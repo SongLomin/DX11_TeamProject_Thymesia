@@ -1,0 +1,254 @@
+0. Attack01
+1. Attack02
+2. Attack03
+3. Attack04
+4. Attack05
+5. Attack06
+6. Attack07
+7. Attack08
+8. Attack09
+9. Attack10
+10. Attack11
+11. Attack12
+12. Attack13
+13. Attack14
+14. Attack15
+15. Attack16
+16. Attack17
+17. Behitfly
+18. Born
+19. Death
+20. Falldown
+21. Hit1
+22. Hit2
+23. Hit3
+24. Hit4
+25. Hitdown
+26. Hoverhit
+27. Lieonfloor
+28. Run
+29. Stand1
+30. Stand2
+31. Standup
+32. Walk
+33. Walkb
+34. Walkl
+35. Walkr
+36. Attack05_1
+37. Attack07_1
+38. Attack05_2
+39. Attack08_1
+40. Attack06_1
+41. Stand2_1
+42. Attack08_2
+43. Attack06_2
+44. Stand1_1
+45. Attack04_1
+46. Stand2_2
+47. Attack01_1
+48. Attack01_2
+49. Walk_1
+50. Death_1
+51. Attack02_1
+52. Attack03_1
+53. Walkb_1
+54. Born_1
+55. Attack20
+56. Born_2
+57. Attack04_2
+58. Walk_2
+59. Stand1_2
+60. UiStand1
+RootNode
+Mo1DiaorensanxingMd000002 (merge)
+Mo1DiaorensanxingMd000002
+Bip001
+Bip001Pelvis
+Bip001Spine
+Bip001LThigh
+Bip001LCalf
+Bip001LFoot
+Bip001LToe0
+Bip001RClavicle
+Bip001RUpperArm
+Bip001RForearm
+Bip001RHand
+Bip001RFinger0
+Bip001RFinger01
+Bip001RFinger02
+Bip001RFinger1
+Bip001RFinger11
+Bip001RFinger12
+Bip001RFinger2
+Bip001RFinger21
+Bip001RFinger22
+Bip001RFinger3
+Bip001RFinger31
+Bip001RFinger32
+Bip001RFinger4
+Bip001RFinger41
+Bip001RFinger42
+Bip001RThigh
+Bip001RCalf
+Bip001RFoot
+Bip001RToe0
+Bip001Spine1
+Bip001Spine2
+Bip001Neck
+Bip001Head
+Bone084
+Bone085
+Bone086
+Bone087
+Bone088
+Bone089
+Bone090
+Bone091
+Bone092
+Bone094
+Bone095
+Bone096
+Bone097
+Bone099
+Bone100
+Bone101
+Bip001LClavicle
+Bip001LUpperArm
+Bip001LForearm
+Bip001LHand
+Bip001LFinger0
+Bip001LFinger01
+Bip001LFinger02
+Bip001LFinger1
+Bip001LFinger11
+Bip001LFinger12
+Bip001LFinger2
+Bip001LFinger21
+Bip001LFinger22
+Bip001LFinger3
+Bip001LFinger31
+Bip001LFinger32
+Bip001LFinger4
+Bip001LFinger41
+Bip001LFinger42
+Bone41
+Bone20
+Bone44
+Bone22
+Bone24
+Bone35
+Bone28
+Bone36
+Bone34
+Bone38
+Bone40
+Bone23
+Bone45
+Bone21
+Bone43
+Bone46
+Bone33
+Bone19
+Bone64
+Bone65
+Bone62
+Bone48
+Bone50
+Bone51
+Bone56
+Bone54
+Bone52
+Bone58
+Bone53
+Bone55
+Bone60
+Bone49
+Bone57
+Bone63
+Bone61
+Bone59
+Suoyi04
+Suoyi05
+Suoyi08
+Suoyi07
+Suoyi36
+Suoyi10
+Suoyi09
+Suoyi01
+Suoyi11
+Suoyi12
+Suoyi14
+Suoyi15
+Suoyi16
+Suoyi23
+Suoyi21
+Suoyi20
+Suoyi22
+Suoyi32
+Suoyi34
+Suoyi35
+Bone11
+Bone12
+Bone13
+Bone07
+Bone01
+Bone05
+Bone09
+Bone04
+Bone14
+Bone15
+Bone16
+Bone17
+Bone18
+Bone32
+Bone31
+Bone27
+Bone30
+Bone42
+Bone29
+Bone37
+Bone47
+Bone26
+Bone39
+Bone66
+Bone67
+Bone69
+Bone06
+Bone08
+Bone02
+Bone03
+Bone10
+Bone68
+Bone76
+Bone79
+Bone70
+Bone83
+Bone80
+Bone71
+Bone82
+Bone73
+Bone74
+Bone72
+Bone78
+Bone75
+Bone81
+Bone77
+Suoyi02
+Suoyi06
+Suoyi33
+Suoyi03
+Suoyi18
+Suoyi17
+Suoyi19
+Suoyi13
+Suoyi25
+Suoyi26
+Suoyi27
+Suoyi24
+Suoyi30
+Suoyi29
+Suoyi31
+Suoyi28
+MarkCase
+HitCase
+Mo1DiaorensanxingMd000002001

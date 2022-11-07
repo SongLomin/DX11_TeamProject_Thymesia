@@ -1,0 +1,4 @@
+문제사항 발생 시 해결법
+1. GameObject 객체의 m_pTransformCom이 null이거나 empty다.
+해결법: __super::Initialize(pArg); 를 안해줌.
+이유: m_pTransformCom은 GameObject의 Initialize에서 할당하기 때문에 __super로 호출하지 않으면 할당되지 않음.

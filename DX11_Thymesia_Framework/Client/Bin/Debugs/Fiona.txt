@@ -1,0 +1,85 @@
+0. combo_heavy_A
+1. combo_heavy_B
+2. combo_heavy_C
+3. Idle
+4. Run
+5. Stunned
+6. LevelUp
+7. Fall_End
+8. combo_light_D
+9. cat_grab_B
+10. Fall_Loop
+11. Slippery
+12. cat_grab_C
+13. combo_light_E
+14. combo_light_A
+15. combo_light_B
+16. Roll
+17. Jump
+18. cat_grab_A
+19. combo_light_C
+20. PreFall
+21. Hit_A
+22. Death_A
+23. Blocked
+24. Party
+RootNode
+Fiona (merge)
+Fiona
+Bip001
+Bip001 Footsteps
+Bip001 Pelvis
+Bip001 Spine
+Bip001 L Thigh
+Bip001 L Calf
+Bip001 L Foot
+Bip001 L Toe0
+Bip001 L Toe0Nub
+Bip001 R Thigh
+Bip001 R Calf
+Bip001 R Foot
+Bip001 R Toe0
+Bip001 R Toe0Nub
+Bip001 Spine1
+Bip001 Spine2
+Bip001 Neck
+Bip001 Head
+Bip001 Hair
+Bip001 Hair02
+Bip001 HairNub
+Bip001 HeadNub
+Bip001 Ponytail1
+Bip001 Ponytail1Nub
+Bip001 Ponytail2
+Bip001 Ponytail2Nub
+Bip001 L Clavicle
+Bip001 L UpperArm
+Bip001 L Forearm
+Bip001 L Hand
+Bip001 L Finger0
+Bip001 L Finger0Nub
+Bone - morningstar01
+Bone - morningstar02
+Bone - morningstar03
+Bone - morningstar04
+Bone - morningstar05
+Bip001 R Clavicle
+Bip001 R UpperArm
+Bip001 R Forearm
+Bip001 R Hand
+Bip001 R Finger0
+Bip001 R Finger0Nub
+Sword
+SWORD
+Bone - catBase
+Bone - catbody01
+Bone - catbody02
+Bone - cattail01
+Bone - cattail02
+Bone - cattail03
+Bone - cattail04
+Cake_Mesh
+Fiona_Mesh
+morningstar
+PlayerShadow
+SlaveAnim

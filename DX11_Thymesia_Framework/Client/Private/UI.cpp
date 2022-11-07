@@ -1,0 +1,206 @@
+#include "stdafx.h"
+#include "UI.h"
+#include "Shader.h"
+#include "Renderer.h"
+#include "Texture.h"
+#include "Transform.h"
+#include "VIBuffer_Rect.h"
+#include "Fader.h"
+#include "GameManager.h"
+
+
+GAMECLASS_C(CUI)
+CLONE_C(CUI, CGameObject)
+
+_float CUI::Get_CamDistance()
+{
+	return m_tUIDesc.fDepth;
+}
+
+HRESULT CUI::Initialize_Prototype()
+{
+	return S_OK;
+}
+
+HRESULT CUI::Initialize(void* pArg)
+{
+	__super::Initialize(pArg);
+
+	m_pShaderCom = Add_Component<CShader>();
+
+	m_pRendererCom = Add_Component<CRenderer>();
+	m_pTextureCom = Add_Component<CTexture>();
+	
+	m_pVIBufferCom = Add_Component<CVIBuffer_Rect>();
+	m_pFaderCom = Add_Component<CFader>();
+
+	Set_OwnerForMyComponents();
+
+	
+
+	m_tUIDesc.fSizeX = g_iWinCX;
+	m_tUIDesc.fSizeY = g_iWinCY;
+	m_tUIDesc.fX = g_iWinCX >> 1;
+	m_tUIDesc.fY = g_iWinCY >> 1;
+
+	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(g_iWinCX, g_iWinCY, 0.f, 1.f)));
+
+	return S_OK;
+}
+
+HRESULT CUI::Start()
+{
+	__super::Start();
+
+	return S_OK;
+}
+
+void CUI::Tick(_float fTimeDelta)
+{
+	//__super::Tick(fTimeDelta);
+
+	m_pFaderCom.lock()->Tick(fTimeDelta);
+
+	if (m_fCurrentShakeTime > 0.f)
+	{
+		m_fCurrentShakeTime -= fTimeDelta;
+		Update_Shaking(fTimeDelta);
+	}
+	else
+	{
+		m_fOffsetPosition = { 0.f, 0.f };
+	}
+	
+}
+
+void CUI::LateTick(_float fTimeDelta)
+{
+	__super::LateTick(fTimeDelta);
+
+	m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Cast<CGameObject>(m_this));
+
+	m_pTransformCom.lock()->Set_Scaled(_float3(m_tUIDesc.fSizeX, m_tUIDesc.fSizeY, 0.f));
+	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tUIDesc.fX - (g_iWinCX * 0.5f) + m_fOffsetPosition.x, 
+		-m_tUIDesc.fY + (g_iWinCY * 0.5f) - m_fOffsetPosition.y, 0.f, 1.f));
+}
+
+HRESULT CUI::Render()
+{
+	//__super::Render();
+
+	/* 셰이더 전역변수에 값을 던진다. */
+	SetUp_ShaderResource();
+
+	m_pShaderCom.lock()->Begin(m_iPassIndex);
+
+	m_pVIBufferCom.lock()->Render();
+
+	return S_OK;
+}
+
+void CUI::Set_Texture(const _char* sKey)
+{
+	m_pTextureCom.lock()->Use_Texture(sKey);
+
+}
+
+void CUI::Set_UIPosition(const _float& fX, const _float& fY, const _float& fSizeX, const _float& fSizeY)
+{
+	m_tUIDesc.fX = fX;
+	m_tUIDesc.fY = fY;
+	m_tUIDesc.fSizeX = fSizeX;
+	m_tUIDesc.fSizeY = fSizeY;
+
+}
+
+void CUI::Add_Shaking(const _float& In_ShakeTime)
+{
+	m_fCurrentShakeTime = In_ShakeTime;
+	m_fCurrentFreq = 0.f;
+
+}
+
+HRESULT CUI::SetUp_ShaderResource()
+{
+	CallBack_Bind_SRV(m_pShaderCom, "");
+
+	_matrix IdentityMatrix = XMMatrixIdentity();
+
+	m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
+	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", &IdentityMatrix, sizeof(_float4x4));
+	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+
+	return S_OK;
+}
+
+void CUI::Update_Shaking(_float fTimeDelta)
+{
+	if (m_fCurrentFreq > 0.f)
+	{
+		m_fCurrentFreq -= fTimeDelta;
+
+		return;
+	}
+
+	m_fOffsetPosition.x = SMath::fRandom(-m_fPower, m_fPower);
+	m_fOffsetPosition.y = SMath::fRandom(-m_fPower, m_fPower);
+
+	m_fCurrentFreq = m_fShakeFreq;
+
+}
+
+
+
+void CUI::Write_Json(json& Out_Json)
+{
+	__super::Write_Json(Out_Json);
+
+	Out_Json.emplace("fX", m_tUIDesc.fX);
+	Out_Json.emplace("fY", m_tUIDesc.fY);
+	Out_Json.emplace("SizeX", m_tUIDesc.fSizeX);
+	Out_Json.emplace("sizeY", m_tUIDesc.fSizeY);
+
+}
+
+void CUI::Load_FromJson(const json& In_Json)
+{
+	__super::Load_FromJson(In_Json);
+
+	if(In_Json.find("fX") != In_Json.end())
+		m_tUIDesc.fX = In_Json["fX"];
+
+	if (In_Json.find("fY") != In_Json.end())
+		m_tUIDesc.fY = In_Json["fY"];
+
+	if (In_Json.find("SizeX") != In_Json.end())
+		m_tUIDesc.fSizeX = In_Json["SizeX"];
+
+	if (In_Json.find("sizeY") != In_Json.end())
+		m_tUIDesc.fSizeY = In_Json["sizeY"];
+
+}
+
+void CUI::OnEventMessage(_uint iArg)
+{
+	if ((_uint)EVENT_TYPE::ON_EDITDRAW == iArg)
+	{
+		if (ImGui::CollapsingHeader("UI GameObject"), ImGuiTreeNodeFlags_DefaultOpen)
+		{
+			ImGui::DragFloat("fX", &m_tUIDesc.fX, 1.f);
+			ImGui::DragFloat("fY", &m_tUIDesc.fY, 1.f);
+			ImGui::DragFloat("SizeX", &m_tUIDesc.fSizeX, 1.f, 1.f);
+			ImGui::DragFloat("sizeY", &m_tUIDesc.fSizeY, 1.f, 1.f);
+
+			m_tUIDesc.fSizeX = max(1.f, m_tUIDesc.fSizeX);
+			m_tUIDesc.fSizeY = max(1.f, m_tUIDesc.fSizeY);
+
+		}
+	}
+
+}
+
+void CUI::Free()
+{
+	__super::Free();
+
+}

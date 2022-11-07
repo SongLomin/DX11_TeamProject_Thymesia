@@ -1,0 +1,329 @@
+0. Armature|Armature|Armature|Armature|Armature|Armature|Attack01|Base Laye
+1. Armature|Armature|Armature|Armature|Armature|Armature|Attack02|Base Laye
+2. Armature|Armature|Armature|Armature|Armature|Armature|Attack03|Base Laye
+3. Armature|Armature|Armature|Armature|Armature|Armature|Attack04|Base Laye
+4. Armature|Armature|Armature|Armature|Armature|Armature|Attack05|Base Laye
+5. Armature|Armature|Armature|Armature|Armature|Armature|Attack06|Base Laye
+6. Armature|Armature|Armature|Armature|Armature|Armature|Attack11|Base Laye
+7. Armature|Armature|Armature|Armature|Armature|Armature|Attack21|Base Laye
+8. Armature|Armature|Armature|Armature|Armature|Armature|Attack31|Base Laye
+9. Armature|Armature|Armature|Armature|Armature|Armature|Attack41|Base Laye
+10. Armature|Armature|Armature|Armature|Armature|Armature|Attack42|Base Laye
+11. Armature|Armature|Armature|Armature|Armature|Armature|Attack43|Base Laye
+12. Armature|Armature|Armature|Armature|Armature|Armature|Attack44|Base Laye
+13. Armature|Armature|Armature|Armature|Armature|Armature|Attack51|Base Laye
+14. Armature|Armature|Armature|Armature|Armature|Armature|AttackQte|Base Lay
+15. Armature|Armature|Armature|Armature|Armature|Armature|Behitfly|Base Laye
+16. Armature|Armature|Armature|Armature|Armature|Armature|Born|Base Layer
+17. Armature|Armature|Armature|Armature|Armature|Armature|Death|Base Layer.0
+18. Armature|Armature|Armature|Armature|Armature|Armature|Falldown|Base Laye
+19. Armature|Armature|Armature|Armature|Armature|Armature|Hit1|Base Layer.00
+20. Armature|Armature|Armature|Armature|Armature|Armature|Hit2|Base Layer.00
+21. Armature|Armature|Armature|Armature|Armature|Armature|Hit3|Base Layer
+22. Armature|Armature|Armature|Armature|Armature|Armature|Hit4|Base Layer.00
+23. Armature|Armature|Armature|Armature|Armature|Armature|Hitdown|Base Layer
+24. Armature|Armature|Armature|Armature|Armature|Armature|Hoverhit|Base Laye
+25. Armature|Armature|Armature|Armature|Armature|Armature|Lieonfloor|Base La
+26. Armature|Armature|Armature|Armature|Armature|Armature|Move1|Base Layer.0
+27. Armature|Armature|Armature|Armature|Armature|Armature|Move2|Base Layer.0
+28. Armature|Armature|Armature|Armature|Armature|Armature|RunLeanL|Base Laye
+29. Armature|Armature|Armature|Armature|Armature|Armature|RunLeanR|Base Laye
+30. Armature|Armature|Armature|Armature|Armature|Armature|RunStartEnd01|Base
+31. Armature|Armature|Armature|Armature|Armature|Armature|RunStartEnd02|Base
+32. Armature|Armature|Armature|Armature|Armature|Armature|RunStart|Base Laye
+33. Armature|Armature|Armature|Armature|Armature|Armature|Run|Base Layer.001
+34. Armature|Armature|Armature|Armature|Armature|Armature|Save|Base Layer.00
+35. Armature|Armature|Armature|Armature|Armature|Armature|Stand1|Base Layer.
+36. Armature|Armature|Armature|Armature|Armature|Armature|Stand2|Base Layer.
+37. Armature|Armature|Armature|Armature|Armature|Armature|Standchange|Base L
+38. Armature|Armature|Armature|Armature|Armature|Armature|Standup|Base Layer
+39. Armature|Armature|Armature|Armature|Armature|Armature|StopR|Base Layer.0
+40. Armature|Armature|Armature|Armature|Armature|Armature|Stop|Base Layer.00
+41. Armature|Armature|Armature|Armature|Armature|Armature|Stun|Base Layer.00
+42. Armature|Armature|Armature|Armature|Armature|Armature|Win|Base Layer.001
+RootNode
+Light
+Camera
+Armature
+R3LuxiyaMd010021 (merge)
+R3LuxiyaMd010021
+Bip001
+Bip001Pelvis
+Bip001Spine
+Bip001LThigh
+Bip001LCalf
+Bip001LFoot
+Bip001LToe0
+Bip001LToe0_end
+Bip001LToe0_end_end
+Bip001LToe0_end_end_end
+Bip001RThigh
+Bip001RCalf
+Bip001RFoot
+Bip001RToe0
+Bip001RToe0_end
+Bip001RToe0_end_end
+Bip001RToe0_end_end_end
+Bip001Spine1
+Bip001Spine2
+Bip001Neck
+Bip001Head
+Bone007
+Bone008
+Bone009
+Bone010
+Bone878
+Bone878_end
+Bone878_end_end
+Bone878_end_end_end
+Bone007mirrored
+Bone008mirrored
+Bone009mirrored
+Bone010mirrored
+Bone879
+Bone879_end
+Bone879_end_end
+Bone879_end_end_end
+Bone012
+Bone013
+Bone014
+Bone880
+Bone880_end
+Bone880_end_end
+Bone880_end_end_end
+Bone024
+Bone025
+Bone026
+Bone886
+Bone886_end
+Bone886_end_end
+Bone886_end_end_end
+Bone038
+Bone039
+Bone040
+Bone041
+Bone042
+Bone883
+Bone883_end
+Bone883_end_end
+Bone883_end_end_end
+Bone044
+Bone045
+Bone046
+Bone047
+Bone048
+Bone881
+Bone881_end
+Bone881_end_end
+Bone881_end_end_end
+Bone050
+Bone045mirrored
+Bone046mirrored
+Bone047mirrored
+Bone048mirrored
+Bone885
+Bone885_end
+Bone885_end_end
+Bone885_end_end_end
+Bone056
+Bone057
+Bone058
+Bone059
+Bone060
+Bone882
+Bone882_end
+Bone882_end_end
+Bone882_end_end_end
+Bone062
+Bone057mirrored
+Bone058mirrored
+Bone059mirrored
+Bone060mirrored
+Bone884
+Bone884_end
+Bone884_end_end
+Bone884_end_end_end
+Bone0870
+Bone0871
+Bone0872
+Bone0873
+Bone0873_end
+Bone0873_end_end
+Bone0873_end_end_end
+Bone0874
+Bone0875
+Bone0876
+Bone0877
+Bone0877_end
+Bone0877_end_end
+Bone0877_end_end_end
+Bip001LClavicle
+Bip001LUpperArm
+Bip001LForearm
+Bip001LHand
+Bip001LFinger0
+Bip001LFinger01
+Bip001LFinger02
+Bip001LFinger02_end
+Bip001LFinger02_end_end
+Bip001LFinger02_end_end_end
+Bip001LFinger1
+Bip001LFinger11
+Bip001LFinger12
+Bip001LFinger12_end
+Bip001LFinger12_end_end
+Bip001LFinger12_end_end_end
+Bip001LFinger2
+Bip001LFinger21
+Bip001LFinger22
+Bip001LFinger22_end
+Bip001LFinger22_end_end
+Bip001LFinger22_end_end_end
+Bip001LFinger3
+Bip001LFinger31
+Bip001LFinger32
+Bip001LFinger32_end
+Bip001LFinger32_end_end
+Bip001LFinger32_end_end_end
+Bip001LFinger4
+Bip001LFinger41
+Bip001LFinger42
+Bip001LFinger42_end
+Bip001LFinger42_end_end
+Bip001LFinger42_end_end_end
+Bip001RClavicle
+Bip001RUpperArm
+Bip001RForearm
+Bip001RHand
+Bip001RFinger0
+Bip001RFinger01
+Bip001RFinger02
+Bip001RFinger02_end
+Bip001RFinger02_end_end
+Bip001RFinger02_end_end_end
+Bip001RFinger1
+Bip001RFinger11
+Bip001RFinger12
+Bip001RFinger12_end
+Bip001RFinger12_end_end
+Bip001RFinger12_end_end_end
+Bip001RFinger2
+Bip001RFinger21
+Bip001RFinger22
+Bip001RFinger22_end
+Bip001RFinger22_end_end
+Bip001RFinger22_end_end_end
+Bip001RFinger3
+Bip001RFinger31
+Bip001RFinger32
+Bip001RFinger32_end
+Bip001RFinger32_end_end
+Bip001RFinger32_end_end_end
+Bip001RFinger4
+Bip001RFinger41
+Bip001RFinger42
+Bip001RFinger42_end
+Bip001RFinger42_end_end
+Bip001RFinger42_end_end_end
+Bone028
+Bone029
+Bone030
+Bone031
+Bone032
+Bone033
+Bone887
+Bone887_end
+Bone887_end_end
+Bone887_end_end_end
+Bone070
+Bone071
+Bone072
+Bone073
+Bone074NUB
+Bone074NUB_end
+Bone074NUB_end_end
+Bone074NUB_end_end_end
+Bone070mirrored
+Bone071mirrored
+Bone072mirrored
+Bone073mirrored
+Bone074(mirrored)NUB
+Bone074(mirrored)NUB_end
+Bone074(mirrored)NUB_end_end
+Bone074(mirrored)NUB_end_end_end
+Bone075
+Bone076
+Bone077
+Bone078
+Bone079NUB
+Bone079NUB_end
+Bone079NUB_end_end
+Bone079NUB_end_end_end
+Bone075mirrored
+Bone076mirrored
+Bone077mirrored
+Bone078mirrored
+Bone079(mirrored)NUB
+Bone079(mirrored)NUB_end
+Bone079(mirrored)NUB_end_end
+Bone079(mirrored)NUB_end_end_end
+Bone080
+Bone081
+Bone082
+Bone083
+Bone084NUB
+Bone084NUB_end
+Bone084NUB_end_end
+Bone084NUB_end_end_end
+Bone082mirrored
+Bone083mirrored
+Bone084(mirrored)NUB
+Bone084(mirrored)NUB_end
+Bone084(mirrored)NUB_end_end
+Bone084(mirrored)NUB_end_end_end
+Bone085
+Bone086
+Bone087NUB
+Bone087NUB_end
+Bone087NUB_end_end
+Bone087NUB_end_end_end
+Bone027
+Bone027_end
+Bone027_end_end
+Bone027_end_end_end
+Bone027mirrored
+Bone027mirrored_end
+Bone027mirrored_end_end
+Bone027mirrored_end_end_end
+Bone035
+Bone036
+Bone037
+Dummy001
+Bone034
+Bone034_end
+Bone034_end_end
+Bone034_end_end_end
+Bone068
+Bone069
+Bone888
+Bone888_end
+Bone888_end_end
+Bone888_end_end_end
+Bip001Prop1
+WeaponCase1
+E3SwordMd150111P01
+WeaponCase1_end
+WeaponCase1_end_end
+WeaponCase1_end_end_end
+CameraReference
+CameraReference_end
+CameraReference_end_end
+CameraReference_end_end_end
+R3LuxiyaMd010011Hair
+R3LuxiyaMd010011Face
+R3LuxiyaMd010021Head
+R3LuxiyaMd010021Hand
+R3LuxiyaMd010021Body
+R3LuxiyaMd010011Eye
+R3LuxiyaMd010021Down
+R3LuxiyaMd010021Upper
