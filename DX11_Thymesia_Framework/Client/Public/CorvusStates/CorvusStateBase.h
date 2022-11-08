@@ -16,8 +16,12 @@ class CCorvusStateBase abstract :
 protected:
     virtual _bool Check_RequirementAttackState();
     virtual _bool Check_RequirementDashState();
+    virtual _bool Check_RequirementJoggingState();
+    virtual _bool Check_RequirementSprintState();
     virtual _bool Check_RequirementRunState();
+
     virtual _bool Check_RequirementUltimateState();
+
 
 protected:
     virtual void OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage) override;

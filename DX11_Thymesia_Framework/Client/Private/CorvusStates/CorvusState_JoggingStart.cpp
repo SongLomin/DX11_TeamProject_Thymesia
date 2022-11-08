@@ -22,7 +22,7 @@ HRESULT CCorvusState_JoggingStart::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	m_iAnimIndex = 12;
+	m_iAnimIndex = 2;
 	return S_OK;
 }
 

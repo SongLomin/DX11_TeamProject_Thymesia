@@ -22,7 +22,7 @@ HRESULT CCorvusState_Idle::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	m_iAnimIndex = 13;
+	m_iAnimIndex = 3;
 	return S_OK;
 }
 
@@ -102,13 +102,26 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 	//	return true;
 	//}
 	
-	if (Check_RequirementRunState())
+	if (Check_RequirementJoggingState())
 	{
 		Rotation_InputToLookDir();
 		Get_OwnerPlayer()->Change_State<CCorvusState_JoggingStart>();
 		return true;
 	}
 
+	if (Check_RequirementRunState())
+	{
+		Rotation_InputToLookDir();
+		Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
+		return true;
+	}
+
+	if (Check_RequirementSprintState())
+	{
+		Rotation_InputToLookDir();
+		Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
+		return true;
+	}
 	return false;
 }
 

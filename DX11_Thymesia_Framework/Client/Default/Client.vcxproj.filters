@@ -610,6 +610,9 @@
     <Filter Include="02. GameObject\01. UI\FadeMask">
       <UniqueIdentifier>{2c9b24b5-36ce-4aa3-8d98-1549cd3ed6cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_SprintStart">
+      <UniqueIdentifier>{e51b7011-ec5e-451f-8088-27a1ad224443}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Corvus">
       <UniqueIdentifier>{16574201-340f-43db-b0c0-e3bb9a200fc8}</UniqueIdentifier>
     </Filter>
