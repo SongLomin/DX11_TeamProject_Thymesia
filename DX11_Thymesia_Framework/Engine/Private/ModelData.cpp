@@ -285,7 +285,10 @@ HRESULT MODEL_DATA::Load_FromAssimp(const _bool In_bAnimZero)
         Animation_Datas.back()->Make_AnimationData(pAiSceneModel->mAnimations[i]);
     }
 
-    
+    if (In_bAnimZero)
+    {
+        iNumAnimations -= 1;
+    }
 
     Bake_Binary();
     

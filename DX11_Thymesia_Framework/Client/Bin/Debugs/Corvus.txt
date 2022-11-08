@@ -1,33 +1,28 @@
-0. SK_C_Corvus.ao|Corvus_SD1_ParryL_NEW
-1. SK_C_Corvus.ao|Corvus_SD1_ParryR_NEW
-2. SK_C_Corvus.ao|Corvus_SD1_Sprint
-3. SK_C_Corvus.ao|Corvus_SD1_Sprint_Start
-4. SK_C_Corvus.ao|Corvus_SD_AvoidF
-5. SK_C_Corvus.ao|Corvus_SD_LAttack1
-6. SK_C_Corvus.ao|Corvus_SD_LAttack2
-7. SK_C_Corvus.ao|Corvus_SD_LAttack3_New
-8. SK_C_Corvus.ao|Corvus_SD_LAttack4
-9. SK_C_Corvus.ao|Corvus_SD_LAttack5
-10. SK_C_Corvus.ao|Corvus_SD_WalkF
-11. SK_C_Corvus.ao|Corvus_SD_WalkF_REnd
-12. SK_C_Corvus.ao|Corvus_SD_WalkF_Start
-13. SK_C_Corvus.ao|Corvus_SD_WalkIdle
+0. Corvus_SD_WalkF
+1. Corvus_SD_WalkF_REnd
+2. Corvus_SD_WalkF_Start
+3. Corvus_SD_WalkIdle
+4. Corvus_SD_RunF_24
+5. Corvus_SD_SprintAttack_1
+6. Corvus_SD_AvoidF
+7. Corvus_SD1_ParryL_NEW
+8. Corvus_SD1_ParryR_NEW
+9. Corvus_SD1_Sprint
+10. Corvus_SD1_Sprint_Start
+11. Corvus_SD_LAttack1
+12. Corvus_SD_LAttack2
+13. Corvus_SD_LAttack3_New
 RootNode
-SK_C_Corvus.ao
+root_$AssimpFbx$_Translation
+root_$AssimpFbx$_PreRotation
+root_$AssimpFbx$_Rotation
+root_$AssimpFbx$_Scaling
 root
 ik_hand_gun
 ik_hand_r
-ik_hand_r_end
-ik_hand_r_end_end
 ik_foot_r
-ik_foot_r_end
-ik_foot_r_end_end
 ik_foot_l
-ik_foot_l_end
-ik_foot_l_end_end
 ik_hand_l
-ik_hand_l_end
-ik_hand_l_end_end
 Bip001
 Bip001-Pelvis
 Bip001-Spine
@@ -36,20 +31,14 @@ Bip001-Spine2
 Bip001-Neck
 Bip001-Head
 Bip001-HeadNub
-Bip001-HeadNub_end
-Bip001-HeadNub_end_end
 Bip001-Xtra07
 Bip001-Xtra0702
 Bip001-Xtra0703
 Bip001-Xtra07Nub
-Bip001-Xtra07Nub_end
-Bip001-Xtra07Nub_end_end
 Bip001-Xtra07Opp
 Bip001-Xtra07Opp02
 Bip001-Xtra07Opp03
 Bip001-Xtra07OppNub
-Bip001-Xtra07OppNub_end
-Bip001-Xtra07OppNub_end_end
 Bip001-R-Clavicle
 Bip001-R-UpperArm
 Bip001-R-Forearm
@@ -58,66 +47,42 @@ Bip001-R-Finger0
 Bip001-R-Finger01
 Bip001-R-Finger02
 Bip001-R-Finger0Nub
-Bip001-R-Finger0Nub_end
-Bip001-R-Finger0Nub_end_end
 Bip001-R-Finger1
 Bip001-R-Finger11
 Bip001-R-Finger12
 Bip001-R-Finger1Nub
-Bip001-R-Finger1Nub_end
-Bip001-R-Finger1Nub_end_end
 Bip001-R-Finger2
 Bip001-R-Finger21
 Bip001-R-Finger22
 Bip001-R-Finger2Nub
-Bip001-R-Finger2Nub_end
-Bip001-R-Finger2Nub_end_end
 Bip001-R-Finger3
 Bip001-R-Finger31
 Bip001-R-Finger32
 Bip001-R-Finger3Nub
-Bip001-R-Finger3Nub_end
-Bip001-R-Finger3Nub_end_end
 Bip001-R-Finger4
 Bip001-R-Finger41
 Bip001-R-Finger42
 Bip001-R-Finger4Nub
-Bip001-R-Finger4Nub_end
-Bip001-R-Finger4Nub_end_end
 Bone001(mirrored)
-Bone001(mirrored)_end
-Bone001(mirrored)_end_end
 weapon_r
-weapon_r_end
-weapon_r_end_end
 Claw_Bone_05
 Claw_Bone_06
 Claw_Bone_07
 Claw_Bone_08_End
-Claw_Bone_08_End_end
-Claw_Bone_08_End_end_end
 Claw_Bone_09
 Claw_Bone_10
 Claw_Bone_11
 Claw_Bone_12_End
-Claw_Bone_12_End_end
-Claw_Bone_12_End_end_end
 Claw_Bone_13
 Claw_Bone_14
 Claw_Bone_15
 Claw_Bone_16_End
-Claw_Bone_16_End_end
-Claw_Bone_16_End_end_end
 Claw_Bone_01
 Claw_Bone_02
 Claw_Bone_03
 Claw_Bone_04_End
-Claw_Bone_04_End_end
-Claw_Bone_04_End_end_end
 Bip001-Xtra04Opp
 Bip001-Xtra04OppNub
-Bip001-Xtra04OppNub_end
-Bip001-Xtra04OppNub_end_end
 Bip001-Xtra05Opp
 Bip001-Xtra05Opp02
 Bip001-Xtra05Opp03
@@ -128,8 +93,6 @@ Bip001-Xtra05Opp07
 Bip001-Xtra05Opp08
 Bip001-Xtra05Opp09
 Bip001-Xtra05OppNub
-Bip001-Xtra05OppNub_end
-Bip001-Xtra05OppNub_end_end
 Bip001-L-Clavicle
 Bip001-L-UpperArm
 Bip001-L-Forearm
@@ -138,90 +101,54 @@ Bip001-L-Finger0
 Bip001-L-Finger01
 Bip001-L-Finger02
 Bip001-L-Finger0Nub
-Bip001-L-Finger0Nub_end
-Bip001-L-Finger0Nub_end_end
 Bip001-L-Finger1
 Bip001-L-Finger11
 Bip001-L-Finger12
 Bip001-L-Finger1Nub
-Bip001-L-Finger1Nub_end
-Bip001-L-Finger1Nub_end_end
 Bip001-L-Finger2
 Bip001-L-Finger21
 Bip001-L-Finger22
 Bip001-L-Finger2Nub
-Bip001-L-Finger2Nub_end
-Bip001-L-Finger2Nub_end_end
 Bip001-L-Finger3
 Bip001-L-Finger31
 Bip001-L-Finger32
 Bip001-L-Finger3Nub
-Bip001-L-Finger3Nub_end
-Bip001-L-Finger3Nub_end_end
 Bip001-L-Finger4
 Bip001-L-Finger41
 Bip001-L-Finger42
 Bip001-L-Finger4Nub
-Bip001-L-Finger4Nub_end
-Bip001-L-Finger4Nub_end_end
 Bone001
-Bone001_end
-Bone001_end_end
 weapon_l
-weapon_l_end
-weapon_l_end_end
 Claw_Bone_01(mirrored)
 Claw_Bone_02(mirrored)
 Claw_Bone_03(mirrored)
 Claw_Bone_04_End(mirrored)
-Claw_Bone_04_End(mirrored)_end
-Claw_Bone_04_End(mirrored)_end_end
 Claw_Bone_05(mirrored)
 Claw_Bone_06(mirrored)
 Claw_Bone_07(mirrored)
 Claw_Bone_08_End(mirrored)
-Claw_Bone_08_End(mirrored)_end
-Claw_Bone_08_End(mirrored)_end_end
 Claw_Bone_09(mirrored)
 Claw_Bone_10(mirrored)
 Claw_Bone_11(mirrored)
 Claw_Bone_12_End(mirrored)
-Claw_Bone_12_End(mirrored)_end
-Claw_Bone_12_End(mirrored)_end_end
 Claw_Bone_13(mirrored)
 Claw_Bone_14(mirrored)
 Claw_Bone_15(mirrored)
 Claw_Bone_16_End(mirrored)
-Claw_Bone_16_End(mirrored)_end
-Claw_Bone_16_End(mirrored)_end_end
 Feather_Bone01
-Feather_Bone01_end
-Feather_Bone01_end_end
 Feather_Bone02
-Feather_Bone02_end
-Feather_Bone02_end_end
 Feather_Bone03
-Feather_Bone03_end
-Feather_Bone03_end_end
 Wings_Bone04
 Wings_Bone05
 Wings_Bone06_End
-Wings_Bone06_End_end
-Wings_Bone06_End_end_end
 Wings_Bone07
 Wings_Bone08
 Wings_Bone09_End
-Wings_Bone09_End_end
-Wings_Bone09_End_end_end
 Wings_Bone01
 Wings_Bone02
 Wings_Bone03_End
-Wings_Bone03_End_end
-Wings_Bone03_End_end_end
 Bip001-Xtra04
 Bip001-Xtra04Nub
-Bip001-Xtra04Nub_end
-Bip001-Xtra04Nub_end_end
 Bip001-Xtra05
 Bip001-Xtra0502
 Bip001-Xtra0503
@@ -232,64 +159,41 @@ Bip001-Xtra0507
 Bip001-Xtra0508
 Bip001-Xtra0509
 Bip001-Xtra05Nub
-Bip001-Xtra05Nub_end
-Bip001-Xtra05Nub_end_end
 Bip001-R-Thigh
 Bip001-R-Calf
 Bip001-R-Foot
 Bip001-R-Toe0
 Bip001-R-Toe0Nub
-Bip001-R-Toe0Nub_end
-Bip001-R-Toe0Nub_end_end
 Bip001-L-Thigh
 Bip001-L-Calf
 Bip001-L-Foot
 Bip001-L-Toe0
 Bip001-L-Toe0Nub
-Bip001-L-Toe0Nub_end
-Bip001-L-Toe0Nub_end_end
 Bip001-Xtra01
 Bip001-Xtra01Nub
-Bip001-Xtra01Nub_end
-Bip001-Xtra01Nub_end_end
 Bip001-Xtra02
 Bip001-Xtra0202
 Bip001-Xtra0203
 Bip001-Xtra02Nub
-Bip001-Xtra02Nub_end
-Bip001-Xtra02Nub_end_end
 Bip001-Xtra02Opp
 Bip001-Xtra02Opp02
 Bip001-Xtra02Opp03
 Bip001-Xtra02OppNub
-Bip001-Xtra02OppNub_end
-Bip001-Xtra02OppNub_end_end
 Bip001-Xtra03
 Bip001-Xtra0302
 Bip001-Xtra0303
 Bip001-Xtra03Nub
-Bip001-Xtra03Nub_end
-Bip001-Xtra03Nub_end_end
 Bip001-Xtra03Opp
 Bip001-Xtra03Opp02
 Bip001-Xtra03Opp03
 Bip001-Xtra03OppNub
-Bip001-Xtra03OppNub_end
-Bip001-Xtra03OppNub_end_end
 Bip001-Xtra06
 Bip001-Xtra0602
 Bip001-Xtra06Nub
-Bip001-Xtra06Nub_end
-Bip001-Xtra06Nub_end_end
 Bip001-Xtra06Opp
 Bip001-Xtra06Opp02
 Bip001-Xtra06OppNub
-Bip001-Xtra06OppNub_end
-Bip001-Xtra06OppNub_end_end
 AnimTargetPoint
-AnimTargetPoint_end
-AnimTargetPoint_end_end
 camera
-camera_end
-camera_end_end
-SK_C_Corvus.mo
+SK_C_Corvus_$AssimpFbx$_PreRotation
+SK_C_Corvus
