@@ -94,6 +94,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CStage2>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CStage3>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CCorvus>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CTerrain>();
 
 
 
@@ -282,7 +283,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
 
 	GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_GAMEPLAY);
-
+	GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_GAMEPLAY);
 
 	GET_SINGLE(CGameManager)->Register_Player_HPBar
 	(GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));

@@ -26,8 +26,6 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 
 	m_pTransformCom.lock()->Add_Position(XMVectorSet(0.f, 2.f, 0.f, 1.f));
 
-	m_vTargetPosition = _float3(0.f, 0.f, 0.f);
-	m_vTargetQuaternion = _float4(0.f, 0.f, 0.f, 0.f);
 
 	_matrix MatLookAtZeroPoint = XMMatrixIdentity();
 	MatLookAtZeroPoint.r[3] = XMVectorSet(0.f, 3.5f, -3.5f, 1.f);
@@ -35,6 +33,7 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 
 	_vector vLookAtZeroPointQuat = XMQuaternionRotationMatrix(SMath::Get_RotationMatrix(MatLookAtZeroPoint));
 
+	USE_START(CCamera_Target);
 
 	return S_OK;
 }
@@ -70,13 +69,14 @@ void CCamera_Target::Tick(_float fTimeDelta)
 		{
 			return;
 		}
-		Bake_TargetCamera(fTimeDelta);
+		Look_At_Target(fTimeDelta);
 	}
 	else
 	{
-		Interpolate_Camera(fTimeDelta);
+		Free_MouseMove(fTimeDelta);
 	}
 
+	Interpolate_Camera(fTimeDelta);
 
 }
 
@@ -134,17 +134,104 @@ HRESULT CCamera_Target::Bind_PipeLine()
 	return S_OK;
 }
 
-void CCamera_Target::Bake_TargetCamera(_float fTimeDelta)//타겟 잡았을 때
+void CCamera_Target::Look_At_Target(_float fTimeDelta)//타겟 고정
 {
-	m_pTransformCom.lock()->Set_WorldMatrix(m_pCurrentPlayerTransformCom.lock()->Get_UnScaledWorldMatrix());
-	m_pTransformCom.lock()->Go_Backward(3.f);
-	m_pTransformCom.lock()->Go_Up(3.f);
+	_vector vPlayerPos = m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+	_vector vTargetPos = m_pTargetMonsterTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+	_vector vLookDir = XMVector3Normalize(vTargetPos - vPlayerPos - XMVectorSet(0.f, 2.f, 0.f, 0.f));
+
+	_vector vRight = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLookDir);
+	_vector vUp = XMVector3Cross(vLookDir, vRight);
+
+	_matrix vLookTargetMatrix = XMMatrixIdentity();
+	vLookTargetMatrix.r[0] = vRight;
+	vLookTargetMatrix.r[1] = vUp;
+	vLookTargetMatrix.r[2] = vLookDir;
+	vLookTargetMatrix.r[3] = vPlayerPos;
+
+	_vector vLookTargetQuaternion = XMQuaternionRotationMatrix(vLookTargetMatrix);
+	_vector vCurCameraQuaternion = XMQuaternionRotationMatrix(m_pTransformCom.lock()->Get_WorldMatrix());
+
+
+	//m_fRotationLerpRatio를 위 처럼 일정 비율 증가하게 해야함 조건은 각도가 일정 크기 이상으로 되었을 때
+	//ratio를 증가 시키고 아닐 때 0으로 만들어 놓음 <- 조건을 찾아야함
+	_vector vLerpQuaternion = XMQuaternionSlerp(vCurCameraQuaternion, vLookTargetQuaternion, 0.05f);
+
+	m_pTransformCom.lock()->Rotation_Quaternion(vLerpQuaternion);
+}
+
+void CCamera_Target::Free_MouseMove(_float fTimeDelta)//마우스 움직임
+{
+	_long		MouseMove = 0;
+
+	if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_X))
+	{
+		m_iMouseMovementX += MouseMove;
+	}
+
+	if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
+	{
+		m_iMouseMovementY += MouseMove;
+	}
+	if (fabs(m_iMouseMovementY) > DBL_EPSILON)
+		m_pTransformCom.lock()->Turn(m_pTransformCom.lock()->Get_State(CTransform::STATE_RIGHT), fTimeDelta * m_iMouseMovementY * 0.2f * 0.1f);
+	m_iMouseMovementY *= 0.8f;
+
+	if (fabs(m_iMouseMovementX) > DBL_EPSILON)
+		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * 0.1f * m_iMouseMovementX * 0.2f);
+	m_iMouseMovementX *= 0.8f;
+
 }
 
 
-void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//일반 모드
+void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 {
-	
+	_vector vPlayerPos = m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+	_vector vPrePlayerPos = XMLoadFloat4(&m_vPrePlayerPos);
+	XMStoreFloat4(&m_vPrePlayerPos, vPlayerPos);
+
+
+	if (DBL_EPSILON < XMVector3Length(vPlayerPos - vPrePlayerPos).m128_f32[0])
+	{
+		_vector vTempPlayerPos = vPlayerPos;
+		vTempPlayerPos.m128_f32[1] = 0.f;
+		_vector vTempPrePlayerPos = vPrePlayerPos;
+		vTempPrePlayerPos.m128_f32[1] = 0.f;
+
+		_vector vMoveDir = vPlayerPos - vPrePlayerPos;
+		vMoveDir = XMVector3Normalize(vMoveDir) * 1.5f;
+		_vector vOffset = XMLoadFloat3(&m_vOffSet);
+
+
+		m_fLerpRatio += fTimeDelta;
+		if (1.f < m_fLerpRatio)
+			m_fLerpRatio = 1.f;
+
+		_float fDotValue = XMVectorGetX(XMVector3Dot(XMVector3Normalize(vMoveDir), XMVector3Normalize(XMLoadFloat4(&m_vPreMoveDir))));
+		/*대각선 이동 시에 보간이 안먹힘
+		 이전 방향과 현재 이동 방향이 다를 시에 다시 보간을 해야 함*/
+		if (0.8f > fDotValue)
+			m_fLerpRatio = 0.f;
+
+		vOffset = XMVectorLerp(vOffset, vMoveDir, m_fLerpRatio);
+		XMStoreFloat3(&m_vOffSet, vOffset);
+		XMStoreFloat4(&m_vPreMoveDir, vMoveDir);
+
+	}
+	else
+	{
+		m_fLerpRatio = 0.f;
+		_vector vOffSet = XMLoadFloat3(&m_vOffSet);
+		vOffSet = XMVectorLerp(vOffSet, XMVectorSet(0.f, 0.f, 0.f, 0.f), 0.05f);
+		XMStoreFloat3(&m_vOffSet, vOffSet);
+	}
+
+
+	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+
+	_vector vPos = vPlayerPos + vLook * -4.f - XMLoadFloat3(&m_vOffSet) + XMVectorSet(0.f, 2.f, 0.f, 0.f);
+
+	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
 }
 
 void CCamera_Target::OnLevelExit()

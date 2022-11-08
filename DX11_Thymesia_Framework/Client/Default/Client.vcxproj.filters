@@ -586,9 +586,6 @@
     <Filter Include="02. GameObject\03. Actor\00. Character">
       <UniqueIdentifier>{618567cb-c6db-48f9-a3fe-050a87d96221}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player">
-      <UniqueIdentifier>{16574201-340f-43db-b0c0-e3bb9a200fc8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster">
       <UniqueIdentifier>{b883227e-9ad7-4b08-8d60-68a4d4c34a6c}</UniqueIdentifier>
     </Filter>
