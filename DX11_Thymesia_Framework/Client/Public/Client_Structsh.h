@@ -130,7 +130,8 @@ namespace Client
 
 		// for sprite images
 		_bool		bSpriteImage = false;
-		_int2		iNumFrames;
+		_int iNumFrameX;
+		_int iNumFrameY;
 		_float2		fCurFrame;
 		_float		fSpriteSpeed;
 	};

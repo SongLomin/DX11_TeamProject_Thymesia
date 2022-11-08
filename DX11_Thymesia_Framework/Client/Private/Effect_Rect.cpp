@@ -152,7 +152,8 @@ void CEffect_Rect::SetUp_ShaderResource()
 
 	if (m_tEffectParticleDesc.bSpriteImage)
 	{
-		m_pShaderCom.lock()->Set_RawValue("g_iNumFrames", &m_tEffectParticleDesc.iNumFrames, sizeof(_int2));
+		m_pShaderCom.lock()->Set_RawValue("g_iNumFrameX", &m_tEffectParticleDesc.iNumFrameX, sizeof(_uint));
+		m_pShaderCom.lock()->Set_RawValue("g_iNumFrameY", &m_tEffectParticleDesc.iNumFrameY, sizeof(_uint));
 	}
 
 	_vector vCamDir = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[2];
@@ -183,8 +184,8 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	Out_Json["Max_Life_Time"] = m_tEffectParticleDesc.fMaxLifeTime;
 	Out_Json["Is_Rect_Spawn"] = m_tEffectParticleDesc.bRectSpawn;
 	Out_Json["Is_Sprite_Image"] = m_tEffectParticleDesc.bSpriteImage;
-	Out_Json["Sprite_NumFrameX"] = m_tEffectParticleDesc.iNumFrames.x;
-	Out_Json["Sprite_NumFrameY"] = m_tEffectParticleDesc.iNumFrames.y;
+	Out_Json["Sprite_NumFrameX"] = m_tEffectParticleDesc.iNumFrameX;
+	Out_Json["Sprite_NumFrameY"] = m_tEffectParticleDesc.iNumFrameY;
 	Out_Json["Sprite_FrameSpeed"] = m_tEffectParticleDesc.fSpriteSpeed;
 
 	CJson_Utility::Write_Float3(Out_Json["Min_Start_Position"], m_tEffectParticleDesc.vMinStartPosition);
@@ -256,8 +257,8 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	m_tEffectParticleDesc.fMaxLifeTime = In_Json["Max_Life_Time"];
 	m_tEffectParticleDesc.bRectSpawn = In_Json["Is_Rect_Spawn"];
 	m_tEffectParticleDesc.bSpriteImage = In_Json["Is_Sprite_Image"];
-	m_tEffectParticleDesc.iNumFrames.x = In_Json["Sprite_NumFrameX"];
-	m_tEffectParticleDesc.iNumFrames.y = In_Json["Sprite_NumFrameY"];
+	m_tEffectParticleDesc.iNumFrameX = In_Json["Sprite_NumFrameX"];
+	m_tEffectParticleDesc.iNumFrameY = In_Json["Sprite_NumFrameY"];
 	m_tEffectParticleDesc.fSpriteSpeed = In_Json["Sprite_FrameSpeed"];
 	CJson_Utility::Load_Float3(In_Json["Min_Start_Position"], m_tEffectParticleDesc.vMinStartPosition);
 	CJson_Utility::Load_Float3(In_Json["Max_Start_Position"], m_tEffectParticleDesc.vMaxStartPosition);
@@ -724,18 +725,21 @@ void CEffect_Rect::Update_ParticleSpriteFrame(const _uint& i, _float fTimeDelta)
 	m_tParticleDescs[i].fCurrentSpriteTime += fTimeDelta;
 	if (m_tEffectParticleDesc.fSpriteSpeed <= m_tParticleDescs[i].fCurrentSpriteTime)
 	{
-		m_tParticleDescs[i].vSpriteUV.x += (1.f / m_tEffectParticleDesc.iNumFrames.x);
+		m_tParticleDescs[i].fCurrentSpriteTime = 0.f;
+
+		m_tParticleDescs[i].vSpriteUV.x += (1.f / m_tEffectParticleDesc.iNumFrameX);
+
+		if (1.f <= m_tParticleDescs[i].vSpriteUV.x && 1.f <= m_tParticleDescs[i].vSpriteUV.y)
+		{
+			ZeroMemory(&m_tParticleDescs[i].vSpriteUV, sizeof(_float2));
+			return;
+		}
 
 		if (1.f <= m_tParticleDescs[i].vSpriteUV.x)
 		{
 			m_tParticleDescs[i].vSpriteUV.x = 0.f;
-			m_tParticleDescs[i].vSpriteUV.y += (1.f / m_tEffectParticleDesc.iNumFrames.y);
+			m_tParticleDescs[i].vSpriteUV.y += (1.f / m_tEffectParticleDesc.iNumFrameY);
 		}
-
-		if (1.f <= m_tParticleDescs[i].vSpriteUV.x && 1.f <= m_tParticleDescs[i].vSpriteUV.y)
-			ZeroMemory(&m_tParticleDescs[i].vSpriteUV, sizeof(_float2));
-
-		m_tParticleDescs[i].fCurrentSpriteTime = 0.f;
 	}
 }
 
@@ -793,8 +797,8 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::Checkbox("##Sprite_Image", &m_tEffectParticleDesc.bSpriteImage);
 			ImGui::Separator();
 
-			ImGui::InputInt("NumFramesX", &m_tEffectParticleDesc.iNumFrames.x);
-			ImGui::InputInt("NumFramesY", &m_tEffectParticleDesc.iNumFrames.y);
+			ImGui::InputInt("NumFramesX", &m_tEffectParticleDesc.iNumFrameX);
+			ImGui::InputInt("NumFramesY", &m_tEffectParticleDesc.iNumFrameY);
 			ImGui::InputFloat("FrameSpeed", &m_tEffectParticleDesc.fSpriteSpeed);
 
 

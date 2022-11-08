@@ -16,7 +16,9 @@ bool		g_bBloom;
 bool		g_bGlow;
 bool		g_bSpriteImage = false;
 
-int2		g_iNumFrames;
+int g_iNumFrameX;
+int g_iNumFrameY;
+
 //float2		g_fCurFrame;
 
 struct VS_IN
@@ -110,17 +112,18 @@ PS_OUT PS_MAIN(PS_IN In)
 	{
 		// Sprite Image
 		Out.vColor = g_DiffuseTexture.Sample(PointSampler,
-			float2(In.vTexUV.x / g_iNumFrames.x + In.vSpriteUV.x,
-				In.vTexUV.y / g_iNumFrames.y + In.vSpriteUV.y));
+			float2(In.vTexUV.x / g_iNumFrameX + In.vSpriteUV.x,
+				In.vTexUV.y / g_iNumFrameY + In.vSpriteUV.y));
 
 		// Diffuse Color for Sprite
-		vector vColorMap = g_ColorTexture.Sample(PointSampler, In.vTexUV + g_vDiffuseUV);
+		
+		// vector vColorMap = g_ColorTexture.Sample(PointSampler, In.vTexUV + g_vDiffuseUV);
 
-		Out.vColor *= In.vColor * vColorMap;
+		Out.vColor *= In.vColor/* * vColorMap*/;
 
-		if ((Out.vColor.r + Out.vColor.g + Out.vColor.b) < 0.9f)
-			discard;
-	}
+        if ((Out.vColor.r + Out.vColor.g + Out.vColor.b) < 0.9f)
+            discard;
+    }
 
 	
     if (g_bBloom)
