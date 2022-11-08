@@ -137,7 +137,7 @@ void CGameObject::Free()
 	m_pComponents.clear();
 }
 
-void CGameObject::Remove_Components(weak_ptr<CComponent> pComponent)
+void CGameObject::Remove_Component(weak_ptr<CComponent> pComponent)
 {
 	for (auto& elem_list : m_pComponents)
 	{

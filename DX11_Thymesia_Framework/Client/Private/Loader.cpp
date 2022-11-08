@@ -94,6 +94,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CStage2>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CStage3>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CCorvus>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CStatic_Prop>();
 
 
 
@@ -209,6 +210,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("객체 생성 중입니다. "));
 
+	Create_GameObjectFromJson("../Bin/LevelData/Logo.json", LEVEL_LOGO);
+
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));	
 
 	m_isFinished = true;
@@ -250,6 +253,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	//Loading_ForEffectGroup("../Bin/EffectData/");
 	Load_AllEffectMesh();
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/", MEMORY_TYPE::MEMORY_STATIC);
 
 
 
@@ -292,6 +296,8 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	GET_SINGLE(CGameManager)->Register_Player_Memory
 	(GAMEINSTANCE->Add_GameObject<CPlayer_Memory>(LEVEL_STATIC));
+
+	Create_GameObjectFromJson("../Bin/LevelData/Stage1.json", LEVEL_GAMEPLAY);
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
 
@@ -585,7 +591,7 @@ void CLoader::Create_GameObjectFromJson(const string& In_szJsonPath, const LEVEL
 		if (pGameObjectInstance.lock().get())
 		{
 			pGameObjectInstance.lock()->Set_Enable(Elem_GameObjects["Setting"]["Enable"]);
-			pGameObjectInstance.lock()->Load_FromJson(Elem_GameObjects["Component"]);
+			pGameObjectInstance.lock()->Load_FromJson(Elem_GameObjects);
 		}
 	}
 }

@@ -359,6 +359,11 @@ void CTransform::Write_Json(json& Out_Json)
 
 void CTransform::Load_FromJson(const json& In_Json)
 {
+    if (In_Json.find("Transform") == In_Json.end())
+    {
+        return;
+    }
+
     for (int i = 0; i < 4; i++)
     {
         for (int j = 0; j < 4; j++)

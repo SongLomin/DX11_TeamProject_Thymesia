@@ -329,8 +329,8 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Render_Font()))
 		DEBUG_ASSERT;
 	
-	if (FAILED(Extract_Brightness()))
-		DEBUG_ASSERT;
+	/*if (FAILED(Extract_Brightness()))
+		DEBUG_ASSERT;*/
 
 	if (FAILED(Blur_ExtractBloom()))
 		DEBUG_ASSERT;

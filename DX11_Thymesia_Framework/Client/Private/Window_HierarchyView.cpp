@@ -94,11 +94,6 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 		Out_Json["GameObject"][iIndex]["Setting"]["Enable"] = Elem_Desc.pInstance.lock()->Get_Enable();
 		Out_Json["GameObject"][iIndex]["Component"]["Transform"].emplace();
 
-		if (Elem_Desc.pInstance.lock()->Get_Component<CModel>().lock())
-		{
-			//
-		}
-
 		Elem_Desc.pInstance.lock()->Write_Json(Out_Json["GameObject"][iIndex]);
 		iIndex++;
 	}
@@ -108,6 +103,11 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 
 void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
 {
+	if (In_Json.find("GameObject") == In_Json.end())
+	{
+		return;
+	}
+
 	for (auto& Elem_GameObject : In_Json["GameObject"])
 	{
 		GAMEOBJECT_DESC TempDesc;

@@ -32,7 +32,7 @@ public:
 
 	const _char* Get_ModelKey() const
 	{
-		return m_szModelKey;
+		return m_szModelKey.c_str();
 	}
 
 	weak_ptr<MODEL_DATA> Get_ModelData() const;
@@ -78,6 +78,10 @@ public:
 	void Reset_DeltaBonePositions();
 	void Set_RootNode(const string& pBoneName, const _bool& In_bRoot = true);
 	
+public:
+	virtual void Write_Json(json& Out_Json) override;
+	virtual void Load_FromJson(const json& In_Json) override;
+
 private:
 	void Init_Model_Internal(const char* sModelKey, const string& szTexturePath = "", _uint iTimeScaleLayer = 0);
 	void Reset_Model();
@@ -97,7 +101,7 @@ protected:
 
 	vector<MODEL_MATERIAL>					m_Materials;
 
-	const char*								m_szModelKey;
+	string									m_szModelKey;
 
 private:
 	vector<weak_ptr<CBoneNode>>				m_pBoneNodes;

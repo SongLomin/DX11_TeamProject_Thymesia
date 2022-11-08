@@ -207,7 +207,7 @@ public: /* For Template Function */
 		m_pComponents[typeid(T).hash_code()].clear();
 	}
 
-	void Remove_Components(weak_ptr<CComponent> pComponent);
+	void Remove_Component(weak_ptr<CComponent> pComponent);
 
 	friend CObject_Manager;
 };
