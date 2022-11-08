@@ -32,9 +32,12 @@ HRESULT CCorvus::Initialize(void* pArg)
 	Add_Component<CCorvusState_Jogging>();
 	Add_Component<CCorvusState_JoggingStart>();
 	Add_Component<CCorvusState_JoggingStartEnd>();
-	Add_Component<CCorvusState_Stop>();
+	Add_Component<CCorvusState_Run>();
+	Add_Component<CCorvusState_Sprint>();
+	Add_Component<CCorvusState_SprintStart>();
 	
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
+
 
 	return S_OK;
 }
@@ -44,6 +47,8 @@ HRESULT CCorvus::Start()
 	__super::Start();
 
 	Change_State<CCorvusState_Idle>();
+
+	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
 	return S_OK;
 }

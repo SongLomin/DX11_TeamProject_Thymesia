@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CorvusStates/CorvusState_JoggingStart.h"
+#include "CorvusStates/CorvusState_SprintStart.h"
 #include "Model.h"
 #include "GameInstance.h"
 #include "GameObject.h"
@@ -9,31 +9,31 @@
 #include "CorvusStates/CorvusStates.h"
 #include "GameManager.h"
 
-GAMECLASS_C(CCorvusState_JoggingStart);
-CLONE_C(CCorvusState_JoggingStart, CComponent)
+GAMECLASS_C(CCorvusState_SprintStart);
+CLONE_C(CCorvusState_SprintStart, CComponent)
 
-HRESULT CCorvusState_JoggingStart::Initialize_Prototype()
+HRESULT CCorvusState_SprintStart::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 	return S_OK;
 }
 
-HRESULT CCorvusState_JoggingStart::Initialize(void* pArg)
+HRESULT CCorvusState_SprintStart::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	m_iAnimIndex = 2;
+	m_iAnimIndex = 10;
 	return S_OK;
 }
 
-void CCorvusState_JoggingStart::Start()
+void CCorvusState_SprintStart::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_JoggingStart::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_SprintStart::Call_AnimationEnd, this);
 }
 
-void CCorvusState_JoggingStart::Tick(_float fTimeDelta)
+void CCorvusState_SprintStart::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
@@ -45,19 +45,19 @@ void CCorvusState_JoggingStart::Tick(_float fTimeDelta)
 	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviCom);
 }
 
-void CCorvusState_JoggingStart::LateTick(_float fTimeDelta)
+void CCorvusState_SprintStart::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
 	Check_AndChangeNextState();
 }
 
-void CCorvusState_JoggingStart::OnDisable()
+void CCorvusState_SprintStart::OnDisable()
 {
-	
+
 }
 
-void CCorvusState_JoggingStart::OnStateStart(const _float& In_fAnimationBlendTime)
+void CCorvusState_SprintStart::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
@@ -70,29 +70,29 @@ void CCorvusState_JoggingStart::OnStateStart(const _float& In_fAnimationBlendTim
 	m_iDustEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("Dust", m_pTransformCom);
 }
 
-void CCorvusState_JoggingStart::OnStateEnd()
+void CCorvusState_SprintStart::OnStateEnd()
 {
 	__super::OnStateEnd();
 
 	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Dust", m_iDustEffectIndex);
 }
 
-void CCorvusState_JoggingStart::Call_AnimationEnd()
+void CCorvusState_SprintStart::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
 
 	Get_OwnerPlayer()->Change_State<CCorvusState_Jogging>();
-	
+
 }
 
-void CCorvusState_JoggingStart::Free()
+void CCorvusState_SprintStart::Free()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_JoggingStart::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_SprintStart::Call_AnimationEnd, this);
 }
 
-_bool CCorvusState_JoggingStart::Check_AndChangeNextState()
+_bool CCorvusState_SprintStart::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
 		return false;
@@ -114,7 +114,6 @@ _bool CCorvusState_JoggingStart::Check_AndChangeNextState()
 	//	return true;
 	//}
 
-	
 	if (!KEY_INPUT(KEY::W, KEY_STATE::HOLD)
 		&& !KEY_INPUT(KEY::A, KEY_STATE::HOLD)
 		&& !KEY_INPUT(KEY::S, KEY_STATE::HOLD)
@@ -124,9 +123,7 @@ _bool CCorvusState_JoggingStart::Check_AndChangeNextState()
 		return true;
 	}
 
-
-		
-
 	return false;
 }
+
 

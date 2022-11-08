@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CorvusStates/CorvusState_Jogging.h"
+#include "CorvusStates/CorvusState_Run.h"
 #include "Model.h"
 #include "Transform.h"
 #include "GameInstance.h"
@@ -9,33 +9,36 @@
 #include "CorvusStates/CorvusStates.h"
 #include "GameManager.h"
 
-GAMECLASS_C(CCorvusState_Jogging);
-CLONE_C(CCorvusState_Jogging, CComponent)
+
+GAMECLASS_C(CCorvusState_Run);
+CLONE_C(CCorvusState_Run, CComponent)
 
 
 
-HRESULT CCorvusState_Jogging::Initialize_Prototype()
+HRESULT CCorvusState_Run::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 	return S_OK;
 }
 
-HRESULT CCorvusState_Jogging::Initialize(void* pArg)
+HRESULT CCorvusState_Run::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	m_iAnimIndex = 0;
+	m_iAnimIndex = 4;
 	return S_OK;
 }
 
-void CCorvusState_Jogging::Start()
+
+
+void CCorvusState_Run::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_pTransform = m_pOwner.lock()->Get_Component<CTransform>();
 }
 
-void CCorvusState_Jogging::Tick(_float fTimeDelta)
+void CCorvusState_Run::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
@@ -48,14 +51,14 @@ void CCorvusState_Jogging::Tick(_float fTimeDelta)
 	m_pTransform.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta, m_pNaviCom);
 }
 
-void CCorvusState_Jogging::LateTick(_float fTimeDelta)
+void CCorvusState_Run::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
 	Check_AndChangeNextState();
 }
 
-void CCorvusState_Jogging::OnStateStart(const _float& In_fAnimationBlendTime)
+void CCorvusState_Run::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
@@ -76,18 +79,18 @@ void CCorvusState_Jogging::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif
 }
 
-void CCorvusState_Jogging::OnStateEnd()
+void CCorvusState_Run::OnStateEnd()
 {
 	__super::OnStateEnd();
 
 	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Dust", m_iDustEffectIndex);
 }
 
-void CCorvusState_Jogging::Free()
+void CCorvusState_Run::Free()
 {
 }
 
-_bool CCorvusState_Jogging::Check_AndChangeNextState()
+_bool CCorvusState_Run::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
 		return false;
@@ -115,8 +118,20 @@ _bool CCorvusState_Jogging::Check_AndChangeNextState()
 	//	Get_OwnerPlayer()->Change_State<CLuxiyaState_Dash>();
 	//	return true;
 	//}
-
+	if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
+	{
+		if (KEY_INPUT(KEY::W, KEY_STATE::HOLD)
+			&& !KEY_INPUT(KEY::A, KEY_STATE::HOLD)
+			&& !KEY_INPUT(KEY::S, KEY_STATE::HOLD)
+			&& !KEY_INPUT(KEY::D, KEY_STATE::HOLD))
+		{
+			Get_OwnerPlayer()->Change_State<CCorvusState_SprintStart>();
+				return true;
+		}
+	}
 	
+
+
 	if (!KEY_INPUT(KEY::W, KEY_STATE::HOLD)
 		&& !KEY_INPUT(KEY::A, KEY_STATE::HOLD)
 		&& !KEY_INPUT(KEY::S, KEY_STATE::HOLD)
@@ -125,6 +140,8 @@ _bool CCorvusState_Jogging::Check_AndChangeNextState()
 		Get_OwnerPlayer()->Change_State<CCorvusState_JoggingStartEnd>();
 		return true;
 	}
+
+
 
 	return false;
 }
