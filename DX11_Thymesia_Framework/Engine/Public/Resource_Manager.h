@@ -21,7 +21,7 @@ private:
 	unordered_map<string, vector<ComPtr<ID3D11ShaderResourceView>>> m_SRVs[(_uint)MEMORY_TYPE::MEMORY_END];
 
 public: /* For Model */
-	HRESULT Load_Model(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType = MEMORY_TYPE::MEMORY_STATIC);
+	HRESULT Load_Model(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType = MEMORY_TYPE::MEMORY_STATIC, _bool bAnimZero = false);
 	shared_ptr<MODEL_DATA> Get_ModelFromKey(const _char* _sKey, MEMORY_TYPE _eType = MEMORY_TYPE::MEMORY_END);
 	vector<string> Get_AllModelKeys();
 	vector<string> Get_AllAnimModelKeys();

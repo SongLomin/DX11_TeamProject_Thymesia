@@ -378,9 +378,9 @@ vector<ComPtr<ID3D11ShaderResourceView>> CGameInstance::Get_TexturesFromKey(cons
 	return m_pResource_Manager->Get_TexturesFromKey(_Str_Key, _eType);
 }
 
-HRESULT CGameInstance::Load_Model(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType)
+HRESULT CGameInstance::Load_Model(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType, _bool Is_bAnimZero)
 {
-	return m_pResource_Manager->Load_Model(sKey, sModelFilePath, eModelType, In_TransformMatrix, eMemType);
+	return m_pResource_Manager->Load_Model(sKey, sModelFilePath, eModelType, In_TransformMatrix, eMemType, Is_bAnimZero);
 }
 
 shared_ptr<MODEL_DATA> CGameInstance::Get_ModelFromKey(const _char* _sKey, MEMORY_TYPE _eType)

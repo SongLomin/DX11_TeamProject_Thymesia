@@ -114,7 +114,7 @@ HRESULT CResource_Manager::Release_ResourceByMemoryType(MEMORY_TYPE _eMemType)
 	return S_OK;
 }
 
-HRESULT CResource_Manager::Load_Model(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType)
+HRESULT CResource_Manager::Load_Model(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType, _bool bAnimZero)
 {
 	shared_ptr<MODEL_DATA> TempModel = make_shared<MODEL_DATA>();
 
@@ -127,7 +127,7 @@ HRESULT CResource_Manager::Load_Model(const _char* sKey, const _char* sModelFile
 	if (m_pScenes[(_uint)eMemType].end() != iter)
 		return E_FAIL;
 	
-	if (FAILED(TempModel->Make_ModelData(szFullPath, eModelType, In_TransformMatrix)))
+	if (FAILED(TempModel->Make_ModelData(szFullPath, eModelType, In_TransformMatrix, bAnimZero)))
 	{
 		return E_FAIL;
 	}
