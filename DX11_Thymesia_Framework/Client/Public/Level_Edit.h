@@ -18,7 +18,7 @@ public:
 
 public:
 	static shared_ptr<CLevel_Edit> Create();
-	virtual void Free() override;
+	void Free();
 
 private:
 	unique_ptr<CImGui_Manager> m_pImGui_Manager;

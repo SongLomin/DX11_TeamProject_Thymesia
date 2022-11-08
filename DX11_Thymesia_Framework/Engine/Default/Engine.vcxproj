@@ -230,7 +230,10 @@
     <ClInclude Include="..\Public\CustomLight.h" />
     <ClInclude Include="..\Public\LightManager.h" />
     <ClInclude Include="..\Public\MaterialData.h" />
-    <ClInclude Include="..\Public\MeshContainer.h" />
+    <ClInclude Include="..\Public\MeshContainer.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Public\MeshData.h" />
     <ClInclude Include="..\Public\Model.h" />
     <ClInclude Include="..\Public\ModelData.h" />
@@ -255,6 +258,11 @@
     <ClInclude Include="..\Public\Timer_Manager.h" />
     <ClInclude Include="..\Public\Transform.h" />
     <ClInclude Include="..\Public\VIBuffer_Cube.h" />
+    <ClInclude Include="..\Public\VIBuffer_Mesh_Instance.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Ground.h" />
     <ClInclude Include="..\Public\VIBuffer_Trail.h" />
     <ClInclude Include="..\Public\VIBuffer_Triangle_Instance.h" />
     <ClInclude Include="..\public\VIBuffer.h" />
@@ -305,7 +313,10 @@
     <ClCompile Include="..\Private\CustomLight.cpp" />
     <ClCompile Include="..\Private\LightManager.cpp" />
     <ClCompile Include="..\Private\MaterialData.cpp" />
-    <ClCompile Include="..\Private\MeshContainer.cpp" />
+    <ClCompile Include="..\Private\MeshContainer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Private\MeshData.cpp" />
     <ClCompile Include="..\Private\Model.cpp" />
     <ClCompile Include="..\Private\ModelData.cpp" />
@@ -330,6 +341,11 @@
     <ClCompile Include="..\Private\Timer_Manager.cpp" />
     <ClCompile Include="..\Private\Transform.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Cube.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_Mesh_Instance.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Ground.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Trail.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Triangle_Instance.cpp" />
     <ClCompile Include="..\private\VIBuffer.cpp" />

@@ -45,7 +45,7 @@ private:
 	HRESULT Ready_DepthStencilRenderTargetView(_uint iWinCX, _uint iWinCY);
 
 public:
-	virtual void Free() override;
+	void Free();
 };
 
 END

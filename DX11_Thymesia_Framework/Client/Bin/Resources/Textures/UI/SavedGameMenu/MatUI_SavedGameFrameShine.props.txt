@@ -1,0 +1,74 @@
+TwoSided = false
+bDisableDepthTest = false
+bIsMasked = false
+ReferencedTextures[1] =
+{
+    ReferencedTextures[0] = Texture2D'/Game/ArtAsset/Texture/UI/SavedGameMenu/TexUI_SavedGameFrame_Default.TexUI_SavedGameFrame_Default'
+}
+Expressions[0] = {}
+CachedExpressionData =
+{
+    Parameters =
+    {
+        Entries[5] =
+        {
+            Entries[0] =
+            {
+                ParameterInfos[4] =
+                {
+                    ParameterInfos[0] = { Name=Rotation }
+                    ParameterInfos[1] = { Name=MinLight }
+                    ParameterInfos[2] = { Name=MaxLight }
+                    ParameterInfos[3] = { Name=Speed }
+                }
+            }
+            Entries[1] = { ParameterInfos[0]={} }
+            Entries[2] =
+            {
+                ParameterInfos[1] =
+                {
+                    ParameterInfos[0] = { Name=Texture }
+                }
+            }
+            Entries[3] = { ParameterInfos[0]={} }
+            Entries[4] = { ParameterInfos[0]={} }
+        }
+        ScalarValues[4] = { 0, 0.2, 1, 0.5 }
+        VectorValues[0] = {}
+        TextureValues[1] =
+        {
+            TextureValues[0] = Texture2D'/Game/ArtAsset/Texture/UI/SavedGameMenu/TexUI_SavedGameFrame_Default.TexUI_SavedGameFrame_Default'
+        }
+    }
+    ReferencedTextures[1] =
+    {
+        ReferencedTextures[0] = Texture2D'/Game/ArtAsset/Texture/UI/SavedGameMenu/TexUI_SavedGameFrame_Default.TexUI_SavedGameFrame_Default'
+    }
+}
+BlendMode = BLEND_Translucent (2)
+OpacityMaskClipValue = 0.333
+CollectedTextureParameters[1] =
+{
+    CollectedTextureParameters[0] =
+    {
+        Texture = Texture2D'/Game/ArtAsset/Texture/UI/SavedGameMenu/TexUI_SavedGameFrame_Default.TexUI_SavedGameFrame_Default'
+        Name = Texture
+        Group = None
+    }
+}
+CollectedScalarParameters[4] =
+{
+    CollectedScalarParameters[0] = { Value=0, Name=Rotation, Group=None }
+    CollectedScalarParameters[1] = { Value=0.2, Name=MinLight, Group=None }
+    CollectedScalarParameters[2] = { Value=1, Name=MaxLight, Group=None }
+    CollectedScalarParameters[3] = { Value=0.5, Name=Speed, Group=None }
+}
+CollectedVectorParameters[0] = {}
+FlattenedTexture = None
+MobileBaseTexture = None
+MobileNormalTexture = None
+bUseMobileSpecular = false
+MobileSpecularPower = 16
+MobileSpecularMask = MSM_Constant (0)
+MobileMaskTexture = None
+TextureStreamingData[0] = {}

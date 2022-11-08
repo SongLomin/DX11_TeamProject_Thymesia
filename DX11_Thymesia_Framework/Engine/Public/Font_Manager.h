@@ -25,7 +25,7 @@ private:
 	class shared_ptr<CCustomFont> Find_Font(_uint iFontTag);
 
 public:
-	virtual void Free() override;
+	void Free();
 };
 
 END

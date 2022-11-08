@@ -36,7 +36,7 @@ private:
 	//class CComponent* Find_Components(const _tchar* pPrototypeTag);
 
 public:
-	virtual void Free() override;
+	void Free();
 
 public: /* For Template Function*/
 	template <typename T>

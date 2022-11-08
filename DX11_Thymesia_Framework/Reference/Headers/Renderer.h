@@ -26,7 +26,7 @@ public:
 	virtual void	Start() override;
 
 protected:
-	virtual void Free() override;
+	void Free();
 };
 
 END

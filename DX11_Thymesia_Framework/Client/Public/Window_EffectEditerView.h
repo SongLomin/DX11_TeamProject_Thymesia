@@ -56,7 +56,7 @@ private:
 	weak_ptr<CPreViewAnimationModel> m_pPreViewModel;
 
 public:
-	virtual void Free() override;
+	void Free();
 };
 END
 

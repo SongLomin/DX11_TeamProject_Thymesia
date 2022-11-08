@@ -32,7 +32,7 @@ private:
 
 public:
 	static shared_ptr<CCustomLight> Create(const LIGHTDESC& LightDesc);
-	virtual void Free() override;
+	void Free();
 
 };
 

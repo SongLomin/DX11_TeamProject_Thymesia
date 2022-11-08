@@ -208,6 +208,7 @@ namespace Engine
 		XMFLOAT4			vLook;
 		XMFLOAT4			vTranslation;
 		XMFLOAT4			vColor;
+		XMFLOAT2			vSpriteTexUV;
 	}VTXCOLORINSTANCE;
 
 	typedef struct ENGINE_DLL tagVertex_Point_Instance_Declaration
@@ -224,7 +225,7 @@ namespace Engine
 
 	typedef struct ENGINE_DLL tagVertex_Texture_Color_Instance_Declaration
 	{
-		static const unsigned int		iNumElements = 7;
+		static const unsigned int		iNumElements = 8;
 		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
 	} VTXTEXCOLOR_INSTANCE_DECLARATION;
 
@@ -300,5 +301,9 @@ namespace Engine
 		{
 			ZeroMemory(this, sizeof(PARTICLE_DESC));
 		}
+
+		// For. Sprites
+		_float2 vSpriteUV;
+		_float fCurrentSpriteTime;
 	};
 }

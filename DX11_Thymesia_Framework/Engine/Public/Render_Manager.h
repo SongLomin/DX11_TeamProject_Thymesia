@@ -93,7 +93,7 @@ public:
 	virtual void OnDestroy() override;
 
 protected:
-	virtual void Free() override;
+	void Free();
 
 
 };

@@ -41,6 +41,6 @@ private:
 	RAY						m_MouseRay;
 
 public:
-	virtual void Free() override;
+	void Free();
 };
 END

@@ -123,7 +123,7 @@ HRESULT CMeshContainer::Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CMod
 		hr = Ready_VertexBuffer_Anim(tMeshData, pModel);
 
 	if (FAILED(hr))
-		return E_FAIL;
+		DEBUG_ASSERT;
 #pragma endregion
 
 #pragma region INDEXBUFFER
@@ -179,15 +179,6 @@ HRESULT CMeshContainer::Ready_VertexBuffer_NonAnim(shared_ptr<MESH_DATA> tMeshDa
 	m_BufferDesc.CPUAccessFlags = 0;
 	m_BufferDesc.MiscFlags = 0;
 
-	//VTXMODEL* pVertices = new VTXMODEL[m_iNumVertices];
-
-	//for (_uint i = 0; i < m_iNumVertices; ++i)
-	//{
-	//	memcpy(&pVertices[i].vPosition, &pAIMesh->mVertices[i], sizeof(_float3));
-	//	memcpy(&pVertices[i].vNormal, &pAIMesh->mNormals[i], sizeof(_float3));
-	//	memcpy(&pVertices[i].vTexUV, &pAIMesh->mTextureCoords[0][i], sizeof(_float2));
-	//	memcpy(&pVertices[i].vTangent, &pAIMesh->mTangents[i], sizeof(_float3));
-	//}
 
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
 	m_SubResourceData.pSysMem = tMeshData->pVertices.get();

@@ -22,6 +22,7 @@ class CEditNaviMesh :
     {
         VERTICE,
         HEIGHT,
+        POSITION_XY,
         EDIT_END
     };
 
@@ -42,14 +43,18 @@ private:
 
     void Update_Vertice(_float fTimeDelta);
     void Update_Height(_float fTimeDelta);
+    void Update_Position(_float fTimeDelta);
 
     void Select_MultiHeightPoints(_float fTimeDelta);
     void Select_RangeHeightPoints(_float fTimeDelta);
     void Select_SingleHeightPoint(_float fTimeDelta);
-    // Return Selected Index. -1 is fail to selection.
-    _int Select_PickPoint() const;
+    _int Select_PickPoint() const; // Return Selected Index. -1 is fail to selection.
 
     void Add_Height(const _float& In_fHeight);
+    void Add_Pos(const _float3& In_vAddPosXY);
+
+    void CellList();
+    void SelectPointList();
 
     void Bake_NaviMesh();
     void Load_NaviMesh();
@@ -65,15 +70,14 @@ private:
 
 private:
     vector<weak_ptr<CCollider>>     m_pPickPointColliderComs;
-    list<weak_ptr<CVIBuffer_Cell>>  m_pCells;
-    
+    list<weak_ptr<CVIBuffer_Cell>>  m_pCells; 
 
-    EDIT_MODE                       m_eEditType = EDIT_MODE::EDIT_END;
+    EDIT_MODE                       m_eEditType     = EDIT_MODE::EDIT_END;
 
-    _float2                         m_vSize;
-    _float                          m_fPitch = 0.f;
-    _uint                           m_iWidthCount = 0;
-    _uint                           m_iHeightCount = 0;
+    _float2                         m_vSize         = { 10.f, 10.f };
+    _float                          m_fPitch        = 1.f;
+    _uint                           m_iWidthCount   = 0;
+    _uint                           m_iHeightCount  = 0;
 
     string                          m_szNaviMeshName;
     
@@ -89,7 +93,7 @@ private: /* For Load NaviMesh */
     shared_ptr<MODEL_DATA>          m_pModelData;
 
 public:
-    virtual void Free() override;
+    void Free();
 
 };
 

@@ -209,6 +209,12 @@
     <ClInclude Include="..\Public\SoundManager.h">
       <Filter>98. Managers\13. SoundManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Mesh_Instance.h">
+      <Filter>01. Elements\03. Component\01. VIBuffer\09. Mesh_Instance</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Ground.h">
+      <Filter>01. Elements\03. Component\01. VIBuffer\09. Ground</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -399,6 +405,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\SoundManager.cpp">
       <Filter>98. Managers\13. SoundManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Mesh_Instance.cpp">
+      <Filter>01. Elements\03. Component\01. VIBuffer\09. Mesh_Instance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Ground.cpp">
+      <Filter>01. Elements\03. Component\01. VIBuffer\09. Ground</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -608,6 +620,12 @@
     </Filter>
     <Filter Include="98. Managers\13. SoundManager">
       <UniqueIdentifier>{e410ccfa-aba2-4ec3-ad06-fc3f670eedf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Elements\03. Component\01. VIBuffer\09. Ground">
+      <UniqueIdentifier>{b236972c-c9f3-4275-ac89-474603fcc79f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Elements\03. Component\01. VIBuffer\09. Mesh_Instance">
+      <UniqueIdentifier>{fa2fd3e7-4ff1-47e5-a259-4f60e59b24f4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

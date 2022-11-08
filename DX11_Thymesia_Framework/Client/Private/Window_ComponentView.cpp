@@ -70,7 +70,6 @@ void CWindow_ComponentView::Call_Click_GameObject(GAMEOBJECT_DESC GameObjectDesc
 {
 	m_tPickedGameObjectDesc = GameObjectDesc;
 	Init_Components();
-
 }
 
 void CWindow_ComponentView::Draw_Components()
@@ -157,16 +156,13 @@ void CWindow_ComponentView::Draw_Components()
 	{
 		if (ImGui::CollapsingHeader("CModel Component"), ImGuiTreeNodeFlags_DefaultOpen)
 		{
-			//ImGui::Text("Input Model Key");
-			//ImGui::InputText("##ModelKey", m_szModelKey, MAX_PATH);
-
 			ImGui::Text("Model List");
 			if (ImGui::BeginListBox("##Model List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
 			{
-
 				for (int i = 0; i < m_AllModelKeys.size(); i++)
 				{
 					const bool is_selected = (m_CurrentModelIndex == i);
+
 					if (ImGui::Selectable(m_AllModelKeys[i].c_str(), is_selected))
 						m_CurrentModelIndex = i;
 
@@ -179,6 +175,9 @@ void CWindow_ComponentView::Draw_Components()
 
 			if (ImGui::Button("Load"))
 			{
+				if (!pModel.lock())
+					return;
+
 				pModel.lock()->Init_Model(m_AllModelKeys[m_CurrentModelIndex].c_str());
 			}
 		}
@@ -188,22 +187,40 @@ void CWindow_ComponentView::Draw_Components()
 
 void CWindow_ComponentView::Init_Components()
 {
+	vector<string> ModelKeys = GET_SINGLE(CGameInstance)->Get_AllNoneAnimModelKeys();
+
+	for (auto& iter : ModelKeys)
+	{
+		const char* pKey = iter.c_str();
+
+		auto iter = find_if(m_AllModelKeys.begin(), m_AllModelKeys.end(), [&](string& ModelKey)
+		{
+			return !strcmp(pKey, ModelKey.c_str());
+		});
+
+		if (iter != m_AllModelKeys.end())
+			continue;
+
+		m_AllModelKeys.push_back(pKey);
+	}
 
 	weak_ptr<CModel> pModel = PICKED_GAMEOBJECT->Get_Component<CModel>();
 
 	if (pModel.lock())
 	{
-		//strcpy_s(m_szModelKey, pModel.lock()->Get_ModelKey());
-		
-		const char* szCurrentModelKey = pModel.lock()->Get_ModelKey();
+		if (pModel.lock()->Get_ModelData().lock())
+		{
+			const char* szCurrentModelKey = pModel.lock()->Get_ModelKey();
 
-		m_AllModelKeys = GAMEINSTANCE->Get_AllModelKeys();
-		auto iter =	 find_if(m_AllModelKeys.begin(), m_AllModelKeys.end(), [&](string& ModelKey)
-			{
-				return !strcmp(szCurrentModelKey, ModelKey.c_str());
-			});
+			m_AllModelKeys = GAMEINSTANCE->Get_AllModelKeys();
 
-		m_CurrentModelIndex = iter - m_AllModelKeys.begin();
+			auto iter = find_if(m_AllModelKeys.begin(), m_AllModelKeys.end(), [&](string& ModelKey)
+				{
+					return !strcmp(szCurrentModelKey, ModelKey.c_str());
+				});
+
+			m_CurrentModelIndex = iter - m_AllModelKeys.begin();
+		}
 	}
 }
 

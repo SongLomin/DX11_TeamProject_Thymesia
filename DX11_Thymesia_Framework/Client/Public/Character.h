@@ -67,7 +67,7 @@ protected:
     virtual void OnEventMessage(_uint iArg) override;
 
 private:
-    virtual void Free() override;
+    void Free();
     
 public: /* For Template Function */
 

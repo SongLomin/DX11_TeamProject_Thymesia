@@ -192,6 +192,7 @@
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\Public\Camera_Static.h" />
     <ClInclude Include="..\Public\Camera_Target.h" />
+    <ClInclude Include="..\Public\CCorvus.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ClientComponent.h" />
     <ClInclude Include="..\Public\ClientLevel.h" />
@@ -199,7 +200,17 @@
     <ClInclude Include="..\Public\Client_GameObjects.h" />
     <ClInclude Include="..\Public\Client_Structsh.h" />
     <ClInclude Include="..\Public\Client_Windows.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusStateBase.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusStates.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Hit.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Idle.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Jogging.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_JoggingStartEnd.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_JoggingStart.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Stop.h" />
     <ClInclude Include="..\Public\CustomEffectMesh.h" />
+    <ClInclude Include="..\Public\Dynamic_Prop.h" />
+    <ClInclude Include="..\Public\CustomUI.h" />
     <ClInclude Include="..\Public\EditNaviMesh.h" />
     <ClInclude Include="..\Public\EffectMesh.h" />
     <ClInclude Include="..\Public\EffectGroup.h" />
@@ -208,14 +219,22 @@
     <ClInclude Include="..\Public\Effect_Rect.h" />
     <ClInclude Include="..\Public\FadeMask.h" />
     <ClInclude Include="..\Public\GameManager.h" />
+    <ClInclude Include="..\Public\Ground.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Public\ImGui_Window.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
+    <ClInclude Include="..\Public\Interaction_Prop.h" />
     <ClInclude Include="..\Public\Level_Lobby.h" />
     <ClInclude Include="..\Public\Level_Stage2.h" />
     <ClInclude Include="..\Public\Level_Stage3.h" />
     <ClInclude Include="..\Public\Map.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\PlayerStateBase.h" />
+    <ClInclude Include="..\Public\Player_HPBar.h" />
+    <ClInclude Include="..\Public\Player_Memory.h" />
+    <ClInclude Include="..\Public\Player_MPBar.h" />
+    <ClInclude Include="..\Public\Player_ProgressBar.h" />
     <ClInclude Include="..\Public\PreViewAnimationModel.h" />
     <ClInclude Include="..\Public\Prop.h" />
     <ClInclude Include="..\Public\SkyBox.h" />
@@ -223,6 +242,7 @@
     <ClInclude Include="..\Public\Stage2.h" />
     <ClInclude Include="..\Public\Stage3.h" />
     <ClInclude Include="..\Public\StateBase.h" />
+    <ClInclude Include="..\Public\Static_Prop.h" />
     <ClInclude Include="..\Public\Status.h" />
     <ClInclude Include="..\Public\Trigger.h" />
     <ClInclude Include="..\Public\Window_AnimationModelView.h" />
@@ -257,10 +277,20 @@
     <ClCompile Include="..\Private\Camera_Free.cpp" />
     <ClCompile Include="..\Private\Camera_Static.cpp" />
     <ClCompile Include="..\Private\Camera_Target.cpp" />
+    <ClCompile Include="..\Private\CCorvus.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ClientComponent.cpp" />
     <ClCompile Include="..\Private\ClientLevel.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusStateBase.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Hit.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Idle.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Jogging.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_JoggingStartEnd.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_JoggingStart.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Stop.cpp" />
     <ClCompile Include="..\Private\CustomEffectMesh.cpp" />
+    <ClCompile Include="..\Private\Dynamic_Prop.cpp" />
+    <ClCompile Include="..\Private\CustomUI.cpp" />
     <ClCompile Include="..\Private\EditNaviMesh.cpp" />
     <ClCompile Include="..\Private\EffectMesh.cpp" />
     <ClCompile Include="..\Private\EffectGroup.cpp" />
@@ -269,13 +299,21 @@
     <ClCompile Include="..\Private\Effect_Rect.cpp" />
     <ClCompile Include="..\Private\FadeMask.cpp" />
     <ClCompile Include="..\Private\GameManager.cpp" />
+    <ClCompile Include="..\Private\Ground.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Private\ImGui_Window.cpp" />
+    <ClCompile Include="..\Private\Interaction_Prop.cpp" />
     <ClCompile Include="..\Private\Level_Lobby.cpp" />
     <ClCompile Include="..\Private\Level_Stage2.cpp" />
     <ClCompile Include="..\Private\Level_Stage3.cpp" />
     <ClCompile Include="..\Private\Map.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\PlayerStateBase.cpp" />
+    <ClCompile Include="..\Private\Player_HPBar.cpp" />
+    <ClCompile Include="..\Private\Player_Memory.cpp" />
+    <ClCompile Include="..\Private\Player_MPBar.cpp" />
+    <ClCompile Include="..\Private\Player_ProgressBar.cpp" />
     <ClCompile Include="..\Private\PreViewAnimationModel.cpp" />
     <ClCompile Include="..\Private\Prop.cpp" />
     <ClCompile Include="..\Private\SkyBox.cpp" />
@@ -283,6 +321,7 @@
     <ClCompile Include="..\Private\Stage2.cpp" />
     <ClCompile Include="..\Private\Stage3.cpp" />
     <ClCompile Include="..\Private\StateBase.cpp" />
+    <ClCompile Include="..\Private\Static_Prop.cpp" />
     <ClCompile Include="..\Private\Status.cpp" />
     <ClCompile Include="..\Private\Trigger.cpp" />
     <ClCompile Include="..\Private\Window_AnimationModelView.cpp" />
@@ -348,6 +387,7 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCubeTex.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxGround.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxInstance.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxModel.hlsl">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS_MAIN</EntryPointName>

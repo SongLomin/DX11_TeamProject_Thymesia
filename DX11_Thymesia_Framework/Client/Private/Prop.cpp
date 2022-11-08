@@ -18,9 +18,9 @@ HRESULT CProp::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
-    m_pModelCom = Add_Component<CModel>();
-    m_pShaderCom = Add_Component<CShader>();
-    m_pRendererCom = Add_Component<CRenderer>();
+    m_pModelCom     = Add_Component<CModel>();
+    m_pShaderCom    = Add_Component<CShader>();
+    m_pRendererCom  = Add_Component<CRenderer>();
 
     return S_OK;
 }
@@ -39,7 +39,6 @@ void CProp::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
 
-
     if(RENDERGROUP::RENDER_END != m_eRenderGroup)
         m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Cast<CGameObject>(m_this));
 }
@@ -48,29 +47,45 @@ HRESULT CProp::Render()
 {
     SetUp_ShaderResource();
 
-    m_pShaderCom.lock()->Begin(m_iPassIndex);
+	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
+	for (_uint i = 0; i < iNumMeshContainers; ++i)
+	{
+		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+		{
+			//cout << i << ". None Texture" << endl;
+		}
+
+		// 노말인데 5에 저장되어 있다..
+		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, (aiTextureType)5)))
+		{
+			// 노말 텍스쳐가 없는 경우
+			m_iPassIndex = 0;
+		}
+		// 노말 텍스쳐가 있는 경우
+		else
+		{
+			m_iPassIndex = 3;
+		}
+
+		m_pShaderCom.lock()->Begin(m_iPassIndex);
+
+		m_pModelCom.lock()->Render_Mesh(i);
+	}
 
     __super::Render();
+
     return S_OK;
 }
 
 void CProp::SetUp_ShaderResource()
 {
-    CallBack_Bind_SRV(m_pShaderCom, "");
-    //m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
+    m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
     m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4));
     m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
 
-   /* const LIGHTDESC& LightDesc = GAMEINSTANCE->Get_LightDesc(1);
+	_vector vLightFlag = { 0.f, 0.f, 1.f, 0.f };
 
-    m_pShaderCom.lock()->Set_RawValue("g_vCamPosition", &GAMEINSTANCE->Get_CamPosition(), sizeof(_float4));
-    m_pShaderCom.lock()->Set_RawValue("g_vLightDir", (void*)&LightDesc.vDirection, sizeof(_float4));
-    m_pShaderCom.lock()->Set_RawValue("g_vLightPos", (void*)&LightDesc.vPosition, sizeof(_float4));
-    m_pShaderCom.lock()->Set_RawValue("g_fRange", (void*)&LightDesc.fRange, sizeof(_float));
-
-    m_pShaderCom.lock()->Set_RawValue("g_vLightDiffuse", (void*)&LightDesc.vDiffuse, sizeof(_float4));
-    m_pShaderCom.lock()->Set_RawValue("g_vLightAmbient", (void*)&LightDesc.vAmbient, sizeof(_float4));
-    m_pShaderCom.lock()->Set_RawValue("g_vLightSpecular", (void*)&LightDesc.vSpecular, sizeof(_float4));*/
+	m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector));
 }
 
 void CProp::Free()

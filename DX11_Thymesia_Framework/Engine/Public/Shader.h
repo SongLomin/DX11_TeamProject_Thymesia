@@ -43,7 +43,7 @@ private:
 public:
 	/*static CShader* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const _tchar * pShaderFilePath, const D3D11_INPUT_ELEMENT_DESC * pElements, _uint iNumElement);
 	virtual CComponent* Clone(void* pArg) override;*/
-	virtual void Free() override;
+	void Free();
 };
 
 END

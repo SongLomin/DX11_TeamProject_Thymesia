@@ -16,6 +16,11 @@ CModel::CModel(const CModel& rhs)
 	*this = rhs;
 }
 
+weak_ptr<MODEL_DATA> CModel::Get_ModelData() const
+{
+	return m_pModelData;
+}
+
 void CModel::Set_CurrentAnimation(_uint iAnimIndex, _uint iStartKeyIndex, _float fBlendTime)
 {
 	if (iAnimIndex >= m_Animations.size())
@@ -318,6 +323,10 @@ void CModel::Reset_Model()
 	m_MeshContainers.clear();
 	m_Materials.clear();
 	
+	for (auto& elem : m_MeshContainers)
+	{
+	}
+
 	m_pOwner.lock()->Remove_Components<CTexture>();
 	m_pOwner.lock()->Remove_Components<CMeshContainer>();
 

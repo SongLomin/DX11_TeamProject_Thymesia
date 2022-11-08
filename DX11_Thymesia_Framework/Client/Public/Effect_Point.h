@@ -37,7 +37,7 @@ private:
     weak_ptr<CVIBuffer_Point_Instance>  m_pVIBuffer;
 
 private:
-    virtual void Free() override;
+    void Free();
 
 };
 

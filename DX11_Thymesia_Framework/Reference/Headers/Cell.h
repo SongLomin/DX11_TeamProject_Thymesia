@@ -51,7 +51,7 @@ private:
 
 public:
 	static shared_ptr<CCell> Create(weak_ptr<CGameObject> pOwner, const _float3* pPoints, _int iIndex);
-	virtual void Free() override;
+	void Free();
 };
 
 END

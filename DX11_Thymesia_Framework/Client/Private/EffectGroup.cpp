@@ -305,7 +305,6 @@ weak_ptr<CEffectGroup> CEffectGroup::Clone_EffectGroup()
 
 void CEffectGroup::Load_FromBinary(const string& In_szPath)
 {      
-#pragma region 바이너리_불러오기
     ifstream is(In_szPath, ios::binary);
 
 #ifdef _DEBUG
@@ -335,9 +334,6 @@ void CEffectGroup::Load_FromBinary(const string& In_szPath)
     }
 
     is.close();
-#pragma endregion
-
-
 }
 
 void CEffectGroup::Write_FromBinary()

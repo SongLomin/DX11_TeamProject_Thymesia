@@ -26,7 +26,7 @@ private:
 
 public:
 	static shared_ptr<CTimer> Create();
-	virtual void Free() override;
+	void Free();
 };
 
 END

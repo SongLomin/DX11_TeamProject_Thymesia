@@ -52,7 +52,7 @@ public:
 	virtual void OnDestroy() override;
 
 public:
-	virtual void Free() override;
+	void Free();
 };
 
 END

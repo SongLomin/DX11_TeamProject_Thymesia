@@ -1,0 +1,103 @@
+TwoSided = false
+bDisableDepthTest = false
+bIsMasked = false
+ReferencedTextures[2] =
+{
+    ReferencedTextures[0] = Texture2D'/Game/ArtAsset/Lv2_Fortress/MarketPlace/Cannon_Pack/Textures/Blank_White.Blank_White'
+    ReferencedTextures[1] = Texture2D'/Game/ArtAsset/Lv2_Fortress/MarketPlace/Medieval_Street/Textures/T_Vegetation_Noise.T_Vegetation_Noise'
+}
+Expressions[0] = {}
+CachedExpressionData =
+{
+    Parameters =
+    {
+        Entries[5] =
+        {
+            Entries[0] =
+            {
+                ParameterInfos[5] =
+                {
+                    ParameterInfos[0] = { Name=Thickness }
+                    ParameterInfos[1] = { Name=StartLocationX }
+                    ParameterInfos[2] = { Name=ProgressValue }
+                    ParameterInfos[3] = { Name=StartLocationY }
+                    ParameterInfos[4] = { Name=Opacity }
+                }
+            }
+            Entries[1] =
+            {
+                ParameterInfos[1] =
+                {
+                    ParameterInfos[0] = { Name=Color }
+                }
+            }
+            Entries[2] =
+            {
+                ParameterInfos[1] =
+                {
+                    ParameterInfos[0] = { Name=MaskImage }
+                }
+            }
+            Entries[3] = { ParameterInfos[0]={} }
+            Entries[4] = { ParameterInfos[0]={} }
+        }
+        ScalarValues[5] = { 0.1, 1, 1, 1, 1 }
+        VectorValues[1] =
+        {
+            VectorValues[0] = { R=0.067437, G=0.588542, B=0.436331, A=0 }
+        }
+        TextureValues[1] =
+        {
+            TextureValues[0] = Texture2D'/Game/ArtAsset/Lv2_Fortress/MarketPlace/Cannon_Pack/Textures/Blank_White.Blank_White'
+        }
+    }
+    ReferencedTextures[2] =
+    {
+        ReferencedTextures[0] = Texture2D'/Game/ArtAsset/Lv2_Fortress/MarketPlace/Medieval_Street/Textures/T_Vegetation_Noise.T_Vegetation_Noise'
+        ReferencedTextures[1] = Texture2D'/Game/ArtAsset/Lv2_Fortress/MarketPlace/Cannon_Pack/Textures/Blank_White.Blank_White'
+    }
+}
+BlendMode = BLEND_Translucent (2)
+OpacityMaskClipValue = 0.333
+CollectedTextureParameters[1] =
+{
+    CollectedTextureParameters[0] =
+    {
+        Texture = Texture2D'/Game/ArtAsset/Lv2_Fortress/MarketPlace/Cannon_Pack/Textures/Blank_White.Blank_White'
+        Name = MaskImage
+        Group = None
+    }
+}
+CollectedScalarParameters[5] =
+{
+    CollectedScalarParameters[0] = { Value=0.1, Name=Thickness, Group=None }
+    CollectedScalarParameters[1] = { Value=1, Name=StartLocationX, Group=None }
+    CollectedScalarParameters[2] = { Value=1, Name=ProgressValue, Group=None }
+    CollectedScalarParameters[3] = { Value=1, Name=StartLocationY, Group=None }
+    CollectedScalarParameters[4] = { Value=1, Name=Opacity, Group=None }
+}
+CollectedVectorParameters[1] =
+{
+    CollectedVectorParameters[0] =
+    {
+        Value = { R=0.067437, G=0.588542, B=0.436331, A=0 }
+        Name = Color
+        Group = None
+    }
+}
+FlattenedTexture = None
+MobileBaseTexture = None
+MobileNormalTexture = None
+bUseMobileSpecular = false
+MobileSpecularPower = 16
+MobileSpecularMask = MSM_Constant (0)
+MobileMaskTexture = None
+TextureStreamingData[1] =
+{
+    TextureStreamingData[0] =
+    {
+        SamplingScale = 1
+        UVChannelIndex = 0
+        TextureName = Blank_White
+    }
+}

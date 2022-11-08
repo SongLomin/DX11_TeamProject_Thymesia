@@ -226,10 +226,10 @@ void CGameInstance::Set_CreatedLevelIndex(_uint iCreatedLevelIndex)
 	m_pLevel_Manager->Set_iLastCreatedLevelID(iCreatedLevelIndex);
 }
 
-weak_ptr<CGameObject> CGameInstance::Add_GameObject(size_t iTypeHash, _uint iLevelIndex, void* pArg, _bool _bMemoryPool)
+weak_ptr<CGameObject> CGameInstance::Add_GameObject(size_t iTypeHash, _uint iLevelIndex, void* pArg)
 {
 	
-	return m_pObject_Manager->Add_GameObject(iTypeHash, iLevelIndex, pArg, _bMemoryPool);
+	return m_pObject_Manager->Add_GameObject(iTypeHash, iLevelIndex, pArg);
 }
 
 FDelegate<>& CGameInstance::Get_CallbackStart()
@@ -378,9 +378,9 @@ vector<ComPtr<ID3D11ShaderResourceView>> CGameInstance::Get_TexturesFromKey(cons
 	return m_pResource_Manager->Get_TexturesFromKey(_Str_Key, _eType);
 }
 
-HRESULT CGameInstance::Load_Model(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType)
+HRESULT CGameInstance::Load_Model(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType, _bool Is_bAnimZero)
 {
-	return m_pResource_Manager->Load_Model(sKey, sModelFilePath, eModelType, In_TransformMatrix, eMemType);
+	return m_pResource_Manager->Load_Model(sKey, sModelFilePath, eModelType, In_TransformMatrix, eMemType, Is_bAnimZero);
 }
 
 shared_ptr<MODEL_DATA> CGameInstance::Get_ModelFromKey(const _char* _sKey, MEMORY_TYPE _eType)
@@ -391,6 +391,11 @@ shared_ptr<MODEL_DATA> CGameInstance::Get_ModelFromKey(const _char* _sKey, MEMOR
 vector<string> CGameInstance::Get_AllModelKeys()
 {
 	return m_pResource_Manager->Get_AllModelKeys();
+}
+
+vector<string> CGameInstance::Get_AllNoneAnimModelKeys()
+{
+	return m_pResource_Manager->Get_AllNoneAnimModelKeys();
 }
 
 vector<string> CGameInstance::Get_AllAnimModelKeys()

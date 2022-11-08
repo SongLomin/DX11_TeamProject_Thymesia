@@ -32,7 +32,7 @@ struct ENGINE_DLL MODEL_DATA
     string                              szModelFileName;
     
 
-    HRESULT Make_ModelData(const char* szFilePath, const MODEL_TYPE& eInModelType, _fmatrix TransformMatrix);
+    HRESULT Make_ModelData(const char* szFilePath, const MODEL_TYPE& eInModelType, _fmatrix TransformMatrix, _bool bAnimZero = false);
 
     void OnDestroy();
     ~MODEL_DATA();
@@ -40,7 +40,7 @@ struct ENGINE_DLL MODEL_DATA
 public:
     void Bake_Binary();
 
-    HRESULT Load_FromAssimp();
+    HRESULT Load_FromAssimp(const _bool bAnimZero);
     void Load_FromBinary();
 
     void Debug_AnimationLog(ofstream& os);

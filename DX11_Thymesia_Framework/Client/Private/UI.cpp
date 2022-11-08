@@ -113,6 +113,11 @@ void CUI::Set_UIPosition(const _float& fX, const _float& fY, const _float& fSize
 
 }
 
+void CUI::Set_Depth(_float _fDepth)
+{
+	m_tUIDesc.fDepth = _fDepth;
+}
+
 void CUI::Add_Shaking(const _float& In_ShakeTime)
 {
 	m_fCurrentShakeTime = In_ShakeTime;

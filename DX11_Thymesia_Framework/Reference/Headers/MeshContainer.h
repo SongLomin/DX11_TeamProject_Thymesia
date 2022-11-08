@@ -36,17 +36,17 @@ private:
 
 private:
 	string								m_szName;
+	weak_ptr<MESH_DATA>					m_pMeshData;
 
 	_uint								m_iMaterialIndex = 0;
 
 	_uint								m_iNumBones = 0;
 
-	weak_ptr<MESH_DATA>					m_pMeshData;
 
 	vector<weak_ptr<CBoneNode>>			m_pBoneNodes;
 
 public:
-	virtual void Free() override;
+	void Free();
 };
 
 END

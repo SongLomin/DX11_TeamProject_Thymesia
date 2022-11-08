@@ -2,7 +2,6 @@
 #include "PreViewAnimationModel.h"
 #include "Model.h"
 #include "shader.h"
-#include "Luxiya.h"
 #include "Animation.h"
 
 GAMECLASS_C(CPreViewAnimationModel)

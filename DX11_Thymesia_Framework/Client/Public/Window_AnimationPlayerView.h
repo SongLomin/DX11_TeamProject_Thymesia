@@ -68,7 +68,7 @@ private:
 	map<_int, list<string>>	m_KeyEventEffectGroupNames;
 
 public:
-	virtual void Free() override;
+	void Free();
 };
 END
 

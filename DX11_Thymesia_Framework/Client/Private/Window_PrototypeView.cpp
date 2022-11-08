@@ -53,6 +53,7 @@ HRESULT CWindow_PrototypeView::Render()
             
             ImGui::EndTabItem();
         }
+
         if (ImGui::BeginTabItem("Prop"))
         {
             for (auto& elem : m_pPrototypes[PROTOTYPE_PROP])
@@ -63,9 +64,9 @@ HRESULT CWindow_PrototypeView::Render()
                 }
             }
 
-
             ImGui::EndTabItem();
         }
+
         if (ImGui::BeginTabItem("UI"))
         {
             for (auto& elem : m_pPrototypes[PROTOTYPE_UI])
@@ -78,6 +79,7 @@ HRESULT CWindow_PrototypeView::Render()
 
             ImGui::EndTabItem();
         }
+
         if (ImGui::BeginTabItem("Camera"))
         {
             for (auto& elem : m_pPrototypes[PROTOTYPE_CAMERA])
@@ -119,9 +121,13 @@ void CWindow_PrototypeView::Add_Prototypes()
     //ADD_PROTOTYPE(PROTOTYPE_ACTOR, CDummy_Player);
 
     ADD_PROTOTYPE(PROTOTYPE_PROP, CTerrain);
-    ADD_PROTOTYPE(PROTOTYPE_PROP, CStage1);
+    ADD_PROTOTYPE(PROTOTYPE_PROP, CGround);
+
+    /*ADD_PROTOTYPE(PROTOTYPE_PROP, CStage1);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStage2);
-    ADD_PROTOTYPE(PROTOTYPE_PROP, CStage3);
+    ADD_PROTOTYPE(PROTOTYPE_PROP, CStage3);*/
+
+    ADD_PROTOTYPE(PROTOTYPE_PROP, CStatic_Prop);
 
     ADD_PROTOTYPE(PROTOTYPE_UI, CFadeMask);
 

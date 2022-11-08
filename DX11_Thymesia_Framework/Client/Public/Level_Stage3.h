@@ -18,7 +18,7 @@ public:
 
 public:
 	static shared_ptr<CLevel_Stage3> Create();
-	virtual void Free() override;
+	void Free();
 };
 
 END

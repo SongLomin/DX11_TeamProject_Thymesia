@@ -27,7 +27,7 @@ private:
 
 public:
 	static shared_ptr<CCustomFont> Create(const _tchar* pFontFilePath);
-	virtual void Free() override;
+	void Free();
 };
 
 END

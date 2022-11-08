@@ -95,7 +95,7 @@ private:
 	_float4x4				m_WorldMatrix;
 
 public:
-	virtual void Free() override;
+	void Free();
 };
 
 END

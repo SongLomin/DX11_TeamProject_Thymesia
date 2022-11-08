@@ -35,7 +35,7 @@ private: /* For. ModelComponent */
 
 
 public:
-	virtual void Free() override;
+	void Free();
 
 
 };

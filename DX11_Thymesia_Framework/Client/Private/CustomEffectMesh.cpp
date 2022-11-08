@@ -44,8 +44,6 @@ HRESULT CCustomEffectMesh::Initialize(void* pArg)
 		VTXANIM_DECLARATION::Element,
 		VTXANIM_DECLARATION::iNumElements);
 
-	
-
 	m_pMaskTextureCom = Add_Component<CTexture>();
 	m_pGradientTextureCom = Add_Component<CTexture>();
 

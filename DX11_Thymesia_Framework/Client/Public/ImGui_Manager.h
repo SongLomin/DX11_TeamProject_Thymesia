@@ -62,7 +62,7 @@ private: /* For Effect Editer */
 	weak_ptr<CTerrain>		m_pTerrain;
 
 private:
-	virtual void Free() override;
+	void Free();
 };
 
 END

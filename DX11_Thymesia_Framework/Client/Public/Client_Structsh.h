@@ -27,6 +27,7 @@ namespace Client
 		_float4		vColorForce;
 		_float4		vMaxColor;
 		_float2		vStartUV;
+		_int		iUVDiffuseIndex;
 		_int		iUVMaskIndex;
 		_bool		bUseDiffuseMap;
 		_bool		bUVClamp;
@@ -118,11 +119,20 @@ namespace Client
 		_float2		vUVForce;
 		_float2		vUVMax;
 
+		_int		iUVColorIndex;
+
 		_bool		bBloom;
 		_bool		bGlow;
 		_float4		vStartGlowColor;
 		_float4		vGlowColorSpeed;
 		_float4		vGlowColorForce;
+
+
+		// for sprite images
+		_bool		bSpriteImage = false;
+		_int2		iNumFrames;
+		_float2		fCurFrame;
+		_float		fSpriteSpeed;
 	};
 
 	struct WEAPON_DESC

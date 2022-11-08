@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "..\Public\Level_GamePlay.h"
 #include "GameInstance.h"
 #include "Client_GameObjects.h"

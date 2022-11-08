@@ -31,7 +31,7 @@ protected:
     weak_ptr<CNavigation> m_pNaviMeshCom;
 
 protected:
-    virtual void Free() override;
+    void Free();
 
 };
 

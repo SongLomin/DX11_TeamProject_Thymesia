@@ -33,6 +33,7 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(GAMEINSTANCE->Initialize_Engine(g_hInst, LEVEL_END, (_uint)TIMESCALE_LAYER::LAYER_END, (_uint)COLLISION_LAYER::LAYER_END, GraphicDesc)))
 		return E_FAIL;	
 
+
 	GAMEINSTANCE->Reserve_Event((_uint)EVENT_TYPE::EVENT_END);
 
 	//GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::PLAYER, (_uint)COLLISION_LAYER::MONSTER);

@@ -27,7 +27,7 @@ private:
 	_float4				m_vLocalPlane[6];
 
 private:
-	virtual void Free() override;
+	void Free();
 
 };
 

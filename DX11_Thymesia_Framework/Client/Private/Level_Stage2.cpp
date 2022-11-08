@@ -24,19 +24,7 @@ HRESULT CLevel_Stage2::Initialize()
 
 	ShowCursor(false);
 
-	CCamera::CAMERADESC			CameraDesc;
-	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
-	CameraDesc.vEye = _float4(0.0f, 2.5f, -2.5f, 1.f);
-	CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
-	CameraDesc.fFovy = XMConvertToRadians(65.0f);
-	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
-	CameraDesc.fNear = 0.2f;
-	CameraDesc.fFar = 300.f;
-
-	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_STAGE2, &CameraDesc);
-
-	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
-
+	
 	Load_FromJson(m_szDefaultJsonPath + "Stage2.json", LEVEL::LEVEL_STAGE2);
 
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_STAGE2);
@@ -55,6 +43,8 @@ HRESULT CLevel_Stage2::Initialize()
 	m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
 
 	GET_SINGLE(CGameManager)->Set_GameState(GAME_STATE::PEACE);
+
+
 
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 75.f, -200.f }, { 0.f, 0.f, 0.f });
 

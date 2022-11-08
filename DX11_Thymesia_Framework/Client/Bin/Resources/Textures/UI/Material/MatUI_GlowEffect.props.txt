@@ -1,0 +1,139 @@
+TwoSided = false
+bDisableDepthTest = false
+bIsMasked = false
+ReferencedTextures[4] =
+{
+    ReferencedTextures[0] = Texture2D'/Game/ArtAsset/Lv1_Circus/MarketPlace/FogGradients/ExampleContent/Textures/T_TilingNoise03.T_TilingNoise03'
+    ReferencedTextures[1] = Texture2D'/Game/ArtAsset/Particle/Textures/TFX_Noise_04.TFX_Noise_04'
+    ReferencedTextures[2] = Texture2D'/Game/ArtAsset/Particle/Textures/Tile/T_Tile_08_01.T_Tile_08_01'
+    ReferencedTextures[3] = Texture2D'/Game/ArtAsset/Texture/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Hover.TexUI_PW_Hover'
+}
+Expressions[0] = {}
+CachedExpressionData =
+{
+    Parameters =
+    {
+        Entries[5] =
+        {
+            Entries[0] =
+            {
+                ParameterInfos[7] =
+                {
+                    ParameterInfos[0] = { Name=RandomOffset }
+                    ParameterInfos[1] = { Name=Max_MaskValue }
+                    ParameterInfos[2] = { Name=MaxGlow }
+                    ParameterInfos[3] = { Name=MaskPower }
+                    ParameterInfos[4] = { Name=Min_MaskValue }
+                    ParameterInfos[5] = { Name=Speed }
+                    ParameterInfos[6] = { Name=MinGlow }
+                }
+            }
+            Entries[1] =
+            {
+                ParameterInfos[1] =
+                {
+                    ParameterInfos[0] = { Name=MaskPannerSpeed }
+                }
+            }
+            Entries[2] =
+            {
+                ParameterInfos[3] =
+                {
+                    ParameterInfos[0] = { Name=Icon }
+                    ParameterInfos[1] = { Name=NoiseMask_02 }
+                    ParameterInfos[2] = { Name=NoiseMask_01 }
+                }
+            }
+            Entries[3] = { ParameterInfos[0]={} }
+            Entries[4] = { ParameterInfos[0]={} }
+        }
+        ScalarValues[7] = { 0, 1, 1.2, 0.5, 0, 0.5, 0.8 }
+        VectorValues[1] =
+        {
+            VectorValues[0] = { R=0.15, G=-0.37, B=-0.13, A=0.21 }
+        }
+        TextureValues[3] =
+        {
+            TextureValues[0] = Texture2D'/Game/ArtAsset/Texture/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Hover.TexUI_PW_Hover'
+            TextureValues[1] = Texture2D'/Game/ArtAsset/Lv1_Circus/MarketPlace/FogGradients/ExampleContent/Textures/T_TilingNoise03.T_TilingNoise03'
+            TextureValues[2] = Texture2D'/Game/ArtAsset/Particle/Textures/TFX_Noise_04.TFX_Noise_04'
+        }
+    }
+    ReferencedTextures[4] =
+    {
+        ReferencedTextures[0] = Texture2D'/Game/ArtAsset/Texture/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Hover.TexUI_PW_Hover'
+        ReferencedTextures[1] = Texture2D'/Game/ArtAsset/Particle/Textures/Tile/T_Tile_08_01.T_Tile_08_01'
+        ReferencedTextures[2] = Texture2D'/Game/ArtAsset/Lv1_Circus/MarketPlace/FogGradients/ExampleContent/Textures/T_TilingNoise03.T_TilingNoise03'
+        ReferencedTextures[3] = Texture2D'/Game/ArtAsset/Particle/Textures/TFX_Noise_04.TFX_Noise_04'
+    }
+}
+BlendMode = BLEND_Translucent (2)
+OpacityMaskClipValue = 0.333
+CollectedTextureParameters[3] =
+{
+    CollectedTextureParameters[0] =
+    {
+        Texture = Texture2D'/Game/ArtAsset/Texture/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Hover.TexUI_PW_Hover'
+        Name = Icon
+        Group = None
+    }
+    CollectedTextureParameters[1] =
+    {
+        Texture = Texture2D'/Game/ArtAsset/Lv1_Circus/MarketPlace/FogGradients/ExampleContent/Textures/T_TilingNoise03.T_TilingNoise03'
+        Name = NoiseMask_02
+        Group = None
+    }
+    CollectedTextureParameters[2] =
+    {
+        Texture = Texture2D'/Game/ArtAsset/Particle/Textures/TFX_Noise_04.TFX_Noise_04'
+        Name = NoiseMask_01
+        Group = None
+    }
+}
+CollectedScalarParameters[7] =
+{
+    CollectedScalarParameters[0] = { Value=0, Name=RandomOffset, Group=None }
+    CollectedScalarParameters[1] = { Value=1, Name=Max_MaskValue, Group=None }
+    CollectedScalarParameters[2] = { Value=1.2, Name=MaxGlow, Group=None }
+    CollectedScalarParameters[3] = { Value=0.5, Name=MaskPower, Group=None }
+    CollectedScalarParameters[4] = { Value=0, Name=Min_MaskValue, Group=None }
+    CollectedScalarParameters[5] = { Value=0.5, Name=Speed, Group=None }
+    CollectedScalarParameters[6] = { Value=0.8, Name=MinGlow, Group=None }
+}
+CollectedVectorParameters[1] =
+{
+    CollectedVectorParameters[0] =
+    {
+        Value = { R=0.15, G=-0.37, B=-0.13, A=0.21 }
+        Name = MaskPannerSpeed
+        Group = None
+    }
+}
+FlattenedTexture = None
+MobileBaseTexture = None
+MobileNormalTexture = None
+bUseMobileSpecular = false
+MobileSpecularPower = 16
+MobileSpecularMask = MSM_Constant (0)
+MobileMaskTexture = None
+TextureStreamingData[3] =
+{
+    TextureStreamingData[0] =
+    {
+        SamplingScale = 1
+        UVChannelIndex = 0
+        TextureName = T_TilingNoise03
+    }
+    TextureStreamingData[1] =
+    {
+        SamplingScale = 1
+        UVChannelIndex = 0
+        TextureName = TexUI_PW_Hover
+    }
+    TextureStreamingData[2] =
+    {
+        SamplingScale = 1
+        UVChannelIndex = 0
+        TextureName = TFX_Noise_04
+    }
+}

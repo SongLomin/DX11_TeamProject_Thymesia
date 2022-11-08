@@ -76,6 +76,20 @@ HRESULT CWindow_EffectResourceView::Render()
             ImGui::EndTabItem();
         }
 
+        if (ImGui::BeginTabItem("Sprite_Image"))
+        {
+            for (auto& elem : m_szSpriteImageNames)
+            {
+                if (ImGui::Selectable(elem.c_str()))
+                {
+                    CallBack_SpriteImageClick(elem.c_str());
+                }
+            }
+
+
+            ImGui::EndTabItem();
+        }
+
         ImGui::EndTabBar();
     }
 
@@ -89,7 +103,7 @@ void CWindow_EffectResourceView::Load_Resources()
     Load_EffectMesh();
     Load_Particle();
     Load_EffectGroup();
-
+    Load_SpriteImage();
 }
 
 void CWindow_EffectResourceView::Load_EffectMesh()
@@ -133,12 +147,19 @@ void CWindow_EffectResourceView::Load_AllEffectMeshInPath_Recursive(const filesy
         }
 
 
-        /*else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0)
-        {
-            cout << szFileName << endl;
-            GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
-            m_szAnimEffectMeshNames.push_back(szFileName);
-        }*/
+        //else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0)
+        //{
+        //    cout << szFileName << endl;
+        //    GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
+        //    m_szAnimEffectMeshNames.push_back(szFileName);
+        //}
+
+        //else if (strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
+        //{
+        //    cout << szFileName << endl;
+        //    GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
+        //    m_szAnimEffectMeshNames.push_back(szFileName);
+        //}
 
 
         itr++;
@@ -213,6 +234,25 @@ void CWindow_EffectResourceView::Load_EffectGroup()
         itr++;
     }
 
+}
+
+void CWindow_EffectResourceView::Load_SpriteImage()
+{
+    m_szSpriteImageNames.clear();
+
+    fs::directory_iterator itr("..\\Bin\\Resources\\Textures\\Effect\\Sprites");
+    string szPath;
+    string szFileName;
+
+    while (itr != fs::end(itr)) {
+        const fs::directory_entry& entry = *itr;
+        szFileName = entry.path().filename().string();
+
+        std::cout << entry.path().filename() << std::endl;
+
+        m_szSpriteImageNames.push_back(szFileName);
+        itr++;
+    }
 }
 
 

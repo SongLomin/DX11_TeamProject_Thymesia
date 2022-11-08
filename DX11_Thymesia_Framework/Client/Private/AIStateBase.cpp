@@ -58,6 +58,7 @@ _bool CAIStateBase::Check_RequirementCoolDown(weak_ptr<CAIStateBase> pTargetStat
 	return false;
 }
 
+
 shared_ptr<CMonster> CAIStateBase::Get_OwnerMonster() const noexcept
 {
 	return m_pOwnerFromMonster.lock();

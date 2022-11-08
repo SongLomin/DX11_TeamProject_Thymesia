@@ -39,82 +39,48 @@ public:
 
 public:
 	void Change_Target();
-	
-	void Add_Shaking(const SHAKE_DIRECTION& In_eState, const _float& In_fPower, const _float& In_fTime);
-
-	void Cinema_LuxiyaUltimate();
-	void Cinema_BattleEnd();
-	void Cinema_LuxiyaStartBattle();
-	void Cinema_BossStartBattle();
+	void Focus_Monster(weak_ptr<CMonster> _pMonster);
+	void Release_Focus();
+	/*
+	* 플레이어한테도 해당 타겟을 넘겨줌 <-선형 보간으로 플레이어 방향을 몬스터를 향하게 도렬둠
+	* 게임 매니저에서 몬스터의포인터를 가지고 있음
+	* 게임 매니저에서 몬스터 정렬하고 카메라 절두체 내부에 있는 몬스터들 추려냄 범위 내에 있는지 플레이어 거리 순으로 오름차순 정렬 그 중 가장 가까운애를 
+	* 게임매니저에서 Focus_Monster를 부르면 카메라의 focus_Monster,플레이어의 focus_Monster를 호출 각각 한번씩만 해줌
+	* 한번 타겟을 찾으면 바꾸기 전까지 고정이므로 바꿀때마다 갱신
+	*/
 
 protected:
 	virtual HRESULT Bind_PipeLine() override;
 
 private:
-	void Init_TargetJustPlayer();
-
 	void Bake_TargetCamera(_float fTimeDelta);
-	void Bake_TargetWithMonster(_float fTimeDelta);
-	void Bake_TargetJustPlayer(_float fTimeDelta);
-
-	void Tick_Shaking(_float fTimeDelta);
 
 	void Interpolate_Camera(_float fTimeDelta);
-	void StaticMove_Camera(_float fTimeDelta);
 
-	void Interpolate_Shaking(_float fTimeDelta);
 
-	void Update_Cinema(_float fTimeDelta);
 
 private:
 	weak_ptr<CPlayer>		m_pCurrentPlayer;
 	weak_ptr<CTransform>	m_pCurrentPlayerTransformCom;
 
-	weak_ptr<CMonster>		m_pLookTargetMonster;
-	weak_ptr<CTransform>	m_pLookTargetMonsterTransformCom;
+	weak_ptr<CMonster>		m_pTargetMonster;
+	weak_ptr<CTransform>	m_pTargetMonsterTransformCom;
 
 	_float3					m_vTargetPosition;
 	_float4					m_vTargetQuaternion;
 	
 	_float4x4				m_MatResult;
 
-	_float					m_fXAxisRadian = 0.f;
-	_float					m_fYAxisRadian = 0.f;
-	_float					m_fTargetPlayerCamLerpTime = 0.f;
-
-	_float					m_fCurFreqTime = 0.f;
 	_float					m_fDistance = 0.f;
 
 	CAMERA_STATE			m_eCameraState = CAMERA_STATE::STATE_END;
-	_bool					m_isMonsterTarget = false;
-	_bool					m_bFirst = true;
-
-private: /* For. Shaking */
-	_float					m_fLoopShakeTime = 0.05f;
-	SHAKE_DIRECTION			m_eCurrentShakeDir = SHAKE_DIRECTION::DIRECTION_END;
-	_float					m_fCurrentShakeTime = 0.f;
-	_float					m_fMaxShakeTime = 0.f;
-	_float					m_fShakePower = 0.f;
-	_float					m_bReverseShake = false;
-	_float					m_fShakeRatio = 0.f;
-
-	_float3					m_vShakePosition;
-
-private: /* For. Cinema */
-	weak_ptr<CTransform>	m_pCinemaTransformCom;
-	vector<CINEMA_DESC>*	m_pCurrentCinemaKeys = nullptr;
-	_uint					m_iCurrentKeyIndex = 0;
-	_float					m_fCurrentTime = 0.f;
-	_bool					m_bCinema = false;
-
-	vector<CINEMA_DESC>		m_tLuxiyaUltimateKeys;
-	vector<CINEMA_DESC>		m_tLuxiyaBornKeys;
-	vector<CINEMA_DESC>		m_tBattleEndCinemaKeys;
-	vector<CINEMA_DESC>		m_tBossStartCinemaKeys;
+	_bool					m_bIsFocused = false;
+	_bool					m_bFirst = true;		
+	
 
 private:
 	virtual void OnLevelExit() override;
-	virtual void Free() override;
+	void Free();
 };
 
 END

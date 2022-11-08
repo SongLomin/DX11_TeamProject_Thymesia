@@ -63,7 +63,7 @@ private:
 	GETSET(_float, fAnimRatio)
 
 public:
-	virtual void Free() override;
+	void Free();
 };
 
 END

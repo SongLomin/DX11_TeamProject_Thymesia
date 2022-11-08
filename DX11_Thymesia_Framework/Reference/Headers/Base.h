@@ -52,7 +52,7 @@ private:
 	_bool			m_bEnable = true;
 
 protected:
-	virtual void Free();
+	void Free();
 
 protected:
 	template<typename T>

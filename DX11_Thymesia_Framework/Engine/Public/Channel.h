@@ -42,7 +42,7 @@ private:
 	weak_ptr<CModel>			m_pModel;
 
 public:
-	virtual void Free() override;
+	void Free();
 };
 
 END

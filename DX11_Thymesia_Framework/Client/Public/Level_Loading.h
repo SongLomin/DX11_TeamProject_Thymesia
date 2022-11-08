@@ -26,7 +26,7 @@ private:
 
 public:
 	static shared_ptr<CLevel_Loading> Create(LEVEL eNextLevel);
-	virtual void Free() override;
+	void Free();
 };
 
 END

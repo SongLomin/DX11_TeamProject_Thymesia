@@ -3,7 +3,7 @@
 
 const static _bool g_bUseAssimp = false;
 
-HRESULT MODEL_DATA::Make_ModelData(const char* szFilePath, const MODEL_TYPE& In_eModelType, _fmatrix In_TransformMatrix)
+HRESULT MODEL_DATA::Make_ModelData(const char* szFilePath, const MODEL_TYPE& In_eModelType, _fmatrix In_TransformMatrix, _bool bAnimZero)
 {
     eModelType = In_eModelType;
 
@@ -18,7 +18,7 @@ HRESULT MODEL_DATA::Make_ModelData(const char* szFilePath, const MODEL_TYPE& In_
 
     if (true == g_bUseAssimp)
     {
-        if (FAILED(Load_FromAssimp()))
+        if (FAILED(Load_FromAssimp(bAnimZero)))
         {
             return E_FAIL;
         }
@@ -45,7 +45,7 @@ HRESULT MODEL_DATA::Make_ModelData(const char* szFilePath, const MODEL_TYPE& In_
     if (!is.is_open())
     {
         is.close();
-        if (FAILED(Load_FromAssimp()))
+        if (FAILED(Load_FromAssimp(bAnimZero)))
         {
             return E_FAIL;
         }
@@ -213,7 +213,7 @@ void MODEL_DATA::Debug_AnimationLog(ofstream& os)
 }
 
 
-HRESULT MODEL_DATA::Load_FromAssimp()
+HRESULT MODEL_DATA::Load_FromAssimp(const _bool In_bAnimZero)
 {
     const aiScene* pAiSceneModel = nullptr;
 
@@ -271,21 +271,24 @@ HRESULT MODEL_DATA::Load_FromAssimp()
 
     /* For Animation */
     Animation_Datas.reserve((size_t)iNumAnimations);
-
-    for (_uint i = 0; i < iNumAnimations; i++)
+    _uint i = 0;
+    if (In_bAnimZero)
+    {
+        i = 1;
+    }
+    for (i; i < iNumAnimations; i++)
     {
         shared_ptr<ANIMATION_DATA> AnimationData = make_shared<ANIMATION_DATA>();
         Animation_Datas.push_back(AnimationData);
 
-        if (strcmp(szModelFileName.c_str(), "Dubian_Dagger") == 0)
-        {
-            Animation_Datas.back()->Make_AnimationData(pAiSceneModel->mAnimations[i], 2.2f);
-            continue;
-        }
+        
         Animation_Datas.back()->Make_AnimationData(pAiSceneModel->mAnimations[i]);
     }
 
-    
+    if (In_bAnimZero)
+    {
+        iNumAnimations -= 1;
+    }
 
     Bake_Binary();
     

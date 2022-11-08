@@ -43,10 +43,14 @@ public:
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render() override;
 
+
 public:
     void Set_TextureIndex(const _uint& Index) { m_iTextureIndex = Index; }
     void Set_Texture(const _char* sKey);
     void Set_UIPosition(const _float& fX, const _float& fY, const _float& fSizeX, const _float& fSizeY);
+    void Set_Depth(_float _fDepth);
+
+
 
 public: /* Shaking */
     virtual void Add_Shaking(const _float& In_ShakeTime);
@@ -85,7 +89,7 @@ protected:
 
 protected:
     virtual void OnEventMessage(_uint iArg) override;
-    virtual void Free() override;
+    void Free();
 
 };
 

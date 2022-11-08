@@ -23,7 +23,7 @@ private:
 
 public:
 	static shared_ptr<CLevel_Logo> Create();
-	virtual void Free() override;
+	void Free();
 };
 
 END

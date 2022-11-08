@@ -32,7 +32,7 @@ private:
     shared_ptr<_float[]>        m_pInstanceSpeeds;
 
 private:
-    virtual void Free() override;
+    void Free();
 
 };
 

@@ -25,7 +25,7 @@ private:
 	_uint					m_iCurrentLevelIDBeforeLevelInitalize = 0;
 
 public:
-	virtual void Free() override;
+	void Free();
 };
 
 END
