@@ -122,8 +122,17 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		Get_OwnerPlayer()->Change_State<CCorvusState_SprintStart>();
 		return true;
 	}
-		
+
+	else if (Check_RequirementAVoidState())
+	{
+		Rotation_InputToLookDir();
+		Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
+		return true;
+	}
+
+
 		return false;
+		
 }
 
 

@@ -50,7 +50,7 @@ void CCorvusState_JoggingStartEnd::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-void CCorvusState_JoggingStartEnd::Call_AnimationEnd()
+void CCorvusState_JoggingStartEnd::Call_AnimationEnd() //¾Ö´Ï¸ŞÀÌ¼Ç²÷³´À»´ë
 {
 	if (!Get_Enable())
 		return;
@@ -137,6 +137,13 @@ _bool CCorvusState_JoggingStartEnd::Check_AndChangeNextState()
 	{
 		Rotation_InputToLookDir();
 		Get_OwnerPlayer()->Change_State<CCorvusState_SprintStart>();
+		return true;
+	}
+
+	else if (Check_RequirementAVoidState())
+	{
+		Rotation_InputToLookDir();
+		Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
 		return true;
 	}
 

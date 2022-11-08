@@ -286,6 +286,18 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_SprintStart.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\08.State_SprintStart</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_SprintAttack.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\10.State_SprintAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoid.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Corvus_DefaultSaber.h">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\00.Corvus_DefaultSaber</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Corvus_DefaultDagger.h">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\01.Corvus_DefaultDagger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -537,14 +549,26 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Idle.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\00.State_Idle</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CorvusState_Run.cpp">
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Run.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\06.State_Run</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CorvusState_SprintStart.cpp">
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Sprint.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\07.State_Sprint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_SprintStart.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\08.State_SprintStart</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CorvusState_Sprint.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\07.State_Sprint</Filter>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_SprintAttack.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\10.State_SprintAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoid.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\00.Corvus_DefaultSaber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\Corvus_DefaultDagger.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\01.Corvus_DefaultDagger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -778,9 +802,6 @@
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\00.State_Idle">
       <UniqueIdentifier>{18638724-2ee5-46e7-a95e-73edb20ab3cf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\04.State_Stop">
-      <UniqueIdentifier>{51c54cbf-686f-4453-ab8b-7ebbfaf21117}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\05.State_Hit">
       <UniqueIdentifier>{41826306-7aa4-4142-8a99-602d9d79a36f}</UniqueIdentifier>
     </Filter>
@@ -873,6 +894,15 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\08.State_SprintStart">
       <UniqueIdentifier>{e51b7011-ec5e-451f-8088-27a1ad224443}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid">
+      <UniqueIdentifier>{aad068d4-0d33-4ebf-bb5c-aa75850e357f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\04.State_Stop">
+      <UniqueIdentifier>{51c54cbf-686f-4453-ab8b-7ebbfaf21117}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\10.State_SprintAttack">
+      <UniqueIdentifier>{7a0236c3-2325-4666-b88a-ea5476d7d0bd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
