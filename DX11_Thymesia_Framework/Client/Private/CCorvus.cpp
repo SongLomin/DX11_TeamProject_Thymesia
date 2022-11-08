@@ -36,6 +36,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 	
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
+
 	return S_OK;
 }
 
@@ -44,6 +45,8 @@ HRESULT CCorvus::Start()
 	__super::Start();
 
 	Change_State<CCorvusState_Idle>();
+
+	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
 	return S_OK;
 }

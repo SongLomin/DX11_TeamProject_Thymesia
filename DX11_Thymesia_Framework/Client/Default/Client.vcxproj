@@ -208,6 +208,9 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_JoggingStartEnd.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_JoggingStart.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Stop.h" />
+    <ClInclude Include="..\Public\CorvusState_Run.h" />
+    <ClInclude Include="..\Public\CorvusState_Sprint.h" />
+    <ClInclude Include="..\Public\CorvusState_SprintStart.h" />
     <ClInclude Include="..\Public\CustomEffectMesh.h" />
     <ClInclude Include="..\Public\Dynamic_Prop.h" />
     <ClInclude Include="..\Public\CustomUI.h" />
@@ -288,6 +291,9 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_JoggingStartEnd.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_JoggingStart.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Stop.cpp" />
+    <ClCompile Include="..\Private\CorvusState_Run.cpp" />
+    <ClCompile Include="..\Private\CorvusState_Sprint.cpp" />
+    <ClCompile Include="..\Private\CorvusState_SprintStart.cpp" />
     <ClCompile Include="..\Private\CustomEffectMesh.cpp" />
     <ClCompile Include="..\Private\Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\CustomUI.cpp" />
