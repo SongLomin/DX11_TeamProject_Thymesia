@@ -26,12 +26,15 @@ HRESULT CHUD_Hover::Initialize(void* pArg)
 	m_pFaderCom.lock()->CallBack_FadeEnd += bind(&CHUD_Hover::Call_FadeEnd, this, placeholders::_1);
 	m_iPassIndex = 5;
 
+
+	m_tUIDesc.fDepth = 0.f;
+	m_tBackUpDesc = m_tUIDesc;
 	m_tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
 	m_tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
 	m_tFaderDesc.fDelayTime = 0.f;
 	m_tFaderDesc.fFadeMaxTime = 1.f;
 	m_tFaderDesc.vFadeColor = m_vFadeColor;
-
+	
 	Set_Enable(false);
 	return S_OK;
 }
@@ -48,10 +51,10 @@ void CHUD_Hover::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 	
 	m_tUIDesc.fSizeX = m_tBackUpDesc.fSizeX +
-		(m_pFaderCom.lock()->Get_FadeTime() / m_tFaderDesc.fFadeMaxTime) * (m_tBackUpDesc.fSizeX * 0.2f);
+		((m_tFaderDesc.fFadeMaxTime - m_pFaderCom.lock()->Get_FadeTime()) / m_tFaderDesc.fFadeMaxTime) * (m_tBackUpDesc.fSizeX * 0.2f);
 
 	m_tUIDesc.fSizeY = m_tBackUpDesc.fSizeY +
-		(m_pFaderCom.lock()->Get_FadeTime() / m_tFaderDesc.fFadeMaxTime) * (m_tBackUpDesc.fSizeY * 0.2f);
+		((m_tFaderDesc.fFadeMaxTime - m_pFaderCom.lock()->Get_FadeTime()) / m_tFaderDesc.fFadeMaxTime) * (m_tBackUpDesc.fSizeY * 0.2f);
 
 }
 
@@ -72,7 +75,7 @@ HRESULT CHUD_Hover::Render()
 void CHUD_Hover::Init_Fade()
 {
 	m_pFaderCom.lock()->Init_Fader(m_tFaderDesc);
-	m_tBackUpDesc = m_tUIDesc;
+	//m_tBackUpDesc = m_tUIDesc;
 
 	Set_Enable(true);
 }
