@@ -19,7 +19,7 @@ public:
 
 public:
 	void	Set_Ratio(_float _fRatio);
-
+	void	Set_PassIndex(_uint _iPassIndex);
 
 public:
 	virtual void OnEventMessage(_uint iArg) override;

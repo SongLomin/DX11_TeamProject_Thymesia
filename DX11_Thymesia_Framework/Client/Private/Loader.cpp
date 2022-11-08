@@ -8,7 +8,8 @@
 #include "Player_MPBar.h"
 #include "Player_Memory.h"
 #include "Player.h"
-
+#include "Player_PotionUI.h"
+#include "Player_FeatherUI.h"
 CLoader::CLoader()
 	//: m_pDevice(pDevice), m_pContext(pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
@@ -99,7 +100,6 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 #pragma endregion
 
-
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
 	GAMEINSTANCE->Load_Textures(("Default"), TEXT("../Bin/Resources/Textures/Default%d.jpg"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Load_Textures(("Background"), TEXT("../Bin/Resources/Textures/Background/BgFightLoading%d.png"), MEMORY_TYPE::MEMORY_STATIC);
@@ -132,11 +132,19 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 
 	//Player Skill & ItemUI
-	GAMEINSTANCE->Load_Textures(("Player_Item_Frame"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Frame.png"), MEMORY_TYPE::MEMORY_STATIC);
-	
+	GAMEINSTANCE->Load_Textures(("HUD_Frame"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Frame.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("HUD_FrameBorder"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_FrameBorder.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
 	//Potion Image
 	//mini : 40x40
-	GAMEINSTANCE->Load_Textures(("Potion_Default_Mini"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Frame.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("HUD_Potion_Default_Mini"), TEXT("../Bin/Resources/Textures/UI/Icons/Potions/TexUI_Potion_DefaultType_Mini.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("HUD_Font_BG"), TEXT("../Bin/Resources/Textures/UI/HUD/TexUI_PlagueWeaponBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	//Feather
+	GAMEINSTANCE->Load_Textures(("HUD_Feather"), TEXT("../Bin/Resources/Textures/UI/HUD/TexUI_Feather.png"), MEMORY_TYPE::MEMORY_STATIC);
+
 
 
 	Load_AllMaskMap();
@@ -292,6 +300,15 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	GET_SINGLE(CGameManager)->Register_Player_Memory
 	(GAMEINSTANCE->Add_GameObject<CPlayer_Memory>(LEVEL_STATIC));
+
+	CUI::UI_DESC desc;
+
+	desc = GAMEINSTANCE->Add_GameObject<CPlayer_PotionUI>(LEVEL_STATIC).lock()->Get_UIDESC();
+
+	desc.fX = 1240.f;
+	desc.fY = 822.f;
+
+	GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC, &desc);
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
 

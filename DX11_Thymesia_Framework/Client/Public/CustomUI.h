@@ -17,6 +17,10 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	void		Set_PassIndex(_uint _iPassIndex);
+
+
 protected:
 	virtual HRESULT SetUp_ShaderResource() override;
 

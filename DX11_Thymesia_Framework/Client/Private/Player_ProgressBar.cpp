@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Player_ProgressBar.h"
+#include "CustomUI.h"
 #include "Texture.h"
 #include "Shader.h"
 #include "GameManager.h"
@@ -24,6 +25,9 @@ HRESULT CPlayer_ProgressBar::Initialize(void* pArg)
         TEXT("Shader_HPBar"),
         VTXTEX_DECLARATION::Element,
         VTXTEX_DECLARATION::iNumElements);
+
+    if (pArg != nullptr)
+        memcpy(&m_tUIDesc, pArg, sizeof(UI_DESC));
 
     m_fRatio = 1.f;
     
@@ -67,6 +71,11 @@ HRESULT CPlayer_ProgressBar::Render()
 void CPlayer_ProgressBar::Set_Ratio(_float _fRatio)
 {
     m_fRatio = _fRatio;
+}
+
+void CPlayer_ProgressBar::Set_PassIndex(_uint _iPassIndex)
+{
+    m_iPassIndex = _iPassIndex;
 }
 
 void CPlayer_ProgressBar::OnEventMessage(_uint iArg)

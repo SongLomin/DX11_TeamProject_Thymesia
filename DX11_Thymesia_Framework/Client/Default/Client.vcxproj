@@ -231,9 +231,12 @@
     <ClInclude Include="..\Public\Map.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\PlayerStateBase.h" />
+    <ClInclude Include="..\Public\Player_FeatherUI.h" />
     <ClInclude Include="..\Public\Player_HPBar.h" />
+    <ClInclude Include="..\Public\Player_ItemSkillCollection.h" />
     <ClInclude Include="..\Public\Player_Memory.h" />
     <ClInclude Include="..\Public\Player_MPBar.h" />
+    <ClInclude Include="..\Public\Player_PotionUI.h" />
     <ClInclude Include="..\Public\Player_ProgressBar.h" />
     <ClInclude Include="..\Public\PreViewAnimationModel.h" />
     <ClInclude Include="..\Public\Prop.h" />
@@ -310,9 +313,12 @@
     <ClCompile Include="..\Private\Map.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\PlayerStateBase.cpp" />
+    <ClCompile Include="..\Private\Player_FeatherUI.cpp" />
     <ClCompile Include="..\Private\Player_HPBar.cpp" />
+    <ClCompile Include="..\Private\Player_ItemSkillCollection.cpp" />
     <ClCompile Include="..\Private\Player_Memory.cpp" />
     <ClCompile Include="..\Private\Player_MPBar.cpp" />
+    <ClCompile Include="..\Private\Player_PotionUI.cpp" />
     <ClCompile Include="..\Private\Player_ProgressBar.cpp" />
     <ClCompile Include="..\Private\PreViewAnimationModel.cpp" />
     <ClCompile Include="..\Private\Prop.cpp" />

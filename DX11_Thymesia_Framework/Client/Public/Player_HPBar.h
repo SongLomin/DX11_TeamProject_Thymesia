@@ -24,10 +24,6 @@ public:
 
 public:
 	void		Set_CurrentHp(_float	_fCurrentHp);
-public:
-
-protected:
-	virtual HRESULT SetUp_ShaderResource() override;
 
 private:
 	weak_ptr< CPlayer_ProgressBar>	m_pMainBar;

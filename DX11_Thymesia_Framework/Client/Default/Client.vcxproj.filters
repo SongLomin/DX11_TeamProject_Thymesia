@@ -244,6 +244,15 @@
     <ClInclude Include="..\Public\Ground.h">
       <Filter>02. GameObject\11. Ground</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Player_ItemSkillCollection.h">
+      <Filter>02. GameObject\01. UI\PlayerUI\Potion &amp; Feather</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player_PotionUI.h">
+      <Filter>02. GameObject\01. UI\PlayerUI\Potion &amp; Feather\Potion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player_FeatherUI.h">
+      <Filter>02. GameObject\01. UI\PlayerUI\Potion &amp; Feather\Feather</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -465,6 +474,15 @@
     <ClCompile Include="..\Private\CustomUI.cpp">
       <Filter>02. GameObject\01. UI\CustomUI</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Player_ItemSkillCollection.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\Potion &amp; Feather</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_PotionUI.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\Potion &amp; Feather\Potion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_FeatherUI.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\Potion &amp; Feather\Feather</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -480,9 +498,6 @@
     </Filter>
     <Filter Include="00. MainApp">
       <UniqueIdentifier>{d893f375-d010-4a8a-bdbc-7084075a09cb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="99. Defines">
-      <UniqueIdentifier>{ca7671a3-fda7-41c0-8070-09afde17063e}</UniqueIdentifier>
     </Filter>
     <Filter Include="97. Tool">
       <UniqueIdentifier>{31f57221-7bc8-442f-a0e1-3848832f0944}</UniqueIdentifier>
@@ -682,9 +697,6 @@
     <Filter Include="02. GameObject\01. UI\CustomUI">
       <UniqueIdentifier>{ff97c274-021f-4a5a-998f-c63545601fef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. UI\PlayerUI\FlatSkill">
-      <UniqueIdentifier>{8439329b-5981-4c42-90ec-11eab1568f89}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Corvus">
       <UniqueIdentifier>{16574201-340f-43db-b0c0-e3bb9a200fc8}</UniqueIdentifier>
     </Filter>
@@ -744,6 +756,18 @@
     </Filter>
     <Filter Include="02. GameObject\11. Ground">
       <UniqueIdentifier>{8b002a8d-4757-456a-9413-0cd76b027117}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99. Defines">
+      <UniqueIdentifier>{ca7671a3-fda7-41c0-8070-09afde17063e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\Potion &amp; Feather">
+      <UniqueIdentifier>{8439329b-5981-4c42-90ec-11eab1568f89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\Potion &amp; Feather\Potion">
+      <UniqueIdentifier>{c654af71-c1f4-4f5e-9939-038eecb26bb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\Potion &amp; Feather\Feather">
+      <UniqueIdentifier>{388374b3-bf34-4888-b9c8-fa080d051771}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
