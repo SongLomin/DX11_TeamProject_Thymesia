@@ -101,14 +101,6 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 	//	Get_OwnerPlayer()->Change_State<CLuxiyaState_Dash>();
 	//	return true;
 	//}
-	
-	if (Check_RequirementJoggingState())
-	{
-		Rotation_InputToLookDir();
-		Get_OwnerPlayer()->Change_State<CCorvusState_JoggingStart>();
-		return true;
-	}
-
 	if (Check_RequirementRunState())
 	{
 		Rotation_InputToLookDir();
@@ -116,16 +108,27 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		return true;
 	}
 
-	if (Check_RequirementSprintState())
+	else if (Check_RequirementJoggingState())
 	{
 		Rotation_InputToLookDir();
-		Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
+		Get_OwnerPlayer()->Change_State<CCorvusState_JoggingStart>();
 		return true;
 	}
-	return false;
+
+
+	else if (Check_RequirementSprintState())
+	{
+		Rotation_InputToLookDir();
+		Get_OwnerPlayer()->Change_State<CCorvusState_SprintStart>();
+		return true;
+	}
+		
+		return false;
 }
 
-void CCorvusState_Idle::Free()
-{
-}
+
+	void CCorvusState_Idle::Free()
+	{
+	}
+
 

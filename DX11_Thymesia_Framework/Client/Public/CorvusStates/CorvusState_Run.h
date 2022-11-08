@@ -1,4 +1,3 @@
-
 #pragma once
 #include "CorvusStateBase.h"
 BEGIN(Engine)
@@ -13,7 +12,7 @@ class CCorvusState_Run :
 {
     GAMECLASS_H(CCorvusState_Run);
     SHALLOW_COPY(CCorvusState_Run)
-        CLONE_H(CCorvusState_Run, CComponent)
+    CLONE_H(CCorvusState_Run, CComponent)
 
 public:
     void Set_RunSpeed(const _float& In_fMaxSpeed, const _float& In_fAccel)
@@ -43,7 +42,7 @@ private:
     _float m_fAccel = 0.f;
 
 protected:
-    virtual void Free() override;
+    void Free();
 
 
     // CLuxiyaStateBase을(를) 통해 상속됨

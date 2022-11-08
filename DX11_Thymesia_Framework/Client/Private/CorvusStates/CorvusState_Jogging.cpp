@@ -116,7 +116,7 @@ _bool CCorvusState_Jogging::Check_AndChangeNextState()
 	//	return true;
 	//}
 
-
+	
 	if (!KEY_INPUT(KEY::W, KEY_STATE::HOLD)
 		&& !KEY_INPUT(KEY::A, KEY_STATE::HOLD)
 		&& !KEY_INPUT(KEY::S, KEY_STATE::HOLD)

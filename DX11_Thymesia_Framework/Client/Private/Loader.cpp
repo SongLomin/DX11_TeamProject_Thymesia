@@ -209,10 +209,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("객체 생성 중입니다. "));
 
-	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_LOGO, &CameraDesc);
-	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
 
-	GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_LOGO);
 
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));	

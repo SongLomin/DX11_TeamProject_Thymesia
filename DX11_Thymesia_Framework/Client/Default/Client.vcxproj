@@ -207,10 +207,10 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Jogging.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_JoggingStartEnd.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_JoggingStart.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Run.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Sprint.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_SprintStart.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Stop.h" />
-    <ClInclude Include="..\Public\CorvusState_Run.h" />
-    <ClInclude Include="..\Public\CorvusState_Sprint.h" />
-    <ClInclude Include="..\Public\CorvusState_SprintStart.h" />
     <ClInclude Include="..\Public\CustomEffectMesh.h" />
     <ClInclude Include="..\Public\Dynamic_Prop.h" />
     <ClInclude Include="..\Public\CustomUI.h" />
