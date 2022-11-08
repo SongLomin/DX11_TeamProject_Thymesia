@@ -2,6 +2,7 @@
 #include "CCorvus.h"
 #include "Client_Components.h"
 #include "CorvusStates/CorvusStates.h"
+#include "Camera_Target.h"
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -38,6 +39,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 	
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
+	USE_START(CCorvus);
 
 	return S_OK;
 }
@@ -47,8 +49,9 @@ HRESULT CCorvus::Start()
 	__super::Start();
 
 	Change_State<CCorvusState_Idle>();
-
-	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
+	
+	m_pCamera = GET_SINGLE(CGameManager)->Get_TargetCamera();
+	m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
 
 	return S_OK;
 }
@@ -56,53 +59,7 @@ HRESULT CCorvus::Start()
 void CCorvus::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-	_vector vLookDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 
-	_vector vLook = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[2];
-	vLook.m128_f32[1] = 0.f;
-	_vector vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
-	_vector vRight = XMVector3Normalize(XMVector3Cross(vUp, vLook));
-	vLook = XMVector3Normalize(XMVector3Cross(vRight, vUp));
-
-	if (GetKeyState('W') & 0x80)
-	{
-		vLookDir += vLook;
-	}
-	if (GetKeyState('A') & 0x80)
-	{
-		vLookDir -= vRight;
-	}
-	if (GetKeyState('D') & 0x80)
-	{
-		vLookDir += vRight;
-	}
-	if (GetKeyState('S') & 0x80)
-	{
-		vLookDir -= vLook;
-	}
-
-	vLookDir = XMVector3Normalize(vLookDir);
-
-	if (XMVectorGetX(XMVector3Length(vLookDir)) > DBL_EPSILON)
-	{
-		_vector vPlayerLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
-		vPlayerLook = XMVector3Normalize(XMVectorLerp(vPlayerLook, vLookDir, 0.5f));
-
-
-		vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
-		vRight = XMVector3Cross(vUp, vPlayerLook);
-
-		m_pTransformCom.lock()->Set_State(CTransform::STATE_LOOK, vPlayerLook);
-		m_pTransformCom.lock()->Set_State(CTransform::STATE_RIGHT, vRight);
-		m_pTransformCom.lock()->Set_State(CTransform::STATE_UP, vUp);
-
-		_float TimeDelta = fTimeDelta;
-
-		if (GetKeyState(VK_SHIFT) & 0x80)
-			TimeDelta *= 2.f;
-
-		m_pTransformCom.lock()->Go_Straight(TimeDelta);
-	}
 }
 
 void CCorvus::LateTick(_float fTimeDelta)

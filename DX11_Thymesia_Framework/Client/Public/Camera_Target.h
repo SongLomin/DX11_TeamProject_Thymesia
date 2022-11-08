@@ -39,7 +39,7 @@ public:
 
 public:
 	void Change_Target();
-	void Focus_Monster(weak_ptr<CMonster> _pMonster);
+	void Focus_Monster(weak_ptr<CGameObject> _pMonster);
 	void Release_Focus();
 	/*
 	* 플레이어한테도 해당 타겟을 넘겨줌 <-선형 보간으로 플레이어 방향을 몬스터를 향하게 도렬둠
@@ -64,7 +64,7 @@ private:
 	weak_ptr<CPlayer>		m_pCurrentPlayer;
 	weak_ptr<CTransform>	m_pCurrentPlayerTransformCom;
 
-	weak_ptr<CMonster>		m_pTargetMonster;
+	weak_ptr<CGameObject>		m_pTargetMonster;
 	weak_ptr<CTransform>	m_pTargetMonsterTransformCom;
 
 	CAMERA_STATE			m_eCameraState = CAMERA_STATE::STATE_END;

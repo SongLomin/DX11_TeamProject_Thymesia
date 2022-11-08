@@ -75,7 +75,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	m_iMonsterCount = 0;
 
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
-	GAMEINSTANCE->PlayBGM(TEXT("Stage1.wav"), 0.3f);
+
 
 	return S_OK;
 }

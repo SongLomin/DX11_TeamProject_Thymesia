@@ -58,7 +58,10 @@ void CPlayerStateBase::Turn_Transform(_float fTimeDelta)
 	_matrix CurrentCamWorldMatrix;
 
 	CurrentCamWorldMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD);
+	cout <<"플레이어 스테이트 : " << CurrentCamWorldMatrix.r[2].m128_f32[0] << ' ' << CurrentCamWorldMatrix.r[2].m128_f32[1] << ' ' << CurrentCamWorldMatrix.r[2].m128_f32[2] << endl;
 	CurrentCamWorldMatrix = SMath::Get_MatrixNormalize(CurrentCamWorldMatrix);
+
+	
 
 	_vector vLookDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 

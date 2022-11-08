@@ -62,6 +62,14 @@ void CCamera_Target::Tick(_float fTimeDelta)
 	if (!m_pCurrentPlayer.lock().get())
 		return;
 
+	if (GAMEINSTANCE->Get_DIMouseKeyState(MOUSEBUTTON::MBS_WHEEL) & 0x80)
+	{
+		m_bIsFocused = !m_bIsFocused;
+		if (m_bIsFocused)
+			GET_SINGLE(CGameManager)->Focus_Monster();
+		else
+			GET_SINGLE(CGameManager)->Release_Focus();
+	}
 
 	if (m_bIsFocused)
 	{
@@ -96,29 +104,29 @@ void CCamera_Target::Change_Target()
 	/*추후에 시간 나면 타겟 바꾸는 기능 추가*/
 }
 
-void CCamera_Target::Focus_Monster(weak_ptr<CMonster> _pMonster)
+void CCamera_Target::Focus_Monster(weak_ptr<CGameObject> _pMonster)
 {
 	m_pTargetMonster = _pMonster;
 	m_pTargetMonsterTransformCom = _pMonster.lock()->Get_Component<CTransform>();
 
-	m_bIsFocused = true;
 }
 
 void CCamera_Target::Release_Focus()
 {
-	m_pTargetMonster = weak_ptr<CMonster>();
+	m_pTargetMonster = weak_ptr<CGameObject>();
 	m_pTargetMonsterTransformCom = weak_ptr<CTransform>();
-	m_bIsFocused = false;
+
 }
 
 
 HRESULT CCamera_Target::Bind_PipeLine()
 {
 	GAMEINSTANCE->Set_Transform(CPipeLine::D3DTS_WORLD, m_pTransformCom.lock()->Get_WorldMatrix());
+	_matrix WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
+	cout << "바인드 파이프라인 : " << WorldMatrix.r[2].m128_f32[0] << ' ' << WorldMatrix.r[2].m128_f32[1] << ' ' << WorldMatrix.r[2].m128_f32[2] << endl;
 
 	//_matrix		WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
 
-	_matrix WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
 
 	/*_matrix		WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix()
 		* XMLoadFloat4x4(&m_MatRotation)
@@ -143,7 +151,7 @@ void CCamera_Target::Look_At_Target(_float fTimeDelta)//타겟 고정
 	_vector vRight = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLookDir);
 	_vector vUp = XMVector3Cross(vLookDir, vRight);
 
-	_matrix vLookTargetMatrix = XMMatrixIdentity();
+	_matrix vLookTargetMatrix;
 	vLookTargetMatrix.r[0] = vRight;
 	vLookTargetMatrix.r[1] = vUp;
 	vLookTargetMatrix.r[2] = vLookDir;
@@ -191,7 +199,7 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 	XMStoreFloat4(&m_vPrePlayerPos, vPlayerPos);
 
 
-	if (DBL_EPSILON < XMVector3Length(vPlayerPos - vPrePlayerPos).m128_f32[0])
+	if (0.05f < XMVector3Length(vPlayerPos - vPrePlayerPos).m128_f32[0])
 	{
 		_vector vTempPlayerPos = vPlayerPos;
 		vTempPlayerPos.m128_f32[1] = 0.f;
@@ -199,6 +207,7 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 		vTempPrePlayerPos.m128_f32[1] = 0.f;
 
 		_vector vMoveDir = vPlayerPos - vPrePlayerPos;
+		if(vMoveDir.m128_f32[2])
 		vMoveDir = XMVector3Normalize(vMoveDir) * 1.5f;
 		_vector vOffset = XMLoadFloat3(&m_vOffSet);
 
@@ -207,11 +216,7 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 		if (1.f < m_fLerpRatio)
 			m_fLerpRatio = 1.f;
 
-		_float fDotValue = XMVectorGetX(XMVector3Dot(XMVector3Normalize(vMoveDir), XMVector3Normalize(XMLoadFloat4(&m_vPreMoveDir))));
-		/*대각선 이동 시에 보간이 안먹힘
-		 이전 방향과 현재 이동 방향이 다를 시에 다시 보간을 해야 함*/
-		if (0.8f > fDotValue)
-			m_fLerpRatio = 0.f;
+	
 
 		vOffset = XMVectorLerp(vOffset, vMoveDir, m_fLerpRatio);
 		XMStoreFloat3(&m_vOffSet, vOffset);

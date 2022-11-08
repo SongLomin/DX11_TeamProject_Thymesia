@@ -285,7 +285,9 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_GAMEPLAY, &CameraDesc);
 	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
 
-	GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_GAMEPLAY);
+	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_GAMEPLAY);
+	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
+
 	GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_GAMEPLAY);
 
 	GET_SINGLE(CGameManager)->Register_Player_HPBar
@@ -296,6 +298,13 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	GET_SINGLE(CGameManager)->Register_Player_Memory
 	(GAMEINSTANCE->Add_GameObject<CPlayer_Memory>(LEVEL_STATIC));
+
+	weak_ptr<CPreViewAnimationModel> pPreviewModel =  GAMEINSTANCE->Add_GameObject<CPreViewAnimationModel>(LEVEL_GAMEPLAY);
+	pPreviewModel.lock()->Init_EditPreViewAnimationModel("Corvus");
+	pPreviewModel.lock()->Change_AnimationFromIndex(3);
+
+	pPreviewModel.lock()->Play_Animation(0.01f);
+	pPreviewModel.lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(10.f,0.f,10.f,0.f));
 
 	lstrcpy(m_szLoadingText, TEXT("·Îµù ³¡ "));
 
