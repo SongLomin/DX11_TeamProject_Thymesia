@@ -6,7 +6,7 @@
 #include "Engine_Defines.h"
 #include "CustomUI.h"
 #include "Player_ProgressBar.h"
-
+#include "HUD_Hover.h"
 
 GAMECLASS_C(CPlayer_FeatherUI)
 CLONE_C(CPlayer_FeatherUI, CGameObject);
@@ -26,31 +26,34 @@ HRESULT CPlayer_FeatherUI::Initialize(void* pArg)
         memcpy(&m_tUIDesc, pArg, sizeof(UI_DESC));
     else
     {
-        Set_UIPosition(1260.f, 785.f, 40.f, 40.f);
+        Set_UIPosition(1240.f, 822.f, 40.f, 40.f);
         m_tUIDesc.fDepth = 0.f;
     }
     m_iMaxFeather = 0;
     m_iCurrentFeather = 0;
 
-    m_pFrame = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &m_tUIDesc);
-    m_pFrame.lock()->Get_Component<CTexture>().lock()->Use_Texture("HUD_Frame");
-    m_pFrame.lock()->Set_Depth(0.2f);
+    m_pIcon = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &m_tUIDesc);
+    m_pIcon.lock()->Get_Component<CTexture>().lock()->Use_Texture("HUD_Feather");
+    m_pIcon.lock()->Set_Depth(0.1f);
 
     m_pFrameBorder = GAMEINSTANCE->Add_GameObject<CPlayer_ProgressBar>(LEVEL_STATIC, &m_tUIDesc);
     m_pFrameBorder.lock()->Get_Component<CTexture>().lock()->Use_Texture("HUD_FrameBorder");
-    m_pFrameBorder.lock()->Set_Depth(0.0f);
+    m_pFrameBorder.lock()->Set_Depth(0.2f);
     m_pFrameBorder.lock()->Set_PassIndex(10);
-    
 
-    m_pIcon = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &m_tUIDesc);
-    m_pIcon.lock()->Get_Component<CTexture>().lock()->Use_Texture("HUD_Feather");
-    m_pIcon.lock()->Set_Depth(0.0f);
+    m_pFrame = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &m_tUIDesc);
+    m_pFrame.lock()->Get_Component<CTexture>().lock()->Use_Texture("HUD_Frame");
+    m_pFrame.lock()->Set_Depth(0.3f);
+
+    m_pHover = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_STATIC, &m_tUIDesc);
+    m_pHover.lock()->Get_Component<CTexture>().lock()->Use_Texture("HUD_Frame_Hover");
+    m_pHover.lock()->Set_Depth(0.0f);
 
 
     m_pFontBG = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &m_tUIDesc);
     m_pFontBG.lock()->Get_Component<CTexture>().lock()->Use_Texture("HUD_Font_BG");
     m_pFontBG.lock()->Set_UIPosition(m_tUIDesc.fX + 40.f, m_tUIDesc.fY, 80.f, 28.f);
-    m_pFontBG.lock()->Set_Depth(0.1f);
+    m_pFontBG.lock()->Set_Depth(0.4f);
 
 
     //left 
@@ -68,7 +71,6 @@ HRESULT CPlayer_FeatherUI::Initialize(void* pArg)
     m_tMaxFeatherTextInfo.vColor = _float4(0.7f, 0.7f, 0.7f, 1.f);
     m_tMaxFeatherTextInfo.vScale = _float2(0.5, 0.5f);
     m_tMaxFeatherTextInfo.vPosition = _float2(m_tUIDesc.fX + 40.f, m_tUIDesc.fY - 10.f);
-
 
     m_fRatio = 1.f;
 
@@ -103,6 +105,11 @@ void CPlayer_FeatherUI::Tick(_float fTimeDelta)
     if (KEY_INPUT(KEY::X, KEY_STATE::HOLD))
     {
         m_fRatio += 0.3f * fTimeDelta;
+    }
+
+    if (KEY_INPUT(KEY::C, KEY_STATE::HOLD))
+    {
+        m_pHover.lock()->Init_Fade();
     }
 
 #endif // _DEBUG

@@ -4,7 +4,7 @@
 
 BEGIN(Client)
 
-class CCustomUI final : public CUI
+class CCustomUI : public CUI
 {
 public:
 	GAMECLASS_H(CCustomUI);
@@ -19,7 +19,6 @@ public:
 
 public:
 	void		Set_PassIndex(_uint _iPassIndex);
-
 
 protected:
 	virtual HRESULT SetUp_ShaderResource() override;

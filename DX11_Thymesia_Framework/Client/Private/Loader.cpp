@@ -131,21 +131,15 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("Player_Memory_Decoration"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_DecorationLine_05.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
-	//Player Skill & ItemUI
+	//HUD
 	GAMEINSTANCE->Load_Textures(("HUD_Frame"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Frame.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("HUD_Frame_Hover"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_DefaultSlotFrame_04.png"), MEMORY_TYPE::MEMORY_STATIC);
+
 	GAMEINSTANCE->Load_Textures(("HUD_FrameBorder"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_FrameBorder.png"), MEMORY_TYPE::MEMORY_STATIC);
-
-
-	//Potion Image
-	//mini : 40x40
 	GAMEINSTANCE->Load_Textures(("HUD_Potion_Default_Mini"), TEXT("../Bin/Resources/Textures/UI/Icons/Potions/TexUI_Potion_DefaultType_Mini.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("HUD_Font_BG"), TEXT("../Bin/Resources/Textures/UI/HUD/TexUI_PlagueWeaponBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
-
-
-	//Feather
 	GAMEINSTANCE->Load_Textures(("HUD_Feather"), TEXT("../Bin/Resources/Textures/UI/HUD/TexUI_Feather.png"), MEMORY_TYPE::MEMORY_STATIC);
-
-
+	
 
 	Load_AllMaskMap();
 
@@ -301,14 +295,11 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	GET_SINGLE(CGameManager)->Register_Player_Memory
 	(GAMEINSTANCE->Add_GameObject<CPlayer_Memory>(LEVEL_STATIC));
 
-	CUI::UI_DESC desc;
+	GET_SINGLE(CGameManager)->Register_Player_HUD_Potion(
+	GAMEINSTANCE->Add_GameObject<CPlayer_PotionUI>(LEVEL_STATIC));
 
-	desc = GAMEINSTANCE->Add_GameObject<CPlayer_PotionUI>(LEVEL_STATIC).lock()->Get_UIDESC();
-
-	desc.fX = 1240.f;
-	desc.fY = 822.f;
-
-	GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC, &desc);
+	GET_SINGLE(CGameManager)->Register_Player_HUD_Feather(
+	GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
 
 	lstrcpy(m_szLoadingText, TEXT("·Îµù ³¡ "));
 

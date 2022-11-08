@@ -34,7 +34,6 @@ HRESULT CPlayer_ProgressBar::Initialize(void* pArg)
     m_iPassIndex = 9;
 
     m_eRenderGroup = RENDERGROUP::RENDER_UI;
-
     GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
 
     m_tUIDesc.fDepth = 0.f;

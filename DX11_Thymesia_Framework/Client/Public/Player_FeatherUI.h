@@ -4,7 +4,7 @@
 BEGIN(Client)
 class CCustomUI;
 class CPlayer_ProgressBar;
-
+class CHUD_Hover;
 
 class CPlayer_FeatherUI :
 	public CUI
@@ -38,6 +38,7 @@ private:
 	weak_ptr<CPlayer_ProgressBar>	m_pFrameBorder;
 	weak_ptr<CCustomUI> m_pIcon;
 	weak_ptr<CCustomUI> m_pFontBG;
+	weak_ptr<CHUD_Hover> m_pHover;
 
 private:
 	_float				m_fRatio;
