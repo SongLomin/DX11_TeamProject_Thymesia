@@ -62,7 +62,8 @@ public:
 
 protected:
     weak_ptr<CMonster> m_pTargetMonster;
-
+    weak_ptr<CStateBase> m_pStandState;
+    weak_ptr<CStateBase> m_pQTEState;
     _uint               m_iPlayerIndex = 0;
 
 private:

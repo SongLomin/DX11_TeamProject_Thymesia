@@ -89,6 +89,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CStage1>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CStage2>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CStage3>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CCorvus>();
 
 
 
@@ -162,6 +163,24 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("데이터를 로딩중입니다. "));
 	GET_SINGLE(CGameManager)->Load_AllKeyEventFromJson();
 
+	_matrix			TransformMatrix;
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("CCorvus", "../Bin/Resources/Meshes/Corvus/Corvus.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	CCamera::CAMERADESC			CameraDesc;
+	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
+	CameraDesc.vEye = _float4(0.0f, 2.5f, -2.5f, 1.f);
+	CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
+	CameraDesc.fFovy = XMConvertToRadians(65.0f);
+	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
+	CameraDesc.fNear = 0.2f;
+	CameraDesc.fFar = 300.f;
+
+	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_LOGO, &CameraDesc);
+	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
+
+	GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_LOGO);
 
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));	
@@ -181,10 +200,7 @@ HRESULT CLoader::Loading_ForLobby()
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
 
-	_matrix			TransformMatrix;
-
-	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//GAMEINSTANCE->Load_Model("Luxiya", "../Bin/Resources/Meshes/Luxiya_Hair/Luxiya_Hair_Cheek_Sword_Normal2.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	
 
 
 
@@ -238,6 +254,9 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_GAMEPLAY, &CameraDesc);
 	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
+
+	GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_GAMEPLAY);
+
 
 	m_isFinished = true;
 

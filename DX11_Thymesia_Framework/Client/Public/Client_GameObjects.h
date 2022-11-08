@@ -15,3 +15,5 @@
 #include "EffectGroup.h"
 
 #include "EditNaviMesh.h"
+
+#include "CCorvus.h"
