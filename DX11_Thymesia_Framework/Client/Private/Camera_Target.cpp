@@ -35,6 +35,7 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 
 	_vector vLookAtZeroPointQuat = XMQuaternionRotationMatrix(SMath::Get_RotationMatrix(MatLookAtZeroPoint));
 
+	GET_SINGLE(CGameManager)->Use_EffectGroup("Tutorial_Dust", m_pTransformCom);
 
 	return S_OK;
 }

@@ -62,7 +62,7 @@ void CEffect_Rect::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	
+
 
 	if (m_pVIBuffer.lock()->Get_InstanceCount() != m_tEffectParticleDesc.iMaxInstance)
 	{
@@ -88,7 +88,7 @@ HRESULT CEffect_Rect::Render()
 	SetUp_ShaderResource();
 
 	__super::Render();
-	m_pShaderCom.lock()->Begin(0);
+	m_pShaderCom.lock()->Begin(m_tEffectParticleDesc.iShaderPassIndex);
 	m_pVIBuffer.lock()->Render();
 
 	return S_OK;
@@ -122,7 +122,6 @@ void CEffect_Rect::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 	Update_ParentTransform();
 
 	Reset_ParticleDescs();
-
 }
 
 void CEffect_Rect::SetUp_ShaderResource()
@@ -148,13 +147,8 @@ void CEffect_Rect::SetUp_ShaderResource()
 		m_pShaderCom.lock()->Set_RawValue("g_vMaskUV", &m_vCurrentUV, sizeof(_float2));
 	}
 	
-	m_pShaderCom.lock()->Set_RawValue("g_bSpriteImage", &m_tEffectParticleDesc.bSpriteImage, sizeof(_bool));
-
-	if (m_tEffectParticleDesc.bSpriteImage)
-	{
-		m_pShaderCom.lock()->Set_RawValue("g_iNumFrameX", &m_tEffectParticleDesc.iNumFrameX, sizeof(_uint));
-		m_pShaderCom.lock()->Set_RawValue("g_iNumFrameY", &m_tEffectParticleDesc.iNumFrameY, sizeof(_uint));
-	}
+	m_pShaderCom.lock()->Set_RawValue("g_iNumFrameX", &m_tEffectParticleDesc.iNumFrameX, sizeof(_uint));
+	m_pShaderCom.lock()->Set_RawValue("g_iNumFrameY", &m_tEffectParticleDesc.iNumFrameY, sizeof(_uint));
 
 	_vector vCamDir = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[2];
 
@@ -165,6 +159,8 @@ void CEffect_Rect::SetUp_ShaderResource()
 	m_pShaderCom.lock()->Set_RawValue("g_bBloom", &m_tEffectParticleDesc.bBloom, sizeof(_bool));
 	m_pShaderCom.lock()->Set_RawValue("g_bGlow", &m_tEffectParticleDesc.bGlow, sizeof(_bool));
 	m_pShaderCom.lock()->Set_RawValue("g_vGlowColor", &m_vCurrentGlowColor, sizeof(_float4));
+
+	m_pShaderCom.lock()->Set_RawValue("g_fDiscardRatio", &m_tEffectParticleDesc.fDiscardRatio, sizeof(_float));
 }
 
 void CEffect_Rect::Write_EffectJson(json& Out_Json)
@@ -183,7 +179,8 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	Out_Json["Min_Life_Time"] = m_tEffectParticleDesc.fMinLifeTime;
 	Out_Json["Max_Life_Time"] = m_tEffectParticleDesc.fMaxLifeTime;
 	Out_Json["Is_Rect_Spawn"] = m_tEffectParticleDesc.bRectSpawn;
-	Out_Json["Is_Sprite_Image"] = m_tEffectParticleDesc.bSpriteImage;
+	Out_Json["ShaderPassIndex"] = m_tEffectParticleDesc.iShaderPassIndex;
+	Out_Json["Sprite_Pendulum"] = m_tEffectParticleDesc.bPendulumSprite;
 	Out_Json["Sprite_NumFrameX"] = m_tEffectParticleDesc.iNumFrameX;
 	Out_Json["Sprite_NumFrameY"] = m_tEffectParticleDesc.iNumFrameY;
 	Out_Json["Sprite_FrameSpeed"] = m_tEffectParticleDesc.fSpriteSpeed;
@@ -217,6 +214,7 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	CJson_Utility::Write_Float4(Out_Json["Color_Speed"], m_tEffectParticleDesc.vColorSpeed);
 	CJson_Utility::Write_Float4(Out_Json["Color_Force"], m_tEffectParticleDesc.vColorForce);
 	CJson_Utility::Write_Float4(Out_Json["Max_Color"], m_tEffectParticleDesc.vMaxColor);
+	Out_Json["Discard_Ratio"] = m_tEffectParticleDesc.fDiscardRatio;
 	CJson_Utility::Write_Float2(Out_Json["Start_UV"], m_tEffectParticleDesc.vStartUV);
 	Out_Json["Is_Diffuse_UV"] = m_tEffectParticleDesc.bDiffuseUV;
 	Out_Json["UV_Color_Index"] = m_tEffectParticleDesc.iUVColorIndex;
@@ -256,7 +254,8 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	m_tEffectParticleDesc.fMinLifeTime = In_Json["Min_Life_Time"];
 	m_tEffectParticleDesc.fMaxLifeTime = In_Json["Max_Life_Time"];
 	m_tEffectParticleDesc.bRectSpawn = In_Json["Is_Rect_Spawn"];
-	m_tEffectParticleDesc.bSpriteImage = In_Json["Is_Sprite_Image"];
+	m_tEffectParticleDesc.iShaderPassIndex = In_Json["ShaderPassIndex"];
+	m_tEffectParticleDesc.bPendulumSprite = In_Json["Sprite_Pendulum"];
 	m_tEffectParticleDesc.iNumFrameX = In_Json["Sprite_NumFrameX"];
 	m_tEffectParticleDesc.iNumFrameY = In_Json["Sprite_NumFrameY"];
 	m_tEffectParticleDesc.fSpriteSpeed = In_Json["Sprite_FrameSpeed"];
@@ -292,6 +291,10 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	CJson_Utility::Load_Float4(In_Json["Color_Speed"], m_tEffectParticleDesc.vColorSpeed);
 	CJson_Utility::Load_Float4(In_Json["Color_Force"], m_tEffectParticleDesc.vColorForce);
 	CJson_Utility::Load_Float4(In_Json["Max_Color"], m_tEffectParticleDesc.vMaxColor);
+
+	if (In_Json.find("Discard_Ratio") != In_Json.end())
+		m_tEffectParticleDesc.fDiscardRatio = In_Json["Discard_Ratio"];
+
 	CJson_Utility::Load_Float2(In_Json["Start_UV"], m_tEffectParticleDesc.vStartUV);
 
 	if(In_Json.find("Is_Diffuse_UV") != In_Json.end())
@@ -634,8 +637,11 @@ void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
 void CEffect_Rect::Update_ParticleScale(const _uint& i, _float fTimeDelta)
 {
 	_float3 vScale = SMath::Mul_Float3(m_tEffectParticleDesc.vScaleSpeed, fTimeDelta);
+
 	m_tParticleDescs[i].vCurrentScaleForce =
 		SMath::Add_Float3(m_tParticleDescs[i].vCurrentScaleForce, SMath::Mul_Float3(m_tEffectParticleDesc.vScaleForce, fTimeDelta));
+
+	SMath::Add_Float3(&m_tParticleDescs[i].vCurrentScale, m_tParticleDescs[i].vCurrentScaleForce);
 
 	m_tParticleDescs[i].vCurrentScale = SMath::Add_Float3(m_tParticleDescs[i].vCurrentScale, vScale);
 
@@ -727,18 +733,64 @@ void CEffect_Rect::Update_ParticleSpriteFrame(const _uint& i, _float fTimeDelta)
 	{
 		m_tParticleDescs[i].fCurrentSpriteTime = 0.f;
 
-		m_tParticleDescs[i].vSpriteUV.x += (1.f / m_tEffectParticleDesc.iNumFrameX);
 
-		if (1.f <= m_tParticleDescs[i].vSpriteUV.x && 1.f <= m_tParticleDescs[i].vSpriteUV.y)
+		if (!m_tEffectParticleDesc.bPendulumSprite)
 		{
-			ZeroMemory(&m_tParticleDescs[i].vSpriteUV, sizeof(_float2));
-			return;
+			m_tParticleDescs[i].vSpriteUV.x += (1.f / m_tEffectParticleDesc.iNumFrameX);
+
+			if ((1.f - 1.f / m_tEffectParticleDesc.iNumFrameX) <= m_tParticleDescs[i].vSpriteUV.x &&
+				(1.f - 1.f / m_tEffectParticleDesc.iNumFrameY) <= m_tParticleDescs[i].vSpriteUV.y)
+			{
+				ZeroMemory(&m_tParticleDescs[i].vSpriteUV, sizeof(_float2));
+				return;
+			}
+
+			if ((1.f - 1.f / m_tEffectParticleDesc.iNumFrameX) <= m_tParticleDescs[i].vSpriteUV.x)
+			{
+				m_tParticleDescs[i].vSpriteUV.x = 0.f;
+				m_tParticleDescs[i].vSpriteUV.y += (1.f / m_tEffectParticleDesc.iNumFrameY);
+				return;
+			}
 		}
-
-		if (1.f <= m_tParticleDescs[i].vSpriteUV.x)
+		else
 		{
-			m_tParticleDescs[i].vSpriteUV.x = 0.f;
-			m_tParticleDescs[i].vSpriteUV.y += (1.f / m_tEffectParticleDesc.iNumFrameY);
+			if (!m_tParticleDescs[i].bFramePlayBackward)
+			{
+				m_tParticleDescs[i].vSpriteUV.x += (1.f / m_tEffectParticleDesc.iNumFrameX);
+
+				if ((1.f - 1.f / m_tEffectParticleDesc.iNumFrameX) <= m_tParticleDescs[i].vSpriteUV.x &&
+					(1.f - 1.f / m_tEffectParticleDesc.iNumFrameY) <= m_tParticleDescs[i].vSpriteUV.y)
+				{
+					m_tParticleDescs[i].vSpriteUV.x = 1.f - 1.f / m_tEffectParticleDesc.iNumFrameX;
+					m_tParticleDescs[i].vSpriteUV.y = 1.f - 1.f / m_tEffectParticleDesc.iNumFrameY;
+					m_tParticleDescs[i].bFramePlayBackward = true;
+					return;
+				}
+
+				if ((1.f - 1.f / m_tEffectParticleDesc.iNumFrameX) <= m_tParticleDescs[i].vSpriteUV.x)
+				{
+					m_tParticleDescs[i].vSpriteUV.x = 0.f;
+					m_tParticleDescs[i].vSpriteUV.y += (1.f / m_tEffectParticleDesc.iNumFrameY);
+					return;
+				}
+			}
+			else
+			{
+				m_tParticleDescs[i].vSpriteUV.x -= (1.f / m_tEffectParticleDesc.iNumFrameX);
+
+				if (0.f >= m_tParticleDescs[i].vSpriteUV.x && 0.f >= m_tParticleDescs[i].vSpriteUV.y)
+				{
+					m_tParticleDescs[i].bFramePlayBackward = false;
+					return;
+				}
+
+				if (0.f >= m_tParticleDescs[i].vSpriteUV.x)
+				{
+					m_tParticleDescs[i].vSpriteUV.x = 1.f - 1.f / m_tEffectParticleDesc.iNumFrameX;
+					m_tParticleDescs[i].vSpriteUV.y -= (1.f / m_tEffectParticleDesc.iNumFrameY);
+					return;
+				}
+			}
 		}
 	}
 }
@@ -792,9 +844,14 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::Checkbox("##Is_Looping", &m_tEffectParticleDesc.bLooping);
 			ImGui::Separator();
 
-			ImGui::Text("Sprite Image");
+
+			ImGui::Text("Pass 0 : Default");
+			ImGui::Text("Pass 1 : Sprite Image");
+			ImGui::InputInt("Shader Pass", &m_tEffectParticleDesc.iShaderPassIndex);
+
+			ImGui::Text("Pendulum Effect");
 			ImGui::SameLine();
-			ImGui::Checkbox("##Sprite_Image", &m_tEffectParticleDesc.bSpriteImage);
+			ImGui::Checkbox("##Pendulum_Effect", &m_tEffectParticleDesc.bPendulumSprite);
 			ImGui::Separator();
 
 			ImGui::InputInt("NumFramesX", &m_tEffectParticleDesc.iNumFrameX);
@@ -973,6 +1030,10 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::DragFloat4("##Max_Color", &m_tEffectParticleDesc.vMaxColor.x, 0.01f);
 			ImGui::Separator();
 
+			
+			ImGui::Text("Discard Ratio");
+			ImGui::DragFloat("##Discard_Ratio", &m_tEffectParticleDesc.fDiscardRatio, 0.01f, 0.f, 1.f);
+			ImGui::Separator();
 
 			
 			ImGui::Text("Start UV");
