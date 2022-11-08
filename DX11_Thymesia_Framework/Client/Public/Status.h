@@ -61,7 +61,7 @@ private:
     STATUS_DESC m_tStatusDesc;
 
 private:
-    virtual void Free() override;
+    void Free();
 
 };
 

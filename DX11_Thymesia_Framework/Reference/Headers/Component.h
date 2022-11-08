@@ -32,7 +32,7 @@ protected:
 	
 public:
 	virtual shared_ptr<CComponent> Clone(_uint iLevelIndex, void* pArg = nullptr) = 0;
-	virtual void Free() override;
+	void Free();
 
 	friend class CComponent_Manager;
 };

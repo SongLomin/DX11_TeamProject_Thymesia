@@ -40,7 +40,7 @@ private:
 	_float4x4			m_TransformState_TP[D3DTS_END];
 	_float4				m_vCamPosition;
 public:
-	virtual void Free() override;
+	void Free();
 };
 
 END

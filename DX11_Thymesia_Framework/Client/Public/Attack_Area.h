@@ -76,7 +76,7 @@ private:
     virtual void OnEnable(void* pArg) override;
     virtual void OnDisable() override;
 
-    virtual void Free() override;
+    void Free();
 
 
 

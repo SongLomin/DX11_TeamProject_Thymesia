@@ -136,3 +136,25 @@ void CGameObject::Free()
 	
 	m_pComponents.clear();
 }
+
+void CGameObject::Remove_Components(weak_ptr<CComponent> pComponent)
+{
+	for (auto& elem_list : m_pComponents)
+	{
+		for (auto iter = elem_list.second.begin(); iter != elem_list.second.end();)
+		{
+			if ((*iter) == pComponent.lock())
+			{
+				(*iter)->OnDestroy();
+				elem_list.second.erase(iter);
+				return;
+			}
+			else
+			{
+				++iter;
+			}
+		}
+
+	}
+	
+}

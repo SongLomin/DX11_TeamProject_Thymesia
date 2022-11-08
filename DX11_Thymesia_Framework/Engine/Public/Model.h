@@ -35,6 +35,8 @@ public:
 		return m_szModelKey;
 	}
 
+	weak_ptr<MODEL_DATA> Get_ModelData() const;
+
 	void Set_CurrentAnimation(_uint iAnimIndex, _uint iStartKeyIndex = 0, _float fBlendTime = 0.1f);
 	void Set_AnimationSpeed(_float fAnimationSpeed);
 	void Set_CurrentAnimationKey(_uint iKeyIndex);
@@ -118,7 +120,7 @@ public:
 	FDelegate<>								CallBack_AnimationEnd;
 
 public:
-	virtual void Free() override;
+	void Free();
 };
 
 END

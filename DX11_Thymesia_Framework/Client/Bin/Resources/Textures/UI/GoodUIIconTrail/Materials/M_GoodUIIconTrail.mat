@@ -1,0 +1,5 @@
+Normal=T_Neon_Box
+Opacity=T_Rotate_Alpha_01
+Other[0]=T_CloudNoise
+Other[1]=T_Rotate_Alpha_02
+Other[2]=T_Box_M

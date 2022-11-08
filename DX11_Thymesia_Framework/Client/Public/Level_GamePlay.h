@@ -26,7 +26,7 @@ private:
 
 private:
 	virtual void OnEventMessage(_uint iArg) override;
-	virtual void Free() override;
+	void Free();
 };
 
 END

@@ -3,6 +3,8 @@
 #include "GameInstance.h"
 #include "Client_GameObjects.h"
 
+#include "Model.h"
+
 IMPLEMENT_SINGLETON(CWindow_HierarchyView)
 
 HRESULT CWindow_HierarchyView::Initialize()
@@ -91,9 +93,16 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 		Out_Json["GameObject"][iIndex]["Hash"] = Elem_Desc.HashCode;
 		Out_Json["GameObject"][iIndex]["Setting"]["Enable"] = Elem_Desc.pInstance.lock()->Get_Enable();
 		Out_Json["GameObject"][iIndex]["Component"]["Transform"].emplace();
+
+		if (Elem_Desc.pInstance.lock()->Get_Component<CModel>().lock())
+		{
+			//
+		}
+
 		Elem_Desc.pInstance.lock()->Write_Json(Out_Json["GameObject"][iIndex]);
 		iIndex++;
 	}
+
 
 }
 

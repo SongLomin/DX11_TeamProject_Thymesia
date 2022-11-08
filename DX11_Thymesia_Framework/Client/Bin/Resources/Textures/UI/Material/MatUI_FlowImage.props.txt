@@ -1,0 +1,105 @@
+TwoSided = false
+bDisableDepthTest = false
+bIsMasked = false
+ReferencedTextures[4] =
+{
+    ReferencedTextures[0] = Texture2D'/Game/ArtAsset/Particle/Textures/T_Y_Noise_02_32.T_Y_Noise_02_32'
+    ReferencedTextures[1] = Texture2D'/Game/ArtAsset/Texture/UI/EvolveMenu/Potions/TexUI_PotionEntryBackground.TexUI_PotionEntryBackground'
+    ReferencedTextures[2] = Texture2D'/Game/ArtAsset/Texture/UI/EvolveMenu/Potions/TexUI_PotionEntryBackground_Mask.TexUI_PotionEntryBackground_Mask'
+    ReferencedTextures[3] = Texture2D'/Game/ArtAsset/Texture/UI/GoodUIIconTrail/Textures/Noise/T_CloudNoise.T_CloudNoise'
+}
+Expressions[0] = {}
+CachedExpressionData =
+{
+    Parameters =
+    {
+        Entries[5] =
+        {
+            Entries[0] =
+            {
+                ParameterInfos[1] =
+                {
+                    ParameterInfos[0] = { Name=EnableFlow? }
+                }
+            }
+            Entries[1] =
+            {
+                ParameterInfos[1] =
+                {
+                    ParameterInfos[0] = { Name=FlowColor }
+                }
+            }
+            Entries[2] =
+            {
+                ParameterInfos[1] =
+                {
+                    ParameterInfos[0] = { Name=Image }
+                }
+            }
+            Entries[3] = { ParameterInfos[0]={} }
+            Entries[4] = { ParameterInfos[0]={} }
+        }
+        ScalarValues[1] = { 0 }
+        VectorValues[1] =
+        {
+            VectorValues[0] = { R=0.079657, G=0.677083, B=0.45139, A=1 }
+        }
+        TextureValues[1] =
+        {
+            TextureValues[0] = Texture2D'/Game/ArtAsset/Texture/UI/EvolveMenu/Potions/TexUI_PotionEntryBackground.TexUI_PotionEntryBackground'
+        }
+    }
+    ReferencedTextures[4] =
+    {
+        ReferencedTextures[0] = Texture2D'/Game/ArtAsset/Particle/Textures/T_Y_Noise_02_32.T_Y_Noise_02_32'
+        ReferencedTextures[1] = Texture2D'/Game/ArtAsset/Texture/UI/EvolveMenu/Potions/TexUI_PotionEntryBackground.TexUI_PotionEntryBackground'
+        ReferencedTextures[2] = Texture2D'/Game/ArtAsset/Texture/UI/GoodUIIconTrail/Textures/Noise/T_CloudNoise.T_CloudNoise'
+        ReferencedTextures[3] = Texture2D'/Game/ArtAsset/Texture/UI/EvolveMenu/Potions/TexUI_PotionEntryBackground_Mask.TexUI_PotionEntryBackground_Mask'
+    }
+}
+BlendMode = BLEND_Translucent (2)
+OpacityMaskClipValue = 0.333
+CollectedTextureParameters[1] =
+{
+    CollectedTextureParameters[0] =
+    {
+        Texture = Texture2D'/Game/ArtAsset/Texture/UI/EvolveMenu/Potions/TexUI_PotionEntryBackground.TexUI_PotionEntryBackground'
+        Name = Image
+        Group = None
+    }
+}
+CollectedScalarParameters[1] =
+{
+    CollectedScalarParameters[0] = { Value=0, Name=EnableFlow?, Group=None }
+}
+CollectedVectorParameters[1] =
+{
+    CollectedVectorParameters[0] =
+    {
+        Value = { R=0.079657, G=0.677083, B=0.45139, A=1 }
+        Name = FlowColor
+        Group = None
+    }
+}
+FlattenedTexture = None
+MobileBaseTexture = None
+MobileNormalTexture = None
+bUseMobileSpecular = false
+MobileSpecularPower = 16
+MobileSpecularMask = MSM_Constant (0)
+MobileMaskTexture = None
+TextureStreamingData[2] =
+{
+    TextureStreamingData[0] =
+    {
+        SamplingScale = 0.296875
+        UVChannelIndex = 0
+        TextureName = T_CloudNoise
+    }
+    TextureStreamingData[1] =
+    {
+        SamplingScale = 0.296875
+        UVChannelIndex = 0
+        TextureName = T_Y_Noise_02_32
+    }
+}

@@ -59,7 +59,7 @@ private:
 	weak_ptr<CEffectGroup>	m_pEffectGroup;
 
 public:
-	virtual void Free() override;
+	void Free();
 };
 END
 

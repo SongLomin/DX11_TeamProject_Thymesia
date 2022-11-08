@@ -1,0 +1,87 @@
+TwoSided = false
+bDisableDepthTest = false
+bIsMasked = false
+ReferencedTextures[3] =
+{
+    ReferencedTextures[0] = Texture2D'/Game/ArtAsset/Texture/UI/EvolveMenu/MapImage/TexUI_LevelImage_Circus.TexUI_LevelImage_Circus'
+    ReferencedTextures[1] = Texture2D'/Game/ArtAsset/Texture/UI/TexUI_LevelImageMask.TexUI_LevelImageMask'
+    ReferencedTextures[2] = Texture2D'/Game/ArtAsset/Texture/UI/TexUI_VideoMask.TexUI_VideoMask'
+}
+Expressions[0] = {}
+CachedExpressionData =
+{
+    Parameters =
+    {
+        Entries[5] =
+        {
+            Entries[0] = { ParameterInfos[0]={} }
+            Entries[1] = { ParameterInfos[0]={} }
+            Entries[2] =
+            {
+                ParameterInfos[3] =
+                {
+                    ParameterInfos[0] = { Name=Mask }
+                    ParameterInfos[1] = { Name=Mask1 }
+                    ParameterInfos[2] = { Name=Image }
+                }
+            }
+            Entries[3] = { ParameterInfos[0]={} }
+            Entries[4] = { ParameterInfos[0]={} }
+        }
+        ScalarValues[0] = {}
+        VectorValues[0] = {}
+        TextureValues[3] =
+        {
+            TextureValues[0] = Texture2D'/Game/ArtAsset/Texture/UI/TexUI_VideoMask.TexUI_VideoMask'
+            TextureValues[1] = Texture2D'/Game/ArtAsset/Texture/UI/TexUI_LevelImageMask.TexUI_LevelImageMask'
+            TextureValues[2] = Texture2D'/Game/ArtAsset/Texture/UI/EvolveMenu/MapImage/TexUI_LevelImage_Circus.TexUI_LevelImage_Circus'
+        }
+    }
+    ReferencedTextures[4] =
+    {
+        ReferencedTextures[0] = Texture2D'/Game/ArtAsset/Texture/UI/EvolveMenu/MapImage/TexUI_LevelImage_Circus.TexUI_LevelImage_Circus'
+        ReferencedTextures[2] = Texture2D'/Game/ArtAsset/Texture/UI/TexUI_VideoMask.TexUI_VideoMask'
+        ReferencedTextures[3] = Texture2D'/Game/ArtAsset/Texture/UI/TexUI_LevelImageMask.TexUI_LevelImageMask'
+    }
+}
+BlendMode = BLEND_Translucent (2)
+OpacityMaskClipValue = 0.333
+CollectedTextureParameters[3] =
+{
+    CollectedTextureParameters[0] =
+    {
+        Texture = Texture2D'/Game/ArtAsset/Texture/UI/TexUI_VideoMask.TexUI_VideoMask'
+        Name = Mask
+        Group = None
+    }
+    CollectedTextureParameters[1] =
+    {
+        Texture = Texture2D'/Game/ArtAsset/Texture/UI/TexUI_LevelImageMask.TexUI_LevelImageMask'
+        Name = Mask1
+        Group = None
+    }
+    CollectedTextureParameters[2] =
+    {
+        Texture = Texture2D'/Game/ArtAsset/Texture/UI/EvolveMenu/MapImage/TexUI_LevelImage_Circus.TexUI_LevelImage_Circus'
+        Name = Image
+        Group = None
+    }
+}
+CollectedScalarParameters[0] = {}
+CollectedVectorParameters[0] = {}
+FlattenedTexture = None
+MobileBaseTexture = None
+MobileNormalTexture = None
+bUseMobileSpecular = false
+MobileSpecularPower = 16
+MobileSpecularMask = MSM_Constant (0)
+MobileMaskTexture = None
+TextureStreamingData[1] =
+{
+    TextureStreamingData[0] =
+    {
+        SamplingScale = 1
+        UVChannelIndex = 0
+        TextureName = TexUI_VideoMask
+    }
+}

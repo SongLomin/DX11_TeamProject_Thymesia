@@ -32,8 +32,8 @@ protected:
     virtual void SetUp_ShaderResource();
 
 protected:
-    weak_ptr<CModel> m_pModelCom;
-    weak_ptr<CShader> m_pShaderCom;
+    weak_ptr<CModel>    m_pModelCom;
+    weak_ptr<CShader>   m_pShaderCom;
     weak_ptr<CRenderer> m_pRendererCom;
 
 protected:
@@ -41,7 +41,7 @@ protected:
     _uint       m_iPassIndex = 0;
 
 protected:
-    virtual void Free() override;
+    void Free();
 
 };
 

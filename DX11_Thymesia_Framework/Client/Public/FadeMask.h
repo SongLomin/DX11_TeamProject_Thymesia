@@ -45,7 +45,7 @@ private:
 	_float4 m_vFadeColor;
 
 public:
-	virtual void Free() override;
+	void Free();
 };
 
 END

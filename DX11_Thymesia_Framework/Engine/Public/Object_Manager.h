@@ -22,23 +22,12 @@ private:
 	};
 
 public:
-	//class CComponent* Get_Component(_uint iLevelIndex, const _tchar* pLayerTag, const _tchar* pComponentTag, _uint iIndex = 0);
-
-public:
 	HRESULT Reserve_Container(_uint iNumLevels);
 	
 	virtual void OnLevelEnter() override;
 	virtual void OnLevelExit() override;
 
 public:
-	/* 원형객체를 추가한다. */
-	//HRESULT Add_Prototype(const _tchar* pPrototypeTag, class CGameObject* pPrototype);
-
-	/* 원형객체르ㅏㅣㄹ 복사하여 사본객체를 추가한다. */
-	//HRESULT Add_GameObject(_uint iLevelIndex, const _tchar* pLayerTag, const _tchar* pPrototypeTag, void* pArg = nullptr);
-
-	
-
 	void Tick(_float fTimeDelta);
 	void LateTick(_float fTimeDelta);
 	void After_Render();
@@ -53,7 +42,7 @@ private:
 	void Register_ReservedObjects();
 
 protected:
-	virtual void Free() override;
+	void Free();
 
 private:
 	map<_hashcode, class shared_ptr<CGameObject>>			m_Prototypes;
@@ -72,7 +61,7 @@ public:
 	FDelegate<> CallBack_Start;
 	
 public:
-	weak_ptr<CGameObject> Add_GameObject(size_t iTypeHash, _uint iLevelIndex, /*CTransform * pParent = nullptr,*/ void* pArg = nullptr, _bool _bMemoryPool = false);
+	weak_ptr<CGameObject> Add_GameObject(size_t iTypeHash, _uint iLevelIndex, void* pArg = nullptr);
 
 public: /* For Template Function */
 	template <typename T>
@@ -95,7 +84,7 @@ public: /* For Template Function */
 	}
 
 	template <typename T>
-	weak_ptr<T> Add_GameObject(_uint iLevelIndex, /*CTransform* pParent = nullptr,*/ void* pArg = nullptr, _bool _bMemoryPool = false)
+	weak_ptr<T> Add_GameObject(_uint iLevelIndex, /*CTransform* pParent = nullptr,*/ void* pArg = nullptr)
 	{
 		static_assert(is_base_of<CGameObject, T>::value, "T Isn't base of CGameObject");
 
@@ -113,7 +102,6 @@ public: /* For Template Function */
 		_hashcode HashCode = typeid(T).hash_code();
 
 		auto iter = m_Prototypes.find(HashCode);
-		//auto iter = find_if(m_Prototypes.begin(), m_Prototypes.end(), CTag_Finder_c_str(typeid(T).name()));
 
 		if (iter != m_Prototypes.end())
 		{
@@ -125,19 +113,6 @@ public: /* For Template Function */
 			pPrototype = Add_Prototype<T>();
 		}
 
-		/*if (_bMemoryPool)
-		{
-			for (auto& elem : m_pLayers[iLevelIndex][HashCode])
-			{
-				if (!elem->Get_Enable())
-				{
-					elem->Set_Enable(true, pArg);
-
-					return elem;
-				}
-			}
-		}*/
-
 		if (0 == pPrototype.use_count())
 			return weak_ptr<T>();
 
@@ -145,16 +120,6 @@ public: /* For Template Function */
 		//pCloneObject->Set_OwnerForMyComponents();
 
 		m_ReservedObjects.push_back({ HashCode, iLevelIndex, pCloneObject });
-
-		//m_pLayers[iLevelIndex][HashCode].push_back(pCloneObject);
-
-		/*if (pParent)
-		{
-			CTransform* pTransfromCom = pCloneObject->Get_Component<CTransform>();
-			pTransfromCom->Set_Parent(pParent);
-			pParent->Add_Child(pTransfromCom);
-		}*/
-		//pCloneObject->OnEnable(pArg);
 
 		return dynamic_pointer_cast<T>(pCloneObject);
 	}
@@ -225,62 +190,6 @@ public: /* For Template Function */
 
 		return Add_GameObject<T>(iLevelIndex);
 	}
-
-//	template <typename T>
-//	CGameObject* Get_ParticleSystem(_uint iLevelIndex, const _tchar* pLayerTag, CTransform* pParent = nullptr, void* pArg = nullptr)
-//	{
-//		static_assert(is_base_of<CParticleSystem, T>::value, "T Isn't base of CParticleSystem");
-//
-//		if (m_iNumLevels <= iLevelIndex)
-//		{
-//			//잘못된 레벨 인덱스
-//#ifdef _DEBUG
-//			assert(false);
-//#endif
-//			return nullptr;
-//		}
-//
-//		CGameObject* pPrototype = nullptr;
-//
-//		auto iter = find_if(m_Prototypes.begin(), m_Prototypes.end(), CTag_Finder_c_str(typeid(T).name()));
-//
-//		if (iter != m_Prototypes.end())
-//		{
-//			pPrototype = (*iter).second;
-//		}
-//
-//		if (nullptr == pPrototype)
-//		{
-//			pPrototype = Add_Prototype<T>();
-//		}
-//
-//		for (auto& elem : m_pLayers[iLevelIndex][pLayerTag])
-//		{
-//			elem->Set_Enable(true, pArg);
-//
-//			return elem;
-//		}
-//
-//
-//		CGameObject* pCloneObject = pPrototype->Clone(pArg);
-//
-//		pCloneObject->Set_Internal_Tag(pLayerTag);
-//
-//		if (nullptr == pCloneObject)
-//			return nullptr;
-//
-//		m_pLayers[iLevelIndex][pLayerTag].push_back(pCloneObject);
-//
-//		if (pParent)
-//		{
-//			CTransform* pTransfromCom = pCloneObject->Get_Component<CTransform>();
-//			pTransfromCom->Set_Parent(pParent);
-//			pParent->Add_Child(pTransfromCom);
-//		}
-//		pCloneObject->OnEnable();
-//
-//		return pCloneObject;
-//	}
 
 };
 

@@ -52,7 +52,6 @@ public:
 
     void ReBake_EditParticle();
 
-
     void Write_EffectJson(json& Out_Json);
     void Load_EffectJson(const json& In_Json, const _uint& In_iTimeScaleLayer);
 
@@ -71,6 +70,7 @@ private:
     void Update_ParticleUV(_float fTimeDelta);
     void Update_ParticleColor(const _uint& i, _float fTimeDelta);
     void Update_ParticleGlowColor(_float fTimeDelta);
+    void Update_ParticleSpriteFrame(const _uint& i, _float fTimeDelta);
 
     void Update_ParentTransform();
 
@@ -87,6 +87,8 @@ private:
     _bool                               m_bStopParticle;
     weak_ptr<CVIBuffer_Rect_Instance>   m_pVIBuffer;
     weak_ptr<CTexture>                  m_pMaskTextureCom;
+    weak_ptr<CTexture>                  m_pColorTextureCom;
+    
 
 private:
     _float2                             m_vCurrentUV;
@@ -112,7 +114,7 @@ public:
     void OnChangeAnimationKey(const _uint& In_Key);
 
 private:
-    virtual void Free() override;
+    void Free();
 
 };
 

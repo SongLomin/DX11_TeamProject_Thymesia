@@ -36,7 +36,7 @@ public:
     void Call_FadeOutToLevelChange();
 
 protected:
-    virtual void Free() override;
+    void Free();
 
 };
 

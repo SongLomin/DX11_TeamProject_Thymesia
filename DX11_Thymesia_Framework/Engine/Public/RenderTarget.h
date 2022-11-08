@@ -54,7 +54,7 @@ public:
     static shared_ptr<CRenderTarget> Create(_uint iWidth, _uint iHeight, DXGI_FORMAT eFormat, _float4 vClearColor);
 
 private:
-    virtual void Free() override;
+    void Free();
 };
 
 END

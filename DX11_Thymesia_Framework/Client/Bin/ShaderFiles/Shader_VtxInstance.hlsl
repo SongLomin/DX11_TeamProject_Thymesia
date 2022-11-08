@@ -1,10 +1,11 @@
-
 #include "Client_Shader_Defines.hpp"
 
 matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
 texture2D	g_DiffuseTexture;
 texture2D	g_MaskTexture;
+texture2D	g_ColorTexture;
+
 float2		g_vMaskUV;
 float2		g_vDiffuseUV;
 vector		g_vCamDirection;
@@ -13,6 +14,10 @@ float4		g_vGlowColor;
 bool		g_bBillboard;
 bool		g_bBloom;
 bool		g_bGlow;
+bool		g_bSpriteImage = false;
+
+int2		g_iNumFrames;
+//float2		g_fCurFrame;
 
 struct VS_IN
 {
@@ -24,6 +29,7 @@ struct VS_IN
 	float4		vLook : TEXCOORD3;
 	float4		vTranslation : TEXCOORD4;
     float4		vColor : TEXCOORD5;
+	float2		vSpriteUV : TEXCOORD6;
 };
 
 struct VS_OUT
@@ -31,6 +37,7 @@ struct VS_OUT
 	float4		vPosition : SV_POSITION;
 	float2		vTexUV : TEXCOORD0;
     float4		vColor : TEXCOORD1;
+	float2		vSpriteUV : TEXCOORD2;
 };
 
 VS_OUT VS_MAIN(VS_IN In)
@@ -60,6 +67,7 @@ VS_OUT VS_MAIN(VS_IN In)
 	Out.vPosition = mul(vPosition, matWVP);
 	Out.vTexUV = In.vTexUV;
     Out.vColor = In.vColor;
+	Out.vSpriteUV = In.vSpriteUV;
 
 	return Out;	
 }
@@ -74,6 +82,7 @@ struct PS_IN
 	float4		vPosition : SV_POSITION;
 	float2		vTexUV : TEXCOORD0;
     float4		vColor : TEXCOORD1;
+	float2		vSpriteUV : TEXCOORD2;
 };
 
 struct PS_OUT
@@ -85,15 +94,34 @@ struct PS_OUT
 
 PS_OUT PS_MAIN(PS_IN In)
 {
-	PS_OUT		Out = (PS_OUT)0;
+	PS_OUT Out = (PS_OUT)0;
 
-    Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexUV + g_vDiffuseUV);
-    Out.vColor.a *= g_MaskTexture.Sample(DefaultSampler, In.vTexUV + g_vMaskUV).r;
+	if (!g_bSpriteImage)
+	{
+		Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexUV + g_vDiffuseUV);
+		Out.vColor.a *= g_MaskTexture.Sample(DefaultSampler, In.vTexUV + g_vMaskUV).r;
 
-    Out.vColor *= In.vColor;
+		Out.vColor *= In.vColor;
 
-    if (Out.vColor.a < 0.1f)
-        discard;
+		if (Out.vColor.a < 0.1f)
+			discard;
+	}
+	else
+	{
+		// Sprite Image
+		Out.vColor = g_DiffuseTexture.Sample(PointSampler,
+			float2(In.vTexUV.x / g_iNumFrames.x + In.vSpriteUV.x,
+				In.vTexUV.y / g_iNumFrames.y + In.vSpriteUV.y));
+
+		// Diffuse Color for Sprite
+		vector vColorMap = g_ColorTexture.Sample(PointSampler, In.vTexUV + g_vDiffuseUV);
+
+		Out.vColor *= In.vColor * vColorMap;
+
+		if ((Out.vColor.r + Out.vColor.g + Out.vColor.b) < 0.9f)
+			discard;
+	}
+
 	
     if (g_bBloom)
     {

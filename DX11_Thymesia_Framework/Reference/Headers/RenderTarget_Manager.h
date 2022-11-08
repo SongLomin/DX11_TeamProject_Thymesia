@@ -55,7 +55,7 @@ public:
 	list<shared_ptr<CRenderTarget>>* Find_MRT(const _tchar* pMRTTag);
 
 public:
-	virtual void Free() override;
+	void Free();
 };
 
 END

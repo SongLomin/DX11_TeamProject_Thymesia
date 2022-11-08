@@ -77,7 +77,7 @@ void CCharacter::OnLevelEnter()
 	CNavigation::NAVIDESC tNaviDesc;
 	tNaviDesc.m_iCurrentIndex = 0;
 
-	m_pNaviMeshCom.lock()->Init_Navi("NaviMesh", tNaviDesc);
+	//m_pNaviMeshCom.lock()->Init_Navi("NaviMesh", tNaviDesc);
 }
 
 void CCharacter::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)

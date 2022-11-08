@@ -83,7 +83,7 @@ public: /* For Event Function */
 
 public:
 	virtual shared_ptr<CGameObject> Clone(_uint iLevelIndex, void* pArg) = 0;
-	virtual void Free() override;
+	void Free();
 
 public: /* For Template Function */
 	template <typename T>
@@ -206,6 +206,8 @@ public: /* For Template Function */
 
 		m_pComponents[typeid(T).hash_code()].clear();
 	}
+
+	void Remove_Components(weak_ptr<CComponent> pComponent);
 
 	friend CObject_Manager;
 };

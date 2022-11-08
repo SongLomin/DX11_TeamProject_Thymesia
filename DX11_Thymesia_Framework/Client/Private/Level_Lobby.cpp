@@ -7,6 +7,7 @@
 #include "Client_GameObjects.h"
 #include "Client_Components.h"
 #include "GameManager.h"
+#include "Player.h"
 
 
 
@@ -21,18 +22,9 @@ HRESULT CLevel_Lobby::Initialize()
 
 	//Load_FromJson(m_szDefaultJsonPath + "Lobby.json", LEVEL::LEVEL_LOBBY);
 
-	CCamera::CAMERADESC			CameraDesc;
-	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
-	CameraDesc.vEye = _float4(0.0f, 1.2f, 1.5f, 1.f);
-	CameraDesc.vAt = _float4(0.f, 1.2f, 0.f, 1.f);
-	CameraDesc.fFovy = XMConvertToRadians(65.0f);
-	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
-	CameraDesc.fNear = 0.2f;
-	CameraDesc.fFar = 300.f;
-
-	weak_ptr<CCamera_Static> StaticCamera = GAMEINSTANCE->Add_GameObject<CCamera_Static>(LEVEL::LEVEL_LOBBY, &CameraDesc);
-
+	
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
+
 
 	return S_OK;
 }

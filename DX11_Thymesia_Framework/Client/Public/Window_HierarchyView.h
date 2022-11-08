@@ -36,7 +36,7 @@ public:
 	virtual void OnLevelLoad() override;
 
 public:
-	virtual void Free() override;
+	void Free();
 
 	
 };

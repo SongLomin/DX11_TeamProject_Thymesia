@@ -41,12 +41,14 @@ public:
 
 	void	Loading_ForEffectGroup(const char* In_Path, const _uint& In_LevelIndex);
 	void	Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex);
+	void	Load_AllDiffuseTexture();
 	void	Load_AllMaskMap();
 	void	Load_AllParticleTexture();
 	void	Load_AllParticleInPath_Recursive(const filesystem::path& In_Path);
 	void	Load_AllEffectMesh();
 	void	Load_AllEffectMeshInPath_Recursive(const filesystem::path& In_Path);
 	void	Load_AllNaviMesh();
+	void	Load_AllMeshes(const filesystem::path& In_Path, const MEMORY_TYPE& In_eMemoryType);
 	
 	void	Create_GameObjectFromJson(const string& In_szJsonPath, const LEVEL& In_eLevel);
 
@@ -64,7 +66,7 @@ public:
 	
 public:
 	static shared_ptr<CLoader> Create(LEVEL eNextLevel);
-	virtual void Free() override;
+	void Free();
 };
 
 END

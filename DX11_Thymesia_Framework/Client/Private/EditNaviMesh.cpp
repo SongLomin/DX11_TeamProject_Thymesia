@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "EditNaviMesh.h"
+
 #include "Collider.h"
 #include "Renderer.h"
 #include "VIBuffer_Cell.h"
@@ -20,7 +21,7 @@ HRESULT CEditNaviMesh::Initialize(void* pArg)
 
     m_pRendererCom = Add_Component<CRenderer>();
 
-	m_vSize = _float2(0.f, 0.f);
+	//m_vSize = _float2(0.f, 0.f);
 
     ZeroMemory(m_iPickingIndex, sizeof(_uint) * 3);
 
@@ -43,22 +44,24 @@ void CEditNaviMesh::Tick(_float fTimeDelta)
 
     switch (m_eEditType)
     {
-    case Client::CEditNaviMesh::EDIT_MODE::VERTICE:
-        Update_Vertice(fTimeDelta);
+        case EDIT_MODE::VERTICE:
+        {
+            Update_Vertice(fTimeDelta);
+        }
         break;
-    case Client::CEditNaviMesh::EDIT_MODE::HEIGHT:
-        Update_Height(fTimeDelta);
-        break;
-    case Client::CEditNaviMesh::EDIT_MODE::EDIT_END:
 
+        case EDIT_MODE::HEIGHT:
+        {
+            Update_Height(fTimeDelta);
+        }
         break;
-    default:
 
+        case EDIT_MODE::POSITION_XY:
+        {
+            Update_Position(fTimeDelta);
+        }
         break;
     }
-
-    
-
 }
 
 void CEditNaviMesh::LateTick(_float fTimeDelta)
@@ -93,8 +96,9 @@ HRESULT CEditNaviMesh::Render()
     }
 
     m_pCellShaderCom.lock()->Set_RawValue("g_WorldMatrix", &XMMatrixIdentity(), sizeof(_float4x4));
-    m_pCellShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4));
-    m_pCellShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
+    m_pCellShaderCom.lock()->Set_RawValue("g_ViewMatrix" , (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4));
+    m_pCellShaderCom.lock()->Set_RawValue("g_ProjMatrix" , (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
+
     _float4 vColor(0.f, 1.f, 0.f, 0.1f);
     m_pCellShaderCom.lock()->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
 
@@ -105,12 +109,8 @@ HRESULT CEditNaviMesh::Render()
         elem.lock()->Render();
     }
 
-
     __super::Render();
 #endif // _DEBUG
-
-
-    
 
     return S_OK;
 }
@@ -119,12 +119,13 @@ void CEditNaviMesh::Init_Collider(const _float& In_iWidth, const _float& In_iHei
 {
     Remove_Components<CCollider>();
     Remove_Components<CVIBuffer_Cell>();
+
     m_pPickPointColliderComs.clear();
     m_pCells.clear();
     m_bSelectedPickPoints.clear();
     Reset_Picking();
 
-    m_iWidthCount = (_uint)In_iWidth / In_fPitch;
+    m_iWidthCount  = (_uint)In_iWidth / In_fPitch;
     m_iHeightCount = (_uint)In_iHeight / In_fPitch;
 
     m_pPickPointColliderComs.reserve(m_iWidthCount * m_iHeightCount);
@@ -151,7 +152,7 @@ void CEditNaviMesh::Init_Collider(const _float& In_iWidth, const _float& In_iHei
                 ColliderDesc.vTranslation = _float3((_float)j * In_fPitch - (In_iWidth * 0.5f), 0.f, (_float)i * In_fPitch - (In_iHeight * 0.5f));
             }
 
-            ColliderDesc.vScale = _float3(In_fPitch * 0.3f, 0.f, 0.f);
+            ColliderDesc.vScale    = _float3(In_fPitch * 0.3f, 0.f, 0.f);
             ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 0.f);
 
             pCollider.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
@@ -194,19 +195,17 @@ void CEditNaviMesh::Reset_Picking()
     }
 #endif // _DEBUG
 
-    
-
-    m_iPickingIndex[0] = -1;
-    m_iPickingIndex[1] = -1;
-    m_iPickingIndex[2] = -1;
+    m_iPickingIndex[0]     = -1;
+    m_iPickingIndex[1]     = -1;
+    m_iPickingIndex[2]     = -1;
     m_iCurrentPickingIndex = 0;
 
     if (!m_bSelectedPickPoints.empty())
     {
         fill(m_bSelectedPickPoints.begin(), m_bSelectedPickPoints.end(), false);
     }
-    m_iLastSelectedIndex = -1;
 
+    m_iLastSelectedIndex = -1;
 }
 
 void CEditNaviMesh::Update_Vertice(_float fTimeDelta)
@@ -254,7 +253,6 @@ void CEditNaviMesh::Update_Vertice(_float fTimeDelta)
         Reset_Picking();
     }
 
-
     if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
     {
         _int iSelected_Index = Select_PickPoint();
@@ -277,8 +275,6 @@ void CEditNaviMesh::Update_Vertice(_float fTimeDelta)
             m_pPickPointColliderComs[iSelected_Index].lock()->Set_DebugColor(PickingColliderColor);
 #endif // _DEBUG
 
-            
-
             ++m_iCurrentPickingIndex;
         }
     }
@@ -287,6 +283,9 @@ void CEditNaviMesh::Update_Vertice(_float fTimeDelta)
     {
         if (KEY_INPUT(KEY::Z, KEY_STATE::TAP))
         {
+            if (m_pCells.empty())
+                return;
+
             m_pCells.pop_back();
         }
     }
@@ -301,10 +300,12 @@ void CEditNaviMesh::Update_Height(_float fTimeDelta)
         {
             Select_MultiHeightPoints(fTimeDelta);
         }
+
         else if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
         {
             Select_RangeHeightPoints(fTimeDelta);
         }
+
         else
         {
             Select_SingleHeightPoint(fTimeDelta);
@@ -320,7 +321,41 @@ void CEditNaviMesh::Update_Height(_float fTimeDelta)
     {
         Add_Height(-1.f * fTimeDelta);
     }
+}
 
+void CEditNaviMesh::Update_Position(_float fTimeDelta)
+{
+    if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
+    {
+        if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD))
+        {
+            Select_MultiHeightPoints(fTimeDelta);
+        }
+
+        else if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
+        {
+            Select_RangeHeightPoints(fTimeDelta);
+        }
+
+        else
+        {
+            Select_SingleHeightPoint(fTimeDelta);
+        }
+    }
+
+    const _float fMoveSpeed = 1.f;
+
+    if (KEY_INPUT(KEY::UP, KEY_STATE::HOLD))
+        Add_Pos(_float3(0.f, 0.f, fMoveSpeed * fTimeDelta));
+
+    if (KEY_INPUT(KEY::DOWN, KEY_STATE::HOLD))
+        Add_Pos(_float3(0.f, 0.f, -fMoveSpeed * fTimeDelta));
+
+    if (KEY_INPUT(KEY::RIGHT, KEY_STATE::HOLD))
+        Add_Pos(_float3(fMoveSpeed * fTimeDelta, 0.f, 0.f));
+
+    if (KEY_INPUT(KEY::LEFT, KEY_STATE::HOLD))
+        Add_Pos(_float3(-fMoveSpeed * fTimeDelta, 0.f, 0.f));
 }
 
 void CEditNaviMesh::Select_MultiHeightPoints(_float fTimeDelta)
@@ -333,16 +368,13 @@ void CEditNaviMesh::Select_MultiHeightPoints(_float fTimeDelta)
     }
 
     m_iLastSelectedIndex = iSelected_Index;
-
     m_bSelectedPickPoints[iSelected_Index] = true;
-
 
 #ifdef _DEBUG
     //선택하면 노란색으로
     m_pPickPointColliderComs[iSelected_Index].lock()->Set_DebugColor({ 1.f, 1.f, 0.f, 1.f });
 #endif // _DEBUG
 
-   
 }
 
 void CEditNaviMesh::Select_RangeHeightPoints(_float fTimeDelta)
@@ -353,7 +385,6 @@ void CEditNaviMesh::Select_RangeHeightPoints(_float fTimeDelta)
     {
         return;
     }
-
 
     if (-1 == m_iLastSelectedIndex)
     {
@@ -366,22 +397,20 @@ void CEditNaviMesh::Select_RangeHeightPoints(_float fTimeDelta)
         m_pPickPointColliderComs[iSelected_Index].lock()->Set_DebugColor({ 1.f, 1.f, 0.f, 1.f });
 #endif // _DEBUG
 
-        
-
         return;
     }
 
     _uint iLastHeight = m_iLastSelectedIndex / m_iWidthCount;
-    _uint iLastWidth = m_iLastSelectedIndex % m_iWidthCount;
+    _uint iLastWidth  = m_iLastSelectedIndex % m_iWidthCount;
 
-    _uint iNewHeight = iSelected_Index / m_iWidthCount;
-    _uint iNewWidth = iSelected_Index % m_iWidthCount;
+    _uint iNewHeight  = iSelected_Index / m_iWidthCount;
+    _uint iNewWidth   = iSelected_Index % m_iWidthCount;
 
-    _uint iMaxHeight = max(iLastHeight, iNewHeight);
-    _uint iMaxWidth = max(iLastWidth, iNewWidth);
+    _uint iMaxHeight  = max(iLastHeight, iNewHeight);
+    _uint iMaxWidth   = max(iLastWidth, iNewWidth);
 
-    _uint iMinHeight = min(iLastHeight, iNewHeight);
-    _uint iMinWidth = min(iLastWidth, iNewWidth);
+    _uint iMinHeight  = min(iLastHeight, iNewHeight);
+    _uint iMinWidth   = min(iLastWidth, iNewWidth);
 
     for (_uint i = iMinHeight; i <= iMaxHeight; ++i)
     {
@@ -393,8 +422,7 @@ void CEditNaviMesh::Select_RangeHeightPoints(_float fTimeDelta)
             //선택하면 노란색으로
             m_pPickPointColliderComs[i * m_iWidthCount + j].lock()->Set_DebugColor({ 1.f, 1.f, 0.f, 1.f });
 #endif // _DEBUG
-
-            
+           
         }
     }
 
@@ -450,6 +478,12 @@ _int CEditNaviMesh::Select_PickPoint() const
 
 void CEditNaviMesh::Add_Height(const _float& In_fHeight)
 {
+    if (m_pPickPointColliderComs.empty())
+        return;
+
+    if (m_iCurrentPickingIndex >= m_pPickPointColliderComs.size())
+        return;
+
     _float3 vHeight(0.f, In_fHeight, 0.f);
 
     for (_size_t i = 0; i < m_pPickPointColliderComs.size(); ++i)
@@ -459,7 +493,92 @@ void CEditNaviMesh::Add_Height(const _float& In_fHeight)
             m_pPickPointColliderComs[i].lock()->Update_AddPosition(vHeight);
         }
     }
+}
 
+void CEditNaviMesh::Add_Pos(const _float3& In_vAddPosXY)
+{
+    if (m_pPickPointColliderComs.empty())
+        return;
+
+    if (m_iCurrentPickingIndex >= m_pPickPointColliderComs.size())
+        return;
+
+    for (_size_t i = 0; i < m_pPickPointColliderComs.size(); ++i)
+    {
+        if (m_bSelectedPickPoints[i])
+        {
+            m_pPickPointColliderComs[i].lock()->Update_AddPosition(In_vAddPosXY);
+        }
+    }
+}
+
+void CEditNaviMesh::CellList()
+{
+    if (ImGui::BeginListBox("Cell List"))
+    {
+        static int Cellitem_current_idx = 0;
+
+        for (_int i = 0; i < m_pCells.size();)
+        {
+            const bool is_selected = (Cellitem_current_idx == i);
+
+            if (m_pCells.empty())
+                return;
+
+            if (m_iPickingIndex[i] >= m_pPickPointColliderComs.size())
+                continue;
+
+            string szItem
+                = string(" ( ") + to_string(i) + string(" ) ");
+
+            if (ImGui::Selectable(szItem.c_str(), is_selected))
+                Cellitem_current_idx = i;
+
+            if (is_selected)
+                ImGui::SetItemDefaultFocus();
+        }
+
+        ImGui::EndListBox();
+    }
+}
+
+void CEditNaviMesh::SelectPointList()
+{
+    static int Pointitem_current_idx = 0;
+
+    if (ImGui::BeginListBox("Select Point List"))
+    {
+        for (_uint i = 0; i < 3; ++i)
+        {
+            const bool is_selected = (Pointitem_current_idx == i);
+
+            if (m_pPickPointColliderComs.empty())
+                return;
+
+            if (0 > m_iPickingIndex[i])
+                continue;
+
+            if (m_iPickingIndex[i] >= m_pPickPointColliderComs.size())
+                continue;
+
+            _float3 vPos = m_pPickPointColliderComs[m_iPickingIndex[i]].lock()->Get_ColliderDesc().vTranslation;
+
+            string szItem
+                = string(" ( ") + to_string(i) + string(" ) ")
+                + string(" Pos : [ ")
+                + to_string(vPos.x) + string(" , ")
+                + to_string(vPos.y) + string(" , ")
+                + to_string(vPos.z) + string(" ]");
+
+            if (ImGui::Selectable(szItem.c_str(), is_selected))
+                Pointitem_current_idx = i;
+
+            if (is_selected)
+                ImGui::SetItemDefaultFocus();
+        }
+
+        ImGui::EndListBox();
+    }
 }
 
 void CEditNaviMesh::Bake_NaviMesh()
@@ -590,12 +709,25 @@ void CEditNaviMesh::OnEventMessage(_uint iArg)
             {
                 Init_Collider(m_vSize.x, m_vSize.y, m_fPitch);
             }
+
             if (ImGui::Button("Reset Selection"))
             {
                 Reset_Picking();
             }
 
-            const char* items[] = { "Vertice Editer", "Height Editer" };
+            const char* items[] = 
+            {
+                "Vertice Editer",
+                "Height Editer",
+                "Position XY Editer",
+            };
+
+            if (KEY_INPUT(KEY::NUM1, KEY_STATE::HOLD))  
+                m_eEditType = EDIT_MODE::VERTICE;
+            else if (KEY_INPUT(KEY::NUM2, KEY_STATE::HOLD))  
+                m_eEditType = EDIT_MODE::HEIGHT;
+            else if (KEY_INPUT(KEY::NUM3, KEY_STATE::HOLD))  
+                m_eEditType = EDIT_MODE::POSITION_XY;
 
             if (ImGui::BeginListBox("Editer Type"))
             {
@@ -632,10 +764,28 @@ void CEditNaviMesh::OnEventMessage(_uint iArg)
             {
                 Load_NaviMesh();
             }
-
 		}
-    }
 
+        if (EDIT_MODE::VERTICE == m_eEditType)
+        {
+            if (ImGui::CollapsingHeader("Cell Info"), ImGuiTreeNodeFlags_DefaultOpen)
+            {
+                if (ImGui::TreeNode("Select Point List"))
+                {
+                    SelectPointList();
+
+                    ImGui::TreePop();
+                }
+
+                if (ImGui::TreeNode("Craete Cell Info"))
+                {
+                    CellList();
+
+                    ImGui::TreePop();
+                }            
+            }
+        }
+    }
 }
 
 void CEditNaviMesh::Free()

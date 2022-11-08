@@ -37,7 +37,7 @@ private:
     HRESULT SetUp_ShaderResource();
 
 protected:
-    virtual void Free() override;
+    void Free();
 
 };
 

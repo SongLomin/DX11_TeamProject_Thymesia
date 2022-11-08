@@ -57,7 +57,7 @@ public: /* For. EventFunction */
     virtual void OnStateEnd() override;
 
 protected:
-    virtual void Free() override;
+    void Free();
 
 };
 

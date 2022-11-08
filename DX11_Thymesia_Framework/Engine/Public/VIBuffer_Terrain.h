@@ -20,7 +20,7 @@ private:
 	_ulong					m_iNumVerticesX, m_iNumVerticesZ;
 
 public:
-	virtual void Free() override;
+	void Free();
 };
 
 END

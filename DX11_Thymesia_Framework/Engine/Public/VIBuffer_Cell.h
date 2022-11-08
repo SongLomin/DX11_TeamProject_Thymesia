@@ -27,7 +27,7 @@ private:
 	_float3	m_vVerticePositions[3];
 
 public:
-	virtual void Free() override;
+	void Free();
 };
 
 END

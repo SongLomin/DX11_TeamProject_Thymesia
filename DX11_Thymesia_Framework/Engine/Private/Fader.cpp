@@ -189,5 +189,4 @@ void CFader::OnDestroy()
 void CFader::Free()
 {
 
-
 }

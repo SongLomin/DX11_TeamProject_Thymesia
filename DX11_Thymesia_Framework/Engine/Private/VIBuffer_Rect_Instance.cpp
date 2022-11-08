@@ -124,6 +124,7 @@ void CVIBuffer_Rect_Instance::Init_Particle(const _uint& In_Size)
 		pInstance[i].vLook = _float4(0.f, 0.f, 1.f, 0.f);
 		pInstance[i].vTranslation = _float4(0.f, 0.f, 0.f, 1.f);
 		pInstance[i].vColor = _float4(1.f, 0.f, 0.f, 1.f);
+		pInstance[i].vSpriteTexUV = _float2(0.f, 0.f);
 	}
 
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
@@ -222,7 +223,6 @@ void CVIBuffer_Rect_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDes
 
 		((VTXCOLORINSTANCE*)SubResource.pData)[i].vTranslation.w = 1.f;
 
-		//비활성화라면 색을 0준다.
 		if (!In_ParticleDescs[i].bEnable)
 		{
 			((VTXCOLORINSTANCE*)SubResource.pData)[i].vColor = _float4(0.f, 0.f, 0.f, 0.f);
@@ -233,6 +233,7 @@ void CVIBuffer_Rect_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDes
 			((VTXCOLORINSTANCE*)SubResource.pData)[i].vColor = In_ParticleDescs[i].vCurrentColor;
 		}
 
+		((VTXCOLORINSTANCE*)SubResource.pData)[i].vSpriteTexUV = In_ParticleDescs[i].vSpriteUV;
 		// *(((VTXINSTANCE*)SubResource.pData) + i)
 		/*((VTXCOLORINSTANCE*)SubResource.pData)[i].vTranslation.y -= m_pInstanceSpeeds[i] * fTimeDelta;
 

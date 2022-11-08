@@ -65,7 +65,7 @@ public: /* For.Level_Manager */
 	void	Set_CreatedLevelIndex(_uint iCreatedLevelIndex);
 
 public: /* For.Object_Manager */
-	weak_ptr<CGameObject> Add_GameObject(size_t iTypeHash, _uint iLevelIndex, /*CTransform * pParent = nullptr,*/ void* pArg = nullptr, _bool _bMemoryPool = false);
+	weak_ptr<CGameObject> Add_GameObject(size_t iTypeHash, _uint iLevelIndex,void* pArg = nullptr);
 
 
 	template <typename T>
@@ -74,10 +74,10 @@ public: /* For.Object_Manager */
 		return m_pObject_Manager->Add_Prototype<T>();
 	}
 	template <typename T>
-	weak_ptr<T> Add_GameObject(_uint iLevelIndex, /*CTransform * pParent = nullptr,*/ void* pArg = nullptr, _bool _bMemoryPool = false)
+	weak_ptr<T> Add_GameObject(_uint iLevelIndex, void* pArg = nullptr)
 	{
 		int i = 0;
-		return m_pObject_Manager->Add_GameObject<T>(iLevelIndex, pArg, _bMemoryPool);
+		return m_pObject_Manager->Add_GameObject<T>(iLevelIndex, pArg);
 	}
 
 	template <typename T>
@@ -135,9 +135,10 @@ public: /* For.Resource_Manager */
 	//vector*를 반환하지 않는 이유: 셰이더리소스뷰의 레퍼런스 카운트를 올리기 위해서 vector*를 반환하지 않는다.
 	vector<ComPtr<ID3D11ShaderResourceView>> Get_TexturesFromKey(const _char* _Str_Key, MEMORY_TYPE _eType = MEMORY_TYPE::MEMORY_END);
 	
-	HRESULT Load_Model(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType = MEMORY_TYPE::MEMORY_STATIC);
+	HRESULT Load_Model(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType = MEMORY_TYPE::MEMORY_STATIC,const _bool Is_bAnimZero = false);
 	shared_ptr<MODEL_DATA> Get_ModelFromKey(const _char* _sKey, MEMORY_TYPE _eType = MEMORY_TYPE::MEMORY_END);
 	vector<string> Get_AllModelKeys();
+	vector<string> Get_AllNoneAnimModelKeys();
 	vector<string> Get_AllAnimModelKeys();
 
 	HRESULT Load_Shader(const _tchar* sKey, const _tchar* sShaderFilePath);
@@ -212,7 +213,7 @@ private:
 
 public:
 	static void Release_Engine();
-	virtual void Free() override;
+	void Free();
 };
 
 END

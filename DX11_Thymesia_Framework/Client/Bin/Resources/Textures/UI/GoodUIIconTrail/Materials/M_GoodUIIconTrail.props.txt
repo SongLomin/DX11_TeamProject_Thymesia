@@ -1,0 +1,118 @@
+TwoSided = false
+bDisableDepthTest = false
+bIsMasked = false
+ReferencedTextures[5] =
+{
+    ReferencedTextures[0] = Texture2D'/Game/ArtAsset/Texture/UI/GoodUIIconTrail/Textures/BaseShapeAlpha/T_Neon_Box.T_Neon_Box'
+    ReferencedTextures[1] = Texture2D'/Game/ArtAsset/Texture/UI/GoodUIIconTrail/Textures/Noise/T_CloudNoise.T_CloudNoise'
+    ReferencedTextures[2] = Texture2D'/Game/ArtAsset/Texture/UI/GoodUIIconTrail/Textures/RotateAlpha/T_Rotate_Alpha_01.T_Rotate_Alpha_01'
+    ReferencedTextures[3] = Texture2D'/Game/ArtAsset/Texture/UI/GoodUIIconTrail/Textures/RotateAlpha/T_Rotate_Alpha_02.T_Rotate_Alpha_02'
+    ReferencedTextures[4] = Texture2D'/Game/ArtAsset/Texture/UI/GoodUIIconTrail/Textures/SecondAlpha/T_Box_M.T_Box_M'
+}
+Expressions[0] = {}
+CachedExpressionData =
+{
+    Parameters =
+    {
+        Entries[5] =
+        {
+            Entries[0] =
+            {
+                ParameterInfos[7] =
+                {
+                    ParameterInfos[0] = { Name=Trail Fade Intensity }
+                    ParameterInfos[1] = { Name=High Light Sharper }
+                    ParameterInfos[2] = { Name=Trail Number }
+                    ParameterInfos[3] = { Name=TimeSpeed }
+                    ParameterInfos[4] = { Name=Global Sharper }
+                    ParameterInfos[5] = { Name=Hight Light Intensity }
+                    ParameterInfos[6] = { Name=Distortion Intensity }
+                }
+            }
+            Entries[1] =
+            {
+                ParameterInfos[1] =
+                {
+                    ParameterInfos[0] = { Name=Color }
+                }
+            }
+            Entries[2] =
+            {
+                ParameterInfos[2] =
+                {
+                    ParameterInfos[0] = { Name=Base_Tex }
+                    ParameterInfos[1] = { Name=Second AlphaShade }
+                }
+            }
+            Entries[3] = { ParameterInfos[0]={} }
+            Entries[4] = { ParameterInfos[0]={} }
+        }
+        ScalarValues[7] = { 2, 2.3, 2, 1, 1, 0, 0.15 }
+        VectorValues[1] =
+        {
+            VectorValues[0] = { R=1, G=1, B=1, A=1 }
+        }
+        TextureValues[2] =
+        {
+            TextureValues[0] = Texture2D'/Game/ArtAsset/Texture/UI/GoodUIIconTrail/Textures/BaseShapeAlpha/T_Neon_Box.T_Neon_Box'
+            TextureValues[1] = Texture2D'/Game/ArtAsset/Texture/UI/GoodUIIconTrail/Textures/SecondAlpha/T_Box_M.T_Box_M'
+        }
+    }
+    ReferencedTextures[5] =
+    {
+        ReferencedTextures[0] = Texture2D'/Game/ArtAsset/Texture/UI/GoodUIIconTrail/Textures/BaseShapeAlpha/T_Neon_Box.T_Neon_Box'
+        ReferencedTextures[1] = Texture2D'/Game/ArtAsset/Texture/UI/GoodUIIconTrail/Textures/RotateAlpha/T_Rotate_Alpha_02.T_Rotate_Alpha_02'
+        ReferencedTextures[2] = Texture2D'/Game/ArtAsset/Texture/UI/GoodUIIconTrail/Textures/RotateAlpha/T_Rotate_Alpha_01.T_Rotate_Alpha_01'
+        ReferencedTextures[3] = Texture2D'/Game/ArtAsset/Texture/UI/GoodUIIconTrail/Textures/Noise/T_CloudNoise.T_CloudNoise'
+        ReferencedTextures[4] = Texture2D'/Game/ArtAsset/Texture/UI/GoodUIIconTrail/Textures/SecondAlpha/T_Box_M.T_Box_M'
+    }
+}
+BlendMode = BLEND_Additive (3)
+OpacityMaskClipValue = 0.333
+CollectedTextureParameters[2] =
+{
+    CollectedTextureParameters[0] =
+    {
+        Texture = Texture2D'/Game/ArtAsset/Texture/UI/GoodUIIconTrail/Textures/BaseShapeAlpha/T_Neon_Box.T_Neon_Box'
+        Name = Base_Tex
+        Group = None
+    }
+    CollectedTextureParameters[1] =
+    {
+        Texture = Texture2D'/Game/ArtAsset/Texture/UI/GoodUIIconTrail/Textures/SecondAlpha/T_Box_M.T_Box_M'
+        Name = Second AlphaShade
+        Group = None
+    }
+}
+CollectedScalarParameters[7] =
+{
+    CollectedScalarParameters[0] = { Value=2, Name=Trail Fade Intensity, Group=None }
+    CollectedScalarParameters[1] = { Value=2.3, Name=High Light Sharper, Group=None }
+    CollectedScalarParameters[2] = { Value=2, Name=Trail Number, Group=None }
+    CollectedScalarParameters[3] = { Value=1, Name=TimeSpeed, Group=None }
+    CollectedScalarParameters[4] = { Value=1, Name=Global Sharper, Group=None }
+    CollectedScalarParameters[5] = { Value=0, Name=Hight Light Intensity, Group=None }
+    CollectedScalarParameters[6] =
+    {
+        Value = 0.15
+        Name = Distortion Intensity
+        Group = None
+    }
+}
+CollectedVectorParameters[1] =
+{
+    CollectedVectorParameters[0] =
+    {
+        Value = { R=1, G=1, B=1, A=1 }
+        Name = Color
+        Group = None
+    }
+}
+FlattenedTexture = None
+MobileBaseTexture = None
+MobileNormalTexture = None
+bUseMobileSpecular = false
+MobileSpecularPower = 16
+MobileSpecularMask = MSM_Constant (0)
+MobileMaskTexture = None
+TextureStreamingData[0] = {}

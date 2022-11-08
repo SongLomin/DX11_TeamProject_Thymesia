@@ -46,6 +46,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 
     m_pRigidBodyColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
 
+    m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
 
     Set_OwnerForMyComponents();
 
@@ -200,6 +201,7 @@ void CPlayer::SetUp_ShaderResource()
 
     m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector));
 
+   
 }
 
 void CPlayer::OnBattleEnd()

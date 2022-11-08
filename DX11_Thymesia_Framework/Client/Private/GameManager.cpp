@@ -165,6 +165,21 @@ weak_ptr<CPlayer> CGameManager::Get_CurrentPlayer()
 	return m_pCurrentPlayer;
 }
 
+void CGameManager::Register_Player_HPBar(weak_ptr<CPlayer_HPBar> pHPBar)
+{
+	m_pPlayer_HPBar = pHPBar;
+}
+
+void CGameManager::Register_Player_MPBar(weak_ptr<CPlayer_MPBar> pMPBar)
+{
+	m_pPlayer_MPBar = pMPBar;
+}
+
+void CGameManager::Register_Player_Memory(weak_ptr<CPlayer_Memory> pMemory)
+{
+	m_pPlayer_Memory = pMemory;
+}
+
 void CGameManager::Set_TargetCamera(weak_ptr<CCamera_Target> In_TargetCamera)
 {
 	m_pTargetCamera = In_TargetCamera;
@@ -186,7 +201,7 @@ void CGameManager::Add_Shaking(const SHAKE_DIRECTION& In_eState, const _float& I
 	if (!m_pTargetCamera.lock())
 		DEBUG_ASSERT;
 
-	m_pTargetCamera.lock()->Add_Shaking(In_eState, In_fPower, In_fTime);
+	//m_pTargetCamera.lock()->Add_Shaking(In_eState, In_fPower, In_fTime);
 	
 
 }

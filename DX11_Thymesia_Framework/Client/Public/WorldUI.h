@@ -56,7 +56,7 @@ public:
     virtual void OnEventMessage(_uint iArg) override;
 
 protected:
-    virtual void Free() override;
+    void Free();
 
 };
 

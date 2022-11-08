@@ -4,6 +4,10 @@
 #include "Client_GameObjects.h"
 #include "Json/Json_Utility.h"
 #include "GameManager.h"
+#include "Player_HPBar.h"
+#include "Player_MPBar.h"
+#include "Player_Memory.h"
+#include "Player.h"
 
 CLoader::CLoader()
 	//: m_pDevice(pDevice), m_pContext(pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
@@ -89,6 +93,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CStage1>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CStage2>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CStage3>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CCorvus>();
 
 
 
@@ -100,6 +105,40 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("Background"), TEXT("../Bin/Resources/Textures/Background/BgFightLoading%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("ButtonDefault"), TEXT("../Bin/Resources/Textures/UI/ButtonDefault.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("UI_White"), TEXT("../Bin/Resources/Textures/UI/UI_White.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures("Grass", TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+	//Player HPBar Texture
+	GAMEINSTANCE->Load_Textures(("Player_HPBar_Border_Left"), TEXT("../Bin/Resources/Textures/UI/HUD/PlayerHPBar/TexUI_HPBar_1Border_Left.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Player_HPBar_Border_Right"), TEXT("../Bin/Resources/Textures/UI/HUD/PlayerHPBar/TexUI_HPBar_1Border_Right.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("Player_HPBar_BG"), TEXT("../Bin/Resources/Textures/UI/HUD/PlayerHPBar/TexUI_HPBar_2BG.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Player_HPBar_MainBar"), TEXT("../Bin/Resources/Textures/UI/HUD/PlayerHPBar/TexUI_HPBar_3MainBar.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Player_HPBar_DelayBar"), TEXT("../Bin/Resources/Textures/UI/HUD/PlayerHPBar/TexUI_HPBar_4DelayBar.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Player_HPBar_Track"), TEXT("../Bin/Resources/Textures/UI/HUD/PlayerHPBar/TexUI_HPBar_5Track.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	//Player_MPBar Texture
+	GAMEINSTANCE->Load_Textures(("Player_MPBar_Border_Left"), TEXT("../Bin/Resources/Textures/UI/HUD/PlayerHPBar/TexUI_MPBar_1Border_Left.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Player_MPBar_Border_Right"), TEXT("../Bin/Resources/Textures/UI/HUD/PlayerHPBar/TexUI_MPBar_1Border_Right.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Player_MPBar_BG"), TEXT("../Bin/Resources/Textures/UI/HUD/PlayerHPBar/TexUI_MPBar_2BG.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Player_MPBar_MainBar"), TEXT("../Bin/Resources/Textures/UI/HUD/PlayerHPBar/TexUI_MPBar_3MainBar.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	//Player_Memory
+	GAMEINSTANCE->Load_Textures(("Player_Memory_Icon"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_MemoryShardsIcon.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Player_Memory_BG"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_ContentBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Player_Memory_BG2"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SquareFrame.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Player_Memory_Decoration"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_DecorationLine_05.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	//Player Skill & ItemUI
+	GAMEINSTANCE->Load_Textures(("Player_Item_Frame"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Frame.png"), MEMORY_TYPE::MEMORY_STATIC);
+	
+	//Potion Image
+	//mini : 40x40
+	GAMEINSTANCE->Load_Textures(("Potion_Default_Mini"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Frame.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
 	Load_AllMaskMap();
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
@@ -158,11 +197,17 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_EffectMesh"), TEXT("../Bin/ShaderFiles/Shader_EffectMesh.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_Cell"), TEXT("../Bin/ShaderFiles/Shader_Cell.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_Luxiya"), TEXT("../Bin/ShaderFiles/Shader_Luxiya.hlsl"));
+	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxGround"), TEXT("../Bin/ShaderFiles/Shader_VtxGround.hlsl"));
 
 	lstrcpy(m_szLoadingText, TEXT("데이터를 로딩중입니다. "));
+
 	GET_SINGLE(CGameManager)->Load_AllKeyEventFromJson();
 
+	_matrix			TransformMatrix;
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Corvus", "../Bin/Resources/Meshes/Corvus/Corvus.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC,true);
 
+	lstrcpy(m_szLoadingText, TEXT("객체 생성 중입니다. "));
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));	
 
@@ -181,9 +226,9 @@ HRESULT CLoader::Loading_ForLobby()
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
 
-	_matrix			TransformMatrix;
+	
 
-	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
+
 	//GAMEINSTANCE->Load_Model("Luxiya", "../Bin/Resources/Meshes/Luxiya_Hair/Luxiya_Hair_Cheek_Sword_Normal2.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 
@@ -205,7 +250,8 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	//Loading_ForEffectGroup("../Bin/EffectData/");
 	Load_AllEffectMesh();
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
-	
+
+
 
 
 #pragma endregion
@@ -214,7 +260,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
 	
 	
-	//GAMEINSTANCE->Load_Textures(TEXT("Grass"), TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	//GAMEINSTANCE->Load_Textures("Grass", TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	
 	
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
@@ -223,10 +269,6 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성 중입니다."));
 
 	//Create_GameObjectFromJson("../Bin/LevelData/Stage1.json", LEVEL_GAMEPLAY);
-
-	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
-
-		
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
 	CameraDesc.vEye = _float4(0.0f, 2.5f, -2.5f, 1.f);
@@ -238,6 +280,24 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_GAMEPLAY, &CameraDesc);
 	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
+
+	GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_GAMEPLAY);
+
+
+	GET_SINGLE(CGameManager)->Register_Player_HPBar
+	(GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
+
+	GET_SINGLE(CGameManager)->Register_Player_MPBar
+	(GAMEINSTANCE->Add_GameObject<CPlayer_MPBar>(LEVEL_STATIC));
+
+	GET_SINGLE(CGameManager)->Register_Player_Memory
+	(GAMEINSTANCE->Add_GameObject<CPlayer_Memory>(LEVEL_STATIC));
+
+	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
+
+		
+	
+
 
 	m_isFinished = true;
 
@@ -315,13 +375,16 @@ HRESULT CLoader::Loading_ForEditLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 
+	//GAMEINSTANCE->Clear();
 
-
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/", MEMORY_TYPE::MEMORY_STATIC);
 
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
-	GAMEINSTANCE->Load_Textures(("NullTexture"), TEXT("../Bin/Resources/Textures/Texture2D/NullTexture.png"), MEMORY_TYPE::MEMORY_STATIC);
+	Load_AllParticleInPath_Recursive("../Bin/Resources/Textures/Ground/");
+
+	//GAMEINSTANCE->Load_Textures("Grass", TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
 
@@ -363,9 +426,13 @@ void CLoader::Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_
 	}
 }
 
+void CLoader::Load_AllDiffuseTexture()
+{
+	GAMEINSTANCE->Load_Textures(("UVColorDiffuse"), TEXT("../Bin/Resources/Textures/Diffuse/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+}
+
 void CLoader::Load_AllMaskMap()
 {
-
 	GAMEINSTANCE->Load_Textures(("UVMask"), TEXT("../Bin/Resources/Textures/Mask/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 }
 
@@ -462,6 +529,41 @@ void CLoader::Load_AllEffectMeshInPath_Recursive(const filesystem::path& In_Path
 void CLoader::Load_AllNaviMesh()
 {
 	
+}
+
+void CLoader::Load_AllMeshes(const filesystem::path& In_Path, const MEMORY_TYPE& In_eMemoryType)
+{
+	if (!In_Path.filename().extension().string().empty())
+		return;
+
+	string szFileName;
+	string szExtension;
+	fs::directory_iterator itr(In_Path);
+
+	while (itr != fs::end(itr)) 
+	{
+		const fs::directory_entry& entry = *itr;
+
+		Load_AllEffectMeshInPath_Recursive(entry.path());
+
+		szFileName = entry.path().filename().string().c_str();
+		szFileName = szFileName.substr(0, szFileName.size() - 4);
+
+		if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
+		{
+			cout << szFileName << endl;
+			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)), In_eMemoryType);
+		}
+
+		else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0 || strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
+		{
+			cout << szFileName << endl;
+			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)), In_eMemoryType);
+		}
+
+
+		itr++;
+	}
 }
 
 void CLoader::Create_GameObjectFromJson(const string& In_szJsonPath, const LEVEL& In_eLevel)

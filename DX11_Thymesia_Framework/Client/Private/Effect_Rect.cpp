@@ -50,7 +50,8 @@ HRESULT CEffect_Rect::Initialize(void* pArg)
 
 	m_pMaskTextureCom = Add_Component<CTexture>();
 	m_pMaskTextureCom.lock()->Use_Texture("UVMask");
-
+	m_pColorTextureCom = Add_Component<CTexture>();
+	m_pColorTextureCom.lock()->Use_Texture("UVColorDiffuse");
 	Set_Enable(false);
 
 
@@ -131,6 +132,7 @@ void CEffect_Rect::SetUp_ShaderResource()
 		Update_ParentTransform();
 	}
 	__super::SetUp_ShaderResource();
+	m_pColorTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_ColorTexture", m_tEffectParticleDesc.iUVColorIndex);
 	m_pMaskTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", m_tEffectParticleDesc.iUVMaskIndex);
 	
 	_float2 vZeroUV = { 0.f, 0.f };
@@ -140,14 +142,18 @@ void CEffect_Rect::SetUp_ShaderResource()
 		m_pShaderCom.lock()->Set_RawValue("g_vDiffuseUV", &m_vCurrentUV, sizeof(_float2));
 		m_pShaderCom.lock()->Set_RawValue("g_vMaskUV", &vZeroUV, sizeof(_float2));
 	}
-
 	else
 	{
 		m_pShaderCom.lock()->Set_RawValue("g_vDiffuseUV", &vZeroUV, sizeof(_float2));
 		m_pShaderCom.lock()->Set_RawValue("g_vMaskUV", &m_vCurrentUV, sizeof(_float2));
 	}
 	
-	
+	m_pShaderCom.lock()->Set_RawValue("g_bSpriteImage", &m_tEffectParticleDesc.bSpriteImage, sizeof(_bool));
+
+	if (m_tEffectParticleDesc.bSpriteImage)
+	{
+		m_pShaderCom.lock()->Set_RawValue("g_iNumFrames", &m_tEffectParticleDesc.iNumFrames, sizeof(_int2));
+	}
 
 	_vector vCamDir = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[2];
 
@@ -176,6 +182,10 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	Out_Json["Min_Life_Time"] = m_tEffectParticleDesc.fMinLifeTime;
 	Out_Json["Max_Life_Time"] = m_tEffectParticleDesc.fMaxLifeTime;
 	Out_Json["Is_Rect_Spawn"] = m_tEffectParticleDesc.bRectSpawn;
+	Out_Json["Is_Sprite_Image"] = m_tEffectParticleDesc.bSpriteImage;
+	Out_Json["Sprite_NumFrameX"] = m_tEffectParticleDesc.iNumFrames.x;
+	Out_Json["Sprite_NumFrameY"] = m_tEffectParticleDesc.iNumFrames.y;
+	Out_Json["Sprite_FrameSpeed"] = m_tEffectParticleDesc.fSpriteSpeed;
 
 	CJson_Utility::Write_Float3(Out_Json["Min_Start_Position"], m_tEffectParticleDesc.vMinStartPosition);
 	CJson_Utility::Write_Float3(Out_Json["Max_Start_Position"], m_tEffectParticleDesc.vMaxStartPosition);
@@ -208,6 +218,7 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	CJson_Utility::Write_Float4(Out_Json["Max_Color"], m_tEffectParticleDesc.vMaxColor);
 	CJson_Utility::Write_Float2(Out_Json["Start_UV"], m_tEffectParticleDesc.vStartUV);
 	Out_Json["Is_Diffuse_UV"] = m_tEffectParticleDesc.bDiffuseUV;
+	Out_Json["UV_Color_Index"] = m_tEffectParticleDesc.iUVColorIndex;
 	Out_Json["UV_Mask_Index"] = m_tEffectParticleDesc.iUVMaskIndex;
 	CJson_Utility::Write_Float2(Out_Json["UV_Speed"], m_tEffectParticleDesc.vUVSpeed);
 	CJson_Utility::Write_Float2(Out_Json["UV_Force"], m_tEffectParticleDesc.vUVForce);
@@ -244,6 +255,10 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	m_tEffectParticleDesc.fMinLifeTime = In_Json["Min_Life_Time"];
 	m_tEffectParticleDesc.fMaxLifeTime = In_Json["Max_Life_Time"];
 	m_tEffectParticleDesc.bRectSpawn = In_Json["Is_Rect_Spawn"];
+	m_tEffectParticleDesc.bSpriteImage = In_Json["Is_Sprite_Image"];
+	m_tEffectParticleDesc.iNumFrames.x = In_Json["Sprite_NumFrameX"];
+	m_tEffectParticleDesc.iNumFrames.y = In_Json["Sprite_NumFrameY"];
+	m_tEffectParticleDesc.fSpriteSpeed = In_Json["Sprite_FrameSpeed"];
 	CJson_Utility::Load_Float3(In_Json["Min_Start_Position"], m_tEffectParticleDesc.vMinStartPosition);
 	CJson_Utility::Load_Float3(In_Json["Max_Start_Position"], m_tEffectParticleDesc.vMaxStartPosition);
 	CJson_Utility::Load_Float3(In_Json["Min_Offset_Direction"], m_tEffectParticleDesc.vMinOffsetDirection);
@@ -280,7 +295,10 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 
 	if(In_Json.find("Is_Diffuse_UV") != In_Json.end())
 		m_tEffectParticleDesc.bDiffuseUV = In_Json["Is_Diffuse_UV"];
+
+	m_tEffectParticleDesc.iUVColorIndex = In_Json["UV_Color_Index"];
 	m_tEffectParticleDesc.iUVMaskIndex = In_Json["UV_Mask_Index"];
+
 	CJson_Utility::Load_Float2(In_Json["UV_Speed"], m_tEffectParticleDesc.vUVSpeed);
 	CJson_Utility::Load_Float2(In_Json["UV_Force"], m_tEffectParticleDesc.vUVForce);
 	CJson_Utility::Load_Float2(In_Json["UV_Max"], m_tEffectParticleDesc.vUVMax);
@@ -374,6 +392,7 @@ void CEffect_Rect::Play(_float fTimeDelta)
 			Update_ParticlePosition(i, fFrameTime);
 			Update_ParticleScale(i, fFrameTime);
 			Update_ParticleColor(i, fFrameTime);
+			Update_ParticleSpriteFrame(i, fFrameTime);
 		}
 				
 		
@@ -700,6 +719,26 @@ void CEffect_Rect::Update_ParticleGlowColor(_float fTimeDelta)
 
 }
 
+void CEffect_Rect::Update_ParticleSpriteFrame(const _uint& i, _float fTimeDelta)
+{
+	m_tParticleDescs[i].fCurrentSpriteTime += fTimeDelta;
+	if (m_tEffectParticleDesc.fSpriteSpeed <= m_tParticleDescs[i].fCurrentSpriteTime)
+	{
+		m_tParticleDescs[i].vSpriteUV.x += (1.f / m_tEffectParticleDesc.iNumFrames.x);
+
+		if (1.f <= m_tParticleDescs[i].vSpriteUV.x)
+		{
+			m_tParticleDescs[i].vSpriteUV.x = 0.f;
+			m_tParticleDescs[i].vSpriteUV.y += (1.f / m_tEffectParticleDesc.iNumFrames.y);
+		}
+
+		if (1.f <= m_tParticleDescs[i].vSpriteUV.x && 1.f <= m_tParticleDescs[i].vSpriteUV.y)
+			ZeroMemory(&m_tParticleDescs[i].vSpriteUV, sizeof(_float2));
+
+		m_tParticleDescs[i].fCurrentSpriteTime = 0.f;
+	}
+}
+
 void CEffect_Rect::Update_ParentTransform()
 {
 	if (m_pParentTransformCom.lock())
@@ -748,6 +787,16 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::SameLine();
 			ImGui::Checkbox("##Is_Looping", &m_tEffectParticleDesc.bLooping);
 			ImGui::Separator();
+
+			ImGui::Text("Sprite Image");
+			ImGui::SameLine();
+			ImGui::Checkbox("##Sprite_Image", &m_tEffectParticleDesc.bSpriteImage);
+			ImGui::Separator();
+
+			ImGui::InputInt("NumFramesX", &m_tEffectParticleDesc.iNumFrames.x);
+			ImGui::InputInt("NumFramesY", &m_tEffectParticleDesc.iNumFrames.y);
+			ImGui::InputFloat("FrameSpeed", &m_tEffectParticleDesc.fSpriteSpeed);
+
 
 			/*ImGui::Text("Is Billboard");
 			ImGui::SameLine();
@@ -894,6 +943,12 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::DragFloat3("##Max_Scale", &m_tEffectParticleDesc.vMaxScale.x, 0.1f);
 			ImGui::Separator();
 
+			ImGui::Text("Is Diffuse UV");
+			ImGui::SameLine();
+			ImGui::Checkbox("##Is_Diffuse_UV", &m_tEffectParticleDesc.bDiffuseUV);
+
+			ImGui::InputInt("UV Color Map Index", &m_tEffectParticleDesc.iUVColorIndex);
+
 			ImGui::Text("Is Gray Only Use Red");
 			ImGui::SameLine();
 			ImGui::Checkbox("##Is_Gray_Only_Use_Red", &m_tEffectParticleDesc.IsGrayOnlyUseRed);
@@ -915,9 +970,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::Separator();
 
 
-			ImGui::Text("Is Diffuse UV");
-			ImGui::SameLine();
-			ImGui::Checkbox("##Is_Diffuse_UV", &m_tEffectParticleDesc.bDiffuseUV);
+			
 			ImGui::Text("Start UV");
 			ImGui::DragFloat2("##Start_UV", &m_tEffectParticleDesc.vStartUV.x, 0.1f);
 

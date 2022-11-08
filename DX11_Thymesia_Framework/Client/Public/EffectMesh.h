@@ -39,7 +39,7 @@ protected:
     _uint       m_iPassIndex = 0;
 
 private:
-    virtual void Free() override;
+    void Free();
 
 };
 

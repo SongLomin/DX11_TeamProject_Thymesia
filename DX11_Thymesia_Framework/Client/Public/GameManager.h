@@ -16,6 +16,13 @@ class CPlayer;
 class CEffectGroup;
 class CSwapPlayerUI;
 
+
+//Player_UI
+class CPlayer_MPBar;
+class CPlayer_HPBar;
+class CPlayer_Memory;
+class CMonster;
+
 class CGameManager :
     public CBase
 {
@@ -38,10 +45,17 @@ public:
     weak_ptr<CPlayer> Get_CurrentPlayer();
 
 public:
+    void Register_Player_HPBar(weak_ptr<CPlayer_HPBar> pHPBar);
+    void Register_Player_MPBar(weak_ptr<CPlayer_MPBar> pMPBar);
+    void Register_Player_Memory(weak_ptr<CPlayer_Memory> pMemory);
+
+
+public:
     void Set_TargetCamera(weak_ptr<CCamera_Target> In_TargetCamera);
     weak_ptr<CCamera_Target> Get_TargetCamera();
     void Add_Shaking(const SHAKE_DIRECTION& In_eState , const _float& In_fPower, const _float& In_fTime);
     //void Set_TargetForTargetCamera(weak_ptr<CGameObject> In_TargetGameObject);
+    void Focus_Monster();
 
 public:
     void Register_EffectGroup(const string& In_szEffectGroupName, weak_ptr<CEffectGroup> In_pEffectGroup);
@@ -96,7 +110,16 @@ private:
     weak_ptr<CCamera_Target>    m_pTargetCamera;
     weak_ptr<CCamera>           m_pCurrentCamera;
     weak_ptr<CPlayer>           m_pCurrentPlayer;
+    weak_ptr<CMonster>          m_pTargetMonster;
     GAME_STATE                  m_eCurrentState = GAME_STATE::STATE_END;
+
+
+    //For. PlayerUI
+private:
+    weak_ptr<CPlayer_HPBar>    m_pPlayer_HPBar;
+    weak_ptr<CPlayer_MPBar>    m_pPlayer_MPBar;
+    weak_ptr<CPlayer_Memory>   m_pPlayer_Memory;
+
 
 private:
     map<_hashcode, map<_int, map<_int, KEYFRAME_EVENT>>>         m_KeyEvents;
@@ -107,7 +130,7 @@ private:
     _int                                                        m_iMonsterCount = 0;
 
 protected:
-    virtual void Free() override;
+    void Free();
 };
 
 END

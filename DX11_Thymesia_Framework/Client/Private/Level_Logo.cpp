@@ -6,6 +6,8 @@
 #include "Fader.h"
 #include "GameManager.h"
 #include "Client_GameObjects.h"
+#include "Player_HPBar.h"
+#include "Player_MPBar.h"
 
 
 CLevel_Logo::CLevel_Logo()
@@ -19,13 +21,26 @@ HRESULT CLevel_Logo::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
+
+	CCamera::CAMERADESC			CameraDesc;
+	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
+	CameraDesc.vEye = _float4(0.0f, 1.2f, 1.5f, 1.f);
+	CameraDesc.vAt = _float4(0.f, 1.2f, 0.f, 1.f);
+	CameraDesc.fFovy = XMConvertToRadians(65.0f);
+	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
+	CameraDesc.fNear = 0.2f;
+	CameraDesc.fFar = 300.f;
+
+	weak_ptr<CCamera_Static> StaticCamera = GAMEINSTANCE->Add_GameObject<CCamera_Static>(LEVEL::LEVEL_LOBBY, &CameraDesc);
+
+
 	m_eNextLevel = LEVEL_LOBBY;
 
 	m_pFadeMask = GAMEINSTANCE->Add_GameObject<CFadeMask>(LEVEL_STATIC);
 
+	//GET_SINGLE(CGameManager)->Set_GameState(GAME_STATE::PEACE);
 
-	GET_SINGLE(CGameManager)->Set_GameState(GAME_STATE::PEACE);
-
+	
 	return S_OK;
 }
 
@@ -42,6 +57,8 @@ void CLevel_Logo::Tick(_float fTimeDelta)
 		tFaderDesc.fDelayTime = 0.5f;
 		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
 
+		m_eNextLevel = LEVEL_GAMEPLAY;
+
 		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
 		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
 	}
@@ -52,7 +69,6 @@ void CLevel_Logo::Tick(_float fTimeDelta)
 		if (FAILED(GAMEINSTANCE->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(LEVEL_EDIT))))
 			return;
 	}
-
 
 }
 

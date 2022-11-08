@@ -33,7 +33,7 @@ private:
 	string												m_szTextureKey;
 
 public:
-	virtual void Free() override;
+	void Free();
 };
 
 END

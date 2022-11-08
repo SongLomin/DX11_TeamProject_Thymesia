@@ -18,7 +18,7 @@ private:
 
 public:
 	static shared_ptr<CLevel_Lobby> Create();
-	virtual void Free() override;
+	void Free();
 };
 
 END

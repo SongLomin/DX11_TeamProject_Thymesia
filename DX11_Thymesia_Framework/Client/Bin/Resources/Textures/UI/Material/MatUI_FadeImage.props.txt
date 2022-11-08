@@ -1,0 +1,107 @@
+TwoSided = false
+bDisableDepthTest = false
+bIsMasked = false
+ReferencedTextures[2] =
+{
+    ReferencedTextures[0] = Texture2D'/Game/ArtAsset/Particle/Textures/T_Y_Noise_02_32.T_Y_Noise_02_32'
+    ReferencedTextures[1] = Texture2D'/Game/ArtAsset/Texture/UI/SkillIcons/T_SkillIcon_Bat.T_SkillIcon_Bat'
+}
+Expressions[0] = {}
+CachedExpressionData =
+{
+    Parameters =
+    {
+        Entries[5] =
+        {
+            Entries[0] =
+            {
+                ParameterInfos[3] =
+                {
+                    ParameterInfos[0] = { Name=Thickness }
+                    ParameterInfos[1] = { Name=AlphaThresold }
+                    ParameterInfos[2] = { Name=MagicalPower }
+                }
+            }
+            Entries[1] =
+            {
+                ParameterInfos[2] =
+                {
+                    ParameterInfos[0] = { Name=Color }
+                    ParameterInfos[1] = { Name=OutlineColor }
+                }
+            }
+            Entries[2] =
+            {
+                ParameterInfos[1] =
+                {
+                    ParameterInfos[0] = { Name=SkillImage }
+                }
+            }
+            Entries[3] = { ParameterInfos[0]={} }
+            Entries[4] = { ParameterInfos[0]={} }
+        }
+        ScalarValues[3] = { 0, 0, 3 }
+        VectorValues[2] =
+        {
+            VectorValues[0] = { R=0.067437, G=0.588542, B=0.436331, A=0 }
+            VectorValues[1] = { R=0, G=0, B=0, A=0 }
+        }
+        TextureValues[1] =
+        {
+            TextureValues[0] = Texture2D'/Game/ArtAsset/Texture/UI/SkillIcons/T_SkillIcon_Bat.T_SkillIcon_Bat'
+        }
+    }
+    ReferencedTextures[3] =
+    {
+        ReferencedTextures[0] = Texture2D'/Game/ArtAsset/Texture/UI/SkillIcons/T_SkillIcon_Bat.T_SkillIcon_Bat'
+        ReferencedTextures[1] = Texture2D'/Game/ArtAsset/Particle/Textures/T_Y_Noise_02_32.T_Y_Noise_02_32'
+    }
+}
+BlendMode = BLEND_Translucent (2)
+OpacityMaskClipValue = 0.333
+CollectedTextureParameters[1] =
+{
+    CollectedTextureParameters[0] =
+    {
+        Texture = Texture2D'/Game/ArtAsset/Texture/UI/SkillIcons/T_SkillIcon_Bat.T_SkillIcon_Bat'
+        Name = SkillImage
+        Group = None
+    }
+}
+CollectedScalarParameters[3] =
+{
+    CollectedScalarParameters[0] = { Value=0, Name=Thickness, Group=None }
+    CollectedScalarParameters[1] = { Value=0, Name=AlphaThresold, Group=None }
+    CollectedScalarParameters[2] = { Value=3, Name=MagicalPower, Group=None }
+}
+CollectedVectorParameters[2] =
+{
+    CollectedVectorParameters[0] =
+    {
+        Value = { R=0.067437, G=0.588542, B=0.436331, A=0 }
+        Name = Color
+        Group = None
+    }
+    CollectedVectorParameters[1] =
+    {
+        Value = { R=0, G=0, B=0, A=0 }
+        Name = OutlineColor
+        Group = None
+    }
+}
+FlattenedTexture = None
+MobileBaseTexture = None
+MobileNormalTexture = None
+bUseMobileSpecular = false
+MobileSpecularPower = 16
+MobileSpecularMask = MSM_Constant (0)
+MobileMaskTexture = None
+TextureStreamingData[1] =
+{
+    TextureStreamingData[0] =
+    {
+        SamplingScale = 1
+        UVChannelIndex = 0
+        TextureName = T_SkillIcon_Bat
+    }
+}
