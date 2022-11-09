@@ -168,11 +168,7 @@ void CPlayer_HPBar::Tick(_float fTimeDelta)
 
 	m_tTextInfo.szText = to_wstring((_uint)m_fLerpHp);
 	m_tTextInfo.szText.append(L"/");
-
-	_uint fader = (_uint)(m_pTrack.lock()->Get_Component<CFader>().lock()->Get_FadeColor().w * 100.f);
-	m_tTextInfo.szText.append(to_wstring(fader));
-	
-	//m_tTextInfo.szText.append(to_wstring((_uint)m_fMaxHp));
+	m_tTextInfo.szText.append(to_wstring((_uint)m_fMaxHp));
 }
 
 void CPlayer_HPBar::LateTick(_float fTimeDelta)

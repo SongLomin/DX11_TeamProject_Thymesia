@@ -21,6 +21,7 @@ public:
 private:	
 	HRESULT Ready_Layer_BackGround(const _tchar* pLayerTag);
 
+
 public:
 	static shared_ptr<CLevel_Logo> Create();
 	void Free();

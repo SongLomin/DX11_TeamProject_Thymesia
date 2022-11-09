@@ -115,9 +115,6 @@ void CUI_Landing::LateTick(_float fTimeDelta)
 HRESULT CUI_Landing::Render()
 {
 
-
-
-
     return S_OK;
 }
 
@@ -125,18 +122,19 @@ void CUI_Landing::Call_Landing(LANDING_TYPE eLandingType)
 {
     m_pLanding.lock()->CallBack_FadeEnd -= bind(&CUI_Landing::Call_FadeEnd, this, placeholders::_1);
 
-
     CHUD_Hover::HUDHOVERDESC desc;
     desc.m_bSizeChange = true;
     desc.m_fSizeMag = 0.1;
 
-    m_pLanding.lock()->Init_Fader(m_tLandingFaderDesc, desc, CHUD_Hover::HUD_HOVER_ANIMATION_JUSTADD);
-    m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture(m_LandingTextures[eLandingType].c_str());
-    m_pLanding.lock()->Set_UIDesc(m_tLandingUIDesc[eLandingType]);
-    m_pLanding.lock()->CallBack_FadeEnd += bind(&CUI_Landing::Call_FadeEnd, this, placeholders::_1);
+   
     
-    if (eLandingType < LANDING_ENTER_STAGE)
+    if ((_uint)eLandingType < (_uint)LANDING_ENTER_STAGE)
     {
+        m_pLanding.lock()->Init_Fader(m_tLandingFaderDesc, desc, CHUD_Hover::HUD_HOVER_ANIMATION_JUSTADD);
+        m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture(m_LandingTextures[eLandingType].c_str());
+        m_pLanding.lock()->Set_UIDesc(m_tLandingUIDesc[eLandingType]);
+        m_pLanding.lock()->CallBack_FadeEnd += bind(&CUI_Landing::Call_FadeEnd, this, placeholders::_1);
+
         m_pLandingBG.lock()->CallBack_FadeEnd -= bind(&CUI_Landing::Call_FadeEnd, this, placeholders::_1);
 
         UI_DESC LandingBG_Desc = m_tLandingUIDesc[eLandingType];
@@ -147,6 +145,13 @@ void CUI_Landing::Call_Landing(LANDING_TYPE eLandingType)
         m_pLandingBG.lock()->Init_Fader(m_tLandingFaderDesc, desc, CHUD_Hover::HUD_HOVER_ANIMATION_JUSTADD);
         m_pLandingBG.lock()->Set_UIDesc(LandingBG_Desc);
         m_pLandingBG.lock()->CallBack_FadeEnd += bind(&CUI_Landing::Call_FadeEnd, this, placeholders::_1);
+    }
+    else//스테이지에 따라 나와야함.GetCurrentLevel이나 머시기...그런걸로
+    {
+        m_pLanding.lock()->Init_Fader(m_tLandingFaderDesc, desc, CHUD_Hover::HUD_HOVER_ANIMATION_JUSTADD);
+        m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture(m_LandingTextures[eLandingType].c_str());
+        m_pLanding.lock()->Set_UIDesc(m_tLandingUIDesc[eLandingType]);
+        m_pLanding.lock()->CallBack_FadeEnd += bind(&CUI_Landing::Call_FadeEnd, this, placeholders::_1);
     }
 }
 
