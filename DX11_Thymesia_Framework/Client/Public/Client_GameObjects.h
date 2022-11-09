@@ -17,5 +17,6 @@
 
 #include "EditNaviMesh.h"
 #include "Static_Prop.h"
+#include "EditGround.h"
 
 #include "CCorvus.h"
