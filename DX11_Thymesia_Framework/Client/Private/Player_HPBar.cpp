@@ -6,6 +6,8 @@
 #include "Engine_Defines.h"
 #include "Player_ProgressBar.h"
 #include "CustomUI.h"
+#include "HUD_Hover.h"
+#include "Fader.h"
 
 GAMECLASS_C(CPlayer_HPBar)
 CLONE_C(CPlayer_HPBar, CGameObject);
@@ -40,9 +42,31 @@ HRESULT CPlayer_HPBar::Initialize(void* pArg)
 	m_pBorderRight.lock()->Get_Component<CTexture>().lock()->Use_Texture("Player_HPBar_Border_Right");
 	m_pBorderRight.lock()->Set_UIPosition(m_tUIDesc.fX + (m_tUIDesc.fSizeX * 0.5f), m_tUIDesc.fY, 26.f, 15.f);
 
-	m_pTrack = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
+
+	Engine::FaderDesc tFaderDesc;
+	
+	UI_DESC	tTrackDesc;
+	tTrackDesc.fX = m_tUIDesc.fX + (m_tUIDesc.fSizeX * 0.5f);
+	tTrackDesc.fY = m_tUIDesc.fY;
+	tTrackDesc.fSizeX = 19.f;
+	tTrackDesc.fSizeY = 45.f;
+	tTrackDesc.fDepth = 0.f;
+
+	tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+	tFaderDesc.eFaderType = FADER_TYPE::FADER_INOUTLOOPING;
+	tFaderDesc.fDelayTime = 0.f;
+	tFaderDesc.fFadeMaxTime = 1.f;
+	tFaderDesc.vFadeColor = _float4(0, 0, 0, 1.f);
+
+	CHUD_Hover::HUDHOVERDESC tHoverDesc;
+	ZeroMemory(&tHoverDesc, sizeof(CHUD_Hover::HUDHOVERDESC));
+
+	tHoverDesc.m_bSizeChange = false;
+
+	m_pTrack = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_STATIC, &tTrackDesc);
 	m_pTrack.lock()->Get_Component<CTexture>().lock()->Use_Texture("Player_HPBar_Track");
-	m_pTrack.lock()->Set_UIPosition(m_tUIDesc.fX + (m_tUIDesc.fSizeX * 0.5f), m_tUIDesc.fY, 19.f, 45.f);
+	m_pTrack.lock()->Init_Fader(tFaderDesc, tHoverDesc);
+
 
 	m_fLerpHp = 300.f;
 	m_fCurrentHp = 300.f;
@@ -51,9 +75,10 @@ HRESULT CPlayer_HPBar::Initialize(void* pArg)
 	m_tTextInfo.bAlways = false;
 	m_tTextInfo.bCenterAlign = false;
 	m_tTextInfo.fRotation = 0.f;
-	m_tTextInfo.vColor = _float4(0.7f, 0.7f, 0.7f, 0.f);
+	m_tTextInfo.vColor = _float4(0.7f, 0.7f, 0.7f, 0.7f);
 	m_tTextInfo.vScale = _float2(0.5, 0.5f);
 	m_tTextInfo.vPosition = _float2(m_tUIDesc.fX + m_tUIDesc.fSizeX * 0.5f + 20.f, m_tUIDesc.fY - 10.f);
+
 
 	m_tUIDesc.fDepth = 0.f;
 	m_fLerpAcc = 1.f;
@@ -129,7 +154,7 @@ void CPlayer_HPBar::Tick(_float fTimeDelta)
 
 	if (fRatio < 1.f)
 	{
-		m_pTrack.lock()->Set_UIPosition((m_tUIDesc.fX - (m_tUIDesc.fSizeX * 0.5f)) + (m_tUIDesc.fSizeX * fRatio), m_tUIDesc.fY, 19.f, 45.f);
+		m_pTrack.lock()->Set_UIPosition((m_tUIDesc.fX - (m_tUIDesc.fSizeX * 0.5f)) + (m_tUIDesc.fSizeX * fRatio), m_tUIDesc.fY);
 		m_pTrack.lock()->Set_Enable(true);
 	}
 	else
@@ -137,10 +162,17 @@ void CPlayer_HPBar::Tick(_float fTimeDelta)
 
 	m_pMainBar.lock()->Set_Ratio(fRatio);
 
+	m_pTrack.lock()->Get_UIDESC();
+
+
 
 	m_tTextInfo.szText = to_wstring((_uint)m_fLerpHp);
 	m_tTextInfo.szText.append(L"/");
-	m_tTextInfo.szText.append(to_wstring((_uint)m_fMaxHp));
+
+	_uint fader = (_uint)(m_pTrack.lock()->Get_Component<CFader>().lock()->Get_FadeColor().w * 100.f);
+	m_tTextInfo.szText.append(to_wstring(fader));
+	
+	//m_tTextInfo.szText.append(to_wstring((_uint)m_fMaxHp));
 }
 
 void CPlayer_HPBar::LateTick(_float fTimeDelta)

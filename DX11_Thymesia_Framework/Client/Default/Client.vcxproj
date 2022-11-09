@@ -263,6 +263,7 @@
     <ClInclude Include="..\Public\Static_Prop.h" />
     <ClInclude Include="..\Public\Status.h" />
     <ClInclude Include="..\Public\Trigger.h" />
+    <ClInclude Include="..\Public\UI_Landing.h" />
     <ClInclude Include="..\Public\Window_AnimationModelView.h" />
     <ClInclude Include="..\Public\Window_AnimationPlayerView.h" />
     <ClInclude Include="..\Public\Window_ComponentView.h" />
@@ -357,6 +358,7 @@
     <ClCompile Include="..\Private\Static_Prop.cpp" />
     <ClCompile Include="..\Private\Status.cpp" />
     <ClCompile Include="..\Private\Trigger.cpp" />
+    <ClCompile Include="..\Private\UI_Landing.cpp" />
     <ClCompile Include="..\Private\Window_AnimationModelView.cpp" />
     <ClCompile Include="..\Private\Window_AnimationPlayerView.cpp" />
     <ClCompile Include="..\Private\Window_ComponentView.cpp" />

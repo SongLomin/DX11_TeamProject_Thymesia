@@ -250,9 +250,6 @@
     <ClInclude Include="..\Public\Player_PotionUI.h">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\Potion</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Player_FeatherUI.h">
-      <Filter>02. GameObject\01. UI\PlayerUI\HUD\Hover</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\HUD_Hover.h">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\Hover</Filter>
     </ClInclude>
@@ -300,6 +297,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\EditGround.h">
       <Filter>02. GameObject\99. Other\01. EditGround</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player_FeatherUI.h">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\Feather</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_Landing.h">
+      <Filter>02. GameObject\01. UI\Landing</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\StateExecution\Varg_Execution.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\00.Varg_Execution</Filter>
@@ -582,7 +585,12 @@
     <ClCompile Include="..\Private\EditGround.cpp">
       <Filter>02. GameObject\99. Other\01. EditGround</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\HUD_Hover.cpp" />
+    <ClCompile Include="..\Private\HUD_Hover.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\Hover</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Landing.cpp">
+      <Filter>02. GameObject\01. UI\Landing</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\VargExecution\Varg_Execution.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\00.Varg_Execution</Filter>
     </ClCompile>
@@ -934,6 +942,12 @@
     </Filter>
     <Filter Include="02. GameObject\99. Other\01. EditGround">
       <UniqueIdentifier>{e901b999-d046-4e3c-aa8b-98d950d74dbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP\Track">
+      <UniqueIdentifier>{e538de5f-ea92-430b-8213-93cc4e5afda8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\Landing">
+      <UniqueIdentifier>{a38b1edb-e548-4ddb-a49a-28060b07b396}</UniqueIdentifier>
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution">
       <UniqueIdentifier>{6a06f980-1515-4d7a-ab10-4f6e976f5190}</UniqueIdentifier>

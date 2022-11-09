@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "Player_PotionUI.h"
 #include "Player_FeatherUI.h"
+#include "UI_Landing.h"
 CLoader::CLoader()
 	//: m_pDevice(pDevice), m_pContext(pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
@@ -103,6 +104,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 #pragma endregion
 
+#pragma region TEXTURE
+
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
 	GAMEINSTANCE->Load_Textures(("Default"), TEXT("../Bin/Resources/Textures/Default%d.jpg"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Load_Textures(("Background"), TEXT("../Bin/Resources/Textures/Background/BgFightLoading%d.png"), MEMORY_TYPE::MEMORY_STATIC);
@@ -118,7 +121,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("Player_HPBar_MainBar"), TEXT("../Bin/Resources/Textures/UI/HUD/PlayerHPBar/TexUI_HPBar_3MainBar.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Player_HPBar_DelayBar"), TEXT("../Bin/Resources/Textures/UI/HUD/PlayerHPBar/TexUI_HPBar_4DelayBar.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Player_HPBar_Track"), TEXT("../Bin/Resources/Textures/UI/HUD/PlayerHPBar/TexUI_HPBar_5Track.png"), MEMORY_TYPE::MEMORY_STATIC);
-
+	//GAMEINSTANCE->Load_Textures(("Player_HPBar_Track_Mana"), TEXT("../Bin/Resources/Textures/UI/Track_Test.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	//Player_MPBar Texture
 	GAMEINSTANCE->Load_Textures(("Player_MPBar_Border_Left"), TEXT("../Bin/Resources/Textures/UI/HUD/PlayerHPBar/TexUI_MPBar_1Border_Left.png"), MEMORY_TYPE::MEMORY_STATIC);
@@ -150,9 +153,31 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("HUD_Potion_Default_Mini"), TEXT("../Bin/Resources/Textures/UI/Icons/Potions/TexUI_Potion_DefaultType_Mini.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("HUD_Font_BG"), TEXT("../Bin/Resources/Textures/UI/HUD/TexUI_PlagueWeaponBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("HUD_Feather"), TEXT("../Bin/Resources/Textures/UI/HUD/TexUI_Feather.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	//Landing
+	GAMEINSTANCE->Load_Textures(("Landing_MemoriesRetrived"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_MemoriesRetrived.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Landing_MemoriesRetrivedBackground"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_MemoriesRetrivedBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Landing_MemoryInterrupted"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_MemoryInterruptedFrame.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Landing_RecallCompleted"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_RecallCompleted.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Landing_BeconFound"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_SanctumDiscoveredFrame.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Landing_BG"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingScreenBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	//Landing_Stage
+	GAMEINSTANCE->Load_Textures(("Landing_SafeHouse"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_TheSafeHouse.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Landing_SeaOfTrees"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_TheCircus.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Landing_RoyalGarden"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_TheGarden.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Landing_HermesFortress"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_TheFortress.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Landing_OceanOfMemories"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_TheMemorySea.png"), MEMORY_TYPE::MEMORY_STATIC);
+
 	
 	// For. Ground Texture : (AN) 임시 텍스쳐이므로 나중에 삭제하기
 	Load_AllParticleInPath_Recursive("../Bin/Resources/Textures/Ground/");
+
+
+
+
+#pragma endregion
 
 	Load_AllMaskMap();
 	Load_AllParticleTexture();
@@ -341,6 +366,8 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	GET_SINGLE(CGameManager)->Register_Player_HUD_Feather(
 	GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
+
+	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);
 
 	Create_GameObjectFromJson("../Bin/LevelData/Stage1.json", LEVEL_GAMEPLAY);
 

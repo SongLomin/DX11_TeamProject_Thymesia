@@ -5,6 +5,7 @@ BEGIN(Client)
 
 class CPlayer_ProgressBar;
 class CCustomUI;
+class CHUD_Hover;
 
 class CPlayer_HPBar final :	public CUI
 {
@@ -24,13 +25,14 @@ public:
 
 public:
 	void		Set_CurrentHp(_float	_fCurrentHp);
+	void		Set_MaxHp(_float	_fMaxHp) { m_fMaxHp = _fMaxHp; }
 
 private:
 	weak_ptr< CPlayer_ProgressBar>	m_pMainBar;
 	weak_ptr< CCustomUI>	m_pBG;
 	weak_ptr< CCustomUI>	m_pBorderLeft;
 	weak_ptr< CCustomUI>	m_pBorderRight;
-	weak_ptr< CCustomUI>	m_pTrack;
+	weak_ptr< CHUD_Hover>	m_pTrack;
 
 
 private:

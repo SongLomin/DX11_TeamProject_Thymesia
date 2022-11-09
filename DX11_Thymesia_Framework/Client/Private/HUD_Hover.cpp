@@ -29,11 +29,8 @@ HRESULT CHUD_Hover::Initialize(void* pArg)
 
 	m_tUIDesc.fDepth = 0.f;
 	m_tBackUpDesc = m_tUIDesc;
-	m_tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
-	m_tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
-	m_tFaderDesc.fDelayTime = 0.f;
-	m_tFaderDesc.fFadeMaxTime = 1.f;
-	m_tFaderDesc.vFadeColor = m_vFadeColor;
+
+	ZeroMemory(&m_tHoverDesc, sizeof(HUDHOVERDESC));
 	
 	Set_Enable(false);
 	return S_OK;
@@ -50,12 +47,18 @@ void CHUD_Hover::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 	
-	m_tUIDesc.fSizeX = m_tBackUpDesc.fSizeX +
-		((m_tFaderDesc.fFadeMaxTime - m_pFaderCom.lock()->Get_FadeTime()) / m_tFaderDesc.fFadeMaxTime) * (m_tBackUpDesc.fSizeX * 0.2f);
+	if (m_tHoverDesc.m_bSizeChange)
+	{
+		FaderDesc tFaderDesc = m_pFaderCom.lock()->Get_FaderDesc();
 
-	m_tUIDesc.fSizeY = m_tBackUpDesc.fSizeY +
-		((m_tFaderDesc.fFadeMaxTime - m_pFaderCom.lock()->Get_FadeTime()) / m_tFaderDesc.fFadeMaxTime) * (m_tBackUpDesc.fSizeY * 0.2f);
+		m_tUIDesc.fSizeX = m_tBackUpDesc.fSizeX +
+			((tFaderDesc.fFadeMaxTime - m_pFaderCom.lock()->Get_FadeTime()) / tFaderDesc.fFadeMaxTime) * (m_tBackUpDesc.fSizeX * m_tHoverDesc.m_fSizeMag);
 
+		m_tUIDesc.fSizeY = m_tBackUpDesc.fSizeY +
+			((tFaderDesc.fFadeMaxTime - m_pFaderCom.lock()->Get_FadeTime()) / tFaderDesc.fFadeMaxTime) * (m_tBackUpDesc.fSizeY * m_tHoverDesc.m_fSizeMag);
+
+	}
+	
 }
 
 void CHUD_Hover::LateTick(_float fTimeDelta)
@@ -72,10 +75,11 @@ HRESULT CHUD_Hover::Render()
 	return S_OK;
 }
 
-void CHUD_Hover::Init_Fade()
-{
-	m_pFaderCom.lock()->Init_Fader(m_tFaderDesc);
 
+void CHUD_Hover::Init_Fader(const Engine::FaderDesc& _tFaderDesc, const HUDHOVERDESC& _tHoverDesc)
+{
+	m_pFaderCom.lock()->Init_Fader(_tFaderDesc);
+	m_tHoverDesc = _tHoverDesc;
 	Set_Enable(true);
 }
 
@@ -83,11 +87,9 @@ void CHUD_Hover::Call_FadeEnd(FADER_TYPE In_eFaderType)
 {
 	//대리자에 뭐 등록된건 없는데 일단 넣어놓았음.
 
-	CallBack_FadeEnd();
-	CallBack_FadeEnd.Clear();
-	Set_Enable(false);
+	CallBack_FadeEnd(In_eFaderType);
+	//CallBack_FadeEnd.Clear();
 
-	m_tUIDesc = m_tBackUpDesc;
 }
 
 

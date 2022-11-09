@@ -166,12 +166,10 @@ PS_OUT PS_MAIN_CUSTOMUI_FADE(PS_IN In)
 
 	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
-	if (Out.vColor.a < 0.1)
-		discard;
+	Out.vColor.a *= g_vColor.a;
 
-	Out.vColor.a = g_vColor.a;
-
-	
+	//if (Out.vColor.a < 0.1)
+	//	discard;
 
 	//Out.vColor.a = 1.f;
 	//Out.vColor.a = Out.vColor.a * g_fAhlpaScale;

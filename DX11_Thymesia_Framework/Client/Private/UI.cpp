@@ -113,6 +113,17 @@ void CUI::Set_UIPosition(const _float& fX, const _float& fY, const _float& fSize
 
 }
 
+void CUI::Set_UIPosition(const _float& fX, const _float& fY)
+{
+	m_tUIDesc.fX = fX;
+	m_tUIDesc.fY = fY;
+}
+
+void CUI::Set_UIDesc(UI_DESC _tUIDesc)
+{
+	m_tUIDesc = _tUIDesc;
+}
+
 void CUI::Set_Depth(_float _fDepth)
 {
 	m_tUIDesc.fDepth = _fDepth;
