@@ -3,7 +3,11 @@
 
 BEGIN(Engine)
 class CShader;
+class CFader;
+
 END
+
+
 
 BEGIN(Client)
 class CHUD_Hover final : public CCustomUI
@@ -36,7 +40,7 @@ protected:
 
 private:
 	_float4						m_vFadeColor;
-	Engine::CFader::FaderDesc	m_tFaderDesc;
+	FaderDesc					m_tFaderDesc;
 	UI_DESC						m_tBackUpDesc;
 public:
 	void Free();

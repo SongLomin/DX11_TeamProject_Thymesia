@@ -50,7 +50,7 @@ void CLevel_Logo::Tick(_float fTimeDelta)
 
 	if (KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))
 	{
-		CFader::FaderDesc tFaderDesc;
+		FaderDesc tFaderDesc;
 		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
 		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
 		tFaderDesc.fFadeMaxTime = 1.f;

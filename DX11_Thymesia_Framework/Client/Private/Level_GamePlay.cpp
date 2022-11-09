@@ -54,7 +54,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
 
-	CFader::FaderDesc tFaderDesc;
+	FaderDesc tFaderDesc;
 	tFaderDesc.eFaderType = FADER_TYPE::FADER_IN;
 	tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
 	tFaderDesc.fFadeMaxTime = 3.f;
@@ -90,7 +90,7 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 
 		m_eNextLevel = LEVEL_STAGE2;
 
-		CFader::FaderDesc tFaderDesc;
+		FaderDesc tFaderDesc;
 		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
 		tFaderDesc.eLinearType = LINEAR_TYPE::POW;
 		tFaderDesc.fFadeMaxTime = 1.f;

@@ -44,7 +44,7 @@ HRESULT CLevel_Stage3::Initialize()
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
 
-	CFader::FaderDesc tFaderDesc;
+	FaderDesc tFaderDesc;
 	tFaderDesc.eFaderType = FADER_TYPE::FADER_IN;
 	tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
 	tFaderDesc.fFadeMaxTime = 3.f;

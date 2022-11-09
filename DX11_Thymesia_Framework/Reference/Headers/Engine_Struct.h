@@ -308,4 +308,13 @@ namespace Engine
 		// For Sprites - Pendulum Effect
 		_bool bFramePlayBackward; // default is false : Frame plays forward
 	};
+
+	struct FaderDesc
+	{
+		LINEAR_TYPE eLinearType;
+		FADER_TYPE	eFaderType;
+		_float4 vFadeColor;
+		_float	fFadeMaxTime;
+		_float	fDelayTime;
+	};
 }

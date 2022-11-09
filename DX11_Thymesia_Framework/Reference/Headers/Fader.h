@@ -8,19 +8,6 @@ class ENGINE_DLL CFader : public CComponent
 	CLONE_H(CFader, CComponent)
 
 public:
-
-	struct FaderDesc
-	{
-		LINEAR_TYPE eLinearType;
-		FADER_TYPE	eFaderType;
-		_float4 vFadeColor;
-		_float	fFadeMaxTime;
-		_float	fDelayTime;
-	};
-
-	
-
-public:
 	CFader(const CFader& rhs);
 
 public:

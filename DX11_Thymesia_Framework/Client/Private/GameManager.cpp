@@ -469,7 +469,7 @@ void CGameManager::Start_BattleEnd()
 		DEBUG_ASSERT;
 	}
 
-	CFader::FaderDesc tFaderDesc;
+	FaderDesc tFaderDesc;
 	tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
 	tFaderDesc.eLinearType = LINEAR_TYPE::POW;
 	tFaderDesc.fFadeMaxTime = 2.f;
@@ -523,7 +523,7 @@ void CGameManager::Call_BattleEndFadeOut()
 		DEBUG_ASSERT;
 	}
 
-	CFader::FaderDesc tFaderDesc;
+	FaderDesc tFaderDesc;
 	tFaderDesc.eFaderType = FADER_TYPE::FADER_IN;
 	tFaderDesc.eLinearType = LINEAR_TYPE::SQRT;
 	tFaderDesc.fFadeMaxTime = 2.f;

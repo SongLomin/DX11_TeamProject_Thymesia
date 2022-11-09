@@ -18,7 +18,14 @@ public:
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render() override;
 
+private:
+    LIGHTDESC   m_tLightDesc;
+    _int        m_iLightIndex;
+
 public:
+    virtual void Write_Json(json& Out_Json) override;
+    virtual void Load_FromJson(const json& In_Json) override;
+    virtual void OnEventMessage(_uint iArg) override;
     void Free();
 };
 
