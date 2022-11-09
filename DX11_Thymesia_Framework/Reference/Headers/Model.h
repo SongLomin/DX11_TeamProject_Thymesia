@@ -37,6 +37,8 @@ public:
 
 	weak_ptr<MODEL_DATA> Get_ModelData() const;
 
+	_int Get_IndexFromAnimName(const _char* In_szAnimName);
+
 	void Set_CurrentAnimation(_uint iAnimIndex, _uint iStartKeyIndex = 0, _float fBlendTime = 0.1f);
 	void Set_AnimationSpeed(_float fAnimationSpeed);
 	void Set_CurrentAnimationKey(_uint iKeyIndex);

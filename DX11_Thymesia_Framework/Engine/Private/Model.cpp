@@ -21,6 +21,22 @@ weak_ptr<MODEL_DATA> CModel::Get_ModelData() const
 	return m_pModelData;
 }
 
+_int CModel::Get_IndexFromAnimName(const _char* In_szAnimName)
+{
+
+	for (_int i = 0; i < m_iNumAnimations; ++i)
+	{
+		if (strcmp(m_Animations[i].lock()->Get_Name(), In_szAnimName) == 0)
+		{
+			return i;
+		}
+	}
+
+	DEBUG_ASSERT;
+
+	return -1;
+}
+
 void CModel::Set_CurrentAnimation(_uint iAnimIndex, _uint iStartKeyIndex, _float fBlendTime)
 {
 	if (iAnimIndex >= m_Animations.size())
