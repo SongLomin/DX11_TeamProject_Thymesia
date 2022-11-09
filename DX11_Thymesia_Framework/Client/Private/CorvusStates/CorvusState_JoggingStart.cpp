@@ -46,7 +46,7 @@ void CCorvusState_JoggingStart::Tick(_float fTimeDelta)
 	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviCom);
 
 
-	cout << "Á¶±ë½ºÅ¸Æ® :: " << vMoveDir.m128_f32[0] << " " << vMoveDir.m128_f32[1] << " " << vMoveDir.m128_f32[2] << " " << endl;
+	
 }
 
 void CCorvusState_JoggingStart::LateTick(_float fTimeDelta)
