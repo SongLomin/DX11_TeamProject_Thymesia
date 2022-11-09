@@ -81,6 +81,16 @@ _bool CCorvusStateBase::Check_RequirementRunState()
 	return false;
 }
 
+_bool CCorvusStateBase::Check_RequirementAVoidState()
+{
+
+	if (KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))		
+	{
+		return true;
+	}
+	return false;
+}
+
 _bool CCorvusStateBase::Check_RequirementUltimateState()
 {
 

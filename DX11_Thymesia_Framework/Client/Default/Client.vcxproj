@@ -202,6 +202,7 @@
     <ClInclude Include="..\Public\Client_Windows.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusStateBase.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusStates.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoid.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Hit.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Idle.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Jogging.h" />
@@ -209,8 +210,11 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_JoggingStart.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Run.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Sprint.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_SprintAttack.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_SprintStart.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Stop.h" />
+    <ClInclude Include="..\Public\Corvus_DefaultDagger.h" />
+    <ClInclude Include="..\Public\Corvus_DefaultSaber.h" />
     <ClInclude Include="..\Public\CustomEffectMesh.h" />
     <ClInclude Include="..\Public\Dynamic_Prop.h" />
     <ClInclude Include="..\Public\CustomUI.h" />
@@ -293,15 +297,18 @@
     <ClCompile Include="..\Private\ClientComponent.cpp" />
     <ClCompile Include="..\Private\ClientLevel.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusStateBase.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoid.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Hit.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Idle.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Jogging.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_JoggingStartEnd.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_JoggingStart.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Run.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Sprint.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_SprintAttack.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_SprintStart.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Stop.cpp" />
-    <ClCompile Include="..\Private\CorvusState_Run.cpp" />
-    <ClCompile Include="..\Private\CorvusState_Sprint.cpp" />
-    <ClCompile Include="..\Private\CorvusState_SprintStart.cpp" />
+    <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp" />
     <ClCompile Include="..\Private\CustomEffectMesh.cpp" />
     <ClCompile Include="..\Private\Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\CustomUI.cpp" />
@@ -363,6 +370,7 @@
     <ClCompile Include="..\Private\Player.cpp" />
     <ClCompile Include="..\Private\UI.cpp" />
     <ClCompile Include="..\Private\WorldUI.cpp" />
+    <ClCompile Include="..\Public\Corvus_DefaultDagger.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
