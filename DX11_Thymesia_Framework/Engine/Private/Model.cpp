@@ -77,10 +77,10 @@ void CModel::Set_CurrentAnimationKey(_uint iKeyIndex)
 
 _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName)
 {
-	/*if (m_isBlend)
+	if (m_isBlend)
 	{
 		return XMVectorSet(0.f, 0.f, 0.f, 1.f);
-	}*/
+	}
 
 	_vector vCurrentBonePosition;
 	_vector vPreBonePosition;

@@ -151,9 +151,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
         discard;
     }
     
-    vector vCartoonShader = ceil(vResult * 8.f) / 8.f;
-    
-    Out.vShade = vCartoonShader;
+    Out.vShade = vResult;
     Out.vShade.a = 1.f;
 
 	vector			vReflect = reflect(normalize(g_vLightDir), vNormal);
@@ -179,7 +177,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 
 	vector			vLook = normalize(vWorldPos - g_vCamPosition);
 
-    Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 5.f);
+    Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f);
 	Out.vSpecular.a = 0.f;
 
 
@@ -247,18 +245,13 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
         discard;
     }
     
-    if (vLightFlagDesc.z < 0.1f)
-    {
-        vResult = ceil(vResult * 8.f) / 8.f;
-    }
-    
     Out.vShade = vResult;
 	Out.vShade.a = 1.f;
 
 	vector			vReflect = reflect(normalize(vLightDir), vNormal);
 	vector			vLook = normalize(vWorldPos - g_vCamPosition);
 
-	Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 2.f) * fAtt;
+    Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f) * fAtt;
 	Out.vSpecular.a = 0.f;
 
 
@@ -331,19 +324,13 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_HALF_POINT(PS_IN In)
         discard;
     }
     
-    // 지형이 아니라면 카툰 렌더링한다. 지형에 카툰렌더링 조명이 들어가면 어색해보인다.
-    if (vLightFlagDesc.z < 0.1f)
-    {
-        vResult = ceil(vResult * 8.f) / 8.f;
-    }
-    
     Out.vShade = vResult;
     Out.vShade.a = 1.f;
 
     vector vReflect = reflect(normalize(vLightDir), vNormal);
     vector vLook = normalize(vWorldPos - g_vCamPosition);
 
-    Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 2.f) * fAtt;
+    Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f) * fAtt;
     Out.vSpecular.a = 0.f;
 
 

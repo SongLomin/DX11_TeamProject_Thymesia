@@ -103,13 +103,6 @@ HRESULT CCorvus_DefaultSaber::Render()
 		m_pModelCom.lock()->Render_Mesh(i);
 	}
 
-#ifdef _DEBUG
-	m_pHitColliderCom.lock()->Render();
-
-#endif // _DEBUG
-
-
-
 	return S_OK;
 }
 

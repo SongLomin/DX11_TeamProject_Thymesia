@@ -4,12 +4,12 @@
 BEGIN(Engine)
 struct MESH_DATA;
 
-class ENGINE_DLL CVIBuffer_NoAnim_Instance :
+class ENGINE_DLL CVIBuffer_Model_Instance :
     public CVIBuffer
 {
-    GAMECLASS_H(CVIBuffer_NoAnim_Instance)
-        SHALLOW_COPY(CVIBuffer_NoAnim_Instance)
-        CLONE_H(CVIBuffer_NoAnim_Instance, CComponent)
+    GAMECLASS_H(CVIBuffer_Model_Instance)
+        SHALLOW_COPY(CVIBuffer_Model_Instance)
+        CLONE_H(CVIBuffer_Model_Instance, CComponent)
 
 public:
     _uint Get_InstanceCount() const { return m_iNumInstance; }
