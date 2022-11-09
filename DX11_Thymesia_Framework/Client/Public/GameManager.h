@@ -21,6 +21,10 @@ class CSwapPlayerUI;
 class CPlayer_MPBar;
 class CPlayer_HPBar;
 class CPlayer_Memory;
+class CPlayer_PotionUI;
+class CPlayer_FeatherUI;
+
+
 class CMonster;
 
 class CGameManager :
@@ -48,6 +52,10 @@ public:
     void Register_Player_HPBar(weak_ptr<CPlayer_HPBar> pHPBar);
     void Register_Player_MPBar(weak_ptr<CPlayer_MPBar> pMPBar);
     void Register_Player_Memory(weak_ptr<CPlayer_Memory> pMemory);
+    void Register_Player_HUD_Potion(weak_ptr<CPlayer_PotionUI> pHUD_Potion);
+    void Register_Player_HUD_Feather(weak_ptr<CPlayer_FeatherUI> pHUD_Feather);
+
+
 
 
 public:

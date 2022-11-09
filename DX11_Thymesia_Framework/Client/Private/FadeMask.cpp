@@ -78,7 +78,6 @@ HRESULT CFadeMask::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
 
-
 	m_vFadeColor.w = 1.f - m_pFaderCom.lock()->Get_FadeColor().w;
 
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vColor", &m_vFadeColor, sizeof(_float4))))

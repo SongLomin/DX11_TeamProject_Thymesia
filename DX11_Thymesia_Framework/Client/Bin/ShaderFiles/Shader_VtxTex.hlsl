@@ -10,7 +10,7 @@ texture2D	g_DepthTexture;
 float g_fAhlpaScale;
 float g_MaskAhlpaScale;
 float2 g_MaskUV;
-
+float4	g_vColor;
 
 struct VS_IN
 {
@@ -160,6 +160,29 @@ PS_OUT PS_MAIN_CUSTOMUI(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_MAIN_CUSTOMUI_FADE(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	if (Out.vColor.a < 0.1)
+		discard;
+
+	Out.vColor.a = g_vColor.a;
+
+	
+
+	//Out.vColor.a = 1.f;
+	//Out.vColor.a = Out.vColor.a * g_fAhlpaScale;
+
+	/*if (Out.vColor.a < 0.1f)
+	discard;*/
+
+	return Out;
+}
+
+
 technique11 DefaultTechnique
 {
 	//0
@@ -220,6 +243,17 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_CUSTOMUI();
+	}
+	//5
+	pass CustomUI_Font_BG_Alpha
+	{
+		SetBlendState(BS_AlphaBlend, vector(1.f, 1.f, 1.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_CUSTOMUI_FADE();
 	}
 
 	/* pass Default
