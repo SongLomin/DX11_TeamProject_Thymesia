@@ -85,7 +85,8 @@ public:
 
     // 해당 키에 이벤트가 있는지 확인 후 있다면 이벤트를 호출합니다.
     void Active_KeyEvent(const weak_ptr<CModel> In_ModelCom, const weak_ptr<CTransform> In_TransformCom, const _uint& In_iKeyIndex, const _uint& In_iTimeScaleLayer = -1);
-       
+    void Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName);
+    void End_Cinematic();
     
 public:
     _bool Is_OpenHyperSpace();

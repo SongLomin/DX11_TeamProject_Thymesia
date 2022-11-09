@@ -4,6 +4,8 @@
 #include "Monster.h"
 #include "Player.h"
 #include "GameObject.h"
+#include "Model.h"
+#include "BoneNode.h"
 
 GAMECLASS_C(CCamera_Target);
 CLONE_C(CCamera_Target, CGameObject);
@@ -47,7 +49,7 @@ HRESULT CCamera_Target::Start()
 		DEBUG_ASSERT;
 
 	m_pCurrentPlayerTransformCom = m_pCurrentPlayer.lock()->Get_Component<CTransform>();
-
+	XMStoreFloat4(&m_vPlayerFollowLerpPosition, m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION));
 
 	return S_OK;
 }
@@ -62,29 +64,37 @@ void CCamera_Target::Tick(_float fTimeDelta)
 	if (!m_pCurrentPlayer.lock().get())
 		return;
 
-	if (GAMEINSTANCE->Get_DIMouseKeyState(MOUSEBUTTON::MBS_WHEEL) & 0x80)
-	{
-		m_bIsFocused = !m_bIsFocused;
-		if (m_bIsFocused)
-			GET_SINGLE(CGameManager)->Focus_Monster();
-		else
-			GET_SINGLE(CGameManager)->Release_Focus();
+	if(m_bCinematic)
+	{ 
+		Update_Bone();
 	}
 
-	if (m_bIsFocused)
-	{
-		if (!m_pTargetMonster.lock()|| m_pTargetMonster.lock()->Get_Dead())
-		{
-			return;
-		}
-		Look_At_Target(fTimeDelta);
-	}
 	else
 	{
-		Free_MouseMove(fTimeDelta);
-	}
+		if (GAMEINSTANCE->Get_DIMouseKeyState(MOUSEBUTTON::MBS_WHEEL) & 0x80)
+		{
+			m_bIsFocused = !m_bIsFocused;
+			if (m_bIsFocused)
+				GET_SINGLE(CGameManager)->Focus_Monster();
+			else
+				GET_SINGLE(CGameManager)->Release_Focus();
+		}
 
-	Interpolate_Camera(fTimeDelta);
+		if (m_bIsFocused)
+		{
+			if (!m_pTargetMonster.lock() || m_pTargetMonster.lock()->Get_Dead())
+			{
+				return;
+			}
+			Look_At_Target(fTimeDelta);
+		}
+		else
+		{
+			Free_MouseMove(fTimeDelta);
+		}
+
+		Interpolate_Camera(fTimeDelta);
+	}
 
 }
 
@@ -116,6 +126,25 @@ void CCamera_Target::Release_Focus()
 	m_pTargetMonster = weak_ptr<CGameObject>();
 	m_pTargetMonsterTransformCom = weak_ptr<CTransform>();
 
+}
+
+void CCamera_Target::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName)
+{
+	m_pCameraBoneNode = _pModel.lock()->Find_BoneNode(pBoneName);
+	m_pCameraBoneParentTransform = _pModel.lock()->Get_Owner().lock()->Get_Component<CTransform>();
+	m_TransformationMatrix = _pModel.lock()->Get_TransformationMatrix();
+	m_bCinematic = true;
+
+	XMStoreFloat4x4(&m_OriginalMatrix, m_pTransformCom.lock()->Get_WorldMatrix());
+}
+
+void CCamera_Target::End_Cinematic()
+{
+	m_pCameraBoneNode = weak_ptr<CBoneNode>();
+	m_pCameraBoneParentTransform = weak_ptr<CTransform>();
+	m_bCinematic = false;
+
+	m_pTransformCom.lock()->Set_WorldMatrix(XMLoadFloat4x4(&m_OriginalMatrix));
 }
 
 
@@ -162,7 +191,7 @@ void CCamera_Target::Look_At_Target(_float fTimeDelta)//타겟 고정
 
 	//m_fRotationLerpRatio를 위 처럼 일정 비율 증가하게 해야함 조건은 각도가 일정 크기 이상으로 되었을 때
 	//ratio를 증가 시키고 아닐 때 0으로 만들어 놓음 <- 조건을 찾아야함
-	_vector vLerpQuaternion = XMQuaternionSlerp(vCurCameraQuaternion, vLookTargetQuaternion, fTimeDelta);
+	_vector vLerpQuaternion = XMQuaternionSlerp(vCurCameraQuaternion, vLookTargetQuaternion, 2.f*fTimeDelta);
 
 	m_pTransformCom.lock()->Rotation_Quaternion(vLerpQuaternion);
 }
@@ -200,44 +229,48 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 
 	if (fTimeDelta < XMVector3Length(vPlayerPos - vPrePlayerPos).m128_f32[0])
 	{
-		_vector vTempPlayerPos = vPlayerPos;
-		vTempPlayerPos.m128_f32[1] = 0.f;
-		_vector vTempPrePlayerPos = vPrePlayerPos;
-		vTempPrePlayerPos.m128_f32[1] = 0.f;
+		_vector  vPlayerFollowLerpPostiion = XMLoadFloat4(&m_vPlayerFollowLerpPosition);
 
-		_vector vMoveDir = vPlayerPos - vPrePlayerPos;
-		if(vMoveDir.m128_f32[2])
-		vMoveDir = XMVector3Normalize(vMoveDir) * 1.5f;
-		_vector vOffset = XMLoadFloat3(&m_vOffSet);
+		m_fSpeed += m_fAccel * fTimeDelta;
+		if (5.f < m_fSpeed)
+			m_fSpeed = 5.f;
 
-		_float fDotValue = XMVector3Dot(XMVector3Normalize(vMoveDir), XMLoadFloat4(&m_vPreMoveDir)).m128_f32[0];
-		
-		if ( 0.1f * fTimeDelta< 1.f -fDotValue)
-			m_fLerpRatio = 0.f;
+		vPlayerFollowLerpPostiion = XMVectorLerp(vPlayerFollowLerpPostiion, vPrePlayerPos, m_fSpeed * fTimeDelta);
 
-		m_fLerpRatio += fTimeDelta;
-		if (1.f < m_fLerpRatio)
-			m_fLerpRatio = 1.f;
 
-		vOffset = XMVectorLerp(vOffset, vMoveDir, m_fLerpRatio);
-		XMStoreFloat3(&m_vOffSet, vOffset);
-		XMStoreFloat4(&m_vPreMoveDir, XMVector3Normalize(vMoveDir));
+		XMStoreFloat4(&m_vPlayerFollowLerpPosition, vPlayerFollowLerpPostiion);;
 
 	}
 	else
 	{
-		m_fLerpRatio = 0.f;
-		_vector vOffSet = XMLoadFloat3(&m_vOffSet);
-		vOffSet = XMVectorLerp(vOffSet, XMVectorSet(0.f, 0.f, 0.f, 0.f), 0.05f);
-		XMStoreFloat3(&m_vOffSet, vOffSet);
+		m_fSpeed = 0.f;
+
+		_vector vPlayerFollowLerpPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition);
+		vPlayerFollowLerpPos.m128_f32[3] = 1.f;
+
+		vPlayerFollowLerpPos = XMVectorLerp(vPlayerFollowLerpPos, vPrePlayerPos, fTimeDelta);
+		XMStoreFloat4(&m_vPlayerFollowLerpPosition, vPlayerFollowLerpPos);
 	}
 
 
 	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
 
-	_vector vPos = vPlayerPos + vLook * -4.f - XMLoadFloat3(&m_vOffSet) + XMVectorSet(0.f, 1.5f, 0.f, 0.f);
+	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * -4.f + XMVectorSet(0.f, 2.f, 0.f, 0.f);
 
 	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
+}
+
+void CCamera_Target::Update_Bone()
+{
+	_matrix		ParentMatrix = m_pCameraBoneNode.lock()->Get_CombinedMatrix()
+		* XMLoadFloat4x4(&m_TransformationMatrix);
+
+	ParentMatrix.r[0] = XMVector3Normalize(ParentMatrix.r[0]);
+	ParentMatrix.r[1] = XMVector3Normalize(ParentMatrix.r[1]);
+	ParentMatrix.r[2] = XMVector3Normalize(ParentMatrix.r[2]);
+
+
+	m_pTransformCom.lock()->Set_WorldMatrix(ParentMatrix * m_pCameraBoneParentTransform.lock()->Get_UnScaledWorldMatrix());
 }
 
 void CCamera_Target::OnLevelExit()

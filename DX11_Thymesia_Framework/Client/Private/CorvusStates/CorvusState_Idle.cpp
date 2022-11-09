@@ -22,7 +22,7 @@ HRESULT CCorvusState_Idle::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	m_iAnimIndex = 3;
+	
 	return S_OK;
 }
 
@@ -30,7 +30,7 @@ void CCorvusState_Idle::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_WalkIdle");
 }
 
 void CCorvusState_Idle::Tick(_float fTimeDelta)
@@ -108,7 +108,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		return true;
 	}
 
-	else if (Check_RequirementJoggingState())
+	 if (Check_RequirementJoggingState())
 	{
 		Rotation_InputToLookDir();
 		Get_OwnerPlayer()->Change_State<CCorvusState_JoggingStart>();
@@ -116,19 +116,27 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 	}
 
 
-	else if (Check_RequirementSprintState())
+	 if (Check_RequirementSprintState())
 	{
 		Rotation_InputToLookDir();
 		Get_OwnerPlayer()->Change_State<CCorvusState_SprintStart>();
 		return true;
 	}
 
-	else if (Check_RequirementAVoidState())
+	 if (Check_RequirementAVoidState())
 	{
 		Rotation_InputToLookDir();
 		Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
 		return true;
 	}
+
+	 //юс╫ц
+	 if (KEY_INPUT(KEY::P, KEY_STATE::TAP))
+	 {
+		 Rotation_InputToLookDir();
+		 Get_OwnerPlayer()->Change_State<CVarg_Execution>();
+		 return true;
+	 }
 
 
 		return false;

@@ -213,6 +213,7 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_SprintAttack.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_SprintStart.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Stop.h" />
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\Varg_Execution.h" />
     <ClInclude Include="..\Public\Corvus_DefaultDagger.h" />
     <ClInclude Include="..\Public\Corvus_DefaultSaber.h" />
     <ClInclude Include="..\Public\CustomEffectMesh.h" />
@@ -309,6 +310,7 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_SprintAttack.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_SprintStart.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Stop.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\Varg_Execution.cpp" />
     <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp" />
     <ClCompile Include="..\Private\CustomEffectMesh.cpp" />
     <ClCompile Include="..\Private\Dynamic_Prop.cpp" />

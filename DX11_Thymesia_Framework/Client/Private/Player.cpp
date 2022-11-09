@@ -8,6 +8,7 @@
 #include "PlayerStateBase.h"
 #include "Attack_Area.h"
 
+
 GAMECLASS_C(CPlayer);
 CLONE_C(CPlayer, CGameObject);
 

@@ -213,6 +213,11 @@ HRESULT CTransform::Add_PositionWithRotation(_fvector vPos, weak_ptr<CNavigation
     _vector vPosition = Get_State(CTransform::STATE_TRANSLATION);
     _vector vRotatedPosition = XMVector3TransformCoord(vPos, SMath::Get_RotationMatrix(Get_WorldMatrix()));
 
+    _float3 vPitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(Get_WorldMatrix()));
+    _vector vPitchYawRollFromVector = XMLoadFloat3(&vPitchYawRoll);
+
+    cout << "Rotation :: " << vPitchYawRollFromVector.m128_f32[0] << " " << vPitchYawRollFromVector.m128_f32[1] << " " << vPitchYawRollFromVector.m128_f32[2] << " " << endl;
+
     vPosition = XMVectorAdd(vPosition, vRotatedPosition * (In_bReverse ? -1.f : 1.f));
     vPosition.m128_f32[3] = 1.f;
 

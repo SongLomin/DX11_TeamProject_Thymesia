@@ -429,6 +429,16 @@ void CGameManager::Active_KeyEvent(const weak_ptr<CModel> In_ModelCom, const wea
 
 }
 
+void CGameManager::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName)
+{
+	m_pTargetCamera.lock()->Start_Cinematic(_pModel, pBoneName);
+}
+
+void CGameManager::End_Cinematic()
+{
+	m_pTargetCamera.lock()->End_Cinematic();
+}
+
 
 
 _bool CGameManager::Is_OpenHyperSpace()

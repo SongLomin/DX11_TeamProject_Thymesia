@@ -3,6 +3,8 @@
 #include "Client_Components.h"
 #include "CorvusStates/CorvusStates.h"
 #include "Camera_Target.h"
+#include "Corvus_DefaultSaber.h"
+#include "Corvus_DefaultDagger.h"
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -28,6 +30,12 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Translation");
 
+	m_pDefaultSaber.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultSaber>(m_CreatedLevel));
+	m_pDefaultSaber.back().lock()->Init_DefaultSaber(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
+
+	m_pDefaultDagger.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultDagger>(m_CreatedLevel));
+	m_pDefaultDagger.back().lock()->Init_DefaultDagger(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_l");
+
 	
 	m_pStandState = Add_Component<CCorvusState_Idle>();
 	Add_Component<CCorvusState_Jogging>();
@@ -37,6 +45,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 	Add_Component<CCorvusState_Sprint>();
 	Add_Component<CCorvusState_SprintStart>();
 	Add_Component<CCorvusState_AVoid>();
+	Add_Component<CVarg_Execution>();
 	
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
