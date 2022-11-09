@@ -146,7 +146,7 @@ void CCamera_Target::Look_At_Target(_float fTimeDelta)//타겟 고정
 {
 	_vector vPlayerPos = m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
 	_vector vTargetPos = m_pTargetMonsterTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-	_vector vLookDir = XMVector3Normalize(vTargetPos - vPlayerPos - XMVectorSet(0.f, 2.f, 0.f, 0.f));
+	_vector vLookDir = XMVector3Normalize(vTargetPos - vPlayerPos - XMVectorSet(0.f, 1.5f, 0.f, 0.f));
 
 	_vector vRight = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLookDir);
 	_vector vUp = XMVector3Cross(vLookDir, vRight);
@@ -163,7 +163,7 @@ void CCamera_Target::Look_At_Target(_float fTimeDelta)//타겟 고정
 
 	//m_fRotationLerpRatio를 위 처럼 일정 비율 증가하게 해야함 조건은 각도가 일정 크기 이상으로 되었을 때
 	//ratio를 증가 시키고 아닐 때 0으로 만들어 놓음 <- 조건을 찾아야함
-	_vector vLerpQuaternion = XMQuaternionSlerp(vCurCameraQuaternion, vLookTargetQuaternion, 0.05f);
+	_vector vLerpQuaternion = XMQuaternionSlerp(vCurCameraQuaternion, vLookTargetQuaternion, fTimeDelta);
 
 	m_pTransformCom.lock()->Rotation_Quaternion(vLerpQuaternion);
 }
@@ -199,7 +199,7 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 	XMStoreFloat4(&m_vPrePlayerPos, vPlayerPos);
 
 
-	if (0.05f < XMVector3Length(vPlayerPos - vPrePlayerPos).m128_f32[0])
+	if (fTimeDelta < XMVector3Length(vPlayerPos - vPrePlayerPos).m128_f32[0])
 	{
 		_vector vTempPlayerPos = vPlayerPos;
 		vTempPlayerPos.m128_f32[1] = 0.f;
@@ -211,16 +211,18 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 		vMoveDir = XMVector3Normalize(vMoveDir) * 1.5f;
 		_vector vOffset = XMLoadFloat3(&m_vOffSet);
 
+		_float fDotValue = XMVector3Dot(XMVector3Normalize(vMoveDir), XMLoadFloat4(&m_vPreMoveDir)).m128_f32[0];
+		
+		if ( 0.1f * fTimeDelta< 1.f -fDotValue)
+			m_fLerpRatio = 0.f;
 
 		m_fLerpRatio += fTimeDelta;
 		if (1.f < m_fLerpRatio)
 			m_fLerpRatio = 1.f;
 
-	
-
 		vOffset = XMVectorLerp(vOffset, vMoveDir, m_fLerpRatio);
 		XMStoreFloat3(&m_vOffSet, vOffset);
-		XMStoreFloat4(&m_vPreMoveDir, vMoveDir);
+		XMStoreFloat4(&m_vPreMoveDir, XMVector3Normalize(vMoveDir));
 
 	}
 	else
@@ -234,7 +236,7 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 
 	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
 
-	_vector vPos = vPlayerPos + vLook * -4.f - XMLoadFloat3(&m_vOffSet) + XMVectorSet(0.f, 2.f, 0.f, 0.f);
+	_vector vPos = vPlayerPos + vLook * -4.f - XMLoadFloat3(&m_vOffSet) + XMVectorSet(0.f, 1.5f, 0.f, 0.f);
 
 	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
 }
