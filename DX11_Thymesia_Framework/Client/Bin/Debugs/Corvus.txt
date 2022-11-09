@@ -1,17 +1,19 @@
-0. Corvus_SD_WalkF
-1. Corvus_SD_WalkF_REnd
-2. Corvus_SD_WalkF_Start
-3. Corvus_SD_WalkIdle
-4. Corvus_SD_RunF_24
-5. Corvus_SD_SprintAttack_1
+0. Corvus_SD_VSVarg_Execution
+1. Corvus_Healing2_InPlace
+2. Corvus_SD1_ParryL_NEW
+3. Corvus_SD1_ParryR_NEW
+4. Corvus_SD1_Sprint
+5. Corvus_SD1_Sprint_Start
 6. Corvus_SD_AvoidF
-7. Corvus_SD1_ParryL_NEW
-8. Corvus_SD1_ParryR_NEW
-9. Corvus_SD1_Sprint
-10. Corvus_SD1_Sprint_Start
-11. Corvus_SD_LAttack1
-12. Corvus_SD_LAttack2
-13. Corvus_SD_LAttack3_New
+7. Corvus_SD_LAttack1
+8. Corvus_SD_LAttack2
+9. Corvus_SD_LAttack3_New
+10. Corvus_SD_RunF_24
+11. Corvus_SD_SprintAttack_1
+12. Corvus_SD_WalkF
+13. Corvus_SD_WalkF_REnd
+14. Corvus_SD_WalkF_Start
+15. Corvus_SD_WalkIdle
 RootNode
 root_$AssimpFbx$_Translation
 root_$AssimpFbx$_PreRotation

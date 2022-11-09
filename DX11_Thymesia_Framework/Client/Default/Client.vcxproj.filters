@@ -301,6 +301,9 @@
     <ClInclude Include="..\Public\EditGround.h">
       <Filter>02. GameObject\99. Other\01. EditGround</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\Varg_Execution.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\00.Varg_Execution</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -575,6 +578,10 @@
     </ClCompile>
     <ClCompile Include="..\Private\EditGround.cpp">
       <Filter>02. GameObject\99. Other\01. EditGround</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_Hover.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\Varg_Execution.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\00.Varg_Execution</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -921,6 +928,12 @@
     </Filter>
     <Filter Include="02. GameObject\99. Other\01. EditGround">
       <UniqueIdentifier>{e901b999-d046-4e3c-aa8b-98d950d74dbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution">
+      <UniqueIdentifier>{6a06f980-1515-4d7a-ab10-4f6e976f5190}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\00.Varg_Execution">
+      <UniqueIdentifier>{c125c642-a472-4a97-b97a-49ea53901244}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
