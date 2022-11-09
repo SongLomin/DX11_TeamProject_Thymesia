@@ -304,6 +304,9 @@
     <ClInclude Include="..\Public\CorvusStates\StateExecution\Varg_Execution.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\00.Varg_Execution</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Attack.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -582,6 +585,9 @@
     <ClCompile Include="..\Private\HUD_Hover.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\Varg_Execution.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\00.Varg_Execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Attack.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -934,6 +940,9 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\00.Varg_Execution">
       <UniqueIdentifier>{c125c642-a472-4a97-b97a-49ea53901244}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack">
+      <UniqueIdentifier>{4a64bbd5-ee25-4223-ac86-be99e1df7490}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

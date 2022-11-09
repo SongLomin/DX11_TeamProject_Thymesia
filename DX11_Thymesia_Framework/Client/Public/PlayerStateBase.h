@@ -37,11 +37,13 @@ protected:
     _bool           Rotation_NearToLookDir();
 
 protected:
-    _float3             m_vLookAtDir;
-    _float              m_fCurrentRotateTime = 0.f;
+    _float3                m_vLookAtDir;
+    _float                 m_fCurrentRotateTime = 0.f;
+
+    vector<const _char*>   m_vCurrentIndex[5];
 
 private:
-    weak_ptr<CPlayer> m_pOwnerFromPlayer;
+    weak_ptr<CPlayer>      m_pOwnerFromPlayer;
 
 public: /* For. EventFunction */
     void OnWeaponFirstAttack(weak_ptr<CCollider> pOtherCollider);
