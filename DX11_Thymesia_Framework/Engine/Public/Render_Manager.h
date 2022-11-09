@@ -39,8 +39,8 @@ private:
 	HRESULT Blur_ExtractGlow(const _float& In_PixelPitchScalar);
 	HRESULT ReBlur_ExtractGlow(const _float& In_PixelPitchScalar);
 	HRESULT Blend_OutLine();
+	HRESULT Blend_Distortion();
 	HRESULT Blend_Glow(); // 원본이 글로우보다 위에 그려진다.
-	HRESULT Blend_UpGlow(); // 글로우가 원본보다 위에 그려진다.
 	HRESULT Render_Font();
 	HRESULT Extract_Brightness();
 	HRESULT Blur_ExtractBloom();

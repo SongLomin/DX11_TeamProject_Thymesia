@@ -77,15 +77,13 @@ void CModel::Set_CurrentAnimationKey(_uint iKeyIndex)
 
 _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName)
 {
-	if (m_isBlend)
+	/*if (m_isBlend)
 	{
 		return XMVectorSet(0.f, 0.f, 0.f, 1.f);
-	}
+	}*/
 
 	_vector vCurrentBonePosition;
 	_vector vPreBonePosition;
-
-	static _float3 Debug_Pos;
 
 	weak_ptr<CBoneNode> CurrentBoneNode = Find_BoneNode(In_szBoneName);
 
@@ -99,17 +97,10 @@ _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName)
 
 	if (m_DeltaBonePositions.end() == iter)
 	{
-		//
-
-		//cout << typeid(this).name() << ": " << "(" << Debug_Pos.x << ", " << Debug_Pos.y << ", " << Debug_Pos.z << ")" << endl;
-
 		_float4 CurrentPosition;
 
 		XMStoreFloat4(&CurrentPosition, CurrentBoneNode.lock()->Get_TransformationMatrix().r[3]);
 		m_DeltaBonePositions.emplace(HashKey, CurrentPosition);
-
-		Debug_Pos.x = Debug_Pos.y = Debug_Pos.z = 0.f;
-
 
 		return XMVectorSet(0.f, 0.f, 0.f, 1.f);
 	}
@@ -117,10 +108,6 @@ _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName)
 	vPreBonePosition = XMLoadFloat4(&(*iter).second);
 	vCurrentBonePosition = CurrentBoneNode.lock()->Get_TransformationMatrix().r[3];
 	vCurrentBonePosition -= vPreBonePosition;
-
-	//Debug_Pos.x += vCurrentBonePosition.m128_f32[0];
-	//Debug_Pos.y += vCurrentBonePosition.m128_f32[1];
-	//Debug_Pos.z += vCurrentBonePosition.m128_f32[2];
 
 	XMStoreFloat4(&(*iter).second, CurrentBoneNode.lock()->Get_TransformationMatrix().r[3]);
 

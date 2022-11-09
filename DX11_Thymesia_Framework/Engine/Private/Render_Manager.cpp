@@ -324,13 +324,9 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 
 	if (FAILED(Blend_Glow()))
 		DEBUG_ASSERT;
-
 	
 	if (FAILED(Render_Font()))
 		DEBUG_ASSERT;
-	
-	/*if (FAILED(Extract_Brightness()))
-		DEBUG_ASSERT;*/
 
 	if (FAILED(Blur_ExtractBloom()))
 		DEBUG_ASSERT;
@@ -868,6 +864,15 @@ HRESULT CRender_Manager::Blend_OutLine()
 	return S_OK;
 }
 
+HRESULT CRender_Manager::Blend_Distortion()
+{
+	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
+
+
+
+	return S_OK;
+}
+
 HRESULT CRender_Manager::Blend_Glow()
 {
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
@@ -887,26 +892,6 @@ HRESULT CRender_Manager::Blend_Glow()
 	/*m_pShader->Begin(7);
 	m_pVIBuffer->Render();*/
 
-
-	return S_OK;
-}
-
-
-HRESULT CRender_Manager::Blend_UpGlow()
-{
-	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
-
-	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
-	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
-	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
-
-	m_pShader->Set_ShaderResourceView("g_GlowTexture", pRenderTargetManager->Get_SRV(TEXT("Target_BlurForGlow")));
-	m_pShader->Set_ShaderResourceView("g_OriginalEffectTexture", pRenderTargetManager->Get_SRV(TEXT("Target_OriginalEffect")));
-	//m_pShader->Set_ShaderResourceView("g_OriginalRenderTexture", GET_SINGLE(CGraphic_Device)->Get_SRV());
-
-
-	m_pShader->Begin(8);
-	m_pVIBuffer->Render();
 
 	return S_OK;
 }
@@ -1122,9 +1107,7 @@ HRESULT CRender_Manager::Render_AfterPostEffectGlow()
 	Blur_ExtractGlow(3.f);
 	ReBlur_ExtractGlow(3.f);
 	
-
 	Blend_Glow();
-	//Blend_UpGlow();
 
 	Blur_ExtractBloom();
 	Extract_Brightness();

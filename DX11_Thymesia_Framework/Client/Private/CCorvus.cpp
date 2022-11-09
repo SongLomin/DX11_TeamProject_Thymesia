@@ -26,7 +26,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
 
 
-	m_pModelCom.lock()->Set_RootNode("Bip001");
+	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Translation");
 
 	
 	m_pStandState = Add_Component<CCorvusState_Idle>();
