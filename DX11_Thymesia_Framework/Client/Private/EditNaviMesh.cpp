@@ -11,7 +11,6 @@ CLONE_C(CEditNaviMesh, CGameObject)
 
 HRESULT CEditNaviMesh::Initialize_Prototype()
 {
-
     return S_OK;
 }
 
@@ -34,7 +33,6 @@ HRESULT CEditNaviMesh::Initialize(void* pArg)
 
 HRESULT CEditNaviMesh::Start()
 {
-
     return S_OK;
 }
 
@@ -87,11 +85,6 @@ HRESULT CEditNaviMesh::Render()
         if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(WorldPos))
         {
             elem.lock()->Render_IgnoreDebugCheck();
-        }
-
-        else
-        {
-            int i = 0;
         }
     }
 
@@ -453,6 +446,7 @@ void CEditNaviMesh::Select_SingleHeightPoint(_float fTimeDelta)
 _int CEditNaviMesh::Select_PickPoint() const
 {
     RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+    cout << MouseRayInWorldSpace.vOrigin.x << " , " << MouseRayInWorldSpace.vOrigin.y << " , " << MouseRayInWorldSpace.vOrigin.z << endl;
 
     for (_size_t i = 0; i < m_pPickPointColliderComs.size(); ++i)
     {

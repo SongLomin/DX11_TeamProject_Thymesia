@@ -298,6 +298,9 @@
     <ClInclude Include="..\Public\Corvus_DefaultDagger.h">
       <Filter>02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\01.Corvus_DefaultDagger</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\EditGround.h">
+      <Filter>02. GameObject\99. Other\01. EditGround</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -569,6 +572,9 @@
     </ClCompile>
     <ClCompile Include="..\Public\Corvus_DefaultDagger.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\01.Corvus_DefaultDagger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EditGround.cpp">
+      <Filter>02. GameObject\99. Other\01. EditGround</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -912,6 +918,9 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\10.State_SprintAttack">
       <UniqueIdentifier>{7a0236c3-2325-4666-b88a-ea5476d7d0bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\99. Other\01. EditGround">
+      <UniqueIdentifier>{e901b999-d046-4e3c-aa8b-98d950d74dbe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -47,7 +47,7 @@ enum class KEY
 	LAST,
 };
 
-enum class MODEL_TYPE { NONANIM = 0, ANIM, NAVI, TYPE_END };
+enum class MODEL_TYPE { NONANIM = 0, ANIM, NAVI, GROUND, TYPE_END };
 
 enum class COLLISION_TYPE { SPHERE = 0, AABB, OBB, TYPE_END };
 

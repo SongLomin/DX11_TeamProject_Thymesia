@@ -26,13 +26,14 @@ public:
     virtual HRESULT Render() override;
 
 private:
-    weak_ptr<CShader>           m_pShaderCom;
-    weak_ptr<CRenderer>         m_pRendererCom;
-    weak_ptr<CTexture>          m_pTextureCom;
-    weak_ptr<CVIBuffer_Ground>  m_pVIBufferCom;
+    HRESULT SetUp_ShaderResource();
 
 private:
-    HRESULT SetUp_ShaderResource();
+    weak_ptr<CShader>           m_pShaderCom;
+    weak_ptr<CRenderer>         m_pRendererCom;
+    weak_ptr<CTexture>          m_pDiff_TextureCom;
+    weak_ptr<CTexture>          m_pNorm_TextureCom;
+    weak_ptr<CVIBuffer_Ground>  m_pVIBufferCom;
 
 public:
     void Free();

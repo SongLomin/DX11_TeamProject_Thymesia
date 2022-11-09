@@ -28,13 +28,15 @@ HRESULT CGround::Initialize(void* pArg)
 		VTXNORTEX_DECLARATION::iNumElements
 	);
 
-	m_pRendererCom = Add_Component<CRenderer>();
-	m_pTextureCom  = Add_Component<CTexture>();
+	m_pRendererCom		 = Add_Component<CRenderer>();
+	m_pDiff_TextureCom	 = Add_Component<CTexture>();
+	m_pNorm_TextureCom	 = Add_Component<CTexture>();
 
-	m_pTextureCom.lock()->Use_Texture("T_Floor_01a_C.png");
+	//m_pDiff_TextureCom.lock()->Use_Texture("T_Floor_01a_C.png");
+	//m_pNorm_TextureCom.lock()->Use_Texture("T_Floor_01a_N.png");
 
-	_float4 vInfo = _float4(30.f, 30.f, 0.5f, 0.f);
-	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>(&vInfo);
+	//_float4 vInfo  = _float4(30.f, 30.f, 0.5f, 0.f);
+	//m_pVIBufferCom = Add_Component<CVIBuffer_Ground>(&vInfo);
 
 	Set_OwnerForMyComponents();
 
@@ -79,8 +81,17 @@ HRESULT CGround::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ)), sizeof(_float4x4))))
 		return E_FAIL;
 
-	if (FAILED(m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_SourDiffTexture", 0)))
-		return E_FAIL;
+	if (m_pDiff_TextureCom.lock())
+	{
+		if (FAILED(m_pDiff_TextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_SourDiffTexture", 0)))
+			return E_FAIL;
+	}
+
+	if (m_pNorm_TextureCom.lock())
+	{
+		if (FAILED(m_pNorm_TextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NormalTexture", 0)))
+			return E_FAIL;
+	}
 
 	_vector vLightFlag = { 0.f, 0.f, 1.f, 0.f };
 

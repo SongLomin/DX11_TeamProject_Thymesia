@@ -179,6 +179,14 @@ void MESH_DATA::Bake_Binary(ofstream& os)
         }
     }
 
+    else if (MODEL_TYPE::GROUND == eModelType)
+    {
+        for (_uint i = 0; i < iNumVertices; ++i)
+        {
+            write_typed_data(os, pGroundVertices[i]);
+        }
+    }
+
     for (_uint i = 0; i < iNumFaces; ++i)
     {
         write_typed_data(os, pIndices[i]);
@@ -236,6 +244,16 @@ void MESH_DATA::Load_FromBinary(ifstream& is)
         for (_uint i = 0; i < iNumVertices; ++i)
         {
             read_typed_data(is, pPosVertices[i]);
+        }
+    }
+
+    else if (MODEL_TYPE::GROUND == eModelType)
+    {
+        pGroundVertices = shared_ptr<VTXNORTEX[]>(new VTXNORTEX[iNumVertices]);
+
+        for (_uint i = 0; i < iNumVertices; ++i)
+        {
+            read_typed_data(is, pGroundVertices[i]);
         }
     }
 
