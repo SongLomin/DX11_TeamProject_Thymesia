@@ -22,7 +22,7 @@ HRESULT CCorvusState_AVoid::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	m_iAnimIndex = 6;
+	
 	return S_OK;
 }
 
@@ -31,6 +31,7 @@ void CCorvusState_AVoid::Start()
 	__super::Start();
 	
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_AvoidF");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_AVoid::Call_AnimationEnd, this);
 }
 
@@ -42,7 +43,7 @@ void CCorvusState_AVoid::Tick(_float fTimeDelta)
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("Bip001");
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
 	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviCom);
 }
 

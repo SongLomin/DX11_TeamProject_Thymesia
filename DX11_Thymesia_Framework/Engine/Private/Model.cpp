@@ -103,6 +103,8 @@ _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName)
 
 		//cout << typeid(this).name() << ": " << "(" << Debug_Pos.x << ", " << Debug_Pos.y << ", " << Debug_Pos.z << ")" << endl;
 
+		//cout << "Pre »À ¼¼ÆÃ" << endl;
+
 		_float4 CurrentPosition;
 
 		XMStoreFloat4(&CurrentPosition, CurrentBoneNode.lock()->Get_TransformationMatrix().r[3]);

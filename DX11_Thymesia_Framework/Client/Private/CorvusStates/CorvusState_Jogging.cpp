@@ -24,7 +24,7 @@ HRESULT CCorvusState_Jogging::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	m_iAnimIndex = 0;
+	
 	return S_OK;
 }
 
@@ -32,6 +32,7 @@ void CCorvusState_Jogging::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_WalkF");
 	m_pTransform = m_pOwner.lock()->Get_Component<CTransform>();
 }
 

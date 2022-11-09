@@ -5,6 +5,8 @@ BEGIN(Client)
 
 class CMonster;
 class CPlayerStateBase;
+class CCorvus_DefaultSaber;
+class CCorvus_DefaultDagger;
 
 class CPlayer :
     public CCharacter
@@ -65,6 +67,9 @@ protected:
     weak_ptr<CStateBase> m_pStandState;
     weak_ptr<CStateBase> m_pQTEState;
     _uint               m_iPlayerIndex = 0;
+
+    list<weak_ptr<CCorvus_DefaultSaber>> m_pDefaultSaber;
+    list<weak_ptr<CCorvus_DefaultDagger>> m_pDefaultDagger;
 
 private:
     _float              m_fNearSearchDelay = 0.f;

@@ -20,7 +20,6 @@ HRESULT CCorvusState_JoggingStartEnd::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	m_iAnimIndex = 1;
 	return S_OK;
 }
 
@@ -28,6 +27,7 @@ void CCorvusState_JoggingStartEnd::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_WalkF_REnd");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_JoggingStartEnd::Call_AnimationEnd, this);
 }
 
@@ -39,7 +39,7 @@ void CCorvusState_JoggingStartEnd::Tick(_float fTimeDelta)
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("Bip001");
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
 	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviCom);
 }
 
