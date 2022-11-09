@@ -2,6 +2,7 @@
 #include "CCorvus.h"
 #include "Client_Components.h"
 #include "CorvusStates/CorvusStates.h"
+#include "Camera_Target.h"
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -32,9 +33,13 @@ HRESULT CCorvus::Initialize(void* pArg)
 	Add_Component<CCorvusState_Jogging>();
 	Add_Component<CCorvusState_JoggingStart>();
 	Add_Component<CCorvusState_JoggingStartEnd>();
-	Add_Component<CCorvusState_Stop>();
+	Add_Component<CCorvusState_Run>();
+	Add_Component<CCorvusState_Sprint>();
+	Add_Component<CCorvusState_SprintStart>();
 	
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
+
+	USE_START(CCorvus);
 
 	return S_OK;
 }
@@ -44,6 +49,9 @@ HRESULT CCorvus::Start()
 	__super::Start();
 
 	Change_State<CCorvusState_Idle>();
+	
+	m_pCamera = GET_SINGLE(CGameManager)->Get_TargetCamera();
+	m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
 
 	return S_OK;
 }
@@ -51,36 +59,12 @@ HRESULT CCorvus::Start()
 void CCorvus::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
 }
 
 void CCorvus::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
-
-	_vector vDebugMove = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-
-	if (KEY_INPUT(KEY::UP, KEY_STATE::HOLD))
-	{
-		vDebugMove.m128_f32[2] = 10.f * fTimeDelta;
-	}
-
-	if (KEY_INPUT(KEY::DOWN, KEY_STATE::HOLD))
-	{
-		vDebugMove.m128_f32[2] = -10.f * fTimeDelta;
-	}
-
-	if (KEY_INPUT(KEY::LEFT, KEY_STATE::HOLD))
-	{
-		vDebugMove.m128_f32[0] = -10.f * fTimeDelta;
-	}
-
-	if (KEY_INPUT(KEY::RIGHT, KEY_STATE::HOLD))
-	{
-		vDebugMove.m128_f32[0] = 10.f * fTimeDelta;
-	}
-
-	m_pTransformCom.lock()->Add_Position(vDebugMove);
-
 
 }
 

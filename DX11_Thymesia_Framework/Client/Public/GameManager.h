@@ -64,6 +64,8 @@ public:
     void Add_Shaking(const SHAKE_DIRECTION& In_eState , const _float& In_fPower, const _float& In_fTime);
     //void Set_TargetForTargetCamera(weak_ptr<CGameObject> In_TargetGameObject);
     void Focus_Monster();
+    void Release_Focus();
+    void Find_Target();
 
 public:
     void Register_EffectGroup(const string& In_szEffectGroupName, weak_ptr<CEffectGroup> In_pEffectGroup);

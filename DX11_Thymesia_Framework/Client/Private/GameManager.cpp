@@ -214,6 +214,24 @@ void CGameManager::Add_Shaking(const SHAKE_DIRECTION& In_eState, const _float& I
 
 }
 
+void CGameManager::Focus_Monster()
+{
+//Å¸°Ù Ã£°í
+//
+	weak_ptr<CGameObject> pTargetMonster = Get_Layer(OBJECT_LAYER::MONSTER).front();
+
+	m_pTargetCamera.lock()->Focus_Monster(pTargetMonster);
+}
+
+void CGameManager::Release_Focus()
+{
+	m_pTargetCamera.lock()->Release_Focus();
+}
+
+void CGameManager::Find_Target()
+{
+}
+
 void CGameManager::Register_EffectGroup(const string& In_szEffectGroupName, weak_ptr<CEffectGroup> In_pEffectGroup)
 {
 	_size_t hashcode = hash<string>()(In_szEffectGroupName);

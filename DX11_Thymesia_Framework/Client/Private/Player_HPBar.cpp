@@ -92,13 +92,13 @@ void CPlayer_HPBar::Tick(_float fTimeDelta)
 		m_fCurrentHp -= 200.f;
 
 	}
-	if (KEY_INPUT(KEY::W, KEY_STATE::TAP))
-	{
-
-		m_fCurrentHp += 200.f;
-		m_fLerpHp = m_fCurrentHp;
-		m_fLerpAcc = 1.f;
-	}
+	//if (KEY_INPUT(KEY::W, KEY_STATE::TAP))
+	//{
+	//
+	//	m_fCurrentHp += 200.f;
+	//	m_fLerpHp = m_fCurrentHp;
+	//	m_fLerpAcc = 1.f;
+	//}
 #endif // _DEBUG
 
 	if (m_fCurrentHp < 0.f)

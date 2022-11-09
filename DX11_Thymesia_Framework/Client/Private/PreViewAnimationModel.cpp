@@ -3,6 +3,7 @@
 #include "Model.h"
 #include "shader.h"
 #include "Animation.h"
+#include "GameManager.h"
 
 GAMECLASS_C(CPreViewAnimationModel)
 CLONE_C(CPreViewAnimationModel, CGameObject)
@@ -32,6 +33,8 @@ HRESULT CPreViewAnimationModel::Initialize(void* pArg)
 		VTXANIM_DECLARATION::iNumElements);
 
 	m_eAttackCollisionLayer = COLLISION_LAYER::PLAYER_ATTACK;
+
+	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::MONSTER, Weak_Cast<CGameObject>(m_this));
 
 	return S_OK;
 }

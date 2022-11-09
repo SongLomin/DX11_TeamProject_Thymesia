@@ -601,9 +601,6 @@
     <Filter Include="02. GameObject\03. Actor\00. Character">
       <UniqueIdentifier>{618567cb-c6db-48f9-a3fe-050a87d96221}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player">
-      <UniqueIdentifier>{16574201-340f-43db-b0c0-e3bb9a200fc8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster">
       <UniqueIdentifier>{b883227e-9ad7-4b08-8d60-68a4d4c34a6c}</UniqueIdentifier>
     </Filter>
@@ -724,6 +721,57 @@
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\03.State_Jogging">
       <UniqueIdentifier>{a12142b2-c69c-41a4-80ed-d407e0173be6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\04. Prop\01. Static_Prop">
+      <UniqueIdentifier>{8db7ae73-3391-4fb1-9d5a-00b64a6c377e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\04. Prop\02. Dynamic_Prop">
+      <UniqueIdentifier>{d2bc77f2-b426-48c5-ada5-146394a4df4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\04. Prop\03. Interaction_Prop">
+      <UniqueIdentifier>{8ee2cfd5-c3f7-4f99-8fb6-64583c3174c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\11. Ground">
+      <UniqueIdentifier>{8b002a8d-4757-456a-9413-0cd76b027117}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_SprintStart">
+      <UniqueIdentifier>{e51b7011-ec5e-451f-8088-27a1ad224443}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Corvus">
+      <UniqueIdentifier>{16574201-340f-43db-b0c0-e3bb9a200fc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase">
+      <UniqueIdentifier>{aadbf6c6-7726-4889-bde8-1f3c8329f678}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState">
+      <UniqueIdentifier>{72943f7d-2bf2-429d-83ff-813079f76ffe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\00.State_Idle">
+      <UniqueIdentifier>{18638724-2ee5-46e7-a95e-73edb20ab3cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\04.State_Stop">
+      <UniqueIdentifier>{51c54cbf-686f-4453-ab8b-7ebbfaf21117}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\05.State_Hit">
+      <UniqueIdentifier>{41826306-7aa4-4142-8a99-602d9d79a36f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon">
+      <UniqueIdentifier>{c544ea3e-e472-45d2-97c7-b7b228b16290}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\00.Corvus_DefaultSaber">
+      <UniqueIdentifier>{0ed56344-d4a6-4fcc-946f-328f7e70d654}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\01.Corvus_DefaultDagger">
+      <UniqueIdentifier>{e8d262bf-d13f-4a53-886f-7946a0308b0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\01.State_JoggingStart">
+      <UniqueIdentifier>{30a1a2b0-e0cd-4a2f-a626-2db95dcc69f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\02.State_JoggingStartEnd">
+      <UniqueIdentifier>{c3aa626e-cb6d-476a-adea-3832b48bfa2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\03.State_Jogging">
+      <UniqueIdentifier>{a12142b2-c69c-41a4-80ed-d407e0173be6}</UniqueIdentifier>
+    </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\06.State_RunStart">
       <UniqueIdentifier>{5975b0e5-d07d-48e4-b336-881fec4035b3}</UniqueIdentifier>
     </Filter>
@@ -736,17 +784,14 @@
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_SprintStart">
       <UniqueIdentifier>{e51b7011-ec5e-451f-8088-27a1ad224443}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\04. Prop\01. Static_Prop">
-      <UniqueIdentifier>{8db7ae73-3391-4fb1-9d5a-00b64a6c377e}</UniqueIdentifier>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\06.State_Run">
+      <UniqueIdentifier>{201fbc95-0885-488a-8f7d-3aa7927da9b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\04. Prop\02. Dynamic_Prop">
-      <UniqueIdentifier>{d2bc77f2-b426-48c5-ada5-146394a4df4c}</UniqueIdentifier>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\07.State_Sprint">
+      <UniqueIdentifier>{d0d5f95f-6dc7-4634-b30f-1a3877a02a70}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\04. Prop\03. Interaction_Prop">
-      <UniqueIdentifier>{8ee2cfd5-c3f7-4f99-8fb6-64583c3174c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\11. Ground">
-      <UniqueIdentifier>{8b002a8d-4757-456a-9413-0cd76b027117}</UniqueIdentifier>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\08.State_SprintStart">
+      <UniqueIdentifier>{e51b7011-ec5e-451f-8088-27a1ad224443}</UniqueIdentifier>
     </Filter>
     <Filter Include="99. Defines">
       <UniqueIdentifier>{ca7671a3-fda7-41c0-8070-09afde17063e}</UniqueIdentifier>

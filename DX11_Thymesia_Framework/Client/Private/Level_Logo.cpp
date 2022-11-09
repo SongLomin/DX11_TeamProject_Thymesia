@@ -31,7 +31,7 @@ HRESULT CLevel_Logo::Initialize()
 	CameraDesc.fNear = 0.2f;
 	CameraDesc.fFar = 300.f;
 
-	weak_ptr<CCamera_Static> StaticCamera = GAMEINSTANCE->Add_GameObject<CCamera_Static>(LEVEL::LEVEL_LOBBY, &CameraDesc);
+	weak_ptr<CCamera_Static> StaticCamera = GAMEINSTANCE->Add_GameObject<CCamera_Static>(LEVEL::LEVEL_LOGO, &CameraDesc);
 
 
 	m_eNextLevel = LEVEL_LOBBY;
