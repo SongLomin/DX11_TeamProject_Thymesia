@@ -76,10 +76,11 @@ private:
 
 	_float3 m_vOffSet = _float3(0.f, 0.f, 0.f);
 	_float4 m_vPrePlayerPos = _float4(0.f, 0.f, 0.f, 0.f);
-	_float4 m_vPreMoveDir = _float4(0.f, 0.f, 0.f, 0.f);
 
-	_float m_fLerpRatio = 0.f;
 	_float m_fRotationLerpRatio = 0.f;
+	_float m_fAccel = 10.f;
+	_float m_fSpeed = 0.f;
+	_float4 m_vPlayerFollowLerpPosition = _float4(0.f, 0.f, 0.f, 1.f);
 
 	
 
