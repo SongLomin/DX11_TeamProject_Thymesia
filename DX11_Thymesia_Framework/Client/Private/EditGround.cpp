@@ -310,14 +310,14 @@ void CEditGround::Bake_Mesh()
 void CEditGround::Load_Mesh()
 {
 	//Edit Load
-	m_pModelData = GAMEINSTANCE->Get_ModelFromKey(m_szMeshName.c_str());
+	//m_pModelData = GAMEINSTANCE->Get_ModelFromKey(m_szMeshName.c_str());
 
-	Remove_Components<CVIBuffer_Ground>();
+	//Remove_Components<CVIBuffer_Ground>();
 
-	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
-	m_pVIBufferCom.lock()->Init_Mesh(m_pModelData.get()->Mesh_Datas[0]);
+	//m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
+	//m_pVIBufferCom.lock()->Init_Mesh(m_pModelData.get()->Mesh_Datas[0]);
 
-	m_bCreate = true;
+	//m_bCreate = true;
 }
 
 void CEditGround::Load_AllMeshInfo()

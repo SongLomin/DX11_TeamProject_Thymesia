@@ -184,6 +184,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
 
+	// TODO : Turn off temporarily for Light_Prop
 	LIGHTDESC			LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 

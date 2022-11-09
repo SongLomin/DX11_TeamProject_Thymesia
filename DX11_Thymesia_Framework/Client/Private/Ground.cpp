@@ -7,6 +7,8 @@
 #include "Texture.h"
 #include "Transform.h"
 #include "VIBuffer_Ground.h"
+#include "ModelData.h"
+#include "MeshData.h"
 
 GAMECLASS_C(CGround)
 CLONE_C(CGround, CGameObject)
@@ -38,7 +40,7 @@ HRESULT CGround::Initialize(void* pArg)
 	shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey("MemoryYamYam");
 
 	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
-	m_pVIBufferCom.lock()->Init_Mesh(pModelData.get()->Mesh_Datas[0]);
+	// m_pVIBufferCom.lock()->Init_Mesh(pModelData.get()->Mesh_Datas[0]);
 
 	Set_OwnerForMyComponents();
 

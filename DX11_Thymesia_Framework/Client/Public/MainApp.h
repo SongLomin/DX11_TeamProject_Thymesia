@@ -38,9 +38,6 @@ private:
 	HRESULT Open_Level(LEVEL eLevelID);
 	HRESULT Ready_Prototype_Component();
 
-
-	
-
 public:
 	static unique_ptr<CMainApp> Create();
 	virtual void Free();

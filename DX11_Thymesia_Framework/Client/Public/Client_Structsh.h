@@ -49,7 +49,6 @@ namespace Client
 		_float      fDamage;
 		_float3		vWeaponOffset;
 		_float		fHitFreq;
-
 	};
 
 	struct EFFECTPARTICLE_DESC

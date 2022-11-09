@@ -60,7 +60,13 @@ void CMainApp::Tick(float fTimeDelta)
 	{
 		POINT WinSize{ g_iWinCX , g_iWinCY };
 		ClientToScreen(g_hWnd, &WinSize);
-		RECT ClientRect = { (_long)WinSize.x - g_iWinCX, (_long)WinSize.y - g_iWinCY, (_long)WinSize.x, (_long)WinSize.y };
+		RECT ClientRect = 
+		{ 
+			(_long)WinSize.x - (_long)g_iWinCX
+			, (_long)WinSize.y - (_long)g_iWinCY
+			, (_long)WinSize.x
+			, (_long)WinSize.y 
+		};
 		ClipCursor(&ClientRect);
 	}
 
@@ -82,7 +88,7 @@ HRESULT CMainApp::Render()
 		nullptr == m_pRenderer*/)
 		return E_FAIL;
 
-	GAMEINSTANCE->Clear_BackBuffer_View(_float4(0.f, 0.f, 0.f, 1.f));
+	GAMEINSTANCE->Clear_BackBuffer_View(_float4(0.f, 128.f / 255.f, 1.f, 1.f));
 	GAMEINSTANCE->Clear_DepthStencil_View();
 	
 	GAMEINSTANCE->Draw_RenderGroup();
