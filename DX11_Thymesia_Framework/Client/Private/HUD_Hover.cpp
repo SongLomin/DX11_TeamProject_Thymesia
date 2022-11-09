@@ -32,6 +32,8 @@ HRESULT CHUD_Hover::Initialize(void* pArg)
 
 	ZeroMemory(&m_tHoverDesc, sizeof(HUDHOVERDESC));
 	
+	m_eHoverType = HUD_HOVER_ANIMATION_END;
+
 	Set_Enable(false);
 	return S_OK;
 }
@@ -49,14 +51,29 @@ void CHUD_Hover::Tick(_float fTimeDelta)
 	
 	if (m_tHoverDesc.m_bSizeChange)
 	{
-		FaderDesc tFaderDesc = m_pFaderCom.lock()->Get_FaderDesc();
+		if (m_eHoverType == HUD_HOVER_ANIMATION_FROM_ALPHA)
+		{
 
-		m_tUIDesc.fSizeX = m_tBackUpDesc.fSizeX +
-			((tFaderDesc.fFadeMaxTime - m_pFaderCom.lock()->Get_FadeTime()) / tFaderDesc.fFadeMaxTime) * (m_tBackUpDesc.fSizeX * m_tHoverDesc.m_fSizeMag);
+			FaderDesc tFaderDesc = m_pFaderCom.lock()->Get_FaderDesc();
+			m_tUIDesc.fSizeX = m_tBackUpDesc.fSizeX +
+				((tFaderDesc.fFadeMaxTime - m_pFaderCom.lock()->Get_FadeTime()) / tFaderDesc.fFadeMaxTime) * (m_tBackUpDesc.fSizeX * m_tHoverDesc.m_fSizeMag);
 
-		m_tUIDesc.fSizeY = m_tBackUpDesc.fSizeY +
-			((tFaderDesc.fFadeMaxTime - m_pFaderCom.lock()->Get_FadeTime()) / tFaderDesc.fFadeMaxTime) * (m_tBackUpDesc.fSizeY * m_tHoverDesc.m_fSizeMag);
+			m_tUIDesc.fSizeY = m_tBackUpDesc.fSizeY +
+				((tFaderDesc.fFadeMaxTime - m_pFaderCom.lock()->Get_FadeTime()) / tFaderDesc.fFadeMaxTime) * (m_tBackUpDesc.fSizeY * m_tHoverDesc.m_fSizeMag);
+		}
+		else if (m_eHoverType == HUD_HOVER_ANIMATION_JUSTADD)
+		{
+			FaderDesc tFaderDesc = m_pFaderCom.lock()->Get_FaderDesc();
+			
+			/*
+			
+			*/
+			_float	fAmountX = (m_tBackUpDesc.fSizeX * m_tHoverDesc.m_fSizeMag) * (fTimeDelta / tFaderDesc.fFadeMaxTime);
+			_float	fAmountY = (m_tBackUpDesc.fSizeY * m_tHoverDesc.m_fSizeMag) * (fTimeDelta / tFaderDesc.fFadeMaxTime);
 
+			m_tUIDesc.fSizeX += fAmountX;
+			m_tUIDesc.fSizeY += fAmountY;
+		}
 	}
 	
 }
@@ -76,11 +93,18 @@ HRESULT CHUD_Hover::Render()
 }
 
 
-void CHUD_Hover::Init_Fader(const Engine::FaderDesc& _tFaderDesc, const HUDHOVERDESC& _tHoverDesc)
+void CHUD_Hover::Init_Fader(const Engine::FaderDesc& _tFaderDesc, const HUDHOVERDESC& _tHoverDesc, HUD_HOVER_ANIMAITON_TYPE eHoverType)
 {
 	m_pFaderCom.lock()->Init_Fader(_tFaderDesc);
 	m_tHoverDesc = _tHoverDesc;
+	m_eHoverType = eHoverType;
 	Set_Enable(true);
+}
+
+void CHUD_Hover::Set_UIDesc(UI_DESC _tUIDesc)
+{
+	m_tUIDesc = _tUIDesc;
+	m_tBackUpDesc = _tUIDesc;
 }
 
 void CHUD_Hover::Call_FadeEnd(FADER_TYPE In_eFaderType)

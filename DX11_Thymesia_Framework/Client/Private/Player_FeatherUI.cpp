@@ -131,7 +131,8 @@ void CPlayer_FeatherUI::Tick(_float fTimeDelta)
         tHoverDesc.m_bSizeChange = true;
         tHoverDesc.m_fSizeMag = 0.2f;
         m_pHover.lock()->CallBack_FadeEnd += bind(&CPlayer_FeatherUI::Call_FadeEnd, this, placeholders::_1);
-        m_pHover.lock()->Init_Fader(m_tFaderDesc, tHoverDesc);
+        m_pHover.lock()->Init_Fader(m_tFaderDesc, tHoverDesc, 
+            CHUD_Hover::HUD_HOVER_ANIMATION_FROM_ALPHA);
     }
 #endif // _DEBUG
     m_pFrameBorder.lock()->Set_Ratio(m_fRatio);

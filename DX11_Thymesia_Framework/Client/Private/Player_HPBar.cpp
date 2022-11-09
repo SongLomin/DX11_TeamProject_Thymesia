@@ -65,7 +65,7 @@ HRESULT CPlayer_HPBar::Initialize(void* pArg)
 
 	m_pTrack = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_STATIC, &tTrackDesc);
 	m_pTrack.lock()->Get_Component<CTexture>().lock()->Use_Texture("Player_HPBar_Track");
-	m_pTrack.lock()->Init_Fader(tFaderDesc, tHoverDesc);
+	m_pTrack.lock()->Init_Fader(tFaderDesc, tHoverDesc, CHUD_Hover::HUD_HOVER_ANIMATION_FROM_ALPHA);
 
 
 	m_fLerpHp = 300.f;

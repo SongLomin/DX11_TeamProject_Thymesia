@@ -13,6 +13,13 @@ BEGIN(Client)
 class CHUD_Hover final : public CCustomUI
 {
 public:
+
+	enum HUD_HOVER_ANIMAITON_TYPE {
+		HUD_HOVER_ANIMATION_FROM_ALPHA, 
+		HUD_HOVER_ANIMATION_JUSTADD,
+		HUD_HOVER_ANIMATION_END};
+
+public:
 	typedef struct tagHoverDesc
 	{
 		_bool		m_bSizeChange;//사이즈 변경
@@ -32,9 +39,13 @@ public:
 	virtual HRESULT Render();
 
 
+
 public:
-	void		Init_Fader(const Engine::FaderDesc& _tFaderDesc, const HUDHOVERDESC& _tHoverDesc );
-	
+	void		Init_Fader(const Engine::FaderDesc& _tFaderDesc, const HUDHOVERDESC& _tHoverDesc, HUD_HOVER_ANIMAITON_TYPE eHoverType);
+	virtual		void Set_UIDesc(UI_DESC _tUIDesc);
+
+
+
 public:
 	void Call_FadeEnd(FADER_TYPE In_eFaderType);
 
@@ -49,7 +60,7 @@ private:
 	_float4						m_vFadeColor;
 	UI_DESC						m_tBackUpDesc;
 	HUDHOVERDESC				m_tHoverDesc;
-
+	HUD_HOVER_ANIMAITON_TYPE				m_eHoverType;
 public:
 	void Free();
 };
