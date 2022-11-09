@@ -97,8 +97,6 @@ HRESULT CMeshContainer::Initialize_Prototype()
 
 HRESULT CMeshContainer::Initialize(void* pArg)
 {
-
-
 	return S_OK;
 }
 

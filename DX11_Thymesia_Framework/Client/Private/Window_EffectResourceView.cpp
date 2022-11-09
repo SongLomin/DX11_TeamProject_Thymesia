@@ -20,6 +20,10 @@ HRESULT CWindow_EffectResourceView::Initialize()
     return S_OK;
 }
 
+void CWindow_EffectResourceView::Start()
+{
+}
+
 void CWindow_EffectResourceView::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
@@ -76,20 +80,6 @@ HRESULT CWindow_EffectResourceView::Render()
             ImGui::EndTabItem();
         }
 
-        if (ImGui::BeginTabItem("Sprite_Image"))
-        {
-            for (auto& elem : m_szSpriteImageNames)
-            {
-                if (ImGui::Selectable(elem.c_str()))
-                {
-                    CallBack_SpriteImageClick(elem.c_str());
-                }
-            }
-
-
-            ImGui::EndTabItem();
-        }
-
         ImGui::EndTabBar();
     }
 
@@ -103,7 +93,6 @@ void CWindow_EffectResourceView::Load_Resources()
     Load_EffectMesh();
     Load_Particle();
     Load_EffectGroup();
-    Load_SpriteImage();
 }
 
 void CWindow_EffectResourceView::Load_EffectMesh()
@@ -123,50 +112,6 @@ void CWindow_EffectResourceView::Load_EffectMesh()
     }
 }
 
-void CWindow_EffectResourceView::Load_AllEffectMeshInPath_Recursive(const filesystem::path& In_Path)
-{
-    if (!In_Path.filename().extension().string().empty())
-        return;
-
-    string szFileName;
-    string szExtension;
-    fs::directory_iterator itr(In_Path);
-    while (itr != fs::end(itr)) {
-        const fs::directory_entry& entry = *itr;
-
-        Load_AllEffectMeshInPath_Recursive(entry.path());
-
-        szFileName = entry.path().filename().string().c_str();
-        szFileName = szFileName.substr(0, szFileName.size() - 4);
-
-        if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
-        {
-            cout << szFileName << endl;
-            GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
-            m_szAnimEffectMeshNames.push_back(szFileName);
-        }
-
-
-        //else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0)
-        //{
-        //    cout << szFileName << endl;
-        //    GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
-        //    m_szAnimEffectMeshNames.push_back(szFileName);
-        //}
-
-        //else if (strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
-        //{
-        //    cout << szFileName << endl;
-        //    GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
-        //    m_szAnimEffectMeshNames.push_back(szFileName);
-        //}
-
-
-        itr++;
-    }
-}
-
-
 void CWindow_EffectResourceView::Load_Particle()
 {
     m_szParticleMeshNames.clear();
@@ -182,34 +127,6 @@ void CWindow_EffectResourceView::Load_Particle()
         std::cout << entry.path().filename() << std::endl;
 
         Load_Particle_Recursive(entry.path());
-
-        itr++;
-    }
-
-}
-
-void CWindow_EffectResourceView::Load_Particle_Recursive(const filesystem::path& In_Path)
-{
-    if (!In_Path.filename().extension().string().empty())
-        return;
-
-    fs::directory_iterator itr(In_Path);
-    tstring szPath;
-    string szFileName;
-
-    while (itr != fs::end(itr)) {
-        const fs::directory_entry& entry = *itr;
-
-        szFileName = entry.path().filename().string();
-
-        std::cout << entry.path().filename() << std::endl;
-
-        Load_Particle_Recursive(entry.path());
-
-        szPath = entry.path().wstring();
-        GAMEINSTANCE->Load_Textures(szFileName.c_str(), szPath.c_str());
-
-        m_szParticleMeshNames.emplace_back(entry.path().filename().string(), szFileName);
 
         itr++;
     }
@@ -236,32 +153,78 @@ void CWindow_EffectResourceView::Load_EffectGroup()
 
 }
 
-void CWindow_EffectResourceView::Load_SpriteImage()
-{
-    m_szSpriteImageNames.clear();
-
-    fs::directory_iterator itr("..\\Bin\\Resources\\Textures\\Effect\\Sprites");
-    string szPath;
-    string szFileName;
-
-    while (itr != fs::end(itr)) {
-        const fs::directory_entry& entry = *itr;
-        szFileName = entry.path().filename().string();
-
-        std::cout << entry.path().filename() << std::endl;
-
-        m_szSpriteImageNames.push_back(szFileName);
-        itr++;
-    }
-}
-
-
-
-
 void CWindow_EffectResourceView::Free()
 {
 }
 
-void CWindow_EffectResourceView::Start()
+void CWindow_EffectResourceView::Load_AllEffectMeshInPath_Recursive(const filesystem::path& In_Path)
 {
+	if (!In_Path.filename().extension().string().empty())
+		return;
+
+	string szFileName;
+	string szExtension;
+	fs::directory_iterator itr(In_Path);
+	while (itr != fs::end(itr)) {
+		const fs::directory_entry& entry = *itr;
+
+		Load_AllEffectMeshInPath_Recursive(entry.path());
+
+		szFileName = entry.path().filename().string().c_str();
+		szFileName = szFileName.substr(0, szFileName.size() - 4);
+
+		if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
+		{
+			cout << szFileName << endl;
+			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
+			m_szAnimEffectMeshNames.push_back(szFileName);
+		}
+
+
+		//else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0)
+		//{
+		//    cout << szFileName << endl;
+		//    GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
+		//    m_szAnimEffectMeshNames.push_back(szFileName);
+		//}
+
+		//else if (strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
+		//{
+		//    cout << szFileName << endl;
+		//    GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
+		//    m_szAnimEffectMeshNames.push_back(szFileName);
+		//}
+
+
+		itr++;
+	}
+}
+
+
+void CWindow_EffectResourceView::Load_Particle_Recursive(const filesystem::path& In_Path)
+{
+	if (!In_Path.filename().extension().string().empty())
+		return;
+
+	fs::directory_iterator itr(In_Path);
+	tstring szPath;
+	string szFileName;
+
+	while (itr != fs::end(itr)) {
+		const fs::directory_entry& entry = *itr;
+
+		szFileName = entry.path().filename().string();
+
+		std::cout << entry.path().filename() << std::endl;
+
+		Load_Particle_Recursive(entry.path());
+
+		szPath = entry.path().wstring();
+		GAMEINSTANCE->Load_Textures(szFileName.c_str(), szPath.c_str());
+
+		m_szParticleMeshNames.emplace_back(entry.path().filename().string(), szFileName);
+
+		itr++;
+	}
+
 }

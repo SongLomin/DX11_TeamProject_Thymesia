@@ -60,7 +60,6 @@ HRESULT CCorvus::Start()
 void CCorvus::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
 }
 
 void CCorvus::LateTick(_float fTimeDelta)

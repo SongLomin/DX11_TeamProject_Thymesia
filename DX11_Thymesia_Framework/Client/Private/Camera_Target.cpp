@@ -206,8 +206,8 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 		vTempPrePlayerPos.m128_f32[1] = 0.f;
 
 		_vector vMoveDir = vPlayerPos - vPrePlayerPos;
-		if(vMoveDir.m128_f32[2])
-		vMoveDir = XMVector3Normalize(vMoveDir) * 1.5f;
+
+		vMoveDir = XMVector3Normalize(vMoveDir) * 0.5f;
 		_vector vOffset = XMLoadFloat3(&m_vOffSet);
 
 		_float fDotValue = XMVector3Dot(XMVector3Normalize(vMoveDir), XMLoadFloat4(&m_vPreMoveDir)).m128_f32[0];
@@ -219,7 +219,7 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 		if (1.f < m_fLerpRatio)
 			m_fLerpRatio = 1.f;
 
-		vOffset = XMVectorLerp(vOffset, vMoveDir, m_fLerpRatio);
+		vOffset = XMVectorLerp(vOffset, vMoveDir, m_fLerpRatio * m_fLerpRatio);
 		XMStoreFloat3(&m_vOffSet, vOffset);
 		XMStoreFloat4(&m_vPreMoveDir, XMVector3Normalize(vMoveDir));
 
@@ -228,7 +228,7 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 	{
 		m_fLerpRatio = 0.f;
 		_vector vOffSet = XMLoadFloat3(&m_vOffSet);
-		vOffSet = XMVectorLerp(vOffSet, XMVectorSet(0.f, 0.f, 0.f, 0.f), 0.05f);
+		vOffSet = XMVectorLerp(vOffSet, XMVectorSet(0.f, 0.f, 0.f, 0.f), fTimeDelta);
 		XMStoreFloat3(&m_vOffSet, vOffSet);
 	}
 

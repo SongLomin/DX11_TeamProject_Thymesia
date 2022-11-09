@@ -211,6 +211,15 @@ namespace Engine
 		XMFLOAT2			vSpriteTexUV;
 	}VTXCOLORINSTANCE;
 
+	typedef struct tagVertex_Model_Instance
+	{
+		XMFLOAT4			vRight;
+		XMFLOAT4			vUp;
+		XMFLOAT4			vLook;
+		XMFLOAT4			vTranslation;
+		XMFLOAT4			vColor;
+	}VTXMODELINSTANCE;
+
 	typedef struct ENGINE_DLL tagVertex_Point_Instance_Declaration
 	{
 		static const unsigned int		iNumElements = 6;

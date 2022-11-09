@@ -132,8 +132,6 @@ void CGameObject::OnEventMessage(_uint iArg)
 void CGameObject::Free()
 {
 	__super::Free();
-
-	
 	m_pComponents.clear();
 }
 

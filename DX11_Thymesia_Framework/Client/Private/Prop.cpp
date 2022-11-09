@@ -84,10 +84,10 @@ void CProp::SetUp_ShaderResource()
     m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
 
 	_vector vLightFlag = { 0.f, 0.f, 1.f, 0.f };
-
 	m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector));
 }
 
 void CProp::Free()
 {
+	__super::Free();
 }
