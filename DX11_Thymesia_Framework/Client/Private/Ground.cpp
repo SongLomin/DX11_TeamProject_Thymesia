@@ -32,11 +32,13 @@ HRESULT CGround::Initialize(void* pArg)
 	m_pDiff_TextureCom	 = Add_Component<CTexture>();
 	m_pNorm_TextureCom	 = Add_Component<CTexture>();
 
-	//m_pDiff_TextureCom.lock()->Use_Texture("T_Floor_01a_C.png");
-	//m_pNorm_TextureCom.lock()->Use_Texture("T_Floor_01a_N.png");
+	m_pDiff_TextureCom.lock()->Use_Texture("T_Floor_01a_C.png");
+	m_pNorm_TextureCom.lock()->Use_Texture("T_Floor_01a_N.png");
 
-	//_float4 vInfo  = _float4(30.f, 30.f, 0.5f, 0.f);
-	//m_pVIBufferCom = Add_Component<CVIBuffer_Ground>(&vInfo);
+	shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey("MemoryYamYam");
+
+	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
+	m_pVIBufferCom.lock()->Init_Mesh(pModelData.get()->Mesh_Datas[0]);
 
 	Set_OwnerForMyComponents();
 
@@ -45,21 +47,27 @@ HRESULT CGround::Initialize(void* pArg)
 
 HRESULT CGround::Start()
 {
+	__super::Start();
+
 	return S_OK;
 }
 
 void CGround::Tick(_float fTimeDelta)
 {
-
+	__super::Tick(fTimeDelta);
 }
 
 void CGround::LateTick(_float fTimeDelta)
 {
+	__super::LateTick(fTimeDelta);
+
 	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Cast<CGameObject>(m_this));
 }
 
 HRESULT CGround::Render()
 {
+	__super::Render();
+
 	if (FAILED(SetUp_ShaderResource()))
 		return E_FAIL;
 

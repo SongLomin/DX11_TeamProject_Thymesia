@@ -151,6 +151,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("HUD_Font_BG"), TEXT("../Bin/Resources/Textures/UI/HUD/TexUI_PlagueWeaponBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("HUD_Feather"), TEXT("../Bin/Resources/Textures/UI/HUD/TexUI_Feather.png"), MEMORY_TYPE::MEMORY_STATIC);
 	
+	// For. Ground Texture : (AN) 임시 텍스쳐이므로 나중에 삭제하기
+	Load_AllParticleInPath_Recursive("../Bin/Resources/Textures/Ground/");
 
 	Load_AllMaskMap();
 	Load_AllParticleTexture();
@@ -291,6 +293,9 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	
 	
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
+
+	CEditGround::Load_AllMeshInfo();
+
 	_matrix			TransformMatrix;
 	
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성 중입니다."));
@@ -428,7 +433,7 @@ HRESULT CLoader::Loading_ForEditLevel()
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
-	Load_AllParticleInPath_Recursive("../Bin/Resources/Textures/Ground/");
+	//Load_AllParticleInPath_Recursive("../Bin/Resources/Textures/Ground/");
 
 	//GAMEINSTANCE->Load_Textures("Grass", TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 

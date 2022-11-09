@@ -52,6 +52,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	//GET_SINGLE(CGameManager)->Set_TargetForTargetCamera(Player.front());
 
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
+	GAMEINSTANCE->Add_GameObject<CGround>(LEVEL_GAMEPLAY);
 
 
 	FaderDesc tFaderDesc;
