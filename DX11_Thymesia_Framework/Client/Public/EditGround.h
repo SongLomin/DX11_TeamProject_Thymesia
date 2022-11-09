@@ -48,8 +48,12 @@ private:
 
     void    CreateBuffer();
     void    PickingGround();
+
     void    Bake_Mesh();
     void    Load_Mesh();
+
+public:
+    static void    Load_AllMeshInfo();
 
 public:
     virtual void OnEventMessage(_uint iArg) override;
@@ -73,6 +77,12 @@ private:
     _float                      m_fBufferDrawRadious    = 1.f;
     _float                      m_fBufferPower          = 1.f;
     string                      m_szMeshName;
+
+    shared_ptr<MODEL_DATA>      m_pModelData;
+
+    ComPtr<ID3D11Texture2D>               m_pTexture2D;
+    ComPtr<ID3D11ShaderResourceView>      m_pFilterTexture;
+
 
 public:
     void Free();

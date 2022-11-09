@@ -36,6 +36,8 @@ HRESULT CEditGround::Initialize(void* pArg)
 	m_pDiff_TextureCom.lock()->Use_Texture("T_Floor_01a_C.png");
 	m_pNorm_TextureCom.lock()->Use_Texture("T_Floor_01a_N.png");
 
+	Load_AllMeshInfo();
+
 	return S_OK;
 }
 
@@ -198,7 +200,30 @@ void CEditGround::CreateBuffer()
 {
 	Remove_Components<CVIBuffer_Ground>();
 
-	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>(&m_vBufferInfo);
+	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
+	m_pVIBufferCom.lock()->Init_Mesh(m_vBufferInfo);
+
+	/*D3D11_TEXTURE2D_DESC	TextureDesc;
+	ZeroMemory(&TextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
+
+	TextureDesc.Width				= m_vBufferInfo.x * m_vBufferInfo.z;
+	TextureDesc.Height				= m_vBufferInfo.y * m_vBufferInfo.z;
+	TextureDesc.MipLevels			= 1;
+	TextureDesc.ArraySize			= 1;
+	TextureDesc.Format				= DXGI_FORMAT_R8G8B8A8_UNORM;
+
+	TextureDesc.SampleDesc.Quality	= 0;
+	TextureDesc.SampleDesc.Count	= 1;
+
+	TextureDesc.Usage				= D3D11_USAGE_DYNAMIC;
+	TextureDesc.BindFlags			= D3D11_BIND_SHADER_RESOURCE;
+	TextureDesc.CPUAccessFlags		= D3D11_CPU_ACCESS_WRITE;
+	TextureDesc.MiscFlags			= 0;*/
+
+	/*if (FAILED(DEVICE->CreateTexture2D(&TextureDesc, nullptr, &m_pTexture2D.Get())))
+		return;*/
+
+
 	m_bCreate = true;
 }
 
@@ -230,12 +255,12 @@ void CEditGround::Bake_Mesh()
 {
 	MODEL_DATA tModelData;
 
-	tModelData.eModelType		= MODEL_TYPE::NAVI;
+	tModelData.eModelType		= MODEL_TYPE::GROUND;
 	tModelData.iNumAnimations	= 0;
 	tModelData.iNumMaterials	= 0;
 	tModelData.iNumMeshs		= 1;
 	tModelData.szModelFileName	= m_szMeshName;
-	tModelData.szModelFilePath	= "../bin/GroundInfo/" + m_szMeshName + ".bin";
+	tModelData.szModelFilePath	= "../Bin/GroundInfo/" + m_szMeshName + ".bin";
 	XMStoreFloat4x4(&tModelData.TransformMatrix, m_pTransformCom.lock()->Get_WorldMatrix());
 
 	tModelData.RootNode = make_shared<NODE_DATA>();
@@ -245,57 +270,73 @@ void CEditGround::Bake_Mesh()
 	_float3 vVertice[3];
 
 	shared_ptr<MESH_DATA> pMeshData = make_shared<MESH_DATA>();
-	pMeshData->eModelType		= MODEL_TYPE::NAVI;
+	pMeshData->eModelType		= MODEL_TYPE::GROUND;
 	pMeshData->iMaterialIndex	= 0;
 	pMeshData->iNumBones		= 0;
-	pMeshData->iNumFaces		= 0;
+	pMeshData->iNumFaces		= _uint(m_vBufferInfo.x - 1) * _uint(m_vBufferInfo.y - 1) * 2;
 	pMeshData->iNumVertices		= m_vBufferInfo.x * m_vBufferInfo.y;
 
-	pMeshData->pGroundVertices = shared_ptr<VTXNORTEX[]>(new VTXNORTEX[3]);
+	pMeshData->pGroundVertices = shared_ptr<VTXNORTEX[]>(new VTXNORTEX[pMeshData->iNumVertices]);
 
 	_float3 vNorm = _float3(0.f, 1.f, 0.f);
 	for (_uint i = 0; i < pMeshData->iNumVertices; ++i)
 	{
-		_float3 vOutPos;
+		VTXNORTEX vOut;
 
-		if (m_pVIBufferCom.lock()->Get_VertexPos(i, &vOutPos))
-			memcpy(&pMeshData->pGroundVertices[i].vPosition, &vOutPos, sizeof(_float3));
+		if (m_pVIBufferCom.lock()->Get_Vertex(i, &vOut))
+			memcpy(&pMeshData->pGroundVertices[i], &vOut, sizeof(VTXNORTEX));
 		else
 			DEBUG_ASSERT;
-
-		memcpy(&pMeshData->pGroundVertices[i].vNormal, &vNorm, sizeof(_float3));
 	}
+
+	pMeshData->pIndices = shared_ptr<FACEINDICES32[]>(new FACEINDICES32[pMeshData->iNumFaces]);
+
+	for (_uint i = 0; i < pMeshData->iNumFaces; ++i)
+	{
+		_uint3 Out = { 0, 0, 0 };
+
+		if (m_pVIBufferCom.lock()->Get_Indices(i, &Out))
+			memcpy(&pMeshData->pIndices[i], &Out, sizeof(_uint3));
+		else
+			DEBUG_ASSERT;
+	}
+
 
 	tModelData.Mesh_Datas.push_back(pMeshData);
 
 	tModelData.Bake_Binary();
-
-	/*GAMEINSTANCE->Load_Model(m_szMeshName.c_str(), tModelData.szModelFilePath.c_str(),
-		MODEL_TYPE::NAVI, XMMatrixIdentity(), MEMORY_TYPE::MEMORY_STATIC);*/
-
-	//Edit Write
-	/*string szEditPath;
-	szEditPath = "../bin/GroundInfo/" + m_szMeshName;
-	szEditPath += "Edit.bin";
-
-	ofstream os(szEditPath, ios::binary);
-
-	write_typed_data(os, m_vSize);
-	write_typed_data(os, m_fPitch);
-
-
-	for (_size_t i = 0; i < m_pPickPointColliderComs.size(); ++i)
-	{
-		write_typed_data(os, m_pPickPointColliderComs[i].lock()->Get_CurrentPosition());
-	}
-
-	os.close();*/
 }
 
 void CEditGround::Load_Mesh()
 {
 	//Edit Load
-	//m_pModelData = GAMEINSTANCE->Get_ModelFromKey(m_szNaviMeshName.c_str());
+	m_pModelData = GAMEINSTANCE->Get_ModelFromKey(m_szMeshName.c_str());
+
+	Remove_Components<CVIBuffer_Ground>();
+
+	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
+	m_pVIBufferCom.lock()->Init_Mesh(m_pModelData.get()->Mesh_Datas[0]);
+
+	m_bCreate = true;
+}
+
+void CEditGround::Load_AllMeshInfo()
+{
+	fs::directory_iterator itr("../Bin/GroundInfo/");
+
+	string szFileName;
+
+	while (itr != fs::end(itr))
+	{
+		const fs::directory_entry& entry = *itr;
+
+		szFileName = entry.path().filename().string().c_str();
+		szFileName = szFileName.substr(0, szFileName.size() - 4);
+
+		GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::GROUND, XMMatrixIdentity());
+
+		itr++;
+	}
 }
 
 

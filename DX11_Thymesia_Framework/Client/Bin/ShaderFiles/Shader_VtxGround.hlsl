@@ -78,7 +78,7 @@ PS_OUT		PS_MAIN_DEFAULT(PS_IN In)
 
     Out.vDiffuse	= vSourDiffuse;
 	Out.vDiffuse.a	= 1.f;
-	Out.vNormal		= vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
+	Out.vNormal		= In.vNormal;
 	Out.vDepth		= vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vLightFlag	= g_vLightFlag;
 
@@ -104,6 +104,20 @@ PS_OUT		PS_MAIN_NORM(PS_IN In)
 	return Out;
 }
 
+PS_OUT		PS_MAIN_WIREFRAM(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+    Out.vDiffuse	= vector(1.f, 1.f, 0.f, 1.f);
+	Out.vNormal		= In.vNormal;
+	Out.vDepth		= vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vLightFlag	= g_vLightFlag;
+
+	return Out;
+}
+
+/* ---------------------------------------------------------- */
+
 technique11 DefaultTechnique
 {
 	pass Ground_Default
@@ -114,7 +128,7 @@ technique11 DefaultTechnique
 
 		VertexShader	= compile vs_5_0	VS_MAIN_DEFAULT();
 		GeometryShader	= NULL;
-        PixelShader		= compile ps_5_0	PS_MAIN_NORM();
+        PixelShader		= compile ps_5_0	PS_MAIN_DEFAULT();
     }
 
 	pass Ground_Norm
@@ -125,6 +139,17 @@ technique11 DefaultTechnique
 
 		VertexShader	= compile vs_5_0	VS_MAIN_DEFAULT();
 		GeometryShader	= NULL;
-        PixelShader		= compile ps_5_0	PS_MAIN_DEFAULT();
+        PixelShader		= compile ps_5_0	PS_MAIN_NORM();
+    }
+
+	pass Ground_WireFrame
+	{
+		SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_Wireframe);
+
+		VertexShader	= compile vs_5_0	VS_MAIN_DEFAULT();
+		GeometryShader	= NULL;
+        PixelShader		= compile ps_5_0	PS_MAIN_WIREFRAM();
     }
 }
