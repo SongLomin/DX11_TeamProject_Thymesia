@@ -46,7 +46,7 @@ void CCorvusState_Jogging::Tick(_float fTimeDelta)
 	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
-	m_pTransform.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta, m_pNaviCom);
+	m_pTransform.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta * 0.5f, m_pNaviCom);
 }
 
 void CCorvusState_Jogging::LateTick(_float fTimeDelta)

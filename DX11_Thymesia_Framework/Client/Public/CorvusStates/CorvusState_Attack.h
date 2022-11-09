@@ -1,5 +1,5 @@
 #pragma once
-#include "LuxiyaStateBase.h"
+#include "CorvusStateBase.h"
 
 BEGIN(Engine)
 class CModel;
@@ -7,13 +7,13 @@ END
 
 BEGIN(Client)
 
-class CLuxiyaState_Attack :
-    public CPlayerStateBase
+class CCorvusState_Attack :
+    public CCorvusStateBase
 {
 
-    GAMECLASS_H(CLuxiyaState_Attack);
-    SHALLOW_COPY(CLuxiyaState_Attack)
-    CLONE_H(CLuxiyaState_Attack, CComponent)
+    GAMECLASS_H(CCorvusState_Attack);
+    SHALLOW_COPY(CCorvusState_Attack)
+    CLONE_H(CCorvusState_Attack, CComponent)
 
 protected:
     virtual HRESULT Initialize_Prototype() override;
@@ -24,14 +24,14 @@ protected:
 
 public:
     void Call_AnimationEnd();
-    void Play_AttackWithIndex(const _uint& In_iAttackIndex);
+    void Play_AttackWithIndex(const _tchar& In_iAttackIndex);
 
 private:
     void Attack();
     void Check_InputNextAttack();
 
 private:
-    _uint m_iAttackIndex = 0;
+    const _tchar* m_cAttackIndex;
     _bool m_IsNextAttack = false;
 
     _float m_fDebugAnimationSpeed = 1.f;
@@ -45,7 +45,7 @@ protected:
 protected:
     virtual void OnEventMessage(_uint iArg) override;
     virtual void OnDestroy() override;
-    virtual void Free() override;
+     void Free();
 
     // CLuxiyaStateBase을(를) 통해 상속됨
     virtual _bool Check_AndChangeNextState() override;
