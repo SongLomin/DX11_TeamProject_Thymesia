@@ -244,6 +244,9 @@
     <ClInclude Include="..\Public\Ground.h">
       <Filter>02. GameObject\11. Ground</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Light_Prop.h">
+      <Filter>02. GameObject\04. Prop\04. Light_Prop</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Player_PotionUI.h">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\Potion</Filter>
     </ClInclude>
@@ -473,6 +476,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CustomUI.cpp">
       <Filter>02. GameObject\01. UI\CustomUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Light_Prop.cpp">
+      <Filter>02. GameObject\04. Prop\04. Light_Prop</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Player_PotionUI.cpp">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\Potion</Filter>
@@ -816,6 +822,9 @@
     </Filter>
     <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\Hover">
       <UniqueIdentifier>{e487d713-d046-4fcc-955c-f8b1014cbff6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\04. Prop\04. Light_Prop">
+      <UniqueIdentifier>{46c37644-8182-4c31-91d7-afefc21a564b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

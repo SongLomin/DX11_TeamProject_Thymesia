@@ -112,6 +112,8 @@ namespace Client
 		_float4		vColorForce;
 		_float4		vMaxColor;
 
+		_float fDiscardRatio;
+
 		_bool		bDiffuseUV;
 		_float2		vStartUV;
 		_int		iUVMaskIndex;
@@ -127,10 +129,12 @@ namespace Client
 		_float4		vGlowColorSpeed;
 		_float4		vGlowColorForce;
 
+		_int	iShaderPassIndex;
 
 		// for sprite images
-		_bool		bSpriteImage = false;
-		_int2		iNumFrames;
+		_bool		bPendulumSprite;
+		_int		iNumFrameX;
+		_int		iNumFrameY;
 		_float2		fCurFrame;
 		_float		fSpriteSpeed;
 	};

@@ -133,6 +133,14 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("Player_Memory_Decoration"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_DecorationLine_05.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
+	//Player Skill & ItemUI
+	GAMEINSTANCE->Load_Textures(("Player_Item_Frame"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Frame.png"), MEMORY_TYPE::MEMORY_STATIC);
+	
+	//Potion Image
+	//mini : 40x40
+	GAMEINSTANCE->Load_Textures(("Potion_Default_Mini"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Frame.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	Load_AllDiffuseTexture();
 	//HUD
 	GAMEINSTANCE->Load_Textures(("HUD_Frame"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Frame.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("HUD_Frame_Hover"), TEXT("../Bin/Resources/Textures/UI/Hover_Rombo_Texture.png"), MEMORY_TYPE::MEMORY_STATIC);
@@ -144,6 +152,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	
 
 	Load_AllMaskMap();
+	Load_AllParticleTexture();
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
 
@@ -228,7 +237,7 @@ HRESULT CLoader::Loading_ForLobby()
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
-	Load_AllParticleTexture();
+	
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
 

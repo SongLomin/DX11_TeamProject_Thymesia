@@ -305,5 +305,7 @@ namespace Engine
 		// For. Sprites
 		_float2 vSpriteUV;
 		_float fCurrentSpriteTime;
+		// For Sprites - Pendulum Effect
+		_bool bFramePlayBackward; // default is false : Frame plays forward
 	};
 }
