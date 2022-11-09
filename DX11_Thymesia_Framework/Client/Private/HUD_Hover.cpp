@@ -75,7 +75,6 @@ HRESULT CHUD_Hover::Render()
 void CHUD_Hover::Init_Fade()
 {
 	m_pFaderCom.lock()->Init_Fader(m_tFaderDesc);
-	//m_tBackUpDesc = m_tUIDesc;
 
 	Set_Enable(true);
 }
