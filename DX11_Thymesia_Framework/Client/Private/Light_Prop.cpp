@@ -17,8 +17,7 @@ HRESULT CLight_Prop::Initialize_Prototype()
 
 HRESULT CLight_Prop::Initialize(void* pArg)
 {
-	// 모델이 없음.
-	//__super::Initialize(pArg);
+	// __super::Initialize(pArg);
 
 	CGameObject::Initialize(pArg);
 

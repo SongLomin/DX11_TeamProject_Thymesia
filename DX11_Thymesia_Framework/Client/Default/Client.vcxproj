@@ -228,6 +228,7 @@
     <ClInclude Include="..\Public\Level_Lobby.h" />
     <ClInclude Include="..\Public\Level_Stage2.h" />
     <ClInclude Include="..\Public\Level_Stage3.h" />
+    <ClInclude Include="..\Public\Light_Prop.h" />
     <ClInclude Include="..\Public\Map.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\PlayerStateBase.h" />
@@ -307,6 +308,7 @@
     <ClCompile Include="..\Private\Level_Lobby.cpp" />
     <ClCompile Include="..\Private\Level_Stage2.cpp" />
     <ClCompile Include="..\Private\Level_Stage3.cpp" />
+    <ClCompile Include="..\Private\Light_Prop.cpp" />
     <ClCompile Include="..\Private\Map.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\PlayerStateBase.cpp" />
