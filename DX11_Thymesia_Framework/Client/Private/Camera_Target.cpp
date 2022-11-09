@@ -262,8 +262,8 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 
 void CCamera_Target::Update_Bone()
 {
-	_matrix		ParentMatrix = m_pCameraBoneNode.lock()->Get_CombinedMatrix();
-		/** XMLoadFloat4x4(&m_TransformationMatrix)*/
+	_matrix		ParentMatrix = m_pCameraBoneNode.lock()->Get_CombinedMatrix()
+		* XMLoadFloat4x4(&m_TransformationMatrix);
 
 	ParentMatrix.r[0] = XMVector3Normalize(ParentMatrix.r[0]);
 	ParentMatrix.r[1] = XMVector3Normalize(ParentMatrix.r[1]);
