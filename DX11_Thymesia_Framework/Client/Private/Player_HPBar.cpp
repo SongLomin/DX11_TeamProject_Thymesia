@@ -164,8 +164,6 @@ void CPlayer_HPBar::Tick(_float fTimeDelta)
 
 	m_pTrack.lock()->Get_UIDESC();
 
-
-
 	m_tTextInfo.szText = to_wstring((_uint)m_fLerpHp);
 	m_tTextInfo.szText.append(L"/");
 	m_tTextInfo.szText.append(to_wstring((_uint)m_fMaxHp));

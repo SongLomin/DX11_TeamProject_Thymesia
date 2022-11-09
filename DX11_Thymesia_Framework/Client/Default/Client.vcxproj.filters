@@ -943,9 +943,6 @@
     <Filter Include="02. GameObject\99. Other\01. EditGround">
       <UniqueIdentifier>{e901b999-d046-4e3c-aa8b-98d950d74dbe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP\Track">
-      <UniqueIdentifier>{e538de5f-ea92-430b-8213-93cc4e5afda8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\01. UI\Landing">
       <UniqueIdentifier>{a38b1edb-e548-4ddb-a49a-28060b07b396}</UniqueIdentifier>
     </Filter>
