@@ -189,26 +189,25 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-    g_hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
+	g_hInst = hInstance;
+	RECT rcWindow{ 0, 0, static_cast<_long>(g_iWinCX), static_cast<_long>(g_iWinCY) };
+	LONG WndWidth{ rcWindow.right - rcWindow.left };
+	LONG WndHeight{ rcWindow.bottom - rcWindow.top };
+	AdjustWindowRect(&rcWindow, WS_OVERLAPPEDWINDOW, FALSE);
+	g_hWnd = CreateWindowW(
+		szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+		int(g_fScreenCenterX - WndWidth / 2.f),
+		int(g_fScreenCenterY - WndHeight / 2.f),
+		rcWindow.right - rcWindow.left,
+		rcWindow.bottom - rcWindow.top,
+		nullptr, nullptr, hInstance, nullptr);
 
-    RECT		rcWindow = { 0, 0, g_iWinCX, g_iWinCY };
+	if (!g_hWnd)
+		return FALSE;
 
-    AdjustWindowRect(&rcWindow, WS_OVERLAPPEDWINDOW, TRUE);
-
-    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, 0, rcWindow.right - rcWindow.left, rcWindow.bottom - rcWindow.top, nullptr, nullptr, hInstance, nullptr);
-
-    if (!hWnd)
-    {
-        return FALSE;
-    }
-
-    ShowWindow(hWnd, nCmdShow);
-    UpdateWindow(hWnd);
-
-    g_hWnd = hWnd;
-
-    return TRUE;
+	ShowWindow(g_hWnd, nCmdShow);
+	UpdateWindow(g_hWnd);
+	return TRUE;
 }
 
 //

@@ -5,6 +5,7 @@
 #include "Texture.h"
 #include "Renderer.h"
 #include "GameInstance.h"
+#include "GameManager.h"
 #include "Model.h"
 
 GAMECLASS_C(CLight_Prop)
@@ -17,14 +18,35 @@ HRESULT CLight_Prop::Initialize_Prototype()
 
 HRESULT CLight_Prop::Initialize(void* pArg)
 {
-	// __super::Initialize(pArg);
+	try
+	{
+		const std::exception Fail;
 
-	CGameObject::Initialize(pArg);
+		if (FAILED(__super::Initialize(pArg)))
+			throw Fail;
 
-	m_pShaderCom = Add_Component<CShader>();
-	m_pRendererCom = Add_Component<CRenderer>();
+		m_pModelCom.lock()->Init_Model("Torch", "", (_uint)TIMESCALE_LAYER::NONE);
 
-	m_eRenderGroup = RENDERGROUP::RENDER_END;
+		m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_VtxModel"),
+			VTXMODEL_DECLARATION::Element,
+			VTXMODEL_DECLARATION::iNumElements);
+
+		// TODO : need to be data
+		m_iPassIndex = 3; // if Normal Map exists, Pass is 3(Normal). else, Pass is 0(Default).
+
+		// TODO : need to be data
+		m_pTransformCom.lock()->Set_Position(_fvector{3.f, 1.f, 3.f, 1.f});
+		m_pTransformCom.lock()->Set_Scaled(_float3{ 0.8f, 0.8f, 0.8f });
+
+		GET_SINGLE(CGameManager)->Use_EffectGroup("TorchFire", m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
+	}
+	catch (const std::exception&)
+	{
+		assert(0);
+		return E_FAIL;
+	}
+
+	m_eRenderGroup = RENDERGROUP::RENDER_NONALPHABLEND;
 
 	ZeroMemory(&m_tLightDesc, sizeof(LIGHTDESC));
 	m_tLightDesc.eType = LIGHTDESC::TYPE::TYPE_HALFPOINT;
@@ -36,11 +58,8 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	m_tLightDesc.vLightFlag = { 1.f, 1.f, 1.f, 1.f };
 	m_tLightDesc.fRange = 17.f;
 
-
 	m_iLightIndex = GAMEINSTANCE->Add_Light(m_tLightDesc);
 	m_tLightDesc = GAMEINSTANCE->Get_LightDesc(m_iLightIndex);
-
-
 	return S_OK;
 }
 
@@ -52,22 +71,29 @@ HRESULT CLight_Prop::Start()
 void CLight_Prop::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
 }
 
 void CLight_Prop::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
-
 }
 
 HRESULT CLight_Prop::Render()
 {
-	
+	__super::SetUp_ShaderResource();
 
+	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
+	for (_uint i = 0; i < iNumMeshContainers; ++i)
+	{
+		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
+		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS);
+		m_pShaderCom.lock()->Begin(m_iPassIndex);
+		m_pModelCom.lock()->Render_Mesh(i);
+	}
+
+	CGameObject::Render();
 	return S_OK;
 }
-
 
 void CLight_Prop::Write_Json(json& Out_Json)
 {
@@ -146,9 +172,8 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 
 }
 
-
 void CLight_Prop::Free()
 {
+	__super::Free();
 	GAMEINSTANCE->Remove_Light(m_tLightDesc.Get_LightIndex());
-
 }

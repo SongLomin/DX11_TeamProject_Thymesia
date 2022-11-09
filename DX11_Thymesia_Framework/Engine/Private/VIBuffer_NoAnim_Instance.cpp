@@ -2,21 +2,21 @@
 #include "GameInstance.h"
 #include "ModelData.h"
 
-GAMECLASS_C(CVIBuffer_NoAnim_Instance)
-CLONE_C(CVIBuffer_NoAnim_Instance, CComponent)
+GAMECLASS_C(CVIBuffer_Model_Instance)
+CLONE_C(CVIBuffer_Model_Instance, CComponent)
 
-HRESULT CVIBuffer_NoAnim_Instance::Initialize_Prototype()
+HRESULT CVIBuffer_Model_Instance::Initialize_Prototype()
 {
 
 	return S_OK;
 }
 
-HRESULT CVIBuffer_NoAnim_Instance::Initialize(void* pArg)
+HRESULT CVIBuffer_Model_Instance::Initialize(void* pArg)
 {
 #pragma region VERTEXBUFFER
-	m_iStride = sizeof(VTXTEX);
+	m_iStride = sizeof(VTXMODEL);
 	m_iNumVertices = 4;
-	m_iNumVertexBuffers = 2;
+	m_iNumVertexBuffers = 1;
 
 	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
 	m_BufferDesc.ByteWidth = m_iStride * m_iNumVertices;
@@ -91,11 +91,11 @@ HRESULT CVIBuffer_NoAnim_Instance::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CVIBuffer_NoAnim_Instance::Start()
+void CVIBuffer_Model_Instance::Start()
 {
 }
 
-void CVIBuffer_NoAnim_Instance::Init_NoAnimInstance(const char* In_szModelName, const MEMORY_TYPE In_eModelMemoryType, const _uint In_iNoAnimIndex)
+void CVIBuffer_Model_Instance::Init_NoAnimInstance(const char* In_szModelName, const MEMORY_TYPE In_eModelMemoryType, const _uint In_iNoAnimIndex)
 {
 	weak_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey(In_szModelName, In_eModelMemoryType);
 
@@ -142,7 +142,7 @@ void CVIBuffer_NoAnim_Instance::Init_NoAnimInstance(const char* In_szModelName, 
 
 }
 
-void CVIBuffer_NoAnim_Instance::Init_Particle(const _uint In_Size)
+void CVIBuffer_Model_Instance::Init_Particle(const _uint In_Size)
 {
 	if (0 == In_Size)
 		return;
@@ -184,7 +184,7 @@ void CVIBuffer_NoAnim_Instance::Init_Particle(const _uint In_Size)
 #pragma endregion
 }
 
-HRESULT CVIBuffer_NoAnim_Instance::Render()
+HRESULT CVIBuffer_Model_Instance::Render()
 {
 
 	ID3D11Buffer* pVertexBuffers[] = {
@@ -212,7 +212,7 @@ HRESULT CVIBuffer_NoAnim_Instance::Render()
 	return S_OK;
 }
 
-void CVIBuffer_NoAnim_Instance::Update(_float fTimeDelta)
+void CVIBuffer_Model_Instance::Update(_float fTimeDelta)
 {
 	D3D11_MAPPED_SUBRESOURCE		SubResource;
 
@@ -234,7 +234,7 @@ void CVIBuffer_NoAnim_Instance::Update(_float fTimeDelta)
 	DEVICECONTEXT->Unmap(m_pVBInstance.Get(), 0);
 }
 
-void CVIBuffer_NoAnim_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDescs)
+void CVIBuffer_Model_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDescs)
 {
 	if (In_ParticleDescs.size() == 0 || 0 == m_iNumInstance)
 		return;
@@ -282,7 +282,7 @@ void CVIBuffer_NoAnim_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleD
 
 }
 
-void CVIBuffer_NoAnim_Instance::Free()
+void CVIBuffer_Model_Instance::Free()
 {
 
 }

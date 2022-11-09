@@ -97,6 +97,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CCorvus>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CTerrain>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CStatic_Prop>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CLight_Prop>();
 
 
 
@@ -220,6 +221,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Corvus", "../Bin/Resources/Meshes/Corvus/Corvus.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC,true);
 
+	GAMEINSTANCE->Load_Model("Torch", "../Bin/Resources/Meshes/LightProp/Torch/Torch.FBX", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
 	lstrcpy(m_szLoadingText, TEXT("객체 생성 중입니다. "));
 
 	Create_GameObjectFromJson("../Bin/LevelData/Logo.json", LEVEL_LOGO);
@@ -299,6 +302,8 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_GAMEPLAY);
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
+
+	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_GAMEPLAY);
 
 	GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_GAMEPLAY);
 

@@ -8,8 +8,12 @@
 
 namespace Client 
 {
-	static const unsigned int g_iWinCX = 1600;
-	static const unsigned int g_iWinCY = 900;
+	static const _uint	g_iScreenCX = GetSystemMetrics(SM_CXSCREEN);
+	static const _uint	g_iScreenCY = GetSystemMetrics(SM_CYSCREEN);
+	static const _float g_fScreenCenterX = g_iScreenCX / 2.f;
+	static const _float g_fScreenCenterY = g_iScreenCY / 2.f;
+	static const _uint	g_iWinCX = 1600;
+	static const _uint	g_iWinCY = 900;
 
 	enum LEVEL { LEVEL_STATIC, LEVEL_LOADING, LEVEL_LOGO, LEVEL_LOBBY, LEVEL_GAMEPLAY, LEVEL_STAGE2, LEVEL_STAGE3, LEVEL_EDIT, LEVEL_END };
 	enum class TIMER { TIMER_DEFAULT, TIMER_FRAME, TIMER_HYPERSPACE, TIMER_END };
