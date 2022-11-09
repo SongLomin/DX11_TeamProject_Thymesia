@@ -24,9 +24,6 @@ HRESULT CCorvusState_Attack::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	//m_vCurrentIndex[0].push_back("Corvus_SD_LAttack1");
-	//m_vCurrentIndex[1].push_back("Corvus_SD_LAttack2");
-	//m_vCurrentIndex[2].push_back("Corvus_SD_LAttack3_New");
 
 
 	return S_OK;
@@ -88,12 +85,12 @@ void CCorvusState_Attack::Call_AnimationEnd()
 void CCorvusState_Attack::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 {
 
-	m_vCurrentIndex = In_iAttackIndex;
-
-	if (6 == m_iAttackIndex)
-	{
-		m_iAttackIndex = 2;
-	}
+	//m_vCurrentIndex = In_iAttackIndex;
+	//
+	//if (6 == m_iAttackIndex)
+	//{
+	//	m_iAttackIndex = 2;
+	//}
 
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
 
@@ -328,7 +325,7 @@ _bool CCorvusState_Attack::Check_RequirementNextAttackState()
 {
 	_uint iTargetKeyFrame = 999;
 
-	switch (m_cAttackIndex)
+	switch (m_iAttackIndex)
 	{
 	case 0:
 		iTargetKeyFrame = 28;

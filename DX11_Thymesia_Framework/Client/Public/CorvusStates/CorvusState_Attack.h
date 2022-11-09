@@ -31,7 +31,7 @@ private:
     void Check_InputNextAttack();
 
 private:
-    const _tchar* m_cAttackIndex;
+    _uint m_iAttackIndex;
     _bool m_IsNextAttack = false;
 
     _float m_fDebugAnimationSpeed = 1.f;
