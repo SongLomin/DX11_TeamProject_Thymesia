@@ -4,6 +4,8 @@
 
 BEGIN(Engine)
 class CTransform;
+class CModel;
+class CBoneNode;
 END
 
 BEGIN(Client)
@@ -41,6 +43,9 @@ public:
 	void Change_Target();
 	void Focus_Monster(weak_ptr<CGameObject> _pMonster);
 	void Release_Focus();
+
+	void Start_Cinematic(weak_ptr<CModel> _pModel,const _char* pBoneName);
+	void End_Cinematic();
 	/*
 	* 플레이어한테도 해당 타겟을 넘겨줌 <-선형 보간으로 플레이어 방향을 몬스터를 향하게 도렬둠
 	* 게임 매니저에서 몬스터의포인터를 가지고 있음
@@ -58,9 +63,16 @@ private:
 
 	void Interpolate_Camera(_float fTimeDelta);
 
+	void Update_Bone();
 
 
 private:
+	_bool					m_bCinematic = false;
+	weak_ptr<CTransform>	m_pCameraBoneParentTransform;
+	weak_ptr<CBoneNode>		m_pCameraBoneNode;
+	_float4x4				m_TransformationMatrix;
+	_float4x4				m_OriginalMatrix;
+
 	weak_ptr<CPlayer>		m_pCurrentPlayer;
 	weak_ptr<CTransform>	m_pCurrentPlayerTransformCom;
 

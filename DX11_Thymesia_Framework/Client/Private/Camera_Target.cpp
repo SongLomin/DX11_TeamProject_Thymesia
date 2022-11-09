@@ -4,6 +4,8 @@
 #include "Monster.h"
 #include "Player.h"
 #include "GameObject.h"
+#include "Model.h"
+#include "BoneNode.h"
 
 GAMECLASS_C(CCamera_Target);
 CLONE_C(CCamera_Target, CGameObject);
@@ -62,29 +64,37 @@ void CCamera_Target::Tick(_float fTimeDelta)
 	if (!m_pCurrentPlayer.lock().get())
 		return;
 
-	if (GAMEINSTANCE->Get_DIMouseKeyState(MOUSEBUTTON::MBS_WHEEL) & 0x80)
-	{
-		m_bIsFocused = !m_bIsFocused;
-		if (m_bIsFocused)
-			GET_SINGLE(CGameManager)->Focus_Monster();
-		else
-			GET_SINGLE(CGameManager)->Release_Focus();
+	if(m_bCinematic)
+	{ 
+		Update_Bone();
 	}
 
-	if (m_bIsFocused)
-	{
-		if (!m_pTargetMonster.lock()|| m_pTargetMonster.lock()->Get_Dead())
-		{
-			return;
-		}
-		Look_At_Target(fTimeDelta);
-	}
 	else
 	{
-		Free_MouseMove(fTimeDelta);
-	}
+		if (GAMEINSTANCE->Get_DIMouseKeyState(MOUSEBUTTON::MBS_WHEEL) & 0x80)
+		{
+			m_bIsFocused = !m_bIsFocused;
+			if (m_bIsFocused)
+				GET_SINGLE(CGameManager)->Focus_Monster();
+			else
+				GET_SINGLE(CGameManager)->Release_Focus();
+		}
 
-	Interpolate_Camera(fTimeDelta);
+		if (m_bIsFocused)
+		{
+			if (!m_pTargetMonster.lock() || m_pTargetMonster.lock()->Get_Dead())
+			{
+				return;
+			}
+			Look_At_Target(fTimeDelta);
+		}
+		else
+		{
+			Free_MouseMove(fTimeDelta);
+		}
+
+		Interpolate_Camera(fTimeDelta);
+	}
 
 }
 
@@ -116,6 +126,25 @@ void CCamera_Target::Release_Focus()
 	m_pTargetMonster = weak_ptr<CGameObject>();
 	m_pTargetMonsterTransformCom = weak_ptr<CTransform>();
 
+}
+
+void CCamera_Target::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName)
+{
+	m_pCameraBoneNode = _pModel.lock()->Find_BoneNode(pBoneName);
+	m_pCameraBoneParentTransform = _pModel.lock()->Get_Owner().lock()->Get_Component<CTransform>();
+	m_TransformationMatrix = _pModel.lock()->Get_TransformationMatrix();
+	m_bCinematic = true;
+
+	XMStoreFloat4x4(&m_OriginalMatrix, m_pTransformCom.lock()->Get_WorldMatrix());
+}
+
+void CCamera_Target::End_Cinematic()
+{
+	m_pCameraBoneNode = weak_ptr<CBoneNode>();
+	m_pCameraBoneParentTransform = weak_ptr<CTransform>();
+	m_bCinematic = false;
+
+	m_pTransformCom.lock()->Set_WorldMatrix(XMLoadFloat4x4(&m_OriginalMatrix));
 }
 
 
@@ -229,6 +258,19 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * -4.f + XMVectorSet(0.f, 2.f, 0.f, 0.f);
 
 	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
+}
+
+void CCamera_Target::Update_Bone()
+{
+	_matrix		ParentMatrix = m_pCameraBoneNode.lock()->Get_CombinedMatrix();
+		/** XMLoadFloat4x4(&m_TransformationMatrix)*/
+
+	ParentMatrix.r[0] = XMVector3Normalize(ParentMatrix.r[0]);
+	ParentMatrix.r[1] = XMVector3Normalize(ParentMatrix.r[1]);
+	ParentMatrix.r[2] = XMVector3Normalize(ParentMatrix.r[2]);
+
+
+	m_pTransformCom.lock()->Set_WorldMatrix(ParentMatrix * m_pCameraBoneParentTransform.lock()->Get_UnScaledWorldMatrix());
 }
 
 void CCamera_Target::OnLevelExit()

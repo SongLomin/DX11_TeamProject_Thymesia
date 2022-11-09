@@ -64,7 +64,7 @@ void CVarg_Execution::OnStateStart(const _float& In_fAnimationBlendTime)
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-
+	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom,"camera");
 #ifdef _DEBUG
 	cout << "LuxiyaState: RunStart -> OnStateStart" << endl;
 #endif
@@ -75,7 +75,7 @@ void CVarg_Execution::OnStateStart(const _float& In_fAnimationBlendTime)
 void CVarg_Execution::OnStateEnd()
 {
 	__super::OnStateEnd();
-
+	GET_SINGLE(CGameManager)->End_Cinematic();
 	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Dust", m_iDustEffectIndex);
 }
 
