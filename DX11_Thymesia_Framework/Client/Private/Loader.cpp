@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "Player_PotionUI.h"
 #include "Player_FeatherUI.h"
+#include "UI_Landing.h"
 CLoader::CLoader()
 	//: m_pDevice(pDevice), m_pContext(pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
@@ -346,6 +347,8 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	GET_SINGLE(CGameManager)->Register_Player_HUD_Feather(
 	GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
+
+	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);
 
 	Create_GameObjectFromJson("../Bin/LevelData/Stage1.json", LEVEL_GAMEPLAY);
 

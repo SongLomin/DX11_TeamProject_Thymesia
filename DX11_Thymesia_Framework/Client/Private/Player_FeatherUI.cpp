@@ -124,13 +124,13 @@ void CPlayer_FeatherUI::Tick(_float fTimeDelta)
         m_fRatio += 0.3f * fTimeDelta;
     }
 
-    if (KEY_INPUT(KEY::C, KEY_STATE::HOLD))
+    if (KEY_INPUT(KEY::C, KEY_STATE::TAP))
     {
-
+        m_pHover.lock()->CallBack_FadeEnd -= bind(&CPlayer_FeatherUI::Call_FadeEnd, this, placeholders::_1);
         CHUD_Hover::HUDHOVERDESC tHoverDesc;
         tHoverDesc.m_bSizeChange = true;
         tHoverDesc.m_fSizeMag = 0.2f;
-        m_pHover.lock()->CallBack_FadeEnd += bind(&CPlayer_FeatherUI::Call_FadeEnd, this);
+        m_pHover.lock()->CallBack_FadeEnd += bind(&CPlayer_FeatherUI::Call_FadeEnd, this, placeholders::_1);
         m_pHover.lock()->Init_Fader(m_tFaderDesc, tHoverDesc);
     }
 #endif // _DEBUG
@@ -175,7 +175,7 @@ void CPlayer_FeatherUI::Set_CurrentFeather(_uint _iCurrentFeather)
         m_tCurrentFeatherTextInfo.vColor = _float4(0.7f, 0.7f, 0.7f, 1.f);
 }
 
-void CPlayer_FeatherUI::Call_FadeEnd()
+void CPlayer_FeatherUI::Call_FadeEnd(FADER_TYPE eFaderType)
 {
     m_pHover.lock()->Set_UIDesc(m_tUIDesc);
     m_pHover.lock()->Set_Enable(false);

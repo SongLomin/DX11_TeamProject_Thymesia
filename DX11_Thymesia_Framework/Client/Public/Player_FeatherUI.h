@@ -51,7 +51,7 @@ private:
 
 
 public:
-	void			Call_FadeEnd();
+	void			Call_FadeEnd(FADER_TYPE eFaderType);
 
 };
 END

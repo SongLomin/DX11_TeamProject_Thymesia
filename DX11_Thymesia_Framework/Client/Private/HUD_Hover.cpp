@@ -87,8 +87,8 @@ void CHUD_Hover::Call_FadeEnd(FADER_TYPE In_eFaderType)
 {
 	//대리자에 뭐 등록된건 없는데 일단 넣어놓았음.
 
-	CallBack_FadeEnd();
-	CallBack_FadeEnd.Clear();
+	CallBack_FadeEnd(In_eFaderType);
+	//CallBack_FadeEnd.Clear();
 
 }
 
