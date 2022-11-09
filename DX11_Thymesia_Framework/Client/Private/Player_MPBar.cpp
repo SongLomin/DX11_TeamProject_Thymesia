@@ -39,8 +39,12 @@ HRESULT CPlayer_MPBar::Initialize(void* pArg)
 
 	m_tUIDesc.fDepth = 0.f;
 	
-	m_fCurrentMp = 150.f;
 	m_fMaxMp = 150.f;
+	m_fCurrentMp = m_fMaxMp;
+	m_fLerpMp = m_fCurrentMp;
+
+	m_tUIDesc.fDepth = 0.f;
+	m_fLerpAcc = 1.f;
 
 	m_tTextInfo.bAlways = false;
 	m_tTextInfo.bCenterAlign = false;
@@ -72,18 +76,56 @@ void CPlayer_MPBar::Tick(_float fTimeDelta)
 	if (KEY_INPUT(KEY::J, KEY_STATE::TAP))
 	{
 		m_fCurrentMp -= 30.f;
+
 	}
 	if (KEY_INPUT(KEY::K, KEY_STATE::TAP))
 	{
+
 		m_fCurrentMp += 30.f;
+		m_fLerpMp = m_fCurrentMp;
+		m_fLerpAcc = 1.f;
 	}
-#endif // DEBUG
+	if (KEY_INPUT(KEY::Q, KEY_STATE::TAP))
+	{
+		m_fCurrentMp -= 200.f;
+
+	}
+	//if (KEY_INPUT(KEY::W, KEY_STATE::TAP))
+	//{
+	//
+	//	m_fCurrentMp += 200.f;
+	//	m_fLerpMp = m_fCurrentMp;
+	//	m_fLerpAcc = 1.f;
+	//}
+#endif // _DEBUG
+
 	if (m_fCurrentMp < 0.f)
 		m_fCurrentMp = 0.f;
 	else if (m_fCurrentMp > m_fMaxMp)
 		m_fCurrentMp = m_fMaxMp;
 
-	m_pMainBar.lock()->Set_Ratio( m_fCurrentMp / m_fMaxMp);
+	if (m_fCurrentMp != m_fLerpMp)
+	{
+		_float fRight = max(m_fCurrentMp, m_fLerpMp);
+		_float fLeft = min(m_fCurrentMp, m_fLerpMp);
+		_float fLerp;
+
+		fLerp = SMath::Lerp(fLeft, fRight, fTimeDelta * m_fLerpAcc);
+
+		if (fabs(m_fCurrentMp - m_fLerpMp) > 1.f)
+		{
+			m_fLerpMp -= (fLerp - fLeft);//·¯ÇÁ Â÷ÀÌ°ª¸¸Å­ »©ÁÜ
+			m_fLerpAcc += 0.4f;
+		}
+		else
+		{
+			m_fLerpMp = m_fCurrentMp;
+			m_fLerpAcc = 1.f;
+		}
+	}
+	_float fRatio = m_fLerpMp / m_fMaxMp;
+
+	m_pMainBar.lock()->Set_Ratio(fRatio);
 
 	m_tTextInfo.szText = to_wstring((_uint)m_fCurrentMp);
 	m_tTextInfo.szText.append(L"/");
@@ -112,6 +154,11 @@ void CPlayer_MPBar::OnEventMessage(_uint iArg)
 
 void CPlayer_MPBar::Set_CurrentMp(_float _fCurrentMp)
 {
+	if (_fCurrentMp > m_fCurrentMp)
+	{
+		m_fLerpMp = _fCurrentMp;
+		m_fLerpAcc = 1.f;
+	}
 	m_fCurrentMp = _fCurrentMp;
 }
 

@@ -151,7 +151,7 @@ void CFader::Fade_Out(_float fTimeDelta)
 
 void CFader::Fade_Looping(_float fTimeDelta)
 {
-	if (m_fCurrentDelayTime <= 0.f)
+	if (m_fFadeTime <= 0.f)
 	{
 		Reset_Fader();
 		m_isFadeOut = true - m_isFadeOut;

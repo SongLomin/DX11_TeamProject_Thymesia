@@ -7,6 +7,10 @@
 #include "CustomUI.h"
 #include "Player_ProgressBar.h"
 #include "HUD_Hover.h"
+#include "Fader.h"
+#include "GameManager.h"
+#include "Engine_Defines.h"
+#include "HUD_Hover.h"
 
 GAMECLASS_C(CPlayer_FeatherUI)
 CLONE_C(CPlayer_FeatherUI, CGameObject);
@@ -70,6 +74,21 @@ HRESULT CPlayer_FeatherUI::Initialize(void* pArg)
     m_tMaxFeatherTextInfo.vScale = _float2(0.5, 0.5f);
     m_tMaxFeatherTextInfo.vPosition = _float2(m_tUIDesc.fX + 40.f, m_tUIDesc.fY - 10.f);
 
+
+
+    //HoverDesc
+    
+    //HoverFaderDesc
+    m_tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+    m_tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+    m_tFaderDesc.fDelayTime = 0.f;
+    m_tFaderDesc.fFadeMaxTime = 1.f;
+    m_tFaderDesc.vFadeColor = _float4(0,0,0,0.7f);
+
+
+
+
+
     m_fRatio = 1.f;
 
     return S_OK;
@@ -107,9 +126,13 @@ void CPlayer_FeatherUI::Tick(_float fTimeDelta)
 
     if (KEY_INPUT(KEY::C, KEY_STATE::HOLD))
     {
-        m_pHover.lock()->Init_Fade();
-    }
 
+        CHUD_Hover::HUDHOVERDESC tHoverDesc;
+        tHoverDesc.m_bSizeChange = true;
+        tHoverDesc.m_fSizeMag = 0.2f;
+        m_pHover.lock()->CallBack_FadeEnd += bind(&CPlayer_FeatherUI::Call_FadeEnd, this);
+        m_pHover.lock()->Init_Fader(m_tFaderDesc, tHoverDesc);
+    }
 #endif // _DEBUG
     m_pFrameBorder.lock()->Set_Ratio(m_fRatio);
 
@@ -150,6 +173,13 @@ void CPlayer_FeatherUI::Set_CurrentFeather(_uint _iCurrentFeather)
         m_tCurrentFeatherTextInfo.vColor = _float4(1.f, 0.f, 0.f, 1.f);
     else
         m_tCurrentFeatherTextInfo.vColor = _float4(0.7f, 0.7f, 0.7f, 1.f);
+}
+
+void CPlayer_FeatherUI::Call_FadeEnd()
+{
+    m_pHover.lock()->Set_UIDesc(m_tUIDesc);
+    m_pHover.lock()->Set_Enable(false);
+
 }
 
 

@@ -28,7 +28,6 @@ public:
 	void			Set_MaxFeather(_uint _iMaxFeather);
 	void			Set_CurrentFeather(_uint _iCurrentFeather);
 
-
 private:
 	_uint			m_iMaxFeather;
 	_uint			m_iCurrentFeather;
@@ -41,12 +40,18 @@ private:
 	weak_ptr<CHUD_Hover> m_pHover;
 
 private:
+	Engine::FaderDesc m_tFaderDesc; //For HUD_Hover;
+	
+private:
 	_float				m_fRatio;
 	
 private:
 	TEXTINFO		m_tCurrentFeatherTextInfo;
 	TEXTINFO		m_tMaxFeatherTextInfo;
 
+
+public:
+	void			Call_FadeEnd();
 
 };
 END

@@ -23,6 +23,7 @@ public:
 
 public:
 	void		Set_CurrentMp(_float	_fCurrentMp);
+	void		Set_MaxMp(_float	_fMaxMp) { m_fMaxMp = _fMaxMp; }
 
 protected:
 	virtual HRESULT SetUp_ShaderResource() override;
@@ -35,8 +36,13 @@ private:
 	weak_ptr< CPlayer_ProgressBar>	m_pTrack;
 
 private:
+	_float			m_fLerpAcc;
+
+private:
 	_float			m_fMaxMp;
 	_float			m_fCurrentMp;
+	_float			m_fLerpMp;
+
 
 private:
 	TEXTINFO		m_tTextInfo;

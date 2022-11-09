@@ -250,9 +250,6 @@
     <ClInclude Include="..\Public\Player_PotionUI.h">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\Potion</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Player_FeatherUI.h">
-      <Filter>02. GameObject\01. UI\PlayerUI\HUD\Hover</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\HUD_Hover.h">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\Hover</Filter>
     </ClInclude>
@@ -300,6 +297,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\EditGround.h">
       <Filter>02. GameObject\99. Other\01. EditGround</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player_FeatherUI.h">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\Feather</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -575,6 +575,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\EditGround.cpp">
       <Filter>02. GameObject\99. Other\01. EditGround</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_Hover.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\Hover</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -921,6 +924,9 @@
     </Filter>
     <Filter Include="02. GameObject\99. Other\01. EditGround">
       <UniqueIdentifier>{e901b999-d046-4e3c-aa8b-98d950d74dbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP\Track">
+      <UniqueIdentifier>{e538de5f-ea92-430b-8213-93cc4e5afda8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
