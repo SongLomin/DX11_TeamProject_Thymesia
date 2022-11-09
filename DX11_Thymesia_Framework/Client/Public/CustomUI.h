@@ -4,7 +4,7 @@
 
 BEGIN(Client)
 
-class CCustomUI final : public CUI
+class CCustomUI : public CUI
 {
 public:
 	GAMECLASS_H(CCustomUI);
@@ -16,6 +16,9 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
+
+public:
+	void		Set_PassIndex(_uint _iPassIndex);
 
 protected:
 	virtual HRESULT SetUp_ShaderResource() override;

@@ -60,6 +60,8 @@ void CPlayerStateBase::Turn_Transform(_float fTimeDelta)
 	CurrentCamWorldMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD);
 	CurrentCamWorldMatrix = SMath::Get_MatrixNormalize(CurrentCamWorldMatrix);
 
+	
+
 	_vector vLookDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 
 	if (KEY_INPUT(KEY::W, KEY_STATE::HOLD))

@@ -1,17 +1,17 @@
-#include "VIBuffer_Mesh_Instance.h"
+#include "VIBuffer_NOAnim_Instance.h"
 #include "GameInstance.h"
 #include "ModelData.h"
 
-GAMECLASS_C(CVIBuffer_Mesh_Instance)
-CLONE_C(CVIBuffer_Mesh_Instance, CComponent)
+GAMECLASS_C(CVIBuffer_NoAnim_Instance)
+CLONE_C(CVIBuffer_NoAnim_Instance, CComponent)
 
-HRESULT CVIBuffer_Mesh_Instance::Initialize_Prototype()
+HRESULT CVIBuffer_NoAnim_Instance::Initialize_Prototype()
 {
 
 	return S_OK;
 }
 
-HRESULT CVIBuffer_Mesh_Instance::Initialize(void* pArg)
+HRESULT CVIBuffer_NoAnim_Instance::Initialize(void* pArg)
 {
 #pragma region VERTEXBUFFER
 	m_iStride = sizeof(VTXTEX);
@@ -91,27 +91,27 @@ HRESULT CVIBuffer_Mesh_Instance::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CVIBuffer_Mesh_Instance::Start()
+void CVIBuffer_NoAnim_Instance::Start()
 {
 }
 
-void CVIBuffer_Mesh_Instance::Init_MeshInstance(const char* In_szModelName, const MEMORY_TYPE In_eModelMemoryType, const _uint In_iMeshIndex)
+void CVIBuffer_NoAnim_Instance::Init_NoAnimInstance(const char* In_szModelName, const MEMORY_TYPE In_eModelMemoryType, const _uint In_iNoAnimIndex)
 {
 	weak_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey(In_szModelName, In_eModelMemoryType);
 
-	m_pMeshData = pModelData.lock()->Mesh_Datas[In_iMeshIndex];
+	m_pNoAnimData = pModelData.lock()->NoAnim_Datas[In_iNoAnimIndex];
 	m_szName = pModelData.lock()->szModelFileName;
 
 #pragma region VERTEXBUFFER
 
-	m_iMaterialIndex = m_pMeshData.lock()->iMaterialIndex;
+	m_iMaterialIndex = m_pNoAnimData.lock()->iMaterialIndex;
 
 	HRESULT		hr = 0;
 
-	if (MODEL_TYPE::NONANIM == tMeshData->eModelType)
-		hr = Ready_VertexBuffer_NonAnim(tMeshData);
+	if (MODEL_TYPE::NONANIM == tNoAnimData->eModelType)
+		hr = Ready_VertexBuffer_NonAnim(tNoAnimData);
 	else
-		hr = Ready_VertexBuffer_Anim(tMeshData, pModel);
+		hr = Ready_VertexBuffer_Anim(tNoAnimData, pModel);
 
 	if (FAILED(hr))
 		DEBUG_ASSERT;
@@ -119,8 +119,8 @@ void CVIBuffer_Mesh_Instance::Init_MeshInstance(const char* In_szModelName, cons
 
 #pragma region INDEXBUFFER
 	m_iIndicesStride = sizeof(FACEINDICES32);
-	m_iNumPrimitive = tMeshData->iNumFaces;
-	//m_iNumPrimitive = pAIMesh->mNumFaces;
+	m_iNumPrimitive = tNoAnimData->iNumFaces;
+	//m_iNumPrimitive = pAINoAnim->mNumFaces;
 	m_iNumIndices = 3 * m_iNumPrimitive;
 	m_eIndexFormat = DXGI_FORMAT_R32_UINT;
 	m_eToplogy = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
@@ -134,7 +134,7 @@ void CVIBuffer_Mesh_Instance::Init_MeshInstance(const char* In_szModelName, cons
 	m_BufferDesc.MiscFlags = 0;
 
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
-	m_SubResourceData.pSysMem = tMeshData->pIndices.get();
+	m_SubResourceData.pSysMem = tNoAnimData->pIndices.get();
 
 	if (FAILED(Create_IndexBuffer()))
 		DEBUG_ASSERT;
@@ -142,7 +142,7 @@ void CVIBuffer_Mesh_Instance::Init_MeshInstance(const char* In_szModelName, cons
 
 }
 
-void CVIBuffer_Mesh_Instance::Init_Particle(const _uint In_Size)
+void CVIBuffer_NoAnim_Instance::Init_Particle(const _uint In_Size)
 {
 	if (0 == In_Size)
 		return;
@@ -184,7 +184,7 @@ void CVIBuffer_Mesh_Instance::Init_Particle(const _uint In_Size)
 #pragma endregion
 }
 
-HRESULT CVIBuffer_Mesh_Instance::Render()
+HRESULT CVIBuffer_NoAnim_Instance::Render()
 {
 
 	ID3D11Buffer* pVertexBuffers[] = {
@@ -212,7 +212,7 @@ HRESULT CVIBuffer_Mesh_Instance::Render()
 	return S_OK;
 }
 
-void CVIBuffer_Mesh_Instance::Update(_float fTimeDelta)
+void CVIBuffer_NoAnim_Instance::Update(_float fTimeDelta)
 {
 	D3D11_MAPPED_SUBRESOURCE		SubResource;
 
@@ -234,7 +234,7 @@ void CVIBuffer_Mesh_Instance::Update(_float fTimeDelta)
 	DEVICECONTEXT->Unmap(m_pVBInstance.Get(), 0);
 }
 
-void CVIBuffer_Mesh_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDescs)
+void CVIBuffer_NoAnim_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDescs)
 {
 	if (In_ParticleDescs.size() == 0 || 0 == m_iNumInstance)
 		return;
@@ -282,7 +282,7 @@ void CVIBuffer_Mesh_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDes
 
 }
 
-void CVIBuffer_Mesh_Instance::Free()
+void CVIBuffer_NoAnim_Instance::Free()
 {
 
 }

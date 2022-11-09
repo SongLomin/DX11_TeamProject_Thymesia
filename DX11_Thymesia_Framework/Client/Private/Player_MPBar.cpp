@@ -45,7 +45,7 @@ HRESULT CPlayer_MPBar::Initialize(void* pArg)
 	m_tTextInfo.bAlways = false;
 	m_tTextInfo.bCenterAlign = false;
 	m_tTextInfo.fRotation = 0.f;
-	m_tTextInfo.vColor = _float4(1.f, 1.f, 1.f, 1.f);
+	m_tTextInfo.vColor = _float4(0.7f, 0.7f, 0.7f, 0.7f);
 	m_tTextInfo.vScale = _float2(0.5, 0.5f);
 	m_tTextInfo.vPosition = _float2(300.f + 200.f + 20.f, m_tUIDesc.fY - 10.f);
 

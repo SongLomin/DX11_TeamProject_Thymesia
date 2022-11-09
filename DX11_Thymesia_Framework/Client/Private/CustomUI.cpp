@@ -26,6 +26,8 @@ HRESULT CCustomUI::Initialize(void* pArg)
 
 	m_tUIDesc.fDepth = 0.0f;
 	m_iPassIndex = 4;
+	if (pArg != nullptr)
+		memcpy(&m_tUIDesc, pArg, sizeof(UI_DESC));
 
 	m_eRenderGroup = RENDERGROUP::RENDER_UI;
 	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
@@ -56,6 +58,11 @@ HRESULT CCustomUI::Render()
 	__super::Render();
 
 	return S_OK;
+}
+
+void CCustomUI::Set_PassIndex(_uint _iPassIndex)
+{
+	m_iPassIndex = _iPassIndex;
 }
 
 HRESULT CCustomUI::SetUp_ShaderResource()

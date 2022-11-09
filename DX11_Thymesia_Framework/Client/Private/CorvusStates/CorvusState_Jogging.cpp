@@ -24,7 +24,7 @@ HRESULT CCorvusState_Jogging::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	m_iAnimIndex = 10;
+	m_iAnimIndex = 0;
 	return S_OK;
 }
 
@@ -116,15 +116,17 @@ _bool CCorvusState_Jogging::Check_AndChangeNextState()
 	//	return true;
 	//}
 
-
+	
 	if (!KEY_INPUT(KEY::W, KEY_STATE::HOLD)
 		&& !KEY_INPUT(KEY::A, KEY_STATE::HOLD)
 		&& !KEY_INPUT(KEY::S, KEY_STATE::HOLD)
 		&& !KEY_INPUT(KEY::D, KEY_STATE::HOLD))
 	{
-		Get_OwnerPlayer()->Change_State<CCorvusState_Stop>();
+		Get_OwnerPlayer()->Change_State<CCorvusState_JoggingStartEnd>();
 		return true;
 	}
+
+	
 
 	return false;
 }

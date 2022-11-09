@@ -180,6 +180,14 @@ void CGameManager::Register_Player_Memory(weak_ptr<CPlayer_Memory> pMemory)
 	m_pPlayer_Memory = pMemory;
 }
 
+void CGameManager::Register_Player_HUD_Potion(weak_ptr<CPlayer_PotionUI> pHUD_Potion)
+{
+}
+
+void CGameManager::Register_Player_HUD_Feather(weak_ptr<CPlayer_FeatherUI> pHUD_Feather)
+{
+}
+
 void CGameManager::Set_TargetCamera(weak_ptr<CCamera_Target> In_TargetCamera)
 {
 	m_pTargetCamera = In_TargetCamera;
@@ -204,6 +212,24 @@ void CGameManager::Add_Shaking(const SHAKE_DIRECTION& In_eState, const _float& I
 	//m_pTargetCamera.lock()->Add_Shaking(In_eState, In_fPower, In_fTime);
 	
 
+}
+
+void CGameManager::Focus_Monster()
+{
+//Å¸°Ù Ã£°í
+//
+	weak_ptr<CGameObject> pTargetMonster = Get_Layer(OBJECT_LAYER::MONSTER).front();
+
+	m_pTargetCamera.lock()->Focus_Monster(pTargetMonster);
+}
+
+void CGameManager::Release_Focus()
+{
+	m_pTargetCamera.lock()->Release_Focus();
+}
+
+void CGameManager::Find_Target()
+{
 }
 
 void CGameManager::Register_EffectGroup(const string& In_szEffectGroupName, weak_ptr<CEffectGroup> In_pEffectGroup)
@@ -443,7 +469,7 @@ void CGameManager::Start_BattleEnd()
 		DEBUG_ASSERT;
 	}
 
-	CFader::FaderDesc tFaderDesc;
+	FaderDesc tFaderDesc;
 	tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
 	tFaderDesc.eLinearType = LINEAR_TYPE::POW;
 	tFaderDesc.fFadeMaxTime = 2.f;
@@ -497,7 +523,7 @@ void CGameManager::Call_BattleEndFadeOut()
 		DEBUG_ASSERT;
 	}
 
-	CFader::FaderDesc tFaderDesc;
+	FaderDesc tFaderDesc;
 	tFaderDesc.eFaderType = FADER_TYPE::FADER_IN;
 	tFaderDesc.eLinearType = LINEAR_TYPE::SQRT;
 	tFaderDesc.fFadeMaxTime = 2.f;

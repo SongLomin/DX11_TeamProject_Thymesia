@@ -20,7 +20,7 @@ public:
 	_float Get_Duration() const { return m_fDuration; }
 	_float Get_AbsoluteTimeAcc() const { return m_fTimeAcc / m_fTickPerSecond; }
 	_float Get_AbsoluteDuration() const { return m_fDuration / m_fTickPerSecond; }
-	string Get_Name() const { return m_szName; }
+	const _char* Get_Name() const { return m_szName.c_str(); }
 
 	void Set_TimeAcc(const _float& In_fTimeAcc) { m_fTimeAcc = In_fTimeAcc; }
 	void Set_AbsoluteTimeAcc(const _float& In_fTimeAcc) { m_fTimeAcc = In_fTimeAcc * m_fTickPerSecond; }

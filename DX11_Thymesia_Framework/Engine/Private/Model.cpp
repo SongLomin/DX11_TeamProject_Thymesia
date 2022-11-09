@@ -21,6 +21,22 @@ weak_ptr<MODEL_DATA> CModel::Get_ModelData() const
 	return m_pModelData;
 }
 
+_int CModel::Get_IndexFromAnimName(const _char* In_szAnimName)
+{
+
+	for (_int i = 0; i < m_iNumAnimations; ++i)
+	{
+		if (strcmp(m_Animations[i].lock()->Get_Name(), In_szAnimName) == 0)
+		{
+			return i;
+		}
+	}
+
+	DEBUG_ASSERT;
+
+	return -1;
+}
+
 void CModel::Set_CurrentAnimation(_uint iAnimIndex, _uint iStartKeyIndex, _float fBlendTime)
 {
 	if (iAnimIndex >= m_Animations.size())
@@ -286,6 +302,7 @@ void CModel::Init_Model_Internal(const char* sModelKey, const string& szTextureP
 	//재사용할거라서 Reset은 필요하지 않음.
 	//Reset_Model();
 
+	Reset_Model();
 
 	m_pModelData = GAMEINSTANCE->Get_ModelFromKey(sModelKey);
 
@@ -317,18 +334,39 @@ void CModel::Init_Model_Internal(const char* sModelKey, const string& szTextureP
 
 void CModel::Reset_Model()
 {
+	for (auto& elem : m_MeshContainers)
+	{
+		m_pOwner.lock()->Remove_Component(elem);
+	}
+
+	for (auto& elem : m_Animations)
+	{
+		m_pOwner.lock()->Remove_Component(elem);
+	}
+
+	for (auto& elem : m_pBoneNodes)
+	{
+		m_pOwner.lock()->Remove_Component(elem);
+	}
+
+	for (auto& elem : m_Materials)
+	{
+		for (_uint i = 0; i < (_uint)AI_TEXTURE_TYPE_MAX; ++i)
+		{
+			if (elem.pTextures[i].lock())
+			{
+				m_pOwner.lock()->Remove_Component(elem.pTextures[i].lock());
+			}
+		}
+	}
+
 	m_pModelData.reset();
 	m_iNumMeshContainers = 0;
 	m_iNumMaterials = 0;
 	m_MeshContainers.clear();
 	m_Materials.clear();
-	
-	for (auto& elem : m_MeshContainers)
-	{
-	}
-
-	m_pOwner.lock()->Remove_Components<CTexture>();
-	m_pOwner.lock()->Remove_Components<CMeshContainer>();
+	m_Animations.clear();
+	m_pBoneNodes.clear();
 
 }
 
@@ -346,6 +384,20 @@ void CModel::Set_RootNode(const string& pBoneName, const _bool& In_bRoot)
 		assert(false);
 
 	pBoneNode.lock()->Set_bRootNode(In_bRoot);
+}
+
+void CModel::Write_Json(json& Out_Json)
+{
+	Out_Json.emplace("Model", m_szModelKey);
+}
+
+void CModel::Load_FromJson(const json& In_Json)
+{
+	m_szModelKey = In_Json["Model"];
+	if (!m_szModelKey.empty())
+	{
+		Init_Model(m_szModelKey.c_str());
+	}
 }
 
 

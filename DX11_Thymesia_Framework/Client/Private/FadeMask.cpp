@@ -68,7 +68,7 @@ void CFadeMask::Init_Fader(void* In_Arg_Fader)
 	if (In_Arg_Fader == nullptr)
 		DEBUG_ASSERT;
 
-	Engine::CFader::FaderDesc tFaderDesc = *(Engine::CFader::FaderDesc*)In_Arg_Fader;
+	FaderDesc tFaderDesc = *(FaderDesc*)In_Arg_Fader;
 	m_pFaderCom.lock()->Init_Fader(tFaderDesc);
 	
 	Set_Enable(true);
@@ -77,7 +77,6 @@ void CFadeMask::Init_Fader(void* In_Arg_Fader)
 HRESULT CFadeMask::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
-
 
 	m_vFadeColor.w = 1.f - m_pFaderCom.lock()->Get_FadeColor().w;
 

@@ -31,7 +31,7 @@ HRESULT CLevel_Logo::Initialize()
 	CameraDesc.fNear = 0.2f;
 	CameraDesc.fFar = 300.f;
 
-	weak_ptr<CCamera_Static> StaticCamera = GAMEINSTANCE->Add_GameObject<CCamera_Static>(LEVEL::LEVEL_LOBBY, &CameraDesc);
+	//weak_ptr<CCamera_Static> StaticCamera = GAMEINSTANCE->Add_GameObject<CCamera_Static>(LEVEL::LEVEL_LOBBY, &CameraDesc);
 
 
 	m_eNextLevel = LEVEL_LOBBY;
@@ -50,7 +50,7 @@ void CLevel_Logo::Tick(_float fTimeDelta)
 
 	if (KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))
 	{
-		CFader::FaderDesc tFaderDesc;
+		FaderDesc tFaderDesc;
 		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
 		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
 		tFaderDesc.fFadeMaxTime = 1.f;

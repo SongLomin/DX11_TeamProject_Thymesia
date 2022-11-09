@@ -3,7 +3,7 @@
 
 BEGIN(Client)
 
-
+class CCamera_Target;
 
 class CCorvus : 
     public CPlayer
@@ -20,7 +20,9 @@ public:
     virtual HRESULT Render() override;
     virtual void SetUp_ShaderResource() override;
 
-
+private:
+    weak_ptr<CCamera_Target> m_pCamera;
+    weak_ptr<CTransform> m_pCameraTransform;
 
 
 protected:
@@ -34,13 +36,7 @@ private:
     virtual void OnDisable() override;
     virtual void OnDestroy() override;
 
-
-
-
     void Free();
-
-
-
 
 };
 

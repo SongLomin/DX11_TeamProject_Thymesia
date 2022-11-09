@@ -1,4 +1,5 @@
 #include "VIBuffer_Ground.h"
+#include "GameInstance.h"
 
 GAMECLASS_C(CVIBuffer_Ground)
 CLONE_C(CVIBuffer_Ground, CComponent)
@@ -50,6 +51,9 @@ HRESULT CVIBuffer_Ground::Initialize(void* pArg)
 			pVertices[iIndex].vPosition = _float3(_float(iRow * vInterval), 0.f, _float(iCol * vInterval));
 			pVertices[iIndex].vTexUV    = _float2(iRow / (m_iNumVerticesX - 1.f), iCol / (m_iNumVerticesZ - 1.f));
 			pVertices[iIndex].vNormal	= _float3(0.f, 1.f, 0.f);
+
+			m_VertexInfo.push_back(pVertices[iIndex]);
+			m_VertexPositions.push_back(pVertices[iIndex].vPosition); // 나중에 지우기
 		}
 	}
 	/* ------------------------------------------------------------------ */
@@ -81,9 +85,11 @@ HRESULT CVIBuffer_Ground::Initialize(void* pArg)
 			};
 
 			pIndices[dwNumFaces] = { iIndices[0], iIndices[1], iIndices[2] };
+			m_Indices.push_back(_uint3(pIndices[dwNumFaces]._1, pIndices[dwNumFaces]._2, pIndices[dwNumFaces]._3));
 			++dwNumFaces;
 
 			pIndices[dwNumFaces] = { iIndices[0], iIndices[2], iIndices[3] };
+			m_Indices.push_back(_uint3(pIndices[dwNumFaces]._1, pIndices[dwNumFaces]._2, pIndices[dwNumFaces]._3));
 			++dwNumFaces;
 		}
 	}
@@ -131,6 +137,90 @@ HRESULT CVIBuffer_Ground::Initialize(void* pArg)
 
 void CVIBuffer_Ground::Start()
 {
+}
+
+_bool CVIBuffer_Ground::Get_VertexPos(_uint _iIndex, _float3* _pOut)
+{
+	if (m_VertexPositions.size() <= _iIndex)
+		return false;
+
+	*_pOut = m_VertexPositions[_iIndex];
+
+	return true;
+}
+
+void CVIBuffer_Ground::Update(_vector _vMousePos, _float _fRadious, _float _fPower, _uint _iMode)
+{
+	D3D11_MAPPED_SUBRESOURCE		SubResource;
+
+	DEVICECONTEXT->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+
+	for (_uint iCol = 0; iCol < m_iNumVerticesZ; ++iCol)
+	{
+		for (_uint iRow = 0; iRow < m_iNumVerticesX; ++iRow)
+		{
+			_ulong	iIndex = iCol * m_iNumVerticesX + iRow;
+
+			_float3 vPos    = ((VTXNORTEX*)SubResource.pData)[iIndex].vPosition;
+			_float  fLength = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vPos) - _vMousePos));
+
+			if (_fRadious >= fLength)
+			{
+				if (0 == _iMode)
+				{
+					((VTXNORTEX*)SubResource.pData)[iIndex].vPosition.y += _fPower;
+					m_VertexPositions[iIndex] = ((VTXNORTEX*)SubResource.pData)[iIndex].vPosition;
+				}
+				else if (1 == _iMode)
+				{
+					_float fLerpPower = _fPower;
+					
+					if (_fRadious == fLength)
+						continue;
+					else
+						fLerpPower = (0 == fLength) ? (_fPower) : (_fPower * (fLength / _fRadious));
+
+
+					((VTXNORTEX*)SubResource.pData)[iIndex].vPosition.y += fLerpPower;
+					m_VertexPositions[iIndex] = ((VTXNORTEX*)SubResource.pData)[iIndex].vPosition;
+				}
+			}
+		}
+	}
+
+	DEVICECONTEXT->Unmap(m_pVB.Get(), 0);
+}
+
+_bool CVIBuffer_Ground::Compute_MousePos(RAY _Ray, _matrix _WorldMatrix, _float3* pOut)
+{
+	_matrix		WorldMatrix = XMMatrixInverse(nullptr, _WorldMatrix);
+
+	_vector			vRayPos, vRayDir;
+
+	vRayPos = XMVector3TransformCoord(XMLoadFloat4(&_Ray.vOrigin), WorldMatrix);
+	vRayDir = XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&_Ray.vDirection), WorldMatrix));
+
+	_float		fDist;
+
+	for (_uint i = 0; i < m_iNumPrimitive; ++i)
+	{
+		_uint3		iIndices = m_Indices[i];
+		_vector		vPickedPos;
+
+		_vector	vVec0 = XMLoadFloat3(&m_VertexPositions[iIndices.ix]);
+		_vector	vVec1 = XMLoadFloat3(&m_VertexPositions[iIndices.iy]);
+		_vector	vVec2 = XMLoadFloat3(&m_VertexPositions[iIndices.iz]);
+
+		if (true == DirectX::TriangleTests::Intersects(vRayPos, vRayDir, vVec0, vVec1, vVec2, fDist))
+		{
+			vPickedPos = vRayPos + XMVector3Normalize(vRayDir) * fDist;
+			XMStoreFloat3(pOut, XMVector3TransformCoord(vPickedPos, _WorldMatrix));
+
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void CVIBuffer_Ground::Free()

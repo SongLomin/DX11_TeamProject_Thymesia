@@ -11,12 +11,16 @@ float2		g_vDiffuseUV;
 vector		g_vCamDirection;
 float4		g_vGlowColor;
 
+float g_fDiscardRatio;
+
+
 bool		g_bBillboard;
 bool		g_bBloom;
 bool		g_bGlow;
-bool		g_bSpriteImage = false;
 
-int2		g_iNumFrames;
+int g_iNumFrameX;
+int g_iNumFrameY;
+
 //float2		g_fCurFrame;
 
 struct VS_IN
@@ -95,45 +99,46 @@ struct PS_OUT
 PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
+	
+	Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexUV + g_vDiffuseUV);
+	Out.vColor.a *= g_MaskTexture.Sample(DefaultSampler, In.vTexUV + g_vMaskUV).r;
 
-	if (!g_bSpriteImage)
-	{
-		Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexUV + g_vDiffuseUV);
-		Out.vColor.a *= g_MaskTexture.Sample(DefaultSampler, In.vTexUV + g_vMaskUV).r;
-
-		Out.vColor *= In.vColor;
-
-		if (Out.vColor.a < 0.1f)
-			discard;
-	}
-	else
-	{
-		// Sprite Image
-		Out.vColor = g_DiffuseTexture.Sample(PointSampler,
-			float2(In.vTexUV.x / g_iNumFrames.x + In.vSpriteUV.x,
-				In.vTexUV.y / g_iNumFrames.y + In.vSpriteUV.y));
-
-		// Diffuse Color for Sprite
-		vector vColorMap = g_ColorTexture.Sample(PointSampler, In.vTexUV + g_vDiffuseUV);
-
-		Out.vColor *= In.vColor * vColorMap;
-
-		if ((Out.vColor.r + Out.vColor.g + Out.vColor.b) < 0.9f)
-			discard;
-	}
+	Out.vColor *= In.vColor;
+	
+	if (Out.vColor.a < g_fDiscardRatio)
+		discard;
 
 	
     if (g_bBloom)
-    {
         Out.vExtractBloom = Out.vColor;
-    }
 	
     if (g_bGlow)
-    {
         Out.vExtractGlow = g_vGlowColor;
-    }
 	
 	return Out;	
+}
+
+PS_OUT PS_SPRITE_IMAGE(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+	
+	// Sprite Image
+    Out.vColor = g_DiffuseTexture.Sample(PointSampler,
+		float2(In.vTexUV.x / g_iNumFrameX + In.vSpriteUV.x,
+			In.vTexUV.y / g_iNumFrameY + In.vSpriteUV.y));
+	
+    Out.vColor *= In.vColor;
+
+    if ((Out.vColor.r + Out.vColor.g + Out.vColor.b) < g_fDiscardRatio)
+        discard;
+	
+    if (g_bBloom)
+        Out.vExtractBloom = Out.vColor;
+	
+    if (g_bGlow)
+        Out.vExtractGlow = g_vGlowColor;
+	
+    return Out;
 }
 
 technique11 DefaultTechnique
@@ -148,4 +153,15 @@ technique11 DefaultTechnique
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
+
+    pass SpriteImage
+    {
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_NonCulling);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_SPRITE_IMAGE();
+    }
 }

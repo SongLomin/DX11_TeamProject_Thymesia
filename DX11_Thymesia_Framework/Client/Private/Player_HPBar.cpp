@@ -51,7 +51,7 @@ HRESULT CPlayer_HPBar::Initialize(void* pArg)
 	m_tTextInfo.bAlways = false;
 	m_tTextInfo.bCenterAlign = false;
 	m_tTextInfo.fRotation = 0.f;
-	m_tTextInfo.vColor = _float4(1.f, 1.f, 1.f, 1.f);
+	m_tTextInfo.vColor = _float4(0.7f, 0.7f, 0.7f, 0.f);
 	m_tTextInfo.vScale = _float2(0.5, 0.5f);
 	m_tTextInfo.vPosition = _float2(m_tUIDesc.fX + m_tUIDesc.fSizeX * 0.5f + 20.f, m_tUIDesc.fY - 10.f);
 
@@ -92,13 +92,13 @@ void CPlayer_HPBar::Tick(_float fTimeDelta)
 		m_fCurrentHp -= 200.f;
 
 	}
-	if (KEY_INPUT(KEY::W, KEY_STATE::TAP))
-	{
-
-		m_fCurrentHp += 200.f;
-		m_fLerpHp = m_fCurrentHp;
-		m_fLerpAcc = 1.f;
-	}
+	//if (KEY_INPUT(KEY::W, KEY_STATE::TAP))
+	//{
+	//
+	//	m_fCurrentHp += 200.f;
+	//	m_fLerpHp = m_fCurrentHp;
+	//	m_fLerpAcc = 1.f;
+	//}
 #endif // _DEBUG
 
 	if (m_fCurrentHp < 0.f)
@@ -172,14 +172,6 @@ void CPlayer_HPBar::Set_CurrentHp(_float _fCurrentHp)
 	m_fCurrentHp = _fCurrentHp;
 }
 
-
-
-HRESULT CPlayer_HPBar::SetUp_ShaderResource()
-{
-	__super::SetUp_ShaderResource();
-
-	return S_OK;
-}
 
 void CPlayer_HPBar::Free()
 {

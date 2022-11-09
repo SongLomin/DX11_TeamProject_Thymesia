@@ -42,7 +42,7 @@ public:
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render() override;
-
+    
 
 public:
     void Set_TextureIndex(const _uint& Index) { m_iTextureIndex = Index; }

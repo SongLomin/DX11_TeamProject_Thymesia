@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Player_ProgressBar.h"
+#include "CustomUI.h"
 #include "Texture.h"
 #include "Shader.h"
 #include "GameManager.h"
@@ -25,12 +26,14 @@ HRESULT CPlayer_ProgressBar::Initialize(void* pArg)
         VTXTEX_DECLARATION::Element,
         VTXTEX_DECLARATION::iNumElements);
 
+    if (pArg != nullptr)
+        memcpy(&m_tUIDesc, pArg, sizeof(UI_DESC));
+
     m_fRatio = 1.f;
     
     m_iPassIndex = 9;
 
     m_eRenderGroup = RENDERGROUP::RENDER_UI;
-
     GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
 
     m_tUIDesc.fDepth = 0.f;
@@ -67,6 +70,11 @@ HRESULT CPlayer_ProgressBar::Render()
 void CPlayer_ProgressBar::Set_Ratio(_float _fRatio)
 {
     m_fRatio = _fRatio;
+}
+
+void CPlayer_ProgressBar::Set_PassIndex(_uint _iPassIndex)
+{
+    m_iPassIndex = _iPassIndex;
 }
 
 void CPlayer_ProgressBar::OnEventMessage(_uint iArg)

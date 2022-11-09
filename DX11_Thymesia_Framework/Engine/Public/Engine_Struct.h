@@ -305,5 +305,16 @@ namespace Engine
 		// For. Sprites
 		_float2 vSpriteUV;
 		_float fCurrentSpriteTime;
+		// For Sprites - Pendulum Effect
+		_bool bFramePlayBackward; // default is false : Frame plays forward
+	};
+
+	struct FaderDesc
+	{
+		LINEAR_TYPE eLinearType;
+		FADER_TYPE	eFaderType;
+		_float4 vFadeColor;
+		_float	fFadeMaxTime;
+		_float	fDelayTime;
 	};
 }

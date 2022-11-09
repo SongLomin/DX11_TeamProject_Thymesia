@@ -261,7 +261,7 @@ PS_OUT PS_MAIN_CURCLE_BLEND_BAR(PS_IN In)
         return Out;
     }
 
-PS_OUT PS_MAIN_TEST_RATIO(PS_IN In)
+PS_OUT PS_MAIN_TEST_RATIO_WIDTH(PS_IN In)
 {
     PS_OUT		Out = (PS_OUT)0;
 
@@ -276,7 +276,20 @@ PS_OUT PS_MAIN_TEST_RATIO(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_MAIN_TEST_RATIO_HEIGHT(PS_IN In)
+{
+    PS_OUT		Out = (PS_OUT)0;
 
+    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+    if (1.f - In.vTexUV.y > g_Ratio)
+        discard;
+
+    //float4 Ahlpa = g_DiffuseTexture.GatherAlpha(DefaultSampler, In.vTexUV);
+    //Out.vColor.a = Ahlpa.r;
+
+    return Out;
+}
 
 
 technique11 DefaultTechnique
@@ -380,7 +393,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_CURCLE_BLEND_BAR();
     }
 
-    pass UI_MOON_HPBarRatio_Test //9
+    pass UI_MOON_HPBarRatio_Test_Width //9
     {
         SetBlendState(BS_AlphaBlend, vector(1.f, 1.f, 1.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
@@ -388,8 +401,20 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_TEST_RATIO();
+        PixelShader = compile ps_5_0 PS_MAIN_TEST_RATIO_WIDTH();
     }
+
+    pass UI_MOON_HPBarRatio_Test_Height //10
+    {
+        SetBlendState(BS_AlphaBlend, vector(1.f, 1.f, 1.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_TEST_RATIO_HEIGHT();
+    }
+
 
 	/*pass Default
 	{

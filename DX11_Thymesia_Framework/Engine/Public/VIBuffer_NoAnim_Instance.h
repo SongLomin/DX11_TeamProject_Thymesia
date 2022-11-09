@@ -4,12 +4,12 @@
 BEGIN(Engine)
 struct MESH_DATA;
 
-class ENGINE_DLL CVIBuffer_Mesh_Instance :
+class ENGINE_DLL CVIBuffer_NoAnim_Instance :
     public CVIBuffer
 {
-    GAMECLASS_H(CVIBuffer_Mesh_Instance)
-        SHALLOW_COPY(CVIBuffer_Mesh_Instance)
-        CLONE_H(CVIBuffer_Mesh_Instance, CComponent)
+    GAMECLASS_H(CVIBuffer_NoAnim_Instance)
+        SHALLOW_COPY(CVIBuffer_NoAnim_Instance)
+        CLONE_H(CVIBuffer_NoAnim_Instance, CComponent)
 
 public:
     _uint Get_InstanceCount() const { return m_iNumInstance; }
@@ -23,7 +23,7 @@ private:
     virtual void	Start() override;
 
 public:
-    void Init_MeshInstance(const char* In_szModelName, const MEMORY_TYPE In_eModelMemoryType, const _uint In_iMeshIndex = 0);
+    void Init_NoAnimInstance(const char* In_szModelName, const MEMORY_TYPE In_eModelMemoryType, const _uint In_iNoAnimIndex = 0);
     void Init_Particle(const _uint In_Size);
 
     virtual HRESULT Render() override;
@@ -37,7 +37,7 @@ private:
     _uint						m_iNumInstance = 0;
 
     string						m_szName;
-    weak_ptr<MESH_DATA>			m_pMeshData;
+    weak_ptr<NoAnim_DATA>			m_pNoAnimData;
 
 private:
     void Free();

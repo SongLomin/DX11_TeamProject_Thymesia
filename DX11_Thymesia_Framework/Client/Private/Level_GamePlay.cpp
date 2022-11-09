@@ -54,7 +54,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
 
-	CFader::FaderDesc tFaderDesc;
+	FaderDesc tFaderDesc;
 	tFaderDesc.eFaderType = FADER_TYPE::FADER_IN;
 	tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
 	tFaderDesc.fFadeMaxTime = 3.f;
@@ -75,7 +75,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	m_iMonsterCount = 0;
 
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
-	GAMEINSTANCE->PlayBGM(TEXT("Stage1.wav"), 0.3f);
+
 
 	return S_OK;
 }
@@ -90,7 +90,7 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 
 		m_eNextLevel = LEVEL_STAGE2;
 
-		CFader::FaderDesc tFaderDesc;
+		FaderDesc tFaderDesc;
 		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
 		tFaderDesc.eLinearType = LINEAR_TYPE::POW;
 		tFaderDesc.fFadeMaxTime = 1.f;

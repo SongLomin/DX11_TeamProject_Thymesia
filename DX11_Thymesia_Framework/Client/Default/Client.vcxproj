@@ -202,15 +202,23 @@
     <ClInclude Include="..\Public\Client_Windows.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusStateBase.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusStates.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoid.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Hit.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Idle.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Jogging.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_JoggingStartEnd.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_JoggingStart.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Run.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Sprint.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_SprintAttack.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_SprintStart.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Stop.h" />
+    <ClInclude Include="..\Public\Corvus_DefaultDagger.h" />
+    <ClInclude Include="..\Public\Corvus_DefaultSaber.h" />
     <ClInclude Include="..\Public\CustomEffectMesh.h" />
     <ClInclude Include="..\Public\Dynamic_Prop.h" />
     <ClInclude Include="..\Public\CustomUI.h" />
+    <ClInclude Include="..\Public\EditGround.h" />
     <ClInclude Include="..\Public\EditNaviMesh.h" />
     <ClInclude Include="..\Public\EffectMesh.h" />
     <ClInclude Include="..\Public\EffectGroup.h" />
@@ -222,18 +230,26 @@
     <ClInclude Include="..\Public\Ground.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Public\HUD_Hover.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Public\ImGui_Window.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Interaction_Prop.h" />
     <ClInclude Include="..\Public\Level_Lobby.h" />
     <ClInclude Include="..\Public\Level_Stage2.h" />
     <ClInclude Include="..\Public\Level_Stage3.h" />
+    <ClInclude Include="..\Public\Light_Prop.h" />
     <ClInclude Include="..\Public\Map.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\PlayerStateBase.h" />
+    <ClInclude Include="..\Public\Player_FeatherUI.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Public\Player_HPBar.h" />
     <ClInclude Include="..\Public\Player_Memory.h" />
     <ClInclude Include="..\Public\Player_MPBar.h" />
+    <ClInclude Include="..\Public\Player_PotionUI.h" />
     <ClInclude Include="..\Public\Player_ProgressBar.h" />
     <ClInclude Include="..\Public\PreViewAnimationModel.h" />
     <ClInclude Include="..\Public\Prop.h" />
@@ -282,15 +298,22 @@
     <ClCompile Include="..\Private\ClientComponent.cpp" />
     <ClCompile Include="..\Private\ClientLevel.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusStateBase.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoid.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Hit.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Idle.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Jogging.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_JoggingStartEnd.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_JoggingStart.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Run.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Sprint.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_SprintAttack.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_SprintStart.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Stop.cpp" />
+    <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp" />
     <ClCompile Include="..\Private\CustomEffectMesh.cpp" />
     <ClCompile Include="..\Private\Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\CustomUI.cpp" />
+    <ClCompile Include="..\Private\EditGround.cpp" />
     <ClCompile Include="..\Private\EditNaviMesh.cpp" />
     <ClCompile Include="..\Private\EffectMesh.cpp" />
     <ClCompile Include="..\Private\EffectGroup.cpp" />
@@ -302,17 +325,23 @@
     <ClCompile Include="..\Private\Ground.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\Private\HUD_Hover.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Private\ImGui_Window.cpp" />
     <ClCompile Include="..\Private\Interaction_Prop.cpp" />
     <ClCompile Include="..\Private\Level_Lobby.cpp" />
     <ClCompile Include="..\Private\Level_Stage2.cpp" />
     <ClCompile Include="..\Private\Level_Stage3.cpp" />
+    <ClCompile Include="..\Private\Light_Prop.cpp" />
     <ClCompile Include="..\Private\Map.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\PlayerStateBase.cpp" />
+    <ClCompile Include="..\Private\Player_FeatherUI.cpp" />
     <ClCompile Include="..\Private\Player_HPBar.cpp" />
     <ClCompile Include="..\Private\Player_Memory.cpp" />
     <ClCompile Include="..\Private\Player_MPBar.cpp" />
+    <ClCompile Include="..\Private\Player_PotionUI.cpp" />
     <ClCompile Include="..\Private\Player_ProgressBar.cpp" />
     <ClCompile Include="..\Private\PreViewAnimationModel.cpp" />
     <ClCompile Include="..\Private\Prop.cpp" />
@@ -343,6 +372,7 @@
     <ClCompile Include="..\Private\Player.cpp" />
     <ClCompile Include="..\Private\UI.cpp" />
     <ClCompile Include="..\Private\WorldUI.cpp" />
+    <ClCompile Include="..\Public\Corvus_DefaultDagger.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -185,16 +185,16 @@
       <Filter>02. GameObject\01. UI\FadeMask</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Player_HPBar.h">
-      <Filter>02. GameObject\01. UI\PlayerUI\HP&amp;MP</Filter>
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Player_ProgressBar.h">
-      <Filter>02. GameObject\01. UI\PlayerUI\HP&amp;MP\Progress</Filter>
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP\Progress</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Player_MPBar.h">
-      <Filter>02. GameObject\01. UI\PlayerUI\HP&amp;MP</Filter>
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Player_Memory.h">
-      <Filter>02. GameObject\01. UI\PlayerUI\Memory</Filter>
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\Memory</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CustomUI.h">
       <Filter>02. GameObject\01. UI\CustomUI</Filter>
@@ -243,6 +243,63 @@
     </ClInclude>
     <ClInclude Include="..\Public\Ground.h">
       <Filter>02. GameObject\11. Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Light_Prop.h">
+      <Filter>02. GameObject\04. Prop\04. Light_Prop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player_PotionUI.h">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\Potion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player_FeatherUI.h">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\Hover</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HUD_Hover.h">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\Hover</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Stop.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\04.State_Stop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Jogging.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\03.State_Jogging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_JoggingStartEnd.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\02.State_JoggingStartEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusStateBase.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusStates.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Hit.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\05.State_Hit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Idle.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\00.State_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Run.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\06.State_Run</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Sprint.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\07.State_Sprint</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_SprintStart.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\08.State_SprintStart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_SprintAttack.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\10.State_SprintAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoid.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Corvus_DefaultSaber.h">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\00.Corvus_DefaultSaber</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Corvus_DefaultDagger.h">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\01.Corvus_DefaultDagger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EditGround.h">
+      <Filter>02. GameObject\99. Other\01. EditGround</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -451,19 +508,73 @@
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\00.State_Idle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Player_HPBar.cpp">
-      <Filter>02. GameObject\01. UI\PlayerUI\HP&amp;MP</Filter>
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Player_ProgressBar.cpp">
-      <Filter>02. GameObject\01. UI\PlayerUI\HP&amp;MP\Progress</Filter>
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP\Progress</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Player_MPBar.cpp">
-      <Filter>02. GameObject\01. UI\PlayerUI\HP&amp;MP</Filter>
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Player_Memory.cpp">
-      <Filter>02. GameObject\01. UI\PlayerUI\Memory</Filter>
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\Memory</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CustomUI.cpp">
       <Filter>02. GameObject\01. UI\CustomUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Light_Prop.cpp">
+      <Filter>02. GameObject\04. Prop\04. Light_Prop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_PotionUI.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\Potion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player_FeatherUI.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\Feather</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_JoggingStart.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\01.State_JoggingStart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Stop.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\04.State_Stop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Jogging.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\03.State_Jogging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_JoggingStartEnd.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\02.State_JoggingStartEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusStateBase.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Hit.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\05.State_Hit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Idle.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\00.State_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Run.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\06.State_Run</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Sprint.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\07.State_Sprint</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_SprintStart.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\08.State_SprintStart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_SprintAttack.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\10.State_SprintAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoid.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\00.Corvus_DefaultSaber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\Corvus_DefaultDagger.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\01.Corvus_DefaultDagger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EditGround.cpp">
+      <Filter>02. GameObject\99. Other\01. EditGround</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -480,9 +591,6 @@
     </Filter>
     <Filter Include="00. MainApp">
       <UniqueIdentifier>{d893f375-d010-4a8a-bdbc-7084075a09cb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="99. Defines">
-      <UniqueIdentifier>{ca7671a3-fda7-41c0-8070-09afde17063e}</UniqueIdentifier>
     </Filter>
     <Filter Include="97. Tool">
       <UniqueIdentifier>{31f57221-7bc8-442f-a0e1-3848832f0944}</UniqueIdentifier>
@@ -586,9 +694,6 @@
     <Filter Include="02. GameObject\03. Actor\00. Character">
       <UniqueIdentifier>{618567cb-c6db-48f9-a3fe-050a87d96221}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player">
-      <UniqueIdentifier>{16574201-340f-43db-b0c0-e3bb9a200fc8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster">
       <UniqueIdentifier>{b883227e-9ad7-4b08-8d60-68a4d4c34a6c}</UniqueIdentifier>
     </Filter>
@@ -655,12 +760,6 @@
     <Filter Include="02. GameObject\10. Trigger">
       <UniqueIdentifier>{99bd0ed4-2e9b-47bf-8557-7c919232b269}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. UI\PlayerUI\HP&amp;MP">
-      <UniqueIdentifier>{2c25f384-014e-4a40-84c4-e8aef1b67eff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. UI\PlayerUI\HP&amp;MP\Progress">
-      <UniqueIdentifier>{fe5378f3-5d92-48f6-9847-6ce6ac071847}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component">
       <UniqueIdentifier>{2d13e696-c96a-4148-8979-8c5f6629f73c}</UniqueIdentifier>
     </Filter>
@@ -676,14 +775,56 @@
     <Filter Include="05. Component\03. State\01. AIStateBase">
       <UniqueIdentifier>{6131b767-66a4-4c88-89ab-249cdfa2a1f7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. UI\PlayerUI\Memory">
-      <UniqueIdentifier>{50d1b317-f506-4a91-9ffe-41249c29fffb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\01. UI\CustomUI">
       <UniqueIdentifier>{ff97c274-021f-4a5a-998f-c63545601fef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. UI\PlayerUI\FlatSkill">
-      <UniqueIdentifier>{8439329b-5981-4c42-90ec-11eab1568f89}</UniqueIdentifier>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Corvus">
+      <UniqueIdentifier>{16574201-340f-43db-b0c0-e3bb9a200fc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase">
+      <UniqueIdentifier>{aadbf6c6-7726-4889-bde8-1f3c8329f678}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState">
+      <UniqueIdentifier>{72943f7d-2bf2-429d-83ff-813079f76ffe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\00.State_Idle">
+      <UniqueIdentifier>{18638724-2ee5-46e7-a95e-73edb20ab3cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\05.State_Hit">
+      <UniqueIdentifier>{41826306-7aa4-4142-8a99-602d9d79a36f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon">
+      <UniqueIdentifier>{c544ea3e-e472-45d2-97c7-b7b228b16290}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\00.Corvus_DefaultSaber">
+      <UniqueIdentifier>{0ed56344-d4a6-4fcc-946f-328f7e70d654}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\01.Corvus_DefaultDagger">
+      <UniqueIdentifier>{e8d262bf-d13f-4a53-886f-7946a0308b0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\01.State_JoggingStart">
+      <UniqueIdentifier>{30a1a2b0-e0cd-4a2f-a626-2db95dcc69f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\02.State_JoggingStartEnd">
+      <UniqueIdentifier>{c3aa626e-cb6d-476a-adea-3832b48bfa2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\03.State_Jogging">
+      <UniqueIdentifier>{a12142b2-c69c-41a4-80ed-d407e0173be6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\04. Prop\01. Static_Prop">
+      <UniqueIdentifier>{8db7ae73-3391-4fb1-9d5a-00b64a6c377e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\04. Prop\02. Dynamic_Prop">
+      <UniqueIdentifier>{d2bc77f2-b426-48c5-ada5-146394a4df4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\04. Prop\03. Interaction_Prop">
+      <UniqueIdentifier>{8ee2cfd5-c3f7-4f99-8fb6-64583c3174c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\11. Ground">
+      <UniqueIdentifier>{8b002a8d-4757-456a-9413-0cd76b027117}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_SprintStart">
+      <UniqueIdentifier>{e51b7011-ec5e-451f-8088-27a1ad224443}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Corvus">
       <UniqueIdentifier>{16574201-340f-43db-b0c0-e3bb9a200fc8}</UniqueIdentifier>
@@ -733,17 +874,53 @@
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_SprintStart">
       <UniqueIdentifier>{e51b7011-ec5e-451f-8088-27a1ad224443}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\04. Prop\01. Static_Prop">
-      <UniqueIdentifier>{8db7ae73-3391-4fb1-9d5a-00b64a6c377e}</UniqueIdentifier>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\06.State_Run">
+      <UniqueIdentifier>{201fbc95-0885-488a-8f7d-3aa7927da9b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\04. Prop\02. Dynamic_Prop">
-      <UniqueIdentifier>{d2bc77f2-b426-48c5-ada5-146394a4df4c}</UniqueIdentifier>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\07.State_Sprint">
+      <UniqueIdentifier>{d0d5f95f-6dc7-4634-b30f-1a3877a02a70}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\04. Prop\03. Interaction_Prop">
-      <UniqueIdentifier>{8ee2cfd5-c3f7-4f99-8fb6-64583c3174c9}</UniqueIdentifier>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\08.State_SprintStart">
+      <UniqueIdentifier>{e51b7011-ec5e-451f-8088-27a1ad224443}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\11. Ground">
-      <UniqueIdentifier>{8b002a8d-4757-456a-9413-0cd76b027117}</UniqueIdentifier>
+    <Filter Include="99. Defines">
+      <UniqueIdentifier>{ca7671a3-fda7-41c0-8070-09afde17063e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD">
+      <UniqueIdentifier>{8439329b-5981-4c42-90ec-11eab1568f89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\Potion">
+      <UniqueIdentifier>{c654af71-c1f4-4f5e-9939-038eecb26bb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\Feather">
+      <UniqueIdentifier>{388374b3-bf34-4888-b9c8-fa080d051771}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP">
+      <UniqueIdentifier>{2c25f384-014e-4a40-84c4-e8aef1b67eff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP\Progress">
+      <UniqueIdentifier>{fe5378f3-5d92-48f6-9847-6ce6ac071847}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\Memory">
+      <UniqueIdentifier>{50d1b317-f506-4a91-9ffe-41249c29fffb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\Hover">
+      <UniqueIdentifier>{e487d713-d046-4fcc-955c-f8b1014cbff6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\04. Prop\04. Light_Prop">
+      <UniqueIdentifier>{46c37644-8182-4c31-91d7-afefc21a564b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid">
+      <UniqueIdentifier>{aad068d4-0d33-4ebf-bb5c-aa75850e357f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\04.State_Stop">
+      <UniqueIdentifier>{51c54cbf-686f-4453-ab8b-7ebbfaf21117}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\10.State_SprintAttack">
+      <UniqueIdentifier>{7a0236c3-2325-4666-b88a-ea5476d7d0bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\99. Other\01. EditGround">
+      <UniqueIdentifier>{e901b999-d046-4e3c-aa8b-98d950d74dbe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

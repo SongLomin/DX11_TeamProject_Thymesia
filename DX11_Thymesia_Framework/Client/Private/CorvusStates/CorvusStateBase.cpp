@@ -34,7 +34,7 @@ _bool CCorvusStateBase::Check_RequirementDashState()
 	return true;
 }
 
-_bool CCorvusStateBase::Check_RequirementRunState()
+_bool CCorvusStateBase::Check_RequirementJoggingState()
 {
 	if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD))
 	{
@@ -48,6 +48,46 @@ _bool CCorvusStateBase::Check_RequirementRunState()
 	}
 	
 
+	return false;
+}
+
+_bool CCorvusStateBase::Check_RequirementSprintState()
+{
+	if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
+	{
+		if (KEY_INPUT(KEY::W, KEY_STATE::HOLD)
+			|| KEY_INPUT(KEY::A, KEY_STATE::HOLD)
+			|| KEY_INPUT(KEY::S, KEY_STATE::HOLD)
+			|| KEY_INPUT(KEY::D, KEY_STATE::HOLD))
+		{
+			return true;
+		}
+	}
+
+
+	return false;
+}
+
+_bool CCorvusStateBase::Check_RequirementRunState()
+{
+		if (KEY_INPUT(KEY::W, KEY_STATE::HOLD)
+			|| KEY_INPUT(KEY::A, KEY_STATE::HOLD)
+			|| KEY_INPUT(KEY::S, KEY_STATE::HOLD)
+			|| KEY_INPUT(KEY::D, KEY_STATE::HOLD))
+		{
+			return true;
+		}
+
+	return false;
+}
+
+_bool CCorvusStateBase::Check_RequirementAVoidState()
+{
+
+	if (KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))		
+	{
+		return true;
+	}
 	return false;
 }
 
