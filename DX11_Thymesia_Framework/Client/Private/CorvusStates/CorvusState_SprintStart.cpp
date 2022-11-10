@@ -68,14 +68,15 @@ void CCorvusState_SprintStart::OnStateStart(const _float& In_fAnimationBlendTime
 	cout << "LuxiyaState: RunStart -> OnStateStart" << endl;
 #endif
 
-	m_iDustEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("Dust", m_pTransformCom);
+	
 }
 
 void CCorvusState_SprintStart::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Dust", m_iDustEffectIndex);
+
+
 }
 
 void CCorvusState_SprintStart::Call_AnimationEnd()
@@ -122,7 +123,7 @@ _bool CCorvusState_SprintStart::Check_AndChangeNextState()
 			&& !KEY_INPUT(KEY::S, KEY_STATE::HOLD)
 			&& !KEY_INPUT(KEY::D, KEY_STATE::HOLD))
 		{
-			Get_OwnerPlayer()->Change_State<CCorvusState_JoggingStartEnd>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
 			return true;
 		}
 	}
@@ -133,7 +134,20 @@ _bool CCorvusState_SprintStart::Check_AndChangeNextState()
 		Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
 		return true;
 	}
-	
+
+	if (Check_RequirementAttackState())
+	{
+		Rotation_InputToLookDir();
+		Get_OwnerPlayer()->Change_State<CCorvusState_SprintAttack>();
+		return true;
+	}
+
+	if (Check_RequirementParryState())
+	{
+		Rotation_InputToLookDir();
+		Get_OwnerPlayer()->Change_State<CCorvusState_Parry>();
+		return true;
+	}
 
 	return false;
 }

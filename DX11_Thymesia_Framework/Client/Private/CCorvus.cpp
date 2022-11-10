@@ -46,7 +46,9 @@ HRESULT CCorvus::Initialize(void* pArg)
 	Add_Component<CCorvusState_SprintStart>();
 	Add_Component<CCorvusState_AVoid>();
 	Add_Component<CVarg_Execution>();
-	
+	Add_Component<CCorvusState_Attack>();
+	Add_Component<CCorvusState_SprintAttack>();
+	Add_Component<CCorvusState_Parry>();
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
 	USE_START(CCorvus);

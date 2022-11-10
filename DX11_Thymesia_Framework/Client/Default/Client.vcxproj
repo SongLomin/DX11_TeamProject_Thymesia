@@ -209,6 +209,7 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Jogging.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_JoggingStartEnd.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_JoggingStart.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Parry.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Run.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Sprint.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_SprintAttack.h" />
@@ -307,6 +308,7 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Jogging.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_JoggingStartEnd.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_JoggingStart.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Parry.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Run.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Sprint.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_SprintAttack.cpp" />

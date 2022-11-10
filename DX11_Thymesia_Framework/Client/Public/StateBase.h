@@ -43,7 +43,7 @@ public:
 protected:
     _uint m_iAnimIndex = 0;
     _uint m_iTimeScaleLayer = 0;
-
+    _uint m_iStateIndex;
     _float m_fFixedPlayRatio = 0.f;
 
 
@@ -57,7 +57,7 @@ protected:
 private:
     weak_ptr<CCharacter>    m_pOwnerFromCharacter;
     static _uint            g_iStateIndex;
-    _uint                   m_iStateIndex;
+   
 
 public: /* For. CallBack */
     FDelegate<> CallBack_StateStart;

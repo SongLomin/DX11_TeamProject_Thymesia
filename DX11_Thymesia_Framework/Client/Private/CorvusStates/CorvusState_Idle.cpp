@@ -130,6 +130,20 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		return true;
 	}
 
+	 if (Check_RequirementAttackState())
+	 {
+		 Rotation_InputToLookDir();
+		 Get_OwnerPlayer()->Change_State<CCorvusState_Attack>();
+		 return true;
+	 }
+
+	 if (Check_RequirementParryState())
+	 {
+		 Rotation_InputToLookDir();
+		 Get_OwnerPlayer()->Change_State<CCorvusState_Parry>();
+		 return true;
+	 }
+
 	 //юс╫ц
 	 if (KEY_INPUT(KEY::P, KEY_STATE::TAP))
 	 {

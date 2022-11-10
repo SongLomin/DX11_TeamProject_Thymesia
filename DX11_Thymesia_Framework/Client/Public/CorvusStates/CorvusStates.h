@@ -13,7 +13,9 @@
 #include "CorvusStates/CorvusState_Sprint.h"
 #include "CorvusStates/CorvusState_SprintStart.h"
 #include "CorvusStates/CorvusState_Run.h"
-#include "CorvusStates//CorvusState_AVoid.h"
+#include "CorvusStates/CorvusState_AVoid.h"
+#include "CorvusStates/CorvusState_SprintAttack.h"
+#include "CorvusStates/CorvusState_Parry.h"
 //플레이어 기본 스테이트
 
 //플레이어 처형 스테이트

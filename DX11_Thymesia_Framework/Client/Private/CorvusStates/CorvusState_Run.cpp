@@ -151,7 +151,7 @@ _bool CCorvusState_Run::Check_AndChangeNextState()
 		&& !KEY_INPUT(KEY::S, KEY_STATE::HOLD)
 		&& !KEY_INPUT(KEY::D, KEY_STATE::HOLD))
 	{
-		Get_OwnerPlayer()->Change_State<CCorvusState_JoggingStartEnd>();
+		Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
 		return true;
 	}
 
@@ -162,7 +162,19 @@ _bool CCorvusState_Run::Check_AndChangeNextState()
 		return true;
 	}
 
-	
+	if (Check_RequirementAttackState())
+	{
+		Rotation_InputToLookDir();
+		Get_OwnerPlayer()->Change_State<CCorvusState_Attack>();
+		return true;
+	}
+
+	if (Check_RequirementParryState())
+	{
+		Rotation_InputToLookDir();
+		Get_OwnerPlayer()->Change_State<CCorvusState_Parry>();
+		return true;
+	}
 
 
 

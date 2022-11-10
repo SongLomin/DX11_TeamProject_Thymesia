@@ -20,7 +20,7 @@ protected:
     virtual _bool Check_RequirementSprintState();
     virtual _bool Check_RequirementRunState();
     virtual _bool Check_RequirementAVoidState();
-
+    virtual _bool Check_RequirementParryState();
     virtual _bool Check_RequirementUltimateState();
 
 

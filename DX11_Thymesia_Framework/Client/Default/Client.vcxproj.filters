@@ -307,6 +307,9 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Attack.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Parry.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\12.State_Parry</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -588,6 +591,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Attack.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Parry.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\12.State_Parry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -943,6 +949,9 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack">
       <UniqueIdentifier>{4a64bbd5-ee25-4223-ac86-be99e1df7490}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\12.State_Parry">
+      <UniqueIdentifier>{19ca8f01-dac7-4194-82e8-a6d863e1c44b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -7,13 +7,13 @@ END
 
 BEGIN(Client)
 
-class CCorvusState_Attack :
+class CCorvusState_Parry :
     public CCorvusStateBase
 {
 
-    GAMECLASS_H(CCorvusState_Attack);
-    SHALLOW_COPY(CCorvusState_Attack)
-    CLONE_H(CCorvusState_Attack, CComponent)
+    GAMECLASS_H(CCorvusState_Parry);
+    SHALLOW_COPY(CCorvusState_Parry)
+        CLONE_H(CCorvusState_Parry, CComponent)
 
 protected:
     virtual HRESULT Initialize_Prototype() override;
@@ -35,10 +35,10 @@ public:
 private:
     void Attack();
     void Check_InputNextAttack();
-   
+
 
 private:
-    _uint m_iAttackIndex = 7;
+    _uint m_iAttackIndex = 2;
     _bool m_IsNextAttack = false;
 
     _float m_fDebugAnimationSpeed = 1.f;
@@ -52,12 +52,12 @@ protected:
 protected:
     virtual void OnEventMessage(_uint iArg) override;
     virtual void OnDestroy() override;
-     void Free();
+    void Free();
 
     // CLuxiyaStateBase을(를) 통해 상속됨
     virtual _bool Check_AndChangeNextState() override;
-    _bool Check_RequirementNextAttackState();
-    _bool Check_RuquireMnetFirstAttackState();
+    _bool Check_RequirementNextParryState();
+    _bool Check_RuquireMnetFirstParryState();
 };
 
 END

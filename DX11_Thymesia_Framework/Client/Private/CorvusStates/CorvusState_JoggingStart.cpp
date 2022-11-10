@@ -128,6 +128,12 @@ _bool CCorvusState_JoggingStart::Check_AndChangeNextState()
 		return true;
 	}
 
+	if (Check_RequirementParryState())
+	{
+		Rotation_InputToLookDir();
+		Get_OwnerPlayer()->Change_State<CCorvusState_Parry>();
+		return true;
+	}
 
 		
 
