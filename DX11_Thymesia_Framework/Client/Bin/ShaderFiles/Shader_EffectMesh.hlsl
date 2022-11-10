@@ -1,21 +1,36 @@
 #include "Client_Shader_Defines.hpp"
 
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
+vector g_vCamDirection;
 
 texture2D g_DiffuseTexture;
 texture2D g_DepthTexture;
 texture2D g_MaskTexture;
-texture2D g_GradientTexture;
+texture2D g_NoiseTexture;
+
+// TODO :  bDynamicNoiseOption temporary for test
+bool g_bDynamicNoiseOption;
+
+/**
+* Wrap Weight
+*  x : Diff, y : Mask, z : Noise, w : None
+*/
+vector g_vWrapWeight;
+
+// texture2D g_GradientTexture;
+
+float g_fDiscardRatio;
 
 float4 g_vColor;
 float2 g_vUV;
+
+bool g_bBloom;
+
+bool g_bGlow;
 float4 g_vGlowColor;
 
-vector g_vCamDirection;
-bool g_bBillboard;
-bool g_bBloom;
-bool g_bGlow;
 bool g_bDiffuseMap;
+bool g_bBillboard;
 
 struct VS_IN
 {
@@ -171,20 +186,9 @@ PS_OUT PS_MAIN_SOFT(PS_IN_SOFT In)
 
 }
 
-// w나누기연산을 수행하낟. (In 투영스페이스)
-// 뷰포트 변환. (In 뷰포트(윈도우좌표))
-
-// 래스터라이즈(픽셀정볼르 생성한다. )
-
 PS_OUT PS_MAIN_NONE_DIFFUSE(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
-    
-    //float red = g_GradientTexture.Sample(DefaultSampler, In.vTexUV + g_vUV.yx).r;
-    
-    //Out.vColor.r = red;
-    //Out.vColor.gb = pow(float2(1.f, 1.f) - Out.vColor.rr, float2(2.f, 2.f));
-    //Out.vColor.r = 1.f;
     
     Out.vColor = g_vColor;
     
@@ -192,24 +196,19 @@ PS_OUT PS_MAIN_NONE_DIFFUSE(PS_IN In)
     {
         Out.vColor *= g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV + g_vUV);
     }
-    
-    //Out.vColor.gb = Out.vColor.rr;
-
+   
     vector MaskColor = g_MaskTexture.Sample(DefaultSampler, In.vTexUV + g_vUV);
     
     Out.vColor.a *= MaskColor.r;
 	
-    if (Out.vColor.a < 0.1f)
+    if (Out.vColor.a < g_fDiscardRatio)
         discard;
     
     if (g_bBloom)
-    {
         Out.vExtractBloom = Out.vColor;
-    }
+    
     if (g_bGlow)
-    {
         Out.vExtractGlow = g_vGlowColor;
-    }
 
     return Out;
 }
@@ -218,12 +217,6 @@ PS_OUT PS_MAIN_NONE_DIFFUSE_CLAMP(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    //float red = g_GradientTexture.Sample(DefaultSampler, In.vTexUV + g_vUV.yx).r;
-    
-    //Out.vColor.r = red;
-    //Out.vColor.gb = pow(float2(1.f, 1.f) - Out.vColor.rr, float2(2.f, 2.f));
-    //Out.vColor.r = 1.f;
-    
     Out.vColor = g_vColor;
     
     if (g_bDiffuseMap)
@@ -231,31 +224,54 @@ PS_OUT PS_MAIN_NONE_DIFFUSE_CLAMP(PS_IN In)
         Out.vColor *= g_DiffuseTexture.Sample(ClampSampler, In.vTexUV + g_vUV);
     }
     
-    //Out.vColor.gb = Out.vColor.rr;
-
     vector MaskColor = g_MaskTexture.Sample(ClampSampler, In.vTexUV + g_vUV);
     
     Out.vColor.a *= MaskColor.r;
 	
-    if (Out.vColor.a < 0.1f)
+    if (Out.vColor.a < g_fDiscardRatio)
         discard;
 
     if (g_bBloom)
-    {
         Out.vExtractBloom = Out.vColor;
-    }
+    
     if (g_bGlow)
-    {
         Out.vExtractGlow = g_vGlowColor;
-    }
     
+    return Out;
+}
+
+PS_OUT PS_DIFF_MASK_NOISE(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    Out.vColor = g_vColor /*g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.x + g_vUV)*/;
+    vector vMaskWeight = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUV);
+    vector vNoiseWeight = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.z + g_vUV);
     
+    // (0, +1) => (-1, +1)
+    if (g_bDynamicNoiseOption)
+        vNoiseWeight.rgb = vNoiseWeight.rgb * 2 - 1;
+    
+    // Out.vColor *= g_vColor;
+    
+    Out.vColor.rgb *= vNoiseWeight.rgb;
+   
+    Out.vColor.a *= vMaskWeight.r;
+    
+    if (Out.vColor.a < g_fDiscardRatio)
+        discard;
+    
+    if (g_bBloom)
+        Out.vExtractBloom = Out.vColor;
+    
+    if (g_bGlow)
+        Out.vExtractGlow = g_vGlowColor;
+
     return Out;
 }
 
 technique11 DefaultTechnique
 {
-    pass Default
+    pass Default // 0
     {
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_Default, 0);
@@ -265,7 +281,7 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }
-    pass SoftEffect
+    pass SoftEffect // 1
     {
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_Default, 0);
@@ -276,7 +292,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_SOFT();
     }
     
-    pass NoneDiffuseEffect_UVDefault
+    pass NoneDiffuseEffect_UVDefault // 2
     {
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_Default, 0);
@@ -287,7 +303,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_NONE_DIFFUSE();
     }
 
-    pass NoneDiffuseEffect_UVClamp
+    pass NoneDiffuseEffect_UVClamp // 3
     {
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_Default, 0);
@@ -298,11 +314,14 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_NONE_DIFFUSE_CLAMP();
     }
 
-
-	/* pass Default
-	{
-		VertexShader = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN();
-	}*/
+    pass PerfectCustom // 4
+    {
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_NonCulling);
+		
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_DIFF_MASK_NOISE();
+    }
 }

@@ -72,8 +72,6 @@ HRESULT CWindow_EffectEditerView::Render()
             if (ImGui::BeginTabItem("Mesh"))
             {
                 Update_MeshInfo();
-
-
                 ImGui::EndTabItem();
             }
         }
@@ -83,7 +81,6 @@ HRESULT CWindow_EffectEditerView::Render()
             if (ImGui::BeginTabItem("Particle"))
             {
                 Update_ParticleInfo();
-
                 ImGui::EndTabItem();
             }
         }
@@ -114,7 +111,7 @@ void CWindow_EffectEditerView::Call_SetCurrentEffect(weak_ptr<CEffectGroup> pEff
     else
     {
         m_eCurrentEffectType = EFFECTRESOURCE_TYPE::PARTICLE;
-        m_pCurrentEffectParticle = m_pCurrentEffectGroup.lock()->Get_Particle(iIndex - m_pCurrentEffectGroup.lock()->Get_EffectMeshSize());
+        m_pCurrentEffectParticle = m_pCurrentEffectGroup.lock()->Get_Particle(iIndex - _uint(m_pCurrentEffectGroup.lock()->Get_EffectMeshSize()));
     }
 
 }
@@ -129,8 +126,10 @@ void CWindow_EffectEditerView::Call_SyncAnimation()
 void CWindow_EffectEditerView::Call_UpdatePreViewModel()
 {
     m_pPreViewModel = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel();
+
     m_pPreViewModel.lock()->Get_CurrentModel().lock()->CallBack_AnimationEnd -=
         bind(&CWindow_EffectEditerView::Call_SyncAnimation, this);
+
     m_pPreViewModel.lock()->Get_CurrentModel().lock()->CallBack_AnimationEnd +=
         bind(&CWindow_EffectEditerView::Call_SyncAnimation, this);
 }
@@ -142,9 +141,7 @@ void CWindow_EffectEditerView::Update_MeshInfo()
         return;
 
     if (EFFECTRESOURCE_TYPE::MESH != m_eCurrentEffectType)
-    {
         return;
-    }
 
     if (ImGui::Button("Remove Effect") || KEY_INPUT(KEY::F1, KEY_STATE::TAP))
     {

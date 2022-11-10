@@ -1,27 +1,27 @@
 #include "Client_Shader_Defines.hpp"
 
 matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
+vector g_vCamDirection;
 
 texture2D	g_DiffuseTexture;
 texture2D	g_MaskTexture;
 texture2D	g_ColorTexture;
 
-float2		g_vMaskUV;
-float2		g_vDiffuseUV;
-vector		g_vCamDirection;
-float4		g_vGlowColor;
+float2 g_vDiffuseUV;
+float2 g_vMaskUV;
 
 float g_fDiscardRatio;
 
+bool g_bBillboard;
 
-bool		g_bBillboard;
-bool		g_bBloom;
-bool		g_bGlow;
+bool g_bBloom;
 
+bool g_bGlow;
+float4 g_vGlowColor;
+
+// for Sprite Image
 int g_iNumFrameX;
 int g_iNumFrameY;
-
-//float2		g_fCurFrame;
 
 struct VS_IN
 {
