@@ -60,8 +60,14 @@ HRESULT CUI_Landing::Initialize(void* pArg)
     m_pLanding = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_STATIC, &m_tLandingUIDesc[LANDING_BECONFOUND]);
     m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture("Landing_BeconFound");
 
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pLanding));
+
+
+
     m_pLandingBG = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_STATIC, &m_tLandingUIDesc[LANDING_BECONFOUND]);
     m_pLandingBG.lock()->Get_Component<CTexture>().lock()->Use_Texture("Landing_BG");
+
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pLandingBG));
 
 
     m_tLandingFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;

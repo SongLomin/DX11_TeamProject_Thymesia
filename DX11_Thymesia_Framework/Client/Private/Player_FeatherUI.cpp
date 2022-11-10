@@ -58,6 +58,17 @@ HRESULT CPlayer_FeatherUI::Initialize(void* pArg)
     m_pFontBG.lock()->Set_Depth(0.4f);
 
 
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pIcon));
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pFrameBorder));
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pFrame));
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pHover));
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pFontBG));
+
+
+
+
+
     //left 
     m_tCurrentFeatherTextInfo.bAlways = false;
     m_tCurrentFeatherTextInfo.bCenterAlign = false;

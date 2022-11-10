@@ -12,6 +12,7 @@
 #include "Player_FeatherUI.h"
 #include "UI_Landing.h"
 #include "CustomUI.h"
+#include "UI_Logo.h"
 CLoader::CLoader()
 	//: m_pDevice(pDevice), m_pContext(pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
@@ -114,8 +115,12 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("UI_White"), TEXT("../Bin/Resources/Textures/UI/UI_White.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures("Grass", TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
-	//MainMenu
+	//MainMenu(LogoLevel)
 	GAMEINSTANCE->Load_Textures(("MainMenu_Background"), TEXT("../Bin/Resources/Textures/UI/MainMenuBackrgound.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("GameLogo"), TEXT("../Bin/Resources/Textures/UI/GameLogo2.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+
+	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_1"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SelectableButtonBackground.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_2"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SelectableButtonHighlight.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
 
 
 	//Player HPBar Texture
@@ -268,10 +273,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	Create_GameObjectFromJson("../Bin/LevelData/Logo.json", LEVEL_LOGO);
 
 
-	weak_ptr<CCustomUI> mainBG = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_LOGO);
+	GAMEINSTANCE->Add_GameObject<CUI_Logo>(LEVEL_LOGO);
 
-	mainBG.lock()->Set_Texture("MainMenu_Background");
-	
 
 	lstrcpy(m_szLoadingText, TEXT("·Îµù ³¡ "));	
 

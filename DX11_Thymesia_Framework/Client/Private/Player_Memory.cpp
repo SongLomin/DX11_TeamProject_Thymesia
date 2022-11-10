@@ -35,9 +35,18 @@ HRESULT CPlayer_Memory::Initialize(void* pArg)
     m_pIcon.lock()->Set_Depth(0.1f);
 
 
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pBG));
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pIcon));
+
+
+
+
     m_fMemory = 0.f;
     m_fLerpMemory = 0.f;
     m_fLerpAcc = 1.f;
+
+
 
 
     return S_OK;

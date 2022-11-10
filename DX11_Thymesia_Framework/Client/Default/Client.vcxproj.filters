@@ -310,6 +310,9 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Attack.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_Logo.h">
+      <Filter>02. GameObject\01. UI\MainMenu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -597,6 +600,9 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Attack.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\UI_Logo.cpp">
+      <Filter>02. GameObject\01. UI\MainMenu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -726,9 +732,6 @@
     </Filter>
     <Filter Include="02. GameObject\01. UI\FadeMask">
       <UniqueIdentifier>{2c9b24b5-36ce-4aa3-8d98-1549cd3ed6cb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. UI\PlayerUI">
-      <UniqueIdentifier>{c4817d22-7dcd-4337-8227-2a1e4243e297}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\04. Prop">
       <UniqueIdentifier>{37ef6a25-ef8c-49c6-b632-dc8c8a6240a1}</UniqueIdentifier>
@@ -907,27 +910,6 @@
     <Filter Include="99. Defines">
       <UniqueIdentifier>{ca7671a3-fda7-41c0-8070-09afde17063e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD">
-      <UniqueIdentifier>{8439329b-5981-4c42-90ec-11eab1568f89}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\Potion">
-      <UniqueIdentifier>{c654af71-c1f4-4f5e-9939-038eecb26bb3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\Feather">
-      <UniqueIdentifier>{388374b3-bf34-4888-b9c8-fa080d051771}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP">
-      <UniqueIdentifier>{2c25f384-014e-4a40-84c4-e8aef1b67eff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP\Progress">
-      <UniqueIdentifier>{fe5378f3-5d92-48f6-9847-6ce6ac071847}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\Memory">
-      <UniqueIdentifier>{50d1b317-f506-4a91-9ffe-41249c29fffb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\Hover">
-      <UniqueIdentifier>{e487d713-d046-4fcc-955c-f8b1014cbff6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\04. Prop\04. Light_Prop">
       <UniqueIdentifier>{46c37644-8182-4c31-91d7-afefc21a564b}</UniqueIdentifier>
     </Filter>
@@ -954,6 +936,33 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack">
       <UniqueIdentifier>{4a64bbd5-ee25-4223-ac86-be99e1df7490}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\MainMenu">
+      <UniqueIdentifier>{06caef51-5ad5-4e46-8a67-52c4d06b4939}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI">
+      <UniqueIdentifier>{c4817d22-7dcd-4337-8227-2a1e4243e297}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD">
+      <UniqueIdentifier>{8439329b-5981-4c42-90ec-11eab1568f89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\Potion">
+      <UniqueIdentifier>{c654af71-c1f4-4f5e-9939-038eecb26bb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\Feather">
+      <UniqueIdentifier>{388374b3-bf34-4888-b9c8-fa080d051771}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP">
+      <UniqueIdentifier>{2c25f384-014e-4a40-84c4-e8aef1b67eff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP\Progress">
+      <UniqueIdentifier>{fe5378f3-5d92-48f6-9847-6ce6ac071847}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\Memory">
+      <UniqueIdentifier>{50d1b317-f506-4a91-9ffe-41249c29fffb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\Hover">
+      <UniqueIdentifier>{e487d713-d046-4fcc-955c-f8b1014cbff6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

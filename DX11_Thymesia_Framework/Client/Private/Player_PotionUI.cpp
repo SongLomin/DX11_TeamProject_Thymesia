@@ -49,6 +49,12 @@ HRESULT CPlayer_PotionUI::Initialize(void* pArg)
     m_pFontBG.lock()->Set_UIPosition(m_tUIDesc.fX + 40.f, m_tUIDesc.fY , 80.f, 28.f);
     m_pFontBG.lock()->Set_Depth(0.1f);
 
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pIcon));
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pFrameBorder));
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pFrame));
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pFontBG));
+
     //left 
    m_tCurrentPotionTextInfo.bAlways = false;
    m_tCurrentPotionTextInfo.bCenterAlign = false;
