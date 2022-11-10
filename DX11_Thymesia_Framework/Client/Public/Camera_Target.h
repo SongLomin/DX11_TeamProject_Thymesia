@@ -72,6 +72,7 @@ private:
 	weak_ptr<CBoneNode>		m_pCameraBoneNode;
 	_float4x4				m_TransformationMatrix;
 	_float4x4				m_OriginalMatrix;
+	_float4x4				m_CinemaWorldMatrix;
 
 	weak_ptr<CPlayer>		m_pCurrentPlayer;
 	weak_ptr<CTransform>	m_pCurrentPlayerTransformCom;

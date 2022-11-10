@@ -27,13 +27,13 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 	__super::Initialize(pArg);
 
 	m_pTransformCom.lock()->Add_Position(XMVectorSet(0.f, 2.f, 0.f, 1.f));
+	XMStoreFloat4x4(&m_CinemaWorldMatrix, XMMatrixIdentity());
 
+	//_matrix MatLookAtZeroPoint = XMMatrixIdentity();
+	//MatLookAtZeroPoint.r[3] = XMVectorSet(0.f, 3.5f, -3.5f, 1.f);
+	//MatLookAtZeroPoint = SMath::LookAt(MatLookAtZeroPoint, XMVectorSet(0.f, 0.f, 0.f, 1.f));
 
-	_matrix MatLookAtZeroPoint = XMMatrixIdentity();
-	MatLookAtZeroPoint.r[3] = XMVectorSet(0.f, 3.5f, -3.5f, 1.f);
-	MatLookAtZeroPoint = SMath::LookAt(MatLookAtZeroPoint, XMVectorSet(0.f, 0.f, 0.f, 1.f));
-
-	_vector vLookAtZeroPointQuat = XMQuaternionRotationMatrix(SMath::Get_RotationMatrix(MatLookAtZeroPoint));
+	//_vector vLookAtZeroPointQuat = XMQuaternionRotationMatrix(SMath::Get_RotationMatrix(MatLookAtZeroPoint));
 
 	GET_SINGLE(CGameManager)->Use_EffectGroup("Tutorial_Dust", m_pTransformCom);
 
@@ -140,27 +140,42 @@ void CCamera_Target::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBon
 
 void CCamera_Target::End_Cinematic()
 {
+
+	_matrix LocalMat = XMMatrixIdentity();
+	LocalMat *= XMMatrixRotationX(XMConvertToRadians(-90.f));
+	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
+
+	_matrix		ParentMatrix = m_pCameraBoneNode.lock()->Get_CombinedMatrix()
+		* XMLoadFloat4x4(&m_TransformationMatrix);
+
+	ParentMatrix.r[0] = XMVector3Normalize(ParentMatrix.r[0]);
+	ParentMatrix.r[1] = XMVector3Normalize(ParentMatrix.r[1]);
+	ParentMatrix.r[2] = XMVector3Normalize(ParentMatrix.r[2]);
+
+	_matrix TotalMatrix = LocalMat * ParentMatrix * m_pCameraBoneParentTransform.lock()->Get_WorldMatrix();
+
+	m_pTransformCom.lock()->Set_WorldMatrix(TotalMatrix);
+
 	m_pCameraBoneNode = weak_ptr<CBoneNode>();
 	m_pCameraBoneParentTransform = weak_ptr<CTransform>();
 	m_bCinematic = false;
 
-	m_pTransformCom.lock()->Set_WorldMatrix(XMLoadFloat4x4(&m_OriginalMatrix));
 }
 
 
 HRESULT CCamera_Target::Bind_PipeLine()
 {
-	GAMEINSTANCE->Set_Transform(CPipeLine::D3DTS_WORLD, m_pTransformCom.lock()->Get_WorldMatrix());
-	_matrix WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
-	
-	//_matrix		WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
-
-
-	/*_matrix		WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix()
-		* XMLoadFloat4x4(&m_MatRotation)
-		* SMath::Get_PositionMatrix(m_pCamTargetTransformCom.lock()->Get_WorldMatrix());
-	GAMEINSTANCE->Set_Transform(CPipeLine::D3DTS_WORLD, WorldMatrix);*/
-
+	_matrix WorldMatrix;
+	if (!m_bCinematic)
+	{
+		GAMEINSTANCE->Set_Transform(CPipeLine::D3DTS_WORLD, m_pTransformCom.lock()->Get_WorldMatrix());
+		WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
+	}
+	else
+	{
+		WorldMatrix = XMLoadFloat4x4(&m_CinemaWorldMatrix);
+		GAMEINSTANCE->Set_Transform(CPipeLine::D3DTS_WORLD, WorldMatrix);
+	}
 	_matrix		ViewMatrix = XMMatrixInverse(nullptr, WorldMatrix);
 	GAMEINSTANCE->Set_Transform(CPipeLine::D3DTS_VIEW, ViewMatrix);
 
@@ -230,16 +245,13 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 	if (fTimeDelta < XMVector3Length(vPlayerPos - vPrePlayerPos).m128_f32[0])
 	{
 		_vector  vPlayerFollowLerpPostiion = XMLoadFloat4(&m_vPlayerFollowLerpPosition);
-
+		
 		m_fSpeed += m_fAccel * fTimeDelta;
 		if (5.f < m_fSpeed)
 			m_fSpeed = 5.f;
 
 		vPlayerFollowLerpPostiion = XMVectorLerp(vPlayerFollowLerpPostiion, vPrePlayerPos, m_fSpeed * fTimeDelta);
-
-
-		XMStoreFloat4(&m_vPlayerFollowLerpPosition, vPlayerFollowLerpPostiion);;
-
+		XMStoreFloat4(&m_vPlayerFollowLerpPosition, vPlayerFollowLerpPostiion);
 	}
 	else
 	{
@@ -252,16 +264,18 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 		XMStoreFloat4(&m_vPlayerFollowLerpPosition, vPlayerFollowLerpPos);
 	}
 
-
 	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
-
-	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * -4.f + XMVectorSet(0.f, 2.f, 0.f, 0.f);
-
+	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * -4.f + XMVectorSet(0.f, 1.5f, 0.f, 0.f);
 	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
 }
 
 void CCamera_Target::Update_Bone()
 {
+	//Varg_Execution camera LocalOffset.
+	_matrix LocalMat = XMMatrixIdentity();
+	LocalMat *= XMMatrixRotationX(XMConvertToRadians(-90.f));
+	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
+
 	_matrix		ParentMatrix = m_pCameraBoneNode.lock()->Get_CombinedMatrix()
 		* XMLoadFloat4x4(&m_TransformationMatrix);
 
@@ -269,8 +283,10 @@ void CCamera_Target::Update_Bone()
 	ParentMatrix.r[1] = XMVector3Normalize(ParentMatrix.r[1]);
 	ParentMatrix.r[2] = XMVector3Normalize(ParentMatrix.r[2]);
 
+	_matrix TotalMatrix = LocalMat *ParentMatrix * m_pCameraBoneParentTransform.lock()->Get_WorldMatrix();
 
-	m_pTransformCom.lock()->Set_WorldMatrix(ParentMatrix * m_pCameraBoneParentTransform.lock()->Get_UnScaledWorldMatrix());
+	XMStoreFloat4x4(&m_CinemaWorldMatrix, TotalMatrix);
+	
 }
 
 void CCamera_Target::OnLevelExit()
