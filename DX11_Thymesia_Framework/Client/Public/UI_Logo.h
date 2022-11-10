@@ -47,13 +47,8 @@ private:
 	weak_ptr<CHUD_Hover>	m_pTextTexture[LOGO_BUTTON_END];
 
 
-
-
-
-	wstring					m_SelectButtonText[LOGO_BUTTON_END];
-	TEXTINFO				m_tTextInfo[LOGO_BUTTON_END];
-
-
+	string					m_fontPath[LOGO_BUTTON_END];
+	_float2					m_fFontSize[LOGO_BUTTON_END];
 
 
 	_uint		m_iSelect;

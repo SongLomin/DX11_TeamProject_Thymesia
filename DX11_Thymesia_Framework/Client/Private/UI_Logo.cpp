@@ -25,12 +25,21 @@ HRESULT CUI_Logo::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
-    m_SelectButtonText[LOGO_BUTTON_CONTINUE_GAME] = L"Continue Game";
-    m_SelectButtonText[LOGO_BUTTON_START_GAME] = L"New Game";
-    m_SelectButtonText[LOGO_BUTTON_LOAD_GAME] = L"Load Game";
-    m_SelectButtonText[LOGO_BUTTON_OPTION] = L"Options";
-    m_SelectButtonText[LOGO_BUTTON_CREDITS] = L"Credits";
-    m_SelectButtonText[LOGO_BUTTON_QUIT] = L"Quit";
+    m_fontPath[LOGO_BUTTON_CONTINUE_GAME] = "MainMenu_SelectableButton_ContinueGame";
+    m_fontPath[LOGO_BUTTON_START_GAME] = "MainMenu_SelectableButton_StartGame";
+    m_fontPath[LOGO_BUTTON_LOAD_GAME] = "MainMenu_SelectableButton_LoadGame";
+    m_fontPath[LOGO_BUTTON_OPTION] = "MainMenu_SelectableButton_Options";
+    m_fontPath[LOGO_BUTTON_CREDITS] = "MainMenu_SelectableButton_Credits";
+    m_fontPath[LOGO_BUTTON_QUIT] = "MainMenu_SelectableButton_Quit";
+
+
+    m_fFontSize[LOGO_BUTTON_CONTINUE_GAME] = _float2(292.f, 30.f);
+    m_fFontSize[LOGO_BUTTON_START_GAME] = _float2(222.f, 30.f);
+    m_fFontSize[LOGO_BUTTON_LOAD_GAME] = _float2(204.f, 30.f);
+    m_fFontSize[LOGO_BUTTON_OPTION] = _float2(155.f, 30.f);
+    m_fFontSize[LOGO_BUTTON_CREDITS] = _float2(137.f, 30.f);
+    m_fFontSize[LOGO_BUTTON_QUIT] = _float2(100.f, 30.f);
+
 
     UI_DESC desc;
     FaderDesc faderDesc;
@@ -71,26 +80,16 @@ HRESULT CUI_Logo::Initialize(void* pArg)
         m_pSelectButton[i].lock()->Set_Enable(true);
         m_pSelectButton[i].lock()->Init_Fader(faderDesc, hoverDesc, CHUD_Hover::HUD_HOVER_ANIMATION_END);
 
-        desc.fSizeX = 165.f;
-        desc.fSizeY = 15.f;
+        desc.fSizeX = m_fFontSize[i].x;
+        desc.fSizeY = m_fFontSize[i].y;
 
         m_pTextTexture[i] = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_LOGO, &desc);
-        m_pTextTexture[i].lock()->Set_Texture("MainMenu_SelectableButton_ContinueGame");
+        m_pTextTexture[i].lock()->Set_Texture(m_fontPath[i].c_str());
         m_pTextTexture[i].lock()->Set_Enable(true);
         m_pTextTexture[i].lock()->Set_Depth(0.0f);
 
         m_pTextTexture[i].lock()->Init_Fader(faderDesc, hoverDesc, CHUD_Hover::HUD_HOVER_ANIMATION_END);
 
-
-
-        m_tTextInfo[i].bAlways = false;
-        m_tTextInfo[i].bCenterAlign = true;
-        m_tTextInfo[i].fRotation = 0.f;
-        m_tTextInfo[i].vColor = _float4(0.3f, 0.3f, 0.3f, 0.3f);
-        m_tTextInfo[i].vScale = _float2(0.5f, 0.5f);
-        m_tTextInfo[i].vPosition.x = ((_float)g_iWinCX) * 0.5f;
-        m_tTextInfo[i].vPosition.y = ((_float)g_iWinCY) * 0.5f + (55.f * i) - 10.f;
-        m_tTextInfo[i].szText = m_SelectButtonText[i];
     }
 
     m_iSelect = 0;
