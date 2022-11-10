@@ -48,7 +48,7 @@ HRESULT CUI_Logo::Initialize(void* pArg)
     m_pMainMenuBG = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_LOGO);
     m_pMainMenuBG.lock()->Set_Depth(0.3f);
     m_pMainMenuBG.lock()->Set_Texture("MainMenu_Background");
-
+    m_pMainMenuBG.lock()->Set_PassIndex(6);
 
     m_pLogo = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_LOGO);
     m_pLogo.lock()->Set_Depth(0.2f);
@@ -79,7 +79,6 @@ HRESULT CUI_Logo::Initialize(void* pArg)
         m_pSelectButton[i].lock()->Set_Texture("MainMenu_SelectableButton_1");
         m_pSelectButton[i].lock()->Set_Enable(true);
         m_pSelectButton[i].lock()->Init_Fader(faderDesc, hoverDesc, CHUD_Hover::HUD_HOVER_ANIMATION_END);
-
         desc.fSizeX = m_fFontSize[i].x;
         desc.fSizeY = m_fFontSize[i].y;
 
@@ -110,28 +109,24 @@ void CUI_Logo::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
-
-#ifdef _DEBUG
     if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
     {
         if (m_iSelect == 0)
             m_iSelect = 0;
         else
             m_iSelect--;
-
         ChageButtonIndex(m_iSelect);
     }
     else if (KEY_INPUT(KEY::DOWN, KEY_STATE::TAP))
     {
-        if (m_iSelect >= (_uint)LOGO_BUTTON_QUIT)
+        if (m_iSelect == (_uint)LOGO_BUTTON_QUIT)
             m_iSelect = (_uint)LOGO_BUTTON_QUIT;
         else
             m_iSelect++;
-        ChageButtonIndex(m_iSelect);
+         ChageButtonIndex(m_iSelect);
     }
-    else if (KEY_INPUT(KEY::ENTER, KEY_STATE::TAP))
+    if (KEY_INPUT(KEY::ENTER, KEY_STATE::TAP))
         SelectButton(m_iSelect);
-#endif // _DEBUG
 
 }
 
@@ -141,14 +136,25 @@ void CUI_Logo::LateTick(_float fTimeDelta)
 
     for (auto i = 0; i < (_uint)LOGO_BUTTON_END; i++)
     {
-        if (m_iSelect == i)
-            continue;
-        
-        m_pSelectButton[i].lock()->Set_Alpha(_float4(0.4f, 0.4f, 0.4f, 0.4f));
-        m_pTextTexture[i].lock()->Set_Alpha(_float4(0.4f, 0.4f, 0.4f, 0.4f));
-
+        if (m_iSelect != i)
+        {
+            m_pSelectButton[i].lock()->Set_Alpha(_float4(0.4f, 0.4f, 0.4f, 0.4f));
+            m_pTextTexture[i].lock()->Set_Alpha(_float4(0.4f, 0.4f, 0.4f, 0.4f));
+        }
     }
+}
 
+HRESULT CUI_Logo::Render()
+{
+
+
+    return S_OK;
+}
+
+HRESULT CUI_Logo::SetUp_ShaderResource()
+{
+
+    return S_OK;
 }
 
 void CUI_Logo::ChageButtonIndex(_uint iButtonIndex)

@@ -32,6 +32,8 @@ HRESULT CHUD_Hover::Initialize(void* pArg)
 
 	ZeroMemory(&m_tHoverDesc, sizeof(HUDHOVERDESC));
 	
+	m_eRenderGroup = RENDERGROUP::RENDER_UI;
+
 	m_eHoverType = HUD_HOVER_ANIMATION_END;
 
 	Set_Enable(false);

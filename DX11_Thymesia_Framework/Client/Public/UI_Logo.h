@@ -31,10 +31,10 @@ public:
 	virtual HRESULT Start();
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
-	virtual HRESULT Render() { return S_OK; }
+	virtual HRESULT Render();
 
 protected:
-	virtual HRESULT SetUp_ShaderResource() { return S_OK; }
+	virtual HRESULT SetUp_ShaderResource();
 
 private:
 	void		ChageButtonIndex(_uint iButtonIndex);
