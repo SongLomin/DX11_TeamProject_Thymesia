@@ -32,6 +32,7 @@ public:
 
 private:
 	_uint					m_iNumVerticesX = 0, m_iNumVerticesZ = 0;
+	_float					m_fInterval = 0.f;
 
 	vector<_uint3>			m_Indices;
 	vector<VTXNORTEX>		m_VertexInfo;

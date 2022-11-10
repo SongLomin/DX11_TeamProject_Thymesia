@@ -30,11 +30,12 @@ HRESULT CEditGround::Initialize(void* pArg)
 	);
 
 	m_pRendererCom		 = Add_Component<CRenderer>();
-	m_pDiff_TextureCom	 = Add_Component<CTexture>();
-	m_pNorm_TextureCom	 = Add_Component<CTexture>();
 
-	m_pDiff_TextureCom.lock()->Use_Texture("T_Floor_01a_C.png");
-	m_pNorm_TextureCom.lock()->Use_Texture("T_Floor_01a_N.png");
+	m_pTextureCom.emplace("g_SourDiffTexture", Add_Component<CTexture>());
+	m_pTextureCom.emplace("g_NormalTexture"  , Add_Component<CTexture>());
+
+	m_pTextureCom.find("g_SourDiffTexture")->second.lock()->Use_Texture("T_Floor_01a_C.png");
+	m_pTextureCom.find("g_NormalTexture")->second.lock()->Use_Texture("T_Floor_01a_N.png");
 
 	Load_AllMeshInfo();
 
@@ -90,15 +91,9 @@ HRESULT CEditGround::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ)), sizeof(_float4x4))))
 		return E_FAIL;
 
-	if (m_pDiff_TextureCom.lock())
+	for (auto& iter : m_pTextureCom)
 	{
-		if (FAILED(m_pDiff_TextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_SourDiffTexture", 0)))
-			return E_FAIL;
-	}
-
-	if (m_pNorm_TextureCom.lock())
-	{
-		if (FAILED(m_pNorm_TextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NormalTexture", 0)))
+		if(FAILED(iter.second.lock()->Set_ShaderResourceView(m_pShaderCom, iter.first.c_str(), 0)))
 			return E_FAIL;
 	}
 

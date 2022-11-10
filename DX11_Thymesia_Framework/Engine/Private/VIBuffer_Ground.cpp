@@ -62,27 +62,93 @@ void CVIBuffer_Ground::Update(_vector _vMousePos, _float _fRadious, _float _fPow
 
 	DEVICECONTEXT->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
 
-	for (_uint i = 0; i < m_iNumVertices; ++i)
+	_int2	iPickIndex = { _int(_vMousePos.m128_f32[0] / m_fInterval), _int(_vMousePos.m128_f32[2] / m_fInterval) };
+	_int	iRoundIndx  = _fRadious / m_fInterval;
+
+	_int2	iBeginIndex, iEndIndex;
+	iBeginIndex.x = (0 > iPickIndex.x - iRoundIndx) ? (0) : (iPickIndex.x - iRoundIndx);
+	iBeginIndex.y = (0 > iPickIndex.y - iRoundIndx) ? (0) : (iPickIndex.y - iRoundIndx);
+	 														
+	iEndIndex.x   = (m_iNumVerticesX < iPickIndex.x + iRoundIndx) ? (m_iNumVerticesX) : (iPickIndex.x + iRoundIndx);
+	iEndIndex.y   = (m_iNumVerticesZ < iPickIndex.y + iRoundIndx) ? (m_iNumVerticesZ) : (iPickIndex.y + iRoundIndx);
+
+	for (_uint iZ = iBeginIndex.y; iZ <= iEndIndex.y; ++iZ)
 	{
-		_float3 vPos    = ((VTXNORTEX*)SubResource.pData)[i].vPosition;
-		_float  fLength = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vPos) - _vMousePos));
-
-		if (_fRadious >= fLength)
+		for (_uint iX = iBeginIndex.x; iX <= iEndIndex.x; ++iX)
 		{
-			if (0 == _iMode)
+			_ulong	iIndex = iZ * m_iNumVerticesX + iX;
+
+			_float3 vPos    = ((VTXNORTEX*)SubResource.pData)[iIndex].vPosition;
+			_float  fLength = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vPos) - _vMousePos));
+
+			if (_fRadious >= fLength)
 			{
-				((VTXNORTEX*)SubResource.pData)[i].vPosition.y += _fPower;
-				m_VertexInfo[i].vPosition = ((VTXNORTEX*)SubResource.pData)[i].vPosition;
+				if (0 == _iMode)
+				{
+					((VTXNORTEX*)SubResource.pData)[iIndex].vPosition.y += _fPower;
+					m_VertexInfo[iIndex].vPosition = ((VTXNORTEX*)SubResource.pData)[iIndex].vPosition;
+				}
+
+				else if (1 == _iMode)
+				{
+					_float fLerpPower = _fPower * (1.f - pow((fLength / _fRadious), 2.f));
+
+					((VTXNORTEX*)SubResource.pData)[iIndex].vPosition.y += fLerpPower;
+					m_VertexInfo[iIndex].vPosition = ((VTXNORTEX*)SubResource.pData)[iIndex].vPosition;
+				}
+			}
+		}
+	}
+
+	for (_uint iZ = iBeginIndex.y; iZ <= iEndIndex.y; ++iZ)
+	{
+		for (_uint iX = iBeginIndex.x; iX <= iEndIndex.x; ++iX)
+		{
+			_ulong	iIndex = iZ * m_iNumVerticesX + iX;
+
+			_long  iAdjacency[] =
+			{
+				iIndex + m_iNumVerticesX,	// 위
+				iIndex + 1,					// 오른쪽
+				iIndex - m_iNumVerticesX,	// 아래
+				iIndex - 1					// 왼쪽
+			};
+			
+			if (0 == iX)
+				iAdjacency[3] = -1;
+
+			if (m_iNumVerticesX == iX)
+				iAdjacency[1] = -1;
+
+			if (0 == iZ)
+				iAdjacency[2] = -1;
+
+			if (m_iNumVerticesZ == iZ)
+				iAdjacency[0] = -1;
+
+			_float3 vNorm = m_VertexInfo[iIndex].vNormal;
+
+			// 노말 벡터 계산
+			for (_uint i = 0; i < 4; ++i)
+			{
+				if (0 > iAdjacency[i])
+					continue;
+
+				_vector vTempNorm = XMLoadFloat3(&vNorm) + XMLoadFloat3(&m_VertexInfo[iAdjacency[i]].vNormal);
+				XMStoreFloat3(&vNorm, XMVector3Normalize(vTempNorm));
 			}
 
-			else if (1 == _iMode)
-			{
-				_float fLerpPower = _fPower * (1.f - pow((fLength / _fRadious), 2.f));
+			m_VertexInfo[iIndex].vNormal = vNorm;
+			((VTXNORTEX*)SubResource.pData)[iIndex].vNormal = vNorm;
 
-				((VTXNORTEX*)SubResource.pData)[i].vPosition.y += fLerpPower;
-				m_VertexInfo[i].vPosition = ((VTXNORTEX*)SubResource.pData)[i].vPosition;
-			}
-		}		
+
+			if (0 > iAdjacency[1])
+				continue;
+
+			// 탄젠트 벡터 계산
+			_vector vTempTangent = XMVector3Normalize(XMLoadFloat3(&m_VertexInfo[iAdjacency[1]].vPosition) - XMLoadFloat3(&m_VertexInfo[iIndex].vPosition));
+
+		}
 	}
 
 	DEVICECONTEXT->Unmap(m_pVB.Get(), 0);
@@ -184,6 +250,19 @@ HRESULT CVIBuffer_Ground::Init_Mesh(shared_ptr<MESH_DATA> tMeshData)
 
 	/* ------------------------------------------------------------------ */
 
+	m_fInterval	= pVertices[1].vPosition.x;
+
+	for (_uint i = 0; i < m_iNumVertices; ++i)
+	{
+		if (m_VertexInfo[i].vPosition.z == m_fInterval)
+		{
+			m_iNumVerticesX = i;
+			break;
+		}
+	}
+
+	m_iNumVerticesZ	= m_iNumVertices / m_iNumVerticesX;
+
 	Safe_Delete_Array(pVertices);
 	Safe_Delete_Array(pIndices);
 
@@ -192,29 +271,26 @@ HRESULT CVIBuffer_Ground::Init_Mesh(shared_ptr<MESH_DATA> tMeshData)
 
 HRESULT CVIBuffer_Ground::Init_Mesh(_float4 _vInfo)
 {
-	_float vInterval		= _vInfo.z;
-	_float _iNumVerticesX	= (_uint)_vInfo.x;
-	_float _iNumVerticesZ	= (_uint)_vInfo.y;
-
-	m_iNumVerticesX = _iNumVerticesX;
-	m_iNumVerticesZ = _iNumVerticesZ;
+	m_fInterval			= _vInfo.z;
+	m_iNumVerticesX		= (_uint)_vInfo.x;
+	m_iNumVerticesZ		= (_uint)_vInfo.y;
 
 	/* 버텍스 버퍼 생성 */
 	m_iStride			= sizeof(VTXNORTEX);
-	m_iNumVertices		= _iNumVerticesX * _iNumVerticesZ;
+	m_iNumVertices		= m_iNumVerticesX * m_iNumVerticesZ;
 	m_iNumVertexBuffers = 1;
 
 	VTXNORTEX* pVertices = new VTXNORTEX[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXNORTEX) * m_iNumVertices);
 
-	for (_uint iCol = 0; iCol < _iNumVerticesZ; ++iCol)
+	for (_uint iCol = 0; iCol < m_iNumVerticesZ; ++iCol)
 	{
-		for (_uint iRow = 0; iRow < _iNumVerticesX; ++iRow)
+		for (_uint iRow = 0; iRow < m_iNumVerticesX; ++iRow)
 		{
-			_ulong	iIndex = iCol * _iNumVerticesX + iRow;
+			_ulong	iIndex = iCol * m_iNumVerticesX + iRow;
 
-			pVertices[iIndex].vPosition = _float3(_float(iRow * vInterval), 0.f, _float(iCol * vInterval));
-			pVertices[iIndex].vTexUV    = _float2(iRow / (_iNumVerticesX - 1.f), iCol / (_iNumVerticesZ - 1.f));
+			pVertices[iIndex].vPosition = _float3(_float(iRow * m_fInterval), 0.f, _float(iCol * m_fInterval));
+			pVertices[iIndex].vTexUV    = _float2(iRow / (m_iNumVerticesX - 1.f), iCol / (m_iNumVerticesZ - 1.f));
 			pVertices[iIndex].vNormal	= _float3(0.f, 1.f, 0.f);
 
 			m_VertexInfo.push_back(pVertices[iIndex]);
@@ -224,7 +300,7 @@ HRESULT CVIBuffer_Ground::Init_Mesh(_float4 _vInfo)
 
 	/* 인덱스 버퍼 생성 */
 	m_iIndicesStride	= sizeof(FACEINDICES32);
-	m_iNumPrimitive		= (_iNumVerticesX - 1) * (_iNumVerticesZ - 1) * 2;
+	m_iNumPrimitive		= (m_iNumVerticesX - 1) * (m_iNumVerticesZ - 1) * 2;
 	m_iNumIndices		= m_iNumPrimitive * 3;
 	m_eIndexFormat		= DXGI_FORMAT_R32_UINT;
 	m_eToplogy			= D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
@@ -233,16 +309,16 @@ HRESULT CVIBuffer_Ground::Init_Mesh(_float4 _vInfo)
 	ZeroMemory(pIndices, sizeof(FACEINDICES32) * m_iNumPrimitive);
 
 	_ulong		dwNumFaces = 0;
-	for (_uint iCol = 0; iCol < _iNumVerticesZ - 1; ++iCol)
+	for (_uint iCol = 0; iCol < m_iNumVerticesZ - 1; ++iCol)
 	{
-		for (_uint iRow = 0; iRow < _iNumVerticesX - 1; ++iRow)
+		for (_uint iRow = 0; iRow < m_iNumVerticesX - 1; ++iRow)
 		{
-			_ulong	iIndex = iCol * _iNumVerticesX + iRow;
+			_ulong	iIndex = iCol * m_iNumVerticesX + iRow;
 
 			_ulong  iIndices[] =
 			{
-				iIndex + _iNumVerticesX,
-				iIndex + _iNumVerticesX + 1,
+				iIndex + m_iNumVerticesX,
+				iIndex + m_iNumVerticesX + 1,
 				iIndex + 1,
 				iIndex
 			};
