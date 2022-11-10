@@ -400,6 +400,7 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_DistortionBlend.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_EffectMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_HPBar.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_HyperSpace.hlsl" />

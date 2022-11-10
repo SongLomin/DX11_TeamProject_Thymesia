@@ -1018,5 +1018,8 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxGround.hlsl">
       <Filter>04. ShaderFiles</Filter>
     </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_DistortionBlend.hlsl">
+      <Filter>04. ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

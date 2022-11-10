@@ -153,7 +153,7 @@ HRESULT CCamera_Target::Bind_PipeLine()
 	GAMEINSTANCE->Set_Transform(CPipeLine::D3DTS_WORLD, m_pTransformCom.lock()->Get_WorldMatrix());
 	_matrix WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
 	
-	//_matrix		WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
+ 	//_matrix		WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
 
 
 	/*_matrix		WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix()

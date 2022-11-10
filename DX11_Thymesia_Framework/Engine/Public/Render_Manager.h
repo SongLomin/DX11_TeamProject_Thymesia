@@ -39,6 +39,7 @@ private:
 	HRESULT Blur_ExtractGlow(const _float& In_PixelPitchScalar);
 	HRESULT ReBlur_ExtractGlow(const _float& In_PixelPitchScalar);
 	HRESULT Blend_OutLine();
+	HRESULT Extract_Distortion();
 	HRESULT Blend_Distortion();
 	HRESULT Blend_Glow(); // 원본이 글로우보다 위에 그려진다.
 	HRESULT Render_Font();
@@ -74,6 +75,7 @@ private:
 	shared_ptr<CShader>			m_pShader;
 	shared_ptr<CShader>			m_pXBlurShader;
 	shared_ptr<CShader>			m_pOutLineShader;
+	shared_ptr<CShader>			m_pDistortionShader;
 	shared_ptr<CVIBuffer_Rect>	m_pVIBuffer;
 
 private:

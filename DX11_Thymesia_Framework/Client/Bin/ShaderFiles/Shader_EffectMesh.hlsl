@@ -90,6 +90,11 @@ struct PS_OUT
     vector vExtractGlow : SV_Target2;
 };
 
+struct PS_OUT_DISTORTION
+{
+    vector vColor : SV_TARGET0;
+};
+
 PS_OUT PS_MAIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
@@ -268,6 +273,14 @@ PS_OUT PS_DIFF_MASK_NOISE(PS_IN In)
 
     return Out;
 }
+PS_OUT_DISTORTION PS_DISTORTION(PS_IN In)
+{
+    PS_OUT_DISTORTION Out = (PS_OUT_DISTORTION)0;
+    
+    Out.vColor = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+
+    return Out;
+}
 
 technique11 DefaultTechnique
 {
@@ -323,5 +336,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_DIFF_MASK_NOISE();
+    }
+
+    pass Distortion //5
+    {
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN_SOFT();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_DISTORTION();
     }
 }
