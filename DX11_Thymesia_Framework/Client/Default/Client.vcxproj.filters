@@ -319,6 +319,9 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Parry2.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\12.State_Parry\State_Parry2</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_BasicHealing.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing\00.CorvusState_BasicHealing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -612,6 +615,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Parry2.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\12.State_Parry\State_Parry2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_BasicHealing.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing\00.CorvusState_BasicHealing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -995,7 +1001,7 @@
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing">
       <UniqueIdentifier>{ccc0efb5-3edc-4fdb-9c8e-1ec91417b221}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing\00.">
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing\00.CorvusState_BasicHealing">
       <UniqueIdentifier>{c10e7031-e434-4528-9ac6-0a6693d61a10}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

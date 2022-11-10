@@ -47,12 +47,12 @@ HRESULT CCorvus::Initialize(void* pArg)
 	Add_Component<CCorvusState_AVoid>();
 	Add_Component<CVarg_Execution>();
 	Add_Component<CCorvusState_SprintAttack>();
-	//Add_Component<CCorvusState_Parry>();
 	Add_Component<CCorvusState_LAttack1>();
 	Add_Component<CCorvusState_LAttack2>();
 	Add_Component<CCorvusState_LAttack3>();
 	Add_Component<CCorvusState_Parry1>();
 	Add_Component<CCorvusState_Parry2>();
+	Add_Component<CCorvusState_BasicHealing>();
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
 	USE_START(CCorvus);
@@ -97,8 +97,6 @@ HRESULT CCorvus::Render()
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
 	
-		//if (4 <= i && i <10) //킹받느다
-		//	continue;
 
 		if (i == 4 || i == 9 || i == 12)
 			continue;

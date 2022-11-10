@@ -140,6 +140,13 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		 return true;
 	 }
 
+	 if (Check_RequirementHealingState())
+	 {
+		 Rotation_InputToLookDir();
+		 Get_OwnerPlayer()->Change_State<CCorvusState_BasicHealing>();
+		 return true;
+	 }
+
 	 //юс╫ц
 	 if (KEY_INPUT(KEY::O, KEY_STATE::TAP))
 	 {

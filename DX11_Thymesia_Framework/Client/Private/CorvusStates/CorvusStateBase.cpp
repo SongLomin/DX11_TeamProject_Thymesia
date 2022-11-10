@@ -111,6 +111,16 @@ _bool CCorvusStateBase::Check_RequirementUltimateState()
 	return false;
 }
 
+_bool CCorvusStateBase::Check_RequirementHealingState()
+{
+	if (KEY_INPUT(KEY::Q, KEY_STATE::TAP))
+	{
+		return true;
+	}
+
+	return false;
+}
+
 void CCorvusStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
 	__super::OnHit(pOtherCollider, In_eHitType, In_fDamage);

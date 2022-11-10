@@ -22,6 +22,7 @@ protected:
     virtual _bool Check_RequirementAVoidState();
     virtual _bool Check_RequirementParryState();
     virtual _bool Check_RequirementUltimateState();
+    virtual _bool Check_RequirementHealingState();
 
 
 protected:
