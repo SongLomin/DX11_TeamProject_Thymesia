@@ -122,6 +122,12 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_1"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SelectableButtonBackground.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_2"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SelectableButtonHighlight.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
 
+	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_ContinueGame"), TEXT("../Bin/Resources/Textures/UI/UI_ContinueGame.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+
+
+
+
+
 
 	//Player HPBar Texture
 	GAMEINSTANCE->Load_Textures(("Player_HPBar_Border_Left"), TEXT("../Bin/Resources/Textures/UI/HUD/PlayerHPBar/TexUI_HPBar_1Border_Left.png"), MEMORY_TYPE::MEMORY_STATIC);

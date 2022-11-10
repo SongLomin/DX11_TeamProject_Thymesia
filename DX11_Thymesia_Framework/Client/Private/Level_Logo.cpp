@@ -48,22 +48,6 @@ void CLevel_Logo::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);		
 
-	if (KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))
-	{
-		FaderDesc tFaderDesc;
-		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
-		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
-		tFaderDesc.fFadeMaxTime = 1.f;
-		tFaderDesc.fDelayTime = 0.5f;
-		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
-
-		m_eNextLevel = LEVEL_GAMEPLAY;
-
-		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
-		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
-	}
-
-
 	if (KEY_INPUT(KEY::F2, KEY_STATE::TAP))
 	{
 		if (FAILED(GAMEINSTANCE->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(LEVEL_EDIT))))
@@ -90,6 +74,23 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)
 
 	return S_OK;
 }
+
+void CLevel_Logo::OnLevelExit()
+{
+	FaderDesc tFaderDesc;
+	tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+	tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+	tFaderDesc.fFadeMaxTime = 1.f;
+	tFaderDesc.fDelayTime = 0.5f;
+	tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+
+	m_eNextLevel = LEVEL_GAMEPLAY;
+
+	m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+	m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
+}
+
+
 
 shared_ptr<CLevel_Logo> CLevel_Logo::Create()
 {

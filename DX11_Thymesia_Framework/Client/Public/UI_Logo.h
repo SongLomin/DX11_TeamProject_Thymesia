@@ -42,8 +42,19 @@ private:
 
 private:
 	weak_ptr<CHUD_Hover>	m_pLogo;
-	weak_ptr<CCustomUI>	m_pMainMenuBG;
+	weak_ptr<CCustomUI>		m_pMainMenuBG;
 	weak_ptr<CHUD_Hover>	m_pSelectButton[LOGO_BUTTON_END];
+	weak_ptr<CHUD_Hover>	m_pTextTexture[LOGO_BUTTON_END];
+
+
+
+
+
+	wstring					m_SelectButtonText[LOGO_BUTTON_END];
+	TEXTINFO				m_tTextInfo[LOGO_BUTTON_END];
+
+
+
 
 	_uint		m_iSelect;
 

@@ -49,6 +49,8 @@ void CHUD_Hover::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 	
+	m_vFadeColor = m_pFaderCom.lock()->Get_FadeColor();
+	
 	if (m_tHoverDesc.m_bSizeChange)
 	{
 		if (m_eHoverType == HUD_HOVER_ANIMATION_FROM_ALPHA)
@@ -81,6 +83,7 @@ void CHUD_Hover::Tick(_float fTimeDelta)
 void CHUD_Hover::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
 
 }
 
@@ -117,11 +120,16 @@ void CHUD_Hover::Call_FadeEnd(FADER_TYPE In_eFaderType)
 }
 
 
+void CHUD_Hover::Set_Alpha(_float4 _vAlpha)
+{
+	m_vFadeColor = _vAlpha;
+}
+
 HRESULT CHUD_Hover::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
 
-	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vColor", &m_pFaderCom.lock()->Get_FadeColor(), sizeof(_float4))))
+	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vColor", &m_vFadeColor, sizeof(_float4))))
 		return E_FAIL;
 
 	return S_OK;

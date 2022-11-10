@@ -52,6 +52,8 @@ public:
 public:
 	FDelegate<FADER_TYPE> CallBack_FadeEnd;
 	
+public:
+	void				Set_Alpha(_float4 _vAlpha);
 
 protected:
 	virtual HRESULT SetUp_ShaderResource() override;
