@@ -992,6 +992,12 @@
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\12.State_Parry\State_Parry2">
       <UniqueIdentifier>{6f878e11-35db-41cc-976c-bcfcb5d31ac6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing">
+      <UniqueIdentifier>{ccc0efb5-3edc-4fdb-9c8e-1ec91417b221}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing\00.">
+      <UniqueIdentifier>{c10e7031-e434-4528-9ac6-0a6693d61a10}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

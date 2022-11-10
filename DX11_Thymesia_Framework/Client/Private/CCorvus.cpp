@@ -76,9 +76,8 @@ HRESULT CCorvus::Start()
 void CCorvus::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
-	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
+	
+	this->RootMove();
 }
 
 void CCorvus::LateTick(_float fTimeDelta)
@@ -94,8 +93,17 @@ HRESULT CCorvus::Render()
 	_int iPassIndex = 0;
 
 	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
+
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
+	
+		//if (4 <= i && i <10) //킹받느다
+		//	continue;
+
+		if (i == 4 || i == 9 || i == 12)
+			continue;
+			
+
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 		{
 
@@ -136,6 +144,13 @@ void CCorvus::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
 
 void CCorvus::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
 {
+}
+
+void CCorvus::RootMove()
+{
+	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
+	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
 }
 
 void CCorvus::OnBattleEnd()
