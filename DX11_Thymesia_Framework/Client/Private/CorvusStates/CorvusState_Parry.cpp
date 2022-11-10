@@ -40,10 +40,6 @@ void CCorvusState_Parry::Tick(_float fTimeDelta)
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 
-	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
-	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviCom);
-
 	if (KEY_INPUT(KEY::N, KEY_STATE::TAP))
 	{
 		if (m_fDebugAnimationSpeed < 0.5f)
@@ -175,7 +171,7 @@ void CCorvusState_Parry::OnStateStart(const _float& In_fAnimationBlendTime)
 
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
-	m_pModelCom.lock()->Set_AnimationSpeed(4.f);
+	m_pModelCom.lock()->Set_AnimationSpeed(5.f);
 
 	//m_iAttackIndex = 7;
 	//m_iEndAttackEffectIndex = -1;
@@ -254,21 +250,21 @@ _bool CCorvusState_Parry::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.6f)
-	{
-		if (Check_RequirementParryState() && 4 == m_iAttackIndex)
-		{
-			if (Check_RequirementParryState())
-			{
-				if (!Rotation_InputToLookDir())
-					Rotation_NearToLookDir();
-
-				Get_OwnerPlayer()->Change_State<CCorvusState_Attack>(0.05f);
-				Get_OwnerPlayer()->Get_Component<CCorvusState_Attack>().lock()->Play_AttackWithIndex(2);
-				return true;
-			}
-		}
-	}
+	//f (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.6f)
+	//
+	//	if (Check_RequirementParryState() && 4 == m_iAttackIndex)
+	//	{
+	//		if (Check_RequirementParryState())
+	//		{
+	//			if (!Rotation_InputToLookDir())
+	//				Rotation_NearToLookDir();
+	//
+	//			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack>(0.05f);
+	//			Get_OwnerPlayer()->Get_Component<CCorvusState_LAttack>().lock()->Play_AttackWithIndex(2);
+	//			return true;
+	//		}
+	//	}
+	//
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{

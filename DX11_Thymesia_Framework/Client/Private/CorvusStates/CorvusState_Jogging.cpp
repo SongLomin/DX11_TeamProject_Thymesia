@@ -130,7 +130,7 @@ _bool CCorvusState_Jogging::Check_AndChangeNextState()
 	if (Check_RequirementParryState())
 	{
 		Rotation_InputToLookDir();
-		Get_OwnerPlayer()->Change_State<CCorvusState_Parry>();
+		Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
 		return true;
 	}
 	

@@ -40,11 +40,6 @@ void CVarg_Execution::Tick(_float fTimeDelta)
 
 	Turn_Transform(fTimeDelta);
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
-
-	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
-	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviCom);
-	cout << "Á¶±ë½ºÅ¸Æ® :: " << vMoveDir.m128_f32[0] << " " << vMoveDir.m128_f32[1] << " " << vMoveDir.m128_f32[2] << " " << endl;
 }
 
 void CVarg_Execution::LateTick(_float fTimeDelta)

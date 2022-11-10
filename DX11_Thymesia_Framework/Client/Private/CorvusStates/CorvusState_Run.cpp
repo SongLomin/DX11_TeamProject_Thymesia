@@ -165,14 +165,14 @@ _bool CCorvusState_Run::Check_AndChangeNextState()
 	if (Check_RequirementAttackState())
 	{
 		Rotation_InputToLookDir();
-		Get_OwnerPlayer()->Change_State<CCorvusState_Attack>();
+		Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
 		return true;
 	}
 
 	if (Check_RequirementParryState())
 	{
 		Rotation_InputToLookDir();
-		Get_OwnerPlayer()->Change_State<CCorvusState_Parry>();
+		Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
 		return true;
 	}
 

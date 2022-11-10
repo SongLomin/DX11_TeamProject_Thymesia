@@ -40,10 +40,6 @@ void CCorvusState_SprintStart::Tick(_float fTimeDelta)
 
 	Turn_Transform(fTimeDelta);
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
-
-	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
-	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviCom);
 }
 
 void CCorvusState_SprintStart::LateTick(_float fTimeDelta)
@@ -67,14 +63,14 @@ void CCorvusState_SprintStart::OnStateStart(const _float& In_fAnimationBlendTime
 #ifdef _DEBUG
 	cout << "LuxiyaState: RunStart -> OnStateStart" << endl;
 #endif
-
+	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 	
 }
 
 void CCorvusState_SprintStart::OnStateEnd()
 {
 	__super::OnStateEnd();
-
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 
 
 }
@@ -145,7 +141,7 @@ _bool CCorvusState_SprintStart::Check_AndChangeNextState()
 	if (Check_RequirementParryState())
 	{
 		Rotation_InputToLookDir();
-		Get_OwnerPlayer()->Change_State<CCorvusState_Parry>();
+		Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
 		return true;
 	}
 

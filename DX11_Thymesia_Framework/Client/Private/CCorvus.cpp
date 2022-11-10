@@ -46,9 +46,13 @@ HRESULT CCorvus::Initialize(void* pArg)
 	Add_Component<CCorvusState_SprintStart>();
 	Add_Component<CCorvusState_AVoid>();
 	Add_Component<CVarg_Execution>();
-	Add_Component<CCorvusState_Attack>();
 	Add_Component<CCorvusState_SprintAttack>();
-	Add_Component<CCorvusState_Parry>();
+	//Add_Component<CCorvusState_Parry>();
+	Add_Component<CCorvusState_LAttack1>();
+	Add_Component<CCorvusState_LAttack2>();
+	Add_Component<CCorvusState_LAttack3>();
+	Add_Component<CCorvusState_Parry1>();
+	Add_Component<CCorvusState_Parry2>();
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
 	USE_START(CCorvus);
@@ -65,13 +69,16 @@ HRESULT CCorvus::Start()
 	m_pCamera = GET_SINGLE(CGameManager)->Get_TargetCamera();
 	m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
 
+
 	return S_OK;
 }
 
 void CCorvus::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
+	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
+	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
 }
 
 void CCorvus::LateTick(_float fTimeDelta)

@@ -41,10 +41,6 @@ void CCorvusState_SprintAttack::Tick(_float fTimeDelta)
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 
-	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
-	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviCom);
-
 	if (KEY_INPUT(KEY::N, KEY_STATE::TAP))
 	{
 		if (m_fDebugAnimationSpeed < 0.5f)
@@ -183,7 +179,7 @@ void CCorvusState_SprintAttack::OnStateStart(const _float& In_fAnimationBlendTim
 
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
-
+	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 
 	//m_iAttackIndex = 7;
 	//m_iEndAttackEffectIndex = -1;
@@ -206,6 +202,7 @@ void CCorvusState_SprintAttack::OnStateEnd()
 
 	//Disable_Weapons();
 	m_IsNextAttack = false;
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 void CCorvusState_SprintAttack::OnEventMessage(_uint iArg)
@@ -260,13 +257,14 @@ _bool CCorvusState_SprintAttack::Check_AndChangeNextState()
 		return false;
 
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	//if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	if(Check_RequirementNextAttackState())
 	{
 		if (Check_RequirementAttackState())
 		{
 
 			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_Attack>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack2>();
 
 			return true;
 
@@ -274,18 +272,8 @@ _bool CCorvusState_SprintAttack::Check_AndChangeNextState()
 		}
 	}
 
-	if (Check_RequirementNextAttackState())
-	{
-		if (!Rotation_InputToLookDir())
-			Rotation_TargetToLookDir();
-
-		//Disable_Weapons();
-
-		m_IsNextAttack = false;
-
-		//스테이트 자체가 변하지 않았기 때문에 false다.
-		return false;
-	}
+	
+	
 	
 
 
@@ -294,19 +282,21 @@ _bool CCorvusState_SprintAttack::Check_AndChangeNextState()
 
 _bool CCorvusState_SprintAttack::Check_RequirementNextAttackState()
 {
-	_uint iTargetKeyFrame = 999;
+	_uint iTargetKeyFrameFirst = 999;
+	_uint iTargetKeyFrameSecond = 999;
 
 
 	switch (m_iAttackIndex)
 	{
 	case 11:
-		iTargetKeyFrame = 28;
+		iTargetKeyFrameFirst = 17;
+		iTargetKeyFrameSecond = 50;
 		break;
 	
 	}
 
 
-	if (m_pModelCom.lock()->Get_CurrentAnimationKeyIndex() == iTargetKeyFrame
+	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameFirst, iTargetKeyFrameSecond) == true
 		&& m_IsNextAttack)
 	{
 		return true;
