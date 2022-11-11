@@ -24,24 +24,59 @@ HRESULT CUI_Landing::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
+    m_LandingTextures[LANDING_BECONFOUND]   = "Landing_BeconFound";
+    m_LandingTextures[LANDING_DEAD]         = "Landing_MemoryInterrupted";
+    m_LandingTextures[LANDING_KILL_BOSS]    = "Landing_RecallCompleted";
+    m_LandingTextures[LANDING_ENTER_STAGE] = "Landing_SafeHouse";
+
+
+
     m_tLandingUIDesc[LANDING_BECONFOUND].fX = ((_float)g_iWinCX) * 0.5f;
     m_tLandingUIDesc[LANDING_BECONFOUND].fY = ((_float)g_iWinCY) * 0.5f;
     m_tLandingUIDesc[LANDING_BECONFOUND].fSizeX = 730.f;
     m_tLandingUIDesc[LANDING_BECONFOUND].fSizeY = 105.f;
+    m_tLandingUIDesc[LANDING_BECONFOUND].fDepth = 0.f;
+
+    m_tLandingUIDesc[LANDING_DEAD].fX = ((_float)g_iWinCX) * 0.5f;
+    m_tLandingUIDesc[LANDING_DEAD].fY = ((_float)g_iWinCY) * 0.5f;
+    m_tLandingUIDesc[LANDING_DEAD].fSizeX = 1037.f;
+    m_tLandingUIDesc[LANDING_DEAD].fSizeY = 150.f;
+    m_tLandingUIDesc[LANDING_DEAD].fDepth = 0.f;
+
+    m_tLandingUIDesc[LANDING_KILL_BOSS].fX = ((_float)g_iWinCX) * 0.5f;
+    m_tLandingUIDesc[LANDING_KILL_BOSS].fY = ((_float)g_iWinCY) * 0.3f;
+    m_tLandingUIDesc[LANDING_KILL_BOSS].fSizeX = 911.f;
+    m_tLandingUIDesc[LANDING_KILL_BOSS].fSizeY = 90.f;
+    m_tLandingUIDesc[LANDING_KILL_BOSS].fDepth = 0.f;
+
+    m_tLandingUIDesc[LANDING_ENTER_STAGE].fX = ((_float)g_iWinCX) * 0.5f;
+    m_tLandingUIDesc[LANDING_ENTER_STAGE].fY = ((_float)g_iWinCY) * 0.3f;
+    m_tLandingUIDesc[LANDING_ENTER_STAGE].fSizeX = 820.f;
+    m_tLandingUIDesc[LANDING_ENTER_STAGE].fSizeY = 643.f;
+    m_tLandingUIDesc[LANDING_ENTER_STAGE].fDepth = 0.f;
 
 
-
+    //최소 기본 세팅.
     m_pLanding = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_STATIC, &m_tLandingUIDesc[LANDING_BECONFOUND]);
     m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture("Landing_BeconFound");
+
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pLanding));
+
+
+
+    m_pLandingBG = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_STATIC, &m_tLandingUIDesc[LANDING_BECONFOUND]);
+    m_pLandingBG.lock()->Get_Component<CTexture>().lock()->Use_Texture("Landing_BG");
+
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pLandingBG));
 
 
     m_tLandingFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
     m_tLandingFaderDesc.eFaderType = FADER_TYPE::FADER_INOUTLOOPING;
     m_tLandingFaderDesc.fDelayTime = 0.f;
-    m_tLandingFaderDesc.fFadeMaxTime = 2.f;
-    m_tLandingFaderDesc.vFadeColor = _float4(0, 0, 0, 0.6f);
+    m_tLandingFaderDesc.fFadeMaxTime = 1.5f;
+    m_tLandingFaderDesc.vFadeColor = _float4(0, 0, 0, 0.3f);
 
-    m_PreCalledLanding = LANDING_END;
+
 
     return S_OK;
 }
@@ -64,6 +99,15 @@ void CUI_Landing::Tick(_float fTimeDelta)
     {
         Call_Landing(LANDING_BECONFOUND);
     }
+    if (KEY_INPUT(KEY::B, KEY_STATE::TAP))
+    {
+        Call_Landing(LANDING_KILL_BOSS);
+    }
+    if (KEY_INPUT(KEY::N, KEY_STATE::TAP))
+    {
+        Call_Landing(LANDING_ENTER_STAGE);
+    }
+
 #endif // _DEBUG
 
 }
@@ -77,27 +121,44 @@ void CUI_Landing::LateTick(_float fTimeDelta)
 HRESULT CUI_Landing::Render()
 {
 
-
-
-
     return S_OK;
 }
 
 void CUI_Landing::Call_Landing(LANDING_TYPE eLandingType)
 {
     m_pLanding.lock()->CallBack_FadeEnd -= bind(&CUI_Landing::Call_FadeEnd, this, placeholders::_1);
-    m_PreCalledLanding = eLandingType;
 
     CHUD_Hover::HUDHOVERDESC desc;
-    desc.m_bSizeChange = false;
-    desc.m_fSizeMag = 0.4;
+    desc.m_bSizeChange = true;
+    desc.m_fSizeMag = 0.1;
 
-    m_pLanding.lock()->Init_Fader(m_tLandingFaderDesc, desc);
-    m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture("Landing_BeconFound");
-    m_pLanding.lock()->Set_UIDesc(m_tLandingUIDesc[eLandingType]);
-    m_pLanding.lock()->CallBack_FadeEnd += bind(&CUI_Landing::Call_FadeEnd, this, placeholders::_1);
+   
+    
+    if ((_uint)eLandingType < (_uint)LANDING_ENTER_STAGE)
+    {
+        m_pLanding.lock()->Init_Fader(m_tLandingFaderDesc, desc, CHUD_Hover::HUD_HOVER_ANIMATION_JUSTADD);
+        m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture(m_LandingTextures[eLandingType].c_str());
+        m_pLanding.lock()->Set_UIDesc(m_tLandingUIDesc[eLandingType]);
+        m_pLanding.lock()->CallBack_FadeEnd += bind(&CUI_Landing::Call_FadeEnd, this, placeholders::_1);
 
+        m_pLandingBG.lock()->CallBack_FadeEnd -= bind(&CUI_Landing::Call_FadeEnd, this, placeholders::_1);
 
+        UI_DESC LandingBG_Desc = m_tLandingUIDesc[eLandingType];
+        LandingBG_Desc.fSizeX = (_float)g_iWinCX;
+        LandingBG_Desc.fSizeY = (_float)330.f;
+        LandingBG_Desc.fDepth = 0.1f;
+
+        m_pLandingBG.lock()->Init_Fader(m_tLandingFaderDesc, desc, CHUD_Hover::HUD_HOVER_ANIMATION_JUSTADD);
+        m_pLandingBG.lock()->Set_UIDesc(LandingBG_Desc);
+        m_pLandingBG.lock()->CallBack_FadeEnd += bind(&CUI_Landing::Call_FadeEnd, this, placeholders::_1);
+    }
+    else//스테이지에 따라 나와야함.GetCurrentLevel이나 머시기...그런걸로
+    {
+        m_pLanding.lock()->Init_Fader(m_tLandingFaderDesc, desc, CHUD_Hover::HUD_HOVER_ANIMATION_JUSTADD);
+        m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture(m_LandingTextures[eLandingType].c_str());
+        m_pLanding.lock()->Set_UIDesc(m_tLandingUIDesc[eLandingType]);
+        m_pLanding.lock()->CallBack_FadeEnd += bind(&CUI_Landing::Call_FadeEnd, this, placeholders::_1);
+    }
 }
 
 void CUI_Landing::Call_FadeEnd(FADER_TYPE eFaderType)
@@ -109,5 +170,8 @@ void CUI_Landing::Call_FadeEnd(FADER_TYPE eFaderType)
     {
         m_pLanding.lock()->Set_UIDesc(m_tUIDesc);
         m_pLanding.lock()->Set_Enable(false);
+
+        m_pLandingBG.lock()->Set_UIDesc(m_tUIDesc);
+        m_pLandingBG.lock()->Set_Enable(false);
     }
 }

@@ -30,7 +30,6 @@ HRESULT CCustomUI::Initialize(void* pArg)
 		memcpy(&m_tUIDesc, pArg, sizeof(UI_DESC));
 
 	m_eRenderGroup = RENDERGROUP::RENDER_UI;
-	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
 
 	return S_OK;
 }

@@ -35,9 +35,18 @@ HRESULT CPlayer_Memory::Initialize(void* pArg)
     m_pIcon.lock()->Set_Depth(0.1f);
 
 
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pBG));
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pIcon));
+
+
+
+
     m_fMemory = 0.f;
     m_fLerpMemory = 0.f;
     m_fLerpAcc = 1.f;
+
+
 
 
     return S_OK;
@@ -54,6 +63,8 @@ void CPlayer_Memory::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
+//TODO: UI: 플레이어 재화 테스트 코드
+#ifdef _DEBUG
     if (KEY_INPUT(KEY::J, KEY_STATE::TAP))
     {
         m_fMemory -= 1000.f;
@@ -63,6 +74,7 @@ void CPlayer_Memory::Tick(_float fTimeDelta)
     {
         m_fMemory += 1000;
     }
+#endif
 
     if (m_fMemory < 0.f)
     {

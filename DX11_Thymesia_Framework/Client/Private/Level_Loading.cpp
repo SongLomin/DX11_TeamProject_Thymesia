@@ -8,7 +8,8 @@
 #include "Level_Stage2.h"
 #include "Level_Stage3.h"
 #include "GameInstance.h"
-
+#include "UI_Loading.h"
+#include "FadeMask.h"
 CLevel_Loading::CLevel_Loading()
 	//: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
@@ -19,7 +20,21 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevel)
 {
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
-	
+
+	FaderDesc tFaderDesc;
+	tFaderDesc.eFaderType = FADER_TYPE::FADER_IN;
+	tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+	tFaderDesc.fFadeMaxTime = 1.f;
+	tFaderDesc.fDelayTime = 0.5f;
+	tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 0.f);
+
+
+	GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front()
+		.lock()->Init_Fader((void*)&tFaderDesc);
+
+
+	//Loading Scene Texture
+
 //	GAMEINSTANCE->Load_Textures(TEXT("Default"), TEXT("../Bin/Resources/Textures/Default%d.jpg"), MEMORY_TYPE::MEMORY_DYNAMIC);
 //	GAMEINSTANCE->Load_Textures(TEXT("LobbyBackground"), TEXT("../Bin/Resources/Textures/Background/BgLobby.png"), MEMORY_TYPE::MEMORY_STATIC);
 	//GAMEINSTANCE->Load_Textures(TEXT("Default"), TEXT("../Bin/Resources/Textures/Default%d.jpg"), MEMORY_TYPE::MEMORY_DYNAMIC);

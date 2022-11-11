@@ -47,6 +47,10 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Ready_Prototype_Component()))
 		return E_FAIL;
 
+
+	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxColor"), TEXT("../Bin/ShaderFiles/Shader_VtxColor.hlsl"));
+	GAMEINSTANCE->Add_GameObject<CFadeMask>(LEVEL_STATIC);
+
 	if (FAILED(Open_Level(LEVEL_LOGO)))
 		return E_FAIL;
 
@@ -135,10 +139,12 @@ HRESULT CMainApp::Open_Level(LEVEL eLevelID)
 	if (nullptr == GAMEINSTANCE)
 		return E_FAIL;
 
+
+
 	shared_ptr<CLevel_Loading>		pLevel_Loading = CLevel_Loading::Create(eLevelID);
 	if (nullptr == pLevel_Loading.get())
 		return E_FAIL;
-
+	
 	if (FAILED(GAMEINSTANCE->Open_Level(LEVEL_LOADING, pLevel_Loading)))
 		return E_FAIL;
 

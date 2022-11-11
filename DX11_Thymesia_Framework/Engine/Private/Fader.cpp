@@ -23,6 +23,8 @@ HRESULT CFader::Initialize(void* pArg)
 
 	m_tFaderDesc.vFadeColor = { 1.f, 1.f, 1.f, 1.f };
 
+
+
 	return S_OK;
 }
 
