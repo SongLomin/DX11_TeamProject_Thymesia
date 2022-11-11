@@ -215,6 +215,12 @@
     <ClInclude Include="..\Public\VIBuffer_Ground.h">
       <Filter>01. Elements\03. Component\01. VIBuffer\09. Ground</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PhysX_Manager.h">
+      <Filter>98. Managers\14. PhysXManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysXCollider.h">
+      <Filter>98. Managers\14. PhysXManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -411,6 +417,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Ground.cpp">
       <Filter>01. Elements\03. Component\01. VIBuffer\09. Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PhysX_Manager.cpp">
+      <Filter>98. Managers\14. PhysXManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PhysXCollider.cpp">
+      <Filter>98. Managers\14. PhysXManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -626,6 +638,9 @@
     </Filter>
     <Filter Include="01. Elements\03. Component\01. VIBuffer\09. NoAmin_Instance">
       <UniqueIdentifier>{fa2fd3e7-4ff1-47e5-a259-4f60e59b24f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Managers\14. PhysXManager">
+      <UniqueIdentifier>{b2acac00-22ab-4c0b-83b9-3ff62faceeb5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
