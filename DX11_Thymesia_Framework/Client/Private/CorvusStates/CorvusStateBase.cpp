@@ -36,7 +36,7 @@ _bool CCorvusStateBase::Check_RequirementDashState()
 
 _bool CCorvusStateBase::Check_RequirementJoggingState()
 {
-	if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD))
+	if (KEY_INPUT(KEY::ALT, KEY_STATE::HOLD))
 	{
 		if (KEY_INPUT(KEY::W, KEY_STATE::HOLD)
 			|| KEY_INPUT(KEY::A, KEY_STATE::HOLD)
@@ -91,10 +91,29 @@ _bool CCorvusStateBase::Check_RequirementAVoidState()
 	return false;
 }
 
+_bool CCorvusStateBase::Check_RequirementParryState()
+{
+	if (KEY_INPUT(KEY::F, KEY_STATE::TAP))
+	{
+		return true;
+	}
+	return false;
+}
+
 _bool CCorvusStateBase::Check_RequirementUltimateState()
 {
 
 	if (KEY_INPUT(KEY::V, KEY_STATE::HOLD))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+_bool CCorvusStateBase::Check_RequirementHealingState()
+{
+	if (KEY_INPUT(KEY::Q, KEY_STATE::TAP))
 	{
 		return true;
 	}

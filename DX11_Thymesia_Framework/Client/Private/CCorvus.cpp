@@ -46,7 +46,13 @@ HRESULT CCorvus::Initialize(void* pArg)
 	Add_Component<CCorvusState_SprintStart>();
 	Add_Component<CCorvusState_AVoid>();
 	Add_Component<CVarg_Execution>();
-	
+	Add_Component<CCorvusState_SprintAttack>();
+	Add_Component<CCorvusState_LAttack1>();
+	Add_Component<CCorvusState_LAttack2>();
+	Add_Component<CCorvusState_LAttack3>();
+	Add_Component<CCorvusState_Parry1>();
+	Add_Component<CCorvusState_Parry2>();
+	Add_Component<CCorvusState_BasicHealing>();
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
 	USE_START(CCorvus);
@@ -63,13 +69,15 @@ HRESULT CCorvus::Start()
 	m_pCamera = GET_SINGLE(CGameManager)->Get_TargetCamera();
 	m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
 
+
 	return S_OK;
 }
 
 void CCorvus::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
+	
+	this->RootMove();
 }
 
 void CCorvus::LateTick(_float fTimeDelta)
@@ -85,8 +93,15 @@ HRESULT CCorvus::Render()
 	_int iPassIndex = 0;
 
 	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
+
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
+	
+
+		if (i == 4 || i == 9 || i == 12)
+			continue;
+			
+
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 		{
 
@@ -127,6 +142,13 @@ void CCorvus::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
 
 void CCorvus::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
 {
+}
+
+void CCorvus::RootMove()
+{
+	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
+	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
 }
 
 void CCorvus::OnBattleEnd()

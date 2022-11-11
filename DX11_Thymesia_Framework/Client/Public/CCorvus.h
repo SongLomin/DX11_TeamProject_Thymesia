@@ -24,11 +24,13 @@ private:
     weak_ptr<CCamera_Target> m_pCamera;
     weak_ptr<CTransform> m_pCameraTransform;
 
-
 protected:
     virtual void OnCollisionEnter(weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionStay(weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionExit(weak_ptr<CCollider> pOtherCollider) override;
+
+private: // called every Tick
+    void RootMove();
 
 private:
     virtual void OnBattleEnd() override;
