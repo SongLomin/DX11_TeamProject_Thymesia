@@ -4,30 +4,45 @@ namespace Client
 {
 	struct EFFECTMESH_DESC
 	{
+#pragma region Tool Options
+		// TODO : for imgui movements
+		_bool		bOnFocus;
+#pragma endregion
+
+#pragma region Datas
 		_float		fInitTime;
 		_float		fLifeTime;
 
 		_bool		bSyncAnimation;
+		_int		iSyncAnimationKey = -1;
+
 		_bool		bFollowTransform;
 		_bool		bBillBoard;
-		_int		iSyncAnimationKey = -1;
+
 		_float3		vStartPosition;
+
 		_float3		vSpeed;
 		_float3		vForce;
 		_float3		vMaxSpeed;
+
 		_float3		vStartRotation;
 		_float3		vRotationSpeed;
 		_float3		vRotationForce;
 		_float3		vMaxRotation;
+
 		_float3		vStartScale;
 		_float3		vScaleSpeed;
 		_float3		vScaleForce;
 		_float3		vMaxScale;
+
+		_int		iShaderPassIndex;
+
+		_float		fDiscardRatio;
+
 		_float4		vStartColor;
 		_float4		vColorSpeed;
 		_float4		vColorForce;
 		_float4		vMaxColor;
-		_float2		vStartUV;
 
 		_int		iUVDiffuseIndex;
 		_int		iUVMaskIndex;
@@ -35,27 +50,23 @@ namespace Client
 
 		// TODO : bDynamicNoiseOption temporary for test
 		_bool		bDynamicNoiseOption;
-
 		/**
 		* x : Diffuse | y : Mask | z : Noise | w : None
 		*/
 		_float4		vWrapWeight;
 
-		_bool		bUVClamp;
+		_float2		vStartUV;
 		_float2		vUVSpeed;
 		_float2		vUVForce;
 		_float2		vUVMax;
 
-		_float fDiscardRatio;
-
-		_bool		bDistortion;
 		_bool		bBloom;
 		_bool		bGlow;
+		_bool		bDistortion;
+
 		_float4		vStartGlowColor;
 		_float4		vGlowColorSpeed;
 		_float4		vGlowColorForce;
-
-		_int		iShaderPassIndex;
 
 		_bool		bCollider;
 		_bool		bWeaponSyncTransform;
@@ -65,9 +76,7 @@ namespace Client
 		_float      fDamage;
 		_float3		vWeaponOffset;
 		_float		fHitFreq;
-
-		// TODO : for imgui movements
-		_bool		bOnFocus;
+#pragma endregion
 	};
 
 	struct EFFECTPARTICLE_DESC

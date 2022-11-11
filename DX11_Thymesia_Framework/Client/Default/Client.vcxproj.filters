@@ -151,7 +151,7 @@
     <ClInclude Include="..\Public\EffectGroup.h">
       <Filter>02. GameObject\07. EffectMesh\02. EffectGroup</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Client_Structsh.h">
+    <ClInclude Include="..\Public\Client_Structs.h">
       <Filter>99. Defines</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\EditNaviMesh.h">
