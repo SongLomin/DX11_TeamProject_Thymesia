@@ -86,8 +86,8 @@ PS_OUT		PS_MAIN_DEFAULT(PS_IN In)
 
     Out.vDiffuse	= vSourDiffuse;
 
-	if (0.1f <= vFilterDiffuse.r)
-		Out.vDiffuse = vector(1.f, 0.f, 0.f, 1.f);
+	if (0.1f < vFilterDiffuse.b)
+		Out.vDiffuse = vector(1.f, 1.f, 0.f, 1.f);
 
 	Out.vDiffuse.a	= 1.f;
 	Out.vNormal		= In.vNormal;

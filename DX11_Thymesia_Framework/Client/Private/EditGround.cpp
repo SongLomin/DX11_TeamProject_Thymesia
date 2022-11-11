@@ -247,11 +247,15 @@ void CEditGround::PickingFillterTextureDraw()
 
 	cout << "( " << iBeginIndex.x << " , " << iBeginIndex.y << " ) / ( " << iEndIndex.x << " , " << iEndIndex.y << " )" << endl;
 
-	static int iMax = 0;
+	for (_uint iZ = iBeginIndex.y; iZ < iEndIndex.y; ++iZ)
+	{
+		for (_uint iX = iBeginIndex.x; iX < iEndIndex.x; ++iX)
+		{
+			_ulong	iIndex = iZ * 128 + iX;
 
-	iMax += 1;
-
-	vector<_uint> TempVec;
+			m_vColors[iIndex] = D3DCOLOR_ABGR(255, 255, 0, 255);
+		}
+	}
 
 	for (_uint iZ = 0; iZ < 128; ++iZ)
 	{
@@ -259,17 +263,9 @@ void CEditGround::PickingFillterTextureDraw()
 		{
 			_ulong	iIndex = iZ * 128 + iX;
 
-			_uint Temp = ((_uint*)SubResource.pData)[iIndex];
-			TempVec.push_back(Temp);
-
-			if (iMax <= iIndex)
-				((_uint*)SubResource.pData)[iIndex] = D3DCOLOR_ABGR(255, 255, 255, 255);
-			else
-				((_uint*)SubResource.pData)[iIndex] = D3DCOLOR_ABGR(255, 0, 0, 255);
+			((_uint*)SubResource.pData)[iIndex] = m_vColors[iIndex];
 		}
 	}
-
-
 
 	DEVICECONTEXT->Unmap(m_pTexture2D.Get(), 0);
 }
@@ -317,7 +313,8 @@ void CEditGround::CreateFilterTexture()
 		{
 			_uint iIndex = i * TextureDesc.Width + s;
 
-			((_uint*)SubResource.pData)[iIndex] = D3DCOLOR_ABGR(255, 0, 0, 0);
+			((_uint*)SubResource.pData)[iIndex] = D3DCOLOR_ABGR(0, 0, 0, 0);
+			m_vColors.push_back(D3DCOLOR_ABGR(0, 0, 0, 0));
 		}
 	}
 

@@ -71,6 +71,9 @@ private:
     TEXTURES                    m_pTextureCom;
     weak_ptr<CVIBuffer_Ground>  m_pVIBufferCom;
 
+    weak_ptr<CVIBuffer_Ground>  m_pVIBufferFilterCom;
+
+
     EDIT_MODE                   m_eEditMode             = EDIT_MODE::NON;
     _bool                       m_bEdit                 = false;
     _bool                       m_bCreate               = false;
@@ -86,6 +89,7 @@ private:
 
     ComPtr<ID3D11Texture2D>               m_pTexture2D;
     ComPtr<ID3D11ShaderResourceView>      m_pFilterTexture;
+    vector<_uint>                         m_vColors;
 
 public:
     void Free();
