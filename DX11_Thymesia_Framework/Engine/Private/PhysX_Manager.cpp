@@ -3,11 +3,6 @@
 
 IMPLEMENT_SINGLETON(CPhysX_Manager)
 
-
-CPhysX_Manager::CPhysX_Manager()
-{
-}
-
 HRESULT CPhysX_Manager::Initialize()
 {
 	// Create Foundation
@@ -41,9 +36,9 @@ HRESULT CPhysX_Manager::Initialize()
 	//m_iNumScenes = iNumLevels;
 	//m_pScenes = new LPSCENE[iNumLevels];
 
-	// Crate Scene
-	//Create_Scene(SCENE_CURRENT);
-	//m_pCurScene = m_pScenes[SCENE_CURRENT];
+	// TODO : for test [ Create Scene ]
+	Create_Scene(SCENE_CURRENT);
+	m_pCurScene = m_pScenes[SCENE_CURRENT];
 
 
 
@@ -66,7 +61,7 @@ HRESULT CPhysX_Manager::Initialize()
 
 void CPhysX_Manager::Tick(_float fTimeDelta)
 {
-	if (m_bSceneStart)
+	if (m_pCurScene)
 	{
 		if (1 == m_pCurScene->getTimestamp() ||
 			2 == m_pCurScene->getTimestamp())
@@ -321,12 +316,13 @@ void CPhysX_Manager::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUppe
 void CPhysX_Manager::Free()
 {
 	PX_UNUSED(true);
-	//for (auto& elem : m_pScenes)
-	//{
-	//	elem->release();
-	//}
+	for (auto& elem : m_pScenes)
+	{
+		elem->release();
+	}
 
-	//m_pCurScene->release();
+	
+	m_pCurScene->release();
 	//m_pDispatcher->release();
 
 	if (m_pPhysics)

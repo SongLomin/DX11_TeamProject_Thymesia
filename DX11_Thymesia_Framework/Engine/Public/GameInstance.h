@@ -17,6 +17,7 @@
 #include "RenderTarget_Manager.h"
 #include "Frustum.h"
 #include "SoundManager.h"
+#include "PhysX_Manager.h"
 
 /* 1. 게임내에 필요한 객체(매니져등)들을 모아서 보관한다. */
 /* 2. 클라이언트 개발자가 접근하기좋은 루트를 제공해준다. 나. */
@@ -204,6 +205,8 @@ private:
 	shared_ptr<CFrustum> m_pFrustum;
 	shared_ptr<CRenderTarget_Manager> m_pTarget_Manager;
 	shared_ptr<CSound_Manager> m_pSound_Manager;
+	shared_ptr<CPhysX_Manager> m_pPhysX_Manager;
+	
 
 private:
 	_float	m_fDeltaTime = 0.f;
