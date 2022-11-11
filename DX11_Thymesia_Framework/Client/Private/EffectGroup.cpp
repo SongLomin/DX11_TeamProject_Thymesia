@@ -11,7 +11,7 @@ _bool CEffectGroup::Is_EffectMesh(const _uint& In_iIndex) const
 {
     _int iIndex = (_int)In_iIndex + 1;
 
-    iIndex -= m_pEffectMeshs.size();
+    iIndex -= _int(m_pEffectMeshs.size());
 
 
     // 예: 이펙트 메쉬 3개, 인덱스 2일때 3-(2+1) = 0, 0번도 이펙트 메쉬다.

@@ -10,7 +10,7 @@ struct ENGINE_DLL MESH_DATA
     shared_ptr<VTXMODEL[]>              pVertices;
     shared_ptr<VTXANIM[]>               pAnimVertices;
     shared_ptr<VTXPOS[]>                pPosVertices;
-    shared_ptr<VTXNORTEX[]>             pGroundVertices;
+    shared_ptr<VTXGROUND[]>             pGroundVertices;
     shared_ptr<FACEINDICES32[]>         pIndices;
 
     string                              szName;

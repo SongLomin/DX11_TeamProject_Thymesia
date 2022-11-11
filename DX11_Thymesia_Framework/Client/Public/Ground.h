@@ -29,11 +29,11 @@ private:
     HRESULT SetUp_ShaderResource();
 
 private:
-    weak_ptr<CShader>           m_pShaderCom;
-    weak_ptr<CRenderer>         m_pRendererCom;
-    weak_ptr<CTexture>          m_pDiff_TextureCom;
-    weak_ptr<CTexture>          m_pNorm_TextureCom;
-    weak_ptr<CVIBuffer_Ground>  m_pVIBufferCom;
+	weak_ptr<CShader>           m_pShaderCom;
+	weak_ptr<CRenderer>         m_pRendererCom;
+	weak_ptr<CTexture>          m_pDiff_TextureCom;
+	weak_ptr<CTexture>          m_pNorm_TextureCom;
+	weak_ptr<CVIBuffer_Ground>  m_pVIBufferCom;
 
 public:
     void Free();

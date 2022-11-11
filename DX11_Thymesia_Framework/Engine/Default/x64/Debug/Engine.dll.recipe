@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>C:\Users\net_n\Desktop\Project\2022\DF_Engine\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\Engine.dll</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles>
+    <ContentFile>
+      <FullPath>C:\Users\net_n\Desktop\Project\2022\DF_Engine\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\Shader_Cell.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\net_n\Desktop\Project\2022\DF_Engine\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\Shader_OutLine.cso</FullPath>
+    </ContentFile>
+  </ContentFiles>
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>

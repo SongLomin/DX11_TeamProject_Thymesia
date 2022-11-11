@@ -15,6 +15,7 @@ public:
 	_float	Get_FadeTime() const { return m_fFadeTime; }
 	FaderDesc Get_FaderDesc() const { return m_tFaderDesc; }
 
+
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg) override;
@@ -42,6 +43,10 @@ private:
 	_float	m_fFadeTime;
 	_float	m_fCurrentDelayTime;
 	_bool	m_bEnable = false;
+
+
+
+
 
 public:
 	FDelegate<FADER_TYPE> CallBack_FadeEnd;

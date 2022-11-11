@@ -58,6 +58,17 @@ HRESULT CPlayer_FeatherUI::Initialize(void* pArg)
     m_pFontBG.lock()->Set_Depth(0.4f);
 
 
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pIcon));
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pFrameBorder));
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pFrame));
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pHover));
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pFontBG));
+
+
+
+
+
     //left 
     m_tCurrentFeatherTextInfo.bAlways = false;
     m_tCurrentFeatherTextInfo.bCenterAlign = false;
@@ -105,6 +116,7 @@ void CPlayer_FeatherUI::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
+//TODO: UI: ±êÅÐ UI Å×½ºÆ®ÄÚµå
 #ifdef _DEBUG
     if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
     {
@@ -131,7 +143,8 @@ void CPlayer_FeatherUI::Tick(_float fTimeDelta)
         tHoverDesc.m_bSizeChange = true;
         tHoverDesc.m_fSizeMag = 0.2f;
         m_pHover.lock()->CallBack_FadeEnd += bind(&CPlayer_FeatherUI::Call_FadeEnd, this, placeholders::_1);
-        m_pHover.lock()->Init_Fader(m_tFaderDesc, tHoverDesc);
+        m_pHover.lock()->Init_Fader(m_tFaderDesc, tHoverDesc, 
+            CHUD_Hover::HUD_HOVER_ANIMATION_FROM_ALPHA);
     }
 #endif // _DEBUG
     m_pFrameBorder.lock()->Set_Ratio(m_fRatio);

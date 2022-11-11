@@ -20,7 +20,9 @@ public:
 
 private:
 	LIGHTDESC   m_tLightDesc;
-	_int        m_iLightIndex;
+    _int        m_iLightIndex;
+	_float      m_fMinLightRange = 0.f;
+	_float      m_fMaxLightRange = 0.f;
 
 public:
     virtual void Write_Json(json& Out_Json) override;

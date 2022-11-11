@@ -65,7 +65,7 @@ HRESULT CPlayer_HPBar::Initialize(void* pArg)
 
 	m_pTrack = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_STATIC, &tTrackDesc);
 	m_pTrack.lock()->Get_Component<CTexture>().lock()->Use_Texture("Player_HPBar_Track");
-	m_pTrack.lock()->Init_Fader(tFaderDesc, tHoverDesc);
+	m_pTrack.lock()->Init_Fader(tFaderDesc, tHoverDesc, CHUD_Hover::HUD_HOVER_ANIMATION_FROM_ALPHA);
 
 
 	m_fLerpHp = 300.f;
@@ -85,6 +85,15 @@ HRESULT CPlayer_HPBar::Initialize(void* pArg)
 	m_eRenderGroup = RENDERGROUP::RENDER_UI;
 	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
 
+	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
+	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pBG));
+	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pMainBar));
+	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pBorderLeft));
+	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pBorderRight));
+	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pTrack));
+
+
+
 	return S_OK;
 }
 
@@ -99,6 +108,7 @@ void CPlayer_HPBar::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+//TODO : UI : HPBar 테스트 코드
 #ifdef _DEBUG
 	if (KEY_INPUT(KEY::J, KEY_STATE::TAP))
 	{
@@ -164,15 +174,9 @@ void CPlayer_HPBar::Tick(_float fTimeDelta)
 
 	m_pTrack.lock()->Get_UIDESC();
 
-
-
 	m_tTextInfo.szText = to_wstring((_uint)m_fLerpHp);
 	m_tTextInfo.szText.append(L"/");
-
-	_uint fader = (_uint)(m_pTrack.lock()->Get_Component<CFader>().lock()->Get_FadeColor().w * 100.f);
-	m_tTextInfo.szText.append(to_wstring(fader));
-	
-	//m_tTextInfo.szText.append(to_wstring((_uint)m_fMaxHp));
+	m_tTextInfo.szText.append(to_wstring((_uint)m_fMaxHp));
 }
 
 void CPlayer_HPBar::LateTick(_float fTimeDelta)

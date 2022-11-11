@@ -47,6 +47,10 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Ready_Prototype_Component()))
 		return E_FAIL;
 
+
+	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxColor"), TEXT("../Bin/ShaderFiles/Shader_VtxColor.hlsl"));
+	GAMEINSTANCE->Add_GameObject<CFadeMask>(LEVEL_STATIC);
+
 	if (FAILED(Open_Level(LEVEL_LOGO)))
 		return E_FAIL;
 
@@ -58,10 +62,23 @@ void CMainApp::Tick(float fTimeDelta)
 {
 	if (GetFocus())
 	{
-		POINT WinSize{ g_iWinCX , g_iWinCY };
-		ClientToScreen(g_hWnd, &WinSize);
-		RECT ClientRect = { (_long)WinSize.x - g_iWinCX, (_long)WinSize.y - g_iWinCY, (_long)WinSize.x, (_long)WinSize.y };
-		ClipCursor(&ClientRect);
+		if (KEY_INPUT(KEY::TAB, KEY_STATE::TAP))
+		{
+			m_bClip = !m_bClip;
+		}
+
+		if (m_bClip)
+		{
+			POINT WinSize{ g_iWinCX , g_iWinCY };
+			ClientToScreen(g_hWnd, &WinSize);
+			RECT ClientRect = { (_long)WinSize.x - g_iWinCX, (_long)WinSize.y - g_iWinCY, (_long)WinSize.x, (_long)WinSize.y };
+			ClipCursor(&ClientRect);
+		}
+		else
+		{
+			RECT ClientRect = { 0, 0, 99999, 99999 };
+			ClipCursor(&ClientRect);
+		}
 	}
 
 	if (nullptr == GAMEINSTANCE)
@@ -82,7 +99,7 @@ HRESULT CMainApp::Render()
 		nullptr == m_pRenderer*/)
 		return E_FAIL;
 
-	GAMEINSTANCE->Clear_BackBuffer_View(_float4(0.f, 0.f, 0.f, 1.f));
+	GAMEINSTANCE->Clear_BackBuffer_View(_float4(0.f, 128.f / 255.f, 1.f, 1.f));
 	GAMEINSTANCE->Clear_DepthStencil_View();
 	
 	GAMEINSTANCE->Draw_RenderGroup();
@@ -122,10 +139,12 @@ HRESULT CMainApp::Open_Level(LEVEL eLevelID)
 	if (nullptr == GAMEINSTANCE)
 		return E_FAIL;
 
+
+
 	shared_ptr<CLevel_Loading>		pLevel_Loading = CLevel_Loading::Create(eLevelID);
 	if (nullptr == pLevel_Loading.get())
 		return E_FAIL;
-
+	
 	if (FAILED(GAMEINSTANCE->Open_Level(LEVEL_LOADING, pLevel_Loading)))
 		return E_FAIL;
 

@@ -35,10 +35,9 @@ void CLight_Manager::Set_LightDesc(const LIGHTDESC& LightDesc)
 
 _uint CLight_Manager::Add_Light(const LIGHTDESC& LightDesc)
 {
-	_uint iIndex = m_pLights.size();
 	m_pLights.push_back(CCustomLight::Create(LightDesc));
 
-	return iIndex;
+	return m_pLights.back()->Get_LightDesc().Get_LightIndex();
 }
 
 _bool CLight_Manager::Remove_Light(const _uint& iIndex)

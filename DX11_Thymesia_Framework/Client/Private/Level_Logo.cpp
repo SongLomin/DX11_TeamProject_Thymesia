@@ -8,10 +8,10 @@
 #include "Client_GameObjects.h"
 #include "Player_HPBar.h"
 #include "Player_MPBar.h"
+#include <UI_Logo.h>
 
 
 CLevel_Logo::CLevel_Logo()
-	//: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
 
 }
@@ -36,8 +36,8 @@ HRESULT CLevel_Logo::Initialize()
 
 	m_eNextLevel = LEVEL_LOBBY;
 
-	m_pFadeMask = GAMEINSTANCE->Add_GameObject<CFadeMask>(LEVEL_STATIC);
-
+	Load_FromJson(m_szDefaultJsonPath + "Logo.json", LEVEL_LOGO);
+	GAMEINSTANCE->Add_GameObject<CUI_Logo>(LEVEL_LOGO);
 	//GET_SINGLE(CGameManager)->Set_GameState(GAME_STATE::PEACE);
 
 	
@@ -47,22 +47,6 @@ HRESULT CLevel_Logo::Initialize()
 void CLevel_Logo::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);		
-
-	if (KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))
-	{
-		FaderDesc tFaderDesc;
-		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
-		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
-		tFaderDesc.fFadeMaxTime = 1.f;
-		tFaderDesc.fDelayTime = 0.5f;
-		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
-
-		m_eNextLevel = LEVEL_GAMEPLAY;
-
-		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
-		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
-	}
-
 
 	if (KEY_INPUT(KEY::F2, KEY_STATE::TAP))
 	{
@@ -90,6 +74,25 @@ HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)
 
 	return S_OK;
 }
+
+void CLevel_Logo::OnLevelExit()
+{
+	FaderDesc tFaderDesc;
+	tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+	tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+	tFaderDesc.fFadeMaxTime = 1.f;
+	tFaderDesc.fDelayTime = 0.5f;
+	tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+
+	m_eNextLevel = LEVEL_GAMEPLAY;
+
+
+	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
+	m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+	m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
+}
+
+
 
 shared_ptr<CLevel_Logo> CLevel_Logo::Create()
 {

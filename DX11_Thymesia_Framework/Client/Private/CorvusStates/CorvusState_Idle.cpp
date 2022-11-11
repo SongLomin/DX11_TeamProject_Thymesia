@@ -37,10 +37,6 @@ void CCorvusState_Idle::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
-
-	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
-	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir);
 }
 
 void CCorvusState_Idle::LateTick(_float fTimeDelta)
@@ -130,8 +126,29 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		return true;
 	}
 
+	 if (Check_RequirementAttackState())
+	 {
+		 Rotation_InputToLookDir();
+		 Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
+		 return true;
+	 }
+
+	 if (Check_RequirementParryState())
+	 {
+		 Rotation_InputToLookDir();
+		 Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
+		 return true;
+	 }
+
+	 if (Check_RequirementHealingState())
+	 {
+		 Rotation_InputToLookDir();
+		 Get_OwnerPlayer()->Change_State<CCorvusState_BasicHealing>();
+		 return true;
+	 }
+
 	 //юс╫ц
-	 if (KEY_INPUT(KEY::P, KEY_STATE::TAP))
+	 if (KEY_INPUT(KEY::O, KEY_STATE::TAP))
 	 {
 		 Rotation_InputToLookDir();
 		 Get_OwnerPlayer()->Change_State<CVarg_Execution>();

@@ -108,6 +108,7 @@ HRESULT CCorvus_DefaultSaber::Render()
 
 void CCorvus_DefaultSaber::Init_DefaultSaber(weak_ptr<CModel> In_pModelCom, weak_ptr<CGameObject> In_pParent, const string& szTargetNode)
 {
+	
 	//m_pModelCom.lock()->Init_Model(In_pModelCom.lock()->Get_ModelKey());
 	m_pParent = In_pParent;
 	m_pTargetBoneNode = In_pModelCom.lock()->Find_BoneNode(szTargetNode);

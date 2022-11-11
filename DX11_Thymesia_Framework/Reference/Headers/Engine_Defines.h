@@ -15,6 +15,7 @@
 #include <DirectXTK/PrimitiveBatch.h>
 #include <DirectXTK/VertexTypes.h>
 #include <DirectXTK/Effects.h>
+#include <DirectXTK/ScreenGrab.h>
 #include <d3dcompiler.h>
 
 #include <DirectXCollision.h>

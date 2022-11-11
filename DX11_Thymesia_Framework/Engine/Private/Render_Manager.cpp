@@ -115,6 +115,10 @@ HRESULT CRender_Manager::Initialize()
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Distortion"),
+		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		DEBUG_ASSERT;
+
 	/*if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_BlurShadow"),
 		(_uint)ViewPortDesc.Width * 5, (_uint)ViewPortDesc.Height * 5, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
 		DEBUG_ASSERT;*/
@@ -167,6 +171,9 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_PublicBlur"), TEXT("Target_PublicBlur"))))
+		DEBUG_ASSERT;
+
+	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Distortion"), TEXT("Target_Distortion"))))
 		DEBUG_ASSERT;
 
 	//if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Glow"), TEXT("Target_Glow"))))
@@ -225,6 +232,7 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Bloom"), ViewPortDesc.Width - fHalf, fHalf + fSize * 3.f, fSize, fSize)))
 		DEBUG_ASSERT;
 
+
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_ExtractGlow"), ViewPortDesc.Width - fHalf - fSize, fHalf, fSize, fSize)))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_BlurForGlow"), ViewPortDesc.Width - fHalf - fSize, fHalf + fSize, fSize, fSize)))
@@ -263,7 +271,10 @@ HRESULT CRender_Manager::Initialize()
 	m_pOutLineShader = CShader::Create();
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_OutLine"), TEXT("../Bin/Shaderfiles/Shader_OutLine.hlsl"));
 	m_pOutLineShader->Set_ShaderInfo(TEXT("Shader_OutLine"), VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements);
-
+	
+	m_pDistortionShader = CShader::Create();
+	GAMEINSTANCE->Load_Shader(TEXT("Shader_Distortion"), TEXT("../Bin/Shaderfiles/Shader_DistortionBlend.hlsl"));
+	m_pDistortionShader->Set_ShaderInfo(TEXT("Shader_Distortion"), VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements);
 
 	m_pVIBuffer = CVIBuffer_Rect::Create();
 	
@@ -315,6 +326,11 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Render_NonLight()))
 		DEBUG_ASSERT;
 	if (FAILED(Render_AlphaBlend()))
+		DEBUG_ASSERT;
+
+	if (FAILED(Extract_Distortion()))
+		DEBUG_ASSERT;
+	if (FAILED(Blend_Distortion()))
 		DEBUG_ASSERT;
 
 	if (FAILED(Blur_ExtractGlow(3.f)))
@@ -864,11 +880,41 @@ HRESULT CRender_Manager::Blend_OutLine()
 	return S_OK;
 }
 
+HRESULT CRender_Manager::Extract_Distortion()
+{
+	if (FAILED(GET_SINGLE(CRenderTarget_Manager)->Begin_MRT(TEXT("MRT_Distortion"))))
+		DEBUG_ASSERT;
+
+	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_DISTORTION])
+	{
+		if (pGameObject.lock())
+			pGameObject.lock()->Render();
+	}
+	m_RenderObjects[(_uint)RENDERGROUP::RENDER_DISTORTION].clear();
+
+	if (FAILED(GET_SINGLE(CRenderTarget_Manager)->End_MRT()))
+		DEBUG_ASSERT;
+
+	return S_OK;
+}
+
 HRESULT CRender_Manager::Blend_Distortion()
 {
+	Bake_OriginalRenderTexture();
+
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
+	if (FAILED(m_pDistortionShader->Set_ShaderResourceView("g_DistortionTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Distortion")))))
+		DEBUG_ASSERT;
+	if (FAILED(m_pDistortionShader->Set_ShaderResourceView("g_OriginTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")))))
+		DEBUG_ASSERT;
 
+ 	m_pDistortionShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	m_pDistortionShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	m_pDistortionShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+
+	m_pDistortionShader->Begin(0);
+	m_pVIBuffer->Render();
 
 	return S_OK;
 }

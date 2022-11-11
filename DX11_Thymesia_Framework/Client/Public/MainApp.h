@@ -28,7 +28,7 @@ private:
 	_float	m_fTimeAcc = 0.f;
 	_uint	m_iNumRender = 0;
 	_tchar	m_szFPS[MAX_PATH] = TEXT("");
-
+	_bool	m_bClip = true;
 
 private:
 	/* 그리기 상태를 셋팅하낟. */
@@ -37,9 +37,6 @@ private:
 
 	HRESULT Open_Level(LEVEL eLevelID);
 	HRESULT Ready_Prototype_Component();
-
-
-	
 
 public:
 	static unique_ptr<CMainApp> Create();

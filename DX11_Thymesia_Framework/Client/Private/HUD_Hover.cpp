@@ -32,6 +32,10 @@ HRESULT CHUD_Hover::Initialize(void* pArg)
 
 	ZeroMemory(&m_tHoverDesc, sizeof(HUDHOVERDESC));
 	
+	m_eRenderGroup = RENDERGROUP::RENDER_UI;
+
+	m_eHoverType = HUD_HOVER_ANIMATION_END;
+
 	Set_Enable(false);
 	return S_OK;
 }
@@ -47,16 +51,33 @@ void CHUD_Hover::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 	
+	m_vFadeColor = m_pFaderCom.lock()->Get_FadeColor();
+	
 	if (m_tHoverDesc.m_bSizeChange)
 	{
-		FaderDesc tFaderDesc = m_pFaderCom.lock()->Get_FaderDesc();
+		if (m_eHoverType == HUD_HOVER_ANIMATION_FROM_ALPHA)
+		{
 
-		m_tUIDesc.fSizeX = m_tBackUpDesc.fSizeX +
-			((tFaderDesc.fFadeMaxTime - m_pFaderCom.lock()->Get_FadeTime()) / tFaderDesc.fFadeMaxTime) * (m_tBackUpDesc.fSizeX * m_tHoverDesc.m_fSizeMag);
+			FaderDesc tFaderDesc = m_pFaderCom.lock()->Get_FaderDesc();
+			m_tUIDesc.fSizeX = m_tBackUpDesc.fSizeX +
+				((tFaderDesc.fFadeMaxTime - m_pFaderCom.lock()->Get_FadeTime()) / tFaderDesc.fFadeMaxTime) * (m_tBackUpDesc.fSizeX * m_tHoverDesc.m_fSizeMag);
 
-		m_tUIDesc.fSizeY = m_tBackUpDesc.fSizeY +
-			((tFaderDesc.fFadeMaxTime - m_pFaderCom.lock()->Get_FadeTime()) / tFaderDesc.fFadeMaxTime) * (m_tBackUpDesc.fSizeY * m_tHoverDesc.m_fSizeMag);
+			m_tUIDesc.fSizeY = m_tBackUpDesc.fSizeY +
+				((tFaderDesc.fFadeMaxTime - m_pFaderCom.lock()->Get_FadeTime()) / tFaderDesc.fFadeMaxTime) * (m_tBackUpDesc.fSizeY * m_tHoverDesc.m_fSizeMag);
+		}
+		else if (m_eHoverType == HUD_HOVER_ANIMATION_JUSTADD)
+		{
+			FaderDesc tFaderDesc = m_pFaderCom.lock()->Get_FaderDesc();
+			
+			/*
+			
+			*/
+			_float	fAmountX = (m_tBackUpDesc.fSizeX * m_tHoverDesc.m_fSizeMag) * (fTimeDelta / tFaderDesc.fFadeMaxTime);
+			_float	fAmountY = (m_tBackUpDesc.fSizeY * m_tHoverDesc.m_fSizeMag) * (fTimeDelta / tFaderDesc.fFadeMaxTime);
 
+			m_tUIDesc.fSizeX += fAmountX;
+			m_tUIDesc.fSizeY += fAmountY;
+		}
 	}
 	
 }
@@ -64,6 +85,7 @@ void CHUD_Hover::Tick(_float fTimeDelta)
 void CHUD_Hover::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
 
 }
 
@@ -76,11 +98,18 @@ HRESULT CHUD_Hover::Render()
 }
 
 
-void CHUD_Hover::Init_Fader(const Engine::FaderDesc& _tFaderDesc, const HUDHOVERDESC& _tHoverDesc)
+void CHUD_Hover::Init_Fader(const Engine::FaderDesc& _tFaderDesc, const HUDHOVERDESC& _tHoverDesc, HUD_HOVER_ANIMAITON_TYPE eHoverType)
 {
 	m_pFaderCom.lock()->Init_Fader(_tFaderDesc);
 	m_tHoverDesc = _tHoverDesc;
+	m_eHoverType = eHoverType;
 	Set_Enable(true);
+}
+
+void CHUD_Hover::Set_UIDesc(UI_DESC _tUIDesc)
+{
+	m_tUIDesc = _tUIDesc;
+	m_tBackUpDesc = _tUIDesc;
 }
 
 void CHUD_Hover::Call_FadeEnd(FADER_TYPE In_eFaderType)
@@ -93,11 +122,16 @@ void CHUD_Hover::Call_FadeEnd(FADER_TYPE In_eFaderType)
 }
 
 
+void CHUD_Hover::Set_Alpha(_float4 _vAlpha)
+{
+	m_vFadeColor = _vAlpha;
+}
+
 HRESULT CHUD_Hover::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
 
-	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vColor", &m_pFaderCom.lock()->Get_FadeColor(), sizeof(_float4))))
+	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vColor", &m_vFadeColor, sizeof(_float4))))
 		return E_FAIL;
 
 	return S_OK;

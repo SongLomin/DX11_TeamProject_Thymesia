@@ -202,13 +202,18 @@
     <ClInclude Include="..\Public\Client_Windows.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusStateBase.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusStates.h" />
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_Attack.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoid.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_BasicHealing.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Hit.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Idle.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Jogging.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_JoggingStartEnd.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_JoggingStart.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_LAttack1.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_LAttack2.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_LAttack3.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Parry1.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Parry2.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Run.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Sprint.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_SprintAttack.h" />
@@ -221,6 +226,7 @@
     <ClInclude Include="..\Public\Dynamic_Prop.h" />
     <ClInclude Include="..\Public\CustomUI.h" />
     <ClInclude Include="..\Public\EditGround.h" />
+    <ClInclude Include="..\Public\EditMapTool.h" />
     <ClInclude Include="..\Public\EditNaviMesh.h" />
     <ClInclude Include="..\Public\EffectMesh.h" />
     <ClInclude Include="..\Public\EffectGroup.h" />
@@ -238,11 +244,23 @@
     <ClInclude Include="..\Public\ImGui_Window.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Interaction_Prop.h" />
-    <ClInclude Include="..\Public\Level_Lobby.h" />
-    <ClInclude Include="..\Public\Level_Stage2.h" />
-    <ClInclude Include="..\Public\Level_Stage3.h" />
+    <ClInclude Include="..\Public\Level_Lobby.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Stage2.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\Level_Stage3.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Public\Light_Prop.h" />
     <ClInclude Include="..\Public\Map.h" />
+    <ClInclude Include="..\Public\Mob.h" />
+    <ClInclude Include="..\Public\MobStateBase.h" />
+    <ClInclude Include="..\Public\MobWeapon\MobWeapon.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\PlayerStateBase.h" />
     <ClInclude Include="..\Public\Player_FeatherUI.h">
@@ -254,6 +272,7 @@
     <ClInclude Include="..\Public\Player_PotionUI.h" />
     <ClInclude Include="..\Public\Player_ProgressBar.h" />
     <ClInclude Include="..\Public\PreViewAnimationModel.h" />
+    <ClInclude Include="..\Public\PreView_Prop.h" />
     <ClInclude Include="..\Public\Prop.h" />
     <ClInclude Include="..\Public\SkyBox.h" />
     <ClInclude Include="..\Public\Stage1.h" />
@@ -264,6 +283,8 @@
     <ClInclude Include="..\Public\Status.h" />
     <ClInclude Include="..\Public\Trigger.h" />
     <ClInclude Include="..\Public\UI_Landing.h" />
+    <ClInclude Include="..\Public\UI_Loading.h" />
+    <ClInclude Include="..\Public\UI_Logo.h" />
     <ClInclude Include="..\Public\Window_AnimationModelView.h" />
     <ClInclude Include="..\Public\Window_AnimationPlayerView.h" />
     <ClInclude Include="..\Public\Window_ComponentView.h" />
@@ -301,13 +322,18 @@
     <ClCompile Include="..\Private\ClientComponent.cpp" />
     <ClCompile Include="..\Private\ClientLevel.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusStateBase.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_Attack.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoid.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_BasicHealing.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Hit.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Idle.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Jogging.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_JoggingStartEnd.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_JoggingStart.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_LAttack1.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_LAttack2.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_LAttack3.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Parry1.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Parry2.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Run.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Sprint.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_SprintAttack.cpp" />
@@ -319,6 +345,7 @@
     <ClCompile Include="..\Private\Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\CustomUI.cpp" />
     <ClCompile Include="..\Private\EditGround.cpp" />
+    <ClCompile Include="..\Private\EditMapTool.cpp" />
     <ClCompile Include="..\Private\EditNaviMesh.cpp" />
     <ClCompile Include="..\Private\EffectMesh.cpp" />
     <ClCompile Include="..\Private\EffectGroup.cpp" />
@@ -335,11 +362,22 @@
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Window.cpp" />
     <ClCompile Include="..\Private\Interaction_Prop.cpp" />
-    <ClCompile Include="..\Private\Level_Lobby.cpp" />
-    <ClCompile Include="..\Private\Level_Stage2.cpp" />
-    <ClCompile Include="..\Private\Level_Stage3.cpp" />
+    <ClCompile Include="..\Private\Level_Lobby.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Stage2.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\Level_Stage3.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Private\Light_Prop.cpp" />
     <ClCompile Include="..\Private\Map.cpp" />
+    <ClCompile Include="..\Private\Mob.cpp" />
+    <ClCompile Include="..\Private\MobWeapon\MobWeapon.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\PlayerStateBase.cpp" />
     <ClCompile Include="..\Private\Player_FeatherUI.cpp" />
@@ -349,6 +387,7 @@
     <ClCompile Include="..\Private\Player_PotionUI.cpp" />
     <ClCompile Include="..\Private\Player_ProgressBar.cpp" />
     <ClCompile Include="..\Private\PreViewAnimationModel.cpp" />
+    <ClCompile Include="..\Private\PreView_Prop.cpp" />
     <ClCompile Include="..\Private\Prop.cpp" />
     <ClCompile Include="..\Private\SkyBox.cpp" />
     <ClCompile Include="..\Private\Stage1.cpp" />
@@ -359,6 +398,8 @@
     <ClCompile Include="..\Private\Status.cpp" />
     <ClCompile Include="..\Private\Trigger.cpp" />
     <ClCompile Include="..\Private\UI_Landing.cpp" />
+    <ClCompile Include="..\Private\UI_Loading.cpp" />
+    <ClCompile Include="..\Private\UI_Logo.cpp" />
     <ClCompile Include="..\Private\Window_AnimationModelView.cpp" />
     <ClCompile Include="..\Private\Window_AnimationPlayerView.cpp" />
     <ClCompile Include="..\Private\Window_ComponentView.cpp" />
@@ -400,6 +441,7 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Deferred.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_DistortionBlend.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_EffectMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_HPBar.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_HyperSpace.hlsl" />

@@ -47,9 +47,9 @@ public:
 public:
     void Set_TextureIndex(const _uint& Index) { m_iTextureIndex = Index; }
     void Set_Texture(const _char* sKey);
-    void Set_UIPosition(const _float& fX, const _float& fY, const _float& fSizeX, const _float& fSizeY);
-    void Set_UIPosition(const _float& fX, const _float& fY);
-    void Set_UIDesc(UI_DESC _tUIDesc);
+    virtual void Set_UIPosition(const _float& fX, const _float& fY, const _float& fSizeX, const _float& fSizeY);
+    virtual void Set_UIPosition(const _float& fX, const _float& fY);
+    virtual void Set_UIDesc(UI_DESC _tUIDesc);
 
 
     void Set_Depth(_float _fDepth);

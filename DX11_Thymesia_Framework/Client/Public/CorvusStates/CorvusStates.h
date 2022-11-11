@@ -2,8 +2,9 @@
 
 #include "GameManager.h"
 
-//플레이어 기본 스테이트
-#include "CorvusStates/CorvusState_Attack.h"
+
+
+//플레이어 기본 스테이트 
 #include "CorvusStates/CorvusState_Jogging.h"
 #include "CorvusStates/CorvusState_JoggingStart.h"
 #include "CorvusStates/CorvusState_JoggingStartEnd.h"
@@ -13,7 +14,14 @@
 #include "CorvusStates/CorvusState_Sprint.h"
 #include "CorvusStates/CorvusState_SprintStart.h"
 #include "CorvusStates/CorvusState_Run.h"
-#include "CorvusStates//CorvusState_AVoid.h"
+#include "CorvusStates/CorvusState_AVoid.h"
+#include "CorvusStates/CorvusState_SprintAttack.h"
+#include "CorvusStates/CorvusState_LAttack1.h"
+#include "CorvusStates/CorvusState_LAttack2.h"
+#include "CorvusStates/CorvusState_LAttack3.h"
+#include "CorvusStates/CorvusState_Parry1.h"
+#include "CorvusStates/CorvusState_Parry2.h"
+#include "CorvusStates/CorvusState_BasicHealing.h"
 //플레이어 기본 스테이트
 
 //플레이어 처형 스테이트

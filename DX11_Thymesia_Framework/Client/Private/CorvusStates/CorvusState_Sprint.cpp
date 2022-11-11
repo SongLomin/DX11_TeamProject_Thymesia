@@ -49,7 +49,7 @@ void CCorvusState_Sprint::Tick(_float fTimeDelta)
 	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
-	m_pTransform.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta, m_pNaviCom);
+	m_pTransform.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta * 1.75f, m_pNaviCom);
 }
 
 void CCorvusState_Sprint::LateTick(_float fTimeDelta)
@@ -127,7 +127,7 @@ _bool CCorvusState_Sprint::Check_AndChangeNextState()
 			&& !KEY_INPUT(KEY::S, KEY_STATE::HOLD)
 			&& !KEY_INPUT(KEY::D, KEY_STATE::HOLD))
 		{
-			Get_OwnerPlayer()->Change_State<CCorvusState_JoggingStartEnd>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
 			return true;
 		}
 	}
@@ -139,6 +139,19 @@ _bool CCorvusState_Sprint::Check_AndChangeNextState()
 	}
 
 
+	if (Check_RequirementAttackState())
+	{
+		Rotation_InputToLookDir();
+		Get_OwnerPlayer()->Change_State<CCorvusState_SprintAttack>();
+		return true;
+	}
+
+	if (Check_RequirementParryState())
+	{
+		Rotation_InputToLookDir();
+		Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
+		return true;
+	}
 
 	return false;
 }

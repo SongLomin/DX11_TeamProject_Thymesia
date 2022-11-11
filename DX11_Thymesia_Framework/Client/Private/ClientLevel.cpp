@@ -61,7 +61,7 @@ void CClientLevel::Call_FadeOutToLevelChange()
 	m_bFadeOut = true;
 
 	m_pFadeMask.lock()->CallBack_FadeEnd -= bind(&CClientLevel::Call_FadeOutToLevelChange, this);
-
+	m_pFadeMask.lock()->Set_Enable(false);
 	if (FAILED(GAMEINSTANCE->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_eNextLevel))))
 		return;
 }

@@ -11,6 +11,9 @@
 #include "Player_PotionUI.h"
 #include "Player_FeatherUI.h"
 #include "UI_Landing.h"
+#include "CustomUI.h"
+#include "UI_Logo.h"
+#include "UI_Loading.h"
 CLoader::CLoader()
 	//: m_pDevice(pDevice), m_pContext(pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
@@ -22,13 +25,12 @@ CLoader::~CLoader()
 	Free();
 }
 
-//unsigned int APIENTRY LoadingMain(void* pArg)
-void LoadingMain(void* pArg)
+unsigned int APIENTRY LoadingMain(void* pArg)
+//void LoadingMain(void* pArg)
 {
 	CLoader*		pLoader = (CLoader*)pArg;
 
-	//EnterCriticalSection(&pLoader->Get_CS());
-
+	EnterCriticalSection(&pLoader->Get_CS());
 	HRESULT hr = 0;
 
 	switch (pLoader->Get_NextLevelID())
@@ -61,23 +63,22 @@ void LoadingMain(void* pArg)
 	if (FAILED(hr))
 		MSG_BOX("Failed to Loading");
 
-	//LeaveCriticalSection(&pLoader->Get_CS());
+	LeaveCriticalSection(&pLoader->Get_CS());
 
-	//return 0;
+	return 0;
 }
 
 HRESULT CLoader::Initialize(LEVEL eNextLevel)
 {
 	m_eNextLevel = eNextLevel;
 
-	std::future<void> a = std::async(std::launch::async, LoadingMain, this);
+	//std::future<void> a = std::async(std::launch::async, LoadingMain, this);
 
+	InitializeCriticalSection(&m_CriticalSection);
 
-	//InitializeCriticalSection(&m_CriticalSection);
-
-	/*m_hThread = (HANDLE)_beginthreadex(nullptr, 0, LoadingMain, this, 0, nullptr);
+	m_hThread = (HANDLE)_beginthreadex(nullptr, 0, LoadingMain, this, 0, nullptr);
 	if (0 == m_hThread)
-		return E_FAIL;*/
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -112,6 +113,32 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("ButtonDefault"), TEXT("../Bin/Resources/Textures/UI/ButtonDefault.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("UI_White"), TEXT("../Bin/Resources/Textures/UI/UI_White.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures("Grass", TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("Loading_SafeHouse"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_Lobby_01.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("Loading_SeaOfTrees"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_Circus_01.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("Loading_RoyalGarden"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_Circus_01.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("Loading_HermesFortress"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_Garden_01.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("Loading_OceanOfMemories"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_MemoryOcean_01.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("Loading_Tutorial"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_Tutorial_01.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+
+	GAMEINSTANCE->Load_Textures(("Loading_Icon"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingIcon.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+
+
+
+	//MainMenu(LogoLevel)
+	GAMEINSTANCE->Load_Textures(("MainMenu_Background"), TEXT("../Bin/Resources/Textures/UI/MainMenuBackrgound.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("GameLogo"), TEXT("../Bin/Resources/Textures/UI/GameLogo2.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+
+	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_1"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SelectableButtonBackground.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_2"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SelectableButtonHighlight.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+
+	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_ContinueGame"), TEXT("../Bin/Resources/Textures/UI/UI_ContinueGame.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_StartGame"), TEXT("../Bin/Resources/Textures/UI/UI_StartGame.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_LoadGame"), TEXT("../Bin/Resources/Textures/UI/UI_LoadGame.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_Options"), TEXT("../Bin/Resources/Textures/UI/UI_Options.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_Credits"), TEXT("../Bin/Resources/Textures/UI/UI_Credits.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_Quit"), TEXT("../Bin/Resources/Textures/UI/UI_Quit.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+
 
 	//Player HPBar Texture
 	GAMEINSTANCE->Load_Textures(("Player_HPBar_Border_Left"), TEXT("../Bin/Resources/Textures/UI/HUD/PlayerHPBar/TexUI_HPBar_1Border_Left.png"), MEMORY_TYPE::MEMORY_STATIC);
@@ -156,7 +183,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	//Landing
 	GAMEINSTANCE->Load_Textures(("Landing_MemoriesRetrived"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_MemoriesRetrived.png"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures(("Landing_MemoriesRetrivedBackground"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_MemoriesRetrivedBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Landing_MemoriesRetrivedBG"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_MemoriesRetrivedBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Landing_MemoryInterrupted"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_MemoryInterruptedFrame.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Landing_RecallCompleted"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_RecallCompleted.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Landing_BeconFound"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_SanctumDiscoveredFrame.png"), MEMORY_TYPE::MEMORY_STATIC);
@@ -180,10 +207,12 @@ HRESULT CLoader::Loading_ForLogoLevel()
 #pragma endregion
 
 	Load_AllMaskMap();
+	Load_AllNoiseTexture();
 	Load_AllParticleTexture();
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
 
+	// TODO : Turn off temporarily for Light_Prop
 	LIGHTDESC			LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
@@ -228,7 +257,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxAnimModel"), TEXT("../Bin/ShaderFiles/Shader_VtxAnimModel.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_HPBar"), TEXT("../Bin/ShaderFiles/Shader_HPBar.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_HyperSpace"), TEXT("../Bin/ShaderFiles/Shader_HyperSpace.hlsl"));
-	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxColor"), TEXT("../Bin/ShaderFiles/Shader_VtxColor.hlsl"));
+	// 메인앱에서 로딩 중 FaderMask 때문에.
+	//GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxColor"), TEXT("../Bin/ShaderFiles/Shader_VtxColor.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxCubeTex"), TEXT("../Bin/ShaderFiles/Shader_VtxCubeTex.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxInstance"), TEXT("../Bin/ShaderFiles/Shader_VtxInstance.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxModel"), TEXT("../Bin/ShaderFiles/Shader_VtxModel.hlsl"));
@@ -248,10 +278,10 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Corvus", "../Bin/Resources/Meshes/Corvus/Corvus.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC,true);
 
-	TransformMatrix =  XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("CorvusDefaultSaber", "../Bin/Resources/Meshes/Corvus/Weapon/Corvus_DefaultSaber/Corvus_DefaultSaber.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
-	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("CorvusDefaultDagger", "../Bin/Resources/Meshes/Corvus/Weapon/Corvus_DefaultDagger/Corvus_DefaultDagger.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	
@@ -260,8 +290,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("객체 생성 중입니다. "));
 
-	Create_GameObjectFromJson("../Bin/LevelData/Logo.json", LEVEL_LOGO);
-
+	
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));	
 
 	m_isFinished = true;
@@ -296,6 +325,8 @@ HRESULT CLoader::Loading_ForLobby()
 
 HRESULT CLoader::Loading_ForGamePlayLevel()
 {
+GAMEINSTANCE->Add_GameObject<CUI_Loading>(LEVEL_LOADING);
+
 
 #pragma region PROTOTYPE_GAMEOBJECT
 
@@ -321,55 +352,10 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	CEditGround::Load_AllMeshInfo();
 
-	_matrix			TransformMatrix;
-	
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성 중입니다."));
 
 	//Create_GameObjectFromJson("../Bin/LevelData/Stage1.json", LEVEL_GAMEPLAY);
-	CCamera::CAMERADESC			CameraDesc;
-	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
-	CameraDesc.vEye = _float4(0.0f, 2.5f, -2.5f, 1.f);
-	CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
-	CameraDesc.fFovy = XMConvertToRadians(65.0f);
-	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
-	CameraDesc.fNear = 0.2f;
-	CameraDesc.fFar = 300.f;
-
-	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_GAMEPLAY, &CameraDesc);
-	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
-
-	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_GAMEPLAY);
-	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
-
-	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_GAMEPLAY);
-
-	//GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_GAMEPLAY);
-
-	GET_SINGLE(CGameManager)->Register_Player_HPBar
-	(GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
-
-	GET_SINGLE(CGameManager)->Register_Player_MPBar
-	(GAMEINSTANCE->Add_GameObject<CPlayer_MPBar>(LEVEL_STATIC));
-
-	GET_SINGLE(CGameManager)->Register_Player_Memory
-	(GAMEINSTANCE->Add_GameObject<CPlayer_Memory>(LEVEL_STATIC));
-
-	weak_ptr<CPreViewAnimationModel> pPreviewModel =  GAMEINSTANCE->Add_GameObject<CPreViewAnimationModel>(LEVEL_GAMEPLAY);
-	pPreviewModel.lock()->Init_EditPreViewAnimationModel("Corvus");
-	pPreviewModel.lock()->Change_AnimationFromIndex(3);
-
-	pPreviewModel.lock()->Play_Animation(0.01f);
-	pPreviewModel.lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(10.f,0.f,10.f,0.f));
-
-	GET_SINGLE(CGameManager)->Register_Player_HUD_Potion(
-	GAMEINSTANCE->Add_GameObject<CPlayer_PotionUI>(LEVEL_STATIC));
-
-	GET_SINGLE(CGameManager)->Register_Player_HUD_Feather(
-	GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
-
-	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);
-
-	Create_GameObjectFromJson("../Bin/LevelData/Stage1.json", LEVEL_GAMEPLAY);
+	
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
 
@@ -512,6 +498,11 @@ void CLoader::Load_AllDiffuseTexture()
 void CLoader::Load_AllMaskMap()
 {
 	GAMEINSTANCE->Load_Textures(("UVMask"), TEXT("../Bin/Resources/Textures/Mask/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+}
+
+void CLoader::Load_AllNoiseTexture()
+{
+	GAMEINSTANCE->Load_Textures(("UVNoise"), TEXT("../Bin/Resources/Textures/Noise/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 }
 
 void CLoader::Load_AllParticleTexture()
@@ -677,8 +668,8 @@ shared_ptr<CLoader> CLoader::Create(LEVEL eNextLevel)
 
 void CLoader::Free()
 {
-	//WaitForSingleObject(m_hThread, INFINITE);
+	WaitForSingleObject(m_hThread, INFINITE);
 
-	//DeleteCriticalSection(&m_CriticalSection);
-	//CloseHandle(m_hThread);
+	DeleteCriticalSection(&m_CriticalSection);
+	CloseHandle(m_hThread);
 }
