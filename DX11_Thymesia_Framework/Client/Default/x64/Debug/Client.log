@@ -1,0 +1,18 @@
+﻿  unity_BU3O3H10EXY7PMQ1.cpp
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Reference\Headers\VIBuffer_Ground.h(6,16): warning C4099: 'Engine::MESH_DATA': 처음에는 'struct'을(를) 사용하여 형식 이름을 표시했는데 이제는 'class'을(를) 사용하여 표시합니다.
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Reference\Headers\MeshContainer.h(5): message : 'Engine::MESH_DATA' 선언을 참조하십시오.
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Private\EditGround.cpp(239,18): warning C4244: '초기화 중': 'Engine::_float'에서 'Engine::_int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Private\EditGround.cpp(265,13): warning C4018: '<=': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Private\EditGround.cpp(380,45): warning C4244: '=': 'float'에서 'Engine::_uint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Private\EditGround.cpp(373,10): warning C4101: 'vVertice' :참조되지 않은 지역 변수입니다.
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Private\EditMapTool.cpp(243,18): warning C4244: '초기화 중': 'Engine::_float'에서 'Engine::_int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Private\EditMapTool.cpp(252,36): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Private\EditMapTool.cpp(254,37): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Private\EditMapTool.cpp(373,45): warning C4244: '=': 'float'에서 'Engine::_uint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Private\EditMapTool.cpp(366,10): warning C4101: 'vVertice' :참조되지 않은 지역 변수입니다.
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Private\EditNaviMesh.cpp(121,39): warning C4244: '=': 'Engine::_float'에서 'Engine::_uint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Private\EditNaviMesh.cpp(122,40): warning C4244: '=': 'Engine::_float'에서 'Engine::_uint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Private\EditNaviMesh.cpp(466,21): warning C4267: 'return': 'size_t'에서 'Engine::_int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Private\EditNaviMesh.cpp(585,43): warning C4267: '=': 'size_t'에서 'Engine::_uint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Private\EffectGroup.cpp(14,34): warning C4267: '-=': 'size_t'에서 'Engine::_int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Client.vcxproj -> C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Bin\Client.exe

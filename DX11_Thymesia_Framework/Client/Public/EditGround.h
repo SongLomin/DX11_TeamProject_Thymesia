@@ -46,11 +46,16 @@ private:
     void    SetUp_PinckingInfo();
     void    SetUp_FillterInfo();
 
+
     void    CreateBuffer();
+    void    CreateFilterTexture();
+
     void    PickingGround();
+    void    PickingFillterTextureDraw();
 
     void    Bake_Mesh();
     void    Load_Mesh();
+    void    Bake_FilterTexture();
 
 public:
     static void    Load_AllMeshInfo();
@@ -66,23 +71,21 @@ private:
     TEXTURES                    m_pTextureCom;
     weak_ptr<CVIBuffer_Ground>  m_pVIBufferCom;
 
+    EDIT_MODE                   m_eEditMode             = EDIT_MODE::NON;
     _bool                       m_bEdit                 = false;
     _bool                       m_bCreate               = false;
-    EDIT_MODE                   m_eEditMode             = EDIT_MODE::NON;
-    _float4                     m_vBufferInfo           = _float4(100.f, 100.f ,0.5f, 0.f);
+    _float4                     m_vBufferInfo           = _float4(128.f, 128.f, 0.5f, 0.f);
     _float                      m_fDensity              = 30.f;
     _int                        m_iShaderPass           = 0;
 
-    _float                      m_fFilterDrawRadious    = 1.f;
     _float                      m_fBufferDrawRadious    = 1.f;
     _float                      m_fBufferPower          = 1.f;
-    string                      m_szMeshName;
+    string                      m_szMeshName            = "";
 
     shared_ptr<MODEL_DATA>      m_pModelData;
 
     ComPtr<ID3D11Texture2D>               m_pTexture2D;
     ComPtr<ID3D11ShaderResourceView>      m_pFilterTexture;
-
 
 public:
     void Free();

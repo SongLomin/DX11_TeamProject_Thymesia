@@ -249,7 +249,7 @@ void MESH_DATA::Load_FromBinary(ifstream& is)
 
     else if (MODEL_TYPE::GROUND == eModelType)
     {
-        pGroundVertices = shared_ptr<VTXNORTEX[]>(new VTXNORTEX[iNumVertices]);
+        pGroundVertices = shared_ptr<VTXGROUND[]>(new VTXGROUND[iNumVertices]);
 
         for (_uint i = 0; i < iNumVertices; ++i)
         {

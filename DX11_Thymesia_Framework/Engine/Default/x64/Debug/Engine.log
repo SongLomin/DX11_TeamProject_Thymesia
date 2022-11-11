@@ -1,0 +1,272 @@
+﻿FXC : warning X4717: Effects deprecated for D3DCompiler_47
+  
+  compilation object save succeeded; see C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\Shader_Cell.cso
+FXC : warning X4717: Effects deprecated for D3DCompiler_47
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\ShaderFiles\Shader_OutLine.hlsl(118,40-44): warning X3556: integer modulus may be much slower, try using uints if possible.
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\ShaderFiles\Shader_OutLine.hlsl(118,74-78): warning X3556: integer divides may be much slower, try using uints if possible.
+  
+  compilation object save succeeded; see C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\Shader_OutLine.cso
+  unity_T6LI8RP115OEV0XM.cpp
+  unity_V3ET35MN7IDW71HQ.cpp
+  unity_C1EK9P49Z3F18XJW.cpp
+  unity_2VCD7Y0XELZL0ISD.cpp
+  unity_HPDZ5ZS4FF5JGJZO.cpp
+  unity_BZV4GW8KQJKI6OSA.cpp
+  unity_CGNGEWABA2VBII2V.cpp
+  unity_4FJ3PFGI1IEN8LX5.cpp
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Private\VIBuffer_Point_Instance.cpp(77,66): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다. (소스 파일 컴파일 중 C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Default\unity_4FJ3PFGI1IEN8LX5.cpp)
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Private\VIBuffer_Point_Instance.cpp(77,46): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다. (소스 파일 컴파일 중 C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Default\unity_4FJ3PFGI1IEN8LX5.cpp)
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Private\Animation.cpp(97,42): warning C4018: '<=': signed 또는 unsigned가 일치하지 않습니다. (소스 파일 컴파일 중 C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Default\unity_T6LI8RP115OEV0XM.cpp)
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Public\VIBuffer_Ground.h(6,16): warning C4099: 'Engine::MESH_DATA': 처음에는 'struct'을(를) 사용하여 형식 이름을 표시했는데 이제는 'class'을(를) 사용하여 표시합니다. (소스 파일 컴파일 중 C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Default\unity_CGNGEWABA2VBII2V.cpp)
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Public\MeshData.h(7): message : 'Engine::MESH_DATA' 선언을 참조하십시오. (소스 파일 컴파일 중 C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Default\unity_CGNGEWABA2VBII2V.cpp)
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Private\VIBuffer_Ground.cpp(56,19): warning C4244: '초기화 중': 'Engine::_float'에서 'Engine::_int'(으)로 변환하면서 데이터가 손실될 수 있습니다. (소스 파일 컴파일 중 C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Default\unity_CGNGEWABA2VBII2V.cpp)
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Private\VIBuffer_Ground.cpp(62,35): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다. (소스 파일 컴파일 중 C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Default\unity_CGNGEWABA2VBII2V.cpp)
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Private\VIBuffer_Ground.cpp(63,35): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다. (소스 파일 컴파일 중 C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Default\unity_CGNGEWABA2VBII2V.cpp)
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Private\VIBuffer_Ground.cpp(65,36): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다. (소스 파일 컴파일 중 C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Default\unity_CGNGEWABA2VBII2V.cpp)
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Private\VIBuffer_Ground.cpp(67,37): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다. (소스 파일 컴파일 중 C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Default\unity_CGNGEWABA2VBII2V.cpp)
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Private\VIBuffer_Ground.cpp(93,36): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다. (소스 파일 컴파일 중 C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Default\unity_CGNGEWABA2VBII2V.cpp)
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Private\VIBuffer_Ground.cpp(95,37): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다. (소스 파일 컴파일 중 C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Default\unity_CGNGEWABA2VBII2V.cpp)
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Private\VIBuffer_Ground.cpp(101,12): warning C4838: 'Engine::_ulong'에서 'Engine::_long'(으)로의 변환에는 축소 변환이 필요합니다. (소스 파일 컴파일 중 C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Default\unity_CGNGEWABA2VBII2V.cpp)
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Private\VIBuffer_Ground.cpp(102,12): warning C4838: 'Engine::_ulong'에서 'Engine::_long'(으)로의 변환에는 축소 변환이 필요합니다. (소스 파일 컴파일 중 C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Default\unity_CGNGEWABA2VBII2V.cpp)
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Private\VIBuffer_Ground.cpp(103,12): warning C4838: 'Engine::_ulong'에서 'Engine::_long'(으)로의 변환에는 축소 변환이 필요합니다. (소스 파일 컴파일 중 C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Default\unity_CGNGEWABA2VBII2V.cpp)
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Private\VIBuffer_Ground.cpp(104,12): warning C4838: 'Engine::_ulong'에서 'Engine::_long'(으)로의 변환에는 축소 변환이 필요합니다. (소스 파일 컴파일 중 C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Default\unity_CGNGEWABA2VBII2V.cpp)
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Private\Model.cpp(27,21): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다. (소스 파일 컴파일 중 C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Default\unity_HPDZ5ZS4FF5JGJZO.cpp)
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Private\LightManager.cpp(38,33): warning C4267: '초기화 중': 'size_t'에서 'Engine::_uint'(으)로 변환하면서 데이터가 손실될 수 있습니다. (소스 파일 컴파일 중 C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Default\unity_2VCD7Y0XELZL0ISD.cpp)
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Private\SoundManager.cpp(230,40): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다. (소스 파일 컴파일 중 C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Default\unity_BZV4GW8KQJKI6OSA.cpp)
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Private\Navigation.cpp(85,50): warning C4267: '=': 'size_t'에서 'Engine::_int'(으)로 변환하면서 데이터가 손실될 수 있습니다. (소스 파일 컴파일 중 C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Default\unity_4FJ3PFGI1IEN8LX5.cpp)
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Private\LightManager.cpp(20): warning C4172: 지역 변수 또는 임시의 주소를 반환하고 있습니다.
+Effects11d.lib(EffectAPI.obj) : warning LNK4099: 'Effects11d.pdb' PDB를 'Effects11d.lib(EffectAPI.obj)' 또는 'C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\Effects11d.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+Effects11d.lib(d3dxGlobal.obj) : warning LNK4099: 'Effects11d.pdb' PDB를 'Effects11d.lib(d3dxGlobal.obj)' 또는 'C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\Effects11d.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+Effects11d.lib(EffectNonRuntime.obj) : warning LNK4099: 'Effects11d.pdb' PDB를 'Effects11d.lib(EffectNonRuntime.obj)' 또는 'C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\Effects11d.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+Effects11d.lib(EffectLoad.obj) : warning LNK4099: 'Effects11d.pdb' PDB를 'Effects11d.lib(EffectLoad.obj)' 또는 'C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\Effects11d.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+Effects11d.lib(EffectReflection.obj) : warning LNK4099: 'Effects11d.pdb' PDB를 'Effects11d.lib(EffectReflection.obj)' 또는 'C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\Effects11d.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+Effects11d.lib(EffectRuntime.obj) : warning LNK4099: 'Effects11d.pdb' PDB를 'Effects11d.lib(EffectRuntime.obj)' 또는 'C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\Effects11d.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(SpriteBatch.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(SpriteBatch.obj)' 또는 'C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(SpriteFont.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(SpriteFont.obj)' 또는 'C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(PrimitiveBatch.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(PrimitiveBatch.obj)' 또는 'C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(BasicEffect.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(BasicEffect.obj)' 또는 'C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(VertexTypes.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(VertexTypes.obj)' 또는 'C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(DDSTextureLoader.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(DDSTextureLoader.obj)' 또는 'C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(WICTextureLoader.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(WICTextureLoader.obj)' 또는 'C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(BufferHelpers.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(BufferHelpers.obj)' 또는 'C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(CommonStates.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(CommonStates.obj)' 또는 'C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(pch.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(pch.obj)' 또는 'C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(BinaryReader.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(BinaryReader.obj)' 또는 'C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+DirectXTKd.lib(EffectCommon.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTKd.lib(EffectCommon.obj)' 또는 'C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+     ..\Bin\Engine.lib 라이브러리 및 ..\Bin\Engine.exp 개체를 생성하고 있습니다.
+  Engine.vcxproj -> C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Engine\Bin\Engine.dll
+  지정된 경로가 잘못되었습니다.
+  ..\..\Engine\Bin\Engine.lib
+  1개 파일이 복사되었습니다.
+  ..\..\Engine\Bin\Engine.dll
+  1개 파일이 복사되었습니다.
+  ..\..\Engine\ThirdPartyLib\assimp-vc140-mt.lib
+  ..\..\Engine\ThirdPartyLib\assimp-vc140-mtd.lib
+  ..\..\Engine\ThirdPartyLib\DirectXTK.lib
+  ..\..\Engine\ThirdPartyLib\DirectXTKd.lib
+  ..\..\Engine\ThirdPartyLib\Effects11.lib
+  ..\..\Engine\ThirdPartyLib\Effects11d.lib
+  ..\..\Engine\ThirdPartyLib\fmodex64_vc.lib
+  ..\..\Engine\ThirdPartyLib\fmodexL64_vc.lib
+  ..\..\Engine\ThirdPartyLib\fmodexL_bc.lib
+  ..\..\Engine\ThirdPartyLib\fmodexL_lcc.lib
+  ..\..\Engine\ThirdPartyLib\fmodexL_vc.lib
+  ..\..\Engine\ThirdPartyLib\fmodex_bc.lib
+  ..\..\Engine\ThirdPartyLib\fmodex_lcc.lib
+  13개 파일이 복사되었습니다.
+  ..\..\Engine\Public\Animation.h
+  ..\..\Engine\Public\AnimationData.h
+  ..\..\Engine\Public\Base.h
+  ..\..\Engine\Public\BinaryData.h
+  ..\..\Engine\Public\BoneData.h
+  ..\..\Engine\Public\BoneNode.h
+  ..\..\Engine\Public\Camera.h
+  ..\..\Engine\Public\Cell.h
+  ..\..\Engine\Public\Channel.h
+  ..\..\Engine\Public\ChannelData.h
+  ..\..\Engine\Public\Collider.h
+  ..\..\Engine\Public\Collision_Manager.h
+  ..\..\Engine\Public\Component.h
+  ..\..\Engine\Public\Component_Manager.h
+  ..\..\Engine\Public\CustomFont.h
+  ..\..\Engine\Public\CustomLight.h
+  ..\..\Engine\Public\DebugDraw.h
+  ..\..\Engine\Public\Delegate.h
+  ..\..\Engine\Public\Engine_Defines.h
+  ..\..\Engine\Public\Engine_Enum.h
+  ..\..\Engine\Public\Engine_Function.h
+  ..\..\Engine\Public\Engine_Functor.h
+  ..\..\Engine\Public\Engine_Macro.h
+  ..\..\Engine\Public\Engine_Struct.h
+  ..\..\Engine\Public\Engine_Typedef.h
+  ..\..\Engine\Public\Event_Manager.h
+  ..\..\Engine\Public\Fader.h
+  ..\..\Engine\Public\Font_Manager.h
+  ..\..\Engine\Public\Frustum.h
+  ..\..\Engine\Public\GameInstance.h
+  ..\..\Engine\Public\GameObject.h
+  ..\..\Engine\Public\Graphic_Device.h
+  ..\..\Engine\Public\Input_Device.h
+  ..\..\Engine\Public\Level.h
+  ..\..\Engine\Public\Level_Manager.h
+  ..\..\Engine\Public\LightManager.h
+  ..\..\Engine\Public\MaterialData.h
+  ..\..\Engine\Public\MeshContainer.h
+  ..\..\Engine\Public\MeshData.h
+  ..\..\Engine\Public\Model.h
+  ..\..\Engine\Public\ModelData.h
+  ..\..\Engine\Public\Navigation.h
+  ..\..\Engine\Public\NodeData.h
+  ..\..\Engine\Public\Object_Manager.h
+  ..\..\Engine\Public\PipeLine.h
+  ..\..\Engine\Public\Renderer.h
+  ..\..\Engine\Public\RenderTarget.h
+  ..\..\Engine\Public\RenderTarget_Manager.h
+  ..\..\Engine\Public\Render_Manager.h
+  ..\..\Engine\Public\Resource_Manager.h
+  ..\..\Engine\Public\RigidBody.h
+  ..\..\Engine\Public\Shader.h
+  ..\..\Engine\Public\SMath.h
+  ..\..\Engine\Public\SoundManager.h
+  ..\..\Engine\Public\Texture.h
+  ..\..\Engine\Public\Timer.h
+  ..\..\Engine\Public\Timer_Manager.h
+  ..\..\Engine\Public\Transform.h
+  ..\..\Engine\Public\VIBuffer.h
+  ..\..\Engine\Public\VIBuffer_Cell.h
+  ..\..\Engine\Public\VIBuffer_Cube.h
+  ..\..\Engine\Public\VIBuffer_Ground.h
+  ..\..\Engine\Public\VIBuffer_NoAnim_Instance.h
+  ..\..\Engine\Public\VIBuffer_Point_Instance.h
+  ..\..\Engine\Public\VIBuffer_Rect.h
+  ..\..\Engine\Public\VIBuffer_Rect_Instance.h
+  ..\..\Engine\Public\VIBuffer_Terrain.h
+  ..\..\Engine\Public\VIBuffer_Trail.h
+  ..\..\Engine\Public\VIBuffer_Triangle_Instance.h
+  ..\..\Engine\Public\assimp\.editorconfig
+  ..\..\Engine\Public\assimp\aabb.h
+  ..\..\Engine\Public\assimp\ai_assert.h
+  ..\..\Engine\Public\assimp\anim.h
+  ..\..\Engine\Public\assimp\BaseImporter.h
+  ..\..\Engine\Public\assimp\Bitmap.h
+  ..\..\Engine\Public\assimp\BlobIOSystem.h
+  ..\..\Engine\Public\assimp\ByteSwapper.h
+  ..\..\Engine\Public\assimp\camera.h
+  ..\..\Engine\Public\assimp\cexport.h
+  ..\..\Engine\Public\assimp\cfileio.h
+  ..\..\Engine\Public\assimp\cimport.h
+  ..\..\Engine\Public\assimp\color4.h
+  ..\..\Engine\Public\assimp\color4.inl
+  ..\..\Engine\Public\assimp\config.h
+  ..\..\Engine\Public\assimp\config.h.in
+  ..\..\Engine\Public\assimp\CreateAnimMesh.h
+  ..\..\Engine\Public\assimp\DefaultIOStream.h
+  ..\..\Engine\Public\assimp\DefaultIOSystem.h
+  ..\..\Engine\Public\assimp\DefaultLogger.hpp
+  ..\..\Engine\Public\assimp\Defines.h
+  ..\..\Engine\Public\assimp\defs.h
+  ..\..\Engine\Public\assimp\Exceptional.h
+  ..\..\Engine\Public\assimp\Exporter.hpp
+  ..\..\Engine\Public\assimp\fast_atof.h
+  ..\..\Engine\Public\assimp\GenericProperty.h
+  ..\..\Engine\Public\assimp\Hash.h
+  ..\..\Engine\Public\assimp\Importer.hpp
+  ..\..\Engine\Public\assimp\importerdesc.h
+  ..\..\Engine\Public\assimp\IOStream.hpp
+  ..\..\Engine\Public\assimp\IOStreamBuffer.h
+  ..\..\Engine\Public\assimp\IOSystem.hpp
+  ..\..\Engine\Public\assimp\irrXMLWrapper.h
+  ..\..\Engine\Public\assimp\light.h
+  ..\..\Engine\Public\assimp\LineSplitter.h
+  ..\..\Engine\Public\assimp\LogAux.h
+  ..\..\Engine\Public\assimp\Logger.hpp
+  ..\..\Engine\Public\assimp\LogStream.hpp
+  ..\..\Engine\Public\assimp\Macros.h
+  ..\..\Engine\Public\assimp\material.h
+  ..\..\Engine\Public\assimp\material.inl
+  ..\..\Engine\Public\assimp\MathFunctions.h
+  ..\..\Engine\Public\assimp\matrix3x3.h
+  ..\..\Engine\Public\assimp\matrix3x3.inl
+  ..\..\Engine\Public\assimp\matrix4x4.h
+  ..\..\Engine\Public\assimp\matrix4x4.inl
+  ..\..\Engine\Public\assimp\MemoryIOWrapper.h
+  ..\..\Engine\Public\assimp\mesh.h
+  ..\..\Engine\Public\assimp\metadata.h
+  ..\..\Engine\Public\assimp\NullLogger.hpp
+  ..\..\Engine\Public\assimp\ParsingUtils.h
+  ..\..\Engine\Public\assimp\pbrmaterial.h
+  ..\..\Engine\Public\assimp\postprocess.h
+  ..\..\Engine\Public\assimp\Profiler.h
+  ..\..\Engine\Public\assimp\ProgressHandler.hpp
+  ..\..\Engine\Public\assimp\qnan.h
+  ..\..\Engine\Public\assimp\quaternion.h
+  ..\..\Engine\Public\assimp\quaternion.inl
+  ..\..\Engine\Public\assimp\RemoveComments.h
+  ..\..\Engine\Public\assimp\scene.h
+  ..\..\Engine\Public\assimp\SceneCombiner.h
+  ..\..\Engine\Public\assimp\SGSpatialSort.h
+  ..\..\Engine\Public\assimp\SkeletonMeshBuilder.h
+  ..\..\Engine\Public\assimp\SmoothingGroups.h
+  ..\..\Engine\Public\assimp\SmoothingGroups.inl
+  ..\..\Engine\Public\assimp\SpatialSort.h
+  ..\..\Engine\Public\assimp\StandardShapes.h
+  ..\..\Engine\Public\assimp\StreamReader.h
+  ..\..\Engine\Public\assimp\StreamWriter.h
+  ..\..\Engine\Public\assimp\StringComparison.h
+  ..\..\Engine\Public\assimp\StringUtils.h
+  ..\..\Engine\Public\assimp\Subdivision.h
+  ..\..\Engine\Public\assimp\texture.h
+  ..\..\Engine\Public\assimp\TinyFormatter.h
+  ..\..\Engine\Public\assimp\types.h
+  ..\..\Engine\Public\assimp\vector2.h
+  ..\..\Engine\Public\assimp\vector2.inl
+  ..\..\Engine\Public\assimp\vector3.h
+  ..\..\Engine\Public\assimp\vector3.inl
+  ..\..\Engine\Public\assimp\version.h
+  ..\..\Engine\Public\assimp\Vertex.h
+  ..\..\Engine\Public\assimp\XMLTools.h
+  ..\..\Engine\Public\assimp\ZipArchiveIOSystem.h
+  ..\..\Engine\Public\assimp\Compiler\poppack1.h
+  ..\..\Engine\Public\assimp\Compiler\pstdint.h
+  ..\..\Engine\Public\assimp\Compiler\pushpack1.h
+  ..\..\Engine\Public\assimp\port\AndroidJNI\AndroidJNIIOSystem.h
+  ..\..\Engine\Public\DirectXTK\Audio.h
+  ..\..\Engine\Public\DirectXTK\BufferHelpers.h
+  ..\..\Engine\Public\DirectXTK\CommonStates.h
+  ..\..\Engine\Public\DirectXTK\DDSTextureLoader.h
+  ..\..\Engine\Public\DirectXTK\DirectXHelpers.h
+  ..\..\Engine\Public\DirectXTK\Effects.h
+  ..\..\Engine\Public\DirectXTK\GamePad.h
+  ..\..\Engine\Public\DirectXTK\GeometricPrimitive.h
+  ..\..\Engine\Public\DirectXTK\GraphicsMemory.h
+  ..\..\Engine\Public\DirectXTK\Keyboard.h
+  ..\..\Engine\Public\DirectXTK\Model.h
+  ..\..\Engine\Public\DirectXTK\Mouse.h
+  ..\..\Engine\Public\DirectXTK\PostProcess.h
+  ..\..\Engine\Public\DirectXTK\PrimitiveBatch.h
+  ..\..\Engine\Public\DirectXTK\ScreenGrab.h
+  ..\..\Engine\Public\DirectXTK\SimpleMath.h
+  ..\..\Engine\Public\DirectXTK\SimpleMath.inl
+  ..\..\Engine\Public\DirectXTK\SpriteBatch.h
+  ..\..\Engine\Public\DirectXTK\SpriteFont.h
+  ..\..\Engine\Public\DirectXTK\VertexTypes.h
+  ..\..\Engine\Public\DirectXTK\WICTextureLoader.h
+  ..\..\Engine\Public\DirectXTK\XboxDDSTextureLoader.h
+  ..\..\Engine\Public\Effects11\d3dx11effect.h
+  ..\..\Engine\Public\Effects11\d3dxGlobal.h
+  ..\..\Engine\Public\FMOD\fmod.h
+  ..\..\Engine\Public\FMOD\fmod.hpp
+  ..\..\Engine\Public\FMOD\fmodex64.dll
+  ..\..\Engine\Public\FMOD\fmodexL.dll
+  ..\..\Engine\Public\FMOD\fmod_codec.h
+  ..\..\Engine\Public\FMOD\fmod_dsp.h
+  ..\..\Engine\Public\FMOD\fmod_errors.h
+  ..\..\Engine\Public\FMOD\fmod_memoryinfo.h
+  ..\..\Engine\Public\FMOD\fmod_output.h
+  ..\..\Engine\Public\Json\json.hpp
+  ..\..\Engine\Public\Json\Json_Utility.h
+  191개 파일이 복사되었습니다.
+  ..\..\Engine\Bin\ShaderFiles\Engine_Shader_Defines.hpp
+  ..\..\Engine\Bin\ShaderFiles\Shader_Cell.hlsl
+  ..\..\Engine\Bin\ShaderFiles\Shader_OutLine.hlsl
+  3개 파일이 복사되었습니다.

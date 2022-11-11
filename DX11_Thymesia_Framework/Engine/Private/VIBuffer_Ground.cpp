@@ -26,17 +26,7 @@ void CVIBuffer_Ground::Start()
 {
 }
 
-_bool CVIBuffer_Ground::Get_VertexPos(_uint _iIndex, _float3* _pOut)
-{
-	if (m_VertexInfo.size() <= _iIndex)
-		return false;
-
-	*_pOut = m_VertexInfo[_iIndex].vPosition;
-
-	return true;
-}
-
-_bool CVIBuffer_Ground::Get_Vertex(_uint _iIndex, VTXNORTEX* _pOut)
+_bool CVIBuffer_Ground::Get_Vertex(_uint _iIndex, VTXGROUND* _pOut)
 {
 	if (m_VertexInfo.size() <= _iIndex)
 		return false;
@@ -72,37 +62,37 @@ void CVIBuffer_Ground::Update(_vector _vMousePos, _float _fRadious, _float _fPow
 	iEndIndex.x   = (m_iNumVerticesX < iPickIndex.x + iRoundIndx) ? (m_iNumVerticesX) : (iPickIndex.x + iRoundIndx);
 	iEndIndex.y   = (m_iNumVerticesZ < iPickIndex.y + iRoundIndx) ? (m_iNumVerticesZ) : (iPickIndex.y + iRoundIndx);
 
-	for (_uint iZ = iBeginIndex.y; iZ <= iEndIndex.y; ++iZ)
+	for (_uint iZ = iBeginIndex.y; iZ < iEndIndex.y; ++iZ)
 	{
-		for (_uint iX = iBeginIndex.x; iX <= iEndIndex.x; ++iX)
+		for (_uint iX = iBeginIndex.x; iX < iEndIndex.x; ++iX)
 		{
 			_ulong	iIndex = iZ * m_iNumVerticesX + iX;
 
-			_float3 vPos    = ((VTXNORTEX*)SubResource.pData)[iIndex].vPosition;
+			_float3 vPos    = ((VTXGROUND*)SubResource.pData)[iIndex].vPosition;
 			_float  fLength = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vPos) - _vMousePos));
 
 			if (_fRadious >= fLength)
 			{
 				if (0 == _iMode)
 				{
-					((VTXNORTEX*)SubResource.pData)[iIndex].vPosition.y += _fPower;
-					m_VertexInfo[iIndex].vPosition = ((VTXNORTEX*)SubResource.pData)[iIndex].vPosition;
+					((VTXGROUND*)SubResource.pData)[iIndex].vPosition.y += _fPower;
+					m_VertexInfo[iIndex].vPosition = ((VTXGROUND*)SubResource.pData)[iIndex].vPosition;
 				}
 
 				else if (1 == _iMode)
 				{
 					_float fLerpPower = _fPower * (1.f - pow((fLength / _fRadious), 2.f));
 
-					((VTXNORTEX*)SubResource.pData)[iIndex].vPosition.y += fLerpPower;
-					m_VertexInfo[iIndex].vPosition = ((VTXNORTEX*)SubResource.pData)[iIndex].vPosition;
+					((VTXGROUND*)SubResource.pData)[iIndex].vPosition.y += fLerpPower;
+					m_VertexInfo[iIndex].vPosition = ((VTXGROUND*)SubResource.pData)[iIndex].vPosition;
 				}
 			}
 		}
 	}
 
-	for (_uint iZ = iBeginIndex.y; iZ <= iEndIndex.y; ++iZ)
+	for (_uint iZ = iBeginIndex.y; iZ < iEndIndex.y; ++iZ)
 	{
-		for (_uint iX = iBeginIndex.x; iX <= iEndIndex.x; ++iX)
+		for (_uint iX = iBeginIndex.x; iX < iEndIndex.x; ++iX)
 		{
 			_ulong	iIndex = iZ * m_iNumVerticesX + iX;
 
@@ -117,37 +107,48 @@ void CVIBuffer_Ground::Update(_vector _vMousePos, _float _fRadious, _float _fPow
 			if (0 == iX)
 				iAdjacency[3] = -1;
 
-			if (m_iNumVerticesX == iX)
+			if (m_iNumVerticesX - 1 == iX)
 				iAdjacency[1] = -1;
 
 			if (0 == iZ)
 				iAdjacency[2] = -1;
 
-			if (m_iNumVerticesZ == iZ)
+			if (m_iNumVerticesZ - 1 == iZ)
 				iAdjacency[0] = -1;
 
 			_float3 vNorm = m_VertexInfo[iIndex].vNormal;
 
 			// ≥Î∏ª ∫§≈Õ ∞ËªÍ
+			_vector vComputeNorm = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+
 			for (_uint i = 0; i < 4; ++i)
 			{
-				if (0 > iAdjacency[i])
+				_uint iNext = (3 == i) ? (0) : (i + 1);
+
+				if (0 > iAdjacency[i] || 0 > iAdjacency[iNext])
 					continue;
 
-				_vector vTempNorm = XMLoadFloat3(&vNorm) + XMLoadFloat3(&m_VertexInfo[iAdjacency[i]].vNormal);
-				XMStoreFloat3(&vNorm, XMVector3Normalize(vTempNorm));
+				_vector vLine_no1 = XMLoadFloat3(&m_VertexInfo[iAdjacency[i]].vPosition) - XMLoadFloat3(&m_VertexInfo[iIndex].vPosition);
+				_vector vLine_no2 = XMLoadFloat3(&m_VertexInfo[iAdjacency[iNext]].vPosition) - XMLoadFloat3(&m_VertexInfo[iIndex].vPosition);
+				_vector vLingNorm = XMVector3Normalize(XMVector3Cross(vLine_no1, vLine_no2));
+
+				vComputeNorm = XMVector3Normalize(vComputeNorm + vLingNorm);
 			}
 
-			m_VertexInfo[iIndex].vNormal = vNorm;
-			((VTXNORTEX*)SubResource.pData)[iIndex].vNormal = vNorm;
+			XMStoreFloat3(&vNorm, vComputeNorm);
 
+			m_VertexInfo[iIndex].vNormal = vNorm;
+			((VTXGROUND*)SubResource.pData)[iIndex].vNormal = vNorm;
 
 			if (0 > iAdjacency[1])
 				continue;
 
 			// ≈∫¡®∆Æ ∫§≈Õ ∞ËªÍ
-			_vector vTempTangent = XMVector3Normalize(XMLoadFloat3(&m_VertexInfo[iAdjacency[1]].vPosition) - XMLoadFloat3(&m_VertexInfo[iIndex].vPosition));
-
+			_float3 vTempTangent;
+			XMStoreFloat3(&vTempTangent, XMVector3Normalize(XMLoadFloat3(&m_VertexInfo[iAdjacency[1]].vPosition) - XMLoadFloat3(&m_VertexInfo[iIndex].vPosition)));
+			
+			m_VertexInfo[iIndex].vTangent = vTempTangent;
+			((VTXGROUND*)SubResource.pData)[iIndex].vTangent = vTempTangent;
 		}
 	}
 
@@ -186,14 +187,49 @@ _bool CVIBuffer_Ground::Compute_MousePos(RAY _Ray, _matrix _WorldMatrix, _float3
 	return false;
 }
 
+_bool CVIBuffer_Ground::Compute_MouseRatio(RAY _Ray, _matrix _WorldMatrix, _float2* pOut)
+{
+	_matrix		WorldMatrix = XMMatrixInverse(nullptr, _WorldMatrix);
+
+	_vector			vRayPos, vRayDir;
+
+	vRayPos = XMVector3TransformCoord(XMLoadFloat4(&_Ray.vOrigin), WorldMatrix);
+	vRayDir = XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&_Ray.vDirection), WorldMatrix));
+
+	_float		fDist;
+	_float2		vMaxRange	= { m_iNumVerticesX * m_fInterval, m_iNumVerticesZ * m_fInterval };
+
+	for (_uint i = 0; i < m_iNumPrimitive; ++i)
+	{
+		_uint3		iIndices = m_Indices[i];
+		_vector		vPickedPos;
+
+		_vector	vVec0 = XMLoadFloat3(&m_VertexInfo[iIndices.ix].vPosition);
+		_vector	vVec1 = XMLoadFloat3(&m_VertexInfo[iIndices.iy].vPosition);
+		_vector	vVec2 = XMLoadFloat3(&m_VertexInfo[iIndices.iz].vPosition);
+
+		if (true == DirectX::TriangleTests::Intersects(vRayPos, vRayDir, vVec0, vVec1, vVec2, fDist))
+		{
+			vPickedPos = vRayPos + XMVector3Normalize(vRayDir) * fDist;
+
+			pOut->x = vPickedPos.m128_f32[0] / vMaxRange.x;
+			pOut->y = vPickedPos.m128_f32[2] / vMaxRange.y;
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
 HRESULT CVIBuffer_Ground::Init_Mesh(shared_ptr<MESH_DATA> tMeshData)
 {
-	m_iStride			= sizeof(VTXNORTEX);
+	m_iStride			= sizeof(VTXGROUND);
 	m_iNumVertices		= tMeshData.get()->iNumVertices;
 	m_iNumVertexBuffers = 1;
 
-	VTXNORTEX* pVertices = new VTXNORTEX[m_iNumVertices];
-	ZeroMemory(pVertices, sizeof(VTXNORTEX) * m_iNumVertices);
+	VTXGROUND* pVertices = new VTXGROUND[m_iNumVertices];
+	ZeroMemory(pVertices, sizeof(VTXGROUND) * m_iNumVertices);
 
 	for (_uint i = 0; i < m_iNumVertices; ++i)
 	{
@@ -202,7 +238,7 @@ HRESULT CVIBuffer_Ground::Init_Mesh(shared_ptr<MESH_DATA> tMeshData)
 		m_VertexInfo.push_back(pVertices[i]);
 	}
 
-	m_iIndicesStride = sizeof(FACEINDICES32);
+	m_iIndicesStride	= sizeof(FACEINDICES32);
 	m_iNumPrimitive		= tMeshData.get()->iNumFaces;
 	m_iNumIndices		= m_iNumPrimitive * 3;
 	m_eIndexFormat		= DXGI_FORMAT_R32_UINT;
@@ -217,6 +253,71 @@ HRESULT CVIBuffer_Ground::Init_Mesh(shared_ptr<MESH_DATA> tMeshData)
 
 		m_Indices.push_back(_uint3(pIndices[i]._1, pIndices[i]._2, pIndices[i]._3));
 	}
+
+	m_iNumVerticesX = tMeshData.get()->iMaterialIndex;
+	m_iNumVerticesZ = tMeshData.get()->iNumBones;
+
+	/*m_fInterval	= pVertices[1].vPosition.x;;*/
+	_ulong		dwNumFaces = 0;
+
+	for (_uint iCol = 0; iCol < m_iNumVerticesZ - 1; ++iCol)
+	{
+		for (_uint iRow = 0; iRow < m_iNumVerticesX - 1; ++iRow)
+		{
+			_ulong	iIndex = iCol * m_iNumVerticesX + iRow;
+
+			_ulong  iIndices[] =
+			{
+				iIndex + m_iNumVerticesX,
+				iIndex + m_iNumVerticesX + 1,
+				iIndex + 1,
+				iIndex
+			};
+
+			_vector		vSour, vDest, vNormal;
+			_vector		vVertexPos[3];
+			_vector		vVertexNor[3];
+
+			vVertexPos[0] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._1].vPosition);
+			vVertexPos[1] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._2].vPosition);
+			vVertexPos[2] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._3].vPosition);
+
+			vVertexNor[0] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._1].vNormal);
+			vVertexNor[1] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._2].vNormal);
+			vVertexNor[2] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._3].vNormal);
+
+			vSour = vVertexPos[1] - vVertexPos[0];
+			vDest = vVertexPos[2] - vVertexPos[1];
+			vNormal = XMVector3Normalize(XMVector3Cross(vSour, vDest));
+
+			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._1].vNormal, vVertexNor[0] + vNormal);
+			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._2].vNormal, vVertexNor[1] + vNormal);
+			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._3].vNormal, vVertexNor[2] + vNormal);
+			dwNumFaces++;
+
+			pIndices[dwNumFaces] = { iIndices[0], iIndices[2], iIndices[3] };
+
+			vVertexPos[0] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._1].vPosition);
+			vVertexPos[1] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._2].vPosition);
+			vVertexPos[2] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._3].vPosition);
+
+			vVertexNor[0] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._1].vNormal);
+			vVertexNor[1] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._2].vNormal);
+			vVertexNor[2] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._3].vNormal);
+
+			vSour = vVertexPos[1] - vVertexPos[0];
+			vDest = vVertexPos[2] - vVertexPos[1];
+			vNormal = XMVector3Normalize(XMVector3Cross(vSour, vDest));
+
+			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._1].vNormal, vVertexNor[0] + vNormal);
+			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._2].vNormal, vVertexNor[1] + vNormal);
+			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._3].vNormal, vVertexNor[2] + vNormal);
+
+			dwNumFaces++;
+		}
+	}
+
+
 
 	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
 	m_BufferDesc.ByteWidth				= m_iStride * m_iNumVertices;
@@ -250,19 +351,6 @@ HRESULT CVIBuffer_Ground::Init_Mesh(shared_ptr<MESH_DATA> tMeshData)
 
 	/* ------------------------------------------------------------------ */
 
-	m_fInterval	= pVertices[1].vPosition.x;
-
-	for (_uint i = 0; i < m_iNumVertices; ++i)
-	{
-		if (m_VertexInfo[i].vPosition.z == m_fInterval)
-		{
-			m_iNumVerticesX = i;
-			break;
-		}
-	}
-
-	m_iNumVerticesZ	= m_iNumVertices / m_iNumVerticesX;
-
 	Safe_Delete_Array(pVertices);
 	Safe_Delete_Array(pIndices);
 
@@ -276,12 +364,12 @@ HRESULT CVIBuffer_Ground::Init_Mesh(_float4 _vInfo)
 	m_iNumVerticesZ		= (_uint)_vInfo.y;
 
 	/* πˆ≈ÿΩ∫ πˆ∆€ ª˝º∫ */
-	m_iStride			= sizeof(VTXNORTEX);
+	m_iStride			= sizeof(VTXGROUND);
 	m_iNumVertices		= m_iNumVerticesX * m_iNumVerticesZ;
 	m_iNumVertexBuffers = 1;
 
-	VTXNORTEX* pVertices = new VTXNORTEX[m_iNumVertices];
-	ZeroMemory(pVertices, sizeof(VTXNORTEX) * m_iNumVertices);
+	VTXGROUND* pVertices = new VTXGROUND[m_iNumVertices];
+	ZeroMemory(pVertices, sizeof(VTXGROUND) * m_iNumVertices);
 
 	for (_uint iCol = 0; iCol < m_iNumVerticesZ; ++iCol)
 	{
@@ -292,6 +380,7 @@ HRESULT CVIBuffer_Ground::Init_Mesh(_float4 _vInfo)
 			pVertices[iIndex].vPosition = _float3(_float(iRow * m_fInterval), 0.f, _float(iCol * m_fInterval));
 			pVertices[iIndex].vTexUV    = _float2(iRow / (m_iNumVerticesX - 1.f), iCol / (m_iNumVerticesZ - 1.f));
 			pVertices[iIndex].vNormal	= _float3(0.f, 1.f, 0.f);
+			pVertices[iIndex].vTangent  = _float3(1.f, 0.f, 0.f);
 
 			m_VertexInfo.push_back(pVertices[iIndex]);
 		}

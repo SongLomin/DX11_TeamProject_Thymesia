@@ -301,6 +301,9 @@
     <ClInclude Include="..\Public\EditGround.h">
       <Filter>02. GameObject\99. Other\01. EditGround</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\EditMapTool.h">
+      <Filter>02. GameObject\99. Other\04. EditMapTool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -575,6 +578,10 @@
     </ClCompile>
     <ClCompile Include="..\Private\EditGround.cpp">
       <Filter>02. GameObject\99. Other\01. EditGround</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_Hover.cpp" />
+    <ClCompile Include="..\Private\EditMapTool.cpp">
+      <Filter>02. GameObject\99. Other\04. EditMapTool</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -921,6 +928,9 @@
     </Filter>
     <Filter Include="02. GameObject\99. Other\01. EditGround">
       <UniqueIdentifier>{e901b999-d046-4e3c-aa8b-98d950d74dbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\99. Other\04. EditMapTool">
+      <UniqueIdentifier>{8879bd77-4670-491b-803a-0ddb8d81c2e9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
