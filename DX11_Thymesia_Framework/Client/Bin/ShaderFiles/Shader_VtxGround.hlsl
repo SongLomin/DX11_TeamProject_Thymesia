@@ -5,10 +5,10 @@ matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 float4	g_vLightFlag;
 float   g_fDensity;
 
-texture2D	g_SourDiffTexture;
-texture2D	g_DestDiffTexture;
-texture2D	g_NormalTexture;
-
+texture2D	g_Texture_Sorc_Diff	 ,	g_Texture_Sorc_Norm	;  int g_Texture_Sorc_Type;
+texture2D	g_Texture_AddNo1_Diff,	g_Texture_AddNo1_Norm; int g_Texture_AddNo1_Type;
+texture2D	g_Texture_AddNo2_Diff,	g_Texture_AddNo2_Norm; int g_Texture_AddNo2_Type;
+texture2D	g_Texture_AddNo3_Diff,	g_Texture_AddNo3_Norm; int g_Texture_AddNo3_Type;
 texture2D	g_FilterTexture;
 
 /* ---------------------------------------------------------- */
@@ -81,13 +81,27 @@ PS_OUT		PS_MAIN_DEFAULT(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 
-	vector		vSourDiffuse	= g_SourDiffTexture.Sample(DefaultSampler, In.vTexUV * g_fDensity);
+    Out.vDiffuse = g_Texture_Sorc_Diff.Sample(DefaultSampler, In.vTexUV * g_fDensity);;
+
 	vector		vFilterDiffuse	= g_FilterTexture.Sample(DefaultSampler, In.vTexUV);
 
-    Out.vDiffuse	= vSourDiffuse;
+	/*if (0.f < vFilterDiffuse.r)
+		Out.vDiffuse = g_Texture_AddNo1_Diff.Sample(DefaultSampler, In.vTexUV * g_fDensity);
+
+	if (0.f < vFilterDiffuse.g)
+		Out.vDiffuse = g_Texture_AddNo2_Diff.Sample(DefaultSampler, In.vTexUV * g_fDensity);
+
+	if (0.f < vFilterDiffuse.b)
+		Out.vDiffuse = g_Texture_AddNo3_Diff.Sample(DefaultSampler, In.vTexUV * g_fDensity);*/
+
+	if (0.1f < vFilterDiffuse.r)
+		Out.vDiffuse = vFilterDiffuse;
+
+	if (0.1f < vFilterDiffuse.g)
+		Out.vDiffuse = vFilterDiffuse;
 
 	if (0.1f < vFilterDiffuse.b)
-		Out.vDiffuse = vector(1.f, 1.f, 0.f, 1.f);
+		Out.vDiffuse = vFilterDiffuse;
 
 	Out.vDiffuse.a	= 1.f;
 	Out.vNormal		= In.vNormal;
@@ -101,8 +115,8 @@ PS_OUT		PS_MAIN_NORM(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 
-	vector		vSourDiffuse = g_SourDiffTexture.Sample(DefaultSampler, In.vTexUV * g_fDensity);
-	float3		vPixelNorm	 = g_NormalTexture.Sample(DefaultSampler, In.vTexUV * g_fDensity).xyz;
+	vector		vSourDiffuse = g_Texture_Sorc_Diff.Sample(DefaultSampler, In.vTexUV * g_fDensity);
+	float3		vPixelNorm	 = g_Texture_Sorc_Norm.Sample(DefaultSampler, In.vTexUV * g_fDensity).xyz;
 
 	float3x3	WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));
 	vPixelNorm = vPixelNorm * 2.f - 1.f;

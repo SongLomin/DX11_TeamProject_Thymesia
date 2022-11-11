@@ -9,12 +9,19 @@
 #include "Transform.h"
 #include "VIBuffer_Ground.h"
 
-#include <Direct.h>
 GAMECLASS_C(CEditGround)
 CLONE_C(CEditGround, CGameObject)
 
 #define D3DCOLOR_ABGR(a,r,g,b) \
     ((D3DCOLOR)((((a)&0xff)<<24)|(((r)&0xff)<<16)|(((g)&0xff)<<8)|((b)&0xff)))
+
+static const char* TexVarDesc[] =
+{
+	"g_Texture_Sorc",
+	"g_Texture_AddNo1",
+	"g_Texture_AddNo2",
+	"g_Texture_AddNo3",
+};
 
 HRESULT CEditGround::Initialize_Prototype()
 {
@@ -35,11 +42,16 @@ HRESULT CEditGround::Initialize(void* pArg)
 
 	m_pRendererCom		 = Add_Component<CRenderer>();
 
-	m_pTextureCom.emplace("g_SourDiffTexture", Add_Component<CTexture>());
-	m_pTextureCom.emplace("g_NormalTexture"  , Add_Component<CTexture>());
+	TEXTURES_INFO TexInfo;
 
-	m_pTextureCom.find("g_SourDiffTexture")->second.lock()->Use_Texture("T_Floor_01a_C.png");
-	m_pTextureCom.find("g_NormalTexture")->second.lock()->Use_Texture("T_Floor_01a_N.png");
+	TexInfo.pDiffTex = Add_Component<CTexture>();
+	TexInfo.pNormTex = Add_Component<CTexture>();
+	TexInfo.iType	 = 1;
+
+	TexInfo.pDiffTex.lock()->Use_Texture("T_Floor_01a_C.png");
+	TexInfo.pNormTex.lock()->Use_Texture("T_Floor_01a_N.png");
+
+	m_pTextureCom.emplace("g_Texture_Sorc", TexInfo);
 
 	Load_AllMeshInfo();
 
@@ -64,8 +76,7 @@ void CEditGround::Tick(_float fTimeDelta)
 
 	if (m_pFilterTexture.Get() && EDIT_MODE::FILLTER == m_eEditMode)
 	{
-		if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
-			PickingFillterTextureDraw();
+		PickingFillterTextureDraw();
 	}
 }
 
@@ -74,7 +85,6 @@ void CEditGround::LateTick(_float fTimeDelta)
 	if (!m_bCreate)
 		return;
 
-	//RENDER_NONALPHABLEND
 	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Cast<CGameObject>(m_this));
 }
 
@@ -104,7 +114,20 @@ HRESULT CEditGround::SetUp_ShaderResource()
 
 	for (auto& iter : m_pTextureCom)
 	{
-		if(FAILED(iter.second.lock()->Set_ShaderResourceView(m_pShaderCom, iter.first.c_str(), 0)))
+		string szDiffTextureName = iter.first + "_Diff";
+		string szNormTextureName = iter.first + "_Norm";
+		string szTypeName		 = iter.first + "_Type";
+	
+		if (FAILED(iter.second.pDiffTex.lock()->Set_ShaderResourceView(m_pShaderCom, szDiffTextureName.c_str(), 0)))
+			return E_FAIL;
+
+		if (1 == iter.second.iType)
+		{
+			if (FAILED(iter.second.pNormTex.lock()->Set_ShaderResourceView(m_pShaderCom, szNormTextureName.c_str(), 0)))
+				return E_FAIL;
+		}
+
+		if (FAILED(m_pShaderCom.lock()->Set_RawValue(szTypeName.c_str(), &iter.second.iType, sizeof(_int))))
 			return E_FAIL;
 	}
 
@@ -214,12 +237,83 @@ void CEditGround::SetUp_PinckingInfo()
 	ImGui::Separator();
 }
 
-void CEditGround::SetUp_FillterInfo()
+void CEditGround::SetUp_Textures()
 {
+	// 탐색기능, 선택기능
+	// 종류 선택 기능
+
+	static int iSelect_TexDesc = 0;
+	ImGui::Combo("Tex Var", &iSelect_TexDesc, TexVarDesc, IM_ARRAYSIZE(TexVarDesc));
+
+	if (ImGui::Button("Add", ImVec2(100.f, 30.f)))
+	{
+		if (m_pTextureCom.end() == m_pTextureCom.find(TexVarDesc[iSelect_TexDesc]))
+		{
+			TEXTURES_INFO	Desc;
+			Desc.pDiffTex = Add_Component<CTexture>();
+			Desc.pNormTex = Add_Component<CTexture>();
+			Desc.iType    = 0;
+
+			m_pTextureCom.emplace(TexVarDesc[iSelect_TexDesc], Desc);
+		}
+	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Del", ImVec2(100.f, 30.f)))
+	{
+		auto iter_fine = m_pTextureCom.find(TexVarDesc[iSelect_TexDesc]);
+
+		if (iter_fine != m_pTextureCom.end())
+		{
+			m_pTextureCom.erase(iter_fine);
+		}
+	}
+
+	ImGui::Separator();
+
+	static int iSelect_Texture_Desc			= 0;
+	static int iSelect_Texture_Desc_Index	= 0;
+
+	for (auto& iter : m_TextureNames)
+	{
+
+	}
+
+	for (auto& iter : m_pTextureCom)
+	{
+		string szTag = string(" [ ") + iter.first.c_str() + " ] ";
+
+		if (ImGui::TreeNode(szTag.c_str()))
+		{
+			string szKeyItem = string("find : ") + iter.first;
+
+
+			ImGui::Text("");
+
+			ImGui::TreePop();
+		}
+	}
+
 }
 
 void CEditGround::PickingFillterTextureDraw()
 {
+	if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
+	{
+		if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
+			m_eBrushMode = BRUSH_MODE::BRUSH_NO1;
+
+		if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
+			m_eBrushMode = BRUSH_MODE::BRUSH_NO2;
+
+		if (KEY_INPUT(KEY::NUM3, KEY_STATE::TAP))
+			m_eBrushMode = BRUSH_MODE::BRUSH_NO3;
+	}
+
+	if (!KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
+		return;
+
 	RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
 
 	_float2		Out;
@@ -245,15 +339,32 @@ void CEditGround::PickingFillterTextureDraw()
 	iEndIndex.x = (_int(m_vBufferInfo.x) < iPickIndex.x + iRoundIndx) ? (_int(m_vBufferInfo.x)) : (iPickIndex.x + iRoundIndx);
 	iEndIndex.y = (_int(m_vBufferInfo.y) < iPickIndex.y + iRoundIndx) ? (_int(m_vBufferInfo.y)) : (iPickIndex.y + iRoundIndx);
 
-	cout << "( " << iBeginIndex.x << " , " << iBeginIndex.y << " ) / ( " << iEndIndex.x << " , " << iEndIndex.y << " )" << endl;
-
 	for (_uint iZ = iBeginIndex.y; iZ < iEndIndex.y; ++iZ)
 	{
 		for (_uint iX = iBeginIndex.x; iX < iEndIndex.x; ++iX)
 		{
 			_ulong	iIndex = iZ * 128 + iX;
 
-			m_vColors[iIndex] = D3DCOLOR_ABGR(255, 255, 0, 255);
+			switch (m_eBrushMode)
+			{
+				case BRUSH_MODE::BRUSH_NO1:
+				{
+					m_vColors[iIndex] = D3DCOLOR_ABGR(255, 0, 0, 255);
+				}
+				break;
+
+				case BRUSH_MODE::BRUSH_NO2:
+				{
+					m_vColors[iIndex] = D3DCOLOR_ABGR(255, 0, 255, 0);
+				}
+				break;
+
+				case BRUSH_MODE::BRUSH_NO3:
+				{
+					m_vColors[iIndex] = D3DCOLOR_ABGR(255, 255, 0, 0);
+				}
+				break;
+			}
 		}
 	}
 
@@ -410,17 +521,17 @@ void CEditGround::Bake_Mesh()
 void CEditGround::Load_Mesh()
 {
 	//Edit Load
-	//m_pModelData = GAMEINSTANCE->Get_ModelFromKey(m_szMeshName.c_str());
+	m_pModelData = GAMEINSTANCE->Get_ModelFromKey(m_szMeshName.c_str());
 
 	if (m_pModelData.get()->Mesh_Datas[0])
 		return;
 
 	Remove_Components<CVIBuffer_Ground>();
 
-	//m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
-	//m_pVIBufferCom.lock()->Init_Mesh(m_pModelData.get()->Mesh_Datas[0]);
+	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
+	m_pVIBufferCom.lock()->Init_Mesh(m_pModelData.get()->Mesh_Datas[0]);
 
-	//m_bCreate = true;
+	m_bCreate = true;
 }
 
 void CEditGround::Bake_FilterTexture()
@@ -466,6 +577,7 @@ void CEditGround::OnEventMessage(_uint iArg)
 			SetUp_EditMode();
 			SetUp_TextureComponent();
 			SetUp_ShaderComponent();
+			SetUp_Textures();
 		}
 
 		if (ImGui::CollapsingHeader("Edit Picking"), ImGuiTreeNodeFlags_DefaultOpen)
@@ -485,6 +597,8 @@ void CEditGround::OnEventMessage(_uint iArg)
 		{
 			Bake_Mesh();
 		}
+
+		ImGui::SameLine();
 
 		if (ImGui::Button("Load"))
 		{
