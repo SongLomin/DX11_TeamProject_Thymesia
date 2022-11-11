@@ -343,7 +343,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_GAMEPLAY);
 
-	//GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_GAMEPLAY);
+	GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_GAMEPLAY);
 
 	GET_SINGLE(CGameManager)->Register_Player_HPBar
 	(GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));

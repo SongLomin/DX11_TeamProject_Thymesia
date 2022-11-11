@@ -58,10 +58,23 @@ void CMainApp::Tick(float fTimeDelta)
 {
 	if (GetFocus())
 	{
-		POINT WinSize{ g_iWinCX , g_iWinCY };
-		ClientToScreen(g_hWnd, &WinSize);
-		RECT ClientRect = { (_long)WinSize.x - g_iWinCX, (_long)WinSize.y - g_iWinCY, (_long)WinSize.x, (_long)WinSize.y };
-		//ClipCursor(&ClientRect);
+		if (KEY_INPUT(KEY::TAB, KEY_STATE::TAP))
+		{
+			m_bClip = !m_bClip;
+		}
+
+		if (m_bClip)
+		{
+			POINT WinSize{ g_iWinCX , g_iWinCY };
+			ClientToScreen(g_hWnd, &WinSize);
+			RECT ClientRect = { (_long)WinSize.x - g_iWinCX, (_long)WinSize.y - g_iWinCY, (_long)WinSize.x, (_long)WinSize.y };
+			ClipCursor(&ClientRect);
+		}
+		else
+		{
+			RECT ClientRect = { 0, 0, 99999, 99999 };
+			ClipCursor(&ClientRect);
+		}
 	}
 
 	if (nullptr == GAMEINSTANCE)
