@@ -63,6 +63,8 @@ void CPlayer_Memory::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
+//TODO: UI: 플레이어 재화 테스트 코드
+#ifdef _DEBUG
     if (KEY_INPUT(KEY::J, KEY_STATE::TAP))
     {
         m_fMemory -= 1000.f;
@@ -72,6 +74,7 @@ void CPlayer_Memory::Tick(_float fTimeDelta)
     {
         m_fMemory += 1000;
     }
+#endif
 
     if (m_fMemory < 0.f)
     {

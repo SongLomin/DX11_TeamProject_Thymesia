@@ -84,6 +84,7 @@ void CPlayer_PotionUI::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
+//TODO: UI: 물약 개수 테스트 코드
 #ifdef _DEBUG
     if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
     {

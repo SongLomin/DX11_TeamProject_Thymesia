@@ -313,6 +313,9 @@
     <ClInclude Include="..\Public\UI_Logo.h">
       <Filter>02. GameObject\01. UI\MainMenu</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_Loading.h">
+      <Filter>02. GameObject\01. UI\Loading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -602,6 +605,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_Logo.cpp">
       <Filter>02. GameObject\01. UI\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_Loading.cpp">
+      <Filter>02. GameObject\01. UI\Loading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -963,6 +969,9 @@
     </Filter>
     <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\Hover">
       <UniqueIdentifier>{e487d713-d046-4fcc-955c-f8b1014cbff6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\Loading">
+      <UniqueIdentifier>{e48e240b-21cd-4024-a452-bb27b060a8cb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

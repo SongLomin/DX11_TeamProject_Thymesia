@@ -108,6 +108,7 @@ void CPlayer_HPBar::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+//TODO : UI : HPBar 테스트 코드
 #ifdef _DEBUG
 	if (KEY_INPUT(KEY::J, KEY_STATE::TAP))
 	{

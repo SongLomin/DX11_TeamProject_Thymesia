@@ -130,8 +130,15 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_Quit"), TEXT("../Bin/Resources/Textures/UI/UI_Quit.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
 
 
-
-
+	//Loading Scene Texture
+	GAMEINSTANCE->Load_Textures(("Loading_SafeHouse"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_Lobby_01.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("Loading_SeaOfTrees"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_Circus_01.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("Loading_RoyalGarden"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_Circus_01.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("Loading_HermesFortress"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_Garden_01.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("Loading_OceanOfMemories"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_MemoryOcean_01.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("Loading_Tutorial"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_Tutorial_01.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	
+	GAMEINSTANCE->Load_Textures(("Loading_Icon"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingIcon.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
 
 
 	//Player HPBar Texture
