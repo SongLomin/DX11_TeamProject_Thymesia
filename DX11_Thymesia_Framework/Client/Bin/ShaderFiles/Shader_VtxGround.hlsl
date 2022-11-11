@@ -85,23 +85,14 @@ PS_OUT		PS_MAIN_DEFAULT(PS_IN In)
 
 	vector		vFilterDiffuse	= g_FilterTexture.Sample(DefaultSampler, In.vTexUV);
 
-	/*if (0.f < vFilterDiffuse.r)
+	if (0.f < vFilterDiffuse.r)
 		Out.vDiffuse = g_Texture_AddNo1_Diff.Sample(DefaultSampler, In.vTexUV * g_fDensity);
 
 	if (0.f < vFilterDiffuse.g)
 		Out.vDiffuse = g_Texture_AddNo2_Diff.Sample(DefaultSampler, In.vTexUV * g_fDensity);
 
 	if (0.f < vFilterDiffuse.b)
-		Out.vDiffuse = g_Texture_AddNo3_Diff.Sample(DefaultSampler, In.vTexUV * g_fDensity);*/
-
-	if (0.1f < vFilterDiffuse.r)
-		Out.vDiffuse = vFilterDiffuse;
-
-	if (0.1f < vFilterDiffuse.g)
-		Out.vDiffuse = vFilterDiffuse;
-
-	if (0.1f < vFilterDiffuse.b)
-		Out.vDiffuse = vFilterDiffuse;
+		Out.vDiffuse = g_Texture_AddNo3_Diff.Sample(DefaultSampler, In.vTexUV * g_fDensity);
 
 	Out.vDiffuse.a	= 1.f;
 	Out.vNormal		= In.vNormal;
@@ -115,14 +106,33 @@ PS_OUT		PS_MAIN_NORM(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 
-	vector		vSourDiffuse = g_Texture_Sorc_Diff.Sample(DefaultSampler, In.vTexUV * g_fDensity);
-	float3		vPixelNorm	 = g_Texture_Sorc_Norm.Sample(DefaultSampler, In.vTexUV * g_fDensity).xyz;
+	Out.vDiffuse = g_Texture_Sorc_Diff.Sample(DefaultSampler, In.vTexUV * g_fDensity);
+
+	vector		vFilterDiffuse	= g_FilterTexture.Sample(DefaultSampler, In.vTexUV);
+	float3		vPixelNorm		= g_Texture_Sorc_Norm.Sample(DefaultSampler, In.vTexUV * g_fDensity).xyz;
+
+	if (0.f < vFilterDiffuse.r)
+	{
+		Out.vDiffuse	= g_Texture_AddNo1_Diff.Sample(DefaultSampler, In.vTexUV * g_fDensity);
+		vPixelNorm		= g_Texture_AddNo1_Norm.Sample(DefaultSampler, In.vTexUV * g_fDensity).xyz;
+	}
+
+	if (0.f < vFilterDiffuse.g)
+	{
+		Out.vDiffuse	= g_Texture_AddNo2_Diff.Sample(DefaultSampler, In.vTexUV * g_fDensity);
+		vPixelNorm		= g_Texture_AddNo2_Norm.Sample(DefaultSampler, In.vTexUV * g_fDensity).xyz;
+	}
+
+	if (0.f < vFilterDiffuse.b)
+	{
+		Out.vDiffuse	= g_Texture_AddNo3_Diff.Sample(DefaultSampler, In.vTexUV * g_fDensity);
+		vPixelNorm		= g_Texture_AddNo3_Norm.Sample(DefaultSampler, In.vTexUV * g_fDensity).xyz;
+	}
 
 	float3x3	WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));
 	vPixelNorm = vPixelNorm * 2.f - 1.f;
 	vPixelNorm = mul(vPixelNorm, WorldMatrix);
 
-    Out.vDiffuse	= vSourDiffuse;
 	Out.vDiffuse.a	= 1.f;
 	Out.vNormal		= vector(vPixelNorm.xyz * 0.5f + 0.5f, 0.f);
 	Out.vDepth		= vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
@@ -143,11 +153,36 @@ PS_OUT		PS_MAIN_WIREFRAM(PS_IN In)
 	return Out;
 }
 
+PS_OUT		PS_MAIN_FILLTER(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+    Out.vDiffuse = g_Texture_Sorc_Diff.Sample(DefaultSampler, In.vTexUV * g_fDensity);;
+
+	vector		vFilterDiffuse	= g_FilterTexture.Sample(DefaultSampler, In.vTexUV);
+
+	if (0.1f < vFilterDiffuse.r)
+		Out.vDiffuse = vFilterDiffuse;
+
+	if (0.1f < vFilterDiffuse.g)
+		Out.vDiffuse = vFilterDiffuse;
+
+	if (0.1f < vFilterDiffuse.b)
+		Out.vDiffuse = vFilterDiffuse;
+
+	Out.vDiffuse.a	= 1.f;
+	Out.vNormal		= In.vNormal;
+	Out.vDepth		= vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vLightFlag	= g_vLightFlag;
+
+	return Out;
+}
+
 /* ---------------------------------------------------------- */
 
 technique11 DefaultTechnique
 {
-	pass Ground_Default
+	pass PASS_0_Ground_Default
 	{
 		SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_Default, 0);
@@ -158,7 +193,7 @@ technique11 DefaultTechnique
         PixelShader		= compile ps_5_0	PS_MAIN_DEFAULT();
     }
 
-	pass Ground_Norm
+	pass PASS_1_Ground_Norm
 	{
 		SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_Default, 0);
@@ -169,7 +204,7 @@ technique11 DefaultTechnique
         PixelShader		= compile ps_5_0	PS_MAIN_NORM();
     }
 
-	pass Ground_WireFrame
+	pass PASS_2_Ground_WireFrame
 	{
 		SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_Default, 0);
@@ -179,4 +214,15 @@ technique11 DefaultTechnique
 		GeometryShader	= NULL;
         PixelShader		= compile ps_5_0	PS_MAIN_WIREFRAM();
     }
+
+	pass PASS_3_Ground_OnlyFilterTexture
+	{
+		SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader	= compile vs_5_0	VS_MAIN_DEFAULT();
+		GeometryShader	= NULL;
+		PixelShader		= compile ps_5_0	PS_MAIN_FILLTER();
+	}
 }

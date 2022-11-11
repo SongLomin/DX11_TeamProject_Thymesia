@@ -55,6 +55,8 @@ HRESULT CEditGround::Initialize(void* pArg)
 
 	Load_AllMeshInfo();
 
+	Load_TextureList("../Bin/Resources/Textures/Ground/");
+
 	return S_OK;
 }
 
@@ -148,9 +150,30 @@ HRESULT CEditGround::SetUp_ShaderResource()
 	return S_OK;
 }
 
+void CEditGround::Load_TextureList(const filesystem::path& In_Path)
+{
+	if (!In_Path.filename().extension().string().empty())
+		return;
+
+	fs::directory_iterator itr(In_Path);
+	tstring szPath;
+	string szFileName;
+
+	while (itr != fs::end(itr)) {
+		const fs::directory_entry& entry = *itr;
+
+		szFileName = entry.path().filename().string();
+		Load_TextureList(entry.path());
+
+		m_TextureNames.push_back(szFileName);
+
+		itr++;
+	}
+}
+
 void CEditGround::SetUp_EditMode()
 {
-	const char* items[] =
+	static const char* items_EditMode[] =
 	{
 		"HEIGHT_FLAT",
 		"HEIGHT_LERP",
@@ -172,10 +195,37 @@ void CEditGround::SetUp_EditMode()
 
 	if (ImGui::BeginListBox("Editer Type"))
 	{
-		for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+		for (int n = 0; n < IM_ARRAYSIZE(items_EditMode); n++)
 		{
 			const bool is_selected = ((_uint)m_eEditMode == n);
-			if (ImGui::Selectable(items[n], is_selected))
+			if (ImGui::Selectable(items_EditMode[n], is_selected))
+			{
+				m_eEditMode = (EDIT_MODE)n;
+			}
+
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+
+		ImGui::EndListBox();
+	}
+
+	ImGui::Separator();
+	ImGui::Text("");
+
+	static const char* items_BrushMode[] =
+	{
+		"HEIGHT_FLAT",
+		"HEIGHT_LERP",
+		"FILLTER"
+	};
+
+	if (ImGui::BeginListBox("Brush Type"))
+	{
+		for (int n = 0; n < IM_ARRAYSIZE(items_BrushMode); n++)
+		{
+			const bool is_selected = ((_uint)m_eEditMode == n);
+			if (ImGui::Selectable(items_BrushMode[n], is_selected))
 			{
 				m_eEditMode = (EDIT_MODE)n;
 			}
@@ -185,7 +235,7 @@ void CEditGround::SetUp_EditMode()
 		}
 		ImGui::EndListBox();
 	}
-	ImGui::Separator();
+
 }
 
 void CEditGround::SetUp_Info()
@@ -204,15 +254,12 @@ void CEditGround::SetUp_Info()
 	}
 }
 
-void CEditGround::SetUp_TextureComponent()
-{
-
-}
-
 void CEditGround::SetUp_ShaderComponent()
 {
-	ImGui::Text("Shader Pass");
 	ImGui::DragInt("##Pass", &m_iShaderPass, 1.f);
+	ImGui::SameLine();
+	ImGui::Text("Shader Pass");
+
 	ImGui::Separator();
 }
 
@@ -228,31 +275,30 @@ void CEditGround::SetUp_PinckingInfo()
 	if (KEY_INPUT(KEY::DOWN, KEY_STATE::TAP))
 		m_fBufferPower -= 0.1f;
 
-	ImGui::Text("Draw Radious,");
 	ImGui::DragFloat("##Radious", &m_fBufferDrawRadious, 1.f);
-	ImGui::Separator();
+	ImGui::SameLine();
+	ImGui::Text("Draw Radious,");
 
-	ImGui::Text("Power");
 	ImGui::DragFloat("##Power", &m_fBufferPower, 1.f);
+	ImGui::SameLine();
+	ImGui::Text("Power");
+
 	ImGui::Separator();
 }
 
 void CEditGround::SetUp_Textures()
 {
-	// 탐색기능, 선택기능
-	// 종류 선택 기능
-
 	static int iSelect_TexDesc = 0;
 	ImGui::Combo("Tex Var", &iSelect_TexDesc, TexVarDesc, IM_ARRAYSIZE(TexVarDesc));
 
-	if (ImGui::Button("Add", ImVec2(100.f, 30.f)))
+	if (ImGui::Button("Add"))
 	{
 		if (m_pTextureCom.end() == m_pTextureCom.find(TexVarDesc[iSelect_TexDesc]))
 		{
 			TEXTURES_INFO	Desc;
 			Desc.pDiffTex = Add_Component<CTexture>();
 			Desc.pNormTex = Add_Component<CTexture>();
-			Desc.iType    = 0;
+			Desc.iType = 0;
 
 			m_pTextureCom.emplace(TexVarDesc[iSelect_TexDesc], Desc);
 		}
@@ -260,7 +306,7 @@ void CEditGround::SetUp_Textures()
 
 	ImGui::SameLine();
 
-	if (ImGui::Button("Del", ImVec2(100.f, 30.f)))
+	if (ImGui::Button("Del"))
 	{
 		auto iter_fine = m_pTextureCom.find(TexVarDesc[iSelect_TexDesc]);
 
@@ -270,31 +316,136 @@ void CEditGround::SetUp_Textures()
 		}
 	}
 
+	ImGui::Text("");
 	ImGui::Separator();
 
-	static int iSelect_Texture_Desc			= 0;
-	static int iSelect_Texture_Desc_Index	= 0;
 
-	for (auto& iter : m_TextureNames)
+	static int			iSelect_Texture_Com			= 0;
+	static string		szSelect_Texture_Com_Tag	= "";
+
+	ImGui::Text(string("Select Com : " + szSelect_Texture_Com_Tag).c_str());
+
+	if (ImGui::BeginListBox("TexCom List"))
 	{
+		_uint iIndex = 0;
 
+		for (auto& iter : m_pTextureCom)
+		{
+			const bool is_selected = (iSelect_Texture_Com == iIndex);
+
+			if (ImGui::Selectable(iter.first.c_str(), is_selected))
+			{
+				iSelect_Texture_Com			= iIndex;
+				szSelect_Texture_Com_Tag	= iter.first;
+			}
+
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+
+			++iIndex;
+		}
+
+		ImGui::EndListBox();
 	}
 
-	for (auto& iter : m_pTextureCom)
+	ImGui::Text("");
+	ImGui::Separator();
+
+	static const char* TexTypeInfo[] =
 	{
-		string szTag = string(" [ ") + iter.first.c_str() + " ] ";
+		"Diff",
+		"Norm"
+	};
 
-		if (ImGui::TreeNode(szTag.c_str()))
+	static int		iSelect_TexType				= 0;
+	static int		iSelect_Texture_Desc		= 0;
+	static string   szClickTexureTag			= "";
+	static _char    szFindTextureTag[MAX_PATH]	= "";
+
+	ImGui::InputText("", szFindTextureTag, MAX_PATH);
+
+	if (!m_TextureNames.empty())
+		ImGui::Text(string("Select Tex : " + m_TextureNames[iSelect_Texture_Desc]).c_str());
+
+	if (ImGui::BeginListBox("Tex List"))
+	{
+		for (_uint i = 0; i < m_TextureNames.size(); ++i)
 		{
-			string szKeyItem = string("find : ") + iter.first;
+			const bool is_selected = (iSelect_Texture_Desc == i);
 
+			if (0 < strlen(szFindTextureTag))
+			{
+				if (string::npos == m_TextureNames[i].find(szFindTextureTag))
+					continue;
+			}
 
-			ImGui::Text("");
+			string szFind = m_TextureNames[i].substr(m_TextureNames[i].length() - 5, m_TextureNames[i].length());
 
-			ImGui::TreePop();
+			if (0 == iSelect_TexType)
+			{
+				if ("C.png" != szFind)
+					continue;
+			}
+			else if (1 == iSelect_TexType)
+			{
+				if ("N.png" != szFind)
+					continue;
+			}
+
+			if (ImGui::Selectable(m_TextureNames[i].c_str(), is_selected))
+			{
+				iSelect_Texture_Desc = i;
+				szClickTexureTag = m_TextureNames[iSelect_Texture_Desc];
+			}
+
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+
+		ImGui::EndListBox();
+	}
+
+	ImGui::Combo("Tex Info", &iSelect_TexType, TexTypeInfo, 2);
+
+	if (ImGui::Button("Edit Texture"))
+	{
+		auto iter_find = m_pTextureCom.find(TexVarDesc[iSelect_TexDesc]);
+
+		if (0 == iSelect_TexType) // Diff
+		{
+			if (m_pTextureCom.end() != iter_find)
+				iter_find->second.pDiffTex.lock()->Use_Texture(szClickTexureTag.c_str());
+		}
+
+		else if (1 == iSelect_TexType) // Norm
+		{
+			if (m_pTextureCom.end() != iter_find)
+				iter_find->second.pNormTex.lock()->Use_Texture(szClickTexureTag.c_str());
 		}
 	}
+}
 
+void CEditGround::SetUp_File()
+{
+	_char szName[64];
+	strcpy_s(szName, m_szMeshName.c_str());
+
+	if (ImGui::InputText("MeshName", szName, 64))
+	{
+		m_szMeshName = szName;
+	}
+
+	if (ImGui::Button("Save"))
+	{
+		Bake_Mesh();
+	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Load"))
+	{
+		Load_Mesh();
+	}
 }
 
 void CEditGround::PickingFillterTextureDraw()
@@ -571,40 +722,48 @@ void CEditGround::OnEventMessage(_uint iArg)
 
 	if ((_uint)EVENT_TYPE::ON_EDITDRAW == iArg)
 	{
-		if (ImGui::CollapsingHeader("Edit Ground"), ImGuiTreeNodeFlags_DefaultOpen)
+		if (ImGui::BeginTabBar("Ground"))
 		{
-			SetUp_Info();
-			SetUp_EditMode();
-			SetUp_TextureComponent();
-			SetUp_ShaderComponent();
-			SetUp_Textures();
-		}
+			if (ImGui::BeginTabItem("Create VIBuffer"))
+			{
+				SetUp_Info();
 
-		if (ImGui::CollapsingHeader("Edit Picking"), ImGuiTreeNodeFlags_DefaultOpen)
-		{
-			SetUp_PinckingInfo();
-		}
+				ImGui::EndTabItem();
+			}
 
-		_char szName[64];
-		strcpy_s(szName, m_szMeshName.c_str());
+			if (ImGui::BeginTabItem("Edit"))
+			{
+				SetUp_EditMode();
+				SetUp_PinckingInfo();
+				SetUp_ShaderComponent();
 
-		if (ImGui::InputText("MeshName", szName, 64))
-		{
-			m_szMeshName = szName;
-		}
+				ImGui::EndTabItem();
+			}
 
-		if (ImGui::Button("Save"))
-		{
-			Bake_Mesh();
-		}
+			if (ImGui::BeginTabItem("Texture"))
+			{
+				SetUp_Textures();
 
-		ImGui::SameLine();
+				ImGui::EndTabItem();
+			}
 
-		if (ImGui::Button("Load"))
-		{
-			Load_Mesh();
+			if (ImGui::BeginTabItem("Load & Save"))
+			{
+				SetUp_File();
+
+				ImGui::EndTabItem();
+			}
+
+			ImGui::EndTabBar();
 		}
 	}
+
+	ImGui::Text("");
+	ImGui::Text("");
+	ImGui::Text("");
+
+	ImGui::Separator();
+	ImGui::Separator();
 }
 
 

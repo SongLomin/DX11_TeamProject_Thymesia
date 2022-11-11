@@ -54,13 +54,14 @@ public:
 
 private:
     HRESULT SetUp_ShaderResource();
+    void    Load_TextureList(const filesystem::path& In_Path);
 
     void    SetUp_EditMode();
     void    SetUp_Info();
-    void    SetUp_TextureComponent();
     void    SetUp_ShaderComponent();
     void    SetUp_PinckingInfo();
     void    SetUp_Textures();
+    void    SetUp_File();
 
     void    CreateBuffer();
     void    CreateFilterTexture();

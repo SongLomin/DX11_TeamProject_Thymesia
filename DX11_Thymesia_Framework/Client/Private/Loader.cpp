@@ -198,7 +198,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("Landing_OceanOfMemories"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_TheMemorySea.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	
-	// For. Ground Texture : (AN) 임시 텍스쳐이므로 나중에 삭제하기
+	// TODO : For. Ground Texture : (AN) 임시 텍스쳐이므로 나중에 삭제하기, CroundTexture로 필요한곳에 사용할 예정임
 	Load_AllParticleInPath_Recursive("../Bin/Resources/Textures/Ground/");
 
 
