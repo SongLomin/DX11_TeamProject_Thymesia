@@ -25,7 +25,32 @@ HRESULT CUI_Loading::Initialize(void* pArg)
 
 	m_pLoadingBG = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_LOADING);
 	m_pLoadingBG.lock()->Set_Texture("Loading_Tutorial");
+	m_pLoadingBG.lock()->Set_Depth(0.2f);
 
+	UI_DESC	tIconDesc;
+	tIconDesc.fX = 1500.f;
+	tIconDesc.fY = 790.f;
+	tIconDesc.fDepth = 0.1f;
+	tIconDesc.fSizeX = 102.f;
+	tIconDesc.fSizeY = 290.f;
+	
+
+
+	FaderDesc faderDesc;
+	faderDesc.eFaderType = FADER_INOUTLOOPING;
+	faderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+	faderDesc.fDelayTime = 0.f;
+	faderDesc.fFadeMaxTime = 1.f;
+	faderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 0.3f);
+
+	CHUD_Hover::HUDHOVERDESC hoverDesc;
+
+	hoverDesc.m_bSizeChange = false;
+
+
+	m_pIcon = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_LOADING, &tIconDesc);
+	m_pIcon.lock()->Init_Fader(faderDesc, hoverDesc, CHUD_Hover::HUD_HOVER_ANIMATION_END);
+	m_pLoadingBG.lock()->Set_Texture("Loading_Icon");
 	m_fRatio = 0;
 
 	return S_OK;

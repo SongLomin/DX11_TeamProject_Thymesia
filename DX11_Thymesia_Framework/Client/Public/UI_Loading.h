@@ -27,7 +27,7 @@ protected:
 
 private:
 	weak_ptr<CCustomUI>		m_pLoadingBG;
-	weak_ptr<CHUD_Hover>	m_LoadingIcon;
+	weak_ptr<CHUD_Hover>	m_pIcon;
 
 private:
 	_float					m_fRatio;

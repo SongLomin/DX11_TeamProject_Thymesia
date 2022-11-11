@@ -36,7 +36,6 @@ HRESULT CLevel_Logo::Initialize()
 
 	m_eNextLevel = LEVEL_LOBBY;
 
-	m_pFadeMask = GAMEINSTANCE->Add_GameObject<CFadeMask>(LEVEL_STATIC);
 
 	//GET_SINGLE(CGameManager)->Set_GameState(GAME_STATE::PEACE);
 
@@ -86,6 +85,8 @@ void CLevel_Logo::OnLevelExit()
 
 	m_eNextLevel = LEVEL_GAMEPLAY;
 
+
+	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 	m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
 	m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
 }
