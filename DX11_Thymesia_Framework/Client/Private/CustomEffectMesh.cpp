@@ -735,15 +735,11 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::DragFloat4("##Max Color", &m_tEffectMeshDesc.vMaxColor.x, 0.01f);
 			ImGui::Separator();
 
+			ImGui::Text("Start UV");
 			ImGui::DragFloat2("##Start UV", &m_tEffectMeshDesc.vStartUV.x, 0.01f);
 
-			ImGui::Text("Diffuse Start UV");
 			ImGui::InputInt("UV Diffuse Index", &m_tEffectMeshDesc.iUVDiffuseIndex, 1);
-
-			ImGui::Text("Mask Start UV");
 			ImGui::InputInt("UV Mask Index", &m_tEffectMeshDesc.iUVMaskIndex, 1);
-
-			ImGui::Text("Noise Start UV");
 			ImGui::InputInt("UV Noise Index", &m_tEffectMeshDesc.iUVNoiseIndex, 1);
 
 			ImGui::Text("Dynamic Noise Option");
@@ -844,12 +840,8 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 				ImGui::DragFloat("##HitFreq", &m_tEffectMeshDesc.fHitFreq);
 				ImGui::Separator();
 			}
-
-
 		}
 	}
-
-
 #endif // _DEBUG
 
 }

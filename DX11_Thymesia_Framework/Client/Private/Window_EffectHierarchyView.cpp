@@ -150,16 +150,24 @@ void CWindow_EffectHierarchyView::Call_AddEffectMesh(const _char* In_szModelKey)
     EFFECTMESH_DESC EffectMeshDesc;
 
     ZeroMemory(&EffectMeshDesc, sizeof(EffectMeshDesc));
+    EffectMeshDesc.bOnFocus = false;
+
+    EffectMeshDesc.fInitTime = 0.f;
+    EffectMeshDesc.fLifeTime = 9999.f;
+
+    EffectMeshDesc.iSyncAnimationKey = -1;
+
+    EffectMeshDesc.vStartPosition = { 0.f, 1.f, 0.f };
+
     EffectMeshDesc.vStartScale = { 1.f, 1.f, 1.f };
     EffectMeshDesc.vMaxScale = { 1.f, 1.f, 1.f };
-    EffectMeshDesc.fLifeTime = 100.f;
-    EffectMeshDesc.bSyncAnimation = true;
-    EffectMeshDesc.vStartPosition = { 0.f, 0.5f, 0.f };
-    EffectMeshDesc.vUVSpeed = { 0.f, 0.f };
-    EffectMeshDesc.iUVMaskIndex = 18;
-    EffectMeshDesc.vUVMax = { 100.f, 100.f };
+
     EffectMeshDesc.vStartColor = { 1.f, 1.f, 1.f, 1.f };
     EffectMeshDesc.vMaxColor = { 1.f, 1.f, 1.f, 1.f };
+
+    EffectMeshDesc.vWrapWeight = { 1.f, 1.f, 1.f, 1.f };
+
+    EffectMeshDesc.vUVMax = { 1.f, 1.f };
 
     Add_EffectMesh_Internal(EffectMeshDesc, In_szModelKey);
 

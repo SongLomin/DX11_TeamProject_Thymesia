@@ -277,7 +277,7 @@ PS_OUT_DISTORTION PS_DISTORTION(PS_IN In)
 {
     PS_OUT_DISTORTION Out = (PS_OUT_DISTORTION)0;
     
-    Out.vColor = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+    Out.vColor = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUV);
 
     return Out;
 }
@@ -333,7 +333,7 @@ technique11 DefaultTechnique
         SetDepthStencilState(DSS_Default, 0);
         SetRasterizerState(RS_NonCulling);
 		
-        VertexShader = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN_SOFT();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_DIFF_MASK_NOISE();
     }
