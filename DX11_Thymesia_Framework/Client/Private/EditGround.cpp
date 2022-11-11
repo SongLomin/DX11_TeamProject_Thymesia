@@ -9,8 +9,12 @@
 #include "Transform.h"
 #include "VIBuffer_Ground.h"
 
+#include <Direct.h>
 GAMECLASS_C(CEditGround)
 CLONE_C(CEditGround, CGameObject)
+
+#define D3DCOLOR_ABGR(a,r,g,b) \
+    ((D3DCOLOR)((((a)&0xff)<<24)|(((r)&0xff)<<16)|(((g)&0xff)<<8)|((b)&0xff)))
 
 HRESULT CEditGround::Initialize_Prototype()
 {
@@ -25,16 +29,17 @@ HRESULT CEditGround::Initialize(void* pArg)
 	m_pShaderCom.lock()->Set_ShaderInfo
 	(
 		TEXT("Shader_VtxGround"),
-		VTXNORTEX_DECLARATION::Element,
-		VTXNORTEX_DECLARATION::iNumElements
+		VTXGROUND_DECLARATION::Element,
+		VTXGROUND_DECLARATION::iNumElements
 	);
 
 	m_pRendererCom		 = Add_Component<CRenderer>();
-	m_pDiff_TextureCom	 = Add_Component<CTexture>();
-	m_pNorm_TextureCom	 = Add_Component<CTexture>();
 
-	m_pDiff_TextureCom.lock()->Use_Texture("T_Floor_01a_C.png");
-	m_pNorm_TextureCom.lock()->Use_Texture("T_Floor_01a_N.png");
+	m_pTextureCom.emplace("g_SourDiffTexture", Add_Component<CTexture>());
+	m_pTextureCom.emplace("g_NormalTexture"  , Add_Component<CTexture>());
+
+	m_pTextureCom.find("g_SourDiffTexture")->second.lock()->Use_Texture("T_Floor_01a_C.png");
+	m_pTextureCom.find("g_NormalTexture")->second.lock()->Use_Texture("T_Floor_01a_N.png");
 
 	Load_AllMeshInfo();
 
@@ -56,6 +61,12 @@ void CEditGround::Tick(_float fTimeDelta)
 		if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
 			PickingGround();
 	}
+
+	if (m_pFilterTexture.Get() && EDIT_MODE::FILLTER == m_eEditMode)
+	{
+		if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
+			PickingFillterTextureDraw();
+	}
 }
 
 void CEditGround::LateTick(_float fTimeDelta)
@@ -63,6 +74,7 @@ void CEditGround::LateTick(_float fTimeDelta)
 	if (!m_bCreate)
 		return;
 
+	//RENDER_NONALPHABLEND
 	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Cast<CGameObject>(m_this));
 }
 
@@ -90,15 +102,15 @@ HRESULT CEditGround::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ)), sizeof(_float4x4))))
 		return E_FAIL;
 
-	if (m_pDiff_TextureCom.lock())
+	for (auto& iter : m_pTextureCom)
 	{
-		if (FAILED(m_pDiff_TextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_SourDiffTexture", 0)))
+		if(FAILED(iter.second.lock()->Set_ShaderResourceView(m_pShaderCom, iter.first.c_str(), 0)))
 			return E_FAIL;
 	}
 
-	if (m_pNorm_TextureCom.lock())
+	if (m_pFilterTexture.Get())
 	{
-		if (FAILED(m_pNorm_TextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NormalTexture", 0)))
+		if (FAILED(m_pShaderCom.lock()->Set_ShaderResourceView("g_FilterTexture", m_pFilterTexture)))
 			return E_FAIL;
 	}
 
@@ -183,7 +195,17 @@ void CEditGround::SetUp_ShaderComponent()
 
 void CEditGround::SetUp_PinckingInfo()
 {
-	ImGui::Text("Shader DrawRadious,");
+	if (KEY_INPUT(KEY::RIGHT, KEY_STATE::TAP))
+		m_fBufferDrawRadious += 0.1f;
+	if (KEY_INPUT(KEY::LEFT, KEY_STATE::TAP))
+		m_fBufferDrawRadious -= 0.1f;
+
+	if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
+		m_fBufferPower += 0.1f;
+	if (KEY_INPUT(KEY::DOWN, KEY_STATE::TAP))
+		m_fBufferPower -= 0.1f;
+
+	ImGui::Text("Draw Radious,");
 	ImGui::DragFloat("##Radious", &m_fBufferDrawRadious, 1.f);
 	ImGui::Separator();
 
@@ -196,6 +218,58 @@ void CEditGround::SetUp_FillterInfo()
 {
 }
 
+void CEditGround::PickingFillterTextureDraw()
+{
+	RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+
+	_float2		Out;
+
+	if (!m_pVIBufferCom.lock()->Compute_MouseRatio(
+		MouseRayInWorldSpace,
+		m_pTransformCom.lock()->Get_WorldMatrix(),
+		&Out))
+	{
+		return;
+	}
+	
+	D3D11_MAPPED_SUBRESOURCE		SubResource;
+	DEVICECONTEXT->Map(m_pTexture2D.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResource);
+
+	_int2	iPickIndex = { _int(Out.x * 128), _int(Out.y * 128) };
+	_int	iRoundIndx = m_fBufferDrawRadious / m_vBufferInfo.z;
+
+	_int2	iBeginIndex, iEndIndex;
+	iBeginIndex.x = (0 > iPickIndex.x - iRoundIndx) ? (0) : (iPickIndex.x - iRoundIndx);
+	iBeginIndex.y = (0 > iPickIndex.y - iRoundIndx) ? (0) : (iPickIndex.y - iRoundIndx);
+
+	iEndIndex.x = (_int(m_vBufferInfo.x) < iPickIndex.x + iRoundIndx) ? (_int(m_vBufferInfo.x)) : (iPickIndex.x + iRoundIndx);
+	iEndIndex.y = (_int(m_vBufferInfo.y) < iPickIndex.y + iRoundIndx) ? (_int(m_vBufferInfo.y)) : (iPickIndex.y + iRoundIndx);
+
+	cout << "( " << iBeginIndex.x << " , " << iBeginIndex.y << " ) / ( " << iEndIndex.x << " , " << iEndIndex.y << " )" << endl;
+
+	for (_uint iZ = iBeginIndex.y; iZ < iEndIndex.y; ++iZ)
+	{
+		for (_uint iX = iBeginIndex.x; iX < iEndIndex.x; ++iX)
+		{
+			_ulong	iIndex = iZ * 128 + iX;
+
+			m_vColors[iIndex] = D3DCOLOR_ABGR(255, 255, 0, 255);
+		}
+	}
+
+	for (_uint iZ = 0; iZ < 128; ++iZ)
+	{
+		for (_uint iX = 0; iX < 128; ++iX)
+		{
+			_ulong	iIndex = iZ * 128 + iX;
+
+			((_uint*)SubResource.pData)[iIndex] = m_vColors[iIndex];
+		}
+	}
+
+	DEVICECONTEXT->Unmap(m_pTexture2D.Get(), 0);
+}
+
 void CEditGround::CreateBuffer()
 {
 	Remove_Components<CVIBuffer_Ground>();
@@ -203,11 +277,18 @@ void CEditGround::CreateBuffer()
 	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
 	m_pVIBufferCom.lock()->Init_Mesh(m_vBufferInfo);
 
-	/*D3D11_TEXTURE2D_DESC	TextureDesc;
+	CreateFilterTexture();
+
+	m_bCreate = true;
+}
+
+void CEditGround::CreateFilterTexture()
+{
+	D3D11_TEXTURE2D_DESC	TextureDesc;
 	ZeroMemory(&TextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
 
-	TextureDesc.Width				= m_vBufferInfo.x * m_vBufferInfo.z;
-	TextureDesc.Height				= m_vBufferInfo.y * m_vBufferInfo.z;
+	TextureDesc.Width				= 128;
+	TextureDesc.Height				= 128;
 	TextureDesc.MipLevels			= 1;
 	TextureDesc.ArraySize			= 1;
 	TextureDesc.Format				= DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -218,13 +299,29 @@ void CEditGround::CreateBuffer()
 	TextureDesc.Usage				= D3D11_USAGE_DYNAMIC;
 	TextureDesc.BindFlags			= D3D11_BIND_SHADER_RESOURCE;
 	TextureDesc.CPUAccessFlags		= D3D11_CPU_ACCESS_WRITE;
-	TextureDesc.MiscFlags			= 0;*/
+	TextureDesc.MiscFlags			= 0;
 
-	/*if (FAILED(DEVICE->CreateTexture2D(&TextureDesc, nullptr, &m_pTexture2D.Get())))
-		return;*/
+	if (FAILED(DEVICE->CreateTexture2D(&TextureDesc, nullptr, m_pTexture2D.GetAddressOf())))
+		return;
 
+	D3D11_MAPPED_SUBRESOURCE		SubResource;
+	DEVICECONTEXT->Map(m_pTexture2D.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResource);
 
-	m_bCreate = true;
+	for (_uint i = 0; i < TextureDesc.Height; ++i)
+	{
+		for (_uint s = 0; s < TextureDesc.Width; ++s)
+		{
+			_uint iIndex = i * TextureDesc.Width + s;
+
+			((_uint*)SubResource.pData)[iIndex] = D3DCOLOR_ABGR(0, 0, 0, 0);
+			m_vColors.push_back(D3DCOLOR_ABGR(0, 0, 0, 0));
+		}
+	}
+
+	DEVICECONTEXT->Unmap(m_pTexture2D.Get(), 0);
+
+	if (FAILED(DEVICE->CreateShaderResourceView(m_pTexture2D.Get(), nullptr, m_pFilterTexture.GetAddressOf())))
+		return;
 }
 
 void CEditGround::PickingGround()
@@ -253,6 +350,9 @@ void CEditGround::PickingGround()
 
 void CEditGround::Bake_Mesh()
 {
+	if ("" == m_szMeshName)
+		return;
+
 	MODEL_DATA tModelData;
 
 	tModelData.eModelType		= MODEL_TYPE::GROUND;
@@ -271,20 +371,20 @@ void CEditGround::Bake_Mesh()
 
 	shared_ptr<MESH_DATA> pMeshData = make_shared<MESH_DATA>();
 	pMeshData->eModelType		= MODEL_TYPE::GROUND;
-	pMeshData->iMaterialIndex	= 0;
-	pMeshData->iNumBones		= 0;
+	pMeshData->iMaterialIndex	= _uint(m_vBufferInfo.x);
+	pMeshData->iNumBones		= _uint(m_vBufferInfo.y);
 	pMeshData->iNumFaces		= _uint(m_vBufferInfo.x - 1) * _uint(m_vBufferInfo.y - 1) * 2;
 	pMeshData->iNumVertices		= m_vBufferInfo.x * m_vBufferInfo.y;
 
-	pMeshData->pGroundVertices = shared_ptr<VTXNORTEX[]>(new VTXNORTEX[pMeshData->iNumVertices]);
+	pMeshData->pGroundVertices = shared_ptr<VTXGROUND[]>(new VTXGROUND[pMeshData->iNumVertices]);
 
 	_float3 vNorm = _float3(0.f, 1.f, 0.f);
 	for (_uint i = 0; i < pMeshData->iNumVertices; ++i)
 	{
-		VTXNORTEX vOut;
+		VTXGROUND vOut;
 
 		if (m_pVIBufferCom.lock()->Get_Vertex(i, &vOut))
-			memcpy(&pMeshData->pGroundVertices[i], &vOut, sizeof(VTXNORTEX));
+			memcpy(&pMeshData->pGroundVertices[i], &vOut, sizeof(VTXGROUND));
 		else
 			DEBUG_ASSERT;
 	}
@@ -312,12 +412,23 @@ void CEditGround::Load_Mesh()
 	//Edit Load
 	m_pModelData = GAMEINSTANCE->Get_ModelFromKey(m_szMeshName.c_str());
 
+	if (m_pModelData.get()->Mesh_Datas[0])
+		return;
+
 	Remove_Components<CVIBuffer_Ground>();
 
 	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
 	m_pVIBufferCom.lock()->Init_Mesh(m_pModelData.get()->Mesh_Datas[0]);
 
 	m_bCreate = true;
+}
+
+void CEditGround::Bake_FilterTexture()
+{
+	/*if (FAILED(SaveDDSTextureToFile(DEVICECONTEXT, (ID3D11Resource*)m_pTexture2D.GetAddressOf(), TEXT("../Bin/Test.dds"))))
+		return;*/
+	//const GUID i;
+	//SaveWICTextureToFile(nullptr, nullptr, i, nullptr);
 }
 
 void CEditGround::Load_AllMeshInfo()

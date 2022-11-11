@@ -25,17 +25,7 @@ void CVIBuffer_Ground::Start()
 {
 }
 
-_bool CVIBuffer_Ground::Get_VertexPos(_uint _iIndex, _float3* _pOut)
-{
-	if (m_VertexInfo.size() <= _iIndex)
-		return false;
-
-	*_pOut = m_VertexInfo[_iIndex].vPosition;
-
-	return true;
-}
-
-_bool CVIBuffer_Ground::Get_Vertex(_uint _iIndex, VTXNORTEX* _pOut)
+_bool CVIBuffer_Ground::Get_Vertex(_uint _iIndex, VTXGROUND* _pOut)
 {
 	if (m_VertexInfo.size() <= _iIndex)
 		return false;
@@ -61,27 +51,104 @@ void CVIBuffer_Ground::Update(_vector _vMousePos, _float _fRadious, _float _fPow
 
 	DEVICECONTEXT->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
 
-	for (_uint i = 0; i < m_iNumVertices; ++i)
+	_int2	iPickIndex = { _int(_vMousePos.m128_f32[0] / m_fInterval), _int(_vMousePos.m128_f32[2] / m_fInterval) };
+	_int	iRoundIndx  = _fRadious / m_fInterval;
+
+	_int2	iBeginIndex, iEndIndex;
+	iBeginIndex.x = (0 > iPickIndex.x - iRoundIndx) ? (0) : (iPickIndex.x - iRoundIndx);
+	iBeginIndex.y = (0 > iPickIndex.y - iRoundIndx) ? (0) : (iPickIndex.y - iRoundIndx);
+	 														
+	iEndIndex.x   = (m_iNumVerticesX < iPickIndex.x + iRoundIndx) ? (m_iNumVerticesX) : (iPickIndex.x + iRoundIndx);
+	iEndIndex.y   = (m_iNumVerticesZ < iPickIndex.y + iRoundIndx) ? (m_iNumVerticesZ) : (iPickIndex.y + iRoundIndx);
+
+	for (_uint iZ = iBeginIndex.y; iZ < iEndIndex.y; ++iZ)
 	{
-		_float3 vPos    = ((VTXNORTEX*)SubResource.pData)[i].vPosition;
-		_float  fLength = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vPos) - _vMousePos));
-
-		if (_fRadious >= fLength)
+		for (_uint iX = iBeginIndex.x; iX < iEndIndex.x; ++iX)
 		{
-			if (0 == _iMode)
+			_ulong	iIndex = iZ * m_iNumVerticesX + iX;
+
+			_float3 vPos    = ((VTXGROUND*)SubResource.pData)[iIndex].vPosition;
+			_float  fLength = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vPos) - _vMousePos));
+
+			if (_fRadious >= fLength)
 			{
-				((VTXNORTEX*)SubResource.pData)[i].vPosition.y += _fPower;
-				m_VertexInfo[i].vPosition = ((VTXNORTEX*)SubResource.pData)[i].vPosition;
+				if (0 == _iMode)
+				{
+					((VTXGROUND*)SubResource.pData)[iIndex].vPosition.y += _fPower;
+					m_VertexInfo[iIndex].vPosition = ((VTXGROUND*)SubResource.pData)[iIndex].vPosition;
+				}
+
+				else if (1 == _iMode)
+				{
+					_float fLerpPower = _fPower * (1.f - pow((fLength / _fRadious), 2.f));
+
+					((VTXGROUND*)SubResource.pData)[iIndex].vPosition.y += fLerpPower;
+					m_VertexInfo[iIndex].vPosition = ((VTXGROUND*)SubResource.pData)[iIndex].vPosition;
+				}
+			}
+		}
+	}
+
+	for (_uint iZ = iBeginIndex.y; iZ < iEndIndex.y; ++iZ)
+	{
+		for (_uint iX = iBeginIndex.x; iX < iEndIndex.x; ++iX)
+		{
+			_ulong	iIndex = iZ * m_iNumVerticesX + iX;
+
+			_long  iAdjacency[] =
+			{
+				iIndex + m_iNumVerticesX,	// 위
+				iIndex + 1,					// 오른쪽
+				iIndex - m_iNumVerticesX,	// 아래
+				iIndex - 1					// 왼쪽
+			};
+			
+			if (0 == iX)
+				iAdjacency[3] = -1;
+
+			if (m_iNumVerticesX - 1 == iX)
+				iAdjacency[1] = -1;
+
+			if (0 == iZ)
+				iAdjacency[2] = -1;
+
+			if (m_iNumVerticesZ - 1 == iZ)
+				iAdjacency[0] = -1;
+
+			_float3 vNorm = m_VertexInfo[iIndex].vNormal;
+
+			// 노말 벡터 계산
+			_vector vComputeNorm = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+
+			for (_uint i = 0; i < 4; ++i)
+			{
+				_uint iNext = (3 == i) ? (0) : (i + 1);
+
+				if (0 > iAdjacency[i] || 0 > iAdjacency[iNext])
+					continue;
+
+				_vector vLine_no1 = XMLoadFloat3(&m_VertexInfo[iAdjacency[i]].vPosition) - XMLoadFloat3(&m_VertexInfo[iIndex].vPosition);
+				_vector vLine_no2 = XMLoadFloat3(&m_VertexInfo[iAdjacency[iNext]].vPosition) - XMLoadFloat3(&m_VertexInfo[iIndex].vPosition);
+				_vector vLingNorm = XMVector3Normalize(XMVector3Cross(vLine_no1, vLine_no2));
+
+				vComputeNorm = XMVector3Normalize(vComputeNorm + vLingNorm);
 			}
 
-			else if (1 == _iMode)
-			{
-				_float fLerpPower = _fPower * (1.f - pow((fLength / _fRadious), 2.f));
+			XMStoreFloat3(&vNorm, vComputeNorm);
 
-				((VTXNORTEX*)SubResource.pData)[i].vPosition.y += fLerpPower;
-				m_VertexInfo[i].vPosition = ((VTXNORTEX*)SubResource.pData)[i].vPosition;
-			}
-		}		
+			m_VertexInfo[iIndex].vNormal = vNorm;
+			((VTXGROUND*)SubResource.pData)[iIndex].vNormal = vNorm;
+
+			if (0 > iAdjacency[1])
+				continue;
+
+			// 탄젠트 벡터 계산
+			_float3 vTempTangent;
+			XMStoreFloat3(&vTempTangent, XMVector3Normalize(XMLoadFloat3(&m_VertexInfo[iAdjacency[1]].vPosition) - XMLoadFloat3(&m_VertexInfo[iIndex].vPosition)));
+			
+			m_VertexInfo[iIndex].vTangent = vTempTangent;
+			((VTXGROUND*)SubResource.pData)[iIndex].vTangent = vTempTangent;
+		}
 	}
 
 	DEVICECONTEXT->Unmap(m_pVB.Get(), 0);
@@ -119,14 +186,49 @@ _bool CVIBuffer_Ground::Compute_MousePos(RAY _Ray, _matrix _WorldMatrix, _float3
 	return false;
 }
 
+_bool CVIBuffer_Ground::Compute_MouseRatio(RAY _Ray, _matrix _WorldMatrix, _float2* pOut)
+{
+	_matrix		WorldMatrix = XMMatrixInverse(nullptr, _WorldMatrix);
+
+	_vector			vRayPos, vRayDir;
+
+	vRayPos = XMVector3TransformCoord(XMLoadFloat4(&_Ray.vOrigin), WorldMatrix);
+	vRayDir = XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&_Ray.vDirection), WorldMatrix));
+
+	_float		fDist;
+	_float2		vMaxRange	= { m_iNumVerticesX * m_fInterval, m_iNumVerticesZ * m_fInterval };
+
+	for (_uint i = 0; i < m_iNumPrimitive; ++i)
+	{
+		_uint3		iIndices = m_Indices[i];
+		_vector		vPickedPos;
+
+		_vector	vVec0 = XMLoadFloat3(&m_VertexInfo[iIndices.ix].vPosition);
+		_vector	vVec1 = XMLoadFloat3(&m_VertexInfo[iIndices.iy].vPosition);
+		_vector	vVec2 = XMLoadFloat3(&m_VertexInfo[iIndices.iz].vPosition);
+
+		if (true == DirectX::TriangleTests::Intersects(vRayPos, vRayDir, vVec0, vVec1, vVec2, fDist))
+		{
+			vPickedPos = vRayPos + XMVector3Normalize(vRayDir) * fDist;
+
+			pOut->x = vPickedPos.m128_f32[0] / vMaxRange.x;
+			pOut->y = vPickedPos.m128_f32[2] / vMaxRange.y;
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
 HRESULT CVIBuffer_Ground::Init_Mesh(shared_ptr<MESH_DATA> tMeshData)
 {
-	m_iStride			= sizeof(VTXNORTEX);
+	m_iStride			= sizeof(VTXGROUND);
 	m_iNumVertices		= tMeshData.get()->iNumVertices;
 	m_iNumVertexBuffers = 1;
 
-	VTXNORTEX* pVertices = new VTXNORTEX[m_iNumVertices];
-	ZeroMemory(pVertices, sizeof(VTXNORTEX) * m_iNumVertices);
+	VTXGROUND* pVertices = new VTXGROUND[m_iNumVertices];
+	ZeroMemory(pVertices, sizeof(VTXGROUND) * m_iNumVertices);
 
 	for (_uint i = 0; i < m_iNumVertices; ++i)
 	{
@@ -135,7 +237,7 @@ HRESULT CVIBuffer_Ground::Init_Mesh(shared_ptr<MESH_DATA> tMeshData)
 		m_VertexInfo.push_back(pVertices[i]);
 	}
 
-	m_iIndicesStride = sizeof(FACEINDICES32);
+	m_iIndicesStride	= sizeof(FACEINDICES32);
 	m_iNumPrimitive		= tMeshData.get()->iNumFaces;
 	m_iNumIndices		= m_iNumPrimitive * 3;
 	m_eIndexFormat		= DXGI_FORMAT_R32_UINT;
@@ -150,6 +252,71 @@ HRESULT CVIBuffer_Ground::Init_Mesh(shared_ptr<MESH_DATA> tMeshData)
 
 		m_Indices.push_back(_uint3(pIndices[i]._1, pIndices[i]._2, pIndices[i]._3));
 	}
+
+	m_iNumVerticesX = tMeshData.get()->iMaterialIndex;
+	m_iNumVerticesZ = tMeshData.get()->iNumBones;
+
+	/*m_fInterval	= pVertices[1].vPosition.x;;*/
+	_ulong		dwNumFaces = 0;
+
+	for (_uint iCol = 0; iCol < m_iNumVerticesZ - 1; ++iCol)
+	{
+		for (_uint iRow = 0; iRow < m_iNumVerticesX - 1; ++iRow)
+		{
+			_ulong	iIndex = iCol * m_iNumVerticesX + iRow;
+
+			_ulong  iIndices[] =
+			{
+				iIndex + m_iNumVerticesX,
+				iIndex + m_iNumVerticesX + 1,
+				iIndex + 1,
+				iIndex
+			};
+
+			_vector		vSour, vDest, vNormal;
+			_vector		vVertexPos[3];
+			_vector		vVertexNor[3];
+
+			vVertexPos[0] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._1].vPosition);
+			vVertexPos[1] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._2].vPosition);
+			vVertexPos[2] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._3].vPosition);
+
+			vVertexNor[0] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._1].vNormal);
+			vVertexNor[1] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._2].vNormal);
+			vVertexNor[2] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._3].vNormal);
+
+			vSour = vVertexPos[1] - vVertexPos[0];
+			vDest = vVertexPos[2] - vVertexPos[1];
+			vNormal = XMVector3Normalize(XMVector3Cross(vSour, vDest));
+
+			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._1].vNormal, vVertexNor[0] + vNormal);
+			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._2].vNormal, vVertexNor[1] + vNormal);
+			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._3].vNormal, vVertexNor[2] + vNormal);
+			dwNumFaces++;
+
+			pIndices[dwNumFaces] = { iIndices[0], iIndices[2], iIndices[3] };
+
+			vVertexPos[0] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._1].vPosition);
+			vVertexPos[1] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._2].vPosition);
+			vVertexPos[2] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._3].vPosition);
+
+			vVertexNor[0] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._1].vNormal);
+			vVertexNor[1] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._2].vNormal);
+			vVertexNor[2] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._3].vNormal);
+
+			vSour = vVertexPos[1] - vVertexPos[0];
+			vDest = vVertexPos[2] - vVertexPos[1];
+			vNormal = XMVector3Normalize(XMVector3Cross(vSour, vDest));
+
+			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._1].vNormal, vVertexNor[0] + vNormal);
+			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._2].vNormal, vVertexNor[1] + vNormal);
+			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._3].vNormal, vVertexNor[2] + vNormal);
+
+			dwNumFaces++;
+		}
+	}
+
+
 
 	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
 	m_BufferDesc.ByteWidth				= m_iStride * m_iNumVertices;
@@ -191,30 +358,28 @@ HRESULT CVIBuffer_Ground::Init_Mesh(shared_ptr<MESH_DATA> tMeshData)
 
 HRESULT CVIBuffer_Ground::Init_Mesh(_float4 _vInfo)
 {
-	_float vInterval		= _vInfo.z;
-	_float _iNumVerticesX	= (_uint)_vInfo.x;
-	_float _iNumVerticesZ	= (_uint)_vInfo.y;
-
-	m_iNumVerticesX = _iNumVerticesX;
-	m_iNumVerticesZ = _iNumVerticesZ;
+	m_fInterval			= _vInfo.z;
+	m_iNumVerticesX		= (_uint)_vInfo.x;
+	m_iNumVerticesZ		= (_uint)_vInfo.y;
 
 	/* 버텍스 버퍼 생성 */
-	m_iStride			= sizeof(VTXNORTEX);
-	m_iNumVertices		= _iNumVerticesX * _iNumVerticesZ;
+	m_iStride			= sizeof(VTXGROUND);
+	m_iNumVertices		= m_iNumVerticesX * m_iNumVerticesZ;
 	m_iNumVertexBuffers = 1;
 
-	VTXNORTEX* pVertices = new VTXNORTEX[m_iNumVertices];
-	ZeroMemory(pVertices, sizeof(VTXNORTEX) * m_iNumVertices);
+	VTXGROUND* pVertices = new VTXGROUND[m_iNumVertices];
+	ZeroMemory(pVertices, sizeof(VTXGROUND) * m_iNumVertices);
 
-	for (_uint iCol = 0; iCol < _iNumVerticesZ; ++iCol)
+	for (_uint iCol = 0; iCol < m_iNumVerticesZ; ++iCol)
 	{
-		for (_uint iRow = 0; iRow < _iNumVerticesX; ++iRow)
+		for (_uint iRow = 0; iRow < m_iNumVerticesX; ++iRow)
 		{
-			_ulong	iIndex = iCol * _iNumVerticesX + iRow;
+			_ulong	iIndex = iCol * m_iNumVerticesX + iRow;
 
-			pVertices[iIndex].vPosition = _float3(_float(iRow * vInterval), 0.f, _float(iCol * vInterval));
-			pVertices[iIndex].vTexUV    = _float2(iRow / (_iNumVerticesX - 1.f), iCol / (_iNumVerticesZ - 1.f));
+			pVertices[iIndex].vPosition = _float3(_float(iRow * m_fInterval), 0.f, _float(iCol * m_fInterval));
+			pVertices[iIndex].vTexUV    = _float2(iRow / (m_iNumVerticesX - 1.f), iCol / (m_iNumVerticesZ - 1.f));
 			pVertices[iIndex].vNormal	= _float3(0.f, 1.f, 0.f);
+			pVertices[iIndex].vTangent  = _float3(1.f, 0.f, 0.f);
 
 			m_VertexInfo.push_back(pVertices[iIndex]);
 		}
@@ -223,7 +388,7 @@ HRESULT CVIBuffer_Ground::Init_Mesh(_float4 _vInfo)
 
 	/* 인덱스 버퍼 생성 */
 	m_iIndicesStride	= sizeof(FACEINDICES32);
-	m_iNumPrimitive		= (_iNumVerticesX - 1) * (_iNumVerticesZ - 1) * 2;
+	m_iNumPrimitive		= (m_iNumVerticesX - 1) * (m_iNumVerticesZ - 1) * 2;
 	m_iNumIndices		= m_iNumPrimitive * 3;
 	m_eIndexFormat		= DXGI_FORMAT_R32_UINT;
 	m_eToplogy			= D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
@@ -232,16 +397,16 @@ HRESULT CVIBuffer_Ground::Init_Mesh(_float4 _vInfo)
 	ZeroMemory(pIndices, sizeof(FACEINDICES32) * m_iNumPrimitive);
 
 	_ulong		dwNumFaces = 0;
-	for (_uint iCol = 0; iCol < _iNumVerticesZ - 1; ++iCol)
+	for (_uint iCol = 0; iCol < m_iNumVerticesZ - 1; ++iCol)
 	{
-		for (_uint iRow = 0; iRow < _iNumVerticesX - 1; ++iRow)
+		for (_uint iRow = 0; iRow < m_iNumVerticesX - 1; ++iRow)
 		{
-			_ulong	iIndex = iCol * _iNumVerticesX + iRow;
+			_ulong	iIndex = iCol * m_iNumVerticesX + iRow;
 
 			_ulong  iIndices[] =
 			{
-				iIndex + _iNumVerticesX,
-				iIndex + _iNumVerticesX + 1,
+				iIndex + m_iNumVerticesX,
+				iIndex + m_iNumVerticesX + 1,
 				iIndex + 1,
 				iIndex
 			};

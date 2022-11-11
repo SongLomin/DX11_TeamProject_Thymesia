@@ -1,0 +1,7 @@
+﻿  unity_2BYNXJI0L5NPNHAD.cpp
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Private\Loader.cpp(288,12): warning C4101: 'TransformMatrix' :참조되지 않은 지역 변수입니다.
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Private\Loader.cpp(359,12): warning C4101: 'TransformMatrix' :참조되지 않은 지역 변수입니다.
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Private\Loader.cpp(429,12): warning C4101: 'TransformMatrix' :참조되지 않은 지역 변수입니다.
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Private\MainApp.cpp(63,40): warning C4838: 'unsigned long'에서 'LONG'(으)로의 변환에는 축소 변환이 필요합니다.
+C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Private\MainApp.cpp(63,69): warning C4838: 'unsigned long'에서 'LONG'(으)로의 변환에는 축소 변환이 필요합니다.
+  Client.vcxproj -> C:\Users\An\Desktop\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Bin\Client.exe

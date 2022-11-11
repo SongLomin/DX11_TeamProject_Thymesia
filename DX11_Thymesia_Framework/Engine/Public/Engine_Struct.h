@@ -133,6 +133,21 @@ namespace Engine
 		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
 	} VTXNORTEX_DECLARATION;
 
+	typedef struct tagVertex_Ground_Texture
+	{
+		XMFLOAT3		vPosition;
+		XMFLOAT3		vNormal;
+		XMFLOAT2		vTexUV;
+		XMFLOAT3		vTangent;
+	}VTXGROUND;
+
+	typedef struct ENGINE_DLL tagVertex_Ground_Texture_Declaration
+	{
+		static const unsigned int				iNumElements = 4;
+		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
+	} VTXGROUND_DECLARATION;
+
+
 	typedef struct tagVertex_Cube_Texture
 	{
 		XMFLOAT3		vPosition;

@@ -7,9 +7,9 @@ float   g_fDensity;
 
 texture2D	g_SourDiffTexture;
 texture2D	g_DestDiffTexture;
-texture2D	g_FilterTexture;
-texture2D	g_BrushTexture;
 texture2D	g_NormalTexture;
+
+texture2D	g_FilterTexture;
 
 /* ---------------------------------------------------------- */
 
@@ -18,6 +18,7 @@ struct VS_IN
 	float3		vPosition	: POSITION;
 	float3		vNormal		: NORMAL;
 	float2		vTexUV		: TEXCOORD0;
+	float3		vTangent	: TANGENT;
 };
 
 struct VS_OUT
@@ -27,6 +28,8 @@ struct VS_OUT
 	float2		vTexUV		: TEXCOORD0;
 	float4		vWorldPos	: TEXCOORD1;
 	float4		vProjPos	: TEXCOORD2;
+	float3		vTangent	: TANGENT;
+	float3		vBinormal	: BINORMAL;
 };
 
 /* ---------------------------------------------------------- */
@@ -45,6 +48,8 @@ VS_OUT		VS_MAIN_DEFAULT(VS_IN In)
 	Out.vNormal		= normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
 	Out.vWorldPos	= mul(vector(In.vPosition, 1.f), g_WorldMatrix);
 	Out.vProjPos	= Out.vPosition;
+	Out.vTangent	= normalize(mul(vector(In.vTangent, 0.f), g_WorldMatrix)).xyz;
+	Out.vBinormal	= normalize(cross(float3(Out.vNormal.xyz), Out.vTangent));
 
 	return Out;
 }
@@ -58,6 +63,8 @@ struct PS_IN
 	float2		vTexUV		: TEXCOORD0;
 	float4		vWorldPos	: TEXCOORD1;
 	float4		vProjPos	: TEXCOORD2;
+	float3		vTangent	: TANGENT;
+	float3		vBinormal	: BINORMAL;
 };
 
 struct PS_OUT
@@ -74,9 +81,14 @@ PS_OUT		PS_MAIN_DEFAULT(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 
-	vector		vSourDiffuse = g_SourDiffTexture.Sample(DefaultSampler, In.vTexUV * 30.f);
+	vector		vSourDiffuse	= g_SourDiffTexture.Sample(DefaultSampler, In.vTexUV * g_fDensity);
+	vector		vFilterDiffuse	= g_FilterTexture.Sample(DefaultSampler, In.vTexUV);
 
     Out.vDiffuse	= vSourDiffuse;
+
+	if (0.1f < vFilterDiffuse.b)
+		Out.vDiffuse = vector(1.f, 1.f, 0.f, 1.f);
+
 	Out.vDiffuse.a	= 1.f;
 	Out.vNormal		= In.vNormal;
 	Out.vDepth		= vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
@@ -89,11 +101,12 @@ PS_OUT		PS_MAIN_NORM(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 
-	vector		vSourDiffuse = g_SourDiffTexture.Sample(DefaultSampler, In.vTexUV * 30.f);
+	vector		vSourDiffuse = g_SourDiffTexture.Sample(DefaultSampler, In.vTexUV * g_fDensity);
+	float3		vPixelNorm	 = g_NormalTexture.Sample(DefaultSampler, In.vTexUV * g_fDensity).xyz;
 
-	float3		vPixelNorm	= g_NormalTexture.Sample(DefaultSampler, In.vTexUV * 30.f).xyz;
+	float3x3	WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));
 	vPixelNorm = vPixelNorm * 2.f - 1.f;
-	vPixelNorm = mul(vPixelNorm, In.vWorldPos);
+	vPixelNorm = mul(vPixelNorm, WorldMatrix);
 
     Out.vDiffuse	= vSourDiffuse;
 	Out.vDiffuse.a	= 1.f;
