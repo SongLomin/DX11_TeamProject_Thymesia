@@ -159,6 +159,9 @@ void CCamera_Target::End_Cinematic()
 	_matrix TotalMatrix = LocalMat * ParentMatrix * m_pCameraBoneParentTransform.lock()->Get_WorldMatrix();
 
 	m_pTransformCom.lock()->Set_WorldMatrix(TotalMatrix);
+	_vector vCurPlayerPos = m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+	XMStoreFloat4(&m_vPrePlayerPos, vCurPlayerPos);
+	XMStoreFloat4(&m_vPlayerFollowLerpPosition, vCurPlayerPos);
 
 	m_pCameraBoneNode = weak_ptr<CBoneNode>();
 	m_pCameraBoneParentTransform = weak_ptr<CTransform>();
@@ -269,7 +272,7 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 	}
 
 	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
-	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * -4.f + XMVectorSet(0.f, 1.5f, 0.f, 0.f);
+	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * -4.5f + XMVectorSet(0.f, 1.1f, 0.f, 0.f);
 	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
 }
 
