@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "PreViewAnimationModel.h"
 #include "Model.h"
+#include "PreView_Prop.h"
 
 IMPLEMENT_SINGLETON(CWindow_AnimationModelView)
 
@@ -78,48 +79,79 @@ HRESULT CWindow_AnimationModelView::Render()
                 Update_PreViewModel();
             }
 
-
-
-            if (m_pPreViewModel.lock())
+            if (ImGui::CollapsingHeader("Load NoAnimModel"), ImGuiTreeNodeFlags_DefaultOpen)
             {
-                if (ImGui::CollapsingHeader("Weapon Collider"), ImGuiTreeNodeFlags_DefaultOpen)
+                //ImGui::Text("Input Model Key");
+                //ImGui::InputText("##ModelKey", m_szModelKey, MAX_PATH);
+
+                ImGui::Text(" NoAnimModel List");
+                if (ImGui::BeginListBox("## NoAnimModel List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
                 {
 
-                    ImGui::Text("Bone List");
-                    if (ImGui::BeginListBox("##Bone List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+                    for (int i = 0; i < m_AllNoAnimModelKeys.size(); i++)
                     {
+                        const bool is_selected = (m_CurrentNoAnimModelIndex == i);
+                        if (ImGui::Selectable(m_AllNoAnimModelKeys[i].c_str(), is_selected))
+                            m_CurrentNoAnimModelIndex = i;
 
-                        for (int i = 0; i < m_AllBoneNames.size(); i++)
-                        {
-                            const bool is_selected = (m_CurrentBoneIndex == i);
-                            if (ImGui::Selectable(m_AllBoneNames[i].c_str(), is_selected))
-                                m_CurrentBoneIndex = i;
-
-                            // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-                            if (is_selected)
-                                ImGui::SetItemDefaultFocus();
-                        }
-                        ImGui::EndListBox();
+                        // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+                        if (is_selected)
+                            ImGui::SetItemDefaultFocus();
                     }
+                    ImGui::EndListBox();
+                }
 
-                    if (ImGui::Button("Create"))
-                    {
-                        m_pPreViewModel.lock()->Add_DebugWeapon(m_AllBoneNames[m_CurrentBoneIndex]);
-                    }
+                if (ImGui::Button("Load_NonAnim"))
+                {
 
-                    ImGui::SameLine();
-
-                    if (ImGui::Button("Clear"))
-                    {
-                        m_pPreViewModel.lock()->Clear_DebugWeapon();
-                    }
-
-                    ImGui::InputFloat("Weapon Scale", &m_tWeaponDesc.fWeaponScale, 0.05f);
-                    ImGui::InputInt("Hit Type", &m_tWeaponDesc.iHitType);
-                    ImGui::InputFloat("Damage", &m_tWeaponDesc.fDamage);
-                    ImGui::InputFloat3("Offset", &m_tWeaponDesc.vWeaponOffset.x, "%.1");
+                    m_pPreViewNoAnimModel.lock()->Get_Component<CModel>().lock()->
+                        Get_Owner().lock()->
+                            Get_Component<CModel>().lock()->Init_Model(m_AllNoAnimModelKeys[m_CurrentModelIndex].c_str());
+                   
                 }
             }
+
+
+            //if (m_pPreViewModel.lock())
+            //{
+            //    if (ImGui::CollapsingHeader("Weapon Collider"), ImGuiTreeNodeFlags_DefaultOpen)
+            //    {
+
+            //        ImGui::Text("Bone List");
+            //        if (ImGui::BeginListBox("##Bone List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+            //        {
+
+            //            for (int i = 0; i < m_AllBoneNames.size(); i++)
+            //            {
+            //                const bool is_selected = (m_CurrentBoneIndex == i);
+            //                if (ImGui::Selectable(m_AllBoneNames[i].c_str(), is_selected))
+            //                    m_CurrentBoneIndex = i;
+
+            //                // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+            //                if (is_selected)
+            //                    ImGui::SetItemDefaultFocus();
+            //            }
+            //            ImGui::EndListBox();
+            //        }
+
+            //        if (ImGui::Button("Create"))
+            //        {
+            //            m_pPreViewModel.lock()->Add_DebugWeapon(m_AllBoneNames[m_CurrentBoneIndex]);
+            //        }
+
+            //        ImGui::SameLine();
+
+            //        if (ImGui::Button("Clear"))
+            //        {
+            //            m_pPreViewModel.lock()->Clear_DebugWeapon();
+            //        }
+
+            //        ImGui::InputFloat("Weapon Scale", &m_tWeaponDesc.fWeaponScale, 0.05f);
+            //        ImGui::InputInt("Hit Type", &m_tWeaponDesc.iHitType);
+            //        ImGui::InputFloat("Damage", &m_tWeaponDesc.fDamage);
+            //        ImGui::InputFloat3("Offset", &m_tWeaponDesc.vWeaponOffset.x, "%.1");
+            //    }
+            //}
             
         }
 
@@ -136,6 +168,9 @@ void CWindow_AnimationModelView::Load_PreViewModels()
     m_pPreViewModel = GAMEINSTANCE->Add_GameObject<CPreViewAnimationModel>(LEVEL_EDIT);
     m_AllModelKeys = GAMEINSTANCE->Get_AllAnimModelKeys();
 
+
+    m_pPreViewNoAnimModel = GAMEINSTANCE->Add_GameObject<CPreView_Prop>(LEVEL_EDIT);
+    m_AllNoAnimModelKeys = GAMEINSTANCE->Get_AllNoneAnimModelKeys();
 }
 
 void CWindow_AnimationModelView::Update_PreViewModel()
@@ -150,5 +185,8 @@ void CWindow_AnimationModelView::Free()
 {
     if(m_pPreViewModel.lock())
         m_pPreViewModel.lock()->Set_Dead();
+
+    if (m_pPreViewNoAnimModel.lock())
+        m_pPreViewNoAnimModel.lock()->Set_Dead();
 
 }

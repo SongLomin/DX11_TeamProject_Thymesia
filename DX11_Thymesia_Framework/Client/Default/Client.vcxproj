@@ -254,6 +254,7 @@
     <ClInclude Include="..\Public\Player_PotionUI.h" />
     <ClInclude Include="..\Public\Player_ProgressBar.h" />
     <ClInclude Include="..\Public\PreViewAnimationModel.h" />
+    <ClInclude Include="..\Public\PreView_Prop.h" />
     <ClInclude Include="..\Public\Prop.h" />
     <ClInclude Include="..\Public\SkyBox.h" />
     <ClInclude Include="..\Public\Stage1.h" />
@@ -349,6 +350,7 @@
     <ClCompile Include="..\Private\Player_PotionUI.cpp" />
     <ClCompile Include="..\Private\Player_ProgressBar.cpp" />
     <ClCompile Include="..\Private\PreViewAnimationModel.cpp" />
+    <ClCompile Include="..\Private\PreView_Prop.cpp" />
     <ClCompile Include="..\Private\Prop.cpp" />
     <ClCompile Include="..\Private\SkyBox.cpp" />
     <ClCompile Include="..\Private\Stage1.cpp" />

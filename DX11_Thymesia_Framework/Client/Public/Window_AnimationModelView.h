@@ -7,6 +7,7 @@ END
 
 BEGIN(Client)
 class CPreViewAnimationModel;
+class CPreView_Prop;
 
 class CWindow_AnimationModelView final
 	: public CImGui_Window
@@ -33,8 +34,11 @@ private:
 
 private:
 	weak_ptr<CPreViewAnimationModel>	m_pPreViewModel;
+	weak_ptr<CPreView_Prop>				m_pPreViewNoAnimModel;
 	vector<string>	m_AllModelKeys;
+	vector<string>	m_AllNoAnimModelKeys;
 	_int			m_CurrentModelIndex = 0;
+	_int			m_CurrentNoAnimModelIndex = 0;
 
 private: /* For Weapon Collider */
 	vector<string> m_AllBoneNames;

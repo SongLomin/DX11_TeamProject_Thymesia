@@ -310,6 +310,9 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Attack.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PreView_Prop.h">
+      <Filter>02. GameObject\04. Prop\05. PreView_Prop</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -596,6 +599,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Attack.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PreView_Prop.cpp">
+      <Filter>02. GameObject\04. Prop\05. PreView_Prop</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -957,6 +963,9 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack">
       <UniqueIdentifier>{4a64bbd5-ee25-4223-ac86-be99e1df7490}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\04. Prop\05. PreView_Prop">
+      <UniqueIdentifier>{959a7114-f746-44a0-91a4-24c79633fe1d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
