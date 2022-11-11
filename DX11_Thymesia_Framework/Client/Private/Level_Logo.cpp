@@ -8,10 +8,10 @@
 #include "Client_GameObjects.h"
 #include "Player_HPBar.h"
 #include "Player_MPBar.h"
+#include <UI_Logo.h>
 
 
 CLevel_Logo::CLevel_Logo()
-	//: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
 
 }
@@ -36,7 +36,8 @@ HRESULT CLevel_Logo::Initialize()
 
 	m_eNextLevel = LEVEL_LOBBY;
 
-
+	Load_FromJson(m_szDefaultJsonPath + "Logo.json", LEVEL_LOGO);
+	GAMEINSTANCE->Add_GameObject<CUI_Logo>(LEVEL_LOGO);
 	//GET_SINGLE(CGameManager)->Set_GameState(GAME_STATE::PEACE);
 
 	

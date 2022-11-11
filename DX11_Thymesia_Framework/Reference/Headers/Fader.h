@@ -15,9 +15,6 @@ public:
 	_float	Get_FadeTime() const { return m_fFadeTime; }
 	FaderDesc Get_FaderDesc() const { return m_tFaderDesc; }
 
-	void	Set_FadeInLimit(_float _fLimit) { m_fInLimitAlpha = _fLimit; }
-	void	Set_FadeOutLimit(_float _fLimit) { m_fOutLimitAlpha = _fLimit; }
-
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -47,9 +44,7 @@ private:
 	_float	m_fCurrentDelayTime;
 	_bool	m_bEnable = false;
 
-private:
-	_float	m_fInLimitAlpha;
-	_float	m_fOutLimitAlpha;
+
 
 
 

@@ -37,11 +37,15 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 
 	GET_SINGLE(CGameManager)->Use_EffectGroup("Tutorial_Dust", m_pTransformCom);
 
+	USE_START(CCamera_Target);
+
 	return S_OK;
 }
 
 HRESULT CCamera_Target::Start()
 {
+	__super::Start();
+
 	m_pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
 	//현재 플레이어가 NULLPTR임.

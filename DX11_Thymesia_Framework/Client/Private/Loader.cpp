@@ -25,12 +25,12 @@ CLoader::~CLoader()
 	Free();
 }
 
-//unsigned int APIENTRY LoadingMain(void* pArg)
-void LoadingMain(void* pArg)
+unsigned int APIENTRY LoadingMain(void* pArg)
+//void LoadingMain(void* pArg)
 {
 	CLoader*		pLoader = (CLoader*)pArg;
 
-	//EnterCriticalSection(&pLoader->Get_CS());
+	EnterCriticalSection(&pLoader->Get_CS());
 	HRESULT hr = 0;
 
 	switch (pLoader->Get_NextLevelID())
@@ -63,29 +63,22 @@ void LoadingMain(void* pArg)
 	if (FAILED(hr))
 		MSG_BOX("Failed to Loading");
 
-	//LeaveCriticalSection(&pLoader->Get_CS());
+	LeaveCriticalSection(&pLoader->Get_CS());
 
-	//return 0;
+	return 0;
 }
 
 HRESULT CLoader::Initialize(LEVEL eNextLevel)
 {
 	m_eNextLevel = eNextLevel;
 
-	std::future<void> a = std::async(std::launch::async, LoadingMain, this);
+	//std::future<void> a = std::async(std::launch::async, LoadingMain, this);
 
+	InitializeCriticalSection(&m_CriticalSection);
 
-	if (eNextLevel == LEVEL::LEVEL_GAMEPLAY)
-		GAMEINSTANCE->Add_GameObject<CUI_Loading>(LEVEL_LOADING);
-
-
-
-
-	//InitializeCriticalSection(&m_CriticalSection);
-
-	/*m_hThread = (HANDLE)_beginthreadex(nullptr, 0, LoadingMain, this, 0, nullptr);
+	m_hThread = (HANDLE)_beginthreadex(nullptr, 0, LoadingMain, this, 0, nullptr);
 	if (0 == m_hThread)
-		return E_FAIL;*/
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -264,7 +257,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxAnimModel"), TEXT("../Bin/ShaderFiles/Shader_VtxAnimModel.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_HPBar"), TEXT("../Bin/ShaderFiles/Shader_HPBar.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_HyperSpace"), TEXT("../Bin/ShaderFiles/Shader_HyperSpace.hlsl"));
-	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxColor"), TEXT("../Bin/ShaderFiles/Shader_VtxColor.hlsl"));
+	// 메인앱에서 로딩 중 FaderMask 때문에.
+	//GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxColor"), TEXT("../Bin/ShaderFiles/Shader_VtxColor.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxCubeTex"), TEXT("../Bin/ShaderFiles/Shader_VtxCubeTex.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxInstance"), TEXT("../Bin/ShaderFiles/Shader_VtxInstance.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxModel"), TEXT("../Bin/ShaderFiles/Shader_VtxModel.hlsl"));
@@ -296,12 +290,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("객체 생성 중입니다. "));
 
-	Create_GameObjectFromJson("../Bin/LevelData/Logo.json", LEVEL_LOGO);
-
-
-	GAMEINSTANCE->Add_GameObject<CUI_Logo>(LEVEL_LOGO);
-
-
+	
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));	
 
 	m_isFinished = true;
@@ -366,50 +355,7 @@ GAMEINSTANCE->Add_GameObject<CUI_Loading>(LEVEL_LOADING);
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성 중입니다."));
 
 	//Create_GameObjectFromJson("../Bin/LevelData/Stage1.json", LEVEL_GAMEPLAY);
-	CCamera::CAMERADESC			CameraDesc;
-	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
-	CameraDesc.vEye = _float4(0.0f, 2.5f, -2.5f, 1.f);
-	CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
-	CameraDesc.fFovy = XMConvertToRadians(65.0f);
-	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
-	CameraDesc.fNear = 0.2f;
-	CameraDesc.fFar = 300.f;
-
-	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_GAMEPLAY, &CameraDesc);
-	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
-
-	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_GAMEPLAY);
-	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
-
-	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_GAMEPLAY);
-
-	GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_GAMEPLAY);
-
-	GET_SINGLE(CGameManager)->Register_Player_HPBar
-	(GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
-
-	GET_SINGLE(CGameManager)->Register_Player_MPBar
-	(GAMEINSTANCE->Add_GameObject<CPlayer_MPBar>(LEVEL_STATIC));
-
-	GET_SINGLE(CGameManager)->Register_Player_Memory
-	(GAMEINSTANCE->Add_GameObject<CPlayer_Memory>(LEVEL_STATIC));
-
-	weak_ptr<CPreViewAnimationModel> pPreviewModel =  GAMEINSTANCE->Add_GameObject<CPreViewAnimationModel>(LEVEL_GAMEPLAY);
-	pPreviewModel.lock()->Init_EditPreViewAnimationModel("Corvus");
-	pPreviewModel.lock()->Change_AnimationFromIndex(3);
-
-	pPreviewModel.lock()->Play_Animation(0.01f);
-	pPreviewModel.lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(10.f,0.f,10.f,0.f));
-
-	GET_SINGLE(CGameManager)->Register_Player_HUD_Potion(
-	GAMEINSTANCE->Add_GameObject<CPlayer_PotionUI>(LEVEL_STATIC));
-
-	GET_SINGLE(CGameManager)->Register_Player_HUD_Feather(
-	GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
-
-	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);
-
-	Create_GameObjectFromJson("../Bin/LevelData/Stage1.json", LEVEL_GAMEPLAY);
+	
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
 
@@ -722,8 +668,8 @@ shared_ptr<CLoader> CLoader::Create(LEVEL eNextLevel)
 
 void CLoader::Free()
 {
-	//WaitForSingleObject(m_hThread, INFINITE);
+	WaitForSingleObject(m_hThread, INFINITE);
 
-	//DeleteCriticalSection(&m_CriticalSection);
-	//CloseHandle(m_hThread);
+	DeleteCriticalSection(&m_CriticalSection);
+	CloseHandle(m_hThread);
 }

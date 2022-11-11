@@ -4,12 +4,14 @@
 #include "Level_Logo.h"
 #include "Level_GamePlay.h"
 #include "Level_Edit.h"
-#include "Level_Lobby.h"
-#include "Level_Stage2.h"
-#include "Level_Stage3.h"
+//#include "Level_Lobby.h"
+//#include "Level_Stage2.h"
+//#include "Level_Stage3.h"
 #include "GameInstance.h"
 #include "UI_Loading.h"
 #include "FadeMask.h"
+#include "GameManager.h"
+
 CLevel_Loading::CLevel_Loading()
 	//: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
@@ -28,19 +30,15 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevel)
 	tFaderDesc.fDelayTime = 0.5f;
 	tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 0.f);
 
+	weak_ptr<CGameObject> pFadeMaskFromGameObject = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::FADEMASK).front();
+	weak_ptr<CFadeMask> pFadeMask = Weak_StaticCast<CFadeMask>(pFadeMaskFromGameObject);
+	//pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
 
-	GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front()
-		.lock()->Init_Fader((void*)&tFaderDesc);
+	//일단 임시
+	pFadeMask.lock()->Set_Enable(false);
 
-
-	//Loading Scene Texture
-
-//	GAMEINSTANCE->Load_Textures(TEXT("Default"), TEXT("../Bin/Resources/Textures/Default%d.jpg"), MEMORY_TYPE::MEMORY_DYNAMIC);
-//	GAMEINSTANCE->Load_Textures(TEXT("LobbyBackground"), TEXT("../Bin/Resources/Textures/Background/BgLobby.png"), MEMORY_TYPE::MEMORY_STATIC);
-	//GAMEINSTANCE->Load_Textures(TEXT("Default"), TEXT("../Bin/Resources/Textures/Default%d.jpg"), MEMORY_TYPE::MEMORY_DYNAMIC);
-	//GAMEINSTANCE->Load_Textures(TEXT("Background"), TEXT("../Bin/Resources/Textures/Background/BgFightLoading%d.png"), MEMORY_TYPE::MEMORY_STATIC);
-
-	//GAMEINSTANCE->Add_GameObject<CBackGround>(LEVEL_LOADING);
+	/*if(LEVEL_GAMEPLAY == eNextLevel)
+		GAMEINSTANCE->Add_GameObject<CUI_Loading>(LEVEL_LOADING);*/
 
 	m_eNextLevel = eNextLevel;
 	
@@ -67,7 +65,7 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 			break;
 
 		case LEVEL_LOBBY:
-			pLevel = CLevel_Lobby::Create();
+			//pLevel = CLevel_Lobby::Create();
 			break;
 
 		case LEVEL_GAMEPLAY:
@@ -75,11 +73,11 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 			break;
 
 		case LEVEL_STAGE2:
-			pLevel = CLevel_Stage2::Create();
+			//pLevel = CLevel_Stage2::Create();
 			break;
 
 		case LEVEL_STAGE3:
-			pLevel = CLevel_Stage3::Create();
+			//pLevel = CLevel_Stage3::Create();
 			break;
 
 		case LEVEL_EDIT:

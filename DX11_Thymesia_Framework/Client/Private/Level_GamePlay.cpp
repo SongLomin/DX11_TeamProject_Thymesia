@@ -5,6 +5,7 @@
 #include "GameManager.h"
 #include "FadeMask.h"
 #include "Fader.h"
+#include <UI_Landing.h>
 
 
 CLevel_GamePlay::CLevel_GamePlay()
@@ -28,28 +29,50 @@ HRESULT CLevel_GamePlay::Initialize()
 	
 
 	//Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_GAMEPLAY);
+	CCamera::CAMERADESC			CameraDesc;
+	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
+	CameraDesc.vEye = _float4(0.0f, 2.5f, -2.5f, 1.f);
+	CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
+	CameraDesc.fFovy = XMConvertToRadians(65.0f);
+	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
+	CameraDesc.fNear = 0.2f;
+	CameraDesc.fFar = 300.f;
 
-	
+	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_GAMEPLAY, &CameraDesc);
+	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
 
-	//GAMEINSTANCE->Add_GameObject<CDummy_Monster>(LEVEL_GAMEPLAY).lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(-2.5f, 0.f, 5.f, 1.f));
-	//GAMEINSTANCE->Add_GameObject<CDummy_Monster>(LEVEL_GAMEPLAY).lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(5.f, 0.f, 5.f, 1.f));
-	//GAMEINSTANCE->Add_GameObject<CDummy_Monster>(LEVEL_GAMEPLAY).lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(-5.f, 0.f, 5.f, 1.f));
-	//GAMEINSTANCE->Add_GameObject<CDummy_Monster>(LEVEL_GAMEPLAY).lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(2.5f, 0.f, 5.f, 1.f));
+	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_GAMEPLAY);
+	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
 
-	//GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_GAMEPLAY);
-	
+	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_GAMEPLAY);
 
-	/*GAMEINSTANCE->Add_GameObject<CEffect_Point>(LEVEL_GAMEPLAY);
-	GAMEINSTANCE->Add_GameObject<CEffect_Point>(LEVEL_GAMEPLAY);
-	GAMEINSTANCE->Add_GameObject<CEffect_Point>(LEVEL_GAMEPLAY);
-	GAMEINSTANCE->Add_GameObject<CEffect_Point>(LEVEL_GAMEPLAY);
-	GAMEINSTANCE->Add_GameObject<CEffect_Point>(LEVEL_GAMEPLAY);
-	GAMEINSTANCE->Add_GameObject<CEffect_Point>(LEVEL_GAMEPLAY);
-	GAMEINSTANCE->Add_GameObject<CEffect_Point>(LEVEL_GAMEPLAY).lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(-5.f, 0.f, 0.f, 1.f));*/
-	
-	//GAMEINSTANCE->Add_GameObject<CCustomEffectMesh>(LEVEL_GAMEPLAY);
+	GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_GAMEPLAY);
 
-	//GET_SINGLE(CGameManager)->Set_TargetForTargetCamera(Player.front());
+	GET_SINGLE(CGameManager)->Register_Player_HPBar
+	(GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
+
+	GET_SINGLE(CGameManager)->Register_Player_MPBar
+	(GAMEINSTANCE->Add_GameObject<CPlayer_MPBar>(LEVEL_STATIC));
+
+	GET_SINGLE(CGameManager)->Register_Player_Memory
+	(GAMEINSTANCE->Add_GameObject<CPlayer_Memory>(LEVEL_STATIC));
+
+	weak_ptr<CPreViewAnimationModel> pPreviewModel = GAMEINSTANCE->Add_GameObject<CPreViewAnimationModel>(LEVEL_GAMEPLAY);
+	pPreviewModel.lock()->Init_EditPreViewAnimationModel("Corvus");
+	pPreviewModel.lock()->Change_AnimationFromIndex(3);
+
+	pPreviewModel.lock()->Play_Animation(0.01f);
+	pPreviewModel.lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(10.f, 0.f, 10.f, 0.f));
+
+	GET_SINGLE(CGameManager)->Register_Player_HUD_Potion(
+		GAMEINSTANCE->Add_GameObject<CPlayer_PotionUI>(LEVEL_STATIC));
+
+	GET_SINGLE(CGameManager)->Register_Player_HUD_Feather(
+		GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
+
+	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);
+
+	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL_GAMEPLAY);
 
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 	// GAMEINSTANCE->Add_GameObject<CGround>(LEVEL_GAMEPLAY);
@@ -84,7 +107,7 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);		
 
-	if (m_bChangeNextLevel)
+	/*if (m_bChangeNextLevel)
 	{
 		m_bChangeNextLevel = false;
 
@@ -100,7 +123,7 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
 		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
 
-	}
+	}*/
 
 }
 

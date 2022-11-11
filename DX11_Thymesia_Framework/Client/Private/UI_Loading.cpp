@@ -22,6 +22,7 @@ HRESULT CUI_Loading::Initialize_Prototype()
 
 HRESULT CUI_Loading::Initialize(void* pArg)
 {
+	__super::Initialize(pArg);
 
 	m_pLoadingBG = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_LOADING);
 	m_pLoadingBG.lock()->Set_Texture("Loading_Tutorial");
