@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "Light_Prop.h"
 #include "VIBuffer_Cube.h"
 #include "Shader.h"
@@ -48,10 +48,11 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 
 	m_eRenderGroup = RENDERGROUP::RENDER_NONALPHABLEND;
 
+	// TODO : need to be data
 	ZeroMemory(&m_tLightDesc, sizeof(LIGHTDESC));
 	m_tLightDesc.eType = LIGHTDESC::TYPE::TYPE_HALFPOINT;
 	m_tLightDesc.bEnable = true;
-	m_tLightDesc.vPosition = { -4.8f, 1.5f, 85.f, 1.f };
+	XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_Position());
 	m_tLightDesc.vDiffuse = { 1.f, 1.f, 0.8f, 0.f };
 	m_tLightDesc.vAmbient = { 0.6f, 0.6f, 0.48f, 0.f };
 	m_tLightDesc.vDirection = { 1.f, 0.f, 0.f, 0.f };
@@ -59,7 +60,6 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	m_tLightDesc.fRange = 17.f;
 
 	m_iLightIndex = GAMEINSTANCE->Add_Light(m_tLightDesc);
-	m_tLightDesc = GAMEINSTANCE->Get_LightDesc(m_iLightIndex);
 	return S_OK;
 }
 
@@ -71,6 +71,8 @@ HRESULT CLight_Prop::Start()
 void CLight_Prop::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+
 }
 
 void CLight_Prop::LateTick(_float fTimeDelta)

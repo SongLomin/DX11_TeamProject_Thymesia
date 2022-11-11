@@ -89,7 +89,7 @@ HRESULT CWindow_EffectHierarchyView::Render()
                 const bool is_selected = (m_iCurrentEffectIndex == i + m_szEffectMeshNames.size());
                 if (ImGui::Selectable(m_szEffectParticleNames[i].c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
                 {
-                    m_iCurrentEffectIndex = i + m_szEffectMeshNames.size();
+                    m_iCurrentEffectIndex = i + _uint(m_szEffectMeshNames.size());
 
                     if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
                     {
@@ -164,7 +164,7 @@ void CWindow_EffectHierarchyView::Call_AddEffectMesh(const _char* In_szModelKey)
     Add_EffectMesh_Internal(EffectMeshDesc, In_szModelKey);
 
     //가장 최근에 집어넣은 인덱스
-    m_iCurrentEffectIndex = m_szEffectMeshNames.size() - 1;
+    m_iCurrentEffectIndex = _uint(m_szEffectMeshNames.size()) - 1;
     CallBack_SelectEffect(m_pEffectGroup, m_iCurrentEffectIndex);
 
 }
@@ -172,16 +172,12 @@ void CWindow_EffectHierarchyView::Call_AddEffectMesh(const _char* In_szModelKey)
 void CWindow_EffectHierarchyView::Call_AddParticle(const _char* In_szName, const _char* In_szTextureKey)
 {
     if (!m_pEffectGroup.lock())
-    {
         m_pEffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(LEVEL_EDIT);
-    }
-
 
     Add_EffectParticle_Internal(In_szName, In_szTextureKey);
 
-
     //가장 최근에 집어넣은 인덱스
-    m_iCurrentEffectIndex = m_szEffectMeshNames.size() + m_szEffectParticleNames.size() - 1;
+    m_iCurrentEffectIndex = _uint(m_szEffectMeshNames.size()) + _uint(m_szEffectParticleNames.size()) - 1;
     CallBack_SelectEffect(m_pEffectGroup, m_iCurrentEffectIndex);
 }
 

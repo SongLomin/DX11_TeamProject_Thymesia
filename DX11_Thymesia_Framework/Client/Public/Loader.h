@@ -43,6 +43,7 @@ public:
 	void	Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex);
 	void	Load_AllDiffuseTexture();
 	void	Load_AllMaskMap();
+	void	Load_AllNoiseTexture();
 	void	Load_AllParticleTexture();
 	void	Load_AllParticleInPath_Recursive(const filesystem::path& In_Path);
 	void	Load_AllEffectMesh();

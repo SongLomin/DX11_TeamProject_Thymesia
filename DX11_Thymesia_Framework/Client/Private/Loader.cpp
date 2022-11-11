@@ -180,10 +180,12 @@ HRESULT CLoader::Loading_ForLogoLevel()
 #pragma endregion
 
 	Load_AllMaskMap();
+	Load_AllNoiseTexture();
 	Load_AllParticleTexture();
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
 
+	// TODO : Turn off temporarily for Light_Prop
 	LIGHTDESC			LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
@@ -321,8 +323,6 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	CEditGround::Load_AllMeshInfo();
 
-	_matrix			TransformMatrix;
-	
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성 중입니다."));
 
 	//Create_GameObjectFromJson("../Bin/LevelData/Stage1.json", LEVEL_GAMEPLAY);
@@ -512,6 +512,11 @@ void CLoader::Load_AllDiffuseTexture()
 void CLoader::Load_AllMaskMap()
 {
 	GAMEINSTANCE->Load_Textures(("UVMask"), TEXT("../Bin/Resources/Textures/Mask/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+}
+
+void CLoader::Load_AllNoiseTexture()
+{
+	GAMEINSTANCE->Load_Textures(("UVNoise"), TEXT("../Bin/Resources/Textures/Noise/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 }
 
 void CLoader::Load_AllParticleTexture()

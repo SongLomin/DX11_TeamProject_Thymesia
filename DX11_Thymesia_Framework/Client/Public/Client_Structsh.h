@@ -6,6 +6,7 @@ namespace Client
 	{
 		_float		fInitTime;
 		_float		fLifeTime;
+
 		_bool		bSyncAnimation;
 		_bool		bFollowTransform;
 		_bool		bBillBoard;
@@ -27,19 +28,34 @@ namespace Client
 		_float4		vColorForce;
 		_float4		vMaxColor;
 		_float2		vStartUV;
+
 		_int		iUVDiffuseIndex;
 		_int		iUVMaskIndex;
-		_bool		bUseDiffuseMap;
+		_int		iUVNoiseIndex;
+
+		// TODO : bDynamicNoiseOption temporary for test
+		_bool		bDynamicNoiseOption;
+
+		/**
+		* x : Diffuse | y : Mask | z : Noise | w : None
+		*/
+		_float4		vWrapWeight;
+
 		_bool		bUVClamp;
 		_float2		vUVSpeed;
 		_float2		vUVForce;
 		_float2		vUVMax;
 
+		_float fDiscardRatio;
+
+		_bool		bDistortion;
 		_bool		bBloom;
 		_bool		bGlow;
 		_float4		vStartGlowColor;
 		_float4		vGlowColorSpeed;
 		_float4		vGlowColorForce;
+
+		_int		iShaderPassIndex;
 
 		_bool		bCollider;
 		_bool		bWeaponSyncTransform;
@@ -50,6 +66,8 @@ namespace Client
 		_float3		vWeaponOffset;
 		_float		fHitFreq;
 
+		// TODO : for imgui movements
+		_bool		bOnFocus;
 	};
 
 	struct EFFECTPARTICLE_DESC

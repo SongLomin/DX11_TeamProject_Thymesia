@@ -82,7 +82,7 @@ HRESULT CMainApp::Render()
 		nullptr == m_pRenderer*/)
 		return E_FAIL;
 
-	GAMEINSTANCE->Clear_BackBuffer_View(_float4(0.f, 0.f, 0.f, 1.f));
+	GAMEINSTANCE->Clear_BackBuffer_View(_float4(0.f, 128.f / 255.f, 1.f, 1.f));
 	GAMEINSTANCE->Clear_DepthStencil_View();
 	
 	GAMEINSTANCE->Draw_RenderGroup();
