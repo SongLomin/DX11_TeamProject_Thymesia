@@ -1,9 +1,10 @@
 #pragma once
 #include "VIBuffer.h"
 
+
 BEGIN(Engine)
 
-class MESH_DATA;
+struct MESH_DATA;
 
 class ENGINE_DLL CVIBuffer_Ground final : public CVIBuffer
 {

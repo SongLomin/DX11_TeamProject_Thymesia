@@ -1,7 +1,6 @@
 #include "VIBuffer_Ground.h"
 #include "GameInstance.h"
-
-#include "MeshData.h"
+#include "ModelData.h"
 
 GAMECLASS_C(CVIBuffer_Ground)
 CLONE_C(CVIBuffer_Ground, CComponent)
