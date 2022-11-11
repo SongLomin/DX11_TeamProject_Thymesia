@@ -5,8 +5,23 @@ namespace Client
 	struct EFFECTMESH_DESC
 	{
 #pragma region Tool Options
-		// TODO : for imgui movements
+		// TODO : for imgui movements -> remove after finishing mesh effect
 		_bool		bOnFocus;
+		_float		fSpeedPerSec;
+		_float		fRotationPerSec;
+		_bool		bSyncStartPositionToController;
+		_bool		bSyncStartRotationToController;
+
+		enum AxisForRotation
+		{
+			Axis_X, Axis_Y, Axis_Z,
+			Axis_Right, Axis_Up, Axis_Look,
+			Axis_END
+		};
+
+		_int eAxisForRotation;
+		_float3 vRotationAxis;
+
 #pragma endregion
 
 #pragma region Datas

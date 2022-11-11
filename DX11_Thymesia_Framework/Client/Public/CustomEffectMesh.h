@@ -55,6 +55,12 @@ public: /* For. Data */
     void Load_EffectJson(const json& In_Json, const _uint& In_iTimeScaleLayer);
 
 private:
+    // TODO : for imgui mesh control (control mesh transformation with key input)
+#ifdef _DEBUG
+    void Key_Input_ControlMesh(_float fTimeDelta);
+    void Apply_ImGui_Controls_to_Mesh();
+#endif // _DEBUG
+
     void Play_Internal(_float fFrameTime);
 	void Free();
 

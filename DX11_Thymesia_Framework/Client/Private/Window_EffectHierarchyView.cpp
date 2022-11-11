@@ -155,7 +155,7 @@ void CWindow_EffectHierarchyView::Call_AddEffectMesh(const _char* In_szModelKey)
     EffectMeshDesc.fInitTime = 0.f;
     EffectMeshDesc.fLifeTime = 9999.f;
 
-    EffectMeshDesc.iSyncAnimationKey = -1;
+    EffectMeshDesc.iSyncAnimationKey = 0;
 
     EffectMeshDesc.vStartPosition = { 0.f, 1.f, 0.f };
 

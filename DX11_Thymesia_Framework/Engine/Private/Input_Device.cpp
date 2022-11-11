@@ -8,6 +8,8 @@ int g_Arr[(int)KEY::LAST] = {
 	VK_UP,//UP,
 	VK_DOWN,//DOWN,
 	'1','2','3','4','5','6','7','8','9','0',
+	VK_NUMPAD1, VK_NUMPAD2, VK_NUMPAD3, VK_NUMPAD4, VK_NUMPAD5,
+	VK_NUMPAD6, VK_NUMPAD7, VK_NUMPAD8, VK_NUMPAD9, VK_NUMPAD0,
 	VK_F1,VK_F2,VK_F3,VK_F4,VK_F5,
 	'Q','W','E','R','T','Y','U','I','O','P',
 	'A','S','D','F','G','H','J','K','L',
