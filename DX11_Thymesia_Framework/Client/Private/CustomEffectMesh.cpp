@@ -87,8 +87,15 @@ void CCustomEffectMesh::LateTick(_float fTimeDelta)
 	if (m_fCurrentInitTime > 0.f)
 		return;
 
-	__super::LateTick(fTimeDelta);
-
+	// __super::LateTick(fTimeDelta);
+	if (m_tEffectMeshDesc.bDistortion)
+		GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_DISTORTION, Weak_Cast<CGameObject>(m_this));
+	else
+	{
+		// __super::LateTick(fTimeDelta);
+		CallBack_LateTick(fTimeDelta);
+		m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Cast<CGameObject>(m_this));
+	}
 }
 
 HRESULT CCustomEffectMesh::Render()
@@ -600,6 +607,12 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 				Clone_EffectMesh();
 			}
 
+			// TODO : for imgui - mesh keyboard control
+			ImGui::Text("On Control Focus");
+			ImGui::Checkbox("##Control Focus", &m_tEffectMeshDesc.bOnFocus);
+
+			ImGui::Separator();
+
 			ImGui::Text("Init Time");
 			ImGui::DragFloat("##Init Time", &m_tEffectMeshDesc.fInitTime, 0.2f);
 
@@ -717,6 +730,10 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::DragFloat2("##UV Max", &m_tEffectMeshDesc.vUVMax.x, 0.01f);
 			ImGui::Separator();
 
+			ImGui::Text("Distortion");
+			ImGui::SameLine();
+			ImGui::Checkbox("##Distortion", &m_tEffectMeshDesc.bDistortion);
+
 			ImGui::Text("Bloom");
 			ImGui::SameLine();
 			ImGui::Checkbox("##Bloom", &m_tEffectMeshDesc.bBloom);
@@ -741,6 +758,7 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::Text("2 : NoneDiffuseEffect_UVWrap");
 			ImGui::Text("3 : NoneDiffuseEffect_UVClamp");
 			ImGui::Text("4 : PerfectCustom");
+			ImGui::Text("5 : Distortion");
 			ImGui::InputInt("##Shader_Pass_Index", &m_tEffectMeshDesc.iShaderPassIndex);
 			ImGui::Separator();
 

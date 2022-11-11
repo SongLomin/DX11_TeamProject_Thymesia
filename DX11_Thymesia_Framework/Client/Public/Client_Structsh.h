@@ -48,13 +48,14 @@ namespace Client
 
 		_float fDiscardRatio;
 
+		_bool		bDistortion;
 		_bool		bBloom;
 		_bool		bGlow;
 		_float4		vStartGlowColor;
 		_float4		vGlowColorSpeed;
 		_float4		vGlowColorForce;
 
-		_int iShaderPassIndex;
+		_int		iShaderPassIndex;
 
 		_bool		bCollider;
 		_bool		bWeaponSyncTransform;
@@ -64,6 +65,9 @@ namespace Client
 		_float      fDamage;
 		_float3		vWeaponOffset;
 		_float		fHitFreq;
+
+		// TODO : for imgui movements
+		_bool		bOnFocus;
 	};
 
 	struct EFFECTPARTICLE_DESC
