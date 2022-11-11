@@ -91,9 +91,6 @@
     <ClInclude Include="..\Public\Camera_Target.h">
       <Filter>02. GameObject\00. Camera\01. Camera_Target</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Monster.h">
-      <Filter>02. GameObject\03. Actor\00. Character\01. Monster</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\StateBase.h">
       <Filter>05. Component\03. State</Filter>
     </ClInclude>
@@ -322,6 +319,18 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_BasicHealing.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing\00.CorvusState_BasicHealing</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\MobStateBase.h">
+      <Filter>05. Component\03. State\01. AIStateBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Monster.h">
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Mob.h">
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\00.Mob</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MobWeapon\MobWeapon.h">
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\00.Mob\00.Weapon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -395,9 +404,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Target.cpp">
       <Filter>02. GameObject\00. Camera\01. Camera_Target</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Monster.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\01. Monster</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\StateBase.cpp">
       <Filter>05. Component\03. State</Filter>
@@ -619,6 +625,15 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_BasicHealing.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing\00.CorvusState_BasicHealing</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Monster.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Mob.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\00.Mob</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MobWeapon\MobWeapon.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\00.Mob\00.Weapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -736,9 +751,6 @@
     </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character">
       <UniqueIdentifier>{618567cb-c6db-48f9-a3fe-050a87d96221}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster">
-      <UniqueIdentifier>{b883227e-9ad7-4b08-8d60-68a4d4c34a6c}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\99. PreViewAnimationModel">
       <UniqueIdentifier>{4324461d-9653-4d65-96ab-339d94dd633d}</UniqueIdentifier>
@@ -1003,6 +1015,15 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing\00.CorvusState_BasicHealing">
       <UniqueIdentifier>{c10e7031-e434-4528-9ac6-0a6693d61a10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster">
+      <UniqueIdentifier>{b10a7ea5-a749-4a3b-a17c-3bb89b499e38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\00.Mob">
+      <UniqueIdentifier>{83e51cf4-fd97-4734-ac39-ca7849a9905d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\00.Mob\00.Weapon">
+      <UniqueIdentifier>{5e4e63d5-214f-4648-9f56-5231e87b034b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
