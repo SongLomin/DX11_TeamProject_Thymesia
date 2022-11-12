@@ -4,6 +4,9 @@
 #include "shader.h"
 #include "Animation.h"
 #include "GameManager.h"
+#include "Corvus_DefaultSaber.h"
+#include "Corvus_DefaultDagger.h"
+#include "Weapon.h"
 
 GAMECLASS_C(CPreViewAnimationModel)
 CLONE_C(CPreViewAnimationModel, CGameObject)
@@ -55,7 +58,7 @@ void CPreViewAnimationModel::LateTick(_float fTimeDelta)
 
 HRESULT CPreViewAnimationModel::Render()
 {
-	__super::Render();
+		__super::Render();
 
 	if (!m_pCurrentModelCom.lock())
 		return E_FAIL;
@@ -140,6 +143,17 @@ void CPreViewAnimationModel::Init_EditPreViewAnimationModel(const string& In_szM
 	m_pModelComs.emplace(In_szModelKey, pModel);
 	m_pCurrentModelCom = pModel;
 	m_pCurrentModelCom.lock()->Set_CurrentAnimation(0);
+
+	if (strcmp(In_szModelKey.c_str(), "Corvus") == 0)
+	{
+		Clear_ModelWeapon();
+
+		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultSaber>(LEVEL_STATIC));
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
+
+		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultDagger>(LEVEL_STATIC));
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, Weak_Cast<CGameObject>(m_this), "weapon_l");
+	}
 }
 
 void CPreViewAnimationModel::Change_AnimationFromIndex(const _uint& In_iAnimIndex)
@@ -172,11 +186,19 @@ void CPreViewAnimationModel::Set_WeaponDesc(const _float& In_fScale, const _floa
 
 void CPreViewAnimationModel::Clear_DebugWeapon()
 {
-	/*for (auto& elem : m_pDebugWeapons)
+	for (auto& elem : m_pDebugWeapons)
 	{
 		elem.lock()->Set_Dead();
-	}*/
+	}
 
+}
+
+void CPreViewAnimationModel::Clear_ModelWeapon()
+{
+	for (auto& elem : m_pModelWeapons)
+	{
+		elem.lock()->Set_Dead();
+	}
 }
 
 

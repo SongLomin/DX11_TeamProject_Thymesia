@@ -196,11 +196,8 @@
     <ClInclude Include="..\Public\CustomUI.h">
       <Filter>02. GameObject\01. UI\CustomUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Player.h">
-      <Filter>02. GameObject\03. Actor\00. Character\99. PreViewAnimationModel</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CCorvus.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Corvus</Filter>
+      <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerStateBase.h">
       <Filter>05. Component\03. State\00. PlayerStateBase</Filter>
@@ -287,10 +284,10 @@
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Corvus_DefaultSaber.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\00.Corvus_DefaultSaber</Filter>
+      <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon\00.Corvus_DefaultSaber</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Corvus_DefaultDagger.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\01.Corvus_DefaultDagger</Filter>
+      <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon\01.Corvus_DefaultDagger</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\EditGround.h">
       <Filter>02. GameObject\99. Other\01. EditGround</Filter>
@@ -345,6 +342,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\PreView_Prop.h">
       <Filter>02. GameObject\04. Prop\05. PreView_Prop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Weapon.h">
+      <Filter>02. GameObject\99. Other\05. Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player.h">
+      <Filter>02. GameObject\03. Actor\00. Character\00.Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -519,11 +522,8 @@
     <ClCompile Include="..\Private\Ground.cpp">
       <Filter>02. GameObject\11. Ground</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Player.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\99. PreViewAnimationModel</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CCorvus.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Corvus</Filter>
+      <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerStateBase.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase</Filter>
@@ -610,10 +610,10 @@
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\00.Corvus_DefaultSaber</Filter>
+      <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon\00.Corvus_DefaultSaber</Filter>
     </ClCompile>
     <ClCompile Include="..\Public\Corvus_DefaultDagger.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\01.Corvus_DefaultDagger</Filter>
+      <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon\01.Corvus_DefaultDagger</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\EditGround.cpp">
       <Filter>02. GameObject\99. Other\01. EditGround</Filter>
@@ -666,6 +666,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_Loading.cpp">
       <Filter>02. GameObject\01. UI\Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Weapon.cpp">
+      <Filter>02. GameObject\99. Other\05. Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\00.Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -863,9 +869,6 @@
     <Filter Include="02. GameObject\01. UI\CustomUI">
       <UniqueIdentifier>{ff97c274-021f-4a5a-998f-c63545601fef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Corvus">
-      <UniqueIdentifier>{16574201-340f-43db-b0c0-e3bb9a200fc8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase">
       <UniqueIdentifier>{aadbf6c6-7726-4889-bde8-1f3c8329f678}</UniqueIdentifier>
     </Filter>
@@ -877,15 +880,6 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\05.State_Hit">
       <UniqueIdentifier>{41826306-7aa4-4142-8a99-602d9d79a36f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon">
-      <UniqueIdentifier>{c544ea3e-e472-45d2-97c7-b7b228b16290}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\00.Corvus_DefaultSaber">
-      <UniqueIdentifier>{0ed56344-d4a6-4fcc-946f-328f7e70d654}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\01.Corvus_DefaultDagger">
-      <UniqueIdentifier>{e8d262bf-d13f-4a53-886f-7946a0308b0a}</UniqueIdentifier>
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\01.State_JoggingStart">
       <UniqueIdentifier>{30a1a2b0-e0cd-4a2f-a626-2db95dcc69f8}</UniqueIdentifier>
@@ -1075,6 +1069,24 @@
     </Filter>
     <Filter Include="02. GameObject\04. Prop\05. PreView_Prop">
       <UniqueIdentifier>{959a7114-f746-44a0-91a4-24c79633fe1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\99. Other\05. Weapon">
+      <UniqueIdentifier>{71ba57b2-badd-4f4c-8aa6-0ff09e48d627}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00.Player">
+      <UniqueIdentifier>{526ae19b-d4f7-432d-9b4b-e73589c3ea78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00.Player\00. Corvus">
+      <UniqueIdentifier>{16574201-340f-43db-b0c0-e3bb9a200fc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon">
+      <UniqueIdentifier>{c544ea3e-e472-45d2-97c7-b7b228b16290}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon\00.Corvus_DefaultSaber">
+      <UniqueIdentifier>{0ed56344-d4a6-4fcc-946f-328f7e70d654}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon\01.Corvus_DefaultDagger">
+      <UniqueIdentifier>{e8d262bf-d13f-4a53-886f-7946a0308b0a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

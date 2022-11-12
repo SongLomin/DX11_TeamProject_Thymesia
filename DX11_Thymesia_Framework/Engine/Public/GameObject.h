@@ -52,6 +52,9 @@ public:
 protected:
 	virtual void OnDestroy() override;
 
+	//SetDead가 호출되는 시점에 발생하는 이벤트입니다.
+	virtual void OnSetDead() {}
+
 protected:
 	void Set_OwnerForMyComponents();
 
