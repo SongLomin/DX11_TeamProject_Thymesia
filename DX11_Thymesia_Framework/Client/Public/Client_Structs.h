@@ -179,6 +179,16 @@ namespace Client
 		_int		iNumFrameY;
 		_float2		fCurFrame;
 		_float		fSpriteSpeed;
+
+		// TODO : for Snake Particle
+		_bool		bSnakeEffect;
+		_float		fSnakeXCosConst;
+		_float		fSnakeXSinConst;
+		_float		fSnakeYCosConst;
+		_float		fSnakeYSinConst;
+		_float		fSnakeZCosConst;
+		_float		fSnakeZSinConst;
+
 	};
 
 	struct WEAPON_DESC
