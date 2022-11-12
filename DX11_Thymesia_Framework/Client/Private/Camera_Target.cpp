@@ -298,11 +298,12 @@ void CCamera_Target::Reposition_Camera_AfterCinematic(_float fTimeDelta)
 
 	_float fLength = XMVector3Length(vDescCamPosition - vCamPosAfterCinematic).m128_f32[0];
 
-	cout << "fLength : " << fLength << " fTimeDelta : " << fTimeDelta << endl;
-
-	if (fTimeDelta < fLength)
+	if (0.5f*fTimeDelta < fLength)
 	{
-		XMStoreFloat4(&m_vCamPosAfterCinematic, XMVectorLerp(vCamPosAfterCinematic, vDescCamPosition, 2.f*fTimeDelta));
+		_float fRatio = 5.f * fTimeDelta;
+		if (1.f < fRatio)
+			fRatio = 1.f;
+		XMStoreFloat4(&m_vCamPosAfterCinematic, XMVectorLerp(vCamPosAfterCinematic, vDescCamPosition, fRatio));
 	}
 	else
 		m_bCinematicEnd = false;
