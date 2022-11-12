@@ -4,6 +4,7 @@
 #include "MeshContainer.h"
 #include "Texture.h"
 #include "GameObject.h"
+#include "Shader.h"
 
 GAMECLASS_C(CVIBuffer_Model_Instance)
 CLONE_C(CVIBuffer_Model_Instance, CComponent)
@@ -16,80 +17,6 @@ HRESULT CVIBuffer_Model_Instance::Initialize_Prototype()
 
 HRESULT CVIBuffer_Model_Instance::Initialize(void* pArg)
 {
-#pragma region VERTEXBUFFER
-	m_iStride = sizeof(VTXMODEL);
-	m_iNumVertices = 4;
-	m_iNumVertexBuffers = 1;
-
-	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
-	m_BufferDesc.ByteWidth = m_iStride * m_iNumVertices;
-	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	m_BufferDesc.StructureByteStride = m_iStride;
-	m_BufferDesc.CPUAccessFlags = 0;
-	m_BufferDesc.MiscFlags = 0;
-
-	VTXTEX* pVertices = new VTXTEX[m_iNumVertices];
-
-	pVertices[0].vPosition = _float3(-0.5f, 0.5f, 0.f);
-	pVertices[0].vTexUV = _float2(0.0f, 0.f);
-
-	pVertices[1].vPosition = _float3(0.5f, 0.5f, 0.f);
-	pVertices[1].vTexUV = _float2(1.0f, 0.f);
-
-	pVertices[2].vPosition = _float3(0.5f, -0.5f, 0.f);
-	pVertices[2].vTexUV = _float2(1.0f, 1.f);
-
-	pVertices[3].vPosition = _float3(-0.5f, -0.5f, 0.f);
-	pVertices[3].vTexUV = _float2(0.0f, 1.f);
-
-	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
-	m_SubResourceData.pSysMem = pVertices;
-
-	if (FAILED(__super::Create_VertexBuffer()))
-		return E_FAIL;
-
-	Safe_Delete_Array(pVertices);
-
-
-#pragma endregion
-
-#pragma region INDEXBUFFER
-
-
-#pragma endregion
-	m_iIndicesStride = sizeof(FACEINDICES16);
-	m_iNumPrimitive = 2;
-	m_iNumIndices = 3 * m_iNumPrimitive;
-	m_eIndexFormat = DXGI_FORMAT_R16_UINT;
-	m_eToplogy = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-
-	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
-	m_BufferDesc.ByteWidth = m_iIndicesStride * m_iNumPrimitive;
-	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	m_BufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	m_BufferDesc.StructureByteStride = 0;
-	m_BufferDesc.CPUAccessFlags = 0;
-	m_BufferDesc.MiscFlags = 0;
-
-	FACEINDICES16* pIndices = new FACEINDICES16[m_iNumPrimitive];
-	ZeroMemory(pIndices, sizeof(FACEINDICES16) * m_iNumPrimitive);
-
-	pIndices[0]._1 = 0;
-	pIndices[0]._2 = 1;
-	pIndices[0]._3 = 2;
-
-	pIndices[1]._1 = 0;
-	pIndices[1]._2 = 2;
-	pIndices[1]._3 = 3;
-
-	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
-	m_SubResourceData.pSysMem = pIndices;
-
-	if (FAILED(Create_IndexBuffer()))
-		return E_FAIL;
-
-	Safe_Delete_Array(pIndices);
 
 	return S_OK;
 }
@@ -100,8 +27,9 @@ void CVIBuffer_Model_Instance::Start()
 
 void CVIBuffer_Model_Instance::Init_NoAnimInstance(const char* In_szModelName, _int In_iNumInstance, const string& szTexturePath)
 {
-	m_iInstanceStride = sizeof(VTXINSTANCE);
+	m_iInstanceStride = sizeof(VTXMODELINSTANCE);
 	m_iNumInstance = In_iNumInstance;
+	m_iNumVertexBuffers = 2;
 
 	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
 	m_BufferDesc.ByteWidth = m_iInstanceStride * m_iNumInstance;
@@ -111,22 +39,23 @@ void CVIBuffer_Model_Instance::Init_NoAnimInstance(const char* In_szModelName, _
 	m_BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	m_BufferDesc.MiscFlags = 0;
 
-	VTXINSTANCE* pInstance = DBG_NEW VTXINSTANCE[m_iNumInstance];
+	VTXMODELINSTANCE* pInstance = DBG_NEW VTXMODELINSTANCE[m_iNumInstance];
 
 	for (_uint i = 0; i < m_iNumInstance; ++i)
 	{
 		pInstance[i].vRight = _float4(1.f, 0.f, 0.f, 0.f);
 		pInstance[i].vUp = _float4(0.f, 1.f, 0.f, 0.f);
 		pInstance[i].vLook = _float4(0.f, 0.f, 1.f, 0.f);
-		pInstance[i].vTranslation = _float4(rand() % 10, 10.0f, rand() % 10, 1.f);
+		pInstance[i].vTranslation = _float4(rand() % 10, 0.f, rand() % 10, 1.f);
 	}
 
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
 	m_SubResourceData.pSysMem = pInstance;
 
-	if (FAILED(DEVICE->CreateBuffer(&m_BufferDesc, &m_SubResourceData, &m_pVBInstance)))
+	DEVICE->CreateBuffer(&m_BufferDesc, &m_SubResourceData, &m_pVBInstance);
 
 	Safe_Delete_Array(pInstance);
+
 /////////////////////////////////////////////////////
 	m_pModelData = GAMEINSTANCE->Get_ModelFromKey(In_szModelName);
 	m_szModelKey = In_szModelName;
@@ -157,7 +86,7 @@ void CVIBuffer_Model_Instance::Create_MeshContainers()
 	for (_uint i = 0; i < m_iNumMeshContainers; ++i)
 	{
 		weak_ptr<CMeshContainer> pMeshContainer  = Get_Owner().lock()->Add_Component<CMeshContainer>();
-		pMeshContainer.lock()->Init_Mesh(m_pModelData->Mesh_Datas[i], Cast<CModel>(m_this));
+		pMeshContainer.lock()->Init_Mesh(m_pModelData->Mesh_Datas[i]);
 		m_MeshContainers.push_back(pMeshContainer);
 	}
 }
@@ -263,6 +192,42 @@ void CVIBuffer_Model_Instance::Init_Particle(const _uint In_Size)
 #pragma endregion
 }
 
+HRESULT CVIBuffer_Model_Instance::Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eType)
+{
+	if (iMeshContainerIndex >= m_iNumMeshContainers)
+		assert(false);
+
+	_uint		iMaterialIndex = m_MeshContainers[iMeshContainerIndex].lock()->Get_MaterialIndex();
+	if (iMaterialIndex >= m_iNumMaterials)
+		assert(false);
+
+	if (!m_Materials[iMaterialIndex].pTextures[eType].lock().get())
+	{
+		if (aiTextureType::aiTextureType_DIFFUSE == eType)
+		{
+			vector<ComPtr<ID3D11ShaderResourceView>> NullTexture = GAMEINSTANCE->Get_TexturesFromKey("NullTexture");
+
+			pShader.lock()->Set_ShaderResourceView(pConstantName, NullTexture.front());
+		}
+
+
+		return S_OK;
+	}
+
+	/*else
+	{
+		if (aiTextureType::aiTextureType_DIFFUSE == eType)
+		{
+			pShader.lock()->Set_ShaderResourceView(pConstantName, GAMEINSTANCE->Get_TexturesFromKey(TEXT("NullTexture")).front());
+		}
+
+		return E_FAIL;
+	}*/
+
+	return m_Materials[iMaterialIndex].pTextures[eType].lock()->Set_ShaderResourceView(pShader, pConstantName);
+}
+
+
 HRESULT CVIBuffer_Model_Instance::Render()
 {
 
@@ -289,6 +254,40 @@ HRESULT CVIBuffer_Model_Instance::Render()
 	DEVICECONTEXT->DrawIndexedInstanced(6, m_iNumInstance, 0, 0, 0);
 
 	return S_OK;
+}
+
+
+HRESULT CVIBuffer_Model_Instance::Render_Mesh(_uint iMeshContainerIndex)
+{
+	if (iMeshContainerIndex >= m_iNumMeshContainers)
+		return E_FAIL;
+
+
+	ID3D11Buffer* pVertexBuffers[] = {
+		m_MeshContainers[iMeshContainerIndex].lock()->Get_VertexBuffer().Get(),
+		m_pVBInstance.Get()
+	};
+
+	_uint		iStrides[] = {
+		m_MeshContainers[iMeshContainerIndex].lock()->Get_Stride(),
+		m_iInstanceStride
+	};
+
+	_uint		iOffsets[] = {
+		0,
+		0
+	};
+
+	DEVICECONTEXT->IASetVertexBuffers(0,m_iNumVertexBuffers , pVertexBuffers, iStrides, iOffsets);
+	DEVICECONTEXT->IASetIndexBuffer(m_MeshContainers[iMeshContainerIndex].lock()->Get_IndexBuffer().Get(), m_MeshContainers[iMeshContainerIndex].lock()->Get_IndexFormat(), 0);
+	DEVICECONTEXT->IASetPrimitiveTopology(m_MeshContainers[iMeshContainerIndex].lock()->Get_Topology());
+
+	/* 6 : 하나의 도형을 그리기위해 사용하는 인덱스의 갯수. 네모라서 여섯개.  */
+	DEVICECONTEXT->DrawIndexedInstanced(m_MeshContainers[iMeshContainerIndex].lock()->Get_NumIndices(), m_iNumInstance, 0, 0, 0);
+
+	return S_OK;
+
+
 }
 
 void CVIBuffer_Model_Instance::Update(_float fTimeDelta)

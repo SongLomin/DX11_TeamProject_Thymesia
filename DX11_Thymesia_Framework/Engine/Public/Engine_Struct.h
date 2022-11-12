@@ -232,7 +232,6 @@ namespace Engine
 		XMFLOAT4			vUp;
 		XMFLOAT4			vLook;
 		XMFLOAT4			vTranslation;
-		XMFLOAT4			vColor;
 	}VTXMODELINSTANCE;
 
 	typedef struct ENGINE_DLL tagVertex_Point_Instance_Declaration
@@ -240,6 +239,12 @@ namespace Engine
 		static const unsigned int		iNumElements = 6;
 		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
 	}VTXPOINT_INSTANCE_DECLARATION;
+
+	typedef struct ENGINE_DLL tagVertex_Model_Instance_Declaration
+	{
+		static const unsigned int		iNumElements = 8;
+		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
+	}VTXMODEL_INSTANCE_DECLARATION;
 
 	typedef struct ENGINE_DLL tagVertex_Texture_Instance_Declaration
 	{

@@ -5,6 +5,7 @@ BEGIN(Engine)
 struct MESH_DATA;
 struct MODEL_DATA;
 class CMeshContainer;
+class CShader;
 
 
 class ENGINE_DLL CVIBuffer_Model_Instance :
@@ -26,6 +27,11 @@ public:
         return m_iMaterialIndex;
     }
 
+    _uint Get_NumMeshContainers() const
+    {
+        return m_iNumMeshContainers;
+    }
+
 private:
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize(void* pArg) override;
@@ -35,7 +41,10 @@ public:
     void Init_NoAnimInstance(const char* In_szModelName, _int In_iNumInstance, const string& szTexturePath ="");
     void Init_Particle(const _uint In_Size);
 
+    HRESULT Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eType);
+
     virtual HRESULT Render() override;
+    HRESULT Render_Mesh(_uint iMeshContainerIndex);
     void Update(_float fTimeDelta);
     void Update(const vector<PARTICLE_DESC>& In_ParticleDescs);
 
