@@ -1,17 +1,12 @@
 #include "..\Public\PhysXCollider.h"
+#include "GameInstance.h"
 #include "PhysX_Manager.h"
 #include "Transform.h"
+#include "SMath.h"
 
+GAMECLASS_C(CPhyXCollider);
+IMPLEMENT_CLONABLE(CPhyXCollider, CComponent);
 
-CPhyXCollider::CPhyXCollider()
-	: CComponent()
-{
-}
-
-CPhyXCollider::CPhyXCollider(const CPhyXCollider & rhs)
-	: CComponent(rhs)
-{
-}
 
 HRESULT CPhyXCollider::Initialize_Prototype()
 {
@@ -32,7 +27,11 @@ HRESULT CPhyXCollider::Initialize(void * pArg)
 	return S_OK;
 }
 
-void CPhyXCollider::Synchronize_Transform(CTransform * pTransform)
+void CPhyXCollider::Start()
+{
+}
+
+void CPhyXCollider::Synchronize_Transform(weak_ptr<CTransform> pTransform)
 {
 	PxTransform	Transform;
 	if (m_pRigidDynamic)
@@ -43,11 +42,11 @@ void CPhyXCollider::Synchronize_Transform(CTransform * pTransform)
 
 	_vector vPos = { Transform.p.x, Transform.p.y, Transform.p.z };
 	_vector vQuaternion = { Transform.q.x, Transform.q.y, Transform.q.z, Transform.q.w };
-	pTransform->Set_State(CTransform::STATE_TRANSLATION, vPos);
-	pTransform->MatrixRotationQuaternion(vQuaternion);
+	pTransform.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
+	pTransform.lock()->Rotation_Quaternion(vQuaternion);
 }
 
-void CPhyXCollider::Synchronize_Transform_Position(CTransform * pTransform)
+void CPhyXCollider::Synchronize_Transform_Position(weak_ptr<CTransform> pTransform)
 {
 	PxTransform	Transform;
 	if (m_pRigidDynamic)
@@ -57,10 +56,10 @@ void CPhyXCollider::Synchronize_Transform_Position(CTransform * pTransform)
 		Transform = m_pRigidStatic->getGlobalPose();
 
 	_vector vPos = { Transform.p.x, Transform.p.y, Transform.p.z };
-	pTransform->Set_State(CTransform::STATE_TRANSLATION, vPos);
+	pTransform.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
 }
 
-void CPhyXCollider::Synchronize_Transform_Rotation(CTransform * pTransform)
+void CPhyXCollider::Synchronize_Transform_Rotation(weak_ptr<CTransform> pTransform)
 {
 	PxTransform	Transform;
 	if (m_pRigidDynamic)
@@ -70,13 +69,13 @@ void CPhyXCollider::Synchronize_Transform_Rotation(CTransform * pTransform)
 		Transform = m_pRigidStatic->getGlobalPose();
 
 	_vector vQuaternion = { Transform.q.x, Transform.q.y, Transform.q.z, Transform.q.w };
-	pTransform->MatrixRotationQuaternion(vQuaternion);
+	pTransform.lock()->Rotation_Quaternion(vQuaternion);
 }
 
-void CPhyXCollider::Synchronize_Collider(CTransform * pTransform)
+void CPhyXCollider::Synchronize_Collider(weak_ptr<CTransform> pTransform)
 {
-	_vector vPos = pTransform->Get_State(CTransform::STATE_TRANSLATION);
-	_vector vQuaternion = pTransform->Get_Quaternion();
+	_vector vPos = pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
+	_vector vQuaternion = XMQuaternionRotationMatrix(SMath::Get_RotationMatrix(pTransform.lock()->Get_WorldMatrix()));
 	Set_Position(vPos, vQuaternion);
 }
 
@@ -381,14 +380,14 @@ void CPhyXCollider::CreatePhysActor(PHYSXCOLLIDERDESC PhysXColliderDesc)
 
 	switch (PhysXColliderDesc.eType)
 	{
-	case COLLIDERTYPE::DYNAMIC:
-	case COLLIDERTYPE::YFIXED_DYNAMIC:
+	case PHYSXACTOR_TYPE::DYNAMIC:
+	case PHYSXACTOR_TYPE::YFIXED_DYNAMIC:
 		Create_DynamicActor(PhysXColliderDesc, Transform, PhysXColliderDesc.pConvecMesh);
 		break;
-	case COLLIDERTYPE::STATIC:
+	case PHYSXACTOR_TYPE::STATIC:
 		Create_StaticActor(PhysXColliderDesc, Transform, PhysXColliderDesc.pConvecMesh);
 		break;
-	case COLLIDERTYPE::ZONE:
+	case PHYSXACTOR_TYPE::ZONE:
 
 		break;
 	default:
@@ -401,17 +400,17 @@ void CPhyXCollider::Create_DynamicActor(PHYSXCOLLIDERDESC PhysXColliderDesc, PxT
 {
 	switch (PhysXColliderDesc.eShape)
 	{
-	case COLLIDERSHAPE::SPHERE:
+	case PHYSXCOLLIDER_TYPE::SPHERE:
 		m_pRigidDynamic = CPhysX_Manager::Get_Instance()->Create_DynamicActor(Transform,
 			PxSphereGeometry(XMVectorGetX(PhysXColliderDesc.vScale)), CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.fDensity, PxVec3(0), PhysXColliderDesc.pMaterial);
 		break;
-	case COLLIDERSHAPE::BOX:
+	case PHYSXCOLLIDER_TYPE::BOX:
 		m_pRigidDynamic = CPhysX_Manager::Get_Instance()->Create_DynamicActor(Transform,
 			PxBoxGeometry(XMVectorGetX(PhysXColliderDesc.vScale) * 0.5f, XMVectorGetY(PhysXColliderDesc.vScale) * 0.5f, XMVectorGetZ(PhysXColliderDesc.vScale) * 0.5f),
 			CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.fDensity, PxVec3(0), PhysXColliderDesc.pMaterial);
 		break;
-	case COLLIDERSHAPE::CYLINDER:
-	case COLLIDERSHAPE::CONVECMESH:
+	case PHYSXCOLLIDER_TYPE::CYLINDER:
+	case PHYSXCOLLIDER_TYPE::CONVECMESH:
 	{
 		PxConvexMeshGeometry PxGeometry; (PhysXColliderDesc.pConvecMesh);
 		PxGeometry.convexMesh = PhysXColliderDesc.pConvecMesh;
@@ -426,7 +425,7 @@ void CPhyXCollider::Create_DynamicActor(PHYSXCOLLIDERDESC PhysXColliderDesc, PxT
 		//	PxConvexMeshGeometry(PhysXColliderDesc.pConvecMesh), CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.fDensity, PxVec3(0), PhysXColliderDesc.pMaterial);
 		break;
 	}
-	case COLLIDERSHAPE::SHAPE_END:
+	case PHYSXCOLLIDER_TYPE::TYPE_END:
 		MSG_BOX("Failed to create DynamicActor : eShape is wrong");
 		break;
 	default:
@@ -438,21 +437,21 @@ void CPhyXCollider::Create_StaticActor(PHYSXCOLLIDERDESC PhysXColliderDesc, PxTr
 {
 	switch (PhysXColliderDesc.eShape)
 	{
-	case COLLIDERSHAPE::SPHERE:
+	case PHYSXCOLLIDER_TYPE::SPHERE:
 		m_pRigidStatic = CPhysX_Manager::Get_Instance()->Create_StaticActor(Transform,
 			PxSphereGeometry(XMVectorGetX(PhysXColliderDesc.vScale)), CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.pMaterial);
 		break;
-	case COLLIDERSHAPE::BOX:
+	case PHYSXCOLLIDER_TYPE::BOX:
 		m_pRigidStatic = CPhysX_Manager::Get_Instance()->Create_StaticActor(Transform,
 			PxBoxGeometry(XMVectorGetX(PhysXColliderDesc.vScale) * 0.5f, XMVectorGetY(PhysXColliderDesc.vScale) * 0.5f, XMVectorGetZ(PhysXColliderDesc.vScale) * 0.5f),
 			CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.pMaterial);
 		break;
-	case COLLIDERSHAPE::CYLINDER:
-	case COLLIDERSHAPE::CONVECMESH:
+	case PHYSXCOLLIDER_TYPE::CYLINDER:
+	case PHYSXCOLLIDER_TYPE::CONVECMESH:
 		m_pRigidStatic = CPhysX_Manager::Get_Instance()->Create_StaticActor(Transform,
 			PxConvexMeshGeometry(PhysXColliderDesc.pConvecMesh), CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.pMaterial);
 		break;
-	case COLLIDERSHAPE::SHAPE_END:
+	case PHYSXCOLLIDER_TYPE::TYPE_END:
 		MSG_BOX("Failed to create StaticActor : eShape is wrong");
 		break;
 	default:
@@ -460,37 +459,14 @@ void CPhyXCollider::Create_StaticActor(PHYSXCOLLIDERDESC PhysXColliderDesc, PxTr
 	}
 }
 
-CPhyXCollider * CPhyXCollider::Create()
+void CPhyXCollider::OnDestroy()
 {
-	CPhyXCollider*		pInstance = new CPhyXCollider();
-
-	if (FAILED(pInstance->Initialize_Prototype()))
-	{
-		MSG_BOX("Failed to Created : CModel");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
-}
-
-CComponent * CPhyXCollider::Clone(void * pArg)
-{
-	CPhyXCollider*		pInstance = new CPhyXCollider(*this);
-
-	if (FAILED(pInstance->Initialize(pArg)))
-	{
-		MSG_BOX("Failed to Created : CPhyXCollider");
-		Safe_Release(pInstance);
-	}
-
-	return pInstance;
-}
-
-void CPhyXCollider::Free()
-{
-	__super::Free();
 	if (m_pRigidDynamic)
 		m_pRigidDynamic->release();
 	if (m_pRigidStatic)
 		m_pRigidStatic->release();
+}
+
+void CPhyXCollider::Free()
+{
 }

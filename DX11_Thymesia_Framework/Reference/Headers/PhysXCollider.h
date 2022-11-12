@@ -6,6 +6,10 @@ class CTransform;
 
 class ENGINE_DLL CPhyXCollider final : public CComponent
 {
+	GAMECLASS_H(CPhyXCollider);
+	SHALLOW_COPY(CPhyXCollider);
+	DECLARE_CLONABLE(CPhyXCollider, CComponent);
+
 public:
 	typedef struct PhysXColliderDesc
 	{
@@ -16,19 +20,14 @@ public:
 
 		PxConvexMesh*		pConvecMesh;
 		PxMaterial*			pMaterial;
-		COLLIDERTYPE		eType;
+		PHYSXACTOR_TYPE		eType;
 		XMVECTOR			vPosition;
 		XMVECTOR			vAngles;
-		COLLIDERSHAPE		eShape;
+		PHYSXCOLLIDER_TYPE		eShape;
 		XMVECTOR			vScale;
 		float				fDensity;
 
 	}PHYSXCOLLIDERDESC;
-
-public:
-	CPhyXCollider();
-	CPhyXCollider(const CPhyXCollider& rhs);
-	virtual ~CPhyXCollider() = default;
 
 public:
 	_vector	Get_Position();
@@ -60,13 +59,14 @@ public:
 public:
 	HRESULT Initialize_Prototype();
 	HRESULT Initialize(void* pArg) override;
+	virtual void	Start() override;
 
 public:
-	void	Synchronize_Transform(CTransform* pTransform);
-	void	Synchronize_Transform_Position(CTransform* pTransform);
-	void	Synchronize_Transform_Rotation(CTransform* pTransform);
+	void	Synchronize_Transform(weak_ptr<CTransform> pTransform);
+	void	Synchronize_Transform_Position(weak_ptr<CTransform> pTransform);
+	void	Synchronize_Transform_Rotation(weak_ptr<CTransform> pTransform);
 
-	void	Synchronize_Collider(CTransform* pTransform);
+	void	Synchronize_Collider(weak_ptr<CTransform> pTransform);
 
 public:
 	void	PutToSleep();
@@ -102,8 +102,9 @@ private:
 	void		Create_StaticActor(PHYSXCOLLIDERDESC PhysXColliderDesc, PxTransform Transform, PxConvexMesh* pConvexMesh = nullptr);
 
 public:
-	static CPhyXCollider* Create();
-	virtual CComponent* Clone(void* pArg = nullptr) override;
+	virtual void OnDestroy() override;
+
+private:
 	void Free();
 };
 
