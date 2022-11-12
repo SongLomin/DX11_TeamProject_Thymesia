@@ -3,6 +3,9 @@
 
 BEGIN(Engine)
 struct MESH_DATA;
+struct MODEL_DATA;
+class CMeshContainer;
+
 
 class ENGINE_DLL CVIBuffer_Model_Instance :
     public CVIBuffer
@@ -10,6 +13,12 @@ class ENGINE_DLL CVIBuffer_Model_Instance :
     GAMECLASS_H(CVIBuffer_Model_Instance)
         SHALLOW_COPY(CVIBuffer_Model_Instance)
         CLONE_H(CVIBuffer_Model_Instance, CComponent)
+
+public:
+    typedef struct tagModelMaterial
+    {
+        weak_ptr<CTexture> pTextures[AI_TEXTURE_TYPE_MAX];
+    }MODEL_MATERIAL;
 
 public:
     _uint Get_InstanceCount() const { return m_iNumInstance; }
@@ -23,7 +32,7 @@ private:
     virtual void	Start() override;
 
 public:
-    void Init_NoAnimInstance(const char* In_szModelName, const MEMORY_TYPE In_eModelMemoryType, const _uint In_iNoAnimIndex = 0);
+    void Init_NoAnimInstance(const char* In_szModelName, _int In_iNumInstance, const string& szTexturePath ="");
     void Init_Particle(const _uint In_Size);
 
     virtual HRESULT Render() override;
@@ -31,13 +40,25 @@ public:
     void Update(const vector<PARTICLE_DESC>& In_ParticleDescs);
 
 private:
+    void Create_Materials(const char* pModelFilePath);
+    void Create_MeshContainers();
+
+private:
     ComPtr<ID3D11Buffer>        m_pVBInstance;
     _uint						m_iMaterialIndex = 0;
     _uint						m_iInstanceStride = 0;
     _uint						m_iNumInstance = 0;
 
-    string						m_szName;
-    weak_ptr<NoAnim_DATA>			m_pNoAnimData;
+    string									m_szModelKey;
+
+    shared_ptr<MODEL_DATA>					m_pModelData;
+    vector<weak_ptr<CMeshContainer>>		m_MeshContainers;
+    _uint									m_iNumMeshContainers = 0;
+    _uint									m_iNumMaterials = 0;
+
+    vector<MODEL_MATERIAL>					m_Materials;
+    vector<_float>                          m_pInstanceSpeeds;
+
 
 private:
     void Free();

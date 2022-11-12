@@ -1,6 +1,9 @@
 #include "VIBuffer_Model_Instance.h"
 #include "GameInstance.h"
 #include "ModelData.h"
+#include "MeshContainer.h"
+#include "Texture.h"
+#include "GameObject.h"
 
 GAMECLASS_C(CVIBuffer_Model_Instance)
 CLONE_C(CVIBuffer_Model_Instance, CComponent)
@@ -95,51 +98,127 @@ void CVIBuffer_Model_Instance::Start()
 {
 }
 
-void CVIBuffer_Model_Instance::Init_NoAnimInstance(const char* In_szModelName, const MEMORY_TYPE In_eModelMemoryType, const _uint In_iNoAnimIndex)
+void CVIBuffer_Model_Instance::Init_NoAnimInstance(const char* In_szModelName, _int In_iNumInstance, const string& szTexturePath)
 {
-	weak_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey(In_szModelName, In_eModelMemoryType);
-
-	m_pNoAnimData = pModelData.lock()->NoAnim_Datas[In_iNoAnimIndex];
-	m_szName = pModelData.lock()->szModelFileName;
-
-#pragma region VERTEXBUFFER
-
-	m_iMaterialIndex = m_pNoAnimData.lock()->iMaterialIndex;
-
-	HRESULT		hr = 0;
-
-	if (MODEL_TYPE::NONANIM == tNoAnimData->eModelType)
-		hr = Ready_VertexBuffer_NonAnim(tNoAnimData);
-	else
-		hr = Ready_VertexBuffer_Anim(tNoAnimData, pModel);
-
-	if (FAILED(hr))
-		DEBUG_ASSERT;
-#pragma endregion
-
-#pragma region INDEXBUFFER
-	m_iIndicesStride = sizeof(FACEINDICES32);
-	m_iNumPrimitive = tNoAnimData->iNumFaces;
-	//m_iNumPrimitive = pAINoAnim->mNumFaces;
-	m_iNumIndices = 3 * m_iNumPrimitive;
-	m_eIndexFormat = DXGI_FORMAT_R32_UINT;
-	m_eToplogy = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	m_iInstanceStride = sizeof(VTXINSTANCE);
+	m_iNumInstance = In_iNumInstance;
 
 	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
-	m_BufferDesc.ByteWidth = m_iIndicesStride * m_iNumPrimitive;
-	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	m_BufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	m_BufferDesc.StructureByteStride = 0;
-	m_BufferDesc.CPUAccessFlags = 0;
+	m_BufferDesc.ByteWidth = m_iInstanceStride * m_iNumInstance;
+	m_BufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	m_BufferDesc.StructureByteStride = m_iInstanceStride;
+	m_BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	m_BufferDesc.MiscFlags = 0;
 
+	VTXINSTANCE* pInstance = DBG_NEW VTXINSTANCE[m_iNumInstance];
+
+	for (_uint i = 0; i < m_iNumInstance; ++i)
+	{
+		pInstance[i].vRight = _float4(1.f, 0.f, 0.f, 0.f);
+		pInstance[i].vUp = _float4(0.f, 1.f, 0.f, 0.f);
+		pInstance[i].vLook = _float4(0.f, 0.f, 1.f, 0.f);
+		pInstance[i].vTranslation = _float4(rand() % 10, 10.0f, rand() % 10, 1.f);
+	}
+
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
-	m_SubResourceData.pSysMem = tNoAnimData->pIndices.get();
+	m_SubResourceData.pSysMem = pInstance;
 
-	if (FAILED(Create_IndexBuffer()))
-		DEBUG_ASSERT;
+	if (FAILED(DEVICE->CreateBuffer(&m_BufferDesc, &m_SubResourceData, &m_pVBInstance)))
+
+	Safe_Delete_Array(pInstance);
+/////////////////////////////////////////////////////
+	m_pModelData = GAMEINSTANCE->Get_ModelFromKey(In_szModelName);
+	m_szModelKey = In_szModelName;
+
+	if (!m_pModelData.get())
+		assert(false);
 
 
+	if (szTexturePath.empty())
+	{
+		char szDir[MAX_PATH];
+		_splitpath_s(m_pModelData->szModelFilePath.c_str(), nullptr, 0, szDir, MAX_PATH, nullptr, 0, nullptr, 0);
+		Create_Materials(szDir);
+	}
+	else
+	{
+		Create_Materials(szTexturePath.c_str());
+	}
+
+	Create_MeshContainers();
+}
+
+
+void CVIBuffer_Model_Instance::Create_MeshContainers()
+{
+	m_iNumMeshContainers = m_pModelData->iNumMeshs;
+
+	for (_uint i = 0; i < m_iNumMeshContainers; ++i)
+	{
+		weak_ptr<CMeshContainer> pMeshContainer  = Get_Owner().lock()->Add_Component<CMeshContainer>();
+		pMeshContainer.lock()->Init_Mesh(m_pModelData->Mesh_Datas[i], Cast<CModel>(m_this));
+		m_MeshContainers.push_back(pMeshContainer);
+	}
+}
+
+
+void CVIBuffer_Model_Instance::Create_Materials(const char* pModelFilePath)
+{
+
+	m_iNumMaterials = m_pModelData->iNumMaterials;
+
+#ifdef _DEBUG
+	cout << m_szModelKey << endl;
+	cout << "========================================" << endl;
+	cout << "NumMaterials: " << m_iNumMaterials << endl;
+#endif // _DEBUG
+
+
+	for (_uint i = 0; i < m_iNumMaterials; ++i)
+	{
+		MODEL_MATERIAL			Material;
+		ZeroMemory(&Material, sizeof(MODEL_MATERIAL));
+
+		for (_uint j = 0; j < (_uint)AI_TEXTURE_TYPE_MAX; ++j)
+		{
+			char			szFullPath[MAX_PATH] = "";
+
+			string		strPath;
+
+			//if (FAILED(AISCENE->mMaterials[i]->GetTexture(aiTextureType(j), 0, &strPath)))
+			//	continue;
+
+			strPath = m_pModelData->Material_Datas[i]->szTextureName[j];
+
+
+			char			szFileName[MAX_PATH] = "";
+			char			szExt[MAX_PATH] = "";
+
+			_splitpath_s(strPath.c_str(), nullptr, 0, nullptr, 0, szFileName, MAX_PATH, szExt, MAX_PATH);
+
+			strcpy_s(szFullPath, pModelFilePath);
+			strcat_s(szFullPath, szFileName);
+			strcat_s(szFullPath, szExt);
+
+			_tchar		szTextureFilePath[MAX_PATH] = TEXT("");
+			//_tchar		szTextureKey[MAX_PATH] = TEXT("");
+
+			MultiByteToWideChar(CP_ACP, 0, szFullPath, (_int)strlen(szFullPath), szTextureFilePath, MAX_PATH);
+			//MultiByteToWideChar(CP_ACP, 0, szFileName, (_int)strlen(szFileName), szTextureKey, MAX_PATH);
+
+#ifdef _DEBUG
+			//cout << "Load_Texture: " << szFullPath << endl;
+#endif // _DEBUG
+
+			GAMEINSTANCE->Load_Textures(szFileName, szTextureFilePath, MEMORY_TYPE::MEMORY_STATIC);
+			Material.pTextures[j] = m_pOwner.lock()->Add_Component<CTexture>();
+			Material.pTextures[j].lock().get()->Use_Texture(szFileName);
+
+		}
+
+		m_Materials.push_back(Material);
+	}
 }
 
 void CVIBuffer_Model_Instance::Init_Particle(const _uint In_Size)

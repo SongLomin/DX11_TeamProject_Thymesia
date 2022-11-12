@@ -209,11 +209,11 @@
     <ClInclude Include="..\Public\SoundManager.h">
       <Filter>98. Managers\13. SoundManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\VIBuffer_NoAnim_Instance.h">
-      <Filter>01. Elements\03. Component\01. VIBuffer\09. NoAmin_Instance</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_Ground.h">
       <Filter>01. Elements\03. Component\01. VIBuffer\09. Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Model_Instance.h">
+      <Filter>01. Elements\03. Component\01. VIBuffer\09. NoAmin_Instance</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -406,7 +406,7 @@
     <ClCompile Include="..\Private\SoundManager.cpp">
       <Filter>98. Managers\13. SoundManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\VIBuffer_NoAnim_Instance.cpp">
+    <ClCompile Include="..\Private\VIBuffer_Model_Instance.cpp">
       <Filter>01. Elements\03. Component\01. VIBuffer\09. NoAmin_Instance</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Ground.cpp">
