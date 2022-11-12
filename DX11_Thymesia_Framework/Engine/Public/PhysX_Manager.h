@@ -106,6 +106,9 @@ private:
 
 
 public:
+	virtual void OnDestroy() override;
+
+private:
 	void Free();
 };
 

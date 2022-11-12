@@ -323,7 +323,7 @@ void CGameInstance::Release_Engine()
 	GET_SINGLE(CFrustum)->Destroy_Instance();
 	GET_SINGLE(CRenderTarget_Manager)->Destroy_Instance();
 	GET_SINGLE(CSound_Manager)->Destroy_Instance();
-
+	GET_SINGLE(CPhysX_Manager)->Destroy_Instance();
 	GET_SINGLE(CGameInstance)->Destroy_Instance();
 }
 
@@ -569,8 +569,6 @@ void CGameInstance::Free()
 	m_pTarget_Manager.reset();
 	m_pSound_Manager.reset();
 
-
-	m_pPhysX_Manager->Free();
 	m_pPhysX_Manager.reset();
 }
 

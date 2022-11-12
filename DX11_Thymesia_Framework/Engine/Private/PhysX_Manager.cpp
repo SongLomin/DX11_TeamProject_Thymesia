@@ -5,6 +5,8 @@ IMPLEMENT_SINGLETON(CPhysX_Manager)
 
 HRESULT CPhysX_Manager::Initialize()
 {
+	ZeroMemory(m_pScenes, sizeof(PxScene*) * SCENE_END);
+
 	// Create Foundation
 	m_pFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, m_Allocator, m_ErrorCallback);
 
@@ -279,7 +281,7 @@ void CPhysX_Manager::Create_Shape(const PxGeometry & Geometry, PxMaterial* pMate
 void CPhysX_Manager::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh ** ppOut)
 {
 	_uint	iNumVerts = 32;
-	PxVec3* pVertices = new PxVec3[iNumVerts];
+	PxVec3* pVertices = DBG_NEW PxVec3[iNumVerts];
 
 	// Below
 	for (PxU32 i = 0; i < 16; i++)
@@ -313,17 +315,18 @@ void CPhysX_Manager::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUppe
 //
 //}
 
-void CPhysX_Manager::Free()
+void CPhysX_Manager::OnDestroy()
 {
 	PX_UNUSED(true);
 	for (auto& elem : m_pScenes)
 	{
-		elem->release();
+		if(elem)
+			elem->release();
 	}
 
-	
-	m_pCurScene->release();
-	//m_pDispatcher->release();
+
+	//m_pCurScene->release();
+	m_pDispatcher->release();
 
 	if (m_pPhysics)
 		m_pPhysics->release();
@@ -339,6 +342,11 @@ void CPhysX_Manager::Free()
 		transport->release();
 	}
 	m_pFoundation->release();
+}
+
+void CPhysX_Manager::Free()
+{
+	
 }
 
 
