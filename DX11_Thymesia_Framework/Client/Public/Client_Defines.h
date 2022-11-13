@@ -108,7 +108,7 @@ namespace Client
 	};
 
 	enum class  NORMONSTERTYPE {
-		AXEMAN,  // 도끼든여자
+		AXEMAN,  // 도끼든남자
 		KNIFEWOMAN, // 기본단검여자
 		SKULL, // 기본해골
 		GARDENER, // 낫든몬스터
@@ -117,8 +117,8 @@ namespace Client
 
 	enum class NORMONSTERIDLETYPE {
 		NORIDLE,
-		GROGGYIDLE,
-		DORMANT,
+		SITIDLE,
+		FIDGETIDLE,
 		IDLEEND
 	};
 

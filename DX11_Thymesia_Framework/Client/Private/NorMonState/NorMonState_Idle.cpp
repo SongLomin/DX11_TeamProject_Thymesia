@@ -28,20 +28,41 @@ HRESULT CNorMonState_Idle::Initialize(void* pArg)
 void CNorMonState_Idle::Start()
 {
 	__super::Start();
-	switch (m_eNorMonType)
+
+	if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
 	{
-	case Client::NORMONSTERTYPE::AXEMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("DemoM02_Idle1");
-		break;
-	case Client::NORMONSTERTYPE::KNIFEWOMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("LV1Villager_F_Idle"); 
-		break;
-	case Client::NORMONSTERTYPE::SKULL:
-		break;
-	case Client::NORMONSTERTYPE::GARDENER:
-		break;
+		switch (m_eNorMonIdleType)
+		{
+		case Client::NORMONSTERIDLETYPE::NORIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("DemoM02_Idle1");
+			break;
+		case Client::NORMONSTERIDLETYPE::SITIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("LV1Villager_M_Sit_Idle");
+			break;
+		case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("LV1Villager_M_SP_Idle1");
+			break;
+		}
 	}
 
+	if (m_eNorMonType == NORMONSTERTYPE::KNIFEWOMAN)
+	{
+		switch (m_eNorMonIdleType)
+		{
+		case Client::NORMONSTERIDLETYPE::NORIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("LV1Villager_F_Idle");
+			break;
+		case Client::NORMONSTERIDLETYPE::SITIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("DemoM02_Idle1");
+			break;
+		case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("DemoM02_Idle1");
+			break;
+		}
+	}
+
+	
+	
 	
 
 }
@@ -92,6 +113,15 @@ void CNorMonState_Idle::Free()
 _bool CNorMonState_Idle::Check_AndChangeNextState()
 {
 
-	return false;
+	if (!Check_Requirement())
+		return false;
+
+
+	//_float fDistance = Get_DistanceWithPlayer();
+
+
+
+
+	
 }
 

@@ -38,7 +38,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	//m_eNorMonType = NORMONSTERTYPE::AXEMAN;
 	
 
-
+	
 	switch (m_tLinkStateDesc.eNorMonType)
 	{
 	case  NORMONSTERTYPE::AXEMAN:
@@ -46,7 +46,8 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 		m_pWeapons.back().lock()->Set_WeaponType(MONSTERWEAPONTYPE::WEAPON_AXE);
 		m_pWeapons.back().lock()->Init_DefaultWeapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "hand_r");
-		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(1.f, 0.f, 1.f, 1.f));
+		//TODO 야매에요 ㅎ
+		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(1.f, 0.f, m_tLinkStateDesc.vYame.z, 1.f));
 		break;
 		//나중에추가할거미리해둠
 	case  NORMONSTERTYPE::KNIFEWOMAN:
@@ -121,20 +122,8 @@ HRESULT CNorMonster::Start()
 {
 	__super::Start();
 
-	switch (m_tLinkStateDesc.eNorMonIdleType)
-	{
-	case Client::NORMONSTERIDLETYPE::NORIDLE:
-		Change_State<CNorMonState_Idle>();
-		break;
-	case Client::NORMONSTERIDLETYPE::GROGGYIDLE:
-		// Change_State<CNorMonState_GroggyStart>();
-		break;
-	case Client::NORMONSTERIDLETYPE::DORMANT:
-		// Change_State<CNorMonState_DorMant>();
-		break;
-	}
-
 	
+	Change_State<CNorMonState_Idle>();
 
 	//m_EffectIndexList.emplace_back("Character_Target", GET_SINGLE(CGameManager)->Use_EffectGroup("Character_Target", m_pTransformCom));
 
@@ -149,6 +138,9 @@ void CNorMonster::Tick(_float fTimeDelta)
 	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
 
 	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
+
+	
+
 
 }
 

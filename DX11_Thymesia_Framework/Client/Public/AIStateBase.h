@@ -42,6 +42,8 @@ protected:
     _float              m_fCurrentRotateTime = 0.f;
     _float              m_fStateTimeAcc = 100.f;
     NORMONSTERTYPE      m_eNorMonType =     NORMONSTERTYPE::NMON_END;
+    NORMONSTERIDLETYPE  m_eNorMonIdleType = NORMONSTERIDLETYPE::IDLEEND;
+
    
 
 
