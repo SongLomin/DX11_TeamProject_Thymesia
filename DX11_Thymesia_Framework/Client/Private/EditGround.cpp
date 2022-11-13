@@ -52,9 +52,9 @@ HRESULT CEditGround::Initialize(void* pArg)
 	m_pTextureCom.emplace(TexVarDesc[0], Desc);
 
 	Load_AllMeshInfo();
-	Load_ResourceList(m_MeshNames, "../Bin/GroundInfo/Mesh/");
+	Load_ResourceList(m_MeshNames, "../Bin/GroundInfo/Mesh/", ".bin");
 	Load_ResourceList(m_TextureNames, "../Bin/Resources/Textures/Ground/");
-	Load_ResourceList(m_FilterNames, "../Bin/GroundInfo/Filter_SubInfo/");
+	Load_ResourceList(m_FilterNames, "../Bin/GroundInfo/Filter_SubInfo/", ".bin");
 
 	return S_OK;
 }
@@ -152,7 +152,7 @@ HRESULT CEditGround::SetUp_ShaderResource()
 	return S_OK;
 }
 
-void CEditGround::Load_ResourceList(vector<string>& In_List, const filesystem::path& In_Path)
+void CEditGround::Load_ResourceList(vector<string>& In_List, const filesystem::path& In_Path, string _szCutName)
 {
 	if (!In_Path.filename().extension().string().empty())
 		return;
@@ -165,6 +165,11 @@ void CEditGround::Load_ResourceList(vector<string>& In_List, const filesystem::p
 		const fs::directory_entry& entry = *itr;
 
 		szFileName = entry.path().filename().string();
+
+		if ("" != _szCutName && string::npos != szFileName.find(_szCutName))
+		{
+			szFileName = szFileName.substr(0, szFileName.find(_szCutName));
+		}
 
 		In_List.push_back(szFileName);
 
@@ -393,7 +398,7 @@ void CEditGround::SetUp_Textures()
 
 	static const char* TexTypeInfo[] =
 	{
-		"Diff_Norm",
+		"Diff_and_Norm",
 		"Diff",
 		"Norm"
 	};
@@ -557,7 +562,8 @@ void CEditGround::SetUp_File()
 	static int	iSelect_FilterData		= 0;
 	static char	szFilterName[MAX_PATH]	= "";
 
-	ImGui::InputText("Filter Name", szFilterName, MAX_PATH);
+	if (ImGui::InputText("Filter Name", szFilterName, MAX_PATH))
+		m_szSaveTextureTag = szFilterName;
 
 	if (ImGui::BeginListBox("Filter List"))
 	{
@@ -576,7 +582,8 @@ void CEditGround::SetUp_File()
 			if (ImGui::Selectable(iter.c_str(), is_selected))
 			{
 				iSelect_FilterData = iIndex;
-				strcpy_s(szFilterName, iter.c_str());
+				m_szSaveTextureTag = iter;
+				strcpy_s(szFilterName, m_szSaveTextureTag.c_str());
 			}
 
 			if (is_selected)
@@ -591,10 +598,7 @@ void CEditGround::SetUp_File()
 
 	if (ImGui::Button("Save_Fltr", ImVec2(100.f, 25.f)))
 	{
-		_tchar szFullTag[MAX_PATH] = L"";
-		MultiByteToWideChar(CP_ACP, 0, szFilterName, (_int)strlen(szFilterName), szFullTag, MAX_PATH);
-
-		Bake_FilterTexture(szFullTag);
+		Bake_FilterTexture();
 	}
 
 	ImGui::SameLine();
@@ -603,10 +607,7 @@ void CEditGround::SetUp_File()
 	{
 		if (0 < (_int)strlen(szFilterName))
 		{
-			_tchar szFullTag[MAX_PATH] = L"";
-			MultiByteToWideChar(CP_ACP, 0, szFilterName, (_int)strlen(szFilterName), szFullTag, MAX_PATH);
-
-			Load_FilterTexture(szFullTag);
+			Load_FilterTexture();
 		}
 	}
 
@@ -703,7 +704,6 @@ void CEditGround::CreateBuffer()
 	Remove_Components<CVIBuffer_Ground>();
 
 	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
-	m_bMeshSave    = false;
 	m_pVIBufferCom.lock()->Init_Mesh(m_vBufferInfo);
 
 	CreateFilterTexture();
@@ -714,8 +714,6 @@ void CEditGround::CreateBuffer()
 void CEditGround::CreateFilterTexture()
 {
 	m_vColors.clear();
-
-	
 
 	if (!m_pTexture2D.Get())
 	{ 
@@ -812,14 +810,13 @@ void CEditGround::Bake_Mesh()
 
 	shared_ptr<MESH_DATA> pMeshData = make_shared<MESH_DATA>();
 	pMeshData->eModelType		= MODEL_TYPE::GROUND;
-	pMeshData->iMaterialIndex	= _uint(m_vBufferInfo.x);
-	pMeshData->iNumBones		= _uint(m_vBufferInfo.y);
+	pMeshData->iMaterialIndex	= 0;
+	pMeshData->iNumBones		= 0;
 	pMeshData->iNumFaces		= _uint(m_vBufferInfo.x - 1) * _uint(m_vBufferInfo.y - 1) * 2;
 	pMeshData->iNumVertices		= m_vBufferInfo.x * m_vBufferInfo.y;
 
 	pMeshData->pGroundVertices = shared_ptr<VTXGROUND[]>(new VTXGROUND[pMeshData->iNumVertices]);
 
-	_float3 vNorm = _float3(0.f, 1.f, 0.f);
 	for (_uint i = 0; i < pMeshData->iNumVertices; ++i)
 	{
 		VTXGROUND vOut;
@@ -848,10 +845,7 @@ void CEditGround::Bake_Mesh()
 
 	/* --- Buffer Data --- */
 	
-	string szBinFilePath 
-		= "../Bin/GroundInfo/Mesh_SubInfo/"
-		+ m_szMeshName
-		+ ((string::npos == m_szMeshName.find(".bin")) ? (".bin") : (""));
+	string szBinFilePath = "../Bin/GroundInfo/Mesh_SubInfo/" + m_szMeshName + ".bin";
 
 	ofstream os(szBinFilePath, ios::binary);
 
@@ -863,18 +857,15 @@ void CEditGround::Bake_Mesh()
 	write_typed_data(os, m_pVIBufferCom.lock()->Get_Interval());
 
 	os.close();
-
-	m_bMeshSave = true;
 }
 
 void CEditGround::Load_Mesh()
 {
 	/* --- Mesh Data --- */
 
-	m_szMeshName = m_szMeshName.substr(0, m_szMeshName.length() - 4);
-	m_pModelData = GAMEINSTANCE->Get_ModelFromKey(m_szMeshName.c_str());
+	shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey(m_szMeshName.c_str());
 
-	if (!m_pModelData.get() || !m_pModelData.get()->Mesh_Datas[0].get())
+	if (!pModelData.get() || !pModelData.get()->Mesh_Datas[0].get())
 		return;
 
 	/* --- Buffer Data --- */
@@ -897,23 +888,22 @@ void CEditGround::Load_Mesh()
 
 	Remove_Components<CVIBuffer_Ground>();
 	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
-	m_pVIBufferCom.lock()->Init_Mesh(m_pModelData.get()->Mesh_Datas[0], iNumVertexX, iNumVertexZ, fInterval);
+	m_pVIBufferCom.lock()->Init_Mesh(pModelData.get()->Mesh_Datas[0], iNumVertexX, iNumVertexZ, fInterval);
 
 	m_bCreate   = true;
-	m_bMeshSave = true;
 }
 
-void CEditGround::Bake_FilterTexture(wstring _szFilePath)
+void CEditGround::Bake_FilterTexture()
 {
-	wstring szTexturePath = TEXT("../Bin/GroundInfo/Filter/") + _szFilePath + TEXT(".dds");
+	_tchar szFullTag[MAX_PATH] = L"";
+	MultiByteToWideChar(CP_ACP, 0, m_szSaveTextureTag.c_str(), (_int)m_szSaveTextureTag.length(), szFullTag, MAX_PATH);
+
+	wstring szTexturePath = TEXT("../Bin/GroundInfo/Filter/") + wstring(szFullTag) + TEXT(".dds");
 
 	if (FAILED(SaveDDSTextureToFile(DEVICECONTEXT, m_pTexture2D.Get(), szTexturePath.c_str())))
 		return;
-	
-	char szFullTag[MAX_PATH] = "";
-	WideCharToMultiByte(CP_ACP, 0, _szFilePath.c_str(), (_int)_szFilePath.length(), szFullTag, MAX_PATH, nullptr, nullptr);
 
-	string szBinFilePath = "../Bin/GroundInfo/Filter_SubInfo/" + string(szFullTag) + ".bin";
+	string szBinFilePath = "../Bin/GroundInfo/Filter_SubInfo/" + m_szSaveTextureTag + ".bin";
 
 	ofstream os(szBinFilePath, ios::binary);
 
@@ -925,16 +915,40 @@ void CEditGround::Bake_FilterTexture(wstring _szFilePath)
 
 	for (auto& iter : m_vColors)
 		write_typed_data(os, iter);
+
+	if (m_pTextureCom.empty())
+		return;
+
+	string szTextureInfoPath = "../Bin/GroundInfo/Filter_SunTextureInfo/" + m_szSaveTextureTag + ".json";
+
+	json TexInfo;
+
+	for (auto& iter : m_pTextureCom)
+	{
+		json Texture;
+
+		Texture.emplace("Diff"   , iter.second.szTexTag_Diff);
+		Texture.emplace("Norm"   , iter.second.szTexTag_Norm);
+		Texture.emplace("Density", iter.second.fDensity);
+
+		TexInfo.emplace(iter.first, Texture);
+	}
+
+	if (FAILED(CJson_Utility::Save_Json(szTextureInfoPath.c_str(), TexInfo)))
+		return;
 }
 
-void CEditGround::Load_FilterTexture(wstring _szFilePath)
+void CEditGround::Load_FilterTexture()
 {
 	if (!m_pTexture2D.Get())
 		CreateFilterTexture();
 
-	_szFilePath = TEXT("../Bin/GroundInfo/Filter_SubInfo/") + _szFilePath;
+	_tchar szFullTag[MAX_PATH] = L"";
+	MultiByteToWideChar(CP_ACP, 0, m_szSaveTextureTag.c_str(), (_int)m_szSaveTextureTag.length(), szFullTag, MAX_PATH);
 
-	ifstream is(_szFilePath, ios::binary);
+	wstring szFilePath = TEXT("../Bin/GroundInfo/Filter_SubInfo/") + wstring(szFullTag) + TEXT(".bin");
+
+	ifstream is(szFilePath, ios::binary);
 
 	if (!is.is_open())
 		return;
@@ -964,6 +978,53 @@ void CEditGround::Load_FilterTexture(wstring _szFilePath)
 	}
 
 	DEVICECONTEXT->Unmap(m_pTexture2D.Get(), 0);
+
+	string szTexturePath = "../Bin/GroundInfo/Filter_SunTextureInfo/" + m_szSaveTextureTag + ".json";
+
+	json json_info;
+	CJson_Utility::Load_Json(szTexturePath.c_str(), json_info);
+
+	for (auto& iter : json_info.items())
+	{
+		string szDatakey = iter.key();
+		json   json_tex  = iter.value();
+
+		auto iter_find = m_pTextureCom.find(szDatakey);
+
+		if (iter_find == m_pTextureCom.end())
+		{
+			TEXTURES_INFO Desc;
+			Desc.pDiffTex = Add_Component<CTexture>();
+			Desc.pNormTex = Add_Component<CTexture>();
+
+			m_pTextureCom.emplace(szDatakey, Desc);
+			iter_find = m_pTextureCom.find(szDatakey);
+		}
+
+		for (auto& iter_item : json_tex.items())
+		{
+			string szitemkey = iter_item.key();
+
+			if ("Diff" == szitemkey)
+			{
+				string szTextureName = iter_item.value();
+				iter_find->second.pDiffTex.lock()->Use_Texture(szTextureName.c_str());
+				iter_find->second.szTexTag_Diff = szTextureName;
+			}
+
+			if ("Norm" == szitemkey)
+			{
+				string szTextureName = iter_item.value();
+				iter_find->second.pNormTex.lock()->Use_Texture(szTextureName.c_str());
+				iter_find->second.szTexTag_Norm = szTextureName;
+			}
+
+			if ("Density" == szitemkey)
+			{
+				iter_find->second.fDensity = iter_item.value();
+			}
+		}
+	}
 }
 
 void CEditGround::Write_Json(json& Out_Json)
@@ -987,20 +1048,20 @@ void CEditGround::Write_Json(json& Out_Json)
 		TexInfo.emplace(iter.first, Texture);
 	}
 
-	/*if (!m_bSaveTexture)
-	8{
-		TexInfo.emplace(iter.first, Texture);
-	}*/
 
-	Out_Json.emplace("TextureInfo", TexInfo);
-	Out_Json.emplace("VIBufferCom", m_szMeshName);
-	Out_Json.emplace("ShaderPass", m_iShaderPass);
+	if (!Check_File("../bin/GroundInfo/Filter" + m_szSaveTextureTag + ".dds"))
+	{
+		Bake_FilterTexture();
+	}
 
-	if (!m_bMeshSave)
+	Out_Json.emplace("g_FilterTexture", string(m_szSaveTextureTag + ".dds"));
+	Out_Json.emplace("TextureInfo"    , TexInfo);
+	Out_Json.emplace("VIBufferCom"    , m_szMeshName);
+	Out_Json.emplace("ShaderPass"     , m_iShaderPass);
+
+	if (!Check_File("../bin/GroundInfo/Mesh/" + m_szSaveTextureTag + ".bin"))
 	{
 		Bake_Mesh();
-
-		m_bMeshSave = true;
 	}
 
 	if (Out_Json.end() != Out_Json.find("Hash"))
@@ -1048,7 +1109,7 @@ void CEditGround::Load_FromJson(const json& In_Json)
 					Desc.pNormTex.lock()->Use_Texture(szTextureName.c_str());
 				}
 
-				if ("Norm" == szDatakey)
+				if ("Density" == szDatakey)
 				{
 					Desc.fDensity = iter_data.value();
 				}

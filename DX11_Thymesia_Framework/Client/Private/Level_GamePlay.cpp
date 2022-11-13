@@ -26,9 +26,7 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	ShowCursor(false);
 
-	
-
-	//Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_GAMEPLAY);
+	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_GAMEPLAY);
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
 	CameraDesc.vEye = _float4(0.0f, 2.5f, -2.5f, 1.f);
@@ -72,11 +70,9 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);
 
-	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL_GAMEPLAY);
+	Load_FromJson(m_szDefaultJsonPath + "Stage3.json", LEVEL_GAMEPLAY);
 
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
-	// GAMEINSTANCE->Add_GameObject<CGround>(LEVEL_GAMEPLAY);
-
 
 	FaderDesc tFaderDesc;
 	tFaderDesc.eFaderType = FADER_TYPE::FADER_IN;
@@ -90,10 +86,10 @@ HRESULT CLevel_GamePlay::Initialize()
 	//GAMEINSTANCE->Add_GameObject<CDubian>(LEVEL::LEVEL_GAMEPLAY).lock()->Set_Enable(false);
 	//GAMEINSTANCE->Add_GameObject<CBianka>(LEVEL::LEVEL_GAMEPLAY).lock()->Set_Enable(false);
 
-	//GAMEINSTANCE->Add_GameObject<CStage1>(LEVEL::LEVEL_GAMEPLAY);
+	GAMEINSTANCE->Add_GameObject<CStage1>(LEVEL::LEVEL_GAMEPLAY);
 	
 
-	//m_iMonsterCount = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::MONSTER).size();
+	m_iMonsterCount = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::MONSTER).size();
 
 	m_iMonsterCount = 0;
 

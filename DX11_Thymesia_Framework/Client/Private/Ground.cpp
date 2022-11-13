@@ -26,8 +26,8 @@ HRESULT CGround::Initialize(void* pArg)
 	m_pShaderCom.lock()->Set_ShaderInfo
 	(
 		TEXT("Shader_VtxGround"),
-		VTXNORTEX_DECLARATION::Element,
-		VTXNORTEX_DECLARATION::iNumElements
+		VTXGROUND_DECLARATION::Element,
+		VTXGROUND_DECLARATION::iNumElements
 	);
 
 	m_pRendererCom = Add_Component<CRenderer>();
@@ -101,7 +101,7 @@ void CGround::Load_FromJson(const json& In_Json)
 					Desc.pNormTex.lock()->Use_Texture(szTextureName.c_str());
 				}
 
-				if ("Norm" == szDatakey)
+				if ("Density" == szDatakey)
 				{
 					Desc.fDensity = iter_data.value();
 				}

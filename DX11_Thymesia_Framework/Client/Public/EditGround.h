@@ -58,7 +58,7 @@ public:
 
 private:
     HRESULT SetUp_ShaderResource();
-    void    Load_ResourceList(vector<string>& In_List, const filesystem::path& In_Path);
+    void    Load_ResourceList(vector<string>& In_List, const filesystem::path& In_Path, string _szCutName = "");
     _bool   Check_File(const string& In_Path);
 
     void    SetUp_EditMode();
@@ -76,8 +76,8 @@ private:
 
     void    Bake_Mesh();
     void    Load_Mesh();
-    void    Bake_FilterTexture(wstring _szFilePath);
-    void    Load_FilterTexture(wstring _szFilePath);
+    void    Bake_FilterTexture();
+    void    Load_FilterTexture();
 
     virtual void Write_Json(json& Out_Json) override;
     virtual void Load_FromJson(const json& In_Json) override;
@@ -106,13 +106,9 @@ private:
     _float                              m_fBufferDrawRadious  = 1.f;
     _float                              m_fBufferPower        = 1.f;
     string                              m_szMeshName          = "";
-    _bool                               m_bMeshSave           = false;
-
-    shared_ptr<MODEL_DATA>              m_pModelData;
 
     BRUSH_MODE                          m_eBrushMode        = BRUSH_MODE::BRUSH_NO1;
-    string                              m_szFindTextureTag  = "";
-    _bool                               m_bSaveTexture      = false;
+    string                              m_szSaveTextureTag  = "";
     ComPtr<ID3D11Texture2D>             m_pTexture2D;
     ComPtr<ID3D11ShaderResourceView>    m_pFilterTexture;
     vector<_uint>                       m_vColors;
