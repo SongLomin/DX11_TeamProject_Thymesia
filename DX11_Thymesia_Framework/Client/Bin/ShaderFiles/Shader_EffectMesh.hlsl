@@ -273,12 +273,36 @@ PS_OUT PS_DIFF_MASK_NOISE(PS_IN In)
 
     return Out;
 }
+
 PS_OUT_DISTORTION PS_DISTORTION(PS_IN In)
 {
     PS_OUT_DISTORTION Out = (PS_OUT_DISTORTION)0;
     
     Out.vColor = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUV);
+    vector vMaskWeight = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUV);
+    
+    Out.vColor *= g_vColor;
+    Out.vColor.a *= vMaskWeight.r;
+  
+    if (Out.vColor.a < g_fDiscardRatio)
+        discard;
+    
+    return Out;
+}
 
+PS_OUT_DISTORTION PS_DISTORTION_Clamp(PS_IN In)
+{
+    PS_OUT_DISTORTION Out = (PS_OUT_DISTORTION) 0;
+    
+    Out.vColor = g_NoiseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUV);
+    vector vMaskWeight = g_MaskTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUV);
+    
+    Out.vColor *= g_vColor;
+    Out.vColor.a *= vMaskWeight.r;
+  
+    if (Out.vColor.a < g_fDiscardRatio)
+        discard;
+    
     return Out;
 }
 
@@ -347,5 +371,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN_SOFT();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_DISTORTION();
+    }
+
+    pass Distortion_Clamp //6
+    {
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_NonCulling);
+
+        VertexShader = compile vs_5_0 VS_MAIN_SOFT();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_DISTORTION_Clamp();
     }
 }
