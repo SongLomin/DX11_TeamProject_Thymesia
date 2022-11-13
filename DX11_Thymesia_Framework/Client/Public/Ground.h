@@ -33,6 +33,14 @@ public:
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render() override;
 
+public:
+    // 툴에서 save로 저장하는 시점에 한 번만 호출됨.
+    virtual void Write_Json(json& Out_Json) override;
+    
+    // 툴이나 인게임에서 객체 생성되고 나서 한 번만 호출됨.
+    virtual void Load_FromJson(const json& In_Json) override;
+
+
 private:
     HRESULT SetUp_ShaderResource();
 
@@ -43,6 +51,11 @@ private:
 	weak_ptr<CRenderer>             m_pRendererCom;
 	weak_ptr<CVIBuffer_Ground>      m_pVIBufferCom;
     TEXTURES                        m_pTextureCom;
+
+    // Temp. 승한이형 보고 지울 것. Json 사용법
+private:
+    string  m_szTextureName = "A";
+    _int    m_iPitch = 5;
 
 public:
     void Free();
