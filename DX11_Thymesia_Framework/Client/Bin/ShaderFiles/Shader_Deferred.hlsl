@@ -28,6 +28,7 @@ texture2D	g_ShadeTexture;
 texture2D	g_NormalTexture;
 texture2D	g_LightFlagTexture;
 texture2D	g_ShadowDepthTexture;
+texture2D	g_StaticShadowDepthTexture;
 texture2D	g_Texture;
 texture2D   g_ViewShadow;
 
@@ -553,8 +554,9 @@ PS_OUT PS_MAIN_VIEW_SHADOW(PS_IN In)
     vNewUV.y = (vUVPos.y / vUVPos.w) * -0.5f + 0.5f;
 	
     vector vShadowDepth = g_ShadowDepthTexture.Sample(ClampSampler, vNewUV);
+    vector vStaticShadowDepth = g_StaticShadowDepthTexture.Sample(ClampSampler, vNewUV);
 
-    if (vPosition.z - 0.15f > vShadowDepth.r * g_fFar)
+    if (vPosition.z - 0.15f > vShadowDepth.r * g_fFar || vPosition.z - 0.15f > vStaticShadowDepth.r * g_fFar)
     {
         Out.vColor = 0.4f;
 		

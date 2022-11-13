@@ -55,6 +55,9 @@ HRESULT CCorvus::Initialize(void* pArg)
 	Add_Component<CCorvusState_BasicHealing>();
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
+	GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_Cast<CGameObject>(m_this));
+
+
 	USE_START(CCorvus);
 
 	return S_OK;
