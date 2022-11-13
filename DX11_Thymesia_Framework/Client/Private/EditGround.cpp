@@ -9,6 +9,8 @@
 #include "Transform.h"
 #include "VIBuffer_Ground.h"
 
+#include "Ground.h"
+
 GAMECLASS_C(CEditGround)
 CLONE_C(CEditGround, CGameObject)
 
@@ -43,6 +45,11 @@ HRESULT CEditGround::Initialize(void* pArg)
 	);
 
 	m_pRendererCom		 = Add_Component<CRenderer>();
+
+	TEXTURES_INFO Desc;
+	Desc.pDiffTex = Add_Component<CTexture>();
+	Desc.pNormTex = Add_Component<CTexture>();
+	m_pTextureCom.emplace(TexVarDesc[0], Desc);
 
 	Load_AllMeshInfo();
 	Load_ResourceList(m_MeshNames, "../Bin/GroundInfo/Mesh/");
@@ -145,34 +152,12 @@ HRESULT CEditGround::SetUp_ShaderResource()
 	return S_OK;
 }
 
-void CEditGround::Load_TextureList(const filesystem::path& In_Path)
-{
-	if (!In_Path.filename().extension().string().empty())
-		return;
-
-	fs::directory_iterator itr(In_Path);
-	tstring szPath;
-	string szFileName;
-
-	while (itr != fs::end(itr)) {
-		const fs::directory_entry& entry = *itr;
-
-		szFileName = entry.path().filename().string();
-		Load_TextureList(entry.path());
-
-		m_TextureNames.push_back(szFileName);
-
-		itr++;
-	}
-}
-
 void CEditGround::Load_ResourceList(vector<string>& In_List, const filesystem::path& In_Path)
 {
 	if (!In_Path.filename().extension().string().empty())
 		return;
 
 	fs::directory_iterator itr(In_Path);
-	tstring szPath;
 	string szFileName;
 
 	while (itr != fs::end(itr)) 
@@ -180,12 +165,20 @@ void CEditGround::Load_ResourceList(vector<string>& In_List, const filesystem::p
 		const fs::directory_entry& entry = *itr;
 
 		szFileName = entry.path().filename().string();
-		Load_TextureList(entry.path());
 
 		In_List.push_back(szFileName);
 
 		itr++;
 	}
+}
+
+_bool CEditGround::Check_File(const string& In_Path)
+{
+	WIN32_FIND_DATAA data;
+	HANDLE hFind = FindFirstFileA(In_Path.c_str(), &data);
+	CloseHandle(hFind);
+
+	return (data.cFileName);
 }
 
 void CEditGround::SetUp_EditMode()
@@ -202,7 +195,7 @@ void CEditGround::SetUp_EditMode()
 	{
 		if (KEY_INPUT(KEY::NUM1, KEY_STATE::HOLD))
 			m_eEditMode = EDIT_MODE::HEIGHT_FLAT;
-		else if (KEY_INPUT(KEY::NUM2, KEY_STATE::HOLD))
+		if (KEY_INPUT(KEY::NUM2, KEY_STATE::HOLD))
 			m_eEditMode = EDIT_MODE::HEIGHT_LERP;
 		else if (KEY_INPUT(KEY::NUM3, KEY_STATE::HOLD))
 			m_eEditMode = EDIT_MODE::FILLTER;
@@ -710,6 +703,7 @@ void CEditGround::CreateBuffer()
 	Remove_Components<CVIBuffer_Ground>();
 
 	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
+	m_bMeshSave    = false;
 	m_pVIBufferCom.lock()->Init_Mesh(m_vBufferInfo);
 
 	CreateFilterTexture();
@@ -721,34 +715,39 @@ void CEditGround::CreateFilterTexture()
 {
 	m_vColors.clear();
 
-	D3D11_TEXTURE2D_DESC	TextureDesc;
-	ZeroMemory(&TextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
+	
 
-	TextureDesc.Width				= FILTER_TEXTURE_SIZE;
-	TextureDesc.Height				= FILTER_TEXTURE_SIZE;
-	TextureDesc.MipLevels			= 1;
-	TextureDesc.ArraySize			= 1;
-	TextureDesc.Format				= DXGI_FORMAT_R8G8B8A8_UNORM;
+	if (!m_pTexture2D.Get())
+	{ 
+		D3D11_TEXTURE2D_DESC	TextureDesc;
+		ZeroMemory(&TextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
 
-	TextureDesc.SampleDesc.Quality	= 0;
-	TextureDesc.SampleDesc.Count	= 1;
+		TextureDesc.Width				= FILTER_TEXTURE_SIZE;
+		TextureDesc.Height				= FILTER_TEXTURE_SIZE;
+		TextureDesc.MipLevels			= 1;
+		TextureDesc.ArraySize			= 1;
+		TextureDesc.Format				= DXGI_FORMAT_R8G8B8A8_UNORM;
 
-	TextureDesc.Usage				= D3D11_USAGE_DYNAMIC;
-	TextureDesc.BindFlags			= D3D11_BIND_SHADER_RESOURCE;
-	TextureDesc.CPUAccessFlags		= D3D11_CPU_ACCESS_WRITE;
-	TextureDesc.MiscFlags			= 0;
+		TextureDesc.SampleDesc.Quality	= 0;
+		TextureDesc.SampleDesc.Count	= 1;
 
-	if (FAILED(DEVICE->CreateTexture2D(&TextureDesc, nullptr, m_pTexture2D.GetAddressOf())))
-		return;
+		TextureDesc.Usage				= D3D11_USAGE_DYNAMIC;
+		TextureDesc.BindFlags			= D3D11_BIND_SHADER_RESOURCE;
+		TextureDesc.CPUAccessFlags		= D3D11_CPU_ACCESS_WRITE;
+		TextureDesc.MiscFlags			= 0;
+
+		if (FAILED(DEVICE->CreateTexture2D(&TextureDesc, nullptr, m_pTexture2D.GetAddressOf())))
+			return;
+	}
 
 	D3D11_MAPPED_SUBRESOURCE		SubResource;
 	DEVICECONTEXT->Map(m_pTexture2D.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResource);
 
-	for (_uint i = 0; i < TextureDesc.Height; ++i)
+	for (_uint i = 0; i < FILTER_TEXTURE_SIZE; ++i)
 	{
-		for (_uint s = 0; s < TextureDesc.Width; ++s)
+		for (_uint s = 0; s < FILTER_TEXTURE_SIZE; ++s)
 		{
-			_uint iIndex = i * TextureDesc.Width + s;
+			_uint iIndex = i * FILTER_TEXTURE_SIZE + s;
 
 			((_uint*)SubResource.pData)[iIndex] = D3DCOLOR_ABGR(0, 0, 0, 0);
 			m_vColors.push_back(D3DCOLOR_ABGR(0, 0, 0, 0));
@@ -757,8 +756,11 @@ void CEditGround::CreateFilterTexture()
 
 	DEVICECONTEXT->Unmap(m_pTexture2D.Get(), 0);
 
-	if (FAILED(DEVICE->CreateShaderResourceView(m_pTexture2D.Get(), nullptr, m_pFilterTexture.GetAddressOf())))
-		return;
+	if (!m_pFilterTexture.Get())
+	{
+		if (FAILED(DEVICE->CreateShaderResourceView(m_pTexture2D.Get(), nullptr, m_pFilterTexture.GetAddressOf())))
+			return;
+	}
 }
 
 void CEditGround::PickingGround()
@@ -861,6 +863,8 @@ void CEditGround::Bake_Mesh()
 	write_typed_data(os, m_pVIBufferCom.lock()->Get_Interval());
 
 	os.close();
+
+	m_bMeshSave = true;
 }
 
 void CEditGround::Load_Mesh()
@@ -868,7 +872,6 @@ void CEditGround::Load_Mesh()
 	/* --- Mesh Data --- */
 
 	m_szMeshName = m_szMeshName.substr(0, m_szMeshName.length() - 4);
-
 	m_pModelData = GAMEINSTANCE->Get_ModelFromKey(m_szMeshName.c_str());
 
 	if (!m_pModelData.get() || !m_pModelData.get()->Mesh_Datas[0].get())
@@ -896,7 +899,8 @@ void CEditGround::Load_Mesh()
 	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
 	m_pVIBufferCom.lock()->Init_Mesh(m_pModelData.get()->Mesh_Datas[0], iNumVertexX, iNumVertexZ, fInterval);
 
-	m_bCreate = true;
+	m_bCreate   = true;
+	m_bMeshSave = true;
 }
 
 void CEditGround::Bake_FilterTexture(wstring _szFilePath)
@@ -938,13 +942,13 @@ void CEditGround::Load_FilterTexture(wstring _szFilePath)
 	_uint iSize, iData;
 	read_typed_data(is, iSize);
 
+	m_vColors.clear();
+
 	for (_uint i = 0; i < iSize; ++i)
 	{
 		read_typed_data(is, iData);
 		m_vColors.push_back(iData);
 	}
-
-	m_vColors.clear();
 
 	D3D11_MAPPED_SUBRESOURCE		SubResource;
 	DEVICECONTEXT->Map(m_pTexture2D.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResource);
@@ -960,6 +964,115 @@ void CEditGround::Load_FilterTexture(wstring _szFilePath)
 	}
 
 	DEVICECONTEXT->Unmap(m_pTexture2D.Get(), 0);
+}
+
+void CEditGround::Write_Json(json& Out_Json)
+{
+	if ("" == m_szMeshName)
+	{
+		MSG_BOX("Check : m_szMeshName value is None");
+		return;
+	}
+
+	json TexInfo;
+
+	for (auto& iter : m_pTextureCom)
+	{
+		json Texture;
+
+		Texture.emplace("Diff", iter.second.szTexTag_Diff);
+		Texture.emplace("Norm", iter.second.szTexTag_Norm);
+		Texture.emplace("Density", iter.second.fDensity);
+
+		TexInfo.emplace(iter.first, Texture);
+	}
+
+	/*if (!m_bSaveTexture)
+	8{
+		TexInfo.emplace(iter.first, Texture);
+	}*/
+
+	Out_Json.emplace("TextureInfo", TexInfo);
+	Out_Json.emplace("VIBufferCom", m_szMeshName);
+	Out_Json.emplace("ShaderPass", m_iShaderPass);
+
+	if (!m_bMeshSave)
+	{
+		Bake_Mesh();
+
+		m_bMeshSave = true;
+	}
+
+	if (Out_Json.end() != Out_Json.find("Hash"))
+	{
+		Out_Json["Hash"] = typeid(CGround).hash_code();
+	}
+	
+	if (Out_Json.end() != Out_Json.find("Name"))
+	{
+		Out_Json["Name"] = typeid(CGround).name();
+	}
+
+}
+
+void CEditGround::Load_FromJson(const json& In_Json)
+{
+	if (In_Json.find("TextureInfo") != In_Json.end())
+	{
+		json TexInfo = In_Json["TextureInfo"];
+
+		for (auto& iter : TexInfo.items())
+		{
+			string szkey = iter.key();
+			json Textures = iter.value();
+
+			TEXTURES_INFO Desc;
+
+			for (auto& iter_data : TexInfo.items())
+			{
+				string szDatakey = iter_data.key();
+
+				if ("Diff" == szDatakey)
+				{
+					string szTextureName = iter_data.value();
+
+					Desc.pDiffTex = Add_Component<CTexture>();
+					Desc.pDiffTex.lock()->Use_Texture(szTextureName.c_str());
+				}
+
+				if ("Norm" == szDatakey)
+				{
+					string szTextureName = iter_data.value();
+
+					Desc.pNormTex = Add_Component<CTexture>();
+					Desc.pNormTex.lock()->Use_Texture(szTextureName.c_str());
+				}
+
+				if ("Norm" == szDatakey)
+				{
+					Desc.fDensity = iter_data.value();
+				}
+			}
+
+			if (Desc.pDiffTex.lock() && Desc.pNormTex.lock())
+				m_pTextureCom.emplace(szkey, Desc);
+		}
+	}
+
+	if (In_Json.find("VIBufferCom") != In_Json.end())
+	{
+		string szVIBufferName = In_Json["VIBufferCom"];
+
+		shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey(szVIBufferName.c_str());
+
+		if (!pModelData.get())
+		{
+			MSG_BOX("Err : CGround::Load_FromJson(...) <Obj Make By [An Seubg Han]>");
+			return;
+		}
+
+		m_pVIBufferCom.lock()->Init_Mesh(pModelData.get()->Mesh_Datas[0]);
+	}
 }
 
 void CEditGround::Load_AllMeshInfo()

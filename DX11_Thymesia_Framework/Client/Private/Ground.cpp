@@ -30,12 +30,8 @@ HRESULT CGround::Initialize(void* pArg)
 		VTXNORTEX_DECLARATION::iNumElements
 	);
 
-	m_pRendererCom		 = Add_Component<CRenderer>();
-
-	//shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey("MemoryYamYam");
-
+	m_pRendererCom = Add_Component<CRenderer>();
 	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
-	// m_pVIBufferCom.lock()->Init_Mesh(pModelData.get()->Mesh_Datas[0]);
 
 	return S_OK;
 }
@@ -66,31 +62,74 @@ HRESULT CGround::Render()
 	if (FAILED(SetUp_ShaderResource()))
 		DEBUG_ASSERT;
 
-	m_pShaderCom.lock()->Begin(0);
-
-	//m_pVIBufferCom.lock()->Render();
+	m_pShaderCom.lock()->Begin(m_iShaderPath);
+	m_pVIBufferCom.lock()->Render();
 
 	return S_OK;
 }
 
-void CGround::Write_Json(json& Out_Json)
-{
-	Out_Json["TextureName"] = m_szTextureName;
-	Out_Json["Pitch"] = m_iPitch;
-}
-
 void CGround::Load_FromJson(const json& In_Json)
 {
-	// Find로 제이슨에 해당하는 키가 있는지 확인
-	if (In_Json.find("TextureName") != In_Json.end())
+	if (In_Json.find("TextureInfo") != In_Json.end())
 	{
-		// 있다면 대입.
-		m_szTextureName = In_Json["TextureName"];
+		json TexInfo = In_Json["TextureInfo"];
+
+		for (auto& iter : TexInfo.items())
+		{
+			string szkey	= iter.key();
+			json Textures	= iter.value();
+
+			TEXTURES_INFO Desc;
+
+			for (auto& iter_data : TexInfo.items())
+			{
+				string szDatakey = iter_data.key();
+
+				if ("Diff" == szDatakey)
+				{
+					string szTextureName = iter_data.value();
+
+					Desc.pDiffTex = Add_Component<CTexture>();
+					Desc.pDiffTex.lock()->Use_Texture(szTextureName.c_str());
+				}
+
+				if ("Norm" == szDatakey)
+				{
+					string szTextureName = iter_data.value();
+
+					Desc.pNormTex = Add_Component<CTexture>();
+					Desc.pNormTex.lock()->Use_Texture(szTextureName.c_str());
+				}
+
+				if ("Norm" == szDatakey)
+				{
+					Desc.fDensity = iter_data.value();
+				}
+			}
+
+			if (Desc.pDiffTex.lock() && Desc.pNormTex.lock())
+				m_pTextureCom.emplace(szkey, Desc);
+		}
 	}
 
-	if (In_Json.find("Pitch") != In_Json.end())
+	if (In_Json.find("VIBufferCom") != In_Json.end())
 	{
-		m_iPitch = In_Json["Pitch"];
+		string szVIBufferName = In_Json["VIBufferCom"];
+
+		shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey(szVIBufferName.c_str());
+
+		if (!pModelData.get())
+		{
+			MSG_BOX("Err : CGround::Load_FromJson(...) <Obj Make By [An Seubg Han]>");
+			return;
+		}
+
+		m_pVIBufferCom.lock()->Init_Mesh(pModelData.get()->Mesh_Datas[0]);
+	}
+
+	if (In_Json.find("ShaderPass") != In_Json.end())
+	{
+		m_iShaderPath = In_Json["ShaderPass"];
 	}
 }
 

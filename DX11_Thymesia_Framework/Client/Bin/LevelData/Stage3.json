@@ -1,0 +1,32 @@
+{
+  "GameObject": [
+    {
+      "Component": {
+        "Transform": [
+          [ 0.9574097990989685, 2.9103830456733704e-11, -0.2887309789657593, 0.0 ],
+          [ 0.1467616856098175, 0.8611807823181152, 0.48665082454681396, 0.0 ],
+          [ 0.24864967167377472, -0.5082992315292358, 0.8245037794113159, 0.0 ],
+          [ 13.739416122436523, 8.93327522277832, -13.50964069366455, 1.0 ]
+        ]
+      },
+      "Hash": 8675365520207489377,
+      "Name": "class Client::CCamera_Free",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": { "Transform": { "": null } },
+      "Hash": 12159710856434595157,
+      "Name": "class Client::CGround",
+      "Setting": { "Enable": true },
+      "ShaderPass": 1,
+      "TextureInfo": {
+        "g_Texture_Sorc": {
+          "Density": 30.0,
+          "Diff": "T_P_Gravel_floor02_C.png",
+          "Norm": "T_P_Gravel_floor02_N.png"
+        }
+      },
+      "VIBufferCom": "Test"
+    }
+  ]
+}
