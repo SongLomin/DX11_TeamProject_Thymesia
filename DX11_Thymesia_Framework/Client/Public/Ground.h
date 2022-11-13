@@ -17,6 +17,14 @@ class CGround final :
     GAMECLASS_H(CGround)
     CLONE_H(CGround, CGameObject)
 
+private:
+    typedef struct tag_TextureInfo
+    {
+        weak_ptr<CTexture>       pDiffTex;
+        weak_ptr<CTexture>       pNormTex;
+        _float                   fDensity = 0.f;
+    } TEXTURES_INFO;
+
 public:
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize(void* pArg) override;
@@ -29,11 +37,12 @@ private:
     HRESULT SetUp_ShaderResource();
 
 private:
-	weak_ptr<CShader>           m_pShaderCom;
-	weak_ptr<CRenderer>         m_pRendererCom;
-	weak_ptr<CTexture>          m_pDiff_TextureCom;
-	weak_ptr<CTexture>          m_pNorm_TextureCom;
-	weak_ptr<CVIBuffer_Ground>  m_pVIBufferCom;
+    typedef map<string, TEXTURES_INFO>  TEXTURES;
+
+	weak_ptr<CShader>               m_pShaderCom;
+	weak_ptr<CRenderer>             m_pRendererCom;
+	weak_ptr<CVIBuffer_Ground>      m_pVIBufferCom;
+    TEXTURES                        m_pTextureCom;
 
 public:
     void Free();

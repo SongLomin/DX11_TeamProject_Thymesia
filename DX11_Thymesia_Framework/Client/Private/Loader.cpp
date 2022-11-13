@@ -100,8 +100,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CTerrain>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CStatic_Prop>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CLight_Prop>();
-
-
+	GAMEINSTANCE->Add_Prototype_GameObject<CGround>();
 
 #pragma endregion
 
@@ -122,8 +121,6 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("Loading_Tutorial"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_Tutorial_01.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
 
 	GAMEINSTANCE->Load_Textures(("Loading_Icon"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingIcon.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
-
-
 
 	//MainMenu(LogoLevel)
 	GAMEINSTANCE->Load_Textures(("MainMenu_Background"), TEXT("../Bin/Resources/Textures/UI/MainMenuBackrgound.png"), MEMORY_TYPE::MEMORY_DYNAMIC);

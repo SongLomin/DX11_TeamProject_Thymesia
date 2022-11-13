@@ -15,8 +15,8 @@ class CEditGround final :
     public CGameObject
 {
     GAMECLASS_H(CEditGround)
-        CLONE_H(CEditGround, CGameObject)
-        SHALLOW_COPY(CEditGround)
+    CLONE_H(CEditGround, CGameObject)
+    SHALLOW_COPY(CEditGround)
 
 private:
     enum class EDIT_MODE
@@ -33,6 +33,7 @@ private:
         BRUSH_NO1,
         BRUSH_NO2,
         BRUSH_NO3,
+        CLEAR,
 
         BRUSH_END
     };
@@ -41,7 +42,10 @@ private:
     {
         weak_ptr<CTexture>       pDiffTex;
         weak_ptr<CTexture>       pNormTex;
-        _int                     iType;
+        _float                   fDensity       = 30.f;
+
+        string                   szTexTag_Diff  = "[ None ]";
+        string                   szTexTag_Norm  = "[ None ]";
     } TEXTURES_INFO;
 
 public:
@@ -55,6 +59,7 @@ public:
 private:
     HRESULT SetUp_ShaderResource();
     void    Load_TextureList(const filesystem::path& In_Path);
+    void    Load_ResourceList(vector<string>& In_List, const filesystem::path& In_Path);
 
     void    SetUp_EditMode();
     void    SetUp_Info();
@@ -71,13 +76,14 @@ private:
 
     void    Bake_Mesh();
     void    Load_Mesh();
-    void    Bake_FilterTexture();
+    void    Bake_FilterTexture(wstring _szFilePath);
+    void    Load_FilterTexture(wstring _szFilePath);
 
 public:
     static void    Load_AllMeshInfo();
 
 public:
-    virtual void OnEventMessage(_uint iArg) override;
+    virtual void   OnEventMessage(_uint iArg) override;
 
 private:
     typedef map<string, TEXTURES_INFO>  TEXTURES;
@@ -88,27 +94,27 @@ private:
     weak_ptr<CVIBuffer_Ground>          m_pVIBufferCom;
     TEXTURES                            m_pTextureCom;
 
-    //weak_ptr<CVIBuffer_Ground>  m_pVIBufferFilterCom;
+    EDIT_MODE                           m_eEditMode     = EDIT_MODE::NON;
+    _bool                               m_bEdit         = false;
+    _bool                               m_bCreate       = false;
+    _float4                             m_vBufferInfo   = _float4(128.f, 128.f, 0.5f, 0.f);
+    _int                                m_iShaderPass   = 0;
 
-    EDIT_MODE                           m_eEditMode = EDIT_MODE::NON;
-    _bool                               m_bEdit = false;
-    _bool                               m_bCreate = false;
-    _float4                             m_vBufferInfo = _float4(128.f, 128.f, 0.5f, 0.f);
-    _float                              m_fDensity = 30.f;
-    _int                                m_iShaderPass = 0;
-
-    _float                              m_fBufferDrawRadious = 1.f;
-    _float                              m_fBufferPower = 1.f;
-    string                              m_szMeshName = "";
+    _float                              m_fBufferDrawRadious  = 1.f;
+    _float                              m_fBufferPower        = 1.f;
+    string                              m_szMeshName          = "";
 
     shared_ptr<MODEL_DATA>              m_pModelData;
 
-    BRUSH_MODE                          m_eBrushMode = BRUSH_MODE::BRUSH_NO1;
-    TEXTURE_NAMES                       m_TextureNames;
+    BRUSH_MODE                          m_eBrushMode        = BRUSH_MODE::BRUSH_NO1;
+    string                              m_szFindTextureTag  = "";
     ComPtr<ID3D11Texture2D>             m_pTexture2D;
     ComPtr<ID3D11ShaderResourceView>    m_pFilterTexture;
     vector<_uint>                       m_vColors;
-    string                              m_szFindTextureTag = "";
+
+    TEXTURE_NAMES                       m_TextureNames;
+    TEXTURE_NAMES                       m_FilterNames;
+    TEXTURE_NAMES                       m_MeshNames;
 
 public:
     void Free();

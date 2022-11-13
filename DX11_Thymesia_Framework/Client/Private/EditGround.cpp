@@ -15,6 +15,8 @@ CLONE_C(CEditGround, CGameObject)
 #define D3DCOLOR_ABGR(a,r,g,b) \
     ((D3DCOLOR)((((a)&0xff)<<24)|(((r)&0xff)<<16)|(((g)&0xff)<<8)|((b)&0xff)))
 
+#define FILTER_TEXTURE_SIZE 512
+
 static const char* TexVarDesc[] =
 {
 	"g_Texture_Sorc",
@@ -42,20 +44,10 @@ HRESULT CEditGround::Initialize(void* pArg)
 
 	m_pRendererCom		 = Add_Component<CRenderer>();
 
-	TEXTURES_INFO TexInfo;
-
-	TexInfo.pDiffTex = Add_Component<CTexture>();
-	TexInfo.pNormTex = Add_Component<CTexture>();
-	TexInfo.iType	 = 1;
-
-	TexInfo.pDiffTex.lock()->Use_Texture("T_Floor_01a_C.png");
-	TexInfo.pNormTex.lock()->Use_Texture("T_Floor_01a_N.png");
-
-	m_pTextureCom.emplace("g_Texture_Sorc", TexInfo);
-
 	Load_AllMeshInfo();
-
-	Load_TextureList("../Bin/Resources/Textures/Ground/");
+	Load_ResourceList(m_MeshNames, "../Bin/GroundInfo/Mesh/");
+	Load_ResourceList(m_TextureNames, "../Bin/Resources/Textures/Ground/");
+	Load_ResourceList(m_FilterNames, "../Bin/GroundInfo/Filter_SubInfo/");
 
 	return S_OK;
 }
@@ -80,6 +72,9 @@ void CEditGround::Tick(_float fTimeDelta)
 	{
 		PickingFillterTextureDraw();
 	}
+
+	/*if (ImGui::IsItemHovered() || ImGui::IsWindowHovered())
+		m_eEditMode = EDIT_MODE::NON;*/
 }
 
 void CEditGround::LateTick(_float fTimeDelta)
@@ -118,18 +113,21 @@ HRESULT CEditGround::SetUp_ShaderResource()
 	{
 		string szDiffTextureName = iter.first + "_Diff";
 		string szNormTextureName = iter.first + "_Norm";
-		string szTypeName		 = iter.first + "_Type";
+		string szDensityName	 = "g_f" + iter.first.substr(string("g_Texture").length() + 1) + "_Density";
 	
-		if (FAILED(iter.second.pDiffTex.lock()->Set_ShaderResourceView(m_pShaderCom, szDiffTextureName.c_str(), 0)))
-			return E_FAIL;
+		if ("[ None ]" != iter.second.szTexTag_Diff)
+		{
+			if (FAILED(iter.second.pDiffTex.lock()->Set_ShaderResourceView(m_pShaderCom, szDiffTextureName.c_str(), 0)))
+				return E_FAIL;
+		}
 
-		if (1 == iter.second.iType)
+		if ("[ None ]" != iter.second.szTexTag_Norm)
 		{
 			if (FAILED(iter.second.pNormTex.lock()->Set_ShaderResourceView(m_pShaderCom, szNormTextureName.c_str(), 0)))
 				return E_FAIL;
 		}
 
-		if (FAILED(m_pShaderCom.lock()->Set_RawValue(szTypeName.c_str(), &iter.second.iType, sizeof(_int))))
+		if (FAILED(m_pShaderCom.lock()->Set_RawValue(szDensityName.c_str(), &iter.second.fDensity, sizeof(_float))))
 			return E_FAIL;
 	}
 
@@ -142,9 +140,6 @@ HRESULT CEditGround::SetUp_ShaderResource()
 	_vector vLightFlag = { 0.f, 0.f, 1.f, 0.f };
 
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector))))
-		return E_FAIL;
-
-	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_fDensity", &m_fDensity, sizeof(_float))))
 		return E_FAIL;
 
 	return S_OK;
@@ -166,6 +161,28 @@ void CEditGround::Load_TextureList(const filesystem::path& In_Path)
 		Load_TextureList(entry.path());
 
 		m_TextureNames.push_back(szFileName);
+
+		itr++;
+	}
+}
+
+void CEditGround::Load_ResourceList(vector<string>& In_List, const filesystem::path& In_Path)
+{
+	if (!In_Path.filename().extension().string().empty())
+		return;
+
+	fs::directory_iterator itr(In_Path);
+	tstring szPath;
+	string szFileName;
+
+	while (itr != fs::end(itr)) 
+	{
+		const fs::directory_entry& entry = *itr;
+
+		szFileName = entry.path().filename().string();
+		Load_TextureList(entry.path());
+
+		In_List.push_back(szFileName);
 
 		itr++;
 	}
@@ -213,21 +230,40 @@ void CEditGround::SetUp_EditMode()
 	ImGui::Separator();
 	ImGui::Text("");
 
+	if (EDIT_MODE::FILLTER != m_eEditMode)
+		return;
+
 	static const char* items_BrushMode[] =
 	{
-		"HEIGHT_FLAT",
-		"HEIGHT_LERP",
-		"FILLTER"
+		"AddTex_No1",
+		"AddTex_No2",
+		"AddTex_No3",
+		"Clear"
 	};
+
+	if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
+	{
+		if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
+			m_eBrushMode = BRUSH_MODE::BRUSH_NO1;
+
+		if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
+			m_eBrushMode = BRUSH_MODE::BRUSH_NO2;
+
+		if (KEY_INPUT(KEY::NUM3, KEY_STATE::TAP))
+			m_eBrushMode = BRUSH_MODE::BRUSH_NO3;
+
+		if (KEY_INPUT(KEY::NUM4, KEY_STATE::TAP))
+			m_eBrushMode = BRUSH_MODE::CLEAR;
+	}
 
 	if (ImGui::BeginListBox("Brush Type"))
 	{
 		for (int n = 0; n < IM_ARRAYSIZE(items_BrushMode); n++)
 		{
-			const bool is_selected = ((_uint)m_eEditMode == n);
+			const bool is_selected = ((_uint)m_eBrushMode == n);
 			if (ImGui::Selectable(items_BrushMode[n], is_selected))
 			{
-				m_eEditMode = (EDIT_MODE)n;
+				m_eBrushMode = (BRUSH_MODE)n;
 			}
 
 			if (is_selected)
@@ -236,6 +272,8 @@ void CEditGround::SetUp_EditMode()
 		ImGui::EndListBox();
 	}
 
+	ImGui::Separator();
+	ImGui::Text("");
 }
 
 void CEditGround::SetUp_Info()
@@ -244,14 +282,12 @@ void CEditGround::SetUp_Info()
 	ImGui::DragFloat3("##Size", &m_vBufferInfo.x, 1.f);
 	ImGui::Separator();
 
-	ImGui::Text("Density");
-	ImGui::DragFloat("##Density", &m_fDensity, 1.f);
-	ImGui::Separator();
-
 	if (ImGui::Button("Create"))
 	{
 		CreateBuffer();
 	}
+
+	ImGui::Separator();
 }
 
 void CEditGround::SetUp_ShaderComponent()
@@ -289,6 +325,7 @@ void CEditGround::SetUp_PinckingInfo()
 void CEditGround::SetUp_Textures()
 {
 	static int iSelect_TexDesc = 0;
+
 	ImGui::Combo("Tex Var", &iSelect_TexDesc, TexVarDesc, IM_ARRAYSIZE(TexVarDesc));
 
 	if (ImGui::Button("Add"))
@@ -298,7 +335,6 @@ void CEditGround::SetUp_Textures()
 			TEXTURES_INFO	Desc;
 			Desc.pDiffTex = Add_Component<CTexture>();
 			Desc.pNormTex = Add_Component<CTexture>();
-			Desc.iType = 0;
 
 			m_pTextureCom.emplace(TexVarDesc[iSelect_TexDesc], Desc);
 		}
@@ -319,11 +355,22 @@ void CEditGround::SetUp_Textures()
 	ImGui::Text("");
 	ImGui::Separator();
 
-
 	static int			iSelect_Texture_Com			= 0;
 	static string		szSelect_Texture_Com_Tag	= "";
 
 	ImGui::Text(string("Select Com : " + szSelect_Texture_Com_Tag).c_str());
+
+	auto iter_find = m_pTextureCom.find(szSelect_Texture_Com_Tag);
+
+	if (m_pTextureCom.end() != iter_find)
+	{
+		ImGui::Text("");
+		ImGui::Text(string("[ Diff ] : " + iter_find->second.szTexTag_Diff).c_str());
+		ImGui::Text(string("[ Norm ] : " + iter_find->second.szTexTag_Norm).c_str());
+
+		ImGui::InputFloat("Density", &iter_find->second.fDensity);
+		ImGui::Text("");
+	}
 
 	if (ImGui::BeginListBox("TexCom List"))
 	{
@@ -353,6 +400,7 @@ void CEditGround::SetUp_Textures()
 
 	static const char* TexTypeInfo[] =
 	{
+		"Diff_Norm",
 		"Diff",
 		"Norm"
 	};
@@ -362,10 +410,10 @@ void CEditGround::SetUp_Textures()
 	static string   szClickTexureTag			= "";
 	static _char    szFindTextureTag[MAX_PATH]	= "";
 
-	ImGui::InputText("", szFindTextureTag, MAX_PATH);
-
 	if (!m_TextureNames.empty())
 		ImGui::Text(string("Select Tex : " + m_TextureNames[iSelect_Texture_Desc]).c_str());
+
+	ImGui::InputText("Find", szFindTextureTag, MAX_PATH);
 
 	if (ImGui::BeginListBox("Tex List"))
 	{
@@ -381,7 +429,7 @@ void CEditGround::SetUp_Textures()
 
 			string szFind = m_TextureNames[i].substr(m_TextureNames[i].length() - 5, m_TextureNames[i].length());
 
-			if (0 == iSelect_TexType)
+			if (0 == iSelect_TexType || 1 == iSelect_TexType)
 			{
 				if ("C.png" != szFind)
 					continue;
@@ -395,7 +443,7 @@ void CEditGround::SetUp_Textures()
 			if (ImGui::Selectable(m_TextureNames[i].c_str(), is_selected))
 			{
 				iSelect_Texture_Desc = i;
-				szClickTexureTag = m_TextureNames[iSelect_Texture_Desc];
+				szClickTexureTag     = m_TextureNames[iSelect_Texture_Desc];
 			}
 
 			if (is_selected)
@@ -409,18 +457,47 @@ void CEditGround::SetUp_Textures()
 
 	if (ImGui::Button("Edit Texture"))
 	{
-		auto iter_find = m_pTextureCom.find(TexVarDesc[iSelect_TexDesc]);
-
-		if (0 == iSelect_TexType) // Diff
+		switch (iSelect_TexType)
 		{
-			if (m_pTextureCom.end() != iter_find)
-				iter_find->second.pDiffTex.lock()->Use_Texture(szClickTexureTag.c_str());
-		}
+			case 0 :
+			{
+				auto iter_find = m_pTextureCom.find(szSelect_Texture_Com_Tag);
 
-		else if (1 == iSelect_TexType) // Norm
-		{
-			if (m_pTextureCom.end() != iter_find)
-				iter_find->second.pNormTex.lock()->Use_Texture(szClickTexureTag.c_str());
+				if (m_pTextureCom.end() != iter_find)
+				{
+					string szNormTex = szClickTexureTag.substr(0, szClickTexureTag.length() - 5) + "N.png";
+
+					iter_find->second.pDiffTex.lock()->Use_Texture(szClickTexureTag.c_str());
+					iter_find->second.pNormTex.lock()->Use_Texture(szNormTex.c_str());
+					iter_find->second.szTexTag_Diff = szClickTexureTag;
+					iter_find->second.szTexTag_Norm = szNormTex;
+				}
+			}
+			break;
+
+			case 1:
+			{
+				auto iter_find = m_pTextureCom.find(szSelect_Texture_Com_Tag);
+
+				if (m_pTextureCom.end() != iter_find)
+				{
+					iter_find->second.pDiffTex.lock()->Use_Texture(szClickTexureTag.c_str());
+					iter_find->second.szTexTag_Diff = szClickTexureTag;
+				}
+			}
+			break;
+
+			case 2:
+			{
+				auto iter_find = m_pTextureCom.find(szSelect_Texture_Com_Tag);
+
+				if (m_pTextureCom.end() != iter_find)
+				{
+					iter_find->second.pNormTex.lock()->Use_Texture(szClickTexureTag.c_str());
+					iter_find->second.szTexTag_Diff = szClickTexureTag;
+				}
+			}
+			break;
 		}
 	}
 }
@@ -429,39 +506,122 @@ void CEditGround::SetUp_File()
 {
 	_char szName[64];
 	strcpy_s(szName, m_szMeshName.c_str());
-
+	
+	ImGui::Text("[ Mesh ]");
 	if (ImGui::InputText("MeshName", szName, 64))
 	{
 		m_szMeshName = szName;
 	}
 
-	if (ImGui::Button("Save"))
+	static int	iSelect_MeshData = 0;
+
+	if (ImGui::BeginListBox("TexCom List"))
+	{
+		_uint iIndex = 0;
+
+		for (auto& iter : m_MeshNames)
+		{
+			const bool is_selected = (iSelect_MeshData == iIndex);
+
+			if ("" != m_szMeshName)
+			{
+				if (string::npos == m_MeshNames[iIndex].find(m_szMeshName))
+					continue;
+			}
+
+			if (ImGui::Selectable(iter.c_str(), is_selected))
+			{
+				iSelect_MeshData	= iIndex;
+				m_szMeshName		= iter;
+			}
+
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+
+			++iIndex;
+		}
+
+		ImGui::EndListBox();
+	}
+
+	if (ImGui::Button("Save", ImVec2(100.f, 25.f)))
 	{
 		Bake_Mesh();
 	}
 
 	ImGui::SameLine();
 
-	if (ImGui::Button("Load"))
+	if (ImGui::Button("Load", ImVec2(100.f, 25.f)))
 	{
 		Load_Mesh();
 	}
+
+	ImGui::Separator();
+	ImGui::Text("");
+
+	ImGui::Text("[ Filter Texture ]");
+
+	static int	iSelect_FilterData		= 0;
+	static char	szFilterName[MAX_PATH]	= "";
+
+	ImGui::InputText("Filter Name", szFilterName, MAX_PATH);
+
+	if (ImGui::BeginListBox("Filter List"))
+	{
+		_uint iIndex = 0;
+
+		for (auto& iter : m_FilterNames)
+		{
+			const bool is_selected = (iSelect_FilterData == iIndex);
+
+			if ("" != string(szFilterName))
+			{
+				if (string::npos == m_FilterNames[iIndex].find(szFilterName))
+					continue;
+			}
+
+			if (ImGui::Selectable(iter.c_str(), is_selected))
+			{
+				iSelect_FilterData = iIndex;
+				strcpy_s(szFilterName, iter.c_str());
+			}
+
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+
+			++iIndex;
+		}
+
+		ImGui::EndListBox();
+	}
+
+
+	if (ImGui::Button("Save_Fltr", ImVec2(100.f, 25.f)))
+	{
+		_tchar szFullTag[MAX_PATH] = L"";
+		MultiByteToWideChar(CP_ACP, 0, szFilterName, (_int)strlen(szFilterName), szFullTag, MAX_PATH);
+
+		Bake_FilterTexture(szFullTag);
+	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Load_Fltr", ImVec2(100.f, 25.f)))
+	{
+		if (0 < (_int)strlen(szFilterName))
+		{
+			_tchar szFullTag[MAX_PATH] = L"";
+			MultiByteToWideChar(CP_ACP, 0, szFilterName, (_int)strlen(szFilterName), szFullTag, MAX_PATH);
+
+			Load_FilterTexture(szFullTag);
+		}
+	}
+
+	ImGui::Separator();
 }
 
 void CEditGround::PickingFillterTextureDraw()
 {
-	if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
-	{
-		if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
-			m_eBrushMode = BRUSH_MODE::BRUSH_NO1;
-
-		if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
-			m_eBrushMode = BRUSH_MODE::BRUSH_NO2;
-
-		if (KEY_INPUT(KEY::NUM3, KEY_STATE::TAP))
-			m_eBrushMode = BRUSH_MODE::BRUSH_NO3;
-	}
-
 	if (!KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
 		return;
 
@@ -480,21 +640,28 @@ void CEditGround::PickingFillterTextureDraw()
 	D3D11_MAPPED_SUBRESOURCE		SubResource;
 	DEVICECONTEXT->Map(m_pTexture2D.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResource);
 
-	_int2	iPickIndex = { _int(Out.x * 128), _int(Out.y * 128) };
+	_int2	iPickIndex = { _int(Out.x * FILTER_TEXTURE_SIZE), _int(Out.y * FILTER_TEXTURE_SIZE) };
 	_int	iRoundIndx = m_fBufferDrawRadious / m_vBufferInfo.z;
 
 	_int2	iBeginIndex, iEndIndex;
 	iBeginIndex.x = (0 > iPickIndex.x - iRoundIndx) ? (0) : (iPickIndex.x - iRoundIndx);
 	iBeginIndex.y = (0 > iPickIndex.y - iRoundIndx) ? (0) : (iPickIndex.y - iRoundIndx);
 
-	iEndIndex.x = (_int(m_vBufferInfo.x) < iPickIndex.x + iRoundIndx) ? (_int(m_vBufferInfo.x)) : (iPickIndex.x + iRoundIndx);
-	iEndIndex.y = (_int(m_vBufferInfo.y) < iPickIndex.y + iRoundIndx) ? (_int(m_vBufferInfo.y)) : (iPickIndex.y + iRoundIndx);
+	iEndIndex.x = (_int(FILTER_TEXTURE_SIZE) < iPickIndex.x + iRoundIndx) ? (FILTER_TEXTURE_SIZE) : (iPickIndex.x + iRoundIndx);
+	iEndIndex.y = (_int(FILTER_TEXTURE_SIZE) < iPickIndex.y + iRoundIndx) ? (FILTER_TEXTURE_SIZE) : (iPickIndex.y + iRoundIndx);
 
 	for (_uint iZ = iBeginIndex.y; iZ < iEndIndex.y; ++iZ)
 	{
 		for (_uint iX = iBeginIndex.x; iX < iEndIndex.x; ++iX)
 		{
-			_ulong	iIndex = iZ * 128 + iX;
+			_ulong	iIndex		= iZ * FILTER_TEXTURE_SIZE + iX;
+			
+			_float2 vMousePos   = _float2((_float)iPickIndex.x, (_float)iPickIndex.y);
+			_float2 vPixelPos	= _float2((_float)iX, (_float)iZ);
+			_float	fLength		= XMVectorGetX((XMVector2Length(XMLoadFloat2(&vPixelPos) - XMLoadFloat2(&vMousePos))));
+
+			if ((_float)iRoundIndx < fLength)
+				continue;
 
 			switch (m_eBrushMode)
 			{
@@ -515,15 +682,21 @@ void CEditGround::PickingFillterTextureDraw()
 					m_vColors[iIndex] = D3DCOLOR_ABGR(255, 255, 0, 0);
 				}
 				break;
+
+				case BRUSH_MODE::CLEAR:
+				{
+					m_vColors[iIndex] = D3DCOLOR_ABGR(0, 0, 0, 0);
+				}
+				break;
 			}
 		}
 	}
 
-	for (_uint iZ = 0; iZ < 128; ++iZ)
+	for (_uint iZ = 0; iZ < FILTER_TEXTURE_SIZE; ++iZ)
 	{
-		for (_uint iX = 0; iX < 128; ++iX)
+		for (_uint iX = 0; iX < FILTER_TEXTURE_SIZE; ++iX)
 		{
-			_ulong	iIndex = iZ * 128 + iX;
+			_ulong	iIndex = iZ * FILTER_TEXTURE_SIZE + iX;
 
 			((_uint*)SubResource.pData)[iIndex] = m_vColors[iIndex];
 		}
@@ -546,11 +719,13 @@ void CEditGround::CreateBuffer()
 
 void CEditGround::CreateFilterTexture()
 {
+	m_vColors.clear();
+
 	D3D11_TEXTURE2D_DESC	TextureDesc;
 	ZeroMemory(&TextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
 
-	TextureDesc.Width				= 128;
-	TextureDesc.Height				= 128;
+	TextureDesc.Width				= FILTER_TEXTURE_SIZE;
+	TextureDesc.Height				= FILTER_TEXTURE_SIZE;
 	TextureDesc.MipLevels			= 1;
 	TextureDesc.ArraySize			= 1;
 	TextureDesc.Format				= DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -615,6 +790,8 @@ void CEditGround::Bake_Mesh()
 	if ("" == m_szMeshName)
 		return;
 
+	/* --- Mesh Data --- */
+
 	MODEL_DATA tModelData;
 
 	tModelData.eModelType		= MODEL_TYPE::GROUND;
@@ -622,7 +799,7 @@ void CEditGround::Bake_Mesh()
 	tModelData.iNumMaterials	= 0;
 	tModelData.iNumMeshs		= 1;
 	tModelData.szModelFileName	= m_szMeshName;
-	tModelData.szModelFilePath	= "../Bin/GroundInfo/" + m_szMeshName + ".bin";
+	tModelData.szModelFilePath	= "../Bin/GroundInfo/Mesh/" + m_szMeshName + ".bin";
 	XMStoreFloat4x4(&tModelData.TransformMatrix, m_pTransformCom.lock()->Get_WorldMatrix());
 
 	tModelData.RootNode = make_shared<NODE_DATA>();
@@ -665,37 +842,129 @@ void CEditGround::Bake_Mesh()
 
 
 	tModelData.Mesh_Datas.push_back(pMeshData);
-
 	tModelData.Bake_Binary();
+
+	/* --- Buffer Data --- */
+	
+	string szBinFilePath 
+		= "../Bin/GroundInfo/Mesh_SubInfo/"
+		+ m_szMeshName
+		+ ((string::npos == m_szMeshName.find(".bin")) ? (".bin") : (""));
+
+	ofstream os(szBinFilePath, ios::binary);
+
+	if (!os.is_open())
+		return;
+
+	write_typed_data(os, m_pVIBufferCom.lock()->Get_NumVerticesX());
+	write_typed_data(os, m_pVIBufferCom.lock()->Get_NumVerticesZ());
+	write_typed_data(os, m_pVIBufferCom.lock()->Get_Interval());
+
+	os.close();
 }
 
 void CEditGround::Load_Mesh()
 {
-	//Edit Load
+	/* --- Mesh Data --- */
+
+	m_szMeshName = m_szMeshName.substr(0, m_szMeshName.length() - 4);
+
 	m_pModelData = GAMEINSTANCE->Get_ModelFromKey(m_szMeshName.c_str());
 
-	if (m_pModelData.get()->Mesh_Datas[0])
+	if (!m_pModelData.get() || !m_pModelData.get()->Mesh_Datas[0].get())
 		return;
 
-	Remove_Components<CVIBuffer_Ground>();
+	/* --- Buffer Data --- */
 
+	string szBinFilePath = "../Bin/GroundInfo/Mesh_SubInfo/" + m_szMeshName + ".bin";
+
+	ifstream is(szBinFilePath, ios::binary);
+
+	if (!is.is_open())
+		return;
+
+	_int	iNumVertexX, iNumVertexZ;
+	_float	fInterval;
+
+	read_typed_data(is, iNumVertexX);
+	read_typed_data(is, iNumVertexZ);
+	read_typed_data(is, fInterval);
+
+	/* --- Create Buffer --- */
+
+	Remove_Components<CVIBuffer_Ground>();
 	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
-	m_pVIBufferCom.lock()->Init_Mesh(m_pModelData.get()->Mesh_Datas[0]);
+	m_pVIBufferCom.lock()->Init_Mesh(m_pModelData.get()->Mesh_Datas[0], iNumVertexX, iNumVertexZ, fInterval);
 
 	m_bCreate = true;
 }
 
-void CEditGround::Bake_FilterTexture()
+void CEditGround::Bake_FilterTexture(wstring _szFilePath)
 {
-	/*if (FAILED(SaveDDSTextureToFile(DEVICECONTEXT, (ID3D11Resource*)m_pTexture2D.GetAddressOf(), TEXT("../Bin/Test.dds"))))
-		return;*/
-	//const GUID i;
-	//SaveWICTextureToFile(nullptr, nullptr, i, nullptr);
+	wstring szTexturePath = TEXT("../Bin/GroundInfo/Filter/") + _szFilePath + TEXT(".dds");
+
+	if (FAILED(SaveDDSTextureToFile(DEVICECONTEXT, m_pTexture2D.Get(), szTexturePath.c_str())))
+		return;
+	
+	char szFullTag[MAX_PATH] = "";
+	WideCharToMultiByte(CP_ACP, 0, _szFilePath.c_str(), (_int)_szFilePath.length(), szFullTag, MAX_PATH, nullptr, nullptr);
+
+	string szBinFilePath = "../Bin/GroundInfo/Filter_SubInfo/" + string(szFullTag) + ".bin";
+
+	ofstream os(szBinFilePath, ios::binary);
+
+	if (!os.is_open())
+		return;
+
+	_uint iSize = (_uint)m_vColors.size();
+	write_typed_data(os, iSize);
+
+	for (auto& iter : m_vColors)
+		write_typed_data(os, iter);
+}
+
+void CEditGround::Load_FilterTexture(wstring _szFilePath)
+{
+	if (!m_pTexture2D.Get())
+		CreateFilterTexture();
+
+	_szFilePath = TEXT("../Bin/GroundInfo/Filter_SubInfo/") + _szFilePath;
+
+	ifstream is(_szFilePath, ios::binary);
+
+	if (!is.is_open())
+		return;
+
+	_uint iSize, iData;
+	read_typed_data(is, iSize);
+
+	for (_uint i = 0; i < iSize; ++i)
+	{
+		read_typed_data(is, iData);
+		m_vColors.push_back(iData);
+	}
+
+	m_vColors.clear();
+
+	D3D11_MAPPED_SUBRESOURCE		SubResource;
+	DEVICECONTEXT->Map(m_pTexture2D.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResource);
+
+	for (_uint iZ = 0; iZ < FILTER_TEXTURE_SIZE; ++iZ)
+	{
+		for (_uint iX = 0; iX < FILTER_TEXTURE_SIZE; ++iX)
+		{
+			_ulong	iIndex = iZ * FILTER_TEXTURE_SIZE + iX;
+
+			((_uint*)SubResource.pData)[iIndex] = m_vColors[iIndex];
+		}
+	}
+
+	DEVICECONTEXT->Unmap(m_pTexture2D.Get(), 0);
 }
 
 void CEditGround::Load_AllMeshInfo()
 {
-	fs::directory_iterator itr("../Bin/GroundInfo/");
+	fs::directory_iterator itr("../Bin/GroundInfo/Mesh/");
 
 	string szFileName;
 
@@ -706,12 +975,12 @@ void CEditGround::Load_AllMeshInfo()
 		szFileName = entry.path().filename().string().c_str();
 		szFileName = szFileName.substr(0, szFileName.size() - 4);
 
-		GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::GROUND, XMMatrixIdentity());
+		if (FAILED(GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::GROUND, XMMatrixIdentity())))
+			MSG_BOX("Err : CEditGround::Load_AllMeshInfo()");
 
 		itr++;
 	}
 }
-
 
 void CEditGround::OnEventMessage(_uint iArg)
 {
@@ -726,6 +995,8 @@ void CEditGround::OnEventMessage(_uint iArg)
 		{
 			if (ImGui::BeginTabItem("Create VIBuffer"))
 			{
+				m_eEditMode = EDIT_MODE::NON;
+
 				SetUp_Info();
 
 				ImGui::EndTabItem();
@@ -742,6 +1013,8 @@ void CEditGround::OnEventMessage(_uint iArg)
 
 			if (ImGui::BeginTabItem("Texture"))
 			{
+				m_eEditMode = EDIT_MODE::NON;
+
 				SetUp_Textures();
 
 				ImGui::EndTabItem();
@@ -749,6 +1022,8 @@ void CEditGround::OnEventMessage(_uint iArg)
 
 			if (ImGui::BeginTabItem("Load & Save"))
 			{
+				m_eEditMode = EDIT_MODE::NON;
+
 				SetUp_File();
 
 				ImGui::EndTabItem();

@@ -31,11 +31,6 @@ HRESULT CGround::Initialize(void* pArg)
 	);
 
 	m_pRendererCom		 = Add_Component<CRenderer>();
-	m_pDiff_TextureCom	 = Add_Component<CTexture>();
-	m_pNorm_TextureCom	 = Add_Component<CTexture>();
-
-	m_pDiff_TextureCom.lock()->Use_Texture("T_Floor_01a_C.png");
-	m_pNorm_TextureCom.lock()->Use_Texture("T_Floor_01a_N.png");
 
 	shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey("MemoryYamYam");
 
@@ -91,15 +86,19 @@ HRESULT CGround::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ)), sizeof(_float4x4))))
 		return E_FAIL;
 
-	if (m_pDiff_TextureCom.lock())
+	for (auto& iter : m_pTextureCom)
 	{
-		if (FAILED(m_pDiff_TextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_SourDiffTexture", 0)))
-			return E_FAIL;
-	}
+		string szDiffTextureName = iter.first + "_Diff";
+		string szNormTextureName = iter.first + "_Norm";
+		string szDensityName     = "g_f" + iter.first.substr(string("g_Texture").length() + 1) + "_Density";
 
-	if (m_pNorm_TextureCom.lock())
-	{
-		if (FAILED(m_pNorm_TextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NormalTexture", 0)))
+		if (FAILED(iter.second.pDiffTex.lock()->Set_ShaderResourceView(m_pShaderCom, szDiffTextureName.c_str(), 0)))
+			return E_FAIL;
+
+		if (FAILED(iter.second.pNormTex.lock()->Set_ShaderResourceView(m_pShaderCom, szNormTextureName.c_str(), 0)))
+			return E_FAIL;
+
+		if (FAILED(m_pShaderCom.lock()->Set_RawValue(szDensityName.c_str(), &iter.second.fDensity, sizeof(_float))))
 			return E_FAIL;
 	}
 

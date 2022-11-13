@@ -22,6 +22,9 @@ public:
 public:
 	_bool			Get_Vertex(_uint _iIndex, VTXGROUND* _pOut);
 	_bool			Get_Indices(_uint _iIndex, _uint3* _pOut);
+	_uint			Get_NumVerticesX() { return m_iNumVerticesX; }
+	_uint			Get_NumVerticesZ() { return m_iNumVerticesZ; }
+	_float			Get_Interval() { return m_fInterval; }
 
 public:
 	void			Update(_vector _vMousePos, _float _fRadious, _float _fPower, _uint _iMode);
@@ -29,6 +32,7 @@ public:
 	_bool			Compute_MouseRatio(RAY _Ray, _matrix _WorldMatrix, _float2* pOut);
 
 	HRESULT			Init_Mesh(shared_ptr<MESH_DATA> tMeshData);
+	HRESULT			Init_Mesh(shared_ptr<MESH_DATA> tMeshData, _uint _iNumVerticesX, _uint _iNumVerticesZ, _float _fInterval);
 	HRESULT			Init_Mesh(_float4 _vInfo);
 
 private:
