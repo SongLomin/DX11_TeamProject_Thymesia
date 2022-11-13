@@ -40,10 +40,6 @@ HRESULT CMobWeapon::Initialize(void* pArg)
 		VTXMODEL_DECLARATION::Element,
 		VTXMODEL_DECLARATION::iNumElements);
 
-
-	m_pModelCom.lock()->Init_Model("CorvusDefaultSaber", "", (_uint)TIMESCALE_LAYER::PLAYER);
-
-
 	return S_OK;
 }
 
@@ -60,6 +56,8 @@ void CMobWeapon::Tick(_float fTimeDelta)
 	if (!m_pParent.lock().get())
 		return;
 
+
+
 	_matrix		ParentMatrix = m_pTargetBoneNode.lock()->Get_CombinedMatrix()
 		* XMLoadFloat4x4(&m_TransformationMatrix);
 
@@ -75,6 +73,10 @@ void CMobWeapon::Tick(_float fTimeDelta)
 	m_pTransformCom.lock()->Set_WorldMatrix(ParentMatrix * m_pParent.lock()->Get_Component<CTransform>().lock()->Get_WorldMatrix());
 	//m_pTransformCom.lock()->Set_WorldMatrix(m_pParent.lock()->Get_Component<CTransform>().lock()->Get_WorldMatrix());
 	m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+
+
+
+
 }
 
 void CMobWeapon::LateTick(_float fTimeDelta)
@@ -90,6 +92,7 @@ HRESULT CMobWeapon::Render()
 
 	__super::Render();
 
+
 	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
@@ -103,6 +106,10 @@ HRESULT CMobWeapon::Render()
 		m_pModelCom.lock()->Render_Mesh(i);
 	}
 
+
+
+
+
 #ifdef _DEBUG
 	m_pHitColliderCom.lock()->Render();
 
@@ -113,7 +120,7 @@ HRESULT CMobWeapon::Render()
 	return S_OK;
 }
 
-void CMobWeapon::Init_DefaultSaber(weak_ptr<CModel> In_pModelCom, weak_ptr<CGameObject> In_pParent, const string& szTargetNode)
+void CMobWeapon::Init_DefaultWeapon(weak_ptr<CModel> In_pModelCom, weak_ptr<CGameObject> In_pParent, const string& szTargetNode)
 {
 
 	//m_pModelCom.lock()->Init_Model(In_pModelCom.lock()->Get_ModelKey());
@@ -122,7 +129,7 @@ void CMobWeapon::Init_DefaultSaber(weak_ptr<CModel> In_pModelCom, weak_ptr<CGame
 	m_TransformationMatrix = In_pModelCom.lock()->Get_TransformationMatrix();
 }
 
-void CMobWeapon::Enable_DefaultSaber(const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+void CMobWeapon::Enable_DefaultWeapon(const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
 	if (m_pHitColliderCom.lock()->Set_Enable(true))
 	{
@@ -133,7 +140,7 @@ void CMobWeapon::Enable_DefaultSaber(const HIT_TYPE& In_eHitType, const _float& 
 	}
 }
 
-void CMobWeapon::Disable_DefaultSaber()
+void CMobWeapon::Disable_DefaultWeapon()
 {
 	if (m_pHitColliderCom.lock()->Set_Enable(false))
 	{
@@ -143,16 +150,16 @@ void CMobWeapon::Disable_DefaultSaber()
 	}
 }
 
-void CMobWeapon::Set_DefaultSaberScale(const _float& In_fWeaponScale)
+void CMobWeapon::Set_DefaultWeaponScale(const _float& In_fWeaponScale)
 {
 	m_fWeaponScale = In_fWeaponScale;
 	m_pHitColliderCom.lock()->Set_ColliderScale(XMVectorSet(In_fWeaponScale, In_fWeaponScale, In_fWeaponScale, 0.f));
 
 }
 
-void CMobWeapon::Set_OriginalDefaultSaberScale()
+void CMobWeapon::Set_OriginalDefaultWeaponScale()
 {
-	Set_DefaultSaberScale(m_fOriginalWeaponScale);
+	Set_DefaultWeaponScale(m_fOriginalWeaponScale);
 }
 
 weak_ptr<CGameObject> CMobWeapon::Get_ParentObject()
@@ -169,6 +176,22 @@ void CMobWeapon::Set_DefaultSaberDesc(const _float& In_fWeaponScale, const _floa
 	m_fDamage = In_fDamage;
 }
 
+void CMobWeapon::Set_WeaponType(MONSTERWEAPONTYPE WeaponType)
+{
+	m_eWeaType = WeaponType;
+
+	switch (m_eWeaType)
+	{
+
+	case MONSTERWEAPONTYPE::WEAPON_AXE:
+		m_pModelCom.lock()->Init_Model("Mon_Weapon_Axe", "", (_uint)TIMESCALE_LAYER::MONSTER);
+		break;
+	case MONSTERWEAPONTYPE::WEAPON_KNIFE:
+		m_pModelCom.lock()->Init_Model("Mon_Weapon_Knife", "", (_uint)TIMESCALE_LAYER::MONSTER);
+		break;
+	}
+}
+
 void CMobWeapon::SetUp_ShaderResource()
 {
 	CallBack_Bind_SRV(m_pShaderCom, "");
@@ -180,6 +203,7 @@ void CMobWeapon::SetUp_ShaderResource()
 
 void CMobWeapon::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
 {
+	// TODO : 콜라이더 작업은 나중에
 	_uint iOtherColliderIndex = pOtherCollider.lock()->Get_ColliderIndex();
 	list<_uint>::iterator iter = find(m_iHitColliderIndexs.begin(), m_iHitColliderIndexs.end(), iOtherColliderIndex);
 
@@ -189,7 +213,8 @@ void CMobWeapon::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
 
 	m_iHitColliderIndexs.push_back(iOtherColliderIndex);
 
-	Weak_Cast<CCharacter>(pOtherCollider.lock()->Get_Owner()).lock()->OnHit(m_pHitColliderCom, m_eHitType, m_fDamage);
+	// TODO : 콜라이더 작업은 나중에
+	// Weak_Cast<CCharacter>(pOtherCollider.lock()->Get_Owner()).lock()->OnHit(m_pHitColliderCom, m_eHitType, m_fDamage);
 
 	if (m_bFirstAttack)
 	{

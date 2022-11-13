@@ -15,6 +15,7 @@ BEGIN(Client)
 class CMobWeapon :
     public CGameObject
 {
+public:
     GAMECLASS_H(CMobWeapon);
     CLONE_H(CMobWeapon, CGameObject);
 
@@ -27,14 +28,16 @@ public:// CGameObject을(를) 통해 상속됨
     virtual HRESULT Render() override;
 
 public:
-    void Init_DefaultSaber(weak_ptr<CModel> In_pModelCom, weak_ptr<CGameObject> In_pParent, const string& szTargetNode = "weapon_r");
-    void Enable_DefaultSaber(const HIT_TYPE& In_eHitType, const _float& In_fDamage);
-    void Disable_DefaultSaber();
-    void Set_DefaultSaberScale(const _float& In_fWeaponScale);
-    void Set_OriginalDefaultSaberScale();
+    void Init_DefaultWeapon(weak_ptr<CModel> In_pModelCom, weak_ptr<CGameObject> In_pParent, const string& szTargetNode = "weapon_r");
+    void Enable_DefaultWeapon(const HIT_TYPE& In_eHitType, const _float& In_fDamage);
+    void Disable_DefaultWeapon();
+    void Set_DefaultWeaponScale(const _float& In_fWeaponScale);
+    void Set_OriginalDefaultWeaponScale();
     weak_ptr<CGameObject> Get_ParentObject();
-
     void Set_DefaultSaberDesc(const _float& In_fWeaponScale, const _float3& In_vOffset, const HIT_TYPE& In_eHitType, const _float& In_fDamage);
+
+    // MOBWEAPONTYPE Get_WeaponType() { return m_eWeaType; }
+    void Set_WeaponType(MONSTERWEAPONTYPE WeaponType);
 
 public:
     FDelegate<weak_ptr<CCollider>> CallBack_Attack;
@@ -57,6 +60,10 @@ private:
     _float4x4               m_TransformationMatrix;
 
     _float3                 m_vOffset;
+
+    MONSTERWEAPONTYPE           m_eWeaType = MONSTERWEAPONTYPE::MON_WEAPON_END;
+
+
 
 private:
     list<_uint>             m_iHitColliderIndexs;

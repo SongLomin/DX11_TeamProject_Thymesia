@@ -18,8 +18,15 @@ HRESULT CAIStateBase::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
+	CMonster::STATE_LINK_DESC StateLinkDesc;
+	ZeroMemory(&StateLinkDesc, sizeof(CMonster::STATE_LINK_DESC));
+	memcpy(&StateLinkDesc, pArg, sizeof(CMonster::STATE_LINK_DESC));
+
+	m_eNorMonType = StateLinkDesc.eNorMonType;
+
 	m_iTimeScaleLayer = (_uint)TIMESCALE_LAYER::MONSTER;
 	m_pOwnerFromMonster = Weak_Cast<CMonster>(m_pOwner);
+	
 	return S_OK;
 }
 

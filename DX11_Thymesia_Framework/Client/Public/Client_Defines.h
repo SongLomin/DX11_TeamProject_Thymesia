@@ -100,6 +100,35 @@ namespace Client
 		DIRECTION_END
 	};
 
+	enum class  MONSTERWEAPONTYPE
+	{
+		WEAPON_AXE,
+		WEAPON_KNIFE,
+		MON_WEAPON_END
+	};
+
+	enum class  NORMONSTERTYPE {
+		AXEMAN,  // 도끼든여자
+		KNIFEWOMAN, // 기본단검여자
+		SKULL, // 기본해골
+		GARDENER, // 낫든몬스터
+		NMON_END
+	};
+
+	enum class NORMONSTERIDLETYPE {
+		NORIDLE,
+		GROGGYIDLE,
+		DORMANT,
+		IDLEEND
+	};
+
+	//enum class  RAREMONSTERTYPE {
+	//	RMON_ARMOR,
+	//	RMON_KNIFEWOMAN,
+	//	RMON, SKULL,
+	//	RMON_END
+	//};
+
 }
 
 extern HWND g_hWnd;

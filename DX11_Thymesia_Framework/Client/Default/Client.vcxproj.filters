@@ -325,17 +325,14 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_BasicHealing.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing\00.CorvusState_BasicHealing</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\MobStateBase.h">
+    <ClInclude Include="..\Public\NorMonStateBase.h">
       <Filter>05. Component\03. State\01. AIStateBase</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Monster.h">
       <Filter>02. GameObject\03. Actor\00. Character\01. Monster</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Mob.h">
-      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\00.Mob</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\MobWeapon\MobWeapon.h">
-      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\00.Mob\00.Weapon</Filter>
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\99.Weapon</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UI_Logo.h">
       <Filter>02. GameObject\01. UI\MainMenu</Filter>
@@ -345,6 +342,99 @@
     </ClInclude>
     <ClInclude Include="..\Public\PreView_Prop.h">
       <Filter>02. GameObject\04. Prop\05. PreView_Prop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonster.h">
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\00.NorMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_DorMant.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\00.DorMant</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Awake.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\01.Awake</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Die.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\13.Die</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Farry.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\29.Farry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Fidget.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Fidget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_FR.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\23.Walk_FR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_GroggyEnd.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\18.GroggyEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_GroggyLoop.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\17.GroggyLoop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_GroggyStart.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\16.GroggyStart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_HeavyAttack1.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\09.HeavyAttack1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_LightAttack1.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\06.LitghAttack1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_LightAttack2.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\07.LightAttack2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_HeavyAttack2.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\10.HeavyAttack2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_HeavyAttack3.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\11.HeavyAttack3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_LightAttack3.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\08.LightAttack3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_HurtL.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\14.HurtL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_HurtR.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\15.HurtR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Idle.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\02.Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Run.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\03.Run</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_TurnL90.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\04.TurnL90</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_TurnR90.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\05.TurnR90</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttack.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\12.SpecialAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_F.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\21.Walk_F</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_B.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\26.Walk_B</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_BL.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\27.Walk_BL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_BR.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\28.Walk_BR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_FL.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\22.Walk_FL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_R.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\25.Walk_R</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_TakeExecution.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\20.TakeExecution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_L.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\24.Walk_L</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -612,9 +702,6 @@
     <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\00.Corvus_DefaultSaber</Filter>
     </ClCompile>
-    <ClCompile Include="..\Public\Corvus_DefaultDagger.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\01.Corvus_DefaultDagger</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\EditGround.cpp">
       <Filter>02. GameObject\99. Other\01. EditGround</Filter>
     </ClCompile>
@@ -652,11 +739,8 @@
     <ClCompile Include="..\Private\Monster.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\01. Monster</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Mob.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\00.Mob</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\MobWeapon\MobWeapon.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\00.Mob\00.Weapon</Filter>
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\99.Weapon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PreView_Prop.cpp">
       <Filter>02. GameObject\04. Prop\05. PreView_Prop</Filter>
@@ -666,6 +750,102 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_Loading.cpp">
       <Filter>02. GameObject\01. UI\Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Corvus_DefaultDagger.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\01.Corvus_DefaultDagger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonster.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\00.NorMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_DorMant.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\00.DorMant</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Awake.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\01.Awake</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Die.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\13.Die</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Farry.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\29.Farry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Fidget.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Fidget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_FR.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\23.Walk_FR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_GroggyEnd.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\18.GroggyEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_GroggyLoop.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\17.GroggyLoop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_GroggyStart.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\16.GroggyStart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_HeavyAttack1.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\09.HeavyAttack1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_LightAttack1.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\06.LitghAttack1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_LightAttack2.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\07.LightAttack2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_HeavyAttack2.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\10.HeavyAttack2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_HeavyAttack3.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\11.HeavyAttack3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_LightAttack3.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\08.LightAttack3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_HurtL.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\14.HurtL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_HurtR.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\15.HurtR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Idle.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\02.Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Run.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\03.Run</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_TurnL90.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\04.TurnL90</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_TurnR90.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\05.TurnR90</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttack.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\12.SpecialAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_F.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\21.Walk_F</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_B.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\26.Walk_B</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_BL.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\27.Walk_BL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_BR.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\28.Walk_BR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_FL.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\22.Walk_FL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_R.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\25.Walk_R</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_TakeExecution.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\20.TakeExecution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_L.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\24.Walk_L</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1067,14 +1247,128 @@
     <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster">
       <UniqueIdentifier>{b10a7ea5-a749-4a3b-a17c-3bb89b499e38}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\00.Mob">
-      <UniqueIdentifier>{83e51cf4-fd97-4734-ac39-ca7849a9905d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\00.Mob\00.Weapon">
-      <UniqueIdentifier>{5e4e63d5-214f-4648-9f56-5231e87b034b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\04. Prop\05. PreView_Prop">
       <UniqueIdentifier>{959a7114-f746-44a0-91a4-24c79633fe1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\00.NorMonster">
+      <UniqueIdentifier>{83e51cf4-fd97-4734-ac39-ca7849a9905d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\01.RareMonster">
+      <UniqueIdentifier>{01de9514-6850-49c7-b222-c2931730e79f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\02.EliteMonster">
+      <UniqueIdentifier>{6dbd2e3c-9b5f-4492-9900-d210f9ae3a6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\03.BossMonster">
+      <UniqueIdentifier>{5e63cf28-93f2-445b-9683-2c4c3c6f8921}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\99.Weapon">
+      <UniqueIdentifier>{5e4e63d5-214f-4648-9f56-5231e87b034b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase">
+      <UniqueIdentifier>{25e87a1f-965a-4575-965e-e7024bb71594}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState">
+      <UniqueIdentifier>{72511287-1c1d-4c1d-bdbc-63edbc96d309}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\01.RareState">
+      <UniqueIdentifier>{bc8dbe67-55c2-4f63-af8c-b934202a2059}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\02.EliteState">
+      <UniqueIdentifier>{3e32fefa-6708-433b-8029-4504c1393290}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState">
+      <UniqueIdentifier>{450abe37-42c4-4e3e-b5ba-decab0b5b0c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\00.DorMant">
+      <UniqueIdentifier>{c951e64e-32c4-4d0e-9ab7-cd2cddafc681}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\01.Awake">
+      <UniqueIdentifier>{070c0955-b050-42cc-a0fc-4b7dd12312aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\02.Idle">
+      <UniqueIdentifier>{dca1824f-b52e-47ba-a9be-cbb72fc4f960}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\03.Run">
+      <UniqueIdentifier>{bbf9fd30-8280-49b5-b9db-4d8be80b07a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\04.TurnL90">
+      <UniqueIdentifier>{02be8622-50d7-4460-8f70-a69504affb03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\05.TurnR90">
+      <UniqueIdentifier>{cb1e378f-d295-4603-96ae-ff08e5ef31fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\06.LitghAttack1">
+      <UniqueIdentifier>{c48987f2-6bb7-4934-bf09-6f2089c1af03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\07.LightAttack2">
+      <UniqueIdentifier>{d5f29e5d-3a55-4e2c-ad56-ba5d40ac7aae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\08.LightAttack3">
+      <UniqueIdentifier>{8b5f759a-e63c-4a8e-8582-e0abfc15eaeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\09.HeavyAttack1">
+      <UniqueIdentifier>{3bb9f5ed-794b-4cd3-80f9-8ee761e4c4c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\10.HeavyAttack2">
+      <UniqueIdentifier>{345c7a6a-30a4-4906-a7b0-4bbd1f5b823d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\11.HeavyAttack3">
+      <UniqueIdentifier>{e2ea7fe8-1f8f-4b67-9753-d97064b4cf10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\12.SpecialAttack">
+      <UniqueIdentifier>{4b358c99-9a0d-49f7-8b4c-ee80f3e0c224}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\13.Die">
+      <UniqueIdentifier>{d1e1d730-2bae-4e62-a813-d7291c9b347e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\14.HurtL">
+      <UniqueIdentifier>{8da0dd97-f260-4957-8aae-dadd1cbb1b15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\15.HurtR">
+      <UniqueIdentifier>{14dda010-24b4-437f-a85f-edc8da7f19f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\16.GroggyStart">
+      <UniqueIdentifier>{20341056-2b33-4408-a7c0-bef71b99ea82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\17.GroggyLoop">
+      <UniqueIdentifier>{0d189ad3-59eb-4618-bf74-fc8a5c1b4761}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Fidget">
+      <UniqueIdentifier>{ef99f0e7-ec59-4038-8104-575ffcc246d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\20.TakeExecution">
+      <UniqueIdentifier>{442d3433-6ed3-4af7-909b-08d4b8d5236f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\21.Walk_F">
+      <UniqueIdentifier>{b9d7dfc9-a39a-4016-91ec-62e6b68ba7ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\22.Walk_FL">
+      <UniqueIdentifier>{36cd9b46-4046-4ae3-a0bb-2dd527e7fb95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\23.Walk_FR">
+      <UniqueIdentifier>{89d3c5b9-35af-4368-9bbf-5dae61143eb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\24.Walk_L">
+      <UniqueIdentifier>{085611db-3707-474e-91a2-e7eee4703b4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\25.Walk_R">
+      <UniqueIdentifier>{84522801-e86c-46c2-8259-89ab8ecabd87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\26.Walk_B">
+      <UniqueIdentifier>{45280aef-b9fc-4efc-a773-70bc15d83ae0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\27.Walk_BL">
+      <UniqueIdentifier>{e9ab06c5-8729-44f6-bd46-1c8650bf2647}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\28.Walk_BR">
+      <UniqueIdentifier>{85df3c89-a57a-4655-9991-adaf86143eaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\29.Farry">
+      <UniqueIdentifier>{2a1c0fc3-adb0-4560-85fb-b6c0286d8e9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\18.GroggyEnd">
+      <UniqueIdentifier>{24fe74f1-5891-4e0a-b64f-c168db6576ab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

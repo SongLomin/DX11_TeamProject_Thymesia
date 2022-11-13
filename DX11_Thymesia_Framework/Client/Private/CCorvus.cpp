@@ -18,6 +18,7 @@ HRESULT CCorvus::Initialize_Prototype()
 
 HRESULT CCorvus::Initialize(void* pArg)
 {
+
 	__super::Initialize(pArg);
 
 	m_pShaderCom.lock()->Set_ShaderInfo(

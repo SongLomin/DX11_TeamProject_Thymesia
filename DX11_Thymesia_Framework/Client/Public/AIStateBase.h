@@ -4,14 +4,11 @@
 BEGIN(Engine)
 class CAnimation;
 class CNavigation;
-
 END
 
 BEGIN(Client)
 
-class CBehaviorBase;
 class CMonster;
-
 class CAIStateBase abstract:
     public CStateBase
 {
@@ -44,6 +41,10 @@ protected:
     _float3             m_vLookAtDir;
     _float              m_fCurrentRotateTime = 0.f;
     _float              m_fStateTimeAcc = 100.f;
+    NORMONSTERTYPE      m_eNorMonType =     NORMONSTERTYPE::NMON_END;
+   
+
+
 
 private:
     weak_ptr<CMonster> m_pOwnerFromMonster;

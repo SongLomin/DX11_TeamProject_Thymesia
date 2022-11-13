@@ -1,5 +1,6 @@
 #pragma once
 
+
 namespace Client
 {
 	struct EFFECTMESH_DESC

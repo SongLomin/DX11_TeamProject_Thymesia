@@ -1,0 +1,162 @@
+0. DemoM02_Idle1
+1. DemoM02_RunF1
+2. DemoM02_TurnL90
+3. DemoM02_TurnR90
+4. LV1Villager_M_Attack01
+5. LV1Villager_M_Attack02
+6. LV1Villager_M_Attack03
+7. LV1Villager_M_Attack04
+8. LV1Villager_M_Attack05
+9. LV1Villager_M_Attack06
+10. LV1Villager_M_Die01
+11. LV1Villager_M_Fall_End
+12. LV1Villager_M_Fall_Loop
+13. LV1Villager_M_FallGround
+14. LV1Villager_M_FallHurt_B
+15. LV1Villager_M_HurtCounter
+16. LV1Villager_M_HurtFall_End_FaceUp
+17. LV1Villager_M_HurtKnockBack
+18. LV1Villager_M_HurtKnockDownB
+19. LV1Villager_M_HurtKnockUp_Sart
+20. LV1Villager_M_HurtL_F
+21. LV1Villager_M_HurtLieGetup_FaceDown
+22. LV1Villager_M_HurtLieGetup_FaceUp
+23. LV1Villager_M_HurtLieLoop_FaceDown
+24. LV1Villager_M_HurtLieLoop_FaceUp
+25. LV1Villager_M_HurtS_FL
+26. LV1Villager_M_HurtS_FR
+27. LV1Villager_M_HurtStunEnd
+28. LV1Villager_M_HurtStunLoop
+29. LV1Villager_M_HurtStunStart
+30. LV1Villager_M_IdleGeneral
+31. LV1Villager_M_Sit_cough
+32. LV1Villager_M_Sit_Idle
+33. LV1Villager_M_SitToIdle
+34. LV1Villager_M_SP01
+35. LV1Villager_M_SP01_Attack01
+36. LV1Villager_M_SP_Idle1
+37. LV1Villager_M_SP_Idle1_End
+38. LV1Villager_M_VSAmbushedDead
+39. LV1Villager_M_VSTakeExecution
+40. LV1Villager_M_VSTakeExecutionDead
+41. LV1Villager_M_WalkB
+42. LV1Villager_M_WalkBL
+43. LV1Villager_M_WalkF
+44. LV1Villager_M_WalkFL
+45. LV1Villager_M_WalkFR
+46. LV1Villager_M_WalkL
+47. LV1Villager_M_WalkR
+48. LV1Villager_Parry
+RootNode
+root_$AssimpFbx$_Translation
+root_$AssimpFbx$_PreRotation
+root_$AssimpFbx$_Rotation
+root_$AssimpFbx$_Scaling
+root
+pelvis
+Bip001-Pelvis
+spine_01
+spine_02
+spine_03
+neck_01
+head
+clavicle_r
+upperarm_r
+lowerarm_r
+hand_r
+thumb_01_r
+thumb_02_r
+thumb_03_r
+index_01_r
+index_02_r
+index_03_r
+middle_01_r
+middle_02_r
+middle_03_r
+ring_01_r
+ring_02_r
+ring_03_r
+pinky_01_r
+pinky_02_r
+pinky_03_r
+weapon_r
+weapon_r_end
+Bone_Cloak10
+Bone_Cloak11
+Bone_Cloak12_End
+clavicle_l
+upperarm_l
+lowerarm_l
+hand_l
+thumb_01_l
+thumb_02_l
+thumb_03_l
+index_01_l
+index_02_l
+index_03_l
+middle_01_l
+middle_02_l
+middle_03_l
+ring_01_l
+ring_02_l
+ring_03_l
+pinky_01_l
+pinky_02_l
+pinky_03_l
+weapon_l
+Bone_Cloak04
+Bone_Cloak05
+Bone_Cloak06_End
+Bone_Cloak07
+Bone_Cloak08
+Bone_Cloak09_End
+Bone_Cloak01
+Bone_Cloak02
+Bone_Cloak03_End
+Bone_Cloak13
+Bone_Cloak14
+Bone_Cloak15_End
+thigh_r
+calf_r
+foot_r
+ball_r
+thigh_l
+calf_l
+foot_l
+ball_l
+Bone_Hen11
+Bone_Hen12
+Bone_Hen13
+Bone_Hen14
+Bone_Hen15_End
+Bone_Hen16
+Bone_Hen17
+Bone_Hen18
+Bone_Hen19
+Bone_Hen20_End
+Bone_Hen21
+Bone_Hen22
+Bone_Hen23
+Bone_Hen24
+Bone_Hen25_End
+Bone_Hen01
+Bone_Hen02
+Bone_Hen03
+Bone_Hen04
+Bone_Hen05_End
+Bone_Hen06
+Bone_Hen07
+Bone_Hen08
+Bone_Hen09
+Bone_Hen10_End
+ik_hand_root
+ik_hand_gun
+ik_foot_r
+ik_foot_l
+ik_hand_r
+ik_hand_l
+AnimTargetPoint
+camera
+weapon_r_IK
+SK_C_LV0Villager_M_$AssimpFbx$_PreRotation
+SK_C_LV0Villager_M
