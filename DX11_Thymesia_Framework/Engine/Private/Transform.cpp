@@ -66,8 +66,6 @@ HRESULT CTransform::Set_ShaderResource(weak_ptr<CShader> pShader, const char* pC
 
 HRESULT CTransform::Go_Straight(_float fTimeDelta, weak_ptr<CNavigation> pNaviCom)
 {
-    
-
     _vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
     _vector		vLook = XMVector3Normalize(Get_State(CTransform::STATE_LOOK));
     _vector     vNewPosition = vPosition + XMVector3Normalize(vLook) * fTimeDelta;
@@ -165,7 +163,78 @@ HRESULT CTransform::Go_Down(_float fTimeDelta)
     vPosition -= XMVector3Normalize(vUp) /* ¼Óµµ:5.f */ * fTimeDelta;
 
     Set_State(CTransform::STATE_TRANSLATION, vPosition);
+    return S_OK;
+}
 
+HRESULT CTransform::Go_Straight_WorldAxis
+(
+    _float fTimeDelta
+)
+{
+    _vector vPosition = this->Get_State(CTransform::STATE_TRANSLATION);
+    _vector vWorldLook{ 0.f, 0.f, 1.f };
+    vPosition += vWorldLook * fTimeDelta;
+    this->Set_State(CTransform::STATE_TRANSLATION, vPosition);
+    return S_OK;
+}
+
+HRESULT CTransform::Go_Backward_WorldAxis
+(
+    _float fTimeDelta
+)
+{
+    _vector vPosition = this->Get_State(CTransform::STATE_TRANSLATION);
+    _vector vWorldLook{ 0.f, 0.f, 1.f };
+    vPosition -= vWorldLook * fTimeDelta;
+    this->Set_State(CTransform::STATE_TRANSLATION, vPosition);
+    return S_OK;
+}
+
+HRESULT CTransform::Go_Left_WorldAxis
+(
+    _float fTimeDelta
+)
+{
+    _vector vPosition = this->Get_State(CTransform::STATE_TRANSLATION);
+    _vector vWorldRight{ 1.f, 0.f, 0.f };
+    vPosition -= vWorldRight * fTimeDelta;
+    this->Set_State(CTransform::STATE_TRANSLATION, vPosition);
+    return S_OK;
+}
+
+HRESULT CTransform::Go_Right_WorldAxis
+(
+    _float fTimeDelta
+)
+{
+    _vector vPosition = this->Get_State(CTransform::STATE_TRANSLATION);
+    _vector vWorldRight{ 1.f, 0.f, 0.f };
+    vPosition += vWorldRight * fTimeDelta;
+    this->Set_State(CTransform::STATE_TRANSLATION, vPosition);
+    return S_OK;
+}
+
+HRESULT CTransform::Go_Up_WorldAxis
+(
+    _float fTimeDelta
+)
+{
+    _vector vPosition = this->Get_State(CTransform::STATE_TRANSLATION);
+    _vector vWorldUp{ 0.f, 1.f, 0.f };
+    vPosition += vWorldUp * fTimeDelta;
+    this->Set_State(CTransform::STATE_TRANSLATION, vPosition);
+    return S_OK;
+}
+
+HRESULT CTransform::Go_Down_WorldAxis
+(
+    _float fTimeDelta
+)
+{
+    _vector vPosition = this->Get_State(CTransform::STATE_TRANSLATION);
+    _vector vWorldUp{ 0.f, 1.f, 0.f };
+    vPosition -= vWorldUp * fTimeDelta;
+    this->Set_State(CTransform::STATE_TRANSLATION, vPosition);
     return S_OK;
 }
 

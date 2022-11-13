@@ -526,41 +526,34 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 void CCustomEffectMesh::Key_Input_ControlMesh(_float fTimeDelta)
 {
 	if (KEY_INPUT(KEY::NUMPAD8, KEY_STATE::HOLD))
-	{
 		m_pTransformCom.lock()->Go_Straight(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
-	}
+	if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) && KEY_INPUT(KEY::NUMPAD8, KEY_STATE::HOLD))
+		m_pTransformCom.lock()->Go_Straight_WorldAxis(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
+
 	if (KEY_INPUT(KEY::NUMPAD2, KEY_STATE::HOLD))
-	{
 		m_pTransformCom.lock()->Go_Backward(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
-	}
+	if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) && KEY_INPUT(KEY::NUMPAD2, KEY_STATE::HOLD))
+		m_pTransformCom.lock()->Go_Backward_WorldAxis(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
+
 	if (KEY_INPUT(KEY::NUMPAD4, KEY_STATE::HOLD))
-	{
 		m_pTransformCom.lock()->Go_Left(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
-	}
+	if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) && KEY_INPUT(KEY::NUMPAD4, KEY_STATE::HOLD))
+		m_pTransformCom.lock()->Go_Left_WorldAxis(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
+
 	if (KEY_INPUT(KEY::NUMPAD6, KEY_STATE::HOLD))
-	{
 		m_pTransformCom.lock()->Go_Right(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
-	}
+	if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) && KEY_INPUT(KEY::NUMPAD6, KEY_STATE::HOLD))
+		m_pTransformCom.lock()->Go_Right_WorldAxis(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
+
 	if (KEY_INPUT(KEY::NUMPAD1, KEY_STATE::HOLD))
-	{
-		// go up
 		m_pTransformCom.lock()->Go_Up(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
-	}
+	if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) && KEY_INPUT(KEY::NUMPAD1, KEY_STATE::HOLD))
+		m_pTransformCom.lock()->Go_Up_WorldAxis(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
+
 	if (KEY_INPUT(KEY::NUMPAD3, KEY_STATE::HOLD))
-	{
-		// go down
 		m_pTransformCom.lock()->Go_Down(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
-	}
-	if (KEY_INPUT(KEY::NUMPAD7, KEY_STATE::HOLD))
-	{
-		// rotation minus
-		m_pTransformCom.lock()->Turn(XMVectorSetW(XMLoadFloat3(&m_tEffectMeshDesc.vRotationAxis), 0.f), -1.f * fTimeDelta * m_tEffectMeshDesc.fRotationPerSec);
-	}
-	if (KEY_INPUT(KEY::NUMPAD9, KEY_STATE::HOLD))
-	{
-		// rotation plus
-		m_pTransformCom.lock()->Turn(XMVectorSetW(XMLoadFloat3(&m_tEffectMeshDesc.vRotationAxis), 0.f), fTimeDelta * m_tEffectMeshDesc.fRotationPerSec);
-	}
+	if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) && KEY_INPUT(KEY::NUMPAD3, KEY_STATE::HOLD))
+		m_pTransformCom.lock()->Go_Down_WorldAxis(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
 }
 
 void CCustomEffectMesh::Apply_ImGui_Controls_to_Mesh()
@@ -568,35 +561,6 @@ void CCustomEffectMesh::Apply_ImGui_Controls_to_Mesh()
 	if (m_tEffectMeshDesc.bSyncStartPositionToController)
 	{
 		XMStoreFloat3(&m_tEffectMeshDesc.vStartPosition, m_pTransformCom.lock()->Get_State(CTransform::STATE::STATE_TRANSLATION));
-	}
-
-	if (m_tEffectMeshDesc.bSyncStartRotationToController)
-	{
-		XMStoreFloat3(&m_tEffectMeshDesc.vStartRotation, m_pTransformCom.lock()->Get_State(CTransform::STATE::STATE_TRANSLATION));
-	}
-
-	switch (m_tEffectMeshDesc.eAxisForRotation)
-	{
-	case Client::EFFECTMESH_DESC::Axis_X:
-		m_tEffectMeshDesc.vRotationAxis = _float3{ 1.f, 0.f, 0.f };
-		break;
-	case Client::EFFECTMESH_DESC::Axis_Y:
-		m_tEffectMeshDesc.vRotationAxis = _float3{ 0.f, 1.f, 0.f };
-		break;
-	case Client::EFFECTMESH_DESC::Axis_Z:
-		m_tEffectMeshDesc.vRotationAxis = _float3{ 0.f, 0.f, 1.f };
-		break;
-	case Client::EFFECTMESH_DESC::Axis_Right:
-		XMStoreFloat3(&m_tEffectMeshDesc.vRotationAxis, m_pTransformCom.lock()->Get_State(CTransform::STATE::STATE_RIGHT));
-		break;
-	case Client::EFFECTMESH_DESC::Axis_Up:
-		XMStoreFloat3(&m_tEffectMeshDesc.vRotationAxis, m_pTransformCom.lock()->Get_State(CTransform::STATE::STATE_UP));
-		break;
-	case Client::EFFECTMESH_DESC::Axis_Look:
-		XMStoreFloat3(&m_tEffectMeshDesc.vRotationAxis, m_pTransformCom.lock()->Get_State(CTransform::STATE::STATE_LOOK));
-		break;
-	default:
-		break;
 	}
 }
 #endif // _DEBUG
@@ -732,32 +696,19 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			{
 				ImGui::Separator();
 				ImGui::Text("Control Keys");
-				ImGui::Text("NumPad 8426 to WASD");
-				ImGui::Text("NumPad 1 : move down");
+				ImGui::Text("NumPad 8 : move forward"); ImGui::SameLine();
+				ImGui::Text("NumPad 2 : move backward");
+				ImGui::Text("NumPad 4 : move leftward"); ImGui::SameLine();
+				ImGui::Text("NumPad 6 : move rightward");
+				ImGui::Text("NumPad 1 : move down"); ImGui::SameLine();
 				ImGui::Text("NumPad 3 : move up");
+				ImGui::Text("Hold LShift to move by World Axis");
 				ImGui::Separator();
-				ImGui::Text("Select Axis to Rotate : ");
-				ImGui::Text("X"); ImGui::SameLine();
-				ImGui::RadioButton("##Axis X", &m_tEffectMeshDesc.eAxisForRotation, EFFECTMESH_DESC::Axis_X);
-				ImGui::Text("Y"); ImGui::SameLine();
-				ImGui::RadioButton("##Axis Y", &m_tEffectMeshDesc.eAxisForRotation, EFFECTMESH_DESC::Axis_Y);
-				ImGui::Text("Z"); ImGui::SameLine();
-				ImGui::RadioButton("##Axis Z", &m_tEffectMeshDesc.eAxisForRotation, EFFECTMESH_DESC::Axis_Z);
-				ImGui::Text("RIGHT"); ImGui::SameLine();
-				ImGui::RadioButton("##Axis Right", &m_tEffectMeshDesc.eAxisForRotation, EFFECTMESH_DESC::Axis_Right);
-				ImGui::Text("UP"); ImGui::SameLine();
-				ImGui::RadioButton("##Axis Up", &m_tEffectMeshDesc.eAxisForRotation, EFFECTMESH_DESC::Axis_Up);
-				ImGui::Text("LOOK"); ImGui::SameLine();
-				ImGui::RadioButton("##Axis Look", &m_tEffectMeshDesc.eAxisForRotation, EFFECTMESH_DESC::Axis_Look);
-				ImGui::Text("NumPad 7 : rotate -");
-				ImGui::Text("NumPad 9 : rotate +");
 				ImGui::Separator();
 
 				ImGui::Text("Control Speed");
 				ImGui::DragFloat("##Control Speed", &m_tEffectMeshDesc.fSpeedPerSec);
-
-				ImGui::Text("Control Rotation Speed");
-				ImGui::DragFloat("##Control Rotation Speed", &m_tEffectMeshDesc.fRotationPerSec);
+				ImGui::Separator();
 			}
 
 			ImGui::Separator();
