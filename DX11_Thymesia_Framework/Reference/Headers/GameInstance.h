@@ -186,7 +186,15 @@ public: /* For.Sound_Manager */
 	void StopSound(_uint _iChannelIndex);
 	void StopAll();
 
+public: /* For.PhysX_Manager */
+	HRESULT			Create_Scene(CPhysX_Manager::Scene eScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));
+	HRESULT			Delete_Scene(CPhysX_Manager::Scene eScene);
+	HRESULT			Change_Scene(CPhysX_Manager::Scene eNextScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));
 
+	void			Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh** ppOut);
+	void			Create_ConvexMesh(PxVec3** pVertices, _uint iNumVertice, PxConvexMesh** ppOut);
+	void			Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial** ppOut);
+	void			Create_Shape(const PxGeometry& Geometry, PxMaterial* pMaterial, PxShape** ppOut);
 
 private:
 	shared_ptr<CGraphic_Device> m_pGraphic_Device;

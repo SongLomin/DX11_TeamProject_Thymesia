@@ -25,6 +25,7 @@ private:
 	_uint					m_iCurrentLevelIDBeforeLevelInitalize = 0;
 
 public:
+	virtual void OnDestroy() override;
 	void Free();
 };
 

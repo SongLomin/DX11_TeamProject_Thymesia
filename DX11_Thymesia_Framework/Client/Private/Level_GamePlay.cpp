@@ -87,16 +87,14 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
 
-	//GAMEINSTANCE->Add_GameObject<CDubian>(LEVEL::LEVEL_GAMEPLAY).lock()->Set_Enable(false);
-	//GAMEINSTANCE->Add_GameObject<CBianka>(LEVEL::LEVEL_GAMEPLAY).lock()->Set_Enable(false);
-
-	//GAMEINSTANCE->Add_GameObject<CStage1>(LEVEL::LEVEL_GAMEPLAY);
-	
-
-	//m_iMonsterCount = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::MONSTER).size();
-
 	m_iMonsterCount = 0;
 
+	GAMEINSTANCE->Add_GameObject<CStatic_Prop>(LEVEL_GAMEPLAY);
+	
+	
+	
+	
+	
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
 
 

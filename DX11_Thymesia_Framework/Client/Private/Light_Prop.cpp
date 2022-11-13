@@ -7,6 +7,7 @@
 #include "GameInstance.h"
 #include "GameManager.h"
 #include "Model.h"
+#include "PhysXCollider.h"
 
 GAMECLASS_C(CLight_Prop)
 CLONE_C(CLight_Prop, CGameObject)
@@ -35,7 +36,7 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 		m_iPassIndex = 3; // if Normal Map exists, Pass is 3(Normal). else, Pass is 0(Default).
 
 		// TODO : need to be data
-		m_pTransformCom.lock()->Set_Position(_fvector{3.f, 1.f, 3.f, 1.f});
+		m_pTransformCom.lock()->Set_Position(_fvector{3.f, 15.f, 3.f, 1.f});
 		m_pTransformCom.lock()->Set_Scaled(_float3{ 0.8f, 0.8f, 0.8f });
 
 		GET_SINGLE(CGameManager)->Use_EffectGroup("TorchFire", m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
@@ -60,6 +61,24 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	m_tLightDesc.fRange = 17.f;
 
 	m_iLightIndex = GAMEINSTANCE->Add_Light(m_tLightDesc);
+
+
+	CPhysXCollider::PHYSXCOLLIDERDESC tPhysxColliderDesc;
+	tPhysxColliderDesc.eShape = PHYSXCOLLIDER_TYPE::SPHERE;
+	tPhysxColliderDesc.eType = PHYSXACTOR_TYPE::DYNAMIC;
+	tPhysxColliderDesc.fDensity = 10.f;
+	PxConvexMesh* pCylinderMesh = nullptr;
+	GAMEINSTANCE->Create_CylinderMesh(0.3f, 0.3f, 1.f, &pCylinderMesh);
+	tPhysxColliderDesc.pConvecMesh = pCylinderMesh;
+	tPhysxColliderDesc.vAngles = { 0.f, 0.f, 0.f, 0.f };
+	tPhysxColliderDesc.vPosition = { 3.f, 15.f, 3.f, 1.f };
+	tPhysxColliderDesc.vScale = { 0.2f, 0.2f, 0.2f };
+	PxMaterial* pMaterial = nullptr;
+	GAMEINSTANCE->Create_Material(0.f, 0.f, 0.f, &pMaterial);
+	tPhysxColliderDesc.pMaterial = pMaterial;
+
+	m_pPhysXColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
+
 	return S_OK;
 }
 
@@ -70,6 +89,8 @@ HRESULT CLight_Prop::Start()
 
 void CLight_Prop::Tick(_float fTimeDelta)
 {
+	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom);
+
 	__super::Tick(fTimeDelta);
 
 
@@ -78,6 +99,8 @@ void CLight_Prop::Tick(_float fTimeDelta)
 void CLight_Prop::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	//m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
 }
 
 HRESULT CLight_Prop::Render()

@@ -4,11 +4,11 @@
 BEGIN(Engine)
 class CTransform;
 
-class ENGINE_DLL CPhyXCollider final : public CComponent
+class ENGINE_DLL CPhysXCollider final : public CComponent
 {
-	GAMECLASS_H(CPhyXCollider);
-	SHALLOW_COPY(CPhyXCollider);
-	DECLARE_CLONABLE(CPhyXCollider, CComponent);
+	GAMECLASS_H(CPhysXCollider);
+	SHALLOW_COPY(CPhysXCollider);
+	DECLARE_CLONABLE(CPhysXCollider, CComponent);
 
 public:
 	typedef struct PhysXColliderDesc
@@ -35,6 +35,8 @@ public:
 	_float	Get_Mess();
 	_vector	Get_AngularVelocity();
 	_vector	Get_LinearVelocity();
+
+	_uint	Get_PColliderIndex() const { return m_iColliderIndex; }
 
 
 	HRESULT Set_Position(_vector _vPos, _vector _vQuaternion);
@@ -80,6 +82,11 @@ public:
 	HRESULT Clear_Force();
 	HRESULT Clear_Velocity();
 	HRESULT Add_LinearVelocityResistance(_vector fResistanceRate);
+
+
+private:
+	static	_uint							m_iClonedColliderIndex;
+	_uint									m_iColliderIndex;
 
 private:
 	// 최대 속도는 XZ,Y 로 나뉘어 진다. XZ에 들어가있는 값은 X에 있는 값을 사용한다.

@@ -1,14 +1,18 @@
 #pragma once
 #include "Base.h"
+
+
+
 BEGIN(Engine)
 
 class CCollider;
+class CollisionCallBack;
 
 class CCollision_Manager final : public CBase
 {
 	DECLARE_SINGLETON(CCollision_Manager)
 
-public:
+public: /* For. MyCollision */
 	void Initialize(const _uint& In_iNumLayer);
 	void Tick();
 	void Add_Collision(const _uint& In_iLayer, weak_ptr<CCollider> In_pCollider);
@@ -24,6 +28,14 @@ private:
 private:
 	vector<list<weak_ptr<CCollider>>>	m_pColliderList; // 충돌 컴포넌트들만 충돌 타입별로 모아놓은 리스트
 	vector<_uint>						m_arrCheck;
+
+public: /* For. PhysxCollision */
+	PxContactModifyCallback*	Get_CollisionCallBack() const;
+
+
+private:
+	CollisionCallBack *m_pCollisionCallBack = nullptr;
+
 
 
 public:

@@ -1,6 +1,7 @@
 #include "Collision_Manager.h"
 #include "Collider.h"
 #include "GameInstance.h"
+#include "CollisionCallBack.h"
 
 IMPLEMENT_SINGLETON(CCollision_Manager)
 
@@ -14,6 +15,7 @@ void CCollision_Manager::Initialize(const _uint& In_iNumLayer)
 		m_arrCheck.push_back(0);
 	}
 
+	m_pCollisionCallBack = DBG_NEW CollisionCallBack();
 
 }
 
@@ -195,9 +197,13 @@ void CCollision_Manager::End_CollisionCheck()
 
 }
 
+PxContactModifyCallback* CCollision_Manager::Get_CollisionCallBack() const
+{
+	return m_pCollisionCallBack;
+}
+
 void CCollision_Manager::Free()
 {
-
-
+	m_pCollisionCallBack->Release();
 }
 

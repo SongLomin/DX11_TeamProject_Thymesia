@@ -39,8 +39,8 @@ HRESULT CPhysX_Manager::Initialize()
 	//m_pScenes = new LPSCENE[iNumLevels];
 
 	// TODO : for test [ Create Scene ]
-	Create_Scene(SCENE_CURRENT);
-	m_pCurScene = m_pScenes[SCENE_CURRENT];
+	//Create_Scene(SCENE_CURRENT);
+	//m_pCurScene = m_pScenes[SCENE_CURRENT];
 
 
 
@@ -65,6 +65,11 @@ void CPhysX_Manager::Tick(_float fTimeDelta)
 {
 	if (m_pCurScene)
 	{
+		if (fTimeDelta > 3.f)
+		{
+			return;
+		}
+
 		if (1 == m_pCurScene->getTimestamp() ||
 			2 == m_pCurScene->getTimestamp())
 			fTimeDelta = 0.16f;
@@ -125,6 +130,9 @@ HRESULT CPhysX_Manager::Create_Scene(Scene eScene, PxVec3 Gravity)
 		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
 	}
 
+	//m_pScenes[eScene]->setSimulationEventCallback();
+	m_pScenes[eScene]->setContactModifyCallback(GET_SINGLE(CCollision_Manager)->Get_CollisionCallBack());
+
 	m_pCurScene = m_pScenes[eScene];
 
 	//PxSceneDesc	SceneDesc(m_pPhysics->getTolerancesScale());
@@ -170,10 +178,12 @@ HRESULT CPhysX_Manager::Create_Scene(Scene eScene, PxVec3 Gravity)
 
 HRESULT CPhysX_Manager::Delete_Scene(Scene eScene)
 {
-	m_pScenes[eScene]->release();
+	if(m_pScenes[eScene])
+		m_pScenes[eScene]->release();
 	m_pScenes[eScene] = nullptr;
 
-	m_pDispatcher->release();
+	if(m_pDispatcher)
+		m_pDispatcher->release();
 	m_pDispatcher = nullptr;
 	return S_OK;
 }
@@ -326,7 +336,8 @@ void CPhysX_Manager::OnDestroy()
 
 
 	//m_pCurScene->release();
-	m_pDispatcher->release();
+	if(m_pDispatcher)
+		m_pDispatcher->release();
 
 	if (m_pPhysics)
 		m_pPhysics->release();

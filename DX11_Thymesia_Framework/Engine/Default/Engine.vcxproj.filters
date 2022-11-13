@@ -221,6 +221,9 @@
     <ClInclude Include="..\Public\PhysXCollider.h">
       <Filter>01. Elements\03. Component\13. PhysXCollider</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CollisionCallBack.h">
+      <Filter>01. Elements\98. Other\05. PhysXModifyCallBack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -423,6 +426,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\PhysXCollider.cpp">
       <Filter>01. Elements\03. Component\13. PhysXCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CollisionCallBack.cpp">
+      <Filter>01. Elements\98. Other\05. PhysXModifyCallBack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -644,6 +650,12 @@
     </Filter>
     <Filter Include="01. Elements\03. Component\13. PhysXCollider">
       <UniqueIdentifier>{a879f670-6b60-4e1f-a2ef-6874000b5219}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Elements\98. Other\05. PhysXModifyCallBack">
+      <UniqueIdentifier>{4488a8cb-dfba-4715-9b2b-3491521772e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Elements\98. Other\NewFilter1">
+      <UniqueIdentifier>{a4e97afd-f6f4-4426-bf35-d7fec2cc53e3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

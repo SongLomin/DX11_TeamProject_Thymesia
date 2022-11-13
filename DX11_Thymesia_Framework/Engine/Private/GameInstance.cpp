@@ -548,6 +548,41 @@ void CGameInstance::StopAll()
 	m_pSound_Manager->StopAll();
 }
 
+HRESULT CGameInstance::Create_Scene(CPhysX_Manager::Scene eScene, PxVec3 Gravity)
+{
+	return m_pPhysX_Manager->Create_Scene(eScene, Gravity);
+}
+
+HRESULT CGameInstance::Delete_Scene(CPhysX_Manager::Scene eScene)
+{
+	return m_pPhysX_Manager->Delete_Scene(eScene);
+}
+
+HRESULT CGameInstance::Change_Scene(CPhysX_Manager::Scene eNextScene, PxVec3 Gravity)
+{
+	return m_pPhysX_Manager->Change_Scene(eNextScene, Gravity);
+}
+
+void CGameInstance::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh** ppOut)
+{
+	m_pPhysX_Manager->Create_CylinderMesh(fRadiusBelow, fRadiusUpper, fHight, ppOut);
+}
+
+void CGameInstance::Create_ConvexMesh(PxVec3** pVertices, _uint iNumVertice, PxConvexMesh** ppOut)
+{
+	m_pPhysX_Manager->Create_ConvexMesh(pVertices, iNumVertice, ppOut);
+}
+
+void CGameInstance::Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial** ppOut)
+{
+	m_pPhysX_Manager->Create_Material(fStaticFriction, fDynamicFriction, fRestitution, ppOut);
+}
+
+void CGameInstance::Create_Shape(const PxGeometry& Geometry, PxMaterial* pMaterial, PxShape** ppOut)
+{
+	m_pPhysX_Manager->Create_Shape(Geometry, pMaterial, ppOut);
+}
+
 
 void CGameInstance::Free()
 {

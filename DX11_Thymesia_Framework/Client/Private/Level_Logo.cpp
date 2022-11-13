@@ -22,6 +22,8 @@ HRESULT CLevel_Logo::Initialize()
 		return E_FAIL;
 
 
+	GAMEINSTANCE->Create_Scene(CPhysX_Manager::SCENE_CURRENT);
+
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
 	CameraDesc.vEye = _float4(0.0f, 1.2f, 1.5f, 1.f);

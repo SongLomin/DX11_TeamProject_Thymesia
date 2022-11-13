@@ -70,7 +70,7 @@ private:
 	PxPhysics*				m_pPhysics;
 
 	// CPU 리소스를 효율적으로 공유할 수 있도록 하기 위해 구현하는 것을 추천
-	PxDefaultCpuDispatcher*	m_pDispatcher;
+	PxDefaultCpuDispatcher*	m_pDispatcher = nullptr;
 
 	// MeshCooking을 하기 위해 생성
 	PxCooking*				m_pCooking = nullptr;
