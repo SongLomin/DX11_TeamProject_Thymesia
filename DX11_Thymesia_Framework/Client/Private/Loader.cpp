@@ -14,6 +14,7 @@
 #include "CustomUI.h"
 #include "UI_Logo.h"
 #include "UI_Loading.h"
+
 CLoader::CLoader()
 	//: m_pDevice(pDevice), m_pContext(pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
@@ -97,6 +98,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CStage2>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CStage3>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CCorvus>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CNorMonster>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CTerrain>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CStatic_Prop>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CLight_Prop>();
@@ -295,6 +297,21 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("CorvusDefaultDagger", "../Bin/Resources/Meshes/Corvus/Weapon/Corvus_DefaultDagger/Corvus_DefaultDagger.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
+	// 일반몬스터 관련모델
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.0037f, 0.0037f, 0.0037f);
+	GAMEINSTANCE->Load_Model("Mon_AxeMan", "../Bin/Resources/Meshes/NorMonster/AxeMan/SK_C_LV0Villager_M_Skeleton.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC, true);
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Mon_KnifeWoMan", "../Bin/Resources/Meshes/NorMonster/KnifeWoMan/SK_C_LV1Villager_F_Skeleton.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC, true);
+	// 일반몬스터 관련모델
+
+	// 일반몬스터 무기모델
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(270.0f)) * XMMatrixRotationY(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Mon_Weapon_Axe", "../Bin/Resources/Meshes/NorMonster/Weapon/Axe/Axe.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Mon_Weapon_Knife", "../Bin/Resources/Meshes/NorMonster/Weapon/Knife/Knife.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	// 일반몬스터 무기모델
 	
 
 	GAMEINSTANCE->Load_Model("Torch", "../Bin/Resources/Meshes/LightProp/Torch/Torch.FBX", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);

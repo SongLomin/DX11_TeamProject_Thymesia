@@ -3,6 +3,7 @@
 #include "Client_Defines.h"
 #include "ClientLevel.h"
 
+
 BEGIN(Client)
 
 class CLevel_GamePlay final : public CClientLevel

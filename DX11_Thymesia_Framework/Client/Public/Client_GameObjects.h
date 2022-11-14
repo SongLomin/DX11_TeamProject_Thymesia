@@ -30,3 +30,7 @@
 #include "Player_Memory.h"
 #include "Player_PotionUI.h"
 #include "Player_FeatherUI.h"
+
+
+#include "NorMonster.h"
+#include "Monster.h"

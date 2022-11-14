@@ -3,13 +3,23 @@
 
 BEGIN(Client)
 
-class CMonsterWeapon;
+class CMobWeapon;
 
 class CMonster :
     public CCharacter
 {
     GAMECLASS_H(CMonster);
     CLONE_H(CMonster, CGameObject);
+
+public:
+    typedef struct tagMonsterStateLinkDesc
+    {
+        NORMONSTERTYPE       eNorMonType;
+        NORMONSTERIDLETYPE   eNorMonIdleType;
+ 
+        //TODO ¾ß¸Å¿¡¿ä ¹Ø¿¡²¨ ¤¾ 
+        _float3            vYame;
+    }STATE_LINK_DESC;
 
 public:
     void Set_TargetCharacter(weak_ptr<CCharacter> In_pCharacter);
@@ -48,10 +58,15 @@ private:
     _float      m_fDissolveAmount = 0.f;
 
 protected:
-    list<weak_ptr<CMonsterWeapon>> m_pWeapons;
-    weak_ptr<CCharacter> m_pTargetCharacter;
-    weak_ptr<CTexture>  m_pDissolveTextureCom;
+    list<weak_ptr<CMobWeapon>> m_pWeapons;
+    weak_ptr<CStateBase> m_pStandState;
 
+    weak_ptr<CCharacter> m_pTargetCharacter;
+    weak_ptr<CTexture>   m_pDissolveTextureCom;
+    // NORMONSTERTYPE       m_eNorMonType    =     NORMONSTERTYPE::NMON_END;
+    STATE_LINK_DESC      m_tLinkStateDesc;
+    MONSTERWEAPONTYPE    m_eMonWeaPonType =     MONSTERWEAPONTYPE::MON_WEAPON_END;
+    NORMONSTERIDLETYPE   m_eNorMonIdleType =    NORMONSTERIDLETYPE::IDLEEND;
 private:
     
     void Free();

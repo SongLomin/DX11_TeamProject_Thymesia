@@ -83,9 +83,6 @@ void CCorvusState_LAttack1::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 
 
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
-
-	cout << "AttackIndex: " << m_iAttackIndex << endl;
-
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAttackIndex);
 	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 }
@@ -280,16 +277,7 @@ _bool CCorvusState_LAttack1::Check_AndChangeNextState()
 			return true;
 		}
 	}
-	// if (Check_RequirementNextAttackState())
-	//{
-	//	if (Check_RequirementParryState())
-	//	{
-	//		Rotation_InputToLookDir();
-	//		Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
-	//		return true;
-	//	}
-	//	
-	//}
+
 		
 
 
