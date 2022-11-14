@@ -128,6 +128,7 @@ void CWindow_PrototypeView::Add_Prototypes()
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStage3);*/
 
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStatic_Prop);
+    ADD_PROTOTYPE(PROTOTYPE_PROP, CGround);
 
     ADD_PROTOTYPE(PROTOTYPE_UI, CFadeMask);
 

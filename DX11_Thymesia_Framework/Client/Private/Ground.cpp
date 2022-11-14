@@ -26,23 +26,12 @@ HRESULT CGround::Initialize(void* pArg)
 	m_pShaderCom.lock()->Set_ShaderInfo
 	(
 		TEXT("Shader_VtxGround"),
-		VTXNORTEX_DECLARATION::Element,
-		VTXNORTEX_DECLARATION::iNumElements
+		VTXGROUND_DECLARATION::Element,
+		VTXGROUND_DECLARATION::iNumElements
 	);
 
-	m_pRendererCom		 = Add_Component<CRenderer>();
-	m_pDiff_TextureCom	 = Add_Component<CTexture>();
-	m_pNorm_TextureCom	 = Add_Component<CTexture>();
-
-	m_pDiff_TextureCom.lock()->Use_Texture("T_Floor_01a_C.png");
-	m_pNorm_TextureCom.lock()->Use_Texture("T_Floor_01a_N.png");
-
-	shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey("MemoryYamYam");
-
+	m_pRendererCom = Add_Component<CRenderer>();
 	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
-	// m_pVIBufferCom.lock()->Init_Mesh(pModelData.get()->Mesh_Datas[0]);
-
-	Set_OwnerForMyComponents();
 
 	return S_OK;
 }
@@ -71,13 +60,77 @@ HRESULT CGround::Render()
 	__super::Render();
 
 	if (FAILED(SetUp_ShaderResource()))
-		return E_FAIL;
+		DEBUG_ASSERT;
 
-	m_pShaderCom.lock()->Begin(0);
-
+	m_pShaderCom.lock()->Begin(m_iShaderPath);
 	m_pVIBufferCom.lock()->Render();
 
 	return S_OK;
+}
+
+void CGround::Load_FromJson(const json& In_Json)
+{
+	if (In_Json.find("TextureInfo") != In_Json.end())
+	{
+		json TexInfo = In_Json["TextureInfo"];
+
+		for (auto& iter : TexInfo.items())
+		{
+			string szkey	= iter.key();
+			json Textures	= iter.value();
+
+			TEXTURES_INFO Desc;
+
+			for (auto& iter_data : TexInfo.items())
+			{
+				string szDatakey = iter_data.key();
+
+				if ("Diff" == szDatakey)
+				{
+					string szTextureName = iter_data.value();
+
+					Desc.pDiffTex = Add_Component<CTexture>();
+					Desc.pDiffTex.lock()->Use_Texture(szTextureName.c_str());
+				}
+
+				if ("Norm" == szDatakey)
+				{
+					string szTextureName = iter_data.value();
+
+					Desc.pNormTex = Add_Component<CTexture>();
+					Desc.pNormTex.lock()->Use_Texture(szTextureName.c_str());
+				}
+
+				if ("Density" == szDatakey)
+				{
+					Desc.fDensity = iter_data.value();
+				}
+			}
+
+			if (Desc.pDiffTex.lock() && Desc.pNormTex.lock())
+				m_pTextureCom.emplace(szkey, Desc);
+		}
+	}
+
+	if (In_Json.find("VIBufferCom") != In_Json.end())
+	{
+		string szVIBufferName = In_Json["VIBufferCom"];
+
+		shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey(szVIBufferName.c_str());
+
+		if (!pModelData.get())
+		{
+			MSG_BOX("Err : CGround::Load_FromJson(...) <Obj Make By [An Seubg Han]>");
+			return;
+		}
+
+		m_pVIBufferCom.lock()->Init_Mesh(pModelData.get()->Mesh_Datas[0]);
+	}
+
+	if (In_Json.find("ShaderPass") != In_Json.end())
+	{
+		m_iShaderPath = In_Json["ShaderPass"];
+	}
 }
 
 HRESULT CGround::SetUp_ShaderResource()
@@ -85,28 +138,32 @@ HRESULT CGround::SetUp_ShaderResource()
 	//CallBack_Bind_SRV(m_pShaderCom, "");
 
 	if (FAILED(m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
-		return E_FAIL;
+		DEBUG_ASSERT;
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW)), sizeof(_float4x4))))
-		return E_FAIL;
+		DEBUG_ASSERT;
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ)), sizeof(_float4x4))))
-		return E_FAIL;
+		DEBUG_ASSERT;
 
-	if (m_pDiff_TextureCom.lock())
+	for (auto& iter : m_pTextureCom)
 	{
-		if (FAILED(m_pDiff_TextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_SourDiffTexture", 0)))
+		string szDiffTextureName = iter.first + "_Diff";
+		string szNormTextureName = iter.first + "_Norm";
+		string szDensityName     = "g_f" + iter.first.substr(string("g_Texture").length() + 1) + "_Density";
+
+		if (FAILED(iter.second.pDiffTex.lock()->Set_ShaderResourceView(m_pShaderCom, szDiffTextureName.c_str(), 0)))
 			return E_FAIL;
-	}
 
-	if (m_pNorm_TextureCom.lock())
-	{
-		if (FAILED(m_pNorm_TextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NormalTexture", 0)))
+		if (FAILED(iter.second.pNormTex.lock()->Set_ShaderResourceView(m_pShaderCom, szNormTextureName.c_str(), 0)))
+			return E_FAIL;
+
+		if (FAILED(m_pShaderCom.lock()->Set_RawValue(szDensityName.c_str(), &iter.second.fDensity, sizeof(_float))))
 			return E_FAIL;
 	}
 
 	_vector vLightFlag = { 0.f, 0.f, 1.f, 0.f };
 
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector))))
-		return E_FAIL;
+		DEBUG_ASSERT;
 
 	return S_OK;
 }

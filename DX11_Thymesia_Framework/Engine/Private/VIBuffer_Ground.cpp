@@ -253,70 +253,81 @@ HRESULT CVIBuffer_Ground::Init_Mesh(shared_ptr<MESH_DATA> tMeshData)
 		m_Indices.push_back(_uint3(pIndices[i]._1, pIndices[i]._2, pIndices[i]._3));
 	}
 
-	m_iNumVerticesX = tMeshData.get()->iMaterialIndex;
-	m_iNumVerticesZ = tMeshData.get()->iNumBones;
+	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
+	m_BufferDesc.ByteWidth				= m_iStride * m_iNumVertices;
+	m_BufferDesc.Usage					= D3D11_USAGE_DEFAULT;
+	m_BufferDesc.BindFlags				= D3D11_BIND_VERTEX_BUFFER;
+	m_BufferDesc.StructureByteStride	= m_iStride;
+	m_BufferDesc.CPUAccessFlags			= 0;
+	m_BufferDesc.MiscFlags				= 0;
 
-	/*m_fInterval	= pVertices[1].vPosition.x;;*/
-	_ulong		dwNumFaces = 0;
+	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
+	m_SubResourceData.pSysMem = pVertices;
 
-	for (_uint iCol = 0; iCol < m_iNumVerticesZ - 1; ++iCol)
+	if (FAILED(Create_VertexBuffer()))
+		return E_FAIL;
+
+	/* ------------------------------------------------------------------ */
+
+	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
+	m_BufferDesc.ByteWidth				= m_iIndicesStride * m_iNumPrimitive;
+	m_BufferDesc.Usage					= D3D11_USAGE_DEFAULT;
+	m_BufferDesc.BindFlags				= D3D11_BIND_INDEX_BUFFER;
+	m_BufferDesc.StructureByteStride	= 0;
+	m_BufferDesc.CPUAccessFlags		    = 0;
+	m_BufferDesc.MiscFlags				= 0;
+
+	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
+	m_SubResourceData.pSysMem = pIndices;
+
+	if (FAILED(Create_IndexBuffer()))
+		return E_FAIL;
+
+	/* ------------------------------------------------------------------ */
+
+	Safe_Delete_Array(pVertices);
+	Safe_Delete_Array(pIndices);
+
+	return S_OK;
+}
+
+HRESULT CVIBuffer_Ground::Init_Mesh(shared_ptr<MESH_DATA> tMeshData, _uint _iNumVerticesX, _uint _iNumVerticesZ, _float _fInterval)
+{
+	m_iNumVerticesX = _iNumVerticesX;
+	m_iNumVerticesZ = _iNumVerticesZ;
+	m_fInterval		= _fInterval;
+
+	/* --------------------------------------------------------- */
+
+	m_iStride			= sizeof(VTXGROUND);
+	m_iNumVertices		= tMeshData.get()->iNumVertices;
+	m_iNumVertexBuffers = 1;
+
+	VTXGROUND* pVertices = new VTXGROUND[m_iNumVertices];
+	ZeroMemory(pVertices, sizeof(VTXGROUND) * m_iNumVertices);
+
+	for (_uint i = 0; i < m_iNumVertices; ++i)
 	{
-		for (_uint iRow = 0; iRow < m_iNumVerticesX - 1; ++iRow)
-		{
-			_ulong	iIndex = iCol * m_iNumVerticesX + iRow;
+		pVertices[i] = tMeshData.get()->pGroundVertices[i];
 
-			_ulong  iIndices[] =
-			{
-				iIndex + m_iNumVerticesX,
-				iIndex + m_iNumVerticesX + 1,
-				iIndex + 1,
-				iIndex
-			};
-
-			_vector		vSour, vDest, vNormal;
-			_vector		vVertexPos[3];
-			_vector		vVertexNor[3];
-
-			vVertexPos[0] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._1].vPosition);
-			vVertexPos[1] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._2].vPosition);
-			vVertexPos[2] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._3].vPosition);
-
-			vVertexNor[0] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._1].vNormal);
-			vVertexNor[1] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._2].vNormal);
-			vVertexNor[2] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._3].vNormal);
-
-			vSour = vVertexPos[1] - vVertexPos[0];
-			vDest = vVertexPos[2] - vVertexPos[1];
-			vNormal = XMVector3Normalize(XMVector3Cross(vSour, vDest));
-
-			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._1].vNormal, vVertexNor[0] + vNormal);
-			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._2].vNormal, vVertexNor[1] + vNormal);
-			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._3].vNormal, vVertexNor[2] + vNormal);
-			dwNumFaces++;
-
-			pIndices[dwNumFaces] = { iIndices[0], iIndices[2], iIndices[3] };
-
-			vVertexPos[0] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._1].vPosition);
-			vVertexPos[1] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._2].vPosition);
-			vVertexPos[2] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._3].vPosition);
-
-			vVertexNor[0] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._1].vNormal);
-			vVertexNor[1] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._2].vNormal);
-			vVertexNor[2] = XMLoadFloat3(&pVertices[pIndices[dwNumFaces]._3].vNormal);
-
-			vSour = vVertexPos[1] - vVertexPos[0];
-			vDest = vVertexPos[2] - vVertexPos[1];
-			vNormal = XMVector3Normalize(XMVector3Cross(vSour, vDest));
-
-			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._1].vNormal, vVertexNor[0] + vNormal);
-			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._2].vNormal, vVertexNor[1] + vNormal);
-			XMStoreFloat3(&pVertices[pIndices[dwNumFaces]._3].vNormal, vVertexNor[2] + vNormal);
-
-			dwNumFaces++;
-		}
+		m_VertexInfo.push_back(pVertices[i]);
 	}
 
+	m_iIndicesStride	= sizeof(FACEINDICES32);
+	m_iNumPrimitive		= tMeshData.get()->iNumFaces;
+	m_iNumIndices		= m_iNumPrimitive * 3;
+	m_eIndexFormat		= DXGI_FORMAT_R32_UINT;
+	m_eToplogy			= D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
+	FACEINDICES32* pIndices = new FACEINDICES32[m_iNumPrimitive];
+	ZeroMemory(pIndices, sizeof(FACEINDICES32) * m_iNumPrimitive);
+
+	for (_uint i = 0; i < m_iNumPrimitive; ++i)
+	{
+		pIndices[i] = tMeshData.get()->pIndices[i];
+
+		m_Indices.push_back(_uint3(pIndices[i]._1, pIndices[i]._2, pIndices[i]._3));
+	}
 
 	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
 	m_BufferDesc.ByteWidth				= m_iStride * m_iNumVertices;
