@@ -292,8 +292,8 @@
     <ClInclude Include="..\Public\EditGround.h">
       <Filter>02. GameObject\99. Other\01. EditGround</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\EditMapTool.h">
-      <Filter>02. GameObject\99. Other\04. EditMapTool</Filter>
+    <ClInclude Include="..\Public\EditGroupProp.h">
+      <Filter>02. GameObject\99. Other\04. EditGroupProp</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Player_FeatherUI.h">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\Feather</Filter>
@@ -622,8 +622,8 @@
       <Filter>02. GameObject\99. Other\01. EditGround</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\HUD_Hover.cpp" />
-    <ClCompile Include="..\Private\EditMapTool.cpp">
-      <Filter>02. GameObject\99. Other\04. EditMapTool</Filter>
+    <ClCompile Include="..\Private\EditGroupProp.cpp">
+      <Filter>02. GameObject\99. Other\04. EditGroupProp</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\HUD_Hover.cpp">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\Hover</Filter>
@@ -986,9 +986,6 @@
     <Filter Include="02. GameObject\99. Other\01. EditGround">
       <UniqueIdentifier>{e901b999-d046-4e3c-aa8b-98d950d74dbe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\99. Other\04. EditMapTool">
-      <UniqueIdentifier>{8879bd77-4670-491b-803a-0ddb8d81c2e9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP\Track">
       <UniqueIdentifier>{e538de5f-ea92-430b-8213-93cc4e5afda8}</UniqueIdentifier>
     </Filter>
@@ -1096,6 +1093,9 @@
     </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon\01.Corvus_DefaultDagger">
       <UniqueIdentifier>{e8d262bf-d13f-4a53-886f-7946a0308b0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\99. Other\04. EditGroupProp">
+      <UniqueIdentifier>{8879bd77-4670-491b-803a-0ddb8d81c2e9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

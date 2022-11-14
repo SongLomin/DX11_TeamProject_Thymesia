@@ -84,6 +84,8 @@ private:
 
 public:
     static void    Load_AllMeshInfo();
+    _bool          Load_AddMeshInfo(string _szFileName);
+    _bool          Load_AddTextureInfo(string _szFileName);
 
 public:
     virtual void   OnEventMessage(_uint iArg) override;

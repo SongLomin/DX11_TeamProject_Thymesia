@@ -68,7 +68,6 @@ private:
 	weak_ptr<MESH_DATA>					m_pMeshData;
 
 	_uint								m_iMaterialIndex = 0;
-
 	_uint								m_iNumBones = 0;
 
 

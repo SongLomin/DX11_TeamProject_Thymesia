@@ -51,7 +51,6 @@ HRESULT CEditGround::Initialize(void* pArg)
 	Desc.pNormTex = Add_Component<CTexture>();
 	m_pTextureCom.emplace(TexVarDesc[0], Desc);
 
-	Load_AllMeshInfo();
 	Load_ResourceList(m_MeshNames, "../Bin/GroundInfo/Mesh/", ".bin");
 	Load_ResourceList(m_TextureNames, "../Bin/Resources/Textures/Ground/");
 	Load_ResourceList(m_FilterNames, "../Bin/GroundInfo/Filter_SubInfo/", ".bin");
@@ -843,6 +842,9 @@ void CEditGround::Bake_Mesh()
 	tModelData.Mesh_Datas.push_back(pMeshData);
 	tModelData.Bake_Binary();
 
+	if (Load_AddMeshInfo(m_szMeshName))
+		m_MeshNames.push_back(m_szMeshName);
+
 	/* --- Buffer Data --- */
 	
 	string szBinFilePath = "../Bin/GroundInfo/Mesh_SubInfo/" + m_szMeshName + ".bin";
@@ -915,6 +917,8 @@ void CEditGround::Bake_FilterTexture()
 
 	for (auto& iter : m_vColors)
 		write_typed_data(os, iter);
+
+	os.close();
 
 	if (m_pTextureCom.empty())
 		return;
@@ -1084,7 +1088,7 @@ void CEditGround::Load_FromJson(const json& In_Json)
 
 		for (auto& iter : TexInfo.items())
 		{
-			string szkey = iter.key();
+			string szkey  = iter.key();
 			json Textures = iter.value();
 
 			TEXTURES_INFO Desc;
@@ -1154,6 +1158,23 @@ void CEditGround::Load_AllMeshInfo()
 
 		itr++;
 	}
+}
+
+_bool CEditGround::Load_AddMeshInfo(string _szFileName)
+{
+	return !FAILED(GAMEINSTANCE->Load_Model(_szFileName.c_str(), "../bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, XMMatrixIdentity()));
+}
+
+_bool CEditGround::Load_AddTextureInfo(string _szFileName)
+{
+	wstring szFilePath = TEXT("../bin/GroundInfo/Mesh/");
+
+	_tchar szFullTag[MAX_PATH] = L"";
+	MultiByteToWideChar(CP_ACP, 0, _szFileName.c_str(), (_int)_szFileName.length(), szFullTag, MAX_PATH);
+
+	szFilePath += wstring(szFullTag) + TEXT(".dds");
+
+	return !FAILED(GAMEINSTANCE->Load_Textures(_szFileName.c_str(), szFilePath.c_str(), MEMORY_TYPE::MEMORY_STATIC));
 }
 
 void CEditGround::OnEventMessage(_uint iArg)

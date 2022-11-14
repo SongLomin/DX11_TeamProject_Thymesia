@@ -50,6 +50,7 @@ private:
 
     shared_ptr<MESH_DATA>           m_pGroundMeshData;
 
+    weak_ptr<CTexture>              m_pFilterTextureCom;
     TEXTURES                        m_pTextureCom;
 
     _uint                           m_iShaderPath = 0;

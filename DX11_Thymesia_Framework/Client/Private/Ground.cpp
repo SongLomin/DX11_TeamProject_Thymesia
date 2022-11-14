@@ -101,7 +101,7 @@ void CGround::Load_FromJson(const json& In_Json)
 
 			TEXTURES_INFO Desc;
 
-			for (auto& iter_data : TexInfo.items())
+			for (auto& iter_data : Textures.items())
 			{
 				string szDatakey = iter_data.key();
 
@@ -130,6 +130,14 @@ void CGround::Load_FromJson(const json& In_Json)
 			if (Desc.pDiffTex.lock() && Desc.pNormTex.lock())
 				m_pTextureCom.emplace(szkey, Desc);
 		}
+	}
+
+	if (In_Json.find("g_FilterTexture") != In_Json.end())
+	{
+		string szTextureName = In_Json["g_FilterTexture"];
+
+		m_pFilterTextureCom = Add_Component<CTexture>();
+		m_pFilterTextureCom.lock()->Use_Texture(szTextureName.c_str());
 	}
 
 	if (In_Json.find("VIBufferCom") != In_Json.end())
@@ -181,6 +189,9 @@ HRESULT CGround::SetUp_ShaderResource()
 		if (FAILED(m_pShaderCom.lock()->Set_RawValue(szDensityName.c_str(), &iter.second.fDensity, sizeof(_float))))
 			return E_FAIL;
 	}
+
+	if (FAILED(m_pFilterTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_FilterTexture", 0)))
+		return E_FAIL;
 
 	_vector vLightFlag = { 0.f, 0.f, 1.f, 0.f };
 

@@ -200,7 +200,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	
 	// TODO : For. Ground Texture : (AN) 임시 텍스쳐이므로 나중에 삭제하기, CroundTexture로 필요한곳에 사용할 예정임
 	Load_AllParticleInPath_Recursive("../Bin/Resources/Textures/Ground/");
-
+	Load_AllParticleInPath_Recursive("../Bin/GroundInfo/Filter/");
 
 
 
@@ -618,15 +618,14 @@ void CLoader::Load_AllMeshes(const filesystem::path& In_Path, const MEMORY_TYPE&
 		if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
 		{
 			cout << szFileName << endl;
-			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)), In_eMemoryType);
+			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixScaling(0.01f, 0.01f, 0.01f), In_eMemoryType);
 		}
 
 		else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0 || strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
 		{
 			cout << szFileName << endl;
-			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)), In_eMemoryType);
+			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixScaling(0.01f, 0.01f, 0.01f), In_eMemoryType);
 		}
-
 
 		itr++;
 	}
