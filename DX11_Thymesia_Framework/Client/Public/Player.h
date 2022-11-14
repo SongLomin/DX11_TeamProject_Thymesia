@@ -7,6 +7,7 @@ class CMonster;
 class CPlayerStateBase;
 class CCorvus_DefaultSaber;
 class CCorvus_DefaultDagger;
+class CWeapon;
 
 class CPlayer :
     public CCharacter
@@ -15,22 +16,9 @@ class CPlayer :
     CLONE_H(CPlayer, CGameObject);
 
 public:
-    _bool Is_Warning() const { return m_bWarning; }
-
     void Set_TargetMonster(weak_ptr<CMonster> In_pMonster);
     weak_ptr<CMonster> Get_TargetMonster() const;
 
-    _uint               Get_PlayerIndex() const {
-        return m_iPlayerIndex;
-    }
-
-    _float              Get_DodgeTime() const {
-        return m_fDodgeTime;
-    }
-
-    void              Set_DodgeTime(const _float& In_fDodgeTime) {
-        m_fDodgeTime = In_fDodgeTime;
-    }
 
 protected:
     // CGameObject을(를) 통해 상속됨
@@ -65,19 +53,14 @@ public:
 protected:
     weak_ptr<CMonster> m_pTargetMonster;
     weak_ptr<CStateBase> m_pStandState;
-    weak_ptr<CStateBase> m_pQTEState;
-    _uint               m_iPlayerIndex = 0;
 
-    list<weak_ptr<CCorvus_DefaultSaber>> m_pDefaultSaber;
-    list<weak_ptr<CCorvus_DefaultDagger>> m_pDefaultDagger;
+    //list<weak_ptr<CCorvus_DefaultSaber>> m_pDefaultSaber;
+    //list<weak_ptr<CCorvus_DefaultDagger>> m_pDefaultDagger;
+
+    list<weak_ptr<CWeapon>> m_pWeapons;
 
 private:
     _float              m_fNearSearchDelay = 0.f;
-
-private: /* For. Dodge */
-    _bool               m_bWarning = false;
-    _float              m_fDodgeTime = 0.f;
-    _float              m_fDrawSkillBallRatio = 0.f;
 
 
 protected:

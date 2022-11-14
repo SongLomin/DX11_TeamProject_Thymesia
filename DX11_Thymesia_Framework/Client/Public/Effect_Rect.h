@@ -73,6 +73,9 @@ private:
     void Update_ParticleSpriteFrame(const _uint& i, _float fTimeDelta);
     void Update_ParentTransform();
 
+    // TODO : Snake Test
+    void SnakeEffect();
+
 private:
 	void Free();
 

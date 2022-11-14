@@ -198,7 +198,7 @@
     <ClInclude Include="..\Public\ClientLevel.h" />
     <ClInclude Include="..\Public\Client_Components.h" />
     <ClInclude Include="..\Public\Client_GameObjects.h" />
-    <ClInclude Include="..\Public\Client_Structsh.h" />
+    <ClInclude Include="..\Public\Client_Structs.h" />
     <ClInclude Include="..\Public\Client_Windows.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusStateBase.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusStates.h" />
@@ -285,6 +285,7 @@
     <ClInclude Include="..\Public\UI_Landing.h" />
     <ClInclude Include="..\Public\UI_Loading.h" />
     <ClInclude Include="..\Public\UI_Logo.h" />
+    <ClInclude Include="..\Public\Weapon.h" />
     <ClInclude Include="..\Public\Window_AnimationModelView.h" />
     <ClInclude Include="..\Public\Window_AnimationPlayerView.h" />
     <ClInclude Include="..\Public\Window_ComponentView.h" />
@@ -400,6 +401,7 @@
     <ClCompile Include="..\Private\UI_Landing.cpp" />
     <ClCompile Include="..\Private\UI_Loading.cpp" />
     <ClCompile Include="..\Private\UI_Logo.cpp" />
+    <ClCompile Include="..\Private\Weapon.cpp" />
     <ClCompile Include="..\Private\Window_AnimationModelView.cpp" />
     <ClCompile Include="..\Private\Window_AnimationPlayerView.cpp" />
     <ClCompile Include="..\Private\Window_ComponentView.cpp" />

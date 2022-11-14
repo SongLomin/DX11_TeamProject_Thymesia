@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "Window_EffectResourceView.h"
 #include "GameInstance.h"
 
@@ -173,25 +173,34 @@ void CWindow_EffectResourceView::Load_AllEffectMeshInPath_Recursive(const filesy
 		szFileName = entry.path().filename().string().c_str();
 		szFileName = szFileName.substr(0, szFileName.size() - 4);
 
-		if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
-		{
+		 if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
+		 {
 			cout << szFileName << endl;
-			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
+
+            // TODO : ! control effect mesh initial size here !
+			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(),
+                MODEL_TYPE::NONANIM,
+                XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f)));
+
 			m_szAnimEffectMeshNames.push_back(szFileName);
-		}
+		 }
 
 
-		//else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0)
+		///*else*/ if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0)
 		//{
 		//    cout << szFileName << endl;
-		//    GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
+		//    GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(),
+  //              MODEL_TYPE::NONANIM,
+  //              XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f)));
 		//    m_szAnimEffectMeshNames.push_back(szFileName);
 		//}
 
 		//else if (strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
 		//{
 		//    cout << szFileName << endl;
-		//    GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
+		//    GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(),
+  //              MODEL_TYPE::NONANIM,
+  //              XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f)));
 		//    m_szAnimEffectMeshNames.push_back(szFileName);
 		//}
 
