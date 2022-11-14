@@ -15,20 +15,25 @@ bool g_bDynamicNoiseOption;
 * Wrap Weight for Textures
 *  x : Diff, y : Noise, z : Mask, w : None
 */
-bool g_bWrapOption[4]; // can be changed to multiple passes
+bool g_bDiffuseWrap;
+bool g_bNoiseWrap;
+bool g_bMaskWrap;
 vector g_vWrapWeight;
+
+float2 g_vUVDiff;
+float2 g_vUVNoise;
+float2 g_vUVMask;
 
 float g_fDiscardRatio;
 
 float4 g_vColor;
-float2 g_vUV;
+
+bool g_bBillboard;
 
 bool g_bBloom;
 
 bool g_bGlow;
 float4 g_vGlowColor;
-
-bool g_bBillboard;
 
 // Vertex Shaders //
 
@@ -158,22 +163,22 @@ PS_OUT PS_DEFAULT(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    if (g_bWrapOption[0])
-        Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.x + g_vUV);
+    if (g_bDiffuseWrap)
+        Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.x + g_vUVDiff);
     else
-        Out.vColor = g_DiffuseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.x + g_vUV);
+        Out.vColor = g_DiffuseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.x + g_vUVDiff);
     
     vector vNoise = (vector) 0;
-    if (g_bWrapOption[1])
-        vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUV);
+    if (g_bNoiseWrap)
+        vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
     else
-        vNoise = g_NoiseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUV);
+        vNoise = g_NoiseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
     
     vector vMask = (vector) 0;
-    if (g_bWrapOption[2])
-        vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.z + g_vUV);
+    if (g_bMaskWrap)
+        vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
     else
-        vMask = g_MaskTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.z + g_vUV);
+        vMask = g_MaskTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
     
     // (0, +1) => (-1, +1)
     if (g_bDynamicNoiseOption)
@@ -199,16 +204,16 @@ PS_OUT_DISTORTION PS_DISTORTION(PS_IN In)
 {
     PS_OUT_DISTORTION Out = (PS_OUT_DISTORTION) 0;
     
-    if (g_bWrapOption[1])
-        Out.vColor = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUV);
+    if (g_bNoiseWrap)
+        Out.vColor = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
     else
-        Out.vColor = g_NoiseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUV);
+        Out.vColor = g_NoiseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
     
     vector vMask;
-    if (g_bWrapOption[2])
-        vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.z + g_vUV);
+    if (g_bMaskWrap)
+        vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
     else
-        vMask = g_MaskTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.z + g_vUV);
+        vMask = g_MaskTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
     
     Out.vColor *= g_vColor;
     Out.vColor.a *= vMask.r;

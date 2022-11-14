@@ -111,3 +111,11 @@ namespace fs = std::filesystem;
 
 #define EVENT_DRAW_EDITER 1
 #define EVENT_INIT_EDITER 0
+
+#ifdef _DEBUG
+#define _SKYBOX_N
+#endif // _DEBUG
+
+#ifdef NDEBUG
+#define _SKYBOX_
+#endif // NDEBUG

@@ -28,7 +28,7 @@ HRESULT CTerrain::Initialize(void* pArg)
 	m_pRendererCom = Add_Component<CRenderer>();
 	m_pTextureCom = Add_Component<CTexture>();
 
-	m_pTextureCom.lock()->Use_Texture(("Grass"));
+	m_pTextureCom.lock()->Use_Texture(("TestTile"));
 	m_pVIBufferCom = Add_Component<CVIBuffer_Terrain>((void*)TEXT("../Bin/Resources/Textures/Terrain/DefaultHeight.bmp"));
 	//m_pVIBufferCom.lock()
 
@@ -61,7 +61,7 @@ void CTerrain::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	m_pPhyxXColliderCom.lock()->Synchronize_Transform(m_pTransformCom);
+	// m_pPhyxXColliderCom.lock()->Synchronize_Transform(m_pTransformCom);
 }
 
 void CTerrain::LateTick(_float fTimeDelta)
@@ -99,7 +99,7 @@ HRESULT CTerrain::SetUp_ShaderResource()
 	if (FAILED(m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_SourDiffTexture", 0)))
 		return E_FAIL;
 
-	_vector vLightFlag = { 0.f, 0.f, 1.f, 0.f };
+	_vector vLightFlag = { 1.f, 1.f, 1.f, 1.f };
 
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector))))
 		return E_FAIL;

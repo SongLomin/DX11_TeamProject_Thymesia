@@ -36,7 +36,6 @@ struct PS_IN
 {
 	float4		vPosition : SV_POSITION;
 	float2		vTexUV : TEXCOORD0;
-
 };
 
 struct PS_OUT
@@ -51,13 +50,11 @@ PS_OUT PS_MAIN(PS_IN In)
 	vector vDistortion = g_DistortionTexture.Sample(DefaultSampler, In.vTexUV);
 
 	if(0.f < vDistortion.r)
-        Out.vColor = g_OriginTexture.Sample(DefaultSampler, In.vTexUV + (vDistortion.r * vDistortion.a));
+        Out.vColor = g_OriginTexture.Sample(DefaultSampler, In.vTexUV + (vDistortion.r * 0.1f));
 	else
 		Out.vColor = g_OriginTexture.Sample(DefaultSampler, In.vTexUV);
-
-
+	
 	return Out;
-
 }
 
 

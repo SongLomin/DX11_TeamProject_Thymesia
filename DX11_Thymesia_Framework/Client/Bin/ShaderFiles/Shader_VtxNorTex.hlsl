@@ -13,8 +13,6 @@ texture2D	g_DestDiffTexture;
 texture2D	g_FilterTexture;
 texture2D	g_BrushTexture;
 
-
-
 struct VS_IN
 {
 	float3		vPosition : POSITION;
@@ -73,22 +71,18 @@ PS_OUT PS_MAIN_TERRAIN_PHONG(PS_IN_PHONG In)
 
 	vector		vSourDiffuse = g_SourDiffTexture.Sample(DefaultSampler, In.vTexUV * 60.f);
 	
-
     Out.vDiffuse = vSourDiffuse;
 	Out.vDiffuse.a = 1.f;
 	
 
 	/* -1 -> 0, 1 -> 1*/
 	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
-
 	
-
 	/* x : 0 ~ 1 */
 	/* y : n ~ f 정규화하여 */
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
 	
     Out.vLightFlag = g_vLightFlag;
-
 	return Out;
 }
 

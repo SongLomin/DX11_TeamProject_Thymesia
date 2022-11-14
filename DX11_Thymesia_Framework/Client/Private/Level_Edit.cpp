@@ -15,9 +15,9 @@ HRESULT CLevel_Edit::Initialize()
 
 	m_pImGui_Manager = make_unique<CImGui_Manager>();
 	m_pImGui_Manager->Initialize();
-
+#ifdef _SKYBOX_
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_GAMEPLAY);
-
+#endif // _SKYBOX_
 	return S_OK;
 }
 

@@ -68,13 +68,25 @@ namespace Client
 		/**
 		* x : Diffuse | y : Mask | z : Noise | w : None
 		*/
-		_bool		bWrapOption[4];
+		_bool		bDiffuseWrap;
+		_bool		bMaskWrap;
+		_bool		bNoiseWrap;
 		_float4		vWrapWeight;
 
-		_float2		vStartUV;
-		_float2		vUVSpeed;
-		_float2		vUVForce;
-		_float2		vUVMax;
+		_float2		vDiffuseStartUV;
+		_float2		vDiffuseUVSpeed;
+		_float2		vDiffuseUVForce;
+		_float2		vDiffuseUVMax;
+
+		_float2		vNoiseStartUV;
+		_float2		vNoiseUVSpeed;
+		_float2		vNoiseUVForce;
+		_float2		vNoiseUVMax;
+
+		_float2		vMaskStartUV;
+		_float2		vMaskUVSpeed;
+		_float2		vMaskUVForce;
+		_float2		vMaskUVMax;
 
 		_bool		bBloom;
 		_bool		bGlow;
