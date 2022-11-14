@@ -89,7 +89,7 @@ void CNorMonState_Idle::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-
+	
 	Check_AndChangeNextState();
 
 }
@@ -132,11 +132,11 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 	_float fDistance = Get_DistanceWithPlayer();
 
 
-	if (fDistance < 6.f)
+	if (fDistance < 5.f)
 	{
-		TurnMechanism();
+		
 		m_bFirstRun = true;
-
+		TurnMechanism();
 		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
 		{
 			switch (m_eNorMonIdleType)
@@ -177,6 +177,8 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 	{
 		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && m_bFirstRun)
 		{
+			TurnMechanism();
+
 			switch (m_eNorMonIdleType)
 			{
 			case Client::NORMONSTERIDLETYPE::NORIDLE:

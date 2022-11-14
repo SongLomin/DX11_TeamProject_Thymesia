@@ -97,8 +97,10 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 
 	_float fDistance = Get_DistanceWithPlayer();
 
-	if (fDistance > 6.f) //6보다 작을떄 공격하거나 좌우아래옆 머시기로움직인다  이떄 그애니메이션 다시 거리게산하고 공격 하는걸로 하게금
+	if (fDistance > 5.f) //6보다 작을떄 공격하거나 좌우아래옆 머시기로움직인다  이떄 그애니메이션 다시 거리게산하고 공격 하는걸로 하게금
 	{
+		
+
 		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && !m_bRunCheck)
 		{
 			_int iMovRand = rand() % 8;
@@ -173,6 +175,12 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 			
 
 		}
+	}
+	else
+	{
+		
+		Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
+		return true;
 	}
 
 	return false;

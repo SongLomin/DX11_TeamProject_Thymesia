@@ -240,7 +240,7 @@ void CAIStateBase::TurnMechanism()
 			return;
 		}
 
-		return;
+		
 	}
 	else
 	{
