@@ -78,6 +78,7 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	tPhysxColliderDesc.pMaterial = pMaterial;
 
 	m_pPhysXColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
+	m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene({ 10.f, 10.f, 10.f });
 
 	return S_OK;
 }
@@ -100,7 +101,7 @@ void CLight_Prop::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	//m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
+	m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
 }
 
 HRESULT CLight_Prop::Render()

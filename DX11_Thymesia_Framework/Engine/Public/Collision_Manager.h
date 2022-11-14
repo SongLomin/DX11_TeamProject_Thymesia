@@ -7,6 +7,7 @@ BEGIN(Engine)
 
 class CCollider;
 class CollisionCallBack;
+class CollisionSimulationEventCallBack;
 
 class CCollision_Manager final : public CBase
 {
@@ -31,10 +32,11 @@ private:
 
 public: /* For. PhysxCollision */
 	PxContactModifyCallback*	Get_CollisionCallBack() const;
-
+	PxSimulationEventCallback* Get_CollisionSimulationEventCallBack() const;
 
 private:
-	CollisionCallBack *m_pCollisionCallBack = nullptr;
+	CollisionCallBack* m_pCollisionCallBack = nullptr;
+	CollisionSimulationEventCallBack* m_pCollisionSimulationEventCallBack = nullptr;
 
 
 

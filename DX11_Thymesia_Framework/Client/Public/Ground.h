@@ -7,6 +7,7 @@ class CShader;
 class CTexture;
 class CRenderer;
 class CVIBuffer_Ground;
+class CPhysXCollider;
 END
 
 BEGIN(Client)
@@ -45,6 +46,10 @@ private:
 	weak_ptr<CShader>               m_pShaderCom;
 	weak_ptr<CRenderer>             m_pRendererCom;
 	weak_ptr<CVIBuffer_Ground>      m_pVIBufferCom;
+    weak_ptr<CPhysXCollider>        m_pPhysXColliderCom;
+
+    shared_ptr<MESH_DATA>           m_pGroundMeshData;
+
     TEXTURES                        m_pTextureCom;
 
     _uint                           m_iShaderPath = 0;

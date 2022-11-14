@@ -198,6 +198,7 @@
     <ClInclude Include="..\Public\BoneNode.h" />
     <ClInclude Include="..\Public\Camera.h" />
     <ClInclude Include="..\Public\CollisionCallBack.h" />
+    <ClInclude Include="..\Public\CollisionSimulationEventCallBack.h" />
     <ClInclude Include="..\Public\Fader.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
@@ -295,6 +296,7 @@
     <ClCompile Include="..\Private\BoneNode.cpp" />
     <ClCompile Include="..\Private\Camera.cpp" />
     <ClCompile Include="..\Private\CollisionCallBack.cpp" />
+    <ClCompile Include="..\Private\CollisionSimulationEventCallBack.cpp" />
     <ClCompile Include="..\Private\Fader.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>

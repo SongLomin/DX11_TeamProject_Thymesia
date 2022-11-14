@@ -7,6 +7,8 @@
 
 namespace Engine
 {
+	struct MESH_DATA;
+
 	namespace SMath
 	{
 		XMMATRIX	ENGINE_DLL Get_RotationMatrix(FXMMATRIX Mat);
@@ -53,6 +55,8 @@ namespace Engine
 		bool		ENGINE_DLL Is_SphereToRayCollision(const XMFLOAT3& Center, const float& Radius, FXMVECTOR Origin, FXMVECTOR Direction, float& Dist);
 		
 		void		ENGINE_DLL Set_ClockwiseTriangle(XMFLOAT3* InOut_TrianglePosition);
+
+		void		ENGINE_DLL Convert_PxVec3FromMeshData(PxVec3* In_PxVec3, weak_ptr<MESH_DATA> pMeshData);
 
 
 		//_bool	Is_Picked(CMesh* pRenderer, _float4* pOut, _float4* pOutNormal = nullptr);

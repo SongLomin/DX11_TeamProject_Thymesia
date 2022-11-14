@@ -2,6 +2,7 @@
 #include "Collider.h"
 #include "GameInstance.h"
 #include "CollisionCallBack.h"
+#include "CollisionSimulationEventCallBack.h"
 
 IMPLEMENT_SINGLETON(CCollision_Manager)
 
@@ -16,7 +17,7 @@ void CCollision_Manager::Initialize(const _uint& In_iNumLayer)
 	}
 
 	m_pCollisionCallBack = DBG_NEW CollisionCallBack();
-
+	m_pCollisionSimulationEventCallBack = DBG_NEW CollisionSimulationEventCallBack();
 }
 
 void CCollision_Manager::Tick()
@@ -202,8 +203,14 @@ PxContactModifyCallback* CCollision_Manager::Get_CollisionCallBack() const
 	return m_pCollisionCallBack;
 }
 
+PxSimulationEventCallback* CCollision_Manager::Get_CollisionSimulationEventCallBack() const
+{
+	return m_pCollisionSimulationEventCallBack;
+}
+
 void CCollision_Manager::Free()
 {
 	m_pCollisionCallBack->Release();
+	m_pCollisionSimulationEventCallBack->Release();
 }
 

@@ -1,6 +1,7 @@
 #include "SMath.h"
 #include <random>
 #include "GameInstance.h"
+#include "MeshData.h"
 
 XMMATRIX Engine::SMath::Get_RotationMatrix(FXMMATRIX Mat)
 {
@@ -562,4 +563,37 @@ void ENGINE_DLL Engine::SMath::Set_ClockwiseTriangle(XMFLOAT3* InOut_TrianglePos
 	}
 
 
+}
+
+void ENGINE_DLL Engine::SMath::Convert_PxVec3FromMeshData(PxVec3* In_PxVec3, weak_ptr<MESH_DATA> pMeshData)
+{
+	_uint iNumVertices = pMeshData.lock()->iNumVertices;
+
+	MODEL_TYPE eType = pMeshData.lock()->eModelType;
+
+	for (_uint i = 0; i < iNumVertices; ++i)
+	{
+		switch (eType)
+		{
+		case MODEL_TYPE::NONANIM:
+			memcpy(&In_PxVec3[i], &pMeshData.lock()->pVertices[i].vPosition, sizeof(PxVec3));
+			break;
+		case MODEL_TYPE::ANIM:
+			memcpy(&In_PxVec3[i], &pMeshData.lock()->pAnimVertices[i].vPosition, sizeof(PxVec3));
+			break;
+		case MODEL_TYPE::NAVI:
+			memcpy(&In_PxVec3[i], &pMeshData.lock()->pPosVertices[i].vPosition, sizeof(PxVec3));
+			break;
+		case MODEL_TYPE::GROUND:
+			memcpy(&In_PxVec3[i], &pMeshData.lock()->pGroundVertices[i].vPosition, sizeof(PxVec3));
+			break;
+		case MODEL_TYPE::TYPE_END:
+			DEBUG_ASSERT;
+			break;
+		default:
+			DEBUG_ASSERT;
+			break;
+		}
+	}
+	
 }

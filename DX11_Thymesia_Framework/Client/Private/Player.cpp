@@ -7,6 +7,7 @@
 #include "Monster.h"
 #include "PlayerStateBase.h"
 #include "Attack_Area.h"
+#include "PhysXCollider.h"
 
 
 GAMECLASS_C(CPlayer);
@@ -22,6 +23,8 @@ HRESULT CPlayer::Initialize_Prototype()
 HRESULT CPlayer::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
+
+    m_pTransformCom.lock()->Add_Position(XMVectorSet(3.f, 2.f, 3.f, 0.f));
 
     m_pHitColliderCom = Add_Component<CCollider>();
 
@@ -49,6 +52,24 @@ HRESULT CPlayer::Initialize(void* pArg)
 
     m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
 
+
+    CPhysXCollider::PHYSXCOLLIDERDESC tPhysxColliderDesc;
+    tPhysxColliderDesc.eShape = PHYSXCOLLIDER_TYPE::CYLINDER;
+    tPhysxColliderDesc.eType = PHYSXACTOR_TYPE::DYNAMIC;
+    tPhysxColliderDesc.fDensity = 10.f;
+    PxConvexMesh* pCylinderMesh = nullptr;
+    GAMEINSTANCE->Create_CylinderMesh(0.3f, 0.3f, 1.f, &pCylinderMesh);
+    tPhysxColliderDesc.pConvecMesh = pCylinderMesh;
+    tPhysxColliderDesc.vAngles = { 0.f, 0.f, 0.f, 0.f };
+    tPhysxColliderDesc.vPosition = m_pTransformCom.lock()->Get_Position();
+    tPhysxColliderDesc.vScale = { 1.f, 1.f, 1.f };
+    PxMaterial* pMaterial = nullptr;
+    GAMEINSTANCE->Create_Material(0.5f, 0.5f, 0.5f, &pMaterial);
+    tPhysxColliderDesc.pMaterial = pMaterial;
+
+    m_pPhysXColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
+
+
     Set_OwnerForMyComponents();
 
     GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::PLAYER, Cast<CGameObject>(m_this));
@@ -69,7 +90,7 @@ HRESULT CPlayer::Start()
 
 #pragma endregion
     
-
+    
     
 
     return S_OK;

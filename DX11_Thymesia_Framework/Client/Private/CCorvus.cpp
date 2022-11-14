@@ -5,6 +5,7 @@
 #include "Camera_Target.h"
 #include "Corvus_DefaultSaber.h"
 #include "Corvus_DefaultDagger.h"
+#include "PhysXCollider.h"
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -76,6 +77,8 @@ HRESULT CCorvus::Start()
 
 void CCorvus::Tick(_float fTimeDelta)
 {
+	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom);
+
 	__super::Tick(fTimeDelta);
 	
 	this->RootMove();
@@ -85,6 +88,7 @@ void CCorvus::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+	m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
 }
 
 HRESULT CCorvus::Render()

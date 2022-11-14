@@ -224,6 +224,9 @@
     <ClInclude Include="..\Public\CollisionCallBack.h">
       <Filter>01. Elements\98. Other\05. PhysXModifyCallBack</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CollisionSimulationEventCallBack.h">
+      <Filter>01. Elements\98. Other\06. PxSimulationEventCallback</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -429,6 +432,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CollisionCallBack.cpp">
       <Filter>01. Elements\98. Other\05. PhysXModifyCallBack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CollisionSimulationEventCallBack.cpp">
+      <Filter>01. Elements\98. Other\06. PxSimulationEventCallback</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -654,8 +660,8 @@
     <Filter Include="01. Elements\98. Other\05. PhysXModifyCallBack">
       <UniqueIdentifier>{4488a8cb-dfba-4715-9b2b-3491521772e2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Elements\98. Other\NewFilter1">
-      <UniqueIdentifier>{a4e97afd-f6f4-4426-bf35-d7fec2cc53e3}</UniqueIdentifier>
+    <Filter Include="01. Elements\98. Other\06. PxSimulationEventCallback">
+      <UniqueIdentifier>{03c35097-ad6a-4f25-8081-564d79b93b57}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,7 @@
 #include "VIBuffer_Ground.h"
 #include "ModelData.h"
 #include "MeshData.h"
+#include "PhysXCollider.h"
 
 GAMECLASS_C(CGround)
 CLONE_C(CGround, CGameObject)
@@ -32,6 +33,9 @@ HRESULT CGround::Initialize(void* pArg)
 
 	m_pRendererCom = Add_Component<CRenderer>();
 	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
+	m_pPhysXColliderCom = Add_Component<CPhysXCollider>();
+	
+	USE_START(CGround);
 
 	return S_OK;
 }
@@ -39,6 +43,21 @@ HRESULT CGround::Initialize(void* pArg)
 HRESULT CGround::Start()
 {
 	__super::Start();
+
+	m_pPhysXColliderCom.lock()->Init_MeshCollider(m_pGroundMeshData);
+
+	CPhysXCollider::PHYSXCOLLIDERDESC ColliderDesc;
+	ColliderDesc.eShape = PHYSXCOLLIDER_TYPE::MESHDATA;
+	ColliderDesc.fDensity = 0.f;
+	ColliderDesc.eType = PHYSXACTOR_TYPE::STATIC;
+	PxMaterial* pMaterial = nullptr;
+	GAMEINSTANCE->Create_Material(0.f, 0.f, 0.f, &pMaterial);
+	ColliderDesc.pMaterial = pMaterial;
+	ColliderDesc.vAngles = { 0.f, 0.f, 0.f, 0.f };
+	ColliderDesc.vPosition = { 0.f, 0.f, 0.f, 1.f };
+	ColliderDesc.vScale = { 1.f, 1.f, 1.f };
+
+	m_pPhysXColliderCom.lock()->CreatePhysXActor(ColliderDesc);
 
 	return S_OK;
 }
@@ -124,7 +143,9 @@ void CGround::Load_FromJson(const json& In_Json)
 			return;
 		}
 
-		m_pVIBufferCom.lock()->Init_Mesh(pModelData.get()->Mesh_Datas[0]);
+		m_pGroundMeshData = pModelData.get()->Mesh_Datas[0];
+
+		m_pVIBufferCom.lock()->Init_Mesh(m_pGroundMeshData);
 	}
 
 	if (In_Json.find("ShaderPass") != In_Json.end())

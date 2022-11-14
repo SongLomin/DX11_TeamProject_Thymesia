@@ -130,8 +130,8 @@ HRESULT CPhysX_Manager::Create_Scene(Scene eScene, PxVec3 Gravity)
 		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
 	}
 
-	//m_pScenes[eScene]->setSimulationEventCallback();
-	m_pScenes[eScene]->setContactModifyCallback(GET_SINGLE(CCollision_Manager)->Get_CollisionCallBack());
+	m_pScenes[eScene]->setSimulationEventCallback(GET_SINGLE(CCollision_Manager)->Get_CollisionSimulationEventCallBack());
+	//m_pScenes[eScene]->setContactModifyCallback(GET_SINGLE(CCollision_Manager)->Get_CollisionCallBack());
 
 	m_pCurScene = m_pScenes[eScene];
 
@@ -198,36 +198,33 @@ HRESULT CPhysX_Manager::Change_Scene(Scene eNextScene, PxVec3 Gravity)
 
 PxRigidDynamic * CPhysX_Manager::Create_DynamicActor(const PxTransform & Transform, const PxGeometry & Geometry, Scene eScene, const PxReal& Density, const PxVec3 & velocity, PxMaterial* pMaterial)
 {
-	PxRigidDynamic* pDynamic = nullptr;
-	if(pMaterial)
-		pDynamic = PxCreateDynamic(*m_pPhysics, Transform, Geometry, *pMaterial, 10.f);
-	else
-		pDynamic = PxCreateDynamic(*m_pPhysics, Transform, Geometry, *m_pMaterial, 10.f);
+	return PxCreateDynamic(*m_pPhysics, Transform, Geometry, *pMaterial, 10.f);
 
-	// 저항값
-	pDynamic->setAngularDamping(0.5f);
-	// 속도
-	pDynamic->setLinearVelocity(velocity);
-
-	pDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
-
-	PxRigidBodyExt::updateMassAndInertia(*pDynamic, Density);
-	m_pCurScene->addActor(*pDynamic);
-	//m_pScenes[eScene]->addActor(*pDynamic);
-	return pDynamic;
+	
+	
 }
 
-PxRigidStatic * CPhysX_Manager::Create_StaticActor(const PxTransform & Transform, const PxGeometry & Geometry, Scene eScene, PxMaterial* pMaterial)
+PxRigidStatic* CPhysX_Manager::Create_StaticActor(const PxTransform & Transform, const PxGeometry & Geometry, Scene eScene, PxMaterial* pMaterial)
 {
-	PxRigidStatic* pStatic = nullptr;
-	if (pMaterial)
-		pStatic = PxCreateStatic(*m_pPhysics, Transform, Geometry, *pMaterial);
-	else
-		pStatic = PxCreateStatic(*m_pPhysics, Transform, Geometry, *m_pMaterial);
+	return PxCreateStatic(*m_pPhysics, Transform, Geometry, *pMaterial);
+}
 
-	m_pCurScene->addActor(*pStatic);
-	//m_pScenes[eScene]->addActor(*pStatic);
-	return pStatic;
+void CPhysX_Manager::Add_DynamicActorAtCurrentScene(PxRigidDynamic& DynamicActor, const PxReal& Density, const PxVec3& In_MassSpaceInertiaTensor)
+{
+	// 저항값
+	DynamicActor.setAngularDamping(0.5f);
+	// 속도
+	//DynamicActor.setLinearVelocity(velocity);
+	DynamicActor.setMassSpaceInertiaTensor(In_MassSpaceInertiaTensor);
+	DynamicActor.setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
+
+	PxRigidBodyExt::updateMassAndInertia(DynamicActor, Density);
+	m_pCurScene->addActor(DynamicActor);
+}
+
+void CPhysX_Manager::Add_StaticActorAtCurrentScene(PxRigidStatic& StaticActor)
+{
+	m_pCurScene->addActor(StaticActor);
 }
 
 //void CPhysX_Manager::Create_Stack(const PxTransform & t, PxU32 size, PxReal halfExtent)
@@ -286,6 +283,18 @@ void CPhysX_Manager::Create_Shape(const PxGeometry & Geometry, PxMaterial* pMate
 	else
 		*ppOut = m_pPhysics->createShape(Geometry, *m_pMaterial);
 
+}
+
+void CPhysX_Manager::Create_MeshFromTriangles(const PxTriangleMeshDesc& In_MeshDesc, PxTriangleMesh** ppOut)
+{
+	PxDefaultMemoryOutputStream writeBuffer;
+	PxTriangleMeshCookingResult::Enum result;
+	bool status = m_pCooking->cookTriangleMesh(In_MeshDesc, writeBuffer, &result);
+	if (!status)
+		DEBUG_ASSERT;
+
+	PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
+	*ppOut = m_pPhysics->createTriangleMesh(readBuffer);
 }
 
 void CPhysX_Manager::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh ** ppOut)

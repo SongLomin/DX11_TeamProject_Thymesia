@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CTransform;
+struct MESH_DATA;
 
 class ENGINE_DLL CPhysXCollider final : public CComponent
 {
@@ -58,10 +59,13 @@ public:
 	void	Delete_Collider();
 	void	Create_Collider();
 
-public:
+private:
 	HRESULT Initialize_Prototype();
 	HRESULT Initialize(void* pArg) override;
 	virtual void	Start() override;
+
+public:
+	void	Init_MeshCollider(weak_ptr<MESH_DATA> pMeshData);
 
 public:
 	void	Synchronize_Transform(weak_ptr<CTransform> pTransform);
@@ -93,20 +97,24 @@ private:
 	_vector					m_vMaxVelocity;
 
 private:
-	PHYSXCOLLIDERDESC		m_ColliderDesc;
+	PHYSXCOLLIDERDESC		m_PhysXColliderDesc;
 	PxRigidDynamic*			m_pRigidDynamic = nullptr;
 	PxRigidStatic*			m_pRigidStatic = nullptr;
 
 	PxConvexMesh*			m_ConvexMeshes[16];
+	PxTriangleMesh*			m_TriangleMesh = nullptr;
 
 	_bool					m_bPickState = false;
 	_bool					m_bPickable = true;
 	_bool					m_bYFixed = false;
 
+public:
+	void		CreatePhysXActor(PHYSXCOLLIDERDESC& PhysXColliderDesc);
+	void		Add_PhysXActorAtScene(const PxVec3& In_MassSpaceInertiaTensor = { 0.f, 0.f, 0.f });
+
 private:
-	void		CreatePhysActor(PHYSXCOLLIDERDESC PhysXColliderDesc);
-	void		Create_DynamicActor(PHYSXCOLLIDERDESC PhysXColliderDesc, PxTransform Transform, PxConvexMesh* pConvexMesh = nullptr);
-	void		Create_StaticActor(PHYSXCOLLIDERDESC PhysXColliderDesc, PxTransform Transform, PxConvexMesh* pConvexMesh = nullptr);
+	void		Create_DynamicActor(PHYSXCOLLIDERDESC& PhysXColliderDesc, PxTransform Transform);
+	void		Create_StaticActor(PHYSXCOLLIDERDESC& PhysXColliderDesc, PxTransform Transform);
 
 public:
 	virtual void OnDestroy() override;
