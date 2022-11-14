@@ -68,7 +68,7 @@ HRESULT CPlayer::Initialize(void* pArg)
     tPhysxColliderDesc.pMaterial = pMaterial;
 
     m_pPhysXColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
-
+    m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
 
     Set_OwnerForMyComponents();
 

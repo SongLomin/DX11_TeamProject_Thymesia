@@ -88,7 +88,7 @@ void CPhysXCollider::Init_MeshCollider(weak_ptr<MESH_DATA> pMeshData)
 	Safe_Delete_Array(pIndices);
 }
 
-void CPhysXCollider::Synchronize_Transform(weak_ptr<CTransform> pTransform)
+void CPhysXCollider::Synchronize_Transform(weak_ptr<CTransform> pTransform, _fvector In_vOffset)
 {
 	PxTransform	Transform;
 	if (m_pRigidDynamic)
@@ -98,6 +98,7 @@ void CPhysXCollider::Synchronize_Transform(weak_ptr<CTransform> pTransform)
 		Transform = m_pRigidStatic->getGlobalPose();
 
 	_vector vPos = { Transform.p.x, Transform.p.y, Transform.p.z };
+	vPos += In_vOffset;
 	vPos.m128_f32[3] = 1.f;
 	_vector vQuaternion = { Transform.q.x, Transform.q.y, Transform.q.z, Transform.q.w };
 	pTransform.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
@@ -130,9 +131,11 @@ void CPhysXCollider::Synchronize_Transform_Rotation(weak_ptr<CTransform> pTransf
 	pTransform.lock()->Rotation_Quaternion(vQuaternion);
 }
 
-void CPhysXCollider::Synchronize_Collider(weak_ptr<CTransform> pTransform)
+void CPhysXCollider::Synchronize_Collider(weak_ptr<CTransform> pTransform, _fvector In_vOffset)
 {
 	_vector vPos = pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
+	vPos += In_vOffset;
+	vPos.m128_f32[3] = 1.f;
 	_vector vQuaternion = XMQuaternionRotationMatrix(SMath::Get_RotationMatrix(pTransform.lock()->Get_WorldMatrix()));
 	Set_Position(vPos, vQuaternion);
 }

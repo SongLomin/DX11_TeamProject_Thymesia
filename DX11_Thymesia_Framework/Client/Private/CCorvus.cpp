@@ -77,7 +77,7 @@ HRESULT CCorvus::Start()
 
 void CCorvus::Tick(_float fTimeDelta)
 {
-	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom);
+	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -0.5f, 0.f, 1.f));
 
 	__super::Tick(fTimeDelta);
 	
@@ -88,7 +88,7 @@ void CCorvus::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
+	m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 0.5f, 0.f, 1.f));
 }
 
 HRESULT CCorvus::Render()

@@ -58,6 +58,7 @@ HRESULT CGround::Start()
 	ColliderDesc.vScale = { 1.f, 1.f, 1.f };
 
 	m_pPhysXColliderCom.lock()->CreatePhysXActor(ColliderDesc);
+	m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
 
 	return S_OK;
 }

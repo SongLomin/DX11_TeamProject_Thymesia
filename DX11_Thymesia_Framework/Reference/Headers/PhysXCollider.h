@@ -68,11 +68,11 @@ public:
 	void	Init_MeshCollider(weak_ptr<MESH_DATA> pMeshData);
 
 public:
-	void	Synchronize_Transform(weak_ptr<CTransform> pTransform);
+	void	Synchronize_Transform(weak_ptr<CTransform> pTransform, _fvector In_vOffset = {0.f, 0.f, 0.f});
 	void	Synchronize_Transform_Position(weak_ptr<CTransform> pTransform);
 	void	Synchronize_Transform_Rotation(weak_ptr<CTransform> pTransform);
 
-	void	Synchronize_Collider(weak_ptr<CTransform> pTransform);
+	void	Synchronize_Collider(weak_ptr<CTransform> pTransform, _fvector In_vOffset = { 0.f, 0.f, 0.f });
 
 public:
 	void	PutToSleep();
