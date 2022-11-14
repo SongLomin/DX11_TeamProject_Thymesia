@@ -118,10 +118,6 @@ void CHUD_PlagueWeapon::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
 
-    if (m_bIsCoolTime)
-    {
-       _float alpha =  m_pPlagueWeapon_Ready.lock()->Get_AlphaColor();
-    }
 }
 
 HRESULT CHUD_PlagueWeapon::Render()

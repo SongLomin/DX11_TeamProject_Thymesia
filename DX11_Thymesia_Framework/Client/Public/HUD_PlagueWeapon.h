@@ -43,9 +43,6 @@ private:
 	Engine::FaderDesc m_tFaderDesc; //For HUD_Hover;
 
 
-private:
-	void			Hover_Event();
-
 
 
 private:
