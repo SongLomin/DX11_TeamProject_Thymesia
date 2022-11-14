@@ -56,6 +56,10 @@ void CNorMonState_Run::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+	Turn_ToThePlayer(fTimeDelta);
+
+	//TurnMechanism();
+
 	Check_AndChangeNextState();
 }
 
@@ -97,52 +101,48 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 
 	_float fDistance = Get_DistanceWithPlayer();
 
-	if (fDistance > 5.f) //6보다 작을떄 공격하거나 좌우아래옆 머시기로움직인다  이떄 그애니메이션 다시 거리게산하고 공격 하는걸로 하게금
+	if (fDistance < 1.f) //6보다 작을떄 공격하거나 좌우아래옆 머시기로움직인다  이떄 그애니메이션 다시 거리게산하고 공격 하는걸로 하게금
 	{
-		
+
 
 		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && !m_bRunCheck)
 		{
-			_int iMovRand = rand() % 8;
+			_int iMovRand = rand() % 6;
 
 			switch (iMovRand)
 			{
 			case 0:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
-				m_bRunCheck = true;
-				break;
-			case 1:
 				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_FR>(0.05f);
 				m_bRunCheck = true;
 				break;
-			case 2:
+			case 1:
 				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_FL>(0.05f);
 				m_bRunCheck = true;
 				break;
-			case 3:
+			case 2:
 				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
 				m_bRunCheck = true;
 				break;
-			case 4:
+			case 3:
 				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
 				m_bRunCheck = true;
 				break;
-			case 5:
+			case 4:
 				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_B>(0.05f);
 				m_bRunCheck = true;
 				break;
-			case 6:
+			case 5:
 				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BL>(0.05f);
-				m_bRunCheck = true;
-				break;
-			case 7:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BR>(0.05f);
 				m_bRunCheck = true;
 				break;
 			}
 			return true;
-		
+
 		}
+	}
+
+	if (fDistance < 3.f  && m_bRunCheck)
+	{
 
 		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && m_bRunCheck)
 		{
@@ -170,17 +170,7 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 			return true;
 		}
 
-		if (m_eNorMonType == NORMONSTERTYPE::KNIFEWOMAN)
-		{
-			
-
-		}
-	}
-	else
-	{
-		
-		Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
-		return true;
+	
 	}
 
 	return false;

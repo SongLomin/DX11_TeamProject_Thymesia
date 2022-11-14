@@ -57,6 +57,8 @@ void CNorMonState_Walk_BR::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+	Turn_ToThePlayer(fTimeDelta);
+
 	Check_AndChangeNextState();
 }
 

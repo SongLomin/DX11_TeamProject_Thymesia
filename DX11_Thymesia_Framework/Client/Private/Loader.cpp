@@ -30,8 +30,8 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 //void LoadingMain(void* pArg)
 {
 	CLoader*		pLoader = (CLoader*)pArg;
-
-	EnterCriticalSection(&pLoader->Get_CS());
+	CRITICAL_SECTION pCS = pLoader->Get_CS();
+	EnterCriticalSection(&pCS);
 	HRESULT hr = 0;
 
 	switch (pLoader->Get_NextLevelID())
@@ -64,7 +64,8 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 	if (FAILED(hr))
 		MSG_BOX("Failed to Loading");
 
-	LeaveCriticalSection(&pLoader->Get_CS());
+	CRITICAL_SECTION pCSLeave = pLoader->Get_CS();
+	LeaveCriticalSection(&pCSLeave);
 
 	return 0;
 }

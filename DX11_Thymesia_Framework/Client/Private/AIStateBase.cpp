@@ -260,7 +260,7 @@ _float CAIStateBase::ComputeAngleWithPlayer()
 	_vector vMonsterToPlayerDirectionVector = XMVector3Normalize(vCurPlayerPos - vMyPos);
 	_vector vMyLookVector = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
 
-	_float fDegree = XMConvertToDegrees(XMVectorGetX(XMVector3Length(XMVector3Dot(vMonsterToPlayerDirectionVector, vMyLookVector))));
+	_float fDegree = XMConvertToDegrees(XMVectorGetY(XMVector3Length(XMVector3Dot(vMonsterToPlayerDirectionVector, vMyLookVector))));
 
 	return fDegree;
 

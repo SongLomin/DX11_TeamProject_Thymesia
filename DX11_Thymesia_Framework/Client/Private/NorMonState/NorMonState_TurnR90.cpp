@@ -44,12 +44,15 @@ void CNorMonState_TurnR90::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	//Turn_Transform(fTimeDelta);
+
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
 void CNorMonState_TurnR90::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	Turn_ToThePlayer(fTimeDelta);
 
 	Check_AndChangeNextState();
 }
@@ -66,14 +69,14 @@ void CNorMonState_TurnR90::OnStateStart(const _float& In_fAnimationBlendTime)
 	cout << "LuxiyaState: RunStart -> OnStateStart" << endl;
 #endif
 
-
+	
 }
 
 void CNorMonState_TurnR90::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-
+	
 }
 
 
@@ -92,6 +95,8 @@ _bool CNorMonState_TurnR90::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+
+	
 
 	return false;
 }

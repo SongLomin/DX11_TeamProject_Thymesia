@@ -132,7 +132,7 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 	_float fDistance = Get_DistanceWithPlayer();
 
 
-	if (fDistance < 5.f)
+	if (fDistance < 3.f)
 	{
 		
 		m_bFirstRun = true;

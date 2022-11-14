@@ -51,6 +51,9 @@ void CNorMonState_LightAttack2::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+	if(m_bAttackLookAtLimit)
+	Turn_ToThePlayer(fTimeDelta);
+
 	Check_AndChangeNextState();
 }
 
@@ -64,17 +67,19 @@ void CNorMonState_LightAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "LuxiyaState: RunStart -> OnStateStart" << endl;
+	cout << "LuxiyaState: Attack2 -> OnStateStart" << endl;
 #endif
 
+	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 
+	m_bAttackLookAtLimit = true;
 }
 
 void CNorMonState_LightAttack2::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 
 }
 
@@ -94,6 +99,11 @@ _bool CNorMonState_LightAttack2::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	{
+		m_bAttackLookAtLimit = false;
+	}
 
 	return false;
 
