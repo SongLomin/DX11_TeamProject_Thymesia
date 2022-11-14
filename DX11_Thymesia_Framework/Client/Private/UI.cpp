@@ -44,7 +44,7 @@ HRESULT CUI::Initialize(void* pArg)
 	m_tUIDesc.fY = g_iWinCY >> 1;
 
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(g_iWinCX, g_iWinCY, 0.f, 1.f)));
-
+	m_bShaking = false;
 	return S_OK;
 }
 
@@ -69,6 +69,12 @@ void CUI::Tick(_float fTimeDelta)
 	else
 	{
 		m_fOffsetPosition = { 0.f, 0.f };
+		if (m_bShaking)
+		{
+			CallBack_ShakingEnd();
+			CallBack_ShakingEnd.Clear();
+			m_bShaking = false;
+		}
 	}
 	
 }
@@ -78,6 +84,10 @@ void CUI::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 	m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Cast<CGameObject>(m_this));
+
+
+	m_fShakedPos.x = m_tUIDesc.fX - (g_iWinCX * 0.5f) + m_fOffsetPosition.x;
+	m_fShakedPos.y = -m_tUIDesc.fY + (g_iWinCY * 0.5f) - m_fOffsetPosition.y;
 
 	m_pTransformCom.lock()->Set_Scaled(_float3(m_tUIDesc.fSizeX, m_tUIDesc.fSizeY, 0.f));
 	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tUIDesc.fX - (g_iWinCX * 0.5f) + m_fOffsetPosition.x, 
@@ -136,10 +146,19 @@ void CUI::Set_Depth(_float _fDepth)
 	m_tUIDesc.fDepth = _fDepth;
 }
 
-void CUI::Add_Shaking(const _float& In_ShakeTime)
+void CUI::Add_Shaking(const _float& In_ShakeTime, const _float& _fShakePower)
 {
 	m_fCurrentShakeTime = In_ShakeTime;
 	m_fCurrentFreq = 0.f;
+	m_fPower = _fShakePower;
+
+	m_fShakedPos.x = m_tUIDesc.fX;
+	m_fShakedPos.y = m_tUIDesc.fY;
+
+	m_bShaking = true;
+
+	CallBack_ShakingStart();
+	CallBack_ShakingStart.Clear();
 
 }
 

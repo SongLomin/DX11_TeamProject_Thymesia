@@ -31,7 +31,7 @@ HRESULT CHUD_PlagueWeapon_Steal::Initialize(void* pArg)
     m_pPlagueWeapon_Border = GAMEINSTANCE->Add_GameObject<CPlayer_ProgressBar>(LEVEL_STATIC, &m_tUIDesc);
     m_pPlagueWeapon_Border.lock()->Set_Texture("HUD_FrameBorder");
     m_pPlagueWeapon_Border.lock()->Set_Depth(0.4f);
-    m_pPlagueWeapon_Border.lock()->Set_PassIndex(10);
+    m_pPlagueWeapon_Border.lock()->Set_PassIndex(3);
 
     m_pPlagueWeapon_Main = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &m_tUIDesc);
     m_pPlagueWeapon_Main.lock()->Set_Texture("HUD_PlagueWeapon_Frame_Steal");

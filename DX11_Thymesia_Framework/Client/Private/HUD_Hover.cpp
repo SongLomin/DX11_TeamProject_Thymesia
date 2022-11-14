@@ -24,7 +24,7 @@ HRESULT CHUD_Hover::Initialize(void* pArg)
 
 	m_vFadeColor = _float4(0.f, 0.f, 0.f, 0.7f);
 	m_pFaderCom.lock()->CallBack_FadeEnd += bind(&CHUD_Hover::Call_FadeEnd, this, placeholders::_1);
-	m_iPassIndex = 5;
+	m_iPassIndex = 0;
 
 
 	m_tUIDesc.fDepth = 0.f;
@@ -122,7 +122,7 @@ void CHUD_Hover::Call_FadeEnd(FADER_TYPE In_eFaderType)
 }
 
 
-void CHUD_Hover::Set_Alpha(_float4 _vAlpha)
+void CHUD_Hover::Set_AlphaColor(_float4 _vAlpha)
 {
 	m_vFadeColor = _vAlpha;
 }
@@ -131,7 +131,7 @@ HRESULT CHUD_Hover::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
 
-	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vColor", &m_vFadeColor, sizeof(_float4))))
+	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_fAlphaColor", &m_vFadeColor.w, sizeof(_float))))
 		return E_FAIL;
 
 	return S_OK;

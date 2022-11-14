@@ -21,17 +21,12 @@ HRESULT CPlayer_ProgressBar::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
-    m_pShaderCom.lock()->Set_ShaderInfo(
-        TEXT("Shader_HPBar"),
-        VTXTEX_DECLARATION::Element,
-        VTXTEX_DECLARATION::iNumElements);
-
     if (pArg != nullptr)
         memcpy(&m_tUIDesc, pArg, sizeof(UI_DESC));
 
     m_fRatio = 1.f;
     
-    m_iPassIndex = 9;
+    m_iPassIndex = 2;
 
     m_eRenderGroup = RENDERGROUP::RENDER_UI;
     GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
@@ -86,13 +81,7 @@ HRESULT CPlayer_ProgressBar::SetUp_ShaderResource()
 {
     __super::SetUp_ShaderResource();
 
-
-    if (FAILED(m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture")))
-    {
-        MSG_BOX("PlayerHPBar_Error");
-    }
     m_pShaderCom.lock()->Set_RawValue("g_Ratio", &m_fRatio, sizeof(_float));
-
 
     return S_OK;
 }

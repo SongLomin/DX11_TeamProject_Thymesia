@@ -48,7 +48,7 @@ HRESULT CUI_Logo::Initialize(void* pArg)
     m_pMainMenuBG = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_LOGO);
     m_pMainMenuBG.lock()->Set_Depth(0.3f);
     m_pMainMenuBG.lock()->Set_Texture("MainMenu_Background");
-    m_pMainMenuBG.lock()->Set_PassIndex(6);
+    m_pMainMenuBG.lock()->Set_PassIndex(1);
 
     m_pLogo = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_LOGO);
     m_pLogo.lock()->Set_Depth(0.2f);
@@ -93,7 +93,7 @@ HRESULT CUI_Logo::Initialize(void* pArg)
 
     m_iSelect = 0;
     ChageButtonIndex(m_iSelect);
-
+    m_bSelect = true;
 
     return S_OK;
 }
@@ -125,7 +125,7 @@ void CUI_Logo::Tick(_float fTimeDelta)
             m_iSelect++;
          ChageButtonIndex(m_iSelect);
     }
-    if (KEY_INPUT(KEY::ENTER, KEY_STATE::TAP))
+    if (KEY_INPUT(KEY::ENTER, KEY_STATE::TAP) && m_bSelect)
         SelectButton(m_iSelect);
 
 }
@@ -138,9 +138,14 @@ void CUI_Logo::LateTick(_float fTimeDelta)
     {
         if (m_iSelect != i)
         {
-            m_pSelectButton[i].lock()->Set_Alpha(_float4(0.4f, 0.4f, 0.4f, 0.4f));
-            m_pTextTexture[i].lock()->Set_Alpha(_float4(0.4f, 0.4f, 0.4f, 0.4f));
+            m_pSelectButton[i].lock()->Set_AlphaColor(_float4(0.4f, 0.4f, 0.4f, 0.4f));
+            m_pTextTexture[i].lock()->Set_AlphaColor(_float4(0.4f, 0.4f, 0.4f, 0.4f));
         }
+    }
+    if (m_pSelectButton[m_iSelect].lock()->Get_AlphaColor() < 0.4f)
+    {
+        m_pSelectButton[m_iSelect].lock()->Set_AlphaColor(_float4(0.4f, 0.4f, 0.4f, 0.4f));
+        m_pTextTexture[m_iSelect].lock()->Set_AlphaColor(_float4(0.4f, 0.4f, 0.4f, 0.4f));
     }
 }
 
@@ -173,6 +178,7 @@ void CUI_Logo::SelectButton(_uint iButtonIndex)
     switch (eType)
     {
     case Client::CUI_Logo::LOGO_BUTTON_START_GAME:
+        m_bSelect = false;
         GAMEINSTANCE->Get_CurrentLevel().lock()->OnLevelExit();
         break;
     case Client::CUI_Logo::LOGO_BUTTON_CONTINUE_GAME:

@@ -245,7 +245,7 @@
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\Potion</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\HUD_Hover.h">
-      <Filter>02. GameObject\01. UI\PlayerUI\HUD\Hover</Filter>
+      <Filter>02. GameObject\01. UI\Hover</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Stop.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\04.State_Stop</Filter>
@@ -442,7 +442,9 @@
     <ClInclude Include="..\Public\HUD_PlagueWeapon.h">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal.h" />
+    <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal.h">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -706,9 +708,6 @@
     <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon\00.Corvus_DefaultSaber</Filter>
     </ClCompile>
-    <ClCompile Include="..\Public\Corvus_DefaultDagger.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon\01.Corvus_DefaultDagger</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\EditGround.cpp">
       <Filter>02. GameObject\99. Other\01. EditGround</Filter>
     </ClCompile>
@@ -863,7 +862,9 @@
     <ClCompile Include="..\Private\HUD_PlagueWeapon.cpp">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal.cpp" />
+    <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1210,9 +1211,6 @@
     <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\Memory">
       <UniqueIdentifier>{50d1b317-f506-4a91-9ffe-41249c29fffb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\Hover">
-      <UniqueIdentifier>{e487d713-d046-4fcc-955c-f8b1014cbff6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\01. UI\Loading">
       <UniqueIdentifier>{e48e240b-21cd-4024-a452-bb27b060a8cb}</UniqueIdentifier>
     </Filter>
@@ -1399,6 +1397,9 @@
     <Filter Include="02. GameObject\99. Other\04. EditGroupProp">
       <UniqueIdentifier>{8879bd77-4670-491b-803a-0ddb8d81c2e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. UI\Hover">
+      <UniqueIdentifier>{e487d713-d046-4fcc-955c-f8b1014cbff6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -1463,6 +1464,9 @@
       <Filter>04. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxModelInstance.hlsl">
+      <Filter>04. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_UI.hlsl">
       <Filter>04. ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

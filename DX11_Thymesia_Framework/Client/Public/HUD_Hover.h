@@ -53,7 +53,8 @@ public:
 	FDelegate<FADER_TYPE> CallBack_FadeEnd;
 	
 public:
-	void				Set_Alpha(_float4 _vAlpha);
+	virtual void				Set_AlphaColor(_float4 _vAlpha);
+	virtual _float				Get_AlphaColor() { return m_vFadeColor.w; }
 
 protected:
 	virtual HRESULT SetUp_ShaderResource() override;

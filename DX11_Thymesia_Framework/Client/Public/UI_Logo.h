@@ -50,7 +50,7 @@ private:
 	string					m_fontPath[LOGO_BUTTON_END];
 	_float2					m_fFontSize[LOGO_BUTTON_END];
 
-
+	_bool		m_bSelect;
 	_uint		m_iSelect;
 
 public:

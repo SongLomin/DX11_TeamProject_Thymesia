@@ -45,7 +45,7 @@ HRESULT CPlayer_FeatherUI::Initialize(void* pArg)
     m_pFrameBorder = GAMEINSTANCE->Add_GameObject<CPlayer_ProgressBar>(LEVEL_STATIC, &m_tUIDesc);
     m_pFrameBorder.lock()->Get_Component<CTexture>().lock()->Use_Texture("HUD_FrameBorder");
     m_pFrameBorder.lock()->Set_Depth(0.2f);
-    m_pFrameBorder.lock()->Set_PassIndex(10);
+    m_pFrameBorder.lock()->Set_PassIndex(3);
 
     m_pFrame = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &m_tUIDesc);
     m_pFrame.lock()->Get_Component<CTexture>().lock()->Use_Texture("HUD_Frame");

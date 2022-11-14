@@ -4,7 +4,7 @@
 
 BEGIN(Client)
 
-class CPlayer_ProgressBar final :  public CUI
+class CPlayer_ProgressBar final :  public CCustomUI
 {
 	GAMECLASS_H(CPlayer_ProgressBar);
 	CLONE_H(CPlayer_ProgressBar, CGameObject);
