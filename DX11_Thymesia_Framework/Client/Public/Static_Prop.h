@@ -2,6 +2,11 @@
 #include "Prop.h"
 #include "Client_Defines.h"
 
+BEGIN(Engine)
+class CPhysXCollider;
+END
+
+
 BEGIN(Client)
 
 class CStatic_Prop final :
@@ -17,6 +22,9 @@ public:
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render() override;
+
+private:
+    weak_ptr<CPhysXCollider> m_pPhyxXColliderCom;
 
 public:
     void Free();

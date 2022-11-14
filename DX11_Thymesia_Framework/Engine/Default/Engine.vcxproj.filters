@@ -209,11 +209,20 @@
     <ClInclude Include="..\Public\SoundManager.h">
       <Filter>98. Managers\13. SoundManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\VIBuffer_NoAnim_Instance.h">
-      <Filter>01. Elements\03. Component\01. VIBuffer\09. NoAmin_Instance</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_Ground.h">
       <Filter>01. Elements\03. Component\01. VIBuffer\09. Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Model_Instance.h">
+      <Filter>01. Elements\03. Component\01. VIBuffer\09. NoAmin_Instance</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX_Manager.h">
+      <Filter>98. Managers\14. PhysXManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysXCollider.h">
+      <Filter>01. Elements\03. Component\13. PhysXCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CollisionCallBack.h">
+      <Filter>01. Elements\98. Other\05. PhysXModifyCallBack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -406,11 +415,20 @@
     <ClCompile Include="..\Private\SoundManager.cpp">
       <Filter>98. Managers\13. SoundManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\VIBuffer_NoAnim_Instance.cpp">
+    <ClCompile Include="..\Private\VIBuffer_Model_Instance.cpp">
       <Filter>01. Elements\03. Component\01. VIBuffer\09. NoAmin_Instance</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Ground.cpp">
       <Filter>01. Elements\03. Component\01. VIBuffer\09. Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PhysX_Manager.cpp">
+      <Filter>98. Managers\14. PhysXManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PhysXCollider.cpp">
+      <Filter>01. Elements\03. Component\13. PhysXCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CollisionCallBack.cpp">
+      <Filter>01. Elements\98. Other\05. PhysXModifyCallBack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -626,6 +644,18 @@
     </Filter>
     <Filter Include="01. Elements\03. Component\01. VIBuffer\09. NoAmin_Instance">
       <UniqueIdentifier>{fa2fd3e7-4ff1-47e5-a259-4f60e59b24f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Managers\14. PhysXManager">
+      <UniqueIdentifier>{b2acac00-22ab-4c0b-83b9-3ff62faceeb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Elements\03. Component\13. PhysXCollider">
+      <UniqueIdentifier>{a879f670-6b60-4e1f-a2ef-6874000b5219}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Elements\98. Other\05. PhysXModifyCallBack">
+      <UniqueIdentifier>{4488a8cb-dfba-4715-9b2b-3491521772e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Elements\98. Other\NewFilter1">
+      <UniqueIdentifier>{a4e97afd-f6f4-4426-bf35-d7fec2cc53e3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

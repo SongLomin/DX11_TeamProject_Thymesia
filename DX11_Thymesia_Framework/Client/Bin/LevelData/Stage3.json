@@ -1,0 +1,56 @@
+{
+  "GameObject": [
+    {
+      "Component": {
+        "Transform": [
+          [ 0.7857320308685303, -2.3283064365386963e-10, -0.6185652613639832, 0.0 ],
+          [ 0.12918245792388916, 0.9779496788978577, 0.1640942394733429, 0.0 ],
+          [ 0.6049258708953857, -0.20884180068969727, 0.7684072852134705, 0.0 ],
+          [ 0.0, 10.0, -10.0, 1.0 ]
+        ]
+      },
+      "Hash": 8675365520207489377,
+      "Name": "class Client::CCamera_Free",
+      "Setting": { "Enable": true }
+    },
+
+    {
+      "Component": {
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 0.0, 0.0 ],
+          [ 0.0, 0.0, 1.0, 0.0 ],
+          [ 0.0, 0.0, 0.0, 1.0 ]
+        ]
+      },
+      "Hash": 12159710856434595157,
+      "Name": "class Client::CGround",
+      "Setting": { "Enable": true },
+      "ShaderPass": 0,
+      "TextureInfo": {
+        "g_Texture_AddNo1": {
+          "Density": 30.0,
+          "Diff": "T_Floor_01a_C.png",
+          "Norm": "T_Floor_01a_N.png"
+        },
+        "g_Texture_AddNo2": {
+          "Density": 30.0,
+          "Diff": "T_wood_floor_1_a_C.png",
+          "Norm": "T_wood_floor_1_a_N.png"
+        },
+        "g_Texture_AddNo3": {
+          "Density": 30.0,
+          "Diff": "T_P_StoneBorderTiles01_C.png",
+          "Norm": "T_P_StoneBorderTiles01_N.png"
+        },
+        "g_Texture_Sorc": {
+          "Density": 30.0,
+          "Diff": "T_P_Gravel_floor02_C.png",
+          "Norm": "T_P_Gravel_floor02_N.png"
+        }
+      },
+      "VIBufferCom": "Memory_YamYam",
+      "g_FilterTexture": "Memory_YamYam_Filter.dds"
+    }
+  ]
+}

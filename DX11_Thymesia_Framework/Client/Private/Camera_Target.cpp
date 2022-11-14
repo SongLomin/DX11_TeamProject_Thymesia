@@ -72,7 +72,10 @@ void CCamera_Target::Tick(_float fTimeDelta)
 	{ 
 		Update_Bone();
 	}
-
+	else if (m_bCinematicEnd)
+	{
+		Reposition_Camera_AfterCinematic(fTimeDelta);
+	}
 	else
 	{
 		if (GAMEINSTANCE->Get_DIMouseKeyState(MOUSEBUTTON::MBS_WHEEL) & 0x80)
@@ -134,10 +137,13 @@ void CCamera_Target::Release_Focus()
 
 void CCamera_Target::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName)
 {
+
 	m_pCameraBoneNode = _pModel.lock()->Find_BoneNode(pBoneName);
 	m_pCameraBoneParentTransform = _pModel.lock()->Get_Owner().lock()->Get_Component<CTransform>();
 	m_TransformationMatrix = _pModel.lock()->Get_TransformationMatrix();
 	m_bCinematic = true;
+
+	Update_Bone();
 
 	XMStoreFloat4x4(&m_OriginalMatrix, m_pTransformCom.lock()->Get_WorldMatrix());
 }
@@ -159,10 +165,22 @@ void CCamera_Target::End_Cinematic()
 	_matrix TotalMatrix = LocalMat * ParentMatrix * m_pCameraBoneParentTransform.lock()->Get_WorldMatrix();
 
 	m_pTransformCom.lock()->Set_WorldMatrix(TotalMatrix);
+	_vector vCurPlayerPos = m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+	XMStoreFloat4(&m_vPlayerFollowLerpPosition, vCurPlayerPos);
+	XMStoreFloat4(&m_vPrePlayerPos, vCurPlayerPos);
+
+	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * -4.5f + XMVectorSet(0.f, 1.1f, 0.f, 0.f);
+
+	XMStoreFloat4(&m_vDestCamPosition, vPos);
+	XMStoreFloat4(&m_vCamPosAfterCinematic, TotalMatrix.r[3]);
+
+	//XMStoreFloat4(&m_vPlayerFollowLerpPosition, TotalMatrix.r[3]);
 
 	m_pCameraBoneNode = weak_ptr<CBoneNode>();
 	m_pCameraBoneParentTransform = weak_ptr<CTransform>();
 	m_bCinematic = false;
+	m_bCinematicEnd = true;
 
 }
 
@@ -264,15 +282,35 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 		_vector vPlayerFollowLerpPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition);
 		vPlayerFollowLerpPos.m128_f32[3] = 1.f;
 
-		vPlayerFollowLerpPos = XMVectorLerp(vPlayerFollowLerpPos, vPrePlayerPos, fTimeDelta);
+		vPlayerFollowLerpPos = XMVectorLerp(vPlayerFollowLerpPos, vPrePlayerPos, 2.f * fTimeDelta);
 		XMStoreFloat4(&m_vPlayerFollowLerpPosition, vPlayerFollowLerpPos);
 	}
 
 	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
-	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * -4.f + XMVectorSet(0.f, 1.5f, 0.f, 0.f);
+	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * -4.5f + XMVectorSet(0.f, 1.1f, 0.f, 0.f);
 	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
 }
 
+void CCamera_Target::Reposition_Camera_AfterCinematic(_float fTimeDelta)
+{
+	_vector vDescCamPosition = XMLoadFloat4(&m_vDestCamPosition);
+	_vector vCamPosAfterCinematic = XMLoadFloat4(&m_vCamPosAfterCinematic);
+
+	_float fLength = XMVector3Length(vDescCamPosition - vCamPosAfterCinematic).m128_f32[0];
+
+	if (0.5f*fTimeDelta < fLength)
+	{
+		_float fRatio = 5.f * fTimeDelta;
+		if (1.f < fRatio)
+			fRatio = 1.f;
+		XMStoreFloat4(&m_vCamPosAfterCinematic, XMVectorLerp(vCamPosAfterCinematic, vDescCamPosition, fRatio));
+	}
+	else
+		m_bCinematicEnd = false;
+
+	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_vCamPosAfterCinematic));
+
+}
 void CCamera_Target::Update_Bone()
 {
 	//Varg_Execution camera LocalOffset.

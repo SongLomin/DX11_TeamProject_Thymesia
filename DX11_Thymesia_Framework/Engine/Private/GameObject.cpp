@@ -112,8 +112,7 @@ void CGameObject::Set_OwnerForMyComponents()
 void CGameObject::Set_Dead()
 {
 	m_bDead = true;
-
-	//자식 객체들도 사망처리
+	OnSetDead();
 
 }
 

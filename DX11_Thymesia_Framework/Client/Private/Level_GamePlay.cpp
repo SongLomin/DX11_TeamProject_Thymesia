@@ -6,6 +6,7 @@
 #include "FadeMask.h"
 #include "Fader.h"
 #include <UI_Landing.h>
+#include "Static_Instancing_Prop.h"
 
 
 CLevel_GamePlay::CLevel_GamePlay()
@@ -26,9 +27,7 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	ShowCursor(false);
 
-	
-
-	//Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_GAMEPLAY);
+	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_GAMEPLAY);
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
 	CameraDesc.vEye = _float4(0.0f, 2.5f, -2.5f, 1.f);
@@ -46,7 +45,7 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_GAMEPLAY);
 
-	GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_GAMEPLAY);
+	//GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_GAMEPLAY);
 
 	GET_SINGLE(CGameManager)->Register_Player_HPBar
 	(GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
@@ -71,32 +70,16 @@ HRESULT CLevel_GamePlay::Initialize()
 		GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
 
 	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);
-
-	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL_GAMEPLAY);
+	
+	GAMEINSTANCE->Add_GameObject<CStatic_Instancing_Prop>(LEVEL_GAMEPLAY);
 
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
-	// GAMEINSTANCE->Add_GameObject<CGround>(LEVEL_GAMEPLAY);
-
-
-	FaderDesc tFaderDesc;
-	tFaderDesc.eFaderType = FADER_TYPE::FADER_IN;
-	tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
-	tFaderDesc.fFadeMaxTime = 3.f;
-	tFaderDesc.fDelayTime = 0.5f;
-	tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 0.f);
-
-	m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
-
-	//GAMEINSTANCE->Add_GameObject<CDubian>(LEVEL::LEVEL_GAMEPLAY).lock()->Set_Enable(false);
-	//GAMEINSTANCE->Add_GameObject<CBianka>(LEVEL::LEVEL_GAMEPLAY).lock()->Set_Enable(false);
 
 	//GAMEINSTANCE->Add_GameObject<CStage1>(LEVEL::LEVEL_GAMEPLAY);
 	
-
-	//m_iMonsterCount = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::MONSTER).size();
-
-	m_iMonsterCount = 0;
-
+	
+	
+	
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
 
 
@@ -107,6 +90,19 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);		
 
+	if (!m_bFadeTrigger)
+	{
+		FaderDesc tFaderDesc;
+		tFaderDesc.eFaderType = FADER_TYPE::FADER_IN;
+		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+		tFaderDesc.fFadeMaxTime = 3.f;
+		tFaderDesc.fDelayTime = 0.f;
+		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 0.f);
+
+		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+
+		m_bFadeTrigger = true;
+	}
 	/*if (m_bChangeNextLevel)
 	{
 		m_bChangeNextLevel = false;

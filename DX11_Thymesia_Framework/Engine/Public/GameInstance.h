@@ -17,6 +17,7 @@
 #include "RenderTarget_Manager.h"
 #include "Frustum.h"
 #include "SoundManager.h"
+#include "PhysX_Manager.h"
 
 /* 1. 게임내에 필요한 객체(매니져등)들을 모아서 보관한다. */
 /* 2. 클라이언트 개발자가 접근하기좋은 루트를 제공해준다. 나. */
@@ -185,7 +186,15 @@ public: /* For.Sound_Manager */
 	void StopSound(_uint _iChannelIndex);
 	void StopAll();
 
+public: /* For.PhysX_Manager */
+	HRESULT			Create_Scene(CPhysX_Manager::Scene eScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));
+	HRESULT			Delete_Scene(CPhysX_Manager::Scene eScene);
+	HRESULT			Change_Scene(CPhysX_Manager::Scene eNextScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));
 
+	void			Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh** ppOut);
+	void			Create_ConvexMesh(PxVec3** pVertices, _uint iNumVertice, PxConvexMesh** ppOut);
+	void			Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial** ppOut);
+	void			Create_Shape(const PxGeometry& Geometry, PxMaterial* pMaterial, PxShape** ppOut);
 
 private:
 	shared_ptr<CGraphic_Device> m_pGraphic_Device;
@@ -204,6 +213,8 @@ private:
 	shared_ptr<CFrustum> m_pFrustum;
 	shared_ptr<CRenderTarget_Manager> m_pTarget_Manager;
 	shared_ptr<CSound_Manager> m_pSound_Manager;
+	shared_ptr<CPhysX_Manager> m_pPhysX_Manager;
+	
 
 private:
 	_float	m_fDeltaTime = 0.f;

@@ -198,7 +198,7 @@
     <ClInclude Include="..\Public\ClientLevel.h" />
     <ClInclude Include="..\Public\Client_Components.h" />
     <ClInclude Include="..\Public\Client_GameObjects.h" />
-    <ClInclude Include="..\Public\Client_Structsh.h" />
+    <ClInclude Include="..\Public\Client_Structs.h" />
     <ClInclude Include="..\Public\Client_Windows.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusStateBase.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusStates.h" />
@@ -279,12 +279,14 @@
     <ClInclude Include="..\Public\Stage2.h" />
     <ClInclude Include="..\Public\Stage3.h" />
     <ClInclude Include="..\Public\StateBase.h" />
+    <ClInclude Include="..\Public\Static_Instancing_Prop.h" />
     <ClInclude Include="..\Public\Static_Prop.h" />
     <ClInclude Include="..\Public\Status.h" />
     <ClInclude Include="..\Public\Trigger.h" />
     <ClInclude Include="..\Public\UI_Landing.h" />
     <ClInclude Include="..\Public\UI_Loading.h" />
     <ClInclude Include="..\Public\UI_Logo.h" />
+    <ClInclude Include="..\Public\Weapon.h" />
     <ClInclude Include="..\Public\Window_AnimationModelView.h" />
     <ClInclude Include="..\Public\Window_AnimationPlayerView.h" />
     <ClInclude Include="..\Public\Window_ComponentView.h" />
@@ -394,12 +396,14 @@
     <ClCompile Include="..\Private\Stage2.cpp" />
     <ClCompile Include="..\Private\Stage3.cpp" />
     <ClCompile Include="..\Private\StateBase.cpp" />
+    <ClCompile Include="..\Private\Static_Instancing_Prop.cpp" />
     <ClCompile Include="..\Private\Static_Prop.cpp" />
     <ClCompile Include="..\Private\Status.cpp" />
     <ClCompile Include="..\Private\Trigger.cpp" />
     <ClCompile Include="..\Private\UI_Landing.cpp" />
     <ClCompile Include="..\Private\UI_Loading.cpp" />
     <ClCompile Include="..\Private\UI_Logo.cpp" />
+    <ClCompile Include="..\Private\Weapon.cpp" />
     <ClCompile Include="..\Private\Window_AnimationModelView.cpp" />
     <ClCompile Include="..\Private\Window_AnimationPlayerView.cpp" />
     <ClCompile Include="..\Private\Window_ComponentView.cpp" />
@@ -475,6 +479,7 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
     </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxModelInstance.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>

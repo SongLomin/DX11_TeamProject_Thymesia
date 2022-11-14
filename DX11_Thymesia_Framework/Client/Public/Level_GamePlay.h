@@ -23,7 +23,7 @@ public:
 private:
 	_bool	m_bCheckMonster = false;
 	_int	m_iWaveCount = 3;
-
+	_bool	m_bFadeTrigger = false;
 private:
 	virtual void OnEventMessage(_uint iArg) override;
 	void Free();

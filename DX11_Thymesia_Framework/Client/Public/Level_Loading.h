@@ -9,6 +9,9 @@
 
 BEGIN(Client)
 
+
+class CUI_Loading;
+
 class CLevel_Loading final : public CClientLevel
 {
 public:
@@ -20,9 +23,15 @@ public:
 	virtual void Tick(_float TimeDelta);
 	virtual HRESULT Render();
 
+
+private:
+	void		Create_Level();
+
 private:
 	LEVEL			m_eNextLevel = LEVEL_END;
 	shared_ptr<class CLoader>	m_pLoader;
+
+	weak_ptr<CUI_Loading> m_pUILoading;
 
 public:
 	static shared_ptr<CLevel_Loading> Create(LEVEL eNextLevel);

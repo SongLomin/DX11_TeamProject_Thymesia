@@ -67,7 +67,7 @@ void CCustomUI::Set_PassIndex(_uint _iPassIndex)
 HRESULT CCustomUI::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
-
+	this;
 	if (FAILED(m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture")))
 	{
 		MSG_BOX("CustomUI Error");

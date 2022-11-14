@@ -6,6 +6,8 @@
 #include "Renderer.h"
 #include "Transform.h"
 
+#include "PhysXCollider.h"
+
 GAMECLASS_C(CStatic_Prop);
 CLONE_C(CStatic_Prop, CGameObject);
 
@@ -24,6 +26,8 @@ HRESULT CStatic_Prop::Initialize(void* pArg)
         VTXMODEL_DECLARATION::Element,
         VTXMODEL_DECLARATION::iNumElements
     );
+
+    
 
     return S_OK;
 }

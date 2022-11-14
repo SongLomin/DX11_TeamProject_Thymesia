@@ -6,6 +6,7 @@
 #include "Transform.h"
 #include "VIBuffer_Terrain.h"
 #include "Navigation.h"
+#include "PhysXCollider.h"
 
 GAMECLASS_C(CTerrain)
 CLONE_C(CTerrain, CGameObject)
@@ -31,6 +32,19 @@ HRESULT CTerrain::Initialize(void* pArg)
 	m_pVIBufferCom = Add_Component<CVIBuffer_Terrain>((void*)TEXT("../Bin/Resources/Textures/Terrain/DefaultHeight.bmp"));
 	//m_pVIBufferCom.lock()
 
+	CPhysXCollider::PHYSXCOLLIDERDESC tPhysxColliderDesc;
+	tPhysxColliderDesc.eShape = PHYSXCOLLIDER_TYPE::BOX;
+	tPhysxColliderDesc.eType = PHYSXACTOR_TYPE::STATIC;
+	tPhysxColliderDesc.fDensity = 10.f;
+	tPhysxColliderDesc.vAngles = { 0.f, 0.f, 0.f, 0.f };
+	tPhysxColliderDesc.vPosition = { 0.f, 0.f, 0.f, 1.f };
+	tPhysxColliderDesc.vScale = { 30.f, 1.f, 30.f };
+	PxMaterial* pMaterial = nullptr;
+	GAMEINSTANCE->Create_Material(0.f, 0.f, -100.f, &pMaterial);
+	tPhysxColliderDesc.pMaterial = pMaterial;
+
+	m_pPhyxXColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
+
 	Set_OwnerForMyComponents();
 
 	return S_OK;
@@ -38,16 +52,22 @@ HRESULT CTerrain::Initialize(void* pArg)
 
 HRESULT CTerrain::Start()
 {
+	__super::Start();
+
 	return S_OK;
 }
 
 void CTerrain::Tick(_float fTimeDelta)
 {
+	__super::Tick(fTimeDelta);
 
+	m_pPhyxXColliderCom.lock()->Synchronize_Transform(m_pTransformCom);
 }
 
 void CTerrain::LateTick(_float fTimeDelta)
 {
+	__super::LateTick(fTimeDelta);
+
 	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Cast<CGameObject>(m_this));
 }
 
@@ -55,6 +75,8 @@ HRESULT CTerrain::Render()
 {
 	if (FAILED(SetUp_ShaderResource()))
 		return E_FAIL;
+
+	__super::Render();
 
 	m_pShaderCom.lock()->Begin(0);
 

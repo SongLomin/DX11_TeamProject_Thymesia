@@ -18,6 +18,34 @@ public:
 	_uint Get_MaterialIndex() const {
 		return m_iMaterialIndex;
 	}
+	_uint Get_Stride() const
+	{
+		return m_iStride;
+	}
+	ComPtr<ID3D11Buffer> Get_VertexBuffer()
+	{
+		return m_pVB;
+	}
+	ComPtr<ID3D11Buffer> Get_IndexBuffer()
+	{
+		return m_pIB;
+	}
+	_uint Get_NumVertexBuffers() const
+	{
+		return m_iNumVertexBuffers;
+	}
+	_uint Get_NumIndices() const
+	{
+		return m_iNumIndices;
+	}
+	D3D11_PRIMITIVE_TOPOLOGY Get_Topology() const
+	{
+		return m_eToplogy;
+	}
+	DXGI_FORMAT Get_IndexFormat() const
+	{
+		return m_eIndexFormat;
+	}
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -25,7 +53,7 @@ public:
 	virtual void	Start() override;
 
 public:
-	HRESULT Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CModel> pModel);
+	HRESULT Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CModel> pModel = weak_ptr<CModel>());
 	//HRESULT SetUp_BonesPtr(weak_ptr<CModel> pModel);
 	void SetUp_BoneMatices(_float4x4* pBoneMatrices, _fmatrix TransformationMatrix);
 	_bool Picking() const;

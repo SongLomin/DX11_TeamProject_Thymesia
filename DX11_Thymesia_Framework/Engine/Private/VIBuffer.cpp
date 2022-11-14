@@ -36,6 +36,12 @@ HRESULT CVIBuffer::Render()
 	if (nullptr == DEVICECONTEXT)
 		return E_FAIL;
 
+	// Is VB null
+	if (!m_pVB.Get())
+	{
+		DEBUG_ASSERT;
+	}
+
 	ID3D11Buffer* pVertexBuffers[] = {
 		m_pVB.Get(),
 	};

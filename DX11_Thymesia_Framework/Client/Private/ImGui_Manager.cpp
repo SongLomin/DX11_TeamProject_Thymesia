@@ -344,8 +344,7 @@ void CImGui_Manager::Write_Json(const string& In_szPath)
 
 	for (_uint i = 0; i < m_arrWindows.size(); ++i)
 	{
-		m_arrWindows[i]->Write_Json(NewJson);
-		
+		m_arrWindows[i]->Write_Json(NewJson);		
 	}
 
 	if (FAILED(CJson_Utility::Save_Json(In_szPath.c_str(), NewJson)))

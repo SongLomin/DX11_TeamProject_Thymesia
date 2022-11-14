@@ -38,6 +38,11 @@ HRESULT CLevel_Manager::Render()
 	return m_pCurrentLevel->Render();
 }
 
+void CLevel_Manager::OnDestroy()
+{
+	m_pCurrentLevel.reset();
+}
+
 void CLevel_Manager::Free()
 {
 	//Safe_Release(m_pCurrentLevel);

@@ -101,8 +101,6 @@ void CPlayer::LateTick(_float fTimeDelta)
         m_pCurState.lock()->LateTick(fTimeDelta);
 
     GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_SHADOWDEPTH, Weak_Cast<CGameObject>(m_this));
-
-    m_bWarning = false;
 }
 
 HRESULT CPlayer::Render()
@@ -267,19 +265,6 @@ void CPlayer::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
 void CPlayer::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
 {
     __super::OnCollisionStay(pOtherCollider);
-
-    if ((_uint)COLLISION_LAYER::MONSTER_ATTACK == pOtherCollider.lock()->Get_CollisionLayer())
-    {
-        weak_ptr<CAttackArea> pAttackArea = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner());
-
-        if (pAttackArea.lock())
-        {
-            if (HIT_TYPE::WARNING == pAttackArea.lock()->Get_HitType())
-            {
-                m_bWarning = true;
-            }
-        }
-    }
 
 }
 

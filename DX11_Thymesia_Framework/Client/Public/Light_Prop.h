@@ -2,6 +2,12 @@
 #include "Prop.h"
 #include "Client_Defines.h"
 
+BEGIN(Engine)
+
+class CPhysXCollider;
+
+END
+
 BEGIN(Client)
 
 class CLight_Prop final :
@@ -23,6 +29,9 @@ private:
     _int        m_iLightIndex;
 	_float      m_fMinLightRange = 0.f;
 	_float      m_fMaxLightRange = 0.f;
+
+private:
+    weak_ptr<CPhysXCollider> m_pPhysXColliderCom;
 
 public:
     virtual void Write_Json(json& Out_Json) override;

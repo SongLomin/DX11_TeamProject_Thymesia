@@ -4,11 +4,19 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # User-specific files
+*.cso
+*.exp
+*.exe
 *.rsuser
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
+*.cso
+*.exp
+*.exe
+Engine.dll
+Engine.lib
 
 *.cso
 *.exp
@@ -352,3 +360,10 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+
+*.cso
+*.exp
+*.lib
+*.dll
+*.exe

@@ -72,6 +72,15 @@ public:
 	HRESULT Go_Up(_float fTimeDelta);
 	HRESULT Go_Down(_float fTimeDelta);
 
+	// TODO : for effect tool << movement by world axis >>
+	HRESULT Go_Straight_WorldAxis(_float fTimeDelta);
+	HRESULT Go_Backward_WorldAxis(_float fTimeDelta);
+	HRESULT Go_Left_WorldAxis(_float fTimeDelta);
+	HRESULT Go_Right_WorldAxis(_float fTimeDelta);
+	HRESULT Go_Up_WorldAxis(_float fTimeDelta);
+	HRESULT Go_Down_WorldAxis(_float fTimeDelta);
+
+
 	HRESULT	Set_Position(_fvector vPos, weak_ptr<CNavigation> pNaviCom = weak_ptr<CNavigation>());
 	HRESULT Add_Position(_fvector vPos, weak_ptr<CNavigation> pNaviCom = weak_ptr<CNavigation>());
 	HRESULT Add_PositionWithRotation(_fvector vPos, weak_ptr<CNavigation> pNaviCom = weak_ptr<CNavigation>(), const _bool& In_bReverse = false );

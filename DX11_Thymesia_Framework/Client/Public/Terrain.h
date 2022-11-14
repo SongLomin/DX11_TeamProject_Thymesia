@@ -7,6 +7,7 @@ class CShader;
 class CTexture;
 class CRenderer;
 class CVIBuffer_Terrain;
+class CPhysXCollider;
 END
 
 BEGIN(Client)
@@ -32,6 +33,7 @@ private:
     weak_ptr<CRenderer> m_pRendererCom;
     weak_ptr<CTexture> m_pTextureCom;
     weak_ptr<CVIBuffer_Terrain> m_pVIBufferCom;
+    weak_ptr<CPhysXCollider> m_pPhyxXColliderCom;
 
 private:
     HRESULT SetUp_ShaderResource();

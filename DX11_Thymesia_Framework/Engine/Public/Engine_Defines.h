@@ -30,6 +30,12 @@ using namespace DirectX;
 #define DIRECTINPUT_VERSION  0x0800
 #include <dinput.h>
 
+#pragma region PhysX
+#include <PxPhysics.h>
+#include <PxPhysicsAPI.h>
+using namespace physx;
+#pragma endregion
+
 #include <process.h>
 #include <iostream>
 #include <memory>

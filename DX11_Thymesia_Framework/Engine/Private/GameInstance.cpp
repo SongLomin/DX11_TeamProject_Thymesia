@@ -26,7 +26,7 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uin
 	m_pTarget_Manager = CRenderTarget_Manager::Create_Instance();
 	m_pFrustum = CFrustum::Create_Instance();
 	m_pSound_Manager = CSound_Manager::Create_Instance();
-	
+	m_pPhysX_Manager = CPhysX_Manager::Create_Instance();
 
 	m_WindowHandle = GraphicDesc.hWnd;
 
@@ -67,6 +67,8 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uin
 
 	m_pSound_Manager->Initialize();
 
+	m_pPhysX_Manager->Initialize();
+
 	return S_OK;	
 }
 
@@ -95,6 +97,8 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 	{
 		m_bDebug = !m_bDebug;
 	}
+
+	m_pPhysX_Manager->Tick(fTimeDelta);
 
 	return S_OK;
 }
@@ -319,7 +323,7 @@ void CGameInstance::Release_Engine()
 	GET_SINGLE(CFrustum)->Destroy_Instance();
 	GET_SINGLE(CRenderTarget_Manager)->Destroy_Instance();
 	GET_SINGLE(CSound_Manager)->Destroy_Instance();
-
+	GET_SINGLE(CPhysX_Manager)->Destroy_Instance();
 	GET_SINGLE(CGameInstance)->Destroy_Instance();
 }
 
@@ -544,6 +548,41 @@ void CGameInstance::StopAll()
 	m_pSound_Manager->StopAll();
 }
 
+HRESULT CGameInstance::Create_Scene(CPhysX_Manager::Scene eScene, PxVec3 Gravity)
+{
+	return m_pPhysX_Manager->Create_Scene(eScene, Gravity);
+}
+
+HRESULT CGameInstance::Delete_Scene(CPhysX_Manager::Scene eScene)
+{
+	return m_pPhysX_Manager->Delete_Scene(eScene);
+}
+
+HRESULT CGameInstance::Change_Scene(CPhysX_Manager::Scene eNextScene, PxVec3 Gravity)
+{
+	return m_pPhysX_Manager->Change_Scene(eNextScene, Gravity);
+}
+
+void CGameInstance::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh** ppOut)
+{
+	m_pPhysX_Manager->Create_CylinderMesh(fRadiusBelow, fRadiusUpper, fHight, ppOut);
+}
+
+void CGameInstance::Create_ConvexMesh(PxVec3** pVertices, _uint iNumVertice, PxConvexMesh** ppOut)
+{
+	m_pPhysX_Manager->Create_ConvexMesh(pVertices, iNumVertice, ppOut);
+}
+
+void CGameInstance::Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial** ppOut)
+{
+	m_pPhysX_Manager->Create_Material(fStaticFriction, fDynamicFriction, fRestitution, ppOut);
+}
+
+void CGameInstance::Create_Shape(const PxGeometry& Geometry, PxMaterial* pMaterial, PxShape** ppOut)
+{
+	m_pPhysX_Manager->Create_Shape(Geometry, pMaterial, ppOut);
+}
+
 
 void CGameInstance::Free()
 {
@@ -564,6 +603,8 @@ void CGameInstance::Free()
 	m_pFrustum.reset();
 	m_pTarget_Manager.reset();
 	m_pSound_Manager.reset();
+
+	m_pPhysX_Manager.reset();
 }
 
 

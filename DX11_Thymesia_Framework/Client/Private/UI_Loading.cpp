@@ -11,12 +11,15 @@
 #include "GameManager.h"
 #include "Engine_Defines.h"
 #include "HUD_Hover.h"
+#include "FadeMask.h"
 
 GAMECLASS_C(CUI_Loading)
 CLONE_C(CUI_Loading, CGameObject)
 
 HRESULT CUI_Loading::Initialize_Prototype()
 {
+	__super::Initialize_Prototype();
+
 	return S_OK;
 }
 
@@ -29,11 +32,11 @@ HRESULT CUI_Loading::Initialize(void* pArg)
 	m_pLoadingBG.lock()->Set_Depth(0.2f);
 
 	UI_DESC	tIconDesc;
-	tIconDesc.fX = 1500.f;
+	tIconDesc.fX = 1550.f;
 	tIconDesc.fY = 790.f;
 	tIconDesc.fDepth = 0.1f;
-	tIconDesc.fSizeX = 102.f;
-	tIconDesc.fSizeY = 290.f;
+	tIconDesc.fSizeX = 51.f;
+	tIconDesc.fSizeY = 145.f;
 	
 
 
@@ -51,9 +54,22 @@ HRESULT CUI_Loading::Initialize(void* pArg)
 
 	m_pIcon = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_LOADING, &tIconDesc);
 	m_pIcon.lock()->Init_Fader(faderDesc, hoverDesc, CHUD_Hover::HUD_HOVER_ANIMATION_END);
-	m_pLoadingBG.lock()->Set_Texture("Loading_Icon");
-	m_fRatio = 0;
+	m_pIcon.lock()->Set_Texture("Loading_Icon");
 
+	tIconDesc.fX = 1400.f;
+	tIconDesc.fY = 850.f;
+	tIconDesc.fDepth = 0.1f;
+	tIconDesc.fSizeX = 400.f;
+	tIconDesc.fSizeY = 75.f;
+
+	m_pLoadComplete = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_LOADING, &tIconDesc);
+	m_pLoadComplete.lock()->Init_Fader(faderDesc, hoverDesc, CHUD_Hover::HUD_HOVER_ANIMATION_END);
+	m_pLoadComplete.lock()->Set_Texture("Loading_Complete");
+	m_pLoadComplete.lock()->Set_Enable(false);
+
+
+	m_bLoadComplete = false;
+	m_bCallFadeOut = false;
 	return S_OK;
 }
 
@@ -73,6 +89,43 @@ void CUI_Loading::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+}
+
+void CUI_Loading::Call_FadeEnd()
+{
+	m_bCallFadeOut = true;
+}
+
+void CUI_Loading::Set_Complete()
+{
+	m_bLoadComplete = true;
+	m_pIcon.lock()->Set_Enable(false);
+	m_pLoadComplete.lock()->Set_Enable(true);
+}
+
+_bool CUI_Loading::Get_Finish()
+{
+	if (m_bLoadComplete)
+	{
+		if (KEY_INPUT(KEY::ENTER, KEY_STATE::TAP))
+		{
+			FaderDesc tFaderDesc;
+			tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+			tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+			tFaderDesc.fFadeMaxTime = 1.f;
+			tFaderDesc.fDelayTime = 0.5f;
+			tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+
+			weak_ptr<CFadeMask> pFadeMask;
+
+			pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
+			pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+			pFadeMask.lock()->CallBack_FadeEnd += bind(&CUI_Loading::Call_FadeEnd, this);
+
+		}
+		return m_bCallFadeOut;
+	}
+	return false;
 }
 
 void CUI_Loading::Free()

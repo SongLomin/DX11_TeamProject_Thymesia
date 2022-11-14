@@ -40,7 +40,6 @@ public: /* For Event Function */
 	//Free는 스마트 포인터가 해제된 이후에 호출됩니다.
 	virtual void OnDestroy() {}
 
-
 	//이벤트 메세지입니다.
 	virtual void OnEventMessage(_uint iArg) {}
 	virtual void OnEventMessage(void* pArg) {}

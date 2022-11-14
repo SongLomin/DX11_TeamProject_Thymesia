@@ -22,6 +22,8 @@ HRESULT CLevel_Logo::Initialize()
 		return E_FAIL;
 
 
+	GAMEINSTANCE->Create_Scene(CPhysX_Manager::SCENE_CURRENT);
+
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
 	CameraDesc.vEye = _float4(0.0f, 1.2f, 1.5f, 1.f);
@@ -62,15 +64,6 @@ HRESULT CLevel_Logo::Render()
 		return E_FAIL;
 
 	SetWindowText(g_hWnd, TEXT("롷고레벨임. "));
-
-	return S_OK;
-}
-
-HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)
-{
-	/* For.BackGround */
-	//GAMEINSTANCE->Add_GameObject<CBackGround>(LEVEL_LOGO);
-	//GAMEINSTANCE->Add_GameObject<CFadeMask>(LEVEL_STATIC).lock()->Init_Fade(4.f, _float3(0.f, 0.f, 0.f), CFadeMask::FADE_TYPE::SIMPLEX_LNIEAR, true);
 
 	return S_OK;
 }

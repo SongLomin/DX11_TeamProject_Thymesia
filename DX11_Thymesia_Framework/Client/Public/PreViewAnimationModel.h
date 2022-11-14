@@ -33,6 +33,7 @@ public:
     void Add_DebugWeapon(const string& In_szBoneName);
     void Set_WeaponDesc(const _float& In_fScale, const _float3& In_vOffset, const _float& In_fDamage, const HIT_TYPE& In_eHitType);
     void Clear_DebugWeapon();
+    void Clear_ModelWeapon();
 
 private:
     void Release_BeforeModel();
@@ -43,6 +44,7 @@ private:
 
 private:
     list<weak_ptr<CWeapon>>                 m_pDebugWeapons;
+    list<weak_ptr<CWeapon>>                 m_pModelWeapons;
 
 private:
     void Free();

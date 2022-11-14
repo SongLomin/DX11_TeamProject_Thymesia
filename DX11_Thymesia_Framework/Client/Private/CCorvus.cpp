@@ -30,13 +30,11 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Translation");
 
-	m_pDefaultSaber.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultSaber>(m_CreatedLevel));
-	m_pDefaultSaber.back().lock()->Init_DefaultSaber(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
+	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultSaber>(m_CreatedLevel));
+	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
+	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultDagger>(m_CreatedLevel));
+	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_l");
 
-	m_pDefaultDagger.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultDagger>(m_CreatedLevel));
-	m_pDefaultDagger.back().lock()->Init_DefaultDagger(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_l");
-
-	
 	m_pStandState = Add_Component<CCorvusState_Idle>();
 	Add_Component<CCorvusState_Jogging>();
 	Add_Component<CCorvusState_JoggingStart>();
@@ -54,6 +52,9 @@ HRESULT CCorvus::Initialize(void* pArg)
 	Add_Component<CCorvusState_Parry2>();
 	Add_Component<CCorvusState_BasicHealing>();
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
+
+	GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_Cast<CGameObject>(m_this));
+
 
 	USE_START(CCorvus);
 
