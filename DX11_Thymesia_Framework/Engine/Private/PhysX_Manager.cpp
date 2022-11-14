@@ -218,7 +218,7 @@ void CPhysX_Manager::Add_DynamicActorAtCurrentScene(PxRigidDynamic& DynamicActor
 	DynamicActor.setMassSpaceInertiaTensor(In_MassSpaceInertiaTensor);
 	DynamicActor.setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
 
-	PxRigidBodyExt::updateMassAndInertia(DynamicActor, Density);
+	//PxRigidBodyExt::updateMassAndInertia(DynamicActor, Density);
 	m_pCurScene->addActor(DynamicActor);
 }
 
