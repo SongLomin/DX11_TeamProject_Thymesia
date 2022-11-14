@@ -15,11 +15,14 @@ void CollisionSimulationEventCallBack::onSleep(PxActor** actors, PxU32 count)
 	int i = 0;
 }
 
+// 둘다 트리거를 쓰지 않는 쉐이프면 onContact
 void CollisionSimulationEventCallBack::onContact(const PxContactPairHeader& pairHeader, const PxContactPair* pairs, PxU32 nbPairs)
 {
 	int i = 0;
 }
 
+
+// 트리거를 쓰는 얘들은 OnTrigger
 void CollisionSimulationEventCallBack::onTrigger(PxTriggerPair* pairs, PxU32 count)
 {
 	int i = 0;

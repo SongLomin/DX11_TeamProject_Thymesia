@@ -83,6 +83,22 @@ void CObject_Manager::LateTick(_float fTimeDelta)
 	}
 }
 
+void CObject_Manager::Before_Render(_float fTimeDelta)
+{
+	for (_uint i = 0; i < m_iNumLevels; ++i)
+	{
+		for (auto& Pair : m_pLayers[i])
+		{
+			for (auto& elem_GameObject : Pair.second)
+			{
+				//게임오브젝트가 활성화 상태면 LateTick을 돌린다.
+				if (elem_GameObject->Get_Enable())
+					elem_GameObject.get()->Before_Render(fTimeDelta);
+			}
+		}
+	}
+}
+
 void CObject_Manager::After_Render()
 {
 	Remove_DeadObject();

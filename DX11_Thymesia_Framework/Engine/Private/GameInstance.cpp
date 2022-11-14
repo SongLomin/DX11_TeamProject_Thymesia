@@ -105,7 +105,8 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 
 HRESULT CGameInstance::Render_Engine()
 {
-	
+	m_pObject_Manager->Before_Render(m_fDeltaTime);
+
 	GET_SINGLE(CLevel_Manager)->Render();
 
 	m_pObject_Manager->After_Render();

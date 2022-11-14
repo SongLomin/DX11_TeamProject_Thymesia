@@ -31,6 +31,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 
 	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Translation");
+	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Rotation");
 
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultSaber>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
@@ -74,14 +75,14 @@ HRESULT CCorvus::Start()
 	
 	m_pCamera = GET_SINGLE(CGameManager)->Get_TargetCamera();
 	m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
-
+	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -0.5f, 0.f, 1.f));
 
 	return S_OK;
 }
 
 void CCorvus::Tick(_float fTimeDelta)
 {
-	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -0.5f, 0.f, 1.f));
+	
 
 	__super::Tick(fTimeDelta);
 	
@@ -93,6 +94,13 @@ void CCorvus::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 	m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 0.5f, 0.f, 1.f));
+}
+
+void CCorvus::Before_Render(_float fTimeDelta)
+{
+	__super::Before_Render(fTimeDelta);
+
+	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -0.5f, 0.f, 1.f));
 }
 
 HRESULT CCorvus::Render()
@@ -157,7 +165,8 @@ void CCorvus::RootMove()
 {
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
-	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
+	//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
+	m_pPhysXColliderCom.lock();
 }
 
 void CCorvus::OnBattleEnd()

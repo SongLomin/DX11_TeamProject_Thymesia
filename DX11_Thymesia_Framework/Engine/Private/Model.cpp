@@ -7,6 +7,7 @@
 #include "Shader.h"
 #include "BoneNode.h"
 #include "Animation.h"
+#include "SMath.h"
 
 GAMECLASS_C(CModel)
 CLONE_C(CModel, CComponent)
@@ -117,6 +118,54 @@ _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName)
 	vCurrentBonePosition = XMVector3TransformCoord(vCurrentBonePosition, XMLoadFloat4x4(&m_pModelData->TransformMatrix));
 
 	return vCurrentBonePosition;
+}
+
+_vector CModel::Get_DeltaBonePitchYawRoll(const char* In_szBoneName)
+{
+	if (m_isBlend)
+	{
+		return XMVectorSet(0.f, 0.f, 0.f, 1.f);
+	}
+
+	_float3 vCurrentBonePitchYawRollFromFloat3;
+	_vector vCurrentBonePitchYawRoll;
+	_vector vPreBonePitchYawRoll;
+
+	weak_ptr<CBoneNode> CurrentBoneNode = Find_BoneNode(In_szBoneName);
+
+	if (!CurrentBoneNode.lock().get())
+		assert(false);
+
+	string szBoneNameToString = In_szBoneName;
+	size_t HashKey = hash<string>()(szBoneNameToString);
+
+	unordered_map<size_t, _float3>::iterator iter = m_DeltaBoneRotations.find(HashKey);
+
+	if (m_DeltaBoneRotations.end() == iter)
+	{
+
+		_float3 StartPitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(CurrentBoneNode.lock()->Get_TransformationMatrix()));
+
+		m_DeltaBoneRotations.emplace(HashKey, StartPitchYawRoll);
+
+		return XMVectorSet(0.f, 0.f, 0.f, 1.f);
+	}
+
+	vPreBonePitchYawRoll = XMLoadFloat3(&(*iter).second);
+	vCurrentBonePitchYawRollFromFloat3 = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(CurrentBoneNode.lock()->Get_TransformationMatrix()));
+	vCurrentBonePitchYawRoll = XMLoadFloat3(&vCurrentBonePitchYawRollFromFloat3);
+
+	vCurrentBonePitchYawRoll -= vPreBonePitchYawRoll;
+
+	(*iter).second = vCurrentBonePitchYawRollFromFloat3;
+
+	// XZ축 회전 소거
+	vCurrentBonePitchYawRoll.m128_f32[0] = 0.f;
+	vCurrentBonePitchYawRoll.m128_f32[2] = 0.f;
+
+	//vCurrentBonePosition = XMVector3TransformCoord(vCurrentBonePosition, XMLoadFloat4x4(&m_pModelData->TransformMatrix));
+
+	return vCurrentBonePitchYawRoll;
 }
 
 _uint CModel::Get_CurrentAnimationKeyIndex() const
@@ -360,6 +409,7 @@ void CModel::Reset_Model()
 void CModel::Reset_DeltaBonePositions()
 {
 	m_DeltaBonePositions.clear();
+	m_DeltaBoneRotations.clear();
 }
 
 void CModel::Set_RootNode(const string& pBoneName, const _bool& In_bRoot)
@@ -510,7 +560,7 @@ void CModel::Create_Materials(const char* pModelFilePath)
 void CModel::Create_BoneNodes(shared_ptr<NODE_DATA> pNodeData, weak_ptr<CBoneNode> pParent, _uint iDepth)
 {
 	weak_ptr<CBoneNode> pBoneNode = m_pOwner.lock()->Add_Component<CBoneNode>();
-	pBoneNode.lock()->Init_BoneNode(pNodeData, pParent, iDepth);
+	pBoneNode.lock()->Init_BoneNode(pNodeData, pParent, iDepth, m_pModelData->TransformMatrix);
 	m_pBoneNodes.push_back(pBoneNode);
 
 	for (_uint i = 0; i < pNodeData->iNumChildren; ++i)

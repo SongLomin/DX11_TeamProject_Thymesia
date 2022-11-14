@@ -433,9 +433,6 @@
     <ClInclude Include="..\Public\Static_Instancing_Prop.h">
       <Filter>02. GameObject\04. Prop\06. Static_Instancing_Prop</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Weapon.h">
-      <Filter>02. GameObject\99. Other\05. Weapon</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Player.h">
       <Filter>02. GameObject\03. Actor\00. Character\00.Player</Filter>
     </ClInclude>
@@ -443,6 +440,9 @@
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal.h" />
+    <ClInclude Include="..\Public\Weapon.h">
+      <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -706,9 +706,6 @@
     <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon\00.Corvus_DefaultSaber</Filter>
     </ClCompile>
-    <ClCompile Include="..\Public\Corvus_DefaultDagger.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon\01.Corvus_DefaultDagger</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\EditGround.cpp">
       <Filter>02. GameObject\99. Other\01. EditGround</Filter>
     </ClCompile>
@@ -854,9 +851,6 @@
     <ClCompile Include="..\Private\Static_Instancing_Prop.cpp">
       <Filter>02. GameObject\04. Prop\06. Static_Instancing_Prop</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Weapon.cpp">
-      <Filter>02. GameObject\99. Other\05. Weapon</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Player.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\00.Player</Filter>
     </ClCompile>
@@ -864,6 +858,9 @@
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal.cpp" />
+    <ClCompile Include="..\Private\Weapon.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

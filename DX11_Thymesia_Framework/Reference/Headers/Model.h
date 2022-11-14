@@ -44,7 +44,8 @@ public:
 	void Set_CurrentAnimationKey(_uint iKeyIndex);
 	
 
-	_vector Get_DeltaBonePosition(const char* szBoneName);
+	_vector Get_DeltaBonePosition(const char* In_szBoneName);
+	_vector Get_DeltaBonePitchYawRoll(const char* In_szBoneName);
 
 	_uint Get_CurrentAnimationKeyIndex() const;
 	_uint Get_CurrentAnimationIndex() const;
@@ -121,6 +122,7 @@ private:
 
 private:
 	unordered_map<size_t, _float4>			m_DeltaBonePositions;
+	unordered_map<size_t, _float3>			m_DeltaBoneRotations;
 
 public:
 	FDelegate<>								CallBack_AnimationEnd;
