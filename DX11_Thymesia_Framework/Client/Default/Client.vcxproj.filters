@@ -343,6 +343,9 @@
     <ClInclude Include="..\Public\PreView_Prop.h">
       <Filter>02. GameObject\04. Prop\05. PreView_Prop</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Static_Instancing_Prop.h">
+      <Filter>02. GameObject\04. Prop\06. Static_Instancing_Prop</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Weapon.h">
       <Filter>02. GameObject\99. Other\05. Weapon</Filter>
     </ClInclude>
@@ -666,6 +669,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_Loading.cpp">
       <Filter>02. GameObject\01. UI\Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Static_Instancing_Prop.cpp">
+      <Filter>02. GameObject\04. Prop\06. Static_Instancing_Prop</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Weapon.cpp">
       <Filter>02. GameObject\99. Other\05. Weapon</Filter>
@@ -1070,6 +1076,9 @@
     <Filter Include="02. GameObject\04. Prop\05. PreView_Prop">
       <UniqueIdentifier>{959a7114-f746-44a0-91a4-24c79633fe1d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\04. Prop\06. Static_Instancing_Prop">
+      <UniqueIdentifier>{7a183ed8-9e71-4344-aae9-eb3571135273}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02. GameObject\99. Other\05. Weapon">
       <UniqueIdentifier>{71ba57b2-badd-4f4c-8aa6-0ff09e48d627}</UniqueIdentifier>
     </Filter>
@@ -1149,6 +1158,9 @@
       <Filter>04. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_DistortionBlend.hlsl">
+      <Filter>04. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxModelInstance.hlsl">
       <Filter>04. ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

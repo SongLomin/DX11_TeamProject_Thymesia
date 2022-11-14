@@ -267,6 +267,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_Cell"), TEXT("../Bin/ShaderFiles/Shader_Cell.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_Luxiya"), TEXT("../Bin/ShaderFiles/Shader_Luxiya.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxGround"), TEXT("../Bin/ShaderFiles/Shader_VtxGround.hlsl"));
+	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxModelInstance"), TEXT("../Bin/ShaderFiles/Shader_VtxModelInstance.hlsl"));
 
 	lstrcpy(m_szLoadingText, TEXT("데이터를 로딩중입니다. "));
 

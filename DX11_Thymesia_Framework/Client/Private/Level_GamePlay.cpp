@@ -6,6 +6,7 @@
 #include "FadeMask.h"
 #include "Fader.h"
 #include <UI_Landing.h>
+#include "Static_Instancing_Prop.h"
 
 
 CLevel_GamePlay::CLevel_GamePlay()
@@ -69,6 +70,8 @@ HRESULT CLevel_GamePlay::Initialize()
 		GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
 
 	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);
+	
+	GAMEINSTANCE->Add_GameObject<CStatic_Instancing_Prop>(LEVEL_GAMEPLAY);
 
 	Load_FromJson(m_szDefaultJsonPath + "Stage3.json", LEVEL_GAMEPLAY);
 

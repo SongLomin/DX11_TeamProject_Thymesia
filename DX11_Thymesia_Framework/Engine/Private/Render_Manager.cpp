@@ -58,6 +58,14 @@ HRESULT CRender_Manager::Initialize()
 
 	pRenderTargetManager->Bake_ShadowDepthStencilView((_uint)ViewPortDesc.Width * 5, (_uint)ViewPortDesc.Height * 5);
 
+	/* For.Target_StaticShadowDepth */
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_StaticShadowDepth"),
+		(_uint)ViewPortDesc.Width * 5, (_uint)ViewPortDesc.Height * 5, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
+		DEBUG_ASSERT;
+
+	pRenderTargetManager->Bake_StaticShadowDepthStencilView((_uint)ViewPortDesc.Width * 5, (_uint)ViewPortDesc.Height * 5);
+
+
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_ExtractBloom"), 
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
@@ -191,6 +199,11 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_ShadowDepth"), TEXT("Target_ShadowDepth"))))
 		DEBUG_ASSERT;
 
+	/* For.MRT_StaticShadowDepth*/
+	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_StaticShadowDepth"), TEXT("Target_StaticShadowDepth"))))
+		DEBUG_ASSERT;
+
+
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_CopyOriginalRender"), TEXT("Target_CopyOriginalRender"))))
 		DEBUG_ASSERT;
 
@@ -241,6 +254,10 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_BlurForEffect"), ViewPortDesc.Width - fHalf - fSize, fHalf + fSize * 3.f, fSize, fSize)))
 		DEBUG_ASSERT;
+
+	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_StaticShadowDepth"), ViewPortDesc.Width - fHalf -fSize*2.f, fHalf, fSize, fSize)))
+		DEBUG_ASSERT;
+
 	/*if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_BlurShadow"), ViewPortDesc.Width - 300, 700, 200, 200)))
 		DEBUG_ASSERT;*/
 
@@ -473,6 +490,22 @@ HRESULT CRender_Manager::Render_ShadowDepth()
 	if (FAILED(GET_SINGLE(CRenderTarget_Manager)->End_ShadowMRT()))
 		DEBUG_ASSERT;
 
+	if (!m_RenderObjects[(_uint)RENDERGROUP::RENDER_STATICSHADOWDEPTH].empty())
+	{
+		if (FAILED(GET_SINGLE(CRenderTarget_Manager)->Begin_StaticShadowMRT(TEXT("MRT_StaticShadowDepth"))))
+			DEBUG_ASSERT;
+
+		for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_STATICSHADOWDEPTH])
+		{
+			if (pGameObject.lock())
+				pGameObject.lock()->Render_ShadowDepth(LightViewMatrix, LightProjMatrix);
+		}
+
+		m_RenderObjects[(_uint)RENDERGROUP::RENDER_STATICSHADOWDEPTH].clear();
+
+		if (FAILED(GET_SINGLE(CRenderTarget_Manager)->End_StaticShadowMRT()))
+			DEBUG_ASSERT;
+	}
 	
 
 	return S_OK;
@@ -551,6 +584,9 @@ HRESULT CRender_Manager::Bake_ViewShadow()
 		DEBUG_ASSERT;
 
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_ShadowDepthTexture", pRenderTargetManager->Get_SRV(TEXT("Target_ShadowDepth")))))
+		DEBUG_ASSERT;
+
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_StaticShadowDepthTexture", pRenderTargetManager->Get_SRV(TEXT("Target_StaticShadowDepth")))))
 		DEBUG_ASSERT;
 
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_DepthTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Depth")))))
@@ -1331,6 +1367,8 @@ HRESULT CRender_Manager::Render_Debug()
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ExtractOutLine"), m_pShader, m_pVIBuffer);
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurOutLine"), m_pShader, m_pVIBuffer);
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ViewShadow"), m_pShader, m_pVIBuffer);
+	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_StaticShadowDepth"), m_pShader, m_pVIBuffer);
+
 	//GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Glow"), m_pShader, m_pVIBuffer);
 
 	/*for (auto& pComponent : m_pDebugComponents)

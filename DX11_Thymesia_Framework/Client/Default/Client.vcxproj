@@ -279,6 +279,7 @@
     <ClInclude Include="..\Public\Stage2.h" />
     <ClInclude Include="..\Public\Stage3.h" />
     <ClInclude Include="..\Public\StateBase.h" />
+    <ClInclude Include="..\Public\Static_Instancing_Prop.h" />
     <ClInclude Include="..\Public\Static_Prop.h" />
     <ClInclude Include="..\Public\Status.h" />
     <ClInclude Include="..\Public\Trigger.h" />
@@ -395,6 +396,7 @@
     <ClCompile Include="..\Private\Stage2.cpp" />
     <ClCompile Include="..\Private\Stage3.cpp" />
     <ClCompile Include="..\Private\StateBase.cpp" />
+    <ClCompile Include="..\Private\Static_Instancing_Prop.cpp" />
     <ClCompile Include="..\Private\Static_Prop.cpp" />
     <ClCompile Include="..\Private\Status.cpp" />
     <ClCompile Include="..\Private\Trigger.cpp" />
@@ -477,6 +479,7 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
     </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxModelInstance.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>

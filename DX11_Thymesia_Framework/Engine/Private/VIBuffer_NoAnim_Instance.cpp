@@ -1,4 +1,4 @@
-#include "VIBuffer_NOAnim_Instance.h"
+#include "VIBuffer_Model_Instance.h"
 #include "GameInstance.h"
 #include "ModelData.h"
 

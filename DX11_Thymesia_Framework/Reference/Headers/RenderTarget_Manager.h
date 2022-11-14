@@ -26,7 +26,11 @@ public:
 	HRESULT Begin_ShadowMRT(const _tchar* pMRTTag);
 	HRESULT End_ShadowMRT();
 
+	HRESULT Begin_StaticShadowMRT(const _tchar* pMRTTag);
+	HRESULT End_StaticShadowMRT();
+
 	HRESULT Bake_ShadowDepthStencilView(_uint iWidth, _uint iHeight);
+	HRESULT Bake_StaticShadowDepthStencilView(_uint iWidth, _uint iHeight);
 
 #ifdef _DEBUG
 public:
@@ -44,7 +48,9 @@ private:
 private:
 	ComPtr<ID3D11RenderTargetView> m_pBackBufferView = nullptr;
 	ComPtr<ID3D11DepthStencilView> m_pDepthStencilView = nullptr;
+	
 	ComPtr<ID3D11DepthStencilView> m_pShadowDepthStencilView = nullptr;
+	ComPtr<ID3D11DepthStencilView> m_pStaticShadowDepthStencilView = nullptr;
 
 	D3D11_VIEWPORT					m_tOriginalViewPortDesc;
 	D3D11_VIEWPORT					m_tShadowViewPortDesc;
