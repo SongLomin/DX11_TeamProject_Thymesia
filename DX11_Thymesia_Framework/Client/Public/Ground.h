@@ -45,6 +45,7 @@ private:
 	weak_ptr<CShader>               m_pShaderCom;
 	weak_ptr<CRenderer>             m_pRendererCom;
 	weak_ptr<CVIBuffer_Ground>      m_pVIBufferCom;
+    weak_ptr<CTexture>              m_pFilterTextureCom;
     TEXTURES                        m_pTextureCom;
 
     _uint                           m_iShaderPath = 0;
