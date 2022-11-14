@@ -58,6 +58,7 @@ weak_ptr<CCharacter> CStateBase::Get_OwnerCharacter() const
 	return m_pOwnerFromCharacter;
 }
 
+
 _bool CStateBase::Check_Requirement()
 {
 	if (m_pOwnerFromCharacter.lock()->Is_Edit())

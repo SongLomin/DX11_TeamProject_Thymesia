@@ -3,13 +3,22 @@
 #include "Model.h"
 #include "GameInstance.h"
 #include "GameObject.h"
-#include "BehaviorBase.h"
+#include "Player.h"
+//#include "BehaviorBase.h"
 #include "Animation.h"
 #include "AIStateBase.h"
+#include "NorMonStateBase.h"
+#include "Character.h"
+
 
 
 GAMECLASS_C(CNorMonState_Idle);
 CLONE_C(CNorMonState_Idle, CComponent)
+
+void CNorMonState_Idle::Set_MonIdleType(NORMONSTERIDLETYPE IDLETYPE)
+{
+	m_eNorMonIdleType = IDLETYPE;
+}
 
 HRESULT CNorMonState_Idle::Initialize_Prototype()
 {
@@ -29,18 +38,19 @@ void CNorMonState_Idle::Start()
 {
 	__super::Start();
 
+
 	if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
 	{
 		switch (m_eNorMonIdleType)
 		{
 		case Client::NORMONSTERIDLETYPE::NORIDLE:
-			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("DemoM02_Idle1");
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|LV1Villager_M_IdleGeneral|BaseLayer");
 			break;
 		case Client::NORMONSTERIDLETYPE::SITIDLE:
-			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("LV1Villager_M_Sit_Idle");
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|LV1Villager_M_Sit_Idle|BaseLayer");
 			break;
 		case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
-			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("LV1Villager_M_SP_Idle1");
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|LV1Villager_M_SP_Idle1|BaseLayer");
 			break;
 		}
 	}
@@ -79,7 +89,9 @@ void CNorMonState_Idle::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+
 	Check_AndChangeNextState();
+
 }
 
 
@@ -101,8 +113,8 @@ void CNorMonState_Idle::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-
 }
+
 
 
 void CNorMonState_Idle::Free()
@@ -117,11 +129,64 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 		return false;
 
 
-	//_float fDistance = Get_DistanceWithPlayer();
+	_float fDistance = Get_DistanceWithPlayer();
 
 
+	if (fDistance < 6.f)
+	{
+		TurnMechanism();
+		m_bFirstRun = true;
 
+		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
+		{
+			switch (m_eNorMonIdleType)
+			{
+			case Client::NORMONSTERIDLETYPE::NORIDLE:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+				break;
+			case Client::NORMONSTERIDLETYPE::SITIDLE:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_SitToIdle>(0.05f);
+				break;
+			case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
+				break;
+			}
 
-	
+			return true;
+
+		}
+
+		//if (m_eNorMonType == NORMONSTERTYPE::KNIFEWOMAN)
+		//{
+		//	if (m_eNorMonType == NORMONSTERTYPE::KNIFEWOMAN)
+		//	{
+		//		switch (m_eNorMonIdleType)
+		//		{
+		//		case Client::NORMONSTERIDLETYPE::NORIDLE:
+		//			break;
+		//		case Client::NORMONSTERIDLETYPE::SITIDLE:
+		//			break;
+		//		case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+		//			break;
+		//		}
+		//	}
+		//	
+		//}
+	}
+	else
+	{
+		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && m_bFirstRun)
+		{
+			switch (m_eNorMonIdleType)
+			{
+			case Client::NORMONSTERIDLETYPE::NORIDLE:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+				break;
+			}
+			return true;
+		}
+	}
+
+	return false;
 }
 

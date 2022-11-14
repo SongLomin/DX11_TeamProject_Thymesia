@@ -6,6 +6,7 @@
 #include "Monster.h"
 #include "Model.h"
 #include "Player.h"
+#include "NorMonStateBase.h"
 
 GAMECLASS_C(CAIStateBase);
 
@@ -24,6 +25,8 @@ HRESULT CAIStateBase::Initialize(void* pArg)
 
 	m_eNorMonType = StateLinkDesc.eNorMonType;
 	m_eNorMonIdleType = StateLinkDesc.eNorMonIdleType;
+	
+	
 
 	m_iTimeScaleLayer = (_uint)TIMESCALE_LAYER::MONSTER;
 	m_pOwnerFromMonster = Weak_Cast<CMonster>(m_pOwner);
@@ -33,7 +36,10 @@ HRESULT CAIStateBase::Initialize(void* pArg)
 
 void CAIStateBase::Start()
 {
+
 	__super::Start();
+
+	m_pTransformCom = Get_Owner().lock()->Get_Component<CTransform>();
 }
 
 void CAIStateBase::Tick(_float fTimeDelta)
@@ -67,9 +73,11 @@ _bool CAIStateBase::Check_RequirementCoolDown(weak_ptr<CAIStateBase> pTargetStat
 }
 
 
+
+
 shared_ptr<CMonster> CAIStateBase::Get_OwnerMonster() const noexcept
 {
-	return m_pOwnerFromMonster.lock();
+	return shared_ptr<CMonster>();
 }
 
 _bool CAIStateBase::Check_Requirement()
@@ -206,6 +214,79 @@ _float CAIStateBase::Get_DistanceWithPlayer() const
 	_float fDistance = XMVector3Length(vPlayerPosition - vMyPosition).m128_f32[0];
 
 	return fDistance;
+}
+
+
+
+void CAIStateBase::TurnMechanism()
+{
+	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+
+	if (!pCurrentPlayer.lock())
+		return;
+
+	if (ComputeAngleWithPlayer() >= 90.f)
+	{
+		switch (ComputeDirectionToPlayer())
+		{
+		case 1:
+			Get_OwnerCharacter().lock()->Change_State<CNorMonState_TurnR90>(0.05f);
+			break;
+		case -1:
+			Get_OwnerCharacter().lock()->Change_State<CNorMonState_TurnL90>(0.05f);
+			break;
+		default:
+			assert(0);
+			return;
+		}
+
+		return;
+	}
+	else
+	{
+		_vector vPlayerPosition = pCurrentPlayer.lock()->Get_WorldPosition();
+		m_pTransformCom.lock()->LookAt(vPlayerPosition);
+	}
+}
+
+_float CAIStateBase::ComputeAngleWithPlayer()
+{
+	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+
+
+	_vector vCurPlayerPos = pCurrentPlayer.lock()->Get_WorldPosition();
+	_vector vMyPos = Get_OwnerCharacter().lock()->Get_WorldPosition();
+	_vector vMonsterToPlayerDirectionVector = XMVector3Normalize(vCurPlayerPos - vMyPos);
+	_vector vMyLookVector = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+
+	_float fDegree = XMConvertToDegrees(XMVectorGetX(XMVector3Length(XMVector3Dot(vMonsterToPlayerDirectionVector, vMyLookVector))));
+
+	return fDegree;
+
+}
+
+_int CAIStateBase::ComputeDirectionToPlayer()
+{
+	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+
+
+	_vector vCurPlayerPos = pCurrentPlayer.lock()->Get_WorldPosition();
+	_vector vMyPos = Get_OwnerCharacter().lock()->Get_WorldPosition();
+	_vector vMonsterToPlayerDirectionVector = XMVector3Normalize(vCurPlayerPos - vMyPos);
+	_vector vMyLookVector = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+
+	_float fCross = XMVectorGetY(XMVector3Cross(vMyLookVector, vMonsterToPlayerDirectionVector));
+
+	if (fCross >= 0.f) // 양수 오른쪽
+	{
+		// 오른쪽가는턴라이트싱행<1리턴>
+		return 1;
+	}
+	else // 음수 왼쪽
+	{
+		//왼쪽으로가는턴래프트실행 <-1리턴>
+		return -1;
+	}
 }
 
 void CAIStateBase::OnDestroy()

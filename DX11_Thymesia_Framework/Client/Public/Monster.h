@@ -14,8 +14,9 @@ class CMonster :
 public:
     typedef struct tagMonsterStateLinkDesc
     {
-        NORMONSTERTYPE  eNorMonType;
-        NORMONSTERIDLETYPE eNorMonIdleType;
+        NORMONSTERTYPE       eNorMonType;
+        NORMONSTERIDLETYPE   eNorMonIdleType;
+ 
         //TODO ¾ß¸Å¿¡¿ä ¹Ø¿¡²¨ ¤¾ 
         _float3            vYame;
     }STATE_LINK_DESC;

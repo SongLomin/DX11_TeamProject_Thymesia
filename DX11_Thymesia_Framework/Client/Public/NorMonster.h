@@ -41,7 +41,6 @@ private:
 private:
     void Free();
 
-
 };
 
 END

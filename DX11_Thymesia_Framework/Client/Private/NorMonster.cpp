@@ -30,10 +30,8 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		VTXANIM_DECLARATION::Element,
 		VTXANIM_DECLARATION::iNumElements);
 
-	//ZeroMemory(&m_tLinkStateDesc, sizeof(STATE_LINK_DESC));
 	memcpy(&m_tLinkStateDesc, pArg, sizeof(STATE_LINK_DESC));
-
-
+	
 	//m_tLinkStateDesc.eNorMonType = NORMONSTERTYPE::AXEMAN;
 	//m_eNorMonType = NORMONSTERTYPE::AXEMAN;
 	
@@ -47,7 +45,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		m_pWeapons.back().lock()->Set_WeaponType(MONSTERWEAPONTYPE::WEAPON_AXE);
 		m_pWeapons.back().lock()->Init_DefaultWeapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "hand_r");
 		//TODO 야매에요 ㅎ
-		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(1.f, 0.f, m_tLinkStateDesc.vYame.z, 1.f));
+		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, 0.f, m_tLinkStateDesc.vYame.z, 1.f));
 		break;
 		//나중에추가할거미리해둠
 	case  NORMONSTERTYPE::KNIFEWOMAN:
@@ -68,9 +66,8 @@ HRESULT CNorMonster::Initialize(void* pArg)
 
 	}
 
-
-
-	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Translation");
+	//TODO 여기서하는 이유는 몬스터가 배치되고 원점에서 우리가 피킹한위치만큼더해지고 난뒤에 그월드포지션값저장하기위해서 여기서함
+	m_pModelCom.lock()->Set_RootNode("RootNode");
 
 
 	//CStatus::STATUS_DESC StatusDesc;
@@ -79,37 +76,30 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	//
 	//m_pStatus.lock()->Init_Status(StatusDesc);
 	//m_pStandState = Add_Component<CIdle>();
-	m_pStandState = Add_Component<CNorMonState_Idle>(&m_tLinkStateDesc);
-	/*Add_Component<CNorMonState_Awake>();
-	Add_Component<CNorMonState_Die>();
-	Add_Component<CNorMonState_DorMant>();
-	Add_Component<CNorMonState_Farry>();
-	Add_Component<CNorMonState_Fidget>();
-	Add_Component<CNorMonState_GroggyEnd>();
-	Add_Component<CNorMonState_GroggyLoop>();
-	Add_Component<CNorMonState_GroggyStart>();
-	Add_Component<CNorMonState_HeavyAttack1>();
-	Add_Component<CNorMonState_HeavyAttack2>();
-	Add_Component<CNorMonState_HeavyAttack3>();
-	Add_Component<CNorMonState_HurtL>();
-	Add_Component<CNorMonState_HurtR>();
-	Add_Component<CNorMonState_LightAttack1>();
-	Add_Component<CNorMonState_LightAttack2>();
-	Add_Component<CNorMonState_LightAttack3>();
-	Add_Component<CNorMonState_Run>();
-	Add_Component<CNorMonState_SpecialAttack>();
-	Add_Component<CNorMonState_TakeExecution>();
-	Add_Component<CNorMonState_TurnL90>();
-	Add_Component<CNorMonState_TurnR90>();
-	Add_Component<CNorMonState_Walk_B>();
-	Add_Component<CNorMonState_Walk_BL>();
-	Add_Component<CNorMonState_Walk_BR>();
-	Add_Component<CNorMonState_Walk_F>();
-	Add_Component<CNorMonState_Walk_FL>();
-	Add_Component<CNorMonState_Walk_FR>();
-	Add_Component<CNorMonState_Walk_L>();
-	Add_Component<CNorMonState_Walk_R>();*/
 	
+	m_pStandState = Add_Component<CNorMonState_Idle>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_SitToIdle>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_LightAttack1>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_LightAttack2>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_Run>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_TurnL90>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_TurnR90>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_LightAttack1>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_LightAttack2>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_LightAttack3>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_HeavyAttack1>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_HeavyAttack2>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_Walk_F>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_Walk_FR>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_Walk_FL>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_Walk_L>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_Walk_R>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_Walk_B>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_Walk_BR>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_Walk_BL>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_Awake>(&m_tLinkStateDesc);
+	
+
 
 
 	//GET_SINGLE(CGameManager)->Bind_KeyEvent("Monster1", m_pModelCom, bind(&CNorMonster::Call_NextAnimationKey, this, placeholders::_1));
@@ -125,6 +115,7 @@ HRESULT CNorMonster::Start()
 	
 	Change_State<CNorMonState_Idle>();
 
+
 	//m_EffectIndexList.emplace_back("Character_Target", GET_SINGLE(CGameManager)->Use_EffectGroup("Character_Target", m_pTransformCom));
 
 	return S_OK;
@@ -135,11 +126,10 @@ void CNorMonster::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
-
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("RootNode");
 	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
 
-	
+
 
 
 }
@@ -159,6 +149,9 @@ HRESULT CNorMonster::Render()
 
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
+		if (i == 2 || i == 3)
+			continue;
+	
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
 

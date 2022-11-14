@@ -56,6 +56,8 @@ _vector CActor::Get_WorldPosition()
     return m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
 }
 
+
+
 void CActor::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 {
     GET_SINGLE(CGameManager)->Active_KeyEvent(m_pModelCom, m_pTransformCom, In_iKeyIndex);

@@ -5,9 +5,8 @@
 
 #include "NorMonState/NorMonState_Awake.h"
 #include "NorMonState/NorMonState_Die.h"
-#include "NorMonState/NorMonState_DorMant.h"
+#include "NorMonState/NorMonState_SitToIdle.h"
 #include "NorMonState/NorMonState_Farry.h"
-#include "NorMonState/NorMonState_Fidget.h"
 #include "NorMonState/NorMonState_GroggyEnd.h"
 #include "NorMonState/NorMonState_GroggyLoop.h"
 #include "NorMonState/NorMonState_GroggyStart.h"

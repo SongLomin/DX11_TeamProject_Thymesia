@@ -346,9 +346,6 @@
     <ClInclude Include="..\Public\NorMonster.h">
       <Filter>02. GameObject\03. Actor\00. Character\01. Monster\00.NorMonster</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\NorMonState\NorMonState_DorMant.h">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\00.DorMant</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\NorMonState\NorMonState_Awake.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\01.Awake</Filter>
     </ClInclude>
@@ -357,9 +354,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\NorMonState\NorMonState_Farry.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\29.Farry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\NorMonState\NorMonState_Fidget.h">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Fidget</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_FR.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\23.Walk_FR</Filter>
@@ -424,9 +418,6 @@
     <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_BR.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\28.Walk_BR</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_FL.h">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\22.Walk_FL</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_R.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\25.Walk_R</Filter>
     </ClInclude>
@@ -435,6 +426,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_L.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\24.Walk_L</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_SitToIdle.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\00.SitToIdle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_FL.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\22.Walk_FL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -757,9 +754,6 @@
     <ClCompile Include="..\Private\NorMonster.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\01. Monster\00.NorMonster</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\NorMonState\NorMonState_DorMant.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\00.DorMant</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\NorMonState\NorMonState_Awake.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\01.Awake</Filter>
     </ClCompile>
@@ -768,9 +762,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\NorMonState\NorMonState_Farry.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\29.Farry</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\NorMonState\NorMonState_Fidget.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Fidget</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_FR.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\23.Walk_FR</Filter>
@@ -846,6 +837,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_L.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\24.Walk_L</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_SitToIdle.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\00.SitToIdle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1280,9 +1274,6 @@
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState">
       <UniqueIdentifier>{450abe37-42c4-4e3e-b5ba-decab0b5b0c7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\00.DorMant">
-      <UniqueIdentifier>{c951e64e-32c4-4d0e-9ab7-cd2cddafc681}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\01.Awake">
       <UniqueIdentifier>{070c0955-b050-42cc-a0fc-4b7dd12312aa}</UniqueIdentifier>
     </Filter>
@@ -1369,6 +1360,9 @@
     </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\18.GroggyEnd">
       <UniqueIdentifier>{24fe74f1-5891-4e0a-b64f-c168db6576ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\00.SitToIdle">
+      <UniqueIdentifier>{c951e64e-32c4-4d0e-9ab7-cd2cddafc681}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

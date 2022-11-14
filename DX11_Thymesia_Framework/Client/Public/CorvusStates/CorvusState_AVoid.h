@@ -21,6 +21,10 @@ protected:
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
 
+
+private:
+    void Check_InputAgainAvoid();
+
 protected:
     virtual void OnDisable() override;
 
@@ -29,15 +33,22 @@ protected:
 
 public:
     void Call_AnimationEnd();
+    void Play_AttackWithIndex(const _tchar& In_iAttackIndex);
 
 private:
     _uint m_iDustEffectIndex;
+    _uint m_iAvoidIndex = 6;
 
+    _float m_fDebugAnimationSpeed = 1.f;
+
+    _bool m_IsAgainAvoid = false;
 protected:
     void Free();
 
     // CLuxiyaStateBase을(를) 통해 상속됨
     virtual _bool Check_AndChangeNextState() override;
+    _bool Check_RuquireMnetRepeatAvoidkState();
+ 
 
 };
 
