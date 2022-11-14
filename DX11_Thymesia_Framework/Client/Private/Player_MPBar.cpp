@@ -19,7 +19,7 @@ HRESULT CPlayer_MPBar::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	Set_UIPosition(250.f, 780.f, 300.f, 8.f);
+	Set_UIPosition(200.f, 830.f, 300.f, 8.f);
 
 	m_pBG = GAMEINSTANCE->Add_GameObject<CPlayer_ProgressBar>(LEVEL_STATIC);
 	m_pBG.lock()->Get_Component<CTexture>().lock()->Use_Texture("Player_MPBar_BG");
@@ -51,8 +51,7 @@ HRESULT CPlayer_MPBar::Initialize(void* pArg)
 	m_tTextInfo.fRotation = 0.f;
 	m_tTextInfo.vColor = _float4(0.7f, 0.7f, 0.7f, 0.7f);
 	m_tTextInfo.vScale = _float2(0.5, 0.5f);
-	m_tTextInfo.vPosition = _float2(300.f + 200.f + 20.f, m_tUIDesc.fY - 10.f);
-
+	m_tTextInfo.vPosition = _float2(m_tUIDesc.fX + m_tUIDesc.fSizeX * 0.5f + 20.f, m_tUIDesc.fY - 10.f);
 
 	m_eRenderGroup = RENDERGROUP::RENDER_UI;
 	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));

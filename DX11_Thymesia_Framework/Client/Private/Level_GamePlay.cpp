@@ -7,8 +7,8 @@
 #include "Fader.h"
 #include <UI_Landing.h>
 #include "Static_Instancing_Prop.h"
-
-
+#include "HUD_PlagueWeapon.h"
+#include "HUD_PlagueWeapon_Steal.h"
 CLevel_GamePlay::CLevel_GamePlay()
 	//: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
@@ -47,14 +47,15 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	//GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_GAMEPLAY);
 
-	GET_SINGLE(CGameManager)->Register_Player_HPBar
-	(GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
+	GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC);
 
-	GET_SINGLE(CGameManager)->Register_Player_MPBar
-	(GAMEINSTANCE->Add_GameObject<CPlayer_MPBar>(LEVEL_STATIC));
+	GAMEINSTANCE->Add_GameObject<CPlayer_MPBar>(LEVEL_STATIC);
 
-	GET_SINGLE(CGameManager)->Register_Player_Memory
-	(GAMEINSTANCE->Add_GameObject<CPlayer_Memory>(LEVEL_STATIC));
+	GAMEINSTANCE->Add_GameObject<CPlayer_Memory>(LEVEL_STATIC);
+	GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon>(LEVEL_STATIC);
+	GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon_Steal>(LEVEL_STATIC);
+
+
 
 	weak_ptr<CPreViewAnimationModel> pPreviewModel = GAMEINSTANCE->Add_GameObject<CPreViewAnimationModel>(LEVEL_GAMEPLAY);
 	pPreviewModel.lock()->Init_EditPreViewAnimationModel("Corvus");
@@ -63,11 +64,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	pPreviewModel.lock()->Play_Animation(0.01f);
 	pPreviewModel.lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(10.f, 0.f, 10.f, 0.f));
 
-	GET_SINGLE(CGameManager)->Register_Player_HUD_Potion(
-		GAMEINSTANCE->Add_GameObject<CPlayer_PotionUI>(LEVEL_STATIC));
+	GAMEINSTANCE->Add_GameObject<CPlayer_PotionUI>(LEVEL_STATIC);
 
-	GET_SINGLE(CGameManager)->Register_Player_HUD_Feather(
-		GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
+	GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC);
 
 	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);
 	

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+#include "GameInstance.h"
 #include "EditGround.h"
 #include "SMath.h"
 
@@ -900,9 +901,8 @@ void CEditGround::Bake_FilterTexture()
 
 	wstring szTexturePath = TEXT("../Bin/GroundInfo/Filter/") + wstring(szFullTag) + TEXT(".dds");
 
-	if (FAILED(SaveDDSTextureToFile(DEVICECONTEXT, m_pTexture2D.Get(), szTexturePath.c_str())))
-		return;
-
+	SaveDDSTextureToFile(DEVICECONTEXT, m_pTexture2D.Get(), szTexturePath.c_str());
+	
 	string szBinFilePath = "../Bin/GroundInfo/Filter_SubInfo/" + m_szSaveTextureTag + ".bin";
 
 	ofstream os(szBinFilePath, ios::binary);

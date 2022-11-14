@@ -352,6 +352,10 @@
     <ClInclude Include="..\Public\Player.h">
       <Filter>02. GameObject\03. Actor\00. Character\00.Player</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\HUD_PlagueWeapon.h">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -679,6 +683,10 @@
     <ClCompile Include="..\Private\Player.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\00.Player</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\HUD_PlagueWeapon.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1096,6 +1104,9 @@
     </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon\01.Corvus_DefaultDagger">
       <UniqueIdentifier>{e8d262bf-d13f-4a53-886f-7946a0308b0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon">
+      <UniqueIdentifier>{a0c92589-e6a5-472c-8c75-63ded80afeec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

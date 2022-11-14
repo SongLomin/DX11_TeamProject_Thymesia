@@ -24,7 +24,8 @@ HRESULT CPlayer_PotionUI::Initialize(void* pArg)
         memcpy(&m_tUIDesc, pArg, sizeof(UI_DESC));
     else
     {
-        Set_UIPosition(1260.f, 785.f, 40.f, 40.f);
+        //+ 20,20,10,10
+        Set_UIPosition(1230.f, 765.f, 50.f, 50.f);
         m_tUIDesc.fDepth = 0.f;
     }
     m_iMaxPotion = 0;
@@ -46,7 +47,7 @@ HRESULT CPlayer_PotionUI::Initialize(void* pArg)
 
     m_pFontBG = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &m_tUIDesc);
     m_pFontBG.lock()->Get_Component<CTexture>().lock()->Use_Texture("HUD_Font_BG");
-    m_pFontBG.lock()->Set_UIPosition(m_tUIDesc.fX + 40.f, m_tUIDesc.fY , 80.f, 28.f);
+    m_pFontBG.lock()->Set_UIPosition(m_tUIDesc.fX + m_tUIDesc.fSizeX, m_tUIDesc.fY , 80.f, 28.f);
     m_pFontBG.lock()->Set_Depth(0.1f);
 
     GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
@@ -61,14 +62,14 @@ HRESULT CPlayer_PotionUI::Initialize(void* pArg)
    m_tCurrentPotionTextInfo.fRotation = 0.f;
    m_tCurrentPotionTextInfo.vColor = _float4(0.7f, 0.7f, 0.7f, 1.f);
    m_tCurrentPotionTextInfo.vScale = _float2(0.5, 0.5f);
-   m_tCurrentPotionTextInfo.vPosition = _float2(m_tUIDesc.fX + 20.f, m_tUIDesc.fY - 10.f);
+   m_tCurrentPotionTextInfo.vPosition = _float2(m_tUIDesc.fX + 25.f, m_tUIDesc.fY - 10.f);
 
    m_tMaxPotionTextInfo.bAlways = false;
    m_tMaxPotionTextInfo.bCenterAlign = false;
    m_tMaxPotionTextInfo.fRotation = 0.f;
    m_tMaxPotionTextInfo.vColor = _float4(0.7f, 0.7f, 0.7f, 1.f);
    m_tMaxPotionTextInfo.vScale = _float2(0.5, 0.5f);
-   m_tMaxPotionTextInfo.vPosition = _float2(m_tUIDesc.fX + 40.f, m_tUIDesc.fY - 10.f);
+   m_tMaxPotionTextInfo.vPosition = _float2(m_tUIDesc.fX + 45.f, m_tUIDesc.fY - 10.f);
 
     return S_OK;
 }

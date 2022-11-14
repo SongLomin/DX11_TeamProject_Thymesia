@@ -21,7 +21,7 @@ HRESULT CPlayer_HPBar::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	Set_UIPosition(300.f, 750.f, 400.f , 15.f);
+	Set_UIPosition(250.f, 800.f, 400.f , 15.f);
 
 	m_pBG = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
 	m_pBG.lock()->Get_Component<CTexture>().lock()->Use_Texture("Player_HPBar_BG");

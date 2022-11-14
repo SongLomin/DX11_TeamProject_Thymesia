@@ -24,6 +24,8 @@ public:
 
 	void Call_FadeEnd();
 
+public:
+	void			SetUp_LoadingUI(LEVEL eLevel);
 
 public:
 	void			Set_Complete();
