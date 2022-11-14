@@ -55,6 +55,9 @@ void CNorMonState_Walk_R::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+	if(m_bAttackLookAtLimit)
+	Turn_ToThePlayer(fTimeDelta);
+
 	Check_AndChangeNextState();
 }
 
@@ -70,14 +73,16 @@ void CNorMonState_Walk_R::OnStateStart(const _float& In_fAnimationBlendTime)
 	cout << "LuxiyaState: RunStart -> OnStateStart" << endl;
 #endif
 
+	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 
+	m_bAttackLookAtLimit = true;
 }
 
 void CNorMonState_Walk_R::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 
@@ -107,6 +112,10 @@ _bool CNorMonState_Walk_R::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
+	{
+		m_bAttackLookAtLimit = false;
+	}
 
 	return false;
 

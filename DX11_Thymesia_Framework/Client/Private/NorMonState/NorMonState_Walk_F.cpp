@@ -57,6 +57,9 @@ void CNorMonState_Walk_F::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+	
+	Turn_ToThePlayer(fTimeDelta);
+
 	Check_AndChangeNextState();
 }
 
@@ -72,14 +75,16 @@ void CNorMonState_Walk_F::OnStateStart(const _float& In_fAnimationBlendTime)
 	cout << "LuxiyaState: RunStart -> OnStateStart" << endl;
 #endif
 
+	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 
+	
 }
 
 void CNorMonState_Walk_F::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 
