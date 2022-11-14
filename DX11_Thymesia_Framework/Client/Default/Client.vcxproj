@@ -226,7 +226,7 @@
     <ClInclude Include="..\Public\Dynamic_Prop.h" />
     <ClInclude Include="..\Public\CustomUI.h" />
     <ClInclude Include="..\Public\EditGround.h" />
-    <ClInclude Include="..\Public\EditMapTool.h" />
+    <ClInclude Include="..\Public\EditGroupProp.h" />
     <ClInclude Include="..\Public\EditNaviMesh.h" />
     <ClInclude Include="..\Public\EffectMesh.h" />
     <ClInclude Include="..\Public\EffectGroup.h" />
@@ -347,7 +347,7 @@
     <ClCompile Include="..\Private\Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\CustomUI.cpp" />
     <ClCompile Include="..\Private\EditGround.cpp" />
-    <ClCompile Include="..\Private\EditMapTool.cpp" />
+    <ClCompile Include="..\Private\EditGroupProp.cpp" />
     <ClCompile Include="..\Private\EditNaviMesh.cpp" />
     <ClCompile Include="..\Private\EffectMesh.cpp" />
     <ClCompile Include="..\Private\EffectGroup.cpp" />

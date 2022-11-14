@@ -28,6 +28,11 @@ public:
     void Bake_Binary(ofstream& os);
     void Load_FromBinary(ifstream& is);
 
+private:
+    void Bake_MeshInfo(_float3 _vMaxPos, _float3 _vMinPos, _float3 _vCenterPos);
+
+    void Check_Position(_float3& _vRecodePosion, _float3 _vValue, _bool(*_pFncPtr)(_float, _float));
+    void Compute_Center(_float3 _vMaxPos, _float3 _vMinPos, _float3& _vCenterOut);
 };
 
 END
