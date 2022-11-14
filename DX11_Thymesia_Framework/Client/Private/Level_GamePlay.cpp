@@ -77,20 +77,10 @@ HRESULT CLevel_GamePlay::Initialize()
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 	// GAMEINSTANCE->Add_GameObject<CGround>(LEVEL_GAMEPLAY);
 
+	//GAMEINSTANCE->Add_GameObject<CDubian>(LEVEL::LEVEL_GAMEPLAY).lock()->Set_Enable(false);
+	//GAMEINSTANCE->Add_GameObject<CBianka>(LEVEL::LEVEL_GAMEPLAY).lock()->Set_Enable(false);
 
-	FaderDesc tFaderDesc;
-	tFaderDesc.eFaderType = FADER_TYPE::FADER_IN;
-	tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
-	tFaderDesc.fFadeMaxTime = 3.f;
-	tFaderDesc.fDelayTime = 0.5f;
-	tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 0.f);
-
-	m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
-
-	m_iMonsterCount = 0;
-
-	GAMEINSTANCE->Add_GameObject<CStatic_Prop>(LEVEL_GAMEPLAY);
-	
+	//GAMEINSTANCE->Add_GameObject<CStage1>(LEVEL::LEVEL_GAMEPLAY);
 	
 	
 	
@@ -105,6 +95,19 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);		
 
+	if (!m_bFadeTrigger)
+	{
+		FaderDesc tFaderDesc;
+		tFaderDesc.eFaderType = FADER_TYPE::FADER_IN;
+		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+		tFaderDesc.fFadeMaxTime = 3.f;
+		tFaderDesc.fDelayTime = 0.f;
+		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 0.f);
+
+		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+
+		m_bFadeTrigger = true;
+	}
 	/*if (m_bChangeNextLevel)
 	{
 		m_bChangeNextLevel = false;

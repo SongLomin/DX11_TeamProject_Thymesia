@@ -22,15 +22,26 @@ public:
 
 	virtual HRESULT Render() { return S_OK; }
 
+	void Call_FadeEnd();
+
+
+public:
+	void			Set_Complete();
+	_bool			Get_Finish();
+
 protected:
 	virtual HRESULT SetUp_ShaderResource() { return S_OK; }
 
 private:
 	weak_ptr<CCustomUI>		m_pLoadingBG;
 	weak_ptr<CHUD_Hover>	m_pIcon;
+	weak_ptr<CHUD_Hover>	m_pLoadComplete;
+
+
 
 private:
-	_float					m_fRatio;
+	_bool					m_bLoadComplete;
+	_bool					m_bCallFadeOut;
 
 public:
 	void Free();
