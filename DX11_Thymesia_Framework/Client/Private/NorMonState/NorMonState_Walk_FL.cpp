@@ -50,7 +50,7 @@ void CNorMonState_Walk_FL::Tick(_float fTimeDelta)
 	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
-	m_pTransformCom.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta, m_pNaviCom);
+	m_pTransformCom.lock()->Add_PositionWithRotation(XMVectorSet(m_fCurrentSpeed * fTimeDelta, 0.f, -m_fCurrentSpeed * fTimeDelta, 1.f), m_pNaviCom);
 }
 
 void CNorMonState_Walk_FL::LateTick(_float fTimeDelta)
@@ -89,7 +89,7 @@ void CNorMonState_Walk_FL::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	m_eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
+	
 	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
 }
 

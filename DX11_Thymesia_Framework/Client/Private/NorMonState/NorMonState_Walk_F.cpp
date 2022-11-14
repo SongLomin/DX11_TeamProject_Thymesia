@@ -89,7 +89,7 @@ void CNorMonState_Walk_F::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	m_eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
+	
 	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
 }
 

@@ -103,7 +103,6 @@ void CNorMonState_LightAttack1::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	m_eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
 	Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack2>(0.05f);
 }
 

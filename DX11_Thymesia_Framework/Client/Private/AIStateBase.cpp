@@ -77,7 +77,7 @@ _bool CAIStateBase::Check_RequirementCoolDown(weak_ptr<CAIStateBase> pTargetStat
 
 shared_ptr<CMonster> CAIStateBase::Get_OwnerMonster() const noexcept
 {
-	return shared_ptr<CMonster>();
+	return m_pOwnerFromMonster.lock();
 }
 
 _bool CAIStateBase::Check_Requirement()
@@ -244,8 +244,9 @@ void CAIStateBase::TurnMechanism()
 	}
 	else
 	{
+		
 		_vector vPlayerPosition = pCurrentPlayer.lock()->Get_WorldPosition();
-		m_pTransformCom.lock()->LookAt(vPlayerPosition);
+		m_pTransformCom.lock()->LookAt2D(vPlayerPosition);
 	}
 }
 

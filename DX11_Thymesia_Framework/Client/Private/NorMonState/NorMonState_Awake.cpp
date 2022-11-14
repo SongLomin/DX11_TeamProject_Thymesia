@@ -90,7 +90,7 @@ void CNorMonState_Awake::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 	
-	m_eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
+	Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_MonIdleType(NORMONSTERIDLETYPE::NORIDLE);
 	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
 }
 
