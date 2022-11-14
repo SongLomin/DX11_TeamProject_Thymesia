@@ -144,6 +144,8 @@ void CCustomEffectMesh::SetUp_ShaderResource()
 	m_pShaderCom.lock()->Set_RawValue("g_vColor", &m_vCurrentColor, sizeof(_float4));
 
 	m_pShaderCom.lock()->Set_RawValue("g_fDiscardRatio", &m_tEffectMeshDesc.fDiscardRatio, sizeof(_float));
+
+	m_pShaderCom.lock()->Set_RawValue("g_bWrapOption", &m_tEffectMeshDesc.bWrapOption, sizeof(_bool) * 4);
 	m_pShaderCom.lock()->Set_RawValue("g_vWrapWeight", &m_tEffectMeshDesc.vWrapWeight, sizeof(_float4));
 	//m_pGradientTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_GradientTexture", 0);
 
@@ -243,10 +245,6 @@ void CCustomEffectMesh::Reset_Effect()
 
 	m_fPreFrame = 0.f;
 
-
-	//½ÃÀÛ ·ÎÅ×ÀÌ¼Ç
-	//½ÃÀÛ ½ºÄÉÀÏ
-	//½ÃÀÛ ÄÃ·¯
 	m_pTransformCom.lock()->Set_Scaled(m_vCurrentScale);
 	_vector StartRotation = XMLoadFloat3(&m_vCurrentRotation);
 	_vector Quaternion = XMQuaternionRotationRollPitchYaw(StartRotation.m128_f32[0], StartRotation.m128_f32[1], StartRotation.m128_f32[2]);
@@ -585,14 +583,12 @@ void CCustomEffectMesh::Apply_ImGui_Controls_to_Mesh()
 
 void CCustomEffectMesh::Play_Internal(_float fFrameTime)
 {
-	// ÀÌµ¿ ¼¼ÆÃ
 	m_vCurrentSpeed = SMath::Mul_Float3(m_tEffectMeshDesc.vSpeed, fFrameTime);
 	m_vCurrentForce = SMath::Add_Float3(m_vCurrentForce, SMath::Mul_Float3(m_tEffectMeshDesc.vForce, fFrameTime));
 
 	_vector vMovePosition = XMLoadFloat3(&m_vCurrentSpeed) + XMLoadFloat3(&m_vCurrentForce);
 	_vector vAbsolutePosition = vMovePosition / fFrameTime;
 
-	// ÃÖ´ë°ª Á¦ÇÑ
 	vAbsolutePosition.m128_f32[0] = min(m_tEffectMeshDesc.vMaxSpeed.x, vAbsolutePosition.m128_f32[0]);
 	vAbsolutePosition.m128_f32[1] = min(m_tEffectMeshDesc.vMaxSpeed.y, vAbsolutePosition.m128_f32[1]);
 	vAbsolutePosition.m128_f32[2] = min(m_tEffectMeshDesc.vMaxSpeed.z, vAbsolutePosition.m128_f32[2]);
@@ -628,7 +624,6 @@ void CCustomEffectMesh::Play_Internal(_float fFrameTime)
 	_vector vCurrentScale = XMLoadFloat3(&m_vCurrentScale);
 	vCurrentScale += vMoveScale;
 
-	// ÃÖ´ë°ª Á¦ÇÑ
 	vCurrentScale.m128_f32[0] = max(0.00001f, min(m_tEffectMeshDesc.vMaxScale.x, vCurrentScale.m128_f32[0]));
 	vCurrentScale.m128_f32[1] = max(0.00001f, min(m_tEffectMeshDesc.vMaxScale.y, vCurrentScale.m128_f32[1]));
 	vCurrentScale.m128_f32[2] = max(0.00001f, min(m_tEffectMeshDesc.vMaxScale.z, vCurrentScale.m128_f32[2]));
@@ -714,13 +709,13 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			{
 				ImGui::Separator();
 				ImGui::Text("Control Keys");
-				ImGui::Text("NumPad 8 : move forward"); ImGui::SameLine();
-				ImGui::Text("NumPad 2 : move backward");
-				ImGui::Text("NumPad 4 : move leftward"); ImGui::SameLine();
+				ImGui::Text("NumPad 8 : move  forward"); ImGui::SameLine();
+				ImGui::Text("NumPad 2 : move  backward");
+				ImGui::Text("NumPad 4 : move  leftward"); ImGui::SameLine();
 				ImGui::Text("NumPad 6 : move rightward");
-				ImGui::Text("NumPad 1 : move down"); ImGui::SameLine();
-				ImGui::Text("NumPad 3 : move up");
-				ImGui::Text("Hold LShift to move by World Axis");
+				ImGui::Text("NumPad 1 : move      down"); ImGui::SameLine();
+				ImGui::Text("NumPad 3 : move        up");
+				ImGui::Text("! Hold LShift to move by World Axis !");
 				ImGui::Separator();
 				ImGui::Separator();
 
@@ -826,12 +821,26 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::DragInt("UV Mask Index", &m_tEffectMeshDesc.iUVMaskIndex, 1, 0);
 			ImGui::DragInt("UV Noise Index", &m_tEffectMeshDesc.iUVNoiseIndex, 1, 0);
 
-			ImGui::Text("Dynamic Noise Option");
+			ImGui::Text("Dynamic Noise Option"); ImGui::SameLine();
 			ImGui::Checkbox("##Dynamic Noise Option", &m_tEffectMeshDesc.bDynamicNoiseOption);
 
+			ImGui::Separator();
+
+			ImGui::Text("Checked : Wrap | Unchecked : Clamp");
+			ImGui::Text("Diffuse"); ImGui::SameLine();
+			ImGui::Checkbox("##WrapOption_Diffuse", &m_tEffectMeshDesc.bWrapOption[0]); ImGui::SameLine();
+			ImGui::Text("| Noise"); ImGui::SameLine();
+			ImGui::Checkbox("##WrapOption_Noise", &m_tEffectMeshDesc.bWrapOption[1]); ImGui::SameLine();
+			ImGui::Text("| Mask"); ImGui::SameLine();
+			ImGui::Checkbox("##WrapOption_Mask", &m_tEffectMeshDesc.bWrapOption[2]);
+
+			ImGui::Separator();
+
 			ImGui::Text("Texture Wrap Weight");
-			ImGui::Text("x : Diffuse | y : Mask | z : Noise");
+			ImGui::Text("x : Diffuse | y : Noise | z : Mask");
 			ImGui::DragFloat4("##Texture Wrap Weight", &m_tEffectMeshDesc.vWrapWeight.x, 0.01f);
+
+			ImGui::Separator();
 
 			ImGui::Text("UV Speed");
 			ImGui::DragFloat2("##UV Speed", &m_tEffectMeshDesc.vUVSpeed.x, 0.01f);
@@ -843,16 +852,13 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::DragFloat2("##UV Max", &m_tEffectMeshDesc.vUVMax.x, 0.01f);
 			ImGui::Separator();
 
-			ImGui::Text("Distortion");
-			ImGui::SameLine();
-			ImGui::Checkbox("##Distortion", &m_tEffectMeshDesc.bDistortion);
+			ImGui::Text("Distortion"); ImGui::SameLine();
+			ImGui::Checkbox("##Distortion", &m_tEffectMeshDesc.bDistortion); ImGui::SameLine();
 
-			ImGui::Text("Bloom");
-			ImGui::SameLine();
-			ImGui::Checkbox("##Bloom", &m_tEffectMeshDesc.bBloom);
+			ImGui::Text("Bloom"); ImGui::SameLine();
+			ImGui::Checkbox("##Bloom", &m_tEffectMeshDesc.bBloom); ImGui::SameLine();
 
-			ImGui::Text("Glow");
-			ImGui::SameLine();
+			ImGui::Text("Glow"); ImGui::SameLine();
 			ImGui::Checkbox("##Glow", &m_tEffectMeshDesc.bGlow);
 
 			ImGui::Text("Start Glow Color");
@@ -867,11 +873,9 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 			ImGui::Separator();
 			ImGui::Text("Shader Pass");
-			ImGui::Text("2 : NoneDiffuseEffect_UVWrap");
-			ImGui::Text("3 : NoneDiffuseEffect_UVClamp");
-			ImGui::Text("4 : PerfectCustom");
-			ImGui::Text("5 : Distortion_UVWrap");
-			ImGui::Text("6 : Distortion_UVClamp");
+			ImGui::Text("0 : Default");
+			ImGui::Text("1 : Distortion");
+			ImGui::Text("2 : Soft");
 			ImGui::InputInt("##Shader_Pass_Index", &m_tEffectMeshDesc.iShaderPassIndex);
 			ImGui::Separator();
 

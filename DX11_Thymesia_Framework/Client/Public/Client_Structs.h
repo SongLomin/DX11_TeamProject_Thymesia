@@ -68,6 +68,7 @@ namespace Client
 		/**
 		* x : Diffuse | y : Mask | z : Noise | w : None
 		*/
+		_bool		bWrapOption[4];
 		_float4		vWrapWeight;
 
 		_float2		vStartUV;

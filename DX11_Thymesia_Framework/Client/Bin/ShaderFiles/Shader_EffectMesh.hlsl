@@ -1,23 +1,22 @@
-#include "Client_Shader_Defines.hpp"
+ #include "Client_Shader_Defines.hpp"
 
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 vector g_vCamDirection;
 
 texture2D g_DiffuseTexture;
-texture2D g_DepthTexture;
-texture2D g_MaskTexture;
 texture2D g_NoiseTexture;
+texture2D g_MaskTexture;
 
+texture2D g_DepthTexture;
 // TODO :  bDynamicNoiseOption temporary for test
 bool g_bDynamicNoiseOption;
 
 /**
-* Wrap Weight
-*  x : Diff, y : Mask, z : Noise, w : None
+* Wrap Weight for Textures
+*  x : Diff, y : Noise, z : Mask, w : None
 */
+bool g_bWrapOption[4]; // can be changed to multiple passes
 vector g_vWrapWeight;
-
-// texture2D g_GradientTexture;
 
 float g_fDiscardRatio;
 
@@ -29,8 +28,9 @@ bool g_bBloom;
 bool g_bGlow;
 float4 g_vGlowColor;
 
-bool g_bDiffuseMap;
 bool g_bBillboard;
+
+// Vertex Shaders //
 
 struct VS_IN
 {
@@ -42,6 +42,13 @@ struct VS_OUT
 {
     float4 vPosition : SV_POSITION;
     float2 vTexUV : TEXCOORD0;
+};
+
+struct VS_OUT_SOFT
+{
+    float4 vPosition : SV_POSITION;
+    float2 vTexUV : TEXCOORD0;
+    float4 vProjPos : TEXCOORD1;
 };
 
 VS_OUT VS_MAIN(VS_IN In)
@@ -72,67 +79,6 @@ VS_OUT VS_MAIN(VS_IN In)
     return Out;
 }
 
-// w나누기연산을 수행하낟. (In 투영스페이스)
-// 뷰포트 변환. (In 뷰포트(윈도우좌표))
-
-// 래스터라이즈(픽셀정볼르 생성한다. )
-
-struct PS_IN
-{
-    float4 vPosition : SV_POSITION;
-    float2 vTexUV : TEXCOORD0;
-};
-
-struct PS_OUT
-{
-    vector vColor : SV_TARGET0;
-    vector vExtractBloom : SV_Target1;
-    vector vExtractGlow : SV_Target2;
-};
-
-struct PS_OUT_DISTORTION
-{
-    vector vColor : SV_TARGET0;
-};
-
-PS_OUT PS_MAIN(PS_IN In)
-{
-    PS_OUT Out = (PS_OUT) 0;
-
-    
-    Out.vColor = g_vColor;
-    
-    if (g_bDiffuseMap)
-    {
-        Out.vColor *= g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-    }
-    
-
-    Out.vColor.a = Out.vColor.a;
-	
-    if (g_bBloom)
-    {
-        Out.vExtractBloom = Out.vColor;
-    }
-    
-    if (g_bGlow)
-    {
-        Out.vExtractGlow = g_vGlowColor;
-    }
-    
-    if (Out.vColor.a < 0.1f)
-        discard;
-
-    return Out;
-}
-
-struct VS_OUT_SOFT
-{
-    float4 vPosition : SV_POSITION;
-    float2 vTexUV : TEXCOORD0;
-    float4 vProjPos : TEXCOORD1;
-};
-
 VS_OUT_SOFT VS_MAIN_SOFT(VS_IN In)
 {
     VS_OUT_SOFT Out = (VS_OUT_SOFT) 0;
@@ -148,12 +94,31 @@ VS_OUT_SOFT VS_MAIN_SOFT(VS_IN In)
 
     return Out;
 }
+//  Vertex Shaders  //
+//  Pixel  Shaders  //
+struct PS_IN
+{
+    float4 vPosition : SV_POSITION;
+    float2 vTexUV : TEXCOORD0;
+};
 
 struct PS_IN_SOFT
 {
     float4 vPosition : SV_POSITION;
     float2 vTexUV : TEXCOORD0;
     float4 vProjPos : TEXCOORD1;
+};
+
+struct PS_OUT
+{
+    vector vColor : SV_TARGET0;
+    vector vExtractBloom : SV_Target1;
+    vector vExtractGlow : SV_Target2;
+};
+
+struct PS_OUT_DISTORTION
+{
+    vector vColor : SV_TARGET0;
 };
 
 PS_OUT PS_MAIN_SOFT(PS_IN_SOFT In)
@@ -163,12 +128,10 @@ PS_OUT PS_MAIN_SOFT(PS_IN_SOFT In)
     Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
     float2 vTexUV;
-
-	/* -1, 1 => 1, -1 : 투영공간상의 위치. */
+    
     vTexUV.x = In.vProjPos.x / In.vProjPos.w;
     vTexUV.y = In.vProjPos.y / In.vProjPos.w;
-
-	/* 0, 0 => 1, 1 : 텍스쳐 유브이 좌표. */
+    
     vTexUV.x = vTexUV.x * 0.5f + 0.5f;
     vTexUV.y = vTexUV.y * -0.5f + 0.5f;
 
@@ -191,78 +154,36 @@ PS_OUT PS_MAIN_SOFT(PS_IN_SOFT In)
 
 }
 
-PS_OUT PS_MAIN_NONE_DIFFUSE(PS_IN In)
+PS_OUT PS_DEFAULT(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
     
-    Out.vColor = g_vColor;
+    if (g_bWrapOption[0])
+        Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.x + g_vUV);
+    else
+        Out.vColor = g_DiffuseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.x + g_vUV);
     
-    if (g_bDiffuseMap)
-    {
-        Out.vColor *= g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV + g_vUV);
-    }
-   
-    vector MaskColor = g_MaskTexture.Sample(DefaultSampler, In.vTexUV + g_vUV);
+    vector vNoise = (vector) 0;
+    if (g_bWrapOption[1])
+        vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUV);
+    else
+        vNoise = g_NoiseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUV);
     
-    Out.vColor.a *= MaskColor.r;
-	
-    if (Out.vColor.a < g_fDiscardRatio)
-        discard;
-    
-    if (g_bBloom)
-        Out.vExtractBloom = Out.vColor;
-    
-    if (g_bGlow)
-        Out.vExtractGlow = g_vGlowColor;
-
-    return Out;
-}
-
-PS_OUT PS_MAIN_NONE_DIFFUSE_CLAMP(PS_IN In)
-{
-    PS_OUT Out = (PS_OUT) 0;
-    
-    Out.vColor = g_vColor;
-    
-    if (g_bDiffuseMap)
-    {
-        Out.vColor *= g_DiffuseTexture.Sample(ClampSampler, In.vTexUV + g_vUV);
-    }
-    
-    vector MaskColor = g_MaskTexture.Sample(ClampSampler, In.vTexUV + g_vUV);
-    
-    Out.vColor.a *= MaskColor.r;
-	
-    if (Out.vColor.a < g_fDiscardRatio)
-        discard;
-
-    if (g_bBloom)
-        Out.vExtractBloom = Out.vColor;
-    
-    if (g_bGlow)
-        Out.vExtractGlow = g_vGlowColor;
-    
-    return Out;
-}
-
-PS_OUT PS_DIFF_MASK_NOISE(PS_IN In)
-{
-    PS_OUT Out = (PS_OUT) 0;
-    Out.vColor = g_vColor /*g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.x + g_vUV)*/;
-    vector vMaskWeight = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUV);
-    vector vNoiseWeight = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.z + g_vUV);
+    vector vMask = (vector) 0;
+    if (g_bWrapOption[2])
+        vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.z + g_vUV);
+    else
+        vMask = g_MaskTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.z + g_vUV);
     
     // (0, +1) => (-1, +1)
     if (g_bDynamicNoiseOption)
-        vNoiseWeight.rgb = vNoiseWeight.rgb * 2 - 1;
+        vNoise.rgb = vNoise.rgb * 2 - 1;
     
-    // Out.vColor *= g_vColor;
+    Out.vColor *= g_vColor;
+    Out.vColor.rgb *= vNoise.rgb;
+    Out.vColor.a *= vMask.r;
     
-    Out.vColor.rgb *= vNoiseWeight.rgb;
-   
-    Out.vColor.a *= vMaskWeight.r;
-    
-    if (Out.vColor.a < g_fDiscardRatio)
+    if (g_fDiscardRatio > Out.vColor.a)
         discard;
     
     if (g_bBloom)
@@ -270,42 +191,34 @@ PS_OUT PS_DIFF_MASK_NOISE(PS_IN In)
     
     if (g_bGlow)
         Out.vExtractGlow = g_vGlowColor;
-
+    
     return Out;
 }
 
 PS_OUT_DISTORTION PS_DISTORTION(PS_IN In)
 {
-    PS_OUT_DISTORTION Out = (PS_OUT_DISTORTION)0;
-    
-    Out.vColor = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUV);
-    vector vMaskWeight = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUV);
-    
-    Out.vColor *= g_vColor;
-    Out.vColor.a *= vMaskWeight.r;
-  
-    if (Out.vColor.a < g_fDiscardRatio)
-        discard;
-    
-    return Out;
-}
-
-PS_OUT_DISTORTION PS_DISTORTION_Clamp(PS_IN In)
-{
     PS_OUT_DISTORTION Out = (PS_OUT_DISTORTION) 0;
     
-    Out.vColor = g_NoiseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUV);
-    vector vMaskWeight = g_MaskTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUV);
+    if (g_bWrapOption[1])
+        Out.vColor = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUV);
+    else
+        Out.vColor = g_NoiseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUV);
+    
+    vector vMask;
+    if (g_bWrapOption[2])
+        vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.z + g_vUV);
+    else
+        vMask = g_MaskTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.z + g_vUV);
     
     Out.vColor *= g_vColor;
-    Out.vColor.a *= vMaskWeight.r;
+    Out.vColor.a *= vMask.r;
   
     if (Out.vColor.a < g_fDiscardRatio)
         discard;
     
     return Out;
 }
-
+//  Pixel  Shaders  //
 technique11 DefaultTechnique
 {
     pass Default // 0
@@ -313,12 +226,24 @@ technique11 DefaultTechnique
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_Default, 0);
         SetRasterizerState(RS_NonCulling);
-
+		
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN();
+        PixelShader = compile ps_5_0 PS_DEFAULT();
     }
-    pass SoftEffect // 1
+
+    pass Distortion // 1
+    {
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_NonCulling);
+		
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_DISTORTION();
+    }
+
+    pass SoftEffect // 2
     {
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_Default, 0);
@@ -327,60 +252,5 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN_SOFT();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_SOFT();
-    }
-    
-    pass NoneDiffuseEffect_UVDefault // 2
-    {
-        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_NonCulling);
-		
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_NONE_DIFFUSE();
-    }
-
-    pass NoneDiffuseEffect_UVClamp // 3
-    {
-        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_NonCulling);
-		
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_NONE_DIFFUSE_CLAMP();
-    }
-
-    pass PerfectCustom // 4
-    {
-        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_NonCulling);
-		
-        VertexShader = compile vs_5_0 VS_MAIN_SOFT();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_DIFF_MASK_NOISE();
-    }
-
-    pass Distortion //5
-    {
-        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_NonCulling);
-
-        VertexShader = compile vs_5_0 VS_MAIN_SOFT();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_DISTORTION();
-    }
-
-    pass Distortion_Clamp //6
-    {
-        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_NonCulling);
-
-        VertexShader = compile vs_5_0 VS_MAIN_SOFT();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_DISTORTION_Clamp();
     }
 }

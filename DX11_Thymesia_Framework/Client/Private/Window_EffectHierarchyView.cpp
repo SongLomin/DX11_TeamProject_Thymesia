@@ -166,6 +166,10 @@ void CWindow_EffectHierarchyView::Call_AddEffectMesh(const _char* In_szModelKey)
     EffectMeshDesc.vStartColor = { 1.f, 1.f, 1.f, 1.f };
     EffectMeshDesc.vMaxColor = { 1.f, 1.f, 1.f, 1.f };
 
+    EffectMeshDesc.bWrapOption[0] = true;
+    EffectMeshDesc.bWrapOption[1] = true;
+    EffectMeshDesc.bWrapOption[2] = true;
+    EffectMeshDesc.bWrapOption[3] = true;
     EffectMeshDesc.vWrapWeight = { 1.f, 1.f, 1.f, 1.f };
 
     EffectMeshDesc.vUVMax = { 1.f, 1.f };
