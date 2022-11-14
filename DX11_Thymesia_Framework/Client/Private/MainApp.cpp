@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Level_Loading.h"
 #include "GameManager.h"
+#include "FadeMask.h"
 
 
 

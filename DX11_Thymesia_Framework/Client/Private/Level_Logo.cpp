@@ -68,15 +68,6 @@ HRESULT CLevel_Logo::Render()
 	return S_OK;
 }
 
-HRESULT CLevel_Logo::Ready_Layer_BackGround(const _tchar * pLayerTag)
-{
-	/* For.BackGround */
-	//GAMEINSTANCE->Add_GameObject<CBackGround>(LEVEL_LOGO);
-	//GAMEINSTANCE->Add_GameObject<CFadeMask>(LEVEL_STATIC).lock()->Init_Fade(4.f, _float3(0.f, 0.f, 0.f), CFadeMask::FADE_TYPE::SIMPLEX_LNIEAR, true);
-
-	return S_OK;
-}
-
 void CLevel_Logo::OnLevelExit()
 {
 	FaderDesc tFaderDesc;

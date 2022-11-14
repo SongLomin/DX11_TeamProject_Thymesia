@@ -45,7 +45,7 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_GAMEPLAY);
 
-	GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_GAMEPLAY);
+	//GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_GAMEPLAY);
 
 	GET_SINGLE(CGameManager)->Register_Player_HPBar
 	(GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
@@ -73,15 +73,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	
 	GAMEINSTANCE->Add_GameObject<CStatic_Instancing_Prop>(LEVEL_GAMEPLAY);
 
-	Load_FromJson(m_szDefaultJsonPath + "Stage3.json", LEVEL_GAMEPLAY);
-
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
-	// GAMEINSTANCE->Add_GameObject<CGround>(LEVEL_GAMEPLAY);
 
-	//GAMEINSTANCE->Add_GameObject<CDubian>(LEVEL::LEVEL_GAMEPLAY).lock()->Set_Enable(false);
-	//GAMEINSTANCE->Add_GameObject<CBianka>(LEVEL::LEVEL_GAMEPLAY).lock()->Set_Enable(false);
-
-	GAMEINSTANCE->Add_GameObject<CStage1>(LEVEL::LEVEL_GAMEPLAY);
+	//GAMEINSTANCE->Add_GameObject<CStage1>(LEVEL::LEVEL_GAMEPLAY);
 	
 	
 	
