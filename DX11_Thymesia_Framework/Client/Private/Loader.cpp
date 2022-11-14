@@ -198,7 +198,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	
 	// TODO : For. Ground Texture : (AN) 임시 텍스쳐이므로 나중에 삭제하기, CroundTexture로 필요한곳에 사용할 예정임
 	Load_AllParticleInPath_Recursive("../Bin/Resources/Textures/Ground/");
-
+	Load_AllParticleInPath_Recursive("../Bin/GroundInfo/Filter/");
 
 
 
