@@ -93,6 +93,7 @@ void CUI_Landing::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
+    //TODO : UI Landing 테스트 코드.
 #ifdef _DEBUG
   
     if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
@@ -106,6 +107,10 @@ void CUI_Landing::Tick(_float fTimeDelta)
     if (KEY_INPUT(KEY::N, KEY_STATE::TAP))
     {
         Call_Landing(LANDING_ENTER_STAGE);
+    }
+    if (KEY_INPUT(KEY::M, KEY_STATE::TAP))
+    {
+        Call_Landing(LANDING_DEAD);
     }
 
 #endif // _DEBUG

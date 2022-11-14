@@ -30,7 +30,9 @@ HRESULT CPlayer_FeatherUI::Initialize(void* pArg)
         memcpy(&m_tUIDesc, pArg, sizeof(UI_DESC));
     else
     {
-        Set_UIPosition(1240.f, 822.f, 40.f, 40.f);
+        //+ 20,20,10,10
+
+        Set_UIPosition(1210.f, 802.f, 50.f, 50.f);
         m_tUIDesc.fDepth = 0.f;
     }
     m_iMaxFeather = 0;
@@ -54,7 +56,7 @@ HRESULT CPlayer_FeatherUI::Initialize(void* pArg)
 
     m_pFontBG = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &m_tUIDesc);
     m_pFontBG.lock()->Get_Component<CTexture>().lock()->Use_Texture("HUD_Font_BG");
-    m_pFontBG.lock()->Set_UIPosition(m_tUIDesc.fX + 40.f, m_tUIDesc.fY, 80.f, 28.f);
+    m_pFontBG.lock()->Set_UIPosition(m_tUIDesc.fX + m_tUIDesc.fSizeX, m_tUIDesc.fY, 80.f, 28.f);
     m_pFontBG.lock()->Set_Depth(0.4f);
 
 
@@ -75,7 +77,7 @@ HRESULT CPlayer_FeatherUI::Initialize(void* pArg)
     m_tCurrentFeatherTextInfo.fRotation = 0.f;
     m_tCurrentFeatherTextInfo.vColor = _float4(0.7f, 0.7f, 0.7f, 1.f);
     m_tCurrentFeatherTextInfo.vScale = _float2(0.5, 0.5f);
-    m_tCurrentFeatherTextInfo.vPosition = _float2(m_tUIDesc.fX + 20.f, m_tUIDesc.fY - 10.f);
+    m_tCurrentFeatherTextInfo.vPosition = _float2(m_tUIDesc.fX + 25.f, m_tUIDesc.fY - 10.f);
 
 
     m_tMaxFeatherTextInfo.bAlways = false;
@@ -83,7 +85,7 @@ HRESULT CPlayer_FeatherUI::Initialize(void* pArg)
     m_tMaxFeatherTextInfo.fRotation = 0.f;
     m_tMaxFeatherTextInfo.vColor = _float4(0.7f, 0.7f, 0.7f, 1.f);
     m_tMaxFeatherTextInfo.vScale = _float2(0.5, 0.5f);
-    m_tMaxFeatherTextInfo.vPosition = _float2(m_tUIDesc.fX + 40.f, m_tUIDesc.fY - 10.f);
+    m_tMaxFeatherTextInfo.vPosition = _float2(m_tUIDesc.fX + 45.f, m_tUIDesc.fY - 10.f);
 
 
 

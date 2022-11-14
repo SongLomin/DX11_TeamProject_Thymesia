@@ -165,29 +165,6 @@ weak_ptr<CPlayer> CGameManager::Get_CurrentPlayer()
 	return m_pCurrentPlayer;
 }
 
-void CGameManager::Register_Player_HPBar(weak_ptr<CPlayer_HPBar> pHPBar)
-{
-	m_pPlayer_HPBar = pHPBar;
-}
-
-void CGameManager::Register_Player_MPBar(weak_ptr<CPlayer_MPBar> pMPBar)
-{
-	m_pPlayer_MPBar = pMPBar;
-}
-
-void CGameManager::Register_Player_Memory(weak_ptr<CPlayer_Memory> pMemory)
-{
-	m_pPlayer_Memory = pMemory;
-}
-
-void CGameManager::Register_Player_HUD_Potion(weak_ptr<CPlayer_PotionUI> pHUD_Potion)
-{
-}
-
-void CGameManager::Register_Player_HUD_Feather(weak_ptr<CPlayer_FeatherUI> pHUD_Feather)
-{
-}
-
 void CGameManager::Set_TargetCamera(weak_ptr<CCamera_Target> In_TargetCamera)
 {
 	m_pTargetCamera = In_TargetCamera;

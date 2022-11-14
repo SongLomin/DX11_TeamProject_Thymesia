@@ -124,6 +124,13 @@ void CUI::Set_UIDesc(UI_DESC _tUIDesc)
 	m_tUIDesc = _tUIDesc;
 }
 
+void CUI::Set_Size(const _float& fSizeX, const _float& fSizeY)
+{
+	m_tUIDesc.fSizeX = fSizeX;
+	m_tUIDesc.fSizeY = fSizeY;
+
+}
+
 void CUI::Set_Depth(_float _fDepth)
 {
 	m_tUIDesc.fDepth = _fDepth;

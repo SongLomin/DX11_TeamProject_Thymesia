@@ -28,7 +28,6 @@ HRESULT CUI_Loading::Initialize(void* pArg)
 	__super::Initialize(pArg);
 
 	m_pLoadingBG = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_LOADING);
-	m_pLoadingBG.lock()->Set_Texture("Loading_Tutorial");
 	m_pLoadingBG.lock()->Set_Depth(0.2f);
 
 	UI_DESC	tIconDesc;
@@ -94,6 +93,36 @@ void CUI_Loading::LateTick(_float fTimeDelta)
 void CUI_Loading::Call_FadeEnd()
 {
 	m_bCallFadeOut = true;
+}
+
+void CUI_Loading::SetUp_LoadingUI(LEVEL eLevel)
+{
+	switch (eLevel)
+	{
+	case Client::LEVEL_STATIC:
+		break;
+	case Client::LEVEL_LOADING:
+		break;
+	case Client::LEVEL_LOGO:
+		break;
+	case Client::LEVEL_LOBBY:
+		break;
+	case Client::LEVEL_GAMEPLAY:
+		m_pLoadingBG.lock()->Set_Texture("Loading_Tutorial");
+		break;
+	case Client::LEVEL_STAGE2:
+		m_pLoadingBG.lock()->Set_Texture("Loading_Tutorial");
+		break;
+	case Client::LEVEL_STAGE3:
+		m_pLoadingBG.lock()->Set_Texture("Loading_Tutorial");
+		break;
+	case Client::LEVEL_EDIT:
+		break;
+	case Client::LEVEL_END:
+		break;
+	default:
+		break;
+	}
 }
 
 void CUI_Loading::Set_Complete()
