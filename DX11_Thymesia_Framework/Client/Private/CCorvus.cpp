@@ -55,6 +55,9 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_Cast<CGameObject>(m_this));
 
+	// Key Frame Effect ON
+	GET_SINGLE(CGameManager)->Bind_KeyEvent("Corvus", m_pModelCom, bind(&CCorvus::Call_NextAnimationKey, this, placeholders::_1));
+
 
 	USE_START(CCorvus);
 

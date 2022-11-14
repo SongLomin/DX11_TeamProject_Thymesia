@@ -82,9 +82,10 @@ private:
 
     _float2               m_vUv;
 
+    weak_ptr<CTexture>    m_pColorDiffuseTextureCom;
     weak_ptr<CTexture>    m_pMaskTextureCom;
     weak_ptr<CTexture>    m_pNoiseTextureCom;
-    weak_ptr<CTexture>    m_pGradientTextureCom;
+    // weak_ptr<CTexture>    m_pGradientTextureCom;
 
     _float                m_fCurrentLifeTime = 0.f;
     _float                m_fCurrentInitTime = 0.f;
@@ -107,8 +108,12 @@ private:
     _float4               m_vCurrentColorForce;
 
     // For. UV
-    _float2               m_vCurrentUV;
-    _float2               m_vCurrentUVForce;
+    _float2               m_vDiffuseCurrentUV;
+    _float2               m_vDiffuseCurrentUVForce;
+    _float2               m_vNoiseCurrentUV;
+    _float2               m_vNoiseCurrentUVForce;
+    _float2               m_vMaskCurrentUV;
+    _float2               m_vMaskCurrentUVForce;
 
     // For. Glow
     _float4               m_vCurrentGlowColor;
