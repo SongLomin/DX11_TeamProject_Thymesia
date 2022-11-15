@@ -57,6 +57,13 @@ public:
 public: /* Shaking */
     virtual void Add_Shaking(const _float& In_ShakeTime, const _float& _fShakePower = 5.f);
 
+public:
+    virtual void OnEnable(void* _Arg = nullptr);
+    //객체의 상태가 비활성화 상태로 변경될 때, 호출되는 이벤트입니다.
+    virtual void OnDisable() override;
+
+
+
 protected:
     virtual HRESULT SetUp_ShaderResource();
 
@@ -82,6 +89,9 @@ protected:
     RENDERGROUP     m_eRenderGroup = RENDERGROUP::RENDER_UI;
     _uint           m_iTextureIndex = 0;
     _uint           m_iPassIndex = 0;
+
+protected:
+    vector<weak_ptr<CUI>> m_vecChildUI;
 
 
 protected: /* For. UI Shaking */

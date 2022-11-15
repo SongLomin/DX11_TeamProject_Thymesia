@@ -48,11 +48,11 @@ HRESULT CUI_Loading::Initialize(void* pArg)
 
 	CHUD_Hover::HUDHOVERDESC hoverDesc;
 
-	hoverDesc.m_bSizeChange = false;
-
+	hoverDesc.bSizeChange = false;
+	hoverDesc.eType = CHUD_Hover::HUD_HOVER_ANIMATION_END;
 
 	m_pIcon = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_LOADING, &tIconDesc);
-	m_pIcon.lock()->Init_Fader(faderDesc, hoverDesc, CHUD_Hover::HUD_HOVER_ANIMATION_END);
+	m_pIcon.lock()->Init_Fader(faderDesc, hoverDesc);
 	m_pIcon.lock()->Set_Texture("Loading_Icon");
 
 	tIconDesc.fX = 1400.f;
@@ -62,7 +62,7 @@ HRESULT CUI_Loading::Initialize(void* pArg)
 	tIconDesc.fSizeY = 75.f;
 
 	m_pLoadComplete = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_LOADING, &tIconDesc);
-	m_pLoadComplete.lock()->Init_Fader(faderDesc, hoverDesc, CHUD_Hover::HUD_HOVER_ANIMATION_END);
+	m_pLoadComplete.lock()->Init_Fader(faderDesc, hoverDesc);
 	m_pLoadComplete.lock()->Set_Texture("Loading_Complete");
 	m_pLoadComplete.lock()->Set_Enable(false);
 

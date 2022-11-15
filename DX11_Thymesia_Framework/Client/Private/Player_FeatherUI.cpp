@@ -26,12 +26,8 @@ HRESULT CPlayer_FeatherUI::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
-    if (pArg != nullptr)
-        memcpy(&m_tUIDesc, pArg, sizeof(UI_DESC));
-    else
+    if (pArg == nullptr)
     {
-        //+ 20,20,10,10
-
         Set_UIPosition(1210.f, 802.f, 50.f, 50.f);
         m_tUIDesc.fDepth = 0.f;
     }
@@ -60,14 +56,10 @@ HRESULT CPlayer_FeatherUI::Initialize(void* pArg)
     m_pFontBG.lock()->Set_Depth(0.4f);
 
 
-    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
-    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pIcon));
-    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pFrameBorder));
-    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pFrame));
-    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pHover));
-    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pFontBG));
-
-
+    m_vecChildUI.push_back(m_pIcon);
+    m_vecChildUI.push_back(m_pFrameBorder);
+    m_vecChildUI.push_back(m_pFrame);
+    m_vecChildUI.push_back(m_pFontBG);
 
 
 
@@ -142,11 +134,11 @@ void CPlayer_FeatherUI::Tick(_float fTimeDelta)
     {
         m_pHover.lock()->CallBack_FadeEnd -= bind(&CPlayer_FeatherUI::Call_FadeEnd, this, placeholders::_1);
         CHUD_Hover::HUDHOVERDESC tHoverDesc;
-        tHoverDesc.m_bSizeChange = true;
-        tHoverDesc.m_fSizeMag = 0.2f;
+        tHoverDesc.bSizeChange = true;
+        tHoverDesc.fSizeMag = 0.2f;
+        tHoverDesc.eType = CHUD_Hover::HUD_HOVER_ANIMATION_FROM_ALPHA;
         m_pHover.lock()->CallBack_FadeEnd += bind(&CPlayer_FeatherUI::Call_FadeEnd, this, placeholders::_1);
-        m_pHover.lock()->Init_Fader(m_tFaderDesc, tHoverDesc, 
-            CHUD_Hover::HUD_HOVER_ANIMATION_FROM_ALPHA);
+        m_pHover.lock()->Init_Fader(m_tFaderDesc, tHoverDesc);
     }
 #endif // _DEBUG
     m_pFrameBorder.lock()->Set_Ratio(m_fRatio);

@@ -65,9 +65,10 @@ HRESULT CUI_Logo::Initialize(void* pArg)
     faderDesc.fDelayTime = 0.f;
     faderDesc.fFadeMaxTime = 1.f;
     faderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 0.3f);
-    hoverDesc.m_bSizeChange = false;
+    hoverDesc.bSizeChange = false;
+    hoverDesc.eType = CHUD_Hover::HUD_HOVER_ANIMATION_END;
 
-    m_pLogo.lock()->Init_Fader(faderDesc, hoverDesc, CHUD_Hover::HUD_HOVER_ANIMATION_END);
+    m_pLogo.lock()->Init_Fader(faderDesc, hoverDesc);
 
     faderDesc.eFaderType = FADER_INOUTLOOPING;
 
@@ -82,7 +83,7 @@ HRESULT CUI_Logo::Initialize(void* pArg)
         m_pSelectButton[i] = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_LOGO, &desc);
         m_pSelectButton[i].lock()->Set_Texture("MainMenu_SelectableButton_1");
         m_pSelectButton[i].lock()->Set_Enable(true);
-        m_pSelectButton[i].lock()->Init_Fader(faderDesc, hoverDesc, CHUD_Hover::HUD_HOVER_ANIMATION_END);
+        m_pSelectButton[i].lock()->Init_Fader(faderDesc, hoverDesc);
         desc.fSizeX = m_fFontSize[i].x;
         desc.fSizeY = m_fFontSize[i].y;
 
@@ -91,7 +92,7 @@ HRESULT CUI_Logo::Initialize(void* pArg)
         m_pTextTexture[i].lock()->Set_Enable(true);
         m_pTextTexture[i].lock()->Set_Depth(0.0f);
 
-        m_pTextTexture[i].lock()->Init_Fader(faderDesc, hoverDesc, CHUD_Hover::HUD_HOVER_ANIMATION_END);
+        m_pTextTexture[i].lock()->Init_Fader(faderDesc, hoverDesc);
 
     }
 

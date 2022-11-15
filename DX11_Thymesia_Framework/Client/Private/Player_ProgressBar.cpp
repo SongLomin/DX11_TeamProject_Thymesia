@@ -21,14 +21,10 @@ HRESULT CPlayer_ProgressBar::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
-    if (pArg != nullptr)
-        memcpy(&m_tUIDesc, pArg, sizeof(UI_DESC));
-
     m_fRatio = 1.f;
     
     m_iPassIndex = 2;
 
-    m_eRenderGroup = RENDERGROUP::RENDER_UI;
     GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
 
     m_tUIDesc.fDepth = 0.f;

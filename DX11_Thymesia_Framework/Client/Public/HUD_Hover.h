@@ -7,8 +7,6 @@ class CFader;
 
 END
 
-
-
 BEGIN(Client)
 class CHUD_Hover final : public CCustomUI
 {
@@ -22,9 +20,9 @@ public:
 public:
 	typedef struct tagHoverDesc
 	{
-		_bool		m_bSizeChange;//사이즈 변경
-		_float		m_fSizeMag;//사이즈 변경 배율
-
+		_bool						bSizeChange;//사이즈 변경
+		_float						fSizeMag;//사이즈 변경 배율
+		HUD_HOVER_ANIMAITON_TYPE	eType;
 	}HUDHOVERDESC;
 public:
 	GAMECLASS_H(CHUD_Hover);
@@ -41,7 +39,7 @@ public:
 
 
 public:
-	void		Init_Fader(const Engine::FaderDesc& _tFaderDesc, const HUDHOVERDESC& _tHoverDesc, HUD_HOVER_ANIMAITON_TYPE eHoverType);
+	void		Init_Fader(const Engine::FaderDesc& _tFaderDesc, const HUDHOVERDESC& _tHoverDesc);
 	virtual		void Set_UIDesc(UI_DESC _tUIDesc);
 
 
@@ -63,7 +61,6 @@ private:
 	_float4						m_vFadeColor;
 	UI_DESC						m_tBackUpDesc;
 	HUDHOVERDESC				m_tHoverDesc;
-	HUD_HOVER_ANIMAITON_TYPE				m_eHoverType;
 public:
 	void Free();
 };

@@ -119,9 +119,6 @@ private:
 
     //For. PlayerUI
 private:
-    weak_ptr<CPlayer_HPBar>    m_pPlayer_HPBar;
-    weak_ptr<CPlayer_MPBar>    m_pPlayer_MPBar;
-    weak_ptr<CPlayer_Memory>   m_pPlayer_Memory;
 
 
 private:

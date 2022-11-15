@@ -162,6 +162,20 @@ void CUI::Add_Shaking(const _float& In_ShakeTime, const _float& _fShakePower)
 
 }
 
+void CUI::OnEnable(void* _Arg)
+{
+	Set_Enable(true);
+	for (auto i = 0; i < m_vecChildUI.size(); i++)
+		m_vecChildUI[i].lock()->Set_Enable(true);
+}
+
+void CUI::OnDisable()
+{
+	Set_Enable(false);
+	for (auto i = 0; i < m_vecChildUI.size(); i++)
+		m_vecChildUI[i].lock()->Set_Enable(false);
+}
+
 HRESULT CUI::SetUp_ShaderResource()
 {
 	CallBack_Bind_SRV(m_pShaderCom, "");
@@ -244,5 +258,6 @@ void CUI::OnEventMessage(_uint iArg)
 void CUI::Free()
 {
 	__super::Free();
+	m_vecChildUI.clear();
 
 }

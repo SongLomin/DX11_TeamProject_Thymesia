@@ -54,14 +54,12 @@ HRESULT CPlayer_MPBar::Initialize(void* pArg)
 	m_tTextInfo.vPosition = _float2(m_tUIDesc.fX + m_tUIDesc.fSizeX * 0.5f + 20.f, m_tUIDesc.fY - 10.f);
 
 	m_eRenderGroup = RENDERGROUP::RENDER_UI;
-	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
-	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pBG));
-	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pMainBar));
-	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pBorderLeft));
-	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pBorderRight));
 	
 
-
+	m_vecChildUI.push_back(m_pMainBar);
+	m_vecChildUI.push_back(m_pBG);
+	m_vecChildUI.push_back(m_pBorderLeft);
+	m_vecChildUI.push_back(m_pBorderRight);
 
 	return S_OK;
 }
