@@ -80,6 +80,7 @@ namespace Client
 
 	enum class COLLISION_LAYER 
 	{
+		NONE,
 		PLAYER,
 		MONSTER,
 		TERRAIN,

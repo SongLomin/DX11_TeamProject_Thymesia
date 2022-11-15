@@ -20,6 +20,8 @@ public:
 
 	_uint	Get_PColliderIndex() const { return m_iColliderIndex; }
 
+	PHYSXCOLLIDERDESC Get_ColliderDesc() const { return m_PhysXColliderDesc; }
+
 
 	HRESULT Set_Position(_vector _vPos, _vector _vQuaternion);
 	HRESULT Set_Position(_vector _vPos);
@@ -68,6 +70,11 @@ public:
 	HRESULT Clear_Velocity();
 	HRESULT Add_LinearVelocityResistance(_vector fResistanceRate);
 
+public:
+	FDelegate<weak_ptr<CPhysXCollider>> CallBack_CollisionEnter;
+	FDelegate<weak_ptr<CPhysXCollider>> CallBack_CollisionStay;
+	FDelegate<weak_ptr<CPhysXCollider>> CallBack_CollisionExit;
+
 
 private:
 	static	_uint							m_iClonedColliderIndex;
@@ -104,6 +111,10 @@ private:
 	void		Create_StaticActor(PHYSXCOLLIDERDESC& PhysXColliderDesc, PxTransform Transform);
 
 public:
+	void PhysXCollisionEnter(weak_ptr<CPhysXCollider> pOtherCollider);
+	void PhysXCollisionStay(weak_ptr<CPhysXCollider> pOtherCollider);
+	void PhysXCollisionExit(weak_ptr<CPhysXCollider> pOtherCollider);
+
 	virtual void OnDestroy() override;
 
 private:

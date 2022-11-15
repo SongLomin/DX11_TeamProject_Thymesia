@@ -48,6 +48,7 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uin
 
 	m_pTimer_Manager->Reserve_TimeScaleLayer(iNumTimeScales);
 	m_pCollision_Manager->Initialize(iNumCollsionLayer);
+
 	if (FAILED(m_pFrustum->Initialize()))
 		return E_FAIL;
 
@@ -67,7 +68,7 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uin
 
 	m_pSound_Manager->Initialize();
 
-	m_pPhysX_Manager->Initialize();
+	m_pPhysX_Manager->Initialize(iNumCollsionLayer);
 
 	return S_OK;	
 }

@@ -3,6 +3,7 @@
 #include "PhysX_Manager.h"
 #include "Transform.h"
 #include "SMath.h"
+#include "GameObject.h"
 
 GAMECLASS_C(CPhysXCollider);
 IMPLEMENT_CLONABLE(CPhysXCollider, CComponent);
@@ -28,6 +29,8 @@ HRESULT CPhysXCollider::Initialize(void * pArg)
 
 		CreatePhysXActor(m_PhysXColliderDesc);
 	}
+
+	GET_SINGLE(CPhysX_Manager)->Register_PhysXCollider(Weak_StaticCast<CPhysXCollider>(m_this));
 
 	return S_OK;
 }
@@ -325,72 +328,72 @@ HRESULT CPhysXCollider::Set_Position(_vector _vPos)
 
 void CPhysXCollider::Set_Scale(_vector vScale)
 {
-	const PxShapeFlags shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE;
+	//const PxShapeFlags shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE | PxShapeFlag::eSCENE_QUERY_SHAPE;
 
-	//PxShape* pShape[1];
-	//ZeroMemory(pShape, sizeof(PxShape) * 16);
-	if (m_pRigidDynamic)
-	{
-		//m_pRigidDynamic->getShapes(pShape, 1);
-		m_pRigidDynamic->release();
-		m_pRigidDynamic = nullptr;
+	////PxShape* pShape[1];
+	////ZeroMemory(pShape, sizeof(PxShape) * 16);
+	//if (m_pRigidDynamic)
+	//{
+	//	//m_pRigidDynamic->getShapes(pShape, 1);
+	//	m_pRigidDynamic->release();
+	//	m_pRigidDynamic = nullptr;
 
-		m_PhysXColliderDesc.vScale = vScale;
-		CreatePhysXActor(m_PhysXColliderDesc);
+	//	m_PhysXColliderDesc.vScale = vScale;
+	//	CreatePhysXActor(m_PhysXColliderDesc);
 
-		//m_pRigidDynamic->attachShape(*pShape[0]);
+	//	//m_pRigidDynamic->attachShape(*pShape[0]);
 
-		for (size_t i = 0; i < 16; ++i)
-		{
-			if (nullptr != m_ConvexMeshes[i])
-			{
-				PxConvexMeshGeometry PxGeometry;
-				PxGeometry.convexMesh = m_ConvexMeshes[i];
-				PxMeshScale	vMeshScale;
-				vMeshScale.scale.x = XMVectorGetX(vScale);
-				vMeshScale.scale.y = XMVectorGetY(vScale);
-				vMeshScale.scale.z = XMVectorGetZ(vScale);
-				PxGeometry.scale = vMeshScale;
-				PxShape*	pShape;
-				PxMaterial*	pMaterial = m_PhysXColliderDesc.pMaterial;
+	//	for (size_t i = 0; i < 16; ++i)
+	//	{
+	//		if (nullptr != m_ConvexMeshes[i])
+	//		{
+	//			PxConvexMeshGeometry PxGeometry;
+	//			PxGeometry.convexMesh = m_ConvexMeshes[i];
+	//			PxMeshScale	vMeshScale;
+	//			vMeshScale.scale.x = XMVectorGetX(vScale);
+	//			vMeshScale.scale.y = XMVectorGetY(vScale);
+	//			vMeshScale.scale.z = XMVectorGetZ(vScale);
+	//			PxGeometry.scale = vMeshScale;
+	//			PxShape*	pShape;
+	//			PxMaterial*	pMaterial = m_PhysXColliderDesc.pMaterial;
 
-				CPhysX_Manager::Get_Instance()->Create_Shape(PxGeometry, pMaterial, shapeFlags, &pShape);
+	//			CPhysX_Manager::Get_Instance()->Create_Shape(PxGeometry, pMaterial, shapeFlags, &pShape);
 
-				m_pRigidDynamic->attachShape(*pShape);
-			}
-		}
-	}
+	//			m_pRigidDynamic->attachShape(*pShape);
+	//		}
+	//	}
+	//}
 
-	if (m_pRigidStatic)
-	{
-		//m_pRigidStatic->getShapes(pShape, 16);
-		m_pRigidStatic->release();
-		m_pRigidStatic = nullptr;
+	//if (m_pRigidStatic)
+	//{
+	//	//m_pRigidStatic->getShapes(pShape, 16);
+	//	m_pRigidStatic->release();
+	//	m_pRigidStatic = nullptr;
 
-		m_PhysXColliderDesc.vScale = vScale;
-		CreatePhysXActor(m_PhysXColliderDesc);
+	//	m_PhysXColliderDesc.vScale = vScale;
+	//	CreatePhysXActor(m_PhysXColliderDesc);
 
 
-		for (size_t i = 0; i < 16; ++i)
-		{
-			if (nullptr != m_ConvexMeshes[i])
-			{
-				PxConvexMeshGeometry PxGeometry;
-				PxGeometry.convexMesh = m_ConvexMeshes[i];
-				PxMeshScale	vMeshScale;
-				vMeshScale.scale.x = XMVectorGetX(vScale);
-				vMeshScale.scale.y = XMVectorGetY(vScale);
-				vMeshScale.scale.z = XMVectorGetZ(vScale);
-				PxGeometry.scale = vMeshScale;
-				PxShape*	pShape;
-				PxMaterial*	pMaterial = m_PhysXColliderDesc.pMaterial;
+	//	for (size_t i = 0; i < 16; ++i)
+	//	{
+	//		if (nullptr != m_ConvexMeshes[i])
+	//		{
+	//			PxConvexMeshGeometry PxGeometry;
+	//			PxGeometry.convexMesh = m_ConvexMeshes[i];
+	//			PxMeshScale	vMeshScale;
+	//			vMeshScale.scale.x = XMVectorGetX(vScale);
+	//			vMeshScale.scale.y = XMVectorGetY(vScale);
+	//			vMeshScale.scale.z = XMVectorGetZ(vScale);
+	//			PxGeometry.scale = vMeshScale;
+	//			PxShape*	pShape;
+	//			PxMaterial*	pMaterial = m_PhysXColliderDesc.pMaterial;
 
-				CPhysX_Manager::Get_Instance()->Create_Shape(PxGeometry, pMaterial, shapeFlags, &pShape);
+	//			CPhysX_Manager::Get_Instance()->Create_Shape(PxGeometry, pMaterial, shapeFlags, &pShape);
 
-				m_pRigidStatic->attachShape(*pShape);
-			}
-		}
-	}
+	//			m_pRigidStatic->attachShape(*pShape);
+	//		}
+	//	}
+	//}
 }
 
 void CPhysXCollider::Set_ActorFlag(PxActorFlag::Enum eFlag, _bool bState)
@@ -547,27 +550,31 @@ void CPhysXCollider::Create_DynamicActor(PHYSXCOLLIDERDESC& tPhysXColliderDesc, 
 
 	if (tPhysXColliderDesc.bTrigger)
 	{
-		shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eTRIGGER_SHAPE;
+		shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE | PxShapeFlag::eSCENE_QUERY_SHAPE;
+		m_FilterData.word2 = 2;
+
 	}
 	else
 	{
-		shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE;
+		shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE | PxShapeFlag::eSCENE_QUERY_SHAPE;
+		m_FilterData.word2 = 0;
 	}
 
-	GET_SINGLE(CPhysX_Manager)->Create_Shape(*m_pGeometry, m_PhysXColliderDesc.pMaterial, shapeFlags, &m_pShape);
+	GET_SINGLE(CPhysX_Manager)->Create_Shape(*m_pGeometry, m_PhysXColliderDesc.pMaterial, false, shapeFlags, &m_pShape);
 	
-	m_FilterData.word0 = m_PhysXColliderDesc.iFilterType;
+	m_FilterData.word0 = (1 << m_PhysXColliderDesc.iFilterType);
 	m_FilterData.word1 = GET_SINGLE(CPhysX_Manager)->Get_PhysXFilterGroup(m_PhysXColliderDesc.iFilterType);
+	m_FilterData.word3 = m_iColliderIndex;
 	
 	//FilterData.word1 = m_PhysXColliderDesc.iFilterType;
-	
-	m_pShape->setSimulationFilterData(m_FilterData);
 
 	if (!m_pShape)
 	{
 		// Shape가 생성되지 않음.
 		DEBUG_ASSERT;
 	}
+
+	m_pShape->setSimulationFilterData(m_FilterData);
 
 	m_pRigidDynamic->attachShape(*m_pShape);
 	m_pRigidDynamic->userData = &m_iColliderIndex;
@@ -582,14 +589,20 @@ void CPhysXCollider::Create_StaticActor(PHYSXCOLLIDERDESC& tPhysXColliderDesc, P
 
 	if (tPhysXColliderDesc.bTrigger)
 	{
-		shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eTRIGGER_SHAPE;
+		shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE | PxShapeFlag::eSCENE_QUERY_SHAPE;
+		m_FilterData.word2 = 2;
 	}
 	else
 	{
-		shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE;
+		shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE | PxShapeFlag::eSCENE_QUERY_SHAPE;
+		m_FilterData.word2 = 0;
 	}
 
-	GET_SINGLE(CPhysX_Manager)->Create_Shape(*m_pGeometry, m_PhysXColliderDesc.pMaterial, shapeFlags, &m_pShape);
+	GET_SINGLE(CPhysX_Manager)->Create_Shape(*m_pGeometry, m_PhysXColliderDesc.pMaterial, false, shapeFlags, &m_pShape);
+
+	m_FilterData.word0 = (1 << m_PhysXColliderDesc.iFilterType);
+	m_FilterData.word1 = GET_SINGLE(CPhysX_Manager)->Get_PhysXFilterGroup(m_PhysXColliderDesc.iFilterType);
+	
 
 	if (!m_pShape)
 	{
@@ -597,8 +610,33 @@ void CPhysXCollider::Create_StaticActor(PHYSXCOLLIDERDESC& tPhysXColliderDesc, P
 		DEBUG_ASSERT;
 	}
 
+	m_pShape->setSimulationFilterData(m_FilterData);
+
 	m_pRigidStatic->attachShape(*m_pShape);
 	m_pRigidStatic->userData = &m_iColliderIndex;
+}
+
+void CPhysXCollider::PhysXCollisionEnter(weak_ptr<CPhysXCollider> pOtherCollider)
+{
+	CallBack_CollisionEnter(pOtherCollider);
+	m_pOwner.lock()->PhysXCollisionEnter(pOtherCollider);
+
+	cout << "Shape is entering trigger volume\n";
+}
+
+void CPhysXCollider::PhysXCollisionStay(weak_ptr<CPhysXCollider> pOtherCollider)
+{
+	CallBack_CollisionStay(pOtherCollider);
+	m_pOwner.lock()->PhysXCollisionStay(pOtherCollider);
+}
+
+void CPhysXCollider::PhysXCollisionExit(weak_ptr<CPhysXCollider> pOtherCollider)
+{
+	CallBack_CollisionExit(pOtherCollider);
+	m_pOwner.lock()->PhysXCollisionExit(pOtherCollider);
+
+	cout << "Shape is Exit trigger volume\n";
+
 }
 
 void CPhysXCollider::OnDestroy()

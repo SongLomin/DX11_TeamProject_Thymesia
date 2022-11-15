@@ -65,9 +65,12 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 
 	PHYSXCOLLIDERDESC tPhysxColliderDesc;
 	Preset::PhysXColliderDesc::TestLightPropSetting(tPhysxColliderDesc);
-
 	m_pPhysXColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
 	m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene({ 10.f, 10.f, 10.f });
+
+	Preset::PhysXColliderDesc::TestLightPropTriggerSetting(tPhysxColliderDesc);
+	m_pPhysXTriggerColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
+	m_pPhysXTriggerColliderCom.lock()->Add_PhysXActorAtScene({ 10.f, 10.f, 10.f });
 
 	return S_OK;
 }
@@ -79,7 +82,7 @@ HRESULT CLight_Prop::Start()
 
 void CLight_Prop::Tick(_float fTimeDelta)
 {
-	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom);
+	
 
 	__super::Tick(fTimeDelta);
 
@@ -91,6 +94,15 @@ void CLight_Prop::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 	m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
+	m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
+}
+
+void CLight_Prop::Before_Render(_float fTimeDelta)
+{
+	__super::Before_Render(fTimeDelta);
+	
+	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom);
+	m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
 }
 
 HRESULT CLight_Prop::Render()

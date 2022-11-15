@@ -3,6 +3,7 @@
 #include "PxSimulationEventCallback.h"
 
 BEGIN(Engine)
+class CPhysXCollider;
 
 class CPhysX_Manager final : public CBase
 {
@@ -35,15 +36,18 @@ public:
 	}COLSHAPE;
 
 public:
-	PxConvexMesh*	Get_ShapeTemplate(COLSHAPE eShape) { m_ShapeTemplate[eShape]; }
-	void			Set_ShapeSphere(PxSphereGeometry* pGeometry) { m_pSphere = pGeometry; }
-	void			Set_ShapeBox(PxBoxGeometry* pGeometry) { m_pBox = pGeometry; }
+	PxConvexMesh*						Get_ShapeTemplate(COLSHAPE eShape) { m_ShapeTemplate[eShape]; }
+	void								Set_ShapeSphere(PxSphereGeometry* pGeometry) { m_pSphere = pGeometry; }
+	void								Set_ShapeBox(PxBoxGeometry* pGeometry) { m_pBox = pGeometry; }
 
-	void			Begin_PhysScene() { m_bSceneStart = true; }
-	void			End_PhysScene() { m_bSceneStart = false; }
+	void								Begin_PhysScene() { m_bSceneStart = true; }
+	void								End_PhysScene() { m_bSceneStart = false; }
+
+	void								Register_PhysXCollider(weak_ptr<CPhysXCollider> pPhysXCollider);
+	weak_ptr<CPhysXCollider>			Find_PhysXCollider(const _uint In_iPhysXColliderIndex);
 
 public:
-	HRESULT	Initialize();
+	HRESULT	Initialize(const _uint In_iNumLayer);
 	void	Tick(_float fTimeDelta);
 
 public:
@@ -67,7 +71,7 @@ public:
 	void			Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh** ppOut);
 	void			Create_ConvexMesh(PxVec3** pVertices, _uint iNumVertice, PxConvexMesh** ppOut);
 	void			Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial** ppOut);
-	void			Create_Shape(const PxGeometry & Geometry, PxMaterial* pMaterial, const PxShapeFlags In_ShapeFlags, PxShape ** ppOut);
+	void			Create_Shape(const PxGeometry & Geometry, PxMaterial* pMaterial, const _bool isExculsive, const PxShapeFlags In_ShapeFlags, PxShape ** ppOut);
 	void			Create_MeshFromTriangles(const PxTriangleMeshDesc& In_MeshDesc, PxTriangleMesh** ppOut);
 
 
@@ -112,6 +116,9 @@ private:
 
 private: /* For. Filter */
 	vector<_uint>			m_arrCheck;
+
+private:
+	map<_uint, weak_ptr<CPhysXCollider>> m_pPhysXCollders;
 
 
 public:

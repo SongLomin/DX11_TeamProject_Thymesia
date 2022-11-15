@@ -22,6 +22,7 @@ public:
     virtual HRESULT Start() override;
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
+    virtual void Before_Render(_float fTimeDelta) override;
     virtual HRESULT Render() override;
 
 private:
@@ -32,6 +33,7 @@ private:
 
 private:
     weak_ptr<CPhysXCollider> m_pPhysXColliderCom;
+    weak_ptr<CPhysXCollider> m_pPhysXTriggerColliderCom;
 
 public:
     virtual void Write_Json(json& Out_Json) override;
