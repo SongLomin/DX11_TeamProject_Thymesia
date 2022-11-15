@@ -35,11 +35,7 @@ private: /* For. ModelComponent */
 	vector<string>	m_AllModelKeys;
 	_int			m_CurrentModelIndex = 0;
 
-
-
 public:
 	void Free();
-
-
 };
 END

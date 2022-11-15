@@ -236,7 +236,6 @@ void CWindow_ComponentView::TransformComponent_PickingAction(weak_ptr<CTransform
 
 	// Z : 이동, X : 로테이션, 마우스 휠 : y축 이동
 
-
 	if (KEY_INPUT(KEY::Z, KEY_STATE::HOLD))
 	{
 		if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
@@ -250,9 +249,6 @@ void CWindow_ComponentView::TransformComponent_PickingAction(weak_ptr<CTransform
 	{
 		_pTransform.lock()->LookAt(XMLoadFloat4(&vMouseDir));
 	}
-
-
-
 }
 
 
