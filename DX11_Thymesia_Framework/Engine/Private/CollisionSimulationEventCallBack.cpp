@@ -92,39 +92,39 @@ void CollisionSimulationEventCallBack::onTrigger(PxTriggerPair* pairs, PxU32 cou
 {
 	while (count--)
 	{
-		const PxTriggerPair& current = *pairs++;
-		if (current.status & PxPairFlag::eNOTIFY_TOUCH_FOUND)
-		{
-			weak_ptr<CPhysXCollider> pColliderCom = GET_SINGLE(CPhysX_Manager)->Find_PhysXCollider(*(_uint*)current.triggerActor->userData);
-			weak_ptr<CPhysXCollider> pOtherColliderCom = GET_SINGLE(CPhysX_Manager)->Find_PhysXCollider(*(_uint*)current.otherActor->userData);
+		//const PxTriggerPair& current = *pairs++;
+		//if (current.status & PxPairFlag::eNOTIFY_TOUCH_FOUND)
+		//{
+		//	weak_ptr<CPhysXCollider> pColliderCom = GET_SINGLE(CPhysX_Manager)->Find_PhysXCollider(*(_uint*)current.triggerActor->userData);
+		//	weak_ptr<CPhysXCollider> pOtherColliderCom = GET_SINGLE(CPhysX_Manager)->Find_PhysXCollider(*(_uint*)current.otherActor->userData);
 
-			if (pColliderCom.lock()->Get_ColliderDesc().bTrigger &&
-				pOtherColliderCom.lock()->Get_ColliderDesc().bTrigger)
-			{
-				pColliderCom.lock()->PhysXCollisionEnter(pOtherColliderCom);
-				pOtherColliderCom.lock()->PhysXCollisionEnter(pColliderCom);
-			}
+		//	if (pColliderCom.lock()->Get_ColliderDesc().bTrigger &&
+		//		pOtherColliderCom.lock()->Get_ColliderDesc().bTrigger)
+		//	{
+		//		pColliderCom.lock()->PhysXCollisionEnter(pOtherColliderCom);
+		//		pOtherColliderCom.lock()->PhysXCollisionEnter(pColliderCom);
+		//	}
 
-			//CPhysXCollider* pColliderCom = (CPhysXCollider*)current.triggerActor->userData;
-			//CPhysXCollider* pOtherColliderCom = (CPhysXCollider*)current.otherActor->userData;
+		//	//CPhysXCollider* pColliderCom = (CPhysXCollider*)current.triggerActor->userData;
+		//	//CPhysXCollider* pOtherColliderCom = (CPhysXCollider*)current.otherActor->userData;
 
-			//weak_ptr<CPhysXCollider> pColliderCom = *reinterpret_cast<std::weak_ptr<CPhysXCollider>*>(&current.triggerActor->userData);
-			//weak_ptr<CPhysXCollider> pOtherColliderCom = *reinterpret_cast<std::weak_ptr<CPhysXCollider>*>(&current.otherActor->userData);
+		//	//weak_ptr<CPhysXCollider> pColliderCom = *reinterpret_cast<std::weak_ptr<CPhysXCollider>*>(&current.triggerActor->userData);
+		//	//weak_ptr<CPhysXCollider> pOtherColliderCom = *reinterpret_cast<std::weak_ptr<CPhysXCollider>*>(&current.otherActor->userData);
 
-			
-		}
-		if (current.status & PxPairFlag::eNOTIFY_TOUCH_LOST)
-		{
-			weak_ptr<CPhysXCollider> pColliderCom = GET_SINGLE(CPhysX_Manager)->Find_PhysXCollider(*(_uint*)current.triggerActor->userData);
-			weak_ptr<CPhysXCollider> pOtherColliderCom = GET_SINGLE(CPhysX_Manager)->Find_PhysXCollider(*(_uint*)current.otherActor->userData);
+		//	
+		//}
+		//if (current.status & PxPairFlag::eNOTIFY_TOUCH_LOST)
+		//{
+		//	weak_ptr<CPhysXCollider> pColliderCom = GET_SINGLE(CPhysX_Manager)->Find_PhysXCollider(*(_uint*)current.triggerActor->userData);
+		//	weak_ptr<CPhysXCollider> pOtherColliderCom = GET_SINGLE(CPhysX_Manager)->Find_PhysXCollider(*(_uint*)current.otherActor->userData);
 
-			if (pColliderCom.lock()->Get_ColliderDesc().bTrigger &&
-				pOtherColliderCom.lock()->Get_ColliderDesc().bTrigger)
-			{
-				pColliderCom.lock()->PhysXCollisionExit(pOtherColliderCom);
-				pOtherColliderCom.lock()->PhysXCollisionExit(pColliderCom);
-			}
-		}
+		//	if (pColliderCom.lock()->Get_ColliderDesc().bTrigger &&
+		//		pOtherColliderCom.lock()->Get_ColliderDesc().bTrigger)
+		//	{
+		//		pColliderCom.lock()->PhysXCollisionExit(pOtherColliderCom);
+		//		pOtherColliderCom.lock()->PhysXCollisionExit(pColliderCom);
+		//	}
+		//}
 			//cout << "Shape is leaving trigger volume\n";
 	}
 }
