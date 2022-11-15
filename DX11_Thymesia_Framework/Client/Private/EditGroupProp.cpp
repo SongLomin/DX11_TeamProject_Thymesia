@@ -35,12 +35,6 @@ HRESULT CEditGroupProp::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	m_PropPrototype.emplace(typeid(CStatic_Prop).name()				, PROPS_PROTOTYPE(typeid(CStatic_Prop).hash_code()			 , CStatic_Prop::Create()));
-	m_PropPrototype.emplace(typeid(CDynamic_Prop).name()			, PROPS_PROTOTYPE(typeid(CDynamic_Prop).hash_code()			 , CDynamic_Prop::Create()));
-	m_PropPrototype.emplace(typeid(CInteraction_Prop).name()		, PROPS_PROTOTYPE(typeid(CInteraction_Prop).hash_code()		 , CInteraction_Prop::Create()));
-	m_PropPrototype.emplace(typeid(CLight_Prop).name()				, PROPS_PROTOTYPE(typeid(CLight_Prop).hash_code()			 , CLight_Prop::Create()));
-	m_PropPrototype.emplace(typeid(CStatic_Instancing_Prop).name()	, PROPS_PROTOTYPE(typeid(CStatic_Instancing_Prop).hash_code(), CStatic_Instancing_Prop::Create()));
-
 	m_ModelList = GET_SINGLE(CGameInstance)->Get_AllNoneAnimModelKeys();
 	Load_ResourceList(m_JsonList   , "../Bin/MapTool_MeshInfo/Json_Desc/", ".json");
 
@@ -344,38 +338,7 @@ void CEditGroupProp::View_PickingInfo()
 	ImGui::Text("Mouse Dir");
 	ImGui::Text("");
 
-	_float3 vPos[4] =
-	{
-		_float3(   0.f, 0.f, 9999.f),
-		_float3(9999.f, 0.f, 9999.f),
-		_float3(9999.f, 0.f, 0.f),
-		_float3(   0.f, 0.f, 0.f)
-	};
-
-	_uint3 iIndex[2] =
-	{
-		_uint3(0, 1, 2),
-		_uint3(0, 2, 3)
-	};
-
-	for (_uint i = 0; i < 2; ++i)
-	{
-		if (0 != isnan(MouseRayInWorldSpace.vOrigin.x))
-			break;
-
-		_vector		vPickedPos;
-		
-		_vector	vVec0 = XMLoadFloat3(&vPos[iIndex[i].ix]);
-		_vector	vVec1 = XMLoadFloat3(&vPos[iIndex[i].iy]);
-		_vector	vVec2 = XMLoadFloat3(&vPos[iIndex[i].iz]);
-
-		_float fDist  = 0;
-		if (DirectX::TriangleTests::Intersects(XMLoadFloat4(&MouseRayInWorldSpace.vOrigin), XMLoadFloat3(&MouseRayInWorldSpace.vDirection), vVec0, vVec1, vVec2, fDist))
-		{
-			vPickedPos = XMLoadFloat4(&MouseRayInWorldSpace.vOrigin) + XMVector3Normalize(XMLoadFloat3(&MouseRayInWorldSpace.vDirection)) * fDist;
-			XMStoreFloat4(&m_vPickingPos, vPickedPos);
-		}
-	}
+	SMath::Is_Picked(MouseRayInWorldSpace, &m_vPickingPos);
 
 	ImGui::Text("[ Picking Info ] ");
 	ImGui::DragFloat4("##PickPos", &m_vPickingPos.x, 1.f);
@@ -383,9 +346,7 @@ void CEditGroupProp::View_PickingInfo()
 	ImGui::Text("Pick Pos");
 	ImGui::Text("");
 
-	string szPickingTag
-		= string("[ Obj Info ] : ")
-		+ "( " + to_string(m_iPickingIndex) + " )";
+	string szPickingTag = string("[ Obj Info ] : ") + "( " + to_string(m_iPickingIndex) + " )";
 
 	szPickingTag += (0 > m_iPickingIndex || (_int)m_PropList.size() <= m_iPickingIndex)
 		? (" None ") 
@@ -398,14 +359,65 @@ void CEditGroupProp::View_PickingInfo()
 		if ("" == m_szSelectModelName)
 			return;
 
-		PROPS_DESC Desc;
-		Desc.pProp	= GAMEINSTANCE->Add_GameObject<CStatic_Prop>(m_CreatedLevel);
-		Desc.hash	= typeid(CStatic_Prop).hash_code();
-		Desc.szName	= typeid(CStatic_Prop).name();
+		if ("CStatic_Prop" == m_szSelectModelName)
+		{
+			PROPS_DESC Desc;
+			Desc.pProp	= GAMEINSTANCE->Add_GameObject<CStatic_Prop>(m_CreatedLevel);
+			Desc.hash	= typeid(CStatic_Prop).hash_code();
+			Desc.szName	= typeid(CStatic_Prop).name();
 
-		Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
-		Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
-		m_PropList.push_back(Desc);
+			Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
+			Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
+			m_PropList.push_back(Desc);
+		}
+
+		else if ("CDynamic_Prop" == m_szSelectModelName)
+		{
+			PROPS_DESC Desc;
+			Desc.pProp	= GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(m_CreatedLevel);
+			Desc.hash	= typeid(CDynamic_Prop).hash_code();
+			Desc.szName	= typeid(CDynamic_Prop).name();
+
+			Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
+			Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
+			m_PropList.push_back(Desc);
+		}
+
+		else if ("CInteraction_Prop" == m_szSelectModelName)
+		{
+			PROPS_DESC Desc;
+			Desc.pProp	= GAMEINSTANCE->Add_GameObject<CInteraction_Prop>(m_CreatedLevel);
+			Desc.hash	= typeid(CInteraction_Prop).hash_code();
+			Desc.szName	= typeid(CInteraction_Prop).name();
+
+			Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
+			Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
+			m_PropList.push_back(Desc);
+		}
+
+		else if ("CLight_Prop" == m_szSelectModelName)
+		{
+			PROPS_DESC Desc;
+			Desc.pProp	= GAMEINSTANCE->Add_GameObject<CLight_Prop>(m_CreatedLevel);
+			Desc.hash	= typeid(CLight_Prop).hash_code();
+			Desc.szName	= typeid(CLight_Prop).name();
+
+			Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
+			Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
+			m_PropList.push_back(Desc);
+		}
+
+		else if ("CStatic_Instancing_Prop" == m_szSelectModelName)
+		{
+			PROPS_DESC Desc;
+			Desc.pProp	= GAMEINSTANCE->Add_GameObject<CLight_Prop>(m_CreatedLevel);
+			Desc.hash	= typeid(CLight_Prop).hash_code();
+			Desc.szName	= typeid(CLight_Prop).name();
+
+			Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
+			Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
+			m_PropList.push_back(Desc);
+		}
 	}
 
 	ImGui::Text("");

@@ -563,3 +563,46 @@ void ENGINE_DLL Engine::SMath::Set_ClockwiseTriangle(XMFLOAT3* InOut_TrianglePos
 
 
 }
+
+_bool ENGINE_DLL Engine::SMath::Is_Picked(RAY _Ray, _float4* _pOutPos)
+{
+	if (0 != isnan(_Ray.vOrigin.x))
+		return false;
+
+	_float3 vPos[4] =
+	{
+		_float3(   0.f, 0.f, 9999.f),
+		_float3(9999.f, 0.f, 9999.f),
+		_float3(9999.f, 0.f, 0.f),
+		_float3(   0.f, 0.f, 0.f)
+	};
+
+	_uint3 iIndex[2] =
+	{
+		_uint3(0, 1, 2),
+		_uint3(0, 2, 3)
+	};
+
+	for (_uint i = 0; i < 2; ++i)
+	{
+		if (0 != isnan(_Ray.vOrigin.x))
+			break;
+
+		_vector		vPickedPos;
+		
+		_vector	vVec0 = XMLoadFloat3(&vPos[iIndex[i].ix]);
+		_vector	vVec1 = XMLoadFloat3(&vPos[iIndex[i].iy]);
+		_vector	vVec2 = XMLoadFloat3(&vPos[iIndex[i].iz]);
+
+		_float fDist  = 0;
+		if (DirectX::TriangleTests::Intersects(XMLoadFloat4(&_Ray.vOrigin), XMLoadFloat3(&_Ray.vDirection), vVec0, vVec1, vVec2, fDist))
+		{
+			vPickedPos = XMLoadFloat4(&_Ray.vOrigin) + XMVector3Normalize(XMLoadFloat3(&_Ray.vDirection)) * fDist;
+			XMStoreFloat4(_pOutPos, vPickedPos);
+
+			return true;
+		}
+	}
+
+	return false;
+}

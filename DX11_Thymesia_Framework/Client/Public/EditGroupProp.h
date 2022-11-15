@@ -31,22 +31,7 @@ private:
 
         _float3             vPosition[8];
         _uint3			    vIndicse[12];
-
-        tag_PropInfo() {}
     } PROPS_DESC;
-
-    typedef struct tag_Prop_Prototype
-    {
-        _hashcode           hash    = 0;
-        weak_ptr<CProp>     pProp;
-
-        tag_Prop_Prototype() {}
-        tag_Prop_Prototype(_hashcode _hash, weak_ptr<CProp> _pProp)
-            : hash      (_hash)
-            , pProp     (_pProp)
-        {}
-
-    } PROPS_PROTOTYPE;
 
 public:
     virtual HRESULT Initialize_Prototype() override;
@@ -81,7 +66,6 @@ private:
     virtual void Write_Json(json& Out_Json) override;
 
 private:
-    typedef map<string, PROPS_PROTOTYPE>        PROP_PROTOTYPE;
     typedef vector<string>                      RESOURCE_LIST;
     typedef vector<PROPS_DESC>                  PROPS_INFOS;
 
@@ -94,8 +78,6 @@ private:
     string              m_szSelectPropType  = "CStatic_Prop";
     string              m_szSelectModelName = "";
     _float4             m_vPickingPos       = _float4(0.f, 0.f, 0.f, 0.f);
-
-    PROP_PROTOTYPE      m_PropPrototype;
     RESOURCE_LIST       m_ModelList;
     RESOURCE_LIST       m_JsonList;
 

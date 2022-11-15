@@ -94,20 +94,22 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 {
 	_uint iIndex = 0;
 
-	for (auto& Elem_Desc : m_pGameObjects)
+	auto iter_elem = m_pGameObjects.begin();
+
+	while (iter_elem != m_pGameObjects.end())
 	{
-		if (typeid(CEditGroupProp).hash_code() == Elem_Desc.HashCode)
+		if (typeid(CEditGroupProp).hash_code() == iter_elem->HashCode)
 		{
-			Elem_Desc.pInstance.lock()->Write_Json(Out_Json["GameObject"][iIndex]);
+			iter_elem->pInstance.lock()->Write_Json(json());
 			continue;
 		}
 
-		Out_Json["GameObject"][iIndex]["Name"]				= Elem_Desc.TypeName;
-		Out_Json["GameObject"][iIndex]["Hash"]				= Elem_Desc.HashCode;
-		Out_Json["GameObject"][iIndex]["Setting"]["Enable"] = Elem_Desc.pInstance.lock()->Get_Enable();
+		Out_Json["GameObject"][iIndex]["Name"]				= iter_elem->TypeName;
+		Out_Json["GameObject"][iIndex]["Hash"]				= iter_elem->HashCode;
+		Out_Json["GameObject"][iIndex]["Setting"]["Enable"] = iter_elem->pInstance.lock()->Get_Enable();
 		Out_Json["GameObject"][iIndex]["Component"]["Transform"].emplace();
 
-		Elem_Desc.pInstance.lock()->Write_Json(Out_Json["GameObject"][iIndex]);
+		iter_elem->pInstance.lock()->Write_Json(Out_Json["GameObject"][iIndex]);
 		iIndex++;
 	}
 }

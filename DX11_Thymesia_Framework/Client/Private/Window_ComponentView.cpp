@@ -104,6 +104,8 @@ void CWindow_ComponentView::Draw_Components()
 
 	if (pTransformCom.lock().get())
 	{
+		TransformComponent_PickingAction();
+
 		if (ImGui::CollapsingHeader("Transform Component"), ImGuiTreeNodeFlags_DefaultOpen)
 		{
 			{ // Position
@@ -221,6 +223,36 @@ void CWindow_ComponentView::Init_Components()
 			m_CurrentModelIndex = iter - m_AllModelKeys.begin();
 		}
 	}
+}
+
+void CWindow_ComponentView::TransformComponent_PickingAction(weak_ptr<CTransform> _pTransform)
+{
+	RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+	_float4 vMouseDir;
+	ZeroMemory(&vMouseDir, sizeof(_float4));
+
+	if (!SMath::Is_Picked(MouseRayInWorldSpace, &vMouseDir))
+		return;
+
+	// Z : 이동, X : 로테이션, 마우스 휠 : y축 이동
+
+
+	if (KEY_INPUT(KEY::Z, KEY_STATE::HOLD))
+	{
+		if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
+		{
+			_vector vAddPos = _pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION) + XMVectorSet(vMouseDir.x, 0.f, vMouseDir.z, 0.f);
+			_pTransform.lock()->Set_State(CTransform::STATE_TRANSLATION, vAddPos);
+		}		
+	}
+
+	if (KEY_INPUT(KEY::X, KEY_STATE::HOLD) && KEY_INPUT(KEY::RBUTTON, KEY_STATE::HOLD))
+	{
+		_pTransform.lock()->LookAt(XMLoadFloat4(&vMouseDir));
+	}
+
+
+
 }
 
 

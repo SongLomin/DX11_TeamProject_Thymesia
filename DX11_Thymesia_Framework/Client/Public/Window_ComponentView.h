@@ -25,6 +25,9 @@ private:
 	void Init_Components();
 
 private:
+	void TransformComponent_PickingAction(weak_ptr<CTransform> _pTransform);
+
+private:
 	GAMEOBJECT_DESC m_tPickedGameObjectDesc;
 	_char m_szModelKey[MAX_PATH];
 
