@@ -187,6 +187,8 @@ public: /* For.Sound_Manager */
 	void StopAll();
 
 public: /* For.PhysX_Manager */
+	void			Check_PhysXFilterGroup(const _uint In_iLeftLayer, const _uint In_iRightLayer);
+
 	HRESULT			Create_Scene(CPhysX_Manager::Scene eScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));
 	HRESULT			Delete_Scene(CPhysX_Manager::Scene eScene);
 	HRESULT			Change_Scene(CPhysX_Manager::Scene eNextScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));

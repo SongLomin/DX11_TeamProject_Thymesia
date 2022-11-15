@@ -539,13 +539,29 @@ PxGeometry* CPhysXCollider::Create_Geometry()
 	return nullptr;
 }
 
-void CPhysXCollider::Create_DynamicActor(PHYSXCOLLIDERDESC& PhysXColliderDesc, PxTransform Transform)
+void CPhysXCollider::Create_DynamicActor(PHYSXCOLLIDERDESC& tPhysXColliderDesc, PxTransform Transform)
 {
 	m_pRigidDynamic = GET_SINGLE(CPhysX_Manager)->Create_DynamicActor(Transform);
 	m_pGeometry = Create_Geometry();
+	PxShapeFlags shapeFlags;
 
-	const PxShapeFlags shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE;
+	if (tPhysXColliderDesc.bTrigger)
+	{
+		shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eTRIGGER_SHAPE;
+	}
+	else
+	{
+		shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE;
+	}
+
 	GET_SINGLE(CPhysX_Manager)->Create_Shape(*m_pGeometry, m_PhysXColliderDesc.pMaterial, shapeFlags, &m_pShape);
+	
+	m_FilterData.word0 = m_PhysXColliderDesc.iFilterType;
+	m_FilterData.word1 = GET_SINGLE(CPhysX_Manager)->Get_PhysXFilterGroup(m_PhysXColliderDesc.iFilterType);
+	
+	//FilterData.word1 = m_PhysXColliderDesc.iFilterType;
+	
+	m_pShape->setSimulationFilterData(m_FilterData);
 
 	if (!m_pShape)
 	{
@@ -557,12 +573,22 @@ void CPhysXCollider::Create_DynamicActor(PHYSXCOLLIDERDESC& PhysXColliderDesc, P
 	m_pRigidDynamic->userData = &m_iColliderIndex;
 }
 
-void CPhysXCollider::Create_StaticActor(PHYSXCOLLIDERDESC& PhysXColliderDesc, PxTransform Transform)
+void CPhysXCollider::Create_StaticActor(PHYSXCOLLIDERDESC& tPhysXColliderDesc, PxTransform Transform)
 {
 	m_pRigidStatic = GET_SINGLE(CPhysX_Manager)->Create_StaticActor(Transform);
 	m_pGeometry = Create_Geometry();
 
-	const PxShapeFlags shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE;
+	PxShapeFlags shapeFlags;
+
+	if (tPhysXColliderDesc.bTrigger)
+	{
+		shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eTRIGGER_SHAPE;
+	}
+	else
+	{
+		shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE;
+	}
+
 	GET_SINGLE(CPhysX_Manager)->Create_Shape(*m_pGeometry, m_PhysXColliderDesc.pMaterial, shapeFlags, &m_pShape);
 
 	if (!m_pShape)

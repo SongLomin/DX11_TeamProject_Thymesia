@@ -47,6 +47,10 @@ public:
 	void	Tick(_float fTimeDelta);
 
 public:
+	void			Check_PhysXFilterGroup(const _uint In_iLeftLayer, const _uint In_iRightLayer);
+	_uint			Get_PhysXFilterGroup(const _uint In_iIndex);
+
+public:
 	// Transform 에는 (float3)위치와 (float4)쿼터니온이 들어간다.
 	HRESULT			Create_Scene(Scene eScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));
 	HRESULT			Delete_Scene(Scene eScene);
@@ -106,8 +110,12 @@ private:
 	PxConvexMesh*			m_ShapeTemplate[SHAPE_END];
 	_bool					m_bSceneStart = false;
 
+private: /* For. Filter */
+	vector<_uint>			m_arrCheck;
+
+
 public:
-	CollisionSimulationEventCallBack* m_pCollisionSimulationEventCallBack;
+	//CollisionSimulationEventCallBack* m_pCollisionSimulationEventCallBack;
 
 private:
 	//void			Create_CheeseShape();

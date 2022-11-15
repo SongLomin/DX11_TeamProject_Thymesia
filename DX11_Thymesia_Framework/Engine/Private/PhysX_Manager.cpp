@@ -32,7 +32,7 @@ HRESULT CPhysX_Manager::Initialize()
 	//m_pMaterial = m_pPhysics->createMaterial(0.5f, 0.5f, 0.6f);
 	m_pMaterial = m_pPhysics->createMaterial(0.5f, 0.5f, -10.f);
 
-	m_pCollisionSimulationEventCallBack = DBG_NEW CollisionSimulationEventCallBack();
+	//m_pCollisionSimulationEventCallBack = DBG_NEW CollisionSimulationEventCallBack();
 	//if (nullptr != m_pScenes)
 	//	__debugbreak();
 
@@ -109,6 +109,63 @@ void CPhysX_Manager::Tick(_float fTimeDelta)
 	
 }
 
+void CPhysX_Manager::Check_PhysXFilterGroup(const _uint In_iLeftLayer, const _uint In_iRightLayer)
+{
+	_uint iRow = (_uint)In_iLeftLayer; // 행
+	_uint iCol = (_uint)In_iRightLayer; // 열
+
+	_uint iMax = iCol;
+	if (iRow > iCol)
+	{
+		iMax = iRow;
+	}
+
+	// 공간 할당
+	for (_uint i = (_uint)m_arrCheck.size(); i <= iMax; ++i)
+	{
+		m_arrCheck.emplace_back(0);
+	}
+
+	if (m_arrCheck[iRow] & (1 << iCol)) // 이미 그 자리가 1이면
+	{
+		m_arrCheck[iRow] &= ~(1 << iCol); // 빼주고
+		m_arrCheck[iCol] &= ~(1 << iRow); // 빼주고
+	}
+	else
+	{
+		m_arrCheck[iRow] |= (1 << iCol);
+		m_arrCheck[iCol] |= (1 << iRow);
+	}
+
+}
+
+_uint CPhysX_Manager::Get_PhysXFilterGroup(const _uint In_iIndex)
+{
+	return m_arrCheck[In_iIndex];
+}
+
+
+PxFilterFlags CollisionFilterShader(
+	PxFilterObjectAttributes attributes0, PxFilterData filterData0,
+	PxFilterObjectAttributes attributes1, PxFilterData filterData1,
+	PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize)
+{
+	// let triggers through
+	if (PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
+	{
+		pairFlags = PxPairFlag::eTRIGGER_DEFAULT;
+		return PxFilterFlag::eDEFAULT;
+	}
+	// generate contacts for all that were not filtered above
+	pairFlags = PxPairFlag::eCONTACT_DEFAULT;
+
+	// trigger the contact callback for pairs (A,B) where 
+	// the filtermask of A contains the ID of B and vice versa.
+	if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+		pairFlags |= PxPairFlag::eNOTIFY_TOUCH_FOUND;
+
+	return PxFilterFlag::eDEFAULT;
+}
 
 HRESULT CPhysX_Manager::Create_Scene(Scene eScene, PxVec3 Gravity)
 {
@@ -119,8 +176,8 @@ HRESULT CPhysX_Manager::Create_Scene(Scene eScene, PxVec3 Gravity)
 	// Set Dispatcher
 	m_pDispatcher = PxDefaultCpuDispatcherCreate(2);
 	sceneDesc.cpuDispatcher = m_pDispatcher;
-	sceneDesc.filterShader = PxDefaultSimulationFilterShader;
-	sceneDesc.simulationEventCallback = m_pCollisionSimulationEventCallBack;
+	sceneDesc.filterShader = CollisionFilterShader;
+	sceneDesc.simulationEventCallback = GET_SINGLE(CCollision_Manager)->Get_CollisionSimulationEventCallBack();
 
 	m_pScenes[eScene] = m_pPhysics->createScene(sceneDesc);
 
@@ -371,7 +428,7 @@ void CPhysX_Manager::OnDestroy()
 	}
 	m_pFoundation->release();
 
-	m_pCollisionSimulationEventCallBack->Release();
+	//m_pCollisionSimulationEventCallBack->Release();
 }
 
 void CPhysX_Manager::Free()

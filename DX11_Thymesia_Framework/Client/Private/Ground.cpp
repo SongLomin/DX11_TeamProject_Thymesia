@@ -1,7 +1,5 @@
 #include "stdafx.h"
-
 #include "Ground.h"
-
 #include "Shader.h"
 #include "Renderer.h"
 #include "Texture.h"
@@ -10,6 +8,7 @@
 #include "ModelData.h"
 #include "MeshData.h"
 #include "PhysXCollider.h"
+#include "Client_Presets.h"
 
 GAMECLASS_C(CGround)
 CLONE_C(CGround, CGameObject)
@@ -46,16 +45,8 @@ HRESULT CGround::Start()
 
 	m_pPhysXColliderCom.lock()->Init_MeshCollider(m_pGroundMeshData);
 
-	CPhysXCollider::PHYSXCOLLIDERDESC ColliderDesc;
-	ColliderDesc.eShape = PHYSXCOLLIDER_TYPE::MESHDATA;
-	ColliderDesc.fDensity = 0.f;
-	ColliderDesc.eActorType = PHYSXACTOR_TYPE::STATIC;
-	PxMaterial* pMaterial = nullptr;
-	GAMEINSTANCE->Create_Material(0.f, 0.f, 0.f, &pMaterial);
-	ColliderDesc.pMaterial = pMaterial;
-	ColliderDesc.vAngles = { 0.f, 0.f, 0.f, 0.f };
-	ColliderDesc.vPosition = { 0.f, 0.f, 0.f, 1.f };
-	ColliderDesc.vScale = { 1.f, 1.f, 1.f };
+	PHYSXCOLLIDERDESC ColliderDesc;
+	Preset::PhysXColliderDesc::GroundSetting(ColliderDesc, false);
 
 	m_pPhysXColliderCom.lock()->CreatePhysXActor(ColliderDesc);
 	m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();

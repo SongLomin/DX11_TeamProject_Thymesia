@@ -12,25 +12,6 @@ class ENGINE_DLL CPhysXCollider final : public CComponent
 	DECLARE_CLONABLE(CPhysXCollider, CComponent);
 
 public:
-	typedef struct PhysXColliderDesc
-	{
-		PhysXColliderDesc() 
-		{
-			ZeroMemory(this, sizeof(PhysXColliderDesc));
-		}
-
-		PxConvexMesh*		pConvecMesh;
-		PxMaterial*			pMaterial;
-		PHYSXACTOR_TYPE		eType;
-		XMVECTOR			vPosition;
-		XMVECTOR			vAngles;
-		PHYSXCOLLIDER_TYPE		eShape;
-		XMVECTOR			vScale;
-		float				fDensity;
-
-	}PHYSXCOLLIDERDESC;
-
-public:
 	_vector	Get_Position();
 	_vector	Get_Velocity();
 	_float	Get_Mess();
@@ -111,6 +92,7 @@ private:
 
 	PxGeometry*				m_pGeometry = nullptr;
 	PxShape*				m_pShape = nullptr;
+	PxFilterData			m_FilterData;
 
 public:
 	void		CreatePhysXActor(PHYSXCOLLIDERDESC& PhysXColliderDesc);

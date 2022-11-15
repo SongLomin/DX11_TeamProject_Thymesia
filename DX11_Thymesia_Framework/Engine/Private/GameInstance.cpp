@@ -549,6 +549,11 @@ void CGameInstance::StopAll()
 	m_pSound_Manager->StopAll();
 }
 
+void CGameInstance::Check_PhysXFilterGroup(const _uint In_iLeftLayer, const _uint In_iRightLayer)
+{
+	m_pPhysX_Manager->Check_PhysXFilterGroup(In_iLeftLayer, In_iRightLayer);
+}
+
 HRESULT CGameInstance::Create_Scene(CPhysX_Manager::Scene eScene, PxVec3 Gravity)
 {
 	return m_pPhysX_Manager->Create_Scene(eScene, Gravity);

@@ -76,7 +76,7 @@ public:
 	
 public:
 	void Init_Model(const char* sModelKey, const string& szTexturePath = "", _uint iTimeScaleLayer = 0);
-	HRESULT Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eType);
+	HRESULT Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eActorType);
 	weak_ptr<CBoneNode> Find_BoneNode(const string& pBoneName);
 	void Reset_DeltaBonePositions();
 	void Set_RootNode(const string& pBoneName, const _bool& In_bRoot = true);

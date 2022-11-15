@@ -346,4 +346,24 @@ namespace Engine
 		_float	fFadeMaxTime;
 		_float	fDelayTime;
 	};
+
+	typedef struct PhysXColliderDesc
+	{
+		PhysXColliderDesc()
+		{
+			ZeroMemory(this, sizeof(PhysXColliderDesc));
+		}
+
+		PxConvexMesh* pConvecMesh;
+		PxMaterial* pMaterial;
+		PHYSXACTOR_TYPE		eActorType;
+		XMVECTOR			vPosition;
+		XMVECTOR			vAngles;
+		PHYSXCOLLIDER_TYPE	eShape;
+		_uint				iFilterType;
+		XMVECTOR			vScale;
+		float				fDensity;
+		_bool				bTrigger;
+
+	}PHYSXCOLLIDERDESC;
 }

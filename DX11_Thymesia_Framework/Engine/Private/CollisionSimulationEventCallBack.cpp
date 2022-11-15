@@ -25,7 +25,16 @@ void CollisionSimulationEventCallBack::onContact(const PxContactPairHeader& pair
 // 트리거를 쓰는 얘들은 OnTrigger
 void CollisionSimulationEventCallBack::onTrigger(PxTriggerPair* pairs, PxU32 count)
 {
-	cout << "OnTrigger" << endl;
+	while (count--)
+	{
+		const PxTriggerPair& current = *pairs++;
+		if (current.status & PxPairFlag::eNOTIFY_TOUCH_FOUND)
+			cout << "Shape is entering trigger volume\n";
+		if (current.status & PxPairFlag::eNOTIFY_TOUCH_LOST)
+			cout << "Shape is leaving trigger volume\n";
+		if (current.status & PxPairFlag::eNOTIFY_TOUCH_PERSISTS)
+			cout << "파시스트 놈들\n";
+	}
 }
 
 void CollisionSimulationEventCallBack::onAdvance(const PxRigidBody* const* bodyBuffer, const PxTransform* poseBuffer, const PxU32 count)

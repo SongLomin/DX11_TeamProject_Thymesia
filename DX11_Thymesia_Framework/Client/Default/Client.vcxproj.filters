@@ -443,6 +443,12 @@
     <ClInclude Include="..\Public\Weapon.h">
       <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Preset_PhysXColliderDesc.h">
+      <Filter>06. DataPreset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Client_Presets.h">
+      <Filter>99. Defines</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -860,6 +866,9 @@
     <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Preset_PhysXColliderDesc.cpp">
+      <Filter>06. DataPreset</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1395,6 +1404,9 @@
     </Filter>
     <Filter Include="02. GameObject\99. Other\04. EditGroupProp">
       <UniqueIdentifier>{8879bd77-4670-491b-803a-0ddb8d81c2e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. DataPreset">
+      <UniqueIdentifier>{8965fd35-6c2d-4080-8e05-2281755353c3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -45,6 +45,10 @@ HRESULT CMainApp::Initialize()
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::TRIGGER, (_uint)COLLISION_LAYER::PLAYER);
 
 
+	GAMEINSTANCE->Check_PhysXFilterGroup((_uint)COLLISION_LAYER::PLAYER, (_uint)COLLISION_LAYER::MONSTER);
+
+
+
 	if (FAILED(Ready_Prototype_Component()))
 		return E_FAIL;
 

@@ -8,6 +8,7 @@
 #include "GameManager.h"
 #include "Model.h"
 #include "PhysXCollider.h"
+#include "Client_Presets.h"
 
 GAMECLASS_C(CLight_Prop)
 CLONE_C(CLight_Prop, CGameObject)
@@ -62,20 +63,8 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 
 	m_iLightIndex = GAMEINSTANCE->Add_Light(m_tLightDesc);
 
-
-	CPhysXCollider::PHYSXCOLLIDERDESC tPhysxColliderDesc;
-	tPhysxColliderDesc.eShape = PHYSXCOLLIDER_TYPE::SPHERE;
-	tPhysxColliderDesc.eActorType = PHYSXACTOR_TYPE::DYNAMIC;
-	tPhysxColliderDesc.fDensity = 10.f;
-	PxConvexMesh* pCylinderMesh = nullptr;
-	GAMEINSTANCE->Create_CylinderMesh(0.3f, 0.3f, 1.f, &pCylinderMesh);
-	tPhysxColliderDesc.pConvecMesh = pCylinderMesh;
-	tPhysxColliderDesc.vAngles = { 0.f, 0.f, 0.f, 0.f };
-	tPhysxColliderDesc.vPosition = { 3.f, 15.f, 3.f, 1.f };
-	tPhysxColliderDesc.vScale = { 0.2f, 0.2f, 0.2f };
-	PxMaterial* pMaterial = nullptr;
-	GAMEINSTANCE->Create_Material(0.f, 0.f, 0.f, &pMaterial);
-	tPhysxColliderDesc.pMaterial = pMaterial;
+	PHYSXCOLLIDERDESC tPhysxColliderDesc;
+	Preset::PhysXColliderDesc::TestLightPropSetting(tPhysxColliderDesc);
 
 	m_pPhysXColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
 	m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene({ 10.f, 10.f, 10.f });

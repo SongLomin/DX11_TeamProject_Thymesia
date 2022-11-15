@@ -198,6 +198,7 @@
     <ClInclude Include="..\Public\ClientLevel.h" />
     <ClInclude Include="..\Public\Client_Components.h" />
     <ClInclude Include="..\Public\Client_GameObjects.h" />
+    <ClInclude Include="..\Public\Client_Presets.h" />
     <ClInclude Include="..\Public\Client_Structs.h" />
     <ClInclude Include="..\Public\Client_Windows.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusStateBase.h" />
@@ -302,6 +303,7 @@
     <ClInclude Include="..\Public\Player_MPBar.h" />
     <ClInclude Include="..\Public\Player_PotionUI.h" />
     <ClInclude Include="..\Public\Player_ProgressBar.h" />
+    <ClInclude Include="..\Public\Preset_PhysXColliderDesc.h" />
     <ClInclude Include="..\Public\PreViewAnimationModel.h" />
     <ClInclude Include="..\Public\PreView_Prop.h" />
     <ClInclude Include="..\Public\Prop.h" />
@@ -451,6 +453,7 @@
     <ClCompile Include="..\Private\Player_MPBar.cpp" />
     <ClCompile Include="..\Private\Player_PotionUI.cpp" />
     <ClCompile Include="..\Private\Player_ProgressBar.cpp" />
+    <ClCompile Include="..\Private\Preset_PhysXColliderDesc.cpp" />
     <ClCompile Include="..\Private\PreViewAnimationModel.cpp" />
     <ClCompile Include="..\Private\PreView_Prop.cpp" />
     <ClCompile Include="..\Private\Prop.cpp" />

@@ -8,6 +8,7 @@
 #include "PlayerStateBase.h"
 #include "Attack_Area.h"
 #include "PhysXCollider.h"
+#include "Client_Presets.h"
 
 
 GAMECLASS_C(CPlayer);
@@ -53,29 +54,18 @@ HRESULT CPlayer::Initialize(void* pArg)
     m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
 
 
-    CPhysXCollider::PHYSXCOLLIDERDESC tPhysxColliderDesc;
-    tPhysxColliderDesc.eShape = PHYSXCOLLIDER_TYPE::CYLINDER;
-    tPhysxColliderDesc.eActorType = PHYSXACTOR_TYPE::DYNAMIC;
-    tPhysxColliderDesc.fDensity = 10.f;
-    PxConvexMesh* pCylinderMesh = nullptr;
-    GAMEINSTANCE->Create_CylinderMesh(0.3f, 0.3f, 1.f, &pCylinderMesh);
-    tPhysxColliderDesc.pConvecMesh = pCylinderMesh;
-    tPhysxColliderDesc.vAngles = { 0.f, 0.f, 0.f, 0.f };
-    tPhysxColliderDesc.vPosition = m_pTransformCom.lock()->Get_Position();
-    tPhysxColliderDesc.vScale = { 1.f, 1.f, 1.f };
-    PxMaterial* pMaterial = nullptr;
-    GAMEINSTANCE->Create_Material(0.5f, 0.5f, 0.5f, &pMaterial);
-    tPhysxColliderDesc.pMaterial = pMaterial;
+    PHYSXCOLLIDERDESC tPhysxColliderDesc;
 
+    Preset::PhysXColliderDesc::PlayerBodySetting(tPhysxColliderDesc, m_pTransformCom);
     m_pPhysXColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
     m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
 
-    Set_OwnerForMyComponents();
+    Preset::PhysXColliderDesc::PlayerBodyTriggerSetting(tPhysxColliderDesc, m_pTransformCom);
+    m_pPhysXTriggerColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
+    m_pPhysXTriggerColliderCom.lock()->Add_PhysXActorAtScene();
 
     GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::PLAYER, Cast<CGameObject>(m_this));
-
     m_eAttackCollisionLayer = COLLISION_LAYER::PLAYER_ATTACK;
-
     return S_OK;
 }
 
