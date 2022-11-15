@@ -34,8 +34,6 @@ HRESULT CEditGroupProp::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	Load_ResourceList(m_AnimList   , "../Bin/MapTool_MeshInfo/ANIM/"     , ".bin");
-	Load_ResourceList(m_NonAnimList, "../Bin/MapTool_MeshInfo/NONANIM/"  , ".bin");
 	Load_ResourceList(m_JsonList   , "../Bin/MapTool_MeshInfo/Json_Desc/", ".json");
 
 	m_PropPrototype.emplace(typeid(CStatic_Prop).name()				, PROPS_PROTOTYPE(typeid(CStatic_Prop).hash_code()			 , CStatic_Prop::Create()));

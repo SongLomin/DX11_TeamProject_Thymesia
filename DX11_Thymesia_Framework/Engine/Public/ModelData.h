@@ -10,7 +10,6 @@ BEGIN(Engine)
 
 struct ENGINE_DLL MODEL_DATA
 {
-
     Assimp::Importer                    AiImporter;
     //const aiScene*                      pAiSceneModel = nullptr;
     
@@ -30,6 +29,8 @@ struct ENGINE_DLL MODEL_DATA
 
     string                              szModelFilePath;
     string                              szModelFileName;
+
+    MESH_VTX_INFO                       VertexInfo;
     
 
     HRESULT Make_ModelData(const char* szFilePath, const MODEL_TYPE& eInModelType, _fmatrix TransformMatrix, _bool bAnimZero = false);
@@ -44,9 +45,8 @@ public:
     void Load_FromBinary();
 
     void Debug_AnimationLog(ofstream& os);
-
+    void Compute_Center(MESH_VTX_INFO& _tVertexInfo);
 
 };
-
 
 END

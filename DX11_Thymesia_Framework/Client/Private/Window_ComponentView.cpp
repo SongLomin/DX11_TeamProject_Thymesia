@@ -24,7 +24,6 @@ HRESULT CWindow_ComponentView::Initialize()
 void CWindow_ComponentView::Start()
 {
 	GET_SINGLE(CWindow_HierarchyView)->CallBack_ListClick += bind(&CWindow_ComponentView::Call_Click_GameObject, this, placeholders::_1);
-
 }
 
 

@@ -22,7 +22,6 @@ HRESULT CWindow_HierarchyView::Initialize()
 void CWindow_HierarchyView::Start()
 {
 	GET_SINGLE(CWindow_PrototypeView)->CallBack_ListClick += bind(&CWindow_HierarchyView::Call_Add_GameObject, this, placeholders::_1, placeholders::_2);
-
 }
 
 
@@ -63,16 +62,13 @@ HRESULT CWindow_HierarchyView::Render()
 		strcat_s(szIndexedName, elem.TypeName.c_str());
 
 		if (ImGui::Selectable(szIndexedName))
-		{
-			
+		{		
 			CallBack_ListClick(elem);
 		}
 
 		iIndex++;
 	}
 	
-
-
 	__super::End();
 
 	return S_OK;
@@ -89,16 +85,14 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 
 	for (auto& Elem_Desc : m_pGameObjects)
 	{
-		Out_Json["GameObject"][iIndex]["Name"] = Elem_Desc.TypeName;
-		Out_Json["GameObject"][iIndex]["Hash"] = Elem_Desc.HashCode;
+		Out_Json["GameObject"][iIndex]["Name"]				= Elem_Desc.TypeName;
+		Out_Json["GameObject"][iIndex]["Hash"]				= Elem_Desc.HashCode;
 		Out_Json["GameObject"][iIndex]["Setting"]["Enable"] = Elem_Desc.pInstance.lock()->Get_Enable();
 		Out_Json["GameObject"][iIndex]["Component"]["Transform"].emplace();
 
 		Elem_Desc.pInstance.lock()->Write_Json(Out_Json["GameObject"][iIndex]);
 		iIndex++;
 	}
-
-
 }
 
 void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
