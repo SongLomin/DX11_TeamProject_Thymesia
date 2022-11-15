@@ -23,15 +23,29 @@ private:
         EDIT_END
     };
 
+
     typedef struct tag_PropInfo
     {
         weak_ptr<CProp>     pProp;
-        string              szName = "";
-        _hashcode           hash;
 
         _float3             vPosition[8];
         _uint3			    vIndicse[12];
+
+        tag_PropInfo() {}
     } PROPS_DESC;
+
+    typedef struct tag_Prop_Prototype
+    {
+        _hashcode           hash    = 0;
+        weak_ptr<CProp>     pProp;
+
+        tag_Prop_Prototype() {}
+        tag_Prop_Prototype(_hashcode _hash, weak_ptr<CProp> _pProp)
+            : hash      (_hash)
+            , pProp     (_pProp)
+        {}
+
+    } PROPS_PROTOTYPE;
 
 public:
     virtual HRESULT Initialize_Prototype() override;
@@ -45,10 +59,10 @@ public:
     virtual void   OnEventMessage(_uint iArg) override;
 
 private:
+    void    View_SelectPropObjectType();
     void    View_EditMode();
-    void    View_CrateProp();
+    void    View_SelectModelComponent();
     void    View_PickingInfo();
-    void    View_ModelList();
 
 private:
     void    Pick_Prop();
@@ -63,14 +77,20 @@ private:
     void Load_Json(string _szName);
 
 private:
-    typedef vector<string>        RESOURCE_LIST;
-    typedef vector<PROPS_DESC>    PROPS_INFOS;
+    typedef map<string, PROPS_PROTOTYPE>        PROP_PROTOTYPE;
+    typedef vector<string>                      RESOURCE_LIST;
+    typedef vector<PROPS_DESC>                  PROPS_INFOS;
 
     PROPS_INFOS         m_PropList;
 
     EDIT_MODE           m_eEditMode         = EDIT_MODE::NON;
     _int                m_iPickingIndex     = -1;
 
+    string              m_szSelectPropType  = "CStatic_Prop";
+    string              m_szSelectModelName = "";
+    _float4             m_vPickingPos       = _float4(0.f, 0.f, 0.f, 0.f);
+
+    PROP_PROTOTYPE      m_PropPrototype;
     RESOURCE_LIST       m_NonAnimList;
     RESOURCE_LIST       m_AnimList;
     RESOURCE_LIST       m_JsonList;

@@ -277,7 +277,7 @@ void CEditGround::SetUp_Info()
 {
 	ImGui::Text("Size X, Z, Pitch");
 	ImGui::DragFloat3("##Size", &m_vBufferInfo.x, 1.f);
-	ImGui::Separator();
+	ImGui::Text("");
 
 	if (ImGui::Button("Create"))
 	{

@@ -516,9 +516,6 @@
     <Filter Include="01. Elements\03. Component\04. Texture">
       <UniqueIdentifier>{4312208c-b194-46ff-bbb2-e37a33409ecb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Elements\03. Component\05. Model">
-      <UniqueIdentifier>{c85fd47a-9db4-498a-9f79-6c3a9c7dbfe1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Elements\99. SuperClass">
       <UniqueIdentifier>{59b16612-71f1-4df7-93bc-eda58ebcaccd}</UniqueIdentifier>
     </Filter>
@@ -656,6 +653,9 @@
     </Filter>
     <Filter Include="01. Elements\98. Other\NewFilter1">
       <UniqueIdentifier>{a4e97afd-f6f4-4426-bf35-d7fec2cc53e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Elements\03. Component\05. Model">
+      <UniqueIdentifier>{c85fd47a-9db4-498a-9f79-6c3a9c7dbfe1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

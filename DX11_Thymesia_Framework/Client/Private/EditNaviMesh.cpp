@@ -27,7 +27,6 @@ HRESULT CEditNaviMesh::Initialize(void* pArg)
     m_pCellShaderCom = Add_Component<CShader>();
     m_pCellShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_Cell"), VTXCUBETEX_DECLARATION::Element, VTXCUBETEX_DECLARATION::iNumElements);
 
-
     return S_OK;
 }
 
@@ -446,7 +445,6 @@ void CEditNaviMesh::Select_SingleHeightPoint(_float fTimeDelta)
 _int CEditNaviMesh::Select_PickPoint() const
 {
     RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
-    cout << MouseRayInWorldSpace.vOrigin.x << " , " << MouseRayInWorldSpace.vOrigin.y << " , " << MouseRayInWorldSpace.vOrigin.z << endl;
 
     for (_size_t i = 0; i < m_pPickPointColliderComs.size(); ++i)
     {
