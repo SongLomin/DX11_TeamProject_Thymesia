@@ -4,6 +4,7 @@
 #include "Client_GameObjects.h"
 
 #include "Model.h"
+#include "Transform.h"
 
 IMPLEMENT_SINGLETON(CWindow_HierarchyView)
 
@@ -24,7 +25,6 @@ void CWindow_HierarchyView::Start()
 	GET_SINGLE(CWindow_PrototypeView)->CallBack_ListClick += bind(&CWindow_HierarchyView::Call_Add_GameObject, this, placeholders::_1, placeholders::_2);
 }
 
-
 void CWindow_HierarchyView::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
@@ -40,32 +40,13 @@ void CWindow_HierarchyView::Tick(_float fTimeDelta)
 			iter++;
 		}
 	}
-
-	for (auto iter = m_pGameObjects.begin(); iter != m_pGameObjects.end();)
-	{
-		weak_ptr<CModel> pModelCom = (*iter).pInstance.lock()->Get_Component<CModel>();
-
-		if (pModelCom.lock())
-		{
-			continue;
-		}
-
-		if (pModelCom.lock()->Check_Picking(마우스 레이))
-		{
-			CallBack_ListClick((*iter));
-			break;
-		}
-	}
-
 }
 
 HRESULT CWindow_HierarchyView::Render()
 {
-	
 	if (FAILED(__super::Begin()))
 		return E_FAIL;
 
-	//ImGui::Text("UI_TOOL");
 	ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 	
 	_uint iIndex = 0;
@@ -81,6 +62,19 @@ HRESULT CWindow_HierarchyView::Render()
 		if (ImGui::Selectable(szIndexedName))
 		{		
 			CallBack_ListClick(elem);
+
+
+			m_iPreSelectIndex = iIndex;
+		}
+
+		if (elem.HashCode == typeid(CEditGroupProp).hash_code())
+		{
+			if (m_iPreSelectIndex == iIndex)
+				elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
+			else
+				elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_NONE);
+
+			elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_SUB);
 		}
 
 		iIndex++;
@@ -102,6 +96,12 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 
 	for (auto& Elem_Desc : m_pGameObjects)
 	{
+		if (typeid(CEditGroupProp).hash_code() == Elem_Desc.HashCode)
+		{
+			Elem_Desc.pInstance.lock()->Write_Json(Out_Json["GameObject"][iIndex]);
+			continue;
+		}
+
 		Out_Json["GameObject"][iIndex]["Name"]				= Elem_Desc.TypeName;
 		Out_Json["GameObject"][iIndex]["Hash"]				= Elem_Desc.HashCode;
 		Out_Json["GameObject"][iIndex]["Setting"]["Enable"] = Elem_Desc.pInstance.lock()->Get_Enable();
@@ -140,12 +140,12 @@ void CWindow_HierarchyView::Call_Add_GameObject_Internal(const _hashcode& TypeHa
 	{
 		CCamera::CAMERADESC			CameraDesc;
 		ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
-		CameraDesc.vEye = _float4(0.0f, 10.f, -10.f, 1.f);
-		CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
-		CameraDesc.fFovy = XMConvertToRadians(65.0f);
-		CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
-		CameraDesc.fNear = 0.2f;
-		CameraDesc.fFar = 300.f;
+		CameraDesc.vEye		= _float4(0.0f, 10.f, -10.f, 1.f);
+		CameraDesc.vAt		= _float4(0.f, 0.f, 0.f, 1.f);
+		CameraDesc.fFovy	= XMConvertToRadians(65.0f);
+		CameraDesc.fAspect	= (_float)g_iWinCX / g_iWinCY;
+		CameraDesc.fNear	= 0.2f;
+		CameraDesc.fFar		= 300.f;
 
 		pArg = &CameraDesc;
 	}
@@ -155,7 +155,6 @@ void CWindow_HierarchyView::Call_Add_GameObject_Internal(const _hashcode& TypeHa
 
 	m_pGameObjects.push_back({ TypeHash, TypeName, pNewGameObject });
 }
-
 
 void CWindow_HierarchyView::OnLevelLoad()
 {

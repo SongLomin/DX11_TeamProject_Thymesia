@@ -26,6 +26,8 @@ private:
     typedef struct tag_PropInfo
     {
         weak_ptr<CProp>     pProp;
+        _hashcode           hash;
+        string              szName;
 
         _float3             vPosition[8];
         _uint3			    vIndicse[12];
@@ -65,6 +67,7 @@ private:
 
 private:
     void    Pick_Prop();
+    _bool   Check_Click(RAY _Ray, MESH_VTX_INFO _VtxInfo, _matrix _WorldMatrix);
 
 private:
     void Load_ResourceList(vector<string>& In_List, const filesystem::path& In_Path, string _szCutName = "");
@@ -75,12 +78,15 @@ private:
     void Save_Json(string _szName);
     void Load_Json(string _szName);
 
+    virtual void Write_Json(json& Out_Json) override;
+
 private:
     typedef map<string, PROPS_PROTOTYPE>        PROP_PROTOTYPE;
     typedef vector<string>                      RESOURCE_LIST;
     typedef vector<PROPS_DESC>                  PROPS_INFOS;
 
     PROPS_INFOS         m_PropList;
+    _bool               m_bSubDraw          = false;
 
     EDIT_MODE           m_eEditMode         = EDIT_MODE::NON;
     _int                m_iPickingIndex     = -1;
@@ -90,8 +96,7 @@ private:
     _float4             m_vPickingPos       = _float4(0.f, 0.f, 0.f, 0.f);
 
     PROP_PROTOTYPE      m_PropPrototype;
-    RESOURCE_LIST       m_NonAnimList;
-    RESOURCE_LIST       m_AnimList;
+    RESOURCE_LIST       m_ModelList;
     RESOURCE_LIST       m_JsonList;
 
 public:

@@ -32,6 +32,9 @@ public:
 public:
 	list<GAMEOBJECT_DESC> m_pGameObjects;
 
+private:
+	_uint	m_iPreSelectIndex = 0;
+
 public:
 	virtual void OnLevelLoad() override;
 

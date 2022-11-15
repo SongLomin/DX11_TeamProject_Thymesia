@@ -110,6 +110,7 @@ void MODEL_DATA::Bake_Binary()
     write_typed_data(os, iNumMaterials);
     write_typed_data(os, iNumAnimations);
     write_typed_data(os, eModelType);
+    write_typed_data(os, VertexInfo);
 
     RootNode->Bake_Binary(os);
 
@@ -129,7 +130,6 @@ void MODEL_DATA::Bake_Binary()
     }
     
     os.close();
-
 }
 
 void MODEL_DATA::Load_FromBinary()
@@ -157,7 +157,7 @@ void MODEL_DATA::Load_FromBinary()
     read_typed_data(is, iNumMaterials);
     read_typed_data(is, iNumAnimations);
     read_typed_data(is, eModelType);
-
+    read_typed_data(is, VertexInfo);
     
     RootNode = make_shared<NODE_DATA>();
     RootNode->Load_FromBinary(is);
@@ -253,8 +253,7 @@ HRESULT MODEL_DATA::Load_FromAssimp(const _bool In_bAnimZero)
     }
 
 
-        /* For Mesh */
-
+    /* For Mesh */
     iNumMeshs = pAiSceneModel->mNumMeshes;
 
     // 메쉬가 없음.
