@@ -41,6 +41,23 @@ void CWindow_HierarchyView::Tick(_float fTimeDelta)
 			iter++;
 		}
 	}
+
+	for (auto iter = m_pGameObjects.begin(); iter != m_pGameObjects.end();)
+	{
+		weak_ptr<CModel> pModelCom = (*iter).pInstance.lock()->Get_Component<CModel>();
+
+		if (pModelCom.lock())
+		{
+			continue;
+		}
+
+		if (pModelCom.lock()->Check_Picking(마우스 레이))
+		{
+			CallBack_ListClick((*iter));
+			break;
+		}
+	}
+
 }
 
 HRESULT CWindow_HierarchyView::Render()
