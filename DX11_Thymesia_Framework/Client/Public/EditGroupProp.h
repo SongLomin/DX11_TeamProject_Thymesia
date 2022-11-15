@@ -23,7 +23,6 @@ private:
         EDIT_END
     };
 
-
     typedef struct tag_PropInfo
     {
         weak_ptr<CProp>     pProp;

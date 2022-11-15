@@ -1,6 +1,6 @@
 #include "MeshData.h"
 
-HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAiMesh, const _fmatrix& In_TransformMatrix)
+HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAiMesh, const _fmatrix& In_TransformMatrix, MESH_VTX_INFO* In_pVertexInfo)
 {
     szName = In_pAiMesh->mName.C_Str();
     eModelType = In_eModelType;
@@ -21,8 +21,6 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
 
         pAnimVertices = shared_ptr<VTXANIM[]>(new VTXANIM[iNumVertices]);
 
-        _float3 vMaxPos, vMinPos, vCenterPos;
-
         for (_uint i = 0; i < iNumVertices; ++i)
         {
             memcpy(&pAnimVertices[i].vPosition, &In_pAiMesh->mVertices[i], sizeof(_float3));
@@ -34,15 +32,9 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
             memcpy(&pAnimVertices[i].vTexUV, &In_pAiMesh->mTextureCoords[0][i], sizeof(_float2));
             memcpy(&pAnimVertices[i].vTangent, &In_pAiMesh->mTangents[i], sizeof(_float3));
 
-
-            // TODO : Map Tool Info, For Test
-            Check_Position(vMaxPos, pVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft < _fRight; });
-            Check_Position(vMinPos, pVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft > _fRight; });               
+            Check_Position(In_pVertexInfo->vMax, pVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft < _fRight; });
+            Check_Position(In_pVertexInfo->vMin, pVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft > _fRight; });
         }
-
-        // TODO : Map Tool Info, For Test
-        Compute_Center(vMaxPos, vMinPos, vCenterPos);
-        Bake_MeshInfo(vMaxPos, vMinPos, vCenterPos);
 
         for (_uint i = 0; i < iNumBones; ++i)
         {
@@ -117,14 +109,9 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
                 pVertices[i].vTangent = { 0.f, 0.f, 0.f };
             }
 
-            // TODO : Map Tool Info, For Test
-            Check_Position(vMaxPos, pVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft < _fRight; });
-            Check_Position(vMinPos, pVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft > _fRight; });
+            Check_Position(In_pVertexInfo->vMax, pVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft < _fRight; });
+            Check_Position(In_pVertexInfo->vMin, pVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft > _fRight; });
         }
-
-        // TODO : Map Tool Info, For Test
-        Compute_Center(vMaxPos, vMinPos, vCenterPos);
-        Bake_MeshInfo(vMaxPos, vMinPos, vCenterPos);
     }
 
     else if (MODEL_TYPE::NAVI == In_eModelType)
@@ -283,34 +270,6 @@ void MESH_DATA::Load_FromBinary(ifstream& is)
 
 }
 
-void MESH_DATA::Bake_MeshInfo(_float3 _vMaxPos, _float3 _vMinPos, _float3 _vCenterPos)
-{
-    string szBinFilePath = "../Bin/MapTool_MeshInfo/";
-
-    switch (eModelType)
-    {
-        case MODEL_TYPE::NONANIM : szBinFilePath += "NONANIM/"; break;
-        case MODEL_TYPE::ANIM    : szBinFilePath += "ANIM/";    break;
-        case MODEL_TYPE::GROUND  : szBinFilePath += "GROUND/";  break;
-
-        default:
-            return;
-    }
-
-    szBinFilePath += szName + ".bin";
-
-    ofstream os(szBinFilePath, ios::binary);
-
-    if (!os.is_open())
-        return;
-
-    write_typed_data(os, _vMaxPos);
-    write_typed_data(os, _vMinPos);
-    write_typed_data(os, _vCenterPos);
-
-    os.close();
-}
-
 void MESH_DATA::Check_Position(_float3& _vRecodePosion, _float3 _vValue, _bool(*_pFncPtr)(_float, _float))
 {
     if (_pFncPtr(_vRecodePosion.x, _vValue.x))
@@ -321,12 +280,4 @@ void MESH_DATA::Check_Position(_float3& _vRecodePosion, _float3 _vValue, _bool(*
 
     if (_pFncPtr(_vRecodePosion.z, _vValue.z))
         _vRecodePosion.z = _vValue.z;
-}
-
-void MESH_DATA::Compute_Center(_float3 _vMaxPos, _float3 _vMinPos, _float3& _vCenterOut)
-{
-    _vector vDist      = (XMLoadFloat3(&_vMaxPos) + XMLoadFloat3(&_vMinPos)) * 0.5f;
-    _vector vCentorPos = XMLoadFloat3(&_vMinPos) + vDist;
-
-    XMStoreFloat3(&_vCenterOut, vCentorPos);
 }
