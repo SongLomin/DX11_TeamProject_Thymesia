@@ -16,8 +16,20 @@ protected:
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual void	Start() override;
 
+public:
+	void Tick(_float fTimeDelta);
+	// void Set_OwnerTransform(shared_ptr<CTransform> pTransform);
+
 private:
-	void Free();
+	_bool m_bTrailOn;
+	_uint m_iVtxCount;
+	_float4 m_vLocalSwordLow;
+	_float4 m_vLocalSwordHigh;
+	// class weak_ptr<CTransform> m_pOwnerTransform;
+	// class weak_ptr<CHierarchyNode>
+
+private:
+	// void Free();
 };
 
 END

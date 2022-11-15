@@ -127,7 +127,7 @@ if (m_bTrailOn)
          DEVICE_CONTEXT->Unmap(m_pVB.Get(), 0);
       }
    }
-   else
+else
    {
       // 트레일 버퍼 꺼지면 천천히 지움
       _uint   iRemoveCount = 2;

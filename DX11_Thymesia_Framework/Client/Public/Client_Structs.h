@@ -9,10 +9,16 @@ namespace Client
 		// TODO : for imgui movements -> remove after finishing mesh effect
 		_bool		bOnFocus;
 		_float		fSpeedPerSec;
-		// _float		fRotationPerSec;
+		_float		fRotationPerSec;
 		_bool		bSyncStartPositionToController;
-		// _bool		bSyncStartRotationToController;
+		_bool		bSyncStartRotationToController;
 
+		enum class ValueForRotation
+		{
+			x, y, z, ValueForRotation_END
+		};
+
+		_int iValueForRotation;
 		//enum AxisForRotation
 		//{
 		//	Axis_X, Axis_Y, Axis_Z,
