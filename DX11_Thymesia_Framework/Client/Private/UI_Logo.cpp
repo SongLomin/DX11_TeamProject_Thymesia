@@ -168,9 +168,9 @@ void CUI_Logo::ChageButtonIndex(_uint iButtonIndex)
 
 void CUI_Logo::SelectButton(_uint iButtonIndex)
 {
-    LOGO_BUTTON_TYPE eType = (LOGO_BUTTON_TYPE)iButtonIndex;
+    LOGO_BUTTON_TYPE eActorType = (LOGO_BUTTON_TYPE)iButtonIndex;
 
-    switch (eType)
+    switch (eActorType)
     {
     case Client::CUI_Logo::LOGO_BUTTON_START_GAME:
         GAMEINSTANCE->Get_CurrentLevel().lock()->OnLevelExit();

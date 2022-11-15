@@ -34,7 +34,7 @@ HRESULT CTerrain::Initialize(void* pArg)
 
 	CPhysXCollider::PHYSXCOLLIDERDESC tPhysxColliderDesc;
 	tPhysxColliderDesc.eShape = PHYSXCOLLIDER_TYPE::BOX;
-	tPhysxColliderDesc.eType = PHYSXACTOR_TYPE::STATIC;
+	tPhysxColliderDesc.eActorType = PHYSXACTOR_TYPE::STATIC;
 	tPhysxColliderDesc.fDensity = 10.f;
 	tPhysxColliderDesc.vAngles = { 0.f, 0.f, 0.f, 0.f };
 	tPhysxColliderDesc.vPosition = { 0.f, 0.f, 0.f, 1.f };

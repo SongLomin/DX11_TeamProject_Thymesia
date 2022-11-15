@@ -49,7 +49,7 @@ HRESULT CGround::Start()
 	CPhysXCollider::PHYSXCOLLIDERDESC ColliderDesc;
 	ColliderDesc.eShape = PHYSXCOLLIDER_TYPE::MESHDATA;
 	ColliderDesc.fDensity = 0.f;
-	ColliderDesc.eType = PHYSXACTOR_TYPE::STATIC;
+	ColliderDesc.eActorType = PHYSXACTOR_TYPE::STATIC;
 	PxMaterial* pMaterial = nullptr;
 	GAMEINSTANCE->Create_Material(0.f, 0.f, 0.f, &pMaterial);
 	ColliderDesc.pMaterial = pMaterial;

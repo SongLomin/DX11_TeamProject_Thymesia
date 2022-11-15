@@ -439,7 +439,7 @@ void CModel::Load_FromJson(const json& In_Json)
 
 
 
-HRESULT CModel::Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eType)
+HRESULT CModel::Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eActorType)
 {
 	if (iMeshContainerIndex >= m_iNumMeshContainers)
 		assert(false);
@@ -448,9 +448,9 @@ HRESULT CModel::Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _
 	if (iMaterialIndex >= m_iNumMaterials)
 		assert(false);
 
-	if (!m_Materials[iMaterialIndex].pTextures[eType].lock().get())
+	if (!m_Materials[iMaterialIndex].pTextures[eActorType].lock().get())
 	{
-		if (aiTextureType::aiTextureType_DIFFUSE == eType)
+		if (aiTextureType::aiTextureType_DIFFUSE == eActorType)
 		{
 			vector<ComPtr<ID3D11ShaderResourceView>> NullTexture = GAMEINSTANCE->Get_TexturesFromKey("NullTexture");
 
@@ -471,7 +471,7 @@ HRESULT CModel::Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _
 		return E_FAIL;
 	}*/
 
-	return m_Materials[iMaterialIndex].pTextures[eType].lock()->Set_ShaderResourceView(pShader, pConstantName);
+	return m_Materials[iMaterialIndex].pTextures[eActorType].lock()->Set_ShaderResourceView(pShader, pConstantName);
 }
 
 weak_ptr<CBoneNode> CModel::Find_BoneNode(const string& pBoneName)

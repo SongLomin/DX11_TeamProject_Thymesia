@@ -192,7 +192,7 @@ void CVIBuffer_Model_Instance::Init_Particle(const _uint In_Size)
 #pragma endregion
 }
 
-HRESULT CVIBuffer_Model_Instance::Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eType)
+HRESULT CVIBuffer_Model_Instance::Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eActorType)
 {
 	if (iMeshContainerIndex >= m_iNumMeshContainers)
 		assert(false);
@@ -201,9 +201,9 @@ HRESULT CVIBuffer_Model_Instance::Bind_SRV(weak_ptr<CShader> pShader, const char
 	if (iMaterialIndex >= m_iNumMaterials)
 		assert(false);
 
-	if (!m_Materials[iMaterialIndex].pTextures[eType].lock().get())
+	if (!m_Materials[iMaterialIndex].pTextures[eActorType].lock().get())
 	{
-		if (aiTextureType::aiTextureType_DIFFUSE == eType)
+		if (aiTextureType::aiTextureType_DIFFUSE == eActorType)
 		{
 			vector<ComPtr<ID3D11ShaderResourceView>> NullTexture = GAMEINSTANCE->Get_TexturesFromKey("NullTexture");
 
@@ -224,7 +224,7 @@ HRESULT CVIBuffer_Model_Instance::Bind_SRV(weak_ptr<CShader> pShader, const char
 		return E_FAIL;
 	}*/
 
-	return m_Materials[iMaterialIndex].pTextures[eType].lock()->Set_ShaderResourceView(pShader, pConstantName);
+	return m_Materials[iMaterialIndex].pTextures[eActorType].lock()->Set_ShaderResourceView(pShader, pConstantName);
 }
 
 

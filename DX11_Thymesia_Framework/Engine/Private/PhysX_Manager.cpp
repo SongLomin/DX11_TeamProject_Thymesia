@@ -1,5 +1,6 @@
 #include "..\Public\PhysX_Manager.h"
 #include "GameInstance.h"
+#include "CollisionSimulationEventCallBack.h"
 
 IMPLEMENT_SINGLETON(CPhysX_Manager)
 
@@ -31,7 +32,7 @@ HRESULT CPhysX_Manager::Initialize()
 	//m_pMaterial = m_pPhysics->createMaterial(0.5f, 0.5f, 0.6f);
 	m_pMaterial = m_pPhysics->createMaterial(0.5f, 0.5f, -10.f);
 
-
+	m_pCollisionSimulationEventCallBack = DBG_NEW CollisionSimulationEventCallBack();
 	//if (nullptr != m_pScenes)
 	//	__debugbreak();
 
@@ -119,7 +120,7 @@ HRESULT CPhysX_Manager::Create_Scene(Scene eScene, PxVec3 Gravity)
 	m_pDispatcher = PxDefaultCpuDispatcherCreate(2);
 	sceneDesc.cpuDispatcher = m_pDispatcher;
 	sceneDesc.filterShader = PxDefaultSimulationFilterShader;
-	sceneDesc.simulationEventCallback = GET_SINGLE(CCollision_Manager)->Get_CollisionSimulationEventCallBack();
+	sceneDesc.simulationEventCallback = m_pCollisionSimulationEventCallBack;
 
 	m_pScenes[eScene] = m_pPhysics->createScene(sceneDesc);
 
@@ -197,17 +198,27 @@ HRESULT CPhysX_Manager::Change_Scene(Scene eNextScene, PxVec3 Gravity)
 	return S_OK;
 }
 
-PxRigidDynamic * CPhysX_Manager::Create_DynamicActor(const PxTransform & Transform, const PxGeometry & Geometry, Scene eScene, const PxReal& Density, const PxVec3 & velocity, PxMaterial* pMaterial)
+PxRigidDynamic * CPhysX_Manager::Create_DynamicActor(const PxTransform & Transform, const PxGeometry & Geometry,  PxMaterial* pMaterial)
 {
 	return PxCreateDynamic(*m_pPhysics, Transform, Geometry, *pMaterial, 10.f);
 
-	
+	//m_pPhysics->createRigidDynamic(Transform);
 	
 }
 
-PxRigidStatic* CPhysX_Manager::Create_StaticActor(const PxTransform & Transform, const PxGeometry & Geometry, Scene eScene, PxMaterial* pMaterial)
+PxRigidDynamic* CPhysX_Manager::Create_DynamicActor(const PxTransform& t)
+{
+	return m_pPhysics->createRigidDynamic(t);
+}
+
+PxRigidStatic* CPhysX_Manager::Create_StaticActor(const PxTransform & Transform, const PxGeometry & Geometry, PxMaterial* pMaterial)
 {
 	return PxCreateStatic(*m_pPhysics, Transform, Geometry, *pMaterial);
+}
+
+PxRigidStatic* CPhysX_Manager::Create_StaticActor(const PxTransform& t)
+{
+	return m_pPhysics->createRigidStatic(t);
 }
 
 void CPhysX_Manager::Add_DynamicActorAtCurrentScene(PxRigidDynamic& DynamicActor, const PxReal& Density, const PxVec3& In_MassSpaceInertiaTensor)
@@ -277,13 +288,9 @@ void CPhysX_Manager::Create_Material(_float fStaticFriction, _float fDynamicFric
 	*ppOut = m_pPhysics->createMaterial(fStaticFriction, fDynamicFriction, fRestitution);
 }
 
-void CPhysX_Manager::Create_Shape(const PxGeometry & Geometry, PxMaterial* pMaterial, PxShape ** ppOut)
+void CPhysX_Manager::Create_Shape(const PxGeometry & Geometry, PxMaterial* pMaterial, const PxShapeFlags In_ShapeFlags, PxShape ** ppOut)
 {
-	if (pMaterial)
-		*ppOut = m_pPhysics->createShape(Geometry, *pMaterial);
-	else
-		*ppOut = m_pPhysics->createShape(Geometry, *m_pMaterial);
-
+	*ppOut = m_pPhysics->createShape(Geometry, *pMaterial, false, In_ShapeFlags);
 }
 
 void CPhysX_Manager::Create_MeshFromTriangles(const PxTriangleMeshDesc& In_MeshDesc, PxTriangleMesh** ppOut)
@@ -363,6 +370,8 @@ void CPhysX_Manager::OnDestroy()
 		transport->release();
 	}
 	m_pFoundation->release();
+
+	m_pCollisionSimulationEventCallBack->Release();
 }
 
 void CPhysX_Manager::Free()

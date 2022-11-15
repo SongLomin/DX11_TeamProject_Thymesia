@@ -579,12 +579,6 @@ void CGameInstance::Create_Material(_float fStaticFriction, _float fDynamicFrict
 	m_pPhysX_Manager->Create_Material(fStaticFriction, fDynamicFriction, fRestitution, ppOut);
 }
 
-void CGameInstance::Create_Shape(const PxGeometry& Geometry, PxMaterial* pMaterial, PxShape** ppOut)
-{
-	m_pPhysX_Manager->Create_Shape(Geometry, pMaterial, ppOut);
-}
-
-
 void CGameInstance::Free()
 {
 	__super::Free();

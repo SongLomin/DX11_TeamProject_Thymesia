@@ -7,6 +7,7 @@ BEGIN(Engine)
 class CollisionSimulationEventCallBack :
     public PxSimulationEventCallback
 {
+public:
     // PxSimulationEventCallback을(를) 통해 상속됨
     virtual void onConstraintBreak(PxConstraintInfo* constraints, PxU32 count) override;
     virtual void onWake(PxActor** actors, PxU32 count) override;

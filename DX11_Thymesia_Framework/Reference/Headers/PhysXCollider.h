@@ -108,11 +108,16 @@ private:
 	_bool					m_bPickable = true;
 	_bool					m_bYFixed = false;
 
+
+	PxGeometry*				m_pGeometry = nullptr;
+	PxShape*				m_pShape = nullptr;
+
 public:
 	void		CreatePhysXActor(PHYSXCOLLIDERDESC& PhysXColliderDesc);
 	void		Add_PhysXActorAtScene(const PxVec3& In_MassSpaceInertiaTensor = { 0.f, 0.f, 0.f });
 
 private:
+	PxGeometry*	Create_Geometry();
 	void		Create_DynamicActor(PHYSXCOLLIDERDESC& PhysXColliderDesc, PxTransform Transform);
 	void		Create_StaticActor(PHYSXCOLLIDERDESC& PhysXColliderDesc, PxTransform Transform);
 

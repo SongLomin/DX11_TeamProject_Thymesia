@@ -325,6 +325,8 @@ HRESULT CPhysXCollider::Set_Position(_vector _vPos)
 
 void CPhysXCollider::Set_Scale(_vector vScale)
 {
+	const PxShapeFlags shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE;
+
 	//PxShape* pShape[1];
 	//ZeroMemory(pShape, sizeof(PxShape) * 16);
 	if (m_pRigidDynamic)
@@ -352,7 +354,7 @@ void CPhysXCollider::Set_Scale(_vector vScale)
 				PxShape*	pShape;
 				PxMaterial*	pMaterial = m_PhysXColliderDesc.pMaterial;
 
-				CPhysX_Manager::Get_Instance()->Create_Shape(PxGeometry, pMaterial, &pShape);
+				CPhysX_Manager::Get_Instance()->Create_Shape(PxGeometry, pMaterial, shapeFlags, &pShape);
 
 				m_pRigidDynamic->attachShape(*pShape);
 			}
@@ -383,7 +385,7 @@ void CPhysXCollider::Set_Scale(_vector vScale)
 				PxShape*	pShape;
 				PxMaterial*	pMaterial = m_PhysXColliderDesc.pMaterial;
 
-				CPhysX_Manager::Get_Instance()->Create_Shape(PxGeometry, pMaterial, &pShape);
+				CPhysX_Manager::Get_Instance()->Create_Shape(PxGeometry, pMaterial, shapeFlags, &pShape);
 
 				m_pRigidStatic->attachShape(*pShape);
 			}
@@ -441,7 +443,7 @@ void CPhysXCollider::CreatePhysXActor(PHYSXCOLLIDERDESC& PhysXColliderDesc)
 		vQuaternion.z,
 		vQuaternion.w);
 
-	switch (PhysXColliderDesc.eType)
+	switch (PhysXColliderDesc.eActorType)
 	{
 	case PHYSXACTOR_TYPE::DYNAMIC:
 	case PHYSXACTOR_TYPE::YFIXED_DYNAMIC:
@@ -472,11 +474,13 @@ void CPhysXCollider::Add_PhysXActorAtScene(const PxVec3& In_MassSpaceInertiaTens
 	else if (m_pRigidDynamic)
 	{
 		GET_SINGLE(CPhysX_Manager)->Add_DynamicActorAtCurrentScene(*m_pRigidDynamic, m_PhysXColliderDesc.fDensity, In_MassSpaceInertiaTensor);
+		Safe_Delete(m_pGeometry);
 	}
 
 	else if (m_pRigidStatic)
 	{
 		GET_SINGLE(CPhysX_Manager)->Add_StaticActorAtCurrentScene(*m_pRigidStatic);
+		Safe_Delete(m_pGeometry);
 	}
 
 	else
@@ -487,51 +491,43 @@ void CPhysXCollider::Add_PhysXActorAtScene(const PxVec3& In_MassSpaceInertiaTens
 
 }
 
-void CPhysXCollider::Create_DynamicActor(PHYSXCOLLIDERDESC& PhysXColliderDesc, PxTransform Transform)
+PxGeometry* CPhysXCollider::Create_Geometry()
 {
-	switch (PhysXColliderDesc.eShape)
+	switch (m_PhysXColliderDesc.eShape)
 	{
 	case PHYSXCOLLIDER_TYPE::SPHERE:
-		m_pRigidDynamic = CPhysX_Manager::Get_Instance()->Create_DynamicActor(Transform,
-			PxSphereGeometry(XMVectorGetX(PhysXColliderDesc.vScale)), CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.fDensity, PxVec3(0), PhysXColliderDesc.pMaterial);
-		break;
+		return DBG_NEW PxSphereGeometry(XMVectorGetX(m_PhysXColliderDesc.vScale));
+
 	case PHYSXCOLLIDER_TYPE::BOX:
-		m_pRigidDynamic = CPhysX_Manager::Get_Instance()->Create_DynamicActor(Transform,
-			PxBoxGeometry(XMVectorGetX(PhysXColliderDesc.vScale) * 0.5f, XMVectorGetY(PhysXColliderDesc.vScale) * 0.5f, XMVectorGetZ(PhysXColliderDesc.vScale) * 0.5f),
-			CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.fDensity, PxVec3(0), PhysXColliderDesc.pMaterial);
-		break;
+		return DBG_NEW PxBoxGeometry(XMVectorGetX(m_PhysXColliderDesc.vScale) * 0.5f,
+			XMVectorGetY(m_PhysXColliderDesc.vScale) * 0.5f, 
+			XMVectorGetZ(m_PhysXColliderDesc.vScale) * 0.5f);
+
 	case PHYSXCOLLIDER_TYPE::CYLINDER:
 	case PHYSXCOLLIDER_TYPE::CONVECMESH:
 	{
-		PxConvexMeshGeometry PxGeometry; (PhysXColliderDesc.pConvecMesh);
-		PxGeometry.convexMesh = PhysXColliderDesc.pConvecMesh;
+		PxConvexMeshGeometry* pPxGeometry = DBG_NEW PxConvexMeshGeometry();
+		pPxGeometry->convexMesh = m_PhysXColliderDesc.pConvecMesh;
 		PxMeshScale	vScale;
-		vScale.scale.x = XMVectorGetX(PhysXColliderDesc.vScale);
-		vScale.scale.y = XMVectorGetY(PhysXColliderDesc.vScale);
-		vScale.scale.z = XMVectorGetZ(PhysXColliderDesc.vScale);
-		PxGeometry.scale = vScale;
-		m_pRigidDynamic = CPhysX_Manager::Get_Instance()->Create_DynamicActor(Transform,
-			PxGeometry, CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.fDensity, PxVec3(0), PhysXColliderDesc.pMaterial);
-
-		//m_pRigidDynamic = CPhysX_Manager::Get_Instance()->Create_DynamicActor(Transform,
-		//	PxConvexMeshGeometry(PhysXColliderDesc.pConvecMesh), CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.fDensity, PxVec3(0), PhysXColliderDesc.pMaterial);
-		break;
+		vScale.scale.x = XMVectorGetX(m_PhysXColliderDesc.vScale);
+		vScale.scale.y = XMVectorGetY(m_PhysXColliderDesc.vScale);
+		vScale.scale.z = XMVectorGetZ(m_PhysXColliderDesc.vScale);
+		pPxGeometry->scale = vScale;
+		return pPxGeometry;
 	}
-	
+
 	case PHYSXCOLLIDER_TYPE::MESHDATA:
 	{
-		PxTriangleMeshGeometry PxGeometry;
-		PxGeometry.triangleMesh = m_TriangleMesh;
+		PxTriangleMeshGeometry* PxGeometry = DBG_NEW PxTriangleMeshGeometry();
+		PxGeometry->triangleMesh = m_TriangleMesh;
 		PxMeshScale	vScale;
-		vScale.scale.x = XMVectorGetX(PhysXColliderDesc.vScale);
-		vScale.scale.y = XMVectorGetY(PhysXColliderDesc.vScale);
-		vScale.scale.z = XMVectorGetZ(PhysXColliderDesc.vScale);
-		PxGeometry.scale = vScale;
-		m_pRigidDynamic = CPhysX_Manager::Get_Instance()->Create_DynamicActor(Transform,
-			PxGeometry, CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.fDensity, PxVec3(0), PhysXColliderDesc.pMaterial);
-		break;
+		vScale.scale.x = XMVectorGetX(m_PhysXColliderDesc.vScale);
+		vScale.scale.y = XMVectorGetY(m_PhysXColliderDesc.vScale);
+		vScale.scale.z = XMVectorGetZ(m_PhysXColliderDesc.vScale);
+		PxGeometry->scale = vScale;
+
+		return PxGeometry;
 	}
-		
 
 	case PHYSXCOLLIDER_TYPE::TYPE_END:
 		MSG_BOX("Failed to create DynamicActor : eShape is wrong");
@@ -540,50 +536,42 @@ void CPhysXCollider::Create_DynamicActor(PHYSXCOLLIDERDESC& PhysXColliderDesc, P
 		break;
 	}
 
-	m_pRigidDynamic->userData = &m_iColliderIndex;
+	return nullptr;
+}
 
+void CPhysXCollider::Create_DynamicActor(PHYSXCOLLIDERDESC& PhysXColliderDesc, PxTransform Transform)
+{
+	m_pRigidDynamic = GET_SINGLE(CPhysX_Manager)->Create_DynamicActor(Transform);
+	m_pGeometry = Create_Geometry();
+
+	const PxShapeFlags shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE;
+	GET_SINGLE(CPhysX_Manager)->Create_Shape(*m_pGeometry, m_PhysXColliderDesc.pMaterial, shapeFlags, &m_pShape);
+
+	if (!m_pShape)
+	{
+		// Shape가 생성되지 않음.
+		DEBUG_ASSERT;
+	}
+
+	m_pRigidDynamic->attachShape(*m_pShape);
+	m_pRigidDynamic->userData = &m_iColliderIndex;
 }
 
 void CPhysXCollider::Create_StaticActor(PHYSXCOLLIDERDESC& PhysXColliderDesc, PxTransform Transform)
 {
-	switch (PhysXColliderDesc.eShape)
-	{
-	case PHYSXCOLLIDER_TYPE::SPHERE:
-		m_pRigidStatic = CPhysX_Manager::Get_Instance()->Create_StaticActor(Transform,
-			PxSphereGeometry(XMVectorGetX(PhysXColliderDesc.vScale)), CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.pMaterial);
-		break;
-	case PHYSXCOLLIDER_TYPE::BOX:
-		m_pRigidStatic = CPhysX_Manager::Get_Instance()->Create_StaticActor(Transform,
-			PxBoxGeometry(XMVectorGetX(PhysXColliderDesc.vScale) * 0.5f, XMVectorGetY(PhysXColliderDesc.vScale) * 0.5f, XMVectorGetZ(PhysXColliderDesc.vScale) * 0.5f),
-			CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.pMaterial);
-		break;
-	case PHYSXCOLLIDER_TYPE::CYLINDER:
-	case PHYSXCOLLIDER_TYPE::CONVECMESH:
-		m_pRigidStatic = CPhysX_Manager::Get_Instance()->Create_StaticActor(Transform,
-			PxConvexMeshGeometry(PhysXColliderDesc.pConvecMesh), CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.pMaterial);
-		break;
+	m_pRigidStatic = GET_SINGLE(CPhysX_Manager)->Create_StaticActor(Transform);
+	m_pGeometry = Create_Geometry();
 
-	case PHYSXCOLLIDER_TYPE::MESHDATA:
+	const PxShapeFlags shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE;
+	GET_SINGLE(CPhysX_Manager)->Create_Shape(*m_pGeometry, m_PhysXColliderDesc.pMaterial, shapeFlags, &m_pShape);
+
+	if (!m_pShape)
 	{
-		PxTriangleMeshGeometry PxGeometry;
-		PxGeometry.triangleMesh = m_TriangleMesh;
-		PxMeshScale	vScale;
-		vScale.scale.x = XMVectorGetX(PhysXColliderDesc.vScale);
-		vScale.scale.y = XMVectorGetY(PhysXColliderDesc.vScale);
-		vScale.scale.z = XMVectorGetZ(PhysXColliderDesc.vScale);
-		PxGeometry.scale = vScale;
-		m_pRigidStatic = CPhysX_Manager::Get_Instance()->Create_StaticActor(Transform,
-			PxGeometry, CPhysX_Manager::SCENE_CURRENT, PhysXColliderDesc.pMaterial);
-		break;
+		// Shape가 생성되지 않음.
+		DEBUG_ASSERT;
 	}
 
-	case PHYSXCOLLIDER_TYPE::TYPE_END:
-		MSG_BOX("Failed to create StaticActor : eShape is wrong");
-		break;
-	default:
-		break;
-	}
-
+	m_pRigidStatic->attachShape(*m_pShape);
 	m_pRigidStatic->userData = &m_iColliderIndex;
 }
 

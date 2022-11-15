@@ -25,7 +25,7 @@ _matrix CBoneNode::Get_CombinedMatrix() const
 
 		// 매트릭스의 XYZ회전값이 나옴.
 
-		_matrix PositionMatrix = SMath::Get_PositionMatrix(TempCombinedTransformationMatrix);
+		/*_matrix PositionMatrix = SMath::Get_PositionMatrix(TempCombinedTransformationMatrix);
 		_matrix RotationMatrix = SMath::Get_RotationMatrix(TempCombinedTransformationMatrix);
 		_matrix ScaleMatrix = SMath::Get_ScaleMatrix(TempCombinedTransformationMatrix);
 
@@ -40,7 +40,7 @@ _matrix CBoneNode::Get_CombinedMatrix() const
 		_matrix TransformationMatrix = XMLoadFloat4x4(&m_ModelTransformMatrix);
 		_matrix JustPitchTransformationMatrix = XMMatrixRotationRollPitchYaw(0.f, SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(TransformationMatrix)).y, 0.f);
 
-		TempCombinedTransformationMatrix *= JustPitchTransformationMatrix;
+		TempCombinedTransformationMatrix *= JustPitchTransformationMatrix;*/
 	}
 
 	return TempCombinedTransformationMatrix;

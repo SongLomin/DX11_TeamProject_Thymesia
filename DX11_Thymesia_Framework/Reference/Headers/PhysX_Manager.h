@@ -52,8 +52,10 @@ public:
 	HRESULT			Delete_Scene(Scene eScene);
 	HRESULT			Change_Scene(Scene eNextScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));
 
-	PxRigidDynamic* Create_DynamicActor(const PxTransform& t, const PxGeometry& geometry, Scene eScene, const PxReal& Density, const PxVec3& velocity = PxVec3(0), PxMaterial* pMaterial = nullptr);
-	PxRigidStatic*	Create_StaticActor(const PxTransform& t, const PxGeometry& geometry, Scene eScene, PxMaterial* pMaterial = nullptr);
+	PxRigidDynamic* Create_DynamicActor(const PxTransform& t, const PxGeometry& geometry, PxMaterial* pMaterial = nullptr);
+	PxRigidDynamic* Create_DynamicActor(const PxTransform& t);
+	PxRigidStatic*	Create_StaticActor(const PxTransform& t, const PxGeometry& geometry, PxMaterial* pMaterial = nullptr);
+	PxRigidStatic*	Create_StaticActor(const PxTransform& t);
 	
 	void			Add_DynamicActorAtCurrentScene(PxRigidDynamic& DynamicActor, const PxReal& Density, const PxVec3& In_MassSpaceInertiaTensor);
 	void			Add_StaticActorAtCurrentScene(PxRigidStatic& StaticActor);
@@ -61,7 +63,7 @@ public:
 	void			Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh** ppOut);
 	void			Create_ConvexMesh(PxVec3** pVertices, _uint iNumVertice, PxConvexMesh** ppOut);
 	void			Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial** ppOut);
-	void			Create_Shape(const PxGeometry & Geometry, PxMaterial* pMaterial, PxShape ** ppOut);
+	void			Create_Shape(const PxGeometry & Geometry, PxMaterial* pMaterial, const PxShapeFlags In_ShapeFlags, PxShape ** ppOut);
 	void			Create_MeshFromTriangles(const PxTriangleMeshDesc& In_MeshDesc, PxTriangleMesh** ppOut);
 
 
@@ -103,6 +105,9 @@ private:
 
 	PxConvexMesh*			m_ShapeTemplate[SHAPE_END];
 	_bool					m_bSceneStart = false;
+
+public:
+	CollisionSimulationEventCallBack* m_pCollisionSimulationEventCallBack;
 
 private:
 	//void			Create_CheeseShape();

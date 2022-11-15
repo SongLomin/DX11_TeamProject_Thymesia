@@ -569,11 +569,11 @@ void ENGINE_DLL Engine::SMath::Convert_PxVec3FromMeshData(PxVec3* In_PxVec3, wea
 {
 	_uint iNumVertices = pMeshData.lock()->iNumVertices;
 
-	MODEL_TYPE eType = pMeshData.lock()->eModelType;
+	MODEL_TYPE eActorType = pMeshData.lock()->eModelType;
 
 	for (_uint i = 0; i < iNumVertices; ++i)
 	{
-		switch (eType)
+		switch (eActorType)
 		{
 		case MODEL_TYPE::NONANIM:
 			memcpy(&In_PxVec3[i], &pMeshData.lock()->pVertices[i].vPosition, sizeof(PxVec3));

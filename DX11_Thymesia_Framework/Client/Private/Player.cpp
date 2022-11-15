@@ -55,7 +55,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 
     CPhysXCollider::PHYSXCOLLIDERDESC tPhysxColliderDesc;
     tPhysxColliderDesc.eShape = PHYSXCOLLIDER_TYPE::CYLINDER;
-    tPhysxColliderDesc.eType = PHYSXACTOR_TYPE::DYNAMIC;
+    tPhysxColliderDesc.eActorType = PHYSXACTOR_TYPE::DYNAMIC;
     tPhysxColliderDesc.fDensity = 10.f;
     PxConvexMesh* pCylinderMesh = nullptr;
     GAMEINSTANCE->Create_CylinderMesh(0.3f, 0.3f, 1.f, &pCylinderMesh);

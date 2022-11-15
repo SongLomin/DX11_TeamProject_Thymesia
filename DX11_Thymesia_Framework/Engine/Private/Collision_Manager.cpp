@@ -203,7 +203,7 @@ PxContactModifyCallback* CCollision_Manager::Get_CollisionCallBack() const
 	return m_pCollisionCallBack;
 }
 
-PxSimulationEventCallback* CCollision_Manager::Get_CollisionSimulationEventCallBack() const
+PxSimulationEventCallback* CCollision_Manager::Get_CollisionSimulationEventCallBack()
 {
 	return m_pCollisionSimulationEventCallBack;
 }

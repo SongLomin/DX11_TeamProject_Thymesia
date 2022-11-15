@@ -32,7 +32,7 @@ private:
 
 public: /* For. PhysxCollision */
 	PxContactModifyCallback*	Get_CollisionCallBack() const;
-	PxSimulationEventCallback* Get_CollisionSimulationEventCallBack() const;
+	PxSimulationEventCallback* Get_CollisionSimulationEventCallBack();
 
 private:
 	CollisionCallBack* m_pCollisionCallBack = nullptr;

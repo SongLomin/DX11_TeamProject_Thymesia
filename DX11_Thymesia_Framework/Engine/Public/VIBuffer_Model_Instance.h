@@ -41,7 +41,7 @@ public:
     void Init_NoAnimInstance(const char* In_szModelName, _int In_iNumInstance, const string& szTexturePath ="");
     void Init_Particle(const _uint In_Size);
 
-    HRESULT Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eType);
+    HRESULT Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eActorType);
 
     virtual HRESULT Render() override;
     HRESULT Render_Mesh(_uint iMeshContainerIndex);

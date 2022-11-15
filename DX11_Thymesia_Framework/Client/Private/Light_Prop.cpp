@@ -51,7 +51,7 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 
 	// TODO : need to be data
 	ZeroMemory(&m_tLightDesc, sizeof(LIGHTDESC));
-	m_tLightDesc.eType = LIGHTDESC::TYPE::TYPE_HALFPOINT;
+	m_tLightDesc.eActorType = LIGHTDESC::TYPE::TYPE_HALFPOINT;
 	m_tLightDesc.bEnable = true;
 	XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_Position());
 	m_tLightDesc.vDiffuse = { 1.f, 1.f, 0.8f, 0.f };
@@ -65,7 +65,7 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 
 	CPhysXCollider::PHYSXCOLLIDERDESC tPhysxColliderDesc;
 	tPhysxColliderDesc.eShape = PHYSXCOLLIDER_TYPE::SPHERE;
-	tPhysxColliderDesc.eType = PHYSXACTOR_TYPE::DYNAMIC;
+	tPhysxColliderDesc.eActorType = PHYSXACTOR_TYPE::DYNAMIC;
 	tPhysxColliderDesc.fDensity = 10.f;
 	PxConvexMesh* pCylinderMesh = nullptr;
 	GAMEINSTANCE->Create_CylinderMesh(0.3f, 0.3f, 1.f, &pCylinderMesh);
@@ -125,7 +125,7 @@ void CLight_Prop::Write_Json(json& Out_Json)
 {
 	__super::Write_Json(Out_Json);
 
-	Out_Json.emplace("Light_Type", (_int)m_tLightDesc.eType);
+	Out_Json.emplace("Light_Type", (_int)m_tLightDesc.eActorType);
 	Out_Json.emplace("Light_Range", m_tLightDesc.fRange);
 	
 	CJson_Utility::Write_Float4(Out_Json["Light_Position"], m_tLightDesc.vPosition);
@@ -142,7 +142,7 @@ void CLight_Prop::Load_FromJson(const json& In_Json)
 	__super::Load_FromJson(In_Json);
 
 	_int iLightTypeFromInt = In_Json["Light_Type"];
-	m_tLightDesc.eType = (LIGHTDESC::TYPE)iLightTypeFromInt;
+	m_tLightDesc.eActorType = (LIGHTDESC::TYPE)iLightTypeFromInt;
 	m_tLightDesc.fRange = In_Json["Light_Range"];
 
 	CJson_Utility::Load_Float4(In_Json["Light_Position"], m_tLightDesc.vPosition);
@@ -169,10 +169,10 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 			{
 				for (_int n = 0; n < (_int)(IM_ARRAYSIZE(LightTypeItems)); n++)
 				{
-					const bool is_selected = ((_int)m_tLightDesc.eType == n);
+					const bool is_selected = ((_int)m_tLightDesc.eActorType == n);
 					if (ImGui::Selectable(LightTypeItems[n], is_selected))
 					{
-						m_tLightDesc.eType = (LIGHTDESC::TYPE)n;
+						m_tLightDesc.eActorType = (LIGHTDESC::TYPE)n;
 					}
 
 					// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)

@@ -30,7 +30,7 @@ HRESULT CCustomLight::Render(weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect>
 
 
 	/*빛 정보를 셰이더에 던진다. */
-	if (LIGHTDESC::TYPE_DIRECTIONAL == m_LightDesc.eType)
+	if (LIGHTDESC::TYPE_DIRECTIONAL == m_LightDesc.eActorType)
 	{
 		iPassIndex = 1;
 
@@ -38,7 +38,7 @@ HRESULT CCustomLight::Render(weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect>
 			DEBUG_ASSERT;
 	}
 
-	else if(LIGHTDESC::TYPE_POINT == m_LightDesc.eType)
+	else if(LIGHTDESC::TYPE_POINT == m_LightDesc.eActorType)
 	{
 		_bool IsInFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(XMLoadFloat4(&m_LightDesc.vPosition), m_LightDesc.fRange);
 
@@ -55,7 +55,7 @@ HRESULT CCustomLight::Render(weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect>
 			DEBUG_ASSERT;
 	}
 
-	else if (LIGHTDESC::TYPE_HALFPOINT == m_LightDesc.eType)
+	else if (LIGHTDESC::TYPE_HALFPOINT == m_LightDesc.eActorType)
 	{
 		_bool IsInFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(XMLoadFloat4(&m_LightDesc.vPosition), m_LightDesc.fRange);
 

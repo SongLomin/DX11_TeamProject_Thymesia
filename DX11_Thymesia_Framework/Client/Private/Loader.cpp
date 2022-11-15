@@ -229,7 +229,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	LIGHTDESC			LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
-	LightDesc.eType = tagLightDesc::TYPE_DIRECTIONAL;
+	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
 	LightDesc.vDiffuse = _float4(0.8f, 0.8f, 0.8f, 1.f);
 	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
@@ -242,7 +242,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	// 지형 라이트
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
-	LightDesc.eType = tagLightDesc::TYPE_DIRECTIONAL;
+	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
 	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
@@ -255,7 +255,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	// 몬스터 라이트
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
-	LightDesc.eType = tagLightDesc::TYPE_DIRECTIONAL;
+	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
 	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);

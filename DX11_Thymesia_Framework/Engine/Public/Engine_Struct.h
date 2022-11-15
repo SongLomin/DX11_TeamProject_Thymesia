@@ -35,7 +35,7 @@ namespace Engine
 
 		
 		bool			bEnable;
-		TYPE			eType = TYPE_END;
+		TYPE			eActorType = TYPE_END;
 
 		XMFLOAT4		vDirection;
 
