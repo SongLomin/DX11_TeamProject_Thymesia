@@ -16,6 +16,9 @@
 
 #include "Model.h"
 
+#include "Window_PrototypeView.h"
+#include "Window_HierarchyView.h"
+
 GAMECLASS_C(CEditGroupProp)
 CLONE_C(CEditGroupProp, CGameObject)
 
@@ -350,12 +353,17 @@ void CEditGroupProp::View_PickingInfo()
 		if ("" == m_szSelectModelName)
 			return;
 
-		PROPS_DESC Desc;
+		GET_SINGLE(CWindow_PrototypeView)->CallBack_ListClick(typeid(CStatic_Prop).hash_code(), typeid(CStatic_Prop).name());
+		weak_ptr<CGameObject> pGameObject = GET_SINGLE(CWindow_HierarchyView)->m_pGameObjects.back().pInstance;
+		pGameObject.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
+		pGameObject.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
+
+		/*PROPS_DESC Desc;
 		Desc.pProp = GAMEINSTANCE->Add_GameObject<CStatic_Prop>(m_CreatedLevel);
 		Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
-		Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
+		Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));*/
 
-		m_PropList.push_back(Desc);
+		//m_PropList.push_back(Desc);
 	}
 
 	ImGui::Text("");

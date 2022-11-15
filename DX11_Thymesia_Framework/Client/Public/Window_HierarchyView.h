@@ -29,7 +29,7 @@ private:
 public:
 	FDelegate<GAMEOBJECT_DESC> CallBack_ListClick;
 
-private:
+public:
 	list<GAMEOBJECT_DESC> m_pGameObjects;
 
 public:
