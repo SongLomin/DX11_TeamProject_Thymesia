@@ -52,8 +52,7 @@ HRESULT CProp::Render()
 	{
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 		{
-			DEBUG_ASSERT;
-			//cout << i << ". None Texture" << endl;
+			return E_FAIL;
 		}
 
 		// 노말인데 5에 저장되어 있다..
@@ -69,7 +68,6 @@ HRESULT CProp::Render()
 		}
 
 		m_pShaderCom.lock()->Begin(m_iPassIndex);
-
 		m_pModelCom.lock()->Render_Mesh(i);
 	}
 
