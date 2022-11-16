@@ -104,6 +104,15 @@ void CMonster::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
     m_pCurState.lock()->LateTick(fTimeDelta);
     GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_SHADOWDEPTH, Weak_Cast<CGameObject>(m_this));
+
+    m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 0.5f, 0.f, 1.f));
+}
+
+void CMonster::Before_Render(_float fTimeDelta)
+{
+    m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -0.5f, 0.f, 1.f));
+
+    __super::Before_Render(fTimeDelta);
 }
 
 HRESULT CMonster::Render()
