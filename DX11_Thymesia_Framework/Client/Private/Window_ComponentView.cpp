@@ -104,7 +104,7 @@ void CWindow_ComponentView::Draw_Components()
 
 	if (pTransformCom.lock().get())
 	{
-		TransformComponent_PickingAction();
+		TransformComponent_PickingAction(pTransformCom);
 
 		if (ImGui::CollapsingHeader("Transform Component"), ImGuiTreeNodeFlags_DefaultOpen)
 		{
@@ -121,7 +121,6 @@ void CWindow_ComponentView::Draw_Components()
 			{ // Quaternion
 				_matrix matWorld = pTransformCom.lock()->Get_WorldMatrix();
 				_float3 vPitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(matWorld));
-				//_vector vQuaternion = XMQuaternionRotationMatrix();
 
 				ImGui::Text("Pitch Yaw Roll");
 				ImGui::DragFloat3("##Pitch Yaw Roll", &vPitchYawRoll.x, 0.01f);
@@ -236,18 +235,24 @@ void CWindow_ComponentView::TransformComponent_PickingAction(weak_ptr<CTransform
 
 	// Z : 이동, X : 로테이션, 마우스 휠 : y축 이동
 
+
 	if (KEY_INPUT(KEY::Z, KEY_STATE::HOLD))
 	{
 		if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
 		{
-			_vector vAddPos = _pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION) + XMVectorSet(vMouseDir.x, 0.f, vMouseDir.z, 0.f);
+			_vector vObjPos = _pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
+			_vector vAddPos = XMVectorSet(vMouseDir.x, vObjPos.m128_f32[1], vMouseDir.z, 0.f);
+
 			_pTransform.lock()->Set_State(CTransform::STATE_TRANSLATION, vAddPos);
 		}		
 	}
 
 	if (KEY_INPUT(KEY::X, KEY_STATE::HOLD) && KEY_INPUT(KEY::RBUTTON, KEY_STATE::HOLD))
 	{
-		_pTransform.lock()->LookAt(XMLoadFloat4(&vMouseDir));
+		_vector vObjPos = _pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
+		_vector vAddPos = XMVectorSet(vMouseDir.x, vObjPos.m128_f32[1], vMouseDir.z, 0.f);
+
+		_pTransform.lock()->LookAt(vAddPos);
 	}
 }
 

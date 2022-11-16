@@ -55,7 +55,7 @@ namespace Engine
 		void		ENGINE_DLL Set_ClockwiseTriangle(XMFLOAT3* InOut_TrianglePosition);
 
 
-		//_bool	Is_Picked(CMesh* pRenderer, _float4* pOut, _float4* pOutNormal = nullptr);
+		_bool		ENGINE_DLL Is_Picked(RAY _Ray, _float4* _pOutPos);
 
 	}
 }

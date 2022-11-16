@@ -10,7 +10,6 @@
 
 #include "Static_Prop.h"
 #include "Dynamic_Prop.h"
-#include "Interaction_Prop.h"
 #include "Light_Prop.h"
 #include "Static_Instancing_Prop.h"
 
@@ -50,7 +49,8 @@ void CEditGroupProp::Tick(_float fTimeDelta)
 {
 	for (auto& iter : m_PropList)
 	{
-		iter.pProp.lock()->Tick(fTimeDelta);
+		if (iter.pProp.lock())
+			iter.pProp.lock()->Tick(fTimeDelta);
 	}
 }
 
@@ -58,7 +58,8 @@ void CEditGroupProp::LateTick(_float fTimeDelta)
 {
 	for (auto& iter : m_PropList)
 	{
-		iter.pProp.lock()->LateTick(fTimeDelta);
+		if (iter.pProp.lock())
+			iter.pProp.lock()->LateTick(fTimeDelta);
 	}
 }
 
@@ -212,7 +213,6 @@ void CEditGroupProp::View_SelectPropObjectType()
 	{
 		"CStatic_Prop",
 		"CDynamic_Prop",
-		"CInteraction_Prop",
 		"CLight_Prop",
 		"CStatic_Instancing_Prop"
 	};
@@ -359,7 +359,7 @@ void CEditGroupProp::View_PickingInfo()
 		if ("" == m_szSelectModelName)
 			return;
 
-		if ("CStatic_Prop" == m_szSelectModelName)
+		if ("CStatic_Prop" == m_szSelectPropType)
 		{
 			PROPS_DESC Desc;
 			Desc.pProp	= GAMEINSTANCE->Add_GameObject<CStatic_Prop>(m_CreatedLevel);
@@ -371,7 +371,7 @@ void CEditGroupProp::View_PickingInfo()
 			m_PropList.push_back(Desc);
 		}
 
-		else if ("CDynamic_Prop" == m_szSelectModelName)
+		else if ("CDynamic_Prop" == m_szSelectPropType)
 		{
 			PROPS_DESC Desc;
 			Desc.pProp	= GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(m_CreatedLevel);
@@ -383,22 +383,10 @@ void CEditGroupProp::View_PickingInfo()
 			m_PropList.push_back(Desc);
 		}
 
-		else if ("CInteraction_Prop" == m_szSelectModelName)
+		else if ("CLight_Prop" == m_szSelectPropType)
 		{
 			PROPS_DESC Desc;
-			Desc.pProp	= GAMEINSTANCE->Add_GameObject<CInteraction_Prop>(m_CreatedLevel);
-			Desc.hash	= typeid(CInteraction_Prop).hash_code();
-			Desc.szName	= typeid(CInteraction_Prop).name();
-
-			Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
-			Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
-			m_PropList.push_back(Desc);
-		}
-
-		else if ("CLight_Prop" == m_szSelectModelName)
-		{
-			PROPS_DESC Desc;
-			Desc.pProp	= GAMEINSTANCE->Add_GameObject<CLight_Prop>(m_CreatedLevel);
+			//Desc.pProp	= GAMEINSTANCE->Add_GameObject<CLight_Prop>(m_CreatedLevel);
 			Desc.hash	= typeid(CLight_Prop).hash_code();
 			Desc.szName	= typeid(CLight_Prop).name();
 
@@ -407,12 +395,12 @@ void CEditGroupProp::View_PickingInfo()
 			m_PropList.push_back(Desc);
 		}
 
-		else if ("CStatic_Instancing_Prop" == m_szSelectModelName)
+		else if ("CStatic_Instancing_Prop" == m_szSelectPropType)
 		{
 			PROPS_DESC Desc;
-			Desc.pProp	= GAMEINSTANCE->Add_GameObject<CLight_Prop>(m_CreatedLevel);
-			Desc.hash	= typeid(CLight_Prop).hash_code();
-			Desc.szName	= typeid(CLight_Prop).name();
+			//Desc.pProp	= GAMEINSTANCE->Add_GameObject<CStatic_Instancing_Prop>(m_CreatedLevel);
+			Desc.hash	= typeid(CStatic_Instancing_Prop).hash_code();
+			Desc.szName	= typeid(CStatic_Instancing_Prop).name();
 
 			Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
 			Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
