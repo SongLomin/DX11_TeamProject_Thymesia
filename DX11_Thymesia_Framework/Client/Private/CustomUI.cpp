@@ -20,12 +20,15 @@ HRESULT CCustomUI::Initialize(void* pArg)
 	__super::Initialize(pArg);
 
 	m_pShaderCom.lock()->Set_ShaderInfo(
-		TEXT("Shader_VtxTex"),
+		TEXT("Shader_UI"),
 		VTXTEX_DECLARATION::Element,
 		VTXTEX_DECLARATION::iNumElements);
 
 	m_tUIDesc.fDepth = 0.0f;
-	m_iPassIndex = 4;
+
+	m_fAlphaColor = 1.f;
+
+	m_iPassIndex = 0;
 	if (pArg != nullptr)
 		memcpy(&m_tUIDesc, pArg, sizeof(UI_DESC));
 
@@ -67,11 +70,16 @@ void CCustomUI::Set_PassIndex(_uint _iPassIndex)
 HRESULT CCustomUI::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
-	this;
+
+	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_fAlphaColor", &m_fAlphaColor, sizeof(_float))))
+		return E_FAIL;
+
 	if (FAILED(m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture")))
 	{
 		MSG_BOX("CustomUI Error");
 	}
+
+
 
 	return S_OK;
 }

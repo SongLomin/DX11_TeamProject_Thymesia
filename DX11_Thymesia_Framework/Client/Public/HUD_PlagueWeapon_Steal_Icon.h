@@ -1,14 +1,20 @@
 #pragma once
-#include "UI.h"
+#include "Player_ProgressBar.h"
 
+
+BEGIN(Engine)
+
+class CTexture;
+
+END
 
 BEGIN(Client)
 
-class CCustomUI : public CUI
+class CHUD_PlagueWeapon_Steal_Icon : public CPlayer_ProgressBar
 {
-public:
-	GAMECLASS_H(CCustomUI);
-	CLONE_H(CCustomUI, CGameObject);
+	GAMECLASS_H(CHUD_PlagueWeapon_Steal_Icon);
+	CLONE_H(CHUD_PlagueWeapon_Steal_Icon, CGameObject);
+
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
@@ -17,23 +23,21 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
-public:
-	void		Set_PassIndex(_uint _iPassIndex);
-
-	void		Set_AlphaColor(_float fAlphaColor) { m_fAlphaColor = fAlphaColor; }
-	_float		Get_AlphaColor() { return m_fAlphaColor; }
-
 protected:
 	virtual HRESULT SetUp_ShaderResource() override;
 
-protected:
-	_float	m_fAlphaColor = 1.f;
-
 private:
+	weak_ptr<CTexture>	m_pDissolveTexture;
+
+	weak_ptr<CTexture>	m_pDissolveMaskTexture;
+
+	_uint				m_iTextureIndex = 0;
 
 public:
 	void Free();
-};
 
+
+
+};
 END
 

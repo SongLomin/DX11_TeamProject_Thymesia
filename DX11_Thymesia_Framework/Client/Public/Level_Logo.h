@@ -19,8 +19,7 @@ public:
 	virtual HRESULT Render();
 
 public:
-	virtual void OnLevelExit();
-
+	 void ExitLevel(LEVEL eLevel);
 public:
 	static shared_ptr<CLevel_Logo> Create();
 	void Free();

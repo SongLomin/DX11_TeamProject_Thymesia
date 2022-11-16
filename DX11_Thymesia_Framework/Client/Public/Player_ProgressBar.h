@@ -1,10 +1,9 @@
 #pragma once
-#include "UI.h"
-
+#include "CustomUI.h"
 
 BEGIN(Client)
 
-class CPlayer_ProgressBar final :  public CUI
+class CPlayer_ProgressBar : public CCustomUI
 {
 	GAMECLASS_H(CPlayer_ProgressBar);
 	CLONE_H(CPlayer_ProgressBar, CGameObject);
@@ -30,7 +29,7 @@ protected:
 	virtual HRESULT SetUp_ShaderResource() override;
 
 
-private:
+protected:
 	_float			m_fRatio; //플레이어 체력 비율. 1이 최대값임.
 
 public:

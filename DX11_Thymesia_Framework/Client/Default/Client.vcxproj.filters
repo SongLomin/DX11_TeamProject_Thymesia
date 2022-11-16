@@ -185,7 +185,7 @@
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Player_ProgressBar.h">
-      <Filter>02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP\Progress</Filter>
+      <Filter>02. GameObject\01. UI\PlayerUI\Progress</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Player_MPBar.h">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP</Filter>
@@ -245,7 +245,7 @@
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\Potion</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\HUD_Hover.h">
-      <Filter>02. GameObject\01. UI\PlayerUI\HUD\Hover</Filter>
+      <Filter>02. GameObject\01. UI\Hover</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Stop.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\04.State_Stop</Filter>
@@ -332,7 +332,7 @@
       <Filter>02. GameObject\03. Actor\00. Character\01. Monster\99.Weapon</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UI_Logo.h">
-      <Filter>02. GameObject\01. UI\MainMenu</Filter>
+      <Filter>02. GameObject\01. UI\Logo</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UI_Loading.h">
       <Filter>02. GameObject\01. UI\Loading</Filter>
@@ -436,8 +436,23 @@
     <ClInclude Include="..\Public\Player.h">
       <Filter>02. GameObject\03. Actor\00. Character\00.Player</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\HUD_PlagueWeapon_Main.h">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal.h">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HUD_PlagueWeaponBase.h">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Base</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\HUD_PlagueWeapon.h">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal_Icon.h">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal\Icon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_PauseMenu.h">
+      <Filter>02. GameObject\01. UI\PauseMenu</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal.h" />
     <ClInclude Include="..\Public\Weapon.h">
@@ -653,7 +668,7 @@
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Player_ProgressBar.cpp">
-      <Filter>02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP\Progress</Filter>
+      <Filter>02. GameObject\01. UI\PlayerUI\Progress</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Player_MPBar.cpp">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP</Filter>
@@ -715,12 +730,8 @@
     <ClCompile Include="..\Private\EditGround.cpp">
       <Filter>02. GameObject\99. Other\01. EditGround</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\HUD_Hover.cpp" />
     <ClCompile Include="..\Private\EditGroupProp.cpp">
       <Filter>02. GameObject\99. Other\04. EditGroupProp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\HUD_Hover.cpp">
-      <Filter>02. GameObject\01. UI\PlayerUI\HUD\Hover</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UI_Landing.cpp">
       <Filter>02. GameObject\01. UI\Landing</Filter>
@@ -756,7 +767,7 @@
       <Filter>02. GameObject\04. Prop\05. PreView_Prop</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UI_Logo.cpp">
-      <Filter>02. GameObject\01. UI\MainMenu</Filter>
+      <Filter>02. GameObject\01. UI\Logo</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UI_Loading.cpp">
       <Filter>02. GameObject\01. UI\Loading</Filter>
@@ -860,8 +871,27 @@
     <ClCompile Include="..\Private\Player.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\00.Player</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\HUD_Hover.cpp">
+      <Filter>02. GameObject\01. UI\Hover</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_PlagueWeapon_Main.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_PlagueWeaponBase.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Base</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeapon.cpp">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_Hover.cpp" />
+    <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal_Icon.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal\Icon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_PauseMenu.cpp">
+      <Filter>02. GameObject\01. UI\PauseMenu</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp">
@@ -880,9 +910,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="04. ShaderFiles">
-      <UniqueIdentifier>{60a2bbed-8e48-438f-a25f-2f9c1f1edaa8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00. MainApp">
       <UniqueIdentifier>{d893f375-d010-4a8a-bdbc-7084075a09cb}</UniqueIdentifier>
     </Filter>
@@ -1192,9 +1219,6 @@
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack">
       <UniqueIdentifier>{4a64bbd5-ee25-4223-ac86-be99e1df7490}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. UI\MainMenu">
-      <UniqueIdentifier>{06caef51-5ad5-4e46-8a67-52c4d06b4939}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\01. UI\PlayerUI">
       <UniqueIdentifier>{c4817d22-7dcd-4337-8227-2a1e4243e297}</UniqueIdentifier>
     </Filter>
@@ -1210,14 +1234,8 @@
     <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP">
       <UniqueIdentifier>{2c25f384-014e-4a40-84c4-e8aef1b67eff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP\Progress">
-      <UniqueIdentifier>{fe5378f3-5d92-48f6-9847-6ce6ac071847}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\Memory">
       <UniqueIdentifier>{50d1b317-f506-4a91-9ffe-41249c29fffb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\Hover">
-      <UniqueIdentifier>{e487d713-d046-4fcc-955c-f8b1014cbff6}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\01. UI\Loading">
       <UniqueIdentifier>{e48e240b-21cd-4024-a452-bb27b060a8cb}</UniqueIdentifier>
@@ -1405,6 +1423,33 @@
     <Filter Include="02. GameObject\99. Other\04. EditGroupProp">
       <UniqueIdentifier>{8879bd77-4670-491b-803a-0ddb8d81c2e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\01. UI\Hover">
+      <UniqueIdentifier>{e487d713-d046-4fcc-955c-f8b1014cbff6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. ShaderFiles">
+      <UniqueIdentifier>{60a2bbed-8e48-438f-a25f-2f9c1f1edaa8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\main">
+      <UniqueIdentifier>{62724a64-aa8d-4c9c-b5cd-7dd650b80bca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal">
+      <UniqueIdentifier>{60a173fd-6def-4331-a918-812a6d063ea7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Base">
+      <UniqueIdentifier>{0166b192-807e-4b40-90b9-9b824b36cb67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\Progress">
+      <UniqueIdentifier>{fe5378f3-5d92-48f6-9847-6ce6ac071847}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal\Icon">
+      <UniqueIdentifier>{8c5fbd75-4b83-4f69-8bb0-f1807de75b94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\Logo">
+      <UniqueIdentifier>{06caef51-5ad5-4e46-8a67-52c4d06b4939}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PauseMenu">
+      <UniqueIdentifier>{a7505ef9-e494-4372-a814-ead3e260b3e8}</UniqueIdentifier>
+    </Filter>
     <Filter Include="06. DataPreset">
       <UniqueIdentifier>{8965fd35-6c2d-4080-8e05-2281755353c3}</UniqueIdentifier>
     </Filter>
@@ -1472,6 +1517,9 @@
       <Filter>04. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxModelInstance.hlsl">
+      <Filter>04. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_UI.hlsl">
       <Filter>04. ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

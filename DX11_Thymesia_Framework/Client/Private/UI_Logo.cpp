@@ -8,6 +8,7 @@
 #include "HUD_Hover.h"
 #include "Fader.h"
 #include "Level_Logo.h"
+#include "Level_Loading.h"
 
 GAMECLASS_C(CUI_Logo)
 CLONE_C(CUI_Logo, CGameObject)
@@ -28,6 +29,7 @@ HRESULT CUI_Logo::Initialize(void* pArg)
     m_fontPath[LOGO_BUTTON_CONTINUE_GAME] = "MainMenu_SelectableButton_ContinueGame";
     m_fontPath[LOGO_BUTTON_START_GAME] = "MainMenu_SelectableButton_StartGame";
     m_fontPath[LOGO_BUTTON_LOAD_GAME] = "MainMenu_SelectableButton_LoadGame";
+    m_fontPath[LOGO_BUTTON_TOOL] = "MainMenu_SelectableButton_Tool";
     m_fontPath[LOGO_BUTTON_OPTION] = "MainMenu_SelectableButton_Options";
     m_fontPath[LOGO_BUTTON_CREDITS] = "MainMenu_SelectableButton_Credits";
     m_fontPath[LOGO_BUTTON_QUIT] = "MainMenu_SelectableButton_Quit";
@@ -36,6 +38,8 @@ HRESULT CUI_Logo::Initialize(void* pArg)
     m_fFontSize[LOGO_BUTTON_CONTINUE_GAME] = _float2(292.f, 30.f);
     m_fFontSize[LOGO_BUTTON_START_GAME] = _float2(222.f, 30.f);
     m_fFontSize[LOGO_BUTTON_LOAD_GAME] = _float2(204.f, 30.f);
+    m_fFontSize[LOGO_BUTTON_TOOL] = _float2(100.f, 30.f);
+
     m_fFontSize[LOGO_BUTTON_OPTION] = _float2(155.f, 30.f);
     m_fFontSize[LOGO_BUTTON_CREDITS] = _float2(137.f, 30.f);
     m_fFontSize[LOGO_BUTTON_QUIT] = _float2(100.f, 30.f);
@@ -48,7 +52,7 @@ HRESULT CUI_Logo::Initialize(void* pArg)
     m_pMainMenuBG = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_LOGO);
     m_pMainMenuBG.lock()->Set_Depth(0.3f);
     m_pMainMenuBG.lock()->Set_Texture("MainMenu_Background");
-    m_pMainMenuBG.lock()->Set_PassIndex(6);
+    m_pMainMenuBG.lock()->Set_PassIndex(1);
 
     m_pLogo = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_LOGO);
     m_pLogo.lock()->Set_Depth(0.2f);
@@ -61,9 +65,10 @@ HRESULT CUI_Logo::Initialize(void* pArg)
     faderDesc.fDelayTime = 0.f;
     faderDesc.fFadeMaxTime = 1.f;
     faderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 0.3f);
-    hoverDesc.m_bSizeChange = false;
+    hoverDesc.bSizeChange = false;
+    hoverDesc.eType = CHUD_Hover::HUD_HOVER_ANIMATION_END;
 
-    m_pLogo.lock()->Init_Fader(faderDesc, hoverDesc, CHUD_Hover::HUD_HOVER_ANIMATION_END);
+    m_pLogo.lock()->Init_Fader(faderDesc, hoverDesc);
 
     faderDesc.eFaderType = FADER_INOUTLOOPING;
 
@@ -78,7 +83,7 @@ HRESULT CUI_Logo::Initialize(void* pArg)
         m_pSelectButton[i] = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_LOGO, &desc);
         m_pSelectButton[i].lock()->Set_Texture("MainMenu_SelectableButton_1");
         m_pSelectButton[i].lock()->Set_Enable(true);
-        m_pSelectButton[i].lock()->Init_Fader(faderDesc, hoverDesc, CHUD_Hover::HUD_HOVER_ANIMATION_END);
+        m_pSelectButton[i].lock()->Init_Fader(faderDesc, hoverDesc);
         desc.fSizeX = m_fFontSize[i].x;
         desc.fSizeY = m_fFontSize[i].y;
 
@@ -87,13 +92,13 @@ HRESULT CUI_Logo::Initialize(void* pArg)
         m_pTextTexture[i].lock()->Set_Enable(true);
         m_pTextTexture[i].lock()->Set_Depth(0.0f);
 
-        m_pTextTexture[i].lock()->Init_Fader(faderDesc, hoverDesc, CHUD_Hover::HUD_HOVER_ANIMATION_END);
+        m_pTextTexture[i].lock()->Init_Fader(faderDesc, hoverDesc);
 
     }
 
     m_iSelect = 0;
     ChageButtonIndex(m_iSelect);
-
+    m_bSelect = true;
 
     return S_OK;
 }
@@ -125,7 +130,7 @@ void CUI_Logo::Tick(_float fTimeDelta)
             m_iSelect++;
          ChageButtonIndex(m_iSelect);
     }
-    if (KEY_INPUT(KEY::ENTER, KEY_STATE::TAP))
+    if (KEY_INPUT(KEY::ENTER, KEY_STATE::TAP) && m_bSelect)
         SelectButton(m_iSelect);
 
 }
@@ -138,9 +143,19 @@ void CUI_Logo::LateTick(_float fTimeDelta)
     {
         if (m_iSelect != i)
         {
-            m_pSelectButton[i].lock()->Set_Alpha(_float4(0.4f, 0.4f, 0.4f, 0.4f));
-            m_pTextTexture[i].lock()->Set_Alpha(_float4(0.4f, 0.4f, 0.4f, 0.4f));
+            m_pSelectButton[i].lock()->Set_AlphaColor(_float4(0.4f, 0.4f, 0.4f, 0.4f));
+            m_pTextTexture[i].lock()->Set_AlphaColor(_float4(0.4f, 0.4f, 0.4f, 0.4f));
         }
+    }
+    if (m_pSelectButton[m_iSelect].lock()->Get_AlphaColor() < 0.4f)
+    {
+        m_pSelectButton[m_iSelect].lock()->Set_AlphaColor(_float4(0.4f, 0.4f, 0.4f, 0.4f));
+        m_pTextTexture[m_iSelect].lock()->Set_AlphaColor(_float4(0.4f, 0.4f, 0.4f, 0.4f));
+    }
+    if (m_iSelect == (_uint)LOGO_BUTTON_TOOL)
+    {
+        m_pSelectButton[m_iSelect].lock()->Set_AlphaColor(_float4(1.0f, 1.0f, 1.0f, 1.0f));
+        m_pTextTexture[m_iSelect].lock()->Set_AlphaColor(_float4(1.0f, 1.0f, 1.0f, 1.0f));
     }
 }
 
@@ -168,16 +183,20 @@ void CUI_Logo::ChageButtonIndex(_uint iButtonIndex)
 
 void CUI_Logo::SelectButton(_uint iButtonIndex)
 {
-    LOGO_BUTTON_TYPE eActorType = (LOGO_BUTTON_TYPE)iButtonIndex;
+    LOGO_BUTTON_TYPE eType = (LOGO_BUTTON_TYPE)iButtonIndex;
+    m_bSelect = false;
 
     switch (eActorType)
     {
     case Client::CUI_Logo::LOGO_BUTTON_START_GAME:
-        GAMEINSTANCE->Get_CurrentLevel().lock()->OnLevelExit();
+        Weak_Cast<CLevel_Logo>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(LEVEL::LEVEL_GAMEPLAY);
         break;
     case Client::CUI_Logo::LOGO_BUTTON_CONTINUE_GAME:
         break;
     case Client::CUI_Logo::LOGO_BUTTON_LOAD_GAME:
+        break;
+    case Client::CUI_Logo::LOGO_BUTTON_TOOL:
+        Weak_Cast<CLevel_Logo>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(LEVEL::LEVEL_EDIT);
         break;
     case Client::CUI_Logo::LOGO_BUTTON_OPTION:
         break;
