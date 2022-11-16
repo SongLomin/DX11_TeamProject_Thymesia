@@ -43,6 +43,9 @@ private:
 
     weak_ptr<CCustomUI> m_pPageIndicatorDecoration;
 
+    weak_ptr<CCustomUI> m_pPageTitleUnderLine;
+
+
     
     
     

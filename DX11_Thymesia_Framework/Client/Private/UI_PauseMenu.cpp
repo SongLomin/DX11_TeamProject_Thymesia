@@ -132,6 +132,7 @@ void CUI_PauseMenu::OnPaging()
 			m_PageTexInfo[i].vColor = _float4(1.f, 1.f, 1.f, 1.f);
 
 			m_pPageIndicator[i].lock()->Set_Texture("PageIndex_Indicator_Selected");
+			m_pPageTitleUnderLine.lock()->Set_UIPosition(m_PageTexInfo[i].vPosition.x, m_PageTexInfo[i].vPosition.y + 40.f);
 		}
 		else
 		{
@@ -208,4 +209,25 @@ void CUI_PauseMenu::Create_PageIndicator()
 
 		m_vecChildUI.push_back(m_pPageIndicator[i]);
 	}
+
+	desc.fSizeX = 390.f;
+	desc.fSizeY = 4.f;                                                                                                                                                                                                                                                                                                                                                                    
+	desc.fDepth = 0.2f;
+	desc.fY = 87.f;
+	desc.fX = 789.f;
+	m_pPageIndicatorDecoration = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &desc);
+	m_pPageIndicatorDecoration.lock()->Set_Texture("PageIndex_Indicator_Decoration");
+	m_vecChildUI.push_back(m_pPageIndicatorDecoration);
+
+	desc.fSizeX = 65.;
+	desc.fSizeY = 17.f;
+	desc.fDepth = 0.2f;
+	desc.fY = 87.f;
+	desc.fX = 789.f;
+
+	m_pPageTitleUnderLine = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &desc);
+	m_pPageTitleUnderLine.lock()->Set_Texture("PageIndex_UnderLine");
+	m_vecChildUI.push_back(m_pPageTitleUnderLine);
+
+
 }
