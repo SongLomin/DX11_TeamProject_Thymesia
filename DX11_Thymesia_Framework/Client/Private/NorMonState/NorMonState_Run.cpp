@@ -118,11 +118,6 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 	_float fMToMDistance = GetStartPositionToCurrentPositionDir(); // 몬스터스타트포지션과 몬스터현재 포지션 사이의 거리
 
-	if (fMToMDistance <= 5.f)
-	{
-		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_OneCheck(false);
-	}
-
 
 
 	if (fPToMDistance < 1.3f && m_bClosePlayer) //6보다 작을떄 공격하거나 좌우아래옆 머시기로움직인다  이떄 그애니메이션 다시 거리게산하고 공격 하는걸로 하게금

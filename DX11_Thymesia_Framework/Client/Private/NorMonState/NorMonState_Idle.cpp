@@ -83,6 +83,12 @@ void CNorMonState_Idle::Tick(_float fTimeDelta)
 
 	//Turn_Transform(fTimeDelta);
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
+
+	if (m_bOneCheck)
+		m_fTimeAcc += fTimeDelta;
+
+	
+
 }
 
 void CNorMonState_Idle::LateTick(_float fTimeDelta)
@@ -144,10 +150,13 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 		m_bReturnStartPosition = false;
 	}
 
+	if (fPToMDistance <= 3.f && !m_bReturnStartPosition)
+		m_bOneCheck = true;
 
-	if (fPToMDistance <= 3.f && !m_bReturnStartPosition )
+	if (fPToMDistance <= 3.f && !m_bReturnStartPosition && m_fTimeAcc >= 0.1f )
 	{
-		
+		m_bOneCheck = false;
+		m_fTimeAcc = 0.f;
 		TurnMechanism();
 
 		m_bFirstRun = true;
@@ -201,8 +210,14 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 		//	
 		//}
 	}
+
 	if (fPToMDistance > 3.f && !m_bReturnStartPosition && m_bPlayerColision)
+		m_bOneCheck = true;
+
+	if (fPToMDistance > 3.f && !m_bReturnStartPosition && m_bPlayerColision && m_fTimeAcc >= 0.1f)
 	{
+		m_bOneCheck = false;
+		m_fTimeAcc = 0.f;
 		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && m_bFirstRun)
 		{
 			TurnMechanism();
@@ -229,29 +244,20 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 		}
 	}
 
-	if (m_bReturnStartPosition && !m_bOneCheck)
-	{
-	 
-		switch (m_eNorMonType)
-		{
-		case  NORMONSTERTYPE::AXEMAN:
-			Get_OwnerCharacter().lock()->Change_State<CNorMonState_Stop>(0.05f);
-			break;
-		}
+	if (m_bReturnStartPosition)
+		m_bOneCheck = true;
+
+
+	if (m_bReturnStartPosition && m_fTimeAcc >= 0.1f)
+	{ 
+		m_bOneCheck = false;
+		m_bPlayerColision = false;
+		m_fTimeAcc = 0.f;
+		Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
 		Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(false);
 		return true;
 	}
 
-	if (m_bReturnStartPosition && m_bOneCheck)
-	{
-		switch (m_eNorMonType)
-		{
-		case NORMONSTERTYPE::AXEMAN:
-			Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
-			break;
-		}
-		return true;
-	}
 
 
 

@@ -38,6 +38,7 @@ private: // 아이들에서만쓰는불값
 
 
 	//TODO 야매
+	_float   m_fTimeAcc = 0.f;
 	_bool    m_bPlayerColision = false;
 	_bool    m_bOneCheck = false;
 

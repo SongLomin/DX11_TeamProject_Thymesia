@@ -75,7 +75,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	//m_pStandState = Add_Component<CIdle>();
 	
 	_vector vecStartPositon = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-	XMStoreFloat3(&m_tLinkStateDesc.m_fStartPositon, vecStartPositon);
+	XMStoreFloat4(&m_tLinkStateDesc.m_fStartPositon, vecStartPositon);
 
 
 	m_pStandState = Add_Component<CNorMonState_Idle>(&m_tLinkStateDesc);
