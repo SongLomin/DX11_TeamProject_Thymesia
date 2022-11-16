@@ -849,23 +849,18 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::Text("Pass 1 : Sprite Image");
 			ImGui::InputInt("Shader Pass", &m_tEffectParticleDesc.iShaderPassIndex);
 
-			ImGui::Text("Pendulum Effect");
-			ImGui::SameLine();
-			ImGui::Checkbox("##Pendulum_Effect", &m_tEffectParticleDesc.bPendulumSprite);
-			ImGui::Separator();
+			if (1 == m_tEffectParticleDesc.iShaderPassIndex)
+			{
+				ImGui::Text("Pendulum Effect");
+				ImGui::SameLine();
+				ImGui::Checkbox("##Pendulum_Effect", &m_tEffectParticleDesc.bPendulumSprite);
+				ImGui::Separator();
 
-			ImGui::InputInt("NumFramesX", &m_tEffectParticleDesc.iNumFrameX);
-			ImGui::InputInt("NumFramesY", &m_tEffectParticleDesc.iNumFrameY);
-			ImGui::InputFloat("FrameSpeed", &m_tEffectParticleDesc.fSpriteSpeed);
+				ImGui::InputInt("NumFramesX", &m_tEffectParticleDesc.iNumFrameX);
+				ImGui::InputInt("NumFramesY", &m_tEffectParticleDesc.iNumFrameY);
+				ImGui::InputFloat("FrameSpeed", &m_tEffectParticleDesc.fSpriteSpeed);
+			}
 
-
-			/*ImGui::Text("Is Billboard");
-			ImGui::SameLine();
-			ImGui::Checkbox("##Is_Billboard", &m_tEffectParticleDesc.bBillboard);
-			ImGui::Separator();*/
-
-			/*ImGui::Text("ParticleType");
-			ImGui::SameLine();*/
 			const char* items[] = { "None", "Outburst", "Billboard"};
 			
 			if (ImGui::BeginListBox("ParticleType"))
