@@ -72,7 +72,7 @@ void CNorMonState_Walk_F::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "LuxiyaState: RunStart -> OnStateStart" << endl;
+	cout << "NorMonState: RunStart -> Walk_F" << endl;
 #endif
 
 	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
@@ -113,6 +113,73 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+
+	_float fDistance = Get_DistanceWithPlayer();
+
+	if (fDistance < 1.f) //6보다 작을떄 공격하거나 좌우아래옆 머시기로움직인다  이떄 그애니메이션 다시 거리게산하고 공격 하는걸로 하게금
+	{
+
+
+		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && !m_bWalkCheck)
+		{
+			_int iMovRand = rand() % 7;
+
+			switch (iMovRand)
+			{
+			case 0:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+				m_bWalkCheck = true;
+				break;
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
+				m_bWalkCheck = true;
+				break;
+			case 2:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_B>(0.05f);
+				m_bWalkCheck = true;
+				break;
+			case 3:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+				m_bWalkCheck = false;
+				break;
+			}
+			return true;
+
+		}
+	}
+
+	if (fDistance < 3.f && m_bWalkCheck)
+	{
+
+		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && m_bWalkCheck)
+		{
+			_int iAttRand = rand() % 4;
+
+			switch (iAttRand)
+			{
+			case 0:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+				m_bWalkCheck = false;
+				break;
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack3>(0.05f);
+				m_bWalkCheck = false;
+				break;
+			case 2:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+				m_bWalkCheck = false;
+				break;
+			case 3:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
+				m_bWalkCheck = false;
+				break;
+			}
+			return true;
+		}
+
+
+	}
+
 
 	return false;
 }

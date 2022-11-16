@@ -89,6 +89,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	Add_Component<CNorMonState_LightAttack3>(&m_tLinkStateDesc);
 	Add_Component<CNorMonState_HeavyAttack1>(&m_tLinkStateDesc);
 	Add_Component<CNorMonState_HeavyAttack2>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_HeavyAttack3>(&m_tLinkStateDesc);
 	Add_Component<CNorMonState_Walk_F>(&m_tLinkStateDesc);
 	Add_Component<CNorMonState_Walk_FR>(&m_tLinkStateDesc);
 	Add_Component<CNorMonState_Walk_FL>(&m_tLinkStateDesc);

@@ -103,7 +103,7 @@ void CNorMonState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "LuxiyaState: RunStart -> OnStateStart" << endl;
+	cout << "NorMonState: Idle -> OnStateStart" << endl;
 #endif
 
 
@@ -140,9 +140,20 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
 		{
 			switch (m_eNorMonIdleType)
-			{
+			{			
 			case Client::NORMONSTERIDLETYPE::NORIDLE:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+			{
+				int iRunORWalk = rand() % 2;
+				switch (iRunORWalk)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+					break;
+				}
+			}
 				break;
 			case Client::NORMONSTERIDLETYPE::SITIDLE:
 				Get_OwnerCharacter().lock()->Change_State<CNorMonState_SitToIdle>(0.05f);
@@ -182,8 +193,19 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 			switch (m_eNorMonIdleType)
 			{
 			case Client::NORMONSTERIDLETYPE::NORIDLE:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
-				break;
+			{
+				int iRunORWalk = rand() % 2;
+				switch (iRunORWalk)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+					break;
+				}
+			}	
+			break;				
 			}
 			return true;
 		}

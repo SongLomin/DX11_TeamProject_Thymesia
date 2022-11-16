@@ -165,7 +165,7 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE&
 
 			m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
 
-			Get_OwnerPlayer()->Change_State<CLuxiyaState_HitDown>();
+			Get_OwnerPlayer()->Change_State<CNorMonState_HitDown>();
 			m_pStatusCom.lock()->Add_Damage(In_fDamage);
 
 		}

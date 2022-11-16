@@ -71,7 +71,7 @@ void CNorMonState_HeavyAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "LuxiyaState: RunStart -> OnStateStart" << endl;
+	cout << "NorMonState: RunStart -> OnStateStart" << endl;
 #endif
 
 	m_pModelCom.lock()->Set_AnimationSpeed(2.f);

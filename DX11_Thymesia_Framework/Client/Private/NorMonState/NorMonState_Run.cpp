@@ -58,8 +58,6 @@ void CNorMonState_Run::LateTick(_float fTimeDelta)
 
 	Turn_ToThePlayer(fTimeDelta);
 
-	//TurnMechanism();
-
 	Check_AndChangeNextState();
 }
 
@@ -72,7 +70,7 @@ void CNorMonState_Run::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "LuxiyaState: RunStart -> OnStateStart" << endl;
+	cout << "NorMonState: RunStart -> Run" << endl;
 #endif
 
 
@@ -101,38 +99,34 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 
 	_float fDistance = Get_DistanceWithPlayer();
 
-	if (fDistance < 1.f) //6보다 작을떄 공격하거나 좌우아래옆 머시기로움직인다  이떄 그애니메이션 다시 거리게산하고 공격 하는걸로 하게금
+	if (fDistance < 1.3f) //6보다 작을떄 공격하거나 좌우아래옆 머시기로움직인다  이떄 그애니메이션 다시 거리게산하고 공격 하는걸로 하게금
 	{
 
 
 		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && !m_bRunCheck)
 		{
-			_int iMovRand = rand() % 6;
+			_int iMovRand = rand() % 5;
 
 			switch (iMovRand)
 			{
 			case 0:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_FR>(0.05f);
-				m_bRunCheck = true;
-				break;
-			case 1:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_FL>(0.05f);
-				m_bRunCheck = true;
-				break;
-			case 2:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
-				m_bRunCheck = true;
-				break;
-			case 3:
 				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
 				m_bRunCheck = true;
 				break;
-			case 4:
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+				m_bRunCheck = true;
+				break;
+			case 2:
 				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_B>(0.05f);
 				m_bRunCheck = true;
 				break;
-			case 5:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BL>(0.05f);
+			case 3:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+				m_bRunCheck = true;
+				break;
+			case 4:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack3>(0.05f);
 				m_bRunCheck = true;
 				break;
 			}
