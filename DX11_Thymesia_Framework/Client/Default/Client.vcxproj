@@ -268,6 +268,7 @@
     <ClInclude Include="..\Public\MobWeapon\MobWeapon.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_SitToIdle.h" />
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Stop.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_FR.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_L.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_LightAttack2.h" />
@@ -424,6 +425,7 @@
     <ClCompile Include="..\Private\MobWeapon\MobWeapon.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_SitToIdle.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_FR.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_L.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_LightAttack2.cpp" />

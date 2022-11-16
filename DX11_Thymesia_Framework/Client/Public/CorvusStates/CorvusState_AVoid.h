@@ -45,7 +45,7 @@ private:
 protected:
     void Free();
 
-    // CLuxiyaStateBase을(를) 통해 상속됨
+    // CNorMonStateBase을(를) 통해 상속됨
     virtual _bool Check_AndChangeNextState() override;
     _bool Check_RuquireMnetRepeatAvoidkState();
  

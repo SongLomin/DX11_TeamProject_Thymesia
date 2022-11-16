@@ -3,6 +3,7 @@
 #include "GameManager.h"
 
 
+#include "NorMonState/NorMonState_Stop.h"
 #include "NorMonState/NorMonState_Awake.h"
 #include "NorMonState/NorMonState_Die.h"
 #include "NorMonState/NorMonState_SitToIdle.h"

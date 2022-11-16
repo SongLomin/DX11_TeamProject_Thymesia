@@ -167,7 +167,7 @@ void CCorvusState_Parry2::OnStateStart(const _float& In_fAnimationBlendTime)
 
 
 #ifdef _DEBUG
-	cout << "LuxiyaState: Attack -> OnStateStart" << endl;
+	cout << "NorMonState: Attack -> OnStateStart" << endl;
 
 #endif
 }

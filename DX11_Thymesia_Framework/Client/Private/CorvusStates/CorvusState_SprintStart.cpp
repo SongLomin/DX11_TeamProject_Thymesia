@@ -61,7 +61,7 @@ void CCorvusState_SprintStart::OnStateStart(const _float& In_fAnimationBlendTime
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "LuxiyaState: RunStart -> OnStateStart" << endl;
+	cout << "NorMonState: RunStart -> OnStateStart" << endl;
 #endif
 	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 	
@@ -98,7 +98,7 @@ _bool CCorvusState_SprintStart::Check_AndChangeNextState()
 	//if (Check_RequirementUltimateState())
 	//{
 	//	Rotation_NearToLookDir();
-	//	Get_OwnerPlayer()->Change_State<CLuxiyaState_UltimateSkill>();
+	//	Get_OwnerPlayer()->Change_State<CNorMonState_UltimateSkill>();
 	//	return true;
 	//}
 	//
@@ -107,8 +107,8 @@ _bool CCorvusState_SprintStart::Check_AndChangeNextState()
 	//	if (!Rotation_InputToLookDir())
 	//		Rotation_NearToLookDir();
 	//
-	//	Get_OwnerPlayer()->Change_State<CLuxiyaState_Attack>();
-	//	Get_OwnerPlayer()->Get_Component<CLuxiyaState_Attack>().lock()->Play_AttackWithIndex(0);
+	//	Get_OwnerPlayer()->Change_State<CNorMonState_Attack>();
+	//	Get_OwnerPlayer()->Get_Component<CNorMonState_Attack>().lock()->Play_AttackWithIndex(0);
 	//	return true;
 	//}
 	

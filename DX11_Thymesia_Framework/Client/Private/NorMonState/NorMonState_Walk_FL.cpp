@@ -72,7 +72,7 @@ void CNorMonState_Walk_FL::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "LuxiyaState: RunStart -> OnStateStart" << endl;
+	cout << "NorMonState: RunStart -> OnStateStart" << endl;
 #endif
 
 	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
