@@ -27,7 +27,7 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	ShowCursor(false);
 	
-	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_GAMEPLAY);
+	Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_GAMEPLAY);
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
 	CameraDesc.vEye = _float4(0.0f, 2.5f, -2.5f, 1.f);

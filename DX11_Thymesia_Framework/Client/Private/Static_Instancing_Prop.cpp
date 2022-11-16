@@ -25,7 +25,7 @@ HRESULT CStatic_Instancing_Prop::Initialize(void* pArg)
         VTXMODEL_INSTANCE_DECLARATION::iNumElements
     );
 
-	GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_Cast<CGameObject>(m_this));
+	GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_StaticCast<CGameObject>(m_this));
 
 
     m_pInstancingModel = Add_Component<CVIBuffer_Model_Instance>();
