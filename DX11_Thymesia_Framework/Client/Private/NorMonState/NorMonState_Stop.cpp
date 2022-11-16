@@ -65,7 +65,7 @@ void CNorMonState_Stop::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "NorMonState: Stop -> StopStop" << endl;
 #endif
 
 
@@ -89,8 +89,7 @@ void CNorMonState_Stop::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
-
-	Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_OneCheck(true);
+	
 	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
 }
 
@@ -101,6 +100,8 @@ _bool CNorMonState_Stop::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+
+
 
 	return false;
 }
