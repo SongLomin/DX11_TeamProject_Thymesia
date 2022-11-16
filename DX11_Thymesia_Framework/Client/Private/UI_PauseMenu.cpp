@@ -169,12 +169,12 @@ void CUI_PauseMenu::Create_Background()
 
 void CUI_PauseMenu::Create_PageText()
 {
-	m_szPageTextData[PAUSE_MENU_STATUS] = L"상태";
-	m_szPageTextData[PAUSE_MENU_TALENT] = L"특성";
-	m_szPageTextData[PAUSE_MENU_ITEM] = L"아이템";
-	m_szPageTextData[PAUSE_MENU_COLLETION] = L"컬렉션";
-	m_szPageTextData[PAUSE_MENU_OPTION] = L"옵션";
-	m_szPageTextData[PAUSE_MENU_QUIT] = L"종료";
+	m_szPageTextData[PAUSE_MENU_STATUS] = L"STATUS";
+	m_szPageTextData[PAUSE_MENU_TALENT] = L"TALENT";
+	m_szPageTextData[PAUSE_MENU_ITEM] = L"ITEM";
+	m_szPageTextData[PAUSE_MENU_COLLETION] = L"COLLECTION";
+	m_szPageTextData[PAUSE_MENU_OPTION] = L"OPTION";
+	m_szPageTextData[PAUSE_MENU_QUIT] = L"QUIT";
 
 
 	for (_uint i = 0; i < (_uint)PAUSE_MENU_END; i++)
