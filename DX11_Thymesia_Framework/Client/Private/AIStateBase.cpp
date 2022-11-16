@@ -25,7 +25,7 @@ HRESULT CAIStateBase::Initialize(void* pArg)
 
 	m_eNorMonType = StateLinkDesc.eNorMonType;
 	m_eNorMonIdleType = StateLinkDesc.eNorMonIdleType;
-	
+	m_fStartPosition = StateLinkDesc.m_fStartPositon;
 	
 
 	m_iTimeScaleLayer = (_uint)TIMESCALE_LAYER::MONSTER;
@@ -217,6 +217,16 @@ _float CAIStateBase::Get_DistanceWithPlayer() const
 }
 
 
+
+_float CAIStateBase::Get_StartPositionToCurrentPositionDir()
+{
+	_vector vStartPosition = XMLoadFloat3(&m_fStartPosition);
+	_vector vCurrentPosition = m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
+
+	_float  fDistance = XMVector3Length(vStartPosition - vCurrentPosition).m128_f32[0];
+
+	return fDistance;
+}
 
 void CAIStateBase::TurnMechanism()
 {

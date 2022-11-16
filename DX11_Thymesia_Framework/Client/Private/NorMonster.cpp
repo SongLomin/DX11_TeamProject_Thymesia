@@ -32,9 +32,6 @@ HRESULT CNorMonster::Initialize(void* pArg)
 
 	memcpy(&m_tLinkStateDesc, pArg, sizeof(STATE_LINK_DESC));
 	
-	//m_tLinkStateDesc.eNorMonType = NORMONSTERTYPE::AXEMAN;
-	//m_eNorMonType = NORMONSTERTYPE::AXEMAN;
-	
 
 	
 	switch (m_tLinkStateDesc.eNorMonType)
@@ -77,6 +74,8 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	//m_pStatus.lock()->Init_Status(StatusDesc);
 	//m_pStandState = Add_Component<CIdle>();
 	
+	_vector vecStartPositon = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+	XMStoreFloat3(&m_tLinkStateDesc.m_fStartPositon, vecStartPositon);
 	m_pStandState = Add_Component<CNorMonState_Idle>(&m_tLinkStateDesc);
 	Add_Component<CNorMonState_SitToIdle>(&m_tLinkStateDesc);
 	Add_Component<CNorMonState_LightAttack1>(&m_tLinkStateDesc);

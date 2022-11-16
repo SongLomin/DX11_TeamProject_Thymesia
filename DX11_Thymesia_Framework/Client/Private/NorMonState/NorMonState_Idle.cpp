@@ -92,6 +92,8 @@ void CNorMonState_Idle::LateTick(_float fTimeDelta)
 	
 	Check_AndChangeNextState();
 
+
+
 }
 
 
@@ -129,10 +131,20 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 		return false;
 
 
-	_float fDistance = Get_DistanceWithPlayer();
+	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
+	_float fMToMDistance = Get_StartPositionToCurrentPositionDir();
+
+	if (fMToMDistance > 30.f) // 거리30보다멀어지면 다른거 다끄고 돌아가게금 
+	{
+		m_bReturnStartPosition = true;
+	}
+	else
+	{
+		m_bReturnStartPosition = false;
+	}
 
 
-	if (fDistance < 3.f)
+	if (fPToMDistance < 3.f)
 	{
 		
 		m_bFirstRun = true;
