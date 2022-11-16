@@ -211,9 +211,15 @@ PxFilterFlags CollisionFilterShader(
 	// let triggers through
 	if (filterData0.word2 == 2 && filterData1.word2 == 2)
 	{
-		pairFlags = PxPairFlag::eTRIGGER_DEFAULT;
-		return PxFilterFlag::eDEFAULT;
-
+		if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+		{
+			pairFlags = PxPairFlag::eTRIGGER_DEFAULT;
+			return PxFilterFlag::eDEFAULT;
+		}
+		else
+		{
+			return PxFilterFlag::eKILL;
+		}
 		//cout << "Is Exit? filterData0.word2 : " << filterData0.word2 << endl;
 		//cout << "Is Exit? filterData1.word2 : " << filterData1.word2 << endl;
 	}

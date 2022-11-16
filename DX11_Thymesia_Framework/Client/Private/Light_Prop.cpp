@@ -66,7 +66,7 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	PHYSXCOLLIDERDESC tPhysxColliderDesc;
 	Preset::PhysXColliderDesc::TestLightPropSetting(tPhysxColliderDesc);
 	m_pPhysXColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
-	m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene({ 10.f, 10.f, 10.f });
+	m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene({ 0.f, 0.f, 0.f });
 
 	Preset::PhysXColliderDesc::TestLightPropTriggerSetting(tPhysxColliderDesc);
 	m_pPhysXTriggerColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
