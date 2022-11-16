@@ -46,7 +46,7 @@ void CVIBuffer_Model_Instance::Init_NoAnimInstance(const char* In_szModelName, _
 		pInstance[i].vRight = _float4(1.f, 0.f, 0.f, 0.f);
 		pInstance[i].vUp = _float4(0.f, 1.f, 0.f, 0.f);
 		pInstance[i].vLook = _float4(0.f, 0.f, 1.f, 0.f);
-		pInstance[i].vTranslation = _float4(rand() % 10, 0.f, rand() % 10, 1.f);
+		pInstance[i].vTranslation = _float4(rand() % 10, 5.f, rand() % 10, 1.f);
 	}
 
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));

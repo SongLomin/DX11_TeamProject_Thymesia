@@ -25,6 +25,9 @@ HRESULT CStatic_Instancing_Prop::Initialize(void* pArg)
         VTXMODEL_INSTANCE_DECLARATION::iNumElements
     );
 
+	GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_Cast<CGameObject>(m_this));
+
+
     m_pInstancingModel = Add_Component<CVIBuffer_Model_Instance>();
     m_pInstancingModel.lock()->Init_NoAnimInstance("Torch", 10);
 
@@ -46,6 +49,7 @@ void CStatic_Instancing_Prop::Tick(_float fTimeDelta)
 void CStatic_Instancing_Prop::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
+
 }
 
 HRESULT CStatic_Instancing_Prop::Render()
@@ -80,6 +84,26 @@ HRESULT CStatic_Instancing_Prop::Render()
 
 
     return __super::Render();
+}
+
+HRESULT CStatic_Instancing_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix)
+{
+	m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
+
+	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)&In_LightViewMatrix, sizeof(_float4x4));
+	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)&In_LightProjMatrix, sizeof(_float4x4));
+
+	_uint iNumMeshContainers = m_pInstancingModel.lock()->Get_NumMeshContainers();
+	for (_uint i = 0; i < iNumMeshContainers; ++i)
+	{
+		
+
+		m_pShaderCom.lock()->Begin(2);
+
+		m_pInstancingModel.lock()->Render_Mesh(i);
+	}
+
+	return S_OK;
 }
 
 void CStatic_Instancing_Prop::Free()
