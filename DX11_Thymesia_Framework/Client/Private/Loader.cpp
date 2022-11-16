@@ -30,8 +30,8 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 //void LoadingMain(void* pArg)
 {
 	CLoader*		pLoader = (CLoader*)pArg;
-
-	EnterCriticalSection(&pLoader->Get_CS());
+	CRITICAL_SECTION pCS = pLoader->Get_CS();
+	EnterCriticalSection(&pCS);
 	HRESULT hr = 0;
 
 	switch (pLoader->Get_NextLevelID())
@@ -64,7 +64,8 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 	if (FAILED(hr))
 		MSG_BOX("Failed to Loading");
 
-	LeaveCriticalSection(&pLoader->Get_CS());
+	CRITICAL_SECTION pCSLeave = pLoader->Get_CS();
+	LeaveCriticalSection(&pCSLeave);
 
 	return 0;
 }
@@ -140,6 +141,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_Options"), TEXT("../Bin/Resources/Textures/UI/UI_Options.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_Credits"), TEXT("../Bin/Resources/Textures/UI/UI_Credits.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_Quit"), TEXT("../Bin/Resources/Textures/UI/UI_Quit.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_Tool"), TEXT("../Bin/Resources/Textures/UI/UI_Tool.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
 
 
 	//Player HPBar Texture
@@ -209,6 +211,27 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("Landing_HermesFortress"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_TheFortress.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Landing_OceanOfMemories"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_TheMemorySea.png"), MEMORY_TYPE::MEMORY_STATIC);
 
+	//UI Masking Texture
+	GAMEINSTANCE->Load_Textures(("CloudNoise"), TEXT("../Bin/Resources/Textures/UI/GoodUIIconTrail/Noise/T_CloudNoise.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Dissolve_1"), TEXT("../Bin/Resources/Textures/UI/Dissolve/Test%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+//	GAMEINSTANCE->Load_Textures(("Dissolve_2"), TEXT("../Bin/Resources/Textures/UI/Dissolve/Test2.png"), MEMORY_TYPE::MEMORY_STATIC);
+//	GAMEINSTANCE->Load_Textures(("Dissolve_3"), TEXT("../Bin/Resources/Textures/UI/Dissolve/Test3.png"), MEMORY_TYPE::MEMORY_STATIC);
+//	GAMEINSTANCE->Load_Textures(("Dissolve_4"), TEXT("../Bin/Resources/Textures/UI/Dissolve/Test4.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Dissolve_1"), TEXT("../Bin/Resources/Textures/UI/Dissolve/Test%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("Dissolve_Mask"), TEXT("../Bin/Resources/Textures/UI/W_PlagueWeapon_MaskColor01.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	//TODO : UI_Menu : ESC키를 눌러서 나오는 메뉴창
+	//UI_Menu
+	GAMEINSTANCE->Load_Textures(("PauseMenu_Background0"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/TexUI_PauseMenuBackground_00.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("PauseMenu_Background1"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/TexUI_PauseMenuBackground_01.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("PauseMenu_Background2"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/TexUI_PauseMenuBackground_02.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+
+
+
+	//TODO : 테스트 주석 지우기
 	
 	// TODO : For. Ground Texture : (AN) 임시 텍스쳐이므로 나중에 삭제하기, CroundTexture로 필요한곳에 사용할 예정임
 	Load_AllParticleInPath_Recursive("../Bin/Resources/Textures/Ground/");
@@ -221,14 +244,14 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	Load_AllMaskMap();
 	Load_AllNoiseTexture();
 	Load_AllParticleTexture();
-
+	
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
 
 	// TODO : Turn off temporarily for Light_Prop
 	LIGHTDESC			LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
-	LightDesc.eType = tagLightDesc::TYPE_DIRECTIONAL;
+	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
 	LightDesc.vDiffuse = _float4(0.8f, 0.8f, 0.8f, 1.f);
 	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
@@ -241,7 +264,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	// 지형 라이트
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
-	LightDesc.eType = tagLightDesc::TYPE_DIRECTIONAL;
+	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
 	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
@@ -254,7 +277,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	// 몬스터 라이트
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
-	LightDesc.eType = tagLightDesc::TYPE_DIRECTIONAL;
+	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
 	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
@@ -277,6 +300,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxNorTex"), TEXT("../Bin/ShaderFiles/Shader_VtxNorTex.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxPointInstance"), TEXT("../Bin/ShaderFiles/Shader_VtxPointInstance.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxTex"), TEXT("../Bin/ShaderFiles/Shader_VtxTex.hlsl"));
+	GAMEINSTANCE->Load_Shader(TEXT("Shader_UI"), TEXT("../Bin/ShaderFiles/Shader_UI.hlsl"));
+
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_EffectMesh"), TEXT("../Bin/ShaderFiles/Shader_EffectMesh.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_Cell"), TEXT("../Bin/ShaderFiles/Shader_Cell.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_Luxiya"), TEXT("../Bin/ShaderFiles/Shader_Luxiya.hlsl"));
@@ -284,7 +309,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxModelInstance"), TEXT("../Bin/ShaderFiles/Shader_VtxModelInstance.hlsl"));
 
 	lstrcpy(m_szLoadingText, TEXT("데이터를 로딩중입니다. "));
-
+	
 	GET_SINGLE(CGameManager)->Load_AllKeyEventFromJson();
 
 	_matrix			TransformMatrix;
@@ -313,9 +338,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Model("Mon_Weapon_Knife", "../Bin/Resources/Meshes/NorMonster/Weapon/Knife/Knife.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 	// 일반몬스터 무기모델
 	
-
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Torch", "../Bin/Resources/Meshes/LightProp/Torch/Torch.FBX", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
-
+	
 	lstrcpy(m_szLoadingText, TEXT("객체 생성 중입니다. "));
 
 	
@@ -464,7 +489,7 @@ HRESULT CLoader::Loading_ForEditLevel()
 	//GAMEINSTANCE->Clear();
 
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/", MEMORY_TYPE::MEMORY_STATIC);
-
+	CEditGround::Load_AllMeshInfo();
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
@@ -601,16 +626,22 @@ void CLoader::Load_AllEffectMeshInPath_Recursive(const filesystem::path& In_Path
 		szFileName = entry.path().filename().string().c_str();
 		szFileName = szFileName.substr(0, szFileName.size() - 4);
 
-		if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
+		/*if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
 		{
 			cout << szFileName << endl;
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
 		}
 
-		else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0)
+		if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0)
 		{
 			cout << szFileName << endl;
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
+		}*/
+
+		if (strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
+		{
+			cout << szFileName << endl;
+			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f));
 		}
 
 
@@ -642,13 +673,13 @@ void CLoader::Load_AllMeshes(const filesystem::path& In_Path, const MEMORY_TYPE&
 		szFileName = entry.path().filename().string().c_str();
 		szFileName = szFileName.substr(0, szFileName.size() - 4);
 
-		if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
+		/*if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
 		{
 			cout << szFileName << endl;
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixScaling(0.01f, 0.01f, 0.01f), In_eMemoryType);
-		}
+		}*/
 
-		else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0 || strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
+		if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0 || strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
 		{
 			cout << szFileName << endl;
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixScaling(0.01f, 0.01f, 0.01f), In_eMemoryType);

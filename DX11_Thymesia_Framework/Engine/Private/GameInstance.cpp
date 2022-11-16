@@ -48,6 +48,7 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uin
 
 	m_pTimer_Manager->Reserve_TimeScaleLayer(iNumTimeScales);
 	m_pCollision_Manager->Initialize(iNumCollsionLayer);
+
 	if (FAILED(m_pFrustum->Initialize()))
 		return E_FAIL;
 
@@ -67,7 +68,7 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uin
 
 	m_pSound_Manager->Initialize();
 
-	m_pPhysX_Manager->Initialize();
+	m_pPhysX_Manager->Initialize(iNumCollsionLayer);
 
 	return S_OK;	
 }
@@ -105,7 +106,8 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 
 HRESULT CGameInstance::Render_Engine()
 {
-	
+	m_pObject_Manager->Before_Render(m_fDeltaTime);
+
 	GET_SINGLE(CLevel_Manager)->Render();
 
 	m_pObject_Manager->After_Render();
@@ -548,6 +550,11 @@ void CGameInstance::StopAll()
 	m_pSound_Manager->StopAll();
 }
 
+void CGameInstance::Check_PhysXFilterGroup(const _uint In_iLeftLayer, const _uint In_iRightLayer)
+{
+	m_pPhysX_Manager->Check_PhysXFilterGroup(In_iLeftLayer, In_iRightLayer);
+}
+
 HRESULT CGameInstance::Create_Scene(CPhysX_Manager::Scene eScene, PxVec3 Gravity)
 {
 	return m_pPhysX_Manager->Create_Scene(eScene, Gravity);
@@ -577,12 +584,6 @@ void CGameInstance::Create_Material(_float fStaticFriction, _float fDynamicFrict
 {
 	m_pPhysX_Manager->Create_Material(fStaticFriction, fDynamicFriction, fRestitution, ppOut);
 }
-
-void CGameInstance::Create_Shape(const PxGeometry& Geometry, PxMaterial* pMaterial, PxShape** ppOut)
-{
-	m_pPhysX_Manager->Create_Shape(Geometry, pMaterial, ppOut);
-}
-
 
 void CGameInstance::Free()
 {

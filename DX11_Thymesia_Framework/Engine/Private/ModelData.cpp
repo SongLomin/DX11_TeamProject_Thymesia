@@ -26,8 +26,6 @@ HRESULT MODEL_DATA::Make_ModelData(const char* szFilePath, const MODEL_TYPE& In_
         return S_OK;
     }
 
-
-
     string          szBinFilePath;
 
     char			szDir[MAX_PATH] = "";
@@ -76,8 +74,6 @@ HRESULT MODEL_DATA::Make_ModelData(const char* szFilePath, const MODEL_TYPE& In_
         fout.close();
     }
 
-    
-
 #endif // _DEBUG
 
 
@@ -114,6 +110,7 @@ void MODEL_DATA::Bake_Binary()
     write_typed_data(os, iNumMaterials);
     write_typed_data(os, iNumAnimations);
     write_typed_data(os, eModelType);
+    write_typed_data(os, VertexInfo);
 
     RootNode->Bake_Binary(os);
 
@@ -133,7 +130,6 @@ void MODEL_DATA::Bake_Binary()
     }
     
     os.close();
-
 }
 
 void MODEL_DATA::Load_FromBinary()
@@ -161,7 +157,7 @@ void MODEL_DATA::Load_FromBinary()
     read_typed_data(is, iNumMaterials);
     read_typed_data(is, iNumAnimations);
     read_typed_data(is, eModelType);
-
+    read_typed_data(is, VertexInfo);
     
     RootNode = make_shared<NODE_DATA>();
     RootNode->Load_FromBinary(is);
@@ -212,6 +208,13 @@ void MODEL_DATA::Debug_AnimationLog(ofstream& os)
     }
 }
 
+void MODEL_DATA::Compute_Center(MESH_VTX_INFO& _tVertexInfo)
+{
+    _vector vDist      = (XMLoadFloat3(&_tVertexInfo.vMax) + XMLoadFloat3(&_tVertexInfo.vMin)) * 0.5f;
+    _vector vCentorPos = XMLoadFloat3(&_tVertexInfo.vMin) + vDist;
+
+    XMStoreFloat3(&_tVertexInfo.vCenter, vCentorPos);
+}
 
 HRESULT MODEL_DATA::Load_FromAssimp(const _bool In_bAnimZero)
 {
@@ -250,8 +253,7 @@ HRESULT MODEL_DATA::Load_FromAssimp(const _bool In_bAnimZero)
     }
 
 
-        /* For Mesh */
-
+    /* For Mesh */
     iNumMeshs = pAiSceneModel->mNumMeshes;
 
     // 메쉬가 없음.
@@ -264,8 +266,10 @@ HRESULT MODEL_DATA::Load_FromAssimp(const _bool In_bAnimZero)
     {
         shared_ptr<MESH_DATA> MeshData = make_shared<MESH_DATA>();
         Mesh_Datas.push_back(MeshData);
-        Mesh_Datas.back()->Make_MeshData(eModelType, pAiSceneModel->mMeshes[i], XMLoadFloat4x4(&TransformMatrix));
+        Mesh_Datas.back()->Make_MeshData(eModelType, pAiSceneModel->mMeshes[i], XMLoadFloat4x4(&TransformMatrix), &VertexInfo);
     }
+
+    Compute_Center(VertexInfo);
 
     iNumAnimations = pAiSceneModel->mNumAnimations;
 

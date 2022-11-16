@@ -51,8 +51,23 @@ void CNorMonState_LightAttack1::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+	
+	if(m_bAttackLookAtLimit)
+	Turn_ToThePlayer(fTimeDelta);
+
 	Check_AndChangeNextState();
 }
+
+
+void CNorMonState_LightAttack1::Call_AnimationEnd()
+{
+	if (!Get_Enable())
+		return;
+	//TODO 야매
+	yame = true;
+	//Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack2>(0.05f);
+}
+
 
 
 
@@ -64,17 +79,19 @@ void CNorMonState_LightAttack1::OnStateStart(const _float& In_fAnimationBlendTim
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "LuxiyaState: RunStart -> OnStateStart" << endl;
+	cout << "LuxiyaState: Attack1 -> OnStateStart" << endl;
 #endif
 
+	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 
+	m_bAttackLookAtLimit = true;  // 애니메이션시작할떄 룩엣시작
 }
 
 void CNorMonState_LightAttack1::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 
@@ -94,16 +111,27 @@ _bool CNorMonState_LightAttack1::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	{
+		m_bAttackLookAtLimit = false;
+	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.6f)
+	{
+		Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack2>(0.05f);
+		return true;
+	}
+	
+	//TODO 야매애요 ㅎ
+	//if (yame)
+	//{
+	//	yame = false;
+	//	Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack2>(0.05f);
+	//	return true;
+	//}
+
 
 	return false;
-}
-
-void CNorMonState_LightAttack1::Call_AnimationEnd()
-{
-	if (!Get_Enable())
-		return;
-
-	Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack2>(0.05f);
 }
 
 

@@ -11,6 +11,11 @@ CTexture::CTexture(const CTexture& rhs)
 
 }
 
+string CTexture::Get_TextureKey() const
+{
+	return m_szTextureKey;
+}
+
 HRESULT CTexture::Set_ShaderResourceView(weak_ptr<CShader> pShader, const char* pConstantName, _uint iIndex)
 {
 	if (iIndex >= m_SRVs.size())

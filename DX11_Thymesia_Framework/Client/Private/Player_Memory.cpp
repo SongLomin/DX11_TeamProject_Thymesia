@@ -35,9 +35,10 @@ HRESULT CPlayer_Memory::Initialize(void* pArg)
     m_pIcon.lock()->Set_Depth(0.1f);
 
 
-    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
-    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pBG));
-    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pIcon));
+
+    m_vecChildUI.push_back(m_pBG);
+    m_vecChildUI.push_back(m_pIcon);
+
 
 
 

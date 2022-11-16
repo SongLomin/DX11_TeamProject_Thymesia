@@ -44,13 +44,16 @@ public:
 	void Set_CurrentAnimationKey(_uint iKeyIndex);
 	
 
-	_vector Get_DeltaBonePosition(const char* szBoneName);
+	_vector Get_DeltaBonePosition(const char* In_szBoneName);
+	_vector Get_DeltaBonePitchYawRoll(const char* In_szBoneName);
 
 	_uint Get_CurrentAnimationKeyIndex() const;
 	_uint Get_CurrentAnimationIndex() const;
 
 	vector<string> Get_AllAnimationKeys() const;
 	vector<string> Get_AllBoneNames() const;
+
+	MESH_VTX_INFO Get_MeshVertexInfo();
 
 	_bool Is_CurrentAnimationKeyInRange(const _uint& iA, const _uint& iB) const;
 
@@ -75,7 +78,7 @@ public:
 	
 public:
 	void Init_Model(const char* sModelKey, const string& szTexturePath = "", _uint iTimeScaleLayer = 0);
-	HRESULT Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eType);
+	HRESULT Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eActorType);
 	weak_ptr<CBoneNode> Find_BoneNode(const string& pBoneName);
 	void Reset_DeltaBonePositions();
 	void Set_RootNode(const string& pBoneName, const _bool& In_bRoot = true);
@@ -121,6 +124,7 @@ private:
 
 private:
 	unordered_map<size_t, _float4>			m_DeltaBonePositions;
+	unordered_map<size_t, _float3>			m_DeltaBoneRotations;
 
 public:
 	FDelegate<>								CallBack_AnimationEnd;

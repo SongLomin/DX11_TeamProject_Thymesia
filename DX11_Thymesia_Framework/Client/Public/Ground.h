@@ -35,6 +35,7 @@ public:
     virtual HRESULT Render() override;
 
 public:
+    virtual void Write_Json(json& Out_Json) override;
     virtual void Load_FromJson(const json& In_Json) override;
 
 private:
@@ -51,9 +52,11 @@ private:
     shared_ptr<MESH_DATA>           m_pGroundMeshData;
 
     weak_ptr<CTexture>              m_pFilterTextureCom;
-    TEXTURES                        m_pTextureCom;
+    TEXTURES                        m_pTextureDescs;
 
     _uint                           m_iShaderPath = 0;
+
+    string                          m_szModelName;
 
 public:
     void Free();

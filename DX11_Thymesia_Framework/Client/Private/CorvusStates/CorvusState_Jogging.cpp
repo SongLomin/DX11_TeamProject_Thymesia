@@ -69,7 +69,6 @@ void CCorvusState_Jogging::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-	m_iDustEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("Dust", m_pTransformCom);
 
 #ifdef _DEBUG
 	cout << "LuxiyaState: Run -> OnStateStart" << endl;
@@ -81,7 +80,6 @@ void CCorvusState_Jogging::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Dust", m_iDustEffectIndex);
 }
 
 void CCorvusState_Jogging::Free()

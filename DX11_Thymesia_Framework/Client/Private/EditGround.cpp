@@ -52,9 +52,9 @@ HRESULT CEditGround::Initialize(void* pArg)
 	Desc.pNormTex = Add_Component<CTexture>();
 	m_pTextureCom.emplace(TexVarDesc[0], Desc);
 
-	Load_ResourceList(m_MeshNames, "../Bin/GroundInfo/Mesh/", ".bin");
+	Load_ResourceList(m_MeshNames   , "../Bin/GroundInfo/Mesh/", ".bin");
 	Load_ResourceList(m_TextureNames, "../Bin/Resources/Textures/Ground/");
-	Load_ResourceList(m_FilterNames, "../Bin/GroundInfo/Filter_SubInfo/", ".bin");
+	Load_ResourceList(m_FilterNames , "../Bin/GroundInfo/Filter_SubInfo/", ".bin");
 
 	return S_OK;
 }
@@ -69,6 +69,9 @@ void CEditGround::Tick(_float fTimeDelta)
 	if (!m_bCreate)
 		return;
 
+	/*static ImGuiIO& io = ImGui::GetIO();
+	ImGui::Text("io.WantCaptureMouse: %d", io.WantCaptureMouse);*/
+
 	if (m_pVIBufferCom.lock() && (EDIT_MODE::HEIGHT_FLAT == m_eEditMode || EDIT_MODE::HEIGHT_LERP == m_eEditMode))
 	{
 		if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
@@ -79,9 +82,6 @@ void CEditGround::Tick(_float fTimeDelta)
 	{
 		PickingFillterTextureDraw();
 	}
-
-	/*if (ImGui::IsItemHovered() || ImGui::IsWindowHovered())
-		m_eEditMode = EDIT_MODE::NON;*/
 }
 
 void CEditGround::LateTick(_float fTimeDelta)
@@ -278,7 +278,7 @@ void CEditGround::SetUp_Info()
 {
 	ImGui::Text("Size X, Z, Pitch");
 	ImGui::DragFloat3("##Size", &m_vBufferInfo.x, 1.f);
-	ImGui::Separator();
+	ImGui::Text("");
 
 	if (ImGui::Button("Create"))
 	{
@@ -1179,11 +1179,6 @@ _bool CEditGround::Load_AddTextureInfo(string _szFileName)
 
 void CEditGround::OnEventMessage(_uint iArg)
 {
-	if ((_uint)EVENT_TYPE::ON_EDITINIT == iArg)
-	{
-		m_bEdit = true;
-	}
-
 	if ((_uint)EVENT_TYPE::ON_EDITDRAW == iArg)
 	{
 		if (ImGui::BeginTabBar("Ground"))

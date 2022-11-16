@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "SMath.h"
 
 BEGIN(Engine)
 
@@ -24,18 +25,7 @@ public:
 		return XMLoadFloat4x4(&m_OffsetMatrix);
 	}
 
-	_matrix Get_CombinedMatrix() const {
-
-		_matrix TempCombinedTransformationMatrix = XMLoadFloat4x4(&m_CombinedTransformationMatrix);
-
-		if (m_bRootNode)
-		{
-			TempCombinedTransformationMatrix.r[3].m128_f32[0] = 0.f;
-			TempCombinedTransformationMatrix.r[3].m128_f32[2] = 0.f;
-		}
-
-		return TempCombinedTransformationMatrix;
-	}
+	_matrix Get_CombinedMatrix() const;
 
 	_matrix Get_TransformationMatrix() const {
 		return XMLoadFloat4x4(&m_TransformationMatrix);
@@ -56,7 +46,7 @@ protected:
     virtual void Start() override;
 
 public:
-    void Init_BoneNode(shared_ptr<NODE_DATA> pNodeData, weak_ptr<CBoneNode> pParent, _uint iDepth);
+    void Init_BoneNode(shared_ptr<NODE_DATA> pNodeData, weak_ptr<CBoneNode> pParent, _uint iDepth, _float4x4& In_ModelTransformMatrix);
 	void Update_CombinedTransformationMatrix();
 
 	void Bake_PreKeyFrame();
@@ -71,6 +61,7 @@ private:
     _float4x4		m_OffsetMatrix;
     _float4x4		m_TransformationMatrix;
     _float4x4		m_CombinedTransformationMatrix;
+	_float4x4		m_ModelTransformMatrix;
 
 	weak_ptr<CBoneNode> m_pParent;
 

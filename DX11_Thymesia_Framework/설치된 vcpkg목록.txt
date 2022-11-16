@@ -1,3 +1,6 @@
 IMGUI
 vcpkg install imgui[core,dx11-binding,win32-binding,docking-experimental]:x64-windows --recurse
+
+vcpkg install physx:x64-windows
+
 DirectXTK

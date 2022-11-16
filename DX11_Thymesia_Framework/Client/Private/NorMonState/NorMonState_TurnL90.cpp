@@ -43,13 +43,15 @@ void CNorMonState_TurnL90::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	//Turn_Transform(fTimeDelta);
+	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
 void CNorMonState_TurnL90::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	Turn_ToThePlayer(fTimeDelta);
 
 	Check_AndChangeNextState();
 }
@@ -74,7 +76,7 @@ void CNorMonState_TurnL90::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-
+	
 }
 
 
@@ -94,6 +96,7 @@ _bool CNorMonState_TurnL90::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+
 	return false;
 
 }
@@ -102,7 +105,6 @@ void CNorMonState_TurnL90::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
-
 	
 	Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_MonIdleType(NORMONSTERIDLETYPE::NORIDLE);
 	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);

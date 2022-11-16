@@ -8,7 +8,7 @@
 #include <UI_Landing.h>
 #include "Static_Instancing_Prop.h"
 #include "HUD_PlagueWeapon.h"
-#include "HUD_PlagueWeapon_Steal.h"
+#include "UI_PauseMenu.h"
 CLevel_GamePlay::CLevel_GamePlay()
 	//: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
@@ -26,7 +26,7 @@ HRESULT CLevel_GamePlay::Initialize()
 		return E_FAIL;
 
 	ShowCursor(false);
-
+	
 	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_GAMEPLAY);
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
@@ -46,10 +46,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	//TODO 야매에요
 	CMonster::STATE_LINK_DESC CCC;
 
-	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
+	/*ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
 	CCC.eNorMonType = NORMONSTERTYPE::AXEMAN;
 	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
-	CCC.vYame.x = 10.f;
 	CCC.vYame.z = 10.f;
 	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
 
@@ -62,9 +61,8 @@ HRESULT CLevel_GamePlay::Initialize()
 	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
 	CCC.eNorMonType = NORMONSTERTYPE::AXEMAN;
 	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::FIDGETIDLE;
-	CCC.vYame.x = 20.f;
 	CCC.vYame.z = 20.f;
-	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
+	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);*/
 
 	
 	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
@@ -77,17 +75,6 @@ HRESULT CLevel_GamePlay::Initialize()
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_GAMEPLAY);
 
 	//GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_GAMEPLAY);
-
-	GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC);
-
-	GAMEINSTANCE->Add_GameObject<CPlayer_MPBar>(LEVEL_STATIC);
-
-	GAMEINSTANCE->Add_GameObject<CPlayer_Memory>(LEVEL_STATIC);
-	GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon>(LEVEL_STATIC);
-	GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon_Steal>(LEVEL_STATIC);
-
-
-
 	weak_ptr<CPreViewAnimationModel> pPreviewModel = GAMEINSTANCE->Add_GameObject<CPreViewAnimationModel>(LEVEL_GAMEPLAY);
 	pPreviewModel.lock()->Init_EditPreViewAnimationModel("Corvus");
 	pPreviewModel.lock()->Change_AnimationFromIndex(3);
@@ -95,22 +82,17 @@ HRESULT CLevel_GamePlay::Initialize()
 	pPreviewModel.lock()->Play_Animation(0.01f);
 	pPreviewModel.lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(10.f, 0.f, 10.f, 0.f));
 
-	GAMEINSTANCE->Add_GameObject<CPlayer_PotionUI>(LEVEL_STATIC);
 
-	GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC);
-
-	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);
-	
 	GAMEINSTANCE->Add_GameObject<CStatic_Instancing_Prop>(LEVEL_GAMEPLAY);
 
-	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
-
-	//GAMEINSTANCE->Add_GameObject<CStage1>(LEVEL::LEVEL_GAMEPLAY);
-	
-	
-	
-	
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
+	
+
+
+	//UI
+	SetUp_UI();
+
+	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
 
 	return S_OK;
@@ -119,6 +101,13 @@ HRESULT CLevel_GamePlay::Initialize()
 void CLevel_GamePlay::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);		
+
+	if (KEY_INPUT(KEY::CTRL, KEY_STATE::TAP))
+	{
+		weak_ptr<CUI_PauseMenu> pPauseMenu = GAMEINSTANCE->Get_GameObjects<CUI_PauseMenu>(LEVEL_STATIC).front();
+		if (!pPauseMenu.lock()->Get_Enable())
+			pPauseMenu.lock()->Set_Enable(true);
+	}
 
 	if (!m_bFadeTrigger)
 	{
@@ -162,6 +151,25 @@ HRESULT CLevel_GamePlay::Render()
 	SetWindowText(g_hWnd, TEXT("게임프렐이레벨임. "));
 
 	return S_OK;
+}
+
+void CLevel_GamePlay::SetUp_UI()
+{
+	weak_ptr<CGameManager>	pGameManager = GET_SINGLE(CGameManager);
+
+	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);//여기서 
+	GAMEINSTANCE->Add_GameObject<CUI_PauseMenu>(LEVEL_STATIC);
+
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_MPBar>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_Memory>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_PotionUI>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
+
+	
+
 }
 
 shared_ptr<CLevel_GamePlay> CLevel_GamePlay::Create()

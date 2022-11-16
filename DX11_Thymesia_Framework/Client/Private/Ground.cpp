@@ -1,7 +1,5 @@
 #include "stdafx.h"
-
 #include "Ground.h"
-
 #include "Shader.h"
 #include "Renderer.h"
 #include "Texture.h"
@@ -10,6 +8,7 @@
 #include "ModelData.h"
 #include "MeshData.h"
 #include "PhysXCollider.h"
+#include "Client_Presets.h"
 
 GAMECLASS_C(CGround)
 CLONE_C(CGround, CGameObject)
@@ -46,16 +45,8 @@ HRESULT CGround::Start()
 
 	m_pPhysXColliderCom.lock()->Init_MeshCollider(m_pGroundMeshData);
 
-	CPhysXCollider::PHYSXCOLLIDERDESC ColliderDesc;
-	ColliderDesc.eShape = PHYSXCOLLIDER_TYPE::MESHDATA;
-	ColliderDesc.fDensity = 0.f;
-	ColliderDesc.eType = PHYSXACTOR_TYPE::STATIC;
-	PxMaterial* pMaterial = nullptr;
-	GAMEINSTANCE->Create_Material(0.f, 0.f, 0.f, &pMaterial);
-	ColliderDesc.pMaterial = pMaterial;
-	ColliderDesc.vAngles = { 0.f, 0.f, 0.f, 0.f };
-	ColliderDesc.vPosition = { 0.f, 0.f, 0.f, 1.f };
-	ColliderDesc.vScale = { 1.f, 1.f, 1.f };
+	PHYSXCOLLIDERDESC ColliderDesc;
+	Preset::PhysXColliderDesc::GroundSetting(ColliderDesc, false);
 
 	m_pPhysXColliderCom.lock()->CreatePhysXActor(ColliderDesc);
 	m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
@@ -86,6 +77,27 @@ HRESULT CGround::Render()
 	m_pVIBufferCom.lock()->Render();
 
 	return S_OK;
+}
+
+void CGround::Write_Json(json& Out_Json)
+{
+	json TexInfo;
+
+	for (auto& iter : m_pTextureDescs)
+	{
+		json Texture;
+
+		Texture.emplace("Diff", iter.second.pDiffTex.lock()->Get_TextureKey());
+		Texture.emplace("Norm", iter.second.pNormTex.lock()->Get_TextureKey());
+		Texture.emplace("Density", iter.second.fDensity);
+		TexInfo.emplace(iter.first, Texture);
+	}
+	Out_Json.emplace("TextureInfo", TexInfo);
+
+	Out_Json.emplace("g_FilterTexture", string(m_pFilterTextureCom.lock()->Get_TextureKey()));
+	Out_Json.emplace("VIBufferCom", m_szModelName);
+	Out_Json.emplace("ShaderPass", m_iShaderPath);
+
 }
 
 void CGround::Load_FromJson(const json& In_Json)
@@ -128,7 +140,7 @@ void CGround::Load_FromJson(const json& In_Json)
 			}
 
 			if (Desc.pDiffTex.lock() && Desc.pNormTex.lock())
-				m_pTextureCom.emplace(szkey, Desc);
+				m_pTextureDescs.emplace(szkey, Desc);
 		}
 	}
 
@@ -142,9 +154,9 @@ void CGround::Load_FromJson(const json& In_Json)
 
 	if (In_Json.find("VIBufferCom") != In_Json.end())
 	{
-		string szVIBufferName = In_Json["VIBufferCom"];
+		m_szModelName = In_Json["VIBufferCom"];
 
-		shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey(szVIBufferName.c_str());
+		shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey(m_szModelName.c_str());
 
 		if (!pModelData.get())
 		{
@@ -174,7 +186,7 @@ HRESULT CGround::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ)), sizeof(_float4x4))))
 		DEBUG_ASSERT;
 
-	for (auto& iter : m_pTextureCom)
+	for (auto& iter : m_pTextureDescs)
 	{
 		string szDiffTextureName = iter.first + "_Diff";
 		string szNormTextureName = iter.first + "_Norm";
@@ -193,7 +205,7 @@ HRESULT CGround::SetUp_ShaderResource()
 	if (FAILED(m_pFilterTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_FilterTexture", 0)))
 		return E_FAIL;
 
-	_vector vLightFlag = { 0.f, 0.f, 1.f, 0.f };
+	_vector vLightFlag = { 1.f, 1.f, 1.f, 1.f };
 
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector))))
 		DEBUG_ASSERT;

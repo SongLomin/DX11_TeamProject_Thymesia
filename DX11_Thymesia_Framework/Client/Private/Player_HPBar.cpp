@@ -61,11 +61,13 @@ HRESULT CPlayer_HPBar::Initialize(void* pArg)
 	CHUD_Hover::HUDHOVERDESC tHoverDesc;
 	ZeroMemory(&tHoverDesc, sizeof(CHUD_Hover::HUDHOVERDESC));
 
-	tHoverDesc.m_bSizeChange = false;
+	tHoverDesc.bSizeChange = false;
+	tHoverDesc.eType = CHUD_Hover::HUD_HOVER_ANIMATION_FROM_ALPHA;
+
 
 	m_pTrack = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_STATIC, &tTrackDesc);
 	m_pTrack.lock()->Get_Component<CTexture>().lock()->Use_Texture("Player_HPBar_Track");
-	m_pTrack.lock()->Init_Fader(tFaderDesc, tHoverDesc, CHUD_Hover::HUD_HOVER_ANIMATION_FROM_ALPHA);
+	m_pTrack.lock()->Init_Fader(tFaderDesc, tHoverDesc);
 
 
 	m_fLerpHp = 300.f;
@@ -85,12 +87,18 @@ HRESULT CPlayer_HPBar::Initialize(void* pArg)
 	m_eRenderGroup = RENDERGROUP::RENDER_UI;
 	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
 
-	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
-	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pBG));
-	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pMainBar));
-	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pBorderLeft));
-	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pBorderRight));
-	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_pTrack));
+	/*
+		weak_ptr< CPlayer_ProgressBar>	m_pMainBar;
+	weak_ptr< CCustomUI>	m_pBG;
+	weak_ptr< CCustomUI>	m_pBorderLeft;
+	weak_ptr< CCustomUI>	m_pBorderRight;
+	weak_ptr< CHUD_Hover>	m_pTrack;
+	*/
+
+	m_vecChildUI.push_back(m_pMainBar);
+	m_vecChildUI.push_back(m_pBG);
+	m_vecChildUI.push_back(m_pBorderLeft);
+	m_vecChildUI.push_back(m_pBorderRight);
 
 
 

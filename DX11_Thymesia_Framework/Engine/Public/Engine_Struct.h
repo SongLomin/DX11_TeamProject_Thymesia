@@ -35,7 +35,7 @@ namespace Engine
 
 		
 		bool			bEnable;
-		TYPE			eType = TYPE_END;
+		TYPE			eActorType = TYPE_END;
 
 		XMFLOAT4		vDirection;
 
@@ -57,6 +57,14 @@ namespace Engine
 		friend class CCustomLight;
 
 	}LIGHTDESC;
+
+	typedef struct tag_MeshVertextPostion
+	{
+		_float3         vMin;
+		_float3         vMax;
+		_float3         vCenter;
+
+	} MESH_VTX_INFO;
 
 	typedef struct tagTextInfo
 	{
@@ -346,4 +354,24 @@ namespace Engine
 		_float	fFadeMaxTime;
 		_float	fDelayTime;
 	};
+
+	typedef struct PhysXColliderDesc
+	{
+		PhysXColliderDesc()
+		{
+			ZeroMemory(this, sizeof(PhysXColliderDesc));
+		}
+
+		PxConvexMesh* pConvecMesh;
+		PxMaterial* pMaterial;
+		PHYSXACTOR_TYPE		eActorType;
+		XMVECTOR			vPosition;
+		XMVECTOR			vAngles;
+		PHYSXCOLLIDER_TYPE	eShape;
+		_uint				iFilterType;
+		XMVECTOR			vScale;
+		float				fDensity;
+		_bool				bTrigger;
+
+	}PHYSXCOLLIDERDESC;
 }

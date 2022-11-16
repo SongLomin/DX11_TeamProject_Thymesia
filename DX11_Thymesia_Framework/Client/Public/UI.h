@@ -54,10 +54,15 @@ public:
 
     void Set_Depth(_float _fDepth);
 
-
-
 public: /* Shaking */
-    virtual void Add_Shaking(const _float& In_ShakeTime);
+    virtual void Add_Shaking(const _float& In_ShakeTime, const _float& _fShakePower = 5.f);
+
+public:
+    virtual void OnEnable(void* _Arg = nullptr);
+    //객체의 상태가 비활성화 상태로 변경될 때, 호출되는 이벤트입니다.
+    virtual void OnDisable() override;
+
+
 
 protected:
     virtual HRESULT SetUp_ShaderResource();
@@ -72,6 +77,12 @@ protected:
     weak_ptr<CVIBuffer_Rect> m_pVIBufferCom;
     weak_ptr<CFader> m_pFaderCom;
 
+
+protected:
+    FDelegate<>     CallBack_ShakingStart;
+    FDelegate<>     CallBack_ShakingEnd;
+
+
 protected:
     UI_DESC         m_tUIDesc;
     _float4x4		m_ProjMatrix;
@@ -79,13 +90,18 @@ protected:
     _uint           m_iTextureIndex = 0;
     _uint           m_iPassIndex = 0;
 
+protected:
+    vector<weak_ptr<CUI>> m_vecChildUI;
+
+
 protected: /* For. UI Shaking */
     _float          m_fCurrentShakeTime = 0.f;
     _float          m_fShakeFreq = 0.04f;
     _float          m_fCurrentFreq = 0.f;
     _float          m_fPower = 5.f;
     _float2         m_fOffsetPosition{0.f, 0.f};
-
+    _float2         m_fShakedPos = { 0.f,0.f };
+    _bool           m_bShaking;
 
 protected:
     virtual void Write_Json(json& Out_Json) override;

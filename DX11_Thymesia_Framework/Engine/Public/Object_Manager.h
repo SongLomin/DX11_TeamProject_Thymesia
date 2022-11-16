@@ -30,6 +30,7 @@ public:
 public:
 	void Tick(_float fTimeDelta);
 	void LateTick(_float fTimeDelta);
+	void Before_Render(_float fTimeDelta);
 	void After_Render();
 
 	virtual void OnDestroy() override;

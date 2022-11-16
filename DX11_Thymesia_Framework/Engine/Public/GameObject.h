@@ -10,6 +10,7 @@ class CComponent;
 class CTransform;
 class CGameInstance;
 class CShader;
+class CPhysXCollider;
 
 class ENGINE_DLL CGameObject abstract : public CBase
 {
@@ -35,6 +36,7 @@ public:
 	virtual HRESULT Start();
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
+	virtual void Before_Render(_float fTimeDelta);
 	virtual HRESULT Render(); 
 	virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix);
 
@@ -47,7 +49,10 @@ public:
 	virtual void OnCollisionStay(weak_ptr<CCollider> pOtherCollider) {};
 	virtual void OnCollisionExit(weak_ptr<CCollider> pOtherCollider) {};
 
-
+public:
+	virtual void PhysXCollisionEnter(weak_ptr<CPhysXCollider> pOtherCollider) {};
+	virtual void PhysXCollisionStay(weak_ptr<CPhysXCollider> pOtherCollider) {};
+	virtual void PhysXCollisionExit(weak_ptr<CPhysXCollider> pOtherCollider) {};
 
 protected:
 	virtual void OnDestroy() override;

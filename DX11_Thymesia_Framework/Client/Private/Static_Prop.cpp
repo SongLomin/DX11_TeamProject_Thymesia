@@ -27,8 +27,6 @@ HRESULT CStatic_Prop::Initialize(void* pArg)
         VTXMODEL_DECLARATION::iNumElements
     );
 
-    
-
     return S_OK;
 }
 

@@ -8,7 +8,7 @@ END
 
 BEGIN(Client)
 
-class CEffect_Rect :
+class CEffect_Rect final :
     public CEffectObject
 {
     GAMECLASS_H(CEffect_Rect)
@@ -72,9 +72,6 @@ private:
     void Update_ParticleGlowColor(_float fTimeDelta);
     void Update_ParticleSpriteFrame(const _uint& i, _float fTimeDelta);
     void Update_ParentTransform();
-
-    // TODO : Snake Test
-    void SnakeEffect();
 
 private:
 	void Free();

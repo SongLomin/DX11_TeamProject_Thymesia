@@ -33,7 +33,6 @@ private:
 	weak_ptr< CPlayer_ProgressBar>	m_pBG;
 	weak_ptr< CPlayer_ProgressBar>	m_pBorderLeft;
 	weak_ptr< CPlayer_ProgressBar>	m_pBorderRight;
-	weak_ptr< CPlayer_ProgressBar>	m_pTrack;
 
 private:
 	_float			m_fLerpAcc;

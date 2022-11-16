@@ -38,6 +38,7 @@ void CNorMonState_HeavyAttack2::Start()
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_HeavyAttack2::Call_AnimationEnd, this);
 
+
 }
 
 void CNorMonState_HeavyAttack2::Tick(_float fTimeDelta)
@@ -52,7 +53,12 @@ void CNorMonState_HeavyAttack2::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+	Turn_ToThePlayer(fTimeDelta);
+
+	if(m_bAttackLookAtLimit)
 	Check_AndChangeNextState();
+
+
 }
 
 
@@ -68,7 +74,9 @@ void CNorMonState_HeavyAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 	cout << "LuxiyaState: RunStart -> OnStateStart" << endl;
 #endif
 
+	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 
+	m_bAttackLookAtLimit = true;
 }
 
 void CNorMonState_HeavyAttack2::OnStateEnd()
@@ -76,7 +84,7 @@ void CNorMonState_HeavyAttack2::OnStateEnd()
 	__super::OnStateEnd();
 
 	
-
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 
@@ -95,6 +103,11 @@ _bool CNorMonState_HeavyAttack2::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	{
+		m_bAttackLookAtLimit = false;
+	}
 
 	return false;
 

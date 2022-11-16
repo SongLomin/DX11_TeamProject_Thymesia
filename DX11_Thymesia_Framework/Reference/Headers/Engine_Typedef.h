@@ -46,6 +46,11 @@ namespace Engine
 			, iy(_iy)
 			, iz(_iz) {	}
 
+		tagInt32()
+			: ix(0)
+			, iy(0)
+			, iz(0) {	}
+
 		unsigned int ix, iy, iz;
 	} _uint3;
 

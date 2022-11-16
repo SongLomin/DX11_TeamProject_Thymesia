@@ -68,21 +68,26 @@ HRESULT CLevel_Logo::Render()
 	return S_OK;
 }
 
-void CLevel_Logo::OnLevelExit()
+void CLevel_Logo::ExitLevel(LEVEL eLevel)
 {
-	FaderDesc tFaderDesc;
-	tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
-	tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
-	tFaderDesc.fFadeMaxTime = 1.f;
-	tFaderDesc.fDelayTime = 0.5f;
-	tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+	m_eNextLevel = eLevel;
 
-	m_eNextLevel = LEVEL_GAMEPLAY;
+	if (eLevel == LEVEL::LEVEL_GAMEPLAY)
+	{
+		FaderDesc tFaderDesc;
+		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+		tFaderDesc.fFadeMaxTime = 1.f;
+		tFaderDesc.fDelayTime = 0.5f;
+		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+		m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
+		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
 
+	}
+	else if (FAILED(GAMEINSTANCE->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_eNextLevel))))
+		return;
 
-	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
-	m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
-	m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
 }
 
 

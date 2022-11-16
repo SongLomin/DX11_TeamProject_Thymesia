@@ -3,6 +3,7 @@
 #include "PxSimulationEventCallback.h"
 
 BEGIN(Engine)
+class CPhysXCollider;
 
 class CPhysX_Manager final : public CBase
 {
@@ -35,16 +36,23 @@ public:
 	}COLSHAPE;
 
 public:
-	PxConvexMesh*	Get_ShapeTemplate(COLSHAPE eShape) { m_ShapeTemplate[eShape]; }
-	void			Set_ShapeSphere(PxSphereGeometry* pGeometry) { m_pSphere = pGeometry; }
-	void			Set_ShapeBox(PxBoxGeometry* pGeometry) { m_pBox = pGeometry; }
+	PxConvexMesh*						Get_ShapeTemplate(COLSHAPE eShape) { m_ShapeTemplate[eShape]; }
+	void								Set_ShapeSphere(PxSphereGeometry* pGeometry) { m_pSphere = pGeometry; }
+	void								Set_ShapeBox(PxBoxGeometry* pGeometry) { m_pBox = pGeometry; }
 
-	void			Begin_PhysScene() { m_bSceneStart = true; }
-	void			End_PhysScene() { m_bSceneStart = false; }
+	void								Begin_PhysScene() { m_bSceneStart = true; }
+	void								End_PhysScene() { m_bSceneStart = false; }
+
+	void								Register_PhysXCollider(weak_ptr<CPhysXCollider> pPhysXCollider);
+	weak_ptr<CPhysXCollider>			Find_PhysXCollider(const _uint In_iPhysXColliderIndex);
 
 public:
-	HRESULT	Initialize();
+	HRESULT	Initialize(const _uint In_iNumLayer);
 	void	Tick(_float fTimeDelta);
+
+public:
+	void			Check_PhysXFilterGroup(const _uint In_iLeftLayer, const _uint In_iRightLayer);
+	_uint			Get_PhysXFilterGroup(const _uint In_iIndex);
 
 public:
 	// Transform 에는 (float3)위치와 (float4)쿼터니온이 들어간다.
@@ -52,8 +60,10 @@ public:
 	HRESULT			Delete_Scene(Scene eScene);
 	HRESULT			Change_Scene(Scene eNextScene, PxVec3 Gravity = PxVec3(0.0f, -9.81f, 0.0f));
 
-	PxRigidDynamic* Create_DynamicActor(const PxTransform& t, const PxGeometry& geometry, Scene eScene, const PxReal& Density, const PxVec3& velocity = PxVec3(0), PxMaterial* pMaterial = nullptr);
-	PxRigidStatic*	Create_StaticActor(const PxTransform& t, const PxGeometry& geometry, Scene eScene, PxMaterial* pMaterial = nullptr);
+	PxRigidDynamic* Create_DynamicActor(const PxTransform& t, const PxGeometry& geometry, PxMaterial* pMaterial = nullptr);
+	PxRigidDynamic* Create_DynamicActor(const PxTransform& t);
+	PxRigidStatic*	Create_StaticActor(const PxTransform& t, const PxGeometry& geometry, PxMaterial* pMaterial = nullptr);
+	PxRigidStatic*	Create_StaticActor(const PxTransform& t);
 	
 	void			Add_DynamicActorAtCurrentScene(PxRigidDynamic& DynamicActor, const PxReal& Density, const PxVec3& In_MassSpaceInertiaTensor);
 	void			Add_StaticActorAtCurrentScene(PxRigidStatic& StaticActor);
@@ -61,7 +71,7 @@ public:
 	void			Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh** ppOut);
 	void			Create_ConvexMesh(PxVec3** pVertices, _uint iNumVertice, PxConvexMesh** ppOut);
 	void			Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial** ppOut);
-	void			Create_Shape(const PxGeometry & Geometry, PxMaterial* pMaterial, PxShape ** ppOut);
+	void			Create_Shape(const PxGeometry & Geometry, PxMaterial* pMaterial, const _bool isExculsive, const PxShapeFlags In_ShapeFlags, PxShape ** ppOut);
 	void			Create_MeshFromTriangles(const PxTriangleMeshDesc& In_MeshDesc, PxTriangleMesh** ppOut);
 
 
@@ -103,6 +113,16 @@ private:
 
 	PxConvexMesh*			m_ShapeTemplate[SHAPE_END];
 	_bool					m_bSceneStart = false;
+
+private: /* For. Filter */
+	vector<_uint>			m_arrCheck;
+
+private:
+	map<_uint, weak_ptr<CPhysXCollider>> m_pPhysXCollders;
+
+
+public:
+	//CollisionSimulationEventCallBack* m_pCollisionSimulationEventCallBack;
 
 private:
 	//void			Create_CheeseShape();

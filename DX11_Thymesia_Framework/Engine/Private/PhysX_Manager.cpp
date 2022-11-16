@@ -1,10 +1,36 @@
 #include "..\Public\PhysX_Manager.h"
 #include "GameInstance.h"
+#include "CollisionSimulationEventCallBack.h"
+#include "PhysXCollider.h"
 
 IMPLEMENT_SINGLETON(CPhysX_Manager)
 
-HRESULT CPhysX_Manager::Initialize()
+void CPhysX_Manager::Register_PhysXCollider(weak_ptr<CPhysXCollider> pPhysXCollider)
 {
+	m_pPhysXCollders.emplace(pPhysXCollider.lock()->Get_PColliderIndex(), pPhysXCollider);
+}
+
+weak_ptr<CPhysXCollider> CPhysX_Manager::Find_PhysXCollider(const _uint In_iPhysXColliderIndex)
+{
+	auto iter = m_pPhysXCollders.find(In_iPhysXColliderIndex);
+
+	if (iter != m_pPhysXCollders.end())
+	{
+		return iter->second;
+	}
+
+	return weak_ptr<CPhysXCollider>();
+}
+
+HRESULT CPhysX_Manager::Initialize(const _uint In_iNumLayer)
+{
+	m_arrCheck.reserve(In_iNumLayer);
+
+	for (_uint i = 0; i < In_iNumLayer; ++i)
+	{
+		m_arrCheck.emplace_back(0);
+	}
+
 	ZeroMemory(m_pScenes, sizeof(PxScene*) * SCENE_END);
 
 	// Create Foundation
@@ -31,7 +57,7 @@ HRESULT CPhysX_Manager::Initialize()
 	//m_pMaterial = m_pPhysics->createMaterial(0.5f, 0.5f, 0.6f);
 	m_pMaterial = m_pPhysics->createMaterial(0.5f, 0.5f, -10.f);
 
-
+	//m_pCollisionSimulationEventCallBack = DBG_NEW CollisionSimulationEventCallBack();
 	//if (nullptr != m_pScenes)
 	//	__debugbreak();
 
@@ -63,6 +89,20 @@ HRESULT CPhysX_Manager::Initialize()
 
 void CPhysX_Manager::Tick(_float fTimeDelta)
 {
+	// 사망한 객체 정리
+	for (auto iter = m_pPhysXCollders.begin(); iter != m_pPhysXCollders.end();)
+	{
+		if (!(*iter).second.lock())
+		{
+			iter = m_pPhysXCollders.erase(iter);
+		}
+		else
+		{
+			++iter;
+		}
+	}
+
+
 	if (m_pCurScene)
 	{
 		if (fTimeDelta > 3.f)
@@ -108,6 +148,101 @@ void CPhysX_Manager::Tick(_float fTimeDelta)
 	
 }
 
+void CPhysX_Manager::Check_PhysXFilterGroup(const _uint In_iLeftLayer, const _uint In_iRightLayer)
+{
+	_uint iRow = (_uint)In_iLeftLayer; // 행
+	_uint iCol = (_uint)In_iRightLayer; // 열
+
+	_uint iMax = iCol;
+	if (iRow > iCol)
+	{
+		iMax = iRow;
+	}
+
+	// 공간 할당
+	for (_uint i = (_uint)m_arrCheck.size(); i <= iMax; ++i)
+	{
+		m_arrCheck.emplace_back(0);
+	}
+
+	if (m_arrCheck[iRow] & (1 << iCol)) // 이미 그 자리가 1이면
+	{
+		m_arrCheck[iRow] &= ~(1 << iCol); // 빼주고
+		m_arrCheck[iCol] &= ~(1 << iRow); // 빼주고
+	}
+	else
+	{
+		m_arrCheck[iRow] |= (1 << iCol);
+		m_arrCheck[iCol] |= (1 << iRow);
+	}
+
+}
+
+_uint CPhysX_Manager::Get_PhysXFilterGroup(const _uint In_iIndex)
+{
+	return m_arrCheck[In_iIndex];
+}
+
+
+PxFilterFlags CollisionFilterShader(
+	PxFilterObjectAttributes attributes0, PxFilterData filterData0,
+	PxFilterObjectAttributes attributes1, PxFilterData filterData1,
+	PxPairFlags& pairFlags, const void* constantBlock, PxU32 constantBlockSize)
+{
+	//// let triggers through
+	//if (PxFilterObjectIsTrigger(attributes0) || PxFilterObjectIsTrigger(attributes1))
+	//{
+	//	pairFlags = PxPairFlag::eTRIGGER_DEFAULT;
+	//	return PxFilterFlag::eDEFAULT;
+
+	//	//cout << "Is Exit? filterData0.word2 : " << filterData0.word2 << endl;
+	//	//cout << "Is Exit? filterData1.word2 : " << filterData1.word2 << endl;
+	//}
+	//// generate contacts for all that were not filtered above
+	//pairFlags = PxPairFlag::eCONTACT_DEFAULT;
+
+	//// trigger the contact callback for pairs (A,B) where 
+	//// the filtermask of A contains the ID of B and vice versa.
+	//if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+	//	pairFlags |= PxPairFlag::eNOTIFY_TOUCH_FOUND;
+
+	//return PxFilterFlag::eDEFAULT;
+
+	// let triggers through
+	if (filterData0.word2 == 2 && filterData1.word2 == 2)
+	{
+		if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+		{
+			pairFlags = PxPairFlag::eTRIGGER_DEFAULT;
+			return PxFilterFlag::eDEFAULT;
+		}
+		else
+		{
+			return PxFilterFlag::eKILL;
+		}
+		//cout << "Is Exit? filterData0.word2 : " << filterData0.word2 << endl;
+		//cout << "Is Exit? filterData1.word2 : " << filterData1.word2 << endl;
+	}
+
+	else if (filterData0.word2 == 0 && filterData1.word2 == 0)
+	{
+		pairFlags = PxPairFlag::eCONTACT_DEFAULT;
+		return PxFilterFlag::eDEFAULT;
+	}
+
+	else
+	{
+		//pairFlags = PxPairFlag::eCONTACT_DEFAULT;
+		return PxFilterFlag::eKILL;
+	}
+
+	// trigger the contact callback for pairs (A,B) where 
+	// the filtermask of A contains the ID of B and vice versa.
+	if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+		pairFlags |= PxPairFlag::eNOTIFY_TOUCH_FOUND;
+
+	return PxFilterFlag::eDEFAULT;
+}
 
 HRESULT CPhysX_Manager::Create_Scene(Scene eScene, PxVec3 Gravity)
 {
@@ -118,7 +253,8 @@ HRESULT CPhysX_Manager::Create_Scene(Scene eScene, PxVec3 Gravity)
 	// Set Dispatcher
 	m_pDispatcher = PxDefaultCpuDispatcherCreate(2);
 	sceneDesc.cpuDispatcher = m_pDispatcher;
-	sceneDesc.filterShader = PxDefaultSimulationFilterShader;
+	sceneDesc.filterShader = CollisionFilterShader;
+	sceneDesc.simulationEventCallback = GET_SINGLE(CCollision_Manager)->Get_CollisionSimulationEventCallBack();
 
 	m_pScenes[eScene] = m_pPhysics->createScene(sceneDesc);
 
@@ -130,7 +266,7 @@ HRESULT CPhysX_Manager::Create_Scene(Scene eScene, PxVec3 Gravity)
 		pvdClient->setScenePvdFlag(PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
 	}
 
-	m_pScenes[eScene]->setSimulationEventCallback(GET_SINGLE(CCollision_Manager)->Get_CollisionSimulationEventCallBack());
+	//m_pScenes[eScene]->setSimulationEventCallback(GET_SINGLE(CCollision_Manager)->Get_CollisionSimulationEventCallBack());
 	//m_pScenes[eScene]->setContactModifyCallback(GET_SINGLE(CCollision_Manager)->Get_CollisionCallBack());
 
 	m_pCurScene = m_pScenes[eScene];
@@ -196,17 +332,27 @@ HRESULT CPhysX_Manager::Change_Scene(Scene eNextScene, PxVec3 Gravity)
 	return S_OK;
 }
 
-PxRigidDynamic * CPhysX_Manager::Create_DynamicActor(const PxTransform & Transform, const PxGeometry & Geometry, Scene eScene, const PxReal& Density, const PxVec3 & velocity, PxMaterial* pMaterial)
+PxRigidDynamic * CPhysX_Manager::Create_DynamicActor(const PxTransform & Transform, const PxGeometry & Geometry,  PxMaterial* pMaterial)
 {
 	return PxCreateDynamic(*m_pPhysics, Transform, Geometry, *pMaterial, 10.f);
 
-	
+	//m_pPhysics->createRigidDynamic(Transform);
 	
 }
 
-PxRigidStatic* CPhysX_Manager::Create_StaticActor(const PxTransform & Transform, const PxGeometry & Geometry, Scene eScene, PxMaterial* pMaterial)
+PxRigidDynamic* CPhysX_Manager::Create_DynamicActor(const PxTransform& t)
+{
+	return m_pPhysics->createRigidDynamic(t);
+}
+
+PxRigidStatic* CPhysX_Manager::Create_StaticActor(const PxTransform & Transform, const PxGeometry & Geometry, PxMaterial* pMaterial)
 {
 	return PxCreateStatic(*m_pPhysics, Transform, Geometry, *pMaterial);
+}
+
+PxRigidStatic* CPhysX_Manager::Create_StaticActor(const PxTransform& t)
+{
+	return m_pPhysics->createRigidStatic(t);
 }
 
 void CPhysX_Manager::Add_DynamicActorAtCurrentScene(PxRigidDynamic& DynamicActor, const PxReal& Density, const PxVec3& In_MassSpaceInertiaTensor)
@@ -218,7 +364,7 @@ void CPhysX_Manager::Add_DynamicActorAtCurrentScene(PxRigidDynamic& DynamicActor
 	DynamicActor.setMassSpaceInertiaTensor(In_MassSpaceInertiaTensor);
 	DynamicActor.setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
 
-	PxRigidBodyExt::updateMassAndInertia(DynamicActor, Density);
+	//PxRigidBodyExt::updateMassAndInertia(DynamicActor, Density);
 	m_pCurScene->addActor(DynamicActor);
 }
 
@@ -276,13 +422,9 @@ void CPhysX_Manager::Create_Material(_float fStaticFriction, _float fDynamicFric
 	*ppOut = m_pPhysics->createMaterial(fStaticFriction, fDynamicFriction, fRestitution);
 }
 
-void CPhysX_Manager::Create_Shape(const PxGeometry & Geometry, PxMaterial* pMaterial, PxShape ** ppOut)
+void CPhysX_Manager::Create_Shape(const PxGeometry & Geometry, PxMaterial* pMaterial, const _bool isExculsive, const PxShapeFlags In_ShapeFlags, PxShape ** ppOut)
 {
-	if (pMaterial)
-		*ppOut = m_pPhysics->createShape(Geometry, *pMaterial);
-	else
-		*ppOut = m_pPhysics->createShape(Geometry, *m_pMaterial);
-
+	*ppOut = m_pPhysics->createShape(Geometry, *pMaterial, isExculsive, In_ShapeFlags);
 }
 
 void CPhysX_Manager::Create_MeshFromTriangles(const PxTriangleMeshDesc& In_MeshDesc, PxTriangleMesh** ppOut)
@@ -362,6 +504,8 @@ void CPhysX_Manager::OnDestroy()
 		transport->release();
 	}
 	m_pFoundation->release();
+
+	//m_pCollisionSimulationEventCallBack->Release();
 }
 
 void CPhysX_Manager::Free()

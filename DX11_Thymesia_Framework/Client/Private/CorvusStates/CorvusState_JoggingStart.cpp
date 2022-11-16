@@ -64,14 +64,12 @@ void CCorvusState_JoggingStart::OnStateStart(const _float& In_fAnimationBlendTim
 	cout << "LuxiyaState: RunStart -> OnStateStart" << endl;
 #endif
 
-	m_iDustEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("Dust", m_pTransformCom);
 }
 
 void CCorvusState_JoggingStart::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Dust", m_iDustEffectIndex);
 }
 
 void CCorvusState_JoggingStart::Call_AnimationEnd()

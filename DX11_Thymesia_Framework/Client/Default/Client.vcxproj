@@ -198,6 +198,7 @@
     <ClInclude Include="..\Public\ClientLevel.h" />
     <ClInclude Include="..\Public\Client_Components.h" />
     <ClInclude Include="..\Public\Client_GameObjects.h" />
+    <ClInclude Include="..\Public\Client_Presets.h" />
     <ClInclude Include="..\Public\Client_Structs.h" />
     <ClInclude Include="..\Public\Client_Windows.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusStateBase.h" />
@@ -242,7 +243,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\HUD_PlagueWeapon.h" />
+    <ClInclude Include="..\Public\HUD_PlagueWeaponBase.h" />
+    <ClInclude Include="..\Public\HUD_PlagueWeapon_Main.h" />
     <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal.h" />
+    <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal_Icon.h" />
     <ClInclude Include="..\Public\ImGui_Window.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\Interaction_Prop.h" />
@@ -302,6 +306,7 @@
     <ClInclude Include="..\Public\Player_MPBar.h" />
     <ClInclude Include="..\Public\Player_PotionUI.h" />
     <ClInclude Include="..\Public\Player_ProgressBar.h" />
+    <ClInclude Include="..\Public\Preset_PhysXColliderDesc.h" />
     <ClInclude Include="..\Public\PreViewAnimationModel.h" />
     <ClInclude Include="..\Public\PreView_Prop.h" />
     <ClInclude Include="..\Public\Prop.h" />
@@ -317,6 +322,7 @@
     <ClInclude Include="..\Public\UI_Landing.h" />
     <ClInclude Include="..\Public\UI_Loading.h" />
     <ClInclude Include="..\Public\UI_Logo.h" />
+    <ClInclude Include="..\Public\UI_PauseMenu.h" />
     <ClInclude Include="..\Public\Weapon.h" />
     <ClInclude Include="..\Public\Window_AnimationModelView.h" />
     <ClInclude Include="..\Public\Window_AnimationPlayerView.h" />
@@ -395,7 +401,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeapon.cpp" />
+    <ClCompile Include="..\Private\HUD_PlagueWeaponBase.cpp" />
+    <ClCompile Include="..\Private\HUD_PlagueWeapon_Main.cpp" />
     <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal.cpp" />
+    <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal_Icon.cpp" />
     <ClCompile Include="..\Private\ImGui_Window.cpp" />
     <ClCompile Include="..\Private\Interaction_Prop.cpp" />
     <ClCompile Include="..\Private\Level_Lobby.cpp">
@@ -451,6 +460,7 @@
     <ClCompile Include="..\Private\Player_MPBar.cpp" />
     <ClCompile Include="..\Private\Player_PotionUI.cpp" />
     <ClCompile Include="..\Private\Player_ProgressBar.cpp" />
+    <ClCompile Include="..\Private\Preset_PhysXColliderDesc.cpp" />
     <ClCompile Include="..\Private\PreViewAnimationModel.cpp" />
     <ClCompile Include="..\Private\PreView_Prop.cpp" />
     <ClCompile Include="..\Private\Prop.cpp" />
@@ -466,6 +476,7 @@
     <ClCompile Include="..\Private\UI_Landing.cpp" />
     <ClCompile Include="..\Private\UI_Loading.cpp" />
     <ClCompile Include="..\Private\UI_Logo.cpp" />
+    <ClCompile Include="..\Private\UI_PauseMenu.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
     <ClCompile Include="..\Private\Window_AnimationModelView.cpp" />
     <ClCompile Include="..\Private\Window_AnimationPlayerView.cpp" />
@@ -512,6 +523,7 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_HPBar.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_HyperSpace.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_Luxiya.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_UI.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimModel.hlsl">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>

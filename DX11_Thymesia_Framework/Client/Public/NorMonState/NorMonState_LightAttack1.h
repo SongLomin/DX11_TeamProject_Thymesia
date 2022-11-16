@@ -28,6 +28,10 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
+	//TODO ¾ß¸Å
+private:
+	_bool yame = false;
+
 private:
 	void Call_AnimationEnd();
 protected:

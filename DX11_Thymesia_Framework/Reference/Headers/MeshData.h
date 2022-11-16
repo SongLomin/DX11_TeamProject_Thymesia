@@ -22,17 +22,14 @@ struct ENGINE_DLL MESH_DATA
 
     MODEL_TYPE                          eModelType;
 
-    HRESULT Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAiMesh, const _fmatrix& In_TransformMatrix);
+    HRESULT Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAiMesh, const _fmatrix& In_TransformMatrix, MESH_VTX_INFO* In_pVertexInfo);
 
 public:
     void Bake_Binary(ofstream& os);
     void Load_FromBinary(ifstream& is);
 
 private:
-    void Bake_MeshInfo(_float3 _vMaxPos, _float3 _vMinPos, _float3 _vCenterPos);
-
     void Check_Position(_float3& _vRecodePosion, _float3 _vValue, _bool(*_pFncPtr)(_float, _float));
-    void Compute_Center(_float3 _vMaxPos, _float3 _vMinPos, _float3& _vCenterOut);
 };
 
 END

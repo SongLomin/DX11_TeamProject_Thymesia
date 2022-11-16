@@ -64,14 +64,12 @@ void CVarg_Execution::OnStateStart(const _float& In_fAnimationBlendTime)
 	cout << "LuxiyaState: RunStart -> OnStateStart" << endl;
 #endif
 
-	m_iDustEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("Dust", m_pTransformCom);
 }
 
 void CVarg_Execution::OnStateEnd()
 {
 	__super::OnStateEnd();
 	GET_SINGLE(CGameManager)->End_Cinematic();
-	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Dust", m_iDustEffectIndex);
 }
 
 void CVarg_Execution::Call_AnimationEnd()

@@ -95,7 +95,6 @@ void CCorvusState_AVoid::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Dust", m_iDustEffectIndex);
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 

@@ -60,6 +60,7 @@ protected:
     weak_ptr<CMonster> m_pTargetMonster;
     weak_ptr<CStateBase> m_pStandState;
     weak_ptr<CPhysXCollider> m_pPhysXColliderCom;
+    weak_ptr<CPhysXCollider> m_pPhysXTriggerColliderCom;
 
     //list<weak_ptr<CCorvus_DefaultSaber>> m_pDefaultSaber;
     //list<weak_ptr<CCorvus_DefaultDagger>> m_pDefaultDagger;

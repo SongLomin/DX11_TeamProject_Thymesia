@@ -7,10 +7,17 @@
 #include "Transform.h"
 #include "VIBuffer_Ground.h"
 
-#include "Prop.h"
 
+#include "Static_Prop.h"
+#include "Dynamic_Prop.h"
+#include "Light_Prop.h"
+#include "Static_Instancing_Prop.h"
 
-#include <Direct.h>
+#include "Model.h"
+
+#include "Window_PrototypeView.h"
+#include "Window_HierarchyView.h"
+#include "ImGui_Window.h"
 
 GAMECLASS_C(CEditGroupProp)
 CLONE_C(CEditGroupProp, CGameObject)
@@ -27,10 +34,9 @@ HRESULT CEditGroupProp::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	Load_ResourceList(m_AnimList   , "../Bin/MapTool_MeshInfo/ANIM/", ".bin");
-	Load_ResourceList(m_NonAnimList, "../Bin/GROUND/ANIM/", ".bin");
-	Load_ResourceList(m_JsonList   , "../Bin/MapTool_MeshInfo/ANIM/", ".json");
-	 
+	m_ModelList = GET_SINGLE(CGameInstance)->Get_AllNoneAnimModelKeys();
+	//Load_ResourceList(m_JsonList   , "../Bin/MapTool_MeshInfo/Json_Desc/", ".json");
+
 	return S_OK;
 }
 
@@ -43,7 +49,8 @@ void CEditGroupProp::Tick(_float fTimeDelta)
 {
 	for (auto& iter : m_PropList)
 	{
-		iter.pProp.lock()->Tick(fTimeDelta);
+		if (iter.pProp.lock())
+			iter.pProp.lock()->Tick(fTimeDelta);
 	}
 }
 
@@ -51,7 +58,8 @@ void CEditGroupProp::LateTick(_float fTimeDelta)
 {
 	for (auto& iter : m_PropList)
 	{
-		iter.pProp.lock()->LateTick(fTimeDelta);
+		if (iter.pProp.lock())
+			iter.pProp.lock()->LateTick(fTimeDelta);
 	}
 }
 
@@ -101,43 +109,89 @@ void CEditGroupProp::Load_Json(string _szName)
 {
 }
 
+void CEditGroupProp::Write_Json(json& Out_Json)
+{
+	for (auto& iter_prop : m_PropList)
+	{
+		CImGui_Window::GAMEOBJECT_DESC Desc;
+		Desc.HashCode	= iter_prop.hash;
+		Desc.pInstance	= iter_prop.pProp;
+		Desc.TypeName	= iter_prop.szName;
+
+		GET_SINGLE(CWindow_HierarchyView)->m_pGameObjects.push_back(Desc);
+	}
+}
+
 void CEditGroupProp::OnEventMessage(_uint iArg)
 {
-	if ((_uint)EVENT_TYPE::ON_EDITDRAW != iArg)
-		return;
-
-	// 메쉬, 생성, 삭제
-	// 리스트 보기
-	// 전체 이동
-
-
-	if (ImGui::BeginTabBar("Map"))
+	switch (iArg)
 	{
-		if (ImGui::BeginTabItem("Edit"))
+		case (_uint)EVENT_TYPE::ON_EDITINIT:
 		{
-			View_EditMode();
-
-			ImGui::EndTabItem();
+			m_bSubDraw = true;
 		}
+		break;
 
-		if (ImGui::BeginTabItem("List"))
+		case (_uint)EVENT_TYPE::ON_EDITDRAW_NONE:
 		{
-
-
-			ImGui::EndTabItem();
+			m_bSubDraw = false;
 		}
+		break;
 
-		if (ImGui::BeginTabItem("Else"))
+		case (_uint)EVENT_TYPE::ON_EDITDRAW_SUB:
 		{
+			if (!m_bSubDraw)
+			return;
 
+			_uint iIndex = 0;
 
-			ImGui::EndTabItem();
+			for (auto& iter_prop : m_PropList)
+			{
+				string szItemTag = string("  - ( ") + to_string(iIndex) + " ) " + iter_prop.szName;
+
+				if (ImGui::Selectable(szItemTag.c_str()))
+				{
+					CImGui_Window::GAMEOBJECT_DESC Desc;
+					Desc.HashCode	= iter_prop.hash;
+					Desc.pInstance	= iter_prop.pProp;
+					Desc.TypeName	= iter_prop.szName;
+
+					GET_SINGLE(CWindow_HierarchyView)->CallBack_ListClick(Desc);
+				}
+
+				++iIndex;
+			}
 		}
+		break;
 
-		ImGui::EndTabBar();
+		case (_uint)EVENT_TYPE::ON_EDITDRAW:
+		{
+			Pick_Prop();
+
+			if (ImGui::BeginTabBar("Map"))
+			{
+				if (ImGui::BeginTabItem("Create"))
+				{
+					View_SelectPropObjectType();
+					View_EditMode();
+					View_SelectModelComponent();
+					View_PickingInfo();
+
+					ImGui::EndTabItem();
+				}
+
+				if (ImGui::BeginTabItem("Else"))
+				{
+
+
+					ImGui::EndTabItem();
+				}
+
+				ImGui::EndTabBar();
+			}
+		}
+		break;
 	}
-
-
 }
 
 void CEditGroupProp::View_EditMode()
@@ -151,7 +205,31 @@ void CEditGroupProp::View_EditMode()
 	};
 }
 
-void CEditGroupProp::View_CrateProp()
+void CEditGroupProp::View_SelectPropObjectType()
+{
+	ImGui::Text("");
+
+	static const char* items_PropType[] =
+	{
+		"CStatic_Prop",
+		"CDynamic_Prop",
+		"CLight_Prop",
+		"CStatic_Instancing_Prop"
+	};
+
+	static _int iSelect_PropType = 0;
+	string szFindTag = string("class Client::") + m_szSelectPropType;
+
+	if (ImGui::Combo("Prop Type", &iSelect_PropType, items_PropType, IM_ARRAYSIZE(items_PropType)))
+	{
+		m_szSelectPropType = items_PropType[iSelect_PropType];
+	}
+
+	ImGui::Text("");
+	ImGui::Separator();
+}
+
+void CEditGroupProp::View_SelectModelComponent()
 {
 	static const char* ModelType[] =
 	{
@@ -159,21 +237,24 @@ void CEditGroupProp::View_CrateProp()
 		"ANIM"
 	};
 
-	static _int		iSelect_ModelType		= 0;
-	static _int		iSelect_NonAnimModel	= 0;
-	static _int		iSelect_AnimModel		= 0;
-	static string	szSelect_ModelTag		= "";
+	static _int		iSelect_ModelType		 = 0;
+	static _int		iSelect_NonAnimModel	 = 0;
+	static _int		iSelect_AnimModel		 = 0;
+	static _char    szFindModelTag[MAX_PATH] = "";
 
-	if (ImGui::Combo("Type", &iSelect_ModelType, ModelType, IM_ARRAYSIZE(ModelType)))
+	if (ImGui::Combo("Model Type", &iSelect_ModelType, ModelType, IM_ARRAYSIZE(ModelType)))
 	{
-		if (0 == iSelect_ModelType)
-			szSelect_ModelTag = m_NonAnimList[iSelect_NonAnimModel];
+		if (0 == iSelect_ModelType && !m_ModelList.empty())
+			m_szSelectModelName = m_ModelList[iSelect_NonAnimModel];
 
-		else if (1 == iSelect_ModelType)
-			szSelect_ModelTag = m_NonAnimList[iSelect_AnimModel];
+		else if (1 == iSelect_ModelType && !m_ModelList.empty())
+			m_szSelectModelName = m_ModelList[iSelect_AnimModel];
 	}
+	ImGui::Text("");
 
-	ImGui::Text(string("[ Select MD ] : " + szSelect_ModelTag).c_str());
+	ImGui::Text(string("[ Select MD ] : " + m_szSelectModelName).c_str());
+	ImGui::InputText("Find", szFindModelTag, MAX_PATH);
+	ImGui::Text("");
 
 	if (ImGui::BeginListBox("Model"))
 	{
@@ -183,14 +264,20 @@ void CEditGroupProp::View_CrateProp()
 		{
 			case 0:
 			{
-				for (auto& iter : m_NonAnimList)
+				for (auto& iter : m_ModelList)
 				{
 					const bool is_selected = (iSelect_NonAnimModel == iIndex);
+
+					if (0 < strlen(szFindModelTag))
+					{
+						if (string::npos == iter.find(szFindModelTag))
+							continue;
+					}
 
 					if (ImGui::Selectable(iter.c_str(), is_selected))
 					{
 						iSelect_NonAnimModel = iIndex;
-						szSelect_ModelTag    = iter;
+						m_szSelectModelName  = iter;
 					}
 
 					if (is_selected)
@@ -203,14 +290,20 @@ void CEditGroupProp::View_CrateProp()
 
 			case 1:
 			{
-				for (auto& iter : m_AnimList)
+				for (auto& iter : m_ModelList)
 				{
 					const bool is_selected = (iSelect_AnimModel == iIndex);
 
+					if (0 < strlen(szFindModelTag))
+					{
+						if (string::npos == iter.find(szFindModelTag))
+							continue;
+					}
+
 					if (ImGui::Selectable(iter.c_str(), is_selected))
 					{
-						iSelect_AnimModel = iIndex;
-						szSelect_ModelTag = iter;
+						iSelect_AnimModel   = iIndex;
+						m_szSelectModelName = iter;
 					}
 
 					if (is_selected)
@@ -225,39 +318,178 @@ void CEditGroupProp::View_CrateProp()
 		ImGui::EndListBox();
 	}
 
+	ImGui::Text("");
+	ImGui::Text("");
+	ImGui::Separator();
 }
 
 void CEditGroupProp::View_PickingInfo()
 {
-	string szPickingTag
-		= string("[ Info ] : ")
-		+ "( " + to_string(m_iPickingIndex) + " )";
+	ImGui::Text("[ Mouse Info ] ");
+	
+	RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+
+	ImGui::DragFloat3("##Pos", &MouseRayInWorldSpace.vOrigin.x   , 1.f);
+	ImGui::SameLine();
+	ImGui::Text("Mouse Pos");
+
+	ImGui::DragFloat3("##Dir", &MouseRayInWorldSpace.vDirection.x, 1.f);
+	ImGui::SameLine();
+	ImGui::Text("Mouse Dir");
+	ImGui::Text("");
+
+	SMath::Is_Picked(MouseRayInWorldSpace, &m_vPickingPos);
+
+	ImGui::Text("[ Picking Info ] ");
+	ImGui::DragFloat4("##PickPos", &m_vPickingPos.x, 1.f);
+	ImGui::SameLine();
+	ImGui::Text("Pick Pos");
+	ImGui::Text("");
+
+	string szPickingTag = string("[ Obj Info ] : ") + "( " + to_string(m_iPickingIndex) + " )";
 
 	szPickingTag += (0 > m_iPickingIndex || (_int)m_PropList.size() <= m_iPickingIndex)
 		? (" None ") 
-		: (m_PropList[m_iPickingIndex].szName);
+		: (typeid(m_PropList[m_iPickingIndex]).name());
 
 	ImGui::Text(szPickingTag.c_str());
-}
 
-void CEditGroupProp::View_ModelList()
-{
+	if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) && KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
+	{	
+		if ("" == m_szSelectModelName)
+			return;
+
+		if ("CStatic_Prop" == m_szSelectPropType)
+		{
+			PROPS_DESC Desc;
+			Desc.pProp	= GAMEINSTANCE->Add_GameObject<CStatic_Prop>(m_CreatedLevel);
+			Desc.hash	= typeid(CStatic_Prop).hash_code();
+			Desc.szName	= typeid(CStatic_Prop).name();
+
+			Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
+			Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
+			m_PropList.push_back(Desc);
+		}
+
+		else if ("CDynamic_Prop" == m_szSelectPropType)
+		{
+			PROPS_DESC Desc;
+			Desc.pProp	= GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(m_CreatedLevel);
+			Desc.hash	= typeid(CDynamic_Prop).hash_code();
+			Desc.szName	= typeid(CDynamic_Prop).name();
+
+			Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
+			Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
+			m_PropList.push_back(Desc);
+		}
+
+		else if ("CLight_Prop" == m_szSelectPropType)
+		{
+			PROPS_DESC Desc;
+			//Desc.pProp	= GAMEINSTANCE->Add_GameObject<CLight_Prop>(m_CreatedLevel);
+			Desc.hash	= typeid(CLight_Prop).hash_code();
+			Desc.szName	= typeid(CLight_Prop).name();
+
+			Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
+			Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
+			m_PropList.push_back(Desc);
+		}
+
+		else if ("CStatic_Instancing_Prop" == m_szSelectPropType)
+		{
+			PROPS_DESC Desc;
+			//Desc.pProp	= GAMEINSTANCE->Add_GameObject<CStatic_Instancing_Prop>(m_CreatedLevel);
+			Desc.hash	= typeid(CStatic_Instancing_Prop).hash_code();
+			Desc.szName	= typeid(CStatic_Instancing_Prop).name();
+
+			Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
+			Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
+			m_PropList.push_back(Desc);
+		}
+	}
+
+	ImGui::Text("");
+	ImGui::Separator();
 }
 
 void CEditGroupProp::Pick_Prop()
 {
-	if (KEY_INPUT(KEY::A, KEY_STATE::TAP))
+	if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) && KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
 	{
-		if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
-		{
-			RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+		RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
 
-			for (_uint i = 0; i < (_uint)m_PropList.size(); ++i)
+		for (auto& iter : m_PropList)
+		{
+			weak_ptr<CModel>		pModelCom     = iter.pProp.lock()->Get_Component<CModel>();
+			weak_ptr<CTransform>	pTransformCom = iter.pProp.lock()->Get_Component<CTransform>();
+
+			if (!pModelCom.lock() || !pTransformCom.lock())
 			{
-				m_PropList[i];
+				continue;
+			}
+
+			MESH_VTX_INFO Info = pModelCom.lock()->Get_ModelData().lock()->VertexInfo;
+
+			if (Check_Click(MouseRayInWorldSpace, Info, pTransformCom.lock()->Get_WorldMatrix()))
+			{
+				CImGui_Window::GAMEOBJECT_DESC Desc;
+				Desc.HashCode	= iter.hash;
+				Desc.pInstance	= iter.pProp;
+				Desc.TypeName	= iter.szName;
+
+				GET_SINGLE(CWindow_HierarchyView)->CallBack_ListClick(Desc);
 			}
 		}
 	}
+}
+
+_bool CEditGroupProp::Check_Click(RAY _Ray, MESH_VTX_INFO _VtxInfo, _matrix _WorldMatrix)
+{
+	_matrix		WorldMatrixInv = XMMatrixInverse(nullptr, _WorldMatrix);
+
+	_vector vRayPos = XMVector3TransformCoord(XMLoadFloat4(&_Ray.vOrigin), WorldMatrixInv);
+	_vector vRayDir = XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&_Ray.vDirection), WorldMatrixInv));
+
+	_float3				vPosition[8];
+	_uint3				vIndex[12];
+
+	vPosition[0] = { _VtxInfo.vMin.x, _VtxInfo.vMax.y, _VtxInfo.vMin.z };
+	vPosition[1] = { _VtxInfo.vMax.x, _VtxInfo.vMax.y, _VtxInfo.vMin.z };
+	vPosition[2] = { _VtxInfo.vMax.x, _VtxInfo.vMin.y, _VtxInfo.vMin.z };
+	vPosition[3] = { _VtxInfo.vMin.x, _VtxInfo.vMin.y, _VtxInfo.vMin.z };
+	vPosition[4] = { _VtxInfo.vMin.x, _VtxInfo.vMax.y, _VtxInfo.vMax.z };
+	vPosition[5] = { _VtxInfo.vMax.x, _VtxInfo.vMax.y, _VtxInfo.vMax.z };
+	vPosition[6] = { _VtxInfo.vMax.x, _VtxInfo.vMin.y, _VtxInfo.vMax.z };
+	vPosition[7] = { _VtxInfo.vMin.x, _VtxInfo.vMin.y, _VtxInfo.vMax.z };
+
+	vIndex[0]  = { 1, 5, 6 };
+	vIndex[1]  = { 1, 6, 2 };
+	vIndex[2]  = { 4, 0, 3 };
+	vIndex[3]  = { 4, 3, 7 };
+	vIndex[4]  = { 4, 5, 1 };
+	vIndex[5]  = { 4, 1, 0 };
+	vIndex[6]  = { 3, 2, 6 };
+	vIndex[7]  = { 3, 6, 7 };
+	vIndex[8]  = { 5, 4, 7 };
+	vIndex[9]  = { 5, 7, 6 };
+	vIndex[10] = { 0, 1, 2 };
+	vIndex[11] = { 0, 2, 3 };
+
+	_float		fDist;
+
+	for (_uint i = 0; i < 12; ++i)
+	{
+		_vector	vVec0 = XMLoadFloat3(&vPosition[vIndex[i].ix]);
+		_vector	vVec1 = XMLoadFloat3(&vPosition[vIndex[i].iy]);
+		_vector	vVec2 = XMLoadFloat3(&vPosition[vIndex[i].iz]);
+
+		if (true == DirectX::TriangleTests::Intersects(vRayPos, vRayDir, vVec0, vVec1, vVec2, fDist))
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void CEditGroupProp::Free()

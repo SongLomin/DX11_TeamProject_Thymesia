@@ -12,25 +12,6 @@ class ENGINE_DLL CPhysXCollider final : public CComponent
 	DECLARE_CLONABLE(CPhysXCollider, CComponent);
 
 public:
-	typedef struct PhysXColliderDesc
-	{
-		PhysXColliderDesc() 
-		{
-			ZeroMemory(this, sizeof(PhysXColliderDesc));
-		}
-
-		PxConvexMesh*		pConvecMesh;
-		PxMaterial*			pMaterial;
-		PHYSXACTOR_TYPE		eType;
-		XMVECTOR			vPosition;
-		XMVECTOR			vAngles;
-		PHYSXCOLLIDER_TYPE		eShape;
-		XMVECTOR			vScale;
-		float				fDensity;
-
-	}PHYSXCOLLIDERDESC;
-
-public:
 	_vector	Get_Position();
 	_vector	Get_Velocity();
 	_float	Get_Mess();
@@ -38,6 +19,8 @@ public:
 	_vector	Get_LinearVelocity();
 
 	_uint	Get_PColliderIndex() const { return m_iColliderIndex; }
+
+	PHYSXCOLLIDERDESC Get_ColliderDesc() const { return m_PhysXColliderDesc; }
 
 
 	HRESULT Set_Position(_vector _vPos, _vector _vQuaternion);
@@ -87,6 +70,11 @@ public:
 	HRESULT Clear_Velocity();
 	HRESULT Add_LinearVelocityResistance(_vector fResistanceRate);
 
+public:
+	FDelegate<weak_ptr<CPhysXCollider>> CallBack_CollisionEnter;
+	FDelegate<weak_ptr<CPhysXCollider>> CallBack_CollisionStay;
+	FDelegate<weak_ptr<CPhysXCollider>> CallBack_CollisionExit;
+
 
 private:
 	static	_uint							m_iClonedColliderIndex;
@@ -108,15 +96,25 @@ private:
 	_bool					m_bPickable = true;
 	_bool					m_bYFixed = false;
 
+
+	PxGeometry*				m_pGeometry = nullptr;
+	PxShape*				m_pShape = nullptr;
+	PxFilterData			m_FilterData;
+
 public:
 	void		CreatePhysXActor(PHYSXCOLLIDERDESC& PhysXColliderDesc);
 	void		Add_PhysXActorAtScene(const PxVec3& In_MassSpaceInertiaTensor = { 0.f, 0.f, 0.f });
 
 private:
+	PxGeometry*	Create_Geometry();
 	void		Create_DynamicActor(PHYSXCOLLIDERDESC& PhysXColliderDesc, PxTransform Transform);
 	void		Create_StaticActor(PHYSXCOLLIDERDESC& PhysXColliderDesc, PxTransform Transform);
 
 public:
+	void PhysXCollisionEnter(weak_ptr<CPhysXCollider> pOtherCollider);
+	void PhysXCollisionStay(weak_ptr<CPhysXCollider> pOtherCollider);
+	void PhysXCollisionExit(weak_ptr<CPhysXCollider> pOtherCollider);
+
 	virtual void OnDestroy() override;
 
 private:

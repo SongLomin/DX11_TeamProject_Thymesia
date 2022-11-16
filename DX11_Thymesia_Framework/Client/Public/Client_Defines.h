@@ -24,6 +24,8 @@ namespace Client
 		ON_HITMONSTER,
 		ON_EDITINIT,
 		ON_EDITDRAW,
+		ON_EDITDRAW_NONE,
+		ON_EDITDRAW_SUB,
 		ON_ANIMATIONEND,
 		ON_MOVING,
 		ON_MONSTERDEAD,
@@ -80,6 +82,7 @@ namespace Client
 
 	enum class COLLISION_LAYER 
 	{
+		NONE,
 		PLAYER,
 		MONSTER,
 		TERRAIN,

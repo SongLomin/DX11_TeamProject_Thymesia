@@ -32,9 +32,9 @@ HRESULT CTerrain::Initialize(void* pArg)
 	m_pVIBufferCom = Add_Component<CVIBuffer_Terrain>((void*)TEXT("../Bin/Resources/Textures/Terrain/DefaultHeight.bmp"));
 	//m_pVIBufferCom.lock()
 
-	CPhysXCollider::PHYSXCOLLIDERDESC tPhysxColliderDesc;
+	/*PHYSXCOLLIDERDESC tPhysxColliderDesc;
 	tPhysxColliderDesc.eShape = PHYSXCOLLIDER_TYPE::BOX;
-	tPhysxColliderDesc.eType = PHYSXACTOR_TYPE::STATIC;
+	tPhysxColliderDesc.eActorType = PHYSXACTOR_TYPE::STATIC;
 	tPhysxColliderDesc.fDensity = 10.f;
 	tPhysxColliderDesc.vAngles = { 0.f, 0.f, 0.f, 0.f };
 	tPhysxColliderDesc.vPosition = { 0.f, 0.f, 0.f, 1.f };
@@ -43,7 +43,7 @@ HRESULT CTerrain::Initialize(void* pArg)
 	GAMEINSTANCE->Create_Material(0.f, 0.f, -100.f, &pMaterial);
 	tPhysxColliderDesc.pMaterial = pMaterial;
 
-	m_pPhyxXColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
+	m_pPhyxXColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);*/
 
 	Set_OwnerForMyComponents();
 

@@ -14,7 +14,8 @@ public:
 	enum LOGO_BUTTON_TYPE {
 		LOGO_BUTTON_START_GAME = 0, 
 		LOGO_BUTTON_CONTINUE_GAME, 
-		LOGO_BUTTON_LOAD_GAME, 
+		LOGO_BUTTON_LOAD_GAME,
+		LOGO_BUTTON_TOOL,
 		LOGO_BUTTON_OPTION, 
 		LOGO_BUTTON_CREDITS, 
 		LOGO_BUTTON_QUIT,
@@ -50,7 +51,7 @@ private:
 	string					m_fontPath[LOGO_BUTTON_END];
 	_float2					m_fFontSize[LOGO_BUTTON_END];
 
-
+	_bool		m_bSelect;
 	_uint		m_iSelect;
 
 public:

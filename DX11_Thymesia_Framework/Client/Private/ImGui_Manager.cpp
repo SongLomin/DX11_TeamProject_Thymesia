@@ -23,6 +23,7 @@
 //Editer Camera
 #include "Camera_Free.h"
 #include "Terrain.h"
+#include "PipeLine.h"
 
 IMPLEMENT_SINGLETON(CImGui_Manager)
 
@@ -74,7 +75,6 @@ HRESULT CImGui_Manager::Render(void)
 	// Start the Dear ImGui frame
 	ImGui_ImplDX11_NewFrame();
 	ImGui_ImplWin32_NewFrame();
-
 
 	ImGui::NewFrame();
 
@@ -179,19 +179,6 @@ HRESULT CImGui_Manager::Render(void)
 			{
 				m_szCurrentLocalPath = "Stage2.json";
 				Load_FromJson(m_szJsonPath + m_szCurrentLocalPath);
-
-				LIGHTDESC			LightDesc;
-				LightDesc = GAMEINSTANCE->Get_LightDesc(0);
-
-				LightDesc.eType = tagLightDesc::TYPE_DIRECTIONAL;
-				LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-				LightDesc.vDiffuse = _float4(0.2f, 0.2f, 0.2f, 1.f);
-				LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
-				LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 0.1f);
-				LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-				LightDesc.bEnable = true;
-
-				GAMEINSTANCE->Set_LightDesc(LightDesc);
 			}
 
 			if (ImGui::MenuItem("04. Stage3"))
@@ -359,7 +346,6 @@ void CImGui_Manager::Load_FromJson(const string& In_szPath)
 		m_arrWindows[i]->OnLevelLoad();
 	}
 
-	//잘못된 경로
 	if (FAILED(CJson_Utility::Load_Json(In_szPath.c_str(), m_CurrentLevelJson)))
 	{
 #ifdef _DEBUG
@@ -373,9 +359,7 @@ void CImGui_Manager::Load_FromJson(const string& In_szPath)
 	{
 		m_arrWindows[i]->Load_FromJson(m_CurrentLevelJson);
 	}
-
 }
-
 
 void CImGui_Manager::Free()
 {
