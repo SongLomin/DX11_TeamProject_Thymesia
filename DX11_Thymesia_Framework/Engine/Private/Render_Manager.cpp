@@ -389,8 +389,6 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 		DEBUG_ASSERT;
 #endif 
 
-
-
 	return S_OK;
   }
 

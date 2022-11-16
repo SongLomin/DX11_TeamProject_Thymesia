@@ -556,7 +556,7 @@ PS_OUT PS_MAIN_VIEW_SHADOW(PS_IN In)
     vector vShadowDepth = g_ShadowDepthTexture.Sample(ClampSampler, vNewUV);
     vector vStaticShadowDepth = g_StaticShadowDepthTexture.Sample(ClampSampler, vNewUV);
 
-    if (vPosition.z - 0.15f > vShadowDepth.r * g_fFar || vPosition.z - 0.15f > vStaticShadowDepth.r * g_fFar)
+    if (vPosition.z - 0.15f > vShadowDepth.r * g_fFar /*|| vPosition.z - 0.15f > vStaticShadowDepth.r * g_fFar*/)
     {
         Out.vColor = 0.4f;
 		

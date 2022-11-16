@@ -5,8 +5,9 @@
 
 #include "Texture.h"
 #include "Transform.h"
-#include "VIBuffer_Ground.h"
-
+#include "VIBuffer_DynamicCube.h"
+#include "Shader.h"
+#include "Renderer.h"
 
 #include "Static_Prop.h"
 #include "Dynamic_Prop.h"
@@ -34,7 +35,17 @@ HRESULT CEditGroupProp::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	m_ModelList = GET_SINGLE(CGameInstance)->Get_AllNoneAnimModelKeys();
+	m_pShaderCom = Add_Component<CShader>();
+	m_pShaderCom.lock()->Set_ShaderInfo
+	(
+		TEXT("Shader_VtxCubeTex"),
+		VTXCUBETEX_DECLARATION::Element,
+		VTXCUBETEX_DECLARATION::iNumElements
+	);
+
+	m_pVIBufferCom = Add_Component<CVIBuffer_DynamicCube>();
+	m_ModelList    = GET_SINGLE(CGameInstance)->Get_AllNoneAnimModelKeys();
+
 	//Load_ResourceList(m_JsonList   , "../Bin/MapTool_MeshInfo/Json_Desc/", ".json");
 
 	return S_OK;
@@ -68,12 +79,24 @@ void CEditGroupProp::LateTick(_float fTimeDelta)
 	for (auto& iter : m_PropList)
 	{
 		if (iter.pProp.lock())
+		{
 			iter.pProp.lock()->LateTick(fTimeDelta);
+
+			if (m_bSelect_ShowGroup)
+				iter.pProp.lock()->Set_ShaderPass(5);
+			else
+				iter.pProp.lock()->Set_ShaderPass(0);
+		}
 	}
+
+	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONLIGHT, Cast<CGameObject>(m_this));
 }
 
 HRESULT CEditGroupProp::Render()
 {
+	if (FAILED(SetUp_ShaderResource()))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -108,6 +131,42 @@ void CEditGroupProp::Load_MeshList()
 
 void CEditGroupProp::Load_MashInfo(string _szName)
 {
+}
+
+HRESULT CEditGroupProp::SetUp_ShaderResource()
+{
+	if (m_PropList.empty() || 0 > m_iPickingIndex || m_PropList.size() <= m_iPickingIndex)
+		return E_FAIL;
+
+	if (!m_PropList[m_iPickingIndex].pProp.lock())
+		return E_FAIL;
+
+	weak_ptr<CTransform>	pTransform = m_PropList[m_iPickingIndex].pProp.lock()->Get_Component<CTransform>();
+	weak_ptr<CModel>		pModel     = m_PropList[m_iPickingIndex].pProp.lock()->Get_Component<CModel>();
+
+	if (!pModel.lock() || !pTransform.lock())
+		return E_FAIL;
+
+	m_pVIBufferCom.lock()->Update
+	(
+		pModel.lock()->Get_MeshVertexInfo(),
+		pTransform.lock()->Get_WorldMatrix()
+	);
+
+	_float4x4 Matrix;
+	XMStoreFloat4x4(&Matrix, XMMatrixIdentity());
+
+	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", &Matrix, sizeof(_float4x4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW)), sizeof(_float4x4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ)), sizeof(_float4x4))))
+		return E_FAIL;
+
+	m_pShaderCom.lock()->Begin(1);
+	m_pVIBufferCom.lock()->Render();
+
+	return S_OK;
 }
 
 void CEditGroupProp::Save_Json(string _szName)
@@ -233,6 +292,9 @@ void CEditGroupProp::View_SelectPropObjectType()
 	{
 		m_szSelectPropType = items_PropType[iSelect_PropType];
 	}
+
+
+	ImGui::Checkbox("Show Groupe", &m_bSelect_ShowGroup);
 
 	ImGui::Text("");
 	ImGui::Separator();
@@ -439,6 +501,7 @@ void CEditGroupProp::Pick_Prop()
 	{
 		RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
 
+		_uint iIndex = 0;
 		for (auto& iter : m_PropList)
 		{
 			weak_ptr<CModel>		pModelCom     = iter.pProp.lock()->Get_Component<CModel>();
@@ -459,13 +522,19 @@ void CEditGroupProp::Pick_Prop()
 				Desc.TypeName	= iter.szName;
 
 				GET_SINGLE(CWindow_HierarchyView)->CallBack_ListClick(Desc);
+				m_iPickingIndex = iIndex;
 			}
+
+			++iIndex;
 		}
 	}
 }
 
 _bool CEditGroupProp::Check_Click(RAY _Ray, MESH_VTX_INFO _VtxInfo, _matrix _WorldMatrix)
 {
+	if (0 != isnan(_Ray.vOrigin.x))
+		return false;
+
 	_matrix		WorldMatrixInv = XMMatrixInverse(nullptr, _WorldMatrix);
 
 	_vector vRayPos = XMVector3TransformCoord(XMLoadFloat4(&_Ray.vOrigin), WorldMatrixInv);

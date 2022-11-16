@@ -2,6 +2,12 @@
 #include "GameObject.h"
 #include "Client_Defines.h"
 
+BEGIN(Engine)
+class CVIBuffer_DynamicCube;
+class CShader;
+class CRenderer;
+END
+
 BEGIN(Client)
 
 class CProp;
@@ -52,6 +58,8 @@ private:
     _bool   Check_Click(RAY _Ray, MESH_VTX_INFO _VtxInfo, _matrix _WorldMatrix);
 
 private:
+    HRESULT SetUp_ShaderResource();
+
     void Load_ResourceList(vector<string>& In_List, const filesystem::path& In_Path, string _szCutName = "");
 
     void Load_MeshList();
@@ -71,6 +79,7 @@ private:
 
     EDIT_MODE           m_eEditMode         = EDIT_MODE::NON;
     _int                m_iPickingIndex     = -1;
+    _bool               m_bSelect_ShowGroup = false;
 
     string              m_szSelectPropType  = "CStatic_Prop";
     string              m_szSelectModelName = "";
@@ -78,6 +87,10 @@ private:
     _float              m_fPosY             = 0.f;
     RESOURCE_LIST       m_ModelList;
     RESOURCE_LIST       m_JsonList;
+
+    weak_ptr<CVIBuffer_DynamicCube>     m_pVIBufferCom;
+    weak_ptr<CShader>                   m_pShaderCom;
+    weak_ptr<CRenderer>                 m_pRendererCom;
 
 public:
     void Free();
