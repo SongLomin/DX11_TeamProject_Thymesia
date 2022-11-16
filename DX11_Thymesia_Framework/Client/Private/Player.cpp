@@ -25,7 +25,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
-    m_pTransformCom.lock()->Add_Position(XMVectorSet(3.f, 2.f, 3.f, 0.f));
+    m_pTransformCom.lock()->Add_Position(XMVectorSet(3.f, 5.f, 3.f, 0.f));
 
     m_pHitColliderCom = Add_Component<CCollider>();
 

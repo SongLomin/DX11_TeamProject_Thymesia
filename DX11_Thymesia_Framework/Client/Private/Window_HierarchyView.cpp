@@ -101,6 +101,7 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 		if (typeid(CEditGroupProp).hash_code() == iter_elem->HashCode)
 		{
 			iter_elem->pInstance.lock()->Write_Json(json());
+			++iter_elem;
 			continue;
 		}
 
@@ -110,7 +111,8 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 		Out_Json["GameObject"][iIndex]["Component"]["Transform"].emplace();
 
 		iter_elem->pInstance.lock()->Write_Json(Out_Json["GameObject"][iIndex]);
-		iIndex++;
+		++iIndex;
+		++iter_elem;
 	}
 }
 

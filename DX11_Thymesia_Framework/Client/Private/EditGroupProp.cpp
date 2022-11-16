@@ -35,7 +35,7 @@ HRESULT CEditGroupProp::Initialize(void* pArg)
 	__super::Initialize(pArg);
 
 	m_ModelList = GET_SINGLE(CGameInstance)->Get_AllNoneAnimModelKeys();
-	Load_ResourceList(m_JsonList   , "../Bin/MapTool_MeshInfo/Json_Desc/", ".json");
+	//Load_ResourceList(m_JsonList   , "../Bin/MapTool_MeshInfo/Json_Desc/", ".json");
 
 	return S_OK;
 }

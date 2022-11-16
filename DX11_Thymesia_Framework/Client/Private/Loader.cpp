@@ -338,7 +338,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Model("Mon_Weapon_Knife", "../Bin/Resources/Meshes/NorMonster/Weapon/Knife/Knife.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 	// 일반몬스터 무기모델
 	
-
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Torch", "../Bin/Resources/Meshes/LightProp/Torch/Torch.FBX", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 	
 	lstrcpy(m_szLoadingText, TEXT("객체 생성 중입니다. "));
@@ -489,7 +489,7 @@ HRESULT CLoader::Loading_ForEditLevel()
 	//GAMEINSTANCE->Clear();
 
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/", MEMORY_TYPE::MEMORY_STATIC);
-
+	CEditGround::Load_AllMeshInfo();
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
@@ -626,16 +626,22 @@ void CLoader::Load_AllEffectMeshInPath_Recursive(const filesystem::path& In_Path
 		szFileName = entry.path().filename().string().c_str();
 		szFileName = szFileName.substr(0, szFileName.size() - 4);
 
-		if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
+		/*if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
 		{
 			cout << szFileName << endl;
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
 		}
 
-		else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0)
+		if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0)
 		{
 			cout << szFileName << endl;
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
+		}*/
+
+		if (strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
+		{
+			cout << szFileName << endl;
+			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f));
 		}
 
 
@@ -667,13 +673,13 @@ void CLoader::Load_AllMeshes(const filesystem::path& In_Path, const MEMORY_TYPE&
 		szFileName = entry.path().filename().string().c_str();
 		szFileName = szFileName.substr(0, szFileName.size() - 4);
 
-		if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
+		/*if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
 		{
 			cout << szFileName << endl;
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixScaling(0.01f, 0.01f, 0.01f), In_eMemoryType);
-		}
+		}*/
 
-		else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0 || strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
+		if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0 || strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
 		{
 			cout << szFileName << endl;
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixScaling(0.01f, 0.01f, 0.01f), In_eMemoryType);

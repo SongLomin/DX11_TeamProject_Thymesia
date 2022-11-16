@@ -78,12 +78,12 @@ HRESULT CImGui_Manager::Render(void)
 
 	ImGui::NewFrame();
 
-	ImGuiIO& io = ImGui::GetIO();
-	_float vProj[16];
+	//ImGuiIO& io = ImGui::GetIO();
+	//_float vProj[16];
 	// memcpy(vProj, GAMEINSTANCE->Get_Transform_float4x4(CPipeLine::D3DTS_PROJ), sizeof(_float) * 16);
 	// this->Perspective(65.f, io.DisplaySize.x / io.DisplaySize.y, 0.1f, 300.f, vProj);
-	ImGuizmo::SetOrthographic(false);
-	ImGuizmo::BeginFrame();
+	//ImGuizmo::SetOrthographic(false);
+	//ImGuizmo::BeginFrame();
 	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 
 	ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -185,19 +185,6 @@ HRESULT CImGui_Manager::Render(void)
 			{
 				m_szCurrentLocalPath = "Stage2.json";
 				Load_FromJson(m_szJsonPath + m_szCurrentLocalPath);
-
-				LIGHTDESC			LightDesc;
-				LightDesc = GAMEINSTANCE->Get_LightDesc(0);
-
-				LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-				LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-				LightDesc.vDiffuse = _float4(0.2f, 0.2f, 0.2f, 1.f);
-				LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
-				LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 0.1f);
-				LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-				LightDesc.bEnable = true;
-
-				GAMEINSTANCE->Set_LightDesc(LightDesc);
 			}
 
 			if (ImGui::MenuItem("04. Stage3"))

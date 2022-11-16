@@ -32,8 +32,8 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
             memcpy(&pAnimVertices[i].vTexUV, &In_pAiMesh->mTextureCoords[0][i], sizeof(_float2));
             memcpy(&pAnimVertices[i].vTangent, &In_pAiMesh->mTangents[i], sizeof(_float3));
 
-            Check_Position(In_pVertexInfo->vMax, pVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft < _fRight; });
-            Check_Position(In_pVertexInfo->vMin, pVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft > _fRight; });
+            Check_Position(In_pVertexInfo->vMax, pAnimVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft < _fRight; });
+            Check_Position(In_pVertexInfo->vMin, pAnimVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft > _fRight; });
         }
 
         for (_uint i = 0; i < iNumBones; ++i)

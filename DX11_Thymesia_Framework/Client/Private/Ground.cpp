@@ -79,6 +79,27 @@ HRESULT CGround::Render()
 	return S_OK;
 }
 
+void CGround::Write_Json(json& Out_Json)
+{
+	json TexInfo;
+
+	for (auto& iter : m_pTextureDescs)
+	{
+		json Texture;
+
+		Texture.emplace("Diff", iter.second.pDiffTex.lock()->Get_TextureKey());
+		Texture.emplace("Norm", iter.second.pNormTex.lock()->Get_TextureKey());
+		Texture.emplace("Density", iter.second.fDensity);
+		TexInfo.emplace(iter.first, Texture);
+	}
+	Out_Json.emplace("TextureInfo", TexInfo);
+
+	Out_Json.emplace("g_FilterTexture", string(m_pFilterTextureCom.lock()->Get_TextureKey()));
+	Out_Json.emplace("VIBufferCom", m_szModelName);
+	Out_Json.emplace("ShaderPass", m_iShaderPath);
+
+}
+
 void CGround::Load_FromJson(const json& In_Json)
 {
 	if (In_Json.find("TextureInfo") != In_Json.end())
@@ -119,7 +140,7 @@ void CGround::Load_FromJson(const json& In_Json)
 			}
 
 			if (Desc.pDiffTex.lock() && Desc.pNormTex.lock())
-				m_pTextureCom.emplace(szkey, Desc);
+				m_pTextureDescs.emplace(szkey, Desc);
 		}
 	}
 
@@ -133,9 +154,9 @@ void CGround::Load_FromJson(const json& In_Json)
 
 	if (In_Json.find("VIBufferCom") != In_Json.end())
 	{
-		string szVIBufferName = In_Json["VIBufferCom"];
+		m_szModelName = In_Json["VIBufferCom"];
 
-		shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey(szVIBufferName.c_str());
+		shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey(m_szModelName.c_str());
 
 		if (!pModelData.get())
 		{
@@ -165,7 +186,7 @@ HRESULT CGround::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ)), sizeof(_float4x4))))
 		DEBUG_ASSERT;
 
-	for (auto& iter : m_pTextureCom)
+	for (auto& iter : m_pTextureDescs)
 	{
 		string szDiffTextureName = iter.first + "_Diff";
 		string szNormTextureName = iter.first + "_Norm";

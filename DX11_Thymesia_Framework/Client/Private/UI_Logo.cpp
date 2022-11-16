@@ -186,7 +186,7 @@ void CUI_Logo::SelectButton(_uint iButtonIndex)
     LOGO_BUTTON_TYPE eType = (LOGO_BUTTON_TYPE)iButtonIndex;
     m_bSelect = false;
 
-    switch (eActorType)
+    switch (eType)
     {
     case Client::CUI_Logo::LOGO_BUTTON_START_GAME:
         Weak_Cast<CLevel_Logo>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(LEVEL::LEVEL_GAMEPLAY);

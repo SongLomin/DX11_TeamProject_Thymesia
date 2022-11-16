@@ -14,6 +14,9 @@ public:
 	CTexture(const CTexture& rhs);
 
 public:
+	string Get_TextureKey() const;
+
+public:
 	HRESULT Set_ShaderResourceView(weak_ptr<CShader> pShader, const char* pConstantName, _uint iIndex = 0);
 
 public:
