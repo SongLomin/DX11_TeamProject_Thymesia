@@ -58,6 +58,9 @@ private:
     _float      m_fDissolveAmount = 0.f;
 
 protected:
+    weak_ptr<CPhysXCollider> m_pPhysXColliderCom;
+
+protected:
     list<weak_ptr<CMobWeapon>> m_pWeapons;
     weak_ptr<CStateBase> m_pStandState;
 

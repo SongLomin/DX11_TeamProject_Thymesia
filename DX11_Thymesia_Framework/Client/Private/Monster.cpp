@@ -9,6 +9,8 @@
 #include "Status.h"
 #include "Player.h"
 #include "Texture.h"
+#include "Client_Presets.h"
+#include "PhysXCollider.h"
 
 GAMECLASS_C(CMonster);
 CLONE_C(CMonster, CGameObject);
@@ -64,6 +66,12 @@ HRESULT CMonster::Initialize(void* pArg)
 
     m_pDissolveTextureCom = Add_Component<CTexture>();
     m_pDissolveTextureCom.lock()->Use_Texture("Dissolve");
+
+    PHYSXCOLLIDERDESC tPhysxColliderDesc;
+
+    Preset::PhysXColliderDesc::PlayerBodySetting(tPhysxColliderDesc, m_pTransformCom);
+    m_pPhysXColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
+    m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
 
 	return S_OK;
 }

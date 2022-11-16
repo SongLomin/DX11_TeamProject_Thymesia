@@ -46,7 +46,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	//TODO 야매에요
 	CMonster::STATE_LINK_DESC CCC;
 
-	/*ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
+	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
 	CCC.eNorMonType = NORMONSTERTYPE::AXEMAN;
 	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
 	CCC.vYame.z = 10.f;
@@ -62,7 +62,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	CCC.eNorMonType = NORMONSTERTYPE::AXEMAN;
 	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::FIDGETIDLE;
 	CCC.vYame.z = 20.f;
-	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);*/
+	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
 
 	
 	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
@@ -75,12 +75,12 @@ HRESULT CLevel_GamePlay::Initialize()
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_GAMEPLAY);
 
 	//GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_GAMEPLAY);
-	weak_ptr<CPreViewAnimationModel> pPreviewModel = GAMEINSTANCE->Add_GameObject<CPreViewAnimationModel>(LEVEL_GAMEPLAY);
+	/*weak_ptr<CPreViewAnimationModel> pPreviewModel = GAMEINSTANCE->Add_GameObject<CPreViewAnimationModel>(LEVEL_GAMEPLAY);
 	pPreviewModel.lock()->Init_EditPreViewAnimationModel("Corvus");
 	pPreviewModel.lock()->Change_AnimationFromIndex(3);
 
 	pPreviewModel.lock()->Play_Animation(0.01f);
-	pPreviewModel.lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(10.f, 0.f, 10.f, 0.f));
+	pPreviewModel.lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(10.f, 0.f, 10.f, 0.f));*/
 
 
 	GAMEINSTANCE->Add_GameObject<CStatic_Instancing_Prop>(LEVEL_GAMEPLAY);
