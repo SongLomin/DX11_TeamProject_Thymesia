@@ -27,7 +27,6 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	ShowCursor(false);
 	
-	
 	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_GAMEPLAY);
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
@@ -47,7 +46,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	//TODO 야매에요
 	CMonster::STATE_LINK_DESC CCC;
 
-	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
+	/*ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
 	CCC.eNorMonType = NORMONSTERTYPE::AXEMAN;
 	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
 	CCC.vYame.z = 10.f;
@@ -63,7 +62,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	CCC.eNorMonType = NORMONSTERTYPE::AXEMAN;
 	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::FIDGETIDLE;
 	CCC.vYame.z = 20.f;
-	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
+	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);*/
 
 	
 	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));

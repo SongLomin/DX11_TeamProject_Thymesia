@@ -32,6 +32,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 
 	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Translation");
+	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Rotation");
 
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultSaber>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");

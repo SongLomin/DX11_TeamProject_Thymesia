@@ -28,6 +28,16 @@ HRESULT CUI_PauseMenu::Initialize(void* pArg)
 
 	Create_PageText();
 	Create_PageIndicator();
+
+
+	m_pPauseMenuBackground_Top = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
+	m_pPauseMenuBackground_Top.lock()->Set_Depth(0.2f);
+	m_pPauseMenuBackground_Top.lock()->Set_Texture("PauseMenu_Background2");
+
+
+	m_vecChildUI.push_back(m_pPauseMenuBackground);
+	m_vecChildUI.push_back(m_pPauseMenuBackground_Main);
+	m_vecChildUI.push_back(m_pPauseMenuBackground_Top);
 	
 	m_bOpenThisFrame = false;
 	Set_Enable(false);

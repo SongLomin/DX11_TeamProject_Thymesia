@@ -47,10 +47,19 @@ HRESULT CEditGroupProp::Start()
 
 void CEditGroupProp::Tick(_float fTimeDelta)
 {
-	for (auto& iter : m_PropList)
+	__super::Tick(fTimeDelta);
+
+	for (auto iter = m_PropList.begin(); iter != m_PropList.end();)
 	{
-		if (iter.pProp.lock())
-			iter.pProp.lock()->Tick(fTimeDelta);
+		if (!(*iter).pProp.lock().get())
+		{
+			iter = m_PropList.erase(iter);
+		}
+		else
+		{
+			iter->pProp.lock()->Tick(fTimeDelta);
+			iter++;
+		}
 	}
 }
 
@@ -118,7 +127,7 @@ void CEditGroupProp::Write_Json(json& Out_Json)
 		Desc.pInstance	= iter_prop.pProp;
 		Desc.TypeName	= iter_prop.szName;
 
-		GET_SINGLE(CWindow_HierarchyView)->m_pGameObjects.push_back(Desc);
+		GET_SINGLE(CWindow_HierarchyView)->m_pSubGameObjects.push_back(Desc);
 	}
 }
 
@@ -126,7 +135,7 @@ void CEditGroupProp::OnEventMessage(_uint iArg)
 {
 	switch (iArg)
 	{
-		case (_uint)EVENT_TYPE::ON_EDITINIT:
+		case (_uint)EVENT_TYPE::ON_EDITDRAW_ACCEPT:
 		{
 			m_bSubDraw = true;
 		}
@@ -325,26 +334,38 @@ void CEditGroupProp::View_SelectModelComponent()
 
 void CEditGroupProp::View_PickingInfo()
 {
-	ImGui::Text("[ Mouse Info ] ");
-	
 	RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
 
-	ImGui::DragFloat3("##Pos", &MouseRayInWorldSpace.vOrigin.x   , 1.f);
-	ImGui::SameLine();
-	ImGui::Text("Mouse Pos");
+	if (ImGui::TreeNode("[ Mouse Info ] "))
+	{
+		ImGui::DragFloat3("##Pos", &MouseRayInWorldSpace.vOrigin.x, 1.f);
+		ImGui::SameLine();
+		ImGui::Text("Mouse Pos");
 
-	ImGui::DragFloat3("##Dir", &MouseRayInWorldSpace.vDirection.x, 1.f);
-	ImGui::SameLine();
-	ImGui::Text("Mouse Dir");
+		ImGui::DragFloat3("##Dir", &MouseRayInWorldSpace.vDirection.x, 1.f);
+		ImGui::SameLine();
+		ImGui::Text("Mouse Dir");
+
+		ImGui::TreePop();
+	}
+
 	ImGui::Text("");
 
 	SMath::Is_Picked(MouseRayInWorldSpace, &m_vPickingPos);
+
+	_long iMouseWheel = 0;
+	if (iMouseWheel = GAMEINSTANCE->Get_DIMouseMoveState(MOUSEMOVE::MMS_WHEEL))
+	{
+		m_fPosY += 0.01f * (abs(iMouseWheel) / iMouseWheel);
+	}
+
+	m_vPickingPos.y = m_fPosY;
+
 
 	ImGui::Text("[ Picking Info ] ");
 	ImGui::DragFloat4("##PickPos", &m_vPickingPos.x, 1.f);
 	ImGui::SameLine();
 	ImGui::Text("Pick Pos");
-	ImGui::Text("");
 
 	string szPickingTag = string("[ Obj Info ] : ") + "( " + to_string(m_iPickingIndex) + " )";
 

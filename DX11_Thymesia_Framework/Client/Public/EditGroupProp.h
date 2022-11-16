@@ -28,9 +28,6 @@ private:
         weak_ptr<CProp>     pProp;
         _hashcode           hash;
         string              szName;
-
-        _float3             vPosition[8];
-        _uint3			    vIndicse[12];
     } PROPS_DESC;
 
 public:
@@ -78,6 +75,7 @@ private:
     string              m_szSelectPropType  = "CStatic_Prop";
     string              m_szSelectModelName = "";
     _float4             m_vPickingPos       = _float4(0.f, 0.f, 0.f, 0.f);
+    _float              m_fPosY             = 0.f;
     RESOURCE_LIST       m_ModelList;
     RESOURCE_LIST       m_JsonList;
 

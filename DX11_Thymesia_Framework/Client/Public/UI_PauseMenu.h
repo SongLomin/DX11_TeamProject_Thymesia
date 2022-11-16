@@ -43,8 +43,8 @@ private:
 
     weak_ptr<CCustomUI> m_pPageIndicatorDecoration;
 
-
-
+    
+    
     
     //PauseMenu Text
 private:
