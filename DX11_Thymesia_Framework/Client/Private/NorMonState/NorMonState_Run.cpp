@@ -58,10 +58,10 @@ void CNorMonState_Run::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 	if(m_bClosePlayer)
-	Turn_ToThePlayer(fTimeDelta);
+		Turn_ToThePlayer(fTimeDelta);
 
 	if(!m_bClosePlayer)
-	StartPositonLookAt(fTimeDelta);
+		StartPositonLookAt(fTimeDelta);
 
 	Check_AndChangeNextState();
 }

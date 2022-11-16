@@ -177,6 +177,7 @@ _vector CAIStateBase::Get_InputToLookDir()
 void CAIStateBase::StartPositonLookAt(_float fTimeDelta)
 {
 	_vector vStartPosition = XMLoadFloat3(&m_fStartPosition);
+	
 
 	m_pTransformCom.lock()->LookAt2D(vStartPosition);
 }
