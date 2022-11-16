@@ -5,6 +5,7 @@
 #include "Client_Structs.h"
 
 #include "imgui.h"
+#include "ImGuizmo.h"
 
 namespace Client 
 {

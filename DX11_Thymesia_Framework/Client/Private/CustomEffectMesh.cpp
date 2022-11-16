@@ -582,6 +582,7 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 #ifdef _DEBUG
 void CCustomEffectMesh::Key_Input_ControlMesh(_float fTimeDelta)
 {
+#pragma region Translation
 	if (KEY_INPUT(KEY::NUMPAD8, KEY_STATE::HOLD))
 	{
 		if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
@@ -629,6 +630,9 @@ void CCustomEffectMesh::Key_Input_ControlMesh(_float fTimeDelta)
 		else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD))
 			m_pTransformCom.lock()->Go_Down(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
 	}
+#pragma endregion // Translation
+
+
 }
 
 void CCustomEffectMesh::Apply_ImGui_Controls_to_Mesh()
@@ -636,6 +640,11 @@ void CCustomEffectMesh::Apply_ImGui_Controls_to_Mesh()
 	if (m_tEffectMeshDesc.bSyncStartPositionToController)
 	{
 		XMStoreFloat3(&m_tEffectMeshDesc.vStartPosition, m_pTransformCom.lock()->Get_State(CTransform::STATE::STATE_TRANSLATION));
+	}
+
+	if (m_tEffectMeshDesc.bSyncStartRotationToController)
+	{
+		XMStoreFloat3(&m_vCurrentRotation, XMLoadFloat3(&m_tEffectMeshDesc.vStartRotation));
 	}
 }
 #endif // _DEBUG
@@ -835,9 +844,8 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::InputInt("Sync Animation Key", &m_tEffectMeshDesc.iSyncAnimationKey);
 			ImGui::Separator();
 
-			ImGui::Text("Sync Start Position to Controller");
+			ImGui::Text("Sync Start Position to Controller"); ImGui::SameLine();
 			ImGui::Checkbox("##Sync Start Position to Controller", &m_tEffectMeshDesc.bSyncStartPositionToController);
-
 			ImGui::Text("Start Position");
 			ImGui::DragFloat3("##Start Position", &m_tEffectMeshDesc.vStartPosition.x, 0.1f);
 
@@ -850,6 +858,9 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::Text("Max Speed");
 			ImGui::DragFloat3("##Max Speed", &m_tEffectMeshDesc.vMaxSpeed.x, 0.1f);
 			ImGui::Separator();
+
+			ImGui::Text("Sync Start Rotation to Controller"); ImGui::SameLine();
+			ImGui::Checkbox("##Sync Start Rotation to Controller", &m_tEffectMeshDesc.bSyncStartRotationToController);
 
 			ImGui::Text("Start Rotation");
 			ImGui::DragFloat3("##Start Rotation", &m_tEffectMeshDesc.vStartRotation.x, 0.01f);

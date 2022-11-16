@@ -9,10 +9,16 @@ namespace Client
 		// TODO : for imgui movements -> remove after finishing mesh effect
 		_bool		bOnFocus;
 		_float		fSpeedPerSec;
-		// _float		fRotationPerSec;
+		_float		fRotationPerSec;
 		_bool		bSyncStartPositionToController;
-		// _bool		bSyncStartRotationToController;
+		_bool		bSyncStartRotationToController;
 
+		enum class ValueForRotation
+		{
+			x, y, z, ValueForRotation_END
+		};
+
+		_int iValueForRotation;
 		//enum AxisForRotation
 		//{
 		//	Axis_X, Axis_Y, Axis_Z,
@@ -193,16 +199,6 @@ namespace Client
 		_int		iNumFrameY;
 		_float2		fCurFrame;
 		_float		fSpriteSpeed;
-
-		// TODO : for Snake Particle
-		_bool		bSnakeEffect;
-		_float		fSnakeXCosConst;
-		_float		fSnakeXSinConst;
-		_float		fSnakeYCosConst;
-		_float		fSnakeYSinConst;
-		_float		fSnakeZCosConst;
-		_float		fSnakeZSinConst;
-
 	};
 
 	struct WEAPON_DESC

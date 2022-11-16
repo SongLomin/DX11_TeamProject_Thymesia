@@ -47,6 +47,8 @@ private:
 	void Write_Json(const string& In_szPath);
 	void Load_FromJson(const string& In_szPath);
 
+	void Perspective(float fovyInDegrees, float aspectRatio, float znear, float zfar, float* m16);
+	void Frustum(float left, float right, float bottom, float top, float znear, float zfar, float* m16);
 public:
 	vector<shared_ptr<CImGui_Window>> m_arrWindows;
 
