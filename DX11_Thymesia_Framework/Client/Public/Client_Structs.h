@@ -174,7 +174,7 @@ namespace Client
 		_float4		vColorForce;
 		_float4		vMaxColor;
 
-		_float fDiscardRatio;
+		_float		fDiscardRatio;
 
 		_bool		bDiffuseUV;
 		_float2		vStartUV;
