@@ -56,8 +56,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 	Add_Component<CCorvusState_BasicHealing>();
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
-	GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_Cast<CGameObject>(m_this));
-
+	
 	// Key Frame Effect ON
 	GET_SINGLE(CGameManager)->Bind_KeyEvent("Corvus", m_pModelCom, bind(&CCorvus::Call_NextAnimationKey, this, placeholders::_1));
 

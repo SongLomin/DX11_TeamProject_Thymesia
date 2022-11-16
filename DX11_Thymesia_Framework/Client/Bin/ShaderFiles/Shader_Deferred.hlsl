@@ -351,13 +351,13 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
     vector          vViewShadow = g_ViewShadow.Sample(DefaultSampler, In.vTexUV);
 
     Out.vColor = vDiffuse * vShade + vSpecular;
+    Out.vColor.rgb *= vViewShadow.rgb;
 	
     if (vLightFlagDesc.r > 0.f || vLightFlagDesc.g > 0.f)
     {
         return Out;
     }
 	
-    Out.vColor.rgb *= vViewShadow.rgb;
     
     
     

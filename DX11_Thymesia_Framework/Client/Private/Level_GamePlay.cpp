@@ -80,7 +80,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	pPreviewModel.lock()->Change_AnimationFromIndex(3);
 
 	pPreviewModel.lock()->Play_Animation(0.01f);
-	pPreviewModel.lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(10.f, 0.f, 10.f, 0.f));*/
+	pPreviewModel.lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(10.f, 10.f, 10.f, 0.f));
 
 
 	GAMEINSTANCE->Add_GameObject<CStatic_Instancing_Prop>(LEVEL_GAMEPLAY);
