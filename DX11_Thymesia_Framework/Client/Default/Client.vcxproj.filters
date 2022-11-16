@@ -439,9 +439,6 @@
     <ClInclude Include="..\Public\HUD_PlagueWeapon_Main.h">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\main</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal.h">
-      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\HUD_PlagueWeaponBase.h">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Base</Filter>
     </ClInclude>
@@ -463,6 +460,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\Client_Presets.h">
       <Filter>99. Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal.h">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -877,9 +877,6 @@
     <ClCompile Include="..\Private\HUD_PlagueWeapon_Main.cpp">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\main</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal.cpp">
-      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeaponBase.cpp">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Base</Filter>
     </ClCompile>
@@ -899,6 +896,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Preset_PhysXColliderDesc.cpp">
       <Filter>06. DataPreset</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
