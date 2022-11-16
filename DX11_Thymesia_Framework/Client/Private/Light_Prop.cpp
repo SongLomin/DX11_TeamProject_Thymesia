@@ -93,16 +93,16 @@ void CLight_Prop::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
-	m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
+	m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 0.13f, 0.f, 1.f));
+	m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 0.13f, 0.f, 1.f));
 }
 
 void CLight_Prop::Before_Render(_float fTimeDelta)
 {
 	__super::Before_Render(fTimeDelta);
 	
-	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom);
-	m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
+	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -0.13f, 0.f, 1.f));
+	m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 0.13f, 0.f, 1.f));
 }
 
 HRESULT CLight_Prop::Render()
