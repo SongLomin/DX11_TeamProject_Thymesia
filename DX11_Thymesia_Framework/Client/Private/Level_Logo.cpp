@@ -97,6 +97,7 @@ void CLevel_Logo::ExitLevel(LEVEL eLevel)
 		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
 		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
 	}
+
 }
 
 

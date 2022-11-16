@@ -27,6 +27,7 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	ShowCursor(false);
 	
+	
 	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_GAMEPLAY);
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
@@ -42,7 +43,7 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_GAMEPLAY);
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
-
+	
 	//TODO 야매에요
 	CMonster::STATE_LINK_DESC CCC;
 
@@ -71,7 +72,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	//GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
 
 	//야매에요
-
+	
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_GAMEPLAY);
 
 	//GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_GAMEPLAY);
