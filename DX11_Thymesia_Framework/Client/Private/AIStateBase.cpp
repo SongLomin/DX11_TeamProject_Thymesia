@@ -174,6 +174,13 @@ _vector CAIStateBase::Get_InputToLookDir()
 	return vLookDir;
 }
 
+void CAIStateBase::StartPositonLookAt(_float fTimeDelta)
+{
+	_vector vStartPosition = XMLoadFloat3(&m_fStartPosition);
+
+	m_pTransformCom.lock()->LookAt2D(vStartPosition);
+}
+
 _bool CAIStateBase::Rotation_InputToLookDir()
 {
 	_vector vInputDir = Get_InputToLookDir();
@@ -218,12 +225,11 @@ _float CAIStateBase::Get_DistanceWithPlayer() const
 
 
 
-_float CAIStateBase::Get_StartPositionToCurrentPositionDir()
+_float CAIStateBase::GetStartPositionToCurrentPositionDir()
 {
+	_vector vCurrenPosition = m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
 	_vector vStartPosition = XMLoadFloat3(&m_fStartPosition);
-	_vector vCurrentPosition = m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
-
-	_float  fDistance = XMVector3Length(vStartPosition - vCurrentPosition).m128_f32[0];
+	_float fDistance = XMVector3Length(vStartPosition - vCurrenPosition).m128_f32[0];
 
 	return fDistance;
 }

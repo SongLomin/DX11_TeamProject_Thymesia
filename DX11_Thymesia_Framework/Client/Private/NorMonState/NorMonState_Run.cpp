@@ -37,6 +37,7 @@ void CNorMonState_Run::Start()
 	{
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|DemoM02_RunF1|BaseLayer");
 	}
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Run::Call_AnimationEnd, this);
 }
 
 void CNorMonState_Run::Tick(_float fTimeDelta)
@@ -56,7 +57,11 @@ void CNorMonState_Run::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+	if(m_bClosePlayer)
 	Turn_ToThePlayer(fTimeDelta);
+
+	if(!m_bClosePlayer)
+	StartPositonLookAt(fTimeDelta);
 
 	Check_AndChangeNextState();
 }
@@ -85,6 +90,19 @@ void CNorMonState_Run::OnStateEnd()
 
 
 
+void CNorMonState_Run::Call_AnimationEnd()
+{
+	if (!Get_Enable())
+		return;
+
+	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
+}
+
+void CNorMonState_Run::OnDestroy()
+{
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_Run::Call_AnimationEnd, this);
+}
+
 void CNorMonState_Run::Free()
 {
 
@@ -97,9 +115,17 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 		return false;
 
 
-	_float fDistance = Get_DistanceWithPlayer();
+	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
+	_float fMToMDistance = GetStartPositionToCurrentPositionDir(); // 몬스터스타트포지션과 몬스터현재 포지션 사이의 거리
 
-	if (fDistance < 1.3f) //6보다 작을떄 공격하거나 좌우아래옆 머시기로움직인다  이떄 그애니메이션 다시 거리게산하고 공격 하는걸로 하게금
+	if (fMToMDistance <= 5.f)
+	{
+		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_OneCheck(false);
+	}
+
+
+
+	if (fPToMDistance < 1.3f && m_bClosePlayer) //6보다 작을떄 공격하거나 좌우아래옆 머시기로움직인다  이떄 그애니메이션 다시 거리게산하고 공격 하는걸로 하게금
 	{
 
 
@@ -135,7 +161,7 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 		}
 	}
 
-	if (fDistance < 3.f  && m_bRunCheck)
+	if (fPToMDistance < 3.f  && m_bRunCheck && m_bClosePlayer)
 	{
 
 		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && m_bRunCheck)
@@ -166,6 +192,9 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 
 	
 	}
+
+
+
 
 	return false;
 }

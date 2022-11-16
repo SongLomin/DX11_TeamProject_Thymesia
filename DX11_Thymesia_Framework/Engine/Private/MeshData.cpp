@@ -36,13 +36,13 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
 
 
             // TODO : Map Tool Info, For Test
-            Check_Position(vMaxPos, pVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft < _fRight; });
-            Check_Position(vMinPos, pVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft > _fRight; });               
+            // Check_Position(vMaxPos, pVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft < _fRight; });
+            // Check_Position(vMinPos, pVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft > _fRight; });               
         }
 
         // TODO : Map Tool Info, For Test
-        Compute_Center(vMaxPos, vMinPos, vCenterPos);
-        Bake_MeshInfo(vMaxPos, vMinPos, vCenterPos);
+        // Compute_Center(vMaxPos, vMinPos, vCenterPos);
+        // Bake_MeshInfo(vMaxPos, vMinPos, vCenterPos);
 
         for (_uint i = 0; i < iNumBones; ++i)
         {

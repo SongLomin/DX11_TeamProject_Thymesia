@@ -33,6 +33,7 @@ public:
 protected:
     void            Turn_ToThePlayer(_float fTimeDelta);
     _vector         Get_InputToLookDir();
+    void            StartPositonLookAt(_float fTimeDelta);
     _bool           Rotation_InputToLookDir();
     _bool           Rotation_TargetToLookDir();
     _float          Get_DistanceWithPlayer() const;

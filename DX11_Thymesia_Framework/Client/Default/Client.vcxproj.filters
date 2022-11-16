@@ -443,6 +443,9 @@
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal.h" />
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Stop.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -706,9 +709,6 @@
     <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon\00.Corvus_DefaultSaber</Filter>
     </ClCompile>
-    <ClCompile Include="..\Public\Corvus_DefaultDagger.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon\01.Corvus_DefaultDagger</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\EditGround.cpp">
       <Filter>02. GameObject\99. Other\01. EditGround</Filter>
     </ClCompile>
@@ -864,6 +864,9 @@
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1333,9 +1336,6 @@
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\17.GroggyLoop">
       <UniqueIdentifier>{0d189ad3-59eb-4618-bf74-fc8a5c1b4761}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Fidget">
-      <UniqueIdentifier>{ef99f0e7-ec59-4038-8104-575ffcc246d9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\20.TakeExecution">
       <UniqueIdentifier>{442d3433-6ed3-4af7-909b-08d4b8d5236f}</UniqueIdentifier>
     </Filter>
@@ -1398,6 +1398,9 @@
     </Filter>
     <Filter Include="02. GameObject\99. Other\04. EditGroupProp">
       <UniqueIdentifier>{8879bd77-4670-491b-803a-0ddb8d81c2e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop">
+      <UniqueIdentifier>{ef99f0e7-ec59-4038-8104-575ffcc246d9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

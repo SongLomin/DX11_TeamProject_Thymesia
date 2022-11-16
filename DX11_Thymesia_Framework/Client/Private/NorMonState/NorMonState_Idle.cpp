@@ -132,25 +132,30 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 
 
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
-	_float fMToMDistance = Get_StartPositionToCurrentPositionDir();
+	_float fMToMDistance = GetStartPositionToCurrentPositionDir(); // 몬스터스타트포지션과 몬스터현재 포지션 사이의 거리
 
-	if (fMToMDistance > 30.f) // 거리30보다멀어지면 다른거 다끄고 돌아가게금 
+	if (fMToMDistance >= 10.f) // 거리30보다멀어지면 다른거 다끄고 돌아가게금 30보다멀어지면 트루줌
 	{
 		m_bReturnStartPosition = true;
+	
 	}
-	else
+	if (m_bReturnStartPosition && fMToMDistance <= 5.f)
 	{
 		m_bReturnStartPosition = false;
 	}
 
 
-	if (fPToMDistance < 3.f)
+	if (fPToMDistance <= 3.f && !m_bReturnStartPosition )
 	{
 		
-		m_bFirstRun = true;
 		TurnMechanism();
+
+		m_bFirstRun = true;
+		m_bPlayerColision = true;
+		Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
 		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
 		{
+			
 			switch (m_eNorMonIdleType)
 			{			
 			case Client::NORMONSTERIDLETYPE::NORIDLE:
@@ -196,7 +201,7 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 		//	
 		//}
 	}
-	else
+	if (fPToMDistance > 3.f && !m_bReturnStartPosition && m_bPlayerColision)
 	{
 		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && m_bFirstRun)
 		{
@@ -219,9 +224,37 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 			}	
 			break;				
 			}
+			
 			return true;
 		}
 	}
+
+	if (m_bReturnStartPosition && !m_bOneCheck)
+	{
+	 
+		switch (m_eNorMonType)
+		{
+		case  NORMONSTERTYPE::AXEMAN:
+			Get_OwnerCharacter().lock()->Change_State<CNorMonState_Stop>(0.05f);
+			break;
+		}
+		Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(false);
+		return true;
+	}
+
+	if (m_bReturnStartPosition && m_bOneCheck)
+	{
+		switch (m_eNorMonType)
+		{
+		case NORMONSTERTYPE::AXEMAN:
+			Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+			break;
+		}
+		return true;
+	}
+
+
+
 
 	return false;
 }
