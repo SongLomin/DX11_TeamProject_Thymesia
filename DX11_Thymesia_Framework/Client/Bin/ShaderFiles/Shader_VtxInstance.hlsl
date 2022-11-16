@@ -4,10 +4,11 @@ matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 vector g_vCamDirection;
 
 texture2D g_DiffuseTexture;
+texture2D g_NoiseTexture;
 texture2D g_MaskTexture;
-texture2D g_ColorTexture;
 
 float2 g_vDiffuseUV;
+float2 g_vNoiseUV;
 float2 g_vMaskUV;
 
 float g_fDiscardRatio;
@@ -22,8 +23,6 @@ float4 g_vGlowColor;
 // for Sprite Image
 int g_iNumFrameX;
 int g_iNumFrameY;
-
-float g_ParticleExp;
 
 struct VS_IN
 {
@@ -166,11 +165,10 @@ PS_OUT_DEFAULT PS_MAIN(PS_IN In)
     Out.vColor.a *= g_MaskTexture.Sample(DefaultSampler, In.vTexUV + g_vMaskUV).r;
 
     Out.vColor *= In.vColor;
-	
+
     if (Out.vColor.a < g_fDiscardRatio)
         discard;
 
-	
     if (g_bBloom)
         Out.vExtractBloom = Out.vColor;
 	
@@ -192,7 +190,6 @@ PS_OUT_DEFAULT PS_MAIN_DEFAULT(PS_IN_DEFAULT In)
     if (Out.vColor.a < g_fDiscardRatio)
         discard;
 
-	
     if (g_bBloom)
         Out.vExtractBloom = Out.vColor;
 	
@@ -224,32 +221,6 @@ PS_OUT_DEFAULT PS_SPRITE_IMAGE(PS_IN In)
 	
     return Out;
 }
-
-PS_OUT_DEFAULT PS_SNAKE(PS_IN_DEFAULT In)
-{
-    PS_OUT_DEFAULT Out = (PS_OUT_DEFAULT) 0;
-    
-    vector vDiffuse = g_DiffuseTexture.Sample(PointSampler, In.vTexUV + g_vDiffuseUV);
-    Out.vColor = (1 - pow(dot(In.vTexUV, In.vTexUV), g_ParticleExp)) * vDiffuse;
-    
-    //Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexUV + g_vDiffuseUV);
-    //Out.vColor.a *= g_MaskTexture.Sample(DefaultSampler, In.vTexUV + g_vMaskUV).r;
-
-    //Out.vColor *= In.vColor;
-	
-    if (Out.vColor.a < g_fDiscardRatio)
-        discard;
-
-	
-    if (g_bBloom)
-        Out.vExtractBloom = Out.vColor;
-	
-    if (g_bGlow)
-        Out.vExtractGlow = g_vGlowColor;
-	
-    return Out;
-}
-
 technique11 DefaultTechnique
 {
     pass Default // 0
@@ -272,16 +243,5 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_SPRITE_IMAGE();
-    }
-
-    pass SnakeParticle // 2
-    {
-        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_NonCulling);
-
-        VertexShader = compile vs_5_0 VS_SNAKE();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_SNAKE();
     }
 }
