@@ -224,6 +224,8 @@ PS_OUT_DISTORTION PS_DISTORTION(PS_IN In)
     return Out;
 }
 //  Pixel  Shaders  //
+
+// Shader Passes //
 technique11 DefaultTechnique
 {
     pass Default // 0
@@ -259,3 +261,4 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_SOFT();
     }
 }
+// Shader Passes //
