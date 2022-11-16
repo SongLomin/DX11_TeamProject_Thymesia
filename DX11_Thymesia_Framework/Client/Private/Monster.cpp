@@ -71,7 +71,7 @@ HRESULT CMonster::Initialize(void* pArg)
 
     Preset::PhysXColliderDesc::PlayerBodySetting(tPhysxColliderDesc, m_pTransformCom);
     m_pPhysXColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
-    m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
+    m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene({ 0.f, 0.f, 0.f }, 1.f);
 
 	return S_OK;
 }

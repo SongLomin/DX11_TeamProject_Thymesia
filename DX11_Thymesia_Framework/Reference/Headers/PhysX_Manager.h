@@ -65,7 +65,7 @@ public:
 	PxRigidStatic*	Create_StaticActor(const PxTransform& t, const PxGeometry& geometry, PxMaterial* pMaterial = nullptr);
 	PxRigidStatic*	Create_StaticActor(const PxTransform& t);
 	
-	void			Add_DynamicActorAtCurrentScene(PxRigidDynamic& DynamicActor, const PxReal& Density, const PxVec3& In_MassSpaceInertiaTensor);
+	void			Add_DynamicActorAtCurrentScene(PxRigidDynamic& DynamicActor);
 	void			Add_StaticActorAtCurrentScene(PxRigidStatic& StaticActor);
 
 	void			Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh** ppOut);

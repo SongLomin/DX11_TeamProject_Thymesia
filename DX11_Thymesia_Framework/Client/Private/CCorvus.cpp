@@ -31,7 +31,6 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 
 	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Translation");
-	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Rotation");
 
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultSaber>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
@@ -166,7 +165,7 @@ void CCorvus::RootMove()
 {
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
-	//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
+	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
 	m_pPhysXColliderCom.lock();
 }
 

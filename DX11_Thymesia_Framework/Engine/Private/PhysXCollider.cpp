@@ -466,7 +466,7 @@ void CPhysXCollider::CreatePhysXActor(PHYSXCOLLIDERDESC& PhysXColliderDesc)
 	
 }
 
-void CPhysXCollider::Add_PhysXActorAtScene(const PxVec3& In_MassSpaceInertiaTensor)
+void CPhysXCollider::Add_PhysXActorAtScene(const PxVec3& In_MassSpaceInertiaTensor, const PxReal In_fMass)
 {
 	if (m_pRigidDynamic && m_pRigidStatic)
 	{
@@ -476,7 +476,16 @@ void CPhysXCollider::Add_PhysXActorAtScene(const PxVec3& In_MassSpaceInertiaTens
 
 	else if (m_pRigidDynamic)
 	{
-		GET_SINGLE(CPhysX_Manager)->Add_DynamicActorAtCurrentScene(*m_pRigidDynamic, m_PhysXColliderDesc.fDensity, In_MassSpaceInertiaTensor);
+		// 저항값
+		m_pRigidDynamic->setAngularDamping(0.5f);
+		m_pRigidDynamic->setMass(In_fMass);
+		m_pRigidDynamic->setLinearDamping(0.f);
+		// 속도
+		//DynamicActor.setLinearVelocity(velocity);
+		m_pRigidDynamic->setMassSpaceInertiaTensor(In_MassSpaceInertiaTensor);
+		//m_pRigidDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
+
+		GET_SINGLE(CPhysX_Manager)->Add_DynamicActorAtCurrentScene(*m_pRigidDynamic);
 		Safe_Delete(m_pGeometry);
 	}
 

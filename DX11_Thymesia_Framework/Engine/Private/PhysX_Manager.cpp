@@ -355,15 +355,8 @@ PxRigidStatic* CPhysX_Manager::Create_StaticActor(const PxTransform& t)
 	return m_pPhysics->createRigidStatic(t);
 }
 
-void CPhysX_Manager::Add_DynamicActorAtCurrentScene(PxRigidDynamic& DynamicActor, const PxReal& Density, const PxVec3& In_MassSpaceInertiaTensor)
+void CPhysX_Manager::Add_DynamicActorAtCurrentScene(PxRigidDynamic& DynamicActor)
 {
-	// 저항값
-	DynamicActor.setAngularDamping(0.5f);
-	// 속도
-	//DynamicActor.setLinearVelocity(velocity);
-	DynamicActor.setMassSpaceInertiaTensor(In_MassSpaceInertiaTensor);
-	DynamicActor.setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
-
 	//PxRigidBodyExt::updateMassAndInertia(DynamicActor, Density);
 	m_pCurScene->addActor(DynamicActor);
 }
