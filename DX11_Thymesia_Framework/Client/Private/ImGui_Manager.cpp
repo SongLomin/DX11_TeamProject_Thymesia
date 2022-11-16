@@ -78,12 +78,6 @@ HRESULT CImGui_Manager::Render(void)
 
 	ImGui::NewFrame();
 
-	ImGuiIO& io = ImGui::GetIO();
-	_float vProj[16];
-	// memcpy(vProj, GAMEINSTANCE->Get_Transform_float4x4(CPipeLine::D3DTS_PROJ), sizeof(_float) * 16);
-	// this->Perspective(65.f, io.DisplaySize.x / io.DisplaySize.y, 0.1f, 300.f, vProj);
-	ImGuizmo::SetOrthographic(false);
-	ImGuizmo::BeginFrame();
 	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 
 	ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -365,7 +359,6 @@ void CImGui_Manager::Load_FromJson(const string& In_szPath)
 		m_arrWindows[i]->OnLevelLoad();
 	}
 
-	//잘못된 경로
 	if (FAILED(CJson_Utility::Load_Json(In_szPath.c_str(), m_CurrentLevelJson)))
 	{
 #ifdef _DEBUG
@@ -379,42 +372,7 @@ void CImGui_Manager::Load_FromJson(const string& In_szPath)
 	{
 		m_arrWindows[i]->Load_FromJson(m_CurrentLevelJson);
 	}
-
 }
-
-void CImGui_Manager::Perspective(float fovyInDegrees, float aspectRatio, float znear, float zfar, float* m16)
-{
-	float ymax, xmax;
-	ymax = znear * tanf(fovyInDegrees * 3.141592f / 180.0f);
-	xmax = ymax * aspectRatio;
-	Frustum(-xmax, xmax, -ymax, ymax, znear, zfar, m16);
-}
-
-void CImGui_Manager::Frustum(float left, float right, float bottom, float top, float znear, float zfar, float* m16)
-{
-	float temp, temp2, temp3, temp4;
-	temp = 2.0f * znear;
-	temp2 = right - left;
-	temp3 = top - bottom;
-	temp4 = zfar - znear;
-	m16[0] = temp / temp2;
-	m16[1] = 0.0;
-	m16[2] = 0.0;
-	m16[3] = 0.0;
-	m16[4] = 0.0;
-	m16[5] = temp / temp3;
-	m16[6] = 0.0;
-	m16[7] = 0.0;
-	m16[8] = (right + left) / temp2;
-	m16[9] = (top + bottom) / temp3;
-	m16[10] = (-zfar - znear) / temp4;
-	m16[11] = -1.0f;
-	m16[12] = 0.0;
-	m16[13] = 0.0;
-	m16[14] = (-temp * zfar) / temp4;
-	m16[15] = 0.0;
-}
-
 
 void CImGui_Manager::Free()
 {
