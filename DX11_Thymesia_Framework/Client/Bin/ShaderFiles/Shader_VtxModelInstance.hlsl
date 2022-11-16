@@ -7,6 +7,7 @@ texture2D	g_MaskTexture;
 texture2D	g_NormalTexture;
 
 float4	g_vLightFlag;
+float g_fFar = 300.f;
 
 struct VS_IN
 {
@@ -169,6 +170,55 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 	return Out;
 }
 
+struct VS_OUT_SHADOW
+{
+	float4 vPosition : SV_POSITION;
+	float4 vProjPos : TEXCOORD0;
+};
+
+VS_OUT_SHADOW VS_MAIN_SHADOW(VS_IN In)
+{
+	VS_OUT_SHADOW		Out = (VS_OUT_SHADOW)0;
+
+
+	matrix			WorldMatrix = float4x4(In.vRight, In.vUp, In.vLook, In.vTranslation);
+
+	vector			vPosition = mul(vector(In.vPosition, 1.f), WorldMatrix);
+
+	matrix			matWV, matWVP;
+
+	matWV = mul(g_WorldMatrix, g_ViewMatrix);
+	matWVP = mul(matWV, g_ProjMatrix);
+
+	Out.vPosition = mul(vPosition, matWVP);
+	Out.vProjPos = Out.vPosition;
+
+	return Out;
+}
+
+struct PS_IN_SHADOW
+{
+	float4 vPosition : SV_POSITION;
+	float4 vProjPos : TEXCOORD0;
+};
+
+struct PS_OUT_SHADOW
+{
+	vector vLightDepth : SV_TARGET0;
+};
+
+PS_OUT_SHADOW PS_MAIN_SHADOW(PS_IN_SHADOW In)
+{
+	PS_OUT_SHADOW Out = (PS_OUT_SHADOW)0;
+
+	Out.vLightDepth.r = In.vProjPos.w / g_fFar;
+
+	Out.vLightDepth.a = 1.f;
+
+	return Out;
+}
+
+
 technique11 DefaultTechnique
 {
 	pass Default
@@ -191,4 +241,15 @@ technique11 DefaultTechnique
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_NORMAL();
 	}
+	pass ShadowDepth //2
+	{
+		SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN_SHADOW();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_SHADOW();
+	}
+
 }

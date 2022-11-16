@@ -32,6 +32,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 
 	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Translation");
+	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Rotation");
 
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultSaber>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
@@ -56,8 +57,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 	Add_Component<CCorvusState_BasicHealing>();
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
-	GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_Cast<CGameObject>(m_this));
-
+	
 	// Key Frame Effect ON
 	GET_SINGLE(CGameManager)->Bind_KeyEvent("Corvus", m_pModelCom, bind(&CCorvus::Call_NextAnimationKey, this, placeholders::_1));
 

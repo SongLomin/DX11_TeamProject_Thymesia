@@ -30,7 +30,8 @@ public:
 	FDelegate<GAMEOBJECT_DESC> CallBack_ListClick;
 
 public:
-	list<GAMEOBJECT_DESC> m_pGameObjects;
+	list<GAMEOBJECT_DESC>	m_pGameObjects;
+	list<GAMEOBJECT_DESC>	m_pSubGameObjects;
 
 private:
 	_uint	m_iPreSelectIndex = 0;

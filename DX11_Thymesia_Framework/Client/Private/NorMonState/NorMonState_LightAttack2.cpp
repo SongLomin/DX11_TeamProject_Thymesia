@@ -67,7 +67,7 @@ void CNorMonState_LightAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "LuxiyaState: Attack2 -> OnStateStart" << endl;
+	cout << "NorMonState: Attack2 -> OnStateStart" << endl;
 #endif
 
 	m_pModelCom.lock()->Set_AnimationSpeed(2.f);

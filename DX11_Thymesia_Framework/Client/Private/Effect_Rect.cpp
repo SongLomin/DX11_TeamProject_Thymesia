@@ -131,7 +131,7 @@ void CEffect_Rect::SetUp_ShaderResource()
 		Update_ParentTransform();
 	}
 	__super::SetUp_ShaderResource();
-	m_pColorTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_ColorTexture", m_tEffectParticleDesc.iUVColorIndex);
+
 	m_pMaskTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", m_tEffectParticleDesc.iUVMaskIndex);
 	
 	_float2 vZeroUV = { 0.f, 0.f };

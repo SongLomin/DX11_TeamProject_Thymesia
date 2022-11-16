@@ -16,6 +16,7 @@ public:
     {
         NORMONSTERTYPE       eNorMonType;
         NORMONSTERIDLETYPE   eNorMonIdleType;
+        _float4              m_fStartPositon;
  
         //TODO ¾ß¸Å¿¡¿ä ¹Ø¿¡²¨ ¤¾ 
         _float3            vYame;

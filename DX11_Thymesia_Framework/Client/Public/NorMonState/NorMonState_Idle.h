@@ -16,6 +16,7 @@ class CNorMonState_Idle :
 
 public:
 	void Set_MonIdleType(NORMONSTERIDLETYPE IDLETYPE);
+	void Set_OneCheck(_bool OneCheck) { m_bOneCheck = OneCheck; }
 
 
 protected:
@@ -31,9 +32,15 @@ protected:
 	virtual _bool Check_AndChangeNextState() override;
 
 
-private:
+private: // 아이들에서만쓰는불값
 	_bool     m_bFirstRun = false; // 6보다멀때 무조건쫓아오니까 6보다 가까워질때 이함수 작용 추후 일정거리멀어지면 이함수 false로만들듯
+	_bool     m_bReturnStartPosition = false;
 
+
+	//TODO 야매
+	_float   m_fTimeAcc = 0.f;
+	_bool    m_bPlayerColision = false;
+	_bool    m_bOneCheck = false;
 
 
 protected:

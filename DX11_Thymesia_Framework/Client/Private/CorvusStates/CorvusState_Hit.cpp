@@ -77,7 +77,7 @@ void CCorvusState_Hit::OnStateStart(const _float& In_fAnimationBlendTime)
 
 
 #ifdef _DEBUG
-	cout << "LuxiyaState: Hit -> OnStateStart" << endl;
+	cout << "NorMonState: Hit -> OnStateStart" << endl;
 #endif
 }
 
@@ -114,7 +114,7 @@ _bool CCorvusState_Hit::Check_AndChangeNextState()
 	//if (Check_RequirementDashState())
 	//{
 	//	Rotation_InputToLookDir();
-	//	Get_OwnerPlayer()->Change_State<CLuxiyaState_Dash>();
+	//	Get_OwnerPlayer()->Change_State<CNorMonState_Dash>();
 	//	return true;
 	//}
 

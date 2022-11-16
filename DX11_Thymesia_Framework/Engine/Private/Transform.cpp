@@ -379,11 +379,13 @@ void CTransform::LookAt(_fvector vTargetPos)
 
 void CTransform::LookAt2D(_fvector vTargetPos)
 {
+    _vector     vTargetPosFromVec4 = vTargetPos;
+    vTargetPosFromVec4.m128_f32[3] = 1.f;
     _vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
 
-    vPosition.m128_f32[1] = vTargetPos.m128_f32[1];
+    vPosition.m128_f32[1] = vTargetPosFromVec4.m128_f32[1];
 
-    _vector		vLook = XMVector3Normalize(vTargetPos - vPosition);
+    _vector		vLook = XMVector3Normalize(vTargetPosFromVec4 - vPosition);
 
     _vector		vRight = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook));
 

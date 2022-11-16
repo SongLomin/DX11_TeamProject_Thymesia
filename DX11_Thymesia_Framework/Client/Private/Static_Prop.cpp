@@ -27,6 +27,8 @@ HRESULT CStatic_Prop::Initialize(void* pArg)
         VTXMODEL_DECLARATION::iNumElements
     );
 
+    GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_StaticCast<CGameObject>(m_this));
+
     return S_OK;
 }
 

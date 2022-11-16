@@ -83,6 +83,12 @@ void CNorMonState_Idle::Tick(_float fTimeDelta)
 
 	//Turn_Transform(fTimeDelta);
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
+
+	if (m_bOneCheck)
+		m_fTimeAcc += fTimeDelta;
+
+	
+
 }
 
 void CNorMonState_Idle::LateTick(_float fTimeDelta)
@@ -91,6 +97,8 @@ void CNorMonState_Idle::LateTick(_float fTimeDelta)
 
 	
 	Check_AndChangeNextState();
+
+
 
 }
 
@@ -103,7 +111,7 @@ void CNorMonState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "LuxiyaState: RunStart -> OnStateStart" << endl;
+	cout << "NorMonState: Idle -> OnStateStart" << endl;
 #endif
 
 
@@ -129,20 +137,49 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 		return false;
 
 
-	_float fDistance = Get_DistanceWithPlayer();
+	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
+	_float fMToMDistance = GetStartPositionToCurrentPositionDir(); // 몬스터스타트포지션과 몬스터현재 포지션 사이의 거리
 
-
-	if (fDistance < 3.f)
+	if (fMToMDistance >= 10.f) // 거리30보다멀어지면 다른거 다끄고 돌아가게금 30보다멀어지면 트루줌
 	{
-		
-		m_bFirstRun = true;
+		m_bReturnStartPosition = true;
+	
+	}
+	if (m_bReturnStartPosition && fMToMDistance <= 5.f)
+	{
+		m_bReturnStartPosition = false;
+	}
+
+	if (fPToMDistance <= 3.f && !m_bReturnStartPosition)
+		m_bOneCheck = true;
+
+	if (fPToMDistance <= 3.f && !m_bReturnStartPosition && m_fTimeAcc >= 0.1f )
+	{
+		m_bOneCheck = false;
+		m_fTimeAcc = 0.f;
 		TurnMechanism();
+
+		m_bFirstRun = true;
+		m_bPlayerColision = true;
+		Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
 		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
 		{
+			
 			switch (m_eNorMonIdleType)
-			{
+			{			
 			case Client::NORMONSTERIDLETYPE::NORIDLE:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+			{
+				int iRunORWalk = rand() % 2;
+				switch (iRunORWalk)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+					break;
+				}
+			}
 				break;
 			case Client::NORMONSTERIDLETYPE::SITIDLE:
 				Get_OwnerCharacter().lock()->Change_State<CNorMonState_SitToIdle>(0.05f);
@@ -173,8 +210,14 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 		//	
 		//}
 	}
-	else
+
+	if (fPToMDistance > 3.f && !m_bReturnStartPosition && m_bPlayerColision)
+		m_bOneCheck = true;
+
+	if (fPToMDistance > 3.f && !m_bReturnStartPosition && m_bPlayerColision && m_fTimeAcc >= 0.1f)
 	{
+		m_bOneCheck = false;
+		m_fTimeAcc = 0.f;
 		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && m_bFirstRun)
 		{
 			TurnMechanism();
@@ -182,12 +225,42 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 			switch (m_eNorMonIdleType)
 			{
 			case Client::NORMONSTERIDLETYPE::NORIDLE:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
-				break;
+			{
+				int iRunORWalk = rand() % 2;
+				switch (iRunORWalk)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+					break;
+				}
+			}	
+			break;				
 			}
+			
 			return true;
 		}
 	}
+
+	if (m_bReturnStartPosition)
+		m_bOneCheck = true;
+
+
+	if (m_bReturnStartPosition && m_fTimeAcc >= 0.1f)
+	{ 
+		m_bOneCheck = false;
+		m_bPlayerColision = false;
+		m_fTimeAcc = 0.f;
+		Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+		Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(false);
+		return true;
+	}
+
+
+
+
 
 	return false;
 }

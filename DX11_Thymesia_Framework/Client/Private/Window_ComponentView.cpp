@@ -30,35 +30,19 @@ void CWindow_ComponentView::Start()
 void CWindow_ComponentView::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
-
-
 }
 
 HRESULT CWindow_ComponentView::Render()
 {
-
-
 	if (FAILED(__super::Begin()))
 		return E_FAIL;
 
-	//ImGui::Text("UI_TOOL");
 	ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 
 	if (PICKED_GAMEOBJECT)
 	{
 		Draw_Components();
 	}
-
-	//for (auto& elem : m_pGameObjects)
-	//{
-	//	if (ImGui::Selectable(elem.TypeName))
-	//	{
-	//		//CallBack_ListClick(elem.HashCode, elem.TypeName);
-	//	}
-	//}
-
-
 
 	__super::End();
 
@@ -84,7 +68,6 @@ void CWindow_ComponentView::Draw_Components()
 		{
 			PICKED_GAMEOBJECT->Set_Dead();
 		}
-
 
 		_bool bEnable = PICKED_GAMEOBJECT->Get_Enable();
 
@@ -161,7 +144,7 @@ void CWindow_ComponentView::Draw_Components()
 			{
 				for (int i = 0; i < m_AllModelKeys.size(); i++)
 				{
-					const bool is_selected = (m_CurrentModelIndex == i);
+					const _bool is_selected = (m_CurrentModelIndex == i);
 
 					if (ImGui::Selectable(m_AllModelKeys[i].c_str(), is_selected))
 						m_CurrentModelIndex = i;
@@ -224,6 +207,38 @@ void CWindow_ComponentView::Init_Components()
 	}
 }
 
+//void CWindow_ComponentView::TransformComponent_PickingAction(weak_ptr<CTransform> _pTransform)
+//{
+//	RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+//	_float4 vMouseDir;
+//	ZeroMemory(&vMouseDir, sizeof(_float4));
+//
+//	if (!SMath::Is_Picked(MouseRayInWorldSpace, &vMouseDir))
+//		return;
+//
+//	// Z : 이동, X : 로테이션, 마우스 휠 : y축 이동
+//
+//
+//	if (KEY_INPUT(KEY::Z, KEY_STATE::HOLD))
+//	{
+//		if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
+//		{
+//			_vector vObjPos = _pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
+//			_vector vAddPos = XMVectorSet(vMouseDir.x, vObjPos.m128_f32[1], vMouseDir.z, 0.f);
+//
+//			_pTransform.lock()->Set_State(CTransform::STATE_TRANSLATION, vAddPos);
+//		}		
+//	}
+//
+//	if (KEY_INPUT(KEY::X, KEY_STATE::HOLD) && KEY_INPUT(KEY::RBUTTON, KEY_STATE::HOLD))
+//	{
+//		_vector vObjPos = _pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
+//		_vector vAddPos = XMVectorSet(vMouseDir.x, vObjPos.m128_f32[1], vMouseDir.z, 0.f);
+//
+//		_pTransform.lock()->LookAt(vAddPos);
+//	}
+//}
+
 void CWindow_ComponentView::TransformComponent_PickingAction(weak_ptr<CTransform> _pTransform)
 {
 	RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
@@ -235,24 +250,35 @@ void CWindow_ComponentView::TransformComponent_PickingAction(weak_ptr<CTransform
 
 	// Z : 이동, X : 로테이션, 마우스 휠 : y축 이동
 
-
-	if (KEY_INPUT(KEY::Z, KEY_STATE::HOLD))
+	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
 	{
-		if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
+		if (KEY_INPUT(KEY::Z, KEY_STATE::HOLD))
+		{
+			_vector vObjPos = _pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
+			_vector vAddPos = XMVectorSet(vMouseDir.x, vObjPos.m128_f32[1], vMouseDir.z, 1.f);
+
+			_pTransform.lock()->Set_State(CTransform::STATE_TRANSLATION, vAddPos);
+		}
+
+		else if (KEY_INPUT(KEY::X, KEY_STATE::HOLD))
 		{
 			_vector vObjPos = _pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
 			_vector vAddPos = XMVectorSet(vMouseDir.x, vObjPos.m128_f32[1], vMouseDir.z, 0.f);
 
-			_pTransform.lock()->Set_State(CTransform::STATE_TRANSLATION, vAddPos);
-		}		
+			_pTransform.lock()->LookAt(vAddPos);
+		}
 	}
 
-	if (KEY_INPUT(KEY::X, KEY_STATE::HOLD) && KEY_INPUT(KEY::RBUTTON, KEY_STATE::HOLD))
+	else
 	{
-		_vector vObjPos = _pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
-		_vector vAddPos = XMVectorSet(vMouseDir.x, vObjPos.m128_f32[1], vMouseDir.z, 0.f);
+		_long iMouseWheel = 0;
+		if (iMouseWheel = GAMEINSTANCE->Get_DIMouseMoveState(MOUSEMOVE::MMS_WHEEL))
+		{
+			_vector vObjPos = _pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
+			_float  m_fPosY = vObjPos.m128_f32[1] + 0.01f * (abs(iMouseWheel) / iMouseWheel);
 
-		_pTransform.lock()->LookAt(vAddPos);
+			_pTransform.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSetY(vObjPos, m_fPosY));
+		}
 	}
 }
 

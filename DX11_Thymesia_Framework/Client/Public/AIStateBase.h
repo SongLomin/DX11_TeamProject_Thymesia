@@ -33,6 +33,7 @@ public:
 protected:
     void            Turn_ToThePlayer(_float fTimeDelta);
     _vector         Get_InputToLookDir();
+    void            StartPositonLookAt(_float fTimeDelta);
     _bool           Rotation_InputToLookDir();
     _bool           Rotation_TargetToLookDir();
     _float          Get_DistanceWithPlayer() const;
@@ -45,14 +46,14 @@ protected:
     NORMONSTERTYPE       m_eNorMonType =     NORMONSTERTYPE::NMON_END; // 현재 몬스터가 어떤몬스터타입인지
     NORMONSTERIDLETYPE   m_eNorMonIdleType = NORMONSTERIDLETYPE::IDLEEND; // 현재몬스터가 어떤아이들타입인지
     weak_ptr<CTransform> m_pTransformCom;  // 몬스터 트랜스폼받아오고저장할려고만듬
-
+    _float4              m_fStartPosition;
 protected:
     _bool                m_bAttackLookAtLimit = false; // 공격할떄룩엣하다가 찍을떄쯤 풀라고
  
 
 
 protected:
- 
+    _float GetStartPositionToCurrentPositionDir();
     void TurnMechanism();
     _float ComputeAngleWithPlayer();
     _int ComputeDirectionToPlayer();
