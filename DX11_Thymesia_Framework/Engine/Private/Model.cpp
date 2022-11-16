@@ -206,6 +206,11 @@ vector<string> CModel::Get_AllBoneNames() const
 	return AllBoneNames;
 }
 
+MESH_VTX_INFO CModel::Get_MeshVertexInfo()
+{
+	return m_pModelData.get()->VertexInfo;
+}
+
 _bool CModel::Is_CurrentAnimationKeyInRange(const _uint& iA, const _uint& iB) const
 {
 	_uint iCurrnetIndex = Get_CurrentAnimationKeyIndex();

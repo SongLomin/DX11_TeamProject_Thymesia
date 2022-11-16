@@ -58,6 +58,14 @@ namespace Engine
 
 	}LIGHTDESC;
 
+	typedef struct tag_MeshVertextPostion
+	{
+		_float3         vMin;
+		_float3         vMax;
+		_float3         vCenter;
+
+	} MESH_VTX_INFO;
+
 	typedef struct tagTextInfo
 	{
 		tstring		szText;

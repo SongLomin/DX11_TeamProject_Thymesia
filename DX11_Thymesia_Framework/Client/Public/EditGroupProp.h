@@ -26,8 +26,8 @@ private:
     typedef struct tag_PropInfo
     {
         weak_ptr<CProp>     pProp;
-        string              szName = "";
         _hashcode           hash;
+        string              szName;
 
         _float3             vPosition[8];
         _uint3			    vIndicse[12];
@@ -45,13 +45,14 @@ public:
     virtual void   OnEventMessage(_uint iArg) override;
 
 private:
+    void    View_SelectPropObjectType();
     void    View_EditMode();
-    void    View_CrateProp();
+    void    View_SelectModelComponent();
     void    View_PickingInfo();
-    void    View_ModelList();
 
 private:
     void    Pick_Prop();
+    _bool   Check_Click(RAY _Ray, MESH_VTX_INFO _VtxInfo, _matrix _WorldMatrix);
 
 private:
     void Load_ResourceList(vector<string>& In_List, const filesystem::path& In_Path, string _szCutName = "");
@@ -62,17 +63,22 @@ private:
     void Save_Json(string _szName);
     void Load_Json(string _szName);
 
+    virtual void Write_Json(json& Out_Json) override;
+
 private:
-    typedef vector<string>        RESOURCE_LIST;
-    typedef vector<PROPS_DESC>    PROPS_INFOS;
+    typedef vector<string>                      RESOURCE_LIST;
+    typedef vector<PROPS_DESC>                  PROPS_INFOS;
 
     PROPS_INFOS         m_PropList;
+    _bool               m_bSubDraw          = false;
 
     EDIT_MODE           m_eEditMode         = EDIT_MODE::NON;
     _int                m_iPickingIndex     = -1;
 
-    RESOURCE_LIST       m_NonAnimList;
-    RESOURCE_LIST       m_AnimList;
+    string              m_szSelectPropType  = "CStatic_Prop";
+    string              m_szSelectModelName = "";
+    _float4             m_vPickingPos       = _float4(0.f, 0.f, 0.f, 0.f);
+    RESOURCE_LIST       m_ModelList;
     RESOURCE_LIST       m_JsonList;
 
 public:

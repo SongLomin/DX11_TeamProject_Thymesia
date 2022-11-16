@@ -59,7 +59,7 @@ namespace Engine
 		void		ENGINE_DLL Convert_PxVec3FromMeshData(PxVec3* In_PxVec3, weak_ptr<MESH_DATA> pMeshData);
 
 
-		//_bool	Is_Picked(CMesh* pRenderer, _float4* pOut, _float4* pOutNormal = nullptr);
+		_bool		ENGINE_DLL Is_Picked(RAY _Ray, _float4* _pOutPos);
 
 	}
 }

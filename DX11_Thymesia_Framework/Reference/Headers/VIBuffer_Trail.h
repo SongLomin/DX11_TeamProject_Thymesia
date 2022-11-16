@@ -3,13 +3,25 @@
 
 BEGIN(Engine)
 
+class CTransform;
+class CBoneNode;
+class MODEL_DATA;
+
 class ENGINE_DLL CVIBuffer_Trail : public CVIBuffer
 {
 	GAMECLASS_H(CVIBuffer_Trail)
-		CLONE_H(CVIBuffer_Trail, CComponent)
+	CLONE_H(CVIBuffer_Trail, CComponent)
 
 public:
 	CVIBuffer_Trail(const CVIBuffer_Trail& rhs);
+
+public:
+	typedef struct tag_TrailBuffer
+	{
+		_float3		vPos_0;
+		_float3		vPos_1;
+		_uint		iMaxCnt;
+	} TRAIL_DESC;
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;

@@ -29,8 +29,11 @@ private:
 public:
 	FDelegate<GAMEOBJECT_DESC> CallBack_ListClick;
 
-private:
+public:
 	list<GAMEOBJECT_DESC> m_pGameObjects;
+
+private:
+	_uint	m_iPreSelectIndex = 0;
 
 public:
 	virtual void OnLevelLoad() override;

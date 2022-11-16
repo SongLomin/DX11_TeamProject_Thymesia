@@ -53,6 +53,8 @@ public:
 	vector<string> Get_AllAnimationKeys() const;
 	vector<string> Get_AllBoneNames() const;
 
+	MESH_VTX_INFO Get_MeshVertexInfo();
+
 	_bool Is_CurrentAnimationKeyInRange(const _uint& iA, const _uint& iB) const;
 
 	weak_ptr<CAnimation>	Get_CurrentAnimation() const

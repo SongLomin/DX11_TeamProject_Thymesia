@@ -184,7 +184,7 @@ HRESULT CGround::SetUp_ShaderResource()
 	if (FAILED(m_pFilterTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_FilterTexture", 0)))
 		return E_FAIL;
 
-	_vector vLightFlag = { 0.f, 0.f, 1.f, 0.f };
+	_vector vLightFlag = { 1.f, 1.f, 1.f, 1.f };
 
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector))))
 		DEBUG_ASSERT;
