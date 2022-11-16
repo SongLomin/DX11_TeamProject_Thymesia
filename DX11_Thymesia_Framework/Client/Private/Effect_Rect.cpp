@@ -53,7 +53,7 @@ HRESULT CEffect_Rect::Initialize(void* pArg)
 	m_pColorTextureCom = Add_Component<CTexture>();
 	m_pColorTextureCom.lock()->Use_Texture("UVColorDiffuse");
 	Set_Enable(false);
-
+	Use_Thread(THREAD_TYPE::TICK);
 
 	return S_OK;
 }
@@ -70,11 +70,13 @@ void CEffect_Rect::Tick(_float fTimeDelta)
 	}
 
 	Play(fTimeDelta * GAMEINSTANCE->Get_TimeScale(m_iTimeScaleLayerIndex));
-	m_pVIBuffer.lock()->Update(m_tParticleDescs);
+	
 }
 
 void CEffect_Rect::LateTick(_float fTimeDelta)
 {
+	m_pVIBuffer.lock()->Update(m_tParticleDescs);
+
 	__super::LateTick(fTimeDelta);
 
 	if (Check_DisableAllParticle())

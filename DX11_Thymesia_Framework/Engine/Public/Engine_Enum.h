@@ -93,3 +93,12 @@ enum class PHYSXACTOR_TYPE
 	ZONE,
 	TYPE_END
 };
+
+enum class THREAD_TYPE
+{
+	NONE,
+	TICK,
+	LATE_TICK,
+	BEFORE_RENDER,
+	TYPE_END
+};

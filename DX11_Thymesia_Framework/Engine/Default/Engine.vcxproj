@@ -264,6 +264,7 @@
     <ClInclude Include="..\Public\RenderTarget_Manager.h" />
     <ClInclude Include="..\Public\SoundManager.h" />
     <ClInclude Include="..\Public\Texture.h" />
+    <ClInclude Include="..\Public\Thread_Manager.h" />
     <ClInclude Include="..\Public\Timer.h" />
     <ClInclude Include="..\Public\Timer_Manager.h" />
     <ClInclude Include="..\Public\Transform.h" />
@@ -356,6 +357,7 @@
     <ClCompile Include="..\Private\RenderTarget_Manager.cpp" />
     <ClCompile Include="..\Private\SoundManager.cpp" />
     <ClCompile Include="..\Private\Texture.cpp" />
+    <ClCompile Include="..\Private\Thread_Manager.cpp" />
     <ClCompile Include="..\Private\Timer.cpp" />
     <ClCompile Include="..\Private\Timer_Manager.cpp" />
     <ClCompile Include="..\Private\Transform.cpp" />

@@ -27,6 +27,7 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uin
 	m_pFrustum = CFrustum::Create_Instance();
 	m_pSound_Manager = CSound_Manager::Create_Instance();
 	m_pPhysX_Manager = CPhysX_Manager::Create_Instance();
+	m_pThread_Manager = CThread_Manager::Create_Instance();
 
 	m_WindowHandle = GraphicDesc.hWnd;
 
@@ -326,6 +327,7 @@ void CGameInstance::Release_Engine()
 	GET_SINGLE(CRenderTarget_Manager)->Destroy_Instance();
 	GET_SINGLE(CSound_Manager)->Destroy_Instance();
 	GET_SINGLE(CPhysX_Manager)->Destroy_Instance();
+	GET_SINGLE(CThread_Manager)->Destroy_Instance();
 	GET_SINGLE(CGameInstance)->Destroy_Instance();
 }
 
@@ -606,6 +608,7 @@ void CGameInstance::Free()
 	m_pSound_Manager.reset();
 
 	m_pPhysX_Manager.reset();
+	m_pThread_Manager.reset();
 }
 
 

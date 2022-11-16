@@ -50,8 +50,8 @@ void CObject_Manager::Tick(_float fTimeDelta)
 {
 	CallBack_Start();
 	CallBack_Start.Clear();
-	
 
+	_bool bThread;
 
 	for (_uint i = 0; i < m_iNumLevels; ++i)
 	{
@@ -59,28 +59,51 @@ void CObject_Manager::Tick(_float fTimeDelta)
 		{
 			for (auto& elem_GameObject : Pair.second)
 			{
-				//게임오브젝트가 활성화 상태면 LateTick을 돌린다.
-				if (elem_GameObject->Get_Enable())
-					elem_GameObject.get()->Tick(fTimeDelta);
+				bThread = elem_GameObject->Is_Thread(THREAD_TYPE::TICK);
+
+				//게임오브젝트가 활성화 상태면 Tick을 돌린다.
+				if (elem_GameObject->Get_Enable() && !bThread)
+				{
+					elem_GameObject->Tick(fTimeDelta);
+
+				}
+				else if(elem_GameObject->Get_Enable() && bThread)
+				{
+					GET_SINGLE(CThread_Manager)->Bind_EngineThread(THREAD_TYPE::TICK, bind(&CGameObject::Tick, elem_GameObject, placeholders::_1), fTimeDelta);
+				}
 			}
 		}
 	}
+
+	GET_SINGLE(CThread_Manager)->Wait_EngineThread(THREAD_TYPE::TICK);
 }
 
 void CObject_Manager::LateTick(_float fTimeDelta)
 {
+	_bool bThread;
+
 	for (_uint i = 0; i < m_iNumLevels; ++i)
 	{
 		for (auto& Pair : m_pLayers[i])
 		{
 			for (auto& elem_GameObject : Pair.second)
 			{
+				bThread = elem_GameObject->Is_Thread(THREAD_TYPE::LATE_TICK);
+
 				//게임오브젝트가 활성화 상태면 LateTick을 돌린다.
-				if (elem_GameObject->Get_Enable())
+				if (elem_GameObject->Get_Enable() && !bThread)
+				{
 					elem_GameObject.get()->LateTick(fTimeDelta);
+				}
+				else if (elem_GameObject->Get_Enable() && bThread)
+				{
+					GET_SINGLE(CThread_Manager)->Bind_EngineThread(THREAD_TYPE::LATE_TICK, bind(&CGameObject::Tick, elem_GameObject, placeholders::_1), fTimeDelta);
+				}
 			}
 		}
 	}
+
+	GET_SINGLE(CThread_Manager)->Wait_EngineThread(THREAD_TYPE::LATE_TICK);
 }
 
 void CObject_Manager::Before_Render(_float fTimeDelta)

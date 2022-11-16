@@ -215,9 +215,6 @@
     <ClInclude Include="..\Public\VIBuffer_Model_Instance.h">
       <Filter>01. Elements\03. Component\01. VIBuffer\09. NoAmin_Instance</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\PhysX_Manager.h">
-      <Filter>98. Managers\14. PhysXManager</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\PhysXCollider.h">
       <Filter>01. Elements\03. Component\13. PhysXCollider</Filter>
     </ClInclude>
@@ -226,6 +223,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\CollisionSimulationEventCallBack.h">
       <Filter>01. Elements\98. Other\06. PxSimulationEventCallback</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysX_Manager.h">
+      <Filter>98. Managers\14. PhysXManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Thread_Manager.h">
+      <Filter>98. Managers\15. ThreadManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -435,6 +438,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CollisionSimulationEventCallBack.cpp">
       <Filter>01. Elements\98. Other\06. PxSimulationEventCallback</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Thread_Manager.cpp">
+      <Filter>98. Managers\15. ThreadManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -662,6 +668,9 @@
     </Filter>
     <Filter Include="01. Elements\03. Component\05. Model">
       <UniqueIdentifier>{c85fd47a-9db4-498a-9f79-6c3a9c7dbfe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Managers\15. ThreadManager">
+      <UniqueIdentifier>{73ad54fd-0779-4738-a82e-151516c60b1f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

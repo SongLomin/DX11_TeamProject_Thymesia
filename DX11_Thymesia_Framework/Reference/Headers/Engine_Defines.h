@@ -49,6 +49,7 @@ using namespace physx;
 #include <sal.h>
 #include <future>
 #include <random>
+#include <mutex>
 
 #ifdef _UNICODE
 typedef std::wstring tstring;

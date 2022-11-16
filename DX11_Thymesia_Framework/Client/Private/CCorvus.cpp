@@ -81,21 +81,26 @@ HRESULT CCorvus::Start()
 
 void CCorvus::Tick(_float fTimeDelta)
 {
-	
-
 	__super::Tick(fTimeDelta);
 	
 	this->RootMove();
 
 	if (KEY_INPUT(KEY::E, KEY_STATE::TAP))
 	{
-		_vector PushPower = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+		for (_int i = 0; i < 100; ++i)
+		{
+			GET_SINGLE(CGameManager)->Use_EffectGroup("TorchFire", m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
 
-		weak_ptr<CGameObject> pGameObject = GAMEINSTANCE->Add_GameObject<CLight_Prop>(m_CreatedLevel);
-		pGameObject.lock()->Get_Component<CTransform>().lock()->Set_Position(m_pTransformCom.lock()->Get_Position() + XMVectorSet(0.f, 0.5f, 0.f, 0.f) + PushPower);
-		pGameObject.lock()->Get_Component<CPhysXCollider>().lock()->Add_Force(PushPower * 1000.f);
+			/*_vector PushPower = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+
+			
+
+			weak_ptr<CGameObject> pGameObject = GAMEINSTANCE->Add_GameObject<CLight_Prop>(m_CreatedLevel);
+			pGameObject.lock()->Get_Component<CTransform>().lock()->Set_Position(m_pTransformCom.lock()->Get_Position() + XMVectorSet(0.f, 0.5f, 0.f, 0.f) + PushPower);
+			pGameObject.lock()->Get_Component<CPhysXCollider>().lock()->Add_Force(PushPower * 1000.f);*/
+		}
+
 		
-
 	}
 }
 
