@@ -485,6 +485,9 @@
     <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal.h">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal</Filter>
     </ClInclude>
+    <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
+      <Filter>04. ShaderFiles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">

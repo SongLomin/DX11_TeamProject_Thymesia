@@ -20,15 +20,17 @@ private:
     {
         NONE,
         OUTBURST,
+        ATTRACTION,
         BILLBOARD,
         TYPE_END
     };
 
+    
     enum class TRANSFORMTYPE
     {
-        STATIC,
+        STATIC,   
         JUSTSPAWN,
-        CHILD,
+        CHILD,    
         TYPE_END
     };
 
@@ -83,12 +85,21 @@ private:
     _uint                               m_iTimeScaleLayerIndex;
     _bool                               m_bFinish;
     _bool                               m_bStopParticle;
-    weak_ptr<CVIBuffer_Rect_Instance>   m_pVIBuffer;
-    weak_ptr<CTexture>                  m_pMaskTextureCom;
-    weak_ptr<CTexture>                  m_pColorTextureCom;
 
-    _float2                             m_vCurrentUV;
-    _float2                             m_vCurrentUVForce;
+    weak_ptr<CVIBuffer_Rect_Instance>   m_pVIBuffer;
+
+    weak_ptr<CTexture>                  m_pColorDiffuseTextureCom;
+    weak_ptr<CTexture>                  m_pMaskTextureCom;
+    weak_ptr<CTexture>                  m_pNoiseTextureCom;
+
+    _float2                             m_vDiffuseCurrentUV;
+    _float2                             m_vDiffuseCurrentUVForce;
+
+    _float2                             m_vMaskCurrentUV;
+    _float2                             m_vMaskCurrentUVForce;
+
+    _float2                             m_vNoiseCurrentUV;
+    _float2                             m_vNoiseCurrentUVForce;
     
     // For. Glow
     _float4                             m_vCurrentGlowColor;
