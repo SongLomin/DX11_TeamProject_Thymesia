@@ -97,7 +97,7 @@ void CPlayerStateBase::Turn_Transform(_float fTimeDelta)
 	//갱신되거나 기존 회전 값이 있는 경우
 	if (XMVector3Length(XMLoadFloat3(&m_vLookAtDir)).m128_f32[0] > DBL_EPSILON)
 	{
-		m_fCurrentRotateTime += fTimeDelta;
+		m_fCurrentRotateTime += fTimeDelta*6.f;
 		_vector PlayerLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
 		PlayerLook = XMVector3Normalize(PlayerLook);
 
