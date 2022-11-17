@@ -250,13 +250,16 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 #pragma endregion
 
 #pragma region Rotation
-	CJson_Utility::Write_Float3(Out_Json["Min_Start_Rotation"], m_tEffectParticleDesc.vMinStartRotation);
-	CJson_Utility::Write_Float3(Out_Json["Max_Start_Rotation"], m_tEffectParticleDesc.vMaxStartRotation);
+	if (_int(PARTICLETYPE::OUTBURST) != m_tEffectParticleDesc.iParticleType)
+	{
+		CJson_Utility::Write_Float3(Out_Json["Min_Start_Rotation"], m_tEffectParticleDesc.vMinStartRotation);
+		CJson_Utility::Write_Float3(Out_Json["Max_Start_Rotation"], m_tEffectParticleDesc.vMaxStartRotation);
 
-	CJson_Utility::Write_Float3(Out_Json["Rotation_Speed"], m_tEffectParticleDesc.vRotationSpeed);
-	CJson_Utility::Write_Float3(Out_Json["Rotation_Force"], m_tEffectParticleDesc.vRotationForce);
+		CJson_Utility::Write_Float3(Out_Json["Rotation_Speed"], m_tEffectParticleDesc.vRotationSpeed);
+		CJson_Utility::Write_Float3(Out_Json["Rotation_Force"], m_tEffectParticleDesc.vRotationForce);
 
-	CJson_Utility::Write_Float3(Out_Json["Max_Rotation"], m_tEffectParticleDesc.vMaxRotation);
+		CJson_Utility::Write_Float3(Out_Json["Max_Rotation"], m_tEffectParticleDesc.vMaxRotation);
+	}
 #pragma endregion
 
 #pragma region Scale
@@ -393,13 +396,16 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma endregion
 
 #pragma region Rotation
-	CJson_Utility::Load_Float3(In_Json["Min_Start_Rotation"], m_tEffectParticleDesc.vMinStartRotation);
-	CJson_Utility::Load_Float3(In_Json["Max_Start_Rotation"], m_tEffectParticleDesc.vMaxStartRotation);
+	if (_int(PARTICLETYPE::OUTBURST) != m_tEffectParticleDesc.iParticleType)
+	{
+		CJson_Utility::Load_Float3(In_Json["Min_Start_Rotation"], m_tEffectParticleDesc.vMinStartRotation);
+		CJson_Utility::Load_Float3(In_Json["Max_Start_Rotation"], m_tEffectParticleDesc.vMaxStartRotation);
 
-	CJson_Utility::Load_Float3(In_Json["Rotation_Speed"], m_tEffectParticleDesc.vRotationSpeed);
-	CJson_Utility::Load_Float3(In_Json["Rotation_Force"], m_tEffectParticleDesc.vRotationForce);
+		CJson_Utility::Load_Float3(In_Json["Rotation_Speed"], m_tEffectParticleDesc.vRotationSpeed);
+		CJson_Utility::Load_Float3(In_Json["Rotation_Force"], m_tEffectParticleDesc.vRotationForce);
 
-	CJson_Utility::Load_Float3(In_Json["Max_Rotation"], m_tEffectParticleDesc.vMaxRotation);
+		CJson_Utility::Load_Float3(In_Json["Max_Rotation"], m_tEffectParticleDesc.vMaxRotation);
+	}
 #pragma endregion
 
 #pragma region Scale
@@ -1146,20 +1152,23 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 #pragma endregion
 			ImGui::Separator();
 #pragma region Rotation
-			ImGui::Text("Min Start Rotation");
-			ImGui::DragFloat3("##Min_Start_Rotation", &m_tEffectParticleDesc.vMinStartRotation.x, 0.1f);
+			if (_int(PARTICLETYPE::OUTBURST) != m_tEffectParticleDesc.iParticleType)
+			{
+				ImGui::Text("Min Start Rotation");
+				ImGui::DragFloat3("##Min_Start_Rotation", &m_tEffectParticleDesc.vMinStartRotation.x, 0.1f);
 
-			ImGui::Text("Max Start Rotation");
-			ImGui::DragFloat3("##Max_Start_Rotation", &m_tEffectParticleDesc.vMaxStartRotation.x, 0.1f);
+				ImGui::Text("Max Start Rotation");
+				ImGui::DragFloat3("##Max_Start_Rotation", &m_tEffectParticleDesc.vMaxStartRotation.x, 0.1f);
 
-			ImGui::Text("Rotation Speed");
-			ImGui::DragFloat3("##Rotation_Speed", &m_tEffectParticleDesc.vRotationSpeed.x, 0.1f);
+				ImGui::Text("Rotation Speed");
+				ImGui::DragFloat3("##Rotation_Speed", &m_tEffectParticleDesc.vRotationSpeed.x, 0.1f);
 
-			ImGui::Text("Rotation Force");
-			ImGui::DragFloat3("##Rotation_Force", &m_tEffectParticleDesc.vRotationForce.x, 0.1f);
+				ImGui::Text("Rotation Force");
+				ImGui::DragFloat3("##Rotation_Force", &m_tEffectParticleDesc.vRotationForce.x, 0.1f);
 
-			ImGui::Text("Max Rotation");
-			ImGui::DragFloat3("##Max_Rotation", &m_tEffectParticleDesc.vMaxRotation.x, 0.1f);
+				ImGui::Text("Max Rotation");
+				ImGui::DragFloat3("##Max_Rotation", &m_tEffectParticleDesc.vMaxRotation.x, 0.1f);
+			}
 #pragma endregion
 			ImGui::Separator();
 #pragma region Scale
@@ -1197,10 +1206,10 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::DragFloat4("##Max_Start_Color", &m_tEffectParticleDesc.vMaxStartColor.x, 0.01f, 0.f, 1.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
 
 			ImGui::Text("Color Speed");
-			ImGui::DragFloat4("##Color_Speed", &m_tEffectParticleDesc.vColorSpeed.x, 0.01f, 0.f, 1.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+			ImGui::DragFloat4("##Color_Speed", &m_tEffectParticleDesc.vColorSpeed.x, 0.01f, -100.f, 100.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
 
 			ImGui::Text("Color Force");
-			ImGui::DragFloat4("##Color_Force", &m_tEffectParticleDesc.vColorForce.x, 0.01f, 0.f, 1.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+			ImGui::DragFloat4("##Color_Force", &m_tEffectParticleDesc.vColorForce.x, 0.01f, -100.f, 100.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
 
 			ImGui::Text("Max Color");
 			ImGui::DragFloat4("##Max_Color", &m_tEffectParticleDesc.vMaxColor.x, 0.01f, 0.f, 1.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
