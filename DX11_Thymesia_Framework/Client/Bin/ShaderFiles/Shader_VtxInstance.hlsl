@@ -254,7 +254,7 @@ PS_OUT PS_SPRITE(PS_IN_SPRITE In)
     PS_OUT Out = (PS_OUT) 0;
 	
 	// Sprite Image
-    Out.vColor = g_DiffuseTexture.Sample(PointSampler,
+    Out.vColor = g_DiffuseTexture.Sample(PointClampSampler,
 		float2(In.vTexUV.x / g_iNumFrameX + In.vSpriteUV.x,
 			In.vTexUV.y / g_iNumFrameY + In.vSpriteUV.y));
 	

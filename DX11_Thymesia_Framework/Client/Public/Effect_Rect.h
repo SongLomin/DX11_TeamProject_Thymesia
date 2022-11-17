@@ -110,6 +110,8 @@ private:
 	vector<PARTICLE_DESC>               m_tOriginalParticleDescs;
 
 	_float                              m_fCurrentInitTime = 0.f;
+
+    _bool                               m_bStopSprite = false;
 };
 
 END

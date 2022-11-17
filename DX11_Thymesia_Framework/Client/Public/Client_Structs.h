@@ -232,12 +232,13 @@ namespace Client
 #pragma endregion
 #pragma region For. Sprite
 		// TODO : convert to separate individual class
-		_bool		bPendulumSprite;
+		// _bool		bPendulumSprite;
+
+		_bool		bLoopSprite;
 
 		_int		iNumFrameX;
 		_int		iNumFrameY;
 
-		// _float2		fCurFrame;
 		_float		fSpriteSpeed;
 #pragma endregion
 	};
