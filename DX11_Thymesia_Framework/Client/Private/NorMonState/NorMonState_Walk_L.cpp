@@ -35,7 +35,7 @@ void CNorMonState_Walk_L::Start()
 
 	if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
 	{
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|LV1Villager_M_WalkL|BaseLayer");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_WalkL|BaseLayer|Armatu");
 	}
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Walk_L::Call_AnimationEnd, this);
 }

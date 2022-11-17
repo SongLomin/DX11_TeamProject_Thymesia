@@ -33,7 +33,7 @@ void CNorMonState_SitToIdle::Start()
 
 	if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
 	{
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|LV1Villager_M_SitToIdle|BaseLayer");	
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_SitToIdle|BaseLayer|Ar");	
 
 	}
 
@@ -88,7 +88,8 @@ void CNorMonState_SitToIdle::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_MonIdleType(NORMONSTERIDLETYPE::NORIDLE);
+	Get_OwnerCharacter().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_AnimIndex(0);
+	Get_OwnerCharacter().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_MonIdleType(NORMONSTERIDLETYPE::NORIDLE);
 	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
 }
 

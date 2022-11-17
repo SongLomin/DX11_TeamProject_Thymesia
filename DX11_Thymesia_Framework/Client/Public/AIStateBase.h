@@ -53,10 +53,14 @@ protected:
 
 
 protected:
+    _vector Get_CurMonToStartMonDir();
     _float GetStartPositionToCurrentPositionDir();
     void TurnMechanism();
     _float ComputeAngleWithPlayer();
     _int ComputeDirectionToPlayer();
+
+
+
 
 
    

@@ -129,6 +129,7 @@ void CAIStateBase::Turn_ToThePlayer(_float fTimeDelta)
 
 		if (fDirResult > 0.f)
 		{
+			
 			m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), sqrtf(fTimeDelta * 0.08f));
 		}
 
@@ -201,12 +202,12 @@ _bool CAIStateBase::Rotation_InputToLookDir()
 
 _bool CAIStateBase::Rotation_TargetToLookDir()
 {
-	weak_ptr<CCharacter> pCharacter = m_pOwnerFromMonster.lock()->Get_TargetCharacter();
+	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
-	if (!pCharacter.lock().get())
+	if (!pCurrentPlayer.lock().get())
 		return false;
 
-	_vector CharacterPosition = pCharacter.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
+	_vector CharacterPosition = pCurrentPlayer.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
 
 	m_pTransformCom.lock()->LookAt2D(CharacterPosition);
 
@@ -225,14 +226,27 @@ _float CAIStateBase::Get_DistanceWithPlayer() const
 
 
 
-_float CAIStateBase::GetStartPositionToCurrentPositionDir()
+_vector CAIStateBase::Get_CurMonToStartMonDir()
 {
 	_vector vCurrenPosition = m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
 	_vector vStartPosition = XMLoadFloat4(&m_fStartPosition);
-	_float fDistance = XMVector3Length(vStartPosition - vCurrenPosition).m128_f32[0];
+	_vector vLookDir = XMVector4Normalize(vStartPosition - vCurrenPosition);
+
+	return vLookDir;
+}
+
+_float CAIStateBase::GetStartPositionToCurrentPositionDir()
+{
+	_vector vCurrenPosition = m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
+	vCurrenPosition = XMVectorSetY(vCurrenPosition, 0.f);
+	_vector vStartPosition = XMLoadFloat4(&m_fStartPosition);
+	vStartPosition = XMVectorSetY(vStartPosition, 0.f);
+	_float fDistance = XMVectorGetX(XMVector3Length(vCurrenPosition - vStartPosition));
 
 	return fDistance;
 }
+
+
 
 void CAIStateBase::TurnMechanism()
 {
@@ -241,7 +255,7 @@ void CAIStateBase::TurnMechanism()
 	if (!pCurrentPlayer.lock())
 		return;
 
-	if (ComputeAngleWithPlayer() >= 90.f)
+	if (ComputeAngleWithPlayer() <= 0.f) // 90일때 0 90보다크면 -값이다 0 보다작다
 	{
 		switch (ComputeDirectionToPlayer())
 		{
@@ -258,13 +272,16 @@ void CAIStateBase::TurnMechanism()
 
 		
 	}
+
 	else
 	{
-		
+		//룩앳천천히하기
 		_vector vPlayerPosition = pCurrentPlayer.lock()->Get_WorldPosition();
 		m_pTransformCom.lock()->LookAt2D(vPlayerPosition);
 	}
+
 }
+
 
 _float CAIStateBase::ComputeAngleWithPlayer()
 {
@@ -272,13 +289,19 @@ _float CAIStateBase::ComputeAngleWithPlayer()
 
 
 	_vector vCurPlayerPos = pCurrentPlayer.lock()->Get_WorldPosition();
+	vCurPlayerPos.m128_f32[1] = 0.f;
 	_vector vMyPos = Get_OwnerCharacter().lock()->Get_WorldPosition();
+	vMyPos.m128_f32[1] = 0.f;
 	_vector vMonsterToPlayerDirectionVector = XMVector3Normalize(vCurPlayerPos - vMyPos);
 	_vector vMyLookVector = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+	vMyLookVector.m128_f32[1] = 0.f;
+	vMyLookVector = XMVector3Normalize(vMyLookVector);
 
-	_float fDegree = XMConvertToDegrees(XMVectorGetY(XMVector3Length(XMVector3Dot(vMonsterToPlayerDirectionVector, vMyLookVector))));
+	_float fCos = XMVectorGetY((XMVector3Dot(vMonsterToPlayerDirectionVector, vMyLookVector)));
 
-	return fDegree;
+	cout << "ComputeAngleWithPlayer: " << fCos << endl;
+
+	return fCos;
 
 }
 
@@ -305,6 +328,8 @@ _int CAIStateBase::ComputeDirectionToPlayer()
 		return -1;
 	}
 }
+
+
 
 void CAIStateBase::OnDestroy()
 {

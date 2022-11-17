@@ -30,8 +30,8 @@ protected:
 
 
 private:
-	_float m_fMaxSpeed = 1.f;
-	_float m_fCurrentSpeed = 0.5f;
+	_float m_fMaxSpeed = 3.f;
+	_float m_fCurrentSpeed = 1.2f;
 	_float m_fAccel = 0.f;
 
 private:
