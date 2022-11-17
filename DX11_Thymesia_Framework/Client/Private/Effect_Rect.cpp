@@ -62,8 +62,6 @@ void CEffect_Rect::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-
-
 	if (m_pVIBuffer.lock()->Get_InstanceCount() != m_tEffectParticleDesc.iMaxInstance)
 	{
 		Reset_Instance(m_tEffectParticleDesc.iMaxInstance);
@@ -136,12 +134,12 @@ void CEffect_Rect::SetUp_ShaderResource()
 	
 	_float2 vZeroUV = { 0.f, 0.f };
 
-	if (m_tEffectParticleDesc.bDiffuseUV)
+	/*if (m_tEffectParticleDesc.bDiffuseUV)
 	{
 		m_pShaderCom.lock()->Set_RawValue("g_vDiffuseUV", &m_vCurrentUV, sizeof(_float2));
 		m_pShaderCom.lock()->Set_RawValue("g_vMaskUV", &vZeroUV, sizeof(_float2));
 	}
-	else
+	else*/
 	{
 		m_pShaderCom.lock()->Set_RawValue("g_vDiffuseUV", &vZeroUV, sizeof(_float2));
 		m_pShaderCom.lock()->Set_RawValue("g_vMaskUV", &m_vCurrentUV, sizeof(_float2));
@@ -196,8 +194,8 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	CJson_Utility::Write_Float3(Out_Json["Min_Force"], m_tEffectParticleDesc.vMinForce);
 	CJson_Utility::Write_Float3(Out_Json["Max_Force"], m_tEffectParticleDesc.vMaxForce);
 	CJson_Utility::Write_Float3(Out_Json["Min_Start_Position"], m_tEffectParticleDesc.vMinStartPosition);
-	Out_Json["Is_Move_Look"] = m_tEffectParticleDesc.bMoveLook;
-	CJson_Utility::Write_Float3(Out_Json["Limite_Speed"], m_tEffectParticleDesc.vLimiteSpeed);
+	// Out_Json["Is_Move_Look"] = m_tEffectParticleDesc.bMoveLook;
+	CJson_Utility::Write_Float3(Out_Json["Limite_Speed"], m_tEffectParticleDesc.vLimitSpeed);
 	CJson_Utility::Write_Float3(Out_Json["Min_Start_Rotation"], m_tEffectParticleDesc.vMinStartRotation);
 	CJson_Utility::Write_Float3(Out_Json["Max_Start_Rotation"], m_tEffectParticleDesc.vMaxStartRotation);
 	CJson_Utility::Write_Float3(Out_Json["Rotation_Speed"], m_tEffectParticleDesc.vRotationSpeed);
@@ -216,7 +214,7 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	CJson_Utility::Write_Float4(Out_Json["Max_Color"], m_tEffectParticleDesc.vMaxColor);
 	Out_Json["Discard_Ratio"] = m_tEffectParticleDesc.fDiscardRatio;
 	CJson_Utility::Write_Float2(Out_Json["Start_UV"], m_tEffectParticleDesc.vStartUV);
-	Out_Json["Is_Diffuse_UV"] = m_tEffectParticleDesc.bDiffuseUV;
+	// Out_Json["Is_Diffuse_UV"] = m_tEffectParticleDesc.bDiffuseUV;
 	Out_Json["UV_Color_Index"] = m_tEffectParticleDesc.iUVColorIndex;
 	Out_Json["UV_Mask_Index"] = m_tEffectParticleDesc.iUVMaskIndex;
 	CJson_Utility::Write_Float2(Out_Json["UV_Speed"], m_tEffectParticleDesc.vUVSpeed);
@@ -271,7 +269,7 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	CJson_Utility::Load_Float3(In_Json["Max_Force"], m_tEffectParticleDesc.vMaxForce);
 	CJson_Utility::Load_Float3(In_Json["Min_Start_Position"], m_tEffectParticleDesc.vMinStartPosition);
 	m_tEffectParticleDesc.bMoveLook = In_Json["Is_Move_Look"];
-	CJson_Utility::Load_Float3(In_Json["Limite_Speed"], m_tEffectParticleDesc.vLimiteSpeed);
+	CJson_Utility::Load_Float3(In_Json["Limite_Speed"], m_tEffectParticleDesc.vLimitSpeed);
 	CJson_Utility::Load_Float3(In_Json["Min_Start_Rotation"], m_tEffectParticleDesc.vMinStartRotation);
 	CJson_Utility::Load_Float3(In_Json["Max_Start_Rotation"], m_tEffectParticleDesc.vMaxStartRotation);
 	CJson_Utility::Load_Float3(In_Json["Rotation_Speed"], m_tEffectParticleDesc.vRotationSpeed);
@@ -297,8 +295,8 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 
 	CJson_Utility::Load_Float2(In_Json["Start_UV"], m_tEffectParticleDesc.vStartUV);
 
-	if(In_Json.find("Is_Diffuse_UV") != In_Json.end())
-		m_tEffectParticleDesc.bDiffuseUV = In_Json["Is_Diffuse_UV"];
+	//if(In_Json.find("Is_Diffuse_UV") != In_Json.end())
+	//	m_tEffectParticleDesc.bDiffuseUV = In_Json["Is_Diffuse_UV"];
 
 	m_tEffectParticleDesc.iUVColorIndex = In_Json["UV_Color_Index"];
 	m_tEffectParticleDesc.iUVMaskIndex = In_Json["UV_Mask_Index"];
@@ -564,9 +562,9 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 
 	vMove = SMath::Add_Float3(vMove, m_tParticleDescs[i].vCurrentForce);
 
-	vMove.x = min(m_tEffectParticleDesc.vLimiteSpeed.x, vMove.x);
-	vMove.y = min(m_tEffectParticleDesc.vLimiteSpeed.y, vMove.y);
-	vMove.z = min(m_tEffectParticleDesc.vLimiteSpeed.z, vMove.z);
+	vMove.x = min(m_tEffectParticleDesc.vLimitSpeed.x, vMove.x);
+	vMove.y = min(m_tEffectParticleDesc.vLimitSpeed.y, vMove.y);
+	vMove.z = min(m_tEffectParticleDesc.vLimitSpeed.z, vMove.z);
 
 	if (m_tEffectParticleDesc.bMoveLook)
 	{
@@ -964,7 +962,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::Checkbox("##Is_Move_Look", &m_tEffectParticleDesc.bMoveLook);
 
 			ImGui::Text("Limite Speed");
-			ImGui::DragFloat3("##Limite_Speed", &m_tEffectParticleDesc.vLimiteSpeed.x, 0.1f);
+			ImGui::DragFloat3("##Limite_Speed", &m_tEffectParticleDesc.vLimitSpeed.x, 0.1f);
 			ImGui::Separator();
 
 			ImGui::Text("Min Start Rotation");
@@ -999,9 +997,9 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::DragFloat3("##Max_Scale", &m_tEffectParticleDesc.vMaxScale.x, 0.1f);
 			ImGui::Separator();
 
-			ImGui::Text("Is Diffuse UV");
-			ImGui::SameLine();
-			ImGui::Checkbox("##Is_Diffuse_UV", &m_tEffectParticleDesc.bDiffuseUV);
+			//ImGui::Text("Is Diffuse UV");
+			//ImGui::SameLine();
+			//ImGui::Checkbox("##Is_Diffuse_UV", &m_tEffectParticleDesc.bDiffuseUV);
 
 			ImGui::InputInt("UV Color Map Index", &m_tEffectParticleDesc.iUVColorIndex);
 

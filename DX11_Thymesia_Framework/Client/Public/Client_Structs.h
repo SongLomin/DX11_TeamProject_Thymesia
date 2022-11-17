@@ -117,7 +117,9 @@ namespace Client
 	struct EFFECTPARTICLE_DESC
 	{
 		_int		iMaxInstance;
+
 		_bool		bLooping;
+
 		_int		iParticleType;
 		_bool		bSyncAnimation;
 		_int		iFollowTransformType;
@@ -128,7 +130,6 @@ namespace Client
 
 		_float		fMinSpawnTime;
 		_float		fMaxSpawnTime;
-
 
 		_float		fMinLifeTime;
 		_float		fMaxLifeTime;
@@ -147,9 +148,10 @@ namespace Client
 		_float3		vMinForce;
 		_float3		vMaxForce;
 
+		// particle moves towards look
 		_bool		bMoveLook;
 
-		_float3		vLimiteSpeed;
+		_float3		vLimitSpeed;
 
 		_float3		vMinStartRotation;
 		_float3		vMaxStartRotation;
@@ -176,7 +178,6 @@ namespace Client
 
 		_float		fDiscardRatio;
 
-		_bool		bDiffuseUV;
 		_float2		vStartUV;
 		_int		iUVMaskIndex;
 		_float2		vUVSpeed;
@@ -193,6 +194,7 @@ namespace Client
 
 		_int	iShaderPassIndex;
 
+		// TODO : convert to separate individual class
 		// for sprite images
 		_bool		bPendulumSprite;
 		_int		iNumFrameX;
