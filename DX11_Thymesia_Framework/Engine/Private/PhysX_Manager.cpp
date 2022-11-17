@@ -52,6 +52,24 @@ HRESULT CPhysX_Manager::Initialize(const _uint In_iNumLayer)
 	// Create Cooking
 	m_pCooking = PxCreateCooking(PX_PHYSICS_VERSION, *m_pFoundation, PxCookingParams(PxTolerancesScale()));
 
+	// Create Cuda
+	PxCudaContextManagerDesc tCudaDesc;
+	tCudaDesc.graphicsDevice = DEVICE;
+	tCudaDesc.interopMode = PxCudaInteropMode::Enum::D3D11_INTEROP;
+
+	m_pCudaContextManager = PxCreateCudaContextManager(*m_pFoundation, tCudaDesc, PxGetProfilerCallback());
+
+	if (m_pCudaContextManager)
+	{
+		if (!m_pCudaContextManager->contextIsValid())
+		{
+			DEBUG_ASSERT;
+		}
+	}
+	else
+	{
+		//DEBUG_ASSERT;
+	}
 	// Crate Material
 	// 충돌체 정지 마찰계수, 운동 마찰 계수, 탄성력
 	//m_pMaterial = m_pPhysics->createMaterial(0.5f, 0.5f, 0.6f);
@@ -255,6 +273,14 @@ HRESULT CPhysX_Manager::Create_Scene(Scene eScene, PxVec3 Gravity)
 	sceneDesc.cpuDispatcher = m_pDispatcher;
 	sceneDesc.filterShader = CollisionFilterShader;
 	sceneDesc.simulationEventCallback = GET_SINGLE(CCollision_Manager)->Get_CollisionSimulationEventCallBack();
+	sceneDesc.cudaContextManager = m_pCudaContextManager;
+	sceneDesc.broadPhaseType = PxBroadPhaseType::eGPU;
+	sceneDesc.flags |= PxSceneFlag::eENABLE_GPU_DYNAMICS;	//Enable GPU dynamics - without this enabled, simulation (contact gen and solver) will run on the CPU.
+	sceneDesc.flags |= PxSceneFlag::eENABLE_PCM;			//Enable PCM. PCM NP is supported on GPU. Legacy contact gen will fall back to CPU
+	sceneDesc.flags |= PxSceneFlag::eENABLE_STABILIZATION;	//Improve solver stability by enabling post-stabilization.
+	sceneDesc.broadPhaseType = PxBroadPhaseType::eGPU;		//Enable GPU broad phase. Without this set, broad phase will run on the CPU.
+	sceneDesc.gpuMaxNumPartitions = 8;						//Defines the maximum number of partitions used by the solver. Only power-of-2 values are valid. 
+															//A value of 8 generally gives best balance between performance and stability.
 
 	m_pScenes[eScene] = m_pPhysics->createScene(sceneDesc);
 
@@ -396,6 +422,7 @@ void CPhysX_Manager::Create_ConvexMesh(PxVec3 ** pVertices, _uint iNumVertice, P
 	// If the gaussMapLimit is chosen higher than the number of output vertices, no gauss map is added to the convex mesh data (here 256).
 	// If the gaussMapLimit is chosen lower than the number of output vertices, a gauss map is added to the convex mesh data (here 16).
 	params.gaussMapLimit = 16;
+	params.buildGPUData = true;
 	m_pCooking->setParams(params);
 
 	// Setup the convex mesh descriptor
@@ -422,6 +449,15 @@ void CPhysX_Manager::Create_Shape(const PxGeometry & Geometry, PxMaterial* pMate
 
 void CPhysX_Manager::Create_MeshFromTriangles(const PxTriangleMeshDesc& In_MeshDesc, PxTriangleMesh** ppOut)
 {
+	PxCookingParams params = m_pCooking->getParams();
+
+	// Use the new (default) PxConvexMeshCookingType::eQUICKHULL
+	params.buildGPUData = true;
+
+	m_pCooking->setParams(params);
+
+
+
 	PxDefaultMemoryOutputStream writeBuffer;
 	PxTriangleMeshCookingResult::Enum result;
 	bool status = m_pCooking->cookTriangleMesh(In_MeshDesc, writeBuffer, &result);
@@ -496,7 +532,12 @@ void CPhysX_Manager::OnDestroy()
 		m_pPVD = nullptr;
 		transport->release();
 	}
-	m_pFoundation->release();
+	if(m_pCudaContextManager)
+		m_pCudaContextManager->release();
+
+	if(m_pFoundation)
+		m_pFoundation->release();
+
 
 	//m_pCollisionSimulationEventCallBack->Release();
 }

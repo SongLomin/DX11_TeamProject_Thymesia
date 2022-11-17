@@ -11,11 +11,12 @@ class CThread_Manager final : public CBase
 
 public:
 	void Initialize(const _uint In_iNumLayer);
-	
-public:
+	void Bind_ThreadObject(const THREAD_TYPE In_eThread_Type, weak_ptr<CGameObject> pGameObject);
 
-	void Bind_EngineThread(const THREAD_TYPE In_eThread_Type, function<void(_float)> Function, _float fTimeDelta);
-	void Wait_EngineThread(const THREAD_TYPE In_eThread_Type);
+private:
+	//void Loop(const THREAD_TYPE In_eThread_Type);
+	void Update(const THREAD_TYPE In_eThread_Type, list<weak_ptr<CGameObject>>& In_List,_float fTimeDelta);
+	void Add_ThreadObject(const THREAD_TYPE In_eThread_Type, list<weak_ptr<CGameObject>>& In_List);
 
 	void Clear_EngineThreads(const THREAD_TYPE In_eThread_Type);
 
@@ -23,12 +24,15 @@ public:
 	
 
 
-private:
-	map<THREAD_TYPE, list<future<void>>>	m_EngineThreads;
-	map<_uint, list<future<void>>>			m_CustomThreads;
+public:
+	list<weak_ptr<CGameObject>>	m_ReservedThreadObjects[(_uint)THREAD_TYPE::TYPE_END];
 
+	vector<future<void>>				m_Threads;
+
+	_bool											m_bDead = false;
 
 public:
+	virtual void OnDestroy() override;
 	void Free();
 };
 

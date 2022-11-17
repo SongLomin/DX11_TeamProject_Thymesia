@@ -43,8 +43,10 @@ public: /* 엔진 라이브럴를 사용할때 필요한 초기화 과정으르 거칠거야. */
 
 	_float Get_DeltaTime() const;
 	_bool  Is_Debug() const { return m_bDebug; }
+	_uint	Get_LoopIndex() const { return m_iLoopIndex; }
 
 	HWND	Get_WindowHandle() const;
+
 
 public: /* For.Graphic_Device */	
 	HRESULT Clear_BackBuffer_View(_float4 vClearColor);
@@ -223,6 +225,7 @@ private:
 	_float	m_fDeltaTime = 0.f;
 	_bool	m_bDebug = false;
 	HWND	m_WindowHandle;
+	_uint	m_iLoopIndex = 0;
 
 
 public:

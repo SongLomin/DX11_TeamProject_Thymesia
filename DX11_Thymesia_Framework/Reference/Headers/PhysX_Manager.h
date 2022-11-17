@@ -80,6 +80,7 @@ private:
 	PxDefaultAllocator		m_Allocator;
 	PxDefaultErrorCallback	m_ErrorCallback;
 	PxFoundation*			m_pFoundation;
+	PxCudaContextManager* m_pCudaContextManager = nullptr;
 
 	// PxFoundation이 있어야 Physics를 생성할 수 있다.
 	PxPhysics*				m_pPhysics;

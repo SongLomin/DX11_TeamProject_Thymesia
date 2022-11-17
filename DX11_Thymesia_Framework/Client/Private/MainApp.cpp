@@ -115,7 +115,6 @@ HRESULT CMainApp::Render()
 	//GAMEINSTANCE->Render_Font((_uint)FONT_INDEX::DREAM);
 
 
-#ifdef _DEBUG
 	if (m_fTimeAcc >= 1.f)
 	{
 		wsprintf(m_szFPS, TEXT("FPS : %d"), m_iNumRender);
@@ -126,7 +125,6 @@ HRESULT CMainApp::Render()
 	++m_iNumRender;
 
 	GAMEINSTANCE->Render_Font((_uint)FONT_INDEX::DREAM, m_szFPS, _float2(0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
-#endif // _DEBUG
 
 	
 

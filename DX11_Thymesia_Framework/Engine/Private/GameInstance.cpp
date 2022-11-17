@@ -70,6 +70,7 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uin
 	m_pSound_Manager->Initialize();
 
 	m_pPhysX_Manager->Initialize(iNumCollsionLayer);
+	m_pThread_Manager->Initialize(1290123);
 
 	return S_OK;	
 }
@@ -101,6 +102,8 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 	}
 
 	m_pPhysX_Manager->Tick(fTimeDelta);
+
+	++m_iLoopIndex;
 
 	return S_OK;
 }
@@ -310,7 +313,7 @@ HRESULT CGameInstance::Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt)
 void CGameInstance::Release_Engine()
 {
 	
-	GET_SINGLE(CObject_Manager)->Destroy_Instance();
+	GET_SINGLE(CThread_Manager)->Destroy_Instance();
 	GET_SINGLE(CComponent_Manager)->Destroy_Instance();
 	GET_SINGLE(CLevel_Manager)->Destroy_Instance();
 	GET_SINGLE(CTimer_Manager)->Destroy_Instance();
@@ -326,8 +329,8 @@ void CGameInstance::Release_Engine()
 	GET_SINGLE(CFrustum)->Destroy_Instance();
 	GET_SINGLE(CRenderTarget_Manager)->Destroy_Instance();
 	GET_SINGLE(CSound_Manager)->Destroy_Instance();
+	GET_SINGLE(CObject_Manager)->Destroy_Instance();
 	GET_SINGLE(CPhysX_Manager)->Destroy_Instance();
-	GET_SINGLE(CThread_Manager)->Destroy_Instance();
 	GET_SINGLE(CGameInstance)->Destroy_Instance();
 }
 

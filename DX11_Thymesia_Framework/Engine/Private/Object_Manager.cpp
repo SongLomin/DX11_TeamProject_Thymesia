@@ -67,15 +67,9 @@ void CObject_Manager::Tick(_float fTimeDelta)
 					elem_GameObject->Tick(fTimeDelta);
 
 				}
-				else if(elem_GameObject->Get_Enable() && bThread)
-				{
-					GET_SINGLE(CThread_Manager)->Bind_EngineThread(THREAD_TYPE::TICK, bind(&CGameObject::Tick, elem_GameObject, placeholders::_1), fTimeDelta);
-				}
 			}
 		}
 	}
-
-	GET_SINGLE(CThread_Manager)->Wait_EngineThread(THREAD_TYPE::TICK);
 }
 
 void CObject_Manager::LateTick(_float fTimeDelta)
@@ -95,15 +89,9 @@ void CObject_Manager::LateTick(_float fTimeDelta)
 				{
 					elem_GameObject.get()->LateTick(fTimeDelta);
 				}
-				else if (elem_GameObject->Get_Enable() && bThread)
-				{
-					GET_SINGLE(CThread_Manager)->Bind_EngineThread(THREAD_TYPE::LATE_TICK, bind(&CGameObject::Tick, elem_GameObject, placeholders::_1), fTimeDelta);
-				}
 			}
 		}
 	}
-
-	GET_SINGLE(CThread_Manager)->Wait_EngineThread(THREAD_TYPE::LATE_TICK);
 }
 
 void CObject_Manager::Before_Render(_float fTimeDelta)
@@ -180,6 +168,11 @@ void CObject_Manager::Remove_DeadObject()
 
 }
 
+shared_ptr<CGameObject> CObject_Manager::Find_Object(weak_ptr<CGameObject> pGameObject)
+{
+	return shared_ptr<CGameObject>();
+}
+
 void CObject_Manager::Register_ReservedObjects()
 {
 	for (auto& elem : m_ReservedObjects)
@@ -189,6 +182,18 @@ void CObject_Manager::Register_ReservedObjects()
 	}
 
 	m_ReservedObjects.clear();
+}
+
+void CObject_Manager::Bind_Thread(shared_ptr<CGameObject> pGameObject)
+{
+	for (_uint i = 0; i < (_uint)THREAD_TYPE::TYPE_END; ++i)
+	{
+		if (pGameObject->Is_Thread((THREAD_TYPE)i))
+		{
+			GET_SINGLE(CThread_Manager)->Bind_ThreadObject((THREAD_TYPE)i, pGameObject);
+		}
+	}
+
 }
 
 void CObject_Manager::Free()
@@ -227,7 +232,15 @@ weak_ptr<CGameObject> CObject_Manager::Add_GameObject(size_t iTypeHash, _uint iL
 
 	shared_ptr<CGameObject> pCloneObject = pPrototype.lock()->Clone(iLevelIndex, pArg);
 
-	m_pLayers[iLevelIndex][iTypeHash].push_back(pCloneObject);
+	/*for (_uint i = 0; i < (_uint)THREAD_TYPE::TYPE_END; ++i)
+	{
+		if (pCloneObject->Is_Thread((THREAD_TYPE)i))
+		{
+			GET_SINGLE(CThread_Manager)->Bind_ThreadObject((THREAD_TYPE)i, pCloneObject);
+		}
+	}*/
+
+	m_ReservedObjects.push_back({ iTypeHash, iLevelIndex, pCloneObject });
 
 	return pCloneObject;
 }

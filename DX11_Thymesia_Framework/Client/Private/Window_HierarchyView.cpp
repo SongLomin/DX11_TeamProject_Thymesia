@@ -99,7 +99,9 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 	{
 		if (typeid(CEditGroupProp).hash_code() == iter_elem->HashCode)
 		{
-			iter_elem->pInstance.lock()->Write_Json(json());
+			json EmptyJson;
+
+			iter_elem->pInstance.lock()->Write_Json(EmptyJson);
 
 			for (auto iter_sub : m_pSubGameObjects)
 			{

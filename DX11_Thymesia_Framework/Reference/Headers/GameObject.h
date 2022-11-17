@@ -67,6 +67,7 @@ protected:
 	_float						m_fCamDistance = 0.f;
 	_uint						m_CreatedLevel;
 	_uint						m_ThreadFlag = 0;
+	_uint						m_UpatedFromThreadFlag = 0;
 
 
 protected:
@@ -85,6 +86,7 @@ public:
 	void	Use_Thread(const THREAD_TYPE In_Type);
 	void	UnUse_Thread(const THREAD_TYPE In_Type);
 	_bool	Is_Thread(const THREAD_TYPE In_Type);
+	_bool	LastestDataFromThread(const THREAD_TYPE In_Type);
 
 private:
 	static _uint g_iGameObjectIndex;
@@ -224,6 +226,7 @@ public: /* For Template Function */
 	void Remove_Component(weak_ptr<CComponent> pComponent);
 
 	friend CObject_Manager;
+	friend CThread_Manager;
 };
 
 END
