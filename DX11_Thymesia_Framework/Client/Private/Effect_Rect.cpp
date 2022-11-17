@@ -2,6 +2,11 @@
 #include "Effect_Rect.h"
 #include "Client_Components.h"
 
+// undefines at bottom
+#define PASS_SPRITE 0
+#define PASS_ALPHADISCARD 1
+#define PASS_BLACKDISCARD 2
+
 GAMECLASS_C(CEffect_Rect)
 CLONE_C(CEffect_Rect, CGameObject)
 
@@ -14,28 +19,51 @@ HRESULT CEffect_Rect::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 
-	m_eRenderGroup = RENDERGROUP::RENDER_ALPHABLEND;
+	m_eRenderGroup                             = RENDERGROUP::RENDER_ALPHABLEND;
 
 	ZeroMemory(&m_tEffectParticleDesc, sizeof(m_tEffectParticleDesc));
-	m_tEffectParticleDesc.vMinStartScale = { 1.f, 1.f, 1.f };
-	m_tEffectParticleDesc.vMaxStartScale = { 1.f, 1.f, 1.f };
-	m_tEffectParticleDesc.vMaxScale = { 1.f, 1.f, 1.f };
-	m_tEffectParticleDesc.vMaxStartColor = { 1.f, 1.f, 1.f, 1.f };
-	m_tEffectParticleDesc.vMinStartColor = { 1.f, 1.f, 1.f, 1.f };
-	m_tEffectParticleDesc.vMaxColor = { 1.f, 1.f, 1.f, 1.f };
-	m_tEffectParticleDesc.vStartGlowColor = { 1.f, 1.f, 1.f, 1.f };
-	m_vDiffuseCurrentUV = { 0.f, 0.f };
-	m_vDiffuseCurrentUVForce = { 0.f, 0.f };
-	m_vMaskCurrentUV = { 0.f, 0.f };
-	m_vMaskCurrentUVForce = { 0.f, 0.f };
-	m_vNoiseCurrentUV = { 0.f, 0.f };
-	m_vNoiseCurrentUVForce = { 0.f, 0.f };
+
+	m_tEffectParticleDesc.iMaxInstance         = 1;
+
+	m_tEffectParticleDesc.iParticleType        = _int(PARTICLETYPE::NONE);
+	m_tEffectParticleDesc.iFollowTransformType = _int(TRANSFORMTYPE::STATIC);
+
+	m_tEffectParticleDesc.iShaderPassIndex     = 1;
+
+	m_tEffectParticleDesc.iSyncAnimationKey    = -1;
+
+	m_tEffectParticleDesc.fMinLifeTime         = 1.f;
+
+	m_tEffectParticleDesc.vMinStartScale       = { 1.f, 1.f, 1.f };
+	m_tEffectParticleDesc.vMaxStartScale       = { 1.f, 1.f, 1.f };
+	m_tEffectParticleDesc.vMaxScale            = { 1.f, 1.f, 1.f };
+
+	m_tEffectParticleDesc.fDiscardRatio        = 0.1f;
+	m_tEffectParticleDesc.vMinStartColor       = { 1.f, 1.f, 1.f, 1.f };
+	m_tEffectParticleDesc.vMaxStartColor       = { 1.f, 1.f, 1.f, 1.f };
+
+	m_tEffectParticleDesc.vMaxColor            = { 1.f, 1.f, 1.f, 1.f };
+
+	m_tEffectParticleDesc.vDiffuseUVMax        = { 1.f, 1.f };
+	m_tEffectParticleDesc.vMaskUVMax           = { 1.f, 1.f };
+	m_tEffectParticleDesc.vNoiseUVMax          = { 1.f, 1.f };
+
+	m_tEffectParticleDesc.vStartGlowColor      = { 1.f, 1.f, 1.f, 1.f };
+
+	ZeroMemory(&m_vDiffuseCurrentUV     , sizeof(_float2));
+	ZeroMemory(&m_vDiffuseCurrentUVForce, sizeof(_float2));
+
+	ZeroMemory(&m_vMaskCurrentUV        , sizeof(_float2));
+	ZeroMemory(&m_vMaskCurrentUVForce   , sizeof(_float2));
+
+	ZeroMemory(&m_vNoiseCurrentUV       , sizeof(_float2));
+	ZeroMemory(&m_vNoiseCurrentUVForce  , sizeof(_float2));
+
 	m_vCurrentGlowColor = { 1.f, 1.f, 1.f, 1.f };
-	m_vCurrentGlowColorForce = { 0.f, 0.f, 0.f, 0.f };
+	ZeroMemory(&m_vCurrentGlowColorForce, sizeof(_float2));
 
-	m_bFinish = false;
+	m_bFinish       = false;
 	m_bStopParticle = false;
-
 	return S_OK;
 }
 
@@ -52,14 +80,14 @@ HRESULT CEffect_Rect::Initialize(void* pArg)
 		VTXTEXCOLOR_INSTANCE_DECLARATION::Element, 
 		VTXTEXCOLOR_INSTANCE_DECLARATION::iNumElements);
 
+	m_pColorDiffuseTextureCom = Add_Component<CTexture>();
+	m_pColorDiffuseTextureCom.lock()->Use_Texture("UVColorDiffuse");
+
 	m_pMaskTextureCom = Add_Component<CTexture>();
 	m_pMaskTextureCom.lock()->Use_Texture("UVMask");
 
 	m_pNoiseTextureCom = Add_Component<CTexture>();
 	m_pNoiseTextureCom.lock()->Use_Texture("UVNoise");
-
-	m_pColorDiffuseTextureCom = Add_Component<CTexture>();
-	m_pColorDiffuseTextureCom.lock()->Use_Texture("UVColorDiffuse");
 	Set_Enable(false);
 
 
@@ -92,11 +120,9 @@ void CEffect_Rect::LateTick(_float fTimeDelta)
 HRESULT CEffect_Rect::Render()
 {
 	SetUp_ShaderResource();
-
 	__super::Render();
 	m_pShaderCom.lock()->Begin(m_tEffectParticleDesc.iShaderPassIndex);
 	m_pVIBuffer.lock()->Render();
-
 	return S_OK;
 }
 
@@ -124,9 +150,6 @@ void CEffect_Rect::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 
 	m_vNoiseCurrentUV = m_tEffectParticleDesc.vNoiseStartUV;
 	m_vNoiseCurrentUVForce = { 0.f, 0.f };
-	
-
-
 
 	m_vCurrentGlowColor = m_tEffectParticleDesc.vStartGlowColor;
 	m_vCurrentGlowColorForce = { 0.f, 0.f, 0.f, 0.f };
@@ -302,12 +325,15 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 #pragma endregion
 
 #pragma region For. Sprite
-	Out_Json["Sprite_Pendulum"] = m_tEffectParticleDesc.bPendulumSprite;
+	if (PASS_SPRITE == m_tEffectParticleDesc.iShaderPassIndex)
+	{
+		Out_Json["Sprite_Pendulum"] = m_tEffectParticleDesc.bPendulumSprite;
 
-	Out_Json["Sprite_NumFrameX"] = m_tEffectParticleDesc.iNumFrameX;
-	Out_Json["Sprite_NumFrameY"] = m_tEffectParticleDesc.iNumFrameY;
+		Out_Json["Sprite_NumFrameX"] = m_tEffectParticleDesc.iNumFrameX;
+		Out_Json["Sprite_NumFrameY"] = m_tEffectParticleDesc.iNumFrameY;
 
-	Out_Json["Sprite_FrameSpeed"] = m_tEffectParticleDesc.fSpriteSpeed;
+		Out_Json["Sprite_FrameSpeed"] = m_tEffectParticleDesc.fSpriteSpeed;
+	}
 #pragma endregion
 }
 
@@ -445,12 +471,15 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma endregion
 
 #pragma region For. Sprite
-	m_tEffectParticleDesc.bPendulumSprite = In_Json["Sprite_Pendulum"];
+	if(PASS_SPRITE == m_tEffectParticleDesc.iShaderPassIndex)
+	{
+		m_tEffectParticleDesc.bPendulumSprite = In_Json["Sprite_Pendulum"];
 
-	m_tEffectParticleDesc.iNumFrameX = In_Json["Sprite_NumFrameX"];
-	m_tEffectParticleDesc.iNumFrameY = In_Json["Sprite_NumFrameY"];
+		m_tEffectParticleDesc.iNumFrameX = In_Json["Sprite_NumFrameX"];
+		m_tEffectParticleDesc.iNumFrameY = In_Json["Sprite_NumFrameY"];
 
-	m_tEffectParticleDesc.fSpriteSpeed = In_Json["Sprite_FrameSpeed"];
+		m_tEffectParticleDesc.fSpriteSpeed = In_Json["Sprite_FrameSpeed"];
+	}
 #pragma endregion
 
 	m_pTextureCom.lock()->Use_Texture(m_szEffectName.c_str());
@@ -530,9 +559,6 @@ void CEffect_Rect::Play(_float fTimeDelta)
 			Update_ParticleColor(i, fFrameTime);
 			Update_ParticleSpriteFrame(i, fFrameTime);
 		}
-				
-		
-		
 	}
 
 	for (_int x = 0; x < iTickCount; ++x)
@@ -593,6 +619,7 @@ void CEffect_Rect::Reset_ParticleDesc(const _uint& In_iIndex)
 	SMath::Add_Float3(&m_tParticleDescs[In_iIndex].vCurrentTarnslation, m_tParticleDescs[In_iIndex].vOffsetPosition);
 }
 
+
 void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 {
 	for (_int i = 0; i < m_tEffectParticleDesc.iMaxInstance; ++i)
@@ -604,10 +631,6 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 
 		m_tOriginalParticleDescs[i].fTargetSpawnTime =
 			SMath::fRandom(m_tEffectParticleDesc.fMinSpawnTime, m_tEffectParticleDesc.fMaxSpawnTime);
-
-
-		/*m_tOriginalParticleDescs[i].vCurrentTarnslation =
-			SMath::vRandom(m_tEffectParticleDesc.vMinStartPosition, m_tEffectParticleDesc.vMaxStartPosition);*/
 
 		_float3 vRandomDir = SMath::vRandom(m_tEffectParticleDesc.vMinSpawnOffsetDirection, m_tEffectParticleDesc.vMaxSpawnOffsetDirection);
 		_vector vRandomDirFromVector = XMLoadFloat3(&vRandomDir);
@@ -650,8 +673,6 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 				SMath::vRandom(m_tEffectParticleDesc.vMinStartColor, m_tEffectParticleDesc.vMaxStartColor);
 		}
 
-		
-
 		m_tOriginalParticleDescs[i].vCurrentUV = m_tEffectParticleDesc.vMaskStartUV;
 
 		m_tOriginalParticleDescs[i].vCurrentScale.x = max(0.00001f, m_tOriginalParticleDescs[i].vCurrentScale.x);
@@ -664,19 +685,13 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 _bool CEffect_Rect::Check_DisableAllParticle()
 {
 	if (m_tEffectParticleDesc.bLooping && !m_bStopParticle)
-	{
 		return false;
-	}
 
 	if (m_fCurrentInitTime > 0.f)
-	{
 		return false;
-	}
 	
 	if ((_uint)TIMESCALE_LAYER::EDITER == m_iTimeScaleLayerIndex)
-	{
 		return false;
-	}
 
 	for (auto& elem : m_tParticleDescs)
 	{
@@ -689,7 +704,6 @@ _bool CEffect_Rect::Check_DisableAllParticle()
 
 void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 {
-
 	_float3 vMove = SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeed, fTimeDelta);
 	m_tParticleDescs[i].vCurrentForce =
 		SMath::Add_Float3(m_tParticleDescs[i].vCurrentForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetForce, fTimeDelta));
@@ -716,7 +730,6 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 			vCurrentPosition += vRotatedPosition;
 			XMStoreFloat3(&m_tParticleDescs[i].vCurrentTarnslation, vCurrentPosition);
 		}
-
 		else
 		{
 			_vector vMovePosition = XMLoadFloat3(&vMove);
@@ -725,10 +738,7 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 			vCurrentPosition += vRotatedPosition;
 			XMStoreFloat3(&m_tParticleDescs[i].vCurrentTarnslation, vCurrentPosition);
 		}
-
-		
 	}
-
 	else
 	{
 		m_tParticleDescs[i].vCurrentTarnslation =
@@ -853,7 +863,6 @@ void CEffect_Rect::Update_ParticleColor(const _uint& i, _float fTimeDelta)
 		vColor.z = min(m_tEffectParticleDesc.vMaxColor.z, vColor.z);
 		vColor.w = min(m_tEffectParticleDesc.vMaxColor.w, vColor.w);
 	}
-
 	else
 	{
 		vColor = SMath::Mul_Float4(m_tEffectParticleDesc.vColorSpeed, fTimeDelta);
@@ -867,8 +876,6 @@ void CEffect_Rect::Update_ParticleColor(const _uint& i, _float fTimeDelta)
 		vColor.z = min(m_tEffectParticleDesc.vMaxColor.z, vColor.z);
 		vColor.w = min(m_tEffectParticleDesc.vMaxColor.w, vColor.w);
 	}
-
-	
 
 	m_tParticleDescs[i].vCurrentColor = vColor;
 }
@@ -887,7 +894,6 @@ void CEffect_Rect::Update_ParticleGlowColor(_float fTimeDelta)
 	vColor.w = min(1.f, max(0.f, vColor.w));
 
 	m_vCurrentGlowColor = vColor;
-
 }
 
 void CEffect_Rect::Update_ParticleSpriteFrame(const _uint& i, _float fTimeDelta)
@@ -896,7 +902,6 @@ void CEffect_Rect::Update_ParticleSpriteFrame(const _uint& i, _float fTimeDelta)
 	if (m_tEffectParticleDesc.fSpriteSpeed <= m_tParticleDescs[i].fCurrentSpriteTime)
 	{
 		m_tParticleDescs[i].fCurrentSpriteTime = 0.f;
-
 
 		if (!m_tEffectParticleDesc.bPendulumSprite)
 		{
@@ -988,9 +993,7 @@ void CEffect_Rect::Update_ParentTransform()
 
 			m_pTransformCom.lock()->Set_WorldMatrix(XMMatrixIdentity());
 		}
-
 	}
-
 }
 
 void CEffect_Rect::OnEventMessage(_uint iArg)
@@ -1010,13 +1013,12 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::Separator();
 
 #pragma region Shader Pass
-			ImGui::Text("Pass 0 : Default");
-			ImGui::Text("Pass 1 : Sprite Image");
-			ImGui::Text("Pass 2 : Default_AlphaDiscard");
-			ImGui::Text("Pass 3 : Default_ColorDiscard");
+			ImGui::Text("Pass %d : Sprite Image",			PASS_SPRITE);
+			ImGui::Text("Pass %d : Default_AlphaDiscard",	PASS_ALPHADISCARD);
+			ImGui::Text("Pass %d : Default_BlackDiscard",	PASS_BLACKDISCARD);
 			ImGui::InputInt("Shader Pass", &m_tEffectParticleDesc.iShaderPassIndex);
 
-			if (1 == m_tEffectParticleDesc.iShaderPassIndex)
+			if (PASS_SPRITE == m_tEffectParticleDesc.iShaderPassIndex)
 			{
 				ImGui::Text("Pendulum Effect");
 				ImGui::SameLine();
@@ -1056,7 +1058,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 			if (ImGui::BeginListBox("Transform Type"))
 			{
-				for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+				for (int n = 0; n < IM_ARRAYSIZE(Transform_items); n++)
 				{
 					const bool is_selected = (m_tEffectParticleDesc.iFollowTransformType == n);
 					if (ImGui::Selectable(Transform_items[n], is_selected))
@@ -1288,3 +1290,7 @@ void CEffect_Rect::OnChangeAnimationKey(const _uint& In_Key)
 
 	Reset_Effect(weak_ptr<CTransform>());
 }
+
+#undef PARTICLE_PASS_SPRITE
+#undef PARTICLE_PASS_ALPHADISCARD
+#undef PARTICLE_PASS_BLACKDISCARD

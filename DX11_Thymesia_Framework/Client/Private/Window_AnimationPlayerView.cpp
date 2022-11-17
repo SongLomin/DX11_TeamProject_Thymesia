@@ -427,7 +427,7 @@ void CWindow_AnimationPlayerView::Draw_AnimationList()
 
     if (ImGui::CollapsingHeader("Select Animation"), ImGuiTreeNodeFlags_DefaultOpen)
     {
-        if (ImGui::BeginListBox("##Animation List", ImVec2(-FLT_MIN, 4 * ImGui::GetTextLineHeightWithSpacing())))
+        if (ImGui::BeginListBox("##Animation List", ImVec2(-FLT_MIN, 10 * ImGui::GetTextLineHeightWithSpacing())))
         {
 
             for (int i = 0; i < m_AllAnimationKeys.size(); i++)

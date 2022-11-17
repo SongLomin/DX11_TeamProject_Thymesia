@@ -25,7 +25,6 @@ private:
         TYPE_END
     };
 
-    
     enum class TRANSFORMTYPE
     {
         STATIC,   
