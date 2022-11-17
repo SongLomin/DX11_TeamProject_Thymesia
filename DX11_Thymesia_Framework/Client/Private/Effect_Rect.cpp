@@ -526,7 +526,7 @@ void CEffect_Rect::Play(_float fTimeDelta)
 					_float3 ParentPosition;
 					XMStoreFloat3(&ParentPosition, m_pParentTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION));
 
-					SMath::Add_Float3(&m_tParticleDescs[i].vCurrentTarnslation, ParentPosition);
+					SMath::Add_Float3(&m_tParticleDescs[i].vCurrentTranslation, ParentPosition);
 				}
 			}
 
@@ -622,7 +622,7 @@ void CEffect_Rect::Reset_ParticleDescs()
 void CEffect_Rect::Reset_ParticleDesc(const _uint& In_iIndex)
 {
 	memcpy(&m_tParticleDescs[In_iIndex], &m_tOriginalParticleDescs[In_iIndex], sizeof(PARTICLE_DESC));
-	SMath::Add_Float3(&m_tParticleDescs[In_iIndex].vCurrentTarnslation, m_tParticleDescs[In_iIndex].vOffsetPosition);
+	SMath::Add_Float3(&m_tParticleDescs[In_iIndex].vCurrentTranslation, m_tParticleDescs[In_iIndex].vOffsetPosition);
 }
 
 
@@ -650,7 +650,7 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 		RotationMatrix = SMath::Go_Up(RotationMatrix, vRandomScalarFromVector.m128_f32[1]);
 		RotationMatrix = SMath::Go_Straight(RotationMatrix, vRandomScalarFromVector.m128_f32[2]);
 
-		XMStoreFloat3(&m_tOriginalParticleDescs[i].vCurrentTarnslation, RotationMatrix.r[3]);
+		XMStoreFloat3(&m_tOriginalParticleDescs[i].vCurrentTranslation, RotationMatrix.r[3]);
 
 		m_tOriginalParticleDescs[i].vOffsetPosition = SMath::vRandom(m_tEffectParticleDesc.vMinSpawnPosition, m_tEffectParticleDesc.vMaxSpawnPosition);
 
@@ -732,23 +732,23 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 			vRotationMatrix.r[2] = vRotationMatrix.r[3];
 			vRotationMatrix.r[3] = XMVectorSet(0.f, 0.f, 0.f, 1.f);
 			_vector vRotatedPosition = XMVector3TransformCoord(vMovePosition, vRotationMatrix);
-			_vector vCurrentPosition = XMLoadFloat3(&m_tParticleDescs[i].vCurrentTarnslation);
+			_vector vCurrentPosition = XMLoadFloat3(&m_tParticleDescs[i].vCurrentTranslation);
 			vCurrentPosition += vRotatedPosition;
-			XMStoreFloat3(&m_tParticleDescs[i].vCurrentTarnslation, vCurrentPosition);
+			XMStoreFloat3(&m_tParticleDescs[i].vCurrentTranslation, vCurrentPosition);
 		}
 		else
 		{
 			_vector vMovePosition = XMLoadFloat3(&vMove);
 			_vector vRotatedPosition = XMVector3TransformCoord(vMovePosition, XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_tParticleDescs[i].vCurrentRotation)));
-			_vector vCurrentPosition = XMLoadFloat3(&m_tParticleDescs[i].vCurrentTarnslation);
+			_vector vCurrentPosition = XMLoadFloat3(&m_tParticleDescs[i].vCurrentTranslation);
 			vCurrentPosition += vRotatedPosition;
-			XMStoreFloat3(&m_tParticleDescs[i].vCurrentTarnslation, vCurrentPosition);
+			XMStoreFloat3(&m_tParticleDescs[i].vCurrentTranslation, vCurrentPosition);
 		}
 	}
 	else
 	{
-		m_tParticleDescs[i].vCurrentTarnslation =
-			SMath::Add_Float3(m_tParticleDescs[i].vCurrentTarnslation, vMove);
+		m_tParticleDescs[i].vCurrentTranslation =
+			SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, vMove);
 	}
 
 	
@@ -759,7 +759,7 @@ void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
 
 	if ((_int)PARTICLETYPE::OUTBURST == m_tEffectParticleDesc.iParticleType)
 	{
-		_vector vUp = XMLoadFloat3(&m_tOriginalParticleDescs[i].vCurrentTarnslation); //커런트 포지션
+		_vector vUp = XMLoadFloat3(&m_tOriginalParticleDescs[i].vCurrentTranslation); //커런트 포지션
 		_matrix ReverseAxisRotationMatrix = SMath::Bake_MatrixNormalizeUseLookVector(vUp);
 		_matrix RotationMatrix = { ReverseAxisRotationMatrix.r[0], 
 			ReverseAxisRotationMatrix.r[2],

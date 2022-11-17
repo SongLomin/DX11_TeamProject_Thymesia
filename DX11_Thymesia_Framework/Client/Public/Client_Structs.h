@@ -160,7 +160,13 @@ namespace Client
 		_float3		vLimitSpeed;
 #pragma endregion
 #pragma region Drag
-		// drag
+		_float3 vMinDrag;
+		_float3 vMaxDrag;
+
+		_float3 vMinDragForce;
+		_float3 vMaxDragForce;
+
+		_float3 vLimitDrag;
 #pragma endregion
 #pragma region Rotation
 		_float3		vMinStartRotation;
