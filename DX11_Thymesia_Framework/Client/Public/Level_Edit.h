@@ -21,7 +21,7 @@ public:
 	void Free();
 
 private:
-	unique_ptr<CImGui_Manager> m_pImGui_Manager;
+	shared_ptr<CImGui_Manager> m_pImGui_Manager;
 };
 
 END

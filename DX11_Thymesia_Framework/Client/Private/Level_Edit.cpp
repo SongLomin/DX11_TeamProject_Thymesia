@@ -13,7 +13,7 @@ HRESULT CLevel_Edit::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-	m_pImGui_Manager = make_unique<CImGui_Manager>();
+	m_pImGui_Manager = CImGui_Manager::Create_Instance();
 	m_pImGui_Manager->Initialize();
 #ifdef _SKYBOX_
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_GAMEPLAY);

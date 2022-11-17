@@ -114,11 +114,7 @@ HRESULT CImGui_Manager::Render(void)
 
 				if (EDITER_TYPE::EFFECT == m_eCurrentEditerType)
 				{
-					json DummuJson;
-
-					GET_SINGLE(CWindow_EffectHierarchyView)->Write_Json(DummuJson);
-					//GET_SINGLE(CWindow_EffectHierarchyView)->Write_FromBinary();
-					GET_SINGLE(CWindow_EffectResourceView)->Load_EffectGroup();
+					this->Save_EffectJson();
 				}
 				
 			}
@@ -231,6 +227,15 @@ HRESULT CImGui_Manager::Render(void)
 
 
 	return S_OK;
+}
+
+void CImGui_Manager::Save_EffectJson()
+{
+	json DummuJson;
+
+	GET_SINGLE(CWindow_EffectHierarchyView)->Write_Json(DummuJson);
+	//GET_SINGLE(CWindow_EffectHierarchyView)->Write_FromBinary();
+	GET_SINGLE(CWindow_EffectResourceView)->Load_EffectGroup();
 }
 
 void CImGui_Manager::Init_SceneEditer()

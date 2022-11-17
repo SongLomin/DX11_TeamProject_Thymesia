@@ -416,7 +416,7 @@ void CWindow_AnimationPlayerView::Draw_AnimationList()
     {
         m_bHold = !m_bHold;
         weak_ptr<CModel> pCurrentModel = m_pPreViewModel.lock()->Get_CurrentModel();
-        pCurrentModel.lock()->Set_RootNode("root_$AssimpFbx$_Translation", m_bHold);
+        pCurrentModel.lock()->Set_RootNode("root", m_bHold);
         
     }
 

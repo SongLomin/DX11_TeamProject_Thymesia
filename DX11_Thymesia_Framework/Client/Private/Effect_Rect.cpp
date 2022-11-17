@@ -243,10 +243,21 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	CJson_Utility::Write_Float3(Out_Json["Min_Speed"], m_tEffectParticleDesc.vMinSpeed);
 	CJson_Utility::Write_Float3(Out_Json["Max_Speed"], m_tEffectParticleDesc.vMaxSpeed);
 
-	CJson_Utility::Write_Float3(Out_Json["Min_Force"], m_tEffectParticleDesc.vMinForce);
-	CJson_Utility::Write_Float3(Out_Json["Max_Force"], m_tEffectParticleDesc.vMaxForce);
+	CJson_Utility::Write_Float3(Out_Json["Min_Speed_Force"], m_tEffectParticleDesc.vMinSpeedForce);
+	CJson_Utility::Write_Float3(Out_Json["Max_Speed_Force"], m_tEffectParticleDesc.vMaxSpeedForce);
 
-	CJson_Utility::Write_Float3(Out_Json["Limit_Speed"], m_tEffectParticleDesc.vLimitSpeed);
+	CJson_Utility::Write_Float3(Out_Json["Min_Limit_Speed"], m_tEffectParticleDesc.vMinLimitSpeed);
+	CJson_Utility::Write_Float3(Out_Json["Max_Limit_Speed"], m_tEffectParticleDesc.vMaxLimitSpeed);
+#pragma endregion
+
+#pragma region Drag
+	// CJson_Utility::Write_Float3(Out_Json["Min_Drag"], m_tEffectParticleDesc.vMinDrag);
+	// CJson_Utility::Write_Float3(Out_Json["Max_Drag"], m_tEffectParticleDesc.vMaxDrag);
+	// 
+	// CJson_Utility::Write_Float3(Out_Json["Min_Drag_Force"], m_tEffectParticleDesc.vMinDragForce);
+	// CJson_Utility::Write_Float3(Out_Json["Max_Drag_Force"], m_tEffectParticleDesc.vMaxDragForce);
+	// 
+	// CJson_Utility::Write_Float3(Out_Json["Max_Limit_Drag"], m_tEffectParticleDesc.vMaxLimitDrag);
 #pragma endregion
 
 #pragma region Rotation
@@ -389,10 +400,21 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	CJson_Utility::Load_Float3(In_Json["Min_Speed"], m_tEffectParticleDesc.vMinSpeed);
 	CJson_Utility::Load_Float3(In_Json["Max_Speed"], m_tEffectParticleDesc.vMaxSpeed);
 
-	CJson_Utility::Load_Float3(In_Json["Min_Force"], m_tEffectParticleDesc.vMinForce);
-	CJson_Utility::Load_Float3(In_Json["Max_Force"], m_tEffectParticleDesc.vMaxForce);
+	CJson_Utility::Load_Float3(In_Json["Min_Speed_Force"], m_tEffectParticleDesc.vMinSpeedForce);
+	CJson_Utility::Load_Float3(In_Json["Max_Speed_Force"], m_tEffectParticleDesc.vMaxSpeedForce);
 
-	CJson_Utility::Load_Float3(In_Json["Limit_Speed"], m_tEffectParticleDesc.vLimitSpeed);
+	CJson_Utility::Load_Float3(In_Json["Min_Limit_Speed"], m_tEffectParticleDesc.vMinLimitSpeed);
+	CJson_Utility::Load_Float3(In_Json["Max_Limit_Speed"], m_tEffectParticleDesc.vMaxLimitSpeed);
+#pragma endregion
+
+#pragma region Drag
+	// CJson_Utility::Load_Float3(In_Json["Min_Drag"], m_tEffectParticleDesc.vMinDrag);
+	// CJson_Utility::Load_Float3(In_Json["Max_Drag"], m_tEffectParticleDesc.vMaxDrag);
+	// 
+	// CJson_Utility::Load_Float3(In_Json["Min_Force"], m_tEffectParticleDesc.vMinDragForce);
+	// CJson_Utility::Load_Float3(In_Json["Max_Force"], m_tEffectParticleDesc.vMaxDragForce);
+	// 
+	// CJson_Utility::Load_Float3(In_Json["Max_Limit_Drag"], m_tEffectParticleDesc.vMaxLimitDrag);
 #pragma endregion
 
 #pragma region Rotation
@@ -657,8 +679,14 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 		m_tOriginalParticleDescs[i].vTargetSpeed =
 			SMath::vRandom(m_tEffectParticleDesc.vMinSpeed, m_tEffectParticleDesc.vMaxSpeed);
 
-		m_tOriginalParticleDescs[i].vTargetForce =
-			SMath::vRandom(m_tEffectParticleDesc.vMinForce, m_tEffectParticleDesc.vMaxForce);
+		m_tOriginalParticleDescs[i].vTargetSpeedForce =
+			SMath::vRandom(m_tEffectParticleDesc.vMinSpeedForce, m_tEffectParticleDesc.vMaxSpeedForce);
+
+		//m_tOriginalParticleDescs[i].vTargetDrag =
+		//	SMath::vRandom(m_tEffectParticleDesc.vMinDrag, m_tEffectParticleDesc.vMaxDrag);
+
+		//m_tOriginalParticleDescs[i].vTargetDragForce =
+		//	SMath::vRandom(m_tEffectParticleDesc.vMinDragForce, m_tEffectParticleDesc.vMaxDragForce);
 
 		m_tOriginalParticleDescs[i].vCurrentRotation =
 			SMath::vRandom(m_tEffectParticleDesc.vMinStartRotation, m_tEffectParticleDesc.vMaxStartRotation);
@@ -711,14 +739,26 @@ _bool CEffect_Rect::Check_DisableAllParticle()
 void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 {
 	_float3 vMove = SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeed, fTimeDelta);
-	m_tParticleDescs[i].vCurrentForce =
-		SMath::Add_Float3(m_tParticleDescs[i].vCurrentForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetForce, fTimeDelta));
+	// _float3 vDrag = SMath::Mul_Float3(m_tParticleDescs[i].vTargetDrag, fTimeDelta);
+	
+	m_tParticleDescs[i].vCurrentSpeedForce =
+		SMath::Add_Float3(m_tParticleDescs[i].vCurrentSpeedForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeedForce, fTimeDelta));
 
-	vMove = SMath::Add_Float3(vMove, m_tParticleDescs[i].vCurrentForce);
+	/*m_tParticleDescs[i].vCurrentDragForce.x = min(m_tEffectParticleDesc.vMaxLimitDrag.x, m_tParticleDescs[i].vCurrentDragForce.x);
+	m_tParticleDescs[i].vCurrentDragForce.y = min(m_tEffectParticleDesc.vMaxLimitDrag.y, m_tParticleDescs[i].vCurrentDragForce.y);
+	m_tParticleDescs[i].vCurrentDragForce.z = min(m_tEffectParticleDesc.vMaxLimitDrag.z, m_tParticleDescs[i].vCurrentDragForce.z);
 
-	vMove.x = min(m_tEffectParticleDesc.vLimitSpeed.x, vMove.x);
-	vMove.y = min(m_tEffectParticleDesc.vLimitSpeed.y, vMove.y);
-	vMove.z = min(m_tEffectParticleDesc.vLimitSpeed.z, vMove.z);
+	m_tParticleDescs[i].vCurrentDragForce =
+		SMath::Add_Float3(m_tParticleDescs[i].vCurrentDragForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetDragForce, fTimeDelta));*/
+
+	vMove = SMath::Add_Float3(vMove, m_tParticleDescs[i].vCurrentSpeedForce);
+	// vDrag = SMath::Add_Float3(vDrag, m_tParticleDescs[i].vCurrentDragForce);
+	// 
+	// vMove = SMath::Add_Float3(vMove, SMath::Mul_Float3(vDrag, -1.f));
+
+	vMove.x = max(m_tEffectParticleDesc.vMinLimitSpeed.x,  min(m_tEffectParticleDesc.vMaxLimitSpeed.x, vMove.x));
+	vMove.y = max(m_tEffectParticleDesc.vMinLimitSpeed.y,  min(m_tEffectParticleDesc.vMaxLimitSpeed.y, vMove.y));
+	vMove.z = max(m_tEffectParticleDesc.vMinLimitSpeed.z,  min(m_tEffectParticleDesc.vMaxLimitSpeed.z, vMove.z));
 
 	if (m_tEffectParticleDesc.bMoveLook)
 	{
@@ -750,8 +790,6 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 		m_tParticleDescs[i].vCurrentTranslation =
 			SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, vMove);
 	}
-
-	
 }
 
 void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
@@ -1135,6 +1173,8 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 #pragma endregion
 			ImGui::Separator();
 #pragma region Speed & Force
+			ImGui::Text("Speed");
+			ImGui::NewLine();
 			ImGui::Text("Min Speed");
 			ImGui::DragFloat3("##Min_Speed", &m_tEffectParticleDesc.vMinSpeed.x, 0.1f);
 
@@ -1142,14 +1182,37 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::DragFloat3("##Max_Speed", &m_tEffectParticleDesc.vMaxSpeed.x, 0.1f);
 
 			ImGui::Text("Min Force");
-			ImGui::DragFloat3("##Min_Force", &m_tEffectParticleDesc.vMinForce.x, 0.1f);
+			ImGui::DragFloat3("##Min_Speed_Force", &m_tEffectParticleDesc.vMinSpeedForce.x, 0.1f);
 
 			ImGui::Text("Max Force");
-			ImGui::DragFloat3("##Max_Force", &m_tEffectParticleDesc.vMaxForce.x, 0.1f);
+			ImGui::DragFloat3("##Max_Speed_Force", &m_tEffectParticleDesc.vMaxSpeedForce.x, 0.1f);
 
-			ImGui::Text("Limit Speed");
-			ImGui::DragFloat3("##Limit_Speed", &m_tEffectParticleDesc.vLimitSpeed.x, 0.1f);
+			ImGui::Text("Max Limit Speed");
+			ImGui::DragFloat3("##Max_Limit_Speed", &m_tEffectParticleDesc.vMaxLimitSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
+
+			ImGui::Text("Min Limit Speed");
+			ImGui::DragFloat3("##Min_Limit_Speed", &m_tEffectParticleDesc.vMinLimitSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
 #pragma endregion
+			ImGui::Separator();
+#pragma region Drag
+			// ImGui::Text("Drag");
+			// ImGui::NewLine();
+			// ImGui::Text("Min Drag");
+			// ImGui::DragFloat3("##Min_Drag", &m_tEffectParticleDesc.vMinDrag.x, 0.1f);
+			// 
+			// ImGui::Text("Max Drag");
+			// ImGui::DragFloat3("##Max_Drag", &m_tEffectParticleDesc.vMaxDrag.x, 0.1f);
+			// 
+			// ImGui::Text("Min Force");
+			// ImGui::DragFloat3("##Min_Drag_Force", &m_tEffectParticleDesc.vMinDragForce.x, 0.1f);
+			// 
+			// ImGui::Text("Max Force");
+			// ImGui::DragFloat3("##Max_Drag_Force", &m_tEffectParticleDesc.vMaxDragForce.x, 0.1f);
+			// 
+			// ImGui::Text("Max Limit Drag");
+			// ImGui::DragFloat3("##Max_Limit_Drag", &m_tEffectParticleDesc.vMaxLimitDrag.x, 0.1f);
+#pragma endregion
+
 			ImGui::Separator();
 #pragma region Rotation
 			if (_int(PARTICLETYPE::OUTBURST) != m_tEffectParticleDesc.iParticleType)
