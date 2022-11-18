@@ -182,13 +182,25 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	//Potion Image
 	//mini : 40x40
 	GAMEINSTANCE->Load_Textures(("Potion_Default_Mini"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Frame.png"), MEMORY_TYPE::MEMORY_STATIC);
+	
+	GAMEINSTANCE->Load_Textures(("HUD_Potion_Default_Mini"), TEXT("../Bin/Resources/Textures/UI/Icons/Potions/TexUI_Potion_DefaultType_Mini.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("HUD_Potion_Buff_Mini"), TEXT("../Bin/Resources/Textures/UI/Icons/Potions/TexUI_Potion_BuffType_Mini.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("HUD_Potion_Immediate_Mini"), TEXT("../Bin/Resources/Textures/UI/Icons/Potions/TexUI_Potion_ImmediateType_Mini.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	GAMEINSTANCE->Load_Textures(("Potion_Default"), TEXT("../Bin/Resources/Textures/UI/Icons/Potions/TexUI_Potion_DefaultType.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Potion_Buff"), TEXT("../Bin/Resources/Textures/UI/Icons/Potions/TexUI_Potion_BuffType.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Potion_Immediate"), TEXT("../Bin/Resources/Textures/UI/Icons/Potions/TexUI_Potion_ImmediateType.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+
+
 
 	//HUD
 	GAMEINSTANCE->Load_Textures(("HUD_Frame"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Frame.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("HUD_Frame_Hover"), TEXT("../Bin/Resources/Textures/UI/Hover_Rombo_Texture.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	GAMEINSTANCE->Load_Textures(("HUD_FrameBorder"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_FrameBorder.png"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures(("HUD_Potion_Default_Mini"), TEXT("../Bin/Resources/Textures/UI/Icons/Potions/TexUI_Potion_DefaultType_Mini.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("HUD_Font_BG"), TEXT("../Bin/Resources/Textures/UI/HUD/TexUI_PlagueWeaponBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("HUD_Feather"), TEXT("../Bin/Resources/Textures/UI/HUD/TexUI_Feather.png"), MEMORY_TYPE::MEMORY_STATIC);
 
@@ -258,8 +270,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	GAMEINSTANCE->Load_Textures(("Tap_PlagueWeapon"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Frame.png"), MEMORY_TYPE::MEMORY_STATIC);
 
-	//TODO : 문.
-	/*
+	
 	Load_AllDiffuseTexture();
 
 	
@@ -277,11 +288,11 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	Load_AllMaskMap();
 	Load_AllNoiseTexture();
 	Load_AllParticleTexture();
-	*/
+	
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
 
 	// TODO : Turn off temporarily for Light_Prop
-	/*문
+	
 	LIGHTDESC			LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
@@ -320,7 +331,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	LightDesc.bEnable = false;
 
 	GAMEINSTANCE->Add_Light(LightDesc);
-	*/
+	
 	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중입니다. "));
 
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_UI"), TEXT("../Bin/ShaderFiles/Shader_UI.hlsl"));
@@ -345,7 +356,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxModelInstance"), TEXT("../Bin/ShaderFiles/Shader_VtxModelInstance.hlsl"));
 
 	lstrcpy(m_szLoadingText, TEXT("데이터를 로딩중입니다. "));
-	/*TODO 문
+
 	GET_SINGLE(CGameManager)->Load_AllKeyEventFromJson();
 
 	_matrix			TransformMatrix;
@@ -376,7 +387,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Torch", "../Bin/Resources/Meshes/LightProp/Torch/Torch.FBX", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
-	*/
+	
 	lstrcpy(m_szLoadingText, TEXT("객체 생성 중입니다. "));
 	
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));	
@@ -418,12 +429,12 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 	//Loading_ForEffectGroup("../Bin/EffectData/");
-	/*
+	
 	Load_AllEffectMesh();
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Main/", MEMORY_TYPE::MEMORY_STATIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Sub/", MEMORY_TYPE::MEMORY_STATIC);
-	*/
+	
 
 #pragma endregion
 
@@ -435,8 +446,8 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	
 	
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
-	//TODO : 문 주
-	//CEditGround::Load_AllMeshInfo();
+
+	CEditGround::Load_AllMeshInfo();
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성 중입니다."));
 

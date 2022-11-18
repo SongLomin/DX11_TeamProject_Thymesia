@@ -67,15 +67,10 @@ HRESULT CUI_PauseMenu_Tap_PlagueWeapon::Initialize(void* pArg)
 	m_PlagueWeaponText.vPosition = _float2(800.f, 174.f);
 	m_PlagueWeaponText.vScale = _float2(1.3f, 1.3f);
 
-
-
-
 	m_vecChildUI.push_back(m_PlagueWeaponMain);
 	m_vecChildUI.push_back(m_PlagueWeaponSub);
 	m_vecChildUI.push_back(m_PlagueWeaponSteal);
 	m_vecChildUI.push_back(m_PlagueWeaponSteal_Decoration);
-
-
 
 	return S_OK;
 }

@@ -26,7 +26,7 @@ HRESULT CLevel_GamePlay::Initialize()
 		return E_FAIL;
 
 	ShowCursor(false);
-	/*Áö¿ö¶ó
+	
 #pragma region GAMEOBJECT
 
 	Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_GAMEPLAY);
@@ -93,7 +93,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
 	
 #pragma endregion GAMEOBJECT
-	*/
+	
 	
 	SetUp_UI();
 

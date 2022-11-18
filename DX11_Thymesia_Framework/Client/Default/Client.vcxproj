@@ -226,6 +226,7 @@
     <ClInclude Include="..\Public\Corvus_DefaultDagger.h" />
     <ClInclude Include="..\Public\Corvus_DefaultSaber.h" />
     <ClInclude Include="..\Public\CustomEffectMesh.h" />
+    <ClInclude Include="..\Public\CustomFont.h" />
     <ClInclude Include="..\Public\DissolveUI.h" />
     <ClInclude Include="..\Public\Dynamic_Prop.h" />
     <ClInclude Include="..\Public\CustomUI.h" />
@@ -332,6 +333,7 @@
     <ClInclude Include="..\Public\UI_PauseMenu.h" />
     <ClInclude Include="..\Public\UI_PauseMenu_Page_Status.h" />
     <ClInclude Include="..\Public\UI_PauseMenu_Tap_PlagueWeapon.h" />
+    <ClInclude Include="..\Public\UI_PauseMenu_Tap_Potion.h" />
     <ClInclude Include="..\Public\UI_PauseMenu_Tap_Status.h" />
     <ClInclude Include="..\Public\UI_PlagueWeapon.h" />
     <ClInclude Include="..\Public\Weapon.h" />
@@ -393,6 +395,7 @@
     <ClCompile Include="..\Private\Corvus_DefaultDagger.cpp" />
     <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp" />
     <ClCompile Include="..\Private\CustomEffectMesh.cpp" />
+    <ClCompile Include="..\Private\CustomFont.cpp" />
     <ClCompile Include="..\Private\DissolveUI.cpp" />
     <ClCompile Include="..\Private\Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\CustomUI.cpp" />
@@ -495,6 +498,7 @@
     <ClCompile Include="..\Private\UI_PauseMenu.cpp" />
     <ClCompile Include="..\Private\UI_PauseMenu_Page_Status.cpp" />
     <ClCompile Include="..\Private\UI_PauseMenu_Tap_PlagueWeapon.cpp" />
+    <ClCompile Include="..\Private\UI_PauseMenu_Tap_Potion.cpp" />
     <ClCompile Include="..\Private\UI_PauseMenu_Tap_Status.cpp" />
     <ClCompile Include="..\Private\UI_PlagueWeapon.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
