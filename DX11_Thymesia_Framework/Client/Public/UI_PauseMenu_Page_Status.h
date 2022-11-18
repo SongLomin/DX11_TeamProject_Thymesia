@@ -4,6 +4,8 @@
 BEGIN(Client)
 
 class CUI_PauseMenu_Tap_Status;
+class CUI_PauseMenu_Tap_PlagueWeapon;
+class CUI_PauseMenu_Tap_Potion;
 
 class CUI_PauseMenu_Page_Status : public CUI
 {
@@ -20,7 +22,9 @@ public:
 
 private:
         weak_ptr<CUI_PauseMenu_Tap_Status>       m_pStatusTap;
-    
+        weak_ptr<CUI_PauseMenu_Tap_PlagueWeapon> m_pPlagueWeaponTap;
+        weak_ptr<CUI_PauseMenu_Tap_Potion>      m_pPotionTap;
+
         
         //    weak_ptr<CUI_PauseMenu_Tap_PlagueWeapon> m_pPlagueWeaponTap;
     //    weak_ptr<CUI_PauseMenu_Tap_Potion>       m_pPotionTap;    

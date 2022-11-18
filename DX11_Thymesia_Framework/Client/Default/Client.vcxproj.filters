@@ -506,11 +506,20 @@
     <ClInclude Include="..\Public\DissolveUI.h">
       <Filter>02. GameObject\01. UI\dissolve</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal_Icon.h" />
     <ClInclude Include="..\Public\LoadingTextUI.h" />
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
       <Filter>04. ShaderFiles</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_PlagueWeapon.h">
+      <Filter>02. GameObject\01. UI\PauseMenu\Page\Status\Tap\PlagueWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_PauseMenu_Tap_Potion.h">
+      <Filter>02. GameObject\01. UI\PauseMenu\Page\Status\Tap\Potion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal_Icon.h">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal\Icon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CustomFont.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -989,8 +998,18 @@
     <ClCompile Include="..\Private\DissolveUI.cpp">
       <Filter>02. GameObject\01. UI\dissolve</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal_Icon.cpp" />
     <ClCompile Include="..\Private\LoadingTextUI.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp" />
+    <ClCompile Include="..\Private\UI_PlagueWeapon.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_PauseMenu_Tap_Potion.cpp">
+      <Filter>02. GameObject\01. UI\PauseMenu\Page\Status\Tap\Potion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal_Icon.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal\Icon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CustomFont.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1573,6 +1592,9 @@
     </Filter>
     <Filter Include="02. GameObject\08. Effect\00. Effect_Rect">
       <UniqueIdentifier>{43be49b4-b4e1-4346-a84a-e59a8f70fb38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\CustomFont">
+      <UniqueIdentifier>{699e0633-b8f5-4d86-ae5f-759bf62e1489}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
