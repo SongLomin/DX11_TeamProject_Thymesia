@@ -152,6 +152,9 @@ namespace Client
 		_bool		bMoveLook;
 #pragma region Speed
 		_bool		bEasingSpeed;
+		EASING_TYPE eSpeedEasingType;
+
+		_float		fSpeedEasingTotalTime;
 
 		_float3		vMinSpeed;
 		_float3		vMaxSpeed;

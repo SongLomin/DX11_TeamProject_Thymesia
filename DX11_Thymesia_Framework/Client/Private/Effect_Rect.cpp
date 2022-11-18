@@ -789,23 +789,12 @@ _bool CEffect_Rect::Check_DisableAllParticle()
 void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 {
 	_float3 vMove = SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeed, fTimeDelta);
-	// _float3 vDrag = SMath::Mul_Float3(m_tParticleDescs[i].vTargetDrag, fTimeDelta);
 	
 	m_tParticleDescs[i].vCurrentSpeedForce =
 		SMath::Add_Float3(m_tParticleDescs[i].vCurrentSpeedForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeedForce, fTimeDelta));
 
-	/*m_tParticleDescs[i].vCurrentDragForce.x = min(m_tEffectParticleDesc.vMaxLimitDrag.x, m_tParticleDescs[i].vCurrentDragForce.x);
-	m_tParticleDescs[i].vCurrentDragForce.y = min(m_tEffectParticleDesc.vMaxLimitDrag.y, m_tParticleDescs[i].vCurrentDragForce.y);
-	m_tParticleDescs[i].vCurrentDragForce.z = min(m_tEffectParticleDesc.vMaxLimitDrag.z, m_tParticleDescs[i].vCurrentDragForce.z);
-
-	m_tParticleDescs[i].vCurrentDragForce =
-		SMath::Add_Float3(m_tParticleDescs[i].vCurrentDragForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetDragForce, fTimeDelta));*/
-
 	vMove = SMath::Add_Float3(vMove, m_tParticleDescs[i].vCurrentSpeedForce);
-	// vDrag = SMath::Add_Float3(vDrag, m_tParticleDescs[i].vCurrentDragForce);
-	// 
-	// vMove = SMath::Add_Float3(vMove, SMath::Mul_Float3(vDrag, -1.f));
-
+	
 	vMove.x = max(m_tEffectParticleDesc.vMinLimitSpeed.x,  min(m_tEffectParticleDesc.vMaxLimitSpeed.x, vMove.x));
 	vMove.y = max(m_tEffectParticleDesc.vMinLimitSpeed.y,  min(m_tEffectParticleDesc.vMaxLimitSpeed.y, vMove.y));
 	vMove.z = max(m_tEffectParticleDesc.vMinLimitSpeed.z,  min(m_tEffectParticleDesc.vMaxLimitSpeed.z, vMove.z));
