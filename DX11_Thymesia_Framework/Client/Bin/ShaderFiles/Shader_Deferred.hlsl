@@ -30,6 +30,7 @@ texture2D	g_ShadowDepthTexture;
 texture2D	g_StaticShadowDepthTexture;
 texture2D	g_Texture;
 texture2D   g_ViewShadow;
+texture2D   g_FogTexture;
 
 
 
@@ -112,6 +113,30 @@ struct PS_OUT_LIGHT
 	vector		vShade : SV_TARGET0;
 	vector		vSpecular : SV_TARGET1;
 };
+
+vector Get_ScreenToWorldPos(float2 vTexUV, vector vDepthDesc)
+{
+    vector			vWorldPos;
+
+    /* 투영스페이스 상의 위치르 ㄹ구한다. */
+    /* 뷰스페이스 상 * 투영행렬 / w 까지 위치를 구한다. */
+    vWorldPos.x = vTexUV.x * 2.f - 1.f;
+    vWorldPos.y = vTexUV.y * -2.f + 1.f;
+    vWorldPos.z = vDepthDesc.x;
+    vWorldPos.w = 1.0f;
+
+    /* 뷰스페이스 상 * 투영행렬까지 곱해놓은 위치를 구한다. */
+    vWorldPos *= vDepthDesc.y * 300.f;
+
+    /* 뷰스페이스 상  위치를 구한다. */
+    vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
+
+
+    /* 월드페이스 상  위치를 구한다. */
+    vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
+
+    return vWorldPos;
+}
 
 PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 {
@@ -348,55 +373,18 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
 	vector			vSpecular = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
     vector			vLightFlagDesc = g_LightFlagTexture.Sample(DefaultSampler, In.vTexUV);
     vector          vViewShadow = g_ViewShadow.Sample(DefaultSampler, In.vTexUV);
+    vector          vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
+    vector          vFogDesc = g_FogTexture.Sample(DefaultSampler, In.vTexUV);
 
     Out.vColor = vDiffuse * vShade + vSpecular;
     Out.vColor.rgb *= vViewShadow.rgb;
-	
+    Out.vColor.rgb = (1.f - vFogDesc.r)* Out.vColor.rgb + vFogDesc.r*vector(0.8f,0.8f,0.8f,1.f);
+   
     if (vLightFlagDesc.r > 0.f || vLightFlagDesc.g > 0.f)
     {
         return Out;
     }
-	
-    
-    
-    
- //   vector vDepth = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
- //   float fViewZ = vDepth.y * g_fFar;
-    
- //   vector vWorldPos;
- //   /* 투영스페이스 상의 위치르 ㄹ구한다. */
-	///* 뷰스페이스 상 * 투영행렬 / w 까지 위치를 구한다. */
- //   vWorldPos.x = In.vTexUV.x * 2.f - 1.f;
- //   vWorldPos.y = In.vTexUV.y * -2.f + 1.f;
- //   vWorldPos.z = vDepth.x;
- //   vWorldPos.w = 1.0f;
 
-	///* 뷰스페이스 상 * 투영행렬까지 곱해놓은 위치를 구한다. */
- //   vWorldPos *= fViewZ;
-
-	///* 뷰스페이스 상  위치를 구한다. */
- //   vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
-
-	///* 월드페이스 상  위치를 구한다. */
- //   vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
-	
- //   vector vPosition = vWorldPos;
- //   vPosition = mul(vPosition, g_LightViewMatrix);
-	
- //   vector vUVPos = mul(vPosition, g_LightProjMatrix);
- //   float2 vNewUV;
-	
- //   vNewUV.x = (vUVPos.x / vUVPos.w) * 0.5f + 0.5f;
- //   vNewUV.y = (vUVPos.y / vUVPos.w) * -0.5f + 0.5f;
-	
- //   vector vShadowDepth = g_ShadowDepthTexture.Sample(ClampSampler, vNewUV);
-
- //   if (vPosition.z - 0.15f > vShadowDepth.r * g_fFar)
- //   {
- //       Out.vColor = Out.vColor * 0.4f;
-		
- //   }
-	
     if (Out.vColor.a == 0.f)
         discard;
 
@@ -519,6 +507,8 @@ PS_OUT PS_MAIN_UP_GLOW(PS_IN In)
     return Out;
 }
 
+
+
 PS_OUT PS_MAIN_VIEW_SHADOW(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 1;
@@ -556,12 +546,61 @@ PS_OUT PS_MAIN_VIEW_SHADOW(PS_IN In)
     vector vStaticShadowDepth = g_StaticShadowDepthTexture.Sample(ClampSampler, vNewUV);
 
     // TODO : Hong Hong Hong Juseok
-    if (vPosition.z - 0.15f > vShadowDepth.r * g_fFar)
-         // || vPosition.z - 0.15f > vStaticShadowDepth.r * g_fFar)
+    if (vPosition.z - 0.15f > vShadowDepth.r * g_fFar
+         || vPosition.z - 0.15f > vStaticShadowDepth.r * g_fFar)
     {
         Out.vColor = 0.4f;
 		
     }
+
+    return Out;
+}
+
+struct PS_OUT_FOG
+{
+    vector vFog: SV_TARGET0;
+};
+
+
+PS_OUT_FOG PS_MAIN_FOG(PS_IN In)
+{
+    PS_OUT_FOG		Out = (PS_OUT_FOG)1;
+
+    /* 방향성광원의 정보와 노멀 타겟에 담겨있는 노멀과의 빛연산을 수행한다. */
+    vector			vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
+
+    float			fViewZ = vDepthDesc.y * 300.f;
+    /* 0 -> -1, 1 -> 1*/
+
+    vector			vWorldPos;
+
+    /* 투영스페이스 상의 위치르 ㄹ구한다. */
+    /* 뷰스페이스 상 * 투영행렬 / w 까지 위치를 구한다. */
+    vWorldPos.x = In.vTexUV.x * 2.f - 1.f;
+    vWorldPos.y = In.vTexUV.y * -2.f + 1.f;
+    vWorldPos.z = vDepthDesc.x;
+    vWorldPos.w = 1.0f;
+
+    /* 뷰스페이스 상 * 투영행렬까지 곱해놓은 위치를 구한다. */
+    vWorldPos *= fViewZ;
+
+    /* 뷰스페이스 상  위치를 구한다. */
+    vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
+
+
+    /* 월드페이스 상  위치를 구한다. */
+    vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
+
+    vector			vFogDir = vWorldPos - g_vCamPosition;
+
+    float			fDistance = length(vFogDir);
+
+    //float			fAtt = saturate((g_fRange - fDistance) / g_fRange);
+    float			fAtt = saturate((20.f - fDistance) / 20.f);
+
+    Out.vFog = (1.f - (fAtt*fAtt));
+   // Out.vShade.a = 1.f;
+
 
     return Out;
 }
@@ -730,5 +769,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_VIEW_SHADOW();
+    }
+
+    pass Fog//11
+    {
+        SetBlendState(BS_ForwardAlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_FOG();
     }
 }

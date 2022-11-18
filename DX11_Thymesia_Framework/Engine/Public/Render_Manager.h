@@ -30,6 +30,7 @@ private:
 	HRESULT Render_ShadowDepth();
 	HRESULT Render_NonAlphaBlend();
 	HRESULT Render_Lights();
+	HRESULT Bake_Fog();
 	HRESULT Bake_ViewShadow();
 	HRESULT Render_Blend(); /* Diffuse * Shade 백버퍼에 그린다. */
 	HRESULT Render_NonLight();
