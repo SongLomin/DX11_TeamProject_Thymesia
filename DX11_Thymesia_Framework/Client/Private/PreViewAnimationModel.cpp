@@ -58,7 +58,8 @@ void CPreViewAnimationModel::LateTick(_float fTimeDelta)
 
 void CPreViewAnimationModel::Custom_Thread0(_float fTimeDelta)
 {
-	m_pCurrentModelCom.lock()->Update_BoneMatrices();
+	if (m_pCurrentModelCom.lock())
+		m_pCurrentModelCom.lock()->Update_BoneMatrices();
 }
 
 HRESULT CPreViewAnimationModel::Render()

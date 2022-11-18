@@ -89,7 +89,7 @@ void CCorvus::Tick(_float fTimeDelta)
 	{
 		for (_int i = 0; i < 100; ++i)
 		{
-			GET_SINGLE(CGameManager)->Use_EffectGroup("TorchFire", m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
+			GET_SINGLE(CGameManager)->Use_EffectGroup("ParryEffectParticle1", m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
 
 			/*_vector PushPower = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
 
