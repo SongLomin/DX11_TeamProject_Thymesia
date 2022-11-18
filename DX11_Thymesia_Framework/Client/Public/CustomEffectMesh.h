@@ -1,7 +1,6 @@
 #pragma once
 #include "EffectMesh.h"
 
-
 BEGIN(Engine)
 class CTransform;
 END

@@ -184,9 +184,9 @@ PS_OUT PS_DEFAULT(PS_IN In)
     if (g_bDynamicNoiseOption)
         vNoise.rgb = vNoise.rgb * 2 - 1;
     
-    Out.vColor *= g_vColor;
+    Out.vColor     *= g_vColor;
     Out.vColor.rgb *= vNoise.rgb;
-    Out.vColor.a *= vMask.r;
+    Out.vColor.a   *= vMask.r;
     
     if (g_fDiscardRatio > Out.vColor.a)
         discard;

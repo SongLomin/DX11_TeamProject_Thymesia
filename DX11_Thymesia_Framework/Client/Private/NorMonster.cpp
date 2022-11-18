@@ -6,7 +6,7 @@
 #include "RigidBody.h"
 #include "GameManager.h"
 #include "MobWeapon/MobWeapon.h"
-#include "NorMonStateBase.h"
+#include "NorMonStateS.h"
 //#include "MonsterWeapon.h"
 //#include "Monster1States/Monster1States.h"
 #include "Client_Components.h"
@@ -31,9 +31,6 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		VTXANIM_DECLARATION::iNumElements);
 
 	memcpy(&m_tLinkStateDesc, pArg, sizeof(STATE_LINK_DESC));
-	
-	//m_tLinkStateDesc.eNorMonType = NORMONSTERTYPE::AXEMAN;
-	//m_eNorMonType = NORMONSTERTYPE::AXEMAN;
 	
 
 	
@@ -77,7 +74,12 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	//m_pStatus.lock()->Init_Status(StatusDesc);
 	//m_pStandState = Add_Component<CIdle>();
 	
+	_vector vecStartPositon = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+	XMStoreFloat4(&m_tLinkStateDesc.m_fStartPositon, vecStartPositon);
+
+
 	m_pStandState = Add_Component<CNorMonState_Idle>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_Stop>(&m_tLinkStateDesc);
 	Add_Component<CNorMonState_SitToIdle>(&m_tLinkStateDesc);
 	Add_Component<CNorMonState_LightAttack1>(&m_tLinkStateDesc);
 	Add_Component<CNorMonState_LightAttack2>(&m_tLinkStateDesc);
@@ -89,6 +91,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	Add_Component<CNorMonState_LightAttack3>(&m_tLinkStateDesc);
 	Add_Component<CNorMonState_HeavyAttack1>(&m_tLinkStateDesc);
 	Add_Component<CNorMonState_HeavyAttack2>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_HeavyAttack3>(&m_tLinkStateDesc);
 	Add_Component<CNorMonState_Walk_F>(&m_tLinkStateDesc);
 	Add_Component<CNorMonState_Walk_FR>(&m_tLinkStateDesc);
 	Add_Component<CNorMonState_Walk_FL>(&m_tLinkStateDesc);

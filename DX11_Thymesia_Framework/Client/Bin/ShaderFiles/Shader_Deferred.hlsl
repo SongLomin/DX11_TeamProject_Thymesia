@@ -1,4 +1,3 @@
-
 matrix		g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 matrix		g_ProjMatrixInv, g_ViewMatrixInv;
 matrix		g_LightViewMatrix, g_LightProjMatrix;
@@ -351,13 +350,13 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
     vector          vViewShadow = g_ViewShadow.Sample(DefaultSampler, In.vTexUV);
 
     Out.vColor = vDiffuse * vShade + vSpecular;
+    Out.vColor.rgb *= vViewShadow.rgb;
 	
     if (vLightFlagDesc.r > 0.f || vLightFlagDesc.g > 0.f)
     {
         return Out;
     }
 	
-    Out.vColor.rgb *= vViewShadow.rgb;
     
     
     
@@ -556,7 +555,9 @@ PS_OUT PS_MAIN_VIEW_SHADOW(PS_IN In)
     vector vShadowDepth = g_ShadowDepthTexture.Sample(ClampSampler, vNewUV);
     vector vStaticShadowDepth = g_StaticShadowDepthTexture.Sample(ClampSampler, vNewUV);
 
-    if (vPosition.z - 0.15f > vShadowDepth.r * g_fFar || vPosition.z - 0.15f > vStaticShadowDepth.r * g_fFar)
+    // TODO : Hong Hong Hong Juseok
+    if (vPosition.z - 0.15f > vShadowDepth.r * g_fFar)
+         // || vPosition.z - 0.15f > vStaticShadowDepth.r * g_fFar)
     {
         Out.vColor = 0.4f;
 		

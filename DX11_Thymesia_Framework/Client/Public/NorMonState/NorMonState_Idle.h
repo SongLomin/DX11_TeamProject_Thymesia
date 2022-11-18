@@ -1,5 +1,5 @@
 #pragma once
-#include "AIStateBase.h"
+#include "NorMonsterStateBase.h"
 
 BEGIN(Engine)
 class CModel;
@@ -8,14 +8,19 @@ END
 BEGIN(Client)
 
 class CNorMonState_Idle :
-	public CAIStateBase
+	public CNorMonsterStateBase
 {
 	GAMECLASS_H(CNorMonState_Idle);
 	CLONE_H(CNorMonState_Idle, CComponent)
 		SHALLOW_COPY(CNorMonState_Idle)
 
+
 public:
 	void Set_MonIdleType(NORMONSTERIDLETYPE IDLETYPE);
+	void Set_IdleType(_uint IdleType) { m_iIdleType = IdleType;}
+	void Set_ClosePlayerCheck(_bool ClosePlayerCheck) 	{m_bClosePlayerCheck = ClosePlayerCheck;}
+	void Set_CloseToRun(_bool CloseToRun) { m_bCloseToRun = CloseToRun; }
+	void Set_AnimIndex(_uint AnimIndex) { m_iAnimIndex = AnimIndex; }
 
 
 protected:
@@ -31,8 +36,13 @@ protected:
 	virtual _bool Check_AndChangeNextState() override;
 
 
-private:
-	_bool     m_bFirstRun = false; // 6보다멀때 무조건쫓아오니까 6보다 가까워질때 이함수 작용 추후 일정거리멀어지면 이함수 false로만들듯
+private: // 아이들에서만쓰는불값
+	_bool     m_bClosePlayerCheck = false;
+	_bool     m_bCloseToRun = false;
+	_uint     m_iIdleType = 0; // 이거 enum으로 관리하면될듯  다하고할거임 ㅇㅇ
+
+
+
 
 
 

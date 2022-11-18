@@ -1,16 +1,14 @@
 #pragma once
-#include "Player_ProgressBar.h"
+#include "DissolveUI.h"
 
 
 BEGIN(Engine)
-
-class CTexture;
-
+CTexture;
 END
 
 BEGIN(Client)
 
-class CHUD_PlagueWeapon_Steal_Icon : public CPlayer_ProgressBar
+class CHUD_PlagueWeapon_Steal_Icon :public CDissolveUI
 {
 	GAMECLASS_H(CHUD_PlagueWeapon_Steal_Icon);
 	CLONE_H(CHUD_PlagueWeapon_Steal_Icon, CGameObject);
@@ -26,18 +24,13 @@ public:
 protected:
 	virtual HRESULT SetUp_ShaderResource() override;
 
-private:
-	weak_ptr<CTexture>	m_pDissolveTexture;
-
-	weak_ptr<CTexture>	m_pDissolveMaskTexture;
-
-	_uint				m_iTextureIndex = 0;
-
 public:
 	void Free();
 
 
-
+private:
+	weak_ptr<CTexture>	m_pMask;
 };
-END
 
+
+END

@@ -322,9 +322,6 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_BasicHealing.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing\00.CorvusState_BasicHealing</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\NorMonStateBase.h">
-      <Filter>05. Component\03. State\01. AIStateBase</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Monster.h">
       <Filter>02. GameObject\03. Actor\00. Character\01. Monster</Filter>
     </ClInclude>
@@ -445,16 +442,22 @@
     <ClInclude Include="..\Public\HUD_PlagueWeaponBase.h">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\HUD_PlagueWeapon_Main.h">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HUD_PlagueWeaponBase.h">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Base</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\HUD_PlagueWeapon.h">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal_Icon.h">
-      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal\Icon</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UI_PauseMenu.h">
       <Filter>02. GameObject\01. UI\PauseMenu</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal.h" />
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Stop.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Weapon.h">
       <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon</Filter>
     </ClInclude>
@@ -463,6 +466,50 @@
     </ClInclude>
     <ClInclude Include="..\Public\Client_Presets.h">
       <Filter>99. Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Weapon.h">
+      <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Preset_PhysXColliderDesc.h">
+      <Filter>06. DataPreset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Client_Presets.h">
+      <Filter>99. Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal.h">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonsterStateBase.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonStates.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
+      <Filter>04. ShaderFiles\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hpp">
+      <Filter>04. ShaderFiles\hpp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EditInstanceProp.h">
+      <Filter>02. GameObject\99. Other\06. EditInstanceProp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_PauseMenu_Page_Status.h">
+      <Filter>02. GameObject\01. UI\PauseMenu\Page\Status</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_PauseMenu_Tap_Status.h">
+      <Filter>02. GameObject\01. UI\PauseMenu\Page\Status\Tap\Status</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_PauseMenu_Tap_PlagueWeapon.h">
+      <Filter>02. GameObject\01. UI\PauseMenu\Page\Status\Tap\PlagueWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DissolveUI.h">
+      <Filter>02. GameObject\01. UI\dissolve</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal_Icon.h" />
+    <ClInclude Include="..\Public\LoadingTextUI.h" />
+    <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
+      <Filter>04. ShaderFiles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -772,9 +819,6 @@
     <ClCompile Include="..\Private\UI_Loading.cpp">
       <Filter>02. GameObject\01. UI\Loading</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Corvus_DefaultDagger.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\01.Corvus_DefaultDagger</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\NorMonster.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\01. Monster\00.NorMonster</Filter>
     </ClCompile>
@@ -883,13 +927,28 @@
     <ClCompile Include="..\Private\HUD_PlagueWeaponBase.cpp">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Base</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\HUD_Hover.cpp">
+      <Filter>02. GameObject\01. UI\Hover</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_PlagueWeapon_Main.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_PlagueWeaponBase.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_Hover.cpp">
+      <Filter>02. GameObject\01. UI\Hover</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_PlagueWeapon_Main.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_PlagueWeaponBase.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Base</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeapon.cpp">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\HUD_Hover.cpp" />
-    <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal_Icon.cpp">
-      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal\Icon</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\UI_PauseMenu.cpp">
       <Filter>02. GameObject\01. UI\PauseMenu</Filter>
     </ClCompile>
@@ -900,6 +959,38 @@
     <ClCompile Include="..\Private\Preset_PhysXColliderDesc.cpp">
       <Filter>06. DataPreset</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Weapon.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Preset_PhysXColliderDesc.cpp">
+      <Filter>06. DataPreset</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Corvus_DefaultDagger.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon\01.Corvus_DefaultDagger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonsterStateBase.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EditInstanceProp.cpp">
+      <Filter>02. GameObject\99. Other\06. EditInstanceProp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_PauseMenu_Page_Status.cpp">
+      <Filter>02. GameObject\01. UI\PauseMenu\Page\Status</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_PauseMenu_Tap_Status.cpp">
+      <Filter>02. GameObject\01. UI\PauseMenu\Page\Status\Tap\Status</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_PauseMenu_Tap_PlagueWeapon.cpp">
+      <Filter>02. GameObject\01. UI\PauseMenu\Page\Status\Tap\PlagueWeapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DissolveUI.cpp">
+      <Filter>02. GameObject\01. UI\dissolve</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal_Icon.cpp" />
+    <ClCompile Include="..\Private\LoadingTextUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1053,9 +1144,6 @@
     </Filter>
     <Filter Include="02. GameObject\08. Effect">
       <UniqueIdentifier>{cda8b559-b3fc-43b5-9315-e385090ba1ec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\08. Effect\00. Effect_Rect">
-      <UniqueIdentifier>{43be49b4-b4e1-4346-a84a-e59a8f70fb38}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\08. Effect\01. Effect_Point">
       <UniqueIdentifier>{a13c11af-c73a-4829-871a-b1c03d227ae5}</UniqueIdentifier>
@@ -1357,9 +1445,6 @@
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\17.GroggyLoop">
       <UniqueIdentifier>{0d189ad3-59eb-4618-bf74-fc8a5c1b4761}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Fidget">
-      <UniqueIdentifier>{ef99f0e7-ec59-4038-8104-575ffcc246d9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\20.TakeExecution">
       <UniqueIdentifier>{442d3433-6ed3-4af7-909b-08d4b8d5236f}</UniqueIdentifier>
     </Filter>
@@ -1423,6 +1508,9 @@
     <Filter Include="02. GameObject\99. Other\04. EditGroupProp">
       <UniqueIdentifier>{8879bd77-4670-491b-803a-0ddb8d81c2e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop">
+      <UniqueIdentifier>{ef99f0e7-ec59-4038-8104-575ffcc246d9}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02. GameObject\01. UI\Hover">
       <UniqueIdentifier>{e487d713-d046-4fcc-955c-f8b1014cbff6}</UniqueIdentifier>
     </Filter>
@@ -1452,6 +1540,39 @@
     </Filter>
     <Filter Include="06. DataPreset">
       <UniqueIdentifier>{8965fd35-6c2d-4080-8e05-2281755353c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. ShaderFiles\hpp">
+      <UniqueIdentifier>{675030f1-6aa5-4084-b435-73d9219cdc1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\99. Other\06. EditInstanceProp">
+      <UniqueIdentifier>{e7b302f4-cc37-48e5-ac40-2dc079cc445b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PauseMenu\Page">
+      <UniqueIdentifier>{f1a9f830-66ed-4085-ba8c-6e691515070b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PauseMenu\Page\Status">
+      <UniqueIdentifier>{9a5cb137-6863-4df9-8167-cc52cc55961a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PauseMenu\Page\Status\Tap">
+      <UniqueIdentifier>{86737f2e-0535-4852-9911-fda4f1f06778}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PauseMenu\Page\Status\Tap\Status">
+      <UniqueIdentifier>{0f137624-7d90-4538-b006-ae3bc19502f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PauseMenu\Page\Status\Tap\PlagueWeapon">
+      <UniqueIdentifier>{c1252e6d-2377-4a63-abd0-f8defc9d6ae8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PauseMenu\Page\Status\Tap\Potion">
+      <UniqueIdentifier>{12c53709-6164-4eab-a852-264e14025107}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\dissolve">
+      <UniqueIdentifier>{d28a398e-5511-4ea3-94e4-8aa2c3524135}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\Loading\LodingTextUI">
+      <UniqueIdentifier>{cf152f4a-504e-4660-b870-17bef185e723}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Effect\00. Effect_Rect">
+      <UniqueIdentifier>{43be49b4-b4e1-4346-a84a-e59a8f70fb38}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

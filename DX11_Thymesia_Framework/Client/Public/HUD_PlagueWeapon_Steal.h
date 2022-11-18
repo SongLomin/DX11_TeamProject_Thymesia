@@ -1,12 +1,16 @@
 #pragma once
 #include "HUD_PlagueWeapon.h"
 
+
+BEGIN(Engine)
+class CTexture;
+END
+
 BEGIN(Client)
 
 class CCustomUI;
-class CPlayer_ProgressBar;
-class CHUD_Hover;
 class CHUD_PlagueWeapon_Steal_Icon;
+class CHUD_Hover;
 
 class CHUD_PlagueWeapon_Steal :
 	public CHUD_PlagueWeaponBase
@@ -22,9 +26,8 @@ public:
 	virtual HRESULT Render();
 
 private:
+	weak_ptr<CCustomUI>				m_pPlagueWeapon_Decoration;//쿨타임 알려주는 게이지 프레임
 	weak_ptr<CHUD_PlagueWeapon_Steal_Icon>	m_pPlagueWeapon_Icon;//아이콘
-	weak_ptr<CCustomUI>	m_pPlagueWeapon_Decoration;//쿨타임 알려주는 게이지 프레임
-
 public:
 	void Free();
 

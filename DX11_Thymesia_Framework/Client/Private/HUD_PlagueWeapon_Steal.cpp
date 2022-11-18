@@ -5,10 +5,10 @@
 #include "Shader.h"
 #include "GameManager.h"
 #include "Engine_Defines.h"
-#include "CustomUI.h"
-#include "Player_ProgressBar.h"
 #include "HUD_Hover.h"
 #include "HUD_PlagueWeapon_Steal_Icon.h"
+#include "Player_ProgressBar.h"
+#include "Texture.h"
 
 
 GAMECLASS_C(CHUD_PlagueWeapon_Steal);
@@ -26,8 +26,6 @@ HRESULT CHUD_PlagueWeapon_Steal::Initialize(void* pArg)
     __super::Initialize(pArg);
 
 
-
-
     m_pPlagueWeapon_Border = GAMEINSTANCE->Add_GameObject<CPlayer_ProgressBar>(LEVEL_STATIC, &m_tUIDesc);
     m_pPlagueWeapon_Border.lock()->Set_Texture("HUD_FrameBorder");
     m_pPlagueWeapon_Border.lock()->Set_Depth(0.4f);
@@ -43,7 +41,6 @@ HRESULT CHUD_PlagueWeapon_Steal::Initialize(void* pArg)
     m_pPlagueWeapon_Icon.lock()->Set_Texture("SkillIcon_Axe");
     m_pPlagueWeapon_Icon.lock()->Set_Depth(0.2f);
     m_pPlagueWeapon_Icon.lock()->Set_Size(160.f, 160.f);
-
 
     m_pPlagueWeapon_Ready = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &m_tUIDesc);
     m_pPlagueWeapon_Ready.lock()->Set_Texture("HUD_PlagueWeapon_Frame_Ready");

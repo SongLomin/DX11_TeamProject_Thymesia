@@ -58,7 +58,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 
     Preset::PhysXColliderDesc::PlayerBodySetting(tPhysxColliderDesc, m_pTransformCom);
     m_pPhysXColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
-    m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
+    m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene({0.f, 0.f, 0.f}, 1.f);
 
     Preset::PhysXColliderDesc::PlayerBodyTriggerSetting(tPhysxColliderDesc, m_pTransformCom);
     m_pPhysXTriggerColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
@@ -127,8 +127,9 @@ HRESULT CPlayer::Render()
 HRESULT CPlayer::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix)
 {
     CallBack_Bind_SRV(m_pShaderCom, "");
+    //플레이어 그림자는 위 callback이 안불려서 이전 그림자 렌더했던 월드를 쓰고 있었음
 
-    
+    m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
 
     m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)&In_LightViewMatrix, sizeof(_float4x4));
     m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)&In_LightProjMatrix, sizeof(_float4x4));

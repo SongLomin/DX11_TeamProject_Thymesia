@@ -94,7 +94,7 @@ void CCorvusState_Parry1::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 	cout << "AttackIndex: " << m_iAttackIndex << endl;
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAttackIndex);
-	m_pModelCom.lock()->Set_AnimationSpeed(5.f);
+	m_pModelCom.lock()->Set_AnimationSpeed(6.f);
 }
 
 void CCorvusState_Parry1::Attack()
@@ -183,7 +183,7 @@ void CCorvusState_Parry1::OnStateStart(const _float& In_fAnimationBlendTime)
 
 
 #ifdef _DEBUG
-	cout << "LuxiyaState: Attack -> OnStateStart" << endl;
+	cout << "NorMonState: Attack -> OnStateStart" << endl;
 
 #endif
 }

@@ -7,7 +7,7 @@
 //#include "BehaviorBase.h"
 #include "Animation.h"
 #include "AIStateBase.h"
-#include "NorMonStateBase.h"
+#include "NorMonStateS.h"
 #include "Character.h"
 
 
@@ -38,19 +38,21 @@ void CNorMonState_Idle::Start()
 {
 	__super::Start();
 
+	
+	
 
 	if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
 	{
 		switch (m_eNorMonIdleType)
 		{
 		case Client::NORMONSTERIDLETYPE::NORIDLE:
-			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|LV1Villager_M_IdleGeneral|BaseLayer");
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|DemoM02_Idle1|BaseLayer|Armature|Arm");
 			break;
 		case Client::NORMONSTERIDLETYPE::SITIDLE:
-			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|LV1Villager_M_Sit_Idle|BaseLayer");
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_Sit_Idle|BaseLayer|Arm");
 			break;
 		case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
-			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|LV1Villager_M_SP_Idle1|BaseLayer");
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_SP_Idle1|BaseLayer|Arm");
 			break;
 		}
 	}
@@ -71,10 +73,9 @@ void CNorMonState_Idle::Start()
 		}
 	}
 
+		
 	
 	
-	
-
 }
 
 void CNorMonState_Idle::Tick(_float fTimeDelta)
@@ -83,18 +84,30 @@ void CNorMonState_Idle::Tick(_float fTimeDelta)
 
 	//Turn_Transform(fTimeDelta);
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
+
+	
+
 }
 
 void CNorMonState_Idle::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
-
 	
+	
+	//TODO 지우면안돼요 화나요
+	//if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CNorMonState_Awake>().lock())
+	//{
+	//	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_IdleGeneral|BaseLayer");
+	//}
+	//
+	//if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CNorMonState_SitToIdle>().lock())
+	//{
+	//	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_IdleGeneral|BaseLayer");
+	//}
+
 	Check_AndChangeNextState();
 
 }
-
-
 
 void CNorMonState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 {
@@ -103,7 +116,7 @@ void CNorMonState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "LuxiyaState: RunStart -> OnStateStart" << endl;
+	cout << "NorMonState: IdleIDLEIDLE -> OnStateStart" << endl;
 #endif
 
 
@@ -114,8 +127,6 @@ void CNorMonState_Idle::OnStateEnd()
 	__super::OnStateEnd();
 
 }
-
-
 
 void CNorMonState_Idle::Free()
 {
@@ -129,20 +140,24 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 		return false;
 
 
-	_float fDistance = Get_DistanceWithPlayer();
+	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
+	_float fMToMDistance = GetStartPositionToCurrentPositionDir(); // 몬스터스타트포지션과 몬스터현재 포지션 사이의 거리
 
-
-	if (fDistance < 3.f)
+	if (fMToMDistance >= 20.f) // 거리20보다멀어지면 다른거 다끄고 돌아가게금 30보다멀어지면 트루줌
 	{
-		
-		m_bFirstRun = true;
-		TurnMechanism();
+		m_iIdleType = 3;
+	}
+
+	// 1. 아이들상태부터 검사  근데이떄가 거리가 가까워졌을대임 
+	// 첫번째로아이들들어오면 무조건 이친구가 들어오게함 
+	if (fPToMDistance <= 3.f && m_iIdleType == 0)
+	{
 		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
 		{
 			switch (m_eNorMonIdleType)
 			{
 			case Client::NORMONSTERIDLETYPE::NORIDLE:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+				TurnMechanism();
 				break;
 			case Client::NORMONSTERIDLETYPE::SITIDLE:
 				Get_OwnerCharacter().lock()->Change_State<CNorMonState_SitToIdle>(0.05f);
@@ -151,44 +166,245 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
 				break;
 			}
-
+			m_iIdleType = 1;
+			m_bCloseToRun = true;
 			return true;
-
 		}
+	}
 
-		//if (m_eNorMonType == NORMONSTERTYPE::KNIFEWOMAN)
+	// 2.재내들 끊나면 다시아이들로옴 어떤상태는 무조건 NORIDLE상태임
+	// 아이들타입으로 들어왔고 이때 턴검사한번 더해야함 90보다 작은상태이거나
+	// 90보다큰상태일떄 검사를해야하기에 아직 기본아이들도 룩앳이아님 
+	// 기본아이들이면 각도를계산해 
+	if (m_bCloseToRun && m_iIdleType == 1)
+	{
+		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
+		{
+			TurnMechanism();
+		}
+		m_iIdleType = 2;
+		m_bClosePlayerCheck = true;
+		return true;
+	}
+	//이러면 서있는거는 턴검사를했고 룩앳인상태고 나머지는 90보만큼돌았을거임 (그거보다작으면룩앳)
+	//이제는 각도계산해서 90보다크면 다시턴검사하고 아니면 원래코드로가야됨
+
+	if (fPToMDistance <= 3.f && m_iIdleType == 2 )
+	{
+		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
+		{
+			if (ComputeAngleWithPlayer() <= 0.f)
+			{
+				TurnMechanism();
+			}
+			else
+			{
+				Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
+				m_bClosePlayerCheck = true;
+				m_bCloseToRun = true; 
+				int iRunORWalk = rand() % 2;
+				switch (iRunORWalk)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+					break;
+				}
+			}
+		}
+		return true;
+	}
+
+	if (m_bCloseToRun && m_iIdleType == 2 && m_bClosePlayerCheck)
+	{
+		Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
+
+		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
+		{
+			int iRunORWalk = rand() % 2;
+			switch (iRunORWalk)
+			{
+			case 0:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+				break;
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+				break;
+			}
+		}
+		return true;
+	}
+
+
+	if (m_iIdleType == 3)
+	{
+		Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_B>(0.05f);
+		return true;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//if (fMToMDistance >= 20.f) // 거리20보다멀어지면 다른거 다끄고 돌아가게금 30보다멀어지면 트루줌
+	//{
+	//	m_bReturnStartPosition = true;
+	//}
+	//if (m_bReturnStartPosition && fMToMDistance <= 10.f)
+	//{
+	//	m_bReturnStartPosition = false;
+	//}
+	//
+	//
+	//
+	//
+	//if (ComputeAngleWithPlayer() >= 0.1f)
+	//{
+	//	if (fPToMDistance <= 3.f && !m_bReturnStartPosition)
+	//	{
+	//		TurnMechanism();
+	//		m_bOneCheck = true;
+	//	}
+			
+
+		//if (fPToMDistance <= 3.f && !m_bReturnStartPosition && m_fTimeAcc >= 0.1f)
 		//{
-		//	if (m_eNorMonType == NORMONSTERTYPE::KNIFEWOMAN)
+		//	m_bOneCheck = false;
+		//	m_bFirstRun = true;
+		//	m_bPlayerColision = true;
+		//	Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
+		//	if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
 		//	{
+		//
 		//		switch (m_eNorMonIdleType)
 		//		{
 		//		case Client::NORMONSTERIDLETYPE::NORIDLE:
-		//			break;
+		//		{
+		//			int iRunORWalk = rand() % 2;
+		//			switch (iRunORWalk)
+		//			{
+		//			case 0:
+		//				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+		//				break;
+		//			case 1:
+		//				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+		//				break;
+		//			}
+		//		}
+		//		break;
 		//		case Client::NORMONSTERIDLETYPE::SITIDLE:
+		//			Get_OwnerCharacter().lock()->Change_State<CNorMonState_SitToIdle>(0.05f);
 		//			break;
 		//		case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+		//			Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
 		//			break;
 		//		}
+		//
+		//		return true;
+		//
 		//	}
-		//	
-		//}
-	}
-	else
-	{
-		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && m_bFirstRun)
-		{
-			TurnMechanism();
 
-			switch (m_eNorMonIdleType)
-			{
-			case Client::NORMONSTERIDLETYPE::NORIDLE:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
-				break;
-			}
-			return true;
-		}
-	}
+			//if (m_eNorMonType == NORMONSTERTYPE::KNIFEWOMAN)
+			//{
+			//	if (m_eNorMonType == NORMONSTERTYPE::KNIFEWOMAN)
+			//	{
+			//		switch (m_eNorMonIdleType)
+			//		{
+			//		case Client::NORMONSTERIDLETYPE::NORIDLE:
+			//			break;
+			//		case Client::NORMONSTERIDLETYPE::SITIDLE:
+			//			break;
+			//		case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+			//			break;
+			//		}
+			//	}
+			//	
+			//}
+	//	}
+	//
+	//	if (fPToMDistance > 3.f && !m_bReturnStartPosition && m_bPlayerColision)
+	//	{
+	//
+	//		
+	//		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && m_bFirstRun)
+	//		{
+	//			TurnMechanism();
+	//
+	//			switch (m_eNorMonIdleType)
+	//			{
+	//			case Client::NORMONSTERIDLETYPE::NORIDLE:
+	//			{
+	//				int iRunORWalk = rand() % 2;
+	//				switch (iRunORWalk)
+	//				{
+	//				case 0:
+	//					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+	//					break;
+	//				case 1:
+	//					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+	//					break;
+	//				}
+	//			}
+	//			break;
+	//			}
+	//
+	//			return true;
+	//		}
+	//	}
+	//
+	//}
 
+	
+
+	
+
+
+
+	
+	
 	return false;
 }
 

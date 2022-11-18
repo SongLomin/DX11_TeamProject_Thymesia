@@ -186,6 +186,8 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
+    <ClInclude Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hpp" />
     <ClInclude Include="..\Public\Actor.h" />
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
@@ -224,10 +226,12 @@
     <ClInclude Include="..\Public\Corvus_DefaultDagger.h" />
     <ClInclude Include="..\Public\Corvus_DefaultSaber.h" />
     <ClInclude Include="..\Public\CustomEffectMesh.h" />
+    <ClInclude Include="..\Public\DissolveUI.h" />
     <ClInclude Include="..\Public\Dynamic_Prop.h" />
     <ClInclude Include="..\Public\CustomUI.h" />
     <ClInclude Include="..\Public\EditGround.h" />
     <ClInclude Include="..\Public\EditGroupProp.h" />
+    <ClInclude Include="..\Public\EditInstanceProp.h" />
     <ClInclude Include="..\Public\EditNaviMesh.h" />
     <ClInclude Include="..\Public\EffectMesh.h" />
     <ClInclude Include="..\Public\EffectGroup.h" />
@@ -263,11 +267,13 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\Light_Prop.h" />
+    <ClInclude Include="..\Public\LoadingTextUI.h" />
     <ClInclude Include="..\Public\Map.h" />
-    <ClInclude Include="..\Public\NorMonStateBase.h" />
+    <ClInclude Include="..\Public\NorMonStates.h" />
     <ClInclude Include="..\Public\MobWeapon\MobWeapon.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_SitToIdle.h" />
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Stop.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_FR.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_L.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_LightAttack2.h" />
@@ -296,6 +302,7 @@
     <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_F.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_FL.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_R.h" />
+    <ClInclude Include="..\Public\NorMonState\NorMonsterStateBase.h" />
     <ClInclude Include="..\Public\NorMonster.h" />
     <ClInclude Include="..\Public\PlayerStateBase.h" />
     <ClInclude Include="..\Public\Player_FeatherUI.h">
@@ -323,6 +330,9 @@
     <ClInclude Include="..\Public\UI_Loading.h" />
     <ClInclude Include="..\Public\UI_Logo.h" />
     <ClInclude Include="..\Public\UI_PauseMenu.h" />
+    <ClInclude Include="..\Public\UI_PauseMenu_Page_Status.h" />
+    <ClInclude Include="..\Public\UI_PauseMenu_Tap_PlagueWeapon.h" />
+    <ClInclude Include="..\Public\UI_PauseMenu_Tap_Status.h" />
     <ClInclude Include="..\Public\Weapon.h" />
     <ClInclude Include="..\Public\Window_AnimationModelView.h" />
     <ClInclude Include="..\Public\Window_AnimationPlayerView.h" />
@@ -382,10 +392,12 @@
     <ClCompile Include="..\Private\Corvus_DefaultDagger.cpp" />
     <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp" />
     <ClCompile Include="..\Private\CustomEffectMesh.cpp" />
+    <ClCompile Include="..\Private\DissolveUI.cpp" />
     <ClCompile Include="..\Private\Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\CustomUI.cpp" />
     <ClCompile Include="..\Private\EditGround.cpp" />
     <ClCompile Include="..\Private\EditGroupProp.cpp" />
+    <ClCompile Include="..\Private\EditInstanceProp.cpp" />
     <ClCompile Include="..\Private\EditNaviMesh.cpp" />
     <ClCompile Include="..\Private\EffectMesh.cpp" />
     <ClCompile Include="..\Private\EffectGroup.cpp" />
@@ -420,10 +432,12 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\Light_Prop.cpp" />
+    <ClCompile Include="..\Private\LoadingTextUI.cpp" />
     <ClCompile Include="..\Private\Map.cpp" />
     <ClCompile Include="..\Private\MobWeapon\MobWeapon.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_SitToIdle.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_FR.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_L.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_LightAttack2.cpp" />
@@ -452,6 +466,7 @@
     <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_F.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_FL.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_R.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonsterStateBase.cpp" />
     <ClCompile Include="..\Private\NorMonster.cpp" />
     <ClCompile Include="..\Private\PlayerStateBase.cpp" />
     <ClCompile Include="..\Private\Player_FeatherUI.cpp" />
@@ -477,6 +492,9 @@
     <ClCompile Include="..\Private\UI_Loading.cpp" />
     <ClCompile Include="..\Private\UI_Logo.cpp" />
     <ClCompile Include="..\Private\UI_PauseMenu.cpp" />
+    <ClCompile Include="..\Private\UI_PauseMenu_Page_Status.cpp" />
+    <ClCompile Include="..\Private\UI_PauseMenu_Tap_PlagueWeapon.cpp" />
+    <ClCompile Include="..\Private\UI_PauseMenu_Tap_Status.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
     <ClCompile Include="..\Private\Window_AnimationModelView.cpp" />
     <ClCompile Include="..\Private\Window_AnimationPlayerView.cpp" />

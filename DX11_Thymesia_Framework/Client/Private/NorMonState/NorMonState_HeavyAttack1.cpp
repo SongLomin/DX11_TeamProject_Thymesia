@@ -6,7 +6,7 @@
 #include "BehaviorBase.h"
 #include "Animation.h"
 #include "AIStateBase.h"
-#include "NorMonStateBase.h"
+#include "NorMonStateS.h"
 #include "Character.h"
 
 
@@ -33,7 +33,7 @@ void CNorMonState_HeavyAttack1::Start()
 
 	if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
 	{
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|LV1Villager_M_Attack04|BaseLayer");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_Attack04|BaseLayer|Arm");
 	}
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_HeavyAttack1::Call_AnimationEnd, this);
@@ -67,7 +67,7 @@ void CNorMonState_HeavyAttack1::OnStateStart(const _float& In_fAnimationBlendTim
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "LuxiyaState: RunStart -> OnStateStart" << endl;
+	cout << "NorMonState: RunStart -> OnStateStart" << endl;
 #endif
 
 	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
@@ -112,6 +112,8 @@ void CNorMonState_HeavyAttack1::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
+
+
 
 	
 	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);

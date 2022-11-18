@@ -134,6 +134,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     pMainApp.reset();
 
 #ifdef  _DEBUG
+    //system("pause");
     fclose(ConsoleStream);
     D3DMemoryLeakCheck();
 #endif //  _DEBUG
@@ -224,6 +225,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_KEYDOWN:
         if (wParam == VK_ESCAPE)
             ::DestroyWindow(hWnd);
+        
         break;
 
     default:

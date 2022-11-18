@@ -15,10 +15,7 @@ HRESULT CWindow_PrototypeView::Initialize()
 	m_bEnable = true;
 	SetUp_ImGuiDESC("Prototype_View", ImVec2(300.f, 500.f), window_flags);
 
-    
     Add_Prototypes();
-
-
     GAMEOBJECT_DESC& EditCamera = m_pPrototypes[PROTOTYPE_CAMERA].front();
     
 
@@ -119,16 +116,16 @@ void CWindow_PrototypeView::Add_Prototypes()
 #define ADD_PROTOTYPE(Layer, ClassType) m_pPrototypes[Layer].push_back({ typeid(ClassType).hash_code(), typeid(ClassType).name(), GAMEINSTANCE->Add_Prototype_GameObject<ClassType>() });
 
     //ADD_PROTOTYPE(PROTOTYPE_ACTOR, CDummy_Player);
-
-    ADD_PROTOTYPE(PROTOTYPE_PROP, CTerrain);
-    ADD_PROTOTYPE(PROTOTYPE_PROP, CEditGround);
-
     /*ADD_PROTOTYPE(PROTOTYPE_PROP, CStage1);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStage2);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStage3);*/
 
+    ADD_PROTOTYPE(PROTOTYPE_PROP, CTerrain);
+    ADD_PROTOTYPE(PROTOTYPE_PROP, CEditGround);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStatic_Prop);
+
     ADD_PROTOTYPE(PROTOTYPE_PROP, CEditGroupProp);
+    ADD_PROTOTYPE(PROTOTYPE_PROP, CEditInstanceProp);
 
     ADD_PROTOTYPE(PROTOTYPE_UI, CFadeMask);
 

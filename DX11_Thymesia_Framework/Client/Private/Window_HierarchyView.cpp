@@ -53,26 +53,23 @@ HRESULT CWindow_HierarchyView::Render()
 
 	for (auto& elem : m_pGameObjects)
 	{
-		char szIndexedName[MAX_PATH];
+		string szIndexedName = to_string(iIndex) + ". " + elem.TypeName;
+		
+		if (m_iPreSelectIndex == iIndex)
+			szIndexedName = "[ " + szIndexedName + " ]";
 
-		_itoa_s(iIndex, szIndexedName, 10);
-		strcat_s(szIndexedName, ". ");
-		strcat_s(szIndexedName, elem.TypeName.c_str());
-
-		if (ImGui::Selectable(szIndexedName))
+		if (ImGui::Selectable(szIndexedName.c_str()))
 		{		
 			CallBack_ListClick(elem);
-
 
 			m_iPreSelectIndex = iIndex;
 		}
 
 		if (elem.HashCode == typeid(CEditGroupProp).hash_code())
 		{
-			if (m_iPreSelectIndex == iIndex)
-				elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
-			else
-				elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_NONE);
+			(m_iPreSelectIndex == iIndex)
+				? (elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_ACCEPT))
+				: (elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_NONE));
 
 			elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_SUB);
 		}
@@ -100,17 +97,35 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 	{
 		if (typeid(CEditGroupProp).hash_code() == iter_elem->HashCode)
 		{
-			iter_elem->pInstance.lock()->Write_Json(json());
+			json EmptyJson;
+
+			iter_elem->pInstance.lock()->Write_Json(EmptyJson);
+
+			for (auto iter_sub : m_pSubGameObjects)
+			{
+				Out_Json["GameObject"][iIndex]["Name"] = iter_sub.TypeName;
+				Out_Json["GameObject"][iIndex]["Hash"] = iter_sub.HashCode;
+				Out_Json["GameObject"][iIndex]["Setting"]["Enable"] = iter_sub.pInstance.lock()->Get_Enable();
+				Out_Json["GameObject"][iIndex]["Component"]["Transform"].emplace();
+
+				iter_sub.pInstance.lock()->Write_Json(Out_Json["GameObject"][iIndex]);
+
+				++iIndex;
+			}
+
+			m_pSubGameObjects.clear();
 			++iter_elem;
+
 			continue;
 		}
 
-		Out_Json["GameObject"][iIndex]["Name"]				= iter_elem->TypeName;
-		Out_Json["GameObject"][iIndex]["Hash"]				= iter_elem->HashCode;
+		Out_Json["GameObject"][iIndex]["Name"] = iter_elem->TypeName;
+		Out_Json["GameObject"][iIndex]["Hash"] = iter_elem->HashCode;
 		Out_Json["GameObject"][iIndex]["Setting"]["Enable"] = iter_elem->pInstance.lock()->Get_Enable();
 		Out_Json["GameObject"][iIndex]["Component"]["Transform"].emplace();
 
 		iter_elem->pInstance.lock()->Write_Json(Out_Json["GameObject"][iIndex]);
+
 		++iIndex;
 		++iter_elem;
 	}

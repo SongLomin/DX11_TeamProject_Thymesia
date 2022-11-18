@@ -16,6 +16,7 @@ public:
     {
         NORMONSTERTYPE       eNorMonType;
         NORMONSTERIDLETYPE   eNorMonIdleType;
+        _float4              m_fStartPositon;
  
         //TODO ¾ß¸Å¿¡¿ä ¹Ø¿¡²¨ ¤¾ 
         _float3            vYame;
@@ -36,6 +37,7 @@ public:
     virtual HRESULT Start() override;
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
+    virtual void Before_Render(_float fTimeDelta) override;
     virtual HRESULT Render() override;
     virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix) override;
 
@@ -56,6 +58,9 @@ protected:
 private:
     _float      m_fTimeAcc = 0.f;
     _float      m_fDissolveAmount = 0.f;
+
+protected:
+    weak_ptr<CPhysXCollider> m_pPhysXColliderCom;
 
 protected:
     list<weak_ptr<CMobWeapon>> m_pWeapons;

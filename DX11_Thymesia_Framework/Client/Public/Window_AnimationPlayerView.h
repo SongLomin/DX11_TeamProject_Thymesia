@@ -20,7 +20,6 @@ public:
 	_bool Is_Stop() const { return m_bStop; }
 
 public:
-	// CImGui_Window을(를) 통해 상속됨
 	virtual HRESULT Initialize() override;
 	virtual void Start() override;
 	virtual void Tick(_float fTimeDelta) override;
@@ -35,7 +34,6 @@ private:
 	void Add_EnableColliderEvent();
 	void Add_DisableColliderEvent();
 	
-
 	void Save_KeyEvent();
 	void Load_KeyEvent();
 	void Clear_KeyEvent();

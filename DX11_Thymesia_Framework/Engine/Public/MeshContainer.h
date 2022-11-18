@@ -54,9 +54,7 @@ public:
 
 public:
 	HRESULT Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CModel> pModel = weak_ptr<CModel>());
-	//HRESULT SetUp_BonesPtr(weak_ptr<CModel> pModel);
 	void SetUp_BoneMatices(_float4x4* pBoneMatrices, _fmatrix TransformationMatrix);
-	_bool Picking() const;
 
 private:
 	HRESULT Ready_VertexBuffer_NonAnim(shared_ptr<MESH_DATA> tMeshData);

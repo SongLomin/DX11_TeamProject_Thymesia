@@ -175,32 +175,32 @@ HRESULT CPhysXCollider::Add_Force(_vector _vForce)
 	if (m_pRigidDynamic)
 		m_pRigidDynamic->addForce(vForce);
 
-	PxVec3	vMaxVel = { XMVectorGetX(m_vMaxVelocity), XMVectorGetY(m_vMaxVelocity), XMVectorGetZ(m_vMaxVelocity) };
-	PxVec3	vVelocity = m_pRigidDynamic->getLinearVelocity();
+	//PxVec3	vMaxVel = { XMVectorGetX(m_vMaxVelocity), XMVectorGetY(m_vMaxVelocity), XMVectorGetZ(m_vMaxVelocity) };
+	//PxVec3	vVelocity = m_pRigidDynamic->getLinearVelocity();
 
-	_vector	XDir = { 1.f, 0.f, 0.f, 0.f };
-	_vector	ZDir = { 0.f, 1.f, 0.f, 0.f }; //vector2Dot으로 계산 하기 때문
+	//_vector	XDir = { 1.f, 0.f, 0.f, 0.f };
+	//_vector	ZDir = { 0.f, 1.f, 0.f, 0.f }; //vector2Dot으로 계산 하기 때문
 
-	_vector	VelocityVec2 = { vVelocity.x, vVelocity.z, 0.f, 0.f };
+	//_vector	VelocityVec2 = { vVelocity.x, vVelocity.z, 0.f, 0.f };
 
-	_vector vNormalizedVelocity = XMVector2Normalize(VelocityVec2);
+	//_vector vNormalizedVelocity = XMVector2Normalize(VelocityVec2);
 
-	//m_vMaxVelocity
-	_vector	vSpeed = XMVector2Length(VelocityVec2);
-	_float	fSpeed = min(XMVectorGetX(vSpeed), XMVectorGetX(m_vMaxVelocity));
+	////m_vMaxVelocity
+	//_vector	vSpeed = XMVector2Length(VelocityVec2);
+	//_float	fSpeed = min(XMVectorGetX(vSpeed), XMVectorGetX(m_vMaxVelocity));
 
-	vNormalizedVelocity *= fSpeed;
+	//vNormalizedVelocity *= fSpeed;
 
-	_vector	XSpeed = XDir * XMVectorGetX(XMVector2Dot(XDir, vNormalizedVelocity));
-	_vector	ZSpeed = ZDir * XMVectorGetX(XMVector2Dot(ZDir, vNormalizedVelocity));
+	//_vector	XSpeed = XDir * XMVectorGetX(XMVector2Dot(XDir, vNormalizedVelocity));
+	//_vector	ZSpeed = ZDir * XMVectorGetX(XMVector2Dot(ZDir, vNormalizedVelocity));
 
-	vVelocity.x = XMVectorGetX(XSpeed);
-	vVelocity.z = XMVectorGetY(ZSpeed);
-	//vVelocity.x = min(fabsf(vVelocity.x), vMaxVel.x) * vVelocity.x / vVelocity.x;
-	//vVelocity.y = min(fabsf(vVelocity.y), vMaxVel.y) * vVelocity.y / vVelocity.y;
-	//vVelocity.z = min(fabsf(vVelocity.z), vMaxVel.z) * vVelocity.z / vVelocity.z;
+	//vVelocity.x = XMVectorGetX(XSpeed);
+	//vVelocity.z = XMVectorGetY(ZSpeed);
+	////vVelocity.x = min(fabsf(vVelocity.x), vMaxVel.x) * vVelocity.x / vVelocity.x;
+	////vVelocity.y = min(fabsf(vVelocity.y), vMaxVel.y) * vVelocity.y / vVelocity.y;
+	////vVelocity.z = min(fabsf(vVelocity.z), vMaxVel.z) * vVelocity.z / vVelocity.z;
 
-	m_pRigidDynamic->setLinearVelocity(vVelocity);
+	//m_pRigidDynamic->setLinearVelocity(vVelocity);
 
 	return S_OK;
 }
@@ -466,7 +466,7 @@ void CPhysXCollider::CreatePhysXActor(PHYSXCOLLIDERDESC& PhysXColliderDesc)
 	
 }
 
-void CPhysXCollider::Add_PhysXActorAtScene(const PxVec3& In_MassSpaceInertiaTensor)
+void CPhysXCollider::Add_PhysXActorAtScene(const PxVec3& In_MassSpaceInertiaTensor, const PxReal In_fMass)
 {
 	if (m_pRigidDynamic && m_pRigidStatic)
 	{
@@ -476,7 +476,16 @@ void CPhysXCollider::Add_PhysXActorAtScene(const PxVec3& In_MassSpaceInertiaTens
 
 	else if (m_pRigidDynamic)
 	{
-		GET_SINGLE(CPhysX_Manager)->Add_DynamicActorAtCurrentScene(*m_pRigidDynamic, m_PhysXColliderDesc.fDensity, In_MassSpaceInertiaTensor);
+		// 저항값
+		m_pRigidDynamic->setAngularDamping(0.5f);
+		m_pRigidDynamic->setMass(In_fMass);
+		m_pRigidDynamic->setLinearDamping(0.f);
+		// 속도
+		//DynamicActor.setLinearVelocity(velocity);
+		m_pRigidDynamic->setMassSpaceInertiaTensor(In_MassSpaceInertiaTensor);
+		//m_pRigidDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
+
+		GET_SINGLE(CPhysX_Manager)->Add_DynamicActorAtCurrentScene(*m_pRigidDynamic);
 		Safe_Delete(m_pGeometry);
 	}
 

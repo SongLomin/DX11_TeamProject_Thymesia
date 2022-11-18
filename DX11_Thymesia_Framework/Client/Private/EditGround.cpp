@@ -53,7 +53,7 @@ HRESULT CEditGround::Initialize(void* pArg)
 	m_pTextureCom.emplace(TexVarDesc[0], Desc);
 
 	Load_ResourceList(m_MeshNames   , "../Bin/GroundInfo/Mesh/", ".bin");
-	Load_ResourceList(m_TextureNames, "../Bin/Resources/Textures/Ground/");
+	Load_ResourceList(m_TextureNames, "../Bin/GroundInfo/Texture/");
 	Load_ResourceList(m_FilterNames , "../Bin/GroundInfo/Filter_SubInfo/", ".bin");
 
 	return S_OK;
@@ -208,7 +208,7 @@ void CEditGround::SetUp_EditMode()
 			m_eEditMode = EDIT_MODE::NON;
 	}
 
-	if (ImGui::BeginListBox("Editer Type"))
+	if (ImGui::BeginListBox("##Editer Type", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
 	{
 		for (int n = 0; n < IM_ARRAYSIZE(items_EditMode); n++)
 		{
@@ -254,7 +254,7 @@ void CEditGround::SetUp_EditMode()
 			m_eBrushMode = BRUSH_MODE::CLEAR;
 	}
 
-	if (ImGui::BeginListBox("Brush Type"))
+	if (ImGui::BeginListBox("##Brush Type", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
 	{
 		for (int n = 0; n < IM_ARRAYSIZE(items_BrushMode); n++)
 		{
@@ -300,14 +300,14 @@ void CEditGround::SetUp_ShaderComponent()
 void CEditGround::SetUp_PinckingInfo()
 {
 	if (KEY_INPUT(KEY::RIGHT, KEY_STATE::TAP))
-		m_fBufferDrawRadious += 0.1f;
+		m_fBufferDrawRadious += KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) ? (1.f) : (0.1f);
 	if (KEY_INPUT(KEY::LEFT, KEY_STATE::TAP))
-		m_fBufferDrawRadious -= 0.1f;
+		m_fBufferDrawRadious -= KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) ? (1.f) : (0.1f);
 
 	if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
-		m_fBufferPower += 0.1f;
+		m_fBufferDrawRadious += KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) ? (0.5f) : (0.1f);
 	if (KEY_INPUT(KEY::DOWN, KEY_STATE::TAP))
-		m_fBufferPower -= 0.1f;
+		m_fBufferDrawRadious -= KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) ? (0.5f) : (0.1f);
 
 	ImGui::DragFloat("##Radious", &m_fBufferDrawRadious, 1.f);
 	ImGui::SameLine();
@@ -370,7 +370,7 @@ void CEditGround::SetUp_Textures()
 		ImGui::Text("");
 	}
 
-	if (ImGui::BeginListBox("TexCom List"))
+	if (ImGui::BeginListBox("##TexCom List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
 	{
 		_uint iIndex = 0;
 
@@ -413,7 +413,7 @@ void CEditGround::SetUp_Textures()
 
 	ImGui::InputText("Find", szFindTextureTag, MAX_PATH);
 
-	if (ImGui::BeginListBox("Tex List"))
+	if (ImGui::BeginListBox("##Tex List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
 	{
 		for (_uint i = 0; i < m_TextureNames.size(); ++i)
 		{
@@ -513,7 +513,7 @@ void CEditGround::SetUp_File()
 
 	static int	iSelect_MeshData = 0;
 
-	if (ImGui::BeginListBox("TexCom List"))
+	if (ImGui::BeginListBox("##TexCom List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
 	{
 		_uint iIndex = 0;
 
@@ -565,7 +565,7 @@ void CEditGround::SetUp_File()
 	if (ImGui::InputText("Filter Name", szFilterName, MAX_PATH))
 		m_szSaveTextureTag = szFilterName;
 
-	if (ImGui::BeginListBox("Filter List"))
+	if (ImGui::BeginListBox("##Filter List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
 	{
 		_uint iIndex = 0;
 
@@ -923,7 +923,7 @@ void CEditGround::Bake_FilterTexture()
 	if (m_pTextureCom.empty())
 		return;
 
-	string szTextureInfoPath = "../Bin/GroundInfo/Filter_SunTextureInfo/" + m_szSaveTextureTag + ".json";
+	string szTextureInfoPath = "../Bin/GroundInfo/Filter_SubTextureInfo/" + m_szSaveTextureTag + ".json";
 
 	json TexInfo;
 
@@ -986,7 +986,9 @@ void CEditGround::Load_FilterTexture()
 	string szTexturePath = "../Bin/GroundInfo/Filter_SunTextureInfo/" + m_szSaveTextureTag + ".json";
 
 	json json_info;
-	CJson_Utility::Load_Json(szTexturePath.c_str(), json_info);
+	
+	if (FAILED(CJson_Utility::Load_Json(szTexturePath.c_str(), json_info)))
+		return;
 
 	for (auto& iter : json_info.items())
 	{
@@ -1154,7 +1156,7 @@ void CEditGround::Load_AllMeshInfo()
 		szFileName = szFileName.substr(0, szFileName.size() - 4);
 
 		if (FAILED(GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::GROUND, XMMatrixIdentity())))
-			MSG_BOX("Err : CEditGround::Load_AllMeshInfo()");
+			DEBUG_ASSERT;
 
 		itr++;
 	}

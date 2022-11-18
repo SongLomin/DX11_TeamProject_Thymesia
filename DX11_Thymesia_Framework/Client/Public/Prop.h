@@ -19,14 +19,15 @@ class CProp :
     CLONE_H(CProp, CGameObject);
 
 public:
-
-    // CGameObject을(를) 통해 상속됨
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize(void* pArg) override;
     virtual HRESULT Start() override;
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render() override;
+
+public:
+    void Set_ShaderPass(_bool _iIndex) { m_iPassIndex = _iIndex; }
 
 protected:
     virtual void SetUp_ShaderResource();

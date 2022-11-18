@@ -191,7 +191,7 @@ void CCorvusState_SprintAttack::OnStateStart(const _float& In_fAnimationBlendTim
 
 
 #ifdef _DEBUG
-	cout << "LuxiyaState: Attack -> OnStateStart" << endl;
+	cout << "NorMonState: Attack -> OnStateStart" << endl;
 
 #endif
 }

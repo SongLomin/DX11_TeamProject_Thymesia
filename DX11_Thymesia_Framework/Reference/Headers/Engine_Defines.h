@@ -49,6 +49,7 @@ using namespace physx;
 #include <sal.h>
 #include <future>
 #include <random>
+#include <mutex>
 
 #ifdef _UNICODE
 typedef std::wstring tstring;
@@ -62,6 +63,7 @@ typedef std::string tstring;
 #include "Engine_Functor.h"
 #include "Engine_Macro.h"
 #include "Engine_Struct.h"
+//#include "Easing_Utillity.h"
 
 #include <typeinfo>
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "AIStateBase.h"
+#include "NorMonsterStateBase.h"
 
 BEGIN(Engine)
 class CModel;
@@ -8,12 +8,11 @@ END
 BEGIN(Client)
 
 class CNorMonState_Walk_B :
-	public CAIStateBase
+	public CNorMonsterStateBase
 {
 	GAMECLASS_H(CNorMonState_Walk_B);
 	CLONE_H(CNorMonState_Walk_B, CComponent)
 		SHALLOW_COPY(CNorMonState_Walk_B)
-
 
 
 protected:
@@ -30,14 +29,17 @@ protected:
 
 
 private:
-	_float m_fMaxSpeed = 1.f;
-	_float m_fCurrentSpeed = 0.5f;
-	_float m_fAccel = 0.f;
 
-private:
-	void Call_AnimationEnd();
+	_float m_fMaxSpeed = 4.f;
+	_float m_fCurrentSpeed = 3.4f;
+	_float m_fAccel = 0.f;
+	
+
+	//TODO 가라에요 ㅎ
+	_bool  m_bPlayerToClose = false;
+
+
 protected:
-	virtual void OnDestroy() override;
 	void Free();
 
 };

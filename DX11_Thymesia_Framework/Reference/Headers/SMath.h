@@ -60,6 +60,7 @@ namespace Engine
 
 
 		_bool		ENGINE_DLL Is_Picked(RAY _Ray, _float4* _pOutPos);
-
+		_bool		ENGINE_DLL Is_Picked_AbstractCube(RAY _Ray, MESH_VTX_INFO _VtxInfo, _matrix _WorldMatrix);
+		_bool		ENGINE_DLL Is_Picked_Y(RAY _Ray, _float4* _pOutPos);
 	}
 }

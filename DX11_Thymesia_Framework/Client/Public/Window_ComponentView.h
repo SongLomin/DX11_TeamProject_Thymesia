@@ -1,7 +1,9 @@
 #pragma once
 #include "ImGui_Window.h"
+
 BEGIN(Engine)
 class CGameObject;
+class CTransform;
 END
 
 BEGIN(Client)
@@ -25,6 +27,7 @@ private:
 	void Init_Components();
 
 private:
+	void Picking_Obj();
 	void TransformComponent_PickingAction(weak_ptr<CTransform> _pTransform);
 
 private:

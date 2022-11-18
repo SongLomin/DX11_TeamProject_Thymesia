@@ -9,6 +9,7 @@
 #include "Model.h"
 #include "Window_AnimationPlayerView.h"
 #include "Effect_Rect.h"
+#include "ImGui_Manager.h"
 
 IMPLEMENT_SINGLETON(CWindow_EffectEditerView)
 
@@ -47,6 +48,14 @@ void CWindow_EffectEditerView::Tick(_float fTimeDelta)
             m_pCurrentEffectGroup.lock()->Reset_Effects();
         }
         
+    }
+
+    if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD))
+    {
+        if (KEY_INPUT(KEY::S, KEY_STATE::TAP))
+        {
+            GET_SINGLE(CImGui_Manager)->Save_EffectJson();
+        }
     }
 
     /*if (GET_SINGLE(CWindow_AnimationPlayerView)->Is_Stop())

@@ -12,6 +12,8 @@
 #include "Engine_Defines.h"
 #include "HUD_Hover.h"
 #include "FadeMask.h"
+#include "DissolveUI.h"
+#include "LoadingTextUI.h"
 
 GAMECLASS_C(CUI_Loading)
 CLONE_C(CUI_Loading, CGameObject)
@@ -67,6 +69,27 @@ HRESULT CUI_Loading::Initialize(void* pArg)
 	m_pLoadComplete.lock()->Set_Enable(false);
 
 
+
+	tIconDesc.fX = 175.f;
+	tIconDesc.fY = 695.f;
+	tIconDesc.fDepth = 0.1f;
+	tIconDesc.fSizeX = 174.;
+	tIconDesc.fSizeY = 32.f;
+
+
+	m_pStageTitle = GAMEINSTANCE->Add_GameObject<CLoadingTextUI>(LEVEL_LOADING, &tIconDesc);
+	m_pStageTitle.lock()->Set_Texture("Loading_Font_Fortress_Title");
+	m_pStageTitle.lock()->Set_DelayAlpha(1.f, 1.f);//1초뒤에, 1초걸리면 1.찍히는 알파 넣음
+	//563 900
+	tIconDesc.fX = 597.f;
+	tIconDesc.fY = 748.f;
+	tIconDesc.fDepth = 0.1f;
+	tIconDesc.fSizeX = 1000.f;
+	tIconDesc.fSizeY = 64.f;
+
+	m_pStageDesc= GAMEINSTANCE->Add_GameObject<CLoadingTextUI>(LEVEL_LOADING, &tIconDesc);
+	m_pStageDesc.lock()->Set_Texture("Loading_Font_Fortress_Desc");
+	m_pStageDesc.lock()->Set_DelayAlpha(3.f, 2.f);
 	m_bLoadComplete = false;
 	m_bCallFadeOut = false;
 	return S_OK;
@@ -82,6 +105,10 @@ HRESULT CUI_Loading::Start()
 void CUI_Loading::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+
+
+
 }
 
 void CUI_Loading::LateTick(_float fTimeDelta)
@@ -157,7 +184,13 @@ _bool CUI_Loading::Get_Finish()
 	return false;
 }
 
+
+
+
 void CUI_Loading::Free()
 {
 	__super::Free();
+
+	
+	
 }

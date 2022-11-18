@@ -66,6 +66,9 @@ protected:
 protected:
 	_float						m_fCamDistance = 0.f;
 	_uint						m_CreatedLevel;
+	_uint						m_ThreadFlag = 0;
+	_uint						m_UpatedFromThreadFlag = 0;
+
 
 protected:
 	map<_hashcode, list<shared_ptr<CComponent>>>	m_pComponents;
@@ -77,8 +80,13 @@ public:
 	FDelegate<>										CallBack_Render;
 	FDelegate<weak_ptr<CShader>, const char*>		CallBack_Bind_SRV;
 
-	void Set_Dead();
-	bool Get_Dead() const { return m_bDead; }
+	void	Set_Dead();
+	bool	Get_Dead() const { return m_bDead; }
+
+	void	Use_Thread(const THREAD_TYPE In_Type);
+	void	UnUse_Thread(const THREAD_TYPE In_Type);
+	_bool	Is_Thread(const THREAD_TYPE In_Type);
+	_bool	LastestDataFromThread(const THREAD_TYPE In_Type);
 
 private:
 	static _uint g_iGameObjectIndex;
@@ -218,6 +226,7 @@ public: /* For Template Function */
 	void Remove_Component(weak_ptr<CComponent> pComponent);
 
 	friend CObject_Manager;
+	friend CThread_Manager;
 };
 
 END

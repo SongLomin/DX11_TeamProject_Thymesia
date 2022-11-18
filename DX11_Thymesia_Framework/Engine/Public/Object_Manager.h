@@ -38,9 +38,12 @@ public:
 public:
 	void Clear(_uint iLevelIndex);
 	void Remove_DeadObject();
+	
+	shared_ptr<CGameObject> Find_Object(weak_ptr<CGameObject> pGameObject);
 
 private:
 	void Register_ReservedObjects();
+	void Bind_Thread(shared_ptr<CGameObject> pGameObject);
 
 protected:
 	void Free();
@@ -118,7 +121,6 @@ public: /* For Template Function */
 			return weak_ptr<T>();
 
 		shared_ptr<CGameObject> pCloneObject = pPrototype.lock()->Clone(iLevelIndex, pArg);
-		//pCloneObject->Set_OwnerForMyComponents();
 
 		m_ReservedObjects.push_back({ HashCode, iLevelIndex, pCloneObject });
 

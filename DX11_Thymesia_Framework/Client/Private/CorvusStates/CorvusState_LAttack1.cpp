@@ -154,7 +154,7 @@ void CCorvusState_LAttack1::OnStateStart(const _float& In_fAnimationBlendTime)
 		
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
-	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
+	m_pModelCom.lock()->Set_AnimationSpeed(2.5f);
 
 	//m_iAttackIndex = 7;
 	//m_iEndAttackEffectIndex = -1;
@@ -163,7 +163,7 @@ void CCorvusState_LAttack1::OnStateStart(const _float& In_fAnimationBlendTime)
 	//Disable_Weapons();
 
 #ifdef _DEBUG
-	cout << "LuxiyaState: Attack -> OnStateStart" << endl;
+	cout << "NorMonState: Attack -> OnStateStart" << endl;
 
 #endif
 }

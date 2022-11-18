@@ -120,6 +120,34 @@ void CGameObject::Set_Dead()
 
 }
 
+void CGameObject::Use_Thread(const THREAD_TYPE In_Type)
+{
+	m_ThreadFlag |= (1 << (_uint)In_Type);
+
+	GET_SINGLE(CThread_Manager)->Bind_ThreadObject(In_Type, Weak_StaticCast<CGameObject>(m_this));
+
+}
+
+void CGameObject::UnUse_Thread(const THREAD_TYPE In_Type)
+{
+	if (m_ThreadFlag & (1 << (_uint)In_Type)) // 이미 그 자리가 1이면
+	{
+		// 빼준다.
+		m_ThreadFlag &= ~(1 << (_uint)In_Type);
+	}
+
+}
+
+_bool CGameObject::Is_Thread(const THREAD_TYPE In_Type)
+{
+	return m_ThreadFlag & (1 << (_uint)In_Type);
+}
+
+_bool CGameObject::LastestDataFromThread(const THREAD_TYPE In_Type)
+{
+	return m_UpatedFromThreadFlag & (1 << (_uint)In_Type);
+}
+
 void CGameObject::OnEventMessage(_uint iArg)
 {
 	for (auto& elem_List : m_pComponents)

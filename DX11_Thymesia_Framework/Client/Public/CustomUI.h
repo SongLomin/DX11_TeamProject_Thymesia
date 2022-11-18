@@ -23,6 +23,7 @@ public:
 	void		Set_AlphaColor(_float fAlphaColor) { m_fAlphaColor = fAlphaColor; }
 	_float		Get_AlphaColor() { return m_fAlphaColor; }
 
+
 protected:
 	virtual HRESULT SetUp_ShaderResource() override;
 

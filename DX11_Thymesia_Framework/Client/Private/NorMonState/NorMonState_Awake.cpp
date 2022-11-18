@@ -6,7 +6,7 @@
 #include "BehaviorBase.h"
 #include "Animation.h"
 #include "AIStateBase.h"
-#include "NorMonStateBase.h"
+#include "NorMonStateS.h"
 #include "Character.h"
 
 
@@ -33,7 +33,7 @@ void CNorMonState_Awake::Start()
 
 	if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
 	{
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|LV1Villager_M_SP_Idle1_End|BaseLayer");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_SP_Idle1_End|BaseLayer");
 	}
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Awake::Call_AnimationEnd, this);
 
@@ -53,7 +53,7 @@ void CNorMonState_Awake::LateTick(_float fTimeDelta)
 
 	Check_AndChangeNextState();
 
-	
+
 }
 
 
@@ -65,7 +65,7 @@ void CNorMonState_Awake::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "LuxiyaState: RunStart -> OnStateStart" << endl;
+	cout << "NorMonState: RunStart -> OnStateStart" << endl;
 #endif
 
 
@@ -90,7 +90,8 @@ void CNorMonState_Awake::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 	
-	Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_MonIdleType(NORMONSTERIDLETYPE::NORIDLE);
+	Get_OwnerCharacter().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_AnimIndex(0);
+	Get_OwnerCharacter().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_MonIdleType(NORMONSTERIDLETYPE::NORIDLE);
 	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
 }
 

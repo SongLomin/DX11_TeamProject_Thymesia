@@ -25,8 +25,9 @@ HRESULT CStatic_Instancing_Prop::Initialize(void* pArg)
         VTXMODEL_INSTANCE_DECLARATION::iNumElements
     );
 
+	GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_StaticCast<CGameObject>(m_this));
+
     m_pInstancingModel = Add_Component<CVIBuffer_Model_Instance>();
-    m_pInstancingModel.lock()->Init_NoAnimInstance("Torch", 10);
 
     return S_OK;
 }
@@ -50,36 +51,59 @@ void CStatic_Instancing_Prop::LateTick(_float fTimeDelta)
 
 HRESULT CStatic_Instancing_Prop::Render()
 {
-	SetUp_ShaderResource();
+	_float4x4 WorldMatrix;
+	XMStoreFloat4x4(&WorldMatrix, XMMatrixIdentity());
+
+	m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_float4x4));
+	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4));
+	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
+
+	_vector vLightFlag = { 1.f, 1.f, 1.f, 1.f };
+	m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector));
 
 	_uint iNumMeshContainers = m_pInstancingModel.lock()->Get_NumMeshContainers();
+
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
 		if (FAILED(m_pInstancingModel.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 		{
 			DEBUG_ASSERT;
-			//cout << i << ". None Texture" << endl;
 		}
 
-		// 노말인데 5에 저장되어 있다..
 		if (FAILED(m_pInstancingModel.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 		{
-			// 노말 텍스쳐가 없는 경우
 			m_iPassIndex = 0;
 		}
-		// 노말 텍스쳐가 있는 경우
 		else
 		{
 			m_iPassIndex = 1;
 		}
 
 		m_pShaderCom.lock()->Begin(m_iPassIndex);
+		m_pInstancingModel.lock()->Render_Mesh(i);
+	}
+
+	CallBack_Render();
+
+    return S_OK;
+}
+
+HRESULT CStatic_Instancing_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix)
+{
+	m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
+
+	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)&In_LightViewMatrix, sizeof(_float4x4));
+	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)&In_LightProjMatrix, sizeof(_float4x4));
+
+	_uint iNumMeshContainers = m_pInstancingModel.lock()->Get_NumMeshContainers();
+	for (_uint i = 0; i < iNumMeshContainers; ++i)
+	{
+		m_pShaderCom.lock()->Begin(2);
 
 		m_pInstancingModel.lock()->Render_Mesh(i);
 	}
 
-
-    return __super::Render();
+	return S_OK;
 }
 
 void CStatic_Instancing_Prop::Free()

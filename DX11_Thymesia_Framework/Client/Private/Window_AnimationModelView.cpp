@@ -85,7 +85,7 @@ HRESULT CWindow_AnimationModelView::Render()
                 //ImGui::InputText("##ModelKey", m_szModelKey, MAX_PATH);
 
                 ImGui::Text(" NoAnimModel List");
-                if (ImGui::BeginListBox("## NoAnimModel List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+                if (ImGui::BeginListBox("## NoAnimModel List", ImVec2(-FLT_MIN, 15 * ImGui::GetTextLineHeightWithSpacing())))
                 {
 
                     for (int i = 0; i < m_AllNoAnimModelKeys.size(); i++)

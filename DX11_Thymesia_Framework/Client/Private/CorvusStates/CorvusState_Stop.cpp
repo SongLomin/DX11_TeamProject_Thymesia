@@ -66,7 +66,7 @@ void CCorvusState_Stop::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "LuxiyaState: Stop -> OnStateStart" << endl;
+	cout << "NorMonState: Stop -> OnStateStart" << endl;
 
 #endif
 }
@@ -95,7 +95,7 @@ _bool CCorvusState_Stop::Check_AndChangeNextState()
 	//if (Check_RequirementUltimateState())
 	//{
 	//	Rotation_NearToLookDir();
-	//	Get_OwnerPlayer()->Change_State<CLuxiyaState_UltimateSkill>();
+	//	Get_OwnerPlayer()->Change_State<CNorMonState_UltimateSkill>();
 	//	return true;
 	//}
 	//
@@ -104,15 +104,15 @@ _bool CCorvusState_Stop::Check_AndChangeNextState()
 	//	if (!Rotation_InputToLookDir())
 	//		Rotation_NearToLookDir();
 	//
-	//	Get_OwnerPlayer()->Change_State<CLuxiyaState_Attack>();
-	//	Get_OwnerPlayer()->Get_Component<CLuxiyaState_Attack>().lock()->Play_AttackWithIndex(0);
+	//	Get_OwnerPlayer()->Change_State<CNorMonState_Attack>();
+	//	Get_OwnerPlayer()->Get_Component<CNorMonState_Attack>().lock()->Play_AttackWithIndex(0);
 	//	return true;
 	//}
 	//
 	//if (Check_RequirementDashState())
 	//{
 	//	Rotation_InputToLookDir();
-	//	Get_OwnerPlayer()->Change_State<CLuxiyaState_Dash>();
+	//	Get_OwnerPlayer()->Change_State<CNorMonState_Dash>();
 	//	return true;
 	//}
 

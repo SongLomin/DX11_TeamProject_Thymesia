@@ -731,7 +731,6 @@ void CEditNaviMesh::OnEventMessage(_uint iArg)
                         m_eEditType = (EDIT_MODE)n;
                     }
 
-                    // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
                     if (is_selected)
                         ImGui::SetItemDefaultFocus();
                 }
