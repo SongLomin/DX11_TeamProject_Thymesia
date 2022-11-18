@@ -608,6 +608,105 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked(RAY _Ray, _float4* _pOutPos)
 	return false;
 }
 
+_bool ENGINE_DLL Engine::SMath::Is_Picked_AbstractCube(RAY _Ray, MESH_VTX_INFO _VtxInfo, _matrix _WorldMatrix)
+{
+	if (0 != isnan(_Ray.vOrigin.x))
+		return false;
+
+	_matrix		WorldMatrixInv = XMMatrixInverse(nullptr, _WorldMatrix);
+
+	_vector vRayPos = XMVector3TransformCoord(XMLoadFloat4(&_Ray.vOrigin), WorldMatrixInv);
+	_vector vRayDir = XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&_Ray.vDirection), WorldMatrixInv));
+
+	_float3				vPosition[8];
+	_uint3				vIndex[12];
+
+	vPosition[0] = { _VtxInfo.vMin.x, _VtxInfo.vMax.y, _VtxInfo.vMin.z };
+	vPosition[1] = { _VtxInfo.vMax.x, _VtxInfo.vMax.y, _VtxInfo.vMin.z };
+	vPosition[2] = { _VtxInfo.vMax.x, _VtxInfo.vMin.y, _VtxInfo.vMin.z };
+	vPosition[3] = { _VtxInfo.vMin.x, _VtxInfo.vMin.y, _VtxInfo.vMin.z };
+	vPosition[4] = { _VtxInfo.vMin.x, _VtxInfo.vMax.y, _VtxInfo.vMax.z };
+	vPosition[5] = { _VtxInfo.vMax.x, _VtxInfo.vMax.y, _VtxInfo.vMax.z };
+	vPosition[6] = { _VtxInfo.vMax.x, _VtxInfo.vMin.y, _VtxInfo.vMax.z };
+	vPosition[7] = { _VtxInfo.vMin.x, _VtxInfo.vMin.y, _VtxInfo.vMax.z };
+
+	vIndex[0]  = { 1, 5, 6 };
+	vIndex[1]  = { 1, 6, 2 };
+	vIndex[2]  = { 4, 0, 3 };
+	vIndex[3]  = { 4, 3, 7 };
+	vIndex[4]  = { 4, 5, 1 };
+	vIndex[5]  = { 4, 1, 0 };
+	vIndex[6]  = { 3, 2, 6 };
+	vIndex[7]  = { 3, 6, 7 };
+	vIndex[8]  = { 5, 4, 7 };
+	vIndex[9]  = { 5, 7, 6 };
+	vIndex[10] = { 0, 1, 2 };
+	vIndex[11] = { 0, 2, 3 };
+
+	_float		fDist;
+
+	for (_uint i = 0; i < 12; ++i)
+	{
+		_vector	vVec0 = XMLoadFloat3(&vPosition[vIndex[i].ix]);
+		_vector	vVec1 = XMLoadFloat3(&vPosition[vIndex[i].iy]);
+		_vector	vVec2 = XMLoadFloat3(&vPosition[vIndex[i].iz]);
+
+		if (true == DirectX::TriangleTests::Intersects(vRayPos, vRayDir, vVec0, vVec1, vVec2, fDist))
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+_bool ENGINE_DLL Engine::SMath::Is_Picked_Y(RAY _Ray, _float4* _pOutPos)
+{
+	if (0 != isnan(_Ray.vOrigin.x))
+		return false;
+
+	_float3 vPos[6] =
+	{
+		_float3(-9999.f,  9999.f, -9999.f),
+		_float3(-9999.f,  9999.f,  9999.f),
+		_float3(-9999.f, -9999.f,  9999.f),
+		_float3(-9999.f, -9999.f, -9999.f),
+		_float3( 9999.f,  9999.f,  9999.f),
+		_float3( 9999.f, -9999.f,  9999.f)
+	};
+
+	_uint3 iIndex[4] =
+	{
+		_uint3(0, 1, 2),
+		_uint3(0, 2, 3),
+		_uint3(1, 4, 5),
+		_uint3(1, 5, 2)
+	};
+
+	for (_uint i = 0; i < 4; ++i)
+	{
+		if (0 != isnan(_Ray.vOrigin.x))
+			break;
+
+		_vector		vPickedPos;
+		
+		_vector	vVec0 = XMLoadFloat3(&vPos[iIndex[i].ix]);
+		_vector	vVec1 = XMLoadFloat3(&vPos[iIndex[i].iy]);
+		_vector	vVec2 = XMLoadFloat3(&vPos[iIndex[i].iz]);
+
+		_float fDist  = 0;
+		if (DirectX::TriangleTests::Intersects(XMLoadFloat4(&_Ray.vOrigin), XMLoadFloat3(&_Ray.vDirection), vVec0, vVec1, vVec2, fDist))
+		{
+			vPickedPos = XMLoadFloat4(&_Ray.vOrigin) + XMVector3Normalize(XMLoadFloat3(&_Ray.vDirection)) * fDist;
+			XMStoreFloat4(_pOutPos, vPickedPos);
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void ENGINE_DLL Engine::SMath::Convert_PxVec3FromMeshData(PxVec3* In_PxVec3, weak_ptr<MESH_DATA> pMeshData)
 {
 	_uint iNumVertices = pMeshData.lock()->iNumVertices;

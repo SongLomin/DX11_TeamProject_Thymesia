@@ -299,6 +299,17 @@ namespace Engine
 
 	}COLLIDERDESC;
 
+	struct INSTANCE_MESH_DESC
+	{
+		_float3         vRotation;
+		_float3         vScale;
+		_float3			vTarnslation;
+
+		void Reset()
+		{
+			ZeroMemory(this, sizeof(INSTANCE_MESH_DESC));
+		}
+	};
 
 	struct PARTICLE_DESC
 	{

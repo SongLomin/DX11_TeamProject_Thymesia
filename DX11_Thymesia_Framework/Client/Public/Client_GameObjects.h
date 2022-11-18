@@ -17,10 +17,12 @@
 
 #include "EditNaviMesh.h"
 #include "Static_Prop.h"
+#include "Static_Instancing_Prop.h"
 #include "Light_Prop.h"
 
 #include "EditGround.h"
 #include "EditGroupProp.h"
+#include "EditInstanceProp.h"
 
 #include "CCorvus.h"
 #include "PreViewAnimationModel.h"
@@ -30,7 +32,6 @@
 #include "Player_Memory.h"
 #include "Player_PotionUI.h"
 #include "Player_FeatherUI.h"
-
 
 #include "NorMonster.h"
 #include "Monster.h"

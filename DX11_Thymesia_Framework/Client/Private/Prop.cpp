@@ -57,8 +57,6 @@ HRESULT CProp::Render()
 
 		// 노말인데 5에 저장되어 있다..
 
-		_uint iPrePass = m_iPassIndex;
-
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 		{
 			// 노말 텍스쳐가 없는 경우
@@ -69,9 +67,6 @@ HRESULT CProp::Render()
 		{
 			m_iPassIndex = 3;
 		}
-
-		if (5 == iPrePass)
-			m_iPassIndex = 5;
 
 		m_pShaderCom.lock()->Begin(m_iPassIndex);
 		m_pModelCom.lock()->Render_Mesh(i);

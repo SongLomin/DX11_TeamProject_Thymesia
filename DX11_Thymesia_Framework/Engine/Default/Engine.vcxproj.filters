@@ -213,7 +213,7 @@
       <Filter>01. Elements\03. Component\01. VIBuffer\09. Ground</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_Model_Instance.h">
-      <Filter>01. Elements\03. Component\01. VIBuffer\10. NoAmin_Instance</Filter>
+      <Filter>01. Elements\03. Component\01. VIBuffer\10. Model_Instance</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PhysX_Manager.h">
       <Filter>98. Managers\14. PhysXManager</Filter>
@@ -422,7 +422,7 @@
       <Filter>98. Managers\13. SoundManager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Model_Instance.cpp">
-      <Filter>01. Elements\03. Component\01. VIBuffer\10. NoAmin_Instance</Filter>
+      <Filter>01. Elements\03. Component\01. VIBuffer\10. Model_Instance</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Ground.cpp">
       <Filter>01. Elements\03. Component\01. VIBuffer\09. Ground</Filter>
@@ -666,11 +666,11 @@
     <Filter Include="01. Elements\03. Component\05. Model">
       <UniqueIdentifier>{c85fd47a-9db4-498a-9f79-6c3a9c7dbfe1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Elements\03. Component\01. VIBuffer\10. NoAmin_Instance">
-      <UniqueIdentifier>{fa2fd3e7-4ff1-47e5-a259-4f60e59b24f4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Elements\03. Component\01. VIBuffer\11. DynamicCube">
       <UniqueIdentifier>{00b2d075-d3c9-47c2-9314-3690a5e301ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Elements\03. Component\01. VIBuffer\10. Model_Instance">
+      <UniqueIdentifier>{fa2fd3e7-4ff1-47e5-a259-4f60e59b24f4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

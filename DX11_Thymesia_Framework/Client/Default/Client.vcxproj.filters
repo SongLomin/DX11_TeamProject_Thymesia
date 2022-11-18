@@ -491,6 +491,9 @@
     <ClInclude Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hpp">
       <Filter>04. ShaderFiles\hpp</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\EditInstanceProp.h">
+      <Filter>02. GameObject\99. Other\06. EditInstanceProp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -947,6 +950,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal.cpp">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EditInstanceProp.cpp">
+      <Filter>02. GameObject\99. Other\06. EditInstanceProp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1503,6 +1509,9 @@
     </Filter>
     <Filter Include="04. ShaderFiles\hpp">
       <UniqueIdentifier>{675030f1-6aa5-4084-b435-73d9219cdc1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\99. Other\06. EditInstanceProp">
+      <UniqueIdentifier>{e7b302f4-cc37-48e5-ac40-2dc079cc445b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

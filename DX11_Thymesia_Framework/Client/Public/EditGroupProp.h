@@ -20,15 +20,6 @@ class CEditGroupProp final :
     SHALLOW_COPY(CEditGroupProp)
 
 private:
-    enum class EDIT_MODE
-    {
-        MOVE,
-        PICKING,
-        NON,
-
-        EDIT_END
-    };
-
     typedef struct tag_PropInfo
     {
         weak_ptr<CProp>     pProp;
@@ -49,21 +40,25 @@ public:
 
 private:
     void    View_SelectPropObjectType();
-    void    View_EditMode();
     void    View_SelectModelComponent();
     void    View_PickingInfo();
 
+    void    View_Picking_Prop();
+    void    View_Picking_List();
+    void    View_Picking_Option();
+    void    View_Picking_Option_Y();
+    void    View_ModelCopy();
+    void    View_SelectTransformInfo();
+
+    void    View_SelectJson();
+
 private:
     void    Pick_Prop();
-    _bool   Check_Click(RAY _Ray, MESH_VTX_INFO _VtxInfo, _matrix _WorldMatrix);
 
 private:
     HRESULT SetUp_ShaderResource();
 
     void Load_ResourceList(vector<string>& In_List, const filesystem::path& In_Path, string _szCutName = "");
-
-    void Load_MeshList();
-    void Load_MashInfo(string _szName);
 
     void Save_Json(string _szName);
     void Load_Json(string _szName);
@@ -75,16 +70,15 @@ private:
     typedef vector<PROPS_DESC>                  PROPS_INFOS;
 
     PROPS_INFOS         m_PropList;
-    _bool               m_bSubDraw          = false;
+    _bool               m_bSubDraw            = false;
+                                              
+    _int                m_iPickingIndex       = -1;
+    _bool               m_bSelect_ShowGroup   = false;
 
-    EDIT_MODE           m_eEditMode         = EDIT_MODE::NON;
-    _int                m_iPickingIndex     = -1;
-    _bool               m_bSelect_ShowGroup = false;
-
-    string              m_szSelectPropType  = "CStatic_Prop";
-    string              m_szSelectModelName = "";
-    _float4             m_vPickingPos       = _float4(0.f, 0.f, 0.f, 0.f);
-    _float              m_fPosY             = 0.f;
+    string              m_szSelectPropType    = "CStatic_Prop";
+    string              m_szSelectModelName   = "";
+    _float4             m_vPickingPos         = _float4(0.f, 0.f, 0.f, 0.f);
+    _float              m_fPosY               = 0.f;
     RESOURCE_LIST       m_ModelList;
     RESOURCE_LIST       m_JsonList;
 

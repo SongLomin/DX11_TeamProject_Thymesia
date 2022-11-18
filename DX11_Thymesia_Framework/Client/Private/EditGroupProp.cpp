@@ -12,7 +12,6 @@
 #include "Static_Prop.h"
 #include "Dynamic_Prop.h"
 #include "Light_Prop.h"
-#include "Static_Instancing_Prop.h"
 
 #include "Model.h"
 
@@ -22,9 +21,6 @@
 
 GAMECLASS_C(CEditGroupProp)
 CLONE_C(CEditGroupProp, CGameObject)
-
-#define D3DCOLOR_ABGR(a,r,g,b) \
-    ((D3DCOLOR)((((a)&0xff)<<24)|(((r)&0xff)<<16)|(((g)&0xff)<<8)|((b)&0xff)))
 
 HRESULT CEditGroupProp::Initialize_Prototype()
 {
@@ -46,7 +42,7 @@ HRESULT CEditGroupProp::Initialize(void* pArg)
 	m_pVIBufferCom = Add_Component<CVIBuffer_DynamicCube>();
 	m_ModelList    = GET_SINGLE(CGameInstance)->Get_AllNoneAnimModelKeys();
 
-	//Load_ResourceList(m_JsonList   , "../Bin/MapTool_MeshInfo/Json_Desc/", ".json");
+	Load_ResourceList(m_JsonList   , "../Bin/MapTool_MeshInfo/", ".json");
 
 	return S_OK;
 }
@@ -125,14 +121,6 @@ void CEditGroupProp::Load_ResourceList(vector<string>& In_List, const filesystem
 	}
 }
 
-void CEditGroupProp::Load_MeshList()
-{
-}
-
-void CEditGroupProp::Load_MashInfo(string _szName)
-{
-}
-
 HRESULT CEditGroupProp::SetUp_ShaderResource()
 {
 	if (m_PropList.empty() || 0 > m_iPickingIndex || m_PropList.size() <= m_iPickingIndex)
@@ -171,10 +159,113 @@ HRESULT CEditGroupProp::SetUp_ShaderResource()
 
 void CEditGroupProp::Save_Json(string _szName)
 {
+	json JsonOut;
+
+	_uint iIndex = 0;
+	for (auto& iter_prop : m_PropList)
+	{
+		json PropInfo;
+
+		if (!iter_prop.pProp.lock())
+			continue;
+
+		weak_ptr<CModel>	 pModel     = iter_prop.pProp.lock()->Get_Component<CModel>();
+		weak_ptr<CTransform> pTransform = iter_prop.pProp.lock()->Get_Component<CTransform>();
+
+		if (!pModel.lock() || !pTransform.lock())
+			continue;
+
+		_float4x4 WorldMatrix;
+		XMStoreFloat4x4(&WorldMatrix, pTransform.lock()->Get_WorldMatrix());
+
+		PropInfo.emplace("hash"			, iter_prop.hash);
+		PropInfo.emplace("ModelKey"		, pModel.lock()->Get_ModelKey());
+		PropInfo.emplace("WorldMatrix"  , WorldMatrix.m);
+
+		string szTag = iter_prop.szName + " ( " + to_string(iIndex++) + " )";
+
+		JsonOut.emplace(szTag, PropInfo);
+	}
+
+	string szPath = "../Bin/MapTool_MeshInfo/" + _szName +".json";
+
+	if (FAILED(CJson_Utility::Save_Json(szPath.c_str(), JsonOut)))
+		return;
 }
 
 void CEditGroupProp::Load_Json(string _szName)
 {
+	json JsonOut;
+
+	string szPath = "../Bin/MapTool_MeshInfo/" + _szName + ".json";
+
+	if (FAILED(CJson_Utility::Load_Json(szPath.c_str(), JsonOut)))
+		return;
+
+	for (auto& iter : JsonOut.items())
+	{
+		json items = iter.value();
+
+		PROPS_DESC	Desc;
+		string		ModelKeyTag = "";
+		_float4x4	WorldMatrix;
+		XMStoreFloat4x4(&WorldMatrix, XMMatrixIdentity());
+
+		for (auto& iter_item : items.items())
+		{
+			string szKey = iter_item.key();
+
+			if ("hash" == szKey)
+			{
+				Desc.hash = iter_item.value();
+
+				if (typeid(CStatic_Prop).hash_code() == Desc.hash)
+				{
+					Desc.pProp  = GAMEINSTANCE->Add_GameObject<CStatic_Prop>(m_CreatedLevel);
+					Desc.szName = typeid(CStatic_Prop).name();
+				}
+
+				else if (typeid(CDynamic_Prop).hash_code() == Desc.hash)
+				{
+					Desc.pProp  = GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(m_CreatedLevel);
+					Desc.szName = typeid(CDynamic_Prop).name();
+				}
+
+				else if ("CLight_Prop" == m_szSelectPropType)
+				{
+					Desc.pProp  = GAMEINSTANCE->Add_GameObject<CLight_Prop>(m_CreatedLevel);
+					Desc.szName = typeid(CLight_Prop).name();
+				}
+
+				else
+				{
+					MSG_BOX("Err : None HashCode");
+					return;
+				}
+			}
+
+			else if ("ModelKey" == szKey)
+			{
+				ModelKeyTag = iter_item.value();
+			}
+
+			else if ("WorldMatrix" == szKey)
+			{
+				for (int i = 0; i < 4; i++)
+				{
+					for (int j = 0; j < 4; j++)
+					{
+						WorldMatrix.m[i][j] = iter_item.value()[i][j];
+					}
+				}
+			}
+		}
+
+		Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(ModelKeyTag.c_str(), "");
+		Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_WorldMatrix(XMLoadFloat4x4(&WorldMatrix));
+
+		m_PropList.push_back(Desc);
+	}
 }
 
 void CEditGroupProp::Write_Json(json& Out_Json)
@@ -212,10 +303,13 @@ void CEditGroupProp::OnEventMessage(_uint iArg)
 			return;
 
 			_uint iIndex = 0;
+			static _int iSelect_Info = 0;
 
 			for (auto& iter_prop : m_PropList)
 			{
-				string szItemTag = string("  - ( ") + to_string(iIndex) + " ) " + iter_prop.szName;
+				string szItemTag = (iIndex == m_iPickingIndex) ? ("  =>") : ("  -");
+
+				szItemTag += string(" ( ") + to_string(iIndex) + " ) " + iter_prop.szName;
 
 				if (ImGui::Selectable(szItemTag.c_str()))
 				{
@@ -225,6 +319,8 @@ void CEditGroupProp::OnEventMessage(_uint iArg)
 					Desc.TypeName	= iter_prop.szName;
 
 					GET_SINGLE(CWindow_HierarchyView)->CallBack_ListClick(Desc);
+
+					m_iPickingIndex = iIndex;
 				}
 
 				++iIndex;
@@ -236,21 +332,32 @@ void CEditGroupProp::OnEventMessage(_uint iArg)
 		{
 			Pick_Prop();
 
-			if (ImGui::BeginTabBar("Map"))
+			if (ImGui::BeginTabBar("Edit"))
 			{
 				if (ImGui::BeginTabItem("Create"))
 				{
 					View_SelectPropObjectType();
-					View_EditMode();
 					View_SelectModelComponent();
 					View_PickingInfo();
 
 					ImGui::EndTabItem();
 				}
 
-				if (ImGui::BeginTabItem("Else"))
+				if (ImGui::BeginTabItem("Pick"))
 				{
+					View_Picking_Prop();
+					View_Picking_List();
+					View_Picking_Option();
+					View_Picking_Option_Y();
+					View_ModelCopy();
+					View_SelectTransformInfo();
 
+					ImGui::EndTabItem();
+				}
+
+				if (ImGui::BeginTabItem("Save & Load"))
+				{
+					View_SelectJson();
 
 					ImGui::EndTabItem();
 				}
@@ -262,17 +369,6 @@ void CEditGroupProp::OnEventMessage(_uint iArg)
 	}
 }
 
-void CEditGroupProp::View_EditMode()
-{
-	static const char* items_EditMode[] =
-	{
-		"MOVE",
-		"HEIGHT_LERP",
-		"FILLTER",
-		"NON"
-	};
-}
-
 void CEditGroupProp::View_SelectPropObjectType()
 {
 	ImGui::Text("");
@@ -282,7 +378,6 @@ void CEditGroupProp::View_SelectPropObjectType()
 		"CStatic_Prop",
 		"CDynamic_Prop",
 		"CLight_Prop",
-		"CStatic_Instancing_Prop"
 	};
 
 	static _int iSelect_PropType = 0;
@@ -302,88 +397,37 @@ void CEditGroupProp::View_SelectPropObjectType()
 
 void CEditGroupProp::View_SelectModelComponent()
 {
-	static const char* ModelType[] =
-	{
-		"NONANIM",
-		"ANIM"
-	};
-
-	static _int		iSelect_ModelType		 = 0;
 	static _int		iSelect_NonAnimModel	 = 0;
-	static _int		iSelect_AnimModel		 = 0;
 	static _char    szFindModelTag[MAX_PATH] = "";
-
-	if (ImGui::Combo("Model Type", &iSelect_ModelType, ModelType, IM_ARRAYSIZE(ModelType)))
-	{
-		if (0 == iSelect_ModelType && !m_ModelList.empty())
-			m_szSelectModelName = m_ModelList[iSelect_NonAnimModel];
-
-		else if (1 == iSelect_ModelType && !m_ModelList.empty())
-			m_szSelectModelName = m_ModelList[iSelect_AnimModel];
-	}
-	ImGui::Text("");
 
 	ImGui::Text(string("[ Select MD ] : " + m_szSelectModelName).c_str());
 	ImGui::InputText("Find", szFindModelTag, MAX_PATH);
 	ImGui::Text("");
 
-	if (ImGui::BeginListBox("Model"))
+	if (ImGui::BeginListBox("##Model", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
 	{
 		_uint iIndex = 0;
 
-		switch (iSelect_ModelType)
+		for (auto& iter : m_ModelList)
 		{
-			case 0:
+			const bool is_selected = (iSelect_NonAnimModel == iIndex);
+
+			if (0 < strlen(szFindModelTag))
 			{
-				for (auto& iter : m_ModelList)
-				{
-					const bool is_selected = (iSelect_NonAnimModel == iIndex);
-
-					if (0 < strlen(szFindModelTag))
-					{
-						if (string::npos == iter.find(szFindModelTag))
-							continue;
-					}
-
-					if (ImGui::Selectable(iter.c_str(), is_selected))
-					{
-						iSelect_NonAnimModel = iIndex;
-						m_szSelectModelName  = iter;
-					}
-
-					if (is_selected)
-						ImGui::SetItemDefaultFocus();
-
-					++iIndex;
-				}
+				if (string::npos == iter.find(szFindModelTag))
+					continue;
 			}
-			break;
 
-			case 1:
+			if (ImGui::Selectable(iter.c_str(), is_selected))
 			{
-				for (auto& iter : m_ModelList)
-				{
-					const bool is_selected = (iSelect_AnimModel == iIndex);
-
-					if (0 < strlen(szFindModelTag))
-					{
-						if (string::npos == iter.find(szFindModelTag))
-							continue;
-					}
-
-					if (ImGui::Selectable(iter.c_str(), is_selected))
-					{
-						iSelect_AnimModel   = iIndex;
-						m_szSelectModelName = iter;
-					}
-
-					if (is_selected)
-						ImGui::SetItemDefaultFocus();
-
-					++iIndex;
-				}
+				iSelect_NonAnimModel = iIndex;
+				m_szSelectModelName  = iter;
 			}
-			break;
+
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+
+			++iIndex;
 		}
 
 		ImGui::EndListBox();
@@ -415,14 +459,16 @@ void CEditGroupProp::View_PickingInfo()
 
 	SMath::Is_Picked(MouseRayInWorldSpace, &m_vPickingPos);
 
-	_long iMouseWheel = 0;
-	if (iMouseWheel = GAMEINSTANCE->Get_DIMouseMoveState(MOUSEMOVE::MMS_WHEEL))
+	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD) && KEY_INPUT(KEY::C, KEY_STATE::HOLD))
 	{
-		m_fPosY += 0.01f * (abs(iMouseWheel) / iMouseWheel);
+		_long		MouseMove = 0;
+		if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
+		{
+			m_fPosY += 0.01f * MouseMove;
+		}
 	}
 
 	m_vPickingPos.y = m_fPosY;
-
 
 	ImGui::Text("[ Picking Info ] ");
 	ImGui::DragFloat4("##PickPos", &m_vPickingPos.x, 1.f);
@@ -433,71 +479,25 @@ void CEditGroupProp::View_PickingInfo()
 
 	szPickingTag += (0 > m_iPickingIndex || (_int)m_PropList.size() <= m_iPickingIndex)
 		? (" None ") 
-		: (typeid(m_PropList[m_iPickingIndex]).name());
+		: (m_PropList[m_iPickingIndex].szName);
 
 	ImGui::Text(szPickingTag.c_str());
 
-	if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) && KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
+	if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) && KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
 	{	
 		if ("" == m_szSelectModelName)
 			return;
 
-		if ("CStatic_Prop" == m_szSelectPropType)
-		{
-			PROPS_DESC Desc;
-			Desc.pProp	= GAMEINSTANCE->Add_GameObject<CStatic_Prop>(m_CreatedLevel);
-			Desc.hash	= typeid(CStatic_Prop).hash_code();
-			Desc.szName	= typeid(CStatic_Prop).name();
-
-			Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
-			Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
-			m_PropList.push_back(Desc);
-		}
-
-		else if ("CDynamic_Prop" == m_szSelectPropType)
-		{
-			PROPS_DESC Desc;
-			Desc.pProp	= GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(m_CreatedLevel);
-			Desc.hash	= typeid(CDynamic_Prop).hash_code();
-			Desc.szName	= typeid(CDynamic_Prop).name();
-
-			Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
-			Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
-			m_PropList.push_back(Desc);
-		}
-
-		else if ("CLight_Prop" == m_szSelectPropType)
-		{
-			PROPS_DESC Desc;
-			//Desc.pProp	= GAMEINSTANCE->Add_GameObject<CLight_Prop>(m_CreatedLevel);
-			Desc.hash	= typeid(CLight_Prop).hash_code();
-			Desc.szName	= typeid(CLight_Prop).name();
-
-			Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
-			Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
-			m_PropList.push_back(Desc);
-		}
-
-		else if ("CStatic_Instancing_Prop" == m_szSelectPropType)
-		{
-			PROPS_DESC Desc;
-			//Desc.pProp	= GAMEINSTANCE->Add_GameObject<CStatic_Instancing_Prop>(m_CreatedLevel);
-			Desc.hash	= typeid(CStatic_Instancing_Prop).hash_code();
-			Desc.szName	= typeid(CStatic_Instancing_Prop).name();
-
-			Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
-			Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
-			m_PropList.push_back(Desc);
-		}
+		
 	}
 
 	ImGui::Text("");
 	ImGui::Separator();
 }
 
-void CEditGroupProp::Pick_Prop()
+void CEditGroupProp::View_Picking_Prop()
 {
-	if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) && KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
+	if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) && KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
 	{
 		RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
 
@@ -508,13 +508,247 @@ void CEditGroupProp::Pick_Prop()
 			weak_ptr<CTransform>	pTransformCom = iter.pProp.lock()->Get_Component<CTransform>();
 
 			if (!pModelCom.lock() || !pTransformCom.lock())
-			{
 				continue;
-			}
+
+			/*if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION)))
+				continue;*/
 
 			MESH_VTX_INFO Info = pModelCom.lock()->Get_ModelData().lock()->VertexInfo;
 
-			if (Check_Click(MouseRayInWorldSpace, Info, pTransformCom.lock()->Get_WorldMatrix()))
+			if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, Info, pTransformCom.lock()->Get_WorldMatrix()))
+			{
+				m_iPickingIndex = iIndex;
+			}
+
+			++iIndex;
+		}
+	}
+}
+
+void CEditGroupProp::View_Picking_List()
+{
+	if (ImGui::BeginListBox("##Prop Info List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+	{
+		for (_uint i = 0; i < (_uint)m_PropList.size(); ++i)
+		{
+			const bool is_selected = (m_iPickingIndex == i);
+
+			string szTag = "( " + to_string(i) + " ) " + m_PropList[i].szName;
+
+			if (ImGui::Selectable(szTag.c_str(), is_selected))
+			{
+				m_iPickingIndex = i;
+			}
+
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+
+		ImGui::EndListBox();
+	}
+}
+
+void CEditGroupProp::View_Picking_Option()
+{
+	if (m_PropList.empty() || 0 > m_iPickingIndex || m_PropList.size() <= m_iPickingIndex)
+		return;
+
+	RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+	_float4 vMouseDir;
+	ZeroMemory(&vMouseDir, sizeof(_float4));
+
+	if (!SMath::Is_Picked(MouseRayInWorldSpace, &vMouseDir))
+		return;
+
+	weak_ptr<CTransform>	pTransformCom = m_PropList[m_iPickingIndex].pProp.lock()->Get_Component<CTransform>();
+
+	if (!pTransformCom.lock())
+		return;
+
+	// Z : 이동, X : 로테이션, 마우스 휠 : y축 이동
+
+	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
+	{
+		if (KEY_INPUT(KEY::Z, KEY_STATE::HOLD))
+		{
+			_vector vObjPos = pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+			_vector vAddPos = XMVectorSet(vMouseDir.x, vObjPos.m128_f32[1], vMouseDir.z, 1.f);
+
+			pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vAddPos);
+		}
+
+		else if (KEY_INPUT(KEY::X, KEY_STATE::HOLD))
+		{
+			_vector vObjPos = pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+			_vector vAddPos = XMVectorSet(vMouseDir.x, vObjPos.m128_f32[1], vMouseDir.z, 1.f);
+
+			pTransformCom.lock()->LookAt(vAddPos);
+		}
+	}
+}
+
+void CEditGroupProp::View_Picking_Option_Y()
+{
+	if (m_PropList.empty() || 0 > m_iPickingIndex || m_PropList.size() <= m_iPickingIndex)
+		return;
+
+	weak_ptr<CTransform>	pTransformCom = m_PropList[m_iPickingIndex].pProp.lock()->Get_Component<CTransform>();
+
+	if (!pTransformCom.lock())
+		return;
+
+	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
+	{
+		if (KEY_INPUT(KEY::C, KEY_STATE::HOLD))
+		{
+			_long		MouseMove = 0;
+			if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
+			{
+				_vector vObjPos = pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+				vObjPos.m128_f32[1] += (MouseMove * -0.01f);
+
+				pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vObjPos);
+			}
+		}
+	}
+
+	_float3 vPos = { 0.f, 0.f, 0.f };
+	XMStoreFloat3(&vPos, pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION));
+
+	ImGui::DragFloat3("OBJ Pos", &vPos.x, 1.f);
+	ImGui::Text("");
+}
+
+void CEditGroupProp::View_ModelCopy()
+{
+	if (m_PropList.empty() || 0 > m_iPickingIndex || m_PropList.size() <= m_iPickingIndex)
+		return;
+
+	if (ImGui::Button("Copy", ImVec2(100.f, 25.f)))
+	{
+		weak_ptr<CModel> pModel = m_PropList[m_iPickingIndex].pProp.lock()->Get_Component<CModel>();
+
+		if (!pModel.lock())
+			return;
+
+		m_szSelectModelName = pModel.lock()->Get_ModelKey();
+	}
+
+	ImGui::Text("");
+	ImGui::Separator();
+	ImGui::Text("");
+}
+
+void CEditGroupProp::View_SelectTransformInfo()
+{
+	if (m_PropList.empty() || 0 > m_iPickingIndex || m_PropList.size() <= m_iPickingIndex)
+		return;
+
+	weak_ptr<CTransform> pTransformCom = m_PropList[m_iPickingIndex].pProp.lock()->Get_Component<CTransform>();
+
+	 // Position
+	_vector vPositionVector = pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+
+	ImGui::Text("Position");
+	ImGui::DragFloat3("##Position", &vPositionVector.m128_f32[0], 1.f);
+
+	pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPositionVector);
+	
+	 // Quaternion
+	_matrix matWorld = pTransformCom.lock()->Get_WorldMatrix();
+	_float3 vPitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(matWorld));
+
+	ImGui::Text("Pitch Yaw Roll");
+	ImGui::DragFloat3("##Pitch Yaw Roll", &vPitchYawRoll.x, 0.01f);
+	_vector vQuaternion = XMQuaternionRotationRollPitchYaw(vPitchYawRoll.x, vPitchYawRoll.y, vPitchYawRoll.z);
+
+	pTransformCom.lock()->Rotation_Quaternion(vQuaternion);
+	
+	 // Scale
+	_float3 vScaleFloat3 = pTransformCom.lock()->Get_Scaled();
+	_vector vScaleVector = XMLoadFloat3(&vScaleFloat3);
+
+	ImGui::Text("Scale");
+	ImGui::DragFloat3("##Scale", &vScaleVector.m128_f32[0], 0.1f);
+
+	vScaleVector.m128_f32[0] = max(0.00001f, vScaleVector.m128_f32[0]);
+	vScaleVector.m128_f32[1] = max(0.00001f, vScaleVector.m128_f32[1]);
+	vScaleVector.m128_f32[2] = max(0.00001f, vScaleVector.m128_f32[2]);
+	XMStoreFloat3(&vScaleFloat3, vScaleVector);
+
+	pTransformCom.lock()->Set_Scaled(vScaleFloat3);
+	ImGui::Text("");
+}
+
+void CEditGroupProp::View_SelectJson()
+{
+	static _char szJsonFileTag[MAX_PATH] = "";
+	ImGui::InputText("Name", szJsonFileTag, MAX_PATH);
+
+	static int	iSelect_MeshData = 0;
+	if (ImGui::BeginListBox("##Json List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+	{
+		_uint iIndex = 0;
+
+		for (auto& iter : m_JsonList)
+		{
+			const bool is_selected = (iSelect_MeshData == iIndex);
+
+			if (0 < strlen(szJsonFileTag))
+			{
+				if (string::npos == m_JsonList[iIndex].find(szJsonFileTag))
+					continue;
+			}
+
+			if (ImGui::Selectable(iter.c_str(), is_selected))
+			{
+				iSelect_MeshData = iIndex;
+				strcpy_s(szJsonFileTag, m_JsonList[iIndex].c_str());
+			}
+
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+
+			++iIndex;
+		}
+
+		ImGui::EndListBox();
+	}
+
+	if (ImGui::Button("Save", ImVec2(100.f, 25.f)) && !m_JsonList.empty())
+	{
+		Save_Json(m_JsonList[iSelect_MeshData]);
+	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Load", ImVec2(100.f, 25.f)) && !m_JsonList.empty())
+	{
+		Load_Json(m_JsonList[iSelect_MeshData]);
+	}
+}
+
+void CEditGroupProp::Pick_Prop()
+{
+	if (KEY_INPUT(KEY::ALT, KEY_STATE::HOLD) && KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
+	{
+		RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+
+		_uint iIndex = 0;
+		for (auto& iter : m_PropList)
+		{
+			weak_ptr<CModel>		pModelCom     = iter.pProp.lock()->Get_Component<CModel>();
+			weak_ptr<CTransform>	pTransformCom = iter.pProp.lock()->Get_Component<CTransform>();
+
+			if (!pModelCom.lock() || !pTransformCom.lock())
+				continue;
+
+			/*if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION)))
+				continue;*/
+
+			MESH_VTX_INFO Info = pModelCom.lock()->Get_ModelData().lock()->VertexInfo;
+
+			if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, Info, pTransformCom.lock()->Get_WorldMatrix()))
 			{
 				CImGui_Window::GAMEOBJECT_DESC Desc;
 				Desc.HashCode	= iter.hash;
@@ -528,58 +762,6 @@ void CEditGroupProp::Pick_Prop()
 			++iIndex;
 		}
 	}
-}
-
-_bool CEditGroupProp::Check_Click(RAY _Ray, MESH_VTX_INFO _VtxInfo, _matrix _WorldMatrix)
-{
-	if (0 != isnan(_Ray.vOrigin.x))
-		return false;
-
-	_matrix		WorldMatrixInv = XMMatrixInverse(nullptr, _WorldMatrix);
-
-	_vector vRayPos = XMVector3TransformCoord(XMLoadFloat4(&_Ray.vOrigin), WorldMatrixInv);
-	_vector vRayDir = XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&_Ray.vDirection), WorldMatrixInv));
-
-	_float3				vPosition[8];
-	_uint3				vIndex[12];
-
-	vPosition[0] = { _VtxInfo.vMin.x, _VtxInfo.vMax.y, _VtxInfo.vMin.z };
-	vPosition[1] = { _VtxInfo.vMax.x, _VtxInfo.vMax.y, _VtxInfo.vMin.z };
-	vPosition[2] = { _VtxInfo.vMax.x, _VtxInfo.vMin.y, _VtxInfo.vMin.z };
-	vPosition[3] = { _VtxInfo.vMin.x, _VtxInfo.vMin.y, _VtxInfo.vMin.z };
-	vPosition[4] = { _VtxInfo.vMin.x, _VtxInfo.vMax.y, _VtxInfo.vMax.z };
-	vPosition[5] = { _VtxInfo.vMax.x, _VtxInfo.vMax.y, _VtxInfo.vMax.z };
-	vPosition[6] = { _VtxInfo.vMax.x, _VtxInfo.vMin.y, _VtxInfo.vMax.z };
-	vPosition[7] = { _VtxInfo.vMin.x, _VtxInfo.vMin.y, _VtxInfo.vMax.z };
-
-	vIndex[0]  = { 1, 5, 6 };
-	vIndex[1]  = { 1, 6, 2 };
-	vIndex[2]  = { 4, 0, 3 };
-	vIndex[3]  = { 4, 3, 7 };
-	vIndex[4]  = { 4, 5, 1 };
-	vIndex[5]  = { 4, 1, 0 };
-	vIndex[6]  = { 3, 2, 6 };
-	vIndex[7]  = { 3, 6, 7 };
-	vIndex[8]  = { 5, 4, 7 };
-	vIndex[9]  = { 5, 7, 6 };
-	vIndex[10] = { 0, 1, 2 };
-	vIndex[11] = { 0, 2, 3 };
-
-	_float		fDist;
-
-	for (_uint i = 0; i < 12; ++i)
-	{
-		_vector	vVec0 = XMLoadFloat3(&vPosition[vIndex[i].ix]);
-		_vector	vVec1 = XMLoadFloat3(&vPosition[vIndex[i].iy]);
-		_vector	vVec2 = XMLoadFloat3(&vPosition[vIndex[i].iz]);
-
-		if (true == DirectX::TriangleTests::Intersects(vRayPos, vRayDir, vVec0, vVec1, vVec2, fDist))
-		{
-			return true;
-		}
-	}
-
-	return false;
 }
 
 void CEditGroupProp::Free()

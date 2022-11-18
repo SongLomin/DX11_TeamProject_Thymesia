@@ -53,16 +53,14 @@ HRESULT CWindow_HierarchyView::Render()
 
 	for (auto& elem : m_pGameObjects)
 	{
-		char szIndexedName[MAX_PATH];
+		string szIndexedName = to_string(iIndex) + ". " + elem.TypeName;
+		
+		if (m_iPreSelectIndex == iIndex)
+			szIndexedName = "[ " + szIndexedName + " ]";
 
-		_itoa_s(iIndex, szIndexedName, 10);
-		strcat_s(szIndexedName, ". ");
-		strcat_s(szIndexedName, elem.TypeName.c_str());
-
-		if (ImGui::Selectable(szIndexedName))
+		if (ImGui::Selectable(szIndexedName.c_str()))
 		{		
 			CallBack_ListClick(elem);
-
 
 			m_iPreSelectIndex = iIndex;
 		}
