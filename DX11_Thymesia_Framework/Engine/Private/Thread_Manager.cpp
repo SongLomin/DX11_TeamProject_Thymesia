@@ -74,12 +74,12 @@ void Loop(const THREAD_TYPE In_eThread_Type)
 
 		for (auto& elem : GET_SINGLE(CThread_Manager)->m_ReservedThreadObjects[(_uint)In_eThread_Type])
 		{
-			cout << "Thread [" << (_uint)In_eThread_Type << "] Push_Back" << endl;
-			//ThreadObjects.push_back(elem);
+			//cout << "Thread [" << (_uint)In_eThread_Type << "] Push_Back" << endl;
+			ThreadObjects.push_back(elem);
 		}
 
 
-		//GET_SINGLE(CThread_Manager)->m_ReservedThreadObjects[In_eThread_Type].clear();
+		GET_SINGLE(CThread_Manager)->m_ReservedThreadObjects[(_uint)In_eThread_Type].clear();
 
 		//Update(In_eThread_Type, ThreadObjects, fTimeDelta);
 
