@@ -361,14 +361,14 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Model("Mon_AxeMan", "../Bin/Resources/Meshes/NorMonster/AxeMan/SK_C_LV1Villager_M_Skeleton.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model("Mon_KnifeWoMan", "../Bin/Resources/Meshes/NorMonster/KnifeWoMan/SK_C_LV1Villager_F_Skeleton.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC, true);
+	GAMEINSTANCE->Load_Model("Mon_KnifeWoMan", "../Bin/Resources/Meshes/NorMonster/KnifeWoMan/SK_C_LV1Villager_F_Skeleton.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 	// 일반몬스터 관련모델
 
 	// 일반몬스터 무기모델
-	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(270.0f)) * XMMatrixRotationY(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f))* XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Mon_Weapon_Axe", "../Bin/Resources/Meshes/NorMonster/Weapon/Axe/Axe.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
-	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Mon_Weapon_Knife", "../Bin/Resources/Meshes/NorMonster/Weapon/Knife/Knife.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 	// 일반몬스터 무기모델
 	

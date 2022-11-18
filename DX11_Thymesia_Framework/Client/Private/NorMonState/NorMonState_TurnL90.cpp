@@ -32,11 +32,20 @@ void CNorMonState_TurnL90::Start()
 	__super::Start();
 
 
-
-	if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
+	switch (m_eNorMonType)
 	{
+	case Client::NORMONSTERTYPE::AXEMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|DemoM02_TurnL90|BaseLayer|Armature|A");
+		break;
+	case Client::NORMONSTERTYPE::KNIFEWOMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|TurnL90|SK_C_LV1Vil");
+		break;
+	case Client::NORMONSTERTYPE::SKULL:
+		break;
+	case Client::NORMONSTERTYPE::GARDENER:
+		break;
 	}
+
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_TurnL90::Call_AnimationEnd, this);
 }

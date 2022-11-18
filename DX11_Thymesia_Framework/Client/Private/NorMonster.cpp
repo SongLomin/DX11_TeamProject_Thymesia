@@ -40,7 +40,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		m_pModelCom.lock()->Init_Model("Mon_AxeMan", "", (_uint)TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 		m_pWeapons.back().lock()->Set_WeaponType(MONSTERWEAPONTYPE::WEAPON_AXE);
-		m_pWeapons.back().lock()->Init_DefaultWeapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "hand_r");
+		m_pWeapons.back().lock()->Init_DefaultWeapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
 		//TODO 야매에요 ㅎ
 		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, 0.f, m_tLinkStateDesc.vYame.z, 1.f));
 		break;
@@ -49,11 +49,8 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		m_pModelCom.lock()->Init_Model("Mon_KnifeWoMan", "", (_uint)TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 		m_pWeapons.back().lock()->Set_WeaponType(MONSTERWEAPONTYPE::WEAPON_KNIFE);
-		m_pWeapons.back().lock()->Init_DefaultWeapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "hand_r");
-		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
-		m_pWeapons.back().lock()->Set_WeaponType(MONSTERWEAPONTYPE::WEAPON_KNIFE);
-		m_pWeapons.back().lock()->Init_DefaultWeapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "hand_l");
-		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(3.f, 0.f, 1.f, 1.f));
+		m_pWeapons.back().lock()->Init_DefaultWeapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
+		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, 0.f, m_tLinkStateDesc.vYame.z, 1.f));
 		break;
 	case NORMONSTERTYPE::SKULL:
 		break;

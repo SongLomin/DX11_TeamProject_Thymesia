@@ -1,85 +1,82 @@
-0. DemoM01_VSTakeExecution
-1. LV1Villager_F_Attack01
-2. LV1Villager_F_Attack02
-3. LV1Villager_F_Attack03
-4. LV1Villager_F_Attack04
-5. LV1Villager_F_Attack05
-6. LV1Villager_F_AttackAfterRun
-7. LV1Villager_F_Die01
-8. LV1Villager_F_Die02
-9. LV1Villager_F_Fall_End
-10. LV1Villager_F_Fall_Loop
-11. LV1Villager_F_FallGround
-12. LV1Villager_F_FallHurt_B
-13. LV1Villager_F_HurtCounter
-14. LV1Villager_F_HurtFall_End_FaceUp
-15. LV1Villager_F_HurtKnockBack
-16. LV1Villager_F_HurtKnockDownF
-17. LV1Villager_F_HurtKnockUp_Sart
-18. LV1Villager_F_HurtL_F
-19. LV1Villager_F_HurtLieDie_FaceUp
-20. LV1Villager_F_HurtLieGetup_FaceDown
-21. LV1Villager_F_HurtLieGetup_FaceUp
-22. LV1Villager_F_HurtLieLoop_FaceDown
-23. LV1Villager_F_HurtLieLoop_FaceUp
-24. LV1Villager_F_HurtM_FL
-25. LV1Villager_F_HurtM_FR
-26. LV1Villager_F_HurtS_FL
-27. LV1Villager_F_HurtS_FR
-28. LV1Villager_F_HurtStunEnd
-29. LV1Villager_F_HurtStunHurt
-30. LV1Villager_F_HurtStunLoop
-31. LV1Villager_F_HurtStunStart
-32. LV1Villager_F_HurtXL_F
-33. LV1Villager_F_Idle
-34. LV1Villager_F_Parry
-35. LV1Villager_F_Run_N
-36. LV1Villager_F_RunRoot
-37. LV1Villager_F_Sit_Idle
-38. LV1Villager_F_SitToIdle
-39. LV1Villager_F_SP03
-40. LV1Villager_F_SP_Idle1
-41. LV1Villager_F_SP_Idle1_End
-42. LV1Villager_F_TurnL90
-43. LV1Villager_F_TurnR90
-44. LV1Villager_F_VSTakeExecutionDead
-45. LV1Villager_F_WalkB
-46. LV1Villager_F_WalkF
-47. LV1Villager_F_WalkL
-48. LV1Villager_F_WalkR
-49. LV2Villager01_F_ComboA01
-50. LV2Villager01_F_ComboB01
-51. LV2Villager01_F_ComboC01
-52. LV2Villager01_F_ComboE01
-53. LV2Villager01_F_ComboE02
-54. LV2Villager01_F_ComboF01
-55. LV2Villager01_F_HurtCounter
-56. LV2Villager01_F_HurtFall_End_FaceUp
-57. LV2Villager01_F_HurtKnockBack
-58. LV2Villager01_F_HurtKnockDownF
-59. LV2Villager01_F_HurtKnockUp_Sart
-60. LV2Villager01_F_HurtLieDie_FaceUp
-61. LV2Villager01_F_HurtLieGetup_FaceUp
-62. LV2Villager01_F_HurtS_FL
-63. LV2Villager01_F_HurtS_FR
-64. LV2Villager01_F_HurtStunEnd
-65. LV2Villager01_F_HurtStunLoop
-66. LV2Villager01_F_HurtStunStart
-67. LV2Villager01_F_Idle
-68. LV2Villager01_F_Parry_L
-69. LV2Villager01_F_Run
-70. LV2Villager01_F_SP_Idle1
-71. LV2Villager01_F_SP_Idle1_End
-72. LV2Villager01_F_VS_TakeExecution
-73. LV2Villager01_F_Walk_B
-74. LV2Villager01_F_Walk_F
-75. LV2Villager01_F_Walk_L
-76. LV2Villager01_F_Walk_R
+0. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|_Idle|SK_C_LV1Villa
+1. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Attack01|SK_C_LV1Vi
+2. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Attack02|SK_C_LV1Vi
+3. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Attack03|SK_C_LV1Vi
+4. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Attack04|SK_C_LV1Vi
+5. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Attack05|SK_C_LV1Vi
+6. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|AttackAfterRun|SK_C
+7. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|ComboA01|SK_C_LV1Vi
+8. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|ComboB01|SK_C_LV1Vi
+9. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|ComboC01|SK_C_LV1Vi
+10. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|ComboE01|SK_C_LV1Vi
+11. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|ComboE02|SK_C_LV1Vi
+12. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|ComboF01|SK_C_LV1Vi
+13. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Die01|SK_C_LV1Villa
+14. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Die02|SK_C_LV1Villa
+15. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Execution|SK_C_LV1V
+16. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|FaceUp|SK_C_LV1Vill
+17. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Fall_End|SK_C_LV1Vi
+18. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Fall_Loop|SK_C_LV1V
+19. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|FallGround|SK_C_LV1
+20. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|FallHurt_B|SK_C_LV1
+21. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtCounter.001|SK_
+22. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtCounter|SK_C_LV
+23. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtFall_End_Fa
+24. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtFall_End_FaceUp
+25. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtKnockBack.001|S
+26. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtKnockBack|SK_C_
+27. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtKnockDownF.001|
+28. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtKnockDownF|SK_C
+29. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtKnockUp_Sart.00
+30. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtKnockUp_Sart|SK
+31. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtL_F|SK_C_LV1Vil
+32. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtLieDie_FaceUp.0
+33. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtLieDie_FaceUp|S
+34. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtLieGetup_FaceDo
+35. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtLieGetupFaceUp|
+36. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtLieLoop_FaceDow
+37. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtLieLoop_FaceUp|
+38. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtM_FL|SK_C_LV1Vi
+39. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtM_FR|SK_C_LV1Vi
+40. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtS_FL.001|SK_C_L
+41. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtS_FL|SK_C_LV1Vi
+42. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtS_FR.001|SK_C_L
+43. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtS_FR|SK_C_LV1Vi
+44. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtStunEnd.001|SK_
+45. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtStunEnd|SK_C_LV
+46. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtStunHurt|SK_C_L
+47. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtStunLoop.001|SK
+48. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtStunLoop|SK_C_L
+49. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtStunStart.001|S
+50. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtStunStart|SK_C_
+51. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtXL_F|SK_C_LV1Vi
+52. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Idle1_End|SK_C_LV1V
+53. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Idle|SK_C_LV1Villag
+54. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Parry_L|SK_C_LV1Vil
+55. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Parry|SK_C_LV1Villa
+56. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Run_N|SK_C_LV1Villa
+57. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|RunRoot|SK_C_LV1Vil
+58. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Run|SK_C_LV1Village
+59. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Sit_Idle|SK_C_LV1Vi
+60. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SitToIdle|SK_C_LV1V
+61. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SP03|SK_C_LV1Villag
+62. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SP_Idle1.001|SK_C_L
+63. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SP_Idle1_End|SK_C_L
+64. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SP_Idle1|SK_C_LV1Vi
+65. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|TakeExecution|SK_C_
+66. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|TurnL90|SK_C_LV1Vil
+67. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|TurnR90|SK_C_LV1Vil
+68. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|VSTakeExecutionDead
+69. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Walk_B|SK_C_LV1Vill
+70. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Walk_F|SK_C_LV1Vill
+71. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Walk_L|SK_C_LV1Vill
+72. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Walk_R|SK_C_LV1Vill
+73. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|WalkB|SK_C_LV1Villa
+74. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|WalkF|SK_C_LV1Villa
+75. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|WalkL|SK_C_LV1Villa
+76. SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|WalkR|SK_C_LV1Villa
 RootNode
-root_$AssimpFbx$_Translation
-root_$AssimpFbx$_PreRotation
-root_$AssimpFbx$_Rotation
-root_$AssimpFbx$_Scaling
+SK_C_LV1Villager_F.ao
 root
 pelvis
 Bip001-Pelvis
@@ -91,12 +88,18 @@ head
 Bone_Hair01
 Bone_Hair02
 Bone_Hair03
+Bone_Hair03_end
+Bone_Hair03_end_end
 Bone_Fitting01
 Bone_Fitting02
 Bone_Fitting03_End
+Bone_Fitting03_End_end
+Bone_Fitting03_End_end_end
 Bone_Fitting04
 Bone_Fitting05
 Bone_Fitting06_End
+Bone_Fitting06_End_end
+Bone_Fitting06_End_end_end
 clavicle_r
 upperarm_r
 lowerarm_r
@@ -104,19 +107,31 @@ hand_r
 thumb_01_r
 thumb_02_r
 thumb_03_r
+thumb_03_r_end
+thumb_03_r_end_end
 index_01_r
 index_02_r
 index_03_r
+index_03_r_end
+index_03_r_end_end
 middle_01_r
 middle_02_r
 middle_03_r
+middle_03_r_end
+middle_03_r_end_end
 ring_01_r
 ring_02_r
 ring_03_r
+ring_03_r_end
+ring_03_r_end_end
 pinky_01_r
 pinky_02_r
 pinky_03_r
+pinky_03_r_end
+pinky_03_r_end_end
 weapon_r
+weapon_r_end
+weapon_r_end_end
 clavicle_l
 upperarm_l
 lowerarm_l
@@ -124,60 +139,99 @@ hand_l
 thumb_01_l
 thumb_02_l
 thumb_03_l
+thumb_03_l_end
+thumb_03_l_end_end
 index_01_l
 index_02_l
 index_03_l
+index_03_l_end
+index_03_l_end_end
 middle_01_l
 middle_02_l
 middle_03_l
+middle_03_l_end
+middle_03_l_end_end
 ring_01_l
 ring_02_l
 ring_03_l
+ring_03_l_end
+ring_03_l_end_end
 pinky_01_l
 pinky_02_l
 pinky_03_l
+pinky_03_l_end
+pinky_03_l_end_end
 weapon_l
+weapon_l_end
+weapon_l_end_end
 Bone_Belt01
 Bone_Belt02
 Bone_Belt03
 Bone_Belt04_End
+Bone_Belt04_End_end
+Bone_Belt04_End_end_end
 Bone_Belt05
 Bone_Belt06
 Bone_Belt07
 Bone_Belt08_End
+Bone_Belt08_End_end
+Bone_Belt08_End_end_end
 thigh_r
 calf_r
 foot_r
 ball_r
+ball_r_end
+ball_r_end_end
 thigh_l
 calf_l
 foot_l
 ball_l
+ball_l_end
+ball_l_end_end
 Bone_Skirt16
 Bone_Skirt17
 Bone_Skirt18
 Bone_Skirt19
 Bone_Skirt20_End
+Bone_Skirt20_End_end
+Bone_Skirt20_End_end_end
 Bone_Skirt01
 Bone_Skirt02
 Bone_Skirt03
 Bone_Skirt04
 Bone_Skirt05_End
+Bone_Skirt05_End_end
+Bone_Skirt05_End_end_end
 Bone_Skirt06
 Bone_Skirt07
 Bone_Skirt08
 Bone_Skirt09
 Bone_Skirt10_End
+Bone_Skirt10_End_end
+Bone_Skirt10_End_end_end
 Bone_Skirt11
 Bone_Skirt12
 Bone_Skirt13
 Bone_Skirt14
 Bone_Skirt15_End
+Bone_Skirt15_End_end
+Bone_Skirt15_End_end_end
 ik_foot_l
+ik_foot_l_end
+ik_foot_l_end_end
 ik_hand_r
+ik_hand_r_end
+ik_hand_r_end_end
 ik_hand_l
+ik_hand_l_end
+ik_hand_l_end_end
 ik_foot_r
+ik_foot_r_end
+ik_foot_r_end_end
 AnimTargetPoint
+AnimTargetPoint_end
+AnimTargetPoint_end_end
 camera
-SK_C_LV1Villager_F_$AssimpFbx$_PreRotation
-SK_C_LV1Villager_F
+camera_end
+camera_end_end
+SK_C_LV1Villager_F.mo

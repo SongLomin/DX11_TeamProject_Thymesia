@@ -33,9 +33,18 @@ void CNorMonState_Walk_BR::Start()
 {
 	__super::Start();
 
-	if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
+	switch (m_eNorMonType)
 	{
+	case Client::NORMONSTERTYPE::AXEMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_WalkBL|BaseLayer|Armat");
+		break;
+	case Client::NORMONSTERTYPE::KNIFEWOMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Walk_B|SK_C_LV1Vill");
+		break;
+	case Client::NORMONSTERTYPE::SKULL:
+		break;
+	case Client::NORMONSTERTYPE::GARDENER:
+		break;
 	}
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Walk_BR::Call_AnimationEnd, this);

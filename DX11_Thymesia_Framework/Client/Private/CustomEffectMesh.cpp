@@ -1040,7 +1040,7 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 				ImGui::SameLine();
 				ImGui::DragFloat("##Weapon_Scale", &m_tEffectMeshDesc.fWeaponScale, 0.1f);
 
-				const char* HitType_items[] = { "Normal", "Upper", "Down", "Warning" };
+				const char* HitType_items[] = { "Normal", "Upper", "Down", "Warning","left","right","excute"};
 
 				if (ImGui::BeginListBox("Hit Type"))
 				{

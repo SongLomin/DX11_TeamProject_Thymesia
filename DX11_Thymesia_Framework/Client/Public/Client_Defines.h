@@ -42,6 +42,9 @@ namespace Client
 		UPPER_HIT,
 		DOWN_HIT,
 		WARNING,
+		LEFT_HIT,
+		RIGHT_HIT,
+		EXCTUE_HIT,
 		TYPE_END
 	};
 
