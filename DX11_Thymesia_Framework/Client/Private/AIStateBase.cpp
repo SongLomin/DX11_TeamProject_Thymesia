@@ -6,7 +6,7 @@
 #include "Monster.h"
 #include "Model.h"
 #include "Player.h"
-#include "NorMonStateBase.h"
+#include "NorMonStateS.h"
 
 GAMECLASS_C(CAIStateBase);
 

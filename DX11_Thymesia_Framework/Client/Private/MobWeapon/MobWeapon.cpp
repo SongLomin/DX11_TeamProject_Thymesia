@@ -33,7 +33,7 @@ HRESULT CMobWeapon::Initialize(void* pArg)
 	ColliderDesc.vTranslation = _float3(0.f, 0.f, 0.f);
 	ColliderDesc.iLayer = (_uint)COLLISION_LAYER::PLAYER_ATTACK;
 
-	m_pHitColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
+	//m_pHitColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
 
 	m_pShaderCom.lock()->Set_ShaderInfo(
 		TEXT("Shader_VtxModel"),
@@ -72,7 +72,7 @@ void CMobWeapon::Tick(_float fTimeDelta)
 
 	m_pTransformCom.lock()->Set_WorldMatrix(ParentMatrix * m_pParent.lock()->Get_Component<CTransform>().lock()->Get_WorldMatrix());
 	//m_pTransformCom.lock()->Set_WorldMatrix(m_pParent.lock()->Get_Component<CTransform>().lock()->Get_WorldMatrix());
-	m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+	//m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 
 
 

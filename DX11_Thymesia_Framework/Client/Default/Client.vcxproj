@@ -264,7 +264,7 @@
     </ClInclude>
     <ClInclude Include="..\Public\Light_Prop.h" />
     <ClInclude Include="..\Public\Map.h" />
-    <ClInclude Include="..\Public\NorMonStateBase.h" />
+    <ClInclude Include="..\Public\NorMonStates.h" />
     <ClInclude Include="..\Public\MobWeapon\MobWeapon.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_SitToIdle.h" />
@@ -297,6 +297,7 @@
     <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_F.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_FL.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_R.h" />
+    <ClInclude Include="..\Public\NorMonState\NorMonsterStateBase.h" />
     <ClInclude Include="..\Public\NorMonster.h" />
     <ClInclude Include="..\Public\PlayerStateBase.h" />
     <ClInclude Include="..\Public\Player_FeatherUI.h">
@@ -454,6 +455,7 @@
     <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_F.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_FL.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_R.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonsterStateBase.cpp" />
     <ClCompile Include="..\Private\NorMonster.cpp" />
     <ClCompile Include="..\Private\PlayerStateBase.cpp" />
     <ClCompile Include="..\Private\Player_FeatherUI.cpp" />

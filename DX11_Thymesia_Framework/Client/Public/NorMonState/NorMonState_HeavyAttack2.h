@@ -1,6 +1,6 @@
 
 #pragma once
-#include "AIStateBase.h"
+#include "NorMonsterStateBase.h"
 
 BEGIN(Engine)
 class CModel;
@@ -9,7 +9,7 @@ END
 BEGIN(Client)
 
 class CNorMonState_HeavyAttack2 :
-	public CAIStateBase
+	public CNorMonsterStateBase
 {
 	GAMECLASS_H(CNorMonState_HeavyAttack2);
 	CLONE_H(CNorMonState_HeavyAttack2, CComponent)

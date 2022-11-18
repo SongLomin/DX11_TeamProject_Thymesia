@@ -6,7 +6,7 @@
 #include "BehaviorBase.h"
 #include "Animation.h"
 #include "AIStateBase.h"
-#include "NorMonStateBase.h"
+#include "NorMonStateS.h"
 #include "Character.h"
 
 

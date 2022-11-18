@@ -6,7 +6,7 @@
 #include "RigidBody.h"
 #include "GameManager.h"
 #include "MobWeapon/MobWeapon.h"
-#include "NorMonStateBase.h"
+#include "NorMonStateS.h"
 //#include "MonsterWeapon.h"
 //#include "Monster1States/Monster1States.h"
 #include "Client_Components.h"
