@@ -267,9 +267,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	Load_AllParticleInPath_Recursive("../Bin/GroundInfo/Filter/");
 	
 	// TODO : For. MapTool Test : (AN) 리소스 최대 메모리 사용량 확인용
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Main/"  , MEMORY_TYPE::MEMORY_STATIC);
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Sub/"   , MEMORY_TYPE::MEMORY_STATIC);
-
+	//Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Main/"  , MEMORY_TYPE::MEMORY_STATIC);
+	//Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Sub/"   , MEMORY_TYPE::MEMORY_STATIC);
+	
 #pragma endregion
 	
 	
@@ -418,7 +418,8 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	//Loading_ForEffectGroup("../Bin/EffectData/");
 	Load_AllEffectMesh();
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/", MEMORY_TYPE::MEMORY_STATIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Main/", MEMORY_TYPE::MEMORY_STATIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Sub/", MEMORY_TYPE::MEMORY_STATIC);
 
 
 #pragma endregion
@@ -521,7 +522,11 @@ HRESULT CLoader::Loading_ForEditLevel()
 
 	//GAMEINSTANCE->Clear();
 
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/", MEMORY_TYPE::MEMORY_STATIC);
+	//Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/", MEMORY_TYPE::MEMORY_STATIC);
+
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Main/"  , MEMORY_TYPE::MEMORY_STATIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Sub/"   , MEMORY_TYPE::MEMORY_STATIC);
+
 	CEditGround::Load_AllMeshInfo();
 #pragma endregion
 

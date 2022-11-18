@@ -134,7 +134,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     pMainApp.reset();
 
 #ifdef  _DEBUG
-    system("pause");
+    //system("pause");
     fclose(ConsoleStream);
     D3DMemoryLeakCheck();
 #endif //  _DEBUG

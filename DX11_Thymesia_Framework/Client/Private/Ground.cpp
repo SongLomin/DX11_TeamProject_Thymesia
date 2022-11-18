@@ -193,17 +193,16 @@ HRESULT CGround::SetUp_ShaderResource()
 		string szDensityName     = "g_f" + iter.first.substr(string("g_Texture").length() + 1) + "_Density";
 
 		if (FAILED(iter.second.pDiffTex.lock()->Set_ShaderResourceView(m_pShaderCom, szDiffTextureName.c_str(), 0)))
-			return E_FAIL;
+			DEBUG_ASSERT;
 
 		if (FAILED(iter.second.pNormTex.lock()->Set_ShaderResourceView(m_pShaderCom, szNormTextureName.c_str(), 0)))
-			return E_FAIL;
+			DEBUG_ASSERT;
 
 		if (FAILED(m_pShaderCom.lock()->Set_RawValue(szDensityName.c_str(), &iter.second.fDensity, sizeof(_float))))
-			return E_FAIL;
+			DEBUG_ASSERT;
 	}
 
-	if (FAILED(m_pFilterTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_FilterTexture", 0)))
-		return E_FAIL;
+	m_pFilterTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_FilterTexture", 0);
 
 	_vector vLightFlag = { 1.f, 1.f, 1.f, 1.f };
 

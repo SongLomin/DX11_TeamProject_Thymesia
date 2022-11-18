@@ -1156,7 +1156,7 @@ void CEditGround::Load_AllMeshInfo()
 		szFileName = szFileName.substr(0, szFileName.size() - 4);
 
 		if (FAILED(GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::GROUND, XMMatrixIdentity())))
-			MSG_BOX("Err : CEditGround::Load_AllMeshInfo()");
+			DEBUG_ASSERT;
 
 		itr++;
 	}
