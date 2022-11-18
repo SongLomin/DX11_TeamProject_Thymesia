@@ -6,8 +6,15 @@
 
 #include "imgui.h"
 
+#ifdef _DEBUG
+#define _USE_THREAD_
+#define _144HZ_
+#endif // _DEBUG
 
-#define _USE_THREAD
+#ifdef NDEBUG
+#define _144HZ_
+#define _USE_THREAD_
+#endif // NDEBUG
 
 namespace Client 
 {

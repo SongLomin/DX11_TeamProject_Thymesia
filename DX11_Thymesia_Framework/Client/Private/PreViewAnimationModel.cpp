@@ -122,10 +122,10 @@ void CPreViewAnimationModel::SetUp_ShaderResource()
 
 	m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector));
 
-#ifndef _USE_THREAD
+#ifndef _USE_THREAD_
 	if(m_pCurrentModelCom.lock())
 		m_pCurrentModelCom.lock()->Update_BoneMatrices();
-#endif // !_USE_THREAD
+#endif // !_USE_THREAD_
 	
 
 }

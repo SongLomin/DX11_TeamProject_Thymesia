@@ -25,9 +25,9 @@ HRESULT CActor::Initialize(void* pArg)
     m_pRigidBodyCom = Add_Component<CRigidBody>();
 
 
-#ifdef _USE_THREAD
+#ifdef _USE_THREAD_
     Use_Thread(THREAD_TYPE::CUSTOM_THREAD0);
-#endif // _USE_THREAD
+#endif // _USE_THREAD_
 
 
     return S_OK;

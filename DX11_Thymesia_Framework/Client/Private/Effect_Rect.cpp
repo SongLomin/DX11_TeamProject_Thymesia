@@ -91,10 +91,10 @@ HRESULT CEffect_Rect::Initialize(void* pArg)
 	Set_Enable(false);
 
 	
-#ifdef _USE_THREAD
+#ifdef _USE_THREAD_
 	Use_Thread(THREAD_TYPE::TICK);
 
-#endif // _USE_THREAD
+#endif // _USE_THREAD_
 
 
 	return S_OK;
