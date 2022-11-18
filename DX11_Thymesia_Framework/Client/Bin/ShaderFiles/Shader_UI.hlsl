@@ -19,7 +19,8 @@ float2 g_MaskUV;
 float4	g_vColor;
 
 
-
+float2	g_DissolveStartPt;
+float	g_DissolveRange;
 
 struct VS_IN
 {
@@ -105,6 +106,51 @@ PS_OUT PS_MAIN_TEST_RATIO_HEIGHT(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_MAIN_DISSOLVE(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	float DissolveDesc = g_DissolveTexture.Sample(DefaultSampler, In.vTexUV).r + g_Ratio;
+	float fDissolveAmount = 1.f - g_Ratio;
+
+	clip(DissolveDesc - fDissolveAmount);
+	
+	//외곽선 효과 일단 꺼봄
+	//Out.vColor.rgb += float3(1.f, 1.f, 1.f) * step(DissolveDesc - fDissolveAmount, 0.02f);
+	Out.vColor.a *=  max((1.f - In.vTexUV.x) + g_Ratio, 1.f);
+
+	/*
+	알파가 1~0으로 가야함.
+	
+	
+	*/
+
+
+
+
+	//
+	//	discard;
+	//g_fDissolveAmount  = 0~1.f; 0로 가면갈수록 안보임.
+
+	/*
+
+	float DissolveDesc = g_DissolveTexture.Sample(DefaultSampler, In.vTexUV).r;
+
+	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	clip(DissolveDesc - g_fDissolveAmount);
+
+	Out.vDiffuse.rgb += float3(1.f, 1.f, 1.f) * step(DissolveDesc - g_fDissolveAmount, 0.02f);
+g_fDissolveAmount
+0~1
+
+	*/
+	return Out;
+}
+
+
 PS_OUT PS_MAIN_TEST_RATIO_HEIGHT_DISSOLVE(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
@@ -145,6 +191,77 @@ g_fDissolveAmount
 0~1
 	
 	*/
+	return Out;
+}
+
+PS_OUT PS_MAIN_WIDTH_DISSOLVE(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	float		MaskAlpha = g_MaskTexture.Sample(DefaultSampler, In.vTexUV).r;
+
+	//제곱 먹여서 알파값이 더욱 극명하게 나오도록
+	MaskAlpha = pow(MaskAlpha, 3);
+
+	//진행도 안에 있는 녀석들만 디졸브 먹이고
+	if (In.vTexUV.x > g_Ratio)
+		discard;
+
+	float DissolveDesc = g_DissolveTexture.Sample(DefaultSampler, In.vTexUV).r + g_Ratio;
+	float fDissolveAmount = In.vTexUV.x;
+	
+	Out.vColor.rgb += float3(0.6f, 0.6f, 0.6f) * step(DissolveDesc - fDissolveAmount, 0.02f);
+	
+	clip(DissolveDesc - fDissolveAmount);
+	
+	if (g_Ratio <= 0.0f)
+		discard;
+
+	Out.vColor.a *= min(MaskAlpha + g_Ratio, 1.f);//근데 이제 나도 잘 모르겠다.
+
+	//
+
+	//	discard;
+
+	//g_fDissolveAmount  = 0~1.f; 0로 가면갈수록 안보임.
+
+	/*
+
+	float DissolveDesc = g_DissolveTexture.Sample(DefaultSampler, In.vTexUV).r;
+
+	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	clip(DissolveDesc - g_fDissolveAmount);
+
+	Out.vDiffuse.rgb += float3(1.f, 1.f, 1.f) * step(DissolveDesc - g_fDissolveAmount, 0.02f);
+g_fDissolveAmount
+0~1
+
+	*/
+	return Out;
+}
+
+
+PS_OUT PS_MAIN_WIDTH_DISSOLVE_FACTOR(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	float4	DissolveNoise = g_DissolveTexture.Sample(DefaultSampler, In.vTexUV);
+
+	float4	OriginalColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	float	fFactor =  saturate(distance(In.vTexUV, g_DissolveStartPt) + (1.f - g_DissolveRange));
+	fFactor = pow(fFactor, 1.f);
+	fFactor = 1.f - (fFactor);
+
+	float NewUV = float4(float2(In.vTexUV - DissolveNoise * fFactor * 0.25f),
+		0.f,
+		fFactor * 10.f
+		);
+	Out.vColor = g_DiffuseTexture.SampleLevel(DefaultSampler, NewUV, 1);
+
 	return Out;
 }
 
@@ -195,7 +312,19 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_MAIN_TEST_RATIO_HEIGHT();
 	}
 
-	pass UI_PlagueWeapon_Steal_Icon//4
+
+	pass UI_Dissolve//4
+	{
+		SetBlendState(BS_AlphaBlend, vector(1.f, 1.f, 1.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_DISSOLVE();
+	}
+
+	pass UI_PlagueWeapon_Steal_Icon//5
 	{
 		SetBlendState(BS_AlphaBlend, vector(1.f, 1.f, 1.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
@@ -204,5 +333,16 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_TEST_RATIO_HEIGHT_DISSOLVE();
+	}
+
+	pass UI_Dissolove_Horizontal_masking//6
+	{
+		SetBlendState(BS_AlphaBlend, vector(1.f, 1.f, 1.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_WIDTH_DISSOLVE_FACTOR();
 	}
 }

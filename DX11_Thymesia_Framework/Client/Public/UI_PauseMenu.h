@@ -43,7 +43,14 @@ private:
 
     weak_ptr<CCustomUI> m_pPageIndicatorDecoration;
 
-    
+    weak_ptr<CCustomUI> m_pPageTitleUnderLine;
+
+
+    weak_ptr<CCustomUI> m_pFonts[PAUSE_MENU_END];
+
+
+private:
+    weak_ptr<CUI>       m_pPages[PAUSE_MENU_END];
     
     
     //PauseMenu Text
@@ -54,10 +61,11 @@ private:
 private:
     _uint       m_iPageIndex;
     _bool       m_bOpenThisFrame;
-
+    _bool       m_bFonts;
 
 private:
     void    Create_Background();
+    void    Create_Pages();
     void    Create_PageText();
     void    Create_PageIndicator();
 

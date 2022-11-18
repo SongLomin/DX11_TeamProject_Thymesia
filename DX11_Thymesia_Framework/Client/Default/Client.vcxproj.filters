@@ -454,9 +454,6 @@
     <ClInclude Include="..\Public\HUD_PlagueWeapon.h">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal_Icon.h">
-      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal\Icon</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\UI_PauseMenu.h">
       <Filter>02. GameObject\01. UI\PauseMenu</Filter>
     </ClInclude>
@@ -485,6 +482,20 @@
     <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal.h">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_PauseMenu_Page_Status.h">
+      <Filter>02. GameObject\01. UI\PauseMenu\Page\Status</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_PauseMenu_Tap_Status.h">
+      <Filter>02. GameObject\01. UI\PauseMenu\Page\Status\Tap\Status</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_PauseMenu_Tap_PlagueWeapon.h">
+      <Filter>02. GameObject\01. UI\PauseMenu\Page\Status\Tap\PlagueWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DissolveUI.h">
+      <Filter>02. GameObject\01. UI\dissolve</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal_Icon.h" />
+    <ClInclude Include="..\Public\LoadingTextUI.h" />
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
       <Filter>04. ShaderFiles</Filter>
     </ClInclude>
@@ -929,9 +940,6 @@
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\HUD_Hover.cpp" />
-    <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal_Icon.cpp">
-      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal\Icon</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\UI_PauseMenu.cpp">
       <Filter>02. GameObject\01. UI\PauseMenu</Filter>
     </ClCompile>
@@ -951,6 +959,20 @@
     <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal.cpp">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\UI_PauseMenu_Page_Status.cpp">
+      <Filter>02. GameObject\01. UI\PauseMenu\Page\Status</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_PauseMenu_Tap_Status.cpp">
+      <Filter>02. GameObject\01. UI\PauseMenu\Page\Status\Tap\Status</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_PauseMenu_Tap_PlagueWeapon.cpp">
+      <Filter>02. GameObject\01. UI\PauseMenu\Page\Status\Tap\PlagueWeapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DissolveUI.cpp">
+      <Filter>02. GameObject\01. UI\dissolve</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal_Icon.cpp" />
+    <ClCompile Include="..\Private\LoadingTextUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1500,6 +1522,30 @@
     </Filter>
     <Filter Include="06. DataPreset">
       <UniqueIdentifier>{8965fd35-6c2d-4080-8e05-2281755353c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PauseMenu\Page">
+      <UniqueIdentifier>{f1a9f830-66ed-4085-ba8c-6e691515070b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PauseMenu\Page\Status">
+      <UniqueIdentifier>{9a5cb137-6863-4df9-8167-cc52cc55961a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PauseMenu\Page\Status\Tap">
+      <UniqueIdentifier>{86737f2e-0535-4852-9911-fda4f1f06778}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PauseMenu\Page\Status\Tap\Status">
+      <UniqueIdentifier>{0f137624-7d90-4538-b006-ae3bc19502f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PauseMenu\Page\Status\Tap\PlagueWeapon">
+      <UniqueIdentifier>{c1252e6d-2377-4a63-abd0-f8defc9d6ae8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\PauseMenu\Page\Status\Tap\Potion">
+      <UniqueIdentifier>{12c53709-6164-4eab-a852-264e14025107}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\dissolve">
+      <UniqueIdentifier>{d28a398e-5511-4ea3-94e4-8aa2c3524135}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\Loading\LodingTextUI">
+      <UniqueIdentifier>{cf152f4a-504e-4660-b870-17bef185e723}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\08. Effect\00. Effect_Rect">
       <UniqueIdentifier>{43be49b4-b4e1-4346-a84a-e59a8f70fb38}</UniqueIdentifier>

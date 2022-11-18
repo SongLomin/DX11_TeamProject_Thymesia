@@ -51,7 +51,7 @@ public:
     virtual void Set_UIPosition(const _float& fX, const _float& fY);
     virtual void Set_UIDesc(UI_DESC _tUIDesc);
     virtual void Set_Size(const _float& fSizeX, const _float& fSizeY);
-
+    virtual void    Set_Y(const _float& fY);
     void Set_Depth(_float _fDepth);
 
 public: /* Shaking */

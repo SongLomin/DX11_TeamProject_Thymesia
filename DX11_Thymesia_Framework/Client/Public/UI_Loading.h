@@ -6,7 +6,8 @@ BEGIN(Client)
 class CCustomUI;
 class CPlayer_ProgressBar;
 class CHUD_Hover;
-
+class CDissolveUI;
+class CLoadingTextUI;
 class CUI_Loading : public CUI
 {
 public:
@@ -39,6 +40,8 @@ private:
 	weak_ptr<CHUD_Hover>	m_pIcon;
 	weak_ptr<CHUD_Hover>	m_pLoadComplete;
 
+	weak_ptr<CLoadingTextUI>		m_pStageTitle;
+	weak_ptr<CLoadingTextUI>		m_pStageDesc;
 
 
 private:
@@ -47,7 +50,6 @@ private:
 
 public:
 	void Free();
-
 
 };
 
