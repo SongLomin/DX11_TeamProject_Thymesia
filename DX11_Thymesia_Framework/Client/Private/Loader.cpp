@@ -270,7 +270,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	GAMEINSTANCE->Load_Textures(("Tap_PlagueWeapon"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Frame.png"), MEMORY_TYPE::MEMORY_STATIC);
 
-	
+	/*moon
 	Load_AllDiffuseTexture();
 
 	
@@ -331,7 +331,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	LightDesc.bEnable = false;
 
 	GAMEINSTANCE->Add_Light(LightDesc);
-	
+	*/
 	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중입니다. "));
 
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_UI"), TEXT("../Bin/ShaderFiles/Shader_UI.hlsl"));
@@ -356,7 +356,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxModelInstance"), TEXT("../Bin/ShaderFiles/Shader_VtxModelInstance.hlsl"));
 
 	lstrcpy(m_szLoadingText, TEXT("데이터를 로딩중입니다. "));
-
+	/*
 	GET_SINGLE(CGameManager)->Load_AllKeyEventFromJson();
 
 	_matrix			TransformMatrix;
@@ -389,7 +389,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Model("Torch", "../Bin/Resources/Meshes/LightProp/Torch/Torch.FBX", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 	
 	lstrcpy(m_szLoadingText, TEXT("객체 생성 중입니다. "));
-	
+	*/
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));	
 
 	m_isFinished = true;
@@ -430,11 +430,12 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 	//Loading_ForEffectGroup("../Bin/EffectData/");
 	
+	/*moon
 	Load_AllEffectMesh();
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Main/", MEMORY_TYPE::MEMORY_STATIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Sub/", MEMORY_TYPE::MEMORY_STATIC);
-	
+	*/
 
 #pragma endregion
 
