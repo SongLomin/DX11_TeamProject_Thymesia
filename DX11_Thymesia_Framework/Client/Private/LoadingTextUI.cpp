@@ -28,7 +28,6 @@ HRESULT CLoadingTextUI::Initialize(void* pArg)
 
     m_iPassIndex = 5;
 
-
     m_bDelay = false;
     return S_OK;
 }
@@ -84,6 +83,7 @@ void CLoadingTextUI::Set_DelayAlpha(_float fDelayTime, _float fStartTime)
     m_fStartDelay = fDelayTime;
     m_fTime = fStartTime;
     m_fTick = 0.f;
+    m_fRatio = 0.f;
     m_bDelay = true;
 }
 
