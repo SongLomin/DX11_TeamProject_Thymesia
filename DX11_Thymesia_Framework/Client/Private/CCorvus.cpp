@@ -85,7 +85,7 @@ void CCorvus::Tick(_float fTimeDelta)
 	
 	this->RootMove();
 
-	if (KEY_INPUT(KEY::E, KEY_STATE::TAP))
+	if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
 	{
 		for (_int i = 0; i < 100; ++i)
 		{
