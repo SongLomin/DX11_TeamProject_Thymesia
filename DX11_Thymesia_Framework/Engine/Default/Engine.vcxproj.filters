@@ -230,6 +230,9 @@
     <ClInclude Include="..\Public\Thread_Manager.h">
       <Filter>98. Managers\15. ThreadManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Easing_Utillity.h">
+      <Filter>01. Elements\05. Utility\02. Easing_Utillity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -441,6 +444,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Thread_Manager.cpp">
       <Filter>98. Managers\15. ThreadManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Easing_Utillity.cpp">
+      <Filter>01. Elements\05. Utility\02. Easing_Utillity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -671,6 +677,9 @@
     </Filter>
     <Filter Include="98. Managers\15. ThreadManager">
       <UniqueIdentifier>{73ad54fd-0779-4738-a82e-151516c60b1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Elements\05. Utility\02. Easing_Utillity">
+      <UniqueIdentifier>{78ceaea1-9e6e-4701-98e5-048820bee6fb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -63,6 +63,7 @@ typedef std::string tstring;
 #include "Engine_Functor.h"
 #include "Engine_Macro.h"
 #include "Engine_Struct.h"
+#include "Easing_Utillity.h"
 
 #include <typeinfo>
 
