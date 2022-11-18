@@ -176,6 +176,11 @@ HRESULT CNorMonster::Render()
 void CNorMonster::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
+
+#ifndef _USE_THREAD
+	m_pModelCom.lock()->Update_BoneMatrices();
+#endif // !_USE_THREAD
+
 }
 
 void CNorMonster::Respawn_Monster(_fvector In_vPosition)

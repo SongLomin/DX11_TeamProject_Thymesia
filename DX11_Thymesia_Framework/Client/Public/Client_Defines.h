@@ -6,6 +6,9 @@
 
 #include "imgui.h"
 
+
+#define _USE_THREAD
+
 namespace Client 
 {
 	static const _uint	g_iScreenCX = GetSystemMetrics(SM_CXSCREEN);

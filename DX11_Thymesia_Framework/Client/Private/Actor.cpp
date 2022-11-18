@@ -24,7 +24,11 @@ HRESULT CActor::Initialize(void* pArg)
     m_pRendererCom = Add_Component<CRenderer>();
     m_pRigidBodyCom = Add_Component<CRigidBody>();
 
+
+#ifdef _USE_THREAD
     Use_Thread(THREAD_TYPE::CUSTOM_THREAD0);
+#endif // _USE_THREAD
+
 
     return S_OK;
 }

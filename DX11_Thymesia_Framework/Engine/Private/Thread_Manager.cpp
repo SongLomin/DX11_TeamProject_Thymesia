@@ -130,10 +130,12 @@ void CThread_Manager::Initialize(const _uint In_iNumLayer)
 		m_Threads.push_back(async(launch::async, function, (THREAD_TYPE)i));
 	}*/
 
-	for (_uint i = (_uint)THREAD_TYPE::TICK; i < (_uint)THREAD_TYPE::TYPE_END; ++i)
+	/*for (_uint i = (_uint)THREAD_TYPE::TICK; i < (_uint)THREAD_TYPE::TYPE_END; ++i)
 	{
 		m_Threads.push_back(async(launch::async, Loop, (THREAD_TYPE)i));
-	}
+	}*/
+
+	//m_Threads.push_back(async(launch::async, Loop, (THREAD_TYPE::CUSTOM_THREAD0)));
 
 	//m_Threads.push_back(async(launch::async, Loop, (THREAD_TYPE::TICK)));
 
@@ -188,6 +190,12 @@ void CThread_Manager::Add_ThreadObject(const THREAD_TYPE In_eThread_Type, list<w
 void CThread_Manager::Bind_ThreadObject(const THREAD_TYPE In_eThread_Type, weak_ptr<CGameObject> pGameObject)
 {
 	m_ReservedThreadObjects[(_uint)In_eThread_Type].emplace_back(pGameObject);
+
+	if (!(m_ThreadEnableFlag & (1 << (_uint)In_eThread_Type)))
+	{
+		m_Threads.push_back(async(launch::async, Loop, In_eThread_Type));
+		m_ThreadEnableFlag |= (1 << (_uint)In_eThread_Type);
+	}
 }
 
 void CThread_Manager::Clear_EngineThreads(const THREAD_TYPE In_eThread_Type)

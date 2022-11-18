@@ -161,6 +161,10 @@ HRESULT CCorvus::Render()
 void CCorvus::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
+
+#ifndef _USE_THREAD
+	m_pModelCom.lock()->Update_BoneMatrices();
+#endif // !_USE_THREAD
 }
 
 void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)

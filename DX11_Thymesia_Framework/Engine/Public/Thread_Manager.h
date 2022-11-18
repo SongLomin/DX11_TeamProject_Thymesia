@@ -27,9 +27,10 @@ public:
 public:
 	list<weak_ptr<CGameObject>>	m_ReservedThreadObjects[(_uint)THREAD_TYPE::TYPE_END];
 
-	vector<future<void>>				m_Threads;
+	list<future<void>>				m_Threads;
 
 	_bool								m_bDead = false;
+	_uint							m_ThreadEnableFlag = 0;
 
 public:
 	virtual void OnDestroy() override;
