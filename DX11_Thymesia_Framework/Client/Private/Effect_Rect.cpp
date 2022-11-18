@@ -796,7 +796,7 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 	if (m_tEffectParticleDesc.bEasingSpeed)
 	{
 		_float fElapsedTime = m_tEffectParticleDesc.fMaxLifeTime - m_tParticleDescs[i].fCurrentLifeTime;
-		this->Apply_Easing(vMove, m_tEffectParticleDesc.eSpeedEasingType, XMLoadFloat3(&m_tEffectParticleDesc.vMinLimitSpeed), XMLoadFloat3(&m_tEffectParticleDesc.vMaxLimitSpeed), fElapsedTime, m_tEffectParticleDesc.fSpeedEasingTotalTime);;
+		this->Apply_Easing(vMove, (EASING_TYPE)m_tEffectParticleDesc.iSpeedEasingType, XMLoadFloat3(&m_tEffectParticleDesc.vMinLimitSpeed), XMLoadFloat3(&m_tEffectParticleDesc.vMaxLimitSpeed), fElapsedTime, m_tEffectParticleDesc.fSpeedEasingTotalTime);;
 	}
 	else
 	{
@@ -1339,17 +1339,60 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 #pragma region Speed & Force
 			ImGui::Text("Speed");
 			ImGui::NewLine();
-			ImGui::Text("Min Speed");
-			ImGui::DragFloat3("##Min_Speed", &m_tEffectParticleDesc.vMinSpeed.x, 0.1f);
 
-			ImGui::Text("Max Speed");
-			ImGui::DragFloat3("##Max_Speed", &m_tEffectParticleDesc.vMaxSpeed.x, 0.1f);
+			ImGui::Text("Apply Easing"); ImGui::SameLine();
+			ImGui::Checkbox("##Is_Easing_Speed", &m_tEffectParticleDesc.bEasingSpeed);
 
-			ImGui::Text("Min Force");
-			ImGui::DragFloat3("##Min_Speed_Force", &m_tEffectParticleDesc.vMinSpeedForce.x, 0.1f);
+			if (m_tEffectParticleDesc.bEasingSpeed)
+			{
+				// open easing list
+				const char* EasingItems[] =
+				{ 
+					"Linear"   , 
+					"QuadIn"   , "QuadOut"	 , "QuadInOut"	 ,
+					"CubicIn"  , "CubicOut"	 , "CubicInOut"	 ,
+					"QuartIn"  , "QuartOut"	 , "QuartInOut"	 ,
+					"QuintIn"  , "QuintOut"	 , "QuintInOut"	 ,
+					"SineIn"   , "SineOut"	 , "SineInOut"	 ,
+					"ExpoIn"   , "ExpoOut"	 , "ExpoInOut"	 ,
+					"CircIn"   , "CircOut"	 , "CircInOut"	 ,
+					"ElasticIn", "ElasticOut", "ElasticInOut",
+					"BounceIn" , "BounceOut"
+				};
 
-			ImGui::Text("Max Force");
-			ImGui::DragFloat3("##Max_Speed_Force", &m_tEffectParticleDesc.vMaxSpeedForce.x, 0.1f);
+				if (ImGui::BeginListBox("Speed Easing Type"))
+				{
+					for (int n = 0; n < IM_ARRAYSIZE(EasingItems); n++)
+					{
+						const bool is_selected = (m_tEffectParticleDesc.iSpeedEasingType == n);
+						if (ImGui::Selectable(EasingItems[n], is_selected))
+						{
+							m_tEffectParticleDesc.iSpeedEasingType = n;
+						}
+
+						if (is_selected)
+							ImGui::SetItemDefaultFocus();
+					}
+					ImGui::EndListBox();
+				}
+
+				ImGui::Text("Total Easing Time"); ImGui::SameLine();
+				ImGui::DragFloat("##Speed_Total_Easing_Time", &m_tEffectParticleDesc.fSpeedEasingTotalTime, 0.01f, -100.f, 100.f, "%.5f");
+			}
+			else
+			{
+				ImGui::Text("Min Speed");
+				ImGui::DragFloat3("##Min_Speed", &m_tEffectParticleDesc.vMinSpeed.x, 0.1f);
+
+				ImGui::Text("Max Speed");
+				ImGui::DragFloat3("##Max_Speed", &m_tEffectParticleDesc.vMaxSpeed.x, 0.1f);
+
+				ImGui::Text("Min Force");
+				ImGui::DragFloat3("##Min_Speed_Force", &m_tEffectParticleDesc.vMinSpeedForce.x, 0.1f);
+
+				ImGui::Text("Max Force");
+				ImGui::DragFloat3("##Max_Speed_Force", &m_tEffectParticleDesc.vMaxSpeedForce.x, 0.1f);
+			}
 
 			ImGui::Text("Max Limit Speed");
 			ImGui::DragFloat3("##Max_Limit_Speed", &m_tEffectParticleDesc.vMaxLimitSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
