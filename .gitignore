@@ -17,10 +17,10 @@
 *.exe
 Engine.dll
 Engine.lib
-
-*.cso
-*.exp
-*.exe
+Map_Lv1_Circus/
+Map_Lv2_Fortress/
+Map_Lv3_Garden/
+Map_Else/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
