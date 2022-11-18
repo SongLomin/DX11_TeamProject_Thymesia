@@ -65,7 +65,7 @@ HRESULT CWindow_HierarchyView::Render()
 			m_iPreSelectIndex = iIndex;
 		}
 
-		if (elem.HashCode == typeid(CEditGroupProp).hash_code())
+		if (elem.HashCode == typeid(CEditGroupProp).hash_code() || elem.HashCode == typeid(CEditInstanceProp).hash_code())
 		{
 			(m_iPreSelectIndex == iIndex)
 				? (elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_ACCEPT))

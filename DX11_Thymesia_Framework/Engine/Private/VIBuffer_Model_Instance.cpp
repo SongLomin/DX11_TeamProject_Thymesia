@@ -235,7 +235,7 @@ HRESULT CVIBuffer_Model_Instance::Render_Mesh(_uint iMeshContainerIndex)
 
 void CVIBuffer_Model_Instance::Update(const vector<INSTANCE_MESH_DESC>& In_ParticleDescs)
 {
-	if (In_ParticleDescs.size() == 0 || 0 == m_iNumInstance)
+	if (0 == In_ParticleDescs.size() || 0 == m_iNumInstance || In_ParticleDescs.size() > In_ParticleDescs.size())
 		return;
 
 	D3D11_MAPPED_SUBRESOURCE		SubResource;
@@ -244,9 +244,8 @@ void CVIBuffer_Model_Instance::Update(const vector<INSTANCE_MESH_DESC>& In_Parti
 
 	for (_uint i = 0; i < m_iNumInstance; ++i)
 	{
-		_vector PitchYawRoll = XMLoadFloat3(&In_ParticleDescs[i].vRotation);
+		_matrix RotationMatrix = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&In_ParticleDescs[i].vRotation));
 
-		_matrix RotationMatrix = XMMatrixRotationRollPitchYawFromVector(PitchYawRoll);
 		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i].vRight      , RotationMatrix.r[0] * In_ParticleDescs[i].vScale.x);
 		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i].vUp         , RotationMatrix.r[1] * In_ParticleDescs[i].vScale.y);
 		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i].vLook       , RotationMatrix.r[2] * In_ParticleDescs[i].vScale.z);

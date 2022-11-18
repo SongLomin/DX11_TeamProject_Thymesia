@@ -38,20 +38,22 @@ private:
     void    View_Picking_Prop();
     void    View_Picking_List();
     void    View_Picking_Option();
-    void    View_Picking_Option_Y();
     void    View_SelectTransformInfo();
 
     void    View_SelectJson();
 
 private:
     HRESULT SetUp_ShaderResource();
+    void    SetUp_ShaderResource_Select();
 
     void Load_ResourceList(vector<string>& In_List, const filesystem::path& In_Path, string _szCutName = "");
 
     void Save_Json(string _szName);
     void Load_Json(string _szName);
 
+public:
     virtual void Write_Json(json& Out_Json) override;
+    virtual void Load_FromJson(const json& In_Json) override;
 
 private:                                                                                                                                                                                                                
     typedef vector<string>               RESOURCE_LIST;
@@ -74,6 +76,7 @@ private:
 
     RESOURCE_LIST       m_ModelList;
     RESOURCE_LIST       m_JsonList;
+    _bool               m_bSubDraw = false;
 
 public:
     void Free();

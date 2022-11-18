@@ -429,7 +429,7 @@ void CEditGround::SetUp_Textures()
 
 			if (0 == iSelect_TexType || 1 == iSelect_TexType)
 			{
-				if ("C.png" != szFind)
+				if ("D.png" != szFind)
 					continue;
 			}
 			else if (1 == iSelect_TexType)

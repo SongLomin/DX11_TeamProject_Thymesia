@@ -87,7 +87,7 @@ void CWindow_ComponentView::Draw_Components()
 	static _bool bSelect_ActivateHotkey  = false;
 	static _bool bSelect_ActivatePicking = false;
 
-	if (pTransformCom.lock().get() && typeid(CEditGroupProp).hash_code() != m_tPickedGameObjectDesc.HashCode)
+	if (pTransformCom.lock().get() && (typeid(CEditGroupProp).hash_code() != m_tPickedGameObjectDesc.HashCode && typeid(CEditInstanceProp).hash_code() != m_tPickedGameObjectDesc.HashCode))
 	{
 		if (bSelect_ActivatePicking)
 			Picking_Obj();

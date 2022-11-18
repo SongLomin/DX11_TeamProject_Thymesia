@@ -20,6 +20,7 @@ public:
 	static void			Load_Float2(const json& In_Json, _float2& Out_Float2);
 	static void			Load_Float3(const json& In_Json, _float3& Out_Float3);
 	static void			Load_Float4(const json& In_Json, _float4& Out_Float4);
+	static void			Load_JsonFloat4x4(const json& _Json, _float4x4& Out_Float4x4);
 
 	static XMFLOAT4		Get_VectorFromJson(json& _json);
 	static XMFLOAT4X4	Get_MatrixFromJson(json& _json);
