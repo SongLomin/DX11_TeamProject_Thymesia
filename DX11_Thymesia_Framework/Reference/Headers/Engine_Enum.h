@@ -102,3 +102,19 @@ enum class THREAD_TYPE
 	BEFORE_RENDER,
 	TYPE_END
 };
+
+enum class EASING_TYPE
+{
+	NONE,
+	Linear,
+	QuadIn, QuadOut, QuadInOut,
+	CubicIn, CubicOut, CubicInOut,
+	QuarticIn, QuarticOut, QuarticInOut,
+	QuinticIn, QuinticOut, QuinticInOut,
+	SinIn, SinOut, SinInOut,
+	ExpoIn, ExpoOut, ExpoInOut,
+	CircularIn, CircularOut, CircularInOut,
+	ElasticIn, ElasticOut, ElasticInOut,
+	BounceIn, BounceOut,
+	TYPE_END
+};

@@ -55,16 +55,18 @@ public:
 	virtual void OnEventMessage(_uint iArg) override;
 	void OnChangeAnimationKey(const _uint& In_Key);
 
-protected:
+private:
 	virtual void SetUp_ShaderResource();
 
-private:
     void Play(_float fTimeDelta); 
+
     void Reset_Instance(const _uint& In_ParticleCount);
     void Reset_ParticleDescs();
     void Reset_ParticleDesc(const _uint& In_iIndex);
+
     void Generate_RandomOriginalParticleDesc();
     _bool Check_DisableAllParticle();
+
     void Update_ParticlePosition(const _uint& i, _float fTimeDelta);
     void Update_ParticleRotation(const _uint& i, _float fTimeDelta);
     void Update_ParticleScale(const _uint& i, _float fTimeDelta);
@@ -99,6 +101,7 @@ private:
 
     _float2                             m_vNoiseCurrentUV;
     _float2                             m_vNoiseCurrentUVForce;
+
     
     // For. Glow
     _float4                             m_vCurrentGlowColor;

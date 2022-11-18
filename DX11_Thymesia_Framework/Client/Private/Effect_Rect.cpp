@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Effect_Rect.h"
 #include "Client_Components.h"
+#include "Easing_Utillity.h"
 
 // undefines at bottom
 #define PASS_SPRITE 0
@@ -788,33 +789,126 @@ _bool CEffect_Rect::Check_DisableAllParticle()
 
 void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 {
-	_float3 vMove = SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeed, fTimeDelta);
-	// _float3 vDrag = SMath::Mul_Float3(m_tParticleDescs[i].vTargetDrag, fTimeDelta);
-	
-	m_tParticleDescs[i].vCurrentSpeedForce =
-		SMath::Add_Float3(m_tParticleDescs[i].vCurrentSpeedForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeedForce, fTimeDelta));
+	_vector vMove;
 
-	/*m_tParticleDescs[i].vCurrentDragForce.x = min(m_tEffectParticleDesc.vMaxLimitDrag.x, m_tParticleDescs[i].vCurrentDragForce.x);
-	m_tParticleDescs[i].vCurrentDragForce.y = min(m_tEffectParticleDesc.vMaxLimitDrag.y, m_tParticleDescs[i].vCurrentDragForce.y);
-	m_tParticleDescs[i].vCurrentDragForce.z = min(m_tEffectParticleDesc.vMaxLimitDrag.z, m_tParticleDescs[i].vCurrentDragForce.z);
+	if (m_tEffectParticleDesc.bEasingSpeed)
+	{
+		_float fElapsedTime = m_tEffectParticleDesc.fMaxLifeTime - m_tParticleDescs[i].fCurrentLifeTime;
+		_vector vStartPoint = XMLoadFloat3(&m_tEffectParticleDesc.vMinLimitSpeed);
+		_vector vTargetPoint = XMLoadFloat3(&m_tEffectParticleDesc.vMaxLimitSpeed);
+		_float fTotalTime = m_tEffectParticleDesc.fSpeedEaseTotalTime;
+		switch (m_tEffectParticleDesc.eSpeedEasingType)
+		{
+		case EASING_TYPE::Linear:
+			vMove = CEasing_Utillity::Linear(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::QuadIn:
+			vMove = CEasing_Utillity::QuadIn(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::QuadOut:
+			vMove = CEasing_Utillity::QuadOut(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::QuadInOut:
+			vMove = CEasing_Utillity::QuadInOut(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::CubicIn:
+			vMove = CEasing_Utillity::CubicIn(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::CubicOut:
+			vMove = CEasing_Utillity::CubicOut(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::CubicInOut:
+			vMove = CEasing_Utillity::CubicInOut(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::QuarticIn:
+			vMove = CEasing_Utillity::QuarticIn(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::QuarticOut:
+			vMove = CEasing_Utillity::QuarticOut(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::QuarticInOut:
+			vMove = CEasing_Utillity::QuarticInOut(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::QuinticIn:
+			vMove = CEasing_Utillity::QuinticIn(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::QuinticOut:
+			vMove = CEasing_Utillity::QuinticIn(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::QuinticInOut:
+			vMove = CEasing_Utillity::QuinticInOut(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::SinIn:
+			vMove = CEasing_Utillity::SinIn(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::SinOut:
+			vMove = CEasing_Utillity::SinOut(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::SinInOut:
+			vMove = CEasing_Utillity::SinInOut(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::ExpoIn:
+			vMove = CEasing_Utillity::ExpoIn(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::ExpoOut:
+			vMove = CEasing_Utillity::ExpoOut(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::ExpoInOut:
+			vMove = CEasing_Utillity::ExpoInOut(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::CircularIn:
+			vMove = CEasing_Utillity::CircularIn(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::CircularOut:
+			vMove = CEasing_Utillity::CircularOut(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::CircularInOut:
+			vMove = CEasing_Utillity::CircularInOut(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::ElasticIn:
+			vMove = CEasing_Utillity::ElasticIn(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::ElasticOut:
+			vMove = CEasing_Utillity::ElasticOut(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::ElasticInOut:
+			vMove = CEasing_Utillity::ElasticInOut(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::BounceIn:
+			vMove = CEasing_Utillity::BounceIn(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		case EASING_TYPE::BounceOut:
+			vMove = CEasing_Utillity::BounceOut(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime);
+			break;
+		default:
+			return;
+		}
+	}
+	else
+	{
+		vMove = XMLoadFloat3(&SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeed, fTimeDelta));
 
-	m_tParticleDescs[i].vCurrentDragForce =
-		SMath::Add_Float3(m_tParticleDescs[i].vCurrentDragForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetDragForce, fTimeDelta));*/
+		m_tParticleDescs[i].vCurrentSpeedForce =
+			SMath::Add_Float3(m_tParticleDescs[i].vCurrentSpeedForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeedForce, fTimeDelta));
 
-	vMove = SMath::Add_Float3(vMove, m_tParticleDescs[i].vCurrentSpeedForce);
-	// vDrag = SMath::Add_Float3(vDrag, m_tParticleDescs[i].vCurrentDragForce);
-	// 
-	// vMove = SMath::Add_Float3(vMove, SMath::Mul_Float3(vDrag, -1.f));
+		vMove = XMVectorSetX(vMove, XMVectorGetX(vMove) + m_tParticleDescs[i].vCurrentSpeedForce.x);
+		vMove = XMVectorSetY(vMove, XMVectorGetY(vMove) + m_tParticleDescs[i].vCurrentSpeedForce.y);
+		vMove = XMVectorSetZ(vMove, XMVectorGetZ(vMove) + m_tParticleDescs[i].vCurrentSpeedForce.z);
 
-	vMove.x = max(m_tEffectParticleDesc.vMinLimitSpeed.x,  min(m_tEffectParticleDesc.vMaxLimitSpeed.x, vMove.x));
-	vMove.y = max(m_tEffectParticleDesc.vMinLimitSpeed.y,  min(m_tEffectParticleDesc.vMaxLimitSpeed.y, vMove.y));
-	vMove.z = max(m_tEffectParticleDesc.vMinLimitSpeed.z,  min(m_tEffectParticleDesc.vMaxLimitSpeed.z, vMove.z));
+		// vMove = XMLoadFloat3(&SMath::Add_Float3(vMove, m_tParticleDescs[i].vCurrentSpeedForce));
+		XMVectorSetX(vMove, max(m_tEffectParticleDesc.vMinLimitSpeed.x, min(m_tEffectParticleDesc.vMaxLimitSpeed.x, XMVectorGetX(vMove))));
+		XMVectorSetY(vMove, max(m_tEffectParticleDesc.vMinLimitSpeed.y, min(m_tEffectParticleDesc.vMaxLimitSpeed.y, XMVectorGetY(vMove))));
+		XMVectorSetZ(vMove, max(m_tEffectParticleDesc.vMinLimitSpeed.z, min(m_tEffectParticleDesc.vMaxLimitSpeed.z, XMVectorGetZ(vMove))));
+		// vMove.y = max(m_tEffectParticleDesc.vMinLimitSpeed.y, min(m_tEffectParticleDesc.vMaxLimitSpeed.y, vMove.y));
+		// vMove.z = max(m_tEffectParticleDesc.vMinLimitSpeed.z, min(m_tEffectParticleDesc.vMaxLimitSpeed.z, vMove.z));
+	}
 
 	if (m_tEffectParticleDesc.bMoveLook)
 	{
 		if ((_int)PARTICLETYPE::OUTBURST == m_tEffectParticleDesc.iParticleType)
 		{
-			_vector vMovePosition = XMLoadFloat3(&vMove);
+			// _vector vMovePosition = XMLoadFloat3(&vMove);
+			_vector vMovePosition = vMove;
 			_vector vRotation = XMLoadFloat3(&m_tParticleDescs[i].vCurrentRotation); 
 			_matrix vRotationMatrix = XMMatrixRotationRollPitchYawFromVector(vRotation);
 			vRotationMatrix.r[3] = vRotationMatrix.r[1];
@@ -828,7 +922,8 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 		}
 		else
 		{
-			_vector vMovePosition = XMLoadFloat3(&vMove);
+			// _vector vMovePosition = XMLoadFloat3(&vMove);
+			_vector vMovePosition = vMove;
 			_vector vRotatedPosition = XMVector3TransformCoord(vMovePosition, XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_tParticleDescs[i].vCurrentRotation)));
 			_vector vCurrentPosition = XMLoadFloat3(&m_tParticleDescs[i].vCurrentTranslation);
 			vCurrentPosition += vRotatedPosition;
@@ -837,8 +932,11 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 	}
 	else
 	{
-		m_tParticleDescs[i].vCurrentTranslation =
-			SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, vMove);
+		_float3 F3Move;
+		XMStoreFloat3(&F3Move, vMove);
+
+		// m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, vMove);
+		m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, F3Move);
 	}
 }
 
@@ -1243,17 +1341,28 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 #pragma region Speed & Force
 			ImGui::Text("Speed");
 			ImGui::NewLine();
-			ImGui::Text("Min Speed");
-			ImGui::DragFloat3("##Min_Speed", &m_tEffectParticleDesc.vMinSpeed.x, 0.1f);
+			ImGui::Text("Use Easing"); ImGui::SameLine();
+			ImGui::Checkbox("##Is_Easing_Speed", &m_tEffectParticleDesc.bEasingSpeed);
 
-			ImGui::Text("Max Speed");
-			ImGui::DragFloat3("##Max_Speed", &m_tEffectParticleDesc.vMaxSpeed.x, 0.1f);
+			if (m_tEffectParticleDesc.bEasingSpeed)
+			{
+				ImGui::Text("Ease Total Time"); ImGui::SameLine();
+				ImGui::DragFloat("##Speed_Ease_Total_Time", &m_tEffectParticleDesc.fSpeedEaseTotalTime);
+			}
+			else
+			{
+				ImGui::Text("Min Speed"); ImGui::SameLine();
+				ImGui::DragFloat3("##Min_Speed", &m_tEffectParticleDesc.vMinSpeed.x, 0.1f);
 
-			ImGui::Text("Min Force");
-			ImGui::DragFloat3("##Min_Speed_Force", &m_tEffectParticleDesc.vMinSpeedForce.x, 0.1f);
+				ImGui::Text("Max Speed"); ImGui::SameLine();
+				ImGui::DragFloat3("##Max_Speed", &m_tEffectParticleDesc.vMaxSpeed.x, 0.1f);
 
-			ImGui::Text("Max Force");
-			ImGui::DragFloat3("##Max_Speed_Force", &m_tEffectParticleDesc.vMaxSpeedForce.x, 0.1f);
+				ImGui::Text("Min Force"); ImGui::SameLine();
+				ImGui::DragFloat3("##Min_Speed_Force", &m_tEffectParticleDesc.vMinSpeedForce.x, 0.1f);
+
+				ImGui::Text("Max Force"); ImGui::SameLine();
+				ImGui::DragFloat3("##Max_Speed_Force", &m_tEffectParticleDesc.vMaxSpeedForce.x, 0.1f);
+			}
 
 			ImGui::Text("Max Limit Speed");
 			ImGui::DragFloat3("##Max_Limit_Speed", &m_tEffectParticleDesc.vMaxLimitSpeed.x, 0.1f, -100.f, 100.f, "%.5f");

@@ -10,7 +10,12 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
     /* 현재 애니메이션을 재상하는데 걸리는 시간. */
     fDuration = (_float)In_pAiAnimation->mDuration;
     fTickPerSecond = (_float)In_pAiAnimation->mTicksPerSecond * In_fSpeed;
-
+    
+    // TODO : Bake Animation with controlled speed
+    //if (!strcmp(szName.c_str(), "Parry"))
+    //{
+    //    fTickPerSecond *= 5.f;
+    //}
     
     for (_uint i = 0; i < iNumChannels; i++)
     {
