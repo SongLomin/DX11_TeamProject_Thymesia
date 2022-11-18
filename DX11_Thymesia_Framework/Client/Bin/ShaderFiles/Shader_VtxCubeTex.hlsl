@@ -60,11 +60,16 @@ PS_OUT PS_MAIN_SKY(PS_IN In)
 	
 	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
-	//Out.vColor.a = 0.5f;
-
-	// Out.vColor = vector(0.f, 0.f, 0.f, 1.f);
-
 	return Out;	
+}
+
+PS_OUT PS_MAIN_COLOR(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vColor = vector(1.f, 0.f, 0.f, 1.f);
+
+	return Out;
 }
 
 
@@ -79,5 +84,16 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN_SKY();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_SKY();
+	}
+
+	pass Pass1_Color
+	{
+		SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+		SetRasterizerState(RS_Wireframe);
+
+		VertexShader		= compile vs_5_0 VS_MAIN_SKY();
+		GeometryShader		= NULL;
+		PixelShader			= compile ps_5_0 PS_MAIN_COLOR();
 	}
 }

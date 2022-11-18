@@ -17,9 +17,9 @@ class CImGui_Window abstract : public CBase
 public:
 	struct GAMEOBJECT_DESC
 	{
-		_hashcode HashCode;
-		string TypeName;
-		weak_ptr<CGameObject> pInstance;
+		_hashcode				HashCode;
+		string					TypeName;
+		weak_ptr<CGameObject>	pInstance;
 	};
 
 public:

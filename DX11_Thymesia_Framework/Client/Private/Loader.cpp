@@ -262,11 +262,13 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	Load_AllDiffuseTexture();
 
 	
-	// TODO : For. Ground Texture : (AN) 임시 텍스쳐이므로 나중에 삭제하기, CroundTexture로 필요한곳에 사용할 예정임
-	Load_AllParticleInPath_Recursive("../Bin/Resources/Textures/Ground/");
+	// TODO : For. Ground Texture : (AN) 임시 텍스쳐이므로 나중에 삭제하기, GroundTexture로 필요한곳에 사용할 예정임
+	Load_AllParticleInPath_Recursive("../Bin/GroundInfo/Texture/");
 	Load_AllParticleInPath_Recursive("../Bin/GroundInfo/Filter/");
 	
-
+	// TODO : For. MapTool Test : (AN) 리소스 최대 메모리 사용량 확인용
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Main/"  , MEMORY_TYPE::MEMORY_STATIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Sub/"   , MEMORY_TYPE::MEMORY_STATIC);
 
 #pragma endregion
 	
@@ -699,18 +701,19 @@ void CLoader::Load_AllMeshes(const filesystem::path& In_Path, const MEMORY_TYPE&
 	{
 		const fs::directory_entry& entry = *itr;
 
+		//string szPath
 		Load_AllEffectMeshInPath_Recursive(entry.path());
 
 		szFileName = entry.path().filename().string().c_str();
 		szFileName = szFileName.substr(0, szFileName.size() - 4);
 
-		/*if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
+		if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
 		{
 			cout << szFileName << endl;
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixScaling(0.01f, 0.01f, 0.01f), In_eMemoryType);
-		}*/
+		}
 
-		if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0 || strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
+		else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0 || strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
 		{
 			cout << szFileName << endl;
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixScaling(0.01f, 0.01f, 0.01f), In_eMemoryType);

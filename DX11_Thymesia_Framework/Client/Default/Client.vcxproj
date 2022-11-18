@@ -187,6 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
+    <ClInclude Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hpp" />
     <ClInclude Include="..\Public\Actor.h" />
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
@@ -230,6 +231,7 @@
     <ClInclude Include="..\Public\CustomUI.h" />
     <ClInclude Include="..\Public\EditGround.h" />
     <ClInclude Include="..\Public\EditGroupProp.h" />
+    <ClInclude Include="..\Public\EditInstanceProp.h" />
     <ClInclude Include="..\Public\EditNaviMesh.h" />
     <ClInclude Include="..\Public\EffectMesh.h" />
     <ClInclude Include="..\Public\EffectGroup.h" />
@@ -394,6 +396,7 @@
     <ClCompile Include="..\Private\CustomUI.cpp" />
     <ClCompile Include="..\Private\EditGround.cpp" />
     <ClCompile Include="..\Private\EditGroupProp.cpp" />
+    <ClCompile Include="..\Private\EditInstanceProp.cpp" />
     <ClCompile Include="..\Private\EditNaviMesh.cpp" />
     <ClCompile Include="..\Private\EffectMesh.cpp" />
     <ClCompile Include="..\Private\EffectGroup.cpp" />

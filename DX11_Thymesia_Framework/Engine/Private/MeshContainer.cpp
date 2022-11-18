@@ -107,7 +107,7 @@ void CMeshContainer::Start()
 HRESULT CMeshContainer::Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CModel> pModel)
 {
 	m_pMeshData = tMeshData;
-	m_szName = tMeshData->szName;
+	m_szName    = tMeshData->szName;
 
 #pragma region VERTEXBUFFER
 
