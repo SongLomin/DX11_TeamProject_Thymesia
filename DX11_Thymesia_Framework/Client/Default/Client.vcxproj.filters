@@ -991,7 +991,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal_Icon.cpp" />
     <ClCompile Include="..\Private\LoadingTextUI.cpp" />
-    <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

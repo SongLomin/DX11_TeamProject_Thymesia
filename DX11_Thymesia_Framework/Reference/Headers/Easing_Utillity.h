@@ -78,8 +78,8 @@ public:
 	static _vector QuinticInOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
 
 	static _vector SinIn(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
-	static _vector SinOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
-	static _vector SinInOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
+	static _vector sinfOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
+	static _vector sinfInOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
 
 	static _vector ExpoIn(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
 	static _vector ExpoOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
@@ -89,12 +89,12 @@ public:
 	static _vector CircularOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
 	static _vector CircularInOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
 
-	static _vector ElasticIn(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
-	static _vector ElasticOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
-	static _vector ElasticInOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
+	static _vector ElasticEaseIn(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
+	static _vector ElasticEaseOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
+	static _vector ElasticEaseInOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
 
-	static _vector BounceIn(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
-	static _vector BounceOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
+	static _vector BounceEaseIn(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
+	static _vector BounceEaseOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
 
 };
 

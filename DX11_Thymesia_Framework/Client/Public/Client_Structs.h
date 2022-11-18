@@ -151,38 +151,33 @@ namespace Client
 		// particle moves toward look
 		_bool		bMoveLook;
 #pragma region Speed
-		_bool		bEasingSpeed;
-		EASING_TYPE eSpeedEasingType;
-
-		// For. Easing
-		_float		fSpeedEaseTotalTime;
-
 		_float3		vMinSpeed;
 		_float3		vMaxSpeed;
 
 		_float3		vMinSpeedForce;
 		_float3		vMaxSpeedForce;
 
-		_float3		vMinLimitSpeed; // To. Ease : vStartPoint
-		_float3		vMaxLimitSpeed; // To. Ease : vTargetPoint
+		_float3		vMinLimitSpeed;
+		_float3		vMaxLimitSpeed;
+#pragma endregion
+#pragma region Drag
+		//_float3 vMinDrag;
+		//_float3 vMaxDrag;
+
+		//_float3 vMinDragForce;
+		//_float3 vMaxDragForce;
+
+		//_float3 vMaxLimitDrag;
 #pragma endregion
 #pragma region Rotation
-		_bool		bEasingRotation;
-		EASING_TYPE bRotationEasingType;
-
 		_float3		vMinStartRotation;
 		_float3		vMaxStartRotation;
 
 		_float3		vRotationSpeed;
 		_float3		vRotationForce;
-
-		_float3		vMinRotation; // T
 		_float3		vMaxRotation;
 #pragma endregion
 #pragma region Scale
-		_bool		bEasingScale;
-		EASING_TYPE ScaleEasingType;
-
 		_float3		vMinStartScale;
 		_float3		vMaxStartScale;
 
@@ -192,9 +187,6 @@ namespace Client
 		_float3		vMaxScale;
 #pragma endregion
 #pragma region Color
-		_bool		bEasingColor;
-		EASING_TYPE vColorEasingType;
-
 		_float		fDiscardRatio;
 		_bool		IsGrayOnlyUseRed;// when random colors, grayscales
 
@@ -209,12 +201,9 @@ namespace Client
 #pragma region Texture
 #pragma region Diffuse
 		_int		iDiffuseIndex;
-
 		_float2		vDiffuseStartUV;
-
 		_float2		vDiffuseUVSpeed;
 		_float2		vDiffuseUVForce;
-
 		_float2		vDiffuseUVMax;
 #pragma endregion
 #pragma region Mask
@@ -224,17 +213,13 @@ namespace Client
 
 		_float2		vMaskUVSpeed;
 		_float2		vMaskUVForce;
-
 		_float2		vMaskUVMax;
 #pragma endregion
 #pragma region Noise
 		_int		iNoiseIndex;
-
 		_float2		vNoiseStartUV;
-
 		_float2		vNoiseUVSpeed;
 		_float2		vNoiseUVForce;
-
 		_float2		vNoiseUVMax;
 #pragma endregion
 #pragma endregion
