@@ -490,8 +490,9 @@ HRESULT CRender_Manager::Render_ShadowDepth()
 	if (FAILED(GET_SINGLE(CRenderTarget_Manager)->End_ShadowMRT()))
 		DEBUG_ASSERT;
 
-	if (!m_RenderObjects[(_uint)RENDERGROUP::RENDER_STATICSHADOWDEPTH].empty())
+	if (m_bFirst || !m_RenderObjects[(_uint)RENDERGROUP::RENDER_STATICSHADOWDEPTH].empty())
 	{
+		m_bFirst = false;
 		if (FAILED(GET_SINGLE(CRenderTarget_Manager)->Begin_StaticShadowMRT(TEXT("MRT_StaticShadowDepth"))))
 			DEBUG_ASSERT;
 

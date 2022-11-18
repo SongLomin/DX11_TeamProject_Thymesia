@@ -54,6 +54,23 @@ HRESULT CStatic_Prop::Render()
     return __super::Render();
 }
 
+HRESULT CStatic_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix)
+{
+    m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
+
+    m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)&In_LightViewMatrix, sizeof(_float4x4));
+    m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)&In_LightProjMatrix, sizeof(_float4x4));
+
+    _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
+    for (_uint i = 0; i < iNumMeshContainers; ++i)
+    {
+        m_pShaderCom.lock()->Begin(1);
+        m_pModelCom.lock()->Render_Mesh(i);
+    }
+
+    return S_OK;
+}
+
 void CStatic_Prop::Free()
 {
 }

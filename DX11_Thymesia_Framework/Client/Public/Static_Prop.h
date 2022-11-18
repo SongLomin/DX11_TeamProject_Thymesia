@@ -22,6 +22,7 @@ public:
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render() override;
+    virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix) override;
 
 private:
     weak_ptr<CPhysXCollider> m_pPhyxXColliderCom;

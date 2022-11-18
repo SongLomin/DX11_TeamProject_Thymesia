@@ -91,6 +91,8 @@ private:
 private:
 	_float		m_fBlurWitdh = 0.f;
 
+	_bool		m_bFirst = true;
+
 public:
 	virtual void OnDestroy() override;
 
