@@ -333,7 +333,7 @@ void CVIBuffer_Model_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDe
 		XMStoreFloat4(&((VTXCOLORINSTANCE*)SubResource.pData)[i].vLook, RotationMatrix.r[2] * In_ParticleDescs[i].vCurrentScale.z);
 
 		XMStoreFloat4(&((VTXCOLORINSTANCE*)SubResource.pData)[i].vTranslation,
-			XMLoadFloat3(&In_ParticleDescs[i].vCurrentTarnslation));
+			XMLoadFloat3(&In_ParticleDescs[i].vCurrentTranslation));
 
 		((VTXCOLORINSTANCE*)SubResource.pData)[i].vTranslation.w = 1.f;
 

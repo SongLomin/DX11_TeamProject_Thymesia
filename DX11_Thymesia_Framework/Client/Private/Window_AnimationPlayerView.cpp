@@ -416,7 +416,7 @@ void CWindow_AnimationPlayerView::Draw_AnimationList()
     {
         m_bHold = !m_bHold;
         weak_ptr<CModel> pCurrentModel = m_pPreViewModel.lock()->Get_CurrentModel();
-        pCurrentModel.lock()->Set_RootNode("root_$AssimpFbx$_Translation", m_bHold);
+        pCurrentModel.lock()->Set_RootNode("root", m_bHold);
         
     }
 
@@ -427,7 +427,7 @@ void CWindow_AnimationPlayerView::Draw_AnimationList()
 
     if (ImGui::CollapsingHeader("Select Animation"), ImGuiTreeNodeFlags_DefaultOpen)
     {
-        if (ImGui::BeginListBox("##Animation List", ImVec2(-FLT_MIN, 4 * ImGui::GetTextLineHeightWithSpacing())))
+        if (ImGui::BeginListBox("##Animation List", ImVec2(-FLT_MIN, 10 * ImGui::GetTextLineHeightWithSpacing())))
         {
 
             for (int i = 0; i < m_AllAnimationKeys.size(); i++)

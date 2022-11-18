@@ -38,7 +38,11 @@ public:
 	void	Tick(_float fTimeDelta);
 	HRESULT Render();
 
+public:
+	void Save_EffectJson();
+
 private:
+
 	void Init_SceneEditer();
 	void Init_EffectEditer();
 

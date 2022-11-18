@@ -117,88 +117,130 @@ namespace Client
 	struct EFFECTPARTICLE_DESC
 	{
 		_int		iMaxInstance;
-		_bool		bLooping;
-		_int		iParticleType;
-		_bool		bSyncAnimation;
-		_int		iFollowTransformType;
-		_int		iSyncAnimationKey = -1;
-		_bool		bRectSpawn;
 
+		_bool		bLooping;
+
+		_int		iParticleType;
+		_int		iFollowTransformType;
+
+		_int		iShaderPassIndex;
+
+#pragma region Animation Sync
+		_bool		bSyncAnimation;
+		_int		iSyncAnimationKey = -1;
+#pragma endregion
+#pragma region Life Time
 		_float		fInitTime;
 
 		_float		fMinSpawnTime;
 		_float		fMaxSpawnTime;
 
-
 		_float		fMinLifeTime;
 		_float		fMaxLifeTime;
+#pragma endregion
+#pragma region Spawn Position
+		_float3		vMinSpawnPosition;
+		_float3		vMaxSpawnPosition;
 
-		_float3		vMinStartPosition;
-		_float3		vMaxStartPosition;
+		_float3		vMinSpawnOffsetDirection;
+		_float3		vMaxSpawnOffsetDirection;
 
-		_float3		vMinOffsetDirection;
-		_float3		vMaxOffsetDirection;
-		_float3		vMinOffsetRange;
-		_float3		vMaxOffsetRange;
-
+		_float3		vMinSpawnOffsetRange;
+		_float3		vMaxSpawnOffsetRange;
+#pragma endregion
+		// particle moves toward look
+		_bool		bMoveLook;
+#pragma region Speed
 		_float3		vMinSpeed;
 		_float3		vMaxSpeed;
 
-		_float3		vMinForce;
-		_float3		vMaxForce;
+		_float3		vMinSpeedForce;
+		_float3		vMaxSpeedForce;
 
-		_bool		bMoveLook;
+		_float3		vMinLimitSpeed;
+		_float3		vMaxLimitSpeed;
+#pragma endregion
+#pragma region Drag
+		//_float3 vMinDrag;
+		//_float3 vMaxDrag;
 
-		_float3		vLimiteSpeed;
+		//_float3 vMinDragForce;
+		//_float3 vMaxDragForce;
 
+		//_float3 vMaxLimitDrag;
+#pragma endregion
+#pragma region Rotation
 		_float3		vMinStartRotation;
 		_float3		vMaxStartRotation;
 
 		_float3		vRotationSpeed;
 		_float3		vRotationForce;
 		_float3		vMaxRotation;
-
-
+#pragma endregion
+#pragma region Scale
 		_float3		vMinStartScale;
 		_float3		vMaxStartScale;
 
 		_float3		vScaleSpeed;
 		_float3		vScaleForce;
-		_float3		vMaxScale;
 
-		_bool		IsGrayOnlyUseRed;
+		_float3		vMaxScale;
+#pragma endregion
+#pragma region Color
+		_float		fDiscardRatio;
+		_bool		IsGrayOnlyUseRed;// when random colors, grayscales
 
 		_float4		vMinStartColor;
 		_float4		vMaxStartColor;
+
 		_float4		vColorSpeed;
 		_float4		vColorForce;
+
 		_float4		vMaxColor;
+#pragma endregion
+#pragma region Texture
+#pragma region Diffuse
+		_int		iDiffuseIndex;
+		_float2		vDiffuseStartUV;
+		_float2		vDiffuseUVSpeed;
+		_float2		vDiffuseUVForce;
+		_float2		vDiffuseUVMax;
+#pragma endregion
+#pragma region Mask
+		_int		iMaskIndex;
 
-		_float		fDiscardRatio;
+		_float2		vMaskStartUV;
 
-		_bool		bDiffuseUV;
-		_float2		vStartUV;
-		_int		iUVMaskIndex;
-		_float2		vUVSpeed;
-		_float2		vUVForce;
-		_float2		vUVMax;
-
-		_int		iUVColorIndex;
-
+		_float2		vMaskUVSpeed;
+		_float2		vMaskUVForce;
+		_float2		vMaskUVMax;
+#pragma endregion
+#pragma region Noise
+		_int		iNoiseIndex;
+		_float2		vNoiseStartUV;
+		_float2		vNoiseUVSpeed;
+		_float2		vNoiseUVForce;
+		_float2		vNoiseUVMax;
+#pragma endregion
+#pragma endregion
+#pragma region Bloom & Glow
 		_bool		bBloom;
 		_bool		bGlow;
 		_float4		vStartGlowColor;
 		_float4		vGlowColorSpeed;
 		_float4		vGlowColorForce;
+#pragma endregion
+#pragma region For. Sprite
+		// TODO : convert to separate individual class
+		// _bool		bPendulumSprite;
 
-		_int	iShaderPassIndex;
+		_bool		bLoopSprite;
 
-		// for sprite images
-		_bool		bPendulumSprite;
 		_int		iNumFrameX;
 		_int		iNumFrameY;
-		_float2		fCurFrame;
+
 		_float		fSpriteSpeed;
+#pragma endregion
 	};
 
 	struct WEAPON_DESC

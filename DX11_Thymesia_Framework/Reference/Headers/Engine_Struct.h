@@ -313,10 +313,16 @@ namespace Engine
 
 		// For. Position
 		_float3			vOffsetPosition;
-		_float3			vCurrentTarnslation;
-		_float3			vCurrentForce;
+		_float3			vCurrentTranslation;
+
+		_float3			vCurrentSpeedForce;
+		// _float3			vCurrentDragForce;
+
 		_float3			vTargetSpeed;
-		_float3			vTargetForce;
+		_float3			vTargetSpeedForce;
+
+		// _float3			vTargetDrag;
+		// _float3			vTargetDragForce;
 
 		// For. Rotation
 		_float3         vCurrentRotation;

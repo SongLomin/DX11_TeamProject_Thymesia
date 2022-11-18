@@ -485,6 +485,9 @@
     <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal.h">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal</Filter>
     </ClInclude>
+    <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
+      <Filter>04. ShaderFiles</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -913,6 +916,15 @@
     <ClCompile Include="..\Private\HUD_PlagueWeaponBase.cpp">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Base</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\HUD_Hover.cpp">
+      <Filter>02. GameObject\01. UI\Hover</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_PlagueWeapon_Main.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_PlagueWeaponBase.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Base</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeapon.cpp">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon</Filter>
     </ClCompile>
@@ -924,9 +936,6 @@
       <Filter>02. GameObject\01. UI\PauseMenu</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal.cpp" />
-    <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Weapon.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon</Filter>
     </ClCompile>
