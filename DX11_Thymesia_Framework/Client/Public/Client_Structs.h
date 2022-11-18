@@ -151,6 +151,8 @@ namespace Client
 		// particle moves toward look
 		_bool		bMoveLook;
 #pragma region Speed
+		_bool		bEasingSpeed;
+
 		_float3		vMinSpeed;
 		_float3		vMaxSpeed;
 
