@@ -93,6 +93,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 
 	GAMEINSTANCE->Add_Font((_uint)FONT_INDEX::DREAM, TEXT("../Bin/Resources/Fonts/128.spriteFont"));
+	GAMEINSTANCE->Add_Font((_uint)FONT_INDEX::PRETENDARD, TEXT("../Bin/Resources/Fonts/Pretendard.spriteFont"));
+
 	GAMEINSTANCE->Add_Prototype_GameObject<CFadeMask>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CCamera_Target>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CStage1>();
@@ -127,6 +129,12 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	GAMEINSTANCE->Load_Textures(("Loading_Icon"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingIcon.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Loading_Complete"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/Loading_Complete.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	GAMEINSTANCE->Load_Textures(("Loading_Font_Fortress_Title"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/Fortress_Name.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Loading_Font_Fortress_Desc"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/Fortress_Desc.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
 
 	//MainMenu(LogoLevel)
 	GAMEINSTANCE->Load_Textures(("MainMenu_Background"), TEXT("../Bin/Resources/Textures/UI/MainMenuBackrgound.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
@@ -218,7 +226,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 //	GAMEINSTANCE->Load_Textures(("Dissolve_4"), TEXT("../Bin/Resources/Textures/UI/Dissolve/Test4.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Dissolve_1"), TEXT("../Bin/Resources/Textures/UI/Dissolve/Test%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 
-	GAMEINSTANCE->Load_Textures(("Dissolve_Mask"), TEXT("../Bin/Resources/Textures/UI/W_PlagueWeapon_MaskColor01.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("MaskColor_Vertical"), TEXT("../Bin/Resources/Textures/UI/W_PlagueWeapon_MaskColor01.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	//TODO : UI_Menu : ESC키를 눌러서 나오는 메뉴창
 	//UI_Menu
@@ -232,6 +240,24 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("PageIndex_UnderLine"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_UnderLine.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	//Page_Status
+	GAMEINSTANCE->Load_Textures(("Tap_Status_BG"), TEXT("../Bin/Resources/Textures/UI/TexUI_CharacterStatusBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	//TestFontImage
+	GAMEINSTANCE->Load_Textures(("PageFont_Status"), TEXT("../Bin/Resources/Textures/UI/PauseMenu_font/PageIndex/Status.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("PageFont_Talent"), TEXT("../Bin/Resources/Textures/UI/PauseMenu_font/PageIndex/Talent.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("PageFont_Collection"), TEXT("../Bin/Resources/Textures/UI/PauseMenu_font/PageIndex/Collection.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("PageFont_Item"), TEXT("../Bin/Resources/Textures/UI/PauseMenu_font/PageIndex/Item.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("PageFont_Option"), TEXT("../Bin/Resources/Textures/UI/PauseMenu_font/PageIndex/Option.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("PageFont_Quit"), TEXT("../Bin/Resources/Textures/UI/PauseMenu_font/PageIndex/Quit.png"), MEMORY_TYPE::MEMORY_STATIC);
+	
+
+	GAMEINSTANCE->Load_Textures(("Font_Diamond"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_DiamondIcon_01.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Font_Decoration2"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_DecorationLine_02.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("Mask_Horizontal"), TEXT("../Bin/Resources/Textures/UI/Mask./Mask_Horizontal%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+
 
 	Load_AllDiffuseTexture();
 
@@ -248,12 +274,11 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	Load_AllMaskMap();
 	Load_AllNoiseTexture();
 	Load_AllParticleTexture();
-	
+
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
 
 	// TODO : Turn off temporarily for Light_Prop
 
-	
 	LIGHTDESC			LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
@@ -292,7 +317,6 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	LightDesc.bEnable = false;
 
 	GAMEINSTANCE->Add_Light(LightDesc);
-	
 	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중입니다. "));
 
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_UI"), TEXT("../Bin/ShaderFiles/Shader_UI.hlsl"));
@@ -317,7 +341,6 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxModelInstance"), TEXT("../Bin/ShaderFiles/Shader_VtxModelInstance.hlsl"));
 
 	lstrcpy(m_szLoadingText, TEXT("데이터를 로딩중입니다. "));
-	
 	
 	GET_SINGLE(CGameManager)->Load_AllKeyEventFromJson();
 
@@ -351,7 +374,6 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Model("Torch", "../Bin/Resources/Meshes/LightProp/Torch/Torch.FBX", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 	
 	lstrcpy(m_szLoadingText, TEXT("객체 생성 중입니다. "));
-	
 	
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));	
 
