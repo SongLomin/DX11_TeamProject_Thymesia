@@ -176,7 +176,6 @@ HRESULT CNorMonster::Render()
 void CNorMonster::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
-
 }
 
 void CNorMonster::Respawn_Monster(_fvector In_vPosition)

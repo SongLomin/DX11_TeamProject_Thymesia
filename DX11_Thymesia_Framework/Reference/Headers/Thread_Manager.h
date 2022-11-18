@@ -29,7 +29,7 @@ public:
 
 	vector<future<void>>				m_Threads;
 
-	_bool											m_bDead = false;
+	_bool								m_bDead = false;
 
 public:
 	virtual void OnDestroy() override;

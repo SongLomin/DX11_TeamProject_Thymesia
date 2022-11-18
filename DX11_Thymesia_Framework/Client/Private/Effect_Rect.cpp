@@ -89,7 +89,7 @@ HRESULT CEffect_Rect::Initialize(void* pArg)
 	m_pNoiseTextureCom = Add_Component<CTexture>();
 	m_pNoiseTextureCom.lock()->Use_Texture("UVNoise");
 	Set_Enable(false);
-	Use_Thread(THREAD_TYPE::TICK);
+	//Use_Thread(THREAD_TYPE::TICK);
 
 	return S_OK;
 }

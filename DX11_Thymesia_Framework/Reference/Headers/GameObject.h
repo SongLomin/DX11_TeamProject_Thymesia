@@ -37,6 +37,7 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 	virtual void Before_Render(_float fTimeDelta);
+	virtual void Custom_Thread0(_float fTimeDelta);
 	virtual HRESULT Render(); 
 	virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix);
 

@@ -24,6 +24,8 @@ HRESULT CActor::Initialize(void* pArg)
     m_pRendererCom = Add_Component<CRenderer>();
     m_pRigidBodyCom = Add_Component<CRigidBody>();
 
+    Use_Thread(THREAD_TYPE::CUSTOM_THREAD0);
+
     return S_OK;
 }
 
@@ -38,6 +40,11 @@ void CActor::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 
     m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Cast<CGameObject>(m_this));
+}
+
+void CActor::Custom_Thread0(_float fTimeDelta)
+{
+    m_pModelCom.lock()->Update_BoneMatrices();
 }
 
 HRESULT CActor::Render()

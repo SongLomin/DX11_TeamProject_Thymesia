@@ -22,19 +22,24 @@ void Loop(const THREAD_TYPE In_eThread_Type)
 
 	list<weak_ptr<CGameObject>>	ThreadObjects;
 
+	shared_ptr<CThread_Manager> pThreadManager = GET_SINGLE(CThread_Manager);
+
 	_bool bDead = false;
 
 	while (true)
 	{
-		std::scoped_lock(g_Mutex);
+		//std::scoped_lock(g_Mutex);
 
-		bDead = GET_SINGLE(CThread_Manager)->m_bDead;
+		bDead = pThreadManager->m_bDead;
 
 		if (bDead)
 			break;
 
 		if (pGameInstance.lock()->Get_LoopIndex() == iLoopIndex)
+		{
+			//this_thread::sleep_for(std::chrono::milliseconds(3));
 			continue;
+		}
 
 		fTimeDelta = pTimer->Compute_Timer();
 
@@ -58,8 +63,8 @@ void Loop(const THREAD_TYPE In_eThread_Type)
 					(*iter).lock()->LateTick(fTimeDelta);
 					break;
 
-				case THREAD_TYPE::BEFORE_RENDER:
-					(*iter).lock()->Before_Render(fTimeDelta);
+				case THREAD_TYPE::CUSTOM_THREAD0:
+					(*iter).lock()->Custom_Thread0(fTimeDelta);
 					break;
 
 				default:
@@ -72,14 +77,14 @@ void Loop(const THREAD_TYPE In_eThread_Type)
 
 		//GET_SINGLE(CThread_Manager)->m_ReservedThreadObjects[(_uint)In_eThread_Type];
 
-		for (auto& elem : GET_SINGLE(CThread_Manager)->m_ReservedThreadObjects[(_uint)In_eThread_Type])
+		for (auto& elem : pThreadManager->m_ReservedThreadObjects[(_uint)In_eThread_Type])
 		{
 			//cout << "Thread [" << (_uint)In_eThread_Type << "] Push_Back" << endl;
 			ThreadObjects.push_back(elem);
 		}
 
 
-		GET_SINGLE(CThread_Manager)->m_ReservedThreadObjects[(_uint)In_eThread_Type].clear();
+		pThreadManager->m_ReservedThreadObjects[(_uint)In_eThread_Type].clear();
 
 		//Update(In_eThread_Type, ThreadObjects, fTimeDelta);
 
@@ -88,8 +93,6 @@ void Loop(const THREAD_TYPE In_eThread_Type)
 		iLoopIndex = pGameInstance.lock()->Get_LoopIndex();
 
 	}
-
-	cout << "Thread [" << (_uint)In_eThread_Type << "] Break" << endl;
 
 	pTimer.reset();
 
@@ -127,12 +130,12 @@ void CThread_Manager::Initialize(const _uint In_iNumLayer)
 		m_Threads.push_back(async(launch::async, function, (THREAD_TYPE)i));
 	}*/
 
-	for (_uint i = 0; i < (_uint)THREAD_TYPE::TYPE_END; ++i)
+	for (_uint i = (_uint)THREAD_TYPE::TICK; i < (_uint)THREAD_TYPE::TYPE_END; ++i)
 	{
 		m_Threads.push_back(async(launch::async, Loop, (THREAD_TYPE)i));
 	}
 
-	
+	//m_Threads.push_back(async(launch::async, Loop, (THREAD_TYPE::TICK)));
 
 }
 
@@ -156,8 +159,8 @@ void CThread_Manager::Update(const THREAD_TYPE In_eThread_Type, list<weak_ptr<CG
 				(*iter).lock()->LateTick(fTimeDelta);
 				break;
 
-			case THREAD_TYPE::BEFORE_RENDER:
-				(*iter).lock()->Before_Render(fTimeDelta);
+			case THREAD_TYPE::CUSTOM_THREAD0:
+				(*iter).lock()->Custom_Thread0(fTimeDelta);
 				break;
 
 			default:

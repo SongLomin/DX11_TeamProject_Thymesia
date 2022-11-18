@@ -127,7 +127,7 @@ HRESULT CCorvus::Render()
 	_int iPassIndex = 0;
 
 	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
-
+	
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
 	
@@ -150,6 +150,7 @@ HRESULT CCorvus::Render()
 			iPassIndex = 4;
 		}
 
+		
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, iPassIndex, "g_Bones");
 		
 	}
@@ -160,10 +161,6 @@ HRESULT CCorvus::Render()
 void CCorvus::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
-
-	_vector vLightFlag = { 1.f, 0.f, 0.f, 0.f };
-
-	m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector));
 }
 
 void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
