@@ -6,7 +6,7 @@
 #include "BehaviorBase.h"
 #include "Animation.h"
 #include "AIStateBase.h"
-#include "NorMonStateBase.h"
+#include "NorMonStateS.h"
 #include "Character.h"
 
 
@@ -31,19 +31,22 @@ void CNorMonState_TurnR90::Start()
 {
 	__super::Start();
 
+	DirCheckTurnSpeed();
+	m_bStartAnimation = true;
+
 	if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
 	{
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|DemoM02_TurnR90|BaseLayer");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|DemoM02_TurnR90|BaseLayer|Armature|A");
 	}
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_TurnR90::Call_AnimationEnd, this);
+	
 }
 
 void CNorMonState_TurnR90::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	//Turn_Transform(fTimeDelta);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -52,9 +55,27 @@ void CNorMonState_TurnR90::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	Turn_ToThePlayer(fTimeDelta);
+
+	_float fTurnValue = 1.57 / 1.333f;
+
+
+	m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * 1.5f);
 
 	Check_AndChangeNextState();
+}
+
+void CNorMonState_TurnR90::DirCheckTurnSpeed()
+{
+	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
+
+	if (fPToMDistance <= 3.f)
+		m_fTurnSpeed = 3.f;
+
+	if (fPToMDistance > 3.f && fPToMDistance <= 7.f)
+		m_fTurnSpeed = 2.f;
+
+	if (fPToMDistance > 7.f)
+		m_fTurnSpeed = 1.f;
 }
 
 
@@ -66,19 +87,29 @@ void CNorMonState_TurnR90::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "NorMonState: turnrrrrrr -> trurnrrrr" << endl;
 #endif
 
-	
+	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 }
 
 void CNorMonState_TurnR90::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
+
+
+
+void CNorMonState_TurnR90::Call_AnimationEnd()
+{
+	if (!Get_Enable())
+		return;
+
+	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
+}
 
 void CNorMonState_TurnR90::OnDestroy()
 {
@@ -96,18 +127,15 @@ _bool CNorMonState_TurnR90::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	
+	if (ComputeAngleWithPlayer() > 0.94f)
+	{
+		Rotation_TargetToLookDir();
+		Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
+		return true;
+	}
+
 
 	return false;
-}
-
-void CNorMonState_TurnR90::Call_AnimationEnd()
-{
-	if (!Get_Enable())
-		return;
-
-	Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_MonIdleType(NORMONSTERIDLETYPE::NORIDLE);
-	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
 }
 
 

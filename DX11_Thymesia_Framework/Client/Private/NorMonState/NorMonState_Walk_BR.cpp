@@ -7,7 +7,7 @@
 //#include "BehaviorBase.h"
 #include "Animation.h"
 #include "AIStateBase.h"
-#include "NorMonStateBase.h"
+#include "NorMonStateS.h"
 #include "Character.h"
 
 
@@ -35,7 +35,7 @@ void CNorMonState_Walk_BR::Start()
 
 	if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
 	{
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|LV1Villager_M_WalkBL|BaseLayer");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_WalkBL|BaseLayer|Armat");
 	}
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Walk_BR::Call_AnimationEnd, this);

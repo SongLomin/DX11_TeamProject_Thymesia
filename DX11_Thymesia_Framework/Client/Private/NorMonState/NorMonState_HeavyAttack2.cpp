@@ -6,7 +6,7 @@
 #include "BehaviorBase.h"
 #include "Animation.h"
 #include "AIStateBase.h"
-#include "NorMonStateBase.h"
+#include "NorMonStateS.h"
 #include "Character.h"
 
 
@@ -33,7 +33,7 @@ void CNorMonState_HeavyAttack2::Start()
 
 	if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
 	{
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|LV1Villager_M_Attack05|BaseLayer");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_Attack05|BaseLayer|Arm");
 	}
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_HeavyAttack2::Call_AnimationEnd, this);
@@ -53,9 +53,9 @@ void CNorMonState_HeavyAttack2::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+	if (m_bAttackLookAtLimit)
 	Turn_ToThePlayer(fTimeDelta);
 
-	if(m_bAttackLookAtLimit)
 	Check_AndChangeNextState();
 
 
