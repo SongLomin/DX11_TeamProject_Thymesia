@@ -45,7 +45,7 @@ void CLoadingTextUI::Tick(_float fTimeDelta)
 
     if (m_bDelay)
     {
-        if (m_fStartDelay -= fTimeDelta < 0.f)
+        if ((m_fStartDelay -= fTimeDelta) < 0.f)
         {
             m_fTick += fTimeDelta;
             m_fRatio = (m_fTick / m_fTime);
@@ -64,7 +64,8 @@ void CLoadingTextUI::LateTick(_float fTimeDelta)
 
 HRESULT CLoadingTextUI::Render()
 {
-    __super::Render();
+    if (m_fRatio >= 0.01f)
+        __super::Render();
 
     return S_OK;
 }
