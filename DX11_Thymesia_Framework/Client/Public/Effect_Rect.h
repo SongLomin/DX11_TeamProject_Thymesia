@@ -37,14 +37,6 @@ public:
     void Set_TimeScaleLayer(const _uint& In_iTimeScaleLayer) { m_iTimeScaleLayerIndex = In_iTimeScaleLayer; }
     const _char* Get_EffectName() const;
 
-private:
-	virtual HRESULT Initialize_Prototype()   override;
-	virtual HRESULT Initialize(void* pArg)   override;
-	virtual void Tick(_float fTimeDelta)     override;
-	virtual void LateTick(_float fTimeDelta) override;
-	virtual HRESULT Render()                 override;
-
-public:
 	void Init_EffectParticle(const _char* In_szName, const _char* In_szTextureKey);
 	void Reset_Effect(weak_ptr<CTransform> pParentTransform);
 	void Sync_Animation();
@@ -55,16 +47,22 @@ public:
 	virtual void OnEventMessage(_uint iArg) override;
 	void OnChangeAnimationKey(const _uint& In_Key);
 
-protected:
+private:
+    virtual HRESULT Initialize_Prototype()   override;
+    virtual HRESULT Initialize(void* pArg)   override;
+    virtual void Tick(_float fTimeDelta)     override;
+    virtual void LateTick(_float fTimeDelta) override;
+    virtual HRESULT Render()                 override;
+
 	virtual void SetUp_ShaderResource();
 
-private:
     void Play(_float fTimeDelta); 
     void Reset_Instance(const _uint& In_ParticleCount);
     void Reset_ParticleDescs();
     void Reset_ParticleDesc(const _uint& In_iIndex);
     void Generate_RandomOriginalParticleDesc();
     _bool Check_DisableAllParticle();
+
     void Update_ParticlePosition(const _uint& i, _float fTimeDelta);
     void Update_ParticleRotation(const _uint& i, _float fTimeDelta);
     void Update_ParticleScale(const _uint& i, _float fTimeDelta);
@@ -73,6 +71,9 @@ private:
     void Update_ParticleGlowColor(_float fTimeDelta);
     void Update_ParticleSpriteFrame(const _uint& i, _float fTimeDelta);
     void Update_ParentTransform();
+
+    // For. Easing
+    void Apply_Easing(_float3& vMove, EASING_TYPE eEasingType, _vector vStartPoint, _vector vTargetPoint, _float fElapsedTime, _float fTotalTime);
 
 private:
 	void Free();

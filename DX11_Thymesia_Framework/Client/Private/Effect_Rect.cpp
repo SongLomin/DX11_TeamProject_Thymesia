@@ -2,6 +2,8 @@
 #include "Effect_Rect.h"
 #include "Client_Components.h"
 
+#include "Easing_Utillity.h"
+
 // undefines at bottom
 #define PASS_SPRITE 0
 #define PASS_ALPHADISCARD 1
@@ -788,16 +790,27 @@ _bool CEffect_Rect::Check_DisableAllParticle()
 
 void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 {
-	_float3 vMove = SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeed, fTimeDelta);
-	
-	m_tParticleDescs[i].vCurrentSpeedForce =
-		SMath::Add_Float3(m_tParticleDescs[i].vCurrentSpeedForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeedForce, fTimeDelta));
+	_float3 vMove;
+	ZeroMemory(&vMove, sizeof(_float3));
 
-	vMove = SMath::Add_Float3(vMove, m_tParticleDescs[i].vCurrentSpeedForce);
-	
-	vMove.x = max(m_tEffectParticleDesc.vMinLimitSpeed.x,  min(m_tEffectParticleDesc.vMaxLimitSpeed.x, vMove.x));
-	vMove.y = max(m_tEffectParticleDesc.vMinLimitSpeed.y,  min(m_tEffectParticleDesc.vMaxLimitSpeed.y, vMove.y));
-	vMove.z = max(m_tEffectParticleDesc.vMinLimitSpeed.z,  min(m_tEffectParticleDesc.vMaxLimitSpeed.z, vMove.z));
+	if (m_tEffectParticleDesc.bEasingSpeed)
+	{
+		_float fElapsedTime = m_tEffectParticleDesc.fMaxLifeTime - m_tParticleDescs[i].fCurrentLifeTime;
+		this->Apply_Easing(vMove, m_tEffectParticleDesc.eSpeedEasingType, XMLoadFloat3(&m_tEffectParticleDesc.vMinLimitSpeed), XMLoadFloat3(&m_tEffectParticleDesc.vMaxLimitSpeed), fElapsedTime, m_tEffectParticleDesc.fSpeedEasingTotalTime);;
+	}
+	else
+	{
+		vMove = SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeed, fTimeDelta);
+
+		m_tParticleDescs[i].vCurrentSpeedForce =
+			SMath::Add_Float3(m_tParticleDescs[i].vCurrentSpeedForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeedForce, fTimeDelta));
+
+		vMove = SMath::Add_Float3(vMove, m_tParticleDescs[i].vCurrentSpeedForce);
+
+		vMove.x = max(m_tEffectParticleDesc.vMinLimitSpeed.x, min(m_tEffectParticleDesc.vMaxLimitSpeed.x, vMove.x));
+		vMove.y = max(m_tEffectParticleDesc.vMinLimitSpeed.y, min(m_tEffectParticleDesc.vMaxLimitSpeed.y, vMove.y));
+		vMove.z = max(m_tEffectParticleDesc.vMinLimitSpeed.z, min(m_tEffectParticleDesc.vMaxLimitSpeed.z, vMove.z));
+	}
 
 	if (m_tEffectParticleDesc.bMoveLook)
 	{
@@ -1089,6 +1102,100 @@ void CEffect_Rect::Update_ParentTransform()
 			m_pTransformCom.lock()->Set_WorldMatrix(XMMatrixIdentity());
 		}
 	}
+}
+
+void CEffect_Rect::Apply_Easing(_float3& vMove, EASING_TYPE eEasingType, _vector vStartPoint, _vector vTargetPoint, _float fElapsedTime, _float fTotalTime)
+{
+#define MACRO(FunctionName)\
+XMStoreFloat3(&vMove, FunctionName(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime));
+
+	switch (eEasingType)
+	{
+	case EASING_TYPE::LINEAR:
+		MACRO(CEasing_Utillity::Linear);
+		break;
+	case EASING_TYPE::QUAD_IN:
+		MACRO(CEasing_Utillity::QuadIn);
+		break;
+	case EASING_TYPE::QUAD_OUT:
+		MACRO(CEasing_Utillity::QuadOut);
+		break;
+	case EASING_TYPE::QUAD_INOUT:
+		MACRO(CEasing_Utillity::QuadInOut);
+		break;
+	case EASING_TYPE::CUBIC_IN:
+		MACRO(CEasing_Utillity::CubicIn);
+		break;
+	case EASING_TYPE::CUBIC_OUT:
+		MACRO(CEasing_Utillity::CubicOut);
+		break;
+	case EASING_TYPE::CUBIC_INOUT:
+		MACRO(CEasing_Utillity::CubicInOut);
+		break;
+	case EASING_TYPE::QUART_IN:
+		MACRO(CEasing_Utillity::QuadIn);
+		break;
+	case EASING_TYPE::QUART_OUT:
+		MACRO(CEasing_Utillity::QuadOut);
+		break;
+	case EASING_TYPE::QUART_INOUT:
+		MACRO(CEasing_Utillity::QuadInOut);
+		break;
+	case EASING_TYPE::QUINT_IN:
+		MACRO(CEasing_Utillity::QuintIn);
+		break;
+	case EASING_TYPE::QUINT_OUT:
+		MACRO(CEasing_Utillity::QuintOut);
+		break;
+	case EASING_TYPE::QUINT_INOUT:
+		MACRO(CEasing_Utillity::QuintInOut);
+		break;
+	case EASING_TYPE::SINE_IN:
+		MACRO(CEasing_Utillity::SineIn);
+		break;
+	case EASING_TYPE::SINE_OUT:
+		MACRO(CEasing_Utillity::SineOut);
+		break;
+	case EASING_TYPE::SINE_INOUT:
+		MACRO(CEasing_Utillity::SineInOut);
+		break;
+	case EASING_TYPE::EXPO_IN:
+		MACRO(CEasing_Utillity::ExpoIn);
+		break;
+	case EASING_TYPE::EXPO_OUT:
+		MACRO(CEasing_Utillity::ExpoOut);
+		break;
+	case EASING_TYPE::EXPO_INOUT:
+		MACRO(CEasing_Utillity::ExpoInOut);
+		break;
+	case EASING_TYPE::CIRC_IN:
+		MACRO(CEasing_Utillity::CircIn);
+		break;
+	case EASING_TYPE::CIRC_OUT:
+		MACRO(CEasing_Utillity::CircOut);
+		break;
+	case EASING_TYPE::CIRC_INOUT:
+		MACRO(CEasing_Utillity::CircInOut);
+		break;
+	case EASING_TYPE::ELASTIC_IN:
+		MACRO(CEasing_Utillity::ElasticIn);
+		break;
+	case EASING_TYPE::ELASTIC_OUT:
+		MACRO(CEasing_Utillity::ElasticOut);
+		break;
+	case EASING_TYPE::ELASTIC_INOUT:
+		MACRO(CEasing_Utillity::ElasticInOut);
+		break;
+	case EASING_TYPE::BOUNCE_IN:
+		MACRO(CEasing_Utillity::BounceIn);
+		break;
+	case EASING_TYPE::BOUNCE_OUT:
+		MACRO(CEasing_Utillity::BounceOut);
+		break;
+	default:
+		return;
+	}
+#undef MACRO
 }
 
 void CEffect_Rect::OnEventMessage(_uint iArg)
