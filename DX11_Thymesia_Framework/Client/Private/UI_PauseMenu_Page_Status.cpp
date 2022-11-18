@@ -7,7 +7,7 @@
 #include "GameManager.h"
 #include "Engine_Defines.h"
 #include "GameObject.h"
-
+#include "UI_PauseMenu_Tap_PlagueWeapon.h"
 
 GAMECLASS_C(CUI_PauseMenu_Page_Status)
 CLONE_C(CUI_PauseMenu_Page_Status, CGameObject)
@@ -25,10 +25,10 @@ HRESULT CUI_PauseMenu_Page_Status::Initialize(void* pArg)
 
 
 	m_pStatusTap = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu_Tap_Status>(LEVEL_STATIC);
-
+	m_pPlagueWeaponTap = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu_Tap_PlagueWeapon>(LEVEL_STATIC);
 
 	m_vecChildUI.push_back(m_pStatusTap);
-
+	m_vecChildUI.push_back(m_pPlagueWeaponTap);
 	return S_OK;
 }
 

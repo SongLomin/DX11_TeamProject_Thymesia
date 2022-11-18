@@ -333,6 +333,7 @@
     <ClInclude Include="..\Public\UI_PauseMenu_Page_Status.h" />
     <ClInclude Include="..\Public\UI_PauseMenu_Tap_PlagueWeapon.h" />
     <ClInclude Include="..\Public\UI_PauseMenu_Tap_Status.h" />
+    <ClInclude Include="..\Public\UI_PlagueWeapon.h" />
     <ClInclude Include="..\Public\Weapon.h" />
     <ClInclude Include="..\Public\Window_AnimationModelView.h" />
     <ClInclude Include="..\Public\Window_AnimationPlayerView.h" />
@@ -495,6 +496,7 @@
     <ClCompile Include="..\Private\UI_PauseMenu_Page_Status.cpp" />
     <ClCompile Include="..\Private\UI_PauseMenu_Tap_PlagueWeapon.cpp" />
     <ClCompile Include="..\Private\UI_PauseMenu_Tap_Status.cpp" />
+    <ClCompile Include="..\Private\UI_PlagueWeapon.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
     <ClCompile Include="..\Private\Window_AnimationModelView.cpp" />
     <ClCompile Include="..\Private\Window_AnimationPlayerView.cpp" />

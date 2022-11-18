@@ -511,6 +511,9 @@
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
       <Filter>04. ShaderFiles</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_PlagueWeapon.h">
+      <Filter>02. GameObject\01. UI\PauseMenu\Page\Status\Tap\PlagueWeapon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -991,6 +994,10 @@
     </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal_Icon.cpp" />
     <ClCompile Include="..\Private\LoadingTextUI.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp" />
+    <ClCompile Include="..\Private\UI_PlagueWeapon.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

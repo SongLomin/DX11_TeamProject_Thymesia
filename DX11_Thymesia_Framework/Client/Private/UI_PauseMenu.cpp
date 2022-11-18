@@ -122,6 +122,9 @@ void CUI_PauseMenu::OnPaging()
 	{
 		if (i == m_iPageIndex)//현재 페이지 인덱스
 		{
+			if (m_pPages[i].lock() != nullptr)
+				m_pPages[i].lock()->Set_Enable(true);
+
 			m_PageTexInfo[i].vPosition.y = 35.f;
 			m_PageTexInfo[i].vColor = _float4(1.f, 1.f, 1.f, 1.f);
 
