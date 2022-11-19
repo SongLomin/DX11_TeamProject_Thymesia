@@ -153,7 +153,6 @@ namespace Client
 #pragma region Speed
 		_bool		bEasingSpeed;
 		_int		iSpeedEasingType;
-
 		_float		fSpeedEasingTotalTime;
 
 		_float3		vMinSpeed;

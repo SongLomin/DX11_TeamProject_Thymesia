@@ -73,7 +73,15 @@ private:
     void Update_ParentTransform();
 
     // For. Easing
-    void Apply_Easing(_float3& vMove, EASING_TYPE eEasingType, _vector vStartPoint, _vector vTargetPoint, _float fElapsedTime, _float fTotalTime);
+    void Apply_Easing
+    (
+        _float3& vTarget
+        , EASING_TYPE eEasingType
+        , _vector vStartPoint
+        , _vector vTargetPoint
+        , _float fElapsedTime
+        , _float fTotalTime
+    );
 
 private:
 	void Free();

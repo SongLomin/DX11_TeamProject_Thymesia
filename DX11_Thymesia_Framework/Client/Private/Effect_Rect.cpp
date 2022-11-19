@@ -245,35 +245,46 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	Out_Json["Is_MoveLook"] = m_tEffectParticleDesc.bMoveLook;
 
 #pragma region Speed
-	CJson_Utility::Write_Float3(Out_Json["Min_Speed"], m_tEffectParticleDesc.vMinSpeed);
-	CJson_Utility::Write_Float3(Out_Json["Max_Speed"], m_tEffectParticleDesc.vMaxSpeed);
+	Out_Json["Is_Easing_Speed"] = m_tEffectParticleDesc.bEasingSpeed;
 
-	CJson_Utility::Write_Float3(Out_Json["Min_Speed_Force"], m_tEffectParticleDesc.vMinSpeedForce);
-	CJson_Utility::Write_Float3(Out_Json["Max_Speed_Force"], m_tEffectParticleDesc.vMaxSpeedForce);
+	if (m_tEffectParticleDesc.bEasingSpeed)
+	{
+		Out_Json["Speed_Easing_Type"] = m_tEffectParticleDesc.iSpeedEasingType;
+		Out_Json["Speed_Easing_Total_Time"] = m_tEffectParticleDesc.fSpeedEasingTotalTime;
+	}
+	else
+	{
+		CJson_Utility::Write_Float3(Out_Json["Min_Speed"], m_tEffectParticleDesc.vMinSpeed);
+		CJson_Utility::Write_Float3(Out_Json["Max_Speed"], m_tEffectParticleDesc.vMaxSpeed);
+
+		CJson_Utility::Write_Float3(Out_Json["Min_Speed_Force"], m_tEffectParticleDesc.vMinSpeedForce);
+		CJson_Utility::Write_Float3(Out_Json["Max_Speed_Force"], m_tEffectParticleDesc.vMaxSpeedForce);
+	}
 
 	CJson_Utility::Write_Float3(Out_Json["Min_Limit_Speed"], m_tEffectParticleDesc.vMinLimitSpeed);
 	CJson_Utility::Write_Float3(Out_Json["Max_Limit_Speed"], m_tEffectParticleDesc.vMaxLimitSpeed);
 #pragma endregion
 
-#pragma region Drag
-	// CJson_Utility::Write_Float3(Out_Json["Min_Drag"], m_tEffectParticleDesc.vMinDrag);
-	// CJson_Utility::Write_Float3(Out_Json["Max_Drag"], m_tEffectParticleDesc.vMaxDrag);
-	// 
-	// CJson_Utility::Write_Float3(Out_Json["Min_Drag_Force"], m_tEffectParticleDesc.vMinDragForce);
-	// CJson_Utility::Write_Float3(Out_Json["Max_Drag_Force"], m_tEffectParticleDesc.vMaxDragForce);
-	// 
-	// CJson_Utility::Write_Float3(Out_Json["Max_Limit_Drag"], m_tEffectParticleDesc.vMaxLimitDrag);
-#pragma endregion
-
 #pragma region Rotation
 	if (_int(PARTICLETYPE::OUTBURST) != m_tEffectParticleDesc.iParticleType)
 	{
-		CJson_Utility::Write_Float3(Out_Json["Min_Start_Rotation"], m_tEffectParticleDesc.vMinStartRotation);
-		CJson_Utility::Write_Float3(Out_Json["Max_Start_Rotation"], m_tEffectParticleDesc.vMaxStartRotation);
+		Out_Json["Is_Easing_Rotation"] = m_tEffectParticleDesc.bEasingRotation;
 
-		CJson_Utility::Write_Float3(Out_Json["Rotation_Speed"], m_tEffectParticleDesc.vRotationSpeed);
-		CJson_Utility::Write_Float3(Out_Json["Rotation_Force"], m_tEffectParticleDesc.vRotationForce);
+		if (m_tEffectParticleDesc.bEasingRotation)
+		{
+			Out_Json["Rotation_Easing_Type"] = m_tEffectParticleDesc.iRotationEasingType;
+			Out_Json["Rotation_Easing_Total_Time"] = m_tEffectParticleDesc.fRotationEasingTotalTime;
+		}
+		else
+		{
+			CJson_Utility::Write_Float3(Out_Json["Min_Start_Rotation"], m_tEffectParticleDesc.vMinStartRotation);
+			CJson_Utility::Write_Float3(Out_Json["Max_Start_Rotation"], m_tEffectParticleDesc.vMaxStartRotation);
 
+			CJson_Utility::Write_Float3(Out_Json["Rotation_Speed"], m_tEffectParticleDesc.vRotationSpeed);
+			CJson_Utility::Write_Float3(Out_Json["Rotation_Force"], m_tEffectParticleDesc.vRotationForce);
+		}
+
+		CJson_Utility::Write_Float3(Out_Json["Min_Rotation"], m_tEffectParticleDesc.vMinLimitRotation);
 		CJson_Utility::Write_Float3(Out_Json["Max_Rotation"], m_tEffectParticleDesc.vMaxLimitRotation);
 	}
 #pragma endregion
@@ -424,17 +435,30 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 		m_tEffectParticleDesc.bMoveLook = In_Json["Is_MoveLook"];
 
 #pragma region Speed
-	if (In_Json.find("Min_Speed") != In_Json.end())
-		CJson_Utility::Load_Float3(In_Json["Min_Speed"], m_tEffectParticleDesc.vMinSpeed);
+	if (In_Json.find("Is_Easing_Speed") != In_Json.end())
+		m_tEffectParticleDesc.bEasingSpeed = In_Json["Is_Easing_Speed"];
 
-	if (In_Json.find("Max_Speed") != In_Json.end())
-		CJson_Utility::Load_Float3(In_Json["Max_Speed"], m_tEffectParticleDesc.vMaxSpeed);
+	if (m_tEffectParticleDesc.bEasingSpeed)
+	{
+		if (In_Json.find("Speed_Easing_Type") != In_Json.end())
+			m_tEffectParticleDesc.iSpeedEasingType = In_Json["Speed_Easing_Type"];
+		if (In_Json.find("Speed_Easing_Total_Time") != In_Json.end())
+			m_tEffectParticleDesc.fSpeedEasingTotalTime = In_Json["Speed_Easing_Total_Time"];
+	}
+	else
+	{
+		if (In_Json.find("Min_Speed") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Min_Speed"], m_tEffectParticleDesc.vMinSpeed);
 
-	if (In_Json.find("Min_Speed_Force") != In_Json.end())
-		CJson_Utility::Load_Float3(In_Json["Min_Speed_Force"], m_tEffectParticleDesc.vMinSpeedForce);
+		if (In_Json.find("Max_Speed") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Max_Speed"], m_tEffectParticleDesc.vMaxSpeed);
 
-	if (In_Json.find("Max_Speed_Force") != In_Json.end())
-		CJson_Utility::Load_Float3(In_Json["Max_Speed_Force"], m_tEffectParticleDesc.vMaxSpeedForce);
+		if (In_Json.find("Min_Speed_Force") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Min_Speed_Force"], m_tEffectParticleDesc.vMinSpeedForce);
+
+		if (In_Json.find("Max_Speed_Force") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Max_Speed_Force"], m_tEffectParticleDesc.vMaxSpeedForce);
+	}
 
 	if (In_Json.find("Min_Limit_Speed") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Min_Limit_Speed"], m_tEffectParticleDesc.vMinLimitSpeed);
@@ -443,29 +467,34 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 		CJson_Utility::Load_Float3(In_Json["Max_Limit_Speed"], m_tEffectParticleDesc.vMaxLimitSpeed);
 #pragma endregion
 
-#pragma region Drag
-	// CJson_Utility::Load_Float3(In_Json["Min_Drag"], m_tEffectParticleDesc.vMinDrag);
-	// CJson_Utility::Load_Float3(In_Json["Max_Drag"], m_tEffectParticleDesc.vMaxDrag);
-	// 
-	// CJson_Utility::Load_Float3(In_Json["Min_Force"], m_tEffectParticleDesc.vMinDragForce);
-	// CJson_Utility::Load_Float3(In_Json["Max_Force"], m_tEffectParticleDesc.vMaxDragForce);
-	// 
-	// CJson_Utility::Load_Float3(In_Json["Max_Limit_Drag"], m_tEffectParticleDesc.vMaxLimitDrag);
-#pragma endregion
-
 #pragma region Rotation
 	if (_int(PARTICLETYPE::OUTBURST) != m_tEffectParticleDesc.iParticleType)
 	{
-		if (In_Json.find("Min_Start_Rotation") != In_Json.end())
-			CJson_Utility::Load_Float3(In_Json["Min_Start_Rotation"], m_tEffectParticleDesc.vMinStartRotation);
-		if (In_Json.find("Max_Start_Rotation") != In_Json.end())
-			CJson_Utility::Load_Float3(In_Json["Max_Start_Rotation"], m_tEffectParticleDesc.vMaxStartRotation);
+		if (In_Json.find("Is_Easing_Rotation") != In_Json.end())
+			m_tEffectParticleDesc.bEasingRotation = In_Json["Is_Easing_Rotation"];
 
-		if (In_Json.find("Rotation_Speed") != In_Json.end())
-			CJson_Utility::Load_Float3(In_Json["Rotation_Speed"], m_tEffectParticleDesc.vRotationSpeed);
-		if (In_Json.find("Rotation_Force") != In_Json.end())
-			CJson_Utility::Load_Float3(In_Json["Rotation_Force"], m_tEffectParticleDesc.vRotationForce);
+		if (m_tEffectParticleDesc.bEasingRotation)
+		{
+			if (In_Json.find("Rotation_Easing_Type") != In_Json.end())
+				m_tEffectParticleDesc.iRotationEasingType = In_Json["Rotation_Easing_Type"];
+			if (In_Json.find("Rotation_Easing_Total_Time") != In_Json.end())
+				m_tEffectParticleDesc.fRotationEasingTotalTime = In_Json["Rotation_Easing_Total_Time"];
+		}
+		else
+		{
+			if (In_Json.find("Min_Start_Rotation") != In_Json.end())
+				CJson_Utility::Load_Float3(In_Json["Min_Start_Rotation"], m_tEffectParticleDesc.vMinStartRotation);
+			if (In_Json.find("Max_Start_Rotation") != In_Json.end())
+				CJson_Utility::Load_Float3(In_Json["Max_Start_Rotation"], m_tEffectParticleDesc.vMaxStartRotation);
 
+			if (In_Json.find("Rotation_Speed") != In_Json.end())
+				CJson_Utility::Load_Float3(In_Json["Rotation_Speed"], m_tEffectParticleDesc.vRotationSpeed);
+			if (In_Json.find("Rotation_Force") != In_Json.end())
+				CJson_Utility::Load_Float3(In_Json["Rotation_Force"], m_tEffectParticleDesc.vRotationForce);
+		}
+
+		if (In_Json.find("Min_Rotation") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Min_Rotation"], m_tEffectParticleDesc.vMinLimitRotation);
 		if (In_Json.find("Max_Rotation") != In_Json.end())
 			CJson_Utility::Load_Float3(In_Json["Max_Rotation"], m_tEffectParticleDesc.vMaxLimitRotation);
 	}
@@ -796,7 +825,15 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 	if (m_tEffectParticleDesc.bEasingSpeed)
 	{
 		_float fElapsedTime = m_tEffectParticleDesc.fMaxLifeTime - m_tParticleDescs[i].fCurrentLifeTime;
-		this->Apply_Easing(vMove, (EASING_TYPE)m_tEffectParticleDesc.iSpeedEasingType, XMLoadFloat3(&m_tEffectParticleDesc.vMinLimitSpeed), XMLoadFloat3(&m_tEffectParticleDesc.vMaxLimitSpeed), fElapsedTime, m_tEffectParticleDesc.fSpeedEasingTotalTime);;
+		this->Apply_Easing
+		(
+			vMove
+			, (EASING_TYPE)m_tEffectParticleDesc.iSpeedEasingType
+			, XMLoadFloat3(&m_tEffectParticleDesc.vMinLimitSpeed)
+			, XMLoadFloat3(&m_tEffectParticleDesc.vMaxLimitSpeed)
+			, fElapsedTime
+			, m_tEffectParticleDesc.fSpeedEasingTotalTime
+		);
 	}
 	else
 	{
@@ -862,12 +899,35 @@ void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
 
 	else
 	{
-		_float3 vRotation = SMath::Mul_Float3(m_tEffectParticleDesc.vRotationSpeed, fTimeDelta);
-		m_tParticleDescs[i].vCurrentRotationForce =
-			SMath::Add_Float3(m_tParticleDescs[i].vCurrentRotationForce, SMath::Mul_Float3(m_tEffectParticleDesc.vRotationForce, fTimeDelta));
+		_float3 vRotation;
+		ZeroMemory(&vRotation, sizeof(_float3));
 
-		vRotation = SMath::Add_Float3(vRotation, m_tParticleDescs[i].vCurrentRotationForce);
+		if (m_tEffectParticleDesc.bEasingRotation)
+		{
+			_float fElapsedTime = m_tEffectParticleDesc.fMaxLifeTime - m_tParticleDescs[i].fCurrentLifeTime;
+			this->Apply_Easing
+			(
+				vRotation
+				, (EASING_TYPE)m_tEffectParticleDesc.iRotationEasingType
+				, XMLoadFloat3(&m_tEffectParticleDesc.vMinLimitRotation)
+				, XMLoadFloat3(&m_tEffectParticleDesc.vMaxLimitRotation)
+				, fElapsedTime
+				, m_tEffectParticleDesc.fRotationEasingTotalTime
+			);
+		}
+		else
+		{
+			vRotation = SMath::Mul_Float3(m_tEffectParticleDesc.vRotationSpeed, fTimeDelta);
+			m_tParticleDescs[i].vCurrentRotationForce =
+				SMath::Add_Float3(m_tParticleDescs[i].vCurrentRotationForce, SMath::Mul_Float3(m_tEffectParticleDesc.vRotationForce, fTimeDelta));
 
+			vRotation = SMath::Add_Float3(vRotation, m_tParticleDescs[i].vCurrentRotationForce);
+
+			vRotation.x = max(m_tEffectParticleDesc.vMinLimitRotation.x, min(m_tEffectParticleDesc.vMaxLimitRotation.x, vRotation.x));
+			vRotation.y = max(m_tEffectParticleDesc.vMinLimitRotation.y, min(m_tEffectParticleDesc.vMaxLimitRotation.y, vRotation.y));
+			vRotation.z = max(m_tEffectParticleDesc.vMinLimitRotation.z, min(m_tEffectParticleDesc.vMaxLimitRotation.z, vRotation.z));
+		}
+		
 		m_tParticleDescs[i].vCurrentRotation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentRotation, vRotation);
 	}
 }
@@ -1104,10 +1164,18 @@ void CEffect_Rect::Update_ParentTransform()
 	}
 }
 
-void CEffect_Rect::Apply_Easing(_float3& vMove, EASING_TYPE eEasingType, _vector vStartPoint, _vector vTargetPoint, _float fElapsedTime, _float fTotalTime)
+void CEffect_Rect::Apply_Easing
+(
+	_float3& vTarget
+	, EASING_TYPE eEasingType
+	, _vector vStartPoint
+	, _vector vTargetPoint
+	, _float fElapsedTime
+	, _float fTotalTime
+)
 {
 #define MACRO(FunctionName)\
-XMStoreFloat3(&vMove, FunctionName(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime));
+XMStoreFloat3(&vTarget, FunctionName(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime));
 
 	switch (eEasingType)
 	{
@@ -1345,6 +1413,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 			if (m_tEffectParticleDesc.bEasingSpeed)
 			{
+#pragma region Easing
 				// open easing list
 				const char* EasingItems[] =
 				{ 
@@ -1378,6 +1447,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 				ImGui::Text("Total Easing Time"); ImGui::SameLine();
 				ImGui::DragFloat("##Speed_Total_Easing_Time", &m_tEffectParticleDesc.fSpeedEasingTotalTime, 0.01f, -100.f, 100.f, "%.5f");
+#pragma endregion
 			}
 			else
 			{
@@ -1401,43 +1471,74 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::DragFloat3("##Min_Limit_Speed", &m_tEffectParticleDesc.vMinLimitSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
 #pragma endregion
 			ImGui::Separator();
-#pragma region Drag
-			// ImGui::Text("Drag");
-			// ImGui::NewLine();
-			// ImGui::Text("Min Drag");
-			// ImGui::DragFloat3("##Min_Drag", &m_tEffectParticleDesc.vMinDrag.x, 0.1f);
-			// 
-			// ImGui::Text("Max Drag");
-			// ImGui::DragFloat3("##Max_Drag", &m_tEffectParticleDesc.vMaxDrag.x, 0.1f);
-			// 
-			// ImGui::Text("Min Force");
-			// ImGui::DragFloat3("##Min_Drag_Force", &m_tEffectParticleDesc.vMinDragForce.x, 0.1f);
-			// 
-			// ImGui::Text("Max Force");
-			// ImGui::DragFloat3("##Max_Drag_Force", &m_tEffectParticleDesc.vMaxDragForce.x, 0.1f);
-			// 
-			// ImGui::Text("Max Limit Drag");
-			// ImGui::DragFloat3("##Max_Limit_Drag", &m_tEffectParticleDesc.vMaxLimitDrag.x, 0.1f);
-#pragma endregion
 
-			ImGui::Separator();
 #pragma region Rotation
 			if (_int(PARTICLETYPE::OUTBURST) != m_tEffectParticleDesc.iParticleType)
 			{
-				ImGui::Text("Min Start Rotation");
-				ImGui::DragFloat3("##Min_Start_Rotation", &m_tEffectParticleDesc.vMinStartRotation.x, 0.1f);
+				ImGui::Text("Rotation");
+				ImGui::NewLine();
 
-				ImGui::Text("Max Start Rotation");
-				ImGui::DragFloat3("##Max_Start_Rotation", &m_tEffectParticleDesc.vMaxStartRotation.x, 0.1f);
+				ImGui::Text("Apply Easing"); ImGui::SameLine();
+				ImGui::Checkbox("##Is_Easing_Rotation", &m_tEffectParticleDesc.bEasingRotation);
 
-				ImGui::Text("Rotation Speed");
-				ImGui::DragFloat3("##Rotation_Speed", &m_tEffectParticleDesc.vRotationSpeed.x, 0.1f);
+				if (m_tEffectParticleDesc.bEasingRotation)
+				{
+#pragma region Easing
+					// open easing list
+					const char* EasingItems[] =
+					{
+						"Linear"   ,
+						"QuadIn"   , "QuadOut"	 , "QuadInOut"	 ,
+						"CubicIn"  , "CubicOut"	 , "CubicInOut"	 ,
+						"QuartIn"  , "QuartOut"	 , "QuartInOut"	 ,
+						"QuintIn"  , "QuintOut"	 , "QuintInOut"	 ,
+						"SineIn"   , "SineOut"	 , "SineInOut"	 ,
+						"ExpoIn"   , "ExpoOut"	 , "ExpoInOut"	 ,
+						"CircIn"   , "CircOut"	 , "CircInOut"	 ,
+						"ElasticIn", "ElasticOut", "ElasticInOut",
+						"BounceIn" , "BounceOut"
+					};
 
-				ImGui::Text("Rotation Force");
-				ImGui::DragFloat3("##Rotation_Force", &m_tEffectParticleDesc.vRotationForce.x, 0.1f);
+					if (ImGui::BeginListBox("Rotation Easing Type"))
+					{
+						for (int n = 0; n < IM_ARRAYSIZE(EasingItems); n++)
+						{
+							const bool is_selected = (m_tEffectParticleDesc.iRotationEasingType == n);
+							if (ImGui::Selectable(EasingItems[n], is_selected))
+							{
+								m_tEffectParticleDesc.iRotationEasingType = n;
+							}
 
-				ImGui::Text("Max Rotation");
-				ImGui::DragFloat3("##Max_Rotation", &m_tEffectParticleDesc.vMaxLimitRotation.x, 0.1f);
+							if (is_selected)
+								ImGui::SetItemDefaultFocus();
+						}
+						ImGui::EndListBox();
+					}
+
+					ImGui::Text("Total Easing Time"); ImGui::SameLine();
+					ImGui::DragFloat("##Rotation_Total_Easing_Time", &m_tEffectParticleDesc.fRotationEasingTotalTime, 0.01f, -100.f, 100.f, "%.5f");
+#pragma endregion
+				}
+				else
+				{
+					ImGui::Text("Min Start Rotation");
+					ImGui::DragFloat3("##Min_Start_Rotation", &m_tEffectParticleDesc.vMinStartRotation.x, 0.1f);
+
+					ImGui::Text("Max Start Rotation");
+					ImGui::DragFloat3("##Max_Start_Rotation", &m_tEffectParticleDesc.vMaxStartRotation.x, 0.1f);
+
+					ImGui::Text("Rotation Speed");
+					ImGui::DragFloat3("##Rotation_Speed", &m_tEffectParticleDesc.vRotationSpeed.x, 0.1f);
+
+					ImGui::Text("Rotation Force");
+					ImGui::DragFloat3("##Rotation_Force", &m_tEffectParticleDesc.vRotationForce.x, 0.1f);
+				}
+
+				ImGui::Text("Min Limit Rotation");
+				ImGui::DragFloat3("##Min_Limit_Rotation", &m_tEffectParticleDesc.vMinLimitRotation.x, 0.1f);
+
+				ImGui::Text("Max Limit Rotation");
+				ImGui::DragFloat3("##Max_Limit_Rotation", &m_tEffectParticleDesc.vMaxLimitRotation.x, 0.1f);
 			}
 #pragma endregion
 			ImGui::Separator();
