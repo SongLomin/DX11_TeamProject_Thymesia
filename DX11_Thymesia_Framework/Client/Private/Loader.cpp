@@ -270,6 +270,18 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	GAMEINSTANCE->Load_Textures(("Tap_PlagueWeapon"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Frame.png"), MEMORY_TYPE::MEMORY_STATIC);
 
+	//MonsterHPBar
+
+	GAMEINSTANCE->Load_Textures(("Monster_HPBar_Border"), TEXT("../Bin/Resources/Textures/UI/HUD/HPBar/TexUI_HPBar_3BarBorder.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Monster_HPBar_RecoveryShine"), TEXT("../Bin/Resources/Textures/UI/HUD/HPBar/TexUI_HPBar_5BarRecoveryShineB.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Monster_HPBar_Decoration_Head"), TEXT("../Bin/Resources/Textures/UI/HUD/HPBar/TexUI_HPBar_2BarHead.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Monster_HPBar_White"), TEXT("../Bin/Resources/Textures/UI/HUD/HPBar/TexUI_HpMain.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Monster_HPBar_Green"), TEXT("../Bin/Resources/Textures/UI/HUD/TexUI_Plague_HealthBar.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Monster_HPBar_Track"), TEXT("../Bin/Resources/Textures/UI/HUD/HPBar/TexUI_HPBar_6BarTrack.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Monster_HPBar_GreenTrack"), TEXT("../Bin/Resources/Textures/UI/HUD/HPBar/TexUI_HPBar_NewPreSTBar.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+
 	/*moon
 	Load_AllDiffuseTexture();
 

@@ -5,7 +5,7 @@
 #include "GameManager.h"
 #include "Engine_Defines.h"
 #include "CustomUI.h"
-#include "Player_ProgressBar.h"
+#include "ProgressBar.h"
 #include "HUD_Hover.h"
 #include "CustomUI.h"
 

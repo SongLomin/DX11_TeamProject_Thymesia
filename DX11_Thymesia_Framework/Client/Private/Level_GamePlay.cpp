@@ -9,6 +9,8 @@
 #include "Static_Instancing_Prop.h"
 #include "HUD_PlagueWeapon.h"
 #include "UI_PauseMenu.h"
+#include "MonsterHPBar_Base.h"
+
 CLevel_GamePlay::CLevel_GamePlay()
 	//: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
@@ -165,6 +167,9 @@ void CLevel_GamePlay::SetUp_UI()
 	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);//¿©±â¼­ 
 	GAMEINSTANCE->Add_GameObject<CUI_PauseMenu>(LEVEL_STATIC);
 
+
+
+
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_MPBar>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_Memory>(LEVEL_STATIC));
@@ -173,7 +178,15 @@ void CLevel_GamePlay::SetUp_UI()
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
 
-	
+	//TODO : MonsterHpBar TestCode
+	CUI::UI_DESC tDesc;
+	tDesc.fX = g_iWinCX / 2.f;
+	tDesc.fY = g_iWinCY / 2.f;
+	tDesc.fSizeX = 150.f;
+	tDesc.fSizeY = 15.f;
+	tDesc.fDepth = 0.f;
+
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Base>(LEVEL_STATIC, &tDesc));
 
 }
 

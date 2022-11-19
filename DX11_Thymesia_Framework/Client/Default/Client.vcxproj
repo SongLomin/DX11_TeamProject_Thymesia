@@ -226,7 +226,6 @@
     <ClInclude Include="..\Public\Corvus_DefaultDagger.h" />
     <ClInclude Include="..\Public\Corvus_DefaultSaber.h" />
     <ClInclude Include="..\Public\CustomEffectMesh.h" />
-    <ClInclude Include="..\Public\CustomFont.h" />
     <ClInclude Include="..\Public\DissolveUI.h" />
     <ClInclude Include="..\Public\Dynamic_Prop.h" />
     <ClInclude Include="..\Public\CustomUI.h" />
@@ -239,6 +238,7 @@
     <ClInclude Include="..\Public\EffectObject.h" />
     <ClInclude Include="..\Public\Effect_Point.h" />
     <ClInclude Include="..\Public\Effect_Rect.h" />
+    <ClInclude Include="..\Public\MonsterHPBar_Base.h" />
     <ClInclude Include="..\Public\FadeMask.h" />
     <ClInclude Include="..\Public\GameManager.h" />
     <ClInclude Include="..\Public\Ground.h">
@@ -313,7 +313,7 @@
     <ClInclude Include="..\Public\Player_Memory.h" />
     <ClInclude Include="..\Public\Player_MPBar.h" />
     <ClInclude Include="..\Public\Player_PotionUI.h" />
-    <ClInclude Include="..\Public\Player_ProgressBar.h" />
+    <ClInclude Include="..\Public\ProgressBar.h" />
     <ClInclude Include="..\Public\Preset_PhysXColliderDesc.h" />
     <ClInclude Include="..\Public\PreViewAnimationModel.h" />
     <ClInclude Include="..\Public\PreView_Prop.h" />
@@ -395,7 +395,6 @@
     <ClCompile Include="..\Private\Corvus_DefaultDagger.cpp" />
     <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp" />
     <ClCompile Include="..\Private\CustomEffectMesh.cpp" />
-    <ClCompile Include="..\Private\CustomFont.cpp" />
     <ClCompile Include="..\Private\DissolveUI.cpp" />
     <ClCompile Include="..\Private\Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\CustomUI.cpp" />
@@ -408,6 +407,7 @@
     <ClCompile Include="..\Private\EffectObject.cpp" />
     <ClCompile Include="..\Private\Effect_Point.cpp" />
     <ClCompile Include="..\Private\Effect_Rect.cpp" />
+    <ClCompile Include="..\Private\MonsterHPBar_Base.cpp" />
     <ClCompile Include="..\Private\FadeMask.cpp" />
     <ClCompile Include="..\Private\GameManager.cpp" />
     <ClCompile Include="..\Private\Ground.cpp">
@@ -478,7 +478,7 @@
     <ClCompile Include="..\Private\Player_Memory.cpp" />
     <ClCompile Include="..\Private\Player_MPBar.cpp" />
     <ClCompile Include="..\Private\Player_PotionUI.cpp" />
-    <ClCompile Include="..\Private\Player_ProgressBar.cpp" />
+    <ClCompile Include="..\Private\ProgressBar.cpp" />
     <ClCompile Include="..\Private\Preset_PhysXColliderDesc.cpp" />
     <ClCompile Include="..\Private\PreViewAnimationModel.cpp" />
     <ClCompile Include="..\Private\PreView_Prop.cpp" />
