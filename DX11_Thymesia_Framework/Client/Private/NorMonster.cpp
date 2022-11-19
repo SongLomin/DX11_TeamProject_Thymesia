@@ -141,7 +141,7 @@ void CNorMonster::Tick(_float fTimeDelta)
 		break;
 	case  NORMONSTERTYPE::KNIFEWOMAN:	
 		_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
 		m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
 		break;
 	}

@@ -127,10 +127,10 @@ void CThread_Manager::Initialize(const _uint In_iNumLayer)
 		m_Threads.push_back(async(launch::async, function, (THREAD_TYPE)i));
 	}*/
 
-	for (_uint i = 0; i < (_uint)THREAD_TYPE::TYPE_END; ++i)
+	/*for (_uint i = 0; i < (_uint)THREAD_TYPE::TYPE_END; ++i)
 	{
 		m_Threads.push_back(async(launch::async, Loop, (THREAD_TYPE)i));
-	}
+	}*/
 
 	
 
