@@ -37,7 +37,7 @@ void CNorMonState_HurtL::Start()
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_HurtS_FL|BaseLayer|Arm");
 		break;
 	case Client::NORMONSTERTYPE::KNIFEWOMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|HurtS_FL|SK_C_LV1Vi");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_HurtM_FL");
 		break;
 	case Client::NORMONSTERTYPE::SKULL:
 		break;
@@ -81,7 +81,9 @@ void CNorMonState_HurtL::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: RunStart -> OnStateStart" << endl;
+#endif
 #endif
 
 	m_pModelCom.lock()->Set_AnimationSpeed(2.f);

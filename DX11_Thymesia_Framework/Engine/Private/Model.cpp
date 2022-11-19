@@ -108,6 +108,14 @@ _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName)
 
 	vPreBonePosition = XMLoadFloat4(&(*iter).second);
 	vCurrentBonePosition = CurrentBoneNode.lock()->Get_TransformationMatrix().r[3];
+
+	/*if (strcmp(In_szBoneName, "root") == 0)
+	{
+		_vector DebugPos = vCurrentBonePosition;
+		cout << "Delta Pos: ";
+		Print_Vector(vCurrentBonePosition);
+	}*/
+
 	vCurrentBonePosition -= vPreBonePosition;
 
 	XMStoreFloat4(&(*iter).second, CurrentBoneNode.lock()->Get_TransformationMatrix().r[3]);
@@ -115,6 +123,8 @@ _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName)
 	vCurrentBonePosition.m128_f32[1] = 0.f;
 	//vCurrentBonePosition.m128_f32[0] = 0.f;
 
+	
+	
 	vCurrentBonePosition = XMVector3TransformCoord(vCurrentBonePosition, XMLoadFloat4x4(&m_pModelData->TransformMatrix));
 
 	return vCurrentBonePosition;

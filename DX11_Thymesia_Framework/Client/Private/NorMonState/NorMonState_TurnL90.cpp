@@ -38,7 +38,7 @@ void CNorMonState_TurnL90::Start()
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|DemoM02_TurnL90|BaseLayer|Armature|A");
 		break;
 	case Client::NORMONSTERTYPE::KNIFEWOMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|TurnL90|SK_C_LV1Vil");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_TurnL90");
 		break;
 	case Client::NORMONSTERTYPE::SKULL:
 		break;
@@ -93,7 +93,9 @@ void CNorMonState_TurnL90::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "NorMonState: TurnLllllll -> Trurnllllll" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: TurnLllllll -> Trurnllllll" << endl;
+#endif
 #endif
 
 	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);

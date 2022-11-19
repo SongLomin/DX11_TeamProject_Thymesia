@@ -56,14 +56,21 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		break;
 	case NORMONSTERTYPE::GARDENER:
 		break;
-
-
 	}
 
+		
 	//TODO 여기서하는 이유는 몬스터가 배치되고 원점에서 우리가 피킹한위치만큼더해지고 난뒤에 그월드포지션값저장하기위해서 여기서함
-	m_pModelCom.lock()->Set_RootNode("root");
-
-
+		switch (m_tLinkStateDesc.eNorMonType)
+		{
+		case  NORMONSTERTYPE::AXEMAN:
+			m_pModelCom.lock()->Set_RootNode("root");
+			break;
+		case  NORMONSTERTYPE::KNIFEWOMAN:
+			m_pModelCom.lock()->Set_RootNode("root");
+			break;
+		}
+	
+	
 	//CStatus::STATUS_DESC StatusDesc;
 	//StatusDesc.fMaxHP = StatusDesc.fCurrentHP = 360.f;
 	//StatusDesc.szName = TEXT("유적 발굴가");
@@ -125,9 +132,19 @@ void CNorMonster::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
-	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
+	switch (m_tLinkStateDesc.eNorMonType)
+	{
+	case  NORMONSTERTYPE::AXEMAN:
+		_vector vMoveDirs = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+		vMoveDirs = m_pModelCom.lock()->Get_DeltaBonePosition("root");
+		m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDirs, m_pNaviMeshCom);
+		break;
+	case  NORMONSTERTYPE::KNIFEWOMAN:	
+		_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
+		m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
+		break;
+	}
 
 }
 

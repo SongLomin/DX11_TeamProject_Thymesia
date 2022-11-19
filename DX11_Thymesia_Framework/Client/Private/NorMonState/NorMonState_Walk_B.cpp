@@ -48,7 +48,7 @@ void CNorMonState_Walk_B::Start()
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_WalkB|BaseLayer|Armatu");
 		break;
 	case Client::NORMONSTERTYPE::KNIFEWOMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Walk_B|SK_C_LV1Vill");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_WalkB");
 		break;
 	case Client::NORMONSTERTYPE::SKULL:
 		break;
@@ -91,7 +91,9 @@ void CNorMonState_Walk_B::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "NorMonState: BBBBBBBBBBBB -> BBBBBBBBBBBB" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: BBBBBBBBBBBB -> BBBBBBBBBBBB" << endl;
+#endif
 #endif
 
 	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);

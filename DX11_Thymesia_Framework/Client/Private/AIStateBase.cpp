@@ -299,7 +299,9 @@ _float CAIStateBase::ComputeAngleWithPlayer()
 
 	_float fCos = XMVectorGetY((XMVector3Dot(vMonsterToPlayerDirectionVector, vMyLookVector)));
 
-	cout << "ComputeAngleWithPlayer: " << fCos << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "ComputeAngleWithPlayer: " << fCos << endl;
+#endif
 
 	return fCos;
 

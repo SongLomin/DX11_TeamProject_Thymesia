@@ -133,7 +133,9 @@ void CMobWeapon::Enable_DefaultWeapon(const HIT_TYPE& In_eHitType, const _float&
 {
 	if (m_pHitColliderCom.lock()->Set_Enable(true))
 	{
+		#ifdef _DEBUG_COUT_
 		cout << "Enable Weapon!" << endl;
+#endif
 		m_eHitType = In_eHitType;
 		m_fDamage = In_fDamage;
 		m_bFirstAttack = true;
@@ -144,7 +146,9 @@ void CMobWeapon::Disable_DefaultWeapon()
 {
 	if (m_pHitColliderCom.lock()->Set_Enable(false))
 	{
+		#ifdef _DEBUG_COUT_
 		cout << "Disable Weapon!" << endl;
+#endif
 		m_iHitColliderIndexs.clear();
 
 	}

@@ -570,7 +570,9 @@ void CLoader::Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_
 		weak_ptr<CEffectGroup> EffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(In_LevelIndex);
 		EffectGroup.lock()->Load_EffectJson(entry.path().string(), (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
 
-		std::cout << entry.path().filename() << std::endl;
+		#ifdef _DEBUG_COUT_
+		cout << entry.path().filename() << std::endl;
+#endif
 
 
 		itr++;
@@ -602,7 +604,9 @@ void CLoader::Load_AllParticleTexture()
 		const fs::directory_entry& entry = *itr;
 		szFileName = entry.path().filename().wstring();
 
-		std::cout << entry.path().filename() << std::endl;
+		#ifdef _DEBUG_COUT_
+		cout << entry.path().filename() << std::endl;
+		#endif
 
 		Load_AllParticleInPath_Recursive(entry.path());
 
@@ -624,7 +628,11 @@ void CLoader::Load_AllParticleInPath_Recursive(const filesystem::path& In_Path)
 
 		szFileName = entry.path().filename().string();
 
-		std::cout << entry.path().filename() << std::endl;
+#ifdef _DEBUG
+#ifdef _DEBUG_COUT_
+		cout << entry.path().filename() << std::endl;
+#endif
+#endif
 
 		Load_AllParticleInPath_Recursive(entry.path());
 
@@ -666,19 +674,33 @@ void CLoader::Load_AllEffectMeshInPath_Recursive(const filesystem::path& In_Path
 
 		/*if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
 		{
-			cout << szFileName << endl;
+			#ifdef _DEBUG_#ifdef _DEBUG_#ifdef _DEBUG_COUT_
+		cout_
+		#ifdef _DEBUG_COUT_
+		cout_
+#ifdef _DEBUG_#ifdef _DEBUG_COUT_
+		cout_
+		#ifdef _DEBUG_COUT_
+		cout << szFileName << endl;
+#endif
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
 		}
 
 		if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0)
 		{
-			cout << szFileName << endl;
+			#ifdef _DEBUG_#ifdef _DEBUG_COUT_
+		cout_
+		#ifdef _DEBUG_COUT_
+		cout << szFileName << endl;
+#endif
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
 		}*/
 
 		if (strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
 		{
-			cout << szFileName << endl;
+			#ifdef _DEBUG_COUT_
+		cout << szFileName << endl;
+#endif
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f));
 		}
 
@@ -714,13 +736,17 @@ void CLoader::Load_AllMeshes(const filesystem::path& In_Path, const MEMORY_TYPE&
 
 		if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
 		{
-			cout << szFileName << endl;
+			#ifdef _DEBUG_COUT_
+		cout << szFileName << endl;
+			#endif
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixScaling(0.01f, 0.01f, 0.01f), In_eMemoryType);
 		}
 
 		else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0 || strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
 		{
-			cout << szFileName << endl;
+			#ifdef _DEBUG_COUT_
+		cout << szFileName << endl;
+			#endif
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixScaling(0.01f, 0.01f, 0.01f), In_eMemoryType);
 		}
 
@@ -741,8 +767,10 @@ void CLoader::Create_GameObjectFromJson(const string& In_szJsonPath, const LEVEL
 
 		//객체가 생성되지 않음. Loader에서 프로토타입이 생성됐는지 확인 필요함.
 #ifdef _DEBUG
+#ifdef _DEBUG_COUT_
 		if (!pGameObjectInstance.lock().get())
-			cout << "객체가 생성되지 않음. 프로토타입 확인" << (string)Elem_GameObjects["Name"] << endl;
+		cout << "객체가 생성되지 않음. 프로토타입 확인" << (string)Elem_GameObjects["Name"] << endl;
+#endif
 #endif // _DEBUG
 		if (pGameObjectInstance.lock().get())
 		{

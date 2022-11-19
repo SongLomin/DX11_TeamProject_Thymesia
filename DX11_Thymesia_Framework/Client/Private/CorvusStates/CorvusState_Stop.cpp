@@ -66,7 +66,9 @@ void CCorvusState_Stop::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "NorMonState: Stop -> OnStateStart" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: Stop -> OnStateStart" << endl;
+#endif
 
 #endif
 }

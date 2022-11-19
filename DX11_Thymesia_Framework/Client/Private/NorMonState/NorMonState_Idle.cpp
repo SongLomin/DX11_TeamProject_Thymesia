@@ -62,13 +62,13 @@ void CNorMonState_Idle::Start()
 		switch (m_eNorMonIdleType)
 		{
 		case Client::NORMONSTERIDLETYPE::NORIDLE:
-			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|_Idle|SK_C_LV1Villa");
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_Idle");
 			break;
 		case Client::NORMONSTERIDLETYPE::SITIDLE:
-			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Sit_Idle|SK_C_LV1Vi");
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_Sit_Idle");
 			break;
 		case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
-			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SP_Idle1.001|SK_C_L");
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_SP_Idle1");
 			break;
 		}
 	}
@@ -116,7 +116,9 @@ void CNorMonState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "NorMonState: IdleIDLEIDLE -> OnStateStart" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: IdleIDLEIDLE -> OnStateStart" << endl;
+#endif
 #endif
 
 
@@ -152,8 +154,10 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 	// 첫번째로아이들들어오면 무조건 이친구가 들어오게함 
 	if (fPToMDistance <= 3.f && m_iIdleType == 0)
 	{
-		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
+
+		switch (m_eNorMonType)
 		{
+		case Client::NORMONSTERTYPE::AXEMAN:
 			switch (m_eNorMonIdleType)
 			{
 			case Client::NORMONSTERIDLETYPE::NORIDLE:
@@ -166,13 +170,8 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
 				break;
 			}
-			m_iIdleType = 1;
-			m_bCloseToRun = true;
-			return true;
-		}
-
-		if (m_eNorMonType == NORMONSTERTYPE::KNIFEWOMAN)
-		{
+			break;
+		case Client::NORMONSTERTYPE::KNIFEWOMAN:
 			switch (m_eNorMonIdleType)
 			{
 			case Client::NORMONSTERIDLETYPE::NORIDLE:
@@ -185,12 +184,16 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
 				break;
 			}
+			break;
+		case Client::NORMONSTERTYPE::SKULL:
+			break;
+		case Client::NORMONSTERTYPE::GARDENER:
+			break;
+		}	
 			m_iIdleType = 1;
 			m_bCloseToRun = true;
 			return true;
-		}
-
-
+	
 	}
 
 	// 2.재내들 끊나면 다시아이들로옴 어떤상태는 무조건 NORIDLE상태임
@@ -271,15 +274,10 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 						break;
 					}
 				}
-			
 			break;
 		case Client::NORMONSTERTYPE::SKULL:
 			break;
 		case Client::NORMONSTERTYPE::GARDENER:
-			break;
-		case Client::NORMONSTERTYPE::NMON_END:
-			break;
-		default:
 			break;
 		}
 		
@@ -330,167 +328,6 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 		Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_B>(0.05f);
 		return true;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	//if (fMToMDistance >= 20.f) // 거리20보다멀어지면 다른거 다끄고 돌아가게금 30보다멀어지면 트루줌
-	//{
-	//	m_bReturnStartPosition = true;
-	//}
-	//if (m_bReturnStartPosition && fMToMDistance <= 10.f)
-	//{
-	//	m_bReturnStartPosition = false;
-	//}
-	//
-	//
-	//
-	//
-	//if (ComputeAngleWithPlayer() >= 0.1f)
-	//{
-	//	if (fPToMDistance <= 3.f && !m_bReturnStartPosition)
-	//	{
-	//		TurnMechanism();
-	//		m_bOneCheck = true;
-	//	}
-			
-
-		//if (fPToMDistance <= 3.f && !m_bReturnStartPosition && m_fTimeAcc >= 0.1f)
-		//{
-		//	m_bOneCheck = false;
-		//	m_bFirstRun = true;
-		//	m_bPlayerColision = true;
-		//	Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
-		//	if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
-		//	{
-		//
-		//		switch (m_eNorMonIdleType)
-		//		{
-		//		case Client::NORMONSTERIDLETYPE::NORIDLE:
-		//		{
-		//			int iRunORWalk = rand() % 2;
-		//			switch (iRunORWalk)
-		//			{
-		//			case 0:
-		//				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
-		//				break;
-		//			case 1:
-		//				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
-		//				break;
-		//			}
-		//		}
-		//		break;
-		//		case Client::NORMONSTERIDLETYPE::SITIDLE:
-		//			Get_OwnerCharacter().lock()->Change_State<CNorMonState_SitToIdle>(0.05f);
-		//			break;
-		//		case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
-		//			Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
-		//			break;
-		//		}
-		//
-		//		return true;
-		//
-		//	}
-
-			//if (m_eNorMonType == NORMONSTERTYPE::KNIFEWOMAN)
-			//{
-			//	if (m_eNorMonType == NORMONSTERTYPE::KNIFEWOMAN)
-			//	{
-			//		switch (m_eNorMonIdleType)
-			//		{
-			//		case Client::NORMONSTERIDLETYPE::NORIDLE:
-			//			break;
-			//		case Client::NORMONSTERIDLETYPE::SITIDLE:
-			//			break;
-			//		case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
-			//			break;
-			//		}
-			//	}
-			//	
-			//}
-	//	}
-	//
-	//	if (fPToMDistance > 3.f && !m_bReturnStartPosition && m_bPlayerColision)
-	//	{
-	//
-	//		
-	//		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && m_bFirstRun)
-	//		{
-	//			TurnMechanism();
-	//
-	//			switch (m_eNorMonIdleType)
-	//			{
-	//			case Client::NORMONSTERIDLETYPE::NORIDLE:
-	//			{
-	//				int iRunORWalk = rand() % 2;
-	//				switch (iRunORWalk)
-	//				{
-	//				case 0:
-	//					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
-	//					break;
-	//				case 1:
-	//					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
-	//					break;
-	//				}
-	//			}
-	//			break;
-	//			}
-	//
-	//			return true;
-	//		}
-	//	}
-	//
-	//}
-
-	
-
-	
-
-
-
-	
 	
 	return false;
 }

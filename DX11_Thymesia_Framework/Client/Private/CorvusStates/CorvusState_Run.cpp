@@ -74,7 +74,9 @@ void CCorvusState_Run::OnStateStart(const _float& In_fAnimationBlendTime)
 
 
 #ifdef _DEBUG
-	cout << "NorMonState: Run -> OnStateStart" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: Run -> OnStateStart" << endl;
+#endif
 
 #endif
 }

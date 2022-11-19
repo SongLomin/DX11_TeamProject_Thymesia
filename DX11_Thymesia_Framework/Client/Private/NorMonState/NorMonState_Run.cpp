@@ -44,7 +44,7 @@ void CNorMonState_Run::Start()
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|DemoM02_RunF1|BaseLayer|Armature|Arm");
 		break;
 	case Client::NORMONSTERTYPE::KNIFEWOMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|SK_C_LV1Villager_F.ao|Run_N|SK_C_LV1Villa");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_RunRoot");
 		break;
 	case Client::NORMONSTERTYPE::SKULL:
 		break;
@@ -93,7 +93,9 @@ void CNorMonState_Run::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "NorMonState: RunRUNRUNRUNRUN -> RunRUNRUNRUN" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: RunRUNRUNRUNRUN -> RunRUNRUNRUN" << endl;
+#endif
 #endif
 
 
@@ -158,62 +160,110 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 
 	if (fPToMDistance < 1.f && m_bClosePlayer) //6보다 작을떄 공격하거나 좌우아래옆 머시기로움직인다  이떄 그애니메이션 다시 거리게산하고 공격 하는걸로 하게금
 	{
-		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && !m_bRunCheck)
+		_int iMovRand = rand() % 3;
+
+		if (!m_bRunCheck)
 		{
-			_int iMovRand = rand() % 3;
-			switch (iMovRand)
+			switch (m_eNorMonType)
 			{
-			case 0:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_B>(0.05f);
-				m_bRunCheck = true;
+			case Client::NORMONSTERTYPE::AXEMAN:
+				switch (iMovRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_B>(0.05f);
+					m_bRunCheck = true;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BL>(0.05f);
+					m_bRunCheck = true;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BR>(0.05f);
+					m_bRunCheck = true;
+					break;
+				}
 				break;
-			case 1:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BL>(0.05f);
-				m_bRunCheck = true;
+			case Client::NORMONSTERTYPE::KNIFEWOMAN:
+				switch (iMovRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_B>(0.05f);
+					m_bRunCheck = true;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BL>(0.05f);
+					m_bRunCheck = true;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BR>(0.05f);
+					m_bRunCheck = true;
+					break;
+				}
 				break;
-			case 2:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BR>(0.05f);
-				m_bRunCheck = true;
+			case Client::NORMONSTERTYPE::SKULL:
+				break;
+			case Client::NORMONSTERTYPE::GARDENER:
 				break;
 			}
 			return true;
-
 		}
+		
 	}
-
+	//
 	if (fPToMDistance <= 1.5f && m_bClosePlayer) //6보다 작을떄 공격하거나 좌우아래옆 머시기로움직인다  이떄 그애니메이션 다시 거리게산하고 공격 하는걸로 하게금
 	{
-
-
-		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && !m_bRunCheck)
+		if (!m_bRunCheck)
 		{
 			_int iMovRand = rand() % 2;
-
-			switch (iMovRand)
+			switch (m_eNorMonType)
 			{
-			case 0:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
-				m_bRunCheck = true;
+			case Client::NORMONSTERTYPE::AXEMAN:
+				switch (iMovRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
+					m_bRunCheck = true;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+					m_bRunCheck = true;
+					break;
+				}
 				break;
-			case 1:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
-				m_bRunCheck = true;
-				break;
-			}
-			return true;
-
-		}
+			case Client::NORMONSTERTYPE::KNIFEWOMAN:
+				switch (iMovRand)
+			    {
+			    case 0:
+			    	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
+			    	m_bRunCheck = true;
+			    	break;
+			    case 1:
+			    	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+			    	m_bRunCheck = true;
+			    	break;
+			    }
+			    	break;
+			    case Client::NORMONSTERTYPE::SKULL:
+			    	break;
+			    case Client::NORMONSTERTYPE::GARDENER:
+			    	break;
+			    }
+			    return true;
+		}	
 	}
 
 	if (fPToMDistance <= 1.5f  && m_bRunCheck && m_bClosePlayer)
 	{
 
-		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && m_bRunCheck)
+		if (m_bRunCheck)
 		{
 			_int iAttRand = rand() % 5;
 
-			switch (iAttRand)
+			switch (m_eNorMonType)
 			{
+			case Client::NORMONSTERTYPE::AXEMAN:
+				switch (iAttRand)
+				{
 				case 0:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
 					m_bRunCheck = false;
@@ -234,9 +284,41 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack3>(0.05f);
 					m_bRunCheck = false;
 					break;
+				}
+				break;
+			case Client::NORMONSTERTYPE::KNIFEWOMAN:
+				switch (iAttRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+					m_bRunCheck = false;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack3>(0.05f);
+					m_bRunCheck = false;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					m_bRunCheck = false;
+					break;
+				case 3:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
+					m_bRunCheck = false;
+					break;
+				case 4:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack3>(0.05f);
+					m_bRunCheck = false;
+					break;
+				}
+				break;
+			case Client::NORMONSTERTYPE::SKULL:
+				break;
+			case Client::NORMONSTERTYPE::GARDENER:
+				break;
 			}
 			return true;
 		}
+	
 
 		
 
