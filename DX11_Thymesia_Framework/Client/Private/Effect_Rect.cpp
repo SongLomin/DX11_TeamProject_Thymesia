@@ -374,13 +374,9 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	m_iTimeScaleLayerIndex = In_iTimeScaleLayer;
 
 	m_szEffectName = In_Json["Name"];
-
 	m_tEffectParticleDesc.iMaxInstance = In_Json["Max_Instance"];
-
 	m_tEffectParticleDesc.bLooping = In_Json["Is_Looping"];
-
 	m_tEffectParticleDesc.iParticleType = In_Json["ParticleType"];
-
 	m_tEffectParticleDesc.iFollowTransformType = In_Json["Follow_Transform"];
 
 	if (In_Json.find("ShaderPassIndex") != In_Json.end())
@@ -389,7 +385,6 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma region Animation Sync
 	if (In_Json.find("Sync_Animation") != In_Json.end())
 		m_tEffectParticleDesc.bSyncAnimation = In_Json["Sync_Animation"];
-
 	if (In_Json.find("Sync_AnimationKey") != In_Json.end())
 		m_tEffectParticleDesc.iSyncAnimationKey = In_Json["Sync_AnimationKey"];
 #pragma endregion
@@ -397,36 +392,27 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma region Life Time
 	if (In_Json.find("Init_Time") != In_Json.end())
 		m_tEffectParticleDesc.fInitTime = In_Json["Init_Time"];
-
 	if (In_Json.find("Min_Spawn_Time") != In_Json.end())
-	m_tEffectParticleDesc.fMinSpawnTime = In_Json["Min_Spawn_Time"];
-
+		m_tEffectParticleDesc.fMinSpawnTime = In_Json["Min_Spawn_Time"];
 	if (In_Json.find("Max_Spawn_Time") != In_Json.end())
-	m_tEffectParticleDesc.fMaxSpawnTime = In_Json["Max_Spawn_Time"];
-
+		m_tEffectParticleDesc.fMaxSpawnTime = In_Json["Max_Spawn_Time"];
 	if (In_Json.find("Min_Life_Time") != In_Json.end())
-	m_tEffectParticleDesc.fMinLifeTime = In_Json["Min_Life_Time"];
-
+		m_tEffectParticleDesc.fMinLifeTime = In_Json["Min_Life_Time"];
 	if (In_Json.find("Max_Life_Time") != In_Json.end())
-	m_tEffectParticleDesc.fMaxLifeTime = In_Json["Max_Life_Time"];
+		m_tEffectParticleDesc.fMaxLifeTime = In_Json["Max_Life_Time"];
 #pragma endregion
 
 #pragma region Spawn Position
 	if (In_Json.find("Min_Spawn_Position") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Min_Spawn_Position"], m_tEffectParticleDesc.vMinSpawnPosition);
-
 	if (In_Json.find("Max_Spawn_Position") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Max_Spawn_Position"], m_tEffectParticleDesc.vMaxSpawnPosition);
-
 	if (In_Json.find("Min_Spawn_Offset_Direction") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Min_Spawn_Offset_Direction"], m_tEffectParticleDesc.vMinSpawnOffsetDirection);
-
 	if (In_Json.find("Max_Spawn_Offset_Direction") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Max_Spawn_Offset_Direction"], m_tEffectParticleDesc.vMaxSpawnOffsetDirection);
-
 	if (In_Json.find("Min_Spawn_Offset_Range") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Min_Spawn_Offset_Range"], m_tEffectParticleDesc.vMinSpawnOffsetRange);
-
 	if (In_Json.find("Max_Spawn_Offset_Range") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Max_Spawn_Offset_Range"], m_tEffectParticleDesc.vMaxSpawnOffsetRange);
 #pragma endregion
@@ -449,20 +435,16 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	{
 		if (In_Json.find("Min_Speed") != In_Json.end())
 			CJson_Utility::Load_Float3(In_Json["Min_Speed"], m_tEffectParticleDesc.vMinSpeed);
-
 		if (In_Json.find("Max_Speed") != In_Json.end())
 			CJson_Utility::Load_Float3(In_Json["Max_Speed"], m_tEffectParticleDesc.vMaxSpeed);
-
 		if (In_Json.find("Min_Speed_Force") != In_Json.end())
 			CJson_Utility::Load_Float3(In_Json["Min_Speed_Force"], m_tEffectParticleDesc.vMinSpeedForce);
-
 		if (In_Json.find("Max_Speed_Force") != In_Json.end())
 			CJson_Utility::Load_Float3(In_Json["Max_Speed_Force"], m_tEffectParticleDesc.vMaxSpeedForce);
 	}
 
 	if (In_Json.find("Min_Limit_Speed") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Min_Limit_Speed"], m_tEffectParticleDesc.vMinLimitSpeed);
-
 	if (In_Json.find("Max_Limit_Speed") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Max_Limit_Speed"], m_tEffectParticleDesc.vMaxLimitSpeed);
 #pragma endregion
@@ -486,7 +468,6 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 				CJson_Utility::Load_Float3(In_Json["Min_Start_Rotation"], m_tEffectParticleDesc.vMinStartRotation);
 			if (In_Json.find("Max_Start_Rotation") != In_Json.end())
 				CJson_Utility::Load_Float3(In_Json["Max_Start_Rotation"], m_tEffectParticleDesc.vMaxStartRotation);
-
 			if (In_Json.find("Rotation_Speed") != In_Json.end())
 				CJson_Utility::Load_Float3(In_Json["Rotation_Speed"], m_tEffectParticleDesc.vRotationSpeed);
 			if (In_Json.find("Rotation_Force") != In_Json.end())
@@ -505,12 +486,10 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 		CJson_Utility::Load_Float3(In_Json["Min_Start_Scale"], m_tEffectParticleDesc.vMinStartScale);
 	if (In_Json.find("Max_Start_Scale") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Max_Start_Scale"], m_tEffectParticleDesc.vMaxStartScale);
-
 	if (In_Json.find("Scale_Speed") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Scale_Speed"], m_tEffectParticleDesc.vScaleSpeed);
 	if (In_Json.find("Scale_Force") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Scale_Force"], m_tEffectParticleDesc.vScaleForce);
-
 	if (In_Json.find("Max_Scale") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Max_Scale"], m_tEffectParticleDesc.vMaxScale);
 #pragma endregion
@@ -518,43 +497,34 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma region Color
 	if (In_Json.find("Discard_Ratio") != In_Json.end())
 		m_tEffectParticleDesc.fDiscardRatio = In_Json["Discard_Ratio"];
-
 	if (In_Json.find("Is_Gray_Only_Use_Red") != In_Json.end())
 		m_tEffectParticleDesc.IsGrayOnlyUseRed = In_Json["Is_Gray_Only_Use_Red"];
 
 	CJson_Utility::Load_Float4(In_Json["Min_Start_Color"], m_tEffectParticleDesc.vMinStartColor);
 	CJson_Utility::Load_Float4(In_Json["Max_Start_Color"], m_tEffectParticleDesc.vMaxStartColor);
-
 	CJson_Utility::Load_Float4(In_Json["Color_Speed"], m_tEffectParticleDesc.vColorSpeed);
 	CJson_Utility::Load_Float4(In_Json["Color_Force"], m_tEffectParticleDesc.vColorForce);
-
 	CJson_Utility::Load_Float4(In_Json["Max_Color"], m_tEffectParticleDesc.vMaxColor);
 #pragma endregion
 
 #pragma region Texture
 #pragma region Diffuse
 	m_tEffectParticleDesc.iDiffuseIndex = In_Json["UV_Diffuse_Index"];
-
 	CJson_Utility::Load_Float2(In_Json["Diffuse_Start_UV"], m_tEffectParticleDesc.vDiffuseStartUV);
-
 	CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Speed"], m_tEffectParticleDesc.vDiffuseUVSpeed);
 	CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Force"], m_tEffectParticleDesc.vDiffuseUVForce);
 	CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Max"], m_tEffectParticleDesc.vDiffuseUVMax);
 #pragma endregion
 #pragma region Mask
 	m_tEffectParticleDesc.iMaskIndex = In_Json["UV_Mask_Index"];
-
 	CJson_Utility::Load_Float2(In_Json["Mask_Start_UV"], m_tEffectParticleDesc.vMaskStartUV);
-
 	CJson_Utility::Load_Float2(In_Json["Mask_UV_Speed"], m_tEffectParticleDesc.vMaskUVSpeed);
 	CJson_Utility::Load_Float2(In_Json["Mask_UV_Force"], m_tEffectParticleDesc.vMaskUVForce);
 	CJson_Utility::Load_Float2(In_Json["Mask_UV_Max"], m_tEffectParticleDesc.vMaskUVMax);
 #pragma endregion
 #pragma region Noise
 	m_tEffectParticleDesc.iNoiseIndex = In_Json["UV_Noise_Index"];
-
 	CJson_Utility::Load_Float2(In_Json["Noise_Start_UV"], m_tEffectParticleDesc.vNoiseStartUV);
-
 	CJson_Utility::Load_Float2(In_Json["Noise_UV_Speed"], m_tEffectParticleDesc.vNoiseUVSpeed);
 	CJson_Utility::Load_Float2(In_Json["Noise_UV_Force"], m_tEffectParticleDesc.vNoiseUVForce);
 	CJson_Utility::Load_Float2(In_Json["Noise_UV_Max"], m_tEffectParticleDesc.vNoiseUVMax);
@@ -564,7 +534,6 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma region Bloom & Glow
 	if (In_Json.find("Is_Bloom") != In_Json.end())
 		m_tEffectParticleDesc.bBloom = In_Json["Is_Bloom"];
-
 	if (In_Json.find("Is_Glow") != In_Json.end())
 		m_tEffectParticleDesc.bGlow = In_Json["Is_Glow"];
 
@@ -579,13 +548,11 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma region For. Sprite
 	if(PASS_SPRITE == m_tEffectParticleDesc.iShaderPassIndex)
 	{
-		// m_tEffectParticleDesc.bPendulumSprite = In_Json["Sprite_Pendulum"];
 		if (In_Json.find("Loop_Sprite") != In_Json.end())
 			m_tEffectParticleDesc.bLoopSprite = In_Json["Loop_Sprite"];
 
 		m_tEffectParticleDesc.iNumFrameX = In_Json["Sprite_NumFrameX"];
 		m_tEffectParticleDesc.iNumFrameY = In_Json["Sprite_NumFrameY"];
-
 		m_tEffectParticleDesc.fSpriteSpeed = In_Json["Sprite_FrameSpeed"];
 	}
 #pragma endregion
