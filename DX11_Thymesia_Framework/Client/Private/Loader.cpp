@@ -524,8 +524,8 @@ HRESULT CLoader::Loading_ForEditLevel()
 
 	//Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/", MEMORY_TYPE::MEMORY_STATIC);
 
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Main/"  , MEMORY_TYPE::MEMORY_STATIC);
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Sub/"   , MEMORY_TYPE::MEMORY_STATIC);
+	// Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Main/"  , MEMORY_TYPE::MEMORY_STATIC);
+	// Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Sub/"   , MEMORY_TYPE::MEMORY_STATIC);
 
 	CEditGround::Load_AllMeshInfo();
 #pragma endregion
@@ -547,8 +547,6 @@ HRESULT CLoader::Loading_ForEditLevel()
 	// TODO : Turn off temporarily for Light_Prop
 
 	m_isFinished = true;
-
-
 	return S_OK;
 }
 
