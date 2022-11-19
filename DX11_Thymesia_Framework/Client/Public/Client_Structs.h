@@ -151,6 +151,7 @@ namespace Client
 		// particle moves toward look
 		_bool		bMoveLook;
 #pragma region Speed
+		// For. Easing
 		_bool		bEasingSpeed;
 		_int		iSpeedEasingType;
 		_float		fSpeedEasingTotalTime;
@@ -163,6 +164,8 @@ namespace Client
 
 		_float3		vMinLimitSpeed;
 		_float3		vMaxLimitSpeed;
+
+		// For. Easing Position
 #pragma endregion
 #pragma region Rotation
 		_bool		bEasingRotation;
