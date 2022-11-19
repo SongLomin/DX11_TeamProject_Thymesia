@@ -67,6 +67,18 @@ void Loop(const THREAD_TYPE In_eThread_Type)
 					(*iter).lock()->Custom_Thread0(fTimeDelta);
 					break;
 
+				case THREAD_TYPE::CUSTOM_THREAD1:
+					(*iter).lock()->Custom_Thread1(fTimeDelta);
+					break;
+
+				case THREAD_TYPE::CUSTOM_THREAD2:
+					(*iter).lock()->Custom_Thread2(fTimeDelta);
+					break;
+
+				case THREAD_TYPE::CUSTOM_THREAD3:
+					(*iter).lock()->Custom_Thread3(fTimeDelta);
+					break;
+
 				default:
 					break;
 				}
@@ -141,51 +153,6 @@ void CThread_Manager::Initialize(const _uint In_iNumLayer)
 
 }
 
-void CThread_Manager::Update(const THREAD_TYPE In_eThread_Type, list<weak_ptr<CGameObject>>& In_List, _float fTimeDelta)
-{
-	for (auto iter = In_List.begin(); iter != In_List.end();)
-	{
-		if (!(*iter).lock())
-		{
-			iter = In_List.erase(iter);
-		}
-		else
-		{
-			switch (In_eThread_Type)
-			{
-			case THREAD_TYPE::TICK:
-				(*iter).lock()->Tick(fTimeDelta);
-				break;
-
-			case THREAD_TYPE::LATE_TICK:
-				(*iter).lock()->LateTick(fTimeDelta);
-				break;
-
-			case THREAD_TYPE::CUSTOM_THREAD0:
-				(*iter).lock()->Custom_Thread0(fTimeDelta);
-				break;
-
-			default:
-				break;
-			}
-
-			++iter;
-		}
-	}
-
-}
-
-void CThread_Manager::Add_ThreadObject(const THREAD_TYPE In_eThread_Type, list<weak_ptr<CGameObject>>& In_List)
-{
-	
-
-	for (auto& elem : GET_SINGLE(CThread_Manager)->m_ReservedThreadObjects[(_uint)In_eThread_Type])
-	{
-		In_List.push_back(elem);
-	}
-
-	GET_SINGLE(CThread_Manager)->m_ReservedThreadObjects[(_uint)In_eThread_Type].clear();
-}
 
 void CThread_Manager::Bind_ThreadObject(const THREAD_TYPE In_eThread_Type, weak_ptr<CGameObject> pGameObject)
 {

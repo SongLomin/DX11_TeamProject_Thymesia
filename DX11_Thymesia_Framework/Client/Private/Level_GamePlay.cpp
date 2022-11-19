@@ -29,7 +29,13 @@ HRESULT CLevel_GamePlay::Initialize()
 	
 #pragma region GAMEOBJECT
 
-	Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_GAMEPLAY);
+	future<void> ThreadResult = async(launch::async, 
+		bind(&CLevel_GamePlay::Load_FromJson, this,
+			placeholders::_1, placeholders::_2), 
+		m_szDefaultJsonPath + "Stage1_sub.json", 
+		LEVEL::LEVEL_GAMEPLAY);
+
+	//Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_GAMEPLAY);
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
 	CameraDesc.vEye = _float4(0.0f, 2.5f, -2.5f, 1.f);
@@ -98,6 +104,8 @@ HRESULT CLevel_GamePlay::Initialize()
 	SetUp_UI();
 
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
+
+	ThreadResult.get();
 
 
 	return S_OK;

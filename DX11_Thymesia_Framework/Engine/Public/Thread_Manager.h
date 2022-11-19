@@ -15,8 +15,6 @@ public:
 
 private:
 	//void Loop(const THREAD_TYPE In_eThread_Type);
-	void Update(const THREAD_TYPE In_eThread_Type, list<weak_ptr<CGameObject>>& In_List,_float fTimeDelta);
-	void Add_ThreadObject(const THREAD_TYPE In_eThread_Type, list<weak_ptr<CGameObject>>& In_List);
 
 	void Clear_EngineThreads(const THREAD_TYPE In_eThread_Type);
 

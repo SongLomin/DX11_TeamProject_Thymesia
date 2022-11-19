@@ -60,6 +60,18 @@ void CGameObject::Custom_Thread0(_float fTimeDelta)
 {
 }
 
+void CGameObject::Custom_Thread1(_float fTimeDelta)
+{
+}
+
+void CGameObject::Custom_Thread2(_float fTimeDelta)
+{
+}
+
+void CGameObject::Custom_Thread3(_float fTimeDelta)
+{
+}
+
 HRESULT CGameObject::Render()
 {
 	CallBack_Render();
