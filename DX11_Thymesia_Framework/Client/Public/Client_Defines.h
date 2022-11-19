@@ -114,6 +114,7 @@ namespace Client
 	{
 		WEAPON_AXE,
 		WEAPON_KNIFE,
+		WEAPON_BOSSVARG,
 		MON_WEAPON_END
 	};
 

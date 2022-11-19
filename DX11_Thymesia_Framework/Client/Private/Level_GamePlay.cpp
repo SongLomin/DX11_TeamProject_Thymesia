@@ -77,6 +77,11 @@ HRESULT CLevel_GamePlay::Initialize()
 	CCC.vYame.z = 25.f;
 	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
 
+	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
+	CCC.vYame.x = 10.f;
+	CCC.vYame.z = 15.f;
+	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &CCC);
+
 	/*ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
 	CCC.eNorMonType = NORMONSTERTYPE::KNIFEWOMAN;
 	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::FIDGETIDLE;
