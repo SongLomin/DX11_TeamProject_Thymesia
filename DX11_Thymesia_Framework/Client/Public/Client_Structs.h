@@ -180,13 +180,19 @@ namespace Client
 		_float3		vMaxLimitRotation;
 #pragma endregion
 #pragma region Scale
+		_bool		bEasingScale;
+		_int		iScaleEasingType;
+
+		_float		fScaleEasingTotalTime;
+
 		_float3		vMinStartScale;
 		_float3		vMaxStartScale;
 
 		_float3		vScaleSpeed;
 		_float3		vScaleForce;
 
-		_float3		vMaxScale;
+		_float3		vMinLimitScale;
+		_float3		vMaxLimitScale;
 #pragma endregion
 #pragma region Color
 		_float		fDiscardRatio;

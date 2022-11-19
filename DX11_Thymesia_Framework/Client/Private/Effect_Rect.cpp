@@ -38,7 +38,7 @@ HRESULT CEffect_Rect::Initialize_Prototype()
 
 	m_tEffectParticleDesc.vMinStartScale       = { 1.f, 1.f, 1.f };
 	m_tEffectParticleDesc.vMaxStartScale       = { 1.f, 1.f, 1.f };
-	m_tEffectParticleDesc.vMaxScale            = { 1.f, 1.f, 1.f };
+	m_tEffectParticleDesc.vMaxLimitScale            = { 1.f, 1.f, 1.f };
 
 	m_tEffectParticleDesc.fDiscardRatio        = 0.1f;
 	m_tEffectParticleDesc.vMinStartColor       = { 1.f, 1.f, 1.f, 1.f };
@@ -290,13 +290,23 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 #pragma endregion
 
 #pragma region Scale
-	CJson_Utility::Write_Float3(Out_Json["Min_Start_Scale"], m_tEffectParticleDesc.vMinStartScale);
-	CJson_Utility::Write_Float3(Out_Json["Max_Start_Scale"], m_tEffectParticleDesc.vMaxStartScale);
+	Out_Json["Is_Easing_Scale"] = m_tEffectParticleDesc.bEasingScale;
 
-	CJson_Utility::Write_Float3(Out_Json["Scale_Speed"], m_tEffectParticleDesc.vScaleSpeed);
-	CJson_Utility::Write_Float3(Out_Json["Scale_Force"], m_tEffectParticleDesc.vScaleForce);
+	if (m_tEffectParticleDesc.bEasingScale)
+	{
+		Out_Json["Scale_Easing_Type"] = m_tEffectParticleDesc.iScaleEasingType;
+		Out_Json["Scale_Easing_Total_Time"] = m_tEffectParticleDesc.fScaleEasingTotalTime;
+	}
+	else
+	{
+		CJson_Utility::Write_Float3(Out_Json["Min_Start_Scale"], m_tEffectParticleDesc.vMinStartScale);
+		CJson_Utility::Write_Float3(Out_Json["Max_Start_Scale"], m_tEffectParticleDesc.vMaxStartScale);
 
-	CJson_Utility::Write_Float3(Out_Json["Max_Scale"], m_tEffectParticleDesc.vMaxScale);
+		CJson_Utility::Write_Float3(Out_Json["Scale_Speed"], m_tEffectParticleDesc.vScaleSpeed);
+		CJson_Utility::Write_Float3(Out_Json["Scale_Force"], m_tEffectParticleDesc.vScaleForce);
+	}
+	CJson_Utility::Write_Float3(Out_Json["Min_Scale"], m_tEffectParticleDesc.vMinLimitScale);
+	CJson_Utility::Write_Float3(Out_Json["Max_Scale"], m_tEffectParticleDesc.vMaxLimitScale);
 #pragma endregion
 
 #pragma region Color
@@ -482,16 +492,31 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma endregion
 
 #pragma region Scale
-	if (In_Json.find("Min_Start_Scale") != In_Json.end())
-		CJson_Utility::Load_Float3(In_Json["Min_Start_Scale"], m_tEffectParticleDesc.vMinStartScale);
-	if (In_Json.find("Max_Start_Scale") != In_Json.end())
-		CJson_Utility::Load_Float3(In_Json["Max_Start_Scale"], m_tEffectParticleDesc.vMaxStartScale);
-	if (In_Json.find("Scale_Speed") != In_Json.end())
-		CJson_Utility::Load_Float3(In_Json["Scale_Speed"], m_tEffectParticleDesc.vScaleSpeed);
-	if (In_Json.find("Scale_Force") != In_Json.end())
-		CJson_Utility::Load_Float3(In_Json["Scale_Force"], m_tEffectParticleDesc.vScaleForce);
+	if (In_Json.find("Is_Easing_Scale") != In_Json.end())
+		m_tEffectParticleDesc.bEasingScale = In_Json["Is_Easing_Scale"];
+
+	if (m_tEffectParticleDesc.bEasingScale)
+	{
+		if (In_Json.find("Scale_Easing_Type") != In_Json.end())
+			m_tEffectParticleDesc.iScaleEasingType = In_Json["Scale_Easing_Type"];
+		if (In_Json.find("Scale_Easing_Total_Time") != In_Json.end())
+			m_tEffectParticleDesc.fScaleEasingTotalTime = In_Json["Scale_Easing_Total_Time"];
+	}
+	else
+	{
+		if (In_Json.find("Min_Start_Scale") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Min_Start_Scale"], m_tEffectParticleDesc.vMinStartScale);
+		if (In_Json.find("Max_Start_Scale") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Max_Start_Scale"], m_tEffectParticleDesc.vMaxStartScale);
+		if (In_Json.find("Scale_Speed") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Scale_Speed"], m_tEffectParticleDesc.vScaleSpeed);
+		if (In_Json.find("Scale_Force") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Scale_Force"], m_tEffectParticleDesc.vScaleForce);
+	}
+	if (In_Json.find("Min_Scale") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Min_Scale"], m_tEffectParticleDesc.vMinLimitScale);
 	if (In_Json.find("Max_Scale") != In_Json.end())
-		CJson_Utility::Load_Float3(In_Json["Max_Scale"], m_tEffectParticleDesc.vMaxScale);
+		CJson_Utility::Load_Float3(In_Json["Max_Scale"], m_tEffectParticleDesc.vMaxLimitScale);
 #pragma endregion
 
 #pragma region Color
@@ -791,7 +816,11 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 
 	if (m_tEffectParticleDesc.bEasingSpeed)
 	{
-		_float fElapsedTime = m_tEffectParticleDesc.fMaxLifeTime - m_tParticleDescs[i].fCurrentLifeTime;
+		_float fElapsedTime = m_tParticleDescs[i].fCurrentLifeTime;
+
+		if (0.f > fElapsedTime)
+			return;
+
 		this->Apply_Easing
 		(
 			vMove
@@ -863,7 +892,6 @@ void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
 
 		m_tParticleDescs[i].vCurrentRotation = SMath::Extract_PitchYawRollFromRotationMatrix(RotationMatrix);
 	}
-
 	else
 	{
 		_float3 vRotation;
@@ -871,7 +899,11 @@ void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
 
 		if (m_tEffectParticleDesc.bEasingRotation)
 		{
-			_float fElapsedTime = m_tEffectParticleDesc.fMaxLifeTime - m_tParticleDescs[i].fCurrentLifeTime;
+			_float fElapsedTime = m_tParticleDescs[i].fCurrentLifeTime;
+
+			if (0.f > fElapsedTime)
+				return;
+
 			this->Apply_Easing
 			(
 				vRotation
@@ -881,6 +913,12 @@ void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
 				, fElapsedTime
 				, m_tEffectParticleDesc.fRotationEasingTotalTime
 			);
+
+			vRotation.x = max(m_tEffectParticleDesc.vMinLimitRotation.x, min(m_tEffectParticleDesc.vMaxLimitRotation.x, vRotation.x));
+			vRotation.y = max(m_tEffectParticleDesc.vMinLimitRotation.y, min(m_tEffectParticleDesc.vMaxLimitRotation.y, vRotation.y));
+			vRotation.z = max(m_tEffectParticleDesc.vMinLimitRotation.z, min(m_tEffectParticleDesc.vMaxLimitRotation.z, vRotation.z));
+
+			m_tParticleDescs[i].vCurrentRotation = vRotation;
 		}
 		else
 		{
@@ -893,26 +931,52 @@ void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
 			vRotation.x = max(m_tEffectParticleDesc.vMinLimitRotation.x, min(m_tEffectParticleDesc.vMaxLimitRotation.x, vRotation.x));
 			vRotation.y = max(m_tEffectParticleDesc.vMinLimitRotation.y, min(m_tEffectParticleDesc.vMaxLimitRotation.y, vRotation.y));
 			vRotation.z = max(m_tEffectParticleDesc.vMinLimitRotation.z, min(m_tEffectParticleDesc.vMaxLimitRotation.z, vRotation.z));
+
+			m_tParticleDescs[i].vCurrentRotation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentRotation, vRotation);
 		}
-		
-		m_tParticleDescs[i].vCurrentRotation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentRotation, vRotation);
 	}
 }
 
 void CEffect_Rect::Update_ParticleScale(const _uint& i, _float fTimeDelta)
 {
-	_float3 vScale = SMath::Mul_Float3(m_tEffectParticleDesc.vScaleSpeed, fTimeDelta);
+	_float3 vScale;
+	ZeroMemory(&vScale, sizeof(_float3));
 
-	m_tParticleDescs[i].vCurrentScaleForce =
-		SMath::Add_Float3(m_tParticleDescs[i].vCurrentScaleForce, SMath::Mul_Float3(m_tEffectParticleDesc.vScaleForce, fTimeDelta));
+	if (m_tEffectParticleDesc.bEasingScale)
+	{
+		_float fElapsedTime = m_tParticleDescs[i].fCurrentLifeTime;
 
-	SMath::Add_Float3(&m_tParticleDescs[i].vCurrentScale, m_tParticleDescs[i].vCurrentScaleForce);
+		if (0.f > fElapsedTime)
+			return;
 
-	m_tParticleDescs[i].vCurrentScale = SMath::Add_Float3(m_tParticleDescs[i].vCurrentScale, vScale);
+		this->Apply_Easing
+		(
+			vScale
+			, (EASING_TYPE)m_tEffectParticleDesc.iScaleEasingType
+			, XMLoadFloat3(&m_tEffectParticleDesc.vMinLimitScale)
+			, XMLoadFloat3(&m_tEffectParticleDesc.vMaxLimitScale)
+			, fElapsedTime
+			, m_tEffectParticleDesc.fScaleEasingTotalTime
+		);
 
-	m_tParticleDescs[i].vCurrentScale.x = max(0.00001f, min(m_tEffectParticleDesc.vMaxScale.x, m_tParticleDescs[i].vCurrentScale.x));
-	m_tParticleDescs[i].vCurrentScale.y = max(0.00001f, min(m_tEffectParticleDesc.vMaxScale.y, m_tParticleDescs[i].vCurrentScale.y));
-	m_tParticleDescs[i].vCurrentScale.z = max(0.00001f, min(m_tEffectParticleDesc.vMaxScale.z, m_tParticleDescs[i].vCurrentScale.z));
+		m_tParticleDescs[i].vCurrentScale = vScale;
+	}
+	else
+	{
+		vScale = SMath::Mul_Float3(m_tEffectParticleDesc.vScaleSpeed, fTimeDelta);
+
+		m_tParticleDescs[i].vCurrentScaleForce =
+			SMath::Add_Float3(m_tParticleDescs[i].vCurrentScaleForce, SMath::Mul_Float3(m_tEffectParticleDesc.vScaleForce, fTimeDelta));
+
+		SMath::Add_Float3(&m_tParticleDescs[i].vCurrentScale, m_tParticleDescs[i].vCurrentScaleForce);
+
+		m_tParticleDescs[i].vCurrentScale = SMath::Add_Float3(m_tParticleDescs[i].vCurrentScale, vScale);
+	}
+
+
+	m_tParticleDescs[i].vCurrentScale.x = max(m_tEffectParticleDesc.vMinLimitScale.x, min(m_tEffectParticleDesc.vMaxLimitScale.x, m_tParticleDescs[i].vCurrentScale.x));
+	m_tParticleDescs[i].vCurrentScale.y = max(m_tEffectParticleDesc.vMinLimitScale.y, min(m_tEffectParticleDesc.vMaxLimitScale.y, m_tParticleDescs[i].vCurrentScale.y));
+	m_tParticleDescs[i].vCurrentScale.z = max(m_tEffectParticleDesc.vMinLimitScale.z, min(m_tEffectParticleDesc.vMaxLimitScale.z, m_tParticleDescs[i].vCurrentScale.z));
 }
 
 void CEffect_Rect::Update_ParticleUV(_float fTimeDelta)
@@ -1248,23 +1312,16 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::SameLine();
 			ImGui::Checkbox("##Is_Looping", &m_tEffectParticleDesc.bLooping);
 			ImGui::Separator();
-
 #pragma region Shader Pass
 			ImGui::Text("Pass %d : Sprite Image",			PASS_SPRITE);
 			ImGui::Text("Pass %d : Default_AlphaDiscard",	PASS_ALPHADISCARD);
 			ImGui::Text("Pass %d : Default_BlackDiscard",	PASS_BLACKDISCARD);
 			ImGui::InputInt("Shader Pass", &m_tEffectParticleDesc.iShaderPassIndex);
-
 #pragma endregion
 			ImGui::Separator();
 #pragma region For. Sprite
 			if (PASS_SPRITE == m_tEffectParticleDesc.iShaderPassIndex)
 			{
-				//ImGui::Text("Pendulum Effect");
-				//ImGui::SameLine();
-				//ImGui::Checkbox("##Pendulum_Effect", &m_tEffectParticleDesc.bPendulumSprite);
-				//ImGui::Separator();
-
 				ImGui::Text("Loop Sprite"); ImGui::SameLine();
 				ImGui::Checkbox("##LoopSprite", &m_tEffectParticleDesc.bLoopSprite);
 
@@ -1274,7 +1331,6 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			}
 #pragma endregion
 			ImGui::Separator();
-
 #pragma region Particle Type
 			const char* items[] = { "None", "Outburst", "Attraction", "Billboard"};
 			
@@ -1288,7 +1344,6 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 						m_tEffectParticleDesc.iParticleType = n;
 					}
 
-					// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
 					if (is_selected)
 						ImGui::SetItemDefaultFocus();
 				}
@@ -1325,7 +1380,6 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::InputInt("Sync Animation Key", &m_tEffectParticleDesc.iSyncAnimationKey);
 #pragma endregion
 			ImGui::Separator();
-
 #pragma region Life Time & Spawns
 			ImGui::Text("Init Time");
 			ImGui::DragFloat("##Init_Time", &m_tEffectParticleDesc.fInitTime, 0.1f);
@@ -1343,7 +1397,6 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::DragFloat("##Max_Life_Time", &m_tEffectParticleDesc.fMaxLifeTime, 0.1f);
 			ImGui::Separator();
 #pragma endregion
-
 			ImGui::Separator();
 
 			ImGui::Text("Is Move Look");
@@ -1510,20 +1563,70 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 #pragma endregion
 			ImGui::Separator();
 #pragma region Scale
-			ImGui::Text("Min Start Scale");
-			ImGui::DragFloat3("##Min_Start_Scale", &m_tEffectParticleDesc.vMinStartScale.x, 0.1f);
+			ImGui::Text("Scale");
+			ImGui::NewLine();
 
-			ImGui::Text("Max Start Scale");
-			ImGui::DragFloat3("##Max_Start_Scale", &m_tEffectParticleDesc.vMaxStartScale.x, 0.1f);
+			ImGui::Text("Apply Easing"); ImGui::SameLine();
+			ImGui::Checkbox("##Is_Easing_Scale", &m_tEffectParticleDesc.bEasingScale);
 
-			ImGui::Text("Scale Speed");
-			ImGui::DragFloat3("##Scale_Speed", &m_tEffectParticleDesc.vScaleSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
+			if (m_tEffectParticleDesc.bEasingScale)
+			{
+#pragma region Easing
+				// open easing list
+				const char* EasingItems[] =
+				{
+					"Linear"   ,
+					"QuadIn"   , "QuadOut"	 , "QuadInOut"	 ,
+					"CubicIn"  , "CubicOut"	 , "CubicInOut"	 ,
+					"QuartIn"  , "QuartOut"	 , "QuartInOut"	 ,
+					"QuintIn"  , "QuintOut"	 , "QuintInOut"	 ,
+					"SineIn"   , "SineOut"	 , "SineInOut"	 ,
+					"ExpoIn"   , "ExpoOut"	 , "ExpoInOut"	 ,
+					"CircIn"   , "CircOut"	 , "CircInOut"	 ,
+					"ElasticIn", "ElasticOut", "ElasticInOut",
+					"BounceIn" , "BounceOut"
+				};
 
-			ImGui::Text("Scale Force");
-			ImGui::DragFloat3("##Scale_Force", &m_tEffectParticleDesc.vScaleForce.x, 0.1f, -100.f, 100.f, "%.5f");
+				if (ImGui::BeginListBox("Scale Easing Type"))
+				{
+					for (int n = 0; n < IM_ARRAYSIZE(EasingItems); n++)
+					{
+						const bool is_selected = (m_tEffectParticleDesc.iScaleEasingType == n);
+						if (ImGui::Selectable(EasingItems[n], is_selected))
+						{
+							m_tEffectParticleDesc.iScaleEasingType = n;
+						}
+
+						if (is_selected)
+							ImGui::SetItemDefaultFocus();
+					}
+					ImGui::EndListBox();
+				}
+
+				ImGui::Text("Total Easing Time"); ImGui::SameLine();
+				ImGui::DragFloat("##Scale_Total_Easing_Time", &m_tEffectParticleDesc.fScaleEasingTotalTime, 0.01f, -100.f, 100.f, "%.5f");
+#pragma endregion
+			}
+			else
+			{
+				ImGui::Text("Min Start Scale");
+				ImGui::DragFloat3("##Min_Start_Scale", &m_tEffectParticleDesc.vMinStartScale.x, 0.1f);
+
+				ImGui::Text("Max Start Scale");
+				ImGui::DragFloat3("##Max_Start_Scale", &m_tEffectParticleDesc.vMaxStartScale.x, 0.1f);
+
+				ImGui::Text("Scale Speed");
+				ImGui::DragFloat3("##Scale_Speed", &m_tEffectParticleDesc.vScaleSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
+
+				ImGui::Text("Scale Force");
+				ImGui::DragFloat3("##Scale_Force", &m_tEffectParticleDesc.vScaleForce.x, 0.1f, -100.f, 100.f, "%.5f");
+			}
+
+			ImGui::Text("Min Scale");
+			ImGui::DragFloat3("##Min_Limit_Scale", &m_tEffectParticleDesc.vMinLimitScale.x, 0.1f, -100.f, 100.f, "%.5f");
 
 			ImGui::Text("Max Scale");
-			ImGui::DragFloat3("##Max_Scale", &m_tEffectParticleDesc.vMaxScale.x, 0.1f, -100.f, 100.f, "%.5f");
+			ImGui::DragFloat3("##Max_Limit_Scale", &m_tEffectParticleDesc.vMaxLimitScale.x, 0.1f, -100.f, 100.f, "%.5f");
 #pragma endregion
 
 			ImGui::Separator();
