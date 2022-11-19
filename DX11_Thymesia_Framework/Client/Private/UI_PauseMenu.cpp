@@ -9,6 +9,7 @@
 #include "Fader.h"
 #include "Engine_Defines.h"
 #include "UI_PauseMenu_Page_Status.h"
+#include "FadeMask.h"
 
 GAMECLASS_C(CUI_PauseMenu)
 CLONE_C(CUI_PauseMenu, CGameObject)
@@ -28,6 +29,9 @@ HRESULT CUI_PauseMenu::Initialize(void* pArg)
 	Create_Pages();
 	Create_PageText();
 	Create_PageIndicator();
+
+
+	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
 
 	m_bOpenThisFrame = false;
@@ -50,7 +54,17 @@ void CUI_PauseMenu::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	if (KEY_INPUT(KEY::CTRL, KEY_STATE::TAP) && m_bOpenThisFrame == false)
-		Set_Enable(false);
+	{
+		FaderDesc tFaderDesc;
+		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+		tFaderDesc.fFadeMaxTime = 0.3f;
+		tFaderDesc.fDelayTime = 0.f;
+		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+
+		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CUI_PauseMenu::Call_FadeInPauseMenu, this);
+	}
 
 
 	if (KEY_INPUT(KEY::Q, KEY_STATE::TAP))
@@ -145,6 +159,12 @@ void CUI_PauseMenu::OnPaging()
 		}
 	}
 
+}
+
+void CUI_PauseMenu::Call_FadeInPauseMenu()
+{
+	Set_Enable(false);
+	m_pFadeMask.lock()->Set_Enable(false);
 }
 
 void CUI_PauseMenu::Create_Background()

@@ -10,7 +10,7 @@
 #include "HUD_PlagueWeapon.h"
 #include "UI_PauseMenu.h"
 #include "MonsterHPBar_Base.h"
-
+#include "MonsterHPBar_Elite.h"
 CLevel_GamePlay::CLevel_GamePlay()
 	//: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
@@ -111,9 +111,18 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 
 	if (KEY_INPUT(KEY::CTRL, KEY_STATE::TAP))
 	{
-		weak_ptr<CUI_PauseMenu> pPauseMenu = GAMEINSTANCE->Get_GameObjects<CUI_PauseMenu>(LEVEL_STATIC).front();
-		if (!pPauseMenu.lock()->Get_Enable())
-			pPauseMenu.lock()->Set_Enable(true);
+		if (m_pPauseMenu.lock()->Get_Enable() == false)
+		{
+			FaderDesc tFaderDesc;
+			tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+			tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+			tFaderDesc.fFadeMaxTime = 0.3f;
+			tFaderDesc.fDelayTime = 0.f;
+			tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+
+			m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CLevel_GamePlay::Call_Enable_PauseMenu, this);
+		}
 	}
 
 	if (!m_bFadeTrigger)
@@ -165,7 +174,7 @@ void CLevel_GamePlay::SetUp_UI()
 	weak_ptr<CGameManager>	pGameManager = GET_SINGLE(CGameManager);
 
 	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);//¿©±â¼­ 
-	GAMEINSTANCE->Add_GameObject<CUI_PauseMenu>(LEVEL_STATIC);
+	m_pPauseMenu = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu>(LEVEL_STATIC);
 
 
 
@@ -186,8 +195,14 @@ void CLevel_GamePlay::SetUp_UI()
 	tDesc.fSizeY = 15.f;
 	tDesc.fDepth = 0.f;
 
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Base>(LEVEL_STATIC, &tDesc));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Elite>(LEVEL_STATIC, &tDesc));
 
+}
+
+void CLevel_GamePlay::Call_Enable_PauseMenu()
+{
+		m_pPauseMenu.lock()->Set_Enable(true);
+		m_pFadeMask.lock()->Set_Enable(false);
 }
 
 shared_ptr<CLevel_GamePlay> CLevel_GamePlay::Create()

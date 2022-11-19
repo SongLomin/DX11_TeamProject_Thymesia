@@ -520,8 +520,9 @@
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal\Icon</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MonsterHPBar_Base.h">
-      <Filter>02. GameObject\01. UI\EnemyHPBar</Filter>
+      <Filter>02. GameObject\01. UI\MonsterHPBar</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\MonsterHPBar_Elite.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1012,8 +1013,9 @@
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal\Icon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\MonsterHPBar_Base.cpp">
-      <Filter>02. GameObject\01. UI\EnemyHPBar</Filter>
+      <Filter>02. GameObject\01. UI\MonsterHPBar</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1597,14 +1599,17 @@
     <Filter Include="02. GameObject\01. UI\CustomFont">
       <UniqueIdentifier>{699e0633-b8f5-4d86-ae5f-759bf62e1489}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. UI\EnemyHPBar">
-      <UniqueIdentifier>{d1cc751f-2867-49e0-be1e-51383949c286}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\UI">
       <UniqueIdentifier>{d079159a-0b85-4615-ae92-0764c377b37b}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\01. UI\Progress">
       <UniqueIdentifier>{fe5378f3-5d92-48f6-9847-6ce6ac071847}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\MonsterHPBar">
+      <UniqueIdentifier>{d1cc751f-2867-49e0-be1e-51383949c286}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\MonsterHPBar\Elite">
+      <UniqueIdentifier>{0080c814-ce65-4f28-a417-282f097ae2bc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
