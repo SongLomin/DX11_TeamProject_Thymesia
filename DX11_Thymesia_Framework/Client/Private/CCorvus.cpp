@@ -74,7 +74,7 @@ HRESULT CCorvus::Start()
 	
 	m_pCamera = GET_SINGLE(CGameManager)->Get_TargetCamera();
 	m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
-	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -0.5f, 0.f, 1.f));
+	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -1.5f, 0.f, 1.f));
 
 	return S_OK;
 }
@@ -108,16 +108,23 @@ void CCorvus::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 0.5f, 0.f, 1.f));
-	m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 0.5f, 0.f, 1.f));
+	m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 1.5f, 0.f, 1.f));
+	m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 1.5f, 0.f, 1.f));
 }
 
 void CCorvus::Before_Render(_float fTimeDelta)
 {
 	__super::Before_Render(fTimeDelta);
 
-	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -0.5f, 0.f, 1.f));
-	m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 0.5f, 0.f, 1.f));
+	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -1.5f, 0.f, 1.f));
+	m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 1.5f, 0.f, 1.f));
+}
+
+void CCorvus::Custom_Thread1(_float fTimeDelta)
+{
+	// 컬링 연산 방지
+	if (RENDERGROUP::RENDER_END != m_eRenderGroup)
+		m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Weak_StaticCast<CGameObject>(m_this));
 }
 
 HRESULT CCorvus::Render()
@@ -162,9 +169,9 @@ void CCorvus::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
 
-#ifndef _USE_THREAD
+#ifndef _USE_THREAD_
 	m_pModelCom.lock()->Update_BoneMatrices();
-#endif // !_USE_THREAD
+#endif // !_USE_THREAD_
 }
 
 void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)

@@ -60,7 +60,7 @@ HRESULT CCustomEffectMesh::Initialize(void* pArg)
 	ZeroMemory(&m_tEffectMeshDesc, sizeof(m_tEffectMeshDesc));
 
 
-#ifdef _USE_THREAD
+#ifdef _USE_THREAD_
 	Use_Thread(THREAD_TYPE::TICK);
 #endif
 

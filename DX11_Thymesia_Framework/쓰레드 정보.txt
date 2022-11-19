@@ -1,0 +1,14 @@
+쓰레드 사용법
+Init이나 start에서(한번만 들어오는 곳)
+Use_Thread(THREAD_TYPE);
+
+Tick, LateTick은 알거고
+
+Custom_Thread0부터는
+virtual void Custom_Thread0(_float fTimeDelta) override;
+하면 된다.
+해당 루프만 쓰레드로 돌아감.
+
+현재 쓰레드 역할
+Custom_Thread0: Update Animation BoneMatrix
+Custom_Thread1: 프러스텀 컬링

@@ -25,6 +25,7 @@ public:// CGameObject을(를) 통해 상속됨
     virtual HRESULT Start() override;
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
+    virtual void Custom_Thread1(_float fTimeDelta) override;
     virtual HRESULT Render() override;
 
 public:
@@ -63,6 +64,7 @@ private:
 
     MONSTERWEAPONTYPE           m_eWeaType = MONSTERWEAPONTYPE::MON_WEAPON_END;
 
+    _bool                   m_bRendering = true;
 
 
 private:

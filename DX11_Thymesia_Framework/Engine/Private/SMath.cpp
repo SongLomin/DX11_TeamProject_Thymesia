@@ -739,3 +739,41 @@ void ENGINE_DLL Engine::SMath::Convert_PxVec3FromMeshData(PxVec3* In_PxVec3, wea
 	}
 	
 }
+
+void ENGINE_DLL Engine::SMath::Convert_PxVec3FromMeshDataWithTransformMatrix(PxVec3* In_PxVec3, weak_ptr<MESH_DATA> pMeshData, FXMMATRIX In_TransformMatrix)
+{
+	_uint iNumVertices = pMeshData.lock()->iNumVertices;
+
+	MODEL_TYPE eActorType = pMeshData.lock()->eModelType;
+
+	_vector vPosition;
+
+	for (_uint i = 0; i < iNumVertices; ++i)
+	{
+		switch (eActorType)
+		{
+		case MODEL_TYPE::NONANIM:
+			vPosition = XMVector3TransformCoord(XMLoadFloat3(&pMeshData.lock()->pVertices[i].vPosition), In_TransformMatrix);
+			memcpy(&In_PxVec3[i], &vPosition, sizeof(PxVec3));
+			break;
+		case MODEL_TYPE::ANIM:
+			vPosition = XMVector3TransformCoord(XMLoadFloat3(&pMeshData.lock()->pAnimVertices[i].vPosition), In_TransformMatrix);
+			memcpy(&In_PxVec3[i], &vPosition, sizeof(PxVec3));
+			break;
+		case MODEL_TYPE::NAVI:
+			vPosition = XMVector3TransformCoord(XMLoadFloat3(&pMeshData.lock()->pPosVertices[i].vPosition), In_TransformMatrix);
+			memcpy(&In_PxVec3[i], &vPosition, sizeof(PxVec3));
+			break;
+		case MODEL_TYPE::GROUND:
+			vPosition = XMVector3TransformCoord(XMLoadFloat3(&pMeshData.lock()->pGroundVertices[i].vPosition), In_TransformMatrix);
+			memcpy(&In_PxVec3[i], &vPosition, sizeof(PxVec3));
+			break;
+		case MODEL_TYPE::TYPE_END:
+			DEBUG_ASSERT;
+			break;
+		default:
+			DEBUG_ASSERT;
+			break;
+		}
+	}
+}

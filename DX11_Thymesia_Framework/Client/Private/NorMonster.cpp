@@ -177,9 +177,9 @@ void CNorMonster::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
 
-#ifndef _USE_THREAD
+#ifndef _USE_THREAD_
 	m_pModelCom.lock()->Update_BoneMatrices();
-#endif // !_USE_THREAD
+#endif // !_USE_THREAD_
 
 }
 

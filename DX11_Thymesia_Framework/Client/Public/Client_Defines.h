@@ -7,7 +7,8 @@
 #include "imgui.h"
 
 
-#define _USE_THREAD
+#define _USE_THREAD_
+#define _LIFEGUARD_FOR_FALL_
 
 namespace Client 
 {
@@ -96,6 +97,7 @@ namespace Client
 		MONSTER_RIGIDBODY,
 		EDIT_NAVIMESH,
 		TRIGGER,
+		STATIC_PROP,
 		LAYER_END
 	};
 

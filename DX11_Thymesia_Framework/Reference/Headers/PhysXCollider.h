@@ -3,7 +3,9 @@
 
 BEGIN(Engine)
 class CTransform;
+struct MODEL_DATA;
 struct MESH_DATA;
+class CVIBuffer_Model_Instance;
 
 class ENGINE_DLL CPhysXCollider final : public CComponent
 {
@@ -48,7 +50,10 @@ private:
 	virtual void	Start() override;
 
 public:
-	void	Init_MeshCollider(weak_ptr<MESH_DATA> pMeshData);
+	void	Init_MeshCollider(weak_ptr<MESH_DATA> pMeshData, const vector<INSTANCE_MESH_DESC>* In_ParticleDescs = nullptr);
+	void	Init_ConvexMeshCollider(weak_ptr<MESH_DATA> pMeshData, const vector<INSTANCE_MESH_DESC>* In_ParticleDescs = nullptr);
+	void	Init_ModelCollider(weak_ptr<MODEL_DATA> pModelData, const _bool In_isConvex);
+	void	Init_ModelInstanceCollider(weak_ptr<MODEL_DATA> pModelData, const vector<INSTANCE_MESH_DESC>& In_ParticleDescs, const _bool In_isConvex);
 
 public:
 	void	Synchronize_Transform(weak_ptr<CTransform> pTransform, _fvector In_vOffset = {0.f, 0.f, 0.f});
@@ -89,16 +94,16 @@ private:
 	PxRigidDynamic*			m_pRigidDynamic = nullptr;
 	PxRigidStatic*			m_pRigidStatic = nullptr;
 
-	PxConvexMesh*			m_ConvexMeshes[16];
-	PxTriangleMesh*			m_TriangleMesh = nullptr;
+	vector<PxConvexMesh*>	m_ConvexMeshes;
+	vector<PxTriangleMesh*>	m_TriangleMesh;
 
 	_bool					m_bPickState = false;
 	_bool					m_bPickable = true;
 	_bool					m_bYFixed = false;
 
 
-	PxGeometry*				m_pGeometry = nullptr;
-	PxShape*				m_pShape = nullptr;
+	vector<PxGeometry*>		m_pGeometry;
+	vector<PxShape*>		m_pShape;
 	PxFilterData			m_FilterData;
 
 public:
@@ -106,7 +111,7 @@ public:
 	void		Add_PhysXActorAtScene(const PxVec3& In_MassSpaceInertiaTensor = { 0.f, 0.f, 0.f }, const PxReal In_fMass = 0.f);
 
 private:
-	PxGeometry*	Create_Geometry();
+	void		Create_Geometry();
 	void		Create_DynamicActor(PHYSXCOLLIDERDESC& PhysXColliderDesc, PxTransform Transform);
 	void		Create_StaticActor(PHYSXCOLLIDERDESC& PhysXColliderDesc, PxTransform Transform);
 

@@ -7,6 +7,7 @@
 #include "Transform.h"
 
 #include "PhysXCollider.h"
+#include "Client_Presets.h"
 
 GAMECLASS_C(CStatic_Prop);
 CLONE_C(CStatic_Prop, CGameObject);
@@ -27,6 +28,9 @@ HRESULT CStatic_Prop::Initialize(void* pArg)
         VTXMODEL_DECLARATION::iNumElements
     );
 
+    m_pPhyxXColliderCom = Add_Component<CPhysXCollider>();
+
+
     GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_StaticCast<CGameObject>(m_this));
 
     return S_OK;
@@ -35,6 +39,8 @@ HRESULT CStatic_Prop::Initialize(void* pArg)
 HRESULT CStatic_Prop::Start()
 {
     __super::Start();
+    
+    
 
     return S_OK;
 }
@@ -47,6 +53,11 @@ void CStatic_Prop::Tick(_float fTimeDelta)
 void CStatic_Prop::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
+}
+
+void CStatic_Prop::Before_Render(_float fTimeDelta)
+{
+    __super::Before_Render(fTimeDelta);
 }
 
 HRESULT CStatic_Prop::Render()
@@ -69,6 +80,95 @@ HRESULT CStatic_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix I
     }
 
     return S_OK;
+}
+
+void CStatic_Prop::Write_Json(json& Out_Json)
+{
+    __super::Write_Json(Out_Json);
+
+    Out_Json["PhysX_Collider_Type"] = m_iColliderType;
+}
+
+void CStatic_Prop::Load_FromJson(const json& In_Json)
+{
+    __super::Load_FromJson(In_Json);
+
+    if (In_Json.find("PhysX_Collider_Type") != In_Json.end())
+    {
+        m_iColliderType = In_Json["PhysX_Collider_Type"];
+    }
+
+    if ((_uint)LEVEL_EDIT == m_CreatedLevel)
+    {
+        return;
+    }
+
+    if (0 == m_iColliderType)
+    {
+        return;
+    }
+    // Model Collider
+    else if (1 == m_iColliderType)
+    {
+        m_pPhyxXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), false);
+    }
+    // Convex Model_Collider
+    else if (2 == m_iColliderType)
+    {
+        m_pPhyxXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
+    }
+
+    PhysXColliderDesc tDesc;
+    Preset::PhysXColliderDesc::StaticPropSetting(tDesc, m_pTransformCom, 0.f);
+    m_pPhyxXColliderCom.lock()->CreatePhysXActor(tDesc);
+    m_pPhyxXColliderCom.lock()->Add_PhysXActorAtScene();
+
+    _vector vMax, vMin;
+
+    vMax = XMLoadFloat3(&m_pModelCom.lock()->Get_ModelData().lock()->VertexInfo.vMax);
+    vMin = XMLoadFloat3(&m_pModelCom.lock()->Get_ModelData().lock()->VertexInfo.vMin);
+    vMax -= vMin;
+
+    _float fMaxRange = vMax.m128_f32[0];
+
+    for (_uint i = 1; i < 4; ++i)
+    {
+        if (fMaxRange < vMax.m128_f32[i])
+        {
+            fMaxRange = vMax.m128_f32[i];
+        }
+    }
+
+    m_fCullingOffsetRange = fMaxRange;
+
+}
+
+void CStatic_Prop::OnEventMessage(_uint iArg)
+{
+    __super::OnEventMessage(iArg);
+
+    if ((_uint)EVENT_TYPE::ON_EDITDRAW == iArg)
+    {
+        const _char* items[] = { "None", "Model", "ConvexModel" };
+
+        if (ImGui::BeginListBox("PhysX Collider Type"))
+        {
+            for (_uint n = 0; n < IM_ARRAYSIZE(items); n++)
+            {
+                const bool is_selected = (m_iColliderType == n);
+                if (ImGui::Selectable(items[n], is_selected))
+                {
+                    m_iColliderType = n;
+                }
+
+                // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+                if (is_selected)
+                    ImGui::SetItemDefaultFocus();
+            }
+            ImGui::EndListBox();
+        }
+    }
+
 }
 
 void CStatic_Prop::Free()

@@ -40,6 +40,12 @@ HRESULT CMobWeapon::Initialize(void* pArg)
 		VTXMODEL_DECLARATION::Element,
 		VTXMODEL_DECLARATION::iNumElements);
 
+
+#ifdef  _USE_THREAD_
+	Use_Thread(THREAD_TYPE::CUSTOM_THREAD1);
+#endif //  _USE_THREAD_
+
+
 	return S_OK;
 }
 
@@ -74,16 +80,41 @@ void CMobWeapon::Tick(_float fTimeDelta)
 	//m_pTransformCom.lock()->Set_WorldMatrix(m_pParent.lock()->Get_Component<CTransform>().lock()->Get_WorldMatrix());
 	//m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 
-
-
-
 }
 
 void CMobWeapon::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Cast<CGameObject>(m_this));
+#ifdef _USE_THREAD_
+	if (m_bRendering)
+	{
+		m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Weak_StaticCast<CGameObject>(m_this));
+	}
+
+#else
+	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), 0.f))
+	{
+		m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Weak_StaticCast<CGameObject>(m_this));
+	}
+
+#endif // !_USE_THREAD_
+
+	
+}
+
+void CMobWeapon::Custom_Thread1(_float fTimeDelta)
+{
+	__super::Custom_Thread1(fTimeDelta);
+
+	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), 0.f))
+	{
+		m_bRendering = true;
+	}
+	else
+	{
+		m_bRendering = false;
+	}
 }
 
 HRESULT CMobWeapon::Render()

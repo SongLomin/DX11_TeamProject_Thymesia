@@ -183,6 +183,12 @@ HRESULT CImGui_Manager::Render(void)
 				Load_FromJson(m_szJsonPath + m_szCurrentLocalPath);
 			}
 
+			if (ImGui::MenuItem("05. Stage1_sub"))
+			{
+				m_szCurrentLocalPath = "Stage1_sub.json";
+				Load_FromJson(m_szJsonPath + m_szCurrentLocalPath);
+			}
+
 			if (ImGui::MenuItem("99. Static"))
 			{
 				m_szCurrentLocalPath = "Static.json";
