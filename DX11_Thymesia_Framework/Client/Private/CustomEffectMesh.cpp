@@ -143,9 +143,9 @@ void CCustomEffectMesh::SetUp_ShaderResource()
 	m_pShaderCom.lock()->Set_RawValue("g_vCamDirection", &vCamDir, sizeof(_vector));
 #pragma endregion
 	
-	m_pColorDiffuseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", m_tEffectMeshDesc.iUVDiffuseIndex);
-	m_pMaskTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", m_tEffectMeshDesc.iUVMaskIndex);
-	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture", m_tEffectMeshDesc.iUVNoiseIndex);
+	m_pColorDiffuseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", m_tEffectMeshDesc.iDiffuseTextureIndex);
+	m_pMaskTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", m_tEffectMeshDesc.iMaskTextureIndex);
+	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture", m_tEffectMeshDesc.iNoiseTextureIndex);
 
 	m_pShaderCom.lock()->Set_RawValue("g_bDynamicNoiseOption", &m_tEffectMeshDesc.bDynamicNoiseOption, sizeof(_bool));
 
@@ -406,9 +406,9 @@ void CCustomEffectMesh::Write_EffectJson(json& Out_Json)
 	CJson_Utility::Write_Float4(Out_Json["Color_Force"], m_tEffectMeshDesc.vColorForce);
 	CJson_Utility::Write_Float4(Out_Json["Max_Color"], m_tEffectMeshDesc.vMaxColor);
 
-	Out_Json["UV_Diffuse_Index"] = m_tEffectMeshDesc.iUVDiffuseIndex;
-	Out_Json["UV_Noise_Index"] = m_tEffectMeshDesc.iUVNoiseIndex;
-	Out_Json["UV_Mask_Index"] = m_tEffectMeshDesc.iUVMaskIndex;
+	Out_Json["UV_Diffuse_Index"] = m_tEffectMeshDesc.iDiffuseTextureIndex;
+	Out_Json["UV_Noise_Index"] = m_tEffectMeshDesc.iNoiseTextureIndex;
+	Out_Json["UV_Mask_Index"] = m_tEffectMeshDesc.iMaskTextureIndex;
 
 	// TODO : bDynamicNoiseOption temporary for test
 	Out_Json["Dynamic_Noise_Option"] = m_tEffectMeshDesc.bDynamicNoiseOption;
@@ -504,13 +504,13 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 	CJson_Utility::Load_Float4(In_Json["Max_Color"], m_tEffectMeshDesc.vMaxColor);
 
 	if (In_Json.find("UV_Diffuse_Index") != In_Json.end())
-		m_tEffectMeshDesc.iUVDiffuseIndex = In_Json["UV_Diffuse_Index"];
+		m_tEffectMeshDesc.iDiffuseTextureIndex = In_Json["UV_Diffuse_Index"];
 
 	if (In_Json.find("UV_Noise_Index") != In_Json.end())
-		m_tEffectMeshDesc.iUVNoiseIndex = In_Json["UV_Noise_Index"];
+		m_tEffectMeshDesc.iNoiseTextureIndex = In_Json["UV_Noise_Index"];
 
 	if (In_Json.find("UV_Mask_Index") != In_Json.end())
-		m_tEffectMeshDesc.iUVMaskIndex = In_Json["UV_Mask_Index"];
+		m_tEffectMeshDesc.iMaskTextureIndex = In_Json["UV_Mask_Index"];
 
 	if (In_Json.find("Dynamic_Noise_Option") != In_Json.end())
 		m_tEffectMeshDesc.bDynamicNoiseOption = In_Json["Dynamic_Noise_Option"];
@@ -653,6 +653,18 @@ void CCustomEffectMesh::Apply_ImGui_Controls_to_Mesh()
 
 void CCustomEffectMesh::Play_Internal(_float fFrameTime)
 {
+	this->Update_Position(fFrameTime);
+	this->Update_Rotation(fFrameTime);
+	this->Update_Scale(fFrameTime);
+	this->Update_Color(fFrameTime);
+	this->Update_Diffuse(fFrameTime);
+	this->Updaste_Noise(fFrameTime);
+	this->Update_Mask(fFrameTime);
+	this->Update_Glow(fFrameTime);
+}
+
+void CCustomEffectMesh::Update_Position(_float fFrameTime)
+{
 	m_vCurrentSpeed = SMath::Mul_Float3(m_tEffectMeshDesc.vSpeed, fFrameTime);
 	m_vCurrentForce = SMath::Add_Float3(m_vCurrentForce, SMath::Mul_Float3(m_tEffectMeshDesc.vForce, fFrameTime));
 
@@ -666,10 +678,10 @@ void CCustomEffectMesh::Play_Internal(_float fFrameTime)
 	vMovePosition = vAbsolutePosition * fFrameTime;
 
 	m_pTransformCom.lock()->Add_Position(vMovePosition);
+}
 
-	// For. Rotation
-
-
+void CCustomEffectMesh::Update_Rotation(_float fFrameTime)
+{
 	_vector CurrentRotation = XMLoadFloat3(&m_vCurrentRotation);
 	_vector MoveRotation = XMLoadFloat3(&m_tEffectMeshDesc.vRotationSpeed) * fFrameTime;
 	_vector MoveForce = XMLoadFloat3(&m_tEffectMeshDesc.vRotationForce) * fFrameTime;
@@ -683,10 +695,10 @@ void CCustomEffectMesh::Play_Internal(_float fFrameTime)
 
 	_vector Quaternion = XMQuaternionRotationRollPitchYaw(CurrentRotation.m128_f32[0], CurrentRotation.m128_f32[1], CurrentRotation.m128_f32[2]);
 	m_pTransformCom.lock()->Rotation_Quaternion(Quaternion);
+}
 
-
-	// For. Scale
-
+void CCustomEffectMesh::Update_Scale(_float fFrameTime)
+{
 	m_vCurrentScaleSpeed = SMath::Mul_Float3(m_tEffectMeshDesc.vScaleSpeed, fFrameTime);
 	m_vCurrentScaleForce = SMath::Add_Float3(m_vCurrentScaleForce, SMath::Mul_Float3(m_tEffectMeshDesc.vScaleForce, fFrameTime));
 
@@ -694,15 +706,17 @@ void CCustomEffectMesh::Play_Internal(_float fFrameTime)
 	_vector vCurrentScale = XMLoadFloat3(&m_vCurrentScale);
 	vCurrentScale += vMoveScale;
 
-	vCurrentScale.m128_f32[0] = max(0.00001f, min(m_tEffectMeshDesc.vMaxScale.x, vCurrentScale.m128_f32[0]));
-	vCurrentScale.m128_f32[1] = max(0.00001f, min(m_tEffectMeshDesc.vMaxScale.y, vCurrentScale.m128_f32[1]));
-	vCurrentScale.m128_f32[2] = max(0.00001f, min(m_tEffectMeshDesc.vMaxScale.z, vCurrentScale.m128_f32[2]));
+	XMVectorSetX(vCurrentScale, max(m_tEffectMeshDesc.vMinScale.x, min(m_tEffectMeshDesc.vMaxScale.x, XMVectorGetX(vCurrentScale))));
+	XMVectorSetY(vCurrentScale, max(m_tEffectMeshDesc.vMinScale.y, min(m_tEffectMeshDesc.vMaxScale.y, XMVectorGetY(vCurrentScale))));
+	XMVectorSetZ(vCurrentScale, max(m_tEffectMeshDesc.vMinScale.z, min(m_tEffectMeshDesc.vMaxScale.z, XMVectorGetZ(vCurrentScale))));
 
 	XMStoreFloat3(&m_vCurrentScale, vCurrentScale);
 
 	m_pTransformCom.lock()->Set_Scaled(m_vCurrentScale);
+}
 
-	// For. Color
+void CCustomEffectMesh::Update_Color(_float fFrameTime)
+{
 	_vector vColorSpeed = XMLoadFloat4(&m_tEffectMeshDesc.vColorSpeed) * fFrameTime;
 	m_vCurrentColorForce = SMath::Add_Float4(m_vCurrentColorForce, SMath::Mul_Float4(m_tEffectMeshDesc.vColorForce, fFrameTime));
 
@@ -716,8 +730,10 @@ void CCustomEffectMesh::Play_Internal(_float fFrameTime)
 	vCurrentColor.m128_f32[3] = min(m_tEffectMeshDesc.vMaxColor.w, vCurrentColor.m128_f32[3]);
 
 	XMStoreFloat4(&m_vCurrentColor, vCurrentColor);
+}
 
-	// For. Diffuse UV
+void CCustomEffectMesh::Update_Diffuse(_float fFrameTime)
+{
 	_vector vDiffuseUVSpeed = XMLoadFloat2(&m_tEffectMeshDesc.vDiffuseUVSpeed) * fFrameTime;
 	m_vDiffuseCurrentUVForce.x += m_tEffectMeshDesc.vDiffuseUVForce.x * fFrameTime;
 	m_vDiffuseCurrentUVForce.y += m_tEffectMeshDesc.vDiffuseUVForce.y * fFrameTime;
@@ -730,8 +746,10 @@ void CCustomEffectMesh::Play_Internal(_float fFrameTime)
 	vDiffuseCurrentUV.m128_f32[1] = min(m_tEffectMeshDesc.vDiffuseUVMax.y, vDiffuseCurrentUV.m128_f32[1]);
 
 	XMStoreFloat2(&m_vDiffuseCurrentUV, vDiffuseCurrentUV);
+}
 
-	// For. Noise UV
+void CCustomEffectMesh::Updaste_Noise(_float fFrameTime)
+{
 	_vector vNoiseUVSpeed = XMLoadFloat2(&m_tEffectMeshDesc.vNoiseUVSpeed) * fFrameTime;
 	m_vNoiseCurrentUVForce.x += m_tEffectMeshDesc.vNoiseUVForce.x * fFrameTime;
 	m_vNoiseCurrentUVForce.y += m_tEffectMeshDesc.vNoiseUVForce.y * fFrameTime;
@@ -744,8 +762,10 @@ void CCustomEffectMesh::Play_Internal(_float fFrameTime)
 	vNoiseCurrentUV.m128_f32[1] = min(m_tEffectMeshDesc.vNoiseUVMax.y, vNoiseCurrentUV.m128_f32[1]);
 
 	XMStoreFloat2(&m_vNoiseCurrentUV, vNoiseCurrentUV);
+}
 
-	// For. Mask UV
+void CCustomEffectMesh::Update_Mask(_float fFrameTime)
+{
 	_vector vMaskUVSpeed = XMLoadFloat2(&m_tEffectMeshDesc.vMaskUVSpeed) * fFrameTime;
 	m_vMaskCurrentUVForce.x += m_tEffectMeshDesc.vMaskUVForce.x * fFrameTime;
 	m_vMaskCurrentUVForce.y += m_tEffectMeshDesc.vMaskUVForce.y * fFrameTime;
@@ -758,8 +778,10 @@ void CCustomEffectMesh::Play_Internal(_float fFrameTime)
 	vMaskCurrentUV.m128_f32[1] = min(m_tEffectMeshDesc.vMaskUVMax.y, vMaskCurrentUV.m128_f32[1]);
 
 	XMStoreFloat2(&m_vMaskCurrentUV, vMaskCurrentUV);
+}
 
-	// For. Glow
+void CCustomEffectMesh::Update_Glow(_float fFrameTime)
+{
 	_vector vGlowSpeed = XMLoadFloat4(&m_tEffectMeshDesc.vGlowColorSpeed) * fFrameTime;
 	m_vCurrentGlowForce.x += m_tEffectMeshDesc.vGlowColorForce.x * fFrameTime;
 	m_vCurrentGlowForce.y += m_tEffectMeshDesc.vGlowColorForce.y * fFrameTime;
@@ -772,9 +794,6 @@ void CCustomEffectMesh::Play_Internal(_float fFrameTime)
 		XMVectorMax(XMVectorSet(0.f, 0.f, 0.f, 0.f), vCurrentGlowColor));
 
 	XMStoreFloat4(&m_vCurrentGlowColor, vCurrentGlowColor);
-
-
-
 }
 
 #ifdef _DEBUG
@@ -915,11 +934,11 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::Separator();
 
 			ImGui::SetNextItemWidth(100.f);
-			ImGui::InputInt("UV Diffuse Index", &m_tEffectMeshDesc.iUVDiffuseIndex, 1, 0);
+			ImGui::InputInt("UV Diffuse Index", &m_tEffectMeshDesc.iDiffuseTextureIndex, 1, 0);
 			ImGui::SetNextItemWidth(100.f);
-			ImGui::InputInt("UV Noise Index", &m_tEffectMeshDesc.iUVNoiseIndex, 1, 0);
+			ImGui::InputInt("UV Noise Index", &m_tEffectMeshDesc.iNoiseTextureIndex, 1, 0);
 			ImGui::SetNextItemWidth(100.f);
-			ImGui::InputInt("UV Mask Index", &m_tEffectMeshDesc.iUVMaskIndex, 1, 0);
+			ImGui::InputInt("UV Mask Index", &m_tEffectMeshDesc.iMaskTextureIndex, 1, 0);
 
 			ImGui::Text("Dynamic Noise Option"); ImGui::SameLine();
 			ImGui::Checkbox("##Dynamic Noise Option", &m_tEffectMeshDesc.bDynamicNoiseOption);
