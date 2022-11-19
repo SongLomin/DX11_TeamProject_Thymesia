@@ -98,7 +98,7 @@ HRESULT CMonsterHPBar_Base::Initialize(void* pArg)
 
 	UI_DESC tStunDesc = m_tUIDesc;
 	tStunDesc.fSizeY = m_tUIDesc.fSizeY + 8.f;
-	tStunDesc.fSizeX = m_tUIDesc.fSizeX;
+	tStunDesc.fSizeX = m_tUIDesc.fSizeX + 20.f;
 	tStunDesc.fDepth = 0.1f;
 
 	m_pStunned = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_STATIC, &tRecoveryDesc);
@@ -341,6 +341,8 @@ void CMonsterHPBar_Base::Set_ChildPosFromThis()
 	m_pBorder.lock()->Set_UIPosition(m_tUIDesc.fX, m_tUIDesc.fY);
 	m_pWhite.lock()->Set_UIPosition(m_tUIDesc.fX, m_tUIDesc.fY);
 	m_pGreen.lock()->Set_UIPosition(m_tUIDesc.fX, m_tUIDesc.fY);
+	m_pRecovery.lock()->Set_UIPosition(m_tUIDesc.fX, m_tUIDesc.fY);
+
 
 	m_pStunned.lock()->Set_UIPosition(m_tUIDesc.fX, m_tUIDesc.fY);
 

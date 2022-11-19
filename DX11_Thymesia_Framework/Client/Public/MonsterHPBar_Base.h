@@ -28,7 +28,7 @@ public:
 	void			Green_Damaged(_float fRatio);
 
 	void			Toggle_Recovery();
-	void			Set_Stun(bool _bStun);
+	virtual void	Set_Stun(bool _bStun);
 protected:
 	virtual void    Add_Child(weak_ptr<CUI> pChild);
 	virtual void	Check_Track();

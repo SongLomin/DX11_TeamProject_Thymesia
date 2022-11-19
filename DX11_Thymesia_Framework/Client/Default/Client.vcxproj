@@ -270,6 +270,7 @@
     <ClInclude Include="..\Public\Light_Prop.h" />
     <ClInclude Include="..\Public\LoadingTextUI.h" />
     <ClInclude Include="..\Public\Map.h" />
+    <ClInclude Include="..\Public\MonsterHPBar_Boss.h" />
     <ClInclude Include="..\Public\MonsterHPBar_Elite.h" />
     <ClInclude Include="..\Public\NorMonStates.h" />
     <ClInclude Include="..\Public\MobWeapon\MobWeapon.h" />
@@ -441,6 +442,7 @@
     <ClCompile Include="..\Private\Map.cpp" />
     <ClCompile Include="..\Private\MobWeapon\MobWeapon.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
+    <ClCompile Include="..\Private\MonsterHPBar_Boss.cpp" />
     <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_SitToIdle.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp" />

@@ -522,7 +522,10 @@
     <ClInclude Include="..\Public\MonsterHPBar_Base.h">
       <Filter>02. GameObject\01. UI\MonsterHPBar</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\MonsterHPBar_Elite.h" />
+    <ClInclude Include="..\Public\MonsterHPBar_Elite.h">
+      <Filter>02. GameObject\01. UI\MonsterHPBar\Elite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterHPBar_Boss.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1015,7 +1018,10 @@
     <ClCompile Include="..\Private\MonsterHPBar_Base.cpp">
       <Filter>02. GameObject\01. UI\MonsterHPBar</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp" />
+    <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp">
+      <Filter>02. GameObject\01. UI\MonsterHPBar\Elite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterHPBar_Boss.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1610,6 +1616,9 @@
     </Filter>
     <Filter Include="02. GameObject\01. UI\MonsterHPBar\Elite">
       <UniqueIdentifier>{0080c814-ce65-4f28-a417-282f097ae2bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\MonsterHPBar\Boss">
+      <UniqueIdentifier>{7f2bc015-f8e3-43fa-ae95-787d7300b0d1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

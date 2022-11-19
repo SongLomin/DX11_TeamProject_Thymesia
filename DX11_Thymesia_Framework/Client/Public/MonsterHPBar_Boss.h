@@ -1,14 +1,11 @@
 #pragma once
 #include "MonsterHPBar_Base.h"
 
-
-BEGIN(Client)
-
-class CMonsterHPBar_Elite : public CMonsterHPBar_Base
+class CMonsterHPBar_Boss : public CMonsterHPBar_Base
 {
 public:
-	GAMECLASS_H(CMonsterHPBar_Elite)
-	CLONE_H(CMonsterHPBar_Elite, CGameObject)
+	GAMECLASS_H(CMonsterHPBar_Boss)
+	CLONE_H(CMonsterHPBar_Boss, CGameObject)
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -18,11 +15,13 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+public:
+	virtual void	Set_Stun(bool _bStun);
+
 protected:
 	virtual void	Set_ChildPosFromThis();
 
 private:
-	weak_ptr<CCustomUI>		m_pEliteBorder;
+	
 };
-END
 

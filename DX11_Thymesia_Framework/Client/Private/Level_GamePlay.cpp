@@ -11,6 +11,7 @@
 #include "UI_PauseMenu.h"
 #include "MonsterHPBar_Base.h"
 #include "MonsterHPBar_Elite.h"
+#include "MonsterHPBar_Boss.h"
 CLevel_GamePlay::CLevel_GamePlay()
 	//: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
@@ -196,6 +197,7 @@ void CLevel_GamePlay::SetUp_UI()
 	tDesc.fDepth = 0.f;
 
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Elite>(LEVEL_STATIC, &tDesc));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Boss>(LEVEL_STATIC, &tDesc));
 
 }
 
