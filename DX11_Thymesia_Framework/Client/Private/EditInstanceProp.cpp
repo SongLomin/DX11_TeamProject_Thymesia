@@ -52,6 +52,9 @@ HRESULT CEditInstanceProp::Initialize(void* pArg)
 
 	m_ModelList = GET_SINGLE(CGameInstance)->Get_AllNoneAnimModelKeys();
 
+	ZeroMemory(&m_PickingDesc, sizeof(INSTANCE_MESH_DESC));
+	m_PickingDesc.vScale = _float3(1.f, 1.f, 1.f);
+
 	return S_OK;
 }
 
@@ -126,9 +129,7 @@ HRESULT CEditInstanceProp::SetUp_ShaderResource()
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
 		if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-		{
-			DEBUG_ASSERT;
-		}
+			return E_FAIL;
 
 		if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 		{
@@ -240,8 +241,10 @@ void CEditInstanceProp::Load_FromJson(const json& In_Json)
 
 		if ("ModelCom" == szKey)
 		{
-			string szModelTag = iter.value();
+			m_szSelectModelName = iter.value();
+			m_pInstanceModelCom.lock()->Init_Model(m_szSelectModelName.c_str());
 		}
+
 		else if ("PropDesc" == szKey)
 		{
 			json Desc = iter.value();
@@ -263,6 +266,8 @@ void CEditInstanceProp::Load_FromJson(const json& In_Json)
 			}
 		}
 	}
+
+	m_pInstanceModelCom.lock()->Init_Instance((_uint)m_pPropInfos.size());
 }
 
 void CEditInstanceProp::OnEventMessage(_uint iArg)
@@ -329,27 +334,24 @@ void CEditInstanceProp::View_SelectModelComponent()
 
 	if (ImGui::BeginListBox("##Model", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
 	{
-		_uint iIndex = 0;
-
-		for (auto& iter : m_ModelList)
+		for (_uint i = 0; i < m_ModelList.size(); ++i)
 		{
 			const bool is_selected = (iSelect_NonAnimModel == iPropMaxSzie);
 
 			if (0 < strlen(szFindModelTag))
 			{
-				if (string::npos == iter.find(szFindModelTag))
+				if (string::npos == m_ModelList[i].find(szFindModelTag))
 					continue;
 			}
 
-			if (ImGui::Selectable(iter.c_str(), is_selected))
+			if (ImGui::Selectable(m_ModelList[i].c_str(), is_selected))
 			{
-				iSelect_NonAnimModel = iIndex;
+				iSelect_NonAnimModel = i;
 			}
 
 			if (is_selected)
 				ImGui::SetItemDefaultFocus();
 
-			++iIndex;
 		}
 
 		ImGui::EndListBox();
@@ -370,44 +372,35 @@ void CEditInstanceProp::View_PickingInfo()
 {
 	RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
 
-	if (ImGui::TreeNode("[ Mouse Info ] "))
+	ImGui::Text("");
+
+	_float4 vOutPos;
+	ZeroMemory(&vOutPos, sizeof(_float4));
+	vOutPos.y = m_PickingDesc.vTarnslation.y;
+
+	_bool bCreate = SMath::Is_Picked(MouseRayInWorldSpace, &vOutPos);
+	vOutPos.y = m_PickingDesc.vTarnslation.y;
+
+	ImGui::Text("");
+
+	if (!m_pPropInfos.empty() && 0 <= m_iPickingIndex && (_uint)m_pPropInfos.size() > m_iPickingIndex)
 	{
-		ImGui::DragFloat3("##Pos", &MouseRayInWorldSpace.vOrigin.x, 1.f);
-		ImGui::SameLine();
-		ImGui::Text("Mouse Pos");
-
-		ImGui::DragFloat3("##Dir", &MouseRayInWorldSpace.vDirection.x, 1.f);
-		ImGui::SameLine();
-		ImGui::Text("Mouse Dir");
-
-		ImGui::TreePop();
+		m_PickingDesc.vTarnslation.y = m_pPropInfos[m_iPickingIndex].vTarnslation.y;
 	}
 
-	ImGui::Text("");
-
-	SMath::Is_Picked(MouseRayInWorldSpace, &m_vPickingPos);
-
-	ImGui::Text("");
-
-	m_vPickingPos.y = m_fPosY;
-
-	ImGui::Text("[ Picking Info ] ");
-	ImGui::DragFloat4("##PickPos", &m_vPickingPos.x, 1.f);
-	ImGui::SameLine();
-	ImGui::Text("Pick Pos");
+	ImGui::DragFloat3("MousePos", &vOutPos.x, 1.f);
+	ImGui::DragFloat3("PickPos" , &m_PickingDesc.vTarnslation.x, 1.f);
 
 	if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) && KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
 	{	
-		if ("" == m_szSelectModelName)
+		if ("" == m_szSelectModelName || !bCreate)
 			return;
 
-		INSTANCE_MESH_DESC	Desc;
-		Desc.vRotation		= _float3(0.f, 0.f, 0.f);
-		Desc.vScale			= _float3(1.f, 1.f, 1.f);
-		Desc.vTarnslation	= _float3(m_vPickingPos.x, m_vPickingPos.y, m_vPickingPos.z);
+		memcpy(&m_PickingDesc.vTarnslation, &vOutPos, sizeof(_float3));
 
-		m_pPropInfos.push_back(Desc);
+		m_pPropInfos.push_back(m_PickingDesc);
 		m_pInstanceModelCom.lock()->Init_Instance((_uint)m_pPropInfos.size());
+		m_iPickingIndex = (_uint)m_pPropInfos.size() - 1;
 	}
 
 	ImGui::Text("");
@@ -439,7 +432,7 @@ void CEditInstanceProp::View_Picking_Prop()
 			if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, VtxInfo, WorlMatrix))
 			{
 				m_iPickingIndex = iIndex;
-				m_fPosY = m_pPropInfos[iIndex].vTarnslation.y;
+				m_PickingDesc   = m_pPropInfos[iIndex];
 			}
 
 			++iIndex;
@@ -468,10 +461,53 @@ void CEditInstanceProp::View_Picking_List()
 
 		ImGui::EndListBox();
 	}
+
+	if (ImGui::Button("Create", ImVec2(100.f, 25.f)))
+	{
+		if ("" == m_szSelectModelName)
+			return;
+
+		m_pPropInfos.push_back(m_PickingDesc);
+		m_pInstanceModelCom.lock()->Init_Instance((_uint)m_pPropInfos.size());
+		m_iPickingIndex = (_uint)m_pPropInfos.size() - 1;
+	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Delete", ImVec2(100.f, 25.f)))
+	{
+		if (m_pPropInfos.empty() || 0 > m_iPickingIndex || m_pPropInfos.size() <= m_iPickingIndex)
+			return;
+
+		auto& iter = m_pPropInfos.begin() + m_iPickingIndex;
+
+		if (m_pPropInfos.end() != iter)
+		{
+			m_pPropInfos.erase(iter);
+			m_pInstanceModelCom.lock()->Init_Instance((_uint)m_pPropInfos.size());
+		}
+	}
 }
 
 void CEditInstanceProp::View_Picking_Option()
 {
+	if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
+		m_iOption = 0;
+	if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
+		m_iOption = 1;
+	if (KEY_INPUT(KEY::NUM3, KEY_STATE::TAP))
+		m_iOption = 2;
+
+	static char* szOptionTag[] =
+	{
+		"<< Act X >>",
+		"<< Act Y >>",
+		"<< Act Z >>"
+	};
+
+	ImGui::Text("");
+	ImGui::Text(string("Select Option : " + string(szOptionTag[m_iOption])).c_str());
+
 	if (m_pPropInfos.empty() || 0 > m_iPickingIndex || m_pPropInfos.size() <= m_iPickingIndex)
 		return;
 
@@ -479,38 +515,67 @@ void CEditInstanceProp::View_Picking_Option()
 
 	_float4 vMouseDir;
 	ZeroMemory(&vMouseDir, sizeof(_float4));
+	vMouseDir.y = m_PickingDesc.vTarnslation.y;
 
 	if (!SMath::Is_Picked(MouseRayInWorldSpace, &vMouseDir))
 		return;
 
-	// Z : 이동, X : 로테이션, 마우스 휠 : y축 이동
-	// C : y 값 변경
-
+	// Z : 터레인 이동
+	// X : 회전(옵션 활성화)
+	// C : 수동 이동(옵션 활성화)
 
 	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
 	{
-		if (KEY_INPUT(KEY::X, KEY_STATE::HOLD))
-		{
-			_long		MouseMove = 0;
-			if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_X))
-			{
-				m_pPropInfos[m_iPickingIndex].vRotation.y += 0.01f * MouseMove;
-			}
-		}
-
-		else if (KEY_INPUT(KEY::Z, KEY_STATE::HOLD))
+		if (KEY_INPUT(KEY::Z, KEY_STATE::HOLD))
 		{
 			_float3 vObjPos = m_pPropInfos[m_iPickingIndex].vTarnslation;
 			m_pPropInfos[m_iPickingIndex].vTarnslation = _float3(vMouseDir.x, vObjPos.y, vMouseDir.z);
 		}
 
+		else if (KEY_INPUT(KEY::X, KEY_STATE::HOLD))
+		{
+			_long		MouseMove = 0;			
+			if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_X))
+			{
+				switch (m_iOption)
+				{
+					case 0 : m_pPropInfos[m_iPickingIndex].vRotation.x += 0.01f * MouseMove; break;
+					case 1 : m_pPropInfos[m_iPickingIndex].vRotation.y += 0.01f * MouseMove; break;
+					case 2 : m_pPropInfos[m_iPickingIndex].vRotation.z += 0.01f * MouseMove; break;
+				}
+			}
+		}
+
 		else if (KEY_INPUT(KEY::C, KEY_STATE::HOLD))
 		{
-			_long		MouseMove = 0;
-			if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
+			switch (m_iOption)
 			{
-				m_pPropInfos[m_iPickingIndex].vTarnslation.y -= 0.01f * MouseMove;
-				m_fPosY = m_pPropInfos[m_iPickingIndex].vTarnslation.y;
+				case 0:
+				case 2:
+				{
+					_long		MouseMoveX = 0;
+					if (MouseMoveX = GAMEINSTANCE->Get_DIMouseMoveState(MMS_X))
+					{
+						m_pPropInfos[m_iPickingIndex].vTarnslation.x += 0.01f * MouseMoveX;
+					}
+
+					_long		MouseMoveZ = 0;
+					if (MouseMoveZ = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
+					{
+						m_pPropInfos[m_iPickingIndex].vTarnslation.z -= 0.01f * MouseMoveZ;
+					}
+				}
+				break;
+
+				case 1:
+				{
+					_long		MouseMove = 0;
+					if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
+					{
+						m_pPropInfos[m_iPickingIndex].vTarnslation.y -= 0.01f * MouseMove;
+					}
+				}
+				break;
 			}
 		}
 	}
@@ -518,6 +583,8 @@ void CEditInstanceProp::View_Picking_Option()
 
 void CEditInstanceProp::View_SelectTransformInfo()
 {
+	ImGui::Separator();
+
 	if (m_pPropInfos.empty() || 0 > m_iPickingIndex || m_pPropInfos.size() <= m_iPickingIndex)
 		return;
 
@@ -534,6 +601,7 @@ void CEditInstanceProp::View_SelectTransformInfo()
 	ImGui::DragFloat3("##Scale", &m_pPropInfos[m_iPickingIndex].vScale.x, 0.1f);
 
 	ImGui::Text("");
+	ImGui::Separator();
 }
 
 void CEditInstanceProp::View_SelectJson()

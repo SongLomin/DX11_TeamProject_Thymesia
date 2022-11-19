@@ -4,6 +4,7 @@
 #include "Client_GameObjects.h"
 
 #include "Model.h"
+#include "VIBuffer_Model_Instance.h"
 #include "Transform.h"
 
 IMPLEMENT_SINGLETON(CWindow_HierarchyView)
@@ -53,10 +54,15 @@ HRESULT CWindow_HierarchyView::Render()
 
 	for (auto& elem : m_pGameObjects)
 	{
-		string szIndexedName = to_string(iIndex) + ". " + elem.TypeName;
-		
+		string szIndexedName = to_string(iIndex) + ". " + elem.TypeName.substr(elem.TypeName.find("class Client::"));
+
 		if (m_iPreSelectIndex == iIndex)
 			szIndexedName = "[ " + szIndexedName + " ]";
+
+		weak_ptr<CVIBuffer_Model_Instance> pModel = elem.pInstance.lock()->Get_Component<CVIBuffer_Model_Instance>().lock();
+
+		if (pModel.lock() && "" != pModel.lock()->Get_ModelKey())
+			szIndexedName += string("\n << : ") + pModel.lock()->Get_ModelKey() + " >>";
 
 		if (ImGui::Selectable(szIndexedName.c_str()))
 		{		
@@ -144,6 +150,19 @@ void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
 		
 		TempDesc.TypeName = Elem_GameObject["Name"];
 		TempDesc.HashCode = Elem_GameObject["Hash"].get<nlohmann::json::number_unsigned_t>();
+
+		if (typeid(CGround).hash_code() == TempDesc.HashCode)
+		{
+			TempDesc.TypeName = typeid(CEditGround).name();
+			TempDesc.HashCode = typeid(CEditGround).hash_code();
+		}
+
+		else if (typeid(CStatic_Instancing_Prop).hash_code() == TempDesc.HashCode)
+		{
+			TempDesc.TypeName = typeid(CEditInstanceProp).name();
+			TempDesc.HashCode = typeid(CEditInstanceProp).hash_code();
+		}
+
 		Call_Add_GameObject_Internal(TempDesc.HashCode, TempDesc.TypeName.c_str());
 		m_pGameObjects.back().pInstance.lock()->Set_Enable(Elem_GameObject["Setting"]["Enable"]);
 		m_pGameObjects.back().pInstance.lock()->Load_FromJson(Elem_GameObject);

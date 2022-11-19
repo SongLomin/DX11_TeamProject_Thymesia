@@ -153,11 +153,11 @@ void CVIBuffer_Model_Instance::Create_Materials(const char* pModelFilePath)
 HRESULT CVIBuffer_Model_Instance::Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eActorType)
 {
 	if (iMeshContainerIndex >= m_iNumMeshContainers)
-		assert(false);
+		return E_FAIL;
 
 	_uint		iMaterialIndex = m_MeshContainers[iMeshContainerIndex].lock()->Get_MaterialIndex();
 	if (iMaterialIndex >= m_iNumMaterials)
-		assert(false);
+		return E_FAIL;
 
 	if (!m_Materials[iMaterialIndex].pTextures[eActorType].lock().get())
 	{

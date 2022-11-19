@@ -87,8 +87,7 @@ HRESULT CStatic_Instancing_Prop::Render()
 
 	// 피킹 오브젝트
 
-
-	CallBack_Render();
+	CGameObject::Render();
 
     return S_OK;
 }
@@ -112,7 +111,7 @@ HRESULT CStatic_Instancing_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix,
 
 void CStatic_Instancing_Prop::Write_Json(json& Out_Json)
 {
-		json PropInfo;
+	json PropInfo;
 
 	_uint iIndex = 0;
 	for (auto& iter : m_pPropInfos)

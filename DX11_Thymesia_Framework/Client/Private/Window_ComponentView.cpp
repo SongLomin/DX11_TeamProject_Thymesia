@@ -87,6 +87,11 @@ void CWindow_ComponentView::Draw_Components()
 	static _bool bSelect_ActivateHotkey  = false;
 	static _bool bSelect_ActivatePicking = false;
 
+	if (pTransformCom.lock().get() && m_tPickedGameObjectDesc.HashCode == typeid(CCamera_Free).hash_code())
+	{
+		View_FreeCamera(pTransformCom);
+	}
+
 	if (pTransformCom.lock().get() && (typeid(CEditGroupProp).hash_code() != m_tPickedGameObjectDesc.HashCode && typeid(CEditInstanceProp).hash_code() != m_tPickedGameObjectDesc.HashCode))
 	{
 		if (bSelect_ActivatePicking)
@@ -292,6 +297,37 @@ void CWindow_ComponentView::TransformComponent_PickingAction(weak_ptr<CTransform
 			}
 		}
 	}
+}
+
+void CWindow_ComponentView::View_FreeCamera(weak_ptr<CTransform> In_pTransform)
+{
+	if (ImGui::Button("Look + X", ImVec2(100.f, 25.f)))
+	{
+		In_pTransform.lock()->Set_Look(XMVectorSet(1.f, 0.f, 0.f, 0.f));
+	}
+	ImGui::SameLine();
+
+	if (ImGui::Button("Look + Z", ImVec2(100.f, 25.f)))
+	{
+		In_pTransform.lock()->Set_Look(XMVectorSet(0.f, 0.f, 1.f, 0.f));
+		ImGui::Separator();
+	}
+
+
+
+	if (ImGui::Button("Look - X", ImVec2(100.f, 25.f)))
+	{
+		In_pTransform.lock()->Set_Look(XMVectorSet(-1.f, 0.f, 0.f, 0.f));
+	}
+	ImGui::SameLine();
+
+	if (ImGui::Button("Look - Z", ImVec2(100.f, 25.f)))
+	{
+		In_pTransform.lock()->Set_Look(XMVectorSet(0.f, 0.f, -1.f, 0.f));
+	}
+
+	ImGui::Separator();
+	ImGui::Text("");
 }
 
 void CWindow_ComponentView::Free()

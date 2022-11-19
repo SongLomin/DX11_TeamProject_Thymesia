@@ -417,7 +417,10 @@ void CEditGroupProp::View_SelectModelComponent()
 			if (0 < strlen(szFindModelTag))
 			{
 				if (string::npos == iter.find(szFindModelTag))
+				{
+					++iIndex;
 					continue;
+				}
 			}
 
 			if (ImGui::Selectable(iter.c_str(), is_selected))
@@ -734,7 +737,10 @@ void CEditGroupProp::View_SelectJson()
 			if (0 < strlen(szJsonFileTag))
 			{
 				if (string::npos == m_JsonList[iIndex].find(szJsonFileTag))
+				{
+					++iIndex;
 					continue;
+				}
 			}
 
 			if (ImGui::Selectable(iter.c_str(), is_selected))
@@ -803,4 +809,8 @@ void CEditGroupProp::Pick_Prop()
 
 void CEditGroupProp::Free()
 {
+	for (auto& iter : m_PropList)
+	{
+		iter.pProp.lock()->Set_Dead();
+	}
 }

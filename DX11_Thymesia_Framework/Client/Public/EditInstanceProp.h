@@ -68,10 +68,10 @@ private:
     weak_ptr<CShader>                   m_pSelect_ShaderCom;
                                               
     _int                m_iPickingIndex       = -1;
+    _uint               m_iOption             = 0;
 
     string              m_szSelectModelName   = "";
-    _float4             m_vPickingPos         = _float4(0.f, 0.f, 0.f, 0.f);
-    _float              m_fPosY               = 0.f;
+    INSTANCE_MESH_DESC  m_PickingDesc;
     _uint               m_iPassIndex          = 0;
 
     RESOURCE_LIST       m_ModelList;

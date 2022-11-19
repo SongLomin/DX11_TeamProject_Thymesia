@@ -341,7 +341,6 @@ void CImGui_Manager::Write_Json(const string& In_szPath)
 
 	if (FAILED(CJson_Utility::Save_Json(In_szPath.c_str(), NewJson)))
 		DEBUG_ASSERT;
-
 }
 
 void CImGui_Manager::Load_FromJson(const string& In_szPath)
