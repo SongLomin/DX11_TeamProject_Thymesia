@@ -523,7 +523,7 @@ void CEditInstanceProp::View_Picking_List()
 		if (m_pPropInfos.empty() || 0 > m_iPickingIndex || m_pPropInfos.size() <= m_iPickingIndex)
 			return;
 
-		auto& iter = m_pPropInfos.begin() + m_iPickingIndex;
+		auto iter = m_pPropInfos.begin() + m_iPickingIndex;
 
 		if (m_pPropInfos.end() != iter)
 		{
@@ -542,7 +542,7 @@ void CEditInstanceProp::View_Picking_Option()
 	if (KEY_INPUT(KEY::NUM3, KEY_STATE::TAP))
 		m_iOption = 2;
 
-	static char* szOptionTag[] =
+	static const char* szOptionTag[] =
 	{
 		"<< Act X >>",
 		"<< Act Y >>",

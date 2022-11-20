@@ -41,11 +41,13 @@ HRESULT CLevel_GamePlay::Initialize()
 		m_szDefaultJsonPath + "Stage1.json", 
 		LEVEL::LEVEL_GAMEPLAY);
 
+#ifdef _STAGE_2_
 	future<void> ThreadResult2 = async(launch::async,
 		bind(&CLevel_GamePlay::Load_FromJson, this,
 			placeholders::_1, placeholders::_2),
 		m_szDefaultJsonPath + "Stage2.json",
 		LEVEL::LEVEL_GAMEPLAY);
+#endif // _STAGE_2_
 
 	//Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_GAMEPLAY);
 	CCamera::CAMERADESC			CameraDesc;
@@ -64,6 +66,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
 	
 	//TODO 야매에요
+#ifdef _STAGE_1_MONSTER_
 	CMonster::STATE_LINK_DESC CCC;
 
 	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
@@ -86,7 +89,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	CCC.vYame.x = 10.f;
 	CCC.vYame.z = 20.f;
 	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
-
+#endif // _STAGE_1_MONSTER_
 	
 	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
 	//CCC.eNorMonType = NORMONSTERTYPE::KNIFEWOMAN;
@@ -148,8 +151,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
 	ThreadResult.get();
+#ifdef _STAGE_2_
 	ThreadResult2.get();
-
+#endif // _STAGE_2_
 
 	return S_OK;
 }

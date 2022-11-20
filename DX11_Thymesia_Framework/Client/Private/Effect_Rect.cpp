@@ -762,7 +762,8 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 		{
 			m_tOriginalParticleDescs[i].vTargetSpeed = SMath::Add_Float3(m_tOriginalParticleDescs[i].vCurrentTranslation, m_tOriginalParticleDescs[i].vOffsetPosition);
 
-			_vector vGoalOffsetPosition = XMLoadFloat3(&SMath::vRandom(m_tEffectParticleDesc.vMinGoalOffsetPosition, m_tEffectParticleDesc.vMaxGoalOffsetPosition));
+			_float3 vGoalPos = SMath::vRandom(m_tEffectParticleDesc.vMinGoalOffsetPosition, m_tEffectParticleDesc.vMaxGoalOffsetPosition);
+			_vector vGoalOffsetPosition = XMLoadFloat3(&vGoalPos);
 			vGoalOffsetPosition = XMVectorSetX(vGoalOffsetPosition, XMVectorGetX(vGoalOffsetPosition) * m_tOriginalParticleDescs[i].vCurrentRotation.x);
 			vGoalOffsetPosition = XMVectorSetY(vGoalOffsetPosition, XMVectorGetY(vGoalOffsetPosition) * m_tOriginalParticleDescs[i].vCurrentRotation.y);
 			vGoalOffsetPosition = XMVectorSetZ(vGoalOffsetPosition, XMVectorGetZ(vGoalOffsetPosition) * m_tOriginalParticleDescs[i].vCurrentRotation.z);
