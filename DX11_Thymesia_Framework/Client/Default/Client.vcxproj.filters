@@ -1256,6 +1256,7 @@
       <Filter>02. GameObject\01. UI\MonsterHPBar\Elite</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\MonsterHPBar_Boss.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

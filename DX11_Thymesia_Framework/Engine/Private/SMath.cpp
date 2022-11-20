@@ -572,10 +572,10 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked(RAY _Ray, _float4* _pOutPos)
 
 	_float3 vPos[4] =
 	{
-		_float3(   0.f, 0.f, 9999.f),
-		_float3(9999.f, 0.f, 9999.f),
-		_float3(9999.f, 0.f, 0.f),
-		_float3(   0.f, 0.f, 0.f)
+		_float3(-99999.f, 0.f,  99999.f),
+		_float3( 99999.f, 0.f,  99999.f),
+		_float3( 99999.f, 0.f, -99999.f),
+		_float3(-99999.f, 0.f, -99999.f)
 	};
 
 	_uint3 iIndex[2] =

@@ -129,6 +129,9 @@ HRESULT CEditGroupProp::SetUp_ShaderResource()
 	if (!m_PropList[m_iPickingIndex].pProp.lock())
 		return E_FAIL;
 
+	if (!m_bSubDraw)
+		return S_OK;
+
 	weak_ptr<CTransform>	pTransform = m_PropList[m_iPickingIndex].pProp.lock()->Get_Component<CTransform>();
 	weak_ptr<CModel>		pModel     = m_PropList[m_iPickingIndex].pProp.lock()->Get_Component<CModel>();
 
@@ -297,6 +300,33 @@ void CEditGroupProp::OnEventMessage(_uint iArg)
 		}
 		break;
 
+		case (_uint)EVENT_TYPE::ON_EDITPICKING:
+		{
+			RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+
+			for (auto& iter : m_PropList)
+			{
+				weak_ptr<CModel>		pModelCom     = iter.pProp.lock()->Get_Component<CModel>();
+				weak_ptr<CTransform>	pTransformCom = iter.pProp.lock()->Get_Component<CTransform>();
+
+				if (!pModelCom.lock().get() || !pTransformCom.lock().get())
+					continue;
+
+				MESH_VTX_INFO Info = pModelCom.lock()->Get_ModelData().lock()->VertexInfo;
+
+				if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, Info, pTransformCom.lock()->Get_WorldMatrix()))
+				{
+					CWindow_HierarchyView::GAMEOBJECT_DESC Desc;
+					Desc.HashCode	= iter.hash;
+					Desc.pInstance	= iter.pProp;
+					Desc.TypeName	= iter.szName;
+
+					GET_SINGLE(CWindow_HierarchyView)->CallBack_ListClick(Desc);
+				}
+			}
+		}
+		break;
+
 		case (_uint)EVENT_TYPE::ON_EDITDRAW_SUB:
 		{
 			if (!m_bSubDraw)
@@ -388,7 +418,6 @@ void CEditGroupProp::View_SelectPropObjectType()
 		m_szSelectPropType = items_PropType[iSelect_PropType];
 	}
 
-
 	ImGui::Checkbox("Show Groupe", &m_bSelect_ShowGroup);
 
 	ImGui::Text("");
@@ -415,7 +444,10 @@ void CEditGroupProp::View_SelectModelComponent()
 			if (0 < strlen(szFindModelTag))
 			{
 				if (string::npos == iter.find(szFindModelTag))
+				{
+					++iIndex;
 					continue;
+				}
 			}
 
 			if (ImGui::Selectable(iter.c_str(), is_selected))
@@ -488,7 +520,41 @@ void CEditGroupProp::View_PickingInfo()
 		if ("" == m_szSelectModelName)
 			return;
 
-		
+		if ("CStatic_Prop" == m_szSelectPropType)
+		{
+			PROPS_DESC Desc;
+			Desc.pProp	= GAMEINSTANCE->Add_GameObject<CStatic_Prop>(m_CreatedLevel);
+			Desc.hash	= typeid(CStatic_Prop).hash_code();
+			Desc.szName	= typeid(CStatic_Prop).name();
+
+			Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
+			Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
+			m_PropList.push_back(Desc);
+		}
+
+		else if ("CDynamic_Prop" == m_szSelectPropType)
+		{
+			PROPS_DESC Desc;
+			Desc.pProp	= GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(m_CreatedLevel);
+			Desc.hash	= typeid(CDynamic_Prop).hash_code();
+			Desc.szName	= typeid(CDynamic_Prop).name();
+
+			Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
+			Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
+			m_PropList.push_back(Desc);
+		}
+
+		else if ("CLight_Prop" == m_szSelectPropType)
+		{
+			PROPS_DESC Desc;
+			//Desc.pProp	= GAMEINSTANCE->Add_GameObject<CLight_Prop>(m_CreatedLevel);
+			Desc.hash	= typeid(CLight_Prop).hash_code();
+			Desc.szName	= typeid(CLight_Prop).name();
+
+			Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
+			Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
+			m_PropList.push_back(Desc);
+		}
 	}
 
 	ImGui::Text("");
@@ -554,6 +620,7 @@ void CEditGroupProp::View_Picking_Option()
 		return;
 
 	RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+
 	_float4 vMouseDir;
 	ZeroMemory(&vMouseDir, sizeof(_float4));
 
@@ -697,7 +764,10 @@ void CEditGroupProp::View_SelectJson()
 			if (0 < strlen(szJsonFileTag))
 			{
 				if (string::npos == m_JsonList[iIndex].find(szJsonFileTag))
+				{
+					++iIndex;
 					continue;
+				}
 			}
 
 			if (ImGui::Selectable(iter.c_str(), is_selected))
@@ -766,4 +836,8 @@ void CEditGroupProp::Pick_Prop()
 
 void CEditGroupProp::Free()
 {
+	for (auto& iter : m_PropList)
+	{
+		iter.pProp.lock()->Set_Dead();
+	}
 }

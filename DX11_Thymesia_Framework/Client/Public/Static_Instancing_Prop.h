@@ -24,10 +24,14 @@ public:
     virtual HRESULT Render() override;
     virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix);
 
-private:
-    typedef vector<PARTICLE_DESC>    PROP_INFO;
+public:
+    virtual void Write_Json(json& Out_Json) override;
+    virtual void Load_FromJson(const json& In_Json) override;
 
-    weak_ptr<CVIBuffer_Model_Instance>  m_pInstancingModel;
+private:
+    typedef vector<INSTANCE_MESH_DESC>    PROP_INFO;
+
+    weak_ptr<CVIBuffer_Model_Instance>  m_pInstanceModelCom;
     PROP_INFO                           m_pPropInfos;
 
 public:

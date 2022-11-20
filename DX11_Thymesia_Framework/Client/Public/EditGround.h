@@ -79,6 +79,7 @@ private:
     void    Bake_FilterTexture();
     void    Load_FilterTexture();
 
+public:
     virtual void Write_Json(json& Out_Json) override;
     virtual void Load_FromJson(const json& In_Json) override;
 
@@ -86,9 +87,9 @@ public:
     static void    Load_AllMeshInfo();
     _bool          Load_AddMeshInfo(string _szFileName);
     _bool          Load_AddTextureInfo(string _szFileName);
-
+    void           Load_FilterTexture_FromJson(string _szFileName);
 public:
-    virtual void   OnEventMessage(_uint iArg) override;
+    virtual void   OnEventMessage(_uint iArg) override; 
 
 private:
     typedef map<string, TEXTURES_INFO>  TEXTURES;

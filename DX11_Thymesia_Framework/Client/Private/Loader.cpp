@@ -106,6 +106,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CStatic_Prop>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CLight_Prop>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CGround>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CStatic_Instancing_Prop>();
 
 #pragma endregion
 
@@ -288,14 +289,10 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	
 	Load_AllDiffuseTexture();
 
-	
 	// TODO : For. Ground Texture : (AN) 임시 텍스쳐이므로 나중에 삭제하기, GroundTexture로 필요한곳에 사용할 예정임
-	Load_AllParticleInPath_Recursive("../Bin/GroundInfo/Texture/");
-	Load_AllParticleInPath_Recursive("../Bin/GroundInfo/Filter/");
+	Load_AllTexture("../Bin/GroundInfo/Texture/", MEMORY_TYPE::MEMORY_STATIC);
+	Load_AllTexture("../Bin/GroundInfo/Filter/" , MEMORY_TYPE::MEMORY_STATIC);
 	
-	// TODO : For. MapTool Test : (AN) 리소스 최대 메모리 사용량 확인용
-	//Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Main/"  , MEMORY_TYPE::MEMORY_STATIC);
-	//Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Sub/"   , MEMORY_TYPE::MEMORY_STATIC);
 	
 #pragma endregion
 	
@@ -423,6 +420,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	m_isFinished = true;
 
 
+	// TODO : 메쉬 생성용 나중에 삭제하시오 ( An )
+	Load_AllMeshes("../Bin/Resources/Meshes/Temp/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+
 	return S_OK;
 }
 
@@ -461,9 +461,11 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	
 	Load_AllEffectMesh();
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Main/", MEMORY_TYPE::MEMORY_STATIC);
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Sub/", MEMORY_TYPE::MEMORY_STATIC);
-	
+
+	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/"         , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Binary/"      , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/GroundInfo/Mesh/"                       , MODEL_TYPE::GROUND , MEMORY_TYPE::MEMORY_DYNAMIC);
 
 #pragma endregion
 
@@ -563,31 +565,23 @@ HRESULT CLoader::Loading_ForEditLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 
-	//GAMEINSTANCE->Clear();
 
-	//Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/", MEMORY_TYPE::MEMORY_STATIC);
-
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Main/"  , MEMORY_TYPE::MEMORY_STATIC);
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Sub/"   , MEMORY_TYPE::MEMORY_STATIC);
-
-	CEditGround::Load_AllMeshInfo();
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
-	//Load_AllParticleInPath_Recursive("../Bin/Resources/Textures/Ground/");
-
-	//GAMEINSTANCE->Load_Textures("Grass", TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
 
-	_matrix			TransformMatrix;
-	//TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f));
-	//GAMEINSTANCE->Load_Model("ForkLift", "../Bin/Resources/Meshes/ForkLift/ForkLift.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/"           , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Binary/"        , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/"  , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/"  , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/GroundInfo/Mesh/"						 , MODEL_TYPE::GROUND , MEMORY_TYPE::MEMORY_DYNAMIC);
 
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
 
-	// TODO : Turn off temporarily for Light_Prop
 
 	m_isFinished = true;
 
@@ -604,7 +598,6 @@ void CLoader::Loading_ForEffectGroup(const char* In_Path, const _uint& In_LevelI
 
 void CLoader::Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex)
 {
-
 	fs::directory_iterator itr(In_FolderPath);
 
 	while (itr != fs::end(itr)) {
@@ -758,7 +751,7 @@ void CLoader::Load_AllNaviMesh()
 	
 }
 
-void CLoader::Load_AllMeshes(const filesystem::path& In_Path, const MEMORY_TYPE& In_eMemoryType)
+void CLoader::Load_AllMeshes(const filesystem::path& In_Path, MODEL_TYPE In_eModelType, const MEMORY_TYPE& In_eMemoryType)
 {
 	if (!In_Path.filename().extension().string().empty())
 		return;
@@ -779,19 +772,41 @@ void CLoader::Load_AllMeshes(const filesystem::path& In_Path, const MEMORY_TYPE&
 
 		if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
 		{
-			#ifdef _DEBUG_COUT_
-		cout << szFileName << endl;
-			#endif
-			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixScaling(0.01f, 0.01f, 0.01f), In_eMemoryType);
+			cout << "Load_AllMeshes() : " << szFileName << endl;
+			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), In_eModelType, XMMatrixScaling(0.01f, 0.01f, 0.01f), In_eMemoryType);
 		}
 
 		else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0 || strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
 		{
-			#ifdef _DEBUG_COUT_
-		cout << szFileName << endl;
-			#endif
-			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixScaling(0.01f, 0.01f, 0.01f), In_eMemoryType);
+			cout << "Load_AllMeshes() : " << szFileName << endl;
+			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), In_eModelType, XMMatrixScaling(0.01f, 0.01f, 0.01f), In_eMemoryType);
 		}
+
+		itr++;
+	}
+}
+
+void CLoader::Load_AllTexture(const filesystem::path& In_Path, const MEMORY_TYPE& In_eMemoryType)
+{
+	if (!In_Path.filename().extension().string().empty())
+		return;
+
+	fs::directory_iterator itr(In_Path);
+	tstring szPath;
+	string szFileName;
+
+	while (itr != fs::end(itr))
+	{
+		const fs::directory_entry& entry = *itr;
+
+		szFileName = entry.path().filename().string();
+		szFileName = szFileName.substr(0, szFileName.find("."));
+
+		std::cout << "Load_AllTexture() : " << szFileName << std::endl;
+		Load_AllTexture(entry.path(), In_eMemoryType);
+
+		szPath = entry.path().wstring();
+		GAMEINSTANCE->Load_Textures(szFileName.c_str(), szPath.c_str(), In_eMemoryType);
 
 		itr++;
 	}
