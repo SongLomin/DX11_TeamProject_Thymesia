@@ -27,23 +27,29 @@ public:
 
 
 public:
-	void			Green_Damaged(_float fRatio);
-
-	void			Set_RecoveryAlram(_bool _bRecovery);
+	void			Set_Owner(weak_ptr<CMonster> pMonster);
 	void			Reset();
 	void			FollowOwner();
-	
+	void			Set_Offset(_float3 _vOffset) { m_vOffset = _vOffset; }
+	//CallEventFuncitons
 public:
-	void			Set_Owner(weak_ptr<CMonster> pMonster);
+	void			Call_Damaged_White(_float _fRatio);
+	void			Call_Damaged_Green(_float _fRatio);
+	void			Call_RecoveryAlram();
+	void			Call_Recovery();
+	void			Call_Disable();
+	void			Call_Stun();
+	void			Call_Restart();
+
+protected:
+	virtual void			Green_Damaged(_float fRatio);
+	virtual void			Set_RecoveryAlram(_bool _bRecovery);
+	virtual void			Set_Stun(bool _bStun);
 
 
-
-	virtual void	Set_Stun(bool _bStun);
 protected:
 	virtual void    Add_Child(weak_ptr<CUI> pChild);
 	virtual void	Check_Track();
-
-
 
 protected:
 	virtual void	Set_ChildPosFromThis();
