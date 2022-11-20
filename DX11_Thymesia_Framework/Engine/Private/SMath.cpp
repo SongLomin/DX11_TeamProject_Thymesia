@@ -777,3 +777,13 @@ void ENGINE_DLL Engine::SMath::Convert_PxVec3FromMeshDataWithTransformMatrix(PxV
 		}
 	}
 }
+
+PxExtendedVec3 ENGINE_DLL Engine::SMath::Convert_PxExtendedVec3(FXMVECTOR In_Vector)
+{
+	return PxExtendedVec3(In_Vector.m128_f32[0], In_Vector.m128_f32[1], In_Vector.m128_f32[2]);
+}
+
+PxVec3 ENGINE_DLL Engine::SMath::Convert_PxVec3(FXMVECTOR In_Vector)
+{
+	return PxVec3(In_Vector.m128_f32[0], In_Vector.m128_f32[1], In_Vector.m128_f32[2]);
+}

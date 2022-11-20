@@ -3,6 +3,7 @@
 #include "SMath.h"
 #include <filesystem>
 #include "Client_Structs.h"
+#include "Client_Presets.h"
 
 #include "imgui.h"
 
@@ -13,6 +14,7 @@
 #define		_DEBUG_COUT_
 #define		_STAGE_2_
 #define		_STAGE_1_MONSTER_
+#define		_GENERATE_PROP_COLLIDER_ true
 #endif // _DEBUG
 
 #ifdef NDEBUG

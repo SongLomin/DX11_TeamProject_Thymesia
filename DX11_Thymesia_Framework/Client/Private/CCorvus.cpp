@@ -7,6 +7,7 @@
 #include "Corvus_DefaultDagger.h"
 #include "PhysXCollider.h"
 #include "Light_Prop.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -74,7 +75,7 @@ HRESULT CCorvus::Start()
 	
 	m_pCamera = GET_SINGLE(CGameManager)->Get_TargetCamera();
 	m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
-	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -1.5f, 0.f, 1.f));
+	//m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -1.5f, 0.f, 1.f));
 
 	return S_OK;
 }
@@ -108,16 +109,17 @@ void CCorvus::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 1.5f, 0.f, 1.f));
-	m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 1.5f, 0.f, 1.f));
+	//m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 1.5f, 0.f, 1.f));
+	//m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 1.5f, 0.f, 1.f));
+	
 }
 
 void CCorvus::Before_Render(_float fTimeDelta)
 {
 	__super::Before_Render(fTimeDelta);
 
-	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -1.5f, 0.f, 1.f));
-	m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 1.5f, 0.f, 1.f));
+	//m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -1.5f, 0.f, 1.f));
+	//m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 1.5f, 0.f, 1.f));
 }
 
 void CCorvus::Custom_Thread1(_float fTimeDelta)
@@ -190,8 +192,8 @@ void CCorvus::RootMove()
 {
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
-	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
-	m_pPhysXColliderCom.lock();
+	//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
+	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, PxControllerFilters(), nullptr, m_pTransformCom);
 }
 
 void CCorvus::OnBattleEnd()

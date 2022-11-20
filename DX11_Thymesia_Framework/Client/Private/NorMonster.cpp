@@ -32,7 +32,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 
 	memcpy(&m_tLinkStateDesc, pArg, sizeof(STATE_LINK_DESC));
 	
-
+	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom));
 	
 	switch (m_tLinkStateDesc.eNorMonType)
 	{
@@ -137,12 +137,14 @@ void CNorMonster::Tick(_float fTimeDelta)
 	case  NORMONSTERTYPE::AXEMAN:
 		_vector vMoveDirs = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 		vMoveDirs = m_pModelCom.lock()->Get_DeltaBonePosition("root");
-		m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDirs, m_pNaviMeshCom);
+		//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDirs, m_pNaviMeshCom);
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDirs, 0.f, 1.f, PxControllerFilters(), nullptr, m_pTransformCom);
 		break;
 	case  NORMONSTERTYPE::KNIFEWOMAN:	
 		_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
-		m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
+		//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, PxControllerFilters(), nullptr, m_pTransformCom);
 		break;
 	}
 

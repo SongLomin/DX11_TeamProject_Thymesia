@@ -191,6 +191,7 @@
     <ClInclude Include="..\Public\Actor.h" />
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
+    <ClInclude Include="..\Public\Preset_PhysXControllerDesc.h" />
     <ClInclude Include="..\Public\VargBossStateBase.h" />
     <ClInclude Include="..\Public\BossVarg\Varg.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack1a.h" />
@@ -407,6 +408,7 @@
     <ClCompile Include="..\Private\Actor.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Attack_Area.cpp" />
+    <ClCompile Include="..\Private\Preset_PhysXControllerDesc.cpp" />
     <ClCompile Include="..\Private\VargBossStateBase.cpp" />
     <ClCompile Include="..\Private\BossVarg\Varg.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack1a.cpp" />

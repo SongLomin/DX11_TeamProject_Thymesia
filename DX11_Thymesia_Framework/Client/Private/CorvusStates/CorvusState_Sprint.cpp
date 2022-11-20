@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "CorvusStates/CorvusStates.h"
 #include "GameManager.h"
+#include "PhysXController.h"
 
 
 GAMECLASS_C(CCorvusState_Sprint);
@@ -49,7 +50,10 @@ void CCorvusState_Sprint::Tick(_float fTimeDelta)
 	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta*1.9f);
-	m_pTransform.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta * 1.75f, m_pNaviCom);
+
+	m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * 1.75f }, 0.f, fTimeDelta, PxControllerFilters(), nullptr, m_pTransformCom);
+
+	//m_pTransform.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta * 1.75f, m_pNaviCom);
 }
 
 void CCorvusState_Sprint::LateTick(_float fTimeDelta)

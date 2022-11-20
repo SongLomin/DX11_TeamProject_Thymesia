@@ -461,9 +461,6 @@
     <ClInclude Include="..\Public\Weapon.h">
       <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Preset_PhysXColliderDesc.h">
-      <Filter>06. DataPreset</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Client_Presets.h">
       <Filter>99. Defines</Filter>
     </ClInclude>
@@ -643,6 +640,12 @@
       <Filter>02. GameObject\01. UI\MonsterHPBar\Elite</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MonsterHPBar_Boss.h" />
+    <ClInclude Include="..\Public\Preset_PhysXColliderDesc.h">
+      <Filter>06. DataPreset\00. Preset_PhysXColliderDesc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Preset_PhysXControllerDesc.h">
+      <Filter>06. DataPreset\01. Preset_PhysXControllerDesc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1088,9 +1091,6 @@
     <ClCompile Include="..\Private\Weapon.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Preset_PhysXColliderDesc.cpp">
-      <Filter>06. DataPreset</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Weapon.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon</Filter>
     </ClCompile>
@@ -1257,6 +1257,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\MonsterHPBar_Boss.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp" />
+    <ClCompile Include="..\Private\Preset_PhysXColliderDesc.cpp">
+      <Filter>06. DataPreset\00. Preset_PhysXColliderDesc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Preset_PhysXControllerDesc.cpp">
+      <Filter>06. DataPreset\01. Preset_PhysXControllerDesc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1512,9 +1518,6 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\07.State_Run">
       <UniqueIdentifier>{201fbc95-0885-488a-8f7d-3aa7927da9b6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\08.State_Sprint">
-      <UniqueIdentifier>{d0d5f95f-6dc7-4634-b30f-1a3877a02a70}</UniqueIdentifier>
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_SprintStart">
       <UniqueIdentifier>{e51b7011-ec5e-451f-8088-27a1ad224443}</UniqueIdentifier>
@@ -1956,6 +1959,12 @@
     </Filter>
     <Filter Include="02. GameObject\01. UI\MonsterHPBar\Boss">
       <UniqueIdentifier>{7f2bc015-f8e3-43fa-ae95-787d7300b0d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. DataPreset\00. Preset_PhysXColliderDesc">
+      <UniqueIdentifier>{f1a5232a-2b66-408b-83c4-1b6820d33fac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. DataPreset\01. Preset_PhysXControllerDesc">
+      <UniqueIdentifier>{76849369-cb5a-4692-9fb2-ceba837d3450}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

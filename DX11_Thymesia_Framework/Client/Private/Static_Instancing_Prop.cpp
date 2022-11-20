@@ -176,18 +176,22 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 	m_pInstanceModelCom.lock()->Init_Instance((_uint)m_pPropInfos.size());
 	m_pInstanceModelCom.lock()->Update(m_pPropInfos);
 
+#ifdef _GENERATE_PROP_COLLIDER_
 	if ((_uint)LEVEL_GAMEPLAY == m_CreatedLevel)
 	{
 #ifdef _DEBUG_COUT_
 		cout << "Create_PhysX: " << m_pInstanceModelCom.lock()->Get_ModelKey() << endl;
 #endif // _DEBUG_COUT_
 
-		m_pPhysXColliderCom.lock()->Init_ModelInstanceCollider(m_pInstanceModelCom.lock()->Get_ModelData(), m_pPropInfos, true);
+		m_pPhysXColliderCom.lock()->Init_ModelInstanceCollider(m_pInstanceModelCom.lock()->Get_ModelData(), m_pPropInfos, _GENERATE_PROP_COLLIDER_);
 		PhysXColliderDesc tDesc;
 		Preset::PhysXColliderDesc::StaticInstancingPropSetting(tDesc, m_pTransformCom);
 		m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
 		m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
 	}
+#endif // _GENERATE_PROP_COLLIDER_
+
+	
 }
 
 void CStatic_Instancing_Prop::Free()

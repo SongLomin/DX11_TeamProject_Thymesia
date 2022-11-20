@@ -14,6 +14,8 @@
 #include "Texture.h"
 #include "VIBuffer_Rect_Instance.h"
 #include "VIBuffer_Point_Instance.h"
+#include "PhysXCollider.h"
+#include "PhysXController.h"
 
 
 

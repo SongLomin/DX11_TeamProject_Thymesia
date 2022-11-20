@@ -33,6 +33,7 @@ void CStateBase::Start()
 	m_pNaviCom = m_pOwner.lock()->Get_Component<CNavigation>();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_pStatusCom = m_pOwner.lock()->Get_Component<CStatus>();
+	m_pPhysXControllerCom = m_pOwner.lock()->Get_Component<CPhysXController>();
 
 }
 
