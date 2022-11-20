@@ -11,7 +11,7 @@ void Preset::PhysXColliderDesc::PlayerBodySetting(PHYSXCOLLIDERDESC& Out_Desc, w
     Out_Desc.iFilterType = (_uint)COLLISION_LAYER::PLAYER;
     Out_Desc.fDensity = 1000.f;
     PxConvexMesh* pCylinderMesh = nullptr;
-    GAMEINSTANCE->Create_CylinderMesh(0.3f, 0.3f, 3.f, &pCylinderMesh);
+    GAMEINSTANCE->Create_CylinderMesh(0.6f, 0.6f, 3.f, &pCylinderMesh);
     Out_Desc.pConvecMesh = pCylinderMesh;
     Out_Desc.vAngles = { 0.f, 0.f, 0.f, 0.f };
     Out_Desc.vPosition = pTransform.lock()->Get_Position();
