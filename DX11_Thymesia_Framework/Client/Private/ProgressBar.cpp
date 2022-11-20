@@ -1,23 +1,23 @@
 #include "stdafx.h"
-#include "Player_ProgressBar.h"
+#include "ProgressBar.h"
 #include "CustomUI.h"
 #include "Texture.h"
 #include "Shader.h"
 #include "GameManager.h"
 #include "Engine_Defines.h"
 
-GAMECLASS_C(CPlayer_ProgressBar)
-CLONE_C(CPlayer_ProgressBar, CGameObject);
+GAMECLASS_C(CProgressBar)
+CLONE_C(CProgressBar, CGameObject);
 
 
-HRESULT CPlayer_ProgressBar::Initialize_Prototype()
+HRESULT CProgressBar::Initialize_Prototype()
 {
     __super::Initialize_Prototype();
 
     return S_OK;
 }
 
-HRESULT CPlayer_ProgressBar::Initialize(void* pArg)
+HRESULT CProgressBar::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
@@ -27,30 +27,28 @@ HRESULT CPlayer_ProgressBar::Initialize(void* pArg)
 
     GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
 
-    m_tUIDesc.fDepth = 0.f;
-
     return S_OK;
 }
 
-HRESULT CPlayer_ProgressBar::Start()
+HRESULT CProgressBar::Start()
 {
     __super::Start();
 
     return S_OK;
 }
 
-void CPlayer_ProgressBar::Tick(_float fTimeDelta)
+void CProgressBar::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 }
 
-void CPlayer_ProgressBar::LateTick(_float fTimeDelta)
+void CProgressBar::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
 
 }
 
-HRESULT CPlayer_ProgressBar::Render()
+HRESULT CProgressBar::Render()
 {
     __super::Render();
 
@@ -58,22 +56,37 @@ HRESULT CPlayer_ProgressBar::Render()
     return S_OK;
 }
 
-void CPlayer_ProgressBar::Set_Ratio(_float _fRatio)
+void CProgressBar::Set_Ratio(_float _fRatio)
 {
     m_fRatio = _fRatio;
 }
 
-void CPlayer_ProgressBar::Set_PassIndex(_uint _iPassIndex)
+void CProgressBar::Set_PassIndex(_uint _iPassIndex)
 {
     m_iPassIndex = _iPassIndex;
 }
 
-void CPlayer_ProgressBar::OnEventMessage(_uint iArg)
+void CProgressBar::Decrease_Ratio(_float fRatio)
+{
+    m_fRatio -= fRatio;
+
+    if (m_fRatio <= 0.f)
+        m_fRatio = 0.f;
+}
+
+void CProgressBar::Increase_Ratio(_float fRatio)
+{
+    m_fRatio += fRatio;
+    if (m_fRatio >= 1.f)
+        m_fRatio = 1.f;
+}
+
+void CProgressBar::OnEventMessage(_uint iArg)
 {
     __super::OnEventMessage(iArg);
 }
 
-HRESULT CPlayer_ProgressBar::SetUp_ShaderResource()
+HRESULT CProgressBar::SetUp_ShaderResource()
 {
     __super::SetUp_ShaderResource();
 
@@ -82,7 +95,7 @@ HRESULT CPlayer_ProgressBar::SetUp_ShaderResource()
     return S_OK;
 }
 
-void CPlayer_ProgressBar::Free()
+void CProgressBar::Free()
 {
     __super::Free();
 }

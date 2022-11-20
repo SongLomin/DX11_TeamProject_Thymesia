@@ -4,7 +4,7 @@
 #include "Shader.h"
 #include "GameManager.h"
 #include "Engine_Defines.h"
-#include "Player_ProgressBar.h"
+#include "ProgressBar.h"
 
 
 GAMECLASS_C(CPlayer_MPBar)
@@ -21,19 +21,19 @@ HRESULT CPlayer_MPBar::Initialize(void* pArg)
 
 	Set_UIPosition(200.f, 830.f, 300.f, 8.f);
 
-	m_pBG = GAMEINSTANCE->Add_GameObject<CPlayer_ProgressBar>(LEVEL_STATIC);
+	m_pBG = GAMEINSTANCE->Add_GameObject<CProgressBar>(LEVEL_STATIC);
 	m_pBG.lock()->Get_Component<CTexture>().lock()->Use_Texture("Player_MPBar_BG");
 	m_pBG.lock()->Set_UIPosition(m_tUIDesc.fX, m_tUIDesc.fY, m_tUIDesc.fSizeX, m_tUIDesc.fSizeY);
 
-	m_pMainBar = GAMEINSTANCE->Add_GameObject<CPlayer_ProgressBar>(LEVEL_STATIC);
+	m_pMainBar = GAMEINSTANCE->Add_GameObject<CProgressBar>(LEVEL_STATIC);
 	m_pMainBar.lock()->Get_Component<CTexture>().lock()->Use_Texture("Player_MPBar_MainBar");
 	m_pMainBar.lock()->Set_UIPosition(m_tUIDesc.fX, m_tUIDesc.fY, m_tUIDesc.fSizeX, m_tUIDesc.fSizeY - 5.f);
 
-	m_pBorderLeft = GAMEINSTANCE->Add_GameObject<CPlayer_ProgressBar>(LEVEL_STATIC);
+	m_pBorderLeft = GAMEINSTANCE->Add_GameObject<CProgressBar>(LEVEL_STATIC);
 	m_pBorderLeft.lock()->Get_Component<CTexture>().lock()->Use_Texture("Player_MPBar_Border_Left");
 	m_pBorderLeft.lock()->Set_UIPosition(m_tUIDesc.fX - (m_tUIDesc.fSizeX * 0.5f), m_tUIDesc.fY, 11.f, 8.f);
 
-	m_pBorderRight = GAMEINSTANCE->Add_GameObject<CPlayer_ProgressBar>(LEVEL_STATIC);
+	m_pBorderRight = GAMEINSTANCE->Add_GameObject<CProgressBar>(LEVEL_STATIC);
 	m_pBorderRight.lock()->Get_Component<CTexture>().lock()->Use_Texture("Player_MPBar_Border_Right");
 	m_pBorderRight.lock()->Set_UIPosition(m_tUIDesc.fX + (m_tUIDesc.fSizeX * 0.5f), m_tUIDesc.fY, 26.f, 8.f);
 

@@ -78,16 +78,16 @@ HRESULT CUI_PauseMenu_Tap_Status::Render()
 void CUI_PauseMenu_Tap_Status::Create_Font()
 {
     
-    m_szStatusText.push_back(L"레벨");
-    m_szStatusText.push_back(L"공격 데미지");
-    m_szStatusText.push_back(L"상처 수");
-    m_szStatusText.push_back(L"발톱 데미지");
-    m_szStatusText.push_back(L"체력");
-    m_szStatusText.push_back(L"에너지");
-    m_szStatusText.push_back(L"힘");
-    m_szStatusText.push_back(L"활력");
-    m_szStatusText.push_back(L"역병");
-    m_szStatusText.push_back(L"깃털");
+    m_szStatusText.push_back(L"Level");
+    m_szStatusText.push_back(L"Attack Damage");
+    m_szStatusText.push_back(L"Wound Count");
+    m_szStatusText.push_back(L"Claw Damage");
+    m_szStatusText.push_back(L"Health Point");
+    m_szStatusText.push_back(L"Energy");
+    m_szStatusText.push_back(L"Strength");
+    m_szStatusText.push_back(L"Vitality");
+    m_szStatusText.push_back(L"Plague");
+    m_szStatusText.push_back(L"Feather");
 
     UI_DESC tUIDesc;    
     for (_uint i = 0; i < TAP_STATUS_CNT; i++)
@@ -144,7 +144,7 @@ void CUI_PauseMenu_Tap_Status::Create_Font()
     m_CorvusTextInfo.bAlways = false;
     m_CorvusTextInfo.bCenterAlign = true;
     m_CorvusTextInfo.fRotation = 0.f;
-    m_CorvusTextInfo.szText = L"코르버스";
+    m_CorvusTextInfo.szText = L"Corvus";
     m_CorvusTextInfo.vColor = _float4(1.f, 1.f, 1.f, 1.f);
     m_CorvusTextInfo.vPosition = _float2(311.f, 174.f);
     m_CorvusTextInfo.vScale = _float2(1.3f, 1.3f);

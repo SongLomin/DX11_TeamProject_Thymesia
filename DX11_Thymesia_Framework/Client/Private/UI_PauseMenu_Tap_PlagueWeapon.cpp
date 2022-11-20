@@ -35,15 +35,15 @@ HRESULT CUI_PauseMenu_Tap_PlagueWeapon::Initialize(void* pArg)
 
 	m_PlagueWeaponMain = GAMEINSTANCE->Add_GameObject<CUI_PlagueWeapon>(LEVEL_STATIC, &MainDesc);
 	m_PlagueWeaponMain.lock()->Set_Texture("Tap_PlagueWeapon");
-	m_PlagueWeaponMain.lock()->Set_MainText(L"역병무기 - 1");
-	m_PlagueWeaponMain.lock()->Set_SkillInfo("SkillIcon_Axe", L"도끼");
+	m_PlagueWeaponMain.lock()->Set_MainText(L"Plague Weapon - 1");
+	m_PlagueWeaponMain.lock()->Set_SkillInfo("SkillIcon_Axe", L"Axe");
 
 	MainDesc.fY = 306.f + 172.f;
 
 	m_PlagueWeaponSub = GAMEINSTANCE->Add_GameObject<CUI_PlagueWeapon>(LEVEL_STATIC, &MainDesc);
 	m_PlagueWeaponSub.lock()->Set_Texture("Tap_PlagueWeapon");
-	m_PlagueWeaponSub.lock()->Set_MainText(L"역병무기 - 2");
-	m_PlagueWeaponSub.lock()->Set_SkillInfo("SkillIcon_Axe", L"도끼");
+	m_PlagueWeaponSub.lock()->Set_MainText(L"Plague Weapon - 2");
+	m_PlagueWeaponSub.lock()->Set_SkillInfo("SkillIcon_Axe", L"Axe");
 
 	MainDesc.fY = 306.f + 172 * 2.f;
 	MainDesc.fSizeX = 256.f;
@@ -51,8 +51,8 @@ HRESULT CUI_PauseMenu_Tap_PlagueWeapon::Initialize(void* pArg)
 
 	m_PlagueWeaponSteal = GAMEINSTANCE->Add_GameObject<CUI_PlagueWeapon>(LEVEL_STATIC, &MainDesc);
 	m_PlagueWeaponSteal.lock()->Set_Texture("HUD_PlagueWeapon_Frame_Steal");
-	m_PlagueWeaponSteal.lock()->Set_MainText(L"역병무기 - 약탈");
-	m_PlagueWeaponSteal.lock()->Set_SkillInfo("SkillIcon_Axe", L"도끼");
+	m_PlagueWeaponSteal.lock()->Set_MainText(L"PlagueWeapon - Plunder");
+	m_PlagueWeaponSteal.lock()->Set_SkillInfo("SkillIcon_Axe", L"Axe");
 	m_PlagueWeaponSteal.lock()->Set_IconSize(228.f, 228.f);
 
 	m_PlagueWeaponSteal_Decoration = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &MainDesc);
@@ -62,7 +62,7 @@ HRESULT CUI_PauseMenu_Tap_PlagueWeapon::Initialize(void* pArg)
 	m_PlagueWeaponText.bAlways = false;
 	m_PlagueWeaponText.bCenterAlign = true;
 	m_PlagueWeaponText.fRotation = 0.f;
-	m_PlagueWeaponText.szText = L"역병무기";
+	m_PlagueWeaponText.szText = L"Plague Weapon";
 	m_PlagueWeaponText.vColor = _float4(1.f, 1.f, 1.f, 1.f);
 	m_PlagueWeaponText.vPosition = _float2(800.f, 174.f);
 	m_PlagueWeaponText.vScale = _float2(1.3f, 1.3f);

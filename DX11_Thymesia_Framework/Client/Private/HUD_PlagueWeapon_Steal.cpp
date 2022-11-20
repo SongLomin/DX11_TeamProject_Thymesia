@@ -7,7 +7,7 @@
 #include "Engine_Defines.h"
 #include "HUD_Hover.h"
 #include "HUD_PlagueWeapon_Steal_Icon.h"
-#include "Player_ProgressBar.h"
+#include "ProgressBar.h"
 #include "Texture.h"
 
 
@@ -26,7 +26,7 @@ HRESULT CHUD_PlagueWeapon_Steal::Initialize(void* pArg)
     __super::Initialize(pArg);
 
 
-    m_pPlagueWeapon_Border = GAMEINSTANCE->Add_GameObject<CPlayer_ProgressBar>(LEVEL_STATIC, &m_tUIDesc);
+    m_pPlagueWeapon_Border = GAMEINSTANCE->Add_GameObject<CProgressBar>(LEVEL_STATIC, &m_tUIDesc);
     m_pPlagueWeapon_Border.lock()->Set_Texture("HUD_FrameBorder");
     m_pPlagueWeapon_Border.lock()->Set_Depth(0.4f);
     m_pPlagueWeapon_Border.lock()->Set_PassIndex(3);

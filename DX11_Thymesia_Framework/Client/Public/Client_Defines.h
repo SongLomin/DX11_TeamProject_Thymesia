@@ -6,9 +6,17 @@
 
 #include "imgui.h"
 
+#ifdef _DEBUG
+#define _USE_THREAD_
+#define _144HZ_
+#define _LIFEGUARD_FOR_FALL_
+#endif // _DEBUG
 
+#ifdef NDEBUG
+#define _144HZ_
 #define _USE_THREAD_
 #define _LIFEGUARD_FOR_FALL_
+#endif // NDEBUG
 
 namespace Client 
 {

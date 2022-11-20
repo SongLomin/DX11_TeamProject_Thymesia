@@ -76,7 +76,7 @@ HRESULT CUI_PauseMenu_Tap_Potion::Initialize(void* pArg)
 	m_PotionTapInfo.bAlways = false;
 	m_PotionTapInfo.bCenterAlign = true;
 	m_PotionTapInfo.fRotation = 0.f;
-	m_PotionTapInfo.szText = L"¹°¾à";
+	m_PotionTapInfo.szText = L"Potion";
 	m_PotionTapInfo.vColor = _float4(1.f, 1.f, 1.f, 1.f);
 	m_PotionTapInfo.vPosition = _float2(1289.f, 174.f);
 	m_PotionTapInfo.vScale = _float2(1.3f, 1.3f);

@@ -3,10 +3,10 @@
 
 BEGIN(Client)
 
-class CPlayer_ProgressBar : public CCustomUI
+class CProgressBar : public CCustomUI
 {
-	GAMECLASS_H(CPlayer_ProgressBar);
-	CLONE_H(CPlayer_ProgressBar, CGameObject);
+	GAMECLASS_H(CProgressBar);
+	CLONE_H(CProgressBar, CGameObject);
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -19,6 +19,12 @@ public:
 public:
 	void	Set_Ratio(_float _fRatio);
 	void	Set_PassIndex(_uint _iPassIndex);
+	void	Decrease_Ratio(_float fRatio);
+	void	Increase_Ratio(_float fRatio);
+
+
+public:
+	_float	Get_Ratio() { return m_fRatio; }
 
 public:
 	virtual void OnEventMessage(_uint iArg) override;

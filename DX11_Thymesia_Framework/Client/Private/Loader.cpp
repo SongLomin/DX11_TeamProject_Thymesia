@@ -236,7 +236,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 //	GAMEINSTANCE->Load_Textures(("Dissolve_2"), TEXT("../Bin/Resources/Textures/UI/Dissolve/Test2.png"), MEMORY_TYPE::MEMORY_STATIC);
 //	GAMEINSTANCE->Load_Textures(("Dissolve_3"), TEXT("../Bin/Resources/Textures/UI/Dissolve/Test3.png"), MEMORY_TYPE::MEMORY_STATIC);
 //	GAMEINSTANCE->Load_Textures(("Dissolve_4"), TEXT("../Bin/Resources/Textures/UI/Dissolve/Test4.png"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures(("Dissolve_1"), TEXT("../Bin/Resources/Textures/UI/Dissolve/Test%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+//	GAMEINSTANCE->Load_Textures(("Dissolve_1"), TEXT("../Bin/Resources/Textures/UI/Dissolve/Test%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	GAMEINSTANCE->Load_Textures(("MaskColor_Vertical"), TEXT("../Bin/Resources/Textures/UI/W_PlagueWeapon_MaskColor01.png"), MEMORY_TYPE::MEMORY_STATIC);
 
@@ -269,6 +269,21 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("Mask_Horizontal"), TEXT("../Bin/Resources/Textures/UI/Mask/Mask_Horizontal%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	GAMEINSTANCE->Load_Textures(("Tap_PlagueWeapon"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Frame.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	//MonsterHPBar
+
+	GAMEINSTANCE->Load_Textures(("Monster_HPBar_Border"), TEXT("../Bin/Resources/Textures/UI/HUD/HPBar/TexUI_HPBar_3BarBorder.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Monster_HPBar_Border_Elite"), TEXT("../Bin/Resources/Textures/UI/HUD/HPBar/TexUI_HPBar_4BarBorderElite_TYPE2_.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("Monster_HPBar_RecoveryShine"), TEXT("../Bin/Resources/Textures/UI/HUD/HPBar/TexUI_HPBar_5BarRecoveryShineB.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Monster_HPBar_Decoration_Head"), TEXT("../Bin/Resources/Textures/UI/HUD/HPBar/TexUI_HPBar_2BarHead.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Monster_HPBar_White"), TEXT("../Bin/Resources/Textures/UI/HUD/HPBar/TexUI_HpMain.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Monster_HPBar_Green"), TEXT("../Bin/Resources/Textures/UI/HUD/TexUI_Plague_HealthBar.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Monster_HPBar_Track"), TEXT("../Bin/Resources/Textures/UI/HUD/HPBar/TexUI_HPBar_6BarTrack.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Monster_HPBar_GreenTrack"), TEXT("../Bin/Resources/Textures/UI/HUD/HPBar/TexUI_HPBar_NewPreSTBar.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Monster_HPBar_StunnedShine"), TEXT("../Bin/Resources/Textures/UI/HUD/HPBar/TexUI_HPBar_StunnedShine1.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
 
 	
 	Load_AllDiffuseTexture();
@@ -356,7 +371,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxModelInstance"), TEXT("../Bin/ShaderFiles/Shader_VtxModelInstance.hlsl"));
 
 	lstrcpy(m_szLoadingText, TEXT("데이터를 로딩중입니다. "));
-
+	
 	GET_SINGLE(CGameManager)->Load_AllKeyEventFromJson();
 
 	_matrix			TransformMatrix;
@@ -429,6 +444,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 	//Loading_ForEffectGroup("../Bin/EffectData/");
+	
 	
 	Load_AllEffectMesh();
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
