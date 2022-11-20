@@ -61,7 +61,9 @@ void CVarg_Execution::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom,"camera");
 #ifdef _DEBUG
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: RunStart -> OnStateStart" << endl;
+#endif
 #endif
 
 }

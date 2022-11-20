@@ -15,8 +15,6 @@ public:
 
 private:
 	//void Loop(const THREAD_TYPE In_eThread_Type);
-	void Update(const THREAD_TYPE In_eThread_Type, list<weak_ptr<CGameObject>>& In_List,_float fTimeDelta);
-	void Add_ThreadObject(const THREAD_TYPE In_eThread_Type, list<weak_ptr<CGameObject>>& In_List);
 
 	void Clear_EngineThreads(const THREAD_TYPE In_eThread_Type);
 
@@ -27,9 +25,10 @@ public:
 public:
 	list<weak_ptr<CGameObject>>	m_ReservedThreadObjects[(_uint)THREAD_TYPE::TYPE_END];
 
-	vector<future<void>>				m_Threads;
+	list<future<void>>				m_Threads;
 
-	_bool											m_bDead = false;
+	_bool								m_bDead = false;
+	_uint							m_ThreadEnableFlag = 0;
 
 public:
 	virtual void OnDestroy() override;

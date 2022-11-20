@@ -3,7 +3,7 @@
 
 BEGIN(Client)
 class CCustomUI;
-class CPlayer_ProgressBar;
+class CProgressBar;
 class CHUD_Hover;
 
 class CPlayer_FeatherUI :
@@ -34,7 +34,7 @@ private:
 
 private:
 	weak_ptr<CCustomUI> m_pFrame;
-	weak_ptr<CPlayer_ProgressBar>	m_pFrameBorder;
+	weak_ptr<CProgressBar>	m_pFrameBorder;
 	weak_ptr<CCustomUI> m_pIcon;
 	weak_ptr<CCustomUI> m_pFontBG;
 	weak_ptr<CHUD_Hover> m_pHover;

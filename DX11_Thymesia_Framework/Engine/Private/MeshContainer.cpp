@@ -2,6 +2,7 @@
 #include "ModelData.h"
 #include "BoneNode.h"
 #include "Model.h"
+#include "Shader.h"
 
 GAMECLASS_C(CMeshContainer)
 CLONE_C(CMeshContainer, CComponent)
@@ -294,29 +295,49 @@ HRESULT CMeshContainer::Ready_VertexBuffer_Anim(shared_ptr<MESH_DATA> tMeshData,
 //	return S_OK;
 //}
 
-void CMeshContainer::SetUp_BoneMatices(_float4x4* pBoneMatrices, _fmatrix TransformationMatrix)
+void CMeshContainer::SetUp_BoneMatices(_fmatrix TransformationMatrix)
 {
 	if (m_iNumBones > 256)
 		return;
 
+	_int iUpdateBoneIndex;
 
-	if (m_szName == "SWORD")
+	if (-1 == m_iSwapBoneIndex)
 	{
-		int i = 0;
+		iUpdateBoneIndex = 0;
 	}
-
+	else
+	{
+		iUpdateBoneIndex = 1 - m_iSwapBoneIndex;
+	}
+	
 
 	_uint		iIndex = 0;
 
 	for (auto& pBone : m_pBoneNodes)
 	{
-		if (!pBone.lock().get())
-			DEBUG_ASSERT;
-
-		XMStoreFloat4x4(&pBoneMatrices[iIndex++], XMMatrixTranspose(pBone.lock()->Get_OffsetMatrix() * pBone.lock()->Get_CombinedMatrix() * TransformationMatrix));
+		XMStoreFloat4x4(&m_BoneMatrices[iUpdateBoneIndex][iIndex++], XMMatrixTranspose(pBone.lock()->Get_OffsetMatrix() * pBone.lock()->Get_CombinedMatrix() * TransformationMatrix));
 	}
 
-	int i = 0;
+	m_iSwapBoneIndex = iUpdateBoneIndex;
+}
+
+HRESULT CMeshContainer::Bind_BoneMatices(weak_ptr<CShader> pShader, const char* pConstantBoneName)
+{
+	// 아직 뼈가 업데이트되지 않음.
+	if (-1 == m_iSwapBoneIndex)
+	{
+		return E_FAIL;
+	}
+
+	HRESULT hr = pShader.lock()->Set_RawValue(pConstantBoneName, &m_BoneMatrices[m_iSwapBoneIndex], sizeof(_float4x4) * 256);
+
+	if (E_FAIL == hr)
+	{
+		DEBUG_ASSERT;
+	}
+
+	return hr;
 }
 
 void CMeshContainer::Free()

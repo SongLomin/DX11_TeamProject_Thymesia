@@ -74,7 +74,7 @@ HRESULT CCorvus::Start()
 	
 	m_pCamera = GET_SINGLE(CGameManager)->Get_TargetCamera();
 	m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
-	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -0.5f, 0.f, 1.f));
+	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -1.5f, 0.f, 1.f));
 
 	return S_OK;
 }
@@ -85,11 +85,11 @@ void CCorvus::Tick(_float fTimeDelta)
 	
 	this->RootMove();
 
-	if (KEY_INPUT(KEY::E, KEY_STATE::TAP))
+	if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
 	{
 		for (_int i = 0; i < 100; ++i)
 		{
-			GET_SINGLE(CGameManager)->Use_EffectGroup("TorchFire", m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
+			GET_SINGLE(CGameManager)->Use_EffectGroup("ParryEffectParticle1", m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
 
 			/*_vector PushPower = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
 
@@ -108,16 +108,23 @@ void CCorvus::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 0.5f, 0.f, 1.f));
-	m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 0.5f, 0.f, 1.f));
+	m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 1.5f, 0.f, 1.f));
+	m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 1.5f, 0.f, 1.f));
 }
 
 void CCorvus::Before_Render(_float fTimeDelta)
 {
 	__super::Before_Render(fTimeDelta);
 
-	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -0.5f, 0.f, 1.f));
-	m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 0.5f, 0.f, 1.f));
+	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -1.5f, 0.f, 1.f));
+	m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 1.5f, 0.f, 1.f));
+}
+
+void CCorvus::Custom_Thread1(_float fTimeDelta)
+{
+	// 컬링 연산 방지
+	if (RENDERGROUP::RENDER_END != m_eRenderGroup)
+		m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Weak_StaticCast<CGameObject>(m_this));
 }
 
 HRESULT CCorvus::Render()
@@ -127,7 +134,7 @@ HRESULT CCorvus::Render()
 	_int iPassIndex = 0;
 
 	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
-
+	
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
 	
@@ -150,6 +157,7 @@ HRESULT CCorvus::Render()
 			iPassIndex = 4;
 		}
 
+		
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, iPassIndex, "g_Bones");
 		
 	}
@@ -161,9 +169,9 @@ void CCorvus::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
 
-	_vector vLightFlag = { 1.f, 0.f, 0.f, 0.f };
-
-	m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector));
+#ifndef _USE_THREAD_
+	m_pModelCom.lock()->Update_BoneMatrices();
+#endif // !_USE_THREAD_
 }
 
 void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)

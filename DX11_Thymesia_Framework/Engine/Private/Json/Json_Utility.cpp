@@ -111,6 +111,19 @@ void CJson_Utility::Load_Float4(const json& In_Json, _float4& Out_Float4)
 	Out_Float4.w = In_Json[3];
 }
 
+void CJson_Utility::Load_JsonFloat4x4(const json& _Json, _float4x4& Out_Float4x4)
+{
+	ZeroMemory(&Out_Float4x4, sizeof(_float4x4));
+
+	for (_uint i = 0; i < 4; ++i)
+	{
+		for (_uint s = 0; s < 4; ++s)
+		{
+			Out_Float4x4.m[i][s] = _Json[i][s];
+		}
+	}
+}
+
 XMFLOAT4 CJson_Utility::Get_VectorFromJson(json& _json)
 {
 	if (_json.empty())

@@ -4,7 +4,7 @@
 #include "Shader.h"
 #include "GameManager.h"
 #include "Engine_Defines.h"
-#include "Player_ProgressBar.h"
+#include "ProgressBar.h"
 #include "CustomUI.h"
 #include "HUD_Hover.h"
 #include "Fader.h"
@@ -29,7 +29,7 @@ HRESULT CPlayer_HPBar::Initialize(void* pArg)
 	m_pBG.lock()->Set_Depth(0.2f);
 
 
-	m_pMainBar = GAMEINSTANCE->Add_GameObject<CPlayer_ProgressBar>(LEVEL_STATIC);
+	m_pMainBar = GAMEINSTANCE->Add_GameObject<CProgressBar>(LEVEL_STATIC);
 	m_pMainBar.lock()->Get_Component<CTexture>().lock()->Use_Texture("Player_HPBar_MainBar");
 	m_pMainBar.lock()->Set_UIPosition(m_tUIDesc.fX, m_tUIDesc.fY, m_tUIDesc.fSizeX, m_tUIDesc.fSizeY - 5.f);
 	m_pMainBar.lock()->Set_Depth(0.1f);
@@ -88,7 +88,7 @@ HRESULT CPlayer_HPBar::Initialize(void* pArg)
 	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
 
 	/*
-		weak_ptr< CPlayer_ProgressBar>	m_pMainBar;
+		weak_ptr< CProgressBar>	m_pMainBar;
 	weak_ptr< CCustomUI>	m_pBG;
 	weak_ptr< CCustomUI>	m_pBorderLeft;
 	weak_ptr< CCustomUI>	m_pBorderRight;

@@ -429,7 +429,7 @@ void CEditGround::SetUp_Textures()
 
 			if (0 == iSelect_TexType || 1 == iSelect_TexType)
 			{
-				if ("C.png" != szFind)
+				if ("D.png" != szFind)
 					continue;
 			}
 			else if (1 == iSelect_TexType)
@@ -515,28 +515,24 @@ void CEditGround::SetUp_File()
 
 	if (ImGui::BeginListBox("##TexCom List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
 	{
-		_uint iIndex = 0;
-
-		for (auto& iter : m_MeshNames)
+		for (_uint i = 0; i < m_MeshNames.size(); ++i)
 		{
-			const bool is_selected = (iSelect_MeshData == iIndex);
+			const bool is_selected = (iSelect_MeshData == i);
 
 			if ("" != m_szMeshName)
 			{
-				if (string::npos == m_MeshNames[iIndex].find(m_szMeshName))
+				if (string::npos == m_MeshNames[i].find(m_szMeshName))
 					continue;
 			}
 
-			if (ImGui::Selectable(iter.c_str(), is_selected))
+			if (ImGui::Selectable(m_MeshNames[i].c_str(), is_selected))
 			{
-				iSelect_MeshData	= iIndex;
-				m_szMeshName		= iter;
+				iSelect_MeshData	= i;
+				m_szMeshName		= m_MeshNames[i];
 			}
 
 			if (is_selected)
 				ImGui::SetItemDefaultFocus();
-
-			++iIndex;
 		}
 
 		ImGui::EndListBox();
@@ -576,7 +572,10 @@ void CEditGround::SetUp_File()
 			if ("" != string(szFilterName))
 			{
 				if (string::npos == m_FilterNames[iIndex].find(szFilterName))
+				{
+					++iIndex;
 					continue;
+				}
 			}
 
 			if (ImGui::Selectable(iter.c_str(), is_selected))
@@ -1095,24 +1094,24 @@ void CEditGround::Load_FromJson(const json& In_Json)
 
 			TEXTURES_INFO Desc;
 
-			for (auto& iter_data : TexInfo.items())
+			for (auto& iter_data : Textures.items())
 			{
 				string szDatakey = iter_data.key();
 
 				if ("Diff" == szDatakey)
 				{
-					string szTextureName = iter_data.value();
+					Desc.szTexTag_Diff = iter_data.value();
 
 					Desc.pDiffTex = Add_Component<CTexture>();
-					Desc.pDiffTex.lock()->Use_Texture(szTextureName.c_str());
+					Desc.pDiffTex.lock()->Use_Texture(Desc.szTexTag_Diff.c_str());
 				}
 
 				if ("Norm" == szDatakey)
 				{
-					string szTextureName = iter_data.value();
+					Desc.szTexTag_Norm = iter_data.value();
 
 					Desc.pNormTex = Add_Component<CTexture>();
-					Desc.pNormTex.lock()->Use_Texture(szTextureName.c_str());
+					Desc.pNormTex.lock()->Use_Texture(Desc.szTexTag_Norm.c_str());
 				}
 
 				if ("Density" == szDatakey)
@@ -1122,7 +1121,9 @@ void CEditGround::Load_FromJson(const json& In_Json)
 			}
 
 			if (Desc.pDiffTex.lock() && Desc.pNormTex.lock())
-				m_pTextureCom.emplace(szkey, Desc);
+			{
+				m_pTextureCom[szkey] = Desc;
+			}
 		}
 	}
 
@@ -1138,7 +1139,16 @@ void CEditGround::Load_FromJson(const json& In_Json)
 			return;
 		}
 
+		m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
 		m_pVIBufferCom.lock()->Init_Mesh(pModelData.get()->Mesh_Datas[0]);
+		m_bCreate = true;
+	}
+
+	if (In_Json.find("g_FilterTexture") != In_Json.end())
+	{
+		string szTexTag = In_Json["g_FilterTexture"];
+
+		Load_FilterTexture_FromJson(szTexTag);
 	}
 }
 
@@ -1177,6 +1187,48 @@ _bool CEditGround::Load_AddTextureInfo(string _szFileName)
 	szFilePath += wstring(szFullTag) + TEXT(".dds");
 
 	return !FAILED(GAMEINSTANCE->Load_Textures(_szFileName.c_str(), szFilePath.c_str(), MEMORY_TYPE::MEMORY_STATIC));
+}
+
+void CEditGround::Load_FilterTexture_FromJson(string _szFileName)
+{
+	if (!m_pTexture2D.Get())
+		CreateFilterTexture();
+
+	_tchar szFullTag[MAX_PATH] = L"";
+	MultiByteToWideChar(CP_ACP, 0, _szFileName.c_str(), (_int)_szFileName.length(), szFullTag, MAX_PATH);
+
+	wstring szFilePath = TEXT("../Bin/GroundInfo/Filter_SubInfo/") + wstring(szFullTag) + TEXT(".bin");
+
+	ifstream is(szFilePath, ios::binary);
+
+	if (!is.is_open())
+		return;
+
+	_uint iSize, iData;
+	read_typed_data(is, iSize);
+
+	m_vColors.clear();
+
+	for (_uint i = 0; i < iSize; ++i)
+	{
+		read_typed_data(is, iData);
+		m_vColors.push_back(iData);
+	}
+
+	D3D11_MAPPED_SUBRESOURCE		SubResource;
+	DEVICECONTEXT->Map(m_pTexture2D.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResource);
+
+	for (_uint iZ = 0; iZ < FILTER_TEXTURE_SIZE; ++iZ)
+	{
+		for (_uint iX = 0; iX < FILTER_TEXTURE_SIZE; ++iX)
+		{
+			_ulong	iIndex = iZ * FILTER_TEXTURE_SIZE + iX;
+
+			((_uint*)SubResource.pData)[iIndex] = m_vColors[iIndex];
+		}
+	}
+
+	DEVICECONTEXT->Unmap(m_pTexture2D.Get(), 0);
 }
 
 void CEditGround::OnEventMessage(_uint iArg)

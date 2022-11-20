@@ -21,6 +21,7 @@ protected:
     virtual HRESULT Initialize(void* pArg) override;
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
+    virtual void Custom_Thread0(_float fTimeDelta) override;
     virtual HRESULT Render() override;
     virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix) override;
 

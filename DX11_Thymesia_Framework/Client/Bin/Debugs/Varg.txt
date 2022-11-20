@@ -1,0 +1,240 @@
+0. SK_C_Varg.ao|Varg_Add_Null
+1. SK_C_Varg.ao|Varg_AddUp_Block
+2. SK_C_Varg.ao|Varg_AddUp_Defance_POSE
+3. SK_C_Varg.ao|Varg_AvoidAttack1
+4. SK_C_Varg.ao|Varg_AvoidB
+5. SK_C_Varg.ao|Varg_AvoidL
+6. SK_C_Varg.ao|Varg_AvoidR
+7. SK_C_Varg.ao|Varg_ComboAttack1_1
+8. SK_C_Varg.ao|Varg_ComboAttack1_2
+9. SK_C_Varg.ao|Varg_ComboAttack1_3
+10. SK_C_Varg.ao|Varg_ComboAttack2_1
+11. SK_C_Varg.ao|Varg_ComboAttack2_2
+12. SK_C_Varg.ao|Varg_ComboAttack2_2b
+13. SK_C_Varg.ao|Varg_ComboAttack2_2b1
+14. SK_C_Varg.ao|Varg_ComboAttack3_1
+15. SK_C_Varg.ao|Varg_Dead
+16. SK_C_Varg.ao|Varg_Dead_Pose
+17. SK_C_Varg.ao|Varg_FightStart_Demo
+18. SK_C_Varg.ao|Varg_HurtF
+19. SK_C_Varg.ao|Varg_Idle
+20. SK_C_Varg.ao|Varg_IdleGeneral
+21. SK_C_Varg.ao|Varg_RaidAttack1
+22. SK_C_Varg.ao|Varg_RaidAttack2
+23. SK_C_Varg.ao|Varg_RunF
+24. SK_C_Varg.ao|Varg_RunF_1
+25. SK_C_Varg.ao|Varg_RunF_Start
+26. SK_C_Varg.ao|Varg_Seq_BossFightStart
+27. SK_C_Varg.ao|Varg_Seq_TutorialBossFightStart
+28. SK_C_Varg.ao|Varg_SPAttack1_Catch
+29. SK_C_Varg.ao|Varg_SPAttack1_CatchSeq1
+30. SK_C_Varg.ao|Varg_SPAttack1_Fail
+31. SK_C_Varg.ao|Varg_SPAttack1_Roar
+32. SK_C_Varg.ao|Varg_SPAttack1_Roar_GetUp
+33. SK_C_Varg.ao|Varg_SPAttack1_Run
+34. SK_C_Varg.ao|Varg_StunEnd
+35. SK_C_Varg.ao|Varg_StunLoop
+36. SK_C_Varg.ao|Varg_StunStart
+37. SK_C_Varg.ao|Varg_TakeExecution_Dead
+38. SK_C_Varg.ao|Varg_TakeExecution_End
+39. SK_C_Varg.ao|Varg_TakeExecution_Loop
+40. SK_C_Varg.ao|Varg_TakeExecution_NoDeadEnd
+41. SK_C_Varg.ao|Varg_TakeExecution_Start_FIX
+42. SK_C_Varg.ao|Varg_TakeParry_FIX
+43. SK_C_Varg.ao|Varg_TurnAttack1
+44. SK_C_Varg.ao|Varg_TurnL90
+45. SK_C_Varg.ao|Varg_TurnR90
+46. SK_C_Varg.ao|Varg_WalkB
+47. SK_C_Varg.ao|Varg_WalkF
+48. SK_C_Varg.ao|Varg_WalkL
+49. SK_C_Varg.ao|Varg_WalkR
+RootNode
+SK_C_Varg.ao
+root
+AnimTargetPoint
+AnimTargetPoint_end
+camera
+camera_end
+ik_hand_r
+ik_hand_r_end
+ik_foot_l
+ik_foot_l_end
+ik_foot_r
+ik_foot_r_end
+ik_hand_l
+ik_hand_l_end
+weapon_r_IK
+weapon_r_IK_end
+Bip001
+Bip001-Pelvis
+Bip001-Spine
+Bip001-Spine1
+Bip001-Spine2
+Bip001-Neck
+Bip001-Head
+Bip001-HeadNub
+Bip001-HeadNub_end
+Bip001-Ponytail1
+Bip001-Ponytail11
+Bip001-Ponytail12
+Bip001-Ponytail13
+Bip001-Ponytail14
+Bip001-Ponytail15
+Bip001-Ponytail16
+Bip001-Ponytail17
+Bip001-Ponytail1Nub
+Bip001-Ponytail1Nub_end
+Bip001-L-Clavicle
+Bip001-L-UpperArm
+Bip001-L-Forearm
+Bip001-L-Hand
+Bip001-L-Finger0
+Bip001-L-Finger01
+Bip001-L-Finger02
+Bip001-L-Finger0Nub
+Bip001-L-Finger0Nub_end
+Bip001-L-Finger1
+Bip001-L-Finger11
+Bip001-L-Finger12
+Bip001-L-Finger1Nub
+Bip001-L-Finger1Nub_end
+Bip001-L-Finger2
+Bip001-L-Finger21
+Bip001-L-Finger22
+Bip001-L-Finger2Nub
+Bip001-L-Finger2Nub_end
+Bip001-L-Finger3
+Bip001-L-Finger31
+Bip001-L-Finger32
+Bip001-L-Finger3Nub
+Bip001-L-Finger3Nub_end
+Bip001-L-Finger4
+Bip001-L-Finger41
+Bip001-L-Finger42
+Bip001-L-Finger4Nub
+Bip001-L-Finger4Nub_end
+weapon_l
+weapon_l_end
+Bip001-Xtra04Opp
+Bip001-Xtra04OppNub
+Bip001-Xtra04OppNub_end
+Bip001-L-ForeTwist
+Bip001-L-ForeTwist_end
+Bip001-Xtra07
+Bip001-Xtra07Nub
+Bip001-Xtra07Nub_end
+Bip001-LUpArmTwist
+Bip001-LUpArmTwist_end
+Bip001-R-Clavicle
+Bip001-R-UpperArm
+Bip001-R-Forearm
+Bip001-R-Hand
+Bip001-R-Finger0
+Bip001-R-Finger01
+Bip001-R-Finger02
+Bip001-R-Finger0Nub
+Bip001-R-Finger0Nub_end
+Bip001-R-Finger1
+Bip001-R-Finger11
+Bip001-R-Finger12
+Bip001-R-Finger1Nub
+Bip001-R-Finger1Nub_end
+Bip001-R-Finger2
+Bip001-R-Finger21
+Bip001-R-Finger22
+Bip001-R-Finger2Nub
+Bip001-R-Finger2Nub_end
+Bip001-R-Finger3
+Bip001-R-Finger31
+Bip001-R-Finger32
+Bip001-R-Finger3Nub
+Bip001-R-Finger3Nub_end
+Bip001-R-Finger4
+Bip001-R-Finger41
+Bip001-R-Finger42
+Bip001-R-Finger4Nub
+Bip001-R-Finger4Nub_end
+weapon_r
+weapon_r_end
+weapon_r_end_end
+Bip001-Xtra04
+Bip001-Xtra04Nub
+Bip001-Xtra04Nub_end
+Bip001-R-ForeTwist
+Bip001-R-ForeTwist_end
+Bip001-Xtra07Opp
+Bip001-Xtra07OppNub
+Bip001-Xtra07OppNub_end
+Bip001-RUpArmTwist
+Bip001-RUpArmTwist_end
+Bip001-Xtra01
+Bip001-Xtra01Nub
+Bip001-Xtra01Nub_end
+Bip001-Xtra10
+Bip001-Xtra1002
+Bip001-Xtra1003
+Bip001-Xtra10Nub
+Bip001-Xtra10Nub_end
+Bip001-Xtra11
+Bip001-Xtra1102
+Bip001-Xtra1103
+Bip001-Xtra1104
+Bip001-Xtra11Nub
+Bip001-Xtra11Nub_end
+Bip001-Xtra11Opp
+Bip001-Xtra11Opp02
+Bip001-Xtra11Opp03
+Bip001-Xtra11Opp04
+Bip001-Xtra11OppNub
+Bip001-Xtra11OppNub_end
+Bip001-Xtra02
+Bip001-Xtra03
+Bip001-Xtra0302
+Bip001-Xtra03Nub
+Bip001-Xtra03Nub_end
+Bip001-Xtra02Nub
+Bip001-Xtra02Nub_end
+Bip001-Xtra08
+Bip001-Xtra0802
+Bip001-Xtra0803
+Bip001-Xtra0804
+Bip001-Xtra08Nub
+Bip001-Xtra08Nub_end
+Bip001-Xtra09
+Bip001-Xtra0902
+Bip001-Xtra09Nub
+Bip001-Xtra09Nub_end
+Bip001-L-Thigh
+Bip001-L-Calf
+Bip001-L-Foot
+Bip001-L-Toe0
+Bip001-L-Toe0Nub
+Bip001-L-Toe0Nub_end
+Bip001-Xtra06
+Bip001-Xtra06Nub
+Bip001-Xtra06Nub_end
+Bip001-Xtra05
+Bip001-Xtra05Nub
+Bip001-Xtra05Nub_end
+Bip001-R-Thigh
+Bip001-R-Calf
+Bip001-R-Foot
+Bip001-R-Toe0
+Bip001-R-Toe0Nub
+Bip001-R-Toe0Nub_end
+Bip001-Xtra06Opp
+Bip001-Xtra06OppNub
+Bip001-Xtra06OppNub_end
+Bip001-Xtra05Opp
+Bip001-Xtra05OppNub
+Bip001-Xtra05OppNub_end
+Bip001-Xtra12
+Bip001-Xtra1202
+Bip001-Xtra1203
+Bip001-Xtra12Nub
+Bip001-Xtra12Nub_end
+Bip001-Xtra13
+Bip001-Xtra1302
+Bip001-Xtra13Nub
+Bip001-Xtra13Nub_end
+SK_C_Varg.mo

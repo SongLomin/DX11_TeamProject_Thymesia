@@ -76,7 +76,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\Bin\</OutDir>
+    <OutDir>..\Bin\debug</OutDir>
     <MultiProcFXC>true</MultiProcFXC>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -84,7 +84,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\Bin\</OutDir>
+    <OutDir>..\Bin\release</OutDir>
     <MultiProcFXC>true</MultiProcFXC>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -191,6 +191,44 @@
     <ClInclude Include="..\Public\Actor.h" />
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
+    <ClInclude Include="..\Public\VargBossStateBase.h" />
+    <ClInclude Include="..\Public\BossVarg\Varg.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack1a.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack1b.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2a.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack3a.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack3b.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidB.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidL.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidR.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_Dead.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_End.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_SitDown.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_SitLoop.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_Start.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Hurt.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Idle.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Parry.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Roar_Getup.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Run.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_RunAttack.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_RunStart.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_SPA_Catch.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_SPA_CatchFail.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_SPA_Roar.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_SPA_Run.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Start.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Stun_End.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Stun_Loop.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Stun_Start.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_TurnL.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_TurnR.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_WalkB.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_WalkF.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_WalkL.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_WalkR.h" />
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\Public\Camera_Static.h" />
     <ClInclude Include="..\Public\Camera_Target.h" />
@@ -238,6 +276,7 @@
     <ClInclude Include="..\Public\EffectObject.h" />
     <ClInclude Include="..\Public\Effect_Point.h" />
     <ClInclude Include="..\Public\Effect_Rect.h" />
+    <ClInclude Include="..\Public\MonsterHPBar_Base.h" />
     <ClInclude Include="..\Public\FadeMask.h" />
     <ClInclude Include="..\Public\GameManager.h" />
     <ClInclude Include="..\Public\Ground.h">
@@ -269,6 +308,8 @@
     <ClInclude Include="..\Public\Light_Prop.h" />
     <ClInclude Include="..\Public\LoadingTextUI.h" />
     <ClInclude Include="..\Public\Map.h" />
+    <ClInclude Include="..\Public\MonsterHPBar_Boss.h" />
+    <ClInclude Include="..\Public\MonsterHPBar_Elite.h" />
     <ClInclude Include="..\Public\NorMonStates.h" />
     <ClInclude Include="..\Public\MobWeapon\MobWeapon.h" />
     <ClInclude Include="..\Public\Monster.h" />
@@ -312,7 +353,7 @@
     <ClInclude Include="..\Public\Player_Memory.h" />
     <ClInclude Include="..\Public\Player_MPBar.h" />
     <ClInclude Include="..\Public\Player_PotionUI.h" />
-    <ClInclude Include="..\Public\Player_ProgressBar.h" />
+    <ClInclude Include="..\Public\ProgressBar.h" />
     <ClInclude Include="..\Public\Preset_PhysXColliderDesc.h" />
     <ClInclude Include="..\Public\PreViewAnimationModel.h" />
     <ClInclude Include="..\Public\PreView_Prop.h" />
@@ -332,7 +373,10 @@
     <ClInclude Include="..\Public\UI_PauseMenu.h" />
     <ClInclude Include="..\Public\UI_PauseMenu_Page_Status.h" />
     <ClInclude Include="..\Public\UI_PauseMenu_Tap_PlagueWeapon.h" />
+    <ClInclude Include="..\Public\UI_PauseMenu_Tap_Potion.h" />
     <ClInclude Include="..\Public\UI_PauseMenu_Tap_Status.h" />
+    <ClInclude Include="..\Public\VargStates.h" />
+    <ClInclude Include="..\Public\UI_PlagueWeapon.h" />
     <ClInclude Include="..\Public\Weapon.h" />
     <ClInclude Include="..\Public\Window_AnimationModelView.h" />
     <ClInclude Include="..\Public\Window_AnimationPlayerView.h" />
@@ -363,6 +407,44 @@
     <ClCompile Include="..\Private\Actor.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Attack_Area.cpp" />
+    <ClCompile Include="..\Private\VargBossStateBase.cpp" />
+    <ClCompile Include="..\Private\BossVarg\Varg.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack1a.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack1b.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2a.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack3a.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack3b.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidAttack.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidB.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidL.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidR.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_Dead.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_End.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_SitDown.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_SitLoop.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_Start.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Hurt.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Idle.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Parry.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Roar_Getup.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Run.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_RunAttack.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_RunStart.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_SPA_Catch.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_SPA_CatchFail.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_SPA_Roar.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_SPA_Run.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Start.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Stun_End.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Stun_Loop.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Stun_Start.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_TurnL.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_TurnR.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_WalkB.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_WalkF.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_WalkL.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_WalkR.cpp" />
     <ClCompile Include="..\Private\Camera_Free.cpp" />
     <ClCompile Include="..\Private\Camera_Static.cpp" />
     <ClCompile Include="..\Private\Camera_Target.cpp" />
@@ -404,6 +486,7 @@
     <ClCompile Include="..\Private\EffectObject.cpp" />
     <ClCompile Include="..\Private\Effect_Point.cpp" />
     <ClCompile Include="..\Private\Effect_Rect.cpp" />
+    <ClCompile Include="..\Private\MonsterHPBar_Base.cpp" />
     <ClCompile Include="..\Private\FadeMask.cpp" />
     <ClCompile Include="..\Private\GameManager.cpp" />
     <ClCompile Include="..\Private\Ground.cpp">
@@ -436,6 +519,8 @@
     <ClCompile Include="..\Private\Map.cpp" />
     <ClCompile Include="..\Private\MobWeapon\MobWeapon.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
+    <ClCompile Include="..\Private\MonsterHPBar_Boss.cpp" />
+    <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_SitToIdle.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_FR.cpp" />
@@ -474,7 +559,7 @@
     <ClCompile Include="..\Private\Player_Memory.cpp" />
     <ClCompile Include="..\Private\Player_MPBar.cpp" />
     <ClCompile Include="..\Private\Player_PotionUI.cpp" />
-    <ClCompile Include="..\Private\Player_ProgressBar.cpp" />
+    <ClCompile Include="..\Private\ProgressBar.cpp" />
     <ClCompile Include="..\Private\Preset_PhysXColliderDesc.cpp" />
     <ClCompile Include="..\Private\PreViewAnimationModel.cpp" />
     <ClCompile Include="..\Private\PreView_Prop.cpp" />
@@ -494,7 +579,9 @@
     <ClCompile Include="..\Private\UI_PauseMenu.cpp" />
     <ClCompile Include="..\Private\UI_PauseMenu_Page_Status.cpp" />
     <ClCompile Include="..\Private\UI_PauseMenu_Tap_PlagueWeapon.cpp" />
+    <ClCompile Include="..\Private\UI_PauseMenu_Tap_Potion.cpp" />
     <ClCompile Include="..\Private\UI_PauseMenu_Tap_Status.cpp" />
+    <ClCompile Include="..\Private\UI_PlagueWeapon.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
     <ClCompile Include="..\Private\Window_AnimationModelView.cpp" />
     <ClCompile Include="..\Private\Window_AnimationPlayerView.cpp" />

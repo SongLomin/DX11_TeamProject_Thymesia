@@ -45,6 +45,10 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Specular"), 
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
+	/*For.Target_Fog*/
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Fog"),
+		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		DEBUG_ASSERT;
 
 	/* For.Target_LightFlag */
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_LightFlag"), 
@@ -195,6 +199,9 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Specular"))))
 		DEBUG_ASSERT;
 
+	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Fog"), TEXT("Target_Fog"))))
+		DEBUG_ASSERT;
+
 	/* For.MRT_ShadowDepth*/
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_ShadowDepth"), TEXT("Target_ShadowDepth"))))
 		DEBUG_ASSERT;
@@ -256,6 +263,8 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_StaticShadowDepth"), ViewPortDesc.Width - fHalf -fSize*2.f, fHalf, fSize, fSize)))
+		DEBUG_ASSERT;
+	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Fog"), ViewPortDesc.Width - fHalf - fSize * 3.f, fHalf, fSize, fSize)))
 		DEBUG_ASSERT;
 
 	/*if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_BlurShadow"), ViewPortDesc.Width - 300, 700, 200, 200)))
@@ -331,14 +340,19 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Render_Lights()))
 		DEBUG_ASSERT;
 
+	if (FAILED(Bake_Fog()))
+		DEBUG_ASSERT;
+
 	if (FAILED(Bake_ViewShadow()))
 		DEBUG_ASSERT;
 
 	if (FAILED(Render_Blend()))
 		DEBUG_ASSERT;
 
-	if (FAILED(Blend_OutLine()))
-		DEBUG_ASSERT;
+	//if (FAILED(Blend_OutLine()))
+	//	DEBUG_ASSERT;
+
+
 
 	if (FAILED(Render_NonLight()))
 		DEBUG_ASSERT;
@@ -561,13 +575,49 @@ HRESULT CRender_Manager::Render_Lights()
 
 	m_pShader->Set_RawValue("g_ViewMatrixInv", &ViewMatrixInv, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
-	
-
-
 
 	m_pShader->Set_RawValue("g_vCamPosition", &pPipeLine->Get_CamPosition(), sizeof(_float4));
 
 	GET_SINGLE(CLight_Manager)->Render_Lights(m_pShader, m_pVIBuffer);
+
+	if (FAILED(pRenderTargetManager->End_MRT()))
+		DEBUG_ASSERT;
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Bake_Fog()
+{
+	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
+
+	/* 셰이드 타겟을 장치에 바인드한다. */
+	if (FAILED(pRenderTargetManager->Begin_MRT(TEXT("MRT_Fog"))))
+		DEBUG_ASSERT;
+
+	/* 모든 빛은 이 노멀텍스쳐(타겟)과 연산이 이뤄지면 되기때문에.
+	모든 빛마다 각각 던질피룡가 없다. */
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_DepthTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Depth")))))
+		DEBUG_ASSERT;
+
+	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
+	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+
+	shared_ptr<CPipeLine> pPipeLine = GET_SINGLE(CPipeLine);
+
+	_float4x4		ViewMatrixInv, ProjMatrixInv;
+
+	XMStoreFloat4x4(&ViewMatrixInv, XMMatrixTranspose(XMMatrixInverse(nullptr, pPipeLine->Get_Transform(CPipeLine::D3DTS_VIEW))));
+	XMStoreFloat4x4(&ProjMatrixInv, XMMatrixTranspose(XMMatrixInverse(nullptr, pPipeLine->Get_Transform(CPipeLine::D3DTS_PROJ))));
+
+	m_pShader->Set_RawValue("g_ViewMatrixInv", &ViewMatrixInv, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
+
+	m_pShader->Set_RawValue("g_vCamPosition", &pPipeLine->Get_CamPosition(), sizeof(_float4));
+
+	m_pShader->Begin(11);
+	m_pVIBuffer->Render();
 
 	if (FAILED(pRenderTargetManager->End_MRT()))
 		DEBUG_ASSERT;
@@ -644,6 +694,11 @@ HRESULT CRender_Manager::Render_Blend()
 
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_ViewShadow", pRenderTargetManager->Get_SRV(TEXT("Target_ViewShadow")))))
 		DEBUG_ASSERT;
+
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_FogTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Fog")))))
+		DEBUG_ASSERT;
+
+
 
 	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
 	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
@@ -1367,7 +1422,7 @@ HRESULT CRender_Manager::Render_Debug()
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurOutLine"), m_pShader, m_pVIBuffer);
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ViewShadow"), m_pShader, m_pVIBuffer);
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_StaticShadowDepth"), m_pShader, m_pVIBuffer);
-
+	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Fog"), m_pShader, m_pVIBuffer);
 	//GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Glow"), m_pShader, m_pVIBuffer);
 
 	/*for (auto& pComponent : m_pDebugComponents)

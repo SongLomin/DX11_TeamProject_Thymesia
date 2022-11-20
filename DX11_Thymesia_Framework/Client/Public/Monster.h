@@ -17,7 +17,8 @@ public:
         NORMONSTERTYPE       eNorMonType;
         NORMONSTERIDLETYPE   eNorMonIdleType;
         _float4              m_fStartPositon;
- 
+        BOSSSTARTTYPE        eBossStartType;
+        //BOSSTYPE             eBossType;
         //TODO ¾ß¸Å¿¡¿ä ¹Ø¿¡²¨ ¤¾ 
         _float3            vYame;
     }STATE_LINK_DESC;
@@ -66,7 +67,7 @@ protected:
     list<weak_ptr<CMobWeapon>> m_pWeapons;
     weak_ptr<CStateBase> m_pStandState;
 
-    weak_ptr<CCharacter> m_pTargetCharacter;
+    weak_ptr<CCharacter> m_pTargetCharacter; // = player
     weak_ptr<CTexture>   m_pDissolveTextureCom;
     // NORMONSTERTYPE       m_eNorMonType    =     NORMONSTERTYPE::NMON_END;
     STATE_LINK_DESC      m_tLinkStateDesc;

@@ -34,7 +34,8 @@ HRESULT CGround::Initialize(void* pArg)
 	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
 	m_pPhysXColliderCom = Add_Component<CPhysXCollider>();
 	
-	USE_START(CGround);
+	if((_uint)LEVEL_EDIT != m_CreatedLevel)
+		USE_START(CGround);
 
 	return S_OK;
 }
@@ -50,6 +51,8 @@ HRESULT CGround::Start()
 
 	m_pPhysXColliderCom.lock()->CreatePhysXActor(ColliderDesc);
 	m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
+	GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_StaticCast<CGameObject>(m_this));
+
 
 	return S_OK;
 }

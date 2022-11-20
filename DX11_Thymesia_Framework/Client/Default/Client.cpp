@@ -104,7 +104,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
         fTimerAcc += GAMEINSTANCE->Compute_Timer((_uint)TIMER::TIMER_DEFAULT);
 
-        if (fTimerAcc > 0.00694f) //144Hz
+        if (
+#ifdef _144HZ_
+            fTimerAcc > 0.00694f
+#else
+            1
+#endif // _144HZ_
+
+            )
         {
             pMainApp->Tick(fTimerAcc);
 

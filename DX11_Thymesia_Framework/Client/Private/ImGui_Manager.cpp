@@ -183,6 +183,12 @@ HRESULT CImGui_Manager::Render(void)
 				Load_FromJson(m_szJsonPath + m_szCurrentLocalPath);
 			}
 
+			if (ImGui::MenuItem("05. Stage1_sub"))
+			{
+				m_szCurrentLocalPath = "Stage1_sub.json";
+				Load_FromJson(m_szJsonPath + m_szCurrentLocalPath);
+			}
+
 			if (ImGui::MenuItem("99. Static"))
 			{
 				m_szCurrentLocalPath = "Static.json";
@@ -341,7 +347,6 @@ void CImGui_Manager::Write_Json(const string& In_szPath)
 
 	if (FAILED(CJson_Utility::Save_Json(In_szPath.c_str(), NewJson)))
 		DEBUG_ASSERT;
-
 }
 
 void CImGui_Manager::Load_FromJson(const string& In_szPath)
@@ -354,7 +359,9 @@ void CImGui_Manager::Load_FromJson(const string& In_szPath)
 	if (FAILED(CJson_Utility::Load_Json(In_szPath.c_str(), m_CurrentLevelJson)))
 	{
 #ifdef _DEBUG
+		#ifdef _DEBUG_COUT_
 		cout << In_szPath << " : 해당 경로에 Json 파일이 없음." << endl;
+#endif
 #endif // _DEBUG
 
 		return;

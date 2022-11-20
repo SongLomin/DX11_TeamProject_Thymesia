@@ -57,6 +57,7 @@ namespace Engine
 		void		ENGINE_DLL Set_ClockwiseTriangle(XMFLOAT3* InOut_TrianglePosition);
 
 		void		ENGINE_DLL Convert_PxVec3FromMeshData(PxVec3* In_PxVec3, weak_ptr<MESH_DATA> pMeshData);
+		void		ENGINE_DLL Convert_PxVec3FromMeshDataWithTransformMatrix(PxVec3* In_PxVec3, weak_ptr<MESH_DATA> pMeshData, FXMMATRIX In_TransformMatrix);
 
 
 		_bool		ENGINE_DLL Is_Picked(RAY _Ray, _float4* _pOutPos);

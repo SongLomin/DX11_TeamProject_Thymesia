@@ -31,9 +31,18 @@ void CNorMonState_HeavyAttack2::Start()
 {
 	__super::Start();
 
-	if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
+	switch (m_eNorMonType)
 	{
+	case Client::NORMONSTERTYPE::AXEMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_Attack05|BaseLayer|Arm");
+		break;
+	case Client::NORMONSTERTYPE::KNIFEWOMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_Attack05");
+		break;
+	case Client::NORMONSTERTYPE::SKULL:
+		break;
+	case Client::NORMONSTERTYPE::GARDENER:
+		break;
 	}
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_HeavyAttack2::Call_AnimationEnd, this);
@@ -71,7 +80,9 @@ void CNorMonState_HeavyAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: RunStart -> OnStateStart" << endl;
+#endif
 #endif
 
 	m_pModelCom.lock()->Set_AnimationSpeed(2.f);

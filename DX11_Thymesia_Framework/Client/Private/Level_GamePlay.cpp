@@ -9,6 +9,12 @@
 #include "Static_Instancing_Prop.h"
 #include "HUD_PlagueWeapon.h"
 #include "UI_PauseMenu.h"
+#include "MonsterHPBar_Base.h"
+#include "MonsterHPBar_Elite.h"
+#include "MonsterHPBar_Boss.h"
+
+
+
 CLevel_GamePlay::CLevel_GamePlay()
 	//: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
@@ -29,7 +35,19 @@ HRESULT CLevel_GamePlay::Initialize()
 	
 #pragma region GAMEOBJECT
 
-	Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_GAMEPLAY);
+	future<void> ThreadResult = async(launch::async, 
+		bind(&CLevel_GamePlay::Load_FromJson, this,
+			placeholders::_1, placeholders::_2), 
+		m_szDefaultJsonPath + "Stage1.json", 
+		LEVEL::LEVEL_GAMEPLAY);
+
+	future<void> ThreadResult2 = async(launch::async,
+		bind(&CLevel_GamePlay::Load_FromJson, this,
+			placeholders::_1, placeholders::_2),
+		m_szDefaultJsonPath + "Stage2.json",
+		LEVEL::LEVEL_GAMEPLAY);
+
+	//Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_GAMEPLAY);
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
 	CameraDesc.vEye = _float4(0.0f, 2.5f, -2.5f, 1.f);
@@ -73,6 +91,36 @@ HRESULT CLevel_GamePlay::Initialize()
 	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
 	//CCC.eNorMonType = NORMONSTERTYPE::KNIFEWOMAN;
 	//CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
+	//CCC.vYame.x = 20.f;
+	//CCC.vYame.z = 25.f;
+	//GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
+
+	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
+	//CCC.vYame.x = 30.f;
+	//CCC.vYame.z = 15.f;
+	//CCC.eBossStartType = BOSSSTARTTYPE::BEGINSTART;
+	//CCC.eBossType = BOSSTYPE::BOSSVARG;
+	//GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &CCC);
+	//
+	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
+	//CCC.vYame.x = 35.f;
+	//CCC.vYame.z = 15.f;
+	//CCC.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
+	//CCC.eBossType = BOSSTYPE::BOSSVARG;
+	//GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &CCC);
+
+	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
+	//CCC.eNorMonType = NORMONSTERTYPE::KNIFEWOMAN;
+	//CCC.eNorMonIdleType = NORMONSTERIDLETYPE::FIDGETIDLE;
+	//CCC.vYame.x = 25.f;
+	//CCC.vYame.z = 30.f;
+	//GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
+	//
+	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
+	//CCC.eNorMonType = NORMONSTERTYPE::KNIFEWOMAN;
+	//CCC.eNorMonIdleType = NORMONSTERIDLETYPE::SITIDLE;
+	//CCC.vYame.x = 30.f;
+	//CCC.vYame.z = 35.f;
 	//GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
 
 	//야매에요
@@ -93,9 +141,14 @@ HRESULT CLevel_GamePlay::Initialize()
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
 	
 #pragma endregion GAMEOBJECT
+	
+	
 	SetUp_UI();
 
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
+
+	ThreadResult.get();
+	ThreadResult2.get();
 
 
 	return S_OK;
@@ -107,9 +160,18 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 
 	if (KEY_INPUT(KEY::CTRL, KEY_STATE::TAP))
 	{
-		weak_ptr<CUI_PauseMenu> pPauseMenu = GAMEINSTANCE->Get_GameObjects<CUI_PauseMenu>(LEVEL_STATIC).front();
-		if (!pPauseMenu.lock()->Get_Enable())
-			pPauseMenu.lock()->Set_Enable(true);
+		if (m_pPauseMenu.lock()->Get_Enable() == false)
+		{
+			FaderDesc tFaderDesc;
+			tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+			tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+			tFaderDesc.fFadeMaxTime = 0.3f;
+			tFaderDesc.fDelayTime = 0.f;
+			tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+
+			m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CLevel_GamePlay::Call_Enable_PauseMenu, this);
+		}
 	}
 
 	if (!m_bFadeTrigger)
@@ -161,7 +223,10 @@ void CLevel_GamePlay::SetUp_UI()
 	weak_ptr<CGameManager>	pGameManager = GET_SINGLE(CGameManager);
 
 	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);//여기서 
-	GAMEINSTANCE->Add_GameObject<CUI_PauseMenu>(LEVEL_STATIC);
+	m_pPauseMenu = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu>(LEVEL_STATIC);
+
+
+
 
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_MPBar>(LEVEL_STATIC));
@@ -171,8 +236,24 @@ void CLevel_GamePlay::SetUp_UI()
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
 
-	
+	//TODO : MonsterHpBar TestCode
+	/*
+	CUI::UI_DESC tDesc;
+	tDesc.fX = g_iWinCX / 2.f;
+	tDesc.fY = g_iWinCY / 2.f;
+	tDesc.fSizeX = 150.f;
+	tDesc.fSizeY = 15.f;
+	tDesc.fDepth = 0.f;
 
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Elite>(LEVEL_STATIC, &tDesc));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Boss>(LEVEL_STATIC, &tDesc));
+	*/
+}
+
+void CLevel_GamePlay::Call_Enable_PauseMenu()
+{
+		m_pPauseMenu.lock()->Set_Enable(true);
+		m_pFadeMask.lock()->Set_Enable(false);
 }
 
 shared_ptr<CLevel_GamePlay> CLevel_GamePlay::Create()

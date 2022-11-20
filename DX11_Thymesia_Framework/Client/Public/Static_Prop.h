@@ -21,13 +21,23 @@ public:
     virtual HRESULT Start() override;
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
+    virtual void Before_Render(_float fTimeDelta) override;
     virtual HRESULT Render() override;
     virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix) override;
 
 private:
-    weak_ptr<CPhysXCollider> m_pPhyxXColliderCom;
+    weak_ptr<CPhysXCollider>    m_pPhyxXColliderCom;
+
+private:
+    _uint                       m_iColliderType = 0;
+    _float                      m_fModelMidOffset;
+
+private:
+    virtual void Write_Json(json& Out_Json) override;
+    virtual void Load_FromJson(const json& In_Json) override;
 
 public:
+    void OnEventMessage(_uint iArg) override;
     void Free();
 };
 

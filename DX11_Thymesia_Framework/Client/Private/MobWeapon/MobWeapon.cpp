@@ -40,6 +40,12 @@ HRESULT CMobWeapon::Initialize(void* pArg)
 		VTXMODEL_DECLARATION::Element,
 		VTXMODEL_DECLARATION::iNumElements);
 
+
+#ifdef  _USE_THREAD_
+	Use_Thread(THREAD_TYPE::CUSTOM_THREAD1);
+#endif //  _USE_THREAD_
+
+
 	return S_OK;
 }
 
@@ -74,16 +80,41 @@ void CMobWeapon::Tick(_float fTimeDelta)
 	//m_pTransformCom.lock()->Set_WorldMatrix(m_pParent.lock()->Get_Component<CTransform>().lock()->Get_WorldMatrix());
 	//m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 
-
-
-
 }
 
 void CMobWeapon::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Cast<CGameObject>(m_this));
+#ifdef _USE_THREAD_
+	if (m_bRendering)
+	{
+		m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Weak_StaticCast<CGameObject>(m_this));
+	}
+
+#else
+	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), 0.f))
+	{
+		m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Weak_StaticCast<CGameObject>(m_this));
+	}
+
+#endif // !_USE_THREAD_
+
+	
+}
+
+void CMobWeapon::Custom_Thread1(_float fTimeDelta)
+{
+	__super::Custom_Thread1(fTimeDelta);
+
+	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), 0.f))
+	{
+		m_bRendering = true;
+	}
+	else
+	{
+		m_bRendering = false;
+	}
 }
 
 HRESULT CMobWeapon::Render()
@@ -133,7 +164,9 @@ void CMobWeapon::Enable_DefaultWeapon(const HIT_TYPE& In_eHitType, const _float&
 {
 	if (m_pHitColliderCom.lock()->Set_Enable(true))
 	{
+		#ifdef _DEBUG_COUT_
 		cout << "Enable Weapon!" << endl;
+#endif
 		m_eHitType = In_eHitType;
 		m_fDamage = In_fDamage;
 		m_bFirstAttack = true;
@@ -144,7 +177,9 @@ void CMobWeapon::Disable_DefaultWeapon()
 {
 	if (m_pHitColliderCom.lock()->Set_Enable(false))
 	{
+		#ifdef _DEBUG_COUT_
 		cout << "Disable Weapon!" << endl;
+#endif
 		m_iHitColliderIndexs.clear();
 
 	}
@@ -188,6 +223,9 @@ void CMobWeapon::Set_WeaponType(MONSTERWEAPONTYPE WeaponType)
 		break;
 	case MONSTERWEAPONTYPE::WEAPON_KNIFE:
 		m_pModelCom.lock()->Init_Model("Mon_Weapon_Knife", "", (_uint)TIMESCALE_LAYER::MONSTER);
+		break;
+	case MONSTERWEAPONTYPE::WEAPON_BOSSVARG:
+		m_pModelCom.lock()->Init_Model("Boss_VargWeapon", "", (_uint)TIMESCALE_LAYER::MONSTER);
 		break;
 	}
 }

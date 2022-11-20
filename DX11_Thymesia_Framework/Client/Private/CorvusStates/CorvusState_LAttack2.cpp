@@ -156,7 +156,7 @@ void CCorvusState_LAttack2::OnStateStart(const _float& In_fAnimationBlendTime)
 		
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
-	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 
 	//m_iAttackIndex = 7;
 	//m_iEndAttackEffectIndex = -1;
@@ -168,7 +168,9 @@ void CCorvusState_LAttack2::OnStateStart(const _float& In_fAnimationBlendTime)
 	
 
 #ifdef _DEBUG
-	cout << "NorMonState: Attack -> OnStateStart" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: Attack -> OnStateStart" << endl;
+#endif
 
 #endif
 }

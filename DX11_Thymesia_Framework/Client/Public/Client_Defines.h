@@ -6,6 +6,19 @@
 
 #include "imgui.h"
 
+#ifdef _DEBUG
+#define		_USE_THREAD_
+#define		_144HZ_
+#define		_LIFEGUARD_FOR_FALL_
+#define		_DBUG_COUT_
+#endif // _DEBUG
+
+#ifdef NDEBUG
+#define		_144HZ_
+#define		_USE_THREAD_
+#define		_LIFEGUARD_FOR_FALL_
+#endif // NDEBUG
+
 namespace Client 
 {
 	static const _uint	g_iScreenCX = GetSystemMetrics(SM_CXSCREEN);
@@ -27,6 +40,7 @@ namespace Client
 		ON_EDITDRAW_NONE,
 		ON_EDITDRAW_ACCEPT,
 		ON_EDITDRAW_SUB,
+		ON_EDITPICKING,
 		ON_ANIMATIONEND,
 		ON_MOVING,
 		ON_MONSTERDEAD,
@@ -42,6 +56,9 @@ namespace Client
 		UPPER_HIT,
 		DOWN_HIT,
 		WARNING,
+		LEFT_HIT,
+		RIGHT_HIT,
+		EXCTUE_HIT,
 		TYPE_END
 	};
 
@@ -93,6 +110,7 @@ namespace Client
 		MONSTER_RIGIDBODY,
 		EDIT_NAVIMESH,
 		TRIGGER,
+		STATIC_PROP,
 		LAYER_END
 	};
 
@@ -108,6 +126,7 @@ namespace Client
 	{
 		WEAPON_AXE,
 		WEAPON_KNIFE,
+		WEAPON_BOSSVARG,
 		MON_WEAPON_END
 	};
 
@@ -125,6 +144,13 @@ namespace Client
 		FIDGETIDLE,
 		IDLEEND
 	};
+
+	enum class BOSSSTARTTYPE {
+		BEGINSTART,
+		NORMALSTART,
+		BOSSSTARTEND
+	};
+
 
 	//enum class  RAREMONSTERTYPE {
 	//	RMON_ARMOR,

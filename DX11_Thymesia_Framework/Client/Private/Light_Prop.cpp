@@ -37,7 +37,7 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 		m_iPassIndex = 3; // if Normal Map exists, Pass is 3(Normal). else, Pass is 0(Default).
 
 		// TODO : need to be data
-		m_pTransformCom.lock()->Set_Position(_fvector{3.f, 15.f, 3.f, 1.f});
+		m_pTransformCom.lock()->Set_Position(_fvector{4.f, -3.f, 4.f, 1.f});
 		m_pTransformCom.lock()->Set_Scaled(_float3{ 0.8f, 0.8f, 0.8f });
 
 		GET_SINGLE(CGameManager)->Use_EffectGroup("TorchFire", m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
@@ -62,15 +62,18 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	m_tLightDesc.fRange = 17.f;
 
 	m_iLightIndex = GAMEINSTANCE->Add_Light(m_tLightDesc);
+	
+	m_pPhysXColliderCom = Add_Component<CPhysXCollider>();
+	m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
 
 	PHYSXCOLLIDERDESC tPhysxColliderDesc;
 	Preset::PhysXColliderDesc::TestLightPropSetting(tPhysxColliderDesc);
-	m_pPhysXColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
+	m_pPhysXColliderCom.lock()->CreatePhysXActor(tPhysxColliderDesc);
 	m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene({ 0.f, 0.f, 0.f }, 1.f);
 
-	Preset::PhysXColliderDesc::TestLightPropTriggerSetting(tPhysxColliderDesc);
+	/*Preset::PhysXColliderDesc::TestLightPropTriggerSetting(tPhysxColliderDesc);
 	m_pPhysXTriggerColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
-	m_pPhysXTriggerColliderCom.lock()->Add_PhysXActorAtScene({ 10.f, 10.f, 10.f }, 1.f);
+	m_pPhysXTriggerColliderCom.lock()->Add_PhysXActorAtScene({ 10.f, 10.f, 10.f }, 1.f);*/
 
 	return S_OK;
 }
@@ -86,6 +89,14 @@ void CLight_Prop::Tick(_float fTimeDelta)
 
 	__super::Tick(fTimeDelta);
 
+#ifdef _LIFEGUARD_FOR_FALL_
+	_vector vPos = m_pTransformCom.lock()->Get_Position();
+	if (vPos.m128_f32[1] < -50.f)
+	{
+		vPos.m128_f32[1] = 50.f;
+		m_pTransformCom.lock()->Set_Position(vPos);
+	}
+#endif
 
 }
 
@@ -94,7 +105,7 @@ void CLight_Prop::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 	m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 0.13f, 0.f, 1.f));
-	m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 0.13f, 0.f, 1.f));
+	//m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 0.13f, 0.f, 1.f));
 }
 
 void CLight_Prop::Before_Render(_float fTimeDelta)
@@ -102,7 +113,7 @@ void CLight_Prop::Before_Render(_float fTimeDelta)
 	__super::Before_Render(fTimeDelta);
 	
 	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -0.13f, 0.f, 1.f));
-	m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 0.13f, 0.f, 1.f));
+	//m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 0.13f, 0.f, 1.f));
 }
 
 HRESULT CLight_Prop::Render()

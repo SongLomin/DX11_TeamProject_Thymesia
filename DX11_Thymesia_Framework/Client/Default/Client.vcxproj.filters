@@ -184,8 +184,8 @@
     <ClInclude Include="..\Public\Player_HPBar.h">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Player_ProgressBar.h">
-      <Filter>02. GameObject\01. UI\PlayerUI\Progress</Filter>
+    <ClInclude Include="..\Public\ProgressBar.h">
+      <Filter>02. GameObject\01. UI\Progress</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Player_MPBar.h">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP</Filter>
@@ -479,12 +479,6 @@
     <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal.h">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\NorMonState\NorMonsterStateBase.h">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\NorMonStates.h">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase</Filter>
-    </ClInclude>
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
       <Filter>04. ShaderFiles\hpp</Filter>
     </ClInclude>
@@ -506,11 +500,149 @@
     <ClInclude Include="..\Public\DissolveUI.h">
       <Filter>02. GameObject\01. UI\dissolve</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal_Icon.h" />
     <ClInclude Include="..\Public\LoadingTextUI.h" />
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
       <Filter>04. ShaderFiles</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\Varg.h">
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\03.BossMonster\00.Varg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Idle.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\00.Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack1a.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\04.ComboAttack1a</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack1b.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\07.ComboAttack1b</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2a.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\05.ComboAttack2a</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\08.ComboAttack2b</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack3a.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\06.ComboAttack3a</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack3b.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\09.ComboAttack3b</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidAttack.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\10.AvoidAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidB.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\14.AvoidB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidL.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\12.AvoidL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidR.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\13.AvoidR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_Dead.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\34.Exection_Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_End.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\33.Execution_End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_SitDown.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\30.Execution_SitDown</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_SitLoop.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\31.Execution_SitLoop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_Start.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\32.Execution_Start</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Hurt.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\15.Hurt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Parry.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\35.Parry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Roar_Getup.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\26.SPAttack_Roar_Getup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Run.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\03.Run</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_RunAttack.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\11.RunAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_RunStart.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\02.RunStart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_SPA_Catch.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\22.SPAttack_Catch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_SPA_CatchFail.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\23.SPAttack_CatchFail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_SPA_Roar.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\25.SPAttack_Roar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Stun_End.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\29.StunEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Stun_Loop.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\28.StunLoop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Stun_Start.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\27.StunStart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Start.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\01.BossStart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_TurnL.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\20.TurnL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_TurnR.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\21.TurnR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_WalkF.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\16.WalkF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_WalkR.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\19.WalkR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_WalkL.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\18.WalkL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_WalkB.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\17.WalkB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_SPA_Run.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\24.SPAttack_Run</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VargStates.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonStates.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonsterStateBase.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VargBossStateBase.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_PlagueWeapon.h">
+      <Filter>02. GameObject\01. UI\PauseMenu\Page\Status\Tap\PlagueWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_PauseMenu_Tap_Potion.h">
+      <Filter>02. GameObject\01. UI\PauseMenu\Page\Status\Tap\Potion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal_Icon.h">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal\Icon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterHPBar_Base.h">
+      <Filter>02. GameObject\01. UI\MonsterHPBar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterHPBar_Elite.h">
+      <Filter>02. GameObject\01. UI\MonsterHPBar\Elite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterHPBar_Boss.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -714,8 +846,8 @@
     <ClCompile Include="..\Private\Player_HPBar.cpp">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Player_ProgressBar.cpp">
-      <Filter>02. GameObject\01. UI\PlayerUI\Progress</Filter>
+    <ClCompile Include="..\Private\ProgressBar.cpp">
+      <Filter>02. GameObject\01. UI\Progress</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Player_MPBar.cpp">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\HP&amp;MP</Filter>
@@ -971,9 +1103,6 @@
     <ClCompile Include="..\Private\Corvus_DefaultDagger.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus\00.Weapon\01.Corvus_DefaultDagger</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\NorMonState\NorMonsterStateBase.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\EditInstanceProp.cpp">
       <Filter>02. GameObject\99. Other\06. EditInstanceProp</Filter>
     </ClCompile>
@@ -989,8 +1118,145 @@
     <ClCompile Include="..\Private\DissolveUI.cpp">
       <Filter>02. GameObject\01. UI\dissolve</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal_Icon.cpp" />
     <ClCompile Include="..\Private\LoadingTextUI.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\Varg.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\03.BossMonster\00.Varg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Idle.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\00.Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack1a.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\04.ComboAttack1a</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack1b.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\07.ComboAttack1b</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2a.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\05.ComboAttack2a</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\08.ComboAttack2b</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack3a.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\06.ComboAttack3a</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack3b.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\09.ComboAttack3b</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidAttack.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\10.AvoidAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidB.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\14.AvoidB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidL.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\12.AvoidL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidR.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\13.AvoidR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_Dead.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\34.Exection_Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_End.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\33.Execution_End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_SitDown.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\30.Execution_SitDown</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_SitLoop.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\31.Execution_SitLoop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_Start.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\32.Execution_Start</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Hurt.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\15.Hurt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Parry.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\35.Parry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Roar_Getup.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\26.SPAttack_Roar_Getup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Run.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\03.Run</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_RunAttack.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\11.RunAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_RunStart.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\02.RunStart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_SPA_Catch.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\22.SPAttack_Catch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_SPA_CatchFail.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\23.SPAttack_CatchFail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_SPA_Roar.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\25.SPAttack_Roar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Stun_End.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\29.StunEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Stun_Loop.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\28.StunLoop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Stun_Start.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\27.StunStart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Start.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\01.BossStart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_TurnL.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\20.TurnL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_TurnR.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\21.TurnR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_WalkF.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\16.WalkF</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_WalkR.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\19.WalkR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_WalkL.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\18.WalkL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_WalkB.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\17.WalkB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_SPA_Run.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\24.SPAttack_Run</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonsterStateBase.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VargBossStateBase.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp" />
+    <ClCompile Include="..\Private\UI_PlagueWeapon.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_PauseMenu_Tap_Potion.cpp">
+      <Filter>02. GameObject\01. UI\PauseMenu\Page\Status\Tap\Potion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal_Icon.cpp">
+      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal\Icon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterHPBar_Base.cpp">
+      <Filter>02. GameObject\01. UI\MonsterHPBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp">
+      <Filter>02. GameObject\01. UI\MonsterHPBar\Elite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterHPBar_Boss.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1217,9 +1483,6 @@
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_SprintStart">
       <UniqueIdentifier>{e51b7011-ec5e-451f-8088-27a1ad224443}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Corvus">
-      <UniqueIdentifier>{16574201-340f-43db-b0c0-e3bb9a200fc8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase">
       <UniqueIdentifier>{aadbf6c6-7726-4889-bde8-1f3c8329f678}</UniqueIdentifier>
     </Filter>
@@ -1234,15 +1497,6 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\05.State_Hit">
       <UniqueIdentifier>{41826306-7aa4-4142-8a99-602d9d79a36f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon">
-      <UniqueIdentifier>{c544ea3e-e472-45d2-97c7-b7b228b16290}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\00.Corvus_DefaultSaber">
-      <UniqueIdentifier>{0ed56344-d4a6-4fcc-946f-328f7e70d654}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Corvus\00.Weapon\01.Corvus_DefaultDagger">
-      <UniqueIdentifier>{e8d262bf-d13f-4a53-886f-7946a0308b0a}</UniqueIdentifier>
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\01.State_JoggingStart">
       <UniqueIdentifier>{30a1a2b0-e0cd-4a2f-a626-2db95dcc69f8}</UniqueIdentifier>
@@ -1526,9 +1780,6 @@
     <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Base">
       <UniqueIdentifier>{0166b192-807e-4b40-90b9-9b824b36cb67}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. UI\PlayerUI\Progress">
-      <UniqueIdentifier>{fe5378f3-5d92-48f6-9847-6ce6ac071847}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal\Icon">
       <UniqueIdentifier>{8c5fbd75-4b83-4f69-8bb0-f1807de75b94}</UniqueIdentifier>
     </Filter>
@@ -1573,6 +1824,138 @@
     </Filter>
     <Filter Include="02. GameObject\08. Effect\00. Effect_Rect">
       <UniqueIdentifier>{43be49b4-b4e1-4346-a84a-e59a8f70fb38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\03.BossMonster\00.Varg">
+      <UniqueIdentifier>{535343db-0b4d-4152-a537-8bf042b28b74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState">
+      <UniqueIdentifier>{2c62c05f-b0e7-4028-a8ca-969b517b2738}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\00.Idle">
+      <UniqueIdentifier>{283e3e5d-9e12-4536-a3f3-0d0a1facff6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\01.BossStart">
+      <UniqueIdentifier>{2facf000-cc88-46f5-8f07-e9310bbb0b93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\02.RunStart">
+      <UniqueIdentifier>{7071cbd2-a869-4ef0-b3a2-0c087321d152}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\03.Run">
+      <UniqueIdentifier>{6b418a01-f3e3-4913-a110-9889d6d63595}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\04.ComboAttack1a">
+      <UniqueIdentifier>{c55ca898-98d1-4c3a-9735-1fa64040b6e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\05.ComboAttack2a">
+      <UniqueIdentifier>{522686f5-12c6-4054-91e5-4ee172e7b314}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\07.ComboAttack1b">
+      <UniqueIdentifier>{c5402721-5443-4023-b711-db865d8014ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\08.ComboAttack2b">
+      <UniqueIdentifier>{e78af453-b8c2-4765-b02e-8fdff8eb3de8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\09.ComboAttack3b">
+      <UniqueIdentifier>{9a02c479-3f7d-4056-a69b-206f31a4a048}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\12.AvoidL">
+      <UniqueIdentifier>{84ccb88c-776d-485a-8e7e-ee05c5142547}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\13.AvoidR">
+      <UniqueIdentifier>{de39efdd-4d0f-4168-9e47-8dea40de0bba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\10.AvoidAttack">
+      <UniqueIdentifier>{f2ca2667-f0a7-49e2-9524-5b2568f63a75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\11.RunAttack">
+      <UniqueIdentifier>{848c1e5f-47ba-485b-9542-aee5c3026da4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\14.AvoidB">
+      <UniqueIdentifier>{e9ef0129-3cc5-49a6-9d92-0543c163b861}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\15.Hurt">
+      <UniqueIdentifier>{0c00c71d-9cb7-4b1a-8bc9-801086daaeae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\16.WalkF">
+      <UniqueIdentifier>{fbfc3854-338e-407a-abbe-c15839bb7227}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\17.WalkB">
+      <UniqueIdentifier>{107b51c4-df68-4324-9350-6ae73aad5571}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\18.WalkL">
+      <UniqueIdentifier>{516a954f-75e4-4f57-9d23-9be03e1ae679}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\19.WalkR">
+      <UniqueIdentifier>{fcd07671-2126-4c42-ae57-6f7c8ffca04a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\20.TurnL">
+      <UniqueIdentifier>{39429b61-8741-41e4-8c6a-5d721b80e460}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\21.TurnR">
+      <UniqueIdentifier>{7b6cdf50-f393-461d-b009-bd71d355aead}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\22.SPAttack_Catch">
+      <UniqueIdentifier>{7f4570e5-16dc-445d-98c9-65be82f12064}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\23.SPAttack_CatchFail">
+      <UniqueIdentifier>{ec100698-5062-4122-a9bd-87146383e072}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\24.SPAttack_Run">
+      <UniqueIdentifier>{48a23966-e211-4371-830c-2cd9983cfef4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\25.SPAttack_Roar">
+      <UniqueIdentifier>{b58676fd-149e-4faa-bd34-5ad299fb3071}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\26.SPAttack_Roar_Getup">
+      <UniqueIdentifier>{d05a21de-fe10-45ea-82b7-d877f53be875}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\27.StunStart">
+      <UniqueIdentifier>{94304dd8-e706-4330-8924-76be0024e5df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\28.StunLoop">
+      <UniqueIdentifier>{604e5de0-b481-40f1-bbae-b0c1684f9ccd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\30.Execution_SitDown">
+      <UniqueIdentifier>{a75c167f-9742-4a29-ba7f-10a94f6f71da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\31.Execution_SitLoop">
+      <UniqueIdentifier>{4cdedb45-e992-44e6-a207-cee4288e7d31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\32.Execution_Start">
+      <UniqueIdentifier>{c292f2b3-db77-4a59-ae9e-49cd66187599}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\33.Execution_End">
+      <UniqueIdentifier>{f8ca6d99-c246-4285-b266-c54d274ee7e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\34.Exection_Dead">
+      <UniqueIdentifier>{4db8f240-e5d9-4d10-a790-55db85eae464}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\35.Parry">
+      <UniqueIdentifier>{e2cac954-05e0-4c33-a5d0-1e46ae4e61a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\29.StunEnd">
+      <UniqueIdentifier>{22303c0f-b11f-41de-992b-7e1a2edef111}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\06.ComboAttack3a">
+      <UniqueIdentifier>{6b747b31-c4e6-4b25-ba5e-3d1ad89d5af0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\CustomFont">
+      <UniqueIdentifier>{699e0633-b8f5-4d86-ae5f-759bf62e1489}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\UI">
+      <UniqueIdentifier>{d079159a-0b85-4615-ae92-0764c377b37b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\Progress">
+      <UniqueIdentifier>{fe5378f3-5d92-48f6-9847-6ce6ac071847}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\MonsterHPBar">
+      <UniqueIdentifier>{d1cc751f-2867-49e0-be1e-51383949c286}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\MonsterHPBar\Elite">
+      <UniqueIdentifier>{0080c814-ce65-4f28-a417-282f097ae2bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\MonsterHPBar\Boss">
+      <UniqueIdentifier>{7f2bc015-f8e3-43fa-ae95-787d7300b0d1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

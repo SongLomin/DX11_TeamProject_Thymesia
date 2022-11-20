@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CGameObject;
+class CTransform;
 END
 
 BEGIN(Client)
@@ -31,9 +32,7 @@ public:
 
 	list<GAMEOBJECT_DESC>	m_pGameObjects;
 	list<GAMEOBJECT_DESC>	m_pSubGameObjects;
-
-private:
-	_uint	m_iPreSelectIndex = 0;
+	_uint					m_iPreSelectIndex = 0;
 
 public:
 	virtual void OnLevelLoad() override;

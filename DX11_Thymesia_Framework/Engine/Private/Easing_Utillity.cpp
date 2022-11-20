@@ -152,20 +152,20 @@ _vector CEasing_Utillity::CubicInOut(_vector vStartPoint, _vector vTargetPoint, 
 	return _vector((vTargetPoint - vStartPoint) / 2 * (fPassedTime*fPassedTime*fPassedTime + 2) + vStartPoint);
 }
 
-_vector CEasing_Utillity::QuarticIn(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
+_vector CEasing_Utillity::QuartIn(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
 {
 	fPassedTime /= fTotalTime;
 	return _vector((vTargetPoint - vStartPoint) * fPassedTime*fPassedTime*fPassedTime*fPassedTime + vStartPoint);
 }
 
-_vector CEasing_Utillity::QuarticOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
+_vector CEasing_Utillity::QuartOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
 {
 	fPassedTime /= fTotalTime;
 	fPassedTime--;
 	return _vector(-(vTargetPoint - vStartPoint) * (fPassedTime*fPassedTime*fPassedTime*fPassedTime - 1) + vStartPoint);
 }
 
-_vector CEasing_Utillity::QuarticInOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
+_vector CEasing_Utillity::QuartInOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
 {
 	fPassedTime /= fTotalTime / 2;
 	if (fPassedTime < 1) return _vector((vTargetPoint - vStartPoint) / 2 * fPassedTime*fPassedTime*fPassedTime*fPassedTime + vStartPoint);
@@ -173,20 +173,20 @@ _vector CEasing_Utillity::QuarticInOut(_vector vStartPoint, _vector vTargetPoint
 	return _vector(-(vTargetPoint - vStartPoint) / 2 * (fPassedTime*fPassedTime*fPassedTime*fPassedTime - 2) + vStartPoint);
 }
 
-_vector CEasing_Utillity::QuinticIn(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
+_vector CEasing_Utillity::QuintIn(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
 {
 	fPassedTime /= fTotalTime;
 	return _vector((vTargetPoint - vStartPoint) * fPassedTime*fPassedTime*fPassedTime*fPassedTime*fPassedTime + vStartPoint);
 }
 
-_vector CEasing_Utillity::QuinticOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
+_vector CEasing_Utillity::QuintOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
 {
 	fPassedTime /= fTotalTime;
 	fPassedTime--;
 	return _vector((vTargetPoint - vStartPoint) * (fPassedTime*fPassedTime*fPassedTime*fPassedTime*fPassedTime + 1) + vStartPoint);
 }
 
-_vector CEasing_Utillity::QuinticInOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
+_vector CEasing_Utillity::QuintInOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
 {
 	fPassedTime /= fTotalTime / 2;
 	if (fPassedTime < 1) return _vector((vTargetPoint - vStartPoint) / 2 * fPassedTime*fPassedTime*fPassedTime*fPassedTime*fPassedTime + vStartPoint);
@@ -194,17 +194,17 @@ _vector CEasing_Utillity::QuinticInOut(_vector vStartPoint, _vector vTargetPoint
 	return _vector((vTargetPoint - vStartPoint) / 2 * (fPassedTime*fPassedTime*fPassedTime*fPassedTime*fPassedTime + 2) + vStartPoint);
 }
 
-_vector CEasing_Utillity::SinIn(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
+_vector CEasing_Utillity::SineIn(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
 {
 	return _vector(-(vTargetPoint - vStartPoint) * cosf(fPassedTime / fTotalTime * (PI / 2)) + (vTargetPoint - vStartPoint) + vStartPoint);
 }
 
-_vector CEasing_Utillity::sinfOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
+_vector CEasing_Utillity::SineOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
 {
 	return _vector((vTargetPoint - vStartPoint) * sinf(fPassedTime / fTotalTime * (PI / 2)) + vStartPoint);
 }
 
-_vector CEasing_Utillity::sinfInOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
+_vector CEasing_Utillity::SineInOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
 {
 	return _vector(-(vTargetPoint - vStartPoint) / 2 * (cosf(PI*fPassedTime / fTotalTime) - 1) + vStartPoint);
 }
@@ -227,20 +227,20 @@ _vector CEasing_Utillity::ExpoInOut(_vector vStartPoint, _vector vTargetPoint, _
 	return _vector((vTargetPoint - vStartPoint) / 2 * (-pow(2, -10 * fPassedTime) + 2) + vStartPoint);
 }
 
-_vector CEasing_Utillity::CircularIn(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
+_vector CEasing_Utillity::CircIn(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
 {
 	fPassedTime /= fTotalTime;
 	return _vector(-(vTargetPoint - vStartPoint) * (sqrtf(1 - fPassedTime * fPassedTime) - 1) + vStartPoint);
 }
 
-_vector CEasing_Utillity::CircularOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
+_vector CEasing_Utillity::CircOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
 {
 	fPassedTime /= fTotalTime;
 	fPassedTime--;
 	return _vector((vTargetPoint - vStartPoint) * sqrtf(1 - fPassedTime * fPassedTime) + vStartPoint);
 }
 
-_vector CEasing_Utillity::CircularInOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
+_vector CEasing_Utillity::CircInOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
 {
 	fPassedTime /= fTotalTime / 2;
 	if (fPassedTime < 1) return _vector(-(vTargetPoint - vStartPoint) / 2 * (sqrtf(1 - fPassedTime * fPassedTime) - 1) + vStartPoint);
@@ -248,7 +248,7 @@ _vector CEasing_Utillity::CircularInOut(_vector vStartPoint, _vector vTargetPoin
 	return _vector((vTargetPoint - vStartPoint) / 2 * (sqrtf(1 - fPassedTime * fPassedTime) + 1) + vStartPoint);
 }
 
-_vector CEasing_Utillity::ElasticEaseOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
+_vector CEasing_Utillity::ElasticOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
 {
 
 	if ((fPassedTime /= fTotalTime) == 1)
@@ -260,7 +260,7 @@ _vector CEasing_Utillity::ElasticEaseOut(_vector vStartPoint, _vector vTargetPoi
 	return _vector((vTargetPoint - vStartPoint) * pow(2, -10 * fPassedTime) * sinf((fPassedTime * fTotalTime - s) * (2 * PI) / p) + (vTargetPoint - vStartPoint) + vStartPoint);
 }
 
-_vector CEasing_Utillity::ElasticEaseIn(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
+_vector CEasing_Utillity::ElasticIn(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
 {
 	if ((fPassedTime /= fTotalTime) == 1)
 		return vStartPoint + (vTargetPoint - vStartPoint);
@@ -271,7 +271,7 @@ _vector CEasing_Utillity::ElasticEaseIn(_vector vStartPoint, _vector vTargetPoin
 	return _vector(-((vTargetPoint - vStartPoint) * pow(2, 10 * (fPassedTime -= 1)) * sinf((fPassedTime * fTotalTime - s) * (2 * PI) / p)) + vStartPoint);
 }
 
-_vector CEasing_Utillity::ElasticEaseInOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
+_vector CEasing_Utillity::ElasticInOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
 {
 	if ((fPassedTime /= fTotalTime / 2) == 2)
 		return _vector(vStartPoint + (vTargetPoint - vStartPoint));
@@ -284,7 +284,7 @@ _vector CEasing_Utillity::ElasticEaseInOut(_vector vStartPoint, _vector vTargetP
 	return _vector((vTargetPoint - vStartPoint) * pow(2, -10 * (fPassedTime -= 1)) * sinf((fPassedTime * fTotalTime - s) * (2 * PI) / p) * .5f + (vTargetPoint - vStartPoint) + vStartPoint);
 }
 
-_vector CEasing_Utillity::BounceEaseOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
+_vector CEasing_Utillity::BounceOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
 {
 	if ((fPassedTime /= fTotalTime) < (1 / 2.75f))
 		return _vector((vTargetPoint - vStartPoint) * (7.5625f * fPassedTime * fPassedTime) + vStartPoint);
@@ -297,9 +297,9 @@ _vector CEasing_Utillity::BounceEaseOut(_vector vStartPoint, _vector vTargetPoin
 }
 
 
-_vector CEasing_Utillity::BounceEaseIn(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
+_vector CEasing_Utillity::BounceIn(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
 {
-	return _vector(BounceEaseOut(vTargetPoint, vStartPoint, fTotalTime - fPassedTime, fTotalTime));
+	return _vector(BounceOut(vTargetPoint, vStartPoint, fTotalTime - fPassedTime, fTotalTime));
 }
 //_float CEasing_Utillity::BounceEaseInOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
 //{

@@ -44,7 +44,7 @@ public:
 	void Set_CurrentAnimationKey(_uint iKeyIndex);
 	
 
-	_vector Get_DeltaBonePosition(const char* In_szBoneName);
+	_vector Get_DeltaBonePosition(const char* In_szBoneName, const _bool In_bUseOffset = false , _fmatrix In_OffsetMatrix = XMMatrixIdentity());
 	_vector Get_DeltaBonePitchYawRoll(const char* In_szBoneName);
 
 	_uint Get_CurrentAnimationKeyIndex() const;
@@ -73,6 +73,7 @@ public:
 
 	HRESULT Play_Animation(_float fTimeDelta);
 	HRESULT Render_Mesh(_uint iMeshContainerIndex);
+	HRESULT Update_BoneMatrices();
 	HRESULT Render_AnimModel(_uint iMeshContainerIndex, weak_ptr<CShader> pShader, _uint iPassIndex, const char* pConstantBoneName);
 	virtual void OnDestroy() override;
 	

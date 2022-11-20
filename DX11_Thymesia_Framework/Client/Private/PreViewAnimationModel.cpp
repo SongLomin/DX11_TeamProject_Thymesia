@@ -56,6 +56,12 @@ void CPreViewAnimationModel::LateTick(_float fTimeDelta)
 	GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_SHADOWDEPTH, Weak_Cast<CGameObject>(m_this));
 }
 
+void CPreViewAnimationModel::Custom_Thread0(_float fTimeDelta)
+{
+	if (m_pCurrentModelCom.lock())
+		m_pCurrentModelCom.lock()->Update_BoneMatrices();
+}
+
 HRESULT CPreViewAnimationModel::Render()
 {
 		__super::Render();
@@ -90,6 +96,8 @@ HRESULT CPreViewAnimationModel::Render_ShadowDepth(_fmatrix In_LightViewMatrix, 
 	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)&In_LightViewMatrix, sizeof(_float4x4));
 	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)&In_LightProjMatrix, sizeof(_float4x4));
 
+	
+
 	_uint iNumMeshContainers = m_pCurrentModelCom.lock()->Get_NumMeshContainers();
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
@@ -114,6 +122,12 @@ void CPreViewAnimationModel::SetUp_ShaderResource()
 
 	m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector));
 
+#ifndef _USE_THREAD_
+	if(m_pCurrentModelCom.lock())
+		m_pCurrentModelCom.lock()->Update_BoneMatrices();
+#endif // !_USE_THREAD_
+	
+
 }
 
 void CPreViewAnimationModel::Init_EditPreViewAnimationModel(const string& In_szModelKey)
@@ -126,6 +140,9 @@ void CPreViewAnimationModel::Init_EditPreViewAnimationModel(const string& In_szM
 		m_pCurrentModelCom.lock()->Set_CurrentAnimation(0);
 		return;
 	}
+
+
+	Clear_DebugWeapon();
 
 	shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey(In_szModelKey.c_str());
 
@@ -172,7 +189,8 @@ void CPreViewAnimationModel::Play_Animation(_float fTimeDelta)
 
 void CPreViewAnimationModel::Add_DebugWeapon(const string& In_szBoneName)
 {
-
+	m_pDebugWeapons.push_back(GAMEINSTANCE->Add_GameObject<CWeapon>(LEVEL_EDIT));
+	m_pDebugWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, Weak_Cast<CGameObject>(m_this), In_szBoneName);
 }
 
 void CPreViewAnimationModel::Set_WeaponDesc(const _float& In_fScale, const _float3& In_vOffset, const _float& In_fDamage, const HIT_TYPE& In_eHitType)
@@ -190,7 +208,7 @@ void CPreViewAnimationModel::Clear_DebugWeapon()
 	{
 		elem.lock()->Set_Dead();
 	}
-
+	m_pDebugWeapons.clear();
 }
 
 void CPreViewAnimationModel::Clear_ModelWeapon()

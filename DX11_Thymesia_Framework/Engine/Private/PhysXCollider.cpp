@@ -4,6 +4,8 @@
 #include "Transform.h"
 #include "SMath.h"
 #include "GameObject.h"
+#include "ModelData.h"
+#include "VIBuffer_Model_Instance.h"
 
 GAMECLASS_C(CPhysXCollider);
 IMPLEMENT_CLONABLE(CPhysXCollider, CComponent);
@@ -23,8 +25,6 @@ HRESULT CPhysXCollider::Initialize(void * pArg)
 
 	if (nullptr != pArg)
 	{
-		ZeroMemory(m_ConvexMeshes, sizeof(PxConvexMesh*) * 16);
-
 		memcpy(&m_PhysXColliderDesc, pArg, sizeof(PHYSXCOLLIDERDESC));
 
 		CreatePhysXActor(m_PhysXColliderDesc);
@@ -40,55 +40,186 @@ void CPhysXCollider::Start()
 
 }
 
-void CPhysXCollider::Init_MeshCollider(weak_ptr<MESH_DATA> pMeshData)
+void CPhysXCollider::Init_MeshCollider(weak_ptr<MESH_DATA> pMeshData, const vector<INSTANCE_MESH_DESC>* In_ParticleDescs)
 {
-	PxU32 iNumVertices = pMeshData.lock()->iNumVertices;
-	PxU32 iNumFaces = pMeshData.lock()->iNumFaces;
-	PxVec3* pVertices = DBG_NEW PxVec3[iNumVertices];
-	FACEINDICES32* pIndices = DBG_NEW FACEINDICES32[iNumFaces];
-
-
-
-	SMath::Convert_PxVec3FromMeshData(pVertices, pMeshData);
-
+	PxU32 iNumVertices;
+	PxU32 iNumFaces;
+	PxVec3* pVertices;
+	FACEINDICES32* pIndices;
 	PxTriangleMeshDesc meshDesc;
-	meshDesc.points.count = iNumVertices;
-	meshDesc.points.stride = sizeof(PxVec3);
-	meshDesc.points.data = pVertices;
 
-
-	for (PxU32 i = 0; i < iNumFaces; ++i)
+	if (In_ParticleDescs)
 	{
-		memcpy(&pIndices[i], &pMeshData.lock()->pIndices[i], sizeof(FACEINDICES32));
+		for (_size_t i = 0; i < In_ParticleDescs->size(); ++i)
+		{
+			iNumVertices = pMeshData.lock()->iNumVertices;
+			iNumFaces = pMeshData.lock()->iNumFaces;
+			pVertices = DBG_NEW PxVec3[iNumVertices];
+			pIndices = DBG_NEW FACEINDICES32[iNumFaces];
+
+			SMath::Convert_PxVec3FromMeshDataWithTransformMatrix(pVertices, pMeshData, (*In_ParticleDescs)[i].Get_Matrix());
+
+			meshDesc.points.count = iNumVertices;
+			meshDesc.points.stride = sizeof(PxVec3);
+			meshDesc.points.data = pVertices;
+
+			for (PxU32 i = 0; i < iNumFaces; ++i)
+			{
+				memcpy(&pIndices[i], &pMeshData.lock()->pIndices[i], sizeof(FACEINDICES32));
+			}
+
+			meshDesc.triangles.count = iNumFaces;
+			meshDesc.triangles.stride = 3 * sizeof(PxU32);
+			meshDesc.triangles.data = pIndices;
+
+			m_TriangleMesh.push_back(nullptr);
+
+			GET_SINGLE(CPhysX_Manager)->Create_MeshFromTriangles(meshDesc, &m_TriangleMesh.back());
+
+			Safe_Delete_Array(pVertices);
+			Safe_Delete_Array(pIndices);
+		}
+
+	}
+	else
+	{
+		iNumVertices = pMeshData.lock()->iNumVertices;
+		iNumFaces = pMeshData.lock()->iNumFaces;
+		pVertices = DBG_NEW PxVec3[iNumVertices];
+		pIndices = DBG_NEW FACEINDICES32[iNumFaces];
+
+		SMath::Convert_PxVec3FromMeshData(pVertices, pMeshData);
+
+		meshDesc.points.count = iNumVertices;
+		meshDesc.points.stride = sizeof(PxVec3);
+		meshDesc.points.data = pVertices;
+
+		for (PxU32 i = 0; i < iNumFaces; ++i)
+		{
+			memcpy(&pIndices[i], &pMeshData.lock()->pIndices[i], sizeof(FACEINDICES32));
+		}
+
+		meshDesc.triangles.count = iNumFaces;
+		meshDesc.triangles.stride = 3 * sizeof(PxU32);
+		meshDesc.triangles.data = pIndices;
+
+		m_TriangleMesh.push_back(nullptr);
+
+		GET_SINGLE(CPhysX_Manager)->Create_MeshFromTriangles(meshDesc, &m_TriangleMesh.back());
+
+		Safe_Delete_Array(pVertices);
+		Safe_Delete_Array(pIndices);
+	}
+}
+
+void CPhysXCollider::Init_ConvexMeshCollider(weak_ptr<MESH_DATA> pMeshData, const vector<INSTANCE_MESH_DESC>* In_ParticleDescs)
+{
+	PxU32 iNumVertices;
+	PxVec3* pVertices;
+	PxConvexMeshDesc meshDesc;
+
+	if (In_ParticleDescs)
+	{
+		/*_matrix TransformationMatrix;
+		_matrix RotationMatrix, ScaleMatrix;
+
+		_vector vPitchYawRoll;
+		_vector vPosition;*/
+
+		for (_size_t i = 0; i < In_ParticleDescs->size(); ++i)
+		{
+			iNumVertices = pMeshData.lock()->iNumVertices;
+			pVertices = DBG_NEW PxVec3[iNumVertices];
+
+			/*vPitchYawRoll = XMLoadFloat3(&(*In_ParticleDescs)[i].vRotation);
+			vPosition = XMLoadFloat3(&(*In_ParticleDescs)[i].vTarnslation);
+			vPosition.m128_f32[3] = 1.f;
+
+			RotationMatrix = XMMatrixRotationRollPitchYawFromVector(vPitchYawRoll);
+			ScaleMatrix = XMMatrixScaling((*In_ParticleDescs)[i].vScale.x, (*In_ParticleDescs)[i].vScale.y, (*In_ParticleDescs)[i].vScale.z);
+			TransformationMatrix = ScaleMatrix * RotationMatrix;
+			TransformationMatrix.r[3] = vPosition;*/
+
+			SMath::Convert_PxVec3FromMeshDataWithTransformMatrix(pVertices, pMeshData, (*In_ParticleDescs)[i].Get_Matrix());
+
+			meshDesc.points.count = iNumVertices;
+			meshDesc.points.stride = sizeof(PxVec3);
+			meshDesc.points.data = pVertices;
+
+			meshDesc.flags |= PxConvexFlag::Enum::ePLANE_SHIFTING;
+			meshDesc.flags |= PxConvexFlag::Enum::eGPU_COMPATIBLE;
+			meshDesc.flags |= PxConvexFlag::Enum::eCOMPUTE_CONVEX;
+
+			m_ConvexMeshes.push_back(nullptr);
+
+			GET_SINGLE(CPhysX_Manager)->Create_ConvexMesh(meshDesc, &m_ConvexMeshes.back());
+
+			Safe_Delete_Array(pVertices);
+		}
 	}
 
-	meshDesc.triangles.count = iNumFaces;
-	meshDesc.triangles.stride = 3 * sizeof(PxU32);
-	meshDesc.triangles.data = pIndices;
+	else
+	{
+		iNumVertices = pMeshData.lock()->iNumVertices;
+		pVertices = DBG_NEW PxVec3[iNumVertices];
 
-	GET_SINGLE(CPhysX_Manager)->Create_MeshFromTriangles(meshDesc, &m_TriangleMesh);
+		SMath::Convert_PxVec3FromMeshData(pVertices, pMeshData);
 
+		meshDesc.points.count = iNumVertices;
+		meshDesc.points.stride = sizeof(PxVec3);
+		meshDesc.points.data = pVertices;
 
-	/*PxTriangleMeshDesc meshDesc;
-	meshDesc.points.count = nbVerts;
-	meshDesc.points.stride = sizeof(PxVec3);
-	meshDesc.points.data = physx::PxTriangle::verts;
+		meshDesc.flags |= PxConvexFlag::Enum::ePLANE_SHIFTING;
+		meshDesc.flags |= PxConvexFlag::Enum::eGPU_COMPATIBLE;
+		meshDesc.flags |= PxConvexFlag::Enum::eCOMPUTE_CONVEX;
 
-	meshDesc.triangles.count = triCount;
-	meshDesc.triangles.stride = 3 * sizeof(PxU32);
-	meshDesc.triangles.data = indices32;
+		m_ConvexMeshes.push_back(nullptr);
 
-	PxDefaultMemoryOutputStream writeBuffer;
-	PxTriangleMeshCookingResult::Enum result;
-	bool status = cooking.cookTriangleMesh(meshDesc, writeBuffer, result);
-	if (!status)
-		return NULL;
+		GET_SINGLE(CPhysX_Manager)->Create_ConvexMesh(meshDesc, &m_ConvexMeshes.back());
 
-	PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
-	return physics.createTriangleMesh(readBuffer);*/
+		Safe_Delete_Array(pVertices);
+	}
+	
+}
 
-	Safe_Delete_Array(pVertices);
-	Safe_Delete_Array(pIndices);
+void CPhysXCollider::Init_ModelCollider(weak_ptr<MODEL_DATA> pModelData, const _bool In_isConvex)
+{
+	if (!pModelData.lock())
+	{
+		DEBUG_ASSERT;
+	}
+
+	for (_uint i = 0; i < pModelData.lock()->iNumMeshs; ++i)
+	{
+		if (In_isConvex)
+		{
+			Init_ConvexMeshCollider((pModelData.lock()->Mesh_Datas[i]));
+		}
+		else
+		{
+			Init_MeshCollider(pModelData.lock()->Mesh_Datas[i]);
+		}
+	}
+}
+
+void CPhysXCollider::Init_ModelInstanceCollider(weak_ptr<MODEL_DATA> pModelData, const vector<INSTANCE_MESH_DESC>& In_ParticleDescs, const _bool In_isConvex)
+{
+	if (!pModelData.lock())
+	{
+		DEBUG_ASSERT;
+	}
+
+	for (_uint i = 0; i < pModelData.lock()->iNumMeshs; ++i)
+	{
+		if (In_isConvex)
+		{
+			Init_ConvexMeshCollider((pModelData.lock()->Mesh_Datas[i]), &In_ParticleDescs);
+		}
+		else
+		{
+			Init_MeshCollider(pModelData.lock()->Mesh_Datas[i], &In_ParticleDescs);
+		}
+	}
 }
 
 void CPhysXCollider::Synchronize_Transform(weak_ptr<CTransform> pTransform, _fvector In_vOffset)
@@ -486,13 +617,11 @@ void CPhysXCollider::Add_PhysXActorAtScene(const PxVec3& In_MassSpaceInertiaTens
 		//m_pRigidDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
 
 		GET_SINGLE(CPhysX_Manager)->Add_DynamicActorAtCurrentScene(*m_pRigidDynamic);
-		Safe_Delete(m_pGeometry);
 	}
 
 	else if (m_pRigidStatic)
 	{
 		GET_SINGLE(CPhysX_Manager)->Add_StaticActorAtCurrentScene(*m_pRigidStatic);
-		Safe_Delete(m_pGeometry);
 	}
 
 	else
@@ -501,22 +630,31 @@ void CPhysXCollider::Add_PhysXActorAtScene(const PxVec3& In_MassSpaceInertiaTens
 		DEBUG_ASSERT;
 	}
 
+	for (auto& elem : m_pGeometry)
+	{
+		Safe_Delete(elem);
+	}
+
 }
 
-PxGeometry* CPhysXCollider::Create_Geometry()
+void CPhysXCollider::Create_Geometry()
 {
+
+
 	switch (m_PhysXColliderDesc.eShape)
 	{
 	case PHYSXCOLLIDER_TYPE::SPHERE:
-		return DBG_NEW PxSphereGeometry(XMVectorGetX(m_PhysXColliderDesc.vScale));
+		m_pGeometry.push_back(DBG_NEW PxSphereGeometry(XMVectorGetX(m_PhysXColliderDesc.vScale)));
+		break;
 
 	case PHYSXCOLLIDER_TYPE::BOX:
-		return DBG_NEW PxBoxGeometry(XMVectorGetX(m_PhysXColliderDesc.vScale) * 0.5f,
+		m_pGeometry.push_back(DBG_NEW PxBoxGeometry(XMVectorGetX(m_PhysXColliderDesc.vScale) * 0.5f,
 			XMVectorGetY(m_PhysXColliderDesc.vScale) * 0.5f, 
-			XMVectorGetZ(m_PhysXColliderDesc.vScale) * 0.5f);
+			XMVectorGetZ(m_PhysXColliderDesc.vScale) * 0.5f));
+		break;
 
 	case PHYSXCOLLIDER_TYPE::CYLINDER:
-	case PHYSXCOLLIDER_TYPE::CONVECMESH:
+	case PHYSXCOLLIDER_TYPE::CONVEXMESH:
 	{
 		PxConvexMeshGeometry* pPxGeometry = DBG_NEW PxConvexMeshGeometry();
 		pPxGeometry->convexMesh = m_PhysXColliderDesc.pConvecMesh;
@@ -525,20 +663,53 @@ PxGeometry* CPhysXCollider::Create_Geometry()
 		vScale.scale.y = XMVectorGetY(m_PhysXColliderDesc.vScale);
 		vScale.scale.z = XMVectorGetZ(m_PhysXColliderDesc.vScale);
 		pPxGeometry->scale = vScale;
-		return pPxGeometry;
+		m_pGeometry.push_back(pPxGeometry);
+		break;
 	}
 
-	case PHYSXCOLLIDER_TYPE::MESHDATA:
+	case PHYSXCOLLIDER_TYPE::CONVEXMODEL:
+	{
+		for (_size_t i = 0; i < m_ConvexMeshes.size(); ++i)
+		{
+			PxConvexMeshGeometry* pPxGeometry = DBG_NEW PxConvexMeshGeometry();
+			pPxGeometry->convexMesh = m_ConvexMeshes[i];
+			PxMeshScale	vScale;
+			vScale.scale.x = XMVectorGetX(m_PhysXColliderDesc.vScale);
+			vScale.scale.y = XMVectorGetY(m_PhysXColliderDesc.vScale);
+			vScale.scale.z = XMVectorGetZ(m_PhysXColliderDesc.vScale);
+			pPxGeometry->scale = vScale;
+			m_pGeometry.push_back(pPxGeometry);
+		}
+		break;
+	}
+
+	case PHYSXCOLLIDER_TYPE::MESH:
 	{
 		PxTriangleMeshGeometry* PxGeometry = DBG_NEW PxTriangleMeshGeometry();
-		PxGeometry->triangleMesh = m_TriangleMesh;
+		PxGeometry->triangleMesh = m_TriangleMesh.front();
 		PxMeshScale	vScale;
 		vScale.scale.x = XMVectorGetX(m_PhysXColliderDesc.vScale);
 		vScale.scale.y = XMVectorGetY(m_PhysXColliderDesc.vScale);
 		vScale.scale.z = XMVectorGetZ(m_PhysXColliderDesc.vScale);
 		PxGeometry->scale = vScale;
+		m_pGeometry.push_back(PxGeometry);
+		break;
+	}
 
-		return PxGeometry;
+	case PHYSXCOLLIDER_TYPE::MODEL:
+	{
+		for (_size_t i = 0; i < m_TriangleMesh.size(); ++i)
+		{
+			PxTriangleMeshGeometry* PxGeometry = DBG_NEW PxTriangleMeshGeometry();
+			PxGeometry->triangleMesh = m_TriangleMesh[i];
+			PxMeshScale	vScale;
+			vScale.scale.x = XMVectorGetX(m_PhysXColliderDesc.vScale);
+			vScale.scale.y = XMVectorGetY(m_PhysXColliderDesc.vScale);
+			vScale.scale.z = XMVectorGetZ(m_PhysXColliderDesc.vScale);
+			PxGeometry->scale = vScale;
+			m_pGeometry.push_back(PxGeometry);
+		}
+		break;
 	}
 
 	case PHYSXCOLLIDER_TYPE::TYPE_END:
@@ -547,82 +718,101 @@ PxGeometry* CPhysXCollider::Create_Geometry()
 	default:
 		break;
 	}
-
-	return nullptr;
 }
 
 void CPhysXCollider::Create_DynamicActor(PHYSXCOLLIDERDESC& tPhysXColliderDesc, PxTransform Transform)
 {
 	m_pRigidDynamic = GET_SINGLE(CPhysX_Manager)->Create_DynamicActor(Transform);
-	m_pGeometry = Create_Geometry();
-	PxShapeFlags shapeFlags;
+	Create_Geometry();
 
-	if (tPhysXColliderDesc.bTrigger)
+	// 지오메트리 개수만큼 셰이프를 만든다.
+	for (_size_t i = 0; i < m_pGeometry.size(); ++i)
 	{
-		shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE | PxShapeFlag::eSCENE_QUERY_SHAPE;
-		m_FilterData.word2 = 2;
+		PxShapeFlags shapeFlags;
 
-	}
-	else
-	{
-		shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE | PxShapeFlag::eSCENE_QUERY_SHAPE;
-		m_FilterData.word2 = 0;
+		if (tPhysXColliderDesc.bTrigger)
+		{
+			shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE | PxShapeFlag::eSCENE_QUERY_SHAPE;
+			m_FilterData.word2 = 2;
+
+		}
+		else
+		{
+			shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE | PxShapeFlag::eSCENE_QUERY_SHAPE;
+			m_FilterData.word2 = 0;
+		}
+
+		PxShape* pShape = nullptr;
+
+		GET_SINGLE(CPhysX_Manager)->Create_Shape(*m_pGeometry[i], m_PhysXColliderDesc.pMaterial, false, shapeFlags, &pShape);
+
+		m_FilterData.word0 = (1 << m_PhysXColliderDesc.iFilterType);
+		m_FilterData.word1 = GET_SINGLE(CPhysX_Manager)->Get_PhysXFilterGroup(m_PhysXColliderDesc.iFilterType);
+		m_FilterData.word3 = m_iColliderIndex;
+
+		//FilterData.word1 = m_PhysXColliderDesc.iFilterType;
+
+		if (!pShape)
+		{
+			// Shape가 생성되지 않음.
+			DEBUG_ASSERT;
+		}
+
+		pShape->setSimulationFilterData(m_FilterData);
+
+		m_pRigidDynamic->attachShape(*pShape);
+		m_pRigidDynamic->userData = &m_iColliderIndex;
+
+		m_pShape.push_back(pShape);
 	}
 
-	GET_SINGLE(CPhysX_Manager)->Create_Shape(*m_pGeometry, m_PhysXColliderDesc.pMaterial, false, shapeFlags, &m_pShape);
 	
-	m_FilterData.word0 = (1 << m_PhysXColliderDesc.iFilterType);
-	m_FilterData.word1 = GET_SINGLE(CPhysX_Manager)->Get_PhysXFilterGroup(m_PhysXColliderDesc.iFilterType);
-	m_FilterData.word3 = m_iColliderIndex;
-	
-	//FilterData.word1 = m_PhysXColliderDesc.iFilterType;
-
-	if (!m_pShape)
-	{
-		// Shape가 생성되지 않음.
-		DEBUG_ASSERT;
-	}
-
-	m_pShape->setSimulationFilterData(m_FilterData);
-
-	m_pRigidDynamic->attachShape(*m_pShape);
-	m_pRigidDynamic->userData = &m_iColliderIndex;
 }
 
 void CPhysXCollider::Create_StaticActor(PHYSXCOLLIDERDESC& tPhysXColliderDesc, PxTransform Transform)
 {
 	m_pRigidStatic = GET_SINGLE(CPhysX_Manager)->Create_StaticActor(Transform);
-	m_pGeometry = Create_Geometry();
+	Create_Geometry();
 
-	PxShapeFlags shapeFlags;
 
-	if (tPhysXColliderDesc.bTrigger)
+	// 지오메트리 개수만큼 셰이프를 만든다.
+	for (_size_t i = 0; i < m_pGeometry.size(); ++i)
 	{
-		shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE | PxShapeFlag::eSCENE_QUERY_SHAPE;
-		m_FilterData.word2 = 2;
+
+		PxShapeFlags shapeFlags;
+
+		if (tPhysXColliderDesc.bTrigger)
+		{
+			shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE | PxShapeFlag::eSCENE_QUERY_SHAPE;
+			m_FilterData.word2 = 2;
+		}
+		else
+		{
+			shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE | PxShapeFlag::eSCENE_QUERY_SHAPE;
+			m_FilterData.word2 = 0;
+		}
+
+		PxShape* pShape = nullptr;
+
+		GET_SINGLE(CPhysX_Manager)->Create_Shape(*m_pGeometry[i], m_PhysXColliderDesc.pMaterial, false, shapeFlags, &pShape);
+
+		m_FilterData.word0 = (1 << m_PhysXColliderDesc.iFilterType);
+		m_FilterData.word1 = GET_SINGLE(CPhysX_Manager)->Get_PhysXFilterGroup(m_PhysXColliderDesc.iFilterType);
+
+
+		if (!pShape)
+		{
+			// Shape가 생성되지 않음.
+			DEBUG_ASSERT;
+		}
+
+		pShape->setSimulationFilterData(m_FilterData);
+
+		m_pRigidStatic->attachShape(*pShape);
+		m_pRigidStatic->userData = &m_iColliderIndex;
+
+		m_pShape.push_back(pShape);
 	}
-	else
-	{
-		shapeFlags = PxShapeFlag::eVISUALIZATION | PxShapeFlag::eSIMULATION_SHAPE | PxShapeFlag::eSCENE_QUERY_SHAPE;
-		m_FilterData.word2 = 0;
-	}
-
-	GET_SINGLE(CPhysX_Manager)->Create_Shape(*m_pGeometry, m_PhysXColliderDesc.pMaterial, false, shapeFlags, &m_pShape);
-
-	m_FilterData.word0 = (1 << m_PhysXColliderDesc.iFilterType);
-	m_FilterData.word1 = GET_SINGLE(CPhysX_Manager)->Get_PhysXFilterGroup(m_PhysXColliderDesc.iFilterType);
-	
-
-	if (!m_pShape)
-	{
-		// Shape가 생성되지 않음.
-		DEBUG_ASSERT;
-	}
-
-	m_pShape->setSimulationFilterData(m_FilterData);
-
-	m_pRigidStatic->attachShape(*m_pShape);
-	m_pRigidStatic->userData = &m_iColliderIndex;
 }
 
 void CPhysXCollider::PhysXCollisionEnter(weak_ptr<CPhysXCollider> pOtherCollider)

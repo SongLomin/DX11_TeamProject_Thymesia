@@ -24,6 +24,13 @@ HRESULT CActor::Initialize(void* pArg)
     m_pRendererCom = Add_Component<CRenderer>();
     m_pRigidBodyCom = Add_Component<CRigidBody>();
 
+
+#ifdef _USE_THREAD_
+    Use_Thread(THREAD_TYPE::CUSTOM_THREAD0);
+    Use_Thread(THREAD_TYPE::CUSTOM_THREAD1);
+#endif // _USE_THREAD_
+
+
     return S_OK;
 }
 
@@ -31,13 +38,57 @@ void CActor::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
+#ifdef _LIFEGUARD_FOR_FALL_
+    _vector vPos = m_pTransformCom.lock()->Get_Position();
+    if (vPos.m128_f32[1] < -50.f)
+    {
+        vPos.m128_f32[1] = 50.f;
+        m_pTransformCom.lock()->Set_Position(vPos);
+    }
+#endif
 }
 
 void CActor::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
 
-    m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Cast<CGameObject>(m_this));
+#ifdef _USE_THREAD_
+    if (m_bRendering)
+    {
+        m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Weak_StaticCast<CGameObject>(m_this));
+    }
+
+#else
+    if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), 0.f))
+    {
+        m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Weak_StaticCast<CGameObject>(m_this));
+    }
+
+#endif // !_USE_THREAD_
+
+
+   
+
+    //m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Cast<CGameObject>(m_this));
+}
+
+void CActor::Custom_Thread0(_float fTimeDelta)
+{
+    m_pModelCom.lock()->Update_BoneMatrices();
+}
+
+void CActor::Custom_Thread1(_float fTimeDelta)
+{
+    __super::Custom_Thread1(fTimeDelta);
+
+    if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), 0.f))
+    {
+        m_bRendering = true;
+    }
+    else
+    {
+        m_bRendering = false;
+    }
 }
 
 HRESULT CActor::Render()

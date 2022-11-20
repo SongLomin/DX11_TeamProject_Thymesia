@@ -28,7 +28,7 @@ private:
 	_float	m_fTimeAcc = 0.f;
 	_uint	m_iNumRender = 0;
 	_tchar	m_szFPS[MAX_PATH] = TEXT("");
-	_bool	m_bClip = true;
+	_bool	m_bClip = false;
 
 private:
 	/* 그리기 상태를 셋팅하낟. */

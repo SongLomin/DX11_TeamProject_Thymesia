@@ -253,7 +253,9 @@ _uint CGameManager::Use_EffectGroupFromHash(const _hashcode& In_EffectGroupNameF
 	// 여기서 터진다면 이펙트그룹을 추가하지 않은 것인지 확인.
 	// 등록된 모든 이펙트 그룹이 사용 중이라면
 	m_pEffectGroups[In_EffectGroupNameFromHash].front().lock()->Clone_EffectGroup().lock()->Use_EffectGroup(pParentTransformCom, In_iTimeScaleLayer);
-	cout << "CloneEffect" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "CloneEffect" << endl;
+#endif
 
 	return iIndex;
 }
@@ -262,7 +264,9 @@ _uint CGameManager::Use_EffectGroup(const string& In_szEffectGroupName, weak_ptr
 {
 	_hashcode hashcode = hash<string>()(In_szEffectGroupName);
 	
-	cout << "Use EffectGroup: " << In_szEffectGroupName << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "Use EffectGroup: " << In_szEffectGroupName << endl;
+#endif
 
 
 	return Use_EffectGroupFromHash(hashcode, pParentTransformCom, In_iTimeScaleLayer);
@@ -273,13 +277,17 @@ void CGameManager::UnUse_EffectGroup(const string& In_szEffectGroupName, const _
 	_hashcode hashcode = hash<string>()(In_szEffectGroupName);
 	_uint iIndex = 0;
 
-	cout << "Init UnUse EffectGroup: " << In_szEffectGroupName << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "Init UnUse EffectGroup: " << In_szEffectGroupName << endl;
+#endif
 
 	for (auto& elem : m_pEffectGroups[hashcode])
 	{
 		if (In_EffectGroupIndex == iIndex)
 		{
-			cout << "UnUse EffectGroup: " << In_szEffectGroupName << endl;
+			#ifdef _DEBUG_COUT_
+		cout << "UnUse EffectGroup: " << In_szEffectGroupName << endl;
+#endif
 			if (elem.lock())
 				elem.lock()->UnUse_EffectGroup();
 		}

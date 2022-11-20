@@ -167,6 +167,11 @@ void CUI::Add_Shaking(const _float& In_ShakeTime, const _float& _fShakePower)
 
 }
 
+void CUI::Add_Child(weak_ptr<CUI> pChild)
+{
+	m_vecChildUI.push_back(pChild);
+}
+
 void CUI::OnEnable(void* _Arg)
 {
 	Set_Enable(true);

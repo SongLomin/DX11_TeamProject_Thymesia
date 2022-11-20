@@ -159,34 +159,10 @@ PS_OUT PS_MAIN_ALPHADISCARD(PS_IN In)
     Out.vColor *= In.vColor;
 
     vector vNoise = g_NoiseTexture.Sample(PointSampler, In.vTexUV + g_vNoiseUV);
-    vNoise.rgb = vNoise.rgb * 2 - 1;
+    // vNoise.rgb = vNoise.rgb * 2 - 1;
 
     Out.vColor.rgb *= vNoise.rgb;
-    Out.vColor.a *= g_MaskTexture.Sample(PointSampler, In.vTexUV + g_vMaskUV).r;
-
-    if (Out.vColor.a < g_fDiscardRatio)
-        discard;
-
-    if (g_bBloom)
-        Out.vExtractBloom = Out.vColor;
-
-    if (g_bGlow)
-        Out.vExtractGlow = g_vGlowColor;
-
-    return Out;
-}
-
-PS_OUT PS_MAIN_NODIFF_ALPHADISCARD(PS_IN In)
-{
-    PS_OUT Out = (PS_OUT)0;
-
-    Out.vColor = In.vColor;
-    
-    vector vNoise = g_NoiseTexture.Sample(PointSampler, In.vTexUV + g_vNoiseUV);
-    vNoise.rgb    = vNoise.rgb * 2 - 1;
-
-    Out.vColor.rgb *= vNoise.rgb;
-    Out.vColor.a   *= g_MaskTexture.Sample(PointSampler, In.vTexUV + g_vMaskUV).r;
+    Out.vColor.a *= g_MaskTexture.Sample(PointSampler, In.vTexUV + g_vMaskUV).g;
 
     if (Out.vColor.a < g_fDiscardRatio)
         discard;
@@ -208,31 +184,7 @@ PS_OUT PS_MAIN_BLACKDISCARD(PS_IN In)
     Out.vColor *= In.vColor;
 
     vector vNoise = g_NoiseTexture.Sample(PointSampler, In.vTexUV + g_vNoiseUV);
-    vNoise.rgb = vNoise.rgb * 2 - 1;
-
-    Out.vColor.rgb *= vNoise.rgb;
-    Out.vColor.a *= g_MaskTexture.Sample(PointSampler, In.vTexUV + g_vMaskUV).r;
-
-    if ((Out.vColor.r + Out.vColor.g + Out.vColor.b) < g_fDiscardRatio)
-        discard;
-
-    if (g_bBloom)
-        Out.vExtractBloom = Out.vColor;
-
-    if (g_bGlow)
-        Out.vExtractGlow = g_vGlowColor;
-
-    return Out;
-}
-
-PS_OUT PS_MAIN_NODIFF_COLORDISCARD(PS_IN In)
-{
-    PS_OUT Out = (PS_OUT)0;
-
-    Out.vColor = In.vColor;
-
-    vector vNoise = g_NoiseTexture.Sample(PointSampler, In.vTexUV + g_vNoiseUV);
-    vNoise.rgb = vNoise.rgb * 2 - 1;
+    // vNoise.rgb = vNoise.rgb * 2 - 1;
 
     Out.vColor.rgb *= vNoise.rgb;
     Out.vColor.a *= g_MaskTexture.Sample(PointSampler, In.vTexUV + g_vMaskUV).r;
@@ -271,6 +223,7 @@ PS_OUT PS_SPRITE(PS_IN_SPRITE In)
 	
     return Out;
 }
+
 technique11 DefaultTechnique
 {
     pass SpriteImage // 0

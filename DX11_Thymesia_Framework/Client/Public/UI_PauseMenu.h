@@ -5,6 +5,7 @@ BEGIN(Client)
 
 class CCustomUI;
 
+class CFadeMask;
 
 class CUI_PauseMenu : public CUI
 {
@@ -62,6 +63,13 @@ private:
     _uint       m_iPageIndex;
     _bool       m_bOpenThisFrame;
     _bool       m_bFonts;
+
+private:
+    weak_ptr<CFadeMask>    m_pFadeMask;
+
+
+public:
+    void            Call_FadeInPauseMenu();
 
 private:
     void    Create_Background();

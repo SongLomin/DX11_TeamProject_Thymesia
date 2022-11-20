@@ -9,6 +9,7 @@
 #include "Fader.h"
 #include "Engine_Defines.h"
 #include "UI_PauseMenu_Page_Status.h"
+#include "FadeMask.h"
 
 GAMECLASS_C(CUI_PauseMenu)
 CLONE_C(CUI_PauseMenu, CGameObject)
@@ -28,6 +29,9 @@ HRESULT CUI_PauseMenu::Initialize(void* pArg)
 	Create_Pages();
 	Create_PageText();
 	Create_PageIndicator();
+
+
+	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
 
 	m_bOpenThisFrame = false;
@@ -50,7 +54,17 @@ void CUI_PauseMenu::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	if (KEY_INPUT(KEY::CTRL, KEY_STATE::TAP) && m_bOpenThisFrame == false)
-		Set_Enable(false);
+	{
+		FaderDesc tFaderDesc;
+		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+		tFaderDesc.fFadeMaxTime = 0.3f;
+		tFaderDesc.fDelayTime = 0.f;
+		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+
+		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CUI_PauseMenu::Call_FadeInPauseMenu, this);
+	}
 
 
 	if (KEY_INPUT(KEY::Q, KEY_STATE::TAP))
@@ -122,6 +136,9 @@ void CUI_PauseMenu::OnPaging()
 	{
 		if (i == m_iPageIndex)//현재 페이지 인덱스
 		{
+			if (m_pPages[i].lock() != nullptr)
+				m_pPages[i].lock()->Set_Enable(true);
+
 			m_PageTexInfo[i].vPosition.y = 35.f;
 			m_PageTexInfo[i].vColor = _float4(1.f, 1.f, 1.f, 1.f);
 
@@ -142,6 +159,12 @@ void CUI_PauseMenu::OnPaging()
 		}
 	}
 
+}
+
+void CUI_PauseMenu::Call_FadeInPauseMenu()
+{
+	Set_Enable(false);
+	m_pFadeMask.lock()->Set_Enable(false);
 }
 
 void CUI_PauseMenu::Create_Background()
@@ -174,12 +197,12 @@ void CUI_PauseMenu::Create_Pages()
 
 void CUI_PauseMenu::Create_PageText()
 {
-	m_szPageTextData[PAUSE_MENU_STATUS] = L"상태";
-	m_szPageTextData[PAUSE_MENU_TALENT] = L"특성";
-	m_szPageTextData[PAUSE_MENU_ITEM] = L"아이템";
-	m_szPageTextData[PAUSE_MENU_COLLETION] = L"수집품";
-	m_szPageTextData[PAUSE_MENU_OPTION] = L"옵션";
-	m_szPageTextData[PAUSE_MENU_QUIT] = L"종료";
+	m_szPageTextData[PAUSE_MENU_STATUS] = L"STATUS";
+	m_szPageTextData[PAUSE_MENU_TALENT] = L"TALENT";
+	m_szPageTextData[PAUSE_MENU_ITEM] = L"ITEM";
+	m_szPageTextData[PAUSE_MENU_COLLETION] = L"COLLECTION";
+	m_szPageTextData[PAUSE_MENU_OPTION] = L"OPTION";
+	m_szPageTextData[PAUSE_MENU_QUIT] = L"QUIT";
 
 	for (_uint i = 0; i < (_uint)PAUSE_MENU_END; i++)
 	{
