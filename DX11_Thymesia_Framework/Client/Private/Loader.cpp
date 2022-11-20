@@ -310,7 +310,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.8f, 0.8f, 0.8f, 1.f);
+	LightDesc.vDiffuse = _float4(0.6f, 0.6f, 0.6f, 1.f);
 	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
 	LightDesc.vSpecular = _float4(0.2f, 0.2f, 0.2f, 0.2f);
 	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
