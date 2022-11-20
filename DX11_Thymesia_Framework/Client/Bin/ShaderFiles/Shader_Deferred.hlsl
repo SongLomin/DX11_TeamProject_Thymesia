@@ -448,6 +448,7 @@ PS_OUT PS_MAIN_POSTEFFECT_BLOOM(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
 	
+    float fPower = 2.2f;
     
     Out.vColor = float4(1.f, 1.f, 1.f, 1.f);
 	
@@ -456,16 +457,14 @@ PS_OUT PS_MAIN_POSTEFFECT_BLOOM(PS_IN In)
     float4 vBloomOriTex = g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV.xy);
     vBloomOriTex.a = 1.f;
 
-    float4 vBloom = pow(pow(abs(vBloomColor), 2.2f) + pow(abs(vBloomOriTex), 2.2f), 1.f / 2.2f);
+    float4 vBloom = pow(pow(abs(vBloomColor), fPower) + pow(abs(vBloomOriTex), fPower), 1.f / fPower);
 
-    Out.vColor = vHDRColor;
-     
-    Out.vColor = pow(abs(Out.vColor), 2.2f);
-    vBloom = pow(abs(vBloom), 2.2f);
+    Out.vColor = pow(abs(vHDRColor), fPower);
+    vBloom = pow(abs(vBloom), fPower);
 
     Out.vColor += vBloom;
 
-    Out.vColor = pow(abs(Out.vColor), 1 / 2.2f);
+    Out.vColor = pow(abs(Out.vColor), 1 / fPower);
 	
     return Out;
 }

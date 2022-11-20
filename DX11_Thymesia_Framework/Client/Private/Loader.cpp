@@ -584,8 +584,6 @@ HRESULT CLoader::Loading_ForEditLevel()
 
 
 	m_isFinished = true;
-
-
 	return S_OK;
 }
 

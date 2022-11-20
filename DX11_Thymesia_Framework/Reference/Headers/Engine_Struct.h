@@ -33,7 +33,7 @@ namespace Engine
 	{
 		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_HALFPOINT, TYPE_END };
 
-		
+
 		bool			bEnable;
 		TYPE			eActorType = TYPE_END;
 
@@ -117,9 +117,9 @@ namespace Engine
 	} VTXPOS_DECLARATION;
 
 	typedef struct tagVertex_Texture
-	{		
+	{
 		XMFLOAT3		vPosition;
-		XMFLOAT2		vTexUV;				
+		XMFLOAT2		vTexUV;
 	}VTXTEX;
 
 	typedef struct ENGINE_DLL tagVertex_Texture_Declaration
@@ -271,7 +271,7 @@ namespace Engine
 	{
 		enum WINMODE { MODE_FULL, MODE_WIN, MODE_END };
 
-		unsigned int iWinCX, iWinCY; 
+		unsigned int iWinCX, iWinCY;
 		HWND	hWnd;
 		WINMODE	isWindowMode;
 	}GRAPHICDESC;
@@ -347,13 +347,9 @@ namespace Engine
 		_float3			vCurrentTranslation;
 
 		_float3			vCurrentSpeedForce;
-		// _float3			vCurrentDragForce;
 
-		_float3			vTargetSpeed;
-		_float3			vTargetSpeedForce;
-
-		// _float3			vTargetDrag;
-		// _float3			vTargetDragForce;
+		_float3			vTargetSpeed;		// is Spawn Position when using easing position
+		_float3			vTargetSpeedForce;  // is Goal Position when using easing position
 
 		// For. Rotation
 		_float3         vCurrentRotation;
@@ -371,16 +367,16 @@ namespace Engine
 		_float2         vCurrentUV;
 		_float2         vCurrentUVForce;
 
-		void Reset()
-		{
-			ZeroMemory(this, sizeof(PARTICLE_DESC));
-		}
-
 		// For. Sprites
 		_float2 vSpriteUV;
 		_float fCurrentSpriteTime;
 		// For Sprites - Pendulum Effect
 		_bool bFramePlayBackward; // default is false : Frame plays forward
+
+		void Reset()
+		{
+			ZeroMemory(this, sizeof(PARTICLE_DESC));
+		}
 	};
 
 	struct FaderDesc
