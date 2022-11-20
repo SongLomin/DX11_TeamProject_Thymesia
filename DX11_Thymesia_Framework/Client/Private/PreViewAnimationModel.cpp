@@ -6,6 +6,7 @@
 #include "GameManager.h"
 #include "Corvus_DefaultSaber.h"
 #include "Corvus_DefaultDagger.h"
+#include "MobWeapon/MobWeapon.h"
 #include "Weapon.h"
 
 GAMECLASS_C(CPreViewAnimationModel)
@@ -146,7 +147,6 @@ void CPreViewAnimationModel::Init_EditPreViewAnimationModel(const string& In_szM
 
 	shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey(In_szModelKey.c_str());
 
-	//모델키와 일치하는 모델이 없음.
 	if (!pModelData)
 	{
 		DEBUG_ASSERT;
@@ -170,6 +170,17 @@ void CPreViewAnimationModel::Init_EditPreViewAnimationModel(const string& In_szM
 
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultDagger>(LEVEL_STATIC));
 		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, Weak_Cast<CGameObject>(m_this), "weapon_l");
+	}
+
+	if (strcmp(In_szModelKey.c_str(), "Varg") == 0)
+	{
+		Clear_ModelWeapon();
+
+		// m_pMobModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
+		// m_pMobModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
+		// 
+		// m_pMobModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
+		// m_pMobModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, Weak_Cast<CGameObject>(m_this), "weapon_l");
 	}
 }
 

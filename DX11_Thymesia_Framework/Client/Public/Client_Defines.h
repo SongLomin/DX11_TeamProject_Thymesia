@@ -16,7 +16,7 @@
 #endif // _DEBUG
 
 #ifdef NDEBUG
-#define		_144HZ_
+//#define		_144HZ_
 #define		_USE_THREAD_
 #define		_STAGE_2_
 #define		_LIFEGUARD_FOR_FALL_

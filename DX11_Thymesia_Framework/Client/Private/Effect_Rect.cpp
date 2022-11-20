@@ -230,7 +230,6 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 
 #pragma region Life Time
 	Out_Json["Init_Time"] = m_tEffectParticleDesc.fInitTime;
-	Out_Json["Min_Life_Time"] = m_tEffectParticleDesc.fMinLifeTime;
 	Out_Json["Min_Spawn_Time"] = m_tEffectParticleDesc.fMinSpawnTime;
 	Out_Json["Max_Spawn_Time"] = m_tEffectParticleDesc.fMaxSpawnTime;
 	Out_Json["Min_Life_Time"] = m_tEffectParticleDesc.fMinLifeTime;
@@ -250,26 +249,39 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 
 	Out_Json["Is_MoveLook"] = m_tEffectParticleDesc.bMoveLook;
 
-#pragma region Speed
-	Out_Json["Is_Easing_Speed"] = m_tEffectParticleDesc.bEasingSpeed;
+	Out_Json["Is_Easing_Position"] = m_tEffectParticleDesc.bEasingPosition;
 
-	if (m_tEffectParticleDesc.bEasingSpeed)
+	if (m_tEffectParticleDesc.bEasingPosition)
 	{
-		Out_Json["Speed_Easing_Type"] = m_tEffectParticleDesc.iSpeedEasingType;
-		Out_Json["Speed_Easing_Total_Time"] = m_tEffectParticleDesc.fSpeedEasingTotalTime;
+		Out_Json["Position_Easing_Type"] = m_tEffectParticleDesc.iSpeedEasingType;
+		Out_Json["Position_Easing_Total_Time"] = m_tEffectParticleDesc.fSpeedEasingTotalTime;
+
+		CJson_Utility::Write_Float3(Out_Json["Min_Goal_Offset_Position"], m_tEffectParticleDesc.vMinSpeed);
+		CJson_Utility::Write_Float3(Out_Json["Max_Goal_Offset_Position"], m_tEffectParticleDesc.vMaxSpeed);
 	}
 	else
 	{
-		CJson_Utility::Write_Float3(Out_Json["Min_Speed"], m_tEffectParticleDesc.vMinSpeed);
-		CJson_Utility::Write_Float3(Out_Json["Max_Speed"], m_tEffectParticleDesc.vMaxSpeed);
+#pragma region Speed
+		Out_Json["Is_Easing_Speed"] = m_tEffectParticleDesc.bEasingSpeed;
 
-		CJson_Utility::Write_Float3(Out_Json["Min_Speed_Force"], m_tEffectParticleDesc.vMinSpeedForce);
-		CJson_Utility::Write_Float3(Out_Json["Max_Speed_Force"], m_tEffectParticleDesc.vMaxSpeedForce);
-	}
+		if (m_tEffectParticleDesc.bEasingSpeed)
+		{
+			Out_Json["Speed_Easing_Type"] = m_tEffectParticleDesc.iSpeedEasingType;
+			Out_Json["Speed_Easing_Total_Time"] = m_tEffectParticleDesc.fSpeedEasingTotalTime;
+		}
+		else
+		{
+			CJson_Utility::Write_Float3(Out_Json["Min_Speed"], m_tEffectParticleDesc.vMinSpeed);
+			CJson_Utility::Write_Float3(Out_Json["Max_Speed"], m_tEffectParticleDesc.vMaxSpeed);
 
-	CJson_Utility::Write_Float3(Out_Json["Min_Limit_Speed"], m_tEffectParticleDesc.vMinLimitSpeed);
-	CJson_Utility::Write_Float3(Out_Json["Max_Limit_Speed"], m_tEffectParticleDesc.vMaxLimitSpeed);
+			CJson_Utility::Write_Float3(Out_Json["Min_Speed_Force"], m_tEffectParticleDesc.vMinSpeedForce);
+			CJson_Utility::Write_Float3(Out_Json["Max_Speed_Force"], m_tEffectParticleDesc.vMaxSpeedForce);
+		}
+
+		CJson_Utility::Write_Float3(Out_Json["Min_Limit_Speed"], m_tEffectParticleDesc.vMinLimitSpeed);
+		CJson_Utility::Write_Float3(Out_Json["Max_Limit_Speed"], m_tEffectParticleDesc.vMaxLimitSpeed);
 #pragma endregion
+	}
 
 #pragma region Rotation
 	if (_int(PARTICLETYPE::OUTBURST) != m_tEffectParticleDesc.iParticleType)
@@ -373,8 +385,6 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 #pragma region For. Sprite
 	if (PASS_SPRITE == m_tEffectParticleDesc.iShaderPassIndex)
 	{
-		// Out_Json["Sprite_Pendulum"] = m_tEffectParticleDesc.bPendulumSprite;
-
 		Out_Json["Loop_Sprite"] = m_tEffectParticleDesc.bLoopSprite;
 
 		Out_Json["Sprite_NumFrameX"] = m_tEffectParticleDesc.iNumFrameX;
@@ -436,34 +446,52 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	if (In_Json.find("Is_MoveLook") != In_Json.end())
 		m_tEffectParticleDesc.bMoveLook = In_Json["Is_MoveLook"];
 
-#pragma region Speed
-	if (In_Json.find("Is_Easing_Speed") != In_Json.end())
-		m_tEffectParticleDesc.bEasingSpeed = In_Json["Is_Easing_Speed"];
+	if (In_Json.find("Is_Easing_Position") != In_Json.end())
+		m_tEffectParticleDesc.bEasingPosition = In_Json["Is_Easing_Position"];
 
-	if (m_tEffectParticleDesc.bEasingSpeed)
+	if (m_tEffectParticleDesc.bEasingPosition)
 	{
-		if (In_Json.find("Speed_Easing_Type") != In_Json.end())
-			m_tEffectParticleDesc.iSpeedEasingType = In_Json["Speed_Easing_Type"];
-		if (In_Json.find("Speed_Easing_Total_Time") != In_Json.end())
-			m_tEffectParticleDesc.fSpeedEasingTotalTime = In_Json["Speed_Easing_Total_Time"];
+		if (In_Json.find("Position_Easing_Type") != In_Json.end())
+			m_tEffectParticleDesc.iSpeedEasingType = In_Json["Position_Easing_Type"];
+		if (In_Json.find("Position_Easing_Total_Time") != In_Json.end())
+			m_tEffectParticleDesc.fSpeedEasingTotalTime = In_Json["Position_Easing_Total_Time"];
+
+		if (In_Json.find("Min_Goal_Offset_Position") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Min_Goal_Offset_Position"], m_tEffectParticleDesc.vMinSpeed);
+		if (In_Json.find("Max_Goal_Offset_Position") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Max_Goal_Offset_Position"], m_tEffectParticleDesc.vMaxSpeed);
 	}
 	else
 	{
-		if (In_Json.find("Min_Speed") != In_Json.end())
-			CJson_Utility::Load_Float3(In_Json["Min_Speed"], m_tEffectParticleDesc.vMinSpeed);
-		if (In_Json.find("Max_Speed") != In_Json.end())
-			CJson_Utility::Load_Float3(In_Json["Max_Speed"], m_tEffectParticleDesc.vMaxSpeed);
-		if (In_Json.find("Min_Speed_Force") != In_Json.end())
-			CJson_Utility::Load_Float3(In_Json["Min_Speed_Force"], m_tEffectParticleDesc.vMinSpeedForce);
-		if (In_Json.find("Max_Speed_Force") != In_Json.end())
-			CJson_Utility::Load_Float3(In_Json["Max_Speed_Force"], m_tEffectParticleDesc.vMaxSpeedForce);
-	}
+#pragma region Speed
+		if (In_Json.find("Is_Easing_Speed") != In_Json.end())
+			m_tEffectParticleDesc.bEasingSpeed = In_Json["Is_Easing_Speed"];
 
-	if (In_Json.find("Min_Limit_Speed") != In_Json.end())
-		CJson_Utility::Load_Float3(In_Json["Min_Limit_Speed"], m_tEffectParticleDesc.vMinLimitSpeed);
-	if (In_Json.find("Max_Limit_Speed") != In_Json.end())
-		CJson_Utility::Load_Float3(In_Json["Max_Limit_Speed"], m_tEffectParticleDesc.vMaxLimitSpeed);
+		if (m_tEffectParticleDesc.bEasingSpeed)
+		{
+			if (In_Json.find("Speed_Easing_Type") != In_Json.end())
+				m_tEffectParticleDesc.iSpeedEasingType = In_Json["Speed_Easing_Type"];
+			if (In_Json.find("Speed_Easing_Total_Time") != In_Json.end())
+				m_tEffectParticleDesc.fSpeedEasingTotalTime = In_Json["Speed_Easing_Total_Time"];
+		}
+		else
+		{
+			if (In_Json.find("Min_Speed") != In_Json.end())
+				CJson_Utility::Load_Float3(In_Json["Min_Speed"], m_tEffectParticleDesc.vMinSpeed);
+			if (In_Json.find("Max_Speed") != In_Json.end())
+				CJson_Utility::Load_Float3(In_Json["Max_Speed"], m_tEffectParticleDesc.vMaxSpeed);
+			if (In_Json.find("Min_Speed_Force") != In_Json.end())
+				CJson_Utility::Load_Float3(In_Json["Min_Speed_Force"], m_tEffectParticleDesc.vMinSpeedForce);
+			if (In_Json.find("Max_Speed_Force") != In_Json.end())
+				CJson_Utility::Load_Float3(In_Json["Max_Speed_Force"], m_tEffectParticleDesc.vMaxSpeedForce);
+		}
+
+		if (In_Json.find("Min_Limit_Speed") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Min_Limit_Speed"], m_tEffectParticleDesc.vMinLimitSpeed);
+		if (In_Json.find("Max_Limit_Speed") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Max_Limit_Speed"], m_tEffectParticleDesc.vMaxLimitSpeed);
 #pragma endregion
+	}
 
 #pragma region Rotation
 	if (_int(PARTICLETYPE::OUTBURST) != m_tEffectParticleDesc.iParticleType)
@@ -762,7 +790,7 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 		{
 			m_tOriginalParticleDescs[i].vTargetSpeed = SMath::Add_Float3(m_tOriginalParticleDescs[i].vCurrentTranslation, m_tOriginalParticleDescs[i].vOffsetPosition);
 
-			_float3 vGoalPos = SMath::vRandom(m_tEffectParticleDesc.vMinGoalOffsetPosition, m_tEffectParticleDesc.vMaxGoalOffsetPosition);
+			_float3 vGoalPos = SMath::vRandom(m_tEffectParticleDesc.vMinSpeed, m_tEffectParticleDesc.vMaxSpeed);
 			_vector vGoalOffsetPosition = XMLoadFloat3(&vGoalPos);
 			vGoalOffsetPosition = XMVectorSetX(vGoalOffsetPosition, XMVectorGetX(vGoalOffsetPosition) * m_tOriginalParticleDescs[i].vCurrentRotation.x);
 			vGoalOffsetPosition = XMVectorSetY(vGoalOffsetPosition, XMVectorGetY(vGoalOffsetPosition) * m_tOriginalParticleDescs[i].vCurrentRotation.y);
@@ -847,7 +875,20 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 			, m_tEffectParticleDesc.fSpeedEasingTotalTime
 		);
 
-		m_tParticleDescs[i].vCurrentTranslation = vMove;
+		if (m_tEffectParticleDesc.bMoveLook)
+		{
+			_vector vSpawnPos           = XMLoadFloat3(&m_tParticleDescs[i].vTargetSpeed);
+			_vector vMovePosition       = XMLoadFloat3(&vMove);
+			vMovePosition              -= vSpawnPos;
+			_vector vRotatedPosition    = XMVector3TransformCoord(vMovePosition, XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_tParticleDescs[i].vCurrentRotation)));
+			vRotatedPosition           += vSpawnPos;
+			// _vector vCurrentPosition = XMLoadFloat3(&m_tParticleDescs[i].vCurrentTranslation);
+			// vCurrentPosition +       = vRotatedPosition;
+			XMStoreFloat3(&m_tParticleDescs[i].vCurrentTranslation, vRotatedPosition);
+		}
+		else
+			m_tParticleDescs[i].vCurrentTranslation = vMove;
+
 	}
 	else
 	{
@@ -1578,6 +1619,12 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 				ImGui::Text("Position Easing Time"); ImGui::SameLine();
 				ImGui::DragFloat("##Position_Total_Easing_Time", &m_tEffectParticleDesc.fSpeedEasingTotalTime, 0.01f, -100.f, 100.f, "%.5f");
+
+				ImGui::Text("Min Goal Offset Position");
+				ImGui::DragFloat3("##Min_Goal_Offset_Position", &m_tEffectParticleDesc.vMinSpeed.x, 0.1f);
+
+				ImGui::Text("Max Goal Offset Position");
+				ImGui::DragFloat3("##Max_Goal_Offset_Position", &m_tEffectParticleDesc.vMaxSpeed.x, 0.1f);
 			}
 #pragma endregion
 			ImGui::Separator();
@@ -1651,17 +1698,6 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 				ImGui::DragFloat3("##Max_Limit_Rotation", &m_tEffectParticleDesc.vMaxLimitRotation.x, 0.1f);
 			}
 
-#pragma endregion
-			ImGui::Separator();
-#pragma region For. Easing
-			if (m_tEffectParticleDesc.bEasingPosition)
-			{
-				ImGui::Text("Min Goal Offset Position");
-				ImGui::DragFloat3("##Min_Goal_Offset_Position", &m_tEffectParticleDesc.vMinGoalOffsetPosition.x, 0.1f);
-
-				ImGui::Text("Max Goal Offset Position");
-				ImGui::DragFloat3("##Max_Goal_Offset_Position", &m_tEffectParticleDesc.vMaxGoalOffsetPosition.x, 0.1f);
-			}
 #pragma endregion
 			ImGui::Separator();
 #pragma region Scale

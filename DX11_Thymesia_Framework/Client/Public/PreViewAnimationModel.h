@@ -5,7 +5,7 @@ BEGIN(Client)
 
 class CLuxiya;
 class CWeapon;
-
+class CMobWeapon;
 class CPreViewAnimationModel :
     public CCharacter
 {
@@ -46,6 +46,7 @@ private:
 private:
     list<weak_ptr<CWeapon>>                 m_pDebugWeapons;
     list<weak_ptr<CWeapon>>                 m_pModelWeapons;
+    list<weak_ptr<CMobWeapon>>              m_pMobModelWeapons;
 
 private:
     void Free();
