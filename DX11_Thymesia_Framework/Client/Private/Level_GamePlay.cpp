@@ -12,6 +12,9 @@
 #include "MonsterHPBar_Base.h"
 #include "MonsterHPBar_Elite.h"
 #include "MonsterHPBar_Boss.h"
+
+
+
 CLevel_GamePlay::CLevel_GamePlay()
 	//: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {

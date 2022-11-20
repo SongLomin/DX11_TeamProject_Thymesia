@@ -28,7 +28,6 @@ HRESULT CStatic_Instancing_Prop::Initialize(void* pArg)
 	GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_StaticCast<CGameObject>(m_this));
 
 	m_pInstanceModelCom = Add_Component<CVIBuffer_Model_Instance>();
-
     return S_OK;
 }
 
@@ -47,6 +46,11 @@ void CStatic_Instancing_Prop::Tick(_float fTimeDelta)
 void CStatic_Instancing_Prop::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
+}
+
+void CStatic_Instancing_Prop::Custom_Thread1(_float fTimeDelta)
+{
+	//Do Nothing
 }
 
 HRESULT CStatic_Instancing_Prop::Render()

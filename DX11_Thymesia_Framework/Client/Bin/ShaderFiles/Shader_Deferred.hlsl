@@ -595,9 +595,9 @@ PS_OUT_FOG PS_MAIN_FOG(PS_IN In)
     float			fDistance = length(vFogDir);
 
     //float			fAtt = saturate((g_fRange - fDistance) / g_fRange);
-    float			fAtt = saturate((20.f - fDistance) / 20.f);
+    float			fAtt = saturate((40.f - fDistance) / 40.f);
 
-    Out.vFog = (1.f - (fAtt*fAtt));
+    Out.vFog = (0.8f - (fAtt*fAtt));
    // Out.vShade.a = 1.f;
 
 

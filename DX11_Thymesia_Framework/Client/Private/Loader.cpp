@@ -421,7 +421,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 
 	// TODO : 메쉬 생성용 나중에 삭제하시오 ( An )
-	Load_AllMeshes("../Bin/Resources/Meshes/Temp/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	// Load_AllMeshes("../Bin/Resources/Meshes/Temp/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 
 	return S_OK;
 }

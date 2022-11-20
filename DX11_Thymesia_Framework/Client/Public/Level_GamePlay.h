@@ -6,6 +6,8 @@
 
 BEGIN(Client)
 
+class CUI_PauseMenu;
+
 class CLevel_GamePlay final : public CClientLevel
 {
 public:
@@ -34,7 +36,7 @@ private:
 	_bool	m_bFadeTrigger = false;
 
 private:
-	weak_ptr< CUI_PauseMenu> m_pPauseMenu;
+	weak_ptr<CUI_PauseMenu> m_pPauseMenu;
 
 private:
 	virtual void OnEventMessage(_uint iArg) override;
