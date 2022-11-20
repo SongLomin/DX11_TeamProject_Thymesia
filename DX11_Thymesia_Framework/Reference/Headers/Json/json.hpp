@@ -6913,7 +6913,8 @@ class lexer : public lexer_base<BasicJsonType>
     error message and return false. Otherwise, return true.
 
     @param[in] ranges  list of integers; interpreted as list of pairs of
-                       inclusive lower and upper bound, respectively
+                       inclusive lower and 
+                       bound, respectively
 
     @pre The passed list @a ranges must have 2, 4, or 6 elements; that is,
          1, 2, or 3 pairs. This precondition is enforced by an assertion.

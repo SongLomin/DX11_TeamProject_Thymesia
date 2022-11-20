@@ -67,7 +67,9 @@ void CCorvusState_JoggingStartEnd::OnStateStart(const _float& In_fAnimationBlend
 
 
 #ifdef _DEBUG
-	cout << "NorMonState: RunStartEnd -> OnStateStart" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: RunStartEnd -> OnStateStart" << endl;
+#endif
 
 #endif
 }

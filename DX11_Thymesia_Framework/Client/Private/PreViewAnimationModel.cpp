@@ -141,6 +141,9 @@ void CPreViewAnimationModel::Init_EditPreViewAnimationModel(const string& In_szM
 		return;
 	}
 
+
+	Clear_DebugWeapon();
+
 	shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey(In_szModelKey.c_str());
 
 	//모델키와 일치하는 모델이 없음.
@@ -186,7 +189,8 @@ void CPreViewAnimationModel::Play_Animation(_float fTimeDelta)
 
 void CPreViewAnimationModel::Add_DebugWeapon(const string& In_szBoneName)
 {
-
+	m_pDebugWeapons.push_back(GAMEINSTANCE->Add_GameObject<CWeapon>(LEVEL_EDIT));
+	m_pDebugWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, Weak_Cast<CGameObject>(m_this), In_szBoneName);
 }
 
 void CPreViewAnimationModel::Set_WeaponDesc(const _float& In_fScale, const _float3& In_vOffset, const _float& In_fDamage, const HIT_TYPE& In_eHitType)
@@ -204,7 +208,7 @@ void CPreViewAnimationModel::Clear_DebugWeapon()
 	{
 		elem.lock()->Set_Dead();
 	}
-
+	m_pDebugWeapons.clear();
 }
 
 void CPreViewAnimationModel::Clear_ModelWeapon()

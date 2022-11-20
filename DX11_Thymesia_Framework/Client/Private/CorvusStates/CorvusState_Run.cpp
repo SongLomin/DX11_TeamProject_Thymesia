@@ -74,7 +74,9 @@ void CCorvusState_Run::OnStateStart(const _float& In_fAnimationBlendTime)
 
 
 #ifdef _DEBUG
-	cout << "NorMonState: Run -> OnStateStart" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: Run -> OnStateStart" << endl;
+#endif
 
 #endif
 }
@@ -133,9 +135,9 @@ _bool CCorvusState_Run::Check_AndChangeNextState()
 	if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
 	{
 		if (KEY_INPUT(KEY::W, KEY_STATE::HOLD)
-			&& !KEY_INPUT(KEY::A, KEY_STATE::HOLD)
-			&& !KEY_INPUT(KEY::S, KEY_STATE::HOLD)
-			&& !KEY_INPUT(KEY::D, KEY_STATE::HOLD))
+			|| KEY_INPUT(KEY::A, KEY_STATE::HOLD)
+			|| KEY_INPUT(KEY::S, KEY_STATE::HOLD)
+			|| KEY_INPUT(KEY::D, KEY_STATE::HOLD))
 		{
 			Get_OwnerPlayer()->Change_State<CCorvusState_SprintStart>();
 				return true;

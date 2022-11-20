@@ -65,7 +65,9 @@ void CNorMonState_Stop::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "NorMonState: Stop -> StopStop" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: Stop -> StopStop" << endl;
+#endif
 #endif
 
 

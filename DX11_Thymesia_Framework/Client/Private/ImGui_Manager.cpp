@@ -360,7 +360,9 @@ void CImGui_Manager::Load_FromJson(const string& In_szPath)
 	if (FAILED(CJson_Utility::Load_Json(In_szPath.c_str(), m_CurrentLevelJson)))
 	{
 #ifdef _DEBUG
+		#ifdef _DEBUG_COUT_
 		cout << In_szPath << " : 해당 경로에 Json 파일이 없음." << endl;
+#endif
 #endif // _DEBUG
 
 		return;

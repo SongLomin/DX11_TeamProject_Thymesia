@@ -68,7 +68,7 @@ HRESULT CStage2::Render()
 	{
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 		{
-			//cout << i << ". None Texture" << endl;
+
 		}
 
 		// 노말인데 5에 저장되어 있다..

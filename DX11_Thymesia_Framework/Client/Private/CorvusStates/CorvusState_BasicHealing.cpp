@@ -61,7 +61,9 @@ void CCorvusState_BasicHealing::OnStateStart(const _float& In_fAnimationBlendTim
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: RunStart -> OnStateStart" << endl;
+#endif
 #endif
 	
 

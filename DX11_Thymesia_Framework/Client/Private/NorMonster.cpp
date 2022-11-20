@@ -40,7 +40,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		m_pModelCom.lock()->Init_Model("Mon_AxeMan", "", (_uint)TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 		m_pWeapons.back().lock()->Set_WeaponType(MONSTERWEAPONTYPE::WEAPON_AXE);
-		m_pWeapons.back().lock()->Init_DefaultWeapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "hand_r");
+		m_pWeapons.back().lock()->Init_DefaultWeapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
 		//TODO 야매에요 ㅎ
 		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, 0.f, m_tLinkStateDesc.vYame.z, 1.f));
 		break;
@@ -49,24 +49,28 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		m_pModelCom.lock()->Init_Model("Mon_KnifeWoMan", "", (_uint)TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 		m_pWeapons.back().lock()->Set_WeaponType(MONSTERWEAPONTYPE::WEAPON_KNIFE);
-		m_pWeapons.back().lock()->Init_DefaultWeapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "hand_r");
-		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
-		m_pWeapons.back().lock()->Set_WeaponType(MONSTERWEAPONTYPE::WEAPON_KNIFE);
-		m_pWeapons.back().lock()->Init_DefaultWeapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "hand_l");
-		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(3.f, 0.f, 1.f, 1.f));
+		m_pWeapons.back().lock()->Init_DefaultWeapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
+		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, 0.f, m_tLinkStateDesc.vYame.z, 1.f));
 		break;
 	case NORMONSTERTYPE::SKULL:
 		break;
 	case NORMONSTERTYPE::GARDENER:
 		break;
-
-
 	}
 
+		
 	//TODO 여기서하는 이유는 몬스터가 배치되고 원점에서 우리가 피킹한위치만큼더해지고 난뒤에 그월드포지션값저장하기위해서 여기서함
-	m_pModelCom.lock()->Set_RootNode("root");
-
-
+		switch (m_tLinkStateDesc.eNorMonType)
+		{
+		case  NORMONSTERTYPE::AXEMAN:
+			m_pModelCom.lock()->Set_RootNode("root");
+			break;
+		case  NORMONSTERTYPE::KNIFEWOMAN:
+			m_pModelCom.lock()->Set_RootNode("root");
+			break;
+		}
+	
+	
 	//CStatus::STATUS_DESC StatusDesc;
 	//StatusDesc.fMaxHP = StatusDesc.fCurrentHP = 360.f;
 	//StatusDesc.szName = TEXT("유적 발굴가");
@@ -128,9 +132,19 @@ void CNorMonster::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
-	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
+	switch (m_tLinkStateDesc.eNorMonType)
+	{
+	case  NORMONSTERTYPE::AXEMAN:
+		_vector vMoveDirs = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+		vMoveDirs = m_pModelCom.lock()->Get_DeltaBonePosition("root");
+		m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDirs, m_pNaviMeshCom);
+		break;
+	case  NORMONSTERTYPE::KNIFEWOMAN:	
+		_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+		m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
+		break;
+	}
 
 }
 

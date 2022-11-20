@@ -58,7 +58,9 @@ void CCorvusState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "CORVUSMonState: Stand -> OnStateStart" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "CORVUSMonState: Stand -> OnStateStart" << endl;
+#endif
 
 #endif
 }

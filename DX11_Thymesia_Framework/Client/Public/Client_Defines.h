@@ -7,15 +7,16 @@
 #include "imgui.h"
 
 #ifdef _DEBUG
-#define _USE_THREAD_
-#define _144HZ_
-#define _LIFEGUARD_FOR_FALL_
+#define		_USE_THREAD_
+#define		_144HZ_
+#define		_LIFEGUARD_FOR_FALL_
+#define		_DBUG_COUT_
 #endif // _DEBUG
 
 #ifdef NDEBUG
-#define _144HZ_
-#define _USE_THREAD_
-#define _LIFEGUARD_FOR_FALL_
+#define		_144HZ_
+#define		_USE_THREAD_
+#define		_LIFEGUARD_FOR_FALL_
 #endif // NDEBUG
 
 namespace Client 
@@ -54,6 +55,9 @@ namespace Client
 		UPPER_HIT,
 		DOWN_HIT,
 		WARNING,
+		LEFT_HIT,
+		RIGHT_HIT,
+		EXCTUE_HIT,
 		TYPE_END
 	};
 
@@ -121,6 +125,7 @@ namespace Client
 	{
 		WEAPON_AXE,
 		WEAPON_KNIFE,
+		WEAPON_BOSSVARG,
 		MON_WEAPON_END
 	};
 
@@ -138,6 +143,13 @@ namespace Client
 		FIDGETIDLE,
 		IDLEEND
 	};
+
+	enum class BOSSSTARTTYPE {
+		BEGINSTART,
+		NORMALSTART,
+		BOSSSTARTEND
+	};
+
 
 	//enum class  RAREMONSTERTYPE {
 	//	RMON_ARMOR,
