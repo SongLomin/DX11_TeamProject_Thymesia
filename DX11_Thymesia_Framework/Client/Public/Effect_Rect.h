@@ -97,19 +97,17 @@ private:
     weak_ptr<CVIBuffer_Rect_Instance>   m_pVIBuffer;
 
     weak_ptr<CTexture>                  m_pColorDiffuseTextureCom;
-    weak_ptr<CTexture>                  m_pMaskTextureCom;
-    weak_ptr<CTexture>                  m_pNoiseTextureCom;
-
     _float2                             m_vDiffuseCurrentUV;
     _float2                             m_vDiffuseCurrentUVForce;
 
+    weak_ptr<CTexture>                  m_pMaskTextureCom;
     _float2                             m_vMaskCurrentUV;
     _float2                             m_vMaskCurrentUVForce;
 
+    weak_ptr<CTexture>                  m_pNoiseTextureCom;
     _float2                             m_vNoiseCurrentUV;
     _float2                             m_vNoiseCurrentUVForce;
     
-    // For. Glow
     _float4                             m_vCurrentGlowColor;
     _float4                             m_vCurrentGlowColorForce;
 

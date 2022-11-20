@@ -166,6 +166,11 @@ namespace Client
 		_float3		vMinSpawnOffsetRange;
 		_float3		vMaxSpawnOffsetRange;
 #pragma endregion
+
+#pragma region Easing Position
+		_bool		bEasingPosition;
+#pragma endregion
+
 		// particle moves toward look
 		_bool		bMoveLook;
 #pragma region Speed

@@ -755,12 +755,6 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 		m_tOriginalParticleDescs[i].vTargetSpeedForce =
 			SMath::vRandom(m_tEffectParticleDesc.vMinSpeedForce, m_tEffectParticleDesc.vMaxSpeedForce);
 
-		//m_tOriginalParticleDescs[i].vTargetDrag =
-		//	SMath::vRandom(m_tEffectParticleDesc.vMinDrag, m_tEffectParticleDesc.vMaxDrag);
-
-		//m_tOriginalParticleDescs[i].vTargetDragForce =
-		//	SMath::vRandom(m_tEffectParticleDesc.vMinDragForce, m_tEffectParticleDesc.vMaxDragForce);
-
 		m_tOriginalParticleDescs[i].vCurrentRotation =
 			SMath::vRandom(m_tEffectParticleDesc.vMinStartRotation, m_tEffectParticleDesc.vMaxStartRotation);
 
