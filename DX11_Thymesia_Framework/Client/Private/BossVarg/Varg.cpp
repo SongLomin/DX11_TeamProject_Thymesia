@@ -34,8 +34,8 @@ HRESULT CVarg::Initialize(void* pArg)
 
 	m_pModelCom.lock()->Init_Model("Boss_Varg", "", (_uint)TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
-	m_pWeapons.back().lock()->Set_WeaponType(MONSTERWEAPONTYPE::WEAPON_BOSSVARG);
-	m_pWeapons.back().lock()->Init_DefaultWeapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
+	m_pWeapons.back().lock()->Init_Model("Boss_VargWeapon", TIMESCALE_LAYER::MONSTER);
+	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
 	//TODO 위치이동 야매임
 	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, 0.f, m_tLinkStateDesc.vYame.z, 1.f));
 

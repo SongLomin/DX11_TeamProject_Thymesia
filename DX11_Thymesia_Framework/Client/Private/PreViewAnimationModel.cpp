@@ -172,15 +172,16 @@ void CPreViewAnimationModel::Init_EditPreViewAnimationModel(const string& In_szM
 		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, Weak_Cast<CGameObject>(m_this), "weapon_l");
 	}
 
-	if (strcmp(In_szModelKey.c_str(), "Varg") == 0)
+	if (strcmp(In_szModelKey.c_str(), "Boss_Varg") == 0)
 	{
 		Clear_ModelWeapon();
 
-		// m_pMobModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
-		// m_pMobModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
-		// 
-		// m_pMobModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
-		// m_pMobModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, Weak_Cast<CGameObject>(m_this), "weapon_l");
+		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
+		m_pModelWeapons.back().lock()->Init_Model("Boss_VargWeapon", TIMESCALE_LAYER::MONSTER);
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
+		
+		/*m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, Weak_Cast<CGameObject>(m_this), "weapon_l");*/
 	}
 }
 

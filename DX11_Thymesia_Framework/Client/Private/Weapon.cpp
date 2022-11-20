@@ -220,6 +220,11 @@ void CWeapon::OnSetDead()
 	int i = 0;
 }
 
+void CWeapon::Init_Model(const string& strWeaponName, TIMESCALE_LAYER eLayer)
+{
+	m_pModelCom.lock()->Init_Model(strWeaponName.c_str(), "", (_uint)eLayer);
+}
+
 void CWeapon::Free()
 {
 }
