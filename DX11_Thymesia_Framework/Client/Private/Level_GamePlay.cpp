@@ -29,7 +29,7 @@ HRESULT CLevel_GamePlay::Initialize()
 		return E_FAIL;
 
 	ShowCursor(false);
-	/*
+	
 #pragma region GAMEOBJECT
 
 	Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_GAMEPLAY);
@@ -96,7 +96,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
 	
 #pragma endregion GAMEOBJECT
-	*/
+	
 	
 	SetUp_UI();
 
@@ -189,6 +189,7 @@ void CLevel_GamePlay::SetUp_UI()
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
 
 	//TODO : MonsterHpBar TestCode
+	/*
 	CUI::UI_DESC tDesc;
 	tDesc.fX = g_iWinCX / 2.f;
 	tDesc.fY = g_iWinCY / 2.f;
@@ -198,7 +199,7 @@ void CLevel_GamePlay::SetUp_UI()
 
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Elite>(LEVEL_STATIC, &tDesc));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Boss>(LEVEL_STATIC, &tDesc));
-
+	*/
 }
 
 void CLevel_GamePlay::Call_Enable_PauseMenu()

@@ -236,7 +236,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 //	GAMEINSTANCE->Load_Textures(("Dissolve_2"), TEXT("../Bin/Resources/Textures/UI/Dissolve/Test2.png"), MEMORY_TYPE::MEMORY_STATIC);
 //	GAMEINSTANCE->Load_Textures(("Dissolve_3"), TEXT("../Bin/Resources/Textures/UI/Dissolve/Test3.png"), MEMORY_TYPE::MEMORY_STATIC);
 //	GAMEINSTANCE->Load_Textures(("Dissolve_4"), TEXT("../Bin/Resources/Textures/UI/Dissolve/Test4.png"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures(("Dissolve_1"), TEXT("../Bin/Resources/Textures/UI/Dissolve/Test%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+//	GAMEINSTANCE->Load_Textures(("Dissolve_1"), TEXT("../Bin/Resources/Textures/UI/Dissolve/Test%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	GAMEINSTANCE->Load_Textures(("MaskColor_Vertical"), TEXT("../Bin/Resources/Textures/UI/W_PlagueWeapon_MaskColor01.png"), MEMORY_TYPE::MEMORY_STATIC);
 
@@ -285,7 +285,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 
 
-	/*moon
+	
 	Load_AllDiffuseTexture();
 
 	
@@ -346,7 +346,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	LightDesc.bEnable = false;
 
 	GAMEINSTANCE->Add_Light(LightDesc);
-	*/
+	
 	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중입니다. "));
 
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_UI"), TEXT("../Bin/ShaderFiles/Shader_UI.hlsl"));
@@ -371,7 +371,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxModelInstance"), TEXT("../Bin/ShaderFiles/Shader_VtxModelInstance.hlsl"));
 
 	lstrcpy(m_szLoadingText, TEXT("데이터를 로딩중입니다. "));
-	/*
+	
 	GET_SINGLE(CGameManager)->Load_AllKeyEventFromJson();
 
 	_matrix			TransformMatrix;
@@ -404,7 +404,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Model("Torch", "../Bin/Resources/Meshes/LightProp/Torch/Torch.FBX", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 	
 	lstrcpy(m_szLoadingText, TEXT("객체 생성 중입니다. "));
-	*/
+	
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));	
 
 	m_isFinished = true;
@@ -445,12 +445,12 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 	//Loading_ForEffectGroup("../Bin/EffectData/");
 	
-	/*moon
+	
 	Load_AllEffectMesh();
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Main/", MEMORY_TYPE::MEMORY_STATIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Sub/", MEMORY_TYPE::MEMORY_STATIC);
-	*/
+	
 
 #pragma endregion
 
