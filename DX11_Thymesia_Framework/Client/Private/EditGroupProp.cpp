@@ -300,6 +300,33 @@ void CEditGroupProp::OnEventMessage(_uint iArg)
 		}
 		break;
 
+		case (_uint)EVENT_TYPE::ON_EDITPICKING:
+		{
+			RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+
+			for (auto& iter : m_PropList)
+			{
+				weak_ptr<CModel>		pModelCom     = iter.pProp.lock()->Get_Component<CModel>();
+				weak_ptr<CTransform>	pTransformCom = iter.pProp.lock()->Get_Component<CTransform>();
+
+				if (!pModelCom.lock().get() || !pTransformCom.lock().get())
+					continue;
+
+				MESH_VTX_INFO Info = pModelCom.lock()->Get_ModelData().lock()->VertexInfo;
+
+				if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, Info, pTransformCom.lock()->Get_WorldMatrix()))
+				{
+					CWindow_HierarchyView::GAMEOBJECT_DESC Desc;
+					Desc.HashCode	= iter.hash;
+					Desc.pInstance	= iter.pProp;
+					Desc.TypeName	= iter.szName;
+
+					GET_SINGLE(CWindow_HierarchyView)->CallBack_ListClick(Desc);
+				}
+			}
+		}
+		break;
+
 		case (_uint)EVENT_TYPE::ON_EDITDRAW_SUB:
 		{
 			if (!m_bSubDraw)

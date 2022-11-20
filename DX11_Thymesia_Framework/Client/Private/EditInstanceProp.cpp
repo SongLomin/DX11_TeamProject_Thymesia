@@ -286,6 +286,46 @@ void CEditInstanceProp::OnEventMessage(_uint iArg)
 		}
 		break;
 
+		case (_uint)EVENT_TYPE::ON_EDITPICKING:
+		{
+			RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+
+			_uint iIndex = 0;
+			for (auto& iter : m_pPropInfos)
+			{
+				if (!m_pInstanceModelCom.lock().get())
+					continue;
+
+				MESH_VTX_INFO Info = m_pInstanceModelCom.lock()->Get_ModelData().lock()->VertexInfo;
+
+				_matrix PickWorldMatrix = XMMatrixIdentity();
+				_matrix RotationMatrix  = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&iter.vRotation));
+
+				PickWorldMatrix.r[0] = RotationMatrix.r[0] * iter.vScale.x;
+				PickWorldMatrix.r[1] = RotationMatrix.r[1] * iter.vScale.y;
+				PickWorldMatrix.r[2] = RotationMatrix.r[2] * iter.vScale.z;
+				PickWorldMatrix.r[3] = XMVectorSetW(XMLoadFloat3(&iter.vTarnslation), 1.f);
+
+
+				if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, Info, PickWorldMatrix))
+				{
+					CWindow_HierarchyView::GAMEOBJECT_DESC Desc;
+					Desc.HashCode	= typeid(CEditInstanceProp).hash_code();
+					Desc.pInstance  = dynamic_pointer_cast<CGameObject>(m_this.lock());
+					Desc.TypeName	= typeid(CEditInstanceProp).name();
+
+					GET_SINGLE(CWindow_HierarchyView)->CallBack_ListClick(Desc);
+					GET_SINGLE(CWindow_HierarchyView)->m_iPreSelectIndex = iIndex;
+
+					m_PickingDesc   = iter;
+					m_iPickingIndex = iIndex;
+				}
+
+				++iIndex;
+			}
+		}
+		break;
+
 		case (_uint)EVENT_TYPE::ON_EDITDRAW:
 		{
 			if (ImGui::BeginTabBar("Edit"))
@@ -370,17 +410,6 @@ void CEditInstanceProp::View_SelectModelComponent()
 
 void CEditInstanceProp::View_PickingInfo()
 {
-	RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
-
-	ImGui::Text("");
-
-	_float4 vOutPos;
-	ZeroMemory(&vOutPos, sizeof(_float4));
-	vOutPos.y = m_PickingDesc.vTarnslation.y;
-
-	_bool bCreate = SMath::Is_Picked(MouseRayInWorldSpace, &vOutPos);
-	vOutPos.y = m_PickingDesc.vTarnslation.y;
-
 	ImGui::Text("");
 
 	if (!m_pPropInfos.empty() && 0 <= m_iPickingIndex && (_uint)m_pPropInfos.size() > m_iPickingIndex)
@@ -388,12 +417,30 @@ void CEditInstanceProp::View_PickingInfo()
 		m_PickingDesc.vTarnslation.y = m_pPropInfos[m_iPickingIndex].vTarnslation.y;
 	}
 
-	ImGui::DragFloat3("MousePos", &vOutPos.x, 1.f);
 	ImGui::DragFloat3("PickPos" , &m_PickingDesc.vTarnslation.x, 1.f);
 
-	if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) && KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
-	{	
-		if ("" == m_szSelectModelName || !bCreate)
+
+	ImGui::Text("");
+	ImGui::Separator();
+}
+
+void CEditInstanceProp::View_Picking_Prop()
+{
+	if (!KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
+		return;
+	
+	// 생성
+	if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
+	{
+		if ("" == m_szSelectModelName)
+			return;
+
+		RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+
+		_float4 vOutPos;
+		ZeroMemory(&vOutPos, sizeof(_float4));
+
+		if (!SMath::Is_Picked(MouseRayInWorldSpace, &vOutPos))
 			return;
 
 		memcpy(&m_PickingDesc.vTarnslation, &vOutPos, sizeof(_float3));
@@ -403,13 +450,8 @@ void CEditInstanceProp::View_PickingInfo()
 		m_iPickingIndex = (_uint)m_pPropInfos.size() - 1;
 	}
 
-	ImGui::Text("");
-	ImGui::Separator();
-}
-
-void CEditInstanceProp::View_Picking_Prop()
-{
-	if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) && KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
+	// 피킹
+	else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD))
 	{
 		RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
 
@@ -417,11 +459,11 @@ void CEditInstanceProp::View_Picking_Prop()
 			return;
 
 		MESH_VTX_INFO VtxInfo = m_pInstanceModelCom.lock()->Get_ModelData().lock()->VertexInfo;
-		
+
 		_uint iIndex = 0;
 		for (auto& iter : m_pPropInfos)
 		{
-			_matrix WorlMatrix     = XMMatrixIdentity();
+			_matrix WorlMatrix = XMMatrixIdentity();
 			_matrix RotationMatrix = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&iter.vRotation));
 
 			WorlMatrix.r[0] = RotationMatrix.r[0] * iter.vScale.x;
@@ -433,6 +475,8 @@ void CEditInstanceProp::View_Picking_Prop()
 			{
 				m_iPickingIndex = iIndex;
 				m_PickingDesc   = m_pPropInfos[iIndex];
+
+				break;
 			}
 
 			++iIndex;
@@ -511,23 +555,21 @@ void CEditInstanceProp::View_Picking_Option()
 	if (m_pPropInfos.empty() || 0 > m_iPickingIndex || m_pPropInfos.size() <= m_iPickingIndex)
 		return;
 
-	RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
-
-	_float4 vMouseDir;
-	ZeroMemory(&vMouseDir, sizeof(_float4));
-	vMouseDir.y = m_PickingDesc.vTarnslation.y;
-
-	if (!SMath::Is_Picked(MouseRayInWorldSpace, &vMouseDir))
-		return;
-
 	// Z : 터레인 이동
 	// X : 회전(옵션 활성화)
 	// C : 수동 이동(옵션 활성화)
 
 	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
 	{
+		RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+
+		_float4 vMouseDir;
+
 		if (KEY_INPUT(KEY::Z, KEY_STATE::HOLD))
 		{
+			if (!SMath::Is_Picked(MouseRayInWorldSpace, &vMouseDir))
+				return;
+
 			_float3 vObjPos = m_pPropInfos[m_iPickingIndex].vTarnslation;
 			m_pPropInfos[m_iPickingIndex].vTarnslation = _float3(vMouseDir.x, vObjPos.y, vMouseDir.z);
 		}

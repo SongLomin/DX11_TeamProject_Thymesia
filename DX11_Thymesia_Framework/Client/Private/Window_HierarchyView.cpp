@@ -54,7 +54,8 @@ HRESULT CWindow_HierarchyView::Render()
 
 	for (auto& elem : m_pGameObjects)
 	{
-		string szIndexedName = to_string(iIndex) + ". " + elem.TypeName.substr(elem.TypeName.find("class Client::"));
+		//szIndexedName = "0. class Client::CCamera_Free"
+		string szIndexedName = to_string(iIndex) + ". " + elem.TypeName.substr(string("class Client::").length());
 
 		if (m_iPreSelectIndex == iIndex)
 			szIndexedName = "[ " + szIndexedName + " ]";
@@ -62,7 +63,7 @@ HRESULT CWindow_HierarchyView::Render()
 		weak_ptr<CVIBuffer_Model_Instance> pModel = elem.pInstance.lock()->Get_Component<CVIBuffer_Model_Instance>().lock();
 
 		if (pModel.lock() && "" != pModel.lock()->Get_ModelKey())
-			szIndexedName += string("\n << : ") + pModel.lock()->Get_ModelKey() + " >>";
+			szIndexedName += string("\n     >> ") + pModel.lock()->Get_ModelKey() + "\n";
 
 		if (ImGui::Selectable(szIndexedName.c_str()))
 		{		

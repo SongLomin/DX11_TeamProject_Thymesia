@@ -87,23 +87,28 @@ void CWindow_ComponentView::Draw_Components()
 	static _bool bSelect_ActivateHotkey  = false;
 	static _bool bSelect_ActivatePicking = false;
 
-	if (pTransformCom.lock().get() && m_tPickedGameObjectDesc.HashCode == typeid(CCamera_Free).hash_code())
+	if (!pTransformCom.lock().get())
+		return;
+
+	if (m_tPickedGameObjectDesc.HashCode == typeid(CCamera_Free).hash_code())
 	{
 		View_FreeCamera(pTransformCom);
 	}
 
-	if (pTransformCom.lock().get() && (typeid(CEditGroupProp).hash_code() != m_tPickedGameObjectDesc.HashCode && typeid(CEditInstanceProp).hash_code() != m_tPickedGameObjectDesc.HashCode))
-	{
-		if (bSelect_ActivatePicking)
-			Picking_Obj();
+	if (bSelect_ActivatePicking)
+		Picking_Obj();
 
+
+	if (typeid(CEditGroupProp).hash_code()    != m_tPickedGameObjectDesc.HashCode &&
+		typeid(CEditInstanceProp).hash_code() != m_tPickedGameObjectDesc.HashCode)
+	{
 		if (bSelect_ActivateHotkey)
 			TransformComponent_PickingAction(pTransformCom);
 
 		if (ImGui::CollapsingHeader("Transform Component"), ImGuiTreeNodeFlags_DefaultOpen)
 		{
 			ImGui::Checkbox("Trasnfrom HotKey", &bSelect_ActivateHotkey);
-			ImGui::Checkbox("Acting Picking", &bSelect_ActivatePicking);
+			ImGui::Checkbox("Acting Picking"  , &bSelect_ActivatePicking);
 
 			{ // Position
 				_vector vPositionVector = pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
@@ -237,22 +242,56 @@ void CWindow_ComponentView::Picking_Obj()
 {
 	if (KEY_INPUT(KEY::ALT, KEY_STATE::HOLD) && KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
 	{
-		RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+		_uint iIndex = 0;
 
 		for (auto& iter : GET_SINGLE(CWindow_HierarchyView)->m_pGameObjects)
 		{
-			weak_ptr<CModel>		pModelCom     = iter.pInstance.lock()->Get_Component<CModel>();
-			weak_ptr<CTransform>	pTransformCom = iter.pInstance.lock()->Get_Component<CTransform>();
-
-			if (!pModelCom.lock() || !pTransformCom.lock())
-				continue;
-
-			MESH_VTX_INFO Info = pModelCom.lock()->Get_ModelData().lock()->VertexInfo;
-
-			if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, Info, pTransformCom.lock()->Get_WorldMatrix()))
+			if (iter.HashCode == typeid(CCamera_Free).hash_code())
 			{
-				GET_SINGLE(CWindow_HierarchyView)->CallBack_ListClick(iter);
+				++iIndex;
+				continue;
 			}
+
+			if (typeid(CEditGroupProp).hash_code()    == iter.HashCode ||
+				typeid(CEditInstanceProp).hash_code() == iter.HashCode)
+			{
+				iter.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITPICKING);
+				GET_SINGLE(CWindow_HierarchyView)->m_iPreSelectIndex = iIndex;
+
+				break;
+			}			
+
+			else
+			{
+				RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+
+				weak_ptr<CModel>		pModelCom     = iter.pInstance.lock()->Get_Component<CModel>();
+				weak_ptr<CTransform>	pTransformCom = iter.pInstance.lock()->Get_Component<CTransform>();
+
+				if (!pModelCom.lock().get() || !pTransformCom.lock().get())
+				{
+					++iIndex;
+					continue;
+				}
+
+				if (!pModelCom.lock()->Get_ModelData().lock())
+				{
+					++iIndex;
+					continue;
+				}
+
+				MESH_VTX_INFO Info = pModelCom.lock()->Get_ModelData().lock()->VertexInfo;
+
+				if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, Info, pTransformCom.lock()->Get_WorldMatrix()))
+				{
+					GET_SINGLE(CWindow_HierarchyView)->CallBack_ListClick(iter);
+					GET_SINGLE(CWindow_HierarchyView)->m_iPreSelectIndex = iIndex;
+
+					break;
+				}
+			}
+
+			++iIndex;
 		}
 	}
 }
