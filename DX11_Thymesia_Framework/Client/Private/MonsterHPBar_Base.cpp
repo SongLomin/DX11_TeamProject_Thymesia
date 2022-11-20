@@ -239,7 +239,71 @@ void CMonsterHPBar_Base::Set_RecoveryAlram(_bool _bRecovery)
 
 void CMonsterHPBar_Base::Reset()
 {
+	Initialize(nullptr);
 	Set_Enable(false);
+
+	m_pTrack.lock()->Set_Enable(false);
+	m_pGreenTrack.lock()->Set_Enable(false);
+	if (m_pStunned.lock())
+		m_pStunned.lock()->Set_Enable(false);
+	m_pRecovery.lock()->Set_Enable(false);
+
+}
+
+void CMonsterHPBar_Base::Call_Damaged_White(_float _fRatio)
+{
+	m_pWhite.lock()->Set_Ratio(_fRatio);
+	Set_RecoveryAlram(false);
+
+}
+
+void CMonsterHPBar_Base::Call_Damaged_Green(_float _fRatio)
+{
+	_float fDamgedRatio;//
+
+	fDamgedRatio = m_pGreen.lock()->Get_Ratio() - _fRatio;//데미지 들어오기전 비율 - 데미지 들어오고 난 후 비율.->데미지.
+
+	Green_Damaged(fDamgedRatio);//그만큼만.
+
+	Set_RecoveryAlram(false);
+
+}
+
+void CMonsterHPBar_Base::Call_RecoveryAlram()
+{
+	Set_RecoveryAlram(true);
+}
+
+void CMonsterHPBar_Base::Call_Recovery()
+{
+	Set_RecoveryAlram(false);
+
+}
+
+void CMonsterHPBar_Base::Call_Disable()
+{
+	Set_Enable(false);
+	m_pTrack.lock()->Set_Enable(false);
+	m_pGreenTrack.lock()->Set_Enable(false);
+	if (m_pStunned.lock())
+		m_pStunned.lock()->Set_Enable(false);
+	m_pRecovery.lock()->Set_Enable(false);
+
+	Set_RecoveryAlram(false);
+}
+
+void CMonsterHPBar_Base::Call_Stun()
+{
+	Set_Stun(true);
+}
+
+void CMonsterHPBar_Base::Call_Restart()
+{
+	Set_Stun(false);
+
+	m_pWhite.lock()->Set_Ratio(0.5f);
+	m_pGreen.lock()->Set_Ratio(0.5f);
+	
 }
 
 void CMonsterHPBar_Base::FollowOwner()
@@ -252,11 +316,10 @@ void CMonsterHPBar_Base::FollowOwner()
 	
 	vViewPosition = m_pOwner.lock()->Get_WorldPosition();
 
-	ViewProjMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_VIEW) *
-		GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_PROJ);
+	ViewProjMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_VIEW) * GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_PROJ);
 		
-	XMVector3TransformCoord(vViewPosition, ViewProjMatrix);
-
+	vViewPosition = XMVector3TransformCoord(vViewPosition, ViewProjMatrix);
+	
 	/* -1 ~ 1 to 0 ~ ViewPort */
 	vViewPosition.m128_f32[0] = (vViewPosition.m128_f32[0] + 1.f) * (_float)g_iWinCX * 0.5f;
 	vViewPosition.m128_f32[1] = (vViewPosition.m128_f32[1] + 1.f) * (_float)g_iWinCY * 0.5f;
