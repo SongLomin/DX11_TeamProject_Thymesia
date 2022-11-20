@@ -86,7 +86,6 @@ void CCorvusState_LAttack3::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 #endif
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAttackIndex);
-	m_pModelCom.lock()->Set_AnimationSpeed(4.5f);
 }
 
 void CCorvusState_LAttack3::Attack()
@@ -142,7 +141,6 @@ void CCorvusState_LAttack3::OnStateStart(const _float& In_fAnimationBlendTime)
 		
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
-	m_pModelCom.lock()->Set_AnimationSpeed(1.75f);
 
 	//m_iAttackIndex = 7;
 	//m_iEndAttackEffectIndex = -1;
@@ -166,7 +164,6 @@ void CCorvusState_LAttack3::OnStateEnd()
 	__super::OnStateEnd();
 
 	//Disable_Weapons();
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 	m_IsNextAttack = false;
 	m_iAttackIndex = 9;
 }

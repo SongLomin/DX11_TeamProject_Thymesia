@@ -78,7 +78,6 @@ namespace Client
 		_float4		vMaxColor;
 #pragma endregion
 
-		// TODO : bDynamicNoiseOption temporary for test
 		_bool		bDynamicNoiseOption;
 		/**
 		* x : Diffuse | y : Mask | z : Noise | w : None
