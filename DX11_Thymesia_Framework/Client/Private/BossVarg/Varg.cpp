@@ -32,8 +32,6 @@ HRESULT CVarg::Initialize(void* pArg)
 
 	memcpy(&m_tLinkStateDesc, pArg, sizeof(STATE_LINK_DESC));
 
-
-
 	m_pModelCom.lock()->Init_Model("Boss_Varg", "", (_uint)TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Set_WeaponType(MONSTERWEAPONTYPE::WEAPON_BOSSVARG);
@@ -41,43 +39,47 @@ HRESULT CVarg::Initialize(void* pArg)
 	//TODO 위치이동 야매임
 	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, 0.f, m_tLinkStateDesc.vYame.z, 1.f));
 
-
-
 	//TODO 여기서하는 이유는 몬스터가 배치되고 원점에서 우리가 피킹한위치만큼더해지고 난뒤에 그월드포지션값저장하기위해서 여기서함
 
 	m_pModelCom.lock()->Set_RootNode("root");
-
-
-
+	
 	_vector vecStartPositon = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
 	XMStoreFloat4(&m_tLinkStateDesc.m_fStartPositon, vecStartPositon);
-	m_pStandState = Add_Component<CVargBossState_Idle>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_Stop>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_SitToIdle>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_LightAttack1>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_LightAttack2>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_Run>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_TurnL90>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_TurnR90>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_LightAttack1>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_LightAttack2>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_LightAttack3>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_HeavyAttack1>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_HeavyAttack2>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_HeavyAttack3>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_Walk_F>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_Walk_FR>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_Walk_FL>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_Walk_L>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_Walk_R>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_Walk_B>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_Walk_BR>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_Walk_BL>(&m_tLinkStateDesc);
-	//Add_Component<CNorMonState_Awake>(&m_tLinkStateDesc);
-
-
-
-
+	m_pStandState = Add_Component<CVargBossState_Start>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_Attack1a>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_Attack1b>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_Attack2a>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_Attack2b>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_Attack3a>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_Attack3b>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_AvoidAttack>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_AvoidB>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_AvoidL>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_AvoidR>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_Hurt>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_Parry>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_Run>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_RunAttack>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_RunStart>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_SPA_Catch>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_SPA_CatchFail>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_SPA_Roar>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_SPA_Roar_Getup>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_SPA_Run>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_Idle>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_Stun_End>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_Stun_Exe_Dead>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_Stun_Exe_SitDown>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_Stun_Exe_SitLoop>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_Stun_Exe_Start>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_Stun_Loop>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_Stun_Start>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_TurnL>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_TurnR>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_WalkB>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_WalkF>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_WalkR>(&m_tLinkStateDesc);
+	
 	//GET_SINGLE(CGameManager)->Bind_KeyEvent("Monster1", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
 
 	USE_START(CVarg);
@@ -89,7 +91,7 @@ HRESULT CVarg::Start()
 	__super::Start();
 
 
-	Change_State<CVargBossState_Idle>();
+	Change_State<CVargBossState_Start>();
 
 
 	//m_EffectIndexList.emplace_back("Character_Target", GET_SINGLE(CGameManager)->Use_EffectGroup("Character_Target", m_pTransformCom));
@@ -102,7 +104,7 @@ void CVarg::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
 	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
 
 

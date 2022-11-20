@@ -5,6 +5,7 @@
 #include "Weapon.h"
 #include "GameManager.h"
 #include "Player.h"
+#include "NorMonStates.h"
 //#include "MonsterHPBar.h"
 #include "Status.h"
 //#include "ComboTimer.h"
@@ -66,7 +67,7 @@ void CNorMonsterStateBase::Play_OnHitEffect()
 
 	GET_SINGLE(CGameManager)->Use_EffectGroup("Hit_Monster1", ReverseLookMatrix);*/
 
-	GET_SINGLE(CGameManager)->Use_EffectGroup("Hit_Monster2", m_pTransformCom);
+	//T_SINGLE(CGameManager)->Use_EffectGroup("Hit_Monster2", m_pTransformCom);
 
 }
 
@@ -80,29 +81,29 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_T
 
 		//맞았을때 플레이어를 바라보는 시선 처리
 		weak_ptr<CAttackArea> pAttackArea = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner());
-
+		
 		if (!pAttackArea.lock())
 			return;
-
+		
 		_vector vOtherColliderPosition = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner()).lock()->
 			Get_ParentObject().lock()->
 			Get_Component<CTransform>().lock()->
 			Get_State(CTransform::STATE_TRANSLATION);
-
+		
 		/*_vector vOtherColliderPosition = Weak_Cast<CWeapon>(pOtherCollider.lock()->Get_Owner()).lock()->
 			Get_ParentObject().lock()->
 			Get_Component<CTransform>().lock()->
 			Get_State(CTransform::STATE_TRANSLATION);*/
-
+		
 		_vector vSameHeightOtherColliderPosition = vOtherColliderPosition;
 		vSameHeightOtherColliderPosition.m128_f32[1] = vMyPosition.m128_f32[1];
-
+		
 		m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
 
-		_bool bRandom = (_bool)(rand() % 2);
+		//bool bRandom = (_bool)(rand() % 2);
 
 		//데미지 적용
-		m_pStatusCom.lock()->Add_Damage(In_fDamage);
+		//m_pStatusCom.lock()->Add_Damage(In_fDamage);
 		//GAMEINSTANCE->Get_GameObjects<CDamageUI>(LEVEL::LEVEL_STATIC).front().lock()->Add_DamageText(vMyPosition, In_fDamage, bRandom);
 
 		//GAMEINSTANCE->Get_GameObjects<CMonsterHpBar>(LEVEL::LEVEL_STATIC).front().lock()->OnHit(m_pOwner);
@@ -110,7 +111,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_T
 
 		GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Set_TargetMonster(Get_OwnerMonster());
 
-		Play_OnHitEffect();
+		//Play_OnHitEffect();
 
 		//공격 형태에 따라서 애니메이션 변경
 
@@ -131,6 +132,16 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_T
 		//	GET_SINGLE(CGameManager)->Add_Shaking(SHAKE_DIRECTION::RIGHT, 0.25f, 0.3f);
 		//}
 
+
+		if (In_eHitType == HIT_TYPE::LEFT_HIT)
+		{
+			Get_OwnerMonster()->Change_State<CNorMonState_HurtL>();
+		}
+
+		else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
+		{
+			Get_OwnerMonster()->Change_State<CNorMonState_HurtR>();
+		}
 
 	}
 

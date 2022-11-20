@@ -26,6 +26,7 @@ HRESULT CAIStateBase::Initialize(void* pArg)
 	m_eNorMonType = StateLinkDesc.eNorMonType;
 	m_eNorMonIdleType = StateLinkDesc.eNorMonIdleType;
 	m_fStartPosition = StateLinkDesc.m_fStartPositon;
+	m_eBossStartType = StateLinkDesc.eBossStartType;
 	
 
 	m_iTimeScaleLayer = (_uint)TIMESCALE_LAYER::MONSTER;

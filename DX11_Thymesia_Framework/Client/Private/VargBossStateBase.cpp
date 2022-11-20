@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "BossStateBase.h"
+#include "VargBossStateBase.h"
 #include "GameInstance.h"
 #include "Collider.h"
 #include "Weapon.h"
@@ -12,9 +12,9 @@
 //#include "DamageUI.h"
 
 
-GAMECLASS_C(CBossStateBase)
+GAMECLASS_C(CVargBossStateBase)
 
-_bool CBossStateBase::Check_RequirementAttackState()
+_bool CVargBossStateBase::Check_RequirementAttackState()
 {
 	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
 	{
@@ -24,7 +24,7 @@ _bool CBossStateBase::Check_RequirementAttackState()
 	return false;
 }
 
-_bool CNorMonsterStateBase::Check_RequirementDashState()
+_bool CVargBossStateBase::Check_RequirementDashState()
 {
 	if (KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))
 	{
@@ -33,7 +33,7 @@ _bool CNorMonsterStateBase::Check_RequirementDashState()
 	return false;
 }
 
-_bool CNorMonsterStateBase::Check_RequirementRunState()
+_bool CVargBossStateBase::Check_RequirementRunState()
 {
 	if (KEY_INPUT(KEY::W, KEY_STATE::HOLD)
 		|| KEY_INPUT(KEY::A, KEY_STATE::HOLD)
@@ -46,7 +46,7 @@ _bool CNorMonsterStateBase::Check_RequirementRunState()
 	return false;
 }
 
-_bool CNorMonsterStateBase::Check_RequirementPlayerInRange(const _float& In_fRange)
+_bool CVargBossStateBase::Check_RequirementPlayerInRange(const _float& In_fRange)
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 	_vector vPlayerPosition = pCurrentPlayer.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
@@ -56,7 +56,7 @@ _bool CNorMonsterStateBase::Check_RequirementPlayerInRange(const _float& In_fRan
 	return In_fRange >= fDistance;
 }
 
-void CNorMonsterStateBase::Play_OnHitEffect()
+void CVargBossStateBase::Play_OnHitEffect()
 {
 	/*_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
 	vLook *= -1.f;
@@ -70,7 +70,7 @@ void CNorMonsterStateBase::Play_OnHitEffect()
 
 }
 
-void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+void CVargBossStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
 	__super::OnHit(pOtherCollider, In_eHitType, In_fDamage);
 
@@ -136,29 +136,29 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_T
 
 }
 
-void CNorMonsterStateBase::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+void CVargBossStateBase::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
 {
 	__super::OnCollisionEnter(pOtherCollider);
 
 }
 
-void CNorMonsterStateBase::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
+void CVargBossStateBase::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
 {
 	__super::OnCollisionStay(pOtherCollider);
 
 }
 
-void CNorMonsterStateBase::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
+void CVargBossStateBase::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
 {
 	__super::OnCollisionExit(pOtherCollider);
 
 }
 
-void CNorMonsterStateBase::OnEventMessage(_uint iArg)
+void CVargBossStateBase::OnEventMessage(_uint iArg)
 {
 	GAMEINSTANCE->PlaySoundW(TEXT("Monstet1_Hit.wav"), 1.f);
 }
 
-void CNorMonsterStateBase::Free()
+void CVargBossStateBase::Free()
 {
 }

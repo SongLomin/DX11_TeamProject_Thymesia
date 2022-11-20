@@ -133,6 +133,13 @@ namespace Client
 		IDLEEND
 	};
 
+	enum class BOSSSTARTTYPE {
+		BEGINSTART,
+		NORMALSTART,
+		BOSSSTARTEND
+	};
+
+
 	//enum class  RAREMONSTERTYPE {
 	//	RMON_ARMOR,
 	//	RMON_KNIFEWOMAN,

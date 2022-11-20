@@ -29,11 +29,13 @@ protected:
 	virtual _bool Check_AndChangeNextState() override;
 
 
+private:
+	_bool   m_bNextState = false;
 
 private:
-	//void Call_AnimationEnd();
+	void Call_AnimationEnd();
 protected:
-	//virtual void OnDestroy() override;
+	virtual void OnDestroy() override;
 	void Free();
 
 };

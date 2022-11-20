@@ -84,7 +84,7 @@ void CCorvusState_LAttack1::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAttackIndex);
-	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+	m_pModelCom.lock()->Set_AnimationSpeed(2.5f);
 }
 
 void CCorvusState_LAttack1::Attack()

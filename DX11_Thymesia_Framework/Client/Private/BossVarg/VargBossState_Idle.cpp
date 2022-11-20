@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "BossVarg/VargBossState_Idle.h"
 #include "VargBossStateBase.h"
 #include "Model.h"
 #include "GameInstance.h"
@@ -6,8 +7,8 @@
 #include "Player.h"
 //#include "BehaviorBase.h"
 #include "Animation.h"
-#include "VargStates.h"
 #include "Character.h"
+#include "VargStates.h"
 
 
 
@@ -33,7 +34,7 @@ void CVargBossState_Idle::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_Seq_TutorialBossFightStart");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_Idle");
 	
 
 	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Idle::Call_AnimationEnd, this);*/
@@ -51,8 +52,6 @@ void CVargBossState_Idle::Tick(_float fTimeDelta)
 void CVargBossState_Idle::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
-
-
 
 	Check_AndChangeNextState();
 }
@@ -108,11 +107,6 @@ _bool CVargBossState_Idle::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
-	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
-		return true;
-	}
 
 	return false;
 }

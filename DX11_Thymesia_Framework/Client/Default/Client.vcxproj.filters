@@ -625,7 +625,7 @@
     <ClInclude Include="..\Public\NorMonState\NorMonsterStateBase.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\BossStateBase.h">
+    <ClInclude Include="..\Public\VargBossStateBase.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1222,7 +1222,7 @@
     <ClCompile Include="..\Private\NorMonState\NorMonsterStateBase.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\BossStateBase.cpp">
+    <ClCompile Include="..\Private\VargBossStateBase.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1820,9 +1820,6 @@
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\05.ComboAttack2a">
       <UniqueIdentifier>{522686f5-12c6-4054-91e5-4ee172e7b314}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\06.ComboAttack3a">
-      <UniqueIdentifier>{6b747b31-c4e6-4b25-ba5e-3d1ad89d5af0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\07.ComboAttack1b">
       <UniqueIdentifier>{c5402721-5443-4023-b711-db865d8014ff}</UniqueIdentifier>
     </Filter>
@@ -1889,9 +1886,6 @@
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\28.StunLoop">
       <UniqueIdentifier>{604e5de0-b481-40f1-bbae-b0c1684f9ccd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\29.StunEnd">
-      <UniqueIdentifier>{22303c0f-b11f-41de-992b-7e1a2edef111}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\30.Execution_SitDown">
       <UniqueIdentifier>{a75c167f-9742-4a29-ba7f-10a94f6f71da}</UniqueIdentifier>
     </Filter>
@@ -1909,6 +1903,12 @@
     </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\35.Parry">
       <UniqueIdentifier>{e2cac954-05e0-4c33-a5d0-1e46ae4e61a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\29.StunEnd">
+      <UniqueIdentifier>{22303c0f-b11f-41de-992b-7e1a2edef111}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\06.ComboAttack3a">
+      <UniqueIdentifier>{6b747b31-c4e6-4b25-ba5e-3d1ad89d5af0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
