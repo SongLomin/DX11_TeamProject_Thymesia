@@ -38,17 +38,17 @@ void CNorMonState_Run::Start()
 {
 	__super::Start();
 
-	switch (m_eNorMonType)
+	switch (m_eMonType)
 	{
-	case Client::NORMONSTERTYPE::AXEMAN:
+	case Client::MONSTERTYPE::AXEMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|DemoM02_RunF1|BaseLayer|Armature|Arm");
 		break;
-	case Client::NORMONSTERTYPE::KNIFEWOMAN:
+	case Client::MONSTERTYPE::KNIFEWOMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_RunRoot");
 		break;
-	case Client::NORMONSTERTYPE::SKULL:
+	case Client::MONSTERTYPE::SKULL:
 		break;
-	case Client::NORMONSTERTYPE::GARDENER:
+	case Client::MONSTERTYPE::GARDENER:
 		break;
 	}
 
@@ -164,9 +164,9 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 
 		if (!m_bRunCheck)
 		{
-			switch (m_eNorMonType)
+			switch (m_eMonType)
 			{
-			case Client::NORMONSTERTYPE::AXEMAN:
+			case Client::MONSTERTYPE::AXEMAN:
 				switch (iMovRand)
 				{
 				case 0:
@@ -183,7 +183,7 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 					break;
 				}
 				break;
-			case Client::NORMONSTERTYPE::KNIFEWOMAN:
+			case Client::MONSTERTYPE::KNIFEWOMAN:
 				switch (iMovRand)
 				{
 				case 0:
@@ -200,9 +200,9 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 					break;
 				}
 				break;
-			case Client::NORMONSTERTYPE::SKULL:
+			case Client::MONSTERTYPE::SKULL:
 				break;
-			case Client::NORMONSTERTYPE::GARDENER:
+			case Client::MONSTERTYPE::GARDENER:
 				break;
 			}
 			return true;
@@ -215,9 +215,9 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 		if (!m_bRunCheck)
 		{
 			_int iMovRand = rand() % 2;
-			switch (m_eNorMonType)
+			switch (m_eMonType)
 			{
-			case Client::NORMONSTERTYPE::AXEMAN:
+			case Client::MONSTERTYPE::AXEMAN:
 				switch (iMovRand)
 				{
 				case 0:
@@ -230,7 +230,7 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 					break;
 				}
 				break;
-			case Client::NORMONSTERTYPE::KNIFEWOMAN:
+			case Client::MONSTERTYPE::KNIFEWOMAN:
 				switch (iMovRand)
 			    {
 			    case 0:
@@ -243,9 +243,9 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 			    	break;
 			    }
 			    	break;
-			    case Client::NORMONSTERTYPE::SKULL:
+			    case Client::MONSTERTYPE::SKULL:
 			    	break;
-			    case Client::NORMONSTERTYPE::GARDENER:
+			    case Client::MONSTERTYPE::GARDENER:
 			    	break;
 			    }
 			    return true;
@@ -259,9 +259,9 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 		{
 			_int iAttRand = rand() % 5;
 
-			switch (m_eNorMonType)
+			switch (m_eMonType)
 			{
-			case Client::NORMONSTERTYPE::AXEMAN:
+			case Client::MONSTERTYPE::AXEMAN:
 				switch (iAttRand)
 				{
 				case 0:
@@ -286,7 +286,7 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 					break;
 				}
 				break;
-			case Client::NORMONSTERTYPE::KNIFEWOMAN:
+			case Client::MONSTERTYPE::KNIFEWOMAN:
 				switch (iAttRand)
 				{
 				case 0:
@@ -311,9 +311,9 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 					break;
 				}
 				break;
-			case Client::NORMONSTERTYPE::SKULL:
+			case Client::MONSTERTYPE::SKULL:
 				break;
-			case Client::NORMONSTERTYPE::GARDENER:
+			case Client::MONSTERTYPE::GARDENER:
 				break;
 			}
 			return true;

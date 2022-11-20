@@ -643,6 +643,9 @@
       <Filter>02. GameObject\01. UI\MonsterHPBar\Elite</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MonsterHPBar_Boss.h" />
+    <ClInclude Include="..\Public\Status_Monster.h">
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1119,9 +1122,6 @@
       <Filter>02. GameObject\01. UI\dissolve</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\LoadingTextUI.cpp" />
-    <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\BossVarg\Varg.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\01. Monster\03.BossMonster\00.Varg</Filter>
     </ClCompile>
@@ -1257,6 +1257,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\MonsterHPBar_Boss.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Status_Monster.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

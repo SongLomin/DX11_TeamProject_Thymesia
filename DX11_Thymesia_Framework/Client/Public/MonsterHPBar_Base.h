@@ -8,6 +8,8 @@ BEGIN(Client)
 class CCustomUI;
 class CProgressBar;
 class CHUD_Hover;
+class CMonster;
+
 
 class CMonsterHPBar_Base : public CUI
 {
@@ -27,7 +29,15 @@ public:
 public:
 	void			Green_Damaged(_float fRatio);
 
-	void			Toggle_Recovery();
+	void			Set_RecoveryAlram(_bool _bRecovery);
+	void			Reset();
+	void			FollowOwner();
+	
+public:
+	void			Set_Owner(weak_ptr<CMonster> pMonster);
+
+
+
 	virtual void	Set_Stun(bool _bStun);
 protected:
 	virtual void    Add_Child(weak_ptr<CUI> pChild);
@@ -54,6 +64,11 @@ protected:
 	weak_ptr<CCustomUI>		m_pTrack;
 	weak_ptr<CHUD_Hover>	m_pRecovery;
 	weak_ptr<CHUD_Hover>	m_pStunned;
+	weak_ptr<CMonster>		m_pOwner;
+
+
+	_float3					m_vOffset;
+
 
 public:
 	void		Call_GreenTrackFadeEnd(FADER_TYPE eType);

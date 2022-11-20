@@ -126,6 +126,7 @@ namespace Client
 		_float		fWeaponLifeTime;
 		_float		fWeaponScale;
 		_int		iHitType;
+		_int		iOptionType;
 		_float      fDamage;
 		_float3		vWeaponOffset;
 		_float		fHitFreq;
@@ -284,6 +285,7 @@ namespace Client
 		_float		fHitFreq;
 		_float		fWeaponScale;
 		_int		iHitType;
+		_int		iOptionType;
 		_float      fDamage;
 		_float3		vWeaponOffset;
 	};

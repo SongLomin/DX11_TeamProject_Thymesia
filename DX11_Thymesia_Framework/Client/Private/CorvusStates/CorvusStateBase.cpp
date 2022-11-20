@@ -26,10 +26,10 @@ _bool CCorvusStateBase::Check_RequirementDashState()
 		return false;
 	}
 
-	if (!m_pStatusCom.lock()->Requirment_Dash())
-	{
-		return false;
-	}
+	//if (!m_pStatusCom.lock()->Requirment_Dash())
+	//{
+	//	return false;
+	//}
 
 	return true;
 }

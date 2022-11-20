@@ -31,17 +31,17 @@ void CNorMonState_LightAttack2::Start()
 {
 	__super::Start();
 
-	switch (m_eNorMonType)
+	switch (m_eMonType)
 	{
-	case Client::NORMONSTERTYPE::AXEMAN:
+	case Client::MONSTERTYPE::AXEMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_Attack03|BaseLayer|Arm");
 		break;
-	case Client::NORMONSTERTYPE::KNIFEWOMAN:
+	case Client::MONSTERTYPE::KNIFEWOMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_Attack03");
 		break;
-	case Client::NORMONSTERTYPE::SKULL:
+	case Client::MONSTERTYPE::SKULL:
 		break;
-	case Client::NORMONSTERTYPE::GARDENER:
+	case Client::MONSTERTYPE::GARDENER:
 		break;
 	}
 

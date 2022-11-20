@@ -18,46 +18,18 @@ void CStatus::Start()
 {
 }
 
-void CStatus::Init_Status(const STATUS_DESC& In_tStatusDesc)
+_bool CStatus::Is_Dead()
 {
-	m_tStatusDesc = In_tStatusDesc;
-	m_tStatusDesc.fRedRatio = 1.f;
+	return _bool();
 }
 
-void CStatus::Add_Damage(const _float& In_fDamage)
+void CStatus::Init_Status(const void* pArg)
 {
-	m_tStatusDesc.fCurrentHP -= In_fDamage;
-
-	if (m_tStatusDesc.fCurrentHP < 0.f)
-	{
-		m_tStatusDesc.fCurrentHP = 0.f;
-	}
 }
 
-void CStatus::Heal_HP(const _float& In_fHP)
+void CStatus::Add_Damage(const _float& In_fDamage, ATTACK_OPTION eAttackOption)
 {
-	m_tStatusDesc.fCurrentHP += In_fHP;
 
-	if (m_tStatusDesc.fCurrentHP > m_tStatusDesc.fMaxHP)
-	{
-		m_tStatusDesc.fCurrentHP = m_tStatusDesc.fMaxHP;
-	}
-}
-
-void CStatus::Add_DashRatio(const _float& In_fDashRatio)
-{
-	m_tStatusDesc.fDashRatio += In_fDashRatio;
-	m_tStatusDesc.fDashRatio = min(1.f, m_tStatusDesc.fDashRatio);
-}
-
-void CStatus::On_Swap()
-{
-	m_tStatusDesc.fSwapTime = m_tStatusDesc.fMaxSwapTime;
-}
-
-void CStatus::Add_SwapTime(const _float& In_fTimeDelta)
-{
-	m_tStatusDesc.fSwapTime += In_fTimeDelta;
 }
 
 void CStatus::Free()

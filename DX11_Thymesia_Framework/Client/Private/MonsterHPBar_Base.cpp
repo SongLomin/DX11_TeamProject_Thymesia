@@ -8,6 +8,9 @@
 #include "ProgressBar.h"
 #include "HUD_Hover.h"
 #include "Fader.h"
+#include "PipeLine.h"
+#include "Monster.h"
+
 
 
 GAMECLASS_C(CMonsterHPBar_Base)
@@ -25,10 +28,18 @@ HRESULT CMonsterHPBar_Base::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	if (nullptr != pArg)
-		memcpy(&m_tUIDesc, pArg, sizeof(UI_DESC));
-	else
-		MSG_BOX("CUI_MonsterHpBar_Base Error : Not Defined UI_Desc");
+	UI_DESC tDesc;
+	tDesc.fDepth = 0.f;
+	tDesc.fX = g_iWinCX / 2.f;
+	tDesc.fY = g_iWinCY / 2.f;
+	tDesc.fSizeX = 150.f;
+	tDesc.fSizeY = 15.f;
+
+
+//	if (nullptr != pArg)
+		memcpy(&m_tUIDesc, &tDesc, sizeof(UI_DESC));
+//	else
+//		MSG_BOX("CUI_MonsterHpBar_Base Error : Not Defined UI_Desc");
 
 	UI_DESC tBorderDesc = m_tUIDesc;
 	tBorderDesc.fSizeY = m_tUIDesc.fSizeY - 6.f;
@@ -104,8 +115,9 @@ HRESULT CMonsterHPBar_Base::Initialize(void* pArg)
 	m_pStunned = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_STATIC, &tRecoveryDesc);
 	m_pStunned.lock()->Set_Texture("Monster_HPBar_StunnedShine");
 
-
 	m_bStun = false;
+
+	m_vOffset = _float3(0.f, 0.f, 0.f);
 
 
 	Add_Child(m_pBorder);
@@ -128,50 +140,7 @@ void CMonsterHPBar_Base::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	if (KEY_INPUT(KEY::Z, KEY_STATE::TAP))
-	{
-		m_pWhite.lock()->Decrease_Ratio(0.1f);
-	}
-	if (KEY_INPUT(KEY::X, KEY_STATE::TAP))
-	{
-		m_pWhite.lock()->Increase_Ratio(0.1f);
-	}
-
-	if (KEY_INPUT(KEY::Q, KEY_STATE::TAP))
-	{
-		Green_Damaged(0.3f);
-	}
-	if (KEY_INPUT(KEY::E, KEY_STATE::TAP))
-	{
-		m_pGreen.lock()->Increase_Ratio(0.3f);
-		Set_Stun(false);
-	}
-
-	if (KEY_INPUT(KEY::R, KEY_STATE::TAP))
-	{
-		Toggle_Recovery();
-	}
-
-	if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
-	{
-		m_tUIDesc.fY -= 10.f;
-	}
-	if (KEY_INPUT(KEY::DOWN, KEY_STATE::TAP))
-	{
-		m_tUIDesc.fY += 10.f;
-
-	}
-
-	if (KEY_INPUT(KEY::LEFT, KEY_STATE::TAP))
-	{
-		m_tUIDesc.fX -= 10.f;
-
-	}
-	if (KEY_INPUT(KEY::RIGHT, KEY_STATE::TAP))
-	{
-		m_tUIDesc.fX += 10.f;
-	}
-
+	FollowOwner();
 	Set_ChildPosFromThis();
 	Check_Track();
 
@@ -243,9 +212,9 @@ void CMonsterHPBar_Base::Green_Damaged(_float _fDmgRatio)
 
 }
 
-void CMonsterHPBar_Base::Toggle_Recovery()
+void CMonsterHPBar_Base::Set_RecoveryAlram(_bool _bRecovery)
 {
-	if (m_pRecovery.lock()->Get_Enable())
+	if (!_bRecovery)
 	{
 		m_pRecovery.lock()->Get_Component<CFader>().lock()->Exit_Fader();
 		m_pRecovery.lock()->Set_Enable(false);
@@ -267,6 +236,40 @@ void CMonsterHPBar_Base::Toggle_Recovery()
 		m_pRecovery.lock()->Init_Fader(faderDesc, hoverDesc);
 	}
 }
+
+void CMonsterHPBar_Base::Reset()
+{
+	Set_Enable(false);
+}
+
+void CMonsterHPBar_Base::FollowOwner()
+{
+	if (!m_pOwner.lock())
+		return;
+
+	_vector vViewPosition;
+	_matrix ViewProjMatrix;
+	
+	vViewPosition = m_pOwner.lock()->Get_WorldPosition();
+
+	ViewProjMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_VIEW) *
+		GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_PROJ);
+		
+	XMVector3TransformCoord(vViewPosition, ViewProjMatrix);
+
+	/* -1 ~ 1 to 0 ~ ViewPort */
+	vViewPosition.m128_f32[0] = (vViewPosition.m128_f32[0] + 1.f) * (_float)g_iWinCX * 0.5f;
+	vViewPosition.m128_f32[1] = (vViewPosition.m128_f32[1] + 1.f) * (_float)g_iWinCY * 0.5f;
+
+	Set_UIPosition(vViewPosition.m128_f32[0], vViewPosition.m128_f32[1]);
+}
+
+void CMonsterHPBar_Base::Set_Owner(weak_ptr<CMonster> pMonster)
+{
+	m_pOwner = pMonster;
+}
+
+
 
 void CMonsterHPBar_Base::Set_Stun(bool _bStun)
 {

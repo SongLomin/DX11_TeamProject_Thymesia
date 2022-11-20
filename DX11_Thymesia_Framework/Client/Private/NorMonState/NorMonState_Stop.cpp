@@ -31,7 +31,7 @@ void CNorMonState_Stop::Start()
 {
 	__super::Start();
 
-	if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
+	if (m_eMonType == MONSTERTYPE::AXEMAN)
 	{
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|DemoM02_Idle1|BaseLayer|Armature|Arm");
 	}

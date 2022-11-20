@@ -31,20 +31,19 @@ void CNorMonState_LightAttack3::Start()
 {
 	__super::Start();
 
-	switch (m_eNorMonType)
+	switch (m_eMonType)
 	{
-	case Client::NORMONSTERTYPE::AXEMAN:
+	case Client::MONSTERTYPE::AXEMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_Attack02|BaseLayer|Arm");
 		break;
-	case Client::NORMONSTERTYPE::KNIFEWOMAN:
+	case Client::MONSTERTYPE::KNIFEWOMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_Attack01");
 		break;
-	case Client::NORMONSTERTYPE::SKULL:
+	case Client::MONSTERTYPE::SKULL:
 		break;
-	case Client::NORMONSTERTYPE::GARDENER:
+	case Client::MONSTERTYPE::GARDENER:
 		break;
 	}
-
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_LightAttack3::Call_AnimationEnd, this);
 }
@@ -124,7 +123,6 @@ void CNorMonState_LightAttack3::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	
 	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
 }
 

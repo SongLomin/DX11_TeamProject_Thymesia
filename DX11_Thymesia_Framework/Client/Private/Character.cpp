@@ -20,7 +20,7 @@ HRESULT CCharacter::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 	m_pNaviMeshCom = Add_Component<CNavigation>();
-	m_pStatus = Add_Component<CStatus>();
+	//m_pStatus = Add_Component<CStatus>();
 	return S_OK;
 }
 

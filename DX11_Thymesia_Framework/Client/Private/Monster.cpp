@@ -11,7 +11,7 @@
 #include "Texture.h"
 #include "Client_Presets.h"
 #include "PhysXCollider.h"
-
+#include "Status_Monster.h"
 GAMECLASS_C(CMonster);
 CLONE_C(CMonster, CGameObject);
 
@@ -35,6 +35,8 @@ HRESULT CMonster::Initialize_Prototype()
 HRESULT CMonster::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
+
+    m_pStatus = Add_Component<CStatus_Monster>(pArg);
 
     m_pHitColliderCom = Add_Component<CCollider>();
 
@@ -161,7 +163,7 @@ HRESULT CMonster::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_Li
 
 void CMonster::Respawn_Monster(_fvector In_vPosition)
 {
-    m_pStatus.lock()->Set_FullHP();
+    //m_pStatus.lock()->Set_FullHP();
     m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, In_vPosition);
     
     m_pTransformCom.lock()->LookAt2D(

@@ -33,6 +33,8 @@ HRESULT CNorMonState_Idle::Initialize(void* pArg)
 	__super::Initialize(pArg);
 
 
+
+
 	return S_OK;
 }
 
@@ -40,10 +42,10 @@ void CNorMonState_Idle::Start()
 {
 	__super::Start();
 
-	
-	
 
-	if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
+
+
+	if (m_eMonType == MONSTERTYPE::AXEMAN)
 	{
 		switch (m_eNorMonIdleType)
 		{
@@ -59,7 +61,7 @@ void CNorMonState_Idle::Start()
 		}
 	}
 
-	if (m_eNorMonType == NORMONSTERTYPE::KNIFEWOMAN)
+	if (m_eMonType == MONSTERTYPE::KNIFEWOMAN)
 	{
 		switch (m_eNorMonIdleType)
 		{
@@ -75,9 +77,27 @@ void CNorMonState_Idle::Start()
 		}
 	}
 
-		
-	
-	
+
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CNorMonState_HurtR>().lock())
+	{
+		int iRand = rand() % 3 + 2;
+
+		m_iCount += iRand;
+	}
+
+
+
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CNorMonState_LightAttack3>().lock())
+	{
+		m_iCount = 0;
+		m_bGoAtk = false;
+		m_bCloseToRun = true;
+		m_iIdleType = 1;
+	}
+
+
+
 }
 
 void CNorMonState_Idle::Tick(_float fTimeDelta)
@@ -89,13 +109,14 @@ void CNorMonState_Idle::Tick(_float fTimeDelta)
 
 	
 
+
 }
 
 void CNorMonState_Idle::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
-	
-	
+
+
 	//TODO 지우면안돼요 화나요
 	//if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CNorMonState_Awake>().lock())
 	//{
@@ -107,85 +128,16 @@ void CNorMonState_Idle::LateTick(_float fTimeDelta)
 	//	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_IdleGeneral|BaseLayer");
 	//}
 
+
+	if (m_iCount >= 10)
+	{
+		m_bGoAtk = true;
+	}
+
 	Check_AndChangeNextState();
 
 }
 
-void CNorMonState_Idle::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
-{
-	//__super::OnHit(pOtherCollider, In_eHitType, In_fDamage);
-
-	if (pOtherCollider.lock()->Get_CollisionLayer() == (_uint)COLLISION_LAYER::PLAYER_ATTACK)
-	{
-		_vector vMyPosition = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-
-		//맞았을때 플레이어를 바라보는 시선 처리
-		weak_ptr<CAttackArea> pAttackArea = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner());
-
-		if (!pAttackArea.lock())
-			return;
-
-		_vector vOtherColliderPosition = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner()).lock()->
-			Get_ParentObject().lock()->
-			Get_Component<CTransform>().lock()->
-			Get_State(CTransform::STATE_TRANSLATION);
-
-		/*_vector vOtherColliderPosition = Weak_Cast<CWeapon>(pOtherCollider.lock()->Get_Owner()).lock()->
-			Get_ParentObject().lock()->
-			Get_Component<CTransform>().lock()->
-			Get_State(CTransform::STATE_TRANSLATION);*/
-
-		_vector vSameHeightOtherColliderPosition = vOtherColliderPosition;
-		vSameHeightOtherColliderPosition.m128_f32[1] = vMyPosition.m128_f32[1];
-
-		m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
-
-		//bool bRandom = (_bool)(rand() % 2);
-
-		//데미지 적용
-		//m_pStatusCom.lock()->Add_Damage(In_fDamage);
-		//GAMEINSTANCE->Get_GameObjects<CDamageUI>(LEVEL::LEVEL_STATIC).front().lock()->Add_DamageText(vMyPosition, In_fDamage, bRandom);
-
-		//GAMEINSTANCE->Get_GameObjects<CMonsterHpBar>(LEVEL::LEVEL_STATIC).front().lock()->OnHit(m_pOwner);
-		//GAMEINSTANCE->Get_GameObjects<CComboTimer>(LEVEL::LEVEL_STATIC).front().lock()->Update_Combo();
-
-		GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Set_TargetMonster(Get_OwnerMonster());
-
-		//Play_OnHitEffect();
-
-		//공격 형태에 따라서 애니메이션 변경
-
-		//if (m_pStatusCom.lock()->Is_Dead())
-		//{
-		//	Get_OwnerMonster()->Change_State<CMonster1State_Death>();
-		//}
-
-		//else if (In_eHitType == HIT_TYPE::NORMAL_HIT)
-		//{
-		//	Get_OwnerMonster()->Change_State<CMonster1State_Hit>();
-		//	GET_SINGLE(CGameManager)->Add_Shaking(SHAKE_DIRECTION::LOOK, 0.15f, 0.2f);
-		//}
-		//
-		//else if (In_eHitType == HIT_TYPE::DOWN_HIT)
-		//{
-		//	Get_OwnerMonster()->Change_State<CMonster1State_HitDown>(0.1f);
-		//	GET_SINGLE(CGameManager)->Add_Shaking(SHAKE_DIRECTION::RIGHT, 0.25f, 0.3f);
-		//}
-
-
-		if (In_eHitType == HIT_TYPE::LEFT_HIT)
-		{
-			Get_OwnerMonster()->Change_State<CNorMonState_HurtL>();
-		}
-
-		else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
-		{
-			Get_OwnerMonster()->Change_State<CNorMonState_HurtR>();
-		}
-	}
-
-
-}
 
 void CNorMonState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 {
@@ -193,9 +145,10 @@ void CNorMonState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+
 #ifdef _DEBUG
-	#ifdef _DEBUG_COUT_
-		cout << "NorMonState: IdleIDLEIDLE -> OnStateStart" << endl;
+#ifdef _DEBUG_COUT_
+	cout << "NorMonState: IdleIDLEIDLE -> OnStateStart" << endl;
 #endif
 #endif
 
@@ -230,12 +183,12 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 
 	// 1. 아이들상태부터 검사  근데이떄가 거리가 가까워졌을대임 
 	// 첫번째로아이들들어오면 무조건 이친구가 들어오게함 
-	if (fPToMDistance <= 3.f && m_iIdleType == 0)
+	if (fPToMDistance <= 3.f && m_iIdleType == 0  )
 	{
 
-		switch (m_eNorMonType)
+		switch (m_eMonType)
 		{
-		case Client::NORMONSTERTYPE::AXEMAN:
+		case Client::MONSTERTYPE::AXEMAN:
 			switch (m_eNorMonIdleType)
 			{
 			case Client::NORMONSTERIDLETYPE::NORIDLE:
@@ -249,7 +202,7 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 				break;
 			}
 			break;
-		case Client::NORMONSTERTYPE::KNIFEWOMAN:
+		case Client::MONSTERTYPE::KNIFEWOMAN:
 			switch (m_eNorMonIdleType)
 			{
 			case Client::NORMONSTERIDLETYPE::NORIDLE:
@@ -263,15 +216,15 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 				break;
 			}
 			break;
-		case Client::NORMONSTERTYPE::SKULL:
+		case Client::MONSTERTYPE::SKULL:
 			break;
-		case Client::NORMONSTERTYPE::GARDENER:
+		case Client::MONSTERTYPE::GARDENER:
 			break;
-		}	
-			m_iIdleType = 1;
-			m_bCloseToRun = true;
-			return true;
-	
+		}
+		m_iIdleType = 1;
+		m_bCloseToRun = true;
+		return true;
+
 	}
 
 	// 2.재내들 끊나면 다시아이들로옴 어떤상태는 무조건 NORIDLE상태임
@@ -281,17 +234,17 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 	if (m_bCloseToRun && m_iIdleType == 1)
 	{
 
-		switch (m_eNorMonType)
+		switch (m_eMonType)
 		{
-		case Client::NORMONSTERTYPE::AXEMAN:
+		case Client::MONSTERTYPE::AXEMAN:
 			TurnMechanism();
 			break;
-		case Client::NORMONSTERTYPE::KNIFEWOMAN:
+		case Client::MONSTERTYPE::KNIFEWOMAN:
 			TurnMechanism();
 			break;
-		case Client::NORMONSTERTYPE::SKULL:
+		case Client::MONSTERTYPE::SKULL:
 			break;
-		case Client::NORMONSTERTYPE::GARDENER:
+		case Client::MONSTERTYPE::GARDENER:
 			break;
 
 		}
@@ -307,69 +260,70 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 	if (fPToMDistance <= 3.f && m_iIdleType == 2 )
 	{
 
-		switch (m_eNorMonType)
+		switch (m_eMonType)
 		{
-		case Client::NORMONSTERTYPE::AXEMAN:
-				if (ComputeAngleWithPlayer() <= 0.f)
+		case Client::MONSTERTYPE::AXEMAN:
+			if (ComputeAngleWithPlayer() <= 0.f)
+			{
+				TurnMechanism();
+			}
+			else
+			{
+				Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
+				m_bClosePlayerCheck = true;
+				m_bCloseToRun = true;
+				int iRunORWalk = rand() % 2;
+				switch (iRunORWalk)
 				{
-					TurnMechanism();
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+					break;
 				}
-				else
-				{
-					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
-					m_bClosePlayerCheck = true;
-					m_bCloseToRun = true;
-					int iRunORWalk = rand() % 2;
-					switch (iRunORWalk)
-					{
-					case 0:
-						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
-						break;
-					case 1:
-						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
-						break;
-					}
-				}
+			}
 			break;
-		case Client::NORMONSTERTYPE::KNIFEWOMAN:
-				if (ComputeAngleWithPlayer() <= 0.f)
+		case Client::MONSTERTYPE::KNIFEWOMAN:
+			if (ComputeAngleWithPlayer() <= 0.f)
+			{
+				TurnMechanism();
+			}
+			else
+			{
+				Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
+				m_bClosePlayerCheck = true;
+				m_bCloseToRun = true;
+				int iRunORWalk = rand() % 2;
+				switch (iRunORWalk)
 				{
-					TurnMechanism();
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+					break;
 				}
-				else
-				{
-					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
-					m_bClosePlayerCheck = true;
-					m_bCloseToRun = true;
-					int iRunORWalk = rand() % 2;
-					switch (iRunORWalk)
-					{
-					case 0:
-						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
-						break;
-					case 1:
-						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
-						break;
-					}
-				}
+			}
 			break;
-		case Client::NORMONSTERTYPE::SKULL:
+		case Client::MONSTERTYPE::SKULL:
 			break;
-		case Client::NORMONSTERTYPE::GARDENER:
+		case Client::MONSTERTYPE::GARDENER:
 			break;
 		}
-		
+
 		return true;
 	}
 
+	// 
 	if (m_bCloseToRun && m_iIdleType == 2 && m_bClosePlayerCheck)
 	{
 		Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
 		int iRunORWalk = rand() % 2;
 
-		switch (m_eNorMonType)
+		switch (m_eMonType)
 		{
-		case Client::NORMONSTERTYPE::AXEMAN:
+		case Client::MONSTERTYPE::AXEMAN:
 			switch (iRunORWalk)
 			{
 			case 0:
@@ -380,7 +334,7 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 				break;
 			}
 			break;
-		case Client::NORMONSTERTYPE::KNIFEWOMAN:
+		case Client::MONSTERTYPE::KNIFEWOMAN:
 			switch (iRunORWalk)
 			{
 			case 0:
@@ -391,9 +345,9 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 				break;
 			}
 			break;
-		case Client::NORMONSTERTYPE::SKULL:
+		case Client::MONSTERTYPE::SKULL:
 			break;
-		case Client::NORMONSTERTYPE::GARDENER:
+		case Client::MONSTERTYPE::GARDENER:
 			break;
 		}
 
@@ -406,7 +360,15 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 		Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_B>(0.05f);
 		return true;
 	}
-	
+
+
+	if (m_bGoAtk)
+	{
+		
+		Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack3>(0.05f);
+		return true;
+	}
+
 	return false;
 }
 

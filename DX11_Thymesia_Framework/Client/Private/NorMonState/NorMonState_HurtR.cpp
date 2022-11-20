@@ -31,17 +31,17 @@ void CNorMonState_HurtR::Start()
 {
 	__super::Start();
 
-	switch (m_eNorMonType)
+	switch (m_eMonType)
 	{
-	case Client::NORMONSTERTYPE::AXEMAN:
+	case Client::MONSTERTYPE::AXEMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_HurtS_FR|BaseLayer|Arm");
 		break;
-	case Client::NORMONSTERTYPE::KNIFEWOMAN:
+	case Client::MONSTERTYPE::KNIFEWOMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_HurtM_FR");
 		break;
-	case Client::NORMONSTERTYPE::SKULL:
+	case Client::MONSTERTYPE::SKULL:
 		break;
-	case Client::NORMONSTERTYPE::GARDENER:
+	case Client::MONSTERTYPE::GARDENER:
 		break;
 	}
 
@@ -127,7 +127,6 @@ void CNorMonState_HurtR::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
-
 
 	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
 }
