@@ -23,14 +23,14 @@ HRESULT CCorvusState_LAttack2::Initialize_Prototype()
 HRESULT CCorvusState_LAttack2::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-	m_iAttackIndex = 8;
+	m_iAttackIndex = 185;
 	return S_OK;
 }
 
 void CCorvusState_LAttack2::Start()
 {
 	__super::Start();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_LAttack2");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD_LAttack2");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_LAttack2::Call_AnimationEnd, this);
 }
 
@@ -116,7 +116,7 @@ void CCorvusState_LAttack2::Check_InputNextAttack()
 
 	switch (m_iAttackIndex)
 	{
-	case 8:
+	case 185:
 		if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(3, 999))
 		{
 			m_IsNextAttack = true;
@@ -182,7 +182,7 @@ void CCorvusState_LAttack2::OnStateEnd()
 	//Disable_Weapons();
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 	m_IsNextAttack = false;
-	m_iAttackIndex = 8;
+	m_iAttackIndex = 185;
 }
 
 void CCorvusState_LAttack2::OnEventMessage(_uint iArg)
@@ -292,7 +292,17 @@ _bool CCorvusState_LAttack2::Check_AndChangeNextState()
 		}
 	}
 
-	
+
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.25f)
+	{
+		if (Check_RequirementClawAttackState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
+			return true;
+		}
+	}
 
 
 
@@ -310,7 +320,7 @@ _bool CCorvusState_LAttack2::Check_RequirementNextAttackState()
 	switch (m_iAttackIndex)
 	{
 
-	case 8:
+	case 185:
 		iTargetKeyFrameFirst = 16;
 		iTargetKeyFrameSecond = 50;
 		break;
@@ -345,7 +355,7 @@ _bool CCorvusState_LAttack2::Check_RuquireMnetFirstAttackState()
 
 	switch (m_iAttackIndex)
 	{
-	case 8:
+	case 185:
 		iTargetKeyFrameMin = 51;
 		iTargetKeyFrameMax = 80;
 		break;

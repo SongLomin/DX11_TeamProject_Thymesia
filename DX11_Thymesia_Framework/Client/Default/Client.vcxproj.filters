@@ -646,6 +646,9 @@
     <ClInclude Include="..\Public\Status_Monster.h">
       <Filter>02. GameObject\03. Actor\00. Character\01. Monster</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttack1.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawAttack1</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1262,6 +1265,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Status_Monster.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\01. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttack1.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawAttack1</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1962,6 +1968,12 @@
     </Filter>
     <Filter Include="02. GameObject\01. UI\MonsterHPBar\Boss">
       <UniqueIdentifier>{7f2bc015-f8e3-43fa-ae95-787d7300b0d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack">
+      <UniqueIdentifier>{1db70a15-64a5-4a8c-8ff3-f74f19895d58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawAttack1">
+      <UniqueIdentifier>{18da53dc-73a3-4ebb-b1b1-1740461d44d4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

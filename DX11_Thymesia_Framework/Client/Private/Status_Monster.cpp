@@ -42,7 +42,7 @@ void CStatus_Monster::LateTick(_float fTimeDelta)
 
 _bool CStatus_Monster::Is_Dead()
 {
-	if (m_tMonsterDesc.m_fCurrentHP_white <= DBL_EPSILON)
+	if (m_tMonsterDesc.m_fCurrentHP_Green <= DBL_EPSILON)
 	{
 		return true;
 	}

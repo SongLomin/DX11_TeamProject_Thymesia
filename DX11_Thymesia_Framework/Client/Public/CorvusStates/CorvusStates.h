@@ -22,6 +22,7 @@
 #include "CorvusStates/CorvusState_Parry1.h"
 #include "CorvusStates/CorvusState_Parry2.h"
 #include "CorvusStates/CorvusState_BasicHealing.h"
+#include "CorvusStates/CorvusState_ClawAttack1.h"
 //플레이어 기본 스테이트
 
 //플레이어 처형 스테이트

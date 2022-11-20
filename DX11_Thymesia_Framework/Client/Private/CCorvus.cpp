@@ -31,8 +31,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
 
 
-	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Translation");
-	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Rotation");
+	m_pModelCom.lock()->Set_RootNode("root");
 
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultSaber>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
@@ -55,6 +54,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 	Add_Component<CCorvusState_Parry1>();
 	Add_Component<CCorvusState_Parry2>();
 	Add_Component<CCorvusState_BasicHealing>();
+	Add_Component<CCorvusState_ClawAttack1>();
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
 	
@@ -189,7 +189,7 @@ void CCorvus::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
 void CCorvus::RootMove()
 {
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
 	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
 	m_pPhysXColliderCom.lock();
 }

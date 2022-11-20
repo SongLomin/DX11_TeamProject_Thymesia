@@ -24,14 +24,14 @@ HRESULT CCorvusState_LAttack1::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	m_iAttackIndex = 7;
+	m_iAttackIndex = 183;
 	return S_OK;
 }
 
 void CCorvusState_LAttack1::Start()
 {
 	__super::Start();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_LAttack1");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD_LAttack1");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_LAttack1::Call_AnimationEnd, this);
 }
 
@@ -115,7 +115,7 @@ void CCorvusState_LAttack1::Check_InputNextAttack()
 
 	switch (m_iAttackIndex)
 	{
-	case 7:
+	case 183:
 		if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(3, 999))
 		{
 			m_IsNextAttack = true;
@@ -151,7 +151,6 @@ void CCorvusState_LAttack1::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	if (!m_pModelCom.lock().get())
 	{
-		
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
 	m_pModelCom.lock()->Set_AnimationSpeed(2.5f);
@@ -277,6 +276,16 @@ _bool CCorvusState_LAttack1::Check_AndChangeNextState()
 		}
 	}
 
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.4f)
+	{
+		if (Check_RequirementClawAttackState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
+			return true;
+		}
+	}
+
 		
 
 
@@ -309,7 +318,7 @@ _bool CCorvusState_LAttack1::Check_RequirementNextAttackState()
 
 	switch (m_iAttackIndex)
 	{
-	case 7:
+	case 183:
 		iTargetKeyFrameFirst = 15;
 		iTargetKeyFrameSecond = 50;
 		break;
@@ -336,7 +345,7 @@ _bool CCorvusState_LAttack1::Check_RuquireMnetFirstAttackState()
 
 	switch (m_iAttackIndex)
 	{
-	case 7:
+	case 183:
 		iTargetKeyFrameMin = 51;
 		iTargetKeyFrameMax = 80;
 		break;
