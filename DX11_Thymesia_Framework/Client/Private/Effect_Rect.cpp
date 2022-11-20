@@ -749,14 +749,28 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 
 		m_tOriginalParticleDescs[i].vOffsetPosition = SMath::vRandom(m_tEffectParticleDesc.vMinSpawnPosition, m_tEffectParticleDesc.vMaxSpawnPosition);
 
-		m_tOriginalParticleDescs[i].vTargetSpeed =
-			SMath::vRandom(m_tEffectParticleDesc.vMinSpeed, m_tEffectParticleDesc.vMaxSpeed);
-
-		m_tOriginalParticleDescs[i].vTargetSpeedForce =
-			SMath::vRandom(m_tEffectParticleDesc.vMinSpeedForce, m_tEffectParticleDesc.vMaxSpeedForce);
-
 		m_tOriginalParticleDescs[i].vCurrentRotation =
 			SMath::vRandom(m_tEffectParticleDesc.vMinStartRotation, m_tEffectParticleDesc.vMaxStartRotation);
+
+		if (m_tEffectParticleDesc.bEasingPosition)
+		{
+			m_tOriginalParticleDescs[i].vTargetSpeed = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, m_tParticleDescs[i].vOffsetPosition);
+
+			_vector vGoalOffsetPosition = XMLoadFloat3(&SMath::vRandom(m_tEffectParticleDesc.vMinGoalOffsetPosition, m_tEffectParticleDesc.vMaxGoalOffsetPosition));
+			vGoalOffsetPosition = XMVectorSetX(vGoalOffsetPosition, XMVectorGetX(vGoalOffsetPosition) * m_tOriginalParticleDescs[i].vCurrentRotation.x);
+			vGoalOffsetPosition = XMVectorSetX(vGoalOffsetPosition, XMVectorGetX(vGoalOffsetPosition) * m_tOriginalParticleDescs[i].vCurrentRotation.x);
+			vGoalOffsetPosition = XMVectorSetX(vGoalOffsetPosition, XMVectorGetX(vGoalOffsetPosition) * m_tOriginalParticleDescs[i].vCurrentRotation.x);
+			XMStoreFloat3(&m_tOriginalParticleDescs[i].vTargetSpeedForce, vGoalOffsetPosition);
+		}
+		else
+		{
+			m_tOriginalParticleDescs[i].vTargetSpeed =
+				SMath::vRandom(m_tEffectParticleDesc.vMinSpeed, m_tEffectParticleDesc.vMaxSpeed);
+
+			m_tOriginalParticleDescs[i].vTargetSpeedForce =
+				SMath::vRandom(m_tEffectParticleDesc.vMinSpeedForce, m_tEffectParticleDesc.vMaxSpeedForce);
+		}
+
 
 		m_tOriginalParticleDescs[i].vCurrentScale =
 			SMath::vRandom(m_tEffectParticleDesc.vMinStartScale, m_tEffectParticleDesc.vMaxStartScale);
@@ -767,10 +781,9 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 			_float fAhlpaColor = SMath::fRandom(m_tEffectParticleDesc.vMinStartColor.w, m_tEffectParticleDesc.vMaxStartColor.w);
 			m_tOriginalParticleDescs[i].vCurrentColor = { fGrayColor, fGrayColor, fGrayColor, fAhlpaColor };
 		}
-
 		else
 		{
-			m_tOriginalParticleDescs[i].vCurrentColor =
+			m_tOriginalParticleDescs[i].vCurrentColor = 
 				SMath::vRandom(m_tEffectParticleDesc.vMinStartColor, m_tEffectParticleDesc.vMaxStartColor);
 		}
 
@@ -779,7 +792,6 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 		m_tOriginalParticleDescs[i].vCurrentScale.x = max(0.00001f, m_tOriginalParticleDescs[i].vCurrentScale.x);
 		m_tOriginalParticleDescs[i].vCurrentScale.y = max(0.00001f, m_tOriginalParticleDescs[i].vCurrentScale.y);
 		m_tOriginalParticleDescs[i].vCurrentScale.z = max(0.00001f, m_tOriginalParticleDescs[i].vCurrentScale.z);
-
 	}
 }
 
@@ -808,7 +820,7 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 	_float3 vMove;
 	ZeroMemory(&vMove, sizeof(_float3));
 
-	if (m_tEffectParticleDesc.bEasingSpeed)
+	if (m_tEffectParticleDesc.bEasingPosition)
 	{
 		_float fElapsedTime = m_tParticleDescs[i].fCurrentLifeTime;
 
@@ -819,65 +831,87 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 		(
 			vMove
 			, (EASING_TYPE)m_tEffectParticleDesc.iSpeedEasingType
-			, XMLoadFloat3(&m_tEffectParticleDesc.vMinLimitSpeed)
-			, XMLoadFloat3(&m_tEffectParticleDesc.vMaxLimitSpeed)
+			, XMLoadFloat3(&m_tParticleDescs[i].vTargetSpeed)
+			, XMLoadFloat3(&m_tParticleDescs[i].vTargetSpeedForce)
 			, fElapsedTime
 			, m_tEffectParticleDesc.fSpeedEasingTotalTime
 		);
 
-		vMove.x = max(m_tEffectParticleDesc.vMinLimitSpeed.x, min(m_tEffectParticleDesc.vMaxLimitSpeed.x, vMove.x));
-		vMove.y = max(m_tEffectParticleDesc.vMinLimitSpeed.y, min(m_tEffectParticleDesc.vMaxLimitSpeed.y, vMove.y));
-		vMove.z = max(m_tEffectParticleDesc.vMinLimitSpeed.z, min(m_tEffectParticleDesc.vMaxLimitSpeed.z, vMove.z));
-
-		m_tParticleDescs[i].vTargetSpeed = vMove;
-	}
-	else
-	{
-		vMove = SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeed, fTimeDelta);
-
-		m_tParticleDescs[i].vCurrentSpeedForce =
-			SMath::Add_Float3(m_tParticleDescs[i].vCurrentSpeedForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeedForce, fTimeDelta));
-
-		vMove = SMath::Add_Float3(vMove, m_tParticleDescs[i].vCurrentSpeedForce);
-
-		vMove.x = max(m_tEffectParticleDesc.vMinLimitSpeed.x, min(m_tEffectParticleDesc.vMaxLimitSpeed.x, vMove.x));
-		vMove.y = max(m_tEffectParticleDesc.vMinLimitSpeed.y, min(m_tEffectParticleDesc.vMaxLimitSpeed.y, vMove.y));
-		vMove.z = max(m_tEffectParticleDesc.vMinLimitSpeed.z, min(m_tEffectParticleDesc.vMaxLimitSpeed.z, vMove.z));
-	}
-
-	if (m_tEffectParticleDesc.bMoveLook)
-	{
-		if ((_int)PARTICLETYPE::OUTBURST == m_tEffectParticleDesc.iParticleType)
-		{
-			_vector vMovePosition = XMLoadFloat3(&vMove);
-			_vector vRotation = XMLoadFloat3(&m_tParticleDescs[i].vCurrentRotation); 
-			_matrix vRotationMatrix = XMMatrixRotationRollPitchYawFromVector(vRotation);
-			vRotationMatrix.r[3] = vRotationMatrix.r[1];
-			vRotationMatrix.r[1] = vRotationMatrix.r[2];
-			vRotationMatrix.r[2] = vRotationMatrix.r[3];
-			vRotationMatrix.r[3] = XMVectorSet(0.f, 0.f, 0.f, 1.f);
-			_vector vRotatedPosition = XMVector3TransformCoord(vMovePosition, vRotationMatrix);
-			_vector vCurrentPosition = XMLoadFloat3(&m_tParticleDescs[i].vCurrentTranslation);
-			vCurrentPosition += vRotatedPosition;
-			XMStoreFloat3(&m_tParticleDescs[i].vCurrentTranslation, vCurrentPosition);
-		}
-		else
-		{
-			_vector vMovePosition = XMLoadFloat3(&vMove);
-			_vector vRotatedPosition = XMVector3TransformCoord(vMovePosition, XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_tParticleDescs[i].vCurrentRotation)));
-			_vector vCurrentPosition = XMLoadFloat3(&m_tParticleDescs[i].vCurrentTranslation);
-			vCurrentPosition += vRotatedPosition;
-			XMStoreFloat3(&m_tParticleDescs[i].vCurrentTranslation, vCurrentPosition);
-		}
+		m_tParticleDescs[i].vCurrentTranslation = vMove;
 	}
 	else
 	{
 		if (m_tEffectParticleDesc.bEasingSpeed)
 		{
-			m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, m_tParticleDescs[i].vTargetSpeed);
+			_float fElapsedTime = m_tParticleDescs[i].fCurrentLifeTime;
+
+			if (0.f > fElapsedTime)
+				return;
+
+			this->Apply_Easing
+			(
+				vMove
+				, (EASING_TYPE)m_tEffectParticleDesc.iSpeedEasingType
+				, XMLoadFloat3(&m_tEffectParticleDesc.vMinLimitSpeed)
+				, XMLoadFloat3(&m_tEffectParticleDesc.vMaxLimitSpeed)
+				, fElapsedTime
+				, m_tEffectParticleDesc.fSpeedEasingTotalTime
+			);
+
+			vMove.x = max(m_tEffectParticleDesc.vMinLimitSpeed.x, min(m_tEffectParticleDesc.vMaxLimitSpeed.x, vMove.x));
+			vMove.y = max(m_tEffectParticleDesc.vMinLimitSpeed.y, min(m_tEffectParticleDesc.vMaxLimitSpeed.y, vMove.y));
+			vMove.z = max(m_tEffectParticleDesc.vMinLimitSpeed.z, min(m_tEffectParticleDesc.vMaxLimitSpeed.z, vMove.z));
+
+			m_tParticleDescs[i].vTargetSpeed = vMove;
 		}
 		else
-			m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, vMove);
+		{
+			vMove = SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeed, fTimeDelta);
+
+			m_tParticleDescs[i].vCurrentSpeedForce =
+				SMath::Add_Float3(m_tParticleDescs[i].vCurrentSpeedForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeedForce, fTimeDelta));
+
+			vMove = SMath::Add_Float3(vMove, m_tParticleDescs[i].vCurrentSpeedForce);
+
+			vMove.x = max(m_tEffectParticleDesc.vMinLimitSpeed.x, min(m_tEffectParticleDesc.vMaxLimitSpeed.x, vMove.x));
+			vMove.y = max(m_tEffectParticleDesc.vMinLimitSpeed.y, min(m_tEffectParticleDesc.vMaxLimitSpeed.y, vMove.y));
+			vMove.z = max(m_tEffectParticleDesc.vMinLimitSpeed.z, min(m_tEffectParticleDesc.vMaxLimitSpeed.z, vMove.z));
+		}
+
+		if (m_tEffectParticleDesc.bMoveLook)
+		{
+			if ((_int)PARTICLETYPE::OUTBURST == m_tEffectParticleDesc.iParticleType)
+			{
+				_vector vMovePosition = XMLoadFloat3(&vMove);
+				_vector vRotation = XMLoadFloat3(&m_tParticleDescs[i].vCurrentRotation);
+				_matrix vRotationMatrix = XMMatrixRotationRollPitchYawFromVector(vRotation);
+				vRotationMatrix.r[3] = vRotationMatrix.r[1];
+				vRotationMatrix.r[1] = vRotationMatrix.r[2];
+				vRotationMatrix.r[2] = vRotationMatrix.r[3];
+				vRotationMatrix.r[3] = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+				_vector vRotatedPosition = XMVector3TransformCoord(vMovePosition, vRotationMatrix);
+				_vector vCurrentPosition = XMLoadFloat3(&m_tParticleDescs[i].vCurrentTranslation);
+				vCurrentPosition += vRotatedPosition;
+				XMStoreFloat3(&m_tParticleDescs[i].vCurrentTranslation, vCurrentPosition);
+			}
+			else
+			{
+				_vector vMovePosition = XMLoadFloat3(&vMove);
+				_vector vRotatedPosition = XMVector3TransformCoord(vMovePosition, XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_tParticleDescs[i].vCurrentRotation)));
+				_vector vCurrentPosition = XMLoadFloat3(&m_tParticleDescs[i].vCurrentTranslation);
+				vCurrentPosition += vRotatedPosition;
+				XMStoreFloat3(&m_tParticleDescs[i].vCurrentTranslation, vCurrentPosition);
+			}
+		}
+		else
+		{
+			if (m_tEffectParticleDesc.bEasingSpeed)
+			{
+				m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, m_tParticleDescs[i].vTargetSpeed);
+			}
+			else
+				m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, vMove);
+		}
 	}
 }
 
@@ -1403,17 +1437,19 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 #pragma endregion
 			ImGui::Separator();
 
-			ImGui::Text("Is Move Look");
-			ImGui::SameLine();
+			ImGui::Text("Is Move Look"); ImGui::SameLine();
 			ImGui::Checkbox("##Is_MoveLook", &m_tEffectParticleDesc.bMoveLook);
 
 			ImGui::Separator();
 #pragma region Positions
-			ImGui::Text("Min Start Position");
-			ImGui::DragFloat3("##Min_Start_Position", &m_tEffectParticleDesc.vMinSpawnPosition.x, 0.1f);
+			ImGui::Text("Use Easing Position"); ImGui::SameLine();
+			ImGui::Checkbox("##Is_Easing_Position", &m_tEffectParticleDesc.bEasingPosition);
 
-			ImGui::Text("Max Start Position");
-			ImGui::DragFloat3("##Max_Start_Position", &m_tEffectParticleDesc.vMaxSpawnPosition.x, 0.1f);
+			ImGui::Text("Min Spawn Position");
+			ImGui::DragFloat3("##Min_Spawn_Position", &m_tEffectParticleDesc.vMinSpawnPosition.x, 0.1f);
+
+			ImGui::Text("Max Spawn Position");
+			ImGui::DragFloat3("##Max_Spawn_Position", &m_tEffectParticleDesc.vMaxSpawnPosition.x, 0.1f);
 
 			ImGui::Text("Min Offset Direction");
 			ImGui::DragFloat3("##Min_Offset_Direction", &m_tEffectParticleDesc.vMinSpawnOffsetDirection.x, 0.1f);
@@ -1429,19 +1465,80 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 #pragma endregion
 			ImGui::Separator();
 #pragma region Speed & Force
-			ImGui::Text("Speed");
-			ImGui::NewLine();
+			if (!m_tEffectParticleDesc.bEasingPosition)
+			{
+				ImGui::Text("Speed");
+				ImGui::NewLine();
 
-			ImGui::Text("Apply Easing"); ImGui::SameLine();
-			ImGui::Checkbox("##Is_Easing_Speed", &m_tEffectParticleDesc.bEasingSpeed);
+				ImGui::Text("Apply Easing"); ImGui::SameLine();
+				ImGui::Checkbox("##Is_Easing_Speed", &m_tEffectParticleDesc.bEasingSpeed);
 
-			if (m_tEffectParticleDesc.bEasingSpeed)
+				if (m_tEffectParticleDesc.bEasingSpeed)
+				{
+#pragma region Easing
+					// open easing list
+					const char* EasingItems[] =
+					{
+						"Linear"   ,
+						"QuadIn"   , "QuadOut"	 , "QuadInOut"	 ,
+						"CubicIn"  , "CubicOut"	 , "CubicInOut"	 ,
+						"QuartIn"  , "QuartOut"	 , "QuartInOut"	 ,
+						"QuintIn"  , "QuintOut"	 , "QuintInOut"	 ,
+						"SineIn"   , "SineOut"	 , "SineInOut"	 ,
+						"ExpoIn"   , "ExpoOut"	 , "ExpoInOut"	 ,
+						"CircIn"   , "CircOut"	 , "CircInOut"	 ,
+						"ElasticIn", "ElasticOut", "ElasticInOut",
+						"BounceIn" , "BounceOut"
+					};
+
+					if (ImGui::BeginListBox("Speed Easing Type"))
+					{
+						for (int n = 0; n < IM_ARRAYSIZE(EasingItems); n++)
+						{
+							const bool is_selected = (m_tEffectParticleDesc.iSpeedEasingType == n);
+							if (ImGui::Selectable(EasingItems[n], is_selected))
+							{
+								m_tEffectParticleDesc.iSpeedEasingType = n;
+							}
+
+							if (is_selected)
+								ImGui::SetItemDefaultFocus();
+						}
+						ImGui::EndListBox();
+					}
+
+					ImGui::Text("Total Easing Time"); ImGui::SameLine();
+					ImGui::DragFloat("##Speed_Total_Easing_Time", &m_tEffectParticleDesc.fSpeedEasingTotalTime, 0.01f, -100.f, 100.f, "%.5f");
+#pragma endregion
+				}
+				else
+				{
+					ImGui::Text("Min Speed");
+					ImGui::DragFloat3("##Min_Speed", &m_tEffectParticleDesc.vMinSpeed.x, 0.1f);
+
+					ImGui::Text("Max Speed");
+					ImGui::DragFloat3("##Max_Speed", &m_tEffectParticleDesc.vMaxSpeed.x, 0.1f);
+
+					ImGui::Text("Min Force");
+					ImGui::DragFloat3("##Min_Speed_Force", &m_tEffectParticleDesc.vMinSpeedForce.x, 0.1f);
+
+					ImGui::Text("Max Force");
+					ImGui::DragFloat3("##Max_Speed_Force", &m_tEffectParticleDesc.vMaxSpeedForce.x, 0.1f);
+				}
+
+				ImGui::Text("Min Limit Speed");
+				ImGui::DragFloat3("##Min_Limit_Speed", &m_tEffectParticleDesc.vMinLimitSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
+
+				ImGui::Text("Max Limit Speed");
+				ImGui::DragFloat3("##Max_Limit_Speed", &m_tEffectParticleDesc.vMaxLimitSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
+			}
+			else
 			{
 #pragma region Easing
 				// open easing list
 				const char* EasingItems[] =
-				{ 
-					"Linear"   , 
+				{
+					"Linear"   ,
 					"QuadIn"   , "QuadOut"	 , "QuadInOut"	 ,
 					"CubicIn"  , "CubicOut"	 , "CubicInOut"	 ,
 					"QuartIn"  , "QuartOut"	 , "QuartInOut"	 ,
@@ -1453,7 +1550,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					"BounceIn" , "BounceOut"
 				};
 
-				if (ImGui::BeginListBox("Speed Easing Type"))
+				if (ImGui::BeginListBox("Position Easing Type"))
 				{
 					for (int n = 0; n < IM_ARRAYSIZE(EasingItems); n++)
 					{
@@ -1469,30 +1566,9 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					ImGui::EndListBox();
 				}
 
-				ImGui::Text("Total Easing Time"); ImGui::SameLine();
-				ImGui::DragFloat("##Speed_Total_Easing_Time", &m_tEffectParticleDesc.fSpeedEasingTotalTime, 0.01f, -100.f, 100.f, "%.5f");
-#pragma endregion
+				ImGui::Text("Position Easing Time"); ImGui::SameLine();
+				ImGui::DragFloat("##Position_Total_Easing_Time", &m_tEffectParticleDesc.fSpeedEasingTotalTime, 0.01f, -100.f, 100.f, "%.5f");
 			}
-			else
-			{
-				ImGui::Text("Min Speed");
-				ImGui::DragFloat3("##Min_Speed", &m_tEffectParticleDesc.vMinSpeed.x, 0.1f);
-
-				ImGui::Text("Max Speed");
-				ImGui::DragFloat3("##Max_Speed", &m_tEffectParticleDesc.vMaxSpeed.x, 0.1f);
-
-				ImGui::Text("Min Force");
-				ImGui::DragFloat3("##Min_Speed_Force", &m_tEffectParticleDesc.vMinSpeedForce.x, 0.1f);
-
-				ImGui::Text("Max Force");
-				ImGui::DragFloat3("##Max_Speed_Force", &m_tEffectParticleDesc.vMaxSpeedForce.x, 0.1f);
-			}
-
-			ImGui::Text("Min Limit Speed");
-			ImGui::DragFloat3("##Min_Limit_Speed", &m_tEffectParticleDesc.vMinLimitSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
-
-			ImGui::Text("Max Limit Speed");
-			ImGui::DragFloat3("##Max_Limit_Speed", &m_tEffectParticleDesc.vMaxLimitSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
 #pragma endregion
 			ImGui::Separator();
 
@@ -1563,6 +1639,18 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 				ImGui::Text("Max Limit Rotation");
 				ImGui::DragFloat3("##Max_Limit_Rotation", &m_tEffectParticleDesc.vMaxLimitRotation.x, 0.1f);
+			}
+
+#pragma endregion
+			ImGui::Separator();
+#pragma region For. Easing
+			if (m_tEffectParticleDesc.bEasingPosition)
+			{
+				ImGui::Text("Min Goal Offset Position");
+				ImGui::DragFloat3("##Min_Goal_Offset_Position", &m_tEffectParticleDesc.vMinGoalOffsetPosition.x, 0.1f);
+
+				ImGui::Text("Max Goal Offset Position");
+				ImGui::DragFloat3("##Max_Goal_Offset_Position", &m_tEffectParticleDesc.vMaxGoalOffsetPosition.x, 0.1f);
 			}
 #pragma endregion
 			ImGui::Separator();

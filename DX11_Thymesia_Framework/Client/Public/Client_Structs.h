@@ -169,15 +169,19 @@ namespace Client
 
 #pragma region Easing Position
 		_bool		bEasingPosition;
+
+		// TODO : make swappable with speed min max
+		_float3		vMinGoalOffsetPosition;
+		_float3		vMaxGoalOffsetPosition;
 #pragma endregion
 
 		// particle moves toward look
 		_bool		bMoveLook;
+
 #pragma region Speed
-		// For. Easing
 		_bool		bEasingSpeed;
-		_int		iSpeedEasingType;
-		_float		fSpeedEasingTotalTime;
+		_int		iSpeedEasingType;			// is position easing type when EasingPosition is true.
+		_float		fSpeedEasingTotalTime;		// is position easing total time when EasingPosition is true. 
 
 		_float3		vMinSpeed;
 		_float3		vMaxSpeed;
@@ -187,8 +191,6 @@ namespace Client
 
 		_float3		vMinLimitSpeed;
 		_float3		vMaxLimitSpeed;
-
-		// For. Easing Position
 #pragma endregion
 #pragma region Rotation
 		_bool		bEasingRotation;
