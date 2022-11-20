@@ -35,19 +35,25 @@ HRESULT CLevel_GamePlay::Initialize()
 	
 #pragma region GAMEOBJECT
 
-	future<void> ThreadResult = async(launch::async, 
+	/*future<void> ThreadResult = async(launch::async, 
 		bind(&CLevel_GamePlay::Load_FromJson, this,
 			placeholders::_1, placeholders::_2), 
 		m_szDefaultJsonPath + "Stage1.json", 
-		LEVEL::LEVEL_GAMEPLAY);
+		LEVEL::LEVEL_GAMEPLAY);*/
+
+	//Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_GAMEPLAY);
 
 #ifdef _STAGE_2_
-	future<void> ThreadResult2 = async(launch::async,
+	/*future<void> ThreadResult2 = async(launch::async,
 		bind(&CLevel_GamePlay::Load_FromJson, this,
 			placeholders::_1, placeholders::_2),
 		m_szDefaultJsonPath + "Stage2.json",
-		LEVEL::LEVEL_GAMEPLAY);
+		LEVEL::LEVEL_GAMEPLAY);*/
+
+	Load_FromJson(m_szDefaultJsonPath + "Stage2.json", LEVEL::LEVEL_GAMEPLAY);
 #endif // _STAGE_2_
+
+	
 
 	//Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_GAMEPLAY);
 	CCamera::CAMERADESC			CameraDesc;
@@ -150,9 +156,9 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
-	ThreadResult.get();
+	//ThreadResult.get();
 #ifdef _STAGE_2_
-	ThreadResult2.get();
+	//ThreadResult2.get();
 #endif // _STAGE_2_
 
 	return S_OK;

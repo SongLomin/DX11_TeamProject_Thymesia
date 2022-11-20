@@ -10,7 +10,7 @@
 #define		_USE_THREAD_
 #define		_144HZ_
 #define		_LIFEGUARD_FOR_FALL_
-#define		_DBUG_COUT_
+#define		_DEBUG_COUT_
 #define		_STAGE_2_
 #define		_STAGE_1_MONSTER_
 #endif // _DEBUG
