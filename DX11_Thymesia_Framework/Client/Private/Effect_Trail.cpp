@@ -19,11 +19,11 @@ HRESULT CEffect_Trail::Initialize(void* pArg)//trail을 사용하는 객체로부터 trail
 {
 	__super::Initialize(pArg);
 
-	m_pVIBuffer = Add_Component<CVIBuffer_Trail>(&pArg);
+	m_pVIBuffer = Add_Component<CVIBuffer_Trail>(pArg);
 
-	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_VtxPointInstance"),
-		VTXPOINT_INSTANCE_DECLARATION::Element, 
-		VTXPOINT_INSTANCE_DECLARATION::iNumElements);
+	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_EffectMesh"),
+		VTXTEX_DECLARATION::Element, 
+		VTXTEX_DECLARATION::iNumElements);
 
 
 	//m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f, 0.f, 10.f, 1.f));
@@ -37,7 +37,7 @@ void CEffect_Trail::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	m_pVIBuffer.lock()->Update(fTimeDelta * GAMEINSTANCE->Get_TimeScale(m_iTimeScaleLayerIndex),m_pOwnerTransform, m_pOwnerBoneNode,m_pOwnerModel_Data);
+	m_pVIBuffer.lock()->Update(fTimeDelta, m_pOwnerTransform, m_pOwnerBoneNode, m_pOwnerModel_Data);
 }
 
 void CEffect_Trail::LateTick(_float fTimeDelta)
@@ -56,6 +56,10 @@ HRESULT CEffect_Trail::Render()
 	m_pVIBuffer.lock()->Render();
 
 	return S_OK;
+}
+void CEffect_Trail::Update(_float fTimeDelta, weak_ptr <CTransform> _pOwnerTransform, weak_ptr<CBoneNode> _pOwnerBoneNode, weak_ptr<MODEL_DATA> _pOwnerModel_Data)
+{
+	m_pVIBuffer.lock()->Update(fTimeDelta, _pOwnerTransform, _pOwnerBoneNode, _pOwnerModel_Data);
 }
 
 void CEffect_Trail::Set_OwnerDesc(weak_ptr <CTransform> _pOwnerTransform, weak_ptr<CBoneNode> _pOwnerBoneNode, weak_ptr<MODEL_DATA> _pOwnerModel_Data)

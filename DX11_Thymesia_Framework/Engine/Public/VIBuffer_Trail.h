@@ -31,8 +31,7 @@ protected:
 public:
 	void Update(_float _fTimeDelta, weak_ptr <CTransform> _pOwnerTransform, weak_ptr<CBoneNode> _pOwnerBoneNode, weak_ptr<MODEL_DATA> _pOwnerModel_Data);
 	void Tick(_float fTimeDelta);
-	void Set_OwnerTransform(shared_ptr<CTransform> pTransform);
-
+	
 private:
 	void LerpPoints();//catmullrom
 
@@ -43,8 +42,9 @@ private:
 	_float4 m_vLocalSwordLow;
 	_float4 m_vLocalSwordHigh;
 	TRAIL_DESC m_tTrailDesc;
-	weak_ptr<CTransform> m_pOwnerTransform;
 	
+	_uint m_iLerpPointNum = 12;
+	_uint m_iCatMullRomIndex[4];
 
 private:
 	 void Free();

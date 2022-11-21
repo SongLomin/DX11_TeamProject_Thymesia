@@ -4,6 +4,8 @@
 #include "BoneNode.h"
 #include "GameManager.h"
 #include "Character.h"
+#include "Effect_Trail.h"
+#include "VIBuffer_Trail.h"
 
 GAMECLASS_C(CCorvus_DefaultSaber);
 CLONE_C(CCorvus_DefaultSaber, CGameObject);
@@ -19,6 +21,13 @@ HRESULT CCorvus_DefaultSaber::Initialize(void* pArg)
 
 	m_pModelCom.lock()->Init_Model("CorvusDefaultSaber", "", (_uint)TIMESCALE_LAYER::PLAYER);
 
+	CVIBuffer_Trail::TRAIL_DESC TrailDesc;
+	ZeroMemory(&TrailDesc, sizeof(CVIBuffer_Trail::TRAIL_DESC));
+
+	TrailDesc.iMaxCnt =120;
+	TrailDesc.vPos_0 = _float3(-0.3f, 0.f, 0.f);
+	TrailDesc.vPos_1 = _float3(1.f, 0.f, 0.f);
+	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail>(LEVEL_GAMEPLAY, &TrailDesc);
 
 	return S_OK;
 }
@@ -26,6 +35,7 @@ HRESULT CCorvus_DefaultSaber::Initialize(void* pArg)
 HRESULT CCorvus_DefaultSaber::Start()
 {
 	__super::Start();
+	m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
 
 	return S_OK;
 }
@@ -33,6 +43,9 @@ HRESULT CCorvus_DefaultSaber::Start()
 void CCorvus_DefaultSaber::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	//m_pTrailEffect.lock()->Update(fTimeDelta, m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
+
 
 }
 

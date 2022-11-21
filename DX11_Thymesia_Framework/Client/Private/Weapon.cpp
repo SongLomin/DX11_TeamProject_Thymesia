@@ -43,22 +43,13 @@ HRESULT CWeapon::Initialize(void* pArg)
 		VTXMODEL_DECLARATION::iNumElements);
 
 	// 무기의 맨 아래 정점과, 맨 위 정점을 알아야 함
-	CVIBuffer_Trail::TRAIL_DESC TrailDesc;
-	ZeroMemory(&TrailDesc, sizeof(CVIBuffer_Trail::TRAIL_DESC));
 
-	TrailDesc.iMaxCnt = 10;
-	TrailDesc.vPos_0 = _float3(0.f, -0.5f, 0.f);
-	TrailDesc.vPos_1 = _float3(0.f, 0.5f, 0.f);
-	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail>(LEVEL_GAMEPLAY,&TrailDesc);
-	m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
-
-
-	
 	return S_OK;
 }
 
 HRESULT CWeapon::Start()
 {
+
 	return S_OK;
 }
 
@@ -85,6 +76,7 @@ void CWeapon::Tick(_float fTimeDelta)
 	m_pTransformCom.lock()->Set_WorldMatrix(ParentMatrix * m_pParent.lock()->Get_Component<CTransform>().lock()->Get_WorldMatrix());
 	//m_pTransformCom.lock()->Set_WorldMatrix(m_pParent.lock()->Get_Component<CTransform>().lock()->Get_WorldMatrix());
 	//m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+
 }
 
 void CWeapon::LateTick(_float fTimeDelta)
