@@ -6,6 +6,12 @@
 //#include "MonsterWeapon.h"
 #include "Status.h"
 #include "Attack_Area.h"
+#include "Status.h"
+#include "Status_Player.h"
+#include "Character.h"
+#include "Status_Monster.h"
+#include "Monster.h"
+
 
 GAMECLASS_C(CCorvusStateBase)
 
@@ -135,14 +141,32 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE&
 {
 	__super::OnHit(pOtherCollider, In_eHitType, In_fDamage);
 
-	/*if (pOtherCollider.lock()->Get_CollisionLayer() == (_uint)COLLISION_LAYER::MONSTER_ATTACK)
+	if (pOtherCollider.lock()->Get_CollisionLayer() == (_uint)COLLISION_LAYER::MONSTER_ATTACK)
 	{
-		if (Get_OwnerPlayer()->Get_DodgeTime() > 0.f)
+		//어쩃든 여기 닿으면 데미지 입음.
+		weak_ptr<CStatus_Player> pStatus = m_pOwner.lock()->Get_ComponentByType<CStatus_Player>();
+
+		if (!pStatus.lock())
 		{
-			return;
+			MSG_BOX("Error: Can't Find CStatus_Player From CorvusStateBase!");
 		}
 
-		if (In_eHitType == HIT_TYPE::NORMAL_HIT)
+		weak_ptr<CStatus_Monster> pMonsterStatus;
+		weak_ptr<CAttackArea>	pAttackArea = Weak_StaticCast<CAttackArea>(pOtherCollider.lock()->Get_Owner());
+		
+		pMonsterStatus = pAttackArea.lock()->Get_ParentObject().lock()->Get_ComponentByType< CStatus_Monster>();
+		
+		if(!pMonsterStatus.lock())
+			MSG_BOX("Error : Can't Find CStatus_Monster From CorvusStateBase");
+
+		pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatus.lock()->Get_Desc().m_fAtk);
+
+		//뎀지가 까인 직후 테스트
+		if (pStatus.lock()->Is_Dead())
+		{ 
+			Get_OwnerPlayer()->Change_State<CCorvusState_Die>();
+		}
+		else if (In_eHitType == HIT_TYPE::NORMAL_HIT)
 		{
 			_vector vMyPosition = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
 
@@ -156,12 +180,11 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE&
 
 			m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
 
-			Get_OwnerPlayer()->Change_State<CCorvusState_Hit>();
-			m_pStatusCom.lock()->Add_Damage(In_fDamage);
 
+			Get_OwnerPlayer()->Change_State<CCorvusState_HurtL>();
+			//m_pStatusCom.lock()->Add_Damage(In_fDamage);
 		}
-
-		if (In_eHitType == HIT_TYPE::DOWN_HIT)
+		else if (In_eHitType == HIT_TYPE::DOWN_HIT)
 		{
 			_vector vMyPosition = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
 
@@ -175,14 +198,10 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE&
 
 			m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
 
-			Get_OwnerPlayer()->Change_State<CNorMonState_HitDown>();
-			m_pStatusCom.lock()->Add_Damage(In_fDamage);
-
+			Get_OwnerPlayer()->Change_State<CCorvusState_HurtXXL>();
+			//m_pStatusCom.lock()->Add_Damage(In_fDamage);
 		}
-	}*/
-
-	
-
+	}
 }
 
 void CCorvusStateBase::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)

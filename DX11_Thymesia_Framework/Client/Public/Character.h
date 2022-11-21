@@ -31,6 +31,9 @@ public:
     _uint Get_CurrentStateIndex() const;
     _uint Get_PreStateIndex() const;
     _bool Is_Edit() const { return m_isEdit; }
+    
+    weak_ptr<CStatus>   Get_Status() { return m_pStatus; }
+
 
     _uint Get_AttackCollisionLayer() const {
         return (_uint)m_eAttackCollisionLayer;

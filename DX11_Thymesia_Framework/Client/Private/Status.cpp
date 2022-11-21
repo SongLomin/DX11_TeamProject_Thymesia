@@ -18,6 +18,14 @@ void CStatus::Start()
 {
 }
 
+void CStatus::Decrease_HP(_float& fCurrentHP, const _float& In_fDamage)
+{
+	fCurrentHP -= In_fDamage;
+	if (fCurrentHP <= 0.f)
+		fCurrentHP = 0.f;
+
+}
+
 _bool CStatus::Is_Dead()
 {
 	return _bool();

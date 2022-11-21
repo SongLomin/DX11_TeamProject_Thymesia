@@ -27,13 +27,22 @@ public:
 	void		Set_CurrentHp(_float	_fCurrentHp);
 	void		Set_MaxHp(_float	_fMaxHp) { m_fMaxHp = _fMaxHp; }
 
+public:
+	void		Call_UpdateStatus();
+	void		Call_ChangeCurrentHP(_float fCurrentHP);
+protected:
+	virtual void		Bind_Player();
+
+
+
+
 private:
 	weak_ptr< CProgressBar>	m_pMainBar;
 	weak_ptr< CCustomUI>	m_pBG;
 	weak_ptr< CCustomUI>	m_pBorderLeft;
 	weak_ptr< CCustomUI>	m_pBorderRight;
 	weak_ptr< CHUD_Hover>	m_pTrack;
-
+	
 
 private:
 	_float			m_fLerpAcc;

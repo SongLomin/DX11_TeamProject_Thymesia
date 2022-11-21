@@ -40,6 +40,7 @@ void CNorMonState_Awake::Start()
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_SP_Idle1_End");
 		break;
 	case Client::MONSTERTYPE::SKULL:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_SP_Idle1_End");
 		break;
 	case Client::MONSTERTYPE::GARDENER:
 		break;

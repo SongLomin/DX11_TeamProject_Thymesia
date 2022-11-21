@@ -8,6 +8,7 @@
 #include "AIStateBase.h"
 #include "NorMonStateS.h"
 #include "Character.h"
+#include "Status_Monster.h"
 
 
 GAMECLASS_C(CNorMonState_GroggyEnd);
@@ -31,10 +32,22 @@ void CNorMonState_GroggyEnd::Start()
 {
 	__super::Start();
 
-	if (m_eMonType == MONSTERTYPE::AXEMAN)
+	switch (m_eMonType)
 	{
+	case Client::MONSTERTYPE::AXEMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_HurtStunEnd|BaseLayer|");
+		break;
+	case Client::MONSTERTYPE::KNIFEWOMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV2Villager01_F_HurtStunEnd");
+		break;
+	case Client::MONSTERTYPE::SKULL:
+		break;
+	case Client::MONSTERTYPE::GARDENER:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_HurtStunEnd");
+		break;
 	}
+
+	
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_GroggyEnd::Call_AnimationEnd, this);
 
 }
@@ -56,13 +69,14 @@ void CNorMonState_GroggyEnd::LateTick(_float fTimeDelta)
 
 }
 
-
-
 void CNorMonState_GroggyEnd::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+
+	m_pOwner.lock()->Get_ComponentByType<CStatus_Monster>().lock()->Restart();
+
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_

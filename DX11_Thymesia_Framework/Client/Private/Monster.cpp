@@ -95,7 +95,7 @@ void CMonster::Tick(_float fTimeDelta)
     m_pCurState.lock()->Tick(fTimeDelta);
     m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
     m_pRigidBodyColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
-
+    m_pStatus.lock()->Tick(fTimeDelta);
 #ifdef _DEBUG
 #endif
 
@@ -105,6 +105,8 @@ void CMonster::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
     m_pCurState.lock()->LateTick(fTimeDelta);
+    m_pStatus.lock()->LateTick(fTimeDelta);
+
     GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_SHADOWDEPTH, Weak_Cast<CGameObject>(m_this));
 
     m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 1.5f, 0.f, 1.f));

@@ -42,6 +42,7 @@ void CNorMonState_HeavyAttack1::Start()
 	case Client::MONSTERTYPE::SKULL:
 		break;
 	case Client::MONSTERTYPE::GARDENER:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_ComboA01");
 		break;
 	}
 

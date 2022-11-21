@@ -60,6 +60,11 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	case MONSTERTYPE::SKULL:
 		break;
 	case MONSTERTYPE::GARDENER:
+		m_pModelCom.lock()->Init_Model("Mon_Gardner", "", (_uint)TIMESCALE_LAYER::MONSTER);
+		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
+		m_pWeapons.back().lock()->Set_WeaponType(MONSTERWEAPONTYPE::WEAPON_SCYTHE);
+		m_pWeapons.back().lock()->Init_DefaultWeapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
+		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, 0.f, m_tLinkStateDesc.vYame.z, 1.f));
 		break;
 	}
 
@@ -71,6 +76,9 @@ HRESULT CNorMonster::Initialize(void* pArg)
 			m_pModelCom.lock()->Set_RootNode("root");
 			break;
 		case  MONSTERTYPE::KNIFEWOMAN:
+			m_pModelCom.lock()->Set_RootNode("root");
+			break;
+		case  MONSTERTYPE::GARDENER:
 			m_pModelCom.lock()->Set_RootNode("root");
 			break;
 		}
@@ -116,9 +124,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	Add_Component<CNorMonState_Die>(&m_tLinkStateDesc);
 	
 
-
-
-	//GET_SINGLE(CGameManager)->Bind_KeyEvent("Monster1", m_pModelCom, bind(&CNorMonster::Call_NextAnimationKey, this, placeholders::_1));
+	GET_SINGLE(CGameManager)->Bind_KeyEvent(m_pStatus.lock()->Get_Desc().m_szModelKey, m_pModelCom, bind(&CNorMonster::Call_NextAnimationKey, this, placeholders::_1));
 
 	USE_START(CNorMonster);
 	return S_OK;
@@ -150,6 +156,11 @@ void CNorMonster::Tick(_float fTimeDelta)
 		break;
 	case  MONSTERTYPE::KNIFEWOMAN:	
 		_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+		m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
+		break;
+	case  MONSTERTYPE::GARDENER:
+		_vector vMoveDired = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
 		m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
 		break;

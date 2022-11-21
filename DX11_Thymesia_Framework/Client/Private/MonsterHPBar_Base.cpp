@@ -10,7 +10,7 @@
 #include "Fader.h"
 #include "PipeLine.h"
 #include "Monster.h"
-
+#include "Status_Monster.h"
 
 
 GAMECLASS_C(CMonsterHPBar_Base)
@@ -252,6 +252,7 @@ void CMonsterHPBar_Base::Reset()
 
 void CMonsterHPBar_Base::Call_Damaged_White(_float _fRatio)
 {
+	Set_Enable(true);
 	m_pWhite.lock()->Set_Ratio(_fRatio);
 	Set_RecoveryAlram(false);
 
@@ -259,6 +260,7 @@ void CMonsterHPBar_Base::Call_Damaged_White(_float _fRatio)
 
 void CMonsterHPBar_Base::Call_Damaged_Green(_float _fRatio)
 {
+	Set_Enable(true);
 	_float fDamgedRatio;//
 
 	fDamgedRatio = m_pGreen.lock()->Get_Ratio() - _fRatio;//데미지 들어오기전 비율 - 데미지 들어오고 난 후 비율.->데미지.
@@ -266,18 +268,25 @@ void CMonsterHPBar_Base::Call_Damaged_Green(_float _fRatio)
 	Green_Damaged(fDamgedRatio);//그만큼만.
 
 	Set_RecoveryAlram(false);
-
 }
 
 void CMonsterHPBar_Base::Call_RecoveryAlram()
 {
-	Set_RecoveryAlram(true);
+	if (!m_pRecovery.lock()->Get_Enable())
+		Set_RecoveryAlram(true);
 }
 
 void CMonsterHPBar_Base::Call_Recovery()
 {
-	Set_RecoveryAlram(false);
+	if (m_pRecovery.lock()->Get_Enable())
+		Set_RecoveryAlram(false);
 
+	weak_ptr<CStatus_Monster> pStatus_Monster;
+	pStatus_Monster = Weak_Cast< CStatus_Monster>(m_pOwner.lock()->Get_ComponentByType<CStatus>());
+
+	_float fRatio = pStatus_Monster.lock()->Get_WhiteRatio();
+
+	m_pWhite.lock()->Set_Ratio(fRatio);
 }
 
 void CMonsterHPBar_Base::Call_Disable()
@@ -301,9 +310,12 @@ void CMonsterHPBar_Base::Call_Restart()
 {
 	Set_Stun(false);
 
-	m_pWhite.lock()->Set_Ratio(0.5f);
-	m_pGreen.lock()->Set_Ratio(0.5f);
-	
+	weak_ptr<CStatus_Monster> pStatus_Monster;
+	pStatus_Monster = Weak_Cast< CStatus_Monster>(m_pOwner.lock()->Get_ComponentByType<CStatus>());
+
+
+	m_pWhite.lock()->Set_Ratio(pStatus_Monster.lock()->Get_WhiteRatio());
+	m_pGreen.lock()->Set_Ratio(pStatus_Monster.lock()->Get_GreenRatio());
 }
 
 void CMonsterHPBar_Base::FollowOwner()
@@ -324,12 +336,56 @@ void CMonsterHPBar_Base::FollowOwner()
 	vViewPosition.m128_f32[0] = (vViewPosition.m128_f32[0] + 1.f) * (_float)g_iWinCX * 0.5f;
 	vViewPosition.m128_f32[1] = (vViewPosition.m128_f32[1] + 1.f) * (_float)g_iWinCY * 0.5f;
 
-	Set_UIPosition(vViewPosition.m128_f32[0], vViewPosition.m128_f32[1]);
+
+//	m_fX = g_iWinCX * 0.5f * XMVectorGetX(Proj) + g_iWinCX * 0.5f;
+//	m_fY = -(g_iWinCY * 0.5f * XMVectorGetY(Proj)) + g_iWinCY * 0.5f;
+
+	_float fHeight = vViewPosition.m128_f32[1];
+
+	if (fHeight >= ((_float)g_iWinCY) * 0.4f)
+	{
+		fHeight = ((_float)g_iWinCY) * 0.4f;
+	}
+	Set_UIPosition(vViewPosition.m128_f32[0],fHeight);
 }
 
 void CMonsterHPBar_Base::Set_Owner(weak_ptr<CMonster> pMonster)
 {
 	m_pOwner = pMonster;
+
+
+	weak_ptr<CStatus_Monster> pStatus_Monster;
+
+	pStatus_Monster = Weak_Cast< CStatus_Monster>(pMonster.lock()->Get_ComponentByType<CStatus>());
+	
+	pStatus_Monster.lock()->CallBack_Damged_White += bind
+	(
+		&CMonsterHPBar_Base::Call_Damaged_White, this,
+		placeholders::_1
+	);
+
+	pStatus_Monster.lock()->CallBack_Damged_Green+= bind
+	(
+		&CMonsterHPBar_Base::Call_Damaged_Green, this,
+		placeholders::_1
+	);
+
+	pStatus_Monster.lock()->CallBack_RecoeoryAlram+= bind
+	(
+		&CMonsterHPBar_Base::Call_RecoveryAlram, this
+	);
+	pStatus_Monster.lock()->CallBack_RecoeoryStart+= bind
+	(
+		&CMonsterHPBar_Base::Call_Recovery, this
+	);
+	pStatus_Monster.lock()->CallBack_UI_Disable+= bind
+	(
+		&CMonsterHPBar_Base::Call_Disable, this
+	);
+	pStatus_Monster.lock()->CallBack_ReStart+= bind
+	(
+		&CMonsterHPBar_Base::Call_Restart, this
+	);
 }
 
 

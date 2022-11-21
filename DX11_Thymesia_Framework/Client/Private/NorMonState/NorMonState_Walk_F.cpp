@@ -44,6 +44,7 @@ void CNorMonState_Walk_F::Start()
 	case Client::MONSTERTYPE::SKULL:
 		break;
 	case Client::MONSTERTYPE::GARDENER:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_WalkF");
 		break;
 	}
 
@@ -128,12 +129,9 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 
 	_float fDistance = Get_DistanceWithPlayer();
 
-	if (fDistance < 1.f) //6보다 작을떄 공격하거나 좌우아래옆 머시기로움직인다  이떄 그애니메이션 다시 거리게산하고 공격 하는걸로 하게금
-	{
-
-		if (!m_bWalkCheck)
-		{
-			_int iMovRand = rand() % 7;
+	if (fDistance < 2.f && !m_bWalkCheck) //6보다 작을떄 공격하거나 좌우아래옆 머시기로움직인다  이떄 그애니메이션 다시 거리게산하고 공격 하는걸로 하게금
+	{		
+			_int iMovRand = rand() % 3;
 
 			switch (m_eMonType)
 			{
@@ -149,10 +147,6 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 					m_bWalkCheck = true;
 					break;
 				case 2:
-					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_B>(0.05f);
-					m_bWalkCheck = true;
-					break;
-				case 3:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
 					m_bWalkCheck = false;
 					break;
@@ -170,10 +164,6 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 					m_bWalkCheck = true;
 					break;
 				case 2:
-					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_B>(0.05f);
-					m_bWalkCheck = true;
-					break;
-				case 3:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
 					m_bWalkCheck = false;
 					break;
@@ -185,11 +175,11 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 				break;
 			}
 			return true;
-		}
+	
 		
 	}
 
-	if (fDistance < 3.f && m_bWalkCheck)
+	if (fDistance < 2.f && m_bWalkCheck)
 	{
 		if (m_bWalkCheck)
 		{

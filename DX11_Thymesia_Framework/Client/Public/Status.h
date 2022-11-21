@@ -12,10 +12,14 @@ class CStatus :
 
 
 
-private:
+public:
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize(void* pArg) override;
     virtual void Start() override;
+
+
+protected:
+    void Decrease_HP(_float& fCurrentHP, const _float& In_fDamage);
 
 public:
     virtual _bool   Is_Dead();

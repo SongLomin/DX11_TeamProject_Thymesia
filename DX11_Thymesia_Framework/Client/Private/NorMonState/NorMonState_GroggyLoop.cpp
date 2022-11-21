@@ -9,7 +9,6 @@
 #include "NorMonStateS.h"
 #include "Character.h"
 
-
 GAMECLASS_C(CNorMonState_GroggyLoop);
 CLONE_C(CNorMonState_GroggyLoop, CComponent)
 
@@ -31,11 +30,23 @@ void CNorMonState_GroggyLoop::Start()
 {
 	__super::Start();
 
-	if (m_eMonType == MONSTERTYPE::AXEMAN)
+	switch (m_eMonType)
 	{
+	case Client::MONSTERTYPE::AXEMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_HurtStunLoop|BaseLayer");
+		break;
+	case Client::MONSTERTYPE::KNIFEWOMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV2Villager01_F_HurtStunLoop");
+		break;
+	case Client::MONSTERTYPE::SKULL:
+		break;
+	case Client::MONSTERTYPE::GARDENER:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_HurtStunLoop");
+		break;
+	}
 
-		}
+
+
 	m_fLoopEndTime = 0.f;
 
 }

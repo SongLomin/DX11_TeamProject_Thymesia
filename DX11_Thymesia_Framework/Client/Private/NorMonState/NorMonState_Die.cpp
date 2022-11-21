@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "Monster.h"
 #include "MobWeapon/MobWeapon.h"
+#include "Status_Monster.h"
 
 GAMECLASS_C(CNorMonState_Die);
 CLONE_C(CNorMonState_Die, CComponent)
@@ -38,10 +39,22 @@ void CNorMonState_Die::Start()
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
 
-	if (m_eMonType == MONSTERTYPE::AXEMAN)
+
+	switch (m_eMonType)
 	{
+	case Client::MONSTERTYPE::AXEMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_Die01|BaseLayer|Armatu");
+		break;
+	case Client::MONSTERTYPE::KNIFEWOMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_Die01");
+		break;
+	case Client::MONSTERTYPE::SKULL:
+		break;
+	case Client::MONSTERTYPE::GARDENER:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_Dead");
+		break;
 	}
+
 
 	m_fDissolveTime = 4.f;
 	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Forced_SearchNearTargetMonster();
@@ -98,7 +111,8 @@ void CNorMonState_Die::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-	
+	m_pOwner.lock()->Get_ComponentByType<CStatus_Monster>().lock()->CallBack_UI_Disable();
+
 	Get_OwnerMonster()->Release_Monster();
 	
 

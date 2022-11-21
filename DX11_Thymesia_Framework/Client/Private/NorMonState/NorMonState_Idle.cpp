@@ -77,6 +77,22 @@ void CNorMonState_Idle::Start()
 		}
 	}
 
+	if (m_eMonType == MONSTERTYPE::GARDENER)
+	{
+		switch (m_eNorMonIdleType)
+		{
+		case Client::NORMONSTERIDLETYPE::NORIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_Idle");
+			break;
+		case Client::NORMONSTERIDLETYPE::SITIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_Sit_Idle");
+			break;
+		case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_SP_Idle1");
+			break;
+		}
+	}
+
 
 	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock() ||
 		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CNorMonState_HurtR>().lock())
@@ -219,6 +235,18 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 		case Client::MONSTERTYPE::SKULL:
 			break;
 		case Client::MONSTERTYPE::GARDENER:
+			switch (m_eNorMonIdleType)
+			{
+			case Client::NORMONSTERIDLETYPE::NORIDLE:
+				TurnMechanism();
+				break;
+			case Client::NORMONSTERIDLETYPE::SITIDLE:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_SitToIdle>(0.05f);
+				break;
+			case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
+				break;
+			}
 			break;
 		}
 		m_iIdleType = 1;
@@ -245,6 +273,7 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 		case Client::MONSTERTYPE::SKULL:
 			break;
 		case Client::MONSTERTYPE::GARDENER:
+			TurnMechanism();
 			break;
 
 		}
@@ -309,6 +338,26 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 		case Client::MONSTERTYPE::SKULL:
 			break;
 		case Client::MONSTERTYPE::GARDENER:
+			if (ComputeAngleWithPlayer() <= 0.f)
+			{
+				TurnMechanism();
+			}
+			else
+			{
+				Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
+				m_bClosePlayerCheck = true;
+				m_bCloseToRun = true;
+				int iRunORWalk = rand() % 2;
+				switch (iRunORWalk)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+					break;
+				}
+			}
 			break;
 		}
 

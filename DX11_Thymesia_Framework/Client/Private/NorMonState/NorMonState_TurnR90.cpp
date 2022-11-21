@@ -45,6 +45,7 @@ void CNorMonState_TurnR90::Start()
 	case Client::MONSTERTYPE::SKULL:
 		break;
 	case Client::MONSTERTYPE::GARDENER:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_TurnR90");
 		break;
 	}
 
