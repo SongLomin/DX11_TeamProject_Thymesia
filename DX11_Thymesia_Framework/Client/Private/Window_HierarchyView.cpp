@@ -72,27 +72,33 @@ HRESULT CWindow_HierarchyView::Render()
 			if (0 != strlen(_szFindTag) && string::npos == pModel.lock()->Get_ModelKey().find(_szFindTag))
 			{
 				++iIndex;
-				elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_NONE);
-
 				continue;
 			}
 		}
+
 
 		if (ImGui::Selectable(szIndexedName.c_str()))
 		{		
 			CallBack_ListClick(elem);
 
-			m_iPreSelectIndex = iIndex;
+			m_iPreSelectIndex	= iIndex;
+
+			if (elem.HashCode == typeid(CEditGroupProp).hash_code() || elem.HashCode == typeid(CEditInstanceProp).hash_code())
+			{
+				for (auto& iter : m_pGameObjects)
+				{
+					iter.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_NONE);
+				}
+			}
+
+			elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_ACCEPT);
 		}
 
-		if (elem.HashCode == typeid(CEditGroupProp).hash_code() || elem.HashCode == typeid(CEditInstanceProp).hash_code())
+		if ((m_iPreSelectIndex == iIndex) && (elem.HashCode == typeid(CEditGroupProp).hash_code() || elem.HashCode == typeid(CEditInstanceProp).hash_code()))
 		{
-			(m_iPreSelectIndex == iIndex)
-				? (elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_ACCEPT))
-				: (elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_NONE));
-
 			elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_SUB);
 		}
+
 
 		++iIndex;
 	}
