@@ -50,11 +50,14 @@ HRESULT CWindow_HierarchyView::Render()
 
 	ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 	
+	static char _szFindTag[MAX_PATH] = "";
+	ImGui::InputText("##Find", _szFindTag, MAX_PATH);
+
 	_uint iIndex = 0;
+	_bool bAct   = false;
 
 	for (auto& elem : m_pGameObjects)
 	{
-		//szIndexedName = "0. class Client::CCamera_Free"
 		string szIndexedName = to_string(iIndex) + ". " + elem.TypeName.substr(string("class Client::").length());
 
 		if (m_iPreSelectIndex == iIndex)
@@ -63,7 +66,17 @@ HRESULT CWindow_HierarchyView::Render()
 		weak_ptr<CVIBuffer_Model_Instance> pModel = elem.pInstance.lock()->Get_Component<CVIBuffer_Model_Instance>().lock();
 
 		if (pModel.lock() && "" != pModel.lock()->Get_ModelKey())
-			szIndexedName += string("\n     >> ") + pModel.lock()->Get_ModelKey() + "\n";
+		{
+			szIndexedName += string("\n      >> ") + pModel.lock()->Get_ModelKey() + "\n";
+
+			if (0 != strlen(_szFindTag) && string::npos == pModel.lock()->Get_ModelKey().find(_szFindTag))
+			{
+				++iIndex;
+				elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_NONE);
+
+				continue;
+			}
+		}
 
 		if (ImGui::Selectable(szIndexedName.c_str()))
 		{		
@@ -81,7 +94,7 @@ HRESULT CWindow_HierarchyView::Render()
 			elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_SUB);
 		}
 
-		iIndex++;
+		++iIndex;
 	}
 	
 	__super::End();
