@@ -328,6 +328,9 @@ void CEditInstanceProp::OnEventMessage(_uint iArg)
 
 		case (_uint)EVENT_TYPE::ON_EDITDRAW:
 		{
+			if (!m_bSubDraw)
+				return;
+
 			if (ImGui::BeginTabBar("Edit"))
 			{
 				if (ImGui::BeginTabItem("Create"))
@@ -439,10 +442,12 @@ void CEditInstanceProp::View_Picking_Prop()
 
 		_float4 vOutPos;
 		ZeroMemory(&vOutPos, sizeof(_float4));
+		vOutPos.y = m_PickingDesc.vTarnslation.y;
 
 		if (!SMath::Is_Picked(MouseRayInWorldSpace, &vOutPos))
 			return;
 
+		vOutPos.y = m_PickingDesc.vTarnslation.y;
 		memcpy(&m_PickingDesc.vTarnslation, &vOutPos, sizeof(_float3));
 
 		m_pPropInfos.push_back(m_PickingDesc);
@@ -567,6 +572,8 @@ void CEditInstanceProp::View_Picking_Option()
 
 		if (KEY_INPUT(KEY::Z, KEY_STATE::HOLD))
 		{
+			vMouseDir.y = m_PickingDesc.vTarnslation.y;
+
 			if (!SMath::Is_Picked(MouseRayInWorldSpace, &vMouseDir))
 				return;
 
