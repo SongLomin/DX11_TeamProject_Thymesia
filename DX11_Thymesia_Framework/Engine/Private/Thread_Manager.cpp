@@ -51,7 +51,7 @@ void Loop(const THREAD_TYPE In_eThread_Type)
 			{
 				iter = ThreadObjects.erase(iter);
 			}
-			else
+			else if ((*iter).lock()->Get_Enable())
 			{
 				switch (In_eThread_Type)
 				{
@@ -82,9 +82,9 @@ void Loop(const THREAD_TYPE In_eThread_Type)
 				default:
 					break;
 				}
-
-				++iter;
 			}
+
+			++iter;
 		}
 
 		//GET_SINGLE(CThread_Manager)->m_ReservedThreadObjects[(_uint)In_eThread_Type];
