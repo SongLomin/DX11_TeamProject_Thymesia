@@ -10,7 +10,7 @@
 #include "Character.h"
 #include "Player.h"
 #include "Monster.h"
-#include "MobWeapon/MobWeapon.h"
+#include "MobWeapon.h"
 #include "Status_Monster.h"
 
 GAMECLASS_C(CNorMonState_Die);

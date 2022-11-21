@@ -30,6 +30,7 @@ private:
 public:
     void Update(_float fTimeDelta, weak_ptr <CTransform> _pOwnerTransform, weak_ptr<CBoneNode> _pOwnerBoneNode, weak_ptr<MODEL_DATA> _pOwnerModel_Data);
     void Set_OwnerDesc(weak_ptr <CTransform> _pOwnerTransform, weak_ptr<CBoneNode> _pOwnerBoneNode, weak_ptr<MODEL_DATA> _pOwnerModel_Data);
+   
 protected:
     virtual void SetUp_ShaderResource() override;
 
@@ -39,7 +40,14 @@ private:
     weak_ptr <CTransform> m_pOwnerTransform;
     weak_ptr<CBoneNode> m_pOwnerBoneNode;
     weak_ptr<MODEL_DATA> m_pOwnerModel_Data;
+
+   
+public:
+    virtual void OnEnable(void* pArg) override;
+    virtual void OnDisable() override;
+
 private:
+
     void Free();
 
 };

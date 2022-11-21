@@ -15,14 +15,6 @@ class ENGINE_DLL CVIBuffer_Trail : public CVIBuffer
 public:
 	CVIBuffer_Trail(const CVIBuffer_Trail& rhs);
 
-public:
-	typedef struct tag_TrailBuffer
-	{
-		_float3		vPos_0;
-		_float3		vPos_1;
-		_uint		iMaxCnt;
-	} TRAIL_DESC;
-
 protected:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
@@ -32,6 +24,9 @@ public:
 	void Update(_float _fTimeDelta, weak_ptr <CTransform> _pOwnerTransform, weak_ptr<CBoneNode> _pOwnerBoneNode, weak_ptr<MODEL_DATA> _pOwnerModel_Data);
 	void Tick(_float fTimeDelta);
 	
+public:
+	void Reset_Points(weak_ptr <CTransform> _pOwnerTransform, weak_ptr<CBoneNode> _pOwnerBoneNode, weak_ptr<MODEL_DATA> _pOwnerModel_Data);
+
 private:
 	void LerpPoints();//catmullrom
 

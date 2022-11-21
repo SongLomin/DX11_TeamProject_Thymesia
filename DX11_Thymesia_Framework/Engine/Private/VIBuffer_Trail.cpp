@@ -370,6 +370,44 @@ void CVIBuffer_Trail::Tick(_float fTimeDelta)
     }*/
 }
 
+void CVIBuffer_Trail::Reset_Points(weak_ptr <CTransform> _pOwnerTransform, weak_ptr<CBoneNode> _pOwnerBoneNode, weak_ptr<MODEL_DATA> _pOwnerModel_Data)
+{
+    _matrix		ParentMatrix
+        = _pOwnerBoneNode.lock()->Get_OffsetMatrix()
+        /** _pOwnerBoneNode.lock()->Get_CombinedMatrix() */
+        * XMLoadFloat4x4(&_pOwnerModel_Data.lock()->TransformMatrix)
+        * _pOwnerTransform.lock()->Get_WorldMatrix();
+
+    ParentMatrix.r[0] = XMVector3Normalize(ParentMatrix.r[0]);
+    ParentMatrix.r[1] = XMVector3Normalize(ParentMatrix.r[1]);
+    ParentMatrix.r[2] = XMVector3Normalize(ParentMatrix.r[2]);
+
+
+    D3D11_MAPPED_SUBRESOURCE		tSubResource;
+
+    DEVICECONTEXT->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &tSubResource);
+
+
+    _vector vPos[2] =
+    {
+        XMVectorSetW(XMLoadFloat3(&m_tTrailDesc.vPos_0), 1.f),
+        XMVectorSetW(XMLoadFloat3(&m_tTrailDesc.vPos_1), 1.f),
+    };
+
+    vPos[0] = XMVector3TransformCoord(vPos[0], ParentMatrix);
+    vPos[1] = XMVector3TransformCoord(vPos[1], ParentMatrix);
+
+    for (_uint i = 0; i < m_iNumVertices; i += 2)
+    {
+        XMStoreFloat3(&((VTXTEX*)tSubResource.pData)[i].vPosition, vPos[0]);
+        XMStoreFloat3(&((VTXTEX*)tSubResource.pData)[i + 1].vPosition, vPos[1]);
+    }
+
+    DEVICECONTEXT->Unmap(m_pVB.Get(), 0);
+
+}
+
+
 
 void CVIBuffer_Trail::Free()
 {

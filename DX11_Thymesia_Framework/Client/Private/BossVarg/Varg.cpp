@@ -5,7 +5,7 @@
 #include "Renderer.h"
 #include "RigidBody.h"
 #include "GameManager.h"
-#include "MobWeapon/MobWeapon.h"
+#include "MobWeapon.h"
 #include "VargStates.h"
 //#include "MonsterWeapon.h"
 //#include "Monster1States/Monster1States.h"

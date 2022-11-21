@@ -9,6 +9,7 @@ class CShader;
 class CRenderer;
 class CBoneNode;
 class CCollider;
+class CVIBuffer_Trail;
 END
 
 BEGIN(Client)
@@ -30,6 +31,7 @@ public:// CGameObject을(를) 통해 상속됨
 public:
     void Init_Weapon(weak_ptr<CModel> In_pModelCom, weak_ptr<CGameObject> In_pParent, const string& szTargetNode = "WeaponCase1");
     void Init_Model(const string& strWeaponName, TIMESCALE_LAYER eLayer);
+    void Init_Trail(TRAIL_DESC& TrailDesc);
     void Enable_Weapon(const HIT_TYPE& In_eHitType, const _float& In_fDamage);
     void Disable_Weapon();
     void Set_WeaponScale(const _float& In_fWeaponScale);
@@ -37,7 +39,7 @@ public:
     weak_ptr<CGameObject> Get_ParentObject();
 
     void Set_WeaponDesc(const _float& In_fWeaponScale, const _float3& In_vOffset, const HIT_TYPE& In_eHitType, const _float& In_fDamage);
-
+    _bool Set_TrailEnable(const _bool In_bEnable);
 public:
     FDelegate<weak_ptr<CCollider>> CallBack_Attack;
     FDelegate<weak_ptr<CCollider>> CallBack_AttackOnce;

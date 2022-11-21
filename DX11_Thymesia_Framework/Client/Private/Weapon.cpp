@@ -4,6 +4,8 @@
 #include "GameManager.h"
 #include "Character.h"
 #include "Weapon.h"
+#include "Effect_Trail.h"
+#include "VIBuffer_Trail.h"
 
 GAMECLASS_C(CWeapon);
 CLONE_C(CWeapon, CGameObject);
@@ -133,6 +135,23 @@ void CWeapon::Enable_Weapon(const HIT_TYPE& In_eHitType, const _float& In_fDamag
 		m_bFirstAttack = true;
 	}
 }
+
+void CWeapon::Init_Trail(TRAIL_DESC& TrailDesc)
+{
+	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail>(m_CreatedLevel, &TrailDesc);
+	m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
+	m_pTrailEffect.lock()->Set_Enable(false);
+}
+
+_bool CWeapon::Set_TrailEnable(const _bool In_bEnable)
+{
+	if (!m_pTrailEffect.lock())
+		return false;
+
+	return m_pTrailEffect.lock()->Set_Enable(In_bEnable);
+	
+}
+
 
 void CWeapon::Disable_Weapon()
 {

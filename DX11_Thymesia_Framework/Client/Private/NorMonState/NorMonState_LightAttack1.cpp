@@ -8,6 +8,7 @@
 #include "AIStateBase.h"
 #include "NorMonStateS.h"
 #include "Character.h"
+#include "MobWeapon.h"
 
 
 GAMECLASS_C(CNorMonState_LightAttack1);
@@ -98,6 +99,7 @@ void CNorMonState_LightAttack1::OnStateStart(const _float& In_fAnimationBlendTim
 		{
 		case Client::MONSTERTYPE::AXEMAN:
 			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
+			Get_OwnerMonster()->Get_Wepons().front().lock()->Set_TrailEnable(true);
 			break;
 		case Client::MONSTERTYPE::KNIFEWOMAN:
 			m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
@@ -115,6 +117,8 @@ void CNorMonState_LightAttack1::OnStateStart(const _float& In_fAnimationBlendTim
 void CNorMonState_LightAttack1::OnStateEnd()
 {
 	__super::OnStateEnd();
+	
+	Get_OwnerMonster()->Get_Wepons().front().lock()->Set_TrailEnable(false);
 
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }

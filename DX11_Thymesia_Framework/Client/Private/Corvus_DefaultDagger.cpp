@@ -3,6 +3,7 @@
 #include "Client_Components.h"
 #include "BoneNode.h"
 #include "GameManager.h"
+#include "Effect_Trail.h"
 #include "Character.h"
 
 GAMECLASS_C(CCorvus_DefaultDagger);
@@ -19,6 +20,13 @@ HRESULT CCorvus_DefaultDagger::Initialize(void* pArg)
 
 	m_pModelCom.lock()->Init_Model("CorvusDefaultDagger", "", (_uint)TIMESCALE_LAYER::PLAYER);
 
+	TRAIL_DESC TrailDesc;
+	ZeroMemory(&TrailDesc, sizeof(TRAIL_DESC));
+
+	TrailDesc.iMaxCnt = 120;
+	TrailDesc.vPos_0 = _float3(0.f, 1.f, 0.f);
+	TrailDesc.vPos_1 = _float3(0.f, -0.3f, 0.f);
+	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail>(LEVEL_GAMEPLAY, &TrailDesc);
 
 	return S_OK;
 }
@@ -26,6 +34,8 @@ HRESULT CCorvus_DefaultDagger::Initialize(void* pArg)
 HRESULT CCorvus_DefaultDagger::Start()
 {
 	__super::Start();
+	m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
+
 
 	return S_OK;
 }

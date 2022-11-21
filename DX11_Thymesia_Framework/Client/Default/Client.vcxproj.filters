@@ -325,9 +325,6 @@
     <ClInclude Include="..\Public\Monster.h">
       <Filter>02. GameObject\03. Actor\00. Character\01. Monster</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\MobWeapon\MobWeapon.h">
-      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\99.Weapon</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\UI_Logo.h">
       <Filter>02. GameObject\01. UI\Logo</Filter>
     </ClInclude>
@@ -670,6 +667,12 @@
     <ClInclude Include="..\Public\Status_Monster.h">
       <Filter>05. Component\04. Status\01. Status_Monster</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Effect_Trail.h">
+      <Filter>02. GameObject\08. Effect\02. Effect_Trail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MobWeapon.h">
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\99.Weapon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -965,9 +968,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Monster.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\01. Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\MobWeapon\MobWeapon.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\99.Weapon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PreView_Prop.cpp">
       <Filter>02. GameObject\04. Prop\05. PreView_Prop</Filter>
@@ -1310,6 +1310,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Status_Monster.cpp">
       <Filter>05. Component\04. Status\01. Status_Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Trail.cpp">
+      <Filter>02. GameObject\08. Effect\02. Effect_Trail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MobWeapon.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\99.Weapon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2046,6 +2052,9 @@
     </Filter>
     <Filter Include="05. Component\04. Status\01. Status_Monster">
       <UniqueIdentifier>{b91daabc-005a-402d-9352-5897608e45d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Effect\02. Effect_Trail">
+      <UniqueIdentifier>{bbc00164-c241-460d-b583-8924bd9217da}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

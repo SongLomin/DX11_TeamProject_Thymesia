@@ -75,6 +75,21 @@ void CEffect_Trail::SetUp_ShaderResource()
 
 }
 
+
+
+void CEffect_Trail::OnEnable(void* pArg)
+{
+	__super::OnEnable(pArg);
+
+	m_pVIBuffer.lock()->Reset_Points(m_pOwnerTransform, m_pOwnerBoneNode, m_pOwnerModel_Data);
+}
+
+void CEffect_Trail::OnDisable()
+{
+	__super::OnDisable();
+}
+
+
 void CEffect_Trail::Free()
 {
 }
