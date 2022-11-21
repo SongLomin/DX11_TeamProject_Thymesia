@@ -37,6 +37,8 @@ private:
     PROP_INFO                           m_pPropInfos;
     weak_ptr<CPhysXCollider>            m_pPhysXColliderCom;
 
+    _int                                m_iColliderType = 0;
+
 public:
     void Free();
 };

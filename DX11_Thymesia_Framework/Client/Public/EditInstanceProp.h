@@ -42,6 +42,8 @@ private:
 
     void    View_SelectJson();
 
+    void    View_PhysXOption();
+
 private:
     HRESULT SetUp_ShaderResource();
     void    SetUp_ShaderResource_Select();
@@ -77,6 +79,8 @@ private:
     RESOURCE_LIST       m_ModelList;
     RESOURCE_LIST       m_JsonList;
     _bool               m_bSubDraw = false;
+
+    _int                m_iColliderType = 0;
 
 public:
     void Free();

@@ -231,6 +231,8 @@ void CEditInstanceProp::Write_Json(json& Out_Json)
 	{
 		Out_Json["Name"] = typeid(CStatic_Instancing_Prop).name();
 	}
+
+	Out_Json.emplace("Collider_Type", m_iColliderType);
 }
 
 void CEditInstanceProp::Load_FromJson(const json& In_Json)
@@ -268,6 +270,11 @@ void CEditInstanceProp::Load_FromJson(const json& In_Json)
 	}
 
 	m_pInstanceModelCom.lock()->Init_Instance((_uint)m_pPropInfos.size());
+
+	if (In_Json.end() != In_Json.find("Collider_Type"))
+	{
+		m_iColliderType = In_Json["Collider_Type"];
+	}
 }
 
 void CEditInstanceProp::OnEventMessage(_uint iArg)
@@ -335,6 +342,8 @@ void CEditInstanceProp::OnEventMessage(_uint iArg)
 			{
 				if (ImGui::BeginTabItem("Create"))
 				{
+
+					View_PhysXOption();
 					View_SelectModelComponent();
 
 					ImGui::EndTabItem();
@@ -698,6 +707,28 @@ void CEditInstanceProp::View_SelectJson()
 	if (ImGui::Button("Load", ImVec2(100.f, 25.f)) && !m_JsonList.empty())
 	{
 		Load_Json(m_JsonList[iSelect_MeshData]);
+	}
+}
+
+void CEditInstanceProp::View_PhysXOption()
+{
+	const _char* items[] = { "None", "Model", "ConvexModel" };
+
+	if (ImGui::BeginListBox("PhysX Collider Type"))
+	{
+		for (_uint n = 0; n < IM_ARRAYSIZE(items); n++)
+		{
+			const bool is_selected = (m_iColliderType == n);
+			if (ImGui::Selectable(items[n], is_selected))
+			{
+				m_iColliderType = n;
+			}
+
+			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndListBox();
 	}
 }
 
