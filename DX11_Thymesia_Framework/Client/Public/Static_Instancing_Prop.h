@@ -5,6 +5,7 @@
 
 BEGIN(Engine)
 class CVIBuffer_Model_Instance;
+class CPhysXCollider;
 END
 
 BEGIN(Client)
@@ -34,6 +35,7 @@ private:
 
     weak_ptr<CVIBuffer_Model_Instance>  m_pInstanceModelCom;
     PROP_INFO                           m_pPropInfos;
+    weak_ptr<CPhysXCollider>            m_pPhysXColliderCom;
 
 public:
     void Free();

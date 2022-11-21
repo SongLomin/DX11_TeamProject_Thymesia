@@ -5,7 +5,7 @@ BEGIN(Client)
 
 class CLuxiya;
 class CWeapon;
-
+class CMobWeapon;
 class CPreViewAnimationModel :
     public CCharacter
 {

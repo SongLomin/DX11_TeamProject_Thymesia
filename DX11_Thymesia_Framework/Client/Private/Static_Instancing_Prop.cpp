@@ -5,6 +5,8 @@
 #include "Shader.h"
 #include "Renderer.h"
 #include "Transform.h"
+#include "PhysXCollider.h"
+#include "Client_Presets.h"
 
 GAMECLASS_C(CStatic_Instancing_Prop);
 CLONE_C(CStatic_Instancing_Prop, CGameObject);
@@ -28,6 +30,7 @@ HRESULT CStatic_Instancing_Prop::Initialize(void* pArg)
 	GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_StaticCast<CGameObject>(m_this));
 
 	m_pInstanceModelCom = Add_Component<CVIBuffer_Model_Instance>();
+	m_pPhysXColliderCom = Add_Component<CPhysXCollider>();
     return S_OK;
 }
 
@@ -172,6 +175,23 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 
 	m_pInstanceModelCom.lock()->Init_Instance((_uint)m_pPropInfos.size());
 	m_pInstanceModelCom.lock()->Update(m_pPropInfos);
+
+#ifdef _GENERATE_PROP_COLLIDER_
+	if ((_uint)LEVEL_GAMEPLAY == m_CreatedLevel)
+	{
+#ifdef _DEBUG_COUT_
+		cout << "Create_PhysX: " << m_pInstanceModelCom.lock()->Get_ModelKey() << endl;
+#endif // _DEBUG_COUT_
+
+		m_pPhysXColliderCom.lock()->Init_ModelInstanceCollider(m_pInstanceModelCom.lock()->Get_ModelData(), m_pPropInfos, _GENERATE_PROP_COLLIDER_);
+		PhysXColliderDesc tDesc;
+		Preset::PhysXColliderDesc::StaticInstancingPropSetting(tDesc, m_pTransformCom);
+		m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
+		m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
+	}
+#endif // _GENERATE_PROP_COLLIDER_
+
+	
 }
 
 void CStatic_Instancing_Prop::Free()

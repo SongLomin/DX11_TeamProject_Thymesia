@@ -11,7 +11,7 @@
 #include "Texture.h"
 #include "Client_Presets.h"
 #include "PhysXCollider.h"
-
+#include "Status_Monster.h"
 GAMECLASS_C(CMonster);
 CLONE_C(CMonster, CGameObject);
 
@@ -35,6 +35,8 @@ HRESULT CMonster::Initialize_Prototype()
 HRESULT CMonster::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
+
+    m_pStatus = Add_Component<CStatus_Monster>(pArg);
 
     m_pHitColliderCom = Add_Component<CCollider>();
 
@@ -67,11 +69,11 @@ HRESULT CMonster::Initialize(void* pArg)
     m_pDissolveTextureCom = Add_Component<CTexture>();
     m_pDissolveTextureCom.lock()->Use_Texture("Dissolve");
 
-    PHYSXCOLLIDERDESC tPhysxColliderDesc;
+    /*PHYSXCOLLIDERDESC tPhysxColliderDesc;
 
     Preset::PhysXColliderDesc::PlayerBodySetting(tPhysxColliderDesc, m_pTransformCom);
     m_pPhysXColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
-    m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene({ 0.f, 0.f, 0.f }, 1.f);
+    m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene({ 0.f, 0.f, 0.f }, 1.f);*/
 
 	return S_OK;
 }
@@ -93,7 +95,7 @@ void CMonster::Tick(_float fTimeDelta)
     m_pCurState.lock()->Tick(fTimeDelta);
     m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
     m_pRigidBodyColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
-
+    m_pStatus.lock()->Tick(fTimeDelta);
 #ifdef _DEBUG
 #endif
 
@@ -103,14 +105,16 @@ void CMonster::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
     m_pCurState.lock()->LateTick(fTimeDelta);
+    m_pStatus.lock()->LateTick(fTimeDelta);
+
     GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_SHADOWDEPTH, Weak_Cast<CGameObject>(m_this));
 
-    m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 1.5f, 0.f, 1.f));
+    //m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 1.5f, 0.f, 1.f));
 }
 
 void CMonster::Before_Render(_float fTimeDelta)
 {
-    m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -1.5f, 0.f, 1.f));
+    //m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -1.5f, 0.f, 1.f));
 
     __super::Before_Render(fTimeDelta);
 }
@@ -161,7 +165,7 @@ HRESULT CMonster::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_Li
 
 void CMonster::Respawn_Monster(_fvector In_vPosition)
 {
-    m_pStatus.lock()->Set_FullHP();
+    //m_pStatus.lock()->Set_FullHP();
     m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, In_vPosition);
     
     m_pTransformCom.lock()->LookAt2D(

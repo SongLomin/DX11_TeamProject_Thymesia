@@ -236,6 +236,9 @@
     <ClInclude Include="..\Public\Easing_Utillity.h">
       <Filter>01. Elements\05. Utility\02. Easing_Utillity</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PhysXController.h">
+      <Filter>01. Elements\03. Component\14. PhysXController</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -453,6 +456,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Easing_Utillity.cpp">
       <Filter>01. Elements\05. Utility\02. Easing_Utillity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PhysXController.cpp">
+      <Filter>01. Elements\03. Component\14. PhysXController</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -689,6 +695,9 @@
     </Filter>
     <Filter Include="01. Elements\05. Utility\02. Easing_Utillity">
       <UniqueIdentifier>{78ceaea1-9e6e-4701-98e5-048820bee6fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Elements\03. Component\14. PhysXController">
+      <UniqueIdentifier>{46b08401-a31e-4346-a0ca-00b1e76c91d1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

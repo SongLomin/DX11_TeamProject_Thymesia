@@ -34,7 +34,6 @@ HRESULT CResource_Manager::Load_Textures(const _char* _strKey, const _tchar* pTe
 
 		if (!lstrcmp(szExt, TEXT(".dds")))
 			hr = CreateDDSTextureFromFile(DEVICE, szTextureFilePath, nullptr, pSRV.GetAddressOf());
-
 		else
 			hr = CreateWICTextureFromFile(DEVICE, szTextureFilePath, nullptr, pSRV.GetAddressOf());
 
@@ -42,7 +41,6 @@ HRESULT CResource_Manager::Load_Textures(const _char* _strKey, const _tchar* pTe
 			return S_OK;
 
 		m_SRVs[(_uint)eMemType][szKey].push_back(pSRV);
-		//.push_back(pSRV);
 	}
 #ifdef _DEBUG
 	//텍스쳐를 512까지 읽었음.

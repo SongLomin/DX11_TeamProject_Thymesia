@@ -17,7 +17,6 @@ HRESULT CStateBase::Initialize_Prototype()
 
 HRESULT CStateBase::Initialize(void* pArg)
 {
-
 	USE_START(CStateBase);
 
 	m_pOwnerFromCharacter = Weak_Cast<CCharacter>(m_pOwner);
@@ -32,8 +31,11 @@ void CStateBase::Start()
 	m_pTransformCom = m_pOwner.lock()->Get_Component<CTransform>();
 	m_pNaviCom = m_pOwner.lock()->Get_Component<CNavigation>();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_pStatusCom = m_pOwner.lock()->Get_Component<CStatus>();
+	m_pPhysXControllerCom = m_pOwner.lock()->Get_Component<CPhysXController>();
 
+	_uint i = m_pOwner.lock()->Get_ComponentsByType<CStatus>().size();
+
+	m_pStatusCom = m_pOwner.lock()->Get_ComponentByType<CStatus>();
 }
 
 void CStateBase::Tick(_float fTimeDelta)

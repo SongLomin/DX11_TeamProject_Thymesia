@@ -49,11 +49,11 @@ void CProp::LateTick(_float fTimeDelta)
 		m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Weak_StaticCast<CGameObject>(m_this));
 	}
 #else
-	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), 0.f))
+	/*if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), 0.f))
 	{
 		if (RENDERGROUP::RENDER_END != m_eRenderGroup)
 			m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Weak_StaticCast<CGameObject>(m_this));
-	}
+	}*/
 
 #endif // !_USE_THREAD_
 
@@ -63,14 +63,14 @@ void CProp::Custom_Thread1(_float fTimeDelta)
 {
 	__super::Custom_Thread1(fTimeDelta);
 
-	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), m_fCullingOffsetRange))
+	/*if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), m_fCullingOffsetRange))
 	{
 		m_bRendering = true;
 	}
 	else
 	{
 		m_bRendering = false;
-	}
+	}*/
 }
 
 HRESULT CProp::Render()

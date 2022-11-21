@@ -74,14 +74,14 @@ public:
 	void			Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial** ppOut);
 	void			Create_Shape(const PxGeometry & Geometry, PxMaterial* pMaterial, const _bool isExculsive, const PxShapeFlags In_ShapeFlags, PxShape ** ppOut);
 	void			Create_MeshFromTriangles(const PxTriangleMeshDesc& In_MeshDesc, PxTriangleMesh** ppOut);
-
+	void			Create_Controller(const PxCapsuleControllerDesc& In_ControllerDesc, PxController** ppOut);
 
 private:
 	// Foundation을 생성하는데 필요한 변수
 	PxDefaultAllocator		m_Allocator;
 	PxDefaultErrorCallback	m_ErrorCallback;
 	PxFoundation*			m_pFoundation;
-	PxCudaContextManager* m_pCudaContextManager = nullptr;
+	PxCudaContextManager*	m_pCudaContextManager = nullptr;
 
 	// PxFoundation이 있어야 Physics를 생성할 수 있다.
 	PxPhysics*				m_pPhysics;
@@ -97,6 +97,7 @@ private:
 	//_uint					m_iNumScenes = 0;
 	//typedef PxScene*		LPSCENE;
 	PxScene*				m_pScenes[SCENE_END];
+	PxControllerManager*	m_pControllerManager = nullptr;
 	PxScene*				m_pCurScene = nullptr;
 
 	// m_pPhysics를 사용해 createMaterial해서 사용

@@ -175,23 +175,26 @@ public: /* For Template Function */
 
 		auto iter = m_pLayers[iLevelIndex].find(typeid(T).hash_code());
 
-		// 생성된게 없으면 생성해서 내보낸다.
+		// 생성된게 없으면 생성 null 반환
 		if (m_pLayers[iLevelIndex].end() == iter)
 		{
-			return Add_GameObject<T>(iLevelIndex);
+			return weak_ptr<T>();
 		}
 
 		for (auto& elem : iter->second)
 		{
 			if (!elem->Get_Enable())
 			{
+				elem->Set_Enable(true);
+				elem->OnMemoryPool();
+
 				return Shared_Cast<T>(elem);
 			}
 		}
 
 		// 전부 활성화 상태라면 생성해서 내보낸다.
 
-		return Add_GameObject<T>(iLevelIndex);
+		return weak_ptr<T>();
 	}
 
 };

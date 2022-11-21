@@ -8,6 +8,9 @@
 #include "ProgressBar.h"
 #include "HUD_Hover.h"
 #include "Fader.h"
+#include "PipeLine.h"
+#include "Monster.h"
+#include "Status_Monster.h"
 
 
 GAMECLASS_C(CMonsterHPBar_Base)
@@ -25,10 +28,18 @@ HRESULT CMonsterHPBar_Base::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	if (nullptr != pArg)
-		memcpy(&m_tUIDesc, pArg, sizeof(UI_DESC));
-	else
-		MSG_BOX("CUI_MonsterHpBar_Base Error : Not Defined UI_Desc");
+	UI_DESC tDesc;
+	tDesc.fDepth = 0.f;
+	tDesc.fX = g_iWinCX / 2.f;
+	tDesc.fY = g_iWinCY / 2.f;
+	tDesc.fSizeX = 150.f;
+	tDesc.fSizeY = 15.f;
+
+
+//	if (nullptr != pArg)
+		memcpy(&m_tUIDesc, &tDesc, sizeof(UI_DESC));
+//	else
+//		MSG_BOX("CUI_MonsterHpBar_Base Error : Not Defined UI_Desc");
 
 	UI_DESC tBorderDesc = m_tUIDesc;
 	tBorderDesc.fSizeY = m_tUIDesc.fSizeY - 6.f;
@@ -104,8 +115,9 @@ HRESULT CMonsterHPBar_Base::Initialize(void* pArg)
 	m_pStunned = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_STATIC, &tRecoveryDesc);
 	m_pStunned.lock()->Set_Texture("Monster_HPBar_StunnedShine");
 
-
 	m_bStun = false;
+
+	m_vOffset = _float3(0.f, 0.f, 0.f);
 
 
 	Add_Child(m_pBorder);
@@ -128,50 +140,7 @@ void CMonsterHPBar_Base::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	if (KEY_INPUT(KEY::Z, KEY_STATE::TAP))
-	{
-		m_pWhite.lock()->Decrease_Ratio(0.1f);
-	}
-	if (KEY_INPUT(KEY::X, KEY_STATE::TAP))
-	{
-		m_pWhite.lock()->Increase_Ratio(0.1f);
-	}
-
-	if (KEY_INPUT(KEY::Q, KEY_STATE::TAP))
-	{
-		Green_Damaged(0.3f);
-	}
-	if (KEY_INPUT(KEY::E, KEY_STATE::TAP))
-	{
-		m_pGreen.lock()->Increase_Ratio(0.3f);
-		Set_Stun(false);
-	}
-
-	if (KEY_INPUT(KEY::R, KEY_STATE::TAP))
-	{
-		Toggle_Recovery();
-	}
-
-	if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
-	{
-		m_tUIDesc.fY -= 10.f;
-	}
-	if (KEY_INPUT(KEY::DOWN, KEY_STATE::TAP))
-	{
-		m_tUIDesc.fY += 10.f;
-
-	}
-
-	if (KEY_INPUT(KEY::LEFT, KEY_STATE::TAP))
-	{
-		m_tUIDesc.fX -= 10.f;
-
-	}
-	if (KEY_INPUT(KEY::RIGHT, KEY_STATE::TAP))
-	{
-		m_tUIDesc.fX += 10.f;
-	}
-
+	FollowOwner();
 	Set_ChildPosFromThis();
 	Check_Track();
 
@@ -243,9 +212,9 @@ void CMonsterHPBar_Base::Green_Damaged(_float _fDmgRatio)
 
 }
 
-void CMonsterHPBar_Base::Toggle_Recovery()
+void CMonsterHPBar_Base::Set_RecoveryAlram(_bool _bRecovery)
 {
-	if (m_pRecovery.lock()->Get_Enable())
+	if (!_bRecovery)
 	{
 		m_pRecovery.lock()->Get_Component<CFader>().lock()->Exit_Fader();
 		m_pRecovery.lock()->Set_Enable(false);
@@ -267,6 +236,160 @@ void CMonsterHPBar_Base::Toggle_Recovery()
 		m_pRecovery.lock()->Init_Fader(faderDesc, hoverDesc);
 	}
 }
+
+void CMonsterHPBar_Base::Reset()
+{
+	Initialize(nullptr);
+	Set_Enable(false);
+
+	m_pTrack.lock()->Set_Enable(false);
+	m_pGreenTrack.lock()->Set_Enable(false);
+	if (m_pStunned.lock())
+		m_pStunned.lock()->Set_Enable(false);
+	m_pRecovery.lock()->Set_Enable(false);
+
+}
+
+void CMonsterHPBar_Base::Call_Damaged_White(_float _fRatio)
+{
+	Set_Enable(true);
+	m_pWhite.lock()->Set_Ratio(_fRatio);
+	Set_RecoveryAlram(false);
+
+}
+
+void CMonsterHPBar_Base::Call_Damaged_Green(_float _fRatio)
+{
+	Set_Enable(true);
+	_float fDamgedRatio;//
+
+	fDamgedRatio = m_pGreen.lock()->Get_Ratio() - _fRatio;//데미지 들어오기전 비율 - 데미지 들어오고 난 후 비율.->데미지.
+
+	Green_Damaged(fDamgedRatio);//그만큼만.
+
+	Set_RecoveryAlram(false);
+}
+
+void CMonsterHPBar_Base::Call_RecoveryAlram()
+{
+	if (!m_pRecovery.lock()->Get_Enable())
+		Set_RecoveryAlram(true);
+}
+
+void CMonsterHPBar_Base::Call_Recovery()
+{
+	if (m_pRecovery.lock()->Get_Enable())
+		Set_RecoveryAlram(false);
+
+	weak_ptr<CStatus_Monster> pStatus_Monster;
+	pStatus_Monster = Weak_Cast< CStatus_Monster>(m_pOwner.lock()->Get_ComponentByType<CStatus>());
+
+	_float fRatio = pStatus_Monster.lock()->Get_WhiteRatio();
+
+	m_pWhite.lock()->Set_Ratio(fRatio);
+}
+
+void CMonsterHPBar_Base::Call_Disable()
+{
+	Set_Enable(false);
+	m_pTrack.lock()->Set_Enable(false);
+	m_pGreenTrack.lock()->Set_Enable(false);
+	if (m_pStunned.lock())
+		m_pStunned.lock()->Set_Enable(false);
+	m_pRecovery.lock()->Set_Enable(false);
+
+	Set_RecoveryAlram(false);
+}
+
+void CMonsterHPBar_Base::Call_Stun()
+{
+	Set_Stun(true);
+}
+
+void CMonsterHPBar_Base::Call_Restart()
+{
+	Set_Stun(false);
+
+	weak_ptr<CStatus_Monster> pStatus_Monster;
+	pStatus_Monster = Weak_Cast< CStatus_Monster>(m_pOwner.lock()->Get_ComponentByType<CStatus>());
+
+
+	m_pWhite.lock()->Set_Ratio(pStatus_Monster.lock()->Get_WhiteRatio());
+	m_pGreen.lock()->Set_Ratio(pStatus_Monster.lock()->Get_GreenRatio());
+}
+
+void CMonsterHPBar_Base::FollowOwner()
+{
+	if (!m_pOwner.lock())
+		return;
+
+	_vector vViewPosition;
+	_matrix ViewProjMatrix;
+	
+	vViewPosition = m_pOwner.lock()->Get_WorldPosition();
+
+	ViewProjMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_VIEW) * GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_PROJ);
+		
+	vViewPosition = XMVector3TransformCoord(vViewPosition, ViewProjMatrix);
+	
+	/* -1 ~ 1 to 0 ~ ViewPort */
+	vViewPosition.m128_f32[0] = (vViewPosition.m128_f32[0] + 1.f) * (_float)g_iWinCX * 0.5f;
+	vViewPosition.m128_f32[1] = (-1.f * vViewPosition.m128_f32[1] + 1.f) * (_float)g_iWinCY * 0.5f;
+
+
+//	m_fX = g_iWinCX * 0.5f * XMVectorGetX(Proj) + g_iWinCX * 0.5f;
+//	m_fY = -(g_iWinCY * 0.5f * XMVectorGetY(Proj)) + g_iWinCY * 0.5f;
+
+	/*_float fHeight = vViewPosition.m128_f32[1];
+
+	if (fHeight >= ((_float)g_iWinCY) * 0.4f)
+	{
+		fHeight = ((_float)g_iWinCY) * 0.4f;
+	}*/
+
+	Set_UIPosition(vViewPosition.m128_f32[0], vViewPosition.m128_f32[1] - 200.f);
+}
+
+void CMonsterHPBar_Base::Set_Owner(weak_ptr<CMonster> pMonster)
+{
+	m_pOwner = pMonster;
+
+
+	weak_ptr<CStatus_Monster> pStatus_Monster;
+
+	pStatus_Monster = Weak_Cast< CStatus_Monster>(pMonster.lock()->Get_ComponentByType<CStatus>());
+	
+	pStatus_Monster.lock()->CallBack_Damged_White += bind
+	(
+		&CMonsterHPBar_Base::Call_Damaged_White, this,
+		placeholders::_1
+	);
+
+	pStatus_Monster.lock()->CallBack_Damged_Green+= bind
+	(
+		&CMonsterHPBar_Base::Call_Damaged_Green, this,
+		placeholders::_1
+	);
+
+	pStatus_Monster.lock()->CallBack_RecoeoryAlram+= bind
+	(
+		&CMonsterHPBar_Base::Call_RecoveryAlram, this
+	);
+	pStatus_Monster.lock()->CallBack_RecoeoryStart+= bind
+	(
+		&CMonsterHPBar_Base::Call_Recovery, this
+	);
+	pStatus_Monster.lock()->CallBack_UI_Disable+= bind
+	(
+		&CMonsterHPBar_Base::Call_Disable, this
+	);
+	pStatus_Monster.lock()->CallBack_ReStart+= bind
+	(
+		&CMonsterHPBar_Base::Call_Restart, this
+	);
+}
+
+
 
 void CMonsterHPBar_Base::Set_Stun(bool _bStun)
 {

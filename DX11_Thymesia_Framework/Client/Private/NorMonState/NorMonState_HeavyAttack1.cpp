@@ -31,17 +31,18 @@ void CNorMonState_HeavyAttack1::Start()
 {
 	__super::Start();
 
-	switch (m_eNorMonType)
+	switch (m_eMonType)
 	{
-	case Client::NORMONSTERTYPE::AXEMAN:
+	case Client::MONSTERTYPE::AXEMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_Attack04|BaseLayer|Arm");
 		break;
-	case Client::NORMONSTERTYPE::KNIFEWOMAN:
+	case Client::MONSTERTYPE::KNIFEWOMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_Attack04");
 		break;
-	case Client::NORMONSTERTYPE::SKULL:
+	case Client::MONSTERTYPE::SKULL:
 		break;
-	case Client::NORMONSTERTYPE::GARDENER:
+	case Client::MONSTERTYPE::GARDENER:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_ComboA01");
 		break;
 	}
 
@@ -81,7 +82,21 @@ void CNorMonState_HeavyAttack1::OnStateStart(const _float& In_fAnimationBlendTim
 #endif
 #endif
 
-	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
+		switch (m_eMonType)
+		{
+		case Client::MONSTERTYPE::AXEMAN:
+			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
+			break;
+		case Client::MONSTERTYPE::KNIFEWOMAN:
+			m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+			break;
+		case Client::MONSTERTYPE::SKULL:
+			break;
+		case Client::MONSTERTYPE::GARDENER:
+			m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+			break;
+		}
+
 
 	m_bAttackLookAtLimit = true;
 }

@@ -31,7 +31,7 @@ HRESULT CCorvusState_SprintAttack::Initialize(void* pArg)
 void CCorvusState_SprintAttack::Start()
 {
 	__super::Start();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_SprintAttack_1");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD_SprintAttack_1");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_SprintAttack::Call_AnimationEnd, this);
 }
 

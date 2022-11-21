@@ -8,6 +8,7 @@
 #include "PlayerStateBase.h"
 #include "Attack_Area.h"
 #include "PhysXCollider.h"
+#include "PhysXController.h"
 #include "Client_Presets.h"
 
 
@@ -25,7 +26,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
-    m_pTransformCom.lock()->Add_Position(XMVectorSet(3.f, 5.f, 3.f, 0.f));
+    m_pTransformCom.lock()->Add_Position(XMVectorSet(20.f, 5.f, 20.f, 0.f));
 
     m_pHitColliderCom = Add_Component<CCollider>();
 
@@ -60,12 +61,17 @@ HRESULT CPlayer::Initialize(void* pArg)
     m_pPhysXColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
     m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene({0.f, 0.f, 0.f}, 1.f);
 
-    Preset::PhysXColliderDesc::PlayerBodyTriggerSetting(tPhysxColliderDesc, m_pTransformCom);
-    m_pPhysXTriggerColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
-    m_pPhysXTriggerColliderCom.lock()->Add_PhysXActorAtScene();
+    //Preset::PhysXColliderDesc::PlayerBodyTriggerSetting(tPhysxColliderDesc, m_pTransformCom);
+    //m_pPhysXTriggerColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
+    //m_pPhysXTriggerColliderCom.lock()->Add_PhysXActorAtScene();
 
     GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::PLAYER, Cast<CGameObject>(m_this));
     m_eAttackCollisionLayer = COLLISION_LAYER::PLAYER_ATTACK;
+
+    
+    m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom));
+    //m_pPhysXControllerCom.lock()->Get_Controller()->setPosition();
+
     return S_OK;
 }
 
@@ -93,8 +99,6 @@ void CPlayer::Tick(_float fTimeDelta)
 
     if(m_pCurState.lock())
         m_pCurState.lock()->Tick(fTimeDelta);
-
-
 
     if(m_pHitColliderCom.lock())
         m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());

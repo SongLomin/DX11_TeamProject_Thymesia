@@ -38,14 +38,7 @@ void CActor::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
-#ifdef _LIFEGUARD_FOR_FALL_
-    _vector vPos = m_pTransformCom.lock()->Get_Position();
-    if (vPos.m128_f32[1] < -50.f)
-    {
-        vPos.m128_f32[1] = 50.f;
-        m_pTransformCom.lock()->Set_Position(vPos);
-    }
-#endif
+
 }
 
 void CActor::LateTick(_float fTimeDelta)

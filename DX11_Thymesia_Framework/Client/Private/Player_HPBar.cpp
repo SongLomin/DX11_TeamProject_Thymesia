@@ -8,6 +8,8 @@
 #include "CustomUI.h"
 #include "HUD_Hover.h"
 #include "Fader.h"
+#include "Player.h"
+#include "Status_Player.h"
 
 GAMECLASS_C(CPlayer_HPBar)
 CLONE_C(CPlayer_HPBar, CGameObject);
@@ -70,9 +72,9 @@ HRESULT CPlayer_HPBar::Initialize(void* pArg)
 	m_pTrack.lock()->Init_Fader(tFaderDesc, tHoverDesc);
 
 
-	m_fLerpHp = 300.f;
-	m_fCurrentHp = 300.f;
-	m_fMaxHp = 300.f;
+	m_fLerpHp = 0.f;
+	m_fCurrentHp = 0.f;
+	m_fMaxHp = 0.f;
 
 	m_tTextInfo.bAlways = false;
 	m_tTextInfo.bCenterAlign = false;
@@ -109,6 +111,8 @@ HRESULT CPlayer_HPBar::Start()
 {
 	__super::Start();
 
+	Bind_Player();
+
 	return S_OK;
 }
 
@@ -116,33 +120,6 @@ void CPlayer_HPBar::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-//TODO : UI : HPBar 테스트 코드
-#ifdef _DEBUG
-	if (KEY_INPUT(KEY::J, KEY_STATE::TAP))
-	{
-		m_fCurrentHp -= 30.f;
-
-	}
-	if (KEY_INPUT(KEY::K, KEY_STATE::TAP))
-	{
-
-		m_fCurrentHp += 30.f;
-		m_fLerpHp = m_fCurrentHp;
-		m_fLerpAcc = 1.f;
-	}
-	if (KEY_INPUT(KEY::Q, KEY_STATE::TAP))
-	{
-		m_fCurrentHp -= 200.f;
-
-	}
-	//if (KEY_INPUT(KEY::W, KEY_STATE::TAP))
-	//{
-	//
-	//	m_fCurrentHp += 200.f;
-	//	m_fLerpHp = m_fCurrentHp;
-	//	m_fLerpAcc = 1.f;
-	//}
-#endif // _DEBUG
 
 	if (m_fCurrentHp < 0.f)
 		m_fCurrentHp = 0.f;
@@ -214,6 +191,29 @@ void CPlayer_HPBar::Set_CurrentHp(_float _fCurrentHp)
 		m_fLerpAcc = 1.f;
 	}
 	m_fCurrentHp = _fCurrentHp;
+}
+
+void CPlayer_HPBar::Call_UpdateStatus()
+{
+	m_fMaxHp = m_pPlayerStatus.lock()->Get_PlayerDesc().m_fMaxHP;
+	m_fLerpHp = m_fMaxHp;
+	m_fCurrentHp = m_fMaxHp;
+}
+
+void CPlayer_HPBar::Call_ChangeCurrentHP(_float fCurrentHP)
+{
+	Set_CurrentHp(fCurrentHP);
+}
+
+
+void CPlayer_HPBar::Bind_Player()
+{
+	__super::Bind_Player();
+	Call_UpdateStatus();
+
+	m_pPlayerStatus.lock()->Callback_ChangeHP += bind(&CPlayer_HPBar::Call_ChangeCurrentHP, this,
+		placeholders::_1);
+
 }
 
 

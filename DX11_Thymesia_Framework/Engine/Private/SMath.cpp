@@ -572,10 +572,10 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked(RAY _Ray, _float4* _pOutPos)
 
 	_float3 vPos[4] =
 	{
-		_float3(-99999.f, 0.f,  99999.f),
-		_float3( 99999.f, 0.f,  99999.f),
-		_float3( 99999.f, 0.f, -99999.f),
-		_float3(-99999.f, 0.f, -99999.f)
+		_float3(-99999.f, _pOutPos->y,  99999.f),
+		_float3( 99999.f, _pOutPos->y,  99999.f),
+		_float3( 99999.f, _pOutPos->y, -99999.f),
+		_float3(-99999.f, _pOutPos->y, -99999.f)
 	};
 
 	_uint3 iIndex[2] =
@@ -776,4 +776,14 @@ void ENGINE_DLL Engine::SMath::Convert_PxVec3FromMeshDataWithTransformMatrix(PxV
 			break;
 		}
 	}
+}
+
+PxExtendedVec3 ENGINE_DLL Engine::SMath::Convert_PxExtendedVec3(FXMVECTOR In_Vector)
+{
+	return PxExtendedVec3(In_Vector.m128_f32[0], In_Vector.m128_f32[1], In_Vector.m128_f32[2]);
+}
+
+PxVec3 ENGINE_DLL Engine::SMath::Convert_PxVec3(FXMVECTOR In_Vector)
+{
+	return PxVec3(In_Vector.m128_f32[0], In_Vector.m128_f32[1], In_Vector.m128_f32[2]);
 }

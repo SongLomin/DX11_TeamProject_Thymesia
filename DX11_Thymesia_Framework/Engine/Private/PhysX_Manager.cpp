@@ -58,7 +58,7 @@ HRESULT CPhysX_Manager::Initialize(const _uint In_iNumLayer)
 	tCudaDesc.interopMode = PxCudaInteropMode::Enum::D3D11_INTEROP;
 	tCudaDesc.ctx;
 
-	m_pCudaContextManager = PxCreateCudaContextManager(*m_pFoundation, tCudaDesc, PxGetProfilerCallback());
+	//m_pCudaContextManager = PxCreateCudaContextManager(*m_pFoundation, tCudaDesc, PxGetProfilerCallback());
 
 	if (m_pCudaContextManager)
 	{
@@ -301,6 +301,13 @@ HRESULT CPhysX_Manager::Create_Scene(Scene eScene, PxVec3 Gravity)
 
 	m_pCurScene = m_pScenes[eScene];
 
+	if (m_pControllerManager)
+		m_pControllerManager->release();
+
+
+
+	m_pControllerManager = PxCreateControllerManager(*m_pCurScene);
+
 	//PxSceneDesc	SceneDesc(m_pPhysics->getTolerancesScale());
 
 	//// ม฿ทย
@@ -489,6 +496,11 @@ void CPhysX_Manager::Create_MeshFromTriangles(const PxTriangleMeshDesc& In_MeshD
 	*ppOut = m_pPhysics->createTriangleMesh(readBuffer);
 }
 
+void CPhysX_Manager::Create_Controller(const PxCapsuleControllerDesc& In_ControllerDesc, PxController** ppOut)
+{
+	*ppOut = m_pControllerManager->createController(In_ControllerDesc);
+}
+
 void CPhysX_Manager::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh ** ppOut)
 {
 	_uint	iNumVerts = 32;
@@ -529,6 +541,10 @@ void CPhysX_Manager::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUppe
 void CPhysX_Manager::OnDestroy()
 {
 	PX_UNUSED(true);
+
+	if (m_pControllerManager)
+		m_pControllerManager->release();
+
 	for (auto& elem : m_pScenes)
 	{
 		if(elem)

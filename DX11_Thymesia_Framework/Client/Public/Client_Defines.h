@@ -3,6 +3,7 @@
 #include "SMath.h"
 #include <filesystem>
 #include "Client_Structs.h"
+#include "Client_Presets.h"
 
 #include "imgui.h"
 
@@ -10,13 +11,15 @@
 #define		_USE_THREAD_
 #define		_144HZ_
 #define		_LIFEGUARD_FOR_FALL_
-#define		_DBUG_COUT_
-#define		_STAGE_2_
+#define		_DEBUG_COUT_
+#define		_STAGE_1_
+// #define		_STAGE_2_
 #define		_STAGE_1_MONSTER_
+#define		_GENERATE_PROP_COLLIDER_ true
 #endif // _DEBUG
 
 #ifdef NDEBUG
-#define		_144HZ_
+//#define		_144HZ_
 #define		_USE_THREAD_
 #define		_STAGE_2_
 #define		_LIFEGUARD_FOR_FALL_
@@ -51,6 +54,7 @@ namespace Client
 		ON_MONSTERBEGIN,
 		ON_TRIGGER,
 		ON_FIRSTHIT,
+		ON_EXCUTION_NORMOB,
 		EVENT_END
 	};
 
@@ -131,17 +135,19 @@ namespace Client
 		WEAPON_AXE,
 		WEAPON_KNIFE,
 		WEAPON_BOSSVARG,
+		WEAPON_SCYTHE,
 		MON_WEAPON_END
 	};
 
-	enum class  NORMONSTERTYPE {
-		AXEMAN,  // 도끼든남자
+	enum class  MONSTERTYPE {
+		AXEMAN,  // 도끼든남자 방패든도끼든남자
 		KNIFEWOMAN, // 기본단검여자
 		SKULL, // 기본해골
 		GARDENER, // 낫든몬스터
 		NMON_END
 	};
 
+	
 	enum class NORMONSTERIDLETYPE {
 		NORIDLE,
 		SITIDLE,
@@ -153,6 +159,14 @@ namespace Client
 		BEGINSTART,
 		NORMALSTART,
 		BOSSSTARTEND
+	};
+
+	enum class ATTACK_OPTION {
+		NONE,
+		NORMAL,
+		PLAGUE,
+		SPECIAL_ATTACK,
+		OPTION_END
 	};
 
 

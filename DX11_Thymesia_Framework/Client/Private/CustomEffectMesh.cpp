@@ -281,6 +281,7 @@ void CCustomEffectMesh::Reset_Effect()
 			ZeroMemory(&WeaponDesc, sizeof(WEAPON_DESC));
 			WeaponDesc.fWeaponScale = m_tEffectMeshDesc.fWeaponScale;
 			WeaponDesc.iHitType = m_tEffectMeshDesc.iHitType;
+			WeaponDesc.iOptionType = m_tEffectMeshDesc.iOptionType;
 			WeaponDesc.fDamage = m_tEffectMeshDesc.fDamage;
 			WeaponDesc.vWeaponOffset = m_tEffectMeshDesc.vWeaponOffset;
 			WeaponDesc.fHitFreq = m_tEffectMeshDesc.fHitFreq;
@@ -349,6 +350,7 @@ void CCustomEffectMesh::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 		ZeroMemory(&WeaponDesc, sizeof(WEAPON_DESC));
 		WeaponDesc.fWeaponScale = m_tEffectMeshDesc.fWeaponScale;
 		WeaponDesc.iHitType = m_tEffectMeshDesc.iHitType;
+		WeaponDesc.iOptionType = m_tEffectMeshDesc.iOptionType;
 		WeaponDesc.fDamage = m_tEffectMeshDesc.fDamage;
 		WeaponDesc.vWeaponOffset = m_tEffectMeshDesc.vWeaponOffset;
 		WeaponDesc.fHitFreq = m_tEffectMeshDesc.fHitFreq;
@@ -413,7 +415,6 @@ void CCustomEffectMesh::Write_EffectJson(json& Out_Json)
 	Out_Json["UV_Noise_Index"] = m_tEffectMeshDesc.iNoiseTextureIndex;
 	Out_Json["UV_Mask_Index"] = m_tEffectMeshDesc.iMaskTextureIndex;
 
-	// TODO : bDynamicNoiseOption temporary for test
 	Out_Json["Dynamic_Noise_Option"] = m_tEffectMeshDesc.bDynamicNoiseOption;
 
 	Out_Json["UV_Diffuse_Wrap_Option"] = m_tEffectMeshDesc.bDiffuseWrap;
@@ -449,6 +450,7 @@ void CCustomEffectMesh::Write_EffectJson(json& Out_Json)
 	Out_Json["Weapon_LifeTime"] = m_tEffectMeshDesc.fWeaponLifeTime;
 	Out_Json["Weapon_Scale"] = m_tEffectMeshDesc.fWeaponScale;
 	Out_Json["Hit_Type"] = m_tEffectMeshDesc.iHitType;
+	Out_Json["Option_Type"] = m_tEffectMeshDesc.iOptionType;
 	Out_Json["Damage"] = m_tEffectMeshDesc.fDamage;
 	CJson_Utility::Write_Float3(Out_Json["Weapon_Offset"], m_tEffectMeshDesc.vWeaponOffset);
 	Out_Json["HitFreq"] = m_tEffectMeshDesc.fHitFreq;
@@ -579,6 +581,11 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 		m_tEffectMeshDesc.fDamage = In_Json["Damage"];
 		CJson_Utility::Load_Float3(In_Json["Weapon_Offset"], m_tEffectMeshDesc.vWeaponOffset);
 		m_tEffectMeshDesc.fHitFreq = In_Json["HitFreq"];
+	}
+
+	if (In_Json.find("Option_Type") != In_Json.end())
+	{
+		m_tEffectMeshDesc.iOptionType = In_Json["Option_Type"];
 	}
 
 	m_pModelCom.lock()->Init_Model(m_szEffectName.c_str());
@@ -1072,6 +1079,25 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 						if (ImGui::Selectable(HitType_items[n], is_selected))
 						{
 							m_tEffectMeshDesc.iHitType = n;
+						}
+
+						// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+						if (is_selected)
+							ImGui::SetItemDefaultFocus();
+					}
+					ImGui::EndListBox();
+				}
+
+				const char* Option_items[] = { "None", "Normal", "Plague", "Special_Attack"};
+
+				if (ImGui::BeginListBox("Option Type"))
+				{
+					for (int n = 0; n < IM_ARRAYSIZE(Option_items); n++)
+					{
+						const bool is_selected = (m_tEffectMeshDesc.iHitType == n);
+						if (ImGui::Selectable(Option_items[n], is_selected))
+						{
+							m_tEffectMeshDesc.iOptionType = n;
 						}
 
 						// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)

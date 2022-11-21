@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "CorvusStates/CorvusStates.h"
 #include "GameManager.h"
+#include "PhysXController.h"
 
 
 GAMECLASS_C(CCorvusState_Run);
@@ -35,8 +36,7 @@ void CCorvusState_Run::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_RunF_24");
-	m_pTransform = m_pOwner.lock()->Get_Component<CTransform>();
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD_RunF_24");
 }
 
 void CCorvusState_Run::Tick(_float fTimeDelta)
@@ -49,7 +49,10 @@ void CCorvusState_Run::Tick(_float fTimeDelta)
 	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
-	m_pTransform.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta, m_pNaviCom);
+
+	m_pPhysXControllerCom.lock()->MoveWithRotation({0.f, 0.f, m_fCurrentSpeed * fTimeDelta}, 0.f, fTimeDelta, PxControllerFilters(), nullptr, m_pTransformCom);
+
+	//m_pTransformCom.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta, m_pNaviCom);
 }
 
 void CCorvusState_Run::LateTick(_float fTimeDelta)
@@ -181,6 +184,13 @@ _bool CCorvusState_Run::Check_AndChangeNextState()
 	{
 		Rotation_InputToLookDir();
 		Get_OwnerPlayer()->Change_State<CCorvusState_BasicHealing>();
+		return true;
+	}
+
+	if (Check_RequirementClawAttackState())
+	{
+		Rotation_InputToLookDir();
+		Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
 		return true;
 	}
 

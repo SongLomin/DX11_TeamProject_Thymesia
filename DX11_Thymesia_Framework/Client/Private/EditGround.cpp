@@ -463,9 +463,10 @@ void CEditGround::SetUp_Textures()
 
 				if (m_pTextureCom.end() != iter_find)
 				{
-					string szNormTex = szClickTexureTag.substr(0, szClickTexureTag.length() - 5) + "N.png";
+					string szDiffTex = szClickTexureTag.substr(0, szClickTexureTag.length() - 5) + "D";
+					string szNormTex = szClickTexureTag.substr(0, szClickTexureTag.length() - 5) + "N";
 
-					iter_find->second.pDiffTex.lock()->Use_Texture(szClickTexureTag.c_str());
+					iter_find->second.pDiffTex.lock()->Use_Texture(szDiffTex.c_str());
 					iter_find->second.pNormTex.lock()->Use_Texture(szNormTex.c_str());
 					iter_find->second.szTexTag_Diff = szClickTexureTag;
 					iter_find->second.szTexTag_Norm = szNormTex;
@@ -479,7 +480,9 @@ void CEditGround::SetUp_Textures()
 
 				if (m_pTextureCom.end() != iter_find)
 				{
-					iter_find->second.pDiffTex.lock()->Use_Texture(szClickTexureTag.c_str());
+					string szDiffTex = szClickTexureTag.substr(0, szClickTexureTag.length() - 5) + "D";
+
+					iter_find->second.pDiffTex.lock()->Use_Texture(szDiffTex.c_str());
 					iter_find->second.szTexTag_Diff = szClickTexureTag;
 				}
 			}
@@ -491,7 +494,9 @@ void CEditGround::SetUp_Textures()
 
 				if (m_pTextureCom.end() != iter_find)
 				{
-					iter_find->second.pNormTex.lock()->Use_Texture(szClickTexureTag.c_str());
+					string szDiffTex = szClickTexureTag.substr(0, szClickTexureTag.length() - 5) + "N";
+
+					iter_find->second.pDiffTex.lock()->Use_Texture(szDiffTex.c_str());
 					iter_find->second.szTexTag_Diff = szClickTexureTag;
 				}
 			}

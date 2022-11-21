@@ -102,7 +102,7 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYP
 		_bool bRandom = (_bool)(rand() % 2);
 
 		//데미지 적용
-		m_pStatusCom.lock()->Add_Damage(In_fDamage);
+		//m_pStatusCom.lock()->Add_Damage(In_fDamage);
 		//GAMEINSTANCE->Get_GameObjects<CDamageUI>(LEVEL::LEVEL_STATIC).front().lock()->Add_DamageText(vMyPosition, In_fDamage, bRandom);
 
 		//GAMEINSTANCE->Get_GameObjects<CMonsterHpBar>(LEVEL::LEVEL_STATIC).front().lock()->OnHit(m_pOwner);

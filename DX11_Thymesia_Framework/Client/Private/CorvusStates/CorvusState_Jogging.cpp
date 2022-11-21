@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "CorvusStates/CorvusStates.h"
 #include "GameManager.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CCorvusState_Jogging);
 CLONE_C(CCorvusState_Jogging, CComponent)
@@ -32,7 +33,7 @@ void CCorvusState_Jogging::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_WalkF");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD_WalkF");
 	m_pTransform = m_pOwner.lock()->Get_Component<CTransform>();
 }
 
@@ -46,7 +47,10 @@ void CCorvusState_Jogging::Tick(_float fTimeDelta)
 	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
-	m_pTransform.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta * 0.5f, m_pNaviCom);
+
+	m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed }, 0.f, fTimeDelta, PxControllerFilters(), nullptr, m_pTransformCom);
+
+	//m_pTransform.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta * 0.5f, m_pNaviCom);
 }
 
 void CCorvusState_Jogging::LateTick(_float fTimeDelta)
