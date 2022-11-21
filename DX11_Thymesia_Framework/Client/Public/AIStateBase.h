@@ -31,6 +31,7 @@ public:
     virtual _bool Check_Requirement() override;
 
 protected:
+    void            Set_AtkPermitAndNoHurt(_bool AtkPermitAndNoHurt) { m_bAtkPermitAndNoHurt = AtkPermitAndNoHurt; }
     void            Turn_ToThePlayer(_float fTimeDelta);
     _vector         Get_InputToLookDir();
     void            StartPositonLookAt(_float fTimeDelta);
@@ -43,14 +44,18 @@ protected:
     _float3              m_vLookAtDir;
     _float               m_fCurrentRotateTime = 0.f;
     _float               m_fStateTimeAcc = 100.f;
-    NORMONSTERTYPE       m_eNorMonType =     NORMONSTERTYPE::NMON_END; // 현재 몬스터가 어떤몬스터타입인지
+    MONSTERTYPE       m_eMonType =     MONSTERTYPE::NMON_END; // 현재 몬스터가 어떤몬스터타입인지
     NORMONSTERIDLETYPE   m_eNorMonIdleType = NORMONSTERIDLETYPE::IDLEEND; // 현재몬스터가 어떤아이들타입인지
-    BOSSSTARTTYPE        m_eBossStartType = BOSSSTARTTYPE::BOSSSTARTEND;
+    _uint                m_iAtkCounterGauge = 0;
     weak_ptr<CTransform> m_pTransformCom;  // 몬스터 트랜스폼받아오고저장할려고만듬
     _float4              m_fStartPosition;
+
+    //TODO 보스로 빼요
+    BOSSSTARTTYPE        m_eBossStartType = BOSSSTARTTYPE::BOSSSTARTEND;
+
 protected:
     _bool                m_bAttackLookAtLimit = false; // 공격할떄룩엣하다가 찍을떄쯤 풀라고
- 
+    _bool                m_bAtkPermitAndNoHurt = false;
 
 
 protected:

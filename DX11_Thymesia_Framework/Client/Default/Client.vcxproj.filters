@@ -640,6 +640,27 @@
       <Filter>02. GameObject\01. UI\MonsterHPBar\Elite</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MonsterHPBar_Boss.h" />
+    <ClInclude Include="..\Public\Status_Monster.h">
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttack1.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawAttack1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtXXL.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtL.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\16.State_HurtL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Die.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\18.State_Die</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtR.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\17.State_HurtR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Status_Player.h">
+      <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Preset_PhysXColliderDesc.h">
       <Filter>06. DataPreset\00. Preset_PhysXColliderDesc</Filter>
     </ClInclude>
@@ -1119,9 +1140,6 @@
       <Filter>02. GameObject\01. UI\dissolve</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\LoadingTextUI.cpp" />
-    <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\BossVarg\Varg.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\01. Monster\03.BossMonster\00.Varg</Filter>
     </ClCompile>
@@ -1257,6 +1275,30 @@
     </ClCompile>
     <ClCompile Include="..\Private\MonsterHPBar_Boss.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Status_Monster.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttack1.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawAttack1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXXL.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtL.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\16.State_HurtL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Die.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\18.State_Die</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtR.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\17.State_HurtR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Status_Player.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\00.Player\00. Corvus</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\Preset_PhysXColliderDesc.cpp">
       <Filter>06. DataPreset\00. Preset_PhysXColliderDesc</Filter>
     </ClCompile>
@@ -1959,6 +2001,24 @@
     </Filter>
     <Filter Include="02. GameObject\01. UI\MonsterHPBar\Boss">
       <UniqueIdentifier>{7f2bc015-f8e3-43fa-ae95-787d7300b0d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack">
+      <UniqueIdentifier>{1db70a15-64a5-4a8c-8ff3-f74f19895d58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawAttack1">
+      <UniqueIdentifier>{18da53dc-73a3-4ebb-b1b1-1740461d44d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL">
+      <UniqueIdentifier>{5b3bf04e-ef79-4bd9-90f9-419338efde3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\16.State_HurtL">
+      <UniqueIdentifier>{6eb29e66-5cbc-447f-ad6a-c89d2e0a3482}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\17.State_HurtR">
+      <UniqueIdentifier>{70e25917-b90a-4d0e-bad7-68905ce2fcd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\18.State_Die">
+      <UniqueIdentifier>{8ded6c00-2b08-4b7d-a952-bda3239de490}</UniqueIdentifier>
     </Filter>
     <Filter Include="06. DataPreset\00. Preset_PhysXColliderDesc">
       <UniqueIdentifier>{f1a5232a-2b66-408b-83c4-1b6820d33fac}</UniqueIdentifier>

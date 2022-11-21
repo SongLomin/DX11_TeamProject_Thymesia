@@ -27,9 +27,13 @@ protected:
 	virtual _bool Check_AndChangeNextState() override;
 
 private:
-	//void Call_AnimationEnd();
+	_float      m_fDissolveTime;
+	_bool       m_bAnimEnd;
+
+private:
+	void Call_AnimationEnd();
 protected:
-	//virtual void OnDestroy() override;
+	virtual void OnDestroy() override;
 	void Free();
 
 };

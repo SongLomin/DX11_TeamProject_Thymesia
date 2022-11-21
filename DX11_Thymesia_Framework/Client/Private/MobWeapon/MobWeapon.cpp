@@ -227,6 +227,9 @@ void CMobWeapon::Set_WeaponType(MONSTERWEAPONTYPE WeaponType)
 	case MONSTERWEAPONTYPE::WEAPON_BOSSVARG:
 		m_pModelCom.lock()->Init_Model("Boss_VargWeapon", "", (_uint)TIMESCALE_LAYER::MONSTER);
 		break;
+	case MONSTERWEAPONTYPE::WEAPON_SCYTHE:
+		m_pModelCom.lock()->Init_Model("Mon_Weapon_Scythe", "", (_uint)TIMESCALE_LAYER::MONSTER);
+		break;
 	}
 }
 

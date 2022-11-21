@@ -64,6 +64,9 @@ protected:
 	//SetDead가 호출되는 시점에 발생하는 이벤트입니다.
 	virtual void OnSetDead() {}
 
+	//메모리풀링이 됐을 때 발생하는 이벤트입니다.
+	virtual void OnMemoryPool() {}
+
 protected:
 	void Set_OwnerForMyComponents();
 

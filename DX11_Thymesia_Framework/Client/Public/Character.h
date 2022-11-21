@@ -31,10 +31,16 @@ public:
     _uint Get_CurrentStateIndex() const;
     _uint Get_PreStateIndex() const;
     _bool Is_Edit() const { return m_isEdit; }
+    
+    weak_ptr<CStatus>   Get_Status() { return m_pStatus; }
+
 
     _uint Get_AttackCollisionLayer() const {
         return (_uint)m_eAttackCollisionLayer;
     };
+
+    void Set_SuperArmor(const _bool In_bSuperArmor) { m_bSuperArmor = In_bSuperArmor; }
+    _bool Get_SuperArmor() const { return m_bSuperArmor; }
 
 public:
     void Set_RigidColliderEnable(const _bool& In_bEnable);
@@ -57,7 +63,7 @@ protected:
 
 private:
     _bool m_isEdit = false;
-    _float  m_fGravityTime = 0.f;
+    _bool     m_bSuperArmor = false;
 
 public:
     virtual void OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage);

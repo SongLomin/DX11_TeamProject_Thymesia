@@ -7,7 +7,10 @@
 #include "Corvus_DefaultDagger.h"
 #include "PhysXCollider.h"
 #include "Light_Prop.h"
+#include "Status_Player.h"
+
 #include "PhysXController.h"
+
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -29,11 +32,11 @@ HRESULT CCorvus::Initialize(void* pArg)
 		VTXANIM_DECLARATION::Element,
 		VTXANIM_DECLARATION::iNumElements);
 
+	m_pStatus = Add_Component<CStatus_Player>();
+
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
 
-
-	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Translation");
-	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Rotation");
+	m_pModelCom.lock()->Set_RootNode("root");
 
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultSaber>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
@@ -56,6 +59,11 @@ HRESULT CCorvus::Initialize(void* pArg)
 	Add_Component<CCorvusState_Parry1>();
 	Add_Component<CCorvusState_Parry2>();
 	Add_Component<CCorvusState_BasicHealing>();
+	Add_Component<CCorvusState_ClawAttack1>();
+	Add_Component<CCorvusState_Die>();
+	Add_Component<CCorvusState_HurtL>();
+	Add_Component<CCorvusState_HurtR>();
+	Add_Component<CCorvusState_HurtXXL>();
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
 	

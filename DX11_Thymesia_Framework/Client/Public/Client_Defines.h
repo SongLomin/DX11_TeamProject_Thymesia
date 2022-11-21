@@ -8,7 +8,7 @@
 #include "imgui.h"
 
 #ifdef _DEBUG
-#define		_USE_THREAD_
+//#define		_USE_THREAD_
 #define		_144HZ_
 #define		_LIFEGUARD_FOR_FALL_
 #define		_DEBUG_COUT_
@@ -133,17 +133,19 @@ namespace Client
 		WEAPON_AXE,
 		WEAPON_KNIFE,
 		WEAPON_BOSSVARG,
+		WEAPON_SCYTHE,
 		MON_WEAPON_END
 	};
 
-	enum class  NORMONSTERTYPE {
-		AXEMAN,  // 도끼든남자
+	enum class  MONSTERTYPE {
+		AXEMAN,  // 도끼든남자 방패든도끼든남자
 		KNIFEWOMAN, // 기본단검여자
 		SKULL, // 기본해골
 		GARDENER, // 낫든몬스터
 		NMON_END
 	};
 
+	
 	enum class NORMONSTERIDLETYPE {
 		NORIDLE,
 		SITIDLE,
@@ -155,6 +157,14 @@ namespace Client
 		BEGINSTART,
 		NORMALSTART,
 		BOSSSTARTEND
+	};
+
+	enum class ATTACK_OPTION {
+		NONE,
+		NORMAL,
+		PLAGUE,
+		SPECIAL_ATTACK,
+		OPTION_END
 	};
 
 

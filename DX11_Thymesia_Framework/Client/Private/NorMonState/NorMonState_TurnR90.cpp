@@ -34,17 +34,18 @@ void CNorMonState_TurnR90::Start()
 	DirCheckTurnSpeed();
 	m_bStartAnimation = true;
 
-	switch (m_eNorMonType)
+	switch (m_eMonType)
 	{
-	case Client::NORMONSTERTYPE::AXEMAN:
+	case Client::MONSTERTYPE::AXEMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|DemoM02_TurnR90|BaseLayer|Armature|A");
 		break;
-	case Client::NORMONSTERTYPE::KNIFEWOMAN:
+	case Client::MONSTERTYPE::KNIFEWOMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_TurnR90");
 		break;
-	case Client::NORMONSTERTYPE::SKULL:
+	case Client::MONSTERTYPE::SKULL:
 		break;
-	case Client::NORMONSTERTYPE::GARDENER:
+	case Client::MONSTERTYPE::GARDENER:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_TurnR90");
 		break;
 	}
 

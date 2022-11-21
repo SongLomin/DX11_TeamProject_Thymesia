@@ -11,31 +11,6 @@ class CCorvus :
     GAMECLASS_H(CCorvus);
     CLONE_H(CCorvus, CGameObject);
 
-
-//TODO : UI테스트용 임시 구조체입니다. 나중에 수민형이랑 연계하면 
-//TODO : 지워라 문광현 지워라 문광현 지워라 문광현 지워라 문광현 지워라 문광현 지워라 문광현
-public:
-    enum T_PotionType{POTION_DEFAULT, POTION_BUFF, POTION_IMMEDIATE, POTION_END};
-    typedef struct tagTestPlayerDesc
-    {
-        _float      fAtkDmg;
-        _float      fClowDmg;
-        
-        _float      fMaxHp;
-        _float      fCurrentHp;
-
-        _float      fMaxMp;
-        _float      fCurrentMp;
-        
-        _uint       iMaxPotion;
-        _uint       iCurrentPotion;
-        T_PotionType ePotionType;
-        
-        _uint       iFeatherMax;
-        _uint       iFeatherCurrent;
-
-    }T_PLAYER_DESC;
-    
 public:
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize(void* pArg) override;

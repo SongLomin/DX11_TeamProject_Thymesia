@@ -23,6 +23,7 @@ class CAttackArea :
 
 public:
     HIT_TYPE Get_HitType() const;
+    ATTACK_OPTION Get_OptionType() const;
 
 public:// CGameObject을(를) 통해 상속됨
     virtual HRESULT Initialize_Prototype() override;

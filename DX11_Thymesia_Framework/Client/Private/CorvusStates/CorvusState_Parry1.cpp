@@ -23,14 +23,14 @@ HRESULT CCorvusState_Parry1::Initialize_Prototype()
 HRESULT CCorvusState_Parry1::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-	m_iAttackIndex = 2;
+	m_iAttackIndex = 123;
 	return S_OK;
 }
 
 void CCorvusState_Parry1::Start()
 {
 	__super::Start();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD1_ParryL_NEW");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD1_ParryL_NEW");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Parry1::Call_AnimationEnd, this);
 }
 
@@ -84,9 +84,9 @@ void CCorvusState_Parry1::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 
 	m_iAttackIndex = In_iAttackIndex;
 
-	if (4 == m_iAttackIndex)
+	if (125 == m_iAttackIndex)
 	{
-		m_iAttackIndex = 2;
+		m_iAttackIndex = 123;
 	}
 
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
@@ -127,7 +127,7 @@ void CCorvusState_Parry1::Check_InputNextAttack()
 
 	switch (m_iAttackIndex)
 	{
-	case 2:
+	case 123:
 		if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(3, 999))
 		{
 			m_IsNextAttack = true;
@@ -135,7 +135,7 @@ void CCorvusState_Parry1::Check_InputNextAttack()
 
 		break;
 
-	case 3:
+	case 124:
 		if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(3, 999))
 		{
 			m_IsNextAttack = true;
@@ -199,7 +199,7 @@ void CCorvusState_Parry1::OnStateEnd()
 	//Disable_Weapons();
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 	m_IsNextAttack = false;
-	m_iAttackIndex = 2;
+	m_iAttackIndex = 123;
 
 }
 
@@ -291,6 +291,16 @@ _bool CCorvusState_Parry1::Check_AndChangeNextState()
 		}
 	}
 
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	{
+		if (Check_RequirementClawAttackState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
+			return true;
+		}
+	}
+
 	if (Check_RequirementNextParryState())
 	{
 		if (Check_RequirementParryState())
@@ -334,7 +344,7 @@ _bool CCorvusState_Parry1::Check_RequirementNextParryState()
 
 	switch (m_iAttackIndex)
 	{
-	case 2:
+	case 123:
 		iTargetKeyFramefirst = 17;
 		iTargetKeyFrameSecond = 50;
 		break;
@@ -370,13 +380,13 @@ _bool CCorvusState_Parry1::Check_RuquireMnetFirstParryState()
 
 	switch (m_iAttackIndex)
 	{
-	case 2:
+	case 123:
 		iTargetKeyFrameMin = 51;
 		iTargetKeyFrameMax = 80;
 
 		break;
 
-	case 3:
+	case 124:
 		iTargetKeyFrameMin = 51;
 		iTargetKeyFrameMax = 80;
 

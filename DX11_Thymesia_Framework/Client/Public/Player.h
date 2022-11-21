@@ -70,6 +70,10 @@ protected:
 private:
     _float              m_fNearSearchDelay = 0.f;
 
+public:
+  
+
+
 
 protected:
     virtual void OnCollisionEnter(weak_ptr<CCollider> pOtherCollider) override;

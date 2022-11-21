@@ -14,13 +14,14 @@ class CNorMonState_Idle :
 	CLONE_H(CNorMonState_Idle, CComponent)
 		SHALLOW_COPY(CNorMonState_Idle)
 
-
 public:
 	void Set_MonIdleType(NORMONSTERIDLETYPE IDLETYPE);
-	void Set_IdleType(_uint IdleType) { m_iIdleType = IdleType;}
-	void Set_ClosePlayerCheck(_bool ClosePlayerCheck) 	{m_bClosePlayerCheck = ClosePlayerCheck;}
+	void Set_IdleType(_uint IdleType) { m_iIdleType = IdleType; }
+	void Set_ClosePlayerCheck(_bool ClosePlayerCheck) { m_bClosePlayerCheck = ClosePlayerCheck; }
 	void Set_CloseToRun(_bool CloseToRun) { m_bCloseToRun = CloseToRun; }
+	void Set_Count(_uint Count) { m_iCount = Count; }
 	void Set_AnimIndex(_uint AnimIndex) { m_iAnimIndex = AnimIndex; }
+
 
 
 protected:
@@ -31,7 +32,7 @@ protected:
 	virtual void LateTick(_float fTimeDelta) override;
 
 protected:
-	virtual void OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage) override;
+	// void OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage) override;
 	virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
@@ -40,8 +41,10 @@ protected:
 private: // 아이들에서만쓰는불값
 	_bool     m_bClosePlayerCheck = false;
 	_bool     m_bCloseToRun = false;
+	_bool     m_bGoAtk = false;
 	_uint     m_iIdleType = 0; // 이거 enum으로 관리하면될듯  다하고할거임 ㅇㅇ
-
+	_uint     m_iCount = 0;
+	
 
 
 

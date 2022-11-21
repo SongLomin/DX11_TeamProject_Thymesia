@@ -12,6 +12,10 @@ END
 
 BEGIN(Client)
 
+class CCharacter;
+class CPlayer;
+class CStatus_Player;
+
 class CUI :
     public CGameObject
 {
@@ -72,6 +76,8 @@ protected:
 protected:
     virtual HRESULT SetUp_ShaderResource();
 
+    virtual void            Bind_Player();
+
 private:
     virtual void Update_Shaking(_float fTimeDelta);
 
@@ -86,7 +92,7 @@ protected:
 protected:
     FDelegate<>     CallBack_ShakingStart;
     FDelegate<>     CallBack_ShakingEnd;
-
+    
 
 protected:
     UI_DESC         m_tUIDesc;
@@ -94,9 +100,12 @@ protected:
     RENDERGROUP     m_eRenderGroup = RENDERGROUP::RENDER_UI;
     _uint           m_iTextureIndex = 0;
     _uint           m_iPassIndex = 0;
-
+    
 protected:
     vector<weak_ptr<CUI>> m_vecChildUI;
+
+    weak_ptr<CPlayer> m_pPlayer;
+    weak_ptr<CStatus_Player> m_pPlayerStatus;
 
 
 protected: /* For. UI Shaking */

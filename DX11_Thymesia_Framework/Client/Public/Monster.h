@@ -4,7 +4,7 @@
 BEGIN(Client)
 
 class CMobWeapon;
-
+class CStatus_Monster;
 class CMonster :
     public CCharacter
 {
@@ -14,10 +14,11 @@ class CMonster :
 public:
     typedef struct tagMonsterStateLinkDesc
     {
-        NORMONSTERTYPE       eNorMonType;
+        MONSTERTYPE          eMonType;
         NORMONSTERIDLETYPE   eNorMonIdleType;
         _float4              m_fStartPositon;
         BOSSSTARTTYPE        eBossStartType;
+        _uint                m_iAtkCounterGauge;
         //BOSSTYPE             eBossType;
         //TODO ¾ß¸Å¿¡¿ä ¹Ø¿¡²¨ ¤¾ 
         _float3            vYame;
@@ -45,6 +46,10 @@ public:
     virtual void Respawn_Monster(_fvector In_vPosition);
     virtual void Release_Monster();
 
+public:
+    list<weak_ptr<CMobWeapon>>  Get_Wepons() { return m_pWeapons; }
+
+
 protected:
     virtual void SetUp_ShaderResource() override;    
 
@@ -63,16 +68,20 @@ private:
 protected:
     weak_ptr<CPhysXCollider> m_pPhysXColliderCom;
 
+
 protected:
     list<weak_ptr<CMobWeapon>> m_pWeapons;
     weak_ptr<CStateBase> m_pStandState;
 
     weak_ptr<CCharacter> m_pTargetCharacter; // = player
     weak_ptr<CTexture>   m_pDissolveTextureCom;
-    // NORMONSTERTYPE       m_eNorMonType    =     NORMONSTERTYPE::NMON_END;
+    // MONSTERTYPE       m_eMonType    =     MONSTERTYPE::NMON_END;
     STATE_LINK_DESC      m_tLinkStateDesc;
     MONSTERWEAPONTYPE    m_eMonWeaPonType =     MONSTERWEAPONTYPE::MON_WEAPON_END;
     NORMONSTERIDLETYPE   m_eNorMonIdleType =    NORMONSTERIDLETYPE::IDLEEND;
+
+    weak_ptr<CStatus_Monster>           m_pStatus;
+
 private:
     
     void Free();
