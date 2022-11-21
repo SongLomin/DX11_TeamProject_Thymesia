@@ -99,7 +99,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_T
 
 		ATTACK_OPTION eAttackOption =  pAttackArea.lock()->Get_OptionType();
 		//플레이어 공격력 아직 없으니 임의값 넣어서!
-		_float fMagnifiedDamage = In_fDamage * 50.f;
+		_float fMagnifiedDamage = In_fDamage * 1.f;
 
 		m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 		//GAMEINSTANCE->Get_GameObjects<CDamageUI>(LEVEL::LEVEL_STATIC).front().lock()->Add_DamageText(vMyPosition, In_fDamage, bRandom);

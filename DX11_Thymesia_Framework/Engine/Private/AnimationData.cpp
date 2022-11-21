@@ -10,19 +10,6 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
     fDuration = (_float)In_pAiAnimation->mDuration;
     fTickPerSecond = (_float)In_pAiAnimation->mTicksPerSecond * In_fSpeed;
 
-#define MACRO(AnimationName, WantedSpeed)\
-    if (!strcmp(szName.c_str(), AnimationName))\
-    {\
-        fTickPerSecond *= WantedSpeed;\
-    }
-    
-    // TODO : change animation speed here
-    MACRO("Corvus_SD_LAttack1", 2.f);
-    MACRO("Corvus_SD_LAttack2", 2.f);
-    MACRO("Corvus_SD_LAttack3_New", 2.f);
-    MACRO("Corvus_SD1_ParryL_NEW", 4.f);
-    MACRO("Corvus_SD1_ParryR_NEW", 4.f);
-#undef MACRO
 
 
     for (_uint i = 0; i < iNumChannels; i++)
@@ -60,6 +47,21 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     read_typed_data(is, iNumChannels);
     read_typed_data(is, fDuration);
     read_typed_data(is, fTickPerSecond);
+
+#define MACRO(AnimationName, WantedSpeed)\
+    if (!strcmp(szName.c_str(), AnimationName))\
+    {\
+        fTickPerSecond *= WantedSpeed;\
+    }
+
+    // TODO : change animation speed here
+    MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack1", 2.f);
+    MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack2", 2.f);
+    MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack3_New", 2.f);
+    MACRO("SK_C_Corvus.ao|Corvus_SD1_ParryL_NEW", 4.f);
+    MACRO("SK_C_Corvus.ao|Corvus_SD1_ParryR_NEW", 4.f);
+#undef MACRO
+
 
     for (_uint i = 0; i < iNumChannels; i++)
     {

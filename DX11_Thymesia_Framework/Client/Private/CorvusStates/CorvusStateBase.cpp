@@ -227,10 +227,10 @@ void CCorvusStateBase::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
 
 void CCorvusStateBase::OnEventMessage(_uint iArg)
 {
-	if ((_uint)EVENT_TYPE::ON_EXCUTION_NORMOB)
+	/*if ((_uint)EVENT_TYPE::ON_EXCUTION_NORMOB)
 	{
 		Get_OwnerCharacter().lock()->Change_State<CNorMob_Execution>();
-	}
+	}*/
 }
 
 void CCorvusStateBase::Free()
