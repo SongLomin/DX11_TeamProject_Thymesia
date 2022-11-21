@@ -161,8 +161,8 @@ void CNorMonster::Tick(_float fTimeDelta)
 		break;
 	case  MONSTERTYPE::GARDENER:
 		_vector vMoveDired = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
-		m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
+		vMoveDired = m_pModelCom.lock()->Get_DeltaBonePosition("root");
+		m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDired, m_pNaviMeshCom);
 		break;
 	}
 

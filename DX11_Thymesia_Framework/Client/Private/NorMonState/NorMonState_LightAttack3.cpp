@@ -81,7 +81,20 @@ void CNorMonState_LightAttack3::OnStateStart(const _float& In_fAnimationBlendTim
 #endif
 #endif
 
-	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
+		switch (m_eMonType)
+		{
+		case Client::MONSTERTYPE::AXEMAN:
+			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
+			break;
+		case Client::MONSTERTYPE::KNIFEWOMAN:
+			m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+			break;
+		case Client::MONSTERTYPE::SKULL:
+			break;
+		case Client::MONSTERTYPE::GARDENER:
+			break;
+		}
+
 
 	m_bAttackLookAtLimit = true;
 }

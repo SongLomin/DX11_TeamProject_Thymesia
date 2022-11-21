@@ -204,6 +204,21 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 			case Client::MONSTERTYPE::SKULL:
 				break;
 			case Client::MONSTERTYPE::GARDENER:
+				switch (iMovRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_B>(0.05f);
+					m_bRunCheck = true;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BL>(0.05f);
+					m_bRunCheck = true;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BR>(0.05f);
+					m_bRunCheck = true;
+					break;
+				}
 				break;
 			}
 			return true;
@@ -247,6 +262,17 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 			    case Client::MONSTERTYPE::SKULL:
 			    	break;
 			    case Client::MONSTERTYPE::GARDENER:
+					switch (iMovRand)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
+						m_bRunCheck = true;
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+						m_bRunCheck = true;
+						break;
+					}
 			    	break;
 			    }
 			    return true;
@@ -315,6 +341,27 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 			case Client::MONSTERTYPE::SKULL:
 				break;
 			case Client::MONSTERTYPE::GARDENER:
+				switch (iAttRand)
+				{
+					{
+						_int iAttRand = rand() % 3;
+					}
+			
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					m_bRunCheck = false;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
+					m_bRunCheck = false;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack3>(0.05f);
+					m_bRunCheck = false;
+					break;
+				
+					}
+			
 				break;
 			}
 			return true;
