@@ -199,7 +199,7 @@ void CCorvus::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
 void CCorvus::RootMove()
 {
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
 	//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
 	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, PxControllerFilters(), nullptr, m_pTransformCom);
 }

@@ -9,7 +9,7 @@
 #include "AIStateBase.h"
 #include "NorMonStateS.h"
 #include "Character.h"
-
+#include "PhysXController.h"
 
 
 GAMECLASS_C(CNorMonState_Walk_FR);
@@ -60,7 +60,8 @@ void CNorMonState_Walk_FR::Tick(_float fTimeDelta)
 	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
-	m_pTransformCom.lock()->Add_PositionWithRotation(XMVectorSet(m_fCurrentSpeed * fTimeDelta, 0.f, m_fCurrentSpeed * fTimeDelta, 1.f), m_pNaviCom);
+	//m_pTransformCom.lock()->Add_PositionWithRotation(XMVectorSet(m_fCurrentSpeed * fTimeDelta, 0.f, m_fCurrentSpeed * fTimeDelta, 1.f), m_pNaviCom);
+	m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, PxControllerFilters(), nullptr, m_pTransformCom);
 }
 
 void CNorMonState_Walk_FR::LateTick(_float fTimeDelta)

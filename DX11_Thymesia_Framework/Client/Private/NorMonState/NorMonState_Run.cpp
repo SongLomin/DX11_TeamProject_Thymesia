@@ -9,6 +9,7 @@
 #include "AIStateBase.h"
 #include "NorMonStateS.h"
 #include "Character.h"
+#include "PhysXController.h"
 
 
 
@@ -66,7 +67,8 @@ void CNorMonState_Run::Tick(_float fTimeDelta)
 	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
-	m_pTransformCom.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta, m_pNaviCom);
+	m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, PxControllerFilters(), nullptr, m_pTransformCom);
+	//m_pTransformCom.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta, m_pNaviCom);
 }
 
 void CNorMonState_Run::LateTick(_float fTimeDelta)

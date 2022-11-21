@@ -49,7 +49,7 @@ void CCharacter::Tick(_float fTimeDelta)
 	{
 		PxControllerCollisionFlags Flags = m_pPhysXControllerCom.lock()->MoveGravity(fTimeDelta);
 
-		if (Flags != PxControllerCollisionFlag::eCOLLISION_DOWN)
+		if (Flags & PxControllerCollisionFlag::eCOLLISION_DOWN)
 		{
 			m_pPhysXControllerCom.lock()->Reset_Gravity();
 		}

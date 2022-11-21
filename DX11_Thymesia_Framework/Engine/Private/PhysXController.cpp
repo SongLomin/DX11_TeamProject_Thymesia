@@ -83,6 +83,13 @@ PxControllerCollisionFlags CPhysXController::MoveWithRotation(const _vector& dis
 	return m_pController->move(vRotatedPositionFromPx, minDist, elapsedTime, filters, obstacles);
 }
 
+PxControllerCollisionFlags CPhysXController::Move(const _vector& disp, PxF32 minDist, PxF32 elapsedTime, const PxControllerFilters& filters, const PxObstacleContext* obstacles)
+{
+	PxVec3 vPositionFromPx = SMath::Convert_PxVec3(disp);
+
+	return m_pController->move(vPositionFromPx, minDist, elapsedTime, filters, obstacles);
+}
+
 PxControllerCollisionFlags CPhysXController::MoveGravity(const _float fDeltaTime)
 {
 	if (m_fGravityAcc <= DBL_EPSILON)
@@ -91,11 +98,11 @@ PxControllerCollisionFlags CPhysXController::MoveGravity(const _float fDeltaTime
 		return PxControllerCollisionFlags();
 	}
 
-	_float m_fPreHeight = -0.5f * fDeltaTime * m_fGravityAcc * m_fGravityAcc;
+	_float m_fPreHeight = -0.5f * 9.81f * m_fGravityAcc * m_fGravityAcc;
 
 	m_fGravityAcc += fDeltaTime;
 
-	_float m_fCurrentHeight = -0.5f * fDeltaTime * m_fGravityAcc * m_fGravityAcc;
+	_float m_fCurrentHeight = -0.5f * 9.81f * m_fGravityAcc * m_fGravityAcc;
 
 	m_fCurrentHeight -= m_fPreHeight;
 

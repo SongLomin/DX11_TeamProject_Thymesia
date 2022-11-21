@@ -35,7 +35,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 
 	memcpy(&m_tLinkStateDesc, pArg, sizeof(STATE_LINK_DESC));
 	
-	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom));
+	
 
 	weak_ptr<CMonsterHPBar_Base> pHPBar = GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Base>(LEVEL_STATIC);
 
@@ -49,7 +49,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		m_pWeapons.back().lock()->Set_WeaponType(MONSTERWEAPONTYPE::WEAPON_AXE);
 		m_pWeapons.back().lock()->Init_DefaultWeapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
 		//TODO 야매에요 ㅎ
-		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, 0.f, m_tLinkStateDesc.vYame.z, 1.f));
+		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, m_tLinkStateDesc.vYame.y, m_tLinkStateDesc.vYame.z, 1.f));
 		break;
 		//나중에추가할거미리해둠
 	case  MONSTERTYPE::KNIFEWOMAN:
@@ -57,7 +57,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 		m_pWeapons.back().lock()->Set_WeaponType(MONSTERWEAPONTYPE::WEAPON_KNIFE);
 		m_pWeapons.back().lock()->Init_DefaultWeapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
-		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, 0.f, m_tLinkStateDesc.vYame.z, 1.f));
+		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, m_tLinkStateDesc.vYame.y, m_tLinkStateDesc.vYame.z, 1.f));
 		break;
 	case MONSTERTYPE::SKULL:
 		break;
@@ -66,7 +66,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 		m_pWeapons.back().lock()->Set_WeaponType(MONSTERWEAPONTYPE::WEAPON_SCYTHE);
 		m_pWeapons.back().lock()->Init_DefaultWeapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
-		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, 0.f, m_tLinkStateDesc.vYame.z, 1.f));
+		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, m_tLinkStateDesc.vYame.y, m_tLinkStateDesc.vYame.z, 1.f));
 		break;
 	}
 
@@ -127,6 +127,8 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	
 
 	GET_SINGLE(CGameManager)->Bind_KeyEvent(m_pStatus.lock()->Get_Desc().m_szModelKey, m_pModelCom, bind(&CNorMonster::Call_NextAnimationKey, this, placeholders::_1));
+
+	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom));
 
 	USE_START(CNorMonster);
 	return S_OK;

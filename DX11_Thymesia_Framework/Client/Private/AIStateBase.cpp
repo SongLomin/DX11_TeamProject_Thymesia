@@ -230,7 +230,9 @@ _float CAIStateBase::Get_DistanceWithPlayer() const
 _vector CAIStateBase::Get_CurMonToStartMonDir()
 {
 	_vector vCurrenPosition = m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
+	vCurrenPosition = XMVectorSetY(vCurrenPosition, 0.f);
 	_vector vStartPosition = XMLoadFloat4(&m_fStartPosition);
+	vStartPosition = XMVectorSetY(vStartPosition, 0.f);
 	_vector vLookDir = XMVector4Normalize(vStartPosition - vCurrenPosition);
 
 	return vLookDir;

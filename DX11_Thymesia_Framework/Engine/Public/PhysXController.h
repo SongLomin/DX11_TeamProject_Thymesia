@@ -36,6 +36,8 @@ public:
 	void						Set_Position(_fvector In_vPosition);
 	_vector					Get_Position();
 	PxControllerCollisionFlags	MoveWithRotation(const _vector& disp, PxF32 minDist, PxF32 elapsedTime, const PxControllerFilters& filters, const PxObstacleContext* obstacles, weak_ptr<CTransform> pTransform);
+	PxControllerCollisionFlags	Move(const _vector& disp, PxF32 minDist, PxF32 elapsedTime, const PxControllerFilters& filters, const PxObstacleContext* obstacles = nullptr);
+	
 	PxControllerCollisionFlags	MoveGravity(const _float fDeltaTime);
 	void						Reset_Gravity();
 

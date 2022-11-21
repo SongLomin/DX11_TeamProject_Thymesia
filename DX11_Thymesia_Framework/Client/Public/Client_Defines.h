@@ -8,7 +8,7 @@
 #include "imgui.h"
 
 #ifdef _DEBUG
-//#define		_USE_THREAD_
+#define		_USE_THREAD_
 #define		_144HZ_
 #define		_LIFEGUARD_FOR_FALL_
 #define		_DEBUG_COUT_
