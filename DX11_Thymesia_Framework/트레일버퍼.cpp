@@ -15,10 +15,10 @@ if (m_bTrailOn)
       {
          D3D11_MAPPED_SUBRESOURCE      SubResource;
 
-         DEVICE_CONTEXT->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+         DEVICE _CONTEXT->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
 
          // 짝수가 아래쪽 0, 2, 4, 6
-         // 홀수가 위쪽 1, 3, 5, 6
+         // 홀수가 위쪽 1, 3, 5, 7
          _float4 vHandPos = m_vLocalSwordLow;
 
          if (!m_pRefBone)
