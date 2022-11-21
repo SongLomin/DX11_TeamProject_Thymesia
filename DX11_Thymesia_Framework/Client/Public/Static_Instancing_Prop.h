@@ -38,6 +38,7 @@ private:
     weak_ptr<CPhysXCollider>            m_pPhysXColliderCom;
 
     _int                                m_iColliderType = 0;
+    _bool                               m_bEdit = false;
 
 public:
     void Free();

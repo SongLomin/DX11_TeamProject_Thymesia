@@ -183,8 +183,10 @@ HRESULT CLevel_GamePlay::Initialize()
 
 
 	GAMEINSTANCE->Add_GameObject<CStatic_Instancing_Prop>(LEVEL_GAMEPLAY);
+	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_GAMEPLAY);
 
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
+	
 	
 #pragma endregion GAMEOBJECT
 	

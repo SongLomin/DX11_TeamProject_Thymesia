@@ -7,6 +7,7 @@
 #include "Transform.h"
 #include "PhysXCollider.h"
 #include "Client_Presets.h"
+#include "ImGui_Manager.h"
 
 GAMECLASS_C(CStatic_Instancing_Prop);
 CLONE_C(CStatic_Instancing_Prop, CGameObject);
@@ -86,6 +87,11 @@ HRESULT CStatic_Instancing_Prop::Render()
 		else
 		{
 			m_iPassIndex = 1;
+		}
+
+		if (m_bEdit && m_iColliderType != 0)
+		{
+			m_iPassIndex = 3;
 		}
 
 		m_pShaderCom.lock()->Begin(m_iPassIndex);
@@ -199,6 +205,8 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 
 	
 }
+
+
 
 void CStatic_Instancing_Prop::Free()
 {

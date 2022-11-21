@@ -140,6 +140,11 @@ HRESULT CEditInstanceProp::SetUp_ShaderResource()
 			m_iPassIndex = 1;
 		}
 
+		if (m_bViewPhysXInfo && m_iColliderType != 0)
+		{
+			m_iPassIndex = 3;
+		}
+
 		m_pShaderCom.lock()->Begin(m_iPassIndex);
 		m_pInstanceModelCom.lock()->Render_Mesh(i);
 	}
@@ -370,6 +375,18 @@ void CEditInstanceProp::OnEventMessage(_uint iArg)
 
 				ImGui::EndTabBar();
 			}
+		}
+		break;
+
+		case (_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO:
+		{
+			m_bViewPhysXInfo = true;
+		}
+		break;
+
+		case (_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO_N:
+		{
+			m_bViewPhysXInfo = false;
 		}
 		break;
 	}

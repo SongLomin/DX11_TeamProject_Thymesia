@@ -81,6 +81,7 @@ private:
     _bool               m_bSubDraw = false;
 
     _int                m_iColliderType = 0;
+    _bool               m_bViewPhysXInfo = false;
 
 public:
     void Free();

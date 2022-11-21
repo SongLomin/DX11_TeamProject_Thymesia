@@ -45,6 +45,8 @@ void CCharacter::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+#ifdef _USE_GRAVITY_
+
 	if (m_pPhysXControllerCom.lock()->Get_Controller())
 	{
 		PxControllerCollisionFlags Flags = m_pPhysXControllerCom.lock()->MoveGravity(fTimeDelta);
@@ -63,7 +65,7 @@ void CCharacter::Tick(_float fTimeDelta)
 		}
 #endif
 	}
-
+#endif
 	
 }
 
