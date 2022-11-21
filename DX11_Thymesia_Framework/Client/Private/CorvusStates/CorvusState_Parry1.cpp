@@ -96,7 +96,6 @@ void CCorvusState_Parry1::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 #endif
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAttackIndex);
-	m_pModelCom.lock()->Set_AnimationSpeed(6.f);
 }
 
 void CCorvusState_Parry1::Attack()
@@ -173,7 +172,6 @@ void CCorvusState_Parry1::OnStateStart(const _float& In_fAnimationBlendTime)
 
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
-	m_pModelCom.lock()->Set_AnimationSpeed(5.f);
 
 	//m_iAttackIndex = 7;
 	//m_iEndAttackEffectIndex = -1;
@@ -197,7 +195,6 @@ void CCorvusState_Parry1::OnStateEnd()
 	__super::OnStateEnd();
 
 	//Disable_Weapons();
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 	m_IsNextAttack = false;
 	m_iAttackIndex = 123;
 

@@ -415,7 +415,6 @@ void CCustomEffectMesh::Write_EffectJson(json& Out_Json)
 	Out_Json["UV_Noise_Index"] = m_tEffectMeshDesc.iNoiseTextureIndex;
 	Out_Json["UV_Mask_Index"] = m_tEffectMeshDesc.iMaskTextureIndex;
 
-	// TODO : bDynamicNoiseOption temporary for test
 	Out_Json["Dynamic_Noise_Option"] = m_tEffectMeshDesc.bDynamicNoiseOption;
 
 	Out_Json["UV_Diffuse_Wrap_Option"] = m_tEffectMeshDesc.bDiffuseWrap;

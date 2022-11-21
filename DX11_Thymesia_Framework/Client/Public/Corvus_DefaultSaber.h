@@ -14,7 +14,7 @@ BEGIN(Client)
 
 
 
-class CCorvus_DefaultSaber :
+class CCorvus_DefaultSaber final :
     public CWeapon
 {
     GAMECLASS_H(CCorvus_DefaultSaber);

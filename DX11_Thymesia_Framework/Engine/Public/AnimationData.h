@@ -6,6 +6,7 @@
 BEGIN(Engine)
 struct ENGINE_DLL ANIMATION_DATA
 {
+
     vector<shared_ptr<CHANNEL_DATA>>        Channel_Datas;
 
     string			                    szName;

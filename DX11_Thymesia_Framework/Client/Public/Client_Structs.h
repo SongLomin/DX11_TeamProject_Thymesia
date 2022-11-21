@@ -78,7 +78,6 @@ namespace Client
 		_float4		vMaxColor;
 #pragma endregion
 
-		// TODO : bDynamicNoiseOption temporary for test
 		_bool		bDynamicNoiseOption;
 		/**
 		* x : Diffuse | y : Mask | z : Noise | w : None
@@ -168,24 +167,20 @@ namespace Client
 		_float3		vMaxSpawnOffsetRange;
 #pragma endregion
 
-#pragma region Easing Position
-		_bool		bEasingPosition;
-
-		// TODO : make swappable with speed min max
-		_float3		vMinGoalOffsetPosition;
-		_float3		vMaxGoalOffsetPosition;
-#pragma endregion
-
 		// particle moves toward look
 		_bool		bMoveLook;
 
+#pragma region Easing Position
+		_bool		bEasingPosition;
+#pragma endregion
+
 #pragma region Speed
 		_bool		bEasingSpeed;
-		_int		iSpeedEasingType;			// is position easing type when EasingPosition is true.
-		_float		fSpeedEasingTotalTime;		// is position easing total time when EasingPosition is true. 
+		_int		iSpeedEasingType;			// --> is position easing type when EasingPosition is true.
+		_float		fSpeedEasingTotalTime;		// --> is position easing total time when EasingPosition is true. 
 
-		_float3		vMinSpeed;
-		_float3		vMaxSpeed;
+		_float3		vMinSpeed;					// --> is min goal offset position when easing position is true.
+		_float3		vMaxSpeed;					// --> is max goal offset position when easing position is true.
 
 		_float3		vMinSpeedForce;
 		_float3		vMaxSpeedForce;
@@ -268,14 +263,9 @@ namespace Client
 		_float4		vGlowColorForce;
 #pragma endregion
 #pragma region For. Sprite
-		// TODO : convert to separate individual class
-		// _bool		bPendulumSprite;
-
 		_bool		bLoopSprite;
-
 		_int		iNumFrameX;
 		_int		iNumFrameY;
-
 		_float		fSpriteSpeed;
 #pragma endregion
 	};
