@@ -9,6 +9,7 @@
 #include "AIStateBase.h"
 #include "NorMonStateS.h"
 #include "Character.h"
+#include "PhysXController.h"
 
 
 
@@ -38,10 +39,21 @@ void CNorMonState_Run::Start()
 {
 	__super::Start();
 
-	if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
+	switch (m_eMonType)
 	{
+	case Client::MONSTERTYPE::AXEMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|DemoM02_RunF1|BaseLayer|Armature|Arm");
+		break;
+	case Client::MONSTERTYPE::KNIFEWOMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_RunRoot");
+		break;
+	case Client::MONSTERTYPE::SKULL:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_Run_F");
+		break;
+	case Client::MONSTERTYPE::GARDENER:
+		break;
 	}
+
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Run::Call_AnimationEnd, this);
 }
 
@@ -55,7 +67,8 @@ void CNorMonState_Run::Tick(_float fTimeDelta)
 	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
-	m_pTransformCom.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta, m_pNaviCom);
+	m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, PxControllerFilters(), nullptr, m_pTransformCom);
+	//m_pTransformCom.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta, m_pNaviCom);
 }
 
 void CNorMonState_Run::LateTick(_float fTimeDelta)
@@ -83,7 +96,9 @@ void CNorMonState_Run::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "NorMonState: RunRUNRUNRUNRUN -> RunRUNRUNRUN" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: RunRUNRUNRUNRUN -> RunRUNRUNRUN" << endl;
+#endif
 #endif
 
 
@@ -148,62 +163,136 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 
 	if (fPToMDistance < 1.f && m_bClosePlayer) //6보다 작을떄 공격하거나 좌우아래옆 머시기로움직인다  이떄 그애니메이션 다시 거리게산하고 공격 하는걸로 하게금
 	{
-		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && !m_bRunCheck)
+		_int iMovRand = rand() % 3;
+
+		if (!m_bRunCheck)
 		{
-			_int iMovRand = rand() % 3;
-			switch (iMovRand)
+			switch (m_eMonType)
 			{
-			case 0:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_B>(0.05f);
-				m_bRunCheck = true;
+			case Client::MONSTERTYPE::AXEMAN:
+				switch (iMovRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_B>(0.05f);
+					m_bRunCheck = true;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BL>(0.05f);
+					m_bRunCheck = true;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BR>(0.05f);
+					m_bRunCheck = true;
+					break;
+				}
 				break;
-			case 1:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BL>(0.05f);
-				m_bRunCheck = true;
+			case Client::MONSTERTYPE::KNIFEWOMAN:
+				switch (iMovRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_B>(0.05f);
+					m_bRunCheck = true;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BL>(0.05f);
+					m_bRunCheck = true;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BR>(0.05f);
+					m_bRunCheck = true;
+					break;
+				}
 				break;
-			case 2:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BR>(0.05f);
-				m_bRunCheck = true;
+			case Client::MONSTERTYPE::SKULL:
+				break;
+			case Client::MONSTERTYPE::GARDENER:
+				switch (iMovRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_B>(0.05f);
+					m_bRunCheck = true;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BL>(0.05f);
+					m_bRunCheck = true;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_BR>(0.05f);
+					m_bRunCheck = true;
+					break;
+				}
 				break;
 			}
 			return true;
-
 		}
+		
 	}
-
+	//
 	if (fPToMDistance <= 1.5f && m_bClosePlayer) //6보다 작을떄 공격하거나 좌우아래옆 머시기로움직인다  이떄 그애니메이션 다시 거리게산하고 공격 하는걸로 하게금
 	{
-
-
-		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && !m_bRunCheck)
+		if (!m_bRunCheck)
 		{
 			_int iMovRand = rand() % 2;
-
-			switch (iMovRand)
+			switch (m_eMonType)
 			{
-			case 0:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
-				m_bRunCheck = true;
+			case Client::MONSTERTYPE::AXEMAN:
+				switch (iMovRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
+					m_bRunCheck = true;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+					m_bRunCheck = true;
+					break;
+				}
 				break;
-			case 1:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
-				m_bRunCheck = true;
-				break;
-			}
-			return true;
-
-		}
+			case Client::MONSTERTYPE::KNIFEWOMAN:
+				switch (iMovRand)
+			    {
+			    case 0:
+			    	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
+			    	m_bRunCheck = true;
+			    	break;
+			    case 1:
+			    	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+			    	m_bRunCheck = true;
+			    	break;
+			    }
+			    	break;
+			    case Client::MONSTERTYPE::SKULL:
+			    	break;
+			    case Client::MONSTERTYPE::GARDENER:
+					switch (iMovRand)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
+						m_bRunCheck = true;
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+						m_bRunCheck = true;
+						break;
+					}
+			    	break;
+			    }
+			    return true;
+		}	
 	}
 
 	if (fPToMDistance <= 1.5f  && m_bRunCheck && m_bClosePlayer)
 	{
 
-		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && m_bRunCheck)
+		if (m_bRunCheck)
 		{
 			_int iAttRand = rand() % 5;
 
-			switch (iAttRand)
+			switch (m_eMonType)
 			{
+			case Client::MONSTERTYPE::AXEMAN:
+				switch (iAttRand)
+				{
 				case 0:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
 					m_bRunCheck = false;
@@ -224,9 +313,62 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack3>(0.05f);
 					m_bRunCheck = false;
 					break;
+				}
+				break;
+			case Client::MONSTERTYPE::KNIFEWOMAN:
+				switch (iAttRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+					m_bRunCheck = false;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack3>(0.05f);
+					m_bRunCheck = false;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					m_bRunCheck = false;
+					break;
+				case 3:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
+					m_bRunCheck = false;
+					break;
+				case 4:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack3>(0.05f);
+					m_bRunCheck = false;
+					break;
+				}
+				break;
+			case Client::MONSTERTYPE::SKULL:
+				break;
+			case Client::MONSTERTYPE::GARDENER:
+				switch (iAttRand)
+				{
+					{
+						_int iAttRand = rand() % 3;
+					}
+			
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					m_bRunCheck = false;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
+					m_bRunCheck = false;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack3>(0.05f);
+					m_bRunCheck = false;
+					break;
+				
+					}
+			
+				break;
 			}
 			return true;
 		}
+	
 
 		
 

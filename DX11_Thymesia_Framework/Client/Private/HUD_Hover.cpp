@@ -62,6 +62,15 @@ void CHUD_Hover::Tick(_float fTimeDelta)
 			m_tUIDesc.fSizeY = m_tBackUpDesc.fSizeY +
 				((tFaderDesc.fFadeMaxTime - m_pFaderCom.lock()->Get_FadeTime()) / tFaderDesc.fFadeMaxTime) * (m_tBackUpDesc.fSizeY * m_tHoverDesc.fSizeMag);
 		}
+		if (m_tHoverDesc.eType == HUD_HOVER_ANIMATION_FROM_ALPHA_HEIGHT)
+		{
+
+			FaderDesc tFaderDesc = m_pFaderCom.lock()->Get_FaderDesc();
+	 
+			m_tUIDesc.fSizeY = m_tBackUpDesc.fSizeY +
+				((tFaderDesc.fFadeMaxTime - m_pFaderCom.lock()->Get_FadeTime()) / tFaderDesc.fFadeMaxTime) * (m_tBackUpDesc.fSizeY * m_tHoverDesc.fSizeMag);
+		}
+
 		else if (m_tHoverDesc.eType == HUD_HOVER_ANIMATION_JUSTADD)
 		{
 			FaderDesc tFaderDesc = m_pFaderCom.lock()->Get_FaderDesc();

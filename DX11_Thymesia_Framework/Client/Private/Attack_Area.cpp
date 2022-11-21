@@ -13,6 +13,11 @@ HIT_TYPE CAttackArea::Get_HitType() const
 	return (HIT_TYPE)m_tWeaponDesc.iHitType;
 }
 
+ATTACK_OPTION CAttackArea::Get_OptionType() const
+{
+	return (ATTACK_OPTION)m_tWeaponDesc.iOptionType;
+}
+
 HRESULT CAttackArea::Initialize_Prototype()
 {
 	return S_OK;

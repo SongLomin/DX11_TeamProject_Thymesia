@@ -23,10 +23,11 @@ HRESULT CAIStateBase::Initialize(void* pArg)
 	ZeroMemory(&StateLinkDesc, sizeof(CMonster::STATE_LINK_DESC));
 	memcpy(&StateLinkDesc, pArg, sizeof(CMonster::STATE_LINK_DESC));
 
-	m_eNorMonType = StateLinkDesc.eNorMonType;
+	m_eMonType = StateLinkDesc.eMonType;
 	m_eNorMonIdleType = StateLinkDesc.eNorMonIdleType;
 	m_fStartPosition = StateLinkDesc.m_fStartPositon;
-	
+	m_eBossStartType = StateLinkDesc.eBossStartType;
+	m_iAtkCounterGauge = StateLinkDesc.m_iAtkCounterGauge;
 
 	m_iTimeScaleLayer = (_uint)TIMESCALE_LAYER::MONSTER;
 	m_pOwnerFromMonster = Weak_Cast<CMonster>(m_pOwner);
@@ -229,7 +230,9 @@ _float CAIStateBase::Get_DistanceWithPlayer() const
 _vector CAIStateBase::Get_CurMonToStartMonDir()
 {
 	_vector vCurrenPosition = m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
+	vCurrenPosition = XMVectorSetY(vCurrenPosition, 0.f);
 	_vector vStartPosition = XMLoadFloat4(&m_fStartPosition);
+	vStartPosition = XMVectorSetY(vStartPosition, 0.f);
 	_vector vLookDir = XMVector4Normalize(vStartPosition - vCurrenPosition);
 
 	return vLookDir;
@@ -299,7 +302,9 @@ _float CAIStateBase::ComputeAngleWithPlayer()
 
 	_float fCos = XMVectorGetY((XMVector3Dot(vMonsterToPlayerDirectionVector, vMyLookVector)));
 
-	cout << "ComputeAngleWithPlayer: " << fCos << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "ComputeAngleWithPlayer: " << fCos << endl;
+#endif
 
 	return fCos;
 

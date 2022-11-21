@@ -32,69 +32,86 @@ namespace Client
 #pragma endregion
 
 #pragma region Datas
+#pragma region Life Time
 		_float		fInitTime;
 		_float		fLifeTime;
+#pragma endregion
 
+#pragma region Animation Sync
 		_bool		bSyncAnimation;
 		_int		iSyncAnimationKey = -1;
+#pragma endregion
 
 		_bool		bFollowTransform;
 		_bool		bBillBoard;
 
 		_float3		vStartPosition;
 
+#pragma region Speed
 		_float3		vSpeed;
 		_float3		vForce;
 		_float3		vMaxSpeed;
+#pragma endregion
 
+#pragma region Rotation
 		_float3		vStartRotation;
 		_float3		vRotationSpeed;
 		_float3		vRotationForce;
 		_float3		vMaxRotation;
+#pragma endregion
 
+#pragma region Scale
 		_float3		vStartScale;
 		_float3		vScaleSpeed;
 		_float3		vScaleForce;
+		_float3		vMinScale;
 		_float3		vMaxScale;
-
+#pragma endregion
 		_int		iShaderPassIndex;
 
+#pragma region Colors
 		_float		fDiscardRatio;
 
 		_float4		vStartColor;
 		_float4		vColorSpeed;
 		_float4		vColorForce;
 		_float4		vMaxColor;
+#pragma endregion
 
-		_int		iUVDiffuseIndex;
-		_int		iUVMaskIndex;
-		_int		iUVNoiseIndex;
-
-		// TODO : bDynamicNoiseOption temporary for test
 		_bool		bDynamicNoiseOption;
 		/**
 		* x : Diffuse | y : Mask | z : Noise | w : None
 		*/
-		_bool		bDiffuseWrap;
-		_bool		bMaskWrap;
-		_bool		bNoiseWrap;
 		_float4		vWrapWeight;
 
+#pragma region Diffuse
+		_int		iDiffuseTextureIndex;
+		_bool		bDiffuseWrap;
 		_float2		vDiffuseStartUV;
 		_float2		vDiffuseUVSpeed;
 		_float2		vDiffuseUVForce;
 		_float2		vDiffuseUVMax;
+#pragma endregion
 
+#pragma region Noise
+		_int		iNoiseTextureIndex;
+		_bool		bNoiseWrap;
 		_float2		vNoiseStartUV;
 		_float2		vNoiseUVSpeed;
 		_float2		vNoiseUVForce;
 		_float2		vNoiseUVMax;
+#pragma endregion
 
+#pragma region Mask
+		_int		iMaskTextureIndex;
+		_bool		bMaskWrap;
 		_float2		vMaskStartUV;
 		_float2		vMaskUVSpeed;
 		_float2		vMaskUVForce;
 		_float2		vMaskUVMax;
+#pragma endregion
 
+#pragma region Bloom & Glow
 		_bool		bBloom;
 		_bool		bGlow;
 		_bool		bDistortion;
@@ -102,12 +119,13 @@ namespace Client
 		_float4		vStartGlowColor;
 		_float4		vGlowColorSpeed;
 		_float4		vGlowColorForce;
-
+#pragma endregion
 		_bool		bCollider;
 		_bool		bWeaponSyncTransform;
 		_float		fWeaponLifeTime;
 		_float		fWeaponScale;
 		_int		iHitType;
+		_int		iOptionType;
 		_float      fDamage;
 		_float3		vWeaponOffset;
 		_float		fHitFreq;
@@ -148,11 +166,21 @@ namespace Client
 		_float3		vMinSpawnOffsetRange;
 		_float3		vMaxSpawnOffsetRange;
 #pragma endregion
+
 		// particle moves toward look
 		_bool		bMoveLook;
+
+#pragma region Easing Position
+		_bool		bEasingPosition;
+#pragma endregion
+
 #pragma region Speed
-		_float3		vMinSpeed;
-		_float3		vMaxSpeed;
+		_bool		bEasingSpeed;
+		_int		iSpeedEasingType;			// --> is position easing type when EasingPosition is true.
+		_float		fSpeedEasingTotalTime;		// --> is position easing total time when EasingPosition is true. 
+
+		_float3		vMinSpeed;					// --> is min goal offset position when easing position is true.
+		_float3		vMaxSpeed;					// --> is max goal offset position when easing position is true.
 
 		_float3		vMinSpeedForce;
 		_float3		vMaxSpeedForce;
@@ -160,31 +188,35 @@ namespace Client
 		_float3		vMinLimitSpeed;
 		_float3		vMaxLimitSpeed;
 #pragma endregion
-#pragma region Drag
-		//_float3 vMinDrag;
-		//_float3 vMaxDrag;
-
-		//_float3 vMinDragForce;
-		//_float3 vMaxDragForce;
-
-		//_float3 vMaxLimitDrag;
-#pragma endregion
 #pragma region Rotation
+		_bool		bEasingRotation;
+		_int		iRotationEasingType;
+
+		_float		fRotationEasingTotalTime;
+
 		_float3		vMinStartRotation;
 		_float3		vMaxStartRotation;
 
 		_float3		vRotationSpeed;
 		_float3		vRotationForce;
-		_float3		vMaxRotation;
+
+		_float3		vMinLimitRotation;
+		_float3		vMaxLimitRotation;
 #pragma endregion
 #pragma region Scale
+		_bool		bEasingScale;
+		_int		iScaleEasingType;
+
+		_float		fScaleEasingTotalTime;
+
 		_float3		vMinStartScale;
 		_float3		vMaxStartScale;
 
 		_float3		vScaleSpeed;
 		_float3		vScaleForce;
 
-		_float3		vMaxScale;
+		_float3		vMinLimitScale;
+		_float3		vMaxLimitScale;
 #pragma endregion
 #pragma region Color
 		_float		fDiscardRatio;
@@ -231,14 +263,9 @@ namespace Client
 		_float4		vGlowColorForce;
 #pragma endregion
 #pragma region For. Sprite
-		// TODO : convert to separate individual class
-		// _bool		bPendulumSprite;
-
 		_bool		bLoopSprite;
-
 		_int		iNumFrameX;
 		_int		iNumFrameY;
-
 		_float		fSpriteSpeed;
 #pragma endregion
 	};
@@ -248,6 +275,7 @@ namespace Client
 		_float		fHitFreq;
 		_float		fWeaponScale;
 		_int		iHitType;
+		_int		iOptionType;
 		_float      fDamage;
 		_float3		vWeaponOffset;
 	};

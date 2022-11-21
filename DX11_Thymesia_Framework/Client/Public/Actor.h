@@ -24,6 +24,8 @@ public:
     virtual HRESULT Initialize(void* pArg) override;
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
+    virtual void Custom_Thread0(_float fTimeDelta) override;
+    virtual void Custom_Thread1(_float fTimeDelta) override;
     virtual HRESULT Render() override;
     
 public:
@@ -49,6 +51,8 @@ protected:
     _uint       m_iPassIndex = 0;
     _float3     m_vMoveDir;
     _float      m_fSpeed = 0.4f;
+
+    _bool       m_bRendering = true;
 
 public:
     // 전투가 끝나면 호출됩니다. 주로 승리 연출

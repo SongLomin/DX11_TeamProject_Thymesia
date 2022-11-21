@@ -2,10 +2,10 @@
 #include "NorMonState/NorMonsterStateBase.h"
 #include "GameInstance.h"
 #include "Collider.h"
-#include "NorMonState/NorMonsterStateBase.h"
 #include "Weapon.h"
 #include "GameManager.h"
 #include "Player.h"
+#include "NorMonStates.h"
 //#include "MonsterHPBar.h"
 #include "Status.h"
 //#include "ComboTimer.h"
@@ -59,21 +59,20 @@ _bool CNorMonsterStateBase::Check_RequirementPlayerInRange(const _float& In_fRan
 
 void CNorMonsterStateBase::Play_OnHitEffect()
 {
-	/*_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
-	vLook *= -1.f;
+	//_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+	//vLook *= -1.f;
 
-	_matrix ReverseLookMatrix = SMath::Bake_MatrixNormalizeUseLookVector(vLook);
-	ReverseLookMatrix.r[3] = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+	//_matrix ReverseLookMatrix = SMath::Bake_MatrixNormalizeUseLookVector(vLook);
+	//ReverseLookMatrix.r[3] = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
 
-	GET_SINGLE(CGameManager)->Use_EffectGroup("Hit_Monster1", ReverseLookMatrix);*/
+	GET_SINGLE(CGameManager)->Use_EffectGroup("BasicMobHitEffect_RE", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 
-	GET_SINGLE(CGameManager)->Use_EffectGroup("Hit_Monster2", m_pTransformCom);
-
+	//T_SINGLE(CGameManager)->Use_EffectGroup("Hit_Monster2", m_pTransformCom);
 }
 
 void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
-	__super::OnHit(pOtherCollider, In_eHitType, In_fDamage);
+	//__super::OnHit(pOtherCollider, In_eHitType, In_fDamage);
 
 	if (pOtherCollider.lock()->Get_CollisionLayer() == (_uint)COLLISION_LAYER::PLAYER_ATTACK)
 	{
@@ -85,25 +84,24 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_T
 		if (!pAttackArea.lock())
 			return;
 
+		
 		_vector vOtherColliderPosition = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner()).lock()->
 			Get_ParentObject().lock()->
 			Get_Component<CTransform>().lock()->
 			Get_State(CTransform::STATE_TRANSLATION);
-
-		/*_vector vOtherColliderPosition = Weak_Cast<CWeapon>(pOtherCollider.lock()->Get_Owner()).lock()->
-			Get_ParentObject().lock()->
-			Get_Component<CTransform>().lock()->
-			Get_State(CTransform::STATE_TRANSLATION);*/
 
 		_vector vSameHeightOtherColliderPosition = vOtherColliderPosition;
 		vSameHeightOtherColliderPosition.m128_f32[1] = vMyPosition.m128_f32[1];
 
 		m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
 
-		_bool bRandom = (_bool)(rand() % 2);
-
 		//데미지 적용
-		m_pStatusCom.lock()->Add_Damage(In_fDamage);
+
+		ATTACK_OPTION eAttackOption =  pAttackArea.lock()->Get_OptionType();
+		//플레이어 공격력 아직 없으니 임의값 넣어서!
+		_float fMagnifiedDamage = In_fDamage * 1.f;
+
+		m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 		//GAMEINSTANCE->Get_GameObjects<CDamageUI>(LEVEL::LEVEL_STATIC).front().lock()->Add_DamageText(vMyPosition, In_fDamage, bRandom);
 
 		//GAMEINSTANCE->Get_GameObjects<CMonsterHpBar>(LEVEL::LEVEL_STATIC).front().lock()->OnHit(m_pOwner);
@@ -115,24 +113,35 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_T
 
 		//공격 형태에 따라서 애니메이션 변경
 
-		//if (m_pStatusCom.lock()->Is_Dead())
-		//{
-		//	Get_OwnerMonster()->Change_State<CMonster1State_Death>();
-		//}
+		
+		if (Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_GroggyLoop>().lock()->Get_StateIndex()
+			|| Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_GroggyStart>().lock()->Get_StateIndex())
+		{
+			Get_OwnerMonster()->Change_State<CNorMonState_Die>();
+			pAttackArea.lock()->Get_ParentObject().lock()->Get_CurState().lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EXCUTION_NORMOB);
+		}
+		else if (m_pStatusCom.lock()->Is_Dead())
+		{
+			Get_OwnerMonster()->Change_State<CNorMonState_GroggyStart>();
+		}	
+		else if (Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Idle>().lock()->Get_StateIndex()||
+			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Run>().lock()->Get_StateIndex()||
+			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Walk_F>().lock()->Get_StateIndex()||
+			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Walk_L>().lock()->Get_StateIndex()||
+			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Walk_R>().lock()->Get_StateIndex()||
+			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_TurnL90>().lock()->Get_StateIndex()||
+			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_TurnR90>().lock()->Get_StateIndex())
+		{
+			if (In_eHitType == HIT_TYPE::LEFT_HIT)
+			{
+				Get_OwnerMonster()->Change_State<CNorMonState_HurtL>();
+			}
 
-		//else if (In_eHitType == HIT_TYPE::NORMAL_HIT)
-		//{
-		//	Get_OwnerMonster()->Change_State<CMonster1State_Hit>();
-		//	GET_SINGLE(CGameManager)->Add_Shaking(SHAKE_DIRECTION::LOOK, 0.15f, 0.2f);
-		//}
-		//
-		//else if (In_eHitType == HIT_TYPE::DOWN_HIT)
-		//{
-		//	Get_OwnerMonster()->Change_State<CMonster1State_HitDown>(0.1f);
-		//	GET_SINGLE(CGameManager)->Add_Shaking(SHAKE_DIRECTION::RIGHT, 0.25f, 0.3f);
-		//}
-
-
+			else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
+			{
+				Get_OwnerMonster()->Change_State<CNorMonState_HurtR>();
+			}
+		}
 	}
 
 }

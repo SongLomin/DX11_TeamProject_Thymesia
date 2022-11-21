@@ -4,7 +4,7 @@
 BEGIN(Engine)
 
 class CPhysXCollider;
-
+class CPhysXController;
 END
 
 BEGIN(Client)
@@ -59,8 +59,8 @@ public:
 protected:
     weak_ptr<CMonster> m_pTargetMonster;
     weak_ptr<CStateBase> m_pStandState;
+    
     weak_ptr<CPhysXCollider> m_pPhysXColliderCom;
-    weak_ptr<CPhysXCollider> m_pPhysXTriggerColliderCom;
 
     //list<weak_ptr<CCorvus_DefaultSaber>> m_pDefaultSaber;
     //list<weak_ptr<CCorvus_DefaultDagger>> m_pDefaultDagger;
@@ -69,6 +69,10 @@ protected:
 
 private:
     _float              m_fNearSearchDelay = 0.f;
+
+public:
+  
+
 
 
 protected:

@@ -31,7 +31,7 @@ HRESULT CCorvusState_SprintAttack::Initialize(void* pArg)
 void CCorvusState_SprintAttack::Start()
 {
 	__super::Start();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_SprintAttack_1");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD_SprintAttack_1");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_SprintAttack::Call_AnimationEnd, this);
 }
 
@@ -91,7 +91,9 @@ void CCorvusState_SprintAttack::Play_AttackWithIndex(const _tchar& In_iAttackInd
 
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
 
-	cout << "AttackIndex: " << m_iAttackIndex << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "AttackIndex: " << m_iAttackIndex << endl;
+#endif
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAttackIndex);
 }
@@ -191,7 +193,9 @@ void CCorvusState_SprintAttack::OnStateStart(const _float& In_fAnimationBlendTim
 
 
 #ifdef _DEBUG
-	cout << "NorMonState: Attack -> OnStateStart" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: Attack -> OnStateStart" << endl;
+#endif
 
 #endif
 }

@@ -9,6 +9,7 @@
 #include "AIStateBase.h"
 #include "NorMonStateS.h"
 #include "Character.h"
+#include "PhysXController.h"
 
 
 
@@ -33,10 +34,21 @@ void CNorMonState_Walk_F::Start()
 {
 	__super::Start();
 
-	if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
+	switch (m_eMonType)
 	{
+	case Client::MONSTERTYPE::AXEMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_WalkF|BaseLayer|Armatu");
+		break;
+	case Client::MONSTERTYPE::KNIFEWOMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_WalkF");
+		break;
+	case Client::MONSTERTYPE::SKULL:
+		break;
+	case Client::MONSTERTYPE::GARDENER:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_WalkF");
+		break;
 	}
+
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Walk_F::Call_AnimationEnd, this);
 }
 
@@ -50,7 +62,8 @@ void CNorMonState_Walk_F::Tick(_float fTimeDelta)
 	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
-	m_pTransformCom.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta, m_pNaviCom);
+	//m_pTransformCom.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta, m_pNaviCom);
+	m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, PxControllerFilters(), nullptr, m_pTransformCom);
 }
 
 void CNorMonState_Walk_F::LateTick(_float fTimeDelta)
@@ -72,7 +85,9 @@ void CNorMonState_Walk_F::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "NorMonState: RunStart -> Walk_F" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: RunStart -> Walk_F" << endl;
+#endif
 #endif
 
 	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
@@ -116,68 +131,150 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 
 	_float fDistance = Get_DistanceWithPlayer();
 
-	if (fDistance < 1.f) //6보다 작을떄 공격하거나 좌우아래옆 머시기로움직인다  이떄 그애니메이션 다시 거리게산하고 공격 하는걸로 하게금
-	{
+	if (fDistance < 2.f && !m_bWalkCheck) //6보다 작을떄 공격하거나 좌우아래옆 머시기로움직인다  이떄 그애니메이션 다시 거리게산하고 공격 하는걸로 하게금
+	{		
+			_int iMovRand = rand() % 3;
 
-
-		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && !m_bWalkCheck)
-		{
-			_int iMovRand = rand() % 7;
-
-			switch (iMovRand)
+			switch (m_eMonType)
 			{
-			case 0:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
-				m_bWalkCheck = true;
+			case Client::MONSTERTYPE::AXEMAN:
+				switch (iMovRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+					m_bWalkCheck = true;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
+					m_bWalkCheck = true;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+					m_bWalkCheck = false;
+					break;
+				}
 				break;
-			case 1:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
-				m_bWalkCheck = true;
+			case Client::MONSTERTYPE::KNIFEWOMAN:
+				switch (iMovRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+					m_bWalkCheck = true;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
+					m_bWalkCheck = true;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+					m_bWalkCheck = false;
+					break;
+				}
 				break;
-			case 2:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_B>(0.05f);
-				m_bWalkCheck = true;
+			case Client::MONSTERTYPE::SKULL:
 				break;
-			case 3:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
-				m_bWalkCheck = false;
+			case Client::MONSTERTYPE::GARDENER:
+				switch (iMovRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+					m_bWalkCheck = true;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
+					m_bWalkCheck = true;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					m_bWalkCheck = false;
+					break;
+				}
 				break;
 			}
 			return true;
-
-		}
+	
+		
 	}
 
-	if (fDistance < 3.f && m_bWalkCheck)
+	if (fDistance < 2.f && m_bWalkCheck)
 	{
-
-		if (m_eNorMonType == NORMONSTERTYPE::AXEMAN && m_bWalkCheck)
+		if (m_bWalkCheck)
 		{
 			_int iAttRand = rand() % 4;
 
-			switch (iAttRand)
+			switch (m_eMonType)
 			{
-			case 0:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
-				m_bWalkCheck = false;
+			case Client::MONSTERTYPE::AXEMAN:
+				switch (iAttRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+					m_bWalkCheck = false;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack3>(0.05f);
+					m_bWalkCheck = false;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					m_bWalkCheck = false;
+					break;
+				case 3:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
+					m_bWalkCheck = false;
+					break;
+				}
 				break;
-			case 1:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack3>(0.05f);
-				m_bWalkCheck = false;
+			case Client::MONSTERTYPE::KNIFEWOMAN:
+				switch (iAttRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+					m_bWalkCheck = false;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack3>(0.05f);
+					m_bWalkCheck = false;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					m_bWalkCheck = false;
+					break;
+				case 3:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
+					m_bWalkCheck = false;
+					break;
+				}
 				break;
-			case 2:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
-				m_bWalkCheck = false;
+			case Client::MONSTERTYPE::SKULL:
 				break;
-			case 3:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
-				m_bWalkCheck = false;
-				break;
+			case Client::MONSTERTYPE::GARDENER:
+				switch (iAttRand)
+				{
+					{
+						_int iAttRand = rand() % 3;
+					}
+					
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					m_bWalkCheck = false;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
+					m_bWalkCheck = false;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack3>(0.05f);
+					m_bWalkCheck = false;
+					break;
+					}
+					break;
+							
 			}
 			return true;
 		}
 
-
+		
 	}
 
 

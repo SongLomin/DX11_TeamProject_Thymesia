@@ -1,5 +1,5 @@
 #pragma once
-#include "GameObject.h"
+#include "Weapon.h"
 #include "Client_Defines.h"
 
 BEGIN(Engine)
@@ -12,8 +12,8 @@ END
 
 BEGIN(Client)
 
-class CMobWeapon :
-    public CGameObject
+class CMobWeapon final :
+    public CWeapon
 {
 public:
     GAMECLASS_H(CMobWeapon);
@@ -27,61 +27,16 @@ public:// CGameObject을(를) 통해 상속됨
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render() override;
 
-public:
-    void Init_DefaultWeapon(weak_ptr<CModel> In_pModelCom, weak_ptr<CGameObject> In_pParent, const string& szTargetNode = "weapon_r");
-    void Enable_DefaultWeapon(const HIT_TYPE& In_eHitType, const _float& In_fDamage);
-    void Disable_DefaultWeapon();
-    void Set_DefaultWeaponScale(const _float& In_fWeaponScale);
-    void Set_OriginalDefaultWeaponScale();
-    weak_ptr<CGameObject> Get_ParentObject();
-    void Set_DefaultSaberDesc(const _float& In_fWeaponScale, const _float3& In_vOffset, const HIT_TYPE& In_eHitType, const _float& In_fDamage);
-
-    // MOBWEAPONTYPE Get_WeaponType() { return m_eWeaType; }
-    void Set_WeaponType(MONSTERWEAPONTYPE WeaponType);
-
-public:
-    FDelegate<weak_ptr<CCollider>> CallBack_Attack;
-    FDelegate<weak_ptr<CCollider>> CallBack_AttackOnce;
-
-
-protected:
+private:
     void SetUp_ShaderResource();
 
 private:
-    weak_ptr<CModel> m_pModelCom;
-    weak_ptr<CShader> m_pShaderCom;
-    weak_ptr<CRenderer> m_pRendererCom;
-    weak_ptr<CCollider> m_pHitColliderCom;
-
-    weak_ptr<CGameObject> m_pParent;
-    weak_ptr<CBoneNode> m_pTargetBoneNode;
-
-    _float4x4				m_WorldMatrix;
-    _float4x4               m_TransformationMatrix;
-
-    _float3                 m_vOffset;
-
-    MONSTERWEAPONTYPE           m_eWeaType = MONSTERWEAPONTYPE::MON_WEAPON_END;
-
-
-
-private:
-    list<_uint>             m_iHitColliderIndexs;
-    HIT_TYPE                m_eHitType = HIT_TYPE::TYPE_END;
-    _float                  m_fDamage = 0.f;
-    _bool                   m_bFirstAttack = true;
-    _float                  m_fWeaponScale = 1.f;
-    _float                  m_fOriginalWeaponScale;
-protected:
     virtual void OnCollisionEnter(weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionStay(weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionExit(weak_ptr<CCollider> pOtherCollider) override;
 
 public:
     void Free();
-
-
-
 };
 
 END

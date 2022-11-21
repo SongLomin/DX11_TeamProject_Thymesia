@@ -76,7 +76,7 @@ void CModel::Set_CurrentAnimationKey(_uint iKeyIndex)
 	m_Animations[m_iCurrentAnimationIndex].lock()->Set_StartAnimationKey(iKeyIndex);
 }
 
-_vector CModel::Get_DeltaBonePosition(const char* In_szBoneName)
+_vector CModel::Get_DeltaBonePosition(const char* In_szBoneName, const _bool In_bUseOffset, _fmatrix In_OffsetMatrix)
 {
 	if (m_isBlend)
 	{
@@ -108,14 +108,37 @@ _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName)
 
 	vPreBonePosition = XMLoadFloat4(&(*iter).second);
 	vCurrentBonePosition = CurrentBoneNode.lock()->Get_TransformationMatrix().r[3];
+
+	/*if (strcmp(In_szBoneName, "root") == 0)
+	{
+		_vector DebugPos = vCurrentBonePosition;
+		DebugPos = XMVector3TransformCoord(DebugPos, XMLoadFloat4x4(&m_pModelData->TransformMatrix));
+		cout << "Delta Pos: ";
+		Print_Vector(DebugPos);
+	}*/
+
 	vCurrentBonePosition -= vPreBonePosition;
 
 	XMStoreFloat4(&(*iter).second, CurrentBoneNode.lock()->Get_TransformationMatrix().r[3]);
-
-	vCurrentBonePosition.m128_f32[1] = 0.f;
+	
 	//vCurrentBonePosition.m128_f32[0] = 0.f;
 
-	vCurrentBonePosition = XMVector3TransformCoord(vCurrentBonePosition, XMLoadFloat4x4(&m_pModelData->TransformMatrix));
+	if (In_bUseOffset)
+	{
+		vCurrentBonePosition = XMVector3TransformCoord(vCurrentBonePosition, In_OffsetMatrix);
+	}
+	else
+	{
+		vCurrentBonePosition = XMVector3TransformCoord(vCurrentBonePosition, XMLoadFloat4x4(&m_pModelData->TransformMatrix));
+	}
+	
+	/*if (strcmp(In_szBoneName, "root") == 0)
+	{
+		Print_Vector(vCurrentBonePosition);
+	}*/
+
+	vCurrentBonePosition.m128_f32[1] = 0.f;
+	
 
 	return vCurrentBonePosition;
 }
@@ -297,6 +320,16 @@ HRESULT CModel::Render_Mesh(_uint iMeshContainerIndex)
 	return S_OK;
 }
 
+HRESULT CModel::Update_BoneMatrices()
+{
+	for (auto& elem : m_MeshContainers)
+	{
+		elem.lock()->SetUp_BoneMatices(XMLoadFloat4x4(&m_pModelData->TransformMatrix));
+	}
+
+	return S_OK;
+}
+
 HRESULT CModel::Render_AnimModel(_uint iMeshContainerIndex, weak_ptr<CShader> pShader, _uint iPassIndex, const char* pConstantBoneName)
 {
 	if (!Get_Enable())
@@ -306,13 +339,20 @@ HRESULT CModel::Render_AnimModel(_uint iMeshContainerIndex, weak_ptr<CShader> pS
 		return E_FAIL;
 
 	/* 그리고자하는 메시컨테이너에 영향을 주는 뼈들의 행렬을 담아준다. */
-	_float4x4			BoneMatrices[256];
+	//_float4x4			BoneMatrices[256];
 	//_float4x4*			BoneMatrices = new _float4x4[256];
 
-	m_MeshContainers[iMeshContainerIndex].lock()->SetUp_BoneMatices(BoneMatrices, XMLoadFloat4x4(&m_pModelData->TransformMatrix));
-
 	if (0 != m_iNumAnimations)
-		pShader.lock()->Set_RawValue(pConstantBoneName, BoneMatrices, sizeof(_float4x4) * 256);
+	{
+		if (FAILED(m_MeshContainers[iMeshContainerIndex].lock()->Bind_BoneMatices(pShader, pConstantBoneName)))
+		{
+#ifdef _DEBUG
+			cout << "Failed to Bind bonematrix." << endl;
+#endif // _DEBUG
+
+			return E_FAIL;
+		}
+	}
 
 	pShader.lock()->Begin(iPassIndex);
 

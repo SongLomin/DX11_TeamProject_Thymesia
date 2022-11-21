@@ -30,7 +30,7 @@ void CCorvusState_Idle::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_WalkIdle");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD_WalkIdle");
 }
 
 void CCorvusState_Idle::Tick(_float fTimeDelta)
@@ -58,7 +58,9 @@ void CCorvusState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "CORVUSMonState: Stand -> OnStateStart" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "CORVUSMonState: Stand -> OnStateStart" << endl;
+#endif
 
 #endif
 }
@@ -144,6 +146,15 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 	 {
 		 Rotation_InputToLookDir();
 		 Get_OwnerPlayer()->Change_State<CCorvusState_BasicHealing>();
+		 return true;
+	 }
+
+	
+
+	 if (Check_RequirementClawAttackState())
+	 {
+		 Rotation_InputToLookDir();
+		 Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
 		 return true;
 	 }
 

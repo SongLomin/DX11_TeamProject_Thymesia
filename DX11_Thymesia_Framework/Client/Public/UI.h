@@ -12,6 +12,10 @@ END
 
 BEGIN(Client)
 
+class CCharacter;
+class CPlayer;
+class CStatus_Player;
+
 class CUI :
     public CGameObject
 {
@@ -57,15 +61,22 @@ public:
 public: /* Shaking */
     virtual void Add_Shaking(const _float& In_ShakeTime, const _float& _fShakePower = 5.f);
 
+    
+
 public:
     virtual void OnEnable(void* _Arg = nullptr);
     //객체의 상태가 비활성화 상태로 변경될 때, 호출되는 이벤트입니다.
     virtual void OnDisable() override;
 
+   //Moon Functions
+protected:
+    virtual void    Add_Child(weak_ptr<CUI> pChild);
 
 
 protected:
     virtual HRESULT SetUp_ShaderResource();
+
+    virtual void            Bind_Player();
 
 private:
     virtual void Update_Shaking(_float fTimeDelta);
@@ -81,7 +92,7 @@ protected:
 protected:
     FDelegate<>     CallBack_ShakingStart;
     FDelegate<>     CallBack_ShakingEnd;
-
+    
 
 protected:
     UI_DESC         m_tUIDesc;
@@ -89,9 +100,12 @@ protected:
     RENDERGROUP     m_eRenderGroup = RENDERGROUP::RENDER_UI;
     _uint           m_iTextureIndex = 0;
     _uint           m_iPassIndex = 0;
-
+    
 protected:
     vector<weak_ptr<CUI>> m_vecChildUI;
+
+    weak_ptr<CPlayer> m_pPlayer;
+    weak_ptr<CStatus_Player> m_pPlayerStatus;
 
 
 protected: /* For. UI Shaking */

@@ -77,7 +77,9 @@ void CCorvusState_Hit::OnStateStart(const _float& In_fAnimationBlendTime)
 
 
 #ifdef _DEBUG
-	cout << "NorMonState: Hit -> OnStateStart" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: Hit -> OnStateStart" << endl;
+#endif
 #endif
 }
 

@@ -7,7 +7,8 @@
 #include "VIBuffer_Rect.h"
 #include "Fader.h"
 #include "GameManager.h"
-
+#include "Player.h"
+#include "Status_Player.h"
 
 GAMECLASS_C(CUI)
 CLONE_C(CUI, CGameObject)
@@ -167,6 +168,11 @@ void CUI::Add_Shaking(const _float& In_ShakeTime, const _float& _fShakePower)
 
 }
 
+void CUI::Add_Child(weak_ptr<CUI> pChild)
+{
+	m_vecChildUI.push_back(pChild);
+}
+
 void CUI::OnEnable(void* _Arg)
 {
 	Set_Enable(true);
@@ -192,6 +198,12 @@ HRESULT CUI::SetUp_ShaderResource()
 	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 
 	return S_OK;
+}
+
+void CUI::Bind_Player()
+{
+	m_pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+	m_pPlayerStatus = m_pPlayer.lock()->Get_ComponentByType<CStatus_Player>();
 }
 
 void CUI::Update_Shaking(_float fTimeDelta)

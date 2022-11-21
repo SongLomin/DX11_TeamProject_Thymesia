@@ -51,6 +51,8 @@ private:
 	void Write_Json(const string& In_szPath);
 	void Load_FromJson(const string& In_szPath);
 
+	void Toggle_PhysXInfo();
+
 public:
 	vector<shared_ptr<CImGui_Window>> m_arrWindows;
 
@@ -64,6 +66,9 @@ private: /* For Json */
 private: /* For Effect Editer */
 	weak_ptr<CCamera_Free>	m_pEditerCamera;
 	weak_ptr<CTerrain>		m_pTerrain;
+
+private: /* For. PhysXInfo */
+	_bool					m_bViewPhysXInfo = false;
 
 private:
 	void Free();

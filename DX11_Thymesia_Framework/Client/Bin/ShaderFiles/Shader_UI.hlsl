@@ -221,25 +221,7 @@ PS_OUT PS_MAIN_WIDTH_DISSOLVE(PS_IN In)
 
 	Out.vColor.a *= min(MaskAlpha + g_Ratio, 1.f);//근데 이제 나도 잘 모르겠다.
 
-	//
-
-	//	discard;
-
-	//g_fDissolveAmount  = 0~1.f; 0로 가면갈수록 안보임.
-
-	/*
-
-	float DissolveDesc = g_DissolveTexture.Sample(DefaultSampler, In.vTexUV).r;
-
-	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-
-	clip(DissolveDesc - g_fDissolveAmount);
-
-	Out.vDiffuse.rgb += float3(1.f, 1.f, 1.f) * step(DissolveDesc - g_fDissolveAmount, 0.02f);
-g_fDissolveAmount
-0~1
-
-	*/
+	
 	return Out;
 }
 

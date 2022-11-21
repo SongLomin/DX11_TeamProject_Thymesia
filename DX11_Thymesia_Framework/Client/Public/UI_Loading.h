@@ -4,7 +4,7 @@
 BEGIN(Client)
 
 class CCustomUI;
-class CPlayer_ProgressBar;
+class CProgressBar;
 class CHUD_Hover;
 class CDissolveUI;
 class CLoadingTextUI;

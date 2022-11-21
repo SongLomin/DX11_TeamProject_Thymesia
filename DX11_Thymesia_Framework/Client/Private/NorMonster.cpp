@@ -7,9 +7,12 @@
 #include "GameManager.h"
 #include "MobWeapon/MobWeapon.h"
 #include "NorMonStateS.h"
+#include "Status_Monster.h"
 //#include "MonsterWeapon.h"
 //#include "Monster1States/Monster1States.h"
 #include "Client_Components.h"
+#include "MonsterHPBar_Base.h"
+
 
 GAMECLASS_C(CNorMonster);
 CLONE_C(CNorMonster, CGameObject);
@@ -32,42 +35,56 @@ HRESULT CNorMonster::Initialize(void* pArg)
 
 	memcpy(&m_tLinkStateDesc, pArg, sizeof(STATE_LINK_DESC));
 	
-
 	
-	switch (m_tLinkStateDesc.eNorMonType)
+
+	weak_ptr<CMonsterHPBar_Base> pHPBar = GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Base>(LEVEL_STATIC);
+
+	pHPBar.lock()->Set_Owner(Weak_Cast<CMonster>(m_this));
+
+	switch (m_tLinkStateDesc.eMonType)
 	{
-	case  NORMONSTERTYPE::AXEMAN:
+	case  MONSTERTYPE::AXEMAN:
 		m_pModelCom.lock()->Init_Model("Mon_AxeMan", "", (_uint)TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
-		m_pWeapons.back().lock()->Set_WeaponType(MONSTERWEAPONTYPE::WEAPON_AXE);
-		m_pWeapons.back().lock()->Init_DefaultWeapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "hand_r");
+		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Axe", TIMESCALE_LAYER::MONSTER);
+		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
 		//TODO 야매에요 ㅎ
-		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, 0.f, m_tLinkStateDesc.vYame.z, 1.f));
+		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, m_tLinkStateDesc.vYame.y, m_tLinkStateDesc.vYame.z, 1.f));
 		break;
 		//나중에추가할거미리해둠
-	case  NORMONSTERTYPE::KNIFEWOMAN:
+	case  MONSTERTYPE::KNIFEWOMAN:
 		m_pModelCom.lock()->Init_Model("Mon_KnifeWoMan", "", (_uint)TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
-		m_pWeapons.back().lock()->Set_WeaponType(MONSTERWEAPONTYPE::WEAPON_KNIFE);
-		m_pWeapons.back().lock()->Init_DefaultWeapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "hand_r");
+		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Knife", TIMESCALE_LAYER::MONSTER);
+		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
+		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, 0.f, m_tLinkStateDesc.vYame.z, 1.f));
+		break;
+	case MONSTERTYPE::SKULL:
+		break;
+	case MONSTERTYPE::GARDENER:
+		m_pModelCom.lock()->Init_Model("Mon_Gardner", "", (_uint)TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
-		m_pWeapons.back().lock()->Set_WeaponType(MONSTERWEAPONTYPE::WEAPON_KNIFE);
-		m_pWeapons.back().lock()->Init_DefaultWeapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "hand_l");
-		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(3.f, 0.f, 1.f, 1.f));
+		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Scythe", TIMESCALE_LAYER::MONSTER);
+		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
+		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, m_tLinkStateDesc.vYame.y, m_tLinkStateDesc.vYame.z, 1.f));
 		break;
-	case NORMONSTERTYPE::SKULL:
-		break;
-	case NORMONSTERTYPE::GARDENER:
-		break;
-
-
 	}
 
+		
 	//TODO 여기서하는 이유는 몬스터가 배치되고 원점에서 우리가 피킹한위치만큼더해지고 난뒤에 그월드포지션값저장하기위해서 여기서함
-	m_pModelCom.lock()->Set_RootNode("root");
+		switch (m_tLinkStateDesc.eMonType)
+		{
+		case  MONSTERTYPE::AXEMAN:
+			m_pModelCom.lock()->Set_RootNode("root");
+			break;
+		case  MONSTERTYPE::KNIFEWOMAN:
+			m_pModelCom.lock()->Set_RootNode("root");
+			break;
+		case  MONSTERTYPE::GARDENER:
+			m_pModelCom.lock()->Set_RootNode("root");
+			break;
+		}
 
-
-	//CStatus::STATUS_DESC StatusDesc;
 	//StatusDesc.fMaxHP = StatusDesc.fCurrentHP = 360.f;
 	//StatusDesc.szName = TEXT("유적 발굴가");
 	//
@@ -101,11 +118,17 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	Add_Component<CNorMonState_Walk_BR>(&m_tLinkStateDesc);
 	Add_Component<CNorMonState_Walk_BL>(&m_tLinkStateDesc);
 	Add_Component<CNorMonState_Awake>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_HurtL>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_HurtR>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_GroggyStart>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_GroggyLoop>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_GroggyEnd>(&m_tLinkStateDesc);
+	Add_Component<CNorMonState_Die>(&m_tLinkStateDesc);
 	
 
+	GET_SINGLE(CGameManager)->Bind_KeyEvent(m_pStatus.lock()->Get_Desc().m_szModelKey, m_pModelCom, bind(&CNorMonster::Call_NextAnimationKey, this, placeholders::_1));
 
-
-	//GET_SINGLE(CGameManager)->Bind_KeyEvent("Monster1", m_pModelCom, bind(&CNorMonster::Call_NextAnimationKey, this, placeholders::_1));
+	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom));
 
 	USE_START(CNorMonster);
 	return S_OK;
@@ -128,9 +151,26 @@ void CNorMonster::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
-	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
+	switch (m_tLinkStateDesc.eMonType)
+	{
+	case  MONSTERTYPE::AXEMAN:
+		_vector vMoveDirs = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+		vMoveDirs = m_pModelCom.lock()->Get_DeltaBonePosition("root");
+		//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDirs, m_pNaviMeshCom);
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDirs, 0.f, 1.f, PxControllerFilters(), nullptr, m_pTransformCom);
+		break;
+	case  MONSTERTYPE::KNIFEWOMAN:	
+		_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+		//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, PxControllerFilters(), nullptr, m_pTransformCom);
+		break;
+	case  MONSTERTYPE::GARDENER:
+		_vector vMoveDired = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+		vMoveDired = m_pModelCom.lock()->Get_DeltaBonePosition("root");
+		m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDired, m_pNaviMeshCom);
+		break;
+	}
 
 }
 
@@ -177,6 +217,10 @@ void CNorMonster::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
 
+#ifndef _USE_THREAD_
+	m_pModelCom.lock()->Update_BoneMatrices();
+#endif // !_USE_THREAD_
+
 }
 
 void CNorMonster::Respawn_Monster(_fvector In_vPosition)
@@ -189,17 +233,17 @@ void CNorMonster::Respawn_Monster(_fvector In_vPosition)
 
 void CNorMonster::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
 {
-	//__super::OnCollisionEnter(pOtherCollider);
+	__super::OnCollisionEnter(pOtherCollider);
 }
 
 void CNorMonster::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
 {
-	//__super::OnCollisionStay(pOtherCollider);
+	__super::OnCollisionStay(pOtherCollider);
 }
 
 void CNorMonster::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
 {
-	//__super::OnCollisionExit(pOtherCollider);
+	__super::OnCollisionExit(pOtherCollider);
 }
 
 void CNorMonster::OnEnable(void* _Arg)

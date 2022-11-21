@@ -5,6 +5,7 @@
 
 BEGIN(Engine)
 class CVIBuffer_Model_Instance;
+class CPhysXCollider;
 END
 
 BEGIN(Client)
@@ -21,14 +22,23 @@ public:
     virtual HRESULT Start() override;
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
+    virtual void Custom_Thread1(_float fTimeDelta) override;
     virtual HRESULT Render() override;
     virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix);
 
-private:
-    typedef vector<PARTICLE_DESC>    PROP_INFO;
+public:
+    virtual void Write_Json(json& Out_Json) override;
+    virtual void Load_FromJson(const json& In_Json) override;
 
-    weak_ptr<CVIBuffer_Model_Instance>  m_pInstancingModel;
+private:
+    typedef vector<INSTANCE_MESH_DESC>    PROP_INFO;
+
+    weak_ptr<CVIBuffer_Model_Instance>  m_pInstanceModelCom;
     PROP_INFO                           m_pPropInfos;
+    weak_ptr<CPhysXCollider>            m_pPhysXColliderCom;
+
+    _int                                m_iColliderType = 0;
+    _bool                               m_bEdit = false;
 
 public:
     void Free();

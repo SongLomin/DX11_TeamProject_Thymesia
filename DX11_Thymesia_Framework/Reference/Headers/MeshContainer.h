@@ -5,6 +5,7 @@ BEGIN(Engine)
 struct MESH_DATA;
 class CModel;
 class CBoneNode;
+class CShader;
 
 class ENGINE_DLL CMeshContainer : public CVIBuffer
 {
@@ -47,6 +48,10 @@ public:
 		return m_eIndexFormat;
 	}
 
+	_int	Get_UpdatedBoneIndex() const { return m_iSwapBoneIndex; }
+
+	
+
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
@@ -54,7 +59,8 @@ public:
 
 public:
 	HRESULT Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CModel> pModel = weak_ptr<CModel>());
-	void SetUp_BoneMatices(_float4x4* pBoneMatrices, _fmatrix TransformationMatrix);
+	void SetUp_BoneMatices(_fmatrix TransformationMatrix);
+	HRESULT Bind_BoneMatices(weak_ptr<CShader> pShader, const char* pConstantBoneName);
 
 private:
 	HRESULT Ready_VertexBuffer_NonAnim(shared_ptr<MESH_DATA> tMeshData);
@@ -67,6 +73,10 @@ private:
 
 	_uint								m_iMaterialIndex = 0;
 	_uint								m_iNumBones = 0;
+
+	_float4x4							m_BoneMatrices[2][256];
+
+	_int								m_iSwapBoneIndex = -1;
 
 
 	vector<weak_ptr<CBoneNode>>			m_pBoneNodes;

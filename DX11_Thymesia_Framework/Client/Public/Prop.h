@@ -24,6 +24,7 @@ public:
     virtual HRESULT Start() override;
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
+    virtual void Custom_Thread1(_float fTimeDelta) override;
     virtual HRESULT Render() override;
 
 public:
@@ -40,6 +41,8 @@ protected:
 protected:
     RENDERGROUP m_eRenderGroup = RENDERGROUP::RENDER_NONALPHABLEND;
     _uint       m_iPassIndex = 0;
+    _float      m_fCullingOffsetRange = 0.f;
+    _bool       m_bRendering = true;
 
 protected:
     void Free();

@@ -340,8 +340,8 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Render_Lights()))
 		DEBUG_ASSERT;
 
-	if (FAILED(Bake_Fog()))
-		DEBUG_ASSERT;
+	/*if (FAILED(Bake_Fog()))
+		DEBUG_ASSERT;*/
 
 	if (FAILED(Bake_ViewShadow()))
 		DEBUG_ASSERT;

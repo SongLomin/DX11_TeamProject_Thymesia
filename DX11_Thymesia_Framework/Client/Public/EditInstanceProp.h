@@ -38,20 +38,24 @@ private:
     void    View_Picking_Prop();
     void    View_Picking_List();
     void    View_Picking_Option();
-    void    View_Picking_Option_Y();
     void    View_SelectTransformInfo();
 
     void    View_SelectJson();
 
+    void    View_PhysXOption();
+
 private:
     HRESULT SetUp_ShaderResource();
+    void    SetUp_ShaderResource_Select();
 
     void Load_ResourceList(vector<string>& In_List, const filesystem::path& In_Path, string _szCutName = "");
 
     void Save_Json(string _szName);
     void Load_Json(string _szName);
 
+public:
     virtual void Write_Json(json& Out_Json) override;
+    virtual void Load_FromJson(const json& In_Json) override;
 
 private:                                                                                                                                                                                                                
     typedef vector<string>               RESOURCE_LIST;
@@ -66,14 +70,18 @@ private:
     weak_ptr<CShader>                   m_pSelect_ShaderCom;
                                               
     _int                m_iPickingIndex       = -1;
+    _uint               m_iOption             = 0;
 
     string              m_szSelectModelName   = "";
-    _float4             m_vPickingPos         = _float4(0.f, 0.f, 0.f, 0.f);
-    _float              m_fPosY               = 0.f;
+    INSTANCE_MESH_DESC  m_PickingDesc;
     _uint               m_iPassIndex          = 0;
 
     RESOURCE_LIST       m_ModelList;
     RESOURCE_LIST       m_JsonList;
+    _bool               m_bSubDraw = false;
+
+    _int                m_iColliderType = 0;
+    _bool               m_bViewPhysXInfo = false;
 
 public:
     void Free();

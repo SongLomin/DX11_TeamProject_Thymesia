@@ -56,14 +56,18 @@ HRESULT CPhysX_Manager::Initialize(const _uint In_iNumLayer)
 	PxCudaContextManagerDesc tCudaDesc;
 	tCudaDesc.graphicsDevice = DEVICE;
 	tCudaDesc.interopMode = PxCudaInteropMode::Enum::D3D11_INTEROP;
+	tCudaDesc.ctx;
 
-	m_pCudaContextManager = PxCreateCudaContextManager(*m_pFoundation, tCudaDesc, PxGetProfilerCallback());
+	//m_pCudaContextManager = PxCreateCudaContextManager(*m_pFoundation, tCudaDesc, PxGetProfilerCallback());
 
 	if (m_pCudaContextManager)
 	{
 		if (!m_pCudaContextManager->contextIsValid())
 		{
-			DEBUG_ASSERT;
+			/*if(m_pCudaContextManager)
+				m_pCudaContextManager->release();
+			m_pCudaContextManager = nullptr;*/
+			exit(0);
 		}
 	}
 	else
@@ -297,6 +301,13 @@ HRESULT CPhysX_Manager::Create_Scene(Scene eScene, PxVec3 Gravity)
 
 	m_pCurScene = m_pScenes[eScene];
 
+	if (m_pControllerManager)
+		m_pControllerManager->release();
+
+
+
+	m_pControllerManager = PxCreateControllerManager(*m_pCurScene);
+
 	//PxSceneDesc	SceneDesc(m_pPhysics->getTolerancesScale());
 
 	//// ม฿ทย
@@ -437,6 +448,23 @@ void CPhysX_Manager::Create_ConvexMesh(PxVec3 ** pVertices, _uint iNumVertice, P
 	*ppOut = m_pCooking->createConvexMesh(Desc, m_pPhysics->getPhysicsInsertionCallback());
 }
 
+void CPhysX_Manager::Create_ConvexMesh(const PxConvexMeshDesc& In_MeshDesc, PxConvexMesh** ppOut)
+{
+	PxCookingParams params = m_pCooking->getParams();
+
+	// Use the new (default) PxConvexMeshCookingType::eQUICKHULL
+	params.convexMeshCookingType = PxConvexMeshCookingType::eQUICKHULL;
+
+	// If the gaussMapLimit is chosen higher than the number of output vertices, no gauss map is added to the convex mesh data (here 256).
+	// If the gaussMapLimit is chosen lower than the number of output vertices, a gauss map is added to the convex mesh data (here 16).
+	params.gaussMapLimit = 16;
+	params.buildGPUData = true;
+	m_pCooking->setParams(params);
+
+	*ppOut = m_pCooking->createConvexMesh(In_MeshDesc, m_pPhysics->getPhysicsInsertionCallback());
+
+}
+
 void CPhysX_Manager::Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial ** ppOut)
 {
 	*ppOut = m_pPhysics->createMaterial(fStaticFriction, fDynamicFriction, fRestitution);
@@ -466,6 +494,11 @@ void CPhysX_Manager::Create_MeshFromTriangles(const PxTriangleMeshDesc& In_MeshD
 
 	PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
 	*ppOut = m_pPhysics->createTriangleMesh(readBuffer);
+}
+
+void CPhysX_Manager::Create_Controller(const PxCapsuleControllerDesc& In_ControllerDesc, PxController** ppOut)
+{
+	*ppOut = m_pControllerManager->createController(In_ControllerDesc);
 }
 
 void CPhysX_Manager::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh ** ppOut)
@@ -508,6 +541,10 @@ void CPhysX_Manager::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUppe
 void CPhysX_Manager::OnDestroy()
 {
 	PX_UNUSED(true);
+
+	if (m_pControllerManager)
+		m_pControllerManager->release();
+
 	for (auto& elem : m_pScenes)
 	{
 		if(elem)

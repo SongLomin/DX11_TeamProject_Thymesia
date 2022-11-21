@@ -23,6 +23,7 @@ protected:
     virtual _bool Check_RequirementParryState();
     virtual _bool Check_RequirementUltimateState();
     virtual _bool Check_RequirementHealingState();
+    virtual _bool Check_RequirementClawAttackState();
 
 
 protected:

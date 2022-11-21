@@ -4,7 +4,7 @@
 BEGIN(Engine)
 class CCollider;
 class CNavigation;
-
+class CPhysXController;
 END
 
 BEGIN(Client)
@@ -31,13 +31,23 @@ public:
     _uint Get_CurrentStateIndex() const;
     _uint Get_PreStateIndex() const;
     _bool Is_Edit() const { return m_isEdit; }
+    
+    weak_ptr<CStatus>   Get_Status() { return m_pStatus; }
+
 
     _uint Get_AttackCollisionLayer() const {
         return (_uint)m_eAttackCollisionLayer;
     };
 
+    void Set_SuperArmor(const _bool In_bSuperArmor) { m_bSuperArmor = In_bSuperArmor; }
+    _bool Get_SuperArmor() const { return m_bSuperArmor; }
+
 public:
     void Set_RigidColliderEnable(const _bool& In_bEnable);
+
+protected:
+    virtual void Tick(_float fTimeDelta) override;
+    virtual void Before_Render(_float fTimeDelta) override;
 
 protected:
     //weak_ptr<CBehaviorBase> m_pBehavior;
@@ -47,11 +57,13 @@ protected:
     weak_ptr<CStateBase>    m_pCurState;
     weak_ptr<CStateBase>    m_pPreState;
     weak_ptr<CStatus>       m_pStatus;
+    weak_ptr<CPhysXController> m_pPhysXControllerCom;
     
     COLLISION_LAYER         m_eAttackCollisionLayer = COLLISION_LAYER::LAYER_END;
 
 private:
     _bool m_isEdit = false;
+    _bool     m_bSuperArmor = false;
 
 public:
     virtual void OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage);

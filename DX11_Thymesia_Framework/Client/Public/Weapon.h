@@ -29,6 +29,7 @@ public:// CGameObject을(를) 통해 상속됨
 
 public:
     void Init_Weapon(weak_ptr<CModel> In_pModelCom, weak_ptr<CGameObject> In_pParent, const string& szTargetNode = "WeaponCase1");
+    void Init_Model(const string& strWeaponName, TIMESCALE_LAYER eLayer);
     void Enable_Weapon(const HIT_TYPE& In_eHitType, const _float& In_fDamage);
     void Disable_Weapon();
     void Set_WeaponScale(const _float& In_fWeaponScale);

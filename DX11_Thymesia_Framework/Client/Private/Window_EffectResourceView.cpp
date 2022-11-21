@@ -124,7 +124,9 @@ void CWindow_EffectResourceView::Load_Particle()
         const fs::directory_entry& entry = *itr;
         szFileName = entry.path().filename().wstring();
 
-        std::cout << entry.path().filename() << std::endl;
+        #ifdef _DEBUG_COUT_
+		cout << entry.path().filename() << std::endl;
+        #endif
 
         Load_Particle_Recursive(entry.path());
 
@@ -145,7 +147,9 @@ void CWindow_EffectResourceView::Load_EffectGroup()
         const fs::directory_entry& entry = *itr;
         szFileName = entry.path().filename().string();
 
-        std::cout << entry.path().filename() << std::endl;
+        #ifdef _DEBUG_COUT_
+		cout << entry.path().filename() << std::endl;
+        #endif
 
         m_szEffectGroupNames.push_back(szFileName);
         itr++;
@@ -175,7 +179,9 @@ void CWindow_EffectResourceView::Load_AllEffectMeshInPath_Recursive(const filesy
 
 		 if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
 		 {
-			cout << szFileName << endl;
+			#ifdef _DEBUG_COUT_
+		cout << szFileName << endl;
+#endif
 
             // TODO : ! control effect mesh initial size here !
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(),
@@ -188,7 +194,9 @@ void CWindow_EffectResourceView::Load_AllEffectMeshInPath_Recursive(const filesy
 
 		///*else*/ if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0)
 		//{
-		//    cout << szFileName << endl;
+#ifdef _DEBUG_COUT_
+		//cout << szFileName << endl;
+#endif
 		//    GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(),
   //              MODEL_TYPE::NONANIM,
   //              XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f)));
@@ -197,13 +205,14 @@ void CWindow_EffectResourceView::Load_AllEffectMeshInPath_Recursive(const filesy
 
 		//else if (strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
 		//{
-		//    cout << szFileName << endl;
+ #ifdef _DEBUG_COUT_
+		//cout << szFileName << endl;
+#endif
 		//    GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(),
   //              MODEL_TYPE::NONANIM,
   //              XMMatrixScaling(0.01f, 0.01f, 0.01f) * XMMatrixRotationY(XMConvertToRadians(180.0f)));
 		//    m_szAnimEffectMeshNames.push_back(szFileName);
 		//}
-
 
 		itr++;
 	}
@@ -224,7 +233,9 @@ void CWindow_EffectResourceView::Load_Particle_Recursive(const filesystem::path&
 
 		szFileName = entry.path().filename().string();
 
-		std::cout << entry.path().filename() << std::endl;
+#ifdef _DEBUG_COUT_
+		cout << entry.path().filename() << std::endl;
+#endif
 
 		Load_Particle_Recursive(entry.path());
 

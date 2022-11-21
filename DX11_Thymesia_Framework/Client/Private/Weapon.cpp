@@ -3,8 +3,6 @@
 #include "BoneNode.h"
 #include "GameManager.h"
 #include "Character.h"
-#include "Effect_Trail.h"
-#include "VIBuffer_Trail.h"
 #include "Weapon.h"
 
 GAMECLASS_C(CWeapon);
@@ -29,7 +27,7 @@ HRESULT CWeapon::Initialize(void* pArg)
 	COLLIDERDESC			ColliderDesc;
 	ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
 
-	m_fOriginalWeaponScale = 0.9f;
+	m_fOriginalWeaponScale = 0.3f;
 	ColliderDesc.vScale = _float3(m_fOriginalWeaponScale, 0.f, 0.f);
 	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
 	ColliderDesc.vTranslation = _float3(0.f, 0.f, 0.f);
@@ -42,14 +40,16 @@ HRESULT CWeapon::Initialize(void* pArg)
 		VTXMODEL_DECLARATION::Element,
 		VTXMODEL_DECLARATION::iNumElements);
 
-	// 무기의 맨 아래 정점과, 맨 위 정점을 알아야 함
+	if ((_uint)LEVEL_EDIT == m_CreatedLevel)
+	{
+		m_pHitColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
+	}
 
 	return S_OK;
 }
 
 HRESULT CWeapon::Start()
 {
-
 	return S_OK;
 }
 
@@ -75,8 +75,11 @@ void CWeapon::Tick(_float fTimeDelta)
 
 	m_pTransformCom.lock()->Set_WorldMatrix(ParentMatrix * m_pParent.lock()->Get_Component<CTransform>().lock()->Get_WorldMatrix());
 	//m_pTransformCom.lock()->Set_WorldMatrix(m_pParent.lock()->Get_Component<CTransform>().lock()->Get_WorldMatrix());
-	//m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
-
+	
+	if ((_uint)LEVEL_EDIT == m_CreatedLevel)
+	{
+		m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+	}
 }
 
 void CWeapon::LateTick(_float fTimeDelta)
@@ -122,7 +125,9 @@ void CWeapon::Enable_Weapon(const HIT_TYPE& In_eHitType, const _float& In_fDamag
 {
 	if (m_pHitColliderCom.lock()->Set_Enable(true))
 	{
+		#ifdef _DEBUG_COUT_
 		cout << "Enable Weapon!" << endl;
+#endif
 		m_eHitType = In_eHitType;
 		m_fDamage = In_fDamage;
 		m_bFirstAttack = true;
@@ -133,7 +138,9 @@ void CWeapon::Disable_Weapon()
 {
 	if (m_pHitColliderCom.lock()->Set_Enable(false))
 	{
+		#ifdef _DEBUG_COUT_
 		cout << "Disable Weapon!" << endl;
+#endif
 		m_iHitColliderIndexs.clear();
 
 	}
@@ -211,6 +218,11 @@ void CWeapon::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
 void CWeapon::OnSetDead()
 {
 	int i = 0;
+}
+
+void CWeapon::Init_Model(const string& strWeaponName, TIMESCALE_LAYER eLayer)
+{
+	m_pModelCom.lock()->Init_Model(strWeaponName.c_str(), "", (_uint)eLayer);
 }
 
 void CWeapon::Free()

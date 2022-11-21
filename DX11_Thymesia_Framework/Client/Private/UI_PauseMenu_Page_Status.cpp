@@ -7,6 +7,8 @@
 #include "GameManager.h"
 #include "Engine_Defines.h"
 #include "GameObject.h"
+#include "UI_PauseMenu_Tap_PlagueWeapon.h"
+#include "UI_PauseMenu_Tap_Potion.h"
 
 
 GAMECLASS_C(CUI_PauseMenu_Page_Status)
@@ -25,9 +27,12 @@ HRESULT CUI_PauseMenu_Page_Status::Initialize(void* pArg)
 
 
 	m_pStatusTap = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu_Tap_Status>(LEVEL_STATIC);
-
+	m_pPlagueWeaponTap = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu_Tap_PlagueWeapon>(LEVEL_STATIC);
+	m_pPotionTap = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu_Tap_Potion>(LEVEL_STATIC);
 
 	m_vecChildUI.push_back(m_pStatusTap);
+	m_vecChildUI.push_back(m_pPlagueWeaponTap);
+	m_vecChildUI.push_back(m_pPotionTap);
 
 	return S_OK;
 }

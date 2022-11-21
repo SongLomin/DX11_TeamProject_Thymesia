@@ -5,6 +5,7 @@
 #include "StateBase.h"
 #include "Status.h"
 #include "Collider.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CCharacter)
 CLONE_C(CCharacter, CGameObject)
@@ -20,7 +21,7 @@ HRESULT CCharacter::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 	m_pNaviMeshCom = Add_Component<CNavigation>();
-	m_pStatus = Add_Component<CStatus>();
+	m_pPhysXControllerCom = Add_Component<CPhysXController>();
 	return S_OK;
 }
 
@@ -38,6 +39,41 @@ _uint CCharacter::Get_PreStateIndex() const
 void CCharacter::Set_RigidColliderEnable(const _bool& In_bEnable)
 {
 	m_pRigidBodyColliderCom.lock()->Set_Enable(In_bEnable);
+}
+
+void CCharacter::Tick(_float fTimeDelta)
+{
+	__super::Tick(fTimeDelta);
+
+#ifdef _USE_GRAVITY_
+
+	if (m_pPhysXControllerCom.lock()->Get_Controller())
+	{
+		PxControllerCollisionFlags Flags = m_pPhysXControllerCom.lock()->MoveGravity(fTimeDelta);
+
+		if (Flags & PxControllerCollisionFlag::eCOLLISION_DOWN)
+		{
+			m_pPhysXControllerCom.lock()->Reset_Gravity();
+		}
+
+#ifdef _LIFEGUARD_FOR_FALL_
+		_vector vPos = m_pPhysXControllerCom.lock()->Get_Position();
+		if (vPos.m128_f32[1] < -50.f)
+		{
+			vPos.m128_f32[1] = 50.f;
+			m_pPhysXControllerCom.lock()->Set_Position(vPos);
+		}
+#endif
+	}
+#endif
+	
+}
+
+void CCharacter::Before_Render(_float fTimeDelta)
+{
+	m_pPhysXControllerCom.lock()->Synchronize_Transform(m_pTransformCom);
+
+	__super::Before_Render(fTimeDelta);
 }
 
 weak_ptr<CCollider> CCharacter::Get_RigidColliderComponent() const

@@ -112,46 +112,42 @@ HRESULT CWindow_AnimationModelView::Render()
             }
 
 
-            //if (m_pPreViewModel.lock())
-            //{
-            //    if (ImGui::CollapsingHeader("Weapon Collider"), ImGuiTreeNodeFlags_DefaultOpen)
-            //    {
+            if (m_pPreViewModel.lock())
+            {
+                if (ImGui::CollapsingHeader("Bone Collider"), ImGuiTreeNodeFlags_DefaultOpen)
+                {
 
-            //        ImGui::Text("Bone List");
-            //        if (ImGui::BeginListBox("##Bone List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
-            //        {
+                    ImGui::Text("Bone List");
+                    if (ImGui::BeginListBox("##Bone List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+                    {
 
-            //            for (int i = 0; i < m_AllBoneNames.size(); i++)
-            //            {
-            //                const bool is_selected = (m_CurrentBoneIndex == i);
-            //                if (ImGui::Selectable(m_AllBoneNames[i].c_str(), is_selected))
-            //                    m_CurrentBoneIndex = i;
+                        for (int i = 0; i < m_AllBoneNames.size(); i++)
+                        {
+                            const bool is_selected = (m_CurrentBoneIndex == i);
+                            if (ImGui::Selectable(m_AllBoneNames[i].c_str(), is_selected))
+                                m_CurrentBoneIndex = i;
 
-            //                // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-            //                if (is_selected)
-            //                    ImGui::SetItemDefaultFocus();
-            //            }
-            //            ImGui::EndListBox();
-            //        }
+                            // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+                            if (is_selected)
+                                ImGui::SetItemDefaultFocus();
+                        }
+                        ImGui::EndListBox();
+                    }
 
-            //        if (ImGui::Button("Create"))
-            //        {
-            //            m_pPreViewModel.lock()->Add_DebugWeapon(m_AllBoneNames[m_CurrentBoneIndex]);
-            //        }
+                    if (ImGui::Button("Create"))
+                    {
+                        m_pPreViewModel.lock()->Clear_DebugWeapon();
+                        m_pPreViewModel.lock()->Add_DebugWeapon(m_AllBoneNames[m_CurrentBoneIndex]);
+                    }
 
-            //        ImGui::SameLine();
+                    ImGui::SameLine();
 
-            //        if (ImGui::Button("Clear"))
-            //        {
-            //            m_pPreViewModel.lock()->Clear_DebugWeapon();
-            //        }
-
-            //        ImGui::InputFloat("Weapon Scale", &m_tWeaponDesc.fWeaponScale, 0.05f);
-            //        ImGui::InputInt("Hit Type", &m_tWeaponDesc.iHitType);
-            //        ImGui::InputFloat("Damage", &m_tWeaponDesc.fDamage);
-            //        ImGui::InputFloat3("Offset", &m_tWeaponDesc.vWeaponOffset.x, "%.1");
-            //    }
-            //}
+                    /*if (ImGui::Button("Clear"))
+                    {
+                        m_pPreViewModel.lock()->Clear_DebugWeapon();
+                    }*/
+                }
+            }
             
         }
 

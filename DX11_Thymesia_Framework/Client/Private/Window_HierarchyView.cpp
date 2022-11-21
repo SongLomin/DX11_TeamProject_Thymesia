@@ -4,6 +4,7 @@
 #include "Client_GameObjects.h"
 
 #include "Model.h"
+#include "VIBuffer_Model_Instance.h"
 #include "Transform.h"
 
 IMPLEMENT_SINGLETON(CWindow_HierarchyView)
@@ -49,32 +50,57 @@ HRESULT CWindow_HierarchyView::Render()
 
 	ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 	
+	static char _szFindTag[MAX_PATH] = "";
+	ImGui::InputText("##Find", _szFindTag, MAX_PATH);
+
 	_uint iIndex = 0;
+	_bool bAct   = false;
 
 	for (auto& elem : m_pGameObjects)
 	{
-		string szIndexedName = to_string(iIndex) + ". " + elem.TypeName;
-		
+		string szIndexedName = to_string(iIndex) + ". " + elem.TypeName.substr(string("class Client::").length());
+
 		if (m_iPreSelectIndex == iIndex)
 			szIndexedName = "[ " + szIndexedName + " ]";
+
+		weak_ptr<CVIBuffer_Model_Instance> pModel = elem.pInstance.lock()->Get_Component<CVIBuffer_Model_Instance>().lock();
+
+		if (pModel.lock() && "" != pModel.lock()->Get_ModelKey())
+		{
+			szIndexedName += string("\n      >> ") + pModel.lock()->Get_ModelKey() + "\n";
+
+			if (0 != strlen(_szFindTag) && string::npos == pModel.lock()->Get_ModelKey().find(_szFindTag))
+			{
+				++iIndex;
+				continue;
+			}
+		}
+
 
 		if (ImGui::Selectable(szIndexedName.c_str()))
 		{		
 			CallBack_ListClick(elem);
 
-			m_iPreSelectIndex = iIndex;
+			m_iPreSelectIndex	= iIndex;
+
+			if (elem.HashCode == typeid(CEditGroupProp).hash_code() || elem.HashCode == typeid(CEditInstanceProp).hash_code())
+			{
+				for (auto& iter : m_pGameObjects)
+				{
+					iter.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_NONE);
+				}
+			}
+
+			elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_ACCEPT);
 		}
 
-		if (elem.HashCode == typeid(CEditGroupProp).hash_code())
+		if ((m_iPreSelectIndex == iIndex) && (elem.HashCode == typeid(CEditGroupProp).hash_code() || elem.HashCode == typeid(CEditInstanceProp).hash_code()))
 		{
-			(m_iPreSelectIndex == iIndex)
-				? (elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_ACCEPT))
-				: (elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_NONE));
-
 			elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_SUB);
 		}
 
-		iIndex++;
+
+		++iIndex;
 	}
 	
 	__super::End();
@@ -144,6 +170,19 @@ void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
 		
 		TempDesc.TypeName = Elem_GameObject["Name"];
 		TempDesc.HashCode = Elem_GameObject["Hash"].get<nlohmann::json::number_unsigned_t>();
+
+		if (typeid(CGround).hash_code() == TempDesc.HashCode)
+		{
+			TempDesc.TypeName = typeid(CEditGround).name();
+			TempDesc.HashCode = typeid(CEditGround).hash_code();
+		}
+
+		else if (typeid(CStatic_Instancing_Prop).hash_code() == TempDesc.HashCode)
+		{
+			TempDesc.TypeName = typeid(CEditInstanceProp).name();
+			TempDesc.HashCode = typeid(CEditInstanceProp).hash_code();
+		}
+
 		Call_Add_GameObject_Internal(TempDesc.HashCode, TempDesc.TypeName.c_str());
 		m_pGameObjects.back().pInstance.lock()->Set_Enable(Elem_GameObject["Setting"]["Enable"]);
 		m_pGameObjects.back().pInstance.lock()->Load_FromJson(Elem_GameObject);

@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
 #include "GameManager.h"
+#include "Status_Player.h"
 
 GAMECLASS_C(CCorvusState_BasicHealing);
 CLONE_C(CCorvusState_BasicHealing, CComponent)
@@ -30,7 +31,7 @@ void CCorvusState_BasicHealing::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_Healing2_InPlace");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_Healing2_InPlace");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_BasicHealing::Call_AnimationEnd, this);
 }
 
@@ -38,7 +39,7 @@ void CCorvusState_BasicHealing::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	Turn_Transform(fTimeDelta);
+	//Turn_Transform(fTimeDelta);
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -60,11 +61,11 @@ void CCorvusState_BasicHealing::OnStateStart(const _float& In_fAnimationBlendTim
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-#ifdef _DEBUG
+#ifdef _DEBUG_COUT_
 	cout << "NorMonState: RunStart -> OnStateStart" << endl;
-#endif
+#endif // _DEBUG_COUT_
 	
-
+	Weak_StaticCast<CStatus_Player>(m_pStatusCom).lock()->Heal_Player(300.f);
 }
 
 void CCorvusState_BasicHealing::OnStateEnd()

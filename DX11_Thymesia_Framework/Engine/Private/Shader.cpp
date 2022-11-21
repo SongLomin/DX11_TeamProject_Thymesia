@@ -52,7 +52,6 @@ HRESULT CShader::Begin(_uint iPassIndex)
 	if (iPassIndex >= m_Passes.size())
 		return E_FAIL;
 	
-
 	DEVICECONTEXT->IASetInputLayout(m_Passes[iPassIndex].pInputLayout);
 
 	if (FAILED(m_Passes[iPassIndex].pPass->Apply(0, DEVICECONTEXT)))

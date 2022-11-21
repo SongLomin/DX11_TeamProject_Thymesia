@@ -8,6 +8,7 @@ class CNavigation;
 class CTransform;
 class CModel;
 class CCollider;
+class CPhysXController;
 
 END
 
@@ -53,6 +54,7 @@ protected:
     weak_ptr<CTransform> m_pTransformCom;
     weak_ptr<CModel> m_pModelCom;
     weak_ptr<CStatus> m_pStatusCom;
+    weak_ptr<CPhysXController> m_pPhysXControllerCom;
     
 private:
     weak_ptr<CCharacter>    m_pOwnerFromCharacter;

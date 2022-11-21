@@ -30,7 +30,7 @@ void CVarg_Execution::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_VSVarg_Execution");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD_VSVarg_Execution");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVarg_Execution::Call_AnimationEnd, this);
 }
 
@@ -61,7 +61,9 @@ void CVarg_Execution::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom,"camera");
 #ifdef _DEBUG
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: RunStart -> OnStateStart" << endl;
+#endif
 #endif
 
 }

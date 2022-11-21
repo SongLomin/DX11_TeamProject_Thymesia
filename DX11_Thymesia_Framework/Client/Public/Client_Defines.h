@@ -3,8 +3,29 @@
 #include "SMath.h"
 #include <filesystem>
 #include "Client_Structs.h"
+#include "Client_Presets.h"
 
 #include "imgui.h"
+
+#ifdef _DEBUG
+#define		_USE_THREAD_
+#define		_144HZ_
+#define		_LIFEGUARD_FOR_FALL_
+#define		_DEBUG_COUT_
+//#define		_STAGE_1_
+#define		_STAGE_2_
+#define		_STAGE_1_MONSTER_
+#define		_GENERATE_PROP_COLLIDER_ true
+#define		_USE_GRAVITY_
+#endif // _DEBUG
+
+#ifdef NDEBUG
+//#define		_144HZ_
+#define		_USE_THREAD_
+#define		_STAGE_2_
+#define		_LIFEGUARD_FOR_FALL_
+#define		_STAGE_1_MONSTER_
+#endif // NDEBUG
 
 namespace Client 
 {
@@ -27,12 +48,16 @@ namespace Client
 		ON_EDITDRAW_NONE,
 		ON_EDITDRAW_ACCEPT,
 		ON_EDITDRAW_SUB,
+		ON_EDITPICKING,
+		ON_EDIT_PHYSXINFO,
+		ON_EDIT_PHYSXINFO_N,
 		ON_ANIMATIONEND,
 		ON_MOVING,
 		ON_MONSTERDEAD,
 		ON_MONSTERBEGIN,
 		ON_TRIGGER,
 		ON_FIRSTHIT,
+		ON_EXCUTION_NORMOB,
 		EVENT_END
 	};
 
@@ -42,6 +67,9 @@ namespace Client
 		UPPER_HIT,
 		DOWN_HIT,
 		WARNING,
+		LEFT_HIT,
+		RIGHT_HIT,
+		EXCTUE_HIT,
 		TYPE_END
 	};
 
@@ -93,6 +121,7 @@ namespace Client
 		MONSTER_RIGIDBODY,
 		EDIT_NAVIMESH,
 		TRIGGER,
+		STATIC_PROP,
 		LAYER_END
 	};
 
@@ -108,23 +137,41 @@ namespace Client
 	{
 		WEAPON_AXE,
 		WEAPON_KNIFE,
+		WEAPON_BOSSVARG,
+		WEAPON_SCYTHE,
 		MON_WEAPON_END
 	};
 
-	enum class  NORMONSTERTYPE {
-		AXEMAN,  // 도끼든남자
+	enum class  MONSTERTYPE {
+		AXEMAN,  // 도끼든남자 방패든도끼든남자
 		KNIFEWOMAN, // 기본단검여자
 		SKULL, // 기본해골
 		GARDENER, // 낫든몬스터
 		NMON_END
 	};
 
+	
 	enum class NORMONSTERIDLETYPE {
 		NORIDLE,
 		SITIDLE,
 		FIDGETIDLE,
 		IDLEEND
 	};
+
+	enum class BOSSSTARTTYPE {
+		BEGINSTART,
+		NORMALSTART,
+		BOSSSTARTEND
+	};
+
+	enum class ATTACK_OPTION {
+		NONE,
+		NORMAL,
+		PLAGUE,
+		SPECIAL_ATTACK,
+		OPTION_END
+	};
+
 
 	//enum class  RAREMONSTERTYPE {
 	//	RMON_ARMOR,

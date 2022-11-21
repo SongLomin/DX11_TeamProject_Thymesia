@@ -4,9 +4,9 @@
 BEGIN(Client)
 
 class CCustomUI;
+class CUI_PlagueWeapon;
 
-class CUI_PauseMenu_Tap_PlagueWeapon :
-    public CUI
+class CUI_PauseMenu_Tap_PlagueWeapon : public CUI
 {
 public:
     GAMECLASS_H(CUI_PauseMenu_Tap_PlagueWeapon)
@@ -21,12 +21,19 @@ public:
     virtual HRESULT Render() override;
 
 private:
-    void    CreatePlagueWeapon_Main();
-    void    CreatePlagueWeapon_Sub();
-    void    CreatePlagueWeapon_Steal();
+    weak_ptr< CUI_PlagueWeapon> m_PlagueWeaponMain;
+    weak_ptr< CUI_PlagueWeapon> m_PlagueWeaponSub;
+    weak_ptr< CUI_PlagueWeapon> m_PlagueWeaponSteal;
+    weak_ptr<CCustomUI> m_PlagueWeaponSteal_Decoration;
+
+    TEXTINFO            m_PlagueWeaponText;
+
 
 private:
     
+
+
+
 };
 
 END

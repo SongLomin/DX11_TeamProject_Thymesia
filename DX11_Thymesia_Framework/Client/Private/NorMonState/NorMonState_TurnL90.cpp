@@ -32,11 +32,21 @@ void CNorMonState_TurnL90::Start()
 	__super::Start();
 
 
-
-	if (m_eNorMonType == NORMONSTERTYPE::AXEMAN)
+	switch (m_eMonType)
 	{
+	case Client::MONSTERTYPE::AXEMAN:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|DemoM02_TurnL90|BaseLayer|Armature|A");
+		break;
+	case Client::MONSTERTYPE::KNIFEWOMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_TurnL90");
+		break;
+	case Client::MONSTERTYPE::SKULL:
+		break;
+	case Client::MONSTERTYPE::GARDENER:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_TurnL90");
+		break;
 	}
+
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_TurnL90::Call_AnimationEnd, this);
 }
@@ -46,7 +56,6 @@ void CNorMonState_TurnL90::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	_float fTurnValue = 1.57 / 1.333f;
-
 
 	m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * -1.5f);
 	
@@ -84,7 +93,9 @@ void CNorMonState_TurnL90::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
-	cout << "NorMonState: TurnLllllll -> Trurnllllll" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: TurnLllllll -> Trurnllllll" << endl;
+#endif
 #endif
 
 	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);

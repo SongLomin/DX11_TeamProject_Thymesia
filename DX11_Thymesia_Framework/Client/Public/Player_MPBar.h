@@ -3,7 +3,7 @@
 
 BEGIN(Client)
 
-class CPlayer_ProgressBar;
+class CProgressBar;
 
 class CPlayer_MPBar final : public CUI
 {
@@ -29,10 +29,10 @@ protected:
 	virtual HRESULT SetUp_ShaderResource() override;
 
 private:
-	weak_ptr< CPlayer_ProgressBar>	m_pMainBar;
-	weak_ptr< CPlayer_ProgressBar>	m_pBG;
-	weak_ptr< CPlayer_ProgressBar>	m_pBorderLeft;
-	weak_ptr< CPlayer_ProgressBar>	m_pBorderRight;
+	weak_ptr< CProgressBar>	m_pMainBar;
+	weak_ptr< CProgressBar>	m_pBG;
+	weak_ptr< CProgressBar>	m_pBorderLeft;
+	weak_ptr< CProgressBar>	m_pBorderRight;
 
 private:
 	_float			m_fLerpAcc;

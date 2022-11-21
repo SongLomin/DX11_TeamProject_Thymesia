@@ -37,6 +37,10 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 	virtual void Before_Render(_float fTimeDelta);
+	virtual void Custom_Thread0(_float fTimeDelta);
+	virtual void Custom_Thread1(_float fTimeDelta);
+	virtual void Custom_Thread2(_float fTimeDelta);
+	virtual void Custom_Thread3(_float fTimeDelta);
 	virtual HRESULT Render(); 
 	virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix);
 
@@ -59,6 +63,9 @@ protected:
 
 	//SetDead가 호출되는 시점에 발생하는 이벤트입니다.
 	virtual void OnSetDead() {}
+
+	//메모리풀링이 됐을 때 발생하는 이벤트입니다.
+	virtual void OnMemoryPool() {}
 
 protected:
 	void Set_OwnerForMyComponents();

@@ -27,7 +27,7 @@ void CCorvusState_JoggingStartEnd::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_WalkF_REnd");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD_WalkF_REnd");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_JoggingStartEnd::Call_AnimationEnd, this);
 }
 
@@ -67,7 +67,9 @@ void CCorvusState_JoggingStartEnd::OnStateStart(const _float& In_fAnimationBlend
 
 
 #ifdef _DEBUG
-	cout << "NorMonState: RunStartEnd -> OnStateStart" << endl;
+	#ifdef _DEBUG_COUT_
+		cout << "NorMonState: RunStartEnd -> OnStateStart" << endl;
+#endif
 
 #endif
 }

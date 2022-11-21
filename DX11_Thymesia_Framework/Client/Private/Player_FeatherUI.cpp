@@ -5,7 +5,7 @@
 #include "GameManager.h"
 #include "Engine_Defines.h"
 #include "CustomUI.h"
-#include "Player_ProgressBar.h"
+#include "ProgressBar.h"
 #include "HUD_Hover.h"
 #include "Fader.h"
 #include "GameManager.h"
@@ -38,7 +38,7 @@ HRESULT CPlayer_FeatherUI::Initialize(void* pArg)
     m_pIcon.lock()->Get_Component<CTexture>().lock()->Use_Texture("HUD_Feather");
     m_pIcon.lock()->Set_Depth(0.1f);
 
-    m_pFrameBorder = GAMEINSTANCE->Add_GameObject<CPlayer_ProgressBar>(LEVEL_STATIC, &m_tUIDesc);
+    m_pFrameBorder = GAMEINSTANCE->Add_GameObject<CProgressBar>(LEVEL_STATIC, &m_tUIDesc);
     m_pFrameBorder.lock()->Get_Component<CTexture>().lock()->Use_Texture("HUD_FrameBorder");
     m_pFrameBorder.lock()->Set_Depth(0.2f);
     m_pFrameBorder.lock()->Set_PassIndex(3);
