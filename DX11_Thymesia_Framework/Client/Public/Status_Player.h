@@ -74,7 +74,7 @@ public:
 	PLAYERDESC Get_PlayerDesc() {return m_tDesc;}
 	PLAYERPOTIONDESC Get_CurrentPotionDesc() { return m_PotionDesc[m_iCurrentPotionIndex]; }
 
-
+	void Heal_Player(const _float fAmount);
 
 private:
 	_float			m_fPotionTime;
@@ -84,6 +84,6 @@ private:
 
 	//어차피 플레이어 상태가 뭐 상속받을 상황은 없을테지만, 혹시몰라서 남겨놓음
 protected:
-	PLAYERDESC		m_tDesc;
+	PLAYERDESC		m_tDesc; // m_tPlayerDesc
 };
 END

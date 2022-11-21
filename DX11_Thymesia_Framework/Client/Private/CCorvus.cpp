@@ -108,8 +108,6 @@ void CCorvus::Tick(_float fTimeDelta)
 			pGameObject.lock()->Get_Component<CTransform>().lock()->Set_Position(m_pTransformCom.lock()->Get_Position() + XMVectorSet(0.f, 0.5f, 0.f, 0.f) + PushPower);
 			pGameObject.lock()->Get_Component<CPhysXCollider>().lock()->Add_Force(PushPower * 1000.f);*/
 		}
-
-		
 	}
 }
 

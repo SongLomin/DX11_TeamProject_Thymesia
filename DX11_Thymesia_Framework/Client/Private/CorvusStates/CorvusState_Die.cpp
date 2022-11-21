@@ -41,7 +41,7 @@ void CCorvusState_Die::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	Turn_Transform(fTimeDelta);
+	//Turn_Transform(fTimeDelta);
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -84,6 +84,11 @@ void CCorvusState_Die::OnStateEnd()
 	__super::OnStateEnd();
 
 
+}
+
+void CCorvusState_Die::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	// Do Nothing
 }
 
 void CCorvusState_Die::Call_AnimationEnd()
