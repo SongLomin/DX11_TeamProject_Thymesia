@@ -90,23 +90,16 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_T
 			Get_Component<CTransform>().lock()->
 			Get_State(CTransform::STATE_TRANSLATION);
 
-		/*_vector vOtherColliderPosition = Weak_Cast<CWeapon>(pOtherCollider.lock()->Get_Owner()).lock()->
-			Get_ParentObject().lock()->
-			Get_Component<CTransform>().lock()->
-			Get_State(CTransform::STATE_TRANSLATION);*/
-
 		_vector vSameHeightOtherColliderPosition = vOtherColliderPosition;
 		vSameHeightOtherColliderPosition.m128_f32[1] = vMyPosition.m128_f32[1];
 
 		m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
 
-		//bool bRandom = (_bool)(rand() % 2);
-
 		//데미지 적용
 
 		ATTACK_OPTION eAttackOption =  pAttackArea.lock()->Get_OptionType();
 		//플레이어 공격력 아직 없으니 임의값 넣어서!
-		_float fMagnifiedDamage = In_fDamage * 25.f;
+		_float fMagnifiedDamage = In_fDamage * 50.f;
 
 		m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 		//GAMEINSTANCE->Get_GameObjects<CDamageUI>(LEVEL::LEVEL_STATIC).front().lock()->Add_DamageText(vMyPosition, In_fDamage, bRandom);
@@ -125,6 +118,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_T
 			|| Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_GroggyStart>().lock()->Get_StateIndex())
 		{
 			Get_OwnerMonster()->Change_State<CNorMonState_Die>();
+			pAttackArea.lock()->Get_ParentObject().lock()->Get_CurState().lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EXCUTION_NORMOB);
 		}
 		else if (m_pStatusCom.lock()->Is_Dead())
 		{

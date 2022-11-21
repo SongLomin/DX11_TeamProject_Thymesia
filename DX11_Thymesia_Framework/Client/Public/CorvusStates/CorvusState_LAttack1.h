@@ -50,7 +50,6 @@ protected:
     virtual void OnStateEnd() override;
 
 protected:
-    virtual void OnEventMessage(_uint iArg) override;
     virtual void OnDestroy() override;
      void Free();
 

@@ -196,6 +196,7 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtL.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtR.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtXXL.h" />
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\NorMob_Execution.h" />
     <ClInclude Include="..\Public\Status_Monster.h" />
     <ClInclude Include="..\Public\Status_Player.h" />
     <ClInclude Include="..\Public\Preset_PhysXControllerDesc.h" />
@@ -420,6 +421,7 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtL.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtR.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXXL.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\NorMob_Execution.cpp" />
     <ClCompile Include="..\Private\Status_Monster.cpp" />
     <ClCompile Include="..\Private\Status_Player.cpp" />
     <ClCompile Include="..\Private\Preset_PhysXControllerDesc.cpp" />

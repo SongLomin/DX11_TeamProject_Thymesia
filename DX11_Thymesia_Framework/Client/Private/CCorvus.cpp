@@ -64,6 +64,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 	Add_Component<CCorvusState_HurtL>();
 	Add_Component<CCorvusState_HurtR>();
 	Add_Component<CCorvusState_HurtXXL>();
+	Add_Component<CNorMob_Execution>();
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
 	
