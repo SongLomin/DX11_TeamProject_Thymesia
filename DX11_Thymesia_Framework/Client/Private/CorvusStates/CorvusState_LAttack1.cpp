@@ -24,6 +24,8 @@ HRESULT CCorvusState_LAttack1::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
+	m_fFixedPlayRatio = 0.5f;
+
 	m_iAttackIndex = 183;
 	return S_OK;
 }
@@ -229,7 +231,6 @@ _bool CCorvusState_LAttack1::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
 		return false;
-
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{

@@ -82,9 +82,14 @@ void Loop(const THREAD_TYPE In_eThread_Type)
 				default:
 					break;
 				}
+				++iter;
+			}
+			else
+			{
+				++iter;
 			}
 
-			++iter;
+			
 		}
 
 		//GET_SINGLE(CThread_Manager)->m_ReservedThreadObjects[(_uint)In_eThread_Type];

@@ -75,34 +75,6 @@ void CPlayer_MPBar::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-//TODO : UI : MPBar 테스트 코드
-#ifdef _DEBUG
-	if (KEY_INPUT(KEY::J, KEY_STATE::TAP))
-	{
-		m_fCurrentMp -= 30.f;
-
-	}
-	if (KEY_INPUT(KEY::K, KEY_STATE::TAP))
-	{
-
-		m_fCurrentMp += 30.f;
-		m_fLerpMp = m_fCurrentMp;
-		m_fLerpAcc = 1.f;
-	}
-	if (KEY_INPUT(KEY::Q, KEY_STATE::TAP))
-	{
-		m_fCurrentMp -= 200.f;
-
-	}
-	//if (KEY_INPUT(KEY::W, KEY_STATE::TAP))
-	//{
-	//
-	//	m_fCurrentMp += 200.f;
-	//	m_fLerpMp = m_fCurrentMp;
-	//	m_fLerpAcc = 1.f;
-	//}
-#endif // _DEBUG
-
 	if (m_fCurrentMp < 0.f)
 		m_fCurrentMp = 0.f;
 	else if (m_fCurrentMp > m_fMaxMp)
