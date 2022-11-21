@@ -511,6 +511,9 @@
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
       <Filter>04. ShaderFiles</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Effect_Trail.h">
+      <Filter>02. GameObject\08. Effect\02. Effect_Trail</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -991,6 +994,10 @@
     </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal_Icon.cpp" />
     <ClCompile Include="..\Private\LoadingTextUI.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp" />
+    <ClCompile Include="..\Private\Effect_Trail.cpp">
+      <Filter>02. GameObject\08. Effect\02. Effect_Trail</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1573,6 +1580,9 @@
     </Filter>
     <Filter Include="02. GameObject\08. Effect\00. Effect_Rect">
       <UniqueIdentifier>{43be49b4-b4e1-4346-a84a-e59a8f70fb38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Effect\02. Effect_Trail">
+      <UniqueIdentifier>{e5ffbc6d-24e9-442a-9bb3-98d9e30c5d15}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

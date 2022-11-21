@@ -46,6 +46,7 @@ protected:
     void SetUp_ShaderResource();
 
 protected:
+    weak_ptr<class CEffect_Trail> m_pTrailEffect;
     weak_ptr<CModel> m_pModelCom;
     weak_ptr<CShader> m_pShaderCom;
     weak_ptr<CRenderer> m_pRendererCom;

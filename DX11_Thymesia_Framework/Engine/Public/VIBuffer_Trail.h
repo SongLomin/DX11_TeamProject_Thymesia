@@ -29,19 +29,25 @@ protected:
 	virtual void	Start() override;
 
 public:
+	void Update(_float _fTimeDelta, weak_ptr <CTransform> _pOwnerTransform, weak_ptr<CBoneNode> _pOwnerBoneNode, weak_ptr<MODEL_DATA> _pOwnerModel_Data);
 	void Tick(_float fTimeDelta);
-	// void Set_OwnerTransform(shared_ptr<CTransform> pTransform);
+	void Set_OwnerTransform(shared_ptr<CTransform> pTransform);
+
+private:
+	void LerpPoints();//catmullrom
 
 private:
 	_bool m_bTrailOn;
-	_uint m_iVtxCount;
+	_uint m_iVtxCnt;
+	_uint m_iNumVertices;
 	_float4 m_vLocalSwordLow;
 	_float4 m_vLocalSwordHigh;
-	// class weak_ptr<CTransform> m_pOwnerTransform;
-	// class weak_ptr<CHierarchyNode>
+	TRAIL_DESC m_tTrailDesc;
+	weak_ptr<CTransform> m_pOwnerTransform;
+	
 
 private:
-	// void Free();
+	 void Free();
 };
 
 END

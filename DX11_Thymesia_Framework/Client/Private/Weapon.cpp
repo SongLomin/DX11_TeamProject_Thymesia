@@ -3,6 +3,8 @@
 #include "BoneNode.h"
 #include "GameManager.h"
 #include "Character.h"
+#include "Effect_Trail.h"
+#include "VIBuffer_Trail.h"
 #include "Weapon.h"
 
 GAMECLASS_C(CWeapon);
@@ -40,8 +42,18 @@ HRESULT CWeapon::Initialize(void* pArg)
 		VTXMODEL_DECLARATION::Element,
 		VTXMODEL_DECLARATION::iNumElements);
 
+	// 무기의 맨 아래 정점과, 맨 위 정점을 알아야 함
+	CVIBuffer_Trail::TRAIL_DESC TrailDesc;
+	ZeroMemory(&TrailDesc, sizeof(CVIBuffer_Trail::TRAIL_DESC));
+
+	TrailDesc.iMaxCnt = 10;
+	TrailDesc.vPos_0 = _float3(0.f, -0.5f, 0.f);
+	TrailDesc.vPos_1 = _float3(0.f, 0.5f, 0.f);
+	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail>(LEVEL_GAMEPLAY,&TrailDesc);
+	m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
 
 
+	
 	return S_OK;
 }
 

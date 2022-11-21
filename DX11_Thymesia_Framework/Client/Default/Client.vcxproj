@@ -238,6 +238,7 @@
     <ClInclude Include="..\Public\EffectObject.h" />
     <ClInclude Include="..\Public\Effect_Point.h" />
     <ClInclude Include="..\Public\Effect_Rect.h" />
+    <ClInclude Include="..\Public\Effect_Trail.h" />
     <ClInclude Include="..\Public\FadeMask.h" />
     <ClInclude Include="..\Public\GameManager.h" />
     <ClInclude Include="..\Public\Ground.h">
@@ -404,6 +405,7 @@
     <ClCompile Include="..\Private\EffectObject.cpp" />
     <ClCompile Include="..\Private\Effect_Point.cpp" />
     <ClCompile Include="..\Private\Effect_Rect.cpp" />
+    <ClCompile Include="..\Private\Effect_Trail.cpp" />
     <ClCompile Include="..\Private\FadeMask.cpp" />
     <ClCompile Include="..\Private\GameManager.cpp" />
     <ClCompile Include="..\Private\Ground.cpp">
