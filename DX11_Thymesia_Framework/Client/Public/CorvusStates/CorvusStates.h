@@ -27,10 +27,12 @@
 #include "CorvusStates/CorvusState_HurtL.h"
 #include "CorvusStates/CorvusState_HurtR.h"
 #include "CorvusStates/CorvusState_Die.h"
+
 //플레이어 기본 스테이트
 
 //플레이어 처형 스테이트
 #include "CorvusStates/StateExecution/Varg_Execution.h"
+#include "CorvusStates/StateExecution/NorMob_Execution.h"
 //플레이어 처형 스테이트
 // 
 // 

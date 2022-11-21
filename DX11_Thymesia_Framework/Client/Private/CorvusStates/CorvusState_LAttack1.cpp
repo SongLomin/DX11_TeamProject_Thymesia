@@ -175,42 +175,6 @@ void CCorvusState_LAttack1::OnStateEnd()
 	
 }
 
-void CCorvusState_LAttack1::OnEventMessage(_uint iArg)
-{
-	//__super::OnEventMessage(iArg);
-	//
-	//if ((_uint)EVENT_TYPE::ON_FIRSTHIT == iArg)
-	//{
-	//	switch (m_pModelCom.lock()->Get_CurrentAnimationIndex())
-	//	{
-	//	case 0:
-	//		GAMEINSTANCE->PlaySoundW(TEXT("c_luciaRK3_atk_attack01.wav"), 1.f);
-	//		break;
-	//
-	//	case 1:
-	//		GAMEINSTANCE->PlaySoundW(TEXT("c_luciaRK3_atk_attack02.wav"), 1.f);
-	//		break;
-	//
-	//	case 2:
-	//		GAMEINSTANCE->PlaySoundW(TEXT("c_luciaRK3_atk_attack03.wav"), 1.f);
-	//		break;
-	//
-	//	case 3:
-	//		GAMEINSTANCE->PlaySoundW(TEXT("c_luciaRK3_atk_attack04.wav"), 1.f);
-	//		break;
-	//
-	//	case 4:
-	//		GAMEINSTANCE->PlaySoundW(TEXT("c_luciaRK3_atk_attack05.wav"), 1.f);
-	//		break;
-	//
-	//	case 5:
-	//		GAMEINSTANCE->PlaySoundW(TEXT("c_luciaRK3_atk_attack06.wav"), 1.f);
-	//		break;
-	//	}
-	//}
-
-}
-
 void CCorvusState_LAttack1::OnDestroy()
 {
 	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_LAttack1::Call_AnimationEnd, this);

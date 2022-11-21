@@ -54,6 +54,7 @@ namespace Client
 		ON_MONSTERBEGIN,
 		ON_TRIGGER,
 		ON_FIRSTHIT,
+		ON_EXCUTION_NORMOB,
 		EVENT_END
 	};
 

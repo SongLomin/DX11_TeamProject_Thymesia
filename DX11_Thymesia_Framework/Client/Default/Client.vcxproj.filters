@@ -302,7 +302,7 @@
       <Filter>02. GameObject\01. UI\Landing</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\StateExecution\Varg_Execution.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\00.Varg_Execution</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Boss\00.Varg_Execution</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_LAttack1.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack\State_Attack1</Filter>
@@ -667,6 +667,9 @@
     <ClInclude Include="..\Public\Preset_PhysXControllerDesc.h">
       <Filter>06. DataPreset\01. Preset_PhysXControllerDesc</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\NorMob_Execution.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\00.NorMob_Execution</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -940,7 +943,7 @@
       <Filter>02. GameObject\01. UI\Landing</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\VargExecution\Varg_Execution.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\00.Varg_Execution</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Boss\00.Varg_Execution</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_LAttack1.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack\State_Attack1</Filter>
@@ -1305,6 +1308,9 @@
     <ClCompile Include="..\Private\Preset_PhysXControllerDesc.cpp">
       <Filter>06. DataPreset\01. Preset_PhysXControllerDesc</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\NorMob_Execution.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\00.NorMob_Execution</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1599,9 +1605,6 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution">
       <UniqueIdentifier>{6a06f980-1515-4d7a-ab10-4f6e976f5190}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\00.Varg_Execution">
-      <UniqueIdentifier>{c125c642-a472-4a97-b97a-49ea53901244}</UniqueIdentifier>
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack">
       <UniqueIdentifier>{4a64bbd5-ee25-4223-ac86-be99e1df7490}</UniqueIdentifier>
@@ -2025,6 +2028,18 @@
     </Filter>
     <Filter Include="06. DataPreset\01. Preset_PhysXControllerDesc">
       <UniqueIdentifier>{76849369-cb5a-4692-9fb2-ceba837d3450}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Boss">
+      <UniqueIdentifier>{021dea83-6155-4372-beb8-6cb70ac77ecc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Boss\00.Varg_Execution">
+      <UniqueIdentifier>{c125c642-a472-4a97-b97a-49ea53901244}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster">
+      <UniqueIdentifier>{848611d6-51a2-41b8-911f-906ab453d5d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\00.NorMob_Execution">
+      <UniqueIdentifier>{9074bd42-f87b-4865-9ff3-a38274e7ef90}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -21,6 +21,7 @@ HRESULT CPlayerStateBase::Initialize(void* pArg)
 	m_iTimeScaleLayer = (_uint)TIMESCALE_LAYER::PLAYER;
 	m_pOwnerFromPlayer = Weak_Cast<CPlayer>(m_pOwner);
 	m_vLookAtDir = { 0.f, 0.f, 0.f };
+
 	return S_OK;
 }
 
@@ -93,6 +94,9 @@ void CPlayerStateBase::Turn_Transform(_float fTimeDelta)
 		XMStoreFloat3(&m_vLookAtDir, vLookDir);
 		m_fCurrentRotateTime = 0.f;
 	}
+
+	//떄리고있는몬스터받아와서 상태체크 -> 
+	
 
 	//갱신되거나 기존 회전 값이 있는 경우
 	if (XMVector3Length(XMLoadFloat3(&m_vLookAtDir)).m128_f32[0] > DBL_EPSILON)

@@ -22,7 +22,7 @@ HRESULT CCorvusState_AVoid::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	m_iAvoidIndex = 6;
+	m_iAvoidIndex = 131;
 	return S_OK;
 }
 
@@ -61,7 +61,7 @@ void CCorvusState_AVoid::Check_InputAgainAvoid()
 
 	switch (m_iAvoidIndex)
 	{
-	case 6:
+	case 131:
 		if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(3, 999))
 		{
 			m_IsAgainAvoid = true;
@@ -166,7 +166,7 @@ _bool CCorvusState_AVoid::Check_RuquireMnetRepeatAvoidkState()
 
 	switch (m_iAvoidIndex)
 	{
-	case 6:
+	case 131:
 		iTargetKeyFrameMin = 35;
 		iTargetKeyFrameMax = 80;
 		break;

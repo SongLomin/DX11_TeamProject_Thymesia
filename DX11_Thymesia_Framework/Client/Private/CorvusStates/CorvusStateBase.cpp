@@ -144,25 +144,28 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE&
 	if (pOtherCollider.lock()->Get_CollisionLayer() == (_uint)COLLISION_LAYER::MONSTER_ATTACK)
 	{
 		//어쩃든 여기 닿으면 데미지 입음.
-		weak_ptr<CStatus_Player> pStatus = m_pOwner.lock()->Get_ComponentByType<CStatus_Player>();
+		weak_ptr<CStatus_Player> pStatus = Weak_StaticCast<CStatus_Player>(m_pStatusCom);
 
 		if (!pStatus.lock())
 		{
 			MSG_BOX("Error: Can't Find CStatus_Player From CorvusStateBase!");
 		}
 
-		weak_ptr<CStatus_Monster> pMonsterStatus;
 		weak_ptr<CAttackArea>	pAttackArea = Weak_StaticCast<CAttackArea>(pOtherCollider.lock()->Get_Owner());
-		
-		pMonsterStatus = pAttackArea.lock()->Get_ParentObject().lock()->Get_ComponentByType< CStatus_Monster>();
-		
-		if(!pMonsterStatus.lock())
+		weak_ptr<CCharacter>	pMonsterFromCharacter = pAttackArea.lock()->Get_ParentObject();
+		weak_ptr<CStatus_Monster>	pMonsterStatusCom = pMonsterFromCharacter.lock()->Get_Component<CStatus_Monster>();
+				
+		if(!pMonsterStatusCom.lock())
 			MSG_BOX("Error : Can't Find CStatus_Monster From CorvusStateBase");
 
-		pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatus.lock()->Get_Desc().m_fAtk);
+		pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
 
+		/*if (pMonsterFromCharacter.lock()->Get_CurState().lock()->G == )
+		{
+			Get_OwnerPlayer()->Change_State<CNorMob_Execution>();
+		}*/
 		//뎀지가 까인 직후 테스트
-		if (pStatus.lock()->Is_Dead())
+		 if (pStatus.lock()->Is_Dead())
 		{ 
 			Get_OwnerPlayer()->Change_State<CCorvusState_Die>();
 		}
@@ -224,19 +227,9 @@ void CCorvusStateBase::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
 
 void CCorvusStateBase::OnEventMessage(_uint iArg)
 {
-	if ((_uint)EVENT_TYPE::ON_FIRSTHIT)
+	if ((_uint)EVENT_TYPE::ON_EXCUTION_NORMOB)
 	{
-		_bool iRandom = (_bool)(rand() % 2);
-
-		if (iRandom)
-		{
-			GAMEINSTANCE->PlaySoundW(TEXT("Luxiya_Hit.wav"), 1.f);
-		}
-		else
-		{
-			GAMEINSTANCE->PlaySoundW(TEXT("Luxiya_Hit2.wav"), 1.f);
-		}
-
+		Get_OwnerCharacter().lock()->Change_State<CNorMob_Execution>();
 	}
 }
 
