@@ -1,24 +1,24 @@
-#include "VIBuffer_Trail.h"
+#include "VIBuffer_Trail_EyeLight.h"
 #include "Engine_Defines.h"
 #include "GameInstance.h"
 #include "Transform.h"
 #include "BoneNode.h"
 #include "ModelData.h"
 
-GAMECLASS_C(CVIBuffer_Trail)
-CLONE_C(CVIBuffer_Trail, CComponent)
+GAMECLASS_C(CVIBuffer_Trail_EyeLight)
+CLONE_C(CVIBuffer_Trail_EyeLight, CComponent)
 
-CVIBuffer_Trail::CVIBuffer_Trail(const CVIBuffer_Trail& rhs)
-	: CVIBuffer(rhs)
+CVIBuffer_Trail_EyeLight::CVIBuffer_Trail_EyeLight(const CVIBuffer_Trail_EyeLight& rhs)
+	: CVIBuffer_Trail(rhs)
 {
 }
 
-HRESULT CVIBuffer_Trail::Initialize_Prototype()
+HRESULT CVIBuffer_Trail_EyeLight::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CVIBuffer_Trail::Initialize(void* pArg)
+HRESULT CVIBuffer_Trail_EyeLight::Initialize(void* pArg)
 {
     if (!pArg)
         return E_FAIL;
@@ -107,11 +107,11 @@ HRESULT CVIBuffer_Trail::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CVIBuffer_Trail::Start()
+void CVIBuffer_Trail_EyeLight::Start()
 {
 }
 
-void CVIBuffer_Trail::Update(_float _fTimeDelta, weak_ptr <CTransform> _pOwnerTransform, weak_ptr<CBoneNode> _pOwnerBoneNode, weak_ptr<MODEL_DATA> _pOwnerModel_Data)
+void CVIBuffer_Trail_EyeLight::Update(_float _fTimeDelta, weak_ptr <CTransform> _pOwnerTransform, weak_ptr<CBoneNode> _pOwnerBoneNode, weak_ptr<MODEL_DATA> _pOwnerModel_Data)
 {
     if (!m_pVB.Get())
         return;
@@ -220,195 +220,7 @@ void CVIBuffer_Trail::Update(_float _fTimeDelta, weak_ptr <CTransform> _pOwnerTr
 }
 
 
-void CVIBuffer_Trail::Tick(_float fTimeDelta)
-{
-    /*if (m_bTrailOn)
-    {
-        if (m_iVtxCnt < m_iNumVertices)
-        {
-            D3D11_MAPPED_SUBRESOURCE      SubResource;
-
-            DEVICECONTEXT->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
-
-            _float4 vHandPos = m_vLocalSwordLow;
-
-            if (!m_pRefBone)
-            {
-                _float4x4 matWorld = m_pOwnerTransform.lock()->Get_WorldMatrix();
-                vHandPos = vHandPos.MultiplyCoord(matWorld);
-            }
-            else
-            {
-                _matrix matRightHand = m_pRefBone->Get_CombinedMatrix();
-                matRightHand = XMMatrixMultiply(matRightHand, m_TransformationMatrix.XMLoad());
-                _float4x4 matBone;
-                XMStoreFloat4x4(&matBone, matRightHand);
-                _float4x4 matWorld = m_pOwnerTransform->Get_WorldMatrix();
-
-                vHandPos = vHandPos.MultiplyCoord(matBone);
-                vHandPos = vHandPos.MultiplyCoord(matWorld);
-            }
-
-
-            ((VTXTEX*)SubResource.pData)[m_iVtxCnt].vPosition.x = vHandPos.x;
-            ((VTXTEX*)SubResource.pData)[m_iVtxCnt].vPosition.y = vHandPos.y;
-            ((VTXTEX*)SubResource.pData)[m_iVtxCnt].vPosition.z = vHandPos.z;
-
-
-            vHandPos = m_vLocalSwordHigh;
-            if (!m_pRefBone)
-            {
-                _float4x4 matWorld = m_pOwnerTransform->Get_WorldMatrix();
-                vHandPos = vHandPos.MultiplyCoord(matWorld);
-            }
-            else
-            {
-                _matrix matRightHand = m_pRefBone->Get_CombinedMatrix();
-                matRightHand = XMMatrixMultiply(matRightHand, m_TransformationMatrix.XMLoad());
-                _float4x4 matBone;
-                XMStoreFloat4x4(&matBone, matRightHand);
-                _float4x4 matWorld = m_pOwnerTransform->Get_WorldMatrix();
-
-                vHandPos = vHandPos.MultiplyCoord(matBone);
-                vHandPos = vHandPos.MultiplyCoord(matWorld);
-            }
-
-            ((VTXTEX*)SubResource.pData)[m_iVtxCount + 1].vPosition.x = vHandPos.x;
-            ((VTXTEX*)SubResource.pData)[m_iVtxCount + 1].vPosition.y = vHandPos.y;
-            ((VTXTEX*)SubResource.pData)[m_iVtxCount + 1].vPosition.z = vHandPos.z;
-
-            m_iVtxCnt += 2;
-
-            if (m_iVtxCnt > m_iNumVertices)
-                m_iVtxCnt = m_iNumVertices;
-
-            for (_uint i = 0; i < m_iVtxCnt; i += 2)
-            {
-                ((VTXTEX*)SubResource.pData)[i].vTexUV = { (_float)i / ((_float)m_iVtxCnt - 2), 1.f };
-                ((VTXTEX*)SubResource.pData)[i + 1].vTexUV = { (_float)i / ((_float)m_iVtxCnt - 2), 0.f };
-            }
-
-            DEVICECONTEXT->Unmap(m_pVB.Get(), 0);
-
-        }
-        else
-        {
-            _uint   iRemoveCount = 2;
-
-            if (iRemoveCount % 2 > 0)
-            {
-                iRemoveCount -= 1;
-            }
-
-            if (iRemoveCount < 2)
-                iRemoveCount = 2;
-
-            if (m_iVtxCnt >= 2)
-                m_iVtxCnt -= iRemoveCount;
-
-
-            D3D11_MAPPED_SUBRESOURCE      SubResource;
-            DEVICECONTEXT->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
-
-            if (m_iVtxCnt <= m_iNumVertices / 4)
-            {
-                for (_uint i = 2; i < m_iNumVertices; i += 2)
-                {
-                    ((VTXTEX*)SubResource.pData)[i].vPosition = ((VTXTEX*)SubResource.pData)[0].vPosition;
-                    ((VTXTEX*)SubResource.pData)[i + 1].vPosition = ((VTXTEX*)SubResource.pData)[1].vPosition;
-                }
-                m_iVtxCnt = 0;
-
-            }
-
-            for (_uint i = 0; i < m_iVtxCnt; i += 2)
-            {
-                ((VTXTEX*)SubResource.pData)[i].vPosition = ((VTXTEX*)SubResource.pData)[iRemoveCount + i].vPosition;
-                ((VTXTEX*)SubResource.pData)[i + 1].vPosition = ((VTXTEX*)SubResource.pData)[iRemoveCount + i + 1].vPosition;
-            }
-            DEVICECONTEXT->Unmap(m_pVB.Get(), 0);
-        }
-    }
-    else
-    {
-        _uint   iRemoveCount = 2;
-
-        if (iRemoveCount % 2 > 0)
-        {
-            iRemoveCount -= 1;
-        }
-
-        if (iRemoveCount < 2)
-            iRemoveCount = 2;
-
-        if (m_iVtxCnt >= 2)
-            m_iVtxCnt -= iRemoveCount;
-
-
-        D3D11_MAPPED_SUBRESOURCE      SubResource;
-        DEVICECONTEXT->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
-
-        if (m_iVtxCnt <= m_iNumVertices / 4)
-        {
-            for (_uint i = 2; i < m_iNumVertices; i += 2)
-            {
-                ((VTXTEX*)SubResource.pData)[i].vPosition = ((VTXTEX*)SubResource.pData)[0].vPosition;
-                ((VTXTEX*)SubResource.pData)[i + 1].vPosition = ((VTXTEX*)SubResource.pData)[1].vPosition;
-            }
-            m_iVtxCnt = 0;
-
-        }
-
-
-        for (_uint i = 0; i < m_iVtxCnt; i += 2)
-        {
-            ((VTXTEX*)SubResource.pData)[i].vPosition = ((VTXTEX*)SubResource.pData)[iRemoveCount + i].vPosition;
-            ((VTXTEX*)SubResource.pData)[i + 1].vPosition = ((VTXTEX*)SubResource.pData)[iRemoveCount + i + 1].vPosition;
-        }
-        DEVICECONTEXT->Unmap(m_pVB.Get(), 0);
-    }*/
-}
-
-void CVIBuffer_Trail::Reset_Points(weak_ptr <CTransform> _pOwnerTransform, weak_ptr<CBoneNode> _pOwnerBoneNode, weak_ptr<MODEL_DATA> _pOwnerModel_Data)
-{
-    _matrix		ParentMatrix
-        = _pOwnerBoneNode.lock()->Get_OffsetMatrix()
-        /** _pOwnerBoneNode.lock()->Get_CombinedMatrix() */
-        * XMLoadFloat4x4(&_pOwnerModel_Data.lock()->TransformMatrix)
-        * _pOwnerTransform.lock()->Get_WorldMatrix();
-
-    ParentMatrix.r[0] = XMVector3Normalize(ParentMatrix.r[0]);
-    ParentMatrix.r[1] = XMVector3Normalize(ParentMatrix.r[1]);
-    ParentMatrix.r[2] = XMVector3Normalize(ParentMatrix.r[2]);
-
-
-    D3D11_MAPPED_SUBRESOURCE		tSubResource;
-
-    DEVICECONTEXT->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &tSubResource);
-
-
-    _vector vPos[2] =
-    {
-        XMVectorSetW(XMLoadFloat3(&m_tTrailDesc.vPos_0), 1.f),
-        XMVectorSetW(XMLoadFloat3(&m_tTrailDesc.vPos_1), 1.f),
-    };
-
-    vPos[0] = XMVector3TransformCoord(vPos[0], ParentMatrix);
-    vPos[1] = XMVector3TransformCoord(vPos[1], ParentMatrix);
-
-    for (_uint i = 0; i < m_iNumVertices; i += 2)
-    {
-        XMStoreFloat3(&((VTXTEX*)tSubResource.pData)[i].vPosition, vPos[0]);
-        XMStoreFloat3(&((VTXTEX*)tSubResource.pData)[i + 1].vPosition, vPos[1]);
-    }
-
-    DEVICECONTEXT->Unmap(m_pVB.Get(), 0);
-
-}
-
-
-
-void CVIBuffer_Trail::Free()
+void CVIBuffer_Trail_EyeLight::Free()
 {
 
 }

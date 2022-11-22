@@ -4,6 +4,7 @@
 #include "BoneNode.h"
 #include "GameManager.h"
 #include "Effect_Trail_Distortion.h"
+#include "Effect_Trail_EyeLight.h"
 #include "Character.h"
 
 GAMECLASS_C(CCorvus_DefaultDagger);
@@ -26,7 +27,7 @@ HRESULT CCorvus_DefaultDagger::Initialize(void* pArg)
 	TrailDesc.iMaxCnt = 240;
 	TrailDesc.vPos_0 = _float3(0.f, 1.f, 0.f);
 	TrailDesc.vPos_1 = _float3(0.f, -0.3f, 0.f);
-	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail_Distortion>(LEVEL_GAMEPLAY, &TrailDesc);
+	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail_EyeLight>(LEVEL_GAMEPLAY, &TrailDesc);
 
 	return S_OK;
 }

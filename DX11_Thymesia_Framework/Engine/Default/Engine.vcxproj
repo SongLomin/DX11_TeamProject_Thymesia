@@ -280,6 +280,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\VIBuffer_Trail.h" />
+    <ClInclude Include="..\Public\VIBuffer_Trail_EyeLight.h" />
     <ClInclude Include="..\Public\VIBuffer_Triangle_Instance.h" />
     <ClInclude Include="..\public\VIBuffer.h" />
     <ClInclude Include="..\Public\VIBuffer_Cell.h" />
@@ -377,6 +378,7 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Ground.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Trail.cpp" />
+    <ClCompile Include="..\Private\VIBuffer_Trail_EyeLight.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Triangle_Instance.cpp" />
     <ClCompile Include="..\private\VIBuffer.cpp" />
     <ClCompile Include="..\Private\VIBuffer_Cell.cpp" />

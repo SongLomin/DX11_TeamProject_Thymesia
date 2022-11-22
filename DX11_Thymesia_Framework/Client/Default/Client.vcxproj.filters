@@ -676,6 +676,9 @@
     <ClInclude Include="..\Public\Effect_Trail_Distortion.h">
       <Filter>02. GameObject\08. Effect\02. Effect_Trail\00. Effect_Distortion</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Effect_Trail_EyeLight.h">
+      <Filter>02. GameObject\08. Effect\02. Effect_Trail\01. Effect_Trail_EyeLight</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1322,6 +1325,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Effect_Trail_Distortion.cpp">
       <Filter>02. GameObject\08. Effect\02. Effect_Trail\00. Effect_Distortion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Trail_EyeLight.cpp">
+      <Filter>02. GameObject\08. Effect\02. Effect_Trail\01. Effect_Trail_EyeLight</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

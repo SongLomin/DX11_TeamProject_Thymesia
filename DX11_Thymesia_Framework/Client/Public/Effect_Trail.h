@@ -42,6 +42,7 @@ protected:
     weak_ptr<MODEL_DATA> m_pOwnerModel_Data;
 
     weak_ptr<CTexture> m_pMaskTextureCom;
+    weak_ptr<CTexture> m_pNoiseTextureCom;
 
 
    
