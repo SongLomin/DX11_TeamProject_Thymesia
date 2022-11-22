@@ -114,6 +114,7 @@
       <MinFilesInUnityFile>2</MinFilesInUnityFile>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <UnityFilesDirectory>$(ProjectDir)</UnityFilesDirectory>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -200,6 +201,7 @@
     <ClInclude Include="..\Public\Status_Monster.h" />
     <ClInclude Include="..\Public\Status_Player.h" />
     <ClInclude Include="..\Public\Preset_PhysXControllerDesc.h" />
+    <ClInclude Include="..\Public\UI_LerpBar.h" />
     <ClInclude Include="..\Public\VargBossStateBase.h" />
     <ClInclude Include="..\Public\BossVarg\Varg.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack1a.h" />
@@ -425,6 +427,7 @@
     <ClCompile Include="..\Private\Status_Monster.cpp" />
     <ClCompile Include="..\Private\Status_Player.cpp" />
     <ClCompile Include="..\Private\Preset_PhysXControllerDesc.cpp" />
+    <ClCompile Include="..\Private\UI_LerpBar.cpp" />
     <ClCompile Include="..\Private\VargBossStateBase.cpp" />
     <ClCompile Include="..\Private\BossVarg\Varg.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack1a.cpp" />

@@ -292,13 +292,7 @@ void CMonsterHPBar_Base::Call_Recovery()
 void CMonsterHPBar_Base::Call_Disable()
 {
 	Set_Enable(false);
-	m_pTrack.lock()->Set_Enable(false);
-	m_pGreenTrack.lock()->Set_Enable(false);
-	if (m_pStunned.lock())
-		m_pStunned.lock()->Set_Enable(false);
-	m_pRecovery.lock()->Set_Enable(false);
 
-	Set_RecoveryAlram(false);
 }
 
 void CMonsterHPBar_Base::Call_Stun()
@@ -316,6 +310,16 @@ void CMonsterHPBar_Base::Call_Restart()
 
 	m_pWhite.lock()->Set_Ratio(pStatus_Monster.lock()->Get_WhiteRatio());
 	m_pGreen.lock()->Set_Ratio(pStatus_Monster.lock()->Get_GreenRatio());
+}
+
+void CMonsterHPBar_Base::OnDisable()
+{
+	m_pTrack.lock()->Set_Enable(false);
+	m_pGreenTrack.lock()->Set_Enable(false);
+	if (m_pStunned.lock())
+		m_pStunned.lock()->Set_Enable(false);
+	m_pRecovery.lock()->Set_Enable(false);
+	Set_RecoveryAlram(false);
 }
 
 void CMonsterHPBar_Base::FollowOwner()

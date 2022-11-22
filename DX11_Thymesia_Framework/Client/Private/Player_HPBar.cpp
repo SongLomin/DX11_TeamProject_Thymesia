@@ -10,6 +10,9 @@
 #include "Fader.h"
 #include "Player.h"
 #include "Status_Player.h"
+#include "Easing_Utillity.h"
+#include "UI_LerpBar.h"
+
 
 GAMECLASS_C(CPlayer_HPBar)
 CLONE_C(CPlayer_HPBar, CGameObject);
@@ -83,9 +86,8 @@ HRESULT CPlayer_HPBar::Initialize(void* pArg)
 	m_tTextInfo.vScale = _float2(0.5, 0.5f);
 	m_tTextInfo.vPosition = _float2(m_tUIDesc.fX + m_tUIDesc.fSizeX * 0.5f + 20.f, m_tUIDesc.fY - 10.f);
 
-
 	m_tUIDesc.fDepth = 0.f;
-	m_fLerpAcc = 1.f;
+
 	m_eRenderGroup = RENDERGROUP::RENDER_UI;
 	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
 
@@ -101,8 +103,6 @@ HRESULT CPlayer_HPBar::Initialize(void* pArg)
 	m_vecChildUI.push_back(m_pBG);
 	m_vecChildUI.push_back(m_pBorderLeft);
 	m_vecChildUI.push_back(m_pBorderRight);
-
-
 
 	return S_OK;
 }
@@ -121,11 +121,28 @@ void CPlayer_HPBar::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 
+	//TODO : HPBar Lerp Test Code;
+
+	if (KEY_INPUT(KEY::Z, KEY_STATE::TAP))
+	{
+
+		_float Hp = m_fCurrentHp -= 100.f;
+
+		Set_CurrentHp(Hp, true);
+
+	}
+
+
 	if (m_fCurrentHp < 0.f)
 		m_fCurrentHp = 0.f;
 	else if (m_fCurrentHp > m_fMaxHp)
 		m_fCurrentHp = m_fMaxHp;
 
+	if (Is_Lerping())
+		m_fLerpHp = Get_Lerp().x;
+
+	//구 러프코드
+	/*구 러프 코드
 	if (m_fCurrentHp != m_fLerpHp)
 	{
 		_float fRight = max(m_fCurrentHp, m_fLerpHp);
@@ -145,6 +162,9 @@ void CPlayer_HPBar::Tick(_float fTimeDelta)
 			m_fLerpAcc = 1.f;
 		}
 	}
+	*/
+
+
 	_float fRatio = m_fLerpHp / m_fMaxHp;
 
 	if (fRatio < 1.f)
@@ -183,19 +203,23 @@ void CPlayer_HPBar::OnEventMessage(_uint iArg)
 {
 }
 
-void CPlayer_HPBar::Set_CurrentHp(_float _fCurrentHp)
+void CPlayer_HPBar::Set_CurrentHp(_float _fCurrentHp, _bool bLerp, EASING_TYPE eLerpType)
 {
-	if (_fCurrentHp > m_fCurrentHp)
-	{
-		m_fLerpHp = _fCurrentHp;
-		m_fLerpAcc = 1.f;
-	}
 	m_fCurrentHp = _fCurrentHp;
+
+	if (m_fCurrentHp <= 0.f)
+		m_fCurrentHp = 0.f;
+
+	if (!bLerp)
+		m_fLerpHp = m_fCurrentHp;
+	else
+		Set_Lerp(m_fLerpHp, m_fCurrentHp, 1.f, eLerpType);
 }
+
 
 void CPlayer_HPBar::Call_UpdateStatus()
 {
-	m_fMaxHp = m_pPlayerStatus.lock()->Get_PlayerDesc().m_fMaxHP;
+	m_fMaxHp = m_pPlayerStatus.lock()->Get_MaxHP();
 	m_fLerpHp = m_fMaxHp;
 	m_fCurrentHp = m_fMaxHp;
 }
@@ -205,17 +229,23 @@ void CPlayer_HPBar::Call_ChangeCurrentHP(_float fCurrentHP)
 	Set_CurrentHp(fCurrentHP);
 }
 
-
 void CPlayer_HPBar::Bind_Player()
 {
+
+#ifndef _ONLY_UI_
 	__super::Bind_Player();
 	Call_UpdateStatus();
 
 	m_pPlayerStatus.lock()->Callback_ChangeHP += bind(&CPlayer_HPBar::Call_ChangeCurrentHP, this,
 		placeholders::_1);
+#else
+	m_fMaxHp = 300.f;
+	m_fLerpHp = m_fMaxHp;
+	m_fCurrentHp = m_fMaxHp;
+#endif // !_ONLY_UI_
+
 
 }
-
 
 void CPlayer_HPBar::Free()
 {

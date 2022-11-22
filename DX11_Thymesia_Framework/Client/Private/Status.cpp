@@ -40,6 +40,10 @@ void CStatus::Add_Damage(const _float& In_fDamage, ATTACK_OPTION eAttackOption)
 
 }
 
+void CStatus::Get_Desc(void* Out_pDesc)
+{
+}
+
 void CStatus::Free()
 {
 }

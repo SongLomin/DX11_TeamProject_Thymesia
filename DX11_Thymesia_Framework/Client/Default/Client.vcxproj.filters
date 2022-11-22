@@ -670,6 +670,7 @@
     <ClInclude Include="..\Public\Status_Monster.h">
       <Filter>05. Component\04. Status\01. Status_Monster</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_LerpBar.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1311,6 +1312,7 @@
     <ClCompile Include="..\Private\Status_Monster.cpp">
       <Filter>05. Component\04. Status\01. Status_Monster</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\UI_LerpBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

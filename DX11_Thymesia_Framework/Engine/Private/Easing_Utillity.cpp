@@ -117,6 +117,15 @@ _vector CEasing_Utillity::QuadIn(_vector vStartPoint, _vector vTargetPoint, _dou
 	return _vector((vTargetPoint - vStartPoint) * fPassedTime*fPassedTime + vStartPoint);
 }
 
+_vector CEasing_Utillity::QuadIn(_float fStartPoint, _float fTargetPoint, _double fPassedTime, _double fTotalTime)
+{
+	fPassedTime /= fTotalTime;
+	_vector	vStartPoint = XMVectorSet(fStartPoint, fStartPoint, fStartPoint, fStartPoint);
+	_vector	vTargetPoint = XMVectorSet(fTargetPoint, fTargetPoint, fTargetPoint, fTargetPoint);
+
+	return QuadIn(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+}
+
 _vector CEasing_Utillity::QuadOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
 {
 	fPassedTime /= fTotalTime;

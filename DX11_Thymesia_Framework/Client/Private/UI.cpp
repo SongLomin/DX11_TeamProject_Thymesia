@@ -202,8 +202,11 @@ HRESULT CUI::SetUp_ShaderResource()
 
 void CUI::Bind_Player()
 {
+#ifndef _ONLY_UI
 	m_pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 	m_pPlayerStatus = m_pPlayer.lock()->Get_ComponentByType<CStatus_Player>();
+#endif // !_ONLY_UI
+
 }
 
 void CUI::Update_Shaking(_float fTimeDelta)

@@ -99,6 +99,11 @@ void CStatus_Player::Full_Recovery()
 	m_PotionDesc[(_uint)POTIONTYPE::POTION_IMMEDIATE].m_iMaxPotion;
 }
 
+void CStatus_Player::Get_Desc(void* Out_pDesc)
+{
+	memcpy(Out_pDesc, &m_tDesc, sizeof(PLAYERDESC));
+}
+
 void CStatus_Player::Heal_Player(const _float fAmount)
 {
 	m_tDesc.m_fCurrentHP += fAmount;

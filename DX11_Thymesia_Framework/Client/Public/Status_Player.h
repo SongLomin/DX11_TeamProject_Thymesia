@@ -71,18 +71,22 @@ public:
 
 	virtual void	Full_Recovery();//부활이나, 의자 앉을시 발동하는 모든회복
 
-	PLAYERDESC Get_PlayerDesc() {return m_tDesc;}
 	PLAYERPOTIONDESC Get_CurrentPotionDesc() { return m_PotionDesc[m_iCurrentPotionIndex]; }
 
+	virtual void	Get_Desc(void* Out_pDesc);
+
+	_float			Get_MaxHP() { return m_tDesc.m_fMaxHP; }
+	_float			Get_CurrentHP() { return m_tDesc.m_fCurrentHP; }
+
 	void Heal_Player(const _float fAmount);
+
+	_float		Get_Atk() { return m_tDesc.m_fNormalAtk; }
 
 private:
 	_float			m_fPotionTime;
 	_uint			m_iCurrentPotionIndex;
 	PLAYERPOTIONDESC	m_PotionDesc[(_uint)POTIONTYPE::POTION_END];
 
-
-	//어차피 플레이어 상태가 뭐 상속받을 상황은 없을테지만, 혹시몰라서 남겨놓음
 protected:
 	PLAYERDESC		m_tDesc; // m_tPlayerDesc
 };
