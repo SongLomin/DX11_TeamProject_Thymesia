@@ -142,7 +142,7 @@ void CStateBase::OnDisable()
 }
 
 
-void CStateBase::OnEventMessage(weak_ptr<void> pArg)
+void CStateBase::OnEventMessage(weak_ptr<CBase> pArg)
 {
 }
 

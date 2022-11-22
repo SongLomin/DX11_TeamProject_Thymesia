@@ -425,13 +425,6 @@ void CGameManager::End_Cinematic()
 	m_pTargetCamera.lock()->End_Cinematic();
 }
 
-
-
-_bool CGameManager::Is_OpenHyperSpace()
-{
-	return Get_Layer(OBJECT_LAYER::HYPERSPACE).front().lock()->Get_Enable();
-}
-
 void CGameManager::Start_Peace()
 {
 	for (auto& elem : m_pLayers[(_uint)OBJECT_LAYER::BATTLEUI])

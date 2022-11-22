@@ -134,7 +134,6 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_T
 			|| Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_GroggyStart>().lock()->Get_StateIndex())
 		{
 			Get_OwnerMonster()->Change_State<CNorMonState_Die>();
-			pAttackArea.lock()->Get_ParentObject().lock()->Get_CurState().lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EXCUTION_NORMOB);
 		}
 		else if (m_pStatusCom.lock()->Is_Dead())
 		{
