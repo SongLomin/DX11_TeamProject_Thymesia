@@ -189,7 +189,7 @@ PS_OUT PS_MAIN_BLACKDISCARD(PS_IN In)
     Out.vColor.rgb *= vNoise.rgb;
     Out.vColor.a *= g_MaskTexture.Sample(PointSampler, In.vTexUV + g_vMaskUV).r;
 
-    if ((Out.vColor.r + Out.vColor.g + Out.vColor.b) < g_fDiscardRatio)
+    if ((Out.vColor.r + Out.vColor.g + Out.vColor.b) <= g_fDiscardRatio)
         discard;
 
     if (g_bBloom)
@@ -212,7 +212,7 @@ PS_OUT PS_SPRITE(PS_IN_SPRITE In)
 	
     Out.vColor *= In.vColor;
 
-    if ((Out.vColor.r + Out.vColor.g + Out.vColor.b) < g_fDiscardRatio)
+    if ((Out.vColor.r + Out.vColor.g + Out.vColor.b) <= g_fDiscardRatio)
         discard;
 	
     if (g_bBloom)

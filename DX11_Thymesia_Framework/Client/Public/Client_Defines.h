@@ -12,7 +12,7 @@
 #define		_144HZ_
 #define		_LIFEGUARD_FOR_FALL_
 #define		_DEBUG_COUT_
-//#define		_STAGE_1_
+#define		_STAGE_1_
 #define		_STAGE_2_
 #define		_STAGE_1_MONSTER_
 #define		_GENERATE_PROP_COLLIDER_ true

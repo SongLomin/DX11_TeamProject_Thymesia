@@ -170,6 +170,10 @@ namespace Client
 		// particle moves toward look
 		_bool		bMoveLook;
 
+		// For. Gravity
+		_bool		bUseGravity;
+		_float3		vGravityForce;
+
 #pragma region Easing Position
 		_bool		bEasingPosition;
 #pragma endregion
