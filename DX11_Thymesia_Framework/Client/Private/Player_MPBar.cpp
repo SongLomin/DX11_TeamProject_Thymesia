@@ -90,7 +90,6 @@ void CPlayer_MPBar::Tick(_float fTimeDelta)
 		Set_CurrentHp(Hp, true);
 	}
 
-
 	if (m_fCurrentMp < 0.f)
 		m_fCurrentMp = 0.f;
 	else if (m_fCurrentMp > m_fMaxMp)

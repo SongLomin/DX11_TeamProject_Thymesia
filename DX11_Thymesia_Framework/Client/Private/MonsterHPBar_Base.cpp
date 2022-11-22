@@ -340,18 +340,11 @@ void CMonsterHPBar_Base::FollowOwner()
 	vViewPosition.m128_f32[0] = (vViewPosition.m128_f32[0] + 1.f) * (_float)g_iWinCX * 0.5f;
 	vViewPosition.m128_f32[1] = (-1.f * vViewPosition.m128_f32[1] + 1.f) * (_float)g_iWinCY * 0.5f;
 
-
-//	m_fX = g_iWinCX * 0.5f * XMVectorGetX(Proj) + g_iWinCX * 0.5f;
-//	m_fY = -(g_iWinCY * 0.5f * XMVectorGetY(Proj)) + g_iWinCY * 0.5f;
-
-	/*_float fHeight = vViewPosition.m128_f32[1];
-
+	_float fHeight = vViewPosition.m128_f32[1] - 200.f;
 	if (fHeight >= ((_float)g_iWinCY) * 0.4f)
-	{
 		fHeight = ((_float)g_iWinCY) * 0.4f;
-	}*/
 
-	Set_UIPosition(vViewPosition.m128_f32[0], vViewPosition.m128_f32[1] - 200.f);
+	Set_UIPosition(vViewPosition.m128_f32[0], fHeight);
 }
 
 void CMonsterHPBar_Base::Set_Owner(weak_ptr<CMonster> pMonster)
