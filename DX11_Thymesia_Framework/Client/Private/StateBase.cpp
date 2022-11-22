@@ -74,7 +74,7 @@ _bool CStateBase::Check_Requirement()
 	return true;
 }
 
-_bool CStateBase::Get_NearGameObjectInDistance(weak_ptr<CGameObject> Out_pGameObject, list<weak_ptr<CGameObject>> In_pGameObjects, const _float In_fDistance)
+_bool CStateBase::Get_NearGameObjectInDistance(weak_ptr<CGameObject>& Out_pGameObject, list<weak_ptr<CGameObject>> In_pGameObjects, const _float In_fDistance)
 {
 	//yes
 	//?? 방법이두가지 맵을쓰는방법 리스트에서 쏘트를쓰는바업

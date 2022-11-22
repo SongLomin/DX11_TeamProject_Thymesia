@@ -49,9 +49,9 @@ void CCorvusState_Sprint::Tick(_float fTimeDelta)
 	m_fCurrentSpeed += m_fAccel * fTimeDelta;
 	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
 
-	m_pModelCom.lock()->Play_Animation(fTimeDelta*1.9f);
+	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 
-	m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * 1.75f }, 0.f, fTimeDelta, PxControllerFilters(), nullptr, m_pTransformCom);
+	m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta * 1.75f }, 0.f, fTimeDelta, PxControllerFilters(), nullptr, m_pTransformCom);
 
 	//m_pTransform.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta * 1.75f, m_pNaviCom);
 }

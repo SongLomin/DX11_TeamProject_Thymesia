@@ -40,7 +40,7 @@ void CNorMob_Execution::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	Turn_Transform(fTimeDelta);
+	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -62,6 +62,8 @@ void CNorMob_Execution::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera");
+
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "NorMonState: RunStart -> OnStateStart" << endl;

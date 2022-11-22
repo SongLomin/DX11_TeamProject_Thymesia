@@ -137,7 +137,7 @@ _bool CCorvusStateBase::Check_RequirementClawAttackState()
 	return false;
 }
 
-_bool CCorvusStateBase::Check_RequirementExcuteState(weak_ptr<CGameObject> Out_pGameObject)
+_bool CCorvusStateBase::Check_RequirementExcuteState(weak_ptr<CGameObject>& Out_pGameObject)
 {
 	list<weak_ptr<CGameObject>>  pGameObjects = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::GROOGYMOSNTER);
 

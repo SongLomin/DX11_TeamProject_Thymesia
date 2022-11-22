@@ -41,7 +41,7 @@ public:
     virtual _bool Check_Requirement();
     virtual _bool Check_AndChangeNextState() PURE;
 public:
-    _bool Get_NearGameObjectInDistance(weak_ptr<CGameObject> Out_pGameObject, list<weak_ptr<CGameObject>> In_pGameObjects, const _float In_fDistance);
+    _bool Get_NearGameObjectInDistance(weak_ptr<CGameObject>& Out_pGameObject, list<weak_ptr<CGameObject>> In_pGameObjects, const _float In_fDistance);
 
 protected:
     _uint m_iAnimIndex = 0;

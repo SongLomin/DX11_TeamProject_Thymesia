@@ -24,7 +24,7 @@ protected:
     virtual _bool Check_RequirementUltimateState();
     virtual _bool Check_RequirementHealingState();
     virtual _bool Check_RequirementClawAttackState();
-    virtual _bool Check_RequirementExcuteState(weak_ptr<CGameObject> Out_pGameObject);
+    virtual _bool Check_RequirementExcuteState(weak_ptr<CGameObject>& Out_pGameObject);
 
 protected:
     virtual void OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage) override;
