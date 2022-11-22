@@ -78,7 +78,7 @@ private:
 
     string                              m_szEffectGroupName;
     vector<weak_ptr<CCustomEffectMesh>> m_pEffectMeshs;
-    vector<weak_ptr<CEffect_Rect>>     m_pEffectParticles;
+    vector<weak_ptr<CEffect_Rect>>      m_pEffectParticles;
 
     _bool                               m_bUsing = false;
 

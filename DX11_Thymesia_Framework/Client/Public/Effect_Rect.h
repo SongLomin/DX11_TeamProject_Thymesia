@@ -119,9 +119,6 @@ private:
 	_float                              m_fCurrentInitTime = 0.f;
 
     _bool                               m_bStopSprite = false;
-
-    list<PARTICLE_SPAWN>                m_tParticleSpawns;
-    
 };
 
 END

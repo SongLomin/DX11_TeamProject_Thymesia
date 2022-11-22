@@ -34,6 +34,9 @@ HRESULT CEffect_Rect::Initialize_Prototype()
 
 	m_tEffectParticleDesc.iSyncAnimationKey    = -1;
 
+
+	// m_tParticleSpawns.clear();
+
 	m_tEffectParticleDesc.fMinLifeTime         = 1.f;
 
 	m_tEffectParticleDesc.vMinStartScale       = { 1.f, 1.f, 1.f };
@@ -1535,6 +1538,8 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 			ImGui::Text("Max Offset Range");
 			ImGui::DragFloat3("##Max_Offset_Range", &m_tEffectParticleDesc.vMaxSpawnOffsetRange.x, 0.1f);
+
+
 #pragma endregion
 			ImGui::Separator();
 #pragma region Speed & Force

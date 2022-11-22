@@ -381,6 +381,13 @@ namespace Engine
 		}
 	};
 
+	struct PARTICLE_SPAWN
+	{
+		_float3			vSpawnPosition;
+		_float3			vSpawnLook;
+		_float			fSpawnTime;
+	};
+
 	struct FaderDesc
 	{
 		LINEAR_TYPE eLinearType;
