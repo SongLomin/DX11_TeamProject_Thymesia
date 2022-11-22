@@ -133,6 +133,13 @@ void CPlayer_HPBar::Tick(_float fTimeDelta)
 	}
 
 
+	else if (KEY_INPUT(KEY::X, KEY_STATE::TAP))
+	{
+
+		_float Hp = m_fCurrentHp += 100.f;
+		Set_CurrentHp(Hp, true);
+	}
+
 	if (m_fCurrentHp < 0.f)
 		m_fCurrentHp = 0.f;
 	else if (m_fCurrentHp > m_fMaxHp)

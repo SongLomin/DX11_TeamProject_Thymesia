@@ -48,10 +48,9 @@ void CUI_LerpBar::Tick(_float fTimeDelta)
         if (m_fLerpTick > m_fLerpTime)
             m_fLerpTick = m_fLerpTime;
 
-        _vector  vLerpedVec = CEasing_Utillity::QuadIn(
+        _vector  vLerpedVec = CEasing_Utillity::LerpToType(
             XMLoadFloat4(&m_vStart),
-            XMLoadFloat4(&m_vTarget), m_fLerpTick, m_fLerpTime);
-
+            XMLoadFloat4(&m_vTarget), m_fLerpTick, m_fLerpTime, m_eLerpType);
         XMStoreFloat4(&m_vLerped, vLerpedVec);
     }
 }

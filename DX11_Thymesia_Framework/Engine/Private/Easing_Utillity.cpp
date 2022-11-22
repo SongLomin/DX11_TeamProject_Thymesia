@@ -106,6 +106,111 @@ CEasing_Utillity::~CEasing_Utillity()
 //}
 
 
+_vector CEasing_Utillity::LerpToType(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime, EASING_TYPE eType)
+{
+	switch (eType)
+	{
+	case EASING_TYPE::LINEAR:
+		return Linear(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+		break;
+	case EASING_TYPE::QUAD_IN:
+		return QuadIn(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+
+		break;
+	case EASING_TYPE::QUAD_OUT:
+		return QuadInOut(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+		break;
+	case EASING_TYPE::QUAD_INOUT:
+		return QuadInOut(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+		break;
+	case EASING_TYPE::CUBIC_IN:
+		return CubicIn(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+		break;
+	case EASING_TYPE::CUBIC_OUT:
+		return CubicOut(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+		break;
+	case EASING_TYPE::CUBIC_INOUT:
+		return CubicInOut(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+		break;
+	case EASING_TYPE::QUART_IN:
+		return QuartIn(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+
+		break;
+	case EASING_TYPE::QUART_OUT:
+		return QuartOut(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+
+		break;
+	case EASING_TYPE::QUART_INOUT:
+		return QuartInOut(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+
+		break;
+	case EASING_TYPE::QUINT_IN:
+		return QuintIn(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+
+		break;
+	case EASING_TYPE::QUINT_OUT:
+		return QuintOut(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+
+		break;
+	case EASING_TYPE::QUINT_INOUT:
+		return QuintInOut(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+
+		break;
+	case EASING_TYPE::SINE_IN:
+		return SineIn(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+
+		break;
+	case EASING_TYPE::SINE_OUT:
+		return SineOut(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+
+		break;
+	case EASING_TYPE::SINE_INOUT:
+		return SineInOut(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+		break;
+	case EASING_TYPE::EXPO_IN:
+		return ExpoIn(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+
+		break;
+	case EASING_TYPE::EXPO_OUT:
+		return ExpoOut(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+
+		break;
+	case EASING_TYPE::EXPO_INOUT:
+		return ExpoInOut(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+		break;
+	case EASING_TYPE::CIRC_IN:
+		return CircIn(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+		break;
+	case EASING_TYPE::CIRC_OUT:
+		return CircOut(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+		break;
+	case EASING_TYPE::CIRC_INOUT:
+		return CircInOut(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+		break;
+	case EASING_TYPE::ELASTIC_IN:
+		return ElasticIn(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+		break;
+	case EASING_TYPE::ELASTIC_OUT:
+		return ElasticOut(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+		break;
+	case EASING_TYPE::ELASTIC_INOUT:
+		return ElasticInOut(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+		break;
+	case EASING_TYPE::BOUNCE_IN:
+		return BounceIn(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+		break;
+	case EASING_TYPE::BOUNCE_OUT:
+		return BounceOut(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+		break;
+	case EASING_TYPE::TYPE_END:
+		break;
+	default:
+		break;
+	}
+
+	return Linear(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+}
+
 _vector CEasing_Utillity::Linear(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime)
 {
 	return _vector((vTargetPoint - vStartPoint) * fPassedTime / fTotalTime + vStartPoint);
