@@ -44,8 +44,11 @@ public:
 	void Focus_Monster(weak_ptr<CGameObject> _pMonster);
 	void Release_Focus();
 
-	void Start_Cinematic(weak_ptr<CModel> _pModel,const _char* pBoneName);
+	void Start_Cinematic(weak_ptr<CModel> _pModel,const _char* pBoneName, _matrix& OffSetMatrix);
 	void End_Cinematic();
+
+	void Activate_Zoom(_float fRatio);
+	void Deactivate_Zoom();
 	/*
 	* 플레이어한테도 해당 타겟을 넘겨줌 <-선형 보간으로 플레이어 방향을 몬스터를 향하게 도렬둠
 	* 게임 매니저에서 몬스터의포인터를 가지고 있음
@@ -60,6 +63,7 @@ protected:
 private:
 	void Look_At_Target(_float fTimeDelta);
 	void Free_MouseMove(_float fTimeDelta);
+	void Calculate_Zoom(_float fTimeDelta);
 
 	void Interpolate_Camera(_float fTimeDelta);
 	void Reposition_Camera_AfterCinematic(_float fTimeDelta);
@@ -73,12 +77,14 @@ private:
 	_float4					m_vDestCamPosition;
 	_float4					m_vCamPosAfterCinematic;
 
+
 	_bool					m_bCinematic = false;
 	weak_ptr<CTransform>	m_pCameraBoneParentTransform;
 	weak_ptr<CBoneNode>		m_pCameraBoneNode;
 	_float4x4				m_TransformationMatrix;
 	_float4x4				m_OriginalMatrix;
 	_float4x4				m_CinemaWorldMatrix;
+	_float4x4				m_CinematicOffSetMatrix;
 
 	weak_ptr<CPlayer>		m_pCurrentPlayer;
 	weak_ptr<CTransform>	m_pCurrentPlayerTransformCom;
@@ -101,6 +107,11 @@ private:
 	_float m_fSpeed = 0.f;
 	_float4 m_vPlayerFollowLerpPosition = _float4(0.f, 0.f, 0.f, 1.f);
 
+	
+	_float m_fZoom = 0.f;//현재 줌 비율 값
+	_float m_fZoomStartOffSet = 0.f;//시작 값
+	_float m_fZoomEndOffSet = 0.f;//도착 값
+	_float m_fZoomTimeAcc = 0.f;
 	
 
 private:

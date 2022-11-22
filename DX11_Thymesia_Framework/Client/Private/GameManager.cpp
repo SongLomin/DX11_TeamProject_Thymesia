@@ -415,14 +415,24 @@ void CGameManager::Active_KeyEvent(const weak_ptr<CModel> In_ModelCom, const wea
 
 }
 
-void CGameManager::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName)
+void CGameManager::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName, _matrix& OffSetMatrix)
 {
-	m_pTargetCamera.lock()->Start_Cinematic(_pModel, pBoneName);
+	m_pTargetCamera.lock()->Start_Cinematic(_pModel, pBoneName, OffSetMatrix);
 }
 
 void CGameManager::End_Cinematic()
 {
 	m_pTargetCamera.lock()->End_Cinematic();
+}
+
+void CGameManager::Activate_Zoom(_float fRatio)
+{
+	m_pTargetCamera.lock()->Activate_Zoom(fRatio);
+}
+
+void CGameManager::Deactivate_Zoom()
+{
+	m_pTargetCamera.lock()->Deactivate_Zoom();
 }
 
 

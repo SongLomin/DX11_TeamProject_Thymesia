@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "Model.h"
 #include "BoneNode.h"
+#include "Easing_Utillity.h"
 
 GAMECLASS_C(CCamera_Target);
 CLONE_C(CCamera_Target, CGameObject);
@@ -78,13 +79,19 @@ void CCamera_Target::Tick(_float fTimeDelta)
 	}
 	else
 	{
-		if (GAMEINSTANCE->Get_DIMouseKeyState(MOUSEBUTTON::MBS_WHEEL) & 0x80)
+		if (KEY_INPUT(KEY::MBUTTON, KEY_STATE::TAP))
 		{
 			m_bIsFocused = !m_bIsFocused;
 			if (m_bIsFocused)
+			{
 				GET_SINGLE(CGameManager)->Focus_Monster();
+				GET_SINGLE(CGameManager)->Activate_Zoom(1.f);
+			}
 			else
+			{
 				GET_SINGLE(CGameManager)->Release_Focus();
+				GET_SINGLE(CGameManager)->Deactivate_Zoom();
+			}
 		}
 
 		if (m_bIsFocused)
@@ -101,6 +108,7 @@ void CCamera_Target::Tick(_float fTimeDelta)
 		}
 
 		Interpolate_Camera(fTimeDelta);
+		Calculate_Zoom(fTimeDelta);
 	}
 
 }
@@ -135,13 +143,15 @@ void CCamera_Target::Release_Focus()
 
 }
 
-void CCamera_Target::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName)
+void CCamera_Target::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName, _matrix& OffSetMatrix)
 {
 
 	m_pCameraBoneNode = _pModel.lock()->Find_BoneNode(pBoneName);
 	m_pCameraBoneParentTransform = _pModel.lock()->Get_Owner().lock()->Get_Component<CTransform>();
 	m_TransformationMatrix = _pModel.lock()->Get_TransformationMatrix();
 	m_bCinematic = true;
+
+	XMStoreFloat4x4(&m_CinematicOffSetMatrix, OffSetMatrix);
 
 	Update_Bone();
 
@@ -182,6 +192,20 @@ void CCamera_Target::End_Cinematic()
 	m_bCinematic = false;
 	m_bCinematicEnd = true;
 
+}
+
+void CCamera_Target::Activate_Zoom(_float fRatio)
+{
+	m_fZoomEndOffSet = fRatio;
+	m_fZoomStartOffSet = 0.f;
+	m_fZoomTimeAcc = 0.f;
+}
+
+void CCamera_Target::Deactivate_Zoom()
+{
+	m_fZoomStartOffSet = m_fZoom;
+	m_fZoomEndOffSet = 0.f;
+	m_fZoomTimeAcc = 0.f;
 }
 
 
@@ -256,6 +280,23 @@ void CCamera_Target::Free_MouseMove(_float fTimeDelta)//마우스 움직임
 
 }
 
+void CCamera_Target::Calculate_Zoom(_float fTimeDelta)
+{
+
+	_vector vStartPoint = XMVectorSet(m_fZoomStartOffSet, 0.f, 0.f, 0.f);
+	_vector vEndPoint = XMVectorSet(m_fZoomEndOffSet, 0.f, 0.f, 0.f);
+
+	m_fZoomTimeAcc += fTimeDelta;
+	if (1.f > m_fZoomTimeAcc)
+	{
+		m_fZoom = CEasing_Utillity::QuartOut(vStartPoint, vEndPoint, m_fZoomTimeAcc, 1.f).m128_f32[0];
+	}
+	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+	_vector vPos = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+	vPos = vPos + vLook * m_fZoom;
+	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
+}
+
 
 void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 {
@@ -313,11 +354,6 @@ void CCamera_Target::Reposition_Camera_AfterCinematic(_float fTimeDelta)
 }
 void CCamera_Target::Update_Bone()
 {
-	//Varg_Execution camera LocalOffset.
-	_matrix LocalMat = XMMatrixIdentity();
-	LocalMat *= XMMatrixRotationX(XMConvertToRadians(-90.f));
-	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
-
 	_matrix		ParentMatrix = m_pCameraBoneNode.lock()->Get_CombinedMatrix()
 		* XMLoadFloat4x4(&m_TransformationMatrix);
 
@@ -325,7 +361,7 @@ void CCamera_Target::Update_Bone()
 	ParentMatrix.r[1] = XMVector3Normalize(ParentMatrix.r[1]);
 	ParentMatrix.r[2] = XMVector3Normalize(ParentMatrix.r[2]);
 
-	_matrix TotalMatrix = LocalMat *ParentMatrix * m_pCameraBoneParentTransform.lock()->Get_WorldMatrix();
+	_matrix TotalMatrix = XMLoadFloat4x4(&m_CinematicOffSetMatrix) * ParentMatrix * m_pCameraBoneParentTransform.lock()->Get_WorldMatrix();
 
 	XMStoreFloat4x4(&m_CinemaWorldMatrix, TotalMatrix);
 	
