@@ -23,6 +23,7 @@
 #include "EditGround.h"
 #include "EditGroupProp.h"
 #include "EditInstanceProp.h"
+#include "PhysXColliderObject.h"
 
 #include "CCorvus.h"
 #include "PreViewAnimationModel.h"

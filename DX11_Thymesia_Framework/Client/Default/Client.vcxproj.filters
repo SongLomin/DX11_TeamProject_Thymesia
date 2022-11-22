@@ -670,6 +670,9 @@
     <ClInclude Include="..\Public\Status_Monster.h">
       <Filter>05. Component\04. Status\01. Status_Monster</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PhysXColliderObject.h">
+      <Filter>02. GameObject\12. PhysXColliderObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1310,6 +1313,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Status_Monster.cpp">
       <Filter>05. Component\04. Status\01. Status_Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\PhysXColliderObject.cpp">
+      <Filter>02. GameObject\12. PhysXColliderObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2046,6 +2052,9 @@
     </Filter>
     <Filter Include="05. Component\04. Status\01. Status_Monster">
       <UniqueIdentifier>{b91daabc-005a-402d-9352-5897608e45d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\12. PhysXColliderObject">
+      <UniqueIdentifier>{f4627d52-ffad-4ed1-962a-b028ee22ba52}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -120,6 +120,9 @@ public:
 	void PhysXCollisionStay(weak_ptr<CPhysXCollider> pOtherCollider);
 	void PhysXCollisionExit(weak_ptr<CPhysXCollider> pOtherCollider);
 
+	virtual void OnEnable(void* pArg) override;
+	virtual void OnDisable() override;
+
 	virtual void OnDestroy() override;
 
 private:

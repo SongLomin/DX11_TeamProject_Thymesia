@@ -127,6 +127,27 @@ void CPhysXController::Create_Geometry()
 
 }
 
+void CPhysXController::OnEnable(void* pArg)
+{
+	__super::OnEnable(pArg);
+
+	if (!m_pController)
+	{
+		GET_SINGLE(CPhysX_Manager)->Create_Controller(m_pControllerDesc, &m_pController);
+	}
+}
+
+void CPhysXController::OnDisable()
+{
+	__super::OnDisable();
+
+	if (m_pController)
+	{
+		m_pController->release();
+		m_pController = nullptr;
+	}
+}
+
 void CPhysXController::OnDestroy()
 {
 	if (m_pController)

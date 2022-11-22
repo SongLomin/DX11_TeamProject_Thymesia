@@ -107,6 +107,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CLight_Prop>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CGround>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CStatic_Instancing_Prop>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CPhysXColliderObject>();
 
 #pragma endregion
 
