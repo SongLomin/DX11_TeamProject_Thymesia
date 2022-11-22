@@ -53,7 +53,7 @@ public:
 public:
     void Set_TargetCamera(weak_ptr<CCamera_Target> In_TargetCamera);
     weak_ptr<CCamera_Target> Get_TargetCamera();
-    void Add_Shaking(const SHAKE_DIRECTION& In_eState , const _float& In_fPower, const _float& In_fTime);
+    void Add_Shaking(_vector& vShakingDir, _float fRatio);
     //void Set_TargetForTargetCamera(weak_ptr<CGameObject> In_TargetGameObject);
     void Focus_Monster();
     void Release_Focus();

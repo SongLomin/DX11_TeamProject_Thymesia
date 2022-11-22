@@ -85,12 +85,13 @@ void CCamera_Target::Tick(_float fTimeDelta)
 			if (m_bIsFocused)
 			{
 				GET_SINGLE(CGameManager)->Focus_Monster();
-				GET_SINGLE(CGameManager)->Activate_Zoom(1.f);
+				GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 1.f, 0.f), 0.5f);
+				//GET_SINGLE(CGameManager)->Activate_Zoom(-1.f);
 			}
 			else
 			{
 				GET_SINGLE(CGameManager)->Release_Focus();
-				GET_SINGLE(CGameManager)->Deactivate_Zoom();
+				//GET_SINGLE(CGameManager)->Deactivate_Zoom();
 			}
 		}
 
@@ -107,8 +108,9 @@ void CCamera_Target::Tick(_float fTimeDelta)
 			Free_MouseMove(fTimeDelta);
 		}
 
+		Calculate_ShakingOffSet(fTimeDelta);
+		Calculate_ZoomOffSet(fTimeDelta);
 		Interpolate_Camera(fTimeDelta);
-		Calculate_Zoom(fTimeDelta);
 	}
 
 }
@@ -208,6 +210,16 @@ void CCamera_Target::Deactivate_Zoom()
 	m_fZoomTimeAcc = 0.f;
 }
 
+void CCamera_Target::Add_Shaking(_vector vShakingDir, _float fRatio)
+{
+	vShakingDir = XMVector3Normalize(vShakingDir);
+	XMStoreFloat3(&m_vShakingEndOffSet, vShakingDir* fRatio);
+	m_vShakingStartOffSet = m_vShaking;
+
+	m_bIncreaseShake = true;
+	m_bDecreaseShake = false;
+}
+
 
 HRESULT CCamera_Target::Bind_PipeLine()
 {
@@ -280,21 +292,54 @@ void CCamera_Target::Free_MouseMove(_float fTimeDelta)//마우스 움직임
 
 }
 
-void CCamera_Target::Calculate_Zoom(_float fTimeDelta)
+void CCamera_Target::Calculate_ZoomOffSet(_float fTimeDelta)
 {
+	if (1.f < fTimeDelta)
+		m_fZoomTimeAcc = 1.f;
+	else
+		m_fZoomTimeAcc += fTimeDelta;
 
-	_vector vStartPoint = XMVectorSet(m_fZoomStartOffSet, 0.f, 0.f, 0.f);
-	_vector vEndPoint = XMVectorSet(m_fZoomEndOffSet, 0.f, 0.f, 0.f);
-
-	m_fZoomTimeAcc += fTimeDelta;
-	if (1.f > m_fZoomTimeAcc)
+	if (1.f >= m_fZoomTimeAcc)
 	{
+
+		_vector vStartPoint = XMVectorSet(m_fZoomStartOffSet, 0.f, 0.f, 0.f);
+		_vector vEndPoint = XMVectorSet(m_fZoomEndOffSet, 0.f, 0.f, 0.f);
+
 		m_fZoom = CEasing_Utillity::QuartOut(vStartPoint, vEndPoint, m_fZoomTimeAcc, 1.f).m128_f32[0];
 	}
-	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
-	_vector vPos = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-	vPos = vPos + vLook * m_fZoom;
-	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
+}
+
+void CCamera_Target::Calculate_ShakingOffSet(_float fTimeDelta)
+{
+	m_fShakingTimeAcc += fTimeDelta;
+
+	if (m_bIncreaseShake)
+	{
+		_vector vStartPoint = XMLoadFloat3(&m_vShakingStartOffSet);
+		_vector vEndPoint = XMLoadFloat3(&m_vShakingEndOffSet);
+
+		XMStoreFloat3(&m_vShaking,CEasing_Utillity::QuartOut(vStartPoint, vEndPoint, m_fShakingTimeAcc, 0.3f));
+
+		if (0.3f < fTimeDelta)
+		{
+			m_bIncreaseShake = false;
+			m_bDecreaseShake = true;
+			m_fShakingTimeAcc = 0.f;
+		}
+	}
+	else if (m_bDecreaseShake)
+	{
+		_vector vStartPoint = XMLoadFloat3(&m_vShaking);
+		_vector vEndPoint = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+
+		XMStoreFloat3(&m_vShaking, CEasing_Utillity::QuartOut(vStartPoint, vEndPoint, m_fShakingTimeAcc, 0.7f));
+
+		if (0.7f < fTimeDelta)
+		{
+			m_bDecreaseShake = false;
+			m_fShakingTimeAcc = 0.f;
+		}
+	}
 }
 
 
@@ -328,7 +373,7 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 	}
 
 	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
-	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * -4.5f + XMVectorSet(0.f, 1.1f, 0.f, 0.f);
+	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * ( - 4.5f + m_fZoom) + XMVectorSet(0.f, 1.1f, 0.f, 0.f) + XMLoadFloat3(&m_vShaking);
 	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
 }
 

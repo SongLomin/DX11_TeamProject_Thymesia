@@ -49,6 +49,8 @@ public:
 
 	void Activate_Zoom(_float fRatio);
 	void Deactivate_Zoom();
+
+	void Add_Shaking(_vector vShakingDir, _float fRatio);
 	/*
 	* 플레이어한테도 해당 타겟을 넘겨줌 <-선형 보간으로 플레이어 방향을 몬스터를 향하게 도렬둠
 	* 게임 매니저에서 몬스터의포인터를 가지고 있음
@@ -63,7 +65,9 @@ protected:
 private:
 	void Look_At_Target(_float fTimeDelta);
 	void Free_MouseMove(_float fTimeDelta);
-	void Calculate_Zoom(_float fTimeDelta);
+
+	void Calculate_ZoomOffSet(_float fTimeDelta);
+	void Calculate_ShakingOffSet(_float fTimeDelta);
 
 	void Interpolate_Camera(_float fTimeDelta);
 	void Reposition_Camera_AfterCinematic(_float fTimeDelta);
@@ -112,7 +116,14 @@ private:
 	_float m_fZoomStartOffSet = 0.f;//시작 값
 	_float m_fZoomEndOffSet = 0.f;//도착 값
 	_float m_fZoomTimeAcc = 0.f;
-	
+
+	_float3 m_vShakingStartOffSet = _float3(0.f, 0.f, 0.f);
+	_float3 m_vShaking = _float3(0.f, 0.f, 0.f);
+	_float3 m_vShakingEndOffSet = _float3(0.f, 0.f, 0.f);
+	_float m_fShakingTimeAcc = 0.f;
+	_bool m_bIncreaseShake = false;
+	_bool m_bDecreaseShake = false;
+		
 
 private:
 	virtual void OnLevelExit() override;
