@@ -359,6 +359,11 @@ void CGameManager::Load_AllKeyEventFromJson()
 					m_KeyEvents[szFileNameToHash][i][j].EffectGroups.push_back(hash<string>()(szEffectGroupName));
 				}
 
+				if (KeyEventJson["AnimationIndex"][i][j]["Enable_Weapon"].empty())
+				{
+					continue;
+				}
+
 				m_KeyEvents[szFileNameToHash][i][j].Enable_Weapon.push_back(KeyEventJson["AnimationIndex"][i][j]["Enable_Weapon"]);
 			}
 		}
