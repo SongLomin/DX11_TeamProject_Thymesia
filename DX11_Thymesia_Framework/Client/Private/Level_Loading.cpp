@@ -4,6 +4,7 @@
 #include "Level_Logo.h"
 #include "Level_GamePlay.h"
 #include "Level_Edit.h"
+#include "Level_Test.h"
 //#include "Level_Lobby.h"
 //#include "Level_Stage2.h"
 //#include "Level_Stage3.h"
@@ -43,6 +44,12 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevel)
 	m_eNextLevel = eNextLevel;
 
 	if (m_eNextLevel == LEVEL::LEVEL_GAMEPLAY)
+	{
+		m_pUILoading = GAMEINSTANCE->Add_GameObject<CUI_Loading>(LEVEL_LOADING);
+		m_pUILoading.lock()->SetUp_LoadingUI(LEVEL::LEVEL_GAMEPLAY);
+	}
+
+	else if (m_eNextLevel == LEVEL::LEVEL_TEST)
 	{
 		m_pUILoading = GAMEINSTANCE->Add_GameObject<CUI_Loading>(LEVEL_LOADING);
 		m_pUILoading.lock()->SetUp_LoadingUI(LEVEL::LEVEL_GAMEPLAY);
@@ -115,6 +122,10 @@ void CLevel_Loading::Create_Level()
 
 	case LEVEL_EDIT:
 		pLevel = CLevel_Edit::Create();
+		break;
+
+	case LEVEL_TEST:
+		pLevel = CLevel_Test::Create();
 		break;
 
 	}

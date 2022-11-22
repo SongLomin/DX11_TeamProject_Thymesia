@@ -12,6 +12,8 @@
 #include "Client_Presets.h"
 #include "PhysXCollider.h"
 #include "Status_Monster.h"
+#include "MobWeapon/MobWeapon.h"
+
 GAMECLASS_C(CMonster);
 CLONE_C(CMonster, CGameObject);
 
@@ -49,18 +51,6 @@ HRESULT CMonster::Initialize(void* pArg)
     ColliderDesc.iLayer = (_uint)COLLISION_LAYER::MONSTER;
 
     m_pHitColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
-    
-    
-    m_pRigidBodyColliderCom = Add_Component<CCollider>();
-
-    ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
-
-    ColliderDesc.vScale = _float3(1.f, 1.f, 1.f);
-    ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
-    ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
-    ColliderDesc.iLayer = (_uint)COLLISION_LAYER::MONSTER_RIGIDBODY;
-
-    m_pRigidBodyColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
 
     m_eAttackCollisionLayer = COLLISION_LAYER::MONSTER_ATTACK;
 
@@ -68,12 +58,6 @@ HRESULT CMonster::Initialize(void* pArg)
 
     m_pDissolveTextureCom = Add_Component<CTexture>();
     m_pDissolveTextureCom.lock()->Use_Texture("Dissolve");
-
-    /*PHYSXCOLLIDERDESC tPhysxColliderDesc;
-
-    Preset::PhysXColliderDesc::PlayerBodySetting(tPhysxColliderDesc, m_pTransformCom);
-    m_pPhysXColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
-    m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene({ 0.f, 0.f, 0.f }, 1.f);*/
 
 	return S_OK;
 }
@@ -94,10 +78,7 @@ void CMonster::Tick(_float fTimeDelta)
 
     m_pCurState.lock()->Tick(fTimeDelta);
     m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
-    m_pRigidBodyColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
     m_pStatus.lock()->Tick(fTimeDelta);
-#ifdef _DEBUG
-#endif
 
 }
 
@@ -183,6 +164,16 @@ void CMonster::Release_Monster()
     GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::MONSTER, Weak_Cast<CGameObject>(m_this));
     m_pHitColliderCom.lock()->Set_Enable(false);
     m_pRigidBodyColliderCom.lock()->Set_Enable(false);
+}
+
+void CMonster::Enable_Weapons(const _bool In_bEnable)
+{
+    for (auto& elem : m_pWeapons)
+    {
+        In_bEnable ?
+            elem.lock()->Enable_Weapon() :
+            elem.lock()->Disable_Weapon();
+    }
 }
 
 void CMonster::SetUp_ShaderResource()

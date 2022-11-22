@@ -201,6 +201,7 @@ void CUI_Logo::SelectButton(_uint iButtonIndex)
     case Client::CUI_Logo::LOGO_BUTTON_OPTION:
         break;
     case Client::CUI_Logo::LOGO_BUTTON_CREDITS:
+        Weak_Cast<CLevel_Logo>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(LEVEL::LEVEL_TEST);
         break;
     case Client::CUI_Logo::LOGO_BUTTON_QUIT:
         break;

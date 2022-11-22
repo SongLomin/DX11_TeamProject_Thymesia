@@ -283,6 +283,7 @@ namespace Client
 	struct KEYFRAME_EVENT
 	{
 		list<_hashcode> EffectGroups;
+		list<_bool>		Enable_Weapon; // Enable은 한개지만 리스트가 비어있으면 이벤트가 없다는 것을 알려준다.
 	};
 
 	struct CINEMA_DESC

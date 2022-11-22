@@ -68,6 +68,9 @@ public:
     _uint Use_EffectGroup(const string& In_szEffectGroupName, weak_ptr<CTransform> pParentTransformCom, const _uint& In_iTimeScaleLayer = -1);
     void UnUse_EffectGroup(const string& In_szEffectGroupName, const _uint& In_EffectGroupIndex);
 
+private:
+    void Enable_WeaponFromEvent(weak_ptr<CTransform> pParentTransformCom, const _bool In_bEnable);
+
 public:
     void Load_AllKeyEventFromJson();
 

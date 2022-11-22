@@ -49,6 +49,8 @@ public:
 public:
     list<weak_ptr<CMobWeapon>>  Get_Wepons() { return m_pWeapons; }
 
+public:
+    virtual void Enable_Weapons(const _bool In_bEnable) override;
 
 protected:
     virtual void SetUp_ShaderResource() override;    

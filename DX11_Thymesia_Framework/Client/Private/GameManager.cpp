@@ -296,6 +296,12 @@ void CGameManager::UnUse_EffectGroup(const string& In_szEffectGroupName, const _
 	}
 }
 
+void CGameManager::Enable_WeaponFromEvent(weak_ptr<CTransform> pParentTransformCom, const _bool In_bEnable)
+{
+	weak_ptr<CCharacter> pCharacter = Weak_Cast<CCharacter>(pParentTransformCom.lock()->Get_Owner());
+	pCharacter.lock()->Enable_Weapons(In_bEnable);
+}
+
 void CGameManager::Load_AllKeyEventFromJson()
 {
 	fs::directory_iterator itr("..\\Bin\\KeyEventData");
@@ -353,6 +359,7 @@ void CGameManager::Load_AllKeyEventFromJson()
 					m_KeyEvents[szFileNameToHash][i][j].EffectGroups.push_back(hash<string>()(szEffectGroupName));
 				}
 
+				m_KeyEvents[szFileNameToHash][i][j].Enable_Weapon.push_back(KeyEventJson["AnimationIndex"][i][j]["Enable_Weapon"]);
 			}
 		}
 
@@ -413,6 +420,11 @@ void CGameManager::Active_KeyEvent(const weak_ptr<CModel> In_ModelCom, const wea
 		Use_EffectGroupFromHash(elem, In_TransformCom, In_iTimeScaleLayer);
 	}
 
+	// 무기 이벤트 발동
+	for (auto& elem : Key_iter->second.Enable_Weapon)
+	{
+		Enable_WeaponFromEvent(In_TransformCom, elem);
+	}
 }
 
 void CGameManager::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName)

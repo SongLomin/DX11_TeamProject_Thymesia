@@ -31,14 +31,14 @@ public:
 
 private:
 	void Add_EffectKeyEvent();
-	void Add_EnableColliderEvent();
-	void Add_DisableColliderEvent();
+	void Add_EnableWeaponEvent(const _bool In_bEnable);
 	
 	void Save_KeyEvent();
 	void Load_KeyEvent();
 	void Clear_KeyEvent();
 	void ClearBack_KeyEvent();
 	void ClearAll_KeyEvent();
+	void Clear_WeaponEvent();
 
 	void Draw_Player();
 	void Draw_KeyEventEditer();

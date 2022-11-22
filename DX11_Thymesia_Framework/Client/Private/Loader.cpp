@@ -59,6 +59,10 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 	case LEVEL_EDIT:
 		hr = pLoader->Loading_ForEditLevel();
 		break;
+
+	case LEVEL_TEST:
+		hr = pLoader->Loading_ForTestLevel();
+		break;
 	}	
 
 	if (FAILED(hr))
@@ -452,6 +456,52 @@ HRESULT CLoader::Loading_ForLobby()
 
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
+
+	m_isFinished = true;
+
+	return S_OK;
+}
+
+HRESULT CLoader::Loading_ForTestLevel()
+{
+#pragma region PROTOTYPE_GAMEOBJECT
+
+	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
+	//Loading_ForEffectGroup("../Bin/EffectData/");
+
+
+	Load_AllEffectMesh();
+	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_TEST);
+
+	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+
+	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
+
+#pragma endregion
+
+
+	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
+
+
+	GAMEINSTANCE->Load_Textures("Sky", TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
+
+
+	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
+
+	CEditGround::Load_AllMeshInfo();
+
+	lstrcpy(m_szLoadingText, TEXT("객체를 생성 중입니다."));
+
+	//Create_GameObjectFromJson("../Bin/LevelData/Stage1.json", LEVEL_GAMEPLAY);
+
+
+	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
+
+
 
 	m_isFinished = true;
 
