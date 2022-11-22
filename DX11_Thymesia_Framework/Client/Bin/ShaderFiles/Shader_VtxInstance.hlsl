@@ -7,6 +7,8 @@ texture2D g_DiffuseTexture;
 texture2D g_NoiseTexture;
 texture2D g_MaskTexture;
 
+texture2D g_DepthTexture;
+
 float2 g_vDiffuseUV;
 float2 g_vNoiseUV;
 float2 g_vMaskUV;
