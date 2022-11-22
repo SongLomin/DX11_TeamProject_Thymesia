@@ -31,9 +31,11 @@ public:
     void Call_AnimationEnd();
 
 private:
+    weak_ptr<CGameObject> m_pTargetObject;
     _uint m_iDustEffectIndex;
 
 protected:
+    virtual void OnEventMessage(weak_ptr<CBase> pArg) override;
     void Free();
 
     // CNorMonStateBase을(를) 통해 상속됨

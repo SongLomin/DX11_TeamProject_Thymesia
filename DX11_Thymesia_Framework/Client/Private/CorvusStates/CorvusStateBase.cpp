@@ -137,6 +137,16 @@ _bool CCorvusStateBase::Check_RequirementClawAttackState()
 	return false;
 }
 
+_bool CCorvusStateBase::Check_RequirementExcuteState(weak_ptr<CGameObject> Out_pGameObject)
+{
+	list<weak_ptr<CGameObject>>  pGameObjects = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::GROOGYMOSNTER);
+
+
+	//몬스터랑 거리비교를해야함
+
+	return Get_NearGameObjectInDistance(Out_pGameObject, pGameObjects,5.f);
+}
+
 void CCorvusStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
 	__super::OnHit(pOtherCollider, In_eHitType, In_fDamage);

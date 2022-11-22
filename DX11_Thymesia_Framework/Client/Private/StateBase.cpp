@@ -74,6 +74,41 @@ _bool CStateBase::Check_Requirement()
 	return true;
 }
 
+_bool CStateBase::Get_NearGameObjectInDistance(weak_ptr<CGameObject> Out_pGameObject, list<weak_ptr<CGameObject>> In_pGameObjects, const _float In_fDistance)
+{
+	//yes
+	//?? 방법이두가지 맵을쓰는방법 리스트에서 쏘트를쓰는바업
+	// 맵을쓰는방법
+	_vector vMyPos = m_pTransformCom.lock()->Get_Position();
+	vMyPos.m128_f32[1] = 0.f;
+
+	map<_float, weak_ptr<CGameObject>> SortedMap;
+	_vector vOtherPos;
+	_float fDistance;
+	for (auto& elem : In_pGameObjects)
+	{
+
+		vOtherPos = elem.lock()->Get_Component<CTransform>().lock()->Get_Position();
+		vOtherPos.m128_f32[1] = 0.f;
+
+		fDistance = XMVectorGetX(XMVector3Length(vMyPos - vOtherPos));
+
+		if (In_fDistance < fDistance)
+		{
+			continue;
+		}
+		//맵은자동정렬 
+		SortedMap.emplace(fDistance, elem);
+	}
+
+	if (SortedMap.empty())
+		return false;
+
+	Out_pGameObject = (*SortedMap.begin()).second;
+
+	return true;
+}
+
 void CStateBase::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	CallBack_StateStart();
@@ -103,6 +138,11 @@ void CStateBase::OnEnable(void* _Arg)
 }
 
 void CStateBase::OnDisable()
+{
+}
+
+
+void CStateBase::OnEventMessage(weak_ptr<void> pArg)
 {
 }
 

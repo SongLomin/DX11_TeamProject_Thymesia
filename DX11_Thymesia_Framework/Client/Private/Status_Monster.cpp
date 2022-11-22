@@ -116,6 +116,7 @@ void CStatus_Monster::Init_Status(const void* pArg)
 
 void CStatus_Monster::Add_Damage(const _float& In_fDamage, ATTACK_OPTION eAttackOption)
 {
+
 	switch (eAttackOption)
 	{
 	case Client::ATTACK_OPTION::NONE:

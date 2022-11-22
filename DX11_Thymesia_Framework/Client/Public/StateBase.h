@@ -40,6 +40,8 @@ public:
 public:
     virtual _bool Check_Requirement();
     virtual _bool Check_AndChangeNextState() PURE;
+public:
+    _bool Get_NearGameObjectInDistance(weak_ptr<CGameObject> Out_pGameObject, list<weak_ptr<CGameObject>> In_pGameObjects, const _float In_fDistance);
 
 protected:
     _uint m_iAnimIndex = 0;
@@ -80,6 +82,8 @@ public:
     virtual void OnCollisionStay(weak_ptr<CCollider> pOtherCollider) {};
     virtual void OnCollisionExit(weak_ptr<CCollider> pOtherCollider) {};
 
+public:
+    virtual void OnEventMessage(weak_ptr<CBase> pArg);
 
 protected:
     void Free();
