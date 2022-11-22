@@ -20,7 +20,7 @@ public:
         m_iTimeScaleLayerIndex = In_iTimeScaleLayer;
     }
 
-private:
+protected:
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize(void* pArg) override;
     virtual void Tick(_float fTimeDelta) override;
@@ -34,12 +34,15 @@ public:
 protected:
     virtual void SetUp_ShaderResource() override;
 
-private:
+protected:
     _uint                               m_iTimeScaleLayerIndex;
     weak_ptr<CVIBuffer_Trail>  m_pVIBuffer;
     weak_ptr <CTransform> m_pOwnerTransform;
     weak_ptr<CBoneNode> m_pOwnerBoneNode;
     weak_ptr<MODEL_DATA> m_pOwnerModel_Data;
+
+    weak_ptr<CTexture> m_pMaskTextureCom;
+
 
    
 public:

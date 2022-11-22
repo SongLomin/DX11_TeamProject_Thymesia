@@ -3,7 +3,7 @@
 #include "Client_Components.h"
 #include "BoneNode.h"
 #include "GameManager.h"
-#include "Effect_Trail.h"
+#include "Effect_Trail_Distortion.h"
 #include "Character.h"
 
 GAMECLASS_C(CCorvus_DefaultDagger);
@@ -23,10 +23,10 @@ HRESULT CCorvus_DefaultDagger::Initialize(void* pArg)
 	TRAIL_DESC TrailDesc;
 	ZeroMemory(&TrailDesc, sizeof(TRAIL_DESC));
 
-	TrailDesc.iMaxCnt = 120;
+	TrailDesc.iMaxCnt = 240;
 	TrailDesc.vPos_0 = _float3(0.f, 1.f, 0.f);
 	TrailDesc.vPos_1 = _float3(0.f, -0.3f, 0.f);
-	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail>(LEVEL_GAMEPLAY, &TrailDesc);
+	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail_Distortion>(LEVEL_GAMEPLAY, &TrailDesc);
 
 	return S_OK;
 }

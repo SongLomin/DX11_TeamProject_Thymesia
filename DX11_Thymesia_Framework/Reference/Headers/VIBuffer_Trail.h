@@ -27,10 +27,8 @@ public:
 public:
 	void Reset_Points(weak_ptr <CTransform> _pOwnerTransform, weak_ptr<CBoneNode> _pOwnerBoneNode, weak_ptr<MODEL_DATA> _pOwnerModel_Data);
 
-private:
-	void LerpPoints();//catmullrom
 
-private:
+protected:
 	_bool m_bTrailOn;
 	_uint m_iVtxCnt;
 	_uint m_iNumVertices;

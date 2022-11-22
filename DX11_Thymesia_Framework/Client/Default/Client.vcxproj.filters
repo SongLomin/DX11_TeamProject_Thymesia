@@ -673,6 +673,9 @@
     <ClInclude Include="..\Public\MobWeapon.h">
       <Filter>02. GameObject\03. Actor\00. Character\01. Monster\99.Weapon</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Effect_Trail_Distortion.h">
+      <Filter>02. GameObject\08. Effect\02. Effect_Trail\00. Effect_Distortion</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1316,6 +1319,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\MobWeapon.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\01. Monster\99.Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Trail_Distortion.cpp">
+      <Filter>02. GameObject\08. Effect\02. Effect_Trail\00. Effect_Distortion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2055,6 +2061,12 @@
     </Filter>
     <Filter Include="02. GameObject\08. Effect\02. Effect_Trail">
       <UniqueIdentifier>{bbc00164-c241-460d-b583-8924bd9217da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Effect\02. Effect_Trail\00. Effect_Distortion">
+      <UniqueIdentifier>{d127b810-9c70-4579-a72e-4a92c1de15ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Effect\02. Effect_Trail\01. Effect_Trail_EyeLight">
+      <UniqueIdentifier>{293a5f45-2278-469d-8ef4-607aaec600f8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

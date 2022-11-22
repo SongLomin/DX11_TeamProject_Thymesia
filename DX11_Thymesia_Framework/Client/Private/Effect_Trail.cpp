@@ -24,10 +24,7 @@ HRESULT CEffect_Trail::Initialize(void* pArg)//trail을 사용하는 객체로부터 trail
 	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_EffectMesh"),
 		VTXTEX_DECLARATION::Element, 
 		VTXTEX_DECLARATION::iNumElements);
-
-
-	//m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f, 0.f, 10.f, 1.f));
-
+	
 	m_pTextureCom.lock()->Use_Texture(("Snow"));
 
 	return S_OK;
