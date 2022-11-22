@@ -94,26 +94,7 @@ void CNorMonState_Idle::Start()
 	}
 
 
-	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock() ||
-		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CNorMonState_HurtR>().lock())
-	{
-		int iRand = rand() % 3 + 2;
-
-		m_iCount += iRand;
-	}
-
-
-
-	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CNorMonState_LightAttack3>().lock())
-	{
-		m_iCount = 0;
-		m_bGoAtk = false;
-		m_bCloseToRun = true;
-		m_iIdleType = 1;
-	}
-
-
-
+	
 }
 
 void CNorMonState_Idle::Tick(_float fTimeDelta)
@@ -158,6 +139,22 @@ void CNorMonState_Idle::LateTick(_float fTimeDelta)
 void CNorMonState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CNorMonState_HurtR>().lock())
+	{
+		int iRand = rand() % 3 + 2;
+
+		m_iCount += iRand;
+	}
+
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CNorMonState_LightAttack3>().lock())
+	{
+		m_iCount = 0;
+		m_bGoAtk = false;
+		m_bCloseToRun = true;
+		m_iIdleType = 1;
+	}
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 

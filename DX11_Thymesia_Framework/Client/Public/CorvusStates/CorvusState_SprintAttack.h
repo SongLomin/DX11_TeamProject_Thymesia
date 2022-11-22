@@ -32,7 +32,6 @@ private:
 
 
 private:
-    _uint m_iAttackIndex = 0;
 
     _bool m_IsNextAttack = false;
 

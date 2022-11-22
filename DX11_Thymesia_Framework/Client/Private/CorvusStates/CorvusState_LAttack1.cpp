@@ -24,8 +24,6 @@ HRESULT CCorvusState_LAttack1::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	m_fFixedPlayRatio = 0.5f;
-
 	m_iAttackIndex = 183;
 	return S_OK;
 }
@@ -112,31 +110,7 @@ void CCorvusState_LAttack1::Check_InputNextAttack()
 		return;
 	}
 
-	switch (m_iAttackIndex)
-	{
-	case 183:
-		if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(3, 999))
-		{
-			m_IsNextAttack = true;
-		}
-		break;
-	
-
-
-	//case 3:
-	//	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(3, 999))
-	//	{
-	//		m_IsNextAttack = true;
-	//	}
-	//	break;
-	//
-	//case 5:
-	//	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(3, 999))
-	//	{
-	//		m_IsNextAttack = true;
-	//	}
-	//	break;
-	}
+	m_IsNextAttack = true;
 
 }
 
@@ -199,30 +173,29 @@ _bool CCorvusState_LAttack1::Check_AndChangeNextState()
 			return true;
 		}
 	}
+
+	if (Check_RequirementAttackState())
+	{
+		if (Check_RequirementNextAttackState())
+		{
+			if (!Rotation_InputToLookDir())
+				Rotation_TargetToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack2>();
+			return true;
+		}
+	}
+
 	
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
+		cout << "Ratio: " << m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() << endl;
+
 		if (Check_RequirementRunState())
 		{
 			Rotation_InputToLookDir();
 			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
 			return true;
 		}
-	}
-
-	
-	//if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() < 0.5f)
-	if (Check_RequirementNextAttackState())
-	{
-	
-		if (Check_RequirementAttackState())
-		{
-			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack2>();
-			return true;
-		}
-
-		
 	}
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.4f)
@@ -239,14 +212,12 @@ _bool CCorvusState_LAttack1::Check_AndChangeNextState()
 	{
 		if (Check_RequirementClawAttackState())
 		{
-			Rotation_InputToLookDir();
+			if (!Rotation_InputToLookDir())
+				Rotation_TargetToLookDir();
 			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
 			return true;
 		}
 	}
-
-		
-
 
 	if (Check_RuquireMnetFirstAttackState())
 	{
@@ -256,36 +227,21 @@ _bool CCorvusState_LAttack1::Check_AndChangeNextState()
 			if (!Rotation_InputToLookDir())
 				Rotation_TargetToLookDir();
 
-			m_IsNextAttack = false;
-			Play_AttackWithIndex(m_iAttackIndex);
+			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
 			return false;
 		}
 	}
 
-
-
-	
 	return false;
 }
 
 _bool CCorvusState_LAttack1::Check_RequirementNextAttackState()
 {	
 
-	_uint iTargetKeyFrameFirst = 999;
-	_uint iTargetKeyFrameSecond = 999;
-	
+	_uint iTargetKeyFrameFirst = 11;
+	_uint iTargetKeyFrameSecond = 50;
 
-	switch (m_iAttackIndex)
-	{
-	case 183:
-		iTargetKeyFrameFirst = 15;
-		iTargetKeyFrameSecond = 50;
-		break;
-	}
-
-
-	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameFirst, iTargetKeyFrameSecond) == true
-		&& m_IsNextAttack)
+	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameFirst, iTargetKeyFrameSecond) && m_IsNextAttack)
 	{
 		return true;
 	}
@@ -297,23 +253,10 @@ _bool CCorvusState_LAttack1::Check_RequirementNextAttackState()
 
 _bool CCorvusState_LAttack1::Check_RuquireMnetFirstAttackState()
 {
-	_uint iTargetKeyFrameMin = 999;
-	_uint iTargetKeyFrameMax = 999;
+	_uint iTargetKeyFrameMin = 51;
+	_uint iTargetKeyFrameMax = 80;
 
-
-
-	switch (m_iAttackIndex)
-	{
-	case 183:
-		iTargetKeyFrameMin = 51;
-		iTargetKeyFrameMax = 80;
-		break;
-	
-	}
-
-
-	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) == true
-		&& m_IsNextAttack)
+	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) && m_IsNextAttack)
 	{
 		return true;
 	}

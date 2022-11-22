@@ -24,7 +24,7 @@ HRESULT CCorvusState_ClawAttack1::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	m_iAttackIndex = 94;
+
 	return S_OK;
 }
 
@@ -83,7 +83,7 @@ void CCorvusState_ClawAttack1::Play_AttackWithIndex(const _tchar& In_iAttackInde
 
 
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAttackIndex);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	m_pModelCom.lock()->Set_AnimationSpeed(2.5f);
 }
 
@@ -113,17 +113,7 @@ void CCorvusState_ClawAttack1::Check_InputNextAttack()
 		return;
 	}
 
-	switch (m_iAttackIndex)
-	{
-	case 94:
-		if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(3, 999))
-		{
-			m_IsNextAttack = true;
-		}
-		break;
-
-		
-	}
+	m_IsNextAttack = true;
 
 }
 
@@ -133,7 +123,7 @@ void CCorvusState_ClawAttack1::OnStateStart(const _float& In_fAnimationBlendTime
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAttackIndex);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 	if (!m_pModelCom.lock().get())
 	{
@@ -274,49 +264,27 @@ _bool CCorvusState_ClawAttack1::Check_AndChangeNextState()
 _bool CCorvusState_ClawAttack1::Check_RequirementNextAttackState()
 {
 
-	_uint iTargetKeyFrameFirst = 999;
-	_uint iTargetKeyFrameSecond = 999;
+	_uint iTargetKeyFrameFirst = 15;
+	_uint iTargetKeyFrameSecond = 50;
 
 
-	switch (m_iAttackIndex)
-	{
-	case 94:
-		iTargetKeyFrameFirst = 15;
-		iTargetKeyFrameSecond = 50;
-		break;
-	}
 
-
-	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameFirst, iTargetKeyFrameSecond) == true
-		&& m_IsNextAttack)
+	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameFirst, iTargetKeyFrameSecond) && m_IsNextAttack)
 	{
 		return true;
 	}
-
-
 
 	return false;
 }
 
 _bool CCorvusState_ClawAttack1::Check_RuquireMnetFirstAttackState()
 {
-	_uint iTargetKeyFrameMin = 999;
-	_uint iTargetKeyFrameMax = 999;
+	_uint iTargetKeyFrameMin = 51;
+	_uint iTargetKeyFrameMax = 80;
 
 
 
-	switch (m_iAttackIndex)
-	{
-	case 94:
-		iTargetKeyFrameMin = 51;
-		iTargetKeyFrameMax = 80;
-		break;
-
-	}
-
-
-	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) == true
-		&& m_IsNextAttack)
+	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) && m_IsNextAttack)
 	{
 		return true;
 	}

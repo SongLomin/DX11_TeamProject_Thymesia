@@ -38,7 +38,7 @@ private:
 
 
 private:
-    _uint m_iAttackIndex = 2;
+    _uint m_iAttackIndex;
     _bool m_IsNextAttack = false;
 
     _float m_fDebugAnimationSpeed = 1.f;

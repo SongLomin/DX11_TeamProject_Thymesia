@@ -73,6 +73,8 @@ void CCorvusState_Run::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_fCurrentSpeed = m_fMaxSpeed / 2.f;
 
+
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 

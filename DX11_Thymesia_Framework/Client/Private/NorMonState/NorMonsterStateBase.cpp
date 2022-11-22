@@ -99,25 +99,26 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_T
 
 		ATTACK_OPTION eAttackOption =  pAttackArea.lock()->Get_OptionType();
 		//플레이어 공격력 아직 없으니 임의값 넣어서!
-		_float fMagnifiedDamage = In_fDamage * 5;
+		_float fMagnifiedDamage = In_fDamage * 100;
+		m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 
-		switch (eAttackOption)
-		{
-		case Client::ATTACK_OPTION::NONE:
-			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, ATTACK_OPTION::NORMAL);
-
-			break;
-		case Client::ATTACK_OPTION::NORMAL:
-			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
-
-			break;
-		case Client::ATTACK_OPTION::PLAGUE:
-			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
-
-			break;
-		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
-			break;
-		}
+		//switch (eAttackOption)
+		//{
+		//case Client::ATTACK_OPTION::NONE:
+		//	m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, ATTACK_OPTION::NORMAL);
+		//
+		//	break;
+		//case Client::ATTACK_OPTION::NORMAL:A
+		//	m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+		//
+		//	break;
+		//case Client::ATTACK_OPTION::PLAGUE:
+		//	m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+		//
+		//	break;
+		//case Client::ATTACK_OPTION::SPECIAL_ATTACK:
+		//	break;
+		//}
 		//GAMEINSTANCE->Get_GameObjects<CDamageUI>(LEVEL::LEVEL_STATIC).front().lock()->Add_DamageText(vMyPosition, In_fDamage, bRandom);
 
 		//GAMEINSTANCE->Get_GameObjects<CMonsterHpBar>(LEVEL::LEVEL_STATIC).front().lock()->OnHit(m_pOwner);
@@ -144,6 +145,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_T
 			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Walk_F>().lock()->Get_StateIndex()||
 			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Walk_L>().lock()->Get_StateIndex()||
 			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Walk_R>().lock()->Get_StateIndex()||
+			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Walk_B>().lock()->Get_StateIndex()||
 			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_TurnL90>().lock()->Get_StateIndex()||
 			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_TurnR90>().lock()->Get_StateIndex())
 		{
