@@ -218,6 +218,7 @@ void CCamera_Target::Add_Shaking(_vector vShakingDir, _float fRatio)
 
 	m_bIncreaseShake = true;
 	m_bDecreaseShake = false;
+	m_fShakingTimeAcc = 0.f;
 }
 
 
@@ -315,31 +316,36 @@ void CCamera_Target::Calculate_ShakingOffSet(_float fTimeDelta)
 
 	if (m_bIncreaseShake)
 	{
-		_vector vStartPoint = XMLoadFloat3(&m_vShakingStartOffSet);
-		_vector vEndPoint = XMLoadFloat3(&m_vShakingEndOffSet);
-
-		XMStoreFloat3(&m_vShaking,CEasing_Utillity::QuartOut(vStartPoint, vEndPoint, m_fShakingTimeAcc, 0.3f));
-
-		if (0.3f < fTimeDelta)
+		if (0.2f < m_fShakingTimeAcc)
 		{
 			m_bIncreaseShake = false;
 			m_bDecreaseShake = true;
 			m_fShakingTimeAcc = 0.f;
 		}
+		else
+		{
+			_vector vStartPoint = XMLoadFloat3(&m_vShakingStartOffSet);
+			_vector vEndPoint = XMLoadFloat3(&m_vShakingEndOffSet);
+
+			XMStoreFloat3(&m_vShaking, CEasing_Utillity::CircOut(vStartPoint, vEndPoint, m_fShakingTimeAcc, 0.2f));
+		}
 	}
 	else if (m_bDecreaseShake)
 	{
-		_vector vStartPoint = XMLoadFloat3(&m_vShaking);
-		_vector vEndPoint = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-
-		XMStoreFloat3(&m_vShaking, CEasing_Utillity::QuartOut(vStartPoint, vEndPoint, m_fShakingTimeAcc, 0.7f));
-
-		if (0.7f < fTimeDelta)
+		if (0.7f < m_fShakingTimeAcc)
 		{
 			m_bDecreaseShake = false;
 			m_fShakingTimeAcc = 0.f;
 		}
+		else
+		{
+			_vector vStartPoint = XMLoadFloat3(&m_vShaking);
+			_vector vEndPoint = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+
+			XMStoreFloat3(&m_vShaking, CEasing_Utillity::CubicOut(vStartPoint, vEndPoint, m_fShakingTimeAcc, 0.7f));
+		}
 	}
+
 }
 
 
