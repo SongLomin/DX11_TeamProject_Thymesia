@@ -163,29 +163,36 @@ void CCamera_Target::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBon
 void CCamera_Target::End_Cinematic()
 {
 
-	_matrix LocalMat = XMMatrixIdentity();
-	LocalMat *= XMMatrixRotationX(XMConvertToRadians(-90.f));
-	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
+	
 
-	_matrix		ParentMatrix = m_pCameraBoneNode.lock()->Get_CombinedMatrix()
+	/*_matrix		ParentMatrix = m_pCameraBoneNode.lock()->Get_CombinedMatrix()
 		* XMLoadFloat4x4(&m_TransformationMatrix);
 
 	ParentMatrix.r[0] = XMVector3Normalize(ParentMatrix.r[0]);
 	ParentMatrix.r[1] = XMVector3Normalize(ParentMatrix.r[1]);
 	ParentMatrix.r[2] = XMVector3Normalize(ParentMatrix.r[2]);
 
-	_matrix TotalMatrix = LocalMat * ParentMatrix * m_pCameraBoneParentTransform.lock()->Get_WorldMatrix();
+	_matrix TotalMatrix = XMLoadFloat4x4(&m_CinematicOffSetMatrix) * ParentMatrix * m_pCameraBoneParentTransform.lock()->Get_WorldMatrix();
 
-	m_pTransformCom.lock()->Set_WorldMatrix(TotalMatrix);
-	_vector vCurPlayerPos = m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-	XMStoreFloat4(&m_vPlayerFollowLerpPosition, vCurPlayerPos);
-	XMStoreFloat4(&m_vPrePlayerPos, vCurPlayerPos);
+	_vector vCurPlayerPos = m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);*/
+	_matrix PlayerMatrix = m_pCurrentPlayerTransformCom.lock()->Get_WorldMatrix();
 
-	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+	PlayerMatrix.r[0] = XMVector3Normalize(PlayerMatrix.r[0]);
+	PlayerMatrix.r[1] = XMVector3Normalize(PlayerMatrix.r[1]);
+	PlayerMatrix.r[2] = XMVector3Normalize(PlayerMatrix.r[2]);
+
+	_vector vLook = PlayerMatrix.r[2];
+	PlayerMatrix.r[3] = PlayerMatrix.r[3] + vLook * -4.5f + XMVectorSet(0.f, 1.1f, 0.f, 0.f);
+	m_pTransformCom.lock()->Set_WorldMatrix(PlayerMatrix);
+
+	XMStoreFloat4(&m_vPlayerFollowLerpPosition, PlayerMatrix.r[3]);
+	XMStoreFloat4(&m_vPrePlayerPos, PlayerMatrix.r[3]);
+
+	vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
 	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * -4.5f + XMVectorSet(0.f, 1.1f, 0.f, 0.f);
 
 	XMStoreFloat4(&m_vDestCamPosition, vPos);
-	XMStoreFloat4(&m_vCamPosAfterCinematic, TotalMatrix.r[3]);
+	XMStoreFloat4(&m_vCamPosAfterCinematic, PlayerMatrix.r[3]);
 
 	//XMStoreFloat4(&m_vPlayerFollowLerpPosition, TotalMatrix.r[3]);
 

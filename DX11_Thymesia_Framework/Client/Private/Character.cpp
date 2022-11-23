@@ -36,11 +36,6 @@ _uint CCharacter::Get_PreStateIndex() const
 	return m_pPreState.lock()->Get_StateIndex();
 }
 
-void CCharacter::Set_RigidColliderEnable(const _bool& In_bEnable)
-{
-	m_pRigidBodyColliderCom.lock()->Set_Enable(In_bEnable);
-}
-
 void CCharacter::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
@@ -74,11 +69,6 @@ void CCharacter::Before_Render(_float fTimeDelta)
 	m_pPhysXControllerCom.lock()->Synchronize_Transform(m_pTransformCom);
 
 	__super::Before_Render(fTimeDelta);
-}
-
-weak_ptr<CCollider> CCharacter::Get_RigidColliderComponent() const
-{
-	return m_pRigidBodyColliderCom;
 }
 
 weak_ptr<CStateBase> CCharacter::Get_PreState() const

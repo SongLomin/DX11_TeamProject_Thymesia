@@ -119,7 +119,6 @@ void CBossMonster::OnEnable(void* _Arg)
 
     GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::MONSTER, Weak_Cast<CGameObject>(m_this));
     m_pHitColliderCom.lock()->Set_Enable(true);
-    m_pRigidBodyColliderCom.lock()->Set_Enable(true);
 
 }
 

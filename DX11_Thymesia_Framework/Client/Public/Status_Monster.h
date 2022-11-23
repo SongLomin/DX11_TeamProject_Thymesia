@@ -60,7 +60,7 @@ public:
 public:
 	virtual _bool   Is_Dead();
 	virtual void    Init_Status(const void* pArg);
-	virtual void    Add_Damage(const _float& In_fDamage, ATTACK_OPTION eAttackOption);
+	virtual void    Add_Damage(const _float In_fDamage, ATTACK_OPTION eAttackOption) override;
 	virtual _float	Get_WhiteRatio() {
 		return m_tMonsterDesc.m_fCurrentHP_white / m_tMonsterDesc.m_fMaxHP_white
 			;

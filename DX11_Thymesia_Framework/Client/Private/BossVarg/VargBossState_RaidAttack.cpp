@@ -32,16 +32,19 @@ void CVargBossState_RaidAttack::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_Seq_TutorialBossFightStart");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_RaidAttack2");
 
+	m_bAttackLookAtLimit = true;  // 애니메이션시작할떄 룩엣시작
 
-	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_RaidAttack::Call_AnimationEnd, this);*/
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_RaidAttack::Call_AnimationEnd, this);
 }
 
 void CVargBossState_RaidAttack::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	if (m_bAttackLookAtLimit)
+		Turn_ToThePlayer(fTimeDelta);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -81,20 +84,20 @@ void CVargBossState_RaidAttack::OnStateEnd()
 }
 
 
-//
-//void CVargBossState_RaidAttack::Call_AnimationEnd()
-//{
-//	if (!Get_Enable())
-//		return;
-//
-//
-//	Get_OwnerCharacter().lock()->Change_State<CVargBossState_RaidAttack>(0.05f);
-//}
 
-//void CVargBossState_RaidAttack::OnDestroy()
-//{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_RaidAttack::Call_AnimationEnd, this);
-//}
+void CVargBossState_RaidAttack::Call_AnimationEnd()
+{
+	if (!Get_Enable())
+		return;
+
+
+	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
+}
+
+void CVargBossState_RaidAttack::OnDestroy()
+{
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_RaidAttack::Call_AnimationEnd, this);
+}
 
 void CVargBossState_RaidAttack::Free()
 {
@@ -107,11 +110,11 @@ _bool CVargBossState_RaidAttack::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_RaidAttack>(0.05f);
-		return true;
+		m_bAttackLookAtLimit = false;
 	}
+
 
 	return false;
 }

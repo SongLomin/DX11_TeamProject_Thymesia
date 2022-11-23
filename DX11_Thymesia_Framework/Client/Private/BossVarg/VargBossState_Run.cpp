@@ -9,6 +9,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CVargBossState_Run);
 CLONE_C(CVargBossState_Run, CComponent)
@@ -31,19 +32,22 @@ void CVargBossState_Run::Start()
 {
 	__super::Start();
 
-
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_RunF");
 
-
-	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Run::Call_AnimationEnd, this);*/
 }
 
 void CVargBossState_Run::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	Rotation_TargetToLookDir();
+
+	m_fCurrentSpeed += m_fAccel * fTimeDelta;
+	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
+
+	m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, PxControllerFilters(), nullptr, m_pTransformCom);
 }
 
 
@@ -81,20 +85,8 @@ void CVargBossState_Run::OnStateEnd()
 }
 
 
-//
-//void CVargBossState_Run::Call_AnimationEnd()
-//{
-//	if (!Get_Enable())
-//		return;
-//
-//
-//	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Run>(0.05f);
-//}
 
-//void CVargBossState_Run::OnDestroy()
-//{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Run::Call_AnimationEnd, this);
-//}
+
 
 void CVargBossState_Run::Free()
 {
@@ -107,11 +99,16 @@ _bool CVargBossState_Run::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
+
+	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
+
+
+	if (fPToMDistance <= 4.f)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Run>(0.05f);
+		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1b>(0.05f);
 		return true;
 	}
+
 
 	return false;
 }

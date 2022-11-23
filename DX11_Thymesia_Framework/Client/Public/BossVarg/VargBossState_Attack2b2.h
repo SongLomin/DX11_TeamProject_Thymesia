@@ -7,12 +7,12 @@ END
 
 BEGIN(Client)
 
-class CVargBossState_Attack2b :
+class CVargBossState_Attack2b2 :
 	public CVargBossStateBase
 {
-	GAMECLASS_H(CVargBossState_Attack2b);
-	CLONE_H(CVargBossState_Attack2b, CComponent)
-		SHALLOW_COPY(CVargBossState_Attack2b)
+	GAMECLASS_H(CVargBossState_Attack2b2);
+	CLONE_H(CVargBossState_Attack2b2, CComponent)
+		SHALLOW_COPY(CVargBossState_Attack2b2)
 
 
 
@@ -31,9 +31,9 @@ protected:
 
 
 private:
-	//void Call_AnimationEnd();
+	void Call_AnimationEnd();
 protected:
-	//virtual void OnDestroy() override;
+	virtual void OnDestroy() override;
 	void Free();
 
 };

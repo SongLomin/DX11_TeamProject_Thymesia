@@ -88,14 +88,14 @@ HRESULT CLevel_GamePlay::Initialize()
 	CMonster::STATE_LINK_MONSTER_DESC CCC;
 	CBossMonster::STATE_LINK_BOSS_DESC DDD;
 
-	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-	//CCC.eMonType = MONSTERTYPE::AXEMAN;
-	//CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
-	//CCC.vYame.x = 13.f;
-	//CCC.vYame.y = 4.6f;
-	//CCC.vYame.z = 36.f;
-	//CCC.m_iAtkCounterGauge = 10;
-	//GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
+	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+	CCC.eMonType = MONSTERTYPE::AXEMAN;
+	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
+	CCC.vYame.x = 13.f;
+	CCC.vYame.y = 4.6f;
+	CCC.vYame.z = 36.f;
+	CCC.m_iAtkCounterGauge = 10;
+	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
 
 	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	//CCC.eMonType = MONSTERTYPE::KNIFEWOMAN;
@@ -178,12 +178,12 @@ HRESULT CLevel_GamePlay::Initialize()
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_GAMEPLAY);
 
 	//GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_GAMEPLAY);
-	weak_ptr<CPreViewAnimationModel> pPreviewModel = GAMEINSTANCE->Add_GameObject<CPreViewAnimationModel>(LEVEL_GAMEPLAY);
+	/*weak_ptr<CPreViewAnimationModel> pPreviewModel = GAMEINSTANCE->Add_GameObject<CPreViewAnimationModel>(LEVEL_GAMEPLAY);
 	pPreviewModel.lock()->Init_EditPreViewAnimationModel("Corvus");
 	pPreviewModel.lock()->Change_AnimationFromIndex(3);
 
 	pPreviewModel.lock()->Play_Animation(0.01f);
-	pPreviewModel.lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(10.f, 10.f, 10.f, 0.f));
+	pPreviewModel.lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(10.f, 10.f, 10.f, 0.f));*/
 
 
 	GAMEINSTANCE->Add_GameObject<CStatic_Instancing_Prop>(LEVEL_GAMEPLAY);
