@@ -8,6 +8,7 @@
 #include "Window_AnimationModelView.h"
 #include "Attack_Area.h"
 #include "PreViewAnimationModel.h"
+#include "Easing_Utillity.h"
 
 
 GAMECLASS_C(CCustomEffectMesh)
@@ -390,6 +391,7 @@ void CCustomEffectMesh::Write_EffectJson(json& Out_Json)
 
 	CJson_Utility::Write_Float3(Out_Json["Speed"], m_tEffectMeshDesc.vSpeed);
 	CJson_Utility::Write_Float3(Out_Json["Force"], m_tEffectMeshDesc.vForce);
+	CJson_Utility::Write_Float3(Out_Json["Min_Speed"], m_tEffectMeshDesc.vMinSpeed);
 	CJson_Utility::Write_Float3(Out_Json["Max_Speed"], m_tEffectMeshDesc.vMaxSpeed);
 
 	CJson_Utility::Write_Float3(Out_Json["Start_Rotation"], m_tEffectMeshDesc.vStartRotation);
@@ -400,6 +402,7 @@ void CCustomEffectMesh::Write_EffectJson(json& Out_Json)
 	CJson_Utility::Write_Float3(Out_Json["Start_Scale"], m_tEffectMeshDesc.vStartScale);
 	CJson_Utility::Write_Float3(Out_Json["Scale_Speed"], m_tEffectMeshDesc.vScaleSpeed);
 	CJson_Utility::Write_Float3(Out_Json["Scale_Force"], m_tEffectMeshDesc.vScaleForce);
+	CJson_Utility::Write_Float3(Out_Json["Min_Scale"], m_tEffectMeshDesc.vMinScale);
 	CJson_Utility::Write_Float3(Out_Json["Max_Scale"], m_tEffectMeshDesc.vMaxScale);
 
 	Out_Json["Shader_Pass_Index"] = m_tEffectMeshDesc.iShaderPassIndex;
@@ -409,6 +412,7 @@ void CCustomEffectMesh::Write_EffectJson(json& Out_Json)
 	CJson_Utility::Write_Float4(Out_Json["Start_Color"], m_tEffectMeshDesc.vStartColor);
 	CJson_Utility::Write_Float4(Out_Json["Color_Speed"], m_tEffectMeshDesc.vColorSpeed);
 	CJson_Utility::Write_Float4(Out_Json["Color_Force"], m_tEffectMeshDesc.vColorForce);
+	CJson_Utility::Write_Float4(Out_Json["Min_Color"], m_tEffectMeshDesc.vMinColor);
 	CJson_Utility::Write_Float4(Out_Json["Max_Color"], m_tEffectMeshDesc.vMaxColor);
 
 	Out_Json["UV_Diffuse_Index"] = m_tEffectMeshDesc.iDiffuseTextureIndex;
@@ -425,16 +429,19 @@ void CCustomEffectMesh::Write_EffectJson(json& Out_Json)
 	CJson_Utility::Write_Float2(Out_Json["Diffuse_Start_UV"], m_tEffectMeshDesc.vDiffuseStartUV);
 	CJson_Utility::Write_Float2(Out_Json["Diffuse_UV_Speed"], m_tEffectMeshDesc.vDiffuseUVSpeed);
 	CJson_Utility::Write_Float2(Out_Json["Diffuse_UV_Force"], m_tEffectMeshDesc.vDiffuseUVForce);
+	CJson_Utility::Write_Float2(Out_Json["Diffuse_Min_UV"], m_tEffectMeshDesc.vDiffuseUVMin);
 	CJson_Utility::Write_Float2(Out_Json["Diffuse_Max_UV"], m_tEffectMeshDesc.vDiffuseUVMax);
 
 	CJson_Utility::Write_Float2(Out_Json["Noise_Start_UV"], m_tEffectMeshDesc.vNoiseStartUV);
 	CJson_Utility::Write_Float2(Out_Json["Noise_UV_Speed"], m_tEffectMeshDesc.vNoiseUVSpeed);
 	CJson_Utility::Write_Float2(Out_Json["Noise_UV_Force"], m_tEffectMeshDesc.vNoiseUVForce);
+	CJson_Utility::Write_Float2(Out_Json["Noise_Min_UV"], m_tEffectMeshDesc.vNoiseUVMin);
 	CJson_Utility::Write_Float2(Out_Json["Noise_Max_UV"], m_tEffectMeshDesc.vNoiseUVMax);
 
 	CJson_Utility::Write_Float2(Out_Json["Mask_Start_UV"], m_tEffectMeshDesc.vMaskStartUV);
 	CJson_Utility::Write_Float2(Out_Json["Mask_UV_Speed"], m_tEffectMeshDesc.vMaskUVSpeed);
 	CJson_Utility::Write_Float2(Out_Json["Mask_UV_Force"], m_tEffectMeshDesc.vMaskUVForce);
+	CJson_Utility::Write_Float2(Out_Json["Mask_Min_UV"], m_tEffectMeshDesc.vMaskUVMin);
 	CJson_Utility::Write_Float2(Out_Json["Mask_Max_UV"], m_tEffectMeshDesc.vMaskUVMax);
 
 	Out_Json["Bloom"] = m_tEffectMeshDesc.bBloom;
@@ -480,22 +487,49 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 
 	if (In_Json.find("BillBoard") != In_Json.end())
 		m_tEffectMeshDesc.bBillBoard = In_Json["BillBoard"];
+	
+	if (In_Json.find("Start_Position") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Start_Position"], m_tEffectMeshDesc.vStartPosition);
 
-	CJson_Utility::Load_Float3(In_Json["Start_Position"], m_tEffectMeshDesc.vStartPosition);
+	if (In_Json.find("Speed") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Speed"], m_tEffectMeshDesc.vSpeed);
 
-	CJson_Utility::Load_Float3(In_Json["Speed"], m_tEffectMeshDesc.vSpeed);
-	CJson_Utility::Load_Float3(In_Json["Force"], m_tEffectMeshDesc.vForce);
-	CJson_Utility::Load_Float3(In_Json["Max_Speed"], m_tEffectMeshDesc.vMaxSpeed);
+	if (In_Json.find("Force") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Force"], m_tEffectMeshDesc.vForce);
 
-	CJson_Utility::Load_Float3(In_Json["Start_Rotation"], m_tEffectMeshDesc.vStartRotation);
-	CJson_Utility::Load_Float3(In_Json["Rotation_Speed"], m_tEffectMeshDesc.vRotationSpeed);
-	CJson_Utility::Load_Float3(In_Json["Rotation_Force"], m_tEffectMeshDesc.vRotationForce);
-	CJson_Utility::Load_Float3(In_Json["Max_Rotation"], m_tEffectMeshDesc.vMaxRotation);
+	if (In_Json.find("Min_Speed") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Min_Speed"], m_tEffectMeshDesc.vMinSpeed);
 
-	CJson_Utility::Load_Float3(In_Json["Start_Scale"], m_tEffectMeshDesc.vStartScale);
-	CJson_Utility::Load_Float3(In_Json["Scale_Speed"], m_tEffectMeshDesc.vScaleSpeed);
-	CJson_Utility::Load_Float3(In_Json["Scale_Force"], m_tEffectMeshDesc.vScaleForce);
-	CJson_Utility::Load_Float3(In_Json["Max_Scale"], m_tEffectMeshDesc.vMaxScale);
+	if (In_Json.find("Max_Speed") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Max_Speed"], m_tEffectMeshDesc.vMaxSpeed);
+
+	if (In_Json.find("Start_Rotation") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Start_Rotation"], m_tEffectMeshDesc.vStartRotation);
+	
+	if (In_Json.find("Rotation_Speed") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Rotation_Speed"], m_tEffectMeshDesc.vRotationSpeed);
+	
+	if (In_Json.find("Rotation_Force") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Rotation_Force"], m_tEffectMeshDesc.vRotationForce);
+	
+	if (In_Json.find("Max_Rotation") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Max_Rotation"], m_tEffectMeshDesc.vMaxRotation);
+
+	
+	if (In_Json.find("Start_Scale") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Start_Scale"], m_tEffectMeshDesc.vStartScale);
+	
+	if (In_Json.find("Scale_Speed") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Scale_Speed"], m_tEffectMeshDesc.vScaleSpeed);
+	
+	if (In_Json.find("Scale_Force") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Scale_Force"], m_tEffectMeshDesc.vScaleForce);
+	
+	if (In_Json.find("Min_Scale") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Min_Scale"], m_tEffectMeshDesc.vMinScale);
+
+	if (In_Json.find("Max_Scale") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Max_Scale"], m_tEffectMeshDesc.vMaxScale);
 
 	if (In_Json.find("Shader_Pass_Index") != In_Json.end())
 		m_tEffectMeshDesc.iShaderPassIndex = In_Json["Shader_Pass_Index"];
@@ -503,10 +537,16 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 	if (In_Json.find("Alpha_Discard_Ratio") != In_Json.end())
 		m_tEffectMeshDesc.fDiscardRatio = In_Json["Alpha_Discard_Ratio"];
 
-	CJson_Utility::Load_Float4(In_Json["Start_Color"], m_tEffectMeshDesc.vStartColor);
-	CJson_Utility::Load_Float4(In_Json["Color_Speed"], m_tEffectMeshDesc.vColorSpeed);
-	CJson_Utility::Load_Float4(In_Json["Color_Force"], m_tEffectMeshDesc.vColorForce);
-	CJson_Utility::Load_Float4(In_Json["Max_Color"], m_tEffectMeshDesc.vMaxColor);
+	if (In_Json.find("Start_Color") != In_Json.end())
+		CJson_Utility::Load_Float4(In_Json["Start_Color"], m_tEffectMeshDesc.vStartColor);
+	if (In_Json.find("Color_Speed") != In_Json.end())
+		CJson_Utility::Load_Float4(In_Json["Color_Speed"], m_tEffectMeshDesc.vColorSpeed);
+	if (In_Json.find("Color_Force") != In_Json.end())
+		CJson_Utility::Load_Float4(In_Json["Color_Force"], m_tEffectMeshDesc.vColorForce);
+	if (In_Json.find("Min_Color") != In_Json.end())
+		CJson_Utility::Load_Float4(In_Json["Min_Color"], m_tEffectMeshDesc.vMinColor);
+	if (In_Json.find("Max_Color") != In_Json.end())
+		CJson_Utility::Load_Float4(In_Json["Max_Color"], m_tEffectMeshDesc.vMaxColor);
 
 	if (In_Json.find("UV_Diffuse_Index") != In_Json.end())
 		m_tEffectMeshDesc.iDiffuseTextureIndex = In_Json["UV_Diffuse_Index"];
@@ -536,6 +576,8 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 		CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Speed"], m_tEffectMeshDesc.vDiffuseUVSpeed);
 	if (In_Json.find("Diffuse_UV_Force") != In_Json.end())
 		CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Force"], m_tEffectMeshDesc.vDiffuseUVForce);
+	if (In_Json.find("Diffuse_Min_UV") != In_Json.end())
+		CJson_Utility::Load_Float2(In_Json["Diffuse_Min_UV"], m_tEffectMeshDesc.vDiffuseUVMin);
 	if (In_Json.find("Diffuse_Max_UV") != In_Json.end())
 		CJson_Utility::Load_Float2(In_Json["Diffuse_Max_UV"], m_tEffectMeshDesc.vDiffuseUVMax);
 
@@ -545,6 +587,8 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 		CJson_Utility::Load_Float2(In_Json["Noise_UV_Speed"], m_tEffectMeshDesc.vNoiseUVSpeed);
 	if (In_Json.find("Noise_UV_Force") != In_Json.end())
 		CJson_Utility::Load_Float2(In_Json["Noise_UV_Force"], m_tEffectMeshDesc.vNoiseUVForce);
+	if (In_Json.find("Noise_Min_UV") != In_Json.end())
+		CJson_Utility::Load_Float2(In_Json["Noise_Min_UV"], m_tEffectMeshDesc.vNoiseUVMin);
 	if (In_Json.find("Noise_Max_UV") != In_Json.end())
 		CJson_Utility::Load_Float2(In_Json["Noise_Max_UV"], m_tEffectMeshDesc.vNoiseUVMax);
 
@@ -554,6 +598,8 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 		CJson_Utility::Load_Float2(In_Json["Mask_UV_Speed"], m_tEffectMeshDesc.vMaskUVSpeed);
 	if (In_Json.find("Mask_UV_Force") != In_Json.end())
 		CJson_Utility::Load_Float2(In_Json["Mask_UV_Force"], m_tEffectMeshDesc.vMaskUVForce);
+	if (In_Json.find("Mask_Min_UV") != In_Json.end())
+		CJson_Utility::Load_Float2(In_Json["Mask_Min_UV"], m_tEffectMeshDesc.vMaskUVMin);
 	if (In_Json.find("Mask_Max_UV") != In_Json.end())
 		CJson_Utility::Load_Float2(In_Json["Mask_Max_UV"], m_tEffectMeshDesc.vMaskUVMax);
 
@@ -680,9 +726,9 @@ void CCustomEffectMesh::Update_Position(_float fFrameTime)
 	_vector vMovePosition = XMLoadFloat3(&m_vCurrentSpeed) + XMLoadFloat3(&m_vCurrentForce);
 	_vector vAbsolutePosition = vMovePosition / fFrameTime;
 
-	vAbsolutePosition.m128_f32[0] = min(m_tEffectMeshDesc.vMaxSpeed.x, vAbsolutePosition.m128_f32[0]);
-	vAbsolutePosition.m128_f32[1] = min(m_tEffectMeshDesc.vMaxSpeed.y, vAbsolutePosition.m128_f32[1]);
-	vAbsolutePosition.m128_f32[2] = min(m_tEffectMeshDesc.vMaxSpeed.z, vAbsolutePosition.m128_f32[2]);
+	XMVectorSetX(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.x, min(m_tEffectMeshDesc.vMaxSpeed.x, XMVectorGetX(vAbsolutePosition))));
+	XMVectorSetY(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.y, min(m_tEffectMeshDesc.vMaxSpeed.y, XMVectorGetY(vAbsolutePosition))));
+	XMVectorSetZ(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.z, min(m_tEffectMeshDesc.vMaxSpeed.z, XMVectorGetZ(vAbsolutePosition))));
 
 	vMovePosition = vAbsolutePosition * fFrameTime;
 
@@ -692,17 +738,24 @@ void CCustomEffectMesh::Update_Position(_float fFrameTime)
 void CCustomEffectMesh::Update_Rotation(_float fFrameTime)
 {
 	_vector CurrentRotation = XMLoadFloat3(&m_vCurrentRotation);
-	_vector MoveRotation = XMLoadFloat3(&m_tEffectMeshDesc.vRotationSpeed) * fFrameTime;
-	_vector MoveForce = XMLoadFloat3(&m_tEffectMeshDesc.vRotationForce) * fFrameTime;
-	_vector CurrentForce = XMLoadFloat3(&m_vCurrentRotationForce);
-	CurrentForce += MoveForce;
-	MoveRotation += CurrentForce;
+	_vector MoveRotation    = XMLoadFloat3(&m_tEffectMeshDesc.vRotationSpeed) * fFrameTime;
+	_vector MoveForce       = XMLoadFloat3(&m_tEffectMeshDesc.vRotationForce) * fFrameTime;
+	_vector CurrentForce    = XMLoadFloat3(&m_vCurrentRotationForce);
+	CurrentForce    += MoveForce;
+	MoveRotation    += CurrentForce;
 	CurrentRotation += MoveRotation;
 
 	XMStoreFloat3(&m_vCurrentRotation, CurrentRotation);
 	XMStoreFloat3(&m_vCurrentRotationForce, CurrentForce);
 
-	_vector Quaternion = XMQuaternionRotationRollPitchYaw(CurrentRotation.m128_f32[0], CurrentRotation.m128_f32[1], CurrentRotation.m128_f32[2]);
+	_vector Quaternion = 
+		XMQuaternionRotationRollPitchYaw
+		(
+			XMVectorGetX(CurrentRotation)
+			, XMVectorGetY(CurrentRotation)
+			, XMVectorGetZ(CurrentRotation)
+		);
+
 	m_pTransformCom.lock()->Rotation_Quaternion(Quaternion);
 }
 
@@ -733,10 +786,10 @@ void CCustomEffectMesh::Update_Color(_float fFrameTime)
 	_vector vCurrentColor = XMLoadFloat4(&m_vCurrentColor);
 	vCurrentColor += vMoveColor;
 
-	vCurrentColor.m128_f32[0] = min(m_tEffectMeshDesc.vMaxColor.x, vCurrentColor.m128_f32[0]);
-	vCurrentColor.m128_f32[1] = min(m_tEffectMeshDesc.vMaxColor.y, vCurrentColor.m128_f32[1]);
-	vCurrentColor.m128_f32[2] = min(m_tEffectMeshDesc.vMaxColor.z, vCurrentColor.m128_f32[2]);
-	vCurrentColor.m128_f32[3] = min(m_tEffectMeshDesc.vMaxColor.w, vCurrentColor.m128_f32[3]);
+	XMVectorSetX(vCurrentColor, max(m_tEffectMeshDesc.vMinColor.x, min(m_tEffectMeshDesc.vMaxColor.x, XMVectorGetX(vCurrentColor))));
+	XMVectorSetY(vCurrentColor, max(m_tEffectMeshDesc.vMinColor.y, min(m_tEffectMeshDesc.vMaxColor.y, XMVectorGetY(vCurrentColor))));
+	XMVectorSetZ(vCurrentColor, max(m_tEffectMeshDesc.vMinColor.z, min(m_tEffectMeshDesc.vMaxColor.z, XMVectorGetZ(vCurrentColor))));
+	XMVectorSetW(vCurrentColor, max(m_tEffectMeshDesc.vMinColor.w, min(m_tEffectMeshDesc.vMaxColor.w, XMVectorGetW(vCurrentColor))));
 
 	XMStoreFloat4(&m_vCurrentColor, vCurrentColor);
 }
@@ -751,8 +804,8 @@ void CCustomEffectMesh::Update_Diffuse(_float fFrameTime)
 	_vector vDiffuseCurrentUV = XMLoadFloat2(&m_vDiffuseCurrentUV);
 	vDiffuseCurrentUV += vDiffuseMoveUV;
 
-	vDiffuseCurrentUV.m128_f32[0] = min(m_tEffectMeshDesc.vDiffuseUVMax.x, XMVectorGetX(vDiffuseCurrentUV));
-	vDiffuseCurrentUV.m128_f32[1] = min(m_tEffectMeshDesc.vDiffuseUVMax.y, vDiffuseCurrentUV.m128_f32[1]);
+	XMVectorSetX(vDiffuseCurrentUV, max(m_tEffectMeshDesc.vDiffuseUVMin.x, min(m_tEffectMeshDesc.vDiffuseUVMax.x, XMVectorGetX(vDiffuseCurrentUV))));
+	XMVectorSetY(vDiffuseCurrentUV, max(m_tEffectMeshDesc.vDiffuseUVMin.y, min(m_tEffectMeshDesc.vDiffuseUVMax.y, XMVectorGetY(vDiffuseCurrentUV))));
 
 	XMStoreFloat2(&m_vDiffuseCurrentUV, vDiffuseCurrentUV);
 }
@@ -767,8 +820,8 @@ void CCustomEffectMesh::Updaste_Noise(_float fFrameTime)
 	_vector vNoiseCurrentUV = XMLoadFloat2(&m_vNoiseCurrentUV);
 	vNoiseCurrentUV += vNoiseMoveUV;
 
-	vNoiseCurrentUV.m128_f32[0] = min(m_tEffectMeshDesc.vNoiseUVMax.x, vNoiseCurrentUV.m128_f32[0]);
-	vNoiseCurrentUV.m128_f32[1] = min(m_tEffectMeshDesc.vNoiseUVMax.y, vNoiseCurrentUV.m128_f32[1]);
+	XMVectorSetX(vNoiseCurrentUV, max(m_tEffectMeshDesc.vNoiseUVMin.x, min(m_tEffectMeshDesc.vNoiseUVMax.x, XMVectorGetX(vNoiseCurrentUV))));
+	XMVectorSetY(vNoiseCurrentUV, max(m_tEffectMeshDesc.vNoiseUVMin.y, min(m_tEffectMeshDesc.vNoiseUVMax.y, XMVectorGetY(vNoiseCurrentUV))));
 
 	XMStoreFloat2(&m_vNoiseCurrentUV, vNoiseCurrentUV);
 }
@@ -783,8 +836,8 @@ void CCustomEffectMesh::Update_Mask(_float fFrameTime)
 	_vector vMaskCurrentUV = XMLoadFloat2(&m_vMaskCurrentUV);
 	vMaskCurrentUV += vMaskMoveUV;
 
-	vMaskCurrentUV.m128_f32[0] = min(m_tEffectMeshDesc.vMaskUVMax.x, vMaskCurrentUV.m128_f32[0]);
-	vMaskCurrentUV.m128_f32[1] = min(m_tEffectMeshDesc.vMaskUVMax.y, vMaskCurrentUV.m128_f32[1]);
+	XMVectorSetX(vMaskCurrentUV, max(m_tEffectMeshDesc.vMaskUVMin.x, min(m_tEffectMeshDesc.vMaskUVMax.x, XMVectorGetX(vMaskCurrentUV))));
+	XMVectorSetY(vMaskCurrentUV, max(m_tEffectMeshDesc.vMaskUVMin.y, min(m_tEffectMeshDesc.vMaskUVMax.y, XMVectorGetY(vMaskCurrentUV))));
 
 	XMStoreFloat2(&m_vMaskCurrentUV, vMaskCurrentUV);
 }
@@ -794,15 +847,118 @@ void CCustomEffectMesh::Update_Glow(_float fFrameTime)
 	_vector vGlowSpeed = XMLoadFloat4(&m_tEffectMeshDesc.vGlowColorSpeed) * fFrameTime;
 	m_vCurrentGlowForce.x += m_tEffectMeshDesc.vGlowColorForce.x * fFrameTime;
 	m_vCurrentGlowForce.y += m_tEffectMeshDesc.vGlowColorForce.y * fFrameTime;
+	m_vCurrentGlowForce.z += m_tEffectMeshDesc.vGlowColorForce.z * fFrameTime;
+	m_vCurrentGlowForce.w += m_tEffectMeshDesc.vGlowColorForce.w * fFrameTime;
 
 	_vector vMoveGlowColor = vGlowSpeed + XMLoadFloat4(&m_vCurrentGlowForce);
 	_vector vCurrentGlowColor = XMLoadFloat4(&m_vCurrentGlowColor);
 	vCurrentGlowColor += vMoveGlowColor;
 
-	vCurrentGlowColor = XMVectorMin(XMVectorSet(1.f, 1.f, 1.f, 1.f),
-		XMVectorMax(XMVectorSet(0.f, 0.f, 0.f, 0.f), vCurrentGlowColor));
+	//	vCurrentGlowColor = XMVectorMin(XMVectorSet(1.f, 1.f, 1.f, 1.f),
+	//	XMVectorMax(XMVectorSet(0.f, 0.f, 0.f, 0.f), vCurrentGlowColor));
 
 	XMStoreFloat4(&m_vCurrentGlowColor, vCurrentGlowColor);
+}
+
+void CCustomEffectMesh::Apply_Easing
+(
+	_float2& vTarget
+	, EASING_TYPE eEasingType
+	, _vector vStartPoint
+	, _vector vTargetPoint
+	, _float fElapsedTime
+	, _float fTotalTime
+)
+{
+#define MACRO(FunctionName)\
+XMStoreFloat2(&vTarget, FunctionName(vStartPoint, vTargetPoint, fElapsedTime, fTotalTime))
+	switch (eEasingType)
+	{
+	case EASING_TYPE::LINEAR:
+		MACRO(CEasing_Utillity::Linear);
+		break;
+	case EASING_TYPE::QUAD_IN:
+		MACRO(CEasing_Utillity::QuadIn);
+		break;
+	case EASING_TYPE::QUAD_OUT:
+		MACRO(CEasing_Utillity::QuadOut);
+		break;
+	case EASING_TYPE::QUAD_INOUT:
+		MACRO(CEasing_Utillity::QuadInOut);
+		break;
+	case EASING_TYPE::CUBIC_IN:
+		MACRO(CEasing_Utillity::CubicIn);
+		break;
+	case EASING_TYPE::CUBIC_OUT:
+		MACRO(CEasing_Utillity::CubicOut);
+		break;
+	case EASING_TYPE::CUBIC_INOUT:
+		MACRO(CEasing_Utillity::CubicInOut);
+		break;
+	case EASING_TYPE::QUART_IN:
+		MACRO(CEasing_Utillity::QuadIn);
+		break;
+	case EASING_TYPE::QUART_OUT:
+		MACRO(CEasing_Utillity::QuadOut);
+		break;
+	case EASING_TYPE::QUART_INOUT:
+		MACRO(CEasing_Utillity::QuadInOut);
+		break;
+	case EASING_TYPE::QUINT_IN:
+		MACRO(CEasing_Utillity::QuintIn);
+		break;
+	case EASING_TYPE::QUINT_OUT:
+		MACRO(CEasing_Utillity::QuintOut);
+		break;
+	case EASING_TYPE::QUINT_INOUT:
+		MACRO(CEasing_Utillity::QuintInOut);
+		break;
+	case EASING_TYPE::SINE_IN:
+		MACRO(CEasing_Utillity::SineIn);
+		break;
+	case EASING_TYPE::SINE_OUT:
+		MACRO(CEasing_Utillity::SineOut);
+		break;
+	case EASING_TYPE::SINE_INOUT:
+		MACRO(CEasing_Utillity::SineInOut);
+		break;
+	case EASING_TYPE::EXPO_IN:
+		MACRO(CEasing_Utillity::ExpoIn);
+		break;
+	case EASING_TYPE::EXPO_OUT:
+		MACRO(CEasing_Utillity::ExpoOut);
+		break;
+	case EASING_TYPE::EXPO_INOUT:
+		MACRO(CEasing_Utillity::ExpoInOut);
+		break;
+	case EASING_TYPE::CIRC_IN:
+		MACRO(CEasing_Utillity::CircIn);
+		break;
+	case EASING_TYPE::CIRC_OUT:
+		MACRO(CEasing_Utillity::CircOut);
+		break;
+	case EASING_TYPE::CIRC_INOUT:
+		MACRO(CEasing_Utillity::CircInOut);
+		break;
+	case EASING_TYPE::ELASTIC_IN:
+		MACRO(CEasing_Utillity::ElasticIn);
+		break;
+	case EASING_TYPE::ELASTIC_OUT:
+		MACRO(CEasing_Utillity::ElasticOut);
+		break;
+	case EASING_TYPE::ELASTIC_INOUT:
+		MACRO(CEasing_Utillity::ElasticInOut);
+		break;
+	case EASING_TYPE::BOUNCE_IN:
+		MACRO(CEasing_Utillity::BounceIn);
+		break;
+	case EASING_TYPE::BOUNCE_OUT:
+		MACRO(CEasing_Utillity::BounceOut);
+		break;
+	default:
+		return;
+	}
+#undef MACRO
 }
 
 #ifdef _DEBUG
@@ -885,6 +1041,10 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::Text("Force");
 			ImGui::DragFloat3("##Force", &m_tEffectMeshDesc.vForce.x, 0.1f);
 
+			ImGui::Text("Min Speed");
+			ImGui::DragFloat3("##Min Speed", &m_tEffectMeshDesc.vMinSpeed.x, 0.1f);
+			ImGui::Separator();
+
 			ImGui::Text("Max Speed");
 			ImGui::DragFloat3("##Max Speed", &m_tEffectMeshDesc.vMaxSpeed.x, 0.1f);
 			ImGui::Separator();
@@ -918,13 +1078,13 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::Text("Scale Force");
 			ImGui::DragFloat3("##Scale Force", &m_tEffectMeshDesc.vScaleForce.x, 0.01f);
 
+			ImGui::Text("Min Scale");
+			ImGui::DragFloat3("##Min Scale", &m_tEffectMeshDesc.vMinScale.x, 0.01f);
+			ImGui::Separator();
+
 			ImGui::Text("Max Scale");
 			ImGui::DragFloat3("##Max Scale", &m_tEffectMeshDesc.vMaxScale.x, 0.01f);
 			ImGui::Separator();
-
-			m_tEffectMeshDesc.vMaxScale.x = max(0.00001f, m_tEffectMeshDesc.vMaxScale.x);
-			m_tEffectMeshDesc.vMaxScale.y = max(0.00001f, m_tEffectMeshDesc.vMaxScale.y);
-			m_tEffectMeshDesc.vMaxScale.z = max(0.00001f, m_tEffectMeshDesc.vMaxScale.z);
 
 			ImGui::Text("Alpha Discard Ratio");
 			ImGui::DragFloat("##Alpha Discard Ratio", &m_tEffectMeshDesc.fDiscardRatio, 0.01f, 0.f, 1.f, "%.3f", 0);
@@ -937,6 +1097,10 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 			ImGui::Text("Color Force");
 			ImGui::DragFloat4("##Color Force", &m_tEffectMeshDesc.vColorForce.x, 0.01f, -1.f, 1.f, "%.5f");
+
+			ImGui::Text("Min Color");
+			ImGui::DragFloat4("##Min Color", &m_tEffectMeshDesc.vMinColor.x, 0.01f, 0.f, 1.f, "%.5f");
+			ImGui::Separator();
 
 			ImGui::Text("Max Color");
 			ImGui::DragFloat4("##Max Color", &m_tEffectMeshDesc.vMaxColor.x, 0.01f, 0.f, 1.f, "%.5f");
@@ -984,6 +1148,9 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::Text("Diffuse UV Force");
 			ImGui::DragFloat2("##Diffuse UV Force", &m_tEffectMeshDesc.vDiffuseUVForce.x, 0.01f);
 
+			ImGui::Text("Diffuse vUV Min");
+			ImGui::DragFloat2("##Diffuse UV Min", &m_tEffectMeshDesc.vDiffuseUVMin.x, 0.01f);
+
 			ImGui::Text("Diffuse vUV Max");
 			ImGui::DragFloat2("##Diffuse UV Max", &m_tEffectMeshDesc.vDiffuseUVMax.x, 0.01f);
 #pragma endregion
@@ -999,6 +1166,9 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 			ImGui::Text("Noise UV Force");
 			ImGui::DragFloat2("##Noise UV Force", &m_tEffectMeshDesc.vNoiseUVForce.x, 0.01f);
+
+			ImGui::Text("Noise vUV Min");
+			ImGui::DragFloat2("##Noise UV Min", &m_tEffectMeshDesc.vNoiseUVMin.x, 0.01f);
 
 			ImGui::Text("Noise vUV Max");
 			ImGui::DragFloat2("##Noise UV Max", &m_tEffectMeshDesc.vNoiseUVMax.x, 0.01f);
@@ -1016,8 +1186,11 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::Text("Mask UV Force");
 			ImGui::DragFloat2("##Mask UV Force", &m_tEffectMeshDesc.vMaskUVForce.x, 0.01f);
 
-			ImGui::Text("vUV Max");
-			ImGui::DragFloat2("##UV Max", &m_tEffectMeshDesc.vMaskUVMax.x, 0.01f);
+			ImGui::Text("Mask vUV Min");
+			ImGui::DragFloat2("##Mask UV Min", &m_tEffectMeshDesc.vMaskUVMin.x, 0.01f);
+
+			ImGui::Text("Mask vUV Max");
+			ImGui::DragFloat2("##Mask UV Max", &m_tEffectMeshDesc.vMaskUVMax.x, 0.01f);
 #pragma endregion
 #pragma endregion
 			ImGui::Separator();

@@ -291,6 +291,12 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 #pragma endregion
 
 	Out_Json["Is_MoveLook"] = m_tEffectParticleDesc.bMoveLook;
+	
+	Out_Json["Is_Use_Gravity"] = m_tEffectParticleDesc.bUseGravity;
+
+	if (m_tEffectParticleDesc.bUseGravity)
+		CJson_Utility::Write_Float3(Out_Json["Gravity_Force"], m_tEffectParticleDesc.vGravityForce);
+
 
 	Out_Json["Is_Easing_Position"] = m_tEffectParticleDesc.bEasingPosition;
 
@@ -497,6 +503,15 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 
 	if (In_Json.find("Is_MoveLook") != In_Json.end())
 		m_tEffectParticleDesc.bMoveLook = In_Json["Is_MoveLook"];
+
+	if (In_Json.find("Is_Use_Gravity") != In_Json.end())
+		m_tEffectParticleDesc.bUseGravity = In_Json["Is_Use_Gravity"];
+
+	if (m_tEffectParticleDesc.bUseGravity)
+	{
+		if (In_Json.find("Gravity_Force") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Gravity_Force"], m_tEffectParticleDesc.vGravityForce);
+	}
 
 	if (In_Json.find("Is_Easing_Position") != In_Json.end())
 		m_tEffectParticleDesc.bEasingPosition = In_Json["Is_Easing_Position"];
@@ -1063,22 +1078,6 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 		vDeltaGravity = XMVectorSetX(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.x * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
 		vDeltaGravity = XMVectorSetY(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.y * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
 		vDeltaGravity = XMVectorSetZ(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.z * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
-
-		_float3 f3DeltaGravity;
-		XMStoreFloat3(&f3DeltaGravity, vDeltaGravity);
-
-		m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, f3DeltaGravity);
-		// vMove = SMath::Add_Float3(vMove, vSpeed);
-	}
-
-	if (m_tEffectParticleDesc.bUseGravity)
-	{
-		_vector vDeltaGravity;
-		ZeroMemory(&vDeltaGravity, sizeof(_vector));
-
-		vDeltaGravity = XMVectorSetX(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.x* fTimeDelta* (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
-		vDeltaGravity = XMVectorSetY(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.y* fTimeDelta* (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
-		vDeltaGravity = XMVectorSetZ(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.z* fTimeDelta* (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
 
 		_float3 f3DeltaGravity;
 		XMStoreFloat3(&f3DeltaGravity, vDeltaGravity);
