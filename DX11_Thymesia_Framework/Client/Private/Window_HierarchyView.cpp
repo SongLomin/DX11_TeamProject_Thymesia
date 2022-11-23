@@ -129,8 +129,8 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 
 			for (auto iter_sub : m_pSubGameObjects)
 			{
-				Out_Json["GameObject"][iIndex]["Name"] = iter_sub.TypeName;
-				Out_Json["GameObject"][iIndex]["Hash"] = iter_sub.HashCode;
+				Out_Json["GameObject"][iIndex]["Name"]				= iter_sub.TypeName;
+				Out_Json["GameObject"][iIndex]["Hash"]				= iter_sub.HashCode;
 				Out_Json["GameObject"][iIndex]["Setting"]["Enable"] = iter_sub.pInstance.lock()->Get_Enable();
 				Out_Json["GameObject"][iIndex]["Component"]["Transform"].emplace();
 
@@ -145,8 +145,8 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 			continue;
 		}
 
-		Out_Json["GameObject"][iIndex]["Name"] = iter_elem->TypeName;
-		Out_Json["GameObject"][iIndex]["Hash"] = iter_elem->HashCode;
+		Out_Json["GameObject"][iIndex]["Name"]				= iter_elem->TypeName;
+		Out_Json["GameObject"][iIndex]["Hash"]				= iter_elem->HashCode;
 		Out_Json["GameObject"][iIndex]["Setting"]["Enable"] = iter_elem->pInstance.lock()->Get_Enable();
 		Out_Json["GameObject"][iIndex]["Component"]["Transform"].emplace();
 
@@ -227,6 +227,28 @@ void CWindow_HierarchyView::OnLevelLoad()
 
 void CWindow_HierarchyView::Free()
 {
+	json NewJson;
+
+	Write_Json(NewJson);
+	
+	if (!NewJson.empty())
+	{
+		time_t timer     = time(NULL);
+		tm     TimeDesc;
+		
+		localtime_s(&TimeDesc, &timer);
+
+		string szPath
+			= string("../Bin/LevelData/AutoSave/AutoSave ") 
+			+ to_string(TimeDesc.tm_mon)  + "."
+			+ to_string(TimeDesc.tm_wday) + " ("
+			+ to_string(TimeDesc.tm_hour) + "-"
+			+ to_string(TimeDesc.tm_min)  + "-"
+			+ to_string(TimeDesc.tm_sec)  + ").json";
+
+		CJson_Utility::Save_Json(szPath.c_str(), NewJson);
+	}
+
 	for (auto& elem : m_pGameObjects)
 	{
 		if(elem.pInstance.lock())

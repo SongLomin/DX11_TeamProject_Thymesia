@@ -78,6 +78,8 @@ private:
     RESOURCE_LIST       m_JsonList;
     _bool               m_bSubDraw = false;
 
+    static _bool        m_bDetailPicking;
+
 public:
     void Free();
 };
