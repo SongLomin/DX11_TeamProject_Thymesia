@@ -1349,9 +1349,6 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_LAttack5.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack\State_Attack5</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\BossMonster.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\03.BossMonster</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\AIStateBase.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState</Filter>
     </ClCompile>

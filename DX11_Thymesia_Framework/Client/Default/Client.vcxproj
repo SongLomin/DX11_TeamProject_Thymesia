@@ -193,8 +193,6 @@
     <ClInclude Include="..\Public\Actor.h" />
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
-    <ClInclude Include="..\Public\BossMonster.h" />
-    <ClInclude Include="..\Public\BossStateBase.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b1.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b2.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h" />
@@ -203,8 +201,6 @@
     <ClInclude Include="..\Public\PhysXColliderObject.h" />
     <ClInclude Include="..\Public\BossMonster.h" />
     <ClInclude Include="..\Public\BossStateBase.h" />
-    <ClInclude Include="..\Public\Level_Test.h" />
-    <ClInclude Include="..\Public\PhysXColliderObject.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttack1.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Die.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtL.h" />
@@ -216,7 +212,6 @@
     <ClInclude Include="..\Public\Effect_Trail_Distortion.h" />
     <ClInclude Include="..\Public\Effect_Trail_EyeLight.h" />
     <ClInclude Include="..\Public\MobWeapon.h" />
-    <ClInclude Include="..\Public\MonsterParryingBar.h" />
     <ClInclude Include="..\Public\Status_Monster.h" />
     <ClInclude Include="..\Public\Status_Player.h" />
     <ClInclude Include="..\Public\Preset_PhysXControllerDesc.h" />
@@ -434,7 +429,6 @@
     <ClCompile Include="..\Private\Actor.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Attack_Area.cpp" />
-    <ClCompile Include="..\Private\BossMonster.cpp" />
     <ClCompile Include="..\Private\BossStateBase.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b1.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b2.cpp" />
@@ -443,9 +437,6 @@
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
     <ClCompile Include="..\Private\UI_LerpBar.cpp" />
     <ClCompile Include="..\Private\BossMonster.cpp" />
-    <ClCompile Include="..\Private\BossStateBase.cpp" />
-    <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
-    <ClCompile Include="..\Private\UI_LerpBar.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttack1.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Die.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtL.cpp" />
