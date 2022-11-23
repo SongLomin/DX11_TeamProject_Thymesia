@@ -46,7 +46,7 @@ public:
 
     void Debug_AnimationLog(ofstream& os);
     void Compute_Center(MESH_VTX_INFO& _tVertexInfo);
-
+    _float Get_MaxOffsetRange() const;
 };
 
 END

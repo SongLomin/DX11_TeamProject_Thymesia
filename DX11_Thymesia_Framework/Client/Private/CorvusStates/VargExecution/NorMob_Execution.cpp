@@ -62,8 +62,9 @@ void CNorMob_Execution::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	_matrix IdentityMatrix = XMMatrixIdentity();
 
-	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera",XMMatrixIdentity());
+	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", IdentityMatrix);
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "NorMonState: RunStart -> OnStateStart" << endl;

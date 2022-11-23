@@ -50,12 +50,22 @@ void CStatic_Instancing_Prop::Tick(_float fTimeDelta)
 void CStatic_Instancing_Prop::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
-	m_pInstanceModelCom.lock()->Culling_Instance(m_pPropInfos, 0.f);
+	
 }
 
 void CStatic_Instancing_Prop::Custom_Thread1(_float fTimeDelta)
 {
-	//Do Nothing
+	
+}
+
+void CStatic_Instancing_Prop::Before_Render(_float fTimeDelta)
+{
+	__super::Before_Render(fTimeDelta);
+
+#ifdef _INSTANCE_CULLING_
+	m_pInstanceModelCom.lock()->Culling_Instance(m_pPropInfos);
+	m_pInstanceModelCom.lock()->Update_VisibleInstance();
+#endif
 }
 
 HRESULT CStatic_Instancing_Prop::Render()

@@ -496,7 +496,8 @@ void CEditInstanceProp::View_Picking_Prop()
 
 		_uint   iIndex    = 0;
 		_float  fDistance = 99999999.f;
-		_vector vCamPos   = XMLoadFloat4(&GAMEINSTANCE->Get_CamPosition());
+		_float4	vCamPosition = GAMEINSTANCE->Get_CamPosition();
+		_vector vCamPos   = XMLoadFloat4(&vCamPosition);
 
 		for (auto& iter : m_pPropInfos)
 		{

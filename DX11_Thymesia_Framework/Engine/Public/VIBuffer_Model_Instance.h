@@ -35,7 +35,7 @@ public:
     string Get_ModelKey() const { return m_szModelKey; }
     weak_ptr<MODEL_DATA> Get_ModelData() const {return m_pModelData; }
 
-    void Culling_Instance(vector<INSTANCE_MESH_DESC>& In_ParticleDescs, const _float In_fRange);
+    void Culling_Instance(vector<INSTANCE_MESH_DESC>& In_ParticleDescs);
 
 public:
     void Init_Model(const char* In_szModelName);
@@ -44,6 +44,7 @@ public:
     HRESULT Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eActorType);
 
     void Update(const vector<INSTANCE_MESH_DESC>& In_ParticleDescs);
+    void Update_VisibleInstance();
 
 private:
     void Create_Materials(const char* pModelFilePath);
@@ -52,6 +53,9 @@ private:
 
 private:
     ComPtr<ID3D11Buffer>        m_pVBInstance;
+    list<INSTANCE_MESH_DESC*>   m_pVisibleInstanceDescs;
+    _bool                       m_bCulling = false;
+    _float                      m_fMaxOffsetRange = 0.f;
 
     _uint						m_iMaterialIndex    = 0;
     _uint						m_iInstanceStride   = 0;

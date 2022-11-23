@@ -50,7 +50,8 @@ void CVargBossState_Start::Tick(_float fTimeDelta)
 
 	if (m_fSinematic == 4.f)
 	{
-		GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", XMMatrixIdentity());
+		_matrix IdentityMatrix = XMMatrixIdentity();
+		GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", IdentityMatrix);
 	}
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);

@@ -24,46 +24,28 @@ void CVIBuffer_Model_Instance::Start()
 {
 }
 
-void CVIBuffer_Model_Instance::Culling_Instance(vector<INSTANCE_MESH_DESC>& In_ParticleDescs, const _float In_fRange)
+void CVIBuffer_Model_Instance::Culling_Instance(vector<INSTANCE_MESH_DESC>& In_ParticleDescs)
 {
 	shared_ptr<CGameInstance> pGameInstance = GAMEINSTANCE;
-	list<INSTANCE_MESH_DESC*> pVisibleInstanceDescs;
+	m_pVisibleInstanceDescs.clear();
+
+	m_pModelData->VertexInfo.vMax;
 
 	_vector vPosition;
 	for (auto& elem : In_ParticleDescs)
 	{
 		vPosition = XMLoadFloat3(&elem.vTarnslation);
 		vPosition = XMVectorSetW(vPosition, 1.f);
-		if (pGameInstance->isIn_Frustum_InWorldSpace(vPosition, In_fRange))
+		if (pGameInstance->isIn_Frustum_InWorldSpace(vPosition, m_fMaxOffsetRange * 4.f))
 		{
-			pVisibleInstanceDescs.push_back(&elem);
+			m_pVisibleInstanceDescs.push_back(&elem);
 		}
 	}
 
-	m_iVisibleCount = pVisibleInstanceDescs.size();
+	m_iVisibleCount = m_pVisibleInstanceDescs.size();
+	m_bCulling = true;
 
-	if (0 == m_iVisibleCount)
-		return;
-
-	D3D11_MAPPED_SUBRESOURCE		SubResource;
-
-	_matrix							WorldMatrix;
-	_uint							iIndex = 0;
-	DEVICECONTEXT->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
-
-	for (auto& elem : pVisibleInstanceDescs)
-	{
-		WorldMatrix = (*elem).Get_Matrix();
-
-		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vRight, WorldMatrix.r[0]);
-		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vUp, WorldMatrix.r[1]);
-		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vLook, WorldMatrix.r[2]);
-		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vTranslation, WorldMatrix.r[3]);
-		++iIndex;
-	}
-
-	DEVICECONTEXT->Unmap(m_pVBInstance.Get(), 0);
-
+	
 	/*shared_ptr<CGameInstance> pGameInstance = GAMEINSTANCE;
 
 	_int iCount = 0;
@@ -113,6 +95,8 @@ void CVIBuffer_Model_Instance::Init_Model(const char* In_szModelName)
 	
 	Create_Materials(szDir);
 	Create_MeshContainers();
+
+	m_fMaxOffsetRange = m_pModelData->Get_MaxOffsetRange();
 }
 
 void CVIBuffer_Model_Instance::Init_Instance(_uint In_iNumInstance)
@@ -327,6 +311,34 @@ void CVIBuffer_Model_Instance::Update(const vector<INSTANCE_MESH_DESC>& In_Parti
 	}
 
 	DEVICECONTEXT->Unmap(m_pVBInstance.Get(), 0);
+}
+
+void CVIBuffer_Model_Instance::Update_VisibleInstance()
+{
+	if (0 == m_iVisibleCount || !m_bCulling || m_pVisibleInstanceDescs.empty())
+		return;
+
+	D3D11_MAPPED_SUBRESOURCE		SubResource;
+
+	_matrix							WorldMatrix;
+	_uint							iIndex = 0;
+	DEVICECONTEXT->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+
+	for (auto& elem : m_pVisibleInstanceDescs)
+	{
+		WorldMatrix = (*elem).Get_Matrix();
+
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vRight, WorldMatrix.r[0]);
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vUp, WorldMatrix.r[1]);
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vLook, WorldMatrix.r[2]);
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vTranslation, WorldMatrix.r[3]);
+		++iIndex;
+	}
+
+	DEVICECONTEXT->Unmap(m_pVBInstance.Get(), 0);
+
+	m_bCulling = false;
+
 }
 
 void CVIBuffer_Model_Instance::OnDestroy()
