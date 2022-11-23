@@ -177,8 +177,12 @@ void CObject_Manager::Register_ReservedObjects()
 {
 	for (auto& elem : m_ReservedObjects)
 	{
-		if(elem.pReservedObject)
+		if (elem.pReservedObject)
+		{
 			m_pLayers[elem.iLevelIndex][elem.hashcode].push_back(elem.pReservedObject);
+			CallBack_Start += bind(&CGameObject::Start, elem.pReservedObject);
+		}
+			
 	}
 
 	m_ReservedObjects.clear();

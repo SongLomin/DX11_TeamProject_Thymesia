@@ -137,7 +137,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 
 	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom));
 
-	USE_START(CNorMonster);
+	//USE_START(CNorMonster);
 	return S_OK;
 }
 

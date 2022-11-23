@@ -159,7 +159,6 @@ namespace Client
 
 		// if true, particle position is according to bone
 		_bool		bBoner;
-		std::string strBoneName;
 
 #pragma region Spawn Position
 		_float3		vMinSpawnPosition; // becomes spawn position if bIsSpawnList is true

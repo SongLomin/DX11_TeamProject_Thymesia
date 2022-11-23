@@ -25,7 +25,7 @@ HRESULT CVIBuffer_Rect_Instance::Initialize(void* pArg)
 	m_BufferDesc.CPUAccessFlags = 0;
 	m_BufferDesc.MiscFlags = 0;
 
-	VTXTEX* pVertices = new VTXTEX[m_iNumVertices];
+	VTXTEX* pVertices = DBG_NEW VTXTEX[m_iNumVertices];
 
 	pVertices[0].vPosition = _float3(-0.5f, 0.5f, 0.f);
 	pVertices[0].vTexUV = _float2(0.0f, 0.f);
@@ -43,7 +43,7 @@ HRESULT CVIBuffer_Rect_Instance::Initialize(void* pArg)
 	m_SubResourceData.pSysMem = pVertices;
 
 	if (FAILED(__super::Create_VertexBuffer()))
-		return E_FAIL;
+		DEBUG_ASSERT;
 
 	Safe_Delete_Array(pVertices);
 
@@ -68,7 +68,7 @@ HRESULT CVIBuffer_Rect_Instance::Initialize(void* pArg)
 	m_BufferDesc.CPUAccessFlags = 0;
 	m_BufferDesc.MiscFlags = 0;
 
-	FACEINDICES16* pIndices = new FACEINDICES16[m_iNumPrimitive];
+	FACEINDICES16* pIndices = DBG_NEW FACEINDICES16[m_iNumPrimitive];
 	ZeroMemory(pIndices, sizeof(FACEINDICES16) * m_iNumPrimitive);
 
 	pIndices[0]._1 = 0;
@@ -83,7 +83,7 @@ HRESULT CVIBuffer_Rect_Instance::Initialize(void* pArg)
 	m_SubResourceData.pSysMem = pIndices;
 
 	if (FAILED(Create_IndexBuffer()))
-		return E_FAIL;
+		DEBUG_ASSERT;
 
 	Safe_Delete_Array(pIndices);
 
@@ -100,7 +100,6 @@ void CVIBuffer_Rect_Instance::Init_Particle(const _uint& In_Size)
 		return;
 
 	int i = m_pVBInstance.Reset();
-	m_pInstanceSpeeds.reset();
 
 #pragma region INSTANCEBUFFER
 	m_iInstanceStride = sizeof(VTXCOLORINSTANCE);
@@ -115,7 +114,7 @@ void CVIBuffer_Rect_Instance::Init_Particle(const _uint& In_Size)
 	m_BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	m_BufferDesc.MiscFlags = 0;
 
-	VTXCOLORINSTANCE* pInstance = new VTXCOLORINSTANCE[m_iNumInstance];
+	VTXCOLORINSTANCE* pInstance = DBG_NEW VTXCOLORINSTANCE[m_iNumInstance];
 
 	for (_uint i = 0; i < m_iNumInstance; ++i)
 	{
@@ -134,16 +133,6 @@ void CVIBuffer_Rect_Instance::Init_Particle(const _uint& In_Size)
 		DEBUG_ASSERT;
 
 	Safe_Delete_Array(pInstance);
-
-	/* 각 인스턴스들이 드랍되어야할 스피드를 각기 다르게 보관한다. */
-	m_pInstanceSpeeds = shared_ptr<_float[]>(new _float[m_iNumInstance]);
-
-	for (_uint i = 0; i < m_iNumInstance; ++i)
-	{
-		m_pInstanceSpeeds[i] = rand() % 7 + 5.0f;
-	}
-
-
 #pragma endregion
 
 }
@@ -174,28 +163,6 @@ HRESULT CVIBuffer_Rect_Instance::Render()
 	DEVICECONTEXT->DrawIndexedInstanced(6, m_iNumInstance, 0, 0, 0);
 
 	return S_OK;
-}
-
-void CVIBuffer_Rect_Instance::Update(_float fTimeDelta)
-{
-	D3D11_MAPPED_SUBRESOURCE		SubResource;
-
-	/* D3D11_MAP_WRITE_NO_OVERWRITE : SubResource구조체가 받아온 pData에 유요한 값이 담겨잇는 형태로 얻어오낟. */
-	/* D3D11_MAP_WRITE_DISCARD : SubResource구조체가 받아온 pData에 값이 초기화된 형태로 얻어오낟. */
-	DEVICECONTEXT->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
-
-	for (_uint i = 0; i < m_iNumInstance; ++i)
-	{
-
-		// *(((VTXINSTANCE*)SubResource.pData) + i)
-		((VTXCOLORINSTANCE*)SubResource.pData)[i].vTranslation.y -= m_pInstanceSpeeds[i] * fTimeDelta;
-
-		if (0.0f >= ((VTXCOLORINSTANCE*)SubResource.pData)[i].vTranslation.y)
-			((VTXCOLORINSTANCE*)SubResource.pData)[i].vTranslation.y = 10.f;
-
-	}
-
-	DEVICECONTEXT->Unmap(m_pVBInstance.Get(), 0);
 }
 
 void CVIBuffer_Rect_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDescs)

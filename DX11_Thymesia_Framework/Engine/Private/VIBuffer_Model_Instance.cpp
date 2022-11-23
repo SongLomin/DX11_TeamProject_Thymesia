@@ -24,6 +24,79 @@ void CVIBuffer_Model_Instance::Start()
 {
 }
 
+void CVIBuffer_Model_Instance::Culling_Instance(vector<INSTANCE_MESH_DESC>& In_ParticleDescs, const _float In_fRange)
+{
+	shared_ptr<CGameInstance> pGameInstance = GAMEINSTANCE;
+	list<INSTANCE_MESH_DESC*> pVisibleInstanceDescs;
+
+	_vector vPosition;
+	for (auto& elem : In_ParticleDescs)
+	{
+		vPosition = XMLoadFloat3(&elem.vTarnslation);
+		vPosition = XMVectorSetW(vPosition, 1.f);
+		if (pGameInstance->isIn_Frustum_InWorldSpace(vPosition, In_fRange))
+		{
+			pVisibleInstanceDescs.push_back(&elem);
+		}
+	}
+
+	m_iVisibleCount = pVisibleInstanceDescs.size();
+
+	if (0 == m_iVisibleCount)
+		return;
+
+	D3D11_MAPPED_SUBRESOURCE		SubResource;
+
+	_matrix							WorldMatrix;
+	_uint							iIndex = 0;
+	DEVICECONTEXT->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+
+	for (auto& elem : pVisibleInstanceDescs)
+	{
+		WorldMatrix = (*elem).Get_Matrix();
+
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vRight, WorldMatrix.r[0]);
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vUp, WorldMatrix.r[1]);
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vLook, WorldMatrix.r[2]);
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vTranslation, WorldMatrix.r[3]);
+		++iIndex;
+	}
+
+	DEVICECONTEXT->Unmap(m_pVBInstance.Get(), 0);
+
+	/*shared_ptr<CGameInstance> pGameInstance = GAMEINSTANCE;
+
+	_int iCount = 0;
+
+	sort(m_pModelInstance, 
+		m_pModelInstance + m_iNumInstance, 
+		[&pGameInstance, &In_fRange, &iCount](VTXMODELINSTANCE& Left, VTXMODELINSTANCE& Right) {
+
+			XMVECTOR LeftFromVector, RightFromVector;
+			LeftFromVector = XMLoadFloat4(&Left.vTranslation);
+			RightFromVector = XMLoadFloat4(&Right.vTranslation);
+			_bool IsInLeft = pGameInstance->isIn_Frustum_InWorldSpace(LeftFromVector, In_fRange);
+			_bool IsInRight = pGameInstance->isIn_Frustum_InWorldSpace(RightFromVector, In_fRange);
+			if (IsInLeft == IsInRight) 
+			{
+				return false;
+			}
+			else if (IsInLeft && !IsInRight)
+			{
+				iCount++;
+				return true;
+			}
+		}
+		);
+
+	m_iVisiableCount = iCount;
+
+	if (m_iVisiableCount > m_iNumInstance)
+	{
+		DEBUG_ASSERT;
+	}*/
+}
+
 void CVIBuffer_Model_Instance::Init_Model(const char* In_szModelName)
 {
 	Reset_Model();
@@ -48,6 +121,7 @@ void CVIBuffer_Model_Instance::Init_Instance(_uint In_iNumInstance)
 
 	m_iInstanceStride		= sizeof(VTXMODELINSTANCE);
 	m_iNumInstance			= In_iNumInstance;
+	m_iVisibleCount		= m_iNumInstance;
 	m_iNumVertexBuffers		= 2;
 
 	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
@@ -58,22 +132,22 @@ void CVIBuffer_Model_Instance::Init_Instance(_uint In_iNumInstance)
 	m_BufferDesc.CPUAccessFlags			= D3D11_CPU_ACCESS_WRITE;
 	m_BufferDesc.MiscFlags				= 0;
 
-	VTXMODELINSTANCE* pInstance = DBG_NEW VTXMODELINSTANCE[m_iNumInstance];
+	VTXMODELINSTANCE* pModelInstance = DBG_NEW VTXMODELINSTANCE[m_iNumInstance];
 
 	for (_uint i = 0; i < m_iNumInstance; ++i)
 	{
-		pInstance[i].vRight			= _float4(1.f, 0.f, 0.f, 0.f);
-		pInstance[i].vUp			= _float4(0.f, 1.f, 0.f, 0.f);
-		pInstance[i].vLook			= _float4(0.f, 0.f, 1.f, 0.f);
-		pInstance[i].vTranslation   = _float4(0.f, 0.f, 0.f, 1.f);
+		pModelInstance[i].vRight			= _float4(1.f, 0.f, 0.f, 0.f);
+		pModelInstance[i].vUp			= _float4(0.f, 1.f, 0.f, 0.f);
+		pModelInstance[i].vLook			= _float4(0.f, 0.f, 1.f, 0.f);
+		pModelInstance[i].vTranslation   = _float4(0.f, 0.f, 0.f, 1.f);
 	}
 
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));
-	m_SubResourceData.pSysMem = pInstance;
+	m_SubResourceData.pSysMem = pModelInstance;
 
 	DEVICE->CreateBuffer(&m_BufferDesc, &m_SubResourceData, &m_pVBInstance);
-
-	Safe_Delete_Array(pInstance);
+	
+	Safe_Delete_Array(pModelInstance);
 }
 
 void CVIBuffer_Model_Instance::Reset_Model() 
@@ -83,7 +157,7 @@ void CVIBuffer_Model_Instance::Reset_Model()
 
 	for (auto& iter : m_Materials)
 	{
-		for (_uint i = 0; i < AI_TEXTURE_TYPE_MAX; ++i)
+		for (_uint i = 0; i < (_uint)AI_TEXTURE_TYPE_MAX; ++i)
 		{
 			if (!iter.pTextures[i].lock())
 				continue;
@@ -228,7 +302,7 @@ HRESULT CVIBuffer_Model_Instance::Render_Mesh(_uint iMeshContainerIndex)
 	DEVICECONTEXT->IASetPrimitiveTopology(m_MeshContainers[iMeshContainerIndex].lock()->Get_Topology());
 
 	/* 6 : 하나의 도형을 그리기위해 사용하는 인덱스의 갯수. 네모라서 여섯개.  */
-	DEVICECONTEXT->DrawIndexedInstanced(m_MeshContainers[iMeshContainerIndex].lock()->Get_NumIndices(), m_iNumInstance, 0, 0, 0);
+	DEVICECONTEXT->DrawIndexedInstanced(m_MeshContainers[iMeshContainerIndex].lock()->Get_NumIndices(), m_iVisibleCount, 0, 0, 0);
 
 	return S_OK;
 }
@@ -253,6 +327,11 @@ void CVIBuffer_Model_Instance::Update(const vector<INSTANCE_MESH_DESC>& In_Parti
 	}
 
 	DEVICECONTEXT->Unmap(m_pVBInstance.Get(), 0);
+}
+
+void CVIBuffer_Model_Instance::OnDestroy()
+{
+	
 }
 
 void CVIBuffer_Model_Instance::Free()

@@ -22,15 +22,12 @@ public:
     void Init_Particle(const _uint& In_Size);
 
     virtual HRESULT Render() override;
-    void Update(_float fTimeDelta);
     void Update(const vector<PARTICLE_DESC>& In_ParticleDescs);
 
 private:
     ComPtr<ID3D11Buffer>        m_pVBInstance;
     _uint						m_iInstanceStride = 0;
     _uint						m_iNumInstance = 0;
-
-    shared_ptr<_float[]>        m_pInstanceSpeeds;
 
 private:
     void Free();

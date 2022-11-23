@@ -38,7 +38,7 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 
 	GET_SINGLE(CGameManager)->Use_EffectGroup("Tutorial_Dust", m_pTransformCom);
 
-	USE_START(CCamera_Target);
+	//USE_START(CCamera_Target);
 
 	return S_OK;
 }

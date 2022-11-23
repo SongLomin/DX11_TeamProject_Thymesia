@@ -26,7 +26,7 @@ HRESULT CGameObject::Initialize_Prototype()
 
 HRESULT CGameObject::Initialize(void* pArg)
 {
-	USE_START(CGameObject);
+	//USE_START(CGameObject);
 	m_pTransformCom = Add_Component<CTransform>();
 	m_iGameObjectIndex = g_iGameObjectIndex++;
 	return S_OK;

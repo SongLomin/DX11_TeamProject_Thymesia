@@ -23,7 +23,7 @@ public:
     virtual HRESULT Render() override;
 
 protected:
-    weak_ptr<CCollider>    m_pCColliderCom;
+    weak_ptr<CCollider>    m_pColliderCom;
 
 protected:
     void Free();

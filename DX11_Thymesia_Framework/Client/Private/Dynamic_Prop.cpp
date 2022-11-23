@@ -1,10 +1,6 @@
 #include "stdafx.h"
 #include "Dynamic_Prop.h"
-
-#include "Model.h"
-#include "Shader.h"
-#include "Renderer.h"
-#include "Transform.h"
+#include "Client_Components.h"
 
 GAMECLASS_C(CDynamic_Prop);
 CLONE_C(CDynamic_Prop, CGameObject);
@@ -17,6 +13,9 @@ HRESULT CDynamic_Prop::Initialize_Prototype()
 HRESULT CDynamic_Prop::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
+
+    m_pColliderCom = Add_Component<CCollider>();
+    //m_pColliderCom.lock()->Init_Collider();
 
     return S_OK;
 }

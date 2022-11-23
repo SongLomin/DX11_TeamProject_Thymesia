@@ -23,60 +23,62 @@ HRESULT CEffect_Rect::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 
-	m_eRenderGroup                             = RENDERGROUP::RENDER_ALPHABLEND;
+	ZeroMemory(&m_tEffectParticleDesc, sizeof(EFFECTPARTICLE_DESC));
 
-	ZeroMemory(&m_tEffectParticleDesc, sizeof(m_tEffectParticleDesc));
+	m_tEffectParticleDesc.iMaxInstance = 1;
 
-	m_tEffectParticleDesc.iMaxInstance         = 1;
-
-	m_tEffectParticleDesc.iParticleType        = _int(PARTICLETYPE::NONE);
+	m_tEffectParticleDesc.iParticleType = _int(PARTICLETYPE::NONE);
 	m_tEffectParticleDesc.iFollowTransformType = _int(TRANSFORMTYPE::STATIC);
 
-	m_tEffectParticleDesc.iShaderPassIndex     = 1;
+	m_tEffectParticleDesc.iShaderPassIndex = 1;
 
-	m_tEffectParticleDesc.iSyncAnimationKey    = -1;
+	m_tEffectParticleDesc.iSyncAnimationKey = -1;
 
 
 	// m_tParticleSpawns.clear();
 
-	m_tEffectParticleDesc.fMinLifeTime         = 1.f;
+	m_tEffectParticleDesc.fMinLifeTime = 1.f;
 
-	m_tEffectParticleDesc.vMinStartScale       = { 1.f, 1.f, 1.f };
-	m_tEffectParticleDesc.vMaxStartScale       = { 1.f, 1.f, 1.f };
-	m_tEffectParticleDesc.vMaxLimitScale            = { 1.f, 1.f, 1.f };
+	m_tEffectParticleDesc.vMinStartScale = { 1.f, 1.f, 1.f };
+	m_tEffectParticleDesc.vMaxStartScale = { 1.f, 1.f, 1.f };
+	m_tEffectParticleDesc.vMaxLimitScale = { 1.f, 1.f, 1.f };
 
-	m_tEffectParticleDesc.fDiscardRatio        = 0.1f;
-	m_tEffectParticleDesc.vMinStartColor       = { 1.f, 1.f, 1.f, 1.f };
-	m_tEffectParticleDesc.vMaxStartColor       = { 1.f, 1.f, 1.f, 1.f };
+	m_tEffectParticleDesc.fDiscardRatio = 0.1f;
+	m_tEffectParticleDesc.vMinStartColor = { 1.f, 1.f, 1.f, 1.f };
+	m_tEffectParticleDesc.vMaxStartColor = { 1.f, 1.f, 1.f, 1.f };
 
-	m_tEffectParticleDesc.vMaxColor            = { 1.f, 1.f, 1.f, 1.f };
+	m_tEffectParticleDesc.vMaxColor = { 1.f, 1.f, 1.f, 1.f };
 
-	m_tEffectParticleDesc.vDiffuseUVMax        = { 1.f, 1.f };
-	m_tEffectParticleDesc.vMaskUVMax           = { 1.f, 1.f };
-	m_tEffectParticleDesc.vNoiseUVMax          = { 1.f, 1.f };
+	m_tEffectParticleDesc.vDiffuseUVMax = { 1.f, 1.f };
+	m_tEffectParticleDesc.vMaskUVMax = { 1.f, 1.f };
+	m_tEffectParticleDesc.vNoiseUVMax = { 1.f, 1.f };
 
-	m_tEffectParticleDesc.vStartGlowColor      = { 1.f, 1.f, 1.f, 1.f };
+	m_tEffectParticleDesc.vStartGlowColor = { 1.f, 1.f, 1.f, 1.f };
 
-	ZeroMemory(&m_vDiffuseCurrentUV     , sizeof(_float2));
+	ZeroMemory(&m_vDiffuseCurrentUV, sizeof(_float2));
 	ZeroMemory(&m_vDiffuseCurrentUVForce, sizeof(_float2));
 
-	ZeroMemory(&m_vMaskCurrentUV        , sizeof(_float2));
-	ZeroMemory(&m_vMaskCurrentUVForce   , sizeof(_float2));
+	ZeroMemory(&m_vMaskCurrentUV, sizeof(_float2));
+	ZeroMemory(&m_vMaskCurrentUVForce, sizeof(_float2));
 
-	ZeroMemory(&m_vNoiseCurrentUV       , sizeof(_float2));
-	ZeroMemory(&m_vNoiseCurrentUVForce  , sizeof(_float2));
+	ZeroMemory(&m_vNoiseCurrentUV, sizeof(_float2));
+	ZeroMemory(&m_vNoiseCurrentUVForce, sizeof(_float2));
 
 	m_vCurrentGlowColor = { 1.f, 1.f, 1.f, 1.f };
 	ZeroMemory(&m_vCurrentGlowColorForce, sizeof(_float2));
 
-	m_bFinish       = false;
+	m_bFinish = false;
 	m_bStopParticle = false;
+
+
 	return S_OK;
 }
 
 
 HRESULT CEffect_Rect::Initialize(void* pArg)
 {
+	m_eRenderGroup = RENDERGROUP::RENDER_ALPHABLEND;
+
 	__super::Initialize(pArg);
 
 	m_pVIBuffer = Add_Component<CVIBuffer_Rect_Instance>();
@@ -1525,7 +1527,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 			char strBoneName[MAX_PATH];
 			ZeroMemory(strBoneName, sizeof(char) * MAX_PATH);
-			strcpy_s(strBoneName, m_tEffectParticleDesc.strBoneName.c_str());
+			strcpy_s(strBoneName, m_szBoneName.c_str());
 			if (m_tEffectParticleDesc.bBoner)
 			{
 				weak_ptr<CPreViewAnimationModel> pPreviewModel;

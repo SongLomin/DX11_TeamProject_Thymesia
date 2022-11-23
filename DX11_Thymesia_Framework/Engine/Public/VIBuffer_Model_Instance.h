@@ -35,6 +35,8 @@ public:
     string Get_ModelKey() const { return m_szModelKey; }
     weak_ptr<MODEL_DATA> Get_ModelData() const {return m_pModelData; }
 
+    void Culling_Instance(vector<INSTANCE_MESH_DESC>& In_ParticleDescs, const _float In_fRange);
+
 public:
     void Init_Model(const char* In_szModelName);
     void Init_Instance(_uint In_iNumInstance);
@@ -50,9 +52,11 @@ private:
 
 private:
     ComPtr<ID3D11Buffer>        m_pVBInstance;
-    _uint						m_iMaterialIndex  = 0;
-    _uint						m_iInstanceStride = 0;
-    _uint						m_iNumInstance    = 0;
+
+    _uint						m_iMaterialIndex    = 0;
+    _uint						m_iInstanceStride   = 0;
+    _uint						m_iNumInstance      = 0;
+    _uint                       m_iVisibleCount    = 0;
 
     string									m_szModelKey;
 
@@ -63,6 +67,7 @@ private:
     _uint									m_iNumMaterials         = 0;
 
 private:
+    virtual void OnDestroy() override;
     void Free();
 
 };
