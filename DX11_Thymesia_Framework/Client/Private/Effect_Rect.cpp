@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Effect_Rect.h"
 #include "Client_Components.h"
+#include "Window_AnimationModelView.h"
+#include "PreViewAnimationModel.h"
 
 #include "Easing_Utillity.h"
 
@@ -1518,6 +1520,26 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 			ImGui::Separator();
 #pragma region Positions
+			ImGui::Text("Follow Bone"); ImGui::SameLine();
+			ImGui::Checkbox("##Is_Boner", &m_tEffectParticleDesc.bBoner);
+
+			char strBoneName[MAX_PATH];
+			ZeroMemory(strBoneName, sizeof(char) * MAX_PATH);
+			strcpy_s(strBoneName, m_tEffectParticleDesc.strBoneName.c_str());
+			if (m_tEffectParticleDesc.bBoner)
+			{
+				weak_ptr<CPreViewAnimationModel> pPreviewModel;
+				pPreviewModel = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel();
+				if (nullptr == pPreviewModel.lock())
+				{
+					ImGui::Text("! NO MODEL !");
+				}
+				else
+				{
+					pPreviewModel.lock()->Get_Component<CModel>();
+				}
+			}
+
 			ImGui::Text("Use Easing Position"); ImGui::SameLine();
 			ImGui::Checkbox("##Is_Easing_Position", &m_tEffectParticleDesc.bEasingPosition);
 

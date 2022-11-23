@@ -61,7 +61,6 @@ public:
     void UnUse_EffectGroup();
     weak_ptr<CEffectGroup> Clone_EffectGroup();
 
-
     void Load_FromBinary(const string& In_szPath);
     void Write_FromBinary();
     void Load_EffectJson(const string& In_szPath, const _uint& In_iTimeScaleLayers, const _uint& In_iCreatedLevel);
