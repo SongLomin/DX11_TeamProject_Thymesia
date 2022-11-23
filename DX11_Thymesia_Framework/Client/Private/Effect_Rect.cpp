@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Effect_Rect.h"
 #include "Client_Components.h"
+#include "Window_AnimationModelView.h"
+#include "PreViewAnimationModel.h"
 
 #include "Easing_Utillity.h"
 
@@ -33,6 +35,9 @@ HRESULT CEffect_Rect::Initialize_Prototype()
 	m_tEffectParticleDesc.iShaderPassIndex     = 1;
 
 	m_tEffectParticleDesc.iSyncAnimationKey    = -1;
+
+
+	// m_tParticleSpawns.clear();
 
 	m_tEffectParticleDesc.fMinLifeTime         = 1.f;
 
@@ -964,6 +969,22 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 				m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, vMove);
 		}
 	}
+
+	if (m_tEffectParticleDesc.bUseGravity)
+	{
+		_vector vDeltaGravity;
+		ZeroMemory(&vDeltaGravity, sizeof(_vector));
+
+		vDeltaGravity = XMVectorSetX(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.x* fTimeDelta* (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
+		vDeltaGravity = XMVectorSetY(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.y* fTimeDelta* (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
+		vDeltaGravity = XMVectorSetZ(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.z* fTimeDelta* (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
+
+		_float3 f3DeltaGravity;
+		XMStoreFloat3(&f3DeltaGravity, vDeltaGravity);
+
+		m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, f3DeltaGravity);
+		// vMove = SMath::Add_Float3(vMove, vSpeed);
+	}
 }
 
 void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
@@ -1491,8 +1512,34 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::Text("Is Move Look"); ImGui::SameLine();
 			ImGui::Checkbox("##Is_MoveLook", &m_tEffectParticleDesc.bMoveLook);
 
+			ImGui::Text("Use Gravity"); ImGui::SameLine();
+			ImGui::Checkbox("##Use_Gravity", &m_tEffectParticleDesc.bUseGravity);
+
+			ImGui::Text("Gravity Force");
+			ImGui::DragFloat3("##Gravity_Force", &m_tEffectParticleDesc.vGravityForce.x, 0.1f, -100.f, 100.f, "%.5f");
+
 			ImGui::Separator();
 #pragma region Positions
+			ImGui::Text("Follow Bone"); ImGui::SameLine();
+			ImGui::Checkbox("##Is_Boner", &m_tEffectParticleDesc.bBoner);
+
+			char strBoneName[MAX_PATH];
+			ZeroMemory(strBoneName, sizeof(char) * MAX_PATH);
+			strcpy_s(strBoneName, m_tEffectParticleDesc.strBoneName.c_str());
+			if (m_tEffectParticleDesc.bBoner)
+			{
+				weak_ptr<CPreViewAnimationModel> pPreviewModel;
+				pPreviewModel = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel();
+				if (nullptr == pPreviewModel.lock())
+				{
+					ImGui::Text("! NO MODEL !");
+				}
+				else
+				{
+					pPreviewModel.lock()->Get_Component<CModel>();
+				}
+			}
+
 			ImGui::Text("Use Easing Position"); ImGui::SameLine();
 			ImGui::Checkbox("##Is_Easing_Position", &m_tEffectParticleDesc.bEasingPosition);
 
@@ -1513,6 +1560,8 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 			ImGui::Text("Max Offset Range");
 			ImGui::DragFloat3("##Max_Offset_Range", &m_tEffectParticleDesc.vMaxSpawnOffsetRange.x, 0.1f);
+
+
 #pragma endregion
 			ImGui::Separator();
 #pragma region Speed & Force
@@ -1763,6 +1812,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::Text("Min Scale");
 			ImGui::DragFloat3("##Min_Limit_Scale", &m_tEffectParticleDesc.vMinLimitScale.x, 0.1f, -100.f, 100.f, "%.5f");
 
+
 			ImGui::Text("Max Scale");
 			ImGui::DragFloat3("##Max_Limit_Scale", &m_tEffectParticleDesc.vMaxLimitScale.x, 0.1f, -100.f, 100.f, "%.5f");
 #pragma endregion
@@ -1772,7 +1822,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 #pragma region Colors
 			ImGui::Text("Discard Ratio");
-			ImGui::DragFloat("##Discard_Ratio", &m_tEffectParticleDesc.fDiscardRatio, 0.01f, 0.f, 1.f);
+			ImGui::DragFloat("##Discard_Ratio", &m_tEffectParticleDesc.fDiscardRatio, 0.01f, 0.f, 3.f);
 
 			ImGui::Text("Is Gray Only Use Red");
 			ImGui::SameLine();

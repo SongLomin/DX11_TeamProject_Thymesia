@@ -351,6 +351,8 @@ namespace Engine
 		_float3			vTargetSpeed;		// is Spawn Position when using easing position
 		_float3			vTargetSpeedForce;  // is Goal Position when using easing position
 
+		_float			fGravityAcc;
+
 		// For. Rotation
 		_float3         vCurrentRotation;
 		_float3			vCurrentRotationForce;
@@ -377,6 +379,16 @@ namespace Engine
 		{
 			ZeroMemory(this, sizeof(PARTICLE_DESC));
 		}
+	};
+
+	struct PARTICLE_SPAWN
+	{
+		_float3			vSpawnPosition;
+
+		_float3			vSpawnLook;
+		_float			fSpawnTime;
+
+		_uint			iParticleNum;
 	};
 
 	struct FaderDesc

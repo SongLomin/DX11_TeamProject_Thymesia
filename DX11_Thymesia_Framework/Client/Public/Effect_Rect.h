@@ -119,6 +119,7 @@ private:
 	_float                              m_fCurrentInitTime = 0.f;
 
     _bool                               m_bStopSprite = false;
+
 };
 
 END

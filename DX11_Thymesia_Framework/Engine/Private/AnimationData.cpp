@@ -60,6 +60,10 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack3_New", 2.f);
     MACRO("SK_C_Corvus.ao|Corvus_SD1_ParryL_NEW", 4.f);
     MACRO("SK_C_Corvus.ao|Corvus_SD1_ParryR_NEW", 4.f);
+
+
+    MACRO("SK_C_Corvus.ao|Corvus_Raven_ClawLong_L01", 2.f);
+    MACRO("SK_C_Corvus.ao|Corvus_Raven_ClawLong_L02", 2.f);
 #undef MACRO
 
 
