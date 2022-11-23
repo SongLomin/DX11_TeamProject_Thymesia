@@ -17,17 +17,6 @@ class CCamera_Target final : public CCamera
 	GAMECLASS_H(CCamera_Target);
 	CLONE_H(CCamera_Target, CGameObject);
 
-	enum class CAMERA_STATE
-	{
-		LOOKMONSTER,
-		INTERPOLATE,
-		LOOKPLAYER,
-		STATE_END
-	};
-
-public:
-
-
 public:
 	CCamera_Target(const CCamera_Target& rhs);
 
@@ -44,7 +33,7 @@ public:
 	void Focus_Monster(weak_ptr<CGameObject> _pMonster);
 	void Release_Focus();
 
-	void Start_Cinematic(weak_ptr<CModel> _pModel,const _char* pBoneName, _fmatrix OffSetMatrix);
+	void Start_Cinematic(weak_ptr<CModel> _pModel,const _char* pBoneName, _fmatrix OffSetMatrix, CINEMATIC_TYPE eType);
 	void End_Cinematic();
 
 	void Activate_Zoom(_float fRatio, _float fZoomTime);
@@ -77,6 +66,7 @@ private:
 
 private:
 	//연출이 끝난 후에 위치 보정 용
+	CINEMATIC_TYPE					m_eCinematicType = CINEMATIC_TYPE::TYPE_END;
 	_bool					m_bCinematicEnd = false;
 	_float4					m_vDestCamPosition;
 	_float4					m_vCamPosAfterCinematic;
@@ -96,7 +86,6 @@ private:
 	weak_ptr<CGameObject>		m_pTargetMonster;
 	weak_ptr<CTransform>	m_pTargetMonsterTransformCom;
 
-	CAMERA_STATE			m_eCameraState = CAMERA_STATE::STATE_END;
 	_bool					m_bIsFocused = false;
 	_bool					m_bFirst = true;
 

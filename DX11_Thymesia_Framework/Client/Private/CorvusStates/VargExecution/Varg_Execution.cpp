@@ -65,7 +65,7 @@ void CVarg_Execution::OnStateStart(const _float& In_fAnimationBlendTime)
 	LocalMat *= XMMatrixRotationX(XMConvertToRadians(-90.f));
 	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
 
-	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom,"camera",LocalMat);
+	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom,"camera",LocalMat,CINEMATIC_TYPE::EXECUTION);
 #ifdef _DEBUG
 	#ifdef _DEBUG_COUT_
 		cout << "NorMonState: RunStart -> OnStateStart" << endl;

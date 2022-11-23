@@ -148,7 +148,7 @@ void CCamera_Target::Release_Focus()
 
 }
 
-void CCamera_Target::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName, _fmatrix OffSetMatrix, _uint eType)
+void CCamera_Target::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName, _fmatrix OffSetMatrix, CINEMATIC_TYPE eType)
 {
 
 	m_pCameraBoneNode = _pModel.lock()->Find_BoneNode(pBoneName);
@@ -167,7 +167,7 @@ void CCamera_Target::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBon
 
 void CCamera_Target::End_Cinematic()
 {
-	if (m_eCinematicType == (_uint)CINEMATIC_TYPE::EXECUTION)
+	if (m_eCinematicType == CINEMATIC_TYPE::EXECUTION)
 	{
 		_matrix		ParentMatrix = m_pCameraBoneNode.lock()->Get_CombinedMatrix()
 			* XMLoadFloat4x4(&m_TransformationMatrix);
@@ -196,9 +196,21 @@ void CCamera_Target::End_Cinematic()
 		m_bCinematic = false;
 		m_bCinematicEnd = true;
 	}
-	else if (m_eCinematicType == (_uint)CINEMATIC_TYPE::CINEMATIC)
+	else if (m_eCinematicType == CINEMATIC_TYPE::CINEMATIC)
 	{
+		_matrix PlayerMatrix = m_pCurrentPlayerTransformCom.lock()->Get_WorldMatrix();
+
+		PlayerMatrix.r[0] = XMVector3Normalize(PlayerMatrix.r[0]);
+		PlayerMatrix.r[1] = XMVector3Normalize(PlayerMatrix.r[1]);
+		PlayerMatrix.r[2] = XMVector3Normalize(PlayerMatrix.r[2]);
+
+		_vector vLook = PlayerMatrix.r[2];
+		PlayerMatrix.r[3] = PlayerMatrix.r[3] + vLook * -4.5f + XMVectorSet(0.f, 1.1f, 0.f, 0.f);
+		m_pTransformCom.lock()->Set_WorldMatrix(PlayerMatrix);
+
 		/*그냥 대충 페이드아웃*/
+		m_pCameraBoneNode = weak_ptr<CBoneNode>();
+		m_pCameraBoneParentTransform = weak_ptr<CTransform>();
 		m_bCinematic = false;
 		m_bCinematicEnd = false;
 	}
