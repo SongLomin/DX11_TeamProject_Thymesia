@@ -176,7 +176,7 @@ weak_ptr<CCamera_Target> CGameManager::Get_TargetCamera()
 	return m_pTargetCamera;
 }
 
-void CGameManager::Add_Shaking(_vector vShakingDir, _float fRatio)
+void CGameManager::Add_Shaking(_vector& vShakingDir, _float fRatio, _float fShakingTime,_float fFrequency)
 {
 	if (m_pTargetCamera.lock().get() != m_pCurrentCamera.lock().get())
 	{
@@ -186,7 +186,7 @@ void CGameManager::Add_Shaking(_vector vShakingDir, _float fRatio)
 	if (!m_pTargetCamera.lock())
 		DEBUG_ASSERT;
 
-	m_pTargetCamera.lock()->Add_Shaking(vShakingDir, fRatio);
+	m_pTargetCamera.lock()->Add_Shaking(vShakingDir, fRatio, fShakingTime, fFrequency = 10.f);
 	
 
 }
@@ -435,9 +435,9 @@ void CGameManager::Active_KeyEvent(const weak_ptr<CModel> In_ModelCom, const wea
 	}
 }
 
-void CGameManager::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName, _matrix& OffSetMatrix)
+void CGameManager::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName, _matrix& OffSetMatrix, CINEMATIC_TYPE iCinematicType)
 {
-	m_pTargetCamera.lock()->Start_Cinematic(_pModel, pBoneName, OffSetMatrix);
+	m_pTargetCamera.lock()->Start_Cinematic(_pModel, pBoneName, OffSetMatrix, iCinematicType);
 }
 
 void CGameManager::End_Cinematic()
@@ -445,9 +445,9 @@ void CGameManager::End_Cinematic()
 	m_pTargetCamera.lock()->End_Cinematic();
 }
 
-void CGameManager::Activate_Zoom(_float fRatio)
+void CGameManager::Activate_Zoom(_float fRatio, _float fZoomTime)
 {
-	m_pTargetCamera.lock()->Activate_Zoom(fRatio);
+	m_pTargetCamera.lock()->Activate_Zoom(fRatio, fZoomTime);
 }
 
 void CGameManager::Deactivate_Zoom()

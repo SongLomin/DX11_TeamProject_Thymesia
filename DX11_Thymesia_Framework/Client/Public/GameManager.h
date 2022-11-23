@@ -53,7 +53,7 @@ public:
 public:
     void Set_TargetCamera(weak_ptr<CCamera_Target> In_TargetCamera);
     weak_ptr<CCamera_Target> Get_TargetCamera();
-    void Add_Shaking(_vector vShakingDir, _float fRatio);
+    void Add_Shaking(_vector& vShakingDir, _float fRatio, _float fShakingTime, _float fFrequency = 10.f);
     //void Set_TargetForTargetCamera(weak_ptr<CGameObject> In_TargetGameObject);
     void Focus_Monster();
     void Release_Focus();
@@ -80,14 +80,12 @@ public:
 
     // 해당 키에 이벤트가 있는지 확인 후 있다면 이벤트를 호출합니다.
     void Active_KeyEvent(const weak_ptr<CModel> In_ModelCom, const weak_ptr<CTransform> In_TransformCom, const _uint& In_iKeyIndex, const _uint& In_iTimeScaleLayer = -1);
-    void Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName,_matrix& OffSetMatrix);
+    void Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName,_matrix& OffSetMatrix, CINEMATIC_TYPE iCinematicType);
     void End_Cinematic();
 
-    void Activate_Zoom(_float fRatio);
+    void Activate_Zoom(_float fRatio, _float fZoomTime);
     void Deactivate_Zoom();
     
-public:
-    _bool Is_OpenHyperSpace();
 
 private:
     void Start_Peace();
