@@ -18,7 +18,7 @@
 #define		_GENERATE_PROP_COLLIDER_ true
 
 // UI제외한 오브젝트 생성 X
-#define		_ONLY_UI_
+#define		//_ONLY_UI_
 
 #endif // _DEBUG
 
