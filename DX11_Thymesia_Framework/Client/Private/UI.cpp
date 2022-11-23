@@ -152,6 +152,11 @@ void CUI::Set_Depth(_float _fDepth)
 	m_tUIDesc.fDepth = _fDepth;
 }
 
+void CUI::Set_SizeX(_float In_fSize)
+{
+	m_tUIDesc.fSizeX = In_fSize;
+}
+
 void CUI::Add_Shaking(const _float& In_ShakeTime, const _float& _fShakePower)
 {
 	m_fCurrentShakeTime = In_ShakeTime;
@@ -202,7 +207,7 @@ HRESULT CUI::SetUp_ShaderResource()
 
 void CUI::Bind_Player()
 {
-#ifndef _ONLY_UI
+#ifndef _ONLY_UI_
 	m_pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 	m_pPlayerStatus = m_pPlayer.lock()->Get_ComponentByType<CStatus_Player>();
 #endif // !_ONLY_UI
