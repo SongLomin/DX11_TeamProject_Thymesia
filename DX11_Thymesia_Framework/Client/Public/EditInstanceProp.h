@@ -80,6 +80,8 @@ private:
     RESOURCE_LIST       m_JsonList;
     _bool               m_bSubDraw = false;
 
+    static _bool        m_bDetailPicking;
+
     _int                m_iColliderType = 0;
     _bool               m_bViewPhysXInfo = false;
 

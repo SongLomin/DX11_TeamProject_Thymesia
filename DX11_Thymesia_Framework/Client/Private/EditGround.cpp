@@ -1083,7 +1083,6 @@ void CEditGround::Write_Json(json& Out_Json)
 	{
 		Out_Json["Name"] = typeid(CGround).name();
 	}
-
 }
 
 void CEditGround::Load_FromJson(const json& In_Json)
