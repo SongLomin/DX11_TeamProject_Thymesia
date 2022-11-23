@@ -1,5 +1,5 @@
 #pragma once
-#include "AIStateBase.h"
+#include "BossStateBase.h"
 #include "Client_Defines.h"
 
 BEGIN(Engine)
@@ -9,7 +9,7 @@ END
 BEGIN(Client)
 
 class CVargBossStateBase abstract :
-    public CAIStateBase
+    public CBossStateBase
 {
     GAMECLASS_H(CVargBossStateBase)
 

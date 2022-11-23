@@ -132,9 +132,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	//
 
 	ZeroMemory(&DDD, sizeof(CBossMonster::STATE_LINK_BOSS_DESC));
-	DDD.vYame.x = 20.f;
+	DDD.vYame.x = 55.f;
 	DDD.vYame.y = 4.7f;
-	DDD.vYame.z = 25.f;
+	DDD.vYame.z = 6.3f;
 	DDD.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
 	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &DDD);
 

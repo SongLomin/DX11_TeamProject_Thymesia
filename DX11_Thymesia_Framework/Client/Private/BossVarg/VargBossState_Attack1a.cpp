@@ -32,7 +32,7 @@ void CVargBossState_Attack1a::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_Seq_TutorialBossFightStart");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_ComboAttack1_1");
 
 
 	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Attack1a::Call_AnimationEnd, this);*/

@@ -103,7 +103,10 @@ void CVargBossState_Start::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 	
-	
+	if (m_fSinematic == 4.f)
+		GET_SINGLE(CGameManager)->End_Cinematic();
+
+	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
 }
 
 void CVargBossState_Start::OnDestroy()
@@ -130,17 +133,16 @@ _bool CVargBossState_Start::Check_AndChangeNextState()
 	//}
 
 
-
 	switch (m_eBossStartType)
 	{
 	case Client::BOSSSTARTTYPE::BEGINSTART:
-		if (fPToMDistance <= 3.f)
+		if (fPToMDistance <= 10.f)
 		{
 			m_fSinematic = 4.f;
 		}
 		break;
 	case Client::BOSSSTARTTYPE::NORMALSTART:
-		if (fPToMDistance <= 3.f)
+		if (fPToMDistance <= 10.f)
 		{
 			m_fSinematic = 4.f;
 		}

@@ -80,22 +80,6 @@ void CVargBossState_Idle::OnStateEnd()
 
 }
 
-
-//
-//void CVargBossState_Idle::Call_AnimationEnd()
-//{
-//	if (!Get_Enable())
-//		return;
-//
-//
-//	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
-//}
-
-//void CVargBossState_Idle::OnDestroy()
-//{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Idle::Call_AnimationEnd, this);
-//}
-
 void CVargBossState_Idle::Free()
 {
 
@@ -106,6 +90,30 @@ _bool CVargBossState_Idle::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+
+	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
+
+	//조건 8보다클때
+
+	if (fPToMDistance > 8.f)
+	{
+		/*
+		* 거리가 8보다크면 조건은 세가지
+		* 1. 점프공격으로 거리줄이는방법 <점프두가지있음 존나크게점프임 이거는레이드어택>
+		* 2. 달려오고 휘두로고 찍는 공격패턴 <런어택>
+		* 3. 달려오면서 바로 공격 <런-> 어택->1 >
+		*/
+	}
+
+	else if (5.f >= fPToMDistance || 8.f <= fPToMDistance)
+	{
+
+	}
+
+	else if (5.f < fPToMDistance)
+	{
+
+	}
 
 
 	return false;
