@@ -98,15 +98,19 @@ PxControllerCollisionFlags CPhysXController::MoveGravity(const _float fDeltaTime
 		return PxControllerCollisionFlags();
 	}
 
-	_float m_fPreHeight = -0.5f * 9.81f * m_fGravityAcc * m_fGravityAcc;
+	/*float m_fPreHeight = -0.5f * 9.81f * m_fGravityAcc * m_fGravityAcc;
 
 	m_fGravityAcc += fDeltaTime;
 
 	_float m_fCurrentHeight = -0.5f * 9.81f * m_fGravityAcc * m_fGravityAcc;
 
-	m_fCurrentHeight -= m_fPreHeight;
+	m_fCurrentHeight -= m_fPreHeight;*/
 
-	return m_pController->move({0.f, m_fCurrentHeight, 0.f}, 0.f, fDeltaTime, PxControllerFilters());
+	_float fDeltaHeight = -0.5f * 9.81f * fDeltaTime*(m_fGravityAcc*2.f + fDeltaTime);
+
+	m_fGravityAcc += fDeltaTime;
+
+	return m_pController->move({0.f, fDeltaHeight, 0.f}, 0.f, fDeltaTime, PxControllerFilters());
 }
 
 void CPhysXController::Reset_Gravity()
@@ -121,6 +125,27 @@ PxController* CPhysXController::Get_Controller()
 void CPhysXController::Create_Geometry()
 {
 
+}
+
+void CPhysXController::OnEnable(void* pArg)
+{
+	__super::OnEnable(pArg);
+
+	if (!m_pController)
+	{
+		GET_SINGLE(CPhysX_Manager)->Create_Controller(m_pControllerDesc, &m_pController);
+	}
+}
+
+void CPhysXController::OnDisable()
+{
+	__super::OnDisable();
+
+	if (m_pController)
+	{
+		m_pController->release();
+		m_pController = nullptr;
+	}
 }
 
 void CPhysXController::OnDestroy()

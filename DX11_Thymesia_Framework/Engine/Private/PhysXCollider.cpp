@@ -651,6 +651,8 @@ void CPhysXCollider::Create_Geometry()
 		m_pGeometry.push_back(DBG_NEW PxBoxGeometry(XMVectorGetX(m_PhysXColliderDesc.vScale) * 0.5f,
 			XMVectorGetY(m_PhysXColliderDesc.vScale) * 0.5f, 
 			XMVectorGetZ(m_PhysXColliderDesc.vScale) * 0.5f));
+
+		
 		break;
 
 	case PHYSXCOLLIDER_TYPE::CYLINDER:
@@ -838,6 +840,30 @@ void CPhysXCollider::PhysXCollisionExit(weak_ptr<CPhysXCollider> pOtherCollider)
 
 }
 
+void CPhysXCollider::OnEnable(void* pArg)
+{
+	__super::OnEnable(pArg);
+
+	if (m_pRigidDynamic)
+		m_pRigidDynamic->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, false);
+
+	if (m_pRigidStatic)
+		m_pRigidStatic->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, false);
+}
+
+void CPhysXCollider::OnDisable()
+{
+	__super::OnDisable();
+
+	if (m_pRigidDynamic)
+		m_pRigidDynamic->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, true);
+
+	if (m_pRigidStatic)
+		m_pRigidStatic->setActorFlag(PxActorFlag::eDISABLE_SIMULATION, true);
+}
+
+
+
 void CPhysXCollider::OnDestroy()
 {
 	if (m_pRigidDynamic)
@@ -849,3 +875,4 @@ void CPhysXCollider::OnDestroy()
 void CPhysXCollider::Free()
 {
 }
+

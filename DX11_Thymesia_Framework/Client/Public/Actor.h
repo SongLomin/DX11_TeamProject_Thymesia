@@ -54,6 +54,8 @@ protected:
 
     _bool       m_bRendering = true;
 
+    _float      m_fCullingRange = 0.f;
+
 public:
     // 전투가 끝나면 호출됩니다. 주로 승리 연출
     virtual void OnBattleEnd() {};

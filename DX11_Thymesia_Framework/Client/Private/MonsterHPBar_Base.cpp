@@ -292,13 +292,7 @@ void CMonsterHPBar_Base::Call_Recovery()
 void CMonsterHPBar_Base::Call_Disable()
 {
 	Set_Enable(false);
-	m_pTrack.lock()->Set_Enable(false);
-	m_pGreenTrack.lock()->Set_Enable(false);
-	if (m_pStunned.lock())
-		m_pStunned.lock()->Set_Enable(false);
-	m_pRecovery.lock()->Set_Enable(false);
 
-	Set_RecoveryAlram(false);
 }
 
 void CMonsterHPBar_Base::Call_Stun()
@@ -316,6 +310,16 @@ void CMonsterHPBar_Base::Call_Restart()
 
 	m_pWhite.lock()->Set_Ratio(pStatus_Monster.lock()->Get_WhiteRatio());
 	m_pGreen.lock()->Set_Ratio(pStatus_Monster.lock()->Get_GreenRatio());
+}
+
+void CMonsterHPBar_Base::OnDisable()
+{
+	m_pTrack.lock()->Set_Enable(false);
+	m_pGreenTrack.lock()->Set_Enable(false);
+	if (m_pStunned.lock())
+		m_pStunned.lock()->Set_Enable(false);
+	m_pRecovery.lock()->Set_Enable(false);
+	Set_RecoveryAlram(false);
 }
 
 void CMonsterHPBar_Base::FollowOwner()
@@ -336,18 +340,11 @@ void CMonsterHPBar_Base::FollowOwner()
 	vViewPosition.m128_f32[0] = (vViewPosition.m128_f32[0] + 1.f) * (_float)g_iWinCX * 0.5f;
 	vViewPosition.m128_f32[1] = (-1.f * vViewPosition.m128_f32[1] + 1.f) * (_float)g_iWinCY * 0.5f;
 
-
-//	m_fX = g_iWinCX * 0.5f * XMVectorGetX(Proj) + g_iWinCX * 0.5f;
-//	m_fY = -(g_iWinCY * 0.5f * XMVectorGetY(Proj)) + g_iWinCY * 0.5f;
-
-	/*_float fHeight = vViewPosition.m128_f32[1];
-
+	_float fHeight = vViewPosition.m128_f32[1] - 200.f;
 	if (fHeight >= ((_float)g_iWinCY) * 0.4f)
-	{
 		fHeight = ((_float)g_iWinCY) * 0.4f;
-	}*/
 
-	Set_UIPosition(vViewPosition.m128_f32[0], vViewPosition.m128_f32[1] - 200.f);
+	Set_UIPosition(vViewPosition.m128_f32[0], fHeight);
 }
 
 void CMonsterHPBar_Base::Set_Owner(weak_ptr<CMonster> pMonster)

@@ -604,7 +604,7 @@ void CEditNaviMesh::Bake_NaviMesh()
         vVertice[1] = elem.lock()->Get_CellPosition(1);
         vVertice[2] = elem.lock()->Get_CellPosition(2);
 
-        pMeshData->pPosVertices = shared_ptr<VTXPOS[]>(new VTXPOS[3]);
+        pMeshData->pPosVertices = shared_ptr<VTXPOS[]>(DBG_NEW VTXPOS[3]);
 
         for (_uint i = 0; i < 3; ++i)
         {

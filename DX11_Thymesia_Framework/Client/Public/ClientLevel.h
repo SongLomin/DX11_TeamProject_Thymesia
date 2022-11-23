@@ -20,6 +20,9 @@ public:
     void Change_NextLevel(void* pArg);
 
 protected:
+    void	Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex);
+
+protected:
     string  m_szDefaultJsonPath = "../Bin/LevelData/";
     LEVEL   m_eMyLevel = LEVEL::LEVEL_END;
     LEVEL   m_eNextLevel = LEVEL::LEVEL_END;

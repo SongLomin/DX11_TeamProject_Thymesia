@@ -14,7 +14,8 @@ HRESULT CResource_Manager::Load_Textures(const _char* _strKey, const _tchar* pTe
 	//이미 등록된 키가 있으면 이어서 등록
 	if (m_SRVs[(_uint)eMemType].end() != iter)
 	{
-		szKey = iter->first;
+		return S_OK;
+		//szKey = iter->first;
 	}
 
 	for (_uint i = 0; i < 512; ++i)
@@ -136,6 +137,60 @@ HRESULT CResource_Manager::Load_Model(const _char* sKey, const _char* sModelFile
 	}
 
 	m_pScenes[(_uint)eMemType].emplace(sKey, TempModel);
+
+
+//	char szDir[MAX_PATH];
+//	_splitpath_s(TempModel->szModelFilePath.c_str(), nullptr, 0, szDir, MAX_PATH, nullptr, 0, nullptr, 0);
+//
+//	_int iNumMaterials = TempModel->iNumMaterials;
+//
+//#ifdef _DEBUG
+//	cout << sKey << endl;
+//	cout << "========================================" << endl;
+//	cout << "NumMaterials: " << iNumMaterials << endl;
+//#endif // _DEBUG
+//
+//
+//
+//
+//	for (_uint i = 0; i < iNumMaterials; ++i)
+//	{
+//		for (_uint j = 0; j < (_uint)AI_TEXTURE_TYPE_MAX; ++j)
+//		{
+//			char			szFullPath[MAX_PATH] = "";
+//
+//			string		strPath;
+//
+//			//if (FAILED(AISCENE->mMaterials[i]->GetTexture(aiTextureType(j), 0, &strPath)))
+//			//	continue;
+//
+//			strPath = TempModel->Material_Datas[i]->szTextureName[j];
+//
+//
+//			char			szFileName[MAX_PATH] = "";
+//			char			szExt[MAX_PATH] = "";
+//
+//			_splitpath_s(strPath.c_str(), nullptr, 0, nullptr, 0, szFileName, MAX_PATH, szExt, MAX_PATH);
+//
+//			
+//
+//			strcpy_s(szFullPath, szDir);
+//			strcat_s(szFullPath, szFileName);
+//			strcat_s(szFullPath, szExt);
+//
+//			_tchar		szTextureFilePath[MAX_PATH] = TEXT("");
+//			//_tchar		szTextureKey[MAX_PATH] = TEXT("");
+//
+//			MultiByteToWideChar(CP_ACP, 0, szFullPath, (_int)strlen(szFullPath), szTextureFilePath, MAX_PATH);
+//			//MultiByteToWideChar(CP_ACP, 0, szFileName, (_int)strlen(szFileName), szTextureKey, MAX_PATH);
+//
+//#ifdef _DEBUG
+//			//cout << "Load_Texture: " << szFullPath << endl;
+//#endif // _DEBUG
+//
+//			GAMEINSTANCE->Load_Textures(szFileName, szTextureFilePath, MEMORY_TYPE::MEMORY_STATIC);
+//		}
+//	}
 
 	return S_OK;
 }

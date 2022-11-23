@@ -5,13 +5,14 @@
 #include "Renderer.h"
 #include "RigidBody.h"
 #include "GameManager.h"
-#include "MobWeapon/MobWeapon.h"
+#include "MobWeapon.h"
 #include "NorMonStateS.h"
 #include "Status_Monster.h"
 //#include "MonsterWeapon.h"
 //#include "Monster1States/Monster1States.h"
 #include "Client_Components.h"
 #include "MonsterHPBar_Base.h"
+#include "VIBuffer_Trail.h"
 
 
 GAMECLASS_C(CNorMonster);
@@ -33,7 +34,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		VTXANIM_DECLARATION::Element,
 		VTXANIM_DECLARATION::iNumElements);
 
-	memcpy(&m_tLinkStateDesc, pArg, sizeof(STATE_LINK_DESC));
+	memcpy(&m_tLinkStateDesc, pArg, sizeof(STATE_LINK_MONSTER_DESC));
 	
 	
 
@@ -48,6 +49,12 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Axe", TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
+		TRAIL_DESC TrailDesc;
+		TrailDesc.iMaxCnt = 100;
+		TrailDesc.vPos_0 = _float3(0.f, 0.5f, 0.f);
+		TrailDesc.vPos_1 = _float3(0.f, -0.5f, 0.f);
+		m_pWeapons.back().lock()->Init_Trail(TrailDesc);
+		
 		//TODO 야매에요 ㅎ
 		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, m_tLinkStateDesc.vYame.y, m_tLinkStateDesc.vYame.z, 1.f));
 		break;
@@ -167,8 +174,9 @@ void CNorMonster::Tick(_float fTimeDelta)
 		break;
 	case  MONSTERTYPE::GARDENER:
 		_vector vMoveDired = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-		vMoveDired = m_pModelCom.lock()->Get_DeltaBonePosition("root");
-		m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDired, m_pNaviMeshCom);
+		vMoveDired = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+		//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDired, 0.f, 1.f, PxControllerFilters(), nullptr, m_pTransformCom);
 		break;
 	}
 

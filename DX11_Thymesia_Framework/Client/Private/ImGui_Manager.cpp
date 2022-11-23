@@ -25,6 +25,8 @@
 #include "Terrain.h"
 #include "PipeLine.h"
 
+#include "Client_GameObjects.h"
+
 IMPLEMENT_SINGLETON(CImGui_Manager)
 
 HRESULT CImGui_Manager::Initialize()
@@ -67,6 +69,11 @@ void CImGui_Manager::Tick(_float fTimeDelta)
 	{
 		if(elem->Get_Enable())
 			elem->Tick(fTimeDelta);
+	}
+
+	if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
+	{
+		Toggle_PhysXInfo();
 	}
 }
 
@@ -135,14 +142,14 @@ HRESULT CImGui_Manager::Render(void)
 
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Edit"))
+		if (ImGui::BeginMenu("View"))
 		{
-			if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
-			if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
-			ImGui::Separator();
-			if (ImGui::MenuItem("Cut", "CTRL+X")) {}
-			if (ImGui::MenuItem("Copy", "CTRL+C")) {}
-			if (ImGui::MenuItem("Paste", "CTRL+V")) {}
+			if (ImGui::MenuItem("PhysX_Collider", "PgUp")) 
+			{
+				Toggle_PhysXInfo();
+
+
+			}
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Level"))
@@ -371,6 +378,33 @@ void CImGui_Manager::Load_FromJson(const string& In_szPath)
 	{
 		m_arrWindows[i]->Load_FromJson(m_CurrentLevelJson);
 	}
+}
+
+void CImGui_Manager::Toggle_PhysXInfo()
+{
+	m_bViewPhysXInfo = !m_bViewPhysXInfo;
+
+	list<weak_ptr<CEditInstanceProp>> Props = GAMEINSTANCE->Get_GameObjects<CEditInstanceProp>(LEVEL_EDIT);
+	list<weak_ptr<CPhysXColliderObject>> ColliderObjects = GAMEINSTANCE->Get_GameObjects<CPhysXColliderObject>(LEVEL_EDIT);
+	
+	for (auto& elem : Props)
+	{
+		if (elem.lock())
+		{
+			elem.lock()->OnEventMessage(m_bViewPhysXInfo ? 
+				(_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO : (_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO_N);
+		}
+	}
+
+	for (auto& elem : ColliderObjects)
+	{
+		if (elem.lock())
+		{
+			elem.lock()->OnEventMessage(m_bViewPhysXInfo ?
+				(_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO : (_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO_N);
+		}
+	}
+
 }
 
 void CImGui_Manager::Free()

@@ -14,9 +14,17 @@ public:
 
 
 public:
+	static _vector LerpToType(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime,
+		EASING_TYPE eType);
+
+
 	static _vector Linear(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
 
 	static _vector QuadIn(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
+
+	static _vector QuadIn(_float	fStartPoint, _float fTargetPoint, _double fPassedTime, _double fTotalTime);
+
+
 	static _vector QuadOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
 	static _vector QuadInOut(_vector vStartPoint, _vector vTargetPoint, _double fPassedTime, _double fTotalTime);
 

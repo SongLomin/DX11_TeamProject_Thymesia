@@ -5,6 +5,8 @@
 #include "GameManager.h"
 #include "Engine_Defines.h"
 #include "ProgressBar.h"
+#include "UI_LerpBar.h"
+
 
 
 GAMECLASS_C(CPlayer_MPBar)
@@ -41,10 +43,9 @@ HRESULT CPlayer_MPBar::Initialize(void* pArg)
 	
 	m_fMaxMp = 150.f;
 	m_fCurrentMp = m_fMaxMp;
-	m_fLerpMp = m_fCurrentMp;
+	m_fLerpedMp = m_fMaxMp;
 
 	m_tUIDesc.fDepth = 0.f;
-	m_fLerpAcc = 1.f;
 
 	m_tTextInfo.bAlways = false;
 	m_tTextInfo.bCenterAlign = false;
@@ -75,35 +76,33 @@ void CPlayer_MPBar::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	if (KEY_INPUT(KEY::Z, KEY_STATE::TAP))
+	{
+
+		_float Hp = m_fCurrentMp -= 100.f;
+		Set_CurrentHp(Hp, true);
+
+	}
+
+	else if (KEY_INPUT(KEY::X, KEY_STATE::TAP))
+	{
+		_float Hp = m_fCurrentMp += 100.f;
+		Set_CurrentHp(Hp, true);
+	}
+
 	if (m_fCurrentMp < 0.f)
 		m_fCurrentMp = 0.f;
 	else if (m_fCurrentMp > m_fMaxMp)
 		m_fCurrentMp = m_fMaxMp;
 
-	if (m_fCurrentMp != m_fLerpMp)
-	{
-		_float fRight = max(m_fCurrentMp, m_fLerpMp);
-		_float fLeft = min(m_fCurrentMp, m_fLerpMp);
-		_float fLerp;
+	if (Is_Lerping())
+		m_fLerpedMp = Get_Lerp().x;
 
-		fLerp = SMath::Lerp(fLeft, fRight, fTimeDelta * m_fLerpAcc);
-
-		if (fabs(m_fCurrentMp - m_fLerpMp) > 1.f)
-		{
-			m_fLerpMp -= (fLerp - fLeft);//·¯ÇÁ Â÷ÀÌ°ª¸¸Å­ »©ÁÜ
-			m_fLerpAcc += 0.4f;
-		}
-		else
-		{
-			m_fLerpMp = m_fCurrentMp;
-			m_fLerpAcc = 1.f;
-		}
-	}
-	_float fRatio = m_fLerpMp / m_fMaxMp;
+	_float fRatio = m_fLerpedMp / m_fMaxMp;
 
 	m_pMainBar.lock()->Set_Ratio(fRatio);
 
-	m_tTextInfo.szText = to_wstring((_uint)m_fCurrentMp);
+	m_tTextInfo.szText = to_wstring((_uint)m_fLerpedMp);
 	m_tTextInfo.szText.append(L"/");
 	m_tTextInfo.szText.append(to_wstring((_uint)m_fMaxMp));
 
@@ -128,15 +127,19 @@ void CPlayer_MPBar::OnEventMessage(_uint iArg)
 {
 }
 
-void CPlayer_MPBar::Set_CurrentMp(_float _fCurrentMp)
+void CPlayer_MPBar::Set_CurrentHp(_float _fCurrentHp, _bool bLerp, EASING_TYPE eLerpType)
 {
-	if (_fCurrentMp > m_fCurrentMp)
-	{
-		m_fLerpMp = _fCurrentMp;
-		m_fLerpAcc = 1.f;
-	}
-	m_fCurrentMp = _fCurrentMp;
+	m_fCurrentMp = _fCurrentHp;
+
+	if (m_fCurrentMp <= 0.f)
+		m_fCurrentMp = 0.f;
+
+	if (!bLerp)
+		m_fLerpedMp = m_fCurrentMp;
+	else
+		Set_Lerp(m_fLerpedMp, m_fCurrentMp, 1.f, eLerpType);
 }
+
 
 HRESULT CPlayer_MPBar::SetUp_ShaderResource()
 {

@@ -7,6 +7,7 @@
 #include "Transform.h"
 #include "PhysXCollider.h"
 #include "Client_Presets.h"
+#include "ImGui_Manager.h"
 
 GAMECLASS_C(CStatic_Instancing_Prop);
 CLONE_C(CStatic_Instancing_Prop, CGameObject);
@@ -86,6 +87,11 @@ HRESULT CStatic_Instancing_Prop::Render()
 		else
 		{
 			m_iPassIndex = 1;
+		}
+
+		if (m_bEdit && m_iColliderType != 0)
+		{
+			m_iPassIndex = 3;
 		}
 
 		m_pShaderCom.lock()->Begin(m_iPassIndex);
@@ -171,19 +177,25 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 				m_pPropInfos.push_back(Desc);
 			}
 		}
+		else if ("Collider_Type" == szKey)
+		{
+			m_iColliderType = iter.value();
+		}
 	}
 
 	m_pInstanceModelCom.lock()->Init_Instance((_uint)m_pPropInfos.size());
 	m_pInstanceModelCom.lock()->Update(m_pPropInfos);
 
 #ifdef _GENERATE_PROP_COLLIDER_
-	if ((_uint)LEVEL_GAMEPLAY == m_CreatedLevel)
+	if ((_uint)LEVEL_GAMEPLAY == m_CreatedLevel && m_iColliderType != 0)
 	{
 #ifdef _DEBUG_COUT_
 		cout << "Create_PhysX: " << m_pInstanceModelCom.lock()->Get_ModelKey() << endl;
 #endif // _DEBUG_COUT_
 
-		m_pPhysXColliderCom.lock()->Init_ModelInstanceCollider(m_pInstanceModelCom.lock()->Get_ModelData(), m_pPropInfos, _GENERATE_PROP_COLLIDER_);
+		_bool bConvex = m_iColliderType == 2;
+
+		m_pPhysXColliderCom.lock()->Init_ModelInstanceCollider(m_pInstanceModelCom.lock()->Get_ModelData(), m_pPropInfos, bConvex);
 		PhysXColliderDesc tDesc;
 		Preset::PhysXColliderDesc::StaticInstancingPropSetting(tDesc, m_pTransformCom);
 		m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
@@ -193,6 +205,8 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 
 	
 }
+
+
 
 void CStatic_Instancing_Prop::Free()
 {

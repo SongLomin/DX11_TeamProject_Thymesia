@@ -4,6 +4,8 @@
 #include "BoneNode.h"
 #include "GameManager.h"
 #include "Character.h"
+#include "Effect_Trail.h"
+#include "VIBuffer_Trail.h"
 
 GAMECLASS_C(CCorvus_DefaultSaber);
 CLONE_C(CCorvus_DefaultSaber, CGameObject);
@@ -19,6 +21,7 @@ HRESULT CCorvus_DefaultSaber::Initialize(void* pArg)
 
 	m_pModelCom.lock()->Init_Model("CorvusDefaultSaber", "", (_uint)TIMESCALE_LAYER::PLAYER);
 
+	
 
 	return S_OK;
 }
@@ -33,6 +36,9 @@ HRESULT CCorvus_DefaultSaber::Start()
 void CCorvus_DefaultSaber::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	//m_pTrailEffect.lock()->Update(fTimeDelta, m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
+
 
 }
 

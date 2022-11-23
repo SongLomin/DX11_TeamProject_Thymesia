@@ -23,7 +23,6 @@ HRESULT CCorvusState_LAttack2::Initialize_Prototype()
 HRESULT CCorvusState_LAttack2::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-	m_iAttackIndex = 185;
 	return S_OK;
 }
 
@@ -113,16 +112,7 @@ void CCorvusState_LAttack2::Check_InputNextAttack()
 		return;
 	}
 
-	switch (m_iAttackIndex)
-	{
-	case 185:
-		if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(3, 999))
-		{
-			m_IsNextAttack = true;
-		}
-
-		break;
-
+	m_IsNextAttack = true;
 
 	//case 3:
 	//	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(3, 999))
@@ -137,7 +127,7 @@ void CCorvusState_LAttack2::Check_InputNextAttack()
 	//		m_IsNextAttack = true;
 	//	}
 	//	break;
-	}
+	
 
 }
 
@@ -179,7 +169,7 @@ void CCorvusState_LAttack2::OnStateEnd()
 
 	//Disable_Weapons();
 	m_IsNextAttack = false;
-	m_iAttackIndex = 185;
+
 }
 
 void CCorvusState_LAttack2::OnEventMessage(_uint iArg)
@@ -255,7 +245,6 @@ _bool CCorvusState_LAttack2::Check_AndChangeNextState()
 		}
 	}
 
-
 	if (Check_RequirementNextAttackState())
 	{
 		if (Check_RequirementAttackState())
@@ -265,8 +254,6 @@ _bool CCorvusState_LAttack2::Check_AndChangeNextState()
 			return true;
 		}
 	}
-
-
 
 	if (Check_RuquireMnetFirstAttackState())
 	{
@@ -289,8 +276,6 @@ _bool CCorvusState_LAttack2::Check_AndChangeNextState()
 		}
 	}
 
-
-
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.25f)
 	{
 		if (Check_RequirementClawAttackState())
@@ -301,43 +286,23 @@ _bool CCorvusState_LAttack2::Check_AndChangeNextState()
 		}
 	}
 
-
-
-
-
 	return false;
 }
 
 _bool CCorvusState_LAttack2::Check_RequirementNextAttackState()
 {
-	_uint iTargetKeyFrameFirst = 999;
-	_uint iTargetKeyFrameSecond = 999;
+	_uint iTargetKeyFrameFirst = 16;
+	_uint iTargetKeyFrameSecond = 50;
 	
 
-	switch (m_iAttackIndex)
-	{
+         iTargetKeyFrameFirst = 16;
+         iTargetKeyFrameSecond = 50;
+	
 
-	case 185:
-		iTargetKeyFrameFirst = 16;
-		iTargetKeyFrameSecond = 50;
-		break;
-
-	//case 3:
-	//	iTargetKeyFrame = 21;
-	//	break;
-	//
-	//case 5:
-	//	iTargetKeyFrame = 11;
-	//	break;
-	}
-
-
-	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameFirst, iTargetKeyFrameSecond) == true
-		&& m_IsNextAttack)
+	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameFirst, iTargetKeyFrameSecond) && m_IsNextAttack)
 	{
 		return true;
 	}
-
 
 
 	return false;
@@ -345,32 +310,15 @@ _bool CCorvusState_LAttack2::Check_RequirementNextAttackState()
 
 _bool CCorvusState_LAttack2::Check_RuquireMnetFirstAttackState()
 {
-	_uint iTargetKeyFrameMin = 999;
-	_uint iTargetKeyFrameMax = 999;
+	_uint iTargetKeyFrameMin = 51;
+	_uint iTargetKeyFrameMax = 80;
 
 
-
-	switch (m_iAttackIndex)
-	{
-	case 185:
-		iTargetKeyFrameMin = 51;
-		iTargetKeyFrameMax = 80;
-		break;
+	iTargetKeyFrameMin = 51;
+	iTargetKeyFrameMax = 80;
 
 
-
-		//case 3:
-		//	iTargetKeyFrame = 21;
-		//	break;
-		//
-		//case 5:
-		//	iTargetKeyFrame = 11;
-		//	break;
-	}
-
-
-	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) == true
-		&& m_IsNextAttack)
+	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax)&& m_IsNextAttack)
 	{
 		return true;
 	}

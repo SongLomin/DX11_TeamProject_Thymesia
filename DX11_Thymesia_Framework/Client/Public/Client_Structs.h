@@ -150,14 +150,19 @@ namespace Client
 #pragma region Life Time
 		_float		fInitTime;
 
-		_float		fMinSpawnTime;
+		_float		fMinSpawnTime; // becomse spawn time if bIsSpawnList is true
 		_float		fMaxSpawnTime;
 
 		_float		fMinLifeTime;
 		_float		fMaxLifeTime;
 #pragma endregion
+
+		// if true, particle position is according to bone
+		_bool		bBoner;
+		std::string strBoneName;
+
 #pragma region Spawn Position
-		_float3		vMinSpawnPosition;
+		_float3		vMinSpawnPosition; // becomes spawn position if bIsSpawnList is true
 		_float3		vMaxSpawnPosition;
 
 		_float3		vMinSpawnOffsetDirection;
@@ -169,6 +174,10 @@ namespace Client
 
 		// particle moves toward look
 		_bool		bMoveLook;
+
+		// For. Gravity
+		_bool		bUseGravity;
+		_float3		vGravityForce;
 
 #pragma region Easing Position
 		_bool		bEasingPosition;
@@ -194,7 +203,7 @@ namespace Client
 
 		_float		fRotationEasingTotalTime;
 
-		_float3		vMinStartRotation;
+		_float3		vMinStartRotation; // // becomes spawn look if bIsSpawnList is true
 		_float3		vMaxStartRotation;
 
 		_float3		vRotationSpeed;
@@ -283,6 +292,7 @@ namespace Client
 	struct KEYFRAME_EVENT
 	{
 		list<_hashcode> EffectGroups;
+		list<_bool>		Enable_Weapon; // Enable은 한개지만 리스트가 비어있으면 이벤트가 없다는 것을 알려준다.
 	};
 
 	struct CINEMA_DESC

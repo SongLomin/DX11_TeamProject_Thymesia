@@ -28,18 +28,16 @@ private:
 	void Call_Add_GameObject_Internal(const _hashcode& TypeHash, const char* TypeName);
 
 public:
-	FDelegate<GAMEOBJECT_DESC> CallBack_ListClick;
+	FDelegate<GAMEOBJECT_DESC>		CallBack_ListClick;
 
-	list<GAMEOBJECT_DESC>	m_pGameObjects;
-	list<GAMEOBJECT_DESC>	m_pSubGameObjects;
-	_uint					m_iPreSelectIndex = 0;
+	list<GAMEOBJECT_DESC>			m_pGameObjects;
+	list<GAMEOBJECT_DESC>			m_pSubGameObjects;
+	_uint							m_iPreSelectIndex = 0;
 
 public:
 	virtual void OnLevelLoad() override;
 
 public:
 	void Free();
-
-	
 };
 END

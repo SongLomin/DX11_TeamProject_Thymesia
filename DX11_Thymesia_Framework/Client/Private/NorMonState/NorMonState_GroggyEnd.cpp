@@ -75,6 +75,8 @@ void CNorMonState_GroggyEnd::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
+
 	m_pOwner.lock()->Get_ComponentByType<CStatus_Monster>().lock()->Restart();
 
 

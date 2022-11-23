@@ -17,6 +17,8 @@
 #include "Window_HierarchyView.h"
 #include "ImGui_Window.h"
 
+_bool CEditInstanceProp::m_bDetailPicking = true;
+
 GAMECLASS_C(CEditInstanceProp)
 CLONE_C(CEditInstanceProp, CGameObject)
 
@@ -140,12 +142,16 @@ HRESULT CEditInstanceProp::SetUp_ShaderResource()
 			m_iPassIndex = 1;
 		}
 
+		if (m_bViewPhysXInfo && m_iColliderType != 0)
+		{
+			m_iPassIndex = 3;
+		}
+
 		m_pShaderCom.lock()->Begin(m_iPassIndex);
 		m_pInstanceModelCom.lock()->Render_Mesh(i);
 	}
 
 	SetUp_ShaderResource_Select();
-
 
 	return __super::Render();
 }
@@ -231,6 +237,8 @@ void CEditInstanceProp::Write_Json(json& Out_Json)
 	{
 		Out_Json["Name"] = typeid(CStatic_Instancing_Prop).name();
 	}
+
+	Out_Json.emplace("Collider_Type", m_iColliderType);
 }
 
 void CEditInstanceProp::Load_FromJson(const json& In_Json)
@@ -268,6 +276,11 @@ void CEditInstanceProp::Load_FromJson(const json& In_Json)
 	}
 
 	m_pInstanceModelCom.lock()->Init_Instance((_uint)m_pPropInfos.size());
+
+	if (In_Json.end() != In_Json.find("Collider_Type"))
+	{
+		m_iColliderType = In_Json["Collider_Type"];
+	}
 }
 
 void CEditInstanceProp::OnEventMessage(_uint iArg)
@@ -335,6 +348,8 @@ void CEditInstanceProp::OnEventMessage(_uint iArg)
 			{
 				if (ImGui::BeginTabItem("Create"))
 				{
+
+					View_PhysXOption();
 					View_SelectModelComponent();
 
 					ImGui::EndTabItem();
@@ -361,6 +376,18 @@ void CEditInstanceProp::OnEventMessage(_uint iArg)
 
 				ImGui::EndTabBar();
 			}
+		}
+		break;
+
+		case (_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO:
+		{
+			m_bViewPhysXInfo = true;
+		}
+		break;
+
+		case (_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO_N:
+		{
+			m_bViewPhysXInfo = false;
 		}
 		break;
 	}
@@ -429,6 +456,8 @@ void CEditInstanceProp::View_PickingInfo()
 
 void CEditInstanceProp::View_Picking_Prop()
 {
+	ImGui::Checkbox("Detail", &m_bDetailPicking);
+
 	if (!KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
 		return;
 	
@@ -457,7 +486,7 @@ void CEditInstanceProp::View_Picking_Prop()
 
 	// ÇÇÅ·
 	else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD))
-	{
+	{			
 		RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
 
 		if (!m_pInstanceModelCom.lock()->Get_ModelData().lock())
@@ -465,10 +494,13 @@ void CEditInstanceProp::View_Picking_Prop()
 
 		MESH_VTX_INFO VtxInfo = m_pInstanceModelCom.lock()->Get_ModelData().lock()->VertexInfo;
 
-		_uint iIndex = 0;
+		_uint   iIndex    = 0;
+		_float  fDistance = 99999999.f;
+		_vector vCamPos   = XMLoadFloat4(&GAMEINSTANCE->Get_CamPosition());
+
 		for (auto& iter : m_pPropInfos)
 		{
-			_matrix WorlMatrix = XMMatrixIdentity();
+			_matrix WorlMatrix     = XMMatrixIdentity();
 			_matrix RotationMatrix = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&iter.vRotation));
 
 			WorlMatrix.r[0] = RotationMatrix.r[0] * iter.vScale.x;
@@ -476,42 +508,71 @@ void CEditInstanceProp::View_Picking_Prop()
 			WorlMatrix.r[2] = RotationMatrix.r[2] * iter.vScale.z;
 			WorlMatrix.r[3] = XMVectorSetW(XMLoadFloat3(&iter.vTarnslation), 1.f);
 
-			if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, VtxInfo, WorlMatrix))
+			if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(WorlMatrix.r[3], iter.vScale.x))
 			{
-				m_iPickingIndex = iIndex;
-				m_PickingDesc   = m_pPropInfos[iIndex];
+				if (m_bDetailPicking)
+				{
+					if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, VtxInfo, WorlMatrix))
+					{
+						_float  fLength = XMVectorGetX(XMVector3Length(vCamPos - XMLoadFloat3(&iter.vTarnslation)));
 
-				break;
+						if (fLength < fDistance)
+						{
+							fDistance       = fLength;
+							m_iPickingIndex = iIndex;
+							m_PickingDesc   = m_pPropInfos[iIndex];
+						}
+					}
+				}
+				else
+				{
+					if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, VtxInfo, WorlMatrix))
+					{
+						m_iPickingIndex = iIndex;
+						m_PickingDesc   = m_pPropInfos[iIndex];
+
+						break;
+					}
+				}
 			}
 
 			++iIndex;
 		}
 	}
+
+
 }
 
 void CEditInstanceProp::View_Picking_List()
 {
-	if (ImGui::BeginListBox("##Prop Info List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+	ImGui::Text(string(string(" Size : ") + to_string((_uint)m_pPropInfos.size())).c_str());
+
+	if (ImGui::TreeNode("[ Show List ]"))
 	{
-		for (_uint i = 0; i < (_uint)m_pPropInfos.size(); ++i)
+		if (ImGui::BeginListBox("##Prop Info List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
 		{
-			const bool is_selected = (m_iPickingIndex == i);
-
-			string szTag = "( " + to_string(i) + " ) " + m_szSelectModelName;
-
-			if (ImGui::Selectable(szTag.c_str(), is_selected))
+			for (_uint i = 0; i < (_uint)m_pPropInfos.size(); ++i)
 			{
-				m_iPickingIndex = i;
+				const bool is_selected = (m_iPickingIndex == i);
+
+				string szTag = "( " + to_string(i) + " ) " + m_szSelectModelName;
+
+				if (ImGui::Selectable(szTag.c_str(), is_selected))
+				{
+					m_iPickingIndex = i;
+				}
+
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
 			}
 
-			if (is_selected)
-				ImGui::SetItemDefaultFocus();
+			ImGui::EndListBox();
 		}
 
-		ImGui::EndListBox();
+		ImGui::TreePop();
 	}
 
-	if (ImGui::Button("Create", ImVec2(100.f, 25.f)))
+	if (ImGui::Button("Create", ImVec2(100.f, 25.f)) || KEY_INPUT(KEY::M, KEY_STATE::TAP))
 	{
 		if ("" == m_szSelectModelName)
 			return;
@@ -627,6 +688,40 @@ void CEditInstanceProp::View_Picking_Option()
 				break;
 			}
 		}
+
+		else if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
+		{
+			switch (m_iOption)
+			{
+				case 0:
+				{
+					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
+						m_pPropInfos[m_iPickingIndex].vScale.x -= 0.1f;
+					else
+						m_pPropInfos[m_iPickingIndex].vScale.x += 0.1f;
+				}
+				break;
+
+				case 1:
+				{
+					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
+						m_pPropInfos[m_iPickingIndex].vScale.y -= 0.1f;
+					else
+						m_pPropInfos[m_iPickingIndex].vScale.y += 0.1f;
+				}
+				break;
+
+				case 2:
+				{
+					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
+						m_pPropInfos[m_iPickingIndex].vScale.z -= 0.1f;
+					else
+						m_pPropInfos[m_iPickingIndex].vScale.z += 0.1f;
+				}
+				break;
+
+			}
+		}
 	}
 }
 
@@ -698,6 +793,28 @@ void CEditInstanceProp::View_SelectJson()
 	if (ImGui::Button("Load", ImVec2(100.f, 25.f)) && !m_JsonList.empty())
 	{
 		Load_Json(m_JsonList[iSelect_MeshData]);
+	}
+}
+
+void CEditInstanceProp::View_PhysXOption()
+{
+	const _char* items[] = { "None", "Model", "ConvexModel" };
+
+	if (ImGui::BeginListBox("PhysX Collider Type"))
+	{
+		for (_uint n = 0; n < IM_ARRAYSIZE(items); n++)
+		{
+			const bool is_selected = (m_iColliderType == n);
+			if (ImGui::Selectable(items[n], is_selected))
+			{
+				m_iColliderType = n;
+			}
+
+			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndListBox();
 	}
 }
 

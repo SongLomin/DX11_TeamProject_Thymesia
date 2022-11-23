@@ -4,6 +4,8 @@
 #include "GameManager.h"
 #include "Character.h"
 #include "Weapon.h"
+#include "Effect_Trail.h"
+#include "VIBuffer_Trail.h"
 
 GAMECLASS_C(CWeapon);
 CLONE_C(CWeapon, CGameObject);
@@ -20,7 +22,7 @@ HRESULT CWeapon::Initialize(void* pArg)
 	m_pModelCom = Add_Component<CModel>();
 	m_pShaderCom = Add_Component<CShader>();
 	m_pRendererCom = Add_Component<CRenderer>();
-	m_pHitColliderCom = Add_Component<CCollider>();
+	m_pHitColliderComs.emplace_back(Add_Component<CCollider>());
 
 	m_vOffset = { 0.f, 0.f, 0.f };
 
@@ -40,9 +42,9 @@ HRESULT CWeapon::Initialize(void* pArg)
 		VTXMODEL_DECLARATION::Element,
 		VTXMODEL_DECLARATION::iNumElements);
 
-	if ((_uint)LEVEL_EDIT == m_CreatedLevel)
+	for (auto& elem : m_pHitColliderComs)
 	{
-		m_pHitColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
+		elem.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
 	}
 
 	return S_OK;
@@ -76,9 +78,9 @@ void CWeapon::Tick(_float fTimeDelta)
 	m_pTransformCom.lock()->Set_WorldMatrix(ParentMatrix * m_pParent.lock()->Get_Component<CTransform>().lock()->Get_WorldMatrix());
 	//m_pTransformCom.lock()->Set_WorldMatrix(m_pParent.lock()->Get_Component<CTransform>().lock()->Get_WorldMatrix());
 	
-	if ((_uint)LEVEL_EDIT == m_CreatedLevel)
+	for (auto& elem : m_pHitColliderComs)
 	{
-		m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+		elem.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 	}
 }
 
@@ -95,6 +97,7 @@ HRESULT CWeapon::Render()
 
 	__super::Render();
 
+	_int iPassIndex;
 	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
@@ -103,7 +106,16 @@ HRESULT CWeapon::Render()
 
 		}
 
-		m_pShaderCom.lock()->Begin(0);
+		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+		{
+			iPassIndex = 0;
+		}
+		else
+		{
+			iPassIndex = 3;
+		}
+
+		m_pShaderCom.lock()->Begin(iPassIndex);
 
 		m_pModelCom.lock()->Render_Mesh(i);
 	}
@@ -121,36 +133,54 @@ void CWeapon::Init_Weapon(weak_ptr<CModel> In_pModelCom, weak_ptr<CGameObject> I
 	m_TransformationMatrix = In_pModelCom.lock()->Get_TransformationMatrix();
 }
 
-void CWeapon::Enable_Weapon(const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+void CWeapon::Enable_Weapon()
 {
-	if (m_pHitColliderCom.lock()->Set_Enable(true))
+	for (auto& elem : m_pHitColliderComs)
 	{
-		#ifdef _DEBUG_COUT_
+		elem.lock()->Set_Enable(true);
+#ifdef _DEBUG_COUT_
 		cout << "Enable Weapon!" << endl;
 #endif
-		m_eHitType = In_eHitType;
-		m_fDamage = In_fDamage;
-		m_bFirstAttack = true;
 	}
 }
 
+void CWeapon::Init_Trail(TRAIL_DESC& TrailDesc)
+{
+	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail>(m_CreatedLevel, &TrailDesc);
+	m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
+	m_pTrailEffect.lock()->Set_Enable(false);
+}
+
+_bool CWeapon::Set_TrailEnable(const _bool In_bEnable)
+{
+	if (!m_pTrailEffect.lock())
+		return false;
+
+	return m_pTrailEffect.lock()->Set_Enable(In_bEnable);
+	
+}
+
+
 void CWeapon::Disable_Weapon()
 {
-	if (m_pHitColliderCom.lock()->Set_Enable(false))
+	for (auto& elem : m_pHitColliderComs)
 	{
-		#ifdef _DEBUG_COUT_
+		elem.lock()->Set_Enable(false);
+#ifdef _DEBUG_COUT_
 		cout << "Disable Weapon!" << endl;
 #endif
 		m_iHitColliderIndexs.clear();
-
 	}
 }
 
 void CWeapon::Set_WeaponScale(const _float& In_fWeaponScale)
 {
 	m_fWeaponScale = In_fWeaponScale;
-	m_pHitColliderCom.lock()->Set_ColliderScale(XMVectorSet(In_fWeaponScale, In_fWeaponScale, In_fWeaponScale, 0.f));
 
+	for (auto& elem : m_pHitColliderComs)
+	{
+		elem.lock()->Set_ColliderScale(XMVectorSet(In_fWeaponScale, In_fWeaponScale, In_fWeaponScale, 0.f));
+	}
 }
 
 void CWeapon::Set_OriginalWeaponScale()
@@ -163,11 +193,8 @@ weak_ptr<CGameObject> CWeapon::Get_ParentObject()
 	return m_pParent;
 }
 
-void CWeapon::Set_WeaponDesc(const _float& In_fWeaponScale, const _float3& In_vOffset, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+void CWeapon::Set_WeaponDesc(const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
-	m_fWeaponScale = In_fWeaponScale;
-	m_pHitColliderCom.lock()->Set_ColliderScale(XMVectorSet(In_fWeaponScale, In_fWeaponScale, In_fWeaponScale, 0.f));
-	m_vOffset = In_vOffset;
 	m_eHitType = In_eHitType;
 	m_fDamage = In_fDamage;
 }
@@ -192,7 +219,7 @@ void CWeapon::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
 
 	m_iHitColliderIndexs.push_back(iOtherColliderIndex);
 
-	Weak_Cast<CCharacter>(pOtherCollider.lock()->Get_Owner()).lock()->OnHit(m_pHitColliderCom, m_eHitType, m_fDamage);
+	Weak_Cast<CCharacter>(pOtherCollider.lock()->Get_Owner()).lock()->OnHit(m_pHitColliderComs.front(), m_eHitType, m_fDamage);
 
 	if (m_bFirstAttack)
 	{

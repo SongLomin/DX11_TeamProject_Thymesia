@@ -819,7 +819,7 @@ void CEditGround::Bake_Mesh()
 	pMeshData->iNumFaces		= _uint(m_vBufferInfo.x - 1) * _uint(m_vBufferInfo.y - 1) * 2;
 	pMeshData->iNumVertices		= m_vBufferInfo.x * m_vBufferInfo.y;
 
-	pMeshData->pGroundVertices = shared_ptr<VTXGROUND[]>(new VTXGROUND[pMeshData->iNumVertices]);
+	pMeshData->pGroundVertices = shared_ptr<VTXGROUND[]>(DBG_NEW VTXGROUND[pMeshData->iNumVertices]);
 
 	for (_uint i = 0; i < pMeshData->iNumVertices; ++i)
 	{
@@ -831,7 +831,7 @@ void CEditGround::Bake_Mesh()
 			DEBUG_ASSERT;
 	}
 
-	pMeshData->pIndices = shared_ptr<FACEINDICES32[]>(new FACEINDICES32[pMeshData->iNumFaces]);
+	pMeshData->pIndices = shared_ptr<FACEINDICES32[]>(DBG_NEW FACEINDICES32[pMeshData->iNumFaces]);
 
 	for (_uint i = 0; i < pMeshData->iNumFaces; ++i)
 	{
@@ -1083,7 +1083,6 @@ void CEditGround::Write_Json(json& Out_Json)
 	{
 		Out_Json["Name"] = typeid(CGround).name();
 	}
-
 }
 
 void CEditGround::Load_FromJson(const json& In_Json)

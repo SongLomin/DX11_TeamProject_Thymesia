@@ -41,6 +41,10 @@ public:
 	void			Call_Stun();
 	void			Call_Restart();
 
+public:
+	virtual void OnDisable();
+
+
 protected:
 	virtual void			Green_Damaged(_float fRatio);
 	virtual void			Set_RecoveryAlram(_bool _bRecovery);

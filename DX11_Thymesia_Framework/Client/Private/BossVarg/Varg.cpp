@@ -5,7 +5,7 @@
 #include "Renderer.h"
 #include "RigidBody.h"
 #include "GameManager.h"
-#include "MobWeapon/MobWeapon.h"
+#include "MobWeapon.h"
 #include "VargStates.h"
 //#include "MonsterWeapon.h"
 //#include "Monster1States/Monster1States.h"
@@ -30,21 +30,19 @@ HRESULT CVarg::Initialize(void* pArg)
 		VTXANIM_DECLARATION::Element,
 		VTXANIM_DECLARATION::iNumElements);
 
-	memcpy(&m_tLinkStateDesc, pArg, sizeof(STATE_LINK_DESC));
+	memcpy(&m_tLinkStateDesc, pArg, sizeof(STATE_LINK_BOSS_DESC));
 
 	m_pModelCom.lock()->Init_Model("Boss_Varg", "", (_uint)TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Model("Boss_VargWeapon", TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
 	//TODO 위치이동 야매임
-	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, 0.f, m_tLinkStateDesc.vYame.z, 1.f));
+	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, m_tLinkStateDesc.vYame.y, m_tLinkStateDesc.vYame.z, 1.f));
 
 	//TODO 여기서하는 이유는 몬스터가 배치되고 원점에서 우리가 피킹한위치만큼더해지고 난뒤에 그월드포지션값저장하기위해서 여기서함
 
 	m_pModelCom.lock()->Set_RootNode("root");
 	
-	_vector vecStartPositon = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-	XMStoreFloat4(&m_tLinkStateDesc.m_fStartPositon, vecStartPositon);
 	m_pStandState = Add_Component<CVargBossState_Start>(&m_tLinkStateDesc);
 	Add_Component<CVargBossState_Attack1a>(&m_tLinkStateDesc);
 	Add_Component<CVargBossState_Attack1b>(&m_tLinkStateDesc);
@@ -82,6 +80,10 @@ HRESULT CVarg::Initialize(void* pArg)
 	
 	//GET_SINGLE(CGameManager)->Bind_KeyEvent("Monster1", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
 
+	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom));
+
+	m_fCullingRange = 999.f;
+
 	USE_START(CVarg);
 	return S_OK;
 }
@@ -105,7 +107,7 @@ void CVarg::Tick(_float fTimeDelta)
 
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
-	m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
+	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, PxControllerFilters(), nullptr, m_pTransformCom);
 
 
 }
@@ -154,13 +156,7 @@ void CVarg::SetUp_ShaderResource()
 
 }
 
-void CVarg::Respawn_Monster(_fvector In_vPosition)
-{
-	//__super::Respawn_Monster(In_vPosition);
 
-	//Change_State<CMonster1State_Stand>();
-	//GAMEINSTANCE->PlaySoundW(TEXT("MonsterBorn.wav"), 0.3f);
-}
 
 void CVarg::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
 {

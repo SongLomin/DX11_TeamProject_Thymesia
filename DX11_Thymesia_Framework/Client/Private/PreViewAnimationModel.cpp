@@ -6,7 +6,7 @@
 #include "GameManager.h"
 #include "Corvus_DefaultSaber.h"
 #include "Corvus_DefaultDagger.h"
-#include "MobWeapon/MobWeapon.h"
+#include "MobWeapon.h"
 #include "Weapon.h"
 
 GAMECLASS_C(CPreViewAnimationModel)

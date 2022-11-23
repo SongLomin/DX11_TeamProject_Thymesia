@@ -64,6 +64,10 @@ private:
 	PxController*							m_pController = nullptr;
 
 
+public:
+	virtual void OnEnable(void* pArg) override;
+	virtual void OnDisable() override;
+
 private:
 	virtual void OnDestroy() override;
 

@@ -1,11 +1,12 @@
 #pragma once
 #include "UI.h"
+#include "UI_LerpBar.h"
 
 BEGIN(Client)
 
 class CProgressBar;
 
-class CPlayer_MPBar final : public CUI
+class CPlayer_MPBar final : public CUI_LerpBar
 {
 	GAMECLASS_H(CPlayer_MPBar);
 	CLONE_H(CPlayer_MPBar, CGameObject);
@@ -21,8 +22,8 @@ public:
 public:
 	virtual void OnEventMessage(_uint iArg) override;
 
-public:
-	void		Set_CurrentMp(_float	_fCurrentMp);
+	void		Set_CurrentHp(_float	_fCurrentHp, _bool bLerp = false,
+		EASING_TYPE eLerpType = EASING_TYPE::QUAD_IN);
 	void		Set_MaxMp(_float	_fMaxMp) { m_fMaxMp = _fMaxMp; }
 
 protected:
@@ -35,12 +36,9 @@ private:
 	weak_ptr< CProgressBar>	m_pBorderRight;
 
 private:
-	_float			m_fLerpAcc;
-
-private:
 	_float			m_fMaxMp;
+	_float			m_fLerpedMp;
 	_float			m_fCurrentMp;
-	_float			m_fLerpMp;
 
 
 private:

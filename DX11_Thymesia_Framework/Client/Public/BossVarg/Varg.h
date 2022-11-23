@@ -1,11 +1,11 @@
 #pragma once
-#include "Monster.h"
+#include "BossMonster.h"
 
 
 BEGIN(Client)
 
 class CVarg :
-    public CMonster
+    public CBossMonster
 {
     GAMECLASS_H(CVarg);
     CLONE_H(CVarg, CGameObject);
@@ -25,8 +25,6 @@ public:
     virtual HRESULT Render() override;
     virtual void SetUp_ShaderResource() override;
 
-public:
-    virtual void Respawn_Monster(_fvector In_vPosition) override;
 
 private:
     virtual void OnCollisionEnter(weak_ptr<CCollider> pOtherCollider) override;

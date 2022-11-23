@@ -8,6 +8,8 @@
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
 #include "GameManager.h"
+#include "Monster.h"
+#include "NorMonStates.h"
 
 GAMECLASS_C(CNorMob_Execution);
 CLONE_C(CNorMob_Execution, CComponent)
@@ -38,7 +40,7 @@ void CNorMob_Execution::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	Turn_Transform(fTimeDelta);
+	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -59,7 +61,9 @@ void CNorMob_Execution::OnStateStart(const _float& In_fAnimationBlendTime)
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera");
+
+
+	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera",XMMatrixIdentity());
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "NorMonState: RunStart -> OnStateStart" << endl;
@@ -81,6 +85,14 @@ void CNorMob_Execution::Call_AnimationEnd()
 
 	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
 
+}
+
+
+
+void CNorMob_Execution::OnEventMessage(weak_ptr<CBase> pArg)
+{
+	m_pTargetObject = Weak_Cast<CGameObject>(pArg);
+	Weak_Cast<CMonster>(m_pTargetObject).lock()->Change_State<CNorMonState_Die>();
 }
 
 void CNorMob_Execution::Free()

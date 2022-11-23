@@ -59,6 +59,10 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 	case LEVEL_EDIT:
 		hr = pLoader->Loading_ForEditLevel();
 		break;
+
+	case LEVEL_TEST:
+		hr = pLoader->Loading_ForTestLevel();
+		break;
 	}	
 
 	if (FAILED(hr))
@@ -107,6 +111,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CLight_Prop>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CGround>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CStatic_Instancing_Prop>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CPhysXColliderObject>();
 
 #pragma endregion
 
@@ -284,19 +289,20 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("Monster_HPBar_GreenTrack"), TEXT("../Bin/Resources/Textures/UI/HUD/HPBar/TexUI_HPBar_NewPreSTBar.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Monster_HPBar_StunnedShine"), TEXT("../Bin/Resources/Textures/UI/HUD/HPBar/TexUI_HPBar_StunnedShine1.png"), MEMORY_TYPE::MEMORY_STATIC);
 
-
-
+#ifndef _ONLY_UI_
 	
 	Load_AllDiffuseTexture();
-
 	// TODO : For. Ground Texture : (AN) 임시 텍스쳐이므로 나중에 삭제하기, GroundTexture로 필요한곳에 사용할 예정임
 	Load_AllTexture("../Bin/GroundInfo/Texture/", MEMORY_TYPE::MEMORY_STATIC);
 	Load_AllTexture("../Bin/GroundInfo/Filter/" , MEMORY_TYPE::MEMORY_STATIC);
+#endif
 	
-	
+
 #pragma endregion
 	
 	
+#ifndef _ONLY_UI_
+
 	Load_AllMaskMap();
 	Load_AllNoiseTexture();
 	Load_AllParticleTexture();
@@ -345,6 +351,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Light(LightDesc);
 	
 	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중입니다. "));
+#endif
 
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_UI"), TEXT("../Bin/ShaderFiles/Shader_UI.hlsl"));
 
@@ -368,7 +375,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxModelInstance"), TEXT("../Bin/ShaderFiles/Shader_VtxModelInstance.hlsl"));
 
 	lstrcpy(m_szLoadingText, TEXT("데이터를 로딩중입니다. "));
-	
+
+#ifndef _ONLY_UI_
 	GET_SINGLE(CGameManager)->Load_AllKeyEventFromJson();
 
 	_matrix			TransformMatrix;
@@ -421,7 +429,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Model("Torch", "../Bin/Resources/Meshes/LightProp/Torch/Torch.FBX", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 	
 	lstrcpy(m_szLoadingText, TEXT("객체 생성 중입니다. "));
-	
+#endif
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));	
 
 	m_isFinished = true;
@@ -457,6 +465,51 @@ HRESULT CLoader::Loading_ForLobby()
 	return S_OK;
 }
 
+HRESULT CLoader::Loading_ForTestLevel()
+{
+#pragma region PROTOTYPE_GAMEOBJECT
+
+	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
+	//Loading_ForEffectGroup("../Bin/EffectData/");
+
+
+	Load_AllEffectMesh();
+
+	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+
+	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
+
+#pragma endregion
+
+
+	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
+
+
+	GAMEINSTANCE->Load_Textures("Sky", TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
+
+
+	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
+
+	CEditGround::Load_AllMeshInfo();
+
+	lstrcpy(m_szLoadingText, TEXT("객체를 생성 중입니다."));
+
+	//Create_GameObjectFromJson("../Bin/LevelData/Stage1.json", LEVEL_GAMEPLAY);
+
+
+	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
+
+
+
+	m_isFinished = true;
+
+	return S_OK;
+}
+
 HRESULT CLoader::Loading_ForGamePlayLevel()
 {
 
@@ -465,9 +518,9 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 	//Loading_ForEffectGroup("../Bin/EffectData/");
 	
+#ifndef _ONLY_UI_
 	
 	Load_AllEffectMesh();
-	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
 
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/"         , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Binary/"      , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
@@ -483,7 +536,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
 	
 	
-	//GAMEINSTANCE->Load_Textures("Grass", TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures("Sky", TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	
 	
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
@@ -494,9 +547,8 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	//Create_GameObjectFromJson("../Bin/LevelData/Stage1.json", LEVEL_GAMEPLAY);
 	
-
+#endif
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
-
 
 
 	m_isFinished = true;
@@ -511,7 +563,6 @@ HRESULT CLoader::Loading_ForStage2Level()
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 	Load_AllEffectMesh();
-	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_STAGE2);
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
@@ -536,8 +587,6 @@ HRESULT CLoader::Loading_ForStage3Level()
 #pragma region PROTOTYPE_GAMEOBJECT
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
-	Load_AllEffectMesh();
-	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_STAGE3);
 #pragma endregion
 
 
@@ -602,25 +651,6 @@ void CLoader::Loading_ForEffectGroup(const char* In_Path, const _uint& In_LevelI
 
 	weak_ptr<CEffectGroup> EffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(In_LevelIndex);
 	EffectGroup.lock()->Load_EffectJson(In_Path, (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
-}
-
-void CLoader::Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex)
-{
-	fs::directory_iterator itr(In_FolderPath);
-
-	while (itr != fs::end(itr)) {
-		const fs::directory_entry& entry = *itr;
-
-		weak_ptr<CEffectGroup> EffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(In_LevelIndex);
-		EffectGroup.lock()->Load_EffectJson(entry.path().string(), (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
-
-		#ifdef _DEBUG_COUT_
-		cout << entry.path().filename() << std::endl;
-#endif
-
-
-		itr++;
-	}
 }
 
 void CLoader::Load_AllDiffuseTexture()

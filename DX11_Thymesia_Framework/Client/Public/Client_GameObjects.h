@@ -23,6 +23,7 @@
 #include "EditGround.h"
 #include "EditGroupProp.h"
 #include "EditInstanceProp.h"
+#include "PhysXColliderObject.h"
 
 #include "CCorvus.h"
 #include "PreViewAnimationModel.h"
@@ -35,4 +36,5 @@
 
 #include "NorMonster.h"
 #include "Monster.h"
+#include "BossMonster.h"
 #include "BossVarg/Varg.h"

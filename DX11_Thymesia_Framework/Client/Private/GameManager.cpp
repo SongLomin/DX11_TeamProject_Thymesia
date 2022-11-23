@@ -176,7 +176,7 @@ weak_ptr<CCamera_Target> CGameManager::Get_TargetCamera()
 	return m_pTargetCamera;
 }
 
-void CGameManager::Add_Shaking(const SHAKE_DIRECTION& In_eState, const _float& In_fPower, const _float& In_fTime)
+void CGameManager::Add_Shaking(_vector& vShakingDir, _float fRatio)
 {
 	if (m_pTargetCamera.lock().get() != m_pCurrentCamera.lock().get())
 	{
@@ -186,7 +186,7 @@ void CGameManager::Add_Shaking(const SHAKE_DIRECTION& In_eState, const _float& I
 	if (!m_pTargetCamera.lock())
 		DEBUG_ASSERT;
 
-	//m_pTargetCamera.lock()->Add_Shaking(In_eState, In_fPower, In_fTime);
+	m_pTargetCamera.lock()->Add_Shaking(vShakingDir, fRatio);
 	
 
 }
@@ -197,6 +197,8 @@ void CGameManager::Focus_Monster()
 //
 	weak_ptr<CGameObject> pTargetMonster = Get_Layer(OBJECT_LAYER::MONSTER).front();
 
+	m_pTargetMonster = Weak_StaticCast<CMonster>(pTargetMonster);
+
 	m_pTargetCamera.lock()->Focus_Monster(pTargetMonster);
 }
 
@@ -205,8 +207,9 @@ void CGameManager::Release_Focus()
 	m_pTargetCamera.lock()->Release_Focus();
 }
 
-void CGameManager::Find_Target()
+weak_ptr<CMonster> CGameManager::Get_TargetMonster()
 {
+	return m_pTargetMonster;
 }
 
 void CGameManager::Register_EffectGroup(const string& In_szEffectGroupName, weak_ptr<CEffectGroup> In_pEffectGroup)
@@ -296,6 +299,12 @@ void CGameManager::UnUse_EffectGroup(const string& In_szEffectGroupName, const _
 	}
 }
 
+void CGameManager::Enable_WeaponFromEvent(weak_ptr<CTransform> pParentTransformCom, const _bool In_bEnable)
+{
+	weak_ptr<CCharacter> pCharacter = Weak_Cast<CCharacter>(pParentTransformCom.lock()->Get_Owner());
+	pCharacter.lock()->Enable_Weapons(In_bEnable);
+}
+
 void CGameManager::Load_AllKeyEventFromJson()
 {
 	fs::directory_iterator itr("..\\Bin\\KeyEventData");
@@ -353,6 +362,12 @@ void CGameManager::Load_AllKeyEventFromJson()
 					m_KeyEvents[szFileNameToHash][i][j].EffectGroups.push_back(hash<string>()(szEffectGroupName));
 				}
 
+				if (KeyEventJson["AnimationIndex"][i][j]["Enable_Weapon"].empty())
+				{
+					continue;
+				}
+
+				m_KeyEvents[szFileNameToHash][i][j].Enable_Weapon.push_back(KeyEventJson["AnimationIndex"][i][j]["Enable_Weapon"]);
 			}
 		}
 
@@ -413,11 +428,16 @@ void CGameManager::Active_KeyEvent(const weak_ptr<CModel> In_ModelCom, const wea
 		Use_EffectGroupFromHash(elem, In_TransformCom, In_iTimeScaleLayer);
 	}
 
+	// 무기 이벤트 발동
+	for (auto& elem : Key_iter->second.Enable_Weapon)
+	{
+		Enable_WeaponFromEvent(In_TransformCom, elem);
+	}
 }
 
-void CGameManager::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName)
+void CGameManager::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName, _matrix& OffSetMatrix)
 {
-	m_pTargetCamera.lock()->Start_Cinematic(_pModel, pBoneName);
+	m_pTargetCamera.lock()->Start_Cinematic(_pModel, pBoneName, OffSetMatrix);
 }
 
 void CGameManager::End_Cinematic()
@@ -425,12 +445,16 @@ void CGameManager::End_Cinematic()
 	m_pTargetCamera.lock()->End_Cinematic();
 }
 
-
-
-_bool CGameManager::Is_OpenHyperSpace()
+void CGameManager::Activate_Zoom(_float fRatio)
 {
-	return Get_Layer(OBJECT_LAYER::HYPERSPACE).front().lock()->Get_Enable();
+	m_pTargetCamera.lock()->Activate_Zoom(fRatio);
 }
+
+void CGameManager::Deactivate_Zoom()
+{
+	m_pTargetCamera.lock()->Deactivate_Zoom();
+}
+
 
 void CGameManager::Start_Peace()
 {

@@ -23,8 +23,7 @@ HRESULT CCorvusState_SprintAttack::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 	
-	m_iAttackIndex = 11;
-	m_iStateIndex = 11;
+
 	return S_OK;
 }
 
@@ -78,25 +77,6 @@ void CCorvusState_SprintAttack::Call_AnimationEnd()
 
 }
 
-void CCorvusState_SprintAttack::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
-{
-	
-
-	m_iAttackIndex = In_iAttackIndex;
-
-	if (10 == m_iAttackIndex)
-	{
-		m_iAttackIndex = 7;
-	}
-
-	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
-
-	#ifdef _DEBUG_COUT_
-		cout << "AttackIndex: " << m_iAttackIndex << endl;
-#endif
-
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAttackIndex);
-}
 
 void CCorvusState_SprintAttack::Attack()
 {
@@ -124,47 +104,8 @@ void CCorvusState_SprintAttack::Check_InputNextAttack()
 		return;
 	}
 
-
-
-	switch (m_iAttackIndex)
-	{
-	case 11:
-		if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(3, 999))
-		{
-			m_IsNextAttack = true;
-		}
+	m_IsNextAttack = true;
 	
-		break;
-	
-	//case 8:
-	//	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(3, 999))
-	//	{
-	//		m_IsNextAttack = true;
-	//	}
-	//
-	//	break;
-	//
-	//case 9:
-	//	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(3, 999))
-	//	{
-	//		m_IsNextAttack = true;
-	//	}
-	//	break;
-
-		//case 3:
-		//	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(3, 999))
-		//	{
-		//		m_IsNextAttack = true;
-		//	}
-		//	break;
-		//
-		//case 5:
-		//	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(3, 999))
-		//	{
-		//		m_IsNextAttack = true;
-		//	}
-		//	break;
-	}
 
 }
 
@@ -182,12 +123,6 @@ void CCorvusState_SprintAttack::OnStateStart(const _float& In_fAnimationBlendTim
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
 	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
-
-	//m_iAttackIndex = 7;
-	//m_iEndAttackEffectIndex = -1;
-
-
-	//Disable_Weapons();
 
 
 
@@ -261,7 +196,6 @@ _bool CCorvusState_SprintAttack::Check_AndChangeNextState()
 		return false;
 
 
-	//if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	if(Check_RequirementNextAttackState())
 	{
 		if (Check_RequirementAttackState())
@@ -271,14 +205,10 @@ _bool CCorvusState_SprintAttack::Check_AndChangeNextState()
 			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack2>();
 
 			return true;
-
-
 		}
 	}
 
-	
-	
-	
+
 
 
 	return false;
@@ -286,22 +216,13 @@ _bool CCorvusState_SprintAttack::Check_AndChangeNextState()
 
 _bool CCorvusState_SprintAttack::Check_RequirementNextAttackState()
 {
-	_uint iTargetKeyFrameFirst = 999;
-	_uint iTargetKeyFrameSecond = 999;
+	_uint iTargetKeyFrameFirst = 17;
+	_uint iTargetKeyFrameSecond = 50;
 
 
-	switch (m_iAttackIndex)
-	{
-	case 11:
-		iTargetKeyFrameFirst = 17;
-		iTargetKeyFrameSecond = 50;
-		break;
-	
-	}
 
-
-	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameFirst, iTargetKeyFrameSecond) == true
-		&& m_IsNextAttack)
+	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameFirst, iTargetKeyFrameSecond) 
+&& m_IsNextAttack)
 	{
 		return true;
 	}
@@ -313,31 +234,15 @@ _bool CCorvusState_SprintAttack::Check_RequirementNextAttackState()
 
 _bool CCorvusState_SprintAttack::Check_RuquireMnetFirstAttackState()
 {
-	_uint iTargetKeyFrameMin = 999;
-	_uint iTargetKeyFrameMax = 999;
+	_uint iTargetKeyFrameMin = 51;
+	_uint iTargetKeyFrameMax = 80;
 
 
 
-	switch (m_iAttackIndex)
-	{
-	case 7:
-		iTargetKeyFrameMin = 51;
-		iTargetKeyFrameMax = 80;
-
-		break;
-
-		//case 3:
-		//	iTargetKeyFrame = 21;
-		//	break;
-		//
-		//case 5:
-		//	iTargetKeyFrame = 11;
-		//	break;
-	}
 
 
-	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) == true
-		&& m_IsNextAttack)
+
+	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) && m_IsNextAttack)
 	{
 		return true;
 	}

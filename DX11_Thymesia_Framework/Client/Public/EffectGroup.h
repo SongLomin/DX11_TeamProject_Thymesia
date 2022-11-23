@@ -61,7 +61,6 @@ public:
     void UnUse_EffectGroup();
     weak_ptr<CEffectGroup> Clone_EffectGroup();
 
-
     void Load_FromBinary(const string& In_szPath);
     void Write_FromBinary();
     void Load_EffectJson(const string& In_szPath, const _uint& In_iTimeScaleLayers, const _uint& In_iCreatedLevel);
@@ -78,7 +77,7 @@ private:
 
     string                              m_szEffectGroupName;
     vector<weak_ptr<CCustomEffectMesh>> m_pEffectMeshs;
-    vector<weak_ptr<CEffect_Rect>>     m_pEffectParticles;
+    vector<weak_ptr<CEffect_Rect>>      m_pEffectParticles;
 
     _bool                               m_bUsing = false;
 

@@ -130,36 +130,25 @@ XMFLOAT3 ENGINE_DLL Engine::SMath::Extract_PitchYawRollFromRotationMatrix(FXMMAT
 XMFLOAT3 ENGINE_DLL Engine::SMath::Add_Float3(const XMFLOAT3& Left, const XMFLOAT3& Right)
 {
 	XMFLOAT3 vResult;
-	vResult.x = Left.x + Right.x;
-	vResult.y = Left.y + Right.y;
-	vResult.z = Left.z + Right.z;
-
+	XMStoreFloat3(&vResult, XMLoadFloat3(&Left) + XMLoadFloat3(&Right));
 	return vResult;
 }
 
 XMFLOAT3 ENGINE_DLL Engine::SMath::Mul_Float3(const XMFLOAT3& Left, const float& Right)
 {
 	XMFLOAT3 vResult;
-
-	vResult.x = Left.x * Right;
-	vResult.y = Left.y * Right;
-	vResult.z = Left.z * Right;
-
+	XMStoreFloat3(&vResult, XMLoadFloat3(&Left) * Right);
 	return vResult;
 }
 
 void ENGINE_DLL Engine::SMath::Add_Float3(XMFLOAT3* InOut_Left, const XMFLOAT3& Right)
 {
-	InOut_Left->x += Right.x;
-	InOut_Left->y += Right.y;
-	InOut_Left->z += Right.z;
+	XMStoreFloat3(InOut_Left, XMLoadFloat3(InOut_Left) + XMLoadFloat3(&Right));
 }
 
 void ENGINE_DLL Engine::SMath::Mul_Float3(XMFLOAT3* InOut_Left, const float& Right)
 {
-	InOut_Left->x *= Right;
-	InOut_Left->y *= Right;
-	InOut_Left->z *= Right;
+	XMStoreFloat3(InOut_Left, XMLoadFloat3(InOut_Left) * Right);
 }
 
 _bool ENGINE_DLL Engine::SMath::Equal_Float3(const XMFLOAT3& Left, const XMFLOAT3& Right)
@@ -175,40 +164,25 @@ _bool ENGINE_DLL Engine::SMath::Equal_Float3(const XMFLOAT3& Left, const XMFLOAT
 XMFLOAT4 ENGINE_DLL Engine::SMath::Add_Float4(const XMFLOAT4& Left, const XMFLOAT4& Right)
 {
 	XMFLOAT4 vResult;
-	vResult.x = Left.x + Right.x;
-	vResult.y = Left.y + Right.y;
-	vResult.z = Left.z + Right.z;
-	vResult.w = Left.w + Right.w;
-
+	XMStoreFloat4(&vResult, XMLoadFloat4(&Left) + XMLoadFloat4(&Right));
 	return vResult;
 }
 
 XMFLOAT4 ENGINE_DLL Engine::SMath::Mul_Float4(const XMFLOAT4& Left, const float& Right)
 {
 	XMFLOAT4 vResult;
-
-	vResult.x = Left.x * Right;
-	vResult.y = Left.y * Right;
-	vResult.z = Left.z * Right;
-	vResult.w = Left.w * Right;
-
+	XMStoreFloat4(&vResult, XMLoadFloat4(&Left) * Right);
 	return vResult;
 }
 
 void ENGINE_DLL Engine::SMath::Add_Float4(XMFLOAT4* InOut_Left, const XMFLOAT4& Right)
 {
-	InOut_Left->x += Right.x;
-	InOut_Left->y += Right.y;
-	InOut_Left->z += Right.z;
-	InOut_Left->w += Right.w;
+	XMStoreFloat4(InOut_Left, XMLoadFloat4(InOut_Left) + XMLoadFloat4(&Right));
 }
 
 void ENGINE_DLL Engine::SMath::Mul_Float4(XMFLOAT4* InOut_Left, const float& Right)
 {
-	InOut_Left->x *= Right;
-	InOut_Left->y *= Right;
-	InOut_Left->z *= Right;
-	InOut_Left->w *= Right;
+	XMStoreFloat4(InOut_Left, XMLoadFloat4(InOut_Left) * Right);
 }
 
 float ENGINE_DLL Engine::SMath::Lerp(const float& fLeft, const float& fRight, float fRatio)

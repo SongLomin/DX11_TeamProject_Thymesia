@@ -15,33 +15,32 @@ class ENGINE_DLL CVIBuffer_Trail : public CVIBuffer
 public:
 	CVIBuffer_Trail(const CVIBuffer_Trail& rhs);
 
-public:
-	typedef struct tag_TrailBuffer
-	{
-		_float3		vPos_0;
-		_float3		vPos_1;
-		_uint		iMaxCnt;
-	} TRAIL_DESC;
-
 protected:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual void	Start() override;
 
 public:
+	void Update(_float _fTimeDelta, weak_ptr <CTransform> _pOwnerTransform, weak_ptr<CBoneNode> _pOwnerBoneNode, weak_ptr<MODEL_DATA> _pOwnerModel_Data);
 	void Tick(_float fTimeDelta);
-	// void Set_OwnerTransform(shared_ptr<CTransform> pTransform);
+	
+public:
+	void Reset_Points(weak_ptr <CTransform> _pOwnerTransform, weak_ptr<CBoneNode> _pOwnerBoneNode, weak_ptr<MODEL_DATA> _pOwnerModel_Data);
 
-private:
+
+protected:
 	_bool m_bTrailOn;
-	_uint m_iVtxCount;
+	_uint m_iVtxCnt;
+	_uint m_iNumVertices;
 	_float4 m_vLocalSwordLow;
 	_float4 m_vLocalSwordHigh;
-	// class weak_ptr<CTransform> m_pOwnerTransform;
-	// class weak_ptr<CHierarchyNode>
+	TRAIL_DESC m_tTrailDesc;
+	
+	_uint m_iLerpPointNum = 12;
+	_uint m_iCatMullRomIndex[4];
 
 private:
-	// void Free();
+	 void Free();
 };
 
 END

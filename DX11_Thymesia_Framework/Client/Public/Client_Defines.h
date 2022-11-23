@@ -12,10 +12,13 @@
 #define		_144HZ_
 #define		_LIFEGUARD_FOR_FALL_
 #define		_DEBUG_COUT_
-//#define		_STAGE_1_
-#define		_STAGE_2_
+#define		_STAGE_1_
+//#define		_STAGE_2_
 #define		_STAGE_1_MONSTER_
 #define		_GENERATE_PROP_COLLIDER_ true
+#define		_USE_GRAVITY_
+// UI제외한 오브젝트 생성 X
+//#define		_ONLY_UI_
 #endif // _DEBUG
 
 #ifdef NDEBUG
@@ -35,7 +38,17 @@ namespace Client
 	static const _uint	g_iWinCX = 1600;
 	static const _uint	g_iWinCY = 900;
 
-	enum LEVEL { LEVEL_STATIC, LEVEL_LOADING, LEVEL_LOGO, LEVEL_LOBBY, LEVEL_GAMEPLAY, LEVEL_STAGE2, LEVEL_STAGE3, LEVEL_EDIT, LEVEL_END };
+	enum LEVEL { 
+		LEVEL_STATIC, 
+		LEVEL_LOADING, 
+		LEVEL_LOGO, 
+		LEVEL_LOBBY, 
+		LEVEL_GAMEPLAY, 
+		LEVEL_STAGE2, 
+		LEVEL_STAGE3, 
+		LEVEL_EDIT, 
+		LEVEL_TEST,
+		LEVEL_END };
 	enum class TIMER { TIMER_DEFAULT, TIMER_FRAME, TIMER_HYPERSPACE, TIMER_END };
 	enum class FONT_INDEX { DREAM, PRETENDARD, FONT_END };
 	enum class EVENT_TYPE
@@ -48,6 +61,8 @@ namespace Client
 		ON_EDITDRAW_ACCEPT,
 		ON_EDITDRAW_SUB,
 		ON_EDITPICKING,
+		ON_EDIT_PHYSXINFO,
+		ON_EDIT_PHYSXINFO_N,
 		ON_ANIMATIONEND,
 		ON_MOVING,
 		ON_MONSTERDEAD,
@@ -67,6 +82,7 @@ namespace Client
 		LEFT_HIT,
 		RIGHT_HIT,
 		EXCTUE_HIT,
+		PARRY_HIT,
 		TYPE_END
 	};
 
@@ -91,7 +107,7 @@ namespace Client
 		PLAYER,
 		MONSTER,
 		FADEMASK,
-		HYPERSPACE,
+		GROOGYMOSNTER,
 		BATTLEUI,
 		SWAPUI,
 		LAYER_END
@@ -166,6 +182,7 @@ namespace Client
 		NORMAL,
 		PLAGUE,
 		SPECIAL_ATTACK,
+		PARRY,
 		OPTION_END
 	};
 

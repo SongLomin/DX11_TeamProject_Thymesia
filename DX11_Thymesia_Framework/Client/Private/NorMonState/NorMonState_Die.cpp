@@ -10,7 +10,7 @@
 #include "Character.h"
 #include "Player.h"
 #include "Monster.h"
-#include "MobWeapon/MobWeapon.h"
+#include "MobWeapon.h"
 #include "Status_Monster.h"
 
 GAMECLASS_C(CNorMonState_Die);
@@ -112,6 +112,8 @@ void CNorMonState_Die::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 	m_pOwner.lock()->Get_ComponentByType<CStatus_Monster>().lock()->CallBack_UI_Disable();
+
+	GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
 
 	Get_OwnerMonster()->Release_Monster();
 	

@@ -53,11 +53,11 @@ public:
 public:
     void Set_TargetCamera(weak_ptr<CCamera_Target> In_TargetCamera);
     weak_ptr<CCamera_Target> Get_TargetCamera();
-    void Add_Shaking(const SHAKE_DIRECTION& In_eState , const _float& In_fPower, const _float& In_fTime);
+    void Add_Shaking(_vector& vShakingDir, _float fRatio);
     //void Set_TargetForTargetCamera(weak_ptr<CGameObject> In_TargetGameObject);
     void Focus_Monster();
     void Release_Focus();
-    void Find_Target();
+    weak_ptr<CMonster> Get_TargetMonster();
 
 public:
     void Register_EffectGroup(const string& In_szEffectGroupName, weak_ptr<CEffectGroup> In_pEffectGroup);
@@ -68,6 +68,9 @@ public:
     _uint Use_EffectGroup(const string& In_szEffectGroupName, weak_ptr<CTransform> pParentTransformCom, const _uint& In_iTimeScaleLayer = -1);
     void UnUse_EffectGroup(const string& In_szEffectGroupName, const _uint& In_EffectGroupIndex);
 
+private:
+    void Enable_WeaponFromEvent(weak_ptr<CTransform> pParentTransformCom, const _bool In_bEnable);
+
 public:
     void Load_AllKeyEventFromJson();
 
@@ -77,8 +80,11 @@ public:
 
     // 해당 키에 이벤트가 있는지 확인 후 있다면 이벤트를 호출합니다.
     void Active_KeyEvent(const weak_ptr<CModel> In_ModelCom, const weak_ptr<CTransform> In_TransformCom, const _uint& In_iKeyIndex, const _uint& In_iTimeScaleLayer = -1);
-    void Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName);
+    void Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName,_matrix& OffSetMatrix);
     void End_Cinematic();
+
+    void Activate_Zoom(_float fRatio);
+    void Deactivate_Zoom();
     
 public:
     _bool Is_OpenHyperSpace();

@@ -93,7 +93,6 @@ void CUI_Landing::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
-    //TODO : UI Landing 테스트 코드.
 #ifdef _DEBUG
   
 

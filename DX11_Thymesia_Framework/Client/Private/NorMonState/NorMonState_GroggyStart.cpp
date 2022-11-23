@@ -80,7 +80,7 @@ void CNorMonState_GroggyStart::OnStateStart(const _float& In_fAnimationBlendTime
 #endif
 #endif
 
-
+	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
 }
 
 void CNorMonState_GroggyStart::OnStateEnd()

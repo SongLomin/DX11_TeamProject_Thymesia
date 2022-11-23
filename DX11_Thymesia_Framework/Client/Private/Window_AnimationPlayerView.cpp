@@ -134,14 +134,21 @@ void CWindow_AnimationPlayerView::Add_EffectKeyEvent()
 
 }
 
-void CWindow_AnimationPlayerView::Add_EnableColliderEvent()
+void CWindow_AnimationPlayerView::Add_EnableWeaponEvent(const _bool In_bEnable)
 {
+    if (!m_pPreViewModel.lock())
+        return;
 
+    weak_ptr<CModel> pCurrentModel = m_pPreViewModel.lock()->Get_CurrentModel();
 
-}
+    _uint iIndex = pCurrentModel.lock()->Get_CurrentAnimationKeyIndex();
 
-void CWindow_AnimationPlayerView::Add_DisableColliderEvent()
-{
+    /*m_KeyEventJson["AnimationIndex"]
+        [to_string(pCurrentModel.lock()->Get_CurrentAnimationIndex())].emplace_back();*/
+
+    m_KeyEventJson["AnimationIndex"]
+        [pCurrentModel.lock()->Get_CurrentAnimationIndex()]
+    [iIndex]["Enable_Weapon"] = In_bEnable;
 }
 
 void CWindow_AnimationPlayerView::Save_KeyEvent()
@@ -201,6 +208,23 @@ void CWindow_AnimationPlayerView::Load_KeyEvent()
 
         m_KeyEventEffectGroupNames.emplace(i, list<string>());
 
+        if (KeyJson[i].end() != KeyJson[i].find("Enable_Weapon"))
+        {
+            string szText = "Weapon(";
+
+            if (KeyJson[i]["Enable_Weapon"] == true)
+            {
+                szText += "true";
+            }
+            else
+            {
+                szText += "false";
+            }
+            
+            szText += ")";
+            m_KeyEventEffectGroupNames[i].emplace_back(szText);
+        }
+
         if (KeyJson[i].end() != KeyJson[i].find("EffectName"))
         {
             for (_size_t j = 0; j < KeyJson[i]["EffectName"].size(); ++j)
@@ -208,17 +232,6 @@ void CWindow_AnimationPlayerView::Load_KeyEvent()
                 m_KeyEventEffectGroupNames[i].emplace_back(KeyJson[i]["EffectName"][j]);
             }
         }
-        
-
-        /*if (KeyJson[i].end() != KeyJson[i].find("EnableWeapon"))
-        {
-            string szText = "Enable Weapon(";
-            szText += KeyJson[i]["EnableWeapon"]["fWeaponScale"];
-            szText += "'";
-            m_KeyEventEffectGroupNames[i].emplace_back(KeyJson[i]["EnableWeapon"]);
-        }*/
-
-        
     }
 }
 
@@ -284,6 +297,27 @@ void CWindow_AnimationPlayerView::ClearAll_KeyEvent()
     KeyJson.clear();
 }
 
+void CWindow_AnimationPlayerView::Clear_WeaponEvent()
+{
+    weak_ptr<CModel> pCurrentModel = m_pPreViewModel.lock()->Get_CurrentModel();
+
+    json& KeyJson = m_KeyEventJson["AnimationIndex"][pCurrentModel.lock()->Get_CurrentAnimationIndex()];
+
+    if (KeyJson.empty())
+    {
+        return;
+    }
+
+    _uint iIndex = pCurrentModel.lock()->Get_CurrentAnimationKeyIndex();
+
+    if (KeyJson[iIndex].empty())
+    {
+        return;
+    }
+
+    KeyJson[iIndex]["Enable_Weapon"].clear();
+}
+
 void CWindow_AnimationPlayerView::Draw_Player()
 {
     if (!m_pCurrentAnimation.lock())
@@ -317,7 +351,7 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
     ImGui::SameLine();
     ImGui::Text(to_string(iMaxKeyIndex).c_str());
 
-    if (ImGui::Button("Add"))
+    if (ImGui::Button("Add_Effect"))
     {
         Add_EffectKeyEvent();
         Save_KeyEvent();
@@ -325,6 +359,20 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
     }
 
     ImGui::SameLine();
+
+    if (ImGui::Button("Enable_Weapon"))
+    {
+        Add_EnableWeaponEvent(true);
+        Save_KeyEvent();
+        Load_KeyEvent();
+    }
+
+    if (ImGui::Button("Disable_Weapon"))
+    {
+        Add_EnableWeaponEvent(false); 
+        Save_KeyEvent();
+        Load_KeyEvent();
+    }
 
     //if (ImGui::Button("Clear"))
     //{
@@ -374,7 +422,7 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
 
     ImGui::SameLine();
     
-    if (ImGui::Button("Clear Back"))
+    if (ImGui::Button("Clear Effect Back"))
     {
         ClearBack_KeyEvent();
         Save_KeyEvent();
@@ -383,9 +431,9 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
 
     ImGui::SameLine();
 
-    if (ImGui::Button("Clear"))
+    if (ImGui::Button("Clear Weapon"))
     {
-        Clear_KeyEvent();
+        Clear_WeaponEvent();
         Save_KeyEvent();
         Load_KeyEvent();
     }
@@ -398,6 +446,7 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
         Save_KeyEvent();
         Load_KeyEvent();
     }
+
 }
 
 void CWindow_AnimationPlayerView::Draw_AnimationList()

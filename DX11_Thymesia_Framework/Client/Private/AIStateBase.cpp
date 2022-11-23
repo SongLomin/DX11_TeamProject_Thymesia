@@ -19,9 +19,9 @@ HRESULT CAIStateBase::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	CMonster::STATE_LINK_DESC StateLinkDesc;
-	ZeroMemory(&StateLinkDesc, sizeof(CMonster::STATE_LINK_DESC));
-	memcpy(&StateLinkDesc, pArg, sizeof(CMonster::STATE_LINK_DESC));
+	CMonster::STATE_LINK_MONSTER_DESC StateLinkDesc;
+	ZeroMemory(&StateLinkDesc, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+	memcpy(&StateLinkDesc, pArg, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 
 	m_eMonType = StateLinkDesc.eMonType;
 	m_eNorMonIdleType = StateLinkDesc.eNorMonIdleType;

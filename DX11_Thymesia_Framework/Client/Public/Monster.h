@@ -22,7 +22,7 @@ public:
         //BOSSTYPE             eBossType;
         //TODO ¾ß¸Å¿¡¿ä ¹Ø¿¡²¨ ¤¾ 
         _float3            vYame;
-    }STATE_LINK_DESC;
+    }STATE_LINK_MONSTER_DESC;
 
 public:
     void Set_TargetCharacter(weak_ptr<CCharacter> In_pCharacter);
@@ -49,6 +49,8 @@ public:
 public:
     list<weak_ptr<CMobWeapon>>  Get_Wepons() { return m_pWeapons; }
 
+public:
+    virtual void Enable_Weapons(const _bool In_bEnable) override;
 
 protected:
     virtual void SetUp_ShaderResource() override;    
@@ -73,10 +75,12 @@ protected:
     list<weak_ptr<CMobWeapon>> m_pWeapons;
     weak_ptr<CStateBase> m_pStandState;
 
+
+
     weak_ptr<CCharacter> m_pTargetCharacter; // = player
     weak_ptr<CTexture>   m_pDissolveTextureCom;
     // MONSTERTYPE       m_eMonType    =     MONSTERTYPE::NMON_END;
-    STATE_LINK_DESC      m_tLinkStateDesc;
+    STATE_LINK_MONSTER_DESC      m_tLinkStateDesc;
     MONSTERWEAPONTYPE    m_eMonWeaPonType =     MONSTERWEAPONTYPE::MON_WEAPON_END;
     NORMONSTERIDLETYPE   m_eNorMonIdleType =    NORMONSTERIDLETYPE::IDLEEND;
 

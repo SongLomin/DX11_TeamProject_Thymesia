@@ -594,57 +594,56 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 #ifdef _DEBUG
 void CCustomEffectMesh::Key_Input_ControlMesh(_float fTimeDelta)
 {
-#pragma region Translation
-	if (KEY_INPUT(KEY::NUMPAD8, KEY_STATE::HOLD))
+	if (m_tEffectMeshDesc.bOnFocus)
 	{
-		if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
-			m_pTransformCom.lock()->Go_Straight_WorldAxis(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
-		else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD))
-			m_pTransformCom.lock()->Go_Straight(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
+		if (KEY_INPUT(KEY::NUMPAD8, KEY_STATE::HOLD))
+		{
+			if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
+				m_pTransformCom.lock()->Go_Straight_WorldAxis(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
+			else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD))
+				m_pTransformCom.lock()->Go_Straight(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
+		}
+
+		if (KEY_INPUT(KEY::NUMPAD2, KEY_STATE::HOLD))
+		{
+			if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
+				m_pTransformCom.lock()->Go_Backward_WorldAxis(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
+			else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD))
+				m_pTransformCom.lock()->Go_Backward(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
+		}
+
+		if (KEY_INPUT(KEY::NUMPAD4, KEY_STATE::HOLD))
+		{
+			if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
+				m_pTransformCom.lock()->Go_Left_WorldAxis(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
+			else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD))
+				m_pTransformCom.lock()->Go_Left(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
+		}
+
+		if (KEY_INPUT(KEY::NUMPAD6, KEY_STATE::HOLD))
+		{
+			if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
+				m_pTransformCom.lock()->Go_Right_WorldAxis(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
+			else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD))
+				m_pTransformCom.lock()->Go_Right(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
+		}
+
+		if (KEY_INPUT(KEY::NUMPAD1, KEY_STATE::HOLD))
+		{
+			if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
+				m_pTransformCom.lock()->Go_Up_WorldAxis(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
+			else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD))
+				m_pTransformCom.lock()->Go_Up(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
+		}
+
+		if (KEY_INPUT(KEY::NUMPAD3, KEY_STATE::HOLD))
+		{
+			if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
+				m_pTransformCom.lock()->Go_Down_WorldAxis(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
+			else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD))
+				m_pTransformCom.lock()->Go_Down(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
+		}
 	}
-
-	if (KEY_INPUT(KEY::NUMPAD2, KEY_STATE::HOLD))
-	{
-		if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
-			m_pTransformCom.lock()->Go_Backward_WorldAxis(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
-		else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD))
-			m_pTransformCom.lock()->Go_Backward(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
-	}
-
-	if (KEY_INPUT(KEY::NUMPAD4, KEY_STATE::HOLD))
-	{
-		if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
-			m_pTransformCom.lock()->Go_Left_WorldAxis(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
-		else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD))
-			m_pTransformCom.lock()->Go_Left(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
-	}
-
-	if (KEY_INPUT(KEY::NUMPAD6, KEY_STATE::HOLD))
-	{
-		if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
-			m_pTransformCom.lock()->Go_Right_WorldAxis(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
-		else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD))
-			m_pTransformCom.lock()->Go_Right(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
-	}
-
-	if (KEY_INPUT(KEY::NUMPAD1, KEY_STATE::HOLD))
-	{
-		if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
-			m_pTransformCom.lock()->Go_Up_WorldAxis(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
-		else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD))
-			m_pTransformCom.lock()->Go_Up(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
-	}
-
-	if (KEY_INPUT(KEY::NUMPAD3, KEY_STATE::HOLD))
-	{
-		if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
-			m_pTransformCom.lock()->Go_Down_WorldAxis(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
-		else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD))
-			m_pTransformCom.lock()->Go_Down(fTimeDelta * m_tEffectMeshDesc.fSpeedPerSec);
-	}
-#pragma endregion // Translation
-
-
 }
 
 void CCustomEffectMesh::Apply_ImGui_Controls_to_Mesh()
@@ -1069,7 +1068,7 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 				ImGui::SameLine();
 				ImGui::DragFloat("##Weapon_Scale", &m_tEffectMeshDesc.fWeaponScale, 0.1f);
 
-				const char* HitType_items[] = { "Normal", "Upper", "Down", "Warning","left","right","excute"};
+				const char* HitType_items[] = { "Normal", "Upper", "Down", "Warning","left","right","excute","Parry"};
 
 				if (ImGui::BeginListBox("Hit Type"))
 				{
@@ -1088,7 +1087,7 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 					ImGui::EndListBox();
 				}
 
-				const char* Option_items[] = { "None", "Normal", "Plague", "Special_Attack"};
+				const char* Option_items[] = { "None", "Normal", "Plague", "Special_Attack","Parry"};
 
 				if (ImGui::BeginListBox("Option Type"))
 				{

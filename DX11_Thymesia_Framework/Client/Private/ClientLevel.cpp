@@ -5,6 +5,7 @@
 #include "Level_Loading.h"
 #include "FadeMask.h"
 #include "GameManager.h"
+#include "EffectGroup.h"
 
 GAMECLASS_C(CClientLevel)
 
@@ -43,6 +44,25 @@ void CClientLevel::Load_FromJson(const string& In_szJsonPath, const LEVEL& In_eL
 			pGameObjectInstance.lock()->Set_Enable(Elem_GameObjects["Setting"]["Enable"]);
 			pGameObjectInstance.lock()->Load_FromJson(Elem_GameObjects);
 		}
+	}
+}
+
+void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex)
+{
+	fs::directory_iterator itr(In_FolderPath);
+
+	while (itr != fs::end(itr)) {
+		const fs::directory_entry& entry = *itr;
+
+		weak_ptr<CEffectGroup> EffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(In_LevelIndex);
+		EffectGroup.lock()->Load_EffectJson(entry.path().string(), (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
+
+#ifdef _DEBUG_COUT_
+		cout << entry.path().filename() << std::endl;
+#endif
+
+
+		itr++;
 	}
 }
 
