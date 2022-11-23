@@ -85,13 +85,15 @@ void CCamera_Target::Tick(_float fTimeDelta)
 			if (m_bIsFocused)
 			{
 				GET_SINGLE(CGameManager)->Focus_Monster();
-				GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 1.f, 0.f), 0.5f);
+				//TODO: 임시 셰이킹
+				GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 1.f, 0.f), 0.5f,0.2f,0.5f);
 				//GET_SINGLE(CGameManager)->Activate_Zoom(-1.f);
 			}
 			else
 			{
 				GET_SINGLE(CGameManager)->Release_Focus();
-				GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 1.f, 0.f), 0.5f);
+				//TODO: 임시 셰이킹
+				GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 1.f, 0.f), 0.5f,0.2f);
 				//GET_SINGLE(CGameManager)->Deactivate_Zoom();
 			}
 		}
@@ -146,13 +148,15 @@ void CCamera_Target::Release_Focus()
 
 }
 
-void CCamera_Target::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName, _fmatrix OffSetMatrix)
+void CCamera_Target::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName, _fmatrix OffSetMatrix, _uint eType)
 {
 
 	m_pCameraBoneNode = _pModel.lock()->Find_BoneNode(pBoneName);
 	m_pCameraBoneParentTransform = _pModel.lock()->Get_Owner().lock()->Get_Component<CTransform>();
 	m_TransformationMatrix = _pModel.lock()->Get_TransformationMatrix();
 	m_bCinematic = true;
+
+	m_eCinematicType = eType;
 
 	XMStoreFloat4x4(&m_CinematicOffSetMatrix, OffSetMatrix);
 
@@ -163,45 +167,50 @@ void CCamera_Target::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBon
 
 void CCamera_Target::End_Cinematic()
 {
+	if (m_eCinematicType == (_uint)CINEMATIC_TYPE::EXECUTION)
+	{
+		_matrix		ParentMatrix = m_pCameraBoneNode.lock()->Get_CombinedMatrix()
+			* XMLoadFloat4x4(&m_TransformationMatrix);
 
-	_matrix LocalMat = XMMatrixIdentity();
-	LocalMat *= XMMatrixRotationX(XMConvertToRadians(-90.f));
-	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
+		ParentMatrix.r[0] = XMVector3Normalize(ParentMatrix.r[0]);
+		ParentMatrix.r[1] = XMVector3Normalize(ParentMatrix.r[1]);
+		ParentMatrix.r[2] = XMVector3Normalize(ParentMatrix.r[2]);
 
-	_matrix		ParentMatrix = m_pCameraBoneNode.lock()->Get_CombinedMatrix()
-		* XMLoadFloat4x4(&m_TransformationMatrix);
+		_matrix TotalMatrix = XMLoadFloat4x4(&m_CinematicOffSetMatrix) * ParentMatrix * m_pCameraBoneParentTransform.lock()->Get_WorldMatrix();
 
-	ParentMatrix.r[0] = XMVector3Normalize(ParentMatrix.r[0]);
-	ParentMatrix.r[1] = XMVector3Normalize(ParentMatrix.r[1]);
-	ParentMatrix.r[2] = XMVector3Normalize(ParentMatrix.r[2]);
+		m_pTransformCom.lock()->Set_WorldMatrix(TotalMatrix);
+		_vector vCurPlayerPos = m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+		XMStoreFloat4(&m_vPlayerFollowLerpPosition, vCurPlayerPos);
+		XMStoreFloat4(&m_vPrePlayerPos, vCurPlayerPos);
 
-	_matrix TotalMatrix = LocalMat * ParentMatrix * m_pCameraBoneParentTransform.lock()->Get_WorldMatrix();
+		_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+		_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * -4.5f + XMVectorSet(0.f, 1.1f, 0.f, 0.f);
 
-	m_pTransformCom.lock()->Set_WorldMatrix(TotalMatrix);
-	_vector vCurPlayerPos = m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-	XMStoreFloat4(&m_vPlayerFollowLerpPosition, vCurPlayerPos);
-	XMStoreFloat4(&m_vPrePlayerPos, vCurPlayerPos);
+		XMStoreFloat4(&m_vDestCamPosition, vPos);
+		XMStoreFloat4(&m_vCamPosAfterCinematic, TotalMatrix.r[3]);
 
-	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
-	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * -4.5f + XMVectorSet(0.f, 1.1f, 0.f, 0.f);
+		//XMStoreFloat4(&m_vPlayerFollowLerpPosition, TotalMatrix.r[3]);
 
-	XMStoreFloat4(&m_vDestCamPosition, vPos);
-	XMStoreFloat4(&m_vCamPosAfterCinematic, TotalMatrix.r[3]);
-
-	//XMStoreFloat4(&m_vPlayerFollowLerpPosition, TotalMatrix.r[3]);
-
-	m_pCameraBoneNode = weak_ptr<CBoneNode>();
-	m_pCameraBoneParentTransform = weak_ptr<CTransform>();
-	m_bCinematic = false;
-	m_bCinematicEnd = true;
+		m_pCameraBoneNode = weak_ptr<CBoneNode>();
+		m_pCameraBoneParentTransform = weak_ptr<CTransform>();
+		m_bCinematic = false;
+		m_bCinematicEnd = true;
+	}
+	else if (m_eCinematicType == (_uint)CINEMATIC_TYPE::CINEMATIC)
+	{
+		/*그냥 대충 페이드아웃*/
+		m_bCinematic = false;
+		m_bCinematicEnd = false;
+	}
 
 }
 
-void CCamera_Target::Activate_Zoom(_float fRatio)
+void CCamera_Target::Activate_Zoom(_float fRatio, _float fZoomTime)
 {
 	m_fZoomEndOffSet = fRatio;
-	m_fZoomStartOffSet = 0.f;
+	m_fZoomStartOffSet = m_fZoom;
 	m_fZoomTimeAcc = 0.f;
+	m_fZoomTime = fZoomTime;
 }
 
 void CCamera_Target::Deactivate_Zoom()
@@ -211,15 +220,20 @@ void CCamera_Target::Deactivate_Zoom()
 	m_fZoomTimeAcc = 0.f;
 }
 
-void CCamera_Target::Add_Shaking(_vector vShakingDir, _float fRatio)
+void CCamera_Target::Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime,_float fFrequency)
 {
 	vShakingDir = XMVector3Normalize(vShakingDir);
+	XMStoreFloat3(&m_vShakingDir, vShakingDir);
 	XMStoreFloat3(&m_vShakingEndOffSet, vShakingDir* fRatio);
 	m_vShakingStartOffSet = m_vShaking;
+	m_fShakingTime = fShakingTime;
+	m_fShakingFrequency = fFrequency;
 
-	m_bIncreaseShake = true;
-	m_bDecreaseShake = false;
+	m_fShakeRatio = fRatio;
 	m_fShakingTimeAcc = 0.f;
+	m_fShakingQuarterFrequency = 0.f;
+	m_fShakingDecreaseTime = 0.f;
+
 }
 
 
@@ -309,13 +323,42 @@ void CCamera_Target::Calculate_ZoomOffSet(_float fTimeDelta)
 
 		m_fZoom = CEasing_Utillity::QuartOut(vStartPoint, vEndPoint, m_fZoomTimeAcc, 1.f).m128_f32[0];
 	}
+	if (m_fZoomTime < m_fZoomTimeAcc)
+	{
+		GET_SINGLE(CGameManager)->Deactivate_Zoom();
+	}
 }
 
 void CCamera_Target::Calculate_ShakingOffSet(_float fTimeDelta)
 {
 	m_fShakingTimeAcc += fTimeDelta;
+	m_fShakingTime -= fTimeDelta;
 
-	if (m_bIncreaseShake)
+	if (m_fShakingTime > DBL_EPSILON)
+	{
+		XMStoreFloat3(&m_vShaking, sinf(m_fShakingTimeAcc * m_fShakingFrequency) * m_fShakeRatio * XMLoadFloat3(&m_vShakingDir));
+		m_fShakingQuarterFrequency += fTimeDelta;
+		if (m_fShakingQuarterFrequency > 1.f/m_fShakingFrequency)
+		{
+			m_fShakeRatio *= 0.25f;
+			m_fShakingQuarterFrequency = 0.f;
+		}
+		m_vShakingStartOffSet = m_vShaking;
+	}
+	else
+	{
+		m_fShakingDecreaseTime += fTimeDelta;
+		if (1.f > m_fShakingDecreaseTime)
+		{
+			_vector vStartPoint = XMLoadFloat3(&m_vShakingStartOffSet);
+			_vector vEndPoint = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+
+			XMStoreFloat3(&m_vShaking, CEasing_Utillity::CircOut(vStartPoint, vEndPoint, m_fShakingDecreaseTime, 1.f));
+		}
+	}
+	cout << "shaking ratio : " << m_fShakeRatio << endl;
+
+	/*if (m_bIncreaseShake)
 	{
 		if (0.1f < m_fShakingTimeAcc)
 		{
@@ -346,7 +389,9 @@ void CCamera_Target::Calculate_ShakingOffSet(_float fTimeDelta)
 
 			XMStoreFloat3(&m_vShaking, CEasing_Utillity::CircOut(vStartPoint, vEndPoint, m_fShakingTimeAcc, 0.7f));
 		}
-	}
+	}*/
+
+
 
 }
 

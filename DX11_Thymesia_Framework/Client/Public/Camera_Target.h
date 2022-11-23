@@ -47,10 +47,10 @@ public:
 	void Start_Cinematic(weak_ptr<CModel> _pModel,const _char* pBoneName, _fmatrix OffSetMatrix);
 	void End_Cinematic();
 
-	void Activate_Zoom(_float fRatio);
+	void Activate_Zoom(_float fRatio, _float fZoomTime);
 	void Deactivate_Zoom();
 
-	void Add_Shaking(_vector vShakingDir, _float fRatio);
+	void Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime, _float fFrequency);
 	/*
 	* 플레이어한테도 해당 타겟을 넘겨줌 <-선형 보간으로 플레이어 방향을 몬스터를 향하게 도렬둠
 	* 게임 매니저에서 몬스터의포인터를 가지고 있음
@@ -115,14 +115,21 @@ private:
 	_float m_fZoom = 0.f;//현재 줌 비율 값
 	_float m_fZoomStartOffSet = 0.f;//시작 값
 	_float m_fZoomEndOffSet = 0.f;//도착 값
+	_float m_fZoomTime = 0.f; // 줌 지속 시간
 	_float m_fZoomTimeAcc = 0.f;
 
 	_float3 m_vShakingStartOffSet = _float3(0.f, 0.f, 0.f);
 	_float3 m_vShaking = _float3(0.f, 0.f, 0.f);
 	_float3 m_vShakingEndOffSet = _float3(0.f, 0.f, 0.f);
+	_float3 m_vShakingDir = _float3(0.f, 0.f, 0.f);
+	_float m_fShakingTime = 0.f;
+	_float m_fShakingFrequency = 0.f;
+	_float m_fShakeRatio = 0.f;
 	_float m_fShakingTimeAcc = 0.f;
-	_bool m_bIncreaseShake = false;
-	_bool m_bDecreaseShake = false;
+	_float m_fShakingQuarterFrequency = 0.f;
+	_float m_fShakingDecreaseTime = 0.f;
+
+
 		
 
 private:
