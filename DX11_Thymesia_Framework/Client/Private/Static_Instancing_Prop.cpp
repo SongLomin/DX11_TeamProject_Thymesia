@@ -72,6 +72,10 @@ HRESULT CStatic_Instancing_Prop::Render()
 {
 	// 오브젝트
 
+	if ("TEMP_Corvus" == m_pInstanceModelCom.lock()->Get_ModelKey())
+	{
+		return S_OK;
+	}
 	_float4x4 WorldMatrix;
 	XMStoreFloat4x4(&WorldMatrix, XMMatrixIdentity());
 
@@ -192,21 +196,23 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 		{
 			m_iColliderType = iter.value();
 		}
+		
 	}
+
 
 	m_pInstanceModelCom.lock()->Init_Instance((_uint)m_pPropInfos.size());
 	m_pInstanceModelCom.lock()->Update(m_pPropInfos);
 
 #ifdef _GENERATE_PROP_COLLIDER_
-	if ((_uint)LEVEL_GAMEPLAY == m_CreatedLevel && m_iColliderType != 0)
+	if ((_uint)LEVEL_GAMEPLAY == m_CreatedLevel)
 	{
 #ifdef _DEBUG_COUT_
 		cout << "Create_PhysX: " << m_pInstanceModelCom.lock()->Get_ModelKey() << endl;
 #endif // _DEBUG_COUT_
 
-		_bool bConvex = m_iColliderType == 2;
+		// _bool bConvex = m_iColliderType == 2;
 
-		m_pPhysXColliderCom.lock()->Init_ModelInstanceCollider(m_pInstanceModelCom.lock()->Get_ModelData(), m_pPropInfos, bConvex);
+		m_pPhysXColliderCom.lock()->Init_ModelInstanceCollider(m_pInstanceModelCom.lock()->Get_ModelData(), m_pPropInfos, _GENERATE_PROP_COLLIDER_);
 		PhysXColliderDesc tDesc;
 		Preset::PhysXColliderDesc::StaticInstancingPropSetting(tDesc, m_pTransformCom);
 		m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);

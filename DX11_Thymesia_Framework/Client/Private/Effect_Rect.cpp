@@ -197,7 +197,8 @@ void CEffect_Rect::SetUp_ShaderResource()
 
 	if (m_pBoneNode.lock() && ((_uint)TRANSFORMTYPE::CHILD == m_tEffectParticleDesc.iFollowTransformType))
 	{
-		_matrix ModelTranMat = XMLoadFloat4x4(&GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Get_TransformationMatrix());
+		_float4x4 TempMat = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Get_TransformationMatrix();
+		_matrix ModelTranMat = XMLoadFloat4x4(&TempMat);
 		BoneMatrix = m_pBoneNode.lock()->Get_CombinedMatrix() * ModelTranMat;
 
 		BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
@@ -697,7 +698,8 @@ void CEffect_Rect::Play(_float fTimeDelta)
 
 	if (m_pBoneNode.lock() && ((_uint)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType))
 	{
-		_matrix ModelTranMat = XMLoadFloat4x4(&GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Get_TransformationMatrix());
+		_float4x4 TempMat = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Get_TransformationMatrix();
+		_matrix ModelTranMat = XMLoadFloat4x4(&TempMat);
 		BoneMatrix = m_pBoneNode.lock()->Get_CombinedMatrix() * ModelTranMat;
 
 		BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
@@ -926,19 +928,20 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 {
 	if (m_pBoneNode.lock())
 	{
-		_matrix ModelTranMat = XMLoadFloat4x4(&GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Get_TransformationMatrix());
-		_matrix ParentMatrix = m_pBoneNode.lock()->Get_CombinedMatrix() * ModelTranMat;
+		_float4x4 TempMat = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Get_TransformationMatrix();
+		_matrix ModelTranMat = XMLoadFloat4x4(&TempMat);
+		_matrix BoneMatrix = m_pBoneNode.lock()->Get_CombinedMatrix() * ModelTranMat;
 
-		ParentMatrix.r[0] = XMVector3Normalize(ParentMatrix.r[0]);
-		ParentMatrix.r[1] = XMVector3Normalize(ParentMatrix.r[1]);
-		ParentMatrix.r[2] = XMVector3Normalize(ParentMatrix.r[2]);
+		BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
+		BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
+		BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
 
 		if ((_int)TRANSFORMTYPE::CHILD == m_tEffectParticleDesc.iFollowTransformType)
 		{
 			if (m_pParentTransformCom.lock())
-				m_pTransformCom.lock()->Set_WorldMatrix(ParentMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix());
+				m_pTransformCom.lock()->Set_WorldMatrix(BoneMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix());
 			else
-				m_pTransformCom.lock()->Set_WorldMatrix(ParentMatrix);
+				m_pTransformCom.lock()->Set_WorldMatrix(BoneMatrix);
 		}
 	}
 

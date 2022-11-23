@@ -31,6 +31,7 @@
 #define		_LIFEGUARD_FOR_FALL_
 #define		_STAGE_1_MONSTER_
 #define		_USE_GRAVITY_
+#define		_GENERATE_PROP_COLLIDER_ true
 #endif // NDEBUG
 
 namespace Client 

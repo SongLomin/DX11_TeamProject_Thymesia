@@ -90,32 +90,32 @@ HRESULT CLevel_GamePlay::Initialize()
 	CMonster::STATE_LINK_MONSTER_DESC CCC;
 	CBossMonster::STATE_LINK_BOSS_DESC DDD;
 
-	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-	//CCC.eMonType = MONSTERTYPE::AXEMAN;
-	//CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
-	//CCC.vYame.x = 13.f;
-	//CCC.vYame.y = 4.6f;
-	//CCC.vYame.z = 36.f;
-	//CCC.m_iAtkCounterGauge = 10;
-	//GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
+	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+	CCC.eMonType = MONSTERTYPE::AXEMAN;
+	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
+	CCC.vYame.x = 13.f;
+	CCC.vYame.y = 4.6f;
+	CCC.vYame.z = 36.f;
+	CCC.m_iAtkCounterGauge = 10;
+	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
 
-	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-	//CCC.eMonType = MONSTERTYPE::KNIFEWOMAN;
-	//CCC.eNorMonIdleType = NORMONSTERIDLETYPE::SITIDLE;
-	//CCC.vYame.x = 23.f;
-	//CCC.vYame.y = 4.6f;
-	//CCC.vYame.z = 43.f;
-	//CCC.m_iAtkCounterGauge = 10;
-	//GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
+	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+	CCC.eMonType = MONSTERTYPE::KNIFEWOMAN;
+	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::SITIDLE;
+	CCC.vYame.x = 23.f;
+	CCC.vYame.y = 4.6f;
+	CCC.vYame.z = 43.f;
+	CCC.m_iAtkCounterGauge = 10;
+	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
 	
-	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-	//CCC.eMonType = MONSTERTYPE::GARDENER;
-	//CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
-	//CCC.vYame.x = 15.f;
-	//CCC.vYame.y = 4.9f;
-	//CCC.vYame.z = 10.5f;
-	//CCC.m_iAtkCounterGauge = 10;
-	//GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
+	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+	CCC.eMonType = MONSTERTYPE::GARDENER;
+	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
+	CCC.vYame.x = 15.f;
+	CCC.vYame.y = 4.9f;
+	CCC.vYame.z = 10.5f;
+	CCC.m_iAtkCounterGauge = 10;
+	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
 #endif // _STAGE_1_MONSTER_
 	
 	/*ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));

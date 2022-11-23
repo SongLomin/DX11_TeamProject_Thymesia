@@ -110,6 +110,12 @@ void CCorvus::Tick(_float fTimeDelta)
 			pGameObject.lock()->Get_Component<CPhysXCollider>().lock()->Add_Force(PushPower * 1000.f);*/
 		}
 	}
+
+	// TODO : test jump key R
+	if (KEY_INPUT(KEY::R, KEY_STATE::TAP))
+	{ 
+		m_pPhysXControllerCom.lock()->Move(_vector{ 0.f, 10000.f * fTimeDelta, 0.f }, 0.f, fTimeDelta, PxControllerFilters());
+	}
 }
 
 void CCorvus::LateTick(_float fTimeDelta)
