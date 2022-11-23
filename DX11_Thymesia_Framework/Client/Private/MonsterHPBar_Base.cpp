@@ -315,10 +315,16 @@ void CMonsterHPBar_Base::Call_Restart()
 void CMonsterHPBar_Base::OnDisable()
 {
 	m_pTrack.lock()->Set_Enable(false);
+
 	m_pGreenTrack.lock()->Set_Enable(false);
+
 	if (m_pStunned.lock())
 		m_pStunned.lock()->Set_Enable(false);
+
 	m_pRecovery.lock()->Set_Enable(false);
+
+	m_pBorder.lock()->Set_Enable(false);
+
 	Set_RecoveryAlram(false);
 }
 

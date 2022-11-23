@@ -40,18 +40,6 @@ HRESULT CPlayer::Initialize(void* pArg)
 
     m_pHitColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
 
-
-    m_pRigidBodyColliderCom = Add_Component<CCollider>();
-
-    ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
-
-    ColliderDesc.vScale = _float3(1.f, 1.f, 1.f);
-    ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
-    ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
-    ColliderDesc.iLayer = (_uint)COLLISION_LAYER::PLAYER_RIGIDBODY;
-
-    m_pRigidBodyColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
-
     m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
 
 
@@ -102,9 +90,6 @@ void CPlayer::Tick(_float fTimeDelta)
 
     if(m_pHitColliderCom.lock())
         m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
-
-    if(m_pRigidBodyColliderCom.lock())
-        m_pRigidBodyColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 
 }
 
@@ -231,13 +216,9 @@ void CPlayer::OnEnable(void* pArg)
     __super::OnEnable(pArg);
 
     m_pHitColliderCom.lock()->Set_Enable(true);
-    m_pRigidBodyColliderCom.lock()->Set_Enable(true);
 
     if (m_pHitColliderCom.lock())
         m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
-
-    if (m_pRigidBodyColliderCom.lock())
-        m_pRigidBodyColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 }
 
 void CPlayer::OnDisable()
@@ -245,7 +226,6 @@ void CPlayer::OnDisable()
     __super::OnDisable();
 
     m_pHitColliderCom.lock()->Set_Enable(false);
-    m_pRigidBodyColliderCom.lock()->Set_Enable(false);
     Set_TargetMonster(weak_ptr<CMonster>());
 }
 

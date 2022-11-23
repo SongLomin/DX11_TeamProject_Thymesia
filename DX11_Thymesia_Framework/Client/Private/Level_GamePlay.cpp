@@ -12,6 +12,8 @@
 #include "MonsterHPBar_Base.h"
 #include "MonsterHPBar_Elite.h"
 #include "MonsterHPBar_Boss.h"
+#include "MonsterParryingBar.h"
+
 
 CLevel_GamePlay::CLevel_GamePlay()
 	//: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
@@ -33,8 +35,8 @@ HRESULT CLevel_GamePlay::Initialize()
 
 //주석지워라
 
-	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
 #ifndef _ONLY_UI_
+	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
 #pragma region GAMEOBJECT
 
 	/*future<void> ThreadResult = async(launch::async, 
@@ -88,32 +90,32 @@ HRESULT CLevel_GamePlay::Initialize()
 	CMonster::STATE_LINK_MONSTER_DESC CCC;
 	CBossMonster::STATE_LINK_BOSS_DESC DDD;
 
-	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-	//CCC.eMonType = MONSTERTYPE::AXEMAN;
-	//CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
-	//CCC.vYame.x = 13.f;
-	//CCC.vYame.y = 4.6f;
-	//CCC.vYame.z = 36.f;
-	//CCC.m_iAtkCounterGauge = 10;
-	//GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
+	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+	CCC.eMonType = MONSTERTYPE::AXEMAN;
+	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
+	CCC.vYame.x = 13.f;
+	CCC.vYame.y = 4.6f;
+	CCC.vYame.z = 36.f;
+	CCC.m_iAtkCounterGauge = 10;
+	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
 
-	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-	//CCC.eMonType = MONSTERTYPE::KNIFEWOMAN;
-	//CCC.eNorMonIdleType = NORMONSTERIDLETYPE::SITIDLE;
-	//CCC.vYame.x = 23.f;
-	//CCC.vYame.y = 4.6f;
-	//CCC.vYame.z = 43.f;
-	//CCC.m_iAtkCounterGauge = 10;
-	//GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
+	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+	CCC.eMonType = MONSTERTYPE::KNIFEWOMAN;
+	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::SITIDLE;
+	CCC.vYame.x = 23.f;
+	CCC.vYame.y = 4.6f;
+	CCC.vYame.z = 43.f;
+	CCC.m_iAtkCounterGauge = 10;
+	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
 	
-	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-	//CCC.eMonType = MONSTERTYPE::GARDENER;
-	//CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
-	//CCC.vYame.x = 15.f;
-	//CCC.vYame.y = 4.9f;
-	//CCC.vYame.z = 10.5f;
-	//CCC.m_iAtkCounterGauge = 10;
-	//GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
+	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+	CCC.eMonType = MONSTERTYPE::GARDENER;
+	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
+	CCC.vYame.x = 15.f;
+	CCC.vYame.y = 4.9f;
+	CCC.vYame.z = 10.5f;
+	CCC.m_iAtkCounterGauge = 10;
+	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
 #endif // _STAGE_1_MONSTER_
 	
 	/*ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
@@ -132,9 +134,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	//
 
 	ZeroMemory(&DDD, sizeof(CBossMonster::STATE_LINK_BOSS_DESC));
-	DDD.vYame.x = 20.f;
-	DDD.vYame.y = 4.7f;
-	DDD.vYame.z = 25.f;
+	DDD.vYame.x = 21.2f;
+	DDD.vYame.y = 4.4f;
+	DDD.vYame.z = 39.68f;
 	DDD.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
 	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &DDD);
 
@@ -178,12 +180,12 @@ HRESULT CLevel_GamePlay::Initialize()
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_GAMEPLAY);
 
 	//GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_GAMEPLAY);
-	weak_ptr<CPreViewAnimationModel> pPreviewModel = GAMEINSTANCE->Add_GameObject<CPreViewAnimationModel>(LEVEL_GAMEPLAY);
+	/*weak_ptr<CPreViewAnimationModel> pPreviewModel = GAMEINSTANCE->Add_GameObject<CPreViewAnimationModel>(LEVEL_GAMEPLAY);
 	pPreviewModel.lock()->Init_EditPreViewAnimationModel("Corvus");
 	pPreviewModel.lock()->Change_AnimationFromIndex(3);
 
 	pPreviewModel.lock()->Play_Animation(0.01f);
-	pPreviewModel.lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(10.f, 10.f, 10.f, 0.f));
+	pPreviewModel.lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(10.f, 10.f, 10.f, 0.f));*/
 
 
 	GAMEINSTANCE->Add_GameObject<CStatic_Instancing_Prop>(LEVEL_GAMEPLAY);
@@ -277,7 +279,7 @@ void CLevel_GamePlay::SetUp_UI()
 	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);//여기서 
 	m_pPauseMenu = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu>(LEVEL_STATIC);
 
-
+	//GAMEINSTANCE->Add_GameObject<CMonsterParryingBar>(LEVEL_STATIC);
 
 
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));

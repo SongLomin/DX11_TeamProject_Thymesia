@@ -49,11 +49,11 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Axe", TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
-		TRAIL_DESC TrailDesc;
+		/*TRAIL_DESC TrailDesc;
 		TrailDesc.iMaxCnt = 100;
 		TrailDesc.vPos_0 = _float3(0.f, 0.5f, 0.f);
 		TrailDesc.vPos_1 = _float3(0.f, -0.5f, 0.f);
-		m_pWeapons.back().lock()->Init_Trail(TrailDesc);
+		m_pWeapons.back().lock()->Init_Trail(TrailDesc);*/
 		
 		//TODO 야매에요 ㅎ
 		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, m_tLinkStateDesc.vYame.y, m_tLinkStateDesc.vYame.z, 1.f));

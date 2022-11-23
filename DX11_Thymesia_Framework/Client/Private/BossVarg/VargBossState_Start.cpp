@@ -47,11 +47,14 @@ void CVargBossState_Start::Start()
 void CVargBossState_Start::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+	
+	_matrix LocalMat = XMMatrixIdentity();
+	LocalMat *= XMMatrixRotationX(XMConvertToRadians(-90.f));
+	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
 
 	if (m_fSinematic == 4.f)
 	{
-		_matrix IdentityMatrix = XMMatrixIdentity();
-		GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", IdentityMatrix);
+		GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat);
 	}
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
@@ -103,8 +106,8 @@ void CVargBossState_Start::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
-	
-	
+
+	Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkF>(0.05f);
 }
 
 void CVargBossState_Start::OnDestroy()
@@ -131,17 +134,16 @@ _bool CVargBossState_Start::Check_AndChangeNextState()
 	//}
 
 
-
 	switch (m_eBossStartType)
 	{
 	case Client::BOSSSTARTTYPE::BEGINSTART:
-		if (fPToMDistance <= 3.f)
+		if (fPToMDistance <= 15.f)
 		{
 			m_fSinematic = 4.f;
 		}
 		break;
 	case Client::BOSSSTARTTYPE::NORMALSTART:
-		if (fPToMDistance <= 3.f)
+		if (fPToMDistance <= 15.f)
 		{
 			m_fSinematic = 4.f;
 		}

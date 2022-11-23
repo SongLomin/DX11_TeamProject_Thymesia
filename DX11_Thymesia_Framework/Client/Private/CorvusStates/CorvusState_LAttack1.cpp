@@ -65,7 +65,7 @@ void CCorvusState_LAttack1::LateTick(_float fTimeDelta)
 
 	if (Check_AndChangeNextState())
 	{
-		Get_OwnerCharacter().lock()->Set_RigidColliderEnable(true);
+
 	}
 }
 
@@ -134,7 +134,7 @@ void CCorvusState_LAttack1::OnStateStart(const _float& In_fAnimationBlendTime)
 
 #ifdef _DEBUG
 	#ifdef _DEBUG_COUT_
-		cout << "NorMonState: Attack -> OnStateStart" << endl;
+		cout << "CorvusState: Attack -> OnStateStart" << endl;
 #endif
 
 #endif
@@ -169,6 +169,7 @@ _bool CCorvusState_LAttack1::Check_AndChangeNextState()
 		if (Check_RequirementAVoidState())
 		{
 			Rotation_InputToLookDir();
+
 			Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
 			return true;
 		}
@@ -180,7 +181,8 @@ _bool CCorvusState_LAttack1::Check_AndChangeNextState()
 		{
 			if (!Rotation_InputToLookDir())
 				Rotation_TargetToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack2>();
+
+			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack2>(0.05f);
 			return true;
 		}
 	}
@@ -214,6 +216,7 @@ _bool CCorvusState_LAttack1::Check_AndChangeNextState()
 		{
 			if (!Rotation_InputToLookDir())
 				Rotation_TargetToLookDir();
+
 			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
 			return true;
 		}
@@ -238,15 +241,13 @@ _bool CCorvusState_LAttack1::Check_AndChangeNextState()
 _bool CCorvusState_LAttack1::Check_RequirementNextAttackState()
 {	
 
-	_uint iTargetKeyFrameFirst = 11;
+	_uint iTargetKeyFrameFirst = 17;
 	_uint iTargetKeyFrameSecond = 50;
 
 	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameFirst, iTargetKeyFrameSecond) && m_IsNextAttack)
 	{
 		return true;
 	}
-
-
 
 	return false;
 }
@@ -260,8 +261,6 @@ _bool CCorvusState_LAttack1::Check_RuquireMnetFirstAttackState()
 	{
 		return true;
 	}
-
-
 
 	return false;
 }

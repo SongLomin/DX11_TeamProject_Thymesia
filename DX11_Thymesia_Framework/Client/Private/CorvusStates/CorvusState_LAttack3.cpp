@@ -64,7 +64,7 @@ void CCorvusState_LAttack3::LateTick(_float fTimeDelta)
 
 	if (Check_AndChangeNextState())
 	{
-		Get_OwnerCharacter().lock()->Set_RigidColliderEnable(true);
+
 	}
 }
 

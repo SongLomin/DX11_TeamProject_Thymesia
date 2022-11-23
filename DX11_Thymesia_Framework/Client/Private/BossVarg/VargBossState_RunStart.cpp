@@ -32,16 +32,17 @@ void CVargBossState_RunStart::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_Seq_TutorialBossFightStart");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_RunF_Start");
 
 
-	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_RunStart::Call_AnimationEnd, this);*/
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_RunStart::Call_AnimationEnd, this);
 }
 
 void CVargBossState_RunStart::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	Rotation_TargetToLookDir();
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -81,20 +82,20 @@ void CVargBossState_RunStart::OnStateEnd()
 }
 
 
-//
-//void CVargBossState_RunStart::Call_AnimationEnd()
-//{
-//	if (!Get_Enable())
-//		return;
-//
-//
-//	Get_OwnerCharacter().lock()->Change_State<CVargBossState_RunStart>(0.05f);
-//}
 
-//void CVargBossState_RunStart::OnDestroy()
-//{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_RunStart::Call_AnimationEnd, this);
-//}
+void CVargBossState_RunStart::Call_AnimationEnd()
+{
+	if (!Get_Enable())
+		return;
+
+
+	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Run>(0.05f);
+}
+
+void CVargBossState_RunStart::OnDestroy()
+{
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_RunStart::Call_AnimationEnd, this);
+}
 
 void CVargBossState_RunStart::Free()
 {
@@ -107,9 +108,9 @@ _bool CVargBossState_RunStart::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.3f)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_RunStart>(0.05f);
+		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Run>(0.05f);
 		return true;
 	}
 

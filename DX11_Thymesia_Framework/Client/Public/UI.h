@@ -46,8 +46,7 @@ public:
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render() override;
-    
-
+   
 public:
     void Set_TextureIndex(const _uint& Index) { m_iTextureIndex = Index; }
     void Set_Texture(const _char* sKey);
@@ -57,7 +56,7 @@ public:
     virtual void Set_Size(const _float& fSizeX, const _float& fSizeY);
     virtual void    Set_Y(const _float& fY);
     void Set_Depth(_float _fDepth);
-
+    virtual void     Set_SizeX(_float In_fSize);
 public: /* Shaking */
     virtual void Add_Shaking(const _float& In_ShakeTime, const _float& _fShakePower = 5.f);
 
@@ -116,6 +115,7 @@ protected: /* For. UI Shaking */
     _float2         m_fOffsetPosition{0.f, 0.f};
     _float2         m_fShakedPos = { 0.f,0.f };
     _bool           m_bShaking;
+
 
 protected:
     virtual void Write_Json(json& Out_Json) override;

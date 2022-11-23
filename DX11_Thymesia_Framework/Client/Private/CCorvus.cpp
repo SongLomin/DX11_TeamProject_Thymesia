@@ -69,7 +69,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	
 	// Key Frame Effect ON
-	//GET_SINGLE(CGameManager)->Bind_KeyEvent("Corvus", m_pModelCom, bind(&CCorvus::Call_NextAnimationKey, this, placeholders::_1));
+	GET_SINGLE(CGameManager)->Bind_KeyEvent("Corvus", m_pModelCom, bind(&CCorvus::Call_NextAnimationKey, this, placeholders::_1));
 
 	//USE_START(CCorvus);
 
@@ -109,6 +109,12 @@ void CCorvus::Tick(_float fTimeDelta)
 			pGameObject.lock()->Get_Component<CTransform>().lock()->Set_Position(m_pTransformCom.lock()->Get_Position() + XMVectorSet(0.f, 0.5f, 0.f, 0.f) + PushPower);
 			pGameObject.lock()->Get_Component<CPhysXCollider>().lock()->Add_Force(PushPower * 1000.f);*/
 		}
+	}
+
+	// TODO : test jump key R
+	if (KEY_INPUT(KEY::R, KEY_STATE::TAP))
+	{ 
+		m_pPhysXControllerCom.lock()->Move(_vector{ 0.f, 10000.f * fTimeDelta, 0.f }, 0.f, fTimeDelta, PxControllerFilters());
 	}
 }
 

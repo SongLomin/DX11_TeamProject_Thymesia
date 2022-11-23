@@ -289,6 +289,14 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("Monster_HPBar_GreenTrack"), TEXT("../Bin/Resources/Textures/UI/HUD/HPBar/TexUI_HPBar_NewPreSTBar.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Monster_HPBar_StunnedShine"), TEXT("../Bin/Resources/Textures/UI/HUD/HPBar/TexUI_HPBar_StunnedShine1.png"), MEMORY_TYPE::MEMORY_STATIC);
 
+
+	//parrying system
+	GAMEINSTANCE->Load_Textures(("Monster_ParryBorder_Default"), TEXT("../Bin/Resources/Textures/UI/Parrying/MockUp/ParrayBorder_Default.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Monster_ParryMain_Default"), TEXT("../Bin/Resources/Textures/UI/Parrying/parry_Gauge_Main_2.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Monster_Parry_Fill"), TEXT("../Bin/Resources/Textures/UI/Parrying/Parrying_Fill.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+
 #ifndef _ONLY_UI_
 	
 	Load_AllDiffuseTexture();
@@ -469,9 +477,10 @@ HRESULT CLoader::Loading_ForTestLevel()
 {
 #pragma region PROTOTYPE_GAMEOBJECT
 
+
+#ifndef _ONLY_UI_
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 	//Loading_ForEffectGroup("../Bin/EffectData/");
-
 
 	Load_AllEffectMesh();
 
@@ -483,8 +492,11 @@ HRESULT CLoader::Loading_ForTestLevel()
 
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
 
+#endif _ONLY_UI_
+
 #pragma endregion
 
+#ifndef _ONLY_UI_
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
 
@@ -503,7 +515,7 @@ HRESULT CLoader::Loading_ForTestLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
 
-
+#endif _ONLY_UI_
 
 	m_isFinished = true;
 
