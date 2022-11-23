@@ -91,6 +91,7 @@ void CCamera_Target::Tick(_float fTimeDelta)
 			else
 			{
 				GET_SINGLE(CGameManager)->Release_Focus();
+				GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 1.f, 0.f), 0.5f);
 				//GET_SINGLE(CGameManager)->Deactivate_Zoom();
 			}
 		}
@@ -316,10 +317,11 @@ void CCamera_Target::Calculate_ShakingOffSet(_float fTimeDelta)
 
 	if (m_bIncreaseShake)
 	{
-		if (0.2f < m_fShakingTimeAcc)
+		if (0.1f < m_fShakingTimeAcc)
 		{
 			m_bIncreaseShake = false;
 			m_bDecreaseShake = true;
+			m_vShakingStartOffSet = m_vShaking;
 			m_fShakingTimeAcc = 0.f;
 		}
 		else
@@ -327,7 +329,7 @@ void CCamera_Target::Calculate_ShakingOffSet(_float fTimeDelta)
 			_vector vStartPoint = XMLoadFloat3(&m_vShakingStartOffSet);
 			_vector vEndPoint = XMLoadFloat3(&m_vShakingEndOffSet);
 
-			XMStoreFloat3(&m_vShaking, CEasing_Utillity::CircOut(vStartPoint, vEndPoint, m_fShakingTimeAcc, 0.2f));
+			XMStoreFloat3(&m_vShaking, CEasing_Utillity::CircOut(vStartPoint, vEndPoint, m_fShakingTimeAcc, 0.1f));
 		}
 	}
 	else if (m_bDecreaseShake)
@@ -339,10 +341,10 @@ void CCamera_Target::Calculate_ShakingOffSet(_float fTimeDelta)
 		}
 		else
 		{
-			_vector vStartPoint = XMLoadFloat3(&m_vShaking);
+			_vector vStartPoint = XMLoadFloat3(&m_vShakingStartOffSet);
 			_vector vEndPoint = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 
-			XMStoreFloat3(&m_vShaking, CEasing_Utillity::CubicOut(vStartPoint, vEndPoint, m_fShakingTimeAcc, 0.7f));
+			XMStoreFloat3(&m_vShaking, CEasing_Utillity::CircOut(vStartPoint, vEndPoint, m_fShakingTimeAcc, 0.7f));
 		}
 	}
 
