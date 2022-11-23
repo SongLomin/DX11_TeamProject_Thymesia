@@ -77,6 +77,12 @@ HRESULT CVarg::Initialize(void* pArg)
 	Add_Component<CVargBossState_WalkB>(&m_tLinkStateDesc);
 	Add_Component<CVargBossState_WalkF>(&m_tLinkStateDesc);
 	Add_Component<CVargBossState_WalkR>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_RaidAttack>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_TurnAttack>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_Attack2b1>(&m_tLinkStateDesc);
+	Add_Component<CVargBossState_Attack2b2>(&m_tLinkStateDesc);
+
+	
 	
 	//GET_SINGLE(CGameManager)->Bind_KeyEvent("Monster1", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
 

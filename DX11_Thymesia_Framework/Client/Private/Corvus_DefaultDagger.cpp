@@ -36,6 +36,8 @@ HRESULT CCorvus_DefaultDagger::Initialize(void* pArg)
 HRESULT CCorvus_DefaultDagger::Start()
 {
 	__super::Start();
+	m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
+
 
 #ifdef _DAGGER_TRAIL_
 	m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());

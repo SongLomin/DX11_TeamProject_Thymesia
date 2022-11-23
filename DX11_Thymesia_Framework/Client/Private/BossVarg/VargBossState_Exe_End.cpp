@@ -32,7 +32,7 @@ void CVargBossState_Stun_Exe_End::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_Seq_TutorialBossFightStart");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_TakeExecution_End");
 
 
 	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Stun_Exe_End::Call_AnimationEnd, this);*/

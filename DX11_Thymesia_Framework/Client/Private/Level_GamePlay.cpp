@@ -134,9 +134,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	//
 
 	ZeroMemory(&DDD, sizeof(CBossMonster::STATE_LINK_BOSS_DESC));
-	DDD.vYame.x = 20.f;
+	DDD.vYame.x = 55.f;
 	DDD.vYame.y = 4.7f;
-	DDD.vYame.z = 25.f;
+	DDD.vYame.z = 6.3f;
 	DDD.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
 	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &DDD);
 
@@ -180,12 +180,12 @@ HRESULT CLevel_GamePlay::Initialize()
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_GAMEPLAY);
 
 	//GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_GAMEPLAY);
-	weak_ptr<CPreViewAnimationModel> pPreviewModel = GAMEINSTANCE->Add_GameObject<CPreViewAnimationModel>(LEVEL_GAMEPLAY);
+	/*weak_ptr<CPreViewAnimationModel> pPreviewModel = GAMEINSTANCE->Add_GameObject<CPreViewAnimationModel>(LEVEL_GAMEPLAY);
 	pPreviewModel.lock()->Init_EditPreViewAnimationModel("Corvus");
 	pPreviewModel.lock()->Change_AnimationFromIndex(3);
 
 	pPreviewModel.lock()->Play_Animation(0.01f);
-	pPreviewModel.lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(10.f, 10.f, 10.f, 0.f));
+	pPreviewModel.lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(10.f, 10.f, 10.f, 0.f));*/
 
 
 	GAMEINSTANCE->Add_GameObject<CStatic_Instancing_Prop>(LEVEL_GAMEPLAY);

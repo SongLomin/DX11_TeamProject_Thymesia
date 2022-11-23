@@ -32,16 +32,19 @@ void CVargBossState_Attack2b::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_Seq_TutorialBossFightStart");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_ComboAttack2_1");
 
+	m_bAttackLookAtLimit = true;  // 애니메이션시작할떄 룩엣시작
 
-	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Attack2b::Call_AnimationEnd, this);*/
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Attack2b::Call_AnimationEnd, this);
 }
 
 void CVargBossState_Attack2b::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	if (m_bAttackLookAtLimit)
+		Turn_ToThePlayer(fTimeDelta);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -70,31 +73,32 @@ void CVargBossState_Attack2b::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif
 #endif
 
-
+	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 }
 
 void CVargBossState_Attack2b::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 
 }
 
 
-//
-//void CVargBossState_Attack2b::Call_AnimationEnd()
-//{
-//	if (!Get_Enable())
-//		return;
-//
-//
-//	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack2b>(0.05f);
-//}
 
-//void CVargBossState_Attack2b::OnDestroy()
-//{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Attack2b::Call_AnimationEnd, this);
-//}
+void CVargBossState_Attack2b::Call_AnimationEnd()
+{
+	if (!Get_Enable())
+		return;
+
+
+	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
+}
+
+void CVargBossState_Attack2b::OnDestroy()
+{
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Attack2b::Call_AnimationEnd, this);
+}
 
 void CVargBossState_Attack2b::Free()
 {
@@ -107,11 +111,11 @@ _bool CVargBossState_Attack2b::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack2b>(0.05f);
-		return true;
+		m_bAttackLookAtLimit = false;
 	}
+
 
 	return false;
 }

@@ -43,7 +43,7 @@ public:
     _bool Get_SuperArmor() const { return m_bSuperArmor; }
 
 public:
-    void Set_RigidColliderEnable(const _bool& In_bEnable);
+    virtual void Enable_Weapons(const _bool In_bEnable) {};
 
     virtual void Enable_Weapons(const _bool In_bEnable) {};
 
@@ -52,9 +52,7 @@ protected:
     virtual void Before_Render(_float fTimeDelta) override;
 
 protected:
-    //weak_ptr<CBehaviorBase> m_pBehavior;
     weak_ptr<CCollider>     m_pHitColliderCom;
-    weak_ptr<CCollider>     m_pRigidBodyColliderCom;
     weak_ptr<CNavigation>   m_pNaviMeshCom;
     weak_ptr<CStateBase>    m_pCurState;
     weak_ptr<CStateBase>    m_pPreState;

@@ -1070,6 +1070,22 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 		m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, f3DeltaGravity);
 		// vMove = SMath::Add_Float3(vMove, vSpeed);
 	}
+
+	if (m_tEffectParticleDesc.bUseGravity)
+	{
+		_vector vDeltaGravity;
+		ZeroMemory(&vDeltaGravity, sizeof(_vector));
+
+		vDeltaGravity = XMVectorSetX(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.x* fTimeDelta* (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
+		vDeltaGravity = XMVectorSetY(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.y* fTimeDelta* (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
+		vDeltaGravity = XMVectorSetZ(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.z* fTimeDelta* (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
+
+		_float3 f3DeltaGravity;
+		XMStoreFloat3(&f3DeltaGravity, vDeltaGravity);
+
+		m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, f3DeltaGravity);
+		// vMove = SMath::Add_Float3(vMove, vSpeed);
+	}
 }
 
 void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)

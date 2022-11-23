@@ -109,10 +109,6 @@ HRESULT CMonster::Render()
     m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &m_fDissolveAmount, sizeof(_float));
 
 #ifdef _DEBUG
-    //GAMEINSTANCE->Add_DebugRenderGroup(m_pHitColliderCom);
-    //GAMEINSTANCE->Add_DebugRenderGroup(m_pRigidBodyColliderCom);
-    //m_pHitColliderCom.lock()->Render();
-    //m_pRigidBodyColliderCom.lock()->Render();
 #endif // _DEBUG
 
     return S_OK;
@@ -163,7 +159,16 @@ void CMonster::Release_Monster()
 {
     GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::MONSTER, Weak_Cast<CGameObject>(m_this));
     m_pHitColliderCom.lock()->Set_Enable(false);
-    m_pRigidBodyColliderCom.lock()->Set_Enable(false);
+}
+
+void CMonster::Enable_Weapons(const _bool In_bEnable)
+{
+    for (auto& elem : m_pWeapons)
+    {
+        In_bEnable ?
+            elem.lock()->Enable_Weapon() :
+            elem.lock()->Disable_Weapon();
+    }
 }
 
 void CMonster::Enable_Weapons(const _bool In_bEnable)
@@ -208,26 +213,6 @@ void CMonster::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
 {
     __super::OnCollisionStay(pOtherCollider);
 
-    if (pOtherCollider.lock()->Get_CollisionLayer() == (_uint)COLLISION_LAYER::MONSTER_RIGIDBODY)
-    {
-        _vector vOtherPos = pOtherCollider.lock()->Get_Owner().lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
-        _vector vMyPos = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-
-        _vector vPushPos = vMyPos - vOtherPos;
-        vPushPos.m128_f32[1] = 0.f;
-        _float fDistance = XMVector3Length(vPushPos).m128_f32[0];
-        //vPushPos.m128_f32[1] = 0.f;
-        //vPushPos = XMVector3Normalize(vPushPos);
-
-        _float fRadius = pOtherCollider.lock()->Get_ColliderDesc().vScale.x;
-        _float fMyRadius = m_pRigidBodyColliderCom.lock()->Get_ColliderDesc().vScale.x;
-        _float fIntersectLength = (fRadius + fMyRadius) * 0.5f - fDistance;
-
-        vPushPos = XMVector3Normalize(vPushPos) * fIntersectLength * 0.5f;
-        vPushPos = XMVectorSetW(vPushPos, 1.f);
-
-        m_pTransformCom.lock()->Add_Position(vPushPos, m_pNaviMeshCom);
-    }
 }
 
 void CMonster::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
@@ -243,7 +228,6 @@ void CMonster::OnEnable(void* _Arg)
 
     GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::MONSTER, Weak_Cast<CGameObject>(m_this));
     m_pHitColliderCom.lock()->Set_Enable(true);
-    m_pRigidBodyColliderCom.lock()->Set_Enable(true);
     
 }
 
