@@ -12,6 +12,8 @@
 #include "MonsterHPBar_Base.h"
 #include "MonsterHPBar_Elite.h"
 #include "MonsterHPBar_Boss.h"
+#include "MonsterParryingBar.h"
+
 
 CLevel_GamePlay::CLevel_GamePlay()
 	//: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
@@ -33,8 +35,8 @@ HRESULT CLevel_GamePlay::Initialize()
 
 //주석지워라
 
-	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
 #ifndef _ONLY_UI_
+	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
 #pragma region GAMEOBJECT
 
 	/*future<void> ThreadResult = async(launch::async, 
@@ -277,7 +279,7 @@ void CLevel_GamePlay::SetUp_UI()
 	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);//여기서 
 	m_pPauseMenu = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu>(LEVEL_STATIC);
 
-
+	//GAMEINSTANCE->Add_GameObject<CMonsterParryingBar>(LEVEL_STATIC);
 
 
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
