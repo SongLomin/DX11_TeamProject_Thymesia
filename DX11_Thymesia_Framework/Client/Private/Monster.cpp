@@ -171,16 +171,6 @@ void CMonster::Enable_Weapons(const _bool In_bEnable)
     }
 }
 
-void CMonster::Enable_Weapons(const _bool In_bEnable)
-{
-    for (auto& elem : m_pWeapons)
-    {
-        In_bEnable ?
-            elem.lock()->Enable_Weapon() :
-            elem.lock()->Disable_Weapon();
-    }
-}
-
 void CMonster::SetUp_ShaderResource()
 {
     __super::SetUp_ShaderResource();

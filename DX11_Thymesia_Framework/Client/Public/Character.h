@@ -45,8 +45,6 @@ public:
 public:
     virtual void Enable_Weapons(const _bool In_bEnable) {};
 
-    virtual void Enable_Weapons(const _bool In_bEnable) {};
-
 protected:
     virtual void Tick(_float fTimeDelta) override;
     virtual void Before_Render(_float fTimeDelta) override;
