@@ -74,7 +74,7 @@ void CActor::Custom_Thread1(_float fTimeDelta)
 {
     __super::Custom_Thread1(fTimeDelta);
 
-    if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), 0.f))
+    if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), m_fCullingRange))
     {
         m_bRendering = true;
     }

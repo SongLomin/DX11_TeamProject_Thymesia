@@ -33,7 +33,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		VTXANIM_DECLARATION::Element,
 		VTXANIM_DECLARATION::iNumElements);
 
-	memcpy(&m_tLinkStateDesc, pArg, sizeof(STATE_LINK_DESC));
+	memcpy(&m_tLinkStateDesc, pArg, sizeof(STATE_LINK_MONSTER_DESC));
 	
 	
 
@@ -167,8 +167,9 @@ void CNorMonster::Tick(_float fTimeDelta)
 		break;
 	case  MONSTERTYPE::GARDENER:
 		_vector vMoveDired = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-		vMoveDired = m_pModelCom.lock()->Get_DeltaBonePosition("root");
-		m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDired, m_pNaviMeshCom);
+		vMoveDired = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+		//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDired, 0.f, 1.f, PxControllerFilters(), nullptr, m_pTransformCom);
 		break;
 	}
 

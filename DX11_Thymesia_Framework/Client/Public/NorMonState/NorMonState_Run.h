@@ -32,8 +32,8 @@ protected:
 
 
 private:
-	_float m_fMaxSpeed = 8.f;
-	_float m_fCurrentSpeed = 4.2f;
+	_float m_fMaxSpeed = 7.f;
+	_float m_fCurrentSpeed = 3.6f;
 	_float m_fAccel = 0.f;
 	_bool  m_bRunCheck = false; // 아이들에서 런으로 들어오고 8방향중 한방향으로 움직이고 다시아이들로가고 다시런가고 그다음에는 공격하게끔짬
 	// 8방향 가기전에는 펄스 가고난다음에는 트루로바꿔줌 

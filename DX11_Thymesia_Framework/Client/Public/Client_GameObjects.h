@@ -35,4 +35,5 @@
 
 #include "NorMonster.h"
 #include "Monster.h"
+#include "BossMonster.h"
 #include "BossVarg/Varg.h"

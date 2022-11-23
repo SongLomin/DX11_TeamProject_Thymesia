@@ -43,8 +43,6 @@ void CNorMonState_Idle::Start()
 	__super::Start();
 
 
-
-
 	if (m_eMonType == MONSTERTYPE::AXEMAN)
 	{
 		switch (m_eNorMonIdleType)
@@ -420,7 +418,21 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 	if (m_bGoAtk)
 	{
 		
-		Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack3>(0.05f);
+		switch (m_eMonType)
+		{
+		case Client::MONSTERTYPE::AXEMAN:
+			Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack3>(0.05f);
+			break;
+		case Client::MONSTERTYPE::KNIFEWOMAN:
+			Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack3>(0.05f);
+			break;
+		case Client::MONSTERTYPE::SKULL:
+			break;
+		case Client::MONSTERTYPE::GARDENER:
+			Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+			break;
+		}
+	
 		return true;
 	}
 

@@ -1,28 +1,24 @@
 #pragma once
-#include "Character.h"
+#include "Monster.h"
 
 BEGIN(Client)
 
 class CMobWeapon;
 class CStatus_Monster;
-class CMonster :
-    public CCharacter
+class CBossMonster :
+    public CMonster
 {
-    GAMECLASS_H(CMonster);
-    CLONE_H(CMonster, CGameObject);
+    GAMECLASS_H(CBossMonster);
+    CLONE_H(CBossMonster, CGameObject);
 
 public:
-    typedef struct tagMonsterStateLinkDesc
+    typedef struct tagBossMonsterStateLinkDesc
     {
-        MONSTERTYPE          eMonType;
-        NORMONSTERIDLETYPE   eNorMonIdleType;
-        _float4              m_fStartPositon;
         BOSSSTARTTYPE        eBossStartType;
-        _uint                m_iAtkCounterGauge;
-        //BOSSTYPE             eBossType;
-        //TODO 야매에요 밑에꺼 ㅎ 
+        _uint                m_iAtkCounterGauge;//아직몰름바그짜보고 다음보스보면짜볼게요  
+        //TODO 야매
         _float3            vYame;
-    }STATE_LINK_MONSTER_DESC;
+    }STATE_LINK_BOSS_DESC;
 
 public:
     void Set_TargetCharacter(weak_ptr<CCharacter> In_pCharacter);
@@ -43,15 +39,13 @@ public:
     virtual HRESULT Render() override;
     virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix) override;
 
-    virtual void Respawn_Monster(_fvector In_vPosition);
-    virtual void Release_Monster();
 
 public:
     list<weak_ptr<CMobWeapon>>  Get_Wepons() { return m_pWeapons; }
 
 
 protected:
-    virtual void SetUp_ShaderResource() override;    
+    virtual void SetUp_ShaderResource() override;
 
     virtual void OnCollisionEnter(weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionStay(weak_ptr<CCollider> pOtherCollider) override;
@@ -60,7 +54,7 @@ protected:
     virtual void OnEnable(void* _Arg = nullptr) override;
     //객체의 상태가 비활성화 상태로 변경될 때, 호출되는 이벤트입니다.
     virtual void OnDisable() override;
-    
+
 private:
     _float      m_fTimeAcc = 0.f;
     _float      m_fDissolveAmount = 0.f;
@@ -73,17 +67,16 @@ protected:
     list<weak_ptr<CMobWeapon>> m_pWeapons;
     weak_ptr<CStateBase> m_pStandState;
 
-    weak_ptr<CCharacter> m_pTargetCharacter; // = player
-    weak_ptr<CTexture>   m_pDissolveTextureCom;
-    // MONSTERTYPE       m_eMonType    =     MONSTERTYPE::NMON_END;
-    STATE_LINK_MONSTER_DESC      m_tLinkStateDesc;
-    MONSTERWEAPONTYPE    m_eMonWeaPonType =     MONSTERWEAPONTYPE::MON_WEAPON_END;
-    NORMONSTERIDLETYPE   m_eNorMonIdleType =    NORMONSTERIDLETYPE::IDLEEND;
+    weak_ptr<CCharacter>   m_pTargetCharacter; // = player
+    weak_ptr<CTexture>     m_pDissolveTextureCom;
+    STATE_LINK_BOSS_DESC   m_tLinkStateDesc;
+    MONSTERWEAPONTYPE      m_eMonWeaPonType = MONSTERWEAPONTYPE::MON_WEAPON_END;
+ 
 
     weak_ptr<CStatus_Monster>           m_pStatus;
 
 private:
-    
+
     void Free();
 
 

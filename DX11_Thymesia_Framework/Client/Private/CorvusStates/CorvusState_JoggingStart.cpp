@@ -94,23 +94,6 @@ _bool CCorvusState_JoggingStart::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	//if (Check_RequirementUltimateState())
-	//{
-	//	Rotation_NearToLookDir();
-	//	Get_OwnerPlayer()->Change_State<CNorMonState_UltimateSkill>();
-	//	return true;
-	//}
-	//
-	//if (Check_RequirementAttackState())
-	//{
-	//	if (!Rotation_InputToLookDir())
-	//		Rotation_NearToLookDir();
-	//
-	//	Get_OwnerPlayer()->Change_State<CNorMonState_Attack>();
-	//	Get_OwnerPlayer()->Get_Component<CNorMonState_Attack>().lock()->Play_AttackWithIndex(0);
-	//	return true;
-	//}
-
 	
 	if (!KEY_INPUT(KEY::W, KEY_STATE::HOLD)
 		&& !KEY_INPUT(KEY::A, KEY_STATE::HOLD)

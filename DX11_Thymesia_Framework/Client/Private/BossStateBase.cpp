@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "AIStateBase.h"
+#include "BossStateBase.h"
 #include "GameInstance.h"
 #include "GameObject.h"
 #include "GameManager.h"
@@ -8,14 +8,14 @@
 #include "Player.h"
 #include "NorMonStateS.h"
 
-GAMECLASS_C(CAIStateBase);
+GAMECLASS_C(CBossStateBase);
 
-HRESULT CAIStateBase::Initialize_Prototype()
+HRESULT CBossStateBase::Initialize_Prototype()
 {
 	return S_OK;
 }
 
-HRESULT CAIStateBase::Initialize(void* pArg)
+HRESULT CBossStateBase::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
@@ -31,11 +31,11 @@ HRESULT CAIStateBase::Initialize(void* pArg)
 
 	m_iTimeScaleLayer = (_uint)TIMESCALE_LAYER::MONSTER;
 	m_pOwnerFromMonster = Weak_Cast<CMonster>(m_pOwner);
-	
+
 	return S_OK;
 }
 
-void CAIStateBase::Start()
+void CBossStateBase::Start()
 {
 
 	__super::Start();
@@ -43,17 +43,17 @@ void CAIStateBase::Start()
 	m_pTransformCom = Get_Owner().lock()->Get_Component<CTransform>();
 }
 
-void CAIStateBase::Tick(_float fTimeDelta)
+void CBossStateBase::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 }
 
-void CAIStateBase::LateTick(_float fTimeDelta)
+void CBossStateBase::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 }
 
-_bool CAIStateBase::Check_RequirementCoolDown(weak_ptr<CAIStateBase> pTargetState, const _float& In_fCoolTime)
+_bool CBossStateBase::Check_RequirementCoolDown(weak_ptr<CBossStateBase> pTargetState, const _float& In_fCoolTime)
 {
 	_float fCheckStateTimeAcc = pTargetState.lock()->Get_StateTimeAcc();
 	_float fOwnerTimeAcc = Get_OwnerMonster()->Get_TimeAcc();
@@ -76,19 +76,19 @@ _bool CAIStateBase::Check_RequirementCoolDown(weak_ptr<CAIStateBase> pTargetStat
 
 
 
-shared_ptr<CMonster> CAIStateBase::Get_OwnerMonster() const noexcept
+shared_ptr<CMonster> CBossStateBase::Get_OwnerMonster() const noexcept
 {
 	return m_pOwnerFromMonster.lock();
 }
 
-_bool CAIStateBase::Check_Requirement()
+_bool CBossStateBase::Check_Requirement()
 {
-	
+
 
 	return __super::Check_Requirement();
 }
 
-void CAIStateBase::Turn_ToThePlayer(_float fTimeDelta)
+void CBossStateBase::Turn_ToThePlayer(_float fTimeDelta)
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
@@ -130,7 +130,7 @@ void CAIStateBase::Turn_ToThePlayer(_float fTimeDelta)
 
 		if (fDirResult > 0.f)
 		{
-			
+
 			m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), sqrtf(fTimeDelta * 0.08f));
 		}
 
@@ -141,7 +141,7 @@ void CAIStateBase::Turn_ToThePlayer(_float fTimeDelta)
 	}
 }
 
-_vector CAIStateBase::Get_InputToLookDir()
+_vector CBossStateBase::Get_InputToLookDir()
 {
 	/*if (m_bEdit)
 		return XMVectorSet(0.f, 0.f, 0.f, 0.f);*/
@@ -176,14 +176,14 @@ _vector CAIStateBase::Get_InputToLookDir()
 	return vLookDir;
 }
 
-void CAIStateBase::StartPositonLookAt(_float fTimeDelta)
+void CBossStateBase::StartPositonLookAt(_float fTimeDelta)
 {
 	_vector vStartPosition = XMLoadFloat4(&m_fStartPosition);
 
 	m_pTransformCom.lock()->LookAt2D(vStartPosition);
 }
 
-_bool CAIStateBase::Rotation_InputToLookDir()
+_bool CBossStateBase::Rotation_InputToLookDir()
 {
 	_vector vInputDir = Get_InputToLookDir();
 
@@ -201,7 +201,7 @@ _bool CAIStateBase::Rotation_InputToLookDir()
 	return false;
 }
 
-_bool CAIStateBase::Rotation_TargetToLookDir()
+_bool CBossStateBase::Rotation_TargetToLookDir()
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
@@ -215,7 +215,7 @@ _bool CAIStateBase::Rotation_TargetToLookDir()
 	return true;
 }
 
-_float CAIStateBase::Get_DistanceWithPlayer() const
+_float CBossStateBase::Get_DistanceWithPlayer() const
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 	_vector vPlayerPosition = pCurrentPlayer.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
@@ -227,7 +227,7 @@ _float CAIStateBase::Get_DistanceWithPlayer() const
 
 
 
-_vector CAIStateBase::Get_CurMonToStartMonDir()
+_vector CBossStateBase::Get_CurMonToStartMonDir()
 {
 	_vector vCurrenPosition = m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
 	vCurrenPosition = XMVectorSetY(vCurrenPosition, 0.f);
@@ -238,7 +238,7 @@ _vector CAIStateBase::Get_CurMonToStartMonDir()
 	return vLookDir;
 }
 
-_float CAIStateBase::GetStartPositionToCurrentPositionDir()
+_float CBossStateBase::GetStartPositionToCurrentPositionDir()
 {
 	_vector vCurrenPosition = m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
 	vCurrenPosition = XMVectorSetY(vCurrenPosition, 0.f);
@@ -251,7 +251,7 @@ _float CAIStateBase::GetStartPositionToCurrentPositionDir()
 
 
 
-void CAIStateBase::TurnMechanism()
+void CBossStateBase::TurnMechanism()
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
@@ -273,7 +273,7 @@ void CAIStateBase::TurnMechanism()
 			return;
 		}
 
-		
+
 	}
 
 	else
@@ -286,7 +286,7 @@ void CAIStateBase::TurnMechanism()
 }
 
 
-_float CAIStateBase::ComputeAngleWithPlayer()
+_float CBossStateBase::ComputeAngleWithPlayer()
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
@@ -302,15 +302,15 @@ _float CAIStateBase::ComputeAngleWithPlayer()
 
 	_float fCos = XMVectorGetY((XMVector3Dot(vMonsterToPlayerDirectionVector, vMyLookVector)));
 
-	#ifdef _DEBUG_COUT_
-		cout << "ComputeAngleWithPlayer: " << fCos << endl;
+#ifdef _DEBUG_COUT_
+	cout << "ComputeAngleWithPlayer: " << fCos << endl;
 #endif
 
 	return fCos;
 
 }
 
-_int CAIStateBase::ComputeDirectionToPlayer()
+_int CBossStateBase::ComputeDirectionToPlayer()
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
@@ -336,23 +336,23 @@ _int CAIStateBase::ComputeDirectionToPlayer()
 
 
 
-void CAIStateBase::OnDestroy()
+void CBossStateBase::OnDestroy()
 {
-	
+
 	__super::OnDestroy();
 }
 
-void CAIStateBase::OnEnable(void* _Arg)
+void CBossStateBase::OnEnable(void* _Arg)
 {
 	__super::OnEnable(_Arg);
 }
 
-void CAIStateBase::OnDisable()
+void CBossStateBase::OnDisable()
 {
 	__super::OnDisable();
 }
 
-void CAIStateBase::OnStateStart(const _float& In_fAnimationBlendTime)
+void CBossStateBase::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
@@ -364,7 +364,7 @@ void CAIStateBase::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_fStateTimeAcc = Get_OwnerMonster()->Get_TimeAcc();
 }
 
-void CAIStateBase::OnStateEnd()
+void CBossStateBase::OnStateEnd()
 {
 	__super::OnStateEnd();
 
@@ -374,6 +374,6 @@ void CAIStateBase::OnStateEnd()
 	}
 }
 
-void CAIStateBase::Free()
+void CBossStateBase::Free()
 {
 }
