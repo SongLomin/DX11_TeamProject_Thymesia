@@ -42,18 +42,19 @@ HRESULT CMonsterParryingBar::Initialize(void* pArg)
    m_pBorder.lock()->Set_Texture("Monster_HPBar_Border");
 
    UI_DESC tMainBarDesc = m_tUIDesc;
-   m_tUIDesc.fSizeX = 0.f;
-   m_tUIDesc.fY = m_tUIDesc.fSizeY - 4.f;
+   tMainBarDesc.fSizeX = 170.f;
+   tMainBarDesc.fSizeY = m_tUIDesc.fSizeY - 4.f;
+   tMainBarDesc.fDepth = 0.0f;
 
-
-    m_pMainBar = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &tMainBarDesc);
+    m_pMainBar = GAMEINSTANCE->Add_GameObject<CProgressBar>(LEVEL_STATIC, &tMainBarDesc);
     m_pMainBar.lock()->Set_Texture("Monster_Parry_Fill");
-    m_pMainBar.lock()->Set_Depth(0.0f);
+    m_pMainBar.lock()->Set_PassIndex(7);
+    m_pMainBar.lock()->Set_Ratio(0.f);
 
     m_fCrurrentParryGauge = 0.f;
     m_fLerpedParryGauge = 0.f;
 
-
+    m_fAmount = 0.3f;
     return S_OK;
 }
 
@@ -71,30 +72,30 @@ void CMonsterParryingBar::Tick(_float fTimeDelta)
 
     if (KEY_INPUT(KEY::Z, KEY_STATE::TAP))
     {
-        m_fCrurrentParryGauge -= 50.f;
+        m_fCrurrentParryGauge -= m_fAmount;
 
         if (m_fCrurrentParryGauge <= 0)
             m_fCrurrentParryGauge = 0.f;
-     //   else
-          //  Set_Lerp(m_fLerpedParryGauge, m_fCrurrentParryGauge, 1.f, EASING_TYPE::QUAD_IN);
+     
+         Set_Lerp(m_fLerpedParryGauge, m_fCrurrentParryGauge, 1.f, EASING_TYPE::EXPO_OUT);
     }
     else if (KEY_INPUT(KEY::X, KEY_STATE::TAP))
     {
-        m_fCrurrentParryGauge += 50.f;
+        m_fCrurrentParryGauge += m_fAmount;
      
-        if (m_fCrurrentParryGauge >= 100.f)
-            m_fCrurrentParryGauge = 100.f;
-        //else
-        //    Set_Lerp(m_fLerpedParryGauge, m_fCrurrentParryGauge, 1.f,EASING_TYPE::QUAD_IN);
+        if (m_fCrurrentParryGauge >= 1.f)
+            m_fCrurrentParryGauge = 1.f;
+
+     
+     Set_Lerp(m_fLerpedParryGauge, m_fCrurrentParryGauge,1.f,EASING_TYPE::EXPO_OUT);
 
     }
-   // if (Is_Lerping())
-    //{
-    //  m_fLerpedParryGauge = Get_Lerp().x;
+    if (Is_Lerping())
+    {
+      m_fLerpedParryGauge = Get_Lerp().x;
 
-       //_float fSizeX = m_tUIDesc.fSizeX * (m_fLerpedParryGauge * 0.01f);
-      m_pMainBar.lock()->Set_SizeX(m_tUIDesc.fSizeX *  (m_fCrurrentParryGauge / 100.f));
-    //}
+      m_pMainBar.lock()->Set_Ratio(m_fLerpedParryGauge);
+    }
  
 
 }

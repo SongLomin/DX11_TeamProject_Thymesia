@@ -56,7 +56,7 @@ public:
     virtual void Set_Size(const _float& fSizeX, const _float& fSizeY);
     virtual void    Set_Y(const _float& fY);
     void Set_Depth(_float _fDepth);
-    virtual void     Set_SizeX(_float In_fSize);
+    virtual void     Set_SizeX(const _float In_fSize);
 public: /* Shaking */
     virtual void Add_Shaking(const _float& In_ShakeTime, const _float& _fShakePower = 5.f);
 

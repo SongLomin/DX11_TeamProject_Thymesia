@@ -247,6 +247,29 @@ PS_OUT PS_MAIN_WIDTH_DISSOLVE_FACTOR(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_MAIN_PARRY(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	float fRatio = 1.f - g_Ratio;
+
+	float fRatioLeft = fRatio / 2;
+	float fRatioRight = 1.f - (fRatio / 2);
+
+	Out.vColor.g = 1 - g_Ratio;
+
+	if (In.vTexUV.x < fRatioLeft)
+		discard;
+
+	if (In.vTexUV.x > fRatioRight)
+		discard;
+
+	return Out;
+}
+
+
 
 technique11 DefaultTechnique
 {
@@ -326,5 +349,15 @@ technique11 DefaultTechnique
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_WIDTH_DISSOLVE_FACTOR();
+	}
+	pass UI_Parrying//7
+	{
+		SetBlendState(BS_AlphaBlend, vector(1.f, 1.f, 1.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_PARRY();
 	}
 }

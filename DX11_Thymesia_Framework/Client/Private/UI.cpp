@@ -152,7 +152,7 @@ void CUI::Set_Depth(_float _fDepth)
 	m_tUIDesc.fDepth = _fDepth;
 }
 
-void CUI::Set_SizeX(_float In_fSize)
+void CUI::Set_SizeX(const _float In_fSize)
 {
 	m_tUIDesc.fSizeX = In_fSize;
 }
