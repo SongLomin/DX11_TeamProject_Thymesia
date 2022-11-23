@@ -197,6 +197,8 @@ void CGameManager::Focus_Monster()
 //
 	weak_ptr<CGameObject> pTargetMonster = Get_Layer(OBJECT_LAYER::MONSTER).front();
 
+	m_pTargetMonster = Weak_StaticCast<CMonster>(pTargetMonster);
+
 	m_pTargetCamera.lock()->Focus_Monster(pTargetMonster);
 }
 
@@ -205,8 +207,9 @@ void CGameManager::Release_Focus()
 	m_pTargetCamera.lock()->Release_Focus();
 }
 
-void CGameManager::Find_Target()
+weak_ptr<CMonster> CGameManager::Get_TargetMonster()
 {
+	return m_pTargetMonster;
 }
 
 void CGameManager::Register_EffectGroup(const string& In_szEffectGroupName, weak_ptr<CEffectGroup> In_pEffectGroup)

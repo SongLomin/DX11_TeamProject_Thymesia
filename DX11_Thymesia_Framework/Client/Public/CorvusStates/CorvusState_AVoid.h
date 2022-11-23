@@ -37,7 +37,7 @@ public:
 
 private:
     _uint m_iDustEffectIndex;
-    _uint m_iAvoidIndex = 6;
+    _uint m_iAvoidIndex;
 
     _float m_fDebugAnimationSpeed = 1.f;
 

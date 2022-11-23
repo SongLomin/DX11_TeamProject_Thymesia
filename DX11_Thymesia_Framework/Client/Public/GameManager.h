@@ -57,7 +57,7 @@ public:
     //void Set_TargetForTargetCamera(weak_ptr<CGameObject> In_TargetGameObject);
     void Focus_Monster();
     void Release_Focus();
-    void Find_Target();
+    weak_ptr<CMonster> Get_TargetMonster();
 
 public:
     void Register_EffectGroup(const string& In_szEffectGroupName, weak_ptr<CEffectGroup> In_pEffectGroup);

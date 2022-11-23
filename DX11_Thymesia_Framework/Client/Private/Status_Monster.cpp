@@ -64,8 +64,8 @@ void CStatus_Monster::Init_Status(const void* pArg)
 	if (pArg == nullptr)
 		MSG_BOX("CStatus_Monster Error : Nullptr Arguments");
 
-	CMonster::STATE_LINK_DESC tMonsterDesc;
-	memcpy(&tMonsterDesc, pArg, sizeof(CMonster::STATE_LINK_DESC));
+	CMonster::STATE_LINK_MONSTER_DESC tMonsterDesc;
+	memcpy(&tMonsterDesc, pArg, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 
 	MONSTERTYPE eMonsterType = tMonsterDesc.eMonType;
 

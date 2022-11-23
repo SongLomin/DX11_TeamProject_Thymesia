@@ -189,9 +189,12 @@
   <ItemGroup>
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hpp" />
+    <ClInclude Include="..\Private\CorvusStates\CorvusState_LAttack5.h" />
     <ClInclude Include="..\Public\Actor.h" />
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
+    <ClInclude Include="..\Public\BossMonster.h" />
+    <ClInclude Include="..\Public\BossStateBase.h" />
     <ClInclude Include="..\Public\Level_Test.h" />
     <ClInclude Include="..\Public\PhysXColliderObject.h" />
     <ClInclude Include="..\Public\Status_Monster.h" />
@@ -202,6 +205,7 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtL.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtR.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtXXL.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_LAttack4.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\NorMob_Execution.h" />
     <ClInclude Include="..\Public\MonsterParryingBar.h" />
     <ClInclude Include="..\Public\Status_Monster.h" />
@@ -262,7 +266,6 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusStates.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoid.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_BasicHealing.h" />
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_Hit.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Idle.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Jogging.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_JoggingStartEnd.h" />
@@ -276,7 +279,6 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Sprint.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_SprintAttack.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_SprintStart.h" />
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_Stop.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\Varg_Execution.h" />
     <ClInclude Include="..\Public\Corvus_DefaultDagger.h" />
     <ClInclude Include="..\Public\Corvus_DefaultSaber.h" />
@@ -424,6 +426,8 @@
     <ClCompile Include="..\Private\Actor.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Attack_Area.cpp" />
+    <ClCompile Include="..\Private\BossMonster.cpp" />
+    <ClCompile Include="..\Private\BossStateBase.cpp" />
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
     <ClCompile Include="..\Private\Status_Monster.cpp" />
     <ClCompile Include="..\Private\Status_Player.cpp" />
@@ -434,6 +438,8 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtL.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtR.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXXL.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_LAttack4.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_LAttack5.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\NorMob_Execution.cpp" />
     <ClCompile Include="..\Private\Level_Test.cpp" />
     <ClCompile Include="..\Private\PhysXColliderObject.cpp" />
@@ -485,7 +491,6 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusStateBase.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoid.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_BasicHealing.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_Hit.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Idle.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Jogging.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_JoggingStartEnd.cpp" />
@@ -499,7 +504,6 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Sprint.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_SprintAttack.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_SprintStart.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_Stop.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\Varg_Execution.cpp" />
     <ClCompile Include="..\Private\Corvus_DefaultDagger.cpp" />
     <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp" />

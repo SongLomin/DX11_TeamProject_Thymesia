@@ -71,6 +71,8 @@ void CVarg_Execution::OnStateStart(const _float& In_fAnimationBlendTime)
 void CVarg_Execution::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+
 	GET_SINGLE(CGameManager)->End_Cinematic();
 }
 

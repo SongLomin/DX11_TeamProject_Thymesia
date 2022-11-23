@@ -283,21 +283,12 @@ _bool CCorvusState_LAttack3::Check_AndChangeNextState()
 
 _bool CCorvusState_LAttack3::Check_RequirementNextAttackState()
 {
-	_uint iTargetKeyFrameFirst = 999;
-	_uint iTargetKeyFrameSecond = 999;
+	_uint iTargetKeyFrameFirst = 17;
+	_uint iTargetKeyFrameSecond = 36;
 	
 
-	switch (m_iAttackIndex)
-	{
-	case 186:
-		iTargetKeyFrameFirst = 17;
-		iTargetKeyFrameSecond = 36;
-		break;
-	}
 
-
-	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameFirst, iTargetKeyFrameSecond) == true
-		&& m_IsNextAttack)
+	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameFirst, iTargetKeyFrameSecond) && m_IsNextAttack)
 	{
 		return true;
 	}
@@ -309,24 +300,13 @@ _bool CCorvusState_LAttack3::Check_RequirementNextAttackState()
 
 _bool CCorvusState_LAttack3::Check_RuquireMnetFirstAttackState()
 {
-	_uint iTargetKeyFrameMin = 999;
-	_uint iTargetKeyFrameMax = 999;
+	_uint iTargetKeyFrameMin = 37;
+	_uint iTargetKeyFrameMax = 62;
 
 
 
-	switch (m_iAttackIndex)
-	{
-	case 186:
-		iTargetKeyFrameMin = 37;
-		iTargetKeyFrameMax = 62;
-		break;
 
-
-	}
-
-
-	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) == true
-		&& m_IsNextAttack)
+	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) && m_IsNextAttack)
 	{
 		return true;
 	}

@@ -48,6 +48,10 @@ void CVargBossState_Start::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	if (m_fSinematic == 4.f)
+	{
+		GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera");
+	}
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -57,7 +61,7 @@ void CVargBossState_Start::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-
+	m_pModelCom.lock()->Set_AnimationSpeed(m_fSinematic);
 
 	Check_AndChangeNextState();
 }
@@ -68,6 +72,7 @@ void CVargBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
@@ -75,15 +80,20 @@ void CVargBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 	cout << "NorMonState: RunStart -> OnStateStart" << endl;
 #endif
 #endif
-	m_pModelCom.lock()->Set_AnimationSpeed(4.f);
+	m_pModelCom.lock()->Set_AnimationSpeed(m_fSinematic);
 
-}
+}	
+
 
 void CVargBossState_Start::OnStateEnd()
 {
 	__super::OnStateEnd();
 
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+
+	if(m_fSinematic == 4.f)
+	GET_SINGLE(CGameManager)->End_Cinematic();
+
 }
 
 
@@ -114,41 +124,38 @@ _bool CVargBossState_Start::Check_AndChangeNextState()
 
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 
-	if (fPToMDistance <= 8.f)
-	{
-		m_bNextState = true;
-	}
+	//if (fPToMDistance <= 8.f)
+	//{
+	//	m_bNextState = true;
+	//}
 
 
-	
 
 	switch (m_eBossStartType)
 	{
 	case Client::BOSSSTARTTYPE::BEGINSTART:
-		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.15f && !m_bNextState)
+		if (fPToMDistance <= 3.f)
 		{
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Start>(0.05f);
-			return true;
+			m_fSinematic = 4.f;
 		}
 		break;
 	case Client::BOSSSTARTTYPE::NORMALSTART:
-		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.15f && !m_bNextState)
+		if (fPToMDistance <= 3.f)
 		{
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Start>(0.05f);
-			return true;
+			m_fSinematic = 4.f;
 		}
 		break;
 	}
 
-	if (m_bNextState)
-	{
-		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.99f)
-		{
-			TurnMechanism();
-			return true;
-		}
-		
-	}
+	//if (m_bNextState)
+	//{
+	//	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.99f)
+	//	{
+	//		TurnMechanism();
+	//		return true;
+	//	}
+	//	
+	//}
 
 	
 

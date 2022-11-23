@@ -82,6 +82,7 @@ namespace Client
 		LEFT_HIT,
 		RIGHT_HIT,
 		EXCTUE_HIT,
+		PARRY_HIT,
 		TYPE_END
 	};
 
@@ -181,6 +182,7 @@ namespace Client
 		NORMAL,
 		PLAGUE,
 		SPECIAL_ATTACK,
+		PARRY,
 		OPTION_END
 	};
 

@@ -48,9 +48,10 @@ void CNorMonState_Run::Start()
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_RunRoot");
 		break;
 	case Client::MONSTERTYPE::SKULL:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_Run_F");
+		
 		break;
 	case Client::MONSTERTYPE::GARDENER:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_Run_F");
 		break;
 	}
 

@@ -106,14 +106,8 @@
     <ClInclude Include="..\Public\Camera_Static.h">
       <Filter>02. GameObject\00. Camera\02. Camera_Static</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\WorldUI.h">
-      <Filter>02. GameObject\06. WorldUI</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\EffectMesh.h">
       <Filter>02. GameObject\07. EffectMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\AIStateBase.h">
-      <Filter>05. Component\03. State\01. AIStateBase</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Status.h">
       <Filter>05. Component\04. Status</Filter>
@@ -205,9 +199,6 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_JoggingStart.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\01.State_JoggingStart</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_Stop.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\04.State_Stop</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Jogging.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\03.State_Jogging</Filter>
     </ClInclude>
@@ -219,9 +210,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusStates.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_Hit.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\05.State_Hit</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Idle.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\00.State_Idle</Filter>
@@ -247,9 +235,6 @@
     <ClInclude Include="..\Public\HUD_Hover.h">
       <Filter>02. GameObject\01. UI\Hover</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_Stop.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\04.State_Stop</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Jogging.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\03.State_Jogging</Filter>
     </ClInclude>
@@ -261,9 +246,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusStates.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_Hit.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\05.State_Hit</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Idle.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\00.State_Idle</Filter>
@@ -670,6 +652,24 @@
     <ClInclude Include="..\Public\Status_Monster.h">
       <Filter>05. Component\04. Status\01. Status_Monster</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_LAttack4.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack\State_Attack4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Private\CorvusStates\CorvusState_LAttack5.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack\State_Attack5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossMonster.h">
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\03.BossMonster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\WorldUI.h">
+      <Filter>02. GameObject\06. WorldUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\AIStateBase.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossStateBase.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\UI_LerpBar.h" />
     <ClInclude Include="..\Public\MonsterParryingBar.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttack1.h">
@@ -803,9 +803,6 @@
     <ClCompile Include="..\Private\EffectMesh.cpp">
       <Filter>02. GameObject\07. EffectMesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\AIStateBase.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Status.cpp">
       <Filter>05. Component\04. Status</Filter>
     </ClCompile>
@@ -890,9 +887,6 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_JoggingStart.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\01.State_JoggingStart</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_Stop.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\04.State_Stop</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Jogging.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\03.State_Jogging</Filter>
     </ClCompile>
@@ -901,9 +895,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusStateBase.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_Hit.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\05.State_Hit</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Idle.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\00.State_Idle</Filter>
@@ -935,9 +926,6 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_JoggingStart.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\01.State_JoggingStart</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_Stop.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\04.State_Stop</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Jogging.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\03.State_Jogging</Filter>
     </ClCompile>
@@ -946,9 +934,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusStateBase.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_Hit.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\05.State_Hit</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Idle.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\00.State_Idle</Filter>
@@ -1348,6 +1333,21 @@
     </ClCompile>
     <ClCompile Include="..\Private\Status_Monster.cpp">
       <Filter>05. Component\04. Status\01. Status_Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_LAttack4.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack\State_Attack4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_LAttack5.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack\State_Attack5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossMonster.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\03.BossMonster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AIStateBase.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossStateBase.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UI_LerpBar.cpp" />
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />

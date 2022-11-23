@@ -189,7 +189,7 @@ _bool CPlayerStateBase::Rotation_InputToLookDir()
 
 _bool CPlayerStateBase::Rotation_TargetToLookDir()
 {
-	weak_ptr<CMonster> pMonster = m_pOwnerFromPlayer.lock()->Get_TargetMonster();
+	weak_ptr<CMonster> pMonster = GET_SINGLE(CGameManager)->Get_TargetMonster();
 
 	if (!pMonster.lock().get())
 		return false;

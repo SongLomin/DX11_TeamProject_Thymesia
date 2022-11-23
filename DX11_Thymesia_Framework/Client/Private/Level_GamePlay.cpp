@@ -84,86 +84,88 @@ HRESULT CLevel_GamePlay::Initialize()
 	
 	//TODO 야매에요
 #ifdef _STAGE_1_MONSTER_
-	CMonster::STATE_LINK_DESC CCC;
+	CMonster::STATE_LINK_MONSTER_DESC CCC;
+	CBossMonster::STATE_LINK_BOSS_DESC DDD;
 
-	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
-	CCC.eMonType = MONSTERTYPE::AXEMAN;
-	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
-	CCC.vYame.x = 13.f;
-	CCC.vYame.y = 4.6f;
-	CCC.vYame.z = 36.f;
-	CCC.m_iAtkCounterGauge = 10;
-	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
+	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+	//CCC.eMonType = MONSTERTYPE::AXEMAN;
+	//CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
+	//CCC.vYame.x = 13.f;
+	//CCC.vYame.y = 4.6f;
+	//CCC.vYame.z = 36.f;
+	//CCC.m_iAtkCounterGauge = 10;
+	//GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
 
-	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
-	CCC.eMonType = MONSTERTYPE::KNIFEWOMAN;
-	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::SITIDLE;
-	CCC.vYame.x = 23.f;
-	CCC.vYame.y = 4.6f;
-	CCC.vYame.z = 43.f;
-	CCC.m_iAtkCounterGauge = 10;
-	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
+	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+	//CCC.eMonType = MONSTERTYPE::KNIFEWOMAN;
+	//CCC.eNorMonIdleType = NORMONSTERIDLETYPE::SITIDLE;
+	//CCC.vYame.x = 23.f;
+	//CCC.vYame.y = 4.6f;
+	//CCC.vYame.z = 43.f;
+	//CCC.m_iAtkCounterGauge = 10;
+	//GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
 	
-	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
-	CCC.eMonType = MONSTERTYPE::GARDENER;
-	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::FIDGETIDLE;
-	CCC.vYame.x = 2.5f;
-	CCC.vYame.y = 4.9f;
-	CCC.vYame.z = 46.f;
-	CCC.m_iAtkCounterGauge = 10;
-	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
+	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+	//CCC.eMonType = MONSTERTYPE::GARDENER;
+	//CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
+	//CCC.vYame.x = 15.f;
+	//CCC.vYame.y = 4.9f;
+	//CCC.vYame.z = 10.5f;
+	//CCC.m_iAtkCounterGauge = 10;
+	//GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
 #endif // _STAGE_1_MONSTER_
 	
-	/*ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
+	/*ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	CCC.eMonType = MONSTERTYPE::KNIFEWOMAN;
 	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
 	CCC.vYame.x = 20.f;
 	CCC.vYame.z = 25.f;
 	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);*/
 
-	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
+	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	//CCC.vYame.x = 30.f;
 	//CCC.vYame.z = 15.f;
 	//CCC.eBossStartType = BOSSSTARTTYPE::BEGINSTART;
 	//CCC.eBossType = BOSSTYPE::BOSSVARG;
 	//GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &CCC);
 	//
-	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
-	//CCC.vYame.x = 35.f;
-	//CCC.vYame.z = 15.f;
-	//CCC.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
-	//CCC.eBossType = BOSSTYPE::BOSSVARG;
-	//GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &CCC);
 
-	/*ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
+	ZeroMemory(&DDD, sizeof(CBossMonster::STATE_LINK_BOSS_DESC));
+	DDD.vYame.x = 20.f;
+	DDD.vYame.y = 4.7f;
+	DDD.vYame.z = 25.f;
+	DDD.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
+	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &DDD);
+
+	/*ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	CCC.eMonType = MONSTERTYPE::KNIFEWOMAN;
 	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::FIDGETIDLE;
 	CCC.vYame.x = 25.f;
 	CCC.vYame.z = 30.f;
 	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
 	
-	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
+	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	CCC.eMonType = MONSTERTYPE::KNIFEWOMAN;
 	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::SITIDLE;
 	CCC.vYame.x = 30.f;
 	CCC.vYame.z = 35.f;
 	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
 
-	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
+	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	CCC.eMonType = MONSTERTYPE::GARDENER;
 	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
 	CCC.vYame.x = 40.f;
 	CCC.vYame.z = 35.f;
 	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
 
-	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
+	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	CCC.eMonType = MONSTERTYPE::GARDENER;
 	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::SITIDLE;
 	CCC.vYame.x = 40.f;
 	CCC.vYame.z = 40.f;
 	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
 
-	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
+	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	CCC.eMonType = MONSTERTYPE::GARDENER;
 	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::FIDGETIDLE;
 	CCC.vYame.x = 40.f;

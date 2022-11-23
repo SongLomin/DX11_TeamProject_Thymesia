@@ -43,8 +43,6 @@ void CNorMonState_Idle::Start()
 	__super::Start();
 
 
-
-
 	if (m_eMonType == MONSTERTYPE::AXEMAN)
 	{
 		switch (m_eNorMonIdleType)
@@ -94,26 +92,7 @@ void CNorMonState_Idle::Start()
 	}
 
 
-	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock() ||
-		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CNorMonState_HurtR>().lock())
-	{
-		int iRand = rand() % 3 + 2;
-
-		m_iCount += iRand;
-	}
-
-
-
-	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CNorMonState_LightAttack3>().lock())
-	{
-		m_iCount = 0;
-		m_bGoAtk = false;
-		m_bCloseToRun = true;
-		m_iIdleType = 1;
-	}
-
-
-
+	
 }
 
 void CNorMonState_Idle::Tick(_float fTimeDelta)
@@ -158,6 +137,22 @@ void CNorMonState_Idle::LateTick(_float fTimeDelta)
 void CNorMonState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CNorMonState_HurtR>().lock())
+	{
+		int iRand = rand() % 3 + 2;
+
+		m_iCount += iRand;
+	}
+
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CNorMonState_LightAttack3>().lock())
+	{
+		m_iCount = 0;
+		m_bGoAtk = false;
+		m_bCloseToRun = true;
+		m_iIdleType = 1;
+	}
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -423,7 +418,21 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 	if (m_bGoAtk)
 	{
 		
-		Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack3>(0.05f);
+		switch (m_eMonType)
+		{
+		case Client::MONSTERTYPE::AXEMAN:
+			Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack3>(0.05f);
+			break;
+		case Client::MONSTERTYPE::KNIFEWOMAN:
+			Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack3>(0.05f);
+			break;
+		case Client::MONSTERTYPE::SKULL:
+			break;
+		case Client::MONSTERTYPE::GARDENER:
+			Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+			break;
+		}
+	
 		return true;
 	}
 
