@@ -4,6 +4,7 @@
 BEGIN(Engine)
 class CVIBuffer_Rect_Instance;
 class CTransform;
+class CBoneNode;
 END
 
 BEGIN(Client)
@@ -27,9 +28,9 @@ private:
 
     enum class TRANSFORMTYPE
     {
-        STATIC,   
+        STATIC,
         JUSTSPAWN,
-        CHILD,    
+        CHILD,
         TYPE_END
     };
 
@@ -37,15 +38,15 @@ public:
     void Set_TimeScaleLayer(const _uint& In_iTimeScaleLayer) { m_iTimeScaleLayerIndex = In_iTimeScaleLayer; }
     const _char* Get_EffectName() const;
 
-	void Init_EffectParticle(const _char* In_szName, const _char* In_szTextureKey);
-	void Reset_Effect(weak_ptr<CTransform> pParentTransform);
-	void Sync_Animation();
-	void UnUse_EffectParticle();
-	void ReBake_EditParticle();
-	void Write_EffectJson(json& Out_Json);
-	void Load_EffectJson(const json& In_Json, const _uint& In_iTimeScaleLayer);
-	virtual void OnEventMessage(_uint iArg) override;
-	void OnChangeAnimationKey(const _uint& In_Key);
+    void Init_EffectParticle(const _char* In_szName, const _char* In_szTextureKey);
+    void Reset_Effect(weak_ptr<CTransform> pParentTransform);
+    void Sync_Animation();
+    void UnUse_EffectParticle();
+    void ReBake_EditParticle();
+    void Write_EffectJson(json& Out_Json);
+    void Load_EffectJson(const json& In_Json, const _uint& In_iTimeScaleLayer);
+    virtual void OnEventMessage(_uint iArg) override;
+    void OnChangeAnimationKey(const _uint& In_Key);
 
 private:
     virtual HRESULT Initialize_Prototype()   override;
@@ -54,9 +55,9 @@ private:
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render()                 override;
 
-	virtual void SetUp_ShaderResource();
+    virtual void SetUp_ShaderResource();
 
-    void Play(_float fTimeDelta); 
+    void Play(_float fTimeDelta);
     void Reset_Instance(const _uint& In_ParticleCount);
     void Reset_ParticleDescs();
     void Reset_ParticleDesc(const _uint& In_iIndex);
@@ -84,7 +85,7 @@ private:
     );
 
 private:
-	void Free();
+    void Free();
 
 private:
     weak_ptr<CTransform>                m_pParentTransformCom;
@@ -107,19 +108,24 @@ private:
     weak_ptr<CTexture>                  m_pNoiseTextureCom;
     _float2                             m_vNoiseCurrentUV;
     _float2                             m_vNoiseCurrentUVForce;
-    
+
     _float4                             m_vCurrentGlowColor;
     _float4                             m_vCurrentGlowColorForce;
 
-	string                              m_szEffectName;
-	EFFECTPARTICLE_DESC                 m_tEffectParticleDesc;
-	vector<PARTICLE_DESC>               m_tParticleDescs;
-	vector<PARTICLE_DESC>               m_tOriginalParticleDescs;
+    string                              m_szEffectName;
+    EFFECTPARTICLE_DESC                 m_tEffectParticleDesc;
+    vector<PARTICLE_DESC>               m_tParticleDescs;
+    vector<PARTICLE_DESC>               m_tOriginalParticleDescs;
 
-	_float                              m_fCurrentInitTime = 0.f;
+    _float                              m_fCurrentInitTime = 0.f;
 
     _bool                               m_bStopSprite = false;
 
+    /* For. Boner */
+    std::vector<std::string>            m_AllBoneNames;
+    weak_ptr<CBoneNode>                 m_pBoneNode;
+    std::string                         m_strBoneName = "";
+    _int                                m_iCurrentBoneIndex = 0;
 };
 
 END
