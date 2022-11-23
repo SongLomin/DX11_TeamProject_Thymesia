@@ -234,18 +234,6 @@ PS_OUT PS_MAIN_RED(PS_IN In)
 }
 
 
-    Out.vDiffuse = vector(1.f, 0.f, 0.f, 1.f);
-    Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
-    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
-    Out.vLightFlag = g_vLightFlag;
-
-    if (Out.vDiffuse.a < 0.1f)
-        discard;
-
-    return Out;
-}
-
-
 technique11 DefaultTechnique
 {
 	pass Default
