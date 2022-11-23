@@ -34,8 +34,8 @@ HRESULT CGround::Initialize(void* pArg)
 	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
 	m_pPhysXColliderCom = Add_Component<CPhysXCollider>();
 	
-	if((_uint)LEVEL_GAMEPLAY == m_CreatedLevel)
-		USE_START(CGround);
+	/*if((_uint)LEVEL_EDIT != m_CreatedLevel)
+		USE_START(CGround);*/
 
 	return S_OK;
 }

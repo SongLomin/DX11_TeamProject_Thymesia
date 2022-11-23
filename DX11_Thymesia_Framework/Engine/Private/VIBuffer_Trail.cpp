@@ -33,7 +33,7 @@ HRESULT CVIBuffer_Trail::Initialize(void* pArg)
     m_iNumVertexBuffers = 1;
     m_iVtxCnt = 0;
 
-	VTXTEX* pVertices = new VTXTEX[m_iNumVertices];
+	VTXTEX* pVertices = DBG_NEW VTXTEX[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXTEX) * m_iNumVertices);
 
 	for (_uint i = 0; i < m_iNumVertices; i += 2)
@@ -55,7 +55,7 @@ HRESULT CVIBuffer_Trail::Initialize(void* pArg)
     m_eIndexFormat   = DXGI_FORMAT_R16_UINT;
     m_eToplogy       = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
-	 FACEINDICES16* pIndices = new FACEINDICES16[m_iNumIndices];
+	 FACEINDICES16* pIndices = DBG_NEW FACEINDICES16[m_iNumIndices];
     ZeroMemory(pIndices, sizeof(FACEINDICES16) * m_iNumIndices);
 
     for (_uint i = 0; i < m_iNumPrimitive; i += 2)

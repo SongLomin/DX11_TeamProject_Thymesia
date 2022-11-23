@@ -12,7 +12,7 @@
 #include "Client_Presets.h"
 #include "PhysXCollider.h"
 #include "Status_Monster.h"
-#include "MobWeapon/MobWeapon.h"
+#include "MobWeapon.h"
 
 GAMECLASS_C(CMonster);
 CLONE_C(CMonster, CGameObject);

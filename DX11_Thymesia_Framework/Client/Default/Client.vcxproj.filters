@@ -643,12 +643,6 @@
     <ClInclude Include="..\Public\CorvusStates\StateExecution\NorMob_Execution.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\00.NorMob_Execution</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Status_Player.h">
-      <Filter>05. Component\04. Status\00. Status_Player</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Status_Monster.h">
-      <Filter>05. Component\04. Status\01. Status_Monster</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Effect_Trail.h">
       <Filter>02. GameObject\08. Effect\02. Effect_Trail</Filter>
     </ClInclude>
@@ -1383,12 +1377,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\VargExecution\NorMob_Execution.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\00.NorMob_Execution</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Status_Player.cpp">
-      <Filter>05. Component\04. Status\00. Status_Player</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Status_Monster.cpp">
-      <Filter>05. Component\04. Status\01. Status_Monster</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Effect_Trail.cpp">
       <Filter>02. GameObject\08. Effect\02. Effect_Trail</Filter>

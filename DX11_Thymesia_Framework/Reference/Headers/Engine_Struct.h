@@ -384,11 +384,8 @@ namespace Engine
 	struct PARTICLE_SPAWN
 	{
 		_float3			vSpawnPosition;
-
 		_float3			vSpawnLook;
 		_float			fSpawnTime;
-
-		_uint			iParticleNum;
 	};
 
 	struct FaderDesc

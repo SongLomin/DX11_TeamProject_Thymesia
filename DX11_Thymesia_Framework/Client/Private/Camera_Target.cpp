@@ -145,7 +145,7 @@ void CCamera_Target::Release_Focus()
 
 }
 
-void CCamera_Target::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName, _matrix& OffSetMatrix)
+void CCamera_Target::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName, _fmatrix OffSetMatrix)
 {
 
 	m_pCameraBoneNode = _pModel.lock()->Find_BoneNode(pBoneName);

@@ -41,7 +41,6 @@ public:
 	HRESULT Loading_ForTestLevel();
 
 	void	Loading_ForEffectGroup(const char* In_Path, const _uint& In_LevelIndex);
-	void	Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex);
 	void	Load_AllDiffuseTexture();
 	void	Load_AllMaskMap();
 	void	Load_AllNoiseTexture();

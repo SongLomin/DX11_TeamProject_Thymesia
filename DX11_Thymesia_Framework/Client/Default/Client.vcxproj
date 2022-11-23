@@ -76,7 +76,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\Bin\debug</OutDir>
+    <OutDir>..\Bin\debug\</OutDir>
     <MultiProcFXC>true</MultiProcFXC>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -84,7 +84,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\Bin\release</OutDir>
+    <OutDir>..\Bin\release\</OutDir>
     <MultiProcFXC>true</MultiProcFXC>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -197,9 +197,6 @@
     <ClInclude Include="..\Public\BossStateBase.h" />
     <ClInclude Include="..\Public\Level_Test.h" />
     <ClInclude Include="..\Public\PhysXColliderObject.h" />
-    <ClInclude Include="..\Public\Status_Monster.h" />
-    <ClInclude Include="..\Public\Status_Player.h" />
-    <ClInclude Include="..\Public\Preset_PhysXControllerDesc.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttack1.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Die.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtL.h" />
@@ -432,9 +429,6 @@
     <ClCompile Include="..\Private\BossMonster.cpp" />
     <ClCompile Include="..\Private\BossStateBase.cpp" />
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
-    <ClCompile Include="..\Private\Status_Monster.cpp" />
-    <ClCompile Include="..\Private\Status_Player.cpp" />
-    <ClCompile Include="..\Private\Preset_PhysXControllerDesc.cpp" />
     <ClCompile Include="..\Private\UI_LerpBar.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttack1.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Die.cpp" />

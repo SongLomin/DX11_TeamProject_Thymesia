@@ -32,7 +32,7 @@ HRESULT CLevel_Test::Initialize()
 		return E_FAIL;
 
 	ShowCursor(false);
-
+	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_TEST);
 	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_TEST);
 
 
@@ -55,9 +55,9 @@ HRESULT CLevel_Test::Initialize()
 
 	//TODO 야매에요
 #ifdef _STAGE_1_MONSTER_
-	CMonster::STATE_LINK_DESC CCC;
+	CMonster::STATE_LINK_MONSTER_DESC CCC;
 
-	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
+	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	CCC.eMonType = MONSTERTYPE::AXEMAN;
 	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
 	CCC.vYame.x = 13.f;
@@ -66,7 +66,7 @@ HRESULT CLevel_Test::Initialize()
 	CCC.m_iAtkCounterGauge = 10;
 	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_TEST, &CCC);
 
-	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
+	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	CCC.eMonType = MONSTERTYPE::KNIFEWOMAN;
 	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::SITIDLE;
 	CCC.vYame.x = 23.f;
@@ -75,7 +75,7 @@ HRESULT CLevel_Test::Initialize()
 	CCC.m_iAtkCounterGauge = 10;
 	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_TEST, &CCC);
 
-	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
+	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	CCC.eMonType = MONSTERTYPE::GARDENER;
 	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::FIDGETIDLE;
 	CCC.vYame.x = 2.5f;

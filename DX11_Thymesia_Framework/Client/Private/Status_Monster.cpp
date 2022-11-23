@@ -200,5 +200,9 @@ void CStatus_Monster::Check_HitedTime(_float fTimeDelta)
 	}
 }
 
+void CStatus_Monster::Free()
+{
+}
+
 
 

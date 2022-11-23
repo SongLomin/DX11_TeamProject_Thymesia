@@ -83,6 +83,9 @@ protected:
 
 protected:
 	MONSTERDESC     m_tMonsterDesc;
+
+private:
+	void			Free();
 };
 
 END

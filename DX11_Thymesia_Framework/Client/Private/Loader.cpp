@@ -474,7 +474,6 @@ HRESULT CLoader::Loading_ForTestLevel()
 
 
 	Load_AllEffectMesh();
-	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_TEST);
 
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
@@ -522,7 +521,6 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 #ifndef _ONLY_UI_
 	
 	Load_AllEffectMesh();
-	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
 
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/"         , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Binary/"      , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
@@ -565,7 +563,6 @@ HRESULT CLoader::Loading_ForStage2Level()
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 	Load_AllEffectMesh();
-	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_STAGE2);
 #pragma endregion
 
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
@@ -590,8 +587,6 @@ HRESULT CLoader::Loading_ForStage3Level()
 #pragma region PROTOTYPE_GAMEOBJECT
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
-	Load_AllEffectMesh();
-	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_STAGE3);
 #pragma endregion
 
 
@@ -656,25 +651,6 @@ void CLoader::Loading_ForEffectGroup(const char* In_Path, const _uint& In_LevelI
 
 	weak_ptr<CEffectGroup> EffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(In_LevelIndex);
 	EffectGroup.lock()->Load_EffectJson(In_Path, (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
-}
-
-void CLoader::Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex)
-{
-	fs::directory_iterator itr(In_FolderPath);
-
-	while (itr != fs::end(itr)) {
-		const fs::directory_entry& entry = *itr;
-
-		weak_ptr<CEffectGroup> EffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(In_LevelIndex);
-		EffectGroup.lock()->Load_EffectJson(entry.path().string(), (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
-
-		#ifdef _DEBUG_COUT_
-		cout << entry.path().filename() << std::endl;
-#endif
-
-
-		itr++;
-	}
 }
 
 void CLoader::Load_AllDiffuseTexture()

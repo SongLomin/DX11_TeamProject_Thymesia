@@ -112,7 +112,7 @@ HRESULT CWeapon::Render()
 		}
 		else
 		{
-			iPassIndex = 4;
+			iPassIndex = 3;
 		}
 
 		m_pShaderCom.lock()->Begin(iPassIndex);

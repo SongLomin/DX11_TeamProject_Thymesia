@@ -33,6 +33,7 @@ HRESULT CLevel_GamePlay::Initialize()
 
 //주석지워라
 
+	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
 #ifndef _ONLY_UI_
 #pragma region GAMEOBJECT
 

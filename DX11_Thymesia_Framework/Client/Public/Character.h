@@ -52,10 +52,6 @@ protected:
     virtual void Before_Render(_float fTimeDelta) override;
 
 protected:
-    virtual void Tick(_float fTimeDelta) override;
-    virtual void Before_Render(_float fTimeDelta) override;
-
-protected:
     //weak_ptr<CBehaviorBase> m_pBehavior;
     weak_ptr<CCollider>     m_pHitColliderCom;
     weak_ptr<CCollider>     m_pRigidBodyColliderCom;

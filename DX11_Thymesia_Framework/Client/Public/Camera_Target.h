@@ -44,7 +44,7 @@ public:
 	void Focus_Monster(weak_ptr<CGameObject> _pMonster);
 	void Release_Focus();
 
-	void Start_Cinematic(weak_ptr<CModel> _pModel,const _char* pBoneName, _matrix& OffSetMatrix);
+	void Start_Cinematic(weak_ptr<CModel> _pModel,const _char* pBoneName, _fmatrix OffSetMatrix);
 	void End_Cinematic();
 
 	void Activate_Zoom(_float fRatio);
