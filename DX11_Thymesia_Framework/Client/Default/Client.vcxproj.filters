@@ -2,16 +2,16 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="Client.h">
-      <Filter>97. Tool\98. Default</Filter>
+      <Filter>98. Default</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>97. Tool\98. Default</Filter>
+      <Filter>98. Default</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
-      <Filter>97. Tool\98. Default</Filter>
+      <Filter>98. Default</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>97. Tool\98. Default</Filter>
+      <Filter>98. Default</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MainApp.h">
       <Filter>00. MainApp</Filter>
@@ -665,7 +665,6 @@
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UI_LerpBar.h" />
-    <ClInclude Include="..\Public\MonsterParryingBar.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttack1.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawAttack1</Filter>
     </ClInclude>
@@ -732,10 +731,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
-      <Filter>97. Tool\98. Default</Filter>
+      <Filter>98. Default</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
-      <Filter>97. Tool\98. Default</Filter>
+      <Filter>98. Default</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\MainApp.cpp">
       <Filter>00. MainApp</Filter>
@@ -1488,10 +1487,10 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
-      <Filter>97. Tool\98. Default</Filter>
+      <Filter>98. Default</Filter>
     </Image>
     <Image Include="small.ico">
-      <Filter>97. Tool\98. Default</Filter>
+      <Filter>98. Default</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
@@ -1572,9 +1571,6 @@
     </Filter>
     <Filter Include="96. GameManager\00. GameState">
       <UniqueIdentifier>{297f4c57-9297-455a-99b4-9a82b4e402f7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="97. Tool\98. Default">
-      <UniqueIdentifier>{65376df2-2a03-48c0-b9a4-e1bcd404fb50}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject">
       <UniqueIdentifier>{57f74c26-08d1-4431-861b-7a6105d37c3f}</UniqueIdentifier>
@@ -2314,15 +2310,18 @@
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\00.Weapon\01.Corvus_DefaultDagger">
       <UniqueIdentifier>{e8d262bf-d13f-4a53-886f-7946a0308b0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="98. Default">
+      <UniqueIdentifier>{65376df2-2a03-48c0-b9a4-e1bcd404fb50}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
-      <Filter>97. Tool\98. Default</Filter>
+      <Filter>98. Default</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt">
-      <Filter>97. Tool\98. Default</Filter>
+      <Filter>98. Default</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

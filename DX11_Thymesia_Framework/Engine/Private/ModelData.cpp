@@ -218,19 +218,9 @@ void MODEL_DATA::Compute_Center(MESH_VTX_INFO& _tVertexInfo)
 
 _float MODEL_DATA::Get_MaxOffsetRange() const
 {
-    _vector vOffsetRange = XMLoadFloat3(&VertexInfo.vMax) - XMLoadFloat3(&VertexInfo.vMin);
-    _float fMaxRange = 0.f;
-    
-    for (_int i = 0; i < 3; ++i)
-    {
-        if (fMaxRange < vOffsetRange.m128_f32[i])
-        {
-            fMaxRange = vOffsetRange.m128_f32[i];
-        }
-    }
+    _vector vOffsetRange = XMLoadFloat3(&VertexInfo.vMax);
 
-
-    return fMaxRange;
+    return XMVectorGetX(XMVector3Length(vOffsetRange));
 }
 
 HRESULT MODEL_DATA::Load_FromAssimp(const _bool In_bAnimZero)

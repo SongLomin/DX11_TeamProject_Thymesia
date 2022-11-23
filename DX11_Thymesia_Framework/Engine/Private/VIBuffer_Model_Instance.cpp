@@ -5,6 +5,7 @@
 #include "Texture.h"
 #include "GameObject.h"
 #include "Shader.h"
+#include "SMath.h"
 
 GAMECLASS_C(CVIBuffer_Model_Instance)
 CLONE_C(CVIBuffer_Model_Instance, CComponent)
@@ -26,26 +27,35 @@ void CVIBuffer_Model_Instance::Start()
 
 void CVIBuffer_Model_Instance::Culling_Instance(vector<INSTANCE_MESH_DESC>& In_ParticleDescs)
 {
+	if (In_ParticleDescs.empty())
+		return;
+
 	shared_ptr<CGameInstance> pGameInstance = GAMEINSTANCE;
 	m_pVisibleInstanceDescs.clear();
 
-	m_pModelData->VertexInfo.vMax;
-
 	_vector vPosition;
+
 	for (auto& elem : In_ParticleDescs)
 	{
 		vPosition = XMLoadFloat3(&elem.vTarnslation);
 		vPosition = XMVectorSetW(vPosition, 1.f);
-		if (pGameInstance->isIn_Frustum_InWorldSpace(vPosition, m_fMaxOffsetRange * 4.f))
+		if (pGameInstance->isIn_Frustum_InWorldSpace(vPosition, 7.f + m_fMaxOffsetRange * 10.f))
 		{
 			m_pVisibleInstanceDescs.push_back(&elem);
 		}
+		//m_pVisibleInstanceDescs.push_back(&elem);
 	}
 
 	m_iVisibleCount = m_pVisibleInstanceDescs.size();
 	m_bCulling = true;
 
+	if (2.f + m_fMaxOffsetRange * 10.f < 4.f)
+	{
+		cout << "Short OffsetRange: " << m_pModelData->szModelFileName << endl;
+	}
 	
+	//Update_VisibleInstance();
+
 	/*shared_ptr<CGameInstance> pGameInstance = GAMEINSTANCE;
 
 	_int iCount = 0;
@@ -286,7 +296,7 @@ HRESULT CVIBuffer_Model_Instance::Render_Mesh(_uint iMeshContainerIndex)
 	DEVICECONTEXT->IASetPrimitiveTopology(m_MeshContainers[iMeshContainerIndex].lock()->Get_Topology());
 
 	/* 6 : 하나의 도형을 그리기위해 사용하는 인덱스의 갯수. 네모라서 여섯개.  */
-	DEVICECONTEXT->DrawIndexedInstanced(m_MeshContainers[iMeshContainerIndex].lock()->Get_NumIndices(), m_iVisibleCount, 0, 0, 0);
+	DEVICECONTEXT->DrawIndexedInstanced(m_MeshContainers[iMeshContainerIndex].lock()->Get_NumIndices(), m_pVisibleInstanceDescs.size(), 0, 0, 0);
 
 	return S_OK;
 }
@@ -315,7 +325,7 @@ void CVIBuffer_Model_Instance::Update(const vector<INSTANCE_MESH_DESC>& In_Parti
 
 void CVIBuffer_Model_Instance::Update_VisibleInstance()
 {
-	if (0 == m_iVisibleCount || !m_bCulling || m_pVisibleInstanceDescs.empty())
+	if (m_pVisibleInstanceDescs.empty())
 		return;
 
 	D3D11_MAPPED_SUBRESOURCE		SubResource;
