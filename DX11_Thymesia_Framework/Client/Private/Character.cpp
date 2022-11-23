@@ -98,7 +98,7 @@ void CCharacter::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eH
 
 void CCharacter::Call_WeaponFirstAttack(weak_ptr<CCollider> pOtherCollider)
 {
-	m_pCurState.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_FIRSTHIT);
+	//m_pCurState.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_FIRSTHIT);
 
 }
 

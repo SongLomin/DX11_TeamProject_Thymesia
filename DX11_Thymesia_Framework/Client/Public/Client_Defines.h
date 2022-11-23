@@ -17,6 +17,8 @@
 #define		_STAGE_1_MONSTER_
 #define		_GENERATE_PROP_COLLIDER_ true
 #define		_USE_GRAVITY_
+// UI제외한 오브젝트 생성 X
+#define		//_ONLY_UI_
 #endif // _DEBUG
 
 #ifdef NDEBUG
@@ -104,7 +106,7 @@ namespace Client
 		PLAYER,
 		MONSTER,
 		FADEMASK,
-		HYPERSPACE,
+		GROOGYMOSNTER,
 		BATTLEUI,
 		SWAPUI,
 		LAYER_END

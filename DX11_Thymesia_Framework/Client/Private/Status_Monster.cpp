@@ -116,6 +116,7 @@ void CStatus_Monster::Init_Status(const void* pArg)
 
 void CStatus_Monster::Add_Damage(const _float& In_fDamage, ATTACK_OPTION eAttackOption)
 {
+
 	switch (eAttackOption)
 	{
 	case Client::ATTACK_OPTION::NONE:
@@ -134,6 +135,11 @@ void CStatus_Monster::Add_Damage(const _float& In_fDamage, ATTACK_OPTION eAttack
 	default:
 		break;
 	}
+}
+
+void CStatus_Monster::Get_Desc(void* pOutDesc)
+{
+	memcpy(pOutDesc, &m_tMonsterDesc, sizeof(MONSTERDESC));
 }
 
 void CStatus_Monster::Decrease_White_HP(const _float& In_fDamage)

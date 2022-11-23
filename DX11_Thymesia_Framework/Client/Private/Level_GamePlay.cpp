@@ -13,8 +13,6 @@
 #include "MonsterHPBar_Elite.h"
 #include "MonsterHPBar_Boss.h"
 
-
-
 CLevel_GamePlay::CLevel_GamePlay()
 	//: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
@@ -32,7 +30,10 @@ HRESULT CLevel_GamePlay::Initialize()
 		return E_FAIL;
 
 	ShowCursor(false);
-	
+
+//주석지워라
+
+#ifndef _ONLY_UI_
 #pragma region GAMEOBJECT
 
 	/*future<void> ThreadResult = async(launch::async, 
@@ -189,8 +190,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	
 	
 #pragma endregion GAMEOBJECT
-	
-	
+#endif	
 	SetUp_UI();
 
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();

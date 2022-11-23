@@ -70,6 +70,9 @@ public:
 			;
 	}
 	const tagMonsterDesc& Get_Desc() { return m_tMonsterDesc; }
+	_float			Get_Atk() { return m_tMonsterDesc.m_fAtk; }
+	virtual void    Get_Desc(void* Out_pDesc);
+
 
 protected:
 	void			Decrease_White_HP(const _float& In_fDamage);

@@ -74,7 +74,14 @@ public:
 	PLAYERDESC Get_PlayerDesc() {return m_tDesc;}
 	PLAYERPOTIONDESC Get_CurrentPotionDesc() { return m_PotionDesc[m_iCurrentPotionIndex]; }
 
+	virtual void	Get_Desc(void* Out_pDesc);
+
+	_float			Get_MaxHP() { return m_tDesc.m_fMaxHP; }
+	_float			Get_CurrentHP() { return m_tDesc.m_fCurrentHP; }
+
 	void Heal_Player(const _float fAmount);
+
+	_float		Get_Atk() { return m_tDesc.m_fNormalAtk; }
 
 private:
 	_float			m_fPotionTime;

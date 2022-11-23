@@ -99,6 +99,8 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 	//	Get_OwnerPlayer()->Change_State<CNorMonState_Dash>();
 	//	return true;
 	//}
+
+
 	if (Check_RequirementRunState())
 	{
 		Rotation_InputToLookDir();
@@ -130,8 +132,19 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 
 	 if (Check_RequirementAttackState())
 	 {
-		 Rotation_InputToLookDir();
-		 Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
+		 weak_ptr<CGameObject> pTargetObject;
+
+		 if (Check_RequirementExcuteState(pTargetObject))
+		 {
+			 Get_OwnerPlayer()->Change_State<CNorMob_Execution>();
+			 Get_OwnerPlayer()->Get_CurState().lock()->OnEventMessage(Weak_Cast<CBase>(pTargetObject));
+		 }
+		 else
+		 {
+			 Rotation_InputToLookDir();
+			 Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
+
+		 }
 		 return true;
 	 }
 

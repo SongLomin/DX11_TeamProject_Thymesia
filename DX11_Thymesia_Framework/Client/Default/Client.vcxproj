@@ -114,6 +114,7 @@
       <MinFilesInUnityFile>2</MinFilesInUnityFile>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <UnityFilesDirectory>$(ProjectDir)</UnityFilesDirectory>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -191,17 +192,22 @@
     <ClInclude Include="..\Public\Actor.h" />
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
+    <ClInclude Include="..\Public\Level_Test.h" />
+    <ClInclude Include="..\Public\PhysXColliderObject.h" />
+    <ClInclude Include="..\Public\Status_Monster.h" />
+    <ClInclude Include="..\Public\Status_Player.h" />
+    <ClInclude Include="..\Public\Preset_PhysXControllerDesc.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttack1.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Die.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtL.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtR.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtXXL.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\NorMob_Execution.h" />
-    <ClInclude Include="..\Public\Level_Test.h" />
-    <ClInclude Include="..\Public\PhysXColliderObject.h" />
+    <ClInclude Include="..\Public\MonsterParryingBar.h" />
     <ClInclude Include="..\Public\Status_Monster.h" />
     <ClInclude Include="..\Public\Status_Player.h" />
     <ClInclude Include="..\Public\Preset_PhysXControllerDesc.h" />
+    <ClInclude Include="..\Public\UI_LerpBar.h" />
     <ClInclude Include="..\Public\VargBossStateBase.h" />
     <ClInclude Include="..\Public\BossVarg\Varg.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack1a.h" />
@@ -418,6 +424,11 @@
     <ClCompile Include="..\Private\Actor.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Attack_Area.cpp" />
+    <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
+    <ClCompile Include="..\Private\Status_Monster.cpp" />
+    <ClCompile Include="..\Private\Status_Player.cpp" />
+    <ClCompile Include="..\Private\Preset_PhysXControllerDesc.cpp" />
+    <ClCompile Include="..\Private\UI_LerpBar.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttack1.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Die.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtL.cpp" />
@@ -426,9 +437,6 @@
     <ClCompile Include="..\Private\CorvusStates\VargExecution\NorMob_Execution.cpp" />
     <ClCompile Include="..\Private\Level_Test.cpp" />
     <ClCompile Include="..\Private\PhysXColliderObject.cpp" />
-    <ClCompile Include="..\Private\Status_Monster.cpp" />
-    <ClCompile Include="..\Private\Status_Player.cpp" />
-    <ClCompile Include="..\Private\Preset_PhysXControllerDesc.cpp" />
     <ClCompile Include="..\Private\VargBossStateBase.cpp" />
     <ClCompile Include="..\Private\BossVarg\Varg.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack1a.cpp" />
