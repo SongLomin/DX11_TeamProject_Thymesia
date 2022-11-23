@@ -5,6 +5,8 @@
 #include "PreViewAnimationModel.h"
 
 #include "Easing_Utillity.h"
+#include "Model.h"
+#include "BoneNode.h"
 
 // undefines at bottom
 #define PASS_SPRITE 0
@@ -85,8 +87,8 @@ HRESULT CEffect_Rect::Initialize(void* pArg)
 	//m_pVIBuffer.lock()->Init_Particle(10);
 	//m_pVIBuffer.lock()->Init_Particle(3);
 
-	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_VtxInstance"), 
-		VTXTEXCOLOR_INSTANCE_DECLARATION::Element, 
+	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_VtxInstance"),
+		VTXTEXCOLOR_INSTANCE_DECLARATION::Element,
 		VTXTEXCOLOR_INSTANCE_DECLARATION::iNumElements);
 
 	m_pColorDiffuseTextureCom = Add_Component<CTexture>();
@@ -99,7 +101,7 @@ HRESULT CEffect_Rect::Initialize(void* pArg)
 	m_pNoiseTextureCom.lock()->Use_Texture("UVNoise");
 	Set_Enable(false);
 
-	
+
 #ifdef _USE_THREAD_
 	Use_Thread(THREAD_TYPE::TICK);
 
@@ -119,7 +121,7 @@ void CEffect_Rect::Tick(_float fTimeDelta)
 	}
 
 	Play(fTimeDelta * GAMEINSTANCE->Get_TimeScale(m_iTimeScaleLayerIndex));
-	
+
 }
 
 void CEffect_Rect::LateTick(_float fTimeDelta)
@@ -172,11 +174,15 @@ void CEffect_Rect::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 	m_vCurrentGlowColor = m_tEffectParticleDesc.vStartGlowColor;
 	m_vCurrentGlowColorForce = { 0.f, 0.f, 0.f, 0.f };
 	m_fPreFrame = 0.f;
-	
-	m_pParentTransformCom = pParentTransform;
-	
-	Update_ParentTransform();
 
+	if (m_tEffectParticleDesc.iFollowTransformType != (_int)TRANSFORMTYPE::STATIC)
+	{
+		if (nullptr == m_pParentTransformCom.lock())
+			m_pParentTransformCom = pParentTransform;
+
+	}
+
+	Update_ParentTransform();
 	Reset_ParticleDescs();
 }
 
@@ -186,8 +192,29 @@ void CEffect_Rect::SetUp_ShaderResource()
 	if ((_uint)TRANSFORMTYPE::STATIC != m_tEffectParticleDesc.iFollowTransformType)
 		Update_ParentTransform();
 
-	CallBack_Bind_SRV(m_pShaderCom, "");
+	_matrix		BoneMatrix = XMMatrixIdentity();
+	_matrix		WorldMatrix = XMMatrixIdentity();
 
+	if (m_pBoneNode.lock() && ((_uint)TRANSFORMTYPE::CHILD == m_tEffectParticleDesc.iFollowTransformType))
+	{
+		_matrix ModelTranMat = XMLoadFloat4x4(&GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Get_TransformationMatrix());
+		BoneMatrix = m_pBoneNode.lock()->Get_CombinedMatrix() * ModelTranMat;
+
+		BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
+		BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
+		BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
+	}
+
+	WorldMatrix = BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix();
+
+	if (((_uint)PARTICLETYPE::BILLBOARD == m_tEffectParticleDesc.iParticleType))
+	{
+		WorldMatrix = SMath::Get_PositionMatrix(WorldMatrix);
+	}
+
+	WorldMatrix = XMMatrixTranspose(WorldMatrix);
+
+	m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_float4x4));
 	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4));
 	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
 #pragma endregion
@@ -201,7 +228,7 @@ void CEffect_Rect::SetUp_ShaderResource()
 	m_pShaderCom.lock()->Set_RawValue("g_vDiffuseUV", &m_vDiffuseCurrentUV, sizeof(_float2));
 	m_pShaderCom.lock()->Set_RawValue("g_vMaskUV", &m_vMaskCurrentUV, sizeof(_float2));
 	m_pShaderCom.lock()->Set_RawValue("g_vNoiseUV", &m_vNoiseCurrentUV, sizeof(_float2));
-	
+
 	m_pShaderCom.lock()->Set_RawValue("g_iNumFrameX", &m_tEffectParticleDesc.iNumFrameX, sizeof(_uint));
 	m_pShaderCom.lock()->Set_RawValue("g_iNumFrameY", &m_tEffectParticleDesc.iNumFrameY, sizeof(_uint));
 #pragma endregion
@@ -242,6 +269,14 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	Out_Json["Min_Life_Time"] = m_tEffectParticleDesc.fMinLifeTime;
 	Out_Json["Max_Life_Time"] = m_tEffectParticleDesc.fMaxLifeTime;
 #pragma endregion
+
+	Out_Json["Is_Boner"] = m_tEffectParticleDesc.bBoner;
+
+	if (m_tEffectParticleDesc.bBoner)
+	{
+		if (0 != m_strBoneName.size())
+			Out_Json["Bone_Name"] = m_strBoneName;
+	}
 
 #pragma region Spawn Position
 	CJson_Utility::Write_Float3(Out_Json["Min_Spawn_Position"], m_tEffectParticleDesc.vMinSpawnPosition);
@@ -434,6 +469,15 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	if (In_Json.find("Max_Life_Time") != In_Json.end())
 		m_tEffectParticleDesc.fMaxLifeTime = In_Json["Max_Life_Time"];
 #pragma endregion
+	if (In_Json.find("Is_Boner") != In_Json.end())
+		m_tEffectParticleDesc.bBoner = In_Json["Is_Boner"];
+
+
+	if (m_tEffectParticleDesc.bBoner)
+	{
+		if (In_Json.find("Bone_Name") != In_Json.end())
+			m_strBoneName = In_Json["Bone_Name"];
+	}
 
 #pragma region Spawn Position
 	if (In_Json.find("Min_Spawn_Position") != In_Json.end())
@@ -612,7 +656,7 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma endregion
 
 #pragma region For. Sprite
-	if(PASS_SPRITE == m_tEffectParticleDesc.iShaderPassIndex)
+	if (PASS_SPRITE == m_tEffectParticleDesc.iShaderPassIndex)
 	{
 		if (In_Json.find("Loop_Sprite") != In_Json.end())
 			m_tEffectParticleDesc.bLoopSprite = In_Json["Loop_Sprite"];
@@ -641,11 +685,29 @@ void CEffect_Rect::Play(_float fTimeDelta)
 	//m_fPreFrame += fTimeDelta - (iTickCount * fTimeDelta / fFrameTime);
 	m_fPreFrame += fTimeDelta;
 
-	while(m_fPreFrame >= fFrameTime)
+	while (m_fPreFrame >= fFrameTime)
 	{
 		++iTickCount;
 		m_fPreFrame -= fFrameTime;
 	}
+
+
+	_matrix		BoneMatrix = XMMatrixIdentity();
+	_matrix		WorldMatrix = XMMatrixIdentity();
+
+	if (m_pBoneNode.lock() && ((_uint)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType))
+	{
+		_matrix ModelTranMat = XMLoadFloat4x4(&GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Get_TransformationMatrix());
+		BoneMatrix = m_pBoneNode.lock()->Get_CombinedMatrix() * ModelTranMat;
+
+		BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
+		BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
+		BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
+	}
+
+	if (m_pParentTransformCom.lock())
+		WorldMatrix = BoneMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix();
+
 
 	for (_int i = 0; i < m_tEffectParticleDesc.iMaxInstance; ++i)
 	{
@@ -659,12 +721,11 @@ void CEffect_Rect::Play(_float fTimeDelta)
 					&& m_pParentTransformCom.lock())
 				{
 					_float3 ParentPosition;
-					XMStoreFloat3(&ParentPosition, m_pParentTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION));
+					XMStoreFloat3(&ParentPosition, WorldMatrix.r[3]);
 
 					SMath::Add_Float3(&m_tParticleDescs[i].vCurrentTranslation, ParentPosition);
 				}
 			}
-
 			else
 			{
 				m_tParticleDescs[i].fCurrentSpawnTime += fTimeDelta;
@@ -672,7 +733,7 @@ void CEffect_Rect::Play(_float fTimeDelta)
 			}
 		}
 
-		else 
+		else
 		{
 			if (m_tParticleDescs[i].fCurrentLifeTime > m_tParticleDescs[i].fTargetLifeTime)
 			{
@@ -828,7 +889,7 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 		}
 		else
 		{
-			m_tOriginalParticleDescs[i].vCurrentColor = 
+			m_tOriginalParticleDescs[i].vCurrentColor =
 				SMath::vRandom(m_tEffectParticleDesc.vMinStartColor, m_tEffectParticleDesc.vMaxStartColor);
 		}
 
@@ -837,6 +898,7 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 		m_tOriginalParticleDescs[i].vCurrentScale.x = max(0.00001f, m_tOriginalParticleDescs[i].vCurrentScale.x);
 		m_tOriginalParticleDescs[i].vCurrentScale.y = max(0.00001f, m_tOriginalParticleDescs[i].vCurrentScale.y);
 		m_tOriginalParticleDescs[i].vCurrentScale.z = max(0.00001f, m_tOriginalParticleDescs[i].vCurrentScale.z);
+
 	}
 }
 
@@ -847,7 +909,7 @@ _bool CEffect_Rect::Check_DisableAllParticle()
 
 	if (m_fCurrentInitTime > 0.f)
 		return false;
-	
+
 	if ((_uint)TIMESCALE_LAYER::EDITER == m_iTimeScaleLayerIndex)
 		return false;
 
@@ -862,6 +924,24 @@ _bool CEffect_Rect::Check_DisableAllParticle()
 
 void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 {
+	if (m_pBoneNode.lock())
+	{
+		_matrix ModelTranMat = XMLoadFloat4x4(&GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Get_TransformationMatrix());
+		_matrix ParentMatrix = m_pBoneNode.lock()->Get_CombinedMatrix() * ModelTranMat;
+
+		ParentMatrix.r[0] = XMVector3Normalize(ParentMatrix.r[0]);
+		ParentMatrix.r[1] = XMVector3Normalize(ParentMatrix.r[1]);
+		ParentMatrix.r[2] = XMVector3Normalize(ParentMatrix.r[2]);
+
+		if ((_int)TRANSFORMTYPE::CHILD == m_tEffectParticleDesc.iFollowTransformType)
+		{
+			if (m_pParentTransformCom.lock())
+				m_pTransformCom.lock()->Set_WorldMatrix(ParentMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix());
+			else
+				m_pTransformCom.lock()->Set_WorldMatrix(ParentMatrix);
+		}
+	}
+
 	_float3 vMove;
 	ZeroMemory(&vMove, sizeof(_float3));
 
@@ -884,11 +964,11 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 
 		if (m_tEffectParticleDesc.bMoveLook)
 		{
-			_vector vSpawnPos           = XMLoadFloat3(&m_tParticleDescs[i].vTargetSpeed);
-			_vector vMovePosition       = XMLoadFloat3(&vMove);
-			vMovePosition              -= vSpawnPos;
-			_vector vRotatedPosition    = XMVector3TransformCoord(vMovePosition, XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_tParticleDescs[i].vCurrentRotation)));
-			vRotatedPosition           += vSpawnPos;
+			_vector vSpawnPos = XMLoadFloat3(&m_tParticleDescs[i].vTargetSpeed);
+			_vector vMovePosition = XMLoadFloat3(&vMove);
+			vMovePosition -= vSpawnPos;
+			_vector vRotatedPosition = XMVector3TransformCoord(vMovePosition, XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_tParticleDescs[i].vCurrentRotation)));
+			vRotatedPosition += vSpawnPos;
 			// _vector vCurrentPosition = XMLoadFloat3(&m_tParticleDescs[i].vCurrentTranslation);
 			// vCurrentPosition +       = vRotatedPosition;
 			XMStoreFloat3(&m_tParticleDescs[i].vCurrentTranslation, vRotatedPosition);
@@ -977,9 +1057,9 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 		_vector vDeltaGravity;
 		ZeroMemory(&vDeltaGravity, sizeof(_vector));
 
-		vDeltaGravity = XMVectorSetX(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.x* fTimeDelta* (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
-		vDeltaGravity = XMVectorSetY(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.y* fTimeDelta* (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
-		vDeltaGravity = XMVectorSetZ(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.z* fTimeDelta* (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
+		vDeltaGravity = XMVectorSetX(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.x * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
+		vDeltaGravity = XMVectorSetY(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.y * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
+		vDeltaGravity = XMVectorSetZ(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.z * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
 
 		_float3 f3DeltaGravity;
 		XMStoreFloat3(&f3DeltaGravity, vDeltaGravity);
@@ -996,7 +1076,7 @@ void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
 	{
 		_vector vUp = XMLoadFloat3(&m_tOriginalParticleDescs[i].vCurrentTranslation); //커런트 포지션
 		_matrix ReverseAxisRotationMatrix = SMath::Bake_MatrixNormalizeUseLookVector(vUp);
-		_matrix RotationMatrix = { ReverseAxisRotationMatrix.r[0], 
+		_matrix RotationMatrix = { ReverseAxisRotationMatrix.r[0],
 			ReverseAxisRotationMatrix.r[2],
 			ReverseAxisRotationMatrix.r[1],
 			ReverseAxisRotationMatrix.r[3]
@@ -1277,22 +1357,14 @@ void CEffect_Rect::Update_ParticleSpriteFrame(const _uint& i, _float fTimeDelta)
 
 void CEffect_Rect::Update_ParentTransform()
 {
-	if (m_pParentTransformCom.lock())
+	if ((_int)TRANSFORMTYPE::STATIC != m_tEffectParticleDesc.iFollowTransformType)
 	{
-		if ((_int)PARTICLETYPE::NONE == m_tEffectParticleDesc.iParticleType ||
-			(_int)PARTICLETYPE::OUTBURST == m_tEffectParticleDesc.iParticleType)
-		{
-			//_matrix RotationMatrix = SMath::Get_RotationMatrix(UnscaledMatrix);
-			//m_pTransformCom.lock()->Set_State(CTransform::STATE_RIGHT, RotationMatrix.r[0]);
-			//m_pTransformCom.lock()->Set_State(CTransform::STATE_UP, RotationMatrix.r[1]);
-			//m_pTransformCom.lock()->Set_State(CTransform::STATE_LOOK, RotationMatrix.r[2]);
 
-			m_pTransformCom.lock()->Set_WorldMatrix(m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
-		}
-
-		else if ((_int)PARTICLETYPE::BILLBOARD == m_tEffectParticleDesc.iParticleType)
+		if ((_int)PARTICLETYPE::BILLBOARD == m_tEffectParticleDesc.iParticleType)
 		{
-			m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix().r[3]);
+			if (m_pParentTransformCom.lock())
+				m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix().r[3]);
+
 		}
 
 		if ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType)
@@ -1304,7 +1376,14 @@ void CEffect_Rect::Update_ParentTransform()
 
 			m_pTransformCom.lock()->Set_WorldMatrix(XMMatrixIdentity());
 		}
+		else if ((_int)TRANSFORMTYPE::CHILD == m_tEffectParticleDesc.iFollowTransformType)
+		{
+			if (m_pParentTransformCom.lock())
+				m_pTransformCom.lock()->Set_WorldMatrix(m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
+		}
+
 	}
+
 }
 
 void CEffect_Rect::Apply_Easing
@@ -1425,9 +1504,9 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::Checkbox("##Is_Looping", &m_tEffectParticleDesc.bLooping);
 			ImGui::Separator();
 #pragma region Shader Pass
-			ImGui::Text("Pass %d : Sprite Image",			PASS_SPRITE);
-			ImGui::Text("Pass %d : Default_AlphaDiscard",	PASS_ALPHADISCARD);
-			ImGui::Text("Pass %d : Default_BlackDiscard",	PASS_BLACKDISCARD);
+			ImGui::Text("Pass %d : Sprite Image", PASS_SPRITE);
+			ImGui::Text("Pass %d : Default_AlphaDiscard", PASS_ALPHADISCARD);
+			ImGui::Text("Pass %d : Default_BlackDiscard", PASS_BLACKDISCARD);
 			ImGui::InputInt("Shader Pass", &m_tEffectParticleDesc.iShaderPassIndex);
 #pragma endregion
 			ImGui::Separator();
@@ -1444,8 +1523,8 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 #pragma endregion
 			ImGui::Separator();
 #pragma region Particle Type
-			const char* items[] = { "None", "Outburst", "Attraction", "Billboard"};
-			
+			const char* items[] = { "None", "Outburst", "Attraction", "Billboard" };
+
 			if (ImGui::BeginListBox("ParticleType"))
 			{
 				for (int n = 0; n < IM_ARRAYSIZE(items); n++)
@@ -1525,20 +1604,44 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::Text("Follow Bone"); ImGui::SameLine();
 			ImGui::Checkbox("##Is_Boner", &m_tEffectParticleDesc.bBoner);
 
-			char strBoneName[MAX_PATH];
-			ZeroMemory(strBoneName, sizeof(char) * MAX_PATH);
-			strcpy_s(strBoneName, m_szBoneName.c_str());
 			if (m_tEffectParticleDesc.bBoner)
 			{
-				weak_ptr<CPreViewAnimationModel> pPreviewModel;
-				pPreviewModel = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel();
-				if (nullptr == pPreviewModel.lock())
+				if (ImGui::Button("Get Bone List"))
 				{
-					ImGui::Text("! NO MODEL !");
+					m_pParentTransformCom = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Component<CTransform>().lock();
+					m_AllBoneNames = GET_SINGLE(CWindow_AnimationModelView)->Get_AllBoneNames();
 				}
+
+				if (0 == m_AllBoneNames.size())
+					ImGui::Text("No Bones!");
 				else
 				{
-					pPreviewModel.lock()->Get_Component<CModel>();
+					if (ImGui::BeginListBox("Bone List 2"))
+					{
+						for (int n = 0; n < m_AllBoneNames.size(); n++)
+						{
+							const bool is_selected = (m_iCurrentBoneIndex == n);
+							if (ImGui::Selectable(m_AllBoneNames[n].c_str(), is_selected))
+							{
+								m_strBoneName = m_AllBoneNames[n];
+							}
+
+							// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+							if (is_selected)
+								ImGui::SetItemDefaultFocus();
+						}
+						ImGui::EndListBox();
+					}
+				}
+
+				if (ImGui::Button("Bind to Bone"))
+				{
+					m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
+					if (nullptr == m_pBoneNode.lock())
+					{
+						MSG_BOX("Invalid Bone Name!");
+						assert(0);
+					}
 				}
 			}
 
