@@ -175,7 +175,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 	 if (KEY_INPUT(KEY::O, KEY_STATE::TAP))
 	 {
 		 Rotation_InputToLookDir();
-		 Get_OwnerPlayer()->Change_State<CVarg_Execution>();
+		 Get_OwnerPlayer()->Change_State<CNorMob_Execution>();
 		 return true;
 	 }
 

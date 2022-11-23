@@ -95,7 +95,7 @@ HRESULT CPlayer::Start()
 void CPlayer::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
-
+ 
 
     if(m_pCurState.lock())
         m_pCurState.lock()->Tick(fTimeDelta);

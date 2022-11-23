@@ -207,6 +207,10 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtXXL.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_LAttack4.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\NorMob_Execution.h" />
+    <ClInclude Include="..\Public\Effect_Trail.h" />
+    <ClInclude Include="..\Public\Effect_Trail_Distortion.h" />
+    <ClInclude Include="..\Public\Effect_Trail_EyeLight.h" />
+    <ClInclude Include="..\Public\MobWeapon.h" />
     <ClInclude Include="..\Public\MonsterParryingBar.h" />
     <ClInclude Include="..\Public\Status_Monster.h" />
     <ClInclude Include="..\Public\Status_Player.h" />
@@ -330,7 +334,6 @@
     <ClInclude Include="..\Public\MonsterHPBar_Boss.h" />
     <ClInclude Include="..\Public\MonsterHPBar_Elite.h" />
     <ClInclude Include="..\Public\NorMonStates.h" />
-    <ClInclude Include="..\Public\MobWeapon\MobWeapon.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_SitToIdle.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Stop.h" />
@@ -441,6 +444,13 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_LAttack4.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_LAttack5.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\NorMob_Execution.cpp" />
+    <ClCompile Include="..\Private\Effect_Trail.cpp" />
+    <ClCompile Include="..\Private\Effect_Trail_Distortion.cpp" />
+    <ClCompile Include="..\Private\Effect_Trail_EyeLight.cpp" />
+    <ClCompile Include="..\Private\MobWeapon.cpp" />
+    <ClCompile Include="..\Private\Status_Monster.cpp" />
+    <ClCompile Include="..\Private\Status_Player.cpp" />
+    <ClCompile Include="..\Private\Preset_PhysXControllerDesc.cpp" />
     <ClCompile Include="..\Private\Level_Test.cpp" />
     <ClCompile Include="..\Private\PhysXColliderObject.cpp" />
     <ClCompile Include="..\Private\VargBossStateBase.cpp" />
@@ -551,7 +561,6 @@
     <ClCompile Include="..\Private\Light_Prop.cpp" />
     <ClCompile Include="..\Private\LoadingTextUI.cpp" />
     <ClCompile Include="..\Private\Map.cpp" />
-    <ClCompile Include="..\Private\MobWeapon\MobWeapon.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\MonsterHPBar_Boss.cpp" />
     <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp" />

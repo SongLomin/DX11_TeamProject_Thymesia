@@ -61,7 +61,7 @@ PS_OUT PS_MAIN(PS_IN In)
 
 technique11 DefaultTechnique
 {
-	pass BlurX //0
+	pass Distortion //0
 	{
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_None_ZTest_And_Write, 0);

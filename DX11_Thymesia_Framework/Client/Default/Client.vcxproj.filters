@@ -307,9 +307,6 @@
     <ClInclude Include="..\Public\Monster.h">
       <Filter>02. GameObject\03. Actor\00. Character\01. Monster</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\MobWeapon\MobWeapon.h">
-      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\99.Weapon</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\UI_Logo.h">
       <Filter>02. GameObject\01. UI\Logo</Filter>
     </ClInclude>
@@ -652,6 +649,18 @@
     <ClInclude Include="..\Public\Status_Monster.h">
       <Filter>05. Component\04. Status\01. Status_Monster</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Effect_Trail.h">
+      <Filter>02. GameObject\08. Effect\02. Effect_Trail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MobWeapon.h">
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\99.Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Trail_Distortion.h">
+      <Filter>02. GameObject\08. Effect\02. Effect_Trail\00. Effect_Distortion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Effect_Trail_EyeLight.h">
+      <Filter>02. GameObject\08. Effect\02. Effect_Trail\01. Effect_Trail_EyeLight</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_LAttack4.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack\State_Attack4</Filter>
     </ClInclude>
@@ -988,9 +997,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Monster.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\01. Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\MobWeapon\MobWeapon.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\99.Weapon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PreView_Prop.cpp">
       <Filter>02. GameObject\04. Prop\05. PreView_Prop</Filter>
@@ -1383,6 +1389,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\Status_Monster.cpp">
       <Filter>05. Component\04. Status\01. Status_Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Trail.cpp">
+      <Filter>02. GameObject\08. Effect\02. Effect_Trail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MobWeapon.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\99.Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Trail_Distortion.cpp">
+      <Filter>02. GameObject\08. Effect\02. Effect_Trail\00. Effect_Distortion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Effect_Trail_EyeLight.cpp">
+      <Filter>02. GameObject\08. Effect\02. Effect_Trail\01. Effect_Trail_EyeLight</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PhysXColliderObject.cpp">
       <Filter>02. GameObject\12. PhysXColliderObject</Filter>
@@ -2110,6 +2128,15 @@
     </Filter>
     <Filter Include="05. Component\04. Status\01. Status_Monster">
       <UniqueIdentifier>{b91daabc-005a-402d-9352-5897608e45d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Effect\02. Effect_Trail">
+      <UniqueIdentifier>{bbc00164-c241-460d-b583-8924bd9217da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Effect\02. Effect_Trail\00. Effect_Distortion">
+      <UniqueIdentifier>{d127b810-9c70-4579-a72e-4a92c1de15ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\08. Effect\02. Effect_Trail\01. Effect_Trail_EyeLight">
+      <UniqueIdentifier>{293a5f45-2278-469d-8ef4-607aaec600f8}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\01. UI\MonsterHPBar\ParryingGauege">
       <UniqueIdentifier>{59565ef4-5b73-4d11-8cb7-edb4d635d7a7}</UniqueIdentifier>

@@ -416,4 +416,12 @@ namespace Engine
 		_bool				bTrigger;
 
 	}PHYSXCOLLIDERDESC;
+
+
+	typedef struct tag_TrailBuffer
+	{
+		_float3		vPos_0;
+		_float3		vPos_1;
+		_uint		iMaxCnt;
+	} TRAIL_DESC;
 }

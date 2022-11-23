@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "MobWeapon/MobWeapon.h"
+#include "MobWeapon.h"
 #include "Client_Components.h"
 #include "BoneNode.h"
 #include "GameManager.h"

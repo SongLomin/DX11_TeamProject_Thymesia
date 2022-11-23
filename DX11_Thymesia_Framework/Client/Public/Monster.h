@@ -75,6 +75,8 @@ protected:
     list<weak_ptr<CMobWeapon>> m_pWeapons;
     weak_ptr<CStateBase> m_pStandState;
 
+
+
     weak_ptr<CCharacter> m_pTargetCharacter; // = player
     weak_ptr<CTexture>   m_pDissolveTextureCom;
     // MONSTERTYPE       m_eMonType    =     MONSTERTYPE::NMON_END;

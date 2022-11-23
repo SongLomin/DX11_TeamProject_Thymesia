@@ -131,6 +131,21 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_T
 		//GAMEINSTANCE->Get_GameObjects<CMonsterHpBar>(LEVEL::LEVEL_STATIC).front().lock()->OnHit(m_pOwner);
 		//GAMEINSTANCE->Get_GameObjects<CComboTimer>(LEVEL::LEVEL_STATIC).front().lock()->Update_Combo();
 
+	/*	switch (eAttackOption)
+		{
+		case Client::ATTACK_OPTION::NONE:
+			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, ATTACK_OPTION::NORMAL);
+			break;
+		case Client::ATTACK_OPTION::NORMAL:
+			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+			break;
+		case Client::ATTACK_OPTION::PLAGUE:
+			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+			break;
+		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
+			break;
+		}*/
+
 		GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Set_TargetMonster(Get_OwnerMonster());
 
 		Play_OnHitEffect();
