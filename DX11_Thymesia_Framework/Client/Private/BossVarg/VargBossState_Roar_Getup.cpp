@@ -66,7 +66,7 @@ void CVargBossState_SPA_Roar_Getup::OnStateStart(const _float& In_fAnimationBlen
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: SPA_Getup -> OnStateStart" << endl;
 #endif
 #endif
 

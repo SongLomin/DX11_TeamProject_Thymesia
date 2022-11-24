@@ -24,7 +24,7 @@ HRESULT CCorvusState_LAttack1::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	m_iAttackIndex = 183;
+
 	return S_OK;
 }
 
@@ -63,10 +63,7 @@ void CCorvusState_LAttack1::LateTick(_float fTimeDelta)
 
 	Check_InputNextAttack();
 
-	if (Check_AndChangeNextState())
-	{
-
-	}
+	Check_AndChangeNextState();
 }
 
 void CCorvusState_LAttack1::Call_AnimationEnd()
@@ -81,7 +78,7 @@ void CCorvusState_LAttack1::Call_AnimationEnd()
 void CCorvusState_LAttack1::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 {
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAttackIndex);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 }
 
 void CCorvusState_LAttack1::Attack()
@@ -120,7 +117,7 @@ void CCorvusState_LAttack1::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAttackIndex);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 	if (!m_pModelCom.lock().get())
 	{

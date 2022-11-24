@@ -6,7 +6,7 @@
 #include "Monster.h"
 #include "Model.h"
 #include "Player.h"
-#include "NorMonStateS.h"
+#include  "VargStates.h"
 
 GAMECLASS_C(CBossStateBase);
 
@@ -263,10 +263,10 @@ void CBossStateBase::TurnMechanism()
 		switch (ComputeDirectionToPlayer())
 		{
 		case 1:
-			Get_OwnerCharacter().lock()->Change_State<CNorMonState_TurnR90>(0.05f);
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_TurnR>(0.05f);
 			break;
 		case -1:
-			Get_OwnerCharacter().lock()->Change_State<CNorMonState_TurnL90>(0.05f);
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_TurnL>(0.05f);
 			break;
 		default:
 			assert(0);

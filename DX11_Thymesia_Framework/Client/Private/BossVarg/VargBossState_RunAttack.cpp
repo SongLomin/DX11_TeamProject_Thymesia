@@ -45,10 +45,6 @@ void CVargBossState_RunAttack::Tick(_float fTimeDelta)
 
 
 
-	if (m_bAttackLookAtLimit)
-		Turn_ToThePlayer(fTimeDelta);
-
-
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -57,7 +53,8 @@ void CVargBossState_RunAttack::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-
+	if (m_bAttackLookAtLimit)
+		Turn_ToThePlayer(fTimeDelta);
 
 	Check_AndChangeNextState();
 }
@@ -72,11 +69,9 @@ void CVargBossState_RunAttack::OnStateStart(const _float& In_fAnimationBlendTime
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: RunAttack -> OnStateStart" << endl;
 #endif
 #endif
-
-	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 
 
 }
@@ -84,8 +79,6 @@ void CVargBossState_RunAttack::OnStateStart(const _float& In_fAnimationBlendTime
 void CVargBossState_RunAttack::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 
 }
 
@@ -116,7 +109,7 @@ _bool CVargBossState_RunAttack::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.8f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.7f)
 	{
 		m_bAttackLookAtLimit = false;
 	}

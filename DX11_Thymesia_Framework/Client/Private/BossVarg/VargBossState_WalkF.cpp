@@ -74,7 +74,7 @@ void CVargBossState_WalkF::OnStateStart(const _float& In_fAnimationBlendTime)
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: WalkbB -> OnStateStart" << endl;
 #endif
 #endif
 
@@ -106,7 +106,7 @@ _bool CVargBossState_WalkF::Check_AndChangeNextState()
 
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 
-	if (fPToMDistance <= 13.f)
+	if (fPToMDistance <= 14.5f)
 	{
 		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
 		return true;

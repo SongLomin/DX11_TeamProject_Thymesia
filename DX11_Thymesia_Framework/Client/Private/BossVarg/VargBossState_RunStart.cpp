@@ -42,8 +42,6 @@ void CVargBossState_RunStart::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	Rotation_TargetToLookDir();
-
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -52,7 +50,7 @@ void CVargBossState_RunStart::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-
+	Rotation_TargetToLookDir();
 
 	Check_AndChangeNextState();
 }
@@ -67,7 +65,7 @@ void CVargBossState_RunStart::OnStateStart(const _float& In_fAnimationBlendTime)
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: RunStart -> OnStateStart" << endl;
 #endif
 #endif
 
@@ -108,7 +106,7 @@ _bool CVargBossState_RunStart::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.3f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
 		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Run>(0.05f);
 		return true;

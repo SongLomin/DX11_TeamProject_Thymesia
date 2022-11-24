@@ -81,7 +81,7 @@ void CVargBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: Start -> OnStateStart" << endl;
 #endif
 #endif
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fSinematic);

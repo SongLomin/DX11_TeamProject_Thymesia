@@ -43,9 +43,6 @@ void CVargBossState_AvoidAttack::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	if (m_bAttackLookAtLimit)
-		Turn_ToThePlayer(fTimeDelta);
-
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -55,7 +52,8 @@ void CVargBossState_AvoidAttack::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-
+	if (m_bAttackLookAtLimit)
+		Turn_ToThePlayer(fTimeDelta);
 
 	Check_AndChangeNextState();
 }
@@ -70,11 +68,11 @@ void CVargBossState_AvoidAttack::OnStateStart(const _float& In_fAnimationBlendTi
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: AvoidAttack -> OnStateStart" << endl;
 #endif
 #endif
 
-	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
+	m_pModelCom.lock()->Set_AnimationSpeed(2.5f);
 }
 
 

@@ -43,8 +43,6 @@ void CVargBossState_RaidAttack::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	if (m_bAttackLookAtLimit)
-		Turn_ToThePlayer(fTimeDelta);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -54,7 +52,8 @@ void CVargBossState_RaidAttack::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-
+	if (m_bAttackLookAtLimit)
+		Turn_ToThePlayer(fTimeDelta);
 
 	Check_AndChangeNextState();
 }
@@ -69,18 +68,18 @@ void CVargBossState_RaidAttack::OnStateStart(const _float& In_fAnimationBlendTim
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: RaidAttack -> OnStateStart" << endl;
 #endif
 #endif
 
-
+	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 }
 
 void CVargBossState_RaidAttack::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 
