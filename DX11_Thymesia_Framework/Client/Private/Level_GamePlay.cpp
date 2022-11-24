@@ -13,6 +13,7 @@
 #include "MonsterHPBar_Elite.h"
 #include "MonsterHPBar_Boss.h"
 #include "MonsterParryingBar.h"
+#include "UI_Containers.h"
 
 
 CLevel_GamePlay::CLevel_GamePlay()
@@ -281,6 +282,7 @@ void CLevel_GamePlay::SetUp_UI()
 
 #ifdef _ONLY_UI_
 	GAMEINSTANCE->Add_GameObject<CMonsterParryingBar>(LEVEL_STATIC);
+	GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu>(LEVEL_STATIC);
 #endif
 
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));

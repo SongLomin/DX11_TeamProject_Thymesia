@@ -60,7 +60,8 @@ public:
 public: /* Shaking */
     virtual void Add_Shaking(const _float& In_ShakeTime, const _float& _fShakePower = 5.f);
 
-    
+
+
 
 public:
     virtual void OnEnable(void* _Arg = nullptr);
@@ -102,6 +103,8 @@ protected:
     
 protected:
     vector<weak_ptr<CUI>> m_vecChildUI;
+    vector<weak_ptr<CUI>> m_vecEventChildUI;
+
 
     weak_ptr<CPlayer> m_pPlayer;
     weak_ptr<CStatus_Player> m_pPlayerStatus;
@@ -128,3 +131,5 @@ protected:
 };
 
 END
+
+

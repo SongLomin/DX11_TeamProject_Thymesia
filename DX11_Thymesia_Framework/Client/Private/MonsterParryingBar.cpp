@@ -55,6 +55,10 @@ HRESULT CMonsterParryingBar::Initialize(void* pArg)
     m_fLerpedParryGauge = 0.f;
 
     m_fAmount = 0.3f;
+
+    Add_Child(m_pBorder);
+    Add_Child(m_pMainBar);
+
     return S_OK;
 }
 
@@ -69,7 +73,7 @@ void CMonsterParryingBar::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
-
+#ifdef _ONLY_UI_
     if (KEY_INPUT(KEY::Z, KEY_STATE::TAP))
     {
         m_fCrurrentParryGauge -= m_fAmount;
@@ -86,10 +90,10 @@ void CMonsterParryingBar::Tick(_float fTimeDelta)
         if (m_fCrurrentParryGauge >= 1.f)
             m_fCrurrentParryGauge = 1.f;
 
-     
      Set_Lerp(m_fLerpedParryGauge, m_fCrurrentParryGauge,1.f,EASING_TYPE::EXPO_OUT);
-
     }
+
+#endif
     if (Is_Lerping())
     {
       m_fLerpedParryGauge = Get_Lerp().x;
@@ -111,4 +115,8 @@ HRESULT CMonsterParryingBar::Render()
     //
 
     return S_OK;
+}
+
+void CMonsterParryingBar::Reset()
+{
 }

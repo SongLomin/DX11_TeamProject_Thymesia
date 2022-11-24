@@ -22,6 +22,7 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+	virtual void		Reset();
 
 private:
 	weak_ptr< CCustomUI> m_pBorder;
