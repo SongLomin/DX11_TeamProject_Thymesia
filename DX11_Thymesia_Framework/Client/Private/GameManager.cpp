@@ -176,7 +176,7 @@ weak_ptr<CCamera_Target> CGameManager::Get_TargetCamera()
 	return m_pTargetCamera;
 }
 
-void CGameManager::Add_Shaking(_vector& vShakingDir, _float fRatio, _float fShakingTime,_float fFrequency)
+void CGameManager::Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime,_float fFrequency)
 {
 	if (m_pTargetCamera.lock().get() != m_pCurrentCamera.lock().get())
 	{
@@ -186,7 +186,7 @@ void CGameManager::Add_Shaking(_vector& vShakingDir, _float fRatio, _float fShak
 	if (!m_pTargetCamera.lock())
 		DEBUG_ASSERT;
 
-	m_pTargetCamera.lock()->Add_Shaking(vShakingDir, fRatio, fShakingTime, fFrequency = 10.f);
+	m_pTargetCamera.lock()->Add_Shaking(vShakingDir, fRatio, fShakingTime, fFrequency);
 	
 
 }

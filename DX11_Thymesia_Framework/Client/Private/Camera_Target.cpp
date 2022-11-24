@@ -30,11 +30,6 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 	m_pTransformCom.lock()->Add_Position(XMVectorSet(0.f, 2.f, 0.f, 1.f));
 	XMStoreFloat4x4(&m_CinemaWorldMatrix, XMMatrixIdentity());
 
-	//_matrix MatLookAtZeroPoint = XMMatrixIdentity();
-	//MatLookAtZeroPoint.r[3] = XMVectorSet(0.f, 3.5f, -3.5f, 1.f);
-	//MatLookAtZeroPoint = SMath::LookAt(MatLookAtZeroPoint, XMVectorSet(0.f, 0.f, 0.f, 1.f));
-
-	//_vector vLookAtZeroPointQuat = XMQuaternionRotationMatrix(SMath::Get_RotationMatrix(MatLookAtZeroPoint));
 
 	GET_SINGLE(CGameManager)->Use_EffectGroup("Tutorial_Dust", m_pTransformCom);
 
@@ -85,15 +80,15 @@ void CCamera_Target::Tick(_float fTimeDelta)
 			if (m_bIsFocused)
 			{
 				GET_SINGLE(CGameManager)->Focus_Monster();
-				//TODO: 임시 셰이킹
-				GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 1.f, 0.f), 0.5f,0.2f,0.5f);
+				//TODO: 임시 셰이킹 기본 타격 셰이킹은 이거 쓰면 될 듯
+				GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 1.f, 0.f), 0.5f,0.1f,1.5f);
 				//GET_SINGLE(CGameManager)->Activate_Zoom(-1.f);
 			}
 			else
 			{
 				GET_SINGLE(CGameManager)->Release_Focus();
 				//TODO: 임시 셰이킹
-				GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 1.f, 0.f), 0.5f,0.2f);
+				GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 1.f, 0.f), 0.5f, 0.1f,1.5f);
 				//GET_SINGLE(CGameManager)->Deactivate_Zoom();
 			}
 		}
@@ -343,32 +338,37 @@ void CCamera_Target::Calculate_ZoomOffSet(_float fTimeDelta)
 
 void CCamera_Target::Calculate_ShakingOffSet(_float fTimeDelta)
 {
+
 	m_fShakingTimeAcc += fTimeDelta;
 	m_fShakingTime -= fTimeDelta;
 
+
 	if (m_fShakingTime > DBL_EPSILON)
 	{
-		XMStoreFloat3(&m_vShaking, sinf(m_fShakingTimeAcc * m_fShakingFrequency) * m_fShakeRatio * XMLoadFloat3(&m_vShakingDir));
+		_float fRadian = m_fShakingTimeAcc;
+		XMStoreFloat3(&m_vShaking, sinf(fRadian * m_fShakingFrequency*XM_2PI) * m_fShakeRatio * XMLoadFloat3(&m_vShakingDir));
+
 		m_fShakingQuarterFrequency += fTimeDelta;
-		if (m_fShakingQuarterFrequency > 1.f/m_fShakingFrequency)
+		if (m_fShakingQuarterFrequency > 1/(m_fShakingFrequency)*0.5f)
 		{
-			m_fShakeRatio *= 0.25f;
+			m_fShakeRatio *= 0.5f;
 			m_fShakingQuarterFrequency = 0.f;
 		}
 		m_vShakingStartOffSet = m_vShaking;
+		
 	}
 	else
 	{
 		m_fShakingDecreaseTime += fTimeDelta;
-		if (1.f > m_fShakingDecreaseTime)
+		if (1.5f > m_fShakingDecreaseTime)
 		{
 			_vector vStartPoint = XMLoadFloat3(&m_vShakingStartOffSet);
 			_vector vEndPoint = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 
-			XMStoreFloat3(&m_vShaking, CEasing_Utillity::CircOut(vStartPoint, vEndPoint, m_fShakingDecreaseTime, 1.f));
+			XMStoreFloat3(&m_vShaking, CEasing_Utillity::CircOut(vStartPoint, vEndPoint, m_fShakingDecreaseTime, 1.5f));
+			//XMStoreFloat3(&m_vShaking, XMVectorLerp(XMLoadFloat3(&m_vShaking), XMVectorSet(0.f, 0.f, 0.f, 0.f), fTimeDelta*fTimeDelta));
 		}
 	}
-	cout << "shaking ratio : " << m_fShakeRatio << endl;
 
 	/*if (m_bIncreaseShake)
 	{
@@ -402,8 +402,6 @@ void CCamera_Target::Calculate_ShakingOffSet(_float fTimeDelta)
 			XMStoreFloat3(&m_vShaking, CEasing_Utillity::CircOut(vStartPoint, vEndPoint, m_fShakingTimeAcc, 0.7f));
 		}
 	}*/
-
-
 
 }
 
