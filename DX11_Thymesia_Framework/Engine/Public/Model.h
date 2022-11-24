@@ -122,6 +122,7 @@ private:
 	_bool									m_isBlend = false;
 	_float									m_fCurrentBlendTime = 0.f;
 	_float									m_fMaxBlendTime;
+	_float									m_fStartBlendTime;
 
 private:
 	unordered_map<size_t, _float4>			m_DeltaBonePositions;

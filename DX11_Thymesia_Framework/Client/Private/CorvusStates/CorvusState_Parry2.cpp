@@ -63,10 +63,7 @@ void CCorvusState_Parry2::LateTick(_float fTimeDelta)
 
 	Check_InputNextAttack();
 
-	if (Check_AndChangeNextState())
-	{
-
-	}
+	Check_AndChangeNextState();
 }
 
 void CCorvusState_Parry2::Call_AnimationEnd()
@@ -120,8 +117,16 @@ void CCorvusState_Parry2::Check_InputNextAttack()
 void CCorvusState_Parry2::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_AVoid>().lock())
+	{
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 15);
+	}
+	else
+	{
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	}
 	
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 	if (!m_pModelCom.lock().get())
 	{

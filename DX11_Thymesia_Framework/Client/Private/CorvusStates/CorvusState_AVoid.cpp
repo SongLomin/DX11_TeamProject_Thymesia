@@ -21,8 +21,9 @@ HRESULT CCorvusState_AVoid::Initialize_Prototype()
 HRESULT CCorvusState_AVoid::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
-	m_iAvoidIndex = 131;
+	m_fNextCombatRatio = 0.23f;
+	m_fNextNonCombatRatio = 0.6f;
+	m_fNextAvoidRatio = 0.46f;
 	return S_OK;
 }
 
@@ -58,19 +59,7 @@ void CCorvusState_AVoid::Check_InputAgainAvoid()
 	{
 		return;
 	}
-
-	switch (m_iAvoidIndex)
-	{
-	case 131:
-		if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(3, 999))
-		{
-			m_IsAgainAvoid = true;
-		}
-		break;
-
-
-
-	}
+	m_IsAgainAvoid = true;
 }
 
 void CCorvusState_AVoid::OnDisable()
@@ -90,14 +79,14 @@ void CCorvusState_AVoid::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif
 #endif
 
-	m_pModelCom.lock()->Set_AnimationSpeed(3.f);
+	//m_pModelCom.lock()->Set_AnimationSpeed(3.f);
 }
 
 void CCorvusState_AVoid::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+	//m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 void CCorvusState_AVoid::Call_AnimationEnd()
@@ -112,8 +101,7 @@ void CCorvusState_AVoid::Call_AnimationEnd()
 void CCorvusState_AVoid::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 {
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAvoidIndex);
-	m_pModelCom.lock()->Set_AnimationSpeed(3.f);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 }
 
 void CCorvusState_AVoid::Free()
@@ -127,21 +115,21 @@ _bool CCorvusState_AVoid::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (Check_RuquireMnetRepeatAvoidkState())
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > m_fNextAvoidRatio)
 	{
-		if (KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))
+		if (Check_RequirementDashState())
 		{
 
 			if (!Rotation_InputToLookDir())
 				Rotation_TargetToLookDir();
 
 			m_IsAgainAvoid = false;
-			Play_AttackWithIndex(m_iAvoidIndex);
+			Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
 			return false;
 		}
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.23f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > m_fNextCombatRatio)
 	{
 		if (Check_RequirementAttackState())
 		{
@@ -149,7 +137,33 @@ _bool CCorvusState_AVoid::Check_AndChangeNextState()
 			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
 			return true;
 		}
+
+		if (Check_RequirementParryState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Parry2>();
+			return true;
+		}
+
+		if (Check_RequirementClawAttackState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
+			return true;
+		}
 	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > m_fNextNonCombatRatio)
+	{
+		if (Check_RequirementRunState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
+			return true;
+		}
+	}
+
+	
 
 
 
@@ -159,23 +173,13 @@ _bool CCorvusState_AVoid::Check_AndChangeNextState()
 
 _bool CCorvusState_AVoid::Check_RuquireMnetRepeatAvoidkState()
 {
-	_uint iTargetKeyFrameMin = 999;
+	_uint iTargetKeyFrameMin = 80;
 	_uint iTargetKeyFrameMax = 999;
 
 
 
-	switch (m_iAvoidIndex)
-	{
-	case 131:
-		iTargetKeyFrameMin = 35;
-		iTargetKeyFrameMax = 80;
-		break;
 
-	}
-
-
-	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) == true
-		&& m_IsAgainAvoid)
+	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) && m_IsAgainAvoid)
 	{
 		return true;
 	}

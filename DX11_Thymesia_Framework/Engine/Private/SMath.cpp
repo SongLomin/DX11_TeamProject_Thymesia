@@ -6,7 +6,7 @@
 XMMATRIX Engine::SMath::Get_RotationMatrix(FXMMATRIX Mat)
 {
 	XMMATRIX ResultMat = XMMatrixIdentity();
-	
+
 	for (int i = 0; i < 3; i++)
 	{
 		ResultMat.r[i] = XMVector3Normalize(Mat.r[i]);
@@ -18,12 +18,12 @@ XMMATRIX Engine::SMath::Get_RotationMatrix(FXMMATRIX Mat)
 XMMATRIX ENGINE_DLL Engine::SMath::Get_ScaleMatrix(FXMMATRIX Mat)
 {
 	XMMATRIX ResultMat = XMMatrixIdentity();
-	
+
 	for (int i = 0; i < 3; i++)
 	{
 		ResultMat.r[i].m128_f32[i] = XMVector3Length(Mat.r[i]).m128_f32[0];
 	}
-	
+
 	return ResultMat;
 }
 
@@ -51,9 +51,9 @@ XMMATRIX ENGINE_DLL Engine::SMath::Get_MatrixNormalize(FXMMATRIX Mat)
 XMMATRIX ENGINE_DLL Engine::SMath::Bake_MatrixNormalizeUseLookVector(FXMVECTOR In_vLook)
 {
 	_matrix		ResultMat;
-	_vector		vLook  = XMVector3Normalize(In_vLook);
+	_vector		vLook = XMVector3Normalize(In_vLook);
 	_vector		vRight = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook);
-	_vector		vUp    = XMVector3Cross(vLook, vRight);
+	_vector		vUp = XMVector3Cross(vLook, vRight);
 
 	ResultMat.r[0] = XMVector3Normalize(vRight);
 	ResultMat.r[1] = XMVector3Normalize(vUp);
@@ -67,25 +67,25 @@ XMMATRIX ENGINE_DLL Engine::SMath::Get_RotationQuaternion(FXMMATRIX Mat, FXMVECT
 {
 	_matrix Result = XMMatrixIdentity();
 
-	_vector vScale = SMath::Get_Scale(Mat);
-		    
-	_vector vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f);
-	_vector vUp    = XMVectorSet(0.f, 1.f, 0.f, 0.f);
-	_vector vLook  = XMVectorSet(0.f, 0.f, 1.f, 0.f);
+	_vector     vScale = SMath::Get_Scale(Mat);
+
+	_vector		vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+	_vector		vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+	_vector		vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f);
 
 	_matrix     RotationMatrix = XMMatrixRotationQuaternion(In_vQauternion);
 
 	vRight = XMVector3TransformNormal(vRight, RotationMatrix);
-	vUp    = XMVector3TransformNormal(vUp, RotationMatrix);
-	vLook  = XMVector3TransformNormal(vLook, RotationMatrix);
+	vUp = XMVector3TransformNormal(vUp, RotationMatrix);
+	vLook = XMVector3TransformNormal(vLook, RotationMatrix);
 
 	vRight = XMVector3Normalize(vRight);
-	vUp    = XMVector3Normalize(vUp);
-	vLook  = XMVector3Normalize(vLook);
+	vUp = XMVector3Normalize(vUp);
+	vLook = XMVector3Normalize(vLook);
 
-	Result.r[0] = vRight * XMVectorGetX(vScale);
-	Result.r[1] = vUp    * XMVectorGetY(vScale);
-	Result.r[2] = vLook  * XMVectorGetZ(vScale);
+	Result.r[0] = vRight * vScale.m128_f32[0];
+	Result.r[1] = vUp * vScale.m128_f32[1];
+	Result.r[2] = vLook * vScale.m128_f32[2];
 	Result.r[3] = Mat.r[3];
 
 	return Result;
@@ -94,10 +94,11 @@ XMMATRIX ENGINE_DLL Engine::SMath::Get_RotationQuaternion(FXMMATRIX Mat, FXMVECT
 XMVECTOR ENGINE_DLL Engine::SMath::Get_Scale(FXMMATRIX Mat)
 {
 	XMVECTOR ResultVec;
-	ZeroMemory(&ResultVec, sizeof(XMVECTOR));
-	XMVectorSetX(ResultVec, XMVectorGetX(XMVector3Length(Mat.r[0])));
-	XMVectorSetY(ResultVec, XMVectorGetX(XMVector3Length(Mat.r[1])));
-	XMVectorSetZ(ResultVec, XMVectorGetX(XMVector3Length(Mat.r[2])));
+
+	ResultVec.m128_f32[0] = XMVectorGetX(XMVector3Length(Mat.r[0]));
+	ResultVec.m128_f32[1] = XMVectorGetX(XMVector3Length(Mat.r[1]));
+	ResultVec.m128_f32[2] = XMVectorGetX(XMVector3Length(Mat.r[2]));
+
 	return ResultVec;
 }
 
@@ -129,40 +130,39 @@ XMFLOAT3 ENGINE_DLL Engine::SMath::Extract_PitchYawRollFromRotationMatrix(FXMMAT
 XMFLOAT3 ENGINE_DLL Engine::SMath::Add_Float3(const XMFLOAT3& Left, const XMFLOAT3& Right)
 {
 	XMFLOAT3 vResult;
-	XMStoreFloat3(&vResult, XMLoadFloat3(&Left) + XMLoadFloat3(&Right));
+	vResult.x = Left.x + Right.x;
+	vResult.y = Left.y + Right.y;
+	vResult.z = Left.z + Right.z;
+
 	return vResult;
 }
 
 XMFLOAT3 ENGINE_DLL Engine::SMath::Mul_Float3(const XMFLOAT3& Left, const float& Right)
 {
 	XMFLOAT3 vResult;
-	XMStoreFloat3(&vResult, XMLoadFloat3(&Left) * Right);
+
+	vResult.x = Left.x * Right;
+	vResult.y = Left.y * Right;
+	vResult.z = Left.z * Right;
+
 	return vResult;
 }
 
-void ENGINE_DLL Engine::SMath::Add_Float3
-(
-	XMFLOAT3* InOut_Left
-	, const XMFLOAT3& Right
-)
+void ENGINE_DLL Engine::SMath::Add_Float3(XMFLOAT3* InOut_Left, const XMFLOAT3& Right)
 {
-	XMStoreFloat3(InOut_Left, XMLoadFloat3(InOut_Left) + XMLoadFloat3(&Right));
+	InOut_Left->x += Right.x;
+	InOut_Left->y += Right.y;
+	InOut_Left->z += Right.z;
 }
 
-void ENGINE_DLL Engine::SMath::Mul_Float3
-(
-	XMFLOAT3* InOut_Left
-	, const float& Right
-)
+void ENGINE_DLL Engine::SMath::Mul_Float3(XMFLOAT3* InOut_Left, const float& Right)
 {
-	XMStoreFloat3(InOut_Left, XMLoadFloat3(InOut_Left) * Right);
+	InOut_Left->x *= Right;
+	InOut_Left->y *= Right;
+	InOut_Left->z *= Right;
 }
 
-_bool ENGINE_DLL Engine::SMath::Equal_Float3
-(
-	const XMFLOAT3& Left
-	, const XMFLOAT3& Right
-)
+_bool ENGINE_DLL Engine::SMath::Equal_Float3(const XMFLOAT3& Left, const XMFLOAT3& Right)
 {
 	_vector vLeft, vRight;
 
@@ -172,63 +172,53 @@ _bool ENGINE_DLL Engine::SMath::Equal_Float3
 	return XMVector3Equal(vLeft, vRight);
 }
 
-XMFLOAT4 ENGINE_DLL Engine::SMath::Add_Float4
-(
-	const XMFLOAT4& Left
-	, const XMFLOAT4& Right
-)
+XMFLOAT4 ENGINE_DLL Engine::SMath::Add_Float4(const XMFLOAT4& Left, const XMFLOAT4& Right)
 {
 	XMFLOAT4 vResult;
-	XMStoreFloat4(&vResult, XMLoadFloat4(&Left) + XMLoadFloat4(&Right));
+	vResult.x = Left.x + Right.x;
+	vResult.y = Left.y + Right.y;
+	vResult.z = Left.z + Right.z;
+	vResult.w = Left.w + Right.w;
+
 	return vResult;
 }
 
-XMFLOAT4 ENGINE_DLL Engine::SMath::Mul_Float4
-(
-	const XMFLOAT4& Left
-	, const float& Right
-)
+XMFLOAT4 ENGINE_DLL Engine::SMath::Mul_Float4(const XMFLOAT4& Left, const float& Right)
 {
 	XMFLOAT4 vResult;
-	XMStoreFloat4(&vResult, XMLoadFloat4(&Left) * Right);
+
+	vResult.x = Left.x * Right;
+	vResult.y = Left.y * Right;
+	vResult.z = Left.z * Right;
+	vResult.w = Left.w * Right;
+
 	return vResult;
 }
 
-void ENGINE_DLL Engine::SMath::Add_Float4
-(
-	XMFLOAT4* InOut_Left
-	, const XMFLOAT4& Right
-)
+void ENGINE_DLL Engine::SMath::Add_Float4(XMFLOAT4* InOut_Left, const XMFLOAT4& Right)
 {
-	XMStoreFloat4(InOut_Left, XMLoadFloat4(InOut_Left) + XMLoadFloat4(&Right));
+	InOut_Left->x += Right.x;
+	InOut_Left->y += Right.y;
+	InOut_Left->z += Right.z;
+	InOut_Left->w += Right.w;
 }
 
-void ENGINE_DLL Engine::SMath::Mul_Float4
-(
-	XMFLOAT4* InOut_Left
-	, const float& Right
-)
+void ENGINE_DLL Engine::SMath::Mul_Float4(XMFLOAT4* InOut_Left, const float& Right)
 {
-	XMStoreFloat4(InOut_Left, XMLoadFloat4(InOut_Left) * Right);
+	InOut_Left->x *= Right;
+	InOut_Left->y *= Right;
+	InOut_Left->z *= Right;
+	InOut_Left->w *= Right;
 }
 
-float ENGINE_DLL Engine::SMath::Lerp
-(
-	const float& fLeft
-	, const float& fRight
-	, float fRatio
-)
+float ENGINE_DLL Engine::SMath::Lerp(const float& fLeft, const float& fRight, float fRatio)
 {
 	fRatio = max(min(fRatio, 1.f), 0.f);
 
 	return (fLeft * (1.f - fRatio)) + (fRight * (fRatio));
 }
 
-int ENGINE_DLL Engine::SMath::Random
-(
-	const int& _iMin
-	, const int& _iMax
-)
+int ENGINE_DLL Engine::SMath::Random(const int& _iMin, const int& _iMax)
 {
 	if (_iMin >= _iMax)
 		return _iMin;
@@ -240,11 +230,7 @@ int ENGINE_DLL Engine::SMath::Random
 	return disx(gen);
 }
 
-float ENGINE_DLL Engine::SMath::fRandom
-(
-	const float& _fMin
-	, const float& _fMax
-)
+float ENGINE_DLL Engine::SMath::fRandom(const float& _fMin, const float& _fMax)
 {
 	if (_fMin >= _fMax)
 		return _fMin;
@@ -256,109 +242,97 @@ float ENGINE_DLL Engine::SMath::fRandom
 	return disx(gen);
 }
 
-XMFLOAT3 ENGINE_DLL Engine::SMath::vRandom
-(
-	const XMFLOAT3& _vMin
-	, const XMFLOAT3& _vMax
-)
+XMFLOAT3 ENGINE_DLL Engine::SMath::vRandom(const XMFLOAT3& _vMin, const XMFLOAT3& _vMax)
 {
-	XMVECTOR Result;
-	ZeroMemory(&Result, sizeof(XMVECTOR));
 
-	XMVectorSetX(Result, fRandom(_vMin.x, _vMax.x));
-	XMVectorSetY(Result, fRandom(_vMin.y, _vMax.y));
-	XMVectorSetZ(Result, fRandom(_vMin.z, _vMax.z));
+	XMFLOAT3 Result;
 
-	if (XMVectorGetX(Result) == 0.f)
-		XMVectorSetX(Result, DBL_EPSILON);
+	Result.x = fRandom(_vMin.x, _vMax.x);
+	Result.y = fRandom(_vMin.y, _vMax.y);
+	Result.z = fRandom(_vMin.z, _vMax.z);
 
-	if (XMVectorGetY(Result) == 0.f)
-		XMVectorSetY(Result, DBL_EPSILON);
+	if (Result.x == 0.f)
+	{
+		Result.x = DBL_EPSILON;
+	}
 
-	if (XMVectorGetZ(Result) == 0.f)
-		XMVectorSetZ(Result, DBL_EPSILON);
+	if (Result.y == 0.f)
+	{
+		Result.y = DBL_EPSILON;
+	}
 
-	XMFLOAT3 vResult;
-	XMStoreFloat3(&vResult, Result);
-	return vResult;
-}
-
-XMFLOAT4 ENGINE_DLL Engine::SMath::vRandom
-(
-	const XMFLOAT4& _vMin
-	, const XMFLOAT4& _vMax
-)
-{
-	XMVECTOR Result;
-	ZeroMemory(&Result, sizeof(XMVECTOR));
-	XMVectorSetX(Result, fRandom(_vMin.x, _vMax.x));
-	XMVectorSetY(Result, fRandom(_vMin.y, _vMax.y));
-	XMVectorSetZ(Result, fRandom(_vMin.z, _vMax.z));
-	XMVectorSetW(Result, fRandom(_vMin.w, _vMax.w));
-
-	if (XMVectorGetX(Result) == 0.f)
-		XMVectorSetX(Result, DBL_EPSILON);
-
-	if (XMVectorGetY(Result) == 0.f)
-		XMVectorSetY(Result, DBL_EPSILON);
-
-	if (XMVectorGetZ(Result) == 0.f)
-		XMVectorSetZ(Result, DBL_EPSILON);
-
-	if (XMVectorGetW(Result) == 0.f)
-		XMVectorSetW(Result, DBL_EPSILON);
-
-	XMFLOAT4 vResult;
-	XMStoreFloat4(&vResult, Result);
-	return vResult;
-}
-
-XMVECTOR ENGINE_DLL Engine::SMath::vRandom
-(
-	const XMVECTOR& _vMin
-	, const XMVECTOR& _vMax
-)
-{
-	XMVECTOR Result;
-	ZeroMemory(&Result, sizeof(XMVECTOR));
-
-	XMVectorSetX(Result, fRandom(XMVectorGetX(_vMin), XMVectorGetX(_vMax)));
-	if (0.f == XMVectorGetX(Result))
-		XMVectorSetX(Result, DBL_EPSILON);
-
-	XMVectorSetY(Result, fRandom(XMVectorGetY(_vMin), XMVectorGetY(_vMax)));
-	if (0.f == XMVectorGetY(Result))
-		XMVectorSetY(Result, DBL_EPSILON);
-
-	XMVectorSetZ(Result, fRandom(XMVectorGetZ(_vMin), XMVectorGetZ(_vMax)));
-	if (0.f == XMVectorGetZ(Result))
-		XMVectorSetZ(Result, DBL_EPSILON);
-
-	XMVectorSetW(Result, fRandom(XMVectorGetW(_vMin), XMVectorGetW(_vMax)));
-	if (0.f == XMVectorGetW(Result))
-		XMVectorSetW(Result, DBL_EPSILON);
+	if (Result.z == 0.f)
+	{
+		Result.z = DBL_EPSILON;
+	}
 
 	return Result;
 }
 
-void ENGINE_DLL Engine::SMath::Get_MouseRayInWorldSpace
-(
-	RAY& Out_Ray
-	, const _uint& In_ViewPortWidth
-	, const _uint& In_ViewPortHeight
-)
+XMFLOAT4 ENGINE_DLL Engine::SMath::vRandom(const XMFLOAT4& _vMin, const XMFLOAT4& _vMax)
+{
+	XMFLOAT4 Result;
+
+	Result.x = fRandom(_vMin.x, _vMax.x);
+	Result.y = fRandom(_vMin.y, _vMax.y);
+	Result.z = fRandom(_vMin.z, _vMax.z);
+	Result.w = fRandom(_vMin.w, _vMax.w);
+
+	if (Result.x == 0.f)
+	{
+		Result.x = DBL_EPSILON;
+	}
+
+	if (Result.y == 0.f)
+	{
+		Result.y = DBL_EPSILON;
+	}
+
+	if (Result.z == 0.f)
+	{
+		Result.z = DBL_EPSILON;
+	}
+
+	if (Result.w == 0.f)
+	{
+		Result.w = DBL_EPSILON;
+	}
+
+	return Result;
+}
+
+XMVECTOR ENGINE_DLL Engine::SMath::vRandom(const XMVECTOR& _vMin, const XMVECTOR& _vMax)
+{
+	XMVECTOR Result;
+
+	for (_uint i = 0; i < 4; i++)
+	{
+		Result.m128_f32[i] = fRandom(_vMin.m128_f32[i], _vMax.m128_f32[i]);
+
+		if (Result.m128_f32[i] == 0.f)
+		{
+			Result.m128_f32[i] = DBL_EPSILON;
+		}
+	}
+
+	return Result;
+}
+
+void ENGINE_DLL Engine::SMath::Get_MouseRayInWorldSpace(RAY& Out_Ray, const _uint& In_ViewPortWidth, const _uint& In_ViewPortHeight)
 {
 	POINT  ptMouse;
 	GetCursorPos(&ptMouse);
 	ScreenToClient(GAMEINSTANCE->Get_WindowHandle(), &ptMouse);
 
+	/* 2. 투영 스페이스 상의 마우스 좌표 구하기 */
 	_vector  vProjPos;
-	ZeroMemory(&vProjPos, sizeof(XMVECTOR));
-	XMVectorSetX(vProjPos, ptMouse.x / (In_ViewPortWidth * 0.5f) - 1.f);
-	XMVectorSetY(vProjPos, ptMouse.y / -(In_ViewPortHeight * 0.5f) + 1.f);
-	XMVectorSetZ(vProjPos, 0.f);
-	XMVectorSetW(vProjPos, 1.f);
 
+	vProjPos.m128_f32[0] = ptMouse.x / (In_ViewPortWidth * 0.5f) - 1.f;
+	vProjPos.m128_f32[1] = ptMouse.y / -(In_ViewPortHeight * 0.5f) + 1.f;
+	vProjPos.m128_f32[2] = 0.0f;
+	vProjPos.m128_f32[3] = 1.0f;
+
+	/* 3.뷰스페이스상의 마우스 좌표를 구하자. */
 	_vector		vViewPos;
 
 	_matrix		ProjMatrixInv;
@@ -367,11 +341,13 @@ void ENGINE_DLL Engine::SMath::Get_MouseRayInWorldSpace
 
 	vViewPos = XMVector3TransformCoord(vProjPos, ProjMatrixInv);
 
+	/* 4.마우스레이와 마우스Pos를구하자.  */
 	_vector		vRayDir, vRayPos;
 
 	vRayDir = vViewPos;
 	vRayPos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
 
+	/* 5.월드로가자. */
 	_matrix	ViewMatrixInv;
 	ViewMatrixInv = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_VIEW);
 	ViewMatrixInv = XMMatrixInverse(nullptr, ViewMatrixInv);
@@ -379,26 +355,24 @@ void ENGINE_DLL Engine::SMath::Get_MouseRayInWorldSpace
 	XMStoreFloat3(&Out_Ray.vDirection, XMVector3TransformNormal(vRayDir, ViewMatrixInv));
 	XMStoreFloat4(&Out_Ray.vOrigin, XMVector3TransformCoord(vRayPos, ViewMatrixInv));
 
-	Out_Ray.fLength = 1000000.0f;
+	Out_Ray.fLength = 1000000.0f; //무한
 }
 
-RAY ENGINE_DLL Engine::SMath::Get_MouseRayInWorldSpace
-(
-	const _uint& In_ViewPortWidth
-	, const _uint& In_ViewPortHeight
-)
+RAY ENGINE_DLL Engine::SMath::Get_MouseRayInWorldSpace(const _uint& In_ViewPortWidth, const _uint& In_ViewPortHeight)
 {
 	POINT  ptMouse;
 	GetCursorPos(&ptMouse);
 	ScreenToClient(GAMEINSTANCE->Get_WindowHandle(), &ptMouse);
 
+	/* 2. 투영 스페이스 상의 마우스 좌표 구하기 */
 	_vector  vProjPos;
-	ZeroMemory(&vProjPos, sizeof(XMVECTOR));
-	XMVectorSetX(vProjPos, ptMouse.x / (In_ViewPortWidth * 0.5f) - 1.f);
-	XMVectorSetY(vProjPos, ptMouse.y / -(In_ViewPortHeight * 0.5f) + 1.f);
-	XMVectorSetZ(vProjPos, 0.f);
-	XMVectorSetW(vProjPos, 0.f);
 
+	vProjPos.m128_f32[0] = ptMouse.x / (In_ViewPortWidth * 0.5f) - 1.f;
+	vProjPos.m128_f32[1] = ptMouse.y / -(In_ViewPortHeight * 0.5f) + 1.f;
+	vProjPos.m128_f32[2] = 0.0f;
+	vProjPos.m128_f32[3] = 0.0f;
+
+	/* 3.뷰스페이스상의 마우스 좌표를 구하자. */
 	_vector		vViewPos;
 
 	_matrix		ProjMatrixInv;
@@ -407,11 +381,13 @@ RAY ENGINE_DLL Engine::SMath::Get_MouseRayInWorldSpace
 
 	vViewPos = XMVector3TransformCoord(vProjPos, ProjMatrixInv);
 
+	/* 4.마우스레이와 마우스Pos를구하자.  */
 	_vector		vRayDir, vRayPos;
 
 	vRayDir = vViewPos;
 	vRayPos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
 
+	/* 5.월드로가자. */
 	_matrix	ViewMatrixInv;
 	ViewMatrixInv = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_VIEW);
 	ViewMatrixInv = XMMatrixInverse(nullptr, ViewMatrixInv);
@@ -421,7 +397,7 @@ RAY ENGINE_DLL Engine::SMath::Get_MouseRayInWorldSpace
 	XMStoreFloat3(&MouseRay.vDirection, XMVector3Normalize(XMVector3TransformNormal(vRayDir, ViewMatrixInv)));
 	XMStoreFloat4(&MouseRay.vOrigin, XMVector3TransformCoord(vRayPos, ViewMatrixInv));
 
-	MouseRay.fLength = 1000000.0f;
+	MouseRay.fLength = 1000000.0f; //무한
 
 	return MouseRay;
 }
@@ -441,10 +417,10 @@ XMMATRIX ENGINE_DLL Engine::SMath::Set_ScaleMatrix(FXMMATRIX Mat, FXMVECTOR Scal
 
 XMMATRIX ENGINE_DLL Engine::SMath::Go_Right(FXMMATRIX Mat, float fScaler)
 {
-	XMMATRIX ResultMat      = Mat;
+	XMMATRIX ResultMat = Mat;
 
-	_vector		vPosition	= ResultMat.r[3];
-	_vector		vRight		= ResultMat.r[0];
+	_vector		vPosition = ResultMat.r[3];
+	_vector		vRight = ResultMat.r[0];
 
 	vPosition += XMVector3Normalize(vRight) * fScaler;
 
@@ -455,10 +431,10 @@ XMMATRIX ENGINE_DLL Engine::SMath::Go_Right(FXMMATRIX Mat, float fScaler)
 
 XMMATRIX ENGINE_DLL Engine::SMath::Go_Straight(FXMMATRIX Mat, float fScaler)
 {
-	XMMATRIX ResultMat      = Mat;
+	XMMATRIX ResultMat = Mat;
 
-	_vector		vPosition	= ResultMat.r[3];
-	_vector		vLook		= ResultMat.r[2];
+	_vector		vPosition = ResultMat.r[3];
+	_vector		vLook = ResultMat.r[2];
 
 	vPosition += XMVector3Normalize(vLook) * fScaler;
 
@@ -469,10 +445,10 @@ XMMATRIX ENGINE_DLL Engine::SMath::Go_Straight(FXMMATRIX Mat, float fScaler)
 
 XMMATRIX ENGINE_DLL Engine::SMath::Go_Up(FXMMATRIX Mat, float fScaler)
 {
-	XMMATRIX ResultMat    = Mat;
+	XMMATRIX ResultMat = Mat;
 
 	_vector		vPosition = ResultMat.r[3];
-	_vector		vUp       = ResultMat.r[1];
+	_vector		vUp = ResultMat.r[1];
 
 	vPosition += XMVector3Normalize(vUp) * fScaler;
 
@@ -484,16 +460,20 @@ XMMATRIX ENGINE_DLL Engine::SMath::Go_Up(FXMMATRIX Mat, float fScaler)
 XMMATRIX ENGINE_DLL Engine::SMath::LookAt(FXMMATRIX Mat, FXMVECTOR In_vPosition)
 {
 	XMMATRIX ResultMat;
-	XMVECTOR vScale		  = SMath::Get_Scale(Mat);
+	XMVECTOR vScale = SMath::Get_Scale(Mat);
+
 
 	_vector		vPosition = Mat.r[3];
-	_vector		vLook     = XMVector3Normalize(In_vPosition - vPosition);
-	_vector		vRight    = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook));
-	_vector		vUp       = XMVector3Normalize(XMVector3Cross(vLook, vRight));
 
-	ResultMat.r[0] = XMVector3Normalize(vRight) * XMVectorGetX(vScale);
-	ResultMat.r[1] = XMVector3Normalize(vUp)    * XMVectorGetY(vScale);
-	ResultMat.r[2] = XMVector3Normalize(vLook)  * XMVectorGetZ(vScale);
+	_vector		vLook = XMVector3Normalize(In_vPosition - vPosition);
+
+	_vector		vRight = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook));
+
+	_vector		vUp = XMVector3Normalize(XMVector3Cross(vLook, vRight));
+
+	ResultMat.r[0] = XMVector3Normalize(vRight) * vScale.m128_f32[0];
+	ResultMat.r[1] = XMVector3Normalize(vUp) * vScale.m128_f32[1];
+	ResultMat.r[2] = XMVector3Normalize(vLook) * vScale.m128_f32[2];
 	ResultMat.r[3] = vPosition;
 
 	return ResultMat;
@@ -560,29 +540,20 @@ void ENGINE_DLL Engine::SMath::Set_ClockwiseTriangle(XMFLOAT3* InOut_TrianglePos
 
 	vAtoB = vPositionFromVector[1] - vPositionFromVector[0];
 	vAtoC = vPositionFromVector[2] - vPositionFromVector[0];
-	
+
 	_vector vAtoB2D, vAtoC2D, vAtoB2DCross;
 	vAtoB2D = vAtoC2D = vAtoB2DCross = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 
-	XMVectorSetX(vAtoB2D, XMVectorGetX(vAtoB));
-	XMVectorSetY(vAtoB2D, XMVectorGetZ(vAtoB));
+	vAtoB2D.m128_f32[0] = vAtoB.m128_f32[0];
+	vAtoB2D.m128_f32[1] = vAtoB.m128_f32[2];
 
-	//vAtoB2D.m128_f32[0] = vAtoB.m128_f32[0];
-	//vAtoB2D.m128_f32[1] = vAtoB.m128_f32[2];
+	vAtoC2D.m128_f32[0] = vAtoC.m128_f32[0];
+	vAtoC2D.m128_f32[1] = vAtoC.m128_f32[2];
 
-	XMVectorSetX(vAtoC2D, XMVectorGetX(vAtoC));
-	XMVectorSetY(vAtoC2D, XMVectorGetZ(vAtoC));
+	vAtoB2DCross.m128_f32[0] = -vAtoB2D.m128_f32[1];
+	vAtoB2DCross.m128_f32[1] = vAtoB2D.m128_f32[0];
 
-	// vAtoC2D.m128_f32[0] = vAtoC.m128_f32[0];
-	// vAtoC2D.m128_f32[1] = vAtoC.m128_f32[2];
-
-	XMVectorSetX(vAtoB2DCross, -1.f * XMVectorGetY(vAtoB2D));
-	XMVectorSetY(vAtoB2DCross, XMVectorGetX(vAtoB2D));
-
-	//vAtoB2DCross.m128_f32[0] = -vAtoB2D.m128_f32[1];
-	//vAtoB2DCross.m128_f32[1] = vAtoB2D.m128_f32[0];
-
-	_float fDot = XMVectorGetX(XMVector2Dot(vAtoB2DCross, vAtoC2D));
+	_float fDot = XMVector2Dot(vAtoB2DCross, vAtoC2D).m128_f32[0];
 
 	// 내적의 결과가 양수라면 반시계 방향이므로 다시 시계방향으로 돌려준다.
 	if (fDot > 0.f)
@@ -601,10 +572,10 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked(RAY _Ray, _float4* _pOutPos)
 
 	_float3 vPos[4] =
 	{
-		_float3(-99999.f, _pOutPos->y,  99999.f),
-		_float3( 99999.f, _pOutPos->y,  99999.f),
-		_float3( 99999.f, _pOutPos->y, -99999.f),
-		_float3(-99999.f, _pOutPos->y, -99999.f)
+		_float3(-99999.f, 0.f,  99999.f),
+		_float3(99999.f, 0.f,  99999.f),
+		_float3(99999.f, 0.f, -99999.f),
+		_float3(-99999.f, 0.f, -99999.f)
 	};
 
 	_uint3 iIndex[2] =
@@ -619,12 +590,12 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked(RAY _Ray, _float4* _pOutPos)
 			break;
 
 		_vector		vPickedPos;
-		
+
 		_vector	vVec0 = XMLoadFloat3(&vPos[iIndex[i].ix]);
 		_vector	vVec1 = XMLoadFloat3(&vPos[iIndex[i].iy]);
 		_vector	vVec2 = XMLoadFloat3(&vPos[iIndex[i].iz]);
 
-		_float fDist  = 0;
+		_float fDist = 0;
 		if (DirectX::TriangleTests::Intersects(XMLoadFloat4(&_Ray.vOrigin), XMLoadFloat3(&_Ray.vDirection), vVec0, vVec1, vVec2, fDist))
 		{
 			vPickedPos = XMLoadFloat4(&_Ray.vOrigin) + XMVector3Normalize(XMLoadFloat3(&_Ray.vDirection)) * fDist;
@@ -647,8 +618,8 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked_AbstractCube(RAY _Ray, MESH_VTX_INFO _
 	_vector vRayPos = XMVector3TransformCoord(XMLoadFloat4(&_Ray.vOrigin), WorldMatrixInv);
 	_vector vRayDir = XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&_Ray.vDirection), WorldMatrixInv));
 
-	_float3	 vPosition[8];
-	_uint3	 vIndex[12];
+	_float3				vPosition[8];
+	_uint3				vIndex[12];
 
 	vPosition[0] = { _VtxInfo.vMin.x, _VtxInfo.vMax.y, _VtxInfo.vMin.z };
 	vPosition[1] = { _VtxInfo.vMax.x, _VtxInfo.vMax.y, _VtxInfo.vMin.z };
@@ -659,20 +630,20 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked_AbstractCube(RAY _Ray, MESH_VTX_INFO _
 	vPosition[6] = { _VtxInfo.vMax.x, _VtxInfo.vMin.y, _VtxInfo.vMax.z };
 	vPosition[7] = { _VtxInfo.vMin.x, _VtxInfo.vMin.y, _VtxInfo.vMax.z };
 
-	vIndex[0]  = { 1, 5, 6 };
-	vIndex[1]  = { 1, 6, 2 };
-	vIndex[2]  = { 4, 0, 3 };
-	vIndex[3]  = { 4, 3, 7 };
-	vIndex[4]  = { 4, 5, 1 };
-	vIndex[5]  = { 4, 1, 0 };
-	vIndex[6]  = { 3, 2, 6 };
-	vIndex[7]  = { 3, 6, 7 };
-	vIndex[8]  = { 5, 4, 7 };
-	vIndex[9]  = { 5, 7, 6 };
+	vIndex[0] = { 1, 5, 6 };
+	vIndex[1] = { 1, 6, 2 };
+	vIndex[2] = { 4, 0, 3 };
+	vIndex[3] = { 4, 3, 7 };
+	vIndex[4] = { 4, 5, 1 };
+	vIndex[5] = { 4, 1, 0 };
+	vIndex[6] = { 3, 2, 6 };
+	vIndex[7] = { 3, 6, 7 };
+	vIndex[8] = { 5, 4, 7 };
+	vIndex[9] = { 5, 7, 6 };
 	vIndex[10] = { 0, 1, 2 };
 	vIndex[11] = { 0, 2, 3 };
 
-	_float fDist;
+	_float		fDist;
 
 	for (_uint i = 0; i < 12; ++i)
 	{
@@ -700,8 +671,8 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked_Y(RAY _Ray, _float4* _pOutPos)
 		_float3(-9999.f,  9999.f,  9999.f),
 		_float3(-9999.f, -9999.f,  9999.f),
 		_float3(-9999.f, -9999.f, -9999.f),
-		_float3( 9999.f,  9999.f,  9999.f),
-		_float3( 9999.f, -9999.f,  9999.f)
+		_float3(9999.f,  9999.f,  9999.f),
+		_float3(9999.f, -9999.f,  9999.f)
 	};
 
 	_uint3 iIndex[4] =
@@ -717,13 +688,13 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked_Y(RAY _Ray, _float4* _pOutPos)
 		if (0 != isnan(_Ray.vOrigin.x))
 			break;
 
-		_vector vPickedPos;
-		
+		_vector		vPickedPos;
+
 		_vector	vVec0 = XMLoadFloat3(&vPos[iIndex[i].ix]);
 		_vector	vVec1 = XMLoadFloat3(&vPos[iIndex[i].iy]);
 		_vector	vVec2 = XMLoadFloat3(&vPos[iIndex[i].iz]);
 
-		_float fDist  = 0;
+		_float fDist = 0;
 		if (DirectX::TriangleTests::Intersects(XMLoadFloat4(&_Ray.vOrigin), XMLoadFloat3(&_Ray.vDirection), vVec0, vVec1, vVec2, fDist))
 		{
 			vPickedPos = XMLoadFloat4(&_Ray.vOrigin) + XMVector3Normalize(XMLoadFloat3(&_Ray.vDirection)) * fDist;
@@ -766,7 +737,7 @@ void ENGINE_DLL Engine::SMath::Convert_PxVec3FromMeshData(PxVec3* In_PxVec3, wea
 			break;
 		}
 	}
-	
+
 }
 
 void ENGINE_DLL Engine::SMath::Convert_PxVec3FromMeshDataWithTransformMatrix(PxVec3* In_PxVec3, weak_ptr<MESH_DATA> pMeshData, FXMMATRIX In_TransformMatrix)
@@ -809,10 +780,10 @@ void ENGINE_DLL Engine::SMath::Convert_PxVec3FromMeshDataWithTransformMatrix(PxV
 
 PxExtendedVec3 ENGINE_DLL Engine::SMath::Convert_PxExtendedVec3(FXMVECTOR In_Vector)
 {
-	return PxExtendedVec3(XMVectorGetX(In_Vector), XMVectorGetY(In_Vector), XMVectorGetZ(In_Vector));
+	return PxExtendedVec3(In_Vector.m128_f32[0], In_Vector.m128_f32[1], In_Vector.m128_f32[2]);
 }
 
 PxVec3 ENGINE_DLL Engine::SMath::Convert_PxVec3(FXMVECTOR In_Vector)
 {
-	return PxVec3(XMVectorGetX(In_Vector), XMVectorGetY(In_Vector), XMVectorGetZ(In_Vector));
+	return PxVec3(In_Vector.m128_f32[0], In_Vector.m128_f32[1], In_Vector.m128_f32[2]);
 }

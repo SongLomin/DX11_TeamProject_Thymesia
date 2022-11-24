@@ -39,7 +39,8 @@ protected:
 protected:
     _float3                m_vLookAtDir;
     _float                 m_fCurrentRotateTime = 0.f;
-    
+    _float                 m_fNextCombatRatio = 0.f; // 어떤 행동을 취한후 다음 전투 행동에 가기까지의 텀
+    _float                 m_fNextNonCombatRatio = 0.f; // 어떤 행동을 취한후 다음 비전투 행동에 가기까지의 텀
     weak_ptr<CPlayer>      m_pOwnerFromPlayer;
 
 

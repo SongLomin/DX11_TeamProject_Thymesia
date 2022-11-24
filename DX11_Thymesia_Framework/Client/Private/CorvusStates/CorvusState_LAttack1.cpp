@@ -161,8 +161,38 @@ _bool CCorvusState_LAttack1::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.2f)
 	{
+
+		if (Check_RequirementAttackState())
+		{
+			if (Check_RequirementNextAttackState())
+			{
+				if (!Rotation_InputToLookDir())
+					Rotation_TargetToLookDir();
+
+				Get_OwnerPlayer()->Change_State<CCorvusState_LAttack2>(0.05f);
+				return true;
+			}
+		}
+
+		if (Check_RequirementParryState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
+			return true;
+		}
+
+		if (Check_RequirementClawAttackState())
+		{
+			if (!Rotation_InputToLookDir())
+				Rotation_TargetToLookDir();
+
+			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
+			return true;
+		}
+
 		if (Check_RequirementAVoidState())
 		{
 			Rotation_InputToLookDir();
@@ -170,22 +200,13 @@ _bool CCorvusState_LAttack1::Check_AndChangeNextState()
 			Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
 			return true;
 		}
+
 	}
 
-	if (Check_RequirementAttackState())
-	{
-		if (Check_RequirementNextAttackState())
-		{
-			if (!Rotation_InputToLookDir())
-				Rotation_TargetToLookDir();
 
-			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack2>(0.05f);
-			return true;
-		}
-	}
 
 	
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.8f)
 	{
 		cout << "Ratio: " << m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() << endl;
 
@@ -197,27 +218,6 @@ _bool CCorvusState_LAttack1::Check_AndChangeNextState()
 		}
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.4f)
-	{
-		if (Check_RequirementParryState())
-		{
-			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
-			return true;
-		}
-	}
-
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.4f)
-	{
-		if (Check_RequirementClawAttackState())
-		{
-			if (!Rotation_InputToLookDir())
-				Rotation_TargetToLookDir();
-
-			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
-			return true;
-		}
-	}
 
 	if (Check_RuquireMnetFirstAttackState())
 	{
