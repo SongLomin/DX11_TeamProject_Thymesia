@@ -322,6 +322,13 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_MapImage_SeaOfTrees"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/MapImage/TexUI_LevelImage_Circus.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
+//Quest
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_QuestTitle"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Quest/QuestTitle.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+//Stage1_Quest
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Stage1_Quest1"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Quest/Stage1/Quese_1.png"), MEMORY_TYPE::MEMORY_STATIC);
+
 
 
 

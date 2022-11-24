@@ -270,6 +270,22 @@ PS_OUT PS_MAIN_PARRY(PS_IN In)
 }
 
 
+PS_OUT PS_MAIN_BORDER_OUT(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	Out.vColor.a *= g_fAlphaColor;
+
+
+	if (In.vTexUV.x < 0.1f || In.vTexUV.x > 0.9f || In.vTexUV.y < 0.1f || In.vTexUV.y > 0.9f)
+		Out.vColor.a *= 0.1f;
+
+	return Out;
+}
+
+
 
 technique11 DefaultTechnique
 {
@@ -360,4 +376,15 @@ technique11 DefaultTechnique
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_PARRY();
 	}
+	pass UI_EvolveMenuRightBG//8
+	{
+		SetBlendState(BS_AlphaBlend, vector(1.f, 1.f, 1.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_BORDER_OUT();
+	}
+
 }

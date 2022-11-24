@@ -63,9 +63,9 @@ HRESULT CUI_EvolveMenu::Initialize(void* pArg)
 
 	//Right
 	m_pRightBG = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
-	m_pRightBG.lock()->Set_UIPosition(875.f, 70.f, 663.f, 660.f, ALIGN_LEFTTOP);
+	m_pRightBG.lock()->Set_UIPosition(875.f, 70.f, 707.f, 665.f, ALIGN_LEFTTOP);
 	m_pRightBG.lock()->Set_Texture("EvolveMenu_RightBG");
-
+	m_pRightBG.lock()->Set_Depth(0.3f);
 	Add_Child(m_pRightBG);
 
 	m_pRightTitle = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
@@ -80,14 +80,70 @@ HRESULT CUI_EvolveMenu::Initialize(void* pArg)
 	m_pRightMapImage = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
 	m_pRightMapImage.lock()->Set_UIPosition
 	(
-		934.f,
-		130.f,
-		567.f,
-		313.f,
+		895.f,
+		120.f,
+		660.f,
+		320.f,
 		CUI::ALIGN_LEFTTOP
 	);
 	m_pRightMapImage.lock()->Set_Texture("EvolveMenu_MapImage_SeaOfTrees");
+	m_pRightMapImage.lock()->Set_PassIndex(8);
 	Add_Child(m_pRightMapImage);
+
+	m_pQuestTitle = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
+	m_pQuestTitle.lock()->Set_UIPosition
+	(
+		955.f,
+		461.f,
+		53.f,
+		34.f,
+		CUI::ALIGN_LEFTTOP
+	);
+	m_pQuestTitle.lock()->Set_Texture("EvolveMenu_QuestTitle");
+	
+	Add_Child(m_pQuestTitle);
+
+	m_pQuestTitleDecoration = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
+	m_pQuestTitleDecoration.lock()->Set_UIPosition
+	(
+		960,
+		491.f,
+		152.f,
+		4.f,
+		CUI::ALIGN_LEFTTOP
+	);
+	m_pQuestTitleDecoration.lock()->Set_Texture("Player_Memory_Decoration");
+	m_pQuestTitleDecoration.lock()->Set_AlphaColor(0.3f);
+
+	Add_Child(m_pQuestTitleDecoration);
+
+	m_pQuestInformation = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
+	m_pQuestInformation.lock()->Set_Texture("EvolveMenu_Stage1_Quest1");
+	m_pQuestInformation.lock()->Set_UIPosition
+	(
+		1014.f,
+		519.f,
+		494.f,
+		28.f,
+		CUI::ALIGN_LEFTTOP
+	);
+	Add_Child(m_pQuestInformation);
+
+
+	m_pQuestInformationsDecoration = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
+	m_pQuestInformationsDecoration.lock()->Set_Texture("Font_Diamond");
+	m_pQuestInformationsDecoration.lock()->Set_UIPosition
+	(
+		994.f,
+		524.f,
+		14.f,
+		14.f,
+		CUI::ALIGN_LEFTTOP
+	);
+	Add_Child(m_pQuestInformationsDecoration);
+
+	
+
 
 
 

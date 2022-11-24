@@ -16,6 +16,9 @@ class CUI_EvolveMenu final : public CUI_Container
 {
 
 public:
+   
+
+
     enum class EVOLVEMENU_TYPE {
         EVOLVE_LEVELUP = 0,
         EVOLVE_UNLOCKTALENT, 
@@ -61,9 +64,16 @@ private://Right UI
     weak_ptr<CCustomUI> m_pRightTitleDecoration;
     weak_ptr<CCustomUI> m_pRightMapImage;
     
+    weak_ptr<CCustomUI> m_pQuestTitle;
+    weak_ptr<CCustomUI> m_pQuestTitleDecoration;
+
+
+    weak_ptr<CCustomUI> m_pQuestInformation;
+
+    weak_ptr<CCustomUI> m_pQuestInformationsDecoration;
 
 private:
-   LEVEL      m_eLastOpenedLevel;
+   LEVEL                m_eLastOpenedLevel;
    _bool               m_bEnabledThisFrame;
 
 private:

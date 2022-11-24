@@ -1139,9 +1139,6 @@
     <ClCompile Include="..\Private\HUD_PlagueWeaponBase.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\PlagueWeapon\Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\HUD_Hover.cpp">
-      <Filter>02. GameObject\01. UI\Hover</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeapon_Main.cpp">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\main</Filter>
     </ClCompile>
@@ -1510,6 +1507,7 @@
       <Filter>02. GameObject\01. UI\UI_Container\Evolve</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UI_Container.cpp" />
+    <ClCompile Include="..\Private\HUD_Hover.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -2353,6 +2351,9 @@
     </Filter>
     <Filter Include="02. GameObject\01. UI\UI_Container\PlayerUI\HUD\PlagueWeapon\Base">
       <UniqueIdentifier>{0166b192-807e-4b40-90b9-9b824b36cb67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. ClientLevel\Quest">
+      <UniqueIdentifier>{26975c0f-87ab-42bf-8e0e-9d709e404cd7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
