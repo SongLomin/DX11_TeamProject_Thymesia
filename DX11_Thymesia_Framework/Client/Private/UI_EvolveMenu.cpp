@@ -15,18 +15,18 @@ HRESULT CUI_EvolveMenu::Initialize(void* pArg)
 
 	m_iSelectedIndex = 0;
 	
-	ZeroMemory(m_bOpenedPage, sizeof(_bool) * (_uint)EVOLOVEMENU_TYPE::EVOLVE_END);
+	ZeroMemory(m_bOpenedPage, sizeof(_bool) * (_uint)EVOLVEMENU_TYPE::EVOLVE_END);
 
-	m_bOpenedPage[(_uint)EVOLOVEMENU_TYPE::EVOLVE_LEVELUP] = true;
+	m_bOpenedPage[(_uint)EVOLVEMENU_TYPE::EVOLVE_LEVELUP] = true;
 	
 
-	strcpy_s(m_MenuTextKey[(_uint)EVOLOVEMENU_TYPE::EVOLVE_LEVELUP], "EvolveMenu_Text_LevelUp");
-	strcpy_s(m_MenuTextKey[(_uint)EVOLOVEMENU_TYPE::EVOLVE_UNLOCKTALENT], "EvolveMenu_Text_UnlockTalent");
-	strcpy_s(m_MenuTextKey[(_uint)EVOLOVEMENU_TYPE::EVOLVE_PLAGUEWEAPON], "EvolveMenu_Text_PlagueWeapon");
-	strcpy_s(m_MenuTextKey[(_uint)EVOLOVEMENU_TYPE::EVOLVE_POTION], "EvolveMenu_Text_Potion");
-	strcpy_s(m_MenuTextKey[(_uint)EVOLOVEMENU_TYPE::EVOLVE_FEATHER], "EvolveMenu_Text_UseForgottenFeather");
-	strcpy_s(m_MenuTextKey[(_uint)EVOLOVEMENU_TYPE::EVOLVE_CEASE_RECALL], "EvolveMenu_Text_Cease_Recall");
-	strcpy_s(m_MenuTextKey[(_uint)EVOLOVEMENU_TYPE::EVOLVE_RESUME_GAME], "EvolveMenu_Text_ResumeGame");
+	strcpy_s(m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_LEVELUP], "EvolveMenu_Text_LevelUp");
+	strcpy_s(m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_UNLOCKTALENT], "EvolveMenu_Text_UnlockTalent");
+	strcpy_s(m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_PLAGUEWEAPON], "EvolveMenu_Text_PlagueWeapon");
+	strcpy_s(m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_POTION], "EvolveMenu_Text_Potion");
+	strcpy_s(m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_FEATHER], "EvolveMenu_Text_UseForgottenFeather");
+	strcpy_s(m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_CEASE_RECALL], "EvolveMenu_Text_Cease_Recall");
+	strcpy_s(m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_RESUME_GAME], "EvolveMenu_Text_ResumeGame");
 
 #pragma region CREATE_UIS
 
@@ -77,6 +77,19 @@ HRESULT CUI_EvolveMenu::Initialize(void* pArg)
 	Add_Child(m_pRightTitleDecoration);
 
 
+	m_pRightMapImage = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
+	m_pRightMapImage.lock()->Set_UIPosition
+	(
+		934.f,
+		130.f,
+		567.f,
+		313.f,
+		CUI::ALIGN_LEFTTOP
+	);
+	m_pRightMapImage.lock()->Set_Texture("EvolveMenu_MapImage_SeaOfTrees");
+	Add_Child(m_pRightMapImage);
+
+
 
 
 #pragma endregion CREATE_UIS
@@ -90,11 +103,11 @@ HRESULT CUI_EvolveMenu::Initialize(void* pArg)
 	tTextDesc.fSizeY = 34.f;
 	tTextDesc.fDepth = 0.f;
 
-	for (_uint i = 0; i < (_uint)EVOLOVEMENU_TYPE::EVOLVE_END; i++)
+	for (_uint i = 0; i < (_uint)EVOLVEMENU_TYPE::EVOLVE_END; i++)
 	{
-		if (i == (_uint)EVOLOVEMENU_TYPE::EVOLVE_FEATHER)
+		if (i == (_uint)EVOLVEMENU_TYPE::EVOLVE_FEATHER)
 			tTextDesc.fSizeX = 180.f;
-		else if (i == (_uint)EVOLOVEMENU_TYPE::EVOLVE_CEASE_RECALL)
+		else if (i == (_uint)EVOLVEMENU_TYPE::EVOLVE_CEASE_RECALL)
 			tTextDesc.fSizeX = 200.f;
 		else
 			tTextDesc.fSizeX = 103.f;
@@ -125,7 +138,7 @@ void CUI_EvolveMenu::Tick(_float fTimeDelta)
 	if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
 	{
 		if (m_iSelectedIndex <= 0)
-			m_iSelectedIndex = (_uint)EVOLOVEMENU_TYPE::EVOLVE_END - 1;
+			m_iSelectedIndex = (_uint)EVOLVEMENU_TYPE::EVOLVE_END - 1;
 		else
 			m_iSelectedIndex--;
 		ChangeButtonIndex();
@@ -133,18 +146,16 @@ void CUI_EvolveMenu::Tick(_float fTimeDelta)
 
 	else if (KEY_INPUT(KEY::DOWN, KEY_STATE::TAP))
 	{
-		if (m_iSelectedIndex >= (_uint)EVOLOVEMENU_TYPE::EVOLVE_END - 1)
+		if (m_iSelectedIndex >= (_uint)EVOLVEMENU_TYPE::EVOLVE_END - 1)
 			m_iSelectedIndex = 0;
 		else
 			m_iSelectedIndex++;
 
 		ChangeButtonIndex();
 	}
-	if (KEY_INPUT(KEY::E, KEY_STATE::TAP) && !m_bEnabledThisFrame)
-	{
-		GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::BATTLEUI);
-		Set_Enable(false);
-	}
+	if (KEY_INPUT(KEY::ENTER, KEY_STATE::TAP))
+		SelectButton();
+
 
 	m_bEnabledThisFrame = false;
 	ChangeButtonIndex();
@@ -175,7 +186,7 @@ void CUI_EvolveMenu::ChangeButtonIndex()
 	m_pSelectHighlight.lock()->Set_Y(m_pMenuText[m_iSelectedIndex].lock()->Get_UIDESC().fY);
 
 
-	for (_uint i = 0; i < (_uint)EVOLOVEMENU_TYPE::EVOLVE_END; i++)
+	for (_uint i = 0; i < (_uint)EVOLVEMENU_TYPE::EVOLVE_END; i++)
 	{
 		if (i == m_iSelectedIndex)
 			m_pMenuText[i].lock()->Set_AlphaColor(1.f);
@@ -183,10 +194,7 @@ void CUI_EvolveMenu::ChangeButtonIndex()
 			m_pMenuText[i].lock()->Set_AlphaColor(0.4f);
 	}
 
-
-
 }
-
 void CUI_EvolveMenu::ChangeUIFromCurrentLevel()
 {
 	//82
@@ -200,6 +208,7 @@ void CUI_EvolveMenu::ChangeUIFromCurrentLevel()
 	case Client::LEVEL_GAMEPLAY:
 		m_pRightTitle.lock()->Set_UIPosition(tRightBGDesc.fX, 82.f + 17.f, 103.f, 34.f);
 		m_pRightTitle.lock()->Set_Texture("EvolveMenu_Text_SeaOfTrees");
+		m_pRightMapImage.lock()->Set_Texture("EvolveMenu_MapImage_SeaOfTrees");
 		break;
 	case Client::LEVEL_TEST:
 		m_pRightTitle.lock()->Set_UIPosition(tRightBGDesc.fX, 82.f + 17.f, 103.f, 34.f);
@@ -219,5 +228,36 @@ void CUI_EvolveMenu::ChangeUIFromCurrentLevel()
 		14.f,
 		14.f
 	);
+}
+
+void CUI_EvolveMenu::SelectButton()
+{
+	CUI_EvolveMenu::EVOLVEMENU_TYPE eType = (CUI_EvolveMenu::EVOLVEMENU_TYPE)m_iSelectedIndex;
+
+	switch (eType)
+	{
+	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_LEVELUP:
+		break;
+	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_UNLOCKTALENT:
+		break;
+	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_PLAGUEWEAPON:
+		break;
+	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_POTION:
+		break;
+	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_FEATHER:
+		break;
+	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_CEASE_RECALL:
+		break;
+	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_RESUME_GAME:
+		GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::BATTLEUI);
+		Set_Enable(false);
+		break;
+	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_END:
+		break;
+	default:
+		break;
+	}
+
+
 }
 

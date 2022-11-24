@@ -319,7 +319,10 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	//EvolveMenu RightBG
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_RightBG"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_EvolveRightBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
-	
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_MapImage_SeaOfTrees"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/MapImage/TexUI_LevelImage_Circus.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+
 
 
 

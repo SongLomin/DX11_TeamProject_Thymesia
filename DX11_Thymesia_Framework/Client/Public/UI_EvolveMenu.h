@@ -16,7 +16,7 @@ class CUI_EvolveMenu final : public CUI_Container
 {
 
 public:
-    enum class EVOLOVEMENU_TYPE { 
+    enum class EVOLVEMENU_TYPE {
         EVOLVE_LEVELUP = 0,
         EVOLVE_UNLOCKTALENT, 
         EVOLVE_PLAGUEWEAPON,
@@ -39,7 +39,7 @@ public:
 
 
 
-private: //Left BackGround
+private: //Left UI
 
     weak_ptr<CCustomUI> m_pLeftBG;
     weak_ptr<CCustomUI> m_pSelectHighlight;
@@ -47,16 +47,15 @@ private: //Left BackGround
     weak_ptr<CCustomUI> m_pMenuTitleBG;
     weak_ptr<CCustomUI> m_pMenuTitleText;
 
-    weak_ptr<CCustomUI>  m_pMenuText[(_uint)EVOLOVEMENU_TYPE::EVOLVE_END];
+    weak_ptr<CCustomUI>  m_pMenuText[(_uint)EVOLVEMENU_TYPE::EVOLVE_END];
 
-    _bool               m_bOpenedPage[(_uint)EVOLOVEMENU_TYPE::EVOLVE_END];
+    _bool               m_bOpenedPage[(_uint)EVOLVEMENU_TYPE::EVOLVE_END];
     _uint               m_iSelectedIndex;
-    _char              m_MenuTextKey[(_uint)EVOLOVEMENU_TYPE::EVOLVE_END][MAX_PATH];
-
-    _bool               m_bEnabledThisFrame;
+    _char              m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_END][MAX_PATH];
 
 
-private:
+
+private://Right UI
     weak_ptr<CCustomUI> m_pRightBG;
     weak_ptr<CCustomUI> m_pRightTitle;
     weak_ptr<CCustomUI> m_pRightTitleDecoration;
@@ -65,14 +64,13 @@ private:
 
 private:
    LEVEL      m_eLastOpenedLevel;
+   _bool               m_bEnabledThisFrame;
 
 private:
     void               ChangeButtonIndex();
     void               SelectButton();
     void               ChangeUIFromCurrentLevel();
     
-
-
 
 private:
     virtual void Free() override;
