@@ -14,7 +14,7 @@
 #include "MonsterHPBar_Boss.h"
 #include "MonsterParryingBar.h"
 #include "UI_Containers.h"
-
+#include "UI_EvolveMenu.h"
 
 CLevel_GamePlay::CLevel_GamePlay()
 	//: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
@@ -259,6 +259,16 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
 
 	}*/
+
+	if (KEY_INPUT(KEY::E, KEY_STATE::TAP))
+	{
+		weak_ptr< CUI_EvolveMenu> pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL_STATIC).front();
+		if (pEvolveMenu.lock()->Get_Enable() == false)
+		{
+			pEvolveMenu.lock()->Set_Enable(true);
+		}
+	
+	}
 
 }
 

@@ -298,20 +298,28 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	//EvoleveMenu
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_LeftBG"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_EvolveLeftBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_TitleBG"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_HighlightBar_01_Reverse.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	//EvolveMenu_Font
 
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_Title"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
-
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_Title_Eng"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Title_Eng.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_LevelUp"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_UnlockTalent"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/UnlockTalent.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_PlagueWeapon"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/PlagueWeapon.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_Potion"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_UseForgottenFeather"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/UseForgottenFeather.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_Cease_Recall"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Cease_Recall.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_ResumeGame"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/ResumeGame.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_SeaOfTrees"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/SeaOfTrees.png"), MEMORY_TYPE::MEMORY_STATIC);
+	
 
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_SelectHighlight"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SelectableButtonHighlight_02.png"), MEMORY_TYPE::MEMORY_STATIC);
 
+	//EvolveMenu RightBG
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_RightBG"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_EvolveRightBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
+	
 
 
 

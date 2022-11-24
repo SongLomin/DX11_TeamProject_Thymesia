@@ -22,6 +22,31 @@ class CUI :
     GAMECLASS_H(CUI)
     CLONE_H(CUI, CGameObject)
 
+
+public:
+    //LeftTop : 너비, 높이 절반을 포지션에 더함.
+    //Center : 더하기 X
+    enum UI_ALIGN_TYPE
+    {
+        ALIGN_LEFTTOP,
+        ALIGN_CENTER,
+        ALIGN_END
+    };
+
+    enum class UI_POINT
+    {
+        LEFT,
+        RIGHT,
+        TOP,
+        BOTTOM,
+        LEFT_TOP,
+        LEFT_BOTTOM,
+        RIGHT_TOP,
+        RIGHT_BOTTOM,
+        UI_POINT_END
+    };
+
+
 public:
     struct UI_DESC
     {
@@ -47,10 +72,11 @@ public:
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render() override;
    
+
 public:
     void Set_TextureIndex(const _uint& Index) { m_iTextureIndex = Index; }
     void Set_Texture(const _char* sKey);
-    virtual void Set_UIPosition(const _float& fX, const _float& fY, const _float& fSizeX, const _float& fSizeY);
+    virtual void Set_UIPosition(const _float& fX, const _float& fY, const _float& fSizeX, const _float& fSizeY, UI_ALIGN_TYPE eType = UI_ALIGN_TYPE::ALIGN_CENTER);
     virtual void Set_UIPosition(const _float& fX, const _float& fY);
     virtual void Set_UIDesc(UI_DESC _tUIDesc);
     virtual void Set_Size(const _float& fSizeX, const _float& fSizeY);
@@ -71,6 +97,10 @@ public:
    //Moon Functions
 protected:
     virtual void    Add_Child(weak_ptr<CUI> pChild);
+
+public:
+    _float2         Get_Point(UI_POINT eType);
+
 
 
 protected:

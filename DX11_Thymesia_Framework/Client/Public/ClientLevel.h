@@ -19,6 +19,9 @@ protected:
 public:
     void Change_NextLevel(void* pArg);
 
+public:
+    LEVEL   Get_MyLevel() { return m_eMyLevel; }
+    LEVEL   Get_NextLevel() { return m_eNextLevel; }
 protected:
     void	Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex);
 

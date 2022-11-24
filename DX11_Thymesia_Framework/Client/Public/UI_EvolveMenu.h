@@ -22,6 +22,8 @@ public:
         EVOLVE_PLAGUEWEAPON,
         EVOLVE_POTION,
         EVOLVE_FEATHER,
+        EVOLVE_CEASE_RECALL,
+        EVOLVE_RESUME_GAME,
         EVOLVE_END
     };
 public:
@@ -33,22 +35,44 @@ public:
     virtual void    Tick(_float fTimeDelta) override;
     virtual void    LateTick(_float fTimeDelta) override;
 
-private://Child 
+    virtual void OnEnable(void* _Arg = nullptr);
+
+
+
+private: //Left BackGround
+
     weak_ptr<CCustomUI> m_pLeftBG;
     weak_ptr<CCustomUI> m_pSelectHighlight;
 
-
+    weak_ptr<CCustomUI> m_pMenuTitleBG;
+    weak_ptr<CCustomUI> m_pMenuTitleText;
 
     weak_ptr<CCustomUI>  m_pMenuText[(_uint)EVOLOVEMENU_TYPE::EVOLVE_END];
 
     _bool               m_bOpenedPage[(_uint)EVOLOVEMENU_TYPE::EVOLVE_END];
     _uint               m_iSelectedIndex;
-
-
     _char              m_MenuTextKey[(_uint)EVOLOVEMENU_TYPE::EVOLVE_END][MAX_PATH];
+
+    _bool               m_bEnabledThisFrame;
+
+
+private:
+    weak_ptr<CCustomUI> m_pRightBG;
+    weak_ptr<CCustomUI> m_pRightTitle;
+    weak_ptr<CCustomUI> m_pRightTitleDecoration;
+    weak_ptr<CCustomUI> m_pRightMapImage;
+    
+
+private:
+   LEVEL      m_eLastOpenedLevel;
 
 private:
     void               ChangeButtonIndex();
+    void               SelectButton();
+    void               ChangeUIFromCurrentLevel();
+    
+
+
 
 private:
     virtual void Free() override;
