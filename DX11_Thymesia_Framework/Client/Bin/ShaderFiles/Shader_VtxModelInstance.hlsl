@@ -6,6 +6,9 @@ texture2D	g_DiffuseTexture;
 texture2D	g_MaskTexture;
 texture2D	g_NormalTexture;
 
+vector      g_vCamPosition;
+float       g_fMaskingRange = 20.f;
+
 float4	g_vLightFlag;
 float g_fFar = 300.f;
 
@@ -147,6 +150,16 @@ struct PS_IN_NORMAL
 PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 {
 	PS_OUT Out = (PS_OUT)0;
+
+	float fCamToPixelWorld = length(g_vCamPosition - In.vWorldPos);
+	if (g_fMaskingRange > fCamToPixelWorld)
+	{
+		vector vMaskTexture = g_MaskTexture.Sample(DefaultSampler, In.vTexUV);
+		if (0.2f < vMaskTexture.r)
+			discard;
+	}
+
+
 
 	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 

@@ -5,6 +5,14 @@ matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 float4	g_vLightFlag;
 texture2D	g_DiffuseTexture;
 texture2D   g_NormalTexture;
+texture2D   g_MaskTexture;
+
+vector      g_vCamPosition;
+vector      g_vCamLook;
+vector      g_vPlayerPosition;
+float       g_fMaskingRange = 2.f;
+
+
 float g_fFar = 300.f;
 
 float g_fUVScale;
@@ -186,8 +194,20 @@ struct PS_IN_NORMAL
 PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 {
     PS_OUT Out = (PS_OUT) 0;
+    //플레이어를 가리는 부분은 도트 처리
+    float2 vPixelTexUV;
+    vPixelTexUV.x = (In.vProjPos.x / In.vProjPos.w) * 0.5f + 0.5f;
+    vPixelTexUV.y = (In.vProjPos.y / In.vProjPos.w) * -0.5f + 0.5f;
 
-    Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    float fCamToPixelWorld = length(g_vCamPosition - In.vWorldPos);
+    float fCamToPlayer = length(g_vCamPosition - g_vPlayerPosition);
+
+    vector vMaskTexture = g_MaskTexture.Sample(DefaultSampler, 8.f * vPixelTexUV);
+    if (fCamToPixelWorld / fCamToPlayer > vMaskTexture.r)
+        Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+
+
 
 	/* 0 ~ 1 */
     float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;

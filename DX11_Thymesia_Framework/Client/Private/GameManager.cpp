@@ -455,6 +455,13 @@ void CGameManager::Deactivate_Zoom()
 	m_pTargetCamera.lock()->Deactivate_Zoom();
 }
 
+_vector CGameManager::Get_PlayerPos()
+{
+	_matrix PlayerMat = m_pCurrentPlayer.lock()->Get_Component<CTransform>().lock()->Get_WorldMatrix();
+
+	return PlayerMat.r[3];
+}
+
 
 void CGameManager::Start_Peace()
 {

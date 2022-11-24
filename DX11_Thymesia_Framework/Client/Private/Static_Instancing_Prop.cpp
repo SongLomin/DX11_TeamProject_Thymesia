@@ -8,6 +8,7 @@
 #include "PhysXCollider.h"
 #include "Client_Presets.h"
 #include "ImGui_Manager.h"
+#include "Texture.h"
 
 GAMECLASS_C(CStatic_Instancing_Prop);
 CLONE_C(CStatic_Instancing_Prop, CGameObject);
@@ -27,6 +28,9 @@ HRESULT CStatic_Instancing_Prop::Initialize(void* pArg)
         VTXMODEL_INSTANCE_DECLARATION::Element,
         VTXMODEL_INSTANCE_DECLARATION::iNumElements
     );
+
+	m_pMaskingTextureCom = Add_Component<CTexture>();
+	m_pMaskingTextureCom.lock()->Use_Texture("UVMask");
 
 	GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_StaticCast<CGameObject>(m_this));
 
@@ -82,6 +86,12 @@ HRESULT CStatic_Instancing_Prop::Render()
 	m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_float4x4));
 	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4));
 	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
+
+	_float4 vCamPos;
+	XMStoreFloat4(&vCamPos, GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[3]);
+
+	m_pShaderCom.lock()->Set_RawValue("g_vCamPosition", &vCamPos, sizeof(_float4));
+	m_pMaskingTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 92);
 
 	_vector vLightFlag = { 1.f, 1.f, 1.f, 1.f };
 	m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector));

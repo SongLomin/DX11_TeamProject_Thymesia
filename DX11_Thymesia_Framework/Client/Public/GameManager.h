@@ -85,7 +85,7 @@ public:
 
     void Activate_Zoom(_float fRatio, _float fZoomTime);
     void Deactivate_Zoom();
-    
+    _vector Get_PlayerPos();
 
 private:
     void Start_Peace();
