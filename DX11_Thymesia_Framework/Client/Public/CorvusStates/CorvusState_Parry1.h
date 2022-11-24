@@ -34,7 +34,7 @@ public:
     }
 private:
     void Attack();
-    void Check_InputNextAttack();
+    void Check_InputNextParry();
 
 
 private:

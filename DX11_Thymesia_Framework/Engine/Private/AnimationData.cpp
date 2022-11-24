@@ -17,9 +17,9 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
     }
 
     // TODO : change animation speed here
-    MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack1", 2.f);
-    MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack2", 2.f);
-    MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack3_New", 2.f);
+    MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack1", 2.5f);
+    MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack2", 2.5f);
+    MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack3_New", 2.5f);
     MACRO("SK_C_Corvus.ao|Corvus_SD1_ParryL_NEW", 4.f);
     MACRO("SK_C_Corvus.ao|Corvus_SD1_ParryR_NEW", 4.f);
 

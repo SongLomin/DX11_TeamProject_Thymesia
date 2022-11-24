@@ -71,8 +71,14 @@ void CCorvusState_AVoid::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_AVoid>().lock())
+	{
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 5);
+	}
+	else
+	{
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	}
 #ifdef _DEBUG
 	#ifdef _DEBUG_COUT_
 		cout << "NorMonState: RunStart -> OnStateStart" << endl;
@@ -115,11 +121,10 @@ _bool CCorvusState_AVoid::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > m_fNextAvoidRatio)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 24)
 	{
 		if (Check_RequirementDashState())
 		{
-
 			if (!Rotation_InputToLookDir())
 				Rotation_TargetToLookDir();
 
@@ -129,7 +134,7 @@ _bool CCorvusState_AVoid::Check_AndChangeNextState()
 		}
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > m_fNextCombatRatio)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 15)
 	{
 		if (Check_RequirementAttackState())
 		{

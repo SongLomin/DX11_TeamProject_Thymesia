@@ -209,8 +209,6 @@ _bool CCorvusState_Parry2::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-
-
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
 		if (Check_RequirementAVoidState())
@@ -278,10 +276,8 @@ _bool CCorvusState_Parry2::Check_RequirementNextParryState()
 
 _bool CCorvusState_Parry2::Check_RuquireMnetFirstParryState()
 {
-	_uint iTargetKeyFrameMin = 51;
-	_uint iTargetKeyFrameMax = 80;
-
-
+	_uint iTargetKeyFrameMin = 17;
+	_uint iTargetKeyFrameMax = 50;
 
 	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) && m_IsNextAttack)
 	{

@@ -62,7 +62,7 @@ void CCorvusState_Parry1::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	Check_InputNextAttack();
+	Check_InputNextParry();
 
 	if (Check_AndChangeNextState())
 	{
@@ -111,7 +111,7 @@ void CCorvusState_Parry1::Attack()
 
 }
 
-void CCorvusState_Parry1::Check_InputNextAttack()
+void CCorvusState_Parry1::Check_InputNextParry()
 {
 	if (!KEY_INPUT(KEY::F, KEY_STATE::TAP))
 	{
@@ -129,7 +129,14 @@ void CCorvusState_Parry1::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 	
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAttackIndex);
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Parry2>().lock())
+	{
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 13);
+	}
+	else
+	{
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	}
 
 	if (!m_pModelCom.lock().get())
 	{
@@ -273,12 +280,10 @@ _bool CCorvusState_Parry1::Check_AndChangeNextState()
 	}
 
 
-
 	if (Check_RuquireMnetFirstParryState())
 	{
 		if (Check_RequirementParryState())
 		{
-
 			if (!Rotation_InputToLookDir())
 				Rotation_TargetToLookDir();
 
@@ -301,14 +306,10 @@ _bool CCorvusState_Parry1::Check_RequirementNextParryState()
 	_uint iTargetKeyFramefirst = 17;
 	_uint iTargetKeyFrameSecond = 50;
 
-
-
 	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFramefirst, iTargetKeyFrameSecond) && m_IsNextAttack)
 	{
 		return true;
 	}
-
-
 
 	return false;
 }
@@ -318,14 +319,10 @@ _bool CCorvusState_Parry1::Check_RuquireMnetFirstParryState()
 	_uint iTargetKeyFrameMin = 51;
 	_uint iTargetKeyFrameMax = 80;
 
-
-
 	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) && m_IsNextAttack)
 	{
 		return true;
 	}
-
-
 
 	return false;
 }
