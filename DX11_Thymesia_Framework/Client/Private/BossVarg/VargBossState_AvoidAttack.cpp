@@ -114,7 +114,7 @@ _bool CVargBossState_AvoidAttack::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.45f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.2f)
 	{
 		m_bAttackLookAtLimit = false;
 	}

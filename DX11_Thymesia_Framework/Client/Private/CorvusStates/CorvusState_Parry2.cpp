@@ -135,7 +135,7 @@ void CCorvusState_Parry2::OnStateStart(const _float& In_fAnimationBlendTime)
 	}
 
 
-
+	m_bParryed = false;
 
 	//Disable_Weapons();
 
@@ -156,6 +156,7 @@ void CCorvusState_Parry2::OnStateEnd()
 
 	//Disable_Weapons();
 	m_IsNextAttack = false;
+	m_bParryed = false;
 }
 
 void CCorvusState_Parry2::OnEventMessage(_uint iArg)
@@ -208,6 +209,8 @@ _bool CCorvusState_Parry2::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
 		return false;
+
+	
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 30)
 	{

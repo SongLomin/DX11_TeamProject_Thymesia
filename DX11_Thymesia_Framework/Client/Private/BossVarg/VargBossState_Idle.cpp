@@ -35,6 +35,8 @@ void CVargBossState_Idle::Start()
 
 	//턴이나 턴어택에서 아이들로 들어오면 워크로 들어오기 
 
+	
+
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_Idle");
 	
@@ -62,6 +64,15 @@ void CVargBossState_Idle::LateTick(_float fTimeDelta)
 void CVargBossState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack3a>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack2b>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_RunAttack>().lock()) 
+	{
+
+		m_bTurnCheck = true;
+}
+
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -101,28 +112,38 @@ _bool CVargBossState_Idle::Check_AndChangeNextState()
 	//보스존나어렵다 시발 ㅠㅠ ㅇㅇㅇ? ㅇㅇ 아 이거 랜덤으로 안하면 내가 정썜떄릴듯 ㄱㅊ? ㅇㅋㅇㅋ 최대한줄여봄 ㅇㅇ
 	// 그럼 탈주함
 
-	if (fPToMDistance < 1.f)
+	if (fPToMDistance < 1.5f)
 	{
 		Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkB>(0.05f);
 		return true;
 	}
-    if (fPToMDistance > 5.f) // 5보다크다
+    if (fPToMDistance >= 7.f) // 5보다크다
 	{
-		int iRand = rand() % 2;
+		int iRand = rand() % 3;
 
-		switch (iRand)
+		if (m_bTurnCheck)
 		{
-		case 0:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_RunAttack>(0.05f);
-			break;
-		case 1:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_RunStart>(0.05f);
-			break;
+			TurnMechanism();
+		}
+		else
+		{
+			switch (iRand)
+			{
+			case 0:
+				Get_OwnerCharacter().lock()->Change_State<CVargBossState_RaidAttack>(0.05f);
+				break;
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CVargBossState_RunAttack>(0.05f);
+				break;
+			case 2:
+				Get_OwnerCharacter().lock()->Change_State<CVargBossState_RunStart>(0.05f);
+				break;
+			}
 		}
 
 		return true;
 	}
-	else  // 5보다 작다
+	if(fPToMDistance >= 1.f && fPToMDistance < 7.f)  // 5보다 작다
 	{
 		if (m_bTurnCheck)
 		{

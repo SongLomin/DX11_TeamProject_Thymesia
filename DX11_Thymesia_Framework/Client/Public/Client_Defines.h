@@ -193,6 +193,15 @@ namespace Client
 		OPTION_END
 	};
 
+	enum class PARRY_TYPE
+	{
+		PERFECT,
+		NORMAL,
+		FAIL,
+		NONE,
+		PARRY_TYPE_END
+	};
+
 
 	//enum class  RAREMONSTERTYPE {
 	//	RMON_ARMOR,

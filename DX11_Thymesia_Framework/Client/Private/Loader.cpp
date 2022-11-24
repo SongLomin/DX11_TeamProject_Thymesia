@@ -410,7 +410,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	// 일반몬스터 관련모델
 
 	// 보스몬스터 관련모델
-	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(45.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Boss_Varg", "../Bin/Resources/Meshes/Boss/Varg/Varg.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 	// 보스몬스터 관련모델 
 

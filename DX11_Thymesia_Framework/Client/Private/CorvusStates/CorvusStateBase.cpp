@@ -11,6 +11,7 @@
 #include "Character.h"
 #include "Status_Monster.h"
 #include "Monster.h"
+#include "NorMonStates.h"
 
 
 GAMECLASS_C(CCorvusStateBase)
@@ -168,15 +169,38 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE&
 		if(!pMonsterStatusCom.lock())
 			MSG_BOX("Error : Can't Find CStatus_Monster From CorvusStateBase");
 
-		pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
-
-		/*if (pMonsterFromCharacter.lock()->Get_CurState().lock()->G == )
+		if (Get_OwnerCharacter().lock()->Get_CurState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Parry1>().lock() ||
+			Get_OwnerCharacter().lock()->Get_CurState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Parry2>().lock())
 		{
-			Get_OwnerPlayer()->Change_State<CNorMob_Execution>();
-		}*/
-		//뎀지가 까인 직후 테스트
-		 if (pStatus.lock()->Is_Dead())
-		{ 
+			/*
+				지금 맞았을 당시 상태가 패링이라면
+			*/
+			PARRY_TYPE eParryingType = Get_ParryType();
+			int a = 10;
+			switch (eParryingType)
+			{
+			case Client::PARRY_TYPE::PERFECT:
+				a = 10;
+				break;
+			case Client::PARRY_TYPE::NORMAL:
+				a= 17;
+				break;
+			case Client::PARRY_TYPE::FAIL:
+				a = 5;
+				break;
+			case Client::PARRY_TYPE::NONE:
+				a = 6;
+				break;
+			case Client::PARRY_TYPE::PARRY_TYPE_END:
+				break;
+			default:
+				break;
+			}
+
+		}
+	
+		if (pStatus.lock()->Is_Dead())
+		{
 			Get_OwnerPlayer()->Change_State<CCorvusState_Die>();
 		}
 		else if (In_eHitType == HIT_TYPE::NORMAL_HIT)
@@ -214,6 +238,8 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE&
 			Get_OwnerPlayer()->Change_State<CCorvusState_HurtXXL>();
 			//m_pStatusCom.lock()->Add_Damage(In_fDamage);
 		}
+		pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
+		
 	}
 }
 

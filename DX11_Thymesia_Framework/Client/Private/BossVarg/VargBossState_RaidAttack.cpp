@@ -110,7 +110,7 @@ _bool CVargBossState_RaidAttack::Check_AndChangeNextState()
 		return false;
 
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.2f)
 	{
 		m_bAttackLookAtLimit = false;
 	}

@@ -264,7 +264,7 @@ void CBossStateBase::TurnMechanism()
 	_float fDistance = Get_DistanceWithPlayer();
 
 
-	if (fDistance > 5.f)
+	if (fDistance > 3.f)
 	{
 		if (ComputeAngleWithPlayer() <= 0.f) // 90일때 0 90보다크면 -값이다 90보다 작으면 +값이다
 		{
@@ -285,6 +285,8 @@ void CBossStateBase::TurnMechanism()
 		else
 		{
 			Rotation_TargetToLookDir();
+			Get_Owner().lock()->Get_Component<CVargBossState_Idle>().lock()->Set_TurnCheck(false);
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
 		}
 	}
 	else
@@ -292,6 +294,12 @@ void CBossStateBase::TurnMechanism()
 		if (ComputeAngleWithPlayer() <= 0.f)
 		{
 			Get_OwnerCharacter().lock()->Change_State<CVargBossState_TurnAttack>(0.05f);
+		}
+		else
+		{
+			Rotation_TargetToLookDir();
+			Get_Owner().lock()->Get_Component<CVargBossState_Idle>().lock()->Set_TurnCheck(false);
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
 		}
 		
 	}

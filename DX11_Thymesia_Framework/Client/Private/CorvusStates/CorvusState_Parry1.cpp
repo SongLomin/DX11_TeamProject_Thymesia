@@ -52,8 +52,8 @@ void CCorvusState_Parry1::Tick(_float fTimeDelta)
 		}
 	}
 
-	Attack();
-
+	//Attack();
+	Update_ParryType();
 	
 }
 
@@ -91,7 +91,7 @@ void CCorvusState_Parry1::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 }
 
-void CCorvusState_Parry1::Attack()
+void CCorvusState_Parry1::Update_ParryType()
 {
 #ifdef _DEBUG
 	if (GAMEINSTANCE->Is_Debug())
@@ -101,12 +101,55 @@ void CCorvusState_Parry1::Attack()
 		szDebugText += to_wstring(m_pModelCom.lock()->Get_CurrentAnimationIndex());
 		szDebugText += TEXT(", Current KeyFrame: ");
 		szDebugText += to_wstring(m_pModelCom.lock()->Get_CurrentAnimationKeyIndex());
-		_float2 vPosition(0.f, 3.f);
+		szDebugText += TEXT("PARRY TYPE : ");
+		szDebugText += to_wstring((_uint)m_eParryType);
+
+		_float2 vPosition(0.f, 850.f);
 		_vector vColor = XMVectorSet(1.f, 1.f, 0.f, 1.f);
 
 		GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::DREAM, szDebugText, vPosition, vColor, false);
 	}
 #endif // _DEBUG
+	/*
+		퍼펙트 패링(특수효과아마?)
+		패링데미지 1.5배
+		데미지 아예 무시
+		14~20
+
+		10~25
+		노멀 패링
+		->패링 데미지 1배
+		받는 데미지 절반
+
+		//나머지
+		->워스트
+		그냥 처맞기랑 같음.
+	*/
+	_uint		iKeyFrame = m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex();
+	if (iKeyFrame >= 14 && iKeyFrame <= 20)
+	{
+		m_eParryType = PARRY_TYPE::PERFECT;
+		return;
+	}
+	else if (iKeyFrame >= 5 && iKeyFrame <= 35)
+	{
+		m_eParryType = PARRY_TYPE::NORMAL;
+		return;
+	}
+	else
+	{
+		m_eParryType = PARRY_TYPE::FAIL;
+		return;
+	}
+}
+
+
+
+
+
+void CCorvusState_Parry1::Attack()
+{
+
 
 }
 
@@ -148,8 +191,8 @@ void CCorvusState_Parry1::OnStateStart(const _float& In_fAnimationBlendTime)
 
 
 	//Disable_Weapons();
-
-
+	m_eParryType = PARRY_TYPE::FAIL;
+	m_bParryed = false;
 
 
 #ifdef _DEBUG
@@ -166,6 +209,8 @@ void CCorvusState_Parry1::OnStateEnd()
 
 	//Disable_Weapons();
 	m_IsNextAttack = false;
+
+	m_bParryed = false;
 
 }
 
@@ -220,8 +265,13 @@ _bool CCorvusState_Parry1::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	//토크 
 
+	/*
+	
+	*/
 
+	
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 35)
 	{
 		if (Check_RequirementAttackState())

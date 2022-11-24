@@ -34,7 +34,6 @@ void CVargBossState_Attack2b::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_ComboAttack2_2");
 
-	m_bAttackLookAtLimit = true;  // 애니메이션시작할떄 룩엣시작
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Attack2b::Call_AnimationEnd, this);
 }
@@ -63,6 +62,8 @@ void CVargBossState_Attack2b::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	m_bAttackLookAtLimit = true;  // 애니메이션시작할떄 룩엣시작
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
@@ -71,7 +72,7 @@ void CVargBossState_Attack2b::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif
 #endif
 
-	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 }
 
 void CVargBossState_Attack2b::OnStateEnd()
@@ -107,10 +108,11 @@ _bool CVargBossState_Attack2b::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.2f)
 	{
 		m_bAttackLookAtLimit = false;
 	}
+
 
 
 	return false;

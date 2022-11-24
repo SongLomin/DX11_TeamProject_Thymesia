@@ -34,6 +34,7 @@ public:
 
     void Set_Animation(_uint In_iNumIndex, _float In_fFixedPlayRatio = -1.f);
     _uint Get_StateIndex()const { return m_iStateIndex; }
+   
 
     weak_ptr<CCharacter> Get_OwnerCharacter() const;
 
@@ -44,10 +45,15 @@ public:
     _bool Get_NearGameObjectInDistance(weak_ptr<CGameObject>& Out_pGameObject, list<weak_ptr<CGameObject>> In_pGameObjects, const _float In_fDistance);
 
 protected:
+    _uint   Get_CurrentAnimationKeyFrames();
+
+
+protected:
     _uint m_iAnimIndex = 0;
     _uint m_iTimeScaleLayer = 0;
     _uint m_iStateIndex;
     _float m_fFixedPlayRatio = 0.f;
+
 
 
 

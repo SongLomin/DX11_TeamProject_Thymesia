@@ -34,11 +34,13 @@ private:
 	_float m_fAccel = 0.f;
 
 
+private:
+	_bool      m_bOneCheck = false;
 
 private:
-	//void Call_AnimationEnd();
+	void Call_AnimationEnd();
 protected:
-	//virtual void OnDestroy() override;
+	virtual void OnDestroy() override;
 	void Free();
 
 };

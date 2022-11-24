@@ -35,6 +35,7 @@ protected:
     _bool           Rotation_InputToLookDir();
     _bool           Rotation_TargetToLookDir();
     _bool           Rotation_NearToLookDir();
+ 
 
 protected:
     _float3 m_vLookAtDir;
@@ -47,7 +48,17 @@ protected:
     _uint m_iNextCombatKeyFrame;
     _uint m_iNextMovementKeyFrame;
 
-    weak_ptr<CPlayer>      m_pOwnerFromPlayer;
+
+    weak_ptr<CPlayer>       m_pOwnerFromPlayer;
+    
+
+protected: //Parrying Variable;
+    PARRY_TYPE              m_eParryType = PARRY_TYPE::PARRY_TYPE_END;
+    _bool                   m_bParryed = false;
+
+protected://Parrying Functions
+    PARRY_TYPE              Get_ParryType() { return m_eParryType; }
+    void                    Success_Parry() { m_bParryed = true; }
 
 public: /* For. EventFunction */
     void OnWeaponFirstAttack(weak_ptr<CCollider> pOtherCollider);

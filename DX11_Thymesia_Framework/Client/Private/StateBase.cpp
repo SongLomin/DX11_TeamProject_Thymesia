@@ -55,6 +55,8 @@ void CStateBase::Set_Animation(_uint In_iNumIndex, _float In_fFixedPlayRatio)
 		m_fFixedPlayRatio = In_fFixedPlayRatio;
 }
 
+
+
 weak_ptr<CCharacter> CStateBase::Get_OwnerCharacter() const
 {
 	return m_pOwnerFromCharacter;

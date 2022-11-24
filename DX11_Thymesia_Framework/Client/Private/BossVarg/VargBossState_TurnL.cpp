@@ -111,6 +111,7 @@ _bool CVargBossState_TurnL::Check_AndChangeNextState()
 	if (ComputeAngleWithPlayer() > 0.94f)
 	{
 		Rotation_TargetToLookDir();
+		Get_Owner().lock()->Get_Component<CVargBossState_Idle>().lock()->Set_TurnCheck(false);
 		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
 		return true;
 	}

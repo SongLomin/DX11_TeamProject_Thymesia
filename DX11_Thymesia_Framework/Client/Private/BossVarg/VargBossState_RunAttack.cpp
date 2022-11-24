@@ -71,7 +71,6 @@ void CVargBossState_RunAttack::OnStateStart(const _float& In_fAnimationBlendTime
 #endif
 
 	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
-
 }
 
 void CVargBossState_RunAttack::OnStateEnd()

@@ -69,7 +69,7 @@ void CVargBossState_TurnAttack::OnStateStart(const _float& In_fAnimationBlendTim
 #endif
 #endif
 
-	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 }
 
 void CVargBossState_TurnAttack::OnStateEnd()
@@ -86,7 +86,7 @@ void CVargBossState_TurnAttack::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-
+	Get_Owner().lock()->Get_Component<CVargBossState_Idle>().lock()->Set_TurnCheck(false);
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
 }
 
@@ -105,6 +105,13 @@ _bool CVargBossState_TurnAttack::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.8f)
+	{
+		Get_Owner().lock()->Get_Component<CVargBossState_Idle>().lock()->Set_TurnCheck(false);
+		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
+		return true;
+	}
 
 	return false;
 }

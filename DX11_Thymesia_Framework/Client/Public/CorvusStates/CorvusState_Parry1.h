@@ -27,9 +27,9 @@ public:
     void Play_AttackWithIndex(const _tchar& In_iAttackIndex);
 
 private:
-    void Attack();
-    void Check_InputNextParry();
-
+    void    Attack();
+    void    Check_InputNextParry();
+    void    Update_ParryType();
 
 private:
     _bool m_IsNextAttack = false;
@@ -37,6 +37,8 @@ private:
     _float m_fDebugAnimationSpeed = 1.f;
 
     _int m_iEndAttackEffectIndex = -1;
+
+   
 
 protected:
     virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
