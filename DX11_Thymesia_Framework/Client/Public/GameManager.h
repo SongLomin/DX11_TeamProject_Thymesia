@@ -42,6 +42,11 @@ public:
 public:
     void Register_Layer(const OBJECT_LAYER& In_Layer, weak_ptr<CGameObject> In_GameObject);
     void Remove_Layer(const OBJECT_LAYER& In_Layer, weak_ptr<CGameObject> In_GameObject);
+    
+    void Enable_Layer(const OBJECT_LAYER& In_Layer);
+    void Disable_Layer(const OBJECT_LAYER& In_Layer);
+
+
 
     list<weak_ptr<CGameObject>> Get_Layer(const OBJECT_LAYER& In_Layer);
     list<weak_ptr<CGameObject>> Get_LayerSelectEnable(const OBJECT_LAYER& In_Layer);
