@@ -43,7 +43,7 @@ public:
 
     HRESULT Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eActorType);
 
-    void Update(const vector<INSTANCE_MESH_DESC>& In_ParticleDescs);
+    void Update(vector<INSTANCE_MESH_DESC>& In_ParticleDescs, const _bool In_bUseCulling = false);
     void Update_VisibleInstance();
 
 private:
@@ -53,7 +53,8 @@ private:
 
 private:
     ComPtr<ID3D11Buffer>        m_pVBInstance;
-    list<INSTANCE_MESH_DESC*>   m_pVisibleInstanceDescs;
+    INSTANCE_MESH_DESC*         m_pVisibleInstanceDescs[2] = { nullptr, nullptr };
+    _int                        m_iCurrentVisibleIndex = 0;
     _bool                       m_bCulling = false;
     _float                      m_fMaxOffsetRange = 0.f;
 

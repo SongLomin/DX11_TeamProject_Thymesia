@@ -304,6 +304,8 @@ namespace Engine
 		_float3         vRotation;
 		_float3         vScale;
 		_float3			vTarnslation;
+		_float			fMaxRange;
+		_float3			vCenter;
 
 		void Reset()
 		{
@@ -328,6 +330,12 @@ namespace Engine
 			TransformationMatrix.r[3] = vPosition;
 
 			return TransformationMatrix;
+		}
+		
+		void	Bake_CenterWithMatrix()
+		{
+			_vector vCenterFromVector = XMLoadFloat3(&vCenter);
+			XMStoreFloat3(&vCenter, XMVector3TransformCoord(vCenterFromVector, Get_Matrix()));
 		}
 	};
 

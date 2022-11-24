@@ -23,8 +23,10 @@ public:
 private:
 	_float4				m_vOriginalPoints[8];
 	_vector				m_vWorldPoints[8];
-	_float4				m_vWorldPlane[6];
+	_float4				m_vWorldPlane[2][6];
 	_float4				m_vLocalPlane[6];
+
+	_int				iCurrentIndex = -1;
 
 private:
 	void Free();

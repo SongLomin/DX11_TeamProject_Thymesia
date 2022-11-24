@@ -52,21 +52,22 @@ void CStatic_Instancing_Prop::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 	//m_pInstanceModelCom.lock()->Culling_Instance(m_pPropInfos);
 
-#ifdef _INSTANCE_CULLING_
-	m_pInstanceModelCom.lock()->Update_VisibleInstance();
-#endif
+
 }
 
 void CStatic_Instancing_Prop::Custom_Thread1(_float fTimeDelta)
 {
-	m_pInstanceModelCom.lock()->Culling_Instance(m_pPropInfos);
+	
 }
 
 void CStatic_Instancing_Prop::Before_Render(_float fTimeDelta)
 {
 	__super::Before_Render(fTimeDelta);
 
-
+#ifdef _INSTANCE_CULLING_
+	m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos));
+	m_pInstanceModelCom.lock()->Update_VisibleInstance();
+#endif
 }
 
 HRESULT CStatic_Instancing_Prop::Render()
@@ -177,6 +178,9 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 		{
 			json Desc = iter.value();
 
+			_vector vPosition;
+			_vector vOffsetRange;
+
 			for (auto& iter_item : Desc.items())
 			{
 				_float4x4 PropMatrix;
@@ -190,6 +194,17 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 				memcpy(&Desc.vScale, &PropMatrix.m[1][0], sizeof(_float3));
 				memcpy(&Desc.vTarnslation, &PropMatrix.m[2][0], sizeof(_float3));
 
+				vPosition = XMLoadFloat3(&Desc.vTarnslation);
+				vPosition = XMVectorSetW(vPosition, 1.f);
+				
+				MESH_VTX_INFO tInfo = m_pInstanceModelCom.lock()->Get_ModelData().lock()->VertexInfo;
+
+				vOffsetRange = XMLoadFloat3(&tInfo.vMax) - XMLoadFloat3(&tInfo.vMin);
+				vOffsetRange *= XMLoadFloat3(&Desc.vScale);
+				Desc.fMaxRange = XMVectorGetX(XMVector3Length(vOffsetRange));
+				Desc.vCenter = tInfo.vCenter;
+				Desc.Bake_CenterWithMatrix();
+
 				m_pPropInfos.push_back(Desc);
 			}
 		}
@@ -202,7 +217,7 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 
 
 	m_pInstanceModelCom.lock()->Init_Instance((_uint)m_pPropInfos.size());
-	m_pInstanceModelCom.lock()->Update(m_pPropInfos);
+	m_pInstanceModelCom.lock()->Update(m_pPropInfos, true);
 
 #ifdef _GENERATE_PROP_COLLIDER_
 	if ((_uint)LEVEL_GAMEPLAY == m_CreatedLevel && strcmp(m_pInstanceModelCom.lock()->Get_ModelKey().c_str(), "SM_Weed"))
