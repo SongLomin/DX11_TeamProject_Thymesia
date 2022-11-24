@@ -98,7 +98,6 @@ XMVECTOR ENGINE_DLL Engine::SMath::Get_Scale(FXMMATRIX Mat)
 	XMVectorSetX(ResultVec, XMVectorGetX(XMVector3Length(Mat.r[0])));
 	XMVectorSetY(ResultVec, XMVectorGetX(XMVector3Length(Mat.r[1])));
 	XMVectorSetZ(ResultVec, XMVectorGetX(XMVector3Length(Mat.r[2])));
-
 	return ResultVec;
 }
 
@@ -353,7 +352,6 @@ void ENGINE_DLL Engine::SMath::Get_MouseRayInWorldSpace
 	GetCursorPos(&ptMouse);
 	ScreenToClient(GAMEINSTANCE->Get_WindowHandle(), &ptMouse);
 
-	/* 2. 투영 스페이스 상의 마우스 좌표 구하기 */
 	_vector  vProjPos;
 	ZeroMemory(&vProjPos, sizeof(XMVECTOR));
 	XMVectorSetX(vProjPos, ptMouse.x / (In_ViewPortWidth * 0.5f) - 1.f);
@@ -361,7 +359,6 @@ void ENGINE_DLL Engine::SMath::Get_MouseRayInWorldSpace
 	XMVectorSetZ(vProjPos, 0.f);
 	XMVectorSetW(vProjPos, 1.f);
 
-	/* 3.뷰스페이스상의 마우스 좌표를 구하자. */
 	_vector		vViewPos;
 
 	_matrix		ProjMatrixInv;
@@ -370,13 +367,11 @@ void ENGINE_DLL Engine::SMath::Get_MouseRayInWorldSpace
 
 	vViewPos = XMVector3TransformCoord(vProjPos, ProjMatrixInv);
 
-	/* 4.마우스레이와 마우스Pos를구하자.  */
 	_vector		vRayDir, vRayPos;
 
 	vRayDir = vViewPos;
 	vRayPos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
 
-	/* 5.월드로가자. */
 	_matrix	ViewMatrixInv;
 	ViewMatrixInv = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_VIEW);
 	ViewMatrixInv = XMMatrixInverse(nullptr, ViewMatrixInv);
@@ -384,7 +379,7 @@ void ENGINE_DLL Engine::SMath::Get_MouseRayInWorldSpace
 	XMStoreFloat3(&Out_Ray.vDirection, XMVector3TransformNormal(vRayDir, ViewMatrixInv));
 	XMStoreFloat4(&Out_Ray.vOrigin, XMVector3TransformCoord(vRayPos, ViewMatrixInv));
 
-	Out_Ray.fLength = 1000000.0f; //무한
+	Out_Ray.fLength = 1000000.0f;
 }
 
 RAY ENGINE_DLL Engine::SMath::Get_MouseRayInWorldSpace
@@ -397,7 +392,6 @@ RAY ENGINE_DLL Engine::SMath::Get_MouseRayInWorldSpace
 	GetCursorPos(&ptMouse);
 	ScreenToClient(GAMEINSTANCE->Get_WindowHandle(), &ptMouse);
 
-	/* 2. 투영 스페이스 상의 마우스 좌표 구하기 */
 	_vector  vProjPos;
 	ZeroMemory(&vProjPos, sizeof(XMVECTOR));
 	XMVectorSetX(vProjPos, ptMouse.x / (In_ViewPortWidth * 0.5f) - 1.f);
@@ -405,7 +399,6 @@ RAY ENGINE_DLL Engine::SMath::Get_MouseRayInWorldSpace
 	XMVectorSetZ(vProjPos, 0.f);
 	XMVectorSetW(vProjPos, 0.f);
 
-	/* 3.뷰스페이스상의 마우스 좌표를 구하자. */
 	_vector		vViewPos;
 
 	_matrix		ProjMatrixInv;
@@ -414,13 +407,11 @@ RAY ENGINE_DLL Engine::SMath::Get_MouseRayInWorldSpace
 
 	vViewPos = XMVector3TransformCoord(vProjPos, ProjMatrixInv);
 
-	/* 4.마우스레이와 마우스Pos를구하자.  */
 	_vector		vRayDir, vRayPos;
 
 	vRayDir = vViewPos;
 	vRayPos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
 
-	/* 5.월드로가자. */
 	_matrix	ViewMatrixInv;
 	ViewMatrixInv = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_VIEW);
 	ViewMatrixInv = XMMatrixInverse(nullptr, ViewMatrixInv);
@@ -430,7 +421,7 @@ RAY ENGINE_DLL Engine::SMath::Get_MouseRayInWorldSpace
 	XMStoreFloat3(&MouseRay.vDirection, XMVector3Normalize(XMVector3TransformNormal(vRayDir, ViewMatrixInv)));
 	XMStoreFloat4(&MouseRay.vOrigin, XMVector3TransformCoord(vRayPos, ViewMatrixInv));
 
-	MouseRay.fLength = 1000000.0f; //무한
+	MouseRay.fLength = 1000000.0f;
 
 	return MouseRay;
 }
@@ -450,10 +441,10 @@ XMMATRIX ENGINE_DLL Engine::SMath::Set_ScaleMatrix(FXMMATRIX Mat, FXMVECTOR Scal
 
 XMMATRIX ENGINE_DLL Engine::SMath::Go_Right(FXMMATRIX Mat, float fScaler)
 {
-	XMMATRIX ResultMat = Mat;
+	XMMATRIX ResultMat      = Mat;
 
-	_vector		vPosition = ResultMat.r[3];
-	_vector		vRight = ResultMat.r[0];
+	_vector		vPosition	= ResultMat.r[3];
+	_vector		vRight		= ResultMat.r[0];
 
 	vPosition += XMVector3Normalize(vRight) * fScaler;
 
@@ -464,10 +455,10 @@ XMMATRIX ENGINE_DLL Engine::SMath::Go_Right(FXMMATRIX Mat, float fScaler)
 
 XMMATRIX ENGINE_DLL Engine::SMath::Go_Straight(FXMMATRIX Mat, float fScaler)
 {
-	XMMATRIX ResultMat = Mat;
+	XMMATRIX ResultMat      = Mat;
 
-	_vector		vPosition = ResultMat.r[3];
-	_vector		vLook = ResultMat.r[2];
+	_vector		vPosition	= ResultMat.r[3];
+	_vector		vLook		= ResultMat.r[2];
 
 	vPosition += XMVector3Normalize(vLook) * fScaler;
 
@@ -478,10 +469,10 @@ XMMATRIX ENGINE_DLL Engine::SMath::Go_Straight(FXMMATRIX Mat, float fScaler)
 
 XMMATRIX ENGINE_DLL Engine::SMath::Go_Up(FXMMATRIX Mat, float fScaler)
 {
-	XMMATRIX ResultMat = Mat;
+	XMMATRIX ResultMat    = Mat;
 
 	_vector		vPosition = ResultMat.r[3];
-	_vector		vUp = ResultMat.r[1];
+	_vector		vUp       = ResultMat.r[1];
 
 	vPosition += XMVector3Normalize(vUp) * fScaler;
 
@@ -493,20 +484,16 @@ XMMATRIX ENGINE_DLL Engine::SMath::Go_Up(FXMMATRIX Mat, float fScaler)
 XMMATRIX ENGINE_DLL Engine::SMath::LookAt(FXMMATRIX Mat, FXMVECTOR In_vPosition)
 {
 	XMMATRIX ResultMat;
-	XMVECTOR vScale = SMath::Get_Scale(Mat);
-
+	XMVECTOR vScale		  = SMath::Get_Scale(Mat);
 
 	_vector		vPosition = Mat.r[3];
+	_vector		vLook     = XMVector3Normalize(In_vPosition - vPosition);
+	_vector		vRight    = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook));
+	_vector		vUp       = XMVector3Normalize(XMVector3Cross(vLook, vRight));
 
-	_vector		vLook = XMVector3Normalize(In_vPosition - vPosition);
-
-	_vector		vRight = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook));
-
-	_vector		vUp = XMVector3Normalize(XMVector3Cross(vLook, vRight));
-
-	ResultMat.r[0] = XMVector3Normalize(vRight) * vScale.m128_f32[0];
-	ResultMat.r[1] = XMVector3Normalize(vUp) * vScale.m128_f32[1];
-	ResultMat.r[2] = XMVector3Normalize(vLook) * vScale.m128_f32[2];
+	ResultMat.r[0] = XMVector3Normalize(vRight) * XMVectorGetX(vScale);
+	ResultMat.r[1] = XMVector3Normalize(vUp)    * XMVectorGetY(vScale);
+	ResultMat.r[2] = XMVector3Normalize(vLook)  * XMVectorGetZ(vScale);
 	ResultMat.r[3] = vPosition;
 
 	return ResultMat;
@@ -577,16 +564,25 @@ void ENGINE_DLL Engine::SMath::Set_ClockwiseTriangle(XMFLOAT3* InOut_TrianglePos
 	_vector vAtoB2D, vAtoC2D, vAtoB2DCross;
 	vAtoB2D = vAtoC2D = vAtoB2DCross = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 
-	vAtoB2D.m128_f32[0] = vAtoB.m128_f32[0];
-	vAtoB2D.m128_f32[1] = vAtoB.m128_f32[2];
+	XMVectorSetX(vAtoB2D, XMVectorGetX(vAtoB));
+	XMVectorSetY(vAtoB2D, XMVectorGetZ(vAtoB));
 
-	vAtoC2D.m128_f32[0] = vAtoC.m128_f32[0];
-	vAtoC2D.m128_f32[1] = vAtoC.m128_f32[2];
+	//vAtoB2D.m128_f32[0] = vAtoB.m128_f32[0];
+	//vAtoB2D.m128_f32[1] = vAtoB.m128_f32[2];
 
-	vAtoB2DCross.m128_f32[0] = -vAtoB2D.m128_f32[1];
-	vAtoB2DCross.m128_f32[1] = vAtoB2D.m128_f32[0];
+	XMVectorSetX(vAtoC2D, XMVectorGetX(vAtoC));
+	XMVectorSetY(vAtoC2D, XMVectorGetZ(vAtoC));
 
-	_float fDot = XMVector2Dot(vAtoB2DCross, vAtoC2D).m128_f32[0];
+	// vAtoC2D.m128_f32[0] = vAtoC.m128_f32[0];
+	// vAtoC2D.m128_f32[1] = vAtoC.m128_f32[2];
+
+	XMVectorSetX(vAtoB2DCross, -1.f * XMVectorGetY(vAtoB2D));
+	XMVectorSetY(vAtoB2DCross, XMVectorGetX(vAtoB2D));
+
+	//vAtoB2DCross.m128_f32[0] = -vAtoB2D.m128_f32[1];
+	//vAtoB2DCross.m128_f32[1] = vAtoB2D.m128_f32[0];
+
+	_float fDot = XMVectorGetX(XMVector2Dot(vAtoB2DCross, vAtoC2D));
 
 	// 내적의 결과가 양수라면 반시계 방향이므로 다시 시계방향으로 돌려준다.
 	if (fDot > 0.f)
@@ -651,8 +647,8 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked_AbstractCube(RAY _Ray, MESH_VTX_INFO _
 	_vector vRayPos = XMVector3TransformCoord(XMLoadFloat4(&_Ray.vOrigin), WorldMatrixInv);
 	_vector vRayDir = XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&_Ray.vDirection), WorldMatrixInv));
 
-	_float3				vPosition[8];
-	_uint3				vIndex[12];
+	_float3	 vPosition[8];
+	_uint3	 vIndex[12];
 
 	vPosition[0] = { _VtxInfo.vMin.x, _VtxInfo.vMax.y, _VtxInfo.vMin.z };
 	vPosition[1] = { _VtxInfo.vMax.x, _VtxInfo.vMax.y, _VtxInfo.vMin.z };
@@ -676,7 +672,7 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked_AbstractCube(RAY _Ray, MESH_VTX_INFO _
 	vIndex[10] = { 0, 1, 2 };
 	vIndex[11] = { 0, 2, 3 };
 
-	_float		fDist;
+	_float fDist;
 
 	for (_uint i = 0; i < 12; ++i)
 	{
@@ -721,7 +717,7 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked_Y(RAY _Ray, _float4* _pOutPos)
 		if (0 != isnan(_Ray.vOrigin.x))
 			break;
 
-		_vector		vPickedPos;
+		_vector vPickedPos;
 		
 		_vector	vVec0 = XMLoadFloat3(&vPos[iIndex[i].ix]);
 		_vector	vVec1 = XMLoadFloat3(&vPos[iIndex[i].iy]);
@@ -813,10 +809,10 @@ void ENGINE_DLL Engine::SMath::Convert_PxVec3FromMeshDataWithTransformMatrix(PxV
 
 PxExtendedVec3 ENGINE_DLL Engine::SMath::Convert_PxExtendedVec3(FXMVECTOR In_Vector)
 {
-	return PxExtendedVec3(In_Vector.m128_f32[0], In_Vector.m128_f32[1], In_Vector.m128_f32[2]);
+	return PxExtendedVec3(XMVectorGetX(In_Vector), XMVectorGetY(In_Vector), XMVectorGetZ(In_Vector));
 }
 
 PxVec3 ENGINE_DLL Engine::SMath::Convert_PxVec3(FXMVECTOR In_Vector)
 {
-	return PxVec3(In_Vector.m128_f32[0], In_Vector.m128_f32[1], In_Vector.m128_f32[2]);
+	return PxVec3(XMVectorGetX(In_Vector), XMVectorGetY(In_Vector), XMVectorGetZ(In_Vector));
 }
