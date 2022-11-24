@@ -9,9 +9,10 @@
 #include "BoneNode.h"
 
 // undefines at bottom
-#define PASS_SPRITE 0
+#define PASS_SPRITE_BLACKDISCARD 0
 #define PASS_ALPHADISCARD 1
 #define PASS_BLACKDISCARD 2
+#define PASS_SPRITE_ALPHADISCARD 3
 
 GAMECLASS_C(CEffect_Rect)
 CLONE_C(CEffect_Rect, CGameObject)
@@ -432,7 +433,11 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 #pragma endregion
 
 #pragma region For. Sprite
-	if (PASS_SPRITE == m_tEffectParticleDesc.iShaderPassIndex)
+	if (
+		(PASS_SPRITE_BLACKDISCARD == m_tEffectParticleDesc.iShaderPassIndex)
+		||
+		(PASS_SPRITE_ALPHADISCARD == m_tEffectParticleDesc.iShaderPassIndex)
+		)
 	{
 		Out_Json["Loop_Sprite"] = m_tEffectParticleDesc.bLoopSprite;
 
@@ -672,7 +677,11 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma endregion
 
 #pragma region For. Sprite
-	if (PASS_SPRITE == m_tEffectParticleDesc.iShaderPassIndex)
+	if (
+		(PASS_SPRITE_BLACKDISCARD == m_tEffectParticleDesc.iShaderPassIndex)
+		||
+		(PASS_SPRITE_ALPHADISCARD == m_tEffectParticleDesc.iShaderPassIndex)
+		)
 	{
 		if (In_Json.find("Loop_Sprite") != In_Json.end())
 			m_tEffectParticleDesc.bLoopSprite = In_Json["Loop_Sprite"];
@@ -1522,14 +1531,19 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::Checkbox("##Is_Looping", &m_tEffectParticleDesc.bLooping);
 			ImGui::Separator();
 #pragma region Shader Pass
-			ImGui::Text("Pass %d : Sprite Image", PASS_SPRITE);
-			ImGui::Text("Pass %d : Default_AlphaDiscard", PASS_ALPHADISCARD);
-			ImGui::Text("Pass %d : Default_BlackDiscard", PASS_BLACKDISCARD);
+			ImGui::Text("Pass %d : Sprite Image (Discard Black)", PASS_SPRITE_BLACKDISCARD);
+			ImGui::Text("Pass %d : Default		(Discard Alpha)", PASS_ALPHADISCARD);
+			ImGui::Text("Pass %d : Default		(Discard Black)", PASS_BLACKDISCARD);
+			ImGui::Text("Pass %d : Sprite Image (Discard Alpha)", PASS_SPRITE_ALPHADISCARD);
 			ImGui::InputInt("Shader Pass", &m_tEffectParticleDesc.iShaderPassIndex);
 #pragma endregion
 			ImGui::Separator();
 #pragma region For. Sprite
-			if (PASS_SPRITE == m_tEffectParticleDesc.iShaderPassIndex)
+			if (
+				(PASS_SPRITE_BLACKDISCARD == m_tEffectParticleDesc.iShaderPassIndex)
+				||
+				(PASS_SPRITE_ALPHADISCARD == m_tEffectParticleDesc.iShaderPassIndex)
+				)
 			{
 				ImGui::Text("Loop Sprite"); ImGui::SameLine();
 				ImGui::Checkbox("##LoopSprite", &m_tEffectParticleDesc.bLoopSprite);
