@@ -2313,6 +2313,9 @@
     <Filter Include="98. Default">
       <UniqueIdentifier>{65376df2-2a03-48c0-b9a4-e1bcd404fb50}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06. DataPreset\02. Preset_ColliderDesc">
+      <UniqueIdentifier>{2ac11f7d-64be-440a-b5ec-df1340b856fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

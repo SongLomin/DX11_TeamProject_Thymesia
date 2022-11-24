@@ -14,7 +14,7 @@
 #define		_DEBUG_COUT_
 // #define		_STAGE_1_
 #define		_STAGE_2_
-#define		_STAGE_1_MONSTER_
+//#define		_STAGE_1_MONSTER_
 #define		_INSTANCE_CULLING_
 //#define		_GENERATE_PROP_COLLIDER_ true
 //#define		_USE_GRAVITY_
@@ -141,6 +141,7 @@ namespace Client
 		EDIT_NAVIMESH,
 		TRIGGER,
 		STATIC_PROP,
+		DYNAMIC_PROP,
 		LAYER_END
 	};
 

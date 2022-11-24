@@ -4,6 +4,7 @@
 
 BEGIN(Engine)
 class CCollider;
+class CPhysXCollider;
 END
 
 BEGIN(Client)
@@ -23,7 +24,8 @@ public:
     virtual HRESULT Render() override;
 
 protected:
-    weak_ptr<CCollider>    m_pColliderCom;
+    weak_ptr<CCollider>         m_pColliderCom;
+    weak_ptr<CPhysXCollider>    m_pPhysXColliderCom;
 
 protected:
     void Free();

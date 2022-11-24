@@ -119,7 +119,7 @@ void CStatic_Prop::Load_FromJson(const json& In_Json)
     }
 
     PhysXColliderDesc tDesc;
-    Preset::PhysXColliderDesc::StaticPropSetting(tDesc, m_pTransformCom, 0.f);
+    Preset::PhysXColliderDesc::StaticPropSetting(tDesc, m_pTransformCom);
     m_pPhyxXColliderCom.lock()->CreatePhysXActor(tDesc);
     m_pPhyxXColliderCom.lock()->Add_PhysXActorAtScene();
 

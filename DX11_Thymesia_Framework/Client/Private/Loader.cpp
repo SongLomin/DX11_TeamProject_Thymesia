@@ -508,6 +508,11 @@ HRESULT CLoader::Loading_ForTestLevel()
 
 	CEditGround::Load_AllMeshInfo();
 
+	_matrix TransformMatrix;
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("DistructableTest", "../Bin/Resources/Meshes/Distructable/test.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	
+
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성 중입니다."));
 
 	//Create_GameObjectFromJson("../Bin/LevelData/Stage1.json", LEVEL_GAMEPLAY);

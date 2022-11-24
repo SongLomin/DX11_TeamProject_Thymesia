@@ -53,6 +53,8 @@ HRESULT CLevel_Test::Initialize()
 	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_TEST);
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
 
+	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST);
+
 	//TODO 야매에요
 #ifdef _STAGE_1_MONSTER_
 	CMonster::STATE_LINK_MONSTER_DESC CCC;
