@@ -262,7 +262,7 @@ _bool CCorvusState_Parry2::Check_AndChangeNextState()
 
 _bool CCorvusState_Parry2::Check_RequirementNextParryState()
 {
-	_uint iTargetKeyFrame = 50;
+	_uint iTargetKeyFrame = 30;
 
 
 
@@ -276,8 +276,8 @@ _bool CCorvusState_Parry2::Check_RequirementNextParryState()
 
 _bool CCorvusState_Parry2::Check_RuquireMnetFirstParryState()
 {
-	_uint iTargetKeyFrameMin = 17;
-	_uint iTargetKeyFrameMax = 50;
+	_uint iTargetKeyFrameMin = 31;
+	_uint iTargetKeyFrameMax = 80;
 
 	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) && m_IsNextAttack)
 	{

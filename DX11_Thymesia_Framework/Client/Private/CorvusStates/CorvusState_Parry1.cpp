@@ -23,7 +23,6 @@ HRESULT CCorvusState_Parry1::Initialize_Prototype()
 HRESULT CCorvusState_Parry1::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-	m_iAttackIndex = 123;
 	return S_OK;
 }
 
@@ -89,7 +88,7 @@ void CCorvusState_Parry1::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 		cout << "AttackIndex: " << m_iAttackIndex << endl;
 #endif
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAttackIndex);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 }
 
 void CCorvusState_Parry1::Attack()
@@ -167,7 +166,6 @@ void CCorvusState_Parry1::OnStateEnd()
 
 	//Disable_Weapons();
 	m_IsNextAttack = false;
-	m_iAttackIndex = 123;
 
 }
 

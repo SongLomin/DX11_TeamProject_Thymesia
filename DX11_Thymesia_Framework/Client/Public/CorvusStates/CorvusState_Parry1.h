@@ -25,20 +25,13 @@ protected:
 public:
     void Call_AnimationEnd();
     void Play_AttackWithIndex(const _tchar& In_iAttackIndex);
-    void Set_AnimationIndex(_uint iAttackIndex)
-    {
-        if (m_iAttackIndex == iAttackIndex)
-            return;
 
-        m_iAttackIndex = iAttackIndex;
-    }
 private:
     void Attack();
     void Check_InputNextParry();
 
 
 private:
-    _uint m_iAttackIndex;
     _bool m_IsNextAttack = false;
 
     _float m_fDebugAnimationSpeed = 1.f;
