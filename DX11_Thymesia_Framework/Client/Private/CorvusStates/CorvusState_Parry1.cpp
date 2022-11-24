@@ -236,18 +236,31 @@ _bool CCorvusState_Parry1::Check_AndChangeNextState()
 	//	}
 	//
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 35)
 	{
+		if (Check_RequirementAttackState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
+			return true;
+		}
+
 		if (Check_RequirementAVoidState())
 		{
 			Rotation_InputToLookDir();
 			Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
 			return true;
 		}
+
+		if (Check_RequirementClawAttackState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
+			return true;
+		}
 	}
 
-
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 70)
 	{
 		if ((Check_RequirementRunState()))
 		{
@@ -257,15 +270,6 @@ _bool CCorvusState_Parry1::Check_AndChangeNextState()
 		}
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
-	{
-		if (Check_RequirementClawAttackState())
-		{
-			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
-			return true;
-		}
-	}
 
 	if (Check_RequirementNextParryState())
 	{
