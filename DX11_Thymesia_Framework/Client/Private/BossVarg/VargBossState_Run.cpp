@@ -40,7 +40,6 @@ void CVargBossState_Run::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	Rotation_TargetToLookDir();
 
 	m_fCurrentSpeed += m_fAccel * fTimeDelta;
 	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
@@ -55,7 +54,7 @@ void CVargBossState_Run::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-
+	Turn_ToThePlayer(fTimeDelta);
 
 	Check_AndChangeNextState();
 }
@@ -70,7 +69,7 @@ void CVargBossState_Run::OnStateStart(const _float& In_fAnimationBlendTime)
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: Run -> OnStateStart" << endl;
 #endif
 #endif
 
@@ -83,9 +82,6 @@ void CVargBossState_Run::OnStateEnd()
 
 
 }
-
-
-
 
 
 void CVargBossState_Run::Free()
@@ -105,7 +101,7 @@ _bool CVargBossState_Run::Check_AndChangeNextState()
 
 	if (fPToMDistance <= 4.f)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1b>(0.05f);
+		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
 		return true;
 	}
 

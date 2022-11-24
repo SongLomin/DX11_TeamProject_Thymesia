@@ -61,10 +61,7 @@ void CCorvusState_LAttack2::LateTick(_float fTimeDelta)
 
 	Check_InputNextAttack();
 
-	if (Check_AndChangeNextState())
-	{
-
-	}
+	Check_AndChangeNextState();
 }
 
 void CCorvusState_LAttack2::Call_AnimationEnd()

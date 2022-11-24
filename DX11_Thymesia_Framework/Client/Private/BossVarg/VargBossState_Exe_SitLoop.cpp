@@ -66,7 +66,7 @@ void CVargBossState_Stun_Exe_SitLoop::OnStateStart(const _float& In_fAnimationBl
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: Exe_SitLoop -> OnStateStart" << endl;
 #endif
 #endif
 

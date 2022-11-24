@@ -66,7 +66,7 @@ void CVargBossState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: Idle -> OnStateStart" << endl;
 #endif
 #endif
 
@@ -93,10 +93,15 @@ _bool CVargBossState_Idle::Check_AndChangeNextState()
 
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 
+
+
 	//조건 8보다클때
 
-	if (fPToMDistance > 8.f)
+
+	if (fPToMDistance > 10.f)
 	{
+		Rotation_TargetToLookDir();
+
 		int iRand = rand() % 3;
 
 		switch (iRand)
@@ -112,35 +117,40 @@ _bool CVargBossState_Idle::Check_AndChangeNextState()
 			break;
 		}
 
-		return true;
+		//턴하면 턴한다음 거기서 다음공격해야하고
+		// 턴안하고 바로공격은 여기서처리할수있음
 
+
+
+		return true;
 		/*
-		* 거리가 8보다크면 조건은 세가지
-		* 1. 점프공격으로 거리줄이는방법 <점프두가지있음 존나크게점프임 이거는레이드어택>
-		* 2. 달려오고 휘두로고 찍는 공격패턴 <런어택>
-		* 3. 달려오면서 바로 공격 <런-> 어택->1 >
+		1. 보스몬스터보다 뒤에있으면 턴함 그리고 띵킹
+		2. 보스몬스터보다 뒤에있으면 뒤로회전공격
+		3. 공격패턴 1. 찍고 찍고 찌르기
+		4. 공격패턴 2. 둥글이 다음에 찍기 ?
+		5. 공격패턴 3. 둥글이 찍기 3개있음 2-1 -> 2-2 , 2-1 -> 2-2B , 2-1->2-2B1
+
 		*/
 	}
-
-	else if (4.f >= fPToMDistance || 8.f <= fPToMDistance)
+	else if (4.f <= fPToMDistance || 8.f >= fPToMDistance)
 	{
-		int iRand = rand() % 5;
+		TurnMechanism();
+
+
+		int iRand = rand() % 4;
 
 		switch (iRand)
 		{
 		case 0:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack3a>(0.05f);
-			break;
-		case 1:
 			Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidL>(0.05f);
 			break;
-		case 2:
+		case 1:
 			Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidR>(0.05f);
 			break;
-		case 3:
+		case 2:
 			Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidB>(0.05f);
 			break;
-		case 4:
+		case 3:
 			Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidAttack>(0.05f);
 			break;
 		}
@@ -153,13 +163,11 @@ _bool CVargBossState_Idle::Check_AndChangeNextState()
 		3. 그냥점프공격바로 ?이건생각좀
 		*/
 	}
-
-	else if (4.f < fPToMDistance)
+	else if (1.5 < fPToMDistance || 4.f > fPToMDistance)
 	{
-		int iRand = rand() % 2;
+		TurnMechanism();
 
-		//턴하면 턴한다음 거기서 다음공격해야하고
-		// 턴안하고 바로공격은 여기서처리할수있음
+		int iRand = rand() % 2;
 
 		switch (iRand)
 		{
@@ -167,20 +175,31 @@ _bool CVargBossState_Idle::Check_AndChangeNextState()
 			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1a>(0.05f);
 			break;
 		case 1:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack2a>(0.05f);
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1b>(0.05f);
 			break;
 		}
-
 		return true;
+
+	}
+
+
+
+	else if (1.5f >= fPToMDistance)
+	{
+
+
+		Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkB>(0.05f);
+	
+		return true;
+
 		/*
-		1. 보스몬스터보다 뒤에있으면 턴함 그리고 띵킹
-		2. 보스몬스터보다 뒤에있으면 뒤로회전공격
-		3. 공격패턴 1. 찍고 찍고 찌르기
-		4. 공격패턴 2. 둥글이 다음에 찍기 ? 
-		5. 공격패턴 3. 둥글이 찍기 3개있음 2-1 -> 2-2 , 2-1 -> 2-2B , 2-1->2-2B1 
-		
+		* 거리가 8보다크면 조건은 세가지
+		* 1. 점프공격으로 거리줄이는방법 <점프두가지있음 존나크게점프임 이거는레이드어택>
+		* 2. 달려오고 휘두로고 찍는 공격패턴 <런어택>
+		* 3. 달려오면서 바로 공격 <런-> 어택->1 >
 		*/
 	}
+	
 
 
 	return false;

@@ -44,7 +44,7 @@ void CVargBossState_AvoidB::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	if (m_bAttackLookAtLimit)
-		Turn_ToThePlayer(fTimeDelta);
+		Rotation_TargetToLookDir();
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -69,10 +69,11 @@ void CVargBossState_AvoidB::OnStateStart(const _float& In_fAnimationBlendTime)
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: AvoidB -> OnStateStart" << endl;
 #endif
 #endif
 
+	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 
 }
 
@@ -80,7 +81,7 @@ void CVargBossState_AvoidB::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 
@@ -90,8 +91,7 @@ void CVargBossState_AvoidB::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-
-	Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidAttack>(0.05f);
+	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
 }
 
 void CVargBossState_AvoidB::OnDestroy()
@@ -110,8 +110,9 @@ _bool CVargBossState_AvoidB::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.2f)
 	{
+
 		m_bAttackLookAtLimit = false;
 	}
 
