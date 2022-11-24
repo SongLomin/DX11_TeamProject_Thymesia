@@ -116,6 +116,13 @@ HRESULT CLevel_GamePlay::Initialize()
 	CCC.vYame.z = 10.5f;
 	CCC.m_iAtkCounterGauge = 10;
 	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &CCC);
+
+	ZeroMemory(&DDD, sizeof(CBossMonster::STATE_LINK_BOSS_DESC));
+	DDD.vYame.x = 21.2f;
+	DDD.vYame.y = 4.4f;
+	DDD.vYame.z = 39.68f;
+	DDD.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
+	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &DDD);
 #endif // _STAGE_1_MONSTER_
 	
 	/*ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
@@ -133,12 +140,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	//GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &CCC);
 	//
 
-	ZeroMemory(&DDD, sizeof(CBossMonster::STATE_LINK_BOSS_DESC));
-	DDD.vYame.x = 21.2f;
-	DDD.vYame.y = 4.4f;
-	DDD.vYame.z = 39.68f;
-	DDD.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
-	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &DDD);
+	
 
 	/*ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	CCC.eMonType = MONSTERTYPE::KNIFEWOMAN;

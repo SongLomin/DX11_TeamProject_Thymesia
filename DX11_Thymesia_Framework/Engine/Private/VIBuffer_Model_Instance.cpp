@@ -215,6 +215,9 @@ HRESULT CVIBuffer_Model_Instance::Render_Mesh(_uint iMeshContainerIndex)
 	if (iMeshContainerIndex >= m_iNumMeshContainers)
 		return E_FAIL;
 
+	if (0 == m_iVisibleCount)
+		return E_FAIL;
+
 	/*if (sizeof(m_pVisibleInstanceDescs[m_iCurrentVisibleIndex]) / sizeof(INSTANCE_MESH_DESC))
 		return E_FAIL;*/
 
@@ -257,18 +260,28 @@ void CVIBuffer_Model_Instance::Culling_Instance(vector<INSTANCE_MESH_DESC>& In_P
 
 	_uint iIndex = 0;
 
+	if (m_pModelData->szModelFileName == "P_CircusBalloon01")
+	{
+		int i = 0;
+	}
+
 	for (auto& elem : In_ParticleDescs)
 	{
-		vPosition = XMLoadFloat3(&elem.vCenter);
+		vPosition = XMLoadFloat3(&elem.vTarnslation);
+		vPosition.m128_f32[3] = 1.f;
 
 		if (pGameInstance->isIn_Frustum_InWorldSpace(vPosition, elem.fMaxRange))
 		{
-			m_pVisibleInstanceDescs[iUpdateIndex][iIndex] = elem;
+			m_pVisibleInstanceDescs[iIndex] = elem;
 			++iIndex;
+		}
+		else
+		{
+			//cout << "Culling! " << endl;
 		}
 	}
 
-	m_iCurrentVisibleIndex = iUpdateIndex;
+	//m_iCurrentVisibleIndex = iUpdateIndex;
 	m_iVisibleCount = iIndex;
 	m_bCulling = true;
 
@@ -314,41 +327,43 @@ void CVIBuffer_Model_Instance::Update(vector<INSTANCE_MESH_DESC>& In_ParticleDes
 
 	if (In_bUseCulling)
 	{
-		if (m_pVisibleInstanceDescs[0])
+		if (m_pVisibleInstanceDescs)
 		{
-			Safe_Delete_Array(m_pVisibleInstanceDescs[0]);
-			m_pVisibleInstanceDescs[0] = nullptr;
+			Safe_Delete_Array(m_pVisibleInstanceDescs);
+			m_pVisibleInstanceDescs = nullptr;
 		}
 
-		if (m_pVisibleInstanceDescs[1])
+		/*if (m_pVisibleInstanceDescs[1])
 		{
 			Safe_Delete_Array(m_pVisibleInstanceDescs[1]);
 			m_pVisibleInstanceDescs[1] = nullptr;
+		}*/
+
+		m_pVisibleInstanceDescs = DBG_NEW INSTANCE_MESH_DESC[In_ParticleDescs.size()];
+		//m_pVisibleInstanceDescs[1] = DBG_NEW INSTANCE_MESH_DESC[In_ParticleDescs.size()];
+
+		_uint iIndex = 0;
+
+		for (auto& elem : In_ParticleDescs)
+		{
+			m_pVisibleInstanceDescs[iIndex] = elem;
+
+			if (m_pModelData->szModelFileName == "P_CircusBalloon01"/* || m_pModelData->szModelFileName == "P_CircusBalloon02"*/)
+			{//TODO: Test
+				weak_ptr<CCollider> pCollider = m_pOwner.lock()->Add_Component<CCollider>();
+				COLLIDERDESC tDesc;
+				tDesc.iLayer = 0;
+				tDesc.vRotation = { 0.f, 0.f, 0.f, 0.f };
+				tDesc.vScale = { elem.fMaxRange, 0.f ,0.f };
+				tDesc.vTranslation = elem.vTarnslation;
+				pCollider.lock()->Init_Collider(COLLISION_TYPE::SPHERE, tDesc);
+			}
+			++iIndex;
 		}
 
-		m_pVisibleInstanceDescs[0] = DBG_NEW INSTANCE_MESH_DESC[In_ParticleDescs.size()];
-		m_pVisibleInstanceDescs[1] = DBG_NEW INSTANCE_MESH_DESC[In_ParticleDescs.size()];
-
-		
-
 	}
 
-	_uint iIndex = 0;
-
-	for (auto& elem : In_ParticleDescs)
-	{
-		m_pVisibleInstanceDescs[0][iIndex] = elem;
-
-		weak_ptr<CCollider> pCollider = m_pOwner.lock()->Add_Component<CCollider>();
-		COLLIDERDESC tDesc;
-		tDesc.iLayer = 0;
-		tDesc.vRotation = { 0.f, 0.f, 0.f, 0.f };
-		tDesc.vScale = { elem.fMaxRange, 0.f ,0.f };
-		tDesc.vTranslation = elem.vCenter;
-		pCollider.lock()->Init_Collider(COLLISION_TYPE::SPHERE, tDesc);
-
-		++iIndex;
-	}
+	
 
 	D3D11_MAPPED_SUBRESOURCE		SubResource;
 
@@ -371,23 +386,26 @@ void CVIBuffer_Model_Instance::Update_VisibleInstance()
 {
 
 
-	if (!m_pVisibleInstanceDescs[m_iCurrentVisibleIndex])
+	if (!m_pVisibleInstanceDescs)
+		return;
+
+	if (0 == m_iVisibleCount)
 		return;
 
 	D3D11_MAPPED_SUBRESOURCE		SubResource;
 
 	_matrix							WorldMatrix;
-	_uint							iIndex = 0;
+
 	DEVICECONTEXT->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
 
 	for (_uint i = 0; i < m_iVisibleCount; ++i)
 	{
-		WorldMatrix = m_pVisibleInstanceDescs[m_iCurrentVisibleIndex][i].Get_Matrix();
+		WorldMatrix = m_pVisibleInstanceDescs[i].Get_Matrix();
 
-		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vRight, WorldMatrix.r[0]);
-		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vUp, WorldMatrix.r[1]);
-		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vLook, WorldMatrix.r[2]);
-		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vTranslation, WorldMatrix.r[3]);
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i].vRight, WorldMatrix.r[0]);
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i].vUp, WorldMatrix.r[1]);
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i].vLook, WorldMatrix.r[2]);
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i ].vTranslation, WorldMatrix.r[3]);
 	}
 
 	/*for (auto& elem : m_pVisibleInstanceDescs[m_iCurrentVisibleIndex])
@@ -407,8 +425,8 @@ void CVIBuffer_Model_Instance::Update_VisibleInstance()
 
 void CVIBuffer_Model_Instance::OnDestroy()
 {
-	Safe_Delete_Array(m_pVisibleInstanceDescs[0]);
-	Safe_Delete_Array(m_pVisibleInstanceDescs[1]);
+	Safe_Delete_Array(m_pVisibleInstanceDescs);
+	//Safe_Delete_Array(m_pVisibleInstanceDescs[1]);
 }
 
 void CVIBuffer_Model_Instance::Free()

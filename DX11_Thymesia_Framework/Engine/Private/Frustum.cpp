@@ -39,7 +39,7 @@ void CFrustum::Update()
 	{
 		iUpdateIndex = 1 - iCurrentIndex;
 	}
-
+	
 
 	XMStoreFloat4(&m_vWorldPlane[iUpdateIndex][0], XMPlaneFromPoints(m_vWorldPoints[1], m_vWorldPoints[5], m_vWorldPoints[6]));
 	XMStoreFloat4(&m_vWorldPlane[iUpdateIndex][1], XMPlaneFromPoints(m_vWorldPoints[4], m_vWorldPoints[0], m_vWorldPoints[3]));
@@ -49,6 +49,9 @@ void CFrustum::Update()
 	XMStoreFloat4(&m_vWorldPlane[iUpdateIndex][5], XMPlaneFromPoints(m_vWorldPoints[0], m_vWorldPoints[1], m_vWorldPoints[2]));
 
 	iCurrentIndex = iUpdateIndex;
+
+	/*cout << "Frustum: ["<< iCurrentIndex << "]: ";
+	Print_Float4(m_vWorldPlane[iCurrentIndex][0]);*/
 }
 
 _bool CFrustum::isIn_Frustum_InWorldSpace(_fvector vWorldPoint, _float fRange)
