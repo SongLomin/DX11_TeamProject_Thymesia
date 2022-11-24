@@ -191,10 +191,6 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE&
 			case Client::PARRY_TYPE::NONE:
 				a = 6;
 				break;
-			case Client::PARRY_TYPE::PARRY_TYPE_END:
-				break;
-			default:
-				break;
 			}
 
 		}
