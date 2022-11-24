@@ -36,6 +36,13 @@
 #define		_GENERATE_PROP_COLLIDER_ true
 #endif // NDEBUG
 
+
+#define CLIENT_DECLATION_UI class CUI; class CCustomUI; class CProgressBar; class CHUD_Hover;
+
+#define ENGINE_DECLATION_UI class CTexture; class CShader;   
+
+
+
 namespace Client 
 {
 	static const _uint	g_iScreenCX = GetSystemMetrics(SM_CXSCREEN);

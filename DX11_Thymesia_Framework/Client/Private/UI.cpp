@@ -115,13 +115,30 @@ void CUI::Set_Texture(const _char* sKey)
 
 }
 
-void CUI::Set_UIPosition(const _float& fX, const _float& fY, const _float& fSizeX, const _float& fSizeY)
+void CUI::Set_UIPosition(const _float& fX, const _float& fY, const _float& fSizeX, const _float& fSizeY,
+	UI_ALIGN_TYPE eType)
 {
-	m_tUIDesc.fX = fX;
-	m_tUIDesc.fY = fY;
-	m_tUIDesc.fSizeX = fSizeX;
-	m_tUIDesc.fSizeY = fSizeY;
+	switch (eType)
+	{
+	case Client::CUI::ALIGN_LEFTTOP:
 
+		m_tUIDesc.fSizeX = fSizeX;
+		m_tUIDesc.fSizeY = fSizeY;
+		m_tUIDesc.fX = fX + (fSizeX * 0.5f);
+		m_tUIDesc.fY = fY +(fSizeY * 0.5f);
+		break;
+	case Client::CUI::ALIGN_CENTER:
+		m_tUIDesc.fX = fX;
+		m_tUIDesc.fY = fY;
+		m_tUIDesc.fSizeX = fSizeX;
+		m_tUIDesc.fSizeY = fSizeY;
+
+		break;
+	case Client::CUI::ALIGN_END:
+		break;
+	default:
+		break;
+	}
 }
 
 void CUI::Set_UIPosition(const _float& fX, const _float& fY)
@@ -152,7 +169,7 @@ void CUI::Set_Depth(_float _fDepth)
 	m_tUIDesc.fDepth = _fDepth;
 }
 
-void CUI::Set_SizeX(_float In_fSize)
+void CUI::Set_SizeX(const _float In_fSize)
 {
 	m_tUIDesc.fSizeX = In_fSize;
 }
@@ -176,6 +193,59 @@ void CUI::Add_Shaking(const _float& In_ShakeTime, const _float& _fShakePower)
 void CUI::Add_Child(weak_ptr<CUI> pChild)
 {
 	m_vecChildUI.push_back(pChild);
+}
+
+_float2 CUI::Get_Point(UI_POINT eType)
+{
+	_float2 vPos;
+
+
+	_float2 fHalfSize;
+	fHalfSize.x = m_tUIDesc.fSizeX * 0.5f;
+	fHalfSize.y = m_tUIDesc.fSizeY * 0.5f;
+
+	
+
+	switch (eType)
+	{
+	case Client::CUI::UI_POINT::LEFT:
+		vPos.x = m_tUIDesc.fX - fHalfSize.x;
+		vPos.y = m_tUIDesc.fY;
+		break;
+	case Client::CUI::UI_POINT::RIGHT:
+		vPos.x = m_tUIDesc.fX + fHalfSize.x;
+		vPos.y = m_tUIDesc.fY;
+		break;
+	case Client::CUI::UI_POINT::TOP:
+		vPos.x = m_tUIDesc.fX;
+		vPos.y = m_tUIDesc.fY - fHalfSize.y;
+		break;
+	case Client::CUI::UI_POINT::BOTTOM:
+		vPos.x = m_tUIDesc.fX;
+		vPos.y = m_tUIDesc.fY + fHalfSize.y;
+		break;
+	case Client::CUI::UI_POINT::LEFT_TOP:
+		vPos.x = m_tUIDesc.fX - fHalfSize.x;
+		vPos.y = m_tUIDesc.fY - fHalfSize.y;
+		break;
+	case Client::CUI::UI_POINT::LEFT_BOTTOM:
+		vPos.x = m_tUIDesc.fX - fHalfSize.x;
+		vPos.y = m_tUIDesc.fY + fHalfSize.y;
+		break;
+	case Client::CUI::UI_POINT::RIGHT_TOP:
+		vPos.x = m_tUIDesc.fX + fHalfSize.x;
+		vPos.y = m_tUIDesc.fY - fHalfSize.y;
+		break;
+	case Client::CUI::UI_POINT::RIGHT_BOTTOM:
+		vPos.x = m_tUIDesc.fX + fHalfSize.x;
+		vPos.y = m_tUIDesc.fY + fHalfSize.y;
+		break;
+	case Client::CUI::UI_POINT::UI_POINT_END:
+		break;
+	default:
+		break;
+	}
+	return vPos;
 }
 
 void CUI::OnEnable(void* _Arg)
@@ -279,6 +349,8 @@ void CUI::OnEventMessage(_uint iArg)
 	}
 
 }
+
+
 
 void CUI::Free()
 {

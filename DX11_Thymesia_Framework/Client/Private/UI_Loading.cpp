@@ -92,6 +92,7 @@ HRESULT CUI_Loading::Initialize(void* pArg)
 	m_pStageDesc.lock()->Set_DelayAlpha(3.f, 2.f);
 	m_bLoadComplete = false;
 	m_bCallFadeOut = false;
+	m_bIsChangeLevel = false;
 	return S_OK;
 }
 
@@ -163,8 +164,9 @@ _bool CUI_Loading::Get_Finish()
 {
 	if (m_bLoadComplete)
 	{
-		if (KEY_INPUT(KEY::ENTER, KEY_STATE::TAP))
+		if (KEY_INPUT(KEY::ENTER, KEY_STATE::TAP) && !m_bIsChangeLevel)
 		{
+			m_bIsChangeLevel = true;
 			FaderDesc tFaderDesc;
 			tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
 			tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
@@ -183,8 +185,6 @@ _bool CUI_Loading::Get_Finish()
 	}
 	return false;
 }
-
-
 
 
 void CUI_Loading::Free()

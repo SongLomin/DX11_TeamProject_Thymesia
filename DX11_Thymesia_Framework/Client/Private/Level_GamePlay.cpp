@@ -13,7 +13,8 @@
 #include "MonsterHPBar_Elite.h"
 #include "MonsterHPBar_Boss.h"
 #include "MonsterParryingBar.h"
-
+#include "UI_Containers.h"
+#include "UI_EvolveMenu.h"
 
 CLevel_GamePlay::CLevel_GamePlay()
 	//: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
@@ -259,6 +260,16 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 
 	}*/
 
+	if (KEY_INPUT(KEY::E, KEY_STATE::TAP))
+	{
+		weak_ptr< CUI_EvolveMenu> pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL_STATIC).front();
+		if (pEvolveMenu.lock()->Get_Enable() == false)
+		{
+			pEvolveMenu.lock()->Set_Enable(true);
+		}
+	
+	}
+
 }
 
 HRESULT CLevel_GamePlay::Render()
@@ -279,8 +290,10 @@ void CLevel_GamePlay::SetUp_UI()
 	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);//¿©±â¼­ 
 	m_pPauseMenu = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu>(LEVEL_STATIC);
 
-	//GAMEINSTANCE->Add_GameObject<CMonsterParryingBar>(LEVEL_STATIC);
-
+#ifdef _ONLY_UI_
+	GAMEINSTANCE->Add_GameObject<CMonsterParryingBar>(LEVEL_STATIC);
+	GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu>(LEVEL_STATIC);
+#endif
 
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_MPBar>(LEVEL_STATIC));

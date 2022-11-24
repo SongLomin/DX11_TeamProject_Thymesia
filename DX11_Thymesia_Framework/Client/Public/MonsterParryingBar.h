@@ -8,7 +8,7 @@ BEGIN(Client)
 class CCustomUI;
 class CProgressBar;
 
-class CMonsterParryingBar : public CCustomUI
+class CMonsterParryingBar : public CUI_LerpBar
 {
 public:
 	GAMECLASS_H(CMonsterParryingBar)
@@ -22,17 +22,18 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+	virtual void		Reset();
 
 private:
 	weak_ptr< CCustomUI> m_pBorder;
-	weak_ptr<CCustomUI>	m_pMainBar;
+	weak_ptr<CProgressBar>	m_pMainBar;
 private:
 	_float		m_fGauegeRecoveryTime;
 	_float		m_fGauegeRecoveryMaxTime;
 
 	_float		m_fCrurrentParryGauge;
 	_float		m_fLerpedParryGauge;
-
+	_float		m_fAmount;
 };
 
 END
