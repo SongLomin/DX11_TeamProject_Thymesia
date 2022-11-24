@@ -53,7 +53,7 @@ void CVargBossState_Attack2a::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 	if (m_bAttackLookAtLimit)
-		Turn_ToThePlayer(fTimeDelta);
+		Rotation_TargetToLookDir();
 
 	Check_AndChangeNextState();
 }
@@ -110,11 +110,6 @@ _bool CVargBossState_Attack2a::Check_AndChangeNextState()
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
 		m_bAttackLookAtLimit = false;
-
-	}
-
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.6f)
-	{
 		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack3a>(0.05f);
 		
 		return true;

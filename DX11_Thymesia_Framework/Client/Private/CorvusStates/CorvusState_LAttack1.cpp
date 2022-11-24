@@ -162,7 +162,7 @@ _bool CCorvusState_LAttack1::Check_AndChangeNextState()
 		return false;
 
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.2f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 16)
 	{
 
 		if (Check_RequirementAttackState())
@@ -206,7 +206,7 @@ _bool CCorvusState_LAttack1::Check_AndChangeNextState()
 
 
 	
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.8f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 64)
 	{
 		cout << "Ratio: " << m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() << endl;
 

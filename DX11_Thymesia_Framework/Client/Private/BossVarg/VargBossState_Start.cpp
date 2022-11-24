@@ -137,30 +137,20 @@ _bool CVargBossState_Start::Check_AndChangeNextState()
 	switch (m_eBossStartType)
 	{
 	case Client::BOSSSTARTTYPE::BEGINSTART:
-		if (fPToMDistance <= 15.f)
+		if (fPToMDistance <= 10.f)
 		{
 			m_fSinematic = 4.f;
 		}
 		break;
 	case Client::BOSSSTARTTYPE::NORMALSTART:
-		if (fPToMDistance <= 15.f)
+		if (fPToMDistance <= 10.f)
 		{
 			m_fSinematic = 4.f;
 		}
 		break;
 	}
 
-	//if (m_bNextState)
-	//{
-	//	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.99f)
-	//	{
-	//		TurnMechanism();
-	//		return true;
-	//	}
-	//	
-	//}
 
-	
 
 	return false;
 }

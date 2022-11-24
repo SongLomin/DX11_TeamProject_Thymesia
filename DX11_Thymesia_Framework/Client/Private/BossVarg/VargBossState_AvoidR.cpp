@@ -34,8 +34,6 @@ void CVargBossState_AvoidR::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_AvoidR");
 
-	m_bAttackLookAtLimit = true;  // 애니메이션시작할떄 룩엣시작
-
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_AvoidR::Call_AnimationEnd, this);
 }
 
@@ -51,8 +49,7 @@ void CVargBossState_AvoidR::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	if (m_bAttackLookAtLimit)
-		Rotation_TargetToLookDir();
+	Rotation_TargetToLookDir();
 
 	Check_AndChangeNextState();
 }
@@ -88,7 +85,7 @@ void CVargBossState_AvoidR::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
+	Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidAttack>(0.05f);
 }
 
 void CVargBossState_AvoidR::OnDestroy()
@@ -107,9 +104,11 @@ _bool CVargBossState_AvoidR::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.2f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
-		m_bAttackLookAtLimit = false;
+		Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidAttack>(0.05f);
+
+		return true;
 	}
 
 	return false;

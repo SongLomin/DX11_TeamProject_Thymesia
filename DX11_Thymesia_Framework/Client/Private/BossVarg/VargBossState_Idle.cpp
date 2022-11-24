@@ -33,6 +33,8 @@ void CVargBossState_Idle::Start()
 {
 	__super::Start();
 
+	//턴이나 턴어택에서 아이들로 들어오면 워크로 들어오기 
+
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_Idle");
 	
@@ -43,7 +45,6 @@ void CVargBossState_Idle::Start()
 void CVargBossState_Idle::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -97,109 +98,47 @@ _bool CVargBossState_Idle::Check_AndChangeNextState()
 
 	//조건 8보다클때
 
+	//보스존나어렵다 시발 ㅠㅠ ㅇㅇㅇ? ㅇㅇ 아 이거 랜덤으로 안하면 내가 정썜떄릴듯 ㄱㅊ? ㅇㅋㅇㅋ 최대한줄여봄 ㅇㅇ
+	// 그럼 탈주함
 
-	if (fPToMDistance > 10.f)
+	if (fPToMDistance < 1.f)
 	{
-		Rotation_TargetToLookDir();
-
-		int iRand = rand() % 3;
-
-		switch (iRand)
-		{
-		case 0:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_RaidAttack>(0.05f);
-			break;
-		case 1:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_RunAttack>(0.05f);
-			break;
-		case 2:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_RunStart>(0.05f);
-			break;
-		}
-
-		//턴하면 턴한다음 거기서 다음공격해야하고
-		// 턴안하고 바로공격은 여기서처리할수있음
-
-
-
+		Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkB>(0.05f);
 		return true;
-		/*
-		1. 보스몬스터보다 뒤에있으면 턴함 그리고 띵킹
-		2. 보스몬스터보다 뒤에있으면 뒤로회전공격
-		3. 공격패턴 1. 찍고 찍고 찌르기
-		4. 공격패턴 2. 둥글이 다음에 찍기 ?
-		5. 공격패턴 3. 둥글이 찍기 3개있음 2-1 -> 2-2 , 2-1 -> 2-2B , 2-1->2-2B1
-
-		*/
 	}
-	else if (4.f <= fPToMDistance || 8.f >= fPToMDistance)
+    if (fPToMDistance > 5.f) // 5보다크다
 	{
-		TurnMechanism();
-
-
-		int iRand = rand() % 4;
-
-		switch (iRand)
-		{
-		case 0:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidL>(0.05f);
-			break;
-		case 1:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidR>(0.05f);
-			break;
-		case 2:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidB>(0.05f);
-			break;
-		case 3:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidAttack>(0.05f);
-			break;
-		}
-
-		return true;
-		/*
-		거리가5보다크거나같고 8보자는작거나같을떄
-		1. 찌르기 공격
-		2. 양옆으로 갇다가 점프공격
-		3. 그냥점프공격바로 ?이건생각좀
-		*/
-	}
-	else if (1.5 < fPToMDistance || 4.f > fPToMDistance)
-	{
-		TurnMechanism();
-
 		int iRand = rand() % 2;
 
 		switch (iRand)
 		{
 		case 0:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1a>(0.05f);
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_RunAttack>(0.05f);
 			break;
 		case 1:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1b>(0.05f);
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_RunStart>(0.05f);
 			break;
 		}
+
 		return true;
-
 	}
-
-
-
-	else if (1.5f >= fPToMDistance)
+	else  // 5보다 작다
 	{
+		if (m_bTurnCheck)
+		{
+			TurnMechanism();
+		}
+		else
+		{
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkF>(0.05f);
+		}
 
+		// 5보다 작을떄 1보다 작을떄
 
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkB>(0.05f);
-	
 		return true;
-
-		/*
-		* 거리가 8보다크면 조건은 세가지
-		* 1. 점프공격으로 거리줄이는방법 <점프두가지있음 존나크게점프임 이거는레이드어택>
-		* 2. 달려오고 휘두로고 찍는 공격패턴 <런어택>
-		* 3. 달려오면서 바로 공격 <런-> 어택->1 >
-		*/
 	}
 	
+
 
 
 	return false;

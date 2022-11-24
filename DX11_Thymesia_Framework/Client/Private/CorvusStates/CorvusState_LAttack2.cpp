@@ -221,9 +221,26 @@ _bool CCorvusState_LAttack2::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 27)
+	{
+		if (Check_RequirementParryState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
+			return true;
+		}
+
+		if (Check_RequirementClawAttackState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
+			return true;
+		}
+	}
 
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 53)
 	{
 		if (Check_RequirementAVoidState())
 		{
@@ -231,10 +248,7 @@ _bool CCorvusState_LAttack2::Check_AndChangeNextState()
 			Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
 			return true;
 		}
-	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
-	{
 		if (Check_RequirementRunState())
 		{
 			Rotation_InputToLookDir();
@@ -242,6 +256,7 @@ _bool CCorvusState_LAttack2::Check_AndChangeNextState()
 			return true;
 		}
 	}
+
 
 	if (Check_RequirementAttackState())
 	{
@@ -265,32 +280,16 @@ _bool CCorvusState_LAttack2::Check_AndChangeNextState()
 		}
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.25f)
-	{
-		if (Check_RequirementParryState())
-		{
-			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
-			return true;
-		}
-	}
+	
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.25f)
-	{
-		if (Check_RequirementClawAttackState())
-		{
-			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
-			return true;
-		}
-	}
+
 
 	return false;
 }
 
 _bool CCorvusState_LAttack2::Check_RequirementNextAttackState()
 {
-	_uint iTargetKeyFrameFirst = 16;
+	_uint iTargetKeyFrameFirst = 12;
 	_uint iTargetKeyFrameSecond = 50;
 	
 

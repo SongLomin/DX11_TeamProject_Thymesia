@@ -258,30 +258,47 @@ void CBossStateBase::TurnMechanism()
 	if (!pCurrentPlayer.lock())
 		return;
 
-	if (ComputeAngleWithPlayer() <= 0.f) // 90일때 0 90보다크면 -값이다 0 보다작다
+	//플레이어랑 몬스터거리구해서 5보다크면 그대로실행하고
+	//5보다 작으면 턴공격으로 
+
+	_float fDistance = Get_DistanceWithPlayer();
+
+
+	if (fDistance > 5.f)
 	{
-		switch (ComputeDirectionToPlayer())
+		if (ComputeAngleWithPlayer() <= 0.f) // 90일때 0 90보다크면 -값이다 90보다 작으면 +값이다
 		{
-		case 1:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_TurnR>(0.05f);
-			break;
-		case -1:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_TurnL>(0.05f);
-			break;
-		default:
-			assert(0);
-			return;
+			switch (ComputeDirectionToPlayer())
+			{
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CVargBossState_TurnR>(0.05f);
+				break;
+			case -1:
+				Get_OwnerCharacter().lock()->Change_State<CVargBossState_TurnL>(0.05f);
+				break;
+			default:
+				assert(0);
+				return;
+			}
 		}
 
-
+		else
+		{
+			Rotation_TargetToLookDir();
+		}
 	}
-
 	else
 	{
-		//룩앳천천히하기
-		_vector vPlayerPosition = pCurrentPlayer.lock()->Get_WorldPosition();
-		m_pTransformCom.lock()->LookAt2D(vPlayerPosition);
+		if (ComputeAngleWithPlayer() <= 0.f)
+		{
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_TurnAttack>(0.05f);
+		}
+		
 	}
+
+
+
+	
 
 }
 

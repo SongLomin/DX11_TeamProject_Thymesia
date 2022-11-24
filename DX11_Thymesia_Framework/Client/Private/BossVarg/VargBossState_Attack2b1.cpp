@@ -52,7 +52,7 @@ void CVargBossState_Attack2b1::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 	if (m_bAttackLookAtLimit)
-		Turn_ToThePlayer(fTimeDelta);
+		Rotation_TargetToLookDir();
 
 	Check_AndChangeNextState();
 }
@@ -71,14 +71,14 @@ void CVargBossState_Attack2b1::OnStateStart(const _float& In_fAnimationBlendTime
 #endif
 #endif
 
-	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+	//m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 }
 
 void CVargBossState_Attack2b1::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+	//m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 

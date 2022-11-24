@@ -52,7 +52,6 @@ void CVargBossState_TurnAttack::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 
-
 	Check_AndChangeNextState();
 }
 
@@ -70,14 +69,14 @@ void CVargBossState_TurnAttack::OnStateStart(const _float& In_fAnimationBlendTim
 #endif
 #endif
 
-
+	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 }
 
 void CVargBossState_TurnAttack::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 
@@ -88,7 +87,7 @@ void CVargBossState_TurnAttack::Call_AnimationEnd()
 		return;
 
 
-	Get_OwnerCharacter().lock()->Change_State<CVargBossState_TurnAttack>(0.05f);
+	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
 }
 
 void CVargBossState_TurnAttack::OnDestroy()

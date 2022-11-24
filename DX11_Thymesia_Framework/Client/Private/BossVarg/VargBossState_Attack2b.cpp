@@ -32,7 +32,7 @@ void CVargBossState_Attack2b::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_ComboAttack2_1");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_ComboAttack2_2");
 
 	m_bAttackLookAtLimit = true;  // 애니메이션시작할떄 룩엣시작
 
@@ -52,7 +52,7 @@ void CVargBossState_Attack2b::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 	if (m_bAttackLookAtLimit)
-		Turn_ToThePlayer(fTimeDelta);
+		Rotation_TargetToLookDir();
 
 	Check_AndChangeNextState();
 }
@@ -81,8 +81,6 @@ void CVargBossState_Attack2b::OnStateEnd()
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 
 }
-
-
 
 void CVargBossState_Attack2b::Call_AnimationEnd()
 {

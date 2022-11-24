@@ -242,6 +242,7 @@ _bool CCorvusState_SprintAttack::Check_RuquireMnetFirstAttackState()
 
 
 
+
 	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) && m_IsNextAttack)
 	{
 		return true;

@@ -106,11 +106,12 @@ _bool CVargBossState_WalkF::Check_AndChangeNextState()
 
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 
-	if (fPToMDistance <= 14.5f)
+
+	if (fPToMDistance <= 3.f)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
-		return true;
+		//이댸 점프하고 공격할수도있음
 	}
+	
 
 
 	return false;

@@ -53,7 +53,7 @@ void CVargBossState_Attack3a::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 	if (m_bAttackLookAtLimit)
-		Turn_ToThePlayer(fTimeDelta);
+		Rotation_TargetToLookDir();
 
 	Check_AndChangeNextState();
 }

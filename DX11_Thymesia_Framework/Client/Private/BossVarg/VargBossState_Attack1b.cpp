@@ -53,7 +53,7 @@ void CVargBossState_Attack1b::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 	if (m_bAttackLookAtLimit)
-		Turn_ToThePlayer(fTimeDelta);
+		Rotation_TargetToLookDir();
 
 	Check_AndChangeNextState();
 }
@@ -90,7 +90,6 @@ void CVargBossState_Attack1b::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 	
-
 }
 
 void CVargBossState_Attack1b::OnDestroy()
@@ -111,25 +110,8 @@ _bool CVargBossState_Attack1b::Check_AndChangeNextState()
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
-
-		int iRand = rand() % 3;
-
-		switch (iRand)
-		{
-		case 0:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack2b>(0.05f);
-			break;
-		case 1:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1a>(0.05f);
-			break;
-		case 2:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack2b2>(0.05f);
-			break;
-		}
-
-
 		m_bAttackLookAtLimit = false;
-
+		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack2b>(0.05f);
 		return true;
 	}
 

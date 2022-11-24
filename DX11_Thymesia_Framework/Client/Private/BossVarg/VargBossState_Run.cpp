@@ -101,7 +101,7 @@ _bool CVargBossState_Run::Check_AndChangeNextState()
 
 	if (fPToMDistance <= 4.f)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
+		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack3b>(0.05f);
 		return true;
 	}
 

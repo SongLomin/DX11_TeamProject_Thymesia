@@ -69,6 +69,7 @@ void CVargBossState_RunStart::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif
 #endif
 
+	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 
 }
 
@@ -76,6 +77,7 @@ void CVargBossState_RunStart::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 
 }
 
@@ -106,11 +108,30 @@ _bool CVargBossState_RunStart::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
+
+
+
+
+	if (fPToMDistance <= 4.f)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Run>(0.05f);
+		int iRand = rand() % 3;
+
+		switch (iRand)
+		{
+		case 0:
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1a>(0.05f);
+			break;
+		case 1:
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1b>(0.05f);
+			break;
+		case 2:
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack3b>(0.05f);
+			break;
+		}
 		return true;
 	}
+
 
 	return false;
 }

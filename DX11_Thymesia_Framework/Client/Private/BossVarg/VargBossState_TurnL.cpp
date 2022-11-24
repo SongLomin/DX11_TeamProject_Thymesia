@@ -42,10 +42,6 @@ void CVargBossState_TurnL::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	_float fTurnValue = 1.57 / 0.85f;
-
-	m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * -1.5f);
-
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -54,7 +50,9 @@ void CVargBossState_TurnL::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+	_float fTurnValue = 1.57 / 0.85f;
 
+	m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * -1.5f);
 
 	Check_AndChangeNextState();
 }
