@@ -260,28 +260,19 @@ void CVIBuffer_Model_Instance::Culling_Instance(vector<INSTANCE_MESH_DESC>& In_P
 
 	_uint iIndex = 0;
 
-	if (m_pModelData->szModelFileName == "P_CircusBalloon01")
-	{
-		int i = 0;
-	}
-
 	for (auto& elem : In_ParticleDescs)
 	{
 		vPosition = XMLoadFloat3(&elem.vTarnslation);
 		vPosition.m128_f32[3] = 1.f;
 
-		if (pGameInstance->isIn_Frustum_InWorldSpace(vPosition, elem.fMaxRange))
+		if (pGameInstance->isIn_Frustum_InWorldSpace(vPosition, elem.fMaxRange * 2.5f))
 		{
-			m_pVisibleInstanceDescs[iIndex] = elem;
+			m_pVisibleInstanceDescs[iUpdateIndex][iIndex] = elem;
 			++iIndex;
-		}
-		else
-		{
-			//cout << "Culling! " << endl;
 		}
 	}
 
-	//m_iCurrentVisibleIndex = iUpdateIndex;
+	m_iCurrentVisibleIndex = iUpdateIndex;
 	m_iVisibleCount = iIndex;
 	m_bCulling = true;
 
@@ -327,37 +318,27 @@ void CVIBuffer_Model_Instance::Update(vector<INSTANCE_MESH_DESC>& In_ParticleDes
 
 	if (In_bUseCulling)
 	{
-		if (m_pVisibleInstanceDescs)
+		if (m_pVisibleInstanceDescs[0])
 		{
-			Safe_Delete_Array(m_pVisibleInstanceDescs);
-			m_pVisibleInstanceDescs = nullptr;
+			Safe_Delete_Array(m_pVisibleInstanceDescs[0]);
+			m_pVisibleInstanceDescs[0] = nullptr;
 		}
 
-		/*if (m_pVisibleInstanceDescs[1])
+		if (m_pVisibleInstanceDescs[1])
 		{
 			Safe_Delete_Array(m_pVisibleInstanceDescs[1]);
 			m_pVisibleInstanceDescs[1] = nullptr;
-		}*/
+		}
 
-		m_pVisibleInstanceDescs = DBG_NEW INSTANCE_MESH_DESC[In_ParticleDescs.size()];
-		//m_pVisibleInstanceDescs[1] = DBG_NEW INSTANCE_MESH_DESC[In_ParticleDescs.size()];
+		m_pVisibleInstanceDescs[0] = DBG_NEW INSTANCE_MESH_DESC[In_ParticleDescs.size()];
+		m_pVisibleInstanceDescs[1] = DBG_NEW INSTANCE_MESH_DESC[In_ParticleDescs.size()];
 
 		_uint iIndex = 0;
 
 		for (auto& elem : In_ParticleDescs)
 		{
-			m_pVisibleInstanceDescs[iIndex] = elem;
+			m_pVisibleInstanceDescs[0][iIndex] = elem;
 
-			if (m_pModelData->szModelFileName == "P_CircusBalloon01"/* || m_pModelData->szModelFileName == "P_CircusBalloon02"*/)
-			{//TODO: Test
-				weak_ptr<CCollider> pCollider = m_pOwner.lock()->Add_Component<CCollider>();
-				COLLIDERDESC tDesc;
-				tDesc.iLayer = 0;
-				tDesc.vRotation = { 0.f, 0.f, 0.f, 0.f };
-				tDesc.vScale = { elem.fMaxRange, 0.f ,0.f };
-				tDesc.vTranslation = elem.vTarnslation;
-				pCollider.lock()->Init_Collider(COLLISION_TYPE::SPHERE, tDesc);
-			}
 			++iIndex;
 		}
 
@@ -392,6 +373,9 @@ void CVIBuffer_Model_Instance::Update_VisibleInstance()
 	if (0 == m_iVisibleCount)
 		return;
 
+	if (!m_bCulling)
+		return;
+
 	D3D11_MAPPED_SUBRESOURCE		SubResource;
 
 	_matrix							WorldMatrix;
@@ -400,7 +384,7 @@ void CVIBuffer_Model_Instance::Update_VisibleInstance()
 
 	for (_uint i = 0; i < m_iVisibleCount; ++i)
 	{
-		WorldMatrix = m_pVisibleInstanceDescs[i].Get_Matrix();
+		WorldMatrix = m_pVisibleInstanceDescs[m_iCurrentVisibleIndex][i].Get_Matrix();
 
 		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i].vRight, WorldMatrix.r[0]);
 		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i].vUp, WorldMatrix.r[1]);
@@ -421,12 +405,14 @@ void CVIBuffer_Model_Instance::Update_VisibleInstance()
 
 	DEVICECONTEXT->Unmap(m_pVBInstance.Get(), 0);
 
+	m_bCulling = false;
+
 }
 
 void CVIBuffer_Model_Instance::OnDestroy()
 {
-	Safe_Delete_Array(m_pVisibleInstanceDescs);
-	//Safe_Delete_Array(m_pVisibleInstanceDescs[1]);
+	Safe_Delete_Array(m_pVisibleInstanceDescs[0]);
+	Safe_Delete_Array(m_pVisibleInstanceDescs[1]);
 }
 
 void CVIBuffer_Model_Instance::Free()
