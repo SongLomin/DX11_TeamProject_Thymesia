@@ -220,21 +220,7 @@ _bool CCorvusState_Parry1::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	//f (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.6f)
-	//
-	//	if (Check_RequirementParryState() && 4 == m_iAttackIndex)
-	//	{
-	//		if (Check_RequirementParryState())
-	//		{
-	//			if (!Rotation_InputToLookDir())
-	//				Rotation_NearToLookDir();
-	//
-	//			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack>(0.05f);
-	//			Get_OwnerPlayer()->Get_Component<CCorvusState_LAttack>().lock()->Play_AttackWithIndex(2);
-	//			return true;
-	//		}
-	//	}
-	//
+
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 35)
 	{
