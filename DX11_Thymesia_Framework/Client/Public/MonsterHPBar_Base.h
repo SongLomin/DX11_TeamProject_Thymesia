@@ -9,7 +9,7 @@ class CCustomUI;
 class CProgressBar;
 class CHUD_Hover;
 class CMonster;
-
+class CMonsterParryingBar;
 
 class CMonsterHPBar_Base : public CUI
 {
@@ -33,16 +33,25 @@ public:
 	void			Set_Offset(_float3 _vOffset) { m_vOffset = _vOffset; }
 	//CallEventFuncitons
 public:
+	void			Call_Update_ParryGauge(_float _fRatio, _bool bLerp);
+
+	
 	void			Call_Damaged_White(_float _fRatio);
 	void			Call_Damaged_Green(_float _fRatio);
+	void			Call_Damaged_Parry(_float _fRatio);
+	
 	void			Call_RecoveryAlram();
 	void			Call_Recovery();
 	void			Call_Disable();
 	void			Call_Stun();
 	void			Call_Restart();
 
+
+	
+
+
 public:
-	virtual void OnDisable();
+	virtual void OnDisable() override;
 
 
 protected:
@@ -62,7 +71,6 @@ protected:
 private:
 	void		Set_DecorationHead();
 
-
 protected:
     weak_ptr<CCustomUI> m_pBorder; // 0.6f;
 	weak_ptr<CCustomUI> m_pDecoration_Head; // 0.0f;
@@ -75,6 +83,9 @@ protected:
 	weak_ptr<CHUD_Hover>	m_pRecovery;
 	weak_ptr<CHUD_Hover>	m_pStunned;
 	weak_ptr<CMonster>		m_pOwner;
+
+
+	weak_ptr<CMonsterParryingBar> m_pParryingBar;
 
 
 	_float3					m_vOffset;

@@ -11,6 +11,7 @@
 #include "UI_PauseMenu_Page_Status.h"
 #include "FadeMask.h"
 
+
 GAMECLASS_C(CUI_PauseMenu)
 CLONE_C(CUI_PauseMenu, CGameObject)
 

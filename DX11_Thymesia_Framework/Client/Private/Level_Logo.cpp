@@ -128,3 +128,8 @@ void CLevel_Logo::Free()
 	__super::Free();
 }
 
+void CLevel_Logo::SetUp_UI()
+{
+	return;
+}
+

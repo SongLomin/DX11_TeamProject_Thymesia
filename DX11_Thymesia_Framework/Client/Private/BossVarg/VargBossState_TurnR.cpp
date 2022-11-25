@@ -31,9 +31,7 @@ void CVargBossState_TurnR::Start()
 {
 	__super::Start();
 
-
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_TurnR90");
-
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_TurnR::Call_AnimationEnd, this);
 }
@@ -42,9 +40,7 @@ void CVargBossState_TurnR::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	_float fTurnValue = 1.57 / 0.85f;
 
-	m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * 1.5f);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -54,7 +50,9 @@ void CVargBossState_TurnR::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+	_float fTurnValue = 1.57 / 0.85f;
 
+	m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * 1.5f);
 
 	Check_AndChangeNextState();
 }
@@ -69,7 +67,7 @@ void CVargBossState_TurnR::OnStateStart(const _float& In_fAnimationBlendTime)
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: TurnR -> OnStateStart" << endl;
 #endif
 #endif
 	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
@@ -89,7 +87,6 @@ void CVargBossState_TurnR::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
-
 
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
 }
@@ -113,6 +110,7 @@ _bool CVargBossState_TurnR::Check_AndChangeNextState()
 	if (ComputeAngleWithPlayer() > 0.94f)
 	{
 		Rotation_TargetToLookDir();
+		Get_Owner().lock()->Get_Component<CVargBossState_Idle>().lock()->Set_TurnCheck(false);
 		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
 		return true;
 	}

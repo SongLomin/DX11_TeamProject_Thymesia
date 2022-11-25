@@ -66,18 +66,18 @@ void CVargBossState_TurnAttack::OnStateStart(const _float& In_fAnimationBlendTim
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: TurnAttack -> OnStateStart" << endl;
 #endif
 #endif
 
-
+	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 }
 
 void CVargBossState_TurnAttack::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 
@@ -87,8 +87,8 @@ void CVargBossState_TurnAttack::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-
-	Get_OwnerCharacter().lock()->Change_State<CVargBossState_TurnAttack>(0.05f);
+	Get_Owner().lock()->Get_Component<CVargBossState_Idle>().lock()->Set_TurnCheck(false);
+	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
 }
 
 void CVargBossState_TurnAttack::OnDestroy()
@@ -106,6 +106,13 @@ _bool CVargBossState_TurnAttack::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.8f)
+	{
+		Get_Owner().lock()->Get_Component<CVargBossState_Idle>().lock()->Set_TurnCheck(false);
+		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
+		return true;
+	}
 
 	return false;
 }

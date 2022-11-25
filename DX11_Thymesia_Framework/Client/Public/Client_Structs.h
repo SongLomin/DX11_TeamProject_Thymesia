@@ -13,22 +13,6 @@ namespace Client
 		_bool		bSyncStartPositionToController;
 		_bool		bSyncStartRotationToController;
 
-		enum class ValueForRotation
-		{
-			x, y, z, ValueForRotation_END
-		};
-
-		_int iValueForRotation;
-		//enum AxisForRotation
-		//{
-		//	Axis_X, Axis_Y, Axis_Z,
-		//	Axis_Right, Axis_Up, Axis_Look,
-		//	Axis_END
-		//};
-
-		//_int eAxisForRotation;
-		//_float3 vRotationAxis;
-
 #pragma endregion
 
 #pragma region Datas
@@ -50,6 +34,7 @@ namespace Client
 #pragma region Speed
 		_float3		vSpeed;
 		_float3		vForce;
+		_float3		vMinSpeed;
 		_float3		vMaxSpeed;
 #pragma endregion
 
@@ -75,6 +60,7 @@ namespace Client
 		_float4		vStartColor;
 		_float4		vColorSpeed;
 		_float4		vColorForce;
+		_float4		vMinColor;
 		_float4		vMaxColor;
 #pragma endregion
 
@@ -87,27 +73,33 @@ namespace Client
 #pragma region Diffuse
 		_int		iDiffuseTextureIndex;
 		_bool		bDiffuseWrap;
+
 		_float2		vDiffuseStartUV;
 		_float2		vDiffuseUVSpeed;
 		_float2		vDiffuseUVForce;
+		_float2		vDiffuseUVMin;
 		_float2		vDiffuseUVMax;
 #pragma endregion
 
 #pragma region Noise
 		_int		iNoiseTextureIndex;
 		_bool		bNoiseWrap;
+
 		_float2		vNoiseStartUV;
 		_float2		vNoiseUVSpeed;
 		_float2		vNoiseUVForce;
+		_float2		vNoiseUVMin;
 		_float2		vNoiseUVMax;
 #pragma endregion
 
 #pragma region Mask
 		_int		iMaskTextureIndex;
 		_bool		bMaskWrap;
+
 		_float2		vMaskStartUV;
 		_float2		vMaskUVSpeed;
 		_float2		vMaskUVForce;
+		_float2		vMaskUVMin;
 		_float2		vMaskUVMax;
 #pragma endregion
 

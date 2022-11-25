@@ -33,6 +33,8 @@ protected:
     virtual void OnCollisionStay(weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionExit(weak_ptr<CCollider> pOtherCollider) override;
 
+    
+
 public:
     virtual void OnEventMessage(_uint iArg) override;
     void Free();

@@ -123,7 +123,14 @@ void CCorvusState_ClawAttack1::OnStateStart(const _float& In_fAnimationBlendTime
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_AVoid>().lock())
+	{
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 14);
+	}
+	else
+	{
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	}
 
 	if (!m_pModelCom.lock().get())
 	{

@@ -35,13 +35,30 @@ protected:
     _bool           Rotation_InputToLookDir();
     _bool           Rotation_TargetToLookDir();
     _bool           Rotation_NearToLookDir();
+ 
 
 protected:
-    _float3                m_vLookAtDir;
-    _float                 m_fCurrentRotateTime = 0.f;
-    
-    weak_ptr<CPlayer>      m_pOwnerFromPlayer;
+    _float3 m_vLookAtDir;
+    _float  m_fCurrentRotateTime = 0.f;
 
+    // TODO : Change to keyframe
+    _float m_fNextCombatRatio = 0.f; // 어떤 행동을 취한후 다음 전투 행동에 가기까지의 텀
+    _float m_fNextNonCombatRatio = 0.f; // 어떤 행동을 취한후 다음 비전투 행동에 가기까지의 텀
+
+    _uint m_iNextCombatKeyFrame;
+    _uint m_iNextMovementKeyFrame;
+
+
+    weak_ptr<CPlayer>       m_pOwnerFromPlayer;
+    
+
+protected: //Parrying Variable;
+    PARRY_TYPE              m_eParryType = PARRY_TYPE::PARRY_TYPE_END;
+    _bool                   m_bParryed = false;
+
+protected://Parrying Functions
+    PARRY_TYPE              Get_ParryType() { return m_eParryType; }
+    void                    Success_Parry() { m_bParryed = true; }
 
 public: /* For. EventFunction */
     void OnWeaponFirstAttack(weak_ptr<CCollider> pOtherCollider);

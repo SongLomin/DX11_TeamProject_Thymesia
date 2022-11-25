@@ -52,8 +52,8 @@ void CCorvusState_Parry2::Tick(_float fTimeDelta)
 		}
 	}
 
-	Attack();
-
+	//Attack();
+	Update_ParryType();
 	
 }
 
@@ -63,10 +63,7 @@ void CCorvusState_Parry2::LateTick(_float fTimeDelta)
 
 	Check_InputNextAttack();
 
-	if (Check_AndChangeNextState())
-	{
-
-	}
+	Check_AndChangeNextState();
 }
 
 void CCorvusState_Parry2::Call_AnimationEnd()
@@ -115,13 +112,41 @@ void CCorvusState_Parry2::Check_InputNextAttack()
 
 }
 
+void CCorvusState_Parry2::Update_ParryType()
+{
+	_uint		iKeyFrame = m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex();
+	if (iKeyFrame >= 14 && iKeyFrame <= 25)
+	{
+		m_eParryType = PARRY_TYPE::PERFECT;
+		return;
+	}
+	else if (iKeyFrame >= 1 && iKeyFrame <= 35)
+	{
+		m_eParryType = PARRY_TYPE::NORMAL;
+		return;
+	}
+	else
+	{
+		m_eParryType = PARRY_TYPE::FAIL;
+		return;
+	}
+}
+
 
 
 void CCorvusState_Parry2::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_AVoid>().lock())
+	{
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 15);
+	}
+	else
+	{
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	}
 	
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 	if (!m_pModelCom.lock().get())
 	{
@@ -130,7 +155,7 @@ void CCorvusState_Parry2::OnStateStart(const _float& In_fAnimationBlendTime)
 	}
 
 
-
+	m_bParryed = false;
 
 	//Disable_Weapons();
 
@@ -151,6 +176,7 @@ void CCorvusState_Parry2::OnStateEnd()
 
 	//Disable_Weapons();
 	m_IsNextAttack = false;
+	m_bParryed = false;
 }
 
 void CCorvusState_Parry2::OnEventMessage(_uint iArg)
@@ -204,35 +230,38 @@ _bool CCorvusState_Parry2::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	
 
-
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 30)
 	{
+		if (Check_RequirementAttackState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
+			return true;
+		}
+
 		if (Check_RequirementAVoidState())
 		{
 			Rotation_InputToLookDir();
 			Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
 			return true;
 		}
+
+		if (Check_RequirementClawAttackState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
+			return true;
+		}
 	}
 
-
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 70)
 	{
 		if ((Check_RequirementRunState()))
 		{
 			Rotation_InputToLookDir();
 			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
-			return true;
-		}
-	}
-
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
-	{
-		if (Check_RequirementClawAttackState())
-		{
-			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
 			return true;
 		}
 	}
@@ -259,7 +288,7 @@ _bool CCorvusState_Parry2::Check_AndChangeNextState()
 
 _bool CCorvusState_Parry2::Check_RequirementNextParryState()
 {
-	_uint iTargetKeyFrame = 50;
+	_uint iTargetKeyFrame = 30;
 
 
 
@@ -273,10 +302,8 @@ _bool CCorvusState_Parry2::Check_RequirementNextParryState()
 
 _bool CCorvusState_Parry2::Check_RuquireMnetFirstParryState()
 {
-	_uint iTargetKeyFrameMin = 51;
-	_uint iTargetKeyFrameMax = 80;
-
-
+	_uint iTargetKeyFrameMin = 31;
+	_uint iTargetKeyFrameMax = 110;
 
 	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) && m_IsNextAttack)
 	{

@@ -22,17 +22,21 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+	virtual void		Reset();
+	virtual void		Set_UIPosition(const _float fX, const _float fY) override;
+
+
+	void				Set_Ratio(_float fRatio, _bool bRatio);
 
 private:
 	weak_ptr< CCustomUI> m_pBorder;
-	weak_ptr<CCustomUI>	m_pMainBar;
+	weak_ptr<CProgressBar>	m_pMainBar;
+
 private:
 	_float		m_fGauegeRecoveryTime;
-	_float		m_fGauegeRecoveryMaxTime;
-
 	_float		m_fCrurrentParryGauge;
 	_float		m_fLerpedParryGauge;
-
+	_float		m_fAmount;
 };
 
 END

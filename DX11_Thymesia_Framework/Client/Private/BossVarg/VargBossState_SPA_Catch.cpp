@@ -66,7 +66,7 @@ void CVargBossState_SPA_Catch::OnStateStart(const _float& In_fAnimationBlendTime
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: SPA_Catch -> OnStateStart" << endl;
 #endif
 #endif
 

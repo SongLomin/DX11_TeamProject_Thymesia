@@ -21,7 +21,7 @@ HRESULT CPlayerStateBase::Initialize(void* pArg)
 	m_iTimeScaleLayer = (_uint)TIMESCALE_LAYER::PLAYER;
 	m_pOwnerFromPlayer = Weak_Cast<CPlayer>(m_pOwner);
 	m_vLookAtDir = { 0.f, 0.f, 0.f };
-
+	
 	return S_OK;
 }
 

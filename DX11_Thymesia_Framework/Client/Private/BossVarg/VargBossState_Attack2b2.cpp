@@ -55,6 +55,9 @@ void CVargBossState_Attack2b2::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+	if (m_bAttackLookAtLimit)
+		Rotation_TargetToLookDir();
+
 	Check_AndChangeNextState();
 }
 
@@ -68,18 +71,18 @@ void CVargBossState_Attack2b2::OnStateStart(const _float& In_fAnimationBlendTime
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: Attack2b2 -> OnStateStart" << endl;
 #endif
 #endif
 
-	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
+	//m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 }
 
 void CVargBossState_Attack2b2::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+	//m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 void CVargBossState_Attack2b2::Call_AnimationEnd()

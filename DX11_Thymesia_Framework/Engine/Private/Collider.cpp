@@ -198,16 +198,18 @@ void CCollider::Reset_OtherColliders()
 
 void CCollider::Update(_fmatrix TransformMatrix)
 {
+	_matrix WorldMatrix = SMath::Add_PositionWithRotation(TransformMatrix, XMLoadFloat3(&m_ColliderDesc.vOffset));
+
 	switch (m_eType)
 	{
 	case COLLISION_TYPE::AABB:
-		m_pAABB_Original->Transform(*m_pAABB, Remove_Rotation(TransformMatrix));
+		m_pAABB_Original->Transform(*m_pAABB, Remove_Rotation(WorldMatrix));
 		break;
 	case COLLISION_TYPE::OBB:
-		m_pOBB_Original->Transform(*m_pOBB, TransformMatrix);
+		m_pOBB_Original->Transform(*m_pOBB, WorldMatrix);
 		break;
 	case COLLISION_TYPE::SPHERE:
-		m_pSphere_Original->Transform(*m_pSphere, TransformMatrix);
+		m_pSphere_Original->Transform(*m_pSphere, WorldMatrix);
 		break;
 	}
 }

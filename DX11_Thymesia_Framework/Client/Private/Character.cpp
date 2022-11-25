@@ -81,6 +81,9 @@ weak_ptr<CStateBase> CCharacter::Get_CurState() const
 	return m_pCurState;
 }
 
+
+
+
 void CCharacter::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
 	m_pCurState.lock()->OnHit(pOtherCollider, In_eHitType, In_fDamage);
@@ -127,6 +130,8 @@ void CCharacter::OnEventMessage(_uint iArg)
 	{
 		m_isEdit = true;
 	}
+
+	
 
 }
 

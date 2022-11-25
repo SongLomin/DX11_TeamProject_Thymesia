@@ -8,6 +8,7 @@
 GAMECLASS_C(CStatus_Monster)
 CLONE_C(CStatus_Monster, CComponent)
 
+
 HRESULT CStatus_Monster::Initialize_Prototype()
 {
 	return E_NOTIMPL;
@@ -34,7 +35,9 @@ void CStatus_Monster::Tick(_float fTimeDelta)
 
 	m_tMonsterDesc.m_fHitedTime += fTimeDelta;
 
-	Check_HitedTime(fTimeDelta);
+	Update_HitedTime(fTimeDelta);
+	Update_ParryRecoveryTime(fTimeDelta);
+
 }
 
 void CStatus_Monster::LateTick(_float fTimeDelta)
@@ -105,11 +108,12 @@ void CStatus_Monster::Init_Status(const void* pArg)
 	m_tMonsterDesc.m_fCurrentHP_Green = m_tMonsterDesc.m_fMaxHP_white;
 	m_tMonsterDesc.m_fMaxHP_Green = m_tMonsterDesc.m_fMaxHP_white;
 	m_tMonsterDesc.m_fHitedTime = 999.f;
+	m_tMonsterDesc.m_fParryGaugeRecoveryTime = 0.f;//얘는 차오른 패리 게이지 양에 따라 줄어드는 시간이 달라짐.
 	m_tMonsterDesc.m_fRecoveryAlramTime = 5.f;
 	m_tMonsterDesc.m_fRecoveryTime = 7.f;
 	m_tMonsterDesc.m_fHpBarDisableTime = 15.f;
 	m_tMonsterDesc.m_iCueentParryCount = 0.f;
-	m_tMonsterDesc.m_fCurrentParryingGauge = m_tMonsterDesc.m_fMaxParryingGauge;
+	m_tMonsterDesc.m_fCurrentParryingGauge = 0.f;
 	m_tMonsterDesc.m_fRecoveryAmountPercentageFromSecond = 0.3f;
 	m_tMonsterDesc.m_fRecoveryMag = 1.f;
 }
@@ -142,17 +146,21 @@ void CStatus_Monster::Get_Desc(void* pOutDesc)
 	memcpy(pOutDesc, &m_tMonsterDesc, sizeof(MONSTERDESC));
 }
 
-void CStatus_Monster::Decrease_White_HP(const _float& In_fDamage)
+void CStatus_Monster::Decrease_White_HP(const _float In_fDamage)
 {
 	Decrease_HP(m_tMonsterDesc.m_fCurrentHP_white, In_fDamage);
 
 	m_tMonsterDesc.m_fHitedTime = 0.f;
 
+	_float fParryGaugeRatio = m_tMonsterDesc.m_fCurrentParryingGauge / m_tMonsterDesc.m_fMaxParryingGauge;
+	Set_ParryRecoveryTime(fParryGaugeRatio);
+
+
 	CallBack_Damged_White(m_tMonsterDesc.m_fCurrentHP_white /
 		m_tMonsterDesc.m_fMaxHP_white);
 }
 
-void CStatus_Monster::Decrease_Green_HP(const _float& In_fDamage)
+void CStatus_Monster::Decrease_Green_HP(const _float In_fDamage)
 {
 	Decrease_HP(m_tMonsterDesc.m_fCurrentHP_Green, In_fDamage);
 
@@ -161,12 +169,57 @@ void CStatus_Monster::Decrease_Green_HP(const _float& In_fDamage)
 	if (m_tMonsterDesc.m_fCurrentHP_Green < m_tMonsterDesc.m_fCurrentHP_white)
 		m_tMonsterDesc.m_fCurrentHP_Green = m_tMonsterDesc.m_fCurrentHP_white;
 
+	_float fParryGaugeRatio = m_tMonsterDesc.m_fCurrentParryingGauge / m_tMonsterDesc.m_fMaxParryingGauge;
+	Set_ParryRecoveryTime(fParryGaugeRatio);
+
+	
 	CallBack_Damged_Green(m_tMonsterDesc.m_fCurrentHP_Green/
 		m_tMonsterDesc.m_fMaxHP_Green);
 }
 
+void CStatus_Monster::Decrease_ParryGauge(const _float In_fDamage)
+{
+	Increase_HP(m_tMonsterDesc.m_fCurrentParryingGauge,
+				m_tMonsterDesc.m_fMaxParryingGauge,
+				In_fDamage);
 
-void CStatus_Monster::Check_HitedTime(_float fTimeDelta)
+	_float fParryGaugeRatio = m_tMonsterDesc.m_fCurrentParryingGauge / m_tMonsterDesc.m_fMaxParryingGauge;
+	CallBack_UpdateParryGauge(fParryGaugeRatio, true);
+	Set_ParryRecoveryTime(fParryGaugeRatio);
+	m_tMonsterDesc.m_fHitedTime = 0.f;
+
+	//패링 게이지가 꽉 찼다면 체력 다 0으로 만들기
+	if (fParryGaugeRatio >= 1.f)
+	{
+		m_tMonsterDesc.m_fCurrentHP_Green = 0.f;
+		m_tMonsterDesc.m_fCurrentHP_white= 0.f;
+
+		CallBack_Damged_White(0.f);
+		CallBack_Damged_Green(0.f);
+	}
+
+	
+}
+
+_bool CStatus_Monster::Is_Groggy() const
+{
+	_float fParryGaugeRatio = m_tMonsterDesc.m_fCurrentParryingGauge / m_tMonsterDesc.m_fMaxParryingGauge;
+
+	return fParryGaugeRatio >= 1.f - DBL_EPSILON;
+}
+
+void CStatus_Monster::Set_ParryRecoveryTime(const _float fRatio)
+{
+	if (fRatio > 0.8f)
+		m_tMonsterDesc.m_fParryGaugeRecoveryTime = 5.f;
+	else if (fRatio > 0.4f)
+		m_tMonsterDesc.m_fParryGaugeRecoveryTime = 4.f;
+	else
+		m_tMonsterDesc.m_fParryGaugeRecoveryTime = 3.f;
+}
+
+
+void CStatus_Monster::Update_HitedTime(_float fTimeDelta)
 {
 	//가장 최근에 맞은 시간에 따라 처리되는 그게... 달라짐.
 	//5
@@ -193,11 +246,35 @@ void CStatus_Monster::Check_HitedTime(_float fTimeDelta)
 	else if (m_tMonsterDesc.m_fHitedTime >= m_tMonsterDesc.m_fRecoveryAlramTime)//5
 	{
 		//체력 회복 알람
-		if (m_tMonsterDesc.m_fCurrentHP_Green >= 0.f)
+		if (m_tMonsterDesc.m_fCurrentHP_Green > 0.f && 
+			(m_tMonsterDesc.m_fCurrentHP_white < m_tMonsterDesc.m_fCurrentHP_Green))
 			CallBack_RecoeoryAlram();
 		
 		return;
 	}
+}
+
+void CStatus_Monster::Update_ParryRecoveryTime(_float fTimeDelta)
+{
+	if (m_tMonsterDesc.m_fCurrentHP_Green <= 0.f)
+		return;
+
+	if (m_tMonsterDesc.m_fCurrentParryingGauge <= 0.f)
+		return;
+	m_tMonsterDesc.m_fParryGaugeRecoveryTime -= fTimeDelta;
+	
+	//패리 게이지가 남아있다? 아직 회복까지 남은 시간이 있다.
+	if (m_tMonsterDesc.m_fParryGaugeRecoveryTime > 0.f)
+		return;
+
+	//초당 최대 패링게이지의 2할만큼 빠짐.
+	m_tMonsterDesc.m_fCurrentParryingGauge -= (m_tMonsterDesc.m_fMaxParryingGauge * 0.2) * fTimeDelta;
+	if (m_tMonsterDesc.m_fCurrentParryingGauge <= 0.f)
+		m_tMonsterDesc.m_fCurrentParryingGauge = 0.f;
+
+	CallBack_UpdateParryGauge(m_tMonsterDesc.m_fCurrentParryingGauge / m_tMonsterDesc.m_fMaxParryingGauge,
+		false);
+
 }
 
 void CStatus_Monster::Free()

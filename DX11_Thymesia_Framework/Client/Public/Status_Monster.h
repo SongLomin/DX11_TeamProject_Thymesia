@@ -18,6 +18,8 @@ public:
 		_float m_fMaxHP_Green; //몬스터초록색최대체력
 		_float m_fAtk; //몬스터 공격력
 		_float m_fHitedTime; //피해를 받은 후로부터 지난 시간(맞을대마다초기화)
+		_float m_fParryGaugeRecoveryTime; //피해를 받은 후로부터 지난 시간(맞을대마다초기화)
+
 		_float m_fRecoveryAlramTime; //흰색체력회복예고시간
 		_float m_fRecoveryTime; //회복까지의시간
 		_float m_fRecoveryAmountPercentageFromSecond;//초당 몇퍼센트까지 회복할껀지(0~1로)
@@ -44,6 +46,8 @@ public:
 	FDelegate<>			CallBack_RecoeoryStart;
 	FDelegate<>			CallBack_RecoeoryAlram;
 	FDelegate<>			CallBack_ReStart;
+	FDelegate<_float, _bool> CallBack_UpdateParryGauge;
+
 
 public:
 	virtual HRESULT Initialize_Prototype();
@@ -65,6 +69,7 @@ public:
 		return m_tMonsterDesc.m_fCurrentHP_white / m_tMonsterDesc.m_fMaxHP_white
 			;
 	}
+	
 	virtual _float	Get_GreenRatio() {
 		return m_tMonsterDesc.m_fCurrentHP_Green/ m_tMonsterDesc.m_fMaxHP_Green
 			;
@@ -73,13 +78,19 @@ public:
 	_float			Get_Atk() { return m_tMonsterDesc.m_fAtk; }
 	virtual void    Get_Desc(void* Out_pDesc);
 
+	void			Decrease_ParryGauge(const _float In_fDamage);
+
+	_bool			Is_Groggy() const;
 
 protected:
-	void			Decrease_White_HP(const _float& In_fDamage);
-	void			Decrease_Green_HP(const _float& In_fDamage);
+	void			Decrease_White_HP(const _float In_fDamage);
+	void			Decrease_Green_HP(const _float In_fDamage);
 
-	void			Check_HitedTime(_float fTimeDelta);
 
+	void			Set_ParryRecoveryTime(const _float fRatio);
+
+	void			Update_HitedTime(_float fTimeDelta);
+	void			Update_ParryRecoveryTime(_float fTimeDelta);
 
 protected:
 	MONSTERDESC     m_tMonsterDesc;

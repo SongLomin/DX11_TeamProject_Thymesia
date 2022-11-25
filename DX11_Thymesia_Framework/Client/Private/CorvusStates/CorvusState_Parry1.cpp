@@ -23,7 +23,6 @@ HRESULT CCorvusState_Parry1::Initialize_Prototype()
 HRESULT CCorvusState_Parry1::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-	m_iAttackIndex = 123;
 	return S_OK;
 }
 
@@ -53,8 +52,8 @@ void CCorvusState_Parry1::Tick(_float fTimeDelta)
 		}
 	}
 
-	Attack();
-
+	//Attack();
+	Update_ParryType();
 	
 }
 
@@ -62,12 +61,9 @@ void CCorvusState_Parry1::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	Check_InputNextAttack();
+	Check_InputNextParry();
 
-	if (Check_AndChangeNextState())
-	{
-
-	}
+	Check_AndChangeNextState();
 }
 
 void CCorvusState_Parry1::Call_AnimationEnd()
@@ -89,10 +85,10 @@ void CCorvusState_Parry1::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 		cout << "AttackIndex: " << m_iAttackIndex << endl;
 #endif
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAttackIndex);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 }
 
-void CCorvusState_Parry1::Attack()
+void CCorvusState_Parry1::Update_ParryType()
 {
 #ifdef _DEBUG
 	if (GAMEINSTANCE->Is_Debug())
@@ -102,16 +98,59 @@ void CCorvusState_Parry1::Attack()
 		szDebugText += to_wstring(m_pModelCom.lock()->Get_CurrentAnimationIndex());
 		szDebugText += TEXT(", Current KeyFrame: ");
 		szDebugText += to_wstring(m_pModelCom.lock()->Get_CurrentAnimationKeyIndex());
-		_float2 vPosition(0.f, 3.f);
+		szDebugText += TEXT("PARRY TYPE : ");
+		szDebugText += to_wstring((_uint)m_eParryType);
+
+		_float2 vPosition(0.f, 850.f);
 		_vector vColor = XMVectorSet(1.f, 1.f, 0.f, 1.f);
 
 		GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::DREAM, szDebugText, vPosition, vColor, false);
 	}
 #endif // _DEBUG
+	/*
+		퍼펙트 패링(특수효과아마?)
+		패링데미지 1.5배
+		데미지 아예 무시
+		14~20
+
+		10~25
+		노멀 패링
+		->패링 데미지 1배
+		받는 데미지 절반
+
+		//나머지
+		->워스트
+		그냥 처맞기랑 같음.
+	*/
+	_uint		iKeyFrame = m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex();
+	if (iKeyFrame >= 14 && iKeyFrame <= 25)
+	{
+		m_eParryType = PARRY_TYPE::PERFECT;
+		return;
+	}
+	else if (iKeyFrame >= 1 && iKeyFrame <= 35)
+	{
+		m_eParryType = PARRY_TYPE::NORMAL;
+		return;
+	}
+	else
+	{
+		m_eParryType = PARRY_TYPE::FAIL;
+		return;
+	}
+}
+
+
+
+
+
+void CCorvusState_Parry1::Attack()
+{
+
 
 }
 
-void CCorvusState_Parry1::Check_InputNextAttack()
+void CCorvusState_Parry1::Check_InputNextParry()
 {
 	if (!KEY_INPUT(KEY::F, KEY_STATE::TAP))
 	{
@@ -129,7 +168,14 @@ void CCorvusState_Parry1::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 	
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAttackIndex);
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Parry2>().lock())
+	{
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 13);
+	}
+	else
+	{
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	}
 
 	if (!m_pModelCom.lock().get())
 	{
@@ -142,8 +188,8 @@ void CCorvusState_Parry1::OnStateStart(const _float& In_fAnimationBlendTime)
 
 
 	//Disable_Weapons();
-
-
+	m_eParryType = PARRY_TYPE::FAIL;
+	m_bParryed = false;
 
 
 #ifdef _DEBUG
@@ -160,7 +206,8 @@ void CCorvusState_Parry1::OnStateEnd()
 
 	//Disable_Weapons();
 	m_IsNextAttack = false;
-	m_iAttackIndex = 123;
+
+	m_bParryed = false;
 
 }
 
@@ -215,34 +262,33 @@ _bool CCorvusState_Parry1::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	//f (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.6f)
-	//
-	//	if (Check_RequirementParryState() && 4 == m_iAttackIndex)
-	//	{
-	//		if (Check_RequirementParryState())
-	//		{
-	//			if (!Rotation_InputToLookDir())
-	//				Rotation_NearToLookDir();
-	//
-	//			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack>(0.05f);
-	//			Get_OwnerPlayer()->Get_Component<CCorvusState_LAttack>().lock()->Play_AttackWithIndex(2);
-	//			return true;
-	//		}
-	//	}
-	//
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 35)
 	{
+		if (Check_RequirementAttackState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
+			return true;
+		}
+
 		if (Check_RequirementAVoidState())
 		{
 			Rotation_InputToLookDir();
 			Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
 			return true;
 		}
+
+		if (Check_RequirementClawAttackState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
+			return true;
+		}
 	}
 
-
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 70)
 	{
 		if ((Check_RequirementRunState()))
 		{
@@ -252,15 +298,6 @@ _bool CCorvusState_Parry1::Check_AndChangeNextState()
 		}
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
-	{
-		if (Check_RequirementClawAttackState())
-		{
-			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
-			return true;
-		}
-	}
 
 	if (Check_RequirementNextParryState())
 	{
@@ -273,12 +310,10 @@ _bool CCorvusState_Parry1::Check_AndChangeNextState()
 	}
 
 
-
 	if (Check_RuquireMnetFirstParryState())
 	{
 		if (Check_RequirementParryState())
 		{
-
 			if (!Rotation_InputToLookDir())
 				Rotation_TargetToLookDir();
 
@@ -301,14 +336,10 @@ _bool CCorvusState_Parry1::Check_RequirementNextParryState()
 	_uint iTargetKeyFramefirst = 17;
 	_uint iTargetKeyFrameSecond = 50;
 
-
-
 	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFramefirst, iTargetKeyFrameSecond) && m_IsNextAttack)
 	{
 		return true;
 	}
-
-
 
 	return false;
 }
@@ -316,16 +347,12 @@ _bool CCorvusState_Parry1::Check_RequirementNextParryState()
 _bool CCorvusState_Parry1::Check_RuquireMnetFirstParryState()
 {
 	_uint iTargetKeyFrameMin = 51;
-	_uint iTargetKeyFrameMax = 80;
-
-
+	_uint iTargetKeyFrameMax = 110;
 
 	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) && m_IsNextAttack)
 	{
 		return true;
 	}
-
-
 
 	return false;
 }

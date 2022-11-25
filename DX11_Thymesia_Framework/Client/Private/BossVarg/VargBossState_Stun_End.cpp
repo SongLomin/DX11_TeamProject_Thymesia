@@ -66,7 +66,7 @@ void CVargBossState_Stun_End::OnStateStart(const _float& In_fAnimationBlendTime)
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: Stun_End -> OnStateStart" << endl;
 #endif
 #endif
 

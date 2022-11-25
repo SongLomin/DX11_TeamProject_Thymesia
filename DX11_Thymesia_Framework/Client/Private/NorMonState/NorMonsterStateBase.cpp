@@ -106,22 +106,19 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_T
 			->Get_Desc(&tPlayerDesc);
 
 		//플레이어 공격력 아직 없으니 임의값 넣어서!
-		_float fMagnifiedDamage = In_fDamage * 100;
+		_float fMagnifiedDamage = In_fDamage * 4;
 		//m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 
 		switch (eAttackOption)
 		{
 		case Client::ATTACK_OPTION::NONE:
-			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, ATTACK_OPTION::NORMAL);
-		
+			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, ATTACK_OPTION::NORMAL);		
 			break;
 		case Client::ATTACK_OPTION::NORMAL:
-			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
-		
+			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);		
 			break;
 		case Client::ATTACK_OPTION::PLAGUE:
-			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
-		
+			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);		
 			break;
 		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
 			break;
@@ -184,6 +181,10 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_T
 	}
 
 }
+
+
+
+
 
 void CNorMonsterStateBase::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
 {

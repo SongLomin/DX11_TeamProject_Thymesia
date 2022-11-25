@@ -6,7 +6,7 @@
 XMMATRIX Engine::SMath::Get_RotationMatrix(FXMMATRIX Mat)
 {
 	XMMATRIX ResultMat = XMMatrixIdentity();
-	
+
 	for (int i = 0; i < 3; i++)
 	{
 		ResultMat.r[i] = XMVector3Normalize(Mat.r[i]);
@@ -18,12 +18,12 @@ XMMATRIX Engine::SMath::Get_RotationMatrix(FXMMATRIX Mat)
 XMMATRIX ENGINE_DLL Engine::SMath::Get_ScaleMatrix(FXMMATRIX Mat)
 {
 	XMMATRIX ResultMat = XMMatrixIdentity();
-	
+
 	for (int i = 0; i < 3; i++)
 	{
 		ResultMat.r[i].m128_f32[i] = XMVector3Length(Mat.r[i]).m128_f32[0];
 	}
-	
+
 	return ResultMat;
 }
 
@@ -130,25 +130,36 @@ XMFLOAT3 ENGINE_DLL Engine::SMath::Extract_PitchYawRollFromRotationMatrix(FXMMAT
 XMFLOAT3 ENGINE_DLL Engine::SMath::Add_Float3(const XMFLOAT3& Left, const XMFLOAT3& Right)
 {
 	XMFLOAT3 vResult;
-	XMStoreFloat3(&vResult, XMLoadFloat3(&Left) + XMLoadFloat3(&Right));
+	vResult.x = Left.x + Right.x;
+	vResult.y = Left.y + Right.y;
+	vResult.z = Left.z + Right.z;
+
 	return vResult;
 }
 
 XMFLOAT3 ENGINE_DLL Engine::SMath::Mul_Float3(const XMFLOAT3& Left, const float& Right)
 {
 	XMFLOAT3 vResult;
-	XMStoreFloat3(&vResult, XMLoadFloat3(&Left) * Right);
+
+	vResult.x = Left.x * Right;
+	vResult.y = Left.y * Right;
+	vResult.z = Left.z * Right;
+
 	return vResult;
 }
 
 void ENGINE_DLL Engine::SMath::Add_Float3(XMFLOAT3* InOut_Left, const XMFLOAT3& Right)
 {
-	XMStoreFloat3(InOut_Left, XMLoadFloat3(InOut_Left) + XMLoadFloat3(&Right));
+	InOut_Left->x += Right.x;
+	InOut_Left->y += Right.y;
+	InOut_Left->z += Right.z;
 }
 
 void ENGINE_DLL Engine::SMath::Mul_Float3(XMFLOAT3* InOut_Left, const float& Right)
 {
-	XMStoreFloat3(InOut_Left, XMLoadFloat3(InOut_Left) * Right);
+	InOut_Left->x *= Right;
+	InOut_Left->y *= Right;
+	InOut_Left->z *= Right;
 }
 
 _bool ENGINE_DLL Engine::SMath::Equal_Float3(const XMFLOAT3& Left, const XMFLOAT3& Right)
@@ -164,25 +175,40 @@ _bool ENGINE_DLL Engine::SMath::Equal_Float3(const XMFLOAT3& Left, const XMFLOAT
 XMFLOAT4 ENGINE_DLL Engine::SMath::Add_Float4(const XMFLOAT4& Left, const XMFLOAT4& Right)
 {
 	XMFLOAT4 vResult;
-	XMStoreFloat4(&vResult, XMLoadFloat4(&Left) + XMLoadFloat4(&Right));
+	vResult.x = Left.x + Right.x;
+	vResult.y = Left.y + Right.y;
+	vResult.z = Left.z + Right.z;
+	vResult.w = Left.w + Right.w;
+
 	return vResult;
 }
 
 XMFLOAT4 ENGINE_DLL Engine::SMath::Mul_Float4(const XMFLOAT4& Left, const float& Right)
 {
 	XMFLOAT4 vResult;
-	XMStoreFloat4(&vResult, XMLoadFloat4(&Left) * Right);
+
+	vResult.x = Left.x * Right;
+	vResult.y = Left.y * Right;
+	vResult.z = Left.z * Right;
+	vResult.w = Left.w * Right;
+
 	return vResult;
 }
 
 void ENGINE_DLL Engine::SMath::Add_Float4(XMFLOAT4* InOut_Left, const XMFLOAT4& Right)
 {
-	XMStoreFloat4(InOut_Left, XMLoadFloat4(InOut_Left) + XMLoadFloat4(&Right));
+	InOut_Left->x += Right.x;
+	InOut_Left->y += Right.y;
+	InOut_Left->z += Right.z;
+	InOut_Left->w += Right.w;
 }
 
 void ENGINE_DLL Engine::SMath::Mul_Float4(XMFLOAT4* InOut_Left, const float& Right)
 {
-	XMStoreFloat4(InOut_Left, XMLoadFloat4(InOut_Left) * Right);
+	InOut_Left->x *= Right;
+	InOut_Left->y *= Right;
+	InOut_Left->z *= Right;
+	InOut_Left->w *= Right;
 }
 
 float ENGINE_DLL Engine::SMath::Lerp(const float& fLeft, const float& fRight, float fRatio)
@@ -431,6 +457,17 @@ XMMATRIX ENGINE_DLL Engine::SMath::Go_Up(FXMMATRIX Mat, float fScaler)
 	return ResultMat;
 }
 
+XMMATRIX ENGINE_DLL Engine::SMath::Add_PositionWithRotation(FXMMATRIX Mat, FXMVECTOR vPosition)
+{
+	_vector vRotatedPosition = XMVector3TransformCoord(vPosition, SMath::Get_RotationMatrix(Mat));
+	_matrix ResultMatrix = Mat;
+
+	ResultMatrix.r[3] += vRotatedPosition;
+	
+
+	return ResultMatrix;
+}
+
 XMMATRIX ENGINE_DLL Engine::SMath::LookAt(FXMMATRIX Mat, FXMVECTOR In_vPosition)
 {
 	XMMATRIX ResultMat;
@@ -514,7 +551,7 @@ void ENGINE_DLL Engine::SMath::Set_ClockwiseTriangle(XMFLOAT3* InOut_TrianglePos
 
 	vAtoB = vPositionFromVector[1] - vPositionFromVector[0];
 	vAtoC = vPositionFromVector[2] - vPositionFromVector[0];
-	
+
 	_vector vAtoB2D, vAtoC2D, vAtoB2DCross;
 	vAtoB2D = vAtoC2D = vAtoB2DCross = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 
@@ -546,10 +583,10 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked(RAY _Ray, _float4* _pOutPos)
 
 	_float3 vPos[4] =
 	{
-		_float3(-99999.f, _pOutPos->y,  99999.f),
-		_float3( 99999.f, _pOutPos->y,  99999.f),
-		_float3( 99999.f, _pOutPos->y, -99999.f),
-		_float3(-99999.f, _pOutPos->y, -99999.f)
+		_float3(-99999.f, 0.f,  99999.f),
+		_float3(99999.f, 0.f,  99999.f),
+		_float3(99999.f, 0.f, -99999.f),
+		_float3(-99999.f, 0.f, -99999.f)
 	};
 
 	_uint3 iIndex[2] =
@@ -564,12 +601,12 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked(RAY _Ray, _float4* _pOutPos)
 			break;
 
 		_vector		vPickedPos;
-		
+
 		_vector	vVec0 = XMLoadFloat3(&vPos[iIndex[i].ix]);
 		_vector	vVec1 = XMLoadFloat3(&vPos[iIndex[i].iy]);
 		_vector	vVec2 = XMLoadFloat3(&vPos[iIndex[i].iz]);
 
-		_float fDist  = 0;
+		_float fDist = 0;
 		if (DirectX::TriangleTests::Intersects(XMLoadFloat4(&_Ray.vOrigin), XMLoadFloat3(&_Ray.vDirection), vVec0, vVec1, vVec2, fDist))
 		{
 			vPickedPos = XMLoadFloat4(&_Ray.vOrigin) + XMVector3Normalize(XMLoadFloat3(&_Ray.vDirection)) * fDist;
@@ -604,16 +641,16 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked_AbstractCube(RAY _Ray, MESH_VTX_INFO _
 	vPosition[6] = { _VtxInfo.vMax.x, _VtxInfo.vMin.y, _VtxInfo.vMax.z };
 	vPosition[7] = { _VtxInfo.vMin.x, _VtxInfo.vMin.y, _VtxInfo.vMax.z };
 
-	vIndex[0]  = { 1, 5, 6 };
-	vIndex[1]  = { 1, 6, 2 };
-	vIndex[2]  = { 4, 0, 3 };
-	vIndex[3]  = { 4, 3, 7 };
-	vIndex[4]  = { 4, 5, 1 };
-	vIndex[5]  = { 4, 1, 0 };
-	vIndex[6]  = { 3, 2, 6 };
-	vIndex[7]  = { 3, 6, 7 };
-	vIndex[8]  = { 5, 4, 7 };
-	vIndex[9]  = { 5, 7, 6 };
+	vIndex[0] = { 1, 5, 6 };
+	vIndex[1] = { 1, 6, 2 };
+	vIndex[2] = { 4, 0, 3 };
+	vIndex[3] = { 4, 3, 7 };
+	vIndex[4] = { 4, 5, 1 };
+	vIndex[5] = { 4, 1, 0 };
+	vIndex[6] = { 3, 2, 6 };
+	vIndex[7] = { 3, 6, 7 };
+	vIndex[8] = { 5, 4, 7 };
+	vIndex[9] = { 5, 7, 6 };
 	vIndex[10] = { 0, 1, 2 };
 	vIndex[11] = { 0, 2, 3 };
 
@@ -645,8 +682,8 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked_Y(RAY _Ray, _float4* _pOutPos)
 		_float3(-9999.f,  9999.f,  9999.f),
 		_float3(-9999.f, -9999.f,  9999.f),
 		_float3(-9999.f, -9999.f, -9999.f),
-		_float3( 9999.f,  9999.f,  9999.f),
-		_float3( 9999.f, -9999.f,  9999.f)
+		_float3(9999.f,  9999.f,  9999.f),
+		_float3(9999.f, -9999.f,  9999.f)
 	};
 
 	_uint3 iIndex[4] =
@@ -663,12 +700,12 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked_Y(RAY _Ray, _float4* _pOutPos)
 			break;
 
 		_vector		vPickedPos;
-		
+
 		_vector	vVec0 = XMLoadFloat3(&vPos[iIndex[i].ix]);
 		_vector	vVec1 = XMLoadFloat3(&vPos[iIndex[i].iy]);
 		_vector	vVec2 = XMLoadFloat3(&vPos[iIndex[i].iz]);
 
-		_float fDist  = 0;
+		_float fDist = 0;
 		if (DirectX::TriangleTests::Intersects(XMLoadFloat4(&_Ray.vOrigin), XMLoadFloat3(&_Ray.vDirection), vVec0, vVec1, vVec2, fDist))
 		{
 			vPickedPos = XMLoadFloat4(&_Ray.vOrigin) + XMVector3Normalize(XMLoadFloat3(&_Ray.vDirection)) * fDist;
@@ -711,7 +748,7 @@ void ENGINE_DLL Engine::SMath::Convert_PxVec3FromMeshData(PxVec3* In_PxVec3, wea
 			break;
 		}
 	}
-	
+
 }
 
 void ENGINE_DLL Engine::SMath::Convert_PxVec3FromMeshDataWithTransformMatrix(PxVec3* In_PxVec3, weak_ptr<MESH_DATA> pMeshData, FXMMATRIX In_TransformMatrix)

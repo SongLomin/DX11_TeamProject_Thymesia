@@ -7,6 +7,7 @@
 #include "Model.h"
 #include "Player.h"
 #include "NorMonStateS.h"
+#include "Status.h"
 
 GAMECLASS_C(CAIStateBase);
 
@@ -46,6 +47,8 @@ void CAIStateBase::Start()
 void CAIStateBase::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+	
+	
 }
 
 void CAIStateBase::LateTick(_float fTimeDelta)

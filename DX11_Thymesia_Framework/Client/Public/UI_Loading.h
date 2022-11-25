@@ -47,7 +47,7 @@ private:
 private:
 	_bool					m_bLoadComplete;
 	_bool					m_bCallFadeOut;
-
+	_bool					m_bIsChangeLevel;
 public:
 	void Free();
 

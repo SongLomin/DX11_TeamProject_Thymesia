@@ -29,6 +29,7 @@ public:
 private:
     void Attack();
     void Check_InputNextAttack();
+    void Update_ParryType();
 
 
 private:

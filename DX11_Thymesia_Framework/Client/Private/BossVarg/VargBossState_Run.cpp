@@ -55,7 +55,7 @@ void CVargBossState_Run::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-
+	Turn_ToThePlayer(fTimeDelta);
 
 	Check_AndChangeNextState();
 }
@@ -70,7 +70,7 @@ void CVargBossState_Run::OnStateStart(const _float& In_fAnimationBlendTime)
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: Run -> OnStateStart" << endl;
 #endif
 #endif
 
@@ -83,9 +83,6 @@ void CVargBossState_Run::OnStateEnd()
 
 
 }
-
-
-
 
 
 void CVargBossState_Run::Free()
@@ -105,7 +102,18 @@ _bool CVargBossState_Run::Check_AndChangeNextState()
 
 	if (fPToMDistance <= 4.f)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1b>(0.05f);
+		int iRand = rand() % 2;
+
+		switch (iRand)
+		{
+		case 0 :
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1a>(0.05f);
+			break;
+		case 1:
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1b>(0.05f);
+			break;
+		}
+	
 		return true;
 	}
 

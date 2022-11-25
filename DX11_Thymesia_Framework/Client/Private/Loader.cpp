@@ -296,6 +296,42 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("Monster_Parry_Fill"), TEXT("../Bin/Resources/Textures/UI/Parrying/Parrying_Fill.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
+	//EvoleveMenu
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LeftBG"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_EvolveLeftBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_TitleBG"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_HighlightBar_01_Reverse.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	//EvolveMenu_Font
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_Title"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_Title_Eng"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Title_Eng.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_LevelUp"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_UnlockTalent"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/UnlockTalent.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_PlagueWeapon"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/PlagueWeapon.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_Potion"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_UseForgottenFeather"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/UseForgottenFeather.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_Cease_Recall"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Cease_Recall.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_ResumeGame"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/ResumeGame.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_SeaOfTrees"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/SeaOfTrees.png"), MEMORY_TYPE::MEMORY_STATIC);
+	
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_SelectHighlight"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SelectableButtonHighlight_02.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	//EvolveMenu RightBG
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_RightBG"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_EvolveRightBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_MapImage_SeaOfTrees"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/MapImage/TexUI_LevelImage_Circus.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+//Quest
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_QuestTitle"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Quest/QuestTitle.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+//Stage1_Quest
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Stage1_Quest1"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Quest/Stage1/Quese_1.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+
+
 
 #ifndef _ONLY_UI_
 	
@@ -410,14 +446,20 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	// 일반몬스터 관련모델
 
 	// 보스몬스터 관련모델
-	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Boss_Varg", "../Bin/Resources/Meshes/Boss/Varg/Varg.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 	// 보스몬스터 관련모델 
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Boss_Urd", "../Bin/Resources/Meshes/Boss/Urd/Urd.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
 
 
 	// 보스몬스터 무기모델
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Boss_VargWeapon", "../Bin/Resources/Meshes/Boss/Varg/Weapon/VargWeapon.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Boss_UrdWeapon", "../Bin/Resources/Meshes/Boss/Urd/Weapon/UrdSword.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 	// 보스몬스터 무기모델 
 
 	// 일반몬스터 무기모델

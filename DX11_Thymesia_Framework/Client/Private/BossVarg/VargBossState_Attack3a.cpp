@@ -55,7 +55,8 @@ void CVargBossState_Attack3a::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-
+	if (m_bAttackLookAtLimit)
+		Rotation_TargetToLookDir();
 
 	Check_AndChangeNextState();
 }
@@ -66,15 +67,17 @@ void CVargBossState_Attack3a::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	m_bAttackLookAtLimit = true;  // 애니메이션시작할떄 룩엣시작
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: Attack3a -> OnStateStart" << endl;
 #endif
 #endif
 
-	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
+	m_pModelCom.lock()->Set_AnimationSpeed(1.3f);
 }
 
 void CVargBossState_Attack3a::OnStateEnd()
@@ -90,7 +93,6 @@ void CVargBossState_Attack3a::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
-
 
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
 }
@@ -111,8 +113,8 @@ _bool CVargBossState_Attack3a::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
-	{
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.2f)
+	{	
 		m_bAttackLookAtLimit = false;
 	}
 

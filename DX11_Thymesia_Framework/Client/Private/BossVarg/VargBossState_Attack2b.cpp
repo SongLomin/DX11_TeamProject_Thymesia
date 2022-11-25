@@ -32,7 +32,7 @@ void CVargBossState_Attack2b::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_ComboAttack2_1");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_ComboAttack2_2");
 
 	m_bAttackLookAtLimit = true;  // 애니메이션시작할떄 룩엣시작
 
@@ -43,9 +43,6 @@ void CVargBossState_Attack2b::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	if (m_bAttackLookAtLimit)
-		Turn_ToThePlayer(fTimeDelta);
-
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -54,7 +51,8 @@ void CVargBossState_Attack2b::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-
+	if (m_bAttackLookAtLimit)
+		Rotation_TargetToLookDir();
 
 	Check_AndChangeNextState();
 }
@@ -65,11 +63,13 @@ void CVargBossState_Attack2b::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	m_bAttackLookAtLimit = true;  // 애니메이션시작할떄 룩엣시작
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: Attack2b -> OnStateStart" << endl;
 #endif
 #endif
 
@@ -83,8 +83,6 @@ void CVargBossState_Attack2b::OnStateEnd()
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 
 }
-
-
 
 void CVargBossState_Attack2b::Call_AnimationEnd()
 {
@@ -111,10 +109,11 @@ _bool CVargBossState_Attack2b::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.2f)
 	{
 		m_bAttackLookAtLimit = false;
 	}
+
 
 
 	return false;

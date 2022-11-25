@@ -289,11 +289,15 @@ namespace Engine
 		_float3			vScale;
 		_float4			vRotation;
 		_float3			vTranslation;
+		_float3			vOffset;
 
-		tagColliderDesc() {}
+		tagColliderDesc() 
+		{
+			ZeroMemory(this, sizeof(tagColliderDesc));
+		}
 
-		tagColliderDesc(const _float3& In_vScale, const _float4& In_vRotation, const _float3& In_vTranslation)
-			: vScale(In_vScale), vRotation(In_vRotation), vTranslation(In_vTranslation)
+		tagColliderDesc(const _float3 In_vScale, const _float4 In_vRotation, const _float3 In_vTranslation, const _float3 In_vOffset)
+			: vScale(In_vScale), vRotation(In_vRotation), vTranslation(In_vTranslation), vOffset(In_vOffset)
 		{
 		}
 

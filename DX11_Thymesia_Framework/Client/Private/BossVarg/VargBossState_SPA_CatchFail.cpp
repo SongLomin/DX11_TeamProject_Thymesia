@@ -66,7 +66,7 @@ void CVargBossState_SPA_CatchFail::OnStateStart(const _float& In_fAnimationBlend
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: SPA_CatchFail -> OnStateStart" << endl;
 #endif
 #endif
 

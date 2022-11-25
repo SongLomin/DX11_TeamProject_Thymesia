@@ -113,7 +113,7 @@ void CAnimation::Update_TransformationMatrices(_float fTimeDelta)
 void CAnimation::Blend_Animation(_float fMaxBlendTime, _float fRatio)
 {
 	m_fAnimRatio = 0.f;
-	m_fTimeAcc = fMaxBlendTime;
+	//m_fTimeAcc = fMaxBlendTime;
 	
 
 	for (_uint i = 0; i < m_pAnimData.lock()->iNumChannels; ++i)
@@ -132,7 +132,6 @@ void CAnimation::Reset_Animaition()
 	{
 		m_Channels[i].lock()->Reset_KeyFrame();
 	}
-
 }
 
 void CAnimation::Set_StartAnimationKey(_uint iKeyIndex)

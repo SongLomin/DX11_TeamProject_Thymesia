@@ -34,7 +34,7 @@ void CVargBossState_RaidAttack::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_RaidAttack2");
 
-	m_bAttackLookAtLimit = true;  // 애니메이션시작할떄 룩엣시작
+	m_bAttackLookAtLimit = true;
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_RaidAttack::Call_AnimationEnd, this);
 }
@@ -54,6 +54,8 @@ void CVargBossState_RaidAttack::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+	if(m_bAttackLookAtLimit)
+	Rotation_TargetToLookDir();
 
 
 	Check_AndChangeNextState();
@@ -69,18 +71,18 @@ void CVargBossState_RaidAttack::OnStateStart(const _float& In_fAnimationBlendTim
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: RaidAttack -> OnStateStart" << endl;
 #endif
 #endif
 
-
+	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 }
 
 void CVargBossState_RaidAttack::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 
@@ -110,7 +112,8 @@ _bool CVargBossState_RaidAttack::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.2f)
 	{
 		m_bAttackLookAtLimit = false;
 	}

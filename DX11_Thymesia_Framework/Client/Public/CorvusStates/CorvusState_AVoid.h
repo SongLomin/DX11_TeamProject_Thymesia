@@ -37,11 +37,13 @@ public:
 
 private:
     _uint m_iDustEffectIndex;
-    _uint m_iAvoidIndex;
 
     _float m_fDebugAnimationSpeed = 1.f;
 
     _bool m_IsAgainAvoid = false;
+
+    _float m_fNextAvoidRatio = 0.46f;
+
 protected:
     void Free();
 

@@ -79,8 +79,6 @@ HRESULT CCustomUI::SetUp_ShaderResource()
 		MSG_BOX("CustomUI Error");
 	}
 
-
-
 	return S_OK;
 }
 

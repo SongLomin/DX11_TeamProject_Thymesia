@@ -166,10 +166,10 @@ void CPreViewAnimationModel::Init_EditPreViewAnimationModel(const string& In_szM
 		Clear_ModelWeapon();
 
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultSaber>(LEVEL_STATIC));
-		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, "weapon_r");
 
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultDagger>(LEVEL_STATIC));
-		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, Weak_Cast<CGameObject>(m_this), "weapon_l");
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, "weapon_l");
 	}
 
 	if (strcmp(In_szModelKey.c_str(), "Boss_Varg") == 0)
@@ -178,7 +178,7 @@ void CPreViewAnimationModel::Init_EditPreViewAnimationModel(const string& In_szM
 
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
 		m_pModelWeapons.back().lock()->Init_Model("Boss_VargWeapon", TIMESCALE_LAYER::MONSTER);
-		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, "weapon_r");
 		
 		/*m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
 		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, Weak_Cast<CGameObject>(m_this), "weapon_l");*/
@@ -202,7 +202,7 @@ void CPreViewAnimationModel::Play_Animation(_float fTimeDelta)
 void CPreViewAnimationModel::Add_DebugWeapon(const string& In_szBoneName)
 {
 	m_pDebugWeapons.push_back(GAMEINSTANCE->Add_GameObject<CWeapon>(LEVEL_EDIT));
-	m_pDebugWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, Weak_Cast<CGameObject>(m_this), In_szBoneName);
+	m_pDebugWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, In_szBoneName);
 }
 
 void CPreViewAnimationModel::Set_WeaponDesc(const _float& In_fScale, const _float3& In_vOffset, const _float& In_fDamage, const HIT_TYPE& In_eHitType)

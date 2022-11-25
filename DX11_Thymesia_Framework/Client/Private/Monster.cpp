@@ -171,6 +171,10 @@ void CMonster::Enable_Weapons(const _bool In_bEnable)
     }
 }
 
+
+
+
+
 void CMonster::SetUp_ShaderResource()
 {
     __super::SetUp_ShaderResource();

@@ -4,6 +4,8 @@
 #include "Client_Components.h"
 #include "Player.h"
 #include "ClientLevel.h"
+#include "Status_Player.h"
+
 
 IMPLEMENT_SINGLETON(CGameManager)
 
@@ -128,6 +130,29 @@ void CGameManager::Remove_Layer(const OBJECT_LAYER& In_Layer, weak_ptr<CGameObje
 	}
 }
 
+void CGameManager::Enable_Layer(const OBJECT_LAYER& In_Layer)
+{
+	list<weak_ptr<CGameObject>> pObjectLayer = m_pLayers[(_uint)In_Layer];
+
+	for (auto& elem : pObjectLayer)
+	{
+		elem.lock()->Set_Enable(true);
+
+	}
+
+}
+
+void CGameManager::Disable_Layer(const OBJECT_LAYER& In_Layer)
+{
+	list<weak_ptr<CGameObject>> pObjectLayer = m_pLayers[(_uint)In_Layer];
+
+	for (auto& elem : pObjectLayer)
+	{
+		elem.lock()->Set_Enable(false);
+
+	}
+}
+
 list<weak_ptr<CGameObject>> CGameManager::Get_Layer(const OBJECT_LAYER& In_Layer)
 {
 	return m_pLayers[(_uint)In_Layer];
@@ -158,6 +183,15 @@ void CGameManager::Set_CurrentPlayer(weak_ptr<CPlayer> In_pPlayer)
 	}
 
 	CallBack_ChangePlayer();
+}
+
+weak_ptr<CStatus_Player> CGameManager::Get_CurrentPlayer_Status()
+{
+	weak_ptr<CPlayer> pPlayer;
+
+	pPlayer = Get_CurrentPlayer();	
+
+	return	 Weak_StaticCast<CStatus_Player>(pPlayer.lock()->Get_Component<CStatus>());
 }
 
 weak_ptr<CPlayer> CGameManager::Get_CurrentPlayer()

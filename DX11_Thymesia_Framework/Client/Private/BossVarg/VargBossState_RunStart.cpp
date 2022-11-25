@@ -42,8 +42,6 @@ void CVargBossState_RunStart::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	Rotation_TargetToLookDir();
-
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -52,7 +50,7 @@ void CVargBossState_RunStart::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-
+	Rotation_TargetToLookDir();
 
 	Check_AndChangeNextState();
 }
@@ -67,10 +65,11 @@ void CVargBossState_RunStart::OnStateStart(const _float& In_fAnimationBlendTime)
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: RunStart -> OnStateStart" << endl;
 #endif
 #endif
 
+	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 
 }
 
@@ -78,6 +77,7 @@ void CVargBossState_RunStart::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 
 }
 
@@ -108,11 +108,30 @@ _bool CVargBossState_RunStart::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.3f)
+	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
+
+
+
+
+	if (fPToMDistance <= 4.f)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Run>(0.05f);
+		int iRand = rand() % 3;
+
+		switch (iRand)
+		{
+		case 0:
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1a>(0.05f);
+			break;
+		case 1:
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1b>(0.05f);
+			break;
+		case 2:
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack3b>(0.05f);
+			break;
+		}
 		return true;
 	}
+
 
 	return false;
 }

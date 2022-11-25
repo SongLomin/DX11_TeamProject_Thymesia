@@ -47,11 +47,13 @@ void CModel::Set_CurrentAnimation(_uint iAnimIndex, _uint iStartKeyIndex, _float
 	m_iCurrentAnimationIndex = iAnimIndex;
 	m_Animations[m_iCurrentAnimationIndex].lock()->Reset_Animaition();
 	m_Animations[m_iCurrentAnimationIndex].lock()->Set_StartAnimationKey(iStartKeyIndex);
+	
+	m_fStartBlendTime = m_Animations[m_iCurrentAnimationIndex].lock()->Get_TimeAcc();
 
-	m_fMaxBlendTime = fBlendTime;
-	m_fCurrentBlendTime = 0.f;
+	m_fMaxBlendTime = fBlendTime + m_fStartBlendTime;
+	m_fCurrentBlendTime = m_fStartBlendTime;
 
-	m_isBlend = fBlendTime > 0.f;
+	m_isBlend = m_fMaxBlendTime > DBL_EPSILON;
 
 	
 	for (size_t i = 0; i < m_pBoneNodes.size(); i++)
@@ -288,11 +290,12 @@ HRESULT CModel::Play_Animation(_float fTimeDelta)
 		{
 			m_Animations[m_iCurrentAnimationIndex].lock()->Update_TransformationMatrices(fTimeDelta);
 			m_isBlend = false;
+			m_Animations[m_iCurrentAnimationIndex].lock()->Set_TimeAcc(m_fCurrentBlendTime);
 		}
 
 		else
 		{
-			_float fRatio = m_fCurrentBlendTime / m_fMaxBlendTime;
+			_float fRatio = (m_fCurrentBlendTime - m_fStartBlendTime) / (m_fMaxBlendTime - m_fStartBlendTime);
 
 			m_Animations[m_iCurrentAnimationIndex].lock()->Blend_Animation(m_fMaxBlendTime, fRatio);
 

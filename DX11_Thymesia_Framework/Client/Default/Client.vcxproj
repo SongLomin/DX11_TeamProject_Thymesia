@@ -193,6 +193,11 @@
     <ClInclude Include="..\Public\Actor.h" />
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
+    <ClInclude Include="..\Public\BossUrd\Urd.h" />
+    <ClInclude Include="..\Public\BossUrd\UrdBossStateBase.h" />
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Idle.h" />
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Start.h" />
+    <ClInclude Include="..\Public\BossUrd\UrdStates.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b1.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b2.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h" />
@@ -215,6 +220,10 @@
     <ClInclude Include="..\Public\Status_Monster.h" />
     <ClInclude Include="..\Public\Status_Player.h" />
     <ClInclude Include="..\Public\Preset_PhysXControllerDesc.h" />
+    <ClInclude Include="..\Public\UI_Container.h" />
+    <ClInclude Include="..\Public\UI_Containers.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_Level.h" />
     <ClInclude Include="..\Public\UI_LerpBar.h" />
     <ClInclude Include="..\Public\VargBossStateBase.h" />
     <ClInclude Include="..\Public\BossVarg\Varg.h" />
@@ -424,17 +433,25 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="UI_Elements.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Actor.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Attack_Area.cpp" />
     <ClCompile Include="..\Private\BossStateBase.cpp" />
+    <ClCompile Include="..\Private\BossUrd\Urd.cpp" />
+    <ClCompile Include="..\Private\BossUrd\UrdBossStateBase.cpp" />
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Idle.cpp" />
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Start.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b1.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b2.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_RaidAttack.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_TurnAttack.cpp" />
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
+    <ClCompile Include="..\Private\UI_Container.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_Level.cpp" />
     <ClCompile Include="..\Private\UI_LerpBar.cpp" />
     <ClCompile Include="..\Private\BossMonster.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttack1.cpp" />
