@@ -85,6 +85,7 @@ void CNorMonState_LightAttack1::Call_AnimationEnd()
 
 void CNorMonState_LightAttack1::OnStateStart(const _float& In_fAnimationBlendTime)
 {
+
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
@@ -98,8 +99,17 @@ void CNorMonState_LightAttack1::OnStateStart(const _float& In_fAnimationBlendTim
 		switch (m_eMonType)
 		{
 		case Client::MONSTERTYPE::AXEMAN:
-			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
-			Get_OwnerMonster()->Get_Wepons().front().lock()->Set_TrailEnable(true);
+		{
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+			}
+		}
+			m_pModelCom.lock()->Set_AnimationSpeed(2.f);		
 			break;
 		case Client::MONSTERTYPE::KNIFEWOMAN:
 			m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
@@ -117,8 +127,7 @@ void CNorMonState_LightAttack1::OnStateStart(const _float& In_fAnimationBlendTim
 void CNorMonState_LightAttack1::OnStateEnd()
 {
 	__super::OnStateEnd();
-	
-	Get_OwnerMonster()->Get_Wepons().front().lock()->Set_TrailEnable(false);
+
 
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }

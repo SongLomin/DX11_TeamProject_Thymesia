@@ -36,9 +36,28 @@ HRESULT CVarg::Initialize(void* pArg)
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Model("Boss_VargWeapon", TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
+	
+	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f, 0.0f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-0.2f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-0.4f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-0.6f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-0.8f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-1.0f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-1.2f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-1.4f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-1.6f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-1.8f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-2.0f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-2.2f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
+
+
+
+	
+
+
 	//TODO 위치이동 야매임
 	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, m_tLinkStateDesc.vYame.y, m_tLinkStateDesc.vYame.z, 1.f));
-	m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(-140.f));
+
 	//TODO 여기서하는 이유는 몬스터가 배치되고 원점에서 우리가 피킹한위치만큼더해지고 난뒤에 그월드포지션값저장하기위해서 여기서함
 
 	m_pModelCom.lock()->Set_RootNode("root");
