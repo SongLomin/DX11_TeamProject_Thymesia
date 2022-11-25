@@ -255,39 +255,6 @@ HRESULT CLevel_Test::Render()
 	return S_OK;
 }
 
-void CLevel_Test::SetUp_UI()
-{
-	weak_ptr<CGameManager>	pGameManager = GET_SINGLE(CGameManager);
-
-	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);//¿©±â¼­ 
-	m_pPauseMenu = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu>(LEVEL_STATIC);
-	m_pEvolveMenu = GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu>(LEVEL_STATIC);
-
-#ifdef _ONLY_UI_
-	
-#endif
-	GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu>(LEVEL_STATIC);
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_MPBar>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_Memory>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_PotionUI>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
-
-	//TODO : MonsterHpBar TestCode
-	/*
-	CUI::UI_DESC tDesc;
-	tDesc.fX = g_iWinCX / 2.f;
-	tDesc.fY = g_iWinCY / 2.f;
-	tDesc.fSizeX = 150.f;
-	tDesc.fSizeY = 15.f;
-	tDesc.fDepth = 0.f;
-
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Elite>(LEVEL_STATIC, &tDesc));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Boss>(LEVEL_STATIC, &tDesc));
-	*/
-}
 
 
 shared_ptr<CLevel_Test> CLevel_Test::Create()

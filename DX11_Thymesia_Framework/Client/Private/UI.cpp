@@ -193,6 +193,14 @@ void CUI::Add_Shaking(const _float& In_ShakeTime, const _float& _fShakePower)
 void CUI::Add_Child(weak_ptr<CUI> pChild)
 {
 	m_vecChildUI.push_back(pChild);
+
+	pChild.lock()->Set_Owner(m_this);
+
+}
+
+void CUI::Set_Owner(weak_ptr<CBase> pOwner)
+{
+	m_pOwner = pOwner;
 }
 
 _float2 CUI::Get_Point(UI_POINT eType)

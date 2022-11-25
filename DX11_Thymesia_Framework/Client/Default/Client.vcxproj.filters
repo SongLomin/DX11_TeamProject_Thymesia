@@ -740,12 +740,6 @@
     <ClInclude Include="..\Public\BossUrd\UrdBossState_Idle.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\01.UrdState\01.Idle</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\HUD_PlagueWeapon_Main.h">
-      <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\PlagueWeapon\main</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\HUD_PlagueWeaponBase.h">
-      <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\PlagueWeapon\Base</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal.h">
       <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\PlagueWeapon\Steal</Filter>
     </ClInclude>
@@ -759,6 +753,12 @@
     <ClInclude Include="..\Public\HUD_PlagueWeapon_Main.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Level.h">
       <Filter>02. GameObject\01. UI\UI_Container\Evolve\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HUD_PlagueWeapon_Main.h">
+      <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\PlagueWeapon\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\HUD_PlagueWeaponBase.h">
+      <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\PlagueWeapon\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1142,12 +1142,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Player.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\00. Player</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\HUD_PlagueWeapon_Main.cpp">
-      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\HUD_PlagueWeaponBase.cpp">
-      <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Base</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeapon.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\PlagueWeapon</Filter>
@@ -1538,6 +1532,12 @@
     <ClCompile Include="..\Private\HUD_PlagueWeapon_Main.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Level.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\Evolve\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_PlagueWeapon_Main.cpp">
+      <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\PlagueWeapon\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\HUD_PlagueWeaponBase.cpp">
+      <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\PlagueWeapon\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

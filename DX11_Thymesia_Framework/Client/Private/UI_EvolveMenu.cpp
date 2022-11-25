@@ -231,8 +231,8 @@ void CUI_EvolveMenu::OnEnable(void* _Arg)
 
 	m_bEnabledThisFrame = true;
 	SetUpFromCurrentLevel();
-	//if (!m_pFadeMask.lock())
-		//m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
+	if (!m_pFadeMask.lock())
+		m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
 	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
 
@@ -294,10 +294,12 @@ void CUI_EvolveMenu::SetUpFromCurrentLevel()
 	case Client::LEVEL_TEST:
 		m_pRightTitle.lock()->Set_UIPosition(tRightBGDesc.fX, 82.f + 17.f, 100.f, 34.f);
 		m_pRightTitle.lock()->Set_Texture("EvolveMenu_Text_SeaOfTrees");
+		m_pRightMapImage.lock()->Set_Texture("EvolveMenu_MapImage_SeaOfTrees");
 		break;
 	default:
 		m_pRightTitle.lock()->Set_UIPosition(tRightBGDesc.fX, 82.f + 17.f, 100.f, 34.f);
 		m_pRightTitle.lock()->Set_Texture("EvolveMenu_Text_SeaOfTrees");
+		m_pRightMapImage.lock()->Set_Texture("EvolveMenu_MapImage_SeaOfTrees");
 		break;
 	}
 

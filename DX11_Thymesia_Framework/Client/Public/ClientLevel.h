@@ -27,6 +27,9 @@ public:
 protected:
     void	Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex);
 
+
+    virtual void		SetUp_UI();
+
 protected:
     string  m_szDefaultJsonPath = "../Bin/LevelData/";
     LEVEL   m_eMyLevel = LEVEL::LEVEL_END;

@@ -97,7 +97,7 @@ public:
    //Moon Functions
 protected:
     virtual void    Add_Child(weak_ptr<CUI> pChild);
-    virtual void    Set_Owner(weak_ptr<CUI> pOwner);
+    virtual void    Set_Owner(weak_ptr<CBase> pOwner);
 
 
 public:
@@ -136,7 +136,7 @@ protected:
 protected:
     vector<weak_ptr<CUI>> m_vecChildUI;
     vector<weak_ptr<CUI>> m_vecEventChildUI;
-    weak_ptr<CUI>       m_pOwnerUI;
+    weak_ptr<CBase>       m_pOwner;
 
 
 

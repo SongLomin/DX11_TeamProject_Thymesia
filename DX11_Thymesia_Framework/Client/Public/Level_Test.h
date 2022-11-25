@@ -18,10 +18,6 @@ public:
 	virtual void Tick(_float TimeDelta);
 	virtual HRESULT Render();
 
-
-private:
-	void		SetUp_UI();
-
 public:
 	static shared_ptr<CLevel_Test> Create();
 
