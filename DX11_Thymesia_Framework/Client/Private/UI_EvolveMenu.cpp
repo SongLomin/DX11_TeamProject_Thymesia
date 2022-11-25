@@ -4,6 +4,8 @@
 #include "Level.h"
 #include "GameManager.h"
 #include "ClientLevel.h"
+#include "FadeMask.h"
+#include "UI_EvolveMenu_Level.h"
 
 
 GAMECLASS_C(CUI_EvolveMenu)
@@ -146,7 +148,7 @@ HRESULT CUI_EvolveMenu::Initialize(void* pArg)
 
 
 
-
+	SetUpFromCurrentLevel();
 
 #pragma endregion CREATE_UIS
 
@@ -179,7 +181,7 @@ HRESULT CUI_EvolveMenu::Initialize(void* pArg)
 
 
 	ChangeButtonIndex();
-	ChangeUIFromCurrentLevel();
+	SetUpFromCurrentLevel();
 	m_bEnabledThisFrame = false;
 
 	Set_Enable(false);
@@ -228,10 +230,33 @@ void CUI_EvolveMenu::OnEnable(void* _Arg)
 	__super::OnEnable(_Arg);
 
 	m_bEnabledThisFrame = true;
-	ChangeUIFromCurrentLevel();
+	SetUpFromCurrentLevel();
+	//if (!m_pFadeMask.lock())
+		//m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
 	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
+
+
 }
+
+void CUI_EvolveMenu::Call_FadeEndEnableEvolveMenu()
+{
+	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::BATTLEUI);
+	Set_Enable(false);
+	m_pFadeMask.lock()->Set_Enable(false);
+}
+
+
+void CUI_EvolveMenu::Call_ChangeUI_EvolveMenu_Level()
+{
+	Set_Enable(false);
+	m_pFadeMask.lock()->Set_Enable(false);
+
+	GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu_Level>(LEVEL_STATIC).front().lock()->Set_Enable(true);
+
+}
+
+
 
 void CUI_EvolveMenu::Free()
 {
@@ -251,7 +276,7 @@ void CUI_EvolveMenu::ChangeButtonIndex()
 	}
 
 }
-void CUI_EvolveMenu::ChangeUIFromCurrentLevel()
+void CUI_EvolveMenu::SetUpFromCurrentLevel()
 {
 	//82
 	m_eLastOpenedLevel = Weak_StaticCast<CClientLevel>(GAMEINSTANCE->Get_CurrentLevel()).lock()->Get_MyLevel();
@@ -289,10 +314,18 @@ void CUI_EvolveMenu::ChangeUIFromCurrentLevel()
 void CUI_EvolveMenu::SelectButton()
 {
 	CUI_EvolveMenu::EVOLVEMENU_TYPE eType = (CUI_EvolveMenu::EVOLVEMENU_TYPE)m_iSelectedIndex;
-
+	FaderDesc tFaderDesc;
+	
 	switch (eType)
 	{
 	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_LEVELUP:
+		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+		tFaderDesc.fFadeMaxTime = 0.3f;
+		tFaderDesc.fDelayTime = 0.f;
+		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CUI_EvolveMenu::Call_ChangeUI_EvolveMenu_Level, this);
 		break;
 	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_UNLOCKTALENT:
 		break;
@@ -305,8 +338,13 @@ void CUI_EvolveMenu::SelectButton()
 	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_CEASE_RECALL:
 		break;
 	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_RESUME_GAME:
-		GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::BATTLEUI);
-		Set_Enable(false);
+		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+		tFaderDesc.fFadeMaxTime = 0.3f;
+		tFaderDesc.fDelayTime = 0.f;
+		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CUI_EvolveMenu::Call_FadeEndEnableEvolveMenu, this);
 		break;
 	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_END:
 		break;

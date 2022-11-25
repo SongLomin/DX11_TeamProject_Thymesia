@@ -4,6 +4,8 @@
 #include "Client_Components.h"
 #include "Player.h"
 #include "ClientLevel.h"
+#include "Status_Player.h"
+
 
 IMPLEMENT_SINGLETON(CGameManager)
 
@@ -181,6 +183,15 @@ void CGameManager::Set_CurrentPlayer(weak_ptr<CPlayer> In_pPlayer)
 	}
 
 	CallBack_ChangePlayer();
+}
+
+weak_ptr<CStatus_Player> CGameManager::Get_CurrentPlayer_Status()
+{
+	weak_ptr<CPlayer> pPlayer;
+
+	pPlayer = Get_CurrentPlayer();	
+
+	return	 Weak_StaticCast<CStatus_Player>(pPlayer.lock()->Get_Component<CStatus>());
 }
 
 weak_ptr<CPlayer> CGameManager::Get_CurrentPlayer()

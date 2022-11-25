@@ -6,6 +6,9 @@
 #include "FadeMask.h"
 #include "GameManager.h"
 #include "EffectGroup.h"
+#include "UI_PauseMenu.h"
+#include "UI_EvolveMenu.h"
+
 
 GAMECLASS_C(CClientLevel)
 
@@ -86,6 +89,18 @@ void CClientLevel::Call_FadeOutToLevelChange()
 	m_pFadeMask.lock()->Set_Enable(false);
 	if (FAILED(GAMEINSTANCE->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_eNextLevel))))
 		return;
+}
+
+void CClientLevel::Call_Enable_PauseMenu()
+{
+	m_pPauseMenu.lock()->Set_Enable(true);
+	m_pFadeMask.lock()->Set_Enable(false);
+}
+
+void CClientLevel::Call_Enable_EvolveMenu()
+{
+	m_pEvolveMenu.lock()->Set_Enable(true);
+	m_pFadeMask.lock()->Set_Enable(false);
 }
 
 void CClientLevel::Free()

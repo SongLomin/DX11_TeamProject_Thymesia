@@ -266,15 +266,21 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 
 	}*/
 
-	if (KEY_INPUT(KEY::ALT, KEY_STATE::TAP))
+	if (KEY_INPUT(KEY::T, KEY_STATE::TAP))
 	{
-		weak_ptr<CUI_EvolveMenu> pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL_STATIC).front();
-		if (pEvolveMenu.lock()->Get_Enable() == false)
+		if (m_pEvolveMenu.lock()->Get_Enable() == false)
 		{
-			pEvolveMenu.lock()->Set_Enable(true);
+			FaderDesc tFaderDesc;
+			tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+			tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+			tFaderDesc.fFadeMaxTime = 0.2f;
+			tFaderDesc.fDelayTime = 0.f;
+			tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+
+			m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CLevel_GamePlay::Call_Enable_EvolveMenu, this);
 		}
 	}
-
 }
 
 HRESULT CLevel_GamePlay::Render()
@@ -294,11 +300,9 @@ void CLevel_GamePlay::SetUp_UI()
 
 	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);//¿©±â¼­ 
 	m_pPauseMenu = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu>(LEVEL_STATIC);
-	GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu>(LEVEL_STATIC);
-#ifdef _ONLY_UI_
-	GAMEINSTANCE->Add_GameObject<CMonsterParryingBar>(LEVEL_STATIC);
-	GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu>(LEVEL_STATIC);
-#endif
+	
+	m_pEvolveMenu = GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu>(LEVEL_STATIC);
+
 
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_MPBar>(LEVEL_STATIC));

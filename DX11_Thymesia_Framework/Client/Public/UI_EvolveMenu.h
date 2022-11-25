@@ -12,6 +12,8 @@ BEGIN(Client)
 
 CLIENT_DECLATION_UI
 
+class CFadeMask;
+
 class CUI_EvolveMenu final : public CUI_Container
 {
 
@@ -41,6 +43,11 @@ public:
     virtual void OnEnable(void* _Arg = nullptr);
 
 
+
+    /*
+    
+    
+    */
 
 private: //Left UI
 
@@ -72,6 +79,10 @@ private://Right UI
 
     weak_ptr<CCustomUI> m_pQuestInformationsDecoration;
 
+
+private:
+    weak_ptr<CFadeMask> m_pFadeMask;
+
 private:
    LEVEL                m_eLastOpenedLevel;
    _bool               m_bEnabledThisFrame;
@@ -79,11 +90,20 @@ private:
 private:
     void               ChangeButtonIndex();
     void               SelectButton();
-    void               ChangeUIFromCurrentLevel();
+    void               SetUpFromCurrentLevel();
     
 
 private:
     virtual void Free() override;
+
+
+
+    //Callback Fucntios
+public:
+    virtual void    Call_FadeEndEnableEvolveMenu();
+    virtual void    Call_ChangeUI_EvolveMenu_Level();
+
+
 
 };
 

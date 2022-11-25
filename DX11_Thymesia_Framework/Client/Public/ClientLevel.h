@@ -5,6 +5,8 @@
 BEGIN(Client)
 
 class CFadeMask;
+class CUI_PauseMenu;
+class CUI_EvolveMenu;
 
 
 class CClientLevel abstract :
@@ -38,8 +40,23 @@ protected:
 
     _bool m_bChangeNextLevel = false;
 
+
+protected:
+    weak_ptr<CUI_PauseMenu> m_pPauseMenu;
+    weak_ptr<CUI_EvolveMenu> m_pEvolveMenu;
+
+
 public:
     void Call_FadeOutToLevelChange();
+
+
+
+
+public:
+    void		Call_Enable_PauseMenu();
+    void		Call_Enable_EvolveMenu();
+
+
 
 protected:
     void Free();

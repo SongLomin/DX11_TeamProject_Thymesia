@@ -25,8 +25,6 @@ public:
 		_uint		m_iMaxPotion;
 		_float		m_fHealingAmount;//최대체력의 얼만큼을 회복시켜주는가.
 		_float		m_fHealingTime; //몇초만큼 회복시킬건가. 0초면 바로 위에 AMount만큼 바로 회복박힘.
-
-
 		/*
 			HP += ((MaxHP * (m_fHealingAmount / m_fHealingTime))) * fTimeDelta;
 			그리고 이제 회복을 m_fHealingTime만큼 시켜주면 됨.
