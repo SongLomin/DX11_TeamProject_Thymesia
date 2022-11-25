@@ -20,6 +20,25 @@ public:
 	virtual void LateTick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+private:
+#ifdef _DEBUG
+	const void ReadyText();
+	const void UpdateText();
+#endif // _DEBUG
+	const void ControlCamera
+	(
+		const _float& fTimeDelta
+	);
+	const void MoveCamera_KeyInput(const _float& fTimeDelta);
+	const void MoveCamera_MouseInput(const _float& fTimeDelta);
+	const void ChangeCameraSpeed();
+
+private:
+	_int m_iCameraSpeed = 0;
+#ifdef _DEBUG
+	TEXTINFO m_tCameraSpeedText;
+#endif // _DEBUG
+
 public:
 	void Free();
 };

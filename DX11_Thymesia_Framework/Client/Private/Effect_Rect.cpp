@@ -348,8 +348,11 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 			CJson_Utility::Write_Float3(Out_Json["Min_Start_Rotation"], m_tEffectParticleDesc.vMinStartRotation);
 			CJson_Utility::Write_Float3(Out_Json["Max_Start_Rotation"], m_tEffectParticleDesc.vMaxStartRotation);
 
-			CJson_Utility::Write_Float3(Out_Json["Rotation_Speed"], m_tEffectParticleDesc.vRotationSpeed);
-			CJson_Utility::Write_Float3(Out_Json["Rotation_Force"], m_tEffectParticleDesc.vRotationForce);
+			CJson_Utility::Write_Float3(Out_Json["Min_Rotation_Speed"], m_tEffectParticleDesc.vMinRotationSpeed);
+			CJson_Utility::Write_Float3(Out_Json["Max_Rotation_Speed"], m_tEffectParticleDesc.vMaxRotationSpeed);
+
+			CJson_Utility::Write_Float3(Out_Json["Min_Rotation_Force"], m_tEffectParticleDesc.vMinRotationForce);
+			CJson_Utility::Write_Float3(Out_Json["Max_Rotation_Force"], m_tEffectParticleDesc.vMaxRotationForce);
 		}
 
 		CJson_Utility::Write_Float3(Out_Json["Min_Rotation"], m_tEffectParticleDesc.vMinLimitRotation);
@@ -584,10 +587,14 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 				CJson_Utility::Load_Float3(In_Json["Min_Start_Rotation"], m_tEffectParticleDesc.vMinStartRotation);
 			if (In_Json.find("Max_Start_Rotation") != In_Json.end())
 				CJson_Utility::Load_Float3(In_Json["Max_Start_Rotation"], m_tEffectParticleDesc.vMaxStartRotation);
-			if (In_Json.find("Rotation_Speed") != In_Json.end())
-				CJson_Utility::Load_Float3(In_Json["Rotation_Speed"], m_tEffectParticleDesc.vRotationSpeed);
-			if (In_Json.find("Rotation_Force") != In_Json.end())
-				CJson_Utility::Load_Float3(In_Json["Rotation_Force"], m_tEffectParticleDesc.vRotationForce);
+			if (In_Json.find("Min_Rotation_Speed") != In_Json.end())
+				CJson_Utility::Load_Float3(In_Json["Min_Rotation_Speed"], m_tEffectParticleDesc.vMinRotationSpeed);
+			if (In_Json.find("Max_Rotation_Speed") != In_Json.end())
+				CJson_Utility::Load_Float3(In_Json["Max_Rotation_Speed"], m_tEffectParticleDesc.vMaxRotationSpeed);
+			if (In_Json.find("Min_Rotation_Force") != In_Json.end())
+				CJson_Utility::Load_Float3(In_Json["Min_Rotation_Force"], m_tEffectParticleDesc.vMinRotationForce);
+			if (In_Json.find("Max_Rotation_Force") != In_Json.end())
+				CJson_Utility::Load_Float3(In_Json["Max_Rotation_Force"], m_tEffectParticleDesc.vMaxRotationForce);
 		}
 
 		if (In_Json.find("Min_Rotation") != In_Json.end())
@@ -869,9 +876,9 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 		_vector vRandomScalarFromVector = XMLoadFloat3(&vRandomScalar);
 
 		_matrix RotationMatrix = SMath::Bake_MatrixNormalizeUseLookVector(vRandomDirFromVector);
-		RotationMatrix = SMath::Go_Right(RotationMatrix, vRandomScalarFromVector.m128_f32[0]);
-		RotationMatrix = SMath::Go_Up(RotationMatrix, vRandomScalarFromVector.m128_f32[1]);
-		RotationMatrix = SMath::Go_Straight(RotationMatrix, vRandomScalarFromVector.m128_f32[2]);
+		RotationMatrix = SMath::Go_Right(RotationMatrix, XMVectorGetX(vRandomScalarFromVector));
+		RotationMatrix = SMath::Go_Up(RotationMatrix, XMVectorGetY(vRandomScalarFromVector));
+		RotationMatrix = SMath::Go_Straight(RotationMatrix, XMVectorGetZ(vRandomScalarFromVector));
 
 		XMStoreFloat3(&m_tOriginalParticleDescs[i].vCurrentTranslation, RotationMatrix.r[3]);
 
@@ -879,6 +886,12 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 
 		m_tOriginalParticleDescs[i].vCurrentRotation =
 			SMath::vRandom(m_tEffectParticleDesc.vMinStartRotation, m_tEffectParticleDesc.vMaxStartRotation);
+
+		m_tOriginalParticleDescs[i].vTargetRotationSpeed = 
+			SMath::vRandom(m_tEffectParticleDesc.vMinRotationSpeed, m_tEffectParticleDesc.vMaxRotationSpeed);
+
+		m_tOriginalParticleDescs[i].vTargetRotationForce =
+			SMath::vRandom(m_tEffectParticleDesc.vMinRotationForce, m_tEffectParticleDesc.vMaxRotationForce);
 
 		if (m_tEffectParticleDesc.bEasingPosition)
 		{
@@ -902,7 +915,6 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 			m_tOriginalParticleDescs[i].vTargetSpeedForce =
 				SMath::vRandom(m_tEffectParticleDesc.vMinSpeedForce, m_tEffectParticleDesc.vMaxSpeedForce);
 		}
-
 
 		m_tOriginalParticleDescs[i].vCurrentScale =
 			SMath::vRandom(m_tEffectParticleDesc.vMinStartScale, m_tEffectParticleDesc.vMaxStartScale);
@@ -1141,9 +1153,9 @@ void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
 		}
 		else
 		{
-			vRotation = SMath::Mul_Float3(m_tEffectParticleDesc.vRotationSpeed, fTimeDelta);
+			vRotation = SMath::Mul_Float3(m_tParticleDescs[i].vTargetRotationSpeed, fTimeDelta);
 			m_tParticleDescs[i].vCurrentRotationForce =
-				SMath::Add_Float3(m_tParticleDescs[i].vCurrentRotationForce, SMath::Mul_Float3(m_tEffectParticleDesc.vRotationForce, fTimeDelta));
+				SMath::Add_Float3(m_tParticleDescs[i].vCurrentRotationForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetRotationForce, fTimeDelta));
 
 			vRotation = SMath::Add_Float3(vRotation, m_tParticleDescs[i].vCurrentRotationForce);
 
@@ -1675,6 +1687,13 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 						assert(0);
 					}
 				}
+
+				if (m_pBoneNode.lock())
+				{
+					ImGui::Text("Binded to Bone : ");
+					ImGui::Text(m_pBoneNode.lock()->Get_Name());
+				}
+
 			}
 
 			ImGui::Text("Use Easing Position"); ImGui::SameLine();
@@ -1870,11 +1889,17 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					ImGui::Text("Max Start Rotation");
 					ImGui::DragFloat3("##Max_Start_Rotation", &m_tEffectParticleDesc.vMaxStartRotation.x, 0.1f);
 
-					ImGui::Text("Rotation Speed");
-					ImGui::DragFloat3("##Rotation_Speed", &m_tEffectParticleDesc.vRotationSpeed.x, 0.1f);
+					ImGui::Text("Min Rotation Speed");
+					ImGui::DragFloat3("##Min_Rotation_Speed", &m_tEffectParticleDesc.vMinRotationSpeed.x, 0.1f);
 
-					ImGui::Text("Rotation Force");
-					ImGui::DragFloat3("##Rotation_Force", &m_tEffectParticleDesc.vRotationForce.x, 0.1f);
+					ImGui::Text("Max Rotation Speed");
+					ImGui::DragFloat3("##Max_Rotation_Speed", &m_tEffectParticleDesc.vMaxRotationSpeed.x, 0.1f);
+
+					ImGui::Text("Min Rotation Force");
+					ImGui::DragFloat3("##Min_Rotation_Force", &m_tEffectParticleDesc.vMinRotationForce.x, 0.1f);
+
+					ImGui::Text("Max Rotation Force");
+					ImGui::DragFloat3("##Max_Rotation_Force", &m_tEffectParticleDesc.vMaxRotationForce.x, 0.1f);
 				}
 
 				ImGui::Text("Min Limit Rotation");

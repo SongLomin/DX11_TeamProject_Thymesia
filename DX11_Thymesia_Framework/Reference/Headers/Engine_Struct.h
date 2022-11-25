@@ -357,6 +357,9 @@ namespace Engine
 		_float3         vCurrentRotation;
 		_float3			vCurrentRotationForce;
 
+		_float3			vTargetRotationSpeed;
+		_float3			vTargetRotationForce;
+
 		// For. Scale
 		_float3         vCurrentScale;
 		_float3         vCurrentScaleForce;
