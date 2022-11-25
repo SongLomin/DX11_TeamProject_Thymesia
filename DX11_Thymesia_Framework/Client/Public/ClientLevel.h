@@ -5,6 +5,8 @@
 BEGIN(Client)
 
 class CFadeMask;
+class CUI_PauseMenu;
+class CUI_EvolveMenu;
 
 
 class CClientLevel abstract :
@@ -19,8 +21,14 @@ protected:
 public:
     void Change_NextLevel(void* pArg);
 
+public:
+    LEVEL   Get_MyLevel() { return m_eMyLevel; }
+    LEVEL   Get_NextLevel() { return m_eNextLevel; }
 protected:
     void	Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex);
+
+
+    virtual void		SetUp_UI();
 
 protected:
     string  m_szDefaultJsonPath = "../Bin/LevelData/";
@@ -35,8 +43,23 @@ protected:
 
     _bool m_bChangeNextLevel = false;
 
+
+protected:
+    weak_ptr<CUI_PauseMenu> m_pPauseMenu;
+    weak_ptr<CUI_EvolveMenu> m_pEvolveMenu;
+
+
 public:
     void Call_FadeOutToLevelChange();
+
+
+
+
+public:
+    void		Call_Enable_PauseMenu();
+    void		Call_Enable_EvolveMenu();
+
+
 
 protected:
     void Free();

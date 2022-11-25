@@ -64,7 +64,7 @@ void CCorvusState_SprintAttack::LateTick(_float fTimeDelta)
 
 	if (Check_AndChangeNextState())
 	{
-		Get_OwnerCharacter().lock()->Set_RigidColliderEnable(true);
+
 	}
 }
 
@@ -236,6 +236,7 @@ _bool CCorvusState_SprintAttack::Check_RuquireMnetFirstAttackState()
 {
 	_uint iTargetKeyFrameMin = 51;
 	_uint iTargetKeyFrameMax = 80;
+
 
 
 

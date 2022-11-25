@@ -23,6 +23,7 @@ public:
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
     virtual void Custom_Thread1(_float fTimeDelta) override;
+    virtual void Before_Render(_float fTimeDelta) override;
     virtual HRESULT Render() override;
     virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix);
 
@@ -33,12 +34,14 @@ public:
 private:
     typedef vector<INSTANCE_MESH_DESC>    PROP_INFO;
 
+    weak_ptr<CTexture>                  m_pMaskingTextureCom;
+
     weak_ptr<CVIBuffer_Model_Instance>  m_pInstanceModelCom;
     PROP_INFO                           m_pPropInfos;
     weak_ptr<CPhysXCollider>            m_pPhysXColliderCom;
 
     _int                                m_iColliderType = 0;
-    _bool                               m_bEdit = false;
+    _bool                               m_bNonCulling   = false;
 
 public:
     void Free();

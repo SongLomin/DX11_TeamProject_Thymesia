@@ -23,6 +23,10 @@ public:
 public:
 	static shared_ptr<CLevel_Logo> Create();
 	void Free();
+
+private:
+	virtual void		SetUp_UI() override;
+
 };
 
 END

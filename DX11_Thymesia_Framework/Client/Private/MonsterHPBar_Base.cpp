@@ -11,7 +11,7 @@
 #include "PipeLine.h"
 #include "Monster.h"
 #include "Status_Monster.h"
-
+#include "MonsterParryingBar.h"
 
 GAMECLASS_C(CMonsterHPBar_Base)
 CLONE_C(CMonsterHPBar_Base, CGameObject)
@@ -28,16 +28,20 @@ HRESULT CMonsterHPBar_Base::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	UI_DESC tDesc;
-	tDesc.fDepth = 0.f;
-	tDesc.fX = g_iWinCX / 2.f;
-	tDesc.fY = g_iWinCY / 2.f;
-	tDesc.fSizeX = 150.f;
-	tDesc.fSizeY = 15.f;
-
+	if (pArg == nullptr)
+	{
+		UI_DESC tDesc;
+		tDesc.fDepth = 0.f;
+		tDesc.fX = g_iWinCX / 2.f;
+		tDesc.fY = g_iWinCY / 2.f;
+		tDesc.fSizeX = 150.f;
+		tDesc.fSizeY = 15.f;
+		memcpy(&m_tUIDesc, &tDesc, sizeof(UI_DESC));
+	}	
+	else
+		memcpy(&m_tUIDesc, pArg, sizeof(UI_DESC));
 
 //	if (nullptr != pArg)
-		memcpy(&m_tUIDesc, &tDesc, sizeof(UI_DESC));
 //	else
 //		MSG_BOX("CUI_MonsterHpBar_Base Error : Not Defined UI_Desc");
 
@@ -96,8 +100,6 @@ HRESULT CMonsterHPBar_Base::Initialize(void* pArg)
 
 	tTrackDesc = m_tUIDesc;
 
-
-
 	UI_DESC tRecoveryDesc = m_tUIDesc;
 	tRecoveryDesc.fSizeY = m_tUIDesc.fSizeY + 6.f;
 	tRecoveryDesc.fSizeX = m_tUIDesc.fSizeX + 10.f;
@@ -119,13 +121,20 @@ HRESULT CMonsterHPBar_Base::Initialize(void* pArg)
 
 	m_vOffset = _float3(0.f, 0.f, 0.f);
 
+	UI_DESC	tParryingDesc = m_tUIDesc;
+
+	tParryingDesc.fSizeY = 10.f;
+	tParryingDesc.fX = m_tUIDesc.fX;
+	tParryingDesc.fY = m_tUIDesc.fY+ 18.f;
+	tParryingDesc.fDepth = 0.f;
+
+	m_pParryingBar = GAMEINSTANCE->Add_GameObject<CMonsterParryingBar>(LEVEL_STATIC, &tParryingDesc);
 
 	Add_Child(m_pBorder);
 	Add_Child(m_pWhite);
 	Add_Child(m_pGreen);
 	Add_Child(m_pDecoration_Head);
-	Add_Child(m_pTrack);
-
+	Add_Child(m_pParryingBar);
 	return S_OK;
 }
 
@@ -250,6 +259,12 @@ void CMonsterHPBar_Base::Reset()
 
 }
 
+void CMonsterHPBar_Base::Call_Update_ParryGauge(_float _fRatio, _bool bLerp)
+{
+	Set_Enable(true);
+	m_pParryingBar.lock()->Set_Ratio(_fRatio, bLerp);
+}
+
 void CMonsterHPBar_Base::Call_Damaged_White(_float _fRatio)
 {
 	Set_Enable(true);
@@ -268,6 +283,11 @@ void CMonsterHPBar_Base::Call_Damaged_Green(_float _fRatio)
 	Green_Damaged(fDamgedRatio);//그만큼만.
 
 	Set_RecoveryAlram(false);
+}
+
+void CMonsterHPBar_Base::Call_Damaged_Parry(_float _fRatio)
+{
+	Set_Enable(true);
 }
 
 void CMonsterHPBar_Base::Call_RecoveryAlram()
@@ -314,11 +334,19 @@ void CMonsterHPBar_Base::Call_Restart()
 
 void CMonsterHPBar_Base::OnDisable()
 {
+	__super::OnDisable();
+
 	m_pTrack.lock()->Set_Enable(false);
+
 	m_pGreenTrack.lock()->Set_Enable(false);
+
 	if (m_pStunned.lock())
 		m_pStunned.lock()->Set_Enable(false);
+
 	m_pRecovery.lock()->Set_Enable(false);
+
+	m_pBorder.lock()->Set_Enable(false);
+
 	Set_RecoveryAlram(false);
 }
 
@@ -332,6 +360,8 @@ void CMonsterHPBar_Base::FollowOwner()
 	
 	vViewPosition = m_pOwner.lock()->Get_WorldPosition();
 
+	vViewPosition += XMVectorSet(0.f,2.f, 0.f, 1.f);
+
 	ViewProjMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_VIEW) * GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_PROJ);
 		
 	vViewPosition = XMVector3TransformCoord(vViewPosition, ViewProjMatrix);
@@ -340,11 +370,12 @@ void CMonsterHPBar_Base::FollowOwner()
 	vViewPosition.m128_f32[0] = (vViewPosition.m128_f32[0] + 1.f) * (_float)g_iWinCX * 0.5f;
 	vViewPosition.m128_f32[1] = (-1.f * vViewPosition.m128_f32[1] + 1.f) * (_float)g_iWinCY * 0.5f;
 
-	_float fHeight = vViewPosition.m128_f32[1] - 200.f;
-	if (fHeight >= ((_float)g_iWinCY) * 0.4f)
-		fHeight = ((_float)g_iWinCY) * 0.4f;
+	//_float fHeight = vViewPosition.m128_f32[1] - 200.f;
+/*	if (fHeight >= ((_float)g_iWinCY) * 0.4f)
+		fHeight = ((_float)g_iWinCY) * 0.4f;*/
 
-	Set_UIPosition(vViewPosition.m128_f32[0], fHeight);
+	Set_UIPosition(vViewPosition.m128_f32[0], vViewPosition.m128_f32[1]);
+	
 }
 
 void CMonsterHPBar_Base::Set_Owner(weak_ptr<CMonster> pMonster)
@@ -354,8 +385,14 @@ void CMonsterHPBar_Base::Set_Owner(weak_ptr<CMonster> pMonster)
 
 	weak_ptr<CStatus_Monster> pStatus_Monster;
 
-	pStatus_Monster = Weak_Cast< CStatus_Monster>(pMonster.lock()->Get_ComponentByType<CStatus>());
+	pStatus_Monster = Weak_StaticCast<CStatus_Monster>(pMonster.lock()->Get_ComponentByType<CStatus>());
 	
+	pStatus_Monster.lock()->CallBack_UpdateParryGauge += bind
+	(
+		&CMonsterHPBar_Base::Call_Update_ParryGauge, this,
+		placeholders::_1, placeholders::_2
+	);
+
 	pStatus_Monster.lock()->CallBack_Damged_White += bind
 	(
 		&CMonsterHPBar_Base::Call_Damaged_White, this,
@@ -479,7 +516,7 @@ void CMonsterHPBar_Base::Set_ChildPosFromThis()
 	
 	Set_DecorationHead();
 
-
+	m_pParryingBar.lock()->Set_UIPosition(m_tUIDesc.fX, m_tUIDesc.fY + 18.f);
 }
 
 void CMonsterHPBar_Base::Set_DecorationHead()

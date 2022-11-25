@@ -46,15 +46,26 @@ private:
     virtual void OnDisable() override;
     virtual void OnDestroy() override;
 
-    void Play_Internal(_float fFrameTime);
+    void Play_Internal  (_float fFrameTime);
     void Update_Position(_float fFrameTime);
     void Update_Rotation(_float fFrameTime);
-    void Update_Scale(_float fFrameTime);
-    void Update_Color(_float fFrameTime);
-    void Update_Diffuse(_float fFrameTime);
-    void Updaste_Noise(_float fFrameTime);
-    void Update_Mask(_float fFrameTime);
-    void Update_Glow(_float fFrameTime);
+    void Update_Scale   (_float fFrameTime);
+    void Update_Color   (_float fFrameTime);
+    void Update_Diffuse (_float fFrameTime);
+    void Updaste_Noise  (_float fFrameTime);
+    void Update_Mask    (_float fFrameTime);
+    void Update_Glow    (_float fFrameTime);
+
+    // For. Easing
+    void Apply_Easing
+    (
+        _float2& vTarget
+        , EASING_TYPE eEasingType
+        , _vector   vStartPoint
+        , _vector   vTargetPoint
+        , _float    fElapsedTime
+        , _float    fTotalTime
+    );
 
 #ifdef _DEBUG
     void Key_Input_ControlMesh(_float fTimeDelta);

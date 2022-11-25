@@ -6,6 +6,25 @@
 #include "FadeMask.h"
 #include "GameManager.h"
 #include "EffectGroup.h"
+#include "UI_PauseMenu.h"
+#include "UI_EvolveMenu.h"
+#include "HUD_PlagueWeapon.h"
+#include "UI_Landing.h"
+#include "Static_Instancing_Prop.h"
+#include "HUD_PlagueWeapon.h"
+#include "UI_PauseMenu.h"
+#include "MonsterHPBar_Base.h"
+#include "MonsterHPBar_Elite.h"
+#include "MonsterHPBar_Boss.h"
+#include "MonsterParryingBar.h"
+#include "UI_Containers.h"
+#include "UI_EvolveMenu.h"
+#include "UI_EvolveMenu_Level.h"
+#include "Player_MPBar.h"
+#include "Player_HPBar.h"
+#include "Player_Memory.h"
+#include "Player_PotionUI.h"
+#include "Player_FeatherUI.h"
 
 GAMECLASS_C(CClientLevel)
 
@@ -66,6 +85,39 @@ void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint
 	}
 }
 
+void CClientLevel::SetUp_UI()
+{
+	weak_ptr<CGameManager>	pGameManager = GET_SINGLE(CGameManager);
+
+	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);//¿©±â¼­ 
+	m_pPauseMenu = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu>(LEVEL_STATIC);
+
+	m_pEvolveMenu = GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu>(LEVEL_STATIC);
+	GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu_Level>(LEVEL_STATIC);
+
+
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_MPBar>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_Memory>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_PotionUI>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
+
+	//TODO : MonsterHpBar TestCode
+	/*
+	CUI::UI_DESC tDesc;
+	tDesc.fX = g_iWinCX / 2.f;
+	tDesc.fY = g_iWinCY / 2.f;
+	tDesc.fSizeX = 150.f;
+	tDesc.fSizeY = 15.f;
+	tDesc.fDepth = 0.f;
+
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Elite>(LEVEL_STATIC, &tDesc));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Boss>(LEVEL_STATIC, &tDesc));
+	*/
+}
+
 void CClientLevel::Change_NextLevel(void* pArg)
 {
 	m_bChangeNextLevel = true;
@@ -86,6 +138,18 @@ void CClientLevel::Call_FadeOutToLevelChange()
 	m_pFadeMask.lock()->Set_Enable(false);
 	if (FAILED(GAMEINSTANCE->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_eNextLevel))))
 		return;
+}
+
+void CClientLevel::Call_Enable_PauseMenu()
+{
+	m_pPauseMenu.lock()->Set_Enable(true);
+	m_pFadeMask.lock()->Set_Enable(false);
+}
+
+void CClientLevel::Call_Enable_EvolveMenu()
+{
+	m_pEvolveMenu.lock()->Set_Enable(true);
+	m_pFadeMask.lock()->Set_Enable(false);
 }
 
 void CClientLevel::Free()

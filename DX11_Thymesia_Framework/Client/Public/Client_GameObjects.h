@@ -19,6 +19,7 @@
 #include "Static_Prop.h"
 #include "Static_Instancing_Prop.h"
 #include "Light_Prop.h"
+#include "Dynamic_Prop.h"
 
 #include "EditGround.h"
 #include "EditGroupProp.h"
@@ -38,3 +39,4 @@
 #include "Monster.h"
 #include "BossMonster.h"
 #include "BossVarg/Varg.h"
+#include "BossUrd/Urd.h"

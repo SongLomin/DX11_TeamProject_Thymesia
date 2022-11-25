@@ -23,7 +23,7 @@ class CPlayer_HPBar;
 class CPlayer_Memory;
 class CPlayer_PotionUI;
 class CPlayer_FeatherUI;
-
+class CStatus_Player;
 
 class CMonster;
 
@@ -42,10 +42,18 @@ public:
 public:
     void Register_Layer(const OBJECT_LAYER& In_Layer, weak_ptr<CGameObject> In_GameObject);
     void Remove_Layer(const OBJECT_LAYER& In_Layer, weak_ptr<CGameObject> In_GameObject);
+    
+    void Enable_Layer(const OBJECT_LAYER& In_Layer);
+    void Disable_Layer(const OBJECT_LAYER& In_Layer);
+
+
 
     list<weak_ptr<CGameObject>> Get_Layer(const OBJECT_LAYER& In_Layer);
     list<weak_ptr<CGameObject>> Get_LayerSelectEnable(const OBJECT_LAYER& In_Layer);
     void Set_CurrentPlayer(weak_ptr<CPlayer> In_pPlayer);
+
+    weak_ptr<CStatus_Player>    Get_CurrentPlayer_Status();
+
     weak_ptr<CPlayer> Get_CurrentPlayer();
 
 public:
@@ -53,7 +61,7 @@ public:
 public:
     void Set_TargetCamera(weak_ptr<CCamera_Target> In_TargetCamera);
     weak_ptr<CCamera_Target> Get_TargetCamera();
-    void Add_Shaking(_vector& vShakingDir, _float fRatio);
+    void Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime, _float fFrequency = 1.5f);
     //void Set_TargetForTargetCamera(weak_ptr<CGameObject> In_TargetGameObject);
     void Focus_Monster();
     void Release_Focus();
@@ -80,14 +88,12 @@ public:
 
     // 해당 키에 이벤트가 있는지 확인 후 있다면 이벤트를 호출합니다.
     void Active_KeyEvent(const weak_ptr<CModel> In_ModelCom, const weak_ptr<CTransform> In_TransformCom, const _uint& In_iKeyIndex, const _uint& In_iTimeScaleLayer = -1);
-    void Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName,_matrix& OffSetMatrix);
+    void Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName,_matrix& OffSetMatrix, CINEMATIC_TYPE iCinematicType);
     void End_Cinematic();
 
-    void Activate_Zoom(_float fRatio);
+    void Activate_Zoom(_float fRatio, _float fZoomTime);
     void Deactivate_Zoom();
-    
-public:
-    _bool Is_OpenHyperSpace();
+    _vector Get_PlayerPos();
 
 private:
     void Start_Peace();

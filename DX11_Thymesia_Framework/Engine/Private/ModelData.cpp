@@ -74,6 +74,19 @@ HRESULT MODEL_DATA::Make_ModelData(const char* szFilePath, const MODEL_TYPE& In_
         fout.close();
     }
 
+   /* else if(MODEL_TYPE::NONANIM == eModelType)
+    {
+        string szDebugFileName;
+
+        szDebugFileName = "../bin/Debugs/NONANIMs.txt";
+
+        ofstream fout(szDebugFileName,std::ios_base::out | std::ios_base::app);
+
+        Debug_NonAnimLog(fout);
+
+        fout.close();
+    }*/
+
 #endif // _DEBUG
 
 
@@ -208,12 +221,27 @@ void MODEL_DATA::Debug_AnimationLog(ofstream& os)
     }
 }
 
+void MODEL_DATA::Debug_NonAnimLog(ofstream& os)
+{
+    _float fMax = XMVectorGetX(XMVector3Length(XMLoadFloat3(&VertexInfo.vMax)));
+    _float fMin = XMVectorGetX(XMVector3Length(XMLoadFloat3(&VertexInfo.vMin)));
+
+    os << szModelFileName << ", Min Length:  " << fMin << endl;
+    os << szModelFileName << ", Max Length:  " << fMax << endl;
+}
+
 void MODEL_DATA::Compute_Center(MESH_VTX_INFO& _tVertexInfo)
 {
     _vector vDist      = (XMLoadFloat3(&_tVertexInfo.vMax) + XMLoadFloat3(&_tVertexInfo.vMin)) * 0.5f;
-    _vector vCentorPos = XMLoadFloat3(&_tVertexInfo.vMin) + vDist;
 
-    XMStoreFloat3(&_tVertexInfo.vCenter, vCentorPos);
+    XMStoreFloat3(&_tVertexInfo.vCenter, vDist);
+}
+
+_float MODEL_DATA::Get_MaxOffsetRange() const
+{
+    _vector vOffsetRange = XMLoadFloat3(&VertexInfo.vMax);
+
+    return XMVectorGetX(XMVector3Length(vOffsetRange));
 }
 
 HRESULT MODEL_DATA::Load_FromAssimp(const _bool In_bAnimZero)

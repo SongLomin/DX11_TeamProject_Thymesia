@@ -9,6 +9,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CVargBossState_WalkB);
 CLONE_C(CVargBossState_WalkB, CComponent)
@@ -32,7 +33,7 @@ void CVargBossState_WalkB::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_Seq_TutorialBossFightStart");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_WalkB");
 
 
 	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_WalkB::Call_AnimationEnd, this);*/
@@ -42,8 +43,13 @@ void CVargBossState_WalkB::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	m_fCurrentSpeed += m_fAccel * fTimeDelta;
+	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
+	_vector vDirLook = Get_CurMonToStartMonDir();
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
+
+	m_pPhysXControllerCom.lock()->Move(vDirLook * m_fCurrentSpeed * fTimeDelta, 0.f, fTimeDelta, PxControllerFilters());
 }
 
 
@@ -51,7 +57,7 @@ void CVargBossState_WalkB::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-
+	Rotation_TargetToLookDir();
 
 	Check_AndChangeNextState();
 }
@@ -66,7 +72,7 @@ void CVargBossState_WalkB::OnStateStart(const _float& In_fAnimationBlendTime)
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: WalkB -> OnStateStart" << endl;
 #endif
 #endif
 
@@ -107,11 +113,18 @@ _bool CVargBossState_WalkB::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
+
+	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
+
+
+	if (fPToMDistance >= 3.f)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkB>(0.05f);
+		Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidB>(0.05f);
+
 		return true;
 	}
+
+
 
 	return false;
 }

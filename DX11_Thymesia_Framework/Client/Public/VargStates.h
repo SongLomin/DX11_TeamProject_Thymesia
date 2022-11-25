@@ -38,4 +38,9 @@
 #include "BossVarg/VargBossState_WalkR.h"
 #include "BossVarg/VargBossState_WalkL.h"
 #include "BossVarg/VargBossState_WalkF.h"
+#include "BossVarg/VargBossState_Attack2b1.h"
+#include "BossVarg/VargBossState_Attack2b2.h"
+#include "BossVarg/VargBossState_RaidAttack.h"
+#include "BossVarg/VargBossState_TurnAttack.h"
+
 

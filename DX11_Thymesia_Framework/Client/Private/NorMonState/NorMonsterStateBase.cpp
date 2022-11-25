@@ -102,30 +102,27 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_T
 
 		CStatus_Player::PLAYERDESC tPlayerDesc;
 
-		pAttackArea.lock()->Get_ParentObject().lock()->Get_Component<CStatus>().lock()
+		pAttackArea.lock()->Get_ParentObject().lock()->Get_ComponentByType<CStatus>().lock()
 			->Get_Desc(&tPlayerDesc);
 
 		//플레이어 공격력 아직 없으니 임의값 넣어서!
-		_float fMagnifiedDamage = In_fDamage * 100;
-		m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+		_float fMagnifiedDamage = In_fDamage * 4;
+		//m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 
-		//switch (eAttackOption)
-		//{
-		//case Client::ATTACK_OPTION::NONE:
-		//	m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, ATTACK_OPTION::NORMAL);
-		//
-		//	break;
-		//case Client::ATTACK_OPTION::NORMAL:A
-		//	m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
-		//
-		//	break;
-		//case Client::ATTACK_OPTION::PLAGUE:
-		//	m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
-		//
-		//	break;
-		//case Client::ATTACK_OPTION::SPECIAL_ATTACK:
-		//	break;
-		//}
+		switch (eAttackOption)
+		{
+		case Client::ATTACK_OPTION::NONE:
+			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, ATTACK_OPTION::NORMAL);		
+			break;
+		case Client::ATTACK_OPTION::NORMAL:
+			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);		
+			break;
+		case Client::ATTACK_OPTION::PLAGUE:
+			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);		
+			break;
+		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
+			break;
+		}
 		//GAMEINSTANCE->Get_GameObjects<CDamageUI>(LEVEL::LEVEL_STATIC).front().lock()->Add_DamageText(vMyPosition, In_fDamage, bRandom);
 
 		//GAMEINSTANCE->Get_GameObjects<CMonsterHpBar>(LEVEL::LEVEL_STATIC).front().lock()->OnHit(m_pOwner);
@@ -184,6 +181,10 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_T
 	}
 
 }
+
+
+
+
 
 void CNorMonsterStateBase::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
 {

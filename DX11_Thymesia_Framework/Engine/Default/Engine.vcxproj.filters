@@ -150,7 +150,7 @@
       <Filter>01. Elements\98. Other\03. DebugDraw</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Collider.h">
-      <Filter>01. Elements\03. Component\11. Collision</Filter>
+      <Filter>01. Elements\03. Component\11. Collider</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\SMath.h">
       <Filter>01. Elements\05. Utility\00. SMath</Filter>
@@ -383,7 +383,7 @@
       <Filter>01. Elements\98. Other\03. DebugDraw</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Collider.cpp">
-      <Filter>01. Elements\03. Component\11. Collision</Filter>
+      <Filter>01. Elements\03. Component\11. Collider</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\SMath.cpp">
       <Filter>01. Elements\05. Utility\00. SMath</Filter>
@@ -612,9 +612,6 @@
     <Filter Include="01. Elements\98. Other\03. DebugDraw">
       <UniqueIdentifier>{62c10e54-fbdd-407a-95f7-188aa722ba4e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01. Elements\03. Component\11. Collision">
-      <UniqueIdentifier>{c271f883-4bee-4c5d-b829-a78a7f5f0177}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01. Elements\05. Utility\00. SMath">
       <UniqueIdentifier>{106fd017-c633-42bf-b5af-ebf4b3172861}</UniqueIdentifier>
     </Filter>
@@ -707,6 +704,9 @@
     </Filter>
     <Filter Include="01. Elements\03. Component\01. VIBuffer\08. Trail\VIBuffer_Trail_EyeLight">
       <UniqueIdentifier>{b19230d0-a1ab-41b9-9ddb-a493e16239fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Elements\03. Component\11. Collider">
+      <UniqueIdentifier>{c271f883-4bee-4c5d-b829-a78a7f5f0177}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

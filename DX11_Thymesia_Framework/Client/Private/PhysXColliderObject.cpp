@@ -49,16 +49,6 @@ HRESULT CPhysXColliderObject::Start()
 void CPhysXColliderObject::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
-
-	if ((_uint)LEVEL_EDIT == m_CreatedLevel)
-	{
-		MESH_VTX_INFO VtxInfo;
-		VtxInfo.vMax = { 1.f, 1.f,1.f };
-		VtxInfo.vMin = { 0.f, 0.f, 0.f };
-
-		//m_pVIBufferCom.lock()->Update(VtxInfo, m_pTransformCom.lock()->Get_WorldMatrix());
-	}
 	
 }
 
@@ -90,6 +80,27 @@ HRESULT CPhysXColliderObject::Render()
 	}
 
 	return S_OK;
+}
+
+_bool CPhysXColliderObject::IsPicking(const RAY& In_Ray, _float& Out_fRange)
+{
+	MESH_VTX_INFO tInfo;
+
+	tInfo.vMax = {  0.5f,  0.5f,  0.5f };
+	tInfo.vMin = { -0.5f, -0.5f, -0.5f };
+
+	_float fDist;
+
+	if (SMath::Is_Picked_AbstractCube(In_Ray, tInfo, m_pTransformCom.lock()->Get_WorldMatrix(), &fDist))
+	{
+		if (Out_fRange > fDist)
+		{
+			Out_fRange = fDist;
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void CPhysXColliderObject::Write_Json(json& Out_Json)

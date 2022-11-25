@@ -42,7 +42,6 @@ protected:
     weak_ptr<CModel> m_pModelCom;
     weak_ptr<CShader> m_pShaderCom;
     weak_ptr<CRenderer> m_pRendererCom;
-    weak_ptr<CRigidBody> m_pRigidBodyCom;
 
     list<pair<string, _uint>>   m_EffectIndexList;
 

@@ -42,10 +42,6 @@ void CVargBossState_TurnL::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	_float fTurnValue = 1.57 / 0.85f;
-
-	m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * -1.5f);
-
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -54,7 +50,9 @@ void CVargBossState_TurnL::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+	_float fTurnValue = 1.57 / 0.85f;
 
+	m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * -1.5f);
 
 	Check_AndChangeNextState();
 }
@@ -69,7 +67,7 @@ void CVargBossState_TurnL::OnStateStart(const _float& In_fAnimationBlendTime)
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: TurnL -> OnStateStart" << endl;
 #endif
 #endif
 
@@ -113,6 +111,7 @@ _bool CVargBossState_TurnL::Check_AndChangeNextState()
 	if (ComputeAngleWithPlayer() > 0.94f)
 	{
 		Rotation_TargetToLookDir();
+		Get_Owner().lock()->Get_Component<CVargBossState_Idle>().lock()->Set_TurnCheck(false);
 		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
 		return true;
 	}

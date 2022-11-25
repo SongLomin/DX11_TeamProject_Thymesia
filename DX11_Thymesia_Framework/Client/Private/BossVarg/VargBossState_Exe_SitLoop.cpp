@@ -32,7 +32,7 @@ void CVargBossState_Stun_Exe_SitLoop::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_Seq_TutorialBossFightStart");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_TakeExecution_Loop");
 
 
 	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Stun_Exe_SitLoop::Call_AnimationEnd, this);*/
@@ -66,7 +66,7 @@ void CVargBossState_Stun_Exe_SitLoop::OnStateStart(const _float& In_fAnimationBl
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: Exe_SitLoop -> OnStateStart" << endl;
 #endif
 #endif
 

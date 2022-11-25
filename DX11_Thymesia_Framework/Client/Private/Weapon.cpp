@@ -17,35 +17,18 @@ HRESULT CWeapon::Initialize_Prototype()
 
 HRESULT CWeapon::Initialize(void* pArg)
 {
-	__super::Initialize(pArg);
+	CGameObject::Initialize(pArg);
 
 	m_pModelCom = Add_Component<CModel>();
 	m_pShaderCom = Add_Component<CShader>();
 	m_pRendererCom = Add_Component<CRenderer>();
-	m_pHitColliderComs.emplace_back(Add_Component<CCollider>());
 
 	m_vOffset = { 0.f, 0.f, 0.f };
 
-	COLLIDERDESC			ColliderDesc;
-	ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
-
-	m_fOriginalWeaponScale = 0.3f;
-	ColliderDesc.vScale = _float3(m_fOriginalWeaponScale, 0.f, 0.f);
-	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
-	ColliderDesc.vTranslation = _float3(0.f, 0.f, 0.f);
-	ColliderDesc.iLayer = (_uint)COLLISION_LAYER::PLAYER_ATTACK;
-
-	//m_pHitColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
-	
 	m_pShaderCom.lock()->Set_ShaderInfo(
 		TEXT("Shader_VtxModel"),
 		VTXMODEL_DECLARATION::Element,
 		VTXMODEL_DECLARATION::iNumElements);
-
-	for (auto& elem : m_pHitColliderComs)
-	{
-		elem.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
-	}
 
 	return S_OK;
 }
@@ -57,10 +40,10 @@ HRESULT CWeapon::Start()
 
 void CWeapon::Tick(_float fTimeDelta)
 {
-	__super::Tick(fTimeDelta);
+	// 부모 틱 돌면 안됨!!
 
 	//부모 게임 오브젝트가 없음.
-	if (!m_pParent.lock().get())
+	if (!m_pParentTransformCom.lock())
 		return;
 
 	_matrix		ParentMatrix = m_pTargetBoneNode.lock()->Get_CombinedMatrix()
@@ -75,9 +58,8 @@ void CWeapon::Tick(_float fTimeDelta)
 	ParentMatrix = SMath::Go_Up(ParentMatrix, m_vOffset.y);
 	ParentMatrix = SMath::Go_Straight(ParentMatrix, m_vOffset.z);
 
-	m_pTransformCom.lock()->Set_WorldMatrix(ParentMatrix * m_pParent.lock()->Get_Component<CTransform>().lock()->Get_WorldMatrix());
-	//m_pTransformCom.lock()->Set_WorldMatrix(m_pParent.lock()->Get_Component<CTransform>().lock()->Get_WorldMatrix());
-	
+	m_pTransformCom.lock()->Set_WorldMatrix(ParentMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix());
+		
 	for (auto& elem : m_pHitColliderComs)
 	{
 		elem.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
@@ -86,8 +68,6 @@ void CWeapon::Tick(_float fTimeDelta)
 
 void CWeapon::LateTick(_float fTimeDelta)
 {
-	__super::LateTick(fTimeDelta);
-
 	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Cast<CGameObject>(m_this));
 }
 
@@ -125,12 +105,22 @@ HRESULT CWeapon::Render()
 	return S_OK;
 }
 
-void CWeapon::Init_Weapon(weak_ptr<CModel> In_pModelCom, weak_ptr<CGameObject> In_pParent, const string& szTargetNode)
+void CWeapon::Init_Weapon(weak_ptr<CModel> In_pModelCom, weak_ptr<CTransform> In_ParentTransformCom, const string& szTargetNode)
 {
 	//m_pModelCom.lock()->Init_Model(In_pModelCom.lock()->Get_ModelKey());
-	m_pParent = In_pParent;
+	m_pParentTransformCom = In_ParentTransformCom;
 	m_pTargetBoneNode = In_pModelCom.lock()->Find_BoneNode(szTargetNode);
 	m_TransformationMatrix = In_pModelCom.lock()->Get_TransformationMatrix();
+
+	weak_ptr<CCharacter> pParentFromCharacter = Weak_Cast<CCharacter>(In_ParentTransformCom.lock()->Get_Owner());
+
+	if (!pParentFromCharacter.lock())
+	{
+		// 부모 객체가 캐릭터가 아니거나 삭제된 객체임.
+		DEBUG_ASSERT;
+	}
+
+	m_pParentCharacter = pParentFromCharacter;
 }
 
 void CWeapon::Enable_Weapon()
@@ -149,6 +139,20 @@ void CWeapon::Init_Trail(TRAIL_DESC& TrailDesc)
 	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail>(m_CreatedLevel, &TrailDesc);
 	m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
 	m_pTrailEffect.lock()->Set_Enable(false);
+}
+
+void CWeapon::Add_Collider(_fvector In_vOffset, const _float In_fScale, const COLLISION_LAYER In_Layer)
+{
+	m_pHitColliderComs.push_back(Add_Component<CCollider>());
+
+	COLLIDERDESC tDesc;
+	tDesc.iLayer = (_uint)In_Layer;
+	tDesc.vRotation = { 0.f, 0.f, 0.f, 0.f };
+	tDesc.vScale = { In_fScale, 0.f, 0.f};
+	tDesc.vTranslation = {0.f, 0.f, 0.f};
+	XMStoreFloat3(&tDesc.vOffset, In_vOffset);
+
+	m_pHitColliderComs.back().lock()->Init_Collider(COLLISION_TYPE::SPHERE, tDesc);
 }
 
 _bool CWeapon::Set_TrailEnable(const _bool In_bEnable)
@@ -173,27 +177,12 @@ void CWeapon::Disable_Weapon()
 	}
 }
 
-void CWeapon::Set_WeaponScale(const _float& In_fWeaponScale)
+weak_ptr<CCharacter> CWeapon::Get_ParentCharacter()
 {
-	m_fWeaponScale = In_fWeaponScale;
-
-	for (auto& elem : m_pHitColliderComs)
-	{
-		elem.lock()->Set_ColliderScale(XMVectorSet(In_fWeaponScale, In_fWeaponScale, In_fWeaponScale, 0.f));
-	}
+	return m_pParentCharacter;
 }
 
-void CWeapon::Set_OriginalWeaponScale()
-{
-	Set_WeaponScale(m_fOriginalWeaponScale);
-}
-
-weak_ptr<CGameObject> CWeapon::Get_ParentObject()
-{
-	return m_pParent;
-}
-
-void CWeapon::Set_WeaponDesc(const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+void CWeapon::Set_WeaponDesc(const HIT_TYPE In_eHitType, const _float In_fDamage)
 {
 	m_eHitType = In_eHitType;
 	m_fDamage = In_fDamage;
@@ -223,14 +212,19 @@ void CWeapon::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
 
 	if (m_bFirstAttack)
 	{
-		CallBack_AttackOnce(pOtherCollider);
-		CallBack_Attack(pOtherCollider);
+		if (m_pParentCharacter.lock())
+		{
+			m_pParentCharacter.lock()->Call_WeaponFirstAttack(pOtherCollider);
+		}
 
 		m_bFirstAttack = false;
 	}
 	else
 	{
-		CallBack_Attack(pOtherCollider);
+		if (m_pParentCharacter.lock())
+		{
+			m_pParentCharacter.lock()->Call_WeaponAttack(pOtherCollider);
+		}
 	}
 }
 

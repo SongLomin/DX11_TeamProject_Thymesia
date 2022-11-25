@@ -88,7 +88,8 @@ void CMainApp::Tick(float fTimeDelta)
 	if (nullptr == GAMEINSTANCE)
 		return;
 
-	GAMEINSTANCE->Add_MotionBlurScale(-0.2f * fTimeDelta);
+	//GAMEINSTANCE->Add_MotionBlurScale(-0.2f * fTimeDelta);
+	GAMEINSTANCE->Add_Chromatic(-0.2f * fTimeDelta);
 
 	GAMEINSTANCE->Tick_Engine(fTimeDelta);
 

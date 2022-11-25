@@ -9,6 +9,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
+#include "MobWeapon.h"
 
 GAMECLASS_C(CVargBossState_RunAttack);
 CLONE_C(CVargBossState_RunAttack, CComponent)
@@ -32,15 +33,15 @@ void CVargBossState_RunAttack::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_Seq_TutorialBossFightStart");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_RaidAttack1");
 
-
-	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_RunAttack::Call_AnimationEnd, this);*/
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_RunAttack::Call_AnimationEnd, this);
 }
 
 void CVargBossState_RunAttack::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
 
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
@@ -51,7 +52,7 @@ void CVargBossState_RunAttack::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-
+	Rotation_TargetToLookDir();
 
 	Check_AndChangeNextState();
 }
@@ -62,39 +63,48 @@ void CVargBossState_RunAttack::OnStateStart(const _float& In_fAnimationBlendTime
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+
+	for (auto& elem : pWeapons)
+	{
+		elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 150.f);
+	}
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: RunAttack -> OnStateStart" << endl;
 #endif
 #endif
 
-
+	m_pModelCom.lock()->Set_AnimationSpeed(1.3f);
 }
 
 void CVargBossState_RunAttack::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 
-//
-//void CVargBossState_RunAttack::Call_AnimationEnd()
-//{
-//	if (!Get_Enable())
-//		return;
-//
-//
-//	Get_OwnerCharacter().lock()->Change_State<CVargBossState_RunAttack>(0.05f);
-//}
 
-//void CVargBossState_RunAttack::OnDestroy()
-//{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_RunAttack::Call_AnimationEnd, this);
-//}
+void CVargBossState_RunAttack::Call_AnimationEnd()
+{
+	if (!Get_Enable())
+		return;
+
+
+	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
+}
+
+void CVargBossState_RunAttack::OnDestroy()
+{
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_RunAttack::Call_AnimationEnd, this);
+}
 
 void CVargBossState_RunAttack::Free()
 {
@@ -107,11 +117,7 @@ _bool CVargBossState_RunAttack::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
-	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_RunAttack>(0.05f);
-		return true;
-	}
+
 
 	return false;
 }

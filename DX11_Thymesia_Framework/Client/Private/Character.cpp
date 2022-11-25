@@ -36,11 +36,6 @@ _uint CCharacter::Get_PreStateIndex() const
 	return m_pPreState.lock()->Get_StateIndex();
 }
 
-void CCharacter::Set_RigidColliderEnable(const _bool& In_bEnable)
-{
-	m_pRigidBodyColliderCom.lock()->Set_Enable(In_bEnable);
-}
-
 void CCharacter::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
@@ -76,11 +71,6 @@ void CCharacter::Before_Render(_float fTimeDelta)
 	__super::Before_Render(fTimeDelta);
 }
 
-weak_ptr<CCollider> CCharacter::Get_RigidColliderComponent() const
-{
-	return m_pRigidBodyColliderCom;
-}
-
 weak_ptr<CStateBase> CCharacter::Get_PreState() const
 {
 	return m_pPreState;
@@ -90,6 +80,9 @@ weak_ptr<CStateBase> CCharacter::Get_CurState() const
 {
 	return m_pCurState;
 }
+
+
+
 
 void CCharacter::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
@@ -137,6 +130,8 @@ void CCharacter::OnEventMessage(_uint iArg)
 	{
 		m_isEdit = true;
 	}
+
+	
 
 }
 

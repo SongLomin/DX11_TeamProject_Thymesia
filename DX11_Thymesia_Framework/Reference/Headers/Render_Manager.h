@@ -22,6 +22,9 @@ public:
 public:
 	HRESULT Set_MotionBlur(const _float& In_fBlurScale);
 	HRESULT Add_MotionBlur(const _float& In_fBlurScale);
+	HRESULT Set_Chromatic(const _float In_fChormaticStrangth);
+	HRESULT Add_Chromatic(const _float In_fChormaticStrangth);
+
 	HRESULT	Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt);
 	
 
@@ -51,6 +54,7 @@ private:
 	HRESULT Render_AfterPostEffect();
 	HRESULT Render_AfterPostEffectGlow();
 	HRESULT Blur_Effect();
+	HRESULT PostProcessing(const _int In_iPass);
 	HRESULT Render_UI();
 	HRESULT Render_Final();
 
@@ -77,6 +81,7 @@ private:
 	shared_ptr<CShader>			m_pXBlurShader;
 	shared_ptr<CShader>			m_pOutLineShader;
 	shared_ptr<CShader>			m_pDistortionShader;
+	shared_ptr<CShader>			m_pPostProcessingShader;
 	shared_ptr<CVIBuffer_Rect>	m_pVIBuffer;
 
 private:
@@ -91,6 +96,7 @@ private:
 
 private:
 	_float		m_fBlurWitdh = 0.f;
+	_float		m_fChromaticStrangth = 0.f;
 
 	_bool		m_bFirst = true;
 

@@ -24,7 +24,7 @@ HRESULT CCorvusState_LAttack1::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	m_iAttackIndex = 183;
+
 	return S_OK;
 }
 
@@ -63,10 +63,7 @@ void CCorvusState_LAttack1::LateTick(_float fTimeDelta)
 
 	Check_InputNextAttack();
 
-	if (Check_AndChangeNextState())
-	{
-		Get_OwnerCharacter().lock()->Set_RigidColliderEnable(true);
-	}
+	Check_AndChangeNextState();
 }
 
 void CCorvusState_LAttack1::Call_AnimationEnd()
@@ -81,7 +78,7 @@ void CCorvusState_LAttack1::Call_AnimationEnd()
 void CCorvusState_LAttack1::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 {
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAttackIndex);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 }
 
 void CCorvusState_LAttack1::Attack()
@@ -120,7 +117,7 @@ void CCorvusState_LAttack1::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAttackIndex);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 	if (!m_pModelCom.lock().get())
 	{
@@ -134,7 +131,7 @@ void CCorvusState_LAttack1::OnStateStart(const _float& In_fAnimationBlendTime)
 
 #ifdef _DEBUG
 	#ifdef _DEBUG_COUT_
-		cout << "NorMonState: Attack -> OnStateStart" << endl;
+		cout << "CorvusState: Attack -> OnStateStart" << endl;
 #endif
 
 #endif
@@ -164,29 +161,52 @@ _bool CCorvusState_LAttack1::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 16)
 	{
-		if (Check_RequirementAVoidState())
+
+		if (Check_RequirementAttackState())
+		{
+			if (Check_RequirementNextAttackState())
+			{
+				if (!Rotation_InputToLookDir())
+					Rotation_TargetToLookDir();
+
+				Get_OwnerPlayer()->Change_State<CCorvusState_LAttack2>(0.05f);
+				return true;
+			}
+		}
+
+		if (Check_RequirementParryState())
 		{
 			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
 			return true;
 		}
-	}
 
-	if (Check_RequirementAttackState())
-	{
-		if (Check_RequirementNextAttackState())
+		if (Check_RequirementClawAttackState())
 		{
 			if (!Rotation_InputToLookDir())
 				Rotation_TargetToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack2>();
+
+			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
 			return true;
 		}
+
+		if (Check_RequirementAVoidState())
+		{
+			Rotation_InputToLookDir();
+
+			Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
+			return true;
+		}
+
 	}
 
+
+
 	
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 64)
 	{
 		cout << "Ratio: " << m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() << endl;
 
@@ -198,26 +218,6 @@ _bool CCorvusState_LAttack1::Check_AndChangeNextState()
 		}
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.4f)
-	{
-		if (Check_RequirementParryState())
-		{
-			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
-			return true;
-		}
-	}
-
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.4f)
-	{
-		if (Check_RequirementClawAttackState())
-		{
-			if (!Rotation_InputToLookDir())
-				Rotation_TargetToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
-			return true;
-		}
-	}
 
 	if (Check_RuquireMnetFirstAttackState())
 	{
@@ -238,15 +238,13 @@ _bool CCorvusState_LAttack1::Check_AndChangeNextState()
 _bool CCorvusState_LAttack1::Check_RequirementNextAttackState()
 {	
 
-	_uint iTargetKeyFrameFirst = 11;
+	_uint iTargetKeyFrameFirst = 17;
 	_uint iTargetKeyFrameSecond = 50;
 
 	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameFirst, iTargetKeyFrameSecond) && m_IsNextAttack)
 	{
 		return true;
 	}
-
-
 
 	return false;
 }
@@ -260,8 +258,6 @@ _bool CCorvusState_LAttack1::Check_RuquireMnetFirstAttackState()
 	{
 		return true;
 	}
-
-
 
 	return false;
 }

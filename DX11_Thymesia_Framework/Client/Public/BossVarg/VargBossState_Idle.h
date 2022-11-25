@@ -14,7 +14,8 @@ class CVargBossState_Idle :
 	CLONE_H(CVargBossState_Idle, CComponent)
 		SHALLOW_COPY(CVargBossState_Idle)
 
-
+public:
+	void Set_TurnCheck(_bool TurnCheck) {m_bTurnCheck = TurnCheck;}
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
@@ -28,7 +29,8 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
-
+private:
+	_bool    m_bTurnCheck = false;
 
 private:
 	//void Call_AnimationEnd();

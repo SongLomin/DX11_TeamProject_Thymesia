@@ -32,16 +32,16 @@ void CVargBossState_AvoidL::Start()
 	__super::Start();
 
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_Seq_TutorialBossFightStart");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_AvoidL");
 
+	m_bAttackLookAtLimit = true;  // 애니메이션시작할떄 룩엣시작
 
-	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_AvoidL::Call_AnimationEnd, this);*/
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_AvoidL::Call_AnimationEnd, this);
 }
 
 void CVargBossState_AvoidL::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -51,7 +51,7 @@ void CVargBossState_AvoidL::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-
+	Rotation_TargetToLookDir();
 
 	Check_AndChangeNextState();
 }
@@ -66,35 +66,33 @@ void CVargBossState_AvoidL::OnStateStart(const _float& In_fAnimationBlendTime)
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: AvoidL -> OnStateStart" << endl;
 #endif
 #endif
 
-
+	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 }
 
 void CVargBossState_AvoidL::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 
-//
-//void CVargBossState_AvoidL::Call_AnimationEnd()
-//{
-//	if (!Get_Enable())
-//		return;
-//
-//
-//	Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidL>(0.05f);
-//}
 
-//void CVargBossState_AvoidL::OnDestroy()
-//{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_AvoidL::Call_AnimationEnd, this);
-//}
+void CVargBossState_AvoidL::Call_AnimationEnd()
+{
+	if (!Get_Enable())
+		return;
+
+}
+
+void CVargBossState_AvoidL::OnDestroy()
+{
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_AvoidL::Call_AnimationEnd, this);
+}
 
 void CVargBossState_AvoidL::Free()
 {
@@ -107,9 +105,10 @@ _bool CVargBossState_AvoidL::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidL>(0.05f);
+		Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidAttack>(0.05f);
+
 		return true;
 	}
 

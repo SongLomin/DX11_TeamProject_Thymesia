@@ -138,7 +138,6 @@ HRESULT CResource_Manager::Load_Model(const _char* sKey, const _char* sModelFile
 
 	m_pScenes[(_uint)eMemType].emplace(sKey, TempModel);
 
-
 //	char szDir[MAX_PATH];
 //	_splitpath_s(TempModel->szModelFilePath.c_str(), nullptr, 0, szDir, MAX_PATH, nullptr, 0, nullptr, 0);
 //

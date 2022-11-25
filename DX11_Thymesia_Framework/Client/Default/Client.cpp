@@ -106,7 +106,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
         if (
 #ifdef _144HZ_
-            fTimerAcc > 0.00694f
+            fTimerAcc > 0.006944f
 #else
             1
 #endif // _144HZ_

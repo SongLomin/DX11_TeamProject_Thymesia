@@ -11,7 +11,6 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
     fTickPerSecond = (_float)In_pAiAnimation->mTicksPerSecond * In_fSpeed;
 
 
-
     for (_uint i = 0; i < iNumChannels; i++)
     {
         shared_ptr<CHANNEL_DATA> pChannelData = make_shared<CHANNEL_DATA>();
@@ -55,17 +54,33 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     }
 
     // TODO : change animation speed here
-    MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack1", 2.f);
-    MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack2", 2.f);
-    MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack3_New", 2.f);
+    /*MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack1", 2.5f);
+    MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack2", 2.5f);
+    MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack3_New", 2.5f);
     MACRO("SK_C_Corvus.ao|Corvus_SD1_ParryL_NEW", 4.f);
     MACRO("SK_C_Corvus.ao|Corvus_SD1_ParryR_NEW", 4.f);
 
 
     MACRO("SK_C_Corvus.ao|Corvus_Raven_ClawLong_L01", 2.f);
     MACRO("SK_C_Corvus.ao|Corvus_Raven_ClawLong_L02", 2.f);
-#undef MACRO
 
+    MACRO("SK_C_Corvus.ao|Corvus_SD_RunF_24", 1.5f);
+    MACRO("SK_C_Corvus.ao|Corvus_SD_AvoidF", 2.25f);
+    MACRO("SK_C_Corvus.ao|Corvus_SD1_Sprint", 2.25f);
+    MACRO("SK_C_Corvus.ao|Corvus_SD1_Sprint_Start", 2.25f);
+    MACRO("SK_C_Corvus.ao|Corvus_Raven_ClawCommonV2_ChargeStart", 1.25f);
+    MACRO("SK_C_Corvus.ao|Corvus_Raven_ClawCommon_ChargeLoop", 1.5f);
+    MACRO("SK_C_Corvus.ao|Corvus_Raven_ClawLong_ChargeFull", 1.75f);
+    MACRO("SK_C_Corvus.ao|Corvus_SD_TD2Thorw2", 1.75f);
+    MACRO("SK_C_Corvus.ao|Corvus_PW_Axe", 3.f);
+    MACRO("SK_C_Corvus.ao|Corvus_PW_Knife_A_V1", 2.75f);
+    MACRO("SK_C_Corvus.ao|Corvus_PW_VargSword_B", 2.5f);
+    MACRO("SK_C_Corvus.ao|Corvus_PW_UrdSword01", 2.25f);
+    MACRO("SK_C_Corvus.ao|Corvus_PW_Magician_A", 1.75f);
+    MACRO("SK_C_Corvus.ao|Corvus_PW_CaneSword_SP02", 2.f);*/
+    MACRO("SK_C_Corvus.ao|Corvus_StunExecute_StartL_L", 5.f);
+
+#undef MACRO
 
     for (_uint i = 0; i < iNumChannels; i++)
     {

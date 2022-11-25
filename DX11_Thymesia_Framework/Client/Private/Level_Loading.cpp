@@ -76,10 +76,20 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 				Create_Level();
 			}
 		}
+
+		else if(m_eNextLevel == LEVEL_TEST)
+		{
+			m_pUILoading.lock()->Set_Complete();
+			if (m_pUILoading.lock()->Get_Finish())
+			{
+				Create_Level();
+			}
+		}	
+
 		else
 		{
 			Create_Level();
-		}	
+		}
 	}
 }
 

@@ -301,6 +301,16 @@ HRESULT CGameInstance::Add_MotionBlurScale(const _float& In_fScale)
 	return m_pRender_Manager->Add_MotionBlur(In_fScale);
 }
 
+HRESULT CGameInstance::Set_Chromatic(const _float In_fChormaticStrangth)
+{
+	return m_pRender_Manager->Set_Chromatic(In_fChormaticStrangth);
+}
+
+HRESULT CGameInstance::Add_Chromatic(const _float In_fChormaticStrangth)
+{
+	return m_pRender_Manager->Add_Chromatic(In_fChormaticStrangth);
+}
+
 HRESULT CGameInstance::Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt)
 {
 	return m_pRender_Manager->Set_ShadowLight(In_vEye, In_vLookAt);

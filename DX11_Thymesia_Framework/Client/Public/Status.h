@@ -25,6 +25,8 @@ public:
 
 protected:
     virtual void    Decrease_HP(_float& InOut_fCurrentHP, const _float In_fDamage);
+    virtual void    Increase_HP(_float& InOut_fCurrentHP,const _float In_fMaxHP, const _float In_fAmount);
+
 
 private:
     void Free();

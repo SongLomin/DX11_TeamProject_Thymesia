@@ -22,6 +22,7 @@ namespace Engine
 		XMMATRIX		ENGINE_DLL Go_Right(FXMMATRIX Mat, float fScaler);
 		XMMATRIX		ENGINE_DLL Go_Straight(FXMMATRIX Mat, float fScaler);
 		XMMATRIX		ENGINE_DLL Go_Up(FXMMATRIX Mat, float fScaler);
+		XMMATRIX		ENGINE_DLL Add_PositionWithRotation(FXMMATRIX Mat, FXMVECTOR vPosition);
 		XMMATRIX		ENGINE_DLL LookAt(FXMMATRIX Mat, FXMVECTOR In_vPosition);
 		
 
@@ -61,8 +62,7 @@ namespace Engine
 		PxExtendedVec3	ENGINE_DLL Convert_PxExtendedVec3(FXMVECTOR In_Vector);
 		PxVec3			ENGINE_DLL Convert_PxVec3(FXMVECTOR In_Vector);
 
-		_bool			ENGINE_DLL Is_Picked(RAY _Ray, _float4* _pOutPos);
-		_bool			ENGINE_DLL Is_Picked_AbstractCube(RAY _Ray, MESH_VTX_INFO _VtxInfo, _matrix _WorldMatrix);
-		_bool			ENGINE_DLL Is_Picked_Y(RAY _Ray, _float4* _pOutPos);
+		_bool			ENGINE_DLL Is_Picked_AbstractTerrain(const RAY& _Ray, _float4* _pOutPos);
+		_bool			ENGINE_DLL Is_Picked_AbstractCube(const RAY& _Ray, MESH_VTX_INFO _VtxInfo, _matrix _WorldMatrix, _float* Out_fDist = nullptr);
 	}
 }

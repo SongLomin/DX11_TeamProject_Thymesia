@@ -47,10 +47,14 @@ void CVargBossState_Start::Start()
 void CVargBossState_Start::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+	
+	_matrix LocalMat = XMMatrixIdentity();
+	LocalMat *= XMMatrixRotationX(XMConvertToRadians(-90.f));
+	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
 
 	if (m_fSinematic == 4.f)
 	{
-		GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", XMMatrixIdentity());
+		GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat,CINEMATIC_TYPE::CINEMATIC);
 	}
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
@@ -77,7 +81,7 @@ void CVargBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	cout << "VargState: Start -> OnStateStart" << endl;
 #endif
 #endif
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fSinematic);
@@ -102,8 +106,8 @@ void CVargBossState_Start::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
-	
-	
+
+	Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkF>(0.05f);
 }
 
 void CVargBossState_Start::OnDestroy()
@@ -130,34 +134,23 @@ _bool CVargBossState_Start::Check_AndChangeNextState()
 	//}
 
 
-
 	switch (m_eBossStartType)
 	{
 	case Client::BOSSSTARTTYPE::BEGINSTART:
-		if (fPToMDistance <= 3.f)
+		if (fPToMDistance <= 10.f)
 		{
 			m_fSinematic = 4.f;
 		}
 		break;
 	case Client::BOSSSTARTTYPE::NORMALSTART:
-		if (fPToMDistance <= 3.f)
+		if (fPToMDistance <= 10.f)
 		{
 			m_fSinematic = 4.f;
 		}
 		break;
 	}
 
-	//if (m_bNextState)
-	//{
-	//	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.99f)
-	//	{
-	//		TurnMechanism();
-	//		return true;
-	//	}
-	//	
-	//}
 
-	
 
 	return false;
 }

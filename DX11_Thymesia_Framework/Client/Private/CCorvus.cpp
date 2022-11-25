@@ -39,9 +39,9 @@ HRESULT CCorvus::Initialize(void* pArg)
 	m_pModelCom.lock()->Set_RootNode("root");
 
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultSaber>(m_CreatedLevel));
-	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_r");
+	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultDagger>(m_CreatedLevel));
-	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, Weak_Cast<CGameObject>(m_this), "weapon_l");
+	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_l");
 
 	m_pStandState = Add_Component<CCorvusState_Idle>();
 	Add_Component<CCorvusState_Jogging>();
@@ -69,9 +69,12 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	
 	// Key Frame Effect ON
-	//GET_SINGLE(CGameManager)->Bind_KeyEvent("Corvus", m_pModelCom, bind(&CCorvus::Call_NextAnimationKey, this, placeholders::_1));
+	GET_SINGLE(CGameManager)->Bind_KeyEvent("Corvus", m_pModelCom, bind(&CCorvus::Call_NextAnimationKey, this, placeholders::_1));
 
-	USE_START(CCorvus);
+	// Passive Effect ON
+	GET_SINGLE(CGameManager)->Use_EffectGroup("CVS_PassiveFeather", m_pTransformCom, (_uint)TIMESCALE_LAYER::PLAYER);
+
+	//USE_START(CCorvus);
 
 	return S_OK;
 }
@@ -109,6 +112,12 @@ void CCorvus::Tick(_float fTimeDelta)
 			pGameObject.lock()->Get_Component<CTransform>().lock()->Set_Position(m_pTransformCom.lock()->Get_Position() + XMVectorSet(0.f, 0.5f, 0.f, 0.f) + PushPower);
 			pGameObject.lock()->Get_Component<CPhysXCollider>().lock()->Add_Force(PushPower * 1000.f);*/
 		}
+	}
+
+	// TODO : test jump key R
+	if (KEY_INPUT(KEY::R, KEY_STATE::TAP))
+	{ 
+		m_pPhysXControllerCom.lock()->Move(_vector{ 0.f, 10000.f * fTimeDelta, 0.f }, 0.f, fTimeDelta, PxControllerFilters());
 	}
 }
 

@@ -35,13 +35,16 @@ public:
     string Get_ModelKey() const { return m_szModelKey; }
     weak_ptr<MODEL_DATA> Get_ModelData() const {return m_pModelData; }
 
+    void Culling_Instance(vector<INSTANCE_MESH_DESC>& In_ParticleDescs);
+
 public:
     void Init_Model(const char* In_szModelName);
     void Init_Instance(_uint In_iNumInstance);
 
     HRESULT Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eActorType);
 
-    void Update(const vector<INSTANCE_MESH_DESC>& In_ParticleDescs);
+    void Update(vector<INSTANCE_MESH_DESC>& In_ParticleDescs, const _bool In_bUseCulling = false);
+    void Update_VisibleInstance();
 
 private:
     void Create_Materials(const char* pModelFilePath);
@@ -50,9 +53,15 @@ private:
 
 private:
     ComPtr<ID3D11Buffer>        m_pVBInstance;
-    _uint						m_iMaterialIndex  = 0;
-    _uint						m_iInstanceStride = 0;
-    _uint						m_iNumInstance    = 0;
+    INSTANCE_MESH_DESC*         m_pVisibleInstanceDescs[2] = { nullptr, nullptr };
+    _int                        m_iCurrentVisibleIndex = 0;
+    _bool                       m_bCulling = false;
+    _float                      m_fMaxOffsetRange = 0.f;
+
+    _uint						m_iMaterialIndex    = 0;
+    _uint						m_iInstanceStride   = 0;
+    _uint						m_iNumInstance      = 0;
+    _uint                       m_iVisibleCount    = 0;
 
     string									m_szModelKey;
 
@@ -63,6 +72,7 @@ private:
     _uint									m_iNumMaterials         = 0;
 
 private:
+    virtual void OnDestroy() override;
     void Free();
 
 };

@@ -28,12 +28,19 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
+private:
+	_float m_fMaxSpeed = 4.f;
+	_float m_fCurrentSpeed = 1.5f;
+	_float m_fAccel = 0.f;
 
 
 private:
-	//void Call_AnimationEnd();
+	_bool      m_bOneCheck = false;
+
+private:
+	void Call_AnimationEnd();
 protected:
-	//virtual void OnDestroy() override;
+	virtual void OnDestroy() override;
 	void Free();
 
 };

@@ -22,7 +22,6 @@ HRESULT CActor::Initialize(void* pArg)
     m_pModelCom = Add_Component<CModel>();
     m_pShaderCom = Add_Component<CShader>();
     m_pRendererCom = Add_Component<CRenderer>();
-    m_pRigidBodyCom = Add_Component<CRigidBody>();
 
 
 #ifdef _USE_THREAD_

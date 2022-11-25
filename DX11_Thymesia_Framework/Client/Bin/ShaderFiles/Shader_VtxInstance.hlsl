@@ -203,7 +203,7 @@ PS_OUT PS_MAIN_BLACKDISCARD(PS_IN In)
     return Out;
 }
 
-PS_OUT PS_SPRITE(PS_IN_SPRITE In)
+PS_OUT PS_SPRITE_BLACKDISCARD(PS_IN_SPRITE In)
 {
     PS_OUT Out = (PS_OUT) 0;
 	
@@ -226,9 +226,32 @@ PS_OUT PS_SPRITE(PS_IN_SPRITE In)
     return Out;
 }
 
+PS_OUT PS_SPRITE_ALPHADISCARD(PS_IN_SPRITE In)
+{
+    PS_OUT Out = (PS_OUT)0;
+
+    // Sprite Image
+    Out.vColor = g_DiffuseTexture.Sample(PointClampSampler,
+        float2(In.vTexUV.x / g_iNumFrameX + In.vSpriteUV.x,
+            In.vTexUV.y / g_iNumFrameY + In.vSpriteUV.y));
+
+    Out.vColor *= In.vColor;
+
+    if (Out.vColor.a <= g_fDiscardRatio)
+        discard;
+
+    if (g_bBloom)
+        Out.vExtractBloom = Out.vColor;
+
+    if (g_bGlow)
+        Out.vExtractGlow = g_vGlowColor;
+
+    return Out;
+}
+
 technique11 DefaultTechnique
 {
-    pass SpriteImage // 0
+    pass SpriteImage_BlackDiscard // 0
     {
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_Default, 0);
@@ -236,7 +259,7 @@ technique11 DefaultTechnique
 
         VertexShader   = compile vs_5_0 VS_SPRITE();
         GeometryShader = NULL;
-        PixelShader    = compile ps_5_0 PS_SPRITE();
+        PixelShader    = compile ps_5_0 PS_SPRITE_BLACKDISCARD();
     }
 
     pass Default_AlphaDiscard // 1
@@ -259,5 +282,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_BLACKDISCARD();
+    }
+
+    pass SpriteImage_AlphaDiscard // 3
+    {
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_NonCulling);
+
+        VertexShader = compile vs_5_0 VS_SPRITE();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_SPRITE_ALPHADISCARD();
     }
 }

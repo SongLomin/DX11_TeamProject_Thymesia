@@ -289,11 +289,15 @@ namespace Engine
 		_float3			vScale;
 		_float4			vRotation;
 		_float3			vTranslation;
+		_float3			vOffset;
 
-		tagColliderDesc() {}
+		tagColliderDesc() 
+		{
+			ZeroMemory(this, sizeof(tagColliderDesc));
+		}
 
-		tagColliderDesc(const _float3& In_vScale, const _float4& In_vRotation, const _float3& In_vTranslation)
-			: vScale(In_vScale), vRotation(In_vRotation), vTranslation(In_vTranslation)
+		tagColliderDesc(const _float3 In_vScale, const _float4 In_vRotation, const _float3 In_vTranslation, const _float3 In_vOffset)
+			: vScale(In_vScale), vRotation(In_vRotation), vTranslation(In_vTranslation), vOffset(In_vOffset)
 		{
 		}
 
@@ -304,6 +308,8 @@ namespace Engine
 		_float3         vRotation;
 		_float3         vScale;
 		_float3			vTarnslation;
+		_float			fMaxRange;
+		_float3			vCenter;
 
 		void Reset()
 		{
@@ -328,6 +334,12 @@ namespace Engine
 			TransformationMatrix.r[3] = vPosition;
 
 			return TransformationMatrix;
+		}
+		
+		void	Bake_CenterWithMatrix()
+		{
+			_vector vCenterFromVector = XMLoadFloat3(&vCenter);
+			XMStoreFloat3(&vCenter, XMVector3TransformCoord(vCenterFromVector, Get_Matrix()));
 		}
 	};
 
@@ -356,6 +368,9 @@ namespace Engine
 		// For. Rotation
 		_float3         vCurrentRotation;
 		_float3			vCurrentRotationForce;
+
+		_float3			vTargetRotationSpeed;
+		_float3			vTargetRotationForce;
 
 		// For. Scale
 		_float3         vCurrentScale;

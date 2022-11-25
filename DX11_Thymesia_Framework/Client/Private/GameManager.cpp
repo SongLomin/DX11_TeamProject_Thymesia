@@ -4,6 +4,8 @@
 #include "Client_Components.h"
 #include "Player.h"
 #include "ClientLevel.h"
+#include "Status_Player.h"
+
 
 IMPLEMENT_SINGLETON(CGameManager)
 
@@ -128,6 +130,29 @@ void CGameManager::Remove_Layer(const OBJECT_LAYER& In_Layer, weak_ptr<CGameObje
 	}
 }
 
+void CGameManager::Enable_Layer(const OBJECT_LAYER& In_Layer)
+{
+	list<weak_ptr<CGameObject>> pObjectLayer = m_pLayers[(_uint)In_Layer];
+
+	for (auto& elem : pObjectLayer)
+	{
+		elem.lock()->Set_Enable(true);
+
+	}
+
+}
+
+void CGameManager::Disable_Layer(const OBJECT_LAYER& In_Layer)
+{
+	list<weak_ptr<CGameObject>> pObjectLayer = m_pLayers[(_uint)In_Layer];
+
+	for (auto& elem : pObjectLayer)
+	{
+		elem.lock()->Set_Enable(false);
+
+	}
+}
+
 list<weak_ptr<CGameObject>> CGameManager::Get_Layer(const OBJECT_LAYER& In_Layer)
 {
 	return m_pLayers[(_uint)In_Layer];
@@ -160,6 +185,15 @@ void CGameManager::Set_CurrentPlayer(weak_ptr<CPlayer> In_pPlayer)
 	CallBack_ChangePlayer();
 }
 
+weak_ptr<CStatus_Player> CGameManager::Get_CurrentPlayer_Status()
+{
+	weak_ptr<CPlayer> pPlayer;
+
+	pPlayer = Get_CurrentPlayer();	
+
+	return	 Weak_StaticCast<CStatus_Player>(pPlayer.lock()->Get_Component<CStatus>());
+}
+
 weak_ptr<CPlayer> CGameManager::Get_CurrentPlayer()
 {
 	return m_pCurrentPlayer;
@@ -176,7 +210,7 @@ weak_ptr<CCamera_Target> CGameManager::Get_TargetCamera()
 	return m_pTargetCamera;
 }
 
-void CGameManager::Add_Shaking(_vector& vShakingDir, _float fRatio)
+void CGameManager::Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime,_float fFrequency)
 {
 	if (m_pTargetCamera.lock().get() != m_pCurrentCamera.lock().get())
 	{
@@ -186,7 +220,7 @@ void CGameManager::Add_Shaking(_vector& vShakingDir, _float fRatio)
 	if (!m_pTargetCamera.lock())
 		DEBUG_ASSERT;
 
-	m_pTargetCamera.lock()->Add_Shaking(vShakingDir, fRatio);
+	m_pTargetCamera.lock()->Add_Shaking(vShakingDir, fRatio, fShakingTime, fFrequency);
 	
 
 }
@@ -435,9 +469,9 @@ void CGameManager::Active_KeyEvent(const weak_ptr<CModel> In_ModelCom, const wea
 	}
 }
 
-void CGameManager::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName, _matrix& OffSetMatrix)
+void CGameManager::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName, _matrix& OffSetMatrix, CINEMATIC_TYPE iCinematicType)
 {
-	m_pTargetCamera.lock()->Start_Cinematic(_pModel, pBoneName, OffSetMatrix);
+	m_pTargetCamera.lock()->Start_Cinematic(_pModel, pBoneName, OffSetMatrix, iCinematicType);
 }
 
 void CGameManager::End_Cinematic()
@@ -445,14 +479,21 @@ void CGameManager::End_Cinematic()
 	m_pTargetCamera.lock()->End_Cinematic();
 }
 
-void CGameManager::Activate_Zoom(_float fRatio)
+void CGameManager::Activate_Zoom(_float fRatio, _float fZoomTime)
 {
-	m_pTargetCamera.lock()->Activate_Zoom(fRatio);
+	m_pTargetCamera.lock()->Activate_Zoom(fRatio, fZoomTime);
 }
 
 void CGameManager::Deactivate_Zoom()
 {
 	m_pTargetCamera.lock()->Deactivate_Zoom();
+}
+
+_vector CGameManager::Get_PlayerPos()
+{
+	_matrix PlayerMat = m_pCurrentPlayer.lock()->Get_Component<CTransform>().lock()->Get_WorldMatrix();
+
+	return PlayerMat.r[3];
 }
 
 

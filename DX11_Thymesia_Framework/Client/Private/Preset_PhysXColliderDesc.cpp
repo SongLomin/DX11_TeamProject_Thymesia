@@ -91,7 +91,7 @@ void Preset::PhysXColliderDesc::TestLightPropTriggerSetting(PHYSXCOLLIDERDESC& O
     Out_Desc.bTrigger = true;
 }
 
-void Preset::PhysXColliderDesc::StaticPropSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform, const _float fCenterY)
+void Preset::PhysXColliderDesc::StaticPropSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform)
 {
     Out_Desc.eShape = PHYSXCOLLIDER_TYPE::MODEL;
     Out_Desc.eActorType = PHYSXACTOR_TYPE::STATIC;

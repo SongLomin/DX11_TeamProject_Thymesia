@@ -45,8 +45,9 @@ public:
     void Load_FromBinary();
 
     void Debug_AnimationLog(ofstream& os);
+    void Debug_NonAnimLog(ofstream& os);
     void Compute_Center(MESH_VTX_INFO& _tVertexInfo);
-
+    _float Get_MaxOffsetRange() const;
 };
 
 END

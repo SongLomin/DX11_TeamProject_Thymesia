@@ -12,7 +12,7 @@
 #include "MonsterHPBar_Base.h"
 #include "MonsterHPBar_Elite.h"
 #include "MonsterHPBar_Boss.h"
-
+#include "UI_EvolveMenu.h"
 
 
 CLevel_Test::CLevel_Test()
@@ -52,6 +52,8 @@ HRESULT CLevel_Test::Initialize()
 
 	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_TEST);
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
+
+	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST);
 
 	//TODO 야매에요
 #ifdef _STAGE_1_MONSTER_
@@ -226,6 +228,22 @@ void CLevel_Test::Tick(_float fTimeDelta)
 
 	}*/
 
+	if (KEY_INPUT(KEY::ALT, KEY_STATE::TAP))
+	{
+		if (m_pEvolveMenu.lock()->Get_Enable() == false)
+		{
+			FaderDesc tFaderDesc;
+			tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+			tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+			tFaderDesc.fFadeMaxTime = 0.2f;
+			tFaderDesc.fDelayTime = 0.f;
+			tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+
+			m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CLevel_Test::Call_Enable_EvolveMenu, this);
+		}
+	}
+
 }
 
 HRESULT CLevel_Test::Render()
@@ -239,43 +257,7 @@ HRESULT CLevel_Test::Render()
 	return S_OK;
 }
 
-void CLevel_Test::SetUp_UI()
-{
-	weak_ptr<CGameManager>	pGameManager = GET_SINGLE(CGameManager);
 
-	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);//여기서 
-	m_pPauseMenu = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu>(LEVEL_STATIC);
-
-
-
-
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_MPBar>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_Memory>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_PotionUI>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
-
-	//TODO : MonsterHpBar TestCode
-	/*
-	CUI::UI_DESC tDesc;
-	tDesc.fX = g_iWinCX / 2.f;
-	tDesc.fY = g_iWinCY / 2.f;
-	tDesc.fSizeX = 150.f;
-	tDesc.fSizeY = 15.f;
-	tDesc.fDepth = 0.f;
-
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Elite>(LEVEL_STATIC, &tDesc));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Boss>(LEVEL_STATIC, &tDesc));
-	*/
-}
-
-void CLevel_Test::Call_Enable_PauseMenu()
-{
-	m_pPauseMenu.lock()->Set_Enable(true);
-	m_pFadeMask.lock()->Set_Enable(false);
-}
 
 shared_ptr<CLevel_Test> CLevel_Test::Create()
 {
