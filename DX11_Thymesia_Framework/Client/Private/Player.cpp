@@ -106,10 +106,8 @@ void CPlayer::LateTick(_float fTimeDelta)
 HRESULT CPlayer::Render()
 {
     __super::Render();
-
-    _float	fDissolveAmount = -1.1f;
+    _float fDissolveAmount(-1.1f);
     m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &fDissolveAmount, sizeof(_float));
-
     return S_OK;
 }
 
