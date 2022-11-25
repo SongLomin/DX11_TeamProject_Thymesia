@@ -51,6 +51,7 @@ private:
 	HRESULT Render_AfterPostEffect();
 	HRESULT Render_AfterPostEffectGlow();
 	HRESULT Blur_Effect();
+	HRESULT PostProcessing();
 	HRESULT Render_UI();
 	HRESULT Render_Final();
 
@@ -77,6 +78,7 @@ private:
 	shared_ptr<CShader>			m_pXBlurShader;
 	shared_ptr<CShader>			m_pOutLineShader;
 	shared_ptr<CShader>			m_pDistortionShader;
+	shared_ptr<CShader>			m_pPostProcessingShader;
 	shared_ptr<CVIBuffer_Rect>	m_pVIBuffer;
 
 private:
