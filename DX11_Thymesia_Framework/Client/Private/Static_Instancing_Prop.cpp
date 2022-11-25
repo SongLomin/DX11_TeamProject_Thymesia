@@ -8,6 +8,7 @@
 #include "PhysXCollider.h"
 #include "Client_Presets.h"
 #include "ImGui_Manager.h"
+#include "GameManager.h"
 #include "Texture.h"
 
 GAMECLASS_C(CStatic_Instancing_Prop);
@@ -87,11 +88,19 @@ HRESULT CStatic_Instancing_Prop::Render()
 	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4));
 	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
 
-	_float4 vCamPos;
-	XMStoreFloat4(&vCamPos, GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[3]);
+	_float4 vCamDesc;
+	XMStoreFloat4(&vCamDesc, GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[3]);
+	m_pShaderCom.lock()->Set_RawValue("g_vCamPosition", &vCamDesc, sizeof(_float4));
 
-	m_pShaderCom.lock()->Set_RawValue("g_vCamPosition", &vCamPos, sizeof(_float4));
+	XMStoreFloat4(&vCamDesc, GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[2]);
+	m_pShaderCom.lock()->Set_RawValue("g_vCamLook", &vCamDesc, sizeof(_float4));
+
+	_float4 vPlayerPos;
+	XMStoreFloat4(&vPlayerPos, GET_SINGLE(CGameManager)->Get_PlayerPos());
+	m_pShaderCom.lock()->Set_RawValue("g_vPlayerPosition", &vPlayerPos, sizeof(_float4));
+
 	m_pMaskingTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 92);
+
 
 	_vector vLightFlag = { 1.f, 1.f, 1.f, 1.f };
 	m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector));
@@ -111,7 +120,7 @@ HRESULT CStatic_Instancing_Prop::Render()
 		}
 		else
 		{
-			m_iPassIndex = 1;
+			m_iPassIndex = 4;
 		}
 
 		if (m_bEdit && m_iColliderType != 0)

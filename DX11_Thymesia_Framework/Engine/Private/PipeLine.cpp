@@ -33,7 +33,7 @@ _vector CPipeLine::Get_LinearVelocity()
 _float4x4 CPipeLine::Get_PreViewMatrix()
 {
 	_float4x4 PreViewMat = m_PreViewMatrix;
-	m_PreViewMatrix = m_TransformState[D3DTS_VIEW];
+	//m_PreViewMatrix = m_TransformState[D3DTS_VIEW];
 
 	return PreViewMat;
 }

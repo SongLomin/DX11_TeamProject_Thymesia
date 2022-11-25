@@ -99,7 +99,7 @@ HRESULT CProp::Render()
 		// 노말 텍스쳐가 있는 경우
 		else
 		{
-			m_iPassIndex = 3;
+			m_iPassIndex = 4;
 		}
 
 		m_pShaderCom.lock()->Begin(m_iPassIndex);

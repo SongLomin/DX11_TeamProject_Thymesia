@@ -92,37 +92,48 @@ PS_OUT PS_MAIN_MOTION_BLUR(PS_IN In)
 
 	vPixelWorldPos = mul(vPixelWorldPos, g_ViewMatrixInv);
 	
+	matrix matVP = mul(g_PreCamViewMatrix, g_CamProjMatrix);
 
-	vector vVelocity = g_vLinearVelocity /*+ vector(cross(vector(g_vAngularVelocity.xyz,0.f), vPixelWorldPos - g_vCamPosition).xyz,0.f)*/;
+	vector vPrePixelPos = mul(vPixelWorldPos, matVP);
+	vPrePixelPos /= vPrePixelPos.w;
+
+	float2 vPixelVelocity = (vPrePixelPos - vPixelPos)*0.5f;
+	float2 texCoord = In.vTexUV;
+
 	vector vColor = vector(0.f,0.f,0.f,0.f);
-	
-	//if (0.1f < length(vVelocity))
+
+	for (int i = 0; i < 10; ++i, texCoord += vPixelVelocity * g_BlurStrength*0.5f)
+	{
+		float4 currentColor = g_OriginalRenderTexture.Sample(ClampSampler, texCoord);
+		vColor += currentColor;
+	}
+
+	Out.vColor = vColor / 10.f;
+
+	//for (int i = 0; i < 13; ++i)
 	//{
-		matrix matVP = mul(g_PreCamViewMatrix, g_CamProjMatrix);
-
-		vector vPrePixelPos = mul(vPixelWorldPos, matVP);
-		vPrePixelPos /= vPrePixelPos.w;
-
-		float2 vPixelDiff = vPrePixelPos.xy - vPixelPos.xy;
-		if (0.1f < length(vPixelDiff))
-			vPixelDiff = normalize(vPixelDiff) * 0.1f;
-
-
-		for (int i = 0; i < 13; ++i)
-		{
-			float2 offset = vPixelDiff * (float(i) / 13.f - 0.5f);
-			vColor += g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV + offset)* BlurWeights[i];
-		}
-
-		/*vColor /= 13;*/
+	//	float2 offset = vPixelDiff * (float(i) / 13.f - 0.5f)/** g_BlurStrength*/;
+	//	vColor += g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV + offset)* BlurWeights[i];
 	//}
-	//else
-	//{
-	//	vColor = g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV);
-	//}
-	
 
-	Out.vColor = vColor;
+
+	//Out.vColor = vColor;
+
+	//float zOverW = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
+	//float4 H = float4(texCoord.x * 2 - 1, (1 - texCoord.y) * 2 - 1, zOverW, 1);
+	//float4 D = mul(H, g_ViewProjectionInverseMatrix);
+	//float4 worldPos = D / Dw;
+	//float4 currentPos = H;
+	//float4 previousPos = mul(worldPos, g_previousViewProjectionMatrix);
+	//previousPos /= previousPos.w;
+	//float2 velocity = (currentPos - previousPos) / 2. f;
+	//float4 color = tex2D(sceneSampler, texCoord);
+	//texCoord += velocity;
+	//for (int i = 1; i < g_numSamples; ++i, texCoord += velocity) {
+	//	float4 currentColor = tex2D(sceneSampler, texCoord);
+	//	color += currentColor;
+	//}
+	//float4 finalColor = color / numSamples;
 	
 	return Out;
 }

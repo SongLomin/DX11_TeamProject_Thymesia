@@ -1346,10 +1346,10 @@ HRESULT CRender_Manager::PostProcessing()
 
 	/*m_pPostProcessingShader->Set_RawValue("g_vLinearVelocity", &vLinearVelocity, sizeof(_float4));
 	m_pPostProcessingShader->Set_RawValue("g_vAngularVelocity", &vAngularVelocity, sizeof(_float4));*/
-	m_pPostProcessingShader->Set_RawValue("g_PreCamViewMatrix", &pPipeLine->Get_PreViewMatrix(), sizeof(_float4x4));
+	m_pPostProcessingShader->Set_RawValue("g_PreCamViewMatrix", &XMMatrixTranspose(XMLoadFloat4x4(&pPipeLine->Get_PreViewMatrix())), sizeof(_float4x4));
 
 
-	m_pPostProcessingShader->Begin(1);
+	m_pPostProcessingShader->Begin(0);
 	m_pVIBuffer->Render();
 
 
