@@ -395,7 +395,10 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Render_AfterPostEffectGlow()))
 		DEBUG_ASSERT;
 
-	if (FAILED(PostProcessing()))
+	if (FAILED(PostProcessing(0)))
+		DEBUG_ASSERT;
+
+	if (FAILED(PostProcessing(1)))
 		DEBUG_ASSERT;
 
 	if (FAILED(Render_UI()))
@@ -427,6 +430,21 @@ HRESULT CRender_Manager::Add_MotionBlur(const _float& In_fBlurScale)
 {
 	m_fBlurWitdh += In_fBlurScale;
 	m_fBlurWitdh = max(0.f, m_fBlurWitdh);
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Set_Chromatic(const _float In_fChormaticStrangth)
+{
+	m_fChromaticStrangth = In_fChormaticStrangth;
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Add_Chromatic(const _float In_fChormaticStrangth)
+{
+	m_fChromaticStrangth += In_fChormaticStrangth;
+	m_fChromaticStrangth = max(0.f, m_fChromaticStrangth);
 
 	return S_OK;
 }
@@ -1305,7 +1323,7 @@ HRESULT CRender_Manager::Blur_Effect()
 	return S_OK;
 }
 
-HRESULT CRender_Manager::PostProcessing()
+HRESULT CRender_Manager::PostProcessing(const _int In_iPass)
 {
 	//모션 블러, 색수차, 중심 블러(얘는 위에 있음) 등등 화면 전체 해야하는 블러의 경우
 	Bake_OriginalRenderTexture();
@@ -1339,6 +1357,7 @@ HRESULT CRender_Manager::PostProcessing()
 //	m_pPostProcessingShader->Set_RawValue("g_CamViewMatrix", &ViewMatrix, sizeof(_float4x4));
 
 	m_pPostProcessingShader->Set_RawValue("g_vCamPosition", &ViewMatrixInv.m[3],sizeof(_float4));
+	m_pPostProcessingShader->Set_RawValue("g_BlurStrength", &m_fChromaticStrangth, sizeof(_float));
 
 	_float4	vLinearVelocity, vAngularVelocity;
 	XMStoreFloat4(&vLinearVelocity, pPipeLine->Get_LinearVelocity());
@@ -1349,7 +1368,7 @@ HRESULT CRender_Manager::PostProcessing()
 	m_pPostProcessingShader->Set_RawValue("g_PreCamViewMatrix", &XMMatrixTranspose(XMLoadFloat4x4(&pPipeLine->Get_PreViewMatrix())), sizeof(_float4x4));
 
 
-	m_pPostProcessingShader->Begin(0);
+	m_pPostProcessingShader->Begin(In_iPass);
 	m_pVIBuffer->Render();
 
 

@@ -11,6 +11,7 @@
 //#include "Monster1States/Monster1States.h"
 #include "Client_Components.h"
 #include "MonsterHPBar_Boss.h"
+#include "Status_Monster.h"
 
 GAMECLASS_C(CVarg);
 CLONE_C(CVarg, CGameObject);
@@ -106,7 +107,7 @@ HRESULT CVarg::Initialize(void* pArg)
 
 	
 	
-	GET_SINGLE(CGameManager)->Bind_KeyEvent((m_pStatus.lock()->Get_Desc().m_szModelKey, m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
+	GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
 
 	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom));
 

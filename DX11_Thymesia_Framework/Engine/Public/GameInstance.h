@@ -122,6 +122,8 @@ public: /* For.Render_Manager */
 	HRESULT Draw_RenderGroup();
 	HRESULT Set_MotionBlurScale(const _float& In_fScale);
 	HRESULT Add_MotionBlurScale(const _float& In_fScale);
+	HRESULT Set_Chromatic(const _float In_fChormaticStrangth);
+	HRESULT Add_Chromatic(const _float In_fChormaticStrangth);
 	HRESULT	Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt);
 
 
