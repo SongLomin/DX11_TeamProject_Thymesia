@@ -137,13 +137,13 @@ _bool CVargBossState_Start::Check_AndChangeNextState()
 	switch (m_eBossStartType)
 	{
 	case Client::BOSSSTARTTYPE::BEGINSTART:
-		if (fPToMDistance <= 0.1f)
+		if (fPToMDistance <= 10.f)
 		{
 			m_fSinematic = 4.f;
 		}
 		break;
 	case Client::BOSSSTARTTYPE::NORMALSTART:
-		if (fPToMDistance <= 0.1f)
+		if (fPToMDistance <= 10.f)
 		{
 			m_fSinematic = 4.f;
 		}

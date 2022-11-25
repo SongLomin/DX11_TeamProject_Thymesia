@@ -9,6 +9,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
+#include "MobWeapon.h"
 
 GAMECLASS_C(CVargBossState_TurnAttack);
 CLONE_C(CVargBossState_TurnAttack, CComponent)
@@ -60,6 +61,15 @@ void CVargBossState_TurnAttack::LateTick(_float fTimeDelta)
 void CVargBossState_TurnAttack::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+
+	for (auto& elem : pWeapons)
+	{
+		elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 150.f);
+	}
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 

@@ -35,6 +35,9 @@ HRESULT CMonsterParryingBar::Initialize(void* pArg)
    m_pBorder.lock()->Set_Depth(0.1f);
 
    UI_DESC tMainBarDesc = m_tUIDesc;
+
+
+   tMainBarDesc.fSizeX = m_tUIDesc.fSizeX + 20.f;
    tMainBarDesc.fSizeY = m_tUIDesc.fSizeY - 4.f;
    tMainBarDesc.fDepth = 0.0f;
 

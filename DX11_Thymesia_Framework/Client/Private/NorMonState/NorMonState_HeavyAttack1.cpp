@@ -12,6 +12,7 @@
 
 
 
+
 GAMECLASS_C(CNorMonState_HeavyAttack1);
 CLONE_C(CNorMonState_HeavyAttack1, CComponent)
 

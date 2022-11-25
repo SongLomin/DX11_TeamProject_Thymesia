@@ -29,9 +29,10 @@ HRESULT CMonsterHPBar_Boss::Initialize(void* pArg)
     tDesc.fSizeX = 810.f;
     tDesc.fSizeY = 15.f;
     tDesc.fDepth = 0.f;
-
     __super::Initialize(&tDesc);
 
+    
+    Set_Enable(false);
 
     return S_OK;
 }

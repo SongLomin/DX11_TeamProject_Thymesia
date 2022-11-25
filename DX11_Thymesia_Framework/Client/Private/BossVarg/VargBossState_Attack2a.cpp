@@ -9,6 +9,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
+#include "MobWeapon.h"
 
 GAMECLASS_C(CVargBossState_Attack2a);
 CLONE_C(CVargBossState_Attack2a, CComponent)
@@ -65,6 +66,15 @@ void CVargBossState_Attack2a::OnStateStart(const _float& In_fAnimationBlendTime)
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_bAttackLookAtLimit = true;  // 애니메이션시작할떄 룩엣시작
+
+	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+
+	for (auto& elem : pWeapons)
+	{
+		elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 150.f);
+	}
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
