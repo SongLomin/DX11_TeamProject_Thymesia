@@ -16,9 +16,9 @@
 #define		_STAGE_1_
 #define		_STAGE_2_
 //#define		_STAGE_1_MONSTER_
-#define		_INSTANCE_CULLING_
-#define		_GENERATE_PROP_COLLIDER_ true
-#define		_USE_GRAVITY_
+//#define		_INSTANCE_CULLING_
+//#define		_GENERATE_PROP_COLLIDER_ true
+//#define		_USE_GRAVITY_
 #define		_DAGGER_TRAIL_
 // UI제외한 오브젝트 생성 X
 //#define		_ONLY_UI_

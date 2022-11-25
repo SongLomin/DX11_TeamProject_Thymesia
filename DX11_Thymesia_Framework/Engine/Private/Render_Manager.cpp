@@ -304,6 +304,11 @@ HRESULT CRender_Manager::Initialize()
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_Distortion"), TEXT("../Bin/Shaderfiles/Shader_DistortionBlend.hlsl"));
 	m_pDistortionShader->Set_ShaderInfo(TEXT("Shader_Distortion"), VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements);
 
+	m_pPostProcessingShader = CShader::Create();
+	GAMEINSTANCE->Load_Shader(TEXT("Shader_PostProcessing"), TEXT("../Bin/Shaderfiles/Shader_PostProcessing.hlsl"));
+	m_pPostProcessingShader->Set_ShaderInfo(TEXT("Shader_PostProcessing"), VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements);
+
+
 	m_pVIBuffer = CVIBuffer_Rect::Create();
 	
 	GAMEINSTANCE->Load_Textures("PostEffectMask", TEXT("../Bin/Resources/Textures/UI/PostEffectMask.bmp"));
@@ -388,6 +393,9 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 		DEBUG_ASSERT;
 
 	if (FAILED(Render_AfterPostEffectGlow()))
+		DEBUG_ASSERT;
+
+	if (FAILED(PostProcessing()))
 		DEBUG_ASSERT;
 
 	if (FAILED(Render_UI()))
@@ -1292,6 +1300,58 @@ HRESULT CRender_Manager::Blur_Effect()
 
 
 	pRenderTargetManager->End_MRT();
+
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::PostProcessing()
+{
+	//모션 블러, 색수차, 중심 블러(얘는 위에 있음) 등등 화면 전체 해야하는 블러의 경우
+	Bake_OriginalRenderTexture();
+
+	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
+
+	if (FAILED(m_pPostProcessingShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")))))
+		DEBUG_ASSERT;
+
+	if (FAILED(m_pPostProcessingShader->Set_ShaderResourceView("g_DepthTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Depth")))))
+		DEBUG_ASSERT;
+
+	m_pPostProcessingShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	m_pPostProcessingShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	m_pPostProcessingShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+	
+	shared_ptr<CPipeLine> pPipeLine = GET_SINGLE(CPipeLine);
+
+	_float4x4		ViewMatrixInv, ProjMatrixInv,ViewMatrix,ProjMatrix;
+
+	XMStoreFloat4x4(&ViewMatrixInv, XMMatrixTranspose(XMMatrixInverse(nullptr, pPipeLine->Get_Transform(CPipeLine::D3DTS_VIEW))));
+	XMStoreFloat4x4(&ProjMatrixInv, XMMatrixTranspose(XMMatrixInverse(nullptr, pPipeLine->Get_Transform(CPipeLine::D3DTS_PROJ))));
+
+	ProjMatrix = *pPipeLine->Get_Transform_TP(CPipeLine::D3DTS_PROJ);
+	ViewMatrix = *pPipeLine->Get_Transform_TP(CPipeLine::D3DTS_VIEW);
+
+
+	m_pPostProcessingShader->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
+	m_pPostProcessingShader->Set_RawValue("g_ViewMatrixInv", &ViewMatrixInv, sizeof(_float4x4));
+	m_pPostProcessingShader->Set_RawValue("g_CamProjMatrix", &ProjMatrix, sizeof(_float4x4));
+//	m_pPostProcessingShader->Set_RawValue("g_CamViewMatrix", &ViewMatrix, sizeof(_float4x4));
+
+	m_pPostProcessingShader->Set_RawValue("g_vCamPosition", &ViewMatrixInv.m[3],sizeof(_float4));
+
+	_float4	vLinearVelocity, vAngularVelocity;
+	XMStoreFloat4(&vLinearVelocity, pPipeLine->Get_LinearVelocity());
+	XMStoreFloat4(&vAngularVelocity, pPipeLine->Get_AngularVelocity());
+
+	/*m_pPostProcessingShader->Set_RawValue("g_vLinearVelocity", &vLinearVelocity, sizeof(_float4));
+	m_pPostProcessingShader->Set_RawValue("g_vAngularVelocity", &vAngularVelocity, sizeof(_float4));*/
+	m_pPostProcessingShader->Set_RawValue("g_PreCamViewMatrix", &XMMatrixTranspose(XMLoadFloat4x4(&pPipeLine->Get_PreViewMatrix())), sizeof(_float4x4));
+
+
+	m_pPostProcessingShader->Begin(0);
+	m_pVIBuffer->Render();
+
 
 
 	return S_OK;

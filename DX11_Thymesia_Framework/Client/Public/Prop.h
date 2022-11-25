@@ -34,6 +34,7 @@ protected:
     virtual void SetUp_ShaderResource();
 
 protected:
+    weak_ptr<CTexture>  m_pMaskingTextureCom;
     weak_ptr<CModel>    m_pModelCom;
     weak_ptr<CShader>   m_pShaderCom;
     weak_ptr<CRenderer> m_pRendererCom;

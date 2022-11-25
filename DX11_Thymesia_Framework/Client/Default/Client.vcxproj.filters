@@ -2637,5 +2637,8 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_UI.hlsl">
       <Filter>04. ShaderFiles</Filter>
     </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_PostProcessing.hlsl">
+      <Filter>04. ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

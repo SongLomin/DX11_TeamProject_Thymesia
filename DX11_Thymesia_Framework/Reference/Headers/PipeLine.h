@@ -11,9 +11,7 @@ public:
 	enum TRANSFORMSTATE { D3DTS_WORLD, D3DTS_VIEW, D3DTS_PROJ, D3DTS_END };
 
 public:
-	void Set_Transform(TRANSFORMSTATE eState, _fmatrix TransformState) {
-		XMStoreFloat4x4(&m_TransformState[eState], TransformState);
-	}
+	void Set_Transform(TRANSFORMSTATE eState, _fmatrix TransformState);
 
 	_matrix Get_Transform(TRANSFORMSTATE eState) {
 		return XMLoadFloat4x4(&m_TransformState[eState]);
@@ -35,10 +33,18 @@ public:
 public:
 	void Tick();
 
+	_vector Get_LinearVelocity();
+	_float4x4 Get_PreViewMatrix();
+	_vector Get_AngularVelocity();
+
 private:
 	_float4x4			m_TransformState[D3DTS_END];
 	_float4x4			m_TransformState_TP[D3DTS_END];
 	_float4				m_vCamPosition;
+
+	_float4				m_vPreCamPosition;
+	_float4				m_vPreCamQuaternion;
+	_float4x4			m_PreViewMatrix;
 public:
 	void Free();
 };

@@ -4,6 +4,8 @@
 #include "Shader.h"
 #include "Renderer.h"
 #include "Transform.h"
+#include "GameManager.h"
+#include "Texture.h"
 
 GAMECLASS_C(CProp);
 CLONE_C(CProp, CGameObject);
@@ -21,6 +23,8 @@ HRESULT CProp::Initialize(void* pArg)
     m_pModelCom     = Add_Component<CModel>();
     m_pShaderCom    = Add_Component<CShader>();
     m_pRendererCom  = Add_Component<CRenderer>();
+	m_pMaskingTextureCom = Add_Component<CTexture>();
+	m_pMaskingTextureCom.lock()->Use_Texture("UVMask");
 
 #ifdef _USE_THREAD_
 	Use_Thread(THREAD_TYPE::CUSTOM_THREAD1);
@@ -95,7 +99,7 @@ HRESULT CProp::Render()
 		// 노말 텍스쳐가 있는 경우
 		else
 		{
-			m_iPassIndex = 3;
+			m_iPassIndex = 4;
 		}
 
 		m_pShaderCom.lock()->Begin(m_iPassIndex);
@@ -112,6 +116,20 @@ void CProp::SetUp_ShaderResource()
     m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
     m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4));
     m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
+
+
+	_float4 vCamDesc;
+	XMStoreFloat4(&vCamDesc, GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[3]);
+	m_pShaderCom.lock()->Set_RawValue("g_vCamPosition", &vCamDesc, sizeof(_float4));
+
+	XMStoreFloat4(&vCamDesc, GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[2]);
+	m_pShaderCom.lock()->Set_RawValue("g_vCamLook", &vCamDesc, sizeof(_float4));
+	
+	_float4 vPlayerPos;
+	XMStoreFloat4(&vPlayerPos,GET_SINGLE(CGameManager)->Get_PlayerPos());
+	m_pShaderCom.lock()->Set_RawValue("g_vPlayerPosition", &vPlayerPos, sizeof(_float4));
+
+	m_pMaskingTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 92);
 
 	_vector vLightFlag = { 1.f, 1.f, 1.f, 1.f };
 	m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector));

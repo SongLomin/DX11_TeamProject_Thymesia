@@ -125,3 +125,10 @@ enum class EASING_TYPE
 
 	, TYPE_END
 };
+
+enum class CINEMATIC_TYPE
+{
+	EXECUTION,
+	CINEMATIC,
+	TYPE_END
+};
