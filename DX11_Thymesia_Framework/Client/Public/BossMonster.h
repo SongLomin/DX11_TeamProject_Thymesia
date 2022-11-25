@@ -40,10 +40,6 @@ public:
     virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix) override;
 
 
-public:
-    list<weak_ptr<CMobWeapon>>  Get_Wepons() { return m_pWeapons; }
-
-
 protected:
     virtual void SetUp_ShaderResource() override;
 
@@ -64,7 +60,6 @@ protected:
 
 
 protected:
-    list<weak_ptr<CMobWeapon>> m_pWeapons;
     weak_ptr<CStateBase> m_pStandState;
 
     weak_ptr<CCharacter>   m_pTargetCharacter; // = player
