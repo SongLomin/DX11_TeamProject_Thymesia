@@ -84,6 +84,7 @@ namespace Client
 		ON_TRIGGER,
 		ON_FIRSTHIT,
 		ON_EXCUTION_NORMOB,
+		ON_GROGGY,
 		EVENT_END
 	};
 

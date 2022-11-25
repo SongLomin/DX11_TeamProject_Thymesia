@@ -115,7 +115,7 @@ void CUI::Set_Texture(const _char* sKey)
 
 }
 
-void CUI::Set_UIPosition(const _float& fX, const _float& fY, const _float& fSizeX, const _float& fSizeY,
+void CUI::Set_UIPosition(const _float fX, const _float fY, const _float fSizeX, const _float fSizeY,
 	UI_ALIGN_TYPE eType)
 {
 	switch (eType)
@@ -141,7 +141,7 @@ void CUI::Set_UIPosition(const _float& fX, const _float& fY, const _float& fSize
 	}
 }
 
-void CUI::Set_UIPosition(const _float& fX, const _float& fY)
+void CUI::Set_UIPosition(const _float fX, const _float fY)
 {
 	m_tUIDesc.fX = fX;
 	m_tUIDesc.fY = fY;
@@ -257,7 +257,7 @@ void CUI::OnEnable(void* _Arg)
 
 void CUI::OnDisable()
 {
-	Set_Enable(false);
+	__super::OnDisable();
 	for (auto i = 0; i < m_vecChildUI.size(); i++)
 		m_vecChildUI[i].lock()->Set_Enable(false);
 }

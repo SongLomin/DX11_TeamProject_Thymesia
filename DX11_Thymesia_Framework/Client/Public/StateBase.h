@@ -44,8 +44,6 @@ public:
 public:
     _bool Get_NearGameObjectInDistance(weak_ptr<CGameObject>& Out_pGameObject, list<weak_ptr<CGameObject>> In_pGameObjects, const _float In_fDistance);
 
-protected:
-    _uint   Get_CurrentAnimationKeyFrames();
 
 
 protected:
@@ -80,7 +78,6 @@ public: /* For. EventFunction */
 
     virtual void OnStateStart(const _float& In_fAnimationBlendTime);
     virtual void OnStateEnd();
-
     virtual void OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage);
 
 public:

@@ -27,6 +27,15 @@ void CStatus::Decrease_HP(_float& InOut_fCurrentHP, const _float In_fDamage)
 		InOut_fCurrentHP = 0.f;
 }
 
+void CStatus::Increase_HP(_float& InOut_fCurrentHP, const _float In_fMaxHP, const _float In_fAmount)
+{
+	InOut_fCurrentHP += In_fAmount;
+	if (InOut_fCurrentHP >= In_fMaxHP)
+		InOut_fCurrentHP = In_fMaxHP;
+}
+
+
+
 _bool CStatus::Is_Dead()
 {
 	return _bool();

@@ -436,6 +436,8 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 		return true;
 	}
 
+	
+
 	return false;
 }
 

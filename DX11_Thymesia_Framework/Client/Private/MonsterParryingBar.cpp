@@ -30,19 +30,11 @@ HRESULT CMonsterParryingBar::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
-    m_tUIDesc.fSizeX = 170.f;
-    m_tUIDesc.fSizeY = 10.f;
-    m_tUIDesc.fX = g_iWinCX / 2.f;
-    m_tUIDesc.fY = g_iWinCY / 2.f;
-    m_tUIDesc.fDepth = 0.1f;
-
-
-
    m_pBorder = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &m_tUIDesc);
    m_pBorder.lock()->Set_Texture("Monster_HPBar_Border");
+   m_pBorder.lock()->Set_Depth(0.1f);
 
    UI_DESC tMainBarDesc = m_tUIDesc;
-   tMainBarDesc.fSizeX = 170.f;
    tMainBarDesc.fSizeY = m_tUIDesc.fSizeY - 4.f;
    tMainBarDesc.fDepth = 0.0f;
 
@@ -53,8 +45,6 @@ HRESULT CMonsterParryingBar::Initialize(void* pArg)
 
     m_fCrurrentParryGauge = 0.f;
     m_fLerpedParryGauge = 0.f;
-
-    m_fAmount = 0.3f;
 
     Add_Child(m_pBorder);
     Add_Child(m_pMainBar);
@@ -101,7 +91,6 @@ void CMonsterParryingBar::Tick(_float fTimeDelta)
       m_pMainBar.lock()->Set_Ratio(m_fLerpedParryGauge);
     }
  
-
 }
 
 void CMonsterParryingBar::LateTick(_float fTimeDelta)
@@ -112,11 +101,32 @@ void CMonsterParryingBar::LateTick(_float fTimeDelta)
 
 HRESULT CMonsterParryingBar::Render()
 {
-    //
 
     return S_OK;
 }
 
 void CMonsterParryingBar::Reset()
 {
+}
+
+void CMonsterParryingBar::Set_UIPosition(const _float fX, const _float fY)
+{
+    __super::Set_UIPosition(fX, fY);
+
+    m_pBorder.lock()->Set_UIPosition(fX, fY);
+    m_pMainBar.lock()->Set_UIPosition(fX, fY);
+
+}
+
+void CMonsterParryingBar::Set_Ratio(_float fRatio, _bool bRatio)
+{
+    m_fCrurrentParryGauge = fRatio;
+
+    if (bRatio)
+        Set_Lerp(m_fLerpedParryGauge, m_fCrurrentParryGauge, 1.f, EASING_TYPE::EXPO_OUT);
+    else
+    {
+        m_fLerpedParryGauge = m_fCrurrentParryGauge;
+        m_pMainBar.lock()->Set_Ratio(m_fLerpedParryGauge);
+    }
 }

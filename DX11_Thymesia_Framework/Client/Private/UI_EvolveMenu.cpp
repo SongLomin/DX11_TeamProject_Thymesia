@@ -262,16 +262,16 @@ void CUI_EvolveMenu::ChangeUIFromCurrentLevel()
 	switch (m_eLastOpenedLevel)
 	{
 	case Client::LEVEL_GAMEPLAY:
-		m_pRightTitle.lock()->Set_UIPosition(tRightBGDesc.fX, 82.f + 17.f, 103.f, 34.f);
+		m_pRightTitle.lock()->Set_UIPosition(tRightBGDesc.fX, 82.f + 17.f, 100.f, 34.f);
 		m_pRightTitle.lock()->Set_Texture("EvolveMenu_Text_SeaOfTrees");
 		m_pRightMapImage.lock()->Set_Texture("EvolveMenu_MapImage_SeaOfTrees");
 		break;
 	case Client::LEVEL_TEST:
-		m_pRightTitle.lock()->Set_UIPosition(tRightBGDesc.fX, 82.f + 17.f, 103.f, 34.f);
+		m_pRightTitle.lock()->Set_UIPosition(tRightBGDesc.fX, 82.f + 17.f, 100.f, 34.f);
 		m_pRightTitle.lock()->Set_Texture("EvolveMenu_Text_SeaOfTrees");
 		break;
 	default:
-		m_pRightTitle.lock()->Set_UIPosition(tRightBGDesc.fX, 82.f + 17.f, 103.f, 34.f);
+		m_pRightTitle.lock()->Set_UIPosition(tRightBGDesc.fX, 82.f + 17.f, 100.f, 34.f);
 		m_pRightTitle.lock()->Set_Texture("EvolveMenu_Text_SeaOfTrees");
 		break;
 	}

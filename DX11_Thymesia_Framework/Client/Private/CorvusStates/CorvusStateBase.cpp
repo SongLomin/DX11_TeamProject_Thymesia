@@ -152,6 +152,23 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE&
 {
 	__super::OnHit(pOtherCollider, In_eHitType, In_fDamage);
 
+	/*
+		공격을 받았다!
+		//공격을받았다 온히트들어온게공격받은거임
+		
+		패링 상태인가?
+			->Yes 퍼펙트 패링인가?
+					->->Yes : 데미지 무시후 패링데미지 존나가함
+					->->NO : 노말 패링인가?
+							->->->Yes : 데미지 무시 후 패링데미지 가함.
+							->->->NO : 그냥 맞아라 너는(피격)
+			->NO : 데미지 가하고, 죽었는가?
+					->->Yes : 데드씬 발생.
+					->->NO : 피격
+	
+	*/
+
+
 	if (pOtherCollider.lock()->Get_CollisionLayer() == (_uint)COLLISION_LAYER::MONSTER_ATTACK)
 	{
 		//어쩃든 여기 닿으면 데미지 입음.
@@ -175,24 +192,40 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE&
 			/*
 				지금 맞았을 당시 상태가 패링이라면
 			*/
+			pMonsterStatusCom.lock()->Decrease_ParryGauge(5000.f);
+			//수민이형 이거 애들 체력 다나가도 Hit상태로 안가요
+			//이거좀 어케 해줘요
+
+			_bool bGroggy = pMonsterStatusCom.lock()->Is_Groggy();
+
+			if (bGroggy)
+			{
+				pMonsterFromCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_GROGGY);
+			}
+
+
 			PARRY_TYPE eParryingType = Get_ParryType();
 			int a = 10;
 			switch (eParryingType)
 			{
 			case Client::PARRY_TYPE::PERFECT:
+				//이떄그럼 몬스터 패링게이지 존나깍으면됨 
 				a = 10;
-				break;
+				return;
 			case Client::PARRY_TYPE::NORMAL:
+				// 이떄 플레이어데미지감소시키지는말고 패링게이지 조금증가
 				a= 17;
-				break;
+				return;
 			case Client::PARRY_TYPE::FAIL:
+				// 걍 플레이어처맞으면될듯
 				a = 5;
 				break;
 			case Client::PARRY_TYPE::NONE:
+				//이건뭐냐
 				a = 6;
 				break;
 			}
-
+			
 		}
 	
 		if (pStatus.lock()->Is_Dead())

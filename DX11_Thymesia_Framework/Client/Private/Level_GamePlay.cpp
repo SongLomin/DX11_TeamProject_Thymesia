@@ -134,12 +134,18 @@ HRESULT CLevel_GamePlay::Initialize()
 	//GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &NORMONSTER);
 	//
 
-	ZeroMemory(&BOSSMONSTER, sizeof(CBossMonster::STATE_LINK_BOSS_DESC));
-	BOSSMONSTER.vYame.x = 32.f;
-	BOSSMONSTER.vYame.y = 4.7f;
-	BOSSMONSTER.vYame.z = 28.f;
-	BOSSMONSTER.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
-	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &BOSSMONSTER);
+	//ZeroMemory(&BOSSMONSTER, sizeof(CBossMonster::STATE_LINK_BOSS_DESC));
+	//BOSSMONSTER.vYame.x = 32.f;
+	//BOSSMONSTER.vYame.y = 4.7f;
+	//BOSSMONSTER.vYame.z = 28.f;
+	//BOSSMONSTER.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
+	//GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &BOSSMONSTER);
+	//
+	//ZeroMemory(&BOSSMONSTER, sizeof(CBossMonster::STATE_LINK_BOSS_DESC));
+	//BOSSMONSTER.vYame.x = 33.f;
+	//BOSSMONSTER.vYame.y = 4.7f;
+	//BOSSMONSTER.vYame.z = 26.f;
+	//GAMEINSTANCE->Add_GameObject<CUrd>(LEVEL_GAMEPLAY, &BOSSMONSTER);
 
 	/*ZeroMemory(&NORMONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	NORMONSTER.eMonType = MONSTERTYPE::KNIFEWOMAN;
@@ -260,14 +266,13 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 
 	}*/
 
-	if (KEY_INPUT(KEY::E, KEY_STATE::TAP))
+	if (KEY_INPUT(KEY::ALT, KEY_STATE::TAP))
 	{
-		weak_ptr< CUI_EvolveMenu> pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL_STATIC).front();
+		weak_ptr<CUI_EvolveMenu> pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL_STATIC).front();
 		if (pEvolveMenu.lock()->Get_Enable() == false)
 		{
 			pEvolveMenu.lock()->Set_Enable(true);
 		}
-	
 	}
 
 }
@@ -289,7 +294,7 @@ void CLevel_GamePlay::SetUp_UI()
 
 	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);//¿©±â¼­ 
 	m_pPauseMenu = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu>(LEVEL_STATIC);
-
+	GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu>(LEVEL_STATIC);
 #ifdef _ONLY_UI_
 	GAMEINSTANCE->Add_GameObject<CMonsterParryingBar>(LEVEL_STATIC);
 	GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu>(LEVEL_STATIC);

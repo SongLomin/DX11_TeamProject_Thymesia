@@ -51,7 +51,6 @@ public:
 
 public:
     virtual void Enable_Weapons(const _bool In_bEnable) override;
-
 protected:
     virtual void SetUp_ShaderResource() override;    
 

@@ -52,8 +52,8 @@ void CCorvusState_Parry2::Tick(_float fTimeDelta)
 		}
 	}
 
-	Attack();
-
+	//Attack();
+	Update_ParryType();
 	
 }
 
@@ -110,6 +110,26 @@ void CCorvusState_Parry2::Check_InputNextAttack()
 
 	m_IsNextAttack = true;
 
+}
+
+void CCorvusState_Parry2::Update_ParryType()
+{
+	_uint		iKeyFrame = m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex();
+	if (iKeyFrame >= 14 && iKeyFrame <= 25)
+	{
+		m_eParryType = PARRY_TYPE::PERFECT;
+		return;
+	}
+	else if (iKeyFrame >= 1 && iKeyFrame <= 35)
+	{
+		m_eParryType = PARRY_TYPE::NORMAL;
+		return;
+	}
+	else
+	{
+		m_eParryType = PARRY_TYPE::FAIL;
+		return;
+	}
 }
 
 
@@ -283,7 +303,7 @@ _bool CCorvusState_Parry2::Check_RequirementNextParryState()
 _bool CCorvusState_Parry2::Check_RuquireMnetFirstParryState()
 {
 	_uint iTargetKeyFrameMin = 31;
-	_uint iTargetKeyFrameMax = 80;
+	_uint iTargetKeyFrameMax = 110;
 
 	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) && m_IsNextAttack)
 	{

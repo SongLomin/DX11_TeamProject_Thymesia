@@ -117,7 +117,7 @@ void CUI_Logo::Tick(_float fTimeDelta)
     if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
     {
         if (m_iSelect == 0)
-            m_iSelect = 0;
+            m_iSelect = LOGO_BUTTON_END - 1;
         else
             m_iSelect--;
         ChageButtonIndex(m_iSelect);
@@ -125,7 +125,7 @@ void CUI_Logo::Tick(_float fTimeDelta)
     else if (KEY_INPUT(KEY::DOWN, KEY_STATE::TAP))
     {
         if (m_iSelect == (_uint)LOGO_BUTTON_QUIT)
-            m_iSelect = (_uint)LOGO_BUTTON_QUIT;
+            m_iSelect = 0;
         else
             m_iSelect++;
          ChageButtonIndex(m_iSelect);

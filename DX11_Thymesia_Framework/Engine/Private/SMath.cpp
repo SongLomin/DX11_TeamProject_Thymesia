@@ -457,6 +457,17 @@ XMMATRIX ENGINE_DLL Engine::SMath::Go_Up(FXMMATRIX Mat, float fScaler)
 	return ResultMat;
 }
 
+XMMATRIX ENGINE_DLL Engine::SMath::Add_PositionWithRotation(FXMMATRIX Mat, FXMVECTOR vPosition)
+{
+	_vector vRotatedPosition = XMVector3TransformCoord(vPosition, SMath::Get_RotationMatrix(Mat));
+	_matrix ResultMatrix = Mat;
+
+	ResultMatrix.r[3] += vRotatedPosition;
+	
+
+	return ResultMatrix;
+}
+
 XMMATRIX ENGINE_DLL Engine::SMath::LookAt(FXMMATRIX Mat, FXMVECTOR In_vPosition)
 {
 	XMMATRIX ResultMat;

@@ -63,10 +63,7 @@ void CCorvusState_Parry1::LateTick(_float fTimeDelta)
 
 	Check_InputNextParry();
 
-	if (Check_AndChangeNextState())
-	{
-
-	}
+	Check_AndChangeNextState();
 }
 
 void CCorvusState_Parry1::Call_AnimationEnd()
@@ -126,12 +123,12 @@ void CCorvusState_Parry1::Update_ParryType()
 		그냥 처맞기랑 같음.
 	*/
 	_uint		iKeyFrame = m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex();
-	if (iKeyFrame >= 14 && iKeyFrame <= 20)
+	if (iKeyFrame >= 14 && iKeyFrame <= 25)
 	{
 		m_eParryType = PARRY_TYPE::PERFECT;
 		return;
 	}
-	else if (iKeyFrame >= 5 && iKeyFrame <= 35)
+	else if (iKeyFrame >= 1 && iKeyFrame <= 35)
 	{
 		m_eParryType = PARRY_TYPE::NORMAL;
 		return;
@@ -265,11 +262,6 @@ _bool CCorvusState_Parry1::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	//토크 
-
-	/*
-	
-	*/
 
 	
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 35)
@@ -355,7 +347,7 @@ _bool CCorvusState_Parry1::Check_RequirementNextParryState()
 _bool CCorvusState_Parry1::Check_RuquireMnetFirstParryState()
 {
 	_uint iTargetKeyFrameMin = 51;
-	_uint iTargetKeyFrameMax = 80;
+	_uint iTargetKeyFrameMax = 110;
 
 	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) && m_IsNextAttack)
 	{

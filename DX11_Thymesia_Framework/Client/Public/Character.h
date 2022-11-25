@@ -67,6 +67,8 @@ public:
     virtual void OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage);
     virtual void Call_WeaponFirstAttack(weak_ptr<CCollider> pOtherCollider);
     virtual void Call_WeaponAttack(weak_ptr<CCollider> pOtherCollider);
+    virtual void OnEventMessage(_uint iArg) override;
+
 protected:
     virtual void OnLevelEnter() override;
 
@@ -74,7 +76,7 @@ protected:
     virtual void OnCollisionStay(weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionExit(weak_ptr<CCollider> pOtherCollider) override;
 
-    virtual void OnEventMessage(_uint iArg) override;
+    
 
 private:
     void Free();

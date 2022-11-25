@@ -12,7 +12,7 @@ public:
 
 protected:
 	_bool		Is_Lerping() { return m_bLerp; }
-	void		Set_Lerp(_float In_fStart, _float In_fEnd, _float In_fTime, EASING_TYPE eType);
+	void		Set_Lerp(_float In_fStart, _float In_fEnd, _float In_fTime, EASING_TYPE eType = EASING_TYPE::QUAD_IN);
 	_float4		Get_Lerp();
 
 private:

@@ -22,6 +22,7 @@ namespace Engine
 		XMMATRIX		ENGINE_DLL Go_Right(FXMMATRIX Mat, float fScaler);
 		XMMATRIX		ENGINE_DLL Go_Straight(FXMMATRIX Mat, float fScaler);
 		XMMATRIX		ENGINE_DLL Go_Up(FXMMATRIX Mat, float fScaler);
+		XMMATRIX		ENGINE_DLL Add_PositionWithRotation(FXMMATRIX Mat, FXMVECTOR vPosition);
 		XMMATRIX		ENGINE_DLL LookAt(FXMMATRIX Mat, FXMVECTOR In_vPosition);
 		
 

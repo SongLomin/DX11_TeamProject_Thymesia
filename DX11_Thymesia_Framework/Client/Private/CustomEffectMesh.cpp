@@ -287,7 +287,7 @@ void CCustomEffectMesh::Reset_Effect()
 			WeaponDesc.vWeaponOffset = m_tEffectMeshDesc.vWeaponOffset;
 			WeaponDesc.fHitFreq = m_tEffectMeshDesc.fHitFreq;
 
-			m_pAttackArea.lock()->Init_Weapon(WeaponDesc,
+			m_pAttackArea.lock()->Init_AttackArea(WeaponDesc,
 				GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Component<CTransform>());
 
 			m_pAttackArea.lock()->Enable_Weapon(m_tEffectMeshDesc.fWeaponLifeTime, m_tEffectMeshDesc.bWeaponSyncTransform);
@@ -356,7 +356,7 @@ void CCustomEffectMesh::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 		WeaponDesc.vWeaponOffset = m_tEffectMeshDesc.vWeaponOffset;
 		WeaponDesc.fHitFreq = m_tEffectMeshDesc.fHitFreq;
 
-		m_pAttackArea.lock()->Init_Weapon(WeaponDesc, pParentTransform);
+		m_pAttackArea.lock()->Init_AttackArea(WeaponDesc, pParentTransform);
 		m_pAttackArea.lock()->Enable_Weapon(m_tEffectMeshDesc.fWeaponLifeTime, m_tEffectMeshDesc.bWeaponSyncTransform);
 	}
 }
