@@ -128,11 +128,11 @@ HRESULT CImGui_Manager::Render(void)
 
 			if (EDITER_TYPE::SCENE == m_eCurrentEditerType)
 			{
-				if (ImGui::MenuItem("Load"))
+				/*if (ImGui::MenuItem("Load"))
 				{
 					Load_FromJson(m_szJsonPath + m_szCurrentLocalPath);
 					
-				}
+				}*/
 			}
 
 			else if (EDITER_TYPE::EFFECT == m_eCurrentEditerType)

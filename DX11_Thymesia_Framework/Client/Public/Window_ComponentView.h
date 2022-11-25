@@ -27,7 +27,6 @@ private:
 	void Init_Components();
 
 private:
-	void Picking_Obj();
 	void TransformComponent_PickingAction(weak_ptr<CTransform> _pTransform);
 	void View_FreeCamera(weak_ptr<CTransform> In_pTransform);
 

@@ -36,6 +36,7 @@ public:
     virtual HRESULT Render() override;
 
 public:
+    virtual _bool IsPicking(const RAY& In_Ray, _float& Out_fRange) override;
     virtual void   OnEventMessage(_uint iArg) override;
 
 private:

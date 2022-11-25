@@ -26,7 +26,7 @@ private:
     virtual void Tick(_float fTimeDelta);
     virtual void LateTick(_float fTimeDelta);
     virtual HRESULT Render();
-
+    virtual _bool IsPicking(const RAY& In_Ray, _float& Out_fRange) override;
 
 private:
     weak_ptr<CPhysXCollider>            m_pPhysXColliderCom;
@@ -36,6 +36,7 @@ private: /* For. Edit */
     weak_ptr<CShader>                   m_pShaderCom;
     weak_ptr<CRenderer>                 m_pRendererCom;
     _bool                               m_bViewPhysXInfo = false;
+
 
 public:
     virtual void Write_Json(json& Out_Json) override;

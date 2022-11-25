@@ -49,13 +49,10 @@ private:
     void    SetUp_ShaderResource_Select();
 
     void Load_ResourceList(vector<string>& In_List, const filesystem::path& In_Path, string _szCutName = "");
-
-    void Save_Json(string _szName);
-    void Load_Json(string _szName);
-
 public:
     virtual void Write_Json(json& Out_Json) override;
     virtual void Load_FromJson(const json& In_Json) override;
+    virtual _bool IsPicking(const RAY& In_Ray, _float& Out_fRange) override;
 
 private:                                                                                                                                                                                                                
     typedef vector<string>               RESOURCE_LIST;
@@ -82,8 +79,9 @@ private:
 
     static _bool        m_bDetailPicking;
 
-    _int                m_iColliderType = 0;
+    _int                m_iColliderType  = 0;
     _bool               m_bViewPhysXInfo = false;
+    _bool               m_bNonCulling    = false;
 
 public:
     void Free();

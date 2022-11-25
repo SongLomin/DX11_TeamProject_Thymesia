@@ -41,6 +41,8 @@ void CWindow_HierarchyView::Tick(_float fTimeDelta)
 			iter++;
 		}
 	}
+
+	Picking_Obj();
 }
 
 HRESULT CWindow_HierarchyView::Render()
@@ -212,6 +214,36 @@ void CWindow_HierarchyView::Call_Add_GameObject_Internal(const _hashcode& TypeHa
 	pNewGameObject.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
 
 	m_pGameObjects.push_back({ TypeHash, TypeName, pNewGameObject });
+}
+
+void CWindow_HierarchyView::Picking_Obj()
+{
+	if (KEY_INPUT(KEY::ALT, KEY_STATE::HOLD) && KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
+	{
+		_int iIndex						= 0;
+		_int iPickedIndex				= -1;
+		_float fDist					= 99999.f;
+		GAMEOBJECT_DESC* pPickingObj	= nullptr;
+
+		RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+
+		for (auto& elem : m_pGameObjects)
+		{
+			if (elem.pInstance.lock()->IsPicking(MouseRayInWorldSpace, fDist))
+			{
+				iPickedIndex = iIndex;
+				pPickingObj  = &elem;
+			}	
+			
+			++iIndex;
+		}
+
+		if (0 <= iPickedIndex)
+		{
+			CallBack_ListClick(*pPickingObj);
+			m_iPreSelectIndex = iPickedIndex;
+		}
+	}
 }
 
 void CWindow_HierarchyView::OnLevelLoad()

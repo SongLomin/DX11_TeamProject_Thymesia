@@ -539,7 +539,7 @@ void ENGINE_DLL Engine::SMath::Set_ClockwiseTriangle(XMFLOAT3* InOut_TrianglePos
 
 }
 
-_bool ENGINE_DLL Engine::SMath::Is_Picked(RAY _Ray, _float4* _pOutPos)
+_bool ENGINE_DLL Engine::SMath::Is_Picked_AbstractTerrain(const RAY& _Ray, _float4* _pOutPos)
 {
 	if (0 != isnan(_Ray.vOrigin.x))
 		return false;
@@ -582,7 +582,7 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked(RAY _Ray, _float4* _pOutPos)
 	return false;
 }
 
-_bool ENGINE_DLL Engine::SMath::Is_Picked_AbstractCube(RAY _Ray, MESH_VTX_INFO _VtxInfo, _matrix _WorldMatrix)
+_bool ENGINE_DLL Engine::SMath::Is_Picked_AbstractCube(const RAY& _Ray, MESH_VTX_INFO _VtxInfo, _matrix _WorldMatrix, _float* Out_pDist)
 {
 	if (0 != isnan(_Ray.vOrigin.x))
 		return false;
@@ -627,6 +627,8 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked_AbstractCube(RAY _Ray, MESH_VTX_INFO _
 
 		if (true == DirectX::TriangleTests::Intersects(vRayPos, vRayDir, vVec0, vVec1, vVec2, fDist))
 		{
+			if (Out_pDist)
+				*Out_pDist = fDist;
 			return true;
 		}
 	}
@@ -634,52 +636,6 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked_AbstractCube(RAY _Ray, MESH_VTX_INFO _
 	return false;
 }
 
-_bool ENGINE_DLL Engine::SMath::Is_Picked_Y(RAY _Ray, _float4* _pOutPos)
-{
-	if (0 != isnan(_Ray.vOrigin.x))
-		return false;
-
-	_float3 vPos[6] =
-	{
-		_float3(-9999.f,  9999.f, -9999.f),
-		_float3(-9999.f,  9999.f,  9999.f),
-		_float3(-9999.f, -9999.f,  9999.f),
-		_float3(-9999.f, -9999.f, -9999.f),
-		_float3( 9999.f,  9999.f,  9999.f),
-		_float3( 9999.f, -9999.f,  9999.f)
-	};
-
-	_uint3 iIndex[4] =
-	{
-		_uint3(0, 1, 2),
-		_uint3(0, 2, 3),
-		_uint3(1, 4, 5),
-		_uint3(1, 5, 2)
-	};
-
-	for (_uint i = 0; i < 4; ++i)
-	{
-		if (0 != isnan(_Ray.vOrigin.x))
-			break;
-
-		_vector		vPickedPos;
-		
-		_vector	vVec0 = XMLoadFloat3(&vPos[iIndex[i].ix]);
-		_vector	vVec1 = XMLoadFloat3(&vPos[iIndex[i].iy]);
-		_vector	vVec2 = XMLoadFloat3(&vPos[iIndex[i].iz]);
-
-		_float fDist  = 0;
-		if (DirectX::TriangleTests::Intersects(XMLoadFloat4(&_Ray.vOrigin), XMLoadFloat3(&_Ray.vDirection), vVec0, vVec1, vVec2, fDist))
-		{
-			vPickedPos = XMLoadFloat4(&_Ray.vOrigin) + XMVector3Normalize(XMLoadFloat3(&_Ray.vDirection)) * fDist;
-			XMStoreFloat4(_pOutPos, vPickedPos);
-
-			return true;
-		}
-	}
-
-	return false;
-}
 
 void ENGINE_DLL Engine::SMath::Convert_PxVec3FromMeshData(PxVec3* In_PxVec3, weak_ptr<MESH_DATA> pMeshData)
 {

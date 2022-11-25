@@ -252,9 +252,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_Default, 0);
         SetRasterizerState(RS_Default);
 
-		VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
-		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN_NORMAL();
+		VertexShader	= compile vs_5_0 VS_MAIN_NORMAL();
+		GeometryShader	= NULL;
+		PixelShader		= compile ps_5_0 PS_MAIN_NORMAL();
 	}
 	pass ShadowDepth //2
 	{
@@ -266,6 +266,7 @@ technique11 DefaultTechnique
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_SHADOW();
 	}
+
     pass Just_Red
     {
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
@@ -277,4 +278,25 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_RED();
     }
 
+	pass Pass4_WireFrameaw
+	{
+		SetBlendState			(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState	(DSS_Default, 0);
+		SetRasterizerState		(RS_NonCulling);
+
+		VertexShader	= compile vs_5_0	VS_MAIN();
+		GeometryShader	= NULL;
+		PixelShader		= compile ps_5_0	PS_MAIN();
+	}
+
+	pass Pass5_WireFrame_Norm
+	{
+		SetBlendState			(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState	(DSS_Default, 0);
+		SetRasterizerState		(RS_NonCulling);
+
+		VertexShader	= compile vs_5_0	VS_MAIN_NORMAL();
+		GeometryShader	= NULL;
+		PixelShader		= compile ps_5_0	PS_MAIN_NORMAL();
+	}
 }
