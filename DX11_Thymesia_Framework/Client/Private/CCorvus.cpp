@@ -71,6 +71,9 @@ HRESULT CCorvus::Initialize(void* pArg)
 	// Key Frame Effect ON
 	GET_SINGLE(CGameManager)->Bind_KeyEvent("Corvus", m_pModelCom, bind(&CCorvus::Call_NextAnimationKey, this, placeholders::_1));
 
+	// Passive Effect ON
+	GET_SINGLE(CGameManager)->Use_EffectGroup("CVS_PassiveFeather", m_pTransformCom, (_uint)TIMESCALE_LAYER::PLAYER);
+
 	//USE_START(CCorvus);
 
 	return S_OK;
