@@ -130,10 +130,9 @@ void CCorvusState_LAttack1::OnStateStart(const _float& In_fAnimationBlendTime)
 	//Disable_Weapons();
 
 #ifdef _DEBUG
-	#ifdef _DEBUG_COUT_
+#ifdef _DEBUG_COUT_
 		cout << "CorvusState: Attack -> OnStateStart" << endl;
 #endif
-
 #endif
 }
 

@@ -54,6 +54,7 @@ private:
 	HRESULT Render_AfterPostEffect();
 	HRESULT Render_AfterPostEffectGlow();
 	HRESULT Blur_Effect();
+
 	HRESULT PostProcessing(const _int In_iPass);
 	HRESULT Render_UI();
 	HRESULT Render_Final();

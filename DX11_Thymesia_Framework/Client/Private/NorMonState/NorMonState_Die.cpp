@@ -123,8 +123,6 @@ void CNorMonState_Die::OnStateStart(const _float& In_fAnimationBlendTime)
 	cout << "NorMonState: Stop -> StopStop" << endl;
 #endif
 #endif
-
-
 }
 
 void CNorMonState_Die::OnStateEnd()

@@ -102,7 +102,7 @@ PS_OUT PS_MAIN_MOTION_BLUR(PS_IN In)
 
 	vector vColor = vector(0.f,0.f,0.f,0.f);
 
-	for (int i = 0; i < 10; ++i, texCoord += vPixelVelocity * g_BlurStrength*0.25f)
+	for (int i = 0; i < 10; ++i, texCoord += vPixelVelocity  * 0.025f)
 	{
 		float4 currentColor = g_OriginalRenderTexture.Sample(ClampSampler, texCoord);
 		vColor += currentColor;
