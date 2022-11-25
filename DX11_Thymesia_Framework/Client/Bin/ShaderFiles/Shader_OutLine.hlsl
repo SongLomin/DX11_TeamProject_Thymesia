@@ -9,25 +9,25 @@ texture2D g_OriginalRenderTexture;
 float g_ViewPortWidth = 1600.f;
 float g_ViewPortHeight = 900.f;
 
-float g_Divider = 1;
+float g_Divider = 1.f;
 
 // Laplacian Filter
 float mask[9] =
 {
-    -1, -1, -1,
-      -1, 8, -1,
-      -1, -1, -1
+    -1.f, -1.f, -1.f,
+    -1.f,  8.f, -1.f,
+    -1.f, -1.f, -1.f
 };
 
 // ±Ÿ√≥ «»ºø
 float coord[3] = 
-	{ -1, 0, +1 };
+	{ -1.f, 0.f, 1.f };
 
 float Blur_mask[9] =
 {
-    1, 1, 1,
-      1, 1, 1,
-      1, 1, 1
+    1.f, 1.f, 1.f,
+    1.f, 1.f, 1.f,
+    1.f, 1.f, 1.f
 };
 
 
@@ -87,19 +87,18 @@ PS_OUT PS_MAIN(PS_IN In)
     {
         Color += mask[i] * 
 		g_DepthTexture.Sample(DefaultSampler,
-		In.vTexUV + float2(coord[i % 3] / (g_ViewPortWidth), coord[i / 3] / (g_ViewPortHeight)));
+		In.vTexUV + float2(coord[i % (uint)3] / (g_ViewPortWidth), coord[i / (uint)3] / (g_ViewPortHeight)));
         
         Color += mask[i] *
 		g_NormalTexture.Sample(DefaultSampler,
-		In.vTexUV + float2(coord[i % 3] / (g_ViewPortWidth), coord[i / 3] / (g_ViewPortHeight))) * 0.1f;
+		In.vTexUV + float2(coord[i % (uint)3] / (g_ViewPortWidth), coord[i / (uint)3] / (g_ViewPortHeight))) * 0.1f;
 
     }
    
-    float gray = 1 - (Color.r * 0.3 + Color.g * 0.59 + Color.b * 0.11);
-    Ret = float4(gray, gray, gray, 1) / 1;
+    float gray = 1.f - (Color.r * 0.3f + Color.g * 0.59f + Color.b * 0.11f);
+    Ret = float4(gray, gray, gray, 1.f) / 1.f;
    
-    Out.vColor = smoothstep(0.8, 1, Ret);
-	
+    Out.vColor = smoothstep(0.8f, 1.f, Ret);
 	
 	return Out;
 }
@@ -115,13 +114,13 @@ PS_OUT PS_MAIN_BLUR(PS_IN In)
     
     for (int i = 0; i < 9; i++)
     {
-        tex = In.vTexUV + float2(coord[i % 3] / (g_ViewPortWidth), coord[i / 3] / (g_ViewPortHeight));
+        tex = In.vTexUV + float2(coord[i % (uint)3] / (g_ViewPortWidth), coord[i / (uint)3] / (g_ViewPortHeight));
         tex = saturate(tex);
         
         Color += Blur_mask[i] * g_OutLineTexture.Sample(DefaultSampler, tex);
     }
     
-    Color = Color / 9;
+    Color /= 9.f;
     //Color.a = 1.f;
 	
     Out.vColor = Color;

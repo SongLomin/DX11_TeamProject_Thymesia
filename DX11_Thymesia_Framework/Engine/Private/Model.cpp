@@ -25,7 +25,7 @@ weak_ptr<MODEL_DATA> CModel::Get_ModelData() const
 _int CModel::Get_IndexFromAnimName(const _char* In_szAnimName)
 {
 
-	for (_int i = 0; i < m_iNumAnimations; ++i)
+	for (_uint i(0); i < m_iNumAnimations; ++i)
 	{
 		if (strcmp(m_Animations[i].lock()->Get_Name(), In_szAnimName) == 0)
 		{

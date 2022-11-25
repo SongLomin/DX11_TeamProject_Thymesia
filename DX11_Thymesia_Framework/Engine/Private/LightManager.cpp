@@ -4,7 +4,6 @@ IMPLEMENT_SINGLETON(CLight_Manager)
 
 const LIGHTDESC& CLight_Manager::Get_LightDesc(_uint iIndex) const
 {
-
 	const LIGHTDESC* elem_LightDesc;
 
 	for (auto& elem : m_pLights)
@@ -12,12 +11,10 @@ const LIGHTDESC& CLight_Manager::Get_LightDesc(_uint iIndex) const
 		elem_LightDesc = &elem->Get_LightDesc();
 
 		if (iIndex == elem_LightDesc->Get_LightIndex())
-		{
 			return *elem_LightDesc;
-		}
 	}
 
-	return {};
+	return LIGHTDESC();
 }
 
 void CLight_Manager::Set_LightDesc(const LIGHTDESC& LightDesc)

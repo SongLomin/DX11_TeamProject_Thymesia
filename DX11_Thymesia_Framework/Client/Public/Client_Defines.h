@@ -10,15 +10,15 @@
 #ifdef _DEBUG
 #define		_USE_THREAD_
 #define		_144HZ_
-#define		_LIFEGUARD_FOR_FALL_
+// #define		_LIFEGUARD_FOR_FALL_
 #define		_DEBUG_COUT_
 #define		_DEBUG_COUT_JOJO
-//#define		_STAGE_1_
-#define		_STAGE_2_
-#define		_STAGE_1_MONSTER_
+// #define		_STAGE_1_
+// #define		_STAGE_2_
+// #define		_STAGE_1_MONSTER_
 //#define		_INSTANCE_CULLING_
 //#define		_GENERATE_PROP_COLLIDER_ true
-#define		_USE_GRAVITY_
+// #define		_USE_GRAVITY_
 // #define		_DAGGER_TRAIL_
 // UI제외한 오브젝트 생성 X
 //#define		_ONLY_UI_

@@ -3,7 +3,7 @@
 
 
 BEGIN(Engine)
-CTexture;
+class CTexture;
 END
 
 BEGIN(Client)

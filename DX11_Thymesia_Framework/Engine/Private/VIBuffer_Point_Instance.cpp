@@ -69,12 +69,12 @@ HRESULT CVIBuffer_Point_Instance::Initialize(void* pArg)
 
 	VTXINSTANCE* pInstance = DBG_NEW VTXINSTANCE[m_iNumInstance];
 
-	for (_uint i = 0; i < m_iNumInstance; ++i)
+	for (_uint i(0); i < m_iNumInstance; ++i)
 	{
 		pInstance[i].vRight = _float4(1.f, 0.f, 0.f, 0.f);
 		pInstance[i].vUp = _float4(0.f, 1.f, 0.f, 0.f);
 		pInstance[i].vLook = _float4(0.f, 0.f, 1.f, 0.f);
-		pInstance[i].vTranslation = _float4(rand() % 10, 10.0f, rand() % 10, 1.f);
+		pInstance[i].vTranslation = _float4((_float)(rand() % 10), 10.0f, (_float)(rand() % 10), 1.f);
 	}
 
 	ZeroMemory(&m_SubResourceData, sizeof(D3D11_SUBRESOURCE_DATA));

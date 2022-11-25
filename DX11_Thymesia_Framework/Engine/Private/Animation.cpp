@@ -40,7 +40,7 @@ void CAnimation::Init_Animation(weak_ptr<ANIMATION_DATA> pAnimData, weak_ptr<CMo
 
 	m_Channels.reserve(m_pAnimData.lock()->iNumChannels);
 
-	for (_uint i = 0; i < m_pAnimData.lock()->iNumChannels; ++i)
+	for (_uint i(0); i < m_pAnimData.lock()->iNumChannels; ++i)
 	{
 		shared_ptr<CHANNEL_DATA> pChannelData = m_pAnimData.lock()->Channel_Datas[i];
 
@@ -49,12 +49,10 @@ void CAnimation::Init_Animation(weak_ptr<ANIMATION_DATA> pAnimData, weak_ptr<CMo
 		m_Channels.push_back(pChannel);
 	}
 
-	for (_uint i = 0; i < m_pAnimData.lock()->iNumChannels; ++i)
+	for (_uint i(0); i < m_pAnimData.lock()->iNumChannels; ++i)
 	{
 		if (m_iMaxkeyFrame < m_Channels[i].lock()->Get_NumKeyFrames())
-		{
 			m_iMaxkeyFrame = m_Channels[i].lock()->Get_NumKeyFrames();
-		}
 	}
 }
 
@@ -67,37 +65,28 @@ void CAnimation::Update_TransformationMatrices(_float fTimeDelta)
 	{
 		//m_isFinished = true;
 		
-
-
-		for (_uint i = 0; i < m_pAnimData.lock()->iNumChannels; ++i)
+		for (_uint i(0); i < m_pAnimData.lock()->iNumChannels; ++i)
 		{
 			//m_Channels[i].lock()->Update_TransformationMatrices(m_fTimeAcc);
 			m_Channels[i].lock()->Reset_KeyFrame();
 			//m_Channels[i].lock()->Update_TransformationMatrices(m_fTimeAcc);
-			
 		}
 
 		m_pModel.lock()->CallBack_AnimationEnd();
 		m_pOwner.lock()->Get_Component<CModel>().lock()->Reset_DeltaBonePositions();
 
 		m_fTimeAcc = 0.f;
-
 		return;
 	}
 
-	for (_uint i = 0; i < m_pAnimData.lock()->iNumChannels; ++i)
-	{
+	for (_uint i(0); i < m_pAnimData.lock()->iNumChannels; ++i)
 		m_Channels[i].lock()->Update_TransformationMatrices(m_fTimeAcc);
-	}
 
 	_int iCurrentKey = (_int)Get_CurrentChannelKeyIndex();
-
 	if (iCurrentKey != m_iPreChannelKey)
 	{
-		for (_uint i = m_iPreChannelKey + 1; i <= iCurrentKey; ++i)
-		{
+		for (_uint i(m_iPreChannelKey + 1); i <= (_uint)iCurrentKey; ++i)
 			CallBack_NextChannelKey(i);
-		}
 
 		/*if (iCurrentKey - (m_iPreChannelKey + 1) > 0)
 		{
@@ -105,7 +94,6 @@ void CAnimation::Update_TransformationMatrices(_float fTimeDelta)
 		}*/
 		
 		//CallBack_NextChannelKey(iCurrentKey);
-
 		m_iPreChannelKey = iCurrentKey;
 	}
 }
@@ -115,23 +103,18 @@ void CAnimation::Blend_Animation(_float fMaxBlendTime, _float fRatio)
 	m_fAnimRatio = 0.f;
 	//m_fTimeAcc = fMaxBlendTime;
 	
-
-	for (_uint i = 0; i < m_pAnimData.lock()->iNumChannels; ++i)
-	{
+	for (_uint i(0); i < m_pAnimData.lock()->iNumChannels; ++i)
 		m_Channels[i].lock()->Blend_PreTransformationMatrices(fMaxBlendTime, fRatio);
-	}
 
 }
 
 void CAnimation::Reset_Animaition()
 {
-	m_fTimeAcc = 0.f;
-	m_fAnimRatio = 0.f;
+	m_fTimeAcc       = 0.f;
+	m_fAnimRatio     = 0.f;
 	m_iPreChannelKey = -1;
-	for (_uint i = 0; i < m_pAnimData.lock()->iNumChannels; ++i)
-	{
+	for (_uint i(0); i < m_pAnimData.lock()->iNumChannels; ++i)
 		m_Channels[i].lock()->Reset_KeyFrame();
-	}
 }
 
 void CAnimation::Set_StartAnimationKey(_uint iKeyIndex)
@@ -142,7 +125,6 @@ void CAnimation::Set_StartAnimationKey(_uint iKeyIndex)
 void CAnimation::Set_AnimationSpeed(_float fAnimationSpeed)
 {
 	m_fAnimationSpeed = fAnimationSpeed;
-
 }
 
 _uint CAnimation::Get_CurrentChannelKeyIndex() const

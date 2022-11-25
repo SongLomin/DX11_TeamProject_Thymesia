@@ -45,7 +45,7 @@ void CPhysXController::Synchronize_Transform(weak_ptr<CTransform> pTransform, _f
 
 	PxExtendedVec3 vPosFromPx = m_pController->getFootPosition();
 
-	_vector vPos = { vPosFromPx.x, vPosFromPx.y, vPosFromPx.z };
+	_vector vPos = { (_float)vPosFromPx.x, (_float)vPosFromPx.y, (_float)vPosFromPx.z };
 	vPos += In_vOffset;
 	vPos.m128_f32[3] = 1.f;
 	pTransform.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);

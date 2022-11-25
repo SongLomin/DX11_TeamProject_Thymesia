@@ -52,18 +52,18 @@ void CVIBuffer_Ground::Update(_vector _vMousePos, _float _fRadious, _float _fPow
 	DEVICECONTEXT->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
 
 	_int2	iPickIndex = { _int(_vMousePos.m128_f32[0] / m_fInterval), _int(_vMousePos.m128_f32[2] / m_fInterval) };
-	_int	iRoundIndx  = _fRadious / m_fInterval;
+	_int	iRoundIndx  = (_int)(_fRadious / m_fInterval);
 
 	_int2	iBeginIndex, iEndIndex;
 	iBeginIndex.x = (0 > iPickIndex.x - iRoundIndx) ? (0) : (iPickIndex.x - iRoundIndx);
 	iBeginIndex.y = (0 > iPickIndex.y - iRoundIndx) ? (0) : (iPickIndex.y - iRoundIndx);
 	 														
-	iEndIndex.x   = (m_iNumVerticesX < iPickIndex.x + iRoundIndx) ? (m_iNumVerticesX) : (iPickIndex.x + iRoundIndx);
-	iEndIndex.y   = (m_iNumVerticesZ < iPickIndex.y + iRoundIndx) ? (m_iNumVerticesZ) : (iPickIndex.y + iRoundIndx);
+	iEndIndex.x   = ((_int)m_iNumVerticesX < iPickIndex.x + iRoundIndx) ? (m_iNumVerticesX) : (iPickIndex.x + iRoundIndx);
+	iEndIndex.y   = ((_int)m_iNumVerticesZ < iPickIndex.y + iRoundIndx) ? (m_iNumVerticesZ) : (iPickIndex.y + iRoundIndx);
 
-	for (_uint iZ = iBeginIndex.y; iZ < iEndIndex.y; ++iZ)
+	for (_uint iZ(iBeginIndex.y); iZ < (_uint)iEndIndex.y; ++iZ)
 	{
-		for (_uint iX = iBeginIndex.x; iX < iEndIndex.x; ++iX)
+		for (_uint iX(iBeginIndex.x); iX < (_uint)iEndIndex.x; ++iX)
 		{
 			_ulong	iIndex = iZ * m_iNumVerticesX + iX;
 
@@ -89,18 +89,18 @@ void CVIBuffer_Ground::Update(_vector _vMousePos, _float _fRadious, _float _fPow
 		}
 	}
 
-	for (_uint iZ = iBeginIndex.y; iZ < iEndIndex.y; ++iZ)
+	for (_uint iZ(iBeginIndex.y); iZ < (_uint)iEndIndex.y; ++iZ)
 	{
-		for (_uint iX = iBeginIndex.x; iX < iEndIndex.x; ++iX)
+		for (_uint iX(iBeginIndex.x); iX < (_uint)iEndIndex.x; ++iX)
 		{
 			_ulong	iIndex = iZ * m_iNumVerticesX + iX;
 
 			_long  iAdjacency[] =
 			{
-				iIndex + m_iNumVerticesX,	// 위
-				iIndex + 1,					// 오른쪽
-				iIndex - m_iNumVerticesX,	// 아래
-				iIndex - 1					// 왼쪽
+				_long(iIndex + m_iNumVerticesX),	// 위
+				_long(iIndex + 1),					// 오른쪽
+				_long(iIndex - m_iNumVerticesX),	// 아래
+				_long(iIndex - 1)					// 왼쪽
 			};
 			
 			if (0 == iX)
