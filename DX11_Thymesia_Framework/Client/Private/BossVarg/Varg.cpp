@@ -60,7 +60,7 @@ HRESULT CVarg::Initialize(void* pArg)
 
 	//TODO 위치이동 야매임
 	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, m_tLinkStateDesc.vYame.y, m_tLinkStateDesc.vYame.z, 1.f));
-
+	m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(-135.0f));
 	//TODO 여기서하는 이유는 몬스터가 배치되고 원점에서 우리가 피킹한위치만큼더해지고 난뒤에 그월드포지션값저장하기위해서 여기서함
 
 	m_pModelCom.lock()->Set_RootNode("root");
@@ -106,13 +106,12 @@ HRESULT CVarg::Initialize(void* pArg)
 
 	
 	
-	GET_SINGLE(CGameManager)->Bind_KeyEvent((m_pStatus.lock()->Get_Desc().m_szModelKey, m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
+	GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
 
 	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom));
 
 	m_fCullingRange = 999.f;
 
-	USE_START(CVarg);
 	return S_OK;
 }
 
@@ -188,17 +187,17 @@ void CVarg::SetUp_ShaderResource()
 
 void CVarg::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
 {
-	//__super::OnCollisionEnter(pOtherCollider);
+	__super::OnCollisionEnter(pOtherCollider);
 }
 
 void CVarg::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
 {
-	//__super::OnCollisionStay(pOtherCollider);
+	__super::OnCollisionStay(pOtherCollider);
 }
 
 void CVarg::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
 {
-	//__super::OnCollisionExit(pOtherCollider);
+	__super::OnCollisionExit(pOtherCollider);
 }
 
 void CVarg::OnEnable(void* _Arg)
