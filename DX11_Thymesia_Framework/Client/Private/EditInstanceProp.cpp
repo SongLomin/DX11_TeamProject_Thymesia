@@ -482,13 +482,10 @@ void CEditInstanceProp::View_PickingInfo()
 {
 	ImGui::Text("");
 
-	if (!m_pPropInfos.empty() && 0 <= m_iPickingIndex && (_uint)m_pPropInfos.size() > m_iPickingIndex)
-	{
+	if (!m_pPropInfos.empty() && 0 <= m_iPickingIndex && (_int)m_pPropInfos.size() > m_iPickingIndex)
 		m_PickingDesc.vTarnslation.y = m_pPropInfos[m_iPickingIndex].vTarnslation.y;
-	}
 
 	ImGui::DragFloat3("PickPos" , &m_PickingDesc.vTarnslation.x, 1.f);
-
 
 	ImGui::Text("");
 	ImGui::Separator();

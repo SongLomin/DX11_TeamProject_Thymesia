@@ -1,83 +1,84 @@
 
 #include "Client_Shader_Defines.hpp"
 
-matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix; //직교투영
-matrix	g_ProjMatrixInv, g_ViewMatrixInv; //월드 <-> 스크린
+matrix	g_WorldMatrix     , g_ViewMatrix	, g_ProjMatrix; //직교투영
+matrix g_ViewMatrixInv	  , g_ProjMatrixInv; //월드 <-> 스크린
+
 matrix  g_PreCamViewMatrix, g_CamProjMatrix;//proj는 변하지 않는다고 가정
+
+texture2D	g_DepthTexture;
+texture2D	g_OriginalRenderTexture;
 
 vector		g_vCamPosition;
 
 vector		g_vLinearVelocity;
 vector		g_vAngularVelocity;
 
-texture2D	g_DepthTexture;
-texture2D	g_OriginalRenderTexture;
-
-float		g_BlurStrength =0.1f;
+float		g_BlurStrength = 0.1f;
 
 static const float BlurWeights[13] =
 {
-	0.002216,
-	0.008764,
-	0.026995,
-	0.064759,
-	0.120985,
-	0.176033,
-	0.199471,
-	0.176033,
-	0.120985,
-	0.064759,
-	0.026995,
-	0.008764,
-	0.002216,
+	0.002216f,
+	0.008764f,
+	0.026995f,
+	0.064759f,
+	0.120985f,
+	0.176033f,
+	0.199471f,
+	0.176033f,
+	0.120985f,
+	0.064759f,
+	0.026995f,
+	0.008764f,
+	0.002216f,
 };
 
 struct VS_IN
 {
-	float3		vPosition : POSITION;	
-	float2		vTexUV : TEXCOORD0;
+	float3 vPosition : POSITION;	
+	float2 vTexUV    : TEXCOORD0;
 };
 
 struct VS_OUT
 {
-	float4		vPosition : SV_POSITION;
-	float2		vTexUV : TEXCOORD0;
+	float4 vPosition : SV_POSITION;
+	float2 vTexUV    : TEXCOORD0;
 };
 
 VS_OUT VS_MAIN(VS_IN In)
 {
-	VS_OUT		Out = (VS_OUT)0;
+	VS_OUT Out = (VS_OUT)0;
 
-	matrix			matWV, matWVP;
+	matrix matWV, matWVP;
 
 	matWV = mul(g_WorldMatrix, g_ViewMatrix);
 	matWVP = mul(matWV, g_ProjMatrix);
 
 	Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
-	Out.vTexUV = In.vTexUV;
+	Out.vTexUV    = In.vTexUV;
 
 	return Out;
 }
 struct PS_IN
 {
-	float4		vPosition : SV_POSITION;
-	float2		vTexUV : TEXCOORD0;
+	float4 vPosition : SV_POSITION;
+	float2 vTexUV    : TEXCOORD0;
 };
 
 struct PS_OUT
 {	
-	vector		vColor : SV_TARGET0;	
+	vector vColor    : SV_TARGET0;	
 };
 
 PS_OUT PS_MAIN_MOTION_BLUR(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
-	vector			vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
-
-	float			fViewZ = vDepthDesc.y * 300.f;
-
-	vector			vPixelWorldPos,vPixelPos;
+	vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
+		   
+	float fViewZ      = vDepthDesc.y * 300.f;
+		   
+	vector vPixelWorldPos,vPixelPos;
 
 	vPixelWorldPos.x = In.vTexUV.x * 2.f - 1.f;
 	vPixelWorldPos.y = In.vTexUV.y * -2.f + 1.f;
@@ -92,13 +93,13 @@ PS_OUT PS_MAIN_MOTION_BLUR(PS_IN In)
 
 	vPixelWorldPos = mul(vPixelWorldPos, g_ViewMatrixInv);
 	
-	matrix matVP = mul(g_PreCamViewMatrix, g_CamProjMatrix);
+	matrix matVP   = mul(g_PreCamViewMatrix, g_CamProjMatrix);
 
 	vector vPrePixelPos = mul(vPixelWorldPos, matVP);
 	vPrePixelPos /= vPrePixelPos.w;
 
-	float2 vPixelVelocity = (vPrePixelPos - vPixelPos)*0.5f;
-	float2 texCoord = In.vTexUV;
+	float2 vPixelVelocity = ((vPrePixelPos - vPixelPos) * 0.5f).xy;
+	float2 texCoord       = In.vTexUV;
 
 	vector vColor = vector(0.f,0.f,0.f,0.f);
 
@@ -168,9 +169,9 @@ technique11 DefaultTechnique
         SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
 		SetRasterizerState(RS_Default);
 
-		VertexShader = compile vs_5_0 VS_MAIN();
+		VertexShader   = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN_MOTION_BLUR();
+		PixelShader    = compile ps_5_0 PS_MAIN_MOTION_BLUR();
 	}
 
 	pass Chromatic_Aberration//1
@@ -179,8 +180,8 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
 		SetRasterizerState(RS_Default);
 
-		VertexShader = compile vs_5_0 VS_MAIN();
+		VertexShader   = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN_CHROMATIC();
+		PixelShader    = compile ps_5_0 PS_MAIN_CHROMATIC();
 	}
 }

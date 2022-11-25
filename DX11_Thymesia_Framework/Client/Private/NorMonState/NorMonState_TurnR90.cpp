@@ -22,8 +22,6 @@ HRESULT CNorMonState_TurnR90::Initialize_Prototype()
 HRESULT CNorMonState_TurnR90::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
-
 	return S_OK;
 }
 
@@ -49,16 +47,12 @@ void CNorMonState_TurnR90::Start()
 		break;
 	}
 
-
-
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_TurnR90::Call_AnimationEnd, this);
-	
 }
 
 void CNorMonState_TurnR90::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -67,9 +61,7 @@ void CNorMonState_TurnR90::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-
-	_float fTurnValue = 1.57 / 1.333f;
-
+	_float fTurnValue = 1.57f / 1.333f;
 
 	m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * 1.5f);
 
@@ -110,7 +102,6 @@ void CNorMonState_TurnR90::OnStateStart(const _float& In_fAnimationBlendTime)
 void CNorMonState_TurnR90::OnStateEnd()
 {
 	__super::OnStateEnd();
-
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
@@ -132,7 +123,6 @@ void CNorMonState_TurnR90::OnDestroy()
 
 void CNorMonState_TurnR90::Free()
 {
-
 }
 
 _bool CNorMonState_TurnR90::Check_AndChangeNextState()
@@ -147,7 +137,6 @@ _bool CNorMonState_TurnR90::Check_AndChangeNextState()
 		Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
 		return true;
 	}
-
 
 	return false;
 }

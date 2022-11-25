@@ -619,25 +619,15 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 HRESULT CLoader::Loading_ForStage2Level()
 {
 #pragma region PROTOTYPE_GAMEOBJECT
-
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 	Load_AllEffectMesh();
 #pragma endregion
-
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
-
-
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
-	_matrix			TransformMatrix;
-
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성 중입니다."));
-
 	//Create_GameObjectFromJson("../Bin/LevelData/Stage1.json", LEVEL_GAMEPLAY);
-
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
-
 	m_isFinished = true;
-
 	return S_OK;
 }
 
@@ -647,14 +637,10 @@ HRESULT CLoader::Loading_ForStage3Level()
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 #pragma endregion
-
-
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
-
-
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
-	_matrix			TransformMatrix;
 
+	_matrix			TransformMatrix;
 	TransformMatrix = XMMatrixScaling(1.f, 1.f, 1.f);
 	GAMEINSTANCE->Load_Model("Stage1", "../Bin/Resources/Meshes/Stage1/Stage1.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_DYNAMIC);
 	TransformMatrix = XMMatrixScaling(1.f, 1.f, 1.f);
@@ -667,27 +653,18 @@ HRESULT CLoader::Loading_ForStage3Level()
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
 	GAMEINSTANCE->Load_Model("FxR3LuxiyaAttack01", "../Bin/Resources/Meshes/EffectMesh/FxR3LuxiyaAttack01/FxR3LuxiyaAttack01.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
-
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성 중입니다."));
-
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
-
 	m_isFinished = true;
-
 	return S_OK;
 }
 
 HRESULT CLoader::Loading_ForEditLevel()
 {
 #pragma region PROTOTYPE_GAMEOBJECT
-
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
-
-
 #pragma endregion
-
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
-
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
 
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/"           , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
@@ -697,17 +674,13 @@ HRESULT CLoader::Loading_ForEditLevel()
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/"  , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/"						 , MODEL_TYPE::GROUND , MEMORY_TYPE::MEMORY_DYNAMIC);
 
-
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
-
-
 	m_isFinished = true;
 	return S_OK;
 }
 
 void CLoader::Loading_ForEffectGroup(const char* In_Path, const _uint& In_LevelIndex)
 {
-
 	weak_ptr<CEffectGroup> EffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(In_LevelIndex);
 	EffectGroup.lock()->Load_EffectJson(In_Path, (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
 }
@@ -840,12 +813,10 @@ void CLoader::Load_AllEffectMeshInPath_Recursive(const filesystem::path& In_Path
 
 		itr++;
 	}
-
 }
 
 void CLoader::Load_AllNaviMesh()
 {
-	
 }
 
 void CLoader::Load_AllMeshes(const filesystem::path& In_Path, MODEL_TYPE In_eModelType, const MEMORY_TYPE& In_eMemoryType)

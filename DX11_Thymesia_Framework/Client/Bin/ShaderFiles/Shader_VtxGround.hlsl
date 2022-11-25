@@ -132,7 +132,7 @@ PS_OUT		PS_MAIN_NORM(PS_IN In)
 		vector vFilter		= vector(vFilterDiffuse.r, vFilterDiffuse.r, vFilterDiffuse.r, 1.f);
 
 		Out.vDiffuse		= AddTex_Diff * vFilter + Out.vDiffuse * (1.f - vFilter);
-		vPixelNorm			= AddTex_Norm;
+		vPixelNorm			= AddTex_Norm.xyz;
 	}
 
 	if (0.f < vFilterDiffuse.g)
@@ -142,7 +142,7 @@ PS_OUT		PS_MAIN_NORM(PS_IN In)
 		vector vFilter		= vector(vFilterDiffuse.g, vFilterDiffuse.g, vFilterDiffuse.g, 1.f);
 
 		Out.vDiffuse		= AddTex_Diff * vFilter + Out.vDiffuse * (1.f - vFilter);
-		vPixelNorm			= AddTex_Norm;
+		vPixelNorm			= AddTex_Norm.xyz;
 	}
 
 	if (0.f < vFilterDiffuse.b)
@@ -152,7 +152,7 @@ PS_OUT		PS_MAIN_NORM(PS_IN In)
 		vector vFilter		= vector(vFilterDiffuse.b, vFilterDiffuse.b, vFilterDiffuse.b, 1.f);
 
 		Out.vDiffuse		= AddTex_Diff * vFilter + Out.vDiffuse * (1.f - vFilter);
-		vPixelNorm			= AddTex_Norm;
+		vPixelNorm			= AddTex_Norm.xyz;
 	}
 
 	float3x3	WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));

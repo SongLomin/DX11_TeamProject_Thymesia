@@ -362,7 +362,7 @@ void CGameManager::Load_AllKeyEventFromJson()
 		m_KeyEvents.emplace(szFileNameToHash, ANIM_MAP());
 
 		// 애니메이션 인덱스 리스트
-		for (_size_t i = 0; i < KeyEventJson["AnimationIndex"].size(); ++i)
+		for (_size_t i(0); i < KeyEventJson["AnimationIndex"].size(); ++i)
 		{
 			if (KeyEventJson["AnimationIndex"][i].empty())
 			{
@@ -373,13 +373,13 @@ void CGameManager::Load_AllKeyEventFromJson()
 			m_KeyEvents[szFileNameToHash].emplace(i, KEYEVENT());
 
 			// 애니메이션 키 인덱스 리스트
-			for (_size_t j = 0; j < KeyEventJson["AnimationIndex"][i].size(); ++j)
+			for (_size_t j(0); j < KeyEventJson["AnimationIndex"][i].size(); ++j)
 			{
 				if (KeyEventJson["AnimationIndex"][i][j].empty())
 				{
 					continue;
 				}
-				m_KeyEvents[szFileNameToHash][i].emplace(j, KEYFRAME_EVENT());
+				m_KeyEvents[szFileNameToHash][(_int)i].emplace(j, KEYFRAME_EVENT());
 
 				// 이펙트그룹 순회
 
@@ -393,7 +393,7 @@ void CGameManager::Load_AllKeyEventFromJson()
 
 					string szEffectGroupName = EffectGroupName;
 
-					m_KeyEvents[szFileNameToHash][i][j].EffectGroups.push_back(hash<string>()(szEffectGroupName));
+					m_KeyEvents[szFileNameToHash][(_int)i][(_int)j].EffectGroups.push_back(hash<string>()(szEffectGroupName));
 				}
 
 				if (KeyEventJson["AnimationIndex"][i][j]["Enable_Weapon"].empty())
@@ -401,7 +401,7 @@ void CGameManager::Load_AllKeyEventFromJson()
 					continue;
 				}
 
-				m_KeyEvents[szFileNameToHash][i][j].Enable_Weapon.push_back(KeyEventJson["AnimationIndex"][i][j]["Enable_Weapon"]);
+				m_KeyEvents[szFileNameToHash][(_int)i][(_int)j].Enable_Weapon.push_back(KeyEventJson["AnimationIndex"][i][j]["Enable_Weapon"]);
 			}
 		}
 

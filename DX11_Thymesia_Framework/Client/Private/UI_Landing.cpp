@@ -119,7 +119,7 @@ void CUI_Landing::Call_Landing(LANDING_TYPE eLandingType)
 
     CHUD_Hover::HUDHOVERDESC desc;
     desc.bSizeChange = true;
-    desc.fSizeMag = 0.1;
+    desc.fSizeMag = 0.1f;
     desc.eType = CHUD_Hover::HUD_HOVER_ANIMATION_JUSTADD;
    
     

@@ -175,9 +175,7 @@ void CWindow_AnimationPlayerView::Load_KeyEvent()
     szPath += ".json";
 
     if (FAILED(CJson_Utility::Load_Json(szPath.c_str(), m_KeyEventJson)))
-    {
         return;
-    }
 
     m_KeyEventEffectGroupNames.clear();
     m_pPreViewModel.lock()->Clear_DebugWeapon();
@@ -197,9 +195,7 @@ void CWindow_AnimationPlayerView::Load_KeyEvent()
     json& KeyJson = m_KeyEventJson["AnimationIndex"][pCurrentModel.lock()->Get_CurrentAnimationIndex()];
 
     if (KeyJson.empty())
-    {
         return;
-    }
 
     for (_size_t i = 0; i < KeyJson.size(); ++i)
     {
@@ -213,24 +209,18 @@ void CWindow_AnimationPlayerView::Load_KeyEvent()
             string szText = "Weapon(";
 
             if (KeyJson[i]["Enable_Weapon"] == true)
-            {
                 szText += "true";
-            }
             else
-            {
                 szText += "false";
-            }
             
             szText += ")";
-            m_KeyEventEffectGroupNames[i].emplace_back(szText);
+            m_KeyEventEffectGroupNames[(_int)i].emplace_back(szText);
         }
 
         if (KeyJson[i].end() != KeyJson[i].find("EffectName"))
         {
-            for (_size_t j = 0; j < KeyJson[i]["EffectName"].size(); ++j)
-            {
-                m_KeyEventEffectGroupNames[i].emplace_back(KeyJson[i]["EffectName"][j]);
-            }
+            for (_size_t j(0); j < KeyJson[i]["EffectName"].size(); ++j)
+                m_KeyEventEffectGroupNames[(_int)i].emplace_back(KeyJson[i]["EffectName"][j]);
         }
     }
 }
@@ -242,16 +232,12 @@ void CWindow_AnimationPlayerView::Clear_KeyEvent()
     json& KeyJson = m_KeyEventJson["AnimationIndex"][pCurrentModel.lock()->Get_CurrentAnimationIndex()];
 
     if (KeyJson.empty())
-    {
         return;
-    }
 
     _uint iIndex = pCurrentModel.lock()->Get_CurrentAnimationKeyIndex();
 
     if (KeyJson[iIndex].empty())
-    {
         return;
-    }
 
     KeyJson[iIndex]["EffectName"].clear();
 }
@@ -263,21 +249,15 @@ void CWindow_AnimationPlayerView::ClearBack_KeyEvent()
     json& KeyJson = m_KeyEventJson["AnimationIndex"][pCurrentModel.lock()->Get_CurrentAnimationIndex()];
 
     if (KeyJson.empty())
-    {
         return;
-    }
 
     _uint iIndex = pCurrentModel.lock()->Get_CurrentAnimationKeyIndex();
 
     if (KeyJson[iIndex].empty())
-    {
         return;
-    }
 
     if (KeyJson[iIndex]["EffectName"].empty())
-    {
         return;
-    }
 
     // 뒤에서 한 개 지움.
     KeyJson[iIndex]["EffectName"].erase(KeyJson[iIndex]["EffectName"].size() - 1);
@@ -290,9 +270,7 @@ void CWindow_AnimationPlayerView::ClearAll_KeyEvent()
     json& KeyJson = m_KeyEventJson["AnimationIndex"][pCurrentModel.lock()->Get_CurrentAnimationIndex()];
 
     if (KeyJson.empty())
-    {
         return;
-    }
 
     KeyJson.clear();
 }
@@ -304,16 +282,12 @@ void CWindow_AnimationPlayerView::Clear_WeaponEvent()
     json& KeyJson = m_KeyEventJson["AnimationIndex"][pCurrentModel.lock()->Get_CurrentAnimationIndex()];
 
     if (KeyJson.empty())
-    {
         return;
-    }
 
     _uint iIndex = pCurrentModel.lock()->Get_CurrentAnimationKeyIndex();
 
     if (KeyJson[iIndex].empty())
-    {
         return;
-    }
 
     KeyJson[iIndex]["Enable_Weapon"].clear();
 }
@@ -340,7 +314,7 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
     _int iMaxKeyIndex = (_int)m_pCurrentAnimation.lock()->Get_MaxChannelKeyIndex();
 
     m_fCurrentTime = m_pCurrentAnimation.lock()->Get_AbsoluteTimeAcc();
-    ImGui::SliderInt("##Animation Time", &iNewKeyIndex, 0.0f, iMaxKeyIndex, "%.3f");
+    ImGui::SliderInt("##Animation Time", &iNewKeyIndex, 0, iMaxKeyIndex);
 
     if (iCurrentKeyIndex != iNewKeyIndex)
     {

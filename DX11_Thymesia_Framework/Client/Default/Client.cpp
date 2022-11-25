@@ -173,16 +173,16 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
 	g_hInst = hInstance;
-	RECT rcWindow{ 0, 0, static_cast<_long>(g_iWinCX), static_cast<_long>(g_iWinCY) };
-	LONG WndWidth{ rcWindow.right - rcWindow.left };
-	LONG WndHeight{ rcWindow.bottom - rcWindow.top };
+	RECT rcWindow{ 0, 0, (_long)g_iWinCX, (_long)g_iWinCY };
+	LONG WndWidth   { rcWindow.right    - rcWindow.left };
+	LONG WndHeight  { rcWindow.bottom   - rcWindow.top  };
 	AdjustWindowRect(&rcWindow, WS_OVERLAPPEDWINDOW, FALSE);
 	g_hWnd = CreateWindowW(
 		szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-		int(g_fScreenCenterX - WndWidth / 2.f),
-		int(g_fScreenCenterY - WndHeight / 2.f) - 50.f,
-		rcWindow.right - rcWindow.left,
-		rcWindow.bottom - rcWindow.top,
+		_int(g_fScreenCenterX - WndWidth / 2.f),
+		_int(g_fScreenCenterY - WndHeight / 2.f) - 50,
+		_int(rcWindow.right - rcWindow.left),
+		_int(rcWindow.bottom - rcWindow.top),
 		nullptr, nullptr, hInstance, nullptr);
 
 	if (!g_hWnd)
