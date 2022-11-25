@@ -107,11 +107,6 @@ _bool CVargBossState_Parry::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
-	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Parry>(0.05f);
-		return true;
-	}
 
 	return false;
 }

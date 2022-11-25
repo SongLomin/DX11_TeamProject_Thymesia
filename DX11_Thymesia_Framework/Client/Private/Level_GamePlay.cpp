@@ -136,13 +136,13 @@ HRESULT CLevel_GamePlay::Initialize()
 	//GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &NORMONSTER);
 	//
 
-	//ZeroMemory(&BOSSMONSTER, sizeof(CBossMonster::STATE_LINK_BOSS_DESC));
-	//BOSSMONSTER.vYame.x = 32.f;
-	//BOSSMONSTER.vYame.y = 4.7f;
-	//BOSSMONSTER.vYame.z = 28.f;
-	//BOSSMONSTER.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
-	//GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &BOSSMONSTER);
-	//
+	ZeroMemory(&BOSSMONSTER, sizeof(CBossMonster::STATE_LINK_BOSS_DESC));
+	BOSSMONSTER.vYame.x = 32.f;
+	BOSSMONSTER.vYame.y = 4.7f;
+	BOSSMONSTER.vYame.z = 28.f;
+	BOSSMONSTER.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
+	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &BOSSMONSTER);
+	
 	//ZeroMemory(&BOSSMONSTER, sizeof(CBossMonster::STATE_LINK_BOSS_DESC));
 	//BOSSMONSTER.vYame.x = 33.f;
 	//BOSSMONSTER.vYame.y = 4.7f;

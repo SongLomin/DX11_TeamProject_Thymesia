@@ -28,16 +28,20 @@ HRESULT CMonsterHPBar_Base::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	UI_DESC tDesc;
-	tDesc.fDepth = 0.f;
-	tDesc.fX = g_iWinCX / 2.f;
-	tDesc.fY = g_iWinCY / 2.f;
-	tDesc.fSizeX = 150.f;
-	tDesc.fSizeY = 15.f;
-
+	if (pArg == nullptr)
+	{
+		UI_DESC tDesc;
+		tDesc.fDepth = 0.f;
+		tDesc.fX = g_iWinCX / 2.f;
+		tDesc.fY = g_iWinCY / 2.f;
+		tDesc.fSizeX = 150.f;
+		tDesc.fSizeY = 15.f;
+		memcpy(&m_tUIDesc, &tDesc, sizeof(UI_DESC));
+	}	
+	else
+		memcpy(&m_tUIDesc, pArg, sizeof(UI_DESC));
 
 //	if (nullptr != pArg)
-		memcpy(&m_tUIDesc, &tDesc, sizeof(UI_DESC));
 //	else
 //		MSG_BOX("CUI_MonsterHpBar_Base Error : Not Defined UI_Desc");
 
@@ -117,16 +121,14 @@ HRESULT CMonsterHPBar_Base::Initialize(void* pArg)
 
 	m_vOffset = _float3(0.f, 0.f, 0.f);
 
-	UI_DESC	tParryingDesc;
+	UI_DESC	tParryingDesc = m_tUIDesc;
 
-	tParryingDesc.fSizeX = 170.f;
 	tParryingDesc.fSizeY = 10.f;
 	tParryingDesc.fX = m_tUIDesc.fX;
 	tParryingDesc.fY = m_tUIDesc.fY+ 18.f;
 	tParryingDesc.fDepth = 0.f;
 
 	m_pParryingBar = GAMEINSTANCE->Add_GameObject<CMonsterParryingBar>(LEVEL_STATIC, &tParryingDesc);
-
 
 	Add_Child(m_pBorder);
 	Add_Child(m_pWhite);

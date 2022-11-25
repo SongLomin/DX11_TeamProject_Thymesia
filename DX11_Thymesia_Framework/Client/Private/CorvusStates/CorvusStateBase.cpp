@@ -192,7 +192,7 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE&
 			/*
 				지금 맞았을 당시 상태가 패링이라면
 			*/
-			pMonsterStatusCom.lock()->Decrease_ParryGauge(5000.f);
+			pMonsterStatusCom.lock()->Decrease_ParryGauge(40.f);
 			//수민이형 이거 애들 체력 다나가도 Hit상태로 안가요
 			//이거좀 어케 해줘요
 

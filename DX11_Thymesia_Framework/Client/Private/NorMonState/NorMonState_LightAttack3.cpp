@@ -8,6 +8,7 @@
 #include "AIStateBase.h"
 #include "NorMonStateS.h"
 #include "Character.h"
+#include "MobWeapon.h"
 
 
 GAMECLASS_C(CNorMonState_LightAttack3);
@@ -84,6 +85,16 @@ void CNorMonState_LightAttack3::OnStateStart(const _float& In_fAnimationBlendTim
 		switch (m_eMonType)
 		{
 		case Client::MONSTERTYPE::AXEMAN:
+		{
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+			}
+		}
 			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 			break;
 		case Client::MONSTERTYPE::KNIFEWOMAN:
