@@ -373,8 +373,14 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 		CJson_Utility::Write_Float3(Out_Json["Min_Start_Scale"], m_tEffectParticleDesc.vMinStartScale);
 		CJson_Utility::Write_Float3(Out_Json["Max_Start_Scale"], m_tEffectParticleDesc.vMaxStartScale);
 
-		CJson_Utility::Write_Float3(Out_Json["Scale_Speed"], m_tEffectParticleDesc.vScaleSpeed);
-		CJson_Utility::Write_Float3(Out_Json["Scale_Force"], m_tEffectParticleDesc.vScaleForce);
+		CJson_Utility::Write_Float3(Out_Json["Min_Scale_Speed"], m_tEffectParticleDesc.vMinScaleSpeed);
+		CJson_Utility::Write_Float3(Out_Json["Max_Scale_Speed"], m_tEffectParticleDesc.vMaxScaleSpeed);
+
+		CJson_Utility::Write_Float3(Out_Json["Min_Scale_Force"], m_tEffectParticleDesc.vMinScaleForce);
+		CJson_Utility::Write_Float3(Out_Json["Max_Scale_Force"], m_tEffectParticleDesc.vMaxScaleForce);
+
+		// CJson_Utility::Write_Float3(Out_Json["Scale_Speed"], m_tEffectParticleDesc.vScaleSpeed);
+		// CJson_Utility::Write_Float3(Out_Json["Scale_Force"], m_tEffectParticleDesc.vScaleForce);
 	}
 	CJson_Utility::Write_Float3(Out_Json["Min_Scale"], m_tEffectParticleDesc.vMinLimitScale);
 	CJson_Utility::Write_Float3(Out_Json["Max_Scale"], m_tEffectParticleDesc.vMaxLimitScale);
@@ -457,9 +463,9 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	m_iTimeScaleLayerIndex = In_iTimeScaleLayer;
 
 	m_szEffectName = In_Json["Name"];
-	m_tEffectParticleDesc.iMaxInstance = In_Json["Max_Instance"];
-	m_tEffectParticleDesc.bLooping = In_Json["Is_Looping"];
-	m_tEffectParticleDesc.iParticleType = In_Json["ParticleType"];
+	m_tEffectParticleDesc.iMaxInstance         = In_Json["Max_Instance"];
+	m_tEffectParticleDesc.bLooping             = In_Json["Is_Looping"];
+	m_tEffectParticleDesc.iParticleType        = In_Json["ParticleType"];
 	m_tEffectParticleDesc.iFollowTransformType = In_Json["Follow_Transform"];
 
 	if (In_Json.find("ShaderPassIndex") != In_Json.end())
@@ -621,10 +627,21 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 			CJson_Utility::Load_Float3(In_Json["Min_Start_Scale"], m_tEffectParticleDesc.vMinStartScale);
 		if (In_Json.find("Max_Start_Scale") != In_Json.end())
 			CJson_Utility::Load_Float3(In_Json["Max_Start_Scale"], m_tEffectParticleDesc.vMaxStartScale);
-		if (In_Json.find("Scale_Speed") != In_Json.end())
+
+		if (In_Json.find("Min_Scale_Speed") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Min_Scale_Speed"], m_tEffectParticleDesc.vMinScaleSpeed);
+		if (In_Json.find("Max_Scale_Speed") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Max_Scale_Speed"], m_tEffectParticleDesc.vMaxScaleSpeed);
+
+		if (In_Json.find("Min_Scale_Force") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Min_Scale_Force"], m_tEffectParticleDesc.vMinScaleForce);
+		if (In_Json.find("Max_Scale_Force") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Max_Scale_Force"], m_tEffectParticleDesc.vMaxScaleForce);
+
+		/*if (In_Json.find("Scale_Speed") != In_Json.end())
 			CJson_Utility::Load_Float3(In_Json["Scale_Speed"], m_tEffectParticleDesc.vScaleSpeed);
 		if (In_Json.find("Scale_Force") != In_Json.end())
-			CJson_Utility::Load_Float3(In_Json["Scale_Force"], m_tEffectParticleDesc.vScaleForce);
+			CJson_Utility::Load_Float3(In_Json["Scale_Force"], m_tEffectParticleDesc.vScaleForce);*/
 	}
 	if (In_Json.find("Min_Scale") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Min_Scale"], m_tEffectParticleDesc.vMinLimitScale);
@@ -919,6 +936,12 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 		m_tOriginalParticleDescs[i].vCurrentScale =
 			SMath::vRandom(m_tEffectParticleDesc.vMinStartScale, m_tEffectParticleDesc.vMaxStartScale);
 
+		m_tOriginalParticleDescs[i].vTargetScaleSpeed = 
+			SMath::vRandom(m_tEffectParticleDesc.vMinScaleSpeed, m_tEffectParticleDesc.vMaxScaleSpeed);
+
+		m_tOriginalParticleDescs[i].vTargetScaleForce =
+			SMath::vRandom(m_tEffectParticleDesc.vMinScaleForce, m_tEffectParticleDesc.vMaxScaleForce);
+
 		if (m_tEffectParticleDesc.IsGrayOnlyUseRed)
 		{
 			_float fGrayColor = SMath::fRandom(m_tEffectParticleDesc.vMinStartColor.x, m_tEffectParticleDesc.vMaxStartColor.x);
@@ -1210,10 +1233,10 @@ void CEffect_Rect::Update_ParticleScale(const _uint& i, _float fTimeDelta)
 	}
 	else
 	{
-		vScale = SMath::Mul_Float3(m_tEffectParticleDesc.vScaleSpeed, fTimeDelta);
+		vScale = SMath::Mul_Float3(m_tParticleDescs[i].vTargetScaleSpeed, fTimeDelta);
 
 		m_tParticleDescs[i].vCurrentScaleForce =
-			SMath::Add_Float3(m_tParticleDescs[i].vCurrentScaleForce, SMath::Mul_Float3(m_tEffectParticleDesc.vScaleForce, fTimeDelta));
+			SMath::Add_Float3(m_tParticleDescs[i].vCurrentScaleForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetScaleForce, fTimeDelta));
 
 		SMath::Add_Float3(&m_tParticleDescs[i].vCurrentScale, m_tParticleDescs[i].vCurrentScaleForce);
 
@@ -1980,11 +2003,24 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 				ImGui::Text("Max Start Scale");
 				ImGui::DragFloat3("##Max_Start_Scale", &m_tEffectParticleDesc.vMaxStartScale.x, 0.1f);
 
-				ImGui::Text("Scale Speed");
-				ImGui::DragFloat3("##Scale_Speed", &m_tEffectParticleDesc.vScaleSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
 
-				ImGui::Text("Scale Force");
-				ImGui::DragFloat3("##Scale_Force", &m_tEffectParticleDesc.vScaleForce.x, 0.1f, -100.f, 100.f, "%.5f");
+				ImGui::Text("Min Scale Speed");
+				ImGui::DragFloat3("##Min_Scale_Speed", &m_tEffectParticleDesc.vMinScaleSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
+
+				ImGui::Text("Max Scale Speed");
+				ImGui::DragFloat3("##Max_Scale_Speed", &m_tEffectParticleDesc.vMaxScaleSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
+
+				ImGui::Text("Min Scale Force");
+				ImGui::DragFloat3("##Min_Scale_Force", &m_tEffectParticleDesc.vMinScaleForce.x, 0.1f, 0.f, 0.f, "%.5f");
+
+				ImGui::Text("Max Scale Force");
+				ImGui::DragFloat3("##Max_Scale_Force", &m_tEffectParticleDesc.vMaxScaleForce.x, 0.1f, 0.f, 0.f, "%.5f");
+
+				//ImGui::Text("Scale Speed");
+				//ImGui::DragFloat3("##Scale_Speed", &m_tEffectParticleDesc.vScaleSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
+
+				//ImGui::Text("Scale Force");
+				//ImGui::DragFloat3("##Scale_Force", &m_tEffectParticleDesc.vScaleForce.x, 0.1f, -100.f, 100.f, "%.5f");
 			}
 
 			ImGui::Text("Min Scale");

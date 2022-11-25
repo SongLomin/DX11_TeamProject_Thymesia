@@ -219,8 +219,15 @@ namespace Client
 		_float3		vMinStartScale;
 		_float3		vMaxStartScale;
 
-		_float3		vScaleSpeed;
-		_float3		vScaleForce;
+		// _float3		vScaleSpeed;
+
+		_float3		vMinScaleSpeed;
+		_float3		vMaxScaleSpeed;
+
+		// _float3		vScaleForce;
+
+		_float3		vMinScaleForce;
+		_float3		vMaxScaleForce;
 
 		_float3		vMinLimitScale;
 		_float3		vMaxLimitScale;

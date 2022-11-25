@@ -374,6 +374,9 @@ namespace Engine
 		_float3         vCurrentScale;
 		_float3         vCurrentScaleForce;
 
+		_float3			vTargetScaleSpeed;
+		_float3			vTargetScaleForce;
+
 		// For. Color
 		_float4         vCurrentColor;
 		_float4         vCurrentColorForce;
