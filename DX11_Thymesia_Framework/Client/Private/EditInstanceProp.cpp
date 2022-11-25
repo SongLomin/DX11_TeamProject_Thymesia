@@ -133,13 +133,19 @@ HRESULT CEditInstanceProp::SetUp_ShaderResource()
 		if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
 
-		if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+		if (m_bNonCulling)
 		{
-			m_iPassIndex = 0;
+			if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+				m_iPassIndex = 4;
+			else
+				m_iPassIndex = 5;
 		}
 		else
 		{
-			m_iPassIndex = 1;
+			if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+				m_iPassIndex = 0;
+			else
+				m_iPassIndex = 1;
 		}
 
 		if (m_bViewPhysXInfo && m_iColliderType != 0)
@@ -192,16 +198,6 @@ void CEditInstanceProp::SetUp_ShaderResource_Select()
 	m_pSelect_VIBufferCom.lock()->Render();
 }
 
-void CEditInstanceProp::Save_Json(string _szName)
-{
-	json JsonOut;
-}
-
-void CEditInstanceProp::Load_Json(string _szName)
-{
-	json JsonOut;
-}
-
 void CEditInstanceProp::Write_Json(json& Out_Json)
 {
 	if ("" == m_szSelectModelName)
@@ -228,6 +224,9 @@ void CEditInstanceProp::Write_Json(json& Out_Json)
 	Out_Json.emplace("PropDesc", PropInfo);
 	Out_Json.emplace("ModelCom", m_pInstanceModelCom.lock()->Get_ModelKey());
 
+	if (m_bNonCulling)
+		Out_Json.emplace("NonCulling", 1);
+
 	if (Out_Json.end() != Out_Json.find("Hash"))
 	{
 		Out_Json["Hash"] = typeid(CStatic_Instancing_Prop).hash_code();
@@ -247,7 +246,12 @@ void CEditInstanceProp::Load_FromJson(const json& In_Json)
 	{
 		string szKey = iter.key();
 
-		if ("ModelCom" == szKey)
+		if ("NonCulling" == szKey)
+		{
+			m_bNonCulling = (1 == iter.value()) ? (true) : (false);
+		}
+
+		else if ("ModelCom" == szKey)
 		{
 			m_szSelectModelName = iter.value();
 			m_pInstanceModelCom.lock()->Init_Model(m_szSelectModelName.c_str());
@@ -281,6 +285,40 @@ void CEditInstanceProp::Load_FromJson(const json& In_Json)
 	{
 		m_iColliderType = In_Json["Collider_Type"];
 	}
+}
+
+_bool CEditInstanceProp::IsPicking(const RAY& In_Ray, _float& Out_fRange)
+{
+	_float fPickedDist;
+	_bool bPicked = false;
+	_uint iIndex = 0;
+
+	for (auto& iter : m_pPropInfos)
+	{
+		if (!m_pInstanceModelCom.lock().get())
+		{
+			return false;
+		}
+
+		MESH_VTX_INFO Info = m_pInstanceModelCom.lock()->Get_ModelData().lock()->VertexInfo;
+
+		_matrix PickWorldMatrix = iter.Get_Matrix();
+
+		if (SMath::Is_Picked_AbstractCube(In_Ray, Info, PickWorldMatrix, &fPickedDist))
+		{
+			if (Out_fRange > fPickedDist)
+			{
+				m_PickingDesc = iter;
+				m_iPickingIndex = iIndex;
+				bPicked = true;
+				Out_fRange = fPickedDist;
+			}
+		}
+
+		++iIndex;
+	}
+
+	return bPicked;
 }
 
 void CEditInstanceProp::OnEventMessage(_uint iArg)
@@ -433,6 +471,8 @@ void CEditInstanceProp::View_SelectModelComponent()
 		m_pInstanceModelCom.lock()->Init_Model(m_szSelectModelName.c_str());
 	}
 
+	ImGui::Checkbox("NinCulling", &m_bNonCulling);
+
 	ImGui::Text("");
 	ImGui::Text("");
 	ImGui::Separator();
@@ -473,7 +513,7 @@ void CEditInstanceProp::View_Picking_Prop()
 		ZeroMemory(&vOutPos, sizeof(_float4));
 		vOutPos.y = m_PickingDesc.vTarnslation.y;
 
-		if (!SMath::Is_Picked(MouseRayInWorldSpace, &vOutPos))
+		if (!SMath::Is_Picked_AbstractTerrain(MouseRayInWorldSpace, &vOutPos))
 			return;
 
 		vOutPos.y = m_PickingDesc.vTarnslation.y;
@@ -540,8 +580,6 @@ void CEditInstanceProp::View_Picking_Prop()
 			++iIndex;
 		}
 	}
-
-
 }
 
 void CEditInstanceProp::View_Picking_List()
@@ -625,6 +663,7 @@ void CEditInstanceProp::View_Picking_Option()
 	// Z : 터레인 이동
 	// X : 회전(옵션 활성화)
 	// C : 수동 이동(옵션 활성화)
+	// R : 삭제
 
 	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
 	{
@@ -636,7 +675,7 @@ void CEditInstanceProp::View_Picking_Option()
 		{
 			vMouseDir.y = m_PickingDesc.vTarnslation.y;
 
-			if (!SMath::Is_Picked(MouseRayInWorldSpace, &vMouseDir))
+			if (!SMath::Is_Picked_AbstractTerrain(MouseRayInWorldSpace, &vMouseDir))
 				return;
 
 			_float3 vObjPos = m_pPropInfos[m_iPickingIndex].vTarnslation;
@@ -645,14 +684,14 @@ void CEditInstanceProp::View_Picking_Option()
 
 		else if (KEY_INPUT(KEY::X, KEY_STATE::HOLD))
 		{
-			_long		MouseMove = 0;			
+			_long		MouseMove = 0;
 			if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_X))
 			{
 				switch (m_iOption)
 				{
-					case 0 : m_pPropInfos[m_iPickingIndex].vRotation.x += 0.01f * MouseMove; break;
-					case 1 : m_pPropInfos[m_iPickingIndex].vRotation.y += 0.01f * MouseMove; break;
-					case 2 : m_pPropInfos[m_iPickingIndex].vRotation.z += 0.01f * MouseMove; break;
+				case 0: m_pPropInfos[m_iPickingIndex].vRotation.x += 0.01f * MouseMove; break;
+				case 1: m_pPropInfos[m_iPickingIndex].vRotation.y += 0.01f * MouseMove; break;
+				case 2: m_pPropInfos[m_iPickingIndex].vRotation.z += 0.01f * MouseMove; break;
 				}
 			}
 		}
@@ -661,32 +700,32 @@ void CEditInstanceProp::View_Picking_Option()
 		{
 			switch (m_iOption)
 			{
-				case 0:
-				case 2:
+			case 0:
+			case 2:
+			{
+				_long		MouseMoveX = 0;
+				if (MouseMoveX = GAMEINSTANCE->Get_DIMouseMoveState(MMS_X))
 				{
-					_long		MouseMoveX = 0;
-					if (MouseMoveX = GAMEINSTANCE->Get_DIMouseMoveState(MMS_X))
-					{
-						m_pPropInfos[m_iPickingIndex].vTarnslation.x += 0.01f * MouseMoveX;
-					}
-
-					_long		MouseMoveZ = 0;
-					if (MouseMoveZ = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
-					{
-						m_pPropInfos[m_iPickingIndex].vTarnslation.z -= 0.01f * MouseMoveZ;
-					}
+					m_pPropInfos[m_iPickingIndex].vTarnslation.x += 0.01f * MouseMoveX;
 				}
-				break;
 
-				case 1:
+				_long		MouseMoveZ = 0;
+				if (MouseMoveZ = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
 				{
-					_long		MouseMove = 0;
-					if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
-					{
-						m_pPropInfos[m_iPickingIndex].vTarnslation.y -= 0.01f * MouseMove;
-					}
+					m_pPropInfos[m_iPickingIndex].vTarnslation.z -= 0.01f * MouseMoveZ;
 				}
-				break;
+			}
+			break;
+
+			case 1:
+			{
+				_long		MouseMove = 0;
+				if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
+				{
+					m_pPropInfos[m_iPickingIndex].vTarnslation.y -= 0.01f * MouseMove;
+				}
+			}
+			break;
 			}
 		}
 
@@ -694,68 +733,48 @@ void CEditInstanceProp::View_Picking_Option()
 		{
 			switch (m_iOption)
 			{
-				case 0:
-				{
-					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
-						m_pPropInfos[m_iPickingIndex].vScale.x -= 0.1f;
-					else
-						m_pPropInfos[m_iPickingIndex].vScale.x += 0.1f;
-				}
-				break;
+			case 0:
+			{
+				if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
+					m_pPropInfos[m_iPickingIndex].vScale.x -= 0.1f;
+				else
+					m_pPropInfos[m_iPickingIndex].vScale.x += 0.1f;
+			}
+			break;
 
-				case 1:
-				{
-					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
-						m_pPropInfos[m_iPickingIndex].vScale.y -= 0.1f;
-					else
-						m_pPropInfos[m_iPickingIndex].vScale.y += 0.1f;
-				}
-				break;
+			case 1:
+			{
+				if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
+					m_pPropInfos[m_iPickingIndex].vScale.y -= 0.1f;
+				else
+					m_pPropInfos[m_iPickingIndex].vScale.y += 0.1f;
+			}
+			break;
 
-				case 2:
-				{
-					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
-						m_pPropInfos[m_iPickingIndex].vScale.z -= 0.1f;
-					else
-						m_pPropInfos[m_iPickingIndex].vScale.z += 0.1f;
-				}
-				break;
+			case 2:
+			{
+				if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
+					m_pPropInfos[m_iPickingIndex].vScale.z -= 0.1f;
+				else
+					m_pPropInfos[m_iPickingIndex].vScale.z += 0.1f;
+			}
+			break;
 
 			}
 		}
+	}
 
-		else if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
+	else if (KEY_INPUT(KEY::R, KEY_STATE::TAP))
+	{
+		if (m_pPropInfos.empty() || 0 > m_iPickingIndex || m_pPropInfos.size() <= m_iPickingIndex)
+			return;
+
+		auto iter = m_pPropInfos.begin() + m_iPickingIndex;
+
+		if (m_pPropInfos.end() != iter)
 		{
-			switch (m_iOption)
-			{
-				case 0:
-				{
-					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
-						m_pPropInfos[m_iPickingIndex].vScale.x -= 0.1f;
-					else
-						m_pPropInfos[m_iPickingIndex].vScale.x += 0.1f;
-				}
-				break;
-
-				case 1:
-				{
-					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
-						m_pPropInfos[m_iPickingIndex].vScale.y -= 0.1f;
-					else
-						m_pPropInfos[m_iPickingIndex].vScale.y += 0.1f;
-				}
-				break;
-
-				case 2:
-				{
-					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
-						m_pPropInfos[m_iPickingIndex].vScale.z -= 0.1f;
-					else
-						m_pPropInfos[m_iPickingIndex].vScale.z += 0.1f;
-				}
-				break;
-
-			}
+			m_pPropInfos.erase(iter);
+			m_pInstanceModelCom.lock()->Init_Instance((_uint)m_pPropInfos.size());
 		}
 	}
 }
@@ -816,18 +835,6 @@ void CEditInstanceProp::View_SelectJson()
 		}
 
 		ImGui::EndListBox();
-	}
-
-	if (ImGui::Button("Save", ImVec2(100.f, 25.f)) && !m_JsonList.empty())
-	{
-		Save_Json(m_JsonList[iSelect_MeshData]);
-	}
-
-	ImGui::SameLine();
-
-	if (ImGui::Button("Load", ImVec2(100.f, 25.f)) && !m_JsonList.empty())
-	{
-		Load_Json(m_JsonList[iSelect_MeshData]);
 	}
 }
 

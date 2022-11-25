@@ -275,6 +275,7 @@ void CEditGroupProp::Write_Json(json& Out_Json)
 {
 	for (auto& iter_prop : m_PropList)
 	{
+
 		CImGui_Window::GAMEOBJECT_DESC Desc;
 		Desc.HashCode	= iter_prop.hash;
 		Desc.pInstance	= iter_prop.pProp;
@@ -282,6 +283,41 @@ void CEditGroupProp::Write_Json(json& Out_Json)
 
 		GET_SINGLE(CWindow_HierarchyView)->m_pSubGameObjects.push_back(Desc);
 	}
+}
+
+_bool CEditGroupProp::IsPicking(const RAY& In_Ray, _float& Out_fRange)
+{
+	_float fPickedDist;
+	_bool bPicked = false;
+	_uint iIndex = 0;
+
+	for (auto& iter : m_PropList)
+	{
+		weak_ptr<CModel>		pModelCom     = iter.pProp.lock()->Get_Component<CModel>();
+		weak_ptr<CTransform>	pTransformCom = iter.pProp.lock()->Get_Component<CTransform>();
+
+		if (!pModelCom.lock().get() || !pTransformCom.lock().get())
+		{
+			++iIndex;
+			continue;
+		}
+
+		MESH_VTX_INFO Info = pModelCom.lock()->Get_ModelData().lock()->VertexInfo;
+
+		if (SMath::Is_Picked_AbstractCube(In_Ray, Info, pTransformCom.lock()->Get_WorldMatrix(), &fPickedDist))
+		{
+			if (Out_fRange > fPickedDist)
+			{
+				Out_fRange      = fPickedDist;
+				m_iPickingIndex = iIndex;
+				bPicked = true;
+			}
+		}
+
+		++iIndex;
+	}
+
+	return bPicked;
 }
 
 void CEditGroupProp::OnEventMessage(_uint iArg)
@@ -489,7 +525,7 @@ void CEditGroupProp::View_PickingInfo()
 
 	ImGui::Text("");
 
-	SMath::Is_Picked(MouseRayInWorldSpace, &m_vPickingPos);
+	SMath::Is_Picked_AbstractTerrain(MouseRayInWorldSpace, &m_vPickingPos);
 
 	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD) && KEY_INPUT(KEY::C, KEY_STATE::HOLD))
 	{
@@ -624,7 +660,7 @@ void CEditGroupProp::View_Picking_Option()
 	_float4 vMouseDir;
 	ZeroMemory(&vMouseDir, sizeof(_float4));
 
-	if (!SMath::Is_Picked(MouseRayInWorldSpace, &vMouseDir))
+	if (!SMath::Is_Picked_AbstractTerrain(MouseRayInWorldSpace, &vMouseDir))
 		return;
 
 	weak_ptr<CTransform>	pTransformCom = m_PropList[m_iPickingIndex].pProp.lock()->Get_Component<CTransform>();

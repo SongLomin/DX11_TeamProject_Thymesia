@@ -44,6 +44,8 @@ public:
 	virtual HRESULT Render(); 
 	virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix);
 
+	virtual _bool IsPicking(const RAY& In_Ray, _float& Out_fRange) { return false; }
+
 public:
 	virtual void Write_Json(json& Out_Json) override;
 	virtual void Load_FromJson(const json& In_Json) override;

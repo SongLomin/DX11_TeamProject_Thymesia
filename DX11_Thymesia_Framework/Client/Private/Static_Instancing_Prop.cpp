@@ -96,22 +96,21 @@ HRESULT CStatic_Instancing_Prop::Render()
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
 		if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-		{
-			DEBUG_ASSERT;
-		}
+			return E_FAIL;
 
-		if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+		if (m_bNonCulling)
 		{
-			m_iPassIndex = 0;
+			if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+				m_iPassIndex = 4;
+			else
+				m_iPassIndex = 5;
 		}
 		else
 		{
-			m_iPassIndex = 1;
-		}
-
-		if (m_bEdit && m_iColliderType != 0)
-		{
-			m_iPassIndex = 3;
+			if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+				m_iPassIndex = 0;
+			else
+				m_iPassIndex = 1;
 		}
 
 		m_pShaderCom.lock()->Begin(m_iPassIndex);
@@ -163,6 +162,9 @@ void CStatic_Instancing_Prop::Write_Json(json& Out_Json)
 
 	Out_Json.emplace("PropDesc", PropInfo);
 	Out_Json.emplace("ModelCom", m_pInstanceModelCom.lock()->Get_ModelKey());
+
+	if (m_bNonCulling)
+		Out_Json.emplace("NonCulling", 1);
 }
 
 void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
@@ -171,12 +173,18 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 	{
 		string szKey = iter.key();
 
-		if ("ModelCom" == szKey)
+		if ("NonCulling" == szKey)
+		{
+			m_bNonCulling = (1 == iter.value()) ? (true) : (false);
+		}
+
+		else if ("ModelCom" == szKey)
 		{
 			string szModelTag = iter.value();
 
 			m_pInstanceModelCom.lock()->Init_Model(szModelTag.c_str());
 		}
+
 		else if ("PropDesc" == szKey)
 		{
 			json Desc = iter.value();
@@ -193,8 +201,8 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 				INSTANCE_MESH_DESC	Desc;
 				ZeroMemory(&Desc, sizeof(INSTANCE_MESH_DESC));
 
-				memcpy(&Desc.vRotation, &PropMatrix.m[0][0], sizeof(_float3));
-				memcpy(&Desc.vScale, &PropMatrix.m[1][0], sizeof(_float3));
+				memcpy(&Desc.vRotation   , &PropMatrix.m[0][0], sizeof(_float3));
+				memcpy(&Desc.vScale      , &PropMatrix.m[1][0], sizeof(_float3));
 				memcpy(&Desc.vTarnslation, &PropMatrix.m[2][0], sizeof(_float3));
 
 				vPosition = XMLoadFloat3(&Desc.vTarnslation);

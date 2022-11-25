@@ -26,6 +26,7 @@ public:
 
 private:
 	void Call_Add_GameObject_Internal(const _hashcode& TypeHash, const char* TypeName);
+	void Picking_Obj();
 
 public:
 	FDelegate<GAMEOBJECT_DESC>		CallBack_ListClick;
