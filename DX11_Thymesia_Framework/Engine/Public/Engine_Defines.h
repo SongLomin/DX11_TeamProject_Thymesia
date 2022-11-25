@@ -32,7 +32,6 @@ using namespace DirectX;
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 
-
 #define DIRECTINPUT_VERSION  0x0800
 #include <dinput.h>
 
