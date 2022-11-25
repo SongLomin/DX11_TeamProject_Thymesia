@@ -37,21 +37,11 @@ HRESULT CVarg::Initialize(void* pArg)
 	m_pWeapons.back().lock()->Init_Model("Boss_VargWeapon", TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
 	
-	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f, 0.0f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-0.2f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-0.4f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-0.6f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-0.8f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-1.0f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-1.2f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-1.4f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-1.6f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-1.8f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-2.0f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.5f,0.f,-2.2f,1.0f }, 0.5f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,1.f,-1.f,1.0f }, 1.f, COLLISION_LAYER::MONSTER_ATTACK);
+	
 
 
-
+	
 	
 
 
