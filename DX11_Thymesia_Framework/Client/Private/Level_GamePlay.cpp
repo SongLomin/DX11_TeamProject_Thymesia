@@ -21,13 +21,9 @@
 CLevel_GamePlay::CLevel_GamePlay()
 	//: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
-
 }
 
-CLevel_GamePlay::~CLevel_GamePlay()
-{
-	Free();
-}
+CLevel_GamePlay::~CLevel_GamePlay() { Free(); }
 
 HRESULT CLevel_GamePlay::Initialize()
 {
@@ -70,8 +66,6 @@ HRESULT CLevel_GamePlay::Initialize()
 	Load_FromJson(m_szDefaultJsonPath + "Stage2.json", LEVEL::LEVEL_GAMEPLAY);
 #endif // _STAGE_2_
 
-	
-
 	//Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_GAMEPLAY);
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
@@ -88,27 +82,35 @@ HRESULT CLevel_GamePlay::Initialize()
 	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_GAMEPLAY);
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
 	
-	//TODO 야매에요
-#ifdef _STAGE_1_MONSTER_
-	CMonster::STATE_LINK_MONSTER_DESC NORMONSTER;
+#ifdef _VARG_
 	CBossMonster::STATE_LINK_BOSS_DESC BOSSMONSTER;
 
-	//ZeroMemory(&NORMONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-	//NORMONSTER.eMonType = MONSTERTYPE::AXEMAN;
-	//NORMONSTER.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
-	//NORMONSTER.vYame.x = 13.f;
-	//NORMONSTER.vYame.y = 4.6f;
-	//NORMONSTER.vYame.z = 36.f;
-	//NORMONSTER.m_iAtkCounterGauge = 10;
-	//GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &NORMONSTER);
-	
 	ZeroMemory(&BOSSMONSTER, sizeof(CBossMonster::STATE_LINK_BOSS_DESC));
 	BOSSMONSTER.vYame.x = 49.33f;
 	BOSSMONSTER.vYame.y = 14.4f;
 	BOSSMONSTER.vYame.z = 30.32f;
 	BOSSMONSTER.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
 	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &BOSSMONSTER);
-	
+
+	//ZeroMemory(&BOSSMONSTER, sizeof(CBossMonster::STATE_LINK_BOSS_DESC));
+	//BOSSMONSTER.vYame.x = 33.f;
+	//BOSSMONSTER.vYame.y = 4.7f;
+	//BOSSMONSTER.vYame.z = 26.f;
+	//GAMEINSTANCE->Add_GameObject<CUrd>(LEVEL_GAMEPLAY, &BOSSMONSTER);
+#endif // _VARG_
+
+	//TODO 야매에요
+#ifdef _STAGE_1_MONSTER_
+	CMonster::STATE_LINK_MONSTER_DESC NORMONSTER;
+
+	ZeroMemory(&NORMONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+	NORMONSTER.eMonType = MONSTERTYPE::AXEMAN;
+	NORMONSTER.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
+	NORMONSTER.vYame.x = 13.f;
+	NORMONSTER.vYame.y = 4.6f;
+	NORMONSTER.vYame.z = 36.f;
+	NORMONSTER.m_iAtkCounterGauge = 10;
+	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &NORMONSTER);
 	//ZeroMemory(&NORMONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	//NORMONSTER.eMonType = MONSTERTYPE::KNIFEWOMAN;
 	//NORMONSTER.eNorMonIdleType = NORMONSTERIDLETYPE::SITIDLE;
@@ -142,14 +144,6 @@ HRESULT CLevel_GamePlay::Initialize()
 	//NORMONSTER.eBossType = BOSSTYPE::BOSSVARG;
 	//GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &NORMONSTER);
 	//
-
-	
-	
-	//ZeroMemory(&BOSSMONSTER, sizeof(CBossMonster::STATE_LINK_BOSS_DESC));
-	//BOSSMONSTER.vYame.x = 33.f;
-	//BOSSMONSTER.vYame.y = 4.7f;
-	//BOSSMONSTER.vYame.z = 26.f;
-	//GAMEINSTANCE->Add_GameObject<CUrd>(LEVEL_GAMEPLAY, &BOSSMONSTER);
 
 	/*ZeroMemory(&NORMONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	NORMONSTER.eMonType = MONSTERTYPE::KNIFEWOMAN;
