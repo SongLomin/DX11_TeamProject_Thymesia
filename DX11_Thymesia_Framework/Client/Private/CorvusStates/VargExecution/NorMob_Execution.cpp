@@ -70,9 +70,6 @@ void CNorMob_Execution::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif
 #endif
 
-	// TODO : test chromatic aberration
-	GAMEINSTANCE->Add_Chromatic(0.5f);
-
 }
 
 void CNorMob_Execution::OnStateEnd()
