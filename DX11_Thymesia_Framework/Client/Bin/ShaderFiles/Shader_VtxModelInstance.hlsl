@@ -341,15 +341,26 @@ technique11 DefaultTechnique
 		GeometryShader	= NULL;
 		PixelShader		= compile ps_5_0	PS_MAIN_NORMAL();
 	}
-	pass Masking//4
+	pass NoneCulling_Masking//6
 	{
 		SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_Default, 0);
-		SetRasterizerState(RS_Default);
+        SetRasterizerState(RS_NonCulling);
 
 		VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_NORMAL_MASKING();
 	}
+
+    pass Culling_Masking //7
+    {
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_NORMAL_MASKING();
+    }
 
 }

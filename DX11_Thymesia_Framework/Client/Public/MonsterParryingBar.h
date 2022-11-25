@@ -8,7 +8,8 @@ BEGIN(Client)
 class CCustomUI;
 class CProgressBar;
 
-class CMonsterParryingBar : public CCustomUI
+
+class CMonsterParryingBar : public CUI_LerpBar
 {
 public:
 	GAMECLASS_H(CMonsterParryingBar)

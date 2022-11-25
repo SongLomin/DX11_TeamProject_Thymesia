@@ -122,14 +122,14 @@ HRESULT CStatic_Instancing_Prop::Render()
 			if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 				m_iPassIndex = 4;
 			else
-				m_iPassIndex = 5;
+				m_iPassIndex = 6;
 		}
 		else
 		{
 			if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 				m_iPassIndex = 0;
 			else
-				m_iPassIndex = 1;
+				m_iPassIndex = 7;
 		}
 
 		m_pShaderCom.lock()->Begin(m_iPassIndex);
