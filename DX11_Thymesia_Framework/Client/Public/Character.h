@@ -25,7 +25,6 @@ public:
     virtual HRESULT Initialize(void* pArg) override;
 
 public:
-    weak_ptr<CCollider> Get_RigidColliderComponent() const;
     weak_ptr<CStateBase> Get_PreState() const;
     weak_ptr<CStateBase> Get_CurState() const;
     _uint Get_CurrentStateIndex() const;
@@ -64,17 +63,17 @@ private:
     _bool     m_bSuperArmor = false;
 
 public:
-    virtual void OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage);
-    virtual void Call_WeaponFirstAttack(weak_ptr<CCollider> pOtherCollider);
-    virtual void Call_WeaponAttack(weak_ptr<CCollider> pOtherCollider);
+    virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage);
+    virtual void Call_WeaponFirstAttack(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider);
+    virtual void Call_WeaponAttack(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider);
     virtual void OnEventMessage(_uint iArg) override;
 
 protected:
     virtual void OnLevelEnter() override;
 
-    virtual void OnCollisionEnter(weak_ptr<CCollider> pOtherCollider) override;
-    virtual void OnCollisionStay(weak_ptr<CCollider> pOtherCollider) override;
-    virtual void OnCollisionExit(weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
 
     
 

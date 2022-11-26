@@ -12,13 +12,16 @@ class CBossMonster :
     CLONE_H(CBossMonster, CGameObject);
 
 public:
-    typedef struct tagBossMonsterStateLinkDesc
-    {
-        BOSSSTARTTYPE        eBossStartType;
-        _uint                m_iAtkCounterGauge;//아직몰름바그짜보고 다음보스보면짜볼게요  
-        //TODO 야매
-        _float3            vYame;
-    }STATE_LINK_BOSS_DESC;
+    //typedef struct tagBossMonsterStateLinkDesc
+    //{
+    //    BOSSSTARTTYPE        eBossStartType;
+    //    _uint                m_iAtkCounterGauge;//아직몰름바그짜보고 다음보스보면짜볼게요  
+    //    MONSTERTYPE          eMontype;
+    //    //TODO 야매
+    //    _float3            vYame;
+    //}STATE_LINK_MONSTER_DESC;
+
+
 
 public:
     void Set_TargetCharacter(weak_ptr<CCharacter> In_pCharacter);
@@ -43,9 +46,9 @@ public:
 protected:
     virtual void SetUp_ShaderResource() override;
 
-    virtual void OnCollisionEnter(weak_ptr<CCollider> pOtherCollider) override;
-    virtual void OnCollisionStay(weak_ptr<CCollider> pOtherCollider) override;
-    virtual void OnCollisionExit(weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
     //객체의 상태가 활성화 상태로 변경될 때, 호출되는 이벤트입니다.
     virtual void OnEnable(void* _Arg = nullptr) override;
     //객체의 상태가 비활성화 상태로 변경될 때, 호출되는 이벤트입니다.
@@ -62,10 +65,10 @@ protected:
 protected:
     weak_ptr<CStateBase> m_pStandState;
 
-    weak_ptr<CCharacter>   m_pTargetCharacter; // = player
-    weak_ptr<CTexture>     m_pDissolveTextureCom;
-    STATE_LINK_BOSS_DESC   m_tLinkStateDesc;
-    MONSTERWEAPONTYPE      m_eMonWeaPonType = MONSTERWEAPONTYPE::MON_WEAPON_END;
+    weak_ptr<CCharacter>      m_pTargetCharacter; // = player
+    weak_ptr<CTexture>        m_pDissolveTextureCom;
+    STATE_LINK_MONSTER_DESC   m_tLinkStateDesc;
+    MONSTERWEAPONTYPE         m_eMonWeaPonType = MONSTERWEAPONTYPE::MON_WEAPON_END;
  
 
     weak_ptr<CStatus_Monster>           m_pStatus;

@@ -1,5 +1,5 @@
 #pragma once
-#include  "CorvusStates/CorvusStateBase.h"
+#include "CorvusStateBase.h"
 
 BEGIN(Engine)
 class CModel;
@@ -7,12 +7,12 @@ END
 
 BEGIN(Client)
 
-class CNorMob_Execution :
+class CCorvusState_ParryDeflectLeft :
     public CCorvusStateBase
 {
-    GAMECLASS_H(CNorMob_Execution);
-    CLONE_H(CNorMob_Execution, CComponent)
-        SHALLOW_COPY(CNorMob_Execution)
+    GAMECLASS_H(CCorvusState_ParryDeflectLeft);
+    CLONE_H(CCorvusState_ParryDeflectLeft, CComponent)
+        SHALLOW_COPY(CCorvusState_ParryDeflectLeft)
 
 protected:
     virtual HRESULT Initialize_Prototype() override;
@@ -20,6 +20,10 @@ protected:
     virtual void Start() override;
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
+
+
+private:
+    void Check_InputAgainAvoid();
 
 protected:
     virtual void OnDisable() override;
@@ -29,17 +33,20 @@ protected:
 
 public:
     void Call_AnimationEnd();
+    void Play_AttackWithIndex(const _tchar& In_iAttackIndex);
 
 private:
-    weak_ptr<CGameObject> m_pTargetObject;
     _uint m_iDustEffectIndex;
+    _float m_fDebugAnimationSpeed = 1.f;
+
 
 protected:
-    virtual void OnEventMessage(weak_ptr<CBase> pArg) override;
     void Free();
 
     // CNorMonStateBase을(를) 통해 상속됨
     virtual _bool Check_AndChangeNextState() override;
+
+
 
 };
 

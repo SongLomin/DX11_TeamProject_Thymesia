@@ -70,9 +70,9 @@ void CUrdBossStateBase::Play_OnHitEffect()
 
 }
 
-void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
-	__super::OnHit(pOtherCollider, In_eHitType, In_fDamage);
+	__super::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 
 	if (pOtherCollider.lock()->Get_CollisionLayer() == (_uint)COLLISION_LAYER::PLAYER_ATTACK)
 	{
@@ -136,21 +136,21 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE
 
 }
 
-void CUrdBossStateBase::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+void CUrdBossStateBase::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionEnter(pOtherCollider);
+	__super::OnCollisionEnter(pMyCollider, pOtherCollider);
 
 }
 
-void CUrdBossStateBase::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
+void CUrdBossStateBase::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionStay(pOtherCollider);
+	__super::OnCollisionStay(pMyCollider, pOtherCollider);
 
 }
 
-void CUrdBossStateBase::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
+void CUrdBossStateBase::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionExit(pOtherCollider);
+	__super::OnCollisionExit(pMyCollider, pOtherCollider);
 
 }
 

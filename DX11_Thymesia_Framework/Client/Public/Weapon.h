@@ -36,7 +36,8 @@ public:
     void Disable_Weapon();
     weak_ptr<CCharacter> Get_ParentCharacter();
 
-    void Set_WeaponDesc(const HIT_TYPE In_eHitType, const _float In_fDamage);
+    void Set_WeaponDesc(const WEAPON_DESC& In_Weapon);
+    void Set_WeaponDesc(const HIT_TYPE In_eHitType, const _float In_fDamage, const ATTACK_OPTION In_eOptionType = ATTACK_OPTION::OPTION_END);
     _bool Set_TrailEnable(const _bool In_bEnable);
 public:
     FDelegate<weak_ptr<CCollider>> CallBack_Attack;
@@ -59,13 +60,12 @@ protected:
     _float3                 m_vOffset;
 
 protected:
-    HIT_TYPE                m_eHitType = HIT_TYPE::TYPE_END;
-    _float                  m_fDamage = 0.f;
+    WEAPON_DESC             m_tWeaponDesc;
 
 protected:
-    virtual void OnCollisionEnter(weak_ptr<CCollider> pOtherCollider) override;
-    virtual void OnCollisionStay(weak_ptr<CCollider> pOtherCollider) override;
-    virtual void OnCollisionExit(weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
 
 public:
     virtual void OnSetDead() override;

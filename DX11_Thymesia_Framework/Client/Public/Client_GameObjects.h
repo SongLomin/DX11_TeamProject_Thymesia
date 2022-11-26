@@ -40,3 +40,7 @@
 #include "BossMonster.h"
 #include "BossVarg/Varg.h"
 #include "BossUrd/Urd.h"
+
+#include "Status_Player.h"
+#include "Status_Monster.h"
+#include "Attack_Area.h"

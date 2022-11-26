@@ -40,9 +40,9 @@ protected:
     _uint       m_iPassIndex = 0;
 
 protected:
-    virtual void OnCollisionEnter(weak_ptr<CCollider> pOtherCollider) override;
-    virtual void OnCollisionStay(weak_ptr<CCollider> pOtherCollider) override;
-    virtual void OnCollisionExit(weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnEventMessage(_uint iArg) override;
 
 private:

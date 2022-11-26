@@ -202,6 +202,12 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b2.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_TurnAttack.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Parry1.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Parry2.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectLeft.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectLeftup.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectRight.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectRightup.h" />
     <ClInclude Include="..\Public\Dynamic_Piece.h" />
     <ClInclude Include="..\Public\Level_Test.h" />
     <ClInclude Include="..\Public\PhysXColliderObject.h" />
@@ -213,11 +219,12 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtR.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtXXL.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_LAttack4.h" />
-    <ClInclude Include="..\Public\CorvusStates\StateExecution\NorMob_Execution.h" />
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_NorMob_Execution.h" />
     <ClInclude Include="..\Public\Effect_Trail.h" />
     <ClInclude Include="..\Public\Effect_Trail_Distortion.h" />
     <ClInclude Include="..\Public\Effect_Trail_EyeLight.h" />
     <ClInclude Include="..\Public\MobWeapon.h" />
+    <ClInclude Include="..\Public\Status_Boss.h" />
     <ClInclude Include="..\Public\Status_Monster.h" />
     <ClInclude Include="..\Public\Status_Player.h" />
     <ClInclude Include="..\Public\Preset_PhysXControllerDesc.h" />
@@ -288,8 +295,6 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_LAttack1.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_LAttack2.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_LAttack3.h" />
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_Parry1.h" />
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_Parry2.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Run.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Sprint.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_SprintAttack.h" />
@@ -353,7 +358,6 @@
     <ClInclude Include="..\Public\NorMonState\NorMonState_LightAttack2.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Awake.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Die.h" />
-    <ClInclude Include="..\Public\NorMonState\NorMonState_Farry.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_GroggyEnd.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_GroggyLoop.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_GroggyStart.h" />
@@ -450,8 +454,13 @@
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b2.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_RaidAttack.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_TurnAttack.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectLeft.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectLeftup.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectRight.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectRightup.cpp" />
     <ClCompile Include="..\Private\Dynamic_Piece.cpp" />
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
+    <ClCompile Include="..\Private\Status_Boss.cpp" />
     <ClCompile Include="..\Private\UI_Container.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Level.cpp" />
@@ -464,7 +473,7 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXXL.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_LAttack4.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_LAttack5.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\VargExecution\NorMob_Execution.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_NorMob_Execution.cpp" />
     <ClCompile Include="..\Private\Effect_Trail.cpp" />
     <ClCompile Include="..\Private\Effect_Trail_Distortion.cpp" />
     <ClCompile Include="..\Private\Effect_Trail_EyeLight.cpp" />
@@ -593,7 +602,6 @@
     <ClCompile Include="..\Private\NorMonState\NorMonState_LightAttack2.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Awake.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Die.cpp" />
-    <ClCompile Include="..\Private\NorMonState\NorMonState_Farry.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_GroggyEnd.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_GroggyLoop.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_GroggyStart.cpp" />

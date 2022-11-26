@@ -70,7 +70,7 @@ void CNorMonsterStateBase::Play_OnHitEffect()
 	//T_SINGLE(CGameManager)->Use_EffectGroup("Hit_Monster2", m_pTransformCom);
 }
 
-void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
 	//__super::OnHit(pOtherCollider, In_eHitType, In_fDamage);
 
@@ -192,21 +192,21 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_T
 
 
 
-void CNorMonsterStateBase::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+void CNorMonsterStateBase::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionEnter(pOtherCollider);
+	__super::OnCollisionEnter(pMyCollider, pOtherCollider);
 
 }
 
-void CNorMonsterStateBase::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
+void CNorMonsterStateBase::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionStay(pOtherCollider);
+	__super::OnCollisionStay(pMyCollider, pOtherCollider);
 
 }
 
-void CNorMonsterStateBase::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
+void CNorMonsterStateBase::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionExit(pOtherCollider);
+	__super::OnCollisionExit(pMyCollider, pOtherCollider);
 
 }
 

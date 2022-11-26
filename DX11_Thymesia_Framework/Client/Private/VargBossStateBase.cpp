@@ -10,6 +10,7 @@
 //#include "ComboTimer.h"
 #include "Attack_Area.h"
 //#include "DamageUI.h"
+#include "Status_Player.h"
 
 
 GAMECLASS_C(CVargBossStateBase)
@@ -70,9 +71,9 @@ void CVargBossStateBase::Play_OnHitEffect()
 
 }
 
-void CVargBossStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
-	__super::OnHit(pOtherCollider, In_eHitType, In_fDamage);
+	__super::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 
 	if (pOtherCollider.lock()->Get_CollisionLayer() == (_uint)COLLISION_LAYER::PLAYER_ATTACK)
 	{
@@ -99,7 +100,14 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYP
 
 		m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
 
-		_bool bRandom = (_bool)(rand() % 2);
+		ATTACK_OPTION eAttackOption = pAttackArea.lock()->Get_OptionType();
+
+
+		CStatus_Player::PLAYERDESC tPlayerDesc;
+
+		pAttackArea.lock()->Get_ParentObject().lock()->Get_ComponentByType<CStatus>().lock()
+			->Get_Desc(&tPlayerDesc);
+		
 
 		//데미지 적용
 		//m_pStatusCom.lock()->Add_Damage(In_fDamage);
@@ -108,9 +116,27 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYP
 		//GAMEINSTANCE->Get_GameObjects<CMonsterHpBar>(LEVEL::LEVEL_STATIC).front().lock()->OnHit(m_pOwner);
 		//GAMEINSTANCE->Get_GameObjects<CComboTimer>(LEVEL::LEVEL_STATIC).front().lock()->Update_Combo();
 
-		GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Set_TargetMonster(Get_OwnerMonster());
+		//GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Set_TargetMonster(Get_OwnerMonster());
 
 		Play_OnHitEffect();
+
+		_float fMagnifiedDamage = In_fDamage * 50.f ;
+		//m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+
+		switch (eAttackOption)
+		{
+		case Client::ATTACK_OPTION::NONE:
+			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, ATTACK_OPTION::NORMAL);
+			break;
+		case Client::ATTACK_OPTION::NORMAL:
+			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+			break;
+		case Client::ATTACK_OPTION::PLAGUE:
+			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+			break;
+		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
+			break;
+		}
 
 		//공격 형태에 따라서 애니메이션 변경
 
@@ -136,21 +162,21 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYP
 
 }
 
-void CVargBossStateBase::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+void CVargBossStateBase::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionEnter(pOtherCollider);
+	__super::OnCollisionEnter(pMyCollider, pOtherCollider);
 
 }
 
-void CVargBossStateBase::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
+void CVargBossStateBase::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionStay(pOtherCollider);
+	__super::OnCollisionStay(pMyCollider, pOtherCollider);
 
 }
 
-void CVargBossStateBase::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
+void CVargBossStateBase::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionExit(pOtherCollider);
+	__super::OnCollisionExit(pMyCollider, pOtherCollider);
 
 }
 

@@ -17,8 +17,11 @@ public:
         MONSTERTYPE          eMonType;
         NORMONSTERIDLETYPE   eNorMonIdleType;
         _float4              m_fStartPositon;
-        BOSSSTARTTYPE        eBossStartType;
         _uint                m_iAtkCounterGauge;
+
+
+
+        BOSSSTARTTYPE        eBossStartType;
         //BOSSTYPE             eBossType;
         //TODO 야매에요 밑에꺼 ㅎ 
         _float3            vYame;
@@ -54,9 +57,9 @@ public:
 protected:
     virtual void SetUp_ShaderResource() override;    
 
-    virtual void OnCollisionEnter(weak_ptr<CCollider> pOtherCollider) override;
-    virtual void OnCollisionStay(weak_ptr<CCollider> pOtherCollider) override;
-    virtual void OnCollisionExit(weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
     //객체의 상태가 활성화 상태로 변경될 때, 호출되는 이벤트입니다.
     virtual void OnEnable(void* _Arg = nullptr) override;
     //객체의 상태가 비활성화 상태로 변경될 때, 호출되는 이벤트입니다.

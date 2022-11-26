@@ -33,8 +33,10 @@ HRESULT CVarg::Initialize(void* pArg)
 		VTXANIM_DECLARATION::iNumElements);
 
 	weak_ptr<CMonsterHPBar_Boss> pHPBar = GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Boss>(LEVEL_STATIC);
+	pHPBar.lock()->Set_Owner(Weak_Cast<CMonster>(m_this));
 
-	memcpy(&m_tLinkStateDesc, pArg, sizeof(STATE_LINK_BOSS_DESC));
+
+	memcpy(&m_tLinkStateDesc, pArg, sizeof(STATE_LINK_MONSTER_DESC));
 
 	m_pModelCom.lock()->Init_Model("Boss_Varg", "", (_uint)TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
@@ -186,19 +188,19 @@ void CVarg::SetUp_ShaderResource()
 
 
 
-void CVarg::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+void CVarg::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionEnter(pOtherCollider);
+	__super::OnCollisionEnter(pMyCollider, pOtherCollider);
 }
 
-void CVarg::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
+void CVarg::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionStay(pOtherCollider);
+	__super::OnCollisionStay(pMyCollider, pOtherCollider);
 }
 
-void CVarg::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
+void CVarg::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionExit(pOtherCollider);
+	__super::OnCollisionExit(pMyCollider, pOtherCollider);
 }
 
 void CVarg::OnEnable(void* _Arg)

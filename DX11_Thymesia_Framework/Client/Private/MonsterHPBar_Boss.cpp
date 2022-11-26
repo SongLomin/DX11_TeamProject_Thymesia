@@ -83,5 +83,5 @@ void CMonsterHPBar_Boss::Set_Stun(bool _bStun)
 
 void CMonsterHPBar_Boss::Set_ChildPosFromThis()
 {
-    __super::Set_ChildPosFromThis();
+  // __super::Set_ChildPosFromThis();
 }

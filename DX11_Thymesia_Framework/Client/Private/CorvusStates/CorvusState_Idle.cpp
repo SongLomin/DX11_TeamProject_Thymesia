@@ -137,7 +137,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 
 		 if (Check_RequirementExcuteState(pTargetObject))
 		 {
-			 Get_OwnerPlayer()->Change_State<CNorMob_Execution>();
+			 Get_OwnerPlayer()->Change_State<CCorvusState_NorMob_Execution>();
 			 Get_OwnerPlayer()->Get_CurState().lock()->OnEventMessage(Weak_Cast<CBase>(pTargetObject));
 		 }
 		 else
@@ -176,7 +176,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 	 if (KEY_INPUT(KEY::O, KEY_STATE::TAP))
 	 {
 		 Rotation_InputToLookDir();
-		 Get_OwnerPlayer()->Change_State<CNorMob_Execution>();
+		 Get_OwnerPlayer()->Change_State<CCorvusState_NorMob_Execution>();
 		 return true;
 	 }
 

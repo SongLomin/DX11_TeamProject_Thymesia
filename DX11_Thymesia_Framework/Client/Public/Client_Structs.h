@@ -278,7 +278,7 @@ namespace Client
 #pragma endregion
 	};
 
-	struct WEAPON_DESC
+	struct ATTACKAREA_DESC
 	{
 		_float		fHitFreq;
 		_float		fWeaponScale;
@@ -286,6 +286,13 @@ namespace Client
 		_int		iOptionType;
 		_float      fDamage;
 		_float3		vWeaponOffset;
+	};
+
+	struct WEAPON_DESC
+	{
+		_int		iHitType;
+		_int		iOptionType;
+		_float      fDamage;
 	};
 
 	struct KEYFRAME_EVENT

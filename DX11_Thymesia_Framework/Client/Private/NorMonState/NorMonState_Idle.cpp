@@ -300,10 +300,10 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 				switch (iRunORWalk)
 				{
 				case 0:
-					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
 					break;
 				case 1:
-					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
 					break;
 				}
 			}

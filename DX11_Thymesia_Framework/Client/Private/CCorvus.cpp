@@ -58,8 +58,8 @@ HRESULT CCorvus::Start()
 	
 	m_pCamera = GET_SINGLE(CGameManager)->Get_TargetCamera();
 	m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
-	//m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -1.5f, 0.f, 1.f));
 
+	
 	return S_OK;
 }
 
@@ -127,9 +127,7 @@ HRESULT CCorvus::Render()
 		else
 			m_iPassIndex = 4;
 
-		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones");
-	}
-
+		}
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 		{
 			iPassIndex = 0;
@@ -145,8 +143,6 @@ HRESULT CCorvus::Render()
 			//	iPassIndex = 5;//use specular map
 			//}
 		}
-
-
 		
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, iPassIndex, "g_Bones");
 		
@@ -202,15 +198,15 @@ void CCorvus::SetUp_ShaderResource()
 #endif // !_USE_THREAD_
 }
 
-void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 }
 
-void CCorvus::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
+void CCorvus::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 }
 
-void CCorvus::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
+void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 }
 

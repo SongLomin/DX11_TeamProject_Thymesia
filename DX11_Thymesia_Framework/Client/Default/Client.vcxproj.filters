@@ -292,12 +292,6 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_LAttack3.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack\State_Attack3</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_Parry1.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\12.State_Parry\State_Paary1</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_Parry2.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\12.State_Parry\State_Parry2</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_BasicHealing.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing\00.CorvusState_BasicHealing</Filter>
     </ClInclude>
@@ -321,9 +315,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\NorMonState\NorMonState_Die.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\13.Die</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\NorMonState\NorMonState_Farry.h">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\29.Farry</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_FR.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\23.Walk_FR</Filter>
@@ -608,9 +599,6 @@
     <ClInclude Include="..\Public\Preset_PhysXControllerDesc.h">
       <Filter>06. DataPreset\01. Preset_PhysXControllerDesc</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\StateExecution\NorMob_Execution.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\00.NorMob_Execution</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Effect_Trail.h">
       <Filter>02. GameObject\08. Effect\02. Effect_Trail</Filter>
     </ClInclude>
@@ -764,6 +752,30 @@
     </ClInclude>
     <ClInclude Include="..\Public\BossUrd\UrdBossState_Idle.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\01.UrdState\01.Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Status_Boss.h">
+      <Filter>05. Component\04. Status\02. Status_Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectLeft.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectLeft</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Parry1.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\12.State_Parry\State_Paary1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Parry2.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\12.State_Parry\State_Parry2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectRightup.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectRightup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectRight.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectRight</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectLeftup.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectLeftup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_NorMob_Execution.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\00.NorMob_Execution</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\HUD_PlagueWeapon_Steal.h">
       <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\PlagueWeapon\Steal</Filter>
@@ -1085,9 +1097,6 @@
     <ClCompile Include="..\Private\NorMonState\NorMonState_Die.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\13.Die</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\NorMonState\NorMonState_Farry.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\29.Farry</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_FR.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\23.Walk_FR</Filter>
     </ClCompile>
@@ -1355,7 +1364,7 @@
     <ClCompile Include="..\Private\Preset_PhysXControllerDesc.cpp">
       <Filter>06. DataPreset\01. Preset_PhysXControllerDesc</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\VargExecution\NorMob_Execution.cpp">
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_NorMob_Execution.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\00.NorMob_Execution</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Status_Player.cpp">
@@ -1612,6 +1621,21 @@
     </ClCompile>
     <ClCompile Include="..\Private\BossUrd\UrdBossState_Idle.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\01.UrdState\01.Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Status_Boss.cpp">
+      <Filter>05. Component\04. Status\02. Status_Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectLeft.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectLeft</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectRightup.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectRightup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectRight.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectRight</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectLeftup.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectLeftup</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeapon_Main.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\PlagueWeapon\main</Filter>
@@ -2555,6 +2579,24 @@
     </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\01.UrdState\01.Idle">
       <UniqueIdentifier>{d4020cdb-cd3a-4888-96a8-4ab6f434e72b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\04. Status\02. Status_Boss">
+      <UniqueIdentifier>{0579d670-3839-4ba7-9e69-76009dab34c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense">
+      <UniqueIdentifier>{9ed78e6d-ae3d-46ba-921f-4572a1a75765}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectLeft">
+      <UniqueIdentifier>{f17d88bf-cbee-46c9-b8fe-1454dc17a445}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectLeftup">
+      <UniqueIdentifier>{741f6502-a6fd-450f-a3e7-b6feb1f44ebd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectRightup">
+      <UniqueIdentifier>{3c883226-d809-42da-bba8-0668854138d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectRight">
+      <UniqueIdentifier>{350860d7-21a4-4f03-8f61-84b8b15bc682}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\01. UI\UI_Container\Evolve\Level">
       <UniqueIdentifier>{fb57bb86-730e-4b11-9301-1c16cb28dd6b}</UniqueIdentifier>

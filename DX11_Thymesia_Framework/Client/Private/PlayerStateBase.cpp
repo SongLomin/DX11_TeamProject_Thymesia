@@ -234,13 +234,13 @@ _bool CPlayerStateBase::Rotation_NearToLookDir()
 }
 
 
-void CPlayerStateBase::OnWeaponFirstAttack(weak_ptr<CCollider> pOtherCollider)
+void CPlayerStateBase::OnWeaponFirstAttack(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 	//GET_SINGLE(CGameManager)->Use_EffectGroup("ShockWave", m_pTransformCom);
 
 }
 
-void CPlayerStateBase::OnWeaponAttack(weak_ptr<CCollider> pOtherCollider)
+void CPlayerStateBase::OnWeaponAttack(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 }
 

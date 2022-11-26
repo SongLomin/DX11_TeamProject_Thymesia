@@ -196,22 +196,22 @@ void CMonster::SetUp_ShaderResource()
     m_pShaderCom.lock()->Set_RawValue("g_vLightSpecular", (void*)&LightDesc.vSpecular, sizeof(_float4));*/
 }
 
-void CMonster::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+void CMonster::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    __super::OnCollisionEnter(pOtherCollider);
+    __super::OnCollisionEnter(pMyCollider, pOtherCollider);
 
 
 }
 
-void CMonster::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
+void CMonster::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    __super::OnCollisionStay(pOtherCollider);
+    __super::OnCollisionStay(pMyCollider, pOtherCollider);
 
 }
 
-void CMonster::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
+void CMonster::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    __super::OnCollisionExit(pOtherCollider);
+    __super::OnCollisionExit(pMyCollider, pOtherCollider);
 
 
 }

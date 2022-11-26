@@ -73,6 +73,7 @@ public:
 	PLAYERPOTIONDESC Get_CurrentPotionDesc() { return m_PotionDesc[m_iCurrentPotionIndex]; }
 
 	virtual void	Get_Desc(void* Out_pDesc);
+	PLAYERDESC		Get_Desc() const;
 
 	_float			Get_MaxHP() { return m_tDesc.m_fMaxHP; }
 	_float			Get_CurrentHP() { return m_tDesc.m_fCurrentHP; }
