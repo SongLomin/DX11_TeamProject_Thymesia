@@ -231,6 +231,8 @@ PS_OUT PS_MAIN_NORMAL_MASKING(PS_IN_NORMAL In)
     vector vMaskTexture = g_MaskTexture.Sample(DefaultSampler, 8.f * vPixelTexUV);
     if (fCamToPixelWorld / fCamToPlayer > vMaskTexture.r)
         Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    else
+        discard;
 
 
 

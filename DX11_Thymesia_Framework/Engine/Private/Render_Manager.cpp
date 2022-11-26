@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Shader.h"
 #include "VIBuffer_Rect.h"
+#include "Easing_Utillity.h"
 
 
 IMPLEMENT_SINGLETON(CRender_Manager)
@@ -395,10 +396,7 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Render_AfterPostEffectGlow()))
 		DEBUG_ASSERT;
 
-	if (FAILED(PostProcessing(0)))
-		DEBUG_ASSERT;
-
-	if (FAILED(PostProcessing(1)))
+	if (FAILED(PostProcessing()))
 		DEBUG_ASSERT;
 
 	if (FAILED(Render_UI()))
@@ -436,6 +434,7 @@ HRESULT CRender_Manager::Add_MotionBlur(const _float& In_fBlurScale)
 
 HRESULT CRender_Manager::Set_Chromatic(const _float In_fChormaticStrangth)
 {
+	m_fChromaticStrengthAcc = In_fChormaticStrangth;
 	m_fChromaticStrangth = In_fChormaticStrangth;
 
 	return S_OK;
@@ -443,8 +442,8 @@ HRESULT CRender_Manager::Set_Chromatic(const _float In_fChormaticStrangth)
 
 HRESULT CRender_Manager::Add_Chromatic(const _float In_fChormaticStrangth)
 {
-	m_fChromaticStrangth += In_fChormaticStrangth;
-	m_fChromaticStrangth = max(0.f, m_fChromaticStrangth);
+	m_fChromaticStrengthAcc += In_fChormaticStrangth;
+	m_fChromaticStrengthAcc = max(0.f, m_fChromaticStrengthAcc);
 
 	return S_OK;
 }
@@ -1323,7 +1322,7 @@ HRESULT CRender_Manager::Blur_Effect()
 	return S_OK;
 }
 
-HRESULT CRender_Manager::PostProcessing(const _int In_iPass)
+HRESULT CRender_Manager::PostProcessing()
 {
 	//모션 블러, 색수차, 중심 블러(얘는 위에 있음) 등등 화면 전체 해야하는 블러의 경우
 	Bake_OriginalRenderTexture();
@@ -1354,23 +1353,28 @@ HRESULT CRender_Manager::PostProcessing(const _int In_iPass)
 	m_pPostProcessingShader->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
 	m_pPostProcessingShader->Set_RawValue("g_ViewMatrixInv", &ViewMatrixInv, sizeof(_float4x4));
 	m_pPostProcessingShader->Set_RawValue("g_CamProjMatrix", &ProjMatrix, sizeof(_float4x4));
-//	m_pPostProcessingShader->Set_RawValue("g_CamViewMatrix", &ViewMatrix, sizeof(_float4x4));
 
 	m_pPostProcessingShader->Set_RawValue("g_vCamPosition", &ViewMatrixInv.m[3],sizeof(_float4));
-	m_pPostProcessingShader->Set_RawValue("g_BlurStrength", &m_fChromaticStrangth, sizeof(_float));
 
-	_float4	vLinearVelocity, vAngularVelocity;
-	XMStoreFloat4(&vLinearVelocity, pPipeLine->Get_LinearVelocity());
-	XMStoreFloat4(&vAngularVelocity, pPipeLine->Get_AngularVelocity());
+	
+	_float fLerpValue = 0.f;
+	if (0.f < m_fChromaticStrengthAcc)
+	{
+		_vector vLerp = XMVectorSet(m_fChromaticStrangth, 0.f, 0.f, 0.f);
+		vLerp = CEasing_Utillity::CubicOut(XMVectorSet(0.f, 0.f, 0.f, 0.f), vLerp, m_fChromaticStrengthAcc, m_fChromaticStrangth);
+		fLerpValue = vLerp.m128_f32[0];
+	}
+	
 
-	/*m_pPostProcessingShader->Set_RawValue("g_vLinearVelocity", &vLinearVelocity, sizeof(_float4));
-	m_pPostProcessingShader->Set_RawValue("g_vAngularVelocity", &vAngularVelocity, sizeof(_float4));*/
+	m_pPostProcessingShader->Set_RawValue("g_BlurStrength", &fLerpValue, sizeof(_float));//chromatic 전용
+
 	m_pPostProcessingShader->Set_RawValue("g_PreCamViewMatrix", &XMMatrixTranspose(XMLoadFloat4x4(&pPipeLine->Get_PreViewMatrix())), sizeof(_float4x4));
 
-
-	m_pPostProcessingShader->Begin(In_iPass);
-	m_pVIBuffer->Render();
-
+	for (_int i = 0; i < 2; ++i)
+	{
+		m_pPostProcessingShader->Begin(i);
+		m_pVIBuffer->Render();
+	}
 
 
 	return S_OK;

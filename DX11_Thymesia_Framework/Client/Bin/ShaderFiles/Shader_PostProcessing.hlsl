@@ -11,9 +11,6 @@ texture2D	g_OriginalRenderTexture;
 
 vector		g_vCamPosition;
 
-vector		g_vLinearVelocity;
-vector		g_vAngularVelocity;
-
 float		g_BlurStrength = 0.1f;
 
 static const float BlurWeights[13] =
@@ -110,31 +107,6 @@ PS_OUT PS_MAIN_MOTION_BLUR(PS_IN In)
 	}
 
 	Out.vColor = vColor / 10.f;
-
-	//for (int i = 0; i < 13; ++i)
-	//{
-	//	float2 offset = vPixelDiff * (float(i) / 13.f - 0.5f)/** g_BlurStrength*/;
-	//	vColor += g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV + offset)* BlurWeights[i];
-	//}
-
-
-	//Out.vColor = vColor;
-
-	//float zOverW = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
-	//float4 H = float4(texCoord.x * 2 - 1, (1 - texCoord.y) * 2 - 1, zOverW, 1);
-	//float4 D = mul(H, g_ViewProjectionInverseMatrix);
-	//float4 worldPos = D / Dw;
-	//float4 currentPos = H;
-	//float4 previousPos = mul(worldPos, g_previousViewProjectionMatrix);
-	//previousPos /= previousPos.w;
-	//float2 velocity = (currentPos - previousPos) / 2. f;
-	//float4 color = tex2D(sceneSampler, texCoord);
-	//texCoord += velocity;
-	//for (int i = 1; i < g_numSamples; ++i, texCoord += velocity) {
-	//	float4 currentColor = tex2D(sceneSampler, texCoord);
-	//	color += currentColor;
-	//}
-	//float4 finalColor = color / numSamples;
 	
 	return Out;
 }

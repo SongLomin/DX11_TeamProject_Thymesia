@@ -23,6 +23,8 @@ HRESULT CCorvusState_LAttack3::Initialize_Prototype()
 HRESULT CCorvusState_LAttack3::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
+	m_vShakingOffSet = { 0.9f,-0.1f,0.f };
+
 
 	return S_OK;
 }
@@ -52,6 +54,8 @@ void CCorvusState_LAttack3::Tick(_float fTimeDelta)
 			m_fDebugAnimationSpeed = 0.1f;
 		}
 	}
+
+	XMStoreFloat3(&m_vShakingOffSet, XMVector3TransformNormal(XMLoadFloat3(&m_vShakingOffSet), m_pTransformCom.lock()->Get_WorldMatrix()));
 
 	Attack();
 }

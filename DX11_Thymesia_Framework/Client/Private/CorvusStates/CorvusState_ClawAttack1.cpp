@@ -59,7 +59,7 @@ void CCorvusState_ClawAttack1::Tick(_float fTimeDelta)
 	{
 		if (m_pModelCom.lock()->Get_CurrentAnimationKeyIndex() >= 20)
 		{
-			GAMEINSTANCE->Add_Chromatic(0.2f);
+			GAMEINSTANCE->Set_Chromatic(0.2f);
 			bTrigger = true;
 		}
 	}

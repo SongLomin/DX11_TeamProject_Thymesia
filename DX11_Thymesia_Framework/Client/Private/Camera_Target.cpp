@@ -232,6 +232,7 @@ void CCamera_Target::Deactivate_Zoom()
 
 void CCamera_Target::Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime,_float fFrequency)
 {
+	vShakingDir = XMVector3TransformNormal(vShakingDir, m_pTransformCom.lock()->Get_WorldMatrix());
 	vShakingDir = XMVector3Normalize(vShakingDir);
 	XMStoreFloat3(&m_vShakingDir, vShakingDir);
 	XMStoreFloat3(&m_vShakingEndOffSet, vShakingDir* fRatio);

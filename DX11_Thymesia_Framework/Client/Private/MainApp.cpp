@@ -89,7 +89,7 @@ void CMainApp::Tick(float fTimeDelta)
 		return;
 
 	//GAMEINSTANCE->Add_MotionBlurScale(-0.2f * fTimeDelta);
-	GAMEINSTANCE->Add_Chromatic(-0.2f * fTimeDelta);
+	GAMEINSTANCE->Add_Chromatic(-0.3f*fTimeDelta);
 
 	GAMEINSTANCE->Tick_Engine(fTimeDelta);
 
