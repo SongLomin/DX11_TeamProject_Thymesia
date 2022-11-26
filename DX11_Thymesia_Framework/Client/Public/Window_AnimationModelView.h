@@ -37,7 +37,7 @@ private:
 private:
 	weak_ptr<CPreViewAnimationModel>	m_pPreViewModel;
 	// TODO : comment because explode
-	// weak_ptr<CPreView_Prop>				m_pPreViewNoAnimModel;
+	weak_ptr<CPreView_Prop>				m_pPreViewNoAnimModel;
 	vector<string>	                    m_AllModelKeys;
 	vector<string>	                    m_AllNoAnimModelKeys;
 	_int			                    m_CurrentModelIndex = 0;

@@ -492,7 +492,9 @@ void CGameManager::Deactivate_Zoom()
 _vector CGameManager::Get_PlayerPos()
 {
 	if (!m_pCurrentPlayer.lock())
+	{
 		return XMVectorSet(0.f, 0.f, 0.f, 1.f);
+	}
 
 	_matrix PlayerMat = m_pCurrentPlayer.lock()->Get_Component<CTransform>().lock()->Get_WorldMatrix();
 
