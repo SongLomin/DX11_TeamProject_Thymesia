@@ -103,7 +103,7 @@ HRESULT CWindow_AnimationModelView::Render()
 
                 if (ImGui::Button("Load_NonAnim"))
                 {
-
+                    // TODO : comment because explode
                     m_pPreViewNoAnimModel.lock()->Get_Component<CModel>().lock()->
                         Get_Owner().lock()->
                             Get_Component<CModel>().lock()->Init_Model(m_AllNoAnimModelKeys[m_CurrentModelIndex].c_str());
@@ -164,7 +164,7 @@ void CWindow_AnimationModelView::Load_PreViewModels()
     m_pPreViewModel = GAMEINSTANCE->Add_GameObject<CPreViewAnimationModel>(LEVEL_EDIT);
     m_AllModelKeys = GAMEINSTANCE->Get_AllAnimModelKeys();
 
-
+    // TODO : comment because explode
     m_pPreViewNoAnimModel = GAMEINSTANCE->Add_GameObject<CPreView_Prop>(LEVEL_EDIT);
     m_AllNoAnimModelKeys = GAMEINSTANCE->Get_AllNoneAnimModelKeys();
 }
@@ -182,6 +182,7 @@ void CWindow_AnimationModelView::Free()
     if(m_pPreViewModel.lock())
         m_pPreViewModel.lock()->Set_Dead();
 
+    // TODO : comment because explode
     if (m_pPreViewNoAnimModel.lock())
         m_pPreViewNoAnimModel.lock()->Set_Dead();
 

@@ -20,7 +20,7 @@ public:
 	_uint Get_ColliderIndex() const { return m_iColliderIndex; }
 	COLLIDERDESC Get_ColliderDesc() const;
 
-	_float3 Get_CurrentPosition() const; 
+	_vector Get_CurrentPosition() const; 
 
 	void Set_ColliderScale(_fvector In_vScale);
 
@@ -69,6 +69,8 @@ private:
 private:
 	static	_uint							m_iClonedColliderIndex;
 	_uint									m_iColliderIndex;
+
+	weak_ptr<CCollider>						m_thisFromColliderCom;
 
 	shared_ptr<BoundingSphere>				m_pSphere_Original;
 	shared_ptr<BoundingBox>					m_pAABB_Original;

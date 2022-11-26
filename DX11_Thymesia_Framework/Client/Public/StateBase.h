@@ -34,13 +34,14 @@ public:
 
     void Set_Animation(_uint In_iNumIndex, _float In_fFixedPlayRatio = -1.f);
     _uint Get_StateIndex()const { return m_iStateIndex; }
-   
+    _float3 Get_ShakingOffset() const { return m_vShakingOffSet; }
 
     weak_ptr<CCharacter> Get_OwnerCharacter() const;
 
 public:
     virtual _bool Check_Requirement();
     virtual _bool Check_AndChangeNextState() PURE;
+    virtual void Check_AndChangeHitState(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage);
 public:
     _bool Get_NearGameObjectInDistance(weak_ptr<CGameObject>& Out_pGameObject, list<weak_ptr<CGameObject>> In_pGameObjects, const _float In_fDistance);
 
@@ -51,6 +52,7 @@ protected:
     _uint m_iTimeScaleLayer = 0;
     _uint m_iStateIndex;
     _float m_fFixedPlayRatio = 0.f;
+    _float3 m_vShakingOffSet = {0.f,0.f,0.f};
 
 
 
@@ -78,12 +80,12 @@ public: /* For. EventFunction */
 
     virtual void OnStateStart(const _float& In_fAnimationBlendTime);
     virtual void OnStateEnd();
-    virtual void OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage);
+    virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage);
 
 public:
-    virtual void OnCollisionEnter(weak_ptr<CCollider> pOtherCollider) {};
-    virtual void OnCollisionStay(weak_ptr<CCollider> pOtherCollider) {};
-    virtual void OnCollisionExit(weak_ptr<CCollider> pOtherCollider) {};
+    virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) {};
+    virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) {};
+    virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) {};
 
 public:
     virtual void OnEventMessage(weak_ptr<CBase> pArg);

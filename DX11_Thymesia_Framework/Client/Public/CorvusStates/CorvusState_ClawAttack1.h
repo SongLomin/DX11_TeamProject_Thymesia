@@ -36,6 +36,10 @@ private:
 
     _int m_iEndAttackEffectIndex = -1;
 
+    // TODO : Delete
+
+    _bool bTrigger = false;
+
 protected:
     virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
     virtual void OnStateEnd() override;

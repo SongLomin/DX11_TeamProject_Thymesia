@@ -639,7 +639,7 @@ void CEditGround::PickingFillterTextureDraw()
 	DEVICECONTEXT->Map(m_pTexture2D.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResource);
 
 	_int2	iPickIndex = { _int(Out.x * FILTER_TEXTURE_SIZE), _int(Out.y * FILTER_TEXTURE_SIZE) };
-	_int	iRoundIndx = m_fBufferDrawRadious / m_vBufferInfo.z;
+	_int	iRoundIndx = _int(m_fBufferDrawRadious / m_vBufferInfo.z);
 
 	_int2	iBeginIndex, iEndIndex;
 	iBeginIndex.x = (0 > iPickIndex.x - iRoundIndx) ? (0) : (iPickIndex.x - iRoundIndx);
@@ -648,9 +648,9 @@ void CEditGround::PickingFillterTextureDraw()
 	iEndIndex.x = (_int(FILTER_TEXTURE_SIZE) < iPickIndex.x + iRoundIndx) ? (FILTER_TEXTURE_SIZE) : (iPickIndex.x + iRoundIndx);
 	iEndIndex.y = (_int(FILTER_TEXTURE_SIZE) < iPickIndex.y + iRoundIndx) ? (FILTER_TEXTURE_SIZE) : (iPickIndex.y + iRoundIndx);
 
-	for (_uint iZ = iBeginIndex.y; iZ < iEndIndex.y; ++iZ)
+	for (_uint iZ(iBeginIndex.y); iZ < (_uint)iEndIndex.y; ++iZ)
 	{
-		for (_uint iX = iBeginIndex.x; iX < iEndIndex.x; ++iX)
+		for (_uint iX(iBeginIndex.x); iX < (_uint)iEndIndex.x; ++iX)
 		{
 			_ulong	iIndex		= iZ * FILTER_TEXTURE_SIZE + iX;
 			
@@ -810,18 +810,16 @@ void CEditGround::Bake_Mesh()
 	tModelData.RootNode->iNumChildren = 0;
 	XMStoreFloat4x4(&tModelData.RootNode->TransformationMatrix, XMMatrixIdentity());
 
-	_float3 vVertice[3];
-
 	shared_ptr<MESH_DATA> pMeshData = make_shared<MESH_DATA>();
 	pMeshData->eModelType		= MODEL_TYPE::GROUND;
 	pMeshData->iMaterialIndex	= 0;
 	pMeshData->iNumBones		= 0;
 	pMeshData->iNumFaces		= _uint(m_vBufferInfo.x - 1) * _uint(m_vBufferInfo.y - 1) * 2;
-	pMeshData->iNumVertices		= m_vBufferInfo.x * m_vBufferInfo.y;
+	pMeshData->iNumVertices		= _uint(m_vBufferInfo.x * m_vBufferInfo.y);
 
 	pMeshData->pGroundVertices = shared_ptr<VTXGROUND[]>(DBG_NEW VTXGROUND[pMeshData->iNumVertices]);
 
-	for (_uint i = 0; i < pMeshData->iNumVertices; ++i)
+	for (_uint i(0); i < pMeshData->iNumVertices; ++i)
 	{
 		VTXGROUND vOut;
 
@@ -833,7 +831,7 @@ void CEditGround::Bake_Mesh()
 
 	pMeshData->pIndices = shared_ptr<FACEINDICES32[]>(DBG_NEW FACEINDICES32[pMeshData->iNumFaces]);
 
-	for (_uint i = 0; i < pMeshData->iNumFaces; ++i)
+	for (_uint i(0); i < pMeshData->iNumFaces; ++i)
 	{
 		_uint3 Out = { 0, 0, 0 };
 

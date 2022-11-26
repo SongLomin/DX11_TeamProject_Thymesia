@@ -118,7 +118,7 @@ void CPhysXColliderObject::Load_FromJson(const json& In_Json)
 		PHYSXCOLLIDERDESC tDesc;
 		Preset::PhysXColliderDesc::StaticBoxDefaultSetting(tDesc, m_pTransformCom);
 		m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
-		m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
+		m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
 	}
 
 }

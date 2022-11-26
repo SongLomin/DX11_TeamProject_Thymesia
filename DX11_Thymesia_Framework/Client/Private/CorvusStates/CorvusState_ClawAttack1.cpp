@@ -54,6 +54,17 @@ void CCorvusState_ClawAttack1::Tick(_float fTimeDelta)
 		}
 	}
 
+	// TODO : delete
+	if (!bTrigger)
+	{
+		if (m_pModelCom.lock()->Get_CurrentAnimationKeyIndex() >= 20)
+		{
+			GAMEINSTANCE->Set_Chromatic(0.2f);
+			bTrigger = true;
+		}
+	}
+
+
 	Attack();
 }
 
@@ -122,6 +133,9 @@ void CCorvusState_ClawAttack1::Check_InputNextAttack()
 void CCorvusState_ClawAttack1::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	// TODO : delete
+	bTrigger = false;
 
 	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_AVoid>().lock())
 	{

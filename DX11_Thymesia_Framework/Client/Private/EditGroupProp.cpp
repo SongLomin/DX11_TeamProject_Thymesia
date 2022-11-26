@@ -79,7 +79,7 @@ void CEditGroupProp::LateTick(_float fTimeDelta)
 			iter.pProp.lock()->LateTick(fTimeDelta);
 
 			if (m_bSelect_ShowGroup)
-				iter.pProp.lock()->Set_ShaderPass(5);
+				iter.pProp.lock()->Set_ShaderPass((_bool)5);
 			else
 				iter.pProp.lock()->Set_ShaderPass(0);
 		}

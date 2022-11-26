@@ -57,6 +57,8 @@ HRESULT CEditInstanceProp::Initialize(void* pArg)
 	ZeroMemory(&m_PickingDesc, sizeof(INSTANCE_MESH_DESC));
 	m_PickingDesc.vScale = _float3(1.f, 1.f, 1.f);
 
+	Use_Thread(THREAD_TYPE::CUSTOM_THREAD1);
+
 	return S_OK;
 }
 
@@ -71,7 +73,7 @@ void CEditInstanceProp::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	m_pInstanceModelCom.lock()->Update(m_pPropInfos);
+	m_pInstanceModelCom.lock()->Update(m_pPropInfos, true);
 }
 
 void CEditInstanceProp::LateTick(_float fTimeDelta)
@@ -79,6 +81,22 @@ void CEditInstanceProp::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Cast<CGameObject>(m_this));
+}
+
+void CEditInstanceProp::Custom_Thread1(_float fTimeDelta)
+{
+#ifdef _INSTANCE_CULLING_
+	m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos));
+#endif
+}
+
+void CEditInstanceProp::Before_Render(_float fTimeDelta)
+{
+	__super::Before_Render(fTimeDelta);
+
+#ifdef _INSTANCE_CULLING_
+	m_pInstanceModelCom.lock()->Update_VisibleInstance();
+#endif
 }
 
 HRESULT CEditInstanceProp::Render()
@@ -261,6 +279,9 @@ void CEditInstanceProp::Load_FromJson(const json& In_Json)
 		{
 			json Desc = iter.value();
 
+			_vector vPosition;
+			_vector vOffsetRange;
+
 			for (auto& iter_item : Desc.items())
 			{
 				_float4x4 PropMatrix;
@@ -273,6 +294,17 @@ void CEditInstanceProp::Load_FromJson(const json& In_Json)
 				memcpy(&Desc.vRotation   , &PropMatrix.m[0][0], sizeof(_float3));
 				memcpy(&Desc.vScale      , &PropMatrix.m[1][0], sizeof(_float3));
 				memcpy(&Desc.vTarnslation, &PropMatrix.m[2][0], sizeof(_float3));
+
+				vPosition = XMLoadFloat3(&Desc.vTarnslation);
+				vPosition = XMVectorSetW(vPosition, 1.f);
+				
+				MESH_VTX_INFO tInfo = m_pInstanceModelCom.lock()->Get_ModelData().lock()->VertexInfo;
+
+				vOffsetRange = XMLoadFloat3(&tInfo.vMax) - XMLoadFloat3(&tInfo.vMin);
+				vOffsetRange *= XMLoadFloat3(&Desc.vScale);
+				Desc.fMaxRange = XMVectorGetX(XMVector3Length(vOffsetRange));
+				Desc.vCenter = tInfo.vCenter;
+				Desc.Bake_CenterWithMatrix();
 
 				m_pPropInfos.push_back(Desc);
 			}
@@ -334,46 +366,6 @@ void CEditInstanceProp::OnEventMessage(_uint iArg)
 		case (_uint)EVENT_TYPE::ON_EDITDRAW_NONE:
 		{
 			m_bSubDraw = false;
-		}
-		break;
-
-		case (_uint)EVENT_TYPE::ON_EDITPICKING:
-		{
-			RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
-
-			_uint iIndex = 0;
-			for (auto& iter : m_pPropInfos)
-			{
-				if (!m_pInstanceModelCom.lock().get())
-					continue;
-
-				MESH_VTX_INFO Info = m_pInstanceModelCom.lock()->Get_ModelData().lock()->VertexInfo;
-
-				_matrix PickWorldMatrix = XMMatrixIdentity();
-				_matrix RotationMatrix  = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&iter.vRotation));
-
-				PickWorldMatrix.r[0] = RotationMatrix.r[0] * iter.vScale.x;
-				PickWorldMatrix.r[1] = RotationMatrix.r[1] * iter.vScale.y;
-				PickWorldMatrix.r[2] = RotationMatrix.r[2] * iter.vScale.z;
-				PickWorldMatrix.r[3] = XMVectorSetW(XMLoadFloat3(&iter.vTarnslation), 1.f);
-
-
-				if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, Info, PickWorldMatrix))
-				{
-					CWindow_HierarchyView::GAMEOBJECT_DESC Desc;
-					Desc.HashCode	= typeid(CEditInstanceProp).hash_code();
-					Desc.pInstance  = dynamic_pointer_cast<CGameObject>(m_this.lock());
-					Desc.TypeName	= typeid(CEditInstanceProp).name();
-
-					GET_SINGLE(CWindow_HierarchyView)->CallBack_ListClick(Desc);
-					GET_SINGLE(CWindow_HierarchyView)->m_iPreSelectIndex = iIndex;
-
-					m_PickingDesc   = iter;
-					m_iPickingIndex = iIndex;
-				}
-
-				++iIndex;
-			}
 		}
 		break;
 
@@ -764,7 +756,7 @@ void CEditInstanceProp::View_Picking_Option()
 		}
 	}
 
-	else if (KEY_INPUT(KEY::R, KEY_STATE::TAP))
+	else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) && KEY_INPUT(KEY::R, KEY_STATE::TAP))
 	{
 		if (m_pPropInfos.empty() || 0 > m_iPickingIndex || m_pPropInfos.size() <= m_iPickingIndex)
 			return;

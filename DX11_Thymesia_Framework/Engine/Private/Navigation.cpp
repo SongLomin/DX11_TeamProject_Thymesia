@@ -74,21 +74,18 @@ void CNavigation::Init_Navi(const string& szModelKey, const NAVIDESC& tNaviDesc)
 
 	_uint VerticeCount = m_pModelData->iNumMeshs;
 
-	for (_uint i = 0; i < m_pModelData->iNumMeshs; i++)
+	for (_uint i(0); i < m_pModelData->iNumMeshs; i++)
 	{
 		shared_ptr<CCell> Cell = CCell::Create(m_pOwner, &m_pModelData->Mesh_Datas[i]->pPosVertices[0].vPosition, i);
-
 		m_pCells.push_back(Cell);
 	}
 
 	memcpy(&m_NaviDesc, &tNaviDesc, sizeof(NAVIDESC));
-	m_NaviDesc.m_iCurrentIndex = m_pCells.size() / 2;
+	m_NaviDesc.m_iCurrentIndex = (_int)m_pCells.size() >> 1;
 
 	m_IsVisitedTable.reserve(m_pCells.size());
-	for (size_t i = 0; i < m_pCells.size(); i++)
-	{
+	for (size_t i(0); i < m_pCells.size(); i++)
 		m_IsVisitedTable.push_back(false);
-	}
 
 	if (FAILED(Make_Neighbor()))
 		DEBUG_ASSERT;

@@ -60,19 +60,19 @@ void CCorvus_DefaultSaber::SetUp_ShaderResource()
 	__super::SetUp_ShaderResource();
 }
 
-void CCorvus_DefaultSaber::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+void CCorvus_DefaultSaber::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionEnter(pOtherCollider);
+	__super::OnCollisionEnter(pMyCollider, pOtherCollider);
 }
 
-void CCorvus_DefaultSaber::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
+void CCorvus_DefaultSaber::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionStay(pOtherCollider);
+	__super::OnCollisionStay(pMyCollider, pOtherCollider);
 }
 
-void CCorvus_DefaultSaber::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
+void CCorvus_DefaultSaber::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionExit(pOtherCollider);
+	__super::OnCollisionExit(pMyCollider, pOtherCollider);
 }
 
 void CCorvus_DefaultSaber::Free()

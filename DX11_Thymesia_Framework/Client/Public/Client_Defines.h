@@ -13,15 +13,18 @@
 #define		_LIFEGUARD_FOR_FALL_
 #define		_DEBUG_COUT_
 #define		_DEBUG_COUT_JOJO
-//#define		_STAGE_1_
+// #define		_STAGE_1_
 #define		_STAGE_2_
-#define		_STAGE_1_MONSTER_
+// #define		_STAGE_1_MONSTER_
+// #define		_VARG_
 //#define		_INSTANCE_CULLING_
-//#define		_GENERATE_PROP_COLLIDER_ true
+// #define		_GENERATE_PROP_COLLIDER_ true
 #define		_USE_GRAVITY_
-#define		_DAGGER_TRAIL_
+// #define		_DAGGER_TRAIL_
+#define		_TEST_STATIC_PROPS_
 // UI제외한 오브젝트 생성 X
 //#define		_ONLY_UI_
+#define		_RENDER_FPS_
 #endif // _DEBUG
 
 #ifdef NDEBUG
@@ -41,7 +44,7 @@
 
 #define ENGINE_DECLATION_UI class CTexture; class CShader;   
 
-
+#define ADD_STATIC_CUSTOMUI GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC)
 
 namespace Client 
 {
@@ -64,7 +67,7 @@ namespace Client
 		LEVEL_TEST,
 		LEVEL_END };
 	enum class TIMER { TIMER_DEFAULT, TIMER_FRAME, TIMER_HYPERSPACE, TIMER_END };
-	enum class FONT_INDEX { DREAM, PRETENDARD, FONT_END };
+	enum class FONT_INDEX { DREAM, PRETENDARD,HEIROLIGHT, FONT_END };
 	enum class EVENT_TYPE
 	{
 		ON_HITPLAYER,
@@ -176,6 +179,8 @@ namespace Client
 		KNIFEWOMAN, // 기본단검여자
 		SKULL, // 기본해골
 		GARDENER, // 낫든몬스터
+		VARG, // 보스바그
+		SHIELDAXEMAN,
 		NMON_END
 	};
 
@@ -209,6 +214,23 @@ namespace Client
 		FAIL,
 		NONE,
 		PARRY_TYPE_END
+	};
+
+	enum class CORSS_RESULT
+	{
+		LEFT,
+		RIGHT,
+		CORSS_END
+	};
+
+	enum class PARRY_SUCCESS
+	{
+		LEFT,
+		LEFTUP,
+		RIGHT,
+		RIGHTUP,
+		FAIL,
+		PARRY_SUCCESS_END
 	};
 
 

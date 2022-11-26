@@ -597,7 +597,7 @@ void CPhysXCollider::CreatePhysXActor(PHYSXCOLLIDERDESC& PhysXColliderDesc)
 	
 }
 
-void CPhysXCollider::Add_PhysXActorAtScene(const PxVec3& In_MassSpaceInertiaTensor, const PxReal In_fMass)
+void CPhysXCollider::Add_PhysXActorAtSceneWithOption(const PxVec3& In_MassSpaceInertiaTensor, const PxReal In_fMass)
 {
 	if (m_pRigidDynamic && m_pRigidStatic)
 	{
@@ -616,6 +616,37 @@ void CPhysXCollider::Add_PhysXActorAtScene(const PxVec3& In_MassSpaceInertiaTens
 		m_pRigidDynamic->setMassSpaceInertiaTensor(In_MassSpaceInertiaTensor);
 		//m_pRigidDynamic->setRigidBodyFlag(PxRigidBodyFlag::eKINEMATIC, false);
 
+		GET_SINGLE(CPhysX_Manager)->Add_DynamicActorAtCurrentScene(*m_pRigidDynamic);
+	}
+
+	else if (m_pRigidStatic)
+	{
+		GET_SINGLE(CPhysX_Manager)->Add_StaticActorAtCurrentScene(*m_pRigidStatic);
+	}
+
+	else
+	{
+		// 생성된 PhysXActor가 없음. Create부터 할 것.
+		DEBUG_ASSERT;
+	}
+
+	for (auto& elem : m_pGeometry)
+	{
+		Safe_Delete(elem);
+	}
+
+}
+
+void CPhysXCollider::Add_PhysXActorAtScene()
+{
+	if (m_pRigidDynamic && m_pRigidStatic)
+	{
+		// 둘 다 존재하면 안된다.
+		DEBUG_ASSERT;
+	}
+
+	else if (m_pRigidDynamic)
+	{
 		GET_SINGLE(CPhysX_Manager)->Add_DynamicActorAtCurrentScene(*m_pRigidDynamic);
 	}
 

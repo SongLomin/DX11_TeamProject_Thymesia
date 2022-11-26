@@ -278,8 +278,8 @@ void CCustomEffectMesh::Reset_Effect()
 				m_pAttackArea = GAMEINSTANCE->Add_GameObject<CAttackArea>(m_CreatedLevel);
 			}
 
-			WEAPON_DESC WeaponDesc;
-			ZeroMemory(&WeaponDesc, sizeof(WEAPON_DESC));
+			ATTACKAREA_DESC WeaponDesc;
+			ZeroMemory(&WeaponDesc, sizeof(ATTACKAREA_DESC));
 			WeaponDesc.fWeaponScale = m_tEffectMeshDesc.fWeaponScale;
 			WeaponDesc.iHitType = m_tEffectMeshDesc.iHitType;
 			WeaponDesc.iOptionType = m_tEffectMeshDesc.iOptionType;
@@ -347,8 +347,8 @@ void CCustomEffectMesh::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 			m_pAttackArea = GAMEINSTANCE->Add_GameObject<CAttackArea>(m_CreatedLevel);
 		}
 
-		WEAPON_DESC WeaponDesc;
-		ZeroMemory(&WeaponDesc, sizeof(WEAPON_DESC));
+		ATTACKAREA_DESC WeaponDesc;
+		ZeroMemory(&WeaponDesc, sizeof(ATTACKAREA_DESC));
 		WeaponDesc.fWeaponScale = m_tEffectMeshDesc.fWeaponScale;
 		WeaponDesc.iHitType = m_tEffectMeshDesc.iHitType;
 		WeaponDesc.iOptionType = m_tEffectMeshDesc.iOptionType;

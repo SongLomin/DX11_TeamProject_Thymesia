@@ -68,7 +68,6 @@ HRESULT CCamera_Free::Render()
 #ifdef _DEBUG
 const void CCamera_Free::ReadyText()
 {
-	ZeroMemory(&m_tCameraSpeedText, sizeof(TEXTINFO));
 	m_tCameraSpeedText.bAlways = false;
 	m_tCameraSpeedText.bCenterAlign = true;
 	m_tCameraSpeedText.fRotation = 0.f;

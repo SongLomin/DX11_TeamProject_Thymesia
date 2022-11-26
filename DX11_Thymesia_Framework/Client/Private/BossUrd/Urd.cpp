@@ -30,7 +30,7 @@ HRESULT CUrd::Initialize(void* pArg)
 		VTXANIM_DECLARATION::Element,
 		VTXANIM_DECLARATION::iNumElements);
 
-	memcpy(&m_tLinkStateDesc, pArg, sizeof(STATE_LINK_BOSS_DESC));
+	memcpy(&m_tLinkStateDesc, pArg, sizeof(STATE_LINK_MONSTER_DESC));
 
 	m_pModelCom.lock()->Init_Model("Boss_Urd", "", (_uint)TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
@@ -128,19 +128,19 @@ void CUrd::SetUp_ShaderResource()
 
 
 
-void CUrd::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+void CUrd::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	//__super::OnCollisionEnter(pOtherCollider);
+	//__super::OnCollisionEnter(pMyCollider, pOtherCollider);
 }
 
-void CUrd::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
+void CUrd::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	//__super::OnCollisionStay(pOtherCollider);
+	//__super::OnCollisionStay(pMyCollider, pOtherCollider);
 }
 
-void CUrd::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
+void CUrd::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	//__super::OnCollisionExit(pOtherCollider);
+	//__super::OnCollisionExit(pMyCollider, pOtherCollider);
 }
 
 void CUrd::OnEnable(void* _Arg)

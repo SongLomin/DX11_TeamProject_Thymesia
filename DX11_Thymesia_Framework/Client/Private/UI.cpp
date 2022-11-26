@@ -141,6 +141,26 @@ void CUI::Set_UIPosition(const _float fX, const _float fY, const _float fSizeX, 
 	}
 }
 
+void CUI::Set_UIPosition(const _float fX, const _float fY, UI_ALIGN_TYPE eType)
+{
+	switch (eType)
+	{
+	case Client::CUI::ALIGN_LEFTTOP:
+
+		m_tUIDesc.fX = fX + (m_tUIDesc.fSizeX * 0.5f);
+		m_tUIDesc.fY = fY + (m_tUIDesc.fSizeY * 0.5f);
+		break;
+	case Client::CUI::ALIGN_CENTER:
+		m_tUIDesc.fX = fX;
+		m_tUIDesc.fY = fY;
+		break;
+	case Client::CUI::ALIGN_END:
+		break;
+	default:
+		break;
+	}
+}
+
 void CUI::Set_UIPosition(const _float fX, const _float fY)
 {
 	m_tUIDesc.fX = fX;

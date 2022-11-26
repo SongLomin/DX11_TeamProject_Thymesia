@@ -32,11 +32,19 @@ private:
     void    Update_ParryType();
 
 private:
-    _bool m_IsNextAttack = false;
-
+    _bool m_IsNextParry = false;
     _float m_fDebugAnimationSpeed = 1.f;
-
     _int m_iEndAttackEffectIndex = -1;
+
+protected: //Parrying Variable;
+    PARRY_TYPE              m_eParryType = PARRY_TYPE::PARRY_TYPE_END;
+    _bool                   m_bParryed = false;
+
+protected://Parrying Functions
+    PARRY_TYPE              Get_ParryType() { return m_eParryType; }
+    void                    Success_Parry() { m_bParryed = true; }
+
+
 
    
 
@@ -45,6 +53,7 @@ protected:
     virtual void OnStateEnd() override;
 
 protected:
+    virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage) override;
     virtual void OnEventMessage(_uint iArg) override;
     virtual void OnDestroy() override;
     void Free();

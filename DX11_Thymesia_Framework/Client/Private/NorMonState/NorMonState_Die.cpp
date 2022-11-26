@@ -125,6 +125,8 @@ void CNorMonState_Die::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif
 
 
+	// TODO : test chromatic aberration
+	GAMEINSTANCE->Add_Chromatic(0.3f);
 }
 
 void CNorMonState_Die::OnStateEnd()

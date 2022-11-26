@@ -34,7 +34,7 @@ public:// CGameObject을(를) 통해 상속됨
     virtual HRESULT Render() override;
 
 public:
-    void Init_AttackArea(const WEAPON_DESC& In_WeaponDesc, weak_ptr<CTransform> In_ParentTransformCom);
+    void Init_AttackArea(const ATTACKAREA_DESC& In_WeaponDesc, weak_ptr<CTransform> In_ParentTransformCom);
     void Enable_Weapon(const _float& In_fLifeTime, const _bool& In_bSyncTransform);
     void Disable_Weapon();
     weak_ptr<CCharacter> Get_ParentObject();
@@ -55,16 +55,16 @@ protected:
     _bool                   m_bFirstAttack = true;
 
 private:
-    WEAPON_DESC         m_tWeaponDesc;
+    ATTACKAREA_DESC         m_tWeaponDesc;
 
     _float              m_fLifeTime = 0.f;
     _float              m_fCurrentFreq = 0.f;
     _bool               m_bSyncTransform = false;
 
 protected:
-    virtual void OnCollisionEnter(weak_ptr<CCollider> pOtherCollider) override;
-    virtual void OnCollisionStay(weak_ptr<CCollider> pOtherCollider) override;
-    virtual void OnCollisionExit(weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
 
 private:
     virtual void OnEnable(void* pArg) override;

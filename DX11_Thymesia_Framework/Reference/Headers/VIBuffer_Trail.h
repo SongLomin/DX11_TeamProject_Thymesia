@@ -5,7 +5,7 @@ BEGIN(Engine)
 
 class CTransform;
 class CBoneNode;
-class MODEL_DATA;
+struct MODEL_DATA;
 
 class ENGINE_DLL CVIBuffer_Trail : public CVIBuffer
 {

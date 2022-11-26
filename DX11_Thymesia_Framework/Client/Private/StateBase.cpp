@@ -29,11 +29,11 @@ HRESULT CStateBase::Initialize(void* pArg)
 void CStateBase::Start()
 {
 	m_pTransformCom = m_pOwner.lock()->Get_Component<CTransform>();
-	m_pNaviCom = m_pOwner.lock()->Get_Component<CNavigation>();
-	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
+	m_pNaviCom      = m_pOwner.lock()->Get_Component<CNavigation>();
+	m_pModelCom     = m_pOwner.lock()->Get_Component<CModel>();
 	m_pPhysXControllerCom = m_pOwner.lock()->Get_Component<CPhysXController>();
 
-	_uint i = m_pOwner.lock()->Get_ComponentsByType<CStatus>().size();
+	_uint i = _uint(m_pOwner.lock()->Get_ComponentsByType<CStatus>().size());
 
 	m_pStatusCom = m_pOwner.lock()->Get_ComponentByType<CStatus>();
 }
@@ -74,6 +74,10 @@ _bool CStateBase::Check_Requirement()
 	}
 
 	return true;
+}
+
+void CStateBase::Check_AndChangeHitState(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
 }
 
 _bool CStateBase::Get_NearGameObjectInDistance(weak_ptr<CGameObject>& Out_pGameObject, list<weak_ptr<CGameObject>> In_pGameObjects, const _float In_fDistance)
@@ -124,7 +128,7 @@ void CStateBase::OnStateEnd()
 
 
 
-void CStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+void CStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
 
 }

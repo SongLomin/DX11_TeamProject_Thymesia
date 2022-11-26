@@ -69,7 +69,7 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	PHYSXCOLLIDERDESC tPhysxColliderDesc;
 	Preset::PhysXColliderDesc::TestLightPropSetting(tPhysxColliderDesc);
 	m_pPhysXColliderCom.lock()->CreatePhysXActor(tPhysxColliderDesc);
-	m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene({ 0.f, 0.f, 0.f }, 1.f);
+	m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption({ 0.f, 0.f, 0.f }, 1.f);
 
 	/*Preset::PhysXColliderDesc::TestLightPropTriggerSetting(tPhysxColliderDesc);
 	m_pPhysXTriggerColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
@@ -125,6 +125,13 @@ HRESULT CLight_Prop::Render()
 	{
 		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS);
+	/*	if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+		{
+			m_iPassIndex = 3;
+		}
+		else
+			m_iPassIndex = 7;*/
+
 		m_pShaderCom.lock()->Begin(m_iPassIndex);
 		m_pModelCom.lock()->Render_Mesh(i);
 	}

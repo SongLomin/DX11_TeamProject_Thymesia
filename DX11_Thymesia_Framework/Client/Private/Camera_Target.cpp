@@ -232,6 +232,7 @@ void CCamera_Target::Deactivate_Zoom()
 
 void CCamera_Target::Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime,_float fFrequency)
 {
+	vShakingDir = XMVector3TransformNormal(vShakingDir, m_pTransformCom.lock()->Get_WorldMatrix());
 	vShakingDir = XMVector3Normalize(vShakingDir);
 	XMStoreFloat3(&m_vShakingDir, vShakingDir);
 	XMStoreFloat3(&m_vShakingEndOffSet, vShakingDir* fRatio);
@@ -310,11 +311,11 @@ void CCamera_Target::Free_MouseMove(_float fTimeDelta)//마우스 움직임
 	}
 	if (fabs(m_iMouseMovementY) > DBL_EPSILON)
 		m_pTransformCom.lock()->Turn(m_pTransformCom.lock()->Get_State(CTransform::STATE_RIGHT), fTimeDelta * m_iMouseMovementY * 0.2f * 0.1f);
-	m_iMouseMovementY *= 0.8f;
+	m_iMouseMovementY = _long(m_iMouseMovementY * 0.8f);
 
 	if (fabs(m_iMouseMovementX) > DBL_EPSILON)
 		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * 0.1f * m_iMouseMovementX * 0.2f);
-	m_iMouseMovementX *= 0.8f;
+	m_iMouseMovementX = _long(m_iMouseMovementX * 0.8f);
 
 }
 

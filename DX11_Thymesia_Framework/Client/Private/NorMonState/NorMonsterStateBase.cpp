@@ -70,7 +70,7 @@ void CNorMonsterStateBase::Play_OnHitEffect()
 	//T_SINGLE(CGameManager)->Use_EffectGroup("Hit_Monster2", m_pTransformCom);
 }
 
-void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
 	//__super::OnHit(pOtherCollider, In_eHitType, In_fDamage);
 
@@ -84,9 +84,14 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_T
 		if (!pAttackArea.lock())
 			return;
 
+		weak_ptr<CCharacter> pOtherCharacter = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner()).lock()->Get_ParentObject();
 		
-		_vector vOtherColliderPosition = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner()).lock()->
-			Get_ParentObject().lock()->
+		_float3 vShakingOffset = pOtherCharacter.lock()->Get_CurState().lock()->Get_ShakingOffset();
+		_vector vShakingOffsetToVector = XMLoadFloat3(&vShakingOffset);
+
+		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.5f, 0.1f);//일반 공격
+
+		_vector vOtherColliderPosition = pOtherCharacter.lock()->
 			Get_Component<CTransform>().lock()->
 			Get_State(CTransform::STATE_TRANSLATION);
 
@@ -99,6 +104,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_T
 
 		ATTACK_OPTION eAttackOption =  pAttackArea.lock()->Get_OptionType();
 		
+		//pAttackArea.lock()->Get_ParentObject().lock()->
 
 		CStatus_Player::PLAYERDESC tPlayerDesc;
 
@@ -186,21 +192,21 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_T
 
 
 
-void CNorMonsterStateBase::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+void CNorMonsterStateBase::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionEnter(pOtherCollider);
+	__super::OnCollisionEnter(pMyCollider, pOtherCollider);
 
 }
 
-void CNorMonsterStateBase::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
+void CNorMonsterStateBase::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionStay(pOtherCollider);
+	__super::OnCollisionStay(pMyCollider, pOtherCollider);
 
 }
 
-void CNorMonsterStateBase::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
+void CNorMonsterStateBase::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionExit(pOtherCollider);
+	__super::OnCollisionExit(pMyCollider, pOtherCollider);
 
 }
 

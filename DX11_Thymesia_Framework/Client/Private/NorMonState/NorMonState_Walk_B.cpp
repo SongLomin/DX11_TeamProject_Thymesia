@@ -130,16 +130,12 @@ _bool CNorMonState_Walk_B::Check_AndChangeNextState()
 	_float fMToMDistance = GetStartPositionToCurrentPositionDir(); // 몬스터스타트포지션과 몬스터현재 포지션 사이의 거리
 
 	
-	if(!m_bPlayerToClose && fPToMDistance <= 3.f)
+	if(!m_bPlayerToClose && fPToMDistance <= 3.f )
 	{
-		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_IdleType(2);
-		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_ClosePlayerCheck(true);
-		Get_Owner().lock()->Get_Component<CNorMonState_Idle>().lock()->Set_CloseToRun(true);
-		Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
+		Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
 		return true;
 	}
-
-	if (!m_bPlayerToClose && fMToMDistance <= 13.f)
+    if (!m_bPlayerToClose && fMToMDistance <= 13.f)
 	{
 		Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(false);
 		Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);

@@ -62,16 +62,14 @@ void CStatic_Instancing_Prop::LateTick(_float fTimeDelta)
 
 void CStatic_Instancing_Prop::Custom_Thread1(_float fTimeDelta)
 {
-
+#ifdef _INSTANCE_CULLING_
+	m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos));
+#endif
 }
 
 void CStatic_Instancing_Prop::Before_Render(_float fTimeDelta)
 {
 	__super::Before_Render(fTimeDelta);
-
-#ifdef _INSTANCE_CULLING_
-	m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos));
-#endif
 
 #ifdef _INSTANCE_CULLING_
 	m_pInstanceModelCom.lock()->Update_VisibleInstance();
@@ -262,7 +260,7 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 		PhysXColliderDesc tDesc;
 		Preset::PhysXColliderDesc::StaticInstancingPropSetting(tDesc, m_pTransformCom);
 		m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
-		m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
+		m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
 	}
 #endif // _GENERATE_PROP_COLLIDER_
 

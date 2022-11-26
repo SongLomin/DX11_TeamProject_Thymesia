@@ -197,15 +197,8 @@ namespace Client
 		_float3		vMinStartRotation; // // becomes spawn look if bIsSpawnList is true
 		_float3		vMaxStartRotation;
 
-		_float3		vMinRotationSpeed;
-		_float3		vMaxRotationSpeed;
-
-		// _float3		vRotationSpeed;
-
-		_float3		vMinRotationForce;
-		_float3		vMaxRotationForce;
-
-		// _float3		vRotationForce;
+		_float3		vRotationSpeed;
+		_float3		vRotationForce;
 
 		_float3		vMinLimitRotation;
 		_float3		vMaxLimitRotation;
@@ -219,8 +212,11 @@ namespace Client
 		_float3		vMinStartScale;
 		_float3		vMaxStartScale;
 
-		_float3		vScaleSpeed;
-		_float3		vScaleForce;
+		_float3		vMinScaleSpeed;
+		_float3		vMaxScaleSpeed;
+
+		_float3		vMinScaleForce;
+		_float3		vMaxScaleForce;
 
 		_float3		vMinLimitScale;
 		_float3		vMaxLimitScale;
@@ -232,9 +228,13 @@ namespace Client
 		_float4		vMinStartColor;
 		_float4		vMaxStartColor;
 
-		_float4		vColorSpeed;
-		_float4		vColorForce;
+		_float4		vMinColorSpeed;
+		_float4		vMaxColorSpeed;
 
+		_float4		vMinColorForce;
+		_float4		vMaxColorForce;
+
+		_float4		vMinColor;
 		_float4		vMaxColor;
 #pragma endregion
 #pragma region Texture
@@ -247,9 +247,7 @@ namespace Client
 #pragma endregion
 #pragma region Mask
 		_int		iMaskIndex;
-
 		_float2		vMaskStartUV;
-
 		_float2		vMaskUVSpeed;
 		_float2		vMaskUVForce;
 		_float2		vMaskUVMax;
@@ -277,7 +275,7 @@ namespace Client
 #pragma endregion
 	};
 
-	struct WEAPON_DESC
+	struct ATTACKAREA_DESC
 	{
 		_float		fHitFreq;
 		_float		fWeaponScale;
@@ -285,6 +283,13 @@ namespace Client
 		_int		iOptionType;
 		_float      fDamage;
 		_float3		vWeaponOffset;
+	};
+
+	struct WEAPON_DESC
+	{
+		_int		iHitType;
+		_int		iOptionType;
+		_float      fDamage;
 	};
 
 	struct KEYFRAME_EVENT

@@ -137,11 +137,11 @@ _uint CSound_Manager::PlaySound(const TCHAR* pSoundKey, _float _vol)
 
 	_uint iResult = -1;
 
-	for (int i = 1; i < MAX_CHANNEL; i++)
+	for (_int i(1); i < MAX_CHANNEL; i++)
 	{
 		FMOD_Channel_IsPlaying(m_pChannelArr[i], &bPlay);
 
-		if (bPlay == 0)
+		if (0 == bPlay)
 		{
 			FMOD_System_PlaySound(m_pSystem, FMOD_CHANNEL_FREE, iter->second, FALSE, &m_pChannelArr[i]);
 			if (_vol >= SOUND_MAX)
@@ -183,25 +183,21 @@ void CSound_Manager::PlayBGM(const TCHAR* pSoundKey, _float _vol)
 
 
 	m_BGMvolume = _vol;
-
 	FMOD_Channel_SetVolume(m_pChannelArr[BGM], _vol);
-
 	FMOD_System_Update(m_pSystem);
 }
 
 void CSound_Manager::StopSound(_uint _iChannelIndex)
 {
 	if (_iChannelIndex == -1)
-	{
 		return;
-	}
 
 	FMOD_Channel_Stop(m_pChannelArr[_iChannelIndex]);
 }
 
 void CSound_Manager::StopAll()
 {
-	for (int i = 0; i < (_uint)MAXCHANNEL; ++i)
+	for (_uint i(0); i < (_uint)MAXCHANNEL; ++i)
 		FMOD_Channel_Stop(m_pChannelArr[i]);
 }
 
@@ -212,9 +208,9 @@ void CSound_Manager::LoadSoundFile()
 	if (handle == -1 || handle == 0)
 		return;
 
-	int iResult = 0;
+	_int iResult(0);
 
-	char szCurPath[128] = "../Bin/Sound/";
+	char szCurPath[128]  = "../Bin/Sound/";
 	char szFullPath[128] = "";
 	char szFilename[MAX_PATH];
 	while (iResult != -1)
@@ -225,9 +221,9 @@ void CSound_Manager::LoadSoundFile()
 		FMOD_SOUND* pSound = nullptr;
 
 		FMOD_RESULT eRes = FMOD_System_CreateSound(m_pSystem, szFullPath, FMOD_DEFAULT, 0, &pSound);
-		if (eRes == FMOD_OK)
+		if (FMOD_OK == eRes)
 		{
-			int iLength = strlen(szFilename) + 1;
+			_int iLength = (_int)strlen(szFilename) + 1;
 
 			TCHAR* pSoundKey = new TCHAR[iLength];
 			ZeroMemory(pSoundKey, sizeof(TCHAR) * iLength);
@@ -235,7 +231,7 @@ void CSound_Manager::LoadSoundFile()
 
 			m_mapSound.emplace(pSoundKey, pSound);
 
-			delete pSoundKey;
+			delete[] pSoundKey;
 		}
 		iResult = _tfindnext64(handle, &fd);
 	}

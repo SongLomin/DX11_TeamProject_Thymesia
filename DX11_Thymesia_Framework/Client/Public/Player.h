@@ -53,14 +53,12 @@ protected:
     virtual void OnDisable() override;
 
 public:
-    virtual void Call_WeaponFirstAttack(weak_ptr<CCollider> pOtherCollider) override;
-    virtual void Call_WeaponAttack(weak_ptr<CCollider> pOtherCollider) override;
+    virtual void Call_WeaponFirstAttack(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+    virtual void Call_WeaponAttack(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
 
 protected:
     weak_ptr<CMonster> m_pTargetMonster;
     weak_ptr<CStateBase> m_pStandState;
-    
-    weak_ptr<CPhysXCollider> m_pPhysXColliderCom;
 
     //list<weak_ptr<CCorvus_DefaultSaber>> m_pDefaultSaber;
     //list<weak_ptr<CCorvus_DefaultDagger>> m_pDefaultDagger;
@@ -76,9 +74,9 @@ public:
 
 
 protected:
-    virtual void OnCollisionEnter(weak_ptr<CCollider> pOtherCollider) override;
-    virtual void OnCollisionStay(weak_ptr<CCollider> pOtherCollider) override;
-    virtual void OnCollisionExit(weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
 
 private:
     void Free();

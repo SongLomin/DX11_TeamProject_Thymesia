@@ -5,15 +5,13 @@ BEGIN(Engine)
 
 struct ENGINE_DLL BONE_DATA
 {
-    string			                    szName;
-
-    _float4x4                           OffsetMatrix;
-
-    HRESULT Make_BoneData(aiBone* In_pAIBone);
+    string szName;
+    _float4x4 OffsetMatrix;
 
 public:
-    void Bake_Binary(ofstream& os);
-    void Load_FromBinary(ifstream& is);
+    HRESULT Make_BoneData(aiBone* In_pAIBone);
+    void    Bake_Binary(ofstream& os);
+    void    Load_FromBinary(ifstream& is);
 
 };
 

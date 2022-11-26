@@ -227,7 +227,7 @@ void CWindow_ComponentView::Init_Components()
 					return !strcmp(szCurrentModelKey, ModelKey.c_str());
 				});
 
-			m_CurrentModelIndex = iter - m_AllModelKeys.begin();
+			m_CurrentModelIndex = _int(iter - m_AllModelKeys.begin());
 		}
 	}
 }

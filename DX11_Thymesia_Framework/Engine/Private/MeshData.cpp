@@ -12,7 +12,7 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
     // 애니메이션
     if (MODEL_TYPE::ANIM == In_eModelType)
     {
-        for (_uint i = 0; i < iNumBones; i++)
+        for (_uint i(0); i < iNumBones; i++)
         {
             shared_ptr<BONE_DATA> pBoneData = make_shared<BONE_DATA>();
             pBoneData->Make_BoneData(In_pAiMesh->mBones[i]);
@@ -21,7 +21,7 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
 
         pAnimVertices = shared_ptr<VTXANIM[]>(new VTXANIM[iNumVertices]);
 
-        for (_uint i = 0; i < iNumVertices; ++i)
+        for (_uint i(0); i < iNumVertices; ++i)
         {
             memcpy(&pAnimVertices[i].vPosition, &In_pAiMesh->mVertices[i], sizeof(_float3));
             //XMStoreFloat3(&pAnimVertices[i].vPosition, XMVector3TransformCoord(XMLoadFloat3(&pAnimVertices[i].vPosition), In_TransformMatrix));
@@ -36,12 +36,12 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
             Check_Position(In_pVertexInfo->vMin, pAnimVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft > _fRight; });
         }
 
-        for (_uint i = 0; i < iNumBones; ++i)
+        for (_uint i(0); i < iNumBones; ++i)
         {
             aiBone* pAIBone = In_pAiMesh->mBones[i];
 
             /* pAIBone->mNumWeights : 이 뼈는 몇개의 정점에 영향릉 주는지 */
-            for (_uint j = 0; j < pAIBone->mNumWeights; ++j)
+            for (_uint j(0); j < pAIBone->mNumWeights; ++j)
             {
                 /* pAIBone->mWeights[j].mVertexId : 그 중에 j번째 정점의 인덱스는 뭐였는지?  */
                 /* pAIBone->mWeights[j].mWeight : j번째 정점에게 적용해야할 가중치. */
@@ -80,9 +80,7 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
         pVertices = shared_ptr<VTXMODEL[]>(new VTXMODEL[iNumVertices]);
         pPosVertices = shared_ptr<VTXPOS[]>(new VTXPOS[iNumVertices]);
 
-        _float3 vMaxPos, vMinPos, vCenterPos;
-
-        for (_uint i = 0; i < iNumVertices; ++i)
+        for (_uint i(0); i < iNumVertices; ++i)
         {
             memcpy(&pVertices[i].vPosition, &In_pAiMesh->mVertices[i], sizeof(_float3));
             XMStoreFloat3(&pVertices[i].vPosition, XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vPosition), In_TransformMatrix));
@@ -92,22 +90,14 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
             XMStoreFloat3(&pVertices[i].vNormal, XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&pVertices[i].vNormal), In_TransformMatrix)));
             
             if (In_pAiMesh->mTextureCoords[0])
-            {
                 memcpy(&pVertices[i].vTexUV, &In_pAiMesh->mTextureCoords[0][i], sizeof(_float2));
-            }
             else
-            {
                 pVertices[i].vTexUV = { 0.f, 0.f };
-            }
 
             if (In_pAiMesh->mTangents)
-            {
                 memcpy(&pVertices[i].vTangent, &In_pAiMesh->mTangents[i], sizeof(_float3));
-            }
             else
-            {
                 pVertices[i].vTangent = { 0.f, 0.f, 0.f };
-            }
 
             Check_Position(In_pVertexInfo->vMax, pVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft < _fRight; });
             Check_Position(In_pVertexInfo->vMin, pVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft > _fRight; });
@@ -118,7 +108,7 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
     {
         pPosVertices = shared_ptr<VTXPOS[]>(new VTXPOS[iNumVertices]);
 
-        for (_uint i = 0; i < iNumVertices; ++i)
+        for (_uint i(0); i < iNumVertices; ++i)
         {
             memcpy(&pVertices[i].vPosition, &In_pAiMesh->mVertices[i], sizeof(_float3));
             XMStoreFloat3(&pVertices[i].vPosition, XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vPosition), In_TransformMatrix));
@@ -133,7 +123,7 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
 
     pIndices = shared_ptr<FACEINDICES32[]>(new FACEINDICES32[iNumFaces]);
 
-    for (_uint i = 0; i < iNumFaces; ++i)
+    for (_uint i(0); i < iNumFaces; ++i)
     {
         pIndices[i]._1 = In_pAiMesh->mFaces[i].mIndices[0];
         pIndices[i]._2 = In_pAiMesh->mFaces[i].mIndices[1];
@@ -156,45 +146,33 @@ void MESH_DATA::Bake_Binary(ofstream& os)
     
     if (MODEL_TYPE::ANIM == eModelType)
     {
-        for (_uint i = 0; i < iNumBones; i++)
-        {
+        for (_uint i(0); i < iNumBones; i++)
             Bone_Datas[i]->Bake_Binary(os);
-        }
 
-        for (_uint i = 0; i < iNumVertices; ++i)
-        {
+        for (_uint i(0); i < iNumVertices; ++i)
             write_typed_data(os, pAnimVertices[i]);
-        }
     }
 
     else if(MODEL_TYPE::NONANIM == eModelType)
     {
-        for (_uint i = 0; i < iNumVertices; ++i)
-        {
+        for (_uint i(0); i < iNumVertices; ++i)
             write_typed_data(os, pVertices[i]);
-        }
     }
 
     else if (MODEL_TYPE::NAVI == eModelType)
     {
-        for (_uint i = 0; i < iNumVertices; ++i)
-        {
+        for (_uint i(0); i < iNumVertices; ++i)
             write_typed_data(os, pPosVertices[i]);
-        }
     }
 
     else if (MODEL_TYPE::GROUND == eModelType)
     {
-        for (_uint i = 0; i < iNumVertices; ++i)
-        {
+        for (_uint i(0); i < iNumVertices; ++i)
             write_typed_data(os, pGroundVertices[i]);
-        }
     }
 
-    for (_uint i = 0; i < iNumFaces; ++i)
-    {
+    for (_uint i(0); i < iNumFaces; ++i)
         write_typed_data(os, pIndices[i]);
-    }
 
 }
 
@@ -213,7 +191,7 @@ void MESH_DATA::Load_FromBinary(ifstream& is)
 
     if (MODEL_TYPE::ANIM == eModelType)
     {
-        for (_uint i = 0; i < iNumBones; i++)
+        for (_uint i(0); i < iNumBones; i++)
         {
             shared_ptr<BONE_DATA> pBoneData = make_shared<BONE_DATA>();
             pBoneData->Load_FromBinary(is);
@@ -222,7 +200,7 @@ void MESH_DATA::Load_FromBinary(ifstream& is)
 
         pAnimVertices = shared_ptr<VTXANIM[]>(new VTXANIM[iNumVertices]);
 
-        for (_uint i = 0; i < iNumVertices; ++i)
+        for (_uint i(0); i < iNumVertices; ++i)
         {
             read_typed_data(is, pAnimVertices[i]);
         }
@@ -234,7 +212,7 @@ void MESH_DATA::Load_FromBinary(ifstream& is)
         pVertices = shared_ptr<VTXMODEL[]>(new VTXMODEL[iNumVertices]);
         pPosVertices = shared_ptr<VTXPOS[]>(new VTXPOS[iNumVertices]);
 
-        for (_uint i = 0; i < iNumVertices; ++i)
+        for (_uint i(0); i < iNumVertices; ++i)
         {
             read_typed_data(is, pVertices[i]);
             memcpy(&pPosVertices[i].vPosition, &pVertices[i].vPosition, sizeof(_float3));
@@ -245,7 +223,7 @@ void MESH_DATA::Load_FromBinary(ifstream& is)
     {
         pPosVertices = shared_ptr<VTXPOS[]>(new VTXPOS[iNumVertices]);
 
-        for (_uint i = 0; i < iNumVertices; ++i)
+        for (_uint i(0); i < iNumVertices; ++i)
         {
             read_typed_data(is, pPosVertices[i]);
         }
@@ -255,7 +233,7 @@ void MESH_DATA::Load_FromBinary(ifstream& is)
     {
         pGroundVertices = shared_ptr<VTXGROUND[]>(new VTXGROUND[iNumVertices]);
 
-        for (_uint i = 0; i < iNumVertices; ++i)
+        for (_uint i(0); i < iNumVertices; ++i)
         {
             read_typed_data(is, pGroundVertices[i]);
         }
@@ -263,7 +241,7 @@ void MESH_DATA::Load_FromBinary(ifstream& is)
 
     pIndices = shared_ptr<FACEINDICES32[]>(new FACEINDICES32[iNumFaces]);
 
-    for (_uint i = 0; i < iNumFaces; ++i)
+    for (_uint i(0); i < iNumFaces; ++i)
     {
         read_typed_data(is, pIndices[i]);
     }

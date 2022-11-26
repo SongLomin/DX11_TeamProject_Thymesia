@@ -98,6 +98,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	GAMEINSTANCE->Add_Font((_uint)FONT_INDEX::DREAM, TEXT("../Bin/Resources/Fonts/128.spriteFont"));
 	GAMEINSTANCE->Add_Font((_uint)FONT_INDEX::PRETENDARD, TEXT("../Bin/Resources/Fonts/Pretendard.spriteFont"));
+	GAMEINSTANCE->Add_Font((_uint)FONT_INDEX::HEIROLIGHT, TEXT("../Bin/Resources/Fonts/HeiroLightRegular.spritefont"));
+
 
 	GAMEINSTANCE->Add_Prototype_GameObject<CFadeMask>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CCamera_Target>();
@@ -143,11 +145,11 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 
 	//MainMenu(LogoLevel)
-	GAMEINSTANCE->Load_Textures(("MainMenu_Background"), TEXT("../Bin/Resources/Textures/UI/MainMenuBackrgound.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
-	GAMEINSTANCE->Load_Textures(("GameLogo"), TEXT("../Bin/Resources/Textures/UI/GameLogo2.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("MainMenu_Background"), TEXT("../Bin/Resources/Textures/UI/MainMenuBackrgound.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("GameLogo"), TEXT("../Bin/Resources/Textures/UI/GameLogo2.png"), MEMORY_TYPE::MEMORY_STATIC);
 
-	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_1"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SelectableButtonBackground.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
-	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_2"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SelectableButtonHighlight.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_1"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SelectableButtonBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_2"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SelectableButtonHighlight.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_ContinueGame"), TEXT("../Bin/Resources/Textures/UI/UI_ContinueGame.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_StartGame"), TEXT("../Bin/Resources/Textures/UI/UI_StartGame.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
@@ -330,6 +332,37 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Stage1_Quest1"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Quest/Stage1/Quese_1.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
+//Level Up Page
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_StatusBG"), TEXT("../Bin/Resources/Textures/UI/General/Test1.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Title"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Level"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Level.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Memory"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Memory.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Required_Memory"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Required_Memory.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Status_Title"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Status.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Status_Strength"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Strength.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Status_Vitality"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Vitality.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Status_Plague"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Plague.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_State_Title"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/State.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_State_AttackDamgage"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/AttackDamage.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_State_Wound"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Wound.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_State_ClawDamage"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/ClawDamage.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_State_HP"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/HP.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_State_MP"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/MP.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Apply"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Apply.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	GAMEINSTANCE->Load_Textures(("Decoration_Arrow_Right"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_Arrow_04.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Keyboard_Arrow_Left"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_Arrow_05.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Keyboard_Arrow_Right"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_Arrow_06.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
 
@@ -471,9 +504,11 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Mon_Weapon_Scythe", "../Bin/Resources/Meshes/NorMonster/Weapon/Scythe/Scythe.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Mon_Weapon_Shield", "../Bin/Resources/Meshes/NorMonster/Weapon/Shield/Shield.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 	// 일반몬스터 무기모델
 
-	
 	
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Torch", "../Bin/Resources/Meshes/LightProp/Torch/Torch.FBX", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
@@ -526,11 +561,16 @@ HRESULT CLoader::Loading_ForTestLevel()
 
 	Load_AllEffectMesh();
 
+
+#ifdef _TEST_STATIC_PROPS_
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+#endif // _TEST_STATIC_PROPS_
+
+	
 
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
 
@@ -551,9 +591,9 @@ HRESULT CLoader::Loading_ForTestLevel()
 	CEditGround::Load_AllMeshInfo();
 
 	_matrix TransformMatrix;
-	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model("DistructableTest", "../Bin/Resources/Meshes/Distructable/test.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
-	
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
+	//GAMEINSTANCE->Load_Model("DistructableTest", "../Bin/Resources/Meshes/Distructable/WagonTest2.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Distructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성 중입니다."));
 
@@ -619,25 +659,15 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 HRESULT CLoader::Loading_ForStage2Level()
 {
 #pragma region PROTOTYPE_GAMEOBJECT
-
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 	Load_AllEffectMesh();
 #pragma endregion
-
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
-
-
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
-	_matrix			TransformMatrix;
-
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성 중입니다."));
-
 	//Create_GameObjectFromJson("../Bin/LevelData/Stage1.json", LEVEL_GAMEPLAY);
-
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
-
 	m_isFinished = true;
-
 	return S_OK;
 }
 
@@ -647,14 +677,10 @@ HRESULT CLoader::Loading_ForStage3Level()
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 #pragma endregion
-
-
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
-
-
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
-	_matrix			TransformMatrix;
 
+	_matrix			TransformMatrix;
 	TransformMatrix = XMMatrixScaling(1.f, 1.f, 1.f);
 	GAMEINSTANCE->Load_Model("Stage1", "../Bin/Resources/Meshes/Stage1/Stage1.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_DYNAMIC);
 	TransformMatrix = XMMatrixScaling(1.f, 1.f, 1.f);
@@ -667,27 +693,18 @@ HRESULT CLoader::Loading_ForStage3Level()
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
 	GAMEINSTANCE->Load_Model("FxR3LuxiyaAttack01", "../Bin/Resources/Meshes/EffectMesh/FxR3LuxiyaAttack01/FxR3LuxiyaAttack01.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
-
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성 중입니다."));
-
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
-
 	m_isFinished = true;
-
 	return S_OK;
 }
 
 HRESULT CLoader::Loading_ForEditLevel()
 {
 #pragma region PROTOTYPE_GAMEOBJECT
-
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
-
-
 #pragma endregion
-
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
-
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
 
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/"           , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
@@ -697,17 +714,13 @@ HRESULT CLoader::Loading_ForEditLevel()
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/"  , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/"						 , MODEL_TYPE::GROUND , MEMORY_TYPE::MEMORY_DYNAMIC);
 
-
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
-
-
 	m_isFinished = true;
 	return S_OK;
 }
 
 void CLoader::Loading_ForEffectGroup(const char* In_Path, const _uint& In_LevelIndex)
 {
-
 	weak_ptr<CEffectGroup> EffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(In_LevelIndex);
 	EffectGroup.lock()->Load_EffectJson(In_Path, (_uint)TIMESCALE_LAYER::NONE, In_LevelIndex);
 }
@@ -840,15 +853,13 @@ void CLoader::Load_AllEffectMeshInPath_Recursive(const filesystem::path& In_Path
 
 		itr++;
 	}
-
 }
 
 void CLoader::Load_AllNaviMesh()
 {
-	
 }
 
-void CLoader::Load_AllMeshes(const filesystem::path& In_Path, MODEL_TYPE In_eModelType, const MEMORY_TYPE& In_eMemoryType)
+void CLoader::Load_AllMeshes(const filesystem::path& In_Path, MODEL_TYPE In_eModelType, const MEMORY_TYPE& In_eMemoryType, _matrix TransformationMatrix, const char* In_extansion)
 {
 	if (!In_Path.filename().extension().string().empty())
 		return;
@@ -867,17 +878,17 @@ void CLoader::Load_AllMeshes(const filesystem::path& In_Path, MODEL_TYPE In_eMod
 		szFileName = entry.path().filename().string().c_str();
 		szFileName = szFileName.substr(0, szFileName.size() - 4);
 
-		if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
+		if (strcmp(entry.path().extension().string().c_str(), In_extansion) == 0)
 		{
 			cout << "Load_AllMeshes() : " << szFileName << endl;
-			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), In_eModelType, XMMatrixScaling(0.01f, 0.01f, 0.01f), In_eMemoryType);
+			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), In_eModelType, TransformationMatrix, In_eMemoryType);
 		}
 
-		else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0 || strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
+		/*else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0 || strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
 		{
 			cout << "Load_AllMeshes() : " << szFileName << endl;
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), In_eModelType, XMMatrixScaling(0.01f, 0.01f, 0.01f), In_eMemoryType);
-		}
+		}*/
 
 		itr++;
 	}

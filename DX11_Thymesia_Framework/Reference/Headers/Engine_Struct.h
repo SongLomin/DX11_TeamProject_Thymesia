@@ -9,24 +9,24 @@ namespace Engine
 
 	typedef struct tagKeyData
 	{
-		XMFLOAT3	vValue;
-		float		fTime;
+		_float3	vValue;
+		_float	fTime;
 
 	} KEY_DATA;
 
 	typedef struct tagRotationKeyData
 	{
-		XMFLOAT4	vValue;
-		float		fTime;
+		_float4	vValue;
+		_float	fTime;
 
 	} ROTATIONKEY_DATA;
 
 	typedef struct tagKeyFrame
 	{
-		XMFLOAT3		vScale;
-		XMFLOAT4		vRotation;
-		XMFLOAT3		vPosition;
-		float			fTime;
+		_float3	vScale;
+		_float4	vRotation;
+		_float3	vPosition;
+		_float	fTime;
 	} KEYFRAME;
 
 	typedef struct tagLightDesc
@@ -34,53 +34,51 @@ namespace Engine
 		enum TYPE { TYPE_DIRECTIONAL, TYPE_POINT, TYPE_HALFPOINT, TYPE_END };
 
 
-		bool			bEnable;
-		TYPE			eActorType = TYPE_END;
-
-		XMFLOAT4		vDirection;
-
-		XMFLOAT4		vPosition;
-		float			fRange;
-
-		XMFLOAT4		vDiffuse;
-		XMFLOAT4		vAmbient;
-		XMFLOAT4		vSpecular;
-
-		XMFLOAT4		vLightFlag;
+		_bool	bEnable    = false;
+		TYPE	eActorType = TYPE_END;
+				 
+		_float4 vDirection = { 0.f, 0.f, 0.f, 0.f };
+				 
+		_float4 vPosition  = { 0.f, 0.f, 0.f, 0.f };
+		_float	fRange     = 0.f;
+				 
+		_float4 vDiffuse   = { 0.f, 0.f, 0.f, 0.f };
+		_float4 vAmbient   = { 0.f, 0.f, 0.f, 0.f };
+		_float4 vSpecular  = { 0.f, 0.f, 0.f, 0.f };
+				 
+		_float4 vLightFlag = { 0.f, 0.f, 0.f, 0.f };
 
 	private:
-		_uint			iLightIndex;
+		_uint iLightIndex = 0;
 
 	public:
 		const _uint Get_LightIndex() const { return iLightIndex; }
-
 		friend class CCustomLight;
-
 	}LIGHTDESC;
 
 	typedef struct tag_MeshVertextPostion
 	{
-		_float3         vMin;
-		_float3         vMax;
-		_float3         vCenter;
+		_float3 vMin;
+		_float3 vMax;
+		_float3 vCenter;
 
 	} MESH_VTX_INFO;
 
 	typedef struct tagTextInfo
 	{
-		tstring		szText;
-		XMFLOAT2	vPosition;
-		XMFLOAT2	vScale;
-		float		fRotation;
-		XMFLOAT4	vColor;
-		bool		bAlways;
-		bool		bCenterAlign;
+		tstring	szText;
+		_float2	vPosition;
+		_float2	vScale;
+		_float	fRotation;
+		_float4	vColor;
+		_bool	bAlways;
+		_bool	bCenterAlign;
 	} TEXTINFO;
 
 	typedef struct tagRayDesc
 	{
-		XMFLOAT4	vOrigin;
-		XMFLOAT3	vDirection;
+		_float4	vOrigin;
+		_float3	vDirection;
 		float		fLength;
 	}RAY;
 
@@ -107,7 +105,7 @@ namespace Engine
 
 	typedef struct tagVertex_Position
 	{
-		XMFLOAT3		vPosition;
+		_float3		vPosition;
 	}VTXPOS;
 
 	typedef struct ENGINE_DLL tagVertex_Position_Declaration
@@ -297,7 +295,7 @@ namespace Engine
 		}
 
 		tagColliderDesc(const _float3 In_vScale, const _float4 In_vRotation, const _float3 In_vTranslation, const _float3 In_vOffset)
-			: vScale(In_vScale), vRotation(In_vRotation), vTranslation(In_vTranslation), vOffset(In_vOffset)
+			: iLayer(0), vScale(In_vScale), vRotation(In_vRotation), vTranslation(In_vTranslation), vOffset(In_vOffset)
 		{
 		}
 
@@ -376,9 +374,15 @@ namespace Engine
 		_float3         vCurrentScale;
 		_float3         vCurrentScaleForce;
 
+		_float3			vTargetScaleSpeed;
+		_float3			vTargetScaleForce;
+
 		// For. Color
 		_float4         vCurrentColor;
 		_float4         vCurrentColorForce;
+
+		_float4			vTargetColorSpeed;
+		_float4			vTargetColorForce;
 
 		// For. UV
 		_float2         vCurrentUV;

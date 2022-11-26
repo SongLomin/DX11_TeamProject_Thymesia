@@ -85,12 +85,8 @@ void CActor::Custom_Thread1(_float fTimeDelta)
 
 HRESULT CActor::Render()
 {
-    SetUp_ShaderResource();
-    
-    //m_pShaderCom.lock()->Begin(m_iPassIndex);
-
+    this->SetUp_ShaderResource();
     __super::Render();
-
     return S_OK;
 }
 
@@ -110,7 +106,6 @@ void CActor::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 void CActor::SetUp_ShaderResource()
 {
     //CallBack_Bind_SRV(m_pShaderCom, "");
-
     m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
     m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4));
     m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));

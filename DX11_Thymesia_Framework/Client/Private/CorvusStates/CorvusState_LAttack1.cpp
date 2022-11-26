@@ -23,7 +23,8 @@ HRESULT CCorvusState_LAttack1::Initialize_Prototype()
 HRESULT CCorvusState_LAttack1::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
+	//공격을 하는 당사자의 측면에서 방향을 구해줌
+	m_vShakingOffSet = { -0.5f,-0.3f,0.f };
 
 	return S_OK;
 }
@@ -53,6 +54,8 @@ void CCorvusState_LAttack1::Tick(_float fTimeDelta)
 			m_fDebugAnimationSpeed = 0.1f;
 		}
 	}
+
+	XMStoreFloat3(&m_vShakingOffSet, XMVector3TransformNormal(XMLoadFloat3(&m_vShakingOffSet), m_pTransformCom.lock()->Get_WorldMatrix()));
 
 	Attack();
 }
@@ -130,10 +133,9 @@ void CCorvusState_LAttack1::OnStateStart(const _float& In_fAnimationBlendTime)
 	//Disable_Weapons();
 
 #ifdef _DEBUG
-	#ifdef _DEBUG_COUT_
+#ifdef _DEBUG_COUT_
 		cout << "CorvusState: Attack -> OnStateStart" << endl;
 #endif
-
 #endif
 }
 

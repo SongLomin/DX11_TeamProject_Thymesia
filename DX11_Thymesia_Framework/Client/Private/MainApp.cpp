@@ -39,6 +39,7 @@ HRESULT CMainApp::Initialize()
 
 	//GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::PLAYER, (_uint)COLLISION_LAYER::MONSTER);
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::PLAYER_ATTACK, (_uint)COLLISION_LAYER::MONSTER);
+	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::PLAYER_ATTACK, (_uint)COLLISION_LAYER::DYNAMIC_PROP);
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::MONSTER_ATTACK, (_uint)COLLISION_LAYER::PLAYER);
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::TRIGGER, (_uint)COLLISION_LAYER::PLAYER);
 
@@ -75,7 +76,7 @@ void CMainApp::Tick(float fTimeDelta)
 		{
 			POINT WinSize{ g_iWinCX , g_iWinCY };
 			ClientToScreen(g_hWnd, &WinSize);
-			RECT ClientRect = { (_long)WinSize.x - g_iWinCX, (_long)WinSize.y - g_iWinCY, (_long)WinSize.x, (_long)WinSize.y };
+			RECT ClientRect = { _long(WinSize.x - g_iWinCX), _long(WinSize.y - g_iWinCY), (_long)WinSize.x, (_long)WinSize.y };
 			ClipCursor(&ClientRect);
 		}
 		else
@@ -89,7 +90,7 @@ void CMainApp::Tick(float fTimeDelta)
 		return;
 
 	//GAMEINSTANCE->Add_MotionBlurScale(-0.2f * fTimeDelta);
-	GAMEINSTANCE->Add_Chromatic(-0.2f * fTimeDelta);
+	GAMEINSTANCE->Add_Chromatic(-0.3f*fTimeDelta);
 
 	GAMEINSTANCE->Tick_Engine(fTimeDelta);
 
@@ -116,9 +117,11 @@ HRESULT CMainApp::Render()
 
 	if (m_fTimeAcc >= 1.f)
 	{
+#ifdef	_RENDER_FPS_
 		wsprintf(m_szFPS, TEXT("FPS : %d"), m_iNumRender);
 		m_fTimeAcc = 0.f;
 		m_iNumRender = 0;
+#endif
 	}
 
 	++m_iNumRender;

@@ -50,19 +50,10 @@ protected:
 
 
     weak_ptr<CPlayer>       m_pOwnerFromPlayer;
-    
-
-protected: //Parrying Variable;
-    PARRY_TYPE              m_eParryType = PARRY_TYPE::PARRY_TYPE_END;
-    _bool                   m_bParryed = false;
-
-protected://Parrying Functions
-    PARRY_TYPE              Get_ParryType() { return m_eParryType; }
-    void                    Success_Parry() { m_bParryed = true; }
 
 public: /* For. EventFunction */
-    void OnWeaponFirstAttack(weak_ptr<CCollider> pOtherCollider);
-    void OnWeaponAttack(weak_ptr<CCollider> pOtherCollider);
+    void OnWeaponFirstAttack(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider);
+    void OnWeaponAttack(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider);
 
     virtual void OnDestroy() override;
     virtual void OnEnable(void* _Arg = nullptr) override;

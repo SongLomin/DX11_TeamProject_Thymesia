@@ -50,7 +50,7 @@ public:
 	void	Load_AllEffectMeshInPath_Recursive(const filesystem::path& In_Path);
 	void	Load_AllNaviMesh();
 
-	void	Load_AllMeshes(const filesystem::path& In_Path, MODEL_TYPE In_eModelType, const MEMORY_TYPE& In_eMemoryType);
+	void	Load_AllMeshes(const filesystem::path& In_Path, MODEL_TYPE In_eModelType, const MEMORY_TYPE& In_eMemoryType, _matrix TransformationMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f), const char* In_extansion = ".bin");
 	void	Load_AllTexture(const filesystem::path& In_Path, const MEMORY_TYPE& In_eMemoryType);
 	
 	void	Create_GameObjectFromJson(const string& In_szJsonPath, const LEVEL& In_eLevel);

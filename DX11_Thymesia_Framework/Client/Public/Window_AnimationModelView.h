@@ -24,7 +24,7 @@ public:
 
 public:
 	weak_ptr<CPreViewAnimationModel> Get_PreViewModel();
-	WEAPON_DESC Get_DebugWeaponDesc() const { return m_tWeaponDesc; }
+	ATTACKAREA_DESC Get_DebugWeaponDesc() const { return m_tWeaponDesc; }
 	const std::vector<std::string> Get_AllBoneNames() const { return m_AllBoneNames; };
 
 public:
@@ -36,6 +36,7 @@ private:
 
 private:
 	weak_ptr<CPreViewAnimationModel>	m_pPreViewModel;
+	// TODO : comment because explode
 	weak_ptr<CPreView_Prop>				m_pPreViewNoAnimModel;
 	vector<string>	                    m_AllModelKeys;
 	vector<string>	                    m_AllNoAnimModelKeys;
@@ -46,7 +47,7 @@ private: /* For Weapon Collider */
 	vector<string>	                    m_AllBoneNames;
 	_int			                    m_CurrentBoneIndex = 0;
 
-	WEAPON_DESC		                    m_tWeaponDesc;
+	ATTACKAREA_DESC		                    m_tWeaponDesc;
 
 
 

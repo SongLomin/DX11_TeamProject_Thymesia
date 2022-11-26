@@ -22,8 +22,6 @@ HRESULT CVargBossState_TurnR::Initialize_Prototype()
 HRESULT CVargBossState_TurnR::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
-
 	return S_OK;
 }
 
@@ -40,8 +38,6 @@ void CVargBossState_TurnR::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-
-
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -50,7 +46,7 @@ void CVargBossState_TurnR::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	_float fTurnValue = 1.57 / 0.85f;
+	_float fTurnValue = 1.57f / 0.85f;
 
 	m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * 1.5f);
 
@@ -98,7 +94,6 @@ void CVargBossState_TurnR::OnDestroy()
 
 void CVargBossState_TurnR::Free()
 {
-
 }
 
 _bool CVargBossState_TurnR::Check_AndChangeNextState()
@@ -107,7 +102,7 @@ _bool CVargBossState_TurnR::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (ComputeAngleWithPlayer() > 0.94f)
+	if (0.94f < ComputeAngleWithPlayer())
 	{
 		Rotation_TargetToLookDir();
 		Get_Owner().lock()->Get_Component<CVargBossState_Idle>().lock()->Set_TurnCheck(false);

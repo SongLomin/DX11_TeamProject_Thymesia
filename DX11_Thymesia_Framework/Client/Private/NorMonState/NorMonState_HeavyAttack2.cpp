@@ -9,6 +9,7 @@
 #include "NorMonStateS.h"
 #include "Character.h"
 #include "MobWeapon.h"
+#include "PhysXController.h"
 
 
 GAMECLASS_C(CNorMonState_HeavyAttack2);
@@ -57,6 +58,25 @@ void CNorMonState_HeavyAttack2::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	//Turn_Transform(fTimeDelta);
+	switch (m_eMonType)
+	{
+	case Client::MONSTERTYPE::GARDENER:
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 20 &&
+			m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() <= 51)
+		{
+			m_fCurrentSpeed += m_fAccel * fTimeDelta;
+			m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
+
+			m_pModelCom.lock()->Play_Animation(fTimeDelta);
+			m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, PxControllerFilters(), nullptr, m_pTransformCom);
+		}
+	
+		break;
+	}
+
+
+	
+
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -99,21 +119,24 @@ void CNorMonState_HeavyAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 			{
 				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
 			}
+			m_bAttackLookAtLimit = true;
 		}
 			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 			break;
 		case Client::MONSTERTYPE::KNIFEWOMAN:
 			m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+			m_bAttackLookAtLimit = true;
 			break;
 		case Client::MONSTERTYPE::SKULL:
 			break;
 		case Client::MONSTERTYPE::GARDENER:
-			m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+			m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+			m_bAttackLookAtLimit = false;
 			break;
 		}
 
 
-	m_bAttackLookAtLimit = true;
+
 }
 
 void CNorMonState_HeavyAttack2::OnStateEnd()
@@ -145,6 +168,19 @@ _bool CNorMonState_HeavyAttack2::Check_AndChangeNextState()
 	{
 		m_bAttackLookAtLimit = false;
 	}
+
+	switch (m_eMonType)
+	{
+	case Client::MONSTERTYPE::GARDENER:
+	{
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 51)
+		{
+			m_bAttackLookAtLimit = false;
+		}
+	}
+	}
+
+
 
 	return false;
 

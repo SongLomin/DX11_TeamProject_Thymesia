@@ -54,19 +54,19 @@ void CTrigger::SetUp_ShaderResource()
     
 }
 
-void CTrigger::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+void CTrigger::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    __super::OnCollisionEnter(pOtherCollider);
+    __super::OnCollisionEnter(pMyCollider, pOtherCollider);
 }
 
-void CTrigger::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
+void CTrigger::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    __super::OnCollisionStay(pOtherCollider);
+    __super::OnCollisionStay(pMyCollider, pOtherCollider);
 }
 
-void CTrigger::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
+void CTrigger::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    __super::OnCollisionExit(pOtherCollider);
+    __super::OnCollisionExit(pMyCollider, pOtherCollider);
 }
 
 void CTrigger::OnEventMessage(_uint iArg)

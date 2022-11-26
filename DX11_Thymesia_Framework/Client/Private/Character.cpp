@@ -84,18 +84,18 @@ weak_ptr<CStateBase> CCharacter::Get_CurState() const
 
 
 
-void CCharacter::OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+void CCharacter::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
-	m_pCurState.lock()->OnHit(pOtherCollider, In_eHitType, In_fDamage);
+	m_pCurState.lock()->OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 }
 
-void CCharacter::Call_WeaponFirstAttack(weak_ptr<CCollider> pOtherCollider)
+void CCharacter::Call_WeaponFirstAttack(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 	//m_pCurState.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_FIRSTHIT);
 
 }
 
-void CCharacter::Call_WeaponAttack(weak_ptr<CCollider> pOtherCollider)
+void CCharacter::Call_WeaponAttack(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 
 
@@ -109,16 +109,16 @@ void CCharacter::OnLevelEnter()
 	//m_pNaviMeshCom.lock()->Init_Navi("NaviMesh", tNaviDesc);
 }
 
-void CCharacter::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+void CCharacter::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 
 }
 
-void CCharacter::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
+void CCharacter::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 }
 
-void CCharacter::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
+void CCharacter::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 }
 
