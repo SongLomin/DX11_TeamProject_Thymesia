@@ -58,7 +58,7 @@ HRESULT CRenderTarget_Manager::Begin_MRT(const _tchar* pMRTTag)
 	if (nullptr == pMRTList)
 		DEBUG_ASSERT;
 
-	if (8 <= pMRTList->size())
+	if (pMRTList->size() >= 8)
 		DEBUG_ASSERT;
 
 	ID3D11ShaderResourceView* pSRVs[128] = { nullptr };
@@ -67,7 +67,7 @@ HRESULT CRenderTarget_Manager::Begin_MRT(const _tchar* pMRTTag)
 
 	ID3D11RenderTargetView* RTVs[8] = { nullptr };
 
-	_uint iNumRTVs(0);
+	_uint		iNumRTVs = 0;
 
 	for (auto& pRenderTarget : *pMRTList)
 	{

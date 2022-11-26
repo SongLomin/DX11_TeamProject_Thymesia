@@ -1,15 +1,9 @@
 #pragma once
 
-//#pragma warning (disable : 4005)
+#pragma warning (disable : 4005)
 #pragma warning (disable : 4251)
-#pragma warning (disable : 4390)
-#pragma warning (disable : 6011)
-#pragma warning (disable : 26451)
-#pragma warning (disable : 26495)
-#pragma warning (disable : 26800)
-#pragma warning (disable : 26819)
-#pragma warning (disable : 28020)
-#pragma warning (disable : 33010)
+
+
 
 #include <d3d11.h>
 #include <DirectXMath.h>
