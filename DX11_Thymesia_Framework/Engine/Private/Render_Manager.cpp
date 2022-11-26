@@ -395,8 +395,8 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Render_AfterPostEffectGlow()))
 		DEBUG_ASSERT;
 
-	if (FAILED(PostProcessing(0)))
-		DEBUG_ASSERT;
+	/*if (FAILED(PostProcessing(0)))
+		DEBUG_ASSERT;*/
 
 	if (FAILED(PostProcessing(1)))
 		DEBUG_ASSERT;
