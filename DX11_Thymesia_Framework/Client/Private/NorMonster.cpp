@@ -49,16 +49,16 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Axe", TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
-		m_pWeapons.back().lock()->Add_Collider({ -0.51f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
-		m_pWeapons.back().lock()->Add_Collider({ -0.41f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
-		m_pWeapons.back().lock()->Add_Collider({ -0.3f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
-		m_pWeapons.back().lock()->Add_Collider({ -0.21f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
-		m_pWeapons.back().lock()->Add_Collider({ -0.11f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
-		m_pWeapons.back().lock()->Add_Collider({ 0.11f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
-		m_pWeapons.back().lock()->Add_Collider({ 0.2f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
-		m_pWeapons.back().lock()->Add_Collider({ 0.31f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
-		m_pWeapons.back().lock()->Add_Collider({ 0.41f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		//m_pWeapons.back().lock()->Add_Collider({ -0.51f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		//m_pWeapons.back().lock()->Add_Collider({ -0.41f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		//m_pWeapons.back().lock()->Add_Collider({ -0.3f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		//m_pWeapons.back().lock()->Add_Collider({ -0.21f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		//m_pWeapons.back().lock()->Add_Collider({ -0.11f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		//m_pWeapons.back().lock()->Add_Collider({ 0.11f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		m_pWeapons.back().lock()->Add_Collider({ 0.51f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.61f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.71f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.81f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 
 		
 		
@@ -252,19 +252,19 @@ void CNorMonster::Respawn_Monster(_fvector In_vPosition)
 	//GAMEINSTANCE->PlaySoundW(TEXT("MonsterBorn.wav"), 0.3f);
 }
 
-void CNorMonster::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+void CNorMonster::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionEnter(pOtherCollider);
+	__super::OnCollisionEnter(pMyCollider, pOtherCollider);
 }
 
-void CNorMonster::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
+void CNorMonster::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionStay(pOtherCollider);
+	__super::OnCollisionStay(pMyCollider, pOtherCollider);
 }
 
-void CNorMonster::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
+void CNorMonster::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionExit(pOtherCollider);
+	__super::OnCollisionExit(pMyCollider, pOtherCollider);
 }
 
 void CNorMonster::OnEventMessage(_uint iArg)

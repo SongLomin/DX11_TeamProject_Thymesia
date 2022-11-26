@@ -41,6 +41,7 @@ public:
 public:
     virtual _bool Check_Requirement();
     virtual _bool Check_AndChangeNextState() PURE;
+    virtual void Check_AndChangeHitState(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage);
 public:
     _bool Get_NearGameObjectInDistance(weak_ptr<CGameObject>& Out_pGameObject, list<weak_ptr<CGameObject>> In_pGameObjects, const _float In_fDistance);
 
@@ -78,12 +79,12 @@ public: /* For. EventFunction */
 
     virtual void OnStateStart(const _float& In_fAnimationBlendTime);
     virtual void OnStateEnd();
-    virtual void OnHit(weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage);
+    virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage);
 
 public:
-    virtual void OnCollisionEnter(weak_ptr<CCollider> pOtherCollider) {};
-    virtual void OnCollisionStay(weak_ptr<CCollider> pOtherCollider) {};
-    virtual void OnCollisionExit(weak_ptr<CCollider> pOtherCollider) {};
+    virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) {};
+    virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) {};
+    virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) {};
 
 public:
     virtual void OnEventMessage(weak_ptr<CBase> pArg);

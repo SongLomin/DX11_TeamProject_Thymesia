@@ -7,6 +7,8 @@
 #include "Animation.h"
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
+#include "Collider.h"
+#include "Client_GameObjects.h"
 
 
 GAMECLASS_C(CCorvusState_Parry1);
@@ -71,13 +73,13 @@ void CCorvusState_Parry1::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
+	
 	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
 
 }
 
 void CCorvusState_Parry1::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 {
-
 
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
 
@@ -107,21 +109,7 @@ void CCorvusState_Parry1::Update_ParryType()
 		GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::DREAM, szDebugText, vPosition, vColor, false);
 	}
 #endif // _DEBUG
-	/*
-		퍼펙트 패링(특수효과아마?)
-		패링데미지 1.5배
-		데미지 아예 무시
-		14~20
 
-		10~25
-		노멀 패링
-		->패링 데미지 1배
-		받는 데미지 절반
-
-		//나머지
-		->워스트
-		그냥 처맞기랑 같음.
-	*/
 	_uint		iKeyFrame = m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex();
 	if (iKeyFrame >= 14 && iKeyFrame <= 25)
 	{
@@ -140,10 +128,6 @@ void CCorvusState_Parry1::Update_ParryType()
 	}
 }
 
-
-
-
-
 void CCorvusState_Parry1::Attack()
 {
 
@@ -157,16 +141,14 @@ void CCorvusState_Parry1::Check_InputNextParry()
 		return;
 	}
 
-	m_IsNextAttack = true;
-
+	m_IsNextParry = true;
 
 }
-
-
 
 void CCorvusState_Parry1::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+	m_eParryType = PARRY_TYPE::PARRY_TYPE_END;
 	
 	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Parry2>().lock())
 	{
@@ -183,12 +165,6 @@ void CCorvusState_Parry1::OnStateStart(const _float& In_fAnimationBlendTime)
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
 
-	//m_iAttackIndex = 7;
-	//m_iEndAttackEffectIndex = -1;
-
-
-	//Disable_Weapons();
-	m_eParryType = PARRY_TYPE::FAIL;
 	m_bParryed = false;
 
 
@@ -205,11 +181,110 @@ void CCorvusState_Parry1::OnStateEnd()
 	__super::OnStateEnd();
 
 	//Disable_Weapons();
-	m_IsNextAttack = false;
-
+	m_IsNextParry = false;
+	m_eParryType = PARRY_TYPE::PARRY_TYPE_END;
 	m_bParryed = false;
 
 }
+
+void CCorvusState_Parry1::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CPlayerStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+
+	if (pOtherCollider.lock()->Get_CollisionLayer() == (_uint)COLLISION_LAYER::MONSTER_ATTACK)
+	{
+		//어쩃든 여기 닿으면 데미지 입음.
+		weak_ptr<CStatus_Player> pStatus = Weak_StaticCast<CStatus_Player>(m_pStatusCom);
+
+		if (!pStatus.lock())
+		{
+			MSG_BOX("Error: Can't Find CStatus_Player From CorvusStateBase!");
+		}
+
+		weak_ptr<CAttackArea>	pAttackArea = Weak_StaticCast<CAttackArea>(pOtherCollider.lock()->Get_Owner());
+		weak_ptr<CCharacter>	pMonsterFromCharacter = pAttackArea.lock()->Get_ParentObject();
+		weak_ptr<CStatus_Monster>	pMonsterStatusCom = pMonsterFromCharacter.lock()->Get_Component<CStatus_Monster>();
+
+		if (!pMonsterStatusCom.lock())
+			MSG_BOX("Error : Can't Find CStatus_Monster From CorvusStateBase");
+
+		PARRY_SUCCESS ParryType = (PARRY_SUCCESS)Check_AndChangeSuccessParrying(pMyCollider, pOtherCollider);
+
+		switch (m_eParryType)
+		{			
+		
+		case Client::PARRY_TYPE::PERFECT:
+			//퍼펙트는 몬스터 게이지 많이깍고 플레이어피를채워\준다 상태는 왼쪽오른쪽 위아래 판단해서 상태를 그걸로바꿔주는용도
+			switch (ParryType)
+			{
+			case Client::PARRY_SUCCESS::LEFT:
+				pMonsterStatusCom.lock()->Decrease_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
+				pStatus.lock()->Heal_Player(30.f);
+				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeft>();
+				break;
+			case Client::PARRY_SUCCESS::LEFTUP:
+				pMonsterStatusCom.lock()->Decrease_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
+				pStatus.lock()->Heal_Player(30.f);
+				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeftup>();
+				break;
+			case Client::PARRY_SUCCESS::RIGHT:
+				pMonsterStatusCom.lock()->Decrease_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
+				pStatus.lock()->Heal_Player(30.f);
+				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRight>();
+				break;
+			case Client::PARRY_SUCCESS::RIGHTUP:
+				pMonsterStatusCom.lock()->Decrease_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
+				pStatus.lock()->Heal_Player(30.f);
+				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRightup>();
+				break;
+			case Client::PARRY_SUCCESS::FAIL:
+				Check_AndChangeHitState(pMyCollider,pOtherCollider, In_eHitType, In_fDamage);
+				pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
+				break;
+			}			
+			break;
+		case Client::PARRY_TYPE::NORMAL:
+			//퍼펙트는 몬스터 게이지 적게깍고 플레이어피는안달고  상태는 왼쪽오른쪽 위아래 판단해서 상태를 그걸로바꿔주는용도
+			switch (ParryType)
+			{
+			case Client::PARRY_SUCCESS::LEFT:
+				pMonsterStatusCom.lock()->Decrease_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
+				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeft>();
+				break;
+			case Client::PARRY_SUCCESS::LEFTUP:
+				pMonsterStatusCom.lock()->Decrease_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
+				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeftup>();
+				break;
+			case Client::PARRY_SUCCESS::RIGHT:
+				pMonsterStatusCom.lock()->Decrease_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
+				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRight>();
+				break;
+			case Client::PARRY_SUCCESS::RIGHTUP:
+				pMonsterStatusCom.lock()->Decrease_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
+				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRightup>();
+				break;
+			case Client::PARRY_SUCCESS::FAIL:
+				Check_AndChangeHitState(pMyCollider,pOtherCollider, In_eHitType, In_fDamage);
+				pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
+				break;
+			}
+			break;
+		case Client::PARRY_TYPE::FAIL:
+			Check_AndChangeHitState(pMyCollider,pOtherCollider, In_eHitType, In_fDamage);
+			pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
+			break;		
+		}
+
+		_bool bGroggy = pMonsterStatusCom.lock()->Is_Groggy();
+
+		if (bGroggy)
+		{
+			pMonsterFromCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_GROGGY);
+		}
+
+	}
+}
+
 
 void CCorvusState_Parry1::OnEventMessage(_uint iArg)
 {
@@ -336,7 +411,7 @@ _bool CCorvusState_Parry1::Check_RequirementNextParryState()
 	_uint iTargetKeyFramefirst = 17;
 	_uint iTargetKeyFrameSecond = 50;
 
-	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFramefirst, iTargetKeyFrameSecond) && m_IsNextAttack)
+	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFramefirst, iTargetKeyFrameSecond) && m_IsNextParry)
 	{
 		return true;
 	}
@@ -349,7 +424,7 @@ _bool CCorvusState_Parry1::Check_RuquireMnetFirstParryState()
 	_uint iTargetKeyFrameMin = 51;
 	_uint iTargetKeyFrameMax = 110;
 
-	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) && m_IsNextAttack)
+	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) && m_IsNextParry)
 	{
 		return true;
 	}

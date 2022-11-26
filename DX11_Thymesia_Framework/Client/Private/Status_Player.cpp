@@ -104,6 +104,11 @@ void CStatus_Player::Get_Desc(void* Out_pDesc)
 	memcpy(Out_pDesc, &m_tDesc, sizeof(PLAYERDESC));
 }
 
+CStatus_Player::PLAYERDESC CStatus_Player::Get_Desc() const
+{
+	return m_tDesc;
+}
+
 void CStatus_Player::Heal_Player(const _float fAmount)
 {
 	m_tDesc.m_fCurrentHP += fAmount;

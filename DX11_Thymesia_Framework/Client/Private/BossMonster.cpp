@@ -92,24 +92,23 @@ void CBossMonster::SetUp_ShaderResource()
     
 }
 
-void CBossMonster::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+void CBossMonster::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    __super::OnCollisionEnter(pOtherCollider);
+    __super::OnCollisionEnter(pMyCollider, pOtherCollider);
 
 
 }
 
-void CBossMonster::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
+void CBossMonster::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    __super::OnCollisionStay(pOtherCollider);
+    __super::OnCollisionStay(pMyCollider, pOtherCollider);
 
    
 }
 
-void CBossMonster::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
+void CBossMonster::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    __super::OnCollisionExit(pOtherCollider);
-
+    __super::OnCollisionExit(pMyCollider, pOtherCollider);
 
 }
 

@@ -28,7 +28,7 @@ HRESULT CAttackArea::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	ZeroMemory(&m_tWeaponDesc, sizeof(WEAPON_DESC));
+	ZeroMemory(&m_tWeaponDesc, sizeof(ATTACKAREA_DESC));
 
 	m_pHitColliderComs.push_back(Add_Component<CCollider>());
 
@@ -110,7 +110,7 @@ HRESULT CAttackArea::Render()
 	return S_OK;
 }
 
-void CAttackArea::Init_AttackArea(const WEAPON_DESC& In_WeaponDesc, weak_ptr<CTransform> In_ParentTransformCom)
+void CAttackArea::Init_AttackArea(const ATTACKAREA_DESC& In_WeaponDesc, weak_ptr<CTransform> In_ParentTransformCom)
 {
 	//m_pModelCom.lock()->Init_Model(In_pModelCom.lock()->Get_ModelKey());
 	m_pParentTransformCom = In_ParentTransformCom;
@@ -209,7 +209,7 @@ _bool CAttackArea::Check_AllDisableCollider()
 	return bDisable;
 }
 
-void CAttackArea::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+void CAttackArea::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 	_uint iOtherColliderIndex = pOtherCollider.lock()->Get_ColliderIndex();
 	list<_uint>::iterator iter = find(m_iHitColliderIndexs.begin(), m_iHitColliderIndexs.end(), iOtherColliderIndex);
@@ -220,13 +220,13 @@ void CAttackArea::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
 
 	m_iHitColliderIndexs.push_back(iOtherColliderIndex);
 
-	Weak_Cast<CCharacter>(pOtherCollider.lock()->Get_Owner()).lock()->OnHit(m_pHitColliderComs.front(), (HIT_TYPE)m_tWeaponDesc.iHitType, m_tWeaponDesc.fDamage);
+	Weak_Cast<CCharacter>(pOtherCollider.lock()->Get_Owner()).lock()->OnHit(pOtherCollider, pMyCollider, (HIT_TYPE)m_tWeaponDesc.iHitType, m_tWeaponDesc.fDamage);
 
 	if (m_bFirstAttack)
 	{
 		if (m_pParentCharacter.lock())
 		{
-			m_pParentCharacter.lock()->Call_WeaponFirstAttack(pOtherCollider);
+			m_pParentCharacter.lock()->Call_WeaponFirstAttack(pMyCollider, pOtherCollider);
 		}
 		
 		m_bFirstAttack = false;
@@ -235,18 +235,18 @@ void CAttackArea::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
 	{
 		if (m_pParentCharacter.lock())
 		{
-			m_pParentCharacter.lock()->Call_WeaponAttack(pOtherCollider);
+			m_pParentCharacter.lock()->Call_WeaponAttack(pMyCollider, pOtherCollider);
 		}
 	}
 }
 
-void CAttackArea::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
+void CAttackArea::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 
 
 }
 
-void CAttackArea::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
+void CAttackArea::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 }
 

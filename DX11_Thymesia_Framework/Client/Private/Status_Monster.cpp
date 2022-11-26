@@ -102,8 +102,17 @@ void CStatus_Monster::Init_Status(const void* pArg)
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
 		m_tMonsterDesc.m_szModelKey = "Mon_Gardner";
 		break;
-	}
+	case Client::MONSTERTYPE::VARG:
+		//TODO 공격력몰름 임시 
+		m_tMonsterDesc.m_fAtk = 1.f;
+		m_tMonsterDesc.m_fMaxHP_white = 500.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 500.f;
+		m_tMonsterDesc.m_iLifeCount = 1;
+		m_tMonsterDesc.m_iMaxParryCount = 10000;
+		m_tMonsterDesc.m_szModelKey = "Boss_Varg";
+		break;
 
+	}
 	m_tMonsterDesc.m_fCurrentHP_white = m_tMonsterDesc.m_fMaxHP_white;
 	m_tMonsterDesc.m_fCurrentHP_Green = m_tMonsterDesc.m_fMaxHP_white;
 	m_tMonsterDesc.m_fMaxHP_Green = m_tMonsterDesc.m_fMaxHP_white;

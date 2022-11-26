@@ -229,46 +229,46 @@ void CPlayer::OnDisable()
     Set_TargetMonster(weak_ptr<CMonster>());
 }
 
-void CPlayer::Call_WeaponFirstAttack(weak_ptr<CCollider> pOtherCollider)
+void CPlayer::Call_WeaponFirstAttack(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    __super::Call_WeaponFirstAttack(pOtherCollider);
+    __super::Call_WeaponFirstAttack(pMyCollider, pOtherCollider);
 
     if (m_pCurState.lock())
     {
-        Weak_Cast<CPlayerStateBase>(m_pCurState).lock()->OnWeaponFirstAttack(pOtherCollider);
+        Weak_Cast<CPlayerStateBase>(m_pCurState).lock()->OnWeaponFirstAttack(pMyCollider, pOtherCollider);
         m_fNearSearchDelay = 2.f;
     }
 
 }
 
-void CPlayer::Call_WeaponAttack(weak_ptr<CCollider> pOtherCollider)
+void CPlayer::Call_WeaponAttack(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    __super::Call_WeaponAttack(pOtherCollider);
+    __super::Call_WeaponAttack(pMyCollider, pOtherCollider);
 
     if (m_pCurState.lock())
     {
-        Weak_Cast<CPlayerStateBase>(m_pCurState).lock()->OnWeaponAttack(pOtherCollider);
+        Weak_Cast<CPlayerStateBase>(m_pCurState).lock()->OnWeaponAttack(pMyCollider, pOtherCollider);
         m_fNearSearchDelay = 2.f;
     }
 }
 
-void CPlayer::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+void CPlayer::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    __super::OnCollisionEnter(pOtherCollider);
+    __super::OnCollisionEnter(pMyCollider, pOtherCollider);
 
     
 
 }
 
-void CPlayer::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
+void CPlayer::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    __super::OnCollisionStay(pOtherCollider);
+    __super::OnCollisionStay(pMyCollider, pOtherCollider);
 
 }
 
-void CPlayer::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
+void CPlayer::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    __super::OnCollisionExit(pOtherCollider);
+    __super::OnCollisionExit(pMyCollider, pOtherCollider);
 }
 
 void CPlayer::Free()

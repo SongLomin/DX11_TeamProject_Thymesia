@@ -213,7 +213,8 @@ void CEditNaviMesh::Update_Vertice(_float fTimeDelta)
 
         for (_uint i = 0; i < m_iCurrentPickingIndex; ++i)
         {
-            vVerticePositions[i] = m_pPickPointColliderComs[m_iPickingIndex[i]].lock()->Get_CurrentPosition();
+            XMStoreFloat3(&vVerticePositions[i], m_pPickPointColliderComs[m_iPickingIndex[i]].lock()->Get_CurrentPosition());
+            //vVerticePositions[i] = m_pPickPointColliderComs[m_iPickingIndex[i]].lock()->Get_CurrentPosition();
         }
 
         SMath::Set_ClockwiseTriangle(vVerticePositions);

@@ -67,19 +67,19 @@ void CCorvus_DefaultDagger::SetUp_ShaderResource()
 
 }
 
-void CCorvus_DefaultDagger::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+void CCorvus_DefaultDagger::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionEnter(pOtherCollider);
+	__super::OnCollisionEnter(pMyCollider, pOtherCollider);
 }
 
-void CCorvus_DefaultDagger::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
+void CCorvus_DefaultDagger::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionStay(pOtherCollider);
+	__super::OnCollisionStay(pMyCollider, pOtherCollider);
 }
 
-void CCorvus_DefaultDagger::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
+void CCorvus_DefaultDagger::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionExit(pOtherCollider);
+	__super::OnCollisionExit(pMyCollider, pOtherCollider);
 }
 
 void CCorvus_DefaultDagger::Free()

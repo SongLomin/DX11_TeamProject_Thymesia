@@ -49,9 +49,9 @@ public:
 	virtual void Load_FromJson(const json& In_Json) override;
 
 public:
-	virtual void OnCollisionEnter(weak_ptr<CCollider> pOtherCollider) {};
-	virtual void OnCollisionStay(weak_ptr<CCollider> pOtherCollider) {};
-	virtual void OnCollisionExit(weak_ptr<CCollider> pOtherCollider) {};
+	virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) {};
+	virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) {};
+	virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) {};
 
 public:
 	virtual void PhysXCollisionEnter(weak_ptr<CPhysXCollider> pOtherCollider) {};

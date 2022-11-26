@@ -175,6 +175,8 @@ namespace Client
 		KNIFEWOMAN, // 기본단검여자
 		SKULL, // 기본해골
 		GARDENER, // 낫든몬스터
+		VARG, // 보스바그
+		SHIELDAXEMAN,
 		NMON_END
 	};
 
@@ -208,6 +210,23 @@ namespace Client
 		FAIL,
 		NONE,
 		PARRY_TYPE_END
+	};
+
+	enum class CORSS_RESULT
+	{
+		LEFT,
+		RIGHT,
+		CORSS_END
+	};
+
+	enum class PARRY_SUCCESS
+	{
+		LEFT,
+		LEFTUP,
+		RIGHT,
+		RIGHTUP,
+		FAIL,
+		PARRY_SUCCESS_END
 	};
 
 

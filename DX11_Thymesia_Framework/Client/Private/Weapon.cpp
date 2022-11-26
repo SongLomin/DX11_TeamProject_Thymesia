@@ -182,10 +182,16 @@ weak_ptr<CCharacter> CWeapon::Get_ParentCharacter()
 	return m_pParentCharacter;
 }
 
-void CWeapon::Set_WeaponDesc(const HIT_TYPE In_eHitType, const _float In_fDamage)
+void CWeapon::Set_WeaponDesc(const WEAPON_DESC& In_WeaponDesc)
 {
-	m_eHitType = In_eHitType;
-	m_fDamage = In_fDamage;
+	m_tWeaponDesc = In_WeaponDesc;
+}
+
+void CWeapon::Set_WeaponDesc(const HIT_TYPE In_eHitType, const _float In_fDamage, const ATTACK_OPTION In_eOptionType)
+{
+	m_tWeaponDesc.iHitType = (_int)In_eHitType;
+	m_tWeaponDesc.iOptionType = (_int)In_eOptionType;
+	m_tWeaponDesc.fDamage = In_fDamage;
 }
 
 void CWeapon::SetUp_ShaderResource()
@@ -197,7 +203,7 @@ void CWeapon::SetUp_ShaderResource()
 
 }
 
-void CWeapon::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+void CWeapon::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 	_uint iOtherColliderIndex = pOtherCollider.lock()->Get_ColliderIndex();
 	list<_uint>::iterator iter = find(m_iHitColliderIndexs.begin(), m_iHitColliderIndexs.end(), iOtherColliderIndex);
@@ -208,13 +214,13 @@ void CWeapon::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
 
 	m_iHitColliderIndexs.push_back(iOtherColliderIndex);
 
-	Weak_Cast<CCharacter>(pOtherCollider.lock()->Get_Owner()).lock()->OnHit(m_pHitColliderComs.front(), m_eHitType, m_fDamage);
+	Weak_Cast<CCharacter>(pOtherCollider.lock()->Get_Owner()).lock()->OnHit(pOtherCollider, pMyCollider, (HIT_TYPE)m_tWeaponDesc.iHitType, m_tWeaponDesc.fDamage);
 
 	if (m_bFirstAttack)
 	{
 		if (m_pParentCharacter.lock())
 		{
-			m_pParentCharacter.lock()->Call_WeaponFirstAttack(pOtherCollider);
+			m_pParentCharacter.lock()->Call_WeaponFirstAttack(pMyCollider, pOtherCollider);
 		}
 
 		m_bFirstAttack = false;
@@ -223,16 +229,16 @@ void CWeapon::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
 	{
 		if (m_pParentCharacter.lock())
 		{
-			m_pParentCharacter.lock()->Call_WeaponAttack(pOtherCollider);
+			m_pParentCharacter.lock()->Call_WeaponAttack(pMyCollider, pOtherCollider);
 		}
 	}
 }
 
-void CWeapon::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
+void CWeapon::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 }
 
-void CWeapon::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
+void CWeapon::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 }
 

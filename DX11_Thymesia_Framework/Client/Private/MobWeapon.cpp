@@ -50,19 +50,19 @@ void CMobWeapon::SetUp_ShaderResource()
 	__super::SetUp_ShaderResource();
 }
 
-void CMobWeapon::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+void CMobWeapon::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionEnter(pOtherCollider);
+	__super::OnCollisionEnter(pMyCollider, pOtherCollider);
 }
 
-void CMobWeapon::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
+void CMobWeapon::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionStay(pOtherCollider);
+	__super::OnCollisionStay(pMyCollider, pOtherCollider);
 }
 
-void CMobWeapon::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
+void CMobWeapon::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionExit(pOtherCollider);
+	__super::OnCollisionExit(pMyCollider, pOtherCollider);
 }
 
 void CMobWeapon::Free()

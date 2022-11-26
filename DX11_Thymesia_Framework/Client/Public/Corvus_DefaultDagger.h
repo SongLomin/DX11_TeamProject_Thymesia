@@ -31,9 +31,9 @@ protected:
     void SetUp_ShaderResource();
 
 protected:
-    virtual void OnCollisionEnter(weak_ptr<CCollider> pOtherCollider) override;
-    virtual void OnCollisionStay(weak_ptr<CCollider> pOtherCollider) override;
-    virtual void OnCollisionExit(weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
 
 private:
     void Free();

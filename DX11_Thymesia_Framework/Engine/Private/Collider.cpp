@@ -14,9 +14,11 @@ COLLIDERDESC CCollider::Get_ColliderDesc() const
 	return m_ColliderDesc;
 }
 
-_float3 CCollider::Get_CurrentPosition() const
+_vector CCollider::Get_CurrentPosition() const
 {
-	return m_vCurrentPosition;
+	_vector vResult = XMVectorSetW(XMLoadFloat3(&m_vCurrentPosition), 1.f);
+
+	return vResult;
 }
 
 void CCollider::Set_ColliderScale(_fvector In_vScale)
@@ -63,6 +65,7 @@ HRESULT CCollider::Initialize(void* pArg)
 #endif // _DEBUG	
 
 	m_iColliderIndex = m_iClonedColliderIndex++;
+	m_thisFromColliderCom = Weak_StaticCast<CCollider>(m_this);
 
 	return S_OK;
 }
@@ -204,12 +207,15 @@ void CCollider::Update(_fmatrix TransformMatrix)
 	{
 	case COLLISION_TYPE::AABB:
 		m_pAABB_Original->Transform(*m_pAABB, Remove_Rotation(WorldMatrix));
+		m_vCurrentPosition = m_pAABB->Center;
 		break;
 	case COLLISION_TYPE::OBB:
 		m_pOBB_Original->Transform(*m_pOBB, WorldMatrix);
+		m_vCurrentPosition = m_pOBB->Center;
 		break;
 	case COLLISION_TYPE::SPHERE:
 		m_pSphere_Original->Transform(*m_pSphere, WorldMatrix);
+		m_vCurrentPosition = m_pSphere->Center;
 		break;
 	}
 }
@@ -432,18 +438,18 @@ HRESULT CCollider::Render_IgnoreDebugCheck()
 void CCollider::CollisionEnter(weak_ptr<CCollider> pOtherCollider)
 {
 	CallBack_CollisionEnter(pOtherCollider);
-	m_pOwner.lock()->OnCollisionEnter(pOtherCollider);
+	m_pOwner.lock()->OnCollisionEnter(m_thisFromColliderCom, pOtherCollider);
 
 }
 void CCollider::CollisionStay(weak_ptr<CCollider> pOtherCollider)
 {
 	CallBack_CollisionStay(pOtherCollider);
-	m_pOwner.lock()->OnCollisionStay(pOtherCollider);
+	m_pOwner.lock()->OnCollisionStay(m_thisFromColliderCom, pOtherCollider);
 }
 void CCollider::CollisionExit(weak_ptr<CCollider> pOtherCollider)
 {
 	CallBack_CollisionExit(pOtherCollider);
-	m_pOwner.lock()->OnCollisionExit(pOtherCollider);
+	m_pOwner.lock()->OnCollisionExit(m_thisFromColliderCom, pOtherCollider);
 }
 
 void CCollider::OnEnable(void* _Arg)

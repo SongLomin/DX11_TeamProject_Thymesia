@@ -64,7 +64,11 @@ HRESULT CCorvus::Initialize(void* pArg)
 	Add_Component<CCorvusState_HurtL>();
 	Add_Component<CCorvusState_HurtR>();
 	Add_Component<CCorvusState_HurtXXL>();
-	Add_Component<CNorMob_Execution>();
+	Add_Component<CCorvusState_NorMob_Execution>();
+	Add_Component<CCorvusState_ParryDeflectLeft>();
+	Add_Component<CCorvusState_ParryDeflectLeftup>();
+	Add_Component<CCorvusState_ParryDeflectRight>();
+	Add_Component<CCorvusState_ParryDeflectRightup>();
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
 	
@@ -84,8 +88,8 @@ HRESULT CCorvus::Start()
 	
 	m_pCamera = GET_SINGLE(CGameManager)->Get_TargetCamera();
 	m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
-	//m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -1.5f, 0.f, 1.f));
 
+	
 	return S_OK;
 }
 
@@ -162,7 +166,6 @@ HRESULT CCorvus::Render()
 		{
 
 		}
-
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 		{
 			iPassIndex = 0;
@@ -171,7 +174,6 @@ HRESULT CCorvus::Render()
 		{
 			iPassIndex = 4;
 		}
-
 		
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, iPassIndex, "g_Bones");
 		
@@ -189,15 +191,15 @@ void CCorvus::SetUp_ShaderResource()
 #endif // !_USE_THREAD_
 }
 
-void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 }
 
-void CCorvus::OnCollisionStay(weak_ptr<CCollider> pOtherCollider)
+void CCorvus::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 }
 
-void CCorvus::OnCollisionExit(weak_ptr<CCollider> pOtherCollider)
+void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 }
 

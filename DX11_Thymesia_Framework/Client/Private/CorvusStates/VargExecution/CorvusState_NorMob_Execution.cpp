@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CorvusStates/StateExecution/NorMob_Execution.h"
+#include "CorvusStates/StateExecution/CorvusState_NorMob_Execution.h"
 #include "Model.h"
 #include "GameInstance.h"
 #include "GameObject.h"
@@ -11,16 +11,16 @@
 #include "Monster.h"
 #include "NorMonStates.h"
 
-GAMECLASS_C(CNorMob_Execution);
-CLONE_C(CNorMob_Execution, CComponent)
+GAMECLASS_C(CCorvusState_NorMob_Execution);
+CLONE_C(CCorvusState_NorMob_Execution, CComponent)
 
-HRESULT CNorMob_Execution::Initialize_Prototype()
+HRESULT CCorvusState_NorMob_Execution::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 	return S_OK;
 }
 
-HRESULT CNorMob_Execution::Initialize(void* pArg)
+HRESULT CCorvusState_NorMob_Execution::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
@@ -28,15 +28,15 @@ HRESULT CNorMob_Execution::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CNorMob_Execution::Start()
+void CCorvusState_NorMob_Execution::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_StunExecute_StartL_L");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMob_Execution::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_NorMob_Execution::Call_AnimationEnd, this);
 }
 
-void CNorMob_Execution::Tick(_float fTimeDelta)
+void CCorvusState_NorMob_Execution::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
@@ -44,19 +44,19 @@ void CNorMob_Execution::Tick(_float fTimeDelta)
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
-void CNorMob_Execution::LateTick(_float fTimeDelta)
+void CCorvusState_NorMob_Execution::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
 	Check_AndChangeNextState();
 }
 
-void CNorMob_Execution::OnDisable()
+void CCorvusState_NorMob_Execution::OnDisable()
 {
 
 }
 
-void CNorMob_Execution::OnStateStart(const _float& In_fAnimationBlendTime)
+void CCorvusState_NorMob_Execution::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
@@ -72,13 +72,13 @@ void CNorMob_Execution::OnStateStart(const _float& In_fAnimationBlendTime)
 
 }
 
-void CNorMob_Execution::OnStateEnd()
+void CCorvusState_NorMob_Execution::OnStateEnd()
 {
 	__super::OnStateEnd();
 	//GET_SINGLE(CGameManager)->End_Cinematic();
 }
 
-void CNorMob_Execution::Call_AnimationEnd()
+void CCorvusState_NorMob_Execution::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
@@ -89,19 +89,19 @@ void CNorMob_Execution::Call_AnimationEnd()
 
 
 
-void CNorMob_Execution::OnEventMessage(weak_ptr<CBase> pArg)
+void CCorvusState_NorMob_Execution::OnEventMessage(weak_ptr<CBase> pArg)
 {
 	m_pTargetObject = Weak_Cast<CGameObject>(pArg);
 	Weak_Cast<CMonster>(m_pTargetObject).lock()->Change_State<CNorMonState_Die>();
 }
 
-void CNorMob_Execution::Free()
+void CCorvusState_NorMob_Execution::Free()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMob_Execution::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_NorMob_Execution::Call_AnimationEnd, this);
 }
 
-_bool CNorMob_Execution::Check_AndChangeNextState()
+_bool CCorvusState_NorMob_Execution::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
 		return false;
