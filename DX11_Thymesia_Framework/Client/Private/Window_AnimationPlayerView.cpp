@@ -39,8 +39,13 @@ void CWindow_AnimationPlayerView::Tick(_float fTimeDelta)
 
     
 
-    if(!m_bStop)
+    if (!m_bStop)
+    {
+        if (!m_pPreViewModel.lock())
+            return;
+
         m_pPreViewModel.lock()->Play_Animation(fTimeDelta);
+    }
 }
 
 HRESULT CWindow_AnimationPlayerView::Render()
