@@ -119,23 +119,20 @@ void CNorMonState_HeavyAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 			{
 				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
 			}
-			m_bAttackLookAtLimit = true;
 		}
 			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 			break;
 		case Client::MONSTERTYPE::KNIFEWOMAN:
 			m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
-			m_bAttackLookAtLimit = true;
 			break;
 		case Client::MONSTERTYPE::SKULL:
 			break;
 		case Client::MONSTERTYPE::GARDENER:
 			m_pModelCom.lock()->Set_AnimationSpeed(1.f);
-			m_bAttackLookAtLimit = false;
 			break;
 		}
 
-
+		m_bAttackLookAtLimit = true;
 
 }
 

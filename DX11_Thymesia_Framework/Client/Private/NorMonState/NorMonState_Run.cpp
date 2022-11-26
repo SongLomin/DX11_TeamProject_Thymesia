@@ -344,28 +344,22 @@ _bool CNorMonState_Run::Check_AndChangeNextState()
 			case Client::MONSTERTYPE::SKULL:
 				break;
 			case Client::MONSTERTYPE::GARDENER:
-				switch (iAttRand)
+				if (m_iGardnerAtkIndex < 1)
 				{
-					{
-						_int iAttRand = rand() % 3;
-					}
-			
-				case 0:
-					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
-					m_bRunCheck = false;
-					break;
-				case 1:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
+					m_iGardnerAtkIndex = 0;
 					m_bRunCheck = false;
-					break;
-				case 2:
-					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack3>(0.05f);
+				}
+				else
+				{
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					++m_iGardnerAtkIndex;
 					m_bRunCheck = false;
-					break;
-				
-					}
+
+				}
 			
 				break;
+							
 			}
 			return true;
 		}

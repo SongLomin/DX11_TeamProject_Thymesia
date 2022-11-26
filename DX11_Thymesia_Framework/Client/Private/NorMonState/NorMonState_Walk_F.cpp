@@ -252,7 +252,7 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 				switch (iAttRand)
 				{
 					{
-						_int iAttRand = rand() % 3;
+						_int iAttRand = rand() % 2;
 					}
 					
 				case 0:
@@ -263,10 +263,10 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
 					m_bWalkCheck = false;
 					break;
-				case 2:
-					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack3>(0.05f);
-					m_bWalkCheck = false;
-					break;
+				//case 2:
+				//	Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack3>(0.05f);
+				//	m_bWalkCheck = false;
+				//	break;
 					}
 					break;
 							

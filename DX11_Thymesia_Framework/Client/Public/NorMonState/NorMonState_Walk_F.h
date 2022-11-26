@@ -34,6 +34,7 @@ private:
 	_float m_fCurrentSpeed = 2.4f;
 	_float m_fAccel = 0.f;
 	_bool  m_bWalkCheck = false;
+	_uint  m_iGardnerAtkIndex = 0;
 
 private:
 	void Call_AnimationEnd();
