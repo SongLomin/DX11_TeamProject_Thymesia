@@ -197,8 +197,11 @@ namespace Client
 		_float3		vMinStartRotation; // // becomes spawn look if bIsSpawnList is true
 		_float3		vMaxStartRotation;
 
-		_float3		vRotationSpeed;
-		_float3		vRotationForce;
+		_float3		vMinRotationSpeed;
+		_float3		vMaxRotationSpeed;
+
+		_float3		vMinRotationForce;
+		_float3		vMaxRotationForce;
 
 		_float3		vMinLimitRotation;
 		_float3		vMaxLimitRotation;

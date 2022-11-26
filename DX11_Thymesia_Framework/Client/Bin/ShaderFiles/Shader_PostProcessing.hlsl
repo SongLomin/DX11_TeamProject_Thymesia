@@ -14,8 +14,6 @@ vector		g_vAngularVelocity;
 texture2D	g_DepthTexture;
 texture2D	g_OriginalRenderTexture;
 
-vector		g_vCamPosition;
-
 float		g_BlurStrength = 0.1f;
 
 static const float BlurWeights[13] =

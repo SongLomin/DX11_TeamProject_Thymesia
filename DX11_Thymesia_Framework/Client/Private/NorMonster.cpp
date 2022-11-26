@@ -277,16 +277,6 @@ void CNorMonster::OnEventMessage(_uint iArg)
 	}
 }
 
-void CNorMonster::OnEventMessage(_uint iArg)
-{
-	__super::OnEventMessage(iArg);
-
-	if ((_uint)EVENT_TYPE::ON_GROGGY == iArg)
-	{
-		Change_State<CNorMonState_GroggyStart>();
-	}
-}
-
 void CNorMonster::OnEnable(void* _Arg)
 {
 	__super::OnEnable(_Arg);

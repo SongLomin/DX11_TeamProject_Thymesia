@@ -142,18 +142,6 @@ void CGameManager::Enable_Layer(const OBJECT_LAYER& In_Layer)
 
 }
 
-void CGameManager::Enable_Layer(const OBJECT_LAYER& In_Layer)
-{
-	list<weak_ptr<CGameObject>> pObjectLayer = m_pLayers[(_uint)In_Layer];
-
-	for (auto& elem : pObjectLayer)
-	{
-		elem.lock()->Set_Enable(true);
-
-	}
-
-}
-
 void CGameManager::Disable_Layer(const OBJECT_LAYER& In_Layer)
 {
 	list<weak_ptr<CGameObject>> pObjectLayer = m_pLayers[(_uint)In_Layer];

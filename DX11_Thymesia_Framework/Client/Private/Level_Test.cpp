@@ -240,7 +240,6 @@ void CLevel_Test::Tick(_float fTimeDelta)
 
 }
 
-}
 
 HRESULT CLevel_Test::Render()
 {

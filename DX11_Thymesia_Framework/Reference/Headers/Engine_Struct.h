@@ -294,8 +294,8 @@ namespace Engine
 			ZeroMemory(this, sizeof(tagColliderDesc));
 		}
 
-		tagColliderDesc(const _float3 In_vScale, const _float4 In_vRotation, const _float3 In_vTranslation, const _float3 In_vOffset)
-			: iLayer(0), vScale(In_vScale), vRotation(In_vRotation), vTranslation(In_vTranslation), vOffset(In_vOffset)
+		tagColliderDesc(const _float3& In_vScale, const _float4& In_vRotation, const _float3& In_vTranslation)
+			: vScale(In_vScale), vRotation(In_vRotation), vTranslation(In_vTranslation)
 		{
 		}
 
