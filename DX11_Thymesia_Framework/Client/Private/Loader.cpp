@@ -98,6 +98,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	GAMEINSTANCE->Add_Font((_uint)FONT_INDEX::DREAM, TEXT("../Bin/Resources/Fonts/128.spriteFont"));
 	GAMEINSTANCE->Add_Font((_uint)FONT_INDEX::PRETENDARD, TEXT("../Bin/Resources/Fonts/Pretendard.spriteFont"));
+	GAMEINSTANCE->Add_Font((_uint)FONT_INDEX::HEIROLIGHT, TEXT("../Bin/Resources/Fonts/HeiroLightRegular.spritefont"));
+
 
 	GAMEINSTANCE->Add_Prototype_GameObject<CFadeMask>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CCamera_Target>();
@@ -143,11 +145,11 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 
 	//MainMenu(LogoLevel)
-	GAMEINSTANCE->Load_Textures(("MainMenu_Background"), TEXT("../Bin/Resources/Textures/UI/MainMenuBackrgound.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
-	GAMEINSTANCE->Load_Textures(("GameLogo"), TEXT("../Bin/Resources/Textures/UI/GameLogo2.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("MainMenu_Background"), TEXT("../Bin/Resources/Textures/UI/MainMenuBackrgound.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("GameLogo"), TEXT("../Bin/Resources/Textures/UI/GameLogo2.png"), MEMORY_TYPE::MEMORY_STATIC);
 
-	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_1"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SelectableButtonBackground.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
-	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_2"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SelectableButtonHighlight.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_1"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SelectableButtonBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_2"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SelectableButtonHighlight.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_ContinueGame"), TEXT("../Bin/Resources/Textures/UI/UI_ContinueGame.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_StartGame"), TEXT("../Bin/Resources/Textures/UI/UI_StartGame.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
@@ -344,6 +346,24 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Status_Strength"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Strength.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Status_Vitality"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Vitality.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Status_Plague"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Plague.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_State_Title"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/State.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_State_AttackDamgage"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/AttackDamage.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_State_Wound"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Wound.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_State_ClawDamage"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/ClawDamage.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_State_HP"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/HP.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_State_MP"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/MP.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Apply"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Apply.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	GAMEINSTANCE->Load_Textures(("Decoration_Arrow_Right"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_Arrow_04.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Keyboard_Arrow_Left"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_Arrow_05.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Keyboard_Arrow_Right"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_Arrow_06.png"), MEMORY_TYPE::MEMORY_STATIC);
+
 
 
 #ifndef _ONLY_UI_
