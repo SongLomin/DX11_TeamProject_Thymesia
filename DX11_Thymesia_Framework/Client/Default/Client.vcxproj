@@ -202,6 +202,7 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b2.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_TurnAttack.h" />
+    <ClInclude Include="..\Public\Dynamic_Piece.h" />
     <ClInclude Include="..\Public\Level_Test.h" />
     <ClInclude Include="..\Public\PhysXColliderObject.h" />
     <ClInclude Include="..\Public\BossMonster.h" />
@@ -448,6 +449,7 @@
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b2.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_RaidAttack.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_TurnAttack.cpp" />
+    <ClCompile Include="..\Private\Dynamic_Piece.cpp" />
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
     <ClCompile Include="..\Private\UI_Container.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu.cpp" />

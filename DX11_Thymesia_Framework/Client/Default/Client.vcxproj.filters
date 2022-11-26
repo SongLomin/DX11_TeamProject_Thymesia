@@ -587,10 +587,6 @@
     <ClInclude Include="..\Public\MonsterHPBar_Base.h">
       <Filter>02. GameObject\01. UI\UI_Container\MonsterHPBar</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\MonsterHPBar_Elite.h">
-      <Filter>02. GameObject\01. UI\UI_Container\MonsterHPBar\ParryingGauege\Elite</Filter>
-      <Filter>02. GameObject\01. UI\MonsterHPBar\ParryingGauege\Elite</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttack1.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawAttack1</Filter>
     </ClInclude>
@@ -788,6 +784,10 @@
     </ClInclude>
     <ClInclude Include="..\Public\HUD_PlagueWeaponBase.h">
       <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\PlagueWeapon\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterHPBar_Elite.h" />
+    <ClInclude Include="..\Public\Dynamic_Piece.h">
+      <Filter>02. GameObject\04. Prop\02-1. Dynamic_Piece</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1330,10 +1330,6 @@
     <ClCompile Include="..\Private\MonsterHPBar_Base.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\MonsterHPBar</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp">
-      <Filter>02. GameObject\01. UI\UI_Container\MonsterHPBar\ParryingGauege\Elite</Filter>
-      <Filter>02. GameObject\01. UI\MonsterHPBar\ParryingGauege\Elite</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
@@ -1648,6 +1644,10 @@
     </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeaponBase.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\PlagueWeapon\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp" />
+    <ClCompile Include="..\Private\Dynamic_Piece.cpp">
+      <Filter>02. GameObject\04. Prop\02-1. Dynamic_Piece</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2361,9 +2361,6 @@
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\10.ComboAttack2b2">
       <UniqueIdentifier>{f2ca2667-f0a7-49e2-9524-5b2568f63a75}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\01. UI\MonsterHPBar\ParryingGauege\Elite">
-      <UniqueIdentifier>{0080c814-ce65-4f28-a417-282f097ae2bc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\12. PhysXColliderObject">
       <UniqueIdentifier>{f4627d52-ffad-4ed1-962a-b028ee22ba52}</UniqueIdentifier>
     </Filter>
@@ -2567,6 +2564,9 @@
     </Filter>
     <Filter Include="06. DataPreset\02. Preset_ColliderDesc">
       <UniqueIdentifier>{2ac11f7d-64be-440a-b5ec-df1340b856fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\04. Prop\02-1. Dynamic_Piece">
+      <UniqueIdentifier>{f9813476-58cc-4e3a-82a9-0b427d013b69}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
