@@ -16,8 +16,9 @@ vector g_vLightSpecular;
 vector g_vLightFlag;
        
 vector g_vMtrlAmbient  = vector(1.f, 1.f, 1.f, 1.f);
-vector g_vMtrlSpecular = vector(0.1f, 0.1f, 0.1f, 1.f);
+vector g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
 
+texture2D g_SpecularMap;
 texture2D g_SpecularTexture;
 texture2D g_DepthTexture;
 texture2D g_DiffuseTexture;
@@ -138,6 +139,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 	vector vDepthDesc     = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
     vector vLightFlagDesc = g_LightFlagTexture.Sample(DefaultSampler, In.vTexUV);
     //vector vShadeDesc   = g_ShadeTexture.Sample(DefaultSampler, In.vTexUV);
+    vector vSpecluarDesc = g_SpecularMap.Sample(DefaultSampler, In.vTexUV);
 	
 	//결과가 0이라면 일치하는 라이트 플래그가 없다. 그리지 않는다.
     vLightFlagDesc *= g_vLightFlag;
@@ -185,8 +187,13 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 	vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
 
 	vector vLook = normalize(vWorldPos - g_vCamPosition);
+    vector vSpecularMap= g_SpecularMap.Sample(DefaultSampler, In.vTexUV);
 
-    Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f);
+  /*  if (vSpecularMap.x > 0.f || vSpecularMap.y > 0.f || vSpecularMap.z > 0.f)
+        Out.vSpecular = g_vLightSpecular * vSpecularMap*pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f);
+    else*/
+        Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f);
+
 	Out.vSpecular.a = 0.f;
 	return Out;
 }

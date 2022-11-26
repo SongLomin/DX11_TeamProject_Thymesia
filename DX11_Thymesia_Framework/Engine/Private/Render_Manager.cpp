@@ -3,6 +3,7 @@
 #include "GameInstance.h"
 #include "Shader.h"
 #include "VIBuffer_Rect.h"
+#include "Easing_Utillity.h"
 
 
 IMPLEMENT_SINGLETON(CRender_Manager)
@@ -39,6 +40,15 @@ HRESULT CRender_Manager::Initialize()
 	/* For.Target_Shade */
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Shade"), 
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 1.f))))
+		DEBUG_ASSERT;
+
+	/* For.Target_SpecularMap */
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_SpecularMap"),
+		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		DEBUG_ASSERT;
+	/* For.Target_SpecularMap */
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_ORM"),
+		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
 	/* For.Target_Specular */
@@ -152,6 +162,8 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_LightFlag"))))
 		DEBUG_ASSERT;
+	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_SpecularMap"))))
+		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_ExtractEffect"), TEXT("Target_OriginalEffect"))))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_ExtractEffect"), TEXT("Target_ExtractBloom"))))
@@ -251,7 +263,8 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Bloom"), ViewPortDesc.Width - fHalf, fHalf + fSize * 3.f, fSize, fSize)))
 		DEBUG_ASSERT;
-
+	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_SpecularMap"), ViewPortDesc.Width - fHalf, fHalf + fSize * 4.f, fSize, fSize)))
+		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_ExtractGlow"), ViewPortDesc.Width - fHalf - fSize, fHalf, fSize, fSize)))
 		DEBUG_ASSERT;
@@ -395,10 +408,7 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Render_AfterPostEffectGlow()))
 		DEBUG_ASSERT;
 
-	if (FAILED(PostProcessing(0)))
-		DEBUG_ASSERT;
-
-	if (FAILED(PostProcessing(1)))
+	if (FAILED(PostProcessing()))
 		DEBUG_ASSERT;
 
 	if (FAILED(Render_UI()))
@@ -436,6 +446,7 @@ HRESULT CRender_Manager::Add_MotionBlur(const _float& In_fBlurScale)
 
 HRESULT CRender_Manager::Set_Chromatic(const _float In_fChormaticStrangth)
 {
+	m_fChromaticStrengthAcc = In_fChormaticStrangth;
 	m_fChromaticStrangth = In_fChormaticStrangth;
 
 	return S_OK;
@@ -443,8 +454,8 @@ HRESULT CRender_Manager::Set_Chromatic(const _float In_fChormaticStrangth)
 
 HRESULT CRender_Manager::Add_Chromatic(const _float In_fChormaticStrangth)
 {
-	m_fChromaticStrangth += In_fChormaticStrangth;
-	m_fChromaticStrangth = max(0.f, m_fChromaticStrangth);
+	m_fChromaticStrengthAcc += In_fChormaticStrangth;
+	m_fChromaticStrengthAcc = max(0.f, m_fChromaticStrengthAcc);
 
 	return S_OK;
 }
@@ -587,6 +598,8 @@ HRESULT CRender_Manager::Render_Lights()
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_DepthTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Depth")))))
 		DEBUG_ASSERT;
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_LightFlagTexture", pRenderTargetManager->Get_SRV(TEXT("Target_LightFlag")))))
+		DEBUG_ASSERT;
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_SpecularMap", pRenderTargetManager->Get_SRV(TEXT("Target_SpecularMap")))))
 		DEBUG_ASSERT;
 
 	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
@@ -1323,7 +1336,7 @@ HRESULT CRender_Manager::Blur_Effect()
 	return S_OK;
 }
 
-HRESULT CRender_Manager::PostProcessing(const _int In_iPass)
+HRESULT CRender_Manager::PostProcessing()
 {
 	//모션 블러, 색수차, 중심 블러(얘는 위에 있음) 등등 화면 전체 해야하는 블러의 경우
 	Bake_OriginalRenderTexture();
@@ -1354,23 +1367,28 @@ HRESULT CRender_Manager::PostProcessing(const _int In_iPass)
 	m_pPostProcessingShader->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
 	m_pPostProcessingShader->Set_RawValue("g_ViewMatrixInv", &ViewMatrixInv, sizeof(_float4x4));
 	m_pPostProcessingShader->Set_RawValue("g_CamProjMatrix", &ProjMatrix, sizeof(_float4x4));
-//	m_pPostProcessingShader->Set_RawValue("g_CamViewMatrix", &ViewMatrix, sizeof(_float4x4));
 
 	m_pPostProcessingShader->Set_RawValue("g_vCamPosition", &ViewMatrixInv.m[3],sizeof(_float4));
-	m_pPostProcessingShader->Set_RawValue("g_BlurStrength", &m_fChromaticStrangth, sizeof(_float));
 
-	_float4	vLinearVelocity, vAngularVelocity;
-	XMStoreFloat4(&vLinearVelocity, pPipeLine->Get_LinearVelocity());
-	XMStoreFloat4(&vAngularVelocity, pPipeLine->Get_AngularVelocity());
+	
+	_float fLerpValue = 0.f;
+	if (0.f < m_fChromaticStrengthAcc)
+	{
+		_vector vLerp = XMVectorSet(m_fChromaticStrangth, 0.f, 0.f, 0.f);
+		vLerp = CEasing_Utillity::CubicOut(XMVectorSet(0.f, 0.f, 0.f, 0.f), vLerp, m_fChromaticStrengthAcc, m_fChromaticStrangth);
+		fLerpValue = vLerp.m128_f32[0];
+	}
+	
 
-	/*m_pPostProcessingShader->Set_RawValue("g_vLinearVelocity", &vLinearVelocity, sizeof(_float4));
-	m_pPostProcessingShader->Set_RawValue("g_vAngularVelocity", &vAngularVelocity, sizeof(_float4));*/
+	m_pPostProcessingShader->Set_RawValue("g_BlurStrength", &fLerpValue, sizeof(_float));//chromatic 전용
+
 	m_pPostProcessingShader->Set_RawValue("g_PreCamViewMatrix", &XMMatrixTranspose(XMLoadFloat4x4(&pPipeLine->Get_PreViewMatrix())), sizeof(_float4x4));
 
-
-	m_pPostProcessingShader->Begin(In_iPass);
-	m_pVIBuffer->Render();
-
+	for (_int i = 0; i < 2; ++i)
+	{
+		m_pPostProcessingShader->Begin(i);
+		m_pVIBuffer->Render();
+	}
 
 
 	return S_OK;
