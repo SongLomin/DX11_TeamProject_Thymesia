@@ -496,17 +496,22 @@ HRESULT CModel::Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _
 	if (iMaterialIndex >= m_iNumMaterials)
 		assert(false);
 
+	function<void()> Bind_NullTexture = [&pShader, &pConstantName]()
+	{
+		vector<ComPtr<ID3D11ShaderResourceView>> NullTexture = GAMEINSTANCE->Get_TexturesFromKey("NullTexture");
+
+		pShader.lock()->Set_ShaderResourceView(pConstantName, NullTexture.front());
+	};
+
 	if (!m_Materials[iMaterialIndex].pTextures[eActorType].lock().get())
 	{
 		if (aiTextureType::aiTextureType_DIFFUSE == eActorType)
 		{
-			vector<ComPtr<ID3D11ShaderResourceView>> NullTexture = GAMEINSTANCE->Get_TexturesFromKey("NullTexture");
-
-			 pShader.lock()->Set_ShaderResourceView(pConstantName, NullTexture.front());
+			Bind_NullTexture();
 		}
 
 		
-		return S_OK;
+		return E_FAIL;
 	}
 
 	/*else
@@ -519,7 +524,15 @@ HRESULT CModel::Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _
 		return E_FAIL;
 	}*/
 
-	return m_Materials[iMaterialIndex].pTextures[eActorType].lock()->Set_ShaderResourceView(pShader, pConstantName);
+	if (FAILED(m_Materials[iMaterialIndex].pTextures[eActorType].lock()->Set_ShaderResourceView(pShader, pConstantName)) &&
+		aiTextureType::aiTextureType_DIFFUSE == eActorType)
+	{
+		Bind_NullTexture();
+
+		return E_FAIL;
+	}
+
+	return S_OK;
 }
 
 weak_ptr<CBoneNode> CModel::Find_BoneNode(const string& pBoneName)

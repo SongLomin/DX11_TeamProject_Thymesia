@@ -62,7 +62,34 @@ void CStatic_Prop::Before_Render(_float fTimeDelta)
 
 HRESULT CStatic_Prop::Render()
 {
-    return __super::Render();
+    __super::Render();
+
+    _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
+    for (_uint i = 0; i < iNumMeshContainers; ++i)
+    {
+        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+        {
+            // Do Nothing.
+        }
+
+        // 노말인데 5에 저장되어 있다..
+
+        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+        {
+            // 노말 텍스쳐가 없는 경우
+            m_iPassIndex = 0;
+        }
+        // 노말 텍스쳐가 있는 경우
+        else
+        {
+            m_iPassIndex = 3;
+        }
+
+        m_pShaderCom.lock()->Begin(m_iPassIndex);
+        m_pModelCom.lock()->Render_Mesh(i);
+    }
+
+    return S_OK;
 }
 
 HRESULT CStatic_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix)
@@ -145,7 +172,7 @@ void CStatic_Prop::Load_FromJson(const json& In_Json)
     PhysXColliderDesc tDesc;
     Preset::PhysXColliderDesc::StaticPropSetting(tDesc, m_pTransformCom);
     m_pPhyxXColliderCom.lock()->CreatePhysXActor(tDesc);
-    m_pPhyxXColliderCom.lock()->Add_PhysXActorAtScene();
+    m_pPhyxXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
 
     _vector vMax, vMin;
 

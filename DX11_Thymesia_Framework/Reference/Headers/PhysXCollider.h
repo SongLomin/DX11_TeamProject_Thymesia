@@ -108,7 +108,8 @@ private:
 
 public:
 	void		CreatePhysXActor(PHYSXCOLLIDERDESC& PhysXColliderDesc);
-	void		Add_PhysXActorAtScene(const PxVec3& In_MassSpaceInertiaTensor = { 0.f, 0.f, 0.f }, const PxReal In_fMass = 0.f);
+	void		Add_PhysXActorAtSceneWithOption(const PxVec3& In_MassSpaceInertiaTensor = { 0.f, 0.f, 0.f }, const PxReal In_fMass = 0.f);
+	void		Add_PhysXActorAtScene();
 
 private:
 	void		Create_Geometry();

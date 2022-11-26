@@ -551,9 +551,9 @@ HRESULT CLoader::Loading_ForTestLevel()
 	CEditGround::Load_AllMeshInfo();
 
 	_matrix TransformMatrix;
-	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model("DistructableTest", "../Bin/Resources/Meshes/Distructable/test.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
-	
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
+	//GAMEINSTANCE->Load_Model("DistructableTest", "../Bin/Resources/Meshes/Distructable/WagonTest2.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Distructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성 중입니다."));
 
@@ -819,7 +819,7 @@ void CLoader::Load_AllNaviMesh()
 {
 }
 
-void CLoader::Load_AllMeshes(const filesystem::path& In_Path, MODEL_TYPE In_eModelType, const MEMORY_TYPE& In_eMemoryType)
+void CLoader::Load_AllMeshes(const filesystem::path& In_Path, MODEL_TYPE In_eModelType, const MEMORY_TYPE& In_eMemoryType, _matrix TransformationMatrix, const char* In_extansion)
 {
 	if (!In_Path.filename().extension().string().empty())
 		return;
@@ -838,17 +838,17 @@ void CLoader::Load_AllMeshes(const filesystem::path& In_Path, MODEL_TYPE In_eMod
 		szFileName = entry.path().filename().string().c_str();
 		szFileName = szFileName.substr(0, szFileName.size() - 4);
 
-		if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
+		if (strcmp(entry.path().extension().string().c_str(), In_extansion) == 0)
 		{
 			cout << "Load_AllMeshes() : " << szFileName << endl;
-			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), In_eModelType, XMMatrixScaling(0.01f, 0.01f, 0.01f), In_eMemoryType);
+			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), In_eModelType, TransformationMatrix, In_eMemoryType);
 		}
 
-		else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0 || strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
+		/*else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0 || strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
 		{
 			cout << "Load_AllMeshes() : " << szFileName << endl;
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), In_eModelType, XMMatrixScaling(0.01f, 0.01f, 0.01f), In_eMemoryType);
-		}
+		}*/
 
 		itr++;
 	}

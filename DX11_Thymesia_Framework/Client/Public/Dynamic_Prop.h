@@ -21,11 +21,13 @@ public:
     virtual HRESULT Start() override;
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
+    virtual void Before_Render(_float fTimeDelta) override;
     virtual HRESULT Render() override;
 
 protected:
     weak_ptr<CCollider>         m_pColliderCom;
     weak_ptr<CPhysXCollider>    m_pPhysXColliderCom;
+    
 
 protected:
     void Free();

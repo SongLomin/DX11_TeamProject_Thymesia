@@ -81,31 +81,6 @@ HRESULT CProp::Render()
 {
     SetUp_ShaderResource();
 
-	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
-	for (_uint i = 0; i < iNumMeshContainers; ++i)
-	{
-		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-		{
-			return E_FAIL;
-		}
-
-		// 노말인데 5에 저장되어 있다..
-
-		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-		{
-			// 노말 텍스쳐가 없는 경우
-			m_iPassIndex = 0;
-		}
-		// 노말 텍스쳐가 있는 경우
-		else
-		{
-			m_iPassIndex = 4;
-		}
-
-		m_pShaderCom.lock()->Begin(m_iPassIndex);
-		m_pModelCom.lock()->Render_Mesh(i);
-	}
-
     __super::Render();
 
     return S_OK;

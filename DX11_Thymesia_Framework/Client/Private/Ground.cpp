@@ -50,7 +50,7 @@ HRESULT CGround::Start()
 	Preset::PhysXColliderDesc::GroundSetting(ColliderDesc, false);
 
 	m_pPhysXColliderCom.lock()->CreatePhysXActor(ColliderDesc);
-	m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
+	m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
 	GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_StaticCast<CGameObject>(m_this));
 
 

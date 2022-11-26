@@ -262,7 +262,7 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 		PhysXColliderDesc tDesc;
 		Preset::PhysXColliderDesc::StaticInstancingPropSetting(tDesc, m_pTransformCom);
 		m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
-		m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
+		m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
 	}
 #endif // _GENERATE_PROP_COLLIDER_
 

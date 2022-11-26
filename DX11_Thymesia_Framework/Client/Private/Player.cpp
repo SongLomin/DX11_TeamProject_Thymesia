@@ -47,7 +47,7 @@ HRESULT CPlayer::Initialize(void* pArg)
 
     Preset::PhysXColliderDesc::PlayerBodySetting(tPhysxColliderDesc, m_pTransformCom);
     m_pPhysXColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
-    m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene({0.f, 0.f, 0.f}, 1.f);
+    m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption({0.f, 0.f, 0.f}, 1.f);
 
     //Preset::PhysXColliderDesc::PlayerBodyTriggerSetting(tPhysxColliderDesc, m_pTransformCom);
     //m_pPhysXTriggerColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
