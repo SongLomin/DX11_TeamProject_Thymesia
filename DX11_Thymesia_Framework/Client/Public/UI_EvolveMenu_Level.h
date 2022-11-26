@@ -23,12 +23,32 @@ public:
 
 private:
 	void    Create_Background();
+	void	Create_Memory();
+	void	Create_Status();
 
 private:
 	weak_ptr<CCustomUI> m_pPauseMenuBackground;
 	weak_ptr<CCustomUI> m_pPauseMenuBackground_Main;
 	weak_ptr<CCustomUI> m_pPauseMenuBackground_Top;
 
+
+
+private:
+	weak_ptr<CCustomUI> m_pTitle;
+	weak_ptr<CCustomUI>	m_pLevel;
+	weak_ptr<CCustomUI> m_pMemory;
+	weak_ptr<CCustomUI> m_pRequired_Memory;
+
+
+
+	//Status
+private:
+	weak_ptr<CCustomUI>	m_pStatusBG;
+
+	weak_ptr<CCustomUI>	m_pStatusTitle;
+	weak_ptr<CCustomUI>	m_pStatusStrength;
+	weak_ptr<CCustomUI>	m_pStatusVitality;
+	weak_ptr<CCustomUI>	m_pStatusPlague;
 
 private:
 	virtual void	OnEnable(void* pArg) override;

@@ -176,7 +176,7 @@ void CStatus_Monster::Decrease_Green_HP(const _float In_fDamage)
 		m_tMonsterDesc.m_fMaxHP_Green);
 }
 
-void CStatus_Monster::Decrease_ParryGauge(const _float In_fDamage)
+void CStatus_Monster::Add_ParryGauge(const _float In_fDamage)
 {
 	Increase_HP(m_tMonsterDesc.m_fCurrentParryingGauge,
 				m_tMonsterDesc.m_fMaxParryingGauge,

@@ -330,7 +330,20 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Stage1_Quest1"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Quest/Stage1/Quese_1.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
+//Level Up Page
 
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_StatusBG"), TEXT("../Bin/Resources/Textures/UI/General/Test1.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Title"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Level"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Level.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Memory"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Memory.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Required_Memory"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Required_Memory.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Status_Title"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Status.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Status_Strength"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Strength.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Status_Vitality"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Vitality.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Status_Plague"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Plague.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
 #ifndef _ONLY_UI_
