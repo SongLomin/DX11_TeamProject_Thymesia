@@ -37,7 +37,6 @@ HRESULT CEffect_Rect::Initialize_Prototype()
 
 	m_tEffectParticleDesc.iSyncAnimationKey = -1;
 
-
 	// m_tParticleSpawns.clear();
 
 	m_tEffectParticleDesc.fMinLifeTime = 1.f;
@@ -72,8 +71,6 @@ HRESULT CEffect_Rect::Initialize_Prototype()
 
 	m_bFinish = false;
 	m_bStopParticle = false;
-
-
 	return S_OK;
 }
 
@@ -875,7 +872,7 @@ void CEffect_Rect::Reset_ParticleDesc(const _uint& In_iIndex)
 
 void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 {
-	for (_int i = 0; i < m_tEffectParticleDesc.iMaxInstance; ++i)
+	for (_int i(0); i < m_tEffectParticleDesc.iMaxInstance; ++i)
 	{
 		m_tOriginalParticleDescs[i].Reset();
 
@@ -959,7 +956,6 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 		m_tOriginalParticleDescs[i].vCurrentScale.x = max(0.00001f, m_tOriginalParticleDescs[i].vCurrentScale.x);
 		m_tOriginalParticleDescs[i].vCurrentScale.y = max(0.00001f, m_tOriginalParticleDescs[i].vCurrentScale.y);
 		m_tOriginalParticleDescs[i].vCurrentScale.z = max(0.00001f, m_tOriginalParticleDescs[i].vCurrentScale.z);
-
 	}
 }
 
@@ -1106,28 +1102,10 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 		else
 		{
 			if (m_tEffectParticleDesc.bEasingSpeed)
-			{
 				m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, m_tParticleDescs[i].vTargetSpeed);
-			}
 			else
 				m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, vMove);
 		}
-	}
-
-	if (m_tEffectParticleDesc.bUseGravity)
-	{
-		_vector vDeltaGravity;
-		ZeroMemory(&vDeltaGravity, sizeof(_vector));
-
-		vDeltaGravity = XMVectorSetX(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.x * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
-		vDeltaGravity = XMVectorSetY(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.y * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
-		vDeltaGravity = XMVectorSetZ(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.z * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
-
-		_float3 f3DeltaGravity;
-		XMStoreFloat3(&f3DeltaGravity, vDeltaGravity);
-
-		m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, f3DeltaGravity);
-		// vMove = SMath::Add_Float3(vMove, vSpeed);
 	}
 
 	if (m_tEffectParticleDesc.bUseGravity)
@@ -1260,8 +1238,8 @@ void CEffect_Rect::Update_ParticleUV(_float fTimeDelta)
 	_vector vDiffuseCurrentUV = XMLoadFloat2(&m_vDiffuseCurrentUV);
 	vDiffuseCurrentUV += vDiffuseMoveUV;
 
-	vDiffuseCurrentUV.m128_f32[0] = min(m_tEffectParticleDesc.vDiffuseUVMax.x, vDiffuseCurrentUV.m128_f32[0]);
-	vDiffuseCurrentUV.m128_f32[1] = min(m_tEffectParticleDesc.vDiffuseUVMax.y, vDiffuseCurrentUV.m128_f32[1]);
+	XMVectorSetX(vDiffuseCurrentUV, min(m_tEffectParticleDesc.vDiffuseUVMax.x, XMVectorGetX(vDiffuseCurrentUV)));
+	XMVectorSetY(vDiffuseCurrentUV, min(m_tEffectParticleDesc.vDiffuseUVMax.y, XMVectorGetY(vDiffuseCurrentUV)));
 
 	XMStoreFloat2(&m_vDiffuseCurrentUV, vDiffuseCurrentUV);
 #pragma endregion
@@ -1275,8 +1253,8 @@ void CEffect_Rect::Update_ParticleUV(_float fTimeDelta)
 	_vector vMaskCurrentUV = XMLoadFloat2(&m_vMaskCurrentUV);
 	vMaskCurrentUV += vMaskMoveUV;
 
-	vMaskCurrentUV.m128_f32[0] = min(m_tEffectParticleDesc.vMaskUVMax.x, vMaskCurrentUV.m128_f32[0]);
-	vMaskCurrentUV.m128_f32[1] = min(m_tEffectParticleDesc.vMaskUVMax.y, vMaskCurrentUV.m128_f32[1]);
+	XMVectorSetX(vMaskCurrentUV, min(m_tEffectParticleDesc.vMaskUVMax.x, XMVectorGetX(vMaskCurrentUV)));
+	XMVectorSetY(vMaskCurrentUV, min(m_tEffectParticleDesc.vMaskUVMax.y, XMVectorGetY(vMaskCurrentUV)));
 
 	XMStoreFloat2(&m_vMaskCurrentUV, vMaskCurrentUV);
 #pragma endregion
@@ -1290,8 +1268,8 @@ void CEffect_Rect::Update_ParticleUV(_float fTimeDelta)
 	_vector vNoiseCurrentUV = XMLoadFloat2(&m_vNoiseCurrentUV);
 	vNoiseCurrentUV += vNoiseMoveUV;
 
-	vNoiseCurrentUV.m128_f32[0] = min(m_tEffectParticleDesc.vNoiseUVMax.x, vNoiseCurrentUV.m128_f32[0]);
-	vNoiseCurrentUV.m128_f32[1] = min(m_tEffectParticleDesc.vNoiseUVMax.y, vNoiseCurrentUV.m128_f32[1]);
+	XMVectorSetX(vNoiseCurrentUV, min(m_tEffectParticleDesc.vNoiseUVMax.x, XMVectorGetX(vNoiseCurrentUV)));
+	XMVectorSetY(vNoiseCurrentUV, min(m_tEffectParticleDesc.vNoiseUVMax.y, XMVectorGetY(vNoiseCurrentUV)));
 
 	XMStoreFloat2(&m_vNoiseCurrentUV, vNoiseCurrentUV);
 #pragma endregion
@@ -1299,42 +1277,51 @@ void CEffect_Rect::Update_ParticleUV(_float fTimeDelta)
 
 void CEffect_Rect::Update_ParticleColor(const _uint& i, _float fTimeDelta)
 {
-	_float4 vColor;
+	_vector vColor;
+	ZeroMemory(&vColor, sizeof(_vector));
 
 	if (m_tEffectParticleDesc.IsGrayOnlyUseRed)
 	{
-		vColor.x = m_tEffectParticleDesc.vColorSpeed.x * fTimeDelta;
-		vColor.w = m_tEffectParticleDesc.vColorSpeed.w * fTimeDelta;
+		XMVectorSetX(vColor, m_tEffectParticleDesc.vColorSpeed.x * fTimeDelta);
+		XMVectorSetW(vColor, m_tEffectParticleDesc.vColorSpeed.w * fTimeDelta);
+
 		m_tParticleDescs[i].vCurrentColorForce.x += m_tEffectParticleDesc.vColorForce.x * fTimeDelta;
 		m_tParticleDescs[i].vCurrentColorForce.w += m_tEffectParticleDesc.vColorForce.w * fTimeDelta;
-		vColor.x += m_tParticleDescs[i].vCurrentColorForce.x;
-		vColor.w += m_tParticleDescs[i].vCurrentColorForce.w;
-		vColor.x += m_tParticleDescs[i].vCurrentColor.x;
-		vColor.w += m_tParticleDescs[i].vCurrentColor.w;
 
-		vColor.y = vColor.x;
-		vColor.z = vColor.x;
+		XMVectorSetX(vColor, XMVectorGetX(vColor) + m_tParticleDescs[i].vCurrentColorForce.x);
+		XMVectorSetW(vColor, XMVectorGetW(vColor) + m_tParticleDescs[i].vCurrentColorForce.w);
+		XMVectorSetX(vColor, XMVectorGetX(vColor) + m_tParticleDescs[i].vCurrentColor.x);
+		XMVectorSetW(vColor, XMVectorGetW(vColor) + m_tParticleDescs[i].vCurrentColor.w);
 
-		vColor.x = min(m_tEffectParticleDesc.vMaxColor.x, vColor.x);
-		vColor.y = min(m_tEffectParticleDesc.vMaxColor.y, vColor.y);
-		vColor.z = min(m_tEffectParticleDesc.vMaxColor.z, vColor.z);
-		vColor.w = min(m_tEffectParticleDesc.vMaxColor.w, vColor.w);
+		XMVectorSetY(vColor, XMVectorGetX(vColor));
+		XMVectorSetZ(vColor, XMVectorGetX(vColor));
+
+		XMVectorSetX(vColor, min(m_tEffectParticleDesc.vMaxColor.x, XMVectorGetX(vColor)));
+		XMVectorSetY(vColor, min(m_tEffectParticleDesc.vMaxColor.y, XMVectorGetY(vColor)));
+		XMVectorSetZ(vColor, min(m_tEffectParticleDesc.vMaxColor.z, XMVectorGetZ(vColor)));
+		XMVectorSetW(vColor, min(m_tEffectParticleDesc.vMaxColor.w, XMVectorGetW(vColor)));
 	}
 	else
 	{
-		vColor = SMath::Mul_Float4(m_tEffectParticleDesc.vColorSpeed, fTimeDelta);
+		vColor = XMLoadFloat4(&SMath::Mul_Float4(m_tEffectParticleDesc.vColorSpeed, fTimeDelta));
 		SMath::Add_Float4(&m_tParticleDescs[i].vCurrentColorForce, SMath::Mul_Float4(m_tEffectParticleDesc.vColorForce, fTimeDelta));
 
-		SMath::Add_Float4(&vColor, m_tParticleDescs[i].vCurrentColorForce);
-		SMath::Add_Float4(&vColor, m_tParticleDescs[i].vCurrentColor);
+		_float4 float4Color;
+		ZeroMemory(&float4Color, sizeof(_float4));
+		XMStoreFloat4(&float4Color, vColor);
 
-		vColor.x = min(m_tEffectParticleDesc.vMaxColor.x, vColor.x);
-		vColor.y = min(m_tEffectParticleDesc.vMaxColor.y, vColor.y);
-		vColor.z = min(m_tEffectParticleDesc.vMaxColor.z, vColor.z);
-		vColor.w = min(m_tEffectParticleDesc.vMaxColor.w, vColor.w);
+		vColor = XMLoadFloat4(&SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColorForce));
+		XMStoreFloat4(&float4Color, vColor);
+
+		vColor = XMLoadFloat4(&SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColor));
+
+		XMVectorSetX(vColor, min(m_tEffectParticleDesc.vMaxColor.x, XMVectorGetX(vColor)));
+		XMVectorSetY(vColor, min(m_tEffectParticleDesc.vMaxColor.y, XMVectorGetY(vColor)));
+		XMVectorSetZ(vColor, min(m_tEffectParticleDesc.vMaxColor.z, XMVectorGetZ(vColor)));
+		XMVectorSetW(vColor, min(m_tEffectParticleDesc.vMaxColor.w, XMVectorGetW(vColor)));
 	}
 
-	m_tParticleDescs[i].vCurrentColor = vColor;
+	XMStoreFloat4(&m_tParticleDescs[i].vCurrentColor, vColor);
 }
 
 void CEffect_Rect::Update_ParticleGlowColor(_float fTimeDelta)
@@ -1362,8 +1349,6 @@ void CEffect_Rect::Update_ParticleSpriteFrame(const _uint& i, _float fTimeDelta)
 		{
 			m_tParticleDescs[i].fCurrentSpriteTime = 0.f;
 
-			//if (!m_tEffectParticleDesc.bPendulumSprite)
-			//{
 			m_tParticleDescs[i].vSpriteUV.x += (1.f / m_tEffectParticleDesc.iNumFrameX);
 
 			if ((1.f - 1.f / m_tEffectParticleDesc.iNumFrameX) <= m_tParticleDescs[i].vSpriteUV.x &&
@@ -1388,47 +1373,6 @@ void CEffect_Rect::Update_ParticleSpriteFrame(const _uint& i, _float fTimeDelta)
 				m_tParticleDescs[i].vSpriteUV.y += (1.f / m_tEffectParticleDesc.iNumFrameY);
 				return;
 			}
-			// }
-			/*else
-			{
-				if (!m_tParticleDescs[i].bFramePlayBackward)
-				{
-					m_tParticleDescs[i].vSpriteUV.x += (1.f / m_tEffectParticleDesc.iNumFrameX);
-
-					if ((1.f - 1.f / m_tEffectParticleDesc.iNumFrameX) <= m_tParticleDescs[i].vSpriteUV.x &&
-						(1.f - 1.f / m_tEffectParticleDesc.iNumFrameY) <= m_tParticleDescs[i].vSpriteUV.y)
-					{
-						m_tParticleDescs[i].vSpriteUV.x = 1.f - 1.f / m_tEffectParticleDesc.iNumFrameX;
-						m_tParticleDescs[i].vSpriteUV.y = 1.f - 1.f / m_tEffectParticleDesc.iNumFrameY;
-						m_tParticleDescs[i].bFramePlayBackward = true;
-						return;
-					}
-
-					if ((1.f - 1.f / m_tEffectParticleDesc.iNumFrameX) <= m_tParticleDescs[i].vSpriteUV.x)
-					{
-						m_tParticleDescs[i].vSpriteUV.x = 0.f;
-						m_tParticleDescs[i].vSpriteUV.y += (1.f / m_tEffectParticleDesc.iNumFrameY);
-						return;
-					}
-				}
-				else
-				{
-					m_tParticleDescs[i].vSpriteUV.x -= (1.f / m_tEffectParticleDesc.iNumFrameX);
-
-					if (0.f >= m_tParticleDescs[i].vSpriteUV.x && 0.f >= m_tParticleDescs[i].vSpriteUV.y)
-					{
-						m_tParticleDescs[i].bFramePlayBackward = false;
-						return;
-					}
-
-					if (0.f >= m_tParticleDescs[i].vSpriteUV.x)
-					{
-						m_tParticleDescs[i].vSpriteUV.x = 1.f - 1.f / m_tEffectParticleDesc.iNumFrameX;
-						m_tParticleDescs[i].vSpriteUV.y -= (1.f / m_tEffectParticleDesc.iNumFrameY);
-						return;
-					}
-				}
-			}*/
 		}
 	}
 }
@@ -1447,11 +1391,6 @@ void CEffect_Rect::Update_ParentTransform()
 
 		if ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType)
 		{
-			//_matrix RotationMatrix = SMath::Get_RotationMatrix(UnscaledMatrix);
-			//m_pTransformCom.lock()->Set_State(CTransform::STATE_RIGHT, RotationMatrix.r[0]);
-			//m_pTransformCom.lock()->Set_State(CTransform::STATE_UP, RotationMatrix.r[1]);
-			//m_pTransformCom.lock()->Set_State(CTransform::STATE_LOOK, RotationMatrix.r[2]);
-
 			m_pTransformCom.lock()->Set_WorldMatrix(XMMatrixIdentity());
 		}
 		else if ((_int)TRANSFORMTYPE::CHILD == m_tEffectParticleDesc.iFollowTransformType)
