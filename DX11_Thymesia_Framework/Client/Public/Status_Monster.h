@@ -78,7 +78,7 @@ public:
 	_float			Get_Atk() { return m_tMonsterDesc.m_fAtk; }
 	virtual void    Get_Desc(void* Out_pDesc);
 
-	void			Decrease_ParryGauge(const _float In_fDamage);
+	void			Add_ParryGauge(const _float In_fDamage);
 
 	_bool			Is_Groggy() const;
 

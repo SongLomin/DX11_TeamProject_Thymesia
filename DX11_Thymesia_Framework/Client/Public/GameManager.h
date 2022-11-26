@@ -53,8 +53,7 @@ public:
     void Set_CurrentPlayer(weak_ptr<CPlayer> In_pPlayer);
 
     weak_ptr<CStatus_Player>    Get_CurrentPlayer_Status();
-
-    weak_ptr<CPlayer> Get_CurrentPlayer();
+    weak_ptr<CPlayer>           Get_CurrentPlayer();
 
 public:
    
@@ -115,7 +114,6 @@ public:
 public:
     void Change_NextLevel(void* pArg);
 
-
 public:
     FDelegate<>                 CallBack_ChangePlayer;
 
@@ -127,11 +125,6 @@ private:
     weak_ptr<CPlayer>           m_pCurrentPlayer;
     weak_ptr<CMonster>          m_pTargetMonster;
     GAME_STATE                  m_eCurrentState = GAME_STATE::STATE_END;
-
-
-    //For. PlayerUI
-private:
-
 
 private:
     map<_hashcode, map<_int, map<_int, KEYFRAME_EVENT>>>         m_KeyEvents;

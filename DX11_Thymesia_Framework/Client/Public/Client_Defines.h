@@ -24,6 +24,7 @@
 #define		_TEST_STATIC_PROPS_
 // UI제외한 오브젝트 생성 X
 //#define		_ONLY_UI_
+#define		_RENDER_FPS_
 #endif // _DEBUG
 
 #ifdef NDEBUG
@@ -43,7 +44,7 @@
 
 #define ENGINE_DECLATION_UI class CTexture; class CShader;   
 
-
+#define ADD_STATIC_CUSTOMUI GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC)
 
 namespace Client 
 {
@@ -66,7 +67,7 @@ namespace Client
 		LEVEL_TEST,
 		LEVEL_END };
 	enum class TIMER { TIMER_DEFAULT, TIMER_FRAME, TIMER_HYPERSPACE, TIMER_END };
-	enum class FONT_INDEX { DREAM, PRETENDARD, FONT_END };
+	enum class FONT_INDEX { DREAM, PRETENDARD,HEIROLIGHT, FONT_END };
 	enum class EVENT_TYPE
 	{
 		ON_HITPLAYER,

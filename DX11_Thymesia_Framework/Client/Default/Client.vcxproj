@@ -226,6 +226,7 @@
     <ClInclude Include="..\Public\UI_EvolveMenu.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Level.h" />
     <ClInclude Include="..\Public\UI_LerpBar.h" />
+    <ClInclude Include="..\Public\UI_T_Dissolve.h" />
     <ClInclude Include="..\Public\VargBossStateBase.h" />
     <ClInclude Include="..\Public\BossVarg\Varg.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack1a.h" />
@@ -473,6 +474,7 @@
     <ClCompile Include="..\Private\Preset_PhysXControllerDesc.cpp" />
     <ClCompile Include="..\Private\Level_Test.cpp" />
     <ClCompile Include="..\Private\PhysXColliderObject.cpp" />
+    <ClCompile Include="..\Private\UI_T_Dissolve.cpp" />
     <ClCompile Include="..\Private\VargBossStateBase.cpp" />
     <ClCompile Include="..\Private\BossVarg\Varg.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack1a.cpp" />
