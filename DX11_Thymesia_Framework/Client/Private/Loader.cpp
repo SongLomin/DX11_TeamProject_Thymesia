@@ -110,6 +110,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CNorMonster>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CTerrain>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CStatic_Prop>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CDynamic_Prop>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CLight_Prop>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CGround>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CStatic_Instancing_Prop>();
@@ -713,6 +714,10 @@ HRESULT CLoader::Loading_ForEditLevel()
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/"  , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/"						 , MODEL_TYPE::GROUND , MEMORY_TYPE::MEMORY_DYNAMIC);
+
+	_matrix TransformMatrix;
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
+	Load_AllMeshes("../Bin/Resources/Meshes/Distructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
 	lstrcpy(m_szLoadingText, TEXT("·Îµù ³¡ "));
 	m_isFinished = true;

@@ -42,6 +42,7 @@ protected:
 protected:
     RENDERGROUP m_eRenderGroup = RENDERGROUP::RENDER_NONALPHABLEND;
     _uint       m_iPassIndex = 0;
+    _float3     m_vCenterOffset{ 0.f, 0.f, 0.f };
     _float      m_fCullingOffsetRange = 0.f;
     _bool       m_bRendering = true;
 

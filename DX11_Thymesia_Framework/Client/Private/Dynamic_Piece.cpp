@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Dynamic_Piece.h"
-
+#include "Easing_Utillity.h"
 #include "Client_Components.h"
 #include "Client_Presets.h"
 
@@ -40,8 +40,10 @@ HRESULT CDynamic_Piece::Initialize(void* pArg)
 
 HRESULT CDynamic_Piece::Start()
 {
+    __super::Start();
+
     PhysXColliderDesc tPhysXColliderDesc;
-    Preset::PhysXColliderDesc::DynamicPropSetting(tPhysXColliderDesc, m_pTransformCom);
+    Preset::PhysXColliderDesc::DynamicPieceSetting(tPhysXColliderDesc, m_pTransformCom);
     m_pPhysXColliderCom.lock()->CreatePhysXActor(tPhysXColliderDesc);
     m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
     Set_Enable(false);
@@ -61,6 +63,16 @@ void CDynamic_Piece::Tick(_float fTimeDelta)
         m_pTransformCom.lock()->Set_Position(vPos);
     }
 #endif
+
+    m_fCurrentLifeTime += fTimeDelta;
+
+    if (m_fCurrentLifeTime >= m_fMaxLifeTime)
+    {
+        m_fCurrentLifeTime = min(m_fMaxLifeTime, m_fCurrentLifeTime);
+        Set_Dead();
+    }
+
+    
 }
 
 void CDynamic_Piece::LateTick(_float fTimeDelta)
@@ -82,6 +94,13 @@ HRESULT CDynamic_Piece::Render()
 {
     __super::Render();
 
+    _vector vStart = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+    _vector vEnd = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+
+    _float fMaskRatio = XMVectorGetX(CEasing_Utillity::QuartIn(vStart, vEnd, m_fCurrentLifeTime, m_fMaxLifeTime));
+
+    m_pShaderCom.lock()->Set_RawValue("g_fMaskingScalar", &fMaskRatio, sizeof(_float));
+
     _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
@@ -100,7 +119,7 @@ HRESULT CDynamic_Piece::Render()
         // 노말 텍스쳐가 있는 경우
         else
         {
-            m_iPassIndex = 3;
+            m_iPassIndex = 8;
         }
 
         m_pShaderCom.lock()->Begin(m_iPassIndex);

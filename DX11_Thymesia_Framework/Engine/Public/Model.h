@@ -66,6 +66,8 @@ public:
 
 	weak_ptr<CAnimation> Get_AnimationFromIndex(const _uint& In_iIndex) const;
 
+	_bool IsModelPicking(const RAY& In_Ray, _float& Out_fRange);
+
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;

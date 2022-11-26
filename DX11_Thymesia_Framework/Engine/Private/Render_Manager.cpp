@@ -571,7 +571,10 @@ HRESULT CRender_Manager::Render_NonAlphaBlend()
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHABLEND])
 	{
 		if (pGameObject.lock())
+		{
 			pGameObject.lock()->Render();
+			pGameObject.reset();
+		}
 	}
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHABLEND].clear();
 

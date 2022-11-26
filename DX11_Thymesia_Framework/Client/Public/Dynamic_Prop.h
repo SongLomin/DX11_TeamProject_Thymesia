@@ -25,6 +25,7 @@ public:
     virtual void LateTick(_float fTimeDelta) override;
     virtual void Before_Render(_float fTimeDelta) override;
     virtual HRESULT Render() override;
+    virtual _bool IsPicking(const RAY& In_Ray, _float& Out_fRange) override;
 
 protected:
     weak_ptr<CCollider>         m_pColliderCom;
@@ -33,6 +34,8 @@ protected:
     
 
 protected:
+    virtual void Load_FromJson(const json& In_Json) override;
+
     virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
 
     void Free();

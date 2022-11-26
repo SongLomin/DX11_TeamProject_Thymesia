@@ -64,6 +64,12 @@ void CActor::LateTick(_float fTimeDelta)
     //m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Cast<CGameObject>(m_this));
 }
 
+void CActor::Before_Render(_float fTimeDelta)
+{
+    //m_pModelCom.lock()->Update_BoneMatrices();
+
+}
+
 void CActor::Custom_Thread0(_float fTimeDelta)
 {
     m_pModelCom.lock()->Update_BoneMatrices();

@@ -578,9 +578,6 @@
     <ClInclude Include="..\Public\MonsterHPBar_Base.h">
       <Filter>02. GameObject\01. UI\UI_Container\MonsterHPBar</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\MonsterHPBar_Elite.h">
-      <Filter>02. GameObject\01. UI\MonsterHPBar\Elite</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\MonsterHPBar_Boss.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttack1.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawAttack1</Filter>
@@ -654,9 +651,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\Preset_PhysXControllerDesc.h">
       <Filter>06. DataPreset\01. Preset_PhysXControllerDesc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\StateExecution\NorMob_Execution.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\00.NorMob_Execution</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Status_Player.h">
       <Filter>05. Component\04. Status\00. Status_Player</Filter>
@@ -804,6 +798,11 @@
     <ClInclude Include="..\Public\MonsterHPBar_Elite.h" />
     <ClInclude Include="..\Public\Dynamic_Piece.h">
       <Filter>02. GameObject\04. Prop\02-1. Dynamic_Piece</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_T_Dissolve.h" />
+    <ClInclude Include="..\Public\MonsterHPBar_Elite.h" />
+    <ClInclude Include="..\Public\Preset_DynamicProp.h">
+      <Filter>06. DataPreset\03. Preset_DynamicProp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1415,9 +1414,6 @@
     <ClCompile Include="..\Private\Preset_PhysXControllerDesc.cpp">
       <Filter>06. DataPreset\01. Preset_PhysXControllerDesc</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\VargExecution\NorMob_Execution.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\00.NorMob_Execution</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Effect_Trail.cpp">
       <Filter>02. GameObject\08. Effect\02. Effect_Trail</Filter>
     </ClCompile>
@@ -1676,6 +1672,10 @@
     <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp" />
     <ClCompile Include="..\Private\Dynamic_Piece.cpp">
       <Filter>02. GameObject\04. Prop\02-1. Dynamic_Piece</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_T_Dissolve.cpp" />
+    <ClCompile Include="..\Private\Preset_DynamicProp.cpp">
+      <Filter>06. DataPreset\03. Preset_DynamicProp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2613,6 +2613,9 @@
     </Filter>
     <Filter Include="02. GameObject\04. Prop\02-1. Dynamic_Piece">
       <UniqueIdentifier>{f9813476-58cc-4e3a-82a9-0b427d013b69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. DataPreset\03. Preset_DynamicProp">
+      <UniqueIdentifier>{62c2a23f-e4e3-4272-8153-6f3a5a0b5a74}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -29,6 +29,7 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uin
 	m_pPhysX_Manager = CPhysX_Manager::Create_Instance();
 	m_pThread_Manager = CThread_Manager::Create_Instance();
 
+	m_GraphicDesc = GraphicDesc;
 	m_WindowHandle = GraphicDesc.hWnd;
 
 	if (nullptr == GET_SINGLE(CGraphic_Device))

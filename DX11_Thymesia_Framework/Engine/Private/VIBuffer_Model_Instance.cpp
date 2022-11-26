@@ -246,7 +246,7 @@ HRESULT CVIBuffer_Model_Instance::Render_Mesh(_uint iMeshContainerIndex)
 
 void CVIBuffer_Model_Instance::Culling_Instance(vector<INSTANCE_MESH_DESC>& In_ParticleDescs)
 {
-	if (In_ParticleDescs.empty())
+	if (In_ParticleDescs.empty() || m_bCulling)
 		return;
 
 	_int iUpdateIndex = 1 - m_iCurrentVisibleIndex;
@@ -262,7 +262,7 @@ void CVIBuffer_Model_Instance::Culling_Instance(vector<INSTANCE_MESH_DESC>& In_P
 		vPosition = XMLoadFloat3(&elem.vCenter);
 		vPosition.m128_f32[3] = 1.f;
 
-		if (pGameInstance->isIn_Frustum_InWorldSpace(vPosition, elem.fMaxRange * 2.5f))
+		if (pGameInstance->isIn_Frustum_InWorldSpace(vPosition, elem.fMaxRange * 1.2f))
 		{
 			m_pVisibleInstanceDescs[iUpdateIndex][iIndex] = elem;
 			++iIndex;

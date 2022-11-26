@@ -118,6 +118,29 @@ void Preset::PhysXColliderDesc::StaticPropSetting(PHYSXCOLLIDERDESC& Out_Desc, w
 void Preset::PhysXColliderDesc::DynamicPropSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform)
 {
     Out_Desc.eShape = PHYSXCOLLIDER_TYPE::CONVEXMODEL;
+    Out_Desc.eActorType = PHYSXACTOR_TYPE::STATIC;
+    Out_Desc.iFilterType = (_uint)COLLISION_LAYER::STATIC_PROP;
+    Out_Desc.fDensity = 5.f;
+    Out_Desc.pConvecMesh = nullptr;
+
+    _float3 PitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(pTransform.lock()->Get_WorldMatrix()));
+    Out_Desc.vAngles = XMLoadFloat3(&PitchYawRoll);
+    _float3 vScale = pTransform.lock()->Get_Scaled();
+
+    _vector vPos = pTransform.lock()->Get_Position();
+    // vPos.m128_f32[1] += fCenterY * vScale.y;
+    Out_Desc.vPosition = vPos;
+
+    Out_Desc.vScale = XMLoadFloat3(&vScale);
+    PxMaterial* pMaterial = nullptr;
+    GAMEINSTANCE->Create_Material(0.5f, 0.5f, 0.f, &pMaterial);
+    Out_Desc.pMaterial = pMaterial;
+    Out_Desc.bTrigger = false;
+}
+
+void Preset::PhysXColliderDesc::DynamicPieceSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform)
+{
+    Out_Desc.eShape = PHYSXCOLLIDER_TYPE::CONVEXMODEL;
     Out_Desc.eActorType = PHYSXACTOR_TYPE::DYNAMIC;
     Out_Desc.iFilterType = (_uint)COLLISION_LAYER::STATIC_PROP;
     Out_Desc.fDensity = 5.f;
