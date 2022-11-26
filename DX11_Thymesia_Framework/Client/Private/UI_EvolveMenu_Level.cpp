@@ -35,7 +35,7 @@ HRESULT CUI_EvolveMenu_Level::Initialize(void* pArg)
 	m_tTextInfo_Memory.fRotation = 0.f;
 	m_tTextInfo_Memory.szText = L"11";
 	m_tTextInfo_Memory.vPosition = _float2(544.f, 191.f - 8.f);
-	m_tTextInfo_Memory.vScale = _float2(1.7f, 1.7f);
+	m_tTextInfo_Memory.vScale = _float2(0.74f, 0.74f);
 	m_tTextInfo_Memory.vColor = _float4(1.f, 1.f, 1.f, 1.0f);
 
 
@@ -95,7 +95,7 @@ void CUI_EvolveMenu_Level::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 
-	GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::HEIROLIGHT, m_tTextInfo_Memory);
+	GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::PRETENDARD, m_tTextInfo_Memory);
 
 }
 
