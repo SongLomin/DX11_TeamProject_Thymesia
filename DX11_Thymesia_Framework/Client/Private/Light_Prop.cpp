@@ -125,6 +125,13 @@ HRESULT CLight_Prop::Render()
 	{
 		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS);
+	/*	if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+		{
+			m_iPassIndex = 3;
+		}
+		else
+			m_iPassIndex = 7;*/
+
 		m_pShaderCom.lock()->Begin(m_iPassIndex);
 		m_pModelCom.lock()->Render_Mesh(i);
 	}

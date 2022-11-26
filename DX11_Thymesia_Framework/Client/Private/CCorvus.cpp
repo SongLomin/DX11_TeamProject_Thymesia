@@ -172,8 +172,16 @@ HRESULT CCorvus::Render()
 		}
 		else
 		{
-			iPassIndex = 4;
+				iPassIndex = 4;
+			//if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+			//{
+			//}
+			//else
+			//{
+			//	iPassIndex = 5;//use specular map
+			//}
 		}
+
 
 		
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, iPassIndex, "g_Bones");

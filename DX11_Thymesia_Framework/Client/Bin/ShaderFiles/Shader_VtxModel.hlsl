@@ -6,6 +6,7 @@ float4	g_vLightFlag;
 texture2D	g_DiffuseTexture;
 texture2D   g_NormalTexture;
 texture2D   g_MaskTexture;
+texture2D   g_SpecularTexture;
 
 vector      g_vCamPosition;
 vector      g_vCamLook;
@@ -289,6 +290,43 @@ PS_OUT      PS_MAIN_PICK(PS_IN In)
     return Out;
 }
 
+struct PS_OUT_SPECULAR
+{
+    vector		vDiffuse : SV_TARGET0;
+    vector		vNormal : SV_TARGET1;
+    vector		vDepth : SV_TARGET2;
+    vector		vLightFlag : SV_Target3;
+    vector      vSpecular : SV_Target4;
+};
+
+PS_OUT_SPECULAR PS_MAIN_NORMAL_SPECULAR(PS_IN_NORMAL In)
+{
+    PS_OUT_SPECULAR Out = (PS_OUT_SPECULAR)0;
+
+    Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+    /* 0 ~ 1 */
+    float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
+
+    /* -1 ~ 1 */
+    vPixelNormal = vPixelNormal * 2.f - 1.f;
+
+    float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));
+
+    vPixelNormal = mul(vPixelNormal, WorldMatrix);
+
+    Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
+
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vLightFlag = g_vLightFlag;
+
+    Out.vSpecular = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
+
+    if (Out.vDiffuse.a < 0.1f)
+        discard;
+
+    return Out;
+}
 
 
 technique11 DefaultTechnique
@@ -369,5 +407,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_NORMAL_MASKING();
+    }
+
+    pass Default_Normal_Specular //7
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_NORMAL_SPECULAR();
     }
 }
