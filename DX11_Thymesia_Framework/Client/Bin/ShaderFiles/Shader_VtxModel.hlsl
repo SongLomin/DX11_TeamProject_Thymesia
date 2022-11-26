@@ -11,6 +11,7 @@ vector      g_vCamPosition;
 vector      g_vCamLook;
 vector      g_vPlayerPosition;
 float       g_fMaskingRange = 2.f;
+float       g_fMaskingScalar;
 
 
 float g_fFar = 300.f;
@@ -255,6 +256,45 @@ PS_OUT PS_MAIN_NORMAL_MASKING(PS_IN_NORMAL In)
     return Out;
 }
 
+PS_OUT PS_MAIN_NORMAL_MASKING_SCALAR(PS_IN_NORMAL In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    //플레이어를 가리는 부분은 도트 처리
+    float2 vPixelTexUV;
+    vPixelTexUV.x = (In.vProjPos.x / In.vProjPos.w) * 0.5f + 0.5f;
+    vPixelTexUV.y = (In.vProjPos.y / In.vProjPos.w) * -0.5f + 0.5f;
+
+    float fCamToPixelWorld = length(g_vCamPosition - In.vWorldPos);
+    float fCamToPlayer = length(g_vCamPosition - g_vPlayerPosition);
+
+    vector vMaskTexture = g_MaskTexture.Sample(DefaultSampler, 8.f * vPixelTexUV);
+    if (g_fMaskingScalar > vMaskTexture.r)
+        Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    else
+        discard;
+
+
+
+    /* 0 ~ 1 */
+    float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
+
+    /* -1 ~ 1 */
+    vPixelNormal = vPixelNormal * 2.f - 1.f;
+
+    float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, In.vNormal);
+
+    vPixelNormal = mul(vPixelNormal, WorldMatrix);
+
+    Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vLightFlag = g_vLightFlag;
+
+    if (Out.vDiffuse.a < 0.1f)
+        discard;
+
+    return Out;
+}
+
 struct PS_OUT_FORWARD
 {
     vector vColor : SV_TARGET0;
@@ -295,7 +335,7 @@ technique11 DefaultTechnique
 	{
 		SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_NonCulling);
+        SetRasterizerState(RS_Default);
 
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
@@ -328,7 +368,7 @@ technique11 DefaultTechnique
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_NonCulling);
+        SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
         GeometryShader = NULL;
@@ -362,10 +402,21 @@ technique11 DefaultTechnique
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_NonCulling);
+        SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_NORMAL_MASKING();
+    }
+
+    pass Masking_Scalar //7
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_NORMAL_MASKING_SCALAR();
     }
 }

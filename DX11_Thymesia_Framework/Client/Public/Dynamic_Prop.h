@@ -9,6 +9,8 @@ END
 
 BEGIN(Client)
 
+class CDynamic_Piece;
+
 class CDynamic_Prop  :
     public CProp
 {
@@ -27,9 +29,12 @@ public:
 protected:
     weak_ptr<CCollider>         m_pColliderCom;
     weak_ptr<CPhysXCollider>    m_pPhysXColliderCom;
+    list<weak_ptr<CDynamic_Piece>>    m_pPieces;
     
 
 protected:
+    virtual void OnCollisionEnter(weak_ptr<CCollider> pOtherCollider) override;
+
     void Free();
 
 };

@@ -54,6 +54,7 @@ HRESULT CLevel_Test::Initialize()
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
 
 	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 5.f, 10.f, 5.f });
+	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 15.f, 10.f, 15.f });
 
 	//TODO 야매에요
 #ifdef _STAGE_1_MONSTER_
@@ -147,16 +148,6 @@ HRESULT CLevel_Test::Initialize()
 
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_TEST);
 
-	//GAMEINSTANCE->Add_GameObject<CTerrain>(LEVEL_Test);
-	weak_ptr<CPreViewAnimationModel> pPreviewModel = GAMEINSTANCE->Add_GameObject<CPreViewAnimationModel>(LEVEL_TEST);
-	pPreviewModel.lock()->Init_EditPreViewAnimationModel("Corvus");
-	pPreviewModel.lock()->Change_AnimationFromIndex(3);
-
-	pPreviewModel.lock()->Play_Animation(0.01f);
-	pPreviewModel.lock()->Get_Component<CTransform>().lock()->Add_Position(XMVectorSet(10.f, 10.f, 10.f, 0.f));
-
-
-	GAMEINSTANCE->Add_GameObject<CStatic_Instancing_Prop>(LEVEL_TEST);
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_TEST);
 
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });

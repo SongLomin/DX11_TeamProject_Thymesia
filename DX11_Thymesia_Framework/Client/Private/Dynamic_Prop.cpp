@@ -2,6 +2,7 @@
 #include "Dynamic_Prop.h"
 #include "Client_Components.h"
 #include "Client_Presets.h"
+#include "Dynamic_Piece.h"
 
 GAMECLASS_C(CDynamic_Prop);
 CLONE_C(CDynamic_Prop, CGameObject);
@@ -28,9 +29,34 @@ HRESULT CDynamic_Prop::Initialize(void* pArg)
 
     m_pPhysXColliderCom = Add_Component<CPhysXCollider>();
 
-   m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
+    m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
 
-   
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_1"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_2"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_3"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_4"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_5"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_6"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_7"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_8"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_9"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_10"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_11"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_12"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_13"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_14"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_15"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_16"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_17"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_18"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_19"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_20"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_21"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_22"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_23"));
+    m_pPieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(m_CreatedLevel, (void*)"Wagon3_24"));
+
+
     
 
     return S_OK;
@@ -41,8 +67,11 @@ HRESULT CDynamic_Prop::Start()
     COLLIDERDESC tColliderDesc;
     tColliderDesc.iLayer = (_uint)COLLISION_LAYER::DYNAMIC_PROP;
     tColliderDesc.vRotation = { 0.f, 0.f, 0.f, 0.f };
-    tColliderDesc.vScale = { 2.f, 0.f, 0.f };
-    XMStoreFloat3(&tColliderDesc.vTranslation, m_pTransformCom.lock()->Get_Position());
+    tColliderDesc.vScale = { 2.3f, 0.f, 0.f };
+    tColliderDesc.vOffset = { 0.f, 0.f, 0.f };
+    //XMStoreFloat3(&tColliderDesc.vTranslation, m_pTransformCom.lock()->Get_Position());
+    tColliderDesc.vTranslation = { 0.f, 0.f, 0.f };
+
 
     m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, tColliderDesc);
 
@@ -66,6 +95,9 @@ void CDynamic_Prop::Tick(_float fTimeDelta)
         m_pTransformCom.lock()->Set_Position(vPos);
     }
 #endif
+
+    
+
 }
 
 void CDynamic_Prop::LateTick(_float fTimeDelta)
@@ -80,7 +112,7 @@ void CDynamic_Prop::Before_Render(_float fTimeDelta)
     __super::Before_Render(fTimeDelta);
 
     m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom);
-
+    m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 }
 
 HRESULT CDynamic_Prop::Render()
@@ -113,6 +145,21 @@ HRESULT CDynamic_Prop::Render()
     }
 
     return S_OK;
+}
+
+void CDynamic_Prop::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+{
+    __super::OnCollisionEnter(pOtherCollider);
+
+    _matrix WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
+
+    for (auto& elem : m_pPieces)
+    {
+        elem.lock()->Set_WorldMatrixWithPhysX(WorldMatrix);
+        elem.lock()->Set_Enable(true);
+    }
+
+    Set_Dead();
 }
 
 void CDynamic_Prop::Free()

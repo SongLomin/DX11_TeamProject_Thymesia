@@ -220,7 +220,14 @@ void CAttackArea::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
 
 	m_iHitColliderIndexs.push_back(iOtherColliderIndex);
 
-	Weak_Cast<CCharacter>(pOtherCollider.lock()->Get_Owner()).lock()->OnHit(m_pHitColliderComs.front(), (HIT_TYPE)m_tWeaponDesc.iHitType, m_tWeaponDesc.fDamage);
+	
+
+	weak_ptr<CCharacter> pCharacter = Weak_Cast<CCharacter>(pOtherCollider.lock()->Get_Owner());
+
+	if(pCharacter.lock())
+	{
+		pCharacter.lock()->OnHit(m_pHitColliderComs.front(), (HIT_TYPE)m_tWeaponDesc.iHitType, m_tWeaponDesc.fDamage);
+	}
 
 	if (m_bFirstAttack)
 	{

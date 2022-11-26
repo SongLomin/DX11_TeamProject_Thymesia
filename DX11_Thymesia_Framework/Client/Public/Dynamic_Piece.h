@@ -8,11 +8,11 @@ END
 
 BEGIN(Client)
 
-class CDynamic_Prop :
+class CDynamic_Piece :
     public CProp
 {
-    GAMECLASS_H(CDynamic_Prop);
-    CLONE_H(CDynamic_Prop, CGameObject);
+    GAMECLASS_H(CDynamic_Piece);
+    CLONE_H(CDynamic_Piece, CGameObject);
 
 public:
     virtual HRESULT Initialize_Prototype() override;
@@ -23,10 +23,16 @@ public:
     virtual void Before_Render(_float fTimeDelta) override;
     virtual HRESULT Render() override;
 
+public:
+    void Set_WorldMatrixWithPhysX(_fmatrix In_WorldMatrix);
+
 protected:
-    weak_ptr<CCollider>         m_pColliderCom;
     weak_ptr<CPhysXCollider>    m_pPhysXColliderCom;
 
+
+private:
+    virtual void OnEnable(void* pArg) override;
+    virtual void OnDisable() override;
 
 protected:
     void Free();
