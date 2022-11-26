@@ -381,6 +381,9 @@ namespace Engine
 		_float4         vCurrentColor;
 		_float4         vCurrentColorForce;
 
+		_float4			vTargetColorSpeed;
+		_float4			vTargetColorForce;
+
 		// For. UV
 		_float2         vCurrentUV;
 		_float2         vCurrentUVForce;

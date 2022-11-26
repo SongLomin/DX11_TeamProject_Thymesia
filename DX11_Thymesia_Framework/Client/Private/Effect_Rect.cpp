@@ -114,12 +114,9 @@ void CEffect_Rect::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	if (m_pVIBuffer.lock()->Get_InstanceCount() != m_tEffectParticleDesc.iMaxInstance)
-	{
 		Reset_Instance(m_tEffectParticleDesc.iMaxInstance);
-	}
 
 	Play(fTimeDelta * GAMEINSTANCE->Get_TimeScale(m_iTimeScaleLayerIndex));
-
 }
 
 void CEffect_Rect::LateTick(_float fTimeDelta)
@@ -390,8 +387,11 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	CJson_Utility::Write_Float4(Out_Json["Min_Start_Color"], m_tEffectParticleDesc.vMinStartColor);
 	CJson_Utility::Write_Float4(Out_Json["Max_Start_Color"], m_tEffectParticleDesc.vMaxStartColor);
 
-	CJson_Utility::Write_Float4(Out_Json["Color_Speed"], m_tEffectParticleDesc.vColorSpeed);
-	CJson_Utility::Write_Float4(Out_Json["Color_Force"], m_tEffectParticleDesc.vColorForce);
+	CJson_Utility::Write_Float4(Out_Json["Min_Color_Speed"], m_tEffectParticleDesc.vMinColorSpeed);
+	CJson_Utility::Write_Float4(Out_Json["Max_Color_Speed"], m_tEffectParticleDesc.vMaxColorSpeed);
+
+	CJson_Utility::Write_Float4(Out_Json["Min_Color_Force"], m_tEffectParticleDesc.vMinColorForce);
+	CJson_Utility::Write_Float4(Out_Json["Max_Color_Force"], m_tEffectParticleDesc.vMaxColorForce);
 
 	CJson_Utility::Write_Float4(Out_Json["Max_Color"], m_tEffectParticleDesc.vMaxColor);
 #pragma endregion
@@ -652,11 +652,25 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	if (In_Json.find("Is_Gray_Only_Use_Red") != In_Json.end())
 		m_tEffectParticleDesc.IsGrayOnlyUseRed = In_Json["Is_Gray_Only_Use_Red"];
 
-	CJson_Utility::Load_Float4(In_Json["Min_Start_Color"], m_tEffectParticleDesc.vMinStartColor);
-	CJson_Utility::Load_Float4(In_Json["Max_Start_Color"], m_tEffectParticleDesc.vMaxStartColor);
-	CJson_Utility::Load_Float4(In_Json["Color_Speed"], m_tEffectParticleDesc.vColorSpeed);
-	CJson_Utility::Load_Float4(In_Json["Color_Force"], m_tEffectParticleDesc.vColorForce);
-	CJson_Utility::Load_Float4(In_Json["Max_Color"], m_tEffectParticleDesc.vMaxColor);
+	if (In_Json.find("Min_Start_Color") != In_Json.end())
+		CJson_Utility::Load_Float4(In_Json["Min_Start_Color"], m_tEffectParticleDesc.vMinStartColor);
+	if (In_Json.find("Max_Start_Color") != In_Json.end())
+		CJson_Utility::Load_Float4(In_Json["Max_Start_Color"], m_tEffectParticleDesc.vMaxStartColor);
+
+	if (In_Json.find("Min_Color_Speed") != In_Json.end())
+		CJson_Utility::Load_Float4(In_Json["Min_Color_Speed"], m_tEffectParticleDesc.vMinColorSpeed);
+	if (In_Json.find("Max_Color_Speed") != In_Json.end())
+		CJson_Utility::Load_Float4(In_Json["Max_Color_Speed"], m_tEffectParticleDesc.vMaxColorSpeed);
+
+	if (In_Json.find("Min_Color_Force") != In_Json.end())
+		CJson_Utility::Load_Float4(In_Json["Min_Color_Force"], m_tEffectParticleDesc.vMinColorForce);
+	if (In_Json.find("Max_Color_Force") != In_Json.end())
+		CJson_Utility::Load_Float4(In_Json["Max_Color_Force"], m_tEffectParticleDesc.vMaxColorForce);
+
+	if (In_Json.find("Min_Color") != In_Json.end())
+		CJson_Utility::Load_Float4(In_Json["Min_Color"], m_tEffectParticleDesc.vMinColor);
+	if (In_Json.find("Max_Color") != In_Json.end())
+		CJson_Utility::Load_Float4(In_Json["Max_Color"], m_tEffectParticleDesc.vMaxColor);
 #pragma endregion
 
 #pragma region Texture
@@ -950,6 +964,12 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 			m_tOriginalParticleDescs[i].vCurrentColor =
 				SMath::vRandom(m_tEffectParticleDesc.vMinStartColor, m_tEffectParticleDesc.vMaxStartColor);
 		}
+
+		m_tOriginalParticleDescs[i].vTargetColorSpeed =
+			SMath::vRandom(m_tEffectParticleDesc.vMinColorSpeed, m_tEffectParticleDesc.vMaxColorSpeed);
+
+		m_tOriginalParticleDescs[i].vTargetColorForce =
+			SMath::vRandom(m_tEffectParticleDesc.vMinColorForce, m_tEffectParticleDesc.vMaxColorForce);
 
 		m_tOriginalParticleDescs[i].vCurrentUV = m_tEffectParticleDesc.vMaskStartUV;
 
@@ -1282,11 +1302,11 @@ void CEffect_Rect::Update_ParticleColor(const _uint& i, _float fTimeDelta)
 
 	if (m_tEffectParticleDesc.IsGrayOnlyUseRed)
 	{
-		XMVectorSetX(vColor, m_tEffectParticleDesc.vColorSpeed.x * fTimeDelta);
-		XMVectorSetW(vColor, m_tEffectParticleDesc.vColorSpeed.w * fTimeDelta);
+		XMVectorSetX(vColor, m_tParticleDescs[i].vTargetColorSpeed.x * fTimeDelta);
+		XMVectorSetW(vColor, m_tParticleDescs[i].vTargetColorSpeed.w * fTimeDelta);
 
-		m_tParticleDescs[i].vCurrentColorForce.x += m_tEffectParticleDesc.vColorForce.x * fTimeDelta;
-		m_tParticleDescs[i].vCurrentColorForce.w += m_tEffectParticleDesc.vColorForce.w * fTimeDelta;
+		m_tParticleDescs[i].vCurrentColorForce.x += m_tParticleDescs[i].vTargetColorForce.x * fTimeDelta;
+		m_tParticleDescs[i].vCurrentColorForce.w += m_tParticleDescs[i].vTargetColorForce.w * fTimeDelta;
 
 		XMVectorSetX(vColor, XMVectorGetX(vColor) + m_tParticleDescs[i].vCurrentColorForce.x);
 		XMVectorSetW(vColor, XMVectorGetW(vColor) + m_tParticleDescs[i].vCurrentColorForce.w);
@@ -1296,15 +1316,15 @@ void CEffect_Rect::Update_ParticleColor(const _uint& i, _float fTimeDelta)
 		XMVectorSetY(vColor, XMVectorGetX(vColor));
 		XMVectorSetZ(vColor, XMVectorGetX(vColor));
 
-		XMVectorSetX(vColor, min(m_tEffectParticleDesc.vMaxColor.x, XMVectorGetX(vColor)));
-		XMVectorSetY(vColor, min(m_tEffectParticleDesc.vMaxColor.y, XMVectorGetY(vColor)));
-		XMVectorSetZ(vColor, min(m_tEffectParticleDesc.vMaxColor.z, XMVectorGetZ(vColor)));
-		XMVectorSetW(vColor, min(m_tEffectParticleDesc.vMaxColor.w, XMVectorGetW(vColor)));
+		XMVectorSetX(vColor, max(m_tEffectParticleDesc.vMinColor.x, min(m_tEffectParticleDesc.vMaxColor.x, XMVectorGetX(vColor))));
+		XMVectorSetY(vColor, max(m_tEffectParticleDesc.vMinColor.y, min(m_tEffectParticleDesc.vMaxColor.y, XMVectorGetY(vColor))));
+		XMVectorSetZ(vColor, max(m_tEffectParticleDesc.vMinColor.z, min(m_tEffectParticleDesc.vMaxColor.z, XMVectorGetZ(vColor))));
+		XMVectorSetW(vColor, max(m_tEffectParticleDesc.vMinColor.w, min(m_tEffectParticleDesc.vMaxColor.w, XMVectorGetW(vColor))));
 	}
 	else
 	{
-		vColor = XMLoadFloat4(&SMath::Mul_Float4(m_tEffectParticleDesc.vColorSpeed, fTimeDelta));
-		SMath::Add_Float4(&m_tParticleDescs[i].vCurrentColorForce, SMath::Mul_Float4(m_tEffectParticleDesc.vColorForce, fTimeDelta));
+		vColor = XMLoadFloat4(&SMath::Mul_Float4(m_tParticleDescs[i].vTargetColorSpeed, fTimeDelta));
+		SMath::Add_Float4(&m_tParticleDescs[i].vCurrentColorForce, SMath::Mul_Float4(m_tParticleDescs[i].vTargetColorForce, fTimeDelta));
 
 		_float4 float4Color;
 		ZeroMemory(&float4Color, sizeof(_float4));
@@ -1315,10 +1335,10 @@ void CEffect_Rect::Update_ParticleColor(const _uint& i, _float fTimeDelta)
 
 		vColor = XMLoadFloat4(&SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColor));
 
-		XMVectorSetX(vColor, min(m_tEffectParticleDesc.vMaxColor.x, XMVectorGetX(vColor)));
-		XMVectorSetY(vColor, min(m_tEffectParticleDesc.vMaxColor.y, XMVectorGetY(vColor)));
-		XMVectorSetZ(vColor, min(m_tEffectParticleDesc.vMaxColor.z, XMVectorGetZ(vColor)));
-		XMVectorSetW(vColor, min(m_tEffectParticleDesc.vMaxColor.w, XMVectorGetW(vColor)));
+		XMVectorSetX(vColor, max(m_tEffectParticleDesc.vMinColor.x, min(m_tEffectParticleDesc.vMaxColor.x, XMVectorGetX(vColor))));
+		XMVectorSetY(vColor, max(m_tEffectParticleDesc.vMinColor.y, min(m_tEffectParticleDesc.vMaxColor.y, XMVectorGetY(vColor))));
+		XMVectorSetZ(vColor, max(m_tEffectParticleDesc.vMinColor.z, min(m_tEffectParticleDesc.vMaxColor.z, XMVectorGetZ(vColor))));
+		XMVectorSetW(vColor, max(m_tEffectParticleDesc.vMinColor.w, min(m_tEffectParticleDesc.vMaxColor.w, XMVectorGetW(vColor))));
 	}
 
 	XMStoreFloat4(&m_tParticleDescs[i].vCurrentColor, vColor);
@@ -1640,9 +1660,9 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 				{
 					if (ImGui::BeginListBox("Bone List 2"))
 					{
-						for (int n = 0; n < m_AllBoneNames.size(); n++)
+						for (_int n(0); n < m_AllBoneNames.size(); n++)
 						{
-							const bool is_selected = (m_iCurrentBoneIndex == n);
+							const _bool is_selected = (m_iCurrentBoneIndex == n);
 							if (ImGui::Selectable(m_AllBoneNames[n].c_str(), is_selected))
 							{
 								m_strBoneName = m_AllBoneNames[n];
@@ -1727,13 +1747,11 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 					if (ImGui::BeginListBox("Speed Easing Type"))
 					{
-						for (int n = 0; n < IM_ARRAYSIZE(EasingItems); n++)
+						for (int n(0); n < IM_ARRAYSIZE(EasingItems); n++)
 						{
 							const bool is_selected = (m_tEffectParticleDesc.iSpeedEasingType == n);
 							if (ImGui::Selectable(EasingItems[n], is_selected))
-							{
 								m_tEffectParticleDesc.iSpeedEasingType = n;
-							}
 
 							if (is_selected)
 								ImGui::SetItemDefaultFocus();
@@ -1841,7 +1859,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 					if (ImGui::BeginListBox("Rotation Easing Type"))
 					{
-						for (int n = 0; n < IM_ARRAYSIZE(EasingItems); n++)
+						for (int n(0); n < IM_ARRAYSIZE(EasingItems); n++)
 						{
 							const bool is_selected = (m_tEffectParticleDesc.iRotationEasingType == n);
 							if (ImGui::Selectable(EasingItems[n], is_selected))
@@ -1919,10 +1937,9 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					for (int n = 0; n < IM_ARRAYSIZE(EasingItems); n++)
 					{
 						const bool is_selected = (m_tEffectParticleDesc.iScaleEasingType == n);
+
 						if (ImGui::Selectable(EasingItems[n], is_selected))
-						{
 							m_tEffectParticleDesc.iScaleEasingType = n;
-						}
 
 						if (is_selected)
 							ImGui::SetItemDefaultFocus();
@@ -1931,7 +1948,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 				}
 
 				ImGui::Text("Total Easing Time"); ImGui::SameLine();
-				ImGui::DragFloat("##Scale_Total_Easing_Time", &m_tEffectParticleDesc.fScaleEasingTotalTime, 0.01f, -100.f, 100.f, "%.5f");
+				ImGui::DragFloat("##Scale_Total_Easing_Time", &m_tEffectParticleDesc.fScaleEasingTotalTime, 0.01f, 0.f, 0.f, "%.5f");
 #pragma endregion
 			}
 			else
@@ -1954,20 +1971,14 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 				ImGui::Text("Max Scale Force");
 				ImGui::DragFloat3("##Max_Scale_Force", &m_tEffectParticleDesc.vMaxScaleForce.x, 0.1f, 0.f, 0.f, "%.5f");
-
-				//ImGui::Text("Scale Speed");
-				//ImGui::DragFloat3("##Scale_Speed", &m_tEffectParticleDesc.vScaleSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
-
-				//ImGui::Text("Scale Force");
-				//ImGui::DragFloat3("##Scale_Force", &m_tEffectParticleDesc.vScaleForce.x, 0.1f, -100.f, 100.f, "%.5f");
 			}
 
 			ImGui::Text("Min Scale");
-			ImGui::DragFloat3("##Min_Limit_Scale", &m_tEffectParticleDesc.vMinLimitScale.x, 0.1f, -100.f, 100.f, "%.5f");
+			ImGui::DragFloat3("##Min_Limit_Scale", &m_tEffectParticleDesc.vMinLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
 
 
 			ImGui::Text("Max Scale");
-			ImGui::DragFloat3("##Max_Limit_Scale", &m_tEffectParticleDesc.vMaxLimitScale.x, 0.1f, -100.f, 100.f, "%.5f");
+			ImGui::DragFloat3("##Max_Limit_Scale", &m_tEffectParticleDesc.vMaxLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
 #pragma endregion
 
 			ImGui::Separator();
@@ -1982,19 +1993,24 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::Checkbox("##Is_Gray_Only_Use_Red", &m_tEffectParticleDesc.IsGrayOnlyUseRed);
 
 			ImGui::Text("Min Start Color");
-			ImGui::DragFloat4("##Min_Start_Color", &m_tEffectParticleDesc.vMinStartColor.x, 0.01f, 0.f, 100.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
-
+			ImGui::DragFloat4("##Min_Start_Color", &m_tEffectParticleDesc.vMinStartColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
 			ImGui::Text("Max Start Color");
-			ImGui::DragFloat4("##Max_Start_Color", &m_tEffectParticleDesc.vMaxStartColor.x, 0.01f, 0.f, 100.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+			ImGui::DragFloat4("##Max_Start_Color", &m_tEffectParticleDesc.vMaxStartColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
 
-			ImGui::Text("Color Speed");
-			ImGui::DragFloat4("##Color_Speed", &m_tEffectParticleDesc.vColorSpeed.x, 0.01f, -100.f, 100.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+			ImGui::Text("Min Color Speed");
+			ImGui::DragFloat4("##Min_Color_Speed", &m_tEffectParticleDesc.vMinColorSpeed.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+			ImGui::Text("Max Color Speed");
+			ImGui::DragFloat4("##Max_Color_Speed", &m_tEffectParticleDesc.vMaxColorSpeed.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
 
-			ImGui::Text("Color Force");
-			ImGui::DragFloat4("##Color_Force", &m_tEffectParticleDesc.vColorForce.x, 0.01f, -100.f, 100.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+			ImGui::Text("Min Color Force");
+			ImGui::DragFloat4("##Min_Color_Force", &m_tEffectParticleDesc.vMinColorForce.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+			ImGui::Text("Max Color Force");
+			ImGui::DragFloat4("##Max_Color_Force", &m_tEffectParticleDesc.vMaxColorForce.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
 
+			ImGui::Text("Min Color");
+			ImGui::DragFloat4("##Min_Color", &m_tEffectParticleDesc.vMinColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
 			ImGui::Text("Max Color");
-			ImGui::DragFloat4("##Max_Color", &m_tEffectParticleDesc.vMaxColor.x, 0.01f, 0.f, 100.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+			ImGui::DragFloat4("##Max_Color", &m_tEffectParticleDesc.vMaxColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
 #pragma endregion
 			ImGui::Separator();
 #pragma region Textures
@@ -2082,6 +2098,7 @@ void CEffect_Rect::OnChangeAnimationKey(const _uint& In_Key)
 	Reset_Effect(weak_ptr<CTransform>());
 }
 
-#undef PARTICLE_PASS_SPRITE
-#undef PARTICLE_PASS_ALPHADISCARD
-#undef PARTICLE_PASS_BLACKDISCARD
+#undef PASS_SPRITE_BLACKDISCARD
+#undef PASS_ALPHADISCARD
+#undef PASS_BLACKDISCARD
+#undef PASS_SPRITE_ALPHADISCARD

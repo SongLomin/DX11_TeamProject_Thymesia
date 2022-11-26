@@ -76,12 +76,12 @@ private:
     // For. Easing
     void Apply_Easing
     (
-        _float3& vTarget
-        , EASING_TYPE eEasingType
-        , _vector vStartPoint
-        , _vector vTargetPoint
-        , _float fElapsedTime
-        , _float fTotalTime
+        _float3&        vTarget
+        , EASING_TYPE   eEasingType
+        , _vector       vStartPoint
+        , _vector       vTargetPoint
+        , _float        fElapsedTime
+        , _float        fTotalTime
     );
 
 private:
