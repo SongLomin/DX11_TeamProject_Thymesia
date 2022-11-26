@@ -70,7 +70,7 @@ void CCorvus::Tick(_float fTimeDelta)
 
 	// TODO : test jump key R
 	if (KEY_INPUT(KEY::R, KEY_STATE::HOLD))
-		m_pPhysXControllerCom.lock()->Move(_vector{ 0.f, 10.f * fTimeDelta, 0.f }, 0.f, fTimeDelta, PxControllerFilters());
+		m_pPhysXControllerCom.lock()->Move(_vector{ 0.f, 500.f * fTimeDelta, 0.f }, 0.f, fTimeDelta, PxControllerFilters());
 
 	// TODO : frame test
 	//if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
@@ -170,6 +170,10 @@ void CCorvus::Ready_States()
 	MACRO(CCorvusState_HurtXXL);
 	MACRO(CCorvusState_NorMob_Execution);
 
+	MACRO(CCorvusState_ParryDeflectLeft);
+	MACRO(CCorvusState_ParryDeflectLeftup);
+	MACRO(CCorvusState_ParryDeflectRight);
+	MACRO(CCorvusState_ParryDeflectRightup);
 #undef MACRO
 }
 

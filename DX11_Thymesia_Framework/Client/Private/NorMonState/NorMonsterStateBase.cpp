@@ -65,7 +65,7 @@ void CNorMonsterStateBase::Play_OnHitEffect()
 	//_matrix ReverseLookMatrix = SMath::Bake_MatrixNormalizeUseLookVector(vLook);
 	//ReverseLookMatrix.r[3] = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
 
-	GET_SINGLE(CGameManager)->Use_EffectGroup("BasicMobHitEffect_RE", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
+	GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 
 	//T_SINGLE(CGameManager)->Use_EffectGroup("Hit_Monster2", m_pTransformCom);
 }

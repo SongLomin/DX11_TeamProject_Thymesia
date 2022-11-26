@@ -15,7 +15,7 @@
 #define		_DEBUG_COUT_JOJO
 // #define		_STAGE_1_
 #define		_STAGE_2_
-// #define		_STAGE_1_MONSTER_
+#define		_STAGE_1_MONSTER_
 // #define		_VARG_
 //#define		_INSTANCE_CULLING_
 // #define		_GENERATE_PROP_COLLIDER_ true
