@@ -147,9 +147,9 @@ HRESULT CDynamic_Prop::Render()
     return S_OK;
 }
 
-void CDynamic_Prop::OnCollisionEnter(weak_ptr<CCollider> pOtherCollider)
+void CDynamic_Prop::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    __super::OnCollisionEnter(pOtherCollider);
+    __super::OnCollisionEnter(pMyCollider, pOtherCollider);
 
     _matrix WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
 

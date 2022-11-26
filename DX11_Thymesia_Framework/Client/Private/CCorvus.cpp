@@ -126,28 +126,12 @@ HRESULT CCorvus::Render()
 			m_iPassIndex = 0;
 		else
 			m_iPassIndex = 4;
-
-		}
-		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-		{
-			iPassIndex = 0;
-		}
-		else
-		{
-				iPassIndex = 4;
-			//if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-			//{
-			//}
-			//else
-			//{
-			//	iPassIndex = 5;//use specular map
-			//}
-		}
 		
-		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, iPassIndex, "g_Bones");
+		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones");
 		
 	}
 
+	return S_OK;
 }
 
 void CCorvus::Ready_Weapon()
@@ -184,7 +168,7 @@ void CCorvus::Ready_States()
 	MACRO(CCorvusState_HurtL);
 	MACRO(CCorvusState_HurtR);
 	MACRO(CCorvusState_HurtXXL);
-	MACRO(CNorMob_Execution);
+	MACRO(CCorvusState_NorMob_Execution);
 
 #undef MACRO
 }

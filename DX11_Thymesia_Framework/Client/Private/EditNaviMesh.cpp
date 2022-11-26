@@ -206,7 +206,10 @@ void CEditNaviMesh::Update_Vertice(_float fTimeDelta)
         list<weak_ptr<CVIBuffer_Cell>> pSameCells = m_pCells;
 
         for (_uint i(0); i < m_iCurrentPickingIndex; ++i)
-            vVerticePositions[i] = m_pPickPointColliderComs[m_iPickingIndex[i]].lock()->Get_CurrentPosition();
+        {
+            _vector CurrentPosition = m_pPickPointColliderComs[m_iPickingIndex[i]].lock()->Get_CurrentPosition();
+            XMStoreFloat3(&vVerticePositions[i], CurrentPosition);
+        }
 
         SMath::Set_ClockwiseTriangle(vVerticePositions);
 

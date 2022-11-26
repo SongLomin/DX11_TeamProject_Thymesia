@@ -33,7 +33,7 @@ protected:
     
 
 protected:
-    virtual void OnCollisionEnter(weak_ptr<CCollider> pOtherCollider) override;
+    virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
 
     void Free();
 

@@ -81,6 +81,8 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_GAMEPLAY);
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
+
+
 	
 #ifdef _VARG_
 	CBossMonster::STATE_LINK_BOSS_DESC BOSSMONSTER;
@@ -92,6 +94,8 @@ HRESULT CLevel_GamePlay::Initialize()
 	BOSSMONSTER.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
 	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &BOSSMONSTER);
 
+
+
 	//ZeroMemory(&BOSSMONSTER, sizeof(CBossMonster::STATE_LINK_BOSS_DESC));
 	//BOSSMONSTER.vYame.x = 33.f;
 	//BOSSMONSTER.vYame.y = 4.7f;
@@ -99,9 +103,11 @@ HRESULT CLevel_GamePlay::Initialize()
 	//GAMEINSTANCE->Add_GameObject<CUrd>(LEVEL_GAMEPLAY, &BOSSMONSTER);
 #endif // _VARG_
 
+
+	CMonster::STATE_LINK_MONSTER_DESC MONSTER;
 	//TODO 야매에요
 #ifdef _STAGE_1_MONSTER_
-	CMonster::STATE_LINK_MONSTER_DESC MONSTER;
+	
 	//CBossMonster::STATE_LINK_MONSTER_DESC BOSSMONSTER;
 
 	ZeroMemory(&MONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
@@ -147,13 +153,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	//GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &MONSTER);
 	//
 
-	ZeroMemory(&MONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-	MONSTER.vYame.x = 32.f;
-	MONSTER.vYame.y = 4.7f;
-	MONSTER.vYame.z = 28.f;
-	MONSTER.eMonType = MONSTERTYPE::VARG;
-	MONSTER.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
-	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &MONSTER);
+	
 	
 	//ZeroMemory(&MONSTER, sizeof(CBossMonster::STATE_LINK_MONSTER_DESC));
 	//MONSTER.vYame.x = 33.f;

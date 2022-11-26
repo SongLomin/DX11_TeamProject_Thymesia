@@ -226,7 +226,7 @@ void CAttackArea::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCo
 
 	if(pCharacter.lock())
 	{
-		pCharacter.lock()->OnHit(m_pHitColliderComs.front(), (HIT_TYPE)m_tWeaponDesc.iHitType, m_tWeaponDesc.fDamage);
+		pCharacter.lock()->OnHit(m_pHitColliderComs.front(), pMyCollider, (HIT_TYPE)m_tWeaponDesc.iHitType, m_tWeaponDesc.fDamage);
 	}
 
 	if (m_bFirstAttack)
