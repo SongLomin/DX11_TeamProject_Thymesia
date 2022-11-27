@@ -18,6 +18,15 @@ HRESULT CUI_EvolveMenu_Level::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
+
+    m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::GRAY] = _float4(0.7f, 0.7f, 0.7f, 0.7f);
+    m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::RED] = _float4(1.f, 0.f, 0.f, 1.f);
+    m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::LIGHT_GREEN] = _float4(104.f / 255.f, 209.f / 255.f, 170.f / 255.f, 1.f);
+
+    m_fFontSize = m_fFontOriginSize * m_fFontScale;
+    
+    GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
+
     weak_ptr<CPlayer>   pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock();
     if (pPlayer.lock())
         pPlayer.lock()->Get_Status().lock()->Get_Desc(&m_tOriginStatus);
@@ -33,7 +42,7 @@ HRESULT CUI_EvolveMenu_Level::Initialize(void* pArg)
         m_tOriginStatus.m_iWound = 75.f;
         m_tOriginStatus.m_iMemory = 5000;
         m_tOriginStatus.m_fParryingAtk = 25.f;
-        m_tOriginStatus.m_iStr  = 1;
+        m_tOriginStatus.m_iStr = 1;
         m_tOriginStatus.m_iVital = 1;
         m_tOriginStatus.m_iPlague = 1;
 
@@ -41,8 +50,9 @@ HRESULT CUI_EvolveMenu_Level::Initialize(void* pArg)
 
     m_tChangeStatus = m_tOriginStatus;
 
-    m_fFontSize = m_fFontOriginSize * m_fFontScale;
-    
+
+    m_stackChangedPlayerDesc.push_back(m_tOriginStatus);
+
     
     m_iArrowArraySize = 10;
 
@@ -57,6 +67,9 @@ HRESULT CUI_EvolveMenu_Level::Initialize(void* pArg)
     m_fDecorationArrowPos[7] = { 1300.f ,386.f };
     m_fDecorationArrowPos[8] = { 1300.f ,456.f };
     m_fDecorationArrowPos[9] = { 1300.f ,526.f };
+
+
+    CalculateNeedMemory();
 
     Create_Background();
     Create_Memory();
@@ -75,7 +88,6 @@ HRESULT CUI_EvolveMenu_Level::Initialize(void* pArg)
     m_iSelectedIndex = 0;
 
     ChangeSelectedIndex();
-
     Set_Enable(false);
     return S_OK;
 }
@@ -100,7 +112,7 @@ void CUI_EvolveMenu_Level::Tick(_float fTimeDelta)
         m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CUI_EvolveMenu_Level::Call_ReturnToEvolveMenu, this);
     }
 
-    if (m_bOpenableReconfirmWindow)
+    if (m_bOpenableReconfirmWindow)//화면이 켜지지 않은 경우.
     {
         if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
         {
@@ -118,6 +130,17 @@ void CUI_EvolveMenu_Level::Tick(_float fTimeDelta)
                 ChangeSelectedIndex();
             }
         }
+        if (KEY_INPUT(KEY::LEFT, KEY_STATE::TAP))
+        {
+            if (m_stackChangedPlayerDesc.size() > 1)
+                DecreaseStatus();
+        }
+        if (KEY_INPUT(KEY::RIGHT, KEY_STATE::TAP))
+        {
+            if (m_stackChangedPlayerDesc.back().m_iMemory >= m_iNeedMemory)
+                IncreaseStatus((CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE)m_iSelectedIndex);
+        }
+
         if (KEY_INPUT(KEY::ENTER, KEY_STATE::TAP))
         {
             if (m_bOpenableReconfirmWindow == true && m_iSelectedIndex == (_uint)EVOLVE_LEVEL_TYPE::APPLY)
@@ -531,7 +554,6 @@ void CUI_EvolveMenu_Level::Init_OriginFontInfo()
     m_tTextInfo_OriginLevel.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_OriginLevel.vPosition = _float2(513.f - m_fFontSize * 0.5f , 196.f - m_fFontSize * 0.5f);
 
-    m_vecTextInfo.push_back(m_tTextInfo_OriginLevel);
 
     m_tTextInfo_OriginMemory.bAlways = false;
     m_tTextInfo_OriginMemory.bCenterAlign = true;
@@ -540,7 +562,6 @@ void CUI_EvolveMenu_Level::Init_OriginFontInfo()
     m_tTextInfo_OriginMemory.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_OriginMemory.vPosition = _float2(513.f - m_fFontSize * 0.5f, 254.f - m_fFontSize * 0.5f);
 
-    m_vecTextInfo.push_back(m_tTextInfo_OriginMemory);
 
 
     m_tTextInfo_OriginStr.bAlways = false;
@@ -550,7 +571,6 @@ void CUI_EvolveMenu_Level::Init_OriginFontInfo()
     m_tTextInfo_OriginStr.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_OriginStr.vPosition = _float2(513.f - m_fFontSize * 0.5f, 475.f - m_fFontSize * 0.5f);
 
-    m_vecTextInfo.push_back(m_tTextInfo_OriginStr);
 
 
     m_tTextInfo_OriginVit.bAlways = false;
@@ -560,7 +580,6 @@ void CUI_EvolveMenu_Level::Init_OriginFontInfo()
     m_tTextInfo_OriginVit.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_OriginVit.vPosition = _float2(513.f - m_fFontSize * 0.5f, 552.f - m_fFontSize * 0.5f);
 
-    m_vecTextInfo.push_back(m_tTextInfo_OriginVit);
 
 
     m_tTextInfo_OriginPlague.bAlways = false;
@@ -570,7 +589,6 @@ void CUI_EvolveMenu_Level::Init_OriginFontInfo()
     m_tTextInfo_OriginPlague.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_OriginPlague.vPosition = _float2(513.f - m_fFontSize * 0.5f, 628.f - m_fFontSize * 0.5f);
 
-    m_vecTextInfo.push_back(m_tTextInfo_OriginPlague);
 
     //State
 
@@ -581,7 +599,6 @@ void CUI_EvolveMenu_Level::Init_OriginFontInfo()
     m_tTextInfo_OriginAttackDamage.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_OriginAttackDamage.vPosition = _float2(1186.f - m_fFontSize * 0.5f, 245.f - m_fFontSize * 0.5f);
 
-    m_vecTextInfo.push_back(m_tTextInfo_OriginAttackDamage);
 
 
     m_tTextInfo_OriginWound.bAlways = false;
@@ -591,7 +608,6 @@ void CUI_EvolveMenu_Level::Init_OriginFontInfo()
     m_tTextInfo_OriginWound.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_OriginWound.vPosition = _float2(1186.f - m_fFontSize * 0.5f, 310.f - m_fFontSize * 0.5f);
 
-    m_vecTextInfo.push_back(m_tTextInfo_OriginWound);
 
 
     m_tTextInfo_OriginClawDamage.bAlways = false;
@@ -601,16 +617,8 @@ void CUI_EvolveMenu_Level::Init_OriginFontInfo()
     m_tTextInfo_OriginClawDamage.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_OriginClawDamage.vPosition = _float2(1186.f - m_fFontSize * 0.5f, 387.f- m_fFontSize * 0.5f);
 
-    m_vecTextInfo.push_back(m_tTextInfo_OriginClawDamage);
+    
 
-    m_tTextInfo_OriginClawDamage.bAlways = false;
-    m_tTextInfo_OriginClawDamage.bCenterAlign = true;
-    m_tTextInfo_OriginClawDamage.fRotation = 0;
-    m_tTextInfo_OriginClawDamage.vColor = _float4(1.f, 1.f, 1.f, 1.f);
-    m_tTextInfo_OriginClawDamage.vScale = _float2(m_fFontScale, m_fFontScale);
-    m_tTextInfo_OriginClawDamage.vPosition = _float2(1186.f - m_fFontSize * 0.5f, 387.f - m_fFontSize * 0.5f);
-
-    m_vecTextInfo.push_back(m_tTextInfo_OriginClawDamage);
 
 
     m_tTextInfo_OriginHP.bAlways = false;
@@ -620,8 +628,7 @@ void CUI_EvolveMenu_Level::Init_OriginFontInfo()
     m_tTextInfo_OriginHP.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_OriginHP.vPosition = _float2(1186.f - m_fFontSize * 0.5f, 455.f - m_fFontSize * 0.5f);
     
-    m_vecTextInfo.push_back(m_tTextInfo_OriginHP);
-
+    
 
     m_tTextInfo_OriginMP.bAlways = false;
     m_tTextInfo_OriginMP.bCenterAlign = true;
@@ -630,7 +637,6 @@ void CUI_EvolveMenu_Level::Init_OriginFontInfo()
     m_tTextInfo_OriginMP.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_OriginMP.vPosition = _float2(1186.f - m_fFontSize * 0.5f, 518.f - m_fFontSize * 0.5f);
 
-    m_vecTextInfo.push_back(m_tTextInfo_OriginMP);
 
 
 
@@ -647,120 +653,98 @@ void CUI_EvolveMenu_Level::Init_ChangeFontInfo()
     m_tTextInfo_ChangeLevel.bAlways = false;
     m_tTextInfo_ChangeLevel.bCenterAlign = true;
     m_tTextInfo_ChangeLevel.fRotation = 0;
-    m_tTextInfo_ChangeLevel.vColor = _float4(1.f, 1.f, 1.f, 1.f);
+    m_tTextInfo_ChangeLevel.vColor = _float4(0.7f,0.7f,0.7f,0.7f);
     m_tTextInfo_ChangeLevel.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_ChangeLevel.vPosition = _float2(733.f - m_fFontSize * 0.5f, 196.f - m_fFontSize * 0.5f);
 
-    m_vecTextInfo.push_back(m_tTextInfo_ChangeLevel);
 
     m_tTextInfo_ChangeMemory.bAlways = false;
     m_tTextInfo_ChangeMemory.bCenterAlign = true;
     m_tTextInfo_ChangeMemory.fRotation = 0;
-    m_tTextInfo_ChangeMemory.vColor = _float4(1.f, 1.f, 1.f, 1.f);
+    m_tTextInfo_ChangeMemory.vColor = _float4(0.7f, 0.7f, 0.7f, 0.7f);
     m_tTextInfo_ChangeMemory.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_ChangeMemory.vPosition = _float2(733.f - m_fFontSize * 0.5f, 254.f - m_fFontSize * 0.5f);
     
-    m_vecTextInfo.push_back(m_tTextInfo_ChangeMemory);
 
 
     m_tTextInfo_RequireMemory.bAlways = false;
     m_tTextInfo_RequireMemory.bCenterAlign = true;
     m_tTextInfo_RequireMemory.fRotation = 0;
-    m_tTextInfo_RequireMemory.vColor = _float4(1.f, 1.f, 1.f, 1.f);
+    m_tTextInfo_RequireMemory.vColor = _float4(0.7f, 0.7f, 0.7f, 0.7f);
     m_tTextInfo_RequireMemory.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_RequireMemory.vPosition = _float2(733.f - m_fFontSize * 0.5f, 310.f - m_fFontSize * 0.5f);
 
-    m_vecTextInfo.push_back(m_tTextInfo_RequireMemory);
 
 
     m_tTextInfo_ChangeStr.bAlways = false;
     m_tTextInfo_ChangeStr.bCenterAlign = true;
     m_tTextInfo_ChangeStr.fRotation = 0;
-    m_tTextInfo_ChangeStr.vColor = _float4(1.f, 1.f, 1.f, 1.f);
+    m_tTextInfo_ChangeStr.vColor = _float4(0.7f, 0.7f, 0.7f, 0.7f);
     m_tTextInfo_ChangeStr.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_ChangeStr.vPosition = _float2(733.f - m_fFontSize * 0.5f, 475.f - m_fFontSize * 0.5f);
 
-    m_vecTextInfo.push_back(m_tTextInfo_ChangeStr);
 
 
     m_tTextInfo_ChangeVit.bAlways = false;
     m_tTextInfo_ChangeVit.bCenterAlign = true;
     m_tTextInfo_ChangeVit.fRotation = 0;
-    m_tTextInfo_ChangeVit.vColor = _float4(1.f, 1.f, 1.f, 1.f);
+    m_tTextInfo_ChangeVit.vColor = _float4(0.7f, 0.7f, 0.7f, 0.7f);
     m_tTextInfo_ChangeVit.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_ChangeVit.vPosition = _float2(733.f - m_fFontSize * 0.5f, 552.f - m_fFontSize * 0.5f);
 
-    m_vecTextInfo.push_back(m_tTextInfo_ChangeVit);
 
 
     m_tTextInfo_ChangePlague.bAlways = false;
     m_tTextInfo_ChangePlague.bCenterAlign = true;
     m_tTextInfo_ChangePlague.fRotation = 0;
-    m_tTextInfo_ChangePlague.vColor = _float4(1.f, 1.f, 1.f, 1.f);
+    m_tTextInfo_ChangePlague.vColor = _float4(0.7f, 0.7f, 0.7f, 0.7f);
     m_tTextInfo_ChangePlague.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_ChangePlague.vPosition = _float2(733.f - m_fFontSize * 0.5f, 628.f - m_fFontSize * 0.5f);
 
-    m_vecTextInfo.push_back(m_tTextInfo_ChangePlague);
 
     //State
 
     m_tTextInfo_ChangeAttackDamage.bAlways = false;
     m_tTextInfo_ChangeAttackDamage.bCenterAlign = true;
     m_tTextInfo_ChangeAttackDamage.fRotation = 0;
-    m_tTextInfo_ChangeAttackDamage.vColor = _float4(1.f, 1.f, 1.f, 1.f);
+    m_tTextInfo_ChangeAttackDamage.vColor = _float4(0.7f, 0.7f, 0.7f, 0.7f);
     m_tTextInfo_ChangeAttackDamage.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_ChangeAttackDamage.vPosition = _float2(1441.f - m_fFontSize * 0.5f, 245.f - m_fFontSize * 0.5f);
 
-    m_vecTextInfo.push_back(m_tTextInfo_ChangeAttackDamage);
-
+    
 
     m_tTextInfo_ChangeWound.bAlways = false;
     m_tTextInfo_ChangeWound.bCenterAlign = true;
     m_tTextInfo_ChangeWound.fRotation = 0;
-    m_tTextInfo_ChangeWound.vColor = _float4(1.f, 1.f, 1.f, 1.f);
+    m_tTextInfo_ChangeWound.vColor = _float4(0.7f, 0.7f, 0.7f, 0.7f);
     m_tTextInfo_ChangeWound.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_ChangeWound.vPosition = _float2(1441.f - m_fFontSize * 0.5f, 310.f - m_fFontSize * 0.5f);
 
-    m_vecTextInfo.push_back(m_tTextInfo_ChangeWound);
-
 
     m_tTextInfo_ChangeClawDamage.bAlways = false;
     m_tTextInfo_ChangeClawDamage.bCenterAlign = true;
     m_tTextInfo_ChangeClawDamage.fRotation = 0;
-    m_tTextInfo_ChangeClawDamage.vColor = _float4(1.f, 1.f, 1.f, 1.f);
+    m_tTextInfo_ChangeClawDamage.vColor = _float4(0.7f, 0.7f, 0.7f, 0.7f);
     m_tTextInfo_ChangeClawDamage.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_ChangeClawDamage.vPosition = _float2(1441.f - m_fFontSize * 0.5f, 387.f - m_fFontSize * 0.5f);
-
-    m_vecTextInfo.push_back(m_tTextInfo_ChangeClawDamage);
-
-    m_tTextInfo_ChangeClawDamage.bAlways = false;
-    m_tTextInfo_ChangeClawDamage.bCenterAlign = true;
-    m_tTextInfo_ChangeClawDamage.fRotation = 0;
-    m_tTextInfo_ChangeClawDamage.vColor = _float4(1.f, 1.f, 1.f, 1.f);
-    m_tTextInfo_ChangeClawDamage.vScale = _float2(m_fFontScale, m_fFontScale);
-    m_tTextInfo_ChangeClawDamage.vPosition = _float2(1441.f - m_fFontSize * 0.5f, 387.f - m_fFontSize * 0.5f);
-
-    m_vecTextInfo.push_back(m_tTextInfo_ChangeClawDamage);
 
 
     m_tTextInfo_ChangeHP.bAlways = false;
     m_tTextInfo_ChangeHP.bCenterAlign = true;
     m_tTextInfo_ChangeHP.fRotation = 0;
-    m_tTextInfo_ChangeHP.vColor = _float4(1.f, 1.f, 1.f, 1.f);
+    m_tTextInfo_ChangeHP.vColor = _float4(0.7f, 0.7f, 0.7f, 0.7f);
     m_tTextInfo_ChangeHP.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_ChangeHP.vPosition = _float2(1441.f - m_fFontSize * 0.5f, 455.f - m_fFontSize * 0.5f);
 
-    m_vecTextInfo.push_back(m_tTextInfo_ChangeHP);
-
+    
 
     m_tTextInfo_ChangeMP.bAlways = false;
     m_tTextInfo_ChangeMP.bCenterAlign = true;
     m_tTextInfo_ChangeMP.fRotation = 0;
-    m_tTextInfo_ChangeMP.vColor = _float4(1.f, 1.f, 1.f, 1.f);
+    m_tTextInfo_ChangeMP.vColor = _float4(0.7f, 0.7f, 0.7f, 0.7f);
     m_tTextInfo_ChangeMP.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_ChangeMP.vPosition = _float2(1441.f - m_fFontSize * 0.5f, 518.f - m_fFontSize * 0.5f);
 
-    m_vecTextInfo.push_back(m_tTextInfo_ChangeMP);
 
 
     
@@ -771,6 +755,9 @@ void CUI_EvolveMenu_Level::Init_ChangeFontInfo()
 
 void CUI_EvolveMenu_Level::Update_FontInfo()
 {
+
+    CStatus_Player::PLAYERDESC      tChangedStatus = m_tChangeStatus;
+    
     m_tTextInfo_OriginLevel.szText = to_wstring(m_tOriginStatus.m_iLevel);
     m_tTextInfo_OriginMemory.szText = to_wstring(m_tOriginStatus.m_iMemory);
     m_tTextInfo_OriginStr.szText = to_wstring(m_tOriginStatus.m_iStr);
@@ -779,28 +766,139 @@ void CUI_EvolveMenu_Level::Update_FontInfo()
     m_tTextInfo_OriginAttackDamage.szText = to_wstring((_uint)m_tOriginStatus.m_fNormalAtk);
     m_tTextInfo_OriginWound.szText = to_wstring((_uint)m_tOriginStatus.m_iWound);
     m_tTextInfo_OriginClawDamage.szText = to_wstring((_uint)m_tOriginStatus.m_fPlagueAtk);
-    m_tTextInfo_OriginClawDamage.szText = to_wstring((_uint)m_tOriginStatus.m_fPlagueAtk);
     m_tTextInfo_OriginHP.szText = to_wstring((_uint)m_tOriginStatus.m_fMaxHP);
     m_tTextInfo_OriginMP.szText = to_wstring((_uint)m_tOriginStatus.m_fMaxMP);
 
-    m_tTextInfo_ChangeLevel.szText = to_wstring(m_tChangeStatus.m_iLevel);
-    m_tTextInfo_ChangeMemory.szText = to_wstring(m_tChangeStatus.m_iMemory);
-    m_tTextInfo_RequireMemory.szText = to_wstring(m_tChangeStatus.m_iLevel * 100);
-    m_tTextInfo_ChangeStr.szText = to_wstring(m_tChangeStatus.m_iStr);
-    m_tTextInfo_ChangeVit.szText = to_wstring(m_tChangeStatus.m_iVital);
-    m_tTextInfo_ChangePlague.szText = to_wstring(m_tChangeStatus.m_iPlague);
-    m_tTextInfo_ChangeAttackDamage.szText = to_wstring((_uint)m_tChangeStatus.m_fNormalAtk);
-    m_tTextInfo_ChangeWound.szText = to_wstring((_uint)m_tChangeStatus.m_iWound);
-    m_tTextInfo_ChangeClawDamage.szText = to_wstring((_uint)m_tChangeStatus.m_fPlagueAtk);
-    m_tTextInfo_ChangeHP.szText = to_wstring((_uint)m_tChangeStatus.m_fMaxHP);
-    m_tTextInfo_ChangeMP.szText = to_wstring((_uint)m_tChangeStatus.m_fMaxMP);
+    m_tTextInfo_ChangeLevel.szText = to_wstring(tChangedStatus.m_iLevel);
+    if (tChangedStatus.m_iLevel > m_tOriginStatus.m_iLevel)
+        m_tTextInfo_ChangeLevel.vColor = m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::LIGHT_GREEN];
+    else
+        m_tTextInfo_ChangeLevel.vColor = m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::GRAY];
+
+
+    m_tTextInfo_ChangeMemory.szText = to_wstring(tChangedStatus.m_iMemory);
+    if (tChangedStatus.m_iMemory < m_tOriginStatus.m_iMemory)
+        m_tTextInfo_ChangeMemory.vColor = m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::RED];
+    else
+        m_tTextInfo_ChangeMemory.vColor = m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::GRAY];
+
+
+    m_tTextInfo_RequireMemory.szText = to_wstring(m_iNeedMemory);
+    m_tTextInfo_RequireMemory.vColor = m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::RED];
+
+
+    m_tTextInfo_ChangeStr.szText = to_wstring(tChangedStatus.m_iStr);
+    if (tChangedStatus.m_iStr > m_tOriginStatus.m_iStr)
+        m_tTextInfo_ChangeStr.vColor = m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::LIGHT_GREEN];
+    else
+        m_tTextInfo_ChangeStr.vColor = m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::GRAY];
+
+    m_tTextInfo_ChangeVit.szText = to_wstring(tChangedStatus.m_iVital);
+    if (tChangedStatus.m_iVital> m_tOriginStatus.m_iVital)
+        m_tTextInfo_ChangeVit.vColor = m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::LIGHT_GREEN];
+    else
+        m_tTextInfo_ChangeVit.vColor = m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::GRAY];
+
+    m_tTextInfo_ChangePlague.szText = to_wstring(tChangedStatus.m_iPlague);
+
+    m_tTextInfo_ChangePlague.szText = to_wstring(tChangedStatus.m_iPlague);
+    if (tChangedStatus.m_iPlague > m_tOriginStatus.m_iPlague)
+        m_tTextInfo_ChangePlague.vColor = m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::LIGHT_GREEN];
+    else
+        m_tTextInfo_ChangePlague.vColor = m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::GRAY];
+
+
+
+    if (tChangedStatus.m_fNormalAtk > m_tOriginStatus.m_fNormalAtk)
+        m_tTextInfo_ChangeAttackDamage.vColor = m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::LIGHT_GREEN];
+    else
+        m_tTextInfo_ChangeAttackDamage.vColor = m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::GRAY];
+        m_tTextInfo_ChangeAttackDamage.szText = to_wstring((_uint)tChangedStatus.m_fNormalAtk);
+
+
+    if (tChangedStatus.m_iWound > m_tOriginStatus.m_iWound)
+        m_tTextInfo_ChangeWound.vColor = m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::LIGHT_GREEN];
+    else
+        m_tTextInfo_ChangeWound.vColor = m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::GRAY];
+    m_tTextInfo_ChangeWound.szText = to_wstring((_uint)tChangedStatus.m_iWound);
+
+
+    
+    if (tChangedStatus.m_fPlagueAtk > m_tOriginStatus.m_fPlagueAtk)
+        m_tTextInfo_ChangeClawDamage.vColor = m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::LIGHT_GREEN];
+    else
+        m_tTextInfo_ChangeClawDamage.vColor = m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::GRAY];
+    m_tTextInfo_ChangeClawDamage.szText = to_wstring((_uint)tChangedStatus.m_fPlagueAtk);
+
+    if (tChangedStatus.m_fMaxHP > m_tOriginStatus.m_fMaxHP)
+        m_tTextInfo_ChangeHP.vColor = m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::LIGHT_GREEN];
+    else
+        m_tTextInfo_ChangeHP.vColor = m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::GRAY];
+    m_tTextInfo_ChangeHP.szText = to_wstring((_uint)tChangedStatus.m_fMaxHP);
+
+    if (tChangedStatus.m_fMaxMP > m_tOriginStatus.m_fMaxMP)
+        m_tTextInfo_ChangeMP.vColor = m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::LIGHT_GREEN];
+    else
+        m_tTextInfo_ChangeMP.vColor = m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::GRAY];
+    m_tTextInfo_ChangeMP.szText = to_wstring((_uint)tChangedStatus.m_fMaxMP);
+
+
+    m_vecTextInfo.clear();
+
+
+
+    m_vecTextInfo.push_back(m_tTextInfo_OriginLevel);
+    m_vecTextInfo.push_back(m_tTextInfo_OriginMemory);
+    m_vecTextInfo.push_back(m_tTextInfo_OriginStr);
+    m_vecTextInfo.push_back(m_tTextInfo_OriginVit);
+    m_vecTextInfo.push_back(m_tTextInfo_OriginPlague);
+    m_vecTextInfo.push_back(m_tTextInfo_OriginAttackDamage);
+    m_vecTextInfo.push_back(m_tTextInfo_OriginWound);
+    m_vecTextInfo.push_back(m_tTextInfo_OriginClawDamage);
+    m_vecTextInfo.push_back(m_tTextInfo_OriginHP);
+    m_vecTextInfo.push_back(m_tTextInfo_OriginMP);
+
+    m_vecTextInfo.push_back(m_tTextInfo_ChangeLevel);
+    m_vecTextInfo.push_back(m_tTextInfo_ChangeMemory);
+    m_vecTextInfo.push_back(m_tTextInfo_RequireMemory);
+    m_vecTextInfo.push_back(m_tTextInfo_ChangeStr);
+    m_vecTextInfo.push_back(m_tTextInfo_ChangeVit);
+    m_vecTextInfo.push_back(m_tTextInfo_ChangePlague);
+    m_vecTextInfo.push_back(m_tTextInfo_ChangeAttackDamage);
+    m_vecTextInfo.push_back(m_tTextInfo_ChangeWound);
+    m_vecTextInfo.push_back(m_tTextInfo_ChangeClawDamage);
+    m_vecTextInfo.push_back(m_tTextInfo_ChangeHP);
+    m_vecTextInfo.push_back(m_tTextInfo_ChangeMP);
 
 }
 
-void CUI_EvolveMenu_Level::Update_ChangeStatus()
+void CUI_EvolveMenu_Level::Update_ChangeStatus(CStatus_Player::PLAYERDESC& tChangedPlayerStatus)
 {
+    //str
+    tChangedPlayerStatus.m_fNormalAtk = 25 + (((_float)tChangedPlayerStatus.m_iStr -1) * 3.f);
+    tChangedPlayerStatus.m_iWound = 75 + ((tChangedPlayerStatus.m_iStr - 1) * 3);
 
+    //Vital
+    tChangedPlayerStatus.m_fMaxHP = 300.f + ((_float)(tChangedPlayerStatus.m_iVital - 1) * 20.f);
 
+    //
+    tChangedPlayerStatus.m_fPlagueAtk = 200.f + ((_float)(tChangedPlayerStatus.m_iPlague - 1)* 10.f);
+
+    tChangedPlayerStatus.m_fMaxMP = 150.f + ((_float)(tChangedPlayerStatus.m_iPlague - 1) * 20.f);
+
+  
+    CalculateNeedMemory();
+    Update_FontInfo();
+}
+
+void CUI_EvolveMenu_Level::CalculateNeedMemory()
+{
+    m_iNeedMemory = m_stackChangedPlayerDesc.back().m_iLevel * 100;
+}
+
+_bool CUI_EvolveMenu_Level::Check_Changed(_uint dest, _uint sour)
+{
+    return dest != sour ? true : false;
 }
 
 
@@ -812,18 +910,12 @@ void CUI_EvolveMenu_Level::OnDisable()
     {
         elem.lock()->Set_Enable(false);
     }
+    m_stackChangedPlayerDesc.clear();
 }
 
 void CUI_EvolveMenu_Level::ChangeSelectedIndex()
 {
     EVOLVE_LEVEL_TYPE eType = (EVOLVE_LEVEL_TYPE)m_iSelectedIndex;
-
-    /*
-    m_fSelectedIndexPosArray[(_uint)EVOLVE_LEVEL_TYPE::STR] = _float2(231.f, 465.f);
-    m_fSelectedIndexPosArray[(_uint)EVOLVE_LEVEL_TYPE::VIT] = _float2(231.f, 542.f);
-    m_fSelectedIndexPosArray[(_uint)EVOLVE_LEVEL_TYPE::PLA] = _float2(231.f, 619.f);
-
-    */
 
     switch (eType)
     {
@@ -868,6 +960,8 @@ void CUI_EvolveMenu_Level::ChangeSelectedIndex()
 
 void CUI_EvolveMenu_Level::SelectButton()
 {
+    
+
 }
 
 void CUI_EvolveMenu_Level::OpenReconfirmWindow()
@@ -918,13 +1012,74 @@ void CUI_EvolveMenu_Level::TickReconfirmWindow()
         }
         if (KEY_INPUT(KEY::ENTER, KEY_STATE::TAP) && m_bOpenReconfirmWindowThisFrame == false)
         {
-                
+            if (m_iReconfirmWindowIndex == (_uint)LEVEL_RECONFIRM_TYPE::YES)
+            {
+                m_tOriginStatus = m_stackChangedPlayerDesc.back();
+                m_stackChangedPlayerDesc.clear();
+                m_stackChangedPlayerDesc.push_back(m_tOriginStatus);
+            }
             m_iReconfirmWindowIndex = 0;
             m_bOpenableReconfirmWindow = true;
+            ChangeSelectedIndex();
             Disable_AllEventChild();
+            Update_ChangeStatus(m_tOriginStatus);
         }
     }
     
+}
+void CUI_EvolveMenu_Level::IncreaseStatus(EVOLVE_LEVEL_TYPE eEvolveType)
+{
+    m_tChangeStatus;
+
+    switch (eEvolveType)
+    {
+    case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::STR:
+        ++m_tChangeStatus.m_iStr;
+        ++m_tChangeStatus.m_iLevel;
+        m_tChangeStatus.m_iMemory -= m_iNeedMemory;
+
+        Update_ChangeStatus(m_tChangeStatus);
+        break;
+    case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::VIT:
+        ++m_tChangeStatus.m_iVital;
+        ++m_tChangeStatus.m_iLevel;
+        Update_ChangeStatus(m_tChangeStatus);
+        break;
+    case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::PLA:
+        ++m_tChangeStatus.m_iPlague;
+        ++m_tChangeStatus.m_iLevel;
+        Update_ChangeStatus(m_tChangeStatus);
+        break;
+    default:
+        break;
+    }
+}
+
+void CUI_EvolveMenu_Level::DecreaseStatus(EVOLVE_LEVEL_TYPE eEvolveType)
+{
+    switch (eEvolveType)
+    {
+    case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::STR:
+        --m_tChangeStatus.m_iStr;
+        --m_tChangeStatus.m_iLevel;
+        m_tChangeStatus.m_iMemory -= m_iNeedMemory;
+
+        Update_ChangeStatus(m_tChangeStatus);
+        break;
+    case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::VIT:
+        --m_tChangeStatus.m_iVital;
+        --m_tChangeStatus.m_iLevel;
+        Update_ChangeStatus(m_tChangeStatus);
+        break;
+    case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::PLA:
+        --m_tChangeStatus.m_iPlague;
+        --m_tChangeStatus.m_iLevel;
+        Update_ChangeStatus(m_tChangeStatus);
+        break;
+    default:
+        break;
+    }
+
 }
 
 
@@ -937,6 +1092,29 @@ void CUI_EvolveMenu_Level::OnEnable(void* pArg)
 
     GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
 
+    weak_ptr<CPlayer>   pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock();
+    if (pPlayer.lock())
+        pPlayer.lock()->Get_Status().lock()->Get_Desc(&m_tOriginStatus);
+    else
+    {
+        m_tOriginStatus.m_iLevel = 1;
+        m_tOriginStatus.m_fCurrentHP = 300.f;
+        m_tOriginStatus.m_fMaxHP = 300.f;
+        m_tOriginStatus.m_fMaxMP = 150.f;
+        m_tOriginStatus.m_fCurrentMP = 150.f;
+        m_tOriginStatus.m_fNormalAtk = 25.f;
+        m_tOriginStatus.m_fPlagueAtk = 200.f;
+        m_tOriginStatus.m_iWound = 75.f;
+        m_tOriginStatus.m_iMemory = 5000;
+        m_tOriginStatus.m_fParryingAtk = 25.f;
+        m_tOriginStatus.m_iStr = 1;
+        m_tOriginStatus.m_iVital = 1;
+        m_tOriginStatus.m_iPlague = 1;
+
+    }
+
+    m_stackChangedPlayerDesc.push_back(m_tOriginStatus);
+    
 }
 
 void CUI_EvolveMenu_Level::Call_ReturnToEvolveMenu()

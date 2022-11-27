@@ -14,7 +14,7 @@ class CUI_EvolveMenu_Level : public CUI_Container
 public:
 	enum class  EVOLVE_LEVEL_TYPE { STR, VIT, PLA, APPLY, EVOLVE_LEVEL_TYPE_END };
 	enum class	LEVEL_RECONFIRM_TYPE{YES,NO,LEVEL_RECONFIRM_END};
-
+	enum class	EVOLOVE_TEXT_COLOR{GRAY, RED, LIGHT_GREEN, EVOLOVE_TEXT_COLOR_END};
 
 public:
 	GAMECLASS_H(CUI_EvolveMenu_Level)
@@ -25,7 +25,6 @@ public:
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual void   Tick(_float fTimeDelta);
 	virtual void   LateTick(_float fTimeDelta);
-
 
 
 private:
@@ -39,15 +38,18 @@ private:
 	void	Init_OriginFontInfo();
 	void	Init_ChangeFontInfo();
 	void	Update_FontInfo();
-	void	Update_ChangeStatus();
+	void	Update_ChangeStatus(CStatus_Player::PLAYERDESC&	tChangedPlayerStatus);
+	void	CalculateNeedMemory();
+
+
+private:
+	_bool	Check_Changed(_uint dest, _uint sour);
 
 
 private:
 	weak_ptr<CCustomUI> m_pPauseMenuBackground;
 	weak_ptr<CCustomUI> m_pPauseMenuBackground_Main;
 	weak_ptr<CCustomUI> m_pPauseMenuBackground_Top;
-
-
 
 private:
 	weak_ptr<CCustomUI> m_pTitle;
@@ -88,8 +90,16 @@ private:
 	_uint            m_iArrowArraySize;
 	_float2            m_fDecorationArrowPos[11];
 
+
 private:
-	EVOLVE_LEVEL_TYPE			m_eSelectType;
+	stack<_uint>			m_stackStr;
+	stack<_uint>			m_stackVital;
+	stack<_uint>			m_stackPlague;
+	stack
+
+
+
+private:
 	_uint						m_iSelectedIndex;
 	_float						m_fFontScale = 0.87f;
 	_float						m_fFontOriginSize = 23.f;
@@ -112,8 +122,13 @@ private://ApplyReconfirm
 private:
 	CStatus_Player::PLAYERDESC m_tOriginStatus;
 	CStatus_Player::PLAYERDESC m_tChangeStatus;
-	_uint						m_iNeedMemory = 0;
 
+	
+private:
+	vector<CStatus_Player::PLAYERDESC>	m_stackChangedPlayerDesc;
+	_uint								m_iCurrentMemory;
+	_uint								m_iNeedMemory;
+	_float4								m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::EVOLOVE_TEXT_COLOR_END];
 private:
 	TEXTINFO					m_tTextInfo_OriginLevel;
 	TEXTINFO					m_tTextInfo_OriginMemory;
@@ -149,9 +164,11 @@ private:
 
 	vector<TEXTINFO>			m_vecTextInfo;
 
+
+
 protected:
 	void			OnDisable() override;
-
+	void			OnEnable(void* pArg);
 	
 
 
@@ -168,11 +185,11 @@ private:
 	void            OpenReconfirmWindow();
 	void            TickReconfirmWindow();
 	
+	void			IncreaseStatus(EVOLVE_LEVEL_TYPE eEvolveType);
+	void			DecreaseStatus(EVOLVE_LEVEL_TYPE eEvolveType);
 
 
 
-private:
-	virtual void   OnEnable(void* pArg) override;
 
 
 private:
