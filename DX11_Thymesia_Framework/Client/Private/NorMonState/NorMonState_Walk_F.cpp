@@ -47,6 +47,13 @@ void CNorMonState_Walk_F::Start()
 	case Client::MONSTERTYPE::GARDENER:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_WalkF");
 		break;
+	case Client::MONSTERTYPE::ELITEGARDENER:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_WalkF");
+		break;
+	case Client::MONSTERTYPE::SHIELDAXEMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_WalkF|BaseLayer|Armatu");
+		break;
+
 	}
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Walk_F::Call_AnimationEnd, this);
@@ -155,6 +162,28 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 				}
 				break;
 			case Client::MONSTERTYPE::KNIFEWOMAN:
+			{
+				_int iAttRand = rand() % 3;
+				switch (iAttRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+					m_bWalkCheck = false;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack2>(0.05f);
+					m_bWalkCheck = false;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					m_bWalkCheck = false;
+					break;
+				}
+			    }
+				break;
+			case Client::MONSTERTYPE::SKULL:
+				break;
+			case Client::MONSTERTYPE::GARDENER:
 				switch (iMovRand)
 				{
 				case 0:
@@ -166,14 +195,29 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 					m_bWalkCheck = true;
 					break;
 				case 2:
-					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
 					m_bWalkCheck = false;
 					break;
 				}
 				break;
-			case Client::MONSTERTYPE::SKULL:
+			case Client::MONSTERTYPE::ELITEGARDENER:
+				switch (iMovRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+					m_bWalkCheck = true;
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
+					m_bWalkCheck = true;
+					break;
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					m_bWalkCheck = false;
+					break;
+				}
 				break;
-			case Client::MONSTERTYPE::GARDENER:
+			case Client::MONSTERTYPE::SHIELDAXEMAN:
 				switch (iMovRand)
 				{
 				case 0:
@@ -249,27 +293,75 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 			case Client::MONSTERTYPE::SKULL:
 				break;
 			case Client::MONSTERTYPE::GARDENER:
-				switch (iAttRand)
+				if (m_iGardnerAtkIndex > 1)
 				{
-					{
-						_int iAttRand = rand() % 2;
-					}
-					
-				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_GardnerAtkIndex(0);
+					m_iGardnerAtkIndex = 0;
+					m_bWalkCheck = false;
+				}
+				else
+				{
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_GardnerPlusAtkIndex(1);
+					++m_iGardnerAtkIndex;
+					m_bWalkCheck = false;
+
+				}	
+				break;	
+			case Client::MONSTERTYPE::ELITEGARDENER:			
+				{
+				int iRand = rand() % 2;
+				if (m_iGardnerAtkIndex > 1)
+				{
+					switch (iRand)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
+						Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_GardnerAtkIndex(0);
+						m_iGardnerAtkIndex = 0;
+						m_bWalkCheck = false;
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack3>(0.05f);
+						Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_GardnerAtkIndex(0);
+						m_iGardnerAtkIndex = 0;
+						m_bWalkCheck = false;
+						break;
+					}
+					break;
+				}
+				else
+				{
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_GardnerPlusAtkIndex(1);
+					++m_iGardnerAtkIndex;
+					m_bWalkCheck = false;
+
+				}
+				}
+				break;
+			case Client::MONSTERTYPE::SHIELDAXEMAN:
+			{
+				int iRand = rand() % 3;
+				switch (iRand)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
 					m_bWalkCheck = false;
 					break;
 				case 1:
-					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack3>(0.05f);
 					m_bWalkCheck = false;
 					break;
-				//case 2:
-				//	Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack3>(0.05f);
-				//	m_bWalkCheck = false;
-				//	break;
-					}
+				case 2:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					m_bWalkCheck = false;
 					break;
-							
+				}
+				break;
+			}	
+			break;
 			}
 			return true;
 		}

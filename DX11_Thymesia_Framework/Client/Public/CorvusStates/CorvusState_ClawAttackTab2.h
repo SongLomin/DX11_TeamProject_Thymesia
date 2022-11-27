@@ -7,13 +7,13 @@ END
 
 BEGIN(Client)
 
-class CCorvusState_ClawAttack1 :
+class CCorvusState_ClawAttackTab2 :
     public CCorvusStateBase
 {
 
-    GAMECLASS_H(CCorvusState_ClawAttack1);
-    SHALLOW_COPY(CCorvusState_ClawAttack1)
-        CLONE_H(CCorvusState_ClawAttack1, CComponent)
+    GAMECLASS_H(CCorvusState_ClawAttackTab2);
+    SHALLOW_COPY(CCorvusState_ClawAttackTab2)
+        CLONE_H(CCorvusState_ClawAttackTab2, CComponent)
 
 protected:
     virtual HRESULT Initialize_Prototype() override;

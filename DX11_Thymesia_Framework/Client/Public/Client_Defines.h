@@ -175,6 +175,7 @@ namespace Client
 		KNIFEWOMAN, // 기본단검여자
 		SKULL, // 기본해골
 		GARDENER, // 낫든몬스터
+		ELITEGARDENER,
 		VARG, // 보스바그
 		SHIELDAXEMAN,
 		NMON_END

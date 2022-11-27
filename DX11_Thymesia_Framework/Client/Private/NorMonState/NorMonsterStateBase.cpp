@@ -106,7 +106,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 			->Get_Desc(&tPlayerDesc);
 
 		//플레이어 공격력 아직 없으니 임의값 넣어서!
-		_float fMagnifiedDamage = In_fDamage * 4;
+		_float fMagnifiedDamage = In_fDamage;
 		//m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 
 		switch (eAttackOption)
@@ -166,7 +166,10 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Walk_R>().lock()->Get_StateIndex()||
 			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Walk_B>().lock()->Get_StateIndex()||
 			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_TurnL90>().lock()->Get_StateIndex()||
-			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_TurnR90>().lock()->Get_StateIndex())
+			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_TurnR90>().lock()->Get_StateIndex()||
+			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_HurtR>().lock()->Get_StateIndex()||
+			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_HurtL>().lock()->Get_StateIndex())
+
 		{
 			if (In_eHitType == HIT_TYPE::LEFT_HIT)
 			{
@@ -175,9 +178,11 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 
 			else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
 			{
+
 				Get_OwnerMonster()->Change_State<CNorMonState_HurtR>();
 			}
 		}
+
 	}
 
 }

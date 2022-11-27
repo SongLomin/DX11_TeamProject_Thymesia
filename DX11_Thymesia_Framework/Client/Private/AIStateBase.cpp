@@ -28,7 +28,6 @@ HRESULT CAIStateBase::Initialize(void* pArg)
 	m_eNorMonIdleType = StateLinkDesc.eNorMonIdleType;
 	m_fStartPosition = StateLinkDesc.m_fStartPositon;
 	m_eBossStartType = StateLinkDesc.eBossStartType;
-	m_iAtkCounterGauge = StateLinkDesc.m_iAtkCounterGauge;
 
 	m_iTimeScaleLayer = (_uint)TIMESCALE_LAYER::MONSTER;
 	m_pOwnerFromMonster = Weak_Cast<CMonster>(m_pOwner);

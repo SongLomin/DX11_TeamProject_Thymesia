@@ -63,7 +63,6 @@ HRESULT CLevel_Test::Initialize()
 	CCC.vYame.x = 13.f;
 	CCC.vYame.y = 4.6f;
 	CCC.vYame.z = 36.f;
-	CCC.m_iAtkCounterGauge = 10;
 	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_TEST, &CCC);
 
 	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
@@ -72,7 +71,6 @@ HRESULT CLevel_Test::Initialize()
 	CCC.vYame.x = 23.f;
 	CCC.vYame.y = 4.6f;
 	CCC.vYame.z = 43.f;
-	CCC.m_iAtkCounterGauge = 10;
 	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_TEST, &CCC);
 
 	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
@@ -81,7 +79,14 @@ HRESULT CLevel_Test::Initialize()
 	CCC.vYame.x = 2.5f;
 	CCC.vYame.y = 4.9f;
 	CCC.vYame.z = 46.f;
-	CCC.m_iAtkCounterGauge = 10;
+	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_TEST, &CCC);
+
+	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+	CCC.eMonType = MONSTERTYPE::SHIELDAXEMAN;
+	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
+	CCC.vYame.x = 2.5f;
+	CCC.vYame.y = 4.9f;
+	CCC.vYame.z = 46.f;
 	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_TEST, &CCC);
 #endif // _STAGE_1_MONSTER_
 

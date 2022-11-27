@@ -191,6 +191,7 @@
     <ClInclude Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hpp" />
     <ClInclude Include="..\Private\CorvusStates\CorvusState_LAttack5.h" />
     <ClInclude Include="..\Public\Actor.h" />
+    <ClInclude Include="..\Public\ActorDecor.h" />
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
     <ClInclude Include="..\Public\BossUrd\Urd.h" />
@@ -202,6 +203,9 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b2.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_TurnAttack.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Parry1.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Parry2.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectLeft.h" />
@@ -209,10 +213,11 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectRight.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectRightup.h" />
     <ClInclude Include="..\Public\Level_Test.h" />
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Parry.h" />
     <ClInclude Include="..\Public\PhysXColliderObject.h" />
     <ClInclude Include="..\Public\BossMonster.h" />
     <ClInclude Include="..\Public\BossStateBase.h" />
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttack1.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Die.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtL.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtR.h" />
@@ -440,6 +445,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Actor.cpp" />
+    <ClCompile Include="..\Private\ActorDecor.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Attack_Area.cpp" />
     <ClCompile Include="..\Private\BossStateBase.cpp" />
@@ -451,17 +457,21 @@
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b2.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_RaidAttack.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_TurnAttack.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackAway.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackHold.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab2.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectLeft.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectLeftup.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectRight.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectRightup.cpp" />
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Parry.cpp" />
     <ClCompile Include="..\Private\Status_Boss.cpp" />
     <ClCompile Include="..\Private\UI_Container.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu.cpp" />
     <ClCompile Include="..\Private\UI_LerpBar.cpp" />
     <ClCompile Include="..\Private\BossMonster.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttack1.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Die.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtL.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtR.cpp" />

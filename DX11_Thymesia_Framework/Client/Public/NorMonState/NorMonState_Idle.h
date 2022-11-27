@@ -19,8 +19,8 @@ public:
 	void Set_IdleType(_uint IdleType) { m_iIdleType = IdleType; }
 	void Set_ClosePlayerCheck(_bool ClosePlayerCheck) { m_bClosePlayerCheck = ClosePlayerCheck; }
 	void Set_CloseToRun(_bool CloseToRun) { m_bCloseToRun = CloseToRun; }
-	void Set_Count(_uint Count) { m_iCount = Count; }
 	void Set_AnimIndex(_uint AnimIndex) { m_iAnimIndex = AnimIndex; }
+	
 
 
 
@@ -43,7 +43,7 @@ private: // 아이들에서만쓰는불값
 	_bool     m_bCloseToRun = false;
 	_bool     m_bGoAtk = false;
 	_uint     m_iIdleType = 0; // 이거 enum으로 관리하면될듯  다하고할거임 ㅇㅇ
-	_uint     m_iCount = 0;
+
 	
 
 

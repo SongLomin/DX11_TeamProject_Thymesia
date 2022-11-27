@@ -59,7 +59,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 	Add_Component<CCorvusState_Parry1>();
 	Add_Component<CCorvusState_Parry2>();
 	Add_Component<CCorvusState_BasicHealing>();
-	Add_Component<CCorvusState_ClawAttack1>();
+	Add_Component<CCorvusState_ClawAttackTab>();
 	Add_Component<CCorvusState_Die>();
 	Add_Component<CCorvusState_HurtL>();
 	Add_Component<CCorvusState_HurtR>();

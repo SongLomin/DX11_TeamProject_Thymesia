@@ -46,6 +46,12 @@ void CNorMonState_HeavyAttack2::Start()
 	case Client::MONSTERTYPE::GARDENER:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_ComboB01");
 		break;
+	case Client::MONSTERTYPE::ELITEGARDENER:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_ComboB01");
+		break;
+	case Client::MONSTERTYPE::SHIELDAXEMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_Attack05|BaseLayer|Arm");
+		break;
 	}
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_HeavyAttack2::Call_AnimationEnd, this);
@@ -70,7 +76,17 @@ void CNorMonState_HeavyAttack2::Tick(_float fTimeDelta)
 			m_pModelCom.lock()->Play_Animation(fTimeDelta);
 			m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, PxControllerFilters(), nullptr, m_pTransformCom);
 		}
-	
+		break;
+	case Client::MONSTERTYPE::ELITEGARDENER:
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 20 &&
+			m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() <= 51)
+		{
+			m_fCurrentSpeed += m_fAccel * fTimeDelta;
+			m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
+
+			m_pModelCom.lock()->Play_Animation(fTimeDelta);
+			m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, PxControllerFilters(), nullptr, m_pTransformCom);
+		}
 		break;
 	}
 
@@ -130,6 +146,12 @@ void CNorMonState_HeavyAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 		case Client::MONSTERTYPE::GARDENER:
 			m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 			break;
+		case Client::MONSTERTYPE::ELITEGARDENER:
+			m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+			break;
+		case Client::MONSTERTYPE::SHIELDAXEMAN:
+			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
+			break;
 		}
 
 		m_bAttackLookAtLimit = true;
@@ -169,12 +191,31 @@ _bool CNorMonState_HeavyAttack2::Check_AndChangeNextState()
 	switch (m_eMonType)
 	{
 	case Client::MONSTERTYPE::GARDENER:
-	{
 		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 51)
 		{
 			m_bAttackLookAtLimit = false;
 		}
+	break;
+	case Client::MONSTERTYPE::ELITEGARDENER:
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 51)
+		{
+			m_bAttackLookAtLimit = false;
+		}
+		break;
 	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 51)
+	{
+		switch (m_eMonType)
+		{
+		case Client::MONSTERTYPE::GARDENER:
+		m_bAttackLookAtLimit = false;
+		break;
+		case Client::MONSTERTYPE::ELITEGARDENER:
+		m_bAttackLookAtLimit = false;
+		break;
+		}
+		return true;
 	}
 
 

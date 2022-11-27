@@ -3,6 +3,7 @@
 
 BEGIN(Client)
 
+class CActorDecor;
 class CMobWeapon;
 class CStatus_Monster;
 class CMonster :
@@ -17,7 +18,7 @@ public:
         MONSTERTYPE          eMonType;
         NORMONSTERIDLETYPE   eNorMonIdleType;
         _float4              m_fStartPositon;
-        _uint                m_iAtkCounterGauge;
+    
 
 
 
@@ -75,6 +76,13 @@ protected:
 
 protected:
     list<weak_ptr<CMobWeapon>> m_pWeapons;
+
+
+
+
+
+
+    list<weak_ptr<CActorDecor>> m_pActorDecor;
     weak_ptr<CStateBase> m_pStandState;
 
 

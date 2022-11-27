@@ -14,7 +14,9 @@ class CNorMonState_Walk_F :
 	CLONE_H(CNorMonState_Walk_F, CComponent)
 		SHALLOW_COPY(CNorMonState_Walk_F)
 
-
+public:
+	void  Set_GardnerAtkIndex(_uint GardnerAtkIndex) { m_iGardnerAtkIndex = GardnerAtkIndex; }
+	void  Set_GardnerPlusAtkIndex(_uint GardnerAtkIndex) { m_iGardnerAtkIndex += GardnerAtkIndex; }
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;

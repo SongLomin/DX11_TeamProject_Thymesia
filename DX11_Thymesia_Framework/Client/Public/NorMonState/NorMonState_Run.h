@@ -17,7 +17,9 @@ class CNorMonState_Run :
 public:
 	void  Set_ClosePlayer(_bool ClosePlayer) { m_bClosePlayer = ClosePlayer; }
 	void  Set_MonIdleType(NORMONSTERIDLETYPE IDLETYPE);
-	void  Set_GardnerAtkIndex(_uint GardnerAtkIndex) {	m_iGardnerAtkIndex += GardnerAtkIndex;}
+	void  Set_GardnerAtkIndex(_uint GardnerAtkIndex) {	m_iGardnerAtkIndex = GardnerAtkIndex;}
+	void  Set_GardnerPlusAtkIndex(_uint GardnerAtkIndex) { m_iGardnerAtkIndex += GardnerAtkIndex; }
+
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
