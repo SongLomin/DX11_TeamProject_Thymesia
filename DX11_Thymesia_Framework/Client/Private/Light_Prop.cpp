@@ -51,17 +51,17 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	m_eRenderGroup = RENDERGROUP::RENDER_NONALPHABLEND;
 
 	// TODO : need to be data
-	ZeroMemory(&m_tLightDesc, sizeof(LIGHTDESC));
-	m_tLightDesc.eActorType = LIGHTDESC::TYPE::TYPE_HALFPOINT;
-	m_tLightDesc.bEnable = true;
-	XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_Position());
-	m_tLightDesc.vDiffuse = { 1.f, 1.f, 0.8f, 0.f };
-	m_tLightDesc.vAmbient = { 0.6f, 0.6f, 0.48f, 0.f };
-	m_tLightDesc.vDirection = { 1.f, 0.f, 0.f, 0.f };
-	m_tLightDesc.vLightFlag = { 1.f, 1.f, 1.f, 1.f };
-	m_tLightDesc.fRange = 17.f;
+	//ZeroMemory(&m_tLightDesc, sizeof(LIGHTDESC));
+	//m_tLightDesc.eActorType = LIGHTDESC::TYPE::TYPE_HALFPOINT;
+	//m_tLightDesc.bEnable = true;
+	//XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_Position());
+	//m_tLightDesc.vDiffuse = { 1.f, 1.f, 0.8f, 0.f };
+	//m_tLightDesc.vAmbient = { 0.6f, 0.6f, 0.48f, 0.f };
+	//m_tLightDesc.vDirection = { 1.f, 0.f, 0.f, 0.f };
+	//m_tLightDesc.vLightFlag = { 1.f, 1.f, 1.f, 1.f };
+	//m_tLightDesc.fRange = 17.f;
 
-	m_iLightIndex = GAMEINSTANCE->Add_Light(m_tLightDesc);
+	//m_iLightIndex = GAMEINSTANCE->Add_Light(m_tLightDesc);
 	
 	m_pPhysXColliderCom = Add_Component<CPhysXCollider>();
 	m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
@@ -125,12 +125,13 @@ HRESULT CLight_Prop::Render()
 	{
 		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS);
-	/*	if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
 		{
 			m_iPassIndex = 3;
 		}
 		else
-			m_iPassIndex = 7;*/
+			m_iPassIndex = 7;
+	
 
 		m_pShaderCom.lock()->Begin(m_iPassIndex);
 		m_pModelCom.lock()->Render_Mesh(i);

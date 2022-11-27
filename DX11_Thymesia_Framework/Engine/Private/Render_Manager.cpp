@@ -41,15 +41,14 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Shade"), 
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 1.f))))
 		DEBUG_ASSERT;
-
-	/* For.Target_SpecularMap */
-	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_SpecularMap"),
+	/* For.Target_PBR */
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_PBR"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
-	/* For.Target_SpecularMap */
-	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_ORM"),
-		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
-		DEBUG_ASSERT;
+	///* For.Target_ORM */
+	//if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_ORM"),
+	//	(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+	//	DEBUG_ASSERT;
 
 	/* For.Target_Specular */
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Specular"), 
@@ -141,6 +140,10 @@ HRESULT CRender_Manager::Initialize()
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Ambient"),
+		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		DEBUG_ASSERT;
+
 	/*if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_BlurShadow"),
 		(_uint)ViewPortDesc.Width * 5, (_uint)ViewPortDesc.Height * 5, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
 		DEBUG_ASSERT;*/
@@ -162,8 +165,10 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_LightFlag"))))
 		DEBUG_ASSERT;
-	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_SpecularMap"))))
+	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_PBR"))))
 		DEBUG_ASSERT;
+	/*if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_ORM"))))
+		DEBUG_ASSERT;*/
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_ExtractEffect"), TEXT("Target_OriginalEffect"))))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_ExtractEffect"), TEXT("Target_ExtractBloom"))))
@@ -209,6 +214,8 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Shade"))))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Specular"))))
+		DEBUG_ASSERT;
+	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Ambient"))))
 		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Fog"), TEXT("Target_Fog"))))
@@ -262,8 +269,10 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_BlurForBloom"), ViewPortDesc.Width - fHalf, fHalf + fSize * 2.f, fSize, fSize)))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Bloom"), ViewPortDesc.Width - fHalf, fHalf + fSize * 3.f, fSize, fSize)))
+		DEBUG_ASSERT; 
+	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_PBR"), ViewPortDesc.Width - fHalf, fHalf + fSize * 4.f, fSize, fSize)))
 		DEBUG_ASSERT;
-	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_SpecularMap"), ViewPortDesc.Width - fHalf, fHalf + fSize * 4.f, fSize, fSize)))
+	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Ambient"), ViewPortDesc.Width - fHalf, fHalf + fSize * 5.f, fSize, fSize)))
 		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_ExtractGlow"), ViewPortDesc.Width - fHalf - fSize, fHalf, fSize, fSize)))
@@ -593,13 +602,15 @@ HRESULT CRender_Manager::Render_Lights()
 
 	/* 모든 빛은 이 노멀텍스쳐(타겟)과 연산이 이뤄지면 되기때문에.
 	모든 빛마다 각각 던질피룡가 없다. */
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_DiffuseTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Diffuse")))))
+		DEBUG_ASSERT;
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_NormalTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Normal")))))
 		DEBUG_ASSERT;
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_DepthTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Depth")))))
 		DEBUG_ASSERT;
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_LightFlagTexture", pRenderTargetManager->Get_SRV(TEXT("Target_LightFlag")))))
 		DEBUG_ASSERT;
-	if (FAILED(m_pShader->Set_ShaderResourceView("g_SpecularMap", pRenderTargetManager->Get_SRV(TEXT("Target_SpecularMap")))))
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_ORMTexture", pRenderTargetManager->Get_SRV(TEXT("Target_PBR")))))
 		DEBUG_ASSERT;
 
 	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
@@ -738,7 +749,8 @@ HRESULT CRender_Manager::Render_Blend()
 
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_FogTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Fog")))))
 		DEBUG_ASSERT;
-
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_AmbientTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Ambient")))))
+		DEBUG_ASSERT;
 
 
 	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */

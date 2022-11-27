@@ -18,10 +18,11 @@ vector g_vLightFlag;
 vector g_vMtrlAmbient  = vector(1.f, 1.f, 1.f, 1.f);
 vector g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
 
-texture2D g_SpecularMap;
+texture2D g_ORMTexture;
 texture2D g_SpecularTexture;
 texture2D g_DepthTexture;
 texture2D g_DiffuseTexture;
+texture2D g_AmbientTexture;
 texture2D g_ShadeTexture;
 texture2D g_NormalTexture;
 texture2D g_LightFlagTexture;
@@ -105,6 +106,7 @@ struct PS_OUT_LIGHT
 {
 	vector vShade    : SV_TARGET0;
 	vector vSpecular : SV_TARGET1;
+    vector vAmbient  : SV_TARGET2;
 };
 
 vector Get_ScreenToWorldPos(float2 vTexUV, vector vDepthDesc)
@@ -130,17 +132,50 @@ vector Get_ScreenToWorldPos(float2 vTexUV, vector vDepthDesc)
     return vWorldPos;
 }
 
+float trowbridgeReitzNDF(float NdotH, float roughness)
+{
+    float alpha = roughness * roughness;
+   // float alpha2 = alpha * alpha;
+    float NdotH2 = NdotH * NdotH;
+    float denom = ((alpha - 1) * NdotH2 + 1);
+    float denominator = 3.141592265359 * denom* denom;
+    return alpha / denominator;
+}
+
+float3 fresnel(float3 F0, float NdotV, float roughness)
+{
+    return F0 + (max(1.0 - roughness, F0) - F0) * pow(1 - NdotV, 5);
+}
+
+float3 fresnel(float3 F0, float NdotV)
+{
+    
+    return F0 + (1 - F0) * pow(1 - NdotV, 5);
+}
+
+float schlickBeckmannGAF(float dotProduct, float roughness)
+{
+   // float alpha = roughness * roughness;
+   // float k = alpha * 0.797884560803;  // sqrt(2 / PI)
+    float fRoughness = (roughness + 1.f);
+    float k = (fRoughness * fRoughness) / 8.f;
+    
+    return dotProduct / (dotProduct * (1 - k) + k);
+}
+
+
 PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 {
 	PS_OUT_LIGHT Out = (PS_OUT_LIGHT)1;
 
 	/* 방향성광원의 정보와 노멀 타겟에 담겨있는 노멀과의 빛연산을 수행한다. */
-	vector vNormalDesc    = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
+    vector vDiffuseColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    vector vNormalDesc    = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
 	vector vDepthDesc     = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
     vector vLightFlagDesc = g_LightFlagTexture.Sample(DefaultSampler, In.vTexUV);
-    //vector vShadeDesc   = g_ShadeTexture.Sample(DefaultSampler, In.vTexUV);
-    vector vSpecluarDesc = g_SpecularMap.Sample(DefaultSampler, In.vTexUV);
-	
+    vector vORMDesc     = g_ORMTexture.Sample(DefaultSampler, In.vTexUV);
+   
+
 	//결과가 0이라면 일치하는 라이트 플래그가 없다. 그리지 않는다.
     vLightFlagDesc *= g_vLightFlag;
 	
@@ -151,50 +186,98 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 	
     if (fMaxScalar < 0.05f)
         discard;
-	
-    float fViewZ = vDepthDesc.y * 300.f;
-	/* 0 -> -1, 1 -> 1*/
+
 	vector vNormal = vector(vNormalDesc.xyz * 2.f - 1.f, 0.f);
-	
-    //Out.vShade = vShadeDesc;
-	
-    vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(g_vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * g_vMtrlAmbient));
+    float fViewZ = vDepthDesc.y * 300.f;
+    /* 0 -> -1, 1 -> 1*/
+    vector vWorldPos;
+
+    /* 투영스페이스 상의 위치르 ㄹ구한다. */
+    /* 뷰스페이스 상 * 투영행렬 / w 까지 위치를 구한다. */
+    vWorldPos.x = In.vTexUV.x * 2.f - 1.f;
+    vWorldPos.y = In.vTexUV.y * -2.f + 1.f;
+    vWorldPos.z = vDepthDesc.x;
+    vWorldPos.w = 1.0f;
+
+    /* 뷰스페이스 상 * 투영행렬까지 곱해놓은 위치를 구한다. */
+    vWorldPos *= fViewZ;
+
+    /* 뷰스페이스 상  위치를 구한다. */
+    vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
+
+    /* 월드페이스 상  위치를 구한다. */
+    vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
+
+    vector vLook = normalize(g_vCamPosition- vWorldPos);
+
+    float fRoughness = vORMDesc.y;
+    float fMetalness = vORMDesc.z;
+    float fOcclusion = vORMDesc.x;
+    if (fRoughness > 0.f || fMetalness > 0.f || fOcclusion > 0.f)
+    {
+        float vHalfVec = normalize(vLook + normalize(g_vLightDir)*-1.f);
+
+        float NdotL = max(dot(vNormal, normalize(g_vLightDir)*-1.f), 0.0);
+        float NdotH = max(dot(vNormal, vHalfVec), 0.0);
+        float NdotV = max(dot(vNormal, vLook), 0.0);
+
+        vector vMetalic = lerp(vector(0.04f, 0.04f, 0.04f, 0.f), vDiffuseColor, fMetalness);
     
-    if (vResult.r < 0.05f && vResult.g < 0.05f && vResult.b < 0.05f)
-        discard;
-    
-    Out.vShade = vResult;
-    Out.vShade.a = 1.f;
+        float NDF = trowbridgeReitzNDF(NdotH, fRoughness);
+        float3 F = fresnel(vMetalic, NdotV, fRoughness);
+        float G = schlickBeckmannGAF(NdotV, fRoughness) * schlickBeckmannGAF(NdotL, fRoughness);
+        
+        vector kS = vector(F,0.f);
+        vector kD = vector(1.f,1.f,1.f,0.f) - kS;
+        kD *= vector(1.f,1.f,1.f,0.f) - fMetalness;
 
-	vector vReflect = reflect(normalize(g_vLightDir), vNormal);
+        vector vNumerator = vector(F,0.f) * NDF * G;
+        float fDenominator = 4.f * max(dot(vNormal, vLook), 0.f) * max(dot(vNormal, normalize(g_vLightDir) * -1.f), 0.f);
+        vector vSpecular = vNumerator / max(fDenominator, 0.001f);
 
-	vector vWorldPos;
+        //vector SpecularAcc = (kD * vDiffuseColor / 3.141592265359 + vSpecular) * NdotL * fOcclusion/** g_vLightDiffuse*/;
+        vector vSpecularAcc = NdotL * vDiffuseColor/ 3.141592265359 * fOcclusion* vSpecular;
+        vector vAmbientColor = vDiffuseColor / 3.141592265359 * fOcclusion;
 
-	/* 투영스페이스 상의 위치르 ㄹ구한다. */
-	/* 뷰스페이스 상 * 투영행렬 / w 까지 위치를 구한다. */
-	vWorldPos.x = In.vTexUV.x * 2.f - 1.f;
-	vWorldPos.y = In.vTexUV.y * -2.f + 1.f;
-	vWorldPos.z = vDepthDesc.x;
-	vWorldPos.w = 1.0f;
+        //shader
+        vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(g_vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * vDiffuseColor));
+        vResult *= fOcclusion;
 
-	/* 뷰스페이스 상 * 투영행렬까지 곱해놓은 위치를 구한다. */
-	vWorldPos *= fViewZ;
+        Out.vSpecular = vSpecularAcc;
+        Out.vSpecular.a = 0.f;
 
-	/* 뷰스페이스 상  위치를 구한다. */
-	vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
+        Out.vShade = vResult;
+        Out.vShade.a = 1.f;
 
-	/* 월드페이스 상  위치를 구한다. */
-	vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
+        Out.vSpecular = Out.vSpecular / (Out.vSpecular + vector(1.f,1.f,1.f,0.f));
+        Out.vSpecular = pow(Out.vSpecular,1.f / 2.2);
+        //Out.vSpecular.a = 0.f;
 
-	vector vLook = normalize(vWorldPos - g_vCamPosition);
-    vector vSpecularMap= g_SpecularMap.Sample(DefaultSampler, In.vTexUV);
+        Out.vAmbient = vAmbientColor;
+        Out.vAmbient.a = 1.f;
+        Out.vAmbient = Out.vAmbient / (Out.vAmbient + vector(1.f, 1.f, 1.f, 0.f));
+        Out.vAmbient = pow(Out.vAmbient, 1.f / 2.2);
+    }
 
-  /*  if (vSpecularMap.x > 0.f || vSpecularMap.y > 0.f || vSpecularMap.z > 0.f)
-        Out.vSpecular = g_vLightSpecular * vSpecularMap*pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f);
-    else*/
+    else
+    {    //Out.vShade = vShadeDesc;
+
+        vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(g_vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * g_vMtrlAmbient));
+
+        if (vResult.r < 0.05f && vResult.g < 0.05f && vResult.b < 0.05f)
+            discard;
+
+        Out.vShade = vResult;
+        Out.vShade.a = 1.f;
+
+        vector vReflect = reflect(normalize(g_vLightDir), vNormal);
+
+
         Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f);
 
-	Out.vSpecular.a = 0.f;
+        Out.vSpecular.a = 0.f;
+        Out.vAmbient = vector(0.f, 0.f, 0.f, 0.f);
+    }
 	return Out;
 }
 
@@ -203,11 +286,12 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 	PS_OUT_LIGHT Out = (PS_OUT_LIGHT)1;
 
 	/* 방향성광원의 정보와 노멀 타겟에 담겨있는 노멀과의 빛연산을 수행한다. */
+    vector vDiffuseColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 	vector vNormalDesc    = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
 	vector vDepthDesc     = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
-    //vector vShadeDesc   = g_ShadeTexture.Sample(DefaultSampler, In.vTexUV);
     vector vLightFlagDesc = g_LightFlagTexture.Sample(DefaultSampler, In.vTexUV);
-    
+    vector vORMDesc = g_ORMTexture.Sample(DefaultSampler, In.vTexUV);
+
     vLightFlagDesc *= g_vLightFlag;
 	
     float fMaxScalar = 0.f;
@@ -244,20 +328,64 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 	float	fDistance = length(vLightDir);
 	float	fAtt      = saturate((g_fRange - fDistance) / g_fRange);
 
-    //Out.vShade = vShadeDesc;
-    vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * g_vMtrlAmbient)) * fAtt;
+    vector vLook = normalize(g_vCamPosition - vWorldPos);
     
-    if (vResult.r < 0.05f && vResult.g < 0.05f && vResult.b < 0.05f)
-        discard;
+    float fRoughness = vORMDesc.y;
+    float fMetalness = vORMDesc.z;
+    float fOcclusion = vORMDesc.x;
+
+    if (fRoughness > 0.f || fMetalness > 0.f || fOcclusion > 0.f)
+    {
+        float vHalfVec = normalize(vLook + normalize(g_vLightDir) * -1.f);
+
+        float NdotL = max(dot(vNormal, normalize(g_vLightDir) * -1.f), 0.0);
+        float NdotH = max(dot(vNormal, vHalfVec), 0.0);
+        float NdotV = max(dot(vNormal, vLook), 0.0);
+
+        vector vMetalic = lerp(vector(0.4f, 0.4f, 0.4f, 0.f), vDiffuseColor, fMetalness);
+
+        float NDF = trowbridgeReitzNDF(NdotH, fRoughness);
+        float3 F = fresnel(vMetalic, NdotV, fRoughness);
+        float G = schlickBeckmannGAF(NdotV, fRoughness) * schlickBeckmannGAF(NdotL, fRoughness);
+
+        vector kS = vector(F, 0.f);
+        vector kD = vector(1.f, 1.f, 1.f, 0.f) - kS;
+        kD *= vector(1.0f, 1.f, 1.f, 0.f) - fMetalness;
+
+        vector vNumerator = vector(F, 0.f) * NDF * G;
+        float fDenominator = 4.f * max(dot(vNormal, vLook), 0.f) * max(dot(vNormal, normalize(g_vLightDir) * -1.f), 0.f);
+        vector vSpecular = vNumerator / max(fDenominator, 0.001f);
+
+        vector SpecularAcc = (kD * vDiffuseColor / 3.141592265359 + vSpecular) * NdotL;
+
+        vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(g_vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * vDiffuseColor));
+        vResult *= fOcclusion;
+
+        Out.vSpecular = SpecularAcc* fOcclusion;
+        Out.vSpecular.a = 0.f;
+
+        Out.vShade = vResult;
+        Out.vShade.a = 1.f;
+
+    }
+    else
+    {
+
+        //Out.vShade = vShadeDesc;
+        vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * g_vMtrlAmbient)) * fAtt;
+
+        if (vResult.r < 0.05f && vResult.g < 0.05f && vResult.b < 0.05f)
+            discard;
+
+        Out.vShade = vResult;
+        Out.vShade.a = 1.f;
+
+        vector vReflect = reflect(normalize(vLightDir), vNormal);
     
-    Out.vShade = vResult;
-	Out.vShade.a = 1.f;
 
-	vector vReflect = reflect(normalize(vLightDir), vNormal);
-	vector vLook    = normalize(vWorldPos - g_vCamPosition);
-
-    Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f) * fAtt;
-	Out.vSpecular.a = 0.f;
+        Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f) * fAtt;
+        Out.vSpecular.a = 0.f;
+    }
 	return Out;
 }
 
@@ -344,11 +472,21 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
     vector vViewShadow    = g_ViewShadow.Sample(DefaultSampler, In.vTexUV);
     vector vDepthDesc     = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
     vector vFogDesc       = g_FogTexture.Sample(DefaultSampler, In.vTexUV);
+    vector vAmbientDesc   = g_AmbientTexture.Sample(DefaultSampler, In.vTexUV);
 
-    Out.vColor      = vDiffuse * vShade + vSpecular;
-    Out.vColor.rgb *= vViewShadow.rgb;
-    Out.vColor.rgb  = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * vector(0.8f,0.8f,0.8f,1.f);
-   
+    if (vAmbientDesc.a > 0.f)
+    {
+        Out.vColor = vAmbientDesc + vSpecular;
+        Out.vColor.rgb *= vViewShadow.rgb;
+        Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * vector(0.8f, 0.8f, 0.8f, 1.f);
+    }
+    else
+    {
+        Out.vColor = vDiffuse * vShade + vSpecular;
+        Out.vColor.rgb *= vViewShadow.rgb;
+        Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * vector(0.8f, 0.8f, 0.8f, 1.f);
+    }
+
     if (vLightFlagDesc.r > 0.f || vLightFlagDesc.g > 0.f)
         return Out;
 

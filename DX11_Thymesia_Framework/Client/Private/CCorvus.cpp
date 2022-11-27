@@ -125,8 +125,14 @@ HRESULT CCorvus::Render()
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 			m_iPassIndex = 0;
 		else
-			m_iPassIndex = 4;
-		
+		{
+			if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+			{
+				m_iPassIndex = 4;
+			}
+			else
+				m_iPassIndex = 5;
+		}
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones");
 		
 	}

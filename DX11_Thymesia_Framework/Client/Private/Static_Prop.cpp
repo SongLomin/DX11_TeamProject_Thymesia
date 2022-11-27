@@ -82,7 +82,13 @@ HRESULT CStatic_Prop::Render()
         // 노말 텍스쳐가 있는 경우
         else
         {
-            m_iPassIndex = 6;
+            if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+            {
+                m_iPassIndex = 6;
+
+            }
+            else
+                m_iPassIndex = 7;
         }
 
         m_pShaderCom.lock()->Begin(m_iPassIndex);
