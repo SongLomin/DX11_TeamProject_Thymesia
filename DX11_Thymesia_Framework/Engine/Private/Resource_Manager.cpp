@@ -18,7 +18,7 @@ HRESULT CResource_Manager::Load_Textures(const _char* _strKey, const _tchar* pTe
 		//szKey = iter->first;
 	}
 
-	for (_uint i = 0; i < 512; ++i)
+	for (_uint i(0); i < 1024; ++i)
 	{
 		ComPtr<ID3D11ShaderResourceView> pSRV;
 
@@ -27,7 +27,7 @@ HRESULT CResource_Manager::Load_Textures(const _char* _strKey, const _tchar* pTe
 
 		wsprintf(szTextureFilePath, pTextureFilePath, i);
 
-		_tchar			szExt[MAX_PATH] = TEXT("");
+		_tchar szExt[MAX_PATH] = TEXT("");
 
 		_wsplitpath_s(szTextureFilePath, nullptr, 0, nullptr, 0, nullptr, 0, szExt, MAX_PATH);
 
@@ -45,7 +45,7 @@ HRESULT CResource_Manager::Load_Textures(const _char* _strKey, const _tchar* pTe
 	}
 #ifdef _DEBUG
 	//텍스쳐를 512까지 읽었음.
-	assert(false);
+	// assert(false);
 #endif
 	return E_FAIL;
 }
