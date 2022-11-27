@@ -6,42 +6,32 @@ IMPLEMENT_SINGLETON(CResource_Manager)
 
 HRESULT CResource_Manager::Load_Textures(const _char* _strKey, const _tchar* pTextureFilePath, MEMORY_TYPE eMemType)
 {
-	_tchar		szTextureFilePath[MAX_PATH] = TEXT("");
-	string		szKey = _strKey;
+	_tchar szTextureFilePath[MAX_PATH] = TEXT("");
+	string szKey = _strKey;
 
-	auto iter = find_if(m_SRVs[(_uint)eMemType].begin(), m_SRVs[(_uint)eMemType].end(), CTag_Finder_c_str(_strKey));//m_SRVs[(_uint)eMemType].find(_strKey);
+	auto iter = find_if(m_SRVs[(_uint)eMemType].begin(), m_SRVs[(_uint)eMemType].end(), CTag_Finder_c_str(_strKey));
 
-	//이미 등록된 키가 있으면 이어서 등록
 	if (m_SRVs[(_uint)eMemType].end() != iter)
-	{
 		return S_OK;
-		//szKey = iter->first;
-	}
+
+	HRESULT hr(0);
+	_tchar szExt[MAX_PATH] = TEXT("");
 
 	for (_uint i(0); i < 1024; ++i)
 	{
 		ComPtr<ID3D11ShaderResourceView> pSRV;
-
-		if (lstrcmpW(szTextureFilePath, pTextureFilePath) == 0)
-			return S_OK;
+		if (lstrcmpW(szTextureFilePath, pTextureFilePath) == 0) return S_OK;
 
 		wsprintf(szTextureFilePath, pTextureFilePath, i);
-
-		_tchar szExt[MAX_PATH] = TEXT("");
-
+		ZeroMemory(szExt, sizeof(_tchar) * MAX_PATH);
 		_wsplitpath_s(szTextureFilePath, nullptr, 0, nullptr, 0, nullptr, 0, szExt, MAX_PATH);
 
-		HRESULT		hr = 0;
+		if (!lstrcmp(szExt, TEXT(".dds"))) hr = CreateDDSTextureFromFile(DEVICE, szTextureFilePath, nullptr, pSRV.GetAddressOf());
+		else hr = CreateWICTextureFromFile(DEVICE, szTextureFilePath, nullptr, pSRV.GetAddressOf());
 
-		if (!lstrcmp(szExt, TEXT(".dds")))
-			hr = CreateDDSTextureFromFile(DEVICE, szTextureFilePath, nullptr, pSRV.GetAddressOf());
-		else
-			hr = CreateWICTextureFromFile(DEVICE, szTextureFilePath, nullptr, pSRV.GetAddressOf());
+		if (FAILED(hr)) return S_OK;
 
-		if (FAILED(hr))
-			return S_OK;
-
-		m_SRVs[(_uint)eMemType][szKey].push_back(pSRV);
+		m_SRVs[(_uint)eMemType][szKey].emplace_back(pSRV);
 	}
 #ifdef _DEBUG
 	//텍스쳐를 512까지 읽었음.
