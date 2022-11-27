@@ -23,7 +23,7 @@
 // #define		_DAGGER_TRAIL_
 #define		_TEST_STATIC_PROPS_
 // UI제외한 오브젝트 생성 X
-//#define		_ONLY_UI_
+#define		_ONLY_UI_
 #define		_RENDER_FPS_
 #endif // _DEBUG
 
@@ -45,6 +45,7 @@
 #define ENGINE_DECLATION_UI class CTexture; class CShader;   
 
 #define ADD_STATIC_CUSTOMUI GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC)
+
 
 namespace Client 
 {

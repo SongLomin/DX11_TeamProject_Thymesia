@@ -1,4 +1,4 @@
-#include "stdafx.h"
+	#include "stdafx.h"
 #include "Status_Player.h"
 #include "Status.h"
 
@@ -120,5 +120,5 @@ void CStatus_Player::Heal_Player(const _float fAmount)
 
 void CStatus_Player::Free()
 {
-}
 
+}

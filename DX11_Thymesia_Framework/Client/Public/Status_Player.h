@@ -40,10 +40,18 @@ public:
 		_float		m_fNormalAtk;//일반공격데미지
 		_float		m_fPlagueAtk;//클로 공격 데미지
 		_float		m_fParryingAtk;//패링데미지
-		
 		_float		m_fFeatherAtk;
 		_uint		m_iCurrentFeather;
 		_uint		m_iMaxFeather;
+		_uint		m_iMemory;
+
+
+		_uint		m_iLevel;
+		_uint		m_iStr;
+		_uint		m_iVital;
+		_uint		m_iPlague;
+		_uint		m_iWound;
+
 
 	}PLAYERDESC;
 
