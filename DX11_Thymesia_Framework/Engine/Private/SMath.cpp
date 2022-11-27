@@ -7,10 +7,8 @@ XMMATRIX Engine::SMath::Get_RotationMatrix(FXMMATRIX Mat)
 {
 	XMMATRIX ResultMat = XMMatrixIdentity();
 
-	for (int i = 0; i < 3; i++)
-	{
+	for (int i(0); i < 3; i++)
 		ResultMat.r[i] = XMVector3Normalize(Mat.r[i]);
-	}
 
 	return ResultMat;
 }
@@ -463,7 +461,6 @@ XMMATRIX ENGINE_DLL Engine::SMath::Add_PositionWithRotation(FXMMATRIX Mat, FXMVE
 	_matrix ResultMatrix = Mat;
 
 	ResultMatrix.r[3] += vRotatedPosition;
-	
 
 	return ResultMatrix;
 }

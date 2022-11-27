@@ -29,6 +29,8 @@ namespace Client
 		_bool		bFollowTransform;
 		_bool		bBillBoard;
 
+		_bool		bBoner;
+
 		_float3		vStartPosition;
 
 #pragma region Speed

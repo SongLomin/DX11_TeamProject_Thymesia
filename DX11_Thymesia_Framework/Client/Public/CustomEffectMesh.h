@@ -123,5 +123,11 @@ private:
     // For. Glow
     _float4               m_vCurrentGlowColor;
     _float4               m_vCurrentGlowForce;
+
+    // For. Boner
+    std::vector<std::string>            m_AllBoneNames;
+    weak_ptr<CBoneNode>                 m_pBoneNode;
+    std::string                         m_strBoneName = "";
+    _int                                m_iCurrentBoneIndex = 0;
 };
 END
