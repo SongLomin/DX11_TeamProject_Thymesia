@@ -7,6 +7,8 @@
 #include "Model.h"
 #include "BoneNode.h"
 #include "Easing_Utillity.h"
+#include "PhysXCameraController.h"
+#include "Preset_PhysXControllerDesc.h"
 
 GAMECLASS_C(CCamera_Target);
 CLONE_C(CCamera_Target, CGameObject);
@@ -33,8 +35,10 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 
 	GET_SINGLE(CGameManager)->Use_EffectGroup("Tutorial_Dust", m_pTransformCom);
 
-	//USE_START(CCamera_Target);
-
+	m_pPhysXCameraControllerCom = Add_Component<CPhysXCameraController>();
+	m_pPhysXCameraControllerCom.lock()->Set_CurrentCameraController();
+	m_pPhysXCameraControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::CameraSetting(m_pTransformCom));
+	
 	return S_OK;
 }
 
@@ -51,6 +55,7 @@ HRESULT CCamera_Target::Start()
 	m_pCurrentPlayerTransformCom = m_pCurrentPlayer.lock()->Get_Component<CTransform>();
 	XMStoreFloat4(&m_vPlayerFollowLerpPosition, m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION));
 
+	
 	return S_OK;
 }
 
@@ -114,6 +119,21 @@ void CCamera_Target::Tick(_float fTimeDelta)
 		Interpolate_Camera(fTimeDelta);
 	}
 
+	
+	RAY PlayerToCameraRay;
+	_vector vPlayerToCameraDir = m_pTransformCom.lock()->Get_Position() - m_pCurrentPlayerTransformCom.lock()->Get_Position();
+	_float fLength = XMVectorGetX(XMVector3Length(vPlayerToCameraDir));
+	vPlayerToCameraDir = XMVector3Normalize(vPlayerToCameraDir);
+	_vector vPlayerPosition = m_pTransformCom.lock()->Get_Position();
+
+	XMStoreFloat4(&PlayerToCameraRay.vOrigin, vPlayerPosition);
+	XMStoreFloat3(&PlayerToCameraRay.vDirection, vPlayerToCameraDir);
+	PlayerToCameraRay.vOrigin.w = 1.f;
+	PlayerToCameraRay.fLength = fLength;
+
+	m_pPhysXCameraControllerCom.lock()->Update_Ray(PlayerToCameraRay);
+	m_pPhysXCameraControllerCom.lock()->Synchronize_Controller(m_pTransformCom, fTimeDelta, PxControllerFilters());
+	m_pPhysXCameraControllerCom.lock()->Synchronize_Transform(m_pTransformCom);
 }
 
 void CCamera_Target::LateTick(_float fTimeDelta)
@@ -442,6 +462,8 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
 	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * ( - 4.5f + m_fZoom) + XMVectorSet(0.f, 1.1f, 0.f, 0.f) + XMLoadFloat3(&m_vShaking);
 	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
+
+
 }
 
 void CCamera_Target::Reposition_Camera_AfterCinematic(_float fTimeDelta)

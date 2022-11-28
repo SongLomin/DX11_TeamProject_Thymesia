@@ -10,5 +10,6 @@ namespace Preset
 	namespace PhysXControllerDesc
 	{
 		PxCapsuleControllerDesc PlayerSetting(weak_ptr<CTransform> pTransform);
+		PxCapsuleControllerDesc CameraSetting(weak_ptr<CTransform> pTransform);
 	}
 }

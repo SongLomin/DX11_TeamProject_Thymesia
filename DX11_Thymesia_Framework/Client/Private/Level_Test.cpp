@@ -38,7 +38,7 @@ HRESULT CLevel_Test::Initialize()
 	Load_FromJson(m_szDefaultJsonPath + "Stage3.json", LEVEL::LEVEL_TEST);
 	//Load_FromJson(m_szDefaultJsonPath + "Stage1_StaticProps.json", LEVEL::LEVEL_TEST);
 #else
-	//Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_TEST);
+	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_TEST);
 #endif // _TEST_STATIC_PROPS_
 
 	//Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_Test);
@@ -57,8 +57,8 @@ HRESULT CLevel_Test::Initialize()
 	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_TEST);
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
 
-	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 5.f, 10.f, 5.f });
-	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 15.f, 10.f, 15.f });
+	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 5.f, 0.f, 5.f });
+	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 15.f, 0.f, 15.f });
 
 	//TODO 야매에요
 #ifdef _STAGE_1_MONSTER_

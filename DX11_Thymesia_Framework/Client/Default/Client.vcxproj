@@ -210,6 +210,7 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectRightup.h" />
     <ClInclude Include="..\Public\Dynamic_Piece.h" />
     <ClInclude Include="..\Public\Level_Test.h" />
+    <ClInclude Include="..\Public\PhysXCameraController.h" />
     <ClInclude Include="..\Public\PhysXColliderObject.h" />
     <ClInclude Include="..\Public\BossMonster.h" />
     <ClInclude Include="..\Public\BossStateBase.h" />
@@ -461,6 +462,7 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectRightup.cpp" />
     <ClCompile Include="..\Private\Dynamic_Piece.cpp" />
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
+    <ClCompile Include="..\Private\PhysXCameraController.cpp" />
     <ClCompile Include="..\Private\Preset_DynamicProp.cpp" />
     <ClCompile Include="..\Private\Status_Boss.cpp" />
     <ClCompile Include="..\Private\UI_Container.cpp" />

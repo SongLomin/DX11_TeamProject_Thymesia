@@ -72,6 +72,13 @@ void CCorvus::Tick(_float fTimeDelta)
 	if (KEY_INPUT(KEY::R, KEY_STATE::HOLD))
 		m_pPhysXControllerCom.lock()->Move(_vector{ 0.f, 10.f * fTimeDelta, 0.f }, 0.f, fTimeDelta, PxControllerFilters());
 
+	if (KEY_INPUT(KEY::NUM0, KEY_STATE::TAP))
+	{
+		static _bool bEnable;
+		bEnable = !bEnable;
+		m_pPhysXControllerCom.lock()->Set_EnableSimulation(bEnable);
+	}
+
 	// TODO : frame test
 	//if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
 	//{

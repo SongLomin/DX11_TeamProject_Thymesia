@@ -23,6 +23,8 @@ HRESULT CPhysXController::Initialize(void* pArg)
 
 	m_iControllerIndex = m_iClonedControllerIndex++;
 
+	GET_SINGLE(CPhysX_Manager)->Register_PhysXController(Weak_StaticCast<CPhysXController>(m_this));
+
 	return S_OK;
 }
 
@@ -31,11 +33,50 @@ void CPhysXController::Start()
 
 }
 
+bool CPhysXController::filter(const PxController& a, const PxController& b)
+{
+	shared_ptr<CPhysX_Manager> pPhysxManager = GET_SINGLE(CPhysX_Manager);
+
+	weak_ptr<CPhysXController> pLeftControllerCom = pPhysxManager->Find_PhysXController(*(_uint*)a.getUserData());
+	weak_ptr<CPhysXController> pRightControllerCom = pPhysxManager->Find_PhysXController(*(_uint*)b.getUserData());
+
+	if (!pLeftControllerCom.lock() || !pRightControllerCom.lock())
+		return false;
+
+	if (pLeftControllerCom.lock()->Is_EnableSimulation() && pLeftControllerCom.lock()->Is_EnableSimulation())
+		return true;
+
+	return false;
+}
+
+void CPhysXController::onShapeHit(const PxControllerShapeHit& hit)
+{
+	
+}
+
+void CPhysXController::onControllerHit(const PxControllersHit& hit)
+{
+	
+}
+
+
+void CPhysXController::onObstacleHit(const PxControllerObstacleHit& hit)
+{
+
+}
+
 void CPhysXController::Init_Controller(const PxCapsuleControllerDesc& In_ControllerDesc)
 {
 	m_pControllerDesc = In_ControllerDesc;
-	GET_SINGLE(CPhysX_Manager)->Create_Controller(In_ControllerDesc, &m_pController);
+	m_pControllerDesc.reportCallback = this;
+	
+	Create_Controller();
+}
 
+void CPhysXController::Create_Controller()
+{
+	GET_SINGLE(CPhysX_Manager)->Create_Controller(m_pControllerDesc, &m_pController);
+	m_pController->setUserData(&m_iControllerIndex);
 }
 
 void CPhysXController::Synchronize_Transform(weak_ptr<CTransform> pTransform, _fvector In_vOffset)
@@ -51,18 +92,26 @@ void CPhysXController::Synchronize_Transform(weak_ptr<CTransform> pTransform, _f
 	pTransform.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
 }
 
-void CPhysXController::Synchronize_Controller(weak_ptr<CTransform> pTransform, _fvector In_vOffset)
+PxControllerCollisionFlags CPhysXController::Synchronize_Controller(weak_ptr<CTransform> pTransform, PxF32 elapsedTime, PxControllerFilters& filters, _fvector In_vOffset)
 {
 	_vector vPos = pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
 	vPos += In_vOffset;
 	vPos.m128_f32[3] = 1.f;
 
 	m_pController->setFootPosition(SMath::Convert_PxExtendedVec3(pTransform.lock()->Get_Position()));
+
+	filters.mCCTFilterCallback = this;
+
+	return m_pController->move({0.000001f, 0.000001f, 0.000001f }, 0.f, elapsedTime, filters);
 }
 
-void CPhysXController::Set_Position(_fvector In_vPosition)
+PxControllerCollisionFlags CPhysXController::Set_Position(_fvector In_vPosition, PxF32 elapsedTime, PxControllerFilters& filters)
 {
 	m_pController->setFootPosition(SMath::Convert_PxExtendedVec3(In_vPosition));
+	
+	filters.mCCTFilterCallback = this;
+
+	return m_pController->move({ 0.000001f, 0.000001f, 0.000001f }, 0.f, elapsedTime, filters);
 }
 
 _vector CPhysXController::Get_Position()
@@ -72,9 +121,11 @@ _vector CPhysXController::Get_Position()
 	return { (_float)vPosFromPx.x, (_float)vPosFromPx.y, (_float)vPosFromPx.z, (_float)1.f };
 }
 
-PxControllerCollisionFlags CPhysXController::MoveWithRotation(const _vector& disp, PxF32 minDist, PxF32 elapsedTime, const PxControllerFilters& filters, const PxObstacleContext* obstacles, weak_ptr<CTransform> pTransform)
+PxControllerCollisionFlags CPhysXController::MoveWithRotation(const _vector& disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles, weak_ptr<CTransform> pTransform)
 {
 	_vector vRotatedPosition = XMVector3TransformCoord(disp, SMath::Get_RotationMatrix(pTransform.lock()->Get_WorldMatrix()));
+
+	filters.mCCTFilterCallback = this;
 
 	PxVec3 vRotatedPositionFromPx = SMath::Convert_PxVec3(vRotatedPosition);
 
@@ -83,14 +134,16 @@ PxControllerCollisionFlags CPhysXController::MoveWithRotation(const _vector& dis
 	return m_pController->move(vRotatedPositionFromPx, minDist, elapsedTime, filters, obstacles);
 }
 
-PxControllerCollisionFlags CPhysXController::Move(const _vector& disp, PxF32 minDist, PxF32 elapsedTime, const PxControllerFilters& filters, const PxObstacleContext* obstacles)
+PxControllerCollisionFlags CPhysXController::Move(const _vector& disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles)
 {
 	PxVec3 vPositionFromPx = SMath::Convert_PxVec3(disp);
+
+	filters.mCCTFilterCallback = this;
 
 	return m_pController->move(vPositionFromPx, minDist, elapsedTime, filters, obstacles);
 }
 
-PxControllerCollisionFlags CPhysXController::MoveGravity(const _float fDeltaTime)
+PxControllerCollisionFlags CPhysXController::MoveGravity(const _float fDeltaTime, PxControllerFilters& filters)
 {
 	if (m_fGravityAcc <= DBL_EPSILON)
 	{
@@ -106,16 +159,23 @@ PxControllerCollisionFlags CPhysXController::MoveGravity(const _float fDeltaTime
 
 	m_fCurrentHeight -= m_fPreHeight;*/
 
+	filters.mCCTFilterCallback = this;
+
 	_float fDeltaHeight = -0.5f * 9.81f * fDeltaTime*(m_fGravityAcc*2.f + fDeltaTime);
 
 	m_fGravityAcc += fDeltaTime;
 
-	return m_pController->move({0.f, fDeltaHeight, 0.f}, 0.f, fDeltaTime, PxControllerFilters());
+	return m_pController->move({0.f, fDeltaHeight, 0.f}, 0.f, fDeltaTime, filters);
 }
 
 void CPhysXController::Reset_Gravity()
 {
 	m_fGravityAcc = 0.f;
+}
+
+void CPhysXController::Set_CurrentCameraController()
+{
+	GET_SINGLE(CPhysX_Manager)->Set_CurrentCameraControllerIndex(m_iControllerIndex);
 }
 
 PxController* CPhysXController::Get_Controller()
@@ -131,21 +191,25 @@ void CPhysXController::OnEnable(void* pArg)
 {
 	__super::OnEnable(pArg);
 
-	if (!m_pController)
+	/*if (!m_pController)
 	{
 		GET_SINGLE(CPhysX_Manager)->Create_Controller(m_pControllerDesc, &m_pController);
-	}
+	}*/
+
+	m_EnableSimulation = true;
 }
 
 void CPhysXController::OnDisable()
 {
 	__super::OnDisable();
 
-	if (m_pController)
+	/*if (m_pController)
 	{
 		m_pController->release();
 		m_pController = nullptr;
-	}
+	}*/
+
+	m_EnableSimulation = false;
 }
 
 void CPhysXController::OnDestroy()

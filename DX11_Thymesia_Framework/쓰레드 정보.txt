@@ -12,3 +12,4 @@ virtual void Custom_Thread0(_float fTimeDelta) override;
 현재 쓰레드 역할
 Custom_Thread0: Update Animation BoneMatrix
 Custom_Thread1: 프러스텀 컬링
+Custom_Thread2: 인스턴싱 컬링

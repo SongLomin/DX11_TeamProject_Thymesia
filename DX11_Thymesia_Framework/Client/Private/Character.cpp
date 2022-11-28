@@ -44,7 +44,7 @@ void CCharacter::Tick(_float fTimeDelta)
 
 	if (m_pPhysXControllerCom.lock()->Get_Controller())
 	{
-		PxControllerCollisionFlags Flags = m_pPhysXControllerCom.lock()->MoveGravity(fTimeDelta);
+		PxControllerCollisionFlags Flags = m_pPhysXControllerCom.lock()->MoveGravity(fTimeDelta, PxControllerFilters());
 
 		if (Flags & PxControllerCollisionFlag::eCOLLISION_DOWN)
 		{
@@ -56,7 +56,7 @@ void CCharacter::Tick(_float fTimeDelta)
 		if (vPos.m128_f32[1] < -50.f)
 		{
 			vPos.m128_f32[1] = 50.f;
-			m_pPhysXControllerCom.lock()->Set_Position(vPos);
+			m_pPhysXControllerCom.lock()->Set_Position(vPos, fTimeDelta, PxControllerFilters());
 		}
 #endif
 	}
