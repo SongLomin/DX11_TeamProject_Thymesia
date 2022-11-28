@@ -68,9 +68,11 @@ void CCorvus::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 	this->RootMove();
 
+	PxControllerFilters Filters = Filters;
+
 	// TODO : test jump key R
 	if (KEY_INPUT(KEY::R, KEY_STATE::HOLD))
-		m_pPhysXControllerCom.lock()->Move(_vector{ 0.f, 500.f * fTimeDelta, 0.f }, 0.f, fTimeDelta, PxControllerFilters());
+		m_pPhysXControllerCom.lock()->Move(_vector{ 0.f, 500.f * fTimeDelta, 0.f }, 0.f, fTimeDelta, Filters);
 
 	if (KEY_INPUT(KEY::NUM0, KEY_STATE::TAP))
 	{
@@ -219,7 +221,9 @@ void CCorvus::RootMove()
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
 	//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
-	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, PxControllerFilters(), nullptr, m_pTransformCom);
+
+	PxControllerFilters Filters = Filters;
+	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 }
 
 void CCorvus::OnBattleEnd()

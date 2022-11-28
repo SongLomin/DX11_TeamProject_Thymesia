@@ -77,7 +77,9 @@ void CUrd::Tick(_float fTimeDelta)
 
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
-	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, PxControllerFilters(), nullptr, m_pTransformCom);
+
+	PxControllerFilters Filters = Filters;
+	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 
 
 }

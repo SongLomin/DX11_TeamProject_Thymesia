@@ -77,10 +77,12 @@ void CNorMonState_Walk_B::Tick(_float fTimeDelta)
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 	
-	m_pPhysXControllerCom.lock()->Move(vDirLook * m_fCurrentSpeed * fTimeDelta, 0.f, fTimeDelta, PxControllerFilters());
+	PxControllerFilters Filters = Filters;
+
+	m_pPhysXControllerCom.lock()->Move(vDirLook * m_fCurrentSpeed * fTimeDelta, 0.f, fTimeDelta, Filters);
 
 	//m_pTransformCom.lock()->Add_Position(vDirLook * m_fCurrentSpeed * fTimeDelta);
-	//m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, -m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, PxControllerFilters(), nullptr, m_pTransformCom);
+	//m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, -m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
 }
 
 void CNorMonState_Walk_B::LateTick(_float fTimeDelta)

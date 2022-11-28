@@ -63,6 +63,8 @@ void CNorMonState_HeavyAttack2::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	PxControllerFilters Filters = Filters;
+
 	//Turn_Transform(fTimeDelta);
 	switch (m_eMonType)
 	{
@@ -74,7 +76,7 @@ void CNorMonState_HeavyAttack2::Tick(_float fTimeDelta)
 			m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
 
 			m_pModelCom.lock()->Play_Animation(fTimeDelta);
-			m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, PxControllerFilters(), nullptr, m_pTransformCom);
+			m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
 		}
 		break;
 	case Client::MONSTERTYPE::ELITEGARDENER:
@@ -85,7 +87,7 @@ void CNorMonState_HeavyAttack2::Tick(_float fTimeDelta)
 			m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
 
 			m_pModelCom.lock()->Play_Animation(fTimeDelta);
-			m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, PxControllerFilters(), nullptr, m_pTransformCom);
+			m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
 		}
 		break;
 	}

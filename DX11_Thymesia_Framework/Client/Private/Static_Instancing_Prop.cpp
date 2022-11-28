@@ -248,15 +248,15 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 	m_pInstanceModelCom.lock()->Update(m_pPropInfos, true);
 
 #ifdef _GENERATE_PROP_COLLIDER_
-	if ((_uint)LEVEL_GAMEPLAY == m_CreatedLevel && strcmp(m_pInstanceModelCom.lock()->Get_ModelKey().c_str(), "SM_Weed"))
+	if ((_uint)LEVEL_GAMEPLAY == m_CreatedLevel && m_iColliderType != 0)
 	{
 #ifdef _DEBUG_COUT_
 		cout << "Create_PhysX: " << m_pInstanceModelCom.lock()->Get_ModelKey() << endl;
 #endif // _DEBUG_COUT_
 
-		// _bool bConvex = m_iColliderType == 2;
+		_bool bConvex = m_iColliderType == 2;
 
-		m_pPhysXColliderCom.lock()->Init_ModelInstanceCollider(m_pInstanceModelCom.lock()->Get_ModelData(), m_pPropInfos, _GENERATE_PROP_COLLIDER_);
+		m_pPhysXColliderCom.lock()->Init_ModelInstanceCollider(m_pInstanceModelCom.lock()->Get_ModelData(), m_pPropInfos, m_iColliderType);
 		PhysXColliderDesc tDesc;
 		Preset::PhysXColliderDesc::StaticInstancingPropSetting(tDesc, m_pTransformCom);
 		m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);

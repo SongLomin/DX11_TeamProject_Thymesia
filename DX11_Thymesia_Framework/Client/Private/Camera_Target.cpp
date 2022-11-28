@@ -132,7 +132,7 @@ void CCamera_Target::Tick(_float fTimeDelta)
 	PlayerToCameraRay.fLength = fLength;
 
 	//m_pPhysXCameraControllerCom.lock()->Update_Ray(PlayerToCameraRay);
-	//m_pPhysXCameraControllerCom.lock()->Synchronize_Controller(m_pTransformCom, fTimeDelta, PxControllerFilters());
+	//m_pPhysXCameraControllerCom.lock()->Synchronize_Controller(m_pTransformCom, fTimeDelta, Filters);
 	//m_pPhysXCameraControllerCom.lock()->Synchronize_Transform(m_pTransformCom);
 }
 
