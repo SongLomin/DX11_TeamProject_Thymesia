@@ -295,7 +295,7 @@ technique11 DefaultTechnique
 }
 //PBR Shader Code
 //if (_WorldSpaceLightPos0.w == 1)
-//return float4(0.0, 0.0, 0.0, 0.0);
+//return floa  t4(0.0, 0.0, 0.0, 0.0);
 //
 //// Just for mapping the 2d texture onto a sphere
 //float2 uv = i.uv;
@@ -319,8 +319,8 @@ technique11 DefaultTechnique
 //float NdotH = max(dot(i.normal, halfVec), 0.0);
 //float HdotV = max(dot(halfVec, viewVec), 0.0);
 //float NdotV = max(dot(i.normal, viewVec), 0.0);
-//float HdotT = dot(halfVec, i.tangentLocal);
-//float HdotB = dot(halfVec, i.bitangentLocal);
+//float HdotT = dot(halfVec, i.tangentLocal);//trowbridgeReitzAnisotropicNDF 구하는 용으로 사용 이 ndf 쓰지 않으면 그냥 지워도됨
+//float HdotB = dot(halfVec, i.bitangentLocal);//trowbridgeReitzAnisotropicNDF
 //
 //// TEXTURE SAMPLES
 //float3 albedo = sRGB2Lin(tex2D(_MainTex, uv));

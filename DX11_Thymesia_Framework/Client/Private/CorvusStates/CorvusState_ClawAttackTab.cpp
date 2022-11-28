@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CorvusStates/CorvusState_ClawAttack1.h"
+#include "CorvusStates/CorvusState_ClawAttackTab.h"
 #include "Model.h"
 #include "GameInstance.h"
 #include "GameObject.h"
@@ -9,10 +9,10 @@
 #include "CorvusStates/CorvusStates.h"
 
 
-GAMECLASS_C(CCorvusState_ClawAttack1);
-CLONE_C(CCorvusState_ClawAttack1, CComponent)
+GAMECLASS_C(CCorvusState_ClawAttackTab);
+CLONE_C(CCorvusState_ClawAttackTab, CComponent)
 
-HRESULT CCorvusState_ClawAttack1::Initialize_Prototype()
+HRESULT CCorvusState_ClawAttackTab::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 
@@ -20,7 +20,7 @@ HRESULT CCorvusState_ClawAttack1::Initialize_Prototype()
 	return S_OK;
 }
 
-HRESULT CCorvusState_ClawAttack1::Initialize(void* pArg)
+HRESULT CCorvusState_ClawAttackTab::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
@@ -28,14 +28,14 @@ HRESULT CCorvusState_ClawAttack1::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CCorvusState_ClawAttack1::Start()
+void CCorvusState_ClawAttackTab::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_Raven_ClawLong_L01");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_ClawAttack1::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_ClawAttackTab::Call_AnimationEnd, this);
 }
 
-void CCorvusState_ClawAttack1::Tick(_float fTimeDelta)
+void CCorvusState_ClawAttackTab::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
@@ -54,21 +54,10 @@ void CCorvusState_ClawAttack1::Tick(_float fTimeDelta)
 		}
 	}
 
-	// TODO : delete
-	if (!bTrigger)
-	{
-		if (m_pModelCom.lock()->Get_CurrentAnimationKeyIndex() >= 20)
-		{
-			GAMEINSTANCE->Set_Chromatic(0.2f);
-			bTrigger = true;
-		}
-	}
-
-
 	Attack();
 }
 
-void CCorvusState_ClawAttack1::LateTick(_float fTimeDelta)
+void CCorvusState_ClawAttackTab::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
@@ -80,7 +69,7 @@ void CCorvusState_ClawAttack1::LateTick(_float fTimeDelta)
 	}
 }
 
-void CCorvusState_ClawAttack1::Call_AnimationEnd()
+void CCorvusState_ClawAttackTab::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
@@ -89,7 +78,7 @@ void CCorvusState_ClawAttack1::Call_AnimationEnd()
 
 }
 
-void CCorvusState_ClawAttack1::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
+void CCorvusState_ClawAttackTab::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 {
 
 
@@ -98,7 +87,7 @@ void CCorvusState_ClawAttack1::Play_AttackWithIndex(const _tchar& In_iAttackInde
 	m_pModelCom.lock()->Set_AnimationSpeed(2.5f);
 }
 
-void CCorvusState_ClawAttack1::Attack()
+void CCorvusState_ClawAttackTab::Attack()
 {
 #ifdef _DEBUG
 	if (GAMEINSTANCE->Is_Debug())
@@ -117,7 +106,7 @@ void CCorvusState_ClawAttack1::Attack()
 
 }
 
-void CCorvusState_ClawAttack1::Check_InputNextAttack()
+void CCorvusState_ClawAttackTab::Check_InputNextAttack()
 {
 	if (!KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
 	{
@@ -130,12 +119,9 @@ void CCorvusState_ClawAttack1::Check_InputNextAttack()
 
 
 
-void CCorvusState_ClawAttack1::OnStateStart(const _float& In_fAnimationBlendTime)
+void CCorvusState_ClawAttackTab::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
-
-	// TODO : delete
-	bTrigger = false;
 
 	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_AVoid>().lock())
 	{
@@ -165,7 +151,7 @@ void CCorvusState_ClawAttack1::OnStateStart(const _float& In_fAnimationBlendTime
 #endif
 }
 
-void CCorvusState_ClawAttack1::OnStateEnd()
+void CCorvusState_ClawAttackTab::OnStateEnd()
 {
 	__super::OnStateEnd();
 
@@ -175,7 +161,7 @@ void CCorvusState_ClawAttack1::OnStateEnd()
 
 }
 
-void CCorvusState_ClawAttack1::OnEventMessage(_uint iArg)
+void CCorvusState_ClawAttackTab::OnEventMessage(_uint iArg)
 {
 	//__super::OnEventMessage(iArg);
 	//
@@ -211,17 +197,17 @@ void CCorvusState_ClawAttack1::OnEventMessage(_uint iArg)
 
 }
 
-void CCorvusState_ClawAttack1::OnDestroy()
+void CCorvusState_ClawAttackTab::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_ClawAttack1::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_ClawAttackTab::Call_AnimationEnd, this);
 }
 
-void CCorvusState_ClawAttack1::Free()
+void CCorvusState_ClawAttackTab::Free()
 {
 
 }
 
-_bool CCorvusState_ClawAttack1::Check_AndChangeNextState()
+_bool CCorvusState_ClawAttackTab::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
 		return false;
@@ -280,7 +266,7 @@ _bool CCorvusState_ClawAttack1::Check_AndChangeNextState()
 	return false;
 }
 
-_bool CCorvusState_ClawAttack1::Check_RequirementNextAttackState()
+_bool CCorvusState_ClawAttackTab::Check_RequirementNextAttackState()
 {
 
 	_uint iTargetKeyFrameFirst = 15;
@@ -296,7 +282,7 @@ _bool CCorvusState_ClawAttack1::Check_RequirementNextAttackState()
 	return false;
 }
 
-_bool CCorvusState_ClawAttack1::Check_RuquireMnetFirstAttackState()
+_bool CCorvusState_ClawAttackTab::Check_RuquireMnetFirstAttackState()
 {
 	_uint iTargetKeyFrameMin = 51;
 	_uint iTargetKeyFrameMax = 80;

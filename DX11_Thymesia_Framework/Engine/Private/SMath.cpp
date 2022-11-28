@@ -583,10 +583,10 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked_AbstractTerrain(const RAY& _Ray, _floa
 
 	_float3 vPos[4] =
 	{
-		_float3(-99999.f, 0.f,  99999.f),
-		_float3(99999.f, 0.f,  99999.f),
-		_float3(99999.f, 0.f, -99999.f),
-		_float3(-99999.f, 0.f, -99999.f)
+		_float3(-99999.f, _pOutPos->y,  99999.f),
+		_float3( 99999.f, _pOutPos->y,  99999.f),
+		_float3( 99999.f, _pOutPos->y, -99999.f),
+		_float3(-99999.f, _pOutPos->y, -99999.f)
 	};
 
 	_uint3 iIndex[2] =

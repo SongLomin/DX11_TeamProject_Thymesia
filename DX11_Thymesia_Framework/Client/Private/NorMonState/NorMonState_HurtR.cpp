@@ -44,6 +44,13 @@ void CNorMonState_HurtR::Start()
 	case Client::MONSTERTYPE::GARDENER:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_HurtM_FR");
 		break;
+	case Client::MONSTERTYPE::ELITEGARDENER:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_HurtM_FR");
+		break;
+	case Client::MONSTERTYPE::SHIELDAXEMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_HurtS_FR|BaseLayer|Arm");
+		break;
+		break;
 	}
 
 
@@ -65,8 +72,6 @@ void CNorMonState_HurtR::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	if (m_bAttackLookAtLimit)
-		Rotation_TargetToLookDir();
 
 	Check_AndChangeNextState();
 
@@ -79,6 +84,26 @@ void CNorMonState_HurtR::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+
+	switch (m_eMonType)
+	{
+	case Client::MONSTERTYPE::AXEMAN:
+	{
+		_uint iRand = rand() % 3 + 4;
+		m_iParryCount += iRand;
+		Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock()->Set_ParryCount(iRand);
+	}	
+	break;
+	case Client::MONSTERTYPE::SHIELDAXEMAN:
+	{
+		_uint iRand = rand() % 3 + 4;
+		m_iParryCount += iRand;
+		Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock()->Set_ParryCount(iRand);
+	}
+	break;
+	}
+
+	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
@@ -93,8 +118,6 @@ void CNorMonState_HurtR::OnStateStart(const _float& In_fAnimationBlendTime)
 void CNorMonState_HurtR::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-	m_bAttackLookAtLimit = false;
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
@@ -115,9 +138,23 @@ _bool CNorMonState_HurtR::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
+	switch (m_eMonType)
 	{
-		m_bAttackLookAtLimit = true;
+	case Client::MONSTERTYPE::AXEMAN:
+		break;
+	case Client::MONSTERTYPE::SHIELDAXEMAN:
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+		{
+			if (m_iParryCount >= 10)
+			{
+				Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock()->Set_ZeroParryCount(0);
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Parry>(0.05f);
+				m_iParryCount = 0;
+			}
+			return true;
+		}
+		break;
+
 	}
 
 	return false;

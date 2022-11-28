@@ -57,6 +57,7 @@ protected:
 
 
 
+
     //weak_ptr<CBehaviorBase> m_pBehavior;
     weak_ptr<CNavigation> m_pNaviCom;
     weak_ptr<CTransform> m_pTransformCom;

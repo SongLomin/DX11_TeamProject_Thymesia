@@ -82,7 +82,13 @@ HRESULT CStatic_Prop::Render()
         // 노말 텍스쳐가 있는 경우
         else
         {
-            m_iPassIndex = 6;
+            if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+            {
+                m_iPassIndex = 6;
+
+            }
+            else
+                m_iPassIndex = 7;
         }
 
         m_pShaderCom.lock()->Begin(m_iPassIndex);
@@ -111,26 +117,7 @@ HRESULT CStatic_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix I
 
 _bool CStatic_Prop::IsPicking(const RAY& In_Ray, _float& Out_fRange)
 {
-    RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
-
-    weak_ptr<MODEL_DATA> pModelData = m_pModelCom.lock()->Get_ModelData();
-
-    if (!pModelData.lock())
-        return false;
-
-    MESH_VTX_INFO Info = pModelData.lock()->VertexInfo;
-    _float fDist;
-
-    if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, Info, m_pTransformCom.lock()->Get_WorldMatrix(), &fDist))
-    {
-        if (Out_fRange > fDist)
-        {
-            Out_fRange = fDist;
-            return true;
-        }
-    }
-
-    return false;
+    return m_pModelCom.lock()->IsModelPicking(In_Ray, Out_fRange);
 }
 
 void CStatic_Prop::Write_Json(json& Out_Json)

@@ -14,7 +14,9 @@ class CNorMonState_Walk_F :
 	CLONE_H(CNorMonState_Walk_F, CComponent)
 		SHALLOW_COPY(CNorMonState_Walk_F)
 
-
+public:
+	void  Set_GardnerAtkIndex(_uint GardnerAtkIndex) { m_iGardnerAtkIndex = GardnerAtkIndex; }
+	void  Set_GardnerPlusAtkIndex(_uint GardnerAtkIndex) { m_iGardnerAtkIndex += GardnerAtkIndex; }
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
@@ -34,6 +36,7 @@ private:
 	_float m_fCurrentSpeed = 2.4f;
 	_float m_fAccel = 0.f;
 	_bool  m_bWalkCheck = false;
+	_uint  m_iGardnerAtkIndex = 0;
 
 private:
 	void Call_AnimationEnd();

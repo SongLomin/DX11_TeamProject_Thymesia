@@ -184,12 +184,13 @@ void CUI_Logo::ChageButtonIndex(_uint iButtonIndex)
 void CUI_Logo::SelectButton(_uint iButtonIndex)
 {
     LOGO_BUTTON_TYPE eType = (LOGO_BUTTON_TYPE)iButtonIndex;
-    m_bSelect = false;
+    
 
     switch (eType)
     {
     case Client::CUI_Logo::LOGO_BUTTON_START_GAME:
         Weak_Cast<CLevel_Logo>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(LEVEL::LEVEL_GAMEPLAY);
+        m_bSelect = false;
         break;
     case Client::CUI_Logo::LOGO_BUTTON_CONTINUE_GAME:
         break;
@@ -197,11 +198,13 @@ void CUI_Logo::SelectButton(_uint iButtonIndex)
         break;
     case Client::CUI_Logo::LOGO_BUTTON_TOOL:
         Weak_Cast<CLevel_Logo>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(LEVEL::LEVEL_EDIT);
+        m_bSelect = false;
         break;
     case Client::CUI_Logo::LOGO_BUTTON_OPTION:
         break;
     case Client::CUI_Logo::LOGO_BUTTON_CREDITS:
         Weak_Cast<CLevel_Logo>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(LEVEL::LEVEL_TEST);
+        m_bSelect = false;
         break;
     case Client::CUI_Logo::LOGO_BUTTON_QUIT:
         break;

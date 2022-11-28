@@ -11,6 +11,7 @@ END
 BEGIN(Client)
 class CPlayer;
 class CMonster;
+class CPhysXCameraController;
 
 class CCamera_Target final : public CCamera
 {
@@ -65,6 +66,8 @@ private:
 
 
 private:
+	weak_ptr<CPhysXCameraController> m_pPhysXCameraControllerCom;
+
 	//연출이 끝난 후에 위치 보정 용
 	CINEMATIC_TYPE					m_eCinematicType = CINEMATIC_TYPE::TYPE_END;
 	_bool					m_bCinematicEnd = false;

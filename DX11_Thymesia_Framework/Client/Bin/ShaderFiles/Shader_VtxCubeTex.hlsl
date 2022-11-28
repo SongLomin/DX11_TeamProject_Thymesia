@@ -5,7 +5,7 @@ matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 
 textureCUBE	g_DiffuseTexture;
 float g_fUVFlow;
-
+float4 g_vColor;
 
 
 struct VS_IN
@@ -72,6 +72,15 @@ PS_OUT PS_MAIN_COLOR(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_MAIN_COLOR_PICK(PS_IN In)
+{
+	PS_OUT		Out = (PS_OUT)0;
+
+	Out.vColor = g_vColor;
+
+	return Out;
+}
+
 
 technique11 DefaultTechnique
 {
@@ -107,4 +116,15 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_COLOR();
     }
+
+	pass Pass3_Color_Pick
+	{
+		SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_Default, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader	= compile vs_5_0	VS_MAIN_SKY();
+		GeometryShader	= NULL;
+		PixelShader		= compile ps_5_0	PS_MAIN_COLOR_PICK();
+	}
 }

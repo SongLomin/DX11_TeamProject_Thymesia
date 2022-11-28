@@ -46,6 +46,7 @@ public: /* 엔진 라이브럴를 사용할때 필요한 초기화 과정으르 거칠거야. */
 	_uint	Get_LoopIndex() const { return m_iLoopIndex; }
 
 	HWND	Get_WindowHandle() const;
+	GRAPHICDESC Get_GraphicDesc() const { return m_GraphicDesc; }
 
 
 public: /* For.Graphic_Device */	
@@ -224,10 +225,11 @@ private:
 	
 
 private:
-	_float	m_fDeltaTime = 0.f;
-	_bool	m_bDebug = false;
-	HWND	m_WindowHandle;
-	_uint	m_iLoopIndex = 0;
+	_float			m_fDeltaTime = 0.f;
+	_bool			m_bDebug = false;
+	HWND			m_WindowHandle;
+	GRAPHICDESC		m_GraphicDesc;
+	_uint			m_iLoopIndex = 0;
 
 
 public:

@@ -39,11 +39,14 @@ void CNorMonState_LightAttack2::Start()
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_Attack03|BaseLayer|Arm");
 		break;
 	case Client::MONSTERTYPE::KNIFEWOMAN:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_Attack03");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_LV0Villager_F.ao|LV1Villager_F_Attack02");
 		break;
 	case Client::MONSTERTYPE::SKULL:
 		break;
 	case Client::MONSTERTYPE::GARDENER:
+		break;
+	case Client::MONSTERTYPE::SHIELDAXEMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_Attack03|BaseLayer|Arm");
 		break;
 	}
 
@@ -107,6 +110,9 @@ void CNorMonState_LightAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 			break;
 		case Client::MONSTERTYPE::GARDENER:
 			break;
+		case Client::MONSTERTYPE::SHIELDAXEMAN:
+			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
+			break;
 		}
 
 
@@ -141,6 +147,12 @@ _bool CNorMonState_LightAttack2::Check_AndChangeNextState()
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
 		m_bAttackLookAtLimit = false;
+	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.6f)
+	{
+		Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack3>(0.05f);
+		return true;
 	}
 
 	return false;

@@ -257,6 +257,30 @@ weak_ptr<CAnimation> CModel::Get_AnimationFromIndex(const _uint& In_iIndex) cons
 	return m_Animations[In_iIndex];
 }
 
+_bool CModel::IsModelPicking(const RAY& In_Ray, _float& Out_fRange)
+{
+	if (m_pModelData)
+		return false;
+
+	GRAPHICDESC tGraphicDesc = GAMEINSTANCE->Get_GraphicDesc();
+
+	RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(tGraphicDesc.iWinCX, tGraphicDesc.iWinCY);
+
+	MESH_VTX_INFO Info = m_pModelData->VertexInfo;
+	_float fDist;
+
+	if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, Info, m_pOwner.lock()->Get_Transform()->Get_WorldMatrix(), &fDist))
+	{
+		if (Out_fRange > fDist)
+		{
+			Out_fRange = fDist;
+			return true;
+		}
+	}
+
+	return false;
+}
+
 HRESULT CModel::Initialize_Prototype()
 {
 	return S_OK;

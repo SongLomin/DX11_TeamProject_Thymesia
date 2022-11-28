@@ -110,18 +110,34 @@ void CStatus_Monster::Init_Status(const void* pArg)
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
 		m_tMonsterDesc.m_szModelKey = "Boss_Varg";
 		break;
+	case Client::MONSTERTYPE::ELITEGARDENER:
+		m_tMonsterDesc.m_fAtk = 1.f;
+		m_tMonsterDesc.m_fMaxHP_white = 200.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 200.f;
+		m_tMonsterDesc.m_iLifeCount = 1;
+		m_tMonsterDesc.m_iMaxParryCount = 10000;
+		m_tMonsterDesc.m_szModelKey = "Mon_Gardner";
+		break;
+	case Client::MONSTERTYPE::SHIELDAXEMAN:
+		m_tMonsterDesc.m_fAtk = 1.f;
+		m_tMonsterDesc.m_fMaxHP_white = 2000.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 2000.f;
+		m_tMonsterDesc.m_iLifeCount = 1;
+		m_tMonsterDesc.m_iMaxParryCount = 10000;
+		m_tMonsterDesc.m_szModelKey = "Mon_AxeMan";
+		break;
 
 	}
 	m_tMonsterDesc.m_fCurrentHP_white = m_tMonsterDesc.m_fMaxHP_white;
 	m_tMonsterDesc.m_fCurrentHP_Green = m_tMonsterDesc.m_fMaxHP_white;
-	m_tMonsterDesc.m_fMaxHP_Green     = m_tMonsterDesc.m_fMaxHP_white;
-	m_tMonsterDesc.m_fHitedTime                          = 999.f;
-	m_tMonsterDesc.m_fParryGaugeRecoveryTime             = 0.f;//얘는 차오른 패리 게이지 양에 따라 줄어드는 시간이 달라짐.
-	m_tMonsterDesc.m_fRecoveryAlramTime                  = 5.f;
-	m_tMonsterDesc.m_fRecoveryTime                       = 7.f;
-	m_tMonsterDesc.m_fHpBarDisableTime                   = 15.f;
-	m_tMonsterDesc.m_iCueentParryCount                   = 0;
-	m_tMonsterDesc.m_fCurrentParryingGauge               = 0.f;
+	m_tMonsterDesc.m_fMaxHP_Green = m_tMonsterDesc.m_fMaxHP_white;
+	m_tMonsterDesc.m_fHitedTime = 999.f;
+	m_tMonsterDesc.m_fParryGaugeRecoveryTime = 0.f;//얘는 차오른 패리 게이지 양에 따라 줄어드는 시간이 달라짐.
+	m_tMonsterDesc.m_fRecoveryAlramTime = 5.f;
+	m_tMonsterDesc.m_fRecoveryTime = 7.f;
+	m_tMonsterDesc.m_fHpBarDisableTime = 15.f;
+	m_tMonsterDesc.m_iCueentParryCount = 0.f;
+	m_tMonsterDesc.m_fCurrentParryingGauge = 0.f;
 	m_tMonsterDesc.m_fRecoveryAmountPercentageFromSecond = 0.3f;
 	m_tMonsterDesc.m_fRecoveryMag                        = 1.f;
 }
@@ -284,8 +300,6 @@ void CStatus_Monster::Update_ParryRecoveryTime(_float fTimeDelta)
 		false);
 
 }
-
-
 
 void CStatus_Monster::Free()
 {

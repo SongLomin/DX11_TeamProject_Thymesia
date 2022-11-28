@@ -35,6 +35,16 @@ HRESULT CProp::Initialize(void* pArg)
 
 HRESULT CProp::Start()
 {
+	weak_ptr<MODEL_DATA> pModelData = m_pModelCom.lock()->Get_ModelData();
+	
+	if (pModelData.lock())
+	{
+		m_vCenterOffset = pModelData.lock()->VertexInfo.vCenter;
+		m_fCullingOffsetRange = pModelData.lock()->Get_MaxOffsetRange() * 1.2f;
+	}
+
+	
+
     return S_OK;
 }
 
@@ -53,11 +63,11 @@ void CProp::LateTick(_float fTimeDelta)
 		m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Weak_StaticCast<CGameObject>(m_this));
 	}
 #else
-	/*if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), 0.f))
+	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position() + vCenterOffsetToVector, m_fCullingOffsetRange))
 	{
 		if (RENDERGROUP::RENDER_END != m_eRenderGroup)
 			m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Weak_StaticCast<CGameObject>(m_this));
-	}*/
+	}
 
 #endif // !_USE_THREAD_
 
@@ -65,16 +75,16 @@ void CProp::LateTick(_float fTimeDelta)
 
 void CProp::Custom_Thread1(_float fTimeDelta)
 {
-	__super::Custom_Thread1(fTimeDelta);
+	_vector vCenterOffsetToVector = XMLoadFloat3(&m_vCenterOffset);
 
-	/*if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), m_fCullingOffsetRange))
+	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position() + vCenterOffsetToVector, m_fCullingOffsetRange))
 	{
 		m_bRendering = true;
 	}
 	else
 	{
 		m_bRendering = false;
-	}*/
+	}
 }
 
 HRESULT CProp::Render()

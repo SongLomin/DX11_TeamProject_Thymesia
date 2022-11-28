@@ -4,6 +4,7 @@
 
 BEGIN(Engine)
 class CPhysXCollider;
+class CPhysXController;
 
 class CPhysX_Manager final : public CBase
 {
@@ -46,9 +47,17 @@ public:
 	void								Register_PhysXCollider(weak_ptr<CPhysXCollider> pPhysXCollider);
 	weak_ptr<CPhysXCollider>			Find_PhysXCollider(const _uint In_iPhysXColliderIndex);
 
+	void								Register_PhysXController(weak_ptr<CPhysXController> pPhysXController);
+	weak_ptr<CPhysXController>			Find_PhysXController(const _uint In_iPhysXControllerIndex);
+
+	void								Set_CurrentCameraControllerIndex(const _uint In_iPhysXCurrentCameraControllerIndex);
+	_int								Get_CurrentCameraControllerIndex() const { return m_iCurrentCameraIndex; }
+
 public:
 	HRESULT	Initialize(const _uint In_iNumLayer);
 	void	Tick(_float fTimeDelta);
+
+
 
 public:
 	void			Check_PhysXFilterGroup(const _uint In_iLeftLayer, const _uint In_iRightLayer);
@@ -75,6 +84,12 @@ public:
 	void			Create_Shape(const PxGeometry & Geometry, PxMaterial* pMaterial, const _bool isExculsive, const PxShapeFlags In_ShapeFlags, PxShape ** ppOut);
 	void			Create_MeshFromTriangles(const PxTriangleMeshDesc& In_MeshDesc, PxTriangleMesh** ppOut);
 	void			Create_Controller(const PxCapsuleControllerDesc& In_ControllerDesc, PxController** ppOut);
+
+private:
+	void			Garbage_Collector();
+
+private: /* For Garabage_Collector */
+	_float					m_fTimeAcc = 0.f;
 
 private:
 	// Foundation을 생성하는데 필요한 변수
@@ -121,7 +136,9 @@ private: /* For. Filter */
 	vector<_uint>			m_arrCheck;
 
 private:
-	map<_uint, weak_ptr<CPhysXCollider>> m_pPhysXCollders;
+	map<_uint, weak_ptr<CPhysXCollider>>	m_pPhysXCollders;
+	map<_uint, weak_ptr<CPhysXController>>	m_pPhysXControllers;
+	_int									m_iCurrentCameraIndex = -1;
 
 
 public:

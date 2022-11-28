@@ -83,7 +83,6 @@ void CCorvusState_Parry1::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
 
-
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 }
 
@@ -355,7 +354,7 @@ _bool CCorvusState_Parry1::Check_AndChangeNextState()
 		if (Check_RequirementClawAttackState())
 		{
 			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackTab>();
 			return true;
 		}
 	}

@@ -35,7 +35,8 @@ HRESULT CLevel_Test::Initialize()
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_TEST);
 
 #ifdef _TEST_STATIC_PROPS_
-	Load_FromJson(m_szDefaultJsonPath + "Stage1_StaticProps.json", LEVEL::LEVEL_TEST);
+	Load_FromJson(m_szDefaultJsonPath + "Stage3.json", LEVEL::LEVEL_TEST);
+	//Load_FromJson(m_szDefaultJsonPath + "Stage1_StaticProps.json", LEVEL::LEVEL_TEST);
 #else
 	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_TEST);
 #endif // _TEST_STATIC_PROPS_
@@ -56,8 +57,8 @@ HRESULT CLevel_Test::Initialize()
 	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_TEST);
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
 
-	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 5.f, 10.f, 5.f });
-	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 15.f, 10.f, 15.f });
+	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 5.f, 0.f, 5.f });
+	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 15.f, 0.f, 15.f });
 
 	//TODO 야매에요
 #ifdef _STAGE_1_MONSTER_
@@ -69,7 +70,6 @@ HRESULT CLevel_Test::Initialize()
 	CCC.vYame.x = 13.f;
 	CCC.vYame.y = 4.6f;
 	CCC.vYame.z = 36.f;
-	CCC.m_iAtkCounterGauge = 10;
 	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_TEST, &CCC);
 
 	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
@@ -78,7 +78,6 @@ HRESULT CLevel_Test::Initialize()
 	CCC.vYame.x = 23.f;
 	CCC.vYame.y = 4.6f;
 	CCC.vYame.z = 43.f;
-	CCC.m_iAtkCounterGauge = 10;
 	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_TEST, &CCC);
 
 	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
@@ -87,7 +86,14 @@ HRESULT CLevel_Test::Initialize()
 	CCC.vYame.x = 2.5f;
 	CCC.vYame.y = 4.9f;
 	CCC.vYame.z = 46.f;
-	CCC.m_iAtkCounterGauge = 10;
+	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_TEST, &CCC);
+
+	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+	CCC.eMonType = MONSTERTYPE::SHIELDAXEMAN;
+	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
+	CCC.vYame.x = 2.5f;
+	CCC.vYame.y = 4.9f;
+	CCC.vYame.z = 46.f;
 	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_TEST, &CCC);
 #endif // _STAGE_1_MONSTER_
 

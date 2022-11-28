@@ -36,7 +36,7 @@ private: /* For. Edit */
     weak_ptr<CShader>                   m_pShaderCom;
     weak_ptr<CRenderer>                 m_pRendererCom;
     _bool                               m_bViewPhysXInfo = false;
-
+    _float4                             m_vColor = { 1.f, 0.f, 0.f, 1.f };
 
 public:
     virtual void Write_Json(json& Out_Json) override;
@@ -45,10 +45,6 @@ public:
 
 private:
     void Free();
-
-
-    
-
 };
 
 END

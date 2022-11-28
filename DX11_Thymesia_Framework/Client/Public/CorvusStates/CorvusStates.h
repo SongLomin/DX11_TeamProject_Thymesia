@@ -19,10 +19,14 @@
 #include "CorvusStates/CorvusState_LAttack1.h"
 #include "CorvusStates/CorvusState_LAttack2.h"
 #include "CorvusStates/CorvusState_LAttack3.h"
+#include "CorvusStates/CorvusState_LAttack4.h"
+#include "CorvusStates/CorvusState_LAttack5.h"
 #include "CorvusStates/CorvusState_Parry1.h"
 #include "CorvusStates/CorvusState_Parry2.h"
 #include "CorvusStates/CorvusState_BasicHealing.h"
-#include "CorvusStates/CorvusState_ClawAttack1.h"
+#include "CorvusStates/CorvusState_ClawAttackTab.h"
+#include "CorvusStates/CorvusState_ClawAttackHold.h"
+#include "CorvusStates/CorvusState_ClawAttackAway.h"
 #include "CorvusStates/CorvusState_HurtXXL.h"
 #include "CorvusStates/CorvusState_HurtL.h"
 #include "CorvusStates/CorvusState_HurtR.h"
@@ -31,6 +35,7 @@
 #include "CorvusStates/CorvusState_ParryDeflectLeftup.h"
 #include "CorvusStates/CorvusState_ParryDeflectRight.h"
 #include "CorvusStates/CorvusState_ParryDeflectRightup.h"
+#include "CorvusStates/CorvusState_ClawAttackTab.h"
 
 //플레이어 기본 스테이트
 

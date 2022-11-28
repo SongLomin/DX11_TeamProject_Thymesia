@@ -160,7 +160,7 @@ _bool CCorvusState_Sprint::Check_AndChangeNextState()
 	if (Check_RequirementClawAttackState())
 	{
 		Rotation_InputToLookDir();
-		Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
+		Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackTab>();
 		return true;
 	}
 

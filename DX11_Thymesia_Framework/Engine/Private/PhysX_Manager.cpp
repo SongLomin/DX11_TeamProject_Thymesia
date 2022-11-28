@@ -2,6 +2,7 @@
 #include "GameInstance.h"
 #include "CollisionSimulationEventCallBack.h"
 #include "PhysXCollider.h"
+#include "PhysXController.h"
 
 IMPLEMENT_SINGLETON(CPhysX_Manager)
 
@@ -20,6 +21,28 @@ weak_ptr<CPhysXCollider> CPhysX_Manager::Find_PhysXCollider(const _uint In_iPhys
 	}
 
 	return weak_ptr<CPhysXCollider>();
+}
+
+void CPhysX_Manager::Register_PhysXController(weak_ptr<CPhysXController> pPhysXController)
+{
+	m_pPhysXControllers.emplace(pPhysXController.lock()->Get_PControllerIndex(), pPhysXController);
+}
+
+weak_ptr<CPhysXController> CPhysX_Manager::Find_PhysXController(const _uint In_iPhysXControllerIndex)
+{
+	auto iter = m_pPhysXControllers.find(In_iPhysXControllerIndex);
+
+	if (iter != m_pPhysXControllers.end())
+	{
+		return iter->second;
+	}
+
+	return weak_ptr<CPhysXController>();
+}
+
+void CPhysX_Manager::Set_CurrentCameraControllerIndex(const _uint In_iPhysXCurrentCameraControllerIndex)
+{
+	m_iCurrentCameraIndex = (_int)In_iPhysXCurrentCameraControllerIndex;
 }
 
 HRESULT CPhysX_Manager::Initialize(const _uint In_iNumLayer)
@@ -58,7 +81,7 @@ HRESULT CPhysX_Manager::Initialize(const _uint In_iNumLayer)
 	tCudaDesc.interopMode = PxCudaInteropMode::Enum::D3D11_INTEROP;
 	tCudaDesc.ctx;
 
-	m_pCudaContextManager = PxCreateCudaContextManager(*m_pFoundation, tCudaDesc, PxGetProfilerCallback());
+	//m_pCudaContextManager = PxCreateCudaContextManager(*m_pFoundation, tCudaDesc, PxGetProfilerCallback());
 
 	if (m_pCudaContextManager)
 	{
@@ -111,18 +134,17 @@ HRESULT CPhysX_Manager::Initialize(const _uint In_iNumLayer)
 
 void CPhysX_Manager::Tick(_float fTimeDelta)
 {
-	// »ç¸ÁÇÑ °´Ã¼ Á¤¸®
-	for (auto iter = m_pPhysXCollders.begin(); iter != m_pPhysXCollders.end();)
+
+	if (m_fTimeAcc > 1.f)
 	{
-		if (!(*iter).second.lock())
-		{
-			iter = m_pPhysXCollders.erase(iter);
-		}
-		else
-		{
-			++iter;
-		}
+		Garbage_Collector();
+		m_fTimeAcc = 0.f;
 	}
+	else
+	{
+		m_fTimeAcc += fTimeDelta;
+	}
+	
 
 
 	if (m_pCurScene)
@@ -169,6 +191,8 @@ void CPhysX_Manager::Tick(_float fTimeDelta)
 
 	
 }
+
+
 
 void CPhysX_Manager::Check_PhysXFilterGroup(const _uint In_iLeftLayer, const _uint In_iRightLayer)
 {
@@ -499,6 +523,34 @@ void CPhysX_Manager::Create_MeshFromTriangles(const PxTriangleMeshDesc& In_MeshD
 void CPhysX_Manager::Create_Controller(const PxCapsuleControllerDesc& In_ControllerDesc, PxController** ppOut)
 {
 	*ppOut = m_pControllerManager->createController(In_ControllerDesc);
+}
+
+void CPhysX_Manager::Garbage_Collector()
+{
+	// »ç¸ÁÇÑ °´Ã¼ Á¤¸®
+	for (auto iter = m_pPhysXCollders.begin(); iter != m_pPhysXCollders.end();)
+	{
+		if (!(*iter).second.lock())
+		{
+			iter = m_pPhysXCollders.erase(iter);
+		}
+		else
+		{
+			++iter;
+		}
+	}
+
+	for (auto iter = m_pPhysXControllers.begin(); iter != m_pPhysXControllers.end();)
+	{
+		if (!(*iter).second.lock())
+		{
+			iter = m_pPhysXControllers.erase(iter);
+		}
+		else
+		{
+			++iter;
+		}
+	}
 }
 
 void CPhysX_Manager::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh ** ppOut)

@@ -150,6 +150,7 @@ HRESULT CUI_EvolveMenu::Initialize(void* pArg)
 
 	SetUpFromCurrentLevel();
 
+
 #pragma endregion CREATE_UIS
 
 
@@ -317,7 +318,7 @@ void CUI_EvolveMenu::SelectButton()
 {
 	CUI_EvolveMenu::EVOLVEMENU_TYPE eType = (CUI_EvolveMenu::EVOLVEMENU_TYPE)m_iSelectedIndex;
 	FaderDesc tFaderDesc;
-	
+
 	switch (eType)
 	{
 	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_LEVELUP:

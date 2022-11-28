@@ -85,12 +85,6 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     MACRO("SK_C_Corvus.ao|Corvus_SD_ParryDeflect_R", 3.f);
     MACRO("SK_C_Corvus.ao|Corvus_SD_ParryDeflect_RUp", 3.f);
 
-    MACRO("SK_C_Corvus.ao|Corvus_SD_ParryDeflect_L", 2.f);
-    MACRO("SK_C_Corvus.ao|Corvus_SD_ParryDeflect_LUp", 2.f);
-
-    MACRO("SK_C_Corvus.ao|Corvus_SD_ParryDeflect_R", 2.f);
-    MACRO("SK_C_Corvus.ao|Corvus_SD_ParryDeflect_RUp", 2.f);
-
 #undef MACRO
 
     for (_uint i = 0; i < iNumChannels; i++)

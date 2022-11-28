@@ -269,6 +269,8 @@ PS_OUT PS_MAIN_BORDER_OUT(PS_IN In)
 	return Out;
 }
 
+
+
 technique11 DefaultTechnique
 {
 	//0

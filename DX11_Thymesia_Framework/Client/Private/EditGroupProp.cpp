@@ -275,7 +275,6 @@ void CEditGroupProp::Write_Json(json& Out_Json)
 {
 	for (auto& iter_prop : m_PropList)
 	{
-
 		CImGui_Window::GAMEOBJECT_DESC Desc;
 		Desc.HashCode	= iter_prop.hash;
 		Desc.pInstance	= iter_prop.pProp;

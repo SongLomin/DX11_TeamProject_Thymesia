@@ -47,9 +47,6 @@ public:
 	void			Call_Restart();
 
 
-	
-
-
 public:
 	virtual void OnDisable() override;
 

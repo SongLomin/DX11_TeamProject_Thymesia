@@ -1342,17 +1342,17 @@ void CEffect_Rect::Update_ParticleColor(const _uint& i, _float fTimeDelta)
 	}
 	else
 	{
-		vColor = XMLoadFloat4(&SMath::Mul_Float4(m_tParticleDescs[i].vTargetColorSpeed, fTimeDelta));
+		//vColor = XMLoadFloat4(&SMath::Mul_Float4(m_tParticleDescs[i].vTargetColorSpeed, fTimeDelta));
 		SMath::Add_Float4(&m_tParticleDescs[i].vCurrentColorForce, SMath::Mul_Float4(m_tParticleDescs[i].vTargetColorForce, fTimeDelta));
 
 		_float4 float4Color;
 		ZeroMemory(&float4Color, sizeof(_float4));
 		XMStoreFloat4(&float4Color, vColor);
 
-		vColor = XMLoadFloat4(&SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColorForce));
+		//vColor = XMLoadFloat4(&SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColorForce));
 		XMStoreFloat4(&float4Color, vColor);
 
-		vColor = XMLoadFloat4(&SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColor));
+		//vColor = XMLoadFloat4(&SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColor));
 
 		XMVectorSetX(vColor, max(m_tEffectParticleDesc.vMinColor.x, min(m_tEffectParticleDesc.vMaxColor.x, XMVectorGetX(vColor))));
 		XMVectorSetY(vColor, max(m_tEffectParticleDesc.vMinColor.y, min(m_tEffectParticleDesc.vMaxColor.y, XMVectorGetY(vColor))));

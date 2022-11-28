@@ -239,7 +239,7 @@ void MODEL_DATA::Compute_Center(MESH_VTX_INFO& _tVertexInfo)
 
 _float MODEL_DATA::Get_MaxOffsetRange() const
 {
-    _vector vOffsetRange = XMLoadFloat3(&VertexInfo.vMax);
+    _vector vOffsetRange = XMLoadFloat3(&VertexInfo.vMax) - XMLoadFloat3(&VertexInfo.vMin);
 
     return XMVectorGetX(XMVector3Length(vOffsetRange));
 }

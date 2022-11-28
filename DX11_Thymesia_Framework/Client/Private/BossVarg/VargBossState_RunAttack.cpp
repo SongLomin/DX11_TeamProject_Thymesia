@@ -118,7 +118,6 @@ _bool CVargBossState_RunAttack::Check_AndChangeNextState()
 		return false;
 
 
-
 	return false;
 }
 

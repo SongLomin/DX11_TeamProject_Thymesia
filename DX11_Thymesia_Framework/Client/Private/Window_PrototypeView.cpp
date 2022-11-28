@@ -124,10 +124,12 @@ void CWindow_PrototypeView::Add_Prototypes()
     ADD_PROTOTYPE(PROTOTYPE_PROP, CEditGround);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStatic_Prop);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStatic_Instancing_Prop);
+    ADD_PROTOTYPE(PROTOTYPE_PROP, CDynamic_Prop);
 
     ADD_PROTOTYPE(PROTOTYPE_PROP, CEditGroupProp);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CEditInstanceProp);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CPhysXColliderObject);
+    ADD_PROTOTYPE(PROTOTYPE_PROP, CEditMapCollider);
 
     ADD_PROTOTYPE(PROTOTYPE_UI, CFadeMask);
 

@@ -223,6 +223,23 @@ void CUI::Set_Owner(weak_ptr<CBase> pOwner)
 	m_pOwner = pOwner;
 }
 
+void CUI::Enable_AllEventChild()
+{
+	for (auto& elem : m_vecEventChildUI)
+	{
+		elem.lock()->Set_Enable(true);
+	}
+
+}
+
+void CUI::Disable_AllEventChild()
+{
+	for (auto& elem : m_vecEventChildUI)
+	{
+		elem.lock()->Set_Enable(false);
+	}
+}
+
 _float2 CUI::Get_Point(UI_POINT eType)
 {
 	_float2 vPos;

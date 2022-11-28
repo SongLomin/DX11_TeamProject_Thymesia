@@ -16,6 +16,7 @@
 #include "VIBuffer_Point_Instance.h"
 #include "PhysXCollider.h"
 #include "PhysXController.h"
+#include "PhysXCameraController.h"
 
 
 

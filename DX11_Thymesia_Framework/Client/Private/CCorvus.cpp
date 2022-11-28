@@ -70,7 +70,14 @@ void CCorvus::Tick(_float fTimeDelta)
 
 	// TODO : test jump key R
 	if (KEY_INPUT(KEY::R, KEY_STATE::HOLD))
-		m_pPhysXControllerCom.lock()->Move(_vector{ 0.f, 10.f * fTimeDelta, 0.f }, 0.f, fTimeDelta, PxControllerFilters());
+		m_pPhysXControllerCom.lock()->Move(_vector{ 0.f, 1000.f * fTimeDelta, 0.f }, 0.f, fTimeDelta, PxControllerFilters());
+
+	if (KEY_INPUT(KEY::NUM0, KEY_STATE::TAP))
+	{
+		static _bool bEnable;
+		bEnable = !bEnable;
+		m_pPhysXControllerCom.lock()->Set_EnableSimulation(bEnable);
+	}
 
 	// TODO : frame test
 	//if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
@@ -125,8 +132,14 @@ HRESULT CCorvus::Render()
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 			m_iPassIndex = 0;
 		else
-			m_iPassIndex = 4;
-		
+		{
+			if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+			{
+				m_iPassIndex = 4;
+			}
+			else
+				m_iPassIndex = 5;
+		}
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones");
 		
 	}
@@ -160,15 +173,22 @@ void CCorvus::Ready_States()
 	MACRO(CCorvusState_LAttack1);
 	MACRO(CCorvusState_LAttack2);
 	MACRO(CCorvusState_LAttack3);
+	MACRO(CCorvusState_LAttack4);
+	MACRO(CCorvusState_LAttack5);
 	MACRO(CCorvusState_Parry1);
 	MACRO(CCorvusState_Parry2);
 	MACRO(CCorvusState_BasicHealing);
-	MACRO(CCorvusState_ClawAttack1);
+	MACRO(CCorvusState_ClawAttackTab);
 	MACRO(CCorvusState_Die);
 	MACRO(CCorvusState_HurtL);
 	MACRO(CCorvusState_HurtR);
 	MACRO(CCorvusState_HurtXXL);
 	MACRO(CCorvusState_NorMob_Execution);
+
+	Add_Component<CCorvusState_ParryDeflectLeft>();
+	Add_Component<CCorvusState_ParryDeflectLeftup>();
+	Add_Component<CCorvusState_ParryDeflectRight>();
+	Add_Component<CCorvusState_ParryDeflectRightup>();
 
 #undef MACRO
 }

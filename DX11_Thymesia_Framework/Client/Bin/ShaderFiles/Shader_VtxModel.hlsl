@@ -7,6 +7,7 @@ texture2D	g_DiffuseTexture;
 texture2D   g_NormalTexture;
 texture2D   g_MaskTexture;
 texture2D   g_SpecularTexture;
+texture2D   g_ORMTexture;
 
 vector      g_vCamPosition;
 vector      g_vCamLook;
@@ -330,18 +331,18 @@ PS_OUT      PS_MAIN_PICK(PS_IN In)
     return Out;
 }
 
-struct PS_OUT_SPECULAR
+struct PS_OUT_PBR
 {
     vector		vDiffuse : SV_TARGET0;
     vector		vNormal : SV_TARGET1;
     vector		vDepth : SV_TARGET2;
     vector		vLightFlag : SV_Target3;
-    vector      vSpecular : SV_Target4;
+    vector      vORM : SV_Target4;
 };
 
-PS_OUT_SPECULAR PS_MAIN_NORMAL_SPECULAR(PS_IN_NORMAL In)
+PS_OUT_PBR PS_MAIN_NORMAL_PBR(PS_IN_NORMAL In)
 {
-    PS_OUT_SPECULAR Out = (PS_OUT_SPECULAR)0;
+    PS_OUT_PBR Out = (PS_OUT_PBR)0;
 
     Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
@@ -360,7 +361,8 @@ PS_OUT_SPECULAR PS_MAIN_NORMAL_SPECULAR(PS_IN_NORMAL In)
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vLightFlag = g_vLightFlag;
 
-    Out.vSpecular = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
+    Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
+   // Out.vORM = g_ORMTexture.Sample(DefaultSampler, In.vTexUV);
 
     if (Out.vDiffuse.a < 0.1f)
         discard;
@@ -386,7 +388,7 @@ technique11 DefaultTechnique
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
-        SetRasterizerState(RS_Default);
+        SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_MAIN_SHADOW();
         GeometryShader = NULL;
@@ -408,7 +410,7 @@ technique11 DefaultTechnique
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_Default);
+        SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
         GeometryShader = NULL;
@@ -431,7 +433,7 @@ technique11 DefaultTechnique
     {
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_Default);
+        SetRasterizerState(RS_NonCulling);
 
         VertexShader    = compile vs_5_0 VS_MAIN();
         GeometryShader  = NULL;
@@ -442,29 +444,29 @@ technique11 DefaultTechnique
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_Default);
+        SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_NORMAL_MASKING();
     }
 
-    pass Default_Normal_Specular //7
+    pass Default_Normal_PBR//7
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_Default);
+        SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_NORMAL_SPECULAR();
+        PixelShader = compile ps_5_0 PS_MAIN_NORMAL_PBR();
     }
 
     pass Masking_Scalar //8
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_Default, 0);
-        SetRasterizerState(RS_Default);
+        SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
         GeometryShader = NULL;

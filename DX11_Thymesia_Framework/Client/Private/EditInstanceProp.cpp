@@ -17,7 +17,8 @@
 #include "Window_HierarchyView.h"
 #include "ImGui_Window.h"
 
-_bool CEditInstanceProp::m_bDetailPicking = true;
+_bool CEditInstanceProp::m_bDetailPicking	= true;
+_uint CEditInstanceProp::m_iOption			= 0;
 
 GAMECLASS_C(CEditInstanceProp)
 CLONE_C(CEditInstanceProp, CGameObject)
@@ -378,7 +379,6 @@ void CEditInstanceProp::OnEventMessage(_uint iArg)
 			{
 				if (ImGui::BeginTabItem("Create"))
 				{
-
 					View_PhysXOption();
 					View_SelectModelComponent();
 
@@ -474,7 +474,7 @@ void CEditInstanceProp::View_PickingInfo()
 {
 	ImGui::Text("");
 
-	if (!m_pPropInfos.empty() && 0 <= m_iPickingIndex && (_uint)m_pPropInfos.size() > m_iPickingIndex)
+	if (!m_pPropInfos.empty() && 0 <= m_iPickingIndex && (_int)m_pPropInfos.size() > m_iPickingIndex)
 	{
 		m_PickingDesc.vTarnslation.y = m_pPropInfos[m_iPickingIndex].vTarnslation.y;
 	}
@@ -519,17 +519,17 @@ void CEditInstanceProp::View_Picking_Prop()
 	// ÇÇÅ·
 	else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD))
 	{			
-		RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
-
 		if (!m_pInstanceModelCom.lock()->Get_ModelData().lock())
 			return;
 
+		RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+
 		MESH_VTX_INFO VtxInfo = m_pInstanceModelCom.lock()->Get_ModelData().lock()->VertexInfo;
 
-		_uint   iIndex    = 0;
-		_float  fDistance = 99999999.f;
+		_uint   iIndex       = 0;
+		_float  fDistance    = 99999999.f;
 		_float4	vCamPosition = GAMEINSTANCE->Get_CamPosition();
-		_vector vCamPos   = XMLoadFloat4(&vCamPosition);
+		_vector vCamPos      = XMLoadFloat4(&vCamPosition);
 
 		for (auto& iter : m_pPropInfos)
 		{
@@ -605,12 +605,12 @@ void CEditInstanceProp::View_Picking_List()
 
 	if (ImGui::Button("Create", ImVec2(100.f, 25.f)) || KEY_INPUT(KEY::M, KEY_STATE::TAP))
 	{
-		if ("" == m_szSelectModelName)
-			return;
-
-		m_pPropInfos.push_back(m_PickingDesc);
-		m_pInstanceModelCom.lock()->Init_Instance((_uint)m_pPropInfos.size());
-		m_iPickingIndex = (_uint)m_pPropInfos.size() - 1;
+		if ("" != m_szSelectModelName)
+		{
+			m_pPropInfos.push_back(m_PickingDesc);
+			m_pInstanceModelCom.lock()->Init_Instance((_uint)m_pPropInfos.size());
+			m_iPickingIndex = (_uint)m_pPropInfos.size() - 1;
+		}
 	}
 
 	ImGui::SameLine();
@@ -659,12 +659,11 @@ void CEditInstanceProp::View_Picking_Option()
 
 	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
 	{
-		RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
-
-		_float4 vMouseDir;
-
 		if (KEY_INPUT(KEY::Z, KEY_STATE::HOLD))
 		{
+			RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+			_float4 vMouseDir;
+
 			vMouseDir.y = m_PickingDesc.vTarnslation.y;
 
 			if (!SMath::Is_Picked_AbstractTerrain(MouseRayInWorldSpace, &vMouseDir))
@@ -681,9 +680,9 @@ void CEditInstanceProp::View_Picking_Option()
 			{
 				switch (m_iOption)
 				{
-				case 0: m_pPropInfos[m_iPickingIndex].vRotation.x += 0.01f * MouseMove; break;
-				case 1: m_pPropInfos[m_iPickingIndex].vRotation.y += 0.01f * MouseMove; break;
-				case 2: m_pPropInfos[m_iPickingIndex].vRotation.z += 0.01f * MouseMove; break;
+					case 0: m_pPropInfos[m_iPickingIndex].vRotation.x += 0.01f * MouseMove; break;
+					case 1: m_pPropInfos[m_iPickingIndex].vRotation.y += 0.01f * MouseMove; break;
+					case 2: m_pPropInfos[m_iPickingIndex].vRotation.z += 0.01f * MouseMove; break;
 				}
 			}
 		}
@@ -692,32 +691,32 @@ void CEditInstanceProp::View_Picking_Option()
 		{
 			switch (m_iOption)
 			{
-			case 0:
-			case 2:
-			{
-				_long		MouseMoveX = 0;
-				if (MouseMoveX = GAMEINSTANCE->Get_DIMouseMoveState(MMS_X))
+				case 0:
+				case 2:
 				{
-					m_pPropInfos[m_iPickingIndex].vTarnslation.x += 0.01f * MouseMoveX;
-				}
+					_long		MouseMoveX = 0;
+					if (MouseMoveX = GAMEINSTANCE->Get_DIMouseMoveState(MMS_X))
+					{
+						m_pPropInfos[m_iPickingIndex].vTarnslation.x += 0.01f * MouseMoveX;
+					}
 
-				_long		MouseMoveZ = 0;
-				if (MouseMoveZ = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
-				{
-					m_pPropInfos[m_iPickingIndex].vTarnslation.z -= 0.01f * MouseMoveZ;
+					_long		MouseMoveZ = 0;
+					if (MouseMoveZ = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
+					{
+						m_pPropInfos[m_iPickingIndex].vTarnslation.z -= 0.01f * MouseMoveZ;
+					}
 				}
-			}
-			break;
+				break;
 
-			case 1:
-			{
-				_long		MouseMove = 0;
-				if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
+				case 1:
 				{
-					m_pPropInfos[m_iPickingIndex].vTarnslation.y -= 0.01f * MouseMove;
+					_long		MouseMove = 0;
+					if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
+					{
+						m_pPropInfos[m_iPickingIndex].vTarnslation.y -= 0.01f * MouseMove;
+					}
 				}
-			}
-			break;
+				break;
 			}
 		}
 
@@ -725,32 +724,66 @@ void CEditInstanceProp::View_Picking_Option()
 		{
 			switch (m_iOption)
 			{
-			case 0:
-			{
-				if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
-					m_pPropInfos[m_iPickingIndex].vScale.x -= 0.1f;
-				else
-					m_pPropInfos[m_iPickingIndex].vScale.x += 0.1f;
-			}
-			break;
+				case 0:
+				{
+					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
+						m_pPropInfos[m_iPickingIndex].vScale.x -= 0.1f;
+					else
+						m_pPropInfos[m_iPickingIndex].vScale.x += 0.1f;
+				}
+				break;
 
-			case 1:
-			{
-				if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
-					m_pPropInfos[m_iPickingIndex].vScale.y -= 0.1f;
-				else
-					m_pPropInfos[m_iPickingIndex].vScale.y += 0.1f;
-			}
-			break;
+				case 1:
+				{
+					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
+						m_pPropInfos[m_iPickingIndex].vScale.y -= 0.1f;
+					else
+						m_pPropInfos[m_iPickingIndex].vScale.y += 0.1f;
+				}
+				break;
 
-			case 2:
-			{
-				if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
-					m_pPropInfos[m_iPickingIndex].vScale.z -= 0.1f;
-				else
-					m_pPropInfos[m_iPickingIndex].vScale.z += 0.1f;
+				case 2:
+				{
+					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
+						m_pPropInfos[m_iPickingIndex].vScale.z -= 0.1f;
+					else
+						m_pPropInfos[m_iPickingIndex].vScale.z += 0.1f;
+				}
+				break;
+
 			}
-			break;
+		}
+
+		else if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
+		{
+			switch (m_iOption)
+			{
+				case 0:
+				{
+					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
+						m_pPropInfos[m_iPickingIndex].vScale.x -= 0.1f;
+					else
+						m_pPropInfos[m_iPickingIndex].vScale.x += 0.1f;
+				}
+				break;
+
+				case 1:
+				{
+					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
+						m_pPropInfos[m_iPickingIndex].vScale.y -= 0.1f;
+					else
+						m_pPropInfos[m_iPickingIndex].vScale.y += 0.1f;
+				}
+				break;
+
+				case 2:
+				{
+					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
+						m_pPropInfos[m_iPickingIndex].vScale.z -= 0.1f;
+					else
+						m_pPropInfos[m_iPickingIndex].vScale.z += 0.1f;
+				}
+				break;
 
 			}
 		}
@@ -844,7 +877,6 @@ void CEditInstanceProp::View_PhysXOption()
 				m_iColliderType = n;
 			}
 
-			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
 			if (is_selected)
 				ImGui::SetItemDefaultFocus();
 		}

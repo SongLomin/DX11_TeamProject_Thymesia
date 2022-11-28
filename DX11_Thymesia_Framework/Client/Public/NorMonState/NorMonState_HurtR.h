@@ -14,6 +14,11 @@ class CNorMonState_HurtR :
 	CLONE_H(CNorMonState_HurtR, CComponent)
 		SHALLOW_COPY(CNorMonState_HurtR)
 
+public:
+	void    Set_ParryCount(_uint ParryCount) { m_iParryCount += ParryCount; }
+	void    Set_ZeroParryCount(_uint ParryCount) { m_iParryCount = ParryCount; }
+	_uint   Get_ParryCount() { return  m_iParryCount; }
+
 protected:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
@@ -27,6 +32,8 @@ protected:
 	virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
+private:
+	_uint  m_iParryCount = 0;
 
 private:
 	void Call_AnimationEnd();

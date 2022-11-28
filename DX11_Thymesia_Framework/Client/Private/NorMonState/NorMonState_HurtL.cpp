@@ -44,6 +44,12 @@ void CNorMonState_HurtL::Start()
 	case Client::MONSTERTYPE::GARDENER:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_HurtM_FL");
 		break;
+	case Client::MONSTERTYPE::ELITEGARDENER:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_HurtM_FL");
+		break;
+	case Client::MONSTERTYPE::SHIELDAXEMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_HurtS_FL|BaseLayer|Arm");
+		break;
 	}
 
 
@@ -65,9 +71,6 @@ void CNorMonState_HurtL::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	if (m_bAttackLookAtLimit)
-		Rotation_TargetToLookDir();
-
 	Check_AndChangeNextState();
 
 }
@@ -78,6 +81,26 @@ void CNorMonState_HurtL::LateTick(_float fTimeDelta)
 void CNorMonState_HurtL::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	switch (m_eMonType)
+	{
+	case Client::MONSTERTYPE::AXEMAN:
+	{
+		_uint iRand = rand() % 3 + 4;
+		m_iParryCount += iRand;
+		Get_Owner().lock()->Get_Component<CNorMonState_HurtR>().lock()->Set_ParryCount(iRand);
+
+		break;
+	}
+	case Client::MONSTERTYPE::SHIELDAXEMAN:
+	{
+		_uint iRand = rand() % 3 + 4;
+		m_iParryCount += iRand;
+		Get_Owner().lock()->Get_Component<CNorMonState_HurtR>().lock()->Set_ParryCount(iRand);
+		break;
+	}
+
+	}
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -96,7 +119,6 @@ void CNorMonState_HurtL::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	m_bAttackLookAtLimit = false;
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
@@ -117,9 +139,16 @@ _bool CNorMonState_HurtL::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
-		m_bAttackLookAtLimit = true;
+		if (m_iParryCount >= 10)
+		{
+			Get_Owner().lock()->Get_Component<CNorMonState_HurtR>().lock()->Set_ZeroParryCount(0);
+			Get_OwnerCharacter().lock()->Change_State<CNorMonState_Parry>(0.05f);
+			m_iParryCount = 0;
+		}
+		return true;
 	}
 
 	return false;
@@ -130,6 +159,8 @@ void CNorMonState_HurtL::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
+
+	
 
 	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
 }

@@ -47,6 +47,13 @@ void CNorMonState_HeavyAttack1::Start()
 	case Client::MONSTERTYPE::GARDENER:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_ComboA01");
 		break;
+	case Client::MONSTERTYPE::ELITEGARDENER:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_ComboA01");
+		break;
+	case Client::MONSTERTYPE::SHIELDAXEMAN:
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_Attack04|BaseLayer|Arm");
+		break;
+
 	}
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_HeavyAttack1::Call_AnimationEnd, this);
@@ -107,6 +114,11 @@ void CNorMonState_HeavyAttack1::OnStateStart(const _float& In_fAnimationBlendTim
 			break;
 		case Client::MONSTERTYPE::GARDENER:
 			m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+			break;
+		case Client::MONSTERTYPE::ELITEGARDENER:
+			m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+		case Client::MONSTERTYPE::SHIELDAXEMAN:
+			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 			break;
 		}
 
