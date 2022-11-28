@@ -9,19 +9,17 @@ HRESULT MODEL_DATA::Make_ModelData(const char* szFilePath, const MODEL_TYPE& In_
 
     XMStoreFloat4x4(&TransformMatrix, In_TransformMatrix);
 
-    if (In_eModelType == MODEL_TYPE::ANIM)
-    {
-        int i = 0;
-    }
+    //if (In_eModelType == MODEL_TYPE::ANIM)
+    //{
+    //    int i = 0;
+    //}
 
     szModelFilePath = szFilePath;
 
     if (true == g_bUseAssimp)
     {
         if (FAILED(Load_FromAssimp(bAnimZero)))
-        {
             return E_FAIL;
-        }
 
         return S_OK;
     }
@@ -44,9 +42,7 @@ HRESULT MODEL_DATA::Make_ModelData(const char* szFilePath, const MODEL_TYPE& In_
     {
         is.close();
         if (FAILED(Load_FromAssimp(bAnimZero)))
-        {
             return E_FAIL;
-        }
     }
 
     else

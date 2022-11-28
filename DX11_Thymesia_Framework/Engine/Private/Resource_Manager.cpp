@@ -105,10 +105,10 @@ HRESULT CResource_Manager::Release_ResourceByMemoryType(MEMORY_TYPE _eMemType)
 
 HRESULT CResource_Manager::Load_Model(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType, _bool bAnimZero)
 {
-	if (strcmp(sKey, "HORSE_P_Flag01"))
-	{
-		int i = 0;
-	}
+	//if (strcmp(sKey, "HORSE_P_Flag01"))
+	//{
+	//	int i = 0;
+	//}
 
 	shared_ptr<MODEL_DATA> TempModel = make_shared<MODEL_DATA>();
 
