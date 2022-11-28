@@ -37,7 +37,7 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 
 	m_pPhysXCameraControllerCom = Add_Component<CPhysXCameraController>();
 	m_pPhysXCameraControllerCom.lock()->Set_CurrentCameraController();
-	m_pPhysXCameraControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::CameraSetting(m_pTransformCom));
+	//c m_pPhysXCameraControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::CameraSetting(m_pTransformCom));
 	
 	return S_OK;
 }
@@ -131,9 +131,9 @@ void CCamera_Target::Tick(_float fTimeDelta)
 	PlayerToCameraRay.vOrigin.w = 1.f;
 	PlayerToCameraRay.fLength = fLength;
 
-	m_pPhysXCameraControllerCom.lock()->Update_Ray(PlayerToCameraRay);
-	m_pPhysXCameraControllerCom.lock()->Synchronize_Controller(m_pTransformCom, fTimeDelta, PxControllerFilters());
-	m_pPhysXCameraControllerCom.lock()->Synchronize_Transform(m_pTransformCom);
+	//m_pPhysXCameraControllerCom.lock()->Update_Ray(PlayerToCameraRay);
+	//m_pPhysXCameraControllerCom.lock()->Synchronize_Controller(m_pTransformCom, fTimeDelta, PxControllerFilters());
+	//m_pPhysXCameraControllerCom.lock()->Synchronize_Transform(m_pTransformCom);
 }
 
 void CCamera_Target::LateTick(_float fTimeDelta)
