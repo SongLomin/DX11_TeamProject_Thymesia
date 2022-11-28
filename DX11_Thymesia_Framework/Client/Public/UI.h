@@ -110,8 +110,6 @@ protected:
 
 
 public:
-    _float2         Get_Point(UI_POINT eType);
-
     void		Set_AlphaColor(_float fAlphaColor) { m_fAlphaColor = fAlphaColor; }
     _float		Get_AlphaColor() { return m_fAlphaColor; }
 

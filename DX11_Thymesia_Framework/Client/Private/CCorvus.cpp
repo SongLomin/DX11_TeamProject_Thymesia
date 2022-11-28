@@ -178,7 +178,7 @@ void CCorvus::Ready_States()
 	MACRO(CCorvusState_Parry1);
 	MACRO(CCorvusState_Parry2);
 	MACRO(CCorvusState_BasicHealing);
-	MACRO(CCorvusState_ClawAttack1);
+	MACRO(CCorvusState_ClawAttackTab);
 	MACRO(CCorvusState_Die);
 	MACRO(CCorvusState_HurtL);
 	MACRO(CCorvusState_HurtR);

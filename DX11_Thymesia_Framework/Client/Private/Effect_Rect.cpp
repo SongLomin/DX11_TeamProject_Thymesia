@@ -1442,8 +1442,6 @@ void CEffect_Rect::Update_ParentTransform()
 
 }
 
-}
-
 void CEffect_Rect::Apply_Easing
 (
 	_float3& vTarget

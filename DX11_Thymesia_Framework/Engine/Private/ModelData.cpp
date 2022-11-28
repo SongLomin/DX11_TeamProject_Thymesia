@@ -244,23 +244,6 @@ _float MODEL_DATA::Get_MaxOffsetRange() const
     return XMVectorGetX(XMVector3Length(vOffsetRange));
 }
 
-_float MODEL_DATA::Get_MaxOffsetRange() const
-{
-    _vector vOffsetRange = XMLoadFloat3(&VertexInfo.vMax) - XMLoadFloat3(&VertexInfo.vMin);
-    _float fMaxRange = 0.f;
-    
-    for (_int i = 0; i < 3; ++i)
-    {
-        if (fMaxRange < vOffsetRange.m128_f32[i])
-        {
-            fMaxRange = vOffsetRange.m128_f32[i];
-        }
-    }
-
-
-    return fMaxRange;
-}
-
 HRESULT MODEL_DATA::Load_FromAssimp(const _bool In_bAnimZero)
 {
     const aiScene* pAiSceneModel = nullptr;

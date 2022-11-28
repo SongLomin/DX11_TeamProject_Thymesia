@@ -108,15 +108,6 @@ void CStatus_Monster::Init_Status(const void* pArg)
 		m_tMonsterDesc.m_fMaxParryingGauge = 500.f;
 		m_tMonsterDesc.m_iLifeCount = 1;
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
-		m_tMonsterDesc.m_szModelKey = "Mon_Gardner";
-		break;
-	case Client::MONSTERTYPE::VARG:
-		//TODO 공격력몰름 임시 
-		m_tMonsterDesc.m_fAtk = 1.f;
-		m_tMonsterDesc.m_fMaxHP_white = 500.f;
-		m_tMonsterDesc.m_fMaxParryingGauge = 500.f;
-		m_tMonsterDesc.m_iLifeCount = 1;
-		m_tMonsterDesc.m_iMaxParryCount = 10000;
 		m_tMonsterDesc.m_szModelKey = "Boss_Varg";
 		break;
 	case Client::MONSTERTYPE::ELITEGARDENER:
@@ -285,29 +276,6 @@ void CStatus_Monster::Update_HitedTime(_float fTimeDelta)
 		
 		return;
 	}
-}
-
-void CStatus_Monster::Update_ParryRecoveryTime(_float fTimeDelta)
-{
-	if (m_tMonsterDesc.m_fCurrentHP_Green <= 0.f)
-		return;
-
-	if (m_tMonsterDesc.m_fCurrentParryingGauge <= 0.f)
-		return;
-	m_tMonsterDesc.m_fParryGaugeRecoveryTime -= fTimeDelta;
-	
-	//패리 게이지가 남아있다? 아직 회복까지 남은 시간이 있다.
-	if (m_tMonsterDesc.m_fParryGaugeRecoveryTime > 0.f)
-		return;
-
-	//초당 최대 패링게이지의 2할만큼 빠짐.
-	m_tMonsterDesc.m_fCurrentParryingGauge -= (m_tMonsterDesc.m_fMaxParryingGauge * 0.2) * fTimeDelta;
-	if (m_tMonsterDesc.m_fCurrentParryingGauge <= 0.f)
-		m_tMonsterDesc.m_fCurrentParryingGauge = 0.f;
-
-	CallBack_UpdateParryGauge(m_tMonsterDesc.m_fCurrentParryingGauge / m_tMonsterDesc.m_fMaxParryingGauge,
-		false);
-
 }
 
 void CStatus_Monster::Update_ParryRecoveryTime(_float fTimeDelta)
