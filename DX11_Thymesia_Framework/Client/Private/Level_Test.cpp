@@ -35,8 +35,8 @@ HRESULT CLevel_Test::Initialize()
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_TEST);
 
 #ifdef _TEST_STATIC_PROPS_
-	Load_FromJson(m_szDefaultJsonPath + "Stage3.json", LEVEL::LEVEL_TEST);
-	//Load_FromJson(m_szDefaultJsonPath + "Stage1_StaticProps.json", LEVEL::LEVEL_TEST);
+	//Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_TEST);
+	Load_FromJson(m_szDefaultJsonPath + "Stage1_StaticProps.json", LEVEL::LEVEL_TEST);
 #else
 	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_TEST);
 #endif // _TEST_STATIC_PROPS_
