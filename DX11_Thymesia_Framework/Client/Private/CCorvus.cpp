@@ -70,7 +70,7 @@ void CCorvus::Tick(_float fTimeDelta)
 
 	// TODO : test jump key R
 	if (KEY_INPUT(KEY::R, KEY_STATE::HOLD))
-		m_pPhysXControllerCom.lock()->Move(_vector{ 0.f, 10.f * fTimeDelta, 0.f }, 0.f, fTimeDelta, PxControllerFilters());
+		m_pPhysXControllerCom.lock()->Move(_vector{ 0.f, 1000.f * fTimeDelta, 0.f }, 0.f, fTimeDelta, PxControllerFilters());
 
 	// TODO : frame test
 	//if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))

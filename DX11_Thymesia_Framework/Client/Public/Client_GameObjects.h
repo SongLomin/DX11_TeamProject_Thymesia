@@ -24,6 +24,7 @@
 #include "EditGround.h"
 #include "EditGroupProp.h"
 #include "EditInstanceProp.h"
+#include "EditMapCollider.h"
 #include "PhysXColliderObject.h"
 
 #include "CCorvus.h"

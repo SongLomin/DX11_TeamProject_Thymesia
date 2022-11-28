@@ -95,7 +95,8 @@ void CWindow_ComponentView::Draw_Components()
 	}
 
 	if (typeid(CEditGroupProp).hash_code()    != m_tPickedGameObjectDesc.HashCode &&
-		typeid(CEditInstanceProp).hash_code() != m_tPickedGameObjectDesc.HashCode)
+		typeid(CEditInstanceProp).hash_code() != m_tPickedGameObjectDesc.HashCode &&
+		typeid(CEditMapCollider).hash_code()  != m_tPickedGameObjectDesc.HashCode)
 	{
 		if (bSelect_ActivateHotkey)
 			TransformComponent_PickingAction(pTransformCom);

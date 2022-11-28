@@ -29,14 +29,15 @@
 
 #ifdef NDEBUG
 #define		_INSTANCE_CULLING_
-#define		_144HZ_
+//#define		_144HZ_
 #define		_DAGGER_TRAIL_
 #define		_USE_THREAD_
 #define		_STAGE_2_
 #define		_LIFEGUARD_FOR_FALL_
-#define		_STAGE_1_MONSTER_
+//#define		_STAGE_1_MONSTER_
 #define		_USE_GRAVITY_
 #define		_GENERATE_PROP_COLLIDER_ true
+#define		_RENDER_FPS_
 #endif // NDEBUG
 
 

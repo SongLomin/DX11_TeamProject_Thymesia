@@ -52,7 +52,7 @@ void CVIBuffer_Model_Instance::Init_Instance(_uint In_iNumInstance)
 
 	m_iInstanceStride		= sizeof(VTXMODELINSTANCE);
 	m_iNumInstance			= In_iNumInstance;
-	m_iVisibleCount		= m_iNumInstance;
+	m_iVisibleCount		    = m_iNumInstance;
 	m_iNumVertexBuffers		= 2;
 
 	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
@@ -262,7 +262,7 @@ void CVIBuffer_Model_Instance::Culling_Instance(vector<INSTANCE_MESH_DESC>& In_P
 		vPosition = XMLoadFloat3(&elem.vCenter);
 		vPosition.m128_f32[3] = 1.f;
 
-		if (pGameInstance->isIn_Frustum_InWorldSpace(vPosition, elem.fMaxRange * 2.5f))
+		if (pGameInstance->isIn_Frustum_InWorldSpace(vPosition, elem.fMaxRange * 1.f))
 		{
 			m_pVisibleInstanceDescs[iUpdateIndex][iIndex] = elem;
 			++iIndex;

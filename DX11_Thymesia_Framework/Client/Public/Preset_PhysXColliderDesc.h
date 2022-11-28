@@ -14,8 +14,8 @@ namespace Preset
 		void GroundSetting(PHYSXCOLLIDERDESC& Out_Desc, const _bool bTrigger);
 		void TestLightPropSetting(PHYSXCOLLIDERDESC& Out_Desc);
 		void TestLightPropTriggerSetting(PHYSXCOLLIDERDESC& Out_Desc);
-		void StaticPropSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform);
 		void DynamicPropSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform);
+		void StaticPropSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform);
 		void StaticInstancingPropSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform);
 		void StaticBoxDefaultSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform);
 	}

@@ -22,6 +22,7 @@ public:
 public:
 	void Call_Add_GameObject(const _hashcode& TypeHash, const char* TypeName);
 	void Write_Json(json& Out_Json);
+	void Write_Json_ModelList();
 	void Load_FromJson(const json& In_Json);
 
 private:
@@ -29,11 +30,16 @@ private:
 	void Picking_Obj();
 
 public:
+	typedef map<_hashcode, vector<GAMEOBJECT_DESC>>		OBJ_GROUP;
+
 	FDelegate<GAMEOBJECT_DESC>		CallBack_ListClick;
 
-	list<GAMEOBJECT_DESC>			m_pGameObjects;
-	list<GAMEOBJECT_DESC>			m_pSubGameObjects;
+	vector<GAMEOBJECT_DESC>			m_pGameObjects;
+	vector<GAMEOBJECT_DESC>			m_pSubGameObjects;
+	OBJ_GROUP						m_pObjGroup;
+
 	_uint							m_iPreSelectIndex = 0;
+	_bool							m_RenderMSG_BOX   = true;
 
 public:
 	virtual void OnLevelLoad() override;

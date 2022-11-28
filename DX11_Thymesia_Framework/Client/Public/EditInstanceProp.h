@@ -68,8 +68,10 @@ private:
     weak_ptr<CVIBuffer_DynamicCube>     m_pSelect_VIBufferCom;
     weak_ptr<CShader>                   m_pSelect_ShaderCom;
                                               
+    static _bool        m_bDetailPicking;
+    static _uint        m_iOption;
+
     _int                m_iPickingIndex       = -1;
-    _uint               m_iOption             = 0;
 
     string              m_szSelectModelName   = "";
     INSTANCE_MESH_DESC  m_PickingDesc;
@@ -79,7 +81,6 @@ private:
     RESOURCE_LIST       m_JsonList;
     _bool               m_bSubDraw = false;
 
-    static _bool        m_bDetailPicking;
 
     _int                m_iColliderType  = 0;
     _bool               m_bViewPhysXInfo = false;
