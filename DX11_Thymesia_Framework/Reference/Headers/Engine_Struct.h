@@ -352,6 +352,8 @@ namespace Engine
 		_float			fCurrentSpawnTime;
 		_float			fTargetSpawnTime;
 
+		_float4x4			matParentMatrix;
+
 		// For. Position
 		_float3			vOffsetPosition;
 		_float3			vCurrentTranslation;

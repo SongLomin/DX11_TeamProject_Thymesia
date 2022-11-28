@@ -487,6 +487,26 @@ XMMATRIX ENGINE_DLL Engine::SMath::LookAt(FXMMATRIX Mat, FXMVECTOR In_vPosition)
 	return ResultMat;
 }
 
+XMMATRIX ENGINE_DLL Engine::SMath::Bake_WorldMatrix(const XMFLOAT3& In_vScale, const XMFLOAT3& In_vRot, const XMFLOAT3& In_vPos)
+{
+	_matrix TransformationMatrix;
+	_matrix RotationMatrix, ScaleMatrix;
+
+	_vector vPitchYawRoll;
+	_vector vPosition;
+
+	vPitchYawRoll = XMLoadFloat3(&In_vRot);
+	vPosition = XMLoadFloat3(&In_vPos);
+	vPosition.m128_f32[3] = 1.f;
+
+	RotationMatrix = XMMatrixRotationRollPitchYawFromVector(vPitchYawRoll);
+	ScaleMatrix = XMMatrixScaling(In_vScale.x, In_vScale.y, In_vScale.z);
+	TransformationMatrix = ScaleMatrix * RotationMatrix;
+	TransformationMatrix.r[3] = vPosition;
+
+	return TransformationMatrix;
+}
+
 bool ENGINE_DLL Engine::SMath::Is_SphereToRayCollision(const XMFLOAT3& Center, const float& Radius, FXMVECTOR Origin, FXMVECTOR Direction, float& Dist)
 {
 	XMVECTOR vCenter = XMLoadFloat3(&Center);

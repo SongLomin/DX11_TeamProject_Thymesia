@@ -123,7 +123,11 @@ void CEffect_Rect::Tick(_float fTimeDelta)
 
 void CEffect_Rect::LateTick(_float fTimeDelta)
 {
-	m_pVIBuffer.lock()->Update(m_tParticleDescs);
+	_bool bUseParentMatrix = false;
+	if ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType)
+		bUseParentMatrix = true;
+
+	m_pVIBuffer.lock()->Update(m_tParticleDescs, bUseParentMatrix);
 
 	__super::LateTick(fTimeDelta);
 
@@ -205,10 +209,10 @@ void CEffect_Rect::SetUp_ShaderResource()
 
 	WorldMatrix = BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix();
 
-	if (((_uint)PARTICLETYPE::BILLBOARD == m_tEffectParticleDesc.iParticleType))
-	{
-		WorldMatrix = SMath::Get_PositionMatrix(WorldMatrix);
-	}
+	//if (((_uint)PARTICLETYPE::BILLBOARD == m_tEffectParticleDesc.iParticleType))
+	//{
+	//	WorldMatrix = SMath::Get_PositionMatrix(WorldMatrix);
+	//}
 
 	WorldMatrix = XMMatrixTranspose(WorldMatrix);
 
@@ -780,12 +784,7 @@ void CEffect_Rect::Play(_float fTimeDelta)
 				m_tParticleDescs[i].bEnable = true;
 
 				if ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType && m_pParentTransformCom.lock())
-				{
-					_float3 ParentPosition;
-					XMStoreFloat3(&ParentPosition, WorldMatrix.r[3]);
-
-					SMath::Add_Float3(&m_tParticleDescs[i].vCurrentTranslation, ParentPosition);
-				}
+					XMStoreFloat4x4(&m_tParticleDescs[i].matParentMatrix, m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
 			}
 			else
 			{
@@ -882,20 +881,20 @@ void CEffect_Rect::Reset_ParticleDesc(const _uint& In_iIndex)
 	_vector vOffset;
 	vOffset = XMLoadFloat3(&m_tParticleDescs[In_iIndex].vOffsetPosition);
 
-	if (m_pBoneNode.lock())
-	{
-		_matrix		BoneMatrix = XMMatrixIdentity();
+	//if (m_pBoneNode.lock())
+	//{
+	//	_matrix		BoneMatrix = XMMatrixIdentity();
 
-		_float4x4	TempMat = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Get_TransformationMatrix();
-		_matrix		ModelTranMat = XMLoadFloat4x4(&TempMat);
-		BoneMatrix = m_pBoneNode.lock()->Get_CombinedMatrix() * ModelTranMat;
+	//	_float4x4	TempMat = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Get_TransformationMatrix();
+	//	_matrix		ModelTranMat = XMLoadFloat4x4(&TempMat);
+	//	BoneMatrix = m_pBoneNode.lock()->Get_CombinedMatrix() * ModelTranMat;
 
-		BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
-		BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
-		BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
+	//	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
+	//	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
+	//	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
 
-		vOffset = XMVector3TransformCoord(vOffset, SMath::Get_RotationMatrix(BoneMatrix));
-	}
+	//	vOffset = XMVector3TransformCoord(vOffset, SMath::Get_RotationMatrix(BoneMatrix));
+	//}
 
 	_float3 f3Offset;
 	ZeroMemory(&f3Offset, sizeof(_float3));

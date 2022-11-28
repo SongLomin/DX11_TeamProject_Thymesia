@@ -75,9 +75,12 @@ void CStatus_Monster::Init_Status(const void* pArg)
 	switch (eMonsterType)
 	{
 	case Client::MONSTERTYPE::AXEMAN:
-		m_tMonsterDesc.m_fAtk              = 55.f;
-		m_tMonsterDesc.m_fMaxHP_white      = 150.f;
-		m_tMonsterDesc.m_fMaxParryingGauge = 200.f;
+		// TODO : JoJo Test : for hit effect
+		m_tMonsterDesc.m_fAtk              = 0.f;
+		// TODO : JoJo Test : for hit effect
+		m_tMonsterDesc.m_fMaxHP_white      = 150.f/*150.f*/;
+		// TODO : JoJo Test : for parry effect
+		m_tMonsterDesc.m_fMaxParryingGauge = FLT_MAX/*200.f*/;
 		m_tMonsterDesc.m_iLifeCount        = 1;
 		m_tMonsterDesc.m_iMaxParryCount    = 10000;
 		m_tMonsterDesc.m_szModelKey        = "Mon_AxeMan";
