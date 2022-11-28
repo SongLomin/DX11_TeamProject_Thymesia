@@ -47,6 +47,7 @@ using namespace physx;
 #include <vector>
 #include <list>
 #include <map>
+#include <stack>
 #include <unordered_map>
 #include <fstream>
 #include <algorithm>

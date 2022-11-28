@@ -46,6 +46,7 @@
 
 #define ADD_STATIC_CUSTOMUI GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC)
 
+
 namespace Client 
 {
 	static const _uint	g_iScreenCX = GetSystemMetrics(SM_CXSCREEN);

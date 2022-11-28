@@ -361,11 +361,19 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Apply"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Apply.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Apply"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Apply.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+
 	GAMEINSTANCE->Load_Textures(("Decoration_Arrow_Right"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_Arrow_04.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Keyboard_Arrow_Left"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_Arrow_05.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Keyboard_Arrow_Right"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_Arrow_06.png"), MEMORY_TYPE::MEMORY_STATIC);
+	
+	GAMEINSTANCE->Load_Textures(("LevelUp_ReconfirmWindowBG"), TEXT("../Bin/Resources/Textures/UI/TexUI_HintDialogBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
 
-
+	GAMEINSTANCE->Load_Textures(("LevelUp_ReconfirmWindow_ChangedStatusApply"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/ChangedStatusApply.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("LevelUp_ReconfirmWindow_Yes"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Yes.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("LevelUp_ReconfirmWindow_No"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/No.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 #ifndef _ONLY_UI_
 	

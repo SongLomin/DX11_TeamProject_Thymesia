@@ -788,7 +788,6 @@
     <ClInclude Include="..\Public\HUD_PlagueWeaponBase.h">
       <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\PlagueWeapon\Base</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\MonsterHPBar_Elite.h" />
     <ClInclude Include="..\Public\Dynamic_Piece.h">
       <Filter>02. GameObject\04. Prop\02-1. Dynamic_Piece</Filter>
     </ClInclude>
@@ -1491,9 +1490,6 @@
     <ClCompile Include="..\Private\Preset_PhysXControllerDesc.cpp">
       <Filter>06. DataPreset\01. Preset_PhysXControllerDesc</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\VargExecution\NorMob_Execution.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\00.NorMob_Execution</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Effect_Trail.cpp">
       <Filter>02. GameObject\08. Effect\02. Effect_Trail</Filter>
     </ClCompile>
@@ -1668,7 +1664,6 @@
     <ClCompile Include="..\Private\HUD_PlagueWeaponBase.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\PlagueWeapon\Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp" />
     <ClCompile Include="..\Private\Dynamic_Piece.cpp">
       <Filter>02. GameObject\04. Prop\02-1. Dynamic_Piece</Filter>
     </ClCompile>
@@ -2246,12 +2241,6 @@
     </Filter>
     <Filter Include="02. GameObject\01. UI\Progress">
       <UniqueIdentifier>{fe5378f3-5d92-48f6-9847-6ce6ac071847}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. UI\MonsterHPBar">
-      <UniqueIdentifier>{d1cc751f-2867-49e0-be1e-51383949c286}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. UI\MonsterHPBar\Boss">
-      <UniqueIdentifier>{7f2bc015-f8e3-43fa-ae95-787d7300b0d1}</UniqueIdentifier>
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack">
       <UniqueIdentifier>{1db70a15-64a5-4a8c-8ff3-f74f19895d58}</UniqueIdentifier>

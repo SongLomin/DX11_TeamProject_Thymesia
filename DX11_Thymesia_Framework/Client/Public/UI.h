@@ -104,9 +104,18 @@ protected:
 public:
     _float2         Get_Point(UI_POINT eType);
 
+protected:
+    virtual void    Enable_AllEventChild();
+    virtual void    Disable_AllEventChild();
+
+
 public:
     _float2         Get_Point(UI_POINT eType);
-    
+
+    void		Set_AlphaColor(_float fAlphaColor) { m_fAlphaColor = fAlphaColor; }
+    _float		Get_AlphaColor() { return m_fAlphaColor; }
+
+
 
 
 protected:
@@ -136,7 +145,9 @@ protected:
     RENDERGROUP     m_eRenderGroup = RENDERGROUP::RENDER_UI;
     _uint           m_iTextureIndex = 0;
     _uint           m_iPassIndex = 0;
-    
+    _float	m_fAlphaColor = 1.f;
+
+
 protected:
     vector<weak_ptr<CUI>> m_vecChildUI;
     vector<weak_ptr<CUI>> m_vecEventChildUI;

@@ -81,7 +81,7 @@ HRESULT CPhysX_Manager::Initialize(const _uint In_iNumLayer)
 	tCudaDesc.interopMode = PxCudaInteropMode::Enum::D3D11_INTEROP;
 	tCudaDesc.ctx;
 
-	m_pCudaContextManager = PxCreateCudaContextManager(*m_pFoundation, tCudaDesc, PxGetProfilerCallback());
+	//m_pCudaContextManager = PxCreateCudaContextManager(*m_pFoundation, tCudaDesc, PxGetProfilerCallback());
 
 	if (m_pCudaContextManager)
 	{
