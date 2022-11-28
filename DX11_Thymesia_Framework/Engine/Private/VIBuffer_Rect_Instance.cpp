@@ -1,6 +1,8 @@
 #include "VIBuffer_Rect_Instance.h"
 #include "GameInstance.h"
 
+#include "SMath.h"
+
 GAMECLASS_C(CVIBuffer_Rect_Instance)
 CLONE_C(CVIBuffer_Rect_Instance, CComponent)
 
@@ -165,7 +167,7 @@ HRESULT CVIBuffer_Rect_Instance::Render()
 	return S_OK;
 }
 
-void CVIBuffer_Rect_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDescs)
+void CVIBuffer_Rect_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDescs, const _bool In_UseParentMatrix)
 {
 	if (In_ParticleDescs.size() == 0 || 0 == m_iNumInstance)
 		return;
@@ -176,37 +178,33 @@ void CVIBuffer_Rect_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDes
 	/* D3D11_MAP_WRITE_DISCARD : SubResource구조체가 받아온 pData에 값이 초기화된 형태로 얻어오낟. */
 	DEVICECONTEXT->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
 
+	const PARTICLE_DESC* pParticleDesc = nullptr;
+
 	for (_uint i = 0; i < m_iNumInstance; ++i)
-	{
-		_vector PitchYawRoll = XMLoadFloat3(&In_ParticleDescs[i].vCurrentRotation);
+	{	
+		pParticleDesc = &In_ParticleDescs[i];
 
-		_matrix RotationMatrix = XMMatrixRotationRollPitchYawFromVector(PitchYawRoll);
-		XMStoreFloat4(&((VTXCOLORINSTANCE*)SubResource.pData)[i].vRight, RotationMatrix.r[0] * In_ParticleDescs[i].vCurrentScale.x);
-		XMStoreFloat4(&((VTXCOLORINSTANCE*)SubResource.pData)[i].vUp, RotationMatrix.r[1] * In_ParticleDescs[i].vCurrentScale.y);
-		XMStoreFloat4(&((VTXCOLORINSTANCE*)SubResource.pData)[i].vLook, RotationMatrix.r[2] * In_ParticleDescs[i].vCurrentScale.z);
-
-		XMStoreFloat4(&((VTXCOLORINSTANCE*)SubResource.pData)[i].vTranslation,
-			XMLoadFloat3(&In_ParticleDescs[i].vCurrentTranslation));
-
-		((VTXCOLORINSTANCE*)SubResource.pData)[i].vTranslation.w = 1.f;
-
-		if (!In_ParticleDescs[i].bEnable)
+		if (!pParticleDesc->bEnable)
 		{
 			((VTXCOLORINSTANCE*)SubResource.pData)[i].vColor = _float4(0.f, 0.f, 0.f, 0.f);
+			continue;
 		}
 
-		else
-		{
-			((VTXCOLORINSTANCE*)SubResource.pData)[i].vColor = In_ParticleDescs[i].vCurrentColor;
-		}
+		_matrix WorldMatrix = SMath::Bake_WorldMatrix(pParticleDesc->vCurrentScale, pParticleDesc->vCurrentRotation, pParticleDesc->vCurrentTranslation);
 
-		((VTXCOLORINSTANCE*)SubResource.pData)[i].vSpriteTexUV = In_ParticleDescs[i].vSpriteUV;
-		// *(((VTXINSTANCE*)SubResource.pData) + i)
-		/*((VTXCOLORINSTANCE*)SubResource.pData)[i].vTranslation.y -= m_pInstanceSpeeds[i] * fTimeDelta;
+		if (In_UseParentMatrix)
+			WorldMatrix *= XMLoadFloat4x4(&pParticleDesc->matParentMatrix);
 
-		if (0.0f >= ((VTXCOLORINSTANCE*)SubResource.pData)[i].vTranslation.y)
-			((VTXCOLORINSTANCE*)SubResource.pData)[i].vTranslation.y = 10.f;*/
+		XMStoreFloat4(&((VTXCOLORINSTANCE*)SubResource.pData)[i].vRight, WorldMatrix.r[0]);
+		XMStoreFloat4(&((VTXCOLORINSTANCE*)SubResource.pData)[i].vUp   , WorldMatrix.r[1]);
+		XMStoreFloat4(&((VTXCOLORINSTANCE*)SubResource.pData)[i].vLook , WorldMatrix.r[2]);
 
+		XMStoreFloat4(&((VTXCOLORINSTANCE*)SubResource.pData)[i].vTranslation,
+			WorldMatrix.r[3]);
+
+		((VTXCOLORINSTANCE*)SubResource.pData)[i].vColor = pParticleDesc->vCurrentColor;
+
+		((VTXCOLORINSTANCE*)SubResource.pData)[i].vSpriteTexUV = pParticleDesc->vSpriteUV;
 	}
 
 	DEVICECONTEXT->Unmap(m_pVBInstance.Get(), 0);

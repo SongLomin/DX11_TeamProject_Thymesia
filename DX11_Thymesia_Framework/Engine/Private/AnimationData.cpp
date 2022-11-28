@@ -80,10 +80,25 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     MACRO("SK_C_Corvus.ao|Corvus_PW_Magician_A", 1.75f);
     MACRO("SK_C_Corvus.ao|Corvus_PW_CaneSword_SP02", 2.f);*/
     MACRO("SK_C_Corvus.ao|Corvus_StunExecute_StartL_L", 5.f);
-    MACRO("SK_C_Corvus.ao|Corvus_SD_ParryDeflect_LUp", 3.f);
-    MACRO("SK_C_Corvus.ao|Corvus_SD_ParryDeflect_L", 3.f);
-    MACRO("SK_C_Corvus.ao|Corvus_SD_ParryDeflect_R", 3.f);
-    MACRO("SK_C_Corvus.ao|Corvus_SD_ParryDeflect_RUp", 3.f);
+
+    MACRO("SK_C_Corvus.ao|Corvus_SD_ParryDeflect_L", 2.f);
+    MACRO("SK_C_Corvus.ao|Corvus_SD_ParryDeflect_LUp", 2.f);
+
+    MACRO("SK_C_Corvus.ao|Corvus_SD_ParryDeflect_R", 2.f);
+    MACRO("SK_C_Corvus.ao|Corvus_SD_ParryDeflect_RUp", 2.f);
+
+
+    MACRO("SK_C_Varg.ao|Varg_Seq_BossFightStart", 5.5f);
+
+    MACRO("SK_C_Varg.ao|Varg_ComboAttack1_1", 1.25f);
+    MACRO("SK_C_Varg.ao|Varg_ComboAttack1_2", 1.25f);
+    MACRO("SK_C_Varg.ao|Varg_ComboAttack1_3", 1.25f);
+
+    MACRO("SK_C_Varg.ao|Varg_ComboAttack2_1", 2.5f);
+    MACRO("SK_C_Varg.ao|Varg_ComboAttack2_2", 2.5f);
+
+    MACRO("SK_C_Varg.ao|Varg_ComboAttack2_2b", 2.f);
+    MACRO("SK_C_Varg.ao|Varg_ComboAttack2_2b1", 2.f);
 
 #undef MACRO
 

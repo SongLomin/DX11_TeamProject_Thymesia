@@ -8,7 +8,6 @@ class CBoneNode;
 END
 
 BEGIN(Client)
-
 class CEffect_Rect final :
     public CEffectObject
 {
@@ -122,7 +121,7 @@ private:
     _bool                               m_bStopSprite = false;
     std::string                         m_szBoneName;
 
-    /* For. Boner */
+    // For. Boner
     std::vector<std::string>            m_AllBoneNames;
     weak_ptr<CBoneNode>                 m_pBoneNode;
     std::string                         m_strBoneName = "";

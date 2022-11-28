@@ -79,6 +79,7 @@ void CActor::Custom_Thread1(_float fTimeDelta)
 {
     __super::Custom_Thread1(fTimeDelta);
 
+#ifdef _Actor_Culling_
     if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), m_fCullingRange))
     {
         m_bRendering = true;
@@ -87,6 +88,9 @@ void CActor::Custom_Thread1(_float fTimeDelta)
     {
         m_bRendering = false;
     }
+#else
+    m_bRendering = true;
+#endif // _Actor_Culling_
 }
 
 HRESULT CActor::Render()

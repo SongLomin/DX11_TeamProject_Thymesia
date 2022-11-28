@@ -7,10 +7,8 @@ XMMATRIX Engine::SMath::Get_RotationMatrix(FXMMATRIX Mat)
 {
 	XMMATRIX ResultMat = XMMatrixIdentity();
 
-	for (int i = 0; i < 3; i++)
-	{
+	for (int i(0); i < 3; i++)
 		ResultMat.r[i] = XMVector3Normalize(Mat.r[i]);
-	}
 
 	return ResultMat;
 }
@@ -463,7 +461,6 @@ XMMATRIX ENGINE_DLL Engine::SMath::Add_PositionWithRotation(FXMMATRIX Mat, FXMVE
 	_matrix ResultMatrix = Mat;
 
 	ResultMatrix.r[3] += vRotatedPosition;
-	
 
 	return ResultMatrix;
 }
@@ -488,6 +485,26 @@ XMMATRIX ENGINE_DLL Engine::SMath::LookAt(FXMMATRIX Mat, FXMVECTOR In_vPosition)
 	ResultMat.r[3] = vPosition;
 
 	return ResultMat;
+}
+
+XMMATRIX ENGINE_DLL Engine::SMath::Bake_WorldMatrix(const XMFLOAT3& In_vScale, const XMFLOAT3& In_vRot, const XMFLOAT3& In_vPos)
+{
+	_matrix TransformationMatrix;
+	_matrix RotationMatrix, ScaleMatrix;
+
+	_vector vPitchYawRoll;
+	_vector vPosition;
+
+	vPitchYawRoll = XMLoadFloat3(&In_vRot);
+	vPosition = XMLoadFloat3(&In_vPos);
+	vPosition.m128_f32[3] = 1.f;
+
+	RotationMatrix = XMMatrixRotationRollPitchYawFromVector(vPitchYawRoll);
+	ScaleMatrix = XMMatrixScaling(In_vScale.x, In_vScale.y, In_vScale.z);
+	TransformationMatrix = ScaleMatrix * RotationMatrix;
+	TransformationMatrix.r[3] = vPosition;
+
+	return TransformationMatrix;
 }
 
 bool ENGINE_DLL Engine::SMath::Is_SphereToRayCollision(const XMFLOAT3& Center, const float& Radius, FXMVECTOR Origin, FXMVECTOR Direction, float& Dist)

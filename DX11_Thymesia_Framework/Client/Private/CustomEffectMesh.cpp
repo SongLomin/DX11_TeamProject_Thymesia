@@ -10,6 +10,8 @@
 #include "PreViewAnimationModel.h"
 #include "Easing_Utillity.h"
 
+#include "BoneNode.h"
+
 
 GAMECLASS_C(CCustomEffectMesh)
 CLONE_C(CCustomEffectMesh, CGameObject)
@@ -1028,6 +1030,59 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::Checkbox("##Sync Animation", &m_tEffectMeshDesc.bSyncAnimation);
 
 			ImGui::InputInt("Sync Animation Key", &m_tEffectMeshDesc.iSyncAnimationKey);
+			ImGui::Separator();
+
+			ImGui::Text("Follow Bone"); ImGui::SameLine();
+			ImGui::Checkbox("##Is_Boner", &m_tEffectMeshDesc.bBoner);
+
+			if (m_tEffectMeshDesc.bBoner)
+			{
+				if (ImGui::Button("Get Bone List"))
+				{
+					m_pParentTransformCom = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Component<CTransform>().lock();
+					m_AllBoneNames = GET_SINGLE(CWindow_AnimationModelView)->Get_AllBoneNames();
+				}
+
+				if (0 == m_AllBoneNames.size())
+					ImGui::Text("No Bones");
+				else
+				{
+					if (ImGui::BeginListBox("Bone List 3"))
+					{
+						for (_int n(0); n < m_AllBoneNames.size(); n++)
+						{
+							const _bool is_selected = (m_iCurrentBoneIndex == n);
+							if (ImGui::Selectable(m_AllBoneNames[n].c_str(), is_selected))
+							{
+								m_strBoneName = m_AllBoneNames[n];
+							}
+
+							if (is_selected)
+								ImGui::SetItemDefaultFocus();
+						}
+						ImGui::EndListBox();
+					}
+
+				}
+
+				if (ImGui::Button("Bind to Bone"))
+				{
+					m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
+					if (nullptr == m_pBoneNode.lock())
+					{
+						MSG_BOX("Invalid Bone Name!");
+						assert(0);
+					}
+				}
+
+				if (m_pBoneNode.lock())
+				{
+					ImGui::Text("Binded to Bone : ");
+					ImGui::Text(m_pBoneNode.lock()->Get_Name());
+				}
+			}
+
+
 			ImGui::Separator();
 
 			ImGui::Text("Sync Start Position to Controller"); ImGui::SameLine();

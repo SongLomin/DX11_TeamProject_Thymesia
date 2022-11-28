@@ -75,6 +75,8 @@ void CCorvusState_ParryDeflectLeft::OnStateStart(const _float& In_fAnimationBlen
 #endif
 #endif
 
+	// GET_SINGLE(CGameManager)->Use_EffectGroup("ParryDeflect_L_Sparkle", m_pTransformCom, (_uint)TIMESCALE_LAYER::PLAYER);
+
 	//m_pModelCom.lock()->Set_AnimationSpeed(3.f);
 }
 

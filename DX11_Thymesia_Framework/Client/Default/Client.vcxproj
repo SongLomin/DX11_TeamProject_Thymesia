@@ -131,6 +131,9 @@
     <FxCompile>
       <ShaderModel>5.0</ShaderModel>
     </FxCompile>
+    <PreBuildEvent>
+      <Command>call ..\..\UpdateLib.bat</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
