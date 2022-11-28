@@ -23,8 +23,6 @@ HRESULT CCorvusState_LAttack2::Initialize_Prototype()
 HRESULT CCorvusState_LAttack2::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-	m_vShakingOffSet = { 0.5f,-0.3f,0.f };
-
 	return S_OK;
 }
 
@@ -53,9 +51,6 @@ void CCorvusState_LAttack2::Tick(_float fTimeDelta)
 			m_fDebugAnimationSpeed = 0.1f;
 		}
 	}
-
-	XMStoreFloat3(&m_vShakingOffSet, XMVector3TransformNormal(XMLoadFloat3(&m_vShakingOffSet), m_pTransformCom.lock()->Get_WorldMatrix()));
-
 
 	Attack();
 }
@@ -238,7 +233,7 @@ _bool CCorvusState_LAttack2::Check_AndChangeNextState()
 		if (Check_RequirementClawAttackState())
 		{
 			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackTab>();
 			return true;
 		}
 	}

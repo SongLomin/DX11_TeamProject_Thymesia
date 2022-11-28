@@ -83,6 +83,9 @@ void CCorvusState_Parry1::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
 
+	#ifdef _DEBUG_COUT_
+		cout << "AttackIndex: " << m_iAttackIndex << endl;
+#endif
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 }
@@ -215,22 +218,22 @@ void CCorvusState_Parry1::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
 			switch (ParryType)
 			{
 			case Client::PARRY_SUCCESS::LEFT:
-				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
+				pMonsterStatusCom.lock()->Decrease_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
 				pStatus.lock()->Heal_Player(30.f);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeft>();
 				break;
 			case Client::PARRY_SUCCESS::LEFTUP:
-				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
+				pMonsterStatusCom.lock()->Decrease_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
 				pStatus.lock()->Heal_Player(30.f);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeftup>();
 				break;
 			case Client::PARRY_SUCCESS::RIGHT:
-				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
+				pMonsterStatusCom.lock()->Decrease_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
 				pStatus.lock()->Heal_Player(30.f);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRight>();
 				break;
 			case Client::PARRY_SUCCESS::RIGHTUP:
-				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
+				pMonsterStatusCom.lock()->Decrease_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
 				pStatus.lock()->Heal_Player(30.f);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRightup>();
 				break;
@@ -245,19 +248,19 @@ void CCorvusState_Parry1::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
 			switch (ParryType)
 			{
 			case Client::PARRY_SUCCESS::LEFT:
-				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
+				pMonsterStatusCom.lock()->Decrease_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeft>();
 				break;
 			case Client::PARRY_SUCCESS::LEFTUP:
-				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
+				pMonsterStatusCom.lock()->Decrease_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeftup>();
 				break;
 			case Client::PARRY_SUCCESS::RIGHT:
-				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
+				pMonsterStatusCom.lock()->Decrease_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRight>();
 				break;
 			case Client::PARRY_SUCCESS::RIGHTUP:
-				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
+				pMonsterStatusCom.lock()->Decrease_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRightup>();
 				break;
 			case Client::PARRY_SUCCESS::FAIL:
@@ -355,7 +358,7 @@ _bool CCorvusState_Parry1::Check_AndChangeNextState()
 		if (Check_RequirementClawAttackState())
 		{
 			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttack1>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackTab>();
 			return true;
 		}
 	}

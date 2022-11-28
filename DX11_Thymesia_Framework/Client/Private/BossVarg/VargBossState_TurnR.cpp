@@ -38,6 +38,8 @@ void CVargBossState_TurnR::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+
+
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 

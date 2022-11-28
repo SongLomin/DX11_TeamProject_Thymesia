@@ -191,6 +191,7 @@
     <ClInclude Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hpp" />
     <ClInclude Include="..\Private\CorvusStates\CorvusState_LAttack5.h" />
     <ClInclude Include="..\Public\Actor.h" />
+    <ClInclude Include="..\Public\ActorDecor.h" />
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
     <ClInclude Include="..\Public\BossUrd\Urd.h" />
@@ -209,8 +210,12 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectRight.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectRightup.h" />
     <ClInclude Include="..\Public\Dynamic_Piece.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h" />
     <ClInclude Include="..\Public\Level_Test.h" />
     <ClInclude Include="..\Public\PhysXCameraController.h" />
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Parry.h" />
     <ClInclude Include="..\Public\PhysXColliderObject.h" />
     <ClInclude Include="..\Public\BossMonster.h" />
     <ClInclude Include="..\Public\BossStateBase.h" />
@@ -445,6 +450,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Actor.cpp" />
+    <ClCompile Include="..\Private\ActorDecor.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Attack_Area.cpp" />
     <ClCompile Include="..\Private\BossStateBase.cpp" />
@@ -460,8 +466,12 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectLeftup.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectRight.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectRightup.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackAway.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackHold.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab2.cpp" />
     <ClCompile Include="..\Private\Dynamic_Piece.cpp" />
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Parry.cpp" />
     <ClCompile Include="..\Private\PhysXCameraController.cpp" />
     <ClCompile Include="..\Private\Preset_DynamicProp.cpp" />
     <ClCompile Include="..\Private\Status_Boss.cpp" />
@@ -470,7 +480,7 @@
     <ClCompile Include="..\Private\UI_EvolveMenu_Level.cpp" />
     <ClCompile Include="..\Private\UI_LerpBar.cpp" />
     <ClCompile Include="..\Private\BossMonster.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttack1.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Die.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtL.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtR.cpp" />

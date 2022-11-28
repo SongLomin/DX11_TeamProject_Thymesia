@@ -26,6 +26,61 @@ void CVIBuffer_Model_Instance::Start()
 {
 }
 
+void CVIBuffer_Model_Instance::Culling_Instance(vector<INSTANCE_MESH_DESC>& In_ParticleDescs)
+{
+	shared_ptr<CGameInstance> pGameInstance = GAMEINSTANCE;
+	m_pVisibleInstanceDescs.clear();
+
+	m_pModelData->VertexInfo.vMax;
+
+	_vector vPosition;
+	for (auto& elem : In_ParticleDescs)
+	{
+		vPosition = XMLoadFloat3(&elem.vTarnslation);
+		vPosition = XMVectorSetW(vPosition, 1.f);
+		if (pGameInstance->isIn_Frustum_InWorldSpace(vPosition, m_fMaxOffsetRange * 4.f))
+		{
+			m_pVisibleInstanceDescs.push_back(&elem);
+		}
+	}
+
+	m_iVisibleCount = m_pVisibleInstanceDescs.size();
+	m_bCulling = true;
+
+	
+	/*shared_ptr<CGameInstance> pGameInstance = GAMEINSTANCE;
+
+	_int iCount = 0;
+
+	sort(m_pModelInstance, 
+		m_pModelInstance + m_iNumInstance, 
+		[&pGameInstance, &In_fRange, &iCount](VTXMODELINSTANCE& Left, VTXMODELINSTANCE& Right) {
+
+			XMVECTOR LeftFromVector, RightFromVector;
+			LeftFromVector = XMLoadFloat4(&Left.vTranslation);
+			RightFromVector = XMLoadFloat4(&Right.vTranslation);
+			_bool IsInLeft = pGameInstance->isIn_Frustum_InWorldSpace(LeftFromVector, In_fRange);
+			_bool IsInRight = pGameInstance->isIn_Frustum_InWorldSpace(RightFromVector, In_fRange);
+			if (IsInLeft == IsInRight) 
+			{
+				return false;
+			}
+			else if (IsInLeft && !IsInRight)
+			{
+				iCount++;
+				return true;
+			}
+		}
+		);
+
+	m_iVisiableCount = iCount;
+
+	if (m_iVisiableCount > m_iNumInstance)
+	{
+		DEBUG_ASSERT;
+	}*/
+}
+
 void CVIBuffer_Model_Instance::Init_Model(const char* In_szModelName)
 {
 	Reset_Model();
@@ -356,6 +411,39 @@ void CVIBuffer_Model_Instance::Update(vector<INSTANCE_MESH_DESC>& In_ParticleDes
 	}
 
 	DEVICECONTEXT->Unmap(m_pVBInstance.Get(), 0);
+}
+
+void CVIBuffer_Model_Instance::Update_VisibleInstance()
+{
+	if (0 == m_iVisibleCount || !m_bCulling || m_pVisibleInstanceDescs.empty())
+		return;
+
+	D3D11_MAPPED_SUBRESOURCE		SubResource;
+
+	_matrix							WorldMatrix;
+	_uint							iIndex = 0;
+	DEVICECONTEXT->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+
+	for (auto& elem : m_pVisibleInstanceDescs)
+	{
+		WorldMatrix = (*elem).Get_Matrix();
+
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vRight, WorldMatrix.r[0]);
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vUp, WorldMatrix.r[1]);
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vLook, WorldMatrix.r[2]);
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[iIndex].vTranslation, WorldMatrix.r[3]);
+		++iIndex;
+	}
+
+	DEVICECONTEXT->Unmap(m_pVBInstance.Get(), 0);
+
+	m_bCulling = false;
+
+}
+
+void CVIBuffer_Model_Instance::OnDestroy()
+{
+	
 }
 
 void CVIBuffer_Model_Instance::Update_VisibleInstance()

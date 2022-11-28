@@ -173,6 +173,8 @@ void CCorvus::Ready_States()
 	MACRO(CCorvusState_LAttack1);
 	MACRO(CCorvusState_LAttack2);
 	MACRO(CCorvusState_LAttack3);
+	MACRO(CCorvusState_LAttack4);
+	MACRO(CCorvusState_LAttack5);
 	MACRO(CCorvusState_Parry1);
 	MACRO(CCorvusState_Parry2);
 	MACRO(CCorvusState_BasicHealing);
@@ -182,6 +184,11 @@ void CCorvus::Ready_States()
 	MACRO(CCorvusState_HurtR);
 	MACRO(CCorvusState_HurtXXL);
 	MACRO(CCorvusState_NorMob_Execution);
+
+	Add_Component<CCorvusState_ParryDeflectLeft>();
+	Add_Component<CCorvusState_ParryDeflectLeftup>();
+	Add_Component<CCorvusState_ParryDeflectRight>();
+	Add_Component<CCorvusState_ParryDeflectRightup>();
 
 #undef MACRO
 }

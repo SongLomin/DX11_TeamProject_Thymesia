@@ -101,6 +101,8 @@ protected:
     virtual void    Add_Child(weak_ptr<CUI> pChild);
     virtual void    Set_Owner(weak_ptr<CBase> pOwner);
 
+public:
+    _float2         Get_Point(UI_POINT eType);
 
 public:
     _float2         Get_Point(UI_POINT eType);

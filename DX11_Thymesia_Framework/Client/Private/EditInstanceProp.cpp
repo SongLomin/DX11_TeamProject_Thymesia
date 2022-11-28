@@ -754,6 +754,40 @@ void CEditInstanceProp::View_Picking_Option()
 
 			}
 		}
+
+		else if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
+		{
+			switch (m_iOption)
+			{
+				case 0:
+				{
+					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
+						m_pPropInfos[m_iPickingIndex].vScale.x -= 0.1f;
+					else
+						m_pPropInfos[m_iPickingIndex].vScale.x += 0.1f;
+				}
+				break;
+
+				case 1:
+				{
+					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
+						m_pPropInfos[m_iPickingIndex].vScale.y -= 0.1f;
+					else
+						m_pPropInfos[m_iPickingIndex].vScale.y += 0.1f;
+				}
+				break;
+
+				case 2:
+				{
+					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
+						m_pPropInfos[m_iPickingIndex].vScale.z -= 0.1f;
+					else
+						m_pPropInfos[m_iPickingIndex].vScale.z += 0.1f;
+				}
+				break;
+
+			}
+		}
 	}
 
 	else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) && KEY_INPUT(KEY::R, KEY_STATE::TAP))
