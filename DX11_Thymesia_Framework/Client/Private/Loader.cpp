@@ -374,8 +374,6 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("LevelUp_ReconfirmWindow_Yes"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Yes.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("LevelUp_ReconfirmWindow_No"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/No.png"), MEMORY_TYPE::MEMORY_STATIC);
 
-
-
 #ifndef _ONLY_UI_
 	
 	Load_AllDiffuseTexture();

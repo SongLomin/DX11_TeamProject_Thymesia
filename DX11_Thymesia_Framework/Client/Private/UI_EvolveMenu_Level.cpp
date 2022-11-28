@@ -132,13 +132,19 @@ void CUI_EvolveMenu_Level::Tick(_float fTimeDelta)
         }
         if (KEY_INPUT(KEY::LEFT, KEY_STATE::TAP))
         {
-            if (m_stackChangedPlayerDesc.size() > 1)
-                DecreaseStatus();
+            if (Check_Changeable((CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE)m_iSelectedIndex, KEY::LEFT))
+            {
+                DecreaseStatus((CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE)m_iSelectedIndex);
+            }
+            ChangeSelectedIndex();
         }
         if (KEY_INPUT(KEY::RIGHT, KEY_STATE::TAP))
         {
-            if (m_stackChangedPlayerDesc.back().m_iMemory >= m_iNeedMemory)
+            if (Check_Changeable((CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE)m_iSelectedIndex, KEY::RIGHT))
+            {
                 IncreaseStatus((CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE)m_iSelectedIndex);
+            }
+            ChangeSelectedIndex();
         }
 
         if (KEY_INPUT(KEY::ENTER, KEY_STATE::TAP))
@@ -463,6 +469,25 @@ void CUI_EvolveMenu_Level::Create_NoneGrouping()
         Add_Child(pArrow);
     }
 
+
+    m_pStatusArrowLeft = ADD_STATIC_CUSTOMUI;
+    m_pStatusArrowLeft.lock()->Set_UIPosition(0, 0, 18.f, 41.f);
+    m_pStatusArrowLeft.lock()->Set_Texture("Keyboard_Arrow_Left");
+    m_pStatusArrowLeft.lock()->Set_Depth(0.5f);
+
+
+
+    m_pStatusArrowRight = ADD_STATIC_CUSTOMUI;
+    m_pStatusArrowRight.lock()->Set_UIPosition(0, 0, 18.f, 41.f);
+    m_pStatusArrowRight.lock()->Set_Texture("Keyboard_Arrow_Right");
+    m_pStatusArrowRight.lock()->Set_Depth(0.5f);
+
+    
+
+
+
+    Add_Child(m_pStatusArrowLeft);
+    Add_Child(m_pStatusArrowRight);
     Add_Child(m_pHighlight);
     Add_Child(m_pApply);
 
@@ -893,13 +918,35 @@ void CUI_EvolveMenu_Level::Update_ChangeStatus(CStatus_Player::PLAYERDESC& tChan
 
 void CUI_EvolveMenu_Level::CalculateNeedMemory()
 {
-    m_iNeedMemory = m_stackChangedPlayerDesc.back().m_iLevel * 100;
+    m_iNeedMemory = m_tChangeStatus.m_iLevel * 100;
 }
 
-_bool CUI_EvolveMenu_Level::Check_Changed(_uint dest, _uint sour)
+_bool CUI_EvolveMenu_Level::Check_Changeable(EVOLVE_LEVEL_TYPE eType, KEY eKey)
 {
-    return dest != sour ? true : false;
+    if (eType == CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::APPLY)
+        return false;
+
+    if (eKey == KEY::LEFT)
+    {
+        switch (eType)
+        {
+        case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::STR:
+            return m_tChangeStatus.m_iStr > m_tOriginStatus.m_iStr ? true : false;
+            break;
+        case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::VIT:
+            return m_tChangeStatus.m_iVital > m_tOriginStatus.m_iVital ? true : false;
+            break;
+        case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::PLA:
+            return m_tChangeStatus.m_iPlague > m_tOriginStatus.m_iPlague ? true : false;
+            break;
+       }
+    }
+    else if (eKey == KEY::RIGHT);
+        return m_tChangeStatus.m_iMemory >= m_iNeedMemory ? true : false;
+
+    return false;
 }
+
 
 
 void CUI_EvolveMenu_Level::OnDisable()
@@ -921,12 +968,21 @@ void CUI_EvolveMenu_Level::ChangeSelectedIndex()
     {
     case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::STR:
         m_pHighlight.lock()->Set_UIPosition(231.f, 465.f, ALIGN_LEFTTOP);
-        break;
+        m_pStatusArrowLeft.lock()->Set_UIPosition(673.f, 465.f, ALIGN_LEFTTOP);
+        m_pStatusArrowRight.lock()->Set_UIPosition(757.f,465.f, ALIGN_LEFTTOP);
+
+        break;  
     case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::VIT:
         m_pHighlight.lock()->Set_UIPosition(231.f, 542.f, ALIGN_LEFTTOP);
+        m_pStatusArrowLeft.lock()->Set_UIPosition(673., 541.f, ALIGN_LEFTTOP);
+        m_pStatusArrowRight.lock()->Set_UIPosition(757.f, 541.f, ALIGN_LEFTTOP);
+
         break;
     case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::PLA:
         m_pHighlight.lock()->Set_UIPosition(231.f, 619.f, ALIGN_LEFTTOP);
+        m_pStatusArrowLeft.lock()->Set_UIPosition(673.f, 618.f, ALIGN_LEFTTOP);
+        m_pStatusArrowRight.lock()->Set_UIPosition(757.f, 618.f, ALIGN_LEFTTOP);
+
         break;
     case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::APPLY:
         m_pHighlight.lock()->Set_UIPosition(121.f, 725.f, ALIGN_LEFTTOP);
@@ -934,6 +990,11 @@ void CUI_EvolveMenu_Level::ChangeSelectedIndex()
     default:
         break;
     }
+    m_pStatusArrowLeft.lock()->Set_Enable(Check_Changeable(eType, KEY::LEFT));
+    m_pStatusArrowRight.lock()->Set_Enable(Check_Changeable(eType, KEY::RIGHT));
+
+
+
 
 
     LEVEL_RECONFIRM_TYPE eReconfirmType = (LEVEL_RECONFIRM_TYPE)m_iReconfirmWindowIndex;
@@ -999,7 +1060,6 @@ void CUI_EvolveMenu_Level::TickReconfirmWindow()
             if (m_iReconfirmWindowIndex > 0)
             {
                 m_iReconfirmWindowIndex--;
-                ChangeSelectedIndex();
             }
         }
         if (KEY_INPUT(KEY::DOWN, KEY_STATE::TAP))
@@ -1014,9 +1074,8 @@ void CUI_EvolveMenu_Level::TickReconfirmWindow()
         {
             if (m_iReconfirmWindowIndex == (_uint)LEVEL_RECONFIRM_TYPE::YES)
             {
-                m_tOriginStatus = m_stackChangedPlayerDesc.back();
-                m_stackChangedPlayerDesc.clear();
-                m_stackChangedPlayerDesc.push_back(m_tOriginStatus);
+                m_tOriginStatus = m_tChangeStatus;
+            
             }
             m_iReconfirmWindowIndex = 0;
             m_bOpenableReconfirmWindow = true;
@@ -1025,7 +1084,6 @@ void CUI_EvolveMenu_Level::TickReconfirmWindow()
             Update_ChangeStatus(m_tOriginStatus);
         }
     }
-    
 }
 void CUI_EvolveMenu_Level::IncreaseStatus(EVOLVE_LEVEL_TYPE eEvolveType)
 {
@@ -1043,11 +1101,14 @@ void CUI_EvolveMenu_Level::IncreaseStatus(EVOLVE_LEVEL_TYPE eEvolveType)
     case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::VIT:
         ++m_tChangeStatus.m_iVital;
         ++m_tChangeStatus.m_iLevel;
+        m_tChangeStatus.m_iMemory -= m_iNeedMemory;
+
         Update_ChangeStatus(m_tChangeStatus);
         break;
     case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::PLA:
         ++m_tChangeStatus.m_iPlague;
         ++m_tChangeStatus.m_iLevel;
+        m_tChangeStatus.m_iMemory -= m_iNeedMemory;
         Update_ChangeStatus(m_tChangeStatus);
         break;
     default:
@@ -1062,18 +1123,22 @@ void CUI_EvolveMenu_Level::DecreaseStatus(EVOLVE_LEVEL_TYPE eEvolveType)
     case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::STR:
         --m_tChangeStatus.m_iStr;
         --m_tChangeStatus.m_iLevel;
-        m_tChangeStatus.m_iMemory -= m_iNeedMemory;
+        m_tChangeStatus.m_iMemory += (m_tChangeStatus.m_iLevel * 100);;
 
         Update_ChangeStatus(m_tChangeStatus);
         break;
     case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::VIT:
         --m_tChangeStatus.m_iVital;
         --m_tChangeStatus.m_iLevel;
+
+        m_tChangeStatus.m_iMemory += (m_tChangeStatus.m_iLevel * 100);;
+
         Update_ChangeStatus(m_tChangeStatus);
         break;
     case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::PLA:
         --m_tChangeStatus.m_iPlague;
         --m_tChangeStatus.m_iLevel;
+        m_tChangeStatus.m_iMemory += (m_tChangeStatus.m_iLevel * 100);
         Update_ChangeStatus(m_tChangeStatus);
         break;
     default:
@@ -1081,7 +1146,6 @@ void CUI_EvolveMenu_Level::DecreaseStatus(EVOLVE_LEVEL_TYPE eEvolveType)
     }
 
 }
-
 
 void CUI_EvolveMenu_Level::OnEnable(void* pArg)
 {
@@ -1095,26 +1159,19 @@ void CUI_EvolveMenu_Level::OnEnable(void* pArg)
     weak_ptr<CPlayer>   pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock();
     if (pPlayer.lock())
         pPlayer.lock()->Get_Status().lock()->Get_Desc(&m_tOriginStatus);
-    else
-    {
-        m_tOriginStatus.m_iLevel = 1;
-        m_tOriginStatus.m_fCurrentHP = 300.f;
-        m_tOriginStatus.m_fMaxHP = 300.f;
-        m_tOriginStatus.m_fMaxMP = 150.f;
-        m_tOriginStatus.m_fCurrentMP = 150.f;
-        m_tOriginStatus.m_fNormalAtk = 25.f;
-        m_tOriginStatus.m_fPlagueAtk = 200.f;
-        m_tOriginStatus.m_iWound = 75.f;
-        m_tOriginStatus.m_iMemory = 5000;
-        m_tOriginStatus.m_fParryingAtk = 25.f;
-        m_tOriginStatus.m_iStr = 1;
-        m_tOriginStatus.m_iVital = 1;
-        m_tOriginStatus.m_iPlague = 1;
 
-    }
+    m_tChangeStatus = m_tOriginStatus;
 
-    m_stackChangedPlayerDesc.push_back(m_tOriginStatus);
+    m_pStatusArrowLeft.lock()->Set_Enable(false);
+    m_pStatusArrowRight.lock()->Set_Enable(false);
     
+    m_iSelectedIndex = (_uint)EVOLVE_LEVEL_TYPE::APPLY;
+    m_iReconfirmWindowIndex = 0;
+    m_bOpenableReconfirmWindow = true;
+
+    ChangeSelectedIndex();
+    CalculateNeedMemory();
+    Update_FontInfo();
 }
 
 void CUI_EvolveMenu_Level::Call_ReturnToEvolveMenu()

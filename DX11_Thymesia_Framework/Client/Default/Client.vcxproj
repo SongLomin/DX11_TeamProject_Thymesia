@@ -234,6 +234,7 @@
     <ClInclude Include="..\Public\UI_EvolveMenu.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Level.h" />
     <ClInclude Include="..\Public\UI_LerpBar.h" />
+    <ClInclude Include="..\Public\UI_Script.h" />
     <ClInclude Include="..\Public\UI_T_Dissolve.h" />
     <ClInclude Include="..\Public\VargBossStateBase.h" />
     <ClInclude Include="..\Public\BossVarg\Varg.h" />
@@ -677,6 +678,7 @@
     <ClCompile Include="..\Private\Player.cpp" />
     <ClCompile Include="..\Private\UI.cpp" />
     <ClCompile Include="..\Private\WorldUI.cpp" />
+    <ClCompile Include="..\Public\UI_Script.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -804,6 +804,7 @@
     <ClInclude Include="..\Public\EasingTransform.h">
       <Filter>05. Component\EasingTransform</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_Script.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1489,9 +1490,6 @@
     <ClCompile Include="..\Private\Preset_PhysXControllerDesc.cpp">
       <Filter>06. DataPreset\01. Preset_PhysXControllerDesc</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\VargExecution\NorMob_Execution.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\00.NorMob_Execution</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Effect_Trail.cpp">
       <Filter>02. GameObject\08. Effect\02. Effect_Trail</Filter>
     </ClCompile>
@@ -1677,6 +1675,7 @@
     <ClCompile Include="..\Private\EasingTransform.cpp">
       <Filter>05. Component\EasingTransform</Filter>
     </ClCompile>
+    <ClCompile Include="..\Public\UI_Script.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -2616,6 +2615,12 @@
     </Filter>
     <Filter Include="05. Component\EasingTransform">
       <UniqueIdentifier>{9b618106-2386-4d3b-8886-733879faba42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\SkillTree">
+      <UniqueIdentifier>{60d9aa6b-ae8a-420c-af5d-f7c6d1442bc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\UI_Container\Script">
+      <UniqueIdentifier>{7733d89c-4844-4f10-8170-06211363d585}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

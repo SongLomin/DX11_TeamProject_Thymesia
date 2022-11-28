@@ -43,7 +43,8 @@ private:
 
 
 private:
-	_bool	Check_Changed(_uint dest, _uint sour);
+
+	_bool	Check_Changeable(EVOLVE_LEVEL_TYPE eType, KEY eKey);
 
 
 private:
@@ -92,12 +93,6 @@ private:
 
 
 private:
-	stack<_uint>			m_stackStr;
-	stack<_uint>			m_stackVital;
-	stack<_uint>			m_stackPlague;
-	stack
-
-
 
 private:
 	_uint						m_iSelectedIndex;
