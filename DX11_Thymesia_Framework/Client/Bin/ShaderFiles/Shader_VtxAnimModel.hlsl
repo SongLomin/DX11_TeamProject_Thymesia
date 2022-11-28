@@ -326,8 +326,7 @@ struct PS_OUT_SPECULAR
     vector		vNormal : SV_TARGET1;
     vector		vDepth : SV_TARGET2;
     vector		vLightFlag : SV_Target3;
-    vector      vSpecular : SV_Target4;
-    vector      vORM : SV_Target5;
+    vector      vORM : SV_Target4;
 };
 
 
@@ -352,7 +351,7 @@ PS_OUT_SPECULAR PS_MAIN_NORMAL_SPECULAR(PS_IN_NORMAL In)
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vLightFlag = g_vLightFlag;
 
-    Out.vSpecular = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
+    Out.vORM= g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
 
     if (Out.vDiffuse.a < 0.1f)
         discard;

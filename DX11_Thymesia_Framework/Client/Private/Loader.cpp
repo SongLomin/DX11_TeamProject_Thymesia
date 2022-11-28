@@ -394,39 +394,39 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.6f, 0.6f, 0.6f, 1.f);
+	LightDesc.vDiffuse = _float4(0.5f, 0.5f, 0.5f, 1.f);
 	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
-	LightDesc.vSpecular = _float4(0.2f, 0.2f, 0.2f, 0.2f);
+	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
 	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.bEnable = true;
 
 	GAMEINSTANCE->Add_Light(LightDesc);
 
 	// 지형 라이트
-	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
+	//ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
-	LightDesc.vSpecular = _float4(0.7f, 0.7f, 0.7f, 0.7f);
-	LightDesc.vLightFlag = _float4(0.f, 0.f, 1.f, 0.f);
-	LightDesc.bEnable = false;
+	//LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+	//LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	//LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	//LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
+	//LightDesc.vSpecular = _float4(0.7f, 0.7f, 0.7f, 1.f);
+	//LightDesc.vLightFlag = _float4(0.f, 0.f, 1.f, 0.f);
+	//LightDesc.bEnable = false;
 
-	GAMEINSTANCE->Add_Light(LightDesc);
+	//GAMEINSTANCE->Add_Light(LightDesc);
 
-	// 몬스터 라이트
-	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
+	//// 몬스터 라이트
+	//ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
-	LightDesc.vSpecular = _float4(0.7f, 0.7f, 0.7f, 0.7f);
-	LightDesc.vLightFlag = _float4(0.f, 1.f, 0.f, 0.f);
-	LightDesc.bEnable = false;
+	//LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+	//LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	//LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	//LightDesc.vAmbient = _float4(0.4f, 0.4f, 0.4f, 1.f);
+	//LightDesc.vSpecular = _float4(0.7f, 0.7f, 0.7f, 0.7f);
+	//LightDesc.vLightFlag = _float4(0.f, 1.f, 0.f, 0.f);
+	//LightDesc.bEnable = false;
 
-	GAMEINSTANCE->Add_Light(LightDesc);
+	//GAMEINSTANCE->Add_Light(LightDesc);
 	
 	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중입니다. "));
 #endif
