@@ -373,19 +373,17 @@ void CEffectGroup::Load_EffectJson(const string& In_szPath, const _uint& In_iTim
     _size_t iEffectMeshCount = Load_Json["EffectMeshCount"];
     _size_t iEffectParticleCount = Load_Json["EffectParticleCount"];
 
-    for (_int i = 0; i < (_int)iEffectMeshCount; ++i)
+    for (_int i(0); i < (_int)iEffectMeshCount; ++i)
     {
         Add_EffectMesh();
         m_pEffectMeshs[i].lock()->Load_EffectJson(Load_Json["EffectMesh"][to_string(i)], In_iTimeScaleLayer);
     }
 
-    for (_int i = 0; i < (_int)iEffectParticleCount; i++)
+    for (_int i(0); i < (_int)iEffectParticleCount; i++)
     {
         Add_Particle();
         m_pEffectParticles[i].lock()->Load_EffectJson(Load_Json["EffectParticle"][to_string(i)], In_iTimeScaleLayer);
     }
-
-
 
     UnUse_EffectGroup();
 

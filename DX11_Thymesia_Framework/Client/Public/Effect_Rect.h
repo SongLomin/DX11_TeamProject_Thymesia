@@ -119,7 +119,6 @@ private:
     _float                              m_fCurrentInitTime = 0.f;
 
     _bool                               m_bStopSprite = false;
-    std::string                         m_szBoneName;
 
     // For. Boner
     std::vector<std::string>            m_AllBoneNames;

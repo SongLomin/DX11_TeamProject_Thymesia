@@ -72,7 +72,6 @@ HRESULT CEffect_Rect::Initialize_Prototype()
 	m_bFinish = false;
 	m_bStopParticle = false;
 
-
 	return S_OK;
 }
 
@@ -104,7 +103,6 @@ HRESULT CEffect_Rect::Initialize(void* pArg)
 
 #ifdef _USE_THREAD_
 	Use_Thread(THREAD_TYPE::TICK);
-
 #endif // _USE_THREAD_
 
 
@@ -180,7 +178,6 @@ void CEffect_Rect::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 	{
 		if (nullptr == m_pParentTransformCom.lock())
 			m_pParentTransformCom = pParentTransform;
-
 	}
 
 	Update_ParentTransform();
@@ -208,11 +205,6 @@ void CEffect_Rect::SetUp_ShaderResource()
 	}
 
 	WorldMatrix = BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix();
-
-	//if (((_uint)PARTICLETYPE::BILLBOARD == m_tEffectParticleDesc.iParticleType))
-	//{
-	//	WorldMatrix = SMath::Get_PositionMatrix(WorldMatrix);
-	//}
 
 	WorldMatrix = XMMatrixTranspose(WorldMatrix);
 
@@ -501,6 +493,14 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	{
 		if (In_Json.find("Bone_Name") != In_Json.end())
 			m_strBoneName = In_Json["Bone_Name"];
+
+		m_pParentTransformCom = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Component<CTransform>().lock();
+		if (!m_pParentTransformCom.lock())
+			assert(0);
+
+		m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
+		if (!m_pBoneNode.lock())
+			assert(0);
 	}
 
 #pragma region Spawn Position
@@ -757,7 +757,6 @@ void CEffect_Rect::Play(_float fTimeDelta)
 		m_fPreFrame -= fFrameTime;
 	}
 
-
 	_matrix		BoneMatrix = XMMatrixIdentity();
 	_matrix		WorldMatrix = XMMatrixIdentity();
 
@@ -878,8 +877,9 @@ void CEffect_Rect::Reset_ParticleDesc(const _uint& In_iIndex)
 {
 	memcpy(&m_tParticleDescs[In_iIndex], &m_tOriginalParticleDescs[In_iIndex], sizeof(PARTICLE_DESC));
 
-	_vector vOffset;
-	vOffset = XMLoadFloat3(&m_tParticleDescs[In_iIndex].vOffsetPosition);
+#pragma region Backup
+	//_vector vOffset;
+	//vOffset = XMLoadFloat3(&m_tParticleDescs[In_iIndex].vOffsetPosition);
 
 	//if (m_pBoneNode.lock())
 	//{
@@ -896,140 +896,110 @@ void CEffect_Rect::Reset_ParticleDesc(const _uint& In_iIndex)
 	//	vOffset = XMVector3TransformCoord(vOffset, SMath::Get_RotationMatrix(BoneMatrix));
 	//}
 
-	_float3 f3Offset;
-	ZeroMemory(&f3Offset, sizeof(_float3));
-	XMStoreFloat3(&f3Offset, vOffset);
+	//_float3 f3Offset;
+	//ZeroMemory(&f3Offset, sizeof(_float3));
+	//XMStoreFloat3(&f3Offset, vOffset);
+#pragma endregion
 
-	SMath::Add_Float3(&m_tParticleDescs[In_iIndex].vCurrentTranslation, f3Offset);
+	SMath::Add_Float3(&m_tParticleDescs[In_iIndex].vCurrentTranslation, m_tParticleDescs[In_iIndex].vOffsetPosition);
 }
 
 
 void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 {
-	//if (m_tEffectParticleDesc.bBoner)
-	//{
-	//	for (_int i(0); i < m_tEffectParticleDesc.iMaxInstance; ++i)
-	//	{
-	//		m_tOriginalParticleDescs[i].Reset();
+	for (_int i(0); i < m_tEffectParticleDesc.iMaxInstance; ++i)
+	{
 
-	//		m_tOriginalParticleDescs[i].fTargetLifeTime =
-	//			SMath::fRandom(m_tEffectParticleDesc.fMinLifeTime, m_tEffectParticleDesc.fMaxLifeTime);
 
-	//		m_tOriginalParticleDescs[i].fTargetSpawnTime =
-	//			SMath::fRandom(m_tEffectParticleDesc.fMinSpawnTime, m_tEffectParticleDesc.fMaxSpawnTime);
+		m_tOriginalParticleDescs[i].Reset();
 
-	//		_float3 vRandomDir = SMath::vRandom(m_tEffectParticleDesc.vMinSpawnOffsetDirection, m_tEffectParticleDesc.vMaxSpawnOffsetDirection);
-	//		_vector vRandomDirFromVector = XMLoadFloat3(&vRandomDir);
-	//		vRandomDirFromVector = XMVector3Normalize(vRandomDirFromVector);
+		m_tOriginalParticleDescs[i].fTargetLifeTime =
+			SMath::fRandom(m_tEffectParticleDesc.fMinLifeTime, m_tEffectParticleDesc.fMaxLifeTime);
 
-	//		_float3 vRandomScalar = SMath::vRandom(m_tEffectParticleDesc.vMinSpawnOffsetRange, m_tEffectParticleDesc.vMaxSpawnOffsetRange);
-	//		_vector vRandomScalarFromVector = XMLoadFloat3(&vRandomScalar);
+		m_tOriginalParticleDescs[i].fTargetSpawnTime =
+			SMath::fRandom(m_tEffectParticleDesc.fMinSpawnTime, m_tEffectParticleDesc.fMaxSpawnTime);
 
-	//		_matrix RotationMatrix = SMath::Bake_MatrixNormalizeUseLookVector(vRandomDirFromVector);
-	//		RotationMatrix = SMath::Go_Right(RotationMatrix, XMVectorGetX(vRandomScalarFromVector));
-	//		RotationMatrix = SMath::Go_Up(RotationMatrix, XMVectorGetY(vRandomScalarFromVector));
-	//		RotationMatrix = SMath::Go_Straight(RotationMatrix, XMVectorGetZ(vRandomScalarFromVector));
+		_float3 vRandomDir = SMath::vRandom(m_tEffectParticleDesc.vMinSpawnOffsetDirection, m_tEffectParticleDesc.vMaxSpawnOffsetDirection);
+		_vector vRandomDirFromVector = XMLoadFloat3(&vRandomDir);
+		vRandomDirFromVector = XMVector3Normalize(vRandomDirFromVector);
 
-	//		XMStoreFloat3(&m_tOriginalParticleDescs[i].vCurrentTranslation, RotationMatrix.r[3]);
+		_float3 vRandomScalar = SMath::vRandom(m_tEffectParticleDesc.vMinSpawnOffsetRange, m_tEffectParticleDesc.vMaxSpawnOffsetRange);
+		_vector vRandomScalarFromVector = XMLoadFloat3(&vRandomScalar);
 
-	//		m_tOriginalParticleDescs[i].vOffsetPosition = SMath::vRandom(m_tEffectParticleDesc.vMinSpawnPosition, m_tEffectParticleDesc.vMaxSpawnPosition);
-	//	}
-	//}
-	//else
-	//{
-		for (_int i(0); i < m_tEffectParticleDesc.iMaxInstance; ++i)
+		_matrix RotationMatrix = SMath::Bake_MatrixNormalizeUseLookVector(vRandomDirFromVector);
+		RotationMatrix = SMath::Go_Right(RotationMatrix, XMVectorGetX(vRandomScalarFromVector));
+		RotationMatrix = SMath::Go_Up(RotationMatrix, XMVectorGetY(vRandomScalarFromVector));
+		RotationMatrix = SMath::Go_Straight(RotationMatrix, XMVectorGetZ(vRandomScalarFromVector));
+
+		XMStoreFloat3(&m_tOriginalParticleDescs[i].vCurrentTranslation, RotationMatrix.r[3]);
+
+		m_tOriginalParticleDescs[i].vOffsetPosition = SMath::vRandom(m_tEffectParticleDesc.vMinSpawnPosition, m_tEffectParticleDesc.vMaxSpawnPosition);
+
+		m_tOriginalParticleDescs[i].vCurrentRotation =
+			SMath::vRandom(m_tEffectParticleDesc.vMinStartRotation, m_tEffectParticleDesc.vMaxStartRotation);
+
+		m_tOriginalParticleDescs[i].vTargetRotationSpeed =
+			SMath::vRandom(m_tEffectParticleDesc.vMinRotationSpeed, m_tEffectParticleDesc.vMaxRotationSpeed);
+
+		m_tOriginalParticleDescs[i].vTargetRotationForce =
+			SMath::vRandom(m_tEffectParticleDesc.vMinRotationForce, m_tEffectParticleDesc.vMaxRotationForce);
+
+		if (m_tEffectParticleDesc.bEasingPosition)
 		{
-			m_tOriginalParticleDescs[i].Reset();
+			m_tOriginalParticleDescs[i].vTargetSpeed = SMath::Add_Float3(m_tOriginalParticleDescs[i].vCurrentTranslation, m_tOriginalParticleDescs[i].vOffsetPosition);
 
-			m_tOriginalParticleDescs[i].fTargetLifeTime =
-				SMath::fRandom(m_tEffectParticleDesc.fMinLifeTime, m_tEffectParticleDesc.fMaxLifeTime);
+			_float3 vGoalPos = SMath::vRandom(m_tEffectParticleDesc.vMinSpeed, m_tEffectParticleDesc.vMaxSpeed);
+			_vector vGoalOffsetPosition = XMLoadFloat3(&vGoalPos);
+			vGoalOffsetPosition = XMVectorSetX(vGoalOffsetPosition, XMVectorGetX(vGoalOffsetPosition) * m_tOriginalParticleDescs[i].vCurrentRotation.x);
+			vGoalOffsetPosition = XMVectorSetY(vGoalOffsetPosition, XMVectorGetY(vGoalOffsetPosition) * m_tOriginalParticleDescs[i].vCurrentRotation.y);
+			vGoalOffsetPosition = XMVectorSetZ(vGoalOffsetPosition, XMVectorGetZ(vGoalOffsetPosition) * m_tOriginalParticleDescs[i].vCurrentRotation.z);
 
-			m_tOriginalParticleDescs[i].fTargetSpawnTime =
-				SMath::fRandom(m_tEffectParticleDesc.fMinSpawnTime, m_tEffectParticleDesc.fMaxSpawnTime);
-
-			_float3 vRandomDir = SMath::vRandom(m_tEffectParticleDesc.vMinSpawnOffsetDirection, m_tEffectParticleDesc.vMaxSpawnOffsetDirection);
-			_vector vRandomDirFromVector = XMLoadFloat3(&vRandomDir);
-			vRandomDirFromVector = XMVector3Normalize(vRandomDirFromVector);
-
-			_float3 vRandomScalar = SMath::vRandom(m_tEffectParticleDesc.vMinSpawnOffsetRange, m_tEffectParticleDesc.vMaxSpawnOffsetRange);
-			_vector vRandomScalarFromVector = XMLoadFloat3(&vRandomScalar);
-
-			_matrix RotationMatrix = SMath::Bake_MatrixNormalizeUseLookVector(vRandomDirFromVector);
-			RotationMatrix = SMath::Go_Right(RotationMatrix, XMVectorGetX(vRandomScalarFromVector));
-			RotationMatrix = SMath::Go_Up(RotationMatrix, XMVectorGetY(vRandomScalarFromVector));
-			RotationMatrix = SMath::Go_Straight(RotationMatrix, XMVectorGetZ(vRandomScalarFromVector));
-
-			XMStoreFloat3(&m_tOriginalParticleDescs[i].vCurrentTranslation, RotationMatrix.r[3]);
-
-			m_tOriginalParticleDescs[i].vOffsetPosition = SMath::vRandom(m_tEffectParticleDesc.vMinSpawnPosition, m_tEffectParticleDesc.vMaxSpawnPosition);
-
-			m_tOriginalParticleDescs[i].vCurrentRotation =
-				SMath::vRandom(m_tEffectParticleDesc.vMinStartRotation, m_tEffectParticleDesc.vMaxStartRotation);
-
-			m_tOriginalParticleDescs[i].vTargetRotationSpeed =
-				SMath::vRandom(m_tEffectParticleDesc.vMinRotationSpeed, m_tEffectParticleDesc.vMaxRotationSpeed);
-
-			m_tOriginalParticleDescs[i].vTargetRotationForce =
-				SMath::vRandom(m_tEffectParticleDesc.vMinRotationForce, m_tEffectParticleDesc.vMaxRotationForce);
-
-			if (m_tEffectParticleDesc.bEasingPosition)
-			{
-				m_tOriginalParticleDescs[i].vTargetSpeed = SMath::Add_Float3(m_tOriginalParticleDescs[i].vCurrentTranslation, m_tOriginalParticleDescs[i].vOffsetPosition);
-
-				_float3 vGoalPos = SMath::vRandom(m_tEffectParticleDesc.vMinSpeed, m_tEffectParticleDesc.vMaxSpeed);
-				_vector vGoalOffsetPosition = XMLoadFloat3(&vGoalPos);
-				vGoalOffsetPosition = XMVectorSetX(vGoalOffsetPosition, XMVectorGetX(vGoalOffsetPosition) * m_tOriginalParticleDescs[i].vCurrentRotation.x);
-				vGoalOffsetPosition = XMVectorSetY(vGoalOffsetPosition, XMVectorGetY(vGoalOffsetPosition) * m_tOriginalParticleDescs[i].vCurrentRotation.y);
-				vGoalOffsetPosition = XMVectorSetZ(vGoalOffsetPosition, XMVectorGetZ(vGoalOffsetPosition) * m_tOriginalParticleDescs[i].vCurrentRotation.z);
-
-				m_tOriginalParticleDescs[i].vTargetSpeedForce.x = m_tOriginalParticleDescs[i].vTargetSpeed.x + XMVectorGetX(vGoalOffsetPosition);
-				m_tOriginalParticleDescs[i].vTargetSpeedForce.y = m_tOriginalParticleDescs[i].vTargetSpeed.y + XMVectorGetY(vGoalOffsetPosition);
-				m_tOriginalParticleDescs[i].vTargetSpeedForce.z = m_tOriginalParticleDescs[i].vTargetSpeed.z + XMVectorGetZ(vGoalOffsetPosition);
-			}
-			else
-			{
-				m_tOriginalParticleDescs[i].vTargetSpeed =
-					SMath::vRandom(m_tEffectParticleDesc.vMinSpeed, m_tEffectParticleDesc.vMaxSpeed);
-
-				m_tOriginalParticleDescs[i].vTargetSpeedForce =
-					SMath::vRandom(m_tEffectParticleDesc.vMinSpeedForce, m_tEffectParticleDesc.vMaxSpeedForce);
-			}
-
-			m_tOriginalParticleDescs[i].vCurrentScale =
-				SMath::vRandom(m_tEffectParticleDesc.vMinStartScale, m_tEffectParticleDesc.vMaxStartScale);
-
-			m_tOriginalParticleDescs[i].vTargetScaleSpeed =
-				SMath::vRandom(m_tEffectParticleDesc.vMinScaleSpeed, m_tEffectParticleDesc.vMaxScaleSpeed);
-
-			m_tOriginalParticleDescs[i].vTargetScaleForce =
-				SMath::vRandom(m_tEffectParticleDesc.vMinScaleForce, m_tEffectParticleDesc.vMaxScaleForce);
-
-			if (m_tEffectParticleDesc.IsGrayOnlyUseRed)
-			{
-				_float fGrayColor = SMath::fRandom(m_tEffectParticleDesc.vMinStartColor.x, m_tEffectParticleDesc.vMaxStartColor.x);
-				_float fAhlpaColor = SMath::fRandom(m_tEffectParticleDesc.vMinStartColor.w, m_tEffectParticleDesc.vMaxStartColor.w);
-				m_tOriginalParticleDescs[i].vCurrentColor = { fGrayColor, fGrayColor, fGrayColor, fAhlpaColor };
-			}
-			else
-			{
-				m_tOriginalParticleDescs[i].vCurrentColor =
-					SMath::vRandom(m_tEffectParticleDesc.vMinStartColor, m_tEffectParticleDesc.vMaxStartColor);
-			}
-
-			m_tOriginalParticleDescs[i].vTargetColorSpeed =
-				SMath::vRandom(m_tEffectParticleDesc.vMinColorSpeed, m_tEffectParticleDesc.vMaxColorSpeed);
-
-			m_tOriginalParticleDescs[i].vTargetColorForce =
-				SMath::vRandom(m_tEffectParticleDesc.vMinColorForce, m_tEffectParticleDesc.vMaxColorForce);
-
-			m_tOriginalParticleDescs[i].vCurrentUV = m_tEffectParticleDesc.vMaskStartUV;
-
-			m_tOriginalParticleDescs[i].vCurrentScale.x = max(0.00001f, m_tOriginalParticleDescs[i].vCurrentScale.x);
-			m_tOriginalParticleDescs[i].vCurrentScale.y = max(0.00001f, m_tOriginalParticleDescs[i].vCurrentScale.y);
-			m_tOriginalParticleDescs[i].vCurrentScale.z = max(0.00001f, m_tOriginalParticleDescs[i].vCurrentScale.z);
-
+			m_tOriginalParticleDescs[i].vTargetSpeedForce.x = m_tOriginalParticleDescs[i].vTargetSpeed.x + XMVectorGetX(vGoalOffsetPosition);
+			m_tOriginalParticleDescs[i].vTargetSpeedForce.y = m_tOriginalParticleDescs[i].vTargetSpeed.y + XMVectorGetY(vGoalOffsetPosition);
+			m_tOriginalParticleDescs[i].vTargetSpeedForce.z = m_tOriginalParticleDescs[i].vTargetSpeed.z + XMVectorGetZ(vGoalOffsetPosition);
 		}
-	/*}*/
+		else
+		{
+			m_tOriginalParticleDescs[i].vTargetSpeed =
+				SMath::vRandom(m_tEffectParticleDesc.vMinSpeed, m_tEffectParticleDesc.vMaxSpeed);
+
+			m_tOriginalParticleDescs[i].vTargetSpeedForce =
+				SMath::vRandom(m_tEffectParticleDesc.vMinSpeedForce, m_tEffectParticleDesc.vMaxSpeedForce);
+		}
+
+		m_tOriginalParticleDescs[i].vCurrentScale =
+			SMath::vRandom(m_tEffectParticleDesc.vMinStartScale, m_tEffectParticleDesc.vMaxStartScale);
+
+		m_tOriginalParticleDescs[i].vTargetScaleSpeed =
+			SMath::vRandom(m_tEffectParticleDesc.vMinScaleSpeed, m_tEffectParticleDesc.vMaxScaleSpeed);
+
+		m_tOriginalParticleDescs[i].vTargetScaleForce =
+			SMath::vRandom(m_tEffectParticleDesc.vMinScaleForce, m_tEffectParticleDesc.vMaxScaleForce);
+
+		if (m_tEffectParticleDesc.IsGrayOnlyUseRed)
+		{
+			_float fGrayColor = SMath::fRandom(m_tEffectParticleDesc.vMinStartColor.x, m_tEffectParticleDesc.vMaxStartColor.x);
+			_float fAhlpaColor = SMath::fRandom(m_tEffectParticleDesc.vMinStartColor.w, m_tEffectParticleDesc.vMaxStartColor.w);
+			m_tOriginalParticleDescs[i].vCurrentColor = { fGrayColor, fGrayColor, fGrayColor, fAhlpaColor };
+		}
+		else
+		{
+			m_tOriginalParticleDescs[i].vCurrentColor =
+				SMath::vRandom(m_tEffectParticleDesc.vMinStartColor, m_tEffectParticleDesc.vMaxStartColor);
+		}
+
+		m_tOriginalParticleDescs[i].vTargetColorSpeed =
+			SMath::vRandom(m_tEffectParticleDesc.vMinColorSpeed, m_tEffectParticleDesc.vMaxColorSpeed);
+
+		m_tOriginalParticleDescs[i].vTargetColorForce =
+			SMath::vRandom(m_tEffectParticleDesc.vMinColorForce, m_tEffectParticleDesc.vMaxColorForce);
+
+		m_tOriginalParticleDescs[i].vCurrentUV = m_tEffectParticleDesc.vMaskStartUV;
+
+		m_tOriginalParticleDescs[i].vCurrentScale.x = max(0.00001f, m_tOriginalParticleDescs[i].vCurrentScale.x);
+		m_tOriginalParticleDescs[i].vCurrentScale.y = max(0.00001f, m_tOriginalParticleDescs[i].vCurrentScale.y);
+		m_tOriginalParticleDescs[i].vCurrentScale.z = max(0.00001f, m_tOriginalParticleDescs[i].vCurrentScale.z);
+	}
 }
 
 _bool CEffect_Rect::Check_DisableAllParticle()
@@ -1472,7 +1442,6 @@ void CEffect_Rect::Update_ParentTransform()
 {
 	if ((_int)TRANSFORMTYPE::STATIC != m_tEffectParticleDesc.iFollowTransformType)
 	{
-
 		if ((_int)PARTICLETYPE::BILLBOARD == m_tEffectParticleDesc.iParticleType)
 		{
 			if (m_pParentTransformCom.lock())
@@ -1488,7 +1457,6 @@ void CEffect_Rect::Update_ParentTransform()
 			if (m_pParentTransformCom.lock())
 				m_pTransformCom.lock()->Set_WorldMatrix(m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
 		}
-
 	}
 
 }

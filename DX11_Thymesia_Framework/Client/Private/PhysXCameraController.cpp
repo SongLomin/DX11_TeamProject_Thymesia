@@ -89,8 +89,8 @@ PxControllerBehaviorFlags CPhysXCameraController::getBehaviorFlags(const PxObsta
 void CPhysXCameraController::Init_Controller(const PxCapsuleControllerDesc& In_ControllerDesc)
 {
 	m_pControllerDesc = In_ControllerDesc;
-	m_pControllerDesc.reportCallback = this;
-	m_pControllerDesc.behaviorCallback = this;
+	// m_pControllerDesc.reportCallback = this;
+	// m_pControllerDesc.behaviorCallback = this;
 
 	Create_Controller();
 }
