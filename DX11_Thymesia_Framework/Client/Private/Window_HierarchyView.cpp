@@ -43,6 +43,30 @@ void CWindow_HierarchyView::Tick(_float fTimeDelta)
 	}
 
 	Picking_Obj();
+
+	if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) && KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) && KEY_INPUT(KEY::S, KEY_STATE::TAP))
+	{
+		json NewJson;
+		Write_Json(NewJson);
+
+		if (!NewJson.empty())
+		{
+			time_t timer = time(NULL);
+			tm     TimeDesc;
+
+			localtime_s(&TimeDesc, &timer);
+
+			string szPath
+				= string("../Bin/LevelData/AutoSave/AutoSave ")
+				+ to_string(TimeDesc.tm_mon) + "."
+				+ to_string(TimeDesc.tm_wday) + " ("
+				+ to_string(TimeDesc.tm_hour) + "-"
+				+ to_string(TimeDesc.tm_min) + "-"
+				+ to_string(TimeDesc.tm_sec) + ").json";
+
+			CJson_Utility::Save_Json(szPath.c_str(), NewJson);
+		}
+	}
 }
 
 HRESULT CWindow_HierarchyView::Render()
@@ -56,7 +80,6 @@ HRESULT CWindow_HierarchyView::Render()
 	ImGui::InputText("##Find", _szFindTag, MAX_PATH);
 
 	_uint iIndex = 0;
-	_bool bAct   = false;
 
 	for (auto& elem : m_pGameObjects)
 	{
@@ -78,29 +101,20 @@ HRESULT CWindow_HierarchyView::Render()
 			}
 		}
 
-
 		if (ImGui::Selectable(szIndexedName.c_str()))
 		{		
 			CallBack_ListClick(elem);
 
-			m_iPreSelectIndex	= iIndex;
-
-			if (elem.HashCode == typeid(CEditGroupProp).hash_code() || elem.HashCode == typeid(CEditInstanceProp).hash_code())
-			{
-				for (auto& iter : m_pGameObjects)
-				{
-					iter.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_NONE);
-				}
-			}
-
+			m_pGameObjects[m_iPreSelectIndex].pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_NONE);
 			elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_ACCEPT);
+
+			m_iPreSelectIndex = iIndex;
 		}
 
-		if ((m_iPreSelectIndex == iIndex) && (elem.HashCode == typeid(CEditGroupProp).hash_code() || elem.HashCode == typeid(CEditInstanceProp).hash_code()))
+		if ((m_iPreSelectIndex == iIndex) && (elem.HashCode == typeid(CEditGroupProp).hash_code()))
 		{
 			elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_SUB);
 		}
-
 
 		++iIndex;
 	}
@@ -118,6 +132,7 @@ void CWindow_HierarchyView::Call_Add_GameObject(const _hashcode& TypeHash, const
 void CWindow_HierarchyView::Write_Json(json& Out_Json)
 {
 	_uint iIndex = 0;
+	vector<string> ModelTag;
 
 	auto iter_elem = m_pGameObjects.begin();
 
@@ -138,12 +153,27 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 
 				iter_sub.pInstance.lock()->Write_Json(Out_Json["GameObject"][iIndex]);
 
+				weak_ptr<CModel> pModel = iter_sub.pInstance.lock()->Get_Component<CModel>();
+
+				if (pModel.lock().get())
+				{
+					string szFindTag = pModel.lock()->Get_ModelKey();
+
+					if (ModelTag.end() == find_if(ModelTag.begin(), ModelTag.end(), [&](string _szTag)->_bool { return (_szTag == szFindTag); }))
+						ModelTag.push_back(pModel.lock()->Get_ModelKey());
+				}
+
 				++iIndex;
 			}
 
 			m_pSubGameObjects.clear();
 			++iter_elem;
 
+			continue;
+		}
+		else if (typeid(CEditMapCollider).hash_code() == iter_elem->HashCode)
+		{
+			++iter_elem;
 			continue;
 		}
 
@@ -154,9 +184,92 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 
 		iter_elem->pInstance.lock()->Write_Json(Out_Json["GameObject"][iIndex]);
 
+		weak_ptr<CVIBuffer_Model_Instance> pModel = iter_elem->pInstance.lock()->Get_Component<CVIBuffer_Model_Instance>();
+
+		if (pModel.lock().get())
+		{
+			string szFindTag = pModel.lock()->Get_ModelKey();
+
+			if (ModelTag.end() == find_if(ModelTag.begin(), ModelTag.end(), [&](string _szTag)->_bool { return (_szTag == szFindTag); }))
+				ModelTag.push_back(pModel.lock()->Get_ModelKey());
+		}
+
 		++iIndex;
 		++iter_elem;
 	}
+
+	for (auto& elem_group : m_pObjGroup)
+	{
+		for (auto& elem : elem_group.second)
+		{
+			Out_Json["GameObject"][iIndex]["Name"]				= elem.TypeName;
+			Out_Json["GameObject"][iIndex]["Hash"]				= elem.HashCode;
+			Out_Json["GameObject"][iIndex]["Setting"]["Enable"] = elem.pInstance.lock()->Get_Enable();
+			Out_Json["GameObject"][iIndex]["Component"]["Transform"].emplace();
+
+			elem.pInstance.lock()->Write_Json(Out_Json["GameObject"][iIndex]);
+			++iIndex;
+		}
+	}
+
+	json Model_json;
+
+	if (!ModelTag.empty())
+	{
+		string szPath[] =
+		{
+			"../Bin/Resources/Meshes/Map_Else/Binary/",
+			"../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/",
+			"../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/",
+			"../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/"
+		};
+
+		vector<string> ModelList[4];
+
+		for (_uint i = 0; i < 4; ++i)
+		{
+			fs::directory_iterator itr(szPath[i]);
+			string szFileName;
+
+			while (itr != fs::end(itr))
+			{
+				const fs::directory_entry& entry = *itr;
+
+				szFileName = entry.path().filename().string();
+
+				if (string::npos != szFileName.find(".bin"))
+				{
+					ModelList[i].push_back(szFileName.substr(0, szFileName.find(".")));
+				}
+
+				++itr;
+			}
+		}
+
+		_uint iIndex = 0;
+		for (auto& iter : ModelTag)
+		{
+			for (_uint i = 0; i < 4; ++i)
+			{
+				string szModelTag = iter;
+
+				if (ModelList[i].end() != find_if(ModelList[i].begin(), ModelList[i].end(), [&](string _szTag)->_bool { return (iter == _szTag); }))
+				{
+					Model_json["ModelTag"][iIndex++] = szPath[i] + szModelTag + ".bin";
+					break;
+				}
+			}
+		}
+	}
+
+	CJson_Utility::Save_Json("../Bin/ModelLoadList/Temp.json", Model_json);
+
+	if (m_RenderMSG_BOX)
+		MSG_BOX("Save_Done");
+}
+
+void CWindow_HierarchyView::Write_Json_ModelList()
+{
 }
 
 void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
@@ -185,11 +298,46 @@ void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
 			TempDesc.HashCode = typeid(CEditInstanceProp).hash_code();
 		}
 
+		else if (typeid(CPhysXColliderObject).hash_code() == TempDesc.HashCode)
+		{
+			weak_ptr<CGameObject> pNewGameObject = GAMEINSTANCE->Add_GameObject(TempDesc.HashCode, LEVEL::LEVEL_EDIT);
+			pNewGameObject.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
+			pNewGameObject.lock()->Load_FromJson(Elem_GameObject);
+
+			auto iter_find = m_pObjGroup.find(TempDesc.HashCode);
+
+			if (iter_find == m_pObjGroup.end())
+			{
+				vector<GAMEOBJECT_DESC> List;
+				List.push_back({ TempDesc.HashCode, TempDesc.TypeName, pNewGameObject });
+
+				m_pObjGroup[TempDesc.HashCode] = List;
+			}
+			else
+			{
+				iter_find->second.push_back({ TempDesc.HashCode, TempDesc.TypeName, pNewGameObject });
+			}
+
+			continue;
+		}
+
+		else if (typeid(CEditMapCollider).hash_code() == TempDesc.HashCode)
+			continue;
+
 		Call_Add_GameObject_Internal(TempDesc.HashCode, TempDesc.TypeName.c_str());
 		m_pGameObjects.back().pInstance.lock()->Set_Enable(Elem_GameObject["Setting"]["Enable"]);
 		m_pGameObjects.back().pInstance.lock()->Load_FromJson(Elem_GameObject);
 	}
 
+	if (m_pObjGroup.end() != m_pObjGroup.find(typeid(CPhysXColliderObject).hash_code()))
+	{
+		GAMEOBJECT_DESC TempDesc;
+		TempDesc.HashCode = typeid(CEditMapCollider).hash_code();
+		TempDesc.TypeName = typeid(CEditMapCollider).name();
+
+		Call_Add_GameObject_Internal(TempDesc.HashCode, TempDesc.TypeName.c_str());
+		m_pGameObjects.back().pInstance.lock()->Set_Enable(true);
+	}
 }
 
 void CWindow_HierarchyView::Call_Add_GameObject_Internal(const _hashcode& TypeHash, const char* TypeName)
@@ -241,6 +389,10 @@ void CWindow_HierarchyView::Picking_Obj()
 		if (0 <= iPickedIndex)
 		{
 			CallBack_ListClick(*pPickingObj);
+
+			m_pGameObjects[m_iPreSelectIndex].pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_NONE);
+			pPickingObj->pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_ACCEPT);
+
 			m_iPreSelectIndex = iPickedIndex;
 		}
 	}
@@ -259,8 +411,9 @@ void CWindow_HierarchyView::OnLevelLoad()
 
 void CWindow_HierarchyView::Free()
 {
-	json NewJson;
+	m_RenderMSG_BOX = false;
 
+	json NewJson;
 	Write_Json(NewJson);
 	
 	if (!NewJson.empty())

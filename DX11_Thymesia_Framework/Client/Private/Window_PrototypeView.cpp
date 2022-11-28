@@ -129,6 +129,7 @@ void CWindow_PrototypeView::Add_Prototypes()
     ADD_PROTOTYPE(PROTOTYPE_PROP, CEditGroupProp);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CEditInstanceProp);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CPhysXColliderObject);
+    ADD_PROTOTYPE(PROTOTYPE_PROP, CEditMapCollider);
 
     ADD_PROTOTYPE(PROTOTYPE_UI, CFadeMask);
 

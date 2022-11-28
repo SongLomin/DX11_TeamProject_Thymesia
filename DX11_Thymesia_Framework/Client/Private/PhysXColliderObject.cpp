@@ -34,7 +34,6 @@ HRESULT CPhysXColliderObject::Initialize(void* pArg)
 		);
 		m_pRendererCom = Add_Component<CRenderer>();
 	}
-	
 
 	return S_OK;
 }
@@ -74,8 +73,10 @@ HRESULT CPhysXColliderObject::Render()
 			DEBUG_ASSERT;
 		if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ)), sizeof(_float4x4))))
 			DEBUG_ASSERT;
+		if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
+			DEBUG_ASSERT;
 
-		m_pShaderCom.lock()->Begin(2);
+		m_pShaderCom.lock()->Begin(3);
 		m_pVIBufferCom.lock()->Render();
 	}
 
@@ -118,22 +119,39 @@ void CPhysXColliderObject::Load_FromJson(const json& In_Json)
 		PHYSXCOLLIDERDESC tDesc;
 		Preset::PhysXColliderDesc::StaticBoxDefaultSetting(tDesc, m_pTransformCom);
 		m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
-		m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
+		m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
 	}
-
 }
 
 void CPhysXColliderObject::OnEventMessage(_uint iArg)
 {
 	__super::OnEventMessage(iArg);
 	
-	if ((_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO == iArg)
+	switch (EVENT_TYPE(iArg))
 	{
-		m_bViewPhysXInfo = true;
-	}
-	else if ((_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO_N == iArg	)
-	{
-		m_bViewPhysXInfo = false;
+		case EVENT_TYPE::ON_EDIT_PHYSXINFO: 
+		{
+			m_bViewPhysXInfo = true;
+		}
+		break;
+
+		case EVENT_TYPE::ON_EDIT_PHYSXINFO_N:
+		{
+			m_bViewPhysXInfo = false;
+		}
+		break;
+
+		case EVENT_TYPE::ON_EDITDRAW_NONE:
+		{
+			m_vColor = { 1.f, 0.f, 0.f, 1.f };
+		}
+		break;
+
+		case EVENT_TYPE::ON_EDITDRAW_ACCEPT:
+		{
+			m_vColor = { 0.f, 1.f, 0.f, 1.f };
+		}
+		break;
 	}
 }
 

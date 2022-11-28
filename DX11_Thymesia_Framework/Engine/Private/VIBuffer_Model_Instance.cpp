@@ -107,7 +107,7 @@ void CVIBuffer_Model_Instance::Init_Instance(_uint In_iNumInstance)
 
 	m_iInstanceStride		= sizeof(VTXMODELINSTANCE);
 	m_iNumInstance			= In_iNumInstance;
-	m_iVisibleCount		= m_iNumInstance;
+	m_iVisibleCount		    = m_iNumInstance;
 	m_iNumVertexBuffers		= 2;
 
 	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));

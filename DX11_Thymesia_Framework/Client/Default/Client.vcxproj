@@ -214,6 +214,7 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h" />
     <ClInclude Include="..\Public\EasingTransform.h" />
+    <ClInclude Include="..\Public\EditMapCollider.h" />
     <ClInclude Include="..\Public\Level_Test.h" />
     <ClInclude Include="..\Public\PhysXCameraController.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Parry.h" />
@@ -473,6 +474,7 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab2.cpp" />
     <ClCompile Include="..\Private\Dynamic_Piece.cpp" />
     <ClCompile Include="..\Private\EasingTransform.cpp" />
+    <ClCompile Include="..\Private\EditMapCollider.cpp" />
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Parry.cpp" />
     <ClCompile Include="..\Private\PhysXCameraController.cpp" />

@@ -1674,6 +1674,9 @@
     <ClCompile Include="..\Private\PhysXCameraController.cpp">
       <Filter>05. Component\00. PhysXCameraController</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\EditMapCollider.cpp">
+      <Filter>02. GameObject\99. Other\07. EditMapCollider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -2604,6 +2607,9 @@
     </Filter>
     <Filter Include="05. Component\00. PhysXCameraController">
       <UniqueIdentifier>{047389ae-7b0d-48b7-a470-d4fc6a1133a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\99. Other\07. EditMapCollider">
+      <UniqueIdentifier>{26edf638-982f-46e7-b7d2-0e0e9f99ec90}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
