@@ -795,7 +795,6 @@
     <ClInclude Include="..\Public\HUD_PlagueWeaponBase.h">
       <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\PlagueWeapon\Base</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\MonsterHPBar_Elite.h" />
     <ClInclude Include="..\Public\Dynamic_Piece.h">
       <Filter>02. GameObject\04. Prop\02-1. Dynamic_Piece</Filter>
     </ClInclude>
@@ -804,7 +803,12 @@
     <ClInclude Include="..\Public\EasingTransform.h">
       <Filter>05. Component\EasingTransform</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UI_Script.h" />
+    <ClInclude Include="..\Public\UI_Script.h">
+      <Filter>02. GameObject\01. UI\UI_Container\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterHPBar_Elite.h">
+      <Filter>02. GameObject\01. UI\UI_Container\MonsterHPBar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1667,7 +1671,6 @@
     <ClCompile Include="..\Private\HUD_PlagueWeaponBase.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\PlagueWeapon\Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp" />
     <ClCompile Include="..\Private\Dynamic_Piece.cpp">
       <Filter>02. GameObject\04. Prop\02-1. Dynamic_Piece</Filter>
     </ClCompile>
@@ -1675,7 +1678,12 @@
     <ClCompile Include="..\Private\EasingTransform.cpp">
       <Filter>05. Component\EasingTransform</Filter>
     </ClCompile>
-    <ClCompile Include="..\Public\UI_Script.cpp" />
+    <ClCompile Include="..\Public\UI_Script.cpp">
+      <Filter>02. GameObject\01. UI\UI_Container\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp">
+      <Filter>02. GameObject\01. UI\UI_Container\MonsterHPBar</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -2246,12 +2254,6 @@
     </Filter>
     <Filter Include="02. GameObject\01. UI\Progress">
       <UniqueIdentifier>{fe5378f3-5d92-48f6-9847-6ce6ac071847}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. UI\MonsterHPBar">
-      <UniqueIdentifier>{d1cc751f-2867-49e0-be1e-51383949c286}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\01. UI\MonsterHPBar\Boss">
-      <UniqueIdentifier>{7f2bc015-f8e3-43fa-ae95-787d7300b0d1}</UniqueIdentifier>
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack">
       <UniqueIdentifier>{1db70a15-64a5-4a8c-8ff3-f74f19895d58}</UniqueIdentifier>
