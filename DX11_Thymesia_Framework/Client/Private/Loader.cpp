@@ -412,7 +412,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	//LightDesc.vLightFlag = _float4(0.f, 0.f, 1.f, 0.f);
 	//LightDesc.bEnable = false;
 
-	GAMEINSTANCE->Add_Light(LightDesc);
+	//GAMEINSTANCE->Add_Light(LightDesc);
 
 	//// 몬스터 라이트
 	//ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
@@ -425,7 +425,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	//LightDesc.vLightFlag = _float4(0.f, 1.f, 0.f, 0.f);
 	//LightDesc.bEnable = false;
 
-	GAMEINSTANCE->Add_Light(LightDesc);
+	//GAMEINSTANCE->Add_Light(LightDesc);
 	
 	lstrcpy(m_szLoadingText, TEXT("셰이더를 로딩중입니다. "));
 #endif

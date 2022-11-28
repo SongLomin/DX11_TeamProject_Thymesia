@@ -210,57 +210,57 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 
     vector vLook = normalize(g_vCamPosition- vWorldPos);
 
+    float fOcclusion = vORMDesc.x;
     float fRoughness = vORMDesc.y;
     float fMetalness = vORMDesc.z;
-    float fOcclusion = vORMDesc.x;
-    if (fRoughness > 0.f || fMetalness > 0.f || fOcclusion > 0.f)
-    {
-        float vHalfVec = normalize(vLook + normalize(g_vLightDir)*-1.f);
+    //if (fRoughness > 0.f || fMetalness > 0.f || fOcclusion > 0.f)
+    //{
+    //    float vHalfVec = normalize(vLook + normalize(g_vLightDir)*-1.f);
 
-        float NdotL = max(dot(vNormal, normalize(g_vLightDir)*-1.f), 0.0);
-        float NdotH = max(dot(vNormal, vHalfVec), 0.0);
-        float NdotV = max(dot(vNormal, vLook), 0.0);
+    //    float NdotL = max(dot(vNormal, normalize(g_vLightDir)*-1.f), 0.0);
+    //    float NdotH = max(dot(vNormal, vHalfVec), 0.0);
+    //    float NdotV = max(dot(vNormal, vLook), 0.0);
 
-        vector vMetalic = lerp(vector(0.04f, 0.04f, 0.04f, 0.f), vDiffuseColor, fMetalness);
-    
-        float NDF = trowbridgeReitzNDF(NdotH, fRoughness);
-        float3 F = fresnel(vMetalic, NdotV, fRoughness);
-        float G = schlickBeckmannGAF(NdotV, fRoughness) * schlickBeckmannGAF(NdotL, fRoughness);
-        
-        vector kS = vector(F,0.f);
-        vector kD = vector(1.f,1.f,1.f,0.f) - kS;
-        kD *= vector(1.f,1.f,1.f,0.f) - fMetalness;
+    //    vector vMetalic = lerp(vector(0.04f, 0.04f, 0.04f, 0.f), vDiffuseColor* fOcclusion, fMetalness);
+    //
+    //    float NDF = trowbridgeReitzNDF(NdotH, fRoughness);
+    //    float3 F = fresnel(vMetalic, NdotV, fRoughness);
+    //    float G = schlickBeckmannGAF(NdotV, fRoughness) * schlickBeckmannGAF(NdotL, fRoughness);
+    //    
+    //    vector kS = vector(F,0.f);
+    //    vector kD = vector(1.f,1.f,1.f,0.f) - kS;
+    //    kD *= 1.f - fMetalness;
 
-        vector vNumerator = vector(F,0.f) * NDF * G;
-        float fDenominator = 4.f * max(dot(vNormal, vLook), 0.f) * max(dot(vNormal, normalize(g_vLightDir) * -1.f), 0.f);
-        vector vSpecular = vNumerator / max(fDenominator, 0.001f);
+    //    vector vNumerator = kS * NDF * G;
+    //    float fDenominator = 4.f * NdotV * NdotL;
+    //    vector vSpecular = vNumerator / max(fDenominator, 0.001f);
 
-        //vector SpecularAcc = (kD * vDiffuseColor / 3.141592265359 + vSpecular) * NdotL * fOcclusion/** g_vLightDiffuse*/;
-        vector vSpecularAcc = NdotL * vDiffuseColor/ 3.141592265359 * fOcclusion* vSpecular;
-        vector vAmbientColor = vDiffuseColor / 3.141592265359 * fOcclusion;
+    //    //vector SpecularAcc = (kD * vDiffuseColor / 3.141592265359 + vSpecular) * NdotL * fOcclusion* g_vLightDiffuse;
+    //    vector vSpecularAcc = NdotL * /*vDiffuseColor/ 3.141592265359 **/ fOcclusion* vSpecular* g_vLightDiffuse;
+    //    vector vAmbientColor = vDiffuseColor / 3.141592265359 * g_vLightDiffuse *fOcclusion;
 
-        //shader
-        vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(g_vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * vDiffuseColor));
-        vResult *= fOcclusion;
+    //    //shader
+    //    vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(g_vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * vDiffuseColor));
+    //    vResult *= fOcclusion;
 
-        Out.vSpecular = vSpecularAcc;
-        Out.vSpecular.a = 0.f;
+    //    Out.vSpecular = vSpecularAcc;
+    //    Out.vSpecular.a = 0.f;
 
-        Out.vShade = vResult;
-        Out.vShade.a = 1.f;
+    //    Out.vShade = vResult;
+    //    Out.vShade.a = 1.f;
 
-        Out.vSpecular = Out.vSpecular / (Out.vSpecular + vector(1.f,1.f,1.f,0.f));
-        Out.vSpecular = pow(Out.vSpecular,1.f / 2.2);
-        //Out.vSpecular.a = 0.f;
+    //    Out.vSpecular = Out.vSpecular / (Out.vSpecular + vector(1.f,1.f,1.f,0.f));
+    //    Out.vSpecular = pow(Out.vSpecular,1.f / 2.2);
+    //    Out.vSpecular.a = 0.f;
 
-        Out.vAmbient = vAmbientColor;
-        Out.vAmbient.a = 1.f;
-        Out.vAmbient = Out.vAmbient / (Out.vAmbient + vector(1.f, 1.f, 1.f, 0.f));
-        Out.vAmbient = pow(Out.vAmbient, 1.f / 2.2);
-    }
+    //    Out.vAmbient = vAmbientColor;
+    //    Out.vAmbient.a = 1.f;
+    //    Out.vAmbient = Out.vAmbient / (Out.vAmbient + vector(1.f, 1.f, 1.f, 0.f));
+    //    Out.vAmbient = pow(Out.vAmbient, 1.f / 2.2);
+    //}
 
-    else
-    {    //Out.vShade = vShadeDesc;
+    //else
+   // {    //Out.vShade = vShadeDesc;
 
         vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(g_vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * g_vMtrlAmbient));
 
@@ -277,7 +277,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 
         Out.vSpecular.a = 0.f;
         Out.vAmbient = vector(0.f, 0.f, 0.f, 0.f);
-    }
+   // }
 	return Out;
 }
 
@@ -334,42 +334,42 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
     float fMetalness = vORMDesc.z;
     float fOcclusion = vORMDesc.x;
 
-    if (fRoughness > 0.f || fMetalness > 0.f || fOcclusion > 0.f)
-    {
-        float vHalfVec = normalize(vLook + normalize(g_vLightDir) * -1.f);
+    //if (fRoughness > 0.f || fMetalness > 0.f || fOcclusion > 0.f)
+    //{
+    //    float vHalfVec = normalize(vLook + normalize(g_vLightDir) * -1.f);
 
-        float NdotL = max(dot(vNormal, normalize(g_vLightDir) * -1.f), 0.0);
-        float NdotH = max(dot(vNormal, vHalfVec), 0.0);
-        float NdotV = max(dot(vNormal, vLook), 0.0);
+    //    float NdotL = max(dot(vNormal, normalize(g_vLightDir) * -1.f), 0.0);
+    //    float NdotH = max(dot(vNormal, vHalfVec), 0.0);
+    //    float NdotV = max(dot(vNormal, vLook), 0.0);
 
-        vector vMetalic = lerp(vector(0.4f, 0.4f, 0.4f, 0.f), vDiffuseColor, fMetalness);
+    //    vector vMetalic = lerp(vector(0.4f, 0.4f, 0.4f, 0.f), vDiffuseColor, fMetalness);
 
-        float NDF = trowbridgeReitzNDF(NdotH, fRoughness);
-        float3 F = fresnel(vMetalic, NdotV, fRoughness);
-        float G = schlickBeckmannGAF(NdotV, fRoughness) * schlickBeckmannGAF(NdotL, fRoughness);
+    //    float NDF = trowbridgeReitzNDF(NdotH, fRoughness);
+    //    float3 F = fresnel(vMetalic, NdotV, fRoughness);
+    //    float G = schlickBeckmannGAF(NdotV, fRoughness) * schlickBeckmannGAF(NdotL, fRoughness);
 
-        vector kS = vector(F, 0.f);
-        vector kD = vector(1.f, 1.f, 1.f, 0.f) - kS;
-        kD *= vector(1.0f, 1.f, 1.f, 0.f) - fMetalness;
+    //    vector kS = vector(F, 0.f);
+    //    vector kD = vector(1.f, 1.f, 1.f, 0.f) - kS;
+    //    kD *= vector(1.0f, 1.f, 1.f, 0.f) - fMetalness;
 
-        vector vNumerator = vector(F, 0.f) * NDF * G;
-        float fDenominator = 4.f * max(dot(vNormal, vLook), 0.f) * max(dot(vNormal, normalize(g_vLightDir) * -1.f), 0.f);
-        vector vSpecular = vNumerator / max(fDenominator, 0.001f);
+    //    vector vNumerator = vector(F, 0.f) * NDF * G;
+    //    float fDenominator = 4.f * max(dot(vNormal, vLook), 0.f) * max(dot(vNormal, normalize(g_vLightDir) * -1.f), 0.f);
+    //    vector vSpecular = vNumerator / max(fDenominator, 0.001f);
 
-        vector SpecularAcc = (kD * vDiffuseColor / 3.141592265359 + vSpecular) * NdotL;
+    //    vector SpecularAcc = (kD * vDiffuseColor / 3.141592265359 + vSpecular) * NdotL;
 
-        vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(g_vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * vDiffuseColor));
-        vResult *= fOcclusion;
+    //    vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(g_vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * vDiffuseColor));
+    //    vResult *= fOcclusion;
 
-        Out.vSpecular = SpecularAcc* fOcclusion;
-        Out.vSpecular.a = 0.f;
+    //    Out.vSpecular = SpecularAcc* fOcclusion;
+    //    Out.vSpecular.a = 0.f;
 
-        Out.vShade = vResult;
-        Out.vShade.a = 1.f;
+    //    Out.vShade = vResult;
+    //    Out.vShade.a = 1.f;
 
-    }
-    else
-    {
+    //}
+    //else
+    //{
 
         //Out.vShade = vShadeDesc;
         vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * g_vMtrlAmbient)) * fAtt;
@@ -385,7 +385,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 
         Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f) * fAtt;
         Out.vSpecular.a = 0.f;
-    }
+   // }
 	return Out;
 }
 
