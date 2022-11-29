@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CTransform;
+class CBoneNode;
 END
 
 BEGIN(Client)

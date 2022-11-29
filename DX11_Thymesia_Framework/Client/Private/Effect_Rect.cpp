@@ -1837,24 +1837,50 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 				}
 				else
 				{
+#pragma region Start Speed
+					static _bool bIsMinMaxSame_StartSpeed;
+					ImGui::Text("Min = Max"); ImGui::SameLine();
+					ImGui::Checkbox("##Is_MinMaxSame_StartSpeed", &bIsMinMaxSame_StartSpeed);
+
 					ImGui::Text("Min Speed");
 					ImGui::DragFloat3("##Min_Speed", &m_tEffectParticleDesc.vMinSpeed.x, 0.1f);
 
+					if (bIsMinMaxSame_StartSpeed)
+						m_tEffectParticleDesc.vMaxSpeed = m_tEffectParticleDesc.vMinSpeed;
+
 					ImGui::Text("Max Speed");
 					ImGui::DragFloat3("##Max_Speed", &m_tEffectParticleDesc.vMaxSpeed.x, 0.1f);
+#pragma endregion
+
+#pragma region Speed Force
+					static _bool bIsMinMaxSame_SpeedForce;
+					ImGui::Text("Min = Max"); ImGui::SameLine();
+					ImGui::Checkbox("##Is_MinMaxSame_SpeedForce", &bIsMinMaxSame_SpeedForce);
 
 					ImGui::Text("Min Force");
 					ImGui::DragFloat3("##Min_Speed_Force", &m_tEffectParticleDesc.vMinSpeedForce.x, 0.1f);
 
+					if (bIsMinMaxSame_SpeedForce)
+						m_tEffectParticleDesc.vMaxSpeedForce = m_tEffectParticleDesc.vMinSpeedForce;
+
 					ImGui::Text("Max Force");
 					ImGui::DragFloat3("##Max_Speed_Force", &m_tEffectParticleDesc.vMaxSpeedForce.x, 0.1f);
+#pragma endregion
 				}
+#pragma region Speed Limit
+				static _bool bIsMinMaxSame_SpeedLimit;
+				ImGui::Text("Min = Max"); ImGui::SameLine();
+				ImGui::Checkbox("##Is_MinMaxSame_SpeedLimit", &bIsMinMaxSame_SpeedLimit);
 
 				ImGui::Text("Min Limit Speed");
 				ImGui::DragFloat3("##Min_Limit_Speed", &m_tEffectParticleDesc.vMinLimitSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
 
+				if (bIsMinMaxSame_SpeedLimit)
+					m_tEffectParticleDesc.vMaxLimitSpeed = m_tEffectParticleDesc.vMinLimitSpeed;
+
 				ImGui::Text("Max Limit Speed");
 				ImGui::DragFloat3("##Max_Limit_Speed", &m_tEffectParticleDesc.vMaxLimitSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
+#pragma endregion
 			}
 			else
 			{
@@ -1951,30 +1977,65 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 				}
 				else
 				{
+#pragma region Start Rotation
+					static _bool bIsMinMaxSame_StartRotation;
+					ImGui::Text("Min = Max"); ImGui::SameLine();
+					ImGui::Checkbox("##Is_MinMaxSame_StartRotation", &bIsMinMaxSame_StartRotation);
+
 					ImGui::Text("Min Start Rotation");
 					ImGui::DragFloat3("##Min_Start_Rotation", &m_tEffectParticleDesc.vMinStartRotation.x, 0.1f);
 
+					if (bIsMinMaxSame_StartRotation)
+						m_tEffectParticleDesc.vMaxStartRotation = m_tEffectParticleDesc.vMinStartRotation;
+
 					ImGui::Text("Max Start Rotation");
 					ImGui::DragFloat3("##Max_Start_Rotation", &m_tEffectParticleDesc.vMaxStartRotation.x, 0.1f);
+#pragma endregion
+
+#pragma region Rotation Speed
+					static _bool bIsMinMaxSame_RotationSpeed;
+					ImGui::Text("Min = Max"); ImGui::SameLine();
+					ImGui::Checkbox("##Is_MinMaxSame_RotationSpeed", &bIsMinMaxSame_RotationSpeed);
 
 					ImGui::Text("Min Rotation Speed");
 					ImGui::DragFloat3("##Min_Rotation_Speed", &m_tEffectParticleDesc.vMinRotationSpeed.x, 0.1f);
 
+					if (bIsMinMaxSame_RotationSpeed)
+						m_tEffectParticleDesc.vMaxRotationSpeed = m_tEffectParticleDesc.vMinRotationSpeed;
+
 					ImGui::Text("Max Rotation Speed");
 					ImGui::DragFloat3("##Max_Rotation_Speed", &m_tEffectParticleDesc.vMaxRotationSpeed.x, 0.1f);
+#pragma endregion
+
+#pragma region Rotation Force
+					static _bool bIsMinMaxSame_RotationForce;
+					ImGui::Text("Min = Max"); ImGui::SameLine();
+					ImGui::Checkbox("##Is_MinMaxSame_RotationForce", &bIsMinMaxSame_RotationForce);
 
 					ImGui::Text("Min Rotation Force");
 					ImGui::DragFloat3("##Min_Rotation_Force", &m_tEffectParticleDesc.vMinRotationForce.x, 0.1f);
 
+					if (bIsMinMaxSame_RotationForce)
+						m_tEffectParticleDesc.vMaxRotationForce = m_tEffectParticleDesc.vMinRotationForce;
+
 					ImGui::Text("Max Rotation Force");
 					ImGui::DragFloat3("##Max_Rotation_Force", &m_tEffectParticleDesc.vMaxRotationForce.x, 0.1f);
+#pragma endregion
 				}
+#pragma region Rotation Limit
+				static _bool bIsMinMaxSame_RotationLimit;
+				ImGui::Text("Min = Max"); ImGui::SameLine();
+				ImGui::Checkbox("##Is_MinMaxSame_RotationLimit", &bIsMinMaxSame_RotationLimit);
 
 				ImGui::Text("Min Limit Rotation");
 				ImGui::DragFloat3("##Min_Limit_Rotation", &m_tEffectParticleDesc.vMinLimitRotation.x, 0.1f);
 
+				if (bIsMinMaxSame_RotationLimit)
+					m_tEffectParticleDesc.vMaxLimitRotation = m_tEffectParticleDesc.vMinLimitRotation;
+
 				ImGui::Text("Max Limit Rotation");
 				ImGui::DragFloat3("##Max_Limit_Rotation", &m_tEffectParticleDesc.vMaxLimitRotation.x, 0.1f);
+#pragma endregion
 			}
 
 #pragma endregion
@@ -2025,32 +2086,65 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			}
 			else
 			{
+#pragma region Start Scale
+				static _bool bIsMinMaxSame_StartScale;
+				ImGui::Text("Min = Max"); ImGui::SameLine();
+				ImGui::Checkbox("##Is_MinMaxSame_StartScale", &bIsMinMaxSame_StartScale);
+
 				ImGui::Text("Min Start Scale");
 				ImGui::DragFloat3("##Min_Start_Scale", &m_tEffectParticleDesc.vMinStartScale.x, 0.1f);
 
+				if (bIsMinMaxSame_StartScale)
+					m_tEffectParticleDesc.vMaxStartScale = m_tEffectParticleDesc.vMinStartScale;
+
 				ImGui::Text("Max Start Scale");
 				ImGui::DragFloat3("##Max_Start_Scale", &m_tEffectParticleDesc.vMaxStartScale.x, 0.1f);
+#pragma endregion
 
+#pragma region Scale Speed
+				static _bool bIsMinMaxSame_ScaleSpeed;
+				ImGui::Text("Min = Max"); ImGui::SameLine();
+				ImGui::Checkbox("##Is_MinMaxSame_ScaleSpeed", &bIsMinMaxSame_ScaleSpeed);
 
 				ImGui::Text("Min Scale Speed");
 				ImGui::DragFloat3("##Min_Scale_Speed", &m_tEffectParticleDesc.vMinScaleSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
 
+				if (bIsMinMaxSame_ScaleSpeed)
+					m_tEffectParticleDesc.vMaxScaleSpeed = m_tEffectParticleDesc.vMinScaleSpeed;
+
 				ImGui::Text("Max Scale Speed");
 				ImGui::DragFloat3("##Max_Scale_Speed", &m_tEffectParticleDesc.vMaxScaleSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
+#pragma endregion
+
+#pragma region Scale Force
+				static _bool bIsMinMaxSame_ScaleForce;
+				ImGui::Text("Min = Max"); ImGui::SameLine();
+				ImGui::Checkbox("##Is_MinMaxSame_ScaleForce", &bIsMinMaxSame_ScaleForce);
 
 				ImGui::Text("Min Scale Force");
 				ImGui::DragFloat3("##Min_Scale_Force", &m_tEffectParticleDesc.vMinScaleForce.x, 0.1f, 0.f, 0.f, "%.5f");
 
+				if (bIsMinMaxSame_ScaleForce)
+					m_tEffectParticleDesc.vMaxScaleForce = m_tEffectParticleDesc.vMinScaleForce;
+
 				ImGui::Text("Max Scale Force");
 				ImGui::DragFloat3("##Max_Scale_Force", &m_tEffectParticleDesc.vMaxScaleForce.x, 0.1f, 0.f, 0.f, "%.5f");
+#pragma endregion
 			}
+#pragma region Scale Limit
+			static _bool bIsMinMaxSame_ScaleLimit;
+			ImGui::Text("Min = Max"); ImGui::SameLine();
+			ImGui::Checkbox("##Is_MinMaxSame_ScaleLimit", &bIsMinMaxSame_ScaleLimit);
 
-			ImGui::Text("Min Scale");
+			ImGui::Text("Min Limit Scale");
 			ImGui::DragFloat3("##Min_Limit_Scale", &m_tEffectParticleDesc.vMinLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
 
+			if (bIsMinMaxSame_ScaleLimit)
+				m_tEffectParticleDesc.vMaxLimitScale = m_tEffectParticleDesc.vMinLimitScale;
 
-			ImGui::Text("Max Scale");
+			ImGui::Text("Max Limit Scale");
 			ImGui::DragFloat3("##Max_Limit_Scale", &m_tEffectParticleDesc.vMaxLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
+#pragma endregion
 #pragma endregion
 
 			ImGui::Separator();
@@ -2064,25 +2158,66 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::SameLine();
 			ImGui::Checkbox("##Is_Gray_Only_Use_Red", &m_tEffectParticleDesc.IsGrayOnlyUseRed);
 
+#pragma region Start Color
+			static _bool bIsMinMaxSame_StartColor;
+			ImGui::Text("Min = Max"); ImGui::SameLine();
+			ImGui::Checkbox("##Is_MinMaxSame_StartColor", &bIsMinMaxSame_StartColor);
+
 			ImGui::Text("Min Start Color");
 			ImGui::DragFloat4("##Min_Start_Color", &m_tEffectParticleDesc.vMinStartColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+
+			if (bIsMinMaxSame_StartColor)
+				m_tEffectParticleDesc.vMaxStartColor = m_tEffectParticleDesc.vMinStartColor;
+
 			ImGui::Text("Max Start Color");
 			ImGui::DragFloat4("##Max_Start_Color", &m_tEffectParticleDesc.vMaxStartColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+#pragma endregion
+
+#pragma region Color Speed 
+			static _bool bIsMinMaxSame_ColorSpeed;
+			ImGui::Text("Min = Max"); ImGui::SameLine();
+			ImGui::Checkbox("##Is_MinMaxSame_ColorSpeed", &bIsMinMaxSame_ColorSpeed);
 
 			ImGui::Text("Min Color Speed");
 			ImGui::DragFloat4("##Min_Color_Speed", &m_tEffectParticleDesc.vMinColorSpeed.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+
+			if (bIsMinMaxSame_ColorSpeed)
+				m_tEffectParticleDesc.vMaxColorSpeed = m_tEffectParticleDesc.vMinColorSpeed;
+
 			ImGui::Text("Max Color Speed");
 			ImGui::DragFloat4("##Max_Color_Speed", &m_tEffectParticleDesc.vMaxColorSpeed.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+#pragma endregion
+
+#pragma region Color Force
+			static _bool bIsMinMaxSame_ColorForce;
+			ImGui::Text("Min = Max"); ImGui::SameLine();
+			ImGui::Checkbox("##Is_MinMaxSame_ColorForce", &bIsMinMaxSame_ColorForce);
 
 			ImGui::Text("Min Color Force");
 			ImGui::DragFloat4("##Min_Color_Force", &m_tEffectParticleDesc.vMinColorForce.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+
+			if (bIsMinMaxSame_ColorForce)
+				m_tEffectParticleDesc.vMaxColorForce = m_tEffectParticleDesc.vMinColorForce;
+
 			ImGui::Text("Max Color Force");
 			ImGui::DragFloat4("##Max_Color_Force", &m_tEffectParticleDesc.vMaxColorForce.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+#pragma endregion
 
-			ImGui::Text("Min Color");
+#pragma region Color Limit
+			static _bool bIsMinMaxSame_ColorLimit;
+			ImGui::Text("Min = Max"); ImGui::SameLine();
+			ImGui::Checkbox("##Is_MinMaxSame_ColorLimit", &bIsMinMaxSame_ColorLimit);
+
+			ImGui::Text("Min Limit Color");
 			ImGui::DragFloat4("##Min_Color", &m_tEffectParticleDesc.vMinColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
-			ImGui::Text("Max Color");
+
+			if (bIsMinMaxSame_ColorLimit)
+				m_tEffectParticleDesc.vMaxColor = m_tEffectParticleDesc.vMinColor;
+
+			ImGui::Text("Max Limit Color");
 			ImGui::DragFloat4("##Max_Color", &m_tEffectParticleDesc.vMaxColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+#pragma endregion
+
 #pragma endregion
 			ImGui::Separator();
 #pragma region Textures
