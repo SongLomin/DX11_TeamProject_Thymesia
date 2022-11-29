@@ -1328,20 +1328,21 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::NewLine();
 			ImGui::Separator();
 
-			ImGui::TextColored(ImVec4{ 0.f, 0.5f, 0.5f, 1.f }, "Textures");
+			ImGui::TextColored(ImVec4{ 0.f, 0.5f, 0.5f, 1.f }, "[ Textures ]");
 			ImGui::NewLine();
 #pragma region Textures
+			ImGui::Text("Texture Index");
 			ImGui::SetNextItemWidth(100.f);
-			ImGui::InputInt("UV Diffuse Index", &m_tEffectMeshDesc.iDiffuseTextureIndex, 1, 0);
+			ImGui::InputInt("Diffuse", &m_tEffectMeshDesc.iDiffuseTextureIndex, 1, 0);
 			ImGui::SetNextItemWidth(100.f);
-			ImGui::InputInt("UV Noise Index", &m_tEffectMeshDesc.iNoiseTextureIndex, 1, 0);
+			ImGui::InputInt("Noise", &m_tEffectMeshDesc.iNoiseTextureIndex, 1, 0);
 			ImGui::SetNextItemWidth(100.f);
-			ImGui::InputInt("UV Mask Index", &m_tEffectMeshDesc.iMaskTextureIndex, 1, 0);
+			ImGui::InputInt("Mask", &m_tEffectMeshDesc.iMaskTextureIndex, 1, 0);
 
 			ImGui::Text("Dynamic Noise"); ImGui::SameLine();
 			ImGui::Checkbox("##Dynamic Noise Option", &m_tEffectMeshDesc.bDynamicNoiseOption);
 
-			ImGui::Separator();
+			ImGui::NewLine();
 
 			ImGui::Text("Checked : Wrap | Unchecked : Clamp");
 			ImGui::Text("Diffuse"); ImGui::SameLine();
@@ -1354,16 +1355,26 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::Separator();
 
 			ImGui::Text("Wrap Weight");
-			ImGui::SetNextItemWidth(100.f);
-			ImGui::DragFloat("##DiffuseTextureWrapWeight", &m_tEffectMeshDesc.vWrapWeight.x, 0.01f); ImGui::SameLine();
-			ImGui::Text("[Diffuse]");
-			ImGui::SetNextItemWidth(100.f);
-			ImGui::DragFloat("##NoiseTextureWrapWeight", &m_tEffectMeshDesc.vWrapWeight.y, 0.01f); ImGui::SameLine();
-			ImGui::Text("[Noise]");
-			ImGui::SetNextItemWidth(100.f);
-			ImGui::DragFloat("##MaskTextureWrapWeight", &m_tEffectMeshDesc.vWrapWeight.z, 0.01f); ImGui::SameLine();
-			ImGui::Text("[Mask]");
+			if (m_tEffectMeshDesc.bDiffuseWrap)
+			{
+				ImGui::SetNextItemWidth(100.f);
+				ImGui::DragFloat("##DiffuseTextureWrapWeight", &m_tEffectMeshDesc.vWrapWeight.x, 0.01f); ImGui::SameLine();
+				ImGui::Text("[Diffuse]");
+			}
+			if (m_tEffectMeshDesc.bNoiseWrap)
+			{
+				ImGui::SetNextItemWidth(100.f);
+				ImGui::DragFloat("##NoiseTextureWrapWeight", &m_tEffectMeshDesc.vWrapWeight.y, 0.01f); ImGui::SameLine();
+				ImGui::Text("[Noise]");
+			}
+			if (m_tEffectMeshDesc.bMaskWrap)
+			{
+				ImGui::SetNextItemWidth(100.f);
+				ImGui::DragFloat("##MaskTextureWrapWeight", &m_tEffectMeshDesc.vWrapWeight.z, 0.01f); ImGui::SameLine();
+				ImGui::Text("[Mask]");
+			}
 #pragma endregion
+
 			ImGui::Separator();
 
 #pragma region UV Options
@@ -1391,7 +1402,7 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::TextColored(ImVec4{ 0.f, 1.f, 0.f, 1.f }, "[ Noise ]");
 			ImGui::NewLine();
 
-			ImGui::Text("Noise Start UV");
+			ImGui::Text("Start UV");
 			ImGui::DragFloat2("##Noise Start UV", &m_tEffectMeshDesc.vNoiseStartUV.x, 0.01f, 0.f, 1.f, "%.5f");
 
 			ImGui::Text("UV Speed");
