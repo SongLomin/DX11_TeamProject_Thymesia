@@ -14,7 +14,7 @@
 #include "CustomUI.h"
 #include "UI_Logo.h"
 #include "UI_Loading.h"
-
+#include <cmath>
 CLoader::CLoader()
 	//: m_pDevice(pDevice), m_pContext(pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
@@ -95,7 +95,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 #pragma region PROTOTYPE_GAMEOBJECT
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
-
+	
 	GAMEINSTANCE->Add_Font((_uint)FONT_INDEX::DREAM, TEXT("../Bin/Resources/Fonts/128.spriteFont"));
 	GAMEINSTANCE->Add_Font((_uint)FONT_INDEX::PRETENDARD, TEXT("../Bin/Resources/Fonts/Pretendard.spriteFont"));
 	GAMEINSTANCE->Add_Font((_uint)FONT_INDEX::HEIROLIGHT, TEXT("../Bin/Resources/Fonts/HeiroLightRegular.spritefont"));
@@ -374,6 +374,31 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("LevelUp_ReconfirmWindow_ChangedStatusApply"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/ChangedStatusApply.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("LevelUp_ReconfirmWindow_Yes"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Yes.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("LevelUp_ReconfirmWindow_No"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/No.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+
+	//Scirpt
+	GAMEINSTANCE->Load_Textures(("Script_Varg_Tutorial_0"), TEXT("../Bin/Resources/Textures/UI/Scripts/Varg/Tutorial_0.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("Script_Varg_Tutorial_1"), TEXT("../Bin/Resources/Textures/UI/Scripts/Varg/Tutorial_1.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	
+
+	//DamageFont
+	GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+	
+	//GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/1.png"), MEMORY_TYPE::MEMORY_STATIC);
+	//GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/2.png"), MEMORY_TYPE::MEMORY_STATIC);
+	//GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/3.png"), MEMORY_TYPE::MEMORY_STATIC);
+	//GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/4.png"), MEMORY_TYPE::MEMORY_STATIC);
+	//GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/5.png"), MEMORY_TYPE::MEMORY_STATIC);
+	//GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/6.png"), MEMORY_TYPE::MEMORY_STATIC);
+	//GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/7.png"), MEMORY_TYPE::MEMORY_STATIC);
+	//GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/8.png"), MEMORY_TYPE::MEMORY_STATIC);
+	//GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/9.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+
 
 #ifndef _ONLY_UI_
 	

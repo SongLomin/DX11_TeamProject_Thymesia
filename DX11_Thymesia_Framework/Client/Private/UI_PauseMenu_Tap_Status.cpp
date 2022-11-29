@@ -7,7 +7,8 @@
 #include "GameManager.h"
 #include "Client_GameObjects.h"
 #include "CustomUI.h"
-
+#include "Player.h"
+#include "Status_Player.h"
 
 
 GAMECLASS_C(CUI_PauseMenu_Tap_Status)
@@ -37,7 +38,7 @@ HRESULT CUI_PauseMenu_Tap_Status::Initialize(void* pArg)
     m_vecChildUI.push_back(m_pStatusBG);
 
 
-    Create_Font();
+
 
     return S_OK;
 }
@@ -73,6 +74,44 @@ HRESULT CUI_PauseMenu_Tap_Status::Render()
 {
     //
     return S_OK;
+}
+void CUI_PauseMenu_Tap_Status::Set_Str(wstring& strStatus, STATUSTYPE eType)
+{
+    switch (eType)
+    {
+    case Client::CUI_PauseMenu_Tap_Status::STATUSTYPE::LEVEL:
+        strStatus = to_wstring(m_tPlayerDesc.m_iLevel);
+        break;
+    case Client::CUI_PauseMenu_Tap_Status::STATUSTYPE::ATTACK_DAMAGE:
+        strStatus = to_wstring((_uint)m_tPlayerDesc.m_fNormalAtk);
+        break;
+    case Client::CUI_PauseMenu_Tap_Status::STATUSTYPE::WOUND:
+        strStatus = to_wstring(m_tPlayerDesc.m_iWound);
+        break;
+    case Client::CUI_PauseMenu_Tap_Status::STATUSTYPE::HP:
+        strStatus = to_wstring((_uint)m_tPlayerDesc.m_fMaxHP);
+        break;
+    case Client::CUI_PauseMenu_Tap_Status::STATUSTYPE::MP:
+        strStatus = to_wstring((_uint)m_tPlayerDesc.m_fMaxMP);
+        break;
+    case Client::CUI_PauseMenu_Tap_Status::STATUSTYPE::STR:
+        strStatus = to_wstring(m_tPlayerDesc.m_iStr);
+        break;
+    case Client::CUI_PauseMenu_Tap_Status::STATUSTYPE::VIT:
+        strStatus = to_wstring(m_tPlayerDesc.m_iVital);
+        break;
+    case Client::CUI_PauseMenu_Tap_Status::STATUSTYPE::PLA:
+        strStatus = to_wstring(m_tPlayerDesc.m_iPlague);
+        break;
+    case Client::CUI_PauseMenu_Tap_Status::STATUSTYPE::FEATHER:
+        strStatus = to_wstring(m_tPlayerDesc.m_iMaxFeather);
+        break;
+    case Client::CUI_PauseMenu_Tap_Status::STATUSTYPE::STATUS_END:
+        break;
+    default:
+        break;
+    }
+
 }
 
 void CUI_PauseMenu_Tap_Status::Create_Font()
@@ -133,7 +172,7 @@ void CUI_PauseMenu_Tap_Status::Create_Font()
         m_StatusTextInfo[i].bAlways = false;
         m_StatusTextInfo[i].bCenterAlign = false;
         m_StatusTextInfo[i].fRotation = 0.f;
-        m_StatusTextInfo[i].szText = L"0";
+        Set_Str(m_StatusTextInfo[i].szText, (STATUSTYPE)i);
         m_StatusTextInfo[i].vColor = _float4(0.7f, 0.7f, 0.7f, 0.7f);
         m_StatusTextInfo[i].vPosition = _float2(458.f, 253.f + ((_float)i * 43.f));
         m_StatusTextInfo[i].vScale = _float2(0.5f, 0.5f);
@@ -163,5 +202,18 @@ void CUI_PauseMenu_Tap_Status::Create_Font()
 
     m_vecChildUI.push_back(m_pUICorvusTextDecoration);
   */  
+}
+
+void CUI_PauseMenu_Tap_Status::OnEnable(void* pArg)
+{
+    weak_ptr<CPlayer>    pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+    if (pPlayer.lock())
+    {
+        pPlayer.lock()->Get_Status().lock()->Get_Desc(&m_tPlayerDesc);
+    }
+    else
+        ZeroMemory(&m_tPlayerDesc, sizeof(CStatus_Player::PLAYERDESC));
+
+    Create_Font();
 }
 

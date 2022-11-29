@@ -113,6 +113,7 @@ public:
     void		Set_AlphaColor(_float fAlphaColor) { m_fAlphaColor = fAlphaColor; }
     _float		Get_AlphaColor() { return m_fAlphaColor; }
 
+    void		Set_OffsetPosition(_float2 fOffset) { m_fOffsetPosition = fOffset; }
 
 
 

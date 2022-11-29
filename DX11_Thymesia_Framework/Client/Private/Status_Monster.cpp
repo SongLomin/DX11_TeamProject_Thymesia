@@ -170,7 +170,11 @@ void CStatus_Monster::Add_Damage(const _float In_fDamage, ATTACK_OPTION eAttackO
 
 void CStatus_Monster::Get_Desc(void* pOutDesc)
 {
-	memcpy(pOutDesc, &m_tMonsterDesc, sizeof(MONSTERDESC));
+	MONSTERDESC* pMonsterDesc = (MONSTERDESC*)pOutDesc;
+
+	*pMonsterDesc = m_tMonsterDesc;
+
+//	memcpy(pOutDesc, &m_tMonsterDesc, sizeof(MONSTERDESC));
 }
 
 void CStatus_Monster::Decrease_White_HP(const _float In_fDamage)

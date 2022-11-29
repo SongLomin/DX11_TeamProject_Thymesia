@@ -18,11 +18,15 @@ public:
 
 	virtual void Tick(_float fTimeDelta) override;
 	virtual void LateTick(_float fTimeDelta) override;
-
 public:
 	_bool		Is_Lerping() { return m_bLerp; }
-	void		Set_LerpFloat(_float In_fStart, _float In_fEnd, _float In_fTime, EASING_TYPE eType = EASING_TYPE::QUAD_IN);
+	void		Set_LerpFloat(_float In_fStart, _float In_fEnd, _float In_fTime, EASING_TYPE eType = EASING_TYPE::QUAD_IN);	
+	void		Set_LerpFloat2(_float2 In_fStart, _float2 In_fEnd, _float In_fTime, EASING_TYPE eType = EASING_TYPE::QUAD_IN);
+
 	_float4		Get_Lerp();
+	_float		Get_PlayingRatio() { return m_fLerpTick / m_fLerpTime; }
+public:
+	FDelegate<>		Callback_LerpEnd;
 
 private:
 	//Lerp Variagbles

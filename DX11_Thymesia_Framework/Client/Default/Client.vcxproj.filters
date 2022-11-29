@@ -92,7 +92,7 @@
       <Filter>05. Component\03. State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\GameManager.h">
-      <Filter>96. GameManager</Filter>
+      <Filter>97. Tool\96. GameManager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Lobby.h">
       <Filter>01. ClientLevel\02. Lobby</Filter>
@@ -572,9 +572,6 @@
     <ClInclude Include="..\Public\MonsterHPBar_Base.h">
       <Filter>02. GameObject\01. UI\UI_Container\MonsterHPBar</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawTabAttack</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtXXL.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
     </ClInclude>
@@ -799,18 +796,19 @@
     <ClInclude Include="..\Public\PhysXCameraController.h">
       <Filter>05. Component\00. PhysXCameraController</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\NorMonState\NorMonState_Parry.h">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\29.Parry</Filter>
+    <ClInclude Include="..\Public\ActorDecor.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h" />
+    <ClInclude Include="..\Public\EasingTransform.h" />
+    <ClInclude Include="..\Public\EditMapCollider.h" />
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Parry.h" />
+    <ClInclude Include="..\Public\Weapon.h" />
+    <ClInclude Include="..\Public\UI_Script.h">
+      <Filter>02. GameObject\01. UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\01.ClawHoldAttack</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\02.ClawAwayAttack</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawTabAttack\01ClawTabAttack2</Filter>
-    </ClInclude>
+    <ClInclude Include="..\Public\UI_ScriptQueue.h" />
+    <ClInclude Include="..\Public\UI_DamageFont.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -886,7 +884,7 @@
       <Filter>05. Component\03. State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\GameManager.cpp">
-      <Filter>96. GameManager</Filter>
+      <Filter>97. Tool\96. GameManager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Lobby.cpp">
       <Filter>01. ClientLevel\02. Lobby</Filter>
@@ -1347,9 +1345,6 @@
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawTabAttack</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXXL.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
     </ClCompile>
@@ -1393,9 +1388,6 @@
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttack1.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawAttack1</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXXL.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
@@ -1468,9 +1460,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttack1.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawAttack1</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXXL.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
@@ -1548,9 +1537,6 @@
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttack1.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawAttack1</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXXL.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
@@ -1677,6 +1663,20 @@
     <ClCompile Include="..\Private\EditMapCollider.cpp">
       <Filter>02. GameObject\99. Other\07. EditMapCollider</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\ActorDecor.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackAway.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackHold.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab2.cpp" />
+    <ClCompile Include="..\Private\EasingTransform.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Parry.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab.cpp" />
+    <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp" />
+    <ClCompile Include="..\Private\Weapon.cpp" />
+    <ClCompile Include="..\Private\UI_Script.cpp">
+      <Filter>02. GameObject\01. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_ScriptQueue.cpp" />
+    <ClCompile Include="..\Private\UI_DamageFont.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1701,9 +1701,6 @@
     </Filter>
     <Filter Include="97. Tool\00. IMGUI\Windows\00. UI">
       <UniqueIdentifier>{f680c8aa-9d60-42d0-9d0d-462fa61d8d83}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="96. GameManager">
-      <UniqueIdentifier>{754a09b8-9237-4e34-871e-e6aeaa3022d6}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. ClientLevel">
       <UniqueIdentifier>{21371941-8fc0-43d9-b47a-6f347c9fae61}</UniqueIdentifier>
@@ -1758,9 +1755,6 @@
     </Filter>
     <Filter Include="01. ClientLevel\Loader">
       <UniqueIdentifier>{33e1de52-700d-4cac-9e56-af962b2b6268}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="96. GameManager\00. GameState">
-      <UniqueIdentifier>{297f4c57-9297-455a-99b4-9a82b4e402f7}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject">
       <UniqueIdentifier>{57f74c26-08d1-4431-861b-7a6105d37c3f}</UniqueIdentifier>
@@ -2610,6 +2604,18 @@
     </Filter>
     <Filter Include="02. GameObject\99. Other\07. EditMapCollider">
       <UniqueIdentifier>{26edf638-982f-46e7-b7d2-0e0e9f99ec90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\96. GameManager">
+      <UniqueIdentifier>{754a09b8-9237-4e34-871e-e6aeaa3022d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\96. GameManager\00. GameState">
+      <UniqueIdentifier>{297f4c57-9297-455a-99b4-9a82b4e402f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SkillTree">
+      <UniqueIdentifier>{bd806de9-8458-4620-bae8-5810e4388550}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\UI_Container\UI_ScriptQueue">
+      <UniqueIdentifier>{29f5e315-7317-4fd4-9e6b-33f780b6d6fd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
