@@ -494,6 +494,7 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 		if (In_Json.find("Bone_Name") != In_Json.end())
 			m_strBoneName = In_Json["Bone_Name"];
 
+#ifdef _BONE_PARTICLE_
 		try
 		{
 			if (m_strBoneName.empty())
@@ -511,6 +512,7 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 		{
 			assert(0);
 		}
+#endif // _BONE_PARTICLE_
 	}
 
 #pragma region Spawn Position
@@ -1590,14 +1592,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::Text("Is Looping");
 			ImGui::SameLine();
 			ImGui::Checkbox("##Is_Looping", &m_tEffectParticleDesc.bLooping);
-			ImGui::Separator();
-#pragma region Shader Pass
-			ImGui::Text("Pass %d : Sprite Image (Discard Black)", PASS_SPRITE_BLACKDISCARD);
-			ImGui::Text("Pass %d : Default		(Discard Alpha)", PASS_ALPHADISCARD);
-			ImGui::Text("Pass %d : Default		(Discard Black)", PASS_BLACKDISCARD);
-			ImGui::Text("Pass %d : Sprite Image (Discard Alpha)", PASS_SPRITE_ALPHADISCARD);
-			ImGui::InputInt("Shader Pass", &m_tEffectParticleDesc.iShaderPassIndex);
-#pragma endregion
+
 			ImGui::Separator();
 #pragma region For. Sprite
 			if (
@@ -1693,7 +1688,11 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::DragFloat3("##Gravity_Force", &m_tEffectParticleDesc.vGravityForce.x, 0.1f, -100.f, 100.f, "%.5f");
 
 			ImGui::Separator();
+			ImGui::Separator();
+
 #pragma region Positions
+			ImGui::Text("Position");
+
 			ImGui::Text("Follow Bone"); ImGui::SameLine();
 			ImGui::Checkbox("##Is_Boner", &m_tEffectParticleDesc.bBoner);
 
@@ -1709,7 +1708,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					ImGui::Text("No Bones!");
 				else
 				{
-					if (ImGui::BeginListBox("Bone List 2"))
+					if (ImGui::BeginListBox("Bone List - Particle"))
 					{
 						for (_int n{ 0 }; n < m_AllBoneNames.size(); n++)
 						{
@@ -1845,13 +1844,13 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					ImGui::Text("Min = Max"); ImGui::SameLine();
 					ImGui::Checkbox("##Is_MinMaxSame_StartSpeed", &bIsMinMaxSame_StartSpeed);
 
-					ImGui::Text("Min Speed");
+					ImGui::Text("Min Start Speed");
 					ImGui::DragFloat3("##Min_Speed", &m_tEffectParticleDesc.vMinSpeed.x, 0.1f);
 
 					if (bIsMinMaxSame_StartSpeed)
 						m_tEffectParticleDesc.vMaxSpeed = m_tEffectParticleDesc.vMinSpeed;
 
-					ImGui::Text("Max Speed");
+					ImGui::Text("Max Start Speed");
 					ImGui::DragFloat3("##Max_Speed", &m_tEffectParticleDesc.vMaxSpeed.x, 0.1f);
 #pragma endregion
 
@@ -2042,13 +2041,21 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			}
 
 #pragma endregion
+
+			ImGui::NewLine();
 			ImGui::Separator();
+			ImGui::NewLine();
+			ImGui::Separator();
+			ImGui::NewLine();
+
 #pragma region Scale
 			ImGui::Text("Scale");
 			ImGui::NewLine();
 
 			ImGui::Text("Apply Easing"); ImGui::SameLine();
 			ImGui::Checkbox("##Is_Easing_Scale", &m_tEffectParticleDesc.bEasingScale);
+
+			ImGui::Separator();
 
 			if (m_tEffectParticleDesc.bEasingScale)
 			{
@@ -2094,16 +2101,16 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 				ImGui::Text("Min = Max"); ImGui::SameLine();
 				ImGui::Checkbox("##Is_MinMaxSame_StartScale", &bIsMinMaxSame_StartScale);
 
-				ImGui::Text("Min Start Scale");
-				ImGui::DragFloat3("##Min_Start_Scale", &m_tEffectParticleDesc.vMinStartScale.x, 0.1f);
-
 				if (bIsMinMaxSame_StartScale)
 					m_tEffectParticleDesc.vMaxStartScale = m_tEffectParticleDesc.vMinStartScale;
+
+				ImGui::Text("Min Start Scale");
+				ImGui::DragFloat3("##Min_Start_Scale", &m_tEffectParticleDesc.vMinStartScale.x, 0.1f);
 
 				ImGui::Text("Max Start Scale");
 				ImGui::DragFloat3("##Max_Start_Scale", &m_tEffectParticleDesc.vMaxStartScale.x, 0.1f);
 #pragma endregion
-
+				ImGui::Separator();
 #pragma region Scale Speed
 				static _bool bIsMinMaxSame_ScaleSpeed;
 				ImGui::Text("Min = Max"); ImGui::SameLine();
@@ -2118,7 +2125,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 				ImGui::Text("Max Scale Speed");
 				ImGui::DragFloat3("##Max_Scale_Speed", &m_tEffectParticleDesc.vMaxScaleSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
 #pragma endregion
-
+				ImGui::Separator();
 #pragma region Scale Force
 				static _bool bIsMinMaxSame_ScaleForce;
 				ImGui::Text("Min = Max"); ImGui::SameLine();
@@ -2134,6 +2141,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 				ImGui::DragFloat3("##Max_Scale_Force", &m_tEffectParticleDesc.vMaxScaleForce.x, 0.1f, 0.f, 0.f, "%.5f");
 #pragma endregion
 			}
+			ImGui::Separator();
 #pragma region Scale Limit
 			static _bool bIsMinMaxSame_ScaleLimit;
 			ImGui::Text("Min = Max"); ImGui::SameLine();
@@ -2150,46 +2158,79 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 #pragma endregion
 #pragma endregion
 
+			ImGui::NewLine();
 			ImGui::Separator();
+			ImGui::NewLine();
 			ImGui::Separator();
+			ImGui::NewLine();
 
 #pragma region Colors
+			ImGui::Text("Colors");
+
+			ImGui::Separator();
+
+#pragma region Shader Pass
+			ImGui::Text("Shader Pass");
+			ImGui::Text("Pass %d : Sprite Image (Discard Black)", PASS_SPRITE_BLACKDISCARD);
+			ImGui::Text("Pass %d : Default		(Discard Alpha)", PASS_ALPHADISCARD);
+			ImGui::Text("Pass %d : Default		(Discard Black)", PASS_BLACKDISCARD);
+			ImGui::Text("Pass %d : Sprite Image (Discard Alpha)", PASS_SPRITE_ALPHADISCARD);
+			ImGui::InputInt("Shader Pass", &m_tEffectParticleDesc.iShaderPassIndex);
+#pragma endregion
+
+			ImGui::Separator();
+
+#pragma region Discard Ratio
 			ImGui::Text("Discard Ratio");
 			ImGui::DragFloat("##Discard_Ratio", &m_tEffectParticleDesc.fDiscardRatio, 0.01f, 0.f, 3.f);
+#pragma endregion
 
+			ImGui::Separator();
+
+#pragma region Is Gray Only Use Red
 			ImGui::Text("Is Gray Only Use Red");
 			ImGui::SameLine();
 			ImGui::Checkbox("##Is_Gray_Only_Use_Red", &m_tEffectParticleDesc.IsGrayOnlyUseRed);
+#pragma endregion
+
+			ImGui::Separator();
 
 #pragma region Start Color
 			static _bool bIsMinMaxSame_StartColor;
 			ImGui::Text("Min = Max"); ImGui::SameLine();
 			ImGui::Checkbox("##Is_MinMaxSame_StartColor", &bIsMinMaxSame_StartColor);
 
-			ImGui::Text("Min Start Color");
-			ImGui::DragFloat4("##Min_Start_Color", &m_tEffectParticleDesc.vMinStartColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
-
 			if (bIsMinMaxSame_StartColor)
 				m_tEffectParticleDesc.vMaxStartColor = m_tEffectParticleDesc.vMinStartColor;
 
+			ImGui::Text("Min Start Color");
+			ImGui::ColorPicker4("##Min_Start_Color", &m_tEffectParticleDesc.vMinStartColor.x, ImGuiColorEditFlags_DefaultOptions_);
+			ImGui::DragFloat4("##Min_Start_Color", &m_tEffectParticleDesc.vMinStartColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_Logarithmic);
+
 			ImGui::Text("Max Start Color");
-			ImGui::DragFloat4("##Max_Start_Color", &m_tEffectParticleDesc.vMaxStartColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+			ImGui::ColorPicker4("##Max_Start_Color", &m_tEffectParticleDesc.vMaxStartColor.x, ImGuiColorEditFlags_DefaultOptions_);
+			ImGui::DragFloat4("##Max_Start_Color", &m_tEffectParticleDesc.vMaxStartColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_Logarithmic);
 #pragma endregion
+
+			ImGui::Separator();
 
 #pragma region Color Speed 
 			static _bool bIsMinMaxSame_ColorSpeed;
 			ImGui::Text("Min = Max"); ImGui::SameLine();
 			ImGui::Checkbox("##Is_MinMaxSame_ColorSpeed", &bIsMinMaxSame_ColorSpeed);
 
-			ImGui::Text("Min Color Speed");
-			ImGui::DragFloat4("##Min_Color_Speed", &m_tEffectParticleDesc.vMinColorSpeed.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
-
 			if (bIsMinMaxSame_ColorSpeed)
 				m_tEffectParticleDesc.vMaxColorSpeed = m_tEffectParticleDesc.vMinColorSpeed;
+
+			ImGui::Text("Min Color Speed");
+			ImGui::DragFloat4("##Min_Color_Speed", &m_tEffectParticleDesc.vMinColorSpeed.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
 
 			ImGui::Text("Max Color Speed");
 			ImGui::DragFloat4("##Max_Color_Speed", &m_tEffectParticleDesc.vMaxColorSpeed.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
 #pragma endregion
+
+			ImGui::Separator();
+
 
 #pragma region Color Force
 			static _bool bIsMinMaxSame_ColorForce;

@@ -12,9 +12,9 @@
 #define		_LIFEGUARD_FOR_FALL_
 #define		_DEBUG_COUT_
 #define		_DEBUG_COUT_JOJO
-// #define		_STAGE_1_
-#define		_STAGE_2_
-// #define		_STAGE_1_MONSTER_
+#define		_STAGE_1_
+// #define		_STAGE_2_
+#define		_STAGE_1_MONSTER_
 // #define		_VARG_
 //#define		_INSTANCE_CULLING_
 #define		_GENERATE_PROP_COLLIDER_ true
@@ -24,6 +24,7 @@
 // UI제외한 오브젝트 생성 X
 //#define		_ONLY_UI_
 #define		_RENDER_FPS_
+#define		_BONE_PARTICLE_
 #endif // _DEBUG
 
 #ifdef NDEBUG
