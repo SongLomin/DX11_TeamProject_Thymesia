@@ -171,6 +171,7 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 
 			continue;
 		}
+
 		else if (typeid(CEditMapCollider).hash_code() == iter_elem->HashCode)
 		{
 			++iter_elem;

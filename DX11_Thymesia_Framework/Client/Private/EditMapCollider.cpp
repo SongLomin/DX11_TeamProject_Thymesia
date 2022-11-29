@@ -355,6 +355,7 @@ void CEditMapCollider::View_Picking_Option()
 
 	ImGui::Text("");
 	ImGui::Text(string("Select Option : " + string(szOptionTag[m_iOption])).c_str());
+	ImGui::Text(string("Pick Index : " + to_string(m_iPickingIndex)).c_str());
 
 	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CPhysXColliderObject).hash_code());
 

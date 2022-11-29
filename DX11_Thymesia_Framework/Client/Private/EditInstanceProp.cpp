@@ -648,6 +648,7 @@ void CEditInstanceProp::View_Picking_Option()
 
 	ImGui::Text("");
 	ImGui::Text(string("Select Option : " + string(szOptionTag[m_iOption])).c_str());
+	ImGui::Text(string("Pick Index : " + to_string(m_iPickingIndex)).c_str());
 
 	if (m_pPropInfos.empty() || 0 > m_iPickingIndex || m_pPropInfos.size() <= m_iPickingIndex)
 		return;
@@ -655,7 +656,9 @@ void CEditInstanceProp::View_Picking_Option()
 	// Z : 터레인 이동
 	// X : 회전(옵션 활성화)
 	// C : 수동 이동(옵션 활성화)
-	// R : 삭제
+	// CTRL + R : 삭제
+	// V : 사이즈
+	// CTRL + H + X/C/V : 초기화
 
 	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
 	{
@@ -791,15 +794,63 @@ void CEditInstanceProp::View_Picking_Option()
 
 	else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) && KEY_INPUT(KEY::R, KEY_STATE::TAP))
 	{
-		if (m_pPropInfos.empty() || 0 > m_iPickingIndex || m_pPropInfos.size() <= m_iPickingIndex)
-			return;
-
 		auto iter = m_pPropInfos.begin() + m_iPickingIndex;
 
 		if (m_pPropInfos.end() != iter)
 		{
 			m_pPropInfos.erase(iter);
 			m_pInstanceModelCom.lock()->Init_Instance((_uint)m_pPropInfos.size());
+		}
+	}
+
+	else if (KEY_INPUT(KEY::V, KEY_STATE::HOLD))
+	{
+		switch (m_iOption)
+		{
+			case 0:
+			{
+				if (KEY_INPUT(KEY::LEFT, KEY_STATE::TAP))
+					m_pPropInfos[m_iPickingIndex].vScale.x -= 0.1f;
+				else if (KEY_INPUT(KEY::RIGHT, KEY_STATE::TAP))
+					m_pPropInfos[m_iPickingIndex].vScale.x += 0.1f;
+			}
+			break;
+
+			case 1:
+			{
+				if (KEY_INPUT(KEY::LEFT, KEY_STATE::TAP))
+					m_pPropInfos[m_iPickingIndex].vScale.y -= 0.1f;
+				else if (KEY_INPUT(KEY::RIGHT, KEY_STATE::TAP))
+					m_pPropInfos[m_iPickingIndex].vScale.y += 0.1f;
+			}
+			break;
+
+			case 2:
+			{
+				if (KEY_INPUT(KEY::LEFT, KEY_STATE::TAP))
+					m_pPropInfos[m_iPickingIndex].vScale.z -= 0.1f;
+				else if (KEY_INPUT(KEY::RIGHT, KEY_STATE::TAP))
+					m_pPropInfos[m_iPickingIndex].vScale.z += 0.1f;
+			}
+			break;
+		}
+	}
+
+	else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) && KEY_INPUT(KEY::H, KEY_STATE::HOLD))
+	{
+		if (KEY_INPUT(KEY::X, KEY_STATE::TAP))
+		{
+			m_pPropInfos[m_iPickingIndex].vRotation = _float3(0.f, 0.f, 0.f);
+		}
+
+		else if (KEY_INPUT(KEY::C, KEY_STATE::TAP))
+		{
+			m_pPropInfos[m_iPickingIndex].vTarnslation = _float3(0.f, 0.f, 0.f);
+		}
+
+		else if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
+		{
+			m_pPropInfos[m_iPickingIndex].vScale = _float3(0.f, 0.f, 0.f);
 		}
 	}
 }

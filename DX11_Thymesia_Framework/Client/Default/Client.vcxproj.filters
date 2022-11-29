@@ -572,9 +572,6 @@
     <ClInclude Include="..\Public\MonsterHPBar_Base.h">
       <Filter>02. GameObject\01. UI\UI_Container\MonsterHPBar</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawTabAttack</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtXXL.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
     </ClInclude>
@@ -799,17 +796,25 @@
     <ClInclude Include="..\Public\PhysXCameraController.h">
       <Filter>05. Component\00. PhysXCameraController</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\NorMonState\NorMonState_Parry.h">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\29.Parry</Filter>
+    <ClInclude Include="..\Public\ActorDecor.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h" />
+    <ClInclude Include="..\Public\EasingTransform.h" />
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Parry.h" />
+    <ClInclude Include="..\Public\UI_Script.h" />
+    <ClInclude Include="..\Public\Weapon.h" />
+    <ClInclude Include="..\Public\EditMapCollider.h">
+      <Filter>02. GameObject\99. Other\07. EditMapCollider</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\01.ClawHoldAttack</Filter>
+    <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Dynamic_Prop</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\02.ClawAwayAttack</Filter>
+    <ClInclude Include="..\Public\Interaction_Ladder.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Ladder</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawTabAttack\01ClawTabAttack2</Filter>
+    <ClInclude Include="..\..\..\..\..\새 폴더 (3)\EditInteractionProp.h">
+      <Filter>02. GameObject\99. Other\08. EditInteractionProp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1347,9 +1352,6 @@
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawTabAttack</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXXL.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
     </ClCompile>
@@ -1393,9 +1395,6 @@
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttack1.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawAttack1</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXXL.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
@@ -1676,6 +1675,25 @@
     </ClCompile>
     <ClCompile Include="..\Private\EditMapCollider.cpp">
       <Filter>02. GameObject\99. Other\07. EditMapCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ActorDecor.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackAway.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackHold.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab2.cpp" />
+    <ClCompile Include="..\Private\EasingTransform.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Parry.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab.cpp" />
+    <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp" />
+    <ClCompile Include="..\Private\Weapon.cpp" />
+    <ClCompile Include="..\Public\UI_Script.cpp" />
+    <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Dynamic_Prop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Interaction_Ladder.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Ladder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\새 폴더 (3)\EditInteractionProp.cpp">
+      <Filter>02. GameObject\99. Other\08. EditInteractionProp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2610,6 +2628,18 @@
     </Filter>
     <Filter Include="02. GameObject\99. Other\07. EditMapCollider">
       <UniqueIdentifier>{26edf638-982f-46e7-b7d2-0e0e9f99ec90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Dynamic_Prop">
+      <UniqueIdentifier>{912b1463-e521-4237-8214-7349c338494d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\99. Other\08. EditInteractionProp">
+      <UniqueIdentifier>{25dede94-b13b-4bfb-b1ff-f6e33a748772}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Ladder">
+      <UniqueIdentifier>{d4b568d3-a583-43b7-be93-6d3c86464356}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Elevator">
+      <UniqueIdentifier>{7bb4749f-a719-40cf-a6da-aa4483c53faf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

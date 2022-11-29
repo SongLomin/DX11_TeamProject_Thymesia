@@ -20,12 +20,14 @@
 #include "Static_Instancing_Prop.h"
 #include "Light_Prop.h"
 #include "Dynamic_Prop.h"
+#include "PhysXColliderObject.h"
+#include "Interaction_Ladder.h"
+#include "Interaction_Dynamic_Prop.h"
 
 #include "EditGround.h"
 #include "EditGroupProp.h"
 #include "EditInstanceProp.h"
 #include "EditMapCollider.h"
-#include "PhysXColliderObject.h"
 
 #include "CCorvus.h"
 #include "PreViewAnimationModel.h"

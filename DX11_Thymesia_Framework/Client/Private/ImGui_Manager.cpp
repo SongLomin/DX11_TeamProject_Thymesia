@@ -384,15 +384,20 @@ void CImGui_Manager::Toggle_PhysXInfo()
 {
 	m_bViewPhysXInfo = !m_bViewPhysXInfo;
 
-	list<weak_ptr<CEditInstanceProp>> Props = GAMEINSTANCE->Get_GameObjects<CEditInstanceProp>(LEVEL_EDIT);
+	list<weak_ptr<CEditInstanceProp>>    Props = GAMEINSTANCE->Get_GameObjects<CEditInstanceProp>(LEVEL_EDIT);
 	list<weak_ptr<CPhysXColliderObject>> ColliderObjects = GAMEINSTANCE->Get_GameObjects<CPhysXColliderObject>(LEVEL_EDIT);
-	
+	list<weak_ptr<CEditMapCollider>>     ColliderGroup = GAMEINSTANCE->Get_GameObjects<CEditMapCollider>(LEVEL_EDIT);
+
 	for (auto& elem : Props)
 	{
 		if (elem.lock())
 		{
-			elem.lock()->OnEventMessage(m_bViewPhysXInfo ? 
-				(_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO : (_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO_N);
+			elem.lock()->OnEventMessage
+			(
+				(m_bViewPhysXInfo)
+				? ((_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO)
+				: ((_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO_N)
+			);
 		}
 	}
 
@@ -400,11 +405,27 @@ void CImGui_Manager::Toggle_PhysXInfo()
 	{
 		if (elem.lock())
 		{
-			elem.lock()->OnEventMessage(m_bViewPhysXInfo ?
-				(_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO : (_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO_N);
+			elem.lock()->OnEventMessage
+			(
+				(m_bViewPhysXInfo)
+				? ((_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO)
+				: ((_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO_N)
+			);
 		}
 	}
 
+	for (auto& elem : ColliderGroup)
+	{
+		if (elem.lock())
+		{
+			elem.lock()->OnEventMessage
+			(
+				(m_bViewPhysXInfo)
+				? ((_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO)
+				: ((_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO_N)
+			);
+		}
+	}
 }
 
 void CImGui_Manager::Free()

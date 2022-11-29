@@ -24,12 +24,13 @@ public:
     virtual void Before_Render(_float fTimeDelta) override;
     virtual HRESULT Render() override;
     virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix) override;
+   
+public:
     virtual _bool IsPicking(const RAY& In_Ray, _float& Out_fRange) override;
 
 private:
     weak_ptr<CPhysXCollider>    m_pPhyxXColliderCom;
 
-private:
     _uint                       m_iColliderType = 0;
     _float                      m_fModelMidOffset;
 
