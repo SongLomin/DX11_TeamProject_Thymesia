@@ -1743,24 +1743,50 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::Text("Use Easing Position"); ImGui::SameLine();
 			ImGui::Checkbox("##Is_Easing_Position", &m_tEffectParticleDesc.bEasingPosition);
 
+#pragma region Spawn Position
+			ImGui::Text("Min = Max"); ImGui::SameLine();
+			static _bool bIsMinMaxSame_SpawnPosition = false;
+			ImGui::Checkbox("##Is_MinMaxSame_SpawnPosition", &bIsMinMaxSame_SpawnPosition);
+
 			ImGui::Text("Min Spawn Position");
 			ImGui::DragFloat3("##Min_Spawn_Position", &m_tEffectParticleDesc.vMinSpawnPosition.x, 0.1f);
 
+			if (bIsMinMaxSame_SpawnPosition)
+				m_tEffectParticleDesc.vMaxSpawnPosition = m_tEffectParticleDesc.vMinSpawnPosition;
+
 			ImGui::Text("Max Spawn Position");
 			ImGui::DragFloat3("##Max_Spawn_Position", &m_tEffectParticleDesc.vMaxSpawnPosition.x, 0.1f);
+#pragma endregion
+
+#pragma region Spawn Offset Direction
+			ImGui::Text("Min = Max"); ImGui::SameLine();
+			static _bool bIsMinMaxSame_OffsetDirection = false;
+			ImGui::Checkbox("##Is_MinMaxSame_OffsetDirection", &bIsMinMaxSame_OffsetDirection);
 
 			ImGui::Text("Min Offset Direction");
 			ImGui::DragFloat3("##Min_Offset_Direction", &m_tEffectParticleDesc.vMinSpawnOffsetDirection.x, 0.1f);
 
+			if (bIsMinMaxSame_OffsetDirection)
+				m_tEffectParticleDesc.vMaxSpawnOffsetDirection = m_tEffectParticleDesc.vMinSpawnOffsetDirection;
+
 			ImGui::Text("Max Offset Direction");
 			ImGui::DragFloat3("##Max_Offset_Direction", &m_tEffectParticleDesc.vMaxSpawnOffsetDirection.x, 0.1f);
+#pragma endregion
+
+#pragma region Spawn Offset Range
+			ImGui::Text("Min = Max"); ImGui::SameLine();
+			static _bool bIsMinMaxSame_OffsetRange = false;
+			ImGui::Checkbox("##Is_MinMaxSame_OffsetRange", &bIsMinMaxSame_OffsetRange);
 
 			ImGui::Text("Min Offset Range");
 			ImGui::DragFloat3("##Min_Offset_Range", &m_tEffectParticleDesc.vMinSpawnOffsetRange.x, 0.1f);
 
+			if (bIsMinMaxSame_OffsetRange)
+				m_tEffectParticleDesc.vMaxSpawnOffsetRange = m_tEffectParticleDesc.vMinSpawnOffsetRange;
+
 			ImGui::Text("Max Offset Range");
 			ImGui::DragFloat3("##Max_Offset_Range", &m_tEffectParticleDesc.vMaxSpawnOffsetRange.x, 0.1f);
-
+#pragma endregion
 
 #pragma endregion
 			ImGui::Separator();
