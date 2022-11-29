@@ -135,11 +135,11 @@ vector Get_ScreenToWorldPos(float2 vTexUV, vector vDepthDesc)
 float trowbridgeReitzNDF(float NdotH, float roughness)
 {
     float alpha = roughness * roughness;
-   // float alpha2 = alpha * alpha;
+    float alpha2 = alpha * alpha;
     float NdotH2 = NdotH * NdotH;
-    float denom = ((alpha - 1) * NdotH2 + 1);
+    float denom = ((alpha2 - 1) * NdotH2 + 1);
     float denominator = 3.141592265359 * denom* denom;
-    return alpha / denominator;
+    return alpha2 / denominator;
 }
 
 float3 fresnel(float3 F0, float NdotV, float roughness)
@@ -215,6 +215,10 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
     float fMetalness = vORMDesc.z;
     if (fRoughness > 0.f || fMetalness > 0.f || fOcclusion > 0.f)
     {
+        fOcclusion = max(0.f, fOcclusion);
+        fRoughness = max(0.f, fRoughness);
+        fMetalness = max(0.f, fMetalness);
+
         float vHalfVec = normalize(vLook + normalize(g_vLightDir)*-1.f);
 
         float NdotL = max(dot(vNormal, normalize(g_vLightDir)*-1.f), 0.0);
@@ -222,7 +226,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
         float NdotV = max(dot(vNormal, vLook), 0.0);
 
         vector vMetalic = lerp(vector(0.04f, 0.04f, 0.04f, 0.f), vDiffuseColor * fOcclusion, fMetalness);
-    
+        
         float NDF = trowbridgeReitzNDF(NdotH, fRoughness);
         float3 F = fresnel(vMetalic, NdotV, fRoughness);
         float G = schlickBeckmannGAF(NdotV, fRoughness) * schlickBeckmannGAF(NdotL, fRoughness);
@@ -233,21 +237,21 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 
         vector vNumerator = kS * NDF * G;
         float fDenominator = 4.f * NdotV * NdotL;
-        vector vSpecular = min(vNumerator / max(fDenominator, 0.001f), vector(1.f,1.f,1.f,1.f));
+        vector vSpecular = vNumerator / max(fDenominator, 0.001f);
 
-        //vector SpecularAcc = (kD * vDiffuseColor / 3.141592265359 + vSpecular) * NdotL * fOcclusion* g_vLightDiffuse;
-        vector vSpecularAcc = NdotL * /*vDiffuseColor/ 3.141592265359 **/ fOcclusion* vSpecular* g_vLightDiffuse;
-        vector vAmbientColor = vDiffuseColor * g_vLightDiffuse *fOcclusion;
+        vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(g_vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * vDiffuseColor));
+        vResult *= fOcclusion;
+
+        //vector vSpecularAcc = (kD * vDiffuseColor/ 3.141592265359 + vSpecular) * NdotL * fOcclusion* g_vLightDiffuse*NdotL;
+        vector vSpecularAcc = NdotL /** vDiffuseColor/ 3.141592265359*/ * fOcclusion * vSpecular* g_vLightDiffuse;
+        vector vAmbientColor = vDiffuseColor *fOcclusion ;
 
         //shade
-        //vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(g_vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * vDiffuseColor));
-        //vResult *= fOcclusion;
-
         Out.vSpecular = vSpecularAcc;
-        Out.vSpecular.a = 0.f;
+        Out.vSpecular.a = 1.f;
 
-        //Out.vShade = vResult;
-        //Out.vShade.a = 1.f;
+        Out.vShade = vResult;
+        Out.vShade.a = 1.f;
 
         Out.vAmbient = vAmbientColor;
         Out.vAmbient.a = 1.f;
@@ -270,7 +274,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 
         Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f);
 
-        Out.vSpecular.a = 0.f;
+        Out.vSpecular.a = 1.f;
         Out.vAmbient = vector(0.f, 0.f, 0.f, 0.f);
     }
 	return Out;
@@ -468,10 +472,11 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
     vector vDepthDesc     = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
     vector vFogDesc       = g_FogTexture.Sample(DefaultSampler, In.vTexUV);
     vector vAmbientDesc   = g_AmbientTexture.Sample(DefaultSampler, In.vTexUV);
+    vSpecular.a = 0.f;
 
     if (vAmbientDesc.a > 0.f)
     {
-        Out.vColor = vAmbientDesc + vSpecular;
+        Out.vColor = vAmbientDesc*vShade + vSpecular;
         Out.vColor = Out.vColor / (Out.vColor + vector(1.f, 1.f, 1.f, 0.f));
         Out.vColor = pow(Out.vColor, 1.f / 2.2);
 
@@ -582,6 +587,7 @@ PS_OUT PS_MAIN_COPY_ORIGIN(PS_IN In)
 {
     PS_OUT Out = (PS_OUT)0;
     Out.vColor = g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV);
+    Out.vColor.a = 1.f;
     return Out;
 }
 

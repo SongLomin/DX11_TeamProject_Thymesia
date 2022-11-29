@@ -16,6 +16,7 @@ HRESULT CResource_Manager::Load_Textures(const _char* _strKey, const _tchar* pTe
 
 	HRESULT hr(0);
 	_tchar szExt[MAX_PATH] = TEXT("");
+	_bool bCreated = false;
 
 	for (_uint i(0); i < 1024; ++i)
 	{
@@ -29,9 +30,16 @@ HRESULT CResource_Manager::Load_Textures(const _char* _strKey, const _tchar* pTe
 		if (!lstrcmp(szExt, TEXT(".dds"))) hr = CreateDDSTextureFromFile(DEVICE, szTextureFilePath, nullptr, pSRV.GetAddressOf());
 		else hr = CreateWICTextureFromFile(DEVICE, szTextureFilePath, nullptr, pSRV.GetAddressOf());
 
-		if (FAILED(hr)) return S_OK;
+		if (FAILED(hr))
+		{
+			if (bCreated)
+				return S_OK;
+			else
+				return E_FAIL;
+		}
 
 		m_SRVs[(_uint)eMemType][szKey].emplace_back(pSRV);
+		bCreated = true;
 	}
 #ifdef _DEBUG
 	//텍스쳐를 512까지 읽었음.

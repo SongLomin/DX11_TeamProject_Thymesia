@@ -347,6 +347,7 @@ PS_OUT_SPECULAR PS_MAIN_NORMAL_SPECULAR(PS_IN_NORMAL In)
     vPixelNormal = mul(vPixelNormal, WorldMatrix);
 
     Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
+   // Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
 
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vLightFlag = g_vLightFlag;
