@@ -65,7 +65,7 @@ void CNorMonsterStateBase::Play_OnHitEffect()
 	//_matrix ReverseLookMatrix = SMath::Bake_MatrixNormalizeUseLookVector(vLook);
 	//ReverseLookMatrix.r[3] = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
 
-	GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
+	//GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 
 	//T_SINGLE(CGameManager)->Use_EffectGroup("Hit_Monster2", m_pTransformCom);
 }
@@ -119,12 +119,15 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 		{
 		case Client::ATTACK_OPTION::NONE:
 			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, ATTACK_OPTION::NORMAL);		
+			GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 			break;
 		case Client::ATTACK_OPTION::NORMAL:
 			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);		
+			GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 			break;
 		case Client::ATTACK_OPTION::PLAGUE:
 			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);		
+			GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 			break;
 		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
 			break;

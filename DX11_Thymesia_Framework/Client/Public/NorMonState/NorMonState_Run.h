@@ -19,6 +19,7 @@ public:
 	void  Set_MonIdleType(NORMONSTERIDLETYPE IDLETYPE);
 	void  Set_GardnerAtkIndex(_uint GardnerAtkIndex) {	m_iGardnerAtkIndex = GardnerAtkIndex;}
 	void  Set_GardnerPlusAtkIndex(_uint GardnerAtkIndex) { m_iGardnerAtkIndex += GardnerAtkIndex; }
+	void  Set_RunCheck(_bool RunCheck) { m_bRunCheck = RunCheck; }
 
 
 protected:

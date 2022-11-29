@@ -8,8 +8,9 @@
 #include "PhysXCollider.h"
 #include "Light_Prop.h"
 #include "Status_Player.h"
-
 #include "PhysXController.h"
+#include "CorvusStates/Talent_Sword.h"
+
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -24,6 +25,10 @@ HRESULT CCorvus::Initialize(void* pArg)
 {
 
 	__super::Initialize(pArg);
+	/*
+		m_pCTalent_Sword = GAMEINSTANCE->AddGameObject<CTalent_Sword>(LEVEL_STATIC);
+	
+	*/
 
 	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_VtxAnimModel"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements);
 
@@ -45,6 +50,11 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	// Passive Effect ON
 	GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_PassiveFeather", m_pTransformCom, (_uint)TIMESCALE_LAYER::PLAYER);
+
+
+	m_pSword = GAMEINSTANCE->Add_GameObject<CTalent_Sword>(LEVEL_STATIC);
+
+	m_pSword.lock()->TestTalentCheck();
 
 	//USE_START(CCorvus);
 	return S_OK;
@@ -186,11 +196,19 @@ void CCorvus::Ready_States()
 	MACRO(CCorvusState_HurtR);
 	MACRO(CCorvusState_HurtXXL);
 	MACRO(CCorvusState_NorMob_Execution);
+	MACRO(CCorvusState_ParryDeflectLeft);
+	MACRO(CCorvusState_ParryDeflectLeftup);
+	MACRO(CCorvusState_ParryDeflectRight);
+	MACRO(CCorvusState_ParryDeflectRightup);
+	MACRO(CCorvusState_PS_Axe);
+	MACRO(CCorvusState_PS_CaneSword);
+	MACRO(CCorvusState_PS_Knife);
+	MACRO(CCorvusState_PS_Magician);
+	MACRO(CCorvusState_PS_UrdSword);
+	MACRO(CCorvusState_PS_VargSword);
 
-	Add_Component<CCorvusState_ParryDeflectLeft>();
-	Add_Component<CCorvusState_ParryDeflectLeftup>();
-	Add_Component<CCorvusState_ParryDeflectRight>();
-	Add_Component<CCorvusState_ParryDeflectRightup>();
+
+	
 
 #undef MACRO
 }

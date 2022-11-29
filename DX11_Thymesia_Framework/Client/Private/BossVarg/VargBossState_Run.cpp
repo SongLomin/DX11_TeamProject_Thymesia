@@ -40,19 +40,13 @@ void CVargBossState_Run::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	Rotation_TargetToLookDir();
-
-	m_fCurrentSpeed += m_fAccel * fTimeDelta;
-	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
 
 	m_fCurrentSpeed += m_fAccel * fTimeDelta;
 	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 
-	PxControllerFilters Filters = Filters;
-
-	m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
+	m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, PxControllerFilters(), nullptr, m_pTransformCom);
 }
 
 
@@ -111,14 +105,14 @@ _bool CVargBossState_Run::Check_AndChangeNextState()
 
 		switch (iRand)
 		{
-		case 0 :
+		case 0:
 			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1a>(0.05f);
 			break;
 		case 1:
 			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1b>(0.05f);
 			break;
 		}
-	
+
 		return true;
 	}
 

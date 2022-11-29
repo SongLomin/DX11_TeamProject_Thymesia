@@ -572,9 +572,6 @@
     <ClInclude Include="..\Public\MonsterHPBar_Base.h">
       <Filter>02. GameObject\01. UI\UI_Container\MonsterHPBar</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawTabAttack</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtXXL.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
     </ClInclude>
@@ -624,9 +621,6 @@
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UI_LerpBar.h" />
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttack1.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawAttack1</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtXXL.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
     </ClInclude>
@@ -799,17 +793,110 @@
     <ClInclude Include="..\Public\PhysXCameraController.h">
       <Filter>05. Component\00. PhysXCameraController</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\NorMonState\NorMonState_Parry.h">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\29.Parry</Filter>
+    <ClInclude Include="..\Public\ActorDecor.h" />
+    <ClInclude Include="..\Public\EasingTransform.h" />
+    <ClInclude Include="..\Public\EditMapCollider.h" />
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Parry.h" />
+    <ClInclude Include="..\Public\UI_Script.h" />
+    <ClInclude Include="..\Public\Weapon.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Axe.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\00.PS_Axe</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\01.ClawHoldAttack</Filter>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Knife.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\01.PS_Knife</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\02.ClawAwayAttack</Filter>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_VargSword.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\02.PS_VargSword</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_UrdSword.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\03.PS_UrdSword</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Magician.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\04.PS_Magician</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_CaneSword.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\05.PS_CaneSword</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawTabAttack\01ClawTabAttack2</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\01.ClawTabAttack2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\02.ClawHoldAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawTabAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\03.ClawAwayAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_L_UP.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\06.CorvusState_Climb_L_UP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_L_UP_End.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\05.CorvusState_Climb_L_UP_End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_R_Down.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\04.CorvusState_Climb_R_Down</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_L_Down.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\08.CorvusState_Climb_L_Down</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Fall_End.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\11.CorvusState_Climb_Fall_End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Fall_Loop.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\09.CorvusState_Climb_Fall_Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Fall_Start.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\10.CorvusState_Climb_Fall_Start</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_Start.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\00.CorvusState_Climb_Start</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_R_UP_End.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\01.CorvusState_Climb_R_UP_End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_R_UP.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\02.CorvusState_Climb_R_UP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_R_Idle.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\12.CorvusState_Climb_R_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_R_Down_End.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\03.CorvusState_Climb_R_Down_End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_L_Idle.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\13.CorvusState_Climb_L_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_L_Down_End.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\07.CorvusState_Climb_L_Down_End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_Fall_Attack.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\14.CorvusState_Climb_Fall_Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent.h">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\00.Talent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect.h">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_NorSwordLV1.h">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Talent_Effect_NorSwordLV1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidThrustLV1.h">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\02.Talent_Effect_AvoidThrustLV1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV1.h">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\01.Talent_Effect_AvoidSlashLV1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Sword.h">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\00.Talent\01.TalentTree\00.Talent_Tree_Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV2.h">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\03.Talent_Effect_AvoidSlashLV2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidThrustLV2.h">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\04.Talent_Effect_AvoidThrustLV2</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1347,9 +1434,6 @@
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawTabAttack</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXXL.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
     </ClCompile>
@@ -1393,9 +1477,6 @@
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttack1.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawAttack1</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXXL.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
@@ -1468,9 +1549,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttack1.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawAttack1</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXXL.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
@@ -1548,9 +1626,6 @@
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttack1.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawAttack1</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXXL.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
@@ -1676,6 +1751,111 @@
     </ClCompile>
     <ClCompile Include="..\Private\EditMapCollider.cpp">
       <Filter>02. GameObject\99. Other\07. EditMapCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ActorDecor.cpp" />
+    <ClCompile Include="..\Private\EasingTransform.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Parry.cpp" />
+    <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp" />
+    <ClCompile Include="..\Private\Weapon.cpp" />
+    <ClCompile Include="..\Public\UI_Script.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Axe.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\00.PS_Axe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Knife.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\01.PS_Knife</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_VargSword.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\02.PS_VargSword</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_UrdSword.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\03.PS_UrdSword</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Magician.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\04.PS_Magician</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_CaneSword.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\05.PS_CaneSword</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawTabAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab2.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\01.ClawTabAttack2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackHold.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\02.ClawHoldAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackAway.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\03.ClawAwayAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_L_Down_End.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\07.CorvusState_Climb_L_Down_End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_L_UP.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\06.CorvusState_Climb_L_UP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_L_UP_End.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\05.CorvusState_Climb_L_UP_End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_R_Down.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\04.CorvusState_Climb_R_Down</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_L_Down.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\08.CorvusState_Climb_L_Down</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Fall_End.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\11.CorvusState_Climb_Fall_End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Fall_Loop.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\09.CorvusState_Climb_Fall_Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Fall_Start.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\10.CorvusState_Climb_Fall_Start</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_Start.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\00.CorvusState_Climb_Start</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_R_UP_End.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\01.CorvusState_Climb_R_UP_End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_R_UP.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\02.CorvusState_Climb_R_UP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_R_Idle.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\12.CorvusState_Climb_R_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_R_Down_End.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\03.CorvusState_Climb_R_Down_End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_L_Idle.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\13.CorvusState_Climb_L_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_Fall_Attack.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\14.CorvusState_Climb_Fall_Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\00.Talent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_NorSwordLV1.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Talent_Effect_NorSwordLV1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV1.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\01.Talent_Effect_AvoidSlashLV1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidThrustLV1.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\02.Talent_Effect_AvoidThrustLV1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Sword.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\00.Talent\01.TalentTree\00.Talent_Tree_Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV2.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\03.Talent_Effect_AvoidSlashLV2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidThrustLV2.cpp">
+      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\04.Talent_Effect_AvoidThrustLV2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2296,9 +2476,6 @@
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack">
       <UniqueIdentifier>{1db70a15-64a5-4a8c-8ff3-f74f19895d58}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawAttack1">
-      <UniqueIdentifier>{18da53dc-73a3-4ebb-b1b1-1740461d44d4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL">
       <UniqueIdentifier>{5b3bf04e-ef79-4bd9-90f9-419338efde3b}</UniqueIdentifier>
     </Filter>
@@ -2610,6 +2787,120 @@
     </Filter>
     <Filter Include="02. GameObject\99. Other\07. EditMapCollider">
       <UniqueIdentifier>{26edf638-982f-46e7-b7d2-0e0e9f99ec90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\20.State_FeatherAttack">
+      <UniqueIdentifier>{3211a79e-1fcc-4b6d-b234-9d5665f196a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills">
+      <UniqueIdentifier>{6bf91170-5b11-4cba-8fd9-142d9a7fcc7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\00.PS_Axe">
+      <UniqueIdentifier>{97b9ff90-3894-440a-9bf3-986d8b4789f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\01.PS_Knife">
+      <UniqueIdentifier>{528ae4a2-d77a-48ca-963e-dca5827a569b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\02.PS_VargSword">
+      <UniqueIdentifier>{08eb2ba1-8ef3-4e46-a3a1-1747da922ced}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\03.PS_UrdSword">
+      <UniqueIdentifier>{036efb93-1712-424c-b24a-6e41c9bfddf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\04.PS_Magician">
+      <UniqueIdentifier>{9189517d-e105-4c63-9905-d9db94f42dde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\05.PS_CaneSword">
+      <UniqueIdentifier>{156e0d77-687e-4c65-bcec-4ec1f6900d28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawTabAttack">
+      <UniqueIdentifier>{18da53dc-73a3-4ebb-b1b1-1740461d44d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\01.ClawTabAttack2">
+      <UniqueIdentifier>{8ac7e80e-076f-4172-9730-63b3e164d1a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\02.ClawHoldAttack">
+      <UniqueIdentifier>{30f05d7b-2f6b-48aa-8e7c-60f5c5b8caaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\03.ClawAwayAttack">
+      <UniqueIdentifier>{b809a622-2ba8-40e0-9862-dfd8627025b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb">
+      <UniqueIdentifier>{bd6d9705-6b38-4a54-8cb8-4d9e64b24b61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\00.CorvusState_Climb_Start">
+      <UniqueIdentifier>{f8a4d71e-96d2-41d8-a149-08cce45f10eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\01.CorvusState_Climb_R_UP_End">
+      <UniqueIdentifier>{479d3249-1965-490a-bfa0-0a80a0ec4d52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\02.CorvusState_Climb_R_UP">
+      <UniqueIdentifier>{1eebe4ea-93a5-42de-9107-fa38c3591525}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\03.CorvusState_Climb_R_Down_End">
+      <UniqueIdentifier>{be7b5baf-4f1a-4abf-9784-1ba9d8410d13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\04.CorvusState_Climb_R_Down">
+      <UniqueIdentifier>{d11e26fc-0228-46a6-9e85-e7e4ac12ce6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\05.CorvusState_Climb_L_UP_End">
+      <UniqueIdentifier>{a8d8d3b7-0277-45b8-b57f-1e7e2b3d4f4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\06.CorvusState_Climb_L_UP">
+      <UniqueIdentifier>{71b37214-eacb-4cbc-9311-d30a43024fc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\07.CorvusState_Climb_L_Down_End">
+      <UniqueIdentifier>{de39a176-7751-40bc-a84a-0f16c579f6ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\08.CorvusState_Climb_L_Down">
+      <UniqueIdentifier>{60b986a8-1ad3-47c5-a0ef-0f2b608539a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\09.CorvusState_Climb_Fall_Loop">
+      <UniqueIdentifier>{364ddad1-f438-413f-a754-516759e82ce8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\10.CorvusState_Climb_Fall_Start">
+      <UniqueIdentifier>{54c6f566-6968-4d09-8d48-596107ce60e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\11.CorvusState_Climb_Fall_End">
+      <UniqueIdentifier>{15815fde-5a49-4919-ab4a-ee1b44f4ec00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\12.CorvusState_Climb_R_Idle">
+      <UniqueIdentifier>{44f81459-bd9d-445b-bdfe-a3f4388898c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\13.CorvusState_Climb_L_Idle">
+      <UniqueIdentifier>{c0e7999d-2b80-40fd-a630-6e9e8ef77660}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\14.CorvusState_Climb_Fall_Attack">
+      <UniqueIdentifier>{a0660124-2e8a-4f9a-88c3-aee4b57d70fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent">
+      <UniqueIdentifier>{88c59779-4bcd-47f0-81cb-285ca31faac4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\00.Talent">
+      <UniqueIdentifier>{52faab68-8092-4ff0-bb5b-efaa39ceeb72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect">
+      <UniqueIdentifier>{51cadc2c-2caa-4ff2-a863-82a44587d527}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Talent_Effect_NorSwordLV1">
+      <UniqueIdentifier>{d9a1d9b8-03ad-46f8-9e67-8f884a1c4a72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\01.Talent_Effect_AvoidSlashLV1">
+      <UniqueIdentifier>{f43eeb07-9c48-44ba-b06e-0e1d38344ec6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\02.Talent_Effect_AvoidThrustLV1">
+      <UniqueIdentifier>{989bd577-31b8-4026-b45d-12127d3851ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\00.Talent\01.TalentTree">
+      <UniqueIdentifier>{81c188ef-931c-4330-9770-f2600f4adc47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\00.Talent\01.TalentTree\00.Talent_Tree_Sword">
+      <UniqueIdentifier>{3ec437e7-34e1-4ee5-83e0-109efef3e874}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\03.Talent_Effect_AvoidSlashLV2">
+      <UniqueIdentifier>{0fd32713-6362-4dd1-a739-5e57fa51b8eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\04.Talent_Effect_AvoidThrustLV2">
+      <UniqueIdentifier>{bce2e1a2-7ad8-4d0b-8205-f50ff1d70d2d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

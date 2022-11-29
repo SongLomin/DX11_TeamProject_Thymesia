@@ -56,6 +56,12 @@ void CStatus_Player::Init_Status(const void* pArg)
 	m_tDesc.m_fPlagueAtk = 25.f;
 	m_tDesc.m_fFeatherAtk = 30.f;
 	m_tDesc.m_fParryingAtk = 50.f;
+	m_tDesc.m_iWound = 1;
+	m_tDesc.m_iVital = 1;
+	m_tDesc.m_iStr = 1;
+	m_tDesc.m_iPlague = 1;
+	m_tDesc.m_iMemory = 1;
+	m_tDesc.m_iLevel = 1;
 
 
 	m_PotionDesc[(_uint)POTIONTYPE::POTION_DEFAULT].m_iMaxPotion = 3;

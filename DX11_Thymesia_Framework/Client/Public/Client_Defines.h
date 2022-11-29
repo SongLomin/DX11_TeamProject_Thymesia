@@ -236,6 +236,16 @@ namespace Client
 		PARRY_SUCCESS_END
 	};
 
+	enum class	TALENT_RESULT
+	{
+		FAILED,
+		NOT_ENOUGHTPOINT,
+		USING_ATHORTREE,
+		SUCCESS,
+		SUBSTARICTPOINT,
+		RESULT_END
+	};
+
 
 	//enum class  RAREMONSTERTYPE {
 	//	RMON_ARMOR,
@@ -244,6 +254,18 @@ namespace Client
 	//	RMON_END
 	//};
 
+	enum class TALENT_EFFECT_FLAG
+	{
+		NONE = 0,
+		SWORD_NOR_ATK_LV1 = (1 << 1),
+		AVOID_SLASH_LV1 = (1 << 2),
+		AVOID_SLASH_LV2 = (1 << 3),
+		AVOID_THRUST_LV1 = (1 << 4),
+		AVOID_THRUST_LV2 = (1 << 5),
+		FLAG_END
+	};
+
+
 }
 
 extern HWND g_hWnd;
@@ -251,6 +273,8 @@ extern HINSTANCE g_hInst;
 
 using namespace Client;
 namespace fs = std::filesystem;
+
+typedef unsigned long long _flag;
 
 
 #define EVENT_DRAW_EDITER 1

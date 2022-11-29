@@ -53,7 +53,6 @@ void CVargBossState_TurnAttack::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 
-
 	Check_AndChangeNextState();
 }
 

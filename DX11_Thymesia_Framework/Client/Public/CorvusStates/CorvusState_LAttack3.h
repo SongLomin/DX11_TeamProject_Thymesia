@@ -13,7 +13,7 @@ class CCorvusState_LAttack3 :
 
     GAMECLASS_H(CCorvusState_LAttack3);
     SHALLOW_COPY(CCorvusState_LAttack3)
-    CLONE_H(CCorvusState_LAttack3, CComponent)
+        CLONE_H(CCorvusState_LAttack3, CComponent)
 
 protected:
     virtual HRESULT Initialize_Prototype() override;
@@ -29,7 +29,7 @@ public:
 private:
     void Attack();
     void Check_InputNextAttack();
-   
+
 
 private:
     _bool m_IsNextAttack = false;
@@ -45,7 +45,7 @@ protected:
 protected:
     virtual void OnEventMessage(_uint iArg) override;
     virtual void OnDestroy() override;
-     void Free();
+    void Free();
 
     // CNorMonStateBase을(를) 통해 상속됨
     virtual _bool Check_AndChangeNextState() override;

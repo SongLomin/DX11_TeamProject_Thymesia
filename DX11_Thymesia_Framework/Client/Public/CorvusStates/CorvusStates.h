@@ -27,6 +27,7 @@
 #include "CorvusStates/CorvusState_ClawAttackTab.h"
 #include "CorvusStates/CorvusState_ClawAttackHold.h"
 #include "CorvusStates/CorvusState_ClawAttackAway.h"
+#include "CorvusStates/CorvusState_ClawAttackTab2.h"
 #include "CorvusStates/CorvusState_HurtXXL.h"
 #include "CorvusStates/CorvusState_HurtL.h"
 #include "CorvusStates/CorvusState_HurtR.h"
@@ -35,7 +36,29 @@
 #include "CorvusStates/CorvusState_ParryDeflectLeftup.h"
 #include "CorvusStates/CorvusState_ParryDeflectRight.h"
 #include "CorvusStates/CorvusState_ParryDeflectRightup.h"
-#include "CorvusStates/CorvusState_ClawAttackTab.h"
+#include "CorvusStates/CorvusState_PS_Axe.h"
+#include "CorvusStates/CorvusState_PS_CaneSword.h"
+#include "CorvusStates/CorvusState_PS_Knife.h"
+#include "CorvusStates/CorvusState_PS_Magician.h"
+#include "CorvusStates/CorvusState_PS_UrdSword.h"
+#include "CorvusStates/CorvusState_PS_VargSword.h"
+#include "CorvusStates/CorvusState_Climb_L_Down.h"
+#include "CorvusStates/CorvusState_Climb_L_Down_End.h"
+#include "CorvusStates/CorvusState_Climb_L_Idle.h"
+#include "CorvusStates/CorvusState_Climb_L_UP.h"
+#include "CorvusStates/CorvusState_Climb_L_UP_End.h"
+#include "CorvusStates/CorvusState_Climb_R_Down.h"
+#include "CorvusStates/CorvusState_Climb_R_Down_End.h"
+#include "CorvusStates/CorvusState_Climb_R_Idle.h"
+#include "CorvusStates/CorvusState_Climb_R_UP.h"
+#include "CorvusStates/CorvusState_Climb_R_UP_End.h"
+#include "CorvusStates/CorvusState_Climb_Start.h"
+#include "CorvusStates/CorvusState_Fall_End.h"
+#include "CorvusStates/CorvusState_Fall_Loop.h"
+#include "CorvusStates/CorvusState_Fall_Start.h"
+#include "CorvusStates/CorvusState_Climb_Fall_Attack.h"
+
+
 
 //플레이어 기본 스테이트
 

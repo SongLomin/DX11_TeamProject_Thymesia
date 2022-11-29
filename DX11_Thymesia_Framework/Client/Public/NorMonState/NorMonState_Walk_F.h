@@ -17,6 +17,7 @@ class CNorMonState_Walk_F :
 public:
 	void  Set_GardnerAtkIndex(_uint GardnerAtkIndex) { m_iGardnerAtkIndex = GardnerAtkIndex; }
 	void  Set_GardnerPlusAtkIndex(_uint GardnerAtkIndex) { m_iGardnerAtkIndex += GardnerAtkIndex; }
+	void  Set_WalkCheck(_bool WalkCheck) { m_bWalkCheck = WalkCheck; }
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;

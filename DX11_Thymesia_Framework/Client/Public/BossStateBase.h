@@ -63,6 +63,7 @@ protected:
     _vector Get_CurMonToStartMonDir();
     _float GetStartPositionToCurrentPositionDir();
     void TurnMechanism();
+    void TurnAttack(_float fTimeDelta);
     _float ComputeAngleWithPlayer();
     _int ComputeDirectionToPlayer();
 
