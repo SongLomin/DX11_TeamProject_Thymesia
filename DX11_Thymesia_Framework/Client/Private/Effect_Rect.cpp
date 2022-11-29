@@ -1741,6 +1741,11 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 				}
 
 			}
+			else
+			{
+				m_pBoneNode.reset();
+				m_strBoneName.clear();
+			}
 
 			ImGui::Text("Use Easing Position"); ImGui::SameLine();
 			ImGui::Checkbox("##Is_Easing_Position", &m_tEffectParticleDesc.bEasingPosition);

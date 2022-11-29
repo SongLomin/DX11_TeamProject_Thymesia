@@ -1058,12 +1058,10 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 		if (ImGui::CollapsingHeader("CustomEffectMesh"), ImGuiTreeNodeFlags_DefaultOpen)
 		{
 			if (ImGui::Button("Clone"))
-			{
-				Clone_EffectMesh();
-			}
+				Clone_EffectMesh();	
 
 			// TODO : for imgui - mesh keyboard control
-			ImGui::Text("On Control Focus");
+			ImGui::Text("Focus Control");
 			ImGui::SameLine();
 			ImGui::Checkbox("##Control Focus", &m_tEffectMeshDesc.bOnFocus);
 			if (m_tEffectMeshDesc.bOnFocus)
@@ -1087,10 +1085,12 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 			ImGui::Separator();
 
-			ImGui::Text("Init Time");
+			ImGui::Text("[ Init Time ]");
+			ImGui::SetNextItemWidth(100.f);
 			ImGui::DragFloat("##Init Time", &m_tEffectMeshDesc.fInitTime, 0.2f);
 
-			ImGui::Text("Life Time");
+			ImGui::Text("[ Life Time ]");
+			ImGui::SetNextItemWidth(100.f);
 			ImGui::DragFloat("##Life Time", &m_tEffectMeshDesc.fLifeTime, 0.2f);
 			ImGui::Separator();
 
@@ -1102,14 +1102,17 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::SameLine();
 			ImGui::Checkbox("##BillBoard", &m_tEffectMeshDesc.bBillBoard);
 
-			ImGui::Text("Sync Animation");
-			ImGui::SameLine();
-			ImGui::Checkbox("##Sync Animation", &m_tEffectMeshDesc.bSyncAnimation);
-
-			ImGui::InputInt("Sync Animation Key", &m_tEffectMeshDesc.iSyncAnimationKey);
 			ImGui::Separator();
 
-			ImGui::Text("Follow Bone"); ImGui::SameLine();
+			ImGui::Text("Sync Animation");
+			ImGui::SameLine();
+			ImGui::Checkbox("##SyncAnimation", &m_tEffectMeshDesc.bSyncAnimation);
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.f);
+			ImGui::InputInt("##SyncAnimationKey", &m_tEffectMeshDesc.iSyncAnimationKey);
+			ImGui::Separator();
+#pragma region Boner
+			ImGui::Text("Boner"); ImGui::SameLine();
 			ImGui::Checkbox("##Is_Boner", &m_tEffectMeshDesc.bBoner);
 
 			if (m_tEffectMeshDesc.bBoner)
@@ -1121,10 +1124,10 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 				}
 
 				if (0 == m_AllBoneNames.size())
-					ImGui::Text("No Bones");
+					ImGui::Text("!!!! No Bone !!!!");
 				else
 				{
-					if (ImGui::BeginListBox("Bone List 3"))
+					if (ImGui::BeginListBox("Bone List - Mesh Effect"))
 					{
 						for (_int n(0); n < m_AllBoneNames.size(); n++)
 						{
@@ -1142,31 +1145,53 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 				}
 
-				if (ImGui::Button("Bind to Bone"))
+				if (ImGui::Button("Bind Bone"))
 				{
 					m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
 					if (nullptr == m_pBoneNode.lock())
 					{
-						MSG_BOX("Invalid Bone Name!");
+						MSG_BOX("!!! Invalid Bone Name !!!");
 						assert(0);
 					}
 				}
 
 				if (m_pBoneNode.lock())
 				{
-					ImGui::Text("Binded to Bone : ");
-					ImGui::Text(m_pBoneNode.lock()->Get_Name());
+					ImGui::Text("Binded to [ "); ImGui::SameLine();
+					ImGui::Text(m_pBoneNode.lock()->Get_Name()); ImGui::SameLine();
+					ImGui::Text(" ]");
 				}
 			}
-
-
+			else
+			{
+				m_pBoneNode.reset();
+				m_strBoneName.clear();
+			}
+#pragma endregion
+			ImGui::Separator();
+			ImGui::NewLine();
+			ImGui::Separator();
+			ImGui::NewLine();
 			ImGui::Separator();
 
-			ImGui::Text("Sync Start Position to Controller"); ImGui::SameLine();
-			ImGui::Checkbox("##Sync Start Position to Controller", &m_tEffectMeshDesc.bSyncStartPositionToController);
+			ImGui::TextColored(ImVec4{ 1.f, 0.f, 0.f, 1.f }, "[ Position ]");
+			ImGui::NewLine();
+#pragma region Position
+			ImGui::Text("Sync Controller"); ImGui::SameLine();
+			ImGui::Checkbox("##Sync_Start_Position_to_Controller", &m_tEffectMeshDesc.bSyncStartPositionToController);
 			ImGui::Text("Start Position");
 			ImGui::DragFloat3("##Start Position", &m_tEffectMeshDesc.vStartPosition.x, 0.1f);
+#pragma endregion
 
+			ImGui::Separator();
+			ImGui::NewLine();
+			ImGui::Separator();
+			ImGui::NewLine();
+			ImGui::Separator();
+
+			ImGui::TextColored(ImVec4{ 0.f, 1.f, 0.f, 1.f }, "[ Speed ]");
+			ImGui::NewLine();
+#pragma region Speed
 			ImGui::Text("Speed");
 			ImGui::DragFloat3("##Speed", &m_tEffectMeshDesc.vSpeed.x, 0.1f);
 
@@ -1175,14 +1200,22 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 			ImGui::Text("Min Speed");
 			ImGui::DragFloat3("##Min Speed", &m_tEffectMeshDesc.vMinSpeed.x, 0.1f);
-			ImGui::Separator();
 
 			ImGui::Text("Max Speed");
 			ImGui::DragFloat3("##Max Speed", &m_tEffectMeshDesc.vMaxSpeed.x, 0.1f);
+#pragma endregion
+
+			ImGui::Separator();
+			ImGui::NewLine();
+			ImGui::Separator();
+			ImGui::NewLine();
 			ImGui::Separator();
 
-			ImGui::Text("Sync Start Rotation to Controller"); ImGui::SameLine();
-			ImGui::Checkbox("##Sync Start Rotation to Controller", &m_tEffectMeshDesc.bSyncStartRotationToController);
+			ImGui::TextColored(ImVec4{ 0.f, 0.f, 1.f, 1.f }, "[ Rotation ]");
+			ImGui::NewLine();
+#pragma region Rotation
+			ImGui::Text("Sync Controller"); ImGui::SameLine();
+			ImGui::Checkbox("##Sync_Start_Rotation_to_Controller", &m_tEffectMeshDesc.bSyncStartRotationToController);
 
 			ImGui::Text("Start Rotation");
 			ImGui::DragFloat3("##Start Rotation", &m_tEffectMeshDesc.vStartRotation.x, 0.01f);
@@ -1195,8 +1228,17 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 			ImGui::Text("Max Rotation");
 			ImGui::DragFloat3("##Max Rotation", &m_tEffectMeshDesc.vMaxRotation.x, 0.01f);
+#pragma endregion
+
+			ImGui::Separator();
+			ImGui::NewLine();
+			ImGui::Separator();
+			ImGui::NewLine();
 			ImGui::Separator();
 
+			ImGui::TextColored(ImVec4{ 0.3f, 0.f, 0.5f, 1.f }, "[ Scale ]");
+			ImGui::NewLine();
+#pragma region Scale
 			ImGui::Text("Start Scale");
 			ImGui::DragFloat3("##Start Scale", &m_tEffectMeshDesc.vStartScale.x, 0.01f);
 
@@ -1212,14 +1254,57 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 			ImGui::Text("Min Scale");
 			ImGui::DragFloat3("##Min Scale", &m_tEffectMeshDesc.vMinScale.x, 0.01f);
-			ImGui::Separator();
 
 			ImGui::Text("Max Scale");
 			ImGui::DragFloat3("##Max Scale", &m_tEffectMeshDesc.vMaxScale.x, 0.01f);
+#pragma endregion
+
+			ImGui::Separator();
+			ImGui::NewLine();
+			ImGui::Separator();
+			ImGui::NewLine();
 			ImGui::Separator();
 
-			ImGui::Text("Alpha Discard Ratio");
-			ImGui::DragFloat("##Alpha Discard Ratio", &m_tEffectMeshDesc.fDiscardRatio, 0.01f, 0.f, 1.f, "%.3f", 0);
+			ImGui::Text("Shaders");
+
+			ImGui::Separator();
+			ImGui::Text("Shader Pass");
+			ImGui::Text("[0]Default"); ImGui::SameLine(); ImGui::Text(" | "); ImGui::SameLine();
+			ImGui::Text("[1]Distortion");
+			ImGui::Text("[2]Soft");
+			ImGui::SetNextItemWidth(100.f);
+			ImGui::InputInt("##Shader_Pass_Index", &m_tEffectMeshDesc.iShaderPassIndex);
+			ImGui::Separator();
+
+			ImGui::Text("Distortion"); ImGui::SameLine();
+			ImGui::Checkbox("##Distortion", &m_tEffectMeshDesc.bDistortion); ImGui::SameLine();
+
+			ImGui::Text("Bloom"); ImGui::SameLine();
+			ImGui::Checkbox("##Bloom", &m_tEffectMeshDesc.bBloom); ImGui::SameLine();
+
+			ImGui::Text("Glow"); ImGui::SameLine();
+			ImGui::Checkbox("##Glow", &m_tEffectMeshDesc.bGlow);
+
+			if (m_tEffectMeshDesc.bGlow)
+			{
+				ImGui::Text("Start Glow Color");
+				ImGui::DragFloat4("##Start_Glow_Color", &m_tEffectMeshDesc.vStartGlowColor.x, 0.01f);
+
+				ImGui::Text("Glow Color Speed ");
+				ImGui::DragFloat4("##Glow_Color_Speed", &m_tEffectMeshDesc.vGlowColorSpeed.x, 0.01f);
+
+				ImGui::Text("Glow Color Force");
+				ImGui::DragFloat4("##Glow_Color_Force", &m_tEffectMeshDesc.vGlowColorForce.x, 0.01f);
+			}
+
+			ImGui::Separator();
+
+			ImGui::TextColored(ImVec4{ 1.f, 0.f, 1.f, 1.f }, "[ Color ]");
+			ImGui::NewLine();
+#pragma region Color
+			ImGui::Text("Discard Ratio"); ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.f);
+			ImGui::DragFloat("##Discard Ratio", &m_tEffectMeshDesc.fDiscardRatio, 0.01f, 0.f, 1.f, "%.3f", 0);
 
 			ImGui::Text("Start Color");
 			ImGui::DragFloat4("##Start Color", &m_tEffectMeshDesc.vStartColor.x, 0.01f, 0.f, 1.f, "%.5f");
@@ -1232,12 +1317,20 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 			ImGui::Text("Min Color");
 			ImGui::DragFloat4("##Min Color", &m_tEffectMeshDesc.vMinColor.x, 0.01f, 0.f, 1.f, "%.5f");
-			ImGui::Separator();
 
 			ImGui::Text("Max Color");
 			ImGui::DragFloat4("##Max Color", &m_tEffectMeshDesc.vMaxColor.x, 0.01f, 0.f, 1.f, "%.5f");
+#pragma endregion
+
+			ImGui::Separator();
+			ImGui::NewLine();
+			ImGui::Separator();
+			ImGui::NewLine();
 			ImGui::Separator();
 
+			ImGui::TextColored(ImVec4{ 0.f, 0.5f, 0.5f, 1.f }, "Textures");
+			ImGui::NewLine();
+#pragma region Textures
 			ImGui::SetNextItemWidth(100.f);
 			ImGui::InputInt("UV Diffuse Index", &m_tEffectMeshDesc.iDiffuseTextureIndex, 1, 0);
 			ImGui::SetNextItemWidth(100.f);
@@ -1245,7 +1338,7 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::SetNextItemWidth(100.f);
 			ImGui::InputInt("UV Mask Index", &m_tEffectMeshDesc.iMaskTextureIndex, 1, 0);
 
-			ImGui::Text("Dynamic Noise Option"); ImGui::SameLine();
+			ImGui::Text("Dynamic Noise"); ImGui::SameLine();
 			ImGui::Checkbox("##Dynamic Noise Option", &m_tEffectMeshDesc.bDynamicNoiseOption);
 
 			ImGui::Separator();
@@ -1260,27 +1353,34 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 			ImGui::Separator();
 
-			ImGui::Text("Texture Wrap Weight");
-			ImGui::Text("x : Diffuse | y : Noise | z : Mask");
-			ImGui::DragFloat4("##Texture Wrap Weight", &m_tEffectMeshDesc.vWrapWeight.x, 0.01f);
-
-			ImGui::Separator();
+			ImGui::Text("Wrap Weight");
+			ImGui::SetNextItemWidth(100.f);
+			ImGui::DragFloat("##DiffuseTextureWrapWeight", &m_tEffectMeshDesc.vWrapWeight.x, 0.01f); ImGui::SameLine();
+			ImGui::Text("[Diffuse]");
+			ImGui::SetNextItemWidth(100.f);
+			ImGui::DragFloat("##NoiseTextureWrapWeight", &m_tEffectMeshDesc.vWrapWeight.y, 0.01f); ImGui::SameLine();
+			ImGui::Text("[Noise]");
+			ImGui::SetNextItemWidth(100.f);
+			ImGui::DragFloat("##MaskTextureWrapWeight", &m_tEffectMeshDesc.vWrapWeight.z, 0.01f); ImGui::SameLine();
+			ImGui::Text("[Mask]");
+#pragma endregion
 			ImGui::Separator();
 
 #pragma region UV Options
 #pragma region Diffuse UV
-			ImGui::Text("Diffuse Texture UV Options");
+			ImGui::TextColored(ImVec4{ 1.f, 0.f, 0.f, 1.f }, "[ Diffuse ]");
+			ImGui::NewLine();
 
-			ImGui::Text("Diffuse Start UV");
+			ImGui::Text("Start UV");
 			ImGui::DragFloat2("##Diffuse Start UV", &m_tEffectMeshDesc.vDiffuseStartUV.x, 0.01f, 0.f, 1.f, "%.5f");
 
-			ImGui::Text("Diffuse UV Speed");
+			ImGui::Text("UV Speed");
 			ImGui::DragFloat2("##Diffuse UV Speed", &m_tEffectMeshDesc.vDiffuseUVSpeed.x, 0.01f);
 
-			ImGui::Text("Diffuse UV Force");
+			ImGui::Text("UV Force");
 			ImGui::DragFloat2("##Diffuse UV Force", &m_tEffectMeshDesc.vDiffuseUVForce.x, 0.01f);
 
-			ImGui::Text("Diffuse vUV Min");
+			ImGui::Text("UV Min");
 			ImGui::DragFloat2("##Diffuse UV Min", &m_tEffectMeshDesc.vDiffuseUVMin.x, 0.01f);
 
 			ImGui::Text("Diffuse vUV Max");
@@ -1288,71 +1388,45 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 #pragma endregion
 			ImGui::Separator();
 #pragma region Noise UV
-			ImGui::Text("Noise Texture UV Options");
+			ImGui::TextColored(ImVec4{ 0.f, 1.f, 0.f, 1.f }, "[ Noise ]");
+			ImGui::NewLine();
 
 			ImGui::Text("Noise Start UV");
 			ImGui::DragFloat2("##Noise Start UV", &m_tEffectMeshDesc.vNoiseStartUV.x, 0.01f, 0.f, 1.f, "%.5f");
 
-			ImGui::Text("Noise UV Speed");
+			ImGui::Text("UV Speed");
 			ImGui::DragFloat2("##Noise UV Speed", &m_tEffectMeshDesc.vNoiseUVSpeed.x, 0.01f);
 
-			ImGui::Text("Noise UV Force");
+			ImGui::Text("UV Force");
 			ImGui::DragFloat2("##Noise UV Force", &m_tEffectMeshDesc.vNoiseUVForce.x, 0.01f);
 
-			ImGui::Text("Noise vUV Min");
+			ImGui::Text("vUV Min");
 			ImGui::DragFloat2("##Noise UV Min", &m_tEffectMeshDesc.vNoiseUVMin.x, 0.01f);
 
-			ImGui::Text("Noise vUV Max");
+			ImGui::Text("vUV Max");
 			ImGui::DragFloat2("##Noise UV Max", &m_tEffectMeshDesc.vNoiseUVMax.x, 0.01f);
 #pragma endregion
 			ImGui::Separator();
 #pragma region Mask UV
-			ImGui::Text("Mask Texture UV Options");
+			ImGui::TextColored(ImVec4{ 0.f, 0.f, 1.f, 1.f }, "[ Mask ]");
+			ImGui::NewLine();
 
-			ImGui::Text("Mask Start UV");
+			ImGui::Text("Start UV");
 			ImGui::DragFloat2("Mask ##Start UV", &m_tEffectMeshDesc.vMaskStartUV.x, 0.01f, 0.f, 1.f, "%.5f");
 
-			ImGui::Text("Mask UV Speed");
+			ImGui::Text("UV Speed");
 			ImGui::DragFloat2("##Mask UV Speed", &m_tEffectMeshDesc.vMaskUVSpeed.x, 0.01f);
 
-			ImGui::Text("Mask UV Force");
+			ImGui::Text("UV Force");
 			ImGui::DragFloat2("##Mask UV Force", &m_tEffectMeshDesc.vMaskUVForce.x, 0.01f);
 
-			ImGui::Text("Mask vUV Min");
+			ImGui::Text("vUV Min");
 			ImGui::DragFloat2("##Mask UV Min", &m_tEffectMeshDesc.vMaskUVMin.x, 0.01f);
 
-			ImGui::Text("Mask vUV Max");
+			ImGui::Text("vUV Max");
 			ImGui::DragFloat2("##Mask UV Max", &m_tEffectMeshDesc.vMaskUVMax.x, 0.01f);
 #pragma endregion
 #pragma endregion
-			ImGui::Separator();
-			ImGui::Separator();
-
-			ImGui::Text("Distortion"); ImGui::SameLine();
-			ImGui::Checkbox("##Distortion", &m_tEffectMeshDesc.bDistortion); ImGui::SameLine();
-
-			ImGui::Text("Bloom"); ImGui::SameLine();
-			ImGui::Checkbox("##Bloom", &m_tEffectMeshDesc.bBloom); ImGui::SameLine();
-
-			ImGui::Text("Glow"); ImGui::SameLine();
-			ImGui::Checkbox("##Glow", &m_tEffectMeshDesc.bGlow);
-
-			ImGui::Text("Start Glow Color");
-			ImGui::DragFloat4("##Start_Glow_Color", &m_tEffectMeshDesc.vStartGlowColor.x, 0.01f);
-
-			ImGui::Text("Glow Color Speed ");
-			ImGui::DragFloat4("##Glow_Color_Speed", &m_tEffectMeshDesc.vGlowColorSpeed.x, 0.01f);
-
-			ImGui::Text("Glow Color Force");
-			ImGui::DragFloat4("##Glow_Color_Force", &m_tEffectMeshDesc.vGlowColorForce.x, 0.01f);
-			ImGui::Separator();
-
-			ImGui::Separator();
-			ImGui::Text("Shader Pass");
-			ImGui::Text("0 : Default");
-			ImGui::Text("1 : Distortion");
-			ImGui::Text("2 : Soft");
-			ImGui::InputInt("##Shader_Pass_Index", &m_tEffectMeshDesc.iShaderPassIndex);
 			ImGui::Separator();
 
 			_bool bPreCollider = m_tEffectMeshDesc.bCollider;
