@@ -1,6 +1,4 @@
 #pragma once
-
-//#pragma warning (disable : 4005)
 #pragma warning (disable : 4251)
 #pragma warning (disable : 4390)
 #pragma warning (disable : 6011)
@@ -71,7 +69,6 @@ typedef std::string tstring;
 #include "Engine_Functor.h"
 #include "Engine_Macro.h"
 #include "Engine_Struct.h"
-//#include "Easing_Utillity.h"
 
 #include <typeinfo>
 
@@ -87,10 +84,6 @@ using namespace Microsoft::WRL;
 
 #include "Delegate.h"
 
-//#include <filesystem>
-//namespace fs = std::filesystem;
-
-
 #ifdef _DEBUG
 
 #define _CRTDBG_MAP_ALLOC
@@ -101,13 +94,11 @@ using namespace Microsoft::WRL;
 #ifndef DBG_NEW 
 
 #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ ) 
-//#define new DBG_NEW 
 
-#endif
+#endif // _DEBUG
 
-#else
+#else // _DEBUG
 #define DBG_NEW new
-
 
 #endif // _DEBUG
 
@@ -117,20 +108,15 @@ using namespace Microsoft::WRL;
 
 #ifndef _DEBUG
 #define DEBUG_ASSERT ;
-#endif
-
-
-
+#endif // _DEBUG
 
 using namespace Engine;
 using namespace std;
-
 
 #define SOUND_MAX 1.0f
 #define SOUND_MIN 0.0f
 #define SOUND_DEFAULT 0.5f
 #define SOUND_WEIGHT 0.1f
-
 
 #include <io.h>
 #pragma comment(lib, "fmodex64_vc.lib")
