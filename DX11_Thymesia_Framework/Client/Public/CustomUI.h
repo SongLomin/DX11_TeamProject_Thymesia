@@ -19,8 +19,7 @@ public:
 
 public:
 	void		Set_PassIndex(_uint _iPassIndex);
-
-
+	void		Set_DeffuseIndex(_uint _iDeffuseIndex);
 
 protected:
 	virtual HRESULT SetUp_ShaderResource() override;
@@ -28,7 +27,7 @@ protected:
 
 
 private:
-
+	_uint	m_iDeffuseIndex = 0;
 public:
 	void Free();
 };

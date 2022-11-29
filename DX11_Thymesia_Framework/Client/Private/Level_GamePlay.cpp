@@ -16,8 +16,9 @@
 #include "UI_Containers.h"
 #include "UI_EvolveMenu.h"
 #include "UI_EvolveMenu_Level.h"
-
-
+#include "UI_Script.h"
+#include "UI_ScriptQueue.h"
+#include "UI_DamageFont.h"
 CLevel_GamePlay::CLevel_GamePlay()
 	//: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
@@ -199,6 +200,21 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 		}
 	}
 
+	if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
+	{
+		if (m_pPauseMenu.lock()->Get_Enable() == false)
+		{
+			weak_ptr<CUI_ScriptQueue> pScriptQueue = GAMEINSTANCE->Get_GameObjects< CUI_ScriptQueue>(LEVEL_STATIC).front();
+			
+			pScriptQueue.lock()->Call_SetScript_Tutorial_Varg();
+		}
+	}
+	if (KEY_INPUT(KEY::C, KEY_STATE::TAP))
+	{
+		weak_ptr<CUI_DamageFont> pDamageFont;
+		pDamageFont = GAMEINSTANCE->Add_GameObject<CUI_DamageFont>(LEVEL_STATIC);
+		pDamageFont.lock()->SetUp_DamageFont(1334, _float2(g_iWinCX >> 1, g_iWinCY >> 1), ATTACK_OPTION::PLAGUE);
+	}
 	if (!m_bFadeTrigger)
 	{
 		FaderDesc tFaderDesc;
