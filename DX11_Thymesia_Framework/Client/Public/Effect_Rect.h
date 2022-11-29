@@ -63,6 +63,7 @@ private:
     void Generate_RandomOriginalParticleDesc();
     _bool Check_DisableAllParticle();
 
+    void Play_Internal(const _uint& i, _float fTimeDelta);
     void Update_ParticlePosition(const _uint& i, _float fTimeDelta);
     void Update_ParticleRotation(const _uint& i, _float fTimeDelta);
     void Update_ParticleScale(const _uint& i, _float fTimeDelta);

@@ -4,7 +4,6 @@
 #include <filesystem>
 #include "Client_Structs.h"
 #include "Client_Presets.h"
-
 #include "imgui.h"
 
 #ifdef _DEBUG

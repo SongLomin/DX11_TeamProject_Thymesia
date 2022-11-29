@@ -755,7 +755,7 @@ void CEffect_Rect::Play(_float fTimeDelta)
 		return;
 	}
 
-	_float	fFrameTime(0.006944f);
+	_float	fFrameTime(HZ_144);
 	_int	iTickCount(0);
 	//iTickCount = fTimeDelta / fFrameTime;
 	//m_fPreFrame += fTimeDelta - (iTickCount * fTimeDelta / fFrameTime);
@@ -813,7 +813,7 @@ void CEffect_Rect::Play(_float fTimeDelta)
 				else
 				{
 					m_tParticleDescs[i].bEnable = false;
-					m_tParticleDescs[i].fCurrentSpawnTime = -999999.f;
+					m_tParticleDescs[i].fCurrentSpawnTime = -1.f * FLT_MAX;
 				}
 				continue;
 			}
@@ -823,13 +823,7 @@ void CEffect_Rect::Play(_float fTimeDelta)
 
 
 		for (_int x(0); x < iTickCount; ++x)
-		{
-			this->Update_ParticleRotation(i, fFrameTime);
-			this->Update_ParticlePosition(i, fFrameTime);
-			this->Update_ParticleScale(i, fFrameTime);
-			this->Update_ParticleColor(i, fFrameTime);
-			this->Update_ParticleSpriteFrame(i, fFrameTime);
-		}
+			this->Play_Internal(i, fFrameTime);
 	}
 
 	for (_int x(0); x < iTickCount; ++x)
@@ -1030,6 +1024,15 @@ _bool CEffect_Rect::Check_DisableAllParticle()
 	}
 
 	return true;
+}
+
+void CEffect_Rect::Play_Internal(const _uint& i, _float fTimeDelta)
+{
+	this->Update_ParticleRotation(i, fTimeDelta);
+	this->Update_ParticlePosition(i, fTimeDelta);
+	this->Update_ParticleScale(i, fTimeDelta);
+	this->Update_ParticleColor(i, fTimeDelta);
+	this->Update_ParticleSpriteFrame(i, fTimeDelta);
 }
 
 void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)

@@ -228,7 +228,7 @@ void CCustomEffectMesh::Play(_float fTimeDelta)
 		return;
 	}
 
-	_float	fFrameTime(0.00694444f);
+	_float	fFrameTime(HZ_144);
 	_int	iTickCount(0);
 
 	m_fPreFrame += fFrameTime;

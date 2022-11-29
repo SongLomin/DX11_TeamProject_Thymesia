@@ -11,6 +11,8 @@
 #pragma warning (disable : 28020)
 #pragma warning (disable : 33010)
 
+#define HZ_144 0.006944f
+
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <Effects11/d3dx11effect.h>
