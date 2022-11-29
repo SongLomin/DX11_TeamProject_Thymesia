@@ -268,7 +268,7 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 
 	if (m_tEffectParticleDesc.bBoner)
 	{
-		if (0 != m_strBoneName.size())
+		if (!m_strBoneName.empty())
 			Out_Json["Bone_Name"] = m_strBoneName;
 	}
 
@@ -485,22 +485,32 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	if (In_Json.find("Max_Life_Time") != In_Json.end())
 		m_tEffectParticleDesc.fMaxLifeTime = In_Json["Max_Life_Time"];
 #pragma endregion
+
 	if (In_Json.find("Is_Boner") != In_Json.end())
 		m_tEffectParticleDesc.bBoner = In_Json["Is_Boner"];
-
 
 	if (m_tEffectParticleDesc.bBoner)
 	{
 		if (In_Json.find("Bone_Name") != In_Json.end())
 			m_strBoneName = In_Json["Bone_Name"];
 
-		m_pParentTransformCom = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Component<CTransform>().lock();
-		if (!m_pParentTransformCom.lock())
-			assert(0);
+		try
+		{
+			if (m_strBoneName.empty())
+				throw;
 
-		m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
-		if (!m_pBoneNode.lock())
+			m_pParentTransformCom = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Component<CTransform>().lock();
+			if (!m_pParentTransformCom.lock())
+				throw;
+
+			m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
+			if (!m_pBoneNode.lock())
+				throw;
+		}
+		catch (const std::exception&)
+		{
 			assert(0);
+		}
 	}
 
 #pragma region Spawn Position
@@ -757,24 +767,24 @@ void CEffect_Rect::Play(_float fTimeDelta)
 		m_fPreFrame -= fFrameTime;
 	}
 
-	_matrix		BoneMatrix = XMMatrixIdentity();
-	_matrix		WorldMatrix = XMMatrixIdentity();
+	//_matrix		BoneMatrix = XMMatrixIdentity();
+	//_matrix		WorldMatrix = XMMatrixIdentity();
 
-	if (m_pBoneNode.lock() && ((_uint)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType))
-	{
-		_float4x4	TempMat = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Get_TransformationMatrix();
-		_matrix		ModelTranMat = XMLoadFloat4x4(&TempMat);
-		BoneMatrix = m_pBoneNode.lock()->Get_CombinedMatrix() * ModelTranMat;
+	//if (m_pBoneNode.lock() && ((_uint)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType))
+	//{
+	//	_float4x4	TempMat = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Get_TransformationMatrix();
+	//	_matrix		ModelTranMat = XMLoadFloat4x4(&TempMat);
+	//	BoneMatrix = m_pBoneNode.lock()->Get_CombinedMatrix() * ModelTranMat;
 
-		BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
-		BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
-		BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
-	}
+	//	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
+	//	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
+	//	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
+	//}
 
-	if (m_pParentTransformCom.lock())
-		WorldMatrix = BoneMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix();
+	//if (m_pParentTransformCom.lock())
+	//	WorldMatrix = BoneMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix();
 
-	for (_int i{ 0 }; i < m_tEffectParticleDesc.iMaxInstance; ++i)
+	for (_int i(0); i < m_tEffectParticleDesc.iMaxInstance; ++i)
 	{
 		if (!m_tParticleDescs[i].bEnable)
 		{
@@ -1702,9 +1712,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 						{
 							const _bool is_selected = (m_iCurrentBoneIndex == n);
 							if (ImGui::Selectable(m_AllBoneNames[n].c_str(), is_selected))
-							{
 								m_strBoneName = m_AllBoneNames[n];
-							}
 
 							// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
 							if (is_selected)
