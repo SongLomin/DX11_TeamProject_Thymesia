@@ -51,12 +51,16 @@ _bool CStatus_Player::Is_Dead()
 void CStatus_Player::Init_Status(const void* pArg)
 {
 	m_tDesc.m_fMaxHP = 300.f;
-	m_tDesc.m_fMaxMP = 300.f;
+	m_tDesc.m_fMaxMP = 150.f;
 	m_tDesc.m_fNormalAtk = 25.f;
 	m_tDesc.m_fPlagueAtk = 25.f;
 	m_tDesc.m_fFeatherAtk = 30.f;
 	m_tDesc.m_fParryingAtk = 50.f;
-
+	m_tDesc.m_iLevel = 1;
+	m_tDesc.m_iStr = 1;
+	m_tDesc.m_iPlague = 1;
+	m_tDesc.m_iWound = 1;
+	m_tDesc.m_iMaxFeather = 3;
 
 	m_PotionDesc[(_uint)POTIONTYPE::POTION_DEFAULT].m_iMaxPotion = 3;
 	m_PotionDesc[(_uint)POTIONTYPE::POTION_DEFAULT].m_fHealingAmount = 0.3f;

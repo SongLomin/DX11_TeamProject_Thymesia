@@ -9,6 +9,8 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
+#include "MobWeapon.h"
+
 
 GAMECLASS_C(CVargBossState_Attack3a);
 CLONE_C(CVargBossState_Attack3a, CComponent)
