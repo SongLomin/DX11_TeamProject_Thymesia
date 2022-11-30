@@ -56,7 +56,7 @@ void CUI_DamageFont::SetUp_DamageFont(_uint iDmg, _float2 vPos, ATTACK_OPTION eA
 	m_vPos.x += rand() % 30;
 	m_vPos.y += rand() % 30;
 
-	m_fDefaultSize = 48.f;
+	m_fDefaultSize = 64.f;
 
 	m_fOffsetX = m_fDefaultSize * 0.5f;
 

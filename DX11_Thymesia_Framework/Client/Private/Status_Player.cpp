@@ -125,6 +125,11 @@ void CStatus_Player::Heal_Player(const _float fAmount)
 	Callback_ChangeHP(m_tDesc.m_fCurrentHP);
 }
 
+void CStatus_Player::Set_Desc(void* In_Desc)
+{
+	memcpy(&m_tDesc, In_Desc, sizeof(PLAYERDESC));
+}
+
 void CStatus_Player::Free()
 {
 
