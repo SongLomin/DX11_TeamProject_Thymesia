@@ -48,6 +48,7 @@ HRESULT CStatic_Prop::Start()
 void CStatic_Prop::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
+
 }
 
 void CStatic_Prop::LateTick(_float fTimeDelta)

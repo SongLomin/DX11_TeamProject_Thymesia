@@ -263,13 +263,14 @@ VS_OUT_NORMAL VS_MAIN_NORMAL(VS_IN In)
 
     vector vPosition = mul(vector(In.vPosition, 1.f), BoneMatrix);
     vector vNormal = mul(vector(In.vNormal, 0.f), BoneMatrix);
+    vector vTangent = mul(vector(In.vTangent, 0.f), BoneMatrix);
 
     Out.vPosition = mul(vPosition, matWVP);
     Out.vNormal = normalize(mul(vNormal, g_WorldMatrix));
     Out.vWorldPos = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
     Out.vTexUV = In.vTexUV;
     Out.vProjPos = Out.vPosition;
-    Out.vTangent = normalize(mul(vector(In.vTangent, 0.f), g_WorldMatrix)).xyz;
+    Out.vTangent = normalize(mul(vTangent,g_WorldMatrix)).xyz;
     Out.vBinormal = normalize(cross(float3(Out.vNormal.xyz), Out.vTangent));
 
     return Out;
@@ -336,7 +337,6 @@ PS_OUT_SPECULAR PS_MAIN_NORMAL_SPECULAR(PS_IN_NORMAL In)
 
     Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     
-    /* 0 ~ 1 */
     float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
 
     /* -1 ~ 1 */
@@ -347,8 +347,6 @@ PS_OUT_SPECULAR PS_MAIN_NORMAL_SPECULAR(PS_IN_NORMAL In)
     vPixelNormal = mul(vPixelNormal, WorldMatrix);
 
     Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
-   // Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
-
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vLightFlag = g_vLightFlag;
 

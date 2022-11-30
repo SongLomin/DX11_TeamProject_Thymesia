@@ -124,7 +124,8 @@ HRESULT CLight_Prop::Render()
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
 		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
-		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS);
+		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_HEIGHT);
+	
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
 		{
 			m_iPassIndex = 3;
