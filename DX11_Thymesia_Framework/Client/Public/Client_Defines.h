@@ -24,7 +24,8 @@
 // UI제외한 오브젝트 생성 X
 //#define		_ONLY_UI_
 #define		_RENDER_FPS_
-#define		_BONE_PARTICLE_
+// #define		_BONE_PARTICLE_
+// #define		_BONE_MESHEFFECT_
 #endif // _DEBUG
 
 #ifdef NDEBUG

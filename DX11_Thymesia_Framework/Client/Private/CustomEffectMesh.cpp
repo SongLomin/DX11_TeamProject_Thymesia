@@ -1168,11 +1168,9 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 				m_strBoneName.clear();
 			}
 #pragma endregion
-			ImGui::Separator();
 			ImGui::NewLine();
 			ImGui::Separator();
 			ImGui::NewLine();
-			ImGui::Separator();
 
 			ImGui::TextColored(ImVec4{ 1.f, 0.f, 0.f, 1.f }, "[ Position ]");
 			ImGui::NewLine();
@@ -1183,11 +1181,9 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::DragFloat3("##Start Position", &m_tEffectMeshDesc.vStartPosition.x, 0.1f);
 #pragma endregion
 
-			ImGui::Separator();
 			ImGui::NewLine();
 			ImGui::Separator();
 			ImGui::NewLine();
-			ImGui::Separator();
 
 			ImGui::TextColored(ImVec4{ 0.f, 1.f, 0.f, 1.f }, "[ Speed ]");
 			ImGui::NewLine();
@@ -1205,11 +1201,9 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::DragFloat3("##Max Speed", &m_tEffectMeshDesc.vMaxSpeed.x, 0.1f);
 #pragma endregion
 
-			ImGui::Separator();
 			ImGui::NewLine();
 			ImGui::Separator();
 			ImGui::NewLine();
-			ImGui::Separator();
 
 			ImGui::TextColored(ImVec4{ 0.f, 0.f, 1.f, 1.f }, "[ Rotation ]");
 			ImGui::NewLine();
@@ -1230,11 +1224,9 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::DragFloat3("##Max Rotation", &m_tEffectMeshDesc.vMaxRotation.x, 0.01f);
 #pragma endregion
 
-			ImGui::Separator();
 			ImGui::NewLine();
 			ImGui::Separator();
 			ImGui::NewLine();
-			ImGui::Separator();
 
 			ImGui::TextColored(ImVec4{ 0.3f, 0.f, 0.5f, 1.f }, "[ Scale ]");
 			ImGui::NewLine();
@@ -1259,11 +1251,9 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::DragFloat3("##Max Scale", &m_tEffectMeshDesc.vMaxScale.x, 0.01f);
 #pragma endregion
 
-			ImGui::Separator();
 			ImGui::NewLine();
 			ImGui::Separator();
 			ImGui::NewLine();
-			ImGui::Separator();
 
 			ImGui::Text("Shaders");
 
@@ -1322,11 +1312,9 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::DragFloat4("##Max Color", &m_tEffectMeshDesc.vMaxColor.x, 0.01f, 0.f, 1.f, "%.5f");
 #pragma endregion
 
-			ImGui::Separator();
 			ImGui::NewLine();
 			ImGui::Separator();
 			ImGui::NewLine();
-			ImGui::Separator();
 
 			ImGui::TextColored(ImVec4{ 0.f, 0.5f, 0.5f, 1.f }, "[ Textures ]");
 			ImGui::NewLine();
