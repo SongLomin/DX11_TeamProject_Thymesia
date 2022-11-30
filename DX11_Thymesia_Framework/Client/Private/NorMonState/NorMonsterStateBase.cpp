@@ -162,7 +162,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 			pDamageFont.lock()->SetUp_DamageFont((_uint)fMagnifiedDamage, vHitPos, eAttackOption);
 			break;
 		case Client::ATTACK_OPTION::PLAGUE:
-			fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+			fMagnifiedDamage *= tPlayerDesc.m_fPlagueAtk;
 			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);		
 			GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 			pDamageFont.lock()->SetUp_DamageFont((_uint)fMagnifiedDamage, vHitPos, eAttackOption);

@@ -126,13 +126,13 @@ HRESULT CLevel_GamePlay::Initialize()
 	MONSTER.vYame.z = 36.f;
 	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &MONSTER);
 	//
-	ZeroMemory(&MONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-	MONSTER.eMonType = MONSTERTYPE::VARG;
-	MONSTER.eBossStartType = BOSSSTARTTYPE::BEGINSTART;
-	MONSTER.vYame.x = 13.f;
-	MONSTER.vYame.y = 4.6f;
-	MONSTER.vYame.z = 33.f;
-	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &MONSTER);
+	//ZeroMemory(&MONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+	//MONSTER.eMonType = MONSTERTYPE::VARG;
+	//MONSTER.eBossStartType = BOSSSTARTTYPE::BEGINSTART;
+	//MONSTER.vYame.x = 13.f;
+	//MONSTER.vYame.y = 4.6f;
+	//MONSTER.vYame.z = 33.f;
+	//GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &MONSTER);
 	
 	//ZeroMemory(&MONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	//MONSTER.eMonType = MONSTERTYPE::GARDENER;

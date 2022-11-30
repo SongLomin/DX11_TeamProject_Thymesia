@@ -9,7 +9,7 @@
 #include "CorvusStates/CorvusStates.h"
 #include "Collider.h"
 #include "Client_GameObjects.h"
-
+#include "UI_DamageFont.h"
 
 GAMECLASS_C(CCorvusState_Parry1);
 CLONE_C(CCorvusState_Parry1, CComponent)
@@ -222,6 +222,47 @@ void CCorvusState_Parry1::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
 
 		PARRY_SUCCESS ParryType = (PARRY_SUCCESS)Check_AndChangeSuccessParrying(pMyCollider, pOtherCollider);
 
+		_vector vViewPosition;
+		_matrix ViewProjMatrix;
+
+		vViewPosition = pMyCollider.lock()->Get_CurrentPosition();
+
+		vViewPosition += XMVectorSet(0.f, 2.f, 0.f, 1.f);
+
+		ViewProjMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_VIEW) * GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_PROJ);
+
+		vViewPosition = XMVector3TransformCoord(vViewPosition, ViewProjMatrix);
+
+		/* -1 ~ 1 to 0 ~ ViewPort */
+		vViewPosition.m128_f32[0] = (vViewPosition.m128_f32[0] + 1.f) * (_float)g_iWinCX * 0.5f;
+		vViewPosition.m128_f32[1] = (-1.f * vViewPosition.m128_f32[1] + 1.f) * (_float)g_iWinCY * 0.5f;
+
+		weak_ptr<CUI_DamageFont> pDamageFont = GAMEINSTANCE->Add_GameObject<CUI_DamageFont>(LEVEL_STATIC);
+
+		_float2 vHitPos;
+
+		vHitPos.x = vViewPosition.m128_f32[0];
+		vHitPos.y = vViewPosition.m128_f32[1];
+
+		random_device rd;
+		mt19937_64 mt(rd());
+
+		uniform_real_distribution<_float> fRandom(-50.f, 50.f);
+
+		vHitPos.x += fRandom(mt);
+		vHitPos.y += fRandom(mt);
+		
+		if (m_eParryType == PARRY_TYPE::PERFECT)
+		{
+			pDamageFont.lock()->SetUp_DamageFont(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f,
+				vHitPos, ATTACK_OPTION::PARRY);
+		}
+		else
+		{
+			pDamageFont.lock()->SetUp_DamageFont(pStatus.lock()->Get_Desc().m_fParryingAtk,
+				vHitPos, ATTACK_OPTION::PARRY);
+		}
+
 		switch (m_eParryType)
 		{
 
@@ -231,9 +272,11 @@ void CCorvusState_Parry1::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
 			{
 			case Client::PARRY_SUCCESS::LEFT:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
+				
 				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 				pStatus.lock()->Heal_Player(30.f);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeft>();
+				
 				break;
 			case Client::PARRY_SUCCESS::LEFTUP:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
@@ -245,13 +288,12 @@ void CCorvusState_Parry1::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
 				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 				pStatus.lock()->Heal_Player(30.f);
-				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRight>();
+				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRight>();				
 				break;
 			case Client::PARRY_SUCCESS::RIGHTUP:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
 				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 				pStatus.lock()->Heal_Player(30.f);
-				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRightup>();
 				break;
 			case Client::PARRY_SUCCESS::FAIL:
 				Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);

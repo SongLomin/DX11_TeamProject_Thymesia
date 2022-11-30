@@ -385,7 +385,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	//DamageFont
 	GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("DamageFont_Normal"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Normal/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures(("DamageFont_Parry"), TEXT("../Bin/Resources/Textures/UI/DamageFont/ParryWW/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("DamageFont_Parry"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Parry/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	
 	//GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/1.png"), MEMORY_TYPE::MEMORY_STATIC);
