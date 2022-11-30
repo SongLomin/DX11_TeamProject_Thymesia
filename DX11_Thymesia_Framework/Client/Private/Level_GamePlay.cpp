@@ -86,14 +86,15 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	
 #ifdef _VARG_
-	CBossMonster::STATE_LINK_BOSS_DESC BOSSMONSTER;
 
-	ZeroMemory(&BOSSMONSTER, sizeof(CBossMonster::STATE_LINK_BOSS_DESC));
-	BOSSMONSTER.vYame.x = 49.33f;
-	BOSSMONSTER.vYame.y = 14.4f;
-	BOSSMONSTER.vYame.z = 30.32f;
-	BOSSMONSTER.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
-	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &BOSSMONSTER);
+	//CBossMonster::STATE_LINK_BOSS_DESC BOSSMONSTER;
+	//
+	//ZeroMemory(&BOSSMONSTER, sizeof(CBossMonster::STATE_LINK_BOSS_DESC));
+	//BOSSMONSTER.vYame.x = 49.33f;
+	//BOSSMONSTER.vYame.y = 14.4f;
+	//BOSSMONSTER.vYame.z = 30.32f;
+	//BOSSMONSTER.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
+	//GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &BOSSMONSTER);
 
 
 
@@ -108,30 +109,30 @@ HRESULT CLevel_GamePlay::Initialize()
 #ifdef _STAGE_1_MONSTER_
 	CMonster::STATE_LINK_MONSTER_DESC MONSTER;
 
-	ZeroMemory(&MONSTER, sizeof(CBossMonster::STATE_LINK_MONSTER_DESC));
-	MONSTER.vYame.x = 49.33f;
-	MONSTER.vYame.y = 14.4f;
-	MONSTER.vYame.z = 30.32f;
-	MONSTER.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
-	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &MONSTER);
+	//ZeroMemory(&MONSTER, sizeof(CBossMonster::STATE_LINK_MONSTER_DESC));
+	//MONSTER.vYame.x = 49.33f;
+	//MONSTER.vYame.y = 14.4f;
+	//MONSTER.vYame.z = 30.32f;
+	//MONSTER.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
+	//GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &MONSTER);
 
 	//CBossMonster::STATE_LINK_MONSTER_DESC BOSSMONSTER;
 	//
-	//ZeroMemory(&MONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-	//MONSTER.eMonType = MONSTERTYPE::AXEMAN;
-	//MONSTER.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
-	//MONSTER.vYame.x = 13.f;
-	//MONSTER.vYame.y = 4.6f;
-	//MONSTER.vYame.z = 36.f;
-	//GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &MONSTER);
+	ZeroMemory(&MONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+	MONSTER.eMonType = MONSTERTYPE::AXEMAN;
+	MONSTER.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
+	MONSTER.vYame.x = 13.f;
+	MONSTER.vYame.y = 4.6f;
+	MONSTER.vYame.z = 36.f;
+	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &MONSTER);
 	//
-	//ZeroMemory(&MONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-	//MONSTER.eMonType = MONSTERTYPE::KNIFEWOMAN;
-	//MONSTER.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
-	//MONSTER.vYame.x = 13.f;
-	//MONSTER.vYame.y = 4.6f;
-	//MONSTER.vYame.z = 33.f;
-	//GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &MONSTER);
+	ZeroMemory(&MONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+	MONSTER.eMonType = MONSTERTYPE::VARG;
+	MONSTER.eBossStartType = BOSSSTARTTYPE::BEGINSTART;
+	MONSTER.vYame.x = 13.f;
+	MONSTER.vYame.y = 4.6f;
+	MONSTER.vYame.z = 33.f;
+	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &MONSTER);
 	
 	//ZeroMemory(&MONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	//MONSTER.eMonType = MONSTERTYPE::GARDENER;
@@ -211,9 +212,9 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 	}
 	if (KEY_INPUT(KEY::C, KEY_STATE::TAP))
 	{
-		weak_ptr<CUI_DamageFont> pDamageFont;
-		pDamageFont = GAMEINSTANCE->Add_GameObject<CUI_DamageFont>(LEVEL_STATIC);
-		pDamageFont.lock()->SetUp_DamageFont(1334, _float2(g_iWinCX >> 1, g_iWinCY >> 1), ATTACK_OPTION::PLAGUE);
+	//	weak_ptr<CUI_DamageFont> pDamageFont;
+	//	pDamageFont = GAMEINSTANCE->Add_GameObject<CUI_DamageFont>(LEVEL_STATIC);
+	//	pDamageFont.lock()->SetUp_DamageFont(1334, _float2(g_iWinCX >> 1, g_iWinCY >> 1), ATTACK_OPTION::PLAGUE);
 	}
 	if (!m_bFadeTrigger)
 	{

@@ -1,6 +1,6 @@
 #pragma once
 #include "UI.h"
-
+#include "Status_Player.h"
 BEGIN(Client)
 
 #define TAP_STATUS_CNT 10

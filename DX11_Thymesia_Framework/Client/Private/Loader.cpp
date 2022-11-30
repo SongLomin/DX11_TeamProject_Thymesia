@@ -379,13 +379,14 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	//Scirpt
 	GAMEINSTANCE->Load_Textures(("Script_Varg_Tutorial_0"), TEXT("../Bin/Resources/Textures/UI/Scripts/Varg/Tutorial_0.png"), MEMORY_TYPE::MEMORY_STATIC);
-
 	GAMEINSTANCE->Load_Textures(("Script_Varg_Tutorial_1"), TEXT("../Bin/Resources/Textures/UI/Scripts/Varg/Tutorial_1.png"), MEMORY_TYPE::MEMORY_STATIC);
-
-	
+	GAMEINSTANCE->Load_Textures(("Script_Varg_Tutorial_Appear"), TEXT("../Bin/Resources/Textures/UI/Scripts/Varg/Appear0.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	//DamageFont
 	GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("DamageFont_Normal"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Normal/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("DamageFont_Parry"), TEXT("../Bin/Resources/Textures/UI/DamageFont/ParryWW/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+
 	
 	//GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/1.png"), MEMORY_TYPE::MEMORY_STATIC);
 	//GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/2.png"), MEMORY_TYPE::MEMORY_STATIC);

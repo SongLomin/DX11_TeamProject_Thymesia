@@ -12,7 +12,7 @@
 #include "Attack_Area.h"
 //#include "DamageUI.h"
 #include "Status_Player.h"
-
+#include "UI_DamageFont.h"
 GAMECLASS_C(CNorMonsterStateBase)
 
 _bool CNorMonsterStateBase::Check_RequirementAttackState()
@@ -114,20 +114,58 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 		//플레이어 공격력 아직 없으니 임의값 넣어서!
 		_float fMagnifiedDamage = In_fDamage;
 		//m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+		_vector vViewPosition;
+		_matrix ViewProjMatrix;
+
+		vViewPosition = pMyCollider.lock()->Get_CurrentPosition();
+
+		vViewPosition += XMVectorSet(0.f, 2.f, 0.f, 1.f);
+
+		ViewProjMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_VIEW) * GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_PROJ);
+
+		vViewPosition = XMVector3TransformCoord(vViewPosition, ViewProjMatrix);
+
+		/* -1 ~ 1 to 0 ~ ViewPort */
+		vViewPosition.m128_f32[0] = (vViewPosition.m128_f32[0] + 1.f) * (_float)g_iWinCX * 0.5f;
+		vViewPosition.m128_f32[1] = (-1.f * vViewPosition.m128_f32[1] + 1.f) * (_float)g_iWinCY * 0.5f;
+
+		
+
+		weak_ptr<CUI_DamageFont> pDamageFont = GAMEINSTANCE->Add_GameObject<CUI_DamageFont>(LEVEL_STATIC);
+
+		_float2 vHitPos;
+		
+		vHitPos.x = vViewPosition.m128_f32[0];
+		vHitPos.y = vViewPosition.m128_f32[1];
+
+		random_device rd;
+		mt19937_64 mt(rd());
+
+		uniform_real_distribution<_float> fRandom(-50.f, 50.f);
+
+		vHitPos.x += fRandom(mt);
+		vHitPos.y += fRandom(mt);
+
 
 		switch (eAttackOption)
 		{
 		case Client::ATTACK_OPTION::NONE:
+			fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
 			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, ATTACK_OPTION::NORMAL);		
 			GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
+			pDamageFont.lock()->SetUp_DamageFont((_uint)fMagnifiedDamage, vHitPos, eAttackOption);
 			break;
 		case Client::ATTACK_OPTION::NORMAL:
+			fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
 			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);		
 			GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
+			pDamageFont.lock()->SetUp_DamageFont((_uint)fMagnifiedDamage, vHitPos, eAttackOption);
 			break;
 		case Client::ATTACK_OPTION::PLAGUE:
+			fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
 			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);		
 			GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
+			pDamageFont.lock()->SetUp_DamageFont((_uint)fMagnifiedDamage, vHitPos, eAttackOption);
 			break;
 		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
 			break;
@@ -195,10 +233,6 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 	}
 
 }
-
-
-
-
 
 void CNorMonsterStateBase::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {

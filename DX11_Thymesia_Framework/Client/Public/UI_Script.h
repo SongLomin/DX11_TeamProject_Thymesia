@@ -60,6 +60,8 @@ private:
 	SCRIPTPLAYINGTYPE	m_eScriptPlaying;
 	_bool				m_bLerp;
 
+
+
 public:
 	void				Call_LerpEnd_FadeIn();
 	void				Call_LerpEnd_FadeOut();

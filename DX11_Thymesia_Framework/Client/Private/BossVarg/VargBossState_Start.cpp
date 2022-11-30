@@ -8,7 +8,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
-
+#include "UI_ScriptQueue.h"
 GAMECLASS_C(CVargBossState_Start);
 CLONE_C(CVargBossState_Start, CComponent)
 
@@ -98,6 +98,9 @@ void CVargBossState_Start::OnStateEnd()
 	if (m_fSinematic == 4.f)
 		GET_SINGLE(CGameManager)->End_Cinematic();
 
+
+	
+
 }
 
 
@@ -108,6 +111,9 @@ void CVargBossState_Start::Call_AnimationEnd()
 		return;
 
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkF>(0.05f);
+
+	weak_ptr<CUI_ScriptQueue> pScriptQeuue = GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL_STATIC).front();
+	pScriptQeuue.lock()->Call_SetScript_Tutorial_Varg();
 }
 
 void CVargBossState_Start::OnDestroy()
@@ -149,6 +155,15 @@ _bool CVargBossState_Start::Check_AndChangeNextState()
 		}
 		break;
 	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 925)
+	{
+		weak_ptr<CUI_ScriptQueue> pScriptQeuue = GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL_STATIC).front();
+		pScriptQeuue.lock()->Call_SetScript_Tutorial_Varg_Appear();
+	}
+
+
+	
 
 
 

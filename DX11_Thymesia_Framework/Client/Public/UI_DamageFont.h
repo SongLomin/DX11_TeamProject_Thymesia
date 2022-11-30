@@ -25,6 +25,7 @@ public:
 	void		SetUp_DamageFont(_uint iDmg, _float2 vPos, ATTACK_OPTION eAttackOption);
 
 private:
+	_float2		m_vPos;
 	_float		m_fOffsetX;
 	_float		m_fDefaultSize;
 	FONT_PLAY_TYPE		m_ePlayingType = FONT_PLAY_TYPE::FONT_END;

@@ -9,6 +9,9 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
+#include "UI_ScriptQueue.h"
+
+
 
 GAMECLASS_C(CVargBossState_Stun_Start);
 CLONE_C(CVargBossState_Stun_Start, CComponent)
@@ -76,7 +79,6 @@ void CVargBossState_Stun_Start::OnStateStart(const _float& In_fAnimationBlendTim
 void CVargBossState_Stun_Start::OnStateEnd()
 {
 	__super::OnStateEnd();
-
 
 }
 

@@ -133,6 +133,7 @@ void CStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOth
 
 }
 
+
 void CStateBase::OnDestroy()
 {
 	UNUSE_START(CStateBase);

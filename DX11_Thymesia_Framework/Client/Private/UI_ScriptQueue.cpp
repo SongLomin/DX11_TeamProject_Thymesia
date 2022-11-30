@@ -21,9 +21,7 @@ HRESULT CUI_ScriptQueue::Initialize(void* pArg)
     __super::Initialize(pArg);
 
     m_pScript = GAMEINSTANCE->Add_GameObject<CUI_Script>(LEVEL_STATIC);
-  
-    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, m_pScript);
-    
+      
     return S_OK;
 }
 
@@ -75,13 +73,12 @@ void CUI_ScriptQueue::Call_SetScript_Tutorial_Varg_Appear()
 {
     CUI_Script::SCRIPTDESC tScriptDesc;
 
-    tScriptDesc.fLifeTime = 2.f;
-    tScriptDesc.fPos = _float2(g_iWinCX / 2.f, 850.f);
-    tScriptDesc.fSize = _float2(644.f, 36.f);
-    tScriptDesc.strScriptKey = "Script_Varg_Tutorial_0";
+    tScriptDesc.fLifeTime = 1.f;
+    tScriptDesc.fPos = _float2(g_iWinCX / 2.f, g_iWinCY / 2.f);
+    tScriptDesc.fSize = _float2(g_iWinCX, g_iWinCY);
+    tScriptDesc.strScriptKey = "Script_Varg_Tutorial_Appear";
     tScriptDesc.bLerp = false;
     m_ScriptDescQueue.push(tScriptDesc);
-
 }
 
 void CUI_ScriptQueue::OnEnable(void* pArg)
