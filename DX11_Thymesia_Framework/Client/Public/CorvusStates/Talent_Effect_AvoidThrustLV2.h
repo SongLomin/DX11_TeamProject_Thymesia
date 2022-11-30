@@ -11,7 +11,7 @@ class CTalent_Effect_AvoidThrustLV2 :
     public CTalent_Effect
 {
     GAMECLASS_H(CTalent_Effect_AvoidThrustLV2);
-   
+    CLONE_H(CTalent_Effect_AvoidThrustLV2, CComponent);
 
 public:
     virtual _flag Check_Requirement(weak_ptr<CPlayer> pPlayer) override;

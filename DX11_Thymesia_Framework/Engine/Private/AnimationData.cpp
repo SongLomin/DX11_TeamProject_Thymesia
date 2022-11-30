@@ -81,7 +81,8 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     MACRO("SK_C_Corvus.ao|Corvus_PW_CaneSword_SP02", 2.f);*/
     MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack4", 2.5f);
     MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack5", 2.5f);
-    MACRO("SK_C_Corvus.ao|Corvus_StunExecute_StartL_L", 5.f);
+    MACRO("SK_C_Corvus.ao|Corvus_SD_AvoidAttack_D", 2.5f);
+    MACRO("SK_C_Corvus.ao|Corvus_SD_AvoidAttack_E2", 2.5f);
 
     MACRO("SK_C_Corvus.ao|Corvus_SD_ParryDeflect_L", 2.f);
     MACRO("SK_C_Corvus.ao|Corvus_SD_ParryDeflect_LUp", 2.f);

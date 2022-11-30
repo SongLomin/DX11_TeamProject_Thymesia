@@ -3,7 +3,7 @@
 #include "GameManager.h"
 
 GAMECLASS_C(CTalent_Effect_AvoidThrustLV2);
-
+CLONE_C(CTalent_Effect_AvoidThrustLV2, CComponent);
 
 _flag CTalent_Effect_AvoidThrustLV2::Check_Requirement(weak_ptr<CPlayer> pPlayer)
 {

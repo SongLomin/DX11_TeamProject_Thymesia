@@ -11,6 +11,7 @@ class CTalent_Effect_AvoidSlashLV1 :
     public CTalent_Effect
 {
     GAMECLASS_H(CTalent_Effect_AvoidSlashLV1);
+    CLONE_H(CTalent_Effect_AvoidSlashLV1, CComponent);
 
 public:
     virtual _flag Check_Requirement(weak_ptr<CPlayer> pPlayer) override;

@@ -206,6 +206,8 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b2.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_TurnAttack.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidSlash.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidThrust.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_Fall_Attack.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_L_Down.h" />
@@ -499,6 +501,8 @@
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b2.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_RaidAttack.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_TurnAttack.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_AvoidSlash.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidThrust.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_Fall_Attack.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_L_Down.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_L_Down_End.cpp" />

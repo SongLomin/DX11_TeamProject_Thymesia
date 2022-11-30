@@ -39,10 +39,10 @@ HRESULT CTalent_Sword::Initialize(void* pArg)
 	pSwordLV2.lock()->Add_TalentChild(pAvoidSlashLV1);
 	pSwordLV2.lock()->Add_TalentChild(pAvoidThrustLV1);
 		
-	pAvoidSlashLV1.lock()->Set_TalentInfo(true, Add_Component<CTalent_Effect_AvoidSlashLV1>(), pSwordLV2);
+	pAvoidSlashLV1.lock()->Set_TalentInfo(false, Add_Component<CTalent_Effect_AvoidSlashLV1>(), pSwordLV2);
 	pAvoidSlashLV1.lock()->Add_TalentChild(pAvoidSlashLV2);
 	
-	pAvoidSlashLV2.lock()->Set_TalentInfo(true, Add_Component<CTalent_Effect_AvoidSlashLV2>(), pAvoidSlashLV1);
+	pAvoidSlashLV2.lock()->Set_TalentInfo(false, Add_Component<CTalent_Effect_AvoidSlashLV2>(), pAvoidSlashLV1);
 		
 	pAvoidThrustLV1.lock()->Set_TalentInfo(false, Add_Component<CTalent_Effect_AvoidThrustLV1>(), pSwordLV2);
 	pAvoidThrustLV1.lock()->Add_TalentChild(pAvoidThrustLV2);
@@ -60,9 +60,9 @@ void  CTalent_Sword::TestTalentCheck()
 
 	TALENT_RESULT eResult;
 
-	m_pPlayer.lock()->Bind_TalentEffects(pSwordLV2.lock()->Get_Effect());
+	m_pPlayer.lock()->Bind_TalentEffects(pAvoidThrustLV1.lock()->Get_Effect());
 	list<weak_ptr<CTalent>> pVisitNodes;
-	eResult = pSwordLV2.lock()->Check_Requiment(iMyTalentPoint, iCost, pVisitNodes);
+	eResult = pAvoidThrustLV1.lock()->Check_Requiment(iMyTalentPoint, iCost, pVisitNodes);
 
 	switch (eResult)
 	{
@@ -77,16 +77,19 @@ void  CTalent_Sword::TestTalentCheck()
 		for (auto& elem : pVisitNodes)
 		{
 			elem.lock()->Set_Active(true);
+			m_pPlayer.lock()->UnBind_TalentEffects(elem.lock()->Get_Effect());
 		}
-		m_pPlayer.lock()->Bind_TalentEffects(pSwordLV2.lock()->Get_Effect());
+		//m_pPlayer.lock()->Bind_TalentEffects(pSwordLV2.lock()->Get_Effect());
+		//m_pPlayer.lock()->Bind_TalentEffects(pAvoidThrustLV1.lock()->Get_Effect());
 		break;
 	case Client::TALENT_RESULT::SUBSTARICTPOINT:
 		iMyTalentPoint += iCost;
 		for (auto& elem : pVisitNodes)
 		{
 			elem.lock()->Set_Active(false);
+			m_pPlayer.lock()->UnBind_TalentEffects(elem.lock()->Get_Effect());
 		}
-		m_pPlayer.lock()->UnBind_TalentEffects(pSwordLV2.lock()->Get_Effect());
+	
 		break;
 	}
 	cout << "iTalent Point : " << iMyTalentPoint<< endl;

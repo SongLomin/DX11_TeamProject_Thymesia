@@ -898,6 +898,14 @@
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidThrustLV2.h">
       <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\04.Talent_Effect_AvoidThrustLV2</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_DamageFont.h" />
+    <ClInclude Include="..\Public\UI_ScriptQueue.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidSlash.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\00.CorvusState_AvoidSalsh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidThrust.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\01.CorvusState_Thurst</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1757,7 +1765,6 @@
     <ClCompile Include="..\Private\NorMonState\NorMonState_Parry.cpp" />
     <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
-    <ClCompile Include="..\Public\UI_Script.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Axe.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\00.PS_Axe</Filter>
     </ClCompile>
@@ -1856,6 +1863,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidThrustLV2.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\04.Talent_Effect_AvoidThrustLV2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_DamageFont.cpp" />
+    <ClCompile Include="..\Private\UI_Script.cpp" />
+    <ClCompile Include="..\Private\UI_ScriptQueue.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_AvoidSlash.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\00.CorvusState_AvoidSalsh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidThrust.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\01.CorvusState_Thurst</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2901,6 +2917,12 @@
     </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\04.Talent_Effect_AvoidThrustLV2">
       <UniqueIdentifier>{bce2e1a2-7ad8-4d0b-8205-f50ff1d70d2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\00.CorvusState_AvoidSalsh">
+      <UniqueIdentifier>{3e1d05dd-8e41-4ceb-963a-95c5352a6d52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\01.CorvusState_Thurst">
+      <UniqueIdentifier>{3798389d-940d-4bee-a6aa-1abe043130f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

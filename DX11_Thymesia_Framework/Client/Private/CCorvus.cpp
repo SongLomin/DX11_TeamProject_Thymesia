@@ -206,6 +206,8 @@ void CCorvus::Ready_States()
 	MACRO(CCorvusState_PS_Magician);
 	MACRO(CCorvusState_PS_UrdSword);
 	MACRO(CCorvusState_PS_VargSword);
+	MACRO(CCorvusState_AVoidSalsh);
+	MACRO(CCorvusState_AVoidThrust);
 
 
 	

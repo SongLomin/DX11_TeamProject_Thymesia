@@ -3,7 +3,7 @@
 #include "GameManager.h"
 
 GAMECLASS_C(CTalent_Effect_AvoidSlashLV1);
-
+CLONE_C(CTalent_Effect_AvoidSlashLV1, CComponent);
 
 _flag CTalent_Effect_AvoidSlashLV1::Check_Requirement(weak_ptr<CPlayer> pPlayer)
 {
