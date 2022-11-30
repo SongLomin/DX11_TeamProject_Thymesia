@@ -121,7 +121,7 @@ _bool CCorvusState_AVoidThrust::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 40)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 25)
 	{
 		if (Check_RequirementDashState())
 		{
@@ -134,7 +134,7 @@ _bool CCorvusState_AVoidThrust::Check_AndChangeNextState()
 		}
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 40)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 25)
 	{
 		if (Check_RequirementAttackState())
 		{

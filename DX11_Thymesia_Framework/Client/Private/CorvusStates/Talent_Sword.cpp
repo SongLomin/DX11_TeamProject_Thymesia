@@ -60,7 +60,9 @@ void  CTalent_Sword::TestTalentCheck()
 
 	TALENT_RESULT eResult;
 
+	//юс╫ц
 	m_pPlayer.lock()->Bind_TalentEffects(pAvoidThrustLV1.lock()->Get_Effect());
+	m_pPlayer.lock()->Bind_TalentEffects(pSwordLV2.lock()->Get_Effect());
 	list<weak_ptr<CTalent>> pVisitNodes;
 	eResult = pAvoidThrustLV1.lock()->Check_Requiment(iMyTalentPoint, iCost, pVisitNodes);
 
@@ -77,7 +79,7 @@ void  CTalent_Sword::TestTalentCheck()
 		for (auto& elem : pVisitNodes)
 		{
 			elem.lock()->Set_Active(true);
-			m_pPlayer.lock()->UnBind_TalentEffects(elem.lock()->Get_Effect());
+			m_pPlayer.lock()->Bind_TalentEffects(elem.lock()->Get_Effect());
 		}
 		//m_pPlayer.lock()->Bind_TalentEffects(pSwordLV2.lock()->Get_Effect());
 		//m_pPlayer.lock()->Bind_TalentEffects(pAvoidThrustLV1.lock()->Get_Effect());
