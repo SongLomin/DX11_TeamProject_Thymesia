@@ -215,9 +215,12 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
     float fMetalness = vORMDesc.z;
     if (fRoughness > 0.f || fMetalness > 0.f || fOcclusion > 0.f)
     {
-        fOcclusion = max(0.f, fOcclusion);
+       /* fOcclusion = max(0.f, fOcclusion);
         fRoughness = max(0.f, fRoughness);
-        fMetalness = max(0.f, fMetalness);
+        fMetalness = max(0.f, fMetalness);*/
+
+        fRoughness = 0.1f;
+        fMetalness = 1.f;
 
         float vHalfVec = normalize(vLook + normalize(g_vLightDir)*-1.f);
 
@@ -225,7 +228,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
         float NdotH = max(dot(vNormal, vHalfVec), 0.0);
         float NdotV = max(dot(vNormal, vLook), 0.0);
 
-        vector vMetalic = lerp(vector(0.04f, 0.04f, 0.04f, 0.f), vDiffuseColor * fOcclusion, fMetalness);
+        vector vMetalic = lerp(vector(0.04f, 0.04f, 0.04f, 0.f), vDiffuseColor , fMetalness);
         
         float NDF = trowbridgeReitzNDF(NdotH, fRoughness);
         float3 F = fresnel(vMetalic, NdotV, fRoughness);
@@ -242,13 +245,14 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
         vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(g_vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * vDiffuseColor));
         vResult *= fOcclusion;
 
-        //vector vSpecularAcc = (kD * vDiffuseColor/ 3.141592265359 + vSpecular) * NdotL * fOcclusion* g_vLightDiffuse*NdotL;
-        vector vSpecularAcc = NdotL /** vDiffuseColor/ 3.141592265359*/ * fOcclusion * vSpecular* g_vLightDiffuse;
-        vector vAmbientColor = vDiffuseColor *fOcclusion ;
+        vector  vSpecularAcc = g_vLightDiffuse * (kD * pow(vDiffuseColor, 2.2) / 3.141592265359 + vSpecular) * NdotL;
+       // vector vSpecularAcc = (kD * vDiffuseColor/ 3.141592265359 + vSpecular) * NdotL * fOcclusion* g_vLightDiffuse;
+       // vector vSpecularAcc = NdotL /** vDiffuseColor/ 3.141592265359*/ * vSpecular* g_vLightDiffuse;
+        vector vAmbientColor = vDiffuseColor *fOcclusion*0.03f ;
 
         //shade
         Out.vSpecular = vSpecularAcc;
-        Out.vSpecular.a = 1.f;
+        Out.vSpecular.a = 0.f;
 
         Out.vShade = vResult;
         Out.vShade.a = 1.f;
