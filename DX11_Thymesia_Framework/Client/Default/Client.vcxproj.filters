@@ -906,6 +906,9 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidThrust.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\01.CorvusState_Thurst</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_EvolveMenu_Talent.h">
+      <Filter>02. GameObject\01. UI\UI_Container\Evolve\Talent</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1872,6 +1875,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidThrust.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\01.CorvusState_Thurst</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp">
+      <Filter>02. GameObject\01. UI\UI_Container\Evolve\Talent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2923,6 +2929,12 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\20.State_FeatherAttack\19.State_ParryDefense\00.CorvusState_ParryDeflectRight">
       <UniqueIdentifier>{350860d7-21a4-4f03-8f61-84b8b15bc682}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\UI_Container\Evolve\Talent">
+      <UniqueIdentifier>{d99133e2-909e-4152-a09b-a48cb920b023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="100.Utils">
+      <UniqueIdentifier>{ee4a5e2e-fa1f-4592-947f-5be7349862f4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

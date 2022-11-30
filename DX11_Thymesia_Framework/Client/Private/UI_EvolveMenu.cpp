@@ -6,7 +6,7 @@
 #include "ClientLevel.h"
 #include "FadeMask.h"
 #include "UI_EvolveMenu_Level.h"
-
+#include "UI_EvolveMenu_Talent.h"
 
 GAMECLASS_C(CUI_EvolveMenu)
 CLONE_C(CUI_EvolveMenu, CGameObject)
@@ -257,6 +257,14 @@ void CUI_EvolveMenu::Call_ChangeUI_EvolveMenu_Level()
 
 }
 
+void CUI_EvolveMenu::Call_ChangeUI_EvolveMenu_Talent()
+{
+	Set_Enable(false);
+	m_pFadeMask.lock()->Set_Enable(false);
+
+	GAMEINSTANCE->Get_GameObjects<CUI_EveolveMenu_Talent>(LEVEL_STATIC).front().lock()->Set_Enable(true);
+}
+
 
 
 void CUI_EvolveMenu::Free()
@@ -331,6 +339,14 @@ void CUI_EvolveMenu::SelectButton()
 		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CUI_EvolveMenu::Call_ChangeUI_EvolveMenu_Level, this);
 		break;
 	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_UNLOCKTALENT:
+		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+		tFaderDesc.fFadeMaxTime = 0.3f;
+		tFaderDesc.fDelayTime = 0.f;
+		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CUI_EvolveMenu::Call_ChangeUI_EvolveMenu_Talent, this);
+		break;
 		break;
 	case Client::CUI_EvolveMenu::EVOLVEMENU_TYPE::EVOLVE_PLAGUEWEAPON:
 		break;

@@ -20,6 +20,7 @@
 #include "UI_Containers.h"
 #include "UI_EvolveMenu.h"
 #include "UI_EvolveMenu_Level.h"
+#include "UI_EvolveMenu_Talent.h"
 #include "Player_MPBar.h"
 #include "Player_HPBar.h"
 #include "Player_Memory.h"
@@ -28,6 +29,9 @@
 #include "UI_Script.h"
 #include "UI_ScriptQueue.h"
 #include "UI_DamageFont.h"
+
+
+
 GAMECLASS_C(CClientLevel)
 
 HRESULT CClientLevel::Initialize()
@@ -96,6 +100,7 @@ void CClientLevel::SetUp_UI()
 
 	m_pEvolveMenu = GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu>(LEVEL_STATIC);
 	GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu_Level>(LEVEL_STATIC);
+	GAMEINSTANCE->Add_GameObject<CUI_EveolveMenu_Talent>(LEVEL_STATIC);
 
 
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));

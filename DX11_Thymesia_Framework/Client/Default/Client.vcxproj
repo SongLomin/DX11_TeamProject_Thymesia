@@ -276,6 +276,7 @@
     <ClInclude Include="..\Public\UI_DamageFont.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Level.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_Talent.h" />
     <ClInclude Include="..\Public\UI_LerpBar.h" />
     <ClInclude Include="..\Public\UI_Script.h" />
     <ClInclude Include="..\Public\UI_ScriptQueue.h" />
@@ -551,6 +552,7 @@
     <ClCompile Include="..\Private\UI_DamageFont.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Level.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp" />
     <ClCompile Include="..\Private\UI_LerpBar.cpp" />
     <ClCompile Include="..\Private\BossMonster.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab.cpp" />

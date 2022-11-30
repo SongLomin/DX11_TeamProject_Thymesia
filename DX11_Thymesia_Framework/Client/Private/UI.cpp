@@ -37,8 +37,6 @@ HRESULT CUI::Initialize(void* pArg)
 
 	Set_OwnerForMyComponents();
 
-	
-
 	m_tUIDesc.fSizeX = g_iWinCX;
 	m_tUIDesc.fSizeY = g_iWinCY;
 	m_tUIDesc.fX = g_iWinCX >> 1;

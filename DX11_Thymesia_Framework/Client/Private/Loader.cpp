@@ -388,6 +388,16 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("DamageFont_Parry"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Parry/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	
+
+	//Talent
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Title"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Talent/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Tap_Sword"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Talent/Tap_Sworld.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+
+
+
+
 	//GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/1.png"), MEMORY_TYPE::MEMORY_STATIC);
 	//GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/2.png"), MEMORY_TYPE::MEMORY_STATIC);
 	//GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/3.png"), MEMORY_TYPE::MEMORY_STATIC);

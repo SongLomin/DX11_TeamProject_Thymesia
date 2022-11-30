@@ -107,7 +107,10 @@ public:
 protected:
     virtual void    Enable_AllEventChild();
     virtual void    Disable_AllEventChild();
-
+    
+public:
+    virtual _bool   OnMouseOver();
+    virtual _bool   OnMouseButtonClicked();
 
 public:
     void		Set_AlphaColor(_float fAlphaColor) { m_fAlphaColor = fAlphaColor; }

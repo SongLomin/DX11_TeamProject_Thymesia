@@ -44,7 +44,7 @@ public:
 		_uint		m_iCurrentFeather;
 		_uint		m_iMaxFeather;
 		_uint		m_iMemory;
-
+		_uint		m_iTalent;
 
 		_uint		m_iLevel;
 		_uint		m_iStr;
