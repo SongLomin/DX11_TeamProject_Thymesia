@@ -60,9 +60,9 @@ HRESULT CPhysX_Manager::Initialize(const _uint In_iNumLayer)
 	m_pFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, m_Allocator, m_ErrorCallback);
 
 	// Create PVD
-	char*	strTransport = "127.0.0.1";
+	char* strTransport = "127.0.0.1";
 	m_pPVD = PxCreatePvd(*m_pFoundation);
-	PxPvdTransport*	Transport = PxDefaultPvdSocketTransportCreate(strTransport, 5425, 10);
+	PxPvdTransport* Transport = PxDefaultPvdSocketTransportCreate(strTransport, 5425, 10);
 	_bool	bPVDConnectionResult = m_pPVD->connect(*Transport, PxPvdInstrumentationFlag::eALL);
 	if (!bPVDConnectionResult)
 	{
@@ -81,7 +81,7 @@ HRESULT CPhysX_Manager::Initialize(const _uint In_iNumLayer)
 	tCudaDesc.interopMode = PxCudaInteropMode::Enum::D3D11_INTEROP;
 	tCudaDesc.ctx;
 
-	//m_pCudaContextManager = PxCreateCudaContextManager(*m_pFoundation, tCudaDesc, PxGetProfilerCallback());
+	m_pCudaContextManager = PxCreateCudaContextManager(*m_pFoundation, tCudaDesc, PxGetProfilerCallback());
 
 	if (m_pCudaContextManager)
 	{
@@ -126,7 +126,7 @@ HRESULT CPhysX_Manager::Initialize(const _uint In_iNumLayer)
 	//Create_StaticActor(PxTransform(PxVec3(0.f, 10.f, 0.f)), PxBoxGeometry(5.f, 5.f, 5.f), SCENE_CURRENT);
 	//Create_DynamicActor(PxTransform(PxVec3(0.f, 0.f, 0.f)), PxBoxGeometry(5.f, 5.f, 5.f), SCENE_CURRENT, 10.f, PxVec3(0.f,0.f,0.f));
 
-	
+
 
 	return S_OK;
 }
@@ -144,7 +144,7 @@ void CPhysX_Manager::Tick(_float fTimeDelta)
 	{
 		m_fTimeAcc += fTimeDelta;
 	}
-	
+
 
 
 	if (m_pCurScene)
@@ -161,7 +161,7 @@ void CPhysX_Manager::Tick(_float fTimeDelta)
 		m_pCurScene->simulate(fTimeDelta);
 		m_pCurScene->fetchResults(true);
 	}
-	
+
 	//PxTransform camera = {0.f, 0.f, 0.f};
 
 	//USEGAMEINSTANCE;
@@ -189,7 +189,7 @@ void CPhysX_Manager::Tick(_float fTimeDelta)
 	//	_float3 vTempPos = { TempPos.x, TempPos.y ,TempPos.z };
 	//}
 
-	
+
 }
 
 
@@ -375,11 +375,11 @@ HRESULT CPhysX_Manager::Create_Scene(Scene eScene, PxVec3 Gravity)
 
 HRESULT CPhysX_Manager::Delete_Scene(Scene eScene)
 {
-	if(m_pScenes[eScene])
+	if (m_pScenes[eScene])
 		m_pScenes[eScene]->release();
 	m_pScenes[eScene] = nullptr;
 
-	if(m_pDispatcher)
+	if (m_pDispatcher)
 		m_pDispatcher->release();
 	m_pDispatcher = nullptr;
 	return S_OK;
@@ -393,12 +393,12 @@ HRESULT CPhysX_Manager::Change_Scene(Scene eNextScene, PxVec3 Gravity)
 	return S_OK;
 }
 
-PxRigidDynamic * CPhysX_Manager::Create_DynamicActor(const PxTransform & Transform, const PxGeometry & Geometry,  PxMaterial* pMaterial)
+PxRigidDynamic* CPhysX_Manager::Create_DynamicActor(const PxTransform& Transform, const PxGeometry& Geometry, PxMaterial* pMaterial)
 {
 	return PxCreateDynamic(*m_pPhysics, Transform, Geometry, *pMaterial, 10.f);
 
 	//m_pPhysics->createRigidDynamic(Transform);
-	
+
 }
 
 PxRigidDynamic* CPhysX_Manager::Create_DynamicActor(const PxTransform& t)
@@ -406,7 +406,7 @@ PxRigidDynamic* CPhysX_Manager::Create_DynamicActor(const PxTransform& t)
 	return m_pPhysics->createRigidDynamic(t);
 }
 
-PxRigidStatic* CPhysX_Manager::Create_StaticActor(const PxTransform & Transform, const PxGeometry & Geometry, PxMaterial* pMaterial)
+PxRigidStatic* CPhysX_Manager::Create_StaticActor(const PxTransform& Transform, const PxGeometry& Geometry, PxMaterial* pMaterial)
 {
 	return PxCreateStatic(*m_pPhysics, Transform, Geometry, *pMaterial);
 }
@@ -447,7 +447,7 @@ void CPhysX_Manager::Add_StaticActorAtCurrentScene(PxRigidStatic& StaticActor)
 //	shape->release();
 //}
 
-void CPhysX_Manager::Create_ConvexMesh(PxVec3 ** pVertices, _uint iNumVertice, PxConvexMesh ** ppOut)
+void CPhysX_Manager::Create_ConvexMesh(PxVec3** pVertices, _uint iNumVertice, PxConvexMesh** ppOut)
 {
 	PxCookingParams params = m_pCooking->getParams();
 
@@ -489,12 +489,12 @@ void CPhysX_Manager::Create_ConvexMesh(const PxConvexMeshDesc& In_MeshDesc, PxCo
 
 }
 
-void CPhysX_Manager::Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial ** ppOut)
+void CPhysX_Manager::Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial** ppOut)
 {
 	*ppOut = m_pPhysics->createMaterial(fStaticFriction, fDynamicFriction, fRestitution);
 }
 
-void CPhysX_Manager::Create_Shape(const PxGeometry & Geometry, PxMaterial* pMaterial, const _bool isExculsive, const PxShapeFlags In_ShapeFlags, PxShape ** ppOut)
+void CPhysX_Manager::Create_Shape(const PxGeometry& Geometry, PxMaterial* pMaterial, const _bool isExculsive, const PxShapeFlags In_ShapeFlags, PxShape** ppOut)
 {
 	*ppOut = m_pPhysics->createShape(Geometry, *pMaterial, isExculsive, In_ShapeFlags);
 }
@@ -553,7 +553,7 @@ void CPhysX_Manager::Garbage_Collector()
 	}
 }
 
-void CPhysX_Manager::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh ** ppOut)
+void CPhysX_Manager::Create_CylinderMesh(_float fRadiusBelow, _float fRadiusUpper, _float fHight, PxConvexMesh** ppOut)
 {
 	_uint	iNumVerts = 32;
 	PxVec3* pVertices = DBG_NEW PxVec3[iNumVerts];
@@ -599,13 +599,13 @@ void CPhysX_Manager::OnDestroy()
 
 	for (auto& elem : m_pScenes)
 	{
-		if(elem)
+		if (elem)
 			elem->release();
 	}
 
 
 	//m_pCurScene->release();
-	if(m_pDispatcher)
+	if (m_pDispatcher)
 		m_pDispatcher->release();
 
 	if (m_pPhysics)
@@ -621,10 +621,10 @@ void CPhysX_Manager::OnDestroy()
 		m_pPVD = nullptr;
 		transport->release();
 	}
-	if(m_pCudaContextManager)
+	if (m_pCudaContextManager)
 		m_pCudaContextManager->release();
 
-	if(m_pFoundation)
+	if (m_pFoundation)
 		m_pFoundation->release();
 
 
@@ -633,7 +633,7 @@ void CPhysX_Manager::OnDestroy()
 
 void CPhysX_Manager::Free()
 {
-	
+
 }
 
 

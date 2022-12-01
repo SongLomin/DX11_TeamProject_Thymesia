@@ -389,8 +389,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	
 #ifndef _ONLY_UI_
 
-	Load_AllMaskMap();
-	Load_AllNoiseTexture();
+	//Load_AllMaskMap();
+	//Load_AllNoiseTexture();
 	Load_AllParticleTexture();
 	
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));

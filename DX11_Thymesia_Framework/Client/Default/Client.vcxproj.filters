@@ -572,9 +572,6 @@
     <ClInclude Include="..\Public\MonsterHPBar_Base.h">
       <Filter>02. GameObject\01. UI\UI_Container\MonsterHPBar</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawTabAttack</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtXXL.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
     </ClInclude>
@@ -799,18 +796,15 @@
     <ClInclude Include="..\Public\PhysXCameraController.h">
       <Filter>05. Component\00. PhysXCameraController</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\NorMonState\NorMonState_Parry.h">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\29.Parry</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\01.ClawHoldAttack</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\02.ClawAwayAttack</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawTabAttack\01ClawTabAttack2</Filter>
-    </ClInclude>
+    <ClInclude Include="..\Public\ActorDecor.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h" />
+    <ClInclude Include="..\Public\EasingTransform.h" />
+    <ClInclude Include="..\Public\EditMapCollider.h" />
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Parry.h" />
+    <ClInclude Include="..\Public\UI_Script.h" />
+    <ClInclude Include="..\Public\Weapon.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1347,9 +1341,6 @@
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawTabAttack</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXXL.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
     </ClCompile>
@@ -1393,9 +1384,6 @@
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttack1.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawAttack1</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXXL.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
@@ -1468,9 +1456,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttack1.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawAttack1</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXXL.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
@@ -1677,6 +1662,16 @@
     <ClCompile Include="..\Private\EditMapCollider.cpp">
       <Filter>02. GameObject\99. Other\07. EditMapCollider</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\ActorDecor.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackAway.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackHold.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab2.cpp" />
+    <ClCompile Include="..\Private\EasingTransform.cpp" />
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Parry.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab.cpp" />
+    <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp" />
+    <ClCompile Include="..\Private\Weapon.cpp" />
+    <ClCompile Include="..\Public\UI_Script.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

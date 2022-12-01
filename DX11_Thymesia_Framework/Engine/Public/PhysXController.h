@@ -41,7 +41,7 @@ protected:
 	void			Create_Controller();
 
 public:
-	void						Synchronize_Transform(weak_ptr<CTransform> pTransform, _fvector In_vOffset = {0.f, 0.f, 0.f});
+	virtual void						Synchronize_Transform(weak_ptr<CTransform> pTransform, _fvector In_vOffset = { 0.f, 0.f, 0.f });
 
 	virtual PxControllerCollisionFlags	Synchronize_Controller(weak_ptr<CTransform> pTransform, PxF32 elapsedTime, PxControllerFilters& filters, _fvector In_vOffset = { 0.f, 0.f, 0.f });
 	virtual PxControllerCollisionFlags	Set_Position(_fvector In_vPosition, PxF32 elapsedTime, PxControllerFilters& filters);
@@ -72,7 +72,7 @@ protected:
 
 protected:
 	PxCapsuleControllerDesc					m_pControllerDesc;
-	PxController*							m_pController = nullptr;
+	PxController* m_pController = nullptr;
 
 	_bool									m_EnableSimulation = true;
 

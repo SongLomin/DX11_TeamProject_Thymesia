@@ -68,7 +68,7 @@ void CCorvus::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 	this->RootMove();
 
-	PxControllerFilters Filters = Filters;
+	PxControllerFilters Filters;
 
 	// TODO : test jump key R
 	if (KEY_INPUT(KEY::R, KEY_STATE::HOLD))

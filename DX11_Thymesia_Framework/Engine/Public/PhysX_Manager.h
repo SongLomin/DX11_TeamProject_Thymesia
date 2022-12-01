@@ -37,7 +37,7 @@ public:
 	}COLSHAPE;
 
 public:
-	PxConvexMesh*						Get_ShapeTemplate(COLSHAPE eShape) { m_ShapeTemplate[eShape]; }
+	PxConvexMesh* Get_ShapeTemplate(COLSHAPE eShape) { m_ShapeTemplate[eShape]; }
 	void								Set_ShapeSphere(PxSphereGeometry* pGeometry) { m_pSphere = pGeometry; }
 	void								Set_ShapeBox(PxBoxGeometry* pGeometry) { m_pBox = pGeometry; }
 
@@ -71,9 +71,9 @@ public:
 
 	PxRigidDynamic* Create_DynamicActor(const PxTransform& t, const PxGeometry& geometry, PxMaterial* pMaterial = nullptr);
 	PxRigidDynamic* Create_DynamicActor(const PxTransform& t);
-	PxRigidStatic*	Create_StaticActor(const PxTransform& t, const PxGeometry& geometry, PxMaterial* pMaterial = nullptr);
-	PxRigidStatic*	Create_StaticActor(const PxTransform& t);
-	
+	PxRigidStatic* Create_StaticActor(const PxTransform& t, const PxGeometry& geometry, PxMaterial* pMaterial = nullptr);
+	PxRigidStatic* Create_StaticActor(const PxTransform& t);
+
 	void			Add_DynamicActorAtCurrentScene(PxRigidDynamic& DynamicActor);
 	void			Add_StaticActorAtCurrentScene(PxRigidStatic& StaticActor);
 
@@ -81,7 +81,7 @@ public:
 	void			Create_ConvexMesh(PxVec3** pVertices, _uint iNumVertice, PxConvexMesh** ppOut);
 	void			Create_ConvexMesh(const PxConvexMeshDesc& In_MeshDesc, PxConvexMesh** ppOut);
 	void			Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial** ppOut);
-	void			Create_Shape(const PxGeometry & Geometry, PxMaterial* pMaterial, const _bool isExculsive, const PxShapeFlags In_ShapeFlags, PxShape ** ppOut);
+	void			Create_Shape(const PxGeometry& Geometry, PxMaterial* pMaterial, const _bool isExculsive, const PxShapeFlags In_ShapeFlags, PxShape** ppOut);
 	void			Create_MeshFromTriangles(const PxTriangleMeshDesc& In_MeshDesc, PxTriangleMesh** ppOut);
 	void			Create_Controller(const PxCapsuleControllerDesc& In_ControllerDesc, PxController** ppOut);
 
@@ -95,41 +95,41 @@ private:
 	// Foundation을 생성하는데 필요한 변수
 	PxDefaultAllocator		m_Allocator;
 	PxDefaultErrorCallback	m_ErrorCallback;
-	PxFoundation*			m_pFoundation;
-	PxCudaContextManager*	m_pCudaContextManager = nullptr;
+	PxFoundation* m_pFoundation;
+	PxCudaContextManager* m_pCudaContextManager = nullptr;
 
 	// PxFoundation이 있어야 Physics를 생성할 수 있다.
-	PxPhysics*				m_pPhysics;
+	PxPhysics* m_pPhysics;
 
 	// CPU 리소스를 효율적으로 공유할 수 있도록 하기 위해 구현하는 것을 추천
-	PxDefaultCpuDispatcher*	m_pDispatcher = nullptr;
+	PxDefaultCpuDispatcher* m_pDispatcher = nullptr;
 
 	// MeshCooking을 하기 위해 생성
-	PxCooking*				m_pCooking = nullptr;
+	PxCooking* m_pCooking = nullptr;
 
 
 	// Scene
 	//_uint					m_iNumScenes = 0;
 	//typedef PxScene*		LPSCENE;
-	PxScene*				m_pScenes[SCENE_END];
-	PxControllerManager*	m_pControllerManager = nullptr;
-	PxScene*				m_pCurScene = nullptr;
+	PxScene* m_pScenes[SCENE_END];
+	PxControllerManager* m_pControllerManager = nullptr;
+	PxScene* m_pCurScene = nullptr;
 
 	// m_pPhysics를 사용해 createMaterial해서 사용
 	// 충돌체 마찰력, Dynamic 마찰력, 탄성력을 지정하여 사용
-	PxMaterial*				m_pMaterial;
+	PxMaterial* m_pMaterial;
 
 	////Visual Debugger
-	PxPvd*					m_pPVD;
+	PxPvd* m_pPVD;
 
-	PxRigidDynamic*			m_pTemp = nullptr;
+	PxRigidDynamic* m_pTemp = nullptr;
 
 
 private:
-	PxBoxGeometry*			m_pBox = nullptr;
-	PxSphereGeometry*		m_pSphere = nullptr;
+	PxBoxGeometry* m_pBox = nullptr;
+	PxSphereGeometry* m_pSphere = nullptr;
 
-	PxConvexMesh*			m_ShapeTemplate[SHAPE_END];
+	PxConvexMesh* m_ShapeTemplate[SHAPE_END];
 	_bool					m_bSceneStart = false;
 
 private: /* For. Filter */
