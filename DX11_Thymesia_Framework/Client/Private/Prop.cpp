@@ -39,11 +39,9 @@ HRESULT CProp::Start()
 	
 	if (pModelData.lock())
 	{
-		m_vCenterOffset = pModelData.lock()->VertexInfo.vCenter;
+		m_vCenterOffset       = pModelData.lock()->VertexInfo.vCenter;
 		m_fCullingOffsetRange = pModelData.lock()->Get_MaxOffsetRange() * 1.2f;
 	}
-
-	
 
     return S_OK;
 }
@@ -101,7 +99,6 @@ void CProp::SetUp_ShaderResource()
     m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
     m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4));
     m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
-
 
 	_float4 vCamDesc;
 	XMStoreFloat4(&vCamDesc, GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[3]);

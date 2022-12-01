@@ -114,6 +114,12 @@ public:
 public:
     void Change_NextLevel(void* pArg);
 
+
+
+
+public:// For UI;
+    POINT Get_MousePoint();
+    
 public:
     FDelegate<>                 CallBack_ChangePlayer;
 

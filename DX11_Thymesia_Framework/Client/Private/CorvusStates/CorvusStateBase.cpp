@@ -53,7 +53,7 @@ _bool CCorvusStateBase::Check_RequirementJoggingState()
 			return true;
 		}
 	}
-	
+
 
 	return false;
 }
@@ -77,13 +77,13 @@ _bool CCorvusStateBase::Check_RequirementSprintState()
 
 _bool CCorvusStateBase::Check_RequirementRunState()
 {
-		if (KEY_INPUT(KEY::W, KEY_STATE::HOLD)
-			|| KEY_INPUT(KEY::A, KEY_STATE::HOLD)
-			|| KEY_INPUT(KEY::S, KEY_STATE::HOLD)
-			|| KEY_INPUT(KEY::D, KEY_STATE::HOLD))
-		{
-			return true;
-		}
+	if (KEY_INPUT(KEY::W, KEY_STATE::HOLD)
+		|| KEY_INPUT(KEY::A, KEY_STATE::HOLD)
+		|| KEY_INPUT(KEY::S, KEY_STATE::HOLD)
+		|| KEY_INPUT(KEY::D, KEY_STATE::HOLD))
+	{
+		return true;
+	}
 
 	return false;
 }
@@ -91,7 +91,7 @@ _bool CCorvusStateBase::Check_RequirementRunState()
 _bool CCorvusStateBase::Check_RequirementAVoidState()
 {
 
-	if (KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))		
+	if (KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))
 	{
 		return true;
 	}
@@ -130,7 +130,17 @@ _bool CCorvusStateBase::Check_RequirementHealingState()
 
 _bool CCorvusStateBase::Check_RequirementClawAttackState()
 {
-	if (KEY_INPUT(KEY::RBUTTON, KEY_STATE::TAP))
+	if (KEY_INPUT(KEY::RBUTTON, KEY_STATE::AWAY))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+_bool CCorvusStateBase::Check_RequirementClawAttackHoldState()
+{
+	if (KEY_INPUT(KEY::RBUTTON, KEY_STATE::HOLD))
 	{
 		return true;
 	}
@@ -145,7 +155,7 @@ _bool CCorvusStateBase::Check_RequirementExcuteState(weak_ptr<CGameObject>& Out_
 
 	//몬스터랑 거리비교를해야함
 
-	return Get_NearGameObjectInDistance(Out_pGameObject, pGameObjects,5.f);
+	return Get_NearGameObjectInDistance(Out_pGameObject, pGameObjects, 5.f);
 }
 
 void CCorvusStateBase::Check_AndChangeHitState(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
@@ -170,7 +180,7 @@ void CCorvusStateBase::Check_AndChangeHitState(weak_ptr<CCollider> pMyCollider, 
 
 		m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
 
-		
+
 		_vector vCorssPotision = pMyCollider.lock()->Get_CurrentPosition();
 		_vector vOtherDoCorssPositon = pOtherCollider.lock()->Get_CurrentPosition();
 		_vector vPlayerColToMonsterColDireciton = XMVector3Normalize(vOtherDoCorssPositon - vCorssPotision);
@@ -191,7 +201,7 @@ void CCorvusStateBase::Check_AndChangeHitState(weak_ptr<CCollider> pMyCollider, 
 			Get_OwnerPlayer()->Change_State<CCorvusState_HurtL>();
 		}
 
-		
+
 
 		//왼쪽오른쪽구분밥먹고합시다 ㅇㅈ?어 ㅇㅈ
 
@@ -220,7 +230,7 @@ void CCorvusStateBase::Check_AndChangeHitState(weak_ptr<CCollider> pMyCollider, 
 
 _int CCorvusStateBase::Check_AndChangeSuccessParrying(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	  
+
 	CORSS_RESULT CorssResult = CORSS_RESULT::CORSS_END;
 
 	//외적
@@ -230,9 +240,9 @@ _int CCorvusStateBase::Check_AndChangeSuccessParrying(weak_ptr<CCollider> pMyCol
 
 	_vector vMyColiderLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
 	vMyColiderLook = XMVector3Normalize(vMyColiderLook);
-	
-	_vector fCross =    XMVector3Cross(vMyColiderLook, vPlayerColToMonsterColDireciton);
-	_float  fYCross =   XMVectorGetY(XMVector3Cross(vMyColiderLook, fCross));
+
+	_vector fCross = XMVector3Cross(vMyColiderLook, vPlayerColToMonsterColDireciton);
+	_float  fYCross = XMVectorGetY(XMVector3Cross(vMyColiderLook, fCross));
 	//_float fDir = XMVector3Dot(fCross, XMVectorSet(0.f, 1.f, 0.f, 0.f)).m128_f32[0];
 
 	if (fYCross > 0.f) //양수 오른쪽
@@ -261,27 +271,27 @@ _int CCorvusStateBase::Check_AndChangeSuccessParrying(weak_ptr<CCollider> pMyCol
 
 	if (CorssResult == CORSS_RESULT::LEFT)
 	{
-		if (fCos >= 0.7f) //45도 이하
+		if (fCos >= 0.f && fCos <= 0.7f) // 0도45도 또는 135도 180도
 		{
 			return (_uint)PARRY_SUCCESS::LEFTUP;
 		}
-		else if (fCos > 0.f) // 45도 ~ 90도
+		else
 		{
 			return (_uint)PARRY_SUCCESS::LEFT;
 		}
-	
+
 	}
 	else if (CorssResult == CORSS_RESULT::RIGHT)
 	{
-		if (fCos >= 0.7f) //0도~45도 이하
+		if (fCos >= 0.f && fCos <= 0.7f) //0도~45도 이하
 		{
 			return (_uint)PARRY_SUCCESS::RIGHTUP;
 		}
-		else if(fCos > 0.f ) //45도 ~ 90도
+		else
 		{
 			return (_uint)PARRY_SUCCESS::RIGHT;
 		}
-		
+
 
 	}
 
@@ -307,14 +317,25 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 		weak_ptr<CAttackArea>	pAttackArea = Weak_StaticCast<CAttackArea>(pOtherCollider.lock()->Get_Owner());
 		weak_ptr<CCharacter>	pMonsterFromCharacter = pAttackArea.lock()->Get_ParentObject();
 		weak_ptr<CStatus_Monster>	pMonsterStatusCom = pMonsterFromCharacter.lock()->Get_Component<CStatus_Monster>();
-				
-		if(!pMonsterStatusCom.lock())
+
+		if (!pMonsterStatusCom.lock())
 			MSG_BOX("Error : Can't Find CStatus_Monster From CorvusStateBase");
 
-	
-		Check_AndChangeHitState(pMyCollider,pOtherCollider, In_eHitType, In_fDamage);
-		pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
+		//타격콜라이더(사다리일경우)
+		/*
+		Climb_Start로이동
+		Climb_Start눌르시 포지션이동 ->사다리쪽으로 
+		애니메이션이 탓을떄 w눌르고면위로s눌르면 아래로
+		홀드눌를때 w눌르면 lUP끝나면 Rup  !홀드면  전상태가 lUp이면 Lidle이고 rUP이면 Ridle이면됨
+
 		
+
+		*/
+
+
+		Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+		pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
+
 	}
 }
 

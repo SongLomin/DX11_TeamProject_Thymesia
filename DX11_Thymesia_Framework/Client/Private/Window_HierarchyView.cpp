@@ -42,6 +42,21 @@ void CWindow_HierarchyView::Tick(_float fTimeDelta)
 		}
 	}
 
+	for (auto& elem : m_pObjGroup)
+	{
+		for (auto iter = elem.second.begin(); iter != elem.second.end();)
+		{
+			if (!(*iter).pInstance.lock().get())
+			{
+				iter = elem.second.erase(iter);
+			}
+			else
+			{
+				iter++;
+			}
+		}
+	}
+
 	Picking_Obj();
 
 	if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) && KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) && KEY_INPUT(KEY::S, KEY_STATE::TAP))
@@ -84,6 +99,9 @@ HRESULT CWindow_HierarchyView::Render()
 	for (auto& elem : m_pGameObjects)
 	{
 		string szIndexedName = to_string(iIndex) + ". " + elem.TypeName.substr(string("class Client::").length());
+
+		if (m_pGameObjects.size() <= m_iPreSelectIndex)
+			m_iPreSelectIndex = 0;
 
 		if (m_iPreSelectIndex == iIndex)
 			szIndexedName = "[ " + szIndexedName + " ]";
@@ -171,6 +189,7 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 
 			continue;
 		}
+
 		else if (typeid(CEditMapCollider).hash_code() == iter_elem->HashCode)
 		{
 			++iter_elem;
@@ -406,7 +425,19 @@ void CWindow_HierarchyView::OnLevelLoad()
 			elem.pInstance.lock()->Set_Dead();
 	}
 
+	for (auto& elem_item : m_pObjGroup)
+	{
+		for (auto& elem : elem_item.second)
+		{
+			if (elem.pInstance.lock())
+				elem.pInstance.lock()->Set_Dead();
+		}
+
+		elem_item.second.clear();
+	}
+
 	m_pGameObjects.clear();
+	m_pObjGroup.clear();
 }
 
 void CWindow_HierarchyView::Free()
@@ -440,6 +471,18 @@ void CWindow_HierarchyView::Free()
 			elem.pInstance.lock()->Set_Dead();
 	}
 
+	for (auto& elem_item : m_pObjGroup)
+	{
+		for (auto& elem : elem_item.second)
+		{
+			if (elem.pInstance.lock())
+				elem.pInstance.lock()->Set_Dead();
+		}
+
+		elem_item.second.clear();
+	}
+
 	m_pGameObjects.clear();
+	m_pObjGroup.clear();
 }
 

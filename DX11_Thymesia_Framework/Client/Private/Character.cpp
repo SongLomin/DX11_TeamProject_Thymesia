@@ -41,7 +41,7 @@ void CCharacter::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 #ifdef _USE_GRAVITY_
-	PxControllerFilters Filters = Filters;
+	PxControllerFilters Filters;
 
 	if (m_pPhysXControllerCom.lock()->Get_Controller())
 	{

@@ -132,3 +132,4 @@ enum class CINEMATIC_TYPE
 	CINEMATIC,
 	TYPE_END
 };
+

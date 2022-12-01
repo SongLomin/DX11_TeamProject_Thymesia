@@ -3,6 +3,8 @@
 #include "CustomEffectMesh.h"
 #include "Effect_Rect.h"
 #include "GameManager.h"
+#include "Window_AnimationModelView.h"
+#include "PreViewAnimationModel.h"
 
 GAMECLASS_C(CEffectGroup)
 CLONE_C(CEffectGroup, CGameObject)
@@ -120,7 +122,7 @@ HRESULT CEffectGroup::Render()
 
 void CEffectGroup::Add_EditEffectMesh(const EFFECTMESH_DESC& In_tEffectMeshDesc, const _char* In_szModelKey)
 {
-    weak_ptr<CCustomEffectMesh> pEffectMesh = GAMEINSTANCE->Add_GameObject<CCustomEffectMesh>(LEVEL_STATIC);
+    weak_ptr<CCustomEffectMesh> pEffectMesh = GAMEINSTANCE->Add_GameObject<CCustomEffectMesh>(LEVEL_EDIT);
     pEffectMesh.lock()->Init_EffectMesh(In_tEffectMeshDesc, In_szModelKey);
     m_pEffectMeshs.emplace_back(pEffectMesh);
     pEffectMesh.lock()->Set_TimeScaleLayer((_uint)TIMESCALE_LAYER::EDITER);
@@ -129,7 +131,7 @@ void CEffectGroup::Add_EditEffectMesh(const EFFECTMESH_DESC& In_tEffectMeshDesc,
 
 void CEffectGroup::Add_EditParticle(const _char* In_szName, const _char* In_szTextureKey)
 {
-    weak_ptr<CEffect_Rect> pEffectPoint = GAMEINSTANCE->Add_GameObject<CEffect_Rect>(LEVEL_STATIC);
+    weak_ptr<CEffect_Rect> pEffectPoint = GAMEINSTANCE->Add_GameObject<CEffect_Rect>(LEVEL_EDIT);
     pEffectPoint.lock()->Init_EffectParticle(In_szName, In_szTextureKey);
     pEffectPoint.lock()->Set_TimeScaleLayer((_uint)TIMESCALE_LAYER::EDITER);
 
@@ -231,15 +233,14 @@ void CEffectGroup::Play(_float fTimeDelta)
 
 void CEffectGroup::Reset_Effects()
 {
+    weak_ptr<CTransform> pPreviewModelTransform = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Transform();
+
     for (auto& elem : m_pEffectMeshs)
-    {
-        elem.lock()->Reset_Effect();
-    }
+        elem.lock()->Reset_Effect(pPreviewModelTransform);
+
 
     for (auto& elem : m_pEffectParticles)
-    {
-        elem.lock()->Reset_Effect(weak_ptr<CTransform>());
-    }
+        elem.lock()->Reset_Effect(pPreviewModelTransform);
 
 }
 
@@ -373,19 +374,17 @@ void CEffectGroup::Load_EffectJson(const string& In_szPath, const _uint& In_iTim
     _size_t iEffectMeshCount = Load_Json["EffectMeshCount"];
     _size_t iEffectParticleCount = Load_Json["EffectParticleCount"];
 
-    for (_int i = 0; i < (_int)iEffectMeshCount; ++i)
+    for (_int i(0); i < (_int)iEffectMeshCount; ++i)
     {
         Add_EffectMesh();
         m_pEffectMeshs[i].lock()->Load_EffectJson(Load_Json["EffectMesh"][to_string(i)], In_iTimeScaleLayer);
     }
 
-    for (_int i = 0; i < (_int)iEffectParticleCount; i++)
+    for (_int i(0); i < (_int)iEffectParticleCount; i++)
     {
         Add_Particle();
         m_pEffectParticles[i].lock()->Load_EffectJson(Load_Json["EffectParticle"][to_string(i)], In_iTimeScaleLayer);
     }
-
-
 
     UnUse_EffectGroup();
 

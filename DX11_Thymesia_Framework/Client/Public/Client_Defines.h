@@ -4,37 +4,39 @@
 #include <filesystem>
 #include "Client_Structs.h"
 #include "Client_Presets.h"
-
 #include "imgui.h"
 
 #ifdef _DEBUG
 #define		_USE_THREAD_
 #define		_144HZ_
-// #define		_LIFEGUARD_FOR_FALL_
+#define		_LIFEGUARD_FOR_FALL_
 // #define		_DEBUG_COUT_
 #define		_DEBUG_COUT_JOJO
-// #define		_STAGE_1_
+#define		_STAGE_1_
 #define		_STAGE_2_
-#define		_STAGE_1_MONSTER_
+//#define		_STAGE_1_MONSTER_
 // #define		_VARG_
 //#define		_INSTANCE_CULLING_
 // #define		_GENERATE_PROP_COLLIDER_ true
-// #define		_USE_GRAVITY_
+#define		_USE_GRAVITY_
 // #define		_DAGGER_TRAIL_
-//#define		_TEST_STATIC_PROPS_
+// #define		_TEST_STATIC_PROPS_
 // UI제외한 오브젝트 생성 X
 //#define		_ONLY_UI_
 #define		_RENDER_FPS_
+#define		_BONE_PARTICLE_
+// #define		_BONE_MESHEFFECT_
 #endif // _DEBUG
 
 #ifdef NDEBUG
-#define		_INSTANCE_CULLING_
+//#define		_INSTANCE_CULLING_
 //#define		_144HZ_
 #define		_DAGGER_TRAIL_
 #define		_USE_THREAD_
+// #define		_STAGE_1_
 #define		_STAGE_2_
+#define		_STAGE_1_MONSTER_
 #define		_LIFEGUARD_FOR_FALL_
-//#define		_STAGE_1_MONSTER_
 #define		_USE_GRAVITY_
 #define		_GENERATE_PROP_COLLIDER_ true
 #define		_RENDER_FPS_
@@ -236,6 +238,16 @@ namespace Client
 		PARRY_SUCCESS_END
 	};
 
+	enum class	TALENT_RESULT
+	{
+		FAILED,
+		NOT_ENOUGHTPOINT,
+		USING_ATHORTREE,
+		SUCCESS,
+		SUBSTARICTPOINT,
+		RESULT_END
+	};
+
 
 	//enum class  RAREMONSTERTYPE {
 	//	RMON_ARMOR,
@@ -244,6 +256,52 @@ namespace Client
 	//	RMON_END
 	//};
 
+	enum class TALENT_EFFECT_FLAG
+	{
+		//검파트
+		NONE = 0,
+		SABER_ATTACK_LV2 = (1 << 1),
+		AVOID_SLASH_LV1 = (1 << 2),
+		AVOID_SLASH_LV2 = (1 << 3),
+		AVOID_THRUST_LV1 = (1 << 4),
+		AVOID_THRUST_LV2 = (1 << 5),
+		
+		JUMP_ATTACK_LV2 = (1 << 6),
+		JUMP_ATTACK_LV3 = (1 << 7),
+
+		EXECUTION_OF_HEALING_LV1  = (1 << 8),
+		EXECUTION_OF_HEALING_LV2  = (1 << 9),
+
+		SHARP_WEAPON_LV1 = (1 << 10),
+		SHARP_WEAPON_LV2 = (1 << 11),
+
+		ENERGISED_WEAPON_LV1 = (1 << 12),
+		ENERGISED_WEAPON_LV2 = (1 << 13),
+
+		//검파트
+
+		//튕겨내기
+		//튕겨내기
+
+		//회피
+		//회피
+
+		//발톱
+		LONG_CLAW_LV2 = (1 << 15),
+		LONG_CLAW_LV3 = (1 << 16),
+		SHORT_CLAW_LV1 = (1 << 17),
+		SHORT_CLAW_LV2 = (1 << 18),
+		//발톱
+
+
+
+
+
+
+		FLAG_END
+	};
+
+
 }
 
 extern HWND g_hWnd;
@@ -251,6 +309,8 @@ extern HINSTANCE g_hInst;
 
 using namespace Client;
 namespace fs = std::filesystem;
+
+typedef unsigned long long _flag;
 
 
 #define EVENT_DRAW_EDITER 1

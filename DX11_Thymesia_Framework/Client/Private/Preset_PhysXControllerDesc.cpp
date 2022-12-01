@@ -31,14 +31,13 @@ PxCapsuleControllerDesc Preset::PhysXControllerDesc::CameraSetting(weak_ptr<CTra
 {
 	PxCapsuleControllerDesc Out_Desc;
 	Out_Desc.behaviorCallback;
-	Out_Desc.height = 2.f;
-	Out_Desc.radius = 3.f;
+	Out_Desc.height = 0.1f;
+	Out_Desc.radius = 1.f;
 	Out_Desc.density = 5.f;
 	Out_Desc.climbingMode = PxCapsuleClimbingMode::eCONSTRAINED;
 
 	_vector vPos = pTransform.lock()->Get_Position();
 	PxExtendedVec3 vPosFromPx = { vPos.m128_f32[0], vPos.m128_f32[1], vPos.m128_f32[2] };
-	vPosFromPx.y += Out_Desc.height * 0.5f;
 	Out_Desc.position = vPosFromPx;
 	Out_Desc.stepOffset = 0.5f;
 

@@ -350,14 +350,14 @@ PS_OUT_PBR PS_MAIN_NORMAL_PBR(PS_IN_NORMAL In)
     float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
 
     /* -1 ~ 1 */
+     /* -1 ~ 1 */
     vPixelNormal = vPixelNormal * 2.f - 1.f;
 
-    float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));
+    float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, In.vNormal);
 
     vPixelNormal = mul(vPixelNormal, WorldMatrix);
 
     Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
-
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vLightFlag = g_vLightFlag;
 

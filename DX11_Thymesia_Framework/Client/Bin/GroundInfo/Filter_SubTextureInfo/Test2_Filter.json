@@ -1,1 +1,7 @@
-{"g_Texture_Sorc":{"Density":30.0,"Diff":"T_P_Gravel_floor01_C.png","Norm":"T_P_Gravel_floor01_N.png"}}
+{
+  "g_Texture_Sorc": {
+    "Density": 30.0,
+    "Diff": "T_P_Gravel_floor01_C",
+    "Norm": "T_P_Gravel_floor01_N"
+  }
+}

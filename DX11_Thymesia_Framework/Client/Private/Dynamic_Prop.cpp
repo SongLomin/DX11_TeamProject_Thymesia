@@ -126,6 +126,9 @@ HRESULT CDynamic_Prop::Render()
 
 _bool CDynamic_Prop::IsPicking(const RAY& In_Ray, _float& Out_fRange)
 {
+    if (!m_pModelCom.lock().get())
+        return false;
+
     return m_pModelCom.lock()->IsModelPicking(In_Ray, Out_fRange);
 }
 

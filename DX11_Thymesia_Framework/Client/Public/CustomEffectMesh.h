@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CTransform;
+class CBoneNode;
 END
 
 BEGIN(Client)
@@ -19,7 +20,6 @@ public: // Get & Set
 	const _char* Get_EffectName() const;
 	_bool Is_Finish() const;
 	void Set_TimeScaleLayer(const _uint& In_iTimeScaleLayer) { m_iTimeScaleLayerIndex = In_iTimeScaleLayer; }
-    void Reset_Effect();
     void Reset_Effect(weak_ptr<CTransform> pParentTransform);
     virtual void OnEventMessage(_uint iArg) override;
     void OnChangeAnimationKey(const _uint& In_Key);
@@ -35,7 +35,7 @@ private:
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize(void* pArg) override;
     virtual HRESULT Start() override;
-    virtual void Tick(_float fTimeDelta) override;
+    virtual void    Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render() override;
     void Free();
@@ -127,6 +127,7 @@ private:
     // For. Boner
     std::vector<std::string>            m_AllBoneNames;
     weak_ptr<CBoneNode>                 m_pBoneNode;
+    weak_ptr<CModel>                    m_pParentModel;
     std::string                         m_strBoneName = "";
     _int                                m_iCurrentBoneIndex = 0;
 };

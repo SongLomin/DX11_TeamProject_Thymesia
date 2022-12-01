@@ -502,6 +502,9 @@ void CModel::Write_Json(json& Out_Json)
 
 void CModel::Load_FromJson(const json& In_Json)
 {
+	if (In_Json.end() == In_Json.find("Model"))
+		return;
+
 	m_szModelKey = In_Json["Model"];
 	if (!m_szModelKey.empty())
 	{
@@ -603,7 +606,8 @@ void CModel::Create_Materials(const char* pModelFilePath)
 
 		for (_uint j = 0; j < (_uint)AI_TEXTURE_TYPE_MAX; ++j)
 		{
-			char			szFullPath[MAX_PATH] = "";
+			char			szFullddsPath[MAX_PATH] = "";
+			char			szFullpngPath[MAX_PATH] = "";
 
 			string		strPath;
 
@@ -618,21 +622,29 @@ void CModel::Create_Materials(const char* pModelFilePath)
 
 			_splitpath_s(strPath.c_str(), nullptr, 0, nullptr, 0, szFileName, MAX_PATH, szExt, MAX_PATH);
 
-			strcpy_s(szFullPath, pModelFilePath);
-			strcat_s(szFullPath, szFileName);
-			strcat_s(szFullPath, szExt);
+			strcpy_s(szFullpngPath, pModelFilePath);
+			strcat_s(szFullpngPath, szFileName);
 
-			_tchar		szTextureFilePath[MAX_PATH] = TEXT("");
-			//_tchar		szTextureKey[MAX_PATH] = TEXT("");
+			strcpy_s(szFullddsPath, szFullpngPath);
+			strcat_s(szFullddsPath, ".dds");
+			strcat_s(szFullpngPath, ".png");
 
-			MultiByteToWideChar(CP_ACP, 0, szFullPath, (_int)strlen(szFullPath), szTextureFilePath, MAX_PATH);
-			//MultiByteToWideChar(CP_ACP, 0, szFileName, (_int)strlen(szFileName), szTextureKey, MAX_PATH);
+
+			_tchar		szTextureFileddsPath[MAX_PATH] = TEXT("");
+			_tchar		szTextureFilepngPath[MAX_PATH] = TEXT("");
+
+			MultiByteToWideChar(CP_ACP, 0, szFullddsPath, (_int)strlen(szFullddsPath), szTextureFileddsPath, MAX_PATH);
+			MultiByteToWideChar(CP_ACP, 0, szFullpngPath, (_int)strlen(szFullpngPath), szTextureFilepngPath, MAX_PATH);
 
 #ifdef _DEBUG
 			//cout << "Load_Texture: " << szFullPath << endl;
 #endif // _DEBUG
 
-			GAMEINSTANCE->Load_Textures(szFileName, szTextureFilePath, MEMORY_TYPE::MEMORY_STATIC);
+			if (FAILED(GAMEINSTANCE->Load_Textures(szFileName, szTextureFileddsPath, MEMORY_TYPE::MEMORY_STATIC)))
+			{
+				GAMEINSTANCE->Load_Textures(szFileName, szTextureFilepngPath, MEMORY_TYPE::MEMORY_STATIC);
+			}
+
 			Material.pTextures[j] = m_pOwner.lock()->Add_Component<CTexture>();
 			Material.pTextures[j].lock().get()->Use_Texture(szFileName);
 

@@ -10,7 +10,7 @@ class CClientComponent :
     GAMECLASS_H(CClientComponent);
 
 public:
-	
+    virtual void Start() {};
 public:
     virtual void OnEditerView() {}
 

@@ -107,12 +107,15 @@ public:
 protected:
     virtual void    Enable_AllEventChild();
     virtual void    Disable_AllEventChild();
+    
+public:
 
 
 public:
     void		Set_AlphaColor(_float fAlphaColor) { m_fAlphaColor = fAlphaColor; }
     _float		Get_AlphaColor() { return m_fAlphaColor; }
 
+    void		Set_OffsetPosition(_float2 fOffset) { m_fOffsetPosition = fOffset; }
 
 
 
@@ -159,13 +162,13 @@ protected:
 
 protected: /* For. UI Shaking */
     _float          m_fCurrentShakeTime = 0.f;
+    _float          m_fShakingTime;
     _float          m_fShakeFreq = 0.04f;
     _float          m_fCurrentFreq = 0.f;
-    _float          m_fPower = 5.f;
+    _float          m_fPower;
     _float2         m_fOffsetPosition{0.f, 0.f};
     _float2         m_fShakedPos = { 0.f,0.f };
     _bool           m_bShaking;
-
 
 protected:
     virtual void Write_Json(json& Out_Json) override;

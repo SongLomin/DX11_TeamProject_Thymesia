@@ -20,11 +20,17 @@
 #include "UI_Containers.h"
 #include "UI_EvolveMenu.h"
 #include "UI_EvolveMenu_Level.h"
+#include "UI_EvolveMenu_Talent.h"
 #include "Player_MPBar.h"
 #include "Player_HPBar.h"
 #include "Player_Memory.h"
 #include "Player_PotionUI.h"
 #include "Player_FeatherUI.h"
+#include "UI_Script.h"
+#include "UI_ScriptQueue.h"
+#include "UI_DamageFont.h"
+#include "EvolveMenu_TalentButton.h"
+
 
 GAMECLASS_C(CClientLevel)
 
@@ -94,6 +100,7 @@ void CClientLevel::SetUp_UI()
 
 	m_pEvolveMenu = GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu>(LEVEL_STATIC);
 	GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu_Level>(LEVEL_STATIC);
+	GAMEINSTANCE->Add_GameObject<CUI_EveolveMenu_Talent>(LEVEL_STATIC);
 
 
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
@@ -103,7 +110,9 @@ void CClientLevel::SetUp_UI()
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_PotionUI>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CUI_ScriptQueue>(LEVEL_STATIC));
 
+	//pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CEvolveMenu_TalentButton>(LEVEL_STATIC));
 	//TODO : MonsterHpBar TestCode
 	/*
 	CUI::UI_DESC tDesc;
@@ -116,6 +125,7 @@ void CClientLevel::SetUp_UI()
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Elite>(LEVEL_STATIC, &tDesc));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Boss>(LEVEL_STATIC, &tDesc));
 	*/
+	
 }
 
 void CClientLevel::Change_NextLevel(void* pArg)

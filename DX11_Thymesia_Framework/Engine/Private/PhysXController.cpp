@@ -51,12 +51,12 @@ bool CPhysXController::filter(const PxController& a, const PxController& b)
 
 void CPhysXController::onShapeHit(const PxControllerShapeHit& hit)
 {
-	
+
 }
 
 void CPhysXController::onControllerHit(const PxControllersHit& hit)
 {
-	
+
 }
 
 
@@ -69,7 +69,7 @@ void CPhysXController::Init_Controller(const PxCapsuleControllerDesc& In_Control
 {
 	m_pControllerDesc = In_ControllerDesc;
 	m_pControllerDesc.reportCallback = this;
-	
+
 	Create_Controller();
 }
 
@@ -80,7 +80,7 @@ void CPhysXController::Create_Controller()
 }
 
 void CPhysXController::Synchronize_Transform(weak_ptr<CTransform> pTransform, _fvector In_vOffset)
-{	
+{
 	if (!m_pController)
 		return;
 
@@ -102,16 +102,16 @@ PxControllerCollisionFlags CPhysXController::Synchronize_Controller(weak_ptr<CTr
 
 	filters.mCCTFilterCallback = this;
 
-	return m_pController->move({0.000001f, 0.000001f, 0.000001f }, 0.f, elapsedTime, filters);
+	return m_pController->move({ 0.f, 0.f, 0.f }, 0.f, elapsedTime, filters);
 }
 
 PxControllerCollisionFlags CPhysXController::Set_Position(_fvector In_vPosition, PxF32 elapsedTime, PxControllerFilters& filters)
 {
 	m_pController->setFootPosition(SMath::Convert_PxExtendedVec3(In_vPosition));
-	
+
 	filters.mCCTFilterCallback = this;
 
-	return m_pController->move({ 0.000001f, 0.000001f, 0.000001f }, 0.f, elapsedTime, filters);
+	return m_pController->move({ 0.f, 0.f, 0.f }, 0.f, elapsedTime, filters);
 }
 
 _vector CPhysXController::Get_Position()
@@ -152,20 +152,17 @@ PxControllerCollisionFlags CPhysXController::MoveGravity(const _float fDeltaTime
 	}
 
 	/*float m_fPreHeight = -0.5f * 9.81f * m_fGravityAcc * m_fGravityAcc;
-
 	m_fGravityAcc += fDeltaTime;
-
 	_float m_fCurrentHeight = -0.5f * 9.81f * m_fGravityAcc * m_fGravityAcc;
-
 	m_fCurrentHeight -= m_fPreHeight;*/
 
 	filters.mCCTFilterCallback = this;
 
-	_float fDeltaHeight = -0.5f * 9.81f * fDeltaTime*(m_fGravityAcc*2.f + fDeltaTime);
+	_float fDeltaHeight = -0.5f * 9.81f * fDeltaTime * (m_fGravityAcc * 2.f + fDeltaTime);
 
 	m_fGravityAcc += fDeltaTime;
 
-	return m_pController->move({0.f, fDeltaHeight, 0.f}, 0.f, fDeltaTime, filters);
+	return m_pController->move({ 0.f, fDeltaHeight, 0.f }, 0.f, fDeltaTime, filters);
 }
 
 void CPhysXController::Reset_Gravity()

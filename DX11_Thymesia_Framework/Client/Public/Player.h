@@ -14,6 +14,7 @@ class CPlayerStateBase;
 class CCorvus_DefaultSaber;
 class CCorvus_DefaultDagger;
 class CWeapon;
+class CTalent_Effect;
 
 class CPlayer :
     public CCharacter
@@ -37,6 +38,10 @@ protected:
     virtual HRESULT Render() override;
     virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix) override;
 
+public: /* For. Talent */
+    void Bind_TalentEffects(weak_ptr<CTalent_Effect> pTalentEffect);
+    void UnBind_TalentEffects(weak_ptr<CTalent_Effect> pTalentEffect);
+    _flag Check_RequirementForTalentEffects();
 
 public:
     void Search_NearTargetMonster(_float fTimeDelta);
@@ -65,8 +70,12 @@ protected:
 
     list<weak_ptr<CWeapon>> m_pWeapons;
 
+    list<weak_ptr<CTalent_Effect>> m_pTalent_Effects;
+
 private:
     _float              m_fNearSearchDelay = 0.f;
+
+    weak_ptr<CPlayer>   m_thisToPlayer;
 
 public:
   

@@ -33,6 +33,7 @@ private:
 	HRESULT Render_ShadowDepth();
 	HRESULT Render_NonAlphaBlend();
 	HRESULT Render_Lights();
+	HRESULT Blur_Specular(const _float& In_PixelPitchScalar);
 	HRESULT Bake_Fog();
 	HRESULT Bake_ViewShadow();
 	HRESULT Render_Blend(); /* Diffuse * Shade 백버퍼에 그린다. */
@@ -56,6 +57,7 @@ private:
 	HRESULT Blur_Effect();
 
 	HRESULT PostProcessing();
+	HRESULT AntiAliasing();
 	HRESULT Render_UI();
 	HRESULT Render_Final();
 
@@ -94,6 +96,9 @@ private:
 	_float3		m_vShadowLightLookAt{ 0.f, 0.f, 0.f };
 	_float4x4	m_LightViewMatrixTranspose;
 	_float4x4	m_LightProjMatrixTranspose;
+
+	_float4x4	m_AntiAliasingWorldMatrix;
+	_float4x4	m_AntiAliasingProjMatrixTranspose;
 
 private:
 	_float		m_fBlurWitdh = 0.f;

@@ -5,7 +5,7 @@
 BEGIN(Client)
 
 class CPhysXCameraController :
-    public CPhysXController, public PxControllerBehaviorCallback
+	public CPhysXController, public PxControllerBehaviorCallback
 {
 	GAMECLASS_H(CPhysXCameraController);
 	SHALLOW_COPY(CPhysXCameraController);
@@ -34,6 +34,7 @@ public:
 	virtual void Init_Controller(const PxCapsuleControllerDesc& In_ControllerDesc) override;
 
 public:
+	virtual void						Synchronize_Transform(weak_ptr<CTransform> pTransform, _fvector In_vOffset = { 0.f, 0.f, 0.f }) override;
 	virtual PxControllerCollisionFlags	Synchronize_Controller(weak_ptr<CTransform> pTransform, PxF32 elapsedTime, PxControllerFilters& filters, _fvector In_vOffset = { 0.f, 0.f, 0.f }) override;
 	virtual PxControllerCollisionFlags	Set_Position(_fvector In_vPosition, PxF32 elapsedTime, PxControllerFilters& filters) override;
 	virtual PxControllerCollisionFlags	MoveWithRotation(const _vector& disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles, weak_ptr<CTransform> pTransform) override;
@@ -47,12 +48,13 @@ public:
 
 private:
 	RAY m_RayCamera;
-	
+	_float3 m_vPrePosition;
+
 
 private:
 	void Free();
 
-	
+
 };
 
 END

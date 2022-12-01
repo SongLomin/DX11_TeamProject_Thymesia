@@ -150,6 +150,13 @@ _bool CCorvusState_Run::Check_AndChangeNextState()
 				return true;
 		}
 	}
+
+	if (Check_RequirementClawAttackHoldState())
+	{
+		Rotation_InputToLookDir();
+		Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackHold>();
+		return true;
+	}
 	
 	
 

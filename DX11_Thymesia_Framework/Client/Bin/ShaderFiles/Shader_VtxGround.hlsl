@@ -68,10 +68,11 @@ struct PS_IN
 
 struct PS_OUT
 {
-	vector		vDiffuse	: SV_TARGET0;
-	vector		vNormal		: SV_TARGET1;
-	vector		vDepth		: SV_TARGET2;
-    vector		vLightFlag	: SV_Target3;
+    vector vDiffuse : SV_TARGET0;
+    vector vNormal : SV_TARGET1;
+    vector vDepth : SV_TARGET2;
+    vector vLightFlag : SV_Target3;
+    vector vORM : SV_Target4;
 };
 
 /* ---------------------------------------------------------- */
@@ -112,6 +113,7 @@ PS_OUT		PS_MAIN_DEFAULT(PS_IN In)
 	Out.vNormal		= In.vNormal;
 	Out.vDepth		= vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vLightFlag	= g_vLightFlag;
+    Out.vORM = 0;
 
 	return Out;
 }
@@ -125,7 +127,7 @@ PS_OUT		PS_MAIN_NORM(PS_IN In)
 	vector		vFilterDiffuse	= g_FilterTexture.Sample(DefaultSampler, In.vTexUV);
 	float3		vPixelNorm		= g_Texture_Sorc_Norm.Sample(DefaultSampler, In.vTexUV * g_fSorc_Density).xyz;
 
-	if (0.f < vFilterDiffuse.r)
+	if (0.1f < vFilterDiffuse.r)
 	{
 		vector AddTex_Diff	= g_Texture_AddNo1_Diff.Sample(DefaultSampler, In.vTexUV * g_fAddNo1_Density);
 		vector AddTex_Norm	= g_Texture_AddNo1_Norm.Sample(DefaultSampler, In.vTexUV * g_fAddNo1_Density);
@@ -135,7 +137,7 @@ PS_OUT		PS_MAIN_NORM(PS_IN In)
 		vPixelNorm			= AddTex_Norm.xyz;
 	}
 
-	if (0.f < vFilterDiffuse.g)
+	if (0.1f < vFilterDiffuse.g)
 	{
 		vector AddTex_Diff	= g_Texture_AddNo2_Diff.Sample(DefaultSampler, In.vTexUV * g_fAddNo2_Density);
 		vector AddTex_Norm	= g_Texture_AddNo2_Norm.Sample(DefaultSampler, In.vTexUV * g_fAddNo2_Density);
@@ -145,7 +147,7 @@ PS_OUT		PS_MAIN_NORM(PS_IN In)
 		vPixelNorm			= AddTex_Norm.xyz;
 	}
 
-	if (0.f < vFilterDiffuse.b)
+	if (0.1f < vFilterDiffuse.b)
 	{
 		vector AddTex_Diff	= g_Texture_AddNo3_Diff.Sample(DefaultSampler, In.vTexUV * g_fAddNo3_Density);
 		vector AddTex_Norm	= g_Texture_AddNo3_Norm.Sample(DefaultSampler, In.vTexUV * g_fAddNo3_Density);
@@ -163,7 +165,7 @@ PS_OUT		PS_MAIN_NORM(PS_IN In)
 	Out.vNormal		= vector(vPixelNorm.xyz * 0.5f + 0.5f, 0.f);
 	Out.vDepth		= vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vLightFlag	= g_vLightFlag;
-
+    Out.vORM = 0;
 	return Out;
 }
 
@@ -175,7 +177,7 @@ PS_OUT		PS_MAIN_WIREFRAM(PS_IN In)
 	Out.vNormal		= In.vNormal;
 	Out.vDepth		= vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vLightFlag	= g_vLightFlag;
-
+    Out.vORM = 0;
 	return Out;
 }
 
@@ -200,7 +202,7 @@ PS_OUT		PS_MAIN_FILLTER(PS_IN In)
 	Out.vNormal		= In.vNormal;
 	Out.vDepth		= vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vLightFlag	= g_vLightFlag;
-
+    Out.vORM = 0;
 	return Out;
 }
 

@@ -37,8 +37,6 @@ HRESULT CUI::Initialize(void* pArg)
 
 	Set_OwnerForMyComponents();
 
-	
-
 	m_tUIDesc.fSizeX = g_iWinCX;
 	m_tUIDesc.fSizeY = g_iWinCY;
 	m_tUIDesc.fX = g_iWinCX >> 1;
@@ -197,6 +195,7 @@ void CUI::Set_SizeX(const _float In_fSize)
 void CUI::Add_Shaking(const _float& In_ShakeTime, const _float& _fShakePower)
 {
 	m_fCurrentShakeTime = In_ShakeTime;
+	m_fShakingTime = In_ShakeTime;
 	m_fCurrentFreq = 0.f;
 	m_fPower = _fShakePower;
 
@@ -240,6 +239,8 @@ void CUI::Disable_AllEventChild()
 	}
 }
 
+
+
 _float2 CUI::Get_Point(UI_POINT eType)
 {
 	_float2 vPos;
@@ -248,8 +249,6 @@ _float2 CUI::Get_Point(UI_POINT eType)
 	_float2 fHalfSize;
 	fHalfSize.x = m_tUIDesc.fSizeX * 0.5f;
 	fHalfSize.y = m_tUIDesc.fSizeY * 0.5f;
-
-	
 
 	switch (eType)
 	{
@@ -337,6 +336,8 @@ void CUI::Update_Shaking(_float fTimeDelta)
 
 		return;
 	}
+
+	m_fPower -= (fTimeDelta * m_fPower) * 30.f;
 
 	m_fOffsetPosition.x = SMath::fRandom(-m_fPower, m_fPower);
 	m_fOffsetPosition.y = SMath::fRandom(-m_fPower, m_fPower);

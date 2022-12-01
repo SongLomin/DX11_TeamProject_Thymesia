@@ -43,7 +43,7 @@ void CWeapon::Tick(_float fTimeDelta)
 	// 부모 틱 돌면 안됨!!
 
 	//부모 게임 오브젝트가 없음.
-	if (!m_pParentTransformCom.lock())
+	if (!m_pParentTransformCom.lock() || !m_pTargetBoneNode.lock())
 		return;
 
 	_matrix		ParentMatrix = m_pTargetBoneNode.lock()->Get_CombinedMatrix()
@@ -61,9 +61,7 @@ void CWeapon::Tick(_float fTimeDelta)
 	m_pTransformCom.lock()->Set_WorldMatrix(ParentMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix());
 		
 	for (auto& elem : m_pHitColliderComs)
-	{
 		elem.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
-	}
 }
 
 void CWeapon::LateTick(_float fTimeDelta)

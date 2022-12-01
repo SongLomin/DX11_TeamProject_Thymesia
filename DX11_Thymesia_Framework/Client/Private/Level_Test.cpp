@@ -13,6 +13,7 @@
 #include "MonsterHPBar_Elite.h"
 #include "MonsterHPBar_Boss.h"
 #include "UI_EvolveMenu.h"
+#include "Client_Presets.h"
 
 
 CLevel_Test::CLevel_Test()
@@ -35,8 +36,8 @@ HRESULT CLevel_Test::Initialize()
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_TEST);
 
 #ifdef _TEST_STATIC_PROPS_
-	Load_FromJson(m_szDefaultJsonPath + "Stage3.json", LEVEL::LEVEL_TEST);
-	//Load_FromJson(m_szDefaultJsonPath + "Stage1_StaticProps.json", LEVEL::LEVEL_TEST);
+	//Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_TEST);
+	Load_FromJson(m_szDefaultJsonPath + "Stage1_StaticProps.json", LEVEL::LEVEL_TEST);
 #else
 	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_TEST);
 #endif // _TEST_STATIC_PROPS_
@@ -60,10 +61,21 @@ HRESULT CLevel_Test::Initialize()
 	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 5.f, 0.f, 5.f });
 	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 15.f, 0.f, 15.f });
 
+
+	CMonster::STATE_LINK_MONSTER_DESC CCC;
+#ifdef _VARG_
+	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+	CCC.eMonType = MONSTERTYPE::VARG;
+	CCC.eBossStartType = BOSSSTARTTYPE::BEGINSTART;
+	CCC.vYame.x = 49.33f;
+	CCC.vYame.y = 14.4f;
+	CCC.vYame.z = 30.32f;
+	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_TEST, &CCC);
+#endif // _VARG_
+
+
 	//TODO 야매에요
 #ifdef _STAGE_1_MONSTER_
-	CMonster::STATE_LINK_MONSTER_DESC CCC;
-
 	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	CCC.eMonType = MONSTERTYPE::AXEMAN;
 	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
@@ -97,62 +109,6 @@ HRESULT CLevel_Test::Initialize()
 	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_TEST, &CCC);
 #endif // _STAGE_1_MONSTER_
 
-	/*ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
-	CCC.eMonType = MONSTERTYPE::KNIFEWOMAN;
-	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
-	CCC.vYame.x = 20.f;
-	CCC.vYame.z = 25.f;
-	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_Test, &CCC);*/
-
-	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
-	//CCC.vYame.x = 30.f;
-	//CCC.vYame.z = 15.f;
-	//CCC.eBossStartType = BOSSSTARTTYPE::BEGINSTART;
-	//CCC.eBossType = BOSSTYPE::BOSSVARG;
-	//GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_Test, &CCC);
-	//
-	//ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
-	//CCC.vYame.x = 35.f;
-	//CCC.vYame.z = 15.f;
-	//CCC.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
-	//CCC.eBossType = BOSSTYPE::BOSSVARG;
-	//GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_Test, &CCC);
-
-	/*ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
-	CCC.eMonType = MONSTERTYPE::KNIFEWOMAN;
-	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::FIDGETIDLE;
-	CCC.vYame.x = 25.f;
-	CCC.vYame.z = 30.f;
-	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_Test, &CCC);
-
-	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
-	CCC.eMonType = MONSTERTYPE::KNIFEWOMAN;
-	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::SITIDLE;
-	CCC.vYame.x = 30.f;
-	CCC.vYame.z = 35.f;
-	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_Test, &CCC);
-
-	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
-	CCC.eMonType = MONSTERTYPE::GARDENER;
-	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
-	CCC.vYame.x = 40.f;
-	CCC.vYame.z = 35.f;
-	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_Test, &CCC);
-
-	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
-	CCC.eMonType = MONSTERTYPE::GARDENER;
-	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::SITIDLE;
-	CCC.vYame.x = 40.f;
-	CCC.vYame.z = 40.f;
-	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_Test, &CCC);
-
-	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_DESC));
-	CCC.eMonType = MONSTERTYPE::GARDENER;
-	CCC.eNorMonIdleType = NORMONSTERIDLETYPE::FIDGETIDLE;
-	CCC.vYame.x = 40.f;
-	CCC.vYame.z = 45.f;
-	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_Test, &CCC);*/
-
 	//야매에요
 
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_TEST);
@@ -162,17 +118,10 @@ HRESULT CLevel_Test::Initialize()
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
 
 
-#pragma endregion GAMEOBJECT
-
-
 	SetUp_UI();
-
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
-	//ThreadResult.get();
-#ifdef _STAGE_2_
-	//ThreadResult2.get();
-#endif // _STAGE_2_
+	Preset::AddGameObject::TalentSetting();
 
 	return S_OK;
 }

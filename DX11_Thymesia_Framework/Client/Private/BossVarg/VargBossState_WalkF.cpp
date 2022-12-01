@@ -51,9 +51,7 @@ void CVargBossState_WalkF::Tick(_float fTimeDelta)
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 
-	PxControllerFilters Filters = Filters;
-
-	m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
+	m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, PxControllerFilters(), nullptr, m_pTransformCom);
 
 
 }
@@ -100,8 +98,8 @@ void CVargBossState_WalkF::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	if(m_bOneCheck)
-	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Run>(0.05f);
+	if (m_bOneCheck)
+		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Run>(0.05f);
 }
 
 
@@ -129,21 +127,18 @@ _bool CVargBossState_WalkF::Check_AndChangeNextState()
 
 	if (fPToMDistance > 5.f)
 	{
-		int iRand = rand() % 3;
+		int iRand = rand() % 2;
 
 		switch (iRand)
 		{
 		case 0:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidB>(0.05f);
-			break;
-		case 1:
 			Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidL>(0.05f);
 			break;
-		case 2:
+		case 1:
 			Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidR>(0.05f);
 			break;
 		}
-		
+
 		return true;
 	}
 	else
@@ -163,12 +158,6 @@ _bool CVargBossState_WalkF::Check_AndChangeNextState()
 		return true;
 	}
 
-
-	//if (fPToMDistance <= 3.f)
-	//{
-	//	//이댸 점프하고 공격할수도있음
-	//}
-	
 
 
 	return false;

@@ -133,9 +133,9 @@ void CPreViewAnimationModel::SetUp_ShaderResource()
 
 void CPreViewAnimationModel::Init_EditPreViewAnimationModel(const string& In_szModelKey)
 {
-	auto iter = find_if(m_pModelComs.begin(), m_pModelComs.end(), CTag_Finder_c_str(In_szModelKey.c_str()));
+	//auto iter = find_if(m_pModelComs.begin(), m_pModelComs.end(), CTag_Finder_c_str(In_szModelKey.c_str()));
 
-	if (m_pModelComs.end() != iter)
+	/*if (m_pModelComs.end() != iter)
 	{
 		m_pCurrentModelCom = iter->second;
 		m_pCurrentModelCom.lock()->Set_CurrentAnimation(0);
@@ -153,13 +153,14 @@ void CPreViewAnimationModel::Init_EditPreViewAnimationModel(const string& In_szM
 		return;
 	}
 
-	weak_ptr<CModel> pModel = Add_Component<CModel>();
+	weak_ptr<CModel> pModel = Add_Component<CModel>();*/
 
-	pModel.lock()->Init_Model(In_szModelKey.c_str(),"", (_uint)TIMESCALE_LAYER::EDITER);
+	m_pModelCom.lock()->Init_Model(In_szModelKey.c_str(),"", (_uint)TIMESCALE_LAYER::EDITER);
+	m_pCurrentModelCom = m_pModelCom;
 
-	m_pModelComs.emplace(In_szModelKey, pModel);
+	/*m_pModelComs.emplace(In_szModelKey, pModel);
 	m_pCurrentModelCom = pModel;
-	m_pCurrentModelCom.lock()->Set_CurrentAnimation(0);
+	m_pCurrentModelCom.lock()->Set_CurrentAnimation(0);*/
 
 	if (strcmp(In_szModelKey.c_str(), "Corvus") == 0)
 	{
@@ -229,6 +230,7 @@ void CPreViewAnimationModel::Clear_ModelWeapon()
 	{
 		elem.lock()->Set_Dead();
 	}
+	m_pModelWeapons.clear();
 }
 
 

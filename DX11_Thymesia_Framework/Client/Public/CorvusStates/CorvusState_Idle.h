@@ -12,7 +12,7 @@ class CCorvusState_Idle :
 {
     GAMECLASS_H(CCorvusState_Idle);
     CLONE_H(CCorvusState_Idle, CComponent)
-    SHALLOW_COPY(CCorvusState_Idle)
+        SHALLOW_COPY(CCorvusState_Idle)
 
 protected:
     virtual HRESULT Initialize_Prototype() override;
@@ -25,6 +25,9 @@ protected:
     virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
     virtual void OnStateEnd() override;
     virtual _bool Check_AndChangeNextState() override;
+
+    //TODO юс╫ц
+    _uint m_iSkillType = 0;
 
 protected:
     void Free();

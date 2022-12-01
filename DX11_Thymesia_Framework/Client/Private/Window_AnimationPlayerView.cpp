@@ -15,6 +15,7 @@ HRESULT CWindow_AnimationPlayerView::Initialize()
     ImGuiWindowFlags window_flags = 0;
     window_flags |= ImGuiWindowFlags_HorizontalScrollbar;
     window_flags |= ImGuiWindowFlags_NoResize;
+    window_flags |= ImGuiWindowFlags_NoMove;
 
     m_bEnable = true;
     SetUp_ImGuiDESC("AnimationPlayer_View", ImVec2(300.f, 200.f), window_flags);
@@ -50,8 +51,10 @@ void CWindow_AnimationPlayerView::Tick(_float fTimeDelta)
 
 HRESULT CWindow_AnimationPlayerView::Render()
 {
-    if (FAILED(__super::Begin()))
-        return E_FAIL;
+    ImGui::PushStyleColor(ImGuiCol_PopupBg, m_BackgroundColor);
+
+    if (!(ImGui::Begin(m_tImGuiDESC.strName.c_str(), 0, m_tImGuiDESC.eWindowFlags)))
+        return S_OK;
 
     //ImGui::Text("UI_TOOL");
     ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
@@ -319,7 +322,8 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
     _int iMaxKeyIndex = (_int)m_pCurrentAnimation.lock()->Get_MaxChannelKeyIndex();
 
     m_fCurrentTime = m_pCurrentAnimation.lock()->Get_AbsoluteTimeAcc();
-    ImGui::SliderInt("##Animation Time", &iNewKeyIndex, 0, iMaxKeyIndex);
+    ImGui::SetNextItemWidth(800.f);
+    ImGui::SliderInt("##Animation Time", &iNewKeyIndex, 0, iMaxKeyIndex, "%d", ImGuiSliderFlags_NoInput);
 
     if (iCurrentKeyIndex != iNewKeyIndex)
     {

@@ -15,7 +15,7 @@ class CVargBossState_Idle :
 		SHALLOW_COPY(CVargBossState_Idle)
 
 public:
-	void Set_TurnCheck(_bool TurnCheck) {m_bTurnCheck = TurnCheck;}
+	void Set_TurnCheck(_bool TurnCheck) { m_bTurnCheck = TurnCheck; }
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;

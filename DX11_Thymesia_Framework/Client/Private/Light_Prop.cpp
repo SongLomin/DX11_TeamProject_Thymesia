@@ -37,7 +37,7 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 		m_iPassIndex = 3; // if Normal Map exists, Pass is 3(Normal). else, Pass is 0(Default).
 
 		// TODO : need to be data
-		m_pTransformCom.lock()->Set_Position(_fvector{4.f, -3.f, 4.f, 1.f});
+		m_pTransformCom.lock()->Set_Position(_fvector{ 4.f, -3.f, 4.f, 1.f });
 		m_pTransformCom.lock()->Set_Scaled(_float3{ 0.8f, 0.8f, 0.8f });
 
 		GET_SINGLE(CGameManager)->Use_EffectGroup("TorchFire", m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
@@ -51,17 +51,17 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	m_eRenderGroup = RENDERGROUP::RENDER_NONALPHABLEND;
 
 	// TODO : need to be data
-	//ZeroMemory(&m_tLightDesc, sizeof(LIGHTDESC));
-	//m_tLightDesc.eActorType = LIGHTDESC::TYPE::TYPE_HALFPOINT;
-	//m_tLightDesc.bEnable = true;
-	//XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_Position());
-	//m_tLightDesc.vDiffuse = { 1.f, 1.f, 0.8f, 0.f };
-	//m_tLightDesc.vAmbient = { 0.6f, 0.6f, 0.48f, 0.f };
-	//m_tLightDesc.vDirection = { 1.f, 0.f, 0.f, 0.f };
-	//m_tLightDesc.vLightFlag = { 1.f, 1.f, 1.f, 1.f };
-	//m_tLightDesc.fRange = 17.f;
+	ZeroMemory(&m_tLightDesc, sizeof(LIGHTDESC));
+	m_tLightDesc.eActorType = LIGHTDESC::TYPE::TYPE_POINT;
+	m_tLightDesc.bEnable = true;
+	XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_Position());
+	m_tLightDesc.vDiffuse = { 1.f, 1.f, 0.8f, 0.f };
+	m_tLightDesc.vAmbient = { 0.6f, 0.6f, 0.48f, 0.f };
+	m_tLightDesc.vSpecular = {0.7f, 0.7f, 0.58f, 1.f};
+	m_tLightDesc.vLightFlag = { 1.f, 1.f, 1.f, 1.f };
+	m_tLightDesc.fRange = 17.f;
 
-	//m_iLightIndex = GAMEINSTANCE->Add_Light(m_tLightDesc);
+	m_iLightIndex = GAMEINSTANCE->Add_Light(m_tLightDesc);
 	
 	m_pPhysXColliderCom = Add_Component<CPhysXCollider>();
 	m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
@@ -124,7 +124,8 @@ HRESULT CLight_Prop::Render()
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
 		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
-		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS);
+		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_HEIGHT);
+	
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
 		{
 			m_iPassIndex = 3;

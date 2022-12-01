@@ -44,7 +44,7 @@ public:
 		_uint		m_iCurrentFeather;
 		_uint		m_iMaxFeather;
 		_uint		m_iMemory;
-
+		_uint		m_iTalent;
 
 		_uint		m_iLevel;
 		_uint		m_iStr;
@@ -88,8 +88,8 @@ public:
 
 	void Heal_Player(const _float fAmount);
 
-	_float		Get_Atk() { return m_tDesc.m_fNormalAtk; }
-
+	_float			Get_Atk() { return m_tDesc.m_fNormalAtk; }
+	virtual void    Set_Desc(void* In_Desc) override;
 private:
 	_float			m_fPotionTime;
 	_uint			m_iCurrentPotionIndex;

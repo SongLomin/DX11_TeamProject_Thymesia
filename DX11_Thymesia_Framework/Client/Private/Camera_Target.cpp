@@ -37,7 +37,7 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 
 	m_pPhysXCameraControllerCom = Add_Component<CPhysXCameraController>();
 	m_pPhysXCameraControllerCom.lock()->Set_CurrentCameraController();
-	//c m_pPhysXCameraControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::CameraSetting(m_pTransformCom));
+	m_pPhysXCameraControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::CameraSetting(m_pTransformCom));
 	
 	return S_OK;
 }
@@ -120,8 +120,19 @@ void CCamera_Target::Tick(_float fTimeDelta)
 	}
 
 	
-	RAY PlayerToCameraRay;
+	/*RAY PlayerToCameraRay;
 	_vector vPlayerToCameraDir = m_pTransformCom.lock()->Get_Position() - m_pCurrentPlayerTransformCom.lock()->Get_Position();
+	_float fLength = XMVectorGetX(XMVector3Length(vPlayerToCameraDir));
+	vPlayerToCameraDir = XMVector3Normalize(vPlayerToCameraDir);
+	_vector vPlayerPosition = m_pTransformCom.lock()->Get_Position();
+
+	XMStoreFloat4(&PlayerToCameraRay.vOrigin, vPlayerPosition);
+	XMStoreFloat3(&PlayerToCameraRay.vDirection, vPlayerToCameraDir);
+	PlayerToCameraRay.vOrigin.w = 1.f;
+	PlayerToCameraRay.fLength = fLength;*/
+
+	RAY PlayerToCameraRay;
+	_vector vPlayerToCameraDir = m_pCurrentPlayerTransformCom.lock()->Get_Position() - m_pTransformCom.lock()->Get_Position();
 	_float fLength = XMVectorGetX(XMVector3Length(vPlayerToCameraDir));
 	vPlayerToCameraDir = XMVector3Normalize(vPlayerToCameraDir);
 	_vector vPlayerPosition = m_pTransformCom.lock()->Get_Position();
@@ -131,9 +142,11 @@ void CCamera_Target::Tick(_float fTimeDelta)
 	PlayerToCameraRay.vOrigin.w = 1.f;
 	PlayerToCameraRay.fLength = fLength;
 
-	//m_pPhysXCameraControllerCom.lock()->Update_Ray(PlayerToCameraRay);
-	//m_pPhysXCameraControllerCom.lock()->Synchronize_Controller(m_pTransformCom, fTimeDelta, Filters);
-	//m_pPhysXCameraControllerCom.lock()->Synchronize_Transform(m_pTransformCom);
+	PxControllerFilters Filters;
+
+	m_pPhysXCameraControllerCom.lock()->Update_Ray(PlayerToCameraRay);
+	m_pPhysXCameraControllerCom.lock()->Synchronize_Controller(m_pTransformCom, fTimeDelta, Filters);
+	m_pPhysXCameraControllerCom.lock()->Synchronize_Transform(m_pTransformCom);
 }
 
 void CCamera_Target::LateTick(_float fTimeDelta)
@@ -460,7 +473,7 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 	}
 
 	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
-	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * ( - 4.5f + m_fZoom) + XMVectorSet(0.f, 1.1f, 0.f, 0.f) + XMLoadFloat3(&m_vShaking);
+	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * ( - 2.5f + m_fZoom) + XMVectorSet(0.f, 1.1f, 0.f, 0.f) + XMLoadFloat3(&m_vShaking);
 	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
 
 

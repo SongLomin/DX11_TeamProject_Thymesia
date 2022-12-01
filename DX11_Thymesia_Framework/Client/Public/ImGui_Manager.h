@@ -42,7 +42,6 @@ public:
 	void Save_EffectJson();
 
 private:
-
 	void Init_SceneEditer();
 	void Init_EffectEditer();
 

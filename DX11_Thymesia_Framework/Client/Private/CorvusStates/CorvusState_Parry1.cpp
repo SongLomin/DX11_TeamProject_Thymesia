@@ -9,7 +9,7 @@
 #include "CorvusStates/CorvusStates.h"
 #include "Collider.h"
 #include "Client_GameObjects.h"
-
+#include "UI_DamageFont.h"
 
 GAMECLASS_C(CCorvusState_Parry1);
 CLONE_C(CCorvusState_Parry1, CComponent)
@@ -56,7 +56,7 @@ void CCorvusState_Parry1::Tick(_float fTimeDelta)
 
 	//Attack();
 	Update_ParryType();
-	
+
 }
 
 void CCorvusState_Parry1::LateTick(_float fTimeDelta)
@@ -73,7 +73,7 @@ void CCorvusState_Parry1::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	
+
 	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
 
 }
@@ -82,6 +82,10 @@ void CCorvusState_Parry1::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 {
 
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
+
+#ifdef _DEBUG_COUT_
+	cout << "AttackIndex: " << m_iAttackIndex << endl;
+#endif
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 }
@@ -145,7 +149,7 @@ void CCorvusState_Parry1::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 	m_eParryType = PARRY_TYPE::PARRY_TYPE_END;
-	
+
 	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Parry2>().lock())
 	{
 		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 13);
@@ -165,8 +169,8 @@ void CCorvusState_Parry1::OnStateStart(const _float& In_fAnimationBlendTime)
 
 
 #ifdef _DEBUG
-	#ifdef _DEBUG_COUT_
-		cout << "NorMonState: Attack -> OnStateStart" << endl;
+#ifdef _DEBUG_COUT_
+	cout << "NorMonState: Attack -> OnStateStart" << endl;
 #endif
 
 #endif
@@ -201,43 +205,101 @@ void CCorvusState_Parry1::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
 		weak_ptr<CCharacter>	pMonsterFromCharacter = pAttackArea.lock()->Get_ParentObject();
 		weak_ptr<CStatus_Monster>	pMonsterStatusCom = pMonsterFromCharacter.lock()->Get_Component<CStatus_Monster>();
 
+		_vector vMyPosition = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+
+		_vector vOtherColliderPosition = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner()).lock()->
+			Get_ParentObject().lock()->
+			Get_Component<CTransform>().lock()->
+			Get_State(CTransform::STATE_TRANSLATION);
+
+		_vector vSameHeightOtherColliderPosition = vOtherColliderPosition;
+		vSameHeightOtherColliderPosition.m128_f32[1] = vMyPosition.m128_f32[1];
+
+		m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
+
 		if (!pMonsterStatusCom.lock())
 			MSG_BOX("Error : Can't Find CStatus_Monster From CorvusStateBase");
 
 		PARRY_SUCCESS ParryType = (PARRY_SUCCESS)Check_AndChangeSuccessParrying(pMyCollider, pOtherCollider);
 
-		switch (m_eParryType)
-		{			
+		_vector vViewPosition;
+		_matrix ViewProjMatrix;
+
+		vViewPosition = pMyCollider.lock()->Get_CurrentPosition();
+
+		vViewPosition += XMVectorSet(0.f, 2.f, 0.f, 1.f);
+
+		ViewProjMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_VIEW) * GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_PROJ);
+
+		vViewPosition = XMVector3TransformCoord(vViewPosition, ViewProjMatrix);
+
+		/* -1 ~ 1 to 0 ~ ViewPort */
+		vViewPosition.m128_f32[0] = (vViewPosition.m128_f32[0] + 1.f) * (_float)g_iWinCX * 0.5f;
+		vViewPosition.m128_f32[1] = (-1.f * vViewPosition.m128_f32[1] + 1.f) * (_float)g_iWinCY * 0.5f;
+
+		weak_ptr<CUI_DamageFont> pDamageFont = GAMEINSTANCE->Add_GameObject<CUI_DamageFont>(LEVEL_STATIC);
+
+		_float2 vHitPos;
+
+		vHitPos.x = vViewPosition.m128_f32[0];
+		vHitPos.y = vViewPosition.m128_f32[1];
+
+		random_device rd;
+		mt19937_64 mt(rd());
+
+		uniform_real_distribution<_float> fRandom(-50.f, 50.f);
+
+		vHitPos.x += fRandom(mt);
+		vHitPos.y += fRandom(mt);
 		
+		if (m_eParryType == PARRY_TYPE::PERFECT)
+		{
+			pDamageFont.lock()->SetUp_DamageFont(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f,
+				vHitPos, ATTACK_OPTION::PARRY);
+		}
+		else
+		{
+			pDamageFont.lock()->SetUp_DamageFont(pStatus.lock()->Get_Desc().m_fParryingAtk,
+				vHitPos, ATTACK_OPTION::PARRY);
+		}
+
+		switch (m_eParryType)
+		{
+
 		case Client::PARRY_TYPE::PERFECT:
 			//퍼펙트는 몬스터 게이지 많이깍고 플레이어피를채워\준다 상태는 왼쪽오른쪽 위아래 판단해서 상태를 그걸로바꿔주는용도
 			switch (ParryType)
 			{
 			case Client::PARRY_SUCCESS::LEFT:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
+				
+				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 				pStatus.lock()->Heal_Player(30.f);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeft>();
+				
 				break;
 			case Client::PARRY_SUCCESS::LEFTUP:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
+				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 				pStatus.lock()->Heal_Player(30.f);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeftup>();
 				break;
 			case Client::PARRY_SUCCESS::RIGHT:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
+				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 				pStatus.lock()->Heal_Player(30.f);
-				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRight>();
+				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRight>();				
 				break;
 			case Client::PARRY_SUCCESS::RIGHTUP:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
+				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 				pStatus.lock()->Heal_Player(30.f);
-				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRightup>();
 				break;
 			case Client::PARRY_SUCCESS::FAIL:
-				Check_AndChangeHitState(pMyCollider,pOtherCollider, In_eHitType, In_fDamage);
+				Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 				pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
 				break;
-			}			
+			}
 			break;
 		case Client::PARRY_TYPE::NORMAL:
 			//퍼펙트는 몬스터 게이지 적게깍고 플레이어피는안달고  상태는 왼쪽오른쪽 위아래 판단해서 상태를 그걸로바꿔주는용도
@@ -245,30 +307,34 @@ void CCorvusState_Parry1::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
 			{
 			case Client::PARRY_SUCCESS::LEFT:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
+				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeft>();
 				break;
 			case Client::PARRY_SUCCESS::LEFTUP:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
+				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeftup>();
 				break;
 			case Client::PARRY_SUCCESS::RIGHT:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
+				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRight>();
 				break;
 			case Client::PARRY_SUCCESS::RIGHTUP:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
+				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRightup>();
 				break;
 			case Client::PARRY_SUCCESS::FAIL:
-				Check_AndChangeHitState(pMyCollider,pOtherCollider, In_eHitType, In_fDamage);
+				Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 				pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
 				break;
 			}
 			break;
 		case Client::PARRY_TYPE::FAIL:
-			Check_AndChangeHitState(pMyCollider,pOtherCollider, In_eHitType, In_fDamage);
+			Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 			pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
-			break;		
+			break;
 		}
 
 		_bool bGroggy = pMonsterStatusCom.lock()->Is_Groggy();
@@ -334,7 +400,7 @@ _bool CCorvusState_Parry1::Check_AndChangeNextState()
 		return false;
 
 
-	
+
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 35)
 	{
 		if (Check_RequirementAttackState())
@@ -396,7 +462,7 @@ _bool CCorvusState_Parry1::Check_AndChangeNextState()
 
 
 
-	
+
 
 
 	return false;
