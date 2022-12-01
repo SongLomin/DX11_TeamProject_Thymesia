@@ -16,6 +16,8 @@ HRESULT CWindow_AnimationModelView::Initialize()
 {
     ImGuiWindowFlags window_flags = 0;
     window_flags |= ImGuiWindowFlags_HorizontalScrollbar;
+    window_flags |= ImGuiWindowFlags_NoResize;
+    window_flags |= ImGuiWindowFlags_NoMove;
 
     m_bEnable = true;
     SetUp_ImGuiDESC("AnimationModel_View", ImVec2(150.f, 500.f), window_flags);

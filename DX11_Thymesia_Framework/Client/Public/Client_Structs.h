@@ -155,12 +155,16 @@ namespace Client
 		_bool		bBoner;
 
 #pragma region Spawn Position
+		
+		_bool		bIsMinMaxSame_SpawnPosition; // TODO : for tool -> erase
 		_float3		vMinSpawnPosition; // becomes spawn position if bIsSpawnList is true
 		_float3		vMaxSpawnPosition;
 
+		_bool		bIsMinMaxSame_OffsetDirection; // TODO : for tool -> erase
 		_float3		vMinSpawnOffsetDirection;
 		_float3		vMaxSpawnOffsetDirection;
 
+		_bool		bIsMinMaxSame_OffsetRange; // TODO : for tool -> erase
 		_float3		vMinSpawnOffsetRange;
 		_float3		vMaxSpawnOffsetRange;
 #pragma endregion
@@ -181,12 +185,15 @@ namespace Client
 		_int		iSpeedEasingType;			// --> is position easing type when EasingPosition is true.
 		_float		fSpeedEasingTotalTime;		// --> is position easing total time when EasingPosition is true. 
 
+		_bool		bIsMinMaxSame_StartSpeed; // TODO : for tool -> erase
 		_float3		vMinSpeed;					// --> is min goal offset position when easing position is true.
 		_float3		vMaxSpeed;					// --> is max goal offset position when easing position is true.
 
+		_bool		bIsMinMaxSame_SpeedForce; // TODO : for tool -> erase
 		_float3		vMinSpeedForce;
 		_float3		vMaxSpeedForce;
 
+		_bool		bIsMinMaxSame_SpeedLimit; // TODO : for tool -> erase
 		_float3		vMinLimitSpeed;
 		_float3		vMaxLimitSpeed;
 #pragma endregion
@@ -196,15 +203,19 @@ namespace Client
 
 		_float		fRotationEasingTotalTime;
 
+		_bool		bIsMinMaxSame_StartRotation; // TODO : for tool -> erase
 		_float3		vMinStartRotation; // // becomes spawn look if bIsSpawnList is true
 		_float3		vMaxStartRotation;
 
+		_bool		bIsMinMaxSame_RotationSpeed; // TODO : for tool -> erase
 		_float3		vMinRotationSpeed;
 		_float3		vMaxRotationSpeed;
 
+		_bool		bIsMinMaxSame_RotationForce; // TODO : for tool -> erase
 		_float3		vMinRotationForce;
 		_float3		vMaxRotationForce;
 
+		_bool		bIsMinMaxSame_RotationLimit; // TODO : for tool -> erase
 		_float3		vMinLimitRotation;
 		_float3		vMaxLimitRotation;
 #pragma endregion
