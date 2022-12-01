@@ -225,15 +225,19 @@ namespace Client
 
 		_float		fScaleEasingTotalTime;
 
+		_bool		bIsMinMaxSame_StartScale; // TODO : for tool -> erase
 		_float3		vMinStartScale;
 		_float3		vMaxStartScale;
 
+		_bool		bIsMinMaxSame_ScaleSpeed; // TODO : for tool -> erase
 		_float3		vMinScaleSpeed;
 		_float3		vMaxScaleSpeed;
 
+		_bool		bIsMinMaxSame_ScaleForce; // TODO : for tool -> erase
 		_float3		vMinScaleForce;
 		_float3		vMaxScaleForce;
 
+		_bool		bIsMinMaxSame_ScaleLimit; // TODO : for tool -> erase
 		_float3		vMinLimitScale;
 		_float3		vMaxLimitScale;
 #pragma endregion
@@ -241,15 +245,19 @@ namespace Client
 		_float		fDiscardRatio;
 		_bool		IsGrayOnlyUseRed;// when random colors, grayscales
 
+		_bool		bIsMinMaxSame_StartColor; // TODO : for tool -> erase
 		_float4		vMinStartColor;
 		_float4		vMaxStartColor;
 
+		_bool		bIsMinMaxSame_ColorSpeed; // TODO : for tool -> erase
 		_float4		vMinColorSpeed;
 		_float4		vMaxColorSpeed;
 
+		_bool		bIsMinMaxSame_ColorForce; // TODO : for tool -> erase
 		_float4		vMinColorForce;
 		_float4		vMaxColorForce;
 
+		_bool		bIsMinMaxSame_ColorLimit; // TODO : for tool -> erase
 		_float4		vMinColor;
 		_float4		vMaxColor;
 #pragma endregion

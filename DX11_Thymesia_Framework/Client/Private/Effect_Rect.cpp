@@ -1587,51 +1587,57 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::Text("Max Instance");
 			ImGui::SameLine();
 			ImGui::DragInt("##Max_Instance", &m_tEffectParticleDesc.iMaxInstance, 1, 0, 9999, "%d", ImGuiSliderFlags_AlwaysClamp);
+			
 			ImGui::Separator();
 
 			ImGui::Text("Is Looping");
 			ImGui::SameLine();
 			ImGui::Checkbox("##Is_Looping", &m_tEffectParticleDesc.bLooping);
-
+			
 			ImGui::Separator();
 #pragma region Particle Type
-			const char* items[] = { "None", "Outburst", "Attraction", "Billboard" };
-
-			if (ImGui::BeginListBox("ParticleType"))
+			if (ImGui::CollapsingHeader("Particle Type"))
 			{
-				for (int n = 0; n < IM_ARRAYSIZE(items); n++)
-				{
-					const bool is_selected = (m_tEffectParticleDesc.iParticleType == n);
-					if (ImGui::Selectable(items[n], is_selected))
-					{
-						m_tEffectParticleDesc.iParticleType = n;
-					}
+				const char* items[] = { "None", "Outburst", "Attraction", "Billboard" };
 
-					if (is_selected)
-						ImGui::SetItemDefaultFocus();
+				if (ImGui::CollapsingHeader("##ParticleType"))
+				{
+					for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+					{
+						const bool is_selected = (m_tEffectParticleDesc.iParticleType == n);
+						if (ImGui::Selectable(items[n], is_selected))
+						{
+							m_tEffectParticleDesc.iParticleType = n;
+						}
+
+						if (is_selected)
+							ImGui::SetItemDefaultFocus();
+					}
+					ImGui::EndListBox();
 				}
-				ImGui::EndListBox();
 			}
 #pragma endregion
-			ImGui::Separator();
 #pragma region Transform Type
-			const char* Transform_items[] = { "Static", "Just Spawn", "Child" };
-
-			if (ImGui::BeginListBox("Transform Type"))
+			if (ImGui::CollapsingHeader("Transform Type"))
 			{
-				for (int n = 0; n < IM_ARRAYSIZE(Transform_items); n++)
-				{
-					const bool is_selected = (m_tEffectParticleDesc.iFollowTransformType == n);
-					if (ImGui::Selectable(Transform_items[n], is_selected))
-					{
-						m_tEffectParticleDesc.iFollowTransformType = n;
-					}
+				const char* Transform_items[] = { "Static", "Just Spawn", "Child" };
 
-					// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-					if (is_selected)
-						ImGui::SetItemDefaultFocus();
+				if (ImGui::BeginListBox("##TransformType"))
+				{
+					for (int n = 0; n < IM_ARRAYSIZE(Transform_items); n++)
+					{
+						const bool is_selected = (m_tEffectParticleDesc.iFollowTransformType == n);
+						if (ImGui::Selectable(Transform_items[n], is_selected))
+						{
+							m_tEffectParticleDesc.iFollowTransformType = n;
+						}
+
+						// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+						if (is_selected)
+							ImGui::SetItemDefaultFocus();
+					}
+					ImGui::EndListBox();
 				}
-				ImGui::EndListBox();
 			}
 #pragma endregion
 			ImGui::Separator();
@@ -1644,153 +1650,273 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 #pragma endregion
 			ImGui::Separator();
 #pragma region Life Time & Spawns
-			ImGui::Text("Init Time");
-			ImGui::DragFloat("##Init_Time", &m_tEffectParticleDesc.fInitTime, 0.1f);
+			if (ImGui::CollapsingHeader("Spawn & Life Time"))
+			{
+				ImGui::Text("Init Time");
+				ImGui::DragFloat("##Init_Time", &m_tEffectParticleDesc.fInitTime, 0.1f);
 
-			ImGui::Text("Min Spawn Time");
-			ImGui::DragFloat("##Min_Spawn_Time", &m_tEffectParticleDesc.fMinSpawnTime, 0.1f);
+				ImGui::Text("Min Spawn Time");
+				ImGui::DragFloat("##Min_Spawn_Time", &m_tEffectParticleDesc.fMinSpawnTime, 0.1f);
 
-			ImGui::Text("Max Spawn Time");
-			ImGui::DragFloat("##Max_Spawn_Time", &m_tEffectParticleDesc.fMaxSpawnTime, 0.1f);
+				ImGui::Text("Max Spawn Time");
+				ImGui::DragFloat("##Max_Spawn_Time", &m_tEffectParticleDesc.fMaxSpawnTime, 0.1f);
 
-			ImGui::Text("Min Life Time");
-			ImGui::DragFloat("##Min_Life_Time", &m_tEffectParticleDesc.fMinLifeTime, 0.1f);
+				ImGui::Text("Min Life Time");
+				ImGui::DragFloat("##Min_Life_Time", &m_tEffectParticleDesc.fMinLifeTime, 0.1f);
 
-			ImGui::Text("Max Life Time");
-			ImGui::DragFloat("##Max_Life_Time", &m_tEffectParticleDesc.fMaxLifeTime, 0.1f);
-			ImGui::Separator();
+				ImGui::Text("Max Life Time");
+				ImGui::DragFloat("##Max_Life_Time", &m_tEffectParticleDesc.fMaxLifeTime, 0.1f);
+			}
 #pragma endregion
 			ImGui::Separator();
 
 			ImGui::Text("Is Move Look"); ImGui::SameLine();
 			ImGui::Checkbox("##Is_MoveLook", &m_tEffectParticleDesc.bMoveLook);
 
-			ImGui::Text("Use Gravity"); ImGui::SameLine();
-			ImGui::Checkbox("##Use_Gravity", &m_tEffectParticleDesc.bUseGravity);
-
-			ImGui::Text("Gravity Force");
-			ImGui::DragFloat3("##Gravity_Force", &m_tEffectParticleDesc.vGravityForce.x, 0.1f, -100.f, 100.f, "%.5f");
-
-			ImGui::Separator();
-			ImGui::Separator();
-
-#pragma region Positions
-			ImGui::Text("Position");
-
-			ImGui::Text("Follow Bone"); ImGui::SameLine();
-			ImGui::Checkbox("##Is_Boner", &m_tEffectParticleDesc.bBoner);
-
-			if (m_tEffectParticleDesc.bBoner)
+			if (ImGui::TreeNode("Gravity Options"))
 			{
-				if (ImGui::Button("Get Bone List"))
-				{
-					m_pParentTransformCom = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Component<CTransform>().lock();
-					m_AllBoneNames = GET_SINGLE(CWindow_AnimationModelView)->Get_AllBoneNames();
-				}
+				ImGui::Text("Use Gravity"); ImGui::SameLine();
+				ImGui::Checkbox("##Use_Gravity", &m_tEffectParticleDesc.bUseGravity);
 
-				if (0 == m_AllBoneNames.size())
-					ImGui::Text("No Bones!");
+				ImGui::Text("Gravity Force");
+				ImGui::DragFloat3("##Gravity_Force", &m_tEffectParticleDesc.vGravityForce.x, 0.1f, -100.f, 100.f, "%.5f");
+
+				ImGui::TreePop();
+			}
+
+			ImGui::Separator();
+#pragma region Positions
+			if (ImGui::TreeNode("Boner"))
+			{
+				ImGui::TreePop();
+
+				ImGui::Text("Follow Bone"); ImGui::SameLine();
+				ImGui::Checkbox("##Is_Boner", &m_tEffectParticleDesc.bBoner);
+
+				if (m_tEffectParticleDesc.bBoner)
+				{
+					if (ImGui::Button("Get Bone List"))
+					{
+						m_pParentTransformCom = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Component<CTransform>().lock();
+						m_AllBoneNames = GET_SINGLE(CWindow_AnimationModelView)->Get_AllBoneNames();
+					}
+
+					if (0 == m_AllBoneNames.size())
+						ImGui::Text("No Bones!");
+					else
+					{
+						if (ImGui::BeginListBox("Bone List - Particle"))
+						{
+							for (_int n{ 0 }; n < m_AllBoneNames.size(); n++)
+							{
+								const _bool is_selected = (m_iCurrentBoneIndex == n);
+								if (ImGui::Selectable(m_AllBoneNames[n].c_str(), is_selected))
+									m_strBoneName = m_AllBoneNames[n];
+
+								// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+								if (is_selected)
+									ImGui::SetItemDefaultFocus();
+							}
+							ImGui::EndListBox();
+						}
+					}
+
+					if (ImGui::Button("Bind to Bone"))
+					{
+						m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
+						if (nullptr == m_pBoneNode.lock())
+						{
+							MSG_BOX("Invalid Bone Name!");
+							assert(0);
+						}
+					}
+
+					if (m_pBoneNode.lock())
+					{
+						ImGui::Text("Binded to Bone : ");
+						ImGui::Text(m_pBoneNode.lock()->Get_Name());
+					}
+
+				}
 				else
 				{
-					if (ImGui::BeginListBox("Bone List - Particle"))
+					m_pBoneNode.reset();
+					m_strBoneName.clear();
+				}
+			}
+			if (ImGui::CollapsingHeader("Position"))
+			{
+				ImGui::Text("Use Easing Position"); ImGui::SameLine();
+				ImGui::Checkbox("##Is_Easing_Position", &m_tEffectParticleDesc.bEasingPosition);
+
+				ImGui::Separator();
+				
+				if (ImGui::TreeNode("Spawn Position"))
+				{
+					ImGui::Text("Min = Max"); ImGui::SameLine();
+					ImGui::Checkbox("##Is_MinMaxSame_SpawnPosition", &m_tEffectParticleDesc.bIsMinMaxSame_SpawnPosition);
+
+					if (m_tEffectParticleDesc.bIsMinMaxSame_SpawnPosition)
+						m_tEffectParticleDesc.vMaxSpawnPosition = m_tEffectParticleDesc.vMinSpawnPosition;
+
+					ImGui::Text("Min Spawn Position");
+					ImGui::DragFloat3("##Min_Spawn_Position", &m_tEffectParticleDesc.vMinSpawnPosition.x, 0.1f);
+
+					ImGui::Text("Max Spawn Position");
+					ImGui::DragFloat3("##Max_Spawn_Position", &m_tEffectParticleDesc.vMaxSpawnPosition.x, 0.1f);
+
+					ImGui::TreePop();
+				}
+				if (ImGui::TreeNode("Spawn Offset Direction"))
+				{
+					ImGui::Text("Min = Max"); ImGui::SameLine();
+					ImGui::Checkbox("##Is_MinMaxSame_OffsetDirection", &m_tEffectParticleDesc.bIsMinMaxSame_OffsetDirection);
+
+					if (m_tEffectParticleDesc.bIsMinMaxSame_OffsetDirection)
+						m_tEffectParticleDesc.vMaxSpawnOffsetDirection = m_tEffectParticleDesc.vMinSpawnOffsetDirection;
+
+					ImGui::Text("Min Offset Direction");
+					ImGui::DragFloat3("##Min_Offset_Direction", &m_tEffectParticleDesc.vMinSpawnOffsetDirection.x, 0.1f);
+
+					ImGui::Text("Max Offset Direction");
+					ImGui::DragFloat3("##Max_Offset_Direction", &m_tEffectParticleDesc.vMaxSpawnOffsetDirection.x, 0.1f);
+
+					ImGui::TreePop();
+				}
+				if (ImGui::TreeNode("Spawn Offset Range"))
+				{
+					ImGui::Text("Min = Max"); ImGui::SameLine();
+					ImGui::Checkbox("##Is_MinMaxSame_OffsetRange", &m_tEffectParticleDesc.bIsMinMaxSame_OffsetRange);
+
+					if (m_tEffectParticleDesc.bIsMinMaxSame_OffsetRange)
+						m_tEffectParticleDesc.vMaxSpawnOffsetRange = m_tEffectParticleDesc.vMinSpawnOffsetRange;
+
+					ImGui::Text("Min Offset Range");
+					ImGui::DragFloat3("##Min_Offset_Range", &m_tEffectParticleDesc.vMinSpawnOffsetRange.x, 0.1f);
+
+					ImGui::Text("Max Offset Range");
+					ImGui::DragFloat3("##Max_Offset_Range", &m_tEffectParticleDesc.vMaxSpawnOffsetRange.x, 0.1f);
+
+					ImGui::TreePop();
+				}
+			}
+#pragma endregion
+			ImGui::Separator();
+#pragma region Speed
+			if (!m_tEffectParticleDesc.bEasingPosition)
+			{
+				if (ImGui::CollapsingHeader("Speed"))
+				{
+					ImGui::Text("Apply Easing"); ImGui::SameLine();
+					ImGui::Checkbox("##Is_Easing_Speed", &m_tEffectParticleDesc.bEasingSpeed);
+
+					if (m_tEffectParticleDesc.bEasingSpeed)
 					{
-						for (_int n{ 0 }; n < m_AllBoneNames.size(); n++)
+#pragma region Easing
+						if (ImGui::TreeNode("Speed Easing List"))
 						{
-							const _bool is_selected = (m_iCurrentBoneIndex == n);
-							if (ImGui::Selectable(m_AllBoneNames[n].c_str(), is_selected))
-								m_strBoneName = m_AllBoneNames[n];
+							// open easing list
+							const char* EasingItems[] =
+							{
+								"Linear"   ,
+								"QuadIn"   , "QuadOut"	 , "QuadInOut"	 ,
+								"CubicIn"  , "CubicOut"	 , "CubicInOut"	 ,
+								"QuartIn"  , "QuartOut"	 , "QuartInOut"	 ,
+								"QuintIn"  , "QuintOut"	 , "QuintInOut"	 ,
+								"SineIn"   , "SineOut"	 , "SineInOut"	 ,
+								"ExpoIn"   , "ExpoOut"	 , "ExpoInOut"	 ,
+								"CircIn"   , "CircOut"	 , "CircInOut"	 ,
+								"ElasticIn", "ElasticOut", "ElasticInOut",
+								"BounceIn" , "BounceOut"
+							};
 
-							// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-							if (is_selected)
-								ImGui::SetItemDefaultFocus();
+							if (ImGui::BeginListBox("Speed Easing Type"))
+							{
+								for (int n(0); n < IM_ARRAYSIZE(EasingItems); n++)
+								{
+									const bool is_selected = (m_tEffectParticleDesc.iSpeedEasingType == n);
+									if (ImGui::Selectable(EasingItems[n], is_selected))
+										m_tEffectParticleDesc.iSpeedEasingType = n;
+
+									if (is_selected)
+										ImGui::SetItemDefaultFocus();
+								}
+								ImGui::EndListBox();
+							}
+
+							ImGui::TreePop();
 						}
-						ImGui::EndListBox();
-					}
-				}
 
-				if (ImGui::Button("Bind to Bone"))
-				{
-					m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
-					if (nullptr == m_pBoneNode.lock())
+						ImGui::Text("Total Easing Time"); ImGui::SameLine();
+						ImGui::DragFloat("##Speed_Total_Easing_Time", &m_tEffectParticleDesc.fSpeedEasingTotalTime, 0.01f, -100.f, 100.f, "%.5f");
+
+						ImGui::Text("Start Speed");
+						ImGui::DragFloat3("##Min_Limit_Speed", &m_tEffectParticleDesc.vMinLimitSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
+
+						ImGui::Text("Target Speed");
+						ImGui::DragFloat3("##Max_Limit_Speed", &m_tEffectParticleDesc.vMaxLimitSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
+#pragma endregion
+					}
+					else
 					{
-						MSG_BOX("Invalid Bone Name!");
-						assert(0);
+						if (ImGui::TreeNode("Start Speed"))
+						{
+							ImGui::Text("Min = Max"); ImGui::SameLine();
+							ImGui::Checkbox("##Is_MinMaxSame_StartSpeed", &m_tEffectParticleDesc.bIsMinMaxSame_StartSpeed);
+
+							if (m_tEffectParticleDesc.bIsMinMaxSame_StartSpeed)
+								m_tEffectParticleDesc.vMaxSpeed = m_tEffectParticleDesc.vMinSpeed;
+
+							ImGui::Text("Min Start Speed");
+							ImGui::DragFloat3("##Min_Speed", &m_tEffectParticleDesc.vMinSpeed.x, 0.1f);
+
+							ImGui::Text("Max Start Speed");
+							ImGui::DragFloat3("##Max_Speed", &m_tEffectParticleDesc.vMaxSpeed.x, 0.1f);
+
+							ImGui::TreePop();
+						}
+
+						if (ImGui::TreeNode("Speed Force"))
+						{
+							ImGui::Text("Min = Max"); ImGui::SameLine();
+							ImGui::Checkbox("##Is_MinMaxSame_SpeedForce", &m_tEffectParticleDesc.bIsMinMaxSame_SpeedForce);
+
+							if (m_tEffectParticleDesc.bIsMinMaxSame_SpeedForce)
+								m_tEffectParticleDesc.vMaxSpeedForce = m_tEffectParticleDesc.vMinSpeedForce;
+
+							ImGui::Text("Min Force");
+							ImGui::DragFloat3("##Min_Speed_Force", &m_tEffectParticleDesc.vMinSpeedForce.x, 0.1f);
+
+							ImGui::Text("Max Force");
+							ImGui::DragFloat3("##Max_Speed_Force", &m_tEffectParticleDesc.vMaxSpeedForce.x, 0.1f);
+
+							ImGui::TreePop();
+						}
+
+						if (ImGui::TreeNode("Speed Limit"))
+						{
+							ImGui::Text("Min = Max"); ImGui::SameLine();
+							ImGui::Checkbox("##Is_MinMaxSame_SpeedLimit", &m_tEffectParticleDesc.bIsMinMaxSame_SpeedLimit);
+
+							if (m_tEffectParticleDesc.bIsMinMaxSame_SpeedLimit)
+								m_tEffectParticleDesc.vMaxLimitSpeed = m_tEffectParticleDesc.vMinLimitSpeed;
+
+							ImGui::Text("Min Limit Speed");
+							ImGui::DragFloat3("##Min_Limit_Speed", &m_tEffectParticleDesc.vMinLimitSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
+
+							ImGui::Text("Max Limit Speed");
+							ImGui::DragFloat3("##Max_Limit_Speed", &m_tEffectParticleDesc.vMaxLimitSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
+
+							ImGui::TreePop();
+						}
 					}
 				}
-
-				if (m_pBoneNode.lock())
-				{
-					ImGui::Text("Binded to Bone : ");
-					ImGui::Text(m_pBoneNode.lock()->Get_Name());
-				}
-
 			}
 			else
 			{
-				m_pBoneNode.reset();
-				m_strBoneName.clear();
-			}
-
-			ImGui::Text("Use Easing Position"); ImGui::SameLine();
-			ImGui::Checkbox("##Is_Easing_Position", &m_tEffectParticleDesc.bEasingPosition);
-
-#pragma region Spawn Position
-			ImGui::Text("Min = Max"); ImGui::SameLine();
-			ImGui::Checkbox("##Is_MinMaxSame_SpawnPosition", &m_tEffectParticleDesc.bIsMinMaxSame_SpawnPosition);
-
-			if (m_tEffectParticleDesc.bIsMinMaxSame_SpawnPosition)
-				m_tEffectParticleDesc.vMaxSpawnPosition = m_tEffectParticleDesc.vMinSpawnPosition;
-
-			ImGui::Text("Min Spawn Position");
-			ImGui::DragFloat3("##Min_Spawn_Position", &m_tEffectParticleDesc.vMinSpawnPosition.x, 0.1f);
-
-			ImGui::Text("Max Spawn Position");
-			ImGui::DragFloat3("##Max_Spawn_Position", &m_tEffectParticleDesc.vMaxSpawnPosition.x, 0.1f);
-#pragma endregion
-
-#pragma region Spawn Offset Direction
-			ImGui::Text("Min = Max"); ImGui::SameLine();
-			ImGui::Checkbox("##Is_MinMaxSame_OffsetDirection", &m_tEffectParticleDesc.bIsMinMaxSame_OffsetDirection);
-
-			if (m_tEffectParticleDesc.bIsMinMaxSame_OffsetDirection)
-				m_tEffectParticleDesc.vMaxSpawnOffsetDirection = m_tEffectParticleDesc.vMinSpawnOffsetDirection;
-
-			ImGui::Text("Min Offset Direction");
-			ImGui::DragFloat3("##Min_Offset_Direction", &m_tEffectParticleDesc.vMinSpawnOffsetDirection.x, 0.1f);
-
-			ImGui::Text("Max Offset Direction");
-			ImGui::DragFloat3("##Max_Offset_Direction", &m_tEffectParticleDesc.vMaxSpawnOffsetDirection.x, 0.1f);
-#pragma endregion
-
-#pragma region Spawn Offset Range
-			ImGui::Text("Min = Max"); ImGui::SameLine();
-			ImGui::Checkbox("##Is_MinMaxSame_OffsetRange", &m_tEffectParticleDesc.bIsMinMaxSame_OffsetRange);
-
-			if (m_tEffectParticleDesc.bIsMinMaxSame_OffsetRange)
-				m_tEffectParticleDesc.vMaxSpawnOffsetRange = m_tEffectParticleDesc.vMinSpawnOffsetRange;
-
-			ImGui::Text("Min Offset Range");
-			ImGui::DragFloat3("##Min_Offset_Range", &m_tEffectParticleDesc.vMinSpawnOffsetRange.x, 0.1f);
-
-			ImGui::Text("Max Offset Range");
-			ImGui::DragFloat3("##Max_Offset_Range", &m_tEffectParticleDesc.vMaxSpawnOffsetRange.x, 0.1f);
-#pragma endregion
-
-#pragma endregion
-			ImGui::Separator();
-#pragma region Speed & Force
-			if (!m_tEffectParticleDesc.bEasingPosition)
-			{
-				ImGui::Text("Speed");
-				ImGui::NewLine();
-
-				ImGui::Text("Apply Easing"); ImGui::SameLine();
-				ImGui::Checkbox("##Is_Easing_Speed", &m_tEffectParticleDesc.bEasingSpeed);
-
-				if (m_tEffectParticleDesc.bEasingSpeed)
+#pragma region Easing Position
+				if (ImGui::TreeNode("Easing Position"))
 				{
-#pragma region Easing
-					// open easing list
 					const char* EasingItems[] =
 					{
 						"Linear"   ,
@@ -1805,149 +1931,14 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 						"BounceIn" , "BounceOut"
 					};
 
-					if (ImGui::BeginListBox("Speed Easing Type"))
+					if (ImGui::BeginListBox("Position Easing Type"))
 					{
-						for (int n(0); n < IM_ARRAYSIZE(EasingItems); n++)
+						for (int n = 0; n < IM_ARRAYSIZE(EasingItems); n++)
 						{
 							const bool is_selected = (m_tEffectParticleDesc.iSpeedEasingType == n);
 							if (ImGui::Selectable(EasingItems[n], is_selected))
-								m_tEffectParticleDesc.iSpeedEasingType = n;
-
-							if (is_selected)
-								ImGui::SetItemDefaultFocus();
-						}
-						ImGui::EndListBox();
-					}
-
-					ImGui::Text("Total Easing Time"); ImGui::SameLine();
-					ImGui::DragFloat("##Speed_Total_Easing_Time", &m_tEffectParticleDesc.fSpeedEasingTotalTime, 0.01f, -100.f, 100.f, "%.5f");
-#pragma endregion
-				}
-				else
-				{
-#pragma region Start Speed
-					ImGui::Text("Min = Max"); ImGui::SameLine();
-					ImGui::Checkbox("##Is_MinMaxSame_StartSpeed", &m_tEffectParticleDesc.bIsMinMaxSame_StartSpeed);
-
-					if (m_tEffectParticleDesc.bIsMinMaxSame_StartSpeed)
-						m_tEffectParticleDesc.vMaxSpeed = m_tEffectParticleDesc.vMinSpeed;
-
-					ImGui::Text("Min Start Speed");
-					ImGui::DragFloat3("##Min_Speed", &m_tEffectParticleDesc.vMinSpeed.x, 0.1f);
-
-					ImGui::Text("Max Start Speed");
-					ImGui::DragFloat3("##Max_Speed", &m_tEffectParticleDesc.vMaxSpeed.x, 0.1f);
-#pragma endregion
-
-#pragma region Speed Force
-					ImGui::Text("Min = Max"); ImGui::SameLine();
-					ImGui::Checkbox("##Is_MinMaxSame_SpeedForce", &m_tEffectParticleDesc.bIsMinMaxSame_SpeedForce);
-
-					if (m_tEffectParticleDesc.bIsMinMaxSame_SpeedForce)
-						m_tEffectParticleDesc.vMaxSpeedForce = m_tEffectParticleDesc.vMinSpeedForce;
-
-					ImGui::Text("Min Force");
-					ImGui::DragFloat3("##Min_Speed_Force", &m_tEffectParticleDesc.vMinSpeedForce.x, 0.1f);
-
-					ImGui::Text("Max Force");
-					ImGui::DragFloat3("##Max_Speed_Force", &m_tEffectParticleDesc.vMaxSpeedForce.x, 0.1f);
-#pragma endregion
-				}
-#pragma region Speed Limit
-				ImGui::Text("Min = Max"); ImGui::SameLine();
-				ImGui::Checkbox("##Is_MinMaxSame_SpeedLimit", &m_tEffectParticleDesc.bIsMinMaxSame_SpeedLimit);
-
-				if (m_tEffectParticleDesc.bIsMinMaxSame_SpeedLimit)
-					m_tEffectParticleDesc.vMaxLimitSpeed = m_tEffectParticleDesc.vMinLimitSpeed;
-
-				ImGui::Text("Min Limit Speed");
-				ImGui::DragFloat3("##Min_Limit_Speed", &m_tEffectParticleDesc.vMinLimitSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
-
-				ImGui::Text("Max Limit Speed");
-				ImGui::DragFloat3("##Max_Limit_Speed", &m_tEffectParticleDesc.vMaxLimitSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
-#pragma endregion
-			}
-			else
-			{
-#pragma region Easing
-				// open easing list
-				const char* EasingItems[] =
-				{
-					"Linear"   ,
-					"QuadIn"   , "QuadOut"	 , "QuadInOut"	 ,
-					"CubicIn"  , "CubicOut"	 , "CubicInOut"	 ,
-					"QuartIn"  , "QuartOut"	 , "QuartInOut"	 ,
-					"QuintIn"  , "QuintOut"	 , "QuintInOut"	 ,
-					"SineIn"   , "SineOut"	 , "SineInOut"	 ,
-					"ExpoIn"   , "ExpoOut"	 , "ExpoInOut"	 ,
-					"CircIn"   , "CircOut"	 , "CircInOut"	 ,
-					"ElasticIn", "ElasticOut", "ElasticInOut",
-					"BounceIn" , "BounceOut"
-				};
-
-				if (ImGui::BeginListBox("Position Easing Type"))
-				{
-					for (int n = 0; n < IM_ARRAYSIZE(EasingItems); n++)
-					{
-						const bool is_selected = (m_tEffectParticleDesc.iSpeedEasingType == n);
-						if (ImGui::Selectable(EasingItems[n], is_selected))
-						{
-							m_tEffectParticleDesc.iSpeedEasingType = n;
-						}
-
-						if (is_selected)
-							ImGui::SetItemDefaultFocus();
-					}
-					ImGui::EndListBox();
-				}
-
-				ImGui::Text("Position Easing Time"); ImGui::SameLine();
-				ImGui::DragFloat("##Position_Total_Easing_Time", &m_tEffectParticleDesc.fSpeedEasingTotalTime, 0.01f, -100.f, 100.f, "%.5f");
-
-				ImGui::Text("Min Goal Offset Position");
-				ImGui::DragFloat3("##Min_Goal_Offset_Position", &m_tEffectParticleDesc.vMinSpeed.x, 0.1f);
-
-				ImGui::Text("Max Goal Offset Position");
-				ImGui::DragFloat3("##Max_Goal_Offset_Position", &m_tEffectParticleDesc.vMaxSpeed.x, 0.1f);
-			}
-#pragma endregion
-			ImGui::Separator();
-
-#pragma region Rotation
-			if (_int(PARTICLETYPE::OUTBURST) != m_tEffectParticleDesc.iParticleType)
-			{
-				ImGui::Text("Rotation");
-				ImGui::NewLine();
-
-				ImGui::Text("Apply Easing"); ImGui::SameLine();
-				ImGui::Checkbox("##Is_Easing_Rotation", &m_tEffectParticleDesc.bEasingRotation);
-
-				if (m_tEffectParticleDesc.bEasingRotation)
-				{
-#pragma region Easing
-					// open easing list
-					const char* EasingItems[] =
-					{
-						"Linear"   ,
-						"QuadIn"   , "QuadOut"	 , "QuadInOut"	 ,
-						"CubicIn"  , "CubicOut"	 , "CubicInOut"	 ,
-						"QuartIn"  , "QuartOut"	 , "QuartInOut"	 ,
-						"QuintIn"  , "QuintOut"	 , "QuintInOut"	 ,
-						"SineIn"   , "SineOut"	 , "SineInOut"	 ,
-						"ExpoIn"   , "ExpoOut"	 , "ExpoInOut"	 ,
-						"CircIn"   , "CircOut"	 , "CircInOut"	 ,
-						"ElasticIn", "ElasticOut", "ElasticInOut",
-						"BounceIn" , "BounceOut"
-					};
-
-					if (ImGui::BeginListBox("Rotation Easing Type"))
-					{
-						for (int n(0); n < IM_ARRAYSIZE(EasingItems); n++)
-						{
-							const bool is_selected = (m_tEffectParticleDesc.iRotationEasingType == n);
-							if (ImGui::Selectable(EasingItems[n], is_selected))
 							{
-								m_tEffectParticleDesc.iRotationEasingType = n;
+								m_tEffectParticleDesc.iSpeedEasingType = n;
 							}
 
 							if (is_selected)
@@ -1956,382 +1947,489 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 						ImGui::EndListBox();
 					}
 
+					ImGui::Text("Position Easing Time"); ImGui::SameLine();
+					ImGui::DragFloat("##Position_Total_Easing_Time", &m_tEffectParticleDesc.fSpeedEasingTotalTime, 0.01f, -100.f, 100.f, "%.5f");
+
+					ImGui::Text("Min Goal Offset Position");
+					ImGui::DragFloat3("##Min_Goal_Offset_Position", &m_tEffectParticleDesc.vMinSpeed.x, 0.1f);
+
+					ImGui::Text("Max Goal Offset Position");
+					ImGui::DragFloat3("##Max_Goal_Offset_Position", &m_tEffectParticleDesc.vMaxSpeed.x, 0.1f);
+
+					ImGui::TreePop();
+				}
+#pragma endregion
+			}
+#pragma endregion
+			ImGui::Separator();
+#pragma region Rotation
+			if (_int(PARTICLETYPE::OUTBURST) != m_tEffectParticleDesc.iParticleType)
+			{
+				if (ImGui::CollapsingHeader("Rotation"))
+				{
+					ImGui::Text("Apply Easing"); ImGui::SameLine();
+					ImGui::Checkbox("##Is_Easing_Rotation", &m_tEffectParticleDesc.bEasingRotation);
+
+					ImGui::Separator();
+
+					if (m_tEffectParticleDesc.bEasingRotation)
+					{
+#pragma region Easing Rotation
+						if (ImGui::TreeNode("Easing Rotation List"))
+						{
+							// open easing list
+							const char* EasingItems[] =
+							{
+								"Linear"   ,
+								"QuadIn"   , "QuadOut"	 , "QuadInOut"	 ,
+								"CubicIn"  , "CubicOut"	 , "CubicInOut"	 ,
+								"QuartIn"  , "QuartOut"	 , "QuartInOut"	 ,
+								"QuintIn"  , "QuintOut"	 , "QuintInOut"	 ,
+								"SineIn"   , "SineOut"	 , "SineInOut"	 ,
+								"ExpoIn"   , "ExpoOut"	 , "ExpoInOut"	 ,
+								"CircIn"   , "CircOut"	 , "CircInOut"	 ,
+								"ElasticIn", "ElasticOut", "ElasticInOut",
+								"BounceIn" , "BounceOut"
+							};
+
+							if (ImGui::BeginListBox("Rotation Easing Type"))
+							{
+								for (int n(0); n < IM_ARRAYSIZE(EasingItems); n++)
+								{
+									const bool is_selected = (m_tEffectParticleDesc.iRotationEasingType == n);
+									if (ImGui::Selectable(EasingItems[n], is_selected))
+									{
+										m_tEffectParticleDesc.iRotationEasingType = n;
+									}
+
+									if (is_selected)
+										ImGui::SetItemDefaultFocus();
+								}
+								ImGui::EndListBox();
+							}
+
+							ImGui::TreePop();
+						}
+
+						ImGui::Text("Total Easing Time"); ImGui::SameLine();
+						ImGui::DragFloat("##Rotation_Total_Easing_Time", &m_tEffectParticleDesc.fRotationEasingTotalTime, 0.01f, -100.f, 100.f, "%.5f");
+
+						ImGui::Text("Start Rotation");
+						ImGui::DragFloat3("##Min_Limit_Rotation", &m_tEffectParticleDesc.vMinLimitRotation.x, 0.1f);
+
+						ImGui::Text("Target Rotation");
+						ImGui::DragFloat3("##Max_Limit_Rotation", &m_tEffectParticleDesc.vMaxLimitRotation.x, 0.1f);
+#pragma endregion
+					}
+					else
+					{
+						if (ImGui::TreeNode("Start Rotation"))
+						{
+							ImGui::Text("Min = Max"); ImGui::SameLine();
+							ImGui::Checkbox("##Is_MinMaxSame_StartRotation", &m_tEffectParticleDesc.bIsMinMaxSame_StartRotation);
+
+							if (m_tEffectParticleDesc.bIsMinMaxSame_StartRotation)
+								m_tEffectParticleDesc.vMaxStartRotation = m_tEffectParticleDesc.vMinStartRotation;
+
+							ImGui::Text("Min Start Rotation");
+							ImGui::DragFloat3("##Min_Start_Rotation", &m_tEffectParticleDesc.vMinStartRotation.x, 0.1f);
+
+							ImGui::Text("Max Start Rotation");
+							ImGui::DragFloat3("##Max_Start_Rotation", &m_tEffectParticleDesc.vMaxStartRotation.x, 0.1f);
+
+							ImGui::TreePop();
+						}
+
+						if (ImGui::TreeNode("Rotation Speed"))
+						{
+							ImGui::Text("Min = Max"); ImGui::SameLine();
+							ImGui::Checkbox("##Is_MinMaxSame_RotationSpeed", &m_tEffectParticleDesc.bIsMinMaxSame_RotationSpeed);
+
+							if (m_tEffectParticleDesc.bIsMinMaxSame_RotationSpeed)
+								m_tEffectParticleDesc.vMaxRotationSpeed = m_tEffectParticleDesc.vMinRotationSpeed;
+
+							ImGui::Text("Min Rotation Speed");
+							ImGui::DragFloat3("##Min_Rotation_Speed", &m_tEffectParticleDesc.vMinRotationSpeed.x, 0.1f);
+
+							ImGui::Text("Max Rotation Speed");
+							ImGui::DragFloat3("##Max_Rotation_Speed", &m_tEffectParticleDesc.vMaxRotationSpeed.x, 0.1f);
+
+							ImGui::TreePop();
+						}
+
+						if (ImGui::TreeNode("Rotation Force"))
+						{
+							ImGui::Text("Min = Max"); ImGui::SameLine();
+							ImGui::Checkbox("##Is_MinMaxSame_RotationForce", &m_tEffectParticleDesc.bIsMinMaxSame_RotationForce);
+
+							if (m_tEffectParticleDesc.bIsMinMaxSame_RotationForce)
+								m_tEffectParticleDesc.vMaxRotationForce = m_tEffectParticleDesc.vMinRotationForce;
+
+							ImGui::Text("Min Rotation Force");
+							ImGui::DragFloat3("##Min_Rotation_Force", &m_tEffectParticleDesc.vMinRotationForce.x, 0.1f);
+
+							ImGui::Text("Max Rotation Force");
+							ImGui::DragFloat3("##Max_Rotation_Force", &m_tEffectParticleDesc.vMaxRotationForce.x, 0.1f);
+
+							ImGui::TreePop();
+						}
+
+						if (ImGui::TreeNode("Rotation Limit"))
+						{
+							ImGui::Text("Min = Max"); ImGui::SameLine();
+							ImGui::Checkbox("##Is_MinMaxSame_RotationLimit", &m_tEffectParticleDesc.bIsMinMaxSame_RotationLimit);
+
+							if (m_tEffectParticleDesc.bIsMinMaxSame_RotationLimit)
+								m_tEffectParticleDesc.vMaxLimitRotation = m_tEffectParticleDesc.vMinLimitRotation;
+
+							ImGui::Text("Min Limit Rotation");
+							ImGui::DragFloat3("##Min_Limit_Rotation", &m_tEffectParticleDesc.vMinLimitRotation.x, 0.1f);
+
+							ImGui::Text("Max Limit Rotation");
+							ImGui::DragFloat3("##Max_Limit_Rotation", &m_tEffectParticleDesc.vMaxLimitRotation.x, 0.1f);
+
+							ImGui::TreePop();
+						}
+					}
+				}
+			}
+
+#pragma endregion
+
+#pragma region Scale
+			if (ImGui::CollapsingHeader("Scale"))
+			{
+				ImGui::Text("Apply Easing"); ImGui::SameLine();
+				ImGui::Checkbox("##Is_Easing_Scale", &m_tEffectParticleDesc.bEasingScale);
+
+				ImGui::Separator();
+
+				if (m_tEffectParticleDesc.bEasingScale)
+				{
+#pragma region Easing
+					if (ImGui::TreeNode("Easing Scale List"))
+					{
+						// open easing list
+						const char* EasingItems[] =
+						{
+							"Linear"   ,
+							"QuadIn"   , "QuadOut"	 , "QuadInOut"	 ,
+							"CubicIn"  , "CubicOut"	 , "CubicInOut"	 ,
+							"QuartIn"  , "QuartOut"	 , "QuartInOut"	 ,
+							"QuintIn"  , "QuintOut"	 , "QuintInOut"	 ,
+							"SineIn"   , "SineOut"	 , "SineInOut"	 ,
+							"ExpoIn"   , "ExpoOut"	 , "ExpoInOut"	 ,
+							"CircIn"   , "CircOut"	 , "CircInOut"	 ,
+							"ElasticIn", "ElasticOut", "ElasticInOut",
+							"BounceIn" , "BounceOut"
+						};
+
+						if (ImGui::BeginListBox("Scale Easing Type"))
+						{
+							for (int n = 0; n < IM_ARRAYSIZE(EasingItems); n++)
+							{
+								const bool is_selected = (m_tEffectParticleDesc.iScaleEasingType == n);
+
+								if (ImGui::Selectable(EasingItems[n], is_selected))
+									m_tEffectParticleDesc.iScaleEasingType = n;
+
+								if (is_selected)
+									ImGui::SetItemDefaultFocus();
+							}
+							ImGui::EndListBox();
+						}
+
+						ImGui::TreePop();
+					}
+
 					ImGui::Text("Total Easing Time"); ImGui::SameLine();
-					ImGui::DragFloat("##Rotation_Total_Easing_Time", &m_tEffectParticleDesc.fRotationEasingTotalTime, 0.01f, -100.f, 100.f, "%.5f");
+					ImGui::DragFloat("##Scale_Total_Easing_Time", &m_tEffectParticleDesc.fScaleEasingTotalTime, 0.01f, 0.f, 0.f, "%.5f");
+
+					ImGui::Text("Start Scale");
+					ImGui::DragFloat3("##Min_Limit_Scale", &m_tEffectParticleDesc.vMinLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
+
+					ImGui::Text("Target Scale");
+					ImGui::DragFloat3("##Max_Limit_Scale", &m_tEffectParticleDesc.vMaxLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
 #pragma endregion
 				}
 				else
 				{
-#pragma region Start Rotation
-					ImGui::Text("Min = Max"); ImGui::SameLine();
-					ImGui::Checkbox("##Is_MinMaxSame_StartRotation", &m_tEffectParticleDesc.bIsMinMaxSame_StartRotation);
-
-					if (m_tEffectParticleDesc.bIsMinMaxSame_StartRotation)
-						m_tEffectParticleDesc.vMaxStartRotation = m_tEffectParticleDesc.vMinStartRotation;
-
-					ImGui::Text("Min Start Rotation");
-					ImGui::DragFloat3("##Min_Start_Rotation", &m_tEffectParticleDesc.vMinStartRotation.x, 0.1f);
-
-					ImGui::Text("Max Start Rotation");
-					ImGui::DragFloat3("##Max_Start_Rotation", &m_tEffectParticleDesc.vMaxStartRotation.x, 0.1f);
-#pragma endregion
-
-#pragma region Rotation Speed
-					ImGui::Text("Min = Max"); ImGui::SameLine();
-					ImGui::Checkbox("##Is_MinMaxSame_RotationSpeed", &m_tEffectParticleDesc.bIsMinMaxSame_RotationSpeed);
-
-					if (m_tEffectParticleDesc.bIsMinMaxSame_RotationSpeed)
-						m_tEffectParticleDesc.vMaxRotationSpeed = m_tEffectParticleDesc.vMinRotationSpeed;
-
-					ImGui::Text("Min Rotation Speed");
-					ImGui::DragFloat3("##Min_Rotation_Speed", &m_tEffectParticleDesc.vMinRotationSpeed.x, 0.1f);
-
-					ImGui::Text("Max Rotation Speed");
-					ImGui::DragFloat3("##Max_Rotation_Speed", &m_tEffectParticleDesc.vMaxRotationSpeed.x, 0.1f);
-#pragma endregion
-
-#pragma region Rotation Force
-					ImGui::Text("Min = Max"); ImGui::SameLine();
-					ImGui::Checkbox("##Is_MinMaxSame_RotationForce", &m_tEffectParticleDesc.bIsMinMaxSame_RotationForce);
-
-					if (m_tEffectParticleDesc.bIsMinMaxSame_RotationForce)
-						m_tEffectParticleDesc.vMaxRotationForce = m_tEffectParticleDesc.vMinRotationForce;
-
-					ImGui::Text("Min Rotation Force");
-					ImGui::DragFloat3("##Min_Rotation_Force", &m_tEffectParticleDesc.vMinRotationForce.x, 0.1f);
-
-					ImGui::Text("Max Rotation Force");
-					ImGui::DragFloat3("##Max_Rotation_Force", &m_tEffectParticleDesc.vMaxRotationForce.x, 0.1f);
-#pragma endregion
-				}
-#pragma region Rotation Limit
-				ImGui::Text("Min = Max"); ImGui::SameLine();
-				ImGui::Checkbox("##Is_MinMaxSame_RotationLimit", &m_tEffectParticleDesc.bIsMinMaxSame_RotationLimit);
-				
-				if (m_tEffectParticleDesc.bIsMinMaxSame_RotationLimit)
-					m_tEffectParticleDesc.vMaxLimitRotation = m_tEffectParticleDesc.vMinLimitRotation;
-
-				ImGui::Text("Min Limit Rotation");
-				ImGui::DragFloat3("##Min_Limit_Rotation", &m_tEffectParticleDesc.vMinLimitRotation.x, 0.1f);
-
-				ImGui::Text("Max Limit Rotation");
-				ImGui::DragFloat3("##Max_Limit_Rotation", &m_tEffectParticleDesc.vMaxLimitRotation.x, 0.1f);
-#pragma endregion
-			}
-
-#pragma endregion
-
-			ImGui::NewLine();
-			ImGui::Separator();
-			ImGui::NewLine();
-			ImGui::Separator();
-			ImGui::NewLine();
-
-#pragma region Scale
-			ImGui::Text("Scale");
-			ImGui::NewLine();
-
-			ImGui::Text("Apply Easing"); ImGui::SameLine();
-			ImGui::Checkbox("##Is_Easing_Scale", &m_tEffectParticleDesc.bEasingScale);
-
-			ImGui::Separator();
-
-			if (m_tEffectParticleDesc.bEasingScale)
-			{
-#pragma region Easing
-				// open easing list
-				const char* EasingItems[] =
-				{
-					"Linear"   ,
-					"QuadIn"   , "QuadOut"	 , "QuadInOut"	 ,
-					"CubicIn"  , "CubicOut"	 , "CubicInOut"	 ,
-					"QuartIn"  , "QuartOut"	 , "QuartInOut"	 ,
-					"QuintIn"  , "QuintOut"	 , "QuintInOut"	 ,
-					"SineIn"   , "SineOut"	 , "SineInOut"	 ,
-					"ExpoIn"   , "ExpoOut"	 , "ExpoInOut"	 ,
-					"CircIn"   , "CircOut"	 , "CircInOut"	 ,
-					"ElasticIn", "ElasticOut", "ElasticInOut",
-					"BounceIn" , "BounceOut"
-				};
-
-				if (ImGui::BeginListBox("Scale Easing Type"))
-				{
-					for (int n = 0; n < IM_ARRAYSIZE(EasingItems); n++)
+					if (ImGui::TreeNode("Start Scale"))
 					{
-						const bool is_selected = (m_tEffectParticleDesc.iScaleEasingType == n);
+						ImGui::Text("Min = Max"); ImGui::SameLine();
+						ImGui::Checkbox("##Is_MinMaxSame_StartScale", &m_tEffectParticleDesc.bIsMinMaxSame_StartScale);
 
-						if (ImGui::Selectable(EasingItems[n], is_selected))
-							m_tEffectParticleDesc.iScaleEasingType = n;
+						if (m_tEffectParticleDesc.bIsMinMaxSame_StartScale)
+							m_tEffectParticleDesc.vMaxStartScale = m_tEffectParticleDesc.vMinStartScale;
 
-						if (is_selected)
-							ImGui::SetItemDefaultFocus();
+						ImGui::Text("Min Start Scale");
+						ImGui::DragFloat3("##Min_Start_Scale", &m_tEffectParticleDesc.vMinStartScale.x, 0.1f);
+
+						ImGui::Text("Max Start Scale");
+						ImGui::DragFloat3("##Max_Start_Scale", &m_tEffectParticleDesc.vMaxStartScale.x, 0.1f);
+
+						ImGui::TreePop();
 					}
-					ImGui::EndListBox();
+
+					if (ImGui::TreeNode("Scale Speed"))
+					{
+						ImGui::Text("Min = Max"); ImGui::SameLine();
+						ImGui::Checkbox("##Is_MinMaxSame_ScaleSpeed", &m_tEffectParticleDesc.bIsMinMaxSame_ScaleSpeed);
+
+						if (m_tEffectParticleDesc.bIsMinMaxSame_ScaleSpeed)
+							m_tEffectParticleDesc.vMaxScaleSpeed = m_tEffectParticleDesc.vMinScaleSpeed;
+
+						ImGui::Text("Min Scale Speed");
+						ImGui::DragFloat3("##Min_Scale_Speed", &m_tEffectParticleDesc.vMinScaleSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
+
+						ImGui::Text("Max Scale Speed");
+						ImGui::DragFloat3("##Max_Scale_Speed", &m_tEffectParticleDesc.vMaxScaleSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
+
+						ImGui::TreePop();
+					}
+
+					if (ImGui::TreeNode("Scale Force"))
+					{
+						ImGui::Text("Min = Max"); ImGui::SameLine();
+						ImGui::Checkbox("##Is_MinMaxSame_ScaleForce", &m_tEffectParticleDesc.bIsMinMaxSame_ScaleForce);
+
+						if (m_tEffectParticleDesc.bIsMinMaxSame_ScaleForce)
+							m_tEffectParticleDesc.vMaxScaleForce = m_tEffectParticleDesc.vMinScaleForce;
+
+						ImGui::Text("Min Scale Force");
+						ImGui::DragFloat3("##Min_Scale_Force", &m_tEffectParticleDesc.vMinScaleForce.x, 0.1f, 0.f, 0.f, "%.5f");
+
+						ImGui::Text("Max Scale Force");
+						ImGui::DragFloat3("##Max_Scale_Force", &m_tEffectParticleDesc.vMaxScaleForce.x, 0.1f, 0.f, 0.f, "%.5f");
+
+						ImGui::TreePop();
+					}
+
+					if (ImGui::TreeNode("Scale Limit"))
+					{
+						ImGui::Text("Min = Max"); ImGui::SameLine();
+						ImGui::Checkbox("##Is_MinMaxSame_ScaleLimit", &m_tEffectParticleDesc.bIsMinMaxSame_ScaleLimit);
+
+						if (m_tEffectParticleDesc.bIsMinMaxSame_ScaleLimit)
+							m_tEffectParticleDesc.vMaxLimitScale = m_tEffectParticleDesc.vMinLimitScale;
+
+						ImGui::Text("Min Limit Scale");
+						ImGui::DragFloat3("##Min_Limit_Scale", &m_tEffectParticleDesc.vMinLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
+
+						ImGui::Text("Max Limit Scale");
+						ImGui::DragFloat3("##Max_Limit_Scale", &m_tEffectParticleDesc.vMaxLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
+
+						ImGui::TreePop();
+					}
 				}
-
-				ImGui::Text("Total Easing Time"); ImGui::SameLine();
-				ImGui::DragFloat("##Scale_Total_Easing_Time", &m_tEffectParticleDesc.fScaleEasingTotalTime, 0.01f, 0.f, 0.f, "%.5f");
-#pragma endregion
 			}
-			else
-			{
-#pragma region Start Scale
-				static _bool bIsMinMaxSame_StartScale;
-				ImGui::Text("Min = Max"); ImGui::SameLine();
-				ImGui::Checkbox("##Is_MinMaxSame_StartScale", &bIsMinMaxSame_StartScale);
-
-				if (bIsMinMaxSame_StartScale)
-					m_tEffectParticleDesc.vMaxStartScale = m_tEffectParticleDesc.vMinStartScale;
-
-				ImGui::Text("Min Start Scale");
-				ImGui::DragFloat3("##Min_Start_Scale", &m_tEffectParticleDesc.vMinStartScale.x, 0.1f);
-
-				ImGui::Text("Max Start Scale");
-				ImGui::DragFloat3("##Max_Start_Scale", &m_tEffectParticleDesc.vMaxStartScale.x, 0.1f);
 #pragma endregion
-				ImGui::Separator();
-#pragma region Scale Speed
-				static _bool bIsMinMaxSame_ScaleSpeed;
-				ImGui::Text("Min = Max"); ImGui::SameLine();
-				ImGui::Checkbox("##Is_MinMaxSame_ScaleSpeed", &bIsMinMaxSame_ScaleSpeed);
-
-				ImGui::Text("Min Scale Speed");
-				ImGui::DragFloat3("##Min_Scale_Speed", &m_tEffectParticleDesc.vMinScaleSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
-
-				if (bIsMinMaxSame_ScaleSpeed)
-					m_tEffectParticleDesc.vMaxScaleSpeed = m_tEffectParticleDesc.vMinScaleSpeed;
-
-				ImGui::Text("Max Scale Speed");
-				ImGui::DragFloat3("##Max_Scale_Speed", &m_tEffectParticleDesc.vMaxScaleSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
-#pragma endregion
-				ImGui::Separator();
-#pragma region Scale Force
-				static _bool bIsMinMaxSame_ScaleForce;
-				ImGui::Text("Min = Max"); ImGui::SameLine();
-				ImGui::Checkbox("##Is_MinMaxSame_ScaleForce", &bIsMinMaxSame_ScaleForce);
-
-				ImGui::Text("Min Scale Force");
-				ImGui::DragFloat3("##Min_Scale_Force", &m_tEffectParticleDesc.vMinScaleForce.x, 0.1f, 0.f, 0.f, "%.5f");
-
-				if (bIsMinMaxSame_ScaleForce)
-					m_tEffectParticleDesc.vMaxScaleForce = m_tEffectParticleDesc.vMinScaleForce;
-
-				ImGui::Text("Max Scale Force");
-				ImGui::DragFloat3("##Max_Scale_Force", &m_tEffectParticleDesc.vMaxScaleForce.x, 0.1f, 0.f, 0.f, "%.5f");
-#pragma endregion
-			}
-			ImGui::Separator();
-#pragma region Scale Limit
-			static _bool bIsMinMaxSame_ScaleLimit;
-			ImGui::Text("Min = Max"); ImGui::SameLine();
-			ImGui::Checkbox("##Is_MinMaxSame_ScaleLimit", &bIsMinMaxSame_ScaleLimit);
-
-			ImGui::Text("Min Limit Scale");
-			ImGui::DragFloat3("##Min_Limit_Scale", &m_tEffectParticleDesc.vMinLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
-
-			if (bIsMinMaxSame_ScaleLimit)
-				m_tEffectParticleDesc.vMaxLimitScale = m_tEffectParticleDesc.vMinLimitScale;
-
-			ImGui::Text("Max Limit Scale");
-			ImGui::DragFloat3("##Max_Limit_Scale", &m_tEffectParticleDesc.vMaxLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
-#pragma endregion
-#pragma endregion
-
-			ImGui::NewLine();
-			ImGui::Separator();
-			ImGui::NewLine();
-			ImGui::Separator();
-			ImGui::NewLine();
 
 #pragma region Colors
-			ImGui::Text("Colors");
-
-			ImGui::Separator();
-
-#pragma region Shader Pass
-			ImGui::Text("Shader Pass");
-			ImGui::Text("Pass %d : Sprite Image (Discard Black)", PASS_SPRITE_BLACKDISCARD);
-			ImGui::Text("Pass %d : Default		(Discard Alpha)", PASS_ALPHADISCARD);
-			ImGui::Text("Pass %d : Default		(Discard Black)", PASS_BLACKDISCARD);
-			ImGui::Text("Pass %d : Sprite Image (Discard Alpha)", PASS_SPRITE_ALPHADISCARD);
-			ImGui::InputInt("Shader Pass", &m_tEffectParticleDesc.iShaderPassIndex);
-#pragma endregion
-
-			ImGui::Separator();
-
-#pragma region For. Sprite
-			if (
-				(PASS_SPRITE_BLACKDISCARD == m_tEffectParticleDesc.iShaderPassIndex)
-				||
-				(PASS_SPRITE_ALPHADISCARD == m_tEffectParticleDesc.iShaderPassIndex)
-				)
+			if (ImGui::CollapsingHeader("Colors"))
 			{
-				ImGui::Text("Loop Sprite"); ImGui::SameLine();
-				ImGui::Checkbox("##LoopSprite", &m_tEffectParticleDesc.bLoopSprite);
+				if (ImGui::TreeNode("Shader Pass"))
+				{
+#pragma region Shader Pass
+					ImGui::Text("Pass %d : Sprite Image (Discard Black)", PASS_SPRITE_BLACKDISCARD);
+					ImGui::Text("Pass %d : Default		(Discard Alpha)", PASS_ALPHADISCARD);
+					ImGui::Text("Pass %d : Default		(Discard Black)", PASS_BLACKDISCARD);
+					ImGui::Text("Pass %d : Sprite Image (Discard Alpha)", PASS_SPRITE_ALPHADISCARD);
+					ImGui::InputInt("Shader Pass", &m_tEffectParticleDesc.iShaderPassIndex);
+#pragma endregion
+					ImGui::TreePop();
+				}
+#pragma region For. Sprite
+				if (
+					(PASS_SPRITE_BLACKDISCARD == m_tEffectParticleDesc.iShaderPassIndex)
+					||
+					(PASS_SPRITE_ALPHADISCARD == m_tEffectParticleDesc.iShaderPassIndex)
+					)
+				{
+					if (ImGui::TreeNode("Sprite Option"))
+					{
+						ImGui::Text("Loop Sprite"); ImGui::SameLine();
+						ImGui::Checkbox("##LoopSprite", &m_tEffectParticleDesc.bLoopSprite);
 
-				ImGui::InputInt("NumFramesX", &m_tEffectParticleDesc.iNumFrameX);
-				ImGui::InputInt("NumFramesY", &m_tEffectParticleDesc.iNumFrameY);
-				ImGui::InputFloat("FrameSpeed", &m_tEffectParticleDesc.fSpriteSpeed);
+						ImGui::InputInt("NumFramesX", &m_tEffectParticleDesc.iNumFrameX);
+						ImGui::InputInt("NumFramesY", &m_tEffectParticleDesc.iNumFrameY);
+						ImGui::InputFloat("FrameSpeed", &m_tEffectParticleDesc.fSpriteSpeed);
+
+						ImGui::TreePop();
+					}
+				}
+#pragma endregion
+#pragma region Discard Ratio
+				ImGui::Text("Discard Rate"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);
+				ImGui::DragFloat("##Discard_Ratio", &m_tEffectParticleDesc.fDiscardRatio, 0.01f, 0.f, 3.f);
+#pragma endregion
+#pragma region Is Gray Only Use Red
+				ImGui::Text("Is Gray Only Use Red"); ImGui::SameLine();
+				ImGui::Checkbox("##Is_Gray_Only_Use_Red", &m_tEffectParticleDesc.IsGrayOnlyUseRed);
+#pragma endregion
+				if (ImGui::TreeNode("Start Color"))
+				{
+					ImGui::Text("Min = Max"); ImGui::SameLine();
+					ImGui::Checkbox("##Is_MinMaxSame_StartColor", &m_tEffectParticleDesc.bIsMinMaxSame_StartColor);
+
+					ImGui::Text("Min Start Color");
+					ImGui::ColorPicker4("##Min_Start_Color", &m_tEffectParticleDesc.vMinStartColor.x, ImGuiColorEditFlags_DefaultOptions_);
+					ImGui::DragFloat4("##Min_Start_Color", &m_tEffectParticleDesc.vMinStartColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_Logarithmic);
+
+					if (m_tEffectParticleDesc.bIsMinMaxSame_StartColor)
+						m_tEffectParticleDesc.vMaxStartColor = m_tEffectParticleDesc.vMinStartColor;
+					else
+					{
+						ImGui::Text("Max Start Color");
+						ImGui::ColorPicker4("##Max_Start_Color", &m_tEffectParticleDesc.vMaxStartColor.x, ImGuiColorEditFlags_DefaultOptions_);
+						ImGui::DragFloat4("##Max_Start_Color", &m_tEffectParticleDesc.vMaxStartColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_Logarithmic);
+					}
+
+					ImGui::TreePop();
+				}
+				if (ImGui::TreeNode("Color Speed"))
+				{
+					ImGui::Text("Min = Max"); ImGui::SameLine();
+					ImGui::Checkbox("##Is_MinMaxSame_ColorSpeed", &m_tEffectParticleDesc.bIsMinMaxSame_ColorSpeed);
+
+					if (m_tEffectParticleDesc.bIsMinMaxSame_ColorSpeed)
+						m_tEffectParticleDesc.vMaxColorSpeed = m_tEffectParticleDesc.vMinColorSpeed;
+
+					ImGui::Text("Min Color Speed");
+					ImGui::DragFloat4("##Min_Color_Speed", &m_tEffectParticleDesc.vMinColorSpeed.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+
+					ImGui::Text("Max Color Speed");
+					ImGui::DragFloat4("##Max_Color_Speed", &m_tEffectParticleDesc.vMaxColorSpeed.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+
+					ImGui::TreePop();
+				}
+				if (ImGui::TreeNode("Color Force"))
+				{
+					ImGui::Text("Min = Max"); ImGui::SameLine();
+					ImGui::Checkbox("##Is_MinMaxSame_ColorForce", &m_tEffectParticleDesc.bIsMinMaxSame_ColorForce);
+
+					if (m_tEffectParticleDesc.bIsMinMaxSame_ColorForce)
+						m_tEffectParticleDesc.vMaxColorForce = m_tEffectParticleDesc.vMinColorForce;
+
+					ImGui::Text("Min Color Force");
+					ImGui::DragFloat4("##Min_Color_Force", &m_tEffectParticleDesc.vMinColorForce.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+
+					ImGui::Text("Max Color Force");
+					ImGui::DragFloat4("##Max_Color_Force", &m_tEffectParticleDesc.vMaxColorForce.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+
+					ImGui::TreePop();
+				}
+				if (ImGui::TreeNode("Color Limit"))
+				{
+					ImGui::Text("Min = Max"); ImGui::SameLine();
+					ImGui::Checkbox("##Is_MinMaxSame_ColorLimit", &m_tEffectParticleDesc.bIsMinMaxSame_ColorLimit);
+
+					if (m_tEffectParticleDesc.bIsMinMaxSame_ColorLimit)
+						m_tEffectParticleDesc.vMaxColor = m_tEffectParticleDesc.vMinColor;
+
+					ImGui::Text("Min Limit Color");
+					ImGui::DragFloat4("##Min_Color", &m_tEffectParticleDesc.vMinColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+
+					ImGui::Text("Max Limit Color");
+					ImGui::DragFloat4("##Max_Color", &m_tEffectParticleDesc.vMaxColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+
+					ImGui::TreePop();
+				}
 			}
 #pragma endregion
-
-			ImGui::Separator();
-
-#pragma region Discard Ratio
-			ImGui::Text("Discard Ratio");
-			ImGui::DragFloat("##Discard_Ratio", &m_tEffectParticleDesc.fDiscardRatio, 0.01f, 0.f, 3.f);
-#pragma endregion
-
-			ImGui::Separator();
-
-#pragma region Is Gray Only Use Red
-			ImGui::Text("Is Gray Only Use Red");
-			ImGui::SameLine();
-			ImGui::Checkbox("##Is_Gray_Only_Use_Red", &m_tEffectParticleDesc.IsGrayOnlyUseRed);
-#pragma endregion
-
-			ImGui::Separator();
-
-#pragma region Start Color
-			static _bool bIsMinMaxSame_StartColor;
-			ImGui::Text("Min = Max"); ImGui::SameLine();
-			ImGui::Checkbox("##Is_MinMaxSame_StartColor", &bIsMinMaxSame_StartColor);
-
-			if (bIsMinMaxSame_StartColor)
-				m_tEffectParticleDesc.vMaxStartColor = m_tEffectParticleDesc.vMinStartColor;
-
-			ImGui::Text("Min Start Color");
-			ImGui::ColorPicker4("##Min_Start_Color", &m_tEffectParticleDesc.vMinStartColor.x, ImGuiColorEditFlags_DefaultOptions_);
-			ImGui::DragFloat4("##Min_Start_Color", &m_tEffectParticleDesc.vMinStartColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_Logarithmic);
-
-			ImGui::Text("Max Start Color");
-			ImGui::ColorPicker4("##Max_Start_Color", &m_tEffectParticleDesc.vMaxStartColor.x, ImGuiColorEditFlags_DefaultOptions_);
-			ImGui::DragFloat4("##Max_Start_Color", &m_tEffectParticleDesc.vMaxStartColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_Logarithmic);
-#pragma endregion
-
-			ImGui::Separator();
-
-#pragma region Color Speed 
-			static _bool bIsMinMaxSame_ColorSpeed;
-			ImGui::Text("Min = Max"); ImGui::SameLine();
-			ImGui::Checkbox("##Is_MinMaxSame_ColorSpeed", &bIsMinMaxSame_ColorSpeed);
-
-			if (bIsMinMaxSame_ColorSpeed)
-				m_tEffectParticleDesc.vMaxColorSpeed = m_tEffectParticleDesc.vMinColorSpeed;
-
-			ImGui::Text("Min Color Speed");
-			ImGui::DragFloat4("##Min_Color_Speed", &m_tEffectParticleDesc.vMinColorSpeed.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
-
-			ImGui::Text("Max Color Speed");
-			ImGui::DragFloat4("##Max_Color_Speed", &m_tEffectParticleDesc.vMaxColorSpeed.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
-#pragma endregion%
-
-			ImGui::Separator();
-
-
-#pragma region Color Force
-			static _bool bIsMinMaxSame_ColorForce;
-			ImGui::Text("Min = Max"); ImGui::SameLine();
-			ImGui::Checkbox("##Is_MinMaxSame_ColorForce", &bIsMinMaxSame_ColorForce);
-
-			ImGui::Text("Min Color Force");
-			ImGui::DragFloat4("##Min_Color_Force", &m_tEffectParticleDesc.vMinColorForce.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
-
-			if (bIsMinMaxSame_ColorForce)
-				m_tEffectParticleDesc.vMaxColorForce = m_tEffectParticleDesc.vMinColorForce;
-
-			ImGui::Text("Max Color Force");
-			ImGui::DragFloat4("##Max_Color_Force", &m_tEffectParticleDesc.vMaxColorForce.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
-#pragma endregion
-
-			ImGui::Separator();
-
-#pragma region Color Limit
-			static _bool bIsMinMaxSame_ColorLimit;
-			ImGui::Text("Min = Max"); ImGui::SameLine();
-			ImGui::Checkbox("##Is_MinMaxSame_ColorLimit", &bIsMinMaxSame_ColorLimit);
-
-			ImGui::Text("Min Limit Color");
-			ImGui::DragFloat4("##Min_Color", &m_tEffectParticleDesc.vMinColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
-
-			if (bIsMinMaxSame_ColorLimit)
-				m_tEffectParticleDesc.vMaxColor = m_tEffectParticleDesc.vMinColor;
-
-			ImGui::Text("Max Limit Color");
-			ImGui::DragFloat4("##Max_Color", &m_tEffectParticleDesc.vMaxColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
-#pragma endregion
-
-#pragma endregion
-			ImGui::Separator();
 #pragma region Textures
-#pragma region Diffuse Texture
-			ImGui::Text("Diffuse Start UV");
-			ImGui::DragFloat2("##Diffuse_Start_UV", &m_tEffectParticleDesc.vDiffuseStartUV.x, 0.1f);
+			if (ImGui::CollapsingHeader("Textures"))
+			{
+				if (ImGui::TreeNode("Diffuse"))
+				{
+					ImGui::Text("Diffuse Index");
+					ImGui::SetNextItemWidth(100.f);
+					ImGui::InputInt("##Diffuse_Index", &m_tEffectParticleDesc.iDiffuseIndex);
 
-			ImGui::InputInt("Diffuse Index", &m_tEffectParticleDesc.iDiffuseIndex);
+					ImGui::Text("Diffuse Start UV");
+					ImGui::DragFloat2("##Diffuse_Start_UV", &m_tEffectParticleDesc.vDiffuseStartUV.x, 0.1f);
 
-			ImGui::Text("Diffuse UV Speed");
-			ImGui::DragFloat2("##Diffuse_UV_Speed", &m_tEffectParticleDesc.vDiffuseUVSpeed.x, 0.1f);
+					ImGui::Text("Diffuse UV Speed");
+					ImGui::DragFloat2("##Diffuse_UV_Speed", &m_tEffectParticleDesc.vDiffuseUVSpeed.x, 0.1f);
 
-			ImGui::Text("Diffuse UV Force");
-			ImGui::DragFloat2("##Diffuse UV_Force", &m_tEffectParticleDesc.vDiffuseUVForce.x, 0.1f);
+					ImGui::Text("Diffuse UV Force");
+					ImGui::DragFloat2("##Diffuse UV_Force", &m_tEffectParticleDesc.vDiffuseUVForce.x, 0.1f);
 
-			ImGui::Text("Diffuse UV Max");
-			ImGui::DragFloat2("##Diffuse_UV_Max", &m_tEffectParticleDesc.vDiffuseUVMax.x, 0.1f);
-#pragma endregion
-			ImGui::Separator();
-#pragma region Mask Texture
-			ImGui::Text("Mask Start UV");
-			ImGui::DragFloat2("##Mask_Start_UV", &m_tEffectParticleDesc.vMaskStartUV.x, 0.1f);
+					ImGui::Text("Diffuse UV Max");
+					ImGui::DragFloat2("##Diffuse_UV_Max", &m_tEffectParticleDesc.vDiffuseUVMax.x, 0.1f);
 
-			ImGui::InputInt("Mask Index", &m_tEffectParticleDesc.iMaskIndex);
+					ImGui::TreePop();
+				}
+				if (ImGui::TreeNode("Mask"))
+				{
+					ImGui::Text("Mask Index");
+					ImGui::SetNextItemWidth(100.f);
+					ImGui::InputInt("##Mask_Index", &m_tEffectParticleDesc.iMaskIndex);
 
-			ImGui::Text("Mask UV Speed");
-			ImGui::DragFloat2("##Mask_UV_Speed", &m_tEffectParticleDesc.vMaskUVSpeed.x, 0.1f);
+					ImGui::Text("Mask Start UV");
+					ImGui::DragFloat2("##Mask_Start_UV", &m_tEffectParticleDesc.vMaskStartUV.x, 0.1f);
 
-			ImGui::Text("Mask UV Force");
-			ImGui::DragFloat2("##Mask UV_Force", &m_tEffectParticleDesc.vMaskUVForce.x, 0.1f);
+					ImGui::Text("Mask UV Speed");
+					ImGui::DragFloat2("##Mask_UV_Speed", &m_tEffectParticleDesc.vMaskUVSpeed.x, 0.1f);
 
-			ImGui::Text("Mask UV Max");
-			ImGui::DragFloat2("##Mask_UV_Max", &m_tEffectParticleDesc.vMaskUVMax.x, 0.1f);
-#pragma endregion
-			ImGui::Separator();
-#pragma region Noise Texture
-			ImGui::Text("Noise Start UV");
-			ImGui::DragFloat2("##Noise_Start_UV", &m_tEffectParticleDesc.vNoiseStartUV.x, 0.1f);
+					ImGui::Text("Mask UV Force");
+					ImGui::DragFloat2("##Mask UV_Force", &m_tEffectParticleDesc.vMaskUVForce.x, 0.1f);
 
-			ImGui::InputInt("Noise Index", &m_tEffectParticleDesc.iNoiseIndex);
+					ImGui::Text("Mask UV Max");
+					ImGui::DragFloat2("##Mask_UV_Max", &m_tEffectParticleDesc.vMaskUVMax.x, 0.1f);
 
-			ImGui::Text("Noise UV Speed");
-			ImGui::DragFloat2("##Noise_UV_Speed", &m_tEffectParticleDesc.vNoiseUVSpeed.x, 0.1f);
+					ImGui::TreePop();
+				}
+				if (ImGui::TreeNode("Noise"))
+				{
+					ImGui::Text("Noise Index");
+					ImGui::SetNextItemWidth(100.f);
+					ImGui::InputInt("##Noise_Index", &m_tEffectParticleDesc.iNoiseIndex);
 
-			ImGui::Text("Noise UV Force");
-			ImGui::DragFloat2("##Noise UV_Force", &m_tEffectParticleDesc.vNoiseUVForce.x, 0.1f);
+					ImGui::Text("Noise Start UV");
+					ImGui::DragFloat2("##Noise_Start_UV", &m_tEffectParticleDesc.vNoiseStartUV.x, 0.1f);
 
-			ImGui::Text("Noise UV Max");
-			ImGui::DragFloat2("##Noise_UV_Max", &m_tEffectParticleDesc.vNoiseUVMax.x, 0.1f);
-#pragma endregion
-#pragma endregion
-			ImGui::Separator();
-#pragma region Bloom & Glow
-			ImGui::Text("Bloom");
-			ImGui::SameLine();
-			ImGui::Checkbox("##Bloom", &m_tEffectParticleDesc.bBloom);
+					ImGui::Text("Noise UV Speed");
+					ImGui::DragFloat2("##Noise_UV_Speed", &m_tEffectParticleDesc.vNoiseUVSpeed.x, 0.1f);
 
-			ImGui::Text("Glow");
-			ImGui::SameLine();
-			ImGui::Checkbox("##Glow", &m_tEffectParticleDesc.bGlow);
+					ImGui::Text("Noise UV Force");
+					ImGui::DragFloat2("##Noise UV_Force", &m_tEffectParticleDesc.vNoiseUVForce.x, 0.1f);
 
-			ImGui::Text("Start Glow Color");
-			ImGui::DragFloat4("##Start_Glow_Color", &m_tEffectParticleDesc.vStartGlowColor.x, 0.01f);
+					ImGui::Text("Noise UV Max");
+					ImGui::DragFloat2("##Noise_UV_Max", &m_tEffectParticleDesc.vNoiseUVMax.x, 0.1f);
 
-			ImGui::Text("Glow Color Speed ");
-			ImGui::DragFloat4("##Glow_Color_Speed", &m_tEffectParticleDesc.vGlowColorSpeed.x, 0.01f);
+					ImGui::TreePop();
+				}
+			}
 
-			ImGui::Text("Glow Color Force");
-			ImGui::DragFloat4("##Glow_Color_Force", &m_tEffectParticleDesc.vGlowColorForce.x, 0.01f);
-			ImGui::Separator();
-#pragma endregion
+			if (ImGui::CollapsingHeader("Bloom & Glow"))
+			{
+				ImGui::Text("Bloom"); ImGui::SameLine();
+				ImGui::Checkbox("##Bloom", &m_tEffectParticleDesc.bBloom);
+
+				ImGui::SameLine(); ImGui::Text(" | "); ImGui::SameLine();
+
+				ImGui::Text("Glow"); ImGui::SameLine();
+				ImGui::Checkbox("##Glow", &m_tEffectParticleDesc.bGlow);
+
+				if (m_tEffectParticleDesc.bGlow)
+				{
+					if (ImGui::TreeNode("Glow Options"))
+					{
+						ImGui::Text("Start Glow Color");
+						ImGui::ColorPicker4("##Start_Glow_Color", &m_tEffectParticleDesc.vStartGlowColor.x, ImGuiColorEditFlags_DefaultOptions_);
+
+						ImGui::Text("Glow Color Speed ");
+						ImGui::DragFloat4("##Glow_Color_Speed", &m_tEffectParticleDesc.vGlowColorSpeed.x, 0.01f);
+
+						ImGui::Text("Glow Color Force");
+						ImGui::DragFloat4("##Glow_Color_Force", &m_tEffectParticleDesc.vGlowColorForce.x, 0.01f);
+
+						ImGui::TreePop();
+					}
+				}
+
+			}
 		}
 	}
 }
