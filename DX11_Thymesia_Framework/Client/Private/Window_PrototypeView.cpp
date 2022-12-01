@@ -17,7 +17,6 @@ HRESULT CWindow_PrototypeView::Initialize()
 
     Add_Prototypes();
     GAMEOBJECT_DESC& EditCamera = m_pPrototypes[PROTOTYPE_CAMERA].front();
-    
 
 	return S_OK;
 }
@@ -54,6 +53,19 @@ HRESULT CWindow_PrototypeView::Render()
         if (ImGui::BeginTabItem("Prop"))
         {
             for (auto& elem : m_pPrototypes[PROTOTYPE_PROP])
+            {
+                if (ImGui::Selectable(elem.TypeName.c_str()))
+                {
+                    CallBack_ListClick(elem.HashCode, elem.TypeName.c_str());
+                }
+            }
+
+            ImGui::EndTabItem();
+        }
+
+        if (ImGui::BeginTabItem("Edit Prop"))
+        {
+            for (auto& elem : m_pPrototypes[PROTOTYPE_EDIT_PROP])
             {
                 if (ImGui::Selectable(elem.TypeName.c_str()))
                 {
@@ -121,15 +133,17 @@ void CWindow_PrototypeView::Add_Prototypes()
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStage3);*/
 
     ADD_PROTOTYPE(PROTOTYPE_PROP, CTerrain);
-    ADD_PROTOTYPE(PROTOTYPE_PROP, CEditGround);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStatic_Prop);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStatic_Instancing_Prop);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CDynamic_Prop);
-
-    ADD_PROTOTYPE(PROTOTYPE_PROP, CEditGroupProp);
-    ADD_PROTOTYPE(PROTOTYPE_PROP, CEditInstanceProp);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CPhysXColliderObject);
-    ADD_PROTOTYPE(PROTOTYPE_PROP, CEditMapCollider);
+    ADD_PROTOTYPE(PROTOTYPE_PROP, CInteraction_Dynamic_Prop);
+    ADD_PROTOTYPE(PROTOTYPE_PROP, CInteraction_Ladder);
+
+    ADD_PROTOTYPE(PROTOTYPE_EDIT_PROP, CEditGround);
+    ADD_PROTOTYPE(PROTOTYPE_EDIT_PROP, CEditGroupProp);
+    ADD_PROTOTYPE(PROTOTYPE_EDIT_PROP, CEditInstanceProp);
+    ADD_PROTOTYPE(PROTOTYPE_EDIT_PROP, CEditMapCollider);
 
     ADD_PROTOTYPE(PROTOTYPE_UI, CFadeMask);
 

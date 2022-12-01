@@ -86,6 +86,13 @@ void CEditMapCollider::OnEventMessage(_uint iArg)
 					ImGui::EndTabItem();
                 }
 
+				if (ImGui::BeginTabItem("Act"))
+				{
+					View_Act_DeleteSame();
+
+					ImGui::EndTabItem();
+				}
+
                 ImGui::EndTabBar();
             }
         }
@@ -355,6 +362,7 @@ void CEditMapCollider::View_Picking_Option()
 
 	ImGui::Text("");
 	ImGui::Text(string("Select Option : " + string(szOptionTag[m_iOption])).c_str());
+	ImGui::Text(string("Pick Index : " + to_string(m_iPickingIndex)).c_str());
 
 	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CPhysXColliderObject).hash_code());
 
@@ -441,15 +449,6 @@ void CEditMapCollider::View_Picking_Option()
 
 		else if (KEY_INPUT(KEY::V, KEY_STATE::HOLD))
 		{
-			if (iter_collider == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
-				return;
-
-			if (iter_collider->second.empty() || 0 > m_iPickingIndex || iter_collider->second.size() <= m_iPickingIndex)
-				return;
-
-			if (iter_collider->second.size() <= m_iPickingIndex)
-				return;
-
 			weak_ptr<CTransform> pTransformCom = iter_collider->second[m_iPickingIndex].pInstance.lock()->Get_Component<CTransform>();
 
 			_float3 vScaleFloat3 = pTransformCom.lock()->Get_Scaled();
@@ -516,4 +515,62 @@ void CEditMapCollider::View_Picking_Option()
 			}
 		}
 	}
+}
+
+void CEditMapCollider::View_Act_DeleteSame()
+{
+	if (!ImGui::Button("Act Delete", ImVec2(100.f, 25.f)))
+		return;
+
+	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CPhysXColliderObject).hash_code());
+
+	if (iter_collider == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
+		return;
+
+	for (auto& elem : iter_collider->second)
+	{
+		for (auto& elem_compare : iter_collider->second)
+		{
+			if (elem.pInstance.lock() == elem_compare.pInstance.lock())
+				continue;
+
+			if (elem.pInstance.lock()->Get_Dead() || elem_compare.pInstance.lock()->Get_Dead())
+				continue;
+
+			weak_ptr<CTransform> pTransform			= elem.pInstance.lock()->Get_Component<CTransform>();
+			weak_ptr<CTransform> pTransform_compare = elem_compare.pInstance.lock()->Get_Component<CTransform>();
+
+			_matrix Mat			= pTransform.lock()->Get_WorldMatrix();
+			_matrix Mat_compare	= pTransform_compare.lock()->Get_WorldMatrix();
+
+			_bool bDelete = true;
+			for (_uint i = 0; i < 4; ++i)
+			{
+				bDelete &= XMVector3Equal(Mat.r[i], Mat_compare.r[i]);
+			}
+			
+			if (bDelete)
+				elem_compare.pInstance.lock()->Set_Dead();
+		}
+	}
+}
+
+void CEditMapCollider::OnDestroy()
+{
+	__super::OnDestroy();
+
+	if (!GET_SINGLE(CWindow_HierarchyView).get())
+		return;
+
+	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CPhysXColliderObject).hash_code());
+
+	if (iter_collider == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
+		return;
+
+	for (auto& elem : iter_collider->second)
+		elem.pInstance.lock()->Set_Dead();
+}
+
+void CEditMapCollider::Free()
+{
 }

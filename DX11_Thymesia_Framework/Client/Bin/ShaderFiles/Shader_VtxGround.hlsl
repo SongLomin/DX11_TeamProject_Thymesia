@@ -127,7 +127,7 @@ PS_OUT		PS_MAIN_NORM(PS_IN In)
 	vector		vFilterDiffuse	= g_FilterTexture.Sample(DefaultSampler, In.vTexUV);
 	float3		vPixelNorm		= g_Texture_Sorc_Norm.Sample(DefaultSampler, In.vTexUV * g_fSorc_Density).xyz;
 
-	if (0.f < vFilterDiffuse.r)
+	if (0.1f < vFilterDiffuse.r)
 	{
 		vector AddTex_Diff	= g_Texture_AddNo1_Diff.Sample(DefaultSampler, In.vTexUV * g_fAddNo1_Density);
 		vector AddTex_Norm	= g_Texture_AddNo1_Norm.Sample(DefaultSampler, In.vTexUV * g_fAddNo1_Density);
@@ -137,7 +137,7 @@ PS_OUT		PS_MAIN_NORM(PS_IN In)
 		vPixelNorm			= AddTex_Norm.xyz;
 	}
 
-	if (0.f < vFilterDiffuse.g)
+	if (0.1f < vFilterDiffuse.g)
 	{
 		vector AddTex_Diff	= g_Texture_AddNo2_Diff.Sample(DefaultSampler, In.vTexUV * g_fAddNo2_Density);
 		vector AddTex_Norm	= g_Texture_AddNo2_Norm.Sample(DefaultSampler, In.vTexUV * g_fAddNo2_Density);
@@ -147,7 +147,7 @@ PS_OUT		PS_MAIN_NORM(PS_IN In)
 		vPixelNorm			= AddTex_Norm.xyz;
 	}
 
-	if (0.f < vFilterDiffuse.b)
+	if (0.1f < vFilterDiffuse.b)
 	{
 		vector AddTex_Diff	= g_Texture_AddNo3_Diff.Sample(DefaultSampler, In.vTexUV * g_fAddNo3_Density);
 		vector AddTex_Norm	= g_Texture_AddNo3_Norm.Sample(DefaultSampler, In.vTexUV * g_fAddNo3_Density);

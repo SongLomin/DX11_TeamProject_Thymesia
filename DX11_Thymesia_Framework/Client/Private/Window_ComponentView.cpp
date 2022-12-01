@@ -149,13 +149,16 @@ void CWindow_ComponentView::Draw_Components()
 
 	weak_ptr<CModel> pModel = PICKED_GAMEOBJECT->Get_Component<CModel>();
 
+
 	static _char    szFindModelTag[MAX_PATH] = "";
 
 	if (pModel.lock().get())
 	{
+
 		if (ImGui::CollapsingHeader("CModel Component"), ImGuiTreeNodeFlags_DefaultOpen)
 		{
-			ImGui::Text("Model List");
+			ImGui::Text("[ Model List ]");
+			ImGui::Text(string("Select MD : " + string(pModel.lock()->Get_ModelKey())).c_str());
 
 			ImGui::Text("");
 			ImGui::InputText("Model Tag Find", szFindModelTag, MAX_PATH);
@@ -241,6 +244,8 @@ void CWindow_ComponentView::TransformComponent_PickingAction(weak_ptr<CTransform
 	_float4 vMouseDir;
 	ZeroMemory(&vMouseDir, sizeof(_float4));
 
+	vMouseDir.y = XMVectorGetY(_pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION));
+
 	_bool _bClick_Terrain = SMath::Is_Picked_AbstractTerrain(MouseRayInWorldSpace, &vMouseDir);
 
 	// Z : 이동, X : 로테이션, 마우스 휠 : y축 이동
@@ -255,7 +260,7 @@ void CWindow_ComponentView::TransformComponent_PickingAction(weak_ptr<CTransform
 			_pTransform.lock()->Set_State(CTransform::STATE_TRANSLATION, vAddPos);
 		}
 
-		else if (_bClick_Terrain && KEY_INPUT(KEY::X, KEY_STATE::HOLD))
+		if (KEY_INPUT(KEY::X, KEY_STATE::HOLD))
 		{
 			_vector vObjPos = _pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
 			_vector vAddPos = XMVectorSet(vMouseDir.x, vObjPos.m128_f32[1], vMouseDir.z, 1.f);

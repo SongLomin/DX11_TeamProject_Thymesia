@@ -44,7 +44,6 @@ HRESULT CShader::Set_RawValue(const char* pConstantName, void* pData, _uint iDat
 		return E_FAIL;
 
 	return pVariable->SetRawValue(pData, 0, iDataSize);
-
 }
 
 HRESULT CShader::Begin(_uint iPassIndex)

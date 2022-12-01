@@ -122,13 +122,13 @@ HRESULT CEditGround::SetUp_ShaderResource()
 		string szNormTextureName = iter.first + "_Norm";
 		string szDensityName	 = "g_f" + iter.first.substr(string("g_Texture").length() + 1) + "_Density";
 	
-		if ("[ None ]" != iter.second.szTexTag_Diff)
+		if ("" != iter.second.pDiffTex.lock()->Get_TextureKey())
 		{
 			if (FAILED(iter.second.pDiffTex.lock()->Set_ShaderResourceView(m_pShaderCom, szDiffTextureName.c_str(), 0)))
 				return E_FAIL;
 		}
 
-		if ("[ None ]" != iter.second.szTexTag_Norm)
+		if ("" != iter.second.pNormTex.lock()->Get_TextureKey())
 		{
 			if (FAILED(iter.second.pNormTex.lock()->Set_ShaderResourceView(m_pShaderCom, szNormTextureName.c_str(), 0)))
 				return E_FAIL;
@@ -363,8 +363,8 @@ void CEditGround::SetUp_Textures()
 	if (m_pTextureCom.end() != iter_find)
 	{
 		ImGui::Text("");
-		ImGui::Text(string("[ Diff ] : " + iter_find->second.szTexTag_Diff).c_str());
-		ImGui::Text(string("[ Norm ] : " + iter_find->second.szTexTag_Norm).c_str());
+		ImGui::Text(string("[ Diff ] : " + iter_find->second.pDiffTex.lock()->Get_TextureKey()).c_str());
+		ImGui::Text(string("[ Norm ] : " + iter_find->second.pNormTex.lock()->Get_TextureKey()).c_str());
 
 		ImGui::InputFloat("Density", &iter_find->second.fDensity);
 		ImGui::Text("");
@@ -468,8 +468,6 @@ void CEditGround::SetUp_Textures()
 
 					iter_find->second.pDiffTex.lock()->Use_Texture(szDiffTex.c_str());
 					iter_find->second.pNormTex.lock()->Use_Texture(szNormTex.c_str());
-					iter_find->second.szTexTag_Diff = szClickTexureTag;
-					iter_find->second.szTexTag_Norm = szNormTex;
 				}
 			}
 			break;
@@ -483,7 +481,6 @@ void CEditGround::SetUp_Textures()
 					string szDiffTex = szClickTexureTag.substr(0, szClickTexureTag.length() - 5) + "D";
 
 					iter_find->second.pDiffTex.lock()->Use_Texture(szDiffTex.c_str());
-					iter_find->second.szTexTag_Diff = szClickTexureTag;
 				}
 			}
 			break;
@@ -497,7 +494,6 @@ void CEditGround::SetUp_Textures()
 					string szDiffTex = szClickTexureTag.substr(0, szClickTexureTag.length() - 5) + "N";
 
 					iter_find->second.pDiffTex.lock()->Use_Texture(szDiffTex.c_str());
-					iter_find->second.szTexTag_Diff = szClickTexureTag;
 				}
 			}
 			break;
@@ -620,17 +616,19 @@ void CEditGround::SetUp_File()
 
 void CEditGround::PickingFillterTextureDraw()
 {
-	if (!KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
+	if (!KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD) || !KEY_INPUT(KEY::Z, KEY_STATE::HOLD))
 		return;
 
 	RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
 
 	_float2		Out;
 
-	if (!m_pVIBufferCom.lock()->Compute_MouseRatio(
+	if (!m_pVIBufferCom.lock()->Compute_MouseRatio
+	(
 		MouseRayInWorldSpace,
 		m_pTransformCom.lock()->Get_WorldMatrix(),
-		&Out))
+		&Out
+	))
 	{
 		return;
 	}
@@ -773,10 +771,12 @@ void CEditGround::PickingGround()
 	{
 		_float3		Out = _float3(0.f, 0.f, 0.f);
 
-		if (m_pVIBufferCom.lock()->Compute_MousePos(
-				MouseRayInWorldSpace,
-				m_pTransformCom.lock()->Get_WorldMatrix(),
-				&Out))
+		if (m_pVIBufferCom.lock()->Compute_MousePos
+		(
+			MouseRayInWorldSpace,
+			m_pTransformCom.lock()->Get_WorldMatrix(),
+			&Out
+		))
 		{
 			m_pVIBufferCom.lock()->Update
 			(
@@ -810,12 +810,15 @@ void CEditGround::Bake_Mesh()
 	tModelData.RootNode->iNumChildren = 0;
 	XMStoreFloat4x4(&tModelData.RootNode->TransformationMatrix, XMMatrixIdentity());
 
+	_float fVtxX = m_pVIBufferCom.lock()->Get_NumVerticesX();
+	_float fVtxZ = m_pVIBufferCom.lock()->Get_NumVerticesZ();
+
 	shared_ptr<MESH_DATA> pMeshData = make_shared<MESH_DATA>();
 	pMeshData->eModelType		= MODEL_TYPE::GROUND;
 	pMeshData->iMaterialIndex	= 0;
 	pMeshData->iNumBones		= 0;
-	pMeshData->iNumFaces		= _uint(m_vBufferInfo.x - 1) * _uint(m_vBufferInfo.y - 1) * 2;
-	pMeshData->iNumVertices		= _uint(m_vBufferInfo.x * m_vBufferInfo.y);
+	pMeshData->iNumFaces		= _uint(fVtxX - 1) * _uint(fVtxZ - 1) * 2;
+	pMeshData->iNumVertices		= _uint(fVtxX * fVtxZ);
 
 	pMeshData->pGroundVertices = shared_ptr<VTXGROUND[]>(DBG_NEW VTXGROUND[pMeshData->iNumVertices]);
 
@@ -895,6 +898,10 @@ void CEditGround::Load_Mesh()
 	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
 	m_pVIBufferCom.lock()->Init_Mesh(pModelData.get()->Mesh_Datas[0], iNumVertexX, iNumVertexZ, fInterval);
 
+	m_vBufferInfo.x = _float(iNumVertexX);
+	m_vBufferInfo.y = _float(iNumVertexZ);
+	m_vBufferInfo.z = fInterval;
+
 	m_bCreate   = true;
 }
 
@@ -933,8 +940,8 @@ void CEditGround::Bake_FilterTexture()
 	{
 		json Texture;
 
-		Texture.emplace("Diff"   , iter.second.szTexTag_Diff);
-		Texture.emplace("Norm"   , iter.second.szTexTag_Norm);
+		Texture.emplace("Diff"   , iter.second.pDiffTex.lock()->Get_TextureKey());
+		Texture.emplace("Norm"   , iter.second.pNormTex.lock()->Get_TextureKey());
 		Texture.emplace("Density", iter.second.fDensity);
 
 		TexInfo.emplace(iter.first, Texture);
@@ -985,12 +992,20 @@ void CEditGround::Load_FilterTexture()
 
 	DEVICECONTEXT->Unmap(m_pTexture2D.Get(), 0);
 
-	string szTexturePath = "../Bin/GroundInfo/Filter_SunTextureInfo/" + m_szSaveTextureTag + ".json";
+	string szTexturePath = "../Bin/GroundInfo/Filter_SubTextureInfo/" + m_szSaveTextureTag + ".json";
 
 	json json_info;
 	
 	if (FAILED(CJson_Utility::Load_Json(szTexturePath.c_str(), json_info)))
 		return;
+
+	for (auto& iter : m_pTextureCom)
+	{
+		iter.second.pDiffTex.lock().reset();
+		iter.second.pNormTex.lock().reset();
+	}
+
+	m_pTextureCom.clear();
 
 	for (auto& iter : json_info.items())
 	{
@@ -1017,14 +1032,12 @@ void CEditGround::Load_FilterTexture()
 			{
 				string szTextureName = iter_item.value();
 				iter_find->second.pDiffTex.lock()->Use_Texture(szTextureName.c_str());
-				iter_find->second.szTexTag_Diff = szTextureName;
 			}
 
 			if ("Norm" == szitemkey)
 			{
 				string szTextureName = iter_item.value();
 				iter_find->second.pNormTex.lock()->Use_Texture(szTextureName.c_str());
-				iter_find->second.szTexTag_Norm = szTextureName;
 			}
 
 			if ("Density" == szitemkey)
@@ -1049,8 +1062,8 @@ void CEditGround::Write_Json(json& Out_Json)
 	{
 		json Texture;
 
-		Texture.emplace("Diff", iter.second.szTexTag_Diff);
-		Texture.emplace("Norm", iter.second.szTexTag_Norm);
+		Texture.emplace("Diff", iter.second.pDiffTex.lock()->Get_TextureKey());
+		Texture.emplace("Norm", iter.second.pNormTex.lock()->Get_TextureKey());
 		Texture.emplace("Density", iter.second.fDensity);
 
 		TexInfo.emplace(iter.first, Texture);
@@ -1062,7 +1075,7 @@ void CEditGround::Write_Json(json& Out_Json)
 		Bake_FilterTexture();
 	}
 
-	Out_Json.emplace("g_FilterTexture", string(m_szSaveTextureTag + ".dds"));
+	Out_Json.emplace("g_FilterTexture", string(m_szSaveTextureTag));
 	Out_Json.emplace("TextureInfo"    , TexInfo);
 	Out_Json.emplace("VIBufferCom"    , m_szMeshName);
 	Out_Json.emplace("ShaderPass"     , m_iShaderPass);
@@ -1098,27 +1111,41 @@ void CEditGround::Load_FromJson(const json& In_Json)
 
 			for (auto& iter_data : Textures.items())
 			{
-				string szDatakey = iter_data.key();
+				string szDatakey = iter.key();
+				json   json_tex  = iter.value();
 
-				if ("Diff" == szDatakey)
+				auto iter_find = m_pTextureCom.find(szDatakey);
+
+				if (iter_find == m_pTextureCom.end())
 				{
-					Desc.szTexTag_Diff = iter_data.value();
-
+					TEXTURES_INFO Desc;
 					Desc.pDiffTex = Add_Component<CTexture>();
-					Desc.pDiffTex.lock()->Use_Texture(Desc.szTexTag_Diff.c_str());
-				}
-
-				if ("Norm" == szDatakey)
-				{
-					Desc.szTexTag_Norm = iter_data.value();
-
 					Desc.pNormTex = Add_Component<CTexture>();
-					Desc.pNormTex.lock()->Use_Texture(Desc.szTexTag_Norm.c_str());
+
+					m_pTextureCom.emplace(szDatakey, Desc);
+					iter_find = m_pTextureCom.find(szDatakey);
 				}
 
-				if ("Density" == szDatakey)
+				for (auto& iter_item : json_tex.items())
 				{
-					Desc.fDensity = iter_data.value();
+					string szitemkey = iter_item.key();
+
+					if ("Diff" == szitemkey)
+					{
+						string szTextureName = iter_item.value();
+						iter_find->second.pDiffTex.lock()->Use_Texture(szTextureName.c_str());
+					}
+
+					if ("Norm" == szitemkey)
+					{
+						string szTextureName = iter_item.value();
+						iter_find->second.pNormTex.lock()->Use_Texture(szTextureName.c_str());
+					}
+
+					if ("Density" == szitemkey)
+					{
+						iter_find->second.fDensity = iter_item.value();
+					}
 				}
 			}
 
@@ -1131,26 +1158,50 @@ void CEditGround::Load_FromJson(const json& In_Json)
 
 	if (In_Json.find("VIBufferCom") != In_Json.end())
 	{
-		string szVIBufferName = In_Json["VIBufferCom"];
+		m_szMeshName = In_Json["VIBufferCom"];
 
-		shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey(szVIBufferName.c_str());
+		shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey(m_szMeshName.c_str());
 
 		if (!pModelData.get())
 		{
-			MSG_BOX("Err : CGround::Load_FromJson(...) <Obj Make By [An Seubg Han]>");
+			MSG_BOX("Err : CGround::Load_FromJson(...) <This Obj Make By [An]>");
 			return;
 		}
 
+		/* --- Buffer Data --- */
+
+		string szBinFilePath = "../Bin/GroundInfo/Mesh_SubInfo/" + m_szMeshName + ".bin";
+
+		ifstream is(szBinFilePath, ios::binary);
+
+		if (!is.is_open())
+			return;
+
+		_int	iNumVertexX, iNumVertexZ;
+		_float	fInterval;
+
+		read_typed_data(is, iNumVertexX);
+		read_typed_data(is, iNumVertexZ);
+		read_typed_data(is, fInterval);
+
+		/* --- Create Buffer --- */
+
+		Remove_Components<CVIBuffer_Ground>();
 		m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
-		m_pVIBufferCom.lock()->Init_Mesh(pModelData.get()->Mesh_Datas[0]);
+		m_pVIBufferCom.lock()->Init_Mesh(pModelData.get()->Mesh_Datas[0], iNumVertexX, iNumVertexZ, fInterval);
+
+		m_vBufferInfo.x = _float(iNumVertexX);
+		m_vBufferInfo.y = _float(iNumVertexZ);
+		m_vBufferInfo.z = fInterval;
+
 		m_bCreate = true;
 	}
 
 	if (In_Json.find("g_FilterTexture") != In_Json.end())
 	{
-		string szTexTag = In_Json["g_FilterTexture"];
+		m_szSaveTextureTag = In_Json["g_FilterTexture"];
 
-		Load_FilterTexture_FromJson(szTexTag);
+		Load_FilterTexture_FromJson(m_szSaveTextureTag);
 	}
 }
 

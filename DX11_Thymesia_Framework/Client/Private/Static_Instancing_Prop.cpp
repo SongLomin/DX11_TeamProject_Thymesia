@@ -55,9 +55,6 @@ void CStatic_Instancing_Prop::Tick(_float fTimeDelta)
 void CStatic_Instancing_Prop::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
-	//m_pInstanceModelCom.lock()->Culling_Instance(m_pPropInfos);
-
-
 }
 
 void CStatic_Instancing_Prop::Custom_Thread1(_float fTimeDelta)
@@ -84,6 +81,7 @@ HRESULT CStatic_Instancing_Prop::Render()
 	{
 		return S_OK;
 	}
+
 	_float4x4 WorldMatrix;
 	XMStoreFloat4x4(&WorldMatrix, XMMatrixIdentity());
 
@@ -138,10 +136,6 @@ HRESULT CStatic_Instancing_Prop::Render()
 		m_pShaderCom.lock()->Begin(m_iPassIndex);
 		m_pInstanceModelCom.lock()->Render_Mesh(i);
 	}
-
-	// 피킹 오브젝트
-
-	CGameObject::Render();
 
     return S_OK;
 }
@@ -241,6 +235,7 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 				m_pPropInfos.push_back(Desc);
 			}
 		}
+
 		else if ("Collider_Type" == szKey)
 		{
 			m_iColliderType = iter.value();

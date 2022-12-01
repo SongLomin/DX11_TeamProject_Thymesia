@@ -1,1 +1,75 @@
-{"GameObject":[{"Component":{"Transform":[[0.9622839689254761,-5.328911356627941e-08,0.27204039692878723,0.0],[-0.18949148058891296,0.7175139784812927,0.6702815294265747,0.0],[-0.1951964646577835,-0.6965513825416565,0.6904562711715698,0.0],[35.676658630371094,19.794078826904297,-0.880979597568512,1.0]]},"Hash":8675365520207489377,"Name":"class Client::CCamera_Free","Setting":{"Enable":true}},{"Component":{"Transform":{"":null}},"Hash":12159710856434595157,"Name":"class Client::CGround","Setting":{"Enable":true},"ShaderPass":0,"TextureInfo":{"g_Texture_Sorc":{"Density":30.0,"Diff":"T_P_Gravel_floor01_D.png","Norm":"T_P_Gravel_floor01_N.png"}},"VIBufferCom":"Test2","g_FilterTexture":"Test2_Filter.dds"},{"Component":{"Model":"Tent_P_WoodenStand01","Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,2.6941299438476563e-05,0.0],[0.0,-2.6941299438476563e-05,1.0,0.0],[20.0,-2.5,20.0,1.0]]},"Hash":15438220394405784524,"Name":"class Client::CStatic_Prop","PhysX_Collider_Type":1,"Setting":{"Enable":true}},{"Component":{"Model":"Tent_P_WoodenStand04","Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,2.6941299438476563e-05,0.0],[0.0,-2.6941299438476563e-05,1.0,0.0],[20.0,-2.5,20.0,1.0]]},"Hash":15438220394405784524,"Name":"class Client::CStatic_Prop","PhysX_Collider_Type":1,"Setting":{"Enable":true}},{"Component":{"Model":"Tent_P_WoodenStand05","Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,2.6941299438476563e-05,0.0],[0.0,-2.6941299438476563e-05,1.0,0.0],[20.0,-2.5,20.0,1.0]]},"Hash":15438220394405784524,"Name":"class Client::CStatic_Prop","PhysX_Collider_Type":1,"Setting":{"Enable":true}},{"Component":{"Model":"Tent_P_WoodenStand08","Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,2.6941299438476563e-05,0.0],[0.0,-2.6941299438476563e-05,1.0,0.0],[20.0,-2.5,20.0,1.0]]},"Hash":15438220394405784524,"Name":"class Client::CStatic_Prop","PhysX_Collider_Type":1,"Setting":{"Enable":true}},{"Component":{"Model":"Tent_P_WoodenStand10","Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,2.6941299438476563e-05,0.0],[0.0,-2.6941299438476563e-05,1.0,0.0],[20.0,-2.5,20.0,1.0]]},"Hash":15438220394405784524,"Name":"class Client::CStatic_Prop","PhysX_Collider_Type":1,"Setting":{"Enable":true}},{"Component":{"Model":"Tent_P_Rag01","Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,2.6941299438476563e-05,0.0],[0.0,-2.6941299438476563e-05,1.0,0.0],[20.0,-2.5,20.0,1.0]]},"Hash":15438220394405784524,"Name":"class Client::CStatic_Prop","PhysX_Collider_Type":1,"Setting":{"Enable":true}},{"Component":{"Model":"Tent_P_Rag02","Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,2.6941299438476563e-05,0.0],[0.0,-2.6941299438476563e-05,1.0,0.0],[20.0,-2.5,20.0,1.0]]},"Hash":15438220394405784524,"Name":"class Client::CStatic_Prop","PhysX_Collider_Type":1,"Setting":{"Enable":true}},{"Component":{"Model":"Tent_P_Rag03","Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,2.6941299438476563e-05,0.0],[0.0,-2.6941299438476563e-05,1.0,0.0],[20.0,-2.5,20.0,1.0]]},"Hash":15438220394405784524,"Name":"class Client::CStatic_Prop","PhysX_Collider_Type":1,"Setting":{"Enable":true}},{"Component":{"Model":"Tent_P_Rag04","Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,2.6941299438476563e-05,0.0],[0.0,-2.6941299438476563e-05,1.0,0.0],[20.0,-2.5,20.0,1.0]]},"Hash":15438220394405784524,"Name":"class Client::CStatic_Prop","PhysX_Collider_Type":1,"Setting":{"Enable":true}},{"Component":{"Model":"Tent_P_Rag05","Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,2.6941299438476563e-05,0.0],[0.0,-2.6941299438476563e-05,1.0,0.0],[20.0,-2.5,20.0,1.0]]},"Hash":15438220394405784524,"Name":"class Client::CStatic_Prop","PhysX_Collider_Type":1,"Setting":{"Enable":true}},{"Component":{"Model":"Tent_P_Rag07","Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,2.6941299438476563e-05,0.0],[0.0,-2.6941299438476563e-05,1.0,0.0],[20.0,-2.5,20.0,1.0]]},"Hash":15438220394405784524,"Name":"class Client::CStatic_Prop","PhysX_Collider_Type":1,"Setting":{"Enable":true}}]}
+{
+  "GameObject": [
+    {
+      "Component": {
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 0.0, 0.0 ],
+          [ 0.0, 0.0, 1.0, 0.0 ],
+          [ 0.0, 0.0, 0.0, 1.0 ]
+        ]
+      },
+      "Hash": 3297996505304094455,
+      "Name": "class Client::CTerrain",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Transform": [
+          [ 0.9719931483268738, 1.6298145055770874e-09, -0.23500242829322815, 0.0 ],
+          [ 0.08602382242679596, 0.9305941462516785, 0.35580193996429443, 0.0 ],
+          [ 0.21869172155857086, -0.36605462431907654, 0.9045324921607971, 0.0 ],
+          [ 7.556668281555176, 5.217325687408447, 1.4956848621368408, 1.0 ]
+        ]
+      },
+      "Hash": 8675365520207489377,
+      "Name": "class Client::CCamera_Free",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 3.4672467708587646, 0.0, 10.18854808807373, 1.0 ]
+        ]
+      },
+      "Hash": 8662760939278159895,
+      "MidSize": 5,
+      "Name": "class Client::CInteraction_Ladder",
+      "Offset": 0.4000000059604645,
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 13.074016571044922, 0.0, 23.225139617919922, 1.0 ]
+        ]
+      },
+      "Hash": 8662760939278159895,
+      "MidSize": 5,
+      "Name": "class Client::CInteraction_Ladder",
+      "Offset": 0.4000000059604645,
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 13.368831634521484, 0.0, 14.18737506866455, 1.0 ]
+        ]
+      },
+      "Hash": 8662760939278159895,
+      "MidSize": 5,
+      "Name": "class Client::CInteraction_Ladder",
+      "Offset": 0.4000000059604645,
+      "Setting": { "Enable": true }
+    }
+  ]
+}

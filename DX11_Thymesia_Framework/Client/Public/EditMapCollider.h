@@ -31,11 +31,17 @@ private:
     void    View_SelectTransformInfo();
     void    View_Picking_Option();
 
+    void    View_Act_DeleteSame();
+
 private: 
     _float4x4               m_PickingDesc;
     _int                    m_iPickingIndex = 0;
     _uint                   m_iOption       = 0;
     _bool                   m_bRender       = false;
+
+public:
+    virtual void OnDestroy() override;
+    void Free();
 };
 
 END

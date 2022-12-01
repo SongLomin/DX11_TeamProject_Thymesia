@@ -7,6 +7,7 @@ class CVIBuffer_DynamicCube;
 class CVIBuffer_Model_Instance;
 class CShader;
 class CRenderer;
+class CTexture;
 END
 
 BEGIN(Client)
@@ -57,13 +58,15 @@ public:
     virtual _bool IsPicking(const RAY& In_Ray, _float& Out_fRange) override;
 
 private:                                                                                                                                                                                                                
-    typedef vector<string>               RESOURCE_LIST;
-    typedef vector<INSTANCE_MESH_DESC>   PROP_INFO;
+    typedef vector<string>                  RESOURCE_LIST;
+    typedef vector<INSTANCE_MESH_DESC>      PROP_INFO;
+    typedef map<string, weak_ptr<CTexture>> TEXTURE_GROUP;
 
     PROP_INFO                           m_pPropInfos;
     weak_ptr<CVIBuffer_Model_Instance>  m_pInstanceModelCom;
     weak_ptr<CShader>                   m_pShaderCom;
     weak_ptr<CRenderer>                 m_pRendererCom;
+    TEXTURE_GROUP                       m_pTextureGroupCom;
 
     weak_ptr<CVIBuffer_DynamicCube>     m_pSelect_VIBufferCom;
     weak_ptr<CShader>                   m_pSelect_ShaderCom;
@@ -79,12 +82,14 @@ private:
 
     RESOURCE_LIST       m_ModelList;
     RESOURCE_LIST       m_JsonList;
-    _bool               m_bSubDraw = false;
+    _bool               m_bSubDraw            = false;
 
-
-    _int                m_iColliderType  = 0;
-    _bool               m_bViewPhysXInfo = false;
-    _bool               m_bNonCulling    = false;
+    _int                m_iColliderType       = 0;
+    _bool               m_bViewPhysXInfo      = false;
+    _bool               m_bNonCulling         = false;
+    _bool               m_bDissolve           = false;
+    _float              m_fDissolveRatio      = 0.f;
+    _float              m_fDissolveSpeed      = 1.f;
 
 public:
     void Free();

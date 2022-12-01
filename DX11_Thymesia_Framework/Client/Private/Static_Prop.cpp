@@ -5,8 +5,8 @@
 #include "Shader.h"
 #include "Renderer.h"
 #include "Transform.h"
-
 #include "PhysXCollider.h"
+
 #include "Client_Presets.h"
 
 GAMECLASS_C(CStatic_Prop);
@@ -29,7 +29,6 @@ HRESULT CStatic_Prop::Initialize(void* pArg)
     );
 
     m_pPhyxXColliderCom = Add_Component<CPhysXCollider>();
-
 
     GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_StaticCast<CGameObject>(m_this));
 

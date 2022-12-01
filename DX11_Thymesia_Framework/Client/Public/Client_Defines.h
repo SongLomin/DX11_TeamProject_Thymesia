@@ -29,7 +29,7 @@
 #endif // _DEBUG
 
 #ifdef NDEBUG
-#define		_INSTANCE_CULLING_
+//#define		_INSTANCE_CULLING_
 //#define		_144HZ_
 #define		_DAGGER_TRAIL_
 #define		_USE_THREAD_

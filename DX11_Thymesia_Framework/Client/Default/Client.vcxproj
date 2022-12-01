@@ -263,6 +263,8 @@
     <ClInclude Include="..\Public\EasingTransform.h" />
     <ClInclude Include="..\Public\EditMapCollider.h" />
     <ClInclude Include="..\Public\EvolveMenu_TalentButton.h" />
+    <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h" />
+    <ClInclude Include="..\Public\Interaction_Ladder.h" />
     <ClInclude Include="..\Public\Level_Test.h" />
     <ClInclude Include="..\Public\PhysXCameraController.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -574,6 +576,8 @@
     <ClCompile Include="..\Private\Dynamic_Piece.cpp" />
     <ClCompile Include="..\Private\EasingTransform.cpp" />
     <ClCompile Include="..\Private\EditMapCollider.cpp" />
+    <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp" />
+    <ClCompile Include="..\Private\Interaction_Ladder.cpp" />
     <ClCompile Include="..\Private\EvolveMenu_TalentButton.cpp" />
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Parry.cpp" />

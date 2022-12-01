@@ -805,6 +805,9 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Axe.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\00.PS_Axe</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\EditMapCollider.h">
+      <Filter>02. GameObject\99. Other\07. EditMapCollider</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Knife.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\01.PS_Knife</Filter>
     </ClInclude>
@@ -825,6 +828,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\02.ClawHoldAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Dynamic_Prop</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawTabAttack</Filter>
@@ -950,6 +956,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_EnergisedWeaponLV2.h">
       <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\04.Talent_Effect_EnergisedWeapon\01.Talent_Effect_EnergisedWeaponLV2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_Ladder.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Ladder</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\EvolveMenu_TalentButton.h" />
   </ItemGroup>
@@ -2065,15 +2074,6 @@
     <Filter Include="02. GameObject\02. Terrain">
       <UniqueIdentifier>{88f2ac0b-a8f4-49fa-a1ea-2fba81ec7232}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor">
-      <UniqueIdentifier>{01737cb7-4728-40ce-9a6d-6f3d60c87ac9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character">
-      <UniqueIdentifier>{618567cb-c6db-48f9-a3fe-050a87d96221}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\99. PreViewAnimationModel">
-      <UniqueIdentifier>{4324461d-9653-4d65-96ab-339d94dd633d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\01. UI">
       <UniqueIdentifier>{f7dd526f-999a-4efc-b2c0-8b5a81b03a28}</UniqueIdentifier>
     </Filter>
@@ -2598,21 +2598,6 @@
     </Filter>
     <Filter Include="02. GameObject\12. PhysXColliderObject">
       <UniqueIdentifier>{f4627d52-ffad-4ed1-962a-b028ee22ba52}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player">
-      <UniqueIdentifier>{526ae19b-d4f7-432d-9b4b-e73589c3ea78}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus">
-      <UniqueIdentifier>{16574201-340f-43db-b0c0-e3bb9a200fc8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\00.Weapon">
-      <UniqueIdentifier>{c544ea3e-e472-45d2-97c7-b7b228b16290}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\00.Weapon\00.Corvus_DefaultSaber">
-      <UniqueIdentifier>{0ed56344-d4a6-4fcc-946f-328f7e70d654}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\00.Weapon\01.Corvus_DefaultDagger">
-      <UniqueIdentifier>{e8d262bf-d13f-4a53-886f-7946a0308b0a}</UniqueIdentifier>
     </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\36.TurnAttack">
       <UniqueIdentifier>{e3ecf8f1-6d57-49e6-a712-42a92d7a7056}</UniqueIdentifier>
