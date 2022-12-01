@@ -21,6 +21,14 @@ HRESULT CRender_Manager::Initialize()
 	DEVICECONTEXT->RSGetViewports(&iNumViewports, &ViewPortDesc);
 
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
+		
+	/*For. Target_AntiAliasing*/
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_AntiAliasing"),
+		(_uint)ViewPortDesc.Width*2.f, (_uint)ViewPortDesc.Height*2.f, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 128.f / 255.f, 1.f, 1.f))))
+		DEBUG_ASSERT;
+
+	if (FAILED(pRenderTargetManager->Bake_AntiAliasingDepthStencilView((_uint)ViewPortDesc.Width*2.f, (_uint)ViewPortDesc.Height*2.f)))
+		DEBUG_ASSERT;
 
 	/* For.Target_Diffuse */
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Diffuse"), 
@@ -54,6 +62,17 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Specular"), 
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
+
+	/* For.Target_BlurXSpecular */
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_BlurXSpecular"),
+		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		DEBUG_ASSERT;
+
+	/* For.Target_BlurSpecular */
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_BlurSpecular"),
+		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		DEBUG_ASSERT;
+
 	/*For.Target_Fog*/
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Fog"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
@@ -167,8 +186,10 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_PBR"))))
 		DEBUG_ASSERT;
-	/*if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_ORM"))))
-		DEBUG_ASSERT;*/
+	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_BlurXSpecular"), TEXT("Target_BlurXSpecular"))))
+		DEBUG_ASSERT;
+	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_BlurSpecular"), TEXT("Target_BlurSpecular"))))
+		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_ExtractEffect"), TEXT("Target_OriginalEffect"))))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_ExtractEffect"), TEXT("Target_ExtractBloom"))))
@@ -203,6 +224,9 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Distortion"), TEXT("Target_Distortion"))))
+		DEBUG_ASSERT;
+
+	if(FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_AntiAliasing"),TEXT("Target_AntiAliasing"))))
 		DEBUG_ASSERT;
 
 	//if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Glow"), TEXT("Target_Glow"))))
@@ -283,6 +307,10 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_BlurForEffect"), ViewPortDesc.Width - fHalf - fSize, fHalf + fSize * 3.f, fSize, fSize)))
 		DEBUG_ASSERT;
+	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_BlurSpecular"), ViewPortDesc.Width - fHalf - fSize, fHalf + fSize * 4.f, fSize, fSize)))
+		DEBUG_ASSERT;
+	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_AntiAliasing"), ViewPortDesc.Width - fHalf - fSize, fHalf + fSize * 5.f, fSize, fSize)))
+		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_StaticShadowDepth"), ViewPortDesc.Width - fHalf -fSize*2.f, fHalf, fSize, fSize)))
 		DEBUG_ASSERT;
@@ -290,6 +318,7 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Fog"), ViewPortDesc.Width - fHalf - fSize * 3.f, fHalf, fSize, fSize)))
 		DEBUG_ASSERT;
+
 
 	/*if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_BlurShadow"), ViewPortDesc.Width - 300, 700, 200, 200)))
 		DEBUG_ASSERT;*/
@@ -309,6 +338,12 @@ HRESULT CRender_Manager::Initialize()
 	XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
 
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(ViewPortDesc.Width, ViewPortDesc.Height, 0.f, 1.f)));
+
+	WorldMatrix.r[0] = XMVectorSet(ViewPortDesc.Width*2.f, 0.f, 0.f, 0.f);
+	WorldMatrix.r[1] = XMVectorSet(0.f, ViewPortDesc.Height*2.f, 0.f, 0.f);
+	XMStoreFloat4x4(&m_AntiAliasingWorldMatrix, XMMatrixTranspose(WorldMatrix));
+	XMStoreFloat4x4(&m_AntiAliasingProjMatrixTranspose, XMMatrixTranspose(XMMatrixOrthographicLH(ViewPortDesc.Width*2.f, ViewPortDesc.Height*2.f, 0.f, 1.f)));
+
 
 	m_pShader = CShader::Create();
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_Deferred"), TEXT("../Bin/Shaderfiles/Shader_Deferred.hlsl"));
@@ -369,6 +404,9 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Render_Lights()))
 		DEBUG_ASSERT;
 
+	//if (FAILED(Blur_Specular(1.f)))
+	//	DEBUG_ASSERT;
+
 	/*if (FAILED(Bake_Fog()))
 		DEBUG_ASSERT;*/
 
@@ -418,6 +456,9 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 		DEBUG_ASSERT;
 
 	if (FAILED(PostProcessing()))
+		DEBUG_ASSERT;
+
+	if (FAILED(AntiAliasing()))
 		DEBUG_ASSERT;
 
 	if (FAILED(Render_UI()))
@@ -637,6 +678,60 @@ HRESULT CRender_Manager::Render_Lights()
 
 	if (FAILED(pRenderTargetManager->End_MRT()))
 		DEBUG_ASSERT;
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Blur_Specular(const _float& In_PixelPitchScalar)
+{
+	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
+
+	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurXSpecular"));
+
+	if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Specular")))))
+		DEBUG_ASSERT;
+
+	m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	m_pXBlurShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+
+	_float fPixelWidth = 1 / 1600.f * In_PixelPitchScalar;
+	_float fPixelHeight = 1 / 900.f * In_PixelPitchScalar;
+	m_pXBlurShader->Set_RawValue("g_PixelWidth", &fPixelWidth, sizeof(_float));
+	m_pXBlurShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));
+
+	_float fBlurStrength = 1.f;
+	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
+
+	// Blur X
+	m_pXBlurShader->Begin(0);
+	m_pVIBuffer->Render();
+
+	pRenderTargetManager->End_MRT();
+
+	/*if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture", pRenderTargetManager->Get_SRV(TEXT("Target_BlurForGlow")))))
+		DEBUG_ASSERT;*/
+
+	if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture",
+		pRenderTargetManager->Get_SRV(TEXT("Target_BlurXSpecular")))))
+		DEBUG_ASSERT;
+
+	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurSpecular"));
+
+	m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	m_pXBlurShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+
+	m_pXBlurShader->Set_RawValue("g_PixelWidth", &fPixelWidth, sizeof(_float));
+	m_pXBlurShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));
+
+	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
+
+	// Blur Y
+	m_pXBlurShader->Begin(1);
+	m_pVIBuffer->Render();
+
+	pRenderTargetManager->End_MRT();
 
 	return S_OK;
 }
@@ -1409,6 +1504,38 @@ HRESULT CRender_Manager::PostProcessing()
 	return S_OK;
 }
 
+HRESULT CRender_Manager::AntiAliasing()
+{
+	Bake_OriginalRenderTexture();
+
+	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
+
+	pRenderTargetManager->Begin_AntiAliasingMRT(TEXT("MRT_AntiAliasing"));
+
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")))))
+		DEBUG_ASSERT;
+
+	m_pShader->Set_RawValue("g_WorldMatrix", &m_AntiAliasingWorldMatrix, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_ProjMatrix", &m_AntiAliasingProjMatrixTranspose, sizeof(_float4x4));
+
+	m_pShader->Begin(7);
+	m_pVIBuffer->Render();
+
+	pRenderTargetManager->End_AntiAliasingMRT();
+
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_AntiAliasing")))))
+		DEBUG_ASSERT;
+
+	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+
+	m_pShader->Begin(7);
+	m_pVIBuffer->Render();
+
+	return S_OK;
+}
+
 HRESULT CRender_Manager::Render_Final()
 {
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_FINAL])
@@ -1538,6 +1665,8 @@ HRESULT CRender_Manager::Render_Debug()
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_StaticShadowDepth"), m_pShader, m_pVIBuffer);
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Fog"), m_pShader, m_pVIBuffer);
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Distortion"), m_pShader, m_pVIBuffer);
+	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurSpecular"), m_pShader, m_pVIBuffer);
+	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_AntiAliasing"), m_pShader, m_pVIBuffer);
 	//GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Glow"), m_pShader, m_pVIBuffer);
 
 	/*for (auto& pComponent : m_pDebugComponents)

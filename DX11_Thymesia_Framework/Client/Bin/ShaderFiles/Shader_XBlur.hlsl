@@ -162,7 +162,6 @@ PS_OUT PS_MAIN_BLURX_WITH_ORIGINAL_RENDER_TEXTURE(PS_IN In)
     PS_OUT Out = (PS_OUT) 0;
 
 	
-
     float4 color = 0;
     float2 samp = In.vTexUV;
     float4 SampleColor = 0;

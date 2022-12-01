@@ -457,14 +457,14 @@
     <ClCompile Include="..\Private\Thread_Manager.cpp">
       <Filter>98. Managers\15. ThreadManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Easing_Utillity.cpp">
-      <Filter>01. Elements\05. Utility\02. Easing_Utillity</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\PhysXController.cpp">
       <Filter>01. Elements\03. Component\14. PhysXController</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Trail_EyeLight.cpp">
       <Filter>01. Elements\03. Component\01. VIBuffer\08. Trail\VIBuffer_Trail_EyeLight</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Easing_Utillity.cpp">
+      <Filter>01. Elements\05. Utility\02. Easing_Utillity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
