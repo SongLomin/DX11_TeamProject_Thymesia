@@ -5,6 +5,7 @@ BEGIN(Engine)
 class CVIBuffer_Rect_Instance;
 class CTransform;
 class CBoneNode;
+class CModel;
 END
 
 BEGIN(Client)
@@ -124,7 +125,8 @@ private:
     // For. Boner
     std::vector<std::string>            m_AllBoneNames;
     weak_ptr<CBoneNode>                 m_pBoneNode;
-    std::string                         m_strBoneName = "";
+    weak_ptr<CModel>                    m_pParentModel;
+    std::string                         m_strBoneName   = "";
     _int                                m_iCurrentBoneIndex = 0;
 };
 

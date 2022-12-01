@@ -24,8 +24,6 @@ HRESULT CWindow_AnimationModelView::Initialize()
 
 
     Load_PreViewModels();
-
-
     return S_OK;
 }
 

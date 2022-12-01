@@ -46,6 +46,9 @@ HRESULT CCorvus::Initialize(void* pArg)
 	// Passive Effect ON
 	GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_PassiveFeather", m_pTransformCom, (_uint)TIMESCALE_LAYER::PLAYER);
 
+	// TODO : test for boner
+	GET_SINGLE(CGameManager)->Use_EffectGroup("TestBoner", m_pTransformCom, (_uint)TIMESCALE_LAYER::PLAYER);
+
 	//USE_START(CCorvus);
 	return S_OK;
 }

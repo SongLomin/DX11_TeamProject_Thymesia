@@ -5,32 +5,7 @@
     ((D3DCOLOR)((((a)&0xff)<<24)|(((r)&0xff)<<16)|(((g)&0xff)<<8)|((b)&0xff)))
 
 #define DEGREE(value)	XMConvertToDegrees(value)
-#define RADIANS(value)	XMConvertToRadians(value)
-
-
-#define GET_INSTANCE(CLASSNAME)	[](){											\
-	CLASSNAME*	pInstance = CLASSNAME::Get_Instance();							\
-	if(nullptr == pInstance) {													\
-	char	szMessage[MAX_PATH] = "";											\
-	strcpy_s(szMessage, typeid(CLASSNAME).name());								\
-	strcat_s(szMessage, "is nullptr");											\
-	MessageBoxA(0, szMessage, nullptr, MB_OK);}									\
-	else {																		\
-	pInstance->AddRef();}														\
-	return pInstance;															\
-	}();
-
-#define RELEASE_INSTANCE(CLASSNAME)	[](){										\
-	CLASSNAME*	pInstance = CLASSNAME::Get_Instance();							\
-	if(nullptr == pInstance) {													\
-	char	szMessage[MAX_PATH] = "";											\
-	strcpy_s(szMessage, typeid(CLASSNAME).name());								\
-	strcat_s(szMessage, "is nullptr");											\
-	MessageBoxA(0, szMessage, nullptr, MB_OK);}									\
-	else {																		\
-	pInstance->Release();}														\
-	}();
-
+#define RADIANS(value)	XMConvertToRadians(value) 
 
 #ifdef ENGINE_EXPORTS
 #define ENGINE_DLL _declspec(dllexport)

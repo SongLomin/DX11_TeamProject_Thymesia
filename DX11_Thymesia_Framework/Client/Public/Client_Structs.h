@@ -154,6 +154,10 @@ namespace Client
 		// if true, particle position is according to bone
 		_bool		bBoner;
 
+#ifdef _DEBUG
+
+#endif // _DEBUG
+
 #pragma region Spawn Position
 		
 		_bool		bIsMinMaxSame_SpawnPosition; // TODO : for tool -> erase

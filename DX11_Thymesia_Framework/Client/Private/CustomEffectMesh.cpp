@@ -12,7 +12,6 @@
 
 #include "BoneNode.h"
 
-
 GAMECLASS_C(CCustomEffectMesh)
 CLONE_C(CCustomEffectMesh, CGameObject)
 
@@ -142,12 +141,11 @@ void CCustomEffectMesh::SetUp_ShaderResource()
 	WorldMatrix = XMMatrixTranspose(WorldMatrix);
 
 	m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", (void*)&WorldMatrix, sizeof(_float4x4));*/
-	_matrix		BoneMatrix	= XMMatrixIdentity();
-	_matrix		WorldMatrix = XMMatrixIdentity();
+	_matrix BoneMatrix = XMMatrixIdentity(), WorldMatrix = XMMatrixIdentity();
 
 	if (m_pBoneNode.lock())
 	{
-		_float4x4 TempMat = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Get_TransformationMatrix();
+		_float4x4 TempMat = m_pParentModel.lock()->Get_TransformationMatrix();
 		_matrix ModelTranMat = XMLoadFloat4x4(&TempMat);
 		BoneMatrix = m_pBoneNode.lock()->Get_CombinedMatrix() * ModelTranMat;
 
@@ -156,11 +154,16 @@ void CCustomEffectMesh::SetUp_ShaderResource()
 		BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
 	}
 
-	WorldMatrix = BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix();
-	WorldMatrix *= XMLoadFloat4x4(&m_ParentMatrix);
-	WorldMatrix = XMMatrixTranspose(WorldMatrix);
+	WorldMatrix = BoneMatrix * m_pTransformCom.lock()->Get_UnScaledWorldMatrix();
 
-	m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_float4x4));
+	_vector vMyScale = XMLoadFloat3(&m_pTransformCom.lock()->Get_Scaled());
+	WorldMatrix.r[0] *= XMVectorGetX(vMyScale);
+	WorldMatrix.r[1] *= XMVectorGetY(vMyScale);
+	WorldMatrix.r[2] *= XMVectorGetZ(vMyScale);
+
+	WorldMatrix = XMMatrixTranspose(WorldMatrix * XMLoadFloat4x4(&m_ParentMatrix));
+
+	m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_matrix));
 	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4));
 	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
 
@@ -175,9 +178,9 @@ void CCustomEffectMesh::SetUp_ShaderResource()
 	m_pShaderCom.lock()->Set_RawValue("g_bDynamicNoiseOption", &m_tEffectMeshDesc.bDynamicNoiseOption, sizeof(_bool));
 
 	m_pShaderCom.lock()->Set_RawValue("g_bDiffuseWrap", &m_tEffectMeshDesc.bDiffuseWrap, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_bNoiseWrap", &m_tEffectMeshDesc.bNoiseWrap, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_bMaskWrap", &m_tEffectMeshDesc.bMaskWrap, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_vWrapWeight", &m_tEffectMeshDesc.vWrapWeight, sizeof(_float4));
+	m_pShaderCom.lock()->Set_RawValue("g_bNoiseWrap",   &m_tEffectMeshDesc.bNoiseWrap, sizeof(_bool));
+	m_pShaderCom.lock()->Set_RawValue("g_bMaskWrap",    &m_tEffectMeshDesc.bMaskWrap, sizeof(_bool));
+	m_pShaderCom.lock()->Set_RawValue("g_vWrapWeight",  &m_tEffectMeshDesc.vWrapWeight, sizeof(_float4));
 
 	m_pShaderCom.lock()->Set_RawValue("g_vUVDiff", &m_vDiffuseCurrentUV, sizeof(_float2));
 	m_pShaderCom.lock()->Set_RawValue("g_vUVNoise", &m_vNoiseCurrentUV, sizeof(_float2));
@@ -210,7 +213,9 @@ void CCustomEffectMesh::Sync_Animation()
 	if (!m_tEffectMeshDesc.bSyncAnimation)
 		return;
 
-	Reset_Effect();
+	weak_ptr<CTransform> pPreviewModelTransform = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Transform();
+
+	Reset_Effect(pPreviewModelTransform);
 }
 
 void CCustomEffectMesh::Play(_float fTimeDelta)
@@ -244,85 +249,34 @@ void CCustomEffectMesh::Play(_float fTimeDelta)
 	m_fCurrentLifeTime += fTimeDelta;
 }
 
-void CCustomEffectMesh::Reset_Effect()
-{
-	Set_Enable(true);
-	m_bFinish = false;
-
-	m_pTransformCom.lock()->Set_WorldMatrix(XMMatrixIdentity());
-
-	m_fCurrentInitTime = m_tEffectMeshDesc.fInitTime;
-	m_fCurrentLifeTime = 0.f;
-
-	_vector StartPosition = XMLoadFloat3(&m_tEffectMeshDesc.vStartPosition);
-	StartPosition = XMVectorSetW(StartPosition, 1.f);
-	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, StartPosition);
-
-	m_vCurrentSpeed     = m_tEffectMeshDesc.vSpeed;
-	m_vCurrentRotation  = m_tEffectMeshDesc.vStartRotation;
-	m_vCurrentScale     = m_tEffectMeshDesc.vStartScale;
-	m_vCurrentColor     = m_tEffectMeshDesc.vStartColor;
-	m_vDiffuseCurrentUV = m_tEffectMeshDesc.vDiffuseStartUV;
-	m_vNoiseCurrentUV   = m_tEffectMeshDesc.vNoiseStartUV;
-	m_vMaskCurrentUV    = m_tEffectMeshDesc.vMaskStartUV;
-	m_vCurrentGlowColor = m_tEffectMeshDesc.vStartGlowColor;
-
-	ZeroMemory(&m_vCurrentForce         , sizeof(_float3));
-	ZeroMemory(&m_vCurrentScaleForce    , sizeof(_float3));
-	ZeroMemory(&m_vCurrentColorForce    , sizeof(_float4));
-	ZeroMemory(&m_vDiffuseCurrentUVForce, sizeof(_float2));
-	ZeroMemory(&m_vNoiseCurrentUVForce  , sizeof(_float2));
-	ZeroMemory(&m_vMaskCurrentUVForce   , sizeof(_float2));
-	ZeroMemory(&m_vCurrentGlowForce     , sizeof(_float4));
-	ZeroMemory(&m_vCurrentRotationForce , sizeof(_float3));
-
-	//XMStoreFloat3(&m_vCurrentForce,          XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	//XMStoreFloat3(&m_vCurrentScaleForce,     XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	//XMStoreFloat4(&m_vCurrentColorForce,     XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	//XMStoreFloat2(&m_vDiffuseCurrentUVForce, XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	//XMStoreFloat2(&m_vNoiseCurrentUVForce,   XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	//XMStoreFloat2(&m_vMaskCurrentUVForce,    XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	//XMStoreFloat4(&m_vCurrentGlowForce,      XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	//XMStoreFloat3(&m_vCurrentRotationForce,  XMVectorSet(0.f, 0.f, 0.f, 0.f));
-
-	m_fPreFrame = 0.f;
-
-	m_pTransformCom.lock()->Set_Scaled(m_vCurrentScale);
-
-	_vector StartRotation = XMLoadFloat3(&m_vCurrentRotation);
-
-	_vector Quaternion = XMQuaternionRotationRollPitchYaw(XMVectorGetX(StartRotation), XMVectorGetY(StartRotation), XMVectorGetZ(StartRotation));
-	m_pTransformCom.lock()->Rotation_Quaternion(Quaternion);
-
-	if (m_tEffectMeshDesc.bCollider)
-	{
-		if (GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock())
-		{
-			if (!m_pAttackArea.lock())
-				m_pAttackArea = GAMEINSTANCE->Add_GameObject<CAttackArea>(m_CreatedLevel);
-
-			ATTACKAREA_DESC WeaponDesc;
-			ZeroMemory(&WeaponDesc, sizeof(ATTACKAREA_DESC));
-
-			WeaponDesc.fWeaponScale  = m_tEffectMeshDesc.fWeaponScale;
-			WeaponDesc.iHitType      = m_tEffectMeshDesc.iHitType;
-			WeaponDesc.iOptionType   = m_tEffectMeshDesc.iOptionType;
-			WeaponDesc.fDamage       = m_tEffectMeshDesc.fDamage;
-			WeaponDesc.vWeaponOffset = m_tEffectMeshDesc.vWeaponOffset;
-			WeaponDesc.fHitFreq      = m_tEffectMeshDesc.fHitFreq;
-
-			m_pAttackArea.lock()->Init_AttackArea(WeaponDesc, GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Component<CTransform>());
-			m_pAttackArea.lock()->Enable_Weapon(m_tEffectMeshDesc.fWeaponLifeTime, m_tEffectMeshDesc.bWeaponSyncTransform);
-		}
-	}
-}
-
 void CCustomEffectMesh::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 {
 	Set_Enable(true);
 	m_bFinish = false;
+
+	if (!pParentTransform.lock())
+		assert(0);
+
 	m_pParentTransformCom = pParentTransform;
 	XMStoreFloat4x4(&m_ParentMatrix, pParentTransform.lock()->Get_UnScaledWorldMatrix());
+
+	if (m_tEffectMeshDesc.bBoner)
+	{
+		try
+		{
+			if (!pParentTransform.lock())
+				throw;
+
+			m_pParentModel = pParentTransform.lock()->Get_Owner().lock()->Get_Component<CModel>();
+			m_pBoneNode = m_pParentModel.lock()->Find_BoneNode(m_strBoneName);
+		}
+		catch (const std::exception&)
+		{
+			// TODO : do nothing
+			void(0);
+		}
+
+	}
 
 	m_pTransformCom.lock()->Set_WorldMatrix(XMMatrixIdentity());
 
@@ -353,15 +307,6 @@ void CCustomEffectMesh::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 	ZeroMemory(&m_vMaskCurrentUVForce   , sizeof(_float2));
 	ZeroMemory(&m_vCurrentGlowForce     , sizeof(_float4));
 	ZeroMemory(&m_vCurrentRotationForce , sizeof(_float3));
-
-	//XMStoreFloat3(&m_vCurrentForce,          XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	//XMStoreFloat3(&m_vCurrentScaleForce,     XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	//XMStoreFloat4(&m_vCurrentColorForce,     XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	//XMStoreFloat2(&m_vDiffuseCurrentUVForce, XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	//XMStoreFloat2(&m_vNoiseCurrentUVForce,   XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	//XMStoreFloat2(&m_vMaskCurrentUVForce,    XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	//XMStoreFloat4(&m_vCurrentGlowForce,      XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	//XMStoreFloat3(&m_vCurrentRotationForce,  XMVectorSet(0.f, 0.f, 0.f, 0.f));
 
 	m_pTransformCom.lock()->Set_Scaled(m_vCurrentScale);
 	_vector StartRotation = XMLoadFloat3(&m_vCurrentRotation);
@@ -537,20 +482,17 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 			if (m_strBoneName.empty())
 				throw;
 
-			m_pParentTransformCom = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Component<CTransform>().lock();
-			if (!m_pParentTransformCom.lock())
-				throw;
-
-			m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
-			if (!m_pBoneNode.lock())
-				throw;
+			if ((_uint)LEVEL_EDIT == m_CreatedLevel)
+			{
+				m_pParentTransformCom = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Component<CTransform>().lock();
+				m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
+			}
 		}
 		catch (const std::exception&)
 		{
 			assert(0);
 		}
 	}
-
 	if (In_Json.find("BillBoard") != In_Json.end())
 		m_tEffectMeshDesc.bBillBoard = In_Json["BillBoard"];
 	
@@ -1147,7 +1089,7 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 				if (ImGui::Button("Bind Bone"))
 				{
-					m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
+					m_pBoneNode = m_pParentModel.lock()->Find_BoneNode(m_strBoneName);
 					if (nullptr == m_pBoneNode.lock())
 					{
 						MSG_BOX("!!! Invalid Bone Name !!!");
@@ -1522,7 +1464,9 @@ void CCustomEffectMesh::OnChangeAnimationKey(const _uint& In_Key)
 	if (m_tEffectMeshDesc.iSyncAnimationKey != (_int)In_Key)
 		return;
 
-	Reset_Effect();
+	weak_ptr<CTransform> pPreviewModelTransform = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Transform();
+
+	Reset_Effect(pPreviewModelTransform);
 }
 
 void CCustomEffectMesh::Free()
