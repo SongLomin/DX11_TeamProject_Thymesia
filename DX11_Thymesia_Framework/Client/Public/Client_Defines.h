@@ -10,16 +10,16 @@
 #ifdef _DEBUG
 #define		_USE_THREAD_
 #define		_144HZ_
-// #define		_LIFEGUARD_FOR_FALL_
+#define		_LIFEGUARD_FOR_FALL_
 // #define		_DEBUG_COUT_
 #define		_DEBUG_COUT_JOJO
 #define		_STAGE_1_
 #define		_STAGE_2_
 #define		_STAGE_1_MONSTER_
- #define		_VARG_
+#define		_VARG_
 //#define		_INSTANCE_CULLING_
 // #define		_GENERATE_PROP_COLLIDER_ true
-// #define		_USE_GRAVITY_
+#define		_USE_GRAVITY_
 // #define		_DAGGER_TRAIL_
 //#define		_TEST_STATIC_PROPS_
 // UI제외한 오브젝트 생성 X
@@ -256,12 +256,46 @@ namespace Client
 
 	enum class TALENT_EFFECT_FLAG
 	{
+		//검파트
 		NONE = 0,
-		SWORD_NOR_ATK_LV1 = (1 << 1),
+		SABER_ATTACK_LV2 = (1 << 1),
 		AVOID_SLASH_LV1 = (1 << 2),
 		AVOID_SLASH_LV2 = (1 << 3),
 		AVOID_THRUST_LV1 = (1 << 4),
 		AVOID_THRUST_LV2 = (1 << 5),
+		
+		JUMP_ATTACK_LV2 = (1 << 6),
+		JUMP_ATTACK_LV3 = (1 << 7),
+
+		EXECUTION_OF_HEALING_LV1  = (1 << 8),
+		EXECUTION_OF_HEALING_LV2  = (1 << 9),
+
+		SHARP_WEAPON_LV1 = (1 << 10),
+		SHARP_WEAPON_LV2 = (1 << 11),
+
+		ENERGISED_WEAPON_LV1 = (1 << 12),
+		ENERGISED_WEAPON_LV2 = (1 << 13),
+
+		//검파트
+
+		//튕겨내기
+		//튕겨내기
+
+		//회피
+		//회피
+
+		//발톱
+		LONG_CLAW_LV2 = (1 << 15),
+		LONG_CLAW_LV3 = (1 << 16),
+		SHORT_CLAW_LV1 = (1 << 17),
+		SHORT_CLAW_LV2 = (1 << 18),
+		//발톱
+
+
+
+
+
+
 		FLAG_END
 	};
 

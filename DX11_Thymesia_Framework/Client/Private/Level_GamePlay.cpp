@@ -19,6 +19,8 @@
 #include "UI_Script.h"
 #include "UI_ScriptQueue.h"
 #include "UI_DamageFont.h"
+
+
 CLevel_GamePlay::CLevel_GamePlay()
 	//: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
@@ -84,31 +86,20 @@ HRESULT CLevel_GamePlay::Initialize()
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
 
 
-	
+	CMonster::STATE_LINK_MONSTER_DESC MONSTER;
+
 #ifdef _VARG_
-
-	//CBossMonster::STATE_LINK_BOSS_DESC BOSSMONSTER;
-	//
-	//ZeroMemory(&BOSSMONSTER, sizeof(CBossMonster::STATE_LINK_BOSS_DESC));
-	//BOSSMONSTER.vYame.x = 49.33f;
-	//BOSSMONSTER.vYame.y = 14.4f;
-	//BOSSMONSTER.vYame.z = 30.32f;
-	//BOSSMONSTER.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
-	//GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &BOSSMONSTER);
-
-
-
-	//ZeroMemory(&BOSSMONSTER, sizeof(CBossMonster::STATE_LINK_BOSS_DESC));
-	//BOSSMONSTER.vYame.x = 33.f;
-	//BOSSMONSTER.vYame.y = 4.7f;
-	//BOSSMONSTER.vYame.z = 26.f;
-	//GAMEINSTANCE->Add_GameObject<CUrd>(LEVEL_GAMEPLAY, &BOSSMONSTER);
+	ZeroMemory(&MONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+	MONSTER.eMonType = MONSTERTYPE::VARG;
+	MONSTER.eBossStartType = BOSSSTARTTYPE::BEGINSTART;
+	MONSTER.vYame.x = 49.33f;
+	MONSTER.vYame.y = 14.4f;
+	MONSTER.vYame.z = 30.32f;
+	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &MONSTER);
 #endif // _VARG_
 
 	//TODO 야매에요
 #ifdef _STAGE_1_MONSTER_
-	CMonster::STATE_LINK_MONSTER_DESC MONSTER;
-
 	//ZeroMemory(&MONSTER, sizeof(CBossMonster::STATE_LINK_MONSTER_DESC));
 	//MONSTER.vYame.x = 49.33f;
 	//MONSTER.vYame.y = 14.4f;
@@ -177,6 +168,8 @@ HRESULT CLevel_GamePlay::Initialize()
 #ifdef _STAGE_2_
 	//ThreadResult2.get();
 #endif // _STAGE_2_
+	
+	
 
 	return S_OK;
 }

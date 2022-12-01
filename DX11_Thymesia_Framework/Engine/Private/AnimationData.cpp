@@ -55,7 +55,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     }
 
     // TODO : change animation speed here
-    /*MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack1", 2.5f);
+    MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack1", 2.5f);
     MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack2", 2.5f);
     MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack3_New", 2.5f);
     MACRO("SK_C_Corvus.ao|Corvus_SD1_ParryL_NEW", 4.f);
@@ -78,7 +78,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     MACRO("SK_C_Corvus.ao|Corvus_PW_VargSword_B", 2.5f);
     MACRO("SK_C_Corvus.ao|Corvus_PW_UrdSword01", 2.25f);
     MACRO("SK_C_Corvus.ao|Corvus_PW_Magician_A", 1.75f);
-    MACRO("SK_C_Corvus.ao|Corvus_PW_CaneSword_SP02", 2.f);*/
+    MACRO("SK_C_Corvus.ao|Corvus_PW_CaneSword_SP02", 2.f);
     MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack4", 2.5f);
     MACRO("SK_C_Corvus.ao|Corvus_SD_LAttack5", 2.5f);
     MACRO("SK_C_Corvus.ao|Corvus_SD_AvoidAttack_D", 2.5f);

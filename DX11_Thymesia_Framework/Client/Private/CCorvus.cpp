@@ -9,7 +9,7 @@
 #include "Light_Prop.h"
 #include "Status_Player.h"
 #include "PhysXController.h"
-#include "CorvusStates/Talent_Sword.h"
+
 
 
 GAMECLASS_C(CCorvus)
@@ -52,9 +52,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 	GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_PassiveFeather", m_pTransformCom, (_uint)TIMESCALE_LAYER::PLAYER);
 
 
-	m_pSword = GAMEINSTANCE->Add_GameObject<CTalent_Sword>(LEVEL_STATIC);
-
-	m_pSword.lock()->TestTalentCheck();
+	
 
 	//USE_START(CCorvus);
 	return S_OK;
@@ -191,6 +189,10 @@ void CCorvus::Ready_States()
 	MACRO(CCorvusState_Parry2);
 	MACRO(CCorvusState_BasicHealing);
 	MACRO(CCorvusState_ClawAttackTab);
+	MACRO(CCorvusState_ClawAttackTab2);
+	MACRO(CCorvusState_ClawAttackHold);
+	MACRO(CCorvusState_ClawAttackAway);
+	MACRO(CCorvusState_ClawAttackHoldLoop);
 	MACRO(CCorvusState_Die);
 	MACRO(CCorvusState_HurtL);
 	MACRO(CCorvusState_HurtR);
@@ -208,6 +210,8 @@ void CCorvus::Ready_States()
 	MACRO(CCorvusState_PS_VargSword);
 	MACRO(CCorvusState_AVoidSalsh);
 	MACRO(CCorvusState_AVoidThrust);
+
+
 
 
 	

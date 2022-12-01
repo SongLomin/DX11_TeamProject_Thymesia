@@ -101,7 +101,7 @@ _bool CVargBossState_Run::Check_AndChangeNextState()
 
 	if (fPToMDistance <= 4.f)
 	{
-		int iRand = rand() % 2;
+		int iRand = rand() % 3;
 
 		switch (iRand)
 		{
@@ -110,6 +110,9 @@ _bool CVargBossState_Run::Check_AndChangeNextState()
 			break;
 		case 1:
 			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1b>(0.05f);
+			break;
+		case 2:
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack3b>(0.05f);
 			break;
 		}
 

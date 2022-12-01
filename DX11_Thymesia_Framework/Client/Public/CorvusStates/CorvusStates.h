@@ -30,6 +30,7 @@
 #include "CorvusStates/CorvusState_ClawAttackHold.h"
 #include "CorvusStates/CorvusState_ClawAttackAway.h"
 #include "CorvusStates/CorvusState_ClawAttackTab2.h"
+#include "CorvusStates/CorvusState_ClawAttackHoldLoop.h"
 #include "CorvusStates/CorvusState_HurtXXL.h"
 #include "CorvusStates/CorvusState_HurtL.h"
 #include "CorvusStates/CorvusState_HurtR.h"

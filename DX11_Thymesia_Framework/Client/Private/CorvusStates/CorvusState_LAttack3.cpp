@@ -249,7 +249,7 @@ _bool CCorvusState_LAttack3::Check_AndChangeNextState()
 		{
 			_flag TalentEffectFlags = Get_OwnerPlayer()->Check_RequirementForTalentEffects();
 
-			if (TalentEffectFlags & (_flag)TALENT_EFFECT_FLAG::SWORD_NOR_ATK_LV1)
+			if (TalentEffectFlags & (_flag)TALENT_EFFECT_FLAG::SABER_ATTACK_LV2)
 			{
 				if (!Rotation_InputToLookDir())
 					Rotation_TargetToLookDir();

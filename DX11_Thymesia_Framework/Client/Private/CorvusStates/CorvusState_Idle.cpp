@@ -200,14 +200,14 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		return true;
 	}
 
-
-
-	if (Check_RequirementClawAttackState())
+	if (Check_RequirementClawAttackHoldState())
 	{
 		Rotation_InputToLookDir();
-		Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackTab>();
+		Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackHold>();
 		return true;
 	}
+
+
 
 	//юс╫ц
 	if (KEY_INPUT(KEY::O, KEY_STATE::TAP))

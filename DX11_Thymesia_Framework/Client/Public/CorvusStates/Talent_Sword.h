@@ -20,15 +20,6 @@ public:
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize(void* pArg) override;
 
-    virtual void   TestTalentCheck();
-
-private:
-    weak_ptr<CTalent> pSwordLV2 = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
-    weak_ptr<CTalent> pAvoidSlashLV1 = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
-    weak_ptr<CTalent> pAvoidSlashLV2 = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
-    weak_ptr<CTalent> pAvoidThrustLV1 = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
-    weak_ptr<CTalent> pAvoidThrustLV2 = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
-    
 private:
     weak_ptr<CPlayer>       m_pPlayer;
 private:

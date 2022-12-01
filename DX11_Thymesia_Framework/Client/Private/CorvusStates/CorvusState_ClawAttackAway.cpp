@@ -31,7 +31,7 @@ HRESULT CCorvusState_ClawAttackAway::Initialize(void* pArg)
 void CCorvusState_ClawAttackAway::Start()
 {
 	__super::Start();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_Raven_ClawLong_L01");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_Raven_ClawLong_ChargeFull");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_ClawAttackAway::Call_AnimationEnd, this);
 }
 
@@ -63,10 +63,7 @@ void CCorvusState_ClawAttackAway::LateTick(_float fTimeDelta)
 
 	Check_InputNextAttack();
 
-	if (Check_AndChangeNextState())
-	{
-
-	}
+	Check_AndChangeNextState();
 }
 
 void CCorvusState_ClawAttackAway::Call_AnimationEnd()
@@ -123,9 +120,10 @@ void CCorvusState_ClawAttackAway::OnStateStart(const _float& In_fAnimationBlendT
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_AVoid>().lock())
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_ClawAttackHold>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_ClawAttackHoldLoop>().lock())
 	{
-		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 14);
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 26);
 	}
 	else
 	{

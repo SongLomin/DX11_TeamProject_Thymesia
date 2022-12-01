@@ -71,14 +71,8 @@ void CCorvusState_AVoidThrust::OnStateStart(const _float& In_fAnimationBlendTime
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_AVoidThrust>().lock())
-	{
-		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 5);
-	}
-	else
-	{
-		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-	}
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+
 #ifdef _DEBUG
 	#ifdef _DEBUG_COUT_
 		cout << "NorMonState: RunStart -> OnStateStart" << endl;

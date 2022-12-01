@@ -63,10 +63,7 @@ void CCorvusState_ClawAttackTab2::LateTick(_float fTimeDelta)
 
 	Check_InputNextAttack();
 
-	if (Check_AndChangeNextState())
-	{
-
-	}
+	Check_AndChangeNextState();
 }
 
 void CCorvusState_ClawAttackTab2::Call_AnimationEnd()
@@ -123,14 +120,7 @@ void CCorvusState_ClawAttackTab2::OnStateStart(const _float& In_fAnimationBlendT
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_AVoid>().lock())
-	{
-		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 14);
-	}
-	else
-	{
-		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-	}
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 	if (!m_pModelCom.lock().get())
 	{
@@ -216,7 +206,7 @@ _bool CCorvusState_ClawAttackTab2::Check_AndChangeNextState()
 
 
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.4f)
 	{
 		if (Check_RequirementAVoidState())
 		{
@@ -226,7 +216,7 @@ _bool CCorvusState_ClawAttackTab2::Check_AndChangeNextState()
 		}
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.4f)
 	{
 		if (Check_RequirementRunState())
 		{
@@ -238,7 +228,7 @@ _bool CCorvusState_ClawAttackTab2::Check_AndChangeNextState()
 
 
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.4f)
 	{
 		if (Check_RequirementParryState())
 		{
@@ -248,7 +238,7 @@ _bool CCorvusState_ClawAttackTab2::Check_AndChangeNextState()
 		}
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.4f)
 	{
 		if (Check_RequirementAttackState())
 		{

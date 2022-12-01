@@ -15,8 +15,7 @@ class CTalent_Effect_NorSwordLV1 :
 
 
 public:
-    virtual _flag Check_Requirement(weak_ptr<CPlayer> pPlayer) override;
-    
+    virtual _flag Check_Requirement(weak_ptr<CPlayer> pPlayer) override;   
     virtual void Bind_Talent_Effect(weak_ptr<CPlayer> pPlayer) override;
     virtual void UnBind_Talent_Effect(weak_ptr<CPlayer> pPlayer) override;
 

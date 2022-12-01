@@ -130,7 +130,17 @@ _bool CCorvusStateBase::Check_RequirementHealingState()
 
 _bool CCorvusStateBase::Check_RequirementClawAttackState()
 {
-	if (KEY_INPUT(KEY::RBUTTON, KEY_STATE::TAP))
+	if (KEY_INPUT(KEY::RBUTTON, KEY_STATE::AWAY))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+_bool CCorvusStateBase::Check_RequirementClawAttackHoldState()
+{
+	if (KEY_INPUT(KEY::RBUTTON, KEY_STATE::HOLD))
 	{
 		return true;
 	}

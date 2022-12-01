@@ -2,6 +2,7 @@
 #include "CorvusStates/Talent.h"
 #include "GameManager.h"
 #include "Player.h"
+#include "CorvusStates/Talent_Effect.h"
 
 GAMECLASS_C(CTalent)
 CLONE_C(CTalent, CGameObject)
@@ -13,6 +14,8 @@ HRESULT CTalent::Initialize_Prototype()
 
 HRESULT CTalent::Initialize(void* pArg)
 {
+    CGameObject::Initialize(pArg);
+
     //eak_ptr<CTalent> pNorSwordLv1 = GAMEINSTANCE->Add_GameObject(CTalent);
 
    return S_OK;
@@ -20,7 +23,12 @@ HRESULT CTalent::Initialize(void* pArg)
 
 HRESULT CTalent::Start()
 {
-    return E_NOTIMPL;
+    CGameObject::Start();
+
+    m_pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+    m_pEffect = Get_ComponentByType<CTalent_Effect>();
+
+    return S_OK;
 }
 
 
@@ -32,7 +40,18 @@ void CTalent::Set_TalentInfo(_bool In_bActive,
     m_pParent = In_pParent;
 }
 
+void CTalent::Add_TalentChild(weak_ptr<CTalent> In_pChild)
+{
+    m_pChilds.push_back(In_pChild);
+}
 
+void CTalent::Set_Parent(weak_ptr<CTalent> In_Parent)
+{
+    m_pParent = In_Parent;
+    m_pParent.lock()->Add_TalentChild(Weak_StaticCast<CTalent>(m_this));
+    
+    Start();
+}
 
 void CTalent::Tick(_float fTimeDelta)
 {
@@ -141,7 +160,52 @@ void CTalent::Find_ActiveChild_Recursive(weak_ptr<CTalent> In_pTalent, list<weak
     return;
 }
 
+void  CTalent::TestTalentCheck()
+{
+    
 
+    int iCost = 0;
+    int iMyTalentPoint = 5;
+
+    TALENT_RESULT eResult;
+
+    //юс╫ц
+    //m_pPlayer.lock()->Bind_TalentEffects(pAvoidThrustLV1.lock()->Get_Effect());
+    //m_pPlayer.lock()->Bind_TalentEffects(pSwordLV2.lock()->Get_Effect());
+    list<weak_ptr<CTalent>> pVisitNodes;
+    eResult = Check_Requiment(iMyTalentPoint, iCost, pVisitNodes);
+
+    switch (eResult)
+    {
+    case Client::TALENT_RESULT::FAILED:
+        break;
+    case Client::TALENT_RESULT::NOT_ENOUGHTPOINT:
+        break;
+    case Client::TALENT_RESULT::USING_ATHORTREE:
+        break;
+    case Client::TALENT_RESULT::SUCCESS:
+        iMyTalentPoint -= iCost;
+        for (auto& elem : pVisitNodes)
+        {
+            elem.lock()->Set_Active(true);
+            m_pPlayer.lock()->Bind_TalentEffects(elem.lock()->Get_Effect());
+        }
+        //m_pPlayer.lock()->Bind_TalentEffects(pSwordLV2.lock()->Get_Effect());
+        //m_pPlayer.lock()->Bind_TalentEffects(pAvoidThrustLV1.lock()->Get_Effect());
+        break;
+    case Client::TALENT_RESULT::SUBSTARICTPOINT:
+        iMyTalentPoint += iCost;
+        for (auto& elem : pVisitNodes)
+        {
+            elem.lock()->Set_Active(false);
+            m_pPlayer.lock()->UnBind_TalentEffects(elem.lock()->Get_Effect());
+        }
+
+        break;
+    }
+    cout << "iTalent Point : " << iMyTalentPoint << endl;
+
+}
 
 void CTalent::Free()
 {

@@ -29,9 +29,14 @@ public:
     void Find_ActiveChild_Recursive(weak_ptr<CTalent> In_pTalent, list<weak_ptr<CTalent>>& out_pActiveChild, int& out_iDepth);
     void    Set_TalentInfo(_bool In_bActive, 
         weak_ptr<CTalent_Effect> In_pEffet, weak_ptr<CTalent> In_pParent);
-    void    Add_TalentChild(weak_ptr<CTalent> In_pChild) { m_pChilds.push_back(In_pChild); }
+    void    Set_Parent(weak_ptr<CTalent> In_Parent);
     void Set_Active(_bool Active) { m_bActive = Active; }
     weak_ptr<CTalent_Effect> Get_Effect() { return m_pEffect; }
+    void TestTalentCheck();
+    
+private:
+    void    Add_TalentChild(weak_ptr<CTalent> In_pChild);
+
 protected:
     _bool                         m_bActive = false;
     weak_ptr<CTalent_Effect>     m_pEffect;

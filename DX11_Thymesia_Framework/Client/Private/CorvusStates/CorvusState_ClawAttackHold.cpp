@@ -31,8 +31,8 @@ HRESULT CCorvusState_ClawAttackHold::Initialize(void* pArg)
 void CCorvusState_ClawAttackHold::Start()
 {
 	__super::Start();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_Raven_ClawLong_L01");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_ClawAttackHold::Call_AnimationEnd, this);
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_Raven_ClawCommonV2_ChargeStart");
+	//m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_ClawAttackHold::Call_AnimationEnd, this);
 }
 
 void CCorvusState_ClawAttackHold::Tick(_float fTimeDelta)
@@ -63,20 +63,17 @@ void CCorvusState_ClawAttackHold::LateTick(_float fTimeDelta)
 
 	Check_InputNextAttack();
 
-	if (Check_AndChangeNextState())
-	{
-
-	}
+	Check_AndChangeNextState();
 }
 
-void CCorvusState_ClawAttackHold::Call_AnimationEnd()
-{
-	if (!Get_Enable())
-		return;
-
-	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
-
-}
+//void CCorvusState_ClawAttackHold::Call_AnimationEnd()
+//{
+//	if (!Get_Enable())
+//		return;
+//
+//	Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackHoldLoop>();
+//
+//}
 
 void CCorvusState_ClawAttackHold::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 {
@@ -123,14 +120,7 @@ void CCorvusState_ClawAttackHold::OnStateStart(const _float& In_fAnimationBlendT
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_AVoid>().lock())
-	{
-		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 14);
-	}
-	else
-	{
-		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-	}
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 	if (!m_pModelCom.lock().get())
 	{
@@ -156,7 +146,6 @@ void CCorvusState_ClawAttackHold::OnStateEnd()
 	__super::OnStateEnd();
 
 	//Disable_Weapons();
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 	m_IsNextAttack = false;
 
 }
@@ -199,7 +188,7 @@ void CCorvusState_ClawAttackHold::OnEventMessage(_uint iArg)
 
 void CCorvusState_ClawAttackHold::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_ClawAttackHold::Call_AnimationEnd, this);
+	//m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_ClawAttackHold::Call_AnimationEnd, this);
 }
 
 void CCorvusState_ClawAttackHold::Free()
@@ -215,50 +204,37 @@ _bool CCorvusState_ClawAttackHold::Check_AndChangeNextState()
 
 
 
-
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() > 30)
 	{
-		if (Check_RequirementAVoidState())
+		if (!Check_RequirementClawAttackHoldState())
 		{
 			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackAway>();
+			return true;
+		}
+		
+	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() <= 30)
+	{
+		if (Check_RequirementClawAttackState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackTab>();
 			return true;
 		}
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.99f)
 	{
-		if (Check_RequirementRunState())
-		{
-			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
-			return true;
-		}
+		
+	    Rotation_InputToLookDir();
+	    Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackHoldLoop>();
+	    return true;
+		
 	}
 
-
-
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
-	{
-		if (Check_RequirementParryState())
-		{
-			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
-			return true;
-		}
-	}
-
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
-	{
-		if (Check_RequirementAttackState())
-		{
-			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
-			return true;
-		}
-	}
-
-
+	
 
 
 

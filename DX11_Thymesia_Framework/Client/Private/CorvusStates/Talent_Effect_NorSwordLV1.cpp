@@ -8,7 +8,7 @@ CLONE_C(CTalent_Effect_NorSwordLV1, CComponent);
 
 _flag CTalent_Effect_NorSwordLV1::Check_Requirement(weak_ptr<CPlayer> pPlayer)
 {
-    return (_flag)TALENT_EFFECT_FLAG::SWORD_NOR_ATK_LV1;
+    return 0;
 }
 
 void CTalent_Effect_NorSwordLV1::Bind_Talent_Effect(weak_ptr<CPlayer> pPlayer)
