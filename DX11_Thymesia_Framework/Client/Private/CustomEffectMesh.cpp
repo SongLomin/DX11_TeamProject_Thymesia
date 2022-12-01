@@ -12,7 +12,6 @@
 
 #include "BoneNode.h"
 
-
 GAMECLASS_C(CCustomEffectMesh)
 CLONE_C(CCustomEffectMesh, CGameObject)
 
@@ -137,11 +136,34 @@ void CCustomEffectMesh::SetUp_ShaderResource()
 		XMStoreFloat4x4(&m_ParentMatrix, m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
 
 #pragma region World, View, Proj, Camera
-	_matrix WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
+	/*_matrix WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
 	WorldMatrix *= XMLoadFloat4x4(&m_ParentMatrix);
 	WorldMatrix = XMMatrixTranspose(WorldMatrix);
 
-	m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", (void*)&WorldMatrix, sizeof(_float4x4));
+	m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", (void*)&WorldMatrix, sizeof(_float4x4));*/
+	_matrix BoneMatrix = XMMatrixIdentity(), WorldMatrix = XMMatrixIdentity();
+
+	if (m_pBoneNode.lock())
+	{
+		_float4x4 TempMat = m_pParentModel.lock()->Get_TransformationMatrix();
+		_matrix ModelTranMat = XMLoadFloat4x4(&TempMat);
+		BoneMatrix = m_pBoneNode.lock()->Get_CombinedMatrix() * ModelTranMat;
+
+		BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
+		BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
+		BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
+	}
+
+	WorldMatrix = BoneMatrix * m_pTransformCom.lock()->Get_UnScaledWorldMatrix();
+
+	_vector vMyScale = XMLoadFloat3(&m_pTransformCom.lock()->Get_Scaled());
+	WorldMatrix.r[0] *= XMVectorGetX(vMyScale);
+	WorldMatrix.r[1] *= XMVectorGetY(vMyScale);
+	WorldMatrix.r[2] *= XMVectorGetZ(vMyScale);
+
+	WorldMatrix = XMMatrixTranspose(WorldMatrix * XMLoadFloat4x4(&m_ParentMatrix));
+
+	m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_matrix));
 	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4));
 	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
 
@@ -156,9 +178,9 @@ void CCustomEffectMesh::SetUp_ShaderResource()
 	m_pShaderCom.lock()->Set_RawValue("g_bDynamicNoiseOption", &m_tEffectMeshDesc.bDynamicNoiseOption, sizeof(_bool));
 
 	m_pShaderCom.lock()->Set_RawValue("g_bDiffuseWrap", &m_tEffectMeshDesc.bDiffuseWrap, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_bNoiseWrap", &m_tEffectMeshDesc.bNoiseWrap, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_bMaskWrap", &m_tEffectMeshDesc.bMaskWrap, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_vWrapWeight", &m_tEffectMeshDesc.vWrapWeight, sizeof(_float4));
+	m_pShaderCom.lock()->Set_RawValue("g_bNoiseWrap",   &m_tEffectMeshDesc.bNoiseWrap, sizeof(_bool));
+	m_pShaderCom.lock()->Set_RawValue("g_bMaskWrap",    &m_tEffectMeshDesc.bMaskWrap, sizeof(_bool));
+	m_pShaderCom.lock()->Set_RawValue("g_vWrapWeight",  &m_tEffectMeshDesc.vWrapWeight, sizeof(_float4));
 
 	m_pShaderCom.lock()->Set_RawValue("g_vUVDiff", &m_vDiffuseCurrentUV, sizeof(_float2));
 	m_pShaderCom.lock()->Set_RawValue("g_vUVNoise", &m_vNoiseCurrentUV, sizeof(_float2));
@@ -191,8 +213,9 @@ void CCustomEffectMesh::Sync_Animation()
 	if (!m_tEffectMeshDesc.bSyncAnimation)
 		return;
 
-	Reset_Effect();
+	weak_ptr<CTransform> pPreviewModelTransform = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Transform();
 
+	Reset_Effect(pPreviewModelTransform);
 }
 
 void CCustomEffectMesh::Play(_float fTimeDelta)
@@ -210,99 +233,50 @@ void CCustomEffectMesh::Play(_float fTimeDelta)
 		return;
 	}
 
-	_float fFrameTime = 1.f / 144.f;
-	_int	iTickCount = 0;
-	//iTickCount = fTimeDelta / fFrameTime;
-	//m_fPreFrame += fTimeDelta - (iTickCount * fTimeDelta / fFrameTime);
+	_float	fFrameTime(HZ_144);
+	_int	iTickCount(0);
 
 	m_fPreFrame += fFrameTime;
-
 	while (m_fPreFrame >= fFrameTime)
 	{
 		++iTickCount;
 		m_fPreFrame -= fFrameTime;
 	}
 
-	for (_int i = 0; i < iTickCount; ++i)
-	{
+	for (_int i(0); i < iTickCount; ++i)
 		Play_Internal(fFrameTime);
-	}
 
 	m_fCurrentLifeTime += fTimeDelta;
-
-}
-
-void CCustomEffectMesh::Reset_Effect()
-{
-	Set_Enable(true);
-	m_bFinish = false;
-
-	m_pTransformCom.lock()->Set_WorldMatrix(XMMatrixIdentity());
-
-	m_fCurrentInitTime = m_tEffectMeshDesc.fInitTime;
-	m_fCurrentLifeTime = 0.f;
-
-	_vector StartPosition = XMLoadFloat3(&m_tEffectMeshDesc.vStartPosition);
-	StartPosition.m128_f32[3] = 1.f;
-	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, StartPosition);
-
-	m_vCurrentSpeed = m_tEffectMeshDesc.vSpeed;
-	m_vCurrentRotation = m_tEffectMeshDesc.vStartRotation;
-	m_vCurrentScale = m_tEffectMeshDesc.vStartScale;
-	m_vCurrentColor = m_tEffectMeshDesc.vStartColor;
-	m_vDiffuseCurrentUV = m_tEffectMeshDesc.vDiffuseStartUV;
-	m_vNoiseCurrentUV = m_tEffectMeshDesc.vNoiseStartUV;
-	m_vMaskCurrentUV = m_tEffectMeshDesc.vMaskStartUV;
-	m_vCurrentGlowColor = m_tEffectMeshDesc.vStartGlowColor;
-
-	XMStoreFloat3(&m_vCurrentForce, XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	XMStoreFloat3(&m_vCurrentScaleForce, XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	XMStoreFloat4(&m_vCurrentColorForce, XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	XMStoreFloat2(&m_vDiffuseCurrentUVForce, XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	XMStoreFloat2(&m_vNoiseCurrentUVForce, XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	XMStoreFloat2(&m_vMaskCurrentUVForce, XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	XMStoreFloat4(&m_vCurrentGlowForce, XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	XMStoreFloat3(&m_vCurrentRotationForce, XMVectorSet(0.f, 0.f, 0.f, 0.f));
-
-	m_fPreFrame = 0.f;
-
-	m_pTransformCom.lock()->Set_Scaled(m_vCurrentScale);
-	_vector StartRotation = XMLoadFloat3(&m_vCurrentRotation);
-	_vector Quaternion = XMQuaternionRotationRollPitchYaw(StartRotation.m128_f32[0], StartRotation.m128_f32[1], StartRotation.m128_f32[2]);
-	m_pTransformCom.lock()->Rotation_Quaternion(Quaternion);
-
-	if (m_tEffectMeshDesc.bCollider)
-	{
-		if (GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock())
-		{
-			if (!m_pAttackArea.lock())
-			{
-				m_pAttackArea = GAMEINSTANCE->Add_GameObject<CAttackArea>(m_CreatedLevel);
-			}
-
-			ATTACKAREA_DESC WeaponDesc;
-			ZeroMemory(&WeaponDesc, sizeof(ATTACKAREA_DESC));
-			WeaponDesc.fWeaponScale = m_tEffectMeshDesc.fWeaponScale;
-			WeaponDesc.iHitType = m_tEffectMeshDesc.iHitType;
-			WeaponDesc.iOptionType = m_tEffectMeshDesc.iOptionType;
-			WeaponDesc.fDamage = m_tEffectMeshDesc.fDamage;
-			WeaponDesc.vWeaponOffset = m_tEffectMeshDesc.vWeaponOffset;
-			WeaponDesc.fHitFreq = m_tEffectMeshDesc.fHitFreq;
-
-			m_pAttackArea.lock()->Init_AttackArea(WeaponDesc,
-				GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Component<CTransform>());
-
-			m_pAttackArea.lock()->Enable_Weapon(m_tEffectMeshDesc.fWeaponLifeTime, m_tEffectMeshDesc.bWeaponSyncTransform);
-		}
-	}
 }
 
 void CCustomEffectMesh::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 {
 	Set_Enable(true);
 	m_bFinish = false;
+
+	if (!pParentTransform.lock())
+		assert(0);
+
 	m_pParentTransformCom = pParentTransform;
 	XMStoreFloat4x4(&m_ParentMatrix, pParentTransform.lock()->Get_UnScaledWorldMatrix());
+
+	if (m_tEffectMeshDesc.bBoner)
+	{
+		try
+		{
+			if (!pParentTransform.lock())
+				throw;
+
+			m_pParentModel = pParentTransform.lock()->Get_Owner().lock()->Get_Component<CModel>();
+			m_pBoneNode = m_pParentModel.lock()->Find_BoneNode(m_strBoneName);
+		}
+		catch (const std::exception&)
+		{
+			// TODO : do nothing
+			void(0);
+		}
+
+	}
 
 	m_pTransformCom.lock()->Set_WorldMatrix(XMMatrixIdentity());
 
@@ -310,36 +284,34 @@ void CCustomEffectMesh::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 	m_fCurrentLifeTime = 0.f;
 
 	_vector StartPosition = XMLoadFloat3(&m_tEffectMeshDesc.vStartPosition);
-	StartPosition.m128_f32[3] = 1.f;
+	StartPosition = XMVectorSetW(StartPosition, 1.f);
+
 	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, StartPosition);
 
 	m_fPreFrame = 0.f;
 
-	m_vCurrentSpeed = m_tEffectMeshDesc.vSpeed;
-	//m_vCurrentRotation = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(UnscaledMatrix));
-	//m_vCurrentRotation = SMath::Add_Float3(m_vCurrentRotation, m_tEffectMeshDesc.vStartRotation);
-
-	m_vCurrentRotation = m_tEffectMeshDesc.vStartRotation;
-	m_vCurrentScale = m_tEffectMeshDesc.vStartScale;
-	m_vCurrentColor = m_tEffectMeshDesc.vStartColor;
+	m_vCurrentSpeed     = m_tEffectMeshDesc.vSpeed;
+	m_vCurrentRotation  = m_tEffectMeshDesc.vStartRotation;
+	m_vCurrentScale     = m_tEffectMeshDesc.vStartScale;
+	m_vCurrentColor     = m_tEffectMeshDesc.vStartColor;
 	m_vDiffuseCurrentUV = m_tEffectMeshDesc.vDiffuseStartUV;
-	m_vNoiseCurrentUV = m_tEffectMeshDesc.vNoiseStartUV;
-	m_vMaskCurrentUV = m_tEffectMeshDesc.vMaskStartUV;
+	m_vNoiseCurrentUV   = m_tEffectMeshDesc.vNoiseStartUV;
+	m_vMaskCurrentUV    = m_tEffectMeshDesc.vMaskStartUV;
 	m_vCurrentGlowColor = m_tEffectMeshDesc.vStartGlowColor;
 
-	XMStoreFloat3(&m_vCurrentForce, XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	XMStoreFloat3(&m_vCurrentScaleForce, XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	XMStoreFloat4(&m_vCurrentColorForce, XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	XMStoreFloat2(&m_vDiffuseCurrentUVForce, XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	XMStoreFloat2(&m_vNoiseCurrentUVForce, XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	XMStoreFloat2(&m_vMaskCurrentUVForce, XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	XMStoreFloat4(&m_vCurrentGlowForce, XMVectorSet(0.f, 0.f, 0.f, 0.f));
-	XMStoreFloat3(&m_vCurrentRotationForce, XMVectorSet(0.f, 0.f, 0.f, 0.f));
-
+	ZeroMemory(&m_vCurrentForce         , sizeof(_float3));
+	ZeroMemory(&m_vCurrentScaleForce    , sizeof(_float3));
+	ZeroMemory(&m_vCurrentColorForce    , sizeof(_float4));
+	ZeroMemory(&m_vDiffuseCurrentUVForce, sizeof(_float2));
+	ZeroMemory(&m_vNoiseCurrentUVForce  , sizeof(_float2));
+	ZeroMemory(&m_vMaskCurrentUVForce   , sizeof(_float2));
+	ZeroMemory(&m_vCurrentGlowForce     , sizeof(_float4));
+	ZeroMemory(&m_vCurrentRotationForce , sizeof(_float3));
 
 	m_pTransformCom.lock()->Set_Scaled(m_vCurrentScale);
 	_vector StartRotation = XMLoadFloat3(&m_vCurrentRotation);
-	_vector Quaternion = XMQuaternionRotationRollPitchYaw(StartRotation.m128_f32[0], StartRotation.m128_f32[1], StartRotation.m128_f32[2]);
+
+	_vector Quaternion = XMQuaternionRotationRollPitchYaw(XMVectorGetX(StartRotation), XMVectorGetY(StartRotation), XMVectorGetZ(StartRotation));
 	m_pTransformCom.lock()->Rotation_Quaternion(Quaternion);
 
 	if (m_tEffectMeshDesc.bCollider)
@@ -378,34 +350,42 @@ void CCustomEffectMesh::Load_FromBinary(istream& is)
 
 void CCustomEffectMesh::Write_EffectJson(json& Out_Json)
 {
-	Out_Json["Name"] = m_szEffectName;
+	Out_Json["Name"]              = m_szEffectName;
 
-	Out_Json["Init_Time"] = m_tEffectMeshDesc.fInitTime;
-	Out_Json["Life_Time"] = m_tEffectMeshDesc.fLifeTime;
+	Out_Json["Init_Time"]         = m_tEffectMeshDesc.fInitTime;
+	Out_Json["Life_Time"]         = m_tEffectMeshDesc.fLifeTime;
 
-	Out_Json["Sync_Animation"] = m_tEffectMeshDesc.bSyncAnimation;
+	Out_Json["Sync_Animation"]    = m_tEffectMeshDesc.bSyncAnimation;
 	Out_Json["Sync_AnimationKey"] = m_tEffectMeshDesc.iSyncAnimationKey;
 
-	Out_Json["Follow_Transform"] = m_tEffectMeshDesc.bFollowTransform;
-	Out_Json["BillBoard"] = m_tEffectMeshDesc.bBillBoard;
+	Out_Json["Follow_Transform"]  = m_tEffectMeshDesc.bFollowTransform;
+	Out_Json["BillBoard"]         = m_tEffectMeshDesc.bBillBoard;
+
+	Out_Json["Is_Boner"]          = m_tEffectMeshDesc.bBoner;
+
+	if (m_tEffectMeshDesc.bBoner)
+	{
+		if (!m_strBoneName.empty())
+			Out_Json["Bone_Name"] = m_strBoneName;
+	}
 
 	CJson_Utility::Write_Float3(Out_Json["Start_Position"], m_tEffectMeshDesc.vStartPosition);
 
-	CJson_Utility::Write_Float3(Out_Json["Speed"], m_tEffectMeshDesc.vSpeed);
-	CJson_Utility::Write_Float3(Out_Json["Force"], m_tEffectMeshDesc.vForce);
-	CJson_Utility::Write_Float3(Out_Json["Min_Speed"], m_tEffectMeshDesc.vMinSpeed);
-	CJson_Utility::Write_Float3(Out_Json["Max_Speed"], m_tEffectMeshDesc.vMaxSpeed);
+	CJson_Utility::Write_Float3(Out_Json["Speed"],          m_tEffectMeshDesc.vSpeed);
+	CJson_Utility::Write_Float3(Out_Json["Force"],          m_tEffectMeshDesc.vForce);
+	CJson_Utility::Write_Float3(Out_Json["Min_Speed"],      m_tEffectMeshDesc.vMinSpeed);
+	CJson_Utility::Write_Float3(Out_Json["Max_Speed"],      m_tEffectMeshDesc.vMaxSpeed);
 
 	CJson_Utility::Write_Float3(Out_Json["Start_Rotation"], m_tEffectMeshDesc.vStartRotation);
 	CJson_Utility::Write_Float3(Out_Json["Rotation_Speed"], m_tEffectMeshDesc.vRotationSpeed);
 	CJson_Utility::Write_Float3(Out_Json["Rotation_Force"], m_tEffectMeshDesc.vRotationForce);
-	CJson_Utility::Write_Float3(Out_Json["Max_Rotation"], m_tEffectMeshDesc.vMaxRotation);
+	CJson_Utility::Write_Float3(Out_Json["Max_Rotation"],   m_tEffectMeshDesc.vMaxRotation);
 
-	CJson_Utility::Write_Float3(Out_Json["Start_Scale"], m_tEffectMeshDesc.vStartScale);
-	CJson_Utility::Write_Float3(Out_Json["Scale_Speed"], m_tEffectMeshDesc.vScaleSpeed);
-	CJson_Utility::Write_Float3(Out_Json["Scale_Force"], m_tEffectMeshDesc.vScaleForce);
-	CJson_Utility::Write_Float3(Out_Json["Min_Scale"], m_tEffectMeshDesc.vMinScale);
-	CJson_Utility::Write_Float3(Out_Json["Max_Scale"], m_tEffectMeshDesc.vMaxScale);
+	CJson_Utility::Write_Float3(Out_Json["Start_Scale"],    m_tEffectMeshDesc.vStartScale);
+	CJson_Utility::Write_Float3(Out_Json["Scale_Speed"],    m_tEffectMeshDesc.vScaleSpeed);
+	CJson_Utility::Write_Float3(Out_Json["Scale_Force"],    m_tEffectMeshDesc.vScaleForce);
+	CJson_Utility::Write_Float3(Out_Json["Min_Scale"],      m_tEffectMeshDesc.vMinScale);
+	CJson_Utility::Write_Float3(Out_Json["Max_Scale"],      m_tEffectMeshDesc.vMaxScale);
 
 	Out_Json["Shader_Pass_Index"] = m_tEffectMeshDesc.iShaderPassIndex;
 
@@ -414,55 +394,57 @@ void CCustomEffectMesh::Write_EffectJson(json& Out_Json)
 	CJson_Utility::Write_Float4(Out_Json["Start_Color"], m_tEffectMeshDesc.vStartColor);
 	CJson_Utility::Write_Float4(Out_Json["Color_Speed"], m_tEffectMeshDesc.vColorSpeed);
 	CJson_Utility::Write_Float4(Out_Json["Color_Force"], m_tEffectMeshDesc.vColorForce);
-	CJson_Utility::Write_Float4(Out_Json["Min_Color"], m_tEffectMeshDesc.vMinColor);
-	CJson_Utility::Write_Float4(Out_Json["Max_Color"], m_tEffectMeshDesc.vMaxColor);
+	CJson_Utility::Write_Float4(Out_Json["Min_Color"],   m_tEffectMeshDesc.vMinColor);
+	CJson_Utility::Write_Float4(Out_Json["Max_Color"],   m_tEffectMeshDesc.vMaxColor);
 
-	Out_Json["UV_Diffuse_Index"] = m_tEffectMeshDesc.iDiffuseTextureIndex;
-	Out_Json["UV_Noise_Index"] = m_tEffectMeshDesc.iNoiseTextureIndex;
-	Out_Json["UV_Mask_Index"] = m_tEffectMeshDesc.iMaskTextureIndex;
+	Out_Json["UV_Diffuse_Index"]       = m_tEffectMeshDesc.iDiffuseTextureIndex;
+	Out_Json["UV_Noise_Index"]         = m_tEffectMeshDesc.iNoiseTextureIndex;
+	Out_Json["UV_Mask_Index"]          = m_tEffectMeshDesc.iMaskTextureIndex;
 
-	Out_Json["Dynamic_Noise_Option"] = m_tEffectMeshDesc.bDynamicNoiseOption;
+	Out_Json["Dynamic_Noise_Option"]   = m_tEffectMeshDesc.bDynamicNoiseOption;
 
 	Out_Json["UV_Diffuse_Wrap_Option"] = m_tEffectMeshDesc.bDiffuseWrap;
-	Out_Json["UV_Noise_Wrap_Option"] = m_tEffectMeshDesc.bNoiseWrap;
-	Out_Json["UV_Mask_Wrap_Option"] = m_tEffectMeshDesc.bMaskWrap;
-	CJson_Utility::Write_Float4(Out_Json["UV_Wrap_Weight"], m_tEffectMeshDesc.vWrapWeight);
+	Out_Json["UV_Noise_Wrap_Option"]   = m_tEffectMeshDesc.bNoiseWrap;
+	Out_Json["UV_Mask_Wrap_Option"]    = m_tEffectMeshDesc.bMaskWrap;
+	CJson_Utility::Write_Float4(Out_Json["UV_Wrap_Weight"],   m_tEffectMeshDesc.vWrapWeight);
 
 	CJson_Utility::Write_Float2(Out_Json["Diffuse_Start_UV"], m_tEffectMeshDesc.vDiffuseStartUV);
 	CJson_Utility::Write_Float2(Out_Json["Diffuse_UV_Speed"], m_tEffectMeshDesc.vDiffuseUVSpeed);
 	CJson_Utility::Write_Float2(Out_Json["Diffuse_UV_Force"], m_tEffectMeshDesc.vDiffuseUVForce);
-	CJson_Utility::Write_Float2(Out_Json["Diffuse_Min_UV"], m_tEffectMeshDesc.vDiffuseUVMin);
-	CJson_Utility::Write_Float2(Out_Json["Diffuse_Max_UV"], m_tEffectMeshDesc.vDiffuseUVMax);
+	CJson_Utility::Write_Float2(Out_Json["Diffuse_Min_UV"],   m_tEffectMeshDesc.vDiffuseUVMin);
+	CJson_Utility::Write_Float2(Out_Json["Diffuse_Max_UV"],   m_tEffectMeshDesc.vDiffuseUVMax);
 
-	CJson_Utility::Write_Float2(Out_Json["Noise_Start_UV"], m_tEffectMeshDesc.vNoiseStartUV);
-	CJson_Utility::Write_Float2(Out_Json["Noise_UV_Speed"], m_tEffectMeshDesc.vNoiseUVSpeed);
-	CJson_Utility::Write_Float2(Out_Json["Noise_UV_Force"], m_tEffectMeshDesc.vNoiseUVForce);
-	CJson_Utility::Write_Float2(Out_Json["Noise_Min_UV"], m_tEffectMeshDesc.vNoiseUVMin);
-	CJson_Utility::Write_Float2(Out_Json["Noise_Max_UV"], m_tEffectMeshDesc.vNoiseUVMax);
+	CJson_Utility::Write_Float2(Out_Json["Noise_Start_UV"],   m_tEffectMeshDesc.vNoiseStartUV);
+	CJson_Utility::Write_Float2(Out_Json["Noise_UV_Speed"],   m_tEffectMeshDesc.vNoiseUVSpeed);
+	CJson_Utility::Write_Float2(Out_Json["Noise_UV_Force"],   m_tEffectMeshDesc.vNoiseUVForce);
+	CJson_Utility::Write_Float2(Out_Json["Noise_Min_UV"],     m_tEffectMeshDesc.vNoiseUVMin);
+	CJson_Utility::Write_Float2(Out_Json["Noise_Max_UV"],     m_tEffectMeshDesc.vNoiseUVMax);
 
-	CJson_Utility::Write_Float2(Out_Json["Mask_Start_UV"], m_tEffectMeshDesc.vMaskStartUV);
-	CJson_Utility::Write_Float2(Out_Json["Mask_UV_Speed"], m_tEffectMeshDesc.vMaskUVSpeed);
-	CJson_Utility::Write_Float2(Out_Json["Mask_UV_Force"], m_tEffectMeshDesc.vMaskUVForce);
-	CJson_Utility::Write_Float2(Out_Json["Mask_Min_UV"], m_tEffectMeshDesc.vMaskUVMin);
-	CJson_Utility::Write_Float2(Out_Json["Mask_Max_UV"], m_tEffectMeshDesc.vMaskUVMax);
+	CJson_Utility::Write_Float2(Out_Json["Mask_Start_UV"],    m_tEffectMeshDesc.vMaskStartUV);
+	CJson_Utility::Write_Float2(Out_Json["Mask_UV_Speed"],    m_tEffectMeshDesc.vMaskUVSpeed);
+	CJson_Utility::Write_Float2(Out_Json["Mask_UV_Force"],    m_tEffectMeshDesc.vMaskUVForce);
+	CJson_Utility::Write_Float2(Out_Json["Mask_Min_UV"],      m_tEffectMeshDesc.vMaskUVMin);
+	CJson_Utility::Write_Float2(Out_Json["Mask_Max_UV"],      m_tEffectMeshDesc.vMaskUVMax);
 
-	Out_Json["Bloom"] = m_tEffectMeshDesc.bBloom;
-	Out_Json["Glow"] = m_tEffectMeshDesc.bGlow;
+	Out_Json["Bloom"]      = m_tEffectMeshDesc.bBloom;
+	Out_Json["Glow"]       = m_tEffectMeshDesc.bGlow;
 	Out_Json["Distortion"] = m_tEffectMeshDesc.bDistortion;
 
 	CJson_Utility::Write_Float4(Out_Json["Start_Glow_Color"], m_tEffectMeshDesc.vStartGlowColor);
 	CJson_Utility::Write_Float4(Out_Json["Glow_Color_Speed"], m_tEffectMeshDesc.vGlowColorSpeed);
 	CJson_Utility::Write_Float4(Out_Json["Glow_Color_Force"], m_tEffectMeshDesc.vGlowColorForce);
 
-	Out_Json["Collider"] = m_tEffectMeshDesc.bCollider;
-	Out_Json["Sync_Transform"] = m_tEffectMeshDesc.bWeaponSyncTransform;
+	Out_Json["Collider"]        = m_tEffectMeshDesc.bCollider;
+	Out_Json["Sync_Transform"]  = m_tEffectMeshDesc.bWeaponSyncTransform;
 	Out_Json["Weapon_LifeTime"] = m_tEffectMeshDesc.fWeaponLifeTime;
-	Out_Json["Weapon_Scale"] = m_tEffectMeshDesc.fWeaponScale;
-	Out_Json["Hit_Type"] = m_tEffectMeshDesc.iHitType;
-	Out_Json["Option_Type"] = m_tEffectMeshDesc.iOptionType;
-	Out_Json["Damage"] = m_tEffectMeshDesc.fDamage;
+	Out_Json["Weapon_Scale"]    = m_tEffectMeshDesc.fWeaponScale;
+	Out_Json["Hit_Type"]        = m_tEffectMeshDesc.iHitType;
+	Out_Json["Option_Type"]     = m_tEffectMeshDesc.iOptionType;
+	Out_Json["Damage"]          = m_tEffectMeshDesc.fDamage;
+
 	CJson_Utility::Write_Float3(Out_Json["Weapon_Offset"], m_tEffectMeshDesc.vWeaponOffset);
-	Out_Json["HitFreq"] = m_tEffectMeshDesc.fHitFreq;
+
+	Out_Json["HitFreq"]         = m_tEffectMeshDesc.fHitFreq;
 }
 
 void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTimeScaleLayer)
@@ -487,6 +469,30 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 	if (In_Json.find("Follow_Transform") != In_Json.end())
 		m_tEffectMeshDesc.bFollowTransform = In_Json["Follow_Transform"];
 
+	if (In_Json.find("Is_Boner") != In_Json.end())
+		m_tEffectMeshDesc.bBoner = In_Json["Is_Boner"];
+
+	if (m_tEffectMeshDesc.bBoner)
+	{
+		if (In_Json.find("Bone_Name") != In_Json.end())
+			m_strBoneName = In_Json["Bone_Name"];
+
+		try
+		{
+			if (m_strBoneName.empty())
+				throw;
+
+			if ((_uint)LEVEL_EDIT == m_CreatedLevel)
+			{
+				m_pParentTransformCom = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Component<CTransform>().lock();
+				m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
+			}
+		}
+		catch (const std::exception&)
+		{
+			assert(0);
+		}
+	}
 	if (In_Json.find("BillBoard") != In_Json.end())
 		m_tEffectMeshDesc.bBillBoard = In_Json["BillBoard"];
 	
@@ -517,7 +523,6 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 	if (In_Json.find("Max_Rotation") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Max_Rotation"], m_tEffectMeshDesc.vMaxRotation);
 
-	
 	if (In_Json.find("Start_Scale") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Start_Scale"], m_tEffectMeshDesc.vStartScale);
 	
@@ -546,9 +551,9 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 	if (In_Json.find("Color_Force") != In_Json.end())
 		CJson_Utility::Load_Float4(In_Json["Color_Force"], m_tEffectMeshDesc.vColorForce);
 	if (In_Json.find("Min_Color") != In_Json.end())
-		CJson_Utility::Load_Float4(In_Json["Min_Color"], m_tEffectMeshDesc.vMinColor);
+		CJson_Utility::Load_Float4(In_Json["Min_Color"],   m_tEffectMeshDesc.vMinColor);
 	if (In_Json.find("Max_Color") != In_Json.end())
-		CJson_Utility::Load_Float4(In_Json["Max_Color"], m_tEffectMeshDesc.vMaxColor);
+		CJson_Utility::Load_Float4(In_Json["Max_Color"],   m_tEffectMeshDesc.vMaxColor);
 
 	if (In_Json.find("UV_Diffuse_Index") != In_Json.end())
 		m_tEffectMeshDesc.iDiffuseTextureIndex = In_Json["UV_Diffuse_Index"];
@@ -579,9 +584,9 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 	if (In_Json.find("Diffuse_UV_Force") != In_Json.end())
 		CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Force"], m_tEffectMeshDesc.vDiffuseUVForce);
 	if (In_Json.find("Diffuse_Min_UV") != In_Json.end())
-		CJson_Utility::Load_Float2(In_Json["Diffuse_Min_UV"], m_tEffectMeshDesc.vDiffuseUVMin);
+		CJson_Utility::Load_Float2(In_Json["Diffuse_Min_UV"],   m_tEffectMeshDesc.vDiffuseUVMin);
 	if (In_Json.find("Diffuse_Max_UV") != In_Json.end())
-		CJson_Utility::Load_Float2(In_Json["Diffuse_Max_UV"], m_tEffectMeshDesc.vDiffuseUVMax);
+		CJson_Utility::Load_Float2(In_Json["Diffuse_Max_UV"],   m_tEffectMeshDesc.vDiffuseUVMax);
 
 	if (In_Json.find("Noise_Start_UV") != In_Json.end())
 		CJson_Utility::Load_Float2(In_Json["Noise_Start_UV"], m_tEffectMeshDesc.vNoiseStartUV);
@@ -590,9 +595,9 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 	if (In_Json.find("Noise_UV_Force") != In_Json.end())
 		CJson_Utility::Load_Float2(In_Json["Noise_UV_Force"], m_tEffectMeshDesc.vNoiseUVForce);
 	if (In_Json.find("Noise_Min_UV") != In_Json.end())
-		CJson_Utility::Load_Float2(In_Json["Noise_Min_UV"], m_tEffectMeshDesc.vNoiseUVMin);
+		CJson_Utility::Load_Float2(In_Json["Noise_Min_UV"],   m_tEffectMeshDesc.vNoiseUVMin);
 	if (In_Json.find("Noise_Max_UV") != In_Json.end())
-		CJson_Utility::Load_Float2(In_Json["Noise_Max_UV"], m_tEffectMeshDesc.vNoiseUVMax);
+		CJson_Utility::Load_Float2(In_Json["Noise_Max_UV"],   m_tEffectMeshDesc.vNoiseUVMax);
 
 	if (In_Json.find("Mask_Start_UV") != In_Json.end())
 		CJson_Utility::Load_Float2(In_Json["Mask_Start_UV"], m_tEffectMeshDesc.vMaskStartUV);
@@ -601,9 +606,9 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 	if (In_Json.find("Mask_UV_Force") != In_Json.end())
 		CJson_Utility::Load_Float2(In_Json["Mask_UV_Force"], m_tEffectMeshDesc.vMaskUVForce);
 	if (In_Json.find("Mask_Min_UV") != In_Json.end())
-		CJson_Utility::Load_Float2(In_Json["Mask_Min_UV"], m_tEffectMeshDesc.vMaskUVMin);
+		CJson_Utility::Load_Float2(In_Json["Mask_Min_UV"],   m_tEffectMeshDesc.vMaskUVMin);
 	if (In_Json.find("Mask_Max_UV") != In_Json.end())
-		CJson_Utility::Load_Float2(In_Json["Mask_Max_UV"], m_tEffectMeshDesc.vMaskUVMax);
+		CJson_Utility::Load_Float2(In_Json["Mask_Max_UV"],   m_tEffectMeshDesc.vMaskUVMax);
 
 	if (In_Json.find("Bloom") != In_Json.end())
 		m_tEffectMeshDesc.bBloom = In_Json["Bloom"];
@@ -621,20 +626,18 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 
 	if (In_Json.find("Collider") != In_Json.end())
 	{
-		m_tEffectMeshDesc.bCollider = In_Json["Collider"];
+		m_tEffectMeshDesc.bCollider            = In_Json["Collider"];
 		m_tEffectMeshDesc.bWeaponSyncTransform = In_Json["Sync_Transform"];
-		m_tEffectMeshDesc.fWeaponLifeTime = In_Json["Weapon_LifeTime"];
-		m_tEffectMeshDesc.fWeaponScale = In_Json["Weapon_Scale"];
-		m_tEffectMeshDesc.iHitType = In_Json["Hit_Type"];
-		m_tEffectMeshDesc.fDamage = In_Json["Damage"];
+		m_tEffectMeshDesc.fWeaponLifeTime      = In_Json["Weapon_LifeTime"];
+		m_tEffectMeshDesc.fWeaponScale         = In_Json["Weapon_Scale"];
+		m_tEffectMeshDesc.iHitType             = In_Json["Hit_Type"];
+		m_tEffectMeshDesc.fDamage              = In_Json["Damage"];
 		CJson_Utility::Load_Float3(In_Json["Weapon_Offset"], m_tEffectMeshDesc.vWeaponOffset);
-		m_tEffectMeshDesc.fHitFreq = In_Json["HitFreq"];
+		m_tEffectMeshDesc.fHitFreq             = In_Json["HitFreq"];
 	}
 
 	if (In_Json.find("Option_Type") != In_Json.end())
-	{
 		m_tEffectMeshDesc.iOptionType = In_Json["Option_Type"];
-	}
 
 	m_pModelCom.lock()->Init_Model(m_szEffectName.c_str());
 }
@@ -722,6 +725,25 @@ void CCustomEffectMesh::Play_Internal(_float fFrameTime)
 
 void CCustomEffectMesh::Update_Position(_float fFrameTime)
 {
+	if (m_pBoneNode.lock())
+	{
+		_float4x4 TempMat = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Get_TransformationMatrix();
+		_matrix ModelTranMat = XMLoadFloat4x4(&TempMat);
+		_matrix BoneMatrix = m_pBoneNode.lock()->Get_CombinedMatrix() * ModelTranMat;
+
+		BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
+		BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
+		BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
+
+		if (m_tEffectMeshDesc.bFollowTransform)
+		{
+			if (m_pParentTransformCom.lock())
+				m_pTransformCom.lock()->Set_WorldMatrix(BoneMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix());
+			else
+				m_pTransformCom.lock()->Set_WorldMatrix(BoneMatrix);
+		}
+	}
+
 	m_vCurrentSpeed = SMath::Mul_Float3(m_tEffectMeshDesc.vSpeed, fFrameTime);
 	m_vCurrentForce = SMath::Add_Float3(m_vCurrentForce, SMath::Mul_Float3(m_tEffectMeshDesc.vForce, fFrameTime));
 
@@ -856,9 +878,6 @@ void CCustomEffectMesh::Update_Glow(_float fFrameTime)
 	_vector vCurrentGlowColor = XMLoadFloat4(&m_vCurrentGlowColor);
 	vCurrentGlowColor += vMoveGlowColor;
 
-	//	vCurrentGlowColor = XMVectorMin(XMVectorSet(1.f, 1.f, 1.f, 1.f),
-	//	XMVectorMax(XMVectorSet(0.f, 0.f, 0.f, 0.f), vCurrentGlowColor));
-
 	XMStoreFloat4(&m_vCurrentGlowColor, vCurrentGlowColor);
 }
 
@@ -981,12 +1000,10 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 		if (ImGui::CollapsingHeader("CustomEffectMesh"), ImGuiTreeNodeFlags_DefaultOpen)
 		{
 			if (ImGui::Button("Clone"))
-			{
-				Clone_EffectMesh();
-			}
+				Clone_EffectMesh();	
 
 			// TODO : for imgui - mesh keyboard control
-			ImGui::Text("On Control Focus");
+			ImGui::Text("Focus Control");
 			ImGui::SameLine();
 			ImGui::Checkbox("##Control Focus", &m_tEffectMeshDesc.bOnFocus);
 			if (m_tEffectMeshDesc.bOnFocus)
@@ -1010,10 +1027,12 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 			ImGui::Separator();
 
-			ImGui::Text("Init Time");
+			ImGui::Text("[ Init Time ]");
+			ImGui::SetNextItemWidth(100.f);
 			ImGui::DragFloat("##Init Time", &m_tEffectMeshDesc.fInitTime, 0.2f);
 
-			ImGui::Text("Life Time");
+			ImGui::Text("[ Life Time ]");
+			ImGui::SetNextItemWidth(100.f);
 			ImGui::DragFloat("##Life Time", &m_tEffectMeshDesc.fLifeTime, 0.2f);
 			ImGui::Separator();
 
@@ -1025,14 +1044,17 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::SameLine();
 			ImGui::Checkbox("##BillBoard", &m_tEffectMeshDesc.bBillBoard);
 
-			ImGui::Text("Sync Animation");
-			ImGui::SameLine();
-			ImGui::Checkbox("##Sync Animation", &m_tEffectMeshDesc.bSyncAnimation);
-
-			ImGui::InputInt("Sync Animation Key", &m_tEffectMeshDesc.iSyncAnimationKey);
 			ImGui::Separator();
 
-			ImGui::Text("Follow Bone"); ImGui::SameLine();
+			ImGui::Text("Sync Animation");
+			ImGui::SameLine();
+			ImGui::Checkbox("##SyncAnimation", &m_tEffectMeshDesc.bSyncAnimation);
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.f);
+			ImGui::InputInt("##SyncAnimationKey", &m_tEffectMeshDesc.iSyncAnimationKey);
+			ImGui::Separator();
+#pragma region Boner
+			ImGui::Text("Boner"); ImGui::SameLine();
 			ImGui::Checkbox("##Is_Boner", &m_tEffectMeshDesc.bBoner);
 
 			if (m_tEffectMeshDesc.bBoner)
@@ -1044,10 +1066,10 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 				}
 
 				if (0 == m_AllBoneNames.size())
-					ImGui::Text("No Bones");
+					ImGui::Text("!!!! No Bone !!!!");
 				else
 				{
-					if (ImGui::BeginListBox("Bone List 3"))
+					if (ImGui::BeginListBox("Bone List - Mesh Effect"))
 					{
 						for (_int n(0); n < m_AllBoneNames.size(); n++)
 						{
@@ -1065,31 +1087,49 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 				}
 
-				if (ImGui::Button("Bind to Bone"))
+				if (ImGui::Button("Bind Bone"))
 				{
-					m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
+					m_pBoneNode = m_pParentModel.lock()->Find_BoneNode(m_strBoneName);
 					if (nullptr == m_pBoneNode.lock())
 					{
-						MSG_BOX("Invalid Bone Name!");
+						MSG_BOX("!!! Invalid Bone Name !!!");
 						assert(0);
 					}
 				}
 
 				if (m_pBoneNode.lock())
 				{
-					ImGui::Text("Binded to Bone : ");
-					ImGui::Text(m_pBoneNode.lock()->Get_Name());
+					ImGui::Text("Binded to [ "); ImGui::SameLine();
+					ImGui::Text(m_pBoneNode.lock()->Get_Name()); ImGui::SameLine();
+					ImGui::Text(" ]");
 				}
 			}
-
-
+			else
+			{
+				m_pBoneNode.reset();
+				m_strBoneName.clear();
+			}
+#pragma endregion
+			ImGui::NewLine();
 			ImGui::Separator();
+			ImGui::NewLine();
 
-			ImGui::Text("Sync Start Position to Controller"); ImGui::SameLine();
-			ImGui::Checkbox("##Sync Start Position to Controller", &m_tEffectMeshDesc.bSyncStartPositionToController);
+			ImGui::TextColored(ImVec4{ 1.f, 0.f, 0.f, 1.f }, "[ Position ]");
+			ImGui::NewLine();
+#pragma region Position
+			ImGui::Text("Sync Controller"); ImGui::SameLine();
+			ImGui::Checkbox("##Sync_Start_Position_to_Controller", &m_tEffectMeshDesc.bSyncStartPositionToController);
 			ImGui::Text("Start Position");
 			ImGui::DragFloat3("##Start Position", &m_tEffectMeshDesc.vStartPosition.x, 0.1f);
+#pragma endregion
 
+			ImGui::NewLine();
+			ImGui::Separator();
+			ImGui::NewLine();
+
+			ImGui::TextColored(ImVec4{ 0.f, 1.f, 0.f, 1.f }, "[ Speed ]");
+			ImGui::NewLine();
+#pragma region Speed
 			ImGui::Text("Speed");
 			ImGui::DragFloat3("##Speed", &m_tEffectMeshDesc.vSpeed.x, 0.1f);
 
@@ -1098,14 +1138,20 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 			ImGui::Text("Min Speed");
 			ImGui::DragFloat3("##Min Speed", &m_tEffectMeshDesc.vMinSpeed.x, 0.1f);
-			ImGui::Separator();
 
 			ImGui::Text("Max Speed");
 			ImGui::DragFloat3("##Max Speed", &m_tEffectMeshDesc.vMaxSpeed.x, 0.1f);
-			ImGui::Separator();
+#pragma endregion
 
-			ImGui::Text("Sync Start Rotation to Controller"); ImGui::SameLine();
-			ImGui::Checkbox("##Sync Start Rotation to Controller", &m_tEffectMeshDesc.bSyncStartRotationToController);
+			ImGui::NewLine();
+			ImGui::Separator();
+			ImGui::NewLine();
+
+			ImGui::TextColored(ImVec4{ 0.f, 0.f, 1.f, 1.f }, "[ Rotation ]");
+			ImGui::NewLine();
+#pragma region Rotation
+			ImGui::Text("Sync Controller"); ImGui::SameLine();
+			ImGui::Checkbox("##Sync_Start_Rotation_to_Controller", &m_tEffectMeshDesc.bSyncStartRotationToController);
 
 			ImGui::Text("Start Rotation");
 			ImGui::DragFloat3("##Start Rotation", &m_tEffectMeshDesc.vStartRotation.x, 0.01f);
@@ -1118,8 +1164,15 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 			ImGui::Text("Max Rotation");
 			ImGui::DragFloat3("##Max Rotation", &m_tEffectMeshDesc.vMaxRotation.x, 0.01f);
-			ImGui::Separator();
+#pragma endregion
 
+			ImGui::NewLine();
+			ImGui::Separator();
+			ImGui::NewLine();
+
+			ImGui::TextColored(ImVec4{ 0.3f, 0.f, 0.5f, 1.f }, "[ Scale ]");
+			ImGui::NewLine();
+#pragma region Scale
 			ImGui::Text("Start Scale");
 			ImGui::DragFloat3("##Start Scale", &m_tEffectMeshDesc.vStartScale.x, 0.01f);
 
@@ -1135,14 +1188,55 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 			ImGui::Text("Min Scale");
 			ImGui::DragFloat3("##Min Scale", &m_tEffectMeshDesc.vMinScale.x, 0.01f);
-			ImGui::Separator();
 
 			ImGui::Text("Max Scale");
 			ImGui::DragFloat3("##Max Scale", &m_tEffectMeshDesc.vMaxScale.x, 0.01f);
+#pragma endregion
+
+			ImGui::NewLine();
+			ImGui::Separator();
+			ImGui::NewLine();
+
+			ImGui::Text("Shaders");
+
+			ImGui::Separator();
+			ImGui::Text("Shader Pass");
+			ImGui::Text("[0]Default"); ImGui::SameLine(); ImGui::Text(" | "); ImGui::SameLine();
+			ImGui::Text("[1]Distortion");
+			ImGui::Text("[2]Soft");
+			ImGui::SetNextItemWidth(100.f);
+			ImGui::InputInt("##Shader_Pass_Index", &m_tEffectMeshDesc.iShaderPassIndex);
 			ImGui::Separator();
 
-			ImGui::Text("Alpha Discard Ratio");
-			ImGui::DragFloat("##Alpha Discard Ratio", &m_tEffectMeshDesc.fDiscardRatio, 0.01f, 0.f, 1.f, "%.3f", 0);
+			ImGui::Text("Distortion"); ImGui::SameLine();
+			ImGui::Checkbox("##Distortion", &m_tEffectMeshDesc.bDistortion); ImGui::SameLine();
+
+			ImGui::Text("Bloom"); ImGui::SameLine();
+			ImGui::Checkbox("##Bloom", &m_tEffectMeshDesc.bBloom); ImGui::SameLine();
+
+			ImGui::Text("Glow"); ImGui::SameLine();
+			ImGui::Checkbox("##Glow", &m_tEffectMeshDesc.bGlow);
+
+			if (m_tEffectMeshDesc.bGlow)
+			{
+				ImGui::Text("Start Glow Color");
+				ImGui::DragFloat4("##Start_Glow_Color", &m_tEffectMeshDesc.vStartGlowColor.x, 0.01f);
+
+				ImGui::Text("Glow Color Speed ");
+				ImGui::DragFloat4("##Glow_Color_Speed", &m_tEffectMeshDesc.vGlowColorSpeed.x, 0.01f);
+
+				ImGui::Text("Glow Color Force");
+				ImGui::DragFloat4("##Glow_Color_Force", &m_tEffectMeshDesc.vGlowColorForce.x, 0.01f);
+			}
+
+			ImGui::Separator();
+
+			ImGui::TextColored(ImVec4{ 1.f, 0.f, 1.f, 1.f }, "[ Color ]");
+			ImGui::NewLine();
+#pragma region Color
+			ImGui::Text("Discard Ratio"); ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.f);
+			ImGui::DragFloat("##Discard Ratio", &m_tEffectMeshDesc.fDiscardRatio, 0.01f, 0.f, 1.f, "%.3f", 0);
 
 			ImGui::Text("Start Color");
 			ImGui::DragFloat4("##Start Color", &m_tEffectMeshDesc.vStartColor.x, 0.01f, 0.f, 1.f, "%.5f");
@@ -1155,23 +1249,30 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 			ImGui::Text("Min Color");
 			ImGui::DragFloat4("##Min Color", &m_tEffectMeshDesc.vMinColor.x, 0.01f, 0.f, 1.f, "%.5f");
-			ImGui::Separator();
 
 			ImGui::Text("Max Color");
 			ImGui::DragFloat4("##Max Color", &m_tEffectMeshDesc.vMaxColor.x, 0.01f, 0.f, 1.f, "%.5f");
+#pragma endregion
+
+			ImGui::NewLine();
 			ImGui::Separator();
+			ImGui::NewLine();
 
+			ImGui::TextColored(ImVec4{ 0.f, 0.5f, 0.5f, 1.f }, "[ Textures ]");
+			ImGui::NewLine();
+#pragma region Textures
+			ImGui::Text("Texture Index");
 			ImGui::SetNextItemWidth(100.f);
-			ImGui::InputInt("UV Diffuse Index", &m_tEffectMeshDesc.iDiffuseTextureIndex, 1, 0);
+			ImGui::InputInt("Diffuse", &m_tEffectMeshDesc.iDiffuseTextureIndex, 1, 0);
 			ImGui::SetNextItemWidth(100.f);
-			ImGui::InputInt("UV Noise Index", &m_tEffectMeshDesc.iNoiseTextureIndex, 1, 0);
+			ImGui::InputInt("Noise", &m_tEffectMeshDesc.iNoiseTextureIndex, 1, 0);
 			ImGui::SetNextItemWidth(100.f);
-			ImGui::InputInt("UV Mask Index", &m_tEffectMeshDesc.iMaskTextureIndex, 1, 0);
+			ImGui::InputInt("Mask", &m_tEffectMeshDesc.iMaskTextureIndex, 1, 0);
 
-			ImGui::Text("Dynamic Noise Option"); ImGui::SameLine();
+			ImGui::Text("Dynamic Noise"); ImGui::SameLine();
 			ImGui::Checkbox("##Dynamic Noise Option", &m_tEffectMeshDesc.bDynamicNoiseOption);
 
-			ImGui::Separator();
+			ImGui::NewLine();
 
 			ImGui::Text("Checked : Wrap | Unchecked : Clamp");
 			ImGui::Text("Diffuse"); ImGui::SameLine();
@@ -1183,27 +1284,44 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 			ImGui::Separator();
 
-			ImGui::Text("Texture Wrap Weight");
-			ImGui::Text("x : Diffuse | y : Noise | z : Mask");
-			ImGui::DragFloat4("##Texture Wrap Weight", &m_tEffectMeshDesc.vWrapWeight.x, 0.01f);
+			ImGui::Text("Wrap Weight");
+			if (m_tEffectMeshDesc.bDiffuseWrap)
+			{
+				ImGui::SetNextItemWidth(100.f);
+				ImGui::DragFloat("##DiffuseTextureWrapWeight", &m_tEffectMeshDesc.vWrapWeight.x, 0.01f); ImGui::SameLine();
+				ImGui::Text("[Diffuse]");
+			}
+			if (m_tEffectMeshDesc.bNoiseWrap)
+			{
+				ImGui::SetNextItemWidth(100.f);
+				ImGui::DragFloat("##NoiseTextureWrapWeight", &m_tEffectMeshDesc.vWrapWeight.y, 0.01f); ImGui::SameLine();
+				ImGui::Text("[Noise]");
+			}
+			if (m_tEffectMeshDesc.bMaskWrap)
+			{
+				ImGui::SetNextItemWidth(100.f);
+				ImGui::DragFloat("##MaskTextureWrapWeight", &m_tEffectMeshDesc.vWrapWeight.z, 0.01f); ImGui::SameLine();
+				ImGui::Text("[Mask]");
+			}
+#pragma endregion
 
-			ImGui::Separator();
 			ImGui::Separator();
 
 #pragma region UV Options
 #pragma region Diffuse UV
-			ImGui::Text("Diffuse Texture UV Options");
+			ImGui::TextColored(ImVec4{ 1.f, 0.f, 0.f, 1.f }, "[ Diffuse ]");
+			ImGui::NewLine();
 
-			ImGui::Text("Diffuse Start UV");
+			ImGui::Text("Start UV");
 			ImGui::DragFloat2("##Diffuse Start UV", &m_tEffectMeshDesc.vDiffuseStartUV.x, 0.01f, 0.f, 1.f, "%.5f");
 
-			ImGui::Text("Diffuse UV Speed");
+			ImGui::Text("UV Speed");
 			ImGui::DragFloat2("##Diffuse UV Speed", &m_tEffectMeshDesc.vDiffuseUVSpeed.x, 0.01f);
 
-			ImGui::Text("Diffuse UV Force");
+			ImGui::Text("UV Force");
 			ImGui::DragFloat2("##Diffuse UV Force", &m_tEffectMeshDesc.vDiffuseUVForce.x, 0.01f);
 
-			ImGui::Text("Diffuse vUV Min");
+			ImGui::Text("UV Min");
 			ImGui::DragFloat2("##Diffuse UV Min", &m_tEffectMeshDesc.vDiffuseUVMin.x, 0.01f);
 
 			ImGui::Text("Diffuse vUV Max");
@@ -1211,71 +1329,45 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 #pragma endregion
 			ImGui::Separator();
 #pragma region Noise UV
-			ImGui::Text("Noise Texture UV Options");
+			ImGui::TextColored(ImVec4{ 0.f, 1.f, 0.f, 1.f }, "[ Noise ]");
+			ImGui::NewLine();
 
-			ImGui::Text("Noise Start UV");
+			ImGui::Text("Start UV");
 			ImGui::DragFloat2("##Noise Start UV", &m_tEffectMeshDesc.vNoiseStartUV.x, 0.01f, 0.f, 1.f, "%.5f");
 
-			ImGui::Text("Noise UV Speed");
+			ImGui::Text("UV Speed");
 			ImGui::DragFloat2("##Noise UV Speed", &m_tEffectMeshDesc.vNoiseUVSpeed.x, 0.01f);
 
-			ImGui::Text("Noise UV Force");
+			ImGui::Text("UV Force");
 			ImGui::DragFloat2("##Noise UV Force", &m_tEffectMeshDesc.vNoiseUVForce.x, 0.01f);
 
-			ImGui::Text("Noise vUV Min");
+			ImGui::Text("vUV Min");
 			ImGui::DragFloat2("##Noise UV Min", &m_tEffectMeshDesc.vNoiseUVMin.x, 0.01f);
 
-			ImGui::Text("Noise vUV Max");
+			ImGui::Text("vUV Max");
 			ImGui::DragFloat2("##Noise UV Max", &m_tEffectMeshDesc.vNoiseUVMax.x, 0.01f);
 #pragma endregion
 			ImGui::Separator();
 #pragma region Mask UV
-			ImGui::Text("Mask Texture UV Options");
+			ImGui::TextColored(ImVec4{ 0.f, 0.f, 1.f, 1.f }, "[ Mask ]");
+			ImGui::NewLine();
 
-			ImGui::Text("Mask Start UV");
+			ImGui::Text("Start UV");
 			ImGui::DragFloat2("Mask ##Start UV", &m_tEffectMeshDesc.vMaskStartUV.x, 0.01f, 0.f, 1.f, "%.5f");
 
-			ImGui::Text("Mask UV Speed");
+			ImGui::Text("UV Speed");
 			ImGui::DragFloat2("##Mask UV Speed", &m_tEffectMeshDesc.vMaskUVSpeed.x, 0.01f);
 
-			ImGui::Text("Mask UV Force");
+			ImGui::Text("UV Force");
 			ImGui::DragFloat2("##Mask UV Force", &m_tEffectMeshDesc.vMaskUVForce.x, 0.01f);
 
-			ImGui::Text("Mask vUV Min");
+			ImGui::Text("vUV Min");
 			ImGui::DragFloat2("##Mask UV Min", &m_tEffectMeshDesc.vMaskUVMin.x, 0.01f);
 
-			ImGui::Text("Mask vUV Max");
+			ImGui::Text("vUV Max");
 			ImGui::DragFloat2("##Mask UV Max", &m_tEffectMeshDesc.vMaskUVMax.x, 0.01f);
 #pragma endregion
 #pragma endregion
-			ImGui::Separator();
-			ImGui::Separator();
-
-			ImGui::Text("Distortion"); ImGui::SameLine();
-			ImGui::Checkbox("##Distortion", &m_tEffectMeshDesc.bDistortion); ImGui::SameLine();
-
-			ImGui::Text("Bloom"); ImGui::SameLine();
-			ImGui::Checkbox("##Bloom", &m_tEffectMeshDesc.bBloom); ImGui::SameLine();
-
-			ImGui::Text("Glow"); ImGui::SameLine();
-			ImGui::Checkbox("##Glow", &m_tEffectMeshDesc.bGlow);
-
-			ImGui::Text("Start Glow Color");
-			ImGui::DragFloat4("##Start_Glow_Color", &m_tEffectMeshDesc.vStartGlowColor.x, 0.01f);
-
-			ImGui::Text("Glow Color Speed ");
-			ImGui::DragFloat4("##Glow_Color_Speed", &m_tEffectMeshDesc.vGlowColorSpeed.x, 0.01f);
-
-			ImGui::Text("Glow Color Force");
-			ImGui::DragFloat4("##Glow_Color_Force", &m_tEffectMeshDesc.vGlowColorForce.x, 0.01f);
-			ImGui::Separator();
-
-			ImGui::Separator();
-			ImGui::Text("Shader Pass");
-			ImGui::Text("0 : Default");
-			ImGui::Text("1 : Distortion");
-			ImGui::Text("2 : Soft");
-			ImGui::InputInt("##Shader_Pass_Index", &m_tEffectMeshDesc.iShaderPassIndex);
 			ImGui::Separator();
 
 			_bool bPreCollider = m_tEffectMeshDesc.bCollider;
@@ -1372,7 +1464,9 @@ void CCustomEffectMesh::OnChangeAnimationKey(const _uint& In_Key)
 	if (m_tEffectMeshDesc.iSyncAnimationKey != (_int)In_Key)
 		return;
 
-	Reset_Effect();
+	weak_ptr<CTransform> pPreviewModelTransform = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Transform();
+
+	Reset_Effect(pPreviewModelTransform);
 }
 
 void CCustomEffectMesh::Free()

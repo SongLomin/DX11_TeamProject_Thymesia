@@ -66,5 +66,8 @@ namespace Engine
 
 		_bool			ENGINE_DLL Is_Picked_AbstractTerrain(const RAY& _Ray, _float4* _pOutPos);
 		_bool			ENGINE_DLL Is_Picked_AbstractCube(const RAY& _Ray, MESH_VTX_INFO _VtxInfo, _matrix _WorldMatrix, _float* Out_fDist = nullptr);
+
+		// For. Particle
+
 	}
 }

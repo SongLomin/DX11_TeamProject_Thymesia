@@ -4,7 +4,6 @@
 #include <filesystem>
 #include "Client_Structs.h"
 #include "Client_Presets.h"
-
 #include "imgui.h"
 
 #ifdef _DEBUG
@@ -25,6 +24,8 @@
 // UI제외한 오브젝트 생성 X
 //#define		_ONLY_UI_
 #define		_RENDER_FPS_
+#define		_BONE_PARTICLE_
+// #define		_BONE_MESHEFFECT_
 #endif // _DEBUG
 
 #ifdef NDEBUG
@@ -32,9 +33,10 @@
 //#define		_144HZ_
 #define		_DAGGER_TRAIL_
 #define		_USE_THREAD_
+// #define		_STAGE_1_
 #define		_STAGE_2_
+#define		_STAGE_1_MONSTER_
 #define		_LIFEGUARD_FOR_FALL_
-//#define		_STAGE_1_MONSTER_
 #define		_USE_GRAVITY_
 #define		_GENERATE_PROP_COLLIDER_ true
 #define		_RENDER_FPS_

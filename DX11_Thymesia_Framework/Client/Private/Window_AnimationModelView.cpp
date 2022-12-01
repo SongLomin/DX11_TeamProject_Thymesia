@@ -17,14 +17,13 @@ HRESULT CWindow_AnimationModelView::Initialize()
     ImGuiWindowFlags window_flags = 0;
     window_flags |= ImGuiWindowFlags_HorizontalScrollbar;
     window_flags |= ImGuiWindowFlags_NoResize;
+    window_flags |= ImGuiWindowFlags_NoMove;
 
     m_bEnable = true;
     SetUp_ImGuiDESC("AnimationModel_View", ImVec2(150.f, 500.f), window_flags);
 
 
     Load_PreViewModels();
-
-
     return S_OK;
 }
 
@@ -41,8 +40,10 @@ void CWindow_AnimationModelView::Tick(_float fTimeDelta)
 
 HRESULT CWindow_AnimationModelView::Render()
 {
-    if (FAILED(__super::Begin()))
-        return E_FAIL;
+    ImGui::PushStyleColor(ImGuiCol_PopupBg, m_BackgroundColor);
+
+    if (!(ImGui::Begin(m_tImGuiDESC.strName.c_str(), 0, m_tImGuiDESC.eWindowFlags)))
+        return S_OK;
 
     //ImGui::Text("UI_TOOL");
     ImGui::PushItemWidth(ImGui::GetFontSize() * -12);

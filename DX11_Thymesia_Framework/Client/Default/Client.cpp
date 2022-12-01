@@ -1,12 +1,9 @@
 // Client.cpp : 응용 프로그램에 대한 진입점을 정의합니다.
 //
-
 #include "stdafx.h"
 #include "Client.h"
 #include "MainApp.h"
 #include "GameInstance.h"
-#include "imgui.h"
-
 
 #define MAX_LOADSTRING 100
 
@@ -30,9 +27,9 @@ void D3DMemoryLeakCheck()
 
     GetDebugInterface(IID_PPV_ARGS(&debug));
 
-    OutputDebugStringW(L"▽▽▽▽▽▽▽▽▽▽ Direct3D Object ref count 메모리 누수 체크 ▽▽▽▽▽▽▽▽▽▽▽\r\n");
+    OutputDebugStringW(L">>>>>>>>>>>>>>>>>>>> Direct3D Object ref count 메모리 누수 체크 <<<<<<<<<<<<<<<<<<<<\r\n");
     debug->ReportLiveObjects(DXGI_DEBUG_D3D11, DXGI_DEBUG_RLO_DETAIL);
-    OutputDebugStringW(L"△△△△△△△△△△ 반환되지 않은 IUnknown 객체가 있을경우 위에 나타납니다. △△△△△△△△△△△△\r\n");
+    OutputDebugStringW(L">>>>>>>>>>>>>>>>>>>> 반환되지 않은 IUnknown 객체가 있을경우 위에 나타납니다. <<<<<<<<<<<<<<<<<<<<\r\n");
 
     debug->Release();
 }
@@ -67,9 +64,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     MyRegisterClass(hInstance);
 
     if (!InitInstance(hInstance, nCmdShow))
-    {
         return FALSE;
-    }
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
 
@@ -79,14 +74,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     if (nullptr == pMainApp.get())
         return FALSE;
 
-
     if (FAILED(GAMEINSTANCE->Add_Timer((_uint)TIMER::TIMER_DEFAULT)))
         return FALSE;
     if (FAILED(GAMEINSTANCE->Add_Timer((_uint)TIMER::TIMER_FRAME)))
         return FALSE;
 
-    _float		fTimerAcc = 0.f;
-    _float      fDeltaTime = 0.f;
+    _float fTimerAcc(0.f);
+    _float fDeltaTime(0.f);
 
     while (true)
     {
@@ -106,11 +100,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
         if (
 #ifdef _144HZ_
-            fTimerAcc > 0.006944f
+            fTimerAcc > HZ_144
 #else
             1
 #endif // _144HZ_
-
             )
         {
             pMainApp->Tick(fTimerAcc);
@@ -120,22 +113,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             if (FAILED(pMainApp->Render()))
                 break;
         }
-
-        //fDeltaTime = GAMEINSTANCE->Compute_Timer((_uint)TIMER::TIMER_DEFAULT);
-        ////fTimerAcc += fDeltaTime;
-        //pMainApp->Tick(fDeltaTime);
-        //if (FAILED(pMainApp->Render()))
-        //    break;
-
-        //if (fTimerAcc > 0.00694f) //144Hz
-        //{
-        //    fTimerAcc = 0.f;
-
-        //    pMainApp->Tick(GAMEINSTANCE->Compute_Timer((_uint)TIMER::TIMER_FRAME));
-
-        //    if (FAILED(pMainApp->Render()))
-        //        break;
-        //}
     }
 
     pMainApp.reset();

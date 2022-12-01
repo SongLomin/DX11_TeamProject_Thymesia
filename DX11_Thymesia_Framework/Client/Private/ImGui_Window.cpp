@@ -29,7 +29,6 @@ HRESULT CImGui_Window::Begin()
 
 	ImGui::SetNextWindowSize(m_tImGuiDESC.vWindowSize, 0);
 
-
 	if (!(ImGui::Begin(m_tImGuiDESC.strName.c_str(), 0, m_tImGuiDESC.eWindowFlags)))
 		return S_OK;
 

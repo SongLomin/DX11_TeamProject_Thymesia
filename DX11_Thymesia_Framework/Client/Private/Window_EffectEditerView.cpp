@@ -18,6 +18,7 @@ HRESULT CWindow_EffectEditerView::Initialize()
     ImGuiWindowFlags window_flags = 0;
     window_flags |= ImGuiWindowFlags_HorizontalScrollbar;
     window_flags |= ImGuiWindowFlags_NoResize;
+    window_flags |= ImGuiWindowFlags_NoMove;
 
     m_bEnable = true;
     SetUp_ImGuiDESC("EffectEditer_View", ImVec2(300.f, 500.f), window_flags);
@@ -67,8 +68,10 @@ void CWindow_EffectEditerView::Tick(_float fTimeDelta)
 
 HRESULT CWindow_EffectEditerView::Render()
 {
-    if (FAILED(__super::Begin()))
-        return E_FAIL;
+    ImGui::PushStyleColor(ImGuiCol_PopupBg, m_BackgroundColor);
+
+    if (!(ImGui::Begin(m_tImGuiDESC.strName.c_str(), 0, m_tImGuiDESC.eWindowFlags)))
+        return S_OK;
 
     //ImGui::Text("UI_TOOL");
     ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
