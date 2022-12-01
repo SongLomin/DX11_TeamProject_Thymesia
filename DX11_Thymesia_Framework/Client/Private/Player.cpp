@@ -10,6 +10,7 @@
 #include "PhysXCollider.h"
 #include "PhysXController.h"
 #include "Client_Presets.h"
+#include "CorvusStates/Talent_Effect.h"
 
 
 GAMECLASS_C(CPlayer);
@@ -25,6 +26,8 @@ HRESULT CPlayer::Initialize_Prototype()
 HRESULT CPlayer::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
+
+    m_thisToPlayer = Weak_StaticCast<CPlayer>(m_this);
 
     m_pTransformCom.lock()->Add_Position(XMVectorSet(20.f, 5.f, 20.f, 0.f));
 
@@ -46,12 +49,14 @@ HRESULT CPlayer::Initialize(void* pArg)
     //m_pPhysXTriggerColliderCom = Add_Component<CPhysXCollider>(&tPhysxColliderDesc);
     //m_pPhysXTriggerColliderCom.lock()->Add_PhysXActorAtScene();
 
-    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::PLAYER, Cast<CGameObject>(m_this));
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::PLAYER, m_thisToPlayer);
     m_eAttackCollisionLayer = COLLISION_LAYER::PLAYER_ATTACK;
 
     
     m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom));
     //m_pPhysXControllerCom.lock()->Get_Controller()->setPosition();
+
+    
 
     return S_OK;
 }
@@ -93,7 +98,7 @@ void CPlayer::LateTick(_float fTimeDelta)
     if (m_pCurState.lock())
         m_pCurState.lock()->LateTick(fTimeDelta);
 
-    GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_SHADOWDEPTH, Weak_Cast<CGameObject>(m_this));
+    GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_SHADOWDEPTH, m_thisToPlayer);
 }
 
 HRESULT CPlayer::Render()
@@ -123,6 +128,39 @@ HRESULT CPlayer::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_Lig
     }
 
     return S_OK;
+}
+
+void CPlayer::Bind_TalentEffects(weak_ptr<CTalent_Effect> pTalentEffect)
+{
+    m_pTalent_Effects.push_back(pTalentEffect);
+    pTalentEffect.lock()->Bind_Talent_Effect(m_thisToPlayer);
+}
+
+void CPlayer::UnBind_TalentEffects(weak_ptr<CTalent_Effect> pTalentEffect)
+{
+    for (auto iter = m_pTalent_Effects.begin(); iter != m_pTalent_Effects.end();)
+    {
+        if ((*iter).lock() == pTalentEffect.lock())
+        {
+            (*iter).lock()->UnBind_Talent_Effect(m_thisToPlayer);
+            m_pTalent_Effects.erase(iter);
+            break;
+        }
+    }
+}
+
+_flag CPlayer::Check_RequirementForTalentEffects()
+{
+    _flag PlayerTalentEffectFlags = 0;
+
+    // m_pTalent_Effects: 플레이어에게 부여된 텔런트 효과들.
+
+    for (auto& elem : m_pTalent_Effects)
+    {
+        PlayerTalentEffectFlags |= elem.lock()->Check_Requirement(m_thisToPlayer);
+    }
+
+    return PlayerTalentEffectFlags;
 }
 
 

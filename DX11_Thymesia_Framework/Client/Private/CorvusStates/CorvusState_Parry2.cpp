@@ -57,7 +57,7 @@ void CCorvusState_Parry2::Tick(_float fTimeDelta)
 
 	//Attack();
 	Update_ParryType();
-	
+
 }
 
 void CCorvusState_Parry2::LateTick(_float fTimeDelta)
@@ -150,7 +150,7 @@ void CCorvusState_Parry2::OnStateStart(const _float& In_fAnimationBlendTime)
 	{
 		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	}
-	
+
 
 	if (!m_pModelCom.lock().get())
 	{
@@ -167,8 +167,8 @@ void CCorvusState_Parry2::OnStateStart(const _float& In_fAnimationBlendTime)
 
 
 #ifdef _DEBUG
-	#ifdef _DEBUG_COUT_
-		cout << "NorMonState: Attack -> OnStateStart" << endl;
+#ifdef _DEBUG_COUT_
+	cout << "NorMonState: Attack -> OnStateStart" << endl;
 #endif
 
 #endif
@@ -248,6 +248,18 @@ void CCorvusState_Parry2::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
 		weak_ptr<CCharacter>	pMonsterFromCharacter = pAttackArea.lock()->Get_ParentObject();
 		weak_ptr<CStatus_Monster>	pMonsterStatusCom = pMonsterFromCharacter.lock()->Get_Component<CStatus_Monster>();
 
+		_vector vMyPosition = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+
+		_vector vOtherColliderPosition = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner()).lock()->
+			Get_ParentObject().lock()->
+			Get_Component<CTransform>().lock()->
+			Get_State(CTransform::STATE_TRANSLATION);
+
+		_vector vSameHeightOtherColliderPosition = vOtherColliderPosition;
+		vSameHeightOtherColliderPosition.m128_f32[1] = vMyPosition.m128_f32[1];
+
+		m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
+
 		if (!pMonsterStatusCom.lock())
 			MSG_BOX("Error : Can't Find CStatus_Monster From CorvusStateBase");
 
@@ -262,26 +274,30 @@ void CCorvusState_Parry2::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
 			{
 			case Client::PARRY_SUCCESS::LEFT:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
+				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 				pStatus.lock()->Heal_Player(30.f);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeft>();
 				break;
 			case Client::PARRY_SUCCESS::LEFTUP:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
+				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 				pStatus.lock()->Heal_Player(30.f);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeftup>();
 				break;
 			case Client::PARRY_SUCCESS::RIGHT:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
+				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 				pStatus.lock()->Heal_Player(30.f);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRight>();
 				break;
 			case Client::PARRY_SUCCESS::RIGHTUP:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
+				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 				pStatus.lock()->Heal_Player(30.f);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRightup>();
 				break;
 			case Client::PARRY_SUCCESS::FAIL:
-				Check_AndChangeHitState(pMyCollider,pOtherCollider, In_eHitType, In_fDamage);
+				Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 				pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
 				break;
 			}
@@ -292,28 +308,32 @@ void CCorvusState_Parry2::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
 			{
 			case Client::PARRY_SUCCESS::LEFT:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
+				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeft>();
 				break;
 			case Client::PARRY_SUCCESS::LEFTUP:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
+				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeftup>();
 				break;
 			case Client::PARRY_SUCCESS::RIGHT:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
+				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRight>();
 				break;
 			case Client::PARRY_SUCCESS::RIGHTUP:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk);
+				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRightup>();
 				break;
 			case Client::PARRY_SUCCESS::FAIL:
-				Check_AndChangeHitState(pMyCollider,pOtherCollider, In_eHitType, In_fDamage);
+				Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 				pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
 				break;
 			}
 			break;
 		case Client::PARRY_TYPE::FAIL:
-			Check_AndChangeHitState(pMyCollider,pOtherCollider, In_eHitType, In_fDamage);
+			Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 			pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
 			break;
 		}
@@ -333,7 +353,7 @@ _bool CCorvusState_Parry2::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	
+
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 30)
 	{
@@ -369,7 +389,7 @@ _bool CCorvusState_Parry2::Check_AndChangeNextState()
 		}
 	}
 
-	
+
 
 
 	if (Check_RuquireMnetFirstParryState())

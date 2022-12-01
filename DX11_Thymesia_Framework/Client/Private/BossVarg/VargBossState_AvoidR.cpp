@@ -106,7 +106,18 @@ _bool CVargBossState_AvoidR::Check_AndChangeNextState()
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidAttack>(0.05f);
+		int iRand = rand() % 2;
+
+		switch (iRand)
+		{
+		case 0:
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidAttack>(0.05f);
+			break;
+		case 1:
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack3a>(0.05f);
+			break;
+		}
+
 
 		return true;
 	}

@@ -39,6 +39,8 @@ void CCorvusState_ClawAttackTab::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+
+
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 
 	if (KEY_INPUT(KEY::N, KEY_STATE::TAP))
@@ -63,10 +65,7 @@ void CCorvusState_ClawAttackTab::LateTick(_float fTimeDelta)
 
 	Check_InputNextAttack();
 
-	if (Check_AndChangeNextState())
-	{
-
-	}
+	Check_AndChangeNextState();
 }
 
 void CCorvusState_ClawAttackTab::Call_AnimationEnd()
@@ -123,9 +122,9 @@ void CCorvusState_ClawAttackTab::OnStateStart(const _float& In_fAnimationBlendTi
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_AVoid>().lock())
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_ClawAttackHold>().lock())
 	{
-		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 14);
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 19);
 	}
 	else
 	{
@@ -254,6 +253,16 @@ _bool CCorvusState_ClawAttackTab::Check_AndChangeNextState()
 		{
 			Rotation_InputToLookDir();
 			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
+			return true;
+		}
+	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.25f)
+	{
+		if (Check_RequirementClawAttackState())
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackTab2>();
 			return true;
 		}
 	}

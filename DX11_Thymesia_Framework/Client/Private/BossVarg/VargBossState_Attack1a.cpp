@@ -35,8 +35,6 @@ void CVargBossState_Attack1a::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_ComboAttack1_1");
 
-	m_bAttackLookAtLimit = true;  // 애니메이션시작할떄 룩엣시작
-
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Attack1a::Call_AnimationEnd, this);
 }
 
@@ -53,7 +51,7 @@ void CVargBossState_Attack1a::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 	if (m_bAttackLookAtLimit)
-		Rotation_TargetToLookDir();
+		TurnAttack(fTimeDelta);
 
 	Check_AndChangeNextState();
 }
@@ -118,15 +116,32 @@ _bool CVargBossState_Attack1a::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.2f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.3f)
 	{
 		m_bAttackLookAtLimit = false;
 	}
 
+	if (ComputeAngleWithPlayer() > 0.99f && m_bAttackLookAtLimit)
+	{
+		Rotation_TargetToLookDir();
+	}
+
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
-		
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack2a>(0.05f);
+		int iRand = rand() % 3;
+
+		switch (iRand)
+		{
+		case 0:
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack2a>(0.05f);
+			break;
+		case 1:
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack3a>(0.05f);
+			break;
+		case 2:
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1b>(0.05f);
+			break;
+		}
 		return true;
 	}
 

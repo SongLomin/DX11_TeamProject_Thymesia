@@ -54,6 +54,10 @@ void CStatus::Get_Desc(void* Out_pDesc)
 {
 }
 
+void CStatus::Set_Desc(void* In_Desc)
+{
+}
+
 void CStatus::Free()
 {
 }

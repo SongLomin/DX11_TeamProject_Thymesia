@@ -37,6 +37,8 @@ void CEasingTransform::Tick(_float fTimeDelta)
     {
         m_bLerp = false;
         m_fLerpTick = 0.f;
+        Callback_LerpEnd();
+        Callback_LerpEnd.Clear();
     }
     if (m_bLerp)
     {
@@ -61,6 +63,19 @@ void CEasingTransform::Set_LerpFloat(_float In_fStart, _float In_fEnd, _float In
 {
     m_vStart = _float4(In_fStart, In_fStart, In_fStart, In_fStart);
     m_vTarget = _float4(In_fEnd, In_fEnd, In_fEnd, In_fEnd);
+
+    m_vLerped = m_vStart;
+    m_fLerpTick = 0.f;
+    m_fLerpTime = In_fTime;
+    m_eLerpType = eType;
+    m_bLerp = true;
+
+}
+
+void CEasingTransform::Set_LerpFloat2(_float2 In_fStart, _float2 In_fEnd, _float In_fTime, EASING_TYPE eType)
+{
+    m_vStart = _float4(In_fStart.x, In_fStart.y, 0.f, 0.f);
+    m_vTarget = _float4(In_fEnd.x, In_fEnd.y, 0.f, 0.f);
 
     m_vLerped = m_vStart;
     m_fLerpTick = 0.f;

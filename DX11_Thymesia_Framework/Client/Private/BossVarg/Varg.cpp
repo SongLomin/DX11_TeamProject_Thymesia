@@ -115,6 +115,7 @@ HRESULT CVarg::Initialize(void* pArg)
 
 	m_fCullingRange = 999.f;
 
+
 	return S_OK;
 }
 

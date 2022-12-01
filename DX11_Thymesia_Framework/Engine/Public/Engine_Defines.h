@@ -56,7 +56,7 @@ using namespace physx;
 #include <future>
 #include <random>
 #include <mutex>
-
+#include <queue>
 #ifdef _UNICODE
 typedef std::wstring tstring;
 #else

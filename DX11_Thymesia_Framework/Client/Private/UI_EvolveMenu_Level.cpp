@@ -1075,7 +1075,10 @@ void CUI_EvolveMenu_Level::TickReconfirmWindow()
             if (m_iReconfirmWindowIndex == (_uint)LEVEL_RECONFIRM_TYPE::YES)
             {
                 m_tOriginStatus = m_tChangeStatus;
-            
+
+                GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Status().lock()
+                    ->Set_Desc(&m_tChangeStatus);
+
             }
             m_iReconfirmWindowIndex = 0;
             m_bOpenableReconfirmWindow = true;

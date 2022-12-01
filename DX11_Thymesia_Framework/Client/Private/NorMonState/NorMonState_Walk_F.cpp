@@ -151,14 +151,17 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 				{
 				case 0:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
 					m_bWalkCheck = true;
 					break;
 				case 1:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
 					m_bWalkCheck = true;
 					break;
 				case 2:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
 					m_bWalkCheck = false;
 					break;
 				}
@@ -170,14 +173,17 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 				{
 				case 0:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 					m_bWalkCheck = false;
 					break;
 				case 1:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack2>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 					m_bWalkCheck = false;
 					break;
 				case 2:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 					m_bWalkCheck = false;
 					break;
 				}
@@ -190,14 +196,17 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 				{
 				case 0:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
 					m_bWalkCheck = true;
 					break;
 				case 1:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
 					m_bWalkCheck = true;
 					break;
 				case 2:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 					m_bWalkCheck = false;
 					break;
 				}
@@ -207,14 +216,17 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 				{
 				case 0:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
 					m_bWalkCheck = true;
 					break;
 				case 1:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
 					m_bWalkCheck = true;
 					break;
 				case 2:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 					m_bWalkCheck = false;
 					break;
 				}
@@ -224,14 +236,17 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 				{
 				case 0:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_L>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
 					m_bWalkCheck = true;
 					break;
 				case 1:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_R>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(true);
 					m_bWalkCheck = true;
 					break;
 				case 2:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 					m_bWalkCheck = false;
 					break;
 				}
@@ -255,18 +270,22 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 				{
 				case 0:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 					m_bWalkCheck = false;
 					break;
 				case 1:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack3>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 					m_bWalkCheck = false;
 					break;
 				case 2:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 					m_bWalkCheck = false;
 					break;
 				case 3:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 					m_bWalkCheck = false;
 					break;
 				}
@@ -276,18 +295,22 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 				{
 				case 0:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 					m_bWalkCheck = false;
 					break;
 				case 1:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack3>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 					m_bWalkCheck = false;
 					break;
 				case 2:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 					m_bWalkCheck = false;
 					break;
 				case 3:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 					m_bWalkCheck = false;
 					break;
 				}
@@ -299,6 +322,7 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 				{
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
 					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_GardnerAtkIndex(0);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 					m_iGardnerAtkIndex = 0;
 					m_bWalkCheck = false;
 				}
@@ -306,6 +330,7 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 				{
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
 					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_GardnerPlusAtkIndex(1);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 					++m_iGardnerAtkIndex;
 					m_bWalkCheck = false;
 
@@ -321,12 +346,14 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 					case 0:
 						Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack2>(0.05f);
 						Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_GardnerAtkIndex(0);
+						Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 						m_iGardnerAtkIndex = 0;
 						m_bWalkCheck = false;
 						break;
 					case 1:
 						Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack3>(0.05f);
 						Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_GardnerAtkIndex(0);
+						Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 						m_iGardnerAtkIndex = 0;
 						m_bWalkCheck = false;
 						break;
@@ -337,6 +364,7 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 				{
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
 					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_GardnerPlusAtkIndex(1);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 					++m_iGardnerAtkIndex;
 					m_bWalkCheck = false;
 
@@ -350,14 +378,17 @@ _bool CNorMonState_Walk_F::Check_AndChangeNextState()
 				{
 				case 0:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 					m_bWalkCheck = false;
 					break;
 				case 1:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack3>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 					m_bWalkCheck = false;
 					break;
 				case 2:
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_HeavyAttack1>(0.05f);
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_RunCheck(false);
 					m_bWalkCheck = false;
 					break;
 				}

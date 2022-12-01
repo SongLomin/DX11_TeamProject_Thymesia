@@ -45,9 +45,6 @@ void CVargBossState_AvoidAttack::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	if (m_bAttackLookAtLimit)
-		Turn_ToThePlayer(fTimeDelta);
-
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -57,8 +54,8 @@ void CVargBossState_AvoidAttack::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	if(m_bAttackLookAtLimit)
-	Rotation_TargetToLookDir();
+	if (m_bAttackLookAtLimit)
+		TurnAttack(fTimeDelta);
 
 	Check_AndChangeNextState();
 }

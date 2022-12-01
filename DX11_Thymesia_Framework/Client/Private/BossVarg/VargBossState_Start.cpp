@@ -8,7 +8,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
-
+#include "UI_ScriptQueue.h"
 GAMECLASS_C(CVargBossState_Start);
 CLONE_C(CVargBossState_Start, CComponent)
 
@@ -47,14 +47,14 @@ void CVargBossState_Start::Start()
 void CVargBossState_Start::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-	
+
 	_matrix LocalMat = XMMatrixIdentity();
 	LocalMat *= XMMatrixRotationX(XMConvertToRadians(-90.f));
 	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
 
 	if (m_fSinematic == 4.f)
 	{
-		GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat,CINEMATIC_TYPE::CINEMATIC);
+		GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat, CINEMATIC_TYPE::CINEMATIC);
 	}
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
@@ -76,7 +76,7 @@ void CVargBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
@@ -86,7 +86,7 @@ void CVargBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fSinematic);
 
-}	
+}
 
 
 void CVargBossState_Start::OnStateEnd()
@@ -95,8 +95,11 @@ void CVargBossState_Start::OnStateEnd()
 
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 
-	if(m_fSinematic == 4.f)
-	GET_SINGLE(CGameManager)->End_Cinematic();
+	if (m_fSinematic == 4.f)
+		GET_SINGLE(CGameManager)->End_Cinematic();
+
+
+	
 
 }
 
@@ -108,6 +111,9 @@ void CVargBossState_Start::Call_AnimationEnd()
 		return;
 
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkF>(0.05f);
+
+	weak_ptr<CUI_ScriptQueue> pScriptQeuue = GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL_STATIC).front();
+	pScriptQeuue.lock()->Call_SetScript_Tutorial_Varg();
 }
 
 void CVargBossState_Start::OnDestroy()
@@ -149,6 +155,15 @@ _bool CVargBossState_Start::Check_AndChangeNextState()
 		}
 		break;
 	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 925)
+	{
+		weak_ptr<CUI_ScriptQueue> pScriptQeuue = GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL_STATIC).front();
+		pScriptQeuue.lock()->Call_SetScript_Tutorial_Varg_Appear();
+	}
+
+
+	
 
 
 

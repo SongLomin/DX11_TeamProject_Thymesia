@@ -88,8 +88,8 @@ public:
 
 	void Heal_Player(const _float fAmount);
 
-	_float		Get_Atk() { return m_tDesc.m_fNormalAtk; }
-
+	_float			Get_Atk() { return m_tDesc.m_fNormalAtk; }
+	virtual void    Set_Desc(void* In_Desc) override;
 private:
 	_float			m_fPotionTime;
 	_uint			m_iCurrentPotionIndex;

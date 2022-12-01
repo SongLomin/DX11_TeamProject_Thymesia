@@ -4,6 +4,8 @@
 BEGIN(Client)
 
 class CCamera_Target;
+class CTalent_Effect;
+class CTalent_Sword;
 
 class CCorvus : 
     public CPlayer
@@ -37,9 +39,15 @@ private:
     virtual void OnDestroy() override;
     void Free();
 
+    //TODO¿”Ω√
+private:
+    weak_ptr<CTalent_Sword>  m_pSword;
+
 private:
     weak_ptr<CCamera_Target> m_pCamera;
     weak_ptr<CTransform> m_pCameraTransform;
+
+    
 
     _uint m_iNumMeshContainers = 0;
 };

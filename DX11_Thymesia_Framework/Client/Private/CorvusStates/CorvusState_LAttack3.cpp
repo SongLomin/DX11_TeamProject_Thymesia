@@ -69,17 +69,17 @@ void CCorvusState_LAttack3::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
-	
+
 	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
-	
+
 }
 
 void CCorvusState_LAttack3::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 {
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
 
-	#ifdef _DEBUG_COUT_
-		cout << "AnINEX: " << m_iAnimIndex << endl;
+#ifdef _DEBUG_COUT_
+	cout << "AnINEX: " << m_iAnimIndex << endl;
 #endif
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
@@ -111,9 +111,9 @@ void CCorvusState_LAttack3::Check_InputNextAttack()
 		return;
 	}
 
-	
+
 	m_IsNextAttack = true;
-	
+
 }
 
 
@@ -127,22 +127,22 @@ void CCorvusState_LAttack3::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	if (!m_pModelCom.lock().get())
 	{
-		
+
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
 
 	//m_iAttackIndex = 7;
 	//m_iEndAttackEffectIndex = -1;
-	
+
 
 	//Disable_Weapons();
 
 
-	
+
 
 #ifdef _DEBUG
-	#ifdef _DEBUG_COUT_
-		cout << "NorMonState: Attack -> OnStateStart" << endl;
+#ifdef _DEBUG_COUT_
+	cout << "NorMonState: Attack -> OnStateStart" << endl;
 #endif
 
 #endif
@@ -199,7 +199,7 @@ void CCorvusState_LAttack3::OnDestroy()
 
 void CCorvusState_LAttack3::Free()
 {
-	
+
 }
 
 _bool CCorvusState_LAttack3::Check_AndChangeNextState()
@@ -243,7 +243,22 @@ _bool CCorvusState_LAttack3::Check_AndChangeNextState()
 		}
 	}
 
+	if (Check_RequirementAttackState())
+	{
+		if (Check_RequirementNextAttackState())
+		{
+			_flag TalentEffectFlags = Get_OwnerPlayer()->Check_RequirementForTalentEffects();
 
+			if (TalentEffectFlags & (_flag)TALENT_EFFECT_FLAG::SABER_ATTACK_LV2)
+			{
+				if (!Rotation_InputToLookDir())
+					Rotation_TargetToLookDir();
+
+				Get_OwnerPlayer()->Change_State<CCorvusState_LAttack4>();
+				return true;
+			}
+		}
+	}
 
 
 
@@ -259,7 +274,7 @@ _bool CCorvusState_LAttack3::Check_AndChangeNextState()
 	}
 
 
-	
+
 
 
 
@@ -271,7 +286,7 @@ _bool CCorvusState_LAttack3::Check_RequirementNextAttackState()
 {
 	_uint iTargetKeyFrameFirst = 17;
 	_uint iTargetKeyFrameSecond = 36;
-	
+
 
 
 	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameFirst, iTargetKeyFrameSecond) && m_IsNextAttack)

@@ -139,7 +139,21 @@ _bool CCorvusState_AVoid::Check_AndChangeNextState()
 		if (Check_RequirementAttackState())
 		{
 			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
+			_flag TalentEffectFlags = Get_OwnerPlayer()->Check_RequirementForTalentEffects();
+
+			if (TalentEffectFlags & (_flag)TALENT_EFFECT_FLAG::AVOID_SLASH_LV1)
+			{
+				Get_OwnerPlayer()->Change_State<CCorvusState_AVoidSalsh>();
+			}
+			else if (TalentEffectFlags & (_flag)TALENT_EFFECT_FLAG::AVOID_THRUST_LV1)
+			{
+				Get_OwnerPlayer()->Change_State<CCorvusState_AVoidThrust>();
+			}
+			else
+			{
+				Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
+			}
+			
 			return true;
 		}
 

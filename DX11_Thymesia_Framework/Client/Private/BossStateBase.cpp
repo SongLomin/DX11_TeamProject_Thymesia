@@ -300,13 +300,35 @@ void CBossStateBase::TurnMechanism()
 			Get_Owner().lock()->Get_Component<CVargBossState_Idle>().lock()->Set_TurnCheck(false);
 			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
 		}
-		
+
 	}
 
 
 
-	
 
+
+}
+
+void CBossStateBase::TurnAttack(_float fTimeDelta)
+{
+	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+
+
+	_vector vCurPlayerPos = pCurrentPlayer.lock()->Get_WorldPosition();
+	_vector vMyPos = Get_OwnerCharacter().lock()->Get_WorldPosition();
+	_vector vMonsterToPlayerDirectionVector = XMVector3Normalize(vCurPlayerPos - vMyPos);
+	_vector vMyLookVector = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+
+	_float fCross = XMVectorGetY(XMVector3Cross(vMyLookVector, vMonsterToPlayerDirectionVector));
+
+	if (fCross >= 0.f) // 양수 오른쪽
+	{
+		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), sqrtf(fTimeDelta * 0.08f));
+	}
+	else // 음수 왼쪽
+	{
+		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -sqrtf(fTimeDelta * 0.08f));
+	}
 }
 
 

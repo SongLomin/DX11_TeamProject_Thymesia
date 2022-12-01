@@ -35,11 +35,11 @@ void CVargBossState_Idle::Start()
 
 	//턴이나 턴어택에서 아이들로 들어오면 워크로 들어오기 
 
-	
+
 
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_Idle");
-	
+
 
 	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Idle::Call_AnimationEnd, this);*/
 }
@@ -67,11 +67,16 @@ void CVargBossState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack3a>().lock() ||
 		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack2b>().lock() ||
-		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_RunAttack>().lock()) 
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_RunAttack>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack2b1>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack2b2>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack2a>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_AvoidAttack>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_RaidAttack>().lock())
 	{
 
 		m_bTurnCheck = true;
-}
+	}
 
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
@@ -117,7 +122,7 @@ _bool CVargBossState_Idle::Check_AndChangeNextState()
 		Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkB>(0.05f);
 		return true;
 	}
-    if (fPToMDistance >= 7.f) // 5보다크다
+	if (fPToMDistance >= 7.f) // 5보다크다
 	{
 		int iRand = rand() % 3;
 
@@ -143,7 +148,7 @@ _bool CVargBossState_Idle::Check_AndChangeNextState()
 
 		return true;
 	}
-	if(fPToMDistance >= 1.f && fPToMDistance < 7.f)  // 5보다 작다
+	if (fPToMDistance >= 1.f && fPToMDistance < 7.f)  // 5보다 작다
 	{
 		if (m_bTurnCheck)
 		{
@@ -158,7 +163,7 @@ _bool CVargBossState_Idle::Check_AndChangeNextState()
 
 		return true;
 	}
-	
+
 
 
 

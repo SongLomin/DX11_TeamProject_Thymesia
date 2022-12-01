@@ -25,7 +25,9 @@
 #include "Player_Memory.h"
 #include "Player_PotionUI.h"
 #include "Player_FeatherUI.h"
-
+#include "UI_Script.h"
+#include "UI_ScriptQueue.h"
+#include "UI_DamageFont.h"
 GAMECLASS_C(CClientLevel)
 
 HRESULT CClientLevel::Initialize()
@@ -103,6 +105,9 @@ void CClientLevel::SetUp_UI()
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_PotionUI>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CUI_ScriptQueue>(LEVEL_STATIC));
+
+
 
 	//TODO : MonsterHpBar TestCode
 	/*
@@ -116,6 +121,7 @@ void CClientLevel::SetUp_UI()
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Elite>(LEVEL_STATIC, &tDesc));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Boss>(LEVEL_STATIC, &tDesc));
 	*/
+	
 }
 
 void CClientLevel::Change_NextLevel(void* pArg)
