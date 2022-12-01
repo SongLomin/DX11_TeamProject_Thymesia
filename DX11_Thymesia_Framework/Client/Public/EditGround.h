@@ -43,9 +43,6 @@ private:
         weak_ptr<CTexture>       pDiffTex;
         weak_ptr<CTexture>       pNormTex;
         _float                   fDensity       = 30.f;
-
-        string                   szTexTag_Diff  = "[ None ]";
-        string                   szTexTag_Norm  = "[ None ]";
     } TEXTURES_INFO;
 
 public:
@@ -88,6 +85,7 @@ public:
     _bool          Load_AddMeshInfo(string _szFileName);
     _bool          Load_AddTextureInfo(string _szFileName);
     void           Load_FilterTexture_FromJson(string _szFileName);
+
 public:
     virtual void   OnEventMessage(_uint iArg) override; 
 

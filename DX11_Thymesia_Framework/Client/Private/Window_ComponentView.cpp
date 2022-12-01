@@ -149,13 +149,16 @@ void CWindow_ComponentView::Draw_Components()
 
 	weak_ptr<CModel> pModel = PICKED_GAMEOBJECT->Get_Component<CModel>();
 
+
 	static _char    szFindModelTag[MAX_PATH] = "";
 
 	if (pModel.lock().get())
 	{
+
 		if (ImGui::CollapsingHeader("CModel Component"), ImGuiTreeNodeFlags_DefaultOpen)
 		{
-			ImGui::Text("Model List");
+			ImGui::Text("[ Model List ]");
+			ImGui::Text(string("Select MD : " + string(pModel.lock()->Get_ModelKey())).c_str());
 
 			ImGui::Text("");
 			ImGui::InputText("Model Tag Find", szFindModelTag, MAX_PATH);

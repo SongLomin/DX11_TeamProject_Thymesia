@@ -133,7 +133,6 @@ void CWindow_PrototypeView::Add_Prototypes()
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStage3);*/
 
     ADD_PROTOTYPE(PROTOTYPE_PROP, CTerrain);
-    ADD_PROTOTYPE(PROTOTYPE_PROP, CEditGround);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStatic_Prop);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStatic_Instancing_Prop);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CDynamic_Prop);
@@ -141,6 +140,7 @@ void CWindow_PrototypeView::Add_Prototypes()
     ADD_PROTOTYPE(PROTOTYPE_PROP, CInteraction_Dynamic_Prop);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CInteraction_Ladder);
 
+    ADD_PROTOTYPE(PROTOTYPE_EDIT_PROP, CEditGround);
     ADD_PROTOTYPE(PROTOTYPE_EDIT_PROP, CEditGroupProp);
     ADD_PROTOTYPE(PROTOTYPE_EDIT_PROP, CEditInstanceProp);
     ADD_PROTOTYPE(PROTOTYPE_EDIT_PROP, CEditMapCollider);

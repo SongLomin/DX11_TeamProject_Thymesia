@@ -502,6 +502,9 @@ void CModel::Write_Json(json& Out_Json)
 
 void CModel::Load_FromJson(const json& In_Json)
 {
+	if (In_Json.end() == In_Json.find("Model"))
+		return;
+
 	m_szModelKey = In_Json["Model"];
 	if (!m_szModelKey.empty())
 	{

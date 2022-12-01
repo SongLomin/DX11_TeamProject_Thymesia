@@ -115,6 +115,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CGround>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CStatic_Instancing_Prop>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CPhysXColliderObject>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Ladder>();
 
 #pragma endregion
 
@@ -381,6 +382,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	// TODO : For. Ground Texture : (AN) 임시 텍스쳐이므로 나중에 삭제하기, GroundTexture로 필요한곳에 사용할 예정임
 	Load_AllTexture("../Bin/GroundInfo/Texture/", MEMORY_TYPE::MEMORY_STATIC);
 	Load_AllTexture("../Bin/GroundInfo/Filter/" , MEMORY_TYPE::MEMORY_STATIC);
+
+	// TODO : For. Prop Dissove : (AN) 박쥐 보스방 식물 디졸브
+	Load_AllTexture("../Bin/Resources/Textures/Prop/", MEMORY_TYPE::MEMORY_STATIC);
 #endif
 	
 
@@ -727,12 +731,15 @@ HRESULT CLoader::Loading_ForEditLevel()
 	lstrcpy(m_szLoadingText, TEXT("텍스쳐를 로딩중입니다. "));
 	lstrcpy(m_szLoadingText, TEXT("모델을 로딩중입니다. "));
 
+	Load_AllMeshes("../Bin/Resources/Meshes/Temp/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/"           , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Binary/"        , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/"  , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/"  , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/"						 , MODEL_TYPE::GROUND , MEMORY_TYPE::MEMORY_DYNAMIC);
+
 
 	_matrix TransformMatrix;
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
@@ -895,15 +902,15 @@ void CLoader::Load_AllMeshes(const filesystem::path& In_Path, MODEL_TYPE In_eMod
 
 		if (strcmp(entry.path().extension().string().c_str(), In_extansion) == 0)
 		{
-			cout << "Load_AllMeshes() : " << szFileName << endl;
+			cout << "Load_AllMeshes() <" << In_extansion << "> " << szFileName << endl;
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), In_eModelType, TransformationMatrix, In_eMemoryType);
 		}
 
-		/*else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0 || strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
+		else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0 || strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
 		{
-			cout << "Load_AllMeshes() : " << szFileName << endl;
-			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), In_eModelType, XMMatrixScaling(0.01f, 0.01f, 0.01f), In_eMemoryType);
-		}*/
+			cout << "Load_AllMeshes() <.fbx> " << szFileName << endl;
+			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), In_eModelType, TransformationMatrix, In_eMemoryType);
+		}
 
 		itr++;
 	}

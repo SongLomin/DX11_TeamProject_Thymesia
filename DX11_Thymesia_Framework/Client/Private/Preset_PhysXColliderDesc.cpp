@@ -193,7 +193,7 @@ void Preset::PhysXColliderDesc::StaticBoxDefaultSetting(PHYSXCOLLIDERDESC& Out_D
     Out_Desc.vAngles = XMLoadFloat3(&PitchYawRoll);
     _float3 vScale = pTransform.lock()->Get_Scaled();
     _vector vPos = pTransform.lock()->Get_Position();
-    vPos.m128_f32[1] += vScale.y * 0.5f;
+    //vPos.m128_f32[1] += vScale.y * 0.5f;
     Out_Desc.vPosition = vPos;
     Out_Desc.vScale = XMLoadFloat3(&vScale);
     PxMaterial* pMaterial = nullptr;

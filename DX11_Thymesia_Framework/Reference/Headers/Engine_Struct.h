@@ -323,11 +323,10 @@ namespace Engine
 			_vector vPosition;
 
 			vPitchYawRoll = XMLoadFloat3(&vRotation);
-			vPosition = XMLoadFloat3(&vTarnslation);
-			vPosition.m128_f32[3] = 1.f;
+			vPosition     = XMVectorSetW(XMLoadFloat3(&vTarnslation), 1.f);
 
 			RotationMatrix = XMMatrixRotationRollPitchYawFromVector(vPitchYawRoll);
-			ScaleMatrix = XMMatrixScaling(vScale.x, vScale.y, vScale.z);
+			ScaleMatrix    = XMMatrixScaling(vScale.x, vScale.y, vScale.z);
 			TransformationMatrix = ScaleMatrix * RotationMatrix;
 			TransformationMatrix.r[3] = vPosition;
 

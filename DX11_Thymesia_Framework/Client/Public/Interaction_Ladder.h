@@ -56,8 +56,8 @@ private:
     weak_ptr<CShader>                   m_pInstanceShaderCom;
     weak_ptr<CTexture>                  m_pMaskingTextureCom;
 
-    _float                              m_fOffset   = 0.f;
-    _int                                m_iMidSize  = 0;
+    _float                              m_fOffset   = 0.4f;
+    _int                                m_iMidSize  = 5;
 };
 
 END

@@ -9,6 +9,7 @@
 #include "VIBuffer_Model_Instance.h"
 #include "Shader.h"
 #include "Renderer.h"
+#include "Texture.h"
 
 #include "Model.h"
 #include "Static_Instancing_Prop.h"
@@ -60,6 +61,12 @@ HRESULT CEditInstanceProp::Initialize(void* pArg)
 
 	Use_Thread(THREAD_TYPE::CUSTOM_THREAD1);
 
+	m_pTextureGroupCom.emplace("g_DissolveTexture"    , Add_Component<CTexture>());
+	m_pTextureGroupCom.emplace("g_DissolveDiffTexture", Add_Component<CTexture>());
+
+	m_pTextureGroupCom["g_DissolveTexture"].lock()->Use_Texture("T_Fire_Tile_BW_03");
+	m_pTextureGroupCom["g_DissolveDiffTexture"].lock()->Use_Texture("Diff_Fire_Tile0");
+
 	return S_OK;
 }
 
@@ -75,6 +82,9 @@ void CEditInstanceProp::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	m_pInstanceModelCom.lock()->Update(m_pPropInfos, true);
+
+	if (m_bDissolve)
+		m_fDissolveRatio += fTimeDelta * m_fDissolveSpeed;
 }
 
 void CEditInstanceProp::LateTick(_float fTimeDelta)
@@ -145,6 +155,21 @@ HRESULT CEditInstanceProp::SetUp_ShaderResource()
 	_vector vLightFlag = { 1.f, 1.f, 1.f, 1.f };
 	m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector));
 
+	if (m_bDissolve)
+	{
+		for (auto& elem : m_pTextureGroupCom)
+		{
+			elem.second.lock()->Set_ShaderResourceView
+			(
+				m_pShaderCom,
+				elem.first.c_str(),
+				0
+			);
+		}
+
+		m_pShaderCom.lock()->Set_RawValue("g_fDissolveRatio", &m_fDissolveRatio, sizeof(_float));
+	}
+
 	_uint iNumMeshContainers = m_pInstanceModelCom.lock()->Get_NumMeshContainers();
 
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
@@ -152,19 +177,26 @@ HRESULT CEditInstanceProp::SetUp_ShaderResource()
 		if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
 
-		if (m_bNonCulling)
+		if (m_bDissolve)
 		{
-			if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-				m_iPassIndex = 4;
-			else
-				m_iPassIndex = 5;
+			m_iPassIndex = 8;
 		}
 		else
 		{
-			if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-				m_iPassIndex = 0;
+			if (m_bNonCulling)
+			{
+				if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+					m_iPassIndex = 4;
+				else
+					m_iPassIndex = 5;
+			}
 			else
-				m_iPassIndex = 1;
+			{
+				if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+					m_iPassIndex = 0;
+				else
+					m_iPassIndex = 1;
+			}
 		}
 
 		if (m_bViewPhysXInfo && m_iColliderType != 0)
@@ -246,6 +278,11 @@ void CEditInstanceProp::Write_Json(json& Out_Json)
 	if (m_bNonCulling)
 		Out_Json.emplace("NonCulling", 1);
 
+	if (m_bDissolve)
+	{
+		Out_Json.emplace("Dissolve", m_fDissolveSpeed);
+	}
+
 	if (Out_Json.end() != Out_Json.find("Hash"))
 	{
 		Out_Json["Hash"] = typeid(CStatic_Instancing_Prop).hash_code();
@@ -317,6 +354,12 @@ void CEditInstanceProp::Load_FromJson(const json& In_Json)
 	if (In_Json.end() != In_Json.find("Collider_Type"))
 	{
 		m_iColliderType = In_Json["Collider_Type"];
+	}
+
+	if (In_Json.end() != In_Json.find("Dissolve"))
+	{
+		m_fDissolveSpeed = In_Json["Dissolve"];
+		m_bDissolve = true;
 	}
 }
 
@@ -463,7 +506,17 @@ void CEditInstanceProp::View_SelectModelComponent()
 		m_pInstanceModelCom.lock()->Init_Model(m_szSelectModelName.c_str());
 	}
 
-	ImGui::Checkbox("NinCulling", &m_bNonCulling);
+	ImGui::Checkbox("No CCW", &m_bNonCulling);
+
+
+	ImGui::DragFloat("##DissolveSpeed", &m_fDissolveSpeed, 1.f);
+	ImGui::SameLine();
+
+	ImGui::Checkbox("Dissolve", &m_bDissolve);
+	ImGui::SameLine();
+
+	if (ImGui::Button("Reset"))
+		m_fDissolveRatio = 0.f;
 
 	ImGui::Text("");
 	ImGui::Text("");

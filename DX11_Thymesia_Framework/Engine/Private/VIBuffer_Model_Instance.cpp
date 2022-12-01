@@ -13,7 +13,6 @@ CLONE_C(CVIBuffer_Model_Instance, CComponent)
 
 HRESULT CVIBuffer_Model_Instance::Initialize_Prototype()
 {
-
 	return S_OK;
 }
 
@@ -237,9 +236,7 @@ HRESULT CVIBuffer_Model_Instance::Render_Mesh(_uint iMeshContainerIndex)
 	DEVICECONTEXT->IASetIndexBuffer(m_MeshContainers[iMeshContainerIndex].lock()->Get_IndexBuffer().Get(), m_MeshContainers[iMeshContainerIndex].lock()->Get_IndexFormat(), 0);
 	DEVICECONTEXT->IASetPrimitiveTopology(m_MeshContainers[iMeshContainerIndex].lock()->Get_Topology());
 
-	/* 6 : 하나의 도형을 그리기위해 사용하는 인덱스의 갯수. 네모라서 여섯개.  */
 	DEVICECONTEXT->DrawIndexedInstanced(m_MeshContainers[iMeshContainerIndex].lock()->Get_NumIndices(), m_iVisibleCount, 0, 0, 0);
-	//m_pVisibleInstanceDescs[m_iCurrentVisibleIndex].size()
 
 	return S_OK;
 }
@@ -253,16 +250,11 @@ void CVIBuffer_Model_Instance::Culling_Instance(vector<INSTANCE_MESH_DESC>& In_P
 
 	shared_ptr<CGameInstance> pGameInstance = GAMEINSTANCE;
 
-	_vector vPosition;
-
 	_uint iIndex = 0;
 
 	for (auto& elem : In_ParticleDescs)
 	{
-		vPosition = XMLoadFloat3(&elem.vCenter);
-		vPosition.m128_f32[3] = 1.f;
-
-		if (pGameInstance->isIn_Frustum_InWorldSpace(vPosition, elem.fMaxRange * 1.2f))
+		if (pGameInstance->isIn_Frustum_InWorldSpace(XMVectorSetW(XMLoadFloat3(&elem.vCenter), 1.f), elem.fMaxRange * 1.2f))
 		{
 			m_pVisibleInstanceDescs[iUpdateIndex][iIndex] = elem;
 			++iIndex;

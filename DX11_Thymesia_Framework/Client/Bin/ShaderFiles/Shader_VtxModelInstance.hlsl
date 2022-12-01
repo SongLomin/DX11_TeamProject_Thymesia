@@ -5,6 +5,8 @@ matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 texture2D	g_DiffuseTexture;
 texture2D	g_MaskTexture;
 texture2D	g_NormalTexture;
+texture2D	g_DissolveTexture;
+texture2D	g_DissolveDiffTexture;
 
 vector      g_vCamPosition;
 vector      g_vCamLook;
@@ -12,7 +14,8 @@ vector      g_vPlayerPosition;
 float       g_fMaskingRange = 2.f;
 
 float4	g_vLightFlag;
-float g_fFar = 300.f;
+float   g_fFar = 300.f;
+float   g_fDissolveRatio;
 
 struct VS_IN
 {
@@ -276,6 +279,43 @@ PS_OUT PS_MAIN_RED(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_MAIN_Dissove(PS_IN_NORMAL In)
+{
+	PS_OUT Out = (PS_OUT)0;
+
+	vector TexDissolve = g_DissolveTexture.Sample(DefaultSampler, In.vTexUV);
+
+	if (g_fDissolveRatio >= TexDissolve.r)
+		discard;
+
+	vector vTexDiff = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	if (g_fDissolveRatio + 0.05f >= TexDissolve.r)
+	{
+		vTexDiff = g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV);
+	}
+	else
+	{
+		vTexDiff = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+	}
+
+	float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
+	vPixelNormal = vPixelNormal * 2.f - 1.f;
+
+	float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, In.vNormal);
+
+	vPixelNormal = mul(vPixelNormal, WorldMatrix);
+
+	Out.vDiffuse   = vTexDiff;
+	Out.vNormal    = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
+	Out.vDepth     = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+	Out.vLightFlag = g_vLightFlag;
+
+	if (Out.vDiffuse.a < 0.1f)
+		discard;
+
+	return Out;
+}
 
 technique11 DefaultTechnique
 {
@@ -289,6 +329,7 @@ technique11 DefaultTechnique
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
+
 	pass NormalMapping
 	{
 		SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
@@ -299,6 +340,7 @@ technique11 DefaultTechnique
 		GeometryShader	= NULL;
 		PixelShader		= compile ps_5_0 PS_MAIN_NORMAL();
 	}
+
 	pass ShadowDepth //2
 	{
 		SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
@@ -321,7 +363,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_RED();
     }
 
-	pass Pass4_WireFrameaw
+	pass Pass4_NonCulling
 	{
 		SetBlendState			(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState	(DSS_Default, 0);
@@ -363,5 +405,16 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_NORMAL_MASKING();
     }
+
+	pass Pass8_Dissolve
+	{
+		SetBlendState			(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState	(DSS_Default, 0);
+		SetRasterizerState		(RS_NonCulling);
+
+		VertexShader	= compile vs_5_0 VS_MAIN_NORMAL();
+		GeometryShader	= NULL;
+		PixelShader		= compile ps_5_0 PS_MAIN_Dissove();
+	}
 
 }

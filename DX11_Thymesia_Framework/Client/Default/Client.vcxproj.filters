@@ -813,9 +813,6 @@
     <ClInclude Include="..\Public\Interaction_Ladder.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Ladder</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\새 폴더 (3)\EditInteractionProp.h">
-      <Filter>02. GameObject\99. Other\08. EditInteractionProp</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1468,9 +1465,6 @@
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttack1.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawAttack1</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXXL.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
     </ClCompile>
@@ -1692,9 +1686,6 @@
     <ClCompile Include="..\Private\Interaction_Ladder.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Ladder</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\새 폴더 (3)\EditInteractionProp.cpp">
-      <Filter>02. GameObject\99. Other\08. EditInteractionProp</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1797,15 +1788,6 @@
     </Filter>
     <Filter Include="02. GameObject\02. Terrain">
       <UniqueIdentifier>{88f2ac0b-a8f4-49fa-a1ea-2fba81ec7232}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor">
-      <UniqueIdentifier>{01737cb7-4728-40ce-9a6d-6f3d60c87ac9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character">
-      <UniqueIdentifier>{618567cb-c6db-48f9-a3fe-050a87d96221}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\99. PreViewAnimationModel">
-      <UniqueIdentifier>{4324461d-9653-4d65-96ab-339d94dd633d}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\01. UI">
       <UniqueIdentifier>{f7dd526f-999a-4efc-b2c0-8b5a81b03a28}</UniqueIdentifier>
@@ -2005,26 +1987,8 @@
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing\00.CorvusState_BasicHealing">
       <UniqueIdentifier>{c10e7031-e434-4528-9ac6-0a6693d61a10}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster">
-      <UniqueIdentifier>{b10a7ea5-a749-4a3b-a17c-3bb89b499e38}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\04. Prop\05. PreView_Prop">
       <UniqueIdentifier>{959a7114-f746-44a0-91a4-24c79633fe1d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\00.NorMonster">
-      <UniqueIdentifier>{83e51cf4-fd97-4734-ac39-ca7849a9905d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\01.RareMonster">
-      <UniqueIdentifier>{01de9514-6850-49c7-b222-c2931730e79f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\02.EliteMonster">
-      <UniqueIdentifier>{6dbd2e3c-9b5f-4492-9900-d210f9ae3a6a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\03.BossMonster">
-      <UniqueIdentifier>{5e63cf28-93f2-445b-9683-2c4c3c6f8921}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\99.Weapon">
-      <UniqueIdentifier>{5e4e63d5-214f-4648-9f56-5231e87b034b}</UniqueIdentifier>
     </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase">
       <UniqueIdentifier>{25e87a1f-965a-4575-965e-e7024bb71594}</UniqueIdentifier>
@@ -2151,9 +2115,6 @@
     </Filter>
     <Filter Include="02. GameObject\08. Effect\00. Effect_Rect">
       <UniqueIdentifier>{43be49b4-b4e1-4346-a84a-e59a8f70fb38}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\03.BossMonster\00.Varg">
-      <UniqueIdentifier>{535343db-0b4d-4152-a537-8bf042b28b74}</UniqueIdentifier>
     </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState">
       <UniqueIdentifier>{2c62c05f-b0e7-4028-a8ca-969b517b2738}</UniqueIdentifier>
@@ -2355,21 +2316,6 @@
     </Filter>
     <Filter Include="02. GameObject\12. PhysXColliderObject">
       <UniqueIdentifier>{f4627d52-ffad-4ed1-962a-b028ee22ba52}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player">
-      <UniqueIdentifier>{526ae19b-d4f7-432d-9b4b-e73589c3ea78}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus">
-      <UniqueIdentifier>{16574201-340f-43db-b0c0-e3bb9a200fc8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\00.Weapon">
-      <UniqueIdentifier>{c544ea3e-e472-45d2-97c7-b7b228b16290}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\00.Weapon\00.Corvus_DefaultSaber">
-      <UniqueIdentifier>{0ed56344-d4a6-4fcc-946f-328f7e70d654}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\00.Weapon\01.Corvus_DefaultDagger">
-      <UniqueIdentifier>{e8d262bf-d13f-4a53-886f-7946a0308b0a}</UniqueIdentifier>
     </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\36.TurnAttack">
       <UniqueIdentifier>{e3ecf8f1-6d57-49e6-a712-42a92d7a7056}</UniqueIdentifier>
@@ -2575,9 +2521,6 @@
     <Filter Include="01. ClientLevel\04. Stage3">
       <UniqueIdentifier>{f753e3e3-5266-40af-90f4-78a4fe474aba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\03.BossMonster\01.Urd">
-      <UniqueIdentifier>{03bebc23-e64e-424d-b26a-a9db7844d3e9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\01.UrdState">
       <UniqueIdentifier>{ce8f2152-e179-4c99-9080-dbfb51d0a181}</UniqueIdentifier>
     </Filter>
@@ -2640,6 +2583,54 @@
     </Filter>
     <Filter Include="02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Elevator">
       <UniqueIdentifier>{7bb4749f-a719-40cf-a6da-aa4483c53faf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor">
+      <UniqueIdentifier>{01737cb7-4728-40ce-9a6d-6f3d60c87ac9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character">
+      <UniqueIdentifier>{618567cb-c6db-48f9-a3fe-050a87d96221}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\99. PreViewAnimationModel">
+      <UniqueIdentifier>{4324461d-9653-4d65-96ab-339d94dd633d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster">
+      <UniqueIdentifier>{b10a7ea5-a749-4a3b-a17c-3bb89b499e38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\00.NorMonster">
+      <UniqueIdentifier>{83e51cf4-fd97-4734-ac39-ca7849a9905d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\01.RareMonster">
+      <UniqueIdentifier>{01de9514-6850-49c7-b222-c2931730e79f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\02.EliteMonster">
+      <UniqueIdentifier>{6dbd2e3c-9b5f-4492-9900-d210f9ae3a6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\03.BossMonster">
+      <UniqueIdentifier>{5e63cf28-93f2-445b-9683-2c4c3c6f8921}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\03.BossMonster\00.Varg">
+      <UniqueIdentifier>{535343db-0b4d-4152-a537-8bf042b28b74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\03.BossMonster\01.Urd">
+      <UniqueIdentifier>{03bebc23-e64e-424d-b26a-a9db7844d3e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\01. Monster\99.Weapon">
+      <UniqueIdentifier>{5e4e63d5-214f-4648-9f56-5231e87b034b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player">
+      <UniqueIdentifier>{526ae19b-d4f7-432d-9b4b-e73589c3ea78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus">
+      <UniqueIdentifier>{16574201-340f-43db-b0c0-e3bb9a200fc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\00.Weapon">
+      <UniqueIdentifier>{c544ea3e-e472-45d2-97c7-b7b228b16290}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\00.Weapon\00.Corvus_DefaultSaber">
+      <UniqueIdentifier>{0ed56344-d4a6-4fcc-946f-328f7e70d654}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\00.Weapon\01.Corvus_DefaultDagger">
+      <UniqueIdentifier>{e8d262bf-d13f-4a53-886f-7946a0308b0a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

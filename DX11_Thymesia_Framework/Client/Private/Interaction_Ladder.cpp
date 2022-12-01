@@ -50,15 +50,11 @@ HRESULT CInteraction_Ladder::Initialize(void* pArg)
     m_pMaskingTextureCom.lock()->Use_Texture("UVMask");
 
 
-    if ()
     m_pModelCom.lock()->Init_Model("P_Ladder02_Down", "");
     m_pUpModelCom.lock()->Init_Model("P_Ladder02_Up", "");
     m_pInstanceModelCom.lock()->Init_Model("P_Ladder02");
 
-    m_fOffset  = 0.4f;
-    m_iMidSize = 5;
-
-    vector<INSTANCE_MESH_DESC> Prop_Desc;
+    /*vector<INSTANCE_MESH_DESC> Prop_Desc;
     INSTANCE_MESH_DESC Desc;
     ZeroMemory(&Desc, sizeof(INSTANCE_MESH_DESC));
     Desc.vScale     = _float3(1.f, 1.f, 1.f);
@@ -71,7 +67,7 @@ HRESULT CInteraction_Ladder::Initialize(void* pArg)
     }
 
     m_pInstanceModelCom.lock()->Init_Instance(m_iMidSize);
-    m_pInstanceModelCom.lock()->Update(Prop_Desc);
+    m_pInstanceModelCom.lock()->Update(Prop_Desc);*/
 
     SetUpColliderDesc();
 
@@ -156,6 +152,9 @@ void CInteraction_Ladder::Write_Json(json& Out_Json)
 
     Out_Json["Offset"]  = m_fOffset;
     Out_Json["MidSize"] = m_iMidSize;
+
+    auto iter = Out_Json["Component"].find("Model");
+    Out_Json["Component"].erase(iter);
 }
 
 void CInteraction_Ladder::Load_FromJson(const json& In_Json)
@@ -165,8 +164,8 @@ void CInteraction_Ladder::Load_FromJson(const json& In_Json)
     m_fOffset  = In_Json["Offset"];
     m_iMidSize = In_Json["MidSize"];
 
-    m_pModelCom.lock()->Init_Model("P_Ladder02_Down", "");
-    m_pUpModelCom.lock()->Init_Model("P_Ladder02_Up", "");
+    //m_pModelCom.lock()->Init_Model("P_Ladder02_Down", "");
+    //m_pUpModelCom.lock()->Init_Model("P_Ladder02_Up", "");
 
     if (0 < m_iMidSize)
     {
@@ -299,7 +298,7 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Mid()
         if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pInstanceShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
             m_iPassIndex = 0;
         else
-            m_iPassIndex = 7;
+            m_iPassIndex = 1;
         
         m_pInstanceShaderCom.lock()->Begin(m_iPassIndex);
         m_pInstanceModelCom.lock()->Render_Mesh(i);

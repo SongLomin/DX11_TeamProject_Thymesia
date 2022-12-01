@@ -1,22 +1,22 @@
 {
   "g_Texture_AddNo1": {
     "Density": 30.0,
-    "Diff": "T_Floor_01a_C.png",
-    "Norm": "T_Floor_01a_N.png"
+    "Diff": "T_Floor_01a_C",
+    "Norm": "T_Floor_01a_N"
   },
   "g_Texture_AddNo2": {
     "Density": 30.0,
-    "Diff": "T_wood_floor_1_a_C.png",
-    "Norm": "T_wood_floor_1_a_N.png"
+    "Diff": "T_wood_floor_1_a_C",
+    "Norm": "T_wood_floor_1_a_N"
   },
   "g_Texture_AddNo3": {
     "Density": 30.0,
-    "Diff": "T_P_StoneBorderTiles01_C.png",
-    "Norm": "T_P_StoneBorderTiles01_N.png"
+    "Diff": "T_P_StoneBorderTiles01_C",
+    "Norm": "T_P_StoneBorderTiles01_N"
   },
   "g_Texture_Sorc": {
     "Density": 30.0,
-    "Diff": "T_P_Gravel_floor02_C.png",
-    "Norm": "T_P_Gravel_floor02_N.png"
+    "Diff": "T_P_Gravel_floor02_C",
+    "Norm": "T_P_Gravel_floor02_N"
   }
 }

@@ -68,13 +68,16 @@ HRESULT CPhysXColliderObject::Render()
 	if ((_uint)LEVEL_EDIT == m_CreatedLevel)
 	{
 		if (FAILED(m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
-			DEBUG_ASSERT;
+			return E_FAIL;
 		if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW)), sizeof(_float4x4))))
-			DEBUG_ASSERT;
+			return E_FAIL;
 		if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ)), sizeof(_float4x4))))
-			DEBUG_ASSERT;
+			return E_FAIL;
 		if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
-			DEBUG_ASSERT;
+			return E_FAIL;
+
+		if (1.f == m_vColor.y)
+			int a = 0;
 
 		m_pShaderCom.lock()->Begin(3);
 		m_pVIBufferCom.lock()->Render();
