@@ -909,6 +909,10 @@
     <ClInclude Include="..\Public\UI_EvolveMenu_Talent.h">
       <Filter>02. GameObject\01. UI\UI_Container\Evolve\Talent</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_Button.h">
+      <Filter>02. GameObject\01. UI\UI_Elem\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EvolveMenu_TalentButton.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1879,6 +1883,10 @@
     <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\Evolve\Talent</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\UI_Button.cpp">
+      <Filter>02. GameObject\01. UI\UI_Elem\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EvolveMenu_TalentButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -2935,6 +2943,15 @@
     </Filter>
     <Filter Include="100.Utils">
       <UniqueIdentifier>{ee4a5e2e-fa1f-4592-947f-5be7349862f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\UI_Elem\CUI">
+      <UniqueIdentifier>{0fdeaad5-d586-4d02-ab75-51ab70394e1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\UI_Elem\Button">
+      <UniqueIdentifier>{5210f488-1bf5-4908-ab06-544da2546d03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\UI_Container\Evolve\Talent\TalentButton">
+      <UniqueIdentifier>{77345cb0-26eb-4af2-b5e6-a54222f4811f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

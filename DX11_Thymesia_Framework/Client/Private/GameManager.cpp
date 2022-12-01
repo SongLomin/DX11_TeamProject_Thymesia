@@ -621,6 +621,16 @@ void CGameManager::Change_NextLevel(void* pArg)
 	pCurrentLevel.lock()->Change_NextLevel(nullptr);
 }
 
+POINT CGameManager::Get_MousePoint()
+{
+	POINT	tMousePt;
+
+	GetCursorPos(&tMousePt);
+	ClientToScreen(g_hWnd, &tMousePt);
+
+	return tMousePt;
+}
+
 //void CGameManager::Set_TargetForTargetCamera(weak_ptr<CGameObject> In_TargetGameObject)
 //{
 //	//타겟 카메라 객체가 없는데 타겟을 넘겨주려고 함.

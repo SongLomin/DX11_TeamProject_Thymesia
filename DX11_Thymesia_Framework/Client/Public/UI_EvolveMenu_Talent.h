@@ -6,7 +6,6 @@ BEGIN(Client)
 class CCustomUI;
 class CFadeMask;
 
-
 class CUI_EveolveMenu_Talent : public CUI_Container
 {
 public:
@@ -47,7 +46,8 @@ private:
 	weak_ptr<CCustomUI> m_pTap[(_uint)TALENT_TAP::TALENT_TAP_END];
 	weak_ptr<CCustomUI>	m_pTapTitle[(_uint)TALENT_TAP::TALENT_TAP_END];
 	
-	
+
+private:
 	_uint				m_iTalentIndex = 0;
 
 private:
