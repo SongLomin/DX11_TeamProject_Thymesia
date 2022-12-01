@@ -41,7 +41,6 @@ private:
 	void	Update_ChangeStatus(CStatus_Player::PLAYERDESC&	tChangedPlayerStatus);
 	void	CalculateNeedMemory();
 
-
 private:
 
 	_bool	Check_Changeable(EVOLVE_LEVEL_TYPE eType, KEY eKey);
@@ -182,9 +181,6 @@ private:
 	
 	void			IncreaseStatus(EVOLVE_LEVEL_TYPE eEvolveType);
 	void			DecreaseStatus(EVOLVE_LEVEL_TYPE eEvolveType);
-
-
-
 
 
 private:

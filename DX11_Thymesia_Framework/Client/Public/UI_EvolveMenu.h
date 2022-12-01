@@ -102,6 +102,8 @@ private:
 public:
     virtual void    Call_FadeEndEnableEvolveMenu();
     virtual void    Call_ChangeUI_EvolveMenu_Level();
+    virtual void    Call_ChangeUI_EvolveMenu_Talent();
+
 
 
 

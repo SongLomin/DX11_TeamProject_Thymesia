@@ -55,6 +55,9 @@ public:
 	
 	void	Create_GameObjectFromJson(const string& In_szJsonPath, const LEVEL& In_eLevel);
 
+
+	void	Load_UIResource();
+
 private:
 	LEVEL						m_eNextLevel = LEVEL_END;
 

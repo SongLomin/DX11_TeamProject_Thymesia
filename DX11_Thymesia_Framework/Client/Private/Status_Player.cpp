@@ -63,7 +63,7 @@ void CStatus_Player::Init_Status(const void* pArg)
 	m_tDesc.m_iWound = 1;
 	m_tDesc.m_iMaxFeather = 3;
 	m_tDesc.m_iMemory = 100000;
-
+	m_tDesc.m_iTalent = 1;
 
 	m_PotionDesc[(_uint)POTIONTYPE::POTION_DEFAULT].m_iMaxPotion = 3;
 	m_PotionDesc[(_uint)POTIONTYPE::POTION_DEFAULT].m_fHealingAmount = 0.3f;

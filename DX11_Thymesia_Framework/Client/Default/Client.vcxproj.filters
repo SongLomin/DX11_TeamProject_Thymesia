@@ -951,6 +951,7 @@
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_EnergisedWeaponLV2.h">
       <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\04.Talent_Effect_EnergisedWeapon\01.Talent_Effect_EnergisedWeaponLV2</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\EvolveMenu_TalentButton.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1960,6 +1961,7 @@
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_EnergisedWeaponLV2.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\04.Talent_Effect_EnergisedWeapon\01.Talent_Effect_EnergisedWeaponLV2</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\EvolveMenu_TalentButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

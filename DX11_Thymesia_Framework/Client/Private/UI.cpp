@@ -37,8 +37,6 @@ HRESULT CUI::Initialize(void* pArg)
 
 	Set_OwnerForMyComponents();
 
-	
-
 	m_tUIDesc.fSizeX = g_iWinCX;
 	m_tUIDesc.fSizeY = g_iWinCY;
 	m_tUIDesc.fX = g_iWinCX >> 1;
@@ -241,6 +239,8 @@ void CUI::Disable_AllEventChild()
 	}
 }
 
+
+
 _float2 CUI::Get_Point(UI_POINT eType)
 {
 	_float2 vPos;
@@ -249,8 +249,6 @@ _float2 CUI::Get_Point(UI_POINT eType)
 	_float2 fHalfSize;
 	fHalfSize.x = m_tUIDesc.fSizeX * 0.5f;
 	fHalfSize.y = m_tUIDesc.fSizeY * 0.5f;
-
-	
 
 	switch (eType)
 	{

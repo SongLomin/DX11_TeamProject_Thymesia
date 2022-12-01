@@ -20,7 +20,6 @@
 #include "UI_ScriptQueue.h"
 #include "UI_DamageFont.h"
 
-
 CLevel_GamePlay::CLevel_GamePlay()
 	//: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
@@ -33,7 +32,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-	ShowCursor(false);
+	//ShowCursor(false);
 
 //주석지워라
 

@@ -107,6 +107,8 @@ public:
 protected:
     virtual void    Enable_AllEventChild();
     virtual void    Disable_AllEventChild();
+    
+public:
 
 
 public:

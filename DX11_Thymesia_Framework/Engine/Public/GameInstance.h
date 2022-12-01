@@ -222,7 +222,8 @@ private:
 	shared_ptr<CSound_Manager> m_pSound_Manager;
 	shared_ptr<CPhysX_Manager> m_pPhysX_Manager;
 	shared_ptr<CThread_Manager> m_pThread_Manager;
-	
+
+
 
 private:
 	_float			m_fDeltaTime = 0.f;
