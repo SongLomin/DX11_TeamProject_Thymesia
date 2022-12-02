@@ -158,7 +158,7 @@
       <Filter>02. GameObject\99. Other\03. Attack_collider</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Trigger.h">
-      <Filter>02. GameObject\10. Trigger</Filter>
+      <Filter>02. GameObject\09. SkyBox\10. Trigger</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\FadeMask.h">
       <Filter>02. GameObject\01. UI\UI_Elem\FadeMask</Filter>
@@ -177,9 +177,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\CustomUI.h">
       <Filter>02. GameObject\01. UI\UI_Elem\CustomUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CCorvus.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerStateBase.h">
       <Filter>05. Component\03. State\00. PlayerStateBase</Filter>
@@ -924,7 +921,6 @@
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_EnergisedWeaponLV2.h">
       <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\04.Talent_Effect_EnergisedWeapon\01.Talent_Effect_EnergisedWeaponLV2</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\EvolveMenu_TalentButton.h" />
     <ClInclude Include="..\Public\Actor.h" />
     <ClInclude Include="..\Public\BossUrd\Urd.h" />
     <ClInclude Include="..\Public\BossMonster.h" />
@@ -951,7 +947,7 @@
     </ClInclude>
     <ClInclude Include="..\Public\Interaction_Door.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="..\Public\Actor.h" />
     <ClInclude Include="..\Public\BossUrd\Urd.h" />
     <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h" />
@@ -971,6 +967,20 @@
     <ClInclude Include="..\Public\PhysXCharacterController.h">
       <Filter>05. Component\00. PhysXController\01. PhysXPlayerController</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CCorvus.h" />
+    <ClInclude Include="..\Public\MonsterParryingBar.h">
+      <Filter>02. GameObject\01. UI\UI_Elem\Parrying</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Private\Player_HPBar_Default.h" />
+    <ClInclude Include="..\Public\CState_AVoid.h" />
+    <ClInclude Include="..\Public\CustomFont.h" />
+    <ClInclude Include="..\Public\Player_ItemSkillCollection.h" />
+    <ClInclude Include="..\Public\PlayerUI_Defines.h" />
+    <ClInclude Include="..\Public\State_Monster.h" />
+    <ClInclude Include="..\Public\State_Player.h" />
+    <ClInclude Include="..\Public\UI_Elements.h" />
+    <ClInclude Include="..\Public\UI_MenuText.h" />
+    <ClInclude Include="..\Public\UI_PauseMenu_PlagueWeapon.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1109,7 +1119,7 @@
       <Filter>02. GameObject\99. Other\03. Attack_collider</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Trigger.cpp">
-      <Filter>02. GameObject\10. Trigger</Filter>
+      <Filter>02. GameObject\09. SkyBox\10. Trigger</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\FadeMask.cpp">
       <Filter>02. GameObject\01. UI\UI_Elem\FadeMask</Filter>
@@ -1125,9 +1135,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Ground.cpp">
       <Filter>02. GameObject\11. Ground</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CCorvus.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PlayerStateBase.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase</Filter>
@@ -1523,7 +1530,6 @@
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UI_LerpBar.cpp" />
-    <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
     </ClCompile>
@@ -1687,9 +1693,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Effect_Trail.cpp">
       <Filter>02. GameObject\08. Effect\02. Effect_Trail</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\MobWeapon.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\99.Weapon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Effect_Trail_Distortion.cpp">
       <Filter>02. GameObject\08. Effect\02. Effect_Trail\00. Effect_Distortion</Filter>
@@ -1944,11 +1947,9 @@
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_EnergisedWeaponLV2.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\04.Talent_Effect_EnergisedWeapon\01.Talent_Effect_EnergisedWeaponLV2</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\EvolveMenu_TalentButton.cpp" />
     <ClCompile Include="..\Private\Actor.cpp" />
     <ClCompile Include="..\Private\BossUrd\Urd.cpp" />
     <ClCompile Include="..\Private\UI_Button.cpp" />
-    <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp" />
     <ClCompile Include="..\Private\BossMonster.cpp" />
     <ClCompile Include="..\Private\MobWeapon.cpp" />
     <ClCompile Include="..\Private\BossVarg\Varg.cpp" />
@@ -1994,6 +1995,19 @@
       <Filter>96. GameManager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\MobWeapon.cpp" />
+    <ClCompile Include="..\Private\MobWeapon.cpp" />
+    <ClCompile Include="..\Private\CCorvus.cpp" />
+    <ClCompile Include="..\Private\MonsterParryingBar.cpp">
+      <Filter>02. GameObject\01. UI\UI_Elem\Parrying</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CustomFont.cpp" />
+    <ClCompile Include="..\Private\Player_HPBar_Default.cpp" />
+    <ClCompile Include="..\Private\Player_ItemSkillCollection.cpp" />
+    <ClCompile Include="..\Private\UI_MenuText.cpp" />
+    <ClCompile Include="..\Private\UltimateUI.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp">
+      <Filter>02. GameObject\01. UI\UI_Container\Evolve\Talent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -2144,9 +2158,6 @@
     </Filter>
     <Filter Include="02. GameObject\09. SkyBox">
       <UniqueIdentifier>{a808949d-7be4-4654-b4d3-8075d2b35373}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\10. Trigger">
-      <UniqueIdentifier>{99bd0ed4-2e9b-47bf-8557-7c919232b269}</UniqueIdentifier>
     </Filter>
     <Filter Include="05. Component">
       <UniqueIdentifier>{2d13e696-c96a-4148-8979-8c5f6629f73c}</UniqueIdentifier>
@@ -2649,9 +2660,6 @@
     <Filter Include="01. ClientLevel\05. Level_Test">
       <UniqueIdentifier>{fc760025-3469-4bd1-81c4-0e8169a05da1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus">
-      <UniqueIdentifier>{16574201-340f-43db-b0c0-e3bb9a200fc8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\00.Weapon">
       <UniqueIdentifier>{c544ea3e-e472-45d2-97c7-b7b228b16290}</UniqueIdentifier>
     </Filter>
@@ -2687,9 +2695,6 @@
     </Filter>
     <Filter Include="01. ClientLevel\05. Level_Test">
       <UniqueIdentifier>{fc760025-3469-4bd1-81c4-0e8169a05da1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus">
-      <UniqueIdentifier>{16574201-340f-43db-b0c0-e3bb9a200fc8}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\00.Weapon">
       <UniqueIdentifier>{c544ea3e-e472-45d2-97c7-b7b228b16290}</UniqueIdentifier>
@@ -2937,9 +2942,6 @@
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\14.CorvusState_Climb_Fall_Attack">
       <UniqueIdentifier>{a0660124-2e8a-4f9a-88c3-aee4b57d70fa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent">
-      <UniqueIdentifier>{88c59779-4bcd-47f0-81cb-285ca31faac4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\00.Talent">
       <UniqueIdentifier>{52faab68-8092-4ff0-bb5b-efaa39ceeb72}</UniqueIdentifier>
     </Filter>
@@ -3074,6 +3076,9 @@
     </Filter>
     <Filter Include="02. GameObject\01. UI\UI_Container\Evolve\Talent\Button">
       <UniqueIdentifier>{bab38216-a0aa-44fc-86b9-9190c54433fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\09. SkyBox\10. Trigger">
+      <UniqueIdentifier>{99bd0ed4-2e9b-47bf-8557-7c919232b269}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

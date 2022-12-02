@@ -64,7 +64,12 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevel)
 
 void CLevel_Loading::Tick(_float fTimeDelta)
 {
-	__super::Tick(fTimeDelta);	
+	__super::Tick(fTimeDelta);
+
+	if (KEY_INPUT(KEY::HOME, KEY_STATE::TAP))
+	{
+		GAMEINSTANCE->Write_JsonUsingResource("../Bin/LevelData/CapturedResource/Loading.json");
+	}
 
 	if (true == m_pLoader->is_Finished())
 	{
@@ -90,6 +95,11 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 		{
 			Create_Level();
 		}
+	}
+
+	if (KEY_INPUT(KEY::HOME, KEY_STATE::TAP))
+	{
+		GAMEINSTANCE->Write_JsonUsingResource("../Bin/LevelData/CapturedResource/Loading.json");
 	}
 }
 

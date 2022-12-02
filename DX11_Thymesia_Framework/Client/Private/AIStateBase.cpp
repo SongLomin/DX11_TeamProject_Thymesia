@@ -358,6 +358,8 @@ void CAIStateBase::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Z);
+
 	if (!m_pModelCom.lock())
 	{
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();

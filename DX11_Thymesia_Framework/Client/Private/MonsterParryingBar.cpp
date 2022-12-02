@@ -30,12 +30,11 @@ HRESULT CMonsterParryingBar::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
-   m_pBorder = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &m_tUIDesc);
-   m_pBorder.lock()->Set_Texture("Monster_HPBar_Border");
-   m_pBorder.lock()->Set_Depth(0.1f);
+  // m_pBorder = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &m_tUIDesc);
+   //m_pBorder.lock()->Set_Texture("Monster_HPBar_Border");
+   //m_pBorder.lock()->Set_Depth(0.1f);
 
    UI_DESC tMainBarDesc = m_tUIDesc;
-
 
    tMainBarDesc.fSizeX = m_tUIDesc.fSizeX + 20.f;
    tMainBarDesc.fSizeY = m_tUIDesc.fSizeY - 4.f;
@@ -49,7 +48,7 @@ HRESULT CMonsterParryingBar::Initialize(void* pArg)
     m_fCrurrentParryGauge = 0.f;
     m_fLerpedParryGauge = 0.f;
 
-    Add_Child(m_pBorder);
+    //Add_Child(m_pBorder);
     Add_Child(m_pMainBar);
 
     return S_OK;
@@ -116,7 +115,7 @@ void CMonsterParryingBar::Set_UIPosition(const _float fX, const _float fY)
 {
     __super::Set_UIPosition(fX, fY);
 
-    m_pBorder.lock()->Set_UIPosition(fX, fY);
+   // m_pBorder.lock()->Set_UIPosition(fX, fY);
     m_pMainBar.lock()->Set_UIPosition(fX, fY);
 
 }

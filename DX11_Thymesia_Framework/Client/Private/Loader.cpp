@@ -95,8 +95,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("객체를 생성중입니다."));
 
-	Load_AllEffectMesh();
-
+	GAMEINSTANCE->Add_Font((_uint)FONT_INDEX::DREAM, TEXT("../Bin/Resources/Fonts/128.spriteFont"));
+	GAMEINSTANCE->Add_Font((_uint)FONT_INDEX::PRETENDARD, TEXT("../Bin/Resources/Fonts/Pretendard.spriteFont"));
+	GAMEINSTANCE->Add_Font((_uint)FONT_INDEX::HEIROLIGHT, TEXT("../Bin/Resources/Fonts/HeiroLightRegular.spritefont"));
 
 	GAMEINSTANCE->Add_Prototype_GameObject<CFadeMask>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CCamera_Target>();
@@ -129,6 +130,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures("Grass", TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures("TestTile", TEXT("../Bin/Resources/Textures/TestTexture/DefaultGrid.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	
+	Load_UIResource();
+
 	//GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/1.png"), MEMORY_TYPE::MEMORY_STATIC);
 	//GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/2.png"), MEMORY_TYPE::MEMORY_STATIC);
 	//GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/3.png"), MEMORY_TYPE::MEMORY_STATIC);
@@ -143,11 +146,13 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	
 #ifdef _LOAD_CAPTURED_RESOURCE_
 	GAMEINSTANCE->Load_ResourcesFromJson("../Bin/LevelData/CapturedResource/Logo.json");
+	GAMEINSTANCE->Load_ResourcesFromJson("../Bin/LevelData/CapturedResource/Loading.json");
 #else
 	Load_AllDiffuseTexture();
 	Load_AllMaskMap();
 	Load_AllNoiseTexture();
 	Load_AllParticleTexture();
+	Load_AllEffectMesh();
 
 	// TODO : For. Prop Dissove : (AN) 박쥐 보스방 식물 디졸브
 	Load_AllTexture("../Bin/Resources/Textures/Prop/", MEMORY_TYPE::MEMORY_STATIC);
@@ -158,7 +163,6 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	Load_AllTexture("../Bin/GroundInfo/Texture/", MEMORY_TYPE::MEMORY_STATIC);
 	Load_AllTexture("../Bin/GroundInfo/Filter/", MEMORY_TYPE::MEMORY_STATIC);
-	Load_UIResource();
 	
 #endif // _LOAD_CAPTURED_RESOURCE_
 
@@ -284,6 +288,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 #endif
 
 	lstrcpy(m_szLoadingText, TEXT("객체 생성 중입니다. "));
+	
 #endif
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));	
 
@@ -463,18 +468,29 @@ HRESULT CLoader::Loading_ForEditLevel()
 
 	//Load_AllMeshes("../Bin/Resources/Meshes/Temp/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 
-#ifdef _LOAD_MAP_MESHES_
+
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/"           , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Binary/"        , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/"  , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/"  , MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/"						 , MODEL_TYPE::GROUND , MEMORY_TYPE::MEMORY_DYNAMIC);
-#endif //_LOAD_MAP_MESHES_
+
 
 	_matrix TransformMatrix;
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
 	Load_AllMeshes("../Bin/Resources/Meshes/Distructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
+
+#ifdef _LOAD_CAPTURED_RESOURCE_
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Corvus", "../Bin/Resources/Meshes/Corvus/Corvus.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC, true);
+
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("CorvusDefaultSaber", "../Bin/Resources/Meshes/Corvus/Weapon/Corvus_DefaultSaber/Corvus_DefaultSaber.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("CorvusDefaultDagger", "../Bin/Resources/Meshes/Corvus/Weapon/Corvus_DefaultDagger/Corvus_DefaultDagger.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+#endif // _LOAD_CAPTURED_RESOURCE_
 
 	lstrcpy(m_szLoadingText, TEXT("로딩 끝 "));
 	m_isFinished = true;
@@ -976,10 +992,33 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Stab"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/TexUI_TalentIcon_LAtk_Stab.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Basic0_Title"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/LAtk_Basic0_Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Basic0_Information"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/LAtk_Basic0_Information.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Basic1_Title"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/LAtk_Basic1_Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Basic1_Information"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/LAtk_Basic1_Information.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Slash0_Title"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/LAtk_Slash0_Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Slash0_Information"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/LAtk_Slash0_Information.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Slash1_Title"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/LAtk_Slash1_Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Slash1_Information"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/LAtk_Slash1_Information.png"), MEMORY_TYPE::MEMORY_STATIC);
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Stab0_Title"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/LAtk_Stab0_Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Stab0_Information"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/LAtk_Stab0_Information.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Stab1_Title"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/LAtk_Stab1_Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Stab1_Information"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/LAtk_Stab1_Information.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("Test"), TEXT("../Bin/Resources/Textures/UI/Test.png"), MEMORY_TYPE::MEMORY_STATIC);
+
 	GAMEINSTANCE->Load_Textures(("MediaFrame"), TEXT("../Bin/Resources/Textures/UI/TexUI_MediaFrame.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	GAMEINSTANCE->Load_Textures(("Talent_Information_BG"), TEXT("../Bin/Resources/Textures/UI/TexUI_TipDialogBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
 
+	GAMEINSTANCE->Load_Textures(("None"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_None.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 }
 

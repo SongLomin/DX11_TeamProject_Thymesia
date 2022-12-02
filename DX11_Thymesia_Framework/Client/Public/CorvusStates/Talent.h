@@ -52,11 +52,15 @@ public:
 
     void TestTalentCheck();
     void Set_TALENT_NAME(TALENT_NAME TalentName);
+
+public:
+    FDelegate<TALENT_NAME>		Callback_OnMouseOver;
+    FDelegate<>		            Callback_OnMouseOut;
+
 private:
     void                        Add_TalentChild(weak_ptr<CTalent> In_pChild);
     
-
-
+  
 
 //For Button
 private:
@@ -85,7 +89,7 @@ private:
     weak_ptr<CTalent_Effect>     m_pEffect;
     list<weak_ptr<CTalent>>      m_pChilds;
     weak_ptr<CTalent>            m_pParent;
-    TALENT_NAME                  m_tTalentName = TALENT_NAME::TALENT_NAME_END;
+    TALENT_NAME                  m_eTalentName = TALENT_NAME::TALENT_NAME_END;
 
     _int                           m_iNodeLevel;
     

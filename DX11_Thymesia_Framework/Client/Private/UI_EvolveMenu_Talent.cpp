@@ -8,7 +8,7 @@
 #include "State_Player.h"
 #include "Player.h"
 #include "FadeMask.h"
-#include "UI_EvolveMenu_TalentButton.h"
+// #include "UI_EvolveMenu_TalentButton.h"
 #include "Talent_Effects.h"
 #include "CorvusStates/Talent.h"
 
@@ -143,6 +143,19 @@ void CUI_EveolveMenu_Talent::Create_TalentInformation()
 
     Add_Child(m_pMediaFrame);
 
+    m_pTalentImage = ADD_STATIC_CUSTOMUI;
+    m_pTalentImage.lock()->Set_UIPosition
+    (
+        992.f,
+        136.f,
+        479.f,
+        268.f,
+        ALIGN_LEFTTOP
+    );
+    m_pTalentImage.lock()->Set_Texture("Test");
+    m_pTalentImage.lock()->Set_Depth(0.1f);
+    Add_Child(m_pTalentImage);
+
 
     m_pTalentInformationBG = ADD_STATIC_CUSTOMUI;
 
@@ -158,6 +171,35 @@ void CUI_EveolveMenu_Talent::Create_TalentInformation()
     m_pTalentInformationBG.lock()->Set_Depth(0.3f);
     m_pTalentInformationBG.lock()->Set_AlphaColor(0.2f);
     Add_Child(m_pTalentInformationBG);
+
+
+    m_pTalentTitle = ADD_STATIC_CUSTOMUI;
+    m_pTalentTitle.lock()->Set_UIPosition
+    (
+        982.f,
+        428.f,
+        497.f,
+        50.f,
+        ALIGN_LEFTTOP
+    );
+    m_pTalentTitle.lock()->Set_Texture("None");
+    m_pTalentImage.lock()->Set_Depth(0.1f);
+
+    Add_Child(m_pTalentImage);
+
+    m_pTalentInformation = ADD_STATIC_CUSTOMUI;
+    m_pTalentInformation.lock()->Set_UIPosition
+    (
+        1024.f,
+        496.f,
+        425.f,
+        257.f,
+        ALIGN_LEFTTOP
+    );
+    m_pTalentInformation.lock()->Set_Texture("None");
+    m_pTalentInformation.lock()->Set_Depth(0.1f);
+
+    Add_Child(m_pTalentInformation);
 
 }
 void CUI_EveolveMenu_Talent::Init_Tap()
@@ -177,7 +219,6 @@ void CUI_EveolveMenu_Talent::OnEnable(void* pArg)
 
     ShowCursor(true);
   
-
     if (!m_pFadeMask.lock())
         m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
@@ -196,15 +237,13 @@ void CUI_EveolveMenu_Talent::OnDisable()
 
     ShowCursor(false);
 
-
-    for (_uint i = 0; i < (_uint)TALENT_TAP::TALENT_SWORD; i++)
+    for (_uint i = 0; i < (_uint)TALENT_TAP::TALENT_TAP_END; i++)
     {
         if (m_pRoot[i].lock())
         {
             m_pRoot[i].lock()->Set_Enable(false);
         }
     }
-
 }
 void CUI_EveolveMenu_Talent::UI_ChangeTap()
 {
@@ -221,6 +260,73 @@ void CUI_EveolveMenu_Talent::UI_ChangeTap()
     }
 }
 
+
+void CUI_EveolveMenu_Talent::Call_TalentMouseOver(TALENT_NAME eTalent_Name)
+{
+    switch (eTalent_Name)
+    {
+    case Client::TALENT_NAME::NORSWORDLV1:
+        m_pTalentTitle.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Basic0_Title");
+        m_pTalentInformation.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Basic0_Information");
+
+        break;
+    case Client::TALENT_NAME::NORSWORDLV2:
+        m_pTalentTitle.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Basic1_Title");
+        m_pTalentInformation.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Basic1_Information");
+        break;
+    case Client::TALENT_NAME::AVOIDSLASHLV1:
+        m_pTalentTitle.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Slash0_Title");
+        m_pTalentInformation.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Slash0_Information");
+
+        break;
+    case Client::TALENT_NAME::AVOIDSLASHLV2:
+        m_pTalentTitle.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Slash1_Title");
+        m_pTalentInformation.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Slash1_Information");
+
+        break;
+    case Client::TALENT_NAME::AVOIDTHRUSTLV1:
+        m_pTalentTitle.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Stab0_Title");
+        m_pTalentInformation.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Stab0_Information");
+
+        break;
+    case Client::TALENT_NAME::AVOIDTHRUSTLV2:
+        m_pTalentTitle.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Stab1_Title");
+        m_pTalentInformation.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Stab1_Information");
+        break;
+    case Client::TALENT_NAME::JUMPATTACKLV1:
+        break;
+    case Client::TALENT_NAME::JUMPATTACKLV2:
+        break;
+    case Client::TALENT_NAME::JUMPATTACKLV3:
+        break;
+    case Client::TALENT_NAME::EXECUTION:
+        break;
+    case Client::TALENT_NAME::HEALINGEXECUTIONLV1:
+        break;
+    case Client::TALENT_NAME::HEALINGEXECUTIONLV2:
+        break;
+    case Client::TALENT_NAME::SHARPWEAPONLV1:
+        break;
+    case Client::TALENT_NAME::SHARPWEAPONLV2:
+        break;
+    case Client::TALENT_NAME::ENERGISEDWEAPONLV1:
+        break;
+    case Client::TALENT_NAME::ENERGISEDWEAPONLV2:
+        break;
+    case Client::TALENT_NAME::TALENT_NAME_END:
+        break;
+    default:
+        break;
+    }
+
+
+}
+
+void CUI_EveolveMenu_Talent::Call_TalentMouseOut()
+{
+    m_pTalentTitle.lock()->Set_Texture("None");
+    m_pTalentInformation.lock()->Set_Texture("None");
+}
 
 void CUI_EveolveMenu_Talent::SetUp_TalentNode(weak_ptr<CTalent> pNode, UI_DESC tUIDesc)
 {

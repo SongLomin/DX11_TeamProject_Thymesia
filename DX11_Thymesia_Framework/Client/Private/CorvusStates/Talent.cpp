@@ -3,7 +3,7 @@
 #include "GameManager.h"
 #include "Player.h"
 #include "CorvusStates/Talent_Effect.h"
-#include "UI_EvolveMenu_TalentButton.h"
+// #include "UI_EvolveMenu_TalentButton.h"
 #include "GameInstance.h"
 #include "Level_Loading.h"
 #include "FadeMask.h"
@@ -12,9 +12,9 @@
 #include "Client_GameObjects.h"
 #include "CustomUI.h"
 #include "Status_Player.h"
-
+#include "UI_EvolveMenu_Level.h"
 #include "UI_Button.h"
-
+#include "UI_EvolveMenu_Talent.h"
 GAMECLASS_C(CTalent)
 CLONE_C(CTalent, CGameObject)
 
@@ -82,6 +82,8 @@ HRESULT CTalent::Start()
     m_pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
     m_pEffect = Get_ComponentByType<CTalent_Effect>();
 
+
+   
     return S_OK;
 }
 
@@ -115,6 +117,7 @@ void CTalent::OnMouseOver()
 {
     __super::OnMouseOver();
 
+    Callback_OnMouseOver(m_eTalentName);
     if (m_bActive)
     {
         CheckMouseOver();
@@ -151,7 +154,7 @@ void CTalent::OnMouseOver()
 void CTalent::OnMouseOut()
 {
     __super::OnMouseOut();
-
+    Callback_OnMouseOut();
     if (m_bActive)
     {
         CheckMouseOut();
@@ -588,11 +591,9 @@ void  CTalent::TestTalentCheck()
 
 void CTalent::Set_TALENT_NAME(TALENT_NAME TalentName)
 {
-    m_tTalentName = TalentName;
+    m_eTalentName = TalentName;
 
-
-
-    switch (m_tTalentName)
+    switch (m_eTalentName)
     {
     case Client::TALENT_NAME::NORSWORDLV1:
         m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Basic");
@@ -637,7 +638,7 @@ void CTalent::Set_TALENT_NAME(TALENT_NAME TalentName)
     default:
         break;
     }
-
+    
 }
 
 
