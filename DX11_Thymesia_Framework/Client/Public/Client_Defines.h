@@ -34,7 +34,7 @@
 //#define		_ONLY_UI_
 #define		_BONE_PARTICLE_
 // #define		_BONE_MESHEFFECT_
-//#define		_LOAD_CAPTURED_RESOURCE_
+#define		_LOAD_CAPTURED_RESOURCE_
 #define		_CORVUS_EFFECT_
 #endif // _DEBUG
 

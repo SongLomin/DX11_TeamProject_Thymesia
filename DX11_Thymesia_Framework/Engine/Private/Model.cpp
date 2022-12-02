@@ -153,7 +153,7 @@ _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName, const _bool In_
 		vCurrentBonePosition.m128_f32[2] = 0.f;
 	}
 
-	Print_Vector(vCurrentBonePosition);
+	//Print_Vector(vCurrentBonePosition);
 
 	return vCurrentBonePosition;
 }

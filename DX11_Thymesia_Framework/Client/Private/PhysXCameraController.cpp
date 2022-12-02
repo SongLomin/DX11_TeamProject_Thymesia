@@ -96,8 +96,6 @@ void CPhysXCameraController::Synchronize_Transform(weak_ptr<CTransform> pTransfo
 
 	XMStoreFloat3(&m_vPrePosition, vPos);
 
-	cout << "Synchronize_Transform" << endl;
-
 	pTransform.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
 }
 
@@ -109,8 +107,6 @@ PxControllerCollisionFlags CPhysXCameraController::Synchronize_Controller(weak_p
 	PxVec3 vMovePositionToPx = SMath::Convert_PxVec3(vMovePosition);
 
 	filters.mCCTFilterCallback = this;
-
-	cout << "Synchronize_Controller" << endl;
 
 	return m_pController->move(vMovePositionToPx, 0.f, elapsedTime, filters);
 }
@@ -187,7 +183,7 @@ void CPhysXCameraController::Update_RayCastCollision(_float fDeltaTime)
 		//Filters.mFilterFlags = PxQueryFlag::Enum(0);
 
 		m_pController->setPosition({ newHit.position.x, newHit.position.y, newHit.position.z });
-		Print_Vector(SMath::Convert_PxExtendedVec3ToVector(position));
+		//Print_Vector(SMath::Convert_PxExtendedVec3ToVector(position));
 		//m_pController->move(MovePosition, 0.f, fDeltaTime, Filters);
 		
 	}

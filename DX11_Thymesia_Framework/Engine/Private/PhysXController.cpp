@@ -159,16 +159,16 @@ PxControllerCollisionFlags CPhysXController::MoveWithRotation(const _vector& dis
 
 	//PxVec3 vRotatedPositionFromPx{ vRotatedPosition.m128_f32[0],vRotatedPosition.m128_f32[1] ,vRotatedPosition.m128_f32[2] };
 
-	cout << "피직스 이동 값: ";
-	Print_Vector(vRotatedPosition);
+	//cout << "피직스 이동 값: ";
+	//Print_Vector(vRotatedPosition);
 
 	auto Result = m_pController->move(vRotatedPositionFromPx, minDist, elapsedTime, filters, obstacles);
 
 	PxExtendedVec3 CurPosition = m_pController->getPosition();
 	PxVec3 RealMove = CurPosition - PrePosition;
 
-	cout << "실제 이동 값: ";
-	Print_Vector({ (_float)RealMove.x, (_float)RealMove.y, (_float)RealMove.z });
+	//cout << "실제 이동 값: ";
+	//Print_Vector({ (_float)RealMove.x, (_float)RealMove.y, (_float)RealMove.z });
 
 	return Result;
 }

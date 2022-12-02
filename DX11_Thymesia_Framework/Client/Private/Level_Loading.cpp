@@ -91,6 +91,11 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 			Create_Level();
 		}
 	}
+
+	if (KEY_INPUT(KEY::HOME, KEY_STATE::TAP))
+	{
+		GAMEINSTANCE->Write_JsonUsingResource("../Bin/LevelData/CapturedResource/Loading.json");
+	}
 }
 
 HRESULT CLevel_Loading::Render()
