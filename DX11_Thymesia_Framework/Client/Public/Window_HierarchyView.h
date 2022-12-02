@@ -45,6 +45,7 @@ public:
 	virtual void OnLevelLoad() override;
 
 public:
+	virtual void OnDestroy() override;
 	void Free();
 };
 END

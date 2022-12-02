@@ -50,7 +50,7 @@ void CCorvusState_Climb_L_UP_End::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
+	Get_OwnerPlayer()->Change_State<CCorvusState_Climb_L_Idle>();
 
 }
 
@@ -62,6 +62,8 @@ void CCorvusState_Climb_L_UP_End::OnStateStart(const _float& In_fAnimationBlendT
 	{
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
+
+	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Y | (_byte)ROOTNODE_FLAG::Z);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 

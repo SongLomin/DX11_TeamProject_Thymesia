@@ -61,6 +61,10 @@ public:
     virtual void Call_WeaponFirstAttack(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
     virtual void Call_WeaponAttack(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
 
+public:
+    _flag           Get_CollisionObjectFlags() { return m_CollisionObjectFlags; }
+    void            Set_CollisionObjectFlag(const _flag In_CollisionObjectFlags, const _bool In_bEnable);
+ 
 protected:
     weak_ptr<CMonster> m_pTargetMonster;
     weak_ptr<CStateBase> m_pStandState;
@@ -73,12 +77,13 @@ protected:
     list<weak_ptr<CTalent_Effect>> m_pTalent_Effects;
 
 private:
-    _float              m_fNearSearchDelay = 0.f;
-
+    _float              m_fNearSearchDelay = 0.f; 
     weak_ptr<CPlayer>   m_thisToPlayer;
 
-public:
-  
+protected:
+    _flag      m_CollisionObjectFlags = 0;
+   
+    //TODO ¾ß¸Å
 
 
 

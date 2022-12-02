@@ -40,7 +40,6 @@ private:
     _bool                   m_bRender       = false;
 
 public:
-    virtual void OnDestroy() override;
     void Free();
 };
 

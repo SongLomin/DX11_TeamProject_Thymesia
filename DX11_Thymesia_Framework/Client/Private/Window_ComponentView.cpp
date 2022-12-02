@@ -66,6 +66,7 @@ void CWindow_ComponentView::Draw_Components()
 	{
 		if (ImGui::Button("Delete Object"))
 		{
+			PICKED_GAMEOBJECT->OnEventMessage((_uint)EVENT_TYPE::ON_EDIT_DELETE);
 			PICKED_GAMEOBJECT->Set_Dead();
 		}
 
@@ -154,43 +155,45 @@ void CWindow_ComponentView::Draw_Components()
 
 	if (pModel.lock().get())
 	{
-
-		if (ImGui::CollapsingHeader("CModel Component"), ImGuiTreeNodeFlags_DefaultOpen)
+		if (typeid(CInteraction_Ladder).hash_code() != m_tPickedGameObjectDesc.HashCode)
 		{
-			ImGui::Text("[ Model List ]");
-			ImGui::Text(string("Select MD : " + string(pModel.lock()->Get_ModelKey())).c_str());
-
-			ImGui::Text("");
-			ImGui::InputText("Model Tag Find", szFindModelTag, MAX_PATH);
-			ImGui::Text("");
-
-			if (ImGui::BeginListBox("##Model List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+			if (ImGui::CollapsingHeader("CModel Component"), ImGuiTreeNodeFlags_DefaultOpen)
 			{
-				for (int i = 0; i < m_AllModelKeys.size(); i++)
+				ImGui::Text("[ Model List ]");
+				ImGui::Text(string("Select MD : " + string(pModel.lock()->Get_ModelKey())).c_str());
+
+				ImGui::Text("");
+				ImGui::InputText("Model Tag Find", szFindModelTag, MAX_PATH);
+				ImGui::Text("");
+
+				if (ImGui::BeginListBox("##Model List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
 				{
-					const _bool is_selected = (m_CurrentModelIndex == i);
-
-					if (0 < strlen(szFindModelTag))
+					for (int i = 0; i < m_AllModelKeys.size(); i++)
 					{
-						if (string::npos == m_AllModelKeys[i].find(szFindModelTag))
-							continue;
+						const _bool is_selected = (m_CurrentModelIndex == i);
+
+						if (0 < strlen(szFindModelTag))
+						{
+							if (string::npos == m_AllModelKeys[i].find(szFindModelTag))
+								continue;
+						}
+
+						if (ImGui::Selectable(m_AllModelKeys[i].c_str(), is_selected))
+							m_CurrentModelIndex = i;
+
+						if (is_selected)
+							ImGui::SetItemDefaultFocus();
 					}
-
-					if (ImGui::Selectable(m_AllModelKeys[i].c_str(), is_selected))
-						m_CurrentModelIndex = i;
-
-					if (is_selected)
-						ImGui::SetItemDefaultFocus();
+					ImGui::EndListBox();
 				}
-				ImGui::EndListBox();
-			}
 
-			if (ImGui::Button("Load"))
-			{
-				if (!pModel.lock())
-					return;
+				if (ImGui::Button("Load"))
+				{
+					if (!pModel.lock())
+						return;
 
-				pModel.lock()->Init_Model(m_AllModelKeys[m_CurrentModelIndex].c_str());
+					pModel.lock()->Init_Model(m_AllModelKeys[m_CurrentModelIndex].c_str());
+				}
 			}
 		}
 	}
@@ -240,6 +243,9 @@ void CWindow_ComponentView::Init_Components()
 
 void CWindow_ComponentView::TransformComponent_PickingAction(weak_ptr<CTransform> _pTransform)
 {
+	if (!KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
+		return;
+
 	RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
 	_float4 vMouseDir;
 	ZeroMemory(&vMouseDir, sizeof(_float4));
@@ -249,37 +255,34 @@ void CWindow_ComponentView::TransformComponent_PickingAction(weak_ptr<CTransform
 	_bool _bClick_Terrain = SMath::Is_Picked_AbstractTerrain(MouseRayInWorldSpace, &vMouseDir);
 
 	// Z : 이동, X : 로테이션, 마우스 휠 : y축 이동
-
-	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
+	if (_bClick_Terrain && KEY_INPUT(KEY::Z, KEY_STATE::HOLD))
 	{
-		if (_bClick_Terrain && KEY_INPUT(KEY::Z, KEY_STATE::HOLD))
+		_vector vObjPos = _pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
+		_vector vAddPos = XMVectorSet(vMouseDir.x, vObjPos.m128_f32[1], vMouseDir.z, 1.f);
+
+		_pTransform.lock()->Set_State(CTransform::STATE_TRANSLATION, vAddPos);
+	}
+
+	if (KEY_INPUT(KEY::X, KEY_STATE::HOLD))
+	{
+		_vector vObjPos = _pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
+		_vector vAddPos = XMVectorSet(vMouseDir.x, vObjPos.m128_f32[1], vMouseDir.z, 1.f);
+
+		_pTransform.lock()->LookAt(vAddPos);
+	}
+
+	else if (KEY_INPUT(KEY::C, KEY_STATE::HOLD))
+	{
+		_long		MouseMove = 0;
+		if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
 		{
 			_vector vObjPos = _pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
-			_vector vAddPos = XMVectorSet(vMouseDir.x, vObjPos.m128_f32[1], vMouseDir.z, 1.f);
+			vObjPos.m128_f32[1] += (MouseMove * -0.01f);
 
-			_pTransform.lock()->Set_State(CTransform::STATE_TRANSLATION, vAddPos);
-		}
-
-		if (KEY_INPUT(KEY::X, KEY_STATE::HOLD))
-		{
-			_vector vObjPos = _pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
-			_vector vAddPos = XMVectorSet(vMouseDir.x, vObjPos.m128_f32[1], vMouseDir.z, 1.f);
-
-			_pTransform.lock()->LookAt(vAddPos);
-		}
-
-		else if (KEY_INPUT(KEY::C, KEY_STATE::HOLD))
-		{
-			_long		MouseMove = 0;
-			if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
-			{
-				_vector vObjPos = _pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
-				vObjPos.m128_f32[1] += (MouseMove * -0.01f);
-
-				_pTransform.lock()->Set_State(CTransform::STATE_TRANSLATION, vObjPos);
-			}
+			_pTransform.lock()->Set_State(CTransform::STATE_TRANSLATION, vObjPos);
 		}
 	}
+	
 }
 
 void CWindow_ComponentView::View_FreeCamera(weak_ptr<CTransform> In_pTransform)

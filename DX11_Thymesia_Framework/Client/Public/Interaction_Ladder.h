@@ -17,6 +17,11 @@ class CInteraction_Ladder final :
     GAMECLASS_H(CInteraction_Ladder);
     CLONE_H(CInteraction_Ladder, CGameObject);
 
+public:
+    _float Get_UpLadderHeight() const {
+        return m_fUpLadderHeight;
+    }
+
 private:
     enum LADDER_COL_TYPE
     {
@@ -37,7 +42,7 @@ public:
     virtual HRESULT Render() override; 
 
 public:
-    void OnEventMessage(_uint iArg) override;
+    virtual void OnEventMessage(_uint iArg) override;
 
     virtual void Write_Json(json& Out_Json) override;
     virtual void Load_FromJson(const json& In_Json) override;
@@ -57,7 +62,9 @@ private:
     weak_ptr<CTexture>                  m_pMaskingTextureCom;
 
     _float                              m_fOffset   = 0.4f;
-    _int                                m_iMidSize  = 5;
+    _int                                m_iMidSize  = 4.5;
+
+    _float                              m_fUpLadderHeight = 0.f;
 };
 
 END

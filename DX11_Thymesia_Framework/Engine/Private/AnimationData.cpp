@@ -104,6 +104,9 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     MACRO("SK_C_Varg.ao|Varg_ComboAttack2_2b1", 2.f);
 
     MACRO("SK_C_Varg.ao|Varg_AvoidB", 1.25f);
+    MACRO("SK_C_Corvus.ao|Corvus_SD_Ladder_Climb_L_UP", 2.f);
+    MACRO("SK_C_Corvus.ao|Corvus_SD_Ladder_Climb_R_UP", 2.f);
+
 
 #undef MACRO
 

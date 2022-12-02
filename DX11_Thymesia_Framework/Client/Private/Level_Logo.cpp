@@ -21,28 +21,23 @@ HRESULT CLevel_Logo::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-
 	GAMEINSTANCE->Create_Scene(CPhysX_Manager::SCENE_CURRENT);
 
-	CCamera::CAMERADESC			CameraDesc;
+	CCamera::CAMERADESC CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
-	CameraDesc.vEye = _float4(0.0f, 1.2f, 1.5f, 1.f);
-	CameraDesc.vAt = _float4(0.f, 1.2f, 0.f, 1.f);
-	CameraDesc.fFovy = XMConvertToRadians(65.0f);
+	CameraDesc.vEye    = _float4(0.0f, 1.2f, 1.5f, 1.f);
+	CameraDesc.vAt     = _float4(0.f, 1.2f, 0.f, 1.f);
+	CameraDesc.fFovy   = XMConvertToRadians(65.0f);
 	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
-	CameraDesc.fNear = 0.2f;
-	CameraDesc.fFar = 300.f;
-
-	//weak_ptr<CCamera_Static> StaticCamera = GAMEINSTANCE->Add_GameObject<CCamera_Static>(LEVEL::LEVEL_LOBBY, &CameraDesc);
-
+	CameraDesc.fNear   = 0.2f;
+	CameraDesc.fFar    = 300.f;
 
 	m_eNextLevel = LEVEL_LOBBY;
 
 	Load_FromJson(m_szDefaultJsonPath + "Logo.json", LEVEL_LOGO);
-	GAMEINSTANCE->Add_GameObject<CUI_Logo>(LEVEL_LOGO);
-	//GET_SINGLE(CGameManager)->Set_GameState(GAME_STATE::PEACE);
 
-	
+	GAMEINSTANCE->Add_GameObject<CUI_Logo>(LEVEL_LOGO);
+
 	return S_OK;
 }
 
@@ -54,6 +49,11 @@ void CLevel_Logo::Tick(_float fTimeDelta)
 	{
 		if (FAILED(GAMEINSTANCE->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(LEVEL_EDIT))))
 			return;
+	}
+
+	if (KEY_INPUT(KEY::HOME, KEY_STATE::TAP))
+	{
+		GAMEINSTANCE->Write_JsonUsingResource("../Bin/LevelData/CapturedResource/Logo.json");
 	}
 
 }

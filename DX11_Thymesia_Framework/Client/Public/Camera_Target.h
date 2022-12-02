@@ -63,6 +63,7 @@ private:
 	void Reposition_Camera_AfterCinematic(_float fTimeDelta);
 
 	void Update_Bone();
+	void Update_PhysXCollider(_float fTimeDelta);
 
 
 private:

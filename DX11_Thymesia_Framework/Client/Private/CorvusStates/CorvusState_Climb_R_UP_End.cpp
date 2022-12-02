@@ -27,7 +27,7 @@ void CCorvusState_Climb_R_UP_End::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD_Ladder_Climb_L_UP_End");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD_Ladder_Climb_R_UP_End");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Climb_R_UP_End::Call_AnimationEnd, this);
 }
 
@@ -76,6 +76,8 @@ void CCorvusState_Climb_R_UP_End::OnStateStart(const _float& In_fAnimationBlendT
 void CCorvusState_Climb_R_UP_End::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Z);
 }
 
 void CCorvusState_Climb_R_UP_End::OnDestroy()

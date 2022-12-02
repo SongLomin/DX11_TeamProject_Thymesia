@@ -84,6 +84,9 @@ void CPhysXController::Synchronize_Transform(weak_ptr<CTransform> pTransform, _f
 	if (!m_pController)
 		return;
 
+	if (!Get_Enable())
+		return;
+
 	PxExtendedVec3 vPosFromPx = m_pController->getFootPosition();
 
 	_vector vPos = { (_float)vPosFromPx.x, (_float)vPosFromPx.y, (_float)vPosFromPx.z };
@@ -102,6 +105,12 @@ PxControllerCollisionFlags CPhysXController::Synchronize_Controller(weak_ptr<CTr
 
 	filters.mCCTFilterCallback = this;
 
+	if (!m_EnableSimulation)
+	{
+		cout << "Null Filter" << endl;
+		filters.mFilterFlags = PxQueryFlags(0);
+	}
+
 	return m_pController->move({ 0.f, 0.f, 0.f }, 0.f, elapsedTime, filters);
 }
 
@@ -110,6 +119,9 @@ PxControllerCollisionFlags CPhysXController::Set_Position(_fvector In_vPosition,
 	m_pController->setFootPosition(SMath::Convert_PxExtendedVec3(In_vPosition));
 
 	filters.mCCTFilterCallback = this;
+
+	if (!m_EnableSimulation)
+		filters.mFilterFlags = PxQueryFlags(0);
 
 	return m_pController->move({ 0.f, 0.f, 0.f }, 0.f, elapsedTime, filters);
 }
@@ -121,35 +133,74 @@ _vector CPhysXController::Get_Position()
 	return { (_float)vPosFromPx.x, (_float)vPosFromPx.y, (_float)vPosFromPx.z, (_float)1.f };
 }
 
+void CPhysXController::Enable_Gravity(const _bool In_bGravity)
+{
+	m_bEnableGravity = In_bGravity;
+}
+
 PxControllerCollisionFlags CPhysXController::MoveWithRotation(const _vector& disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles, weak_ptr<CTransform> pTransform)
 {
+	if (!Get_Enable())
+		return PxControllerCollisionFlags();
+
 	_vector vRotatedPosition = XMVector3TransformCoord(disp, SMath::Get_RotationMatrix(pTransform.lock()->Get_WorldMatrix()));
 
 	filters.mCCTFilterCallback = this;
 
+	if (!m_EnableSimulation)
+	{
+		cout << "Null Filter" << endl;
+		filters.mFilterFlags = PxQueryFlags(0);
+	}
+
 	PxVec3 vRotatedPositionFromPx = SMath::Convert_PxVec3(vRotatedPosition);
+
+	PxExtendedVec3 PrePosition = m_pController->getPosition();
 
 	//PxVec3 vRotatedPositionFromPx{ vRotatedPosition.m128_f32[0],vRotatedPosition.m128_f32[1] ,vRotatedPosition.m128_f32[2] };
 
-	return m_pController->move(vRotatedPositionFromPx, minDist, elapsedTime, filters, obstacles);
+	cout << "피직스 이동 값: ";
+	Print_Vector(vRotatedPosition);
+
+	auto Result = m_pController->move(vRotatedPositionFromPx, minDist, elapsedTime, filters, obstacles);
+
+	PxExtendedVec3 CurPosition = m_pController->getPosition();
+	PxVec3 RealMove = CurPosition - PrePosition;
+
+	cout << "실제 이동 값: ";
+	Print_Vector({ (_float)RealMove.x, (_float)RealMove.y, (_float)RealMove.z });
+
+	return Result;
 }
 
 PxControllerCollisionFlags CPhysXController::Move(const _vector& disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles)
 {
+	if (!Get_Enable())
+		return PxControllerCollisionFlags();
+
 	PxVec3 vPositionFromPx = SMath::Convert_PxVec3(disp);
 
 	filters.mCCTFilterCallback = this;
+
+	if (!m_EnableSimulation)
+		filters.mFilterFlags = PxQueryFlags(0);
 
 	return m_pController->move(vPositionFromPx, minDist, elapsedTime, filters, obstacles);
 }
 
 PxControllerCollisionFlags CPhysXController::MoveGravity(const _float fDeltaTime, PxControllerFilters& filters)
 {
-	if (m_fGravityAcc <= DBL_EPSILON)
+	if (!Get_Enable())
+		return PxControllerCollisionFlags();
+
+	if(!m_bEnableGravity)
+		return PxControllerCollisionFlags();
+
+	/*if (m_fGravityAcc <= DBL_EPSILON)
 	{
 		m_fGravityAcc += fDeltaTime;
 		return PxControllerCollisionFlags();
-	}
+	}*/
 
 	/*float m_fPreHeight = -0.5f * 9.81f * m_fGravityAcc * m_fGravityAcc;
 	m_fGravityAcc += fDeltaTime;
@@ -158,8 +209,11 @@ PxControllerCollisionFlags CPhysXController::MoveGravity(const _float fDeltaTime
 
 	filters.mCCTFilterCallback = this;
 
-	_float fDeltaHeight = -0.5f * 9.81f * fDeltaTime * (m_fGravityAcc * 2.f + fDeltaTime);
+	if (!m_EnableSimulation)
+		filters.mFilterFlags = PxQueryFlags(0);
 
+	_float fDeltaHeight = -0.5f * 9.81f * fDeltaTime * (m_fGravityAcc * 2.f + fDeltaTime);
+	fDeltaHeight += 0.0001f;
 	m_fGravityAcc += fDeltaTime;
 
 	return m_pController->move({ 0.f, fDeltaHeight, 0.f }, 0.f, fDeltaTime, filters);
@@ -167,6 +221,9 @@ PxControllerCollisionFlags CPhysXController::MoveGravity(const _float fDeltaTime
 
 void CPhysXController::Reset_Gravity()
 {
+	if (!Get_Enable())
+		return;
+
 	m_fGravityAcc = 0.f;
 }
 

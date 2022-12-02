@@ -32,7 +32,7 @@ PxCapsuleControllerDesc Preset::PhysXControllerDesc::CameraSetting(weak_ptr<CTra
 	PxCapsuleControllerDesc Out_Desc;
 	Out_Desc.behaviorCallback;
 	Out_Desc.height = 0.1f;
-	Out_Desc.radius = 1.f;
+	Out_Desc.radius = 0.3f;
 	Out_Desc.density = 5.f;
 	Out_Desc.climbingMode = PxCapsuleClimbingMode::eCONSTRAINED;
 

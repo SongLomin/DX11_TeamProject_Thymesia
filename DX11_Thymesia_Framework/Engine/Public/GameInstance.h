@@ -138,6 +138,9 @@ public: /* For.PipeLine */
 
 
 public: /* For.Resource_Manager */
+	void	Write_JsonUsingResource(const char* In_szFilePath);
+	void	Load_ResourcesFromJson(const char* In_szFilePath);
+
 	HRESULT Load_Textures(const _char* _strKey, const _tchar* pTextureFilePath, MEMORY_TYPE eMemType = MEMORY_TYPE::MEMORY_STATIC);
 	//vector*를 반환하지 않는 이유: 셰이더리소스뷰의 레퍼런스 카운트를 올리기 위해서 vector*를 반환하지 않는다.
 	vector<ComPtr<ID3D11ShaderResourceView>> Get_TexturesFromKey(const _char* _Str_Key, MEMORY_TYPE _eType = MEMORY_TYPE::MEMORY_END);

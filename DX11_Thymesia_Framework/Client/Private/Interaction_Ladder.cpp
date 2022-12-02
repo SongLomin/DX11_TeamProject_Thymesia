@@ -54,23 +54,10 @@ HRESULT CInteraction_Ladder::Initialize(void* pArg)
     m_pUpModelCom.lock()->Init_Model("P_Ladder02_Up", "");
     m_pInstanceModelCom.lock()->Init_Model("P_Ladder02");
 
-    /*vector<INSTANCE_MESH_DESC> Prop_Desc;
-    INSTANCE_MESH_DESC Desc;
-    ZeroMemory(&Desc, sizeof(INSTANCE_MESH_DESC));
-    Desc.vScale     = _float3(1.f, 1.f, 1.f);
-
-    _vector vPos = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-    for (_uint i = 0; i < m_iMidSize; ++i)
-    {
-        XMStoreFloat3(&Desc.vTarnslation, XMVectorSetY(vPos, XMVectorGetY(vPos) + (m_fOffset * (i + OFFSET_INDEX))));
-        Prop_Desc.push_back(Desc);
-    }
-
-    m_pInstanceModelCom.lock()->Init_Instance(m_iMidSize);
-    m_pInstanceModelCom.lock()->Update(Prop_Desc);*/
-
     SetUpColliderDesc();
 
+
+    m_fCullingOffsetRange = 9999.f;
     return S_OK;
 }
 
@@ -203,7 +190,11 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Up()
 {
     _float4x4 WorldMatrix;
     XMStoreFloat4x4(&WorldMatrix, m_pTransformCom.lock()->Get_WorldMatrix());
-    WorldMatrix._42 += (m_fOffset * (m_iMidSize + OFFSET_INDEX));
+    
+    m_fUpLadderHeight = (m_fOffset * (m_iMidSize + OFFSET_INDEX));
+
+    WorldMatrix._42 += m_fUpLadderHeight;
+
     XMStoreFloat4x4(&WorldMatrix, XMMatrixTranspose(XMLoadFloat4x4(&WorldMatrix)));
 
     if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_float4x4))))
@@ -361,23 +352,26 @@ void CInteraction_Ladder::SetUpColliderDesc()
     COLLIDERDESC ColliderDesc;
     ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
 
-    ColliderDesc.iLayer = (_uint)COLLISION_LAYER::TRIGGER;
+   
 
-    _float3 vUse_Size  = {  3.f, 0.f, 0.f };
+    _float3 vUse_Size  = {  1.5f, 0.f, 0.f };
     _float3 vAnim_Size = { 1.5f, 0.f, 0.f };
 
+    ColliderDesc.iLayer = (_uint)COLLISION_LAYER::LADDER_DOWN;
     ColliderDesc.vScale = vUse_Size;
+    ColliderDesc.vTranslation = { 0.f, 0.5f, 0.f };
+
     m_pColliderCom[LADDER_COL_TYPE::DOWN_USE].lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
 
-    ColliderDesc.vScale = vAnim_Size;
-    m_pColliderCom[LADDER_COL_TYPE::DOWN_ANIM].lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
+    ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
 
-    ColliderDesc.vTranslation = { 0.f, m_fOffset * (m_iMidSize + OFFSET_INDEX), 0.f };
-    ColliderDesc.vScale = vUse_Size;
-    m_pColliderCom[LADDER_COL_TYPE::UP_USE].lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
-
-    ColliderDesc.vScale = vAnim_Size;
-    m_pColliderCom[LADDER_COL_TYPE::UP_ANIM].lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
+   ColliderDesc.iLayer = (_uint)COLLISION_LAYER::LADDER_UP;
+   ColliderDesc.vTranslation = { 0.f, m_fOffset * (m_iMidSize + OFFSET_INDEX), 0.f };
+   ColliderDesc.vScale = vUse_Size;
+   m_pColliderCom[LADDER_COL_TYPE::UP_USE].lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
+   //
+   //ColliderDesc.vScale = vAnim_Size;
+   //m_pColliderCom[LADDER_COL_TYPE::UP_ANIM].lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
 
 
     for (_uint i = 0; i < LADDER_COL_TYPE::TYPE_END; ++i)

@@ -64,7 +64,7 @@ void CEditGroupProp::Tick(_float fTimeDelta)
 		}
 		else
 		{
-			iter->pProp.lock()->Tick(fTimeDelta);
+			//iter->pProp.lock()->Tick(fTimeDelta);
 			iter++;
 		}
 	}
@@ -72,19 +72,6 @@ void CEditGroupProp::Tick(_float fTimeDelta)
 
 void CEditGroupProp::LateTick(_float fTimeDelta)
 {
-	for (auto& iter : m_PropList)
-	{
-		if (iter.pProp.lock())
-		{
-			iter.pProp.lock()->LateTick(fTimeDelta);
-
-			if (m_bSelect_ShowGroup)
-				iter.pProp.lock()->Set_ShaderPass((_bool)5);
-			else
-				iter.pProp.lock()->Set_ShaderPass(0);
-		}
-	}
-
 	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONLIGHT, Cast<CGameObject>(m_this));
 }
 
@@ -452,8 +439,6 @@ void CEditGroupProp::View_SelectPropObjectType()
 	{
 		m_szSelectPropType = items_PropType[iSelect_PropType];
 	}
-
-	ImGui::Checkbox("Show Groupe", &m_bSelect_ShowGroup);
 
 	ImGui::Text("");
 	ImGui::Separator();

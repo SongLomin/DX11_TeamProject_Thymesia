@@ -21,6 +21,8 @@ public:
 	PxController* Get_Controller();
 	_vector	Get_Position();
 
+	void	Enable_Gravity(const _bool In_bGravity);
+
 protected:
 	HRESULT Initialize_Prototype();
 	HRESULT Initialize(void* pArg) override;
@@ -75,6 +77,7 @@ protected:
 	PxController* m_pController = nullptr;
 
 	_bool									m_EnableSimulation = true;
+	_bool									m_bEnableGravity = true;
 
 
 public:

@@ -8,6 +8,8 @@ HRESULT CWindow_EffectResourceView::Initialize()
 {
     ImGuiWindowFlags window_flags = 0;
     window_flags |= ImGuiWindowFlags_HorizontalScrollbar;
+    window_flags |= ImGuiWindowFlags_NoResize;
+    window_flags |= ImGuiWindowFlags_NoMove;
 
     m_bEnable = true;
     SetUp_ImGuiDESC("EffectResource_View", ImVec2(150.f, 500.f), window_flags);
@@ -30,12 +32,9 @@ void CWindow_EffectResourceView::Tick(_float fTimeDelta)
 
 HRESULT CWindow_EffectResourceView::Render()
 {
-    ImGui::PushStyleColor(ImGuiCol_PopupBg, m_BackgroundColor);
+    if (FAILED(__super::Begin()))
+        return E_FAIL;
 
-    if (!(ImGui::Begin(m_tImGuiDESC.strName.c_str(), 0, m_tImGuiDESC.eWindowFlags)))
-        return S_OK;
-
-    //ImGui::Text("UI_TOOL");
     ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 
     ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;

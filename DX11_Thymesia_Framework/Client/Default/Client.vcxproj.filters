@@ -34,12 +34,6 @@
     <ClInclude Include="..\Public\Terrain.h">
       <Filter>02. GameObject\02. Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Actor.h">
-      <Filter>02. GameObject\03. Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Character.h">
-      <Filter>02. GameObject\03. Actor\00. Character</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\ImGui_Window.h">
       <Filter>97. Tool\00. IMGUI</Filter>
     </ClInclude>
@@ -132,9 +126,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\Window_EffectHierarchyView.h">
       <Filter>97. Tool\00. IMGUI\Windows\02. Effect\04. EffectHierarchy</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\PreViewAnimationModel.h">
-      <Filter>02. GameObject\03. Actor\00. Character\99. PreViewAnimationModel</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CustomEffectMesh.h">
       <Filter>02. GameObject\07. EffectMesh\01. CustomEffectMesh</Filter>
@@ -295,9 +286,6 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_BasicHealing.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing\00.CorvusState_BasicHealing</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Monster.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01. Monster</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\UI_Logo.h">
       <Filter>02. GameObject\01. UI\UI_Container\Logo</Filter>
     </ClInclude>
@@ -306,9 +294,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\PreView_Prop.h">
       <Filter>02. GameObject\04. Prop\05. PreView_Prop</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\NorMonster.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01. Monster\00.NorMonster</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\NorMonState\NorMonState_Awake.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\01.Awake</Filter>
@@ -397,9 +382,6 @@
     <ClInclude Include="..\Public\Static_Instancing_Prop.h">
       <Filter>02. GameObject\04. Prop\06. Static_Instancing_Prop</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Player.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\HUD_PlagueWeapon.h">
       <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\PlagueWeapon</Filter>
     </ClInclude>
@@ -445,9 +427,6 @@
     </ClInclude>
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp">
       <Filter>04. ShaderFiles</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\BossVarg\Varg.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01. Monster\03.BossMonster\00.Varg</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BossVarg\VargBossState_Idle.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\00.Idle</Filter>
@@ -593,9 +572,6 @@
     <ClInclude Include="..\Public\Effect_Trail.h">
       <Filter>02. GameObject\08. Effect\02. Effect_Trail</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\MobWeapon.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01. Monster\99.Weapon</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Effect_Trail_Distortion.h">
       <Filter>02. GameObject\08. Effect\02. Effect_Trail\00. Effect_Distortion</Filter>
     </ClInclude>
@@ -607,9 +583,6 @@
     </ClInclude>
     <ClInclude Include="..\Private\CorvusStates\CorvusState_LAttack5.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack\State_Attack5</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\BossMonster.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01. Monster\03.BossMonster</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\WorldUI.h">
       <Filter>02. GameObject\06. WorldUI</Filter>
@@ -723,9 +696,6 @@
     <ClInclude Include="..\Public\UI_Containers.h">
       <Filter>02. GameObject\01. UI\UI_Container</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\BossUrd\Urd.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01. Monster\03.BossMonster\01.Urd</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\BossUrd\UrdBossStateBase.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\01.UrdState</Filter>
     </ClInclude>
@@ -791,7 +761,7 @@
       <Filter>06. DataPreset\03. Preset_DynamicProp</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PhysXCameraController.h">
-      <Filter>05. Component\00. PhysXCameraController</Filter>
+      <Filter>05. Component\00. PhysXController\00. PhysXCameraController</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ActorDecor.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h" />
@@ -828,9 +798,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\02.ClawHoldAttack</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h">
-      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Dynamic_Prop</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\00.ClawTabAttack</Filter>
@@ -957,10 +924,53 @@
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_EnergisedWeaponLV2.h">
       <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\04.Talent_Effect_EnergisedWeapon\01.Talent_Effect_EnergisedWeaponLV2</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Interaction_Ladder.h">
-      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Ladder</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\EvolveMenu_TalentButton.h" />
+    <ClInclude Include="..\Public\Actor.h" />
+    <ClInclude Include="..\Public\BossUrd\Urd.h" />
+    <ClInclude Include="..\Public\BossMonster.h" />
+    <ClInclude Include="..\Public\MobWeapon.h" />
+    <ClInclude Include="..\Public\UI_Button.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_Talent.h" />
+    <ClInclude Include="..\Public\BossVarg\Varg.h" />
+    <ClInclude Include="..\Public\Character.h" />
+    <ClInclude Include="..\Public\Monster.h" />
+    <ClInclude Include="..\Public\NorMonster.h" />
+    <ClInclude Include="..\Public\PreViewAnimationModel.h" />
+    <ClInclude Include="..\Public\Player.h" />
+    <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_Ladder.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_CheckPoint.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_Elevator.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_Door.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
+	</ClInclude>
+    <ClInclude Include="..\Public\Actor.h" />
+    <ClInclude Include="..\Public\BossUrd\Urd.h" />
+    <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h" />
+    <ClInclude Include="..\Public\Interaction_Ladder.h" />
+    <ClInclude Include="..\Public\BossMonster.h" />
+    <ClInclude Include="..\Public\MobWeapon.h" />
+    <ClInclude Include="..\Public\UI_Button.h" />
+    <ClInclude Include="..\Public\BossVarg\Varg.h" />
+    <ClInclude Include="..\Public\Character.h" />
+    <ClInclude Include="..\Public\Monster.h" />
+    <ClInclude Include="..\Public\NorMonster.h" />
+    <ClInclude Include="..\Public\PreViewAnimationModel.h" />
+    <ClInclude Include="..\Public\Player.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_Talent.h">
+      <Filter>02. GameObject\01. UI\UI_Container\Evolve\Talent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\PhysXCharacterController.h">
+      <Filter>05. Component\00. PhysXController\01. PhysXPlayerController</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -986,12 +996,6 @@
     </ClCompile>
     <ClCompile Include="Terrain.cpp">
       <Filter>02. GameObject\02. Terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Actor.cpp">
-      <Filter>02. GameObject\03. Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Character.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Window.cpp">
       <Filter>97. Tool\00. IMGUI</Filter>
@@ -1031,9 +1035,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Target.cpp">
       <Filter>02. GameObject\00. Camera\01. Camera_Target</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\StateBase.cpp">
-      <Filter>05. Component\03. State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\GameManager.cpp">
       <Filter>96. GameManager</Filter>
@@ -1079,9 +1080,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Window_EffectHierarchyView.cpp">
       <Filter>97. Tool\00. IMGUI\Windows\02. Effect\04. EffectHierarchy</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\PreViewAnimationModel.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\99. PreViewAnimationModel</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CustomEffectMesh.cpp">
       <Filter>02. GameObject\07. EffectMesh\01. CustomEffectMesh</Filter>
@@ -1236,9 +1234,6 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_BasicHealing.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing\00.CorvusState_BasicHealing</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Monster.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01. Monster</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\PreView_Prop.cpp">
       <Filter>02. GameObject\04. Prop\05. PreView_Prop</Filter>
     </ClCompile>
@@ -1247,9 +1242,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_Loading.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\Loading</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\NorMonster.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01. Monster\00.NorMonster</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\NorMonState\NorMonState_Awake.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\01.Awake</Filter>
@@ -1338,9 +1330,6 @@
     <ClCompile Include="..\Private\Static_Instancing_Prop.cpp">
       <Filter>02. GameObject\04. Prop\06. Static_Instancing_Prop</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Player.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeapon.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\PlagueWeapon</Filter>
     </ClCompile>
@@ -1371,9 +1360,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\DissolveUI.cpp">
       <Filter>02. GameObject\01. UI\UI_Elem\dissolve</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BossVarg\Varg.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01. Monster\03.BossMonster\00.Varg</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BossVarg\VargBossState_Idle.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\00.Idle</Filter>
@@ -1562,9 +1548,6 @@
     <ClCompile Include="..\Private\Effect_Trail.cpp">
       <Filter>02. GameObject\08. Effect\02. Effect_Trail</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\MobWeapon.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01. Monster\99.Weapon</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Effect_Trail_Distortion.cpp">
       <Filter>02. GameObject\08. Effect\02. Effect_Trail\00. Effect_Distortion</Filter>
     </ClCompile>
@@ -1634,9 +1617,6 @@
     <ClCompile Include="..\Private\Effect_Trail.cpp">
       <Filter>02. GameObject\08. Effect\02. Effect_Trail</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\MobWeapon.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\01. Monster\99.Weapon</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Effect_Trail_Distortion.cpp">
       <Filter>02. GameObject\08. Effect\02. Effect_Trail\00. Effect_Distortion</Filter>
     </ClCompile>
@@ -1675,9 +1655,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_LAttack5.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack\State_Attack5</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BossMonster.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01. Monster\03.BossMonster</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\AIStateBase.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState</Filter>
@@ -1743,9 +1720,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\HUD_Hover.cpp" />
     <ClCompile Include="..\Private\HUD_Hover.cpp" />
-    <ClCompile Include="..\Private\BossUrd\Urd.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01. Monster\03.BossMonster\01.Urd</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\BossUrd\UrdBossStateBase.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\01.UrdState</Filter>
     </ClCompile>
@@ -1810,7 +1784,7 @@
       <Filter>06. DataPreset\03. Preset_DynamicProp</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\PhysXCameraController.cpp">
-      <Filter>05. Component\00. PhysXCameraController</Filter>
+      <Filter>05. Component\00. PhysXController\00. PhysXCameraController</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\EditMapCollider.cpp">
       <Filter>02. GameObject\99. Other\07. EditMapCollider</Filter>
@@ -1971,6 +1945,55 @@
       <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\04.Talent_Effect_EnergisedWeapon\01.Talent_Effect_EnergisedWeaponLV2</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\EvolveMenu_TalentButton.cpp" />
+    <ClCompile Include="..\Private\Actor.cpp" />
+    <ClCompile Include="..\Private\BossUrd\Urd.cpp" />
+    <ClCompile Include="..\Private\UI_Button.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp" />
+    <ClCompile Include="..\Private\BossMonster.cpp" />
+    <ClCompile Include="..\Private\MobWeapon.cpp" />
+    <ClCompile Include="..\Private\BossVarg\Varg.cpp" />
+    <ClCompile Include="..\Private\Character.cpp" />
+    <ClCompile Include="..\Private\Monster.cpp" />
+    <ClCompile Include="..\Private\NorMonster.cpp" />
+    <ClCompile Include="..\Private\PreViewAnimationModel.cpp" />
+    <ClCompile Include="..\Private\Player.cpp" />
+    <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Interaction_Ladder.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Interaction_CheckPoint.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Interaction_Elevator.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MobWeapon.cpp" />
+    <ClCompile Include="..\Private\Interaction_Door.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Actor.cpp" />
+    <ClCompile Include="..\Private\BossUrd\Urd.cpp" />
+    <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp" />
+    <ClCompile Include="..\Private\Interaction_Ladder.cpp" />
+    <ClCompile Include="..\Private\UI_Button.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp" />
+    <ClCompile Include="..\Private\BossMonster.cpp" />
+    <ClCompile Include="..\Private\MobWeapon.cpp" />
+    <ClCompile Include="..\Private\BossVarg\Varg.cpp" />
+    <ClCompile Include="..\Private\Character.cpp" />
+    <ClCompile Include="..\Private\Monster.cpp" />
+    <ClCompile Include="..\Private\NorMonster.cpp" />
+    <ClCompile Include="..\Private\PreViewAnimationModel.cpp" />
+    <ClCompile Include="..\Private\Player.cpp" />
+    <ClCompile Include="..\Private\PhysXCharacterController.cpp">
+      <Filter>05. Component\00. PhysXController\01. PhysXPlayerController</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\StateBase.cpp">
+      <Filter>96. GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\MobWeapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -2626,9 +2649,6 @@
     <Filter Include="01. ClientLevel\05. Level_Test">
       <UniqueIdentifier>{fc760025-3469-4bd1-81c4-0e8169a05da1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player">
-      <UniqueIdentifier>{526ae19b-d4f7-432d-9b4b-e73589c3ea78}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus">
       <UniqueIdentifier>{16574201-340f-43db-b0c0-e3bb9a200fc8}</UniqueIdentifier>
     </Filter>
@@ -2667,9 +2687,6 @@
     </Filter>
     <Filter Include="01. ClientLevel\05. Level_Test">
       <UniqueIdentifier>{fc760025-3469-4bd1-81c4-0e8169a05da1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player">
-      <UniqueIdentifier>{526ae19b-d4f7-432d-9b4b-e73589c3ea78}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus">
       <UniqueIdentifier>{16574201-340f-43db-b0c0-e3bb9a200fc8}</UniqueIdentifier>
@@ -2832,9 +2849,6 @@
     </Filter>
     <Filter Include="01. ClientLevel\05. TestZone">
       <UniqueIdentifier>{fc760025-3469-4bd1-81c4-0e8169a05da1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Component\00. PhysXCameraController">
-      <UniqueIdentifier>{047389ae-7b0d-48b7-a470-d4fc6a1133a0}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\99. Other\07. EditMapCollider">
       <UniqueIdentifier>{26edf638-982f-46e7-b7d2-0e0e9f99ec90}</UniqueIdentifier>
@@ -3039,6 +3053,27 @@
     </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\03.Talent_Effect_SharpWeapon\01.Talent_Effect_SharpWeaponLV2">
       <UniqueIdentifier>{77e47ca3-0e07-4a76-bce1-e0e67a84ba9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement">
+      <UniqueIdentifier>{d448ba0b-2790-47ce-8b37-f43a368800bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement">
+      <UniqueIdentifier>{004d0da4-bbf9-49a4-90a3-5c4dd77fe071}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\00. PhysXController">
+      <UniqueIdentifier>{3fb5a8e8-feb7-4e28-b731-ab60b5f594ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\00. PhysXController\00. PhysXCameraController">
+      <UniqueIdentifier>{047389ae-7b0d-48b7-a470-d4fc6a1133a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\00. PhysXController\01. PhysXPlayerController">
+      <UniqueIdentifier>{6101f352-b354-4c1b-9a6f-525ed34101fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\UI_Container\Evolve\Talent">
+      <UniqueIdentifier>{02f73a0f-26c5-4020-ba52-94fe53e83724}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\UI_Container\Evolve\Talent\Button">
+      <UniqueIdentifier>{bab38216-a0aa-44fc-86b9-9190c54433fe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

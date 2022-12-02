@@ -75,7 +75,12 @@ void CCorvusState_Run::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_fCurrentSpeed = m_fMaxSpeed / 2.f;
 
+	PxControllerCollisionFlags Flags = Get_OwnerCharacter().lock()->Get_LastCollisionFlags();
 
+	//if (!(Flags & PxControllerCollisionFlag::eCOLLISION_DOWN))
+	//{
+	//	// 떨어지고 있는 중
+	//}
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -205,6 +210,8 @@ _bool CCorvusState_Run::Check_AndChangeNextState()
 		return true;
 	}
 
+
+	
 
 	return false;
 }

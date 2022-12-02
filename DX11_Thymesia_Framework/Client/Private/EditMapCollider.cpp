@@ -125,6 +125,18 @@ void CEditMapCollider::OnEventMessage(_uint iArg)
 			m_bRender = false;
 		}
 		break;
+
+		case EVENT_TYPE::ON_EDIT_DELETE:
+		{
+			auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CPhysXColliderObject).hash_code());
+
+			if (iter_collider != GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
+			{
+				for (auto& elem : iter_collider->second)
+					elem.pInstance.lock()->Set_Dead();
+			}
+		}
+		break;
     }
 }
 
@@ -553,22 +565,6 @@ void CEditMapCollider::View_Act_DeleteSame()
 				elem_compare.pInstance.lock()->Set_Dead();
 		}
 	}
-}
-
-void CEditMapCollider::OnDestroy()
-{
-	__super::OnDestroy();
-
-	if (!GET_SINGLE(CWindow_HierarchyView).get())
-		return;
-
-	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CPhysXColliderObject).hash_code());
-
-	if (iter_collider == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
-		return;
-
-	for (auto& elem : iter_collider->second)
-		elem.pInstance.lock()->Set_Dead();
 }
 
 void CEditMapCollider::Free()

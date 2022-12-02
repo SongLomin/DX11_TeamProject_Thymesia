@@ -42,23 +42,21 @@ HRESULT CMainApp::Initialize()
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::PLAYER_ATTACK, (_uint)COLLISION_LAYER::DYNAMIC_PROP);
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::MONSTER_ATTACK, (_uint)COLLISION_LAYER::PLAYER);
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::TRIGGER, (_uint)COLLISION_LAYER::PLAYER);
+	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::LADDER_DOWN, (_uint)COLLISION_LAYER::PLAYER);
+	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::LADDER_UP, (_uint)COLLISION_LAYER::PLAYER);
+	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::ELEVATOR, (_uint)COLLISION_LAYER::PLAYER);
+	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::DOOR, (_uint)COLLISION_LAYER::PLAYER);
 
-
-	
 	GAMEINSTANCE->Check_PhysXFilterGroup((_uint)COLLISION_LAYER::PLAYER, (_uint)COLLISION_LAYER::MONSTER);
 
-
-
-	if (FAILED(Ready_Prototype_Component()))
-		return E_FAIL;
-
+	//if (FAILED(Ready_Prototype_Component()))
+	//	return E_FAIL;
 
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxColor"), TEXT("../Bin/ShaderFiles/Shader_VtxColor.hlsl"));
 	GAMEINSTANCE->Add_GameObject<CFadeMask>(LEVEL_STATIC);
 
 	if (FAILED(Open_Level(LEVEL_LOGO)))
 		return E_FAIL;
-
 
 	return S_OK;
 }
@@ -141,8 +139,6 @@ HRESULT CMainApp::Open_Level(LEVEL eLevelID)
 {
 	if (nullptr == GAMEINSTANCE)
 		return E_FAIL;
-
-
 
 	shared_ptr<CLevel_Loading>		pLevel_Loading = CLevel_Loading::Create(eLevelID);
 	if (nullptr == pLevel_Loading.get())

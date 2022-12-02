@@ -7,12 +7,18 @@ IMPLEMENT_SINGLETON(CResource_Manager)
 HRESULT CResource_Manager::Load_Textures(const _char* _strKey, const _tchar* pTextureFilePath, MEMORY_TYPE eMemType)
 {
 	_tchar szTextureFilePath[MAX_PATH] = TEXT("");
-	string szKey = _strKey;
 
-	auto iter = find_if(m_SRVs[(_uint)eMemType].begin(), m_SRVs[(_uint)eMemType].end(), CTag_Finder_c_str(_strKey));
+	_hashcode KeyToHash = hash<string>()(_strKey);
+
+	auto iter = m_SRVs[(_uint)eMemType].find(KeyToHash);
+	//auto iter = find_if(m_SRVs[(_uint)eMemType].begin(), m_SRVs[(_uint)eMemType].end(), CTag_Finder_c_str(_strKey));
+
+	
 
 	if (m_SRVs[(_uint)eMemType].end() != iter)
 		return S_OK;
+
+	
 
 	HRESULT hr(0);
 	_tchar szExt[MAX_PATH] = TEXT("");
@@ -21,7 +27,11 @@ HRESULT CResource_Manager::Load_Textures(const _char* _strKey, const _tchar* pTe
 	for (_uint i(0); i < 1024; ++i)
 	{
 		ComPtr<ID3D11ShaderResourceView> pSRV;
-		if (lstrcmpW(szTextureFilePath, pTextureFilePath) == 0) return S_OK;
+		if (lstrcmpW(szTextureFilePath, pTextureFilePath) == 0)
+		{
+			m_TextureFilePaths[(_uint)eMemType][_strKey] = std::filesystem::path(pTextureFilePath).string();
+			return S_OK;
+		}
 
 		wsprintf(szTextureFilePath, pTextureFilePath, i);
 		ZeroMemory(szExt, sizeof(_tchar) * MAX_PATH);
@@ -33,12 +43,15 @@ HRESULT CResource_Manager::Load_Textures(const _char* _strKey, const _tchar* pTe
 		if (FAILED(hr))
 		{
 			if (bCreated)
+			{
+				m_TextureFilePaths[(_uint)eMemType][_strKey] = std::filesystem::path(pTextureFilePath).string();
 				return S_OK;
+			}
 			else
 				return E_FAIL;
 		}
 
-		m_SRVs[(_uint)eMemType][szKey].emplace_back(pSRV);
+		m_SRVs[(_uint)eMemType][KeyToHash].emplace_back(pSRV);
 		bCreated = true;
 	}
 #ifdef _DEBUG
@@ -50,31 +63,35 @@ HRESULT CResource_Manager::Load_Textures(const _char* _strKey, const _tchar* pTe
 
 vector<ComPtr<ID3D11ShaderResourceView>> CResource_Manager::Get_TexturesFromKey(const _char* _Str_Key, MEMORY_TYPE _eType)
 {
+	_hashcode KeyToHash = hash<string>()(_Str_Key);
+
 	if (MEMORY_TYPE::MEMORY_END == _eType)
 	{
-		//auto	iter = m_SRVs->find(_Str_Key);
-
-		auto	iter = find_if(m_SRVs[(_uint)MEMORY_TYPE::MEMORY_STATIC].begin(), m_SRVs[(_uint)MEMORY_TYPE::MEMORY_STATIC].end(), CTag_Finder_c_str(_Str_Key));
+		auto	iter = m_SRVs[(_uint)MEMORY_TYPE::MEMORY_STATIC].find(KeyToHash);
+		//auto	iter = find_if(m_SRVs[(_uint)MEMORY_TYPE::MEMORY_STATIC].begin(), m_SRVs[(_uint)MEMORY_TYPE::MEMORY_STATIC].end(), CTag_Finder_c_str(_Str_Key));
 
 		if (m_SRVs[(_uint)MEMORY_TYPE::MEMORY_STATIC].end() != iter)
 		{
+			m_UsingResourceJson[(_int)MEMORY_TYPE::MEMORY_STATIC]["Textures"][_Str_Key] = m_TextureFilePaths[(_uint)MEMORY_TYPE::MEMORY_STATIC][_Str_Key];
 			return (*iter).second;
 		}
-		//iter = m_SRVs->find(_Str_Key);
-
-		iter = find_if(m_SRVs[(_uint)MEMORY_TYPE::MEMORY_DYNAMIC].begin(), m_SRVs[(_uint)MEMORY_TYPE::MEMORY_DYNAMIC].end(), CTag_Finder_c_str(_Str_Key));
+		
+		iter = m_SRVs[(_uint)MEMORY_TYPE::MEMORY_DYNAMIC].find(KeyToHash);
+		//iter = find_if(m_SRVs[(_uint)MEMORY_TYPE::MEMORY_DYNAMIC].begin(), m_SRVs[(_uint)MEMORY_TYPE::MEMORY_DYNAMIC].end(), CTag_Finder_c_str(_Str_Key));
 
 		if (m_SRVs[(_uint)MEMORY_TYPE::MEMORY_DYNAMIC].end() != iter)
 		{
+			m_UsingResourceJson[(_int)MEMORY_TYPE::MEMORY_DYNAMIC]["Textures"][_Str_Key] = m_TextureFilePaths[(_uint)MEMORY_TYPE::MEMORY_DYNAMIC][_Str_Key];
 			return (*iter).second;
 		}
 	}
 	else
 	{
-		auto	iter = find_if(m_SRVs[(_uint)_eType].begin(), m_SRVs[(_uint)_eType].end(), CTag_Finder_c_str(_Str_Key));
+		auto	iter = m_SRVs[(_uint)_eType].find(KeyToHash);
 
 		if (m_SRVs[(_uint)_eType].end() != iter)
 		{
+			m_UsingResourceJson[(_int)_eType]["Textures"][_Str_Key] = m_TextureFilePaths[(_int)_eType][_Str_Key];
 			return (*iter).second;
 		}
 	}
@@ -87,6 +104,11 @@ vector<ComPtr<ID3D11ShaderResourceView>> CResource_Manager::Get_TexturesFromKey(
 
 HRESULT CResource_Manager::Release_ResourceByMemoryType(MEMORY_TYPE _eMemType)
 {
+	if (MEMORY_TYPE::MEMORY_END == _eMemType)
+	{
+		DEBUG_ASSERT;
+	}
+
 	//Release Textures
 	for (auto& pair : m_SRVs[(_uint)_eMemType])
 	{
@@ -98,6 +120,8 @@ HRESULT CResource_Manager::Release_ResourceByMemoryType(MEMORY_TYPE _eMemType)
 		pair.second.clear();
 	}
 
+	m_TextureFilePaths[(_uint)_eMemType].clear();
+
 	m_SRVs[(_uint)_eMemType].clear();
 
 	for (auto& pair : m_pScenes[(_uint)_eMemType])
@@ -108,15 +132,92 @@ HRESULT CResource_Manager::Release_ResourceByMemoryType(MEMORY_TYPE _eMemType)
 
 	m_pScenes[(_uint)_eMemType].clear();
 
+	m_UsingResourceJson[(_uint)_eMemType].clear();
+
+
 	return S_OK;
+}
+
+void CResource_Manager::Write_JsonUsingResource(const char* In_szFilePath)
+{
+	if (FAILED(CJson_Utility::Save_Json(In_szFilePath, m_UsingResourceJson)))
+	{
+		DEBUG_ASSERT;
+	}
+}
+
+void CResource_Manager::Load_ResourcesFromJson(const char* In_szFilePath)
+{
+	json In_Json;
+
+	if (FAILED(CJson_Utility::Load_Json(In_szFilePath, In_Json)))
+	{
+		DEBUG_ASSERT;
+	}
+
+	list<future<void>>	Threads;
+
+	for (_int i = 0; i < 2; ++i)
+	{
+		Threads.push_back(async(launch::async,
+			bind(&CResource_Manager::Load_ModelResourcesFromJson, this, placeholders::_1, placeholders::_2), 
+			In_Json[i]["Model"], (MEMORY_TYPE)i));
+
+		Threads.push_back(async(launch::async,
+			bind(&CResource_Manager::Load_TextureResourcesFromJson, this, placeholders::_1, placeholders::_2),
+			In_Json[i]["Textures"], (MEMORY_TYPE)i));
+	}
+
+	for (auto& elem : Threads)
+	{
+		elem.get();
+	}
+}
+
+void CResource_Manager::Load_ModelResourcesFromJson(json& In_ModelJson, const MEMORY_TYPE In_eMemoryType)
+{
+	_float4x4	TransformMatrix;
+	string		FilePath;
+	_int		ModelType;
+
+	for (auto json_iter : In_ModelJson.items())
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				TransformMatrix.m[i][j] = json_iter.value()["TransformMatrix"][i][j];
+			}
+		}
+
+		FilePath = json_iter.value()["FilePath"];
+		ModelType = json_iter.value()["ModelType"];
+
+		Load_Model(json_iter.key().c_str(), FilePath.c_str(),
+			(MODEL_TYPE)ModelType, XMLoadFloat4x4(&TransformMatrix), In_eMemoryType);
+	}
+}
+
+void CResource_Manager::Load_TextureResourcesFromJson(json& In_TextureJson, const MEMORY_TYPE In_eMemoryType)
+{
+	_float4x4	TransformMatrix;
+	string		FilePath;
+	_int		ModelType;
+	tstring		szTexturePath;
+
+	for (auto json_iter : In_TextureJson.items())
+	{
+		FilePath = json_iter.value();
+
+		szTexturePath = std::filesystem::path(FilePath).wstring();
+
+		Load_Textures(json_iter.key().c_str(), szTexturePath.c_str(), In_eMemoryType);
+	}
 }
 
 HRESULT CResource_Manager::Load_Model(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType, _bool bAnimZero)
 {
-	//if (strcmp(sKey, "HORSE_P_Flag01"))
-	//{
-	//	int i = 0;
-	//}
+	
 
 	shared_ptr<MODEL_DATA> TempModel = make_shared<MODEL_DATA>();
 
@@ -193,12 +294,16 @@ HRESULT CResource_Manager::Load_Model(const _char* sKey, const _char* sModelFile
 
 shared_ptr<MODEL_DATA> CResource_Manager::Get_ModelFromKey(const _char* _sKey, MEMORY_TYPE _eType)
 {
+
 	if (MEMORY_TYPE::MEMORY_END == _eType)
 	{
 		auto	iter = find_if(m_pScenes[(_uint)MEMORY_TYPE::MEMORY_STATIC].begin(), m_pScenes[(_uint)MEMORY_TYPE::MEMORY_STATIC].end(), CTag_Finder_c_str(_sKey));
 
 		if (m_pScenes[(_uint)MEMORY_TYPE::MEMORY_STATIC].end() != iter)
 		{
+			m_UsingResourceJson[(_int)MEMORY_TYPE::MEMORY_STATIC]["Model"][_sKey]["TransformMatrix"] = iter->second->TransformMatrix.m;
+			m_UsingResourceJson[(_int)MEMORY_TYPE::MEMORY_STATIC]["Model"][_sKey]["FilePath"] = iter->second->szModelFilePath;
+			m_UsingResourceJson[(_int)MEMORY_TYPE::MEMORY_STATIC]["Model"][_sKey]["ModelType"] = (_int)iter->second->eModelType;
 			return (*iter).second;
 		}
 
@@ -206,6 +311,9 @@ shared_ptr<MODEL_DATA> CResource_Manager::Get_ModelFromKey(const _char* _sKey, M
 
 		if (m_pScenes[(_uint)MEMORY_TYPE::MEMORY_DYNAMIC].end() != iter)
 		{
+			m_UsingResourceJson[(_int)MEMORY_TYPE::MEMORY_DYNAMIC]["Model"][_sKey]["TransformMatrix"] = iter->second->TransformMatrix.m;
+			m_UsingResourceJson[(_int)MEMORY_TYPE::MEMORY_DYNAMIC]["Model"][_sKey]["FilePath"] = iter->second->szModelFilePath;
+			m_UsingResourceJson[(_int)MEMORY_TYPE::MEMORY_DYNAMIC]["Model"][_sKey]["ModelType"] = (_int)iter->second->eModelType;
 			return (*iter).second;
 		}
 	}
@@ -215,6 +323,9 @@ shared_ptr<MODEL_DATA> CResource_Manager::Get_ModelFromKey(const _char* _sKey, M
 
 		if (m_pScenes[(_uint)_eType].end() != iter)
 		{
+			m_UsingResourceJson[(_int)_eType]["Model"][_sKey]["TransformMatrix"] = iter->second->TransformMatrix.m;
+			m_UsingResourceJson[(_int)_eType]["Model"][_sKey]["FilePath"] = iter->second->szModelFilePath;
+			m_UsingResourceJson[(_int)_eType]["Model"][_sKey]["ModelType"] = (_int)iter->second->eModelType;
 			return (*iter).second;
 		}
 	}

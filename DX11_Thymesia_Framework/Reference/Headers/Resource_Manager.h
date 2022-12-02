@@ -18,7 +18,8 @@ public: /* For Texture */
 	
 
 private:
-	unordered_map<string, vector<ComPtr<ID3D11ShaderResourceView>>> m_SRVs[(_uint)MEMORY_TYPE::MEMORY_END];
+	unordered_map<_hashcode, vector<ComPtr<ID3D11ShaderResourceView>>> m_SRVs[(_uint)MEMORY_TYPE::MEMORY_END];
+	unordered_map<string, string> m_TextureFilePaths[(_uint)MEMORY_TYPE::MEMORY_END];
 
 public: /* For Model */
 	HRESULT Load_Model(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType = MEMORY_TYPE::MEMORY_STATIC, _bool bAnimZero = false);
@@ -45,8 +46,18 @@ private:
 //private:
 //	unordered_map<string, >
 
-public:
+public: /* For. Captured Resources */
 	HRESULT Release_ResourceByMemoryType(MEMORY_TYPE _eMemType);
+
+	void Write_JsonUsingResource(const char* In_szFilePath);
+	void Load_ResourcesFromJson(const char* In_szFilePath);
+
+private:
+	void Load_ModelResourcesFromJson(json& In_ModelJson, const MEMORY_TYPE In_eMemoryType);
+	void Load_TextureResourcesFromJson(json& In_TextureJson, const MEMORY_TYPE In_eMemoryType);
+
+private:
+	json m_UsingResourceJson;
 
 
 	//map<const _char*, const aiScene*>	m_pScenes[(_uint)MEMORY_TYPE::MEMORY_END];

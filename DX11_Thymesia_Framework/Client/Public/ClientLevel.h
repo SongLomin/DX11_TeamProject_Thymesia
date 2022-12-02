@@ -27,7 +27,7 @@ public:
 protected:
     void	Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex);
 
-
+    virtual void Tick(_float fTimeDelta) override;
     virtual void		SetUp_UI();
 
 protected:
@@ -52,7 +52,8 @@ protected:
 public:
     void Call_FadeOutToLevelChange();
 
-
+public:
+    virtual void ExitLevel(LEVEL eLevel) {};
 
 
 public:

@@ -4,12 +4,12 @@
 BEGIN(Engine)
 class CCollider;
 class CNavigation;
-class CPhysXController;
 END
 
 BEGIN(Client)
 class CStateBase;
 class CStatus;
+class CPhysXCharacterController;
 
 //class CBehaviorBase;
 
@@ -27,13 +27,15 @@ public:
 public:
     weak_ptr<CStateBase> Get_PreState() const;
     weak_ptr<CStateBase> Get_CurState() const;
+    weak_ptr<CPhysXController> Get_PhysXController() const;
     _uint Get_CurrentStateIndex() const;
     _uint Get_PreStateIndex() const;
     _bool Is_Edit() const { return m_isEdit; }
+    PxControllerCollisionFlags Get_LastCollisionFlags() const { return m_LastCollisionFlags; }
     
     weak_ptr<CStatus>   Get_Status() { return m_pStatus; }
 
-
+    void Set_DissolveAmount(const _float& In_fAmount) { m_fDissolveAmount = In_fAmount; }
     _uint Get_AttackCollisionLayer() const {
         return (_uint)m_eAttackCollisionLayer;
     };
@@ -54,13 +56,17 @@ protected:
     weak_ptr<CStateBase>    m_pCurState;
     weak_ptr<CStateBase>    m_pPreState;
     weak_ptr<CStatus>       m_pStatus;
-    weak_ptr<CPhysXController> m_pPhysXControllerCom;
+    weak_ptr<CPhysXCharacterController> m_pPhysXControllerCom;
     
     COLLISION_LAYER         m_eAttackCollisionLayer = COLLISION_LAYER::LAYER_END;
+
+    _float m_fDissolveAmount = 0.f;
 
 private:
     _bool m_isEdit = false;
     _bool     m_bSuperArmor = false;
+    PxControllerCollisionFlags m_LastCollisionFlags;
+
 
 public:
     virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage);

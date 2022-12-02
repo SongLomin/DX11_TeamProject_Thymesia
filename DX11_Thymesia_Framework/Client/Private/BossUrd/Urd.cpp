@@ -41,7 +41,7 @@ HRESULT CUrd::Initialize(void* pArg)
 	m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(-140.f));
 	//TODO 여기서하는 이유는 몬스터가 배치되고 원점에서 우리가 피킹한위치만큼더해지고 난뒤에 그월드포지션값저장하기위해서 여기서함
 
-	m_pModelCom.lock()->Set_RootNode("root");
+	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
 
 	m_pStandState = Add_Component<CUrdBossState_Start>(&m_tLinkStateDesc);
 	Add_Component<CUrdBossState_Idle>(&m_tLinkStateDesc);

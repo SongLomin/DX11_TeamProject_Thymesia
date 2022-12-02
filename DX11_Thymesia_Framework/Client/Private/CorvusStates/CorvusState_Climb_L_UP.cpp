@@ -50,7 +50,8 @@ void CCorvusState_Climb_L_UP::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
+	
+	Get_OwnerPlayer()->Change_State<CCorvusState_Climb_L_Idle>();
 
 }
 
@@ -63,7 +64,7 @@ void CCorvusState_Climb_L_UP::OnStateStart(const _float& In_fAnimationBlendTime)
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 0, 0.05f);
 
 #ifdef _DEBUG
 	#ifdef _DEBUG_COUT_
@@ -92,6 +93,7 @@ _bool CCorvusState_Climb_L_UP::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
 		return false;
+
 
 
 	return false;

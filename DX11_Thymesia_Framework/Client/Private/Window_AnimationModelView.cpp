@@ -40,12 +40,9 @@ void CWindow_AnimationModelView::Tick(_float fTimeDelta)
 
 HRESULT CWindow_AnimationModelView::Render()
 {
-    ImGui::PushStyleColor(ImGuiCol_PopupBg, m_BackgroundColor);
+    if (FAILED(__super::Begin()))
+        return E_FAIL;
 
-    if (!(ImGui::Begin(m_tImGuiDESC.strName.c_str(), 0, m_tImGuiDESC.eWindowFlags)))
-        return S_OK;
-
-    //ImGui::Text("UI_TOOL");
     ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 
     ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;

@@ -17,6 +17,7 @@
 #include "PhysXCollider.h"
 #include "PhysXController.h"
 #include "PhysXCameraController.h"
+#include "PhysXCharacterController.h"
 
 
 

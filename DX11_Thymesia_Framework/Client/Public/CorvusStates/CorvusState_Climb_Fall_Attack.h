@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CModel;
+class CPhysXController;
 END
 
 BEGIN(Client)

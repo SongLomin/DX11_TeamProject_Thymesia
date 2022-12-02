@@ -20,6 +20,9 @@ public:
 	virtual void LateTick(_float fTimeDelta) override;
 	virtual HRESULT Render() override;
 
+public:
+	virtual void  OnEventMessage(_uint iArg) override;
+
 private:
 #ifdef _DEBUG
 	const void ReadyText();

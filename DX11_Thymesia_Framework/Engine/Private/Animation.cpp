@@ -46,7 +46,7 @@ void CAnimation::Init_Animation(weak_ptr<ANIMATION_DATA> pAnimData, weak_ptr<CMo
 
 		weak_ptr<CChannel> pChannel = m_pOwner.lock()->Add_Component<CChannel>();
 		pChannel.lock()->Init_Channel(pChannelData, pModel);
-		m_Channels.push_back(pChannel);
+		m_Channels.emplace_back(pChannel);
 	}
 
 	for (_uint i(0); i < m_pAnimData.lock()->iNumChannels; ++i)

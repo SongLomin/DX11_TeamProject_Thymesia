@@ -39,6 +39,9 @@ public:
 		XMStoreFloat4x4(&m_TransformationMatrix, TransformationMatrix);
 	}
 
+	void Set_RootNodeFlags(_byte RootNodeFlags);
+	_byte Get_RootNodeFlags() const { return m_RootNodeFlags; }
+
 protected:
     // CComponent을(를) 통해 상속됨
     virtual HRESULT Initialize_Prototype() override;
@@ -53,8 +56,7 @@ public:
 	void Blend_Animation(const KEYFRAME& tCurKey, _float fRatio);
 
 private:
-	GETSET(_bool, bRootNode);
-
+	_byte			m_RootNodeFlags = 0;
     _uint			m_iDepth = 0;
     string			m_szName;
 

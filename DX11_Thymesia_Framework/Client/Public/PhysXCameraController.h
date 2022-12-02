@@ -40,15 +40,20 @@ public:
 	virtual PxControllerCollisionFlags	MoveWithRotation(const _vector& disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles, weak_ptr<CTransform> pTransform) override;
 	virtual PxControllerCollisionFlags	Move(const _vector& disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles = nullptr) override;
 	virtual PxControllerCollisionFlags	MoveGravity(const _float fDeltaTime, PxControllerFilters& filters)  override;
+	void								Update_RayCastCollision(_float fDeltaTime);
 
 
 public:
-	void Update_Ray(const RAY& In_Ray);
+	void Update_Ray(weak_ptr<CTransform> pTargetTransform);
 
 
 private:
+	weak_ptr<CTransform> m_pTargetTransformCom;
 	RAY m_RayCamera;
 	_float3 m_vPrePosition;
+
+	PxShape* m_pLastHitShape = nullptr;
+	PxRigidActor* m_pLastHitActor = nullptr;
 
 
 private:

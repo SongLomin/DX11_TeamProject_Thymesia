@@ -23,6 +23,7 @@ private:
     {
         HEIGHT_FLAT,
         HEIGHT_LERP,
+        HEIGHT_SET,
         FILLTER,
         NON,
         EDIT_END

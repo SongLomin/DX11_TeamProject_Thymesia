@@ -84,6 +84,7 @@ private:
 
 	list<weak_ptr<CCollider>>				m_pPreOtherColliders;
 	list<weak_ptr<CCollider>>				m_pOtherColliders;
+
 	_bool									m_isColl = false;
 
 	_float3									m_vCurrentPosition;

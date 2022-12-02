@@ -10,7 +10,7 @@ public:
 	{
 		UI_BUTTON_OVER,
 		UI_BUTTON_BUTTON_DOWN,
-		UI_BUTTON_NONE
+		UI_BUTTON_OUT
 	};
 
 public:
@@ -21,7 +21,7 @@ public:
 
 public:
 	_bool		Get_Togle() { return m_bClickToggle; }
-
+	UI_BUTTON_STATE	Get_ButtonState() { return m_eButtonState; }
 protected:
 	 void	Update_MouseOver();
 	 void	Update_LButtonDown();
@@ -32,16 +32,27 @@ public:
 	FDelegate<>		Callback_OnMouseOut;
 	FDelegate<>		Callback_OnLButtonDown;
 
+
+
 protected:
 	virtual void	OnMouseOver();
 	virtual void	OnMouseOut();
 	virtual void	OnLButtonDown();
 	virtual void	OnLButtonClick();
+	
+protected:
+	virtual void	CheckMouseOver();
+	virtual void	CheckMouseOut();
+	virtual void	CheckLButtonDown();
+	virtual void	CheckLButtonClick();
+
+	virtual void	UnCheckMouseOver();
+	virtual void	UnCheckMouseOut();
+	virtual void	UnCheckLButtonDown();
+	virtual void	UnCheckLButtonClick();
 
 
-
-
-private:
+protected:
 	UI_BUTTON_STATE m_eButtonState;
 	_bool		m_bClickToggle;
 };

@@ -65,6 +65,18 @@ HRESULT CCamera_Free::Render()
 	return S_OK;
 }
 
+void  CCamera_Free::OnEventMessage(_uint iArg)
+{
+	switch ((EVENT_TYPE)iArg)
+	{
+		case EVENT_TYPE::ON_EDITDRAW :
+		{
+			ImGui::DragInt("Speed", &m_iCameraSpeed, 1.f);
+		}
+		break;
+	}
+}
+
 #ifdef _DEBUG
 const void CCamera_Free::ReadyText()
 {

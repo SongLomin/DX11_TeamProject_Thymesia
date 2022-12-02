@@ -215,6 +215,8 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
     float fMetalness = vORMDesc.z;
     if (fRoughness > 0.f || fMetalness > 0.f || fOcclusion > 0.f)
     {
+        fRoughness *= fRoughness;
+        
         vector vHalfVec = normalize(vLook + normalize(g_vLightDir) * -1.f);
 
         float NdotL = max(dot(vNormal, normalize(g_vLightDir) * -1.f), 0.0);
@@ -267,7 +269,6 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
         Out.vAmbient = vAmbientColor;
         Out.vAmbient.a = 1.f;
     }
-
     else
     {    //Out.vShade = vShadeDesc;
 
@@ -339,7 +340,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
     if(g_fRange < fDistance)
         discard;
     
-    float fAtt = saturate(1.f / max(fDistance * fDistance,0.0001f));
+    float fAtt = 1.f / fDistance * fDistance + 1.f;
 
     vector vLook = normalize(g_vCamPosition - vWorldPos);
     
@@ -680,7 +681,7 @@ PS_OUT PS_MAIN_VIEW_SHADOW(PS_IN In)
     // TODO : Hong Hong Hong Juseok
     if (vPosition.z - 0.15f > vShadowDepth.r * g_fFar
          || vPosition.z - 0.15f > vStaticShadowDepth.r * g_fFar)
-        Out.vColor = 0.4f;
+        Out.vColor = 0.8f;
 
     return Out;
 }

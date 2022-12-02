@@ -84,6 +84,7 @@ struct PS_OUT
 	vector		vNormal : SV_TARGET1;
 	vector		vDepth : SV_TARGET2;
 	vector		vLightFlag : SV_Target3;
+    vector vORM : SV_Target4;
 };
 
 PS_OUT PS_MAIN(PS_IN In)
@@ -172,7 +173,7 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 	Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
 	Out.vLightFlag = g_vLightFlag;
-
+    Out.vORM = 0;
 	if (Out.vDiffuse.a < 0.1f)
 		discard;
 

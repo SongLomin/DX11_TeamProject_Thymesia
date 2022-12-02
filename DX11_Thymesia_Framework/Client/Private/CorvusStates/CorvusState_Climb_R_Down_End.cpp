@@ -6,6 +6,7 @@
 #include "BehaviorBase.h"
 #include "Animation.h"
 #include "CorvusStates/CorvusStates.h"
+#include "PhysXCharacterController.h"
 
 GAMECLASS_C(CCorvusState_Climb_R_Down_End);
 CLONE_C(CCorvusState_Climb_R_Down_End, CComponent)
@@ -63,6 +64,9 @@ void CCorvusState_Climb_R_Down_End::OnStateStart(const _float& In_fAnimationBlen
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
 
+	m_pPhysXControllerCom.lock()->Set_EnableSimulation(true);
+	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Y | (_byte)ROOTNODE_FLAG::Z);
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
@@ -76,6 +80,8 @@ void CCorvusState_Climb_R_Down_End::OnStateStart(const _float& In_fAnimationBlen
 void CCorvusState_Climb_R_Down_End::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Z);
 }
 
 void CCorvusState_Climb_R_Down_End::OnDestroy()
@@ -92,6 +98,8 @@ _bool CCorvusState_Climb_R_Down_End::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
 		return false;
+
+	//애니메이션이 끝나면 피직스키고 아이들로돌아가라
 
 	return false;
 }

@@ -29,7 +29,6 @@
 #include "UI_Script.h"
 #include "UI_ScriptQueue.h"
 #include "UI_DamageFont.h"
-#include "EvolveMenu_TalentButton.h"
 
 
 GAMECLASS_C(CClientLevel)
@@ -91,6 +90,14 @@ void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint
 	}
 }
 
+void CClientLevel::Tick(_float fTimeDelta)
+{
+	__super::Tick(fTimeDelta);
+
+	
+
+}
+
 void CClientLevel::SetUp_UI()
 {
 	weak_ptr<CGameManager>	pGameManager = GET_SINGLE(CGameManager);
@@ -100,7 +107,9 @@ void CClientLevel::SetUp_UI()
 
 	m_pEvolveMenu = GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu>(LEVEL_STATIC);
 	GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu_Level>(LEVEL_STATIC);
-	GAMEINSTANCE->Add_GameObject<CUI_EveolveMenu_Talent>(LEVEL_STATIC);
+
+
+	Preset::AddGameObject::TalentSetting();
 
 
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));

@@ -15,7 +15,9 @@ public:
 	virtual HRESULT Render();
 
 	static shared_ptr<CLevel_GamePlay> Create();
-	void Call_Enable_PauseMenu();
+
+	virtual void ExitLevel(LEVEL eLevel);
+
 
 private:
 	virtual void OnEventMessage(_uint iArg) override;

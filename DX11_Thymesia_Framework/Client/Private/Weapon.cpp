@@ -91,6 +91,13 @@ HRESULT CWeapon::Render()
 		else
 		{
 			iPassIndex = 3;
+
+			/*if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+			{
+				iPassIndex = 3;
+			}
+			else
+				iPassIndex = 7;*/
 		}
 
 		m_pShaderCom.lock()->Begin(iPassIndex);

@@ -57,7 +57,7 @@ HRESULT CMonster::Initialize(void* pArg)
     GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::MONSTER, Weak_Cast<CGameObject>(m_this));
 
     m_pDissolveTextureCom = Add_Component<CTexture>();
-    m_pDissolveTextureCom.lock()->Use_Texture("Dissolve");
+    m_pDissolveTextureCom.lock()->Use_Texture("Dissolve_1");
 
 	return S_OK;
 }
@@ -79,6 +79,7 @@ void CMonster::Tick(_float fTimeDelta)
     m_pCurState.lock()->Tick(fTimeDelta);
     m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
     m_pStatus.lock()->Tick(fTimeDelta);
+
 
 }
 
@@ -102,11 +103,22 @@ void CMonster::Before_Render(_float fTimeDelta)
 
 HRESULT CMonster::Render()
 {
-    __super::Render();
+    _float3 vDissolveDir = { 0.f,1.f,0.f };
 
     m_pDissolveTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DissolveTexture", 0);
 
+    _float3 g_vDissolveStartWorldPos;
+    XMStoreFloat3(&g_vDissolveStartWorldPos, m_pTransformCom.lock()->Get_Position());
+
+    m_pShaderCom.lock()->Set_RawValue("g_vDissolveDir", &vDissolveDir, sizeof(_float3));
+    m_pShaderCom.lock()->Set_RawValue("g_vDissolveStartWorldPos", &g_vDissolveStartWorldPos, sizeof(_float3));
+
+
     m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &m_fDissolveAmount, sizeof(_float));
+    m_pShaderCom.lock()->Set_RawValue("g_vDissolveDirection", &vDissolveDir, sizeof(_float3));
+
+    __super::Render();
+
 
 #ifdef _DEBUG
 #endif // _DEBUG

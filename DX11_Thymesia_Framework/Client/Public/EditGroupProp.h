@@ -75,7 +75,6 @@ private:
                                               
     _int                m_iPickingIndex       = -1;
     _uint               m_iOption             = 0;
-    _bool               m_bSelect_ShowGroup   = false;
 
     string              m_szSelectPropType    = "CStatic_Prop";
     string              m_szSelectModelName   = "";

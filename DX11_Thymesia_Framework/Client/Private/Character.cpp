@@ -5,7 +5,7 @@
 #include "StateBase.h"
 #include "Status.h"
 #include "Collider.h"
-#include "PhysXController.h"
+#include "PhysXCharacterController.h"
 
 GAMECLASS_C(CCharacter)
 CLONE_C(CCharacter, CGameObject)
@@ -20,8 +20,9 @@ HRESULT CCharacter::Initialize_Prototype()
 HRESULT CCharacter::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
+
 	m_pNaviMeshCom = Add_Component<CNavigation>();
-	m_pPhysXControllerCom = Add_Component<CPhysXController>();
+	m_pPhysXControllerCom = Add_Component<CPhysXCharacterController>();
 	return S_OK;
 }
 
@@ -45,9 +46,9 @@ void CCharacter::Tick(_float fTimeDelta)
 
 	if (m_pPhysXControllerCom.lock()->Get_Controller())
 	{
-		PxControllerCollisionFlags Flags = m_pPhysXControllerCom.lock()->MoveGravity(fTimeDelta, Filters);
+		m_LastCollisionFlags = m_pPhysXControllerCom.lock()->MoveGravity(fTimeDelta, Filters);
 
-		if (Flags & PxControllerCollisionFlag::eCOLLISION_DOWN)
+		if (m_LastCollisionFlags & PxControllerCollisionFlag::eCOLLISION_DOWN)
 		{
 			m_pPhysXControllerCom.lock()->Reset_Gravity();
 		}
@@ -82,6 +83,11 @@ weak_ptr<CStateBase> CCharacter::Get_CurState() const
 	return m_pCurState;
 }
 
+weak_ptr<CPhysXController> CCharacter::Get_PhysXController() const
+{
+	return m_pPhysXControllerCom;
+}
+
 
 
 
@@ -112,15 +118,17 @@ void CCharacter::OnLevelEnter()
 
 void CCharacter::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-
+	m_pCurState.lock()->OnCollisionEnter(pMyCollider, pOtherCollider);
 }
 
 void CCharacter::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
+	m_pCurState.lock()->OnCollisionStay(pMyCollider, pOtherCollider);
 }
 
 void CCharacter::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
+	m_pCurState.lock()->OnCollisionExit(pMyCollider, pOtherCollider);
 }
 
 void CCharacter::OnEventMessage(_uint iArg)

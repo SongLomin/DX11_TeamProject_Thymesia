@@ -6,6 +6,7 @@
 #include "BehaviorBase.h"
 #include "Animation.h"
 #include "CorvusStates/CorvusStates.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CCorvusState_Fall_Start);
 CLONE_C(CCorvusState_Fall_Start, CComponent)
@@ -50,13 +51,16 @@ void CCorvusState_Fall_Start::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
+	Get_OwnerPlayer()->Change_State<CCorvusState_Fall_Loop>();
 
 }
 
 void CCorvusState_Fall_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+	m_pPhysXControllerCom.lock()->Set_EnableSimulation(true);
 
 	if (!m_pModelCom.lock().get())
 	{
@@ -93,7 +97,23 @@ _bool CCorvusState_Fall_Start::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	//피직즈(땅)이랑 충돌하면 피직스키고 idle로돌아가라
 
+	if (Check_RequirementAttackState())
+	{
+		Get_OwnerCharacter().lock()->Get_PhysXController().lock()->Enable_Gravity(false);
+		Get_OwnerPlayer()->Change_State<CCorvusState_Climb_Fall_Attack>();
+		return true;
+	}
+
+	PxControllerCollisionFlags Flags = Get_OwnerCharacter().lock()->Get_LastCollisionFlags();
+
+	if ((Flags & PxControllerCollisionFlag::eCOLLISION_DOWN))
+	{
+		Rotation_InputToLookDir();
+		Get_OwnerPlayer()->Change_State<CCorvusState_Fall_End>();
+		return true;
+	}
 
 
 	return false;

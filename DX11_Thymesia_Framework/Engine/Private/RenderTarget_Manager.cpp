@@ -204,6 +204,9 @@ HRESULT CRenderTarget_Manager::End_MRT()
 	m_pBackBufferView.Reset();
 	m_pDepthStencilView.Reset();
 
+	ID3D11ShaderResourceView* pSRV = NULL;
+	DEVICECONTEXT->PSSetShaderResources(0, 1, &pSRV);
+
 	return S_OK;
 }
 
@@ -252,6 +255,9 @@ HRESULT CRenderTarget_Manager::End_ShadowMRT()
 
 	m_pBackBufferView.Reset();
 	m_pDepthStencilView.Reset();
+
+	ID3D11ShaderResourceView* pSRV = NULL;
+	DEVICECONTEXT->PSSetShaderResources(0, 1, &pSRV);
 
 	return S_OK;
 }
@@ -346,6 +352,9 @@ HRESULT CRenderTarget_Manager::End_StaticShadowMRT()
 	m_pBackBufferView.Reset();
 	m_pDepthStencilView.Reset();
 
+	ID3D11ShaderResourceView* pSRV = NULL;
+	DEVICECONTEXT->PSSetShaderResources(0, 1, &pSRV);
+
 	return S_OK;
 }
 
@@ -394,6 +403,9 @@ HRESULT CRenderTarget_Manager::End_AntiAliasingMRT()
 
 	m_pBackBufferView.Reset();
 	m_pDepthStencilView.Reset();
+
+	ID3D11ShaderResourceView* pSRV = NULL;
+	DEVICECONTEXT->PSSetShaderResources(0, 1, &pSRV);
 
 	return S_OK;
 }

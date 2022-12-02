@@ -25,6 +25,8 @@ public:
     virtual HRESULT Render() override;
     virtual void SetUp_ShaderResource() override;
 
+private:
+    weak_ptr<class CEffect_Trail> m_pTrailEffect;
 
 private:
     virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;

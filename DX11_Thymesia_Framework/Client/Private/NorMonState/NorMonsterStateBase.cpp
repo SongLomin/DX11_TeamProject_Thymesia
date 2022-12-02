@@ -89,7 +89,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 		_float3 vShakingOffset = pOtherCharacter.lock()->Get_CurState().lock()->Get_ShakingOffset();
 		_vector vShakingOffsetToVector = XMLoadFloat3(&vShakingOffset);
 
-		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.5f, 0.1f);//일반 공격
+		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.55f, 0.1f);//일반 공격
 
 		_vector vOtherColliderPosition = pOtherCharacter.lock()->
 			Get_Component<CTransform>().lock()->

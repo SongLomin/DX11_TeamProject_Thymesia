@@ -51,7 +51,7 @@ void CVIBuffer_Ground::Update(_vector _vMousePos, _float _fRadious, _float _fPow
 
 	DEVICECONTEXT->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
 
-	_int2	iPickIndex = { _int(_vMousePos.m128_f32[0] / m_fInterval), _int(_vMousePos.m128_f32[2] / m_fInterval) };
+	_int2	iPickIndex  = { _int(_vMousePos.m128_f32[0] / m_fInterval), _int(_vMousePos.m128_f32[2] / m_fInterval) };
 	_int	iRoundIndx  = (_int)(_fRadious / m_fInterval);
 
 	_int2	iBeginIndex, iEndIndex;
@@ -69,23 +69,38 @@ void CVIBuffer_Ground::Update(_vector _vMousePos, _float _fRadious, _float _fPow
 
 			_float3 vPos    = ((VTXGROUND*)SubResource.pData)[iIndex].vPosition;
 			_float  fLength = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vPos) - _vMousePos));
-
-			if (_fRadious >= fLength)
+		
+			switch (_iMode)
 			{
-				if (0 == _iMode)
+				case 0: 
 				{
+					if (_fRadious < fLength)
+						continue;
+
 					((VTXGROUND*)SubResource.pData)[iIndex].vPosition.y += _fPower;
 					m_VertexInfo[iIndex].vPosition = ((VTXGROUND*)SubResource.pData)[iIndex].vPosition;
 				}
+				break;
 
-				else if (1 == _iMode)
+				case 1:
 				{
+					if (_fRadious < fLength)
+						continue;
+
 					_float fLerpPower = _fPower * (1.f - pow((fLength / _fRadious), 2.f));
 
 					((VTXGROUND*)SubResource.pData)[iIndex].vPosition.y += fLerpPower;
 					m_VertexInfo[iIndex].vPosition = ((VTXGROUND*)SubResource.pData)[iIndex].vPosition;
 				}
-			}
+				break;
+
+				case 2:
+				{
+					((VTXGROUND*)SubResource.pData)[iIndex].vPosition.y = _fPower;
+					m_VertexInfo[iIndex].vPosition = ((VTXGROUND*)SubResource.pData)[iIndex].vPosition;
+				}
+				break;
+			}		
 		}
 	}
 
@@ -127,7 +142,7 @@ void CVIBuffer_Ground::Update(_vector _vMousePos, _float _fRadious, _float _fPow
 				if (0 > iAdjacency[i] || 0 > iAdjacency[iNext])
 					continue;
 
-				_vector vLine_no1 = XMLoadFloat3(&m_VertexInfo[iAdjacency[i]].vPosition) - XMLoadFloat3(&m_VertexInfo[iIndex].vPosition);
+				_vector vLine_no1 = XMLoadFloat3(&m_VertexInfo[iAdjacency[i]].vPosition)     - XMLoadFloat3(&m_VertexInfo[iIndex].vPosition);
 				_vector vLine_no2 = XMLoadFloat3(&m_VertexInfo[iAdjacency[iNext]].vPosition) - XMLoadFloat3(&m_VertexInfo[iIndex].vPosition);
 				_vector vLingNorm = XMVector3Normalize(XMVector3Cross(vLine_no1, vLine_no2));
 
@@ -157,8 +172,7 @@ void CVIBuffer_Ground::Update(_vector _vMousePos, _float _fRadious, _float _fPow
 _bool CVIBuffer_Ground::Compute_MousePos(RAY _Ray, _matrix _WorldMatrix, _float3* pOut)
 {
 	_matrix		WorldMatrix = XMMatrixInverse(nullptr, _WorldMatrix);
-
-	_vector			vRayPos, vRayDir;
+	_vector		vRayPos, vRayDir;
 
 	vRayPos = XMVector3TransformCoord(XMLoadFloat4(&_Ray.vOrigin), WorldMatrix);
 	vRayDir = XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&_Ray.vDirection), WorldMatrix));
@@ -177,7 +191,7 @@ _bool CVIBuffer_Ground::Compute_MousePos(RAY _Ray, _matrix _WorldMatrix, _float3
 		if (true == DirectX::TriangleTests::Intersects(vRayPos, vRayDir, vVec0, vVec1, vVec2, fDist))
 		{
 			vPickedPos = vRayPos + XMVector3Normalize(vRayDir) * fDist;
-			XMStoreFloat3(pOut, XMVector3TransformCoord(vPickedPos, _WorldMatrix));
+			XMStoreFloat3(pOut, vPickedPos);
 
 			return true;
 		}

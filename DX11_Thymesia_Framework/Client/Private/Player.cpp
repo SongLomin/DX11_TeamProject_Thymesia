@@ -281,6 +281,18 @@ void CPlayer::Call_WeaponAttack(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
     }
 }
 
+void CPlayer::Set_CollisionObjectFlag(const _flag In_CollisionObjectFlags, const _bool In_bEnable)
+{
+    if (In_bEnable)
+    {
+        m_CollisionObjectFlags |= In_CollisionObjectFlags;
+    }
+    else
+    {
+        m_CollisionObjectFlags &= ~In_CollisionObjectFlags;
+    }
+}
+
 void CPlayer::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
     __super::OnCollisionEnter(pMyCollider, pOtherCollider);

@@ -263,7 +263,10 @@
     <ClInclude Include="..\Public\EasingTransform.h" />
     <ClInclude Include="..\Public\EditMapCollider.h" />
     <ClInclude Include="..\Public\EvolveMenu_TalentButton.h" />
+    <ClInclude Include="..\Public\Interaction_CheckPoint.h" />
+    <ClInclude Include="..\Public\Interaction_Door.h" />
     <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h" />
+    <ClInclude Include="..\Public\Interaction_Elevator.h" />
     <ClInclude Include="..\Public\Interaction_Ladder.h" />
     <ClInclude Include="..\Public\Level_Test.h" />
     <ClInclude Include="..\Public\PhysXCameraController.h">
@@ -271,6 +274,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\NorMonState\NorMonState_Parry.h" />
+    <ClInclude Include="..\Public\PhysXCharacterController.h" />
     <ClInclude Include="..\Public\PhysXColliderObject.h" />
     <ClInclude Include="..\Public\BossMonster.h" />
     <ClInclude Include="..\Public\BossStateBase.h" />
@@ -405,7 +409,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Stage2.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Stage3.h">
@@ -576,7 +580,10 @@
     <ClCompile Include="..\Private\Dynamic_Piece.cpp" />
     <ClCompile Include="..\Private\EasingTransform.cpp" />
     <ClCompile Include="..\Private\EditMapCollider.cpp" />
+    <ClCompile Include="..\Private\Interaction_CheckPoint.cpp" />
+    <ClCompile Include="..\Private\Interaction_Door.cpp" />
     <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp" />
+    <ClCompile Include="..\Private\Interaction_Elevator.cpp" />
     <ClCompile Include="..\Private\Interaction_Ladder.cpp" />
     <ClCompile Include="..\Private\EvolveMenu_TalentButton.cpp" />
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
@@ -585,6 +592,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\Private\PhysXCharacterController.cpp" />
     <ClCompile Include="..\Private\Preset_DynamicProp.cpp" />
     <ClCompile Include="..\Private\Preset_AddGameObject.cpp" />
     <ClCompile Include="..\Private\Status_Boss.cpp" />
@@ -714,7 +722,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Stage2.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Stage3.cpp">

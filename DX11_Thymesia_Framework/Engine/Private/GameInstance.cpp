@@ -390,6 +390,16 @@ _float4 CGameInstance::Get_CamPosition()
 	return m_pPipeLine->Get_CamPosition();
 }
 
+void CGameInstance::Write_JsonUsingResource(const char* In_szFilePath)
+{
+	return m_pResource_Manager->Write_JsonUsingResource(In_szFilePath);
+}
+
+void CGameInstance::Load_ResourcesFromJson(const char* In_szFilePath)
+{
+	return m_pResource_Manager->Load_ResourcesFromJson(In_szFilePath);
+}
+
 HRESULT CGameInstance::Load_Textures(const _char* _strKey, const _tchar* pTextureFilePath, MEMORY_TYPE eMemType)
 {
 	return m_pResource_Manager->Load_Textures(_strKey, pTextureFilePath, eMemType);

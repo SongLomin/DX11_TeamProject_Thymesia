@@ -1449,12 +1449,12 @@ HRESULT CRender_Manager::Blur_Effect()
 HRESULT CRender_Manager::PostProcessing()
 {
 	//모션 블러, 색수차, 중심 블러(얘는 위에 있음) 등등 화면 전체 해야하는 블러의 경우
-	Bake_OriginalRenderTexture();
+	//Bake_OriginalRenderTexture();
 
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
-	if (FAILED(m_pPostProcessingShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")))))
-		DEBUG_ASSERT;
+	//if (FAILED(m_pPostProcessingShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")))))
+	//	DEBUG_ASSERT;
 
 	if (FAILED(m_pPostProcessingShader->Set_ShaderResourceView("g_DepthTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Depth")))))
 		DEBUG_ASSERT;
@@ -1494,8 +1494,12 @@ HRESULT CRender_Manager::PostProcessing()
 
 	m_pPostProcessingShader->Set_RawValue("g_PreCamViewMatrix", &XMMatrixTranspose(XMLoadFloat4x4(&pPipeLine->Get_PreViewMatrix())), sizeof(_float4x4));
 
-	for (_int i = 0; i < 2; ++i)
+	for (_int i = 0; i < 3; ++i)
 	{
+		Bake_OriginalRenderTexture();
+		if (FAILED(m_pPostProcessingShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")))))
+			DEBUG_ASSERT;
+
 		m_pPostProcessingShader->Begin(i);
 		m_pVIBuffer->Render();
 	}

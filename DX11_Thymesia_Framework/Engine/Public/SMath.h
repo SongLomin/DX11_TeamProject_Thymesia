@@ -62,7 +62,12 @@ namespace Engine
 		void			ENGINE_DLL Convert_PxVec3FromMeshData(PxVec3* In_PxVec3, weak_ptr<MESH_DATA> pMeshData);
 		void			ENGINE_DLL Convert_PxVec3FromMeshDataWithTransformMatrix(PxVec3* In_PxVec3, weak_ptr<MESH_DATA> pMeshData, FXMMATRIX In_TransformMatrix);
 		PxExtendedVec3	ENGINE_DLL Convert_PxExtendedVec3(FXMVECTOR In_Vector);
+		PxExtendedVec3	ENGINE_DLL Convert_PxExtendedVec3(PxVec3 In_Vector);
 		PxVec3			ENGINE_DLL Convert_PxVec3(FXMVECTOR In_Vector);
+		XMVECTOR		ENGINE_DLL Convert_PxVec3ToVector(const PxVec3& In_PxVec3);
+		XMVECTOR		ENGINE_DLL Convert_PxExtendedVec3ToVector(const PxExtendedVec3& In_PxVec3);
+		PxVec3			ENGINE_DLL Convert_PxVec3(PxExtendedVec3 In_Vector);
+
 
 		_bool			ENGINE_DLL Is_Picked_AbstractTerrain(const RAY& _Ray, _float4* _pOutPos);
 		_bool			ENGINE_DLL Is_Picked_AbstractCube(const RAY& _Ray, MESH_VTX_INFO _VtxInfo, _matrix _WorldMatrix, _float* Out_fDist = nullptr);

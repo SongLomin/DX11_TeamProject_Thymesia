@@ -32,7 +32,7 @@ HRESULT CLevel_Test::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-	ShowCursor(false);
+	//ShowCursor(false);
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_TEST);
 
 #ifdef _TEST_STATIC_PROPS_
@@ -118,10 +118,11 @@ HRESULT CLevel_Test::Initialize()
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
 
 
+
 	SetUp_UI();
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
-	Preset::AddGameObject::TalentSetting();
+	
 
 	return S_OK;
 }
@@ -177,7 +178,7 @@ void CLevel_Test::Tick(_float fTimeDelta)
 
 	}*/
 
-	if (KEY_INPUT(KEY::ALT, KEY_STATE::TAP))
+	/*if (KEY_INPUT(KEY::ALT, KEY_STATE::TAP))
 	{
 		if (m_pEvolveMenu.lock()->Get_Enable() == false)
 		{
@@ -191,8 +192,12 @@ void CLevel_Test::Tick(_float fTimeDelta)
 			m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
 			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CLevel_Test::Call_Enable_EvolveMenu, this);
 		}
-	}
+	}*/
 
+	if (KEY_INPUT(KEY::HOME, KEY_STATE::TAP))
+	{
+		GAMEINSTANCE->Write_JsonUsingResource("../Bin/LevelData/CapturedResource/TestLevel.json");
+	}
 }
 
 

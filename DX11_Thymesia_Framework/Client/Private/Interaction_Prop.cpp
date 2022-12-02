@@ -7,6 +7,9 @@
 #include "Transform.h"
 #include "PhysXCollider.h"
 
+#include "GameInstance.h"
+#include "ClientLevel.h"
+
 GAMECLASS_C(CInteraction_Prop);
 
 HRESULT CInteraction_Prop::Initialize_Prototype()
@@ -53,14 +56,29 @@ _bool CInteraction_Prop::IsPicking(const RAY& In_Ray, _float& Out_fRange)
 
 void CInteraction_Prop::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
+    m_bOnceAct = false;
 }
 
 void CInteraction_Prop::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
+    if (m_bOnceAct)
+        return;
+
+    if (KEY_INPUT(KEY::E, KEY_STATE::TAP))
+    {
+        Act_Interaction();
+        m_bOnceAct = true;
+    }
 }
 
 void CInteraction_Prop::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
+    m_bOnceAct = false;
+}
+
+void CInteraction_Prop::Act_Interaction()
+{
+
 }
 
 HRESULT CInteraction_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix)

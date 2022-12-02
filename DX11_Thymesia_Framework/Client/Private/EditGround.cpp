@@ -68,20 +68,6 @@ void CEditGround::Tick(_float fTimeDelta)
 {
 	if (!m_bCreate)
 		return;
-
-	/*static ImGuiIO& io = ImGui::GetIO();
-	ImGui::Text("io.WantCaptureMouse: %d", io.WantCaptureMouse);*/
-
-	if (m_pVIBufferCom.lock() && (EDIT_MODE::HEIGHT_FLAT == m_eEditMode || EDIT_MODE::HEIGHT_LERP == m_eEditMode))
-	{
-		if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
-			PickingGround();
-	}
-
-	if (m_pFilterTexture.Get() && EDIT_MODE::FILLTER == m_eEditMode)
-	{
-		PickingFillterTextureDraw();
-	}
 }
 
 void CEditGround::LateTick(_float fTimeDelta)
@@ -101,7 +87,6 @@ HRESULT CEditGround::Render()
 		return E_FAIL;
 
 	m_pShaderCom.lock()->Begin(m_iShaderPass);
-
 	m_pVIBufferCom.lock()->Render();
 
 	return S_OK;
@@ -192,6 +177,7 @@ void CEditGround::SetUp_EditMode()
 	{
 		"HEIGHT_FLAT",
 		"HEIGHT_LERP",
+		"HEIGHT_SET",
 		"FILLTER",
 		"NON"
 	};
@@ -200,11 +186,13 @@ void CEditGround::SetUp_EditMode()
 	{
 		if (KEY_INPUT(KEY::NUM1, KEY_STATE::HOLD))
 			m_eEditMode = EDIT_MODE::HEIGHT_FLAT;
-		if (KEY_INPUT(KEY::NUM2, KEY_STATE::HOLD))
+		else if (KEY_INPUT(KEY::NUM2, KEY_STATE::HOLD))
 			m_eEditMode = EDIT_MODE::HEIGHT_LERP;
 		else if (KEY_INPUT(KEY::NUM3, KEY_STATE::HOLD))
-			m_eEditMode = EDIT_MODE::FILLTER;
+			m_eEditMode = EDIT_MODE::HEIGHT_SET;
 		else if (KEY_INPUT(KEY::NUM4, KEY_STATE::HOLD))
+			m_eEditMode = EDIT_MODE::FILLTER;
+		else if (KEY_INPUT(KEY::NUM5, KEY_STATE::HOLD))
 			m_eEditMode = EDIT_MODE::NON;
 	}
 
@@ -301,21 +289,16 @@ void CEditGround::SetUp_PinckingInfo()
 {
 	if (KEY_INPUT(KEY::RIGHT, KEY_STATE::TAP))
 		m_fBufferDrawRadious += KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) ? (1.f) : (0.1f);
-	if (KEY_INPUT(KEY::LEFT, KEY_STATE::TAP))
+	else if (KEY_INPUT(KEY::LEFT, KEY_STATE::TAP))
 		m_fBufferDrawRadious -= KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) ? (1.f) : (0.1f);
 
 	if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
-		m_fBufferDrawRadious += KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) ? (0.5f) : (0.1f);
-	if (KEY_INPUT(KEY::DOWN, KEY_STATE::TAP))
-		m_fBufferDrawRadious -= KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) ? (0.5f) : (0.1f);
+		m_fBufferPower += KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) ? (0.5f) : (0.1f);
+	else if (KEY_INPUT(KEY::DOWN, KEY_STATE::TAP))
+		m_fBufferPower -= KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) ? (0.5f) : (0.1f);
 
-	ImGui::DragFloat("##Radious", &m_fBufferDrawRadious, 1.f);
-	ImGui::SameLine();
-	ImGui::Text("Draw Radious,");
-
-	ImGui::DragFloat("##Power", &m_fBufferPower, 1.f);
-	ImGui::SameLine();
-	ImGui::Text("Power");
+	ImGui::DragFloat("Radious", &m_fBufferDrawRadious, 1.f);
+	ImGui::DragFloat("Power"  , &m_fBufferPower, 1.f);
 
 	ImGui::Separator();
 }
@@ -616,6 +599,9 @@ void CEditGround::SetUp_File()
 
 void CEditGround::PickingFillterTextureDraw()
 {
+	if (!m_pVIBufferCom.lock().get())
+		return;
+
 	if (!KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD) || !KEY_INPUT(KEY::Z, KEY_STATE::HOLD))
 		return;
 
@@ -765,6 +751,18 @@ void CEditGround::CreateFilterTexture()
 
 void CEditGround::PickingGround()
 {
+	if (!m_pVIBufferCom.lock().get())
+		return;
+
+	if (!KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
+		return;
+
+	_bool bInputZ = KEY_INPUT(KEY::Z, KEY_STATE::HOLD);
+	_bool bInputX = KEY_INPUT(KEY::X, KEY_STATE::HOLD);
+
+	if (!bInputZ && !bInputX)
+		return;
+
 	RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
 
 	if (m_pVIBufferCom.lock())
@@ -778,13 +776,26 @@ void CEditGround::PickingGround()
 			&Out
 		))
 		{
-			m_pVIBufferCom.lock()->Update
-			(
-				XMLoadFloat3(&Out),
-				m_fBufferDrawRadious,
-				m_fBufferPower,
-				(_uint)m_eEditMode
-			);
+			if (bInputZ)
+			{
+				m_pVIBufferCom.lock()->Update
+				(
+					XMLoadFloat3(&Out),
+					m_fBufferDrawRadious,
+					m_fBufferPower,
+					(_uint)m_eEditMode
+				);
+			}
+			else if (bInputX)
+			{
+				m_pVIBufferCom.lock()->Update
+				(
+					XMLoadFloat3(&Out),
+					m_fBufferDrawRadious,
+					m_fBufferPower * -1.f,
+					(_uint)m_eEditMode
+				);
+			}
 		}
 	}
 }
@@ -1056,6 +1067,8 @@ void CEditGround::Write_Json(json& Out_Json)
 		return;
 	}
 
+	__super::Write_Json(Out_Json);
+
 	json TexInfo;
 
 	for (auto& iter : m_pTextureCom)
@@ -1068,7 +1081,6 @@ void CEditGround::Write_Json(json& Out_Json)
 
 		TexInfo.emplace(iter.first, Texture);
 	}
-
 
 	if (!Check_File("../bin/GroundInfo/Filter" + m_szSaveTextureTag + ".dds"))
 	{
@@ -1098,6 +1110,8 @@ void CEditGround::Write_Json(json& Out_Json)
 
 void CEditGround::Load_FromJson(const json& In_Json)
 {
+	__super::Load_FromJson(In_Json);
+
 	if (In_Json.find("TextureInfo") != In_Json.end())
 	{
 		json TexInfo = In_Json["TextureInfo"];
@@ -1288,6 +1302,24 @@ void CEditGround::OnEventMessage(_uint iArg)
 {
 	if ((_uint)EVENT_TYPE::ON_EDITDRAW == iArg)
 	{
+		switch (m_eEditMode)
+		{
+			case EDIT_MODE::HEIGHT_FLAT:
+			case EDIT_MODE::HEIGHT_LERP:
+			case EDIT_MODE::HEIGHT_SET:
+			{
+				PickingGround();
+			}
+			break;
+
+			case EDIT_MODE::FILLTER:
+			{
+				PickingFillterTextureDraw();
+			}
+			break;
+		}
+
+
 		if (ImGui::BeginTabBar("Ground"))
 		{
 			if (ImGui::BeginTabItem("Create VIBuffer"))

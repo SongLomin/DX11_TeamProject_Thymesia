@@ -9,6 +9,9 @@
 #include "Engine_Defines.h"
 #include "Client_Defines.h"
 #include "HUD_Hover.h"
+#include "UI_EvolveMenu_Level.h"
+#include "UI_EvolveMenu.h"
+#include "ClientLevel.h"
 
 GAMECLASS_C(CUI_Landing)
 CLONE_C(CUI_Landing, CGameObject)
@@ -116,7 +119,7 @@ HRESULT CUI_Landing::Render()
 void CUI_Landing::Call_Landing(LANDING_TYPE eLandingType)
 {
     m_pLanding.lock()->CallBack_FadeEnd -= bind(&CUI_Landing::Call_FadeEnd, this, placeholders::_1);
-
+    m_PreCalledLanding = eLandingType;
     CHUD_Hover::HUDHOVERDESC desc;
     desc.bSizeChange = true;
     desc.fSizeMag = 0.1f;
@@ -163,4 +166,21 @@ void CUI_Landing::Call_FadeEnd(FADER_TYPE eFaderType)
         m_pLandingBG.lock()->Set_UIDesc(m_tUIDesc);
         m_pLandingBG.lock()->Set_Enable(false);
     }
+    switch (m_PreCalledLanding)
+    {
+    case Client::CUI_Landing::LANDING_BECONFOUND:
+        Weak_StaticCast<CClientLevel>(GAMEINSTANCE->Get_CurrentLevel()).lock()->Call_Enable_EvolveMenu();
+        break;
+    case Client::CUI_Landing::LANDING_DEAD:
+        break;
+    case Client::CUI_Landing::LANDING_KILL_BOSS:
+        break;
+    case Client::CUI_Landing::LANDING_ENTER_STAGE:
+        break;
+    case Client::CUI_Landing::LANDING_END:
+        break;
+    default:
+        break;
+    }
+
 }

@@ -36,7 +36,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
 
-	m_pModelCom.lock()->Set_RootNode("root");
+	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
 
 	m_iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 
@@ -45,6 +45,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 	
+#ifdef _CORVUS_EFFECT_
 	// Key Frame Effect ON
 	GET_SINGLE(CGameManager)->Bind_KeyEvent("Corvus", m_pModelCom, bind(&CCorvus::Call_NextAnimationKey, this, placeholders::_1));
 
@@ -53,7 +54,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	// TODO : test for boner
 	GET_SINGLE(CGameManager)->Use_EffectGroup("TestBoner", m_pTransformCom, (_uint)TIMESCALE_LAYER::PLAYER);
-
+#endif // _CORVUS_EFFECT_
 	//USE_START(CCorvus);
 	return S_OK;
 }
@@ -110,15 +111,11 @@ void CCorvus::Tick(_float fTimeDelta)
 void CCorvus::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
-	//m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 1.5f, 0.f, 1.f));
-	//m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 1.5f, 0.f, 1.f));
 }
 
 void CCorvus::Before_Render(_float fTimeDelta)
 {
 	__super::Before_Render(fTimeDelta);
-	//m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -1.5f, 0.f, 1.f));
-	//m_pPhysXTriggerColliderCom.lock()->Synchronize_Collider(m_pTransformCom, XMVectorSet(0.f, 1.5f, 0.f, 1.f));
 }
 
 void CCorvus::Custom_Thread1(_float fTimeDelta)
@@ -210,6 +207,23 @@ void CCorvus::Ready_States()
 	MACRO(CCorvusState_PS_VargSword);
 	MACRO(CCorvusState_AVoidSalsh);
 	MACRO(CCorvusState_AVoidThrust);
+	MACRO(CCorvusState_Climb_L_Down);
+	MACRO(CCorvusState_Climb_L_Down_End);
+	MACRO(CCorvusState_Climb_L_Idle);
+	MACRO(CCorvusState_Climb_L_UP);
+	MACRO(CCorvusState_Climb_L_UP_End);
+	MACRO(CCorvusState_Climb_R_Down);
+	MACRO(CCorvusState_Climb_R_Down_End);
+	MACRO(CCorvusState_Climb_R_Idle);
+	MACRO(CCorvusState_Climb_R_UP);
+	MACRO(CCorvusState_Climb_R_UP_End);
+	MACRO(CCorvusState_Climb_Start);
+	MACRO(CCorvusState_Fall_End);
+	MACRO(CCorvusState_Fall_Loop);
+	MACRO(CCorvusState_Fall_Start);
+	MACRO(CCorvusState_Climb_Start);
+	MACRO(CCorvusState_Climb_Fall_Attack);
+
 
 
 
@@ -230,24 +244,83 @@ void CCorvus::SetUp_ShaderResource()
 
 void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
+	switch ((COLLISION_LAYER)pOtherCollider.lock()->Get_CollisionLayer())
+	{
+	case Client::COLLISION_LAYER::LADDER_UP:
+		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::LADDERUP;
+		break;
+
+	case Client::COLLISION_LAYER::LADDER_DOWN:
+		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::LADDERDOWN;
+		break;
+
+	case Client::COLLISION_LAYER::ELEVATOR:
+		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::ELEVATOR;
+		break;
+
+	case Client::COLLISION_LAYER::DOOR:
+		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::DOOR;
+		break;
+	}
+
+	__super::OnCollisionEnter(pMyCollider,pOtherCollider);
 }
 
 void CCorvus::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
+	__super::OnCollisionStay(pMyCollider, pOtherCollider);
+
+	//여기추후 4개추가해야됨 
+	
+
+	
+
+
+	//유아이 충돌하면 보인다
+	//유아이보일때 눌르면 
+	// 여기서 저 아더코라이더랑 내콜라이더를 트랜스폼 룩엣을 일단하고
+	// 상대한테 던져준다 
+
+
+
+
+
+	
 }
 
 void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
+	__super::OnCollisionExit(pMyCollider,pOtherCollider);
+
+	switch ((COLLISION_LAYER)pOtherCollider.lock()->Get_CollisionLayer())
+	{
+	case Client::COLLISION_LAYER::LADDER_UP:
+		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::LADDERUP;
+		break;
+	case Client::COLLISION_LAYER::LADDER_DOWN:
+		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::LADDERDOWN;
+		break;
+	case Client::COLLISION_LAYER::ELEVATOR:
+		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::ELEVATOR;
+		break;
+	case Client::COLLISION_LAYER::DOOR:
+		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::DOOR;
+		break;
+	}
+	
 }
 
 void CCorvus::RootMove()
 {
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)) * XMMatrixRotationZ(XMConvertToRadians(180.f)));
 	//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
 
-	PxControllerFilters Filters = Filters;
-	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+	PxControllerFilters Filters;
+	
+	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, GAMEINSTANCE->Get_DeltaTime(), Filters, nullptr, m_pTransformCom);
+	
+	
 }
 
 void CCorvus::OnBattleEnd()
@@ -269,3 +342,4 @@ void CCorvus::OnDestroy()
 void CCorvus::Free()
 {
 }
+

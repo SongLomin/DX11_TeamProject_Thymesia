@@ -7,6 +7,7 @@
 #include "GameManager.h"
 #include "MobWeapon.h"
 #include "VargStates.h"
+#include "Effect_Trail_EyeLight.h"
 //#include "MonsterWeapon.h"
 //#include "Monster1States/Monster1States.h"
 #include "Client_Components.h"
@@ -66,7 +67,7 @@ HRESULT CVarg::Initialize(void* pArg)
 	m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(-135.0f));
 	//TODO 여기서하는 이유는 몬스터가 배치되고 원점에서 우리가 피킹한위치만큼더해지고 난뒤에 그월드포지션값저장하기위해서 여기서함
 
-	m_pModelCom.lock()->Set_RootNode("root");
+	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
 	
 	m_pStandState = Add_Component<CVargBossState_Start>(&m_tLinkStateDesc);
 	Add_Component<CVargBossState_Attack1a>(&m_tLinkStateDesc);
@@ -107,8 +108,14 @@ HRESULT CVarg::Initialize(void* pArg)
 	Add_Component<CVargBossState_Attack2b1>(&m_tLinkStateDesc);
 	Add_Component<CVargBossState_Attack2b2>(&m_tLinkStateDesc);
 
-	
-	
+	/*TRAIL_DESC TrailDesc;
+	ZeroMemory(&TrailDesc, sizeof(TRAIL_DESC));
+
+	TrailDesc.iMaxCnt = 240;
+	TrailDesc.vPos_0 = _float3(0.f, 1.f, 0.f);
+	TrailDesc.vPos_1 = _float3(0.f, -0.3f, 0.f);
+	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail_EyeLight>(LEVEL_GAMEPLAY, &TrailDesc);*/
+
 	GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
 
 	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom));
@@ -126,6 +133,9 @@ HRESULT CVarg::Start()
 
 	Change_State<CVargBossState_Start>();
 
+	//weak_ptr<CBoneNode> pTargetBoneNode = m_pModelCom.lock()->Find_BoneNode();
+
+	//m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
 
 	//m_EffectIndexList.emplace_back("Character_Target", GET_SINGLE(CGameManager)->Use_EffectGroup("Character_Target", m_pTransformCom));
 

@@ -98,43 +98,19 @@ PS_OUT PS_MAIN_MOTION_BLUR(PS_IN In)
 	vector vPrePixelPos = mul(vPixelWorldPos, matVP);
 	vPrePixelPos /= vPrePixelPos.w;
 
-	float2 vPixelVelocity = ((vPrePixelPos - vPixelPos) * 0.5f).xy;
+	float2 vPixelVelocity = ((vPixelPos - vPrePixelPos) * 0.5f).xy;
 	float2 texCoord       = In.vTexUV;
 
 	vector vColor = vector(0.f,0.f,0.f,0.f);
 
-	for (int i = 0; i < 10; ++i, texCoord += vPixelVelocity  * 0.025f)
+	for (int i = -5; i < 5; ++i)
 	{
+        texCoord += vPixelVelocity * 0.001f * i;
 		float4 currentColor = g_OriginalRenderTexture.Sample(ClampSampler, texCoord);
 		vColor += currentColor;
 	}
 
 	Out.vColor = vColor / 10.f;
-	
-	//for (int i = 0; i < 13; ++i)
-	//{
-	//	float2 offset = vPixelDiff * (float(i) / 13.f - 0.5f)/** g_BlurStrength*/;
-	//	vColor += g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV + offset)* BlurWeights[i];
-	//}
-
-
-	//Out.vColor = vColor;
-
-	//float zOverW = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
-	//float4 H = float4(texCoord.x * 2 - 1, (1 - texCoord.y) * 2 - 1, zOverW, 1);
-	//float4 D = mul(H, g_ViewProjectionInverseMatrix);
-	//float4 worldPos = D / Dw;
-	//float4 currentPos = H;
-	//float4 previousPos = mul(worldPos, g_previousViewProjectionMatrix);
-	//previousPos /= previousPos.w;
-	//float2 velocity = (currentPos - previousPos) / 2. f;
-	//float4 color = tex2D(sceneSampler, texCoord);
-	//texCoord += velocity;
-	//for (int i = 1; i < g_numSamples; ++i, texCoord += velocity) {
-	//	float4 currentColor = tex2D(sceneSampler, texCoord);
-	//	color += currentColor;
-	//}
-	//float4 finalColor = color / numSamples;
 	
 	return Out;
 }
@@ -160,10 +136,52 @@ PS_OUT PS_MAIN_CHROMATIC(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_MAIN_LIFTGAMMAGAIN(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    vector vColor = g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV);
+	
+	//Lift
+    vector vLift = vector(1.f, 1.f, 0.9f, 1.f);
+    vColor = vColor * (1.5f - 0.5f * vLift) + 0.5f * vLift - 0.5f;
+    vColor = saturate(vColor); //isn't strictly necessary, but doesn't cost performance.
+	
+	//Gain = 1.f <- 임시
+	//vector vGain = vector(1.f,1.f,1.f,1.f,);
+    vColor *= 1.f;
+	
+	//Gamma =1.3f <- 임시
+    vector vGamma = vector(1.f, 1.f, 1.2f, 1.f);
+    Out.vColor = pow(vColor, 1.0 / vGamma); //Gamma
+
+    return Out;
+}
+
 
 technique11 DefaultTechnique
 {
-	pass MotionBlur //0
+	pass Chromatic_Aberration//2
+	{
+		SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader   = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader    = compile ps_5_0 PS_MAIN_CHROMATIC();
+	}
+    pass Lift_Gamma_Gain //1
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_LIFTGAMMAGAIN();
+    }
+	pass MotionBlur //2
 	{
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
@@ -174,14 +192,5 @@ technique11 DefaultTechnique
 		PixelShader    = compile ps_5_0 PS_MAIN_MOTION_BLUR();
 	}
 
-	pass Chromatic_Aberration//1
-	{
-		SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
-		SetRasterizerState(RS_Default);
 
-		VertexShader   = compile vs_5_0 VS_MAIN();
-		GeometryShader = NULL;
-		PixelShader    = compile ps_5_0 PS_MAIN_CHROMATIC();
-	}
 }

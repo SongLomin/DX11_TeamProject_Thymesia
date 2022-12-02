@@ -7,6 +7,7 @@
 #include "Animation.h"
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CCorvusState_Idle);
 CLONE_C(CCorvusState_Idle, CComponent)
@@ -137,6 +138,19 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 	//	Get_OwnerPlayer()->Change_State<CNorMonState_Dash>();
 	//	return true;
 	//}
+
+	//TODO 야매애요ㅎ
+	
+		PxControllerCollisionFlags Flags = Get_OwnerCharacter().lock()->Get_LastCollisionFlags();
+
+		if (!(Flags & PxControllerCollisionFlag::eCOLLISION_DOWN))
+		{
+			Rotation_InputToLookDir();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Fall_Start>();
+			return true;
+		}
+	
+	
 
 
 	if (Check_RequirementRunState())

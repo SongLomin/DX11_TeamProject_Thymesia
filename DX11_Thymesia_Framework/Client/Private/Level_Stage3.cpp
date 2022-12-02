@@ -22,7 +22,7 @@ HRESULT CLevel_Stage3::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-	ShowCursor(false);
+	//ShowCursor(false);
 
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));

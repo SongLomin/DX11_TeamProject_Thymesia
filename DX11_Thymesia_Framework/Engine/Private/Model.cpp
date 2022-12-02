@@ -134,13 +134,26 @@ _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName, const _bool In_
 		vCurrentBonePosition = XMVector3TransformCoord(vCurrentBonePosition, XMLoadFloat4x4(&m_pModelData->TransformMatrix));
 	}
 	
-	/*if (strcmp(In_szBoneName, "root") == 0)
-	{
-		Print_Vector(vCurrentBonePosition);
-	}*/
-
-	vCurrentBonePosition.m128_f32[1] = 0.f;
 	
+
+	_byte RootNodeFlags = CurrentBoneNode.lock()->Get_RootNodeFlags();
+
+	if (!(RootNodeFlags & (_byte)ROOTNODE_FLAG::X))
+	{
+		vCurrentBonePosition.m128_f32[0] = 0.f;
+	}
+
+	if (!(RootNodeFlags & (_byte)ROOTNODE_FLAG::Y))
+	{
+		vCurrentBonePosition.m128_f32[1] = 0.f;
+	}
+
+	if (!(RootNodeFlags & (_byte)ROOTNODE_FLAG::Z))
+	{
+		vCurrentBonePosition.m128_f32[2] = 0.f;
+	}
+
+	Print_Vector(vCurrentBonePosition);
 
 	return vCurrentBonePosition;
 }
@@ -484,7 +497,7 @@ void CModel::Reset_DeltaBonePositions()
 	m_DeltaBoneRotations.clear();
 }
 
-void CModel::Set_RootNode(const string& pBoneName, const _bool& In_bRoot)
+void CModel::Set_RootNode(const string& pBoneName, const _byte RootNodeFlags)
 {
 	weak_ptr<CBoneNode> pBoneNode = Find_BoneNode(pBoneName);
 
@@ -492,7 +505,9 @@ void CModel::Set_RootNode(const string& pBoneName, const _bool& In_bRoot)
 	if (!pBoneNode.lock().get())
 		assert(false);
 
-	pBoneNode.lock()->Set_bRootNode(In_bRoot);
+	cout << "Set_RootNode" << (_int)RootNodeFlags << endl;
+
+	pBoneNode.lock()->Set_RootNodeFlags(RootNodeFlags);
 }
 
 void CModel::Write_Json(json& Out_Json)
@@ -616,6 +631,11 @@ void CModel::Create_Materials(const char* pModelFilePath)
 
 			strPath = m_pModelData->Material_Datas[i]->szTextureName[j];
 
+			if (strPath.empty())
+			{
+				continue;
+			}
+
 
 			char			szFileName[MAX_PATH] = "";
 			char			szExt[MAX_PATH] = "";
@@ -658,7 +678,7 @@ void CModel::Create_BoneNodes(shared_ptr<NODE_DATA> pNodeData, weak_ptr<CBoneNod
 {
 	weak_ptr<CBoneNode> pBoneNode = m_pOwner.lock()->Add_Component<CBoneNode>();
 	pBoneNode.lock()->Init_BoneNode(pNodeData, pParent, iDepth, m_pModelData->TransformMatrix);
-	m_pBoneNodes.push_back(pBoneNode);
+	m_pBoneNodes.emplace_back(pBoneNode);
 
 	for (_uint i = 0; i < pNodeData->iNumChildren; ++i)
 		Create_BoneNodes(pNodeData->pChildren[i], pBoneNode, iDepth + 1);
@@ -668,12 +688,14 @@ void CModel::Create_Animations(_uint iTimeScaleLayer)
 {
 	m_iNumAnimations = m_pModelData->iNumAnimations;
 
+	weak_ptr<CModel> ThisToModel = Weak_StaticCast<CModel>(m_this);
+
 	for (_uint i = 0; i < m_iNumAnimations; ++i)
 	{
 		weak_ptr<CAnimation> pAnimation = m_pOwner.lock()->Add_Component<CAnimation>();
-		pAnimation.lock()->Init_Animation(m_pModelData->Animation_Datas[i], Cast<CModel>(m_this), iTimeScaleLayer);
+		pAnimation.lock()->Init_Animation(m_pModelData->Animation_Datas[i], ThisToModel, iTimeScaleLayer);
 
-		m_Animations.push_back(pAnimation);
+		m_Animations.emplace_back(pAnimation);
 	}
 
 }

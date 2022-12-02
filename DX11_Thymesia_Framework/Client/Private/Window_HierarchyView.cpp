@@ -440,31 +440,34 @@ void CWindow_HierarchyView::OnLevelLoad()
 	m_pObjGroup.clear();
 }
 
-void CWindow_HierarchyView::Free()
+void CWindow_HierarchyView::OnDestroy()
 {
 	m_RenderMSG_BOX = false;
 
 	json NewJson;
 	Write_Json(NewJson);
-	
+
 	if (!NewJson.empty())
 	{
-		time_t timer     = time(NULL);
+		time_t timer = time(NULL);
 		tm     TimeDesc;
-		
+
 		localtime_s(&TimeDesc, &timer);
 
 		string szPath
-			= string("../Bin/LevelData/AutoSave/AutoSave ") 
-			+ to_string(TimeDesc.tm_mon)  + "."
+			= string("../Bin/LevelData/AutoSave/AutoSave ")
+			+ to_string(TimeDesc.tm_mon) + "."
 			+ to_string(TimeDesc.tm_wday) + " ("
 			+ to_string(TimeDesc.tm_hour) + "-"
-			+ to_string(TimeDesc.tm_min)  + "-"
-			+ to_string(TimeDesc.tm_sec)  + ").json";
+			+ to_string(TimeDesc.tm_min) + "-"
+			+ to_string(TimeDesc.tm_sec) + ").json";
 
 		CJson_Utility::Save_Json(szPath.c_str(), NewJson);
 	}
+}
 
+void CWindow_HierarchyView::Free()
+{
 	for (auto& elem : m_pGameObjects)
 	{
 		if(elem.pInstance.lock())

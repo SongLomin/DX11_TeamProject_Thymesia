@@ -49,6 +49,7 @@ enum class KEY
 	MBUTTON,
 	BACKSPACE,
 	DELETEKEY,
+	HOME,
 	LAST,
 };
 
@@ -131,5 +132,13 @@ enum class CINEMATIC_TYPE
 	EXECUTION,
 	CINEMATIC,
 	TYPE_END
+};
+
+enum class ROOTNODE_FLAG
+{
+	X = (1 << 0),
+	Y = (1 << 1),
+	Z = (1 << 2),
+	FLAG_END
 };
 

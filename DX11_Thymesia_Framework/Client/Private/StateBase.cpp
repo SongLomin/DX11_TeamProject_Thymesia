@@ -31,7 +31,7 @@ void CStateBase::Start()
 	m_pTransformCom = m_pOwner.lock()->Get_Component<CTransform>();
 	m_pNaviCom      = m_pOwner.lock()->Get_Component<CNavigation>();
 	m_pModelCom     = m_pOwner.lock()->Get_Component<CModel>();
-	m_pPhysXControllerCom = m_pOwner.lock()->Get_Component<CPhysXController>();
+	m_pPhysXControllerCom = m_pOwner.lock()->Get_Component<CPhysXCharacterController>();
 
 	_uint i = _uint(m_pOwner.lock()->Get_ComponentsByType<CStatus>().size());
 

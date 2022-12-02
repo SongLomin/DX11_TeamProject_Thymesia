@@ -62,7 +62,7 @@ void CNorMonState_Die::Start()
 	}
 
 
-	m_fDissolveTime = 4.f;
+	m_fDissolveTime = 5.f;
 	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Forced_SearchNearTargetMonster();
 	m_bAnimEnd = false;
 
@@ -75,14 +75,18 @@ void CNorMonState_Die::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	if(!m_bAnimEnd)
-	m_pModelCom.lock()->Play_Animation(fTimeDelta);
+	if (!m_bAnimEnd)
+		m_pModelCom.lock()->Play_Animation(fTimeDelta);
+	else
+	{
+		m_fDissolveTime -= fTimeDelta;
 
-	m_fDissolveTime -= fTimeDelta;
-
-	_float fDissolveAmount = SMath::Lerp(1.f, 0.f, m_fDissolveTime / 4.f);
-	Get_OwnerMonster()->Set_DissolveAmount(fDissolveAmount);
-
+		if (4.f > m_fDissolveTime)
+		{
+			_float fDissolveAmount = SMath::Lerp(1.f, 0.f, m_fDissolveTime / 4.f);
+			Get_OwnerMonster()->Set_DissolveAmount(fDissolveAmount);
+		}
+	}
 }
 
 void CNorMonState_Die::LateTick(_float fTimeDelta)
@@ -132,7 +136,7 @@ void CNorMonState_Die::OnStateStart(const _float& In_fAnimationBlendTime)
 
 
 	// TODO : test chromatic aberration
-	GAMEINSTANCE->Add_Chromatic(0.3f);
+	GAMEINSTANCE->Set_Chromatic(0.2f);
 }
 
 void CNorMonState_Die::OnStateEnd()

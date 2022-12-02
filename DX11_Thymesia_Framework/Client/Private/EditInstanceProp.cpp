@@ -81,10 +81,10 @@ void CEditInstanceProp::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	m_pInstanceModelCom.lock()->Update(m_pPropInfos, true);
-
 	if (m_bDissolve)
 		m_fDissolveRatio += fTimeDelta * m_fDissolveSpeed;
+
+	//m_pInstanceModelCom.lock()->Update(m_pPropInfos, true);
 }
 
 void CEditInstanceProp::LateTick(_float fTimeDelta)
@@ -148,9 +148,12 @@ HRESULT CEditInstanceProp::SetUp_ShaderResource()
 	_float4x4 WorldMatrix;
 	XMStoreFloat4x4(&WorldMatrix, XMMatrixIdentity());
 
-	m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_float4x4));
-	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4));
-	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
+	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_float4x4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
+		return E_FAIL;
+	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
+		return E_FAIL;
 
 	_vector vLightFlag = { 1.f, 1.f, 1.f, 1.f };
 	m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector));
@@ -159,12 +162,13 @@ HRESULT CEditInstanceProp::SetUp_ShaderResource()
 	{
 		for (auto& elem : m_pTextureGroupCom)
 		{
-			elem.second.lock()->Set_ShaderResourceView
+			if (FAILED(elem.second.lock()->Set_ShaderResourceView
 			(
 				m_pShaderCom,
 				elem.first.c_str(),
 				0
-			);
+			)))
+				return E_FAIL;
 		}
 
 		m_pShaderCom.lock()->Set_RawValue("g_fDissolveRatio", &m_fDissolveRatio, sizeof(_float));
@@ -174,12 +178,11 @@ HRESULT CEditInstanceProp::SetUp_ShaderResource()
 
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
-		if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-			return E_FAIL;
+		m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 
 		if (m_bDissolve)
 		{
-			m_iPassIndex = 8;
+			m_iPassIndex = 9;
 		}
 		else
 		{
@@ -350,7 +353,8 @@ void CEditInstanceProp::Load_FromJson(const json& In_Json)
 	}
 
 	m_pInstanceModelCom.lock()->Init_Instance((_uint)m_pPropInfos.size());
-
+	m_pInstanceModelCom.lock()->Update(m_pPropInfos, true);
+		
 	if (In_Json.end() != In_Json.find("Collider_Type"))
 	{
 		m_iColliderType = In_Json["Collider_Type"];
@@ -417,6 +421,8 @@ void CEditInstanceProp::OnEventMessage(_uint iArg)
 		{
 			if (!m_bSubDraw)
 				return;
+
+			m_pInstanceModelCom.lock()->Update(m_pPropInfos, true);
 
 			if (ImGui::BeginTabBar("Edit"))
 			{

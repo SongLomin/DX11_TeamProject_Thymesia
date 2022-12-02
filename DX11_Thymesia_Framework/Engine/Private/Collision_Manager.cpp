@@ -24,9 +24,9 @@ void CCollision_Manager::Tick()
 {
 	Remove_DeadCollision();
 
-	for (size_t iRow = 0; iRow < m_arrCheck.size(); ++iRow)
+	for (size_t iRow(0); iRow < m_arrCheck.size(); ++iRow)
 	{
-		for (size_t iCol = iRow; iCol < m_arrCheck.size(); ++iCol) // 체크 박스 반만 해야되기 때문에 컬럼은 row부터
+		for (size_t iCol(iRow); iCol < m_arrCheck.size(); ++iCol) // 체크 박스 반만 해야되기 때문에 컬럼은 row부터
 		{
 			if (m_arrCheck[iRow] & (1 << iCol))
 			{

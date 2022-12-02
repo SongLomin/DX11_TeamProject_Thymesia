@@ -767,7 +767,27 @@ PxExtendedVec3 ENGINE_DLL Engine::SMath::Convert_PxExtendedVec3(FXMVECTOR In_Vec
 	return PxExtendedVec3(In_Vector.m128_f32[0], In_Vector.m128_f32[1], In_Vector.m128_f32[2]);
 }
 
+PxExtendedVec3 ENGINE_DLL Engine::SMath::Convert_PxExtendedVec3(PxVec3 In_Vector)
+{
+	return PxExtendedVec3(In_Vector.x, In_Vector.y, In_Vector.z);
+}
+
 PxVec3 ENGINE_DLL Engine::SMath::Convert_PxVec3(FXMVECTOR In_Vector)
 {
 	return PxVec3(In_Vector.m128_f32[0], In_Vector.m128_f32[1], In_Vector.m128_f32[2]);
+}
+
+XMVECTOR ENGINE_DLL Engine::SMath::Convert_PxVec3ToVector(const PxVec3& In_PxVec3)
+{
+	return XMVectorSet(In_PxVec3.x, In_PxVec3.y, In_PxVec3.z, 0.f);
+}
+
+XMVECTOR ENGINE_DLL Engine::SMath::Convert_PxExtendedVec3ToVector(const PxExtendedVec3& In_PxVec3)
+{
+	return XMVectorSet(In_PxVec3.x, In_PxVec3.y, In_PxVec3.z, 0.f);
+}
+
+PxVec3 ENGINE_DLL Engine::SMath::Convert_PxVec3(PxExtendedVec3 In_Vector)
+{
+	return PxVec3(In_Vector.x, In_Vector.y, In_Vector.z);
 }

@@ -11,10 +11,25 @@
 #include "Level.h"
 
 // undefines at bottom
-#define PASS_SPRITE_BLACKDISCARD 0
-#define PASS_ALPHADISCARD 1
-#define PASS_BLACKDISCARD 2
-#define PASS_SPRITE_ALPHADISCARD 3
+#define PASS_SPRITE_BLACKDISCARD				0
+#define PASS_ALPHADISCARD						1
+#define PASS_BLACKDISCARD						2
+#define PASS_SPRITE_ALPHADISCARD				3
+
+#define PASS_ALPHADISCARD_SOFT					4
+#define PASS_BLACKDISCARD_SOFT					5
+#define PASS_SPRITE_ALPHADISCARD_SOFT			6
+#define PASS_SPRITE_BLACKDISCARD_SOFT			7
+
+#define PASS_SPRITE_BLACKDISCARD_SPECIAL		8
+#define PASS_ALPHADISCARD_SPECIAL				9
+#define PASS_BLACKDISCARD_SPECIAL				10
+#define PASS_SPRITE_ALPHADISCARD_SPECIAL		11
+
+#define PASS_ALPHADISCARD_SOFT_SPECIAL			12
+#define PASS_BLACKDISCARD_SOFT_SPECIAL			13
+#define PASS_SPRITE_ALPHADISCARD_SOFT_SPECIAL	14
+#define PASS_SPRITE_BLACKDISCARD_SOFT_SPECIAL	15
 
 GAMECLASS_C(CEffect_Rect)
 CLONE_C(CEffect_Rect, CGameObject)
@@ -139,7 +154,7 @@ void CEffect_Rect::LateTick(_float fTimeDelta)
 
 HRESULT CEffect_Rect::Render()
 {
-	SetUp_ShaderResource();
+	this->SetUp_ShaderResource();
 	__super::Render();
 	m_pShaderCom.lock()->Begin(m_tEffectParticleDesc.iShaderPassIndex);
 	m_pVIBuffer.lock()->Render();
@@ -230,12 +245,19 @@ void CEffect_Rect::SetUp_ShaderResource()
 	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4));
 	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
 #pragma endregion
+
+	m_pShaderCom.lock()->Set_RawValue("g_bXInverse", &m_tEffectParticleDesc.bDiffuseXInverse, sizeof(_bool));
+	m_pShaderCom.lock()->Set_RawValue("g_bYInverse", &m_tEffectParticleDesc.bDiffuseYInverse, sizeof(_bool));
+
 #pragma region Textures
 	m_pShaderCom.lock()->Set_RawValue("g_fDiscardRatio", &m_tEffectParticleDesc.fDiscardRatio, sizeof(_float));
+
 
 	m_pColorDiffuseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", m_tEffectParticleDesc.iDiffuseIndex);
 	m_pMaskTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", m_tEffectParticleDesc.iMaskIndex);
 	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture", m_tEffectParticleDesc.iNoiseIndex);
+
+	m_pShaderCom.lock()->Set_ShaderResourceView("g_DepthTexture", GAMEINSTANCE->Get_RenderTarget_SRV(TEXT("Target_Depth")));
 
 	m_pShaderCom.lock()->Set_RawValue("g_vDiffuseUV", &m_vDiffuseCurrentUV, sizeof(_float2));
 	m_pShaderCom.lock()->Set_RawValue("g_vMaskUV", &m_vMaskCurrentUV, sizeof(_float2));
@@ -413,6 +435,9 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 #pragma endregion
 
 #pragma region Texture
+	Out_Json["Diffuse_XInverse"] = m_tEffectParticleDesc.bDiffuseXInverse;
+	Out_Json["Diffuse_YInverse"] = m_tEffectParticleDesc.bDiffuseYInverse;
+
 #pragma region Diffuse
 	Out_Json["UV_Diffuse_Index"] = m_tEffectParticleDesc.iDiffuseIndex;
 
@@ -459,6 +484,18 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 		(PASS_SPRITE_BLACKDISCARD == m_tEffectParticleDesc.iShaderPassIndex)
 		||
 		(PASS_SPRITE_ALPHADISCARD == m_tEffectParticleDesc.iShaderPassIndex)
+		||
+		(PASS_SPRITE_ALPHADISCARD_SOFT == m_tEffectParticleDesc.iShaderPassIndex)
+		||
+		(PASS_SPRITE_BLACKDISCARD_SOFT == m_tEffectParticleDesc.iShaderPassIndex)
+		||
+		(PASS_SPRITE_BLACKDISCARD_SPECIAL == m_tEffectParticleDesc.iShaderPassIndex)
+		||
+		(PASS_SPRITE_ALPHADISCARD_SPECIAL == m_tEffectParticleDesc.iShaderPassIndex)
+		||
+		(PASS_SPRITE_ALPHADISCARD_SOFT_SPECIAL == m_tEffectParticleDesc.iShaderPassIndex)
+		||
+		(PASS_SPRITE_BLACKDISCARD_SOFT_SPECIAL == m_tEffectParticleDesc.iShaderPassIndex)
 		)
 	{
 		Out_Json["Loop_Sprite"] = m_tEffectParticleDesc.bLoopSprite;
@@ -708,6 +745,12 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma endregion
 
 #pragma region Texture
+
+	if (In_Json.find("Diffuse_XInverse") != In_Json.end())
+		m_tEffectParticleDesc.bDiffuseXInverse = In_Json["Diffuse_XInverse"];
+	if (In_Json.find("Diffuse_YInverse") != In_Json.end())
+		m_tEffectParticleDesc.bDiffuseYInverse = In_Json["Diffuse_YInverse"];
+
 #pragma region Diffuse
 	m_tEffectParticleDesc.iDiffuseIndex = In_Json["UV_Diffuse_Index"];
 	CJson_Utility::Load_Float2(In_Json["Diffuse_Start_UV"], m_tEffectParticleDesc.vDiffuseStartUV);
@@ -750,6 +793,18 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 		(PASS_SPRITE_BLACKDISCARD == m_tEffectParticleDesc.iShaderPassIndex)
 		||
 		(PASS_SPRITE_ALPHADISCARD == m_tEffectParticleDesc.iShaderPassIndex)
+		||
+		(PASS_SPRITE_ALPHADISCARD_SOFT == m_tEffectParticleDesc.iShaderPassIndex)
+		||
+		(PASS_SPRITE_BLACKDISCARD_SOFT == m_tEffectParticleDesc.iShaderPassIndex)
+		||
+		(PASS_SPRITE_BLACKDISCARD_SPECIAL == m_tEffectParticleDesc.iShaderPassIndex)
+		||
+		(PASS_SPRITE_ALPHADISCARD_SPECIAL == m_tEffectParticleDesc.iShaderPassIndex)
+		||
+		(PASS_SPRITE_ALPHADISCARD_SOFT_SPECIAL == m_tEffectParticleDesc.iShaderPassIndex)
+		||
+		(PASS_SPRITE_BLACKDISCARD_SOFT_SPECIAL == m_tEffectParticleDesc.iShaderPassIndex)
 		)
 	{
 		if (In_Json.find("Loop_Sprite") != In_Json.end())
@@ -793,7 +848,7 @@ void CEffect_Rect::Play(_float fTimeDelta)
 			{
 				m_tParticleDescs[i].bEnable = true;
 
-				if ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType && m_pParentTransformCom.lock())
+				if ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType)
 					XMStoreFloat4x4(&m_tParticleDescs[i].matParentMatrix, m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
 			}
 			else
@@ -1459,8 +1514,7 @@ void CEffect_Rect::Update_ParentTransform()
 	{
 		if ((_int)PARTICLETYPE::BILLBOARD == m_tEffectParticleDesc.iParticleType)
 		{
-			if (m_pParentTransformCom.lock())
-				m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix().r[3]);
+			m_pTransformCom.lock()->Set_WorldMatrix(m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
 		}
 
 		if ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType)
@@ -1469,8 +1523,7 @@ void CEffect_Rect::Update_ParentTransform()
 		}
 		else if ((_int)TRANSFORMTYPE::CHILD == m_tEffectParticleDesc.iFollowTransformType)
 		{
-			if (m_pParentTransformCom.lock())
-				m_pTransformCom.lock()->Set_WorldMatrix(m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
+			m_pTransformCom.lock()->Set_WorldMatrix(m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
 		}
 	}
 
@@ -1580,6 +1633,7 @@ XMStoreFloat3(&vTarget, FunctionName(vStartPoint, vTargetPoint, fElapsedTime, fT
 
 void CEffect_Rect::OnEventMessage(_uint iArg)
 {
+#ifdef _DEBUG
 	if ((_uint)EVENT_TYPE::ON_EDITDRAW == iArg)
 	{
 		if (ImGui::CollapsingHeader("Effect_Particle"), ImGuiTreeNodeFlags_DefaultOpen)
@@ -1594,8 +1648,6 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::SameLine();
 			ImGui::Checkbox("##Is_Looping", &m_tEffectParticleDesc.bLooping);
 			
-			ImGui::Separator();
-#pragma region Particle Type
 			if (ImGui::CollapsingHeader("Particle Type"))
 			{
 				const char* items[] = { "None", "Outburst", "Attraction", "Billboard" };
@@ -1616,8 +1668,6 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					ImGui::EndListBox();
 				}
 			}
-#pragma endregion
-#pragma region Transform Type
 			if (ImGui::CollapsingHeader("Transform Type"))
 			{
 				const char* Transform_items[] = { "Static", "Just Spawn", "Child" };
@@ -1639,62 +1689,58 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					ImGui::EndListBox();
 				}
 			}
-#pragma endregion
-			ImGui::Separator();
-#pragma region Animation Sync
-			ImGui::Text("Sync Animation");
-			ImGui::SameLine();
-			ImGui::Checkbox("##Is_Sync_Animation", &m_tEffectParticleDesc.bSyncAnimation);
+			if (ImGui::CollapsingHeader("Animation Sync"))
+			{
+				ImGui::Text("Sync Animation"); ImGui::SameLine();
+				ImGui::Checkbox("##Is_Sync_Animation", &m_tEffectParticleDesc.bSyncAnimation);
 
-			ImGui::InputInt("Sync Animation Key", &m_tEffectParticleDesc.iSyncAnimationKey);
-#pragma endregion
-			ImGui::Separator();
-#pragma region Life Time & Spawns
+				ImGui::InputInt("Sync Animation Key", &m_tEffectParticleDesc.iSyncAnimationKey);
+			}
 			if (ImGui::CollapsingHeader("Spawn & Life Time"))
 			{
-				ImGui::Text("Init Time");
+				ImGui::Text("Init Time"); ImGui::SameLine();
 				ImGui::SetNextItemWidth(100.f);
 				ImGui::DragFloat("##Init_Time", &m_tEffectParticleDesc.fInitTime, 0.1f);
 
-				ImGui::Text("Min Spawn Time");
+				ImGui::Text("Min Spawn Time"); ImGui::SameLine();
 				ImGui::SetNextItemWidth(100.f);
 				ImGui::DragFloat("##Min_Spawn_Time", &m_tEffectParticleDesc.fMinSpawnTime, 0.1f);
 
-				ImGui::Text("Max Spawn Time");
+				ImGui::Text("Max Spawn Time"); ImGui::SameLine();
 				ImGui::SetNextItemWidth(100.f);
 				ImGui::DragFloat("##Max_Spawn_Time", &m_tEffectParticleDesc.fMaxSpawnTime, 0.1f);
 
-				ImGui::Text("Min Life Time");
+				ImGui::Text("Min Life Time"); ImGui::SameLine();
 				ImGui::SetNextItemWidth(100.f);
 				ImGui::DragFloat("##Min_Life_Time", &m_tEffectParticleDesc.fMinLifeTime, 0.1f);
 
-				ImGui::Text("Max Life Time");
+				ImGui::Text("Max Life Time"); ImGui::SameLine();
 				ImGui::SetNextItemWidth(100.f);
 				ImGui::DragFloat("##Max_Life_Time", &m_tEffectParticleDesc.fMaxLifeTime, 0.1f);
 			}
-#pragma endregion
+
 			ImGui::Separator();
 
 			ImGui::Text("Is Move Look"); ImGui::SameLine();
 			ImGui::Checkbox("##Is_MoveLook", &m_tEffectParticleDesc.bMoveLook);
+
+			ImGui::Separator();
 
 			if (ImGui::TreeNode("Gravity Options"))
 			{
 				ImGui::Text("Use Gravity"); ImGui::SameLine();
 				ImGui::Checkbox("##Use_Gravity", &m_tEffectParticleDesc.bUseGravity);
 
-				ImGui::Text("Gravity Force");
-				ImGui::DragFloat3("##Gravity_Force", &m_tEffectParticleDesc.vGravityForce.x, 0.1f, -100.f, 100.f, "%.5f");
+				ImGui::Text("Gravity Force"); ImGui::SetNextItemWidth(300.f);
+				ImGui::DragFloat3("##Gravity_Force", &m_tEffectParticleDesc.vGravityForce.x, 0.1f, 0.f, 0.f, "%.5f");
 
 				ImGui::TreePop();
 			}
 
 			ImGui::Separator();
-#pragma region Positions
-			if (ImGui::TreeNode("Boner"))
-			{
-				ImGui::TreePop();
 
+			if (ImGui::CollapsingHeader("Boner"))
+			{
 				ImGui::Text("Follow Bone"); ImGui::SameLine();
 				ImGui::Checkbox("##Is_Boner", &m_tEffectParticleDesc.bBoner);
 
@@ -1768,11 +1814,11 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					if (m_tEffectParticleDesc.bIsMinMaxSame_SpawnPosition)
 						m_tEffectParticleDesc.vMaxSpawnPosition = m_tEffectParticleDesc.vMinSpawnPosition;
 
-					ImGui::Text("Min Spawn Position");
-					ImGui::DragFloat3("##Min_Spawn_Position", &m_tEffectParticleDesc.vMinSpawnPosition.x, 0.1f);
+					ImGui::Text("Min Spawn Position"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat3("##Min_Spawn_Position", &m_tEffectParticleDesc.vMinSpawnPosition.x, 0.01f, 0.f, 0.f, "%.5f");
 
-					ImGui::Text("Max Spawn Position");
-					ImGui::DragFloat3("##Max_Spawn_Position", &m_tEffectParticleDesc.vMaxSpawnPosition.x, 0.1f);
+					ImGui::Text("Max Spawn Position"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat3("##Max_Spawn_Position", &m_tEffectParticleDesc.vMaxSpawnPosition.x, 0.01f, 0.f, 0.f, "%.5f");
 
 					ImGui::TreePop();
 				}
@@ -1784,11 +1830,11 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					if (m_tEffectParticleDesc.bIsMinMaxSame_OffsetDirection)
 						m_tEffectParticleDesc.vMaxSpawnOffsetDirection = m_tEffectParticleDesc.vMinSpawnOffsetDirection;
 
-					ImGui::Text("Min Offset Direction");
-					ImGui::DragFloat3("##Min_Offset_Direction", &m_tEffectParticleDesc.vMinSpawnOffsetDirection.x, 0.1f);
+					ImGui::Text("Min Offset Direction"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat3("##Min_Offset_Direction", &m_tEffectParticleDesc.vMinSpawnOffsetDirection.x, 0.01f, 0.f, 0.f, "%.5f");
 
-					ImGui::Text("Max Offset Direction");
-					ImGui::DragFloat3("##Max_Offset_Direction", &m_tEffectParticleDesc.vMaxSpawnOffsetDirection.x, 0.1f);
+					ImGui::Text("Max Offset Direction"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat3("##Max_Offset_Direction", &m_tEffectParticleDesc.vMaxSpawnOffsetDirection.x, 0.01f, 0.f, 0.f, "%.5f");
 
 					ImGui::TreePop();
 				}
@@ -1800,18 +1846,15 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					if (m_tEffectParticleDesc.bIsMinMaxSame_OffsetRange)
 						m_tEffectParticleDesc.vMaxSpawnOffsetRange = m_tEffectParticleDesc.vMinSpawnOffsetRange;
 
-					ImGui::Text("Min Offset Range");
-					ImGui::DragFloat3("##Min_Offset_Range", &m_tEffectParticleDesc.vMinSpawnOffsetRange.x, 0.1f);
+					ImGui::Text("Min Offset Range"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat3("##Min_Offset_Range", &m_tEffectParticleDesc.vMinSpawnOffsetRange.x, 0.01f, 0.f, 0.f, "%.5f");
 
-					ImGui::Text("Max Offset Range");
-					ImGui::DragFloat3("##Max_Offset_Range", &m_tEffectParticleDesc.vMaxSpawnOffsetRange.x, 0.1f);
+					ImGui::Text("Max Offset Range"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat3("##Max_Offset_Range", &m_tEffectParticleDesc.vMaxSpawnOffsetRange.x, 0.01f, 0.f, 0.f, "%.5f");
 
 					ImGui::TreePop();
 				}
 			}
-#pragma endregion
-			ImGui::Separator();
-#pragma region Speed
 			if (!m_tEffectParticleDesc.bEasingPosition)
 			{
 				if (ImGui::CollapsingHeader("Speed"))
@@ -1856,14 +1899,14 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 							ImGui::TreePop();
 						}
 
-						ImGui::Text("Total Easing Time"); ImGui::SameLine();
-						ImGui::DragFloat("##Speed_Total_Easing_Time", &m_tEffectParticleDesc.fSpeedEasingTotalTime, 0.01f, -100.f, 100.f, "%.5f");
+						ImGui::Text("Total Easing Time"); ImGui::SetNextItemWidth(300.f);
+						ImGui::DragFloat("##Speed_Total_Easing_Time", &m_tEffectParticleDesc.fSpeedEasingTotalTime, 0.01f, 0.f, 0.f, "%.5f");
 
-						ImGui::Text("Start Speed");
-						ImGui::DragFloat3("##Min_Limit_Speed", &m_tEffectParticleDesc.vMinLimitSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
+						ImGui::Text("Start Speed"); ImGui::SetNextItemWidth(300.f);
+						ImGui::DragFloat3("##Min_Limit_Speed", &m_tEffectParticleDesc.vMinLimitSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
 
-						ImGui::Text("Target Speed");
-						ImGui::DragFloat3("##Max_Limit_Speed", &m_tEffectParticleDesc.vMaxLimitSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
+						ImGui::Text("Target Speed"); ImGui::SetNextItemWidth(300.f);
+						ImGui::DragFloat3("##Max_Limit_Speed", &m_tEffectParticleDesc.vMaxLimitSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
 #pragma endregion
 					}
 					else
@@ -1876,11 +1919,11 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 							if (m_tEffectParticleDesc.bIsMinMaxSame_StartSpeed)
 								m_tEffectParticleDesc.vMaxSpeed = m_tEffectParticleDesc.vMinSpeed;
 
-							ImGui::Text("Min Start Speed");
-							ImGui::DragFloat3("##Min_Speed", &m_tEffectParticleDesc.vMinSpeed.x, 0.1f);
+							ImGui::Text("Min Start Speed"); ImGui::SetNextItemWidth(300.f);
+							ImGui::DragFloat3("##Min_Speed", &m_tEffectParticleDesc.vMinSpeed.x, 0.01f, 0.f, 0.f, "%.5f");
 
-							ImGui::Text("Max Start Speed");
-							ImGui::DragFloat3("##Max_Speed", &m_tEffectParticleDesc.vMaxSpeed.x, 0.1f);
+							ImGui::Text("Max Start Speed"); ImGui::SetNextItemWidth(300.f);
+							ImGui::DragFloat3("##Max_Speed", &m_tEffectParticleDesc.vMaxSpeed.x, 0.01f, 0.f, 0.f, "%.5f");
 
 							ImGui::TreePop();
 						}
@@ -1893,11 +1936,11 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 							if (m_tEffectParticleDesc.bIsMinMaxSame_SpeedForce)
 								m_tEffectParticleDesc.vMaxSpeedForce = m_tEffectParticleDesc.vMinSpeedForce;
 
-							ImGui::Text("Min Force");
-							ImGui::DragFloat3("##Min_Speed_Force", &m_tEffectParticleDesc.vMinSpeedForce.x, 0.1f);
+							ImGui::Text("Min Force"); ImGui::SetNextItemWidth(300.f);
+							ImGui::DragFloat3("##Min_Speed_Force", &m_tEffectParticleDesc.vMinSpeedForce.x, 0.01f, 0.f, 0.f, "%.5f");
 
-							ImGui::Text("Max Force");
-							ImGui::DragFloat3("##Max_Speed_Force", &m_tEffectParticleDesc.vMaxSpeedForce.x, 0.1f);
+							ImGui::Text("Max Force"); ImGui::SetNextItemWidth(300.f);
+							ImGui::DragFloat3("##Max_Speed_Force", &m_tEffectParticleDesc.vMaxSpeedForce.x, 0.01f, 0.f, 0.f, "%.5f");
 
 							ImGui::TreePop();
 						}
@@ -1910,11 +1953,11 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 							if (m_tEffectParticleDesc.bIsMinMaxSame_SpeedLimit)
 								m_tEffectParticleDesc.vMaxLimitSpeed = m_tEffectParticleDesc.vMinLimitSpeed;
 
-							ImGui::Text("Min Limit Speed");
-							ImGui::DragFloat3("##Min_Limit_Speed", &m_tEffectParticleDesc.vMinLimitSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
+							ImGui::Text("Min Limit Speed"); ImGui::SetNextItemWidth(300.f);
+							ImGui::DragFloat3("##Min_Limit_Speed", &m_tEffectParticleDesc.vMinLimitSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
 
-							ImGui::Text("Max Limit Speed");
-							ImGui::DragFloat3("##Max_Limit_Speed", &m_tEffectParticleDesc.vMaxLimitSpeed.x, 0.1f, -100.f, 100.f, "%.5f");
+							ImGui::Text("Max Limit Speed"); ImGui::SetNextItemWidth(300.f);
+							ImGui::DragFloat3("##Max_Limit_Speed", &m_tEffectParticleDesc.vMaxLimitSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
 
 							ImGui::TreePop();
 						}
@@ -1923,7 +1966,6 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			}
 			else
 			{
-#pragma region Easing Position
 				if (ImGui::TreeNode("Easing Position"))
 				{
 					const char* EasingItems[] =
@@ -1956,22 +1998,18 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 						ImGui::EndListBox();
 					}
 
-					ImGui::Text("Position Easing Time"); ImGui::SameLine();
-					ImGui::DragFloat("##Position_Total_Easing_Time", &m_tEffectParticleDesc.fSpeedEasingTotalTime, 0.01f, -100.f, 100.f, "%.5f");
+					ImGui::Text("Position Easing Time"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat("##Position_Total_Easing_Time", &m_tEffectParticleDesc.fSpeedEasingTotalTime, 0.01f, 0.f, 0.f, "%.5f");
 
-					ImGui::Text("Min Goal Offset Position");
-					ImGui::DragFloat3("##Min_Goal_Offset_Position", &m_tEffectParticleDesc.vMinSpeed.x, 0.1f);
+					ImGui::Text("Min Goal Offset Position"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat3("##Min_Goal_Offset_Position", &m_tEffectParticleDesc.vMinSpeed.x, 0.01f, 0.f, 0.f, "%.5f");
 
-					ImGui::Text("Max Goal Offset Position");
-					ImGui::DragFloat3("##Max_Goal_Offset_Position", &m_tEffectParticleDesc.vMaxSpeed.x, 0.1f);
+					ImGui::Text("Max Goal Offset Position"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat3("##Max_Goal_Offset_Position", &m_tEffectParticleDesc.vMaxSpeed.x, 0.01f, 0.f, 0.f, "%.5f");
 
 					ImGui::TreePop();
 				}
-#pragma endregion
 			}
-#pragma endregion
-			ImGui::Separator();
-#pragma region Rotation
 			if (_int(PARTICLETYPE::OUTBURST) != m_tEffectParticleDesc.iParticleType)
 			{
 				if (ImGui::CollapsingHeader("Rotation"))
@@ -1983,7 +2021,6 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 					if (m_tEffectParticleDesc.bEasingRotation)
 					{
-#pragma region Easing Rotation
 						if (ImGui::TreeNode("Easing Rotation List"))
 						{
 							// open easing list
@@ -2023,12 +2060,11 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 						ImGui::Text("Total Easing Time"); ImGui::SameLine();
 						ImGui::DragFloat("##Rotation_Total_Easing_Time", &m_tEffectParticleDesc.fRotationEasingTotalTime, 0.01f, -100.f, 100.f, "%.5f");
 
-						ImGui::Text("Start Rotation");
-						ImGui::DragFloat3("##Min_Limit_Rotation", &m_tEffectParticleDesc.vMinLimitRotation.x, 0.1f);
+						ImGui::Text("Start Rotation"); ImGui::SetNextItemWidth(300.f);
+						ImGui::DragFloat3("##Min_Limit_Rotation", &m_tEffectParticleDesc.vMinLimitRotation.x, 0.01f, 0.f, 0.f, "%.5f");
 
-						ImGui::Text("Target Rotation");
-						ImGui::DragFloat3("##Max_Limit_Rotation", &m_tEffectParticleDesc.vMaxLimitRotation.x, 0.1f);
-#pragma endregion
+						ImGui::Text("Target Rotation"); ImGui::SetNextItemWidth(300.f);
+						ImGui::DragFloat3("##Max_Limit_Rotation", &m_tEffectParticleDesc.vMaxLimitRotation.x, 0.01f, 0.f, 0.f, "%.5f");
 					}
 					else
 					{
@@ -2040,11 +2076,11 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 							if (m_tEffectParticleDesc.bIsMinMaxSame_StartRotation)
 								m_tEffectParticleDesc.vMaxStartRotation = m_tEffectParticleDesc.vMinStartRotation;
 
-							ImGui::Text("Min Start Rotation");
-							ImGui::DragFloat3("##Min_Start_Rotation", &m_tEffectParticleDesc.vMinStartRotation.x, 0.1f);
+							ImGui::Text("Min Start Rotation"); ImGui::SetNextItemWidth(300.f);
+							ImGui::DragFloat3("##Min_Start_Rotation", &m_tEffectParticleDesc.vMinStartRotation.x, 0.01f, 0.f, 0.f, "%.5f");
 
-							ImGui::Text("Max Start Rotation");
-							ImGui::DragFloat3("##Max_Start_Rotation", &m_tEffectParticleDesc.vMaxStartRotation.x, 0.1f);
+							ImGui::Text("Max Start Rotation"); ImGui::SetNextItemWidth(300.f);
+							ImGui::DragFloat3("##Max_Start_Rotation", &m_tEffectParticleDesc.vMaxStartRotation.x, 0.01f, 0.f, 0.f, "%.5f");
 
 							ImGui::TreePop();
 						}
@@ -2057,11 +2093,11 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 							if (m_tEffectParticleDesc.bIsMinMaxSame_RotationSpeed)
 								m_tEffectParticleDesc.vMaxRotationSpeed = m_tEffectParticleDesc.vMinRotationSpeed;
 
-							ImGui::Text("Min Rotation Speed");
-							ImGui::DragFloat3("##Min_Rotation_Speed", &m_tEffectParticleDesc.vMinRotationSpeed.x, 0.1f);
+							ImGui::Text("Min Rotation Speed"); ImGui::SetNextItemWidth(300.f);
+							ImGui::DragFloat3("##Min_Rotation_Speed", &m_tEffectParticleDesc.vMinRotationSpeed.x, 0.01f, 0.f, 0.f, "%.5f");
 
-							ImGui::Text("Max Rotation Speed");
-							ImGui::DragFloat3("##Max_Rotation_Speed", &m_tEffectParticleDesc.vMaxRotationSpeed.x, 0.1f);
+							ImGui::Text("Max Rotation Speed"); ImGui::SetNextItemWidth(300.f);
+							ImGui::DragFloat3("##Max_Rotation_Speed", &m_tEffectParticleDesc.vMaxRotationSpeed.x, 0.01f, 0.f, 0.f, "%.5f");
 
 							ImGui::TreePop();
 						}
@@ -2074,11 +2110,11 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 							if (m_tEffectParticleDesc.bIsMinMaxSame_RotationForce)
 								m_tEffectParticleDesc.vMaxRotationForce = m_tEffectParticleDesc.vMinRotationForce;
 
-							ImGui::Text("Min Rotation Force");
-							ImGui::DragFloat3("##Min_Rotation_Force", &m_tEffectParticleDesc.vMinRotationForce.x, 0.1f);
+							ImGui::Text("Min Rotation Force"); ImGui::SetNextItemWidth(300.f);
+							ImGui::DragFloat3("##Min_Rotation_Force", &m_tEffectParticleDesc.vMinRotationForce.x, 0.01f, 0.f, 0.f, "%.5f");
 
-							ImGui::Text("Max Rotation Force");
-							ImGui::DragFloat3("##Max_Rotation_Force", &m_tEffectParticleDesc.vMaxRotationForce.x, 0.1f);
+							ImGui::Text("Max Rotation Force"); ImGui::SetNextItemWidth(300.f);
+							ImGui::DragFloat3("##Max_Rotation_Force", &m_tEffectParticleDesc.vMaxRotationForce.x, 0.01f, 0.f, 0.f, "%.5f");
 
 							ImGui::TreePop();
 						}
@@ -2091,21 +2127,17 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 							if (m_tEffectParticleDesc.bIsMinMaxSame_RotationLimit)
 								m_tEffectParticleDesc.vMaxLimitRotation = m_tEffectParticleDesc.vMinLimitRotation;
 
-							ImGui::Text("Min Limit Rotation");
-							ImGui::DragFloat3("##Min_Limit_Rotation", &m_tEffectParticleDesc.vMinLimitRotation.x, 0.1f);
+							ImGui::Text("Min Limit Rotation"); ImGui::SetNextItemWidth(300.f);
+							ImGui::DragFloat3("##Min_Limit_Rotation", &m_tEffectParticleDesc.vMinLimitRotation.x, 0.01f, 0.f, 0.f, "%.5f");
 
-							ImGui::Text("Max Limit Rotation");
-							ImGui::DragFloat3("##Max_Limit_Rotation", &m_tEffectParticleDesc.vMaxLimitRotation.x, 0.1f);
+							ImGui::Text("Max Limit Rotation"); ImGui::SetNextItemWidth(300.f);
+							ImGui::DragFloat3("##Max_Limit_Rotation", &m_tEffectParticleDesc.vMaxLimitRotation.x, 0.01f, 0.f, 0.f, "%.5f");
 
 							ImGui::TreePop();
 						}
 					}
 				}
 			}
-
-#pragma endregion
-
-#pragma region Scale
 			if (ImGui::CollapsingHeader("Scale"))
 			{
 				ImGui::Text("Apply Easing"); ImGui::SameLine();
@@ -2151,13 +2183,13 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 						ImGui::TreePop();
 					}
 
-					ImGui::Text("Total Easing Time"); ImGui::SameLine();
+					ImGui::Text("Total Easing Time"); ImGui::SetNextItemWidth(300.f);
 					ImGui::DragFloat("##Scale_Total_Easing_Time", &m_tEffectParticleDesc.fScaleEasingTotalTime, 0.01f, 0.f, 0.f, "%.5f");
 
-					ImGui::Text("Start Scale");
+					ImGui::Text("Start Scale"); ImGui::SetNextItemWidth(300.f);
 					ImGui::DragFloat3("##Min_Limit_Scale", &m_tEffectParticleDesc.vMinLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
 
-					ImGui::Text("Target Scale");
+					ImGui::Text("Target Scale"); ImGui::SetNextItemWidth(300.f);
 					ImGui::DragFloat3("##Max_Limit_Scale", &m_tEffectParticleDesc.vMaxLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
 #pragma endregion
 				}
@@ -2171,11 +2203,11 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 						if (m_tEffectParticleDesc.bIsMinMaxSame_StartScale)
 							m_tEffectParticleDesc.vMaxStartScale = m_tEffectParticleDesc.vMinStartScale;
 
-						ImGui::Text("Min Start Scale");
-						ImGui::DragFloat3("##Min_Start_Scale", &m_tEffectParticleDesc.vMinStartScale.x, 0.1f);
+						ImGui::Text("Min Start Scale"); ImGui::SetNextItemWidth(300.f);
+						ImGui::DragFloat3("##Min_Start_Scale", &m_tEffectParticleDesc.vMinStartScale.x, 0.1f, 0.f, 0.f, "%.5f");
 
-						ImGui::Text("Max Start Scale");
-						ImGui::DragFloat3("##Max_Start_Scale", &m_tEffectParticleDesc.vMaxStartScale.x, 0.1f);
+						ImGui::Text("Max Start Scale"); ImGui::SetNextItemWidth(300.f);
+						ImGui::DragFloat3("##Max_Start_Scale", &m_tEffectParticleDesc.vMaxStartScale.x, 0.1f, 0.f, 0.f, "%.5f");
 
 						ImGui::TreePop();
 					}
@@ -2188,10 +2220,10 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 						if (m_tEffectParticleDesc.bIsMinMaxSame_ScaleSpeed)
 							m_tEffectParticleDesc.vMaxScaleSpeed = m_tEffectParticleDesc.vMinScaleSpeed;
 
-						ImGui::Text("Min Scale Speed");
+						ImGui::Text("Min Scale Speed"); ImGui::SetNextItemWidth(300.f);
 						ImGui::DragFloat3("##Min_Scale_Speed", &m_tEffectParticleDesc.vMinScaleSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
 
-						ImGui::Text("Max Scale Speed");
+						ImGui::Text("Max Scale Speed"); ImGui::SetNextItemWidth(300.f);
 						ImGui::DragFloat3("##Max_Scale_Speed", &m_tEffectParticleDesc.vMaxScaleSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
 
 						ImGui::TreePop();
@@ -2205,10 +2237,10 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 						if (m_tEffectParticleDesc.bIsMinMaxSame_ScaleForce)
 							m_tEffectParticleDesc.vMaxScaleForce = m_tEffectParticleDesc.vMinScaleForce;
 
-						ImGui::Text("Min Scale Force");
+						ImGui::Text("Min Scale Force"); ImGui::SetNextItemWidth(300.f);
 						ImGui::DragFloat3("##Min_Scale_Force", &m_tEffectParticleDesc.vMinScaleForce.x, 0.1f, 0.f, 0.f, "%.5f");
 
-						ImGui::Text("Max Scale Force");
+						ImGui::Text("Max Scale Force"); ImGui::SetNextItemWidth(300.f);
 						ImGui::DragFloat3("##Max_Scale_Force", &m_tEffectParticleDesc.vMaxScaleForce.x, 0.1f, 0.f, 0.f, "%.5f");
 
 						ImGui::TreePop();
@@ -2222,37 +2254,57 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 						if (m_tEffectParticleDesc.bIsMinMaxSame_ScaleLimit)
 							m_tEffectParticleDesc.vMaxLimitScale = m_tEffectParticleDesc.vMinLimitScale;
 
-						ImGui::Text("Min Limit Scale");
+						ImGui::Text("Min Limit Scale"); ImGui::SetNextItemWidth(300.f);
 						ImGui::DragFloat3("##Min_Limit_Scale", &m_tEffectParticleDesc.vMinLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
 
-						ImGui::Text("Max Limit Scale");
+						ImGui::Text("Max Limit Scale"); ImGui::SetNextItemWidth(300.f);
 						ImGui::DragFloat3("##Max_Limit_Scale", &m_tEffectParticleDesc.vMaxLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
 
 						ImGui::TreePop();
 					}
 				}
 			}
-#pragma endregion
-
-#pragma region Colors
 			if (ImGui::CollapsingHeader("Colors"))
 			{
 				if (ImGui::TreeNode("Shader Pass"))
 				{
-#pragma region Shader Pass
-					ImGui::Text("Pass %d : Sprite Image (Discard Black)", PASS_SPRITE_BLACKDISCARD);
-					ImGui::Text("Pass %d : Default		(Discard Alpha)", PASS_ALPHADISCARD);
-					ImGui::Text("Pass %d : Default		(Discard Black)", PASS_BLACKDISCARD);
-					ImGui::Text("Pass %d : Sprite Image (Discard Alpha)", PASS_SPRITE_ALPHADISCARD);
+					ImGui::Text("Pass %d : Sprite Image (Discard Black)"                 , PASS_SPRITE_BLACKDISCARD);
+					ImGui::Text("Pass %d : Default      (Discard Alpha)"                 , PASS_ALPHADISCARD);
+					ImGui::Text("Pass %d : Default		(Discard Black)"                 , PASS_BLACKDISCARD);
+					ImGui::Text("Pass %d : Sprite Image (Discard Alpha)"                 , PASS_SPRITE_ALPHADISCARD);
+					ImGui::Text("Pass %d : Default      (Discard Alpha) (Soft)"          , PASS_ALPHADISCARD_SOFT);
+					ImGui::Text("Pass %d : Default      (Discard Black) (Soft)"          , PASS_BLACKDISCARD_SOFT);
+					ImGui::Text("Pass %d : Sprite Image (Discard Alpha) (Soft)"          , PASS_SPRITE_ALPHADISCARD_SOFT);
+					ImGui::Text("Pass %d : Sprite Image (Discard Black) (Soft)"          , PASS_SPRITE_BLACKDISCARD_SOFT);
+
+					ImGui::Text("Pass %d : Sprite Image (Discard Black) [SPECIAL]"       , PASS_SPRITE_BLACKDISCARD_SPECIAL);
+					ImGui::Text("Pass %d : Default      (Discard Alpha) [SPECIAL]"       , PASS_ALPHADISCARD_SPECIAL);
+					ImGui::Text("Pass %d : Default		(Discard Black) [SPECIAL]"       , PASS_BLACKDISCARD_SPECIAL);
+					ImGui::Text("Pass %d : Sprite Image (Discard Alpha) [SPECIAL]"       , PASS_SPRITE_ALPHADISCARD_SPECIAL);
+					ImGui::Text("Pass %d : Default      (Discard Alpha) (Soft) [SPECIAL]", PASS_ALPHADISCARD_SOFT_SPECIAL);
+					ImGui::Text("Pass %d : Default      (Discard Black) (Soft) [SPECIAL]", PASS_BLACKDISCARD_SOFT_SPECIAL);
+					ImGui::Text("Pass %d : Sprite Image (Discard Alpha) (Soft) [SPECIAL]", PASS_SPRITE_ALPHADISCARD_SOFT_SPECIAL);
+					ImGui::Text("Pass %d : Sprite Image (Discard Black) (Soft) [SPECIAL]", PASS_SPRITE_BLACKDISCARD_SOFT_SPECIAL);
+
 					ImGui::InputInt("Shader Pass", &m_tEffectParticleDesc.iShaderPassIndex);
-#pragma endregion
 					ImGui::TreePop();
 				}
-#pragma region For. Sprite
 				if (
 					(PASS_SPRITE_BLACKDISCARD == m_tEffectParticleDesc.iShaderPassIndex)
 					||
 					(PASS_SPRITE_ALPHADISCARD == m_tEffectParticleDesc.iShaderPassIndex)
+					||
+					(PASS_SPRITE_ALPHADISCARD_SOFT == m_tEffectParticleDesc.iShaderPassIndex)
+					||
+					(PASS_SPRITE_BLACKDISCARD_SOFT == m_tEffectParticleDesc.iShaderPassIndex)
+					||
+					(PASS_SPRITE_BLACKDISCARD_SPECIAL == m_tEffectParticleDesc.iShaderPassIndex)
+					||
+					(PASS_SPRITE_ALPHADISCARD_SPECIAL == m_tEffectParticleDesc.iShaderPassIndex)
+					||
+					(PASS_SPRITE_ALPHADISCARD_SOFT_SPECIAL == m_tEffectParticleDesc.iShaderPassIndex)
+					||
+					(PASS_SPRITE_BLACKDISCARD_SOFT_SPECIAL == m_tEffectParticleDesc.iShaderPassIndex)
 					)
 				{
 					if (ImGui::TreeNode("Sprite Option"))
@@ -2267,32 +2319,37 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 						ImGui::TreePop();
 					}
 				}
-#pragma endregion
-#pragma region Discard Ratio
 				ImGui::Text("Discard Rate"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);
 				ImGui::DragFloat("##Discard_Ratio", &m_tEffectParticleDesc.fDiscardRatio, 0.01f, 0.f, 3.f);
-#pragma endregion
-#pragma region Is Gray Only Use Red
 				ImGui::Text("Is Gray Only Use Red"); ImGui::SameLine();
 				ImGui::Checkbox("##Is_Gray_Only_Use_Red", &m_tEffectParticleDesc.IsGrayOnlyUseRed);
-#pragma endregion
 				if (ImGui::TreeNode("Start Color"))
 				{
 					ImGui::Text("Min = Max"); ImGui::SameLine();
 					ImGui::Checkbox("##Is_MinMaxSame_StartColor", &m_tEffectParticleDesc.bIsMinMaxSame_StartColor);
 
-					ImGui::Text("Min Start Color");
-					ImGui::ColorPicker4("##Min_Start_Color", &m_tEffectParticleDesc.vMinStartColor.x, ImGuiColorEditFlags_DefaultOptions_);
-					ImGui::DragFloat4("##Min_Start_Color", &m_tEffectParticleDesc.vMinStartColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_Logarithmic);
-
 					if (m_tEffectParticleDesc.bIsMinMaxSame_StartColor)
 						m_tEffectParticleDesc.vMaxStartColor = m_tEffectParticleDesc.vMinStartColor;
-					else
+
+					ImGui::Text("Min Start Color"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat4("##Min_Start_Color", &m_tEffectParticleDesc.vMinStartColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_Logarithmic);
+					if (ImGui::TreeNode("Min Start Color Picker"))
 					{
-						ImGui::Text("Max Start Color");
-						ImGui::ColorPicker4("##Max_Start_Color", &m_tEffectParticleDesc.vMaxStartColor.x, ImGuiColorEditFlags_DefaultOptions_);
-						ImGui::DragFloat4("##Max_Start_Color", &m_tEffectParticleDesc.vMaxStartColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_Logarithmic);
+						ImGui::ColorPicker4("##Min_Start_Color", &m_tEffectParticleDesc.vMinStartColor.x, ImGuiColorEditFlags_AlphaPreviewHalf | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_InputRGB);
+						ImGui::TreePop();
 					}
+
+					ImGui::Separator();
+
+					ImGui::Text("Max Start Color"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat4("##Max_Start_Color", &m_tEffectParticleDesc.vMaxStartColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_Logarithmic);
+					if (ImGui::TreeNode("Max Start Color Picker"))
+					{
+						ImGui::ColorPicker4("##Max_Start_Color", &m_tEffectParticleDesc.vMaxStartColor.x, ImGuiColorEditFlags_AlphaPreviewHalf | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_InputRGB);
+						ImGui::TreePop();
+					}
+
+					ImGui::Separator();
 
 					ImGui::TreePop();
 				}
@@ -2304,10 +2361,10 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					if (m_tEffectParticleDesc.bIsMinMaxSame_ColorSpeed)
 						m_tEffectParticleDesc.vMaxColorSpeed = m_tEffectParticleDesc.vMinColorSpeed;
 
-					ImGui::Text("Min Color Speed");
+					ImGui::Text("Min Color Speed"); ImGui::SetNextItemWidth(300.f);
 					ImGui::DragFloat4("##Min_Color_Speed", &m_tEffectParticleDesc.vMinColorSpeed.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
 
-					ImGui::Text("Max Color Speed");
+					ImGui::Text("Max Color Speed"); ImGui::SetNextItemWidth(300.f);
 					ImGui::DragFloat4("##Max_Color_Speed", &m_tEffectParticleDesc.vMaxColorSpeed.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
 
 					ImGui::TreePop();
@@ -2320,10 +2377,10 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					if (m_tEffectParticleDesc.bIsMinMaxSame_ColorForce)
 						m_tEffectParticleDesc.vMaxColorForce = m_tEffectParticleDesc.vMinColorForce;
 
-					ImGui::Text("Min Color Force");
+					ImGui::Text("Min Color Force"); ImGui::SetNextItemWidth(300.f);
 					ImGui::DragFloat4("##Min_Color_Force", &m_tEffectParticleDesc.vMinColorForce.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
 
-					ImGui::Text("Max Color Force");
+					ImGui::Text("Max Color Force"); ImGui::SetNextItemWidth(300.f);
 					ImGui::DragFloat4("##Max_Color_Force", &m_tEffectParticleDesc.vMaxColorForce.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
 
 					ImGui::TreePop();
@@ -2336,81 +2393,98 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					if (m_tEffectParticleDesc.bIsMinMaxSame_ColorLimit)
 						m_tEffectParticleDesc.vMaxColor = m_tEffectParticleDesc.vMinColor;
 
-					ImGui::Text("Min Limit Color");
-					ImGui::DragFloat4("##Min_Color", &m_tEffectParticleDesc.vMinColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
 
-					ImGui::Text("Max Limit Color");
-					ImGui::DragFloat4("##Max_Color", &m_tEffectParticleDesc.vMaxColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+					ImGui::Text("Min Limit Color"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat4("##Min_Limit_Color", &m_tEffectParticleDesc.vMinColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_Logarithmic);
+					if (ImGui::TreeNode("Min Limit Color Picker"))
+					{
+						ImGui::ColorPicker4("##Min_Limit_Color", &m_tEffectParticleDesc.vMinColor.x, ImGuiColorEditFlags_AlphaPreviewHalf | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_InputRGB);
+						ImGui::TreePop();
+					}
+
+					ImGui::Separator();
+
+					ImGui::Text("Max Limit Color"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat4("##Max_Limit_Color", &m_tEffectParticleDesc.vMaxColor.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_Logarithmic);
+					if (ImGui::TreeNode("Max Limit Color Picker"))
+					{
+						ImGui::ColorPicker4("##Max_Limit_Color", &m_tEffectParticleDesc.vMaxColor.x, ImGuiColorEditFlags_AlphaPreviewHalf | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_InputRGB);
+						ImGui::TreePop();
+					}
+
+					ImGui::Separator();
 
 					ImGui::TreePop();
 				}
 			}
-#pragma endregion
-#pragma region Textures
 			if (ImGui::CollapsingHeader("Textures"))
 			{
 				if (ImGui::TreeNode("Diffuse"))
 				{
-					ImGui::Text("Diffuse Index");
-					ImGui::SetNextItemWidth(100.f);
+					ImGui::Text("XInverse"); ImGui::SameLine();
+					ImGui::Checkbox("##Is_XInverse_Texture", &m_tEffectParticleDesc.bDiffuseXInverse);
+
+					ImGui::SameLine(); ImGui::Text(" | "); ImGui::SameLine();
+
+					ImGui::Text("YInverse"); ImGui::SameLine();
+					ImGui::Checkbox("##Is_YInverse_Texture", &m_tEffectParticleDesc.bDiffuseYInverse);
+
+					ImGui::Text("Diffuse Index");  ImGui::SetNextItemWidth(300.f);
 					ImGui::InputInt("##Diffuse_Index", &m_tEffectParticleDesc.iDiffuseIndex);
 
-					ImGui::Text("Diffuse Start UV");
-					ImGui::DragFloat2("##Diffuse_Start_UV", &m_tEffectParticleDesc.vDiffuseStartUV.x, 0.1f);
+					ImGui::Text("Diffuse Start UV"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat2("##Diffuse_Start_UV", &m_tEffectParticleDesc.vDiffuseStartUV.x, 0.01f, 0.f, 0.f, "%.5f");
 
-					ImGui::Text("Diffuse UV Speed");
-					ImGui::DragFloat2("##Diffuse_UV_Speed", &m_tEffectParticleDesc.vDiffuseUVSpeed.x, 0.1f);
+					ImGui::Text("Diffuse UV Speed"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat2("##Diffuse_UV_Speed", &m_tEffectParticleDesc.vDiffuseUVSpeed.x, 0.01f, 0.f, 0.f, "%.5f");
 
-					ImGui::Text("Diffuse UV Force");
-					ImGui::DragFloat2("##Diffuse UV_Force", &m_tEffectParticleDesc.vDiffuseUVForce.x, 0.1f);
+					ImGui::Text("Diffuse UV Force"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat2("##Diffuse UV_Force", &m_tEffectParticleDesc.vDiffuseUVForce.x, 0.01f, 0.f, 0.f, "%.5f");
 
-					ImGui::Text("Diffuse UV Max");
-					ImGui::DragFloat2("##Diffuse_UV_Max", &m_tEffectParticleDesc.vDiffuseUVMax.x, 0.1f);
+					ImGui::Text("Diffuse UV Max"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat2("##Diffuse_UV_Max", &m_tEffectParticleDesc.vDiffuseUVMax.x, 0.01f, 0.f, 0.f, "%.5f");
 
 					ImGui::TreePop();
 				}
 				if (ImGui::TreeNode("Mask"))
 				{
-					ImGui::Text("Mask Index");
-					ImGui::SetNextItemWidth(100.f);
+					ImGui::Text("Mask Index"); ImGui::SetNextItemWidth(300.f);
 					ImGui::InputInt("##Mask_Index", &m_tEffectParticleDesc.iMaskIndex);
 
-					ImGui::Text("Mask Start UV");
-					ImGui::DragFloat2("##Mask_Start_UV", &m_tEffectParticleDesc.vMaskStartUV.x, 0.1f);
+					ImGui::Text("Mask Start UV"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat2("##Mask_Start_UV", &m_tEffectParticleDesc.vMaskStartUV.x, 0.01f, 0.f, 0.f, "%.5f");
 
-					ImGui::Text("Mask UV Speed");
-					ImGui::DragFloat2("##Mask_UV_Speed", &m_tEffectParticleDesc.vMaskUVSpeed.x, 0.1f);
+					ImGui::Text("Mask UV Speed"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat2("##Mask_UV_Speed", &m_tEffectParticleDesc.vMaskUVSpeed.x, 0.01f, 0.f, 0.f, "%.5f");
 
-					ImGui::Text("Mask UV Force");
-					ImGui::DragFloat2("##Mask UV_Force", &m_tEffectParticleDesc.vMaskUVForce.x, 0.1f);
+					ImGui::Text("Mask UV Force"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat2("##Mask UV_Force", &m_tEffectParticleDesc.vMaskUVForce.x, 0.01f, 0.f, 0.f, "%.5f");
 
-					ImGui::Text("Mask UV Max");
-					ImGui::DragFloat2("##Mask_UV_Max", &m_tEffectParticleDesc.vMaskUVMax.x, 0.1f);
+					ImGui::Text("Mask UV Max"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat2("##Mask_UV_Max", &m_tEffectParticleDesc.vMaskUVMax.x, 0.01f, 0.f, 0.f, "%.5f");
 
 					ImGui::TreePop();
 				}
 				if (ImGui::TreeNode("Noise"))
 				{
-					ImGui::Text("Noise Index");
-					ImGui::SetNextItemWidth(100.f);
+					ImGui::Text("Noise Index"); ImGui::SetNextItemWidth(300.f);
 					ImGui::InputInt("##Noise_Index", &m_tEffectParticleDesc.iNoiseIndex);
 
-					ImGui::Text("Noise Start UV");
-					ImGui::DragFloat2("##Noise_Start_UV", &m_tEffectParticleDesc.vNoiseStartUV.x, 0.1f);
+					ImGui::Text("Noise Start UV"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat2("##Noise_Start_UV", &m_tEffectParticleDesc.vNoiseStartUV.x, 0.01f, 0.f, 0.f, "%.5f");
 
-					ImGui::Text("Noise UV Speed");
-					ImGui::DragFloat2("##Noise_UV_Speed", &m_tEffectParticleDesc.vNoiseUVSpeed.x, 0.1f);
+					ImGui::Text("Noise UV Speed"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat2("##Noise_UV_Speed", &m_tEffectParticleDesc.vNoiseUVSpeed.x, 0.01f, 0.f, 0.f, "%.5f");
 
-					ImGui::Text("Noise UV Force");
-					ImGui::DragFloat2("##Noise UV_Force", &m_tEffectParticleDesc.vNoiseUVForce.x, 0.1f);
+					ImGui::Text("Noise UV Force"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat2("##Noise UV_Force", &m_tEffectParticleDesc.vNoiseUVForce.x, 0.01f, 0.f, 0.f, "%.5f");
 
-					ImGui::Text("Noise UV Max");
-					ImGui::DragFloat2("##Noise_UV_Max", &m_tEffectParticleDesc.vNoiseUVMax.x, 0.1f);
+					ImGui::Text("Noise UV Max"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat2("##Noise_UV_Max", &m_tEffectParticleDesc.vNoiseUVMax.x, 0.01f, 0.f, 0.f, "%.5f");
 
 					ImGui::TreePop();
 				}
 			}
-
 			if (ImGui::CollapsingHeader("Bloom & Glow"))
 			{
 				ImGui::Text("Bloom"); ImGui::SameLine();
@@ -2426,7 +2500,12 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					if (ImGui::TreeNode("Glow Options"))
 					{
 						ImGui::Text("Start Glow Color");
-						ImGui::ColorPicker4("##Start_Glow_Color", &m_tEffectParticleDesc.vStartGlowColor.x, ImGuiColorEditFlags_DefaultOptions_);
+						ImGui::DragFloat4("##Start_Glow_Color", &m_tEffectParticleDesc.vStartGlowColor.x, 0.01f);
+						if (ImGui::TreeNode("Glow Color Picker"))
+						{
+							ImGui::ColorPicker4("##Start_Glow_Color", &m_tEffectParticleDesc.vStartGlowColor.x, ImGuiColorEditFlags_AlphaPreviewHalf | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_InputRGB);
+							ImGui::TreePop();
+						}
 
 						ImGui::Text("Glow Color Speed ");
 						ImGui::DragFloat4("##Glow_Color_Speed", &m_tEffectParticleDesc.vGlowColorSpeed.x, 0.01f);
@@ -2441,6 +2520,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			}
 		}
 	}
+#endif // _DEBUG
 }
 
 void CEffect_Rect::Free()
@@ -2458,5 +2538,20 @@ void CEffect_Rect::OnChangeAnimationKey(const _uint& In_Key)
 
 #undef PASS_SPRITE_BLACKDISCARD
 #undef PASS_ALPHADISCARD
-#undef PASS_BLACKDISCARD
+#undef PASS_BLACKDISCARD	
 #undef PASS_SPRITE_ALPHADISCARD
+
+#undef PASS_ALPHADISCARD_SOFT
+#undef PASS_BLACKDISCARD_SOFT
+#undef PASS_SPRITE_ALPHADISCARD_SOFT
+#undef PASS_SPRITE_BLACKDISCARD_SOFT
+
+#undef PASS_SPRITE_BLACKDISCARD_SPECIAL	
+#undef PASS_ALPHADISCARD_SPECIAL			
+#undef PASS_BLACKDISCARD_SPECIAL			
+#undef PASS_SPRITE_ALPHADISCARD_SPECIAL
+
+#undef PASS_ALPHADISCARD_SOFT_SPECIAL		
+#undef PASS_BLACKDISCARD_SOFT	_SPECIAL	
+#undef PASS_SPRITE_ALPHADISCARD_SOFT_SPECIAL
+#undef PASS_SPRITE_BLACKDISCARD_SOFT_SPECIAL

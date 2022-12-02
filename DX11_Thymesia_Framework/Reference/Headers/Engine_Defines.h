@@ -107,7 +107,7 @@ using namespace Microsoft::WRL;
 #endif
 
 #ifndef _DEBUG
-#define DEBUG_ASSERT ;
+#define DEBUG_ASSERT void(0);
 #endif // _DEBUG
 
 using namespace Engine;

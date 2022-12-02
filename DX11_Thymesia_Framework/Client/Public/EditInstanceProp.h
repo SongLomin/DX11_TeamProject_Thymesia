@@ -91,6 +91,8 @@ private:
     _float              m_fDissolveRatio      = 0.f;
     _float              m_fDissolveSpeed      = 1.f;
 
+    _bool               m_bUpdateTick         = true;
+
 public:
     void Free();
 };

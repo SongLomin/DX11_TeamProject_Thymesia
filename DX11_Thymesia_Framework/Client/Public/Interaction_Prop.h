@@ -10,17 +10,6 @@ class CInteraction_Prop abstract :
     GAMECLASS_H(CInteraction_Prop);
 
 public:
-    enum PROP_ACT_TYPE 
-    {
-        ACT_ONEWAY_DOOR,
-        ACT_LOCK_DOOR,
-        ACT_LADDER_UP,
-        ACT_LADDER_DOWN,
-
-        PROP_ACT_END
-    };
-
-public:
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize(void* pArg) override;
     virtual HRESULT Start() override;
@@ -36,12 +25,11 @@ public:
     virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
 
-private:
-    weak_ptr<CPhysXCollider>    m_pUse_PhyxXColliderCom;
+public:
+    virtual void Act_Interaction();
 
-
-    PROP_ACT_TYPE               m_eActType = PROP_ACT_TYPE::PROP_ACT_END;
-
+protected:
+    _bool   m_bOnceAct = false;
 
 public:
     void Free();

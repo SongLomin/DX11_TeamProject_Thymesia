@@ -68,6 +68,16 @@ HRESULT CLevel_GamePlay::Initialize()
 	Load_FromJson(m_szDefaultJsonPath + "Stage2.json", LEVEL::LEVEL_GAMEPLAY);
 #endif // _STAGE_2_
 
+#ifdef _STAGE_2_2_
+	/*future<void> ThreadResult2 = async(launch::async,
+		bind(&CLevel_GamePlay::Load_FromJson, this,
+			placeholders::_1, placeholders::_2),
+		m_szDefaultJsonPath + "Stage2.json",
+		LEVEL::LEVEL_GAMEPLAY);*/
+
+	Load_FromJson(m_szDefaultJsonPath + "Stage2-2.json", LEVEL::LEVEL_GAMEPLAY);
+#endif // _STAGE_2_2_
+
 	//Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_GAMEPLAY);
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
@@ -193,15 +203,7 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 		}
 	}
 
-	if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
-	{
-		if (m_pPauseMenu.lock()->Get_Enable() == false)
-		{
-			weak_ptr<CUI_ScriptQueue> pScriptQueue = GAMEINSTANCE->Get_GameObjects< CUI_ScriptQueue>(LEVEL_STATIC).front();
-			
-			pScriptQueue.lock()->Call_SetScript_Tutorial_Varg();
-		}
-	}
+	
 	if (KEY_INPUT(KEY::C, KEY_STATE::TAP))
 	{
 	//	weak_ptr<CUI_DamageFont> pDamageFont;
@@ -251,8 +253,13 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 			tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
 
 			m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
-			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CLevel_GamePlay::Call_Enable_EvolveMenu, this);
+			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_Enable_EvolveMenu, this);
 		}
+	}
+
+	if (KEY_INPUT(KEY::HOME, KEY_STATE::TAP))
+	{
+		GAMEINSTANCE->Write_JsonUsingResource("../Bin/LevelData/CapturedResource/GamePlay.json");
 	}
 }
 
@@ -267,12 +274,25 @@ HRESULT CLevel_GamePlay::Render()
 	return S_OK;
 }
 
-
-void CLevel_GamePlay::Call_Enable_PauseMenu()
+void CLevel_GamePlay::ExitLevel(LEVEL eLevel)
 {
-		m_pPauseMenu.lock()->Set_Enable(true);
-		m_pFadeMask.lock()->Set_Enable(false);
+
+	if (eLevel == LEVEL::LEVEL_STAGE2)
+	{
+		m_eNextLevel = eLevel;
+
+		FaderDesc tFaderDesc;
+		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+		tFaderDesc.fFadeMaxTime = 1.f;
+		tFaderDesc.fDelayTime = 0.5f;
+		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+		m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
+		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
+	}
 }
+
 
 shared_ptr<CLevel_GamePlay> CLevel_GamePlay::Create()
 {

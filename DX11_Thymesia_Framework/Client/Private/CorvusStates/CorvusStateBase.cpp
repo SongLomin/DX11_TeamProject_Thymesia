@@ -12,6 +12,8 @@
 #include "Status_Monster.h"
 #include "Monster.h"
 #include "NorMonStates.h"
+#include "PhysXCharacterController.h"
+#include "Interaction_Ladder.h"
 
 
 GAMECLASS_C(CCorvusStateBase)
@@ -141,6 +143,36 @@ _bool CCorvusStateBase::Check_RequirementClawAttackState()
 _bool CCorvusStateBase::Check_RequirementClawAttackHoldState()
 {
 	if (KEY_INPUT(KEY::RBUTTON, KEY_STATE::HOLD))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+_bool CCorvusStateBase::Check_RequirementObjectInteraction()
+{
+	if (KEY_INPUT(KEY::E, KEY_STATE::TAP))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+_bool CCorvusStateBase::Check_RequirementUpLadderState()
+{
+	if (KEY_INPUT(KEY::W, KEY_STATE::HOLD))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+_bool CCorvusStateBase::Check_RequirementDownLadderState()
+{
+	if (KEY_INPUT(KEY::S, KEY_STATE::HOLD))
 	{
 		return true;
 	}
@@ -298,6 +330,67 @@ _int CCorvusStateBase::Check_AndChangeSuccessParrying(weak_ptr<CCollider> pMyCol
 	return (_uint)PARRY_SUCCESS::FAIL;
 }
 
+_bool CCorvusStateBase::Check_AndChangeLadderState(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
+{
+	if (!KEY_INPUT(KEY::E, KEY_STATE::TAP))
+	{
+		return false;
+	}
+
+
+	_bool bChanged = true;
+	_matrix vOtherWorldMatrix = pOtherCollider.lock()->Get_Owner().lock()->Get_Transform()->Get_WorldMatrix();
+	_vector vMyPos = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+	_matrix vResultOtherWorldMatrix;
+	PxControllerFilters Filters;
+
+	switch ((COLLISION_LAYER)pOtherCollider.lock()->Get_CollisionLayer())
+	{
+	case Client::COLLISION_LAYER::LADDER_UP:
+	{
+		_float fHeightOffset = Weak_Cast<CInteraction_Ladder>(pOtherCollider.lock()->Get_Owner()).lock()->Get_UpLadderHeight();
+
+		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, fHeightOffset, 4.f, 0.f));
+
+		m_pPhysXControllerCom.lock()->Set_Position(
+			vResultOtherWorldMatrix.r[3],
+			GAMEINSTANCE->Get_DeltaTime(),
+			Filters);
+		//m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vOtherPos + vLadderOffSetDown + XMVectorSet(0.f, 0.f, 0.f, 0.f));
+		//m_pTransformCom.lock()->LookAt2D(vOtherWorldMatrix.r[3]);
+		m_pTransformCom.lock()->Set_Look2D(vOtherWorldMatrix.r[2]);
+		m_pPhysXControllerCom.lock()->Enable_Gravity(false);
+		Get_OwnerPlayer()->Change_State<CCorvusState_Climb_L_UP_End>();
+	}
+		
+		break;
+
+	case Client::COLLISION_LAYER::LADDER_DOWN:
+		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.02f, -1.f, 0.f));
+		m_pPhysXControllerCom.lock()->Enable_Gravity(false);
+		//m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vOtherPos + vLadderOffSetDown + XMVectorSet(0.f, 0.f, 0.f, 0.f));
+		m_pPhysXControllerCom.lock()->Set_Position(
+			vResultOtherWorldMatrix.r[3],
+			GAMEINSTANCE->Get_DeltaTime(),
+			Filters);
+		m_pTransformCom.lock()->Set_Look2D(vOtherWorldMatrix.r[2]);
+		Get_OwnerPlayer()->Change_State<CCorvusState_Climb_Start>();
+		break;
+
+	case Client::COLLISION_LAYER::ELEVATOR:
+		break;
+
+	case Client::COLLISION_LAYER::DOOR:
+		break;
+
+	default:
+		bChanged = false;
+		break;
+	}
+
+	return bChanged;
+}
+
 void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
 	__super::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
@@ -349,6 +442,7 @@ void CCorvusStateBase::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr
 {
 	__super::OnCollisionStay(pMyCollider, pOtherCollider);
 
+	Check_AndChangeLadderState(pMyCollider, pOtherCollider);
 }
 
 void CCorvusStateBase::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)

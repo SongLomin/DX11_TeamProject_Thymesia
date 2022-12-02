@@ -6,6 +6,7 @@
 #include "BehaviorBase.h"
 #include "Animation.h"
 #include "CorvusStates/CorvusStates.h"
+#include "PhysXCharacterController.h"
 
 GAMECLASS_C(CCorvusState_Climb_Start);
 CLONE_C(CCorvusState_Climb_Start, CComponent)
@@ -50,7 +51,8 @@ void CCorvusState_Climb_Start::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
+	//m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Z);
+	Get_OwnerPlayer()->Change_State<CCorvusState_Climb_L_Idle>();
 
 }
 
@@ -58,10 +60,14 @@ void CCorvusState_Climb_Start::OnStateStart(const _float& In_fAnimationBlendTime
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	m_pPhysXControllerCom.lock()->Set_EnableSimulation(false);
+
 	if (!m_pModelCom.lock().get())
 	{
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
+
+	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Y | (_byte)ROOTNODE_FLAG::Z);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -76,6 +82,8 @@ void CCorvusState_Climb_Start::OnStateStart(const _float& In_fAnimationBlendTime
 void CCorvusState_Climb_Start::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	//m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Z);
 }
 
 void CCorvusState_Climb_Start::OnDestroy()

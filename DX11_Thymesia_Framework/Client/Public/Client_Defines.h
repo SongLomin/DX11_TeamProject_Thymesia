@@ -9,23 +9,33 @@
 #ifdef _DEBUG
 #define		_USE_THREAD_
 #define		_144HZ_
+#define		_RENDER_FPS_
 #define		_LIFEGUARD_FOR_FALL_
-// #define		_DEBUG_COUT_
-#define		_DEBUG_COUT_JOJO
-#define		_STAGE_1_
-#define		_STAGE_2_
-//#define		_STAGE_1_MONSTER_
-// #define		_VARG_
 //#define		_INSTANCE_CULLING_
 // #define		_GENERATE_PROP_COLLIDER_ true
+#pragma region Console Outputs
+// #define		_DEBUG_COUT_
+#define		_DEBUG_COUT_JOJO
+//#define		_STAGE_1_
+#define		_STAGE_2_
+#define		_NORMAL_MONSTERS
+#pragma region Boss Mobs
+#define		_BOSS_MONSTERS_
+#define		_BOSS_VARG_
+// #define		_BOSS_URD_
+#pragma endregion // Boss Mobs
+#define		_STAGE_1_MONSTER_
+// #define		_VARG_
+//#define		_INSTANCE_CULLING_
+#define		_GENERATE_PROP_COLLIDER_ true
 #define		_USE_GRAVITY_
 // #define		_DAGGER_TRAIL_
-// #define		_TEST_STATIC_PROPS_
-// UI제외한 오브젝트 생성 X
+#define		_TEST_STATIC_PROPS_
 //#define		_ONLY_UI_
-#define		_RENDER_FPS_
 #define		_BONE_PARTICLE_
 // #define		_BONE_MESHEFFECT_
+//#define		_LOAD_CAPTURED_RESOURCE_
+#define		_CORVUS_EFFECT_
 #endif // _DEBUG
 
 #ifdef NDEBUG
@@ -33,13 +43,20 @@
 //#define		_144HZ_
 #define		_DAGGER_TRAIL_
 #define		_USE_THREAD_
+#define			_GROUNDINFO_TEXTURES_
+#define		_PROP_DISSOLVE_TEXTURES_
+#define _LOAD_UI_RESOURCES_
 // #define		_STAGE_1_
-#define		_STAGE_2_
-#define		_STAGE_1_MONSTER_
+// #define		_STAGE_2_
+#define		_STAGE_2_2_
+#define		_NORMAL_MONSTERS
+#define		_BOSS_MONSTERS_
+// #define		_STAGE_1_MONSTER_
 #define		_LIFEGUARD_FOR_FALL_
 #define		_USE_GRAVITY_
 #define		_GENERATE_PROP_COLLIDER_ true
 #define		_RENDER_FPS_
+#define		_LOAD_CAPTURED_RESOURCE_
 #endif // NDEBUG
 
 
@@ -48,7 +65,6 @@
 #define ENGINE_DECLATION_UI class CTexture; class CShader;   
 
 #define ADD_STATIC_CUSTOMUI GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC)
-
 
 namespace Client 
 {
@@ -84,6 +100,7 @@ namespace Client
 		ON_EDITPICKING,
 		ON_EDIT_PHYSXINFO,
 		ON_EDIT_PHYSXINFO_N,
+		ON_EDIT_DELETE,
 		ON_ANIMATIONEND,
 		ON_MOVING,
 		ON_MONSTERDEAD,
@@ -92,6 +109,7 @@ namespace Client
 		ON_FIRSTHIT,
 		ON_EXCUTION_NORMOB,
 		ON_GROGGY,
+		ON_LADDERMOVEUP,
 		EVENT_END
 	};
 
@@ -158,6 +176,10 @@ namespace Client
 		TRIGGER,
 		STATIC_PROP,
 		DYNAMIC_PROP,
+		LADDER_UP,
+		LADDER_DOWN,
+		DOOR,
+		ELEVATOR,
 		LAYER_END
 	};
 
@@ -244,7 +266,7 @@ namespace Client
 		NOT_ENOUGHTPOINT,
 		USING_ATHORTREE,
 		SUCCESS,
-		SUBSTARICTPOINT,
+		SUBSCRIPTPOINT,
 		RESULT_END
 	};
 
@@ -300,6 +322,47 @@ namespace Client
 
 		FLAG_END
 	};
+
+	enum class TALENT_NAME
+	{
+		NORSWORDLV1,
+		NORSWORDLV2,
+		AVOIDSLASHLV1,
+		AVOIDSLASHLV2,
+		AVOIDTHRUSTLV1,
+		AVOIDTHRUSTLV2,
+
+		JUMPATTACKLV1,
+		JUMPATTACKLV2,
+		JUMPATTACKLV3,
+
+		EXECUTION,
+		HEALINGEXECUTIONLV1,
+		HEALINGEXECUTIONLV2,
+
+		SHARPWEAPONLV1,
+		SHARPWEAPONLV2,
+
+		ENERGISEDWEAPONLV1,
+		ENERGISEDWEAPONLV2,
+
+		TALENT_NAME_END
+
+
+
+
+	};
+
+	enum class COLISIONOBJECT_FLAG
+	{
+		LADDERUP = (1 << 0),
+		LADDERDOWN = (1 << 1),
+		ELEVATOR = (1 << 2),
+		DOOR = (1 << 3),
+		FLAG_END
+	};
+
+
 
 
 }

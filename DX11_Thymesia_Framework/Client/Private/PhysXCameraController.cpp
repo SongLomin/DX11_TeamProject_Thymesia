@@ -1,6 +1,8 @@
 ﻿#include "stdafx.h"
 #include "PhysXCameraController.h"
 #include "Transform.h"
+#include "GameInstance.h"
+#include "GameObject.h"
 
 GAMECLASS_C(CPhysXCameraController);
 IMPLEMENT_CLONABLE(CPhysXCameraController, CComponent);
@@ -39,27 +41,10 @@ void CPhysXCameraController::onShapeHit(const PxControllerShapeHit& hit)
 		return;
 	}
 
-	PxRaycastHit newHit;
-	// ÄÁ¹öÆ® ÇÇÁ÷½ºVec3 
-	PxVec3 RayPos = SMath::Convert_PxVec3(XMLoadFloat4(&m_RayCamera.vOrigin));
-	PxVec3 RayDir = SMath::Convert_PxVec3(XMLoadFloat3(&m_RayCamera.vDirection));
+	m_pLastHitShape = hit.shape;
+	m_pLastHitActor = hit.actor;
 
-	PxU32 n = PxShapeExt::raycast(
-		*hit.shape, *hit.actor
-		, RayPos, RayDir,
-		(PxReal)m_RayCamera. fLength,
-		PxHitFlag::ePOSITION, 1, &newHit);
-
-
-	if (n > 0)
-	{
-
-		int i = 0;
-		//PxExtendedVec3 position{ newHit.position.x, newHit.position.y, newHit.position.z };
-
-		//m_pController->setPosition(position);
-	}
-
+	cout << "ShapeHit" << endl;
 
 }
 
@@ -73,7 +58,7 @@ void CPhysXCameraController::onObstacleHit(const PxControllerObstacleHit& hit)
 
 PxControllerBehaviorFlags CPhysXCameraController::getBehaviorFlags(const PxShape& shape, const PxActor& actor)
 {
-	return PxControllerBehaviorFlags(0);
+	return PxControllerBehaviorFlag::eCCT_USER_DEFINED_RIDE;
 }
 
 PxControllerBehaviorFlags CPhysXCameraController::getBehaviorFlags(const PxController& controller)
@@ -111,6 +96,8 @@ void CPhysXCameraController::Synchronize_Transform(weak_ptr<CTransform> pTransfo
 
 	XMStoreFloat3(&m_vPrePosition, vPos);
 
+	cout << "Synchronize_Transform" << endl;
+
 	pTransform.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
 }
 
@@ -122,6 +109,8 @@ PxControllerCollisionFlags CPhysXCameraController::Synchronize_Controller(weak_p
 	PxVec3 vMovePositionToPx = SMath::Convert_PxVec3(vMovePosition);
 
 	filters.mCCTFilterCallback = this;
+
+	cout << "Synchronize_Controller" << endl;
 
 	return m_pController->move(vMovePositionToPx, 0.f, elapsedTime, filters);
 }
@@ -146,10 +135,68 @@ PxControllerCollisionFlags CPhysXCameraController::MoveGravity(const _float fDel
 	return  __super::MoveGravity(fDeltaTime, filters);
 }
 
-
-void CPhysXCameraController::Update_Ray(const RAY& In_Ray)
+void CPhysXCameraController::Update_RayCastCollision(_float fDeltaTime)
 {
-	m_RayCamera = In_Ray;
+	if (!m_pLastHitShape || !m_pLastHitActor)
+		return;
+
+	
+
+	_vector vPlayerToCameraDir = m_pOwner.lock()->Get_Transform()->Get_Position() - m_pTargetTransformCom.lock()->Get_Position() + XMVectorSet(0.f, 1.1f, 0.f, 0.f);	
+	_float fLength = 1000.f;
+	vPlayerToCameraDir = XMVector3Normalize(vPlayerToCameraDir);
+
+	
+
+	_vector vPlayerPosition = m_pTargetTransformCom.lock()->Get_Position() + XMVectorSet(0.f, 1.1f, 0.f, 0.f);
+
+	XMStoreFloat4(&m_RayCamera.vOrigin, vPlayerPosition);
+	XMStoreFloat3(&m_RayCamera.vDirection, vPlayerToCameraDir);
+	m_RayCamera.vOrigin.w = 1.f;
+	m_RayCamera.fLength = 1000.f;
+
+
+	PxRaycastHit newHit;
+
+	PxVec3 RayPos = SMath::Convert_PxVec3(XMLoadFloat4(&m_RayCamera.vOrigin));
+	PxVec3 RayDir = SMath::Convert_PxVec3(XMLoadFloat3(&m_RayCamera.vDirection));
+
+	PxU32 n = PxShapeExt::raycast(
+		*m_pLastHitShape, *m_pLastHitActor
+		, RayPos, RayDir,
+		(PxReal)m_RayCamera.fLength,
+		PxHitFlag::ePOSITION, 1, &newHit);
+
+	
+	PxVec3 RayDirOffset = (RayDir * -1.f) * 0.7f;
+
+	// 충돌했는지?
+	if (n > 0)
+	{
+		
+
+		// + PxExtendedVec3(RayDirOffset.x, RayDirOffset.y, RayDirOffset.z)
+
+		newHit.position += RayDirOffset;
+
+		PxExtendedVec3 position = m_pController->getPosition();
+
+		PxVec3 MovePosition = newHit.position - PxVec3(position.x, position.y, position.z);
+
+		//PxControllerFilters Filters;
+		//Filters.mFilterFlags = PxQueryFlag::Enum(0);
+
+		m_pController->setPosition({ newHit.position.x, newHit.position.y, newHit.position.z });
+		Print_Vector(SMath::Convert_PxExtendedVec3ToVector(position));
+		//m_pController->move(MovePosition, 0.f, fDeltaTime, Filters);
+		
+	}
+}
+
+
+void CPhysXCameraController::Update_Ray(weak_ptr<CTransform> pTargetTransform)
+{
+	m_pTargetTransformCom = pTargetTransform;
 }
 
 void CPhysXCameraController::Free()

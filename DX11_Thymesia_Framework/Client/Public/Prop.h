@@ -27,9 +27,6 @@ public:
     virtual void Custom_Thread1(_float fTimeDelta) override;
     virtual HRESULT Render() override;
 
-public:
-    void Set_ShaderPass(_bool _iIndex) { m_iPassIndex = _iIndex; }
-
 protected:
     virtual void SetUp_ShaderResource();
 

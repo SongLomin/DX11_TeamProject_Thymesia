@@ -50,7 +50,7 @@ void CCorvusState_Climb_L_Down::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
+	Get_OwnerPlayer()->Change_State<CCorvusState_Climb_R_Idle>();
 
 }
 

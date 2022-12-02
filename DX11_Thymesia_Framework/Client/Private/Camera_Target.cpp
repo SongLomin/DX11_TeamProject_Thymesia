@@ -35,9 +35,9 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 
 	GET_SINGLE(CGameManager)->Use_EffectGroup("Tutorial_Dust", m_pTransformCom);
 
-	m_pPhysXCameraControllerCom = Add_Component<CPhysXCameraController>();
-	m_pPhysXCameraControllerCom.lock()->Set_CurrentCameraController();
-	m_pPhysXCameraControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::CameraSetting(m_pTransformCom));
+	 m_pPhysXCameraControllerCom = Add_Component<CPhysXCameraController>();
+	 m_pPhysXCameraControllerCom.lock()->Set_CurrentCameraController();
+	 m_pPhysXCameraControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::CameraSetting(m_pTransformCom));
 	
 	return S_OK;
 }
@@ -114,11 +114,13 @@ void CCamera_Target::Tick(_float fTimeDelta)
 			Free_MouseMove(fTimeDelta);
 		}
 
+
 		Calculate_ShakingOffSet(fTimeDelta);
 		Calculate_ZoomOffSet(fTimeDelta);
 		Interpolate_Camera(fTimeDelta);
 	}
 
+		Update_PhysXCollider(fTimeDelta);
 	
 	/*RAY PlayerToCameraRay;
 	_vector vPlayerToCameraDir = m_pTransformCom.lock()->Get_Position() - m_pCurrentPlayerTransformCom.lock()->Get_Position();
@@ -131,22 +133,8 @@ void CCamera_Target::Tick(_float fTimeDelta)
 	PlayerToCameraRay.vOrigin.w = 1.f;
 	PlayerToCameraRay.fLength = fLength;*/
 
-	RAY PlayerToCameraRay;
-	_vector vPlayerToCameraDir = m_pCurrentPlayerTransformCom.lock()->Get_Position() - m_pTransformCom.lock()->Get_Position();
-	_float fLength = XMVectorGetX(XMVector3Length(vPlayerToCameraDir));
-	vPlayerToCameraDir = XMVector3Normalize(vPlayerToCameraDir);
-	_vector vPlayerPosition = m_pTransformCom.lock()->Get_Position();
-
-	XMStoreFloat4(&PlayerToCameraRay.vOrigin, vPlayerPosition);
-	XMStoreFloat3(&PlayerToCameraRay.vDirection, vPlayerToCameraDir);
-	PlayerToCameraRay.vOrigin.w = 1.f;
-	PlayerToCameraRay.fLength = fLength;
-
-	PxControllerFilters Filters;
-
-	m_pPhysXCameraControllerCom.lock()->Update_Ray(PlayerToCameraRay);
-	m_pPhysXCameraControllerCom.lock()->Synchronize_Controller(m_pTransformCom, fTimeDelta, Filters);
-	m_pPhysXCameraControllerCom.lock()->Synchronize_Transform(m_pTransformCom);
+	
+	
 }
 
 void CCamera_Target::LateTick(_float fTimeDelta)
@@ -344,10 +332,12 @@ void CCamera_Target::Free_MouseMove(_float fTimeDelta)//마우스 움직임
 	}
 	if (fabs(m_iMouseMovementY) > DBL_EPSILON)
 		m_pTransformCom.lock()->Turn(m_pTransformCom.lock()->Get_State(CTransform::STATE_RIGHT), fTimeDelta * m_iMouseMovementY * 0.2f * 0.1f);
+
 	m_iMouseMovementY = _long(m_iMouseMovementY * 0.8f);
 
 	if (fabs(m_iMouseMovementX) > DBL_EPSILON)
 		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * 0.1f * m_iMouseMovementX * 0.2f);
+
 	m_iMouseMovementX = _long(m_iMouseMovementX * 0.8f);
 
 }
@@ -392,7 +382,7 @@ void CCamera_Target::Calculate_ShakingOffSet(_float fTimeDelta)
 			m_fShakingQuarterFrequency = 0.f;
 		}
 		m_vShakingStartOffSet = m_vShaking;
-		
+
 	}
 	else
 	{
@@ -405,6 +395,8 @@ void CCamera_Target::Calculate_ShakingOffSet(_float fTimeDelta)
 			XMStoreFloat3(&m_vShaking, CEasing_Utillity::CircOut(vStartPoint, vEndPoint, m_fShakingDecreaseTime, 1.5f));
 			//XMStoreFloat3(&m_vShaking, XMVectorLerp(XMLoadFloat3(&m_vShaking), XMVectorSet(0.f, 0.f, 0.f, 0.f), fTimeDelta*fTimeDelta));
 		}
+
+
 	}
 
 	/*if (m_bIncreaseShake)
@@ -512,6 +504,16 @@ void CCamera_Target::Update_Bone()
 
 	XMStoreFloat4x4(&m_CinemaWorldMatrix, TotalMatrix);
 	
+}
+
+void CCamera_Target::Update_PhysXCollider(_float fTimeDelta)
+{
+	PxControllerFilters Filters;
+
+	m_pPhysXCameraControllerCom.lock()->Update_Ray(m_pCurrentPlayerTransformCom);
+	m_pPhysXCameraControllerCom.lock()->Synchronize_Controller(m_pTransformCom, fTimeDelta, Filters);
+	m_pPhysXCameraControllerCom.lock()->Update_RayCastCollision(fTimeDelta);
+	m_pPhysXCameraControllerCom.lock()->Synchronize_Transform(m_pTransformCom);
 }
 
 void CCamera_Target::OnLevelExit()

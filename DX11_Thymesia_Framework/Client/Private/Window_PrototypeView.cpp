@@ -125,12 +125,8 @@ HRESULT CWindow_PrototypeView::Render()
 
 void CWindow_PrototypeView::Add_Prototypes()
 {
-#define ADD_PROTOTYPE(Layer, ClassType) m_pPrototypes[Layer].push_back({ typeid(ClassType).hash_code(), typeid(ClassType).name(), GAMEINSTANCE->Add_Prototype_GameObject<ClassType>() });
 
-    //ADD_PROTOTYPE(PROTOTYPE_ACTOR, CDummy_Player);
-    /*ADD_PROTOTYPE(PROTOTYPE_PROP, CStage1);
-    ADD_PROTOTYPE(PROTOTYPE_PROP, CStage2);
-    ADD_PROTOTYPE(PROTOTYPE_PROP, CStage3);*/
+#define ADD_PROTOTYPE(Layer, ClassType) m_pPrototypes[Layer].push_back({ typeid(ClassType).hash_code(), typeid(ClassType).name(), GAMEINSTANCE->Add_Prototype_GameObject<ClassType>() });
 
     ADD_PROTOTYPE(PROTOTYPE_PROP, CTerrain);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStatic_Prop);
@@ -139,11 +135,15 @@ void CWindow_PrototypeView::Add_Prototypes()
     ADD_PROTOTYPE(PROTOTYPE_PROP, CPhysXColliderObject);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CInteraction_Dynamic_Prop);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CInteraction_Ladder);
+    ADD_PROTOTYPE(PROTOTYPE_PROP, CInteraction_CheckPoint);
+    ADD_PROTOTYPE(PROTOTYPE_PROP, CInteraction_Elevator);
+    ADD_PROTOTYPE(PROTOTYPE_PROP, CInteraction_Door);
 
     ADD_PROTOTYPE(PROTOTYPE_EDIT_PROP, CEditGround);
     ADD_PROTOTYPE(PROTOTYPE_EDIT_PROP, CEditGroupProp);
     ADD_PROTOTYPE(PROTOTYPE_EDIT_PROP, CEditInstanceProp);
     ADD_PROTOTYPE(PROTOTYPE_EDIT_PROP, CEditMapCollider);
+
 
     ADD_PROTOTYPE(PROTOTYPE_UI, CFadeMask);
 

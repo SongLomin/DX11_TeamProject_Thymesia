@@ -90,7 +90,9 @@ public:
 	void Rotation_Quaternion(_fvector vQuaternion);
 	void LookAt(_fvector vTargetPos);
 	void LookAt2D(_fvector vTargetPos);
+	void LookAt_Right(_fvector vTargetRight);
 	void Set_Look(_fvector vLook);
+	void Set_Look2D(_fvector vLook);
 	void Chase(_fvector vTargetPos, _float fTimeDelta);
 
 public:

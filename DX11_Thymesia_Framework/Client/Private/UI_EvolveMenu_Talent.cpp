@@ -8,6 +8,9 @@
 #include "State_Player.h"
 #include "Player.h"
 #include "FadeMask.h"
+#include "UI_EvolveMenu_TalentButton.h"
+#include "Talent_Effects.h"
+#include "CorvusStates/Talent.h"
 
 GAMECLASS_C(CUI_EveolveMenu_Talent)
 CLONE_C(CUI_EveolveMenu_Talent, CGameObject)
@@ -35,13 +38,41 @@ HRESULT CUI_EveolveMenu_Talent::Initialize(void* pArg)
     
     m_iTalentIndex = 0;
 
+    m_fTreeOffsetY = 100.f;
+    m_fTreeOffsetX = 50.f;
+
+
+
+
+    Create_TalentInformation();
+
+
+
+
+
     Set_Enable(false);
+
+
+
+
     return S_OK;
 }
 
 HRESULT CUI_EveolveMenu_Talent::Start()
 {
     __super::Start();
+
+    UI_DESC tUIDesc;
+
+    tUIDesc.fX = 192.f;
+    tUIDesc.fY = 317.f;;
+    tUIDesc.fSizeX = 40.f;
+    tUIDesc.fSizeY = 40.f;
+    tUIDesc.fDepth = 0.1f;
+
+    SetUp_TalentNode(m_pRoot[0], tUIDesc);
+
+    int a = 10;
 
     return S_OK;
 }
@@ -72,6 +103,11 @@ void CUI_EveolveMenu_Talent::LateTick(_float fTimeDelta)
 
 }
 
+void CUI_EveolveMenu_Talent::SetRootTalent(weak_ptr<CTalent> In_pTalent, TALENT_TAP eRootType)
+{
+    m_pRoot[(_uint)eRootType] = In_pTalent;
+}
+
 void CUI_EveolveMenu_Talent::Create_Background()
 {
     m_pPauseMenuBackground = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
@@ -90,6 +126,40 @@ void CUI_EveolveMenu_Talent::Create_Background()
     m_vecChildUI.push_back(m_pPauseMenuBackground_Main);
     m_vecChildUI.push_back(m_pPauseMenuBackground_Top);
 }
+void CUI_EveolveMenu_Talent::Create_TalentInformation()
+{
+    m_pMediaFrame = ADD_STATIC_CUSTOMUI;
+    
+    m_pMediaFrame.lock()->Set_UIPosition
+    (
+        982.f,
+        127.f,
+        497.f,
+        288.f,
+        ALIGN_LEFTTOP
+    );
+    m_pMediaFrame.lock()->Set_Texture("MediaFrame");
+    m_pMediaFrame.lock()->Set_Depth(0.3f);
+
+    Add_Child(m_pMediaFrame);
+
+
+    m_pTalentInformationBG = ADD_STATIC_CUSTOMUI;
+
+    m_pTalentInformationBG.lock()->Set_UIPosition
+    (
+        982.f,
+        478.f,
+        497.f,
+        327.f,
+        ALIGN_LEFTTOP
+    );
+    m_pTalentInformationBG.lock()->Set_Texture("Talent_Information_BG");
+    m_pTalentInformationBG.lock()->Set_Depth(0.3f);
+    m_pTalentInformationBG.lock()->Set_AlphaColor(0.2f);
+    Add_Child(m_pTalentInformationBG);
+
+}
 void CUI_EveolveMenu_Talent::Init_Tap()
 {
 //    m_pTap[(_uint)TALENT_TAP::TALENT_SWORD]
@@ -101,12 +171,40 @@ void CUI_EveolveMenu_Talent::Update_UI()
 
 }
 
-
-
 void CUI_EveolveMenu_Talent::OnEnable(void* pArg)
 {
+    __super::OnEnable(pArg);
+
+    ShowCursor(true);
+  
+
     if (!m_pFadeMask.lock())
         m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
+
+    for (_uint i = 0; i < 1; i++)
+    {
+        if (m_pRoot[i].lock())
+        {
+            m_pRoot[i].lock()->Set_Enable(true);
+        }
+    }
+
+}
+void CUI_EveolveMenu_Talent::OnDisable()
+{
+    __super::OnDisable();
+
+    ShowCursor(false);
+
+
+    for (_uint i = 0; i < (_uint)TALENT_TAP::TALENT_SWORD; i++)
+    {
+        if (m_pRoot[i].lock())
+        {
+            m_pRoot[i].lock()->Set_Enable(false);
+        }
+    }
+
 }
 void CUI_EveolveMenu_Talent::UI_ChangeTap()
 {
@@ -122,6 +220,47 @@ void CUI_EveolveMenu_Talent::UI_ChangeTap()
         m_pTap[m_iTalentIndex].lock()->Set_Enable(true);
     }
 }
+
+
+void CUI_EveolveMenu_Talent::SetUp_TalentNode(weak_ptr<CTalent> pNode, UI_DESC tUIDesc)
+{
+    pNode.lock()->Set_UIPosition(tUIDesc.fX, tUIDesc.fY);
+
+    list<weak_ptr<CTalent>> ChildList = pNode.lock()->Get_Child();
+    
+    /*
+       여기에 탤런트 정보 넣어야함.
+    */
+    if (ChildList.empty())
+        return;
+
+    if (ChildList.size() == 1)
+    {
+        tUIDesc.fY += m_fTreeOffsetY;
+        SetUp_TalentNode(ChildList.front(), tUIDesc);
+    }
+    else
+    {
+        int i = 0;
+        tUIDesc.fY += m_fTreeOffsetY;
+        for (auto& elem : ChildList)
+        {
+            UI_DESC childDesc = tUIDesc;
+            if (i % 2 == 0)
+            {
+                childDesc.fX += (((i + 1) * -1) * m_fTreeOffsetX);
+            }
+            else
+            {
+                childDesc.fX += ((i) * m_fTreeOffsetX);
+            }
+            i++;
+            SetUp_TalentNode(elem, childDesc);
+          
+        }
+    }
+}
+
 void CUI_EveolveMenu_Talent::Call_ReturnToEvolveMenu()
 {
     Set_Enable(false);

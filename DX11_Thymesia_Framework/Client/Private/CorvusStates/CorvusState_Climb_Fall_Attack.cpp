@@ -6,6 +6,7 @@
 #include "BehaviorBase.h"
 #include "Animation.h"
 #include "CorvusStates/CorvusStates.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CCorvusState_Climb_Fall_Attack);
 CLONE_C(CCorvusState_Climb_Fall_Attack, CComponent)
@@ -92,6 +93,16 @@ _bool CCorvusState_Climb_Fall_Attack::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
 		return false;
+
+	PxControllerCollisionFlags Flags = Get_OwnerCharacter().lock()->Get_LastCollisionFlags();
+
+	if ((Flags & PxControllerCollisionFlag::eCOLLISION_DOWN))
+	{
+		//¶¥¿¡ºÙÀ½
+		m_pPhysXControllerCom.lock()->Enable_Gravity(true);	
+	}
+
+
 
 
 	return false;
