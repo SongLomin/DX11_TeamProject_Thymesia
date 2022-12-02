@@ -5,7 +5,7 @@
 BEGIN(Engine)
 
 class CCollider;
-//class CPhysXCollider;
+class CPhysXCollider;
 
 END
 
@@ -21,7 +21,7 @@ private:
     enum ACTION_FLAG
     {
         ACTIVATE = ( 1 << 0 ), // 1
-        OPEN     = ( 1 << 1 ), // 2
+        ROTATION = ( 1 << 1 ), // 2
     };
 
 public:
@@ -49,10 +49,11 @@ private:
 private:
     weak_ptr<CCollider>         m_pColliderCom;
     weak_ptr<CPhysXCollider>    m_pPhysXColliderCom;
-
-    _flag                       m_bActionFlag   = ACTION_FLAG::OPEN;
-    _float                      m_fAddRadian    = 0.f;
-    _float                      m_fFirstRadian  = 0.f;
+         
+    _flag                       m_ActionFlag        = ACTION_FLAG::ROTATION;
+    _float                      m_fRotationtRadian  = XMConvertToRadians(90.f);
+    _float                      m_fAddRadian        = 0.f;
+    _float                      m_fFirstRadian      = 0.f;
 };
 
 END

@@ -16,8 +16,8 @@
 #pragma region Console Outputs
 // #define		_DEBUG_COUT_
 #define		_DEBUG_COUT_JOJO
-//#define		_STAGE_1_
-#define		_STAGE_2_
+#define		_STAGE_1_
+//#define		_STAGE_2_
 #define		_NORMAL_MONSTERS
 #pragma region Boss Mobs
 #define		_BOSS_MONSTERS_

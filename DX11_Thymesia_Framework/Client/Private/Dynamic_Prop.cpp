@@ -141,10 +141,6 @@ void CDynamic_Prop::Load_FromJson(const json& In_Json)
         m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
         Preset::Dynamic_Prop::GateWay_DynamicPropSetting(m_pModelCom.lock()->Get_ModelKey(), m_CreatedLevel, m_pPieces);
     }
-    else
-    {
-        DEBUG_ASSERT;
-    }
 }
 
 void CDynamic_Prop::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
