@@ -193,6 +193,7 @@
     <ClInclude Include="..\Bin\ShaderFiles\Client_Shader_Defines.hpp" />
     <ClInclude Include="..\Bin\ShaderFiles\Engine_Shader_Defines.hpp" />
     <ClInclude Include="..\Private\CorvusStates\CorvusState_LAttack5.h" />
+    <ClInclude Include="..\Private\Player_HPBar_Default.h" />
     <ClInclude Include="..\Public\Actor.h" />
     <ClInclude Include="..\Public\ActorDecor.h" />
     <ClInclude Include="..\Public\AIStateBase.h" />
@@ -256,19 +257,21 @@
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_SharpWeaponLV1.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_SharpWeaponLV2.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Sword.h" />
+    <ClInclude Include="..\Public\CState_AVoid.h" />
+    <ClInclude Include="..\Public\CustomFont.h" />
     <ClInclude Include="..\Public\Dynamic_Piece.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h" />
     <ClInclude Include="..\Public\EasingTransform.h" />
     <ClInclude Include="..\Public\EditMapCollider.h" />
-    <ClInclude Include="..\Public\EvolveMenu_TalentButton.h" />
     <ClInclude Include="..\Public\Interaction_CheckPoint.h" />
     <ClInclude Include="..\Public\Interaction_Door.h" />
     <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h" />
     <ClInclude Include="..\Public\Interaction_Elevator.h" />
     <ClInclude Include="..\Public\Interaction_Ladder.h" />
     <ClInclude Include="..\Public\Level_Test.h" />
+    <ClInclude Include="..\Public\MonsterParryingBar.h" />
     <ClInclude Include="..\Public\PhysXCameraController.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
@@ -288,8 +291,12 @@
     <ClInclude Include="..\Public\Effect_Trail_Distortion.h" />
     <ClInclude Include="..\Public\Effect_Trail_EyeLight.h" />
     <ClInclude Include="..\Public\MobWeapon.h" />
+    <ClInclude Include="..\Public\PlayerUI_Defines.h" />
+    <ClInclude Include="..\Public\Player_ItemSkillCollection.h" />
     <ClInclude Include="..\Public\Preset_AddGameObject.h" />
     <ClInclude Include="..\Public\Preset_DynamicProp.h" />
+    <ClInclude Include="..\Public\State_Monster.h" />
+    <ClInclude Include="..\Public\State_Player.h" />
     <ClInclude Include="..\Public\Status_Boss.h" />
     <ClInclude Include="..\Public\Status_Monster.h" />
     <ClInclude Include="..\Public\Status_Player.h" />
@@ -299,10 +306,13 @@
     <ClInclude Include="..\Public\UI_Container.h" />
     <ClInclude Include="..\Public\UI_Containers.h" />
     <ClInclude Include="..\Public\UI_DamageFont.h" />
+    <ClInclude Include="..\Public\UI_Elements.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Level.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Talent.h" />
     <ClInclude Include="..\Public\UI_LerpBar.h" />
+    <ClInclude Include="..\Public\UI_MenuText.h" />
+    <ClInclude Include="..\Public\UI_PauseMenu_PlagueWeapon.h" />
     <ClInclude Include="..\Public\UI_Script.h" />
     <ClInclude Include="..\Public\UI_ScriptQueue.h" />
     <ClInclude Include="..\Public\UI_T_Dissolve.h" />
@@ -577,6 +587,7 @@
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_SharpWeaponLV1.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_SharpWeaponLV2.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Sword.cpp" />
+    <ClCompile Include="..\Private\CustomFont.cpp" />
     <ClCompile Include="..\Private\Dynamic_Piece.cpp" />
     <ClCompile Include="..\Private\EasingTransform.cpp" />
     <ClCompile Include="..\Private\EditMapCollider.cpp" />
@@ -585,7 +596,6 @@
     <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\Interaction_Elevator.cpp" />
     <ClCompile Include="..\Private\Interaction_Ladder.cpp" />
-    <ClCompile Include="..\Private\EvolveMenu_TalentButton.cpp" />
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Parry.cpp" />
     <ClCompile Include="..\Private\PhysXCameraController.cpp">
@@ -593,6 +603,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\PhysXCharacterController.cpp" />
+    <ClCompile Include="..\Private\Player_HPBar_Default.cpp" />
+    <ClCompile Include="..\Private\Player_ItemSkillCollection.cpp" />
     <ClCompile Include="..\Private\Preset_DynamicProp.cpp" />
     <ClCompile Include="..\Private\Preset_AddGameObject.cpp" />
     <ClCompile Include="..\Private\Status_Boss.cpp" />
@@ -621,9 +633,11 @@
     <ClCompile Include="..\Private\Preset_PhysXControllerDesc.cpp" />
     <ClCompile Include="..\Private\Level_Test.cpp" />
     <ClCompile Include="..\Private\PhysXColliderObject.cpp" />
+    <ClCompile Include="..\Private\UI_MenuText.cpp" />
     <ClCompile Include="..\Private\UI_Script.cpp" />
     <ClCompile Include="..\Private\UI_ScriptQueue.cpp" />
     <ClCompile Include="..\Private\UI_T_Dissolve.cpp" />
+    <ClCompile Include="..\Private\UltimateUI.cpp" />
     <ClCompile Include="..\Private\VargBossStateBase.cpp" />
     <ClCompile Include="..\Private\BossVarg\Varg.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack1a.cpp" />

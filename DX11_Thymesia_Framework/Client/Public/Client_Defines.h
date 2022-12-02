@@ -31,7 +31,7 @@
 #define		_USE_GRAVITY_
 // #define		_DAGGER_TRAIL_
 #define		_TEST_STATIC_PROPS_
-//#define		_ONLY_UI_
+#define		_ONLY_UI_
 #define		_BONE_PARTICLE_
 // #define		_BONE_MESHEFFECT_
 //#define		_LOAD_CAPTURED_RESOURCE_

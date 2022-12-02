@@ -15,12 +15,22 @@ void Preset::AddGameObject::TalentSetting()
 	pSword1Talent.lock()->Add_Component<CTalent_Effect_NorSwordLV1>();
 	pSword1Talent.lock()->Set_TALENT_NAME(TALENT_NAME::NORSWORDLV1);
 	pSword1Talent.lock()->Set_Active(true);
+	pSword1Talent.lock()->Callback_OnMouseOver += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOver, pEvolveMenu_Talent.lock(), placeholders::_1);
+	pSword1Talent.lock()->Callback_OnMouseOut += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOut, pEvolveMenu_Talent.lock());
+
+
 
 	// Sword2
 	weak_ptr<CTalent> pSword2Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
 	pSword2Talent.lock()->Add_Component<CTalent_Effect_NorSwordLV2>();
 	pSword2Talent.lock()->Set_TALENT_NAME(TALENT_NAME::NORSWORDLV2);
 	pSword2Talent.lock()->Set_Parent(pSword1Talent);
+	
+	pSword2Talent.lock()->Callback_OnMouseOver += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOver, pEvolveMenu_Talent.lock(), placeholders::_1);
+	pSword2Talent.lock()->Callback_OnMouseOut += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOut, pEvolveMenu_Talent.lock());
+
+
+
 
 	// Slash1
 	weak_ptr<CTalent> pSlash1Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
@@ -28,11 +38,22 @@ void Preset::AddGameObject::TalentSetting()
 	pSlash1Talent.lock()->Set_TALENT_NAME(TALENT_NAME::AVOIDSLASHLV1);
 	pSlash1Talent.lock()->Set_Parent(pSword2Talent);
 
+	pSlash1Talent.lock()->Callback_OnMouseOver += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOver, pEvolveMenu_Talent.lock(), placeholders::_1);
+	pSlash1Talent.lock()->Callback_OnMouseOut += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOut, pEvolveMenu_Talent.lock());
+
+
+
 	// Slash2
 	weak_ptr<CTalent> pSlash2Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
 	pSlash2Talent.lock()->Add_Component<CTalent_Effect_AvoidSlashLV2>();
 	pSlash2Talent.lock()->Set_TALENT_NAME(TALENT_NAME::AVOIDSLASHLV2);
 	pSlash2Talent.lock()->Set_Parent(pSlash1Talent);
+
+
+	pSlash2Talent.lock()->Callback_OnMouseOver += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOver, pEvolveMenu_Talent.lock(), placeholders::_1);
+	pSlash2Talent.lock()->Callback_OnMouseOut += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOut, pEvolveMenu_Talent.lock());
+
+
 
 	// Thrust1
 	weak_ptr<CTalent> pThrust1Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
@@ -40,12 +61,21 @@ void Preset::AddGameObject::TalentSetting()
 	pThrust1Talent.lock()->Set_TALENT_NAME(TALENT_NAME::AVOIDTHRUSTLV1);
 	pThrust1Talent.lock()->Set_Parent(pSword2Talent);
 
+
+	pThrust1Talent.lock()->Callback_OnMouseOver += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOver, pEvolveMenu_Talent.lock(), placeholders::_1);
+	pThrust1Talent.lock()->Callback_OnMouseOut += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOut, pEvolveMenu_Talent.lock());
+
+
 	// Thrust2
 	weak_ptr<CTalent> pThrust2Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
 	pThrust2Talent.lock()->Add_Component<CTalent_Effect_AvoidThrustLV2>();
 	pThrust2Talent.lock()->Set_TALENT_NAME(TALENT_NAME::AVOIDTHRUSTLV2);
 	pThrust2Talent.lock()->Set_Parent(pThrust1Talent);
 	// 검파트 첫번째부분 끝  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+	pThrust2Talent.lock()->Callback_OnMouseOver += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOver, pEvolveMenu_Talent.lock(), placeholders::_1);
+	pThrust2Talent.lock()->Callback_OnMouseOut += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOut, pEvolveMenu_Talent.lock());
+
 
 	pEvolveMenu_Talent.lock()->SetRootTalent(pSword1Talent, CUI_EveolveMenu_Talent::TALENT_TAP::TALENT_SWORD);
 

@@ -29,8 +29,8 @@ protected:
 
 private:
 
-public:
-	virtual void Free() override;
+private:
+	void Free();
 
 };
 
