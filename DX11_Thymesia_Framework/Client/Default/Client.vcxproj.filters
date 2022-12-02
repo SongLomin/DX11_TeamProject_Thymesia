@@ -968,6 +968,19 @@
       <Filter>05. Component\00. PhysXController\01. PhysXPlayerController</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CCorvus.h" />
+    <ClInclude Include="..\Public\MonsterParryingBar.h">
+      <Filter>02. GameObject\01. UI\UI_Elem\Parrying</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Private\Player_HPBar_Default.h" />
+    <ClInclude Include="..\Public\CState_AVoid.h" />
+    <ClInclude Include="..\Public\CustomFont.h" />
+    <ClInclude Include="..\Public\Player_ItemSkillCollection.h" />
+    <ClInclude Include="..\Public\PlayerUI_Defines.h" />
+    <ClInclude Include="..\Public\State_Monster.h" />
+    <ClInclude Include="..\Public\State_Player.h" />
+    <ClInclude Include="..\Public\UI_Elements.h" />
+    <ClInclude Include="..\Public\UI_MenuText.h" />
+    <ClInclude Include="..\Public\UI_PauseMenu_PlagueWeapon.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1517,7 +1530,6 @@
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UI_LerpBar.cpp" />
-    <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Stop.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
     </ClCompile>
@@ -1938,7 +1950,6 @@
     <ClCompile Include="..\Private\Actor.cpp" />
     <ClCompile Include="..\Private\BossUrd\Urd.cpp" />
     <ClCompile Include="..\Private\UI_Button.cpp" />
-    <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp" />
     <ClCompile Include="..\Private\BossMonster.cpp" />
     <ClCompile Include="..\Private\MobWeapon.cpp" />
     <ClCompile Include="..\Private\BossVarg\Varg.cpp" />
@@ -1986,6 +1997,17 @@
     <ClCompile Include="..\Private\MobWeapon.cpp" />
     <ClCompile Include="..\Private\MobWeapon.cpp" />
     <ClCompile Include="..\Private\CCorvus.cpp" />
+    <ClCompile Include="..\Private\MonsterParryingBar.cpp">
+      <Filter>02. GameObject\01. UI\UI_Elem\Parrying</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CustomFont.cpp" />
+    <ClCompile Include="..\Private\Player_HPBar_Default.cpp" />
+    <ClCompile Include="..\Private\Player_ItemSkillCollection.cpp" />
+    <ClCompile Include="..\Private\UI_MenuText.cpp" />
+    <ClCompile Include="..\Private\UltimateUI.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp">
+      <Filter>02. GameObject\01. UI\UI_Container\Evolve\Talent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

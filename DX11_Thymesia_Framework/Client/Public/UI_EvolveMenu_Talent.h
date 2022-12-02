@@ -60,12 +60,14 @@ private:
 
 private:
 	weak_ptr<CCustomUI>	m_pTalentImage;
-	weak_ptr<CCustomUI>	m_pTalentTitle;
-	weak_ptr<CCustomUI>	m_pTalentInformation;
+	weak_ptr<CCustomUI> m_pMediaFrame;//프레임
+	weak_ptr<CCustomUI>	m_pTalentTitle;//타이틀
+	weak_ptr<CCustomUI>	m_pTalentInformation;//정보
+	weak_ptr<CCustomUI>	m_pTalentInformationBG;//정보배경
+public:
+	void	Call_TalentMouseOver(TALENT_NAME eTalent_Name);
+	void	Call_TalentMouseOut();
 
-private:
-	weak_ptr<CCustomUI> m_pMediaFrame;
-	weak_ptr<CCustomUI>	m_pTalentInformationBG;
 
 
 private:
