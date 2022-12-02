@@ -110,9 +110,9 @@ void CProp::SetUp_ShaderResource()
 	XMStoreFloat4(&vCamDesc, GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[2]);
 	m_pShaderCom.lock()->Set_RawValue("g_vCamLook", &vCamDesc, sizeof(_float4));
 	
-	/*_float4 vPlayerPos;
+	_float4 vPlayerPos;
 	XMStoreFloat4(&vPlayerPos,GET_SINGLE(CGameManager)->Get_PlayerPos());
-	m_pShaderCom.lock()->Set_RawValue("g_vPlayerPosition", &vPlayerPos, sizeof(_float4));*/
+	m_pShaderCom.lock()->Set_RawValue("g_vPlayerPosition", &vPlayerPos, sizeof(_float4));
 
 	if (FAILED(m_pMaskingTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 92)))
 		return;
