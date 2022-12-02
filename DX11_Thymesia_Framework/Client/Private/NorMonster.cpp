@@ -213,7 +213,7 @@ void CNorMonster::Tick(_float fTimeDelta)
 	{
 	case  MONSTERTYPE::AXEMAN:
 		_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
 		//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDirs, m_pNaviMeshCom);
 		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 		break;
@@ -237,7 +237,7 @@ void CNorMonster::Tick(_float fTimeDelta)
 		break;
 	case  MONSTERTYPE::SHIELDAXEMAN:
 		vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
 		//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDirs, m_pNaviMeshCom);
 		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 		break;
