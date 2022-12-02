@@ -25,7 +25,7 @@
 #define		_STAGE_1_MONSTER_
 // #define		_VARG_
 //#define		_INSTANCE_CULLING_
-#define		_GENERATE_PROP_COLLIDER_ true
+// #define		_GENERATE_PROP_COLLIDER_ true
 #define		_USE_GRAVITY_
 // #define		_DAGGER_TRAIL_
 #define		_TEST_STATIC_PROPS_
@@ -45,8 +45,8 @@
 #define		_PROP_DISSOLVE_TEXTURES_
 #define _LOAD_UI_RESOURCES_
 // #define		_STAGE_1_
-// #define		_STAGE_2_
-#define		_STAGE_2_2_
+#define		_STAGE_2_
+// #define		_STAGE_2_2_
 #define		_NORMAL_MONSTERS
 #define		_BOSS_MONSTERS_
 // #define		_STAGE_1_MONSTER_
