@@ -97,8 +97,6 @@ HRESULT CPreViewAnimationModel::Render_ShadowDepth(_fmatrix In_LightViewMatrix, 
 	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)&In_LightViewMatrix, sizeof(_float4x4));
 	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)&In_LightProjMatrix, sizeof(_float4x4));
 
-	
-
 	_uint iNumMeshContainers = m_pCurrentModelCom.lock()->Get_NumMeshContainers();
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
@@ -127,8 +125,6 @@ void CPreViewAnimationModel::SetUp_ShaderResource()
 	if(m_pCurrentModelCom.lock())
 		m_pCurrentModelCom.lock()->Update_BoneMatrices();
 #endif // !_USE_THREAD_
-	
-
 }
 
 void CPreViewAnimationModel::Init_EditPreViewAnimationModel(const string& In_szModelKey)
@@ -165,12 +161,13 @@ void CPreViewAnimationModel::Init_EditPreViewAnimationModel(const string& In_szM
 	if (strcmp(In_szModelKey.c_str(), "Corvus") == 0)
 	{
 		Clear_ModelWeapon();
-
+#ifdef _ANIMATION_TOOL_CORVUS_WEAPON_
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultSaber>(LEVEL_STATIC));
 		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, "weapon_r");
 
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultDagger>(LEVEL_STATIC));
 		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, "weapon_l");
+#endif // _ANIMATION_TOOL_CORVUS_WEAPON_
 	}
 
 	if (strcmp(In_szModelKey.c_str(), "Boss_Varg") == 0)

@@ -792,9 +792,9 @@ void CCustomEffectMesh::Update_Scale(_float fFrameTime)
 	_vector vCurrentScale = XMLoadFloat3(&m_vCurrentScale);
 	vCurrentScale += vMoveScale;
 
-	XMVectorSetX(vCurrentScale, max(m_tEffectMeshDesc.vMinScale.x, min(m_tEffectMeshDesc.vMaxScale.x, XMVectorGetX(vCurrentScale))));
-	XMVectorSetY(vCurrentScale, max(m_tEffectMeshDesc.vMinScale.y, min(m_tEffectMeshDesc.vMaxScale.y, XMVectorGetY(vCurrentScale))));
-	XMVectorSetZ(vCurrentScale, max(m_tEffectMeshDesc.vMinScale.z, min(m_tEffectMeshDesc.vMaxScale.z, XMVectorGetZ(vCurrentScale))));
+	vCurrentScale = XMVectorSetX(vCurrentScale, max(m_tEffectMeshDesc.vMinScale.x, min(m_tEffectMeshDesc.vMaxScale.x, XMVectorGetX(vCurrentScale))));
+	vCurrentScale = XMVectorSetY(vCurrentScale, max(m_tEffectMeshDesc.vMinScale.y, min(m_tEffectMeshDesc.vMaxScale.y, XMVectorGetY(vCurrentScale))));
+	vCurrentScale = XMVectorSetZ(vCurrentScale, max(m_tEffectMeshDesc.vMinScale.z, min(m_tEffectMeshDesc.vMaxScale.z, XMVectorGetZ(vCurrentScale))));
 
 	XMStoreFloat3(&m_vCurrentScale, vCurrentScale);
 

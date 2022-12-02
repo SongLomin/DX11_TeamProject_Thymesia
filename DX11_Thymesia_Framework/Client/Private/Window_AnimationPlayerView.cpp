@@ -444,9 +444,15 @@ void CWindow_AnimationPlayerView::Draw_AnimationList()
     if (ImGui::Button("Hold"))
     {
         m_bHold = !m_bHold;
+
+        _byte byFlag(0);
+
         weak_ptr<CModel> pCurrentModel = m_pPreViewModel.lock()->Get_CurrentModel();
-        pCurrentModel.lock()->Set_RootNode("root", m_bHold);
-        
+
+        if (m_bHold)
+            byFlag = (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Z;
+            
+        pCurrentModel.lock()->Set_RootNode("root", byFlag);
     }
 
     ImGui::SameLine();
