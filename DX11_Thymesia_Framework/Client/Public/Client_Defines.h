@@ -11,8 +11,6 @@
 #define		_144HZ_
 #define		_RENDER_FPS_
 #define		_LIFEGUARD_FOR_FALL_
-//#define		_INSTANCE_CULLING_
-// #define		_GENERATE_PROP_COLLIDER_ true
 #pragma region Console Outputs
 // #define		_DEBUG_COUT_
 #define		_DEBUG_COUT_JOJO
