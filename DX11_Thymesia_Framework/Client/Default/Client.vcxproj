@@ -637,7 +637,6 @@
     <ClCompile Include="..\Private\UI_Script.cpp" />
     <ClCompile Include="..\Private\UI_ScriptQueue.cpp" />
     <ClCompile Include="..\Private\UI_T_Dissolve.cpp" />
-    <ClCompile Include="..\Private\UltimateUI.cpp" />
     <ClCompile Include="..\Private\VargBossStateBase.cpp" />
     <ClCompile Include="..\Private\BossVarg\Varg.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack1a.cpp" />

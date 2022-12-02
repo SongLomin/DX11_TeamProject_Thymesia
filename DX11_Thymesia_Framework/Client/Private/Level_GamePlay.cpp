@@ -97,7 +97,7 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	CMonster::STATE_LINK_MONSTER_DESC MONSTER;
 
-#ifdef _VARG_
+#ifdef _BOSS_VARG_
 	ZeroMemory(&MONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	MONSTER.eMonType = MONSTERTYPE::VARG;
 	MONSTER.eBossStartType = BOSSSTARTTYPE::BEGINSTART;
@@ -105,7 +105,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	MONSTER.vYame.y = 14.4f;
 	MONSTER.vYame.z = 30.32f;
 	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &MONSTER);
-#endif // _VARG_
+#endif // _BOSS_VARG_
 
 	//TODO 야매에요
 #ifdef _STAGE_1_MONSTER_

@@ -37,15 +37,15 @@ public:
     void    Set_Parent(weak_ptr<CTalent> In_Parent);
     void Set_Active(_bool Active);
     weak_ptr<CTalent_Effect> Get_Effect() { return m_pEffect; }
-    list<weak_ptr<CTalent>> CTalent::Get_Child()
+    list<weak_ptr<CTalent>> Get_Child()
     {
         return m_pChilds;
     }
-    inline weak_ptr<CTalent> CTalent::Get_Parent()
+    inline weak_ptr<CTalent> Get_Parent()
     {
         return m_pParent;
     }
-    _int                       Get_NodeLevel()
+    _int Get_NodeLevel()
     {
         return m_iNodeLevel;
     }

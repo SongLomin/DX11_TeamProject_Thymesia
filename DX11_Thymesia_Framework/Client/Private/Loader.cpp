@@ -224,10 +224,10 @@ HRESULT CLoader::Loading_ForLogoLevel()
 #ifndef _ONLY_UI_
 	GET_SINGLE(CGameManager)->Load_AllKeyEventFromJson();
 
+	_matrix			TransformMatrix;
 #ifdef _LOAD_CAPTURED_RESOURCE_
 	void(0);
 #else
-	_matrix			TransformMatrix;
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Corvus", "../Bin/Resources/Meshes/Corvus/Corvus.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC,true);
 
@@ -286,6 +286,12 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Model("Torch", "../Bin/Resources/Meshes/LightProp/Torch/Torch.FBX", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 	
 #endif
+	// _matrix			TransformMatrix;
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Boss_Varg", "../Bin/Resources/Meshes/Boss/Varg/Varg.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Boss_VargWeapon", "../Bin/Resources/Meshes/Boss/Varg/Weapon/VargWeapon.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	lstrcpy(m_szLoadingText, TEXT("객체 생성 중입니다. "));
 	

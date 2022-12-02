@@ -88,7 +88,7 @@ void CCamera_Target::Tick(_float fTimeDelta)
 				//TODO: 임시 쉐이킹 기본 타격 셰이킹은 이거 쓰면 될 듯
 				//GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 1.f, 0.f), 0.5f,0.1f);
 				//TODO: 과격한 타격 쉐이킹
-				 GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 1.f, 0.f), 0.5f,0.6f);
+				// GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 1.f, 0.f), 0.5f,0.6f);
 				 
 				//GET_SINGLE(CGameManager)->Activate_Zoom(-1.f);
 			}
@@ -96,7 +96,7 @@ void CCamera_Target::Tick(_float fTimeDelta)
 			{
 				GET_SINGLE(CGameManager)->Release_Focus();
 				//TODO: 과격한 타격 쉐이킹
-				GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 1.f, 0.f), 0.5f, 0.6f);
+				// GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 1.f, 0.f), 0.5f, 0.6f);
 				//GET_SINGLE(CGameManager)->Deactivate_Zoom();
 			}
 		}

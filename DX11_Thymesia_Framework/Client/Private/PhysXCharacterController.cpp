@@ -26,7 +26,7 @@ void CPhysXCharacterController::Start()
 
 bool CPhysXCharacterController::filter(const PxController& a, const PxController& b)
 {
-	return false;
+	return true;
 }
 
 void CPhysXCharacterController::onShapeHit(const PxControllerShapeHit& hit)

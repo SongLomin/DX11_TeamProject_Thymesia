@@ -76,11 +76,11 @@ void CStatus_Monster::Init_Status(const void* pArg)
 	{
 	case Client::MONSTERTYPE::AXEMAN:
 		// TODO : JoJo Test : for hit effect
-		m_tMonsterDesc.m_fAtk              = 0.f;
+		m_tMonsterDesc.m_fAtk              = 30.f;
 		// TODO : JoJo Test : for hit effect
 		m_tMonsterDesc.m_fMaxHP_white      = 150.f/*150.f*/;
 		// TODO : JoJo Test : for parry effect
-		m_tMonsterDesc.m_fMaxParryingGauge = FLT_MAX/*200.f*/;
+		m_tMonsterDesc.m_fMaxParryingGauge = 200.f/*200.f*/;
 		m_tMonsterDesc.m_iLifeCount        = 1;
 		m_tMonsterDesc.m_iMaxParryCount    = 10000;
 		m_tMonsterDesc.m_szModelKey        = "Mon_AxeMan";
@@ -106,7 +106,7 @@ void CStatus_Monster::Init_Status(const void* pArg)
 		break;
 	case Client::MONSTERTYPE::VARG:
 		//TODO 공격력몰름 임시 
-		m_tMonsterDesc.m_fAtk = 1.f;
+		m_tMonsterDesc.m_fAtk = 0.3f;
 		m_tMonsterDesc.m_fMaxHP_white = 500.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 500.f;
 		m_tMonsterDesc.m_iLifeCount = 1;
@@ -242,11 +242,11 @@ _bool CStatus_Monster::Is_Groggy() const
 void CStatus_Monster::Set_ParryRecoveryTime(const _float fRatio)
 {
 	if (fRatio > 0.8f)
-		m_tMonsterDesc.m_fParryGaugeRecoveryTime = 5.f;
+		m_tMonsterDesc.m_fParryGaugeRecoveryTime = 10.f;
 	else if (fRatio > 0.4f)
-		m_tMonsterDesc.m_fParryGaugeRecoveryTime = 4.f;
+		m_tMonsterDesc.m_fParryGaugeRecoveryTime = 8.f;
 	else
-		m_tMonsterDesc.m_fParryGaugeRecoveryTime = 3.f;
+		m_tMonsterDesc.m_fParryGaugeRecoveryTime = 6.f;
 }
 
 

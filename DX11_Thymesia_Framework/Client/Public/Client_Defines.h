@@ -14,7 +14,7 @@
 #pragma region Console Outputs
 // #define		_DEBUG_COUT_
 #define		_DEBUG_COUT_JOJO
-//#define		_BRIGHT_LIGHT_
+#define		_BRIGHT_LIGHT_
 //#define		_STAGE_1_
 #define		_STAGE_2_
 #define		_NORMAL_MONSTERS
@@ -24,13 +24,13 @@
 // #define		_BOSS_URD_
 #pragma endregion // Boss Mobs
 #define		_STAGE_1_MONSTER_
-// #define		_VARG_
+#define		_VARG_
 //#define		_INSTANCE_CULLING_
-// #define		_GENERATE_PROP_COLLIDER_ true
+#define		_GENERATE_PROP_COLLIDER_ true
 #define		_USE_GRAVITY_
 // #define		_DAGGER_TRAIL_
 #define		_TEST_STATIC_PROPS_
-#define		_ONLY_UI_
+// #define		_ONLY_UI_
 #define		_BONE_PARTICLE_
 // #define		_BONE_MESHEFFECT_
 #define		_LOAD_CAPTURED_RESOURCE_
@@ -42,17 +42,20 @@
 //#define		_144HZ_
 #define		_DAGGER_TRAIL_
 #define		_USE_THREAD_
-#define			_GROUNDINFO_TEXTURES_
+#define		_GROUNDINFO_TEXTURES_
 #define		_PROP_DISSOLVE_TEXTURES_
-#define _LOAD_UI_RESOURCES_
+#define		_LOAD_UI_RESOURCES_
 // #define		_STAGE_1_
 #define		_STAGE_2_
 // #define		_STAGE_2_2_
 #define		_NORMAL_MONSTERS
 #define		_BOSS_MONSTERS_
-// #define		_STAGE_1_MONSTER_
+#define		_BOSS_VARG_
+#define		_STAGE_1_MONSTER_
 #define		_LIFEGUARD_FOR_FALL_
 #define		_USE_GRAVITY_
+#define		_CORVUS_EFFECT_
+#define		_BONE_PARTICLE_
 #define		_GENERATE_PROP_COLLIDER_ true
 #define		_RENDER_FPS_
 #define		_LOAD_CAPTURED_RESOURCE_
