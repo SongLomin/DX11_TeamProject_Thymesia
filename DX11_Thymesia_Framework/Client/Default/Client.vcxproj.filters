@@ -158,7 +158,7 @@
       <Filter>02. GameObject\99. Other\03. Attack_collider</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Trigger.h">
-      <Filter>02. GameObject\10. Trigger</Filter>
+      <Filter>02. GameObject\09. SkyBox\10. Trigger</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\FadeMask.h">
       <Filter>02. GameObject\01. UI\UI_Elem\FadeMask</Filter>
@@ -1106,7 +1106,7 @@
       <Filter>02. GameObject\99. Other\03. Attack_collider</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Trigger.cpp">
-      <Filter>02. GameObject\10. Trigger</Filter>
+      <Filter>02. GameObject\09. SkyBox\10. Trigger</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\FadeMask.cpp">
       <Filter>02. GameObject\01. UI\UI_Elem\FadeMask</Filter>
@@ -2137,9 +2137,6 @@
     <Filter Include="02. GameObject\09. SkyBox">
       <UniqueIdentifier>{a808949d-7be4-4654-b4d3-8075d2b35373}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\10. Trigger">
-      <UniqueIdentifier>{99bd0ed4-2e9b-47bf-8557-7c919232b269}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component">
       <UniqueIdentifier>{2d13e696-c96a-4148-8979-8c5f6629f73c}</UniqueIdentifier>
     </Filter>
@@ -2677,9 +2674,6 @@
     <Filter Include="01. ClientLevel\05. Level_Test">
       <UniqueIdentifier>{fc760025-3469-4bd1-81c4-0e8169a05da1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus">
-      <UniqueIdentifier>{16574201-340f-43db-b0c0-e3bb9a200fc8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\00.Weapon">
       <UniqueIdentifier>{c544ea3e-e472-45d2-97c7-b7b228b16290}</UniqueIdentifier>
     </Filter>
@@ -2926,9 +2920,6 @@
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\14.CorvusState_Climb_Fall_Attack">
       <UniqueIdentifier>{a0660124-2e8a-4f9a-88c3-aee4b57d70fa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent">
-      <UniqueIdentifier>{88c59779-4bcd-47f0-81cb-285ca31faac4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\00.Talent">
       <UniqueIdentifier>{52faab68-8092-4ff0-bb5b-efaa39ceeb72}</UniqueIdentifier>
     </Filter>
@@ -3063,6 +3054,9 @@
     </Filter>
     <Filter Include="02. GameObject\01. UI\UI_Container\Evolve\Talent\Button">
       <UniqueIdentifier>{bab38216-a0aa-44fc-86b9-9190c54433fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\09. SkyBox\10. Trigger">
+      <UniqueIdentifier>{99bd0ed4-2e9b-47bf-8557-7c919232b269}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

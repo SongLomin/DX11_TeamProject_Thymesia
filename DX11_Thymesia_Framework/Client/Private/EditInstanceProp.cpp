@@ -340,11 +340,11 @@ void CEditInstanceProp::Load_FromJson(const json& In_Json)
 				vPosition = XMVectorSetW(vPosition, 1.f);
 				
 				MESH_VTX_INFO tInfo = m_pInstanceModelCom.lock()->Get_ModelData().lock()->VertexInfo;
-
+				                          
 				vOffsetRange = XMLoadFloat3(&tInfo.vMax) - XMLoadFloat3(&tInfo.vMin);
 				vOffsetRange *= XMLoadFloat3(&Desc.vScale);
 				Desc.fMaxRange = XMVectorGetX(XMVector3Length(vOffsetRange));
-				Desc.vCenter = tInfo.vCenter;
+				Desc.vCenter = tInfo.vCenter;       
 				Desc.Bake_CenterWithMatrix();
 
 				m_pPropInfos.push_back(Desc);
