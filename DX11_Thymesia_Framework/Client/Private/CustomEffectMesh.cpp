@@ -1161,24 +1161,79 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 			if (ImGui::CollapsingHeader("Scale"))
 			{
+#pragma region Start Scale
+				ImGui::Text("Sync"); ImGui::SameLine();
+				ImGui::Checkbox("##Sync_Start_Scale", &m_tEffectMeshDesc.bSyncStartScale);
+
 				ImGui::Text("Start Scale");
 				ImGui::DragFloat3("##Start Scale", &m_tEffectMeshDesc.vStartScale.x, 0.01f);
+
+				if (m_tEffectMeshDesc.bSyncStartScale)
+				{
+					m_tEffectMeshDesc.vStartScale.y = m_tEffectMeshDesc.vStartScale.x;
+					m_tEffectMeshDesc.vStartScale.z = m_tEffectMeshDesc.vStartScale.x;
+				}
 
 				m_tEffectMeshDesc.vStartScale.x = max(FLT_MIN, m_tEffectMeshDesc.vStartScale.x);
 				m_tEffectMeshDesc.vStartScale.y = max(FLT_MIN, m_tEffectMeshDesc.vStartScale.y);
 				m_tEffectMeshDesc.vStartScale.z = max(FLT_MIN, m_tEffectMeshDesc.vStartScale.z);
+#pragma endregion
+				ImGui::NewLine();
+#pragma region Scale Speed
+				ImGui::Text("Sync"); ImGui::SameLine();
+				ImGui::Checkbox("##Sync_Scale_Speed", &m_tEffectMeshDesc.bSyncScaleSpeed);
 
 				ImGui::Text("Scale Speed");
 				ImGui::DragFloat3("##Scale Speed", &m_tEffectMeshDesc.vScaleSpeed.x, 0.01f);
 
+				if (m_tEffectMeshDesc.bSyncScaleSpeed)
+				{
+					m_tEffectMeshDesc.vScaleSpeed.y = m_tEffectMeshDesc.vScaleSpeed.x;
+					m_tEffectMeshDesc.vScaleSpeed.z = m_tEffectMeshDesc.vScaleSpeed.x;
+				}
+#pragma endregion
+				ImGui::NewLine();
+#pragma region Scale Force
+				ImGui::Text("Sync"); ImGui::SameLine();
+				ImGui::Checkbox("##Sync_Scale_Force", &m_tEffectMeshDesc.bSyncScaleForce);
+
 				ImGui::Text("Scale Force");
 				ImGui::DragFloat3("##Scale Force", &m_tEffectMeshDesc.vScaleForce.x, 0.01f);
+
+				if (m_tEffectMeshDesc.bSyncScaleForce)
+				{
+					m_tEffectMeshDesc.vScaleForce.y = m_tEffectMeshDesc.vScaleForce.x;
+					m_tEffectMeshDesc.vScaleForce.z = m_tEffectMeshDesc.vScaleForce.x;
+				}
+#pragma endregion
+				ImGui::NewLine();
+#pragma region Min Scale
+				ImGui::Text("Sync"); ImGui::SameLine();
+				ImGui::Checkbox("##Sync_Min_Scale", &m_tEffectMeshDesc.bSyncMinScale);
 
 				ImGui::Text("Min Scale");
 				ImGui::DragFloat3("##Min Scale", &m_tEffectMeshDesc.vMinScale.x, 0.01f);
 
+				if (m_tEffectMeshDesc.bSyncMinScale)
+				{
+					m_tEffectMeshDesc.vMinScale.y = m_tEffectMeshDesc.vMinScale.x;
+					m_tEffectMeshDesc.vMinScale.z = m_tEffectMeshDesc.vMinScale.x;
+				}
+#pragma endregion
+				ImGui::NewLine();
+#pragma region Max Scale
+				ImGui::Text("Sync"); ImGui::SameLine();
+				ImGui::Checkbox("##Sync_Max_Scale", &m_tEffectMeshDesc.bSyncMaxScale);
+
 				ImGui::Text("Max Scale");
 				ImGui::DragFloat3("##Max Scale", &m_tEffectMeshDesc.vMaxScale.x, 0.01f);
+
+				if (m_tEffectMeshDesc.bSyncMaxScale)
+				{
+					m_tEffectMeshDesc.vMaxScale.y = m_tEffectMeshDesc.vMaxScale.x;
+					m_tEffectMeshDesc.vMaxScale.z = m_tEffectMeshDesc.vMaxScale.x;
+				}
+#pragma endregion
 			}
 
 			if (ImGui::CollapsingHeader("Shaders"))

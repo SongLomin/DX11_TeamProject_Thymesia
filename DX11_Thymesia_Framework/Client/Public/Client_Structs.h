@@ -13,6 +13,11 @@ namespace Client
 		_bool		bSyncStartPositionToController;
 		_bool		bSyncStartRotationToController;
 
+		_bool		bSyncStartScale;
+		_bool		bSyncScaleSpeed;
+		_bool		bSyncScaleForce;
+		_bool		bSyncMinScale;
+		_bool		bSyncMaxScale;
 #pragma endregion
 
 #pragma region Datas
