@@ -21,7 +21,6 @@
 #include "UI_DamageFont.h"
 
 CLevel_GamePlay::CLevel_GamePlay()
-	//: CLevel(pDevice, pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
 }
 
@@ -32,21 +31,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-	//ShowCursor(false);
-
-//주석지워라
-
 #ifndef _ONLY_UI_
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
 #pragma region GAMEOBJECT
-
-	/*future<void> ThreadResult = async(launch::async, 
-		bind(&CLevel_GamePlay::Load_FromJson, this,
-			placeholders::_1, placeholders::_2), 
-		m_szDefaultJsonPath + "Stage1.json", 
-		LEVEL::LEVEL_GAMEPLAY);*/
-
-	//Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_GAMEPLAY);
 
 #ifdef _STAGE_1_
 /*future<void> ThreadResult2 = async(launch::async,
@@ -79,21 +66,20 @@ HRESULT CLevel_GamePlay::Initialize()
 #endif // _STAGE_2_2_
 
 	//Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_GAMEPLAY);
-	CCamera::CAMERADESC			CameraDesc;
+	CCamera::CAMERADESC CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
-	CameraDesc.vEye = _float4(0.0f, 2.5f, -2.5f, 1.f);
-	CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
-	CameraDesc.fFovy = XMConvertToRadians(65.0f);
+	CameraDesc.vEye    = _float4(0.0f, 2.5f, -2.5f, 1.f);
+	CameraDesc.vAt     = _float4(0.f, 0.f, 0.f, 1.f);
+	CameraDesc.fFovy   = XMConvertToRadians(65.0f);
 	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
-	CameraDesc.fNear = 0.2f;
-	CameraDesc.fFar = 300.f;
+	CameraDesc.fNear   = 0.2f;
+	CameraDesc.fFar    = 300.f;
 
 	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_GAMEPLAY, &CameraDesc);
 	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
 
 	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_GAMEPLAY);
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
-
 
 	CMonster::STATE_LINK_MONSTER_DESC MONSTER;
 
@@ -107,17 +93,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &MONSTER);
 #endif // _BOSS_VARG_
 
-	//TODO 야매에요
-#ifdef _STAGE_1_MONSTER_
-	//ZeroMemory(&MONSTER, sizeof(CBossMonster::STATE_LINK_MONSTER_DESC));
-	//MONSTER.vYame.x = 49.33f;
-	//MONSTER.vYame.y = 14.4f;
-	//MONSTER.vYame.z = 30.32f;
-	//MONSTER.eBossStartType = BOSSSTARTTYPE::NORMALSTART;
-	//GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &MONSTER);
-
-	//CBossMonster::STATE_LINK_MONSTER_DESC BOSSMONSTER;
-	//
+#ifdef _STAGE_2_MONSTER_
 	ZeroMemory(&MONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	MONSTER.eMonType = MONSTERTYPE::AXEMAN;
 	MONSTER.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
@@ -125,61 +101,17 @@ HRESULT CLevel_GamePlay::Initialize()
 	MONSTER.vYame.y = 4.6f;
 	MONSTER.vYame.z = 36.f;
 	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &MONSTER);
-	//
-	//ZeroMemory(&MONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-	//MONSTER.eMonType = MONSTERTYPE::VARG;
-	//MONSTER.eBossStartType = BOSSSTARTTYPE::BEGINSTART;
-	//MONSTER.vYame.x = 13.f;
-	//MONSTER.vYame.y = 4.6f;
-	//MONSTER.vYame.z = 33.f;
-	//GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &MONSTER);
-	
-	//ZeroMemory(&MONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-	//MONSTER.eMonType = MONSTERTYPE::GARDENER;
-	//MONSTER.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
-	//MONSTER.vYame.x = 15.f;
-	//MONSTER.vYame.y = 4.9f;
-	//MONSTER.vYame.z = 10.5f;
-	//GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &MONSTER);
-
-	//ZeroMemory(&MONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-	//MONSTER.eMonType = MONSTERTYPE::ELITEGARDENER;
-	//MONSTER.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
-	//MONSTER.vYame.x = 20.f;
-	//MONSTER.vYame.y = 4.6f;
-	//MONSTER.vYame.z = 15.f;
-	//GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &MONSTER);
-	//
-	//ZeroMemory(&MONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-	//MONSTER.eMonType = MONSTERTYPE::SHIELDAXEMAN;
-	//MONSTER.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
-	//MONSTER.vYame.x = 20.f;
-	//MONSTER.vYame.y = 4.6f;
-	//MONSTER.vYame.z = 36.f;
-	//GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &MONSTER);
-#endif // _STAGE_1_MONSTER_
-	
-	//야매에요
+#endif // _STAGE_2_MONSTER_
 	
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_GAMEPLAY);
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_GAMEPLAY);
-
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
 	
-	
 #pragma endregion GAMEOBJECT
-#endif	
+#endif	// ONLY_UI
+
 	SetUp_UI();
-
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
-
-	//ThreadResult.get();
-#ifdef _STAGE_2_
-	//ThreadResult2.get();
-#endif // _STAGE_2_
-	
-	
-
 	return S_OK;
 }
 
@@ -192,24 +124,17 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 		if (m_pPauseMenu.lock()->Get_Enable() == false)
 		{
 			FaderDesc tFaderDesc;
-			tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
-			tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+			tFaderDesc.eFaderType   = FADER_TYPE::FADER_OUT;
+			tFaderDesc.eLinearType  = LINEAR_TYPE::LNIEAR;
 			tFaderDesc.fFadeMaxTime = 0.3f;
-			tFaderDesc.fDelayTime = 0.f;
-			tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+			tFaderDesc.fDelayTime   = 0.f;
+			tFaderDesc.vFadeColor   = _float4(0.f, 0.f, 0.f, 1.f);
 
 			m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
 			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CLevel_GamePlay::Call_Enable_PauseMenu, this);
 		}
 	}
 
-	
-	if (KEY_INPUT(KEY::C, KEY_STATE::TAP))
-	{
-	//	weak_ptr<CUI_DamageFont> pDamageFont;
-	//	pDamageFont = GAMEINSTANCE->Add_GameObject<CUI_DamageFont>(LEVEL_STATIC);
-	//	pDamageFont.lock()->SetUp_DamageFont(1334, _float2(g_iWinCX >> 1, g_iWinCY >> 1), ATTACK_OPTION::PLAGUE);
-	}
 	if (!m_bFadeTrigger)
 	{
 		FaderDesc tFaderDesc;
@@ -223,7 +148,8 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 
 		m_bFadeTrigger = true;
 	}
-	/*if (m_bChangeNextLevel)
+	/*
+	if (m_bChangeNextLevel)
 	{
 		m_bChangeNextLevel = false;
 
@@ -239,8 +165,10 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
 		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
 
-	}*/
+	}
+	*/
 
+#ifdef _ONLY_UI_
 	if (KEY_INPUT(KEY::T, KEY_STATE::TAP))
 	{
 		if (m_pEvolveMenu.lock()->Get_Enable() == false)
@@ -256,11 +184,14 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_Enable_EvolveMenu, this);
 		}
 	}
+#endif // _ONLY_UI_
 
+#ifndef _LOAD_CAPTURED_RESOURCE_
 	if (KEY_INPUT(KEY::HOME, KEY_STATE::TAP))
 	{
 		GAMEINSTANCE->Write_JsonUsingResource("../Bin/LevelData/CapturedResource/GamePlay.json");
 	}
+#endif // _LOAD_CAPTURED_RESOURCE_
 }
 
 HRESULT CLevel_GamePlay::Render()

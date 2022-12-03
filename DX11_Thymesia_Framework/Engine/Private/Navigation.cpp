@@ -48,19 +48,6 @@ HRESULT CNavigation::Initialize_Prototype() // const _tchar * pNavigationData
 
 HRESULT CNavigation::Initialize(void* pArg)
 {
-	
-
-#ifdef _DEBUG
-	m_pShader = m_pOwner.lock()->Add_Component<CShader>();
-
-	if (!m_pShader.lock().get())
-		DEBUG_ASSERT;
-
-	m_pShader.lock()->Set_ShaderInfo(TEXT("Shader_Cell"), VTXCUBETEX_DECLARATION::Element, VTXCUBETEX_DECLARATION::iNumElements);
-#endif // _DEBUG
-
-	
-
 	return S_OK;
 }
 

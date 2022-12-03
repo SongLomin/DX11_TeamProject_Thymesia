@@ -63,7 +63,7 @@ HRESULT CLevel_Test::Initialize()
 
 
 	CMonster::STATE_LINK_MONSTER_DESC CCC;
-#ifdef _VARG_
+#ifdef _BOSS_VARG_
 	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	CCC.eMonType = MONSTERTYPE::VARG;
 	CCC.eBossStartType = BOSSSTARTTYPE::BEGINSTART;
@@ -71,10 +71,8 @@ HRESULT CLevel_Test::Initialize()
 	CCC.vYame.y = 14.4f;
 	CCC.vYame.z = 30.32f;
 	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_TEST, &CCC);
-#endif // _VARG_
+#endif // _BOSS_VARG_
 
-
-	//TODO 야매에요
 #ifdef _STAGE_1_MONSTER_
 	ZeroMemory(&CCC, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	CCC.eMonType = MONSTERTYPE::AXEMAN;

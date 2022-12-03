@@ -29,7 +29,12 @@ HRESULT CLevel_Stage2::Initialize()
 
 void CLevel_Stage2::Tick(_float fTimeDelta)
 {
-	__super::Tick(fTimeDelta);		
+	__super::Tick(fTimeDelta);	
+
+	if (KEY_INPUT(KEY::HOME, KEY_STATE::TAP))
+	{
+		GAMEINSTANCE->Write_JsonUsingResource("../Bin/LevelData/CapturedResource/Stage2.json");
+	}
 }
 
 HRESULT CLevel_Stage2::Render()

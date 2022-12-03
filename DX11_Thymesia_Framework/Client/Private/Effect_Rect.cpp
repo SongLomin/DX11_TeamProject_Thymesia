@@ -549,7 +549,6 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 		if (In_Json.find("Bone_Name") != In_Json.end())
 			m_strBoneName = In_Json["Bone_Name"];
 
-#ifdef _BONE_PARTICLE_
 		try
 		{
 			if (m_strBoneName.empty())
@@ -565,7 +564,6 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 		{
 			assert(0);
 		}
-#endif // _BONE_PARTICLE_
 	}
 
 #pragma region Spawn Position
