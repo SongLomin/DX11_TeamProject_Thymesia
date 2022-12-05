@@ -23,6 +23,8 @@ public:
     virtual void Custom_Thread1(_float fTimeDelta) override;
     virtual HRESULT Render()                       override;
 
+
+
 protected:
     virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
@@ -42,14 +44,13 @@ private:
     //TODO¿”Ω√
 private:
     weak_ptr<CTalent_Sword>  m_pSword;
+    _uint m_iContainerIndex = 0;
 
 private:
     weak_ptr<CCamera_Target> m_pCamera;
     weak_ptr<CTransform> m_pCameraTransform;
 
-    
-
-    _uint m_iNumMeshContainers = 0;
+  
 };
 
 END

@@ -70,7 +70,7 @@ HRESULT CLevel_Stage3::Render()
 		return E_FAIL;
 
 
-	SetWindowText(g_hWnd, TEXT("게임프렐이레벨임. "));
+	SetWindowText(g_hWnd, TEXT("Thymesia : STAGE 3"));
 
 	return S_OK;
 }

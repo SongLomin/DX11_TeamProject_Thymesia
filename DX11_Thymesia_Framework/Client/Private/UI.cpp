@@ -58,7 +58,15 @@ void CUI::Tick(_float fTimeDelta)
 {
 	//__super::Tick(fTimeDelta);
 
-	m_pFaderCom.lock()->Tick(fTimeDelta);
+	//m_pFaderCom.lock()->Tick(fTimeDelta);
+
+	for (auto& elem : m_pComponents)
+	{
+		for (auto& listElem : elem.second)
+		{
+			listElem->Tick(fTimeDelta);
+		}
+	}
 
 	if (m_fCurrentShakeTime > 0.f)
 	{
@@ -81,6 +89,14 @@ void CUI::Tick(_float fTimeDelta)
 void CUI::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	for (auto& elem : m_pComponents)
+	{
+		for (auto& listElem : elem.second)
+		{
+			listElem->LateTick(fTimeDelta);
+		}
+	}
 
 	m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Cast<CGameObject>(m_this));
 

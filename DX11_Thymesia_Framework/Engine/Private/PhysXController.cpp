@@ -107,7 +107,7 @@ PxControllerCollisionFlags CPhysXController::Synchronize_Controller(weak_ptr<CTr
 
 	if (!m_EnableSimulation)
 	{
-		cout << "Null Filter" << endl;
+		//cout << "Null Filter" << endl;
 		filters.mFilterFlags = PxQueryFlags(0);
 	}
 
@@ -138,7 +138,7 @@ void CPhysXController::Enable_Gravity(const _bool In_bGravity)
 	m_bEnableGravity = In_bGravity;
 }
 
-PxControllerCollisionFlags CPhysXController::MoveWithRotation(const _vector& disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles, weak_ptr<CTransform> pTransform)
+PxControllerCollisionFlags CPhysXController::MoveWithRotation(_fvector disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles, weak_ptr<CTransform> pTransform)
 {
 	if (!Get_Enable())
 		return PxControllerCollisionFlags();
@@ -149,7 +149,7 @@ PxControllerCollisionFlags CPhysXController::MoveWithRotation(const _vector& dis
 
 	if (!m_EnableSimulation)
 	{
-		cout << "Null Filter" << endl;
+		//cout << "Null Filter" << endl;
 		filters.mFilterFlags = PxQueryFlags(0);
 	}
 
@@ -173,7 +173,7 @@ PxControllerCollisionFlags CPhysXController::MoveWithRotation(const _vector& dis
 	return Result;
 }
 
-PxControllerCollisionFlags CPhysXController::Move(const _vector& disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles)
+PxControllerCollisionFlags CPhysXController::Move(_fvector disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles)
 {
 	if (!Get_Enable())
 		return PxControllerCollisionFlags();

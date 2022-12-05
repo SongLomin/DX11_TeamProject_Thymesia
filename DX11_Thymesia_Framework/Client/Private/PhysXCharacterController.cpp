@@ -90,12 +90,12 @@ PxControllerCollisionFlags CPhysXCharacterController::Set_Position(_fvector In_v
 	return  __super::Set_Position(In_vPosition, elapsedTime, filters);
 }
 
-PxControllerCollisionFlags CPhysXCharacterController::MoveWithRotation(const _vector& disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles, weak_ptr<CTransform> pTransform)
+PxControllerCollisionFlags CPhysXCharacterController::MoveWithRotation(_fvector disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles, weak_ptr<CTransform> pTransform)
 {
 	return  __super::MoveWithRotation(disp, minDist, elapsedTime, filters, obstacles, pTransform);
 }
 
-PxControllerCollisionFlags CPhysXCharacterController::Move(const _vector& disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles)
+PxControllerCollisionFlags CPhysXCharacterController::Move(_fvector disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles)
 {
 	return  __super::Move(disp, minDist, elapsedTime, filters, obstacles);
 }

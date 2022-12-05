@@ -42,6 +42,16 @@ public: /* For. Talent */
     void Bind_TalentEffects(weak_ptr<CTalent_Effect> pTalentEffect);
     void UnBind_TalentEffects(weak_ptr<CTalent_Effect> pTalentEffect);
     _flag Check_RequirementForTalentEffects();
+    void  Set_LadderCheck(_bool LadderCheck) { m_bLadderCheck = LadderCheck; }
+    _bool Get_LadderCheck() { return m_bLadderCheck; }
+
+public:
+    void Set_DissolveAmount(const _int In_iDissolveMeshIndex, const _float In_fDissolveAmount, const _float3 In_vDissolveDir)
+    {
+        m_fDissolveAmount = In_fDissolveAmount;
+        m_iDissolveMeshIndex = In_iDissolveMeshIndex;
+        m_vDissolveDir = In_vDissolveDir;
+    }
 
 public:
     void Search_NearTargetMonster(_float fTimeDelta);
@@ -76,12 +86,17 @@ protected:
 
     list<weak_ptr<CTalent_Effect>> m_pTalent_Effects;
 
+    _int m_iDissolveMeshIndex = -1;
+    _float3 m_vDissolveDir = { 0.f,0.f,0.f };
+    _uint m_iNumMeshContainers = 0;
+
 private:
     _float              m_fNearSearchDelay = 0.f; 
     weak_ptr<CPlayer>   m_thisToPlayer;
 
 protected:
     _flag      m_CollisionObjectFlags = 0;
+    _bool      m_bLadderCheck = false;
    
     //TODO ¾ß¸Å
 

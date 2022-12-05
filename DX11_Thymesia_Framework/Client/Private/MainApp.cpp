@@ -5,6 +5,10 @@
 #include "GameManager.h"
 #include "FadeMask.h"
 
+#ifdef _JOJO_EFFECT_TOOL_
+#include "JoJoParticleShaderManager.h"
+#endif // _JOJO_EFFECT_TOOL_
+
 
 
 CMainApp::CMainApp()
@@ -27,17 +31,26 @@ HRESULT CMainApp::Initialize()
 	GraphicDesc.iWinCY = g_iWinCY;
 	GraphicDesc.isWindowMode = GRAPHICDESC::MODE_WIN;
 
+#ifdef _RENDER_FPS_
+	m_TextInfo_FPS.bCenterAlign = false;
+	m_TextInfo_FPS.bAlways		= false;
+	m_TextInfo_FPS.fRotation = 0.f;
+	XMStoreFloat4(&m_TextInfo_FPS.vColor, XMVectorSet(0.f, 0.8588f, 0.176f, 1.f));
+	XMStoreFloat2(&m_TextInfo_FPS.vPosition, XMVectorSet(2.f, 2.f, 0.f, 0.f));
+	XMStoreFloat2(&m_TextInfo_FPS.vScale, XMVectorSet(0.55f, 0.55f, 0.f, 0.f));
+#endif // _RENDER_FPS_
 
 	CGameInstance::Create_Instance();
 	CGameManager::Create_Instance();
+#ifdef _JOJO_EFFECT_TOOL_
+	CJoJoParticleShaderManager::Create_Instance();
+#endif // #ifdef _JOJO_EFFECT_TOOL_
 
 	if (FAILED(GAMEINSTANCE->Initialize_Engine(g_hInst, LEVEL_END, (_uint)TIMESCALE_LAYER::LAYER_END, (_uint)COLLISION_LAYER::LAYER_END, GraphicDesc)))
 		return E_FAIL;	
 
-
 	GAMEINSTANCE->Reserve_Event((_uint)EVENT_TYPE::EVENT_END);
 
-	//GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::PLAYER, (_uint)COLLISION_LAYER::MONSTER);
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::PLAYER_ATTACK, (_uint)COLLISION_LAYER::MONSTER);
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::PLAYER_ATTACK, (_uint)COLLISION_LAYER::DYNAMIC_PROP);
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::MONSTER_ATTACK, (_uint)COLLISION_LAYER::PLAYER);
@@ -49,14 +62,29 @@ HRESULT CMainApp::Initialize()
 
 	GAMEINSTANCE->Check_PhysXFilterGroup((_uint)COLLISION_LAYER::PLAYER, (_uint)COLLISION_LAYER::MONSTER);
 
-	//if (FAILED(Ready_Prototype_Component()))
-	//	return E_FAIL;
-
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxColor"), TEXT("../Bin/ShaderFiles/Shader_VtxColor.hlsl"));
 	GAMEINSTANCE->Add_GameObject<CFadeMask>(LEVEL_STATIC);
 
+#ifdef _JOJO_EFFECT_TOOL_
+	GET_SINGLE(CJoJoParticleShaderManager)->Initialize();
+#endif // _JOJO_EFFECT_TOOL_
+
+
+	//GAMEINSTANCE->Load_Textures_Generate_MipMaps(("WHYTHROWSIBAL"), TEXT("../Bin/T_C_CorvusBirdClaw01_C.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	//GAMEINSTANCE->Load_TexturesGenerateMipMap(("WHYTHROWSIBAL"), TEXT("../Bin/basket_01_wire_087225143_BaseColor.png"), MEMORY_TYPE::MEMORY_STATIC);
+	//GAMEINSTANCE->Load_TexturesGenerateMipMap(("WHYTHROWSIBAL"), TEXT("../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/TX_FF10_N.png"), MEMORY_TYPE::MEMORY_STATIC);
+#ifdef _BAKE_MIPMAPS_
+	Bake_MipMaps();
+	MSG_BOX("BAKE SUCCEEDED.");
+	
+#else
 	if (FAILED(Open_Level(LEVEL_LOGO)))
 		return E_FAIL;
+#endif // _BAKE_MIPMAPS_
+
+	
+
+
 
 	return S_OK;
 }
@@ -87,50 +115,40 @@ void CMainApp::Tick(float fTimeDelta)
 	if (nullptr == GAMEINSTANCE)
 		return;
 
-	//GAMEINSTANCE->Add_MotionBlurScale(-0.2f * fTimeDelta);
 	GAMEINSTANCE->Add_Chromatic(-0.4f*fTimeDelta);
 
 	GAMEINSTANCE->Tick_Engine(fTimeDelta);
 
 	GET_SINGLE(CGameManager)->LateTick(fTimeDelta);
-	
+
+#ifdef	_RENDER_FPS_
 	m_fTimeAcc += fTimeDelta;
-}
-
-HRESULT CMainApp::Render()
-{
-	if (nullptr == GAMEINSTANCE/* ||
-		nullptr == m_pRenderer*/)
-		return E_FAIL;
-
-	GAMEINSTANCE->Clear_BackBuffer_View(_float4(0.f, 0.215686f, 0.588235f, 1.f));
-	GAMEINSTANCE->Clear_DepthStencil_View();
-	
-	GAMEINSTANCE->Draw_RenderGroup();
-
-	GAMEINSTANCE->Render_Engine();
-
-	//GAMEINSTANCE->Render_Font((_uint)FONT_INDEX::DREAM);
-
 
 	if (m_fTimeAcc >= 1.f)
 	{
-#ifdef	_RENDER_FPS_
-		wsprintf(m_szFPS, TEXT("FPS : %d"), m_iNumRender);
+		wsprintf(m_szFPS, TEXT("%d"), m_iNumRender);
+		m_TextInfo_FPS.szText = m_szFPS;
 		m_fTimeAcc = 0.f;
 		m_iNumRender = 0;
-#endif
 	}
 
 	++m_iNumRender;
 
-	GAMEINSTANCE->Render_Font((_uint)FONT_INDEX::DREAM, m_szFPS, _float2(0.f, 0.f), XMVectorSet(1.f, 1.f, 1.f, 1.f));
+	GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::DREAM, m_TextInfo_FPS);
+#endif // _RENDER_FPS_
+}
 
-	
+HRESULT CMainApp::Render()
+{
+	if (nullptr == GAMEINSTANCE)
+		return E_FAIL;
 
-	// MakeSpriteFont "폰트이름" /FontSize:32 /FastPack /CharacterRegion:0x0020-0x00FF /CharacterRegion:0x3131-0x3163 /CharacterRegion:0xAC00-0xD800 /DefaultCharacter:0xAC00 출력파일이름.spritefont
+	GAMEINSTANCE->Clear_BackBuffer_View(_float4(0.f, 0.215686f, 0.588235f, 1.f));
+	GAMEINSTANCE->Clear_DepthStencil_View();
+	GAMEINSTANCE->Draw_RenderGroup();
+	GAMEINSTANCE->Render_Engine();
+
 	GAMEINSTANCE->Present();
-
 	return S_OK;
 }
 
@@ -150,34 +168,64 @@ HRESULT CMainApp::Open_Level(LEVEL eLevelID)
 	return S_OK;
 }
 
-HRESULT CMainApp::Ready_Prototype_Component()
+void CMainApp::Bake_MipMaps()
 {
-	if (nullptr == GAMEINSTANCE)
-		return E_FAIL;
+	fs::directory_iterator itr("..\\Bin\\Resources\\Meshes");
+	tstring szPath;
+	tstring szFileName;
 
-	///* For.Prototype_Component_Renderer */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Renderer"),
-	//	m_pRenderer = CRenderer::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
+	while (itr != fs::end(itr)) {
+		const fs::directory_entry& entry = *itr;
+		szFileName = entry.path().filename().wstring();
 
-	///* For.Prototype_Component_VIBuffer_Rect*/
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_VIBuffer_Rect"),
-	//	CVIBuffer_Rect::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
+#ifdef _DEBUG_COUT_
+		cout << entry.path().filename() << std::endl;
+#endif
 
-	///* For.Prototype_Component_Transform */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Transform"),
-	//	CTransform::Create(m_pGraphic_Device))))
-	//	return E_FAIL;
+		Bake_MipMaps_Recursive(entry.path());
 
-	///* For.Prototype_Component_Shader_Rect */
-	//if (FAILED(m_pGameInstance->Add_Prototype(LEVEL_STATIC, TEXT("Prototype_Component_Shader_Rect"),
-	//	CShader::Create(m_pGraphic_Device, TEXT("..'Shader_Rect.hlsl")))))
-	//	return E_FAIL;
+		itr++;
+	}
 
-	//Safe_AddRef(m_pRenderer);
+	//GAMEINSTANCE->Load_TexturesGenerateMipMap(("WHYTHROWSIBAL"), TEXT("../Bin/T_C_CorvusBirdClaw01_C.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	//GAMEINSTANCE->Load_TexturesGenerateMipMap(("WHYTHROWSIBAL"), TEXT("../Bin/basket_01_wire_087225143_BaseColor.png"), MEMORY_TYPE::MEMORY_STATIC);
+	//GAMEINSTANCE->Load_TexturesGenerateMipMap(("WHYTHROWSIBAL"), TEXT("../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/TX_FF10_N.png"), MEMORY_TYPE::MEMORY_STATIC);
 
-	return S_OK;
+}
+
+void CMainApp::Bake_MipMaps_Recursive(const filesystem::path& In_Path)
+{
+	if (!In_Path.filename().extension().string().empty())
+		return;
+
+	fs::directory_iterator itr(In_Path);
+	tstring szPath;
+	string szFileName;
+
+	while (itr != fs::end(itr)) 
+	{
+		const fs::directory_entry& entry = *itr;
+		
+
+#ifdef _DEBUG
+#ifdef _DEBUG_COUT_
+		cout << entry.path().filename() << std::endl;
+#endif
+#endif
+
+		Bake_MipMaps_Recursive(entry.path());
+
+		
+
+		if (strcmp(entry.path().extension().string().c_str(), ".png") == 0)
+		{
+			szPath = entry.path().wstring();
+
+			GAMEINSTANCE->Generate_MipMap(szPath.c_str());
+		}
+
+		itr++;
+	}
 }
 
 unique_ptr<CMainApp> CMainApp::Create()
@@ -192,4 +240,7 @@ void CMainApp::Free()
 	CGameInstance::Release_Engine();
 	CGameInstance::Destroy_Instance();
 	CGameManager::Destroy_Instance();
+#ifdef _JOJO_EFFECT_TOOL_
+	CJoJoParticleShaderManager::Destroy_Instance();
+#endif // _JOJO_EFFECT_TOOL_
 }

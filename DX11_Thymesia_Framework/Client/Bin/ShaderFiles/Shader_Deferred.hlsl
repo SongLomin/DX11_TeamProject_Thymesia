@@ -172,20 +172,20 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
     vector vDiffuseColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     vector vNormalDesc    = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
 	vector vDepthDesc     = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
-    vector vLightFlagDesc = g_LightFlagTexture.Sample(DefaultSampler, In.vTexUV);
+    //vector vLightFlagDesc = g_LightFlagTexture.Sample(DefaultSampler, In.vTexUV);
     vector vORMDesc     = g_ORMTexture.Sample(DefaultSampler, In.vTexUV);
    
 
 	//결과가 0이라면 일치하는 라이트 플래그가 없다. 그리지 않는다.
-    vLightFlagDesc *= g_vLightFlag;
+   // vLightFlagDesc *= g_vLightFlag;
 	
     float fMaxScalar = 0.f;
 	
-    for (uint i = 0; i < 4; ++i)
-        fMaxScalar = max(fMaxScalar, vLightFlagDesc[i]);
+    //for (uint i = 0; i < 4; ++i)
+    //    fMaxScalar = max(fMaxScalar, vLightFlagDesc[i]);
 	
-    if (fMaxScalar < 0.05f)
-        discard;
+    //if (fMaxScalar < 0.05f)
+    //    discard;
 
 	vector vNormal = vector(vNormalDesc.xyz * 2.f - 1.f, 0.f);
     float fViewZ = vDepthDesc.y * 300.f;
@@ -299,18 +299,18 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
     vector vDiffuseColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 	vector vNormalDesc    = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
 	vector vDepthDesc     = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
-    vector vLightFlagDesc = g_LightFlagTexture.Sample(DefaultSampler, In.vTexUV);
+   // vector vLightFlagDesc = g_LightFlagTexture.Sample(DefaultSampler, In.vTexUV);
     vector vORMDesc = g_ORMTexture.Sample(DefaultSampler, In.vTexUV);
 
-    vLightFlagDesc *= g_vLightFlag;
+   // vLightFlagDesc *= g_vLightFlag;
 	
     float fMaxScalar = 0.f;
 	
-    for (uint i = 0; i < 4; ++i)
-        fMaxScalar = max(fMaxScalar, vLightFlagDesc[i]);
+    //for (uint i = 0; i < 4; ++i)
+    //    fMaxScalar = max(fMaxScalar, vLightFlagDesc[i]);
 	
-    if (fMaxScalar < 0.05f)
-        discard;
+    //if (fMaxScalar < 0.05f)
+    //    discard;
     
 	float fViewZ = vDepthDesc.y * 300.f;
 	/* 0 -> -1, 1 -> 1*/
@@ -430,17 +430,17 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_HALF_POINT(PS_IN In)
     vector vNormalDesc    = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
     vector vDepthDesc     = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
     //vector vShadeDesc   = g_ShadeTexture.Sample(DefaultSampler, In.vTexUV);
-    vector vLightFlagDesc = g_LightFlagTexture.Sample(DefaultSampler, In.vTexUV);
+   // vector vLightFlagDesc = g_LightFlagTexture.Sample(DefaultSampler, In.vTexUV);
     
-    vLightFlagDesc *= g_vLightFlag;
+    //vLightFlagDesc *= g_vLightFlag;
 	
-    float fMaxScalar = 0.f;
+    //float fMaxScalar = 0.f;
 	
-    for (uint i = 0; i < 4; ++i)
-        fMaxScalar = max(fMaxScalar, vLightFlagDesc[i]);
+    //for (uint i = 0; i < 4; ++i)
+    //    fMaxScalar = max(fMaxScalar, vLightFlagDesc[i]);
 	
-    if (fMaxScalar < 0.05f)
-        discard;
+    //if (fMaxScalar < 0.05f)
+    //    discard;
     
     float fViewZ = vDepthDesc.y * 300.f;
 	/* 0 -> -1, 1 -> 1*/
@@ -501,7 +501,7 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
 	vector vDiffuse       = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 	vector vShade         = g_ShadeTexture.Sample(DefaultSampler, In.vTexUV);
 	vector vSpecular      = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
-    vector vLightFlagDesc = g_LightFlagTexture.Sample(DefaultSampler, In.vTexUV);
+   // vector vLightFlagDesc = g_LightFlagTexture.Sample(DefaultSampler, In.vTexUV);
     vector vViewShadow    = g_ViewShadow.Sample(DefaultSampler, In.vTexUV);
     vector vDepthDesc     = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
     vector vFogDesc       = g_FogTexture.Sample(DefaultSampler, In.vTexUV);
@@ -525,8 +525,8 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
         Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * vector(0.8f, 0.8f, 0.8f, 1.f);
     }
 
-    if (vLightFlagDesc.r > 0.f || vLightFlagDesc.g > 0.f)
-        return Out;
+    //if (vLightFlagDesc.r > 0.f || vLightFlagDesc.g > 0.f)
+    //    return Out;
 
     if (Out.vColor.a == 0.f)
         discard;

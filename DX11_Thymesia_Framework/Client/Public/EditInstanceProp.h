@@ -3,11 +3,13 @@
 #include "Client_Defines.h"
 
 BEGIN(Engine)
+
 class CVIBuffer_DynamicCube;
 class CVIBuffer_Model_Instance;
 class CShader;
 class CRenderer;
 class CTexture;
+
 END
 
 BEGIN(Client)

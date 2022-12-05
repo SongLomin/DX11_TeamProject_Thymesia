@@ -8,6 +8,7 @@
 #include "BoneNode.h"
 #include "Animation.h"
 #include "SMath.h"
+#include "Resource_Manager.h"
 
 GAMECLASS_C(CModel)
 CLONE_C(CModel, CComponent)
@@ -660,9 +661,9 @@ void CModel::Create_Materials(const char* pModelFilePath)
 			//cout << "Load_Texture: " << szFullPath << endl;
 #endif // _DEBUG
 
-			if (FAILED(GAMEINSTANCE->Load_Textures(szFileName, szTextureFileddsPath, MEMORY_TYPE::MEMORY_STATIC)))
+			if (FAILED(GET_SINGLE(CResource_Manager)->Load_Textures(szFileName, szTextureFileddsPath, MEMORY_TYPE::MEMORY_STATIC)))
 			{
-				GAMEINSTANCE->Load_Textures(szFileName, szTextureFilepngPath, MEMORY_TYPE::MEMORY_STATIC);
+				GET_SINGLE(CResource_Manager)->Load_Textures(szFileName, szTextureFilepngPath, MEMORY_TYPE::MEMORY_STATIC);
 			}
 
 			Material.pTextures[j] = m_pOwner.lock()->Add_Component<CTexture>();

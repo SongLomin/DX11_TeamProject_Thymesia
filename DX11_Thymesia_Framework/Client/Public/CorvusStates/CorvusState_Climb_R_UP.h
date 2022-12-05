@@ -23,7 +23,11 @@ protected:
 
 public:
     void Call_AnimationEnd();
+    void Call_NextKeyFrame(const _uint& In_KeyIndex);
 
+
+private:
+    weak_ptr<CAnimation> m_pThisAnimationCom;
 protected:
     virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
     virtual void OnStateEnd() override;
@@ -32,6 +36,7 @@ protected:
     virtual void OnDestroy() override;
     void Free();
 
+;
 
     // CNorMonStateBase을(를) 통해 상속됨
     virtual _bool Check_AndChangeNextState() override;

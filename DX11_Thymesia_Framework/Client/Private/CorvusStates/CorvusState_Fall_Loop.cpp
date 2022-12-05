@@ -112,6 +112,15 @@ _bool CCorvusState_Fall_Loop::Check_AndChangeNextState()
 
 
 
+	if (Check_RequirementRunState())
+	{
+		Rotation_InputToLookDir();
+		Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
+		return true;
+	}
+
+
+
 	return false;
 }
 

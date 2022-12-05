@@ -95,6 +95,7 @@ void CGround::Write_Json(json& Out_Json)
 		Texture.emplace("Density", iter.second.fDensity);
 		TexInfo.emplace(iter.first, Texture);
 	}
+
 	Out_Json.emplace("TextureInfo", TexInfo);
 
 	Out_Json.emplace("g_FilterTexture", string(m_pFilterTextureCom.lock()->Get_TextureKey()));
@@ -183,11 +184,11 @@ HRESULT CGround::SetUp_ShaderResource()
 	//CallBack_Bind_SRV(m_pShaderCom, "");
 
 	if (FAILED(m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
-		DEBUG_ASSERT;
+		return E_FAIL;
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW)), sizeof(_float4x4))))
-		DEBUG_ASSERT;
+		return E_FAIL;
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ)), sizeof(_float4x4))))
-		DEBUG_ASSERT;
+		return E_FAIL;
 
 	for (auto& iter : m_pTextureDescs)
 	{
@@ -196,20 +197,20 @@ HRESULT CGround::SetUp_ShaderResource()
 		string szDensityName     = "g_f" + iter.first.substr(string("g_Texture").length() + 1) + "_Density";
 
 		if (FAILED(iter.second.pDiffTex.lock()->Set_ShaderResourceView(m_pShaderCom, szDiffTextureName.c_str(), 0)))
-			DEBUG_ASSERT;
+			return E_FAIL;
 
 		if (FAILED(iter.second.pNormTex.lock()->Set_ShaderResourceView(m_pShaderCom, szNormTextureName.c_str(), 0)))
-			DEBUG_ASSERT;
+			return E_FAIL;
 
 		if (FAILED(m_pShaderCom.lock()->Set_RawValue(szDensityName.c_str(), &iter.second.fDensity, sizeof(_float))))
-			DEBUG_ASSERT;
+			return E_FAIL;
 	}
 
 	m_pFilterTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_FilterTexture", 0);
 
-	_vector vLightFlag = { 1.f, 1.f, 1.f, 1.f };
+	_vector vShaderFlag = { 0.f, 0.f, 0.f, 0.f };
 
-	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector))))
+	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector))))
 		DEBUG_ASSERT;
 
 	return S_OK;

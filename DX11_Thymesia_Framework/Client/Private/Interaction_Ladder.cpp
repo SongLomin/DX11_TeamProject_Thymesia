@@ -216,8 +216,8 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Up()
     if (FAILED(m_pMaskingTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 92)))
         return E_FAIL;
 
-    _vector vLightFlag = { 1.f, 1.f, 1.f, 1.f };
-    if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector))))
+    _vector vShaderFlag = { 1.f, m_fOutLineBlurIntensity, 0.f, 0.f };
+    if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector))))
         return E_FAIL;
 
     _uint iNumMeshContainers = m_pUpModelCom.lock()->Get_NumMeshContainers();
@@ -275,8 +275,8 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Mid()
     if (FAILED(m_pMaskingTextureCom.lock()->Set_ShaderResourceView(m_pInstanceShaderCom, "g_MaskTexture", 92)))
         return E_FAIL;
 
-    _vector vLightFlag = { 1.f, 1.f, 1.f, 1.f };
-    if (FAILED(m_pInstanceShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector))))
+    _vector vShaderFlag = { 1.f, m_fOutLineBlurIntensity, 0.f, 0.f };
+    if (FAILED(m_pInstanceShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector))))
         return E_FAIL;
 
     _uint iNumMeshContainers = m_pInstanceModelCom.lock()->Get_NumMeshContainers();
@@ -317,8 +317,8 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Down()
     if (FAILED(m_pMaskingTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 92)))
         return E_FAIL;
 
-    _vector vLightFlag = { 1.f, 1.f, 1.f, 1.f };
-    if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector))))
+    _vector vShaderFlag = { 1.f, m_fOutLineBlurIntensity, 0.f, 0.f };
+    if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector))))
         return E_FAIL;
 
     _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
@@ -359,14 +359,13 @@ void CInteraction_Ladder::SetUpColliderDesc()
 
     ColliderDesc.iLayer = (_uint)COLLISION_LAYER::LADDER_DOWN;
     ColliderDesc.vScale = vUse_Size;
-    ColliderDesc.vTranslation = { 0.f, 0.5f, 0.f };
 
     m_pColliderCom[LADDER_COL_TYPE::DOWN_USE].lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
 
     ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
 
    ColliderDesc.iLayer = (_uint)COLLISION_LAYER::LADDER_UP;
-   ColliderDesc.vTranslation = { 0.f, m_fOffset * (m_iMidSize + OFFSET_INDEX), 0.f };
+   ColliderDesc.vTranslation = { 0.f, m_fOffset * (m_iMidSize + OFFSET_INDEX) + 0.2f, 0.f };
    ColliderDesc.vScale = vUse_Size;
    m_pColliderCom[LADDER_COL_TYPE::UP_USE].lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
    //

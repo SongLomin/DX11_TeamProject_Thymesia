@@ -32,6 +32,7 @@
 #include "EditGroupProp.h"
 #include "EditInstanceProp.h"
 #include "EditMapCollider.h"
+#include "EditSetActor.h"
 
 #include "CCorvus.h"
 #include "PreViewAnimationModel.h"

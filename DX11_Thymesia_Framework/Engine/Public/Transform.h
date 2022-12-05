@@ -88,6 +88,7 @@ public:
 	void Turn(_fvector vAxis, _float fTimeDelta);
 	void Rotation(_fvector vAxis, _float fRadian);
 	void Rotation_Quaternion(_fvector vQuaternion);
+	void Rotation_PitchYawRoll(_float3 vRadian);
 	void LookAt(_fvector vTargetPos);
 	void LookAt2D(_fvector vTargetPos);
 	void LookAt_Right(_fvector vTargetRight);

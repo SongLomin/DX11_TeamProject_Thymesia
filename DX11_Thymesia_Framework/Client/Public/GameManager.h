@@ -16,7 +16,6 @@ class CPlayer;
 class CEffectGroup;
 class CSwapPlayerUI;
 
-
 //Player_UI
 class CPlayer_MPBar;
 class CPlayer_HPBar;

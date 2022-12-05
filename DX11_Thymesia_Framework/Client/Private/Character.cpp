@@ -37,6 +37,8 @@ _uint CCharacter::Get_PreStateIndex() const
 	return m_pPreState.lock()->Get_StateIndex();
 }
 
+
+
 void CCharacter::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
@@ -138,10 +140,8 @@ void CCharacter::OnEventMessage(_uint iArg)
 	if ((_uint)EVENT_TYPE::ON_EDITINIT == iArg)
 	{
 		m_isEdit = true;
+		m_pPhysXControllerCom.lock()->Set_Enable(false);
 	}
-
-	
-
 }
 
 void CCharacter::Free()

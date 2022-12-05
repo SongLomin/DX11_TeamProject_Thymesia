@@ -55,6 +55,25 @@ void CCorvusState_ClawAttackTab::Tick(_float fTimeDelta)
 			m_fDebugAnimationSpeed = 0.1f;
 		}
 	}
+	if (m_bDissolve)
+	{
+		m_fDissolveTime -= fTimeDelta;
+		if (0.f > m_fDissolveTime)
+			m_bDissolve = false;
+
+		if (m_bDissolveAppear)
+		{
+			m_fDissolveAmount = SMath::Lerp(0.f, 1.f, m_fDissolveTime / 0.7f);
+			m_vDissolveDir = { 1.f,0.f,0.f };
+		}
+		else
+		{
+			m_fDissolveAmount = SMath::Lerp(1.f, 0.f, m_fDissolveTime / 0.7f);
+			m_vDissolveDir = { -1.f,0.f,0.f };
+		}
+	}
+
+	Get_OwnerPlayer()->Set_DissolveAmount(5, m_fDissolveAmount, m_vDissolveDir);
 
 	Attack();
 }
@@ -77,14 +96,34 @@ void CCorvusState_ClawAttackTab::Call_AnimationEnd()
 
 }
 
-void CCorvusState_ClawAttackTab::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
+void CCorvusState_ClawAttackTab::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 {
+	if (!Get_Enable())
+		return;
 
-
-	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-	m_pModelCom.lock()->Set_AnimationSpeed(2.5f);
+	switch (In_iKeyIndex)
+	{
+	case 10:
+		m_fDissolveTime = 0.7f;
+		m_bDissolve = true;
+		m_bDissolveAppear = true;
+		break;
+	case 100:
+		m_fDissolveTime = 0.7f;
+		m_bDissolve = true;
+		m_bDissolveAppear = false;
+		break;
+	}
 }
+
+//void CCorvusState_ClawAttackTab::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
+//{
+//
+//
+//	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
+//	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+//	m_pModelCom.lock()->Set_AnimationSpeed(2.5f);
+//}
 
 void CCorvusState_ClawAttackTab::Attack()
 {
@@ -136,6 +175,10 @@ void CCorvusState_ClawAttackTab::OnStateStart(const _float& In_fAnimationBlendTi
 
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
+
+	m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_ClawAttackTab::Call_NextAnimationKey, this, placeholders::_1);
+
 	//m_iAttackIndex = 7;
 	//m_iEndAttackEffectIndex = -1;
 
@@ -157,7 +200,7 @@ void CCorvusState_ClawAttackTab::OnStateEnd()
 	//Disable_Weapons();
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 	m_IsNextAttack = false;
-
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CCorvusState_ClawAttackTab::Call_NextAnimationKey, this, placeholders::_1);
 }
 
 void CCorvusState_ClawAttackTab::OnEventMessage(_uint iArg)

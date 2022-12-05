@@ -4,6 +4,8 @@
 
 BEGIN(Client)
 
+class CEasingTransform;
+
 class CCustomUI : public CUI
 {
 public:
@@ -28,6 +30,7 @@ protected:
 
 private:
 	_uint	m_iDeffuseIndex = 0;
+	
 public:
 	void Free();
 };

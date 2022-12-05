@@ -27,6 +27,8 @@ protected:
     virtual void OnStateEnd() override;
     virtual _bool Check_AndChangeNextState() override;
 
+private:
+    _bool m_bLadderLock = false;
     //TODO юс╫ц
     _uint m_iSkillType = 0;
 

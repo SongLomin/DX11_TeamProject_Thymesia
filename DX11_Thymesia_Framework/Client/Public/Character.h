@@ -32,6 +32,7 @@ public:
     _uint Get_PreStateIndex() const;
     _bool Is_Edit() const { return m_isEdit; }
     PxControllerCollisionFlags Get_LastCollisionFlags() const { return m_LastCollisionFlags; }
+  
     
     weak_ptr<CStatus>   Get_Status() { return m_pStatus; }
 

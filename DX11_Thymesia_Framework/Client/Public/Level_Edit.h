@@ -22,6 +22,12 @@ public:
 
 private:
 	shared_ptr<CImGui_Manager> m_pImGui_Manager;
+#ifdef _RENDER_FPS_
+	_float	m_fTimeAcc = 0.f;
+	_uint	m_iNumRender = 0;
+	_tchar	m_szFPS[MAX_PATH] = TEXT("");
+	TEXTINFO m_TextInfo_FPS;
+#endif // _RENDER_FPS_
 };
 
 END

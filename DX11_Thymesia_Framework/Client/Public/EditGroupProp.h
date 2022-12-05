@@ -19,14 +19,6 @@ class CEditGroupProp final :
     CLONE_H(CEditGroupProp, CGameObject)
     SHALLOW_COPY(CEditGroupProp)
 
-private:
-    typedef struct tag_PropInfo
-    {
-        weak_ptr<CProp>     pProp;
-        _hashcode           hash;
-        string              szName;
-    } PROPS_DESC;
-
 public:
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize(void* pArg) override;
@@ -40,7 +32,7 @@ public:
     virtual void  OnEventMessage(_uint iArg) override;
 
 private:
-    void    View_SelectPropObjectType();
+    void    View_CreateProp();
     void    View_SelectModelComponent();
     void    View_PickingInfo();
 
@@ -51,26 +43,19 @@ private:
     void    View_ModelCopy();
     void    View_SelectTransformInfo();
 
-    void    View_SelectJson();
-
 private:
-    void    Pick_Prop();
+    _bool    Pick_Prop(RAY& _pMouseRayInWorldSpace);
 
 private:
     HRESULT SetUp_ShaderResource();
 
     void Load_ResourceList(vector<string>& In_List, const filesystem::path& In_Path, string _szCutName = "");
 
-    void Save_Json(string _szName);
-    void Load_Json(string _szName);
-
     virtual void Write_Json(json& Out_Json) override;
 
 private:
     typedef vector<string>                      RESOURCE_LIST;
-    typedef vector<PROPS_DESC>                  PROPS_INFOS;
 
-    PROPS_INFOS         m_PropList;
     _bool               m_bSubDraw            = false;
                                               
     _int                m_iPickingIndex       = -1;
@@ -80,8 +65,8 @@ private:
     string              m_szSelectModelName   = "";
     _float4             m_vPickingPos         = _float4(0.f, 0.f, 0.f, 0.f);
     _float              m_fPosY               = 0.f;
+
     RESOURCE_LIST       m_ModelList;
-    RESOURCE_LIST       m_JsonList;
 
     weak_ptr<CVIBuffer_DynamicCube>     m_pVIBufferCom;
     weak_ptr<CShader>                   m_pShaderCom;

@@ -360,6 +360,16 @@ void CTransform::Rotation_Quaternion(_fvector vQuaternion)
     Set_State(CTransform::STATE_LOOK, vLook * vScale.z);
 }
 
+void CTransform::Rotation_PitchYawRoll(_float3 vRadian)
+{
+    _matrix matPitchYawRoll = XMMatrixRotationRollPitchYaw(vRadian.x, vRadian.y, vRadian.z);
+    _vector vPosition = Get_Position();
+    _matrix WorldMatrix = SMath::Get_ScaleMatrix(XMLoadFloat4x4(&m_WorldMatrix)) * matPitchYawRoll;
+  
+    WorldMatrix.r[3] = vPosition;
+    XMStoreFloat4x4(&m_WorldMatrix, WorldMatrix);
+}
+
 void CTransform::LookAt(_fvector vTargetPos)
 {
     _vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);

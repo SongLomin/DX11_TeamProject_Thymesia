@@ -10,7 +10,7 @@ void CCollision_Manager::Initialize(const _uint& In_iNumLayer)
 {
 	m_pColliderList.reserve(In_iNumLayer);
 
-	for (_uint i = 0; i < In_iNumLayer; ++i)
+	for (_uint i(0); i < In_iNumLayer; ++i)
 	{
 		m_pColliderList.push_back({});
 		m_arrCheck.push_back(0);
@@ -48,9 +48,7 @@ void CCollision_Manager::Add_Collision(const _uint& In_iLayer, weak_ptr<CCollide
 		[&](weak_ptr<CCollider> pPreOtherCollider)
 		{
 			if (!In_pCollider.lock().get() || !pPreOtherCollider.lock().get())
-			{
 				return false;
-			}
 
 			return pPreOtherCollider.lock()->Get_ColliderIndex() == In_pCollider.lock()->Get_ColliderIndex();
 		});
@@ -59,15 +57,17 @@ void CCollision_Manager::Add_Collision(const _uint& In_iLayer, weak_ptr<CCollide
 	{
 
 		m_pColliderList[In_iLayer].push_back(In_pCollider);
+#ifdef _DEBUG
 		cout << In_pCollider.lock()->Get_ColliderIndex() << ": Add Collider" << endl;
+#endif // _DEBUG
 	}
 
 }
 
 void CCollision_Manager::Check_Group(const _uint& In_iLeftLayer, const _uint& In_iRightLayer)
 {
-	_uint iRow = (_uint)In_iLeftLayer; // 행
-	_uint iCol = (_uint)In_iRightLayer; // 열
+	_uint iRow((_uint)In_iLeftLayer); // 행
+	_uint iCol((_uint)In_iRightLayer); // 열
 
 	if (iRow > iCol)
 	{
@@ -87,16 +87,14 @@ void CCollision_Manager::Render_Collider()
 	for (auto& elem_List : m_pColliderList)
 	{
 		for (auto& elem : elem_List)
-		{
 			elem.lock()->Render();
-		}
 	}
 
 }
 
 void CCollision_Manager::Remove_DeadCollision()
 {
-	for (_uint i = 0; i < m_pColliderList.size(); i++)
+	for (_uint i(0); i < m_pColliderList.size(); i++)
 	{
 		for (auto iter = m_pColliderList[i].begin(); iter != m_pColliderList[i].end();)
 		{
@@ -106,7 +104,9 @@ void CCollision_Manager::Remove_DeadCollision()
 			}
 			else if(!(*iter).lock().get()->Get_Enable())
 			{
+#ifdef _DEBUG
 				cout << (*iter).lock()->Get_ColliderIndex() << ": Remove Disable Collider" << endl;
+#endif // _DEBUG
 				iter = m_pColliderList[i].erase(iter);
 			}
 			else
@@ -144,7 +144,7 @@ void CCollision_Manager::Update_CollisionGroup(const _uint& In_iLeftLayer, const
 
 _bool CCollision_Manager::Is_Collision(weak_ptr<CCollider> In_pLeft, weak_ptr<CCollider> In_pRight)
 {
-	_bool isCollision = false;
+	_bool isCollision(false);
 
 	if (!In_pLeft.lock()->Get_Enable() || !In_pRight.lock()->Get_Enable())
 		return false;
@@ -188,7 +188,7 @@ _bool CCollision_Manager::Is_Collision(weak_ptr<CCollider> In_pLeft, weak_ptr<CC
 
 void CCollision_Manager::End_CollisionCheck()
 {
-	for (_uint i = 0; i < m_pColliderList.size(); i++)
+	for (_uint i(0); i < m_pColliderList.size(); i++)
 	{
 		for (auto& elem : m_pColliderList[i])
 		{

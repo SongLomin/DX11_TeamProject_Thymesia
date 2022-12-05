@@ -119,6 +119,8 @@ namespace Client
 		_float4		vGlowColorSpeed;
 		_float4		vGlowColorForce;
 #pragma endregion
+
+#pragma region Collider
 		_bool		bCollider;
 		_bool		bWeaponSyncTransform;
 		_float		fWeaponLifeTime;
@@ -137,11 +139,11 @@ namespace Client
 
 		_bool		bLooping;
 
-		_bool		bDiffuseXInverse;
-		_bool		bDiffuseYInverse;
-
 		_int		iParticleType;
 		_int		iFollowTransformType;
+
+		_bool		bAttraction;
+		_float3		vGoalPosition;
 
 		_int		iShaderPassIndex;
 
@@ -149,6 +151,7 @@ namespace Client
 		_bool		bSyncAnimation;
 		_int		iSyncAnimationKey = -1;
 #pragma endregion
+
 #pragma region Life Time
 		_float		fInitTime;
 
@@ -188,7 +191,6 @@ namespace Client
 #endif // _DEBUG
 
 #pragma region Spawn Position
-		
 		_float3		vMinSpawnPosition; // becomes spawn position if bIsSpawnList is true
 		_float3		vMaxSpawnPosition;
 
@@ -243,26 +245,30 @@ namespace Client
 		_float3		vMaxLimitRotation;
 #pragma endregion
 #pragma region Scale
+		_bool		bSquareScale;
+
 		_bool		bEasingScale;
 		_int		iScaleEasingType;
 
 		_float		fScaleEasingTotalTime;
 
-		_float3		vMinStartScale;
-		_float3		vMaxStartScale;
+		_float2		vMinStartScale;
+		_float2		vMaxStartScale;
 
-		_float3		vMinScaleSpeed;
-		_float3		vMaxScaleSpeed;
+		_float2		vMinScaleSpeed;
+		_float2		vMaxScaleSpeed;
 
-		_float3		vMinScaleForce;
-		_float3		vMaxScaleForce;
+		_float2		vMinScaleForce;
+		_float2		vMaxScaleForce;
 
-		_float3		vMinLimitScale;
-		_float3		vMaxLimitScale;
+		_float2		vMinLimitScale;
+		_float2		vMaxLimitScale;
 #pragma endregion
 #pragma region Color
 		_float		fDiscardRatio;
 		_bool		IsGrayOnlyUseRed;// when random colors, grayscales
+
+		_bool		bEasingAlpha;
 
 		_float4		vMinStartColor;
 		_float4		vMaxStartColor;
@@ -278,6 +284,9 @@ namespace Client
 #pragma endregion
 #pragma region Texture
 #pragma region Diffuse
+		_bool		bDiffuseXInverse;
+		_bool		bDiffuseYInverse;
+
 		_int		iDiffuseIndex;
 		_float2		vDiffuseStartUV;
 		_float2		vDiffuseUVSpeed;
@@ -347,4 +356,18 @@ namespace Client
 		
 	};
 
+	// For. JoJo Particle Tool [Shader]
+#ifdef _JOJO_EFFECT_TOOL_
+	typedef struct tagJoJoParticleShaderInfo
+	{
+		enum class PARTICLE_RECT_TYPE		{ DEFAULT, SPRITE, TYPE_END };
+		enum class PARTICLE_DISCARD_TYPE	{ DISCARD_ALPHA, DISCARD_BLACK, TYPE_END };
+
+		_uint iShaderPassNumber;
+		PARTICLE_RECT_TYPE		eRectType;
+		PARTICLE_DISCARD_TYPE	eDiscardType;
+		_bool bSoftRendering;
+		_bool bSpecialRendering;
+	}JJ_PARTICLE_SHADER_INFO;
+#endif // _JOJO_EFFECT_TOOL_
 }

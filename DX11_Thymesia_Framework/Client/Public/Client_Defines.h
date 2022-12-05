@@ -2,6 +2,7 @@
 #include "Engine_Defines.h"
 #include "SMath.h"
 #include <filesystem>
+
 #include "Client_Structs.h"
 #include "Client_Presets.h"
 #include "imgui.h"
@@ -11,7 +12,7 @@
 
 #pragma region System
 // #define		_ONLY_UI_
-
+// #define		_BAKE_MIPMAPS_
 #define		_USE_THREAD_
 #define		_144HZ_
 #define		_RENDER_FPS_
@@ -19,84 +20,142 @@
 //#define		_LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
-#define		_USE_GRAVITY_
-#define		_LIFEGUARD_FOR_FALL_
+#define _USE_GRAVITY_
+#define _LIFEGUARD_FOR_FALL_
 
 #pragma region Console Outputs
-// #define		_DEBUG_COUT_
-#define		_DEBUG_COUT_JOJO
+// #define _DEBUG_COUT_
+// #define _DEBUG_COUT_JOJO
 #pragma endregion // Console Outputs
 
 #pragma region Map
-#define		_BRIGHT_LIGHT_
-// #define		_GENERATE_PROP_COLLIDER_ true
-//#define	_STAGE_1_
-#define		_STAGE_2_
-#define		_TEST_STATIC_PROPS_
+#define _BRIGHT_LIGHT_
+// #define _GENERATE_PROP_COLLIDER_ true
+#define _STAGE_1_
+// #define _STAGE_2_
+#define _TEST_STATIC_PROPS_
+// #define _TEST_DYNAMIC_PROPS_
 #pragma endregion // Map
 
 #pragma region Tool
-#define _MAP_TOOL_
+// #define _MAP_TOOL_
 #define _EFFECT_TOOL_
-#pragma endregion
+#pragma endregion // Tool
 
 #pragma region Boss Mobs
-#define		_BOSS_VARG_
-// #define		_BOSS_URD_
+#define _BOSS_VARG_
+// #define _BOSS_URD_
 #pragma endregion // Boss Mobs
 
 #pragma region Normal Mobs
-#define		_STAGE_1_MONSTER_
-#define		_STAGE_2_MONSTER_
+#define _STAGE_1_MONSTER_
+// #define _STAGE_2_MONSTER_
 #pragma endregion // Normal Mobs
 
 #pragma region Effects
-// #define		_DAGGER_TRAIL_
-#define		_CORVUS_EFFECT_
+// #define _DAGGER_TRAIL_
+#define _CORVUS_EFFECT_
+#define _JOJO_EFFECTS_
 #pragma endregion // Effects
 
 #endif // _DEBUG
 //////////////// DEBUG MODE DEFINES ////////////////
 
-
 //////////////// RELEASE MODE DEFINES ////////////////
 #ifdef NDEBUG
 
+#undef _JOJO_EFFECT_TOOL_
+#undef _ONLY_UI_
+
 #pragma region System
-#define		_USE_THREAD_
-#define		_144HZ_
-#define		_RENDER_FPS_
+#define _USE_THREAD_
+#define _144HZ_
+#define _RENDER_FPS_
 //#define		_INSTANCE_CULLING_
-#define		_LOAD_CAPTURED_RESOURCE_
+#define _LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
-#define		_USE_GRAVITY_
-// #define		_LIFEGUARD_FOR_FALL_
+#define _USE_GRAVITY_
+// #define _LIFEGUARD_FOR_FALL_
 
 #pragma region Map
-// #define		_BRIGHT_LIGHT_
-#define		_GENERATE_PROP_COLLIDER_ true
-// #define		_STAGE_1_
-#define		_STAGE_2_
+// #define _BRIGHT_LIGHT_
+#define _GENERATE_PROP_COLLIDER_ true
+// #define _STAGE_1_
+#define _STAGE_2_
 #pragma endregion // Map
 
 #pragma region Boss Mobs
-#define		_BOSS_VARG_
-#define		_BOSS_URD_
+#define _BOSS_VARG_
+#define _BOSS_URD_
 #pragma endregion // Boss Mobs
 
 #pragma region Normal Mobs
-#define		_STAGE_1_MONSTER_
-#define		_STAGE_2_MONSTER_
+#define _STAGE_1_MONSTER_
+#define _STAGE_2_MONSTER_
 #pragma endregion // Normal Mobs
 
 #pragma region Effects
-// #define		_DAGGER_TRAIL_
-#define		_CORVUS_EFFECT_
+// #define _DAGGER_TRAIL_
+#define _CORVUS_EFFECT_
 #pragma endregion // Effects
 
 #endif // NDEBUG
 //////////////// RELEASE MODE DEFINES ////////////////
+
+/////////////// For. JoJo Effect Tool ///////////////
+#ifdef _JOJO_EFFECT_TOOL_
+
+#pragma region System
+// #define _ONLY_UI_
+#define _USE_THREAD_
+#define _144HZ_
+#define _RENDER_FPS_
+#undef _INSTANCE_CULLING_
+#undef _LOAD_CAPTURED_RESOURCE_
+#pragma endregion // System
+
+#undef _USE_GRAVITY_
+#undef _LIFEGUARD_FOR_FALL_
+
+#pragma region Console Outputs
+#undef _DEBUG_COUT_
+#undef _DEBUG_COUT_JOJO
+#pragma endregion // Console Outputs
+
+#pragma region Map
+#define _BRIGHT_LIGHT_
+#undef _GENERATE_PROP_COLLIDER_ true
+#undef _STAGE_1_
+#undef _STAGE_2_
+#undef _TEST_STATIC_PROPS_
+#undef _TEST_DYNAMIC_PROPS_
+#pragma endregion // Map
+
+#pragma region Tool
+#undef _MAP_TOOL_
+#define _EFFECT_TOOL_
+#pragma endregion // Tool
+
+#pragma region Boss Mobs
+#undef _BOSS_VARG_
+#undef _BOSS_URD_
+#pragma endregion // Boss Mobs
+
+#pragma region Normal Mobs
+#undef _STAGE_1_MONSTER_
+#undef _STAGE_2_MONSTER_
+#pragma endregion // Normal Mobs
+
+#pragma region Effects
+#undef _DAGGER_TRAIL_
+#define _CORVUS_EFFECT_
+#undef _JOJO_EFFECTS_
+#define _ANIMATION_TOOL_CORVUS_WEAPON_
+#pragma endregion // Effects
+
+#endif // _JOJO_EFFECT_TOOL_
+/////////////// For. JoJo Effect Tool ///////////////
 
 
 
@@ -135,7 +194,6 @@ namespace Client
 		ON_EDITDRAW_NONE,
 		ON_EDITDRAW_ACCEPT,
 		ON_EDITDRAW_SUB,
-		ON_EDITPICKING,
 		ON_EDIT_PHYSXINFO,
 		ON_EDIT_PHYSXINFO_N,
 		ON_EDIT_DELETE,
@@ -177,6 +235,7 @@ namespace Client
 		PLAYER,
 		MONSTER,
 		EDITER,
+		UI,
 		LAYER_END
 	};
 
@@ -239,13 +298,19 @@ namespace Client
 	};
 
 	enum class  MONSTERTYPE {
+		START_NORMAL_MONSTER = 0,
 		AXEMAN,  // 도끼든남자 방패든도끼든남자
 		KNIFEWOMAN, // 기본단검여자
 		SKULL, // 기본해골
 		GARDENER, // 낫든몬스터
-		ELITEGARDENER,
-		VARG, // 보스바그
 		SHIELDAXEMAN,
+
+		START_ELITE_MONSTER = 10000,
+		ELITEGARDENER,
+
+		STARTBOSS_MONSTER = 20000,
+		VARG, // 보스바그
+
 		NMON_END
 	};
 

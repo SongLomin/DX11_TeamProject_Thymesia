@@ -25,6 +25,8 @@ public:
     virtual HRESULT Render() override;
     virtual void SetUp_ShaderResource() override;
 
+public:
+    virtual void Init_Desc() override;
 
 private:
     virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;

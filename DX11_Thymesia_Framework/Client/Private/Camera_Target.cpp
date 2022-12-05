@@ -120,7 +120,7 @@ void CCamera_Target::Tick(_float fTimeDelta)
 		Interpolate_Camera(fTimeDelta);
 	}
 
-		Update_PhysXCollider(fTimeDelta);
+	Update_PhysXCollider(fTimeDelta);
 	
 	/*RAY PlayerToCameraRay;
 	_vector vPlayerToCameraDir = m_pTransformCom.lock()->Get_Position() - m_pCurrentPlayerTransformCom.lock()->Get_Position();
@@ -465,10 +465,13 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 	}
 
 	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
-	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * ( - 4.5f + m_fZoom) + XMVectorSet(0.f, 1.1f, 0.f, 0.f) + XMLoadFloat3(&m_vShaking);
+	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * ( - 2.5f + m_fZoom) + XMVectorSet(0.f, 1.1f, 0.f, 0.f) + XMLoadFloat3(&m_vShaking);
 	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
 
+	_float3 vPitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(m_pTransformCom.lock()->Get_WorldMatrix()));
+	vPitchYawRoll.z = 0.f;
 
+	m_pTransformCom.lock()->Rotation_PitchYawRoll(vPitchYawRoll);
 }
 
 void CCamera_Target::Reposition_Camera_AfterCinematic(_float fTimeDelta)

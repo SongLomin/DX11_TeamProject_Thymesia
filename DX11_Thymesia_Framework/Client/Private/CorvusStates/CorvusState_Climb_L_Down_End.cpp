@@ -6,6 +6,7 @@
 #include "BehaviorBase.h"
 #include "Animation.h"
 #include "CorvusStates/CorvusStates.h"
+#include "PhysXCharacterController.h"
 
 GAMECLASS_C(CCorvusState_Climb_L_Down_End);
 CLONE_C(CCorvusState_Climb_L_Down_End, CComponent)
@@ -96,6 +97,22 @@ _bool CCorvusState_Climb_L_Down_End::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
 		return false;
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.3f)
+	{
+		m_pPhysXControllerCom.lock()->Set_EnableSimulation(true);
+	}
+
+	//if ((Flags & PxControllerCollisionFlag::eCOLLISION_DOWN))
+	//{
+	//	Rotation_InputToLookDir();
+	//	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+	//	m_pPhysXControllerCom.lock()->Set_EnableSimulation(true);
+	//	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Z);
+	//	return false;
+	//}
+
+
 
 	//애니메이션이 끝나면 피직스키고 아이들로돌아가라
 

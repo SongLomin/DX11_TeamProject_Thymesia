@@ -83,8 +83,8 @@ HRESULT CCustomLight::Render(weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect>
 	if (FAILED(pShader.lock()->Set_RawValue("g_vLightSpecular", &m_LightDesc.vSpecular, sizeof(_float4))))
 		DEBUG_ASSERT;
 	
-	if (FAILED(pShader.lock()->Set_RawValue("g_vLightFlag", &m_LightDesc.vLightFlag, sizeof(_float4))))
-		DEBUG_ASSERT;
+	/*if (FAILED(pShader.lock()->Set_RawValue("g_vShaderFlag", &m_LightDesc.vLightFlag, sizeof(_float4))))
+		DEBUG_ASSERT;*/
 
 	pShader.lock()->Begin(iPassIndex);
 

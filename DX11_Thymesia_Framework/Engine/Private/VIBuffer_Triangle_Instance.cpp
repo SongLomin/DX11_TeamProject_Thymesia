@@ -208,7 +208,6 @@ void CVIBuffer_Triangle_Instance::Update(const vector<PARTICLE_DESC>& In_Particl
 		_matrix RotationMatrix = XMMatrixRotationRollPitchYawFromVector(PitchYawRoll);
 		XMStoreFloat4(&((VTXCOLORINSTANCE*)SubResource.pData)[i].vRight, RotationMatrix.r[0] * In_ParticleDescs[i].vCurrentScale.x);
 		XMStoreFloat4(&((VTXCOLORINSTANCE*)SubResource.pData)[i].vUp, RotationMatrix.r[1] * In_ParticleDescs[i].vCurrentScale.y);
-		XMStoreFloat4(&((VTXCOLORINSTANCE*)SubResource.pData)[i].vLook, RotationMatrix.r[2] * In_ParticleDescs[i].vCurrentScale.z);
 
 		XMStoreFloat4(&((VTXCOLORINSTANCE*)SubResource.pData)[i].vTranslation,
 			XMLoadFloat3(&In_ParticleDescs[i].vCurrentTranslation));

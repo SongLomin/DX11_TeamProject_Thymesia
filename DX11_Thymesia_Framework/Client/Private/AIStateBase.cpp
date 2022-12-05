@@ -20,19 +20,22 @@ HRESULT CAIStateBase::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	CMonster::STATE_LINK_MONSTER_DESC StateLinkDesc;
-	ZeroMemory(&StateLinkDesc, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-	memcpy(&StateLinkDesc, pArg, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-
-	m_eMonType = StateLinkDesc.eMonType;
-	m_eNorMonIdleType = StateLinkDesc.eNorMonIdleType;
-	m_fStartPosition = StateLinkDesc.m_fStartPositon;
-	m_eBossStartType = StateLinkDesc.eBossStartType;
-
 	m_iTimeScaleLayer = (_uint)TIMESCALE_LAYER::MONSTER;
 	m_pOwnerFromMonster = Weak_Cast<CMonster>(m_pOwner);
 	
 	return S_OK;
+}
+
+void CAIStateBase::Init_Desc(void* In_pDesc)
+{
+	CMonster::STATE_LINK_MONSTER_DESC StateLinkDesc;
+	ZeroMemory(&StateLinkDesc, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+	memcpy(&StateLinkDesc, In_pDesc, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+
+	m_eMonType        = StateLinkDesc.eMonType;
+	m_eNorMonIdleType = StateLinkDesc.eNorMonIdleType;
+	m_fStartPosition  = StateLinkDesc.m_fStartPositon;
+	m_eBossStartType  = StateLinkDesc.eBossStartType;
 }
 
 void CAIStateBase::Start()
@@ -220,14 +223,16 @@ _bool CAIStateBase::Rotation_TargetToLookDir()
 _float CAIStateBase::Get_DistanceWithPlayer() const
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+
+	if (!pCurrentPlayer.lock())
+		return 999999.f;
+
 	_vector vPlayerPosition = pCurrentPlayer.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
 	_vector vMyPosition = m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
 	_float fDistance = XMVector3Length(vPlayerPosition - vMyPosition).m128_f32[0];
 
 	return fDistance;
 }
-
-
 
 _vector CAIStateBase::Get_CurMonToStartMonDir()
 {

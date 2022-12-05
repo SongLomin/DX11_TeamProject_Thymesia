@@ -405,6 +405,11 @@ HRESULT CGameInstance::Load_Textures(const _char* _strKey, const _tchar* pTextur
 	return m_pResource_Manager->Load_Textures(_strKey, pTextureFilePath, eMemType);
 }
 
+HRESULT CGameInstance::Generate_MipMap(const _tchar* pTextureFilePath, const _int In_iMipMapLevels)
+{
+	return m_pResource_Manager->Generate_MipMap(pTextureFilePath, In_iMipMapLevels);
+}
+
 vector<ComPtr<ID3D11ShaderResourceView>> CGameInstance::Get_TexturesFromKey(const _char* _Str_Key, MEMORY_TYPE _eType)
 {
 	return m_pResource_Manager->Get_TexturesFromKey(_Str_Key, _eType);

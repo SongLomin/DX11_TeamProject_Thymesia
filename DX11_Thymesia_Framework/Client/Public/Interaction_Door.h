@@ -44,7 +44,7 @@ public:
     virtual void SetUp_ShaderResource() override;
 
 private:
-    void    SetUpColliderDesc();
+    void    SetUpColliderDesc(_float* _pColliderDesc);
 
 private:
     weak_ptr<CCollider>         m_pColliderCom;
@@ -52,6 +52,7 @@ private:
          
     _flag                       m_ActionFlag        = ACTION_FLAG::ROTATION;
     _float                      m_fRotationtRadian  = XMConvertToRadians(90.f);
+    _float                      m_fRotationtSpeed   = 1.f;
     _float                      m_fAddRadian        = 0.f;
     _float                      m_fFirstRadian      = 0.f;
 };

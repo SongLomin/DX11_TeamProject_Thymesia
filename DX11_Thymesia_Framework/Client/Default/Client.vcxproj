@@ -259,17 +259,20 @@
     <ClInclude Include="..\Public\CorvusStates\Talent_Sword.h" />
     <ClInclude Include="..\Public\CState_AVoid.h" />
     <ClInclude Include="..\Public\CustomFont.h" />
+    <ClInclude Include="..\Public\CUtils_EasingTransform.h" />
     <ClInclude Include="..\Public\Dynamic_Piece.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h" />
     <ClInclude Include="..\Public\EasingTransform.h" />
     <ClInclude Include="..\Public\EditMapCollider.h" />
+    <ClInclude Include="..\Public\EditSetActor.h" />
     <ClInclude Include="..\Public\Interaction_CheckPoint.h" />
     <ClInclude Include="..\Public\Interaction_Door.h" />
     <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h" />
     <ClInclude Include="..\Public\Interaction_Elevator.h" />
     <ClInclude Include="..\Public\Interaction_Ladder.h" />
+    <ClInclude Include="..\Public\JoJoParticleShaderManager.h" />
     <ClInclude Include="..\Public\Level_Test.h" />
     <ClInclude Include="..\Public\MonsterParryingBar.h" />
     <ClInclude Include="..\Public\PhysXCameraController.h">
@@ -301,6 +304,7 @@
     <ClInclude Include="..\Public\Status_Monster.h" />
     <ClInclude Include="..\Public\Status_Player.h" />
     <ClInclude Include="..\Public\Preset_PhysXControllerDesc.h" />
+    <ClInclude Include="..\Public\TestUI.h" />
     <ClInclude Include="..\Public\UI_Button.h" />
     <ClInclude Include="..\Public\Talent_Effects.h" />
     <ClInclude Include="..\Public\UI_Container.h" />
@@ -588,14 +592,17 @@
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_SharpWeaponLV2.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Sword.cpp" />
     <ClCompile Include="..\Private\CustomFont.cpp" />
+    <ClCompile Include="..\Private\CUtils_EasingTransform.cpp" />
     <ClCompile Include="..\Private\Dynamic_Piece.cpp" />
     <ClCompile Include="..\Private\EasingTransform.cpp" />
     <ClCompile Include="..\Private\EditMapCollider.cpp" />
+    <ClCompile Include="..\Private\EditSetActor.cpp" />
     <ClCompile Include="..\Private\Interaction_CheckPoint.cpp" />
     <ClCompile Include="..\Private\Interaction_Door.cpp" />
     <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\Interaction_Elevator.cpp" />
     <ClCompile Include="..\Private\Interaction_Ladder.cpp" />
+    <ClCompile Include="..\Private\JoJoParticleShaderManager.cpp" />
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Parry.cpp" />
     <ClCompile Include="..\Private\PhysXCameraController.cpp">
@@ -828,6 +835,7 @@
     <ClCompile Include="..\Private\Player.cpp" />
     <ClCompile Include="..\Private\UI.cpp" />
     <ClCompile Include="..\Private\WorldUI.cpp" />
+    <ClCompile Include="..\Public\TestUI.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

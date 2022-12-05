@@ -19,15 +19,6 @@ HRESULT CBossStateBase::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	CMonster::STATE_LINK_MONSTER_DESC StateLinkDesc;
-	ZeroMemory(&StateLinkDesc, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-	memcpy(&StateLinkDesc, pArg, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-
-	m_eMonType = StateLinkDesc.eMonType;
-	m_eNorMonIdleType = StateLinkDesc.eNorMonIdleType;
-	m_fStartPosition = StateLinkDesc.m_fStartPositon;
-	m_eBossStartType = StateLinkDesc.eBossStartType;
-
 	m_iTimeScaleLayer = (_uint)TIMESCALE_LAYER::MONSTER;
 	m_pOwnerFromMonster = Weak_Cast<CMonster>(m_pOwner);
 
@@ -72,7 +63,17 @@ _bool CBossStateBase::Check_RequirementCoolDown(weak_ptr<CBossStateBase> pTarget
 	return false;
 }
 
+void CBossStateBase::Init_Desc(void* In_pDesc) 
+{
+	CMonster::STATE_LINK_MONSTER_DESC StateLinkDesc;
+	ZeroMemory(&StateLinkDesc, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
+	memcpy(&StateLinkDesc, In_pDesc, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 
+	m_eMonType        = StateLinkDesc.eMonType;
+	m_eNorMonIdleType = StateLinkDesc.eNorMonIdleType;
+	m_fStartPosition  = StateLinkDesc.m_fStartPositon;
+	m_eBossStartType  = StateLinkDesc.eBossStartType;
+}
 
 
 shared_ptr<CMonster> CBossStateBase::Get_OwnerMonster() const noexcept

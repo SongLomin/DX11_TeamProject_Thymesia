@@ -42,6 +42,8 @@ public:
     virtual _bool Check_Requirement();
     virtual _bool Check_AndChangeNextState() PURE;
     virtual void Check_AndChangeHitState(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage);
+    virtual void Init_Desc(void* In_pDesc) { }
+
 public:
     _bool Get_NearGameObjectInDistance(weak_ptr<CGameObject>& Out_pGameObject, list<weak_ptr<CGameObject>> In_pGameObjects, const _float In_fDistance);
 
@@ -87,6 +89,7 @@ public:
     virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) {};
 
 public:
+    virtual void OnEventMessage(_uint iArg) override;
     virtual void OnEventMessage(weak_ptr<CBase> pArg);
 
 protected:

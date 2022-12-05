@@ -178,10 +178,13 @@ void CNorMonState_Idle::Free()
 
 _bool CNorMonState_Idle::Check_AndChangeNextState()
 {
-
 	if (!Check_Requirement())
 		return false;
 
+	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+
+	if (!pCurrentPlayer.lock())
+		return false;
 
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 	_float fMToMDistance = GetStartPositionToCurrentPositionDir(); // 몬스터스타트포지션과 몬스터현재 포지션 사이의 거리

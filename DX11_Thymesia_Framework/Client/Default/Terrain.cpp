@@ -99,9 +99,9 @@ HRESULT CTerrain::SetUp_ShaderResource()
 	if (FAILED(m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_SourDiffTexture", 0)))
 		return E_FAIL;
 
-	_vector vLightFlag = { 1.f, 1.f, 1.f, 1.f };
+	_vector vShaderFlag = { 0.f, 0.f, 0.f, 0.f };
 
-	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector))))
+	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector))))
 		return E_FAIL;
 
 	return S_OK;

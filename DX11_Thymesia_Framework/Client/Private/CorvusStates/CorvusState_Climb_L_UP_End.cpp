@@ -6,6 +6,7 @@
 #include "BehaviorBase.h"
 #include "Animation.h"
 #include "CorvusStates/CorvusStates.h"
+#include "PhysXCharacterController.h"
 
 GAMECLASS_C(CCorvusState_Climb_L_UP_End);
 CLONE_C(CCorvusState_Climb_L_UP_End, CComponent)
@@ -54,6 +55,19 @@ void CCorvusState_Climb_L_UP_End::Call_AnimationEnd()
 
 }
 
+void CCorvusState_Climb_L_UP_End::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
+	if (!Get_Enable())
+		return;
+
+	_vector fOffSet = { 0.f, 0.00163934426f ,0.f };
+
+	PxControllerFilters Filters;
+
+	m_pPhysXControllerCom.lock()->MoveWithRotation(fOffSet, 0.f, GAMEINSTANCE->Get_DeltaTime(),
+		Filters, nullptr, m_pTransformCom);
+}
+
 void CCorvusState_Climb_L_UP_End::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
@@ -67,6 +81,11 @@ void CCorvusState_Climb_L_UP_End::OnStateStart(const _float& In_fAnimationBlendT
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey +=
+		bind(&CCorvusState_Climb_L_UP_End::Call_NextKeyFrame, this, placeholders::_1);
+
 #ifdef _DEBUG
 	#ifdef _DEBUG_COUT_
 		cout << "NorMonState: Stop -> OnStateStart" << endl;
@@ -78,6 +97,11 @@ void CCorvusState_Climb_L_UP_End::OnStateStart(const _float& In_fAnimationBlendT
 void CCorvusState_Climb_L_UP_End::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -=
+		bind(&CCorvusState_Climb_L_UP_End::Call_NextKeyFrame, this, placeholders::_1);
+
+	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Z);
 }
 
 void CCorvusState_Climb_L_UP_End::OnDestroy()

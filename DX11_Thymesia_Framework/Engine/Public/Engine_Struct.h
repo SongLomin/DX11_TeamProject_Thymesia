@@ -64,6 +64,7 @@ namespace Engine
 
 	} MESH_VTX_INFO;
 
+	// !!! DO NOT ZeroMemory() !!!
 	typedef struct tagTextInfo
 	{
 		tstring	szText;
@@ -79,7 +80,7 @@ namespace Engine
 	{
 		_float4	vOrigin;
 		_float3	vDirection;
-		float		fLength;
+		float	fLength;
 	}RAY;
 
 	typedef struct tagLineIndices32
@@ -351,7 +352,10 @@ namespace Engine
 		_float			fCurrentSpawnTime;
 		_float			fTargetSpawnTime;
 
-		_float4x4			matParentMatrix;
+		_float4x4		matParentMatrix;
+		
+		// For. Attraction
+		_float3			vTargetLookAt;
 
 		// For. Position
 		_float3			vOffsetPosition;
@@ -372,11 +376,11 @@ namespace Engine
 		_float3			vTargetRotationForce;
 
 		// For. Scale
-		_float3         vCurrentScale;
-		_float3         vCurrentScaleForce;
+		_float2         vCurrentScale;
+		_float2         vCurrentScaleForce;
 
-		_float3			vTargetScaleSpeed;
-		_float3			vTargetScaleForce;
+		_float2			vTargetScaleSpeed;
+		_float2			vTargetScaleForce;
 
 		// For. Color
 		_float4         vCurrentColor;
@@ -392,8 +396,6 @@ namespace Engine
 		// For. Sprites
 		_float2 vSpriteUV;
 		_float fCurrentSpriteTime;
-		// For Sprites - Pendulum Effect
-		_bool bFramePlayBackward; // default is false : Frame plays forward
 
 		void Reset()
 		{

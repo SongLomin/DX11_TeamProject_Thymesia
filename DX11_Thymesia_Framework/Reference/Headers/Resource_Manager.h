@@ -11,15 +11,23 @@ class CResource_Manager :
 {
 	DECLARE_SINGLETON(CResource_Manager)
 
+private: /* For. Captured Resources */
+	struct TEXTURE_DATA
+	{
+		string	szFilePath;
+		_int	MipMapLevels;
+	};
+
 public: /* For Texture */
 	HRESULT Load_Textures(const _char* _strKey, const _tchar* pTextureFilePath, MEMORY_TYPE eMemType = MEMORY_TYPE::MEMORY_STATIC);
+	HRESULT Generate_MipMap(const _tchar* pTextureFilePath, const _int In_iMipMapLevels = 8);
 	//vector*를 반환하지 않는 이유: 셰이더리소스뷰의 레퍼런스 카운트를 올리기 위해서 쓰지 않는다.
 	vector<ComPtr<ID3D11ShaderResourceView>> Get_TexturesFromKey(const _char* _Str_Key, MEMORY_TYPE _eType = MEMORY_TYPE::MEMORY_END);
 	
 
 private:
 	unordered_map<_hashcode, vector<ComPtr<ID3D11ShaderResourceView>>> m_SRVs[(_uint)MEMORY_TYPE::MEMORY_END];
-	unordered_map<string, string> m_TextureFilePaths[(_uint)MEMORY_TYPE::MEMORY_END];
+	unordered_map<string, TEXTURE_DATA> m_TextureFilePaths[(_uint)MEMORY_TYPE::MEMORY_END];
 
 public: /* For Model */
 	HRESULT Load_Model(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType = MEMORY_TYPE::MEMORY_STATIC, _bool bAnimZero = false);

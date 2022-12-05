@@ -29,36 +29,10 @@ HRESULT CEditMapCollider::Start()
 
 void CEditMapCollider::Tick(_float fTimeDelta)
 {
-	__super::Tick(fTimeDelta);
-
-	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CPhysXColliderObject).hash_code());
-
-	if (iter_collider == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
-		return;
-
-	for (auto iter = iter_collider->second.begin(); iter != iter_collider->second.end();)
-	{
-		if (!(*iter).pInstance.lock().get())
-		{
-			iter = iter_collider->second.erase(iter);
-		}
-		else
-		{
-			iter->pInstance.lock()->Tick(fTimeDelta);
-			++iter;
-		}
-	}
 }
 
 void CEditMapCollider::LateTick(_float fTimeDelta)
 {
-	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CPhysXColliderObject).hash_code());
-
-	if (iter_collider == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
-		return;
-
-	for (auto& iter : iter_collider->second)
-		iter.pInstance.lock()->LateTick(fTimeDelta);
 }
 
 HRESULT CEditMapCollider::Render()

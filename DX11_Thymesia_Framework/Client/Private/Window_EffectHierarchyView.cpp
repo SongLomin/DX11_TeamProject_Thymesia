@@ -266,7 +266,6 @@ void CWindow_EffectHierarchyView::Add_EffectParticle_Internal(const _char* In_sz
     m_pEffectGroup.lock()->Add_EditParticle(In_szName, In_szModelKey);
     m_szEffectParticleNames.emplace_back(In_szName);
 }
-
 void CWindow_EffectHierarchyView::Free()
 {
 }

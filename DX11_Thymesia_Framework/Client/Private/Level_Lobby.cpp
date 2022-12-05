@@ -55,7 +55,7 @@ HRESULT CLevel_Lobby::Render()
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 
-	SetWindowText(g_hWnd, TEXT("로비 레벨. "));
+	SetWindowText(g_hWnd, TEXT("Thymesia : LOBBY"));
 	return S_OK;
 }
 

@@ -112,10 +112,17 @@ void CVargBossState_Start::Call_AnimationEnd()
 
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkF>(0.05f);
 
+	weak_ptr<CCharacter> pCharacter = Weak_StaticCast<CCharacter>(m_pOwner);
+
+	if (pCharacter.lock()->Is_Edit())
+	{
+		return;
+	}
+
 	weak_ptr<CUI_ScriptQueue> pScriptQeuue = GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL_STATIC).front();
 	pScriptQeuue.lock()->Call_SetScript_Tutorial_Varg();
 }
-
+ 
 void CVargBossState_Start::OnDestroy()
 {
 	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Start::Call_AnimationEnd, this);

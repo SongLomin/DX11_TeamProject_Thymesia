@@ -40,6 +40,7 @@ public:
 	HRESULT Loading_ForEditLevel();
 	HRESULT Loading_ForTestLevel();
 
+private:
 	void	Loading_ForEffectGroup(const char* In_Path, const _uint& In_LevelIndex);
 	void	Load_AllDiffuseTexture();
 	void	Load_AllMaskMap();
@@ -55,8 +56,10 @@ public:
 	
 	void	Create_GameObjectFromJson(const string& In_szJsonPath, const LEVEL& In_eLevel);
 
-
 	void	Load_UIResource();
+	void	Load_CorvusModel();
+	void	Load_NormalMobModel();
+	void	Load_BossMobModel();
 
 private:
 	LEVEL						m_eNextLevel = LEVEL_END;

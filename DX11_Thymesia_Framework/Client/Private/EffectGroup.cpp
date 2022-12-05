@@ -133,9 +133,8 @@ void CEffectGroup::Add_EditParticle(const _char* In_szName, const _char* In_szTe
 {
     weak_ptr<CEffect_Rect> pEffectPoint = GAMEINSTANCE->Add_GameObject<CEffect_Rect>(LEVEL_EDIT);
     pEffectPoint.lock()->Init_EffectParticle(In_szName, In_szTextureKey);
-    pEffectPoint.lock()->Set_TimeScaleLayer((_uint)TIMESCALE_LAYER::EDITER);
-
     m_pEffectParticles.emplace_back(pEffectPoint);
+    pEffectPoint.lock()->Set_TimeScaleLayer((_uint)TIMESCALE_LAYER::EDITER);
 }
 
 void CEffectGroup::ReBake_EditParticle()

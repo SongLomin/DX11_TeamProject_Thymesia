@@ -1,1 +1,207 @@
-{"GameObject":[{"Component":{"Transform":[[0.9982858300209045,-2.473825588822365e-10,-0.05835941806435585,0.0],[0.022954756394028664,0.9193871021270752,0.3926786184310913,0.0],[0.05365242809057236,-0.3933469355106354,0.9178199172019958,0.0],[5.006903648376465,6.214107990264893,34.7357063293457,1.0]]},"Hash":8675365520207489377,"Name":"class Client::CCamera_Free","Setting":{"Enable":true}},{"Component":{"Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,0.0,0.0,1.0]]},"Hash":12159710856434595157,"Name":"class Client::CGround","Setting":{"Enable":true},"ShaderPass":0,"TextureInfo":{"g_Texture_Sorc":{"Density":30.0,"Diff":"T_P_Gravel_floor01_D","Norm":"T_P_Gravel_floor01_N"}},"VIBufferCom":"Test2","g_FilterTexture":"Test2_Filter"},{"ActionFlag":2,"Component":{"Model":"Door01_05","Transform":[[-0.4204420745372772,3.6379712176765056e-12,-0.9073171019554138,0.0],[2.444434358039871e-05,0.9999995827674866,-1.1327270840411074e-05,0.0],[0.9073171019554138,-2.6941243049805053e-05,-0.4204420745372772,0.0],[7.228116512298584,-1.2900006771087646,41.19867706298828,1.0]]},"Hash":5477902507740036444,"Name":"class Client::CInteraction_Door","RotationtRadian":1.5707963705062866,"Setting":{"Enable":true}},{"ActionFlag":2,"Component":{"Model":"P_ChurchSideDoor01","Transform":[[0.3353225886821747,3.637979240772582e-12,-0.942103385925293,0.0],[2.5381486921105534e-05,1.0,9.03402815310983e-06,0.0],[0.942103385925293,-2.694129761948716e-05,0.3353225886821747,0.0],[11.971214294433594,-0.4899995028972626,42.26034927368164,1.0]]},"Hash":5477902507740036444,"Name":"class Client::CInteraction_Door","RotationtRadian":1.5707963705062866,"Setting":{"Enable":true}},{"ActionFlag":2,"Component":{"Model":"P_MainChurchDoorRight01","Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,2.6941299438476563e-05,0.0],[0.0,-2.6941299438476563e-05,1.0,0.0],[6.812178611755371,0.15000051259994507,44.13690185546875,1.0]]},"Hash":5477902507740036444,"Name":"class Client::CInteraction_Door","RotationtRadian":1.5707963705062866,"Setting":{"Enable":true}},{"Component":{"Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,2.6941299438476563e-05,0.0],[0.0,-2.6941299438476563e-05,1.0,0.0],[5.041403770446777,-2.4499998092651367,39.025856018066406,1.0]]},"Hash":10178373209891377349,"Name":"class Client::CInteraction_CheckPoint","Setting":{"Enable":true}},{"Component":{"Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,2.6941299438476563e-05,0.0],[0.0,-2.6941299438476563e-05,1.0,0.0],[10.015096664428711,-0.9099999666213989,40.78294372558594,1.0]]},"Hash":10178373209891377349,"Name":"class Client::CInteraction_CheckPoint","Setting":{"Enable":true}},{"ActionFlag":0,"Component":{"Model":"P_MainChurchDoorLeft01","Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,2.6941299438476563e-05,0.0],[0.0,-2.6941299438476563e-05,1.0,0.0],[2.17893385887146,0.0,44.10332107543945,1.0]]},"Hash":5477902507740036444,"Name":"class Client::CInteraction_Door","RotationtRadian":1.5707963705062866,"Setting":{"Enable":true}},{"Component":{"Model":"Wagon3_Origin","Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,2.6941299438476563e-05,0.0],[0.0,-2.6941299438476563e-05,1.0,0.0],[5.71179723739624,0.430000901222229,31.093929290771484,1.0]]},"Hash":12970482995225672232,"Name":"class Client::CDynamic_Prop","Setting":{"Enable":true}},{"Component":{"Model":"","Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,0.0,0.0,1.0]]},"Hash":12970482995225672232,"Name":"class Client::CDynamic_Prop","Setting":{"Enable":true}},{"Component":{"Model":"","Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,0.0,0.0,1.0]]},"Hash":12970482995225672232,"Name":"class Client::CDynamic_Prop","Setting":{"Enable":true}}]}
+{
+  "GameObject": [
+    {
+      "Component": {
+        "Transform": [
+          [ 0.5867600440979004, -5.820766091346741e-11, -0.809759795665741, 0.0 ],
+          [ 0.4363848567008972, 0.8423649668693542, 0.3162088990211487, 0.0 ],
+          [ 0.6821140646934509, -0.5389052629470825, 0.49426835775375366, 0.0 ],
+          [ 4.5691046714782715, 16.377037048339844, -3.120427370071411, 1.0 ]
+        ]
+      },
+      "Hash": 8675365520207489377,
+      "Name": "class Client::CCamera_Free",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Model": "Mon_AxeMan",
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 7.4230427742004395, 5.2699995040893555, 20.833242416381836, 1.0 ]
+        ]
+      },
+      "Hash": 12933828336327676828,
+      "MonsterDesc": {
+        "IdleType_Boss": 2,
+        "IdleType_Monster": 0,
+        "MonsterType": 1
+      },
+      "Name": "class Client::CNorMonster",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Model": "Mon_AxeMan",
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 17.15130043029785, 5.410000324249268, 16.966598510742188, 1.0 ]
+        ]
+      },
+      "Hash": 12933828336327676828,
+      "MonsterDesc": {
+        "IdleType_Boss": 2,
+        "IdleType_Monster": 0,
+        "MonsterType": 1
+      },
+      "Name": "class Client::CNorMonster",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Model": "Mon_AxeMan",
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.193450927734375e-05, 0.0 ],
+          [ 0.0, -2.193450927734375e-05, 1.0, 0.0 ],
+          [ 10.199297904968262, 5.279999732971191, 13.467453002929688, 1.0 ]
+        ]
+      },
+      "Hash": 12933828336327676828,
+      "MonsterDesc": {
+        "IdleType_Boss": 2,
+        "IdleType_Monster": 0,
+        "MonsterType": 1
+      },
+      "Name": "class Client::CNorMonster",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Model": "Mon_AxeMan",
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 12.337067604064941, 5.410000324249268, 5.792386054992676, 1.0 ]
+        ]
+      },
+      "Hash": 12933828336327676828,
+      "MonsterDesc": {
+        "IdleType_Boss": 2,
+        "IdleType_Monster": 0,
+        "MonsterType": 1
+      },
+      "Name": "class Client::CNorMonster",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Model": "Mon_AxeMan",
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 7.276889324188232, 5.410000324249268, 6.691537857055664, 1.0 ]
+        ]
+      },
+      "Hash": 12933828336327676828,
+      "MonsterDesc": {
+        "IdleType_Boss": 2,
+        "IdleType_Monster": 0,
+        "MonsterType": 1
+      },
+      "Name": "class Client::CNorMonster",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Model": "Mon_AxeMan",
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 6.85609245300293, 5.410000324249268, 14.206769943237305, 1.0 ]
+        ]
+      },
+      "Hash": 12933828336327676828,
+      "MonsterDesc": {
+        "IdleType_Boss": 2,
+        "IdleType_Monster": 0,
+        "MonsterType": 1
+      },
+      "Name": "class Client::CNorMonster",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Model": "Mon_AxeMan",
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 14.941817283630371, 5.410000324249268, 27.94180679321289, 1.0 ]
+        ]
+      },
+      "Hash": 12933828336327676828,
+      "MonsterDesc": {
+        "IdleType_Boss": 2,
+        "IdleType_Monster": 0,
+        "MonsterType": 1
+      },
+      "Name": "class Client::CNorMonster",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Model": "Mon_AxeMan",
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 12.262532234191895, 5.410000324249268, 14.918251037597656, 1.0 ]
+        ]
+      },
+      "Hash": 12933828336327676828,
+      "MonsterDesc": {
+        "IdleType_Boss": 2,
+        "IdleType_Monster": 0,
+        "MonsterType": 1
+      },
+      "Name": "class Client::CNorMonster",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Model": "Mon_AxeMan",
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 12.627917289733887, 5.410000324249268, 23.97689437866211, 1.0 ]
+        ]
+      },
+      "Hash": 12933828336327676828,
+      "MonsterDesc": {
+        "IdleType_Boss": 2,
+        "IdleType_Monster": 0,
+        "MonsterType": 1
+      },
+      "Name": "class Client::CNorMonster",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Model": "Boss_Varg",
+        "Transform": [
+          [ -0.7071071267127991, -5.4569695116801764e-12, 0.7071064710617065, 0.0 ],
+          [ -1.9050366972805932e-05, 1.0, -1.9050377886742353e-05, 0.0 ],
+          [ -0.7071064710617065, -2.694130307645537e-05, -0.7071071267127991, 0.0 ],
+          [ 9.228233337402344, 11.710000038146973, 7.4028778076171875, 1.0 ]
+        ]
+      },
+      "Hash": 13883423221805443591,
+      "MonsterDesc": {
+        "IdleType_Boss": 2,
+        "IdleType_Monster": 0,
+        "MonsterType": 20001
+      },
+      "Name": "class Client::CVarg",
+      "Setting": { "Enable": true }
+    }
+  ]
+}

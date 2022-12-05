@@ -63,9 +63,9 @@ HRESULT CWindow_PrototypeView::Render()
             ImGui::EndTabItem();
         }
 
-        if (ImGui::BeginTabItem("Edit Prop"))
+        if (ImGui::BeginTabItem("Edit"))
         {
-            for (auto& elem : m_pPrototypes[PROTOTYPE_EDIT_PROP])
+            for (auto& elem : m_pPrototypes[PROTOTYPE_EDIT])
             {
                 if (ImGui::Selectable(elem.TypeName.c_str()))
                 {
@@ -128,6 +128,9 @@ void CWindow_PrototypeView::Add_Prototypes()
 
 #define ADD_PROTOTYPE(Layer, ClassType) m_pPrototypes[Layer].push_back({ typeid(ClassType).hash_code(), typeid(ClassType).name(), GAMEINSTANCE->Add_Prototype_GameObject<ClassType>() });
 
+    ADD_PROTOTYPE(PROTOTYPE_ACTOR, CNorMonster);
+    ADD_PROTOTYPE(PROTOTYPE_ACTOR, CVarg);
+
     ADD_PROTOTYPE(PROTOTYPE_PROP, CTerrain);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStatic_Prop);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStatic_Instancing_Prop);
@@ -139,11 +142,11 @@ void CWindow_PrototypeView::Add_Prototypes()
     ADD_PROTOTYPE(PROTOTYPE_PROP, CInteraction_Elevator);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CInteraction_Door);
 
-    ADD_PROTOTYPE(PROTOTYPE_EDIT_PROP, CEditGround);
-    ADD_PROTOTYPE(PROTOTYPE_EDIT_PROP, CEditGroupProp);
-    ADD_PROTOTYPE(PROTOTYPE_EDIT_PROP, CEditInstanceProp);
-    ADD_PROTOTYPE(PROTOTYPE_EDIT_PROP, CEditMapCollider);
-
+    ADD_PROTOTYPE(PROTOTYPE_EDIT, CEditGround);
+    ADD_PROTOTYPE(PROTOTYPE_EDIT, CEditGroupProp);
+    ADD_PROTOTYPE(PROTOTYPE_EDIT, CEditInstanceProp);
+    ADD_PROTOTYPE(PROTOTYPE_EDIT, CEditMapCollider);
+    ADD_PROTOTYPE(PROTOTYPE_EDIT, CEditSetActor);
 
     ADD_PROTOTYPE(PROTOTYPE_UI, CFadeMask);
 

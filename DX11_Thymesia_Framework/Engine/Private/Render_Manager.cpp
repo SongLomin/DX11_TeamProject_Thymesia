@@ -63,23 +63,13 @@ HRESULT CRender_Manager::Initialize()
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
-	/* For.Target_BlurXSpecular */
-	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_BlurXSpecular"),
-		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
-		DEBUG_ASSERT;
-
-	/* For.Target_BlurSpecular */
-	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_BlurSpecular"),
-		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
-		DEBUG_ASSERT;
-
 	/*For.Target_Fog*/
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Fog"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
-	/* For.Target_LightFlag */
-	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_LightFlag"), 
+	/* For.Target_ShaderFlag */
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_ShaderFlag"), 
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
@@ -146,6 +136,9 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_BlurOutLine"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_BlurOutLineIntensity"),
+		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_ViewShadow"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
@@ -182,13 +175,9 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_Depth"))))
 		DEBUG_ASSERT;
-	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_LightFlag"))))
+	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_ShaderFlag"))))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_PBR"))))
-		DEBUG_ASSERT;
-	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_BlurXSpecular"), TEXT("Target_BlurXSpecular"))))
-		DEBUG_ASSERT;
-	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_BlurSpecular"), TEXT("Target_BlurSpecular"))))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_ExtractEffect"), TEXT("Target_OriginalEffect"))))
 		DEBUG_ASSERT;
@@ -215,6 +204,8 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_BlurOutLine"), TEXT("Target_BlurOutLine"))))
+		DEBUG_ASSERT;
+	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_BlurOutLine"), TEXT("Target_BlurOutLineIntensity"))))
 		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_ViewShadow"), TEXT("Target_ViewShadow"))))
@@ -268,7 +259,7 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Depth"), fHalf, fHalf + fSize * 2, fSize, fSize)))
 		DEBUG_ASSERT;
-	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_LightFlag"), fHalf, fHalf + fSize * 3, fSize, fSize)))
+	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_ShaderFlag"), fHalf, fHalf + fSize * 3, fSize, fSize)))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_ExtractOutLine"), fHalf, fHalf + fSize * 4, fSize, fSize)))
 		DEBUG_ASSERT;
@@ -306,8 +297,6 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_OriginalEffect"), ViewPortDesc.Width - fHalf - fSize, fHalf + fSize * 2.f, fSize, fSize)))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_BlurForEffect"), ViewPortDesc.Width - fHalf - fSize, fHalf + fSize * 3.f, fSize, fSize)))
-		DEBUG_ASSERT;
-	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_BlurSpecular"), ViewPortDesc.Width - fHalf - fSize, fHalf + fSize * 4.f, fSize, fSize)))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_AntiAliasing"), ViewPortDesc.Width - fHalf - fSize, fHalf + fSize * 5.f, fSize, fSize)))
 		DEBUG_ASSERT;
@@ -404,9 +393,6 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Render_Lights()))
 		DEBUG_ASSERT;
 
-	//if (FAILED(Blur_Specular(1.f)))
-	//	DEBUG_ASSERT;
-
 	/*if (FAILED(Bake_Fog()))
 		DEBUG_ASSERT;*/
 
@@ -416,8 +402,8 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Render_Blend()))
 		DEBUG_ASSERT;
 
-	//if (FAILED(Blend_OutLine()))
-	//	DEBUG_ASSERT;
+	if (FAILED(Blend_OutLine()))
+		DEBUG_ASSERT;
 
 
 
@@ -463,7 +449,6 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 
 	if (FAILED(Render_UI()))
 		DEBUG_ASSERT;
-
 
 	GET_SINGLE(CFont_Manager)->Render_AllFont();
 
@@ -652,8 +637,8 @@ HRESULT CRender_Manager::Render_Lights()
 		DEBUG_ASSERT;
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_DepthTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Depth")))))
 		DEBUG_ASSERT;
-	if (FAILED(m_pShader->Set_ShaderResourceView("g_LightFlagTexture", pRenderTargetManager->Get_SRV(TEXT("Target_LightFlag")))))
-		DEBUG_ASSERT;
+	//if (FAILED(m_pShader->Set_ShaderResourceView("g_LightFlagTexture", pRenderTargetManager->Get_SRV(TEXT("Target_LightFlag")))))
+	//	DEBUG_ASSERT;
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_ORMTexture", pRenderTargetManager->Get_SRV(TEXT("Target_PBR")))))
 		DEBUG_ASSERT;
 
@@ -682,59 +667,6 @@ HRESULT CRender_Manager::Render_Lights()
 	return S_OK;
 }
 
-HRESULT CRender_Manager::Blur_Specular(const _float& In_PixelPitchScalar)
-{
-	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
-
-	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurXSpecular"));
-
-	if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Specular")))))
-		DEBUG_ASSERT;
-
-	m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
-	m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
-	m_pXBlurShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
-
-	_float fPixelWidth = 1 / 1600.f * In_PixelPitchScalar;
-	_float fPixelHeight = 1 / 900.f * In_PixelPitchScalar;
-	m_pXBlurShader->Set_RawValue("g_PixelWidth", &fPixelWidth, sizeof(_float));
-	m_pXBlurShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));
-
-	_float fBlurStrength = 1.f;
-	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
-
-	// Blur X
-	m_pXBlurShader->Begin(0);
-	m_pVIBuffer->Render();
-
-	pRenderTargetManager->End_MRT();
-
-	/*if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture", pRenderTargetManager->Get_SRV(TEXT("Target_BlurForGlow")))))
-		DEBUG_ASSERT;*/
-
-	if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture",
-		pRenderTargetManager->Get_SRV(TEXT("Target_BlurXSpecular")))))
-		DEBUG_ASSERT;
-
-	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurSpecular"));
-
-	m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
-	m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
-	m_pXBlurShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
-
-	m_pXBlurShader->Set_RawValue("g_PixelWidth", &fPixelWidth, sizeof(_float));
-	m_pXBlurShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));
-
-	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
-
-	// Blur Y
-	m_pXBlurShader->Begin(1);
-	m_pVIBuffer->Render();
-
-	pRenderTargetManager->End_MRT();
-
-	return S_OK;
-}
 
 HRESULT CRender_Manager::Bake_Fog()
 {
@@ -839,8 +771,8 @@ HRESULT CRender_Manager::Render_Blend()
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_DepthTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Depth")))))
 		DEBUG_ASSERT;
 
-	if (FAILED(m_pShader->Set_ShaderResourceView("g_LightFlagTexture", pRenderTargetManager->Get_SRV(TEXT("Target_LightFlag")))))
-		DEBUG_ASSERT;
+	//if (FAILED(m_pShader->Set_ShaderResourceView("g_LightFlagTexture", pRenderTargetManager->Get_SRV(TEXT("Target_LightFlag")))))
+	//	DEBUG_ASSERT;
 
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_ViewShadow", pRenderTargetManager->Get_SRV(TEXT("Target_ViewShadow")))))
 		DEBUG_ASSERT;
@@ -938,6 +870,9 @@ HRESULT CRender_Manager::Extract_OutLine()
 	if (FAILED(m_pOutLineShader->Set_ShaderResourceView("g_NormalTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Normal")))))
 		DEBUG_ASSERT;
 
+	if (FAILED(m_pOutLineShader->Set_ShaderResourceView("g_ShaderFlagTexture", pRenderTargetManager->Get_SRV(TEXT("Target_ShaderFlag")))))
+		DEBUG_ASSERT;
+
 	m_pOutLineShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 	m_pOutLineShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
 	m_pOutLineShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
@@ -964,6 +899,9 @@ HRESULT CRender_Manager::Blur_OutLine()
 	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurOutLine"));
 
 	if (FAILED(m_pOutLineShader->Set_ShaderResourceView("g_OutLineTexture", pRenderTargetManager->Get_SRV(TEXT("Target_ExtractOutLine")))))
+		DEBUG_ASSERT;
+
+	if (FAILED(m_pOutLineShader->Set_ShaderResourceView("g_ShaderFlagTexture", pRenderTargetManager->Get_SRV(TEXT("Target_ShaderFlag")))))
 		DEBUG_ASSERT;
 
 	m_pOutLineShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
@@ -1103,6 +1041,10 @@ HRESULT CRender_Manager::Blend_OutLine()
 	if (FAILED(m_pOutLineShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")))))
 		DEBUG_ASSERT;
 	if (FAILED(m_pOutLineShader->Set_ShaderResourceView("g_OutLineTexture", pRenderTargetManager->Get_SRV(TEXT("Target_BlurOutLine")))))
+		DEBUG_ASSERT;
+	if (FAILED(m_pOutLineShader->Set_ShaderResourceView("g_ShaderFlagTexture", pRenderTargetManager->Get_SRV(TEXT("Target_ShaderFlag")))))
+		DEBUG_ASSERT;
+	if (FAILED(m_pOutLineShader->Set_ShaderResourceView("g_IntensityFlagTexture", pRenderTargetManager->Get_SRV(TEXT("Target_BlurOutLineIntensity")))))
 		DEBUG_ASSERT;
 
 	m_pOutLineShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
@@ -1669,7 +1611,6 @@ HRESULT CRender_Manager::Render_Debug()
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_StaticShadowDepth"), m_pShader, m_pVIBuffer);
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Fog"), m_pShader, m_pVIBuffer);
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Distortion"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurSpecular"), m_pShader, m_pVIBuffer);
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_AntiAliasing"), m_pShader, m_pVIBuffer);
 	//GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Glow"), m_pShader, m_pVIBuffer);
 

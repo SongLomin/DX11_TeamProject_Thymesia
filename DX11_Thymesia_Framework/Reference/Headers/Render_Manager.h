@@ -24,6 +24,7 @@ public:
 	HRESULT Add_MotionBlur(const _float& In_fBlurScale);
 	HRESULT Set_Chromatic(const _float In_fChormaticStrangth);
 	HRESULT Add_Chromatic(const _float In_fChormaticStrangth);
+	
 
 	HRESULT	Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt);
 	
@@ -33,7 +34,6 @@ private:
 	HRESULT Render_ShadowDepth();
 	HRESULT Render_NonAlphaBlend();
 	HRESULT Render_Lights();
-	HRESULT Blur_Specular(const _float& In_PixelPitchScalar);
 	HRESULT Bake_Fog();
 	HRESULT Bake_ViewShadow();
 	HRESULT Render_Blend(); /* Diffuse * Shade 백버퍼에 그린다. */

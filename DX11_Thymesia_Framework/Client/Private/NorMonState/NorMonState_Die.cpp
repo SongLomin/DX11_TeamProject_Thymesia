@@ -63,12 +63,13 @@ void CNorMonState_Die::Start()
 
 
 	m_fDissolveTime = 5.f;
-	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Forced_SearchNearTargetMonster();
+	weak_ptr<CPlayer> pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+	
+	if (pPlayer.lock())
+		pPlayer.lock()->Forced_SearchNearTargetMonster();
+
 	m_bAnimEnd = false;
-
-
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Die::Call_AnimationEnd, this);
-
 }
 
 void CNorMonState_Die::Tick(_float fTimeDelta)

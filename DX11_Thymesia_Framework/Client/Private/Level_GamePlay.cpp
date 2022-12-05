@@ -82,26 +82,6 @@ HRESULT CLevel_GamePlay::Initialize()
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
 
 	CMonster::STATE_LINK_MONSTER_DESC MONSTER;
-
-#ifdef _BOSS_VARG_
-	ZeroMemory(&MONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-	MONSTER.eMonType = MONSTERTYPE::VARG;
-	MONSTER.eBossStartType = BOSSSTARTTYPE::BEGINSTART;
-	MONSTER.vYame.x = 49.33f;
-	MONSTER.vYame.y = 14.4f;
-	MONSTER.vYame.z = 30.32f;
-	GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL_GAMEPLAY, &MONSTER);
-#endif // _BOSS_VARG_
-
-#ifdef _STAGE_2_MONSTER_
-	ZeroMemory(&MONSTER, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-	MONSTER.eMonType = MONSTERTYPE::AXEMAN;
-	MONSTER.eNorMonIdleType = NORMONSTERIDLETYPE::NORIDLE;
-	MONSTER.vYame.x = 13.f;
-	MONSTER.vYame.y = 4.6f;
-	MONSTER.vYame.z = 36.f;
-	GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL_GAMEPLAY, &MONSTER);
-#endif // _STAGE_2_MONSTER_
 	
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_GAMEPLAY);
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_GAMEPLAY);
@@ -184,6 +164,16 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_Enable_EvolveMenu, this);
 		}
 	}
+	if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
+	{
+		GAMEINSTANCE->Add_GameObject<CUI_DamageFont>(LEVEL_STATIC).lock()->SetUp_DamageFont
+		(
+			557,
+			_float2(g_iWinCX >> 1, g_iWinCY >> 1),
+			Client::ATTACK_OPTION::NORMAL
+		);	
+	}
+
 #endif // _ONLY_UI_
 
 #ifndef _LOAD_CAPTURED_RESOURCE_
@@ -200,7 +190,7 @@ HRESULT CLevel_GamePlay::Render()
 		return E_FAIL;
 
 
-	SetWindowText(g_hWnd, TEXT("게임프렐이레벨임. "));
+	SetWindowText(g_hWnd, TEXT("Thymesia : GAMEPLAY"));
 
 	return S_OK;
 }

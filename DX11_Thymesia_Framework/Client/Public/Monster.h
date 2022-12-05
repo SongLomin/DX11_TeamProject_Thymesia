@@ -6,6 +6,9 @@ BEGIN(Client)
 class CActorDecor;
 class CMobWeapon;
 class CStatus_Monster;
+
+#define INIT_STATE(STATE) Weak_StaticCast<STATE>(m_pComponents.find(typeid(STATE).hash_code())->second.front()).lock()->Init_Desc(&m_tLinkStateDesc);
+
 class CMonster :
     public CCharacter
 {
@@ -18,18 +21,19 @@ public:
         MONSTERTYPE          eMonType;
         NORMONSTERIDLETYPE   eNorMonIdleType;
         _float4              m_fStartPositon;
-    
-
-
-
         BOSSSTARTTYPE        eBossStartType;
-        //BOSSTYPE             eBossType;
-        //TODO ¾ß¸Å¿¡¿ä ¹Ø¿¡²¨ ¤¾ 
-        _float3            vYame;
+
+        void Reset()
+        {
+            ZeroMemory(this, sizeof(tagMonsterStateLinkDesc));
+        }
+
     }STATE_LINK_MONSTER_DESC;
 
 public:
     void Set_TargetCharacter(weak_ptr<CCharacter> In_pCharacter);
+    void Set_LinkStateDesc(const STATE_LINK_MONSTER_DESC& In_tDesc) { m_tLinkStateDesc = In_tDesc; };
+
     weak_ptr<CCharacter> Get_TargetCharacter() const;
     virtual _float  Get_CamOffset() const { return 0.f; }
     _float  Get_TimeAcc() const { return m_fTimeAcc; }
@@ -55,6 +59,12 @@ public:
 
 public:
     virtual void Enable_Weapons(const _bool In_bEnable) override;
+
+    virtual void Write_Json(json& Out_Json) override;
+    virtual void Load_FromJson(const json& In_Json) override;
+
+    virtual void Init_Desc() { };
+
 protected:
     virtual void SetUp_ShaderResource() override;    
 
@@ -76,12 +86,6 @@ protected:
 
 protected:
     list<weak_ptr<CMobWeapon>> m_pWeapons;
-
-
-
-
-
-
     list<weak_ptr<CActorDecor>> m_pActorDecor;
     weak_ptr<CStateBase> m_pStandState;
 

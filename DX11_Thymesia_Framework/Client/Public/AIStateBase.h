@@ -23,6 +23,7 @@ public:
     virtual void    LateTick(_float fTimeDelta) override;
 
 public:
+    virtual void Init_Desc(void* In_pDesc) override;
     virtual _bool Check_RequirementCoolDown(weak_ptr<CAIStateBase> pTargetState, const _float& In_fCoolTime);
 
 public:

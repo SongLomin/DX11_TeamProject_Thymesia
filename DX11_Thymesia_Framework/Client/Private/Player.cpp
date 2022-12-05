@@ -228,9 +228,9 @@ void CPlayer::SetUp_ShaderResource()
 {
     __super::SetUp_ShaderResource();
 
-    _vector vLightFlag = { 1.f, 0.f, 0.f, 0.f };
+    _vector vShaderFlag = { 0.f, 0.f, 0.f, 0.f };
 
-    m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector));
+    m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector));
 
    
 }

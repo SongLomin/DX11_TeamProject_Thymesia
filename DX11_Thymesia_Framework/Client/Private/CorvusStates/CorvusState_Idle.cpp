@@ -52,10 +52,19 @@ void CCorvusState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() != Get_Owner().lock()->Get_Component<CCorvusState_Climb_L_Down_End>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() != Get_Owner().lock()->Get_Component<CCorvusState_Climb_R_Down_End>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() != Get_Owner().lock()->Get_Component<CCorvusState_Climb_R_UP_End>().lock())
+	{
+		m_bLadderLock = true;
+	}
+
 	if (!m_pModelCom.lock().get())
 	{
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
+
+	Get_OwnerPlayer()->Set_LadderCheck(false);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -107,6 +116,8 @@ void CCorvusState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 void CCorvusState_Idle::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	m_bLadderLock = false;
 }
 
 _bool CCorvusState_Idle::Check_AndChangeNextState()
@@ -143,12 +154,18 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 	
 		PxControllerCollisionFlags Flags = Get_OwnerCharacter().lock()->Get_LastCollisionFlags();
 
-		if (!(Flags & PxControllerCollisionFlag::eCOLLISION_DOWN))
+		if (!m_bLadderLock)
 		{
-			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_Fall_Start>();
-			return true;
+			if (!(Flags & PxControllerCollisionFlag::eCOLLISION_DOWN))
+			{
+				Rotation_InputToLookDir();
+				Get_OwnerPlayer()->Change_State<CCorvusState_Fall_Start>();
+				return true;
+			}
 		}
+
+
+	
 	
 	
 

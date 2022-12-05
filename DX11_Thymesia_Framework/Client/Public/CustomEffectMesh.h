@@ -67,10 +67,13 @@ private:
         , _float    fTotalTime
     );
 
+
 #ifdef _DEBUG
+    void Clone_EffectMesh();
+#ifdef _JOJO_EFFECT_TOOL_
     void Key_Input_ControlMesh(_float fTimeDelta);
     void Apply_ImGui_Controls_to_Mesh();
-    void Clone_EffectMesh();
+#endif // _JOJO_EFFECT_TOOL_
 #endif // _DEBUG
 
 private:

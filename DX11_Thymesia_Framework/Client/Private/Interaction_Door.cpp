@@ -33,8 +33,6 @@ HRESULT CInteraction_Door::Initialize(void* pArg)
         VTXMODEL_DECLARATION::iNumElements
     );
 
-    m_pModelCom.lock()->Init_Model("Door01_05", "");
-
     return S_OK;
 }
 
@@ -49,14 +47,16 @@ void CInteraction_Door::Tick(_float fTimeDelta)
 
     if (m_ActionFlag & ACTION_FLAG::ACTIVATE)
     {
-        m_fAddRadian += fTimeDelta;
+        m_fAddRadian += fTimeDelta * m_fRotationtSpeed;
+
+        _float fDir = (0.f == m_fRotationtSpeed) ? (1.f) : (m_fRotationtSpeed / abs(m_fRotationtSpeed));
 
         if (m_ActionFlag & ACTION_FLAG::ROTATION)
-            m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 1.f), (m_fFirstRadian + m_fAddRadian));
+            m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 1.f), ((m_fFirstRadian + (m_fAddRadian))));
         else
-            m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 1.f), (m_fFirstRadian + m_fRotationtRadian - m_fAddRadian));
+            m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 1.f), ((m_fFirstRadian + (m_fRotationtRadian * fDir)) - (m_fAddRadian)));
 
-        if (m_fRotationtRadian <= m_fAddRadian)
+        if (m_fRotationtRadian <= fabs(m_fAddRadian))
         {
             m_ActionFlag  ^= ACTION_FLAG::ROTATION;
             m_ActionFlag  ^= ACTION_FLAG::ACTIVATE;
@@ -84,7 +84,8 @@ void CInteraction_Door::OnEventMessage(_uint iArg)
     {
         case EVENT_TYPE::ON_EDITINIT:
         {
-            SetUpColliderDesc();
+            _float fDefaultDesc[4] = { 3.f, 0.f, 1.5f, 0.f };
+            SetUpColliderDesc(fDefaultDesc);
         }
         break;
 
@@ -92,11 +93,24 @@ void CInteraction_Door::OnEventMessage(_uint iArg)
         {
             m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 
-            _bool bCheck_ReverseAct = (m_ActionFlag & ACTION_FLAG::ROTATION);
-            if (ImGui::Checkbox("Act Reverse", &bCheck_ReverseAct))
-                m_ActionFlag ^= ACTION_FLAG::ROTATION;
+            ImGui::DragFloat("Rotation Speed ", &m_fRotationtSpeed);
+            ImGui::DragFloat("Rotation Radian", &m_fRotationtRadian);
 
-            ImGui::DragFloat("Rotation", &m_fRotationtRadian);
+            COLLIDERDESC ColliderDesc;
+            ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
+
+            ColliderDesc = m_pColliderCom.lock()->Get_ColliderDesc();
+
+            _bool bChage = false;
+
+            bChage |= ImGui::DragFloat3("Coll Transform", &ColliderDesc.vTranslation.x);
+            bChage |= ImGui::DragFloat ("Coll Size"     , &ColliderDesc.vScale.x);
+
+            if (bChage)
+            {
+                m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
+                m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+            }
         }
         break;
     }
@@ -106,12 +120,26 @@ void CInteraction_Door::Write_Json(json& Out_Json)
 {
     __super::Write_Json(Out_Json);
 
-    Out_Json["RotationtRadian"] = m_fRotationtRadian;
+    Out_Json["RotationtRadian"]   = m_fRotationtRadian;
+    Out_Json["RotationSpeed"] = m_fRotationtSpeed;
 
-    if (m_ActionFlag & ACTION_FLAG::ROTATION)
-        Out_Json["ActionFlag"] = ACTION_FLAG::ROTATION;
-    else
-        Out_Json["ActionFlag"] = 0;
+    if (m_pColliderCom.lock())
+    {
+        COLLIDERDESC ColliderDesc;
+        ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
+
+        ColliderDesc = m_pColliderCom.lock()->Get_ColliderDesc();
+
+        _float ColliderInfo[4] = 
+        {
+            ColliderDesc.vScale.x,
+            ColliderDesc.vTranslation.x,
+            ColliderDesc.vTranslation.y,
+            ColliderDesc.vTranslation.z
+        };
+
+        Out_Json["ColliderDesc"] = ColliderInfo;
+    }
 }
 
 void CInteraction_Door::Load_FromJson(const json& In_Json)
@@ -121,13 +149,31 @@ void CInteraction_Door::Load_FromJson(const json& In_Json)
     if (In_Json.end() != In_Json.find("RotationtRadian"))
         m_fRotationtRadian = In_Json["RotationtRadian"];
 
-    if (In_Json.end() != In_Json.find("ActionFlag"))
-        m_ActionFlag = In_Json["ActionFlag"];
+    if (In_Json.end() != In_Json.find("RotationSpeed"))
+        m_fRotationtSpeed = In_Json["RotationSpeed"];
 
-    SetUpColliderDesc();
+    if (In_Json.end() != In_Json.find("ColliderDesc"))
+    {
+        _float fColliderDesc[4];
+
+        for (_uint i = 0; i < 4; ++i)
+            fColliderDesc[i] = In_Json["ColliderDesc"][i];
+
+        SetUpColliderDesc(fColliderDesc);
+    }
+    else
+    {
+        _float fDefaultDesc[4] = { 3.f, 0.f, 1.5f, 0.f };
+
+        SetUpColliderDesc(fDefaultDesc);
+    }
+
 
     m_fFirstRadian = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(m_pTransformCom.lock()->Get_WorldMatrix())).y;
     m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
+
+    if ("" == string(m_pModelCom.lock()->Get_ModelKey()))
+        m_pModelCom.lock()->Init_Model("Door01_05", "");
 }
 
 void CInteraction_Door::Act_Interaction()
@@ -164,14 +210,14 @@ void CInteraction_Door::SetUp_ShaderResource()
     }
 }
 
-void CInteraction_Door::SetUpColliderDesc()
+void CInteraction_Door::SetUpColliderDesc(_float* _pColliderDesc)
 {
     COLLIDERDESC ColliderDesc;
     ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
 
     ColliderDesc.iLayer       = (_uint)COLLISION_LAYER::TRIGGER;
-    ColliderDesc.vScale       = _float3(3.f, 0.f, 0.f);
-    ColliderDesc.vTranslation = _float3(0.f, 1.5f, 0.f);
+    ColliderDesc.vScale       = _float3(_pColliderDesc[0], 0.f, 0.f);
+    ColliderDesc.vTranslation = _float3(_pColliderDesc[1], _pColliderDesc[2], _pColliderDesc[3]);
 
     m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
     m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());

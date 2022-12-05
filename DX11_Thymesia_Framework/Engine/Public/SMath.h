@@ -33,6 +33,11 @@ namespace Engine
 
 		XMFLOAT3		ENGINE_DLL Extract_PitchYawRollFromRotationMatrix(FXMMATRIX Mat);
 
+		XMFLOAT2		ENGINE_DLL Add_Float2(const XMFLOAT2& Left, const XMFLOAT2& Right);
+		XMFLOAT2		ENGINE_DLL Mul_Float2(const XMFLOAT2& Left, const float& Right);
+		void			ENGINE_DLL Add_Float2(XMFLOAT2* InOut_Left, const XMFLOAT2& Right);
+		void			ENGINE_DLL Mul_Float2(XMFLOAT2* InOut_Left, const float& Right);
+
 		XMFLOAT3		ENGINE_DLL Add_Float3(const XMFLOAT3& Left, const XMFLOAT3& Right);
 		XMFLOAT3		ENGINE_DLL Mul_Float3(const XMFLOAT3& Left, const float& Right);
 		void			ENGINE_DLL Add_Float3(XMFLOAT3* InOut_Left, const XMFLOAT3& Right);

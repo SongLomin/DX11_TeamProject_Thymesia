@@ -25,6 +25,9 @@ public:
     virtual HRESULT Render() override;
     virtual void SetUp_ShaderResource() override;
 
+public:
+    virtual void Init_Desc() override;
+
 private:
     weak_ptr<class CEffect_Trail> m_pTrailEffect;
 

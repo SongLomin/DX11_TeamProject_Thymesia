@@ -63,7 +63,7 @@ HRESULT CLevel_Logo::Render()
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 
-	SetWindowText(g_hWnd, TEXT("롷고레벨임. "));
+	SetWindowText(g_hWnd, TEXT("Thymesia : LOGO"));
 
 	return S_OK;
 }

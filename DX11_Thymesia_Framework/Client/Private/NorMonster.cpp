@@ -35,14 +35,52 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		VTXANIM_DECLARATION::Element,
 		VTXANIM_DECLARATION::iNumElements);
 
-	memcpy(&m_tLinkStateDesc, pArg, sizeof(STATE_LINK_MONSTER_DESC));
-	
-	
-
 	weak_ptr<CMonsterHPBar_Base> pHPBar = GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Base>(LEVEL_STATIC);
-
 	pHPBar.lock()->Set_Owner(Weak_Cast<CMonster>(m_this));
 
+	m_pStandState = Add_Component<CNorMonState_Idle>();
+	Add_Component<CNorMonState_Stop>();
+	Add_Component<CNorMonState_SitToIdle>();
+	Add_Component<CNorMonState_Run>();
+	Add_Component<CNorMonState_TurnL90>();
+	Add_Component<CNorMonState_TurnR90>();
+	Add_Component<CNorMonState_LightAttack1>();
+	Add_Component<CNorMonState_LightAttack2>();
+	Add_Component<CNorMonState_LightAttack3>();
+	Add_Component<CNorMonState_HeavyAttack1>();
+	Add_Component<CNorMonState_HeavyAttack2>();
+	Add_Component<CNorMonState_HeavyAttack3>();
+	Add_Component<CNorMonState_Walk_F>();
+	Add_Component<CNorMonState_Walk_FR>();
+	Add_Component<CNorMonState_Walk_FL>();
+	Add_Component<CNorMonState_Walk_L>();
+	Add_Component<CNorMonState_Walk_R>();
+	Add_Component<CNorMonState_Walk_B>();
+	Add_Component<CNorMonState_Walk_BR>();
+	Add_Component<CNorMonState_Walk_BL>();
+	Add_Component<CNorMonState_Awake>();
+	Add_Component<CNorMonState_HurtL>();
+	Add_Component<CNorMonState_HurtR>();
+	Add_Component<CNorMonState_GroggyStart>();
+	Add_Component<CNorMonState_GroggyLoop>();
+	Add_Component<CNorMonState_GroggyEnd>();
+	Add_Component<CNorMonState_Die>();
+	Add_Component<CNorMonState_Parry>();
+	
+	return S_OK;
+}
+
+HRESULT CNorMonster::Start()
+{
+	__super::Start();
+
+	Change_State<CNorMonState_Idle>();
+	
+	return S_OK;
+}
+
+void CNorMonster::Init_Desc()
+{
 	switch (m_tLinkStateDesc.eMonType)
 	{
 	case  MONSTERTYPE::AXEMAN:
@@ -55,26 +93,15 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		m_pWeapons.back().lock()->Add_Collider({ 0.61f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		m_pWeapons.back().lock()->Add_Collider({ 0.71f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		m_pWeapons.back().lock()->Add_Collider({ 0.81f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
-
-		
-		
-		/*TRAIL_DESC TrailDesc;
-		TrailDesc.iMaxCnt = 100;
-		TrailDesc.vPos_0 = _float3(0.f, 0.5f, 0.f);
-		TrailDesc.vPos_1 = _float3(0.f, -0.5f, 0.f);
-		m_pWeapons.back().lock()->Init_Trail(TrailDesc);*/
-		
-		//TODO 야매에요 ㅎ
-		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, m_tLinkStateDesc.vYame.y, m_tLinkStateDesc.vYame.z, 1.f));
 		break;
+
 		//나중에추가할거미리해둠
 	case  MONSTERTYPE::KNIFEWOMAN:
 		m_pModelCom.lock()->Init_Model("Mon_KnifeWoMan", "", (_uint)TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Knife", TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
-		
-		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, 0.f, m_tLinkStateDesc.vYame.z, 1.f));
+
 		break;
 	case MONSTERTYPE::SKULL:
 		break;
@@ -82,11 +109,10 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		m_pModelCom.lock()->Init_Model("Mon_Gardner", "", (_uint)TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Scythe", TIMESCALE_LAYER::MONSTER);
-		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");	
+		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
 		m_pActorDecor.push_back(GAMEINSTANCE->Add_GameObject<CActorDecor>(m_CreatedLevel));
 		m_pActorDecor.back().lock()->Init_Model("Mon_Vain", TIMESCALE_LAYER::MONSTER);
 		m_pActorDecor.back().lock()->Init_ActorDecor(m_pModelCom, m_pTransformCom, "spine_03");
-		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, m_tLinkStateDesc.vYame.y, m_tLinkStateDesc.vYame.z, 1.f));
 		break;
 	case MONSTERTYPE::ELITEGARDENER:
 		m_pModelCom.lock()->Init_Model("Mon_Gardner", "", (_uint)TIMESCALE_LAYER::MONSTER);
@@ -99,7 +125,6 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		m_pActorDecor.push_back(GAMEINSTANCE->Add_GameObject<CActorDecor>(m_CreatedLevel));
 		m_pActorDecor.back().lock()->Init_Model("Mon_Vain", TIMESCALE_LAYER::MONSTER);
 		m_pActorDecor.back().lock()->Init_ActorDecor(m_pModelCom, m_pTransformCom, "spine_03");
-		m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(m_tLinkStateDesc.vYame.x, m_tLinkStateDesc.vYame.y, m_tLinkStateDesc.vYame.z, 1.f));
 		break;
 	case MONSTERTYPE::SHIELDAXEMAN:
 		m_pModelCom.lock()->Init_Model("Mon_AxeMan", "", (_uint)TIMESCALE_LAYER::MONSTER);
@@ -114,93 +139,65 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		m_pWeapons.back().lock()->Add_Collider({ 0.61f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		m_pWeapons.back().lock()->Add_Collider({ 0.71f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		m_pWeapons.back().lock()->Add_Collider({ 0.81f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
-		break; 
+		break;
 	}
 
-		
+
 	//TODO 여기서하는 이유는 몬스터가 배치되고 원점에서 우리가 피킹한위치만큼더해지고 난뒤에 그월드포지션값저장하기위해서 여기서함
-		switch (m_tLinkStateDesc.eMonType)
-		{
-		case  MONSTERTYPE::AXEMAN:
-			m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
-			break;
-		case  MONSTERTYPE::KNIFEWOMAN:
-			m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
-			break;
-		case  MONSTERTYPE::GARDENER:
-			m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
-			break;
-		case MONSTERTYPE::ELITEGARDENER:
-			m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
-			break;
-		case MONSTERTYPE::SHIELDAXEMAN:
-			m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
-			break;
+	switch (m_tLinkStateDesc.eMonType)
+	{
+	case  MONSTERTYPE::AXEMAN:
+		m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
+		break;
+	case  MONSTERTYPE::KNIFEWOMAN:
+		m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
+		break;
+	case  MONSTERTYPE::GARDENER:
+		m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
+		break;
+	case MONSTERTYPE::ELITEGARDENER:
+		m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
+		break;
+	case MONSTERTYPE::SHIELDAXEMAN:
+		m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
+		break;
 
-		}
-
-	//StatusDesc.fMaxHP = StatusDesc.fCurrentHP = 360.f;
-	//StatusDesc.szName = TEXT("유적 발굴가");
-	//
-	//m_pStatus.lock()->Init_Status(StatusDesc);
-	//m_pStandState = Add_Component<CIdle>();
-	
+	}
 	_vector vecStartPositon = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
 	XMStoreFloat4(&m_tLinkStateDesc.m_fStartPositon, vecStartPositon);
 
-
-	m_pStandState = Add_Component<CNorMonState_Idle>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_Stop>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_SitToIdle>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_LightAttack1>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_LightAttack2>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_Run>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_TurnL90>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_TurnR90>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_LightAttack1>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_LightAttack2>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_LightAttack3>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_HeavyAttack1>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_HeavyAttack2>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_HeavyAttack3>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_Walk_F>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_Walk_FR>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_Walk_FL>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_Walk_L>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_Walk_R>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_Walk_B>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_Walk_BR>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_Walk_BL>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_Awake>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_HurtL>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_HurtR>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_GroggyStart>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_GroggyLoop>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_GroggyEnd>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_Die>(&m_tLinkStateDesc);
-	Add_Component<CNorMonState_Parry>(&m_tLinkStateDesc);
-	
-	
+	INIT_STATE(CNorMonState_Idle);
+	INIT_STATE(CNorMonState_Stop);
+	INIT_STATE(CNorMonState_SitToIdle);
+	INIT_STATE(CNorMonState_LightAttack1);
+	INIT_STATE(CNorMonState_LightAttack2);
+	INIT_STATE(CNorMonState_LightAttack3);
+	INIT_STATE(CNorMonState_Run);
+	INIT_STATE(CNorMonState_TurnL90);
+	INIT_STATE(CNorMonState_TurnR90);
+	INIT_STATE(CNorMonState_HeavyAttack1);
+	INIT_STATE(CNorMonState_HeavyAttack2);
+	INIT_STATE(CNorMonState_HeavyAttack3);
+	INIT_STATE(CNorMonState_Walk_F);
+	INIT_STATE(CNorMonState_Walk_FR);
+	INIT_STATE(CNorMonState_Walk_FL);
+	INIT_STATE(CNorMonState_Walk_L);
+	INIT_STATE(CNorMonState_Walk_R);
+	INIT_STATE(CNorMonState_Walk_B);
+	INIT_STATE(CNorMonState_Walk_BR);
+	INIT_STATE(CNorMonState_Walk_BL);
+	INIT_STATE(CNorMonState_Awake);
+	INIT_STATE(CNorMonState_HurtL);
+	INIT_STATE(CNorMonState_HurtR);
+	INIT_STATE(CNorMonState_GroggyStart);
+	INIT_STATE(CNorMonState_GroggyLoop);
+	INIT_STATE(CNorMonState_GroggyEnd);
+	INIT_STATE(CNorMonState_Die);
+	INIT_STATE(CNorMonState_Parry);
 
 	GET_SINGLE(CGameManager)->Bind_KeyEvent(m_pStatus.lock()->Get_Desc().m_szModelKey, m_pModelCom, bind(&CNorMonster::Call_NextAnimationKey, this, placeholders::_1));
 
 	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom));
-
-	//USE_START(CNorMonster);
-	return S_OK;
-}
-
-HRESULT CNorMonster::Start()
-{
-	__super::Start();
-
-	
-	Change_State<CNorMonState_Idle>();
-
-
-	//m_EffectIndexList.emplace_back("Character_Target", GET_SINGLE(CGameManager)->Use_EffectGroup("Character_Target", m_pTransformCom));
-
-	return S_OK;
 }
 
 void CNorMonster::Tick(_float fTimeDelta)
@@ -272,7 +269,14 @@ HRESULT CNorMonster::Render()
 		}
 		else
 		{
-			iPassIndex = 4;
+			if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture",i, aiTextureType_SPECULAR)))
+			{
+				iPassIndex = 4;
+			}
+			else
+			{
+				iPassIndex = 5;
+			}
 		}
 
 		//m_pShaderCom.lock()->Begin(m_iPassIndex);
@@ -300,6 +304,11 @@ void CNorMonster::Respawn_Monster(_fvector In_vPosition)
 
 	//Change_State<CMonster1State_Stand>();
 	//GAMEINSTANCE->PlaySoundW(TEXT("MonsterBorn.wav"), 0.3f);
+}
+
+void Init_MonsterDesc(void* In_Arg)
+{
+
 }
 
 void CNorMonster::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
@@ -330,8 +339,6 @@ void CNorMonster::OnEventMessage(_uint iArg)
 void CNorMonster::OnEnable(void* _Arg)
 {
 	__super::OnEnable(_Arg);
-
-
 }
 
 void CNorMonster::OnDisable()
@@ -339,8 +346,14 @@ void CNorMonster::OnDisable()
 	__super::OnDisable();
 }
 
-
-
 void CNorMonster::Free()
 {
+	// TODO : AN 로민아 모르겠어 도와줘
+	// 맵툴에서 몬스터 소멸시키면 무기만 남아 있어
+
+	for (auto& elem : m_pWeapons)
+		elem.lock()->Set_Dead();
+
+	for (auto& elem : m_pActorDecor)
+		elem.lock()->Set_Dead();
 }

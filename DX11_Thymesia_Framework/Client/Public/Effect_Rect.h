@@ -45,6 +45,7 @@ public:
     void ReBake_EditParticle();
     void Write_EffectJson(json& Out_Json);
     void Load_EffectJson(const json& In_Json, const _uint& In_iTimeScaleLayer);
+    void Clone_EffectRect();
     virtual void OnEventMessage(_uint iArg) override;
     void OnChangeAnimationKey(const _uint& In_Key);
 
@@ -84,6 +85,21 @@ private:
         , _float        fElapsedTime
         , _float        fTotalTime
     );
+
+    void Apply_Easing
+    (
+        _float2& vTarget
+        , EASING_TYPE   eEasingType
+        , _vector       vStartPoint
+        , _vector       vTargetPoint
+        , _float        fElapsedTime
+        , _float        fTotalTime
+    );
+
+    // For. Tool
+#ifdef _JOJO_EFFECT_TOOL_
+    void Show_ShaderPasses();
+#endif // _JOJO_EFFECT_TOOL_
 
 private:
     void Free();

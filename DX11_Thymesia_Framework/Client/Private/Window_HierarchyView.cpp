@@ -33,13 +33,9 @@ void CWindow_HierarchyView::Tick(_float fTimeDelta)
 	for (auto iter = m_pGameObjects.begin(); iter != m_pGameObjects.end();)
 	{
 		if (!(*iter).pInstance.lock().get())
-		{
 			iter = m_pGameObjects.erase(iter);
-		}
 		else
-		{
 			iter++;
-		}
 	}
 
 	for (auto& elem : m_pObjGroup)
@@ -47,13 +43,9 @@ void CWindow_HierarchyView::Tick(_float fTimeDelta)
 		for (auto iter = elem.second.begin(); iter != elem.second.end();)
 		{
 			if (!(*iter).pInstance.lock().get())
-			{
 				iter = elem.second.erase(iter);
-			}
 			else
-			{
 				iter++;
-			}
 		}
 	}
 
@@ -129,11 +121,6 @@ HRESULT CWindow_HierarchyView::Render()
 			m_iPreSelectIndex = iIndex;
 		}
 
-		if ((m_iPreSelectIndex == iIndex) && (elem.HashCode == typeid(CEditGroupProp).hash_code()))
-		{
-			elem.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW_SUB);
-		}
-
 		++iIndex;
 	}
 	
@@ -150,47 +137,14 @@ void CWindow_HierarchyView::Call_Add_GameObject(const _hashcode& TypeHash, const
 void CWindow_HierarchyView::Write_Json(json& Out_Json)
 {
 	_uint iIndex = 0;
-	vector<string> ModelTag;
 
 	auto iter_elem = m_pGameObjects.begin();
 
 	while (iter_elem != m_pGameObjects.end())
 	{
-		if (typeid(CEditGroupProp).hash_code() == iter_elem->HashCode)
-		{
-			json EmptyJson;
-
-			iter_elem->pInstance.lock()->Write_Json(EmptyJson);
-
-			for (auto iter_sub : m_pSubGameObjects)
-			{
-				Out_Json["GameObject"][iIndex]["Name"]				= iter_sub.TypeName;
-				Out_Json["GameObject"][iIndex]["Hash"]				= iter_sub.HashCode;
-				Out_Json["GameObject"][iIndex]["Setting"]["Enable"] = iter_sub.pInstance.lock()->Get_Enable();
-				Out_Json["GameObject"][iIndex]["Component"]["Transform"].emplace();
-
-				iter_sub.pInstance.lock()->Write_Json(Out_Json["GameObject"][iIndex]);
-
-				weak_ptr<CModel> pModel = iter_sub.pInstance.lock()->Get_Component<CModel>();
-
-				if (pModel.lock().get())
-				{
-					string szFindTag = pModel.lock()->Get_ModelKey();
-
-					if (ModelTag.end() == find_if(ModelTag.begin(), ModelTag.end(), [&](string _szTag)->_bool { return (_szTag == szFindTag); }))
-						ModelTag.push_back(pModel.lock()->Get_ModelKey());
-				}
-
-				++iIndex;
-			}
-
-			m_pSubGameObjects.clear();
-			++iter_elem;
-
-			continue;
-		}
-
-		else if (typeid(CEditMapCollider).hash_code() == iter_elem->HashCode)
+		if (typeid(CEditMapCollider).hash_code() == iter_elem->HashCode ||
+			typeid(CEditSetActor).hash_code()    == iter_elem->HashCode ||
+			typeid(CEditGroupProp).hash_code()   == iter_elem->HashCode)
 		{
 			++iter_elem;
 			continue;
@@ -202,16 +156,6 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 		Out_Json["GameObject"][iIndex]["Component"]["Transform"].emplace();
 
 		iter_elem->pInstance.lock()->Write_Json(Out_Json["GameObject"][iIndex]);
-
-		weak_ptr<CVIBuffer_Model_Instance> pModel = iter_elem->pInstance.lock()->Get_Component<CVIBuffer_Model_Instance>();
-
-		if (pModel.lock().get())
-		{
-			string szFindTag = pModel.lock()->Get_ModelKey();
-
-			if (ModelTag.end() == find_if(ModelTag.begin(), ModelTag.end(), [&](string _szTag)->_bool { return (_szTag == szFindTag); }))
-				ModelTag.push_back(pModel.lock()->Get_ModelKey());
-		}
 
 		++iIndex;
 		++iter_elem;
@@ -230,58 +174,6 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 			++iIndex;
 		}
 	}
-
-	json Model_json;
-
-	if (!ModelTag.empty())
-	{
-		string szPath[] =
-		{
-			"../Bin/Resources/Meshes/Map_Else/Binary/",
-			"../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/",
-			"../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/",
-			"../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/"
-		};
-
-		vector<string> ModelList[4];
-
-		for (_uint i = 0; i < 4; ++i)
-		{
-			fs::directory_iterator itr(szPath[i]);
-			string szFileName;
-
-			while (itr != fs::end(itr))
-			{
-				const fs::directory_entry& entry = *itr;
-
-				szFileName = entry.path().filename().string();
-
-				if (string::npos != szFileName.find(".bin"))
-				{
-					ModelList[i].push_back(szFileName.substr(0, szFileName.find(".")));
-				}
-
-				++itr;
-			}
-		}
-
-		_uint iIndex = 0;
-		for (auto& iter : ModelTag)
-		{
-			for (_uint i = 0; i < 4; ++i)
-			{
-				string szModelTag = iter;
-
-				if (ModelList[i].end() != find_if(ModelList[i].begin(), ModelList[i].end(), [&](string _szTag)->_bool { return (iter == _szTag); }))
-				{
-					Model_json["ModelTag"][iIndex++] = szPath[i] + szModelTag + ".bin";
-					break;
-				}
-			}
-		}
-	}
-
-	CJson_Utility::Save_Json("../Bin/ModelLoadList/Temp.json", Model_json);
 
 	if (m_RenderMSG_BOX)
 		MSG_BOX("Save_Done");
@@ -340,7 +232,32 @@ void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
 			continue;
 		}
 
-		else if (typeid(CEditMapCollider).hash_code() == TempDesc.HashCode)
+		else if (typeid(CNorMonster).hash_code() == TempDesc.HashCode ||
+			     typeid(CVarg).hash_code()       == TempDesc.HashCode)
+		{
+			weak_ptr<CGameObject> pNewGameObject = GAMEINSTANCE->Add_GameObject(TempDesc.HashCode, LEVEL::LEVEL_EDIT);
+			pNewGameObject.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
+			pNewGameObject.lock()->Load_FromJson(Elem_GameObject);
+
+			auto iter_find = m_pObjGroup.find(typeid(CEditSetActor).hash_code());
+
+			if (iter_find == m_pObjGroup.end())
+			{
+				vector<GAMEOBJECT_DESC> List;
+				List.push_back({ TempDesc.HashCode, TempDesc.TypeName, pNewGameObject });
+
+				m_pObjGroup[typeid(CEditSetActor).hash_code()] = List;
+			}
+			else
+			{
+				iter_find->second.push_back({ TempDesc.HashCode, TempDesc.TypeName, pNewGameObject });
+			}
+
+			continue;
+		}
+
+		else if (typeid(CEditMapCollider).hash_code() == TempDesc.HashCode ||
+			     typeid(CEditSetActor).hash_code()    == TempDesc.HashCode)
 			continue;
 
 		Call_Add_GameObject_Internal(TempDesc.HashCode, TempDesc.TypeName.c_str());
@@ -348,11 +265,23 @@ void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
 		m_pGameObjects.back().pInstance.lock()->Load_FromJson(Elem_GameObject);
 	}
 
+
+	// Grouping Editer Create
 	if (m_pObjGroup.end() != m_pObjGroup.find(typeid(CPhysXColliderObject).hash_code()))
 	{
 		GAMEOBJECT_DESC TempDesc;
 		TempDesc.HashCode = typeid(CEditMapCollider).hash_code();
 		TempDesc.TypeName = typeid(CEditMapCollider).name();
+
+		Call_Add_GameObject_Internal(TempDesc.HashCode, TempDesc.TypeName.c_str());
+		m_pGameObjects.back().pInstance.lock()->Set_Enable(true);
+	}
+
+	if (m_pObjGroup.end() != m_pObjGroup.find(typeid(CEditSetActor).hash_code()))
+	{
+		GAMEOBJECT_DESC TempDesc;
+		TempDesc.HashCode = typeid(CEditSetActor).hash_code();
+		TempDesc.TypeName = typeid(CEditSetActor).name();
 
 		Call_Add_GameObject_Internal(TempDesc.HashCode, TempDesc.TypeName.c_str());
 		m_pGameObjects.back().pInstance.lock()->Set_Enable(true);

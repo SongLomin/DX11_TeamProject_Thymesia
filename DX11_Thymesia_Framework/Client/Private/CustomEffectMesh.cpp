@@ -40,10 +40,7 @@ HRESULT CCustomEffectMesh::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	m_pShaderCom.lock()->Set_ShaderInfo(
-		TEXT("Shader_EffectMesh"),
-		VTXANIM_DECLARATION::Element,
-		VTXANIM_DECLARATION::iNumElements);
+	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_EffectMesh"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements);
 
 	m_pColorDiffuseTextureCom = CGameObject::Add_Component<CTexture>();
 	m_pNoiseTextureCom = CGameObject::Add_Component<CTexture>();
@@ -55,44 +52,45 @@ HRESULT CCustomEffectMesh::Initialize(void* pArg)
 	m_pMaskTextureCom.lock()->Use_Texture(("UVMask"));
 	// m_pGradientTextureCom.lock()->Use_Texture(("Gradient"));
 
-	Set_Enable(false);
+	CBase::Set_Enable(false);
 
 	XMStoreFloat4x4(&m_ParentMatrix, XMMatrixIdentity());
-
 	ZeroMemory(&m_tEffectMeshDesc, sizeof(m_tEffectMeshDesc));
 
-
 #ifdef _USE_THREAD_
-	Use_Thread(THREAD_TYPE::TICK);
+	CGameObject::Use_Thread(THREAD_TYPE::TICK);
 #endif
-
 	return S_OK;
 }
 
 HRESULT CCustomEffectMesh::Start()
 {
 	__super::Start();
-
 	return S_OK;
 }
 
 void CCustomEffectMesh::Tick(_float fTimeDelta)
 {
-	if (!Get_Enable())
+	if (!CBase::Get_Enable())
 		return;
 
 	__super::Tick(fTimeDelta);
 
-	Play(fTimeDelta * GAMEINSTANCE->Get_TimeScale(m_iTimeScaleLayerIndex));
+	this->Play(fTimeDelta * GAMEINSTANCE->Get_TimeScale(m_iTimeScaleLayerIndex));
 #ifdef _DEBUG
-	this->Key_Input_ControlMesh(fTimeDelta);
-	this->Apply_ImGui_Controls_to_Mesh();
+#ifdef _JOJO_EFFECT_TOOL_
+	if ((_uint)LEVEL_EDIT == m_CreatedLevel)
+	{
+		this->Key_Input_ControlMesh(fTimeDelta);
+		this->Apply_ImGui_Controls_to_Mesh();
+	}
+#endif // _JOJO_EFFECT_TOOL_
 #endif // _DEBUG
 }
 
 void CCustomEffectMesh::LateTick(_float fTimeDelta)
 {
-	if (!Get_Enable())
+	if (!CBase::Get_Enable())
 		return;
 
 	if (m_fCurrentInitTime > 0.f)
@@ -111,19 +109,17 @@ void CCustomEffectMesh::LateTick(_float fTimeDelta)
 
 HRESULT CCustomEffectMesh::Render()
 {
-	if (!Get_Enable())
+	if (!CBase::Get_Enable())
 		return E_FAIL;
 
 	this->SetUp_ShaderResource();
 	CGameObject::CallBack_Render();
 
 	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
-	for (_uint i = 0; i < iNumMeshContainers; ++i)
+	for (_uint i(0); i < iNumMeshContainers; ++i)
 	{
 		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
-
 		m_pShaderCom.lock()->Begin(m_tEffectMeshDesc.iShaderPassIndex);
-
 		m_pModelCom.lock()->Render_Mesh(i);
 	}
 
@@ -136,17 +132,12 @@ void CCustomEffectMesh::SetUp_ShaderResource()
 		XMStoreFloat4x4(&m_ParentMatrix, m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
 
 #pragma region World, View, Proj, Camera
-	/*_matrix WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
-	WorldMatrix *= XMLoadFloat4x4(&m_ParentMatrix);
-	WorldMatrix = XMMatrixTranspose(WorldMatrix);
-
-	m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", (void*)&WorldMatrix, sizeof(_float4x4));*/
-	_matrix BoneMatrix = XMMatrixIdentity(), WorldMatrix = XMMatrixIdentity();
+	_matrix BoneMatrix(XMMatrixIdentity()), WorldMatrix(XMMatrixIdentity());
 
 	if (m_pBoneNode.lock())
 	{
-		_float4x4 TempMat = m_pParentModel.lock()->Get_TransformationMatrix();
-		_matrix ModelTranMat = XMLoadFloat4x4(&TempMat);
+		_float4x4 TempMat(m_pParentModel.lock()->Get_TransformationMatrix());
+		_matrix ModelTranMat(XMLoadFloat4x4(&TempMat));
 		BoneMatrix = m_pBoneNode.lock()->Get_CombinedMatrix() * ModelTranMat;
 
 		BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
@@ -156,19 +147,13 @@ void CCustomEffectMesh::SetUp_ShaderResource()
 
 	WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix() * BoneMatrix ;
 
-	/*_float3 f3MyScale = m_pTransformCom.lock()->Get_Scaled();
-	_vector vMyScale = XMLoadFloat3(&f3MyScale);
-	WorldMatrix.r[0] *= XMVectorGetX(vMyScale);
-	WorldMatrix.r[1] *= XMVectorGetY(vMyScale);
-	WorldMatrix.r[2] *= XMVectorGetZ(vMyScale);*/
-
 	WorldMatrix = XMMatrixTranspose(WorldMatrix * XMLoadFloat4x4(&m_ParentMatrix));
 
 	m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_matrix));
 	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4));
 	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
 
-	_vector vCamDir = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[2];
+	_vector vCamDir(GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[2]);
 	m_pShaderCom.lock()->Set_RawValue("g_vCamDirection", &vCamDir, sizeof(_vector));
 #pragma endregion
 	
@@ -191,8 +176,6 @@ void CCustomEffectMesh::SetUp_ShaderResource()
 
 	m_pShaderCom.lock()->Set_RawValue("g_vColor", &m_vCurrentColor, sizeof(_float4));
 
-	//m_pGradientTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_GradientTexture", 0);
-
 	m_pShaderCom.lock()->Set_RawValue("g_bBillboard", &m_tEffectMeshDesc.bBillBoard, sizeof(_bool));
 
 	m_pShaderCom.lock()->Set_RawValue("g_bBloom", &m_tEffectMeshDesc.bBloom, sizeof(_bool));
@@ -203,9 +186,7 @@ void CCustomEffectMesh::SetUp_ShaderResource()
 void CCustomEffectMesh::Init_EffectMesh(const EFFECTMESH_DESC& In_tEffectMeshDesc, const _char* In_szModelKey)
 {
 	m_szEffectName = In_szModelKey;
-
 	memcpy(&m_tEffectMeshDesc, &In_tEffectMeshDesc, sizeof(EFFECTMESH_DESC));
-
 	m_pModelCom.lock()->Init_Model(m_szEffectName.c_str());
 }
 
@@ -214,14 +195,14 @@ void CCustomEffectMesh::Sync_Animation()
 	if (!m_tEffectMeshDesc.bSyncAnimation)
 		return;
 
-	weak_ptr<CTransform> pPreviewModelTransform = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Transform();
+	weak_ptr<CTransform> pPreviewModelTransform(GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Transform());
 
 	Reset_Effect(pPreviewModelTransform);
 }
 
 void CCustomEffectMesh::Play(_float fTimeDelta)
 {
-	if (m_fCurrentInitTime > 0.f)
+	if (0.f < m_fCurrentInitTime)
 	{
 		m_fCurrentInitTime -= fTimeDelta;
 		return;
@@ -229,7 +210,7 @@ void CCustomEffectMesh::Play(_float fTimeDelta)
 
 	if (m_fCurrentLifeTime >= m_tEffectMeshDesc.fLifeTime)
 	{
-		Set_Enable(false);
+		CBase::Set_Enable(false);
 		m_bFinish = true;
 		return;
 	}
@@ -245,14 +226,14 @@ void CCustomEffectMesh::Play(_float fTimeDelta)
 	}
 
 	for (_int i(0); i < iTickCount; ++i)
-		Play_Internal(fFrameTime);
+		this->Play_Internal(fFrameTime);
 
 	m_fCurrentLifeTime += fTimeDelta;
 }
 
 void CCustomEffectMesh::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 {
-	Set_Enable(true);
+	CBase::Set_Enable(true);
 	m_bFinish = false;
 
 	if (!pParentTransform.lock())
@@ -283,8 +264,7 @@ void CCustomEffectMesh::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 	m_fCurrentInitTime = m_tEffectMeshDesc.fInitTime;
 	m_fCurrentLifeTime = 0.f;
 
-	_vector StartPosition = XMLoadFloat3(&m_tEffectMeshDesc.vStartPosition);
-	StartPosition = XMVectorSetW(StartPosition, 1.f);
+	_vector StartPosition(XMVectorSetW(XMLoadFloat3(&m_tEffectMeshDesc.vStartPosition), 1.f));
 
 	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, StartPosition);
 
@@ -309,17 +289,14 @@ void CCustomEffectMesh::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 	ZeroMemory(&m_vCurrentRotationForce , sizeof(_float3));
 
 	m_pTransformCom.lock()->Set_Scaled(m_vCurrentScale);
-	_vector StartRotation = XMLoadFloat3(&m_vCurrentRotation);
-
-	_vector Quaternion = XMQuaternionRotationRollPitchYaw(XMVectorGetX(StartRotation), XMVectorGetY(StartRotation), XMVectorGetZ(StartRotation));
+	_vector StartRotation(XMLoadFloat3(&m_vCurrentRotation));
+	_vector Quaternion(XMQuaternionRotationRollPitchYaw(XMVectorGetX(StartRotation), XMVectorGetY(StartRotation), XMVectorGetZ(StartRotation)));
 	m_pTransformCom.lock()->Rotation_Quaternion(Quaternion);
 
 	if (m_tEffectMeshDesc.bCollider)
 	{
 		if (!m_pAttackArea.lock())
-		{
 			m_pAttackArea = GAMEINSTANCE->Add_GameObject<CAttackArea>(m_CreatedLevel);
-		}
 
 		ATTACKAREA_DESC WeaponDesc;
 		ZeroMemory(&WeaponDesc, sizeof(ATTACKAREA_DESC));
@@ -643,6 +620,7 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 }
 
 #ifdef _DEBUG
+#ifdef _JOJO_EFFECT_TOOL_
 void CCustomEffectMesh::Key_Input_ControlMesh(_float fTimeDelta)
 {
 	if (m_tEffectMeshDesc.bOnFocus)
@@ -709,8 +687,8 @@ void CCustomEffectMesh::Apply_ImGui_Controls_to_Mesh()
 		XMStoreFloat3(&m_vCurrentRotation, XMLoadFloat3(&m_tEffectMeshDesc.vStartRotation));
 	}
 }
+#endif // _JOJO_EFFECT_TOOL_
 #endif // _DEBUG
-
 void CCustomEffectMesh::Play_Internal(_float fFrameTime)
 {
 	this->Update_Position(fFrameTime);
@@ -725,34 +703,15 @@ void CCustomEffectMesh::Play_Internal(_float fFrameTime)
 
 void CCustomEffectMesh::Update_Position(_float fFrameTime)
 {
-	/*if (m_pBoneNode.lock())
-	{
-		_float4x4 TempMat = m_pParentModel.lock()->Get_TransformationMatrix();
-		_matrix ModelTranMat = XMLoadFloat4x4(&TempMat);
-		_matrix BoneMatrix = m_pBoneNode.lock()->Get_CombinedMatrix() * ModelTranMat;
-
-		BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
-		BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
-		BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
-
-		if (m_tEffectMeshDesc.bFollowTransform)
-		{
-			if (m_pParentTransformCom.lock())
-				m_pTransformCom.lock()->Set_WorldMatrix(BoneMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix());
-			else
-				m_pTransformCom.lock()->Set_WorldMatrix(BoneMatrix);
-		}
-	}*/
-
 	m_vCurrentSpeed = SMath::Mul_Float3(m_tEffectMeshDesc.vSpeed, fFrameTime);
 	m_vCurrentForce = SMath::Add_Float3(m_vCurrentForce, SMath::Mul_Float3(m_tEffectMeshDesc.vForce, fFrameTime));
 
-	_vector vMovePosition = XMLoadFloat3(&m_vCurrentSpeed) + XMLoadFloat3(&m_vCurrentForce);
-	_vector vAbsolutePosition = vMovePosition / fFrameTime;
+	_vector vMovePosition(XMLoadFloat3(&m_vCurrentSpeed) + XMLoadFloat3(&m_vCurrentForce));
+	_vector vAbsolutePosition(vMovePosition / fFrameTime);
 
-	XMVectorSetX(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.x, min(m_tEffectMeshDesc.vMaxSpeed.x, XMVectorGetX(vAbsolutePosition))));
-	XMVectorSetY(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.y, min(m_tEffectMeshDesc.vMaxSpeed.y, XMVectorGetY(vAbsolutePosition))));
-	XMVectorSetZ(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.z, min(m_tEffectMeshDesc.vMaxSpeed.z, XMVectorGetZ(vAbsolutePosition))));
+	vAbsolutePosition = XMVectorSetX(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.x, min(m_tEffectMeshDesc.vMaxSpeed.x, XMVectorGetX(vAbsolutePosition))));
+	vAbsolutePosition = XMVectorSetY(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.y, min(m_tEffectMeshDesc.vMaxSpeed.y, XMVectorGetY(vAbsolutePosition))));
+	vAbsolutePosition = XMVectorSetZ(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.z, min(m_tEffectMeshDesc.vMaxSpeed.z, XMVectorGetZ(vAbsolutePosition))));
 
 	vMovePosition = vAbsolutePosition * fFrameTime;
 
@@ -761,10 +720,10 @@ void CCustomEffectMesh::Update_Position(_float fFrameTime)
 
 void CCustomEffectMesh::Update_Rotation(_float fFrameTime)
 {
-	_vector CurrentRotation = XMLoadFloat3(&m_vCurrentRotation);
-	_vector MoveRotation    = XMLoadFloat3(&m_tEffectMeshDesc.vRotationSpeed) * fFrameTime;
-	_vector MoveForce       = XMLoadFloat3(&m_tEffectMeshDesc.vRotationForce) * fFrameTime;
-	_vector CurrentForce    = XMLoadFloat3(&m_vCurrentRotationForce);
+	_vector CurrentRotation(XMLoadFloat3(&m_vCurrentRotation));
+	_vector MoveRotation(XMLoadFloat3(&m_tEffectMeshDesc.vRotationSpeed) * fFrameTime);
+	_vector MoveForce(XMLoadFloat3(&m_tEffectMeshDesc.vRotationForce) * fFrameTime);
+	_vector CurrentForce(XMLoadFloat3(&m_vCurrentRotationForce));
 	CurrentForce    += MoveForce;
 	MoveRotation    += CurrentForce;
 	CurrentRotation += MoveRotation;
@@ -772,13 +731,13 @@ void CCustomEffectMesh::Update_Rotation(_float fFrameTime)
 	XMStoreFloat3(&m_vCurrentRotation, CurrentRotation);
 	XMStoreFloat3(&m_vCurrentRotationForce, CurrentForce);
 
-	_vector Quaternion = 
+	_vector Quaternion(
 		XMQuaternionRotationRollPitchYaw
 		(
 			XMVectorGetX(CurrentRotation)
 			, XMVectorGetY(CurrentRotation)
 			, XMVectorGetZ(CurrentRotation)
-		);
+		));
 
 	m_pTransformCom.lock()->Rotation_Quaternion(Quaternion);
 }
@@ -788,8 +747,8 @@ void CCustomEffectMesh::Update_Scale(_float fFrameTime)
 	m_vCurrentScaleSpeed = SMath::Mul_Float3(m_tEffectMeshDesc.vScaleSpeed, fFrameTime);
 	m_vCurrentScaleForce = SMath::Add_Float3(m_vCurrentScaleForce, SMath::Mul_Float3(m_tEffectMeshDesc.vScaleForce, fFrameTime));
 
-	_vector vMoveScale = XMLoadFloat3(&m_vCurrentScaleSpeed) + XMLoadFloat3(&m_vCurrentScaleForce);
-	_vector vCurrentScale = XMLoadFloat3(&m_vCurrentScale);
+	_vector vMoveScale(XMLoadFloat3(&m_vCurrentScaleSpeed) + XMLoadFloat3(&m_vCurrentScaleForce));
+	_vector vCurrentScale(XMLoadFloat3(&m_vCurrentScale));
 	vCurrentScale += vMoveScale;
 
 	vCurrentScale = XMVectorSetX(vCurrentScale, max(m_tEffectMeshDesc.vMinScale.x, min(m_tEffectMeshDesc.vMaxScale.x, XMVectorGetX(vCurrentScale))));
@@ -803,79 +762,79 @@ void CCustomEffectMesh::Update_Scale(_float fFrameTime)
 
 void CCustomEffectMesh::Update_Color(_float fFrameTime)
 {
-	_vector vColorSpeed = XMLoadFloat4(&m_tEffectMeshDesc.vColorSpeed) * fFrameTime;
+	_vector vColorSpeed(XMLoadFloat4(&m_tEffectMeshDesc.vColorSpeed) * fFrameTime);
 	m_vCurrentColorForce = SMath::Add_Float4(m_vCurrentColorForce, SMath::Mul_Float4(m_tEffectMeshDesc.vColorForce, fFrameTime));
 
-	_vector vMoveColor = vColorSpeed + XMLoadFloat4(&m_vCurrentColorForce);
-	_vector vCurrentColor = XMLoadFloat4(&m_vCurrentColor);
+	_vector vMoveColor(vColorSpeed + XMLoadFloat4(&m_vCurrentColorForce));
+	_vector vCurrentColor(XMLoadFloat4(&m_vCurrentColor));
 	vCurrentColor += vMoveColor;
 
-	XMVectorSetX(vCurrentColor, max(m_tEffectMeshDesc.vMinColor.x, min(m_tEffectMeshDesc.vMaxColor.x, XMVectorGetX(vCurrentColor))));
-	XMVectorSetY(vCurrentColor, max(m_tEffectMeshDesc.vMinColor.y, min(m_tEffectMeshDesc.vMaxColor.y, XMVectorGetY(vCurrentColor))));
-	XMVectorSetZ(vCurrentColor, max(m_tEffectMeshDesc.vMinColor.z, min(m_tEffectMeshDesc.vMaxColor.z, XMVectorGetZ(vCurrentColor))));
-	XMVectorSetW(vCurrentColor, max(m_tEffectMeshDesc.vMinColor.w, min(m_tEffectMeshDesc.vMaxColor.w, XMVectorGetW(vCurrentColor))));
+	vCurrentColor = XMVectorSetX(vCurrentColor, max(m_tEffectMeshDesc.vMinColor.x, min(m_tEffectMeshDesc.vMaxColor.x, XMVectorGetX(vCurrentColor))));
+	vCurrentColor = XMVectorSetY(vCurrentColor, max(m_tEffectMeshDesc.vMinColor.y, min(m_tEffectMeshDesc.vMaxColor.y, XMVectorGetY(vCurrentColor))));
+	vCurrentColor = XMVectorSetZ(vCurrentColor, max(m_tEffectMeshDesc.vMinColor.z, min(m_tEffectMeshDesc.vMaxColor.z, XMVectorGetZ(vCurrentColor))));
+	vCurrentColor = XMVectorSetW(vCurrentColor, max(m_tEffectMeshDesc.vMinColor.w, min(m_tEffectMeshDesc.vMaxColor.w, XMVectorGetW(vCurrentColor))));
 
 	XMStoreFloat4(&m_vCurrentColor, vCurrentColor);
 }
 
 void CCustomEffectMesh::Update_Diffuse(_float fFrameTime)
 {
-	_vector vDiffuseUVSpeed = XMLoadFloat2(&m_tEffectMeshDesc.vDiffuseUVSpeed) * fFrameTime;
+	_vector vDiffuseUVSpeed(XMLoadFloat2(&m_tEffectMeshDesc.vDiffuseUVSpeed) * fFrameTime);
 	m_vDiffuseCurrentUVForce.x += m_tEffectMeshDesc.vDiffuseUVForce.x * fFrameTime;
 	m_vDiffuseCurrentUVForce.y += m_tEffectMeshDesc.vDiffuseUVForce.y * fFrameTime;
 
-	_vector vDiffuseMoveUV = vDiffuseUVSpeed + XMLoadFloat2(&m_vDiffuseCurrentUVForce);
-	_vector vDiffuseCurrentUV = XMLoadFloat2(&m_vDiffuseCurrentUV);
+	_vector vDiffuseMoveUV(vDiffuseUVSpeed + XMLoadFloat2(&m_vDiffuseCurrentUVForce));
+	_vector vDiffuseCurrentUV(XMLoadFloat2(&m_vDiffuseCurrentUV));
 	vDiffuseCurrentUV += vDiffuseMoveUV;
 
-	XMVectorSetX(vDiffuseCurrentUV, max(m_tEffectMeshDesc.vDiffuseUVMin.x, min(m_tEffectMeshDesc.vDiffuseUVMax.x, XMVectorGetX(vDiffuseCurrentUV))));
-	XMVectorSetY(vDiffuseCurrentUV, max(m_tEffectMeshDesc.vDiffuseUVMin.y, min(m_tEffectMeshDesc.vDiffuseUVMax.y, XMVectorGetY(vDiffuseCurrentUV))));
+	vDiffuseCurrentUV = XMVectorSetX(vDiffuseCurrentUV, max(m_tEffectMeshDesc.vDiffuseUVMin.x, min(m_tEffectMeshDesc.vDiffuseUVMax.x, XMVectorGetX(vDiffuseCurrentUV))));
+	vDiffuseCurrentUV = XMVectorSetY(vDiffuseCurrentUV, max(m_tEffectMeshDesc.vDiffuseUVMin.y, min(m_tEffectMeshDesc.vDiffuseUVMax.y, XMVectorGetY(vDiffuseCurrentUV))));
 
 	XMStoreFloat2(&m_vDiffuseCurrentUV, vDiffuseCurrentUV);
 }
 
 void CCustomEffectMesh::Updaste_Noise(_float fFrameTime)
 {
-	_vector vNoiseUVSpeed = XMLoadFloat2(&m_tEffectMeshDesc.vNoiseUVSpeed) * fFrameTime;
+	_vector vNoiseUVSpeed(XMLoadFloat2(&m_tEffectMeshDesc.vNoiseUVSpeed) * fFrameTime);
 	m_vNoiseCurrentUVForce.x += m_tEffectMeshDesc.vNoiseUVForce.x * fFrameTime;
 	m_vNoiseCurrentUVForce.y += m_tEffectMeshDesc.vNoiseUVForce.y * fFrameTime;
 
-	_vector vNoiseMoveUV = vNoiseUVSpeed + XMLoadFloat2(&m_vNoiseCurrentUVForce);
-	_vector vNoiseCurrentUV = XMLoadFloat2(&m_vNoiseCurrentUV);
+	_vector vNoiseMoveUV(vNoiseUVSpeed + XMLoadFloat2(&m_vNoiseCurrentUVForce));
+	_vector vNoiseCurrentUV(XMLoadFloat2(&m_vNoiseCurrentUV));
 	vNoiseCurrentUV += vNoiseMoveUV;
 
-	XMVectorSetX(vNoiseCurrentUV, max(m_tEffectMeshDesc.vNoiseUVMin.x, min(m_tEffectMeshDesc.vNoiseUVMax.x, XMVectorGetX(vNoiseCurrentUV))));
-	XMVectorSetY(vNoiseCurrentUV, max(m_tEffectMeshDesc.vNoiseUVMin.y, min(m_tEffectMeshDesc.vNoiseUVMax.y, XMVectorGetY(vNoiseCurrentUV))));
+	vNoiseCurrentUV = XMVectorSetX(vNoiseCurrentUV, max(m_tEffectMeshDesc.vNoiseUVMin.x, min(m_tEffectMeshDesc.vNoiseUVMax.x, XMVectorGetX(vNoiseCurrentUV))));
+	vNoiseCurrentUV = XMVectorSetY(vNoiseCurrentUV, max(m_tEffectMeshDesc.vNoiseUVMin.y, min(m_tEffectMeshDesc.vNoiseUVMax.y, XMVectorGetY(vNoiseCurrentUV))));
 
 	XMStoreFloat2(&m_vNoiseCurrentUV, vNoiseCurrentUV);
 }
 
 void CCustomEffectMesh::Update_Mask(_float fFrameTime)
 {
-	_vector vMaskUVSpeed = XMLoadFloat2(&m_tEffectMeshDesc.vMaskUVSpeed) * fFrameTime;
+	_vector vMaskUVSpeed(XMLoadFloat2(&m_tEffectMeshDesc.vMaskUVSpeed) * fFrameTime);
 	m_vMaskCurrentUVForce.x += m_tEffectMeshDesc.vMaskUVForce.x * fFrameTime;
 	m_vMaskCurrentUVForce.y += m_tEffectMeshDesc.vMaskUVForce.y * fFrameTime;
 
-	_vector vMaskMoveUV = vMaskUVSpeed + XMLoadFloat2(&m_vMaskCurrentUVForce);
-	_vector vMaskCurrentUV = XMLoadFloat2(&m_vMaskCurrentUV);
+	_vector vMaskMoveUV(vMaskUVSpeed + XMLoadFloat2(&m_vMaskCurrentUVForce));
+	_vector vMaskCurrentUV(XMLoadFloat2(&m_vMaskCurrentUV));
 	vMaskCurrentUV += vMaskMoveUV;
 
-	XMVectorSetX(vMaskCurrentUV, max(m_tEffectMeshDesc.vMaskUVMin.x, min(m_tEffectMeshDesc.vMaskUVMax.x, XMVectorGetX(vMaskCurrentUV))));
-	XMVectorSetY(vMaskCurrentUV, max(m_tEffectMeshDesc.vMaskUVMin.y, min(m_tEffectMeshDesc.vMaskUVMax.y, XMVectorGetY(vMaskCurrentUV))));
+	vMaskCurrentUV = XMVectorSetX(vMaskCurrentUV, max(m_tEffectMeshDesc.vMaskUVMin.x, min(m_tEffectMeshDesc.vMaskUVMax.x, XMVectorGetX(vMaskCurrentUV))));
+	vMaskCurrentUV = XMVectorSetY(vMaskCurrentUV, max(m_tEffectMeshDesc.vMaskUVMin.y, min(m_tEffectMeshDesc.vMaskUVMax.y, XMVectorGetY(vMaskCurrentUV))));
 
 	XMStoreFloat2(&m_vMaskCurrentUV, vMaskCurrentUV);
 }
 
 void CCustomEffectMesh::Update_Glow(_float fFrameTime)
 {
-	_vector vGlowSpeed = XMLoadFloat4(&m_tEffectMeshDesc.vGlowColorSpeed) * fFrameTime;
+	_vector vGlowSpeed(XMLoadFloat4(&m_tEffectMeshDesc.vGlowColorSpeed) * fFrameTime);
 	m_vCurrentGlowForce.x += m_tEffectMeshDesc.vGlowColorForce.x * fFrameTime;
 	m_vCurrentGlowForce.y += m_tEffectMeshDesc.vGlowColorForce.y * fFrameTime;
 	m_vCurrentGlowForce.z += m_tEffectMeshDesc.vGlowColorForce.z * fFrameTime;
 	m_vCurrentGlowForce.w += m_tEffectMeshDesc.vGlowColorForce.w * fFrameTime;
 
-	_vector vMoveGlowColor = vGlowSpeed + XMLoadFloat4(&m_vCurrentGlowForce);
-	_vector vCurrentGlowColor = XMLoadFloat4(&m_vCurrentGlowColor);
+	_vector vMoveGlowColor(vGlowSpeed + XMLoadFloat4(&m_vCurrentGlowForce));
+	_vector vCurrentGlowColor(XMLoadFloat4(&m_vCurrentGlowColor));
 	vCurrentGlowColor += vMoveGlowColor;
 
 	XMStoreFloat4(&m_vCurrentGlowColor, vCurrentGlowColor);
@@ -986,7 +945,6 @@ XMStoreFloat2(&vTarget, FunctionName(vStartPoint, vTargetPoint, fElapsedTime, fT
 void CCustomEffectMesh::Clone_EffectMesh()
 {
 	GET_SINGLE(CWindow_EffectHierarchyView)->Add_EffectMesh_Internal(m_tEffectMeshDesc, m_szEffectName.c_str());
-
 }
 #endif // _DEBUG
 
@@ -1000,7 +958,7 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 		if (ImGui::CollapsingHeader("CustomEffectMesh"), ImGuiTreeNodeFlags_DefaultOpen)
 		{
 			if (ImGui::Button("Clone"))
-				Clone_EffectMesh();
+				this->Clone_EffectMesh();
 
 			// TODO : for imgui - mesh keyboard control
 			ImGui::Text("Focus Control"); ImGui::SameLine();
@@ -1433,7 +1391,7 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 						if (ImGui::BeginListBox("Hit Type"))
 						{
-							for (int n = 0; n < IM_ARRAYSIZE(HitType_items); n++)
+							for (int n(0); n < IM_ARRAYSIZE(HitType_items); n++)
 							{
 								const bool is_selected = (m_tEffectMeshDesc.iHitType == n);
 								if (ImGui::Selectable(HitType_items[n], is_selected))
@@ -1456,7 +1414,7 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 						if (ImGui::BeginListBox("Option Type"))
 						{
-							for (int n = 0; n < IM_ARRAYSIZE(Option_items); n++)
+							for (int n(0); n < IM_ARRAYSIZE(Option_items); n++)
 							{
 								const bool is_selected = (m_tEffectMeshDesc.iHitType == n);
 								if (ImGui::Selectable(Option_items[n], is_selected))
@@ -1509,9 +1467,9 @@ void CCustomEffectMesh::OnChangeAnimationKey(const _uint& In_Key)
 	if (m_tEffectMeshDesc.iSyncAnimationKey != (_int)In_Key)
 		return;
 
-	weak_ptr<CTransform> pPreviewModelTransform = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Transform();
+	weak_ptr<CTransform> pPreviewModelTransform(GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Transform());
 
-	Reset_Effect(pPreviewModelTransform);
+	this->Reset_Effect(pPreviewModelTransform);
 }
 
 void CCustomEffectMesh::Free()

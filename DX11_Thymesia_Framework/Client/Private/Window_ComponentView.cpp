@@ -97,7 +97,8 @@ void CWindow_ComponentView::Draw_Components()
 
 	if (typeid(CEditGroupProp).hash_code()    != m_tPickedGameObjectDesc.HashCode &&
 		typeid(CEditInstanceProp).hash_code() != m_tPickedGameObjectDesc.HashCode &&
-		typeid(CEditMapCollider).hash_code()  != m_tPickedGameObjectDesc.HashCode)
+		typeid(CEditMapCollider).hash_code()  != m_tPickedGameObjectDesc.HashCode &&
+		typeid(CEditSetActor).hash_code()     != m_tPickedGameObjectDesc.HashCode)
 	{
 		if (bSelect_ActivateHotkey)
 			TransformComponent_PickingAction(pTransformCom);
@@ -265,10 +266,23 @@ void CWindow_ComponentView::TransformComponent_PickingAction(weak_ptr<CTransform
 
 	if (KEY_INPUT(KEY::X, KEY_STATE::HOLD))
 	{
-		_vector vObjPos = _pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
+		_long		MouseMove = 0;
+		if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_X))
+		{
+			_matrix matWorld      = _pTransform.lock()->Get_WorldMatrix();
+			_float3 vPitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(matWorld));
+
+			vPitchYawRoll.y += 0.01f * MouseMove;
+
+			_vector vQuaternion = XMQuaternionRotationRollPitchYaw(vPitchYawRoll.x, vPitchYawRoll.y, vPitchYawRoll.z);
+
+			_pTransform.lock()->Rotation_Quaternion(vQuaternion);
+		}
+
+		/*_vector vObjPos = _pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
 		_vector vAddPos = XMVectorSet(vMouseDir.x, vObjPos.m128_f32[1], vMouseDir.z, 1.f);
 
-		_pTransform.lock()->LookAt(vAddPos);
+		_pTransform.lock()->LookAt(vAddPos);*/
 	}
 
 	else if (KEY_INPUT(KEY::C, KEY_STATE::HOLD))

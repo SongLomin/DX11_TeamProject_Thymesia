@@ -189,8 +189,9 @@ void CVIBuffer_Rect_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDes
 			((VTXCOLORINSTANCE*)SubResource.pData)[i].vColor = _float4(0.f, 0.f, 0.f, 0.f);
 			continue;
 		}
-
-		_matrix WorldMatrix = SMath::Bake_WorldMatrix(pParticleDesc->vCurrentScale, pParticleDesc->vCurrentRotation, pParticleDesc->vCurrentTranslation);
+		
+		_float3 vCurrentScale = _float3(pParticleDesc->vCurrentScale.x, pParticleDesc->vCurrentScale.y, 0.f);
+		_matrix WorldMatrix = SMath::Bake_WorldMatrix(vCurrentScale, pParticleDesc->vCurrentRotation, pParticleDesc->vCurrentTranslation);
 
 		if (In_UseParentMatrix)
 			WorldMatrix *= XMLoadFloat4x4(&pParticleDesc->matParentMatrix);

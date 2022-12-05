@@ -44,7 +44,7 @@ void CPhysXCameraController::onShapeHit(const PxControllerShapeHit& hit)
 	m_pLastHitShape = hit.shape;
 	m_pLastHitActor = hit.actor;
 
-	cout << "ShapeHit" << endl;
+	//cout << "ShapeHit" << endl;
 
 }
 
@@ -116,12 +116,12 @@ PxControllerCollisionFlags CPhysXCameraController::Set_Position(_fvector In_vPos
 	return  __super::Set_Position(In_vPosition, elapsedTime, filters);
 }
 
-PxControllerCollisionFlags CPhysXCameraController::MoveWithRotation(const _vector& disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles, weak_ptr<CTransform> pTransform)
+PxControllerCollisionFlags CPhysXCameraController::MoveWithRotation(_fvector disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles, weak_ptr<CTransform> pTransform)
 {
 	return  __super::MoveWithRotation(disp, minDist, elapsedTime, filters, obstacles, pTransform);
 }
 
-PxControllerCollisionFlags CPhysXCameraController::Move(const _vector& disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles)
+PxControllerCollisionFlags CPhysXCameraController::Move(_fvector disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles)
 {
 	return  __super::Move(disp, minDist, elapsedTime, filters, obstacles);
 }

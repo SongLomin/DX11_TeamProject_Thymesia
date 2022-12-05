@@ -22,20 +22,22 @@ HRESULT CStateBase::Initialize(void* pArg)
 	m_pOwnerFromCharacter = Weak_Cast<CCharacter>(m_pOwner);
 	m_iStateIndex = g_iStateIndex++;
 
+	m_pTransformCom       = m_pOwner.lock()->Get_Component<CTransform>();
+	m_pNaviCom            = m_pOwner.lock()->Get_Component<CNavigation>();
+	m_pModelCom           = m_pOwner.lock()->Get_Component<CModel>();
+	m_pPhysXControllerCom = m_pOwner.lock()->Get_Component<CPhysXCharacterController>();
+	
+	// TODO : _uint i ÀÌ°Å ¹º ¿ëµµ?
+	//_uint i = _uint(m_pOwner.lock()->Get_ComponentsByType<CStatus>().size());
+	m_pStatusCom          = m_pOwner.lock()->Get_ComponentByType<CStatus>();
+
+
 	Set_Enable(false);
 	return S_OK;
 }
 
 void CStateBase::Start()
 {
-	m_pTransformCom = m_pOwner.lock()->Get_Component<CTransform>();
-	m_pNaviCom      = m_pOwner.lock()->Get_Component<CNavigation>();
-	m_pModelCom     = m_pOwner.lock()->Get_Component<CModel>();
-	m_pPhysXControllerCom = m_pOwner.lock()->Get_Component<CPhysXCharacterController>();
-
-	_uint i = _uint(m_pOwner.lock()->Get_ComponentsByType<CStatus>().size());
-
-	m_pStatusCom = m_pOwner.lock()->Get_ComponentByType<CStatus>();
 }
 
 void CStateBase::Tick(_float fTimeDelta)
@@ -141,18 +143,21 @@ void CStateBase::OnDestroy()
 
 void CStateBase::OnEnable(void* _Arg)
 {
-	//m_pBehavior = m_pOwner.lock()->Get_ComponentByType<CBehaviorBase>();
-	m_pNaviCom = m_pOwner.lock()->Get_Component<CNavigation>();
-	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 }
 
 void CStateBase::OnDisable()
 {
 }
 
+void CStateBase::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+}
 
 void CStateBase::OnEventMessage(weak_ptr<CBase> pArg)
 {
+
 }
 
 void CStateBase::Free()
