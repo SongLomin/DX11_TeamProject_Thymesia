@@ -1002,6 +1002,7 @@ void CLoader::Load_UIResource()
 
 	//Masking
 	GAMEINSTANCE->Load_Textures(("Mask"), TEXT("../Bin/Resources/Textures/Mask/193.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("UI_Evolve_Level_BG_UVAnimMask"), TEXT("../Bin/Resources/Textures/Mask/193.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 }
 
