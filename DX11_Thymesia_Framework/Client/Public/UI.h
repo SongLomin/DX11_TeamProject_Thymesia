@@ -75,7 +75,7 @@ public:
 
 public:
     void            Set_TextureIndex(const _uint& Index) { m_iTextureIndex = Index; }
-    void            Set_Texture(const _char* sKey);
+    virtual void    Set_Texture(const _char* sKey);
     virtual void    Set_UIPosition(const _float fX, const _float fY, const _float fSizeX, const _float fSizeY, UI_ALIGN_TYPE eType = UI_ALIGN_TYPE::ALIGN_CENTER);
     virtual void    Set_UIPosition(const _float fX, const _float fY, UI_ALIGN_TYPE eType);//먼저 선언된 사이즈가 있어야함.
     virtual void    Set_UIPosition(const _float fX, const _float fY);

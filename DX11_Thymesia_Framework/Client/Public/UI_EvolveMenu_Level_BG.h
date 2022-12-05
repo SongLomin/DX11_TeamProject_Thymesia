@@ -22,6 +22,15 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+private:
+	virtual void            Set_Texture(const _char* sKey) override;
+
+
+private:
+	weak_ptr<CTexture>	m_pUVAnimMask;
+	_float2				m_fUVOffset;
+	_float				m_fUVOffsetAmount;
+
 protected:
 	virtual HRESULT SetUp_ShaderResource() override;
 
