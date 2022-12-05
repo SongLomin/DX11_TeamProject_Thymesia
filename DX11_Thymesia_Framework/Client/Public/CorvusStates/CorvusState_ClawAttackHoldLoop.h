@@ -36,6 +36,8 @@ private:
 
     _int m_iEndAttackEffectIndex = -1;
 
+    _uint m_iEffectIndex = 0;
+
 protected:
     virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
     virtual void OnStateEnd() override;

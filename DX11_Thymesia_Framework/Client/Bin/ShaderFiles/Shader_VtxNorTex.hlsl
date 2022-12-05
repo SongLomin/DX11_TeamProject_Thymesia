@@ -2,7 +2,7 @@
 #include "Client_Shader_Defines.hpp"
 
 matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
-float4	g_vLightFlag;
+float4	g_vShaderFlag;
 
 vector	g_vBrushPos = vector(15.f, 0.f, 15.f, 1.f);
 float	g_fBrushRange = 10.f;
@@ -62,7 +62,7 @@ struct PS_OUT
 	vector		vDiffuse : SV_TARGET0;
 	vector		vNormal : SV_TARGET1;
 	vector		vDepth : SV_TARGET2;
-    vector		vLightFlag : SV_Target3;
+    vector		vShaderFlag : SV_Target3;
 };
 
 PS_OUT PS_MAIN_TERRAIN_PHONG(PS_IN_PHONG In)
@@ -82,7 +82,7 @@ PS_OUT PS_MAIN_TERRAIN_PHONG(PS_IN_PHONG In)
 	/* y : n ~ f 정규화하여 */
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
 	
-    Out.vLightFlag = g_vLightFlag;
+    Out.vShaderFlag = g_vShaderFlag;
 	return Out;
 }
 
@@ -119,7 +119,7 @@ PS_OUT PS_MAIN_TERRAIN_BLEND_PHONG(PS_IN_PHONG In)
 	/* y : n ~ f 정규화하여 */
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
 
-    Out.vLightFlag = g_vLightFlag;
+    Out.vShaderFlag = g_vShaderFlag;
 	
     return Out;
 }

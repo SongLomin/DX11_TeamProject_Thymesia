@@ -251,7 +251,7 @@ HRESULT CLoader::Loading_ForTestLevel()
 #ifdef _LOAD_CAPTURED_RESOURCE_
 	lstrcpy(m_szLoadingText, TEXT("Loading Captured Resources..."));
 	GAMEINSTANCE->Load_ResourcesFromJson("../Bin/LevelData/CapturedResource/TestLevel.json");
-#else
+#else // _LOAD_CAPTURED_RESOURCE_
 	lstrcpy(m_szLoadingText, TEXT("Loading EditGround All Mesh Infos..."));
 	CEditGround::Load_AllMeshInfo();
 

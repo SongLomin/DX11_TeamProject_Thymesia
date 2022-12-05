@@ -131,6 +131,7 @@ void CCorvusState_ClawAttackHoldLoop::OnStateStart(const _float& In_fAnimationBl
 	//m_iAttackIndex = 7;
 	//m_iEndAttackEffectIndex = -1;
 
+	m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_ClawChargeLoop_Particle", m_pTransformCom, _uint(TIMESCALE_LAYER::PLAYER));
 
 	//Disable_Weapons();
 
@@ -145,6 +146,8 @@ void CCorvusState_ClawAttackHoldLoop::OnStateStart(const _float& In_fAnimationBl
 void CCorvusState_ClawAttackHoldLoop::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Corvus_ClawChargeLoop_Particle", m_iEffectIndex);
 
 	//Disable_Weapons();
 	m_IsNextAttack = false;

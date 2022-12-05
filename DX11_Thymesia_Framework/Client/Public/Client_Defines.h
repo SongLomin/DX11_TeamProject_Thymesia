@@ -3,6 +3,8 @@
 #include "SMath.h"
 #include <filesystem>
 
+#define _JOJO_EFFECT_TOOL_
+
 #include "Client_Structs.h"
 #include "Client_Presets.h"
 #include "imgui.h"
@@ -31,8 +33,8 @@
 #pragma region Map
 #define _BRIGHT_LIGHT_
 // #define _GENERATE_PROP_COLLIDER_ true
-// #define _STAGE_1_
-#define _STAGE_2_
+#define _STAGE_1_
+// #define _STAGE_2_
 #define _TEST_STATIC_PROPS_
 // #define _TEST_DYNAMIC_PROPS_
 #pragma endregion // Map
@@ -43,7 +45,7 @@
 #pragma endregion // Tool
 
 #pragma region Boss Mobs
-#define _BOSS_VARG_
+// #define _BOSS_VARG_
 // #define _BOSS_URD_
 #pragma endregion // Boss Mobs
 
@@ -126,7 +128,7 @@
 #pragma region Map
 #define _BRIGHT_LIGHT_
 #undef _GENERATE_PROP_COLLIDER_ true
-#undef _STAGE_1_
+#define _STAGE_1_
 #undef _STAGE_2_
 #undef _TEST_STATIC_PROPS_
 #undef _TEST_DYNAMIC_PROPS_
