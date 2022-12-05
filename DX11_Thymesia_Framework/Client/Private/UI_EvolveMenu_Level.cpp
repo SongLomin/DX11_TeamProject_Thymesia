@@ -479,7 +479,7 @@ void CUI_EvolveMenu_Level::Create_NoneGrouping()
 
     weak_ptr<CEasingTransform> pEasingTransformCom = m_pStatusArrowLeft.lock()->Get_Component<CEasingTransform>();
 
-    _float2 vOffset = { -15.f , 0 };
+    _float2 vOffset = { -8.f , 0 };
 
     pEasingTransformCom.lock()->Set_LerpFloat2_StartFromZero(vOffset, 0.6f, EASING_TYPE::SINE_IN, true,
         CEasingTransform::GO_AND_BACK);
@@ -491,7 +491,7 @@ void CUI_EvolveMenu_Level::Create_NoneGrouping()
     m_pStatusArrowRight.lock()->Set_Depth(0.5f);
     m_pStatusArrowRight.lock()->Add_Component<CEasingTransform>();
 
-    vOffset = { 15.f, 0 };
+    vOffset = { 8.f, 0 };
 
     pEasingTransformCom = m_pStatusArrowRight.lock()->Get_Component<CEasingTransform>();
     pEasingTransformCom.lock()->Set_LerpFloat2_StartFromZero(vOffset, 0.6f, EASING_TYPE::SINE_IN, true,
