@@ -10,7 +10,7 @@
 #ifdef _DEBUG
 
 #pragma region System
-// #define		_ONLY_UI_
+ #define		_ONLY_UI_
 
 #define		_USE_THREAD_
 #define		_144HZ_
@@ -177,6 +177,7 @@ namespace Client
 		PLAYER,
 		MONSTER,
 		EDITER,
+		UI,
 		LAYER_END
 	};
 

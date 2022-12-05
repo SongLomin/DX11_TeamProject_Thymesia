@@ -20,7 +20,6 @@ public:
 	GAMECLASS_H(CUI_EvolveMenu_Level)
 		CLONE_H(CUI_EvolveMenu_Level, CGameObject)
 
-
 public:
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual void   Tick(_float fTimeDelta);
@@ -40,6 +39,18 @@ private:
 	void	Update_FontInfo();
 	void	Update_ChangeStatus(CStatus_Player::PLAYERDESC&	tChangedPlayerStatus);
 	void	CalculateNeedMemory();
+
+	void	ChangeSelectedIndex();
+	void	SelectButton();
+	void	OpenReconfirmWindow();
+	void    TickReconfirmWindow();
+
+	void  	IncreaseStatus(EVOLVE_LEVEL_TYPE eEvolveType);
+	void  	DecreaseStatus(EVOLVE_LEVEL_TYPE eEvolveType);
+
+
+	
+
 
 private:
 
@@ -173,14 +184,6 @@ private:
 	weak_ptr<CEasingTransform> m_pEasingTransformCom;
 
 
-private:
-	void            ChangeSelectedIndex();
-	void            SelectButton();
-	void            OpenReconfirmWindow();
-	void            TickReconfirmWindow();
-	
-	void			IncreaseStatus(EVOLVE_LEVEL_TYPE eEvolveType);
-	void			DecreaseStatus(EVOLVE_LEVEL_TYPE eEvolveType);
 
 
 private:

@@ -97,7 +97,7 @@ void CUI_EvolveMenu_Level::Tick(_float fTimeDelta)
     __super::Tick(fTimeDelta);
 
 
-    m_pEasingTransformCom.lock()->Tick(fTimeDelta);
+    //m_pEasingTransformCom.lock()->Tick(fTimeDelta);
 
     if (KEY_INPUT(KEY::T, KEY_STATE::TAP))
     {
@@ -158,7 +158,8 @@ void CUI_EvolveMenu_Level::Tick(_float fTimeDelta)
 
     TickReconfirmWindow();
    
-    
+
+
     m_bOpenReconfirmWindowThisFrame = false;
 
 }
@@ -474,17 +475,27 @@ void CUI_EvolveMenu_Level::Create_NoneGrouping()
     m_pStatusArrowLeft.lock()->Set_UIPosition(0, 0, 18.f, 41.f);
     m_pStatusArrowLeft.lock()->Set_Texture("Keyboard_Arrow_Left");
     m_pStatusArrowLeft.lock()->Set_Depth(0.5f);
+    m_pStatusArrowLeft.lock()->Add_Component<CEasingTransform>();
 
+    weak_ptr<CEasingTransform> pEasingTransformCom = m_pStatusArrowLeft.lock()->Get_Component<CEasingTransform>();
+
+    _float2 vOffset = { -15.f , 0 };
+
+    pEasingTransformCom.lock()->Set_LerpFloat2_StartFromZero(vOffset, 0.6f, EASING_TYPE::SINE_IN, true,
+        CEasingTransform::GO_AND_BACK);
 
 
     m_pStatusArrowRight = ADD_STATIC_CUSTOMUI;
     m_pStatusArrowRight.lock()->Set_UIPosition(0, 0, 18.f, 41.f);
     m_pStatusArrowRight.lock()->Set_Texture("Keyboard_Arrow_Right");
     m_pStatusArrowRight.lock()->Set_Depth(0.5f);
+    m_pStatusArrowRight.lock()->Add_Component<CEasingTransform>();
 
-    
+    vOffset = { 15.f, 0 };
 
-
+    pEasingTransformCom = m_pStatusArrowRight.lock()->Get_Component<CEasingTransform>();
+    pEasingTransformCom.lock()->Set_LerpFloat2_StartFromZero(vOffset, 0.6f, EASING_TYPE::SINE_IN, true,
+       CEasingTransform::GO_AND_BACK);
 
     Add_Child(m_pStatusArrowLeft);
     Add_Child(m_pStatusArrowRight);
@@ -990,10 +1001,22 @@ void CUI_EvolveMenu_Level::ChangeSelectedIndex()
     default:
         break;
     }
-    m_pStatusArrowLeft.lock()->Set_Enable(Check_Changeable(eType, KEY::LEFT));
-    m_pStatusArrowRight.lock()->Set_Enable(Check_Changeable(eType, KEY::RIGHT));
-
-
+    if (Check_Changeable(eType, KEY::LEFT))
+    {
+        m_pStatusArrowLeft.lock()->Set_Texture("Keyboard_Arrow_Left");
+    }
+    else
+    {
+        m_pStatusArrowLeft.lock()->Set_Texture("None");
+    }
+    if (Check_Changeable(eType, KEY::RIGHT))
+    {
+        m_pStatusArrowRight.lock()->Set_Texture("Keyboard_Arrow_Right");
+    }
+    else
+    {
+        m_pStatusArrowRight.lock()->Set_Texture("None");
+    }
 
 
 
@@ -1031,9 +1054,9 @@ void CUI_EvolveMenu_Level::OpenReconfirmWindow()
     m_bOpenReconfirmWindowThisFrame = true;
 
     m_iReconfirmWindowIndex = 0;
-    m_pEasingTransformCom.lock()->Set_LerpFloat
+    m_pEasingTransformCom.lock()->Set_Lerp_Alpha
     (
-        0.f,1.f,0.3f,   EASING_TYPE::QUAD_IN
+        0.3f,   EASING_TYPE::QUAD_IN
     );
     Enable_AllEventChild();
     TickReconfirmWindow();
@@ -1165,8 +1188,8 @@ void CUI_EvolveMenu_Level::OnEnable(void* pArg)
 
     m_tChangeStatus = m_tOriginStatus;
 
-    m_pStatusArrowLeft.lock()->Set_Enable(false);
-    m_pStatusArrowRight.lock()->Set_Enable(false);
+   // m_pStatusArrowLeft.lock()->Set_Enable(false);
+   // m_pStatusArrowRight.lock()->Set_Enable(false);
     
     m_iSelectedIndex = (_uint)EVOLVE_LEVEL_TYPE::APPLY;
     m_iReconfirmWindowIndex = 0;

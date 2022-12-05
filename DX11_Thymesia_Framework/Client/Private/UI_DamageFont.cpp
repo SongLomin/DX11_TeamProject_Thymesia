@@ -12,7 +12,7 @@ HRESULT CUI_DamageFont::Initialize(void* pArg)
 
 
 	m_pEasingTransform = Add_Component<CEasingTransform>();
-
+	m_fDefaultSize = 32.f;
     return S_OK;
 }
 
@@ -56,7 +56,7 @@ void CUI_DamageFont::SetUp_DamageFont(_uint iDmg, _float2 vPos, ATTACK_OPTION eA
 	m_vPos.x += rand() % 30;
 	m_vPos.y += rand() % 30;
 
-	m_fDefaultSize = 64.f;
+
 
 	m_fOffsetX = m_fDefaultSize * 0.5f;
 
@@ -98,7 +98,11 @@ void CUI_DamageFont::SetUp_DamageFont(_uint iDmg, _float2 vPos, ATTACK_OPTION eA
 		//setting Offset;
 		_float fOffset = m_fOffsetX * (i - (strSize / 2));
 
-		pDamageFont = ADD_STATIC_CUSTOMUI;
+
+		pDamageFont = GAMEINSTANCE->Get_GameObject_UseMemoryPool<CCustomUI>(LEVEL_STATIC);
+		if (!pDamageFont.lock())
+			pDamageFont = ADD_STATIC_CUSTOMUI;
+
 		pDamageFont.lock()->Set_UIPosition
 		(
 			vPos.x + fOffset,
@@ -110,9 +114,20 @@ void CUI_DamageFont::SetUp_DamageFont(_uint iDmg, _float2 vPos, ATTACK_OPTION eA
 		pDamageFont.lock()->Set_DeffuseIndex((_uint)(strDamage[i] - '0'));
 		m_vecChildUI.push_back(pDamageFont);
 	}
-	CallBack_ShakingEnd += bind(&CUI_DamageFont::Call_Shaking_End, this);
+	//CallBack_ShakingEnd += bind(&CUI_DamageFont::Call_Shaking_End, this);
 
-	Add_Shaking(1.5f, 30.f);
+	_float fOffsetY;
+	fOffsetY = -m_fDefaultSize * 2.f;
+
+	_float2	fOffset;
+
+	fOffset.x = 0.f;
+	fOffset.y = fOffsetY;
+
+	m_pEasingTransform.lock()->Set_LerpFloat2(_float2(0.f,0.f), fOffset, 0.5f, EASING_TYPE::QUINT_IN);
+	m_pEasingTransform.lock()->Callback_LerpEnd += bind(&CUI_DamageFont::Call_LerpEnd_FadeOut, this);
+
+	//Add_Shaking(1.5f, 30.f);
 }
 
 
@@ -130,9 +145,15 @@ void CUI_DamageFont::Call_Shaking_End()
 {
 	_float fOffsetY;
 
-	fOffsetY = -m_fDefaultSize * 2.f;
+	fOffsetY = -m_fDefaultSize * 1.5f;
 
-	m_pEasingTransform.lock()->Set_LerpFloat(0, fOffsetY, 0.5f);
+
+	_float2	fOffset;
+
+	fOffset.x = 0.f;
+	fOffset.y = fOffsetY;
+
+	m_pEasingTransform.lock()->Set_LerpFloat2(_float2(0.f,0.f), fOffset, 0.2f);
 	m_pEasingTransform.lock()->Callback_LerpEnd += bind(&CUI_DamageFont::Call_LerpEnd_FadeOut, this);
 }
 

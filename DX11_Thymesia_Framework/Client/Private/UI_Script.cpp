@@ -37,7 +37,7 @@ void CUI_Script::Tick(_float fTimeDelta)
         {
             if (m_bLerp)
             {
-                m_pEasingTrnaformCom.lock()->Set_LerpFloat(1.0f, 0.f, 1.f);
+                m_pEasingTrnaformCom.lock()->Set_Lerp_Alpha(1.f);
                 m_pEasingTrnaformCom.lock()->Callback_LerpEnd += bind(
                     &CUI_Script::Call_LerpEnd_FadeOut, this);
                 m_eScriptPlaying = CUI_Script::SCRIPTPLAYINGTYPE::SCRIPT_FADEOUT;
@@ -80,7 +80,7 @@ void CUI_Script::ReadyScript(SCRIPTDESC tScriptDesc)
     m_bLerp = tScriptDesc.bLerp;
     if (m_bLerp)
     {
-        m_pEasingTrnaformCom.lock()->Set_LerpFloat(0.f, 1.f, 1.f);
+        m_pEasingTrnaformCom.lock()->Set_Lerp_Alpha(1.f);
         m_pEasingTrnaformCom.lock()->Callback_LerpEnd += bind(
             &CUI_Script::Call_LerpEnd_FadeIn, this);
     }

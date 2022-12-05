@@ -250,12 +250,6 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoid.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Corvus_DefaultSaber.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\00.Weapon\00.Corvus_DefaultSaber</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Corvus_DefaultDagger.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\00.Weapon\01.Corvus_DefaultDagger</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\EditGround.h">
       <Filter>02. GameObject\99. Other\01. EditGround</Filter>
     </ClInclude>
@@ -856,9 +850,6 @@
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV1.h">
       <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\02.Talent_Effect_AvoidSlashLV1</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\Talent_Sword.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\00.Talent\01.TalentTree\00.Talent_Tree_Sword</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV2.h">
       <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\03.Talent_Effect_AvoidSlashLV2</Filter>
     </ClInclude>
@@ -975,6 +966,11 @@
     <ClInclude Include="..\Public\CorvusStates\Talent.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect.h" />
     <ClInclude Include="..\Public\Talent_Effects.h" />
+    <ClInclude Include="..\Public\TestUI.h" />
+    <ClInclude Include="..\Public\CorvusStates\Talent_Sword.h" />
+    <ClInclude Include="..\Public\Corvus_DefaultDagger.h" />
+    <ClInclude Include="..\Public\Corvus_DefaultSaber.h" />
+    <ClInclude Include="..\Public\CUtils_EasingTransform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1202,9 +1198,6 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoid.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\00.Weapon\00.Corvus_DefaultSaber</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\EditGround.cpp">
       <Filter>02. GameObject\99. Other\01. EditGround</Filter>
     </ClCompile>
@@ -1343,9 +1336,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal.cpp">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Corvus_DefaultDagger.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\00.Weapon\01.Corvus_DefaultDagger</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\EditInstanceProp.cpp">
       <Filter>02. GameObject\99. Other\06. EditInstanceProp</Filter>
@@ -1878,9 +1868,6 @@
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidThrustLV1.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\04.Talent_Effect_AvoidThrustLV1</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\Talent_Sword.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\00.Talent\01.TalentTree\00.Talent_Tree_Sword</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV2.cpp">
       <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\03.Talent_Effect_AvoidSlashLV2</Filter>
     </ClCompile>
@@ -1997,6 +1984,11 @@
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\Talent.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect.cpp" />
+    <ClCompile Include="..\Public\TestUI.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\Talent_Sword.cpp" />
+    <ClCompile Include="..\Private\Corvus_DefaultDagger.cpp" />
+    <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp" />
+    <ClCompile Include="..\Private\CUtils_EasingTransform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -2649,12 +2641,6 @@
     <Filter Include="01. ClientLevel\05. Level_Test">
       <UniqueIdentifier>{fc760025-3469-4bd1-81c4-0e8169a05da1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\00.Weapon\00.Corvus_DefaultSaber">
-      <UniqueIdentifier>{0ed56344-d4a6-4fcc-946f-328f7e70d654}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\00.Weapon\01.Corvus_DefaultDagger">
-      <UniqueIdentifier>{e8d262bf-d13f-4a53-886f-7946a0308b0a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\36.TurnAttack">
       <UniqueIdentifier>{e3ecf8f1-6d57-49e6-a712-42a92d7a7056}</UniqueIdentifier>
     </Filter>
@@ -2681,9 +2667,6 @@
     </Filter>
     <Filter Include="01. ClientLevel\05. Level_Test">
       <UniqueIdentifier>{fc760025-3469-4bd1-81c4-0e8169a05da1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\00.Weapon">
-      <UniqueIdentifier>{c544ea3e-e472-45d2-97c7-b7b228b16290}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\00.Weapon\00.Corvus_DefaultSaber">
       <UniqueIdentifier>{0ed56344-d4a6-4fcc-946f-328f7e70d654}</UniqueIdentifier>
@@ -2928,12 +2911,6 @@
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\14.CorvusState_Climb_Fall_Attack">
       <UniqueIdentifier>{a0660124-2e8a-4f9a-88c3-aee4b57d70fa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\00.Talent\01.TalentTree">
-      <UniqueIdentifier>{81c188ef-931c-4330-9770-f2600f4adc47}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\00.Talent\01.TalentTree\00.Talent_Tree_Sword">
-      <UniqueIdentifier>{3ec437e7-34e1-4ee5-83e0-109efef3e874}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\00.CorvusState_AvoidSalsh">
       <UniqueIdentifier>{3e1d05dd-8e41-4ceb-963a-95c5352a6d52}</UniqueIdentifier>
     </Filter>
@@ -2961,12 +2938,6 @@
     <Filter Include="06. DataPreset\04. Preset_AddGameObject">
       <UniqueIdentifier>{9945984e-3b3a-4360-916d-6b7a7ec51ad8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword">
-      <UniqueIdentifier>{670d20a0-95e3-4e4f-b0fa-a2b8393809e3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword">
-      <UniqueIdentifier>{4a59091b-9b7d-492d-bbdd-ca9ead1e63a7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\01.Talent_Effect_NorSwordLV2">
       <UniqueIdentifier>{d9a1d9b8-03ad-46f8-9e67-8f884a1c4a72}</UniqueIdentifier>
     </Filter>
@@ -2985,9 +2956,6 @@
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\00.Talent_Efftct_NorSwordLV1">
       <UniqueIdentifier>{43b13b45-05da-4cfe-9a11-cf855d491f00}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\01.Talent_Effect_JumpSword">
-      <UniqueIdentifier>{a968b718-5e61-4cf3-ac3b-985b7e00c639}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\01.Talent_Effect_JumpSword\00.Talent_Effect_JumpAttackLV1">
       <UniqueIdentifier>{f4fe6ee4-2c47-4dfe-868c-76ec24842d8e}</UniqueIdentifier>
     </Filter>
@@ -2996,9 +2964,6 @@
     </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\01.Talent_Effect_JumpSword\02.Talent_Effect_JumpAttackLV3">
       <UniqueIdentifier>{7f8814f4-e4d6-4647-9b8a-50229d27042f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\02.Talent_Effect_Execution">
-      <UniqueIdentifier>{d24bbbef-9ea4-4437-96c3-dfd71e09d212}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\02.Talent_Effect_Execution\00.Talent_Effect_Execution">
       <UniqueIdentifier>{4a6eb1d2-ff84-4844-8cda-d9e5700ef9d4}</UniqueIdentifier>
@@ -3009,29 +2974,14 @@
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\02.Talent_Effect_Execution\02.Talent_Effect_HealingExecutionLV2">
       <UniqueIdentifier>{971172d7-3cee-41d3-a066-c363ba64007b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\03.Talent_Effect_SharpWeapon">
-      <UniqueIdentifier>{2579d941-6ac3-4b96-b4dc-ebfb16d4b9e4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\03.Talent_Effect_SharpWeapon\00.Talent_Effect_SharpWeaponLV1">
       <UniqueIdentifier>{a387fdb0-275a-4c33-a86e-ca1161df89f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\04.Talent_Effect_EnergisedWeapon">
-      <UniqueIdentifier>{ccf0e4d6-6ca0-4c33-8278-67fd1562c348}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\04.Talent_Effect_EnergisedWeapon\00.Talent_Effect_EnergisedWeaponLV1">
       <UniqueIdentifier>{f973a8ec-6920-427d-8823-3eecc21de088}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\04.Talent_Effect_EnergisedWeapon\01.Talent_Effect_EnergisedWeaponLV2">
       <UniqueIdentifier>{875fa4f9-9d1f-4c94-9814-864877dafa3e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\01.Parry">
-      <UniqueIdentifier>{b0ef1549-304e-43d4-9e1f-708a8780501b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\02.Avoid">
-      <UniqueIdentifier>{7b45d742-6f8c-4e40-8f95-59072c1c46d1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\03.Claw">
-      <UniqueIdentifier>{ef2fe422-5df4-4fc5-9215-904cfb2def8e}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\03.Talent_Effect_SharpWeapon\01.Talent_Effect_SharpWeaponLV2">
       <UniqueIdentifier>{77e47ca3-0e07-4a76-bce1-e0e67a84ba9c}</UniqueIdentifier>
@@ -3059,6 +3009,15 @@
     </Filter>
     <Filter Include="02. GameObject\09. SkyBox\10. Trigger">
       <UniqueIdentifier>{99bd0ed4-2e9b-47bf-8557-7c919232b269}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\TestUI">
+      <UniqueIdentifier>{3a7dd4a0-338c-4577-a64c-a11260525a5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95.Utils">
+      <UniqueIdentifier>{d1e7b6c9-9862-4942-a64d-ce6d33a781ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="95.Utils\EasingTranform">
+      <UniqueIdentifier>{fefbb47b-bd98-4a8a-9ebf-0887800940dd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -29,7 +29,7 @@
 #include "UI_Script.h"
 #include "UI_ScriptQueue.h"
 #include "UI_DamageFont.h"
-
+#include "TestUI.h"
 
 GAMECLASS_C(CClientLevel)
 
@@ -120,6 +120,16 @@ void CClientLevel::SetUp_UI()
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CUI_ScriptQueue>(LEVEL_STATIC));
+
+#ifdef _ONLY_UI_
+
+	GAMEINSTANCE->Add_GameObject<CTestUI>(LEVEL_STATIC);
+
+
+#endif
+
+
+
 
 	//pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CEvolveMenu_TalentButton>(LEVEL_STATIC));
 	//TODO : MonsterHpBar TestCode

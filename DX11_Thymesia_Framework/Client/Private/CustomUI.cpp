@@ -81,7 +81,16 @@ HRESULT CCustomUI::SetUp_ShaderResource()
 
 	if (FAILED(m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture",m_iDeffuseIndex)))
 	{
-		MSG_BOX("CustomUI Error");
+		tstring strErrorText = TEXT("CCustomUI  \n  Errror Textre Key : ");
+		
+		string	strTextureKey = m_pTextureCom.lock()->Get_TextureKey();
+		wstring	wstrTextureKey;
+
+		wstrTextureKey.assign(strTextureKey.begin(), strTextureKey.end());
+
+		strErrorText += wstrTextureKey;
+
+		MessageBox(0, strErrorText.c_str(), TEXT("System Error"), MB_OK);
 	}
 
 	return S_OK;

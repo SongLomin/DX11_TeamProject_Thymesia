@@ -18,6 +18,11 @@ float4	g_vColor;
 float2	g_DissolveStartPt;
 float	g_DissolveRange;
 
+
+float2	g_UVOffset;
+
+
+
 struct VS_IN
 {
 	float3 vPosition : POSITION;
@@ -195,6 +200,8 @@ PS_OUT PS_MAIN_WIDTH_DISSOLVE(PS_IN In)
 	float DissolveDesc    = g_DissolveTexture.Sample(DefaultSampler, In.vTexUV).r + g_Ratio;
 	float fDissolveAmount = In.vTexUV.x;
 	
+
+
 	Out.vColor.rgb += float3(0.6f, 0.6f, 0.6f) * step(DissolveDesc - fDissolveAmount, 0.02f);
 	
 	clip(DissolveDesc - fDissolveAmount);
@@ -265,6 +272,33 @@ PS_OUT PS_MAIN_BORDER_OUT(PS_IN In)
 		|| In.vTexUV.y > 0.9f
 		)
 		Out.vColor.a *= 0.1f;
+
+	return Out;
+}
+
+
+PS_OUT PS_MASK_UV_ANIM(PS_IN In)
+{
+	PS_OUT Out = (PS_OUT)0;
+
+	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+	Out.vColor.a *= g_fAlphaColor;
+
+	if (In.vTexUV.x > g_Ratio)
+		discard;
+
+	if (Out.vColor.a < 0.1f)
+	{
+		discard;
+	}
+	else
+	{
+		float2	maskUV = In.vTexUV.rg;
+		maskUV.xy *= 3.f;
+
+		float4	mask = g_MaskTexture.Sample(DefaultSampler, maskUV + g_UVOffset);
+		Out.vColor.rgb += mask.rgb;
+	}
 
 	return Out;
 }
@@ -370,4 +404,16 @@ technique11 DefaultTechnique
 		GeometryShader = NULL;
 		PixelShader    = compile ps_5_0 PS_MAIN_BORDER_OUT();
 	}
+
+	pass UI_UVAnimaiton//9
+	{
+		SetBlendState(BS_AlphaBlend, vector(1.f, 1.f, 1.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MASK_UV_ANIM();
+	}
+
 }

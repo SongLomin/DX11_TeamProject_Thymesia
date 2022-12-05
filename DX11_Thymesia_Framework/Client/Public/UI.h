@@ -74,53 +74,48 @@ public:
    
 
 public:
-    void Set_TextureIndex(const _uint& Index) { m_iTextureIndex = Index; }
-    void Set_Texture(const _char* sKey);
-    virtual void Set_UIPosition(const _float fX, const _float fY, const _float fSizeX, const _float fSizeY, UI_ALIGN_TYPE eType = UI_ALIGN_TYPE::ALIGN_CENTER);
-    virtual void Set_UIPosition(const _float fX, const _float fY, UI_ALIGN_TYPE eType);//먼저 선언된 사이즈가 있어야함.
-    virtual void Set_UIPosition(const _float fX, const _float fY);
+    void            Set_TextureIndex(const _uint& Index) { m_iTextureIndex = Index; }
+    void            Set_Texture(const _char* sKey);
+    virtual void    Set_UIPosition(const _float fX, const _float fY, const _float fSizeX, const _float fSizeY, UI_ALIGN_TYPE eType = UI_ALIGN_TYPE::ALIGN_CENTER);
+    virtual void    Set_UIPosition(const _float fX, const _float fY, UI_ALIGN_TYPE eType);//먼저 선언된 사이즈가 있어야함.
+    virtual void    Set_UIPosition(const _float fX, const _float fY);
 
-    virtual void Set_UIDesc(UI_DESC _tUIDesc);
-    virtual void Set_Size(const _float& fSizeX, const _float& fSizeY);
+    virtual void    Set_UIDesc(UI_DESC _tUIDesc);
+    virtual void    Set_Size(const _float& fSizeX, const _float& fSizeY);
     virtual void    Set_Y(const _float& fY);
-    void Set_Depth(_float _fDepth);
-    virtual void     Set_SizeX(const _float In_fSize);
+    void            Set_Depth(_float _fDepth);
+    virtual void    Set_SizeX(const _float In_fSize);
 public: /* Shaking */
-    virtual void Add_Shaking(const _float& In_ShakeTime, const _float& _fShakePower = 5.f);
+    virtual void    Add_Shaking(const _float& In_ShakeTime, const _float& _fShakePower = 5.f);
 
 
 
 
 public:
-    virtual void OnEnable(void* _Arg = nullptr);
-    //객체의 상태가 비활성화 상태로 변경될 때, 호출되는 이벤트입니다.
-    virtual void OnDisable() override;
+    virtual void            OnEnable(void* _Arg = nullptr);
+    //객체의 상태            가 비활성화 상태로 변경될 때, 호출되는 이벤트입니다.
+    virtual void            OnDisable() override;
 
    //Moon Functions
 protected:
-    virtual void    Add_Child(weak_ptr<CUI> pChild);
-    virtual void    Set_Owner(weak_ptr<CBase> pOwner);
+    virtual void             Add_Child(weak_ptr<CUI> pChild);
+    virtual void             Set_Owner(weak_ptr<CBase> pOwner);
 
 public:
-    _float2         Get_Point(UI_POINT eType);
+    _float2                  Get_Point(UI_POINT eType);
 
 protected:
-    virtual void    Enable_AllEventChild();
-    virtual void    Disable_AllEventChild();
+    virtual void             Enable_AllEventChild();
+    virtual void             Disable_AllEventChild();
     
 public:
+    void		            Set_AlphaColor(_float fAlphaColor) { m_fAlphaColor = fAlphaColor; }
+    _float		            Get_AlphaColor() { return m_fAlphaColor; }
 
-
-public:
-    void		Set_AlphaColor(_float fAlphaColor) { m_fAlphaColor = fAlphaColor; }
-    _float		Get_AlphaColor() { return m_fAlphaColor; }
-
-    void		Set_OffsetPosition(_float2 fOffset) { m_fOffsetPosition = fOffset; }
-
-
+    void		            Set_OffsetPosition(_float2 fOffset) { m_fOffsetPosition = fOffset; }
 
 protected:
-    virtual HRESULT SetUp_ShaderResource();
+    virtual HRESULT         SetUp_ShaderResource();
 
     virtual void            Bind_Player();
 
@@ -146,7 +141,7 @@ protected:
     RENDERGROUP     m_eRenderGroup = RENDERGROUP::RENDER_UI;
     _uint           m_iTextureIndex = 0;
     _uint           m_iPassIndex = 0;
-    _float	m_fAlphaColor = 1.f;
+    _float	        m_fAlphaColor = 1.f;
 
 
 protected:

@@ -184,6 +184,16 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_Enable_EvolveMenu, this);
 		}
 	}
+	if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
+	{
+		GAMEINSTANCE->Add_GameObject<CUI_DamageFont>(LEVEL_STATIC).lock()->SetUp_DamageFont
+		(
+			557,
+			_float2(g_iWinCX >> 1, g_iWinCY >> 1),
+			Client::ATTACK_OPTION::NORMAL
+		);	
+	}
+
 #endif // _ONLY_UI_
 
 #ifndef _LOAD_CAPTURED_RESOURCE_
