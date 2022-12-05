@@ -59,6 +59,8 @@ void CCorvusState_Climb_Fall_Attack::OnStateStart(const _float& In_fAnimationBle
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+
 	if (!m_pModelCom.lock().get())
 	{
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
@@ -93,16 +95,6 @@ _bool CCorvusState_Climb_Fall_Attack::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
 		return false;
-
-	PxControllerCollisionFlags Flags = Get_OwnerCharacter().lock()->Get_LastCollisionFlags();
-
-	if ((Flags & PxControllerCollisionFlag::eCOLLISION_DOWN))
-	{
-		//¶¥¿¡ºÙÀ½
-		m_pPhysXControllerCom.lock()->Enable_Gravity(true);	
-	}
-
-
 
 
 	return false;

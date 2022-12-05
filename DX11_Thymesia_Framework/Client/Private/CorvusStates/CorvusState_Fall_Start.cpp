@@ -101,7 +101,6 @@ _bool CCorvusState_Fall_Start::Check_AndChangeNextState()
 
 	if (Check_RequirementAttackState())
 	{
-		Get_OwnerCharacter().lock()->Get_PhysXController().lock()->Enable_Gravity(false);
 		Get_OwnerPlayer()->Change_State<CCorvusState_Climb_Fall_Attack>();
 		return true;
 	}

@@ -368,9 +368,7 @@ _bool CCorvusStateBase::Check_AndChangeLadderState(weak_ptr<CCollider> pMyCollid
 			Get_OwnerPlayer()->Change_State<CCorvusState_Climb_L_UP_End>();
 		}
 	
-
-	}
-		
+	}		
 		break;
 
 	case Client::COLLISION_LAYER::LADDER_DOWN:
@@ -401,6 +399,23 @@ _bool CCorvusStateBase::Check_AndChangeLadderState(weak_ptr<CCollider> pMyCollid
 	}
 
 	return bChanged;
+}
+
+_bool CCorvusStateBase::Check_RequirementAttackClose(weak_ptr<CGameObject>& Out_pGameObject)
+{
+	list<weak_ptr<CGameObject>>  pGameObjects = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::MONSTER);
+
+
+
+
+
+
+	if (!Out_pGameObject.lock())
+		return false;
+
+
+
+	return false();
 }
 
 void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)

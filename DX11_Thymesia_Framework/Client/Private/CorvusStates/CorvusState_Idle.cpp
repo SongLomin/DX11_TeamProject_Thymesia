@@ -59,6 +59,7 @@ void CCorvusState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 		m_bLadderLock = true;
 	}
 
+
 	if (!m_pModelCom.lock().get())
 	{
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
@@ -116,8 +117,6 @@ void CCorvusState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 void CCorvusState_Idle::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-	m_bLadderLock = false;
 }
 
 _bool CCorvusState_Idle::Check_AndChangeNextState()

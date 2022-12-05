@@ -148,8 +148,8 @@ HRESULT CCorvus::Render()
 		//		continue;
 		//}
 	////메쉬 확인 용	
-		if (i == m_iContainerIndex)
-			continue;
+		//if (i == m_iContainerIndex)
+		//	continue;
 
 		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 
