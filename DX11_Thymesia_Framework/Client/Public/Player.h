@@ -54,6 +54,14 @@ public:
     }
 
 public:
+    void Set_DissolveAmount(const _int In_iDissolveMeshIndex, const _float In_fDissolveAmount, const _float3 In_vDissolveDir)
+    {
+        m_fDissolveAmount = In_fDissolveAmount;
+        m_iDissolveMeshIndex = In_iDissolveMeshIndex;
+        m_vDissolveDir = In_vDissolveDir;
+    }
+
+public:
     void Search_NearTargetMonster(_float fTimeDelta);
     void Forced_SearchNearTargetMonster();
 

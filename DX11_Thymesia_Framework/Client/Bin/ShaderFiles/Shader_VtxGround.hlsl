@@ -2,7 +2,7 @@
 #include "Client_Shader_Defines.hpp"
 
 matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
-float4 g_vShaderFlag;
+float4	g_vShaderFlag;
 
 texture2D	g_Texture_Sorc_Diff	 ,	g_Texture_Sorc_Norm;   float g_fSorc_Density;
 texture2D	g_Texture_AddNo1_Diff,	g_Texture_AddNo1_Norm; float g_fAddNo1_Density;

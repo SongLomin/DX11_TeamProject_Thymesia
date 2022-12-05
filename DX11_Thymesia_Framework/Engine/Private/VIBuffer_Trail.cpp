@@ -116,11 +116,23 @@ void CVIBuffer_Trail::Update(_float _fTimeDelta, weak_ptr <CTransform> _pOwnerTr
     if (!m_pVB.Get())
         return;
 
-    _matrix		ParentMatrix
-        = _pOwnerBoneNode.lock()->Get_OffsetMatrix()
-        /** _pOwnerBoneNode.lock()->Get_CombinedMatrix() */
-       * XMLoadFloat4x4(&_pOwnerModel_Data.lock()->TransformMatrix)
-        * _pOwnerTransform.lock()->Get_WorldMatrix();
+    _matrix		ParentMatrix;
+      
+
+    if (_pOwnerBoneNode.lock())
+    {
+        ParentMatrix
+        =  _pOwnerBoneNode.lock()->Get_CombinedMatrix()
+            * XMLoadFloat4x4(&_pOwnerModel_Data.lock()->TransformMatrix)
+            * _pOwnerTransform.lock()->Get_WorldMatrix();
+    }
+    else//weapon
+    {
+        ParentMatrix
+            = XMLoadFloat4x4(&_pOwnerModel_Data.lock()->TransformMatrix)
+            * _pOwnerTransform.lock()->Get_WorldMatrix();
+    }
+
 
     ParentMatrix.r[0] = XMVector3Normalize(ParentMatrix.r[0]);
     ParentMatrix.r[1] = XMVector3Normalize(ParentMatrix.r[1]);
@@ -132,7 +144,7 @@ void CVIBuffer_Trail::Update(_float _fTimeDelta, weak_ptr <CTransform> _pOwnerTr
 
     if (m_iVtxCnt >= m_iNumVertices)
     {
-        _uint iRemoveCnt = (m_iVtxCnt/4)*2;
+        _uint iRemoveCnt = /*(m_iVtxCnt/4)**/2;
         m_iVtxCnt -= iRemoveCnt;
 
         
@@ -182,7 +194,7 @@ void CVIBuffer_Trail::Update(_float _fTimeDelta, weak_ptr <CTransform> _pOwnerTr
 
     for (_uint i = 0; i < m_iLerpPointNum; ++i)
     {
-        _uint iIndex = i * 2 + m_iVtxCnt - 2;
+         _uint iIndex = i * 2 + m_iVtxCnt - 2;
         _float fWeight = _float(i + 1) / (m_iLerpPointNum + 1);
 
         _vector vPos0 = XMLoadFloat3(&((VTXTEX*)tSubResource.pData)[m_iCatMullRomIndex[0]].vPosition);

@@ -46,19 +46,19 @@ void CWeapon::Tick(_float fTimeDelta)
 	if (!m_pParentTransformCom.lock() || !m_pTargetBoneNode.lock())
 		return;
 
-	_matrix		ParentMatrix = m_pTargetBoneNode.lock()->Get_CombinedMatrix()
+	_matrix		BoneMatrix = m_pTargetBoneNode.lock()->Get_CombinedMatrix()
 		* XMLoadFloat4x4(&m_TransformationMatrix);
 
-	ParentMatrix.r[0] = XMVector3Normalize(ParentMatrix.r[0]);
-	ParentMatrix.r[1] = XMVector3Normalize(ParentMatrix.r[1]);
-	ParentMatrix.r[2] = XMVector3Normalize(ParentMatrix.r[2]);
+	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
+	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
+	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
 
 	//무기 오프셋 나중에 캐릭터별로 매개변수로 받아서 처리하자.
-	ParentMatrix = SMath::Go_Right(ParentMatrix, m_vOffset.x);
-	ParentMatrix = SMath::Go_Up(ParentMatrix, m_vOffset.y);
-	ParentMatrix = SMath::Go_Straight(ParentMatrix, m_vOffset.z);
+	//ParentMatrix = SMath::Go_Right(ParentMatrix, m_vOffset.x);
+	//ParentMatrix = SMath::Go_Up(ParentMatrix, m_vOffset.y);
+	//ParentMatrix = SMath::Go_Straight(ParentMatrix, m_vOffset.z);
 
-	m_pTransformCom.lock()->Set_WorldMatrix(ParentMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix());
+	m_pTransformCom.lock()->Set_WorldMatrix(BoneMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix());
 		
 	for (auto& elem : m_pHitColliderComs)
 		elem.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());

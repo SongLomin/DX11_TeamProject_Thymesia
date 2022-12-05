@@ -2,6 +2,10 @@
 #include "BossMonster.h"
 
 
+BEGIN(Engine)
+class CBoneNode;
+END
+
 BEGIN(Client)
 
 class CVarg :
@@ -30,6 +34,7 @@ public:
 
 private:
     weak_ptr<class CEffect_Trail> m_pTrailEffect;
+    weak_ptr<CBoneNode> m_pTrailBoneNode;
 
 private:
     virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
