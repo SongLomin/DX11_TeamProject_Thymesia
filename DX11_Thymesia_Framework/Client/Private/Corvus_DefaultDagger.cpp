@@ -48,8 +48,9 @@ void CCorvus_DefaultDagger::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+#ifdef _DAGGER_TRAIL_
 	m_pTrailEffect.lock()->Update(fTimeDelta, m_pTransformCom, weak_ptr<CBoneNode>(), m_pModelCom.lock()->Get_ModelData());
-
+#endif // _DAGGER_TRAIL_
 }
 
 void CCorvus_DefaultDagger::LateTick(_float fTimeDelta)

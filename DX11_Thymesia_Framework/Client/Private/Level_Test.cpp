@@ -35,6 +35,10 @@ HRESULT CLevel_Test::Initialize()
 #ifdef _JOJO_EFFECTS_
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_TEST);
 #endif // _JOJO_EFFECTS_
+	
+#ifdef	_BOSS_VARG_
+	Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_TEST);
+#endif
 
 #ifdef _TEST_STATIC_PROPS_
 	Load_FromJson(m_szDefaultJsonPath + "Stage1_StaticProps.json", LEVEL::LEVEL_TEST);

@@ -78,10 +78,10 @@ HRESULT CVarg::Initialize(void* pArg)
 	TRAIL_DESC TrailDesc;
 	ZeroMemory(&TrailDesc, sizeof(TRAIL_DESC));
 
-	TrailDesc.iMaxCnt = 100;
+	TrailDesc.iMaxCnt = 40;
 	//position 0.163, 0.12,0.055 , z 0.1¾¿
-	TrailDesc.vPos_0 = _float3(0.163, 0.12, 0.155);
-	TrailDesc.vPos_1 = _float3(0.163, 0.12, -0.045);
+	TrailDesc.vPos_0 = _float3(0.163, 0.17, 0.075);
+	TrailDesc.vPos_1 = _float3(0.163, 0.17, 0.035);
 	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail_EyeLight>(LEVEL_GAMEPLAY, &TrailDesc);
 
 	//GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));

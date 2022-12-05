@@ -181,46 +181,46 @@ void CVIBuffer_Trail::Update(_float _fTimeDelta, weak_ptr <CTransform> _pOwnerTr
 
     m_iVtxCnt += 2;
 
-#pragma region CatMullRom
-    _uint iEndIndex = m_iVtxCnt + m_iLerpPointNum * 2;
-    m_iCatMullRomIndex[2] = iEndIndex - 2;//2개씩 빼는 이유 : 위 아래 2개 쌍 만큼 계산하기 때문에     
-    m_iCatMullRomIndex[3] = iEndIndex;
-
-    XMStoreFloat3(&((VTXTEX*)tSubResource.pData)[iEndIndex-2].vPosition, XMLoadFloat3((&((VTXTEX*)tSubResource.pData)[m_iVtxCnt - 2].vPosition)));
-    XMStoreFloat3(&((VTXTEX*)tSubResource.pData)[iEndIndex - 1].vPosition, XMLoadFloat3((&((VTXTEX*)tSubResource.pData)[m_iVtxCnt - 1].vPosition)));
-
-    XMStoreFloat3(&((VTXTEX*)tSubResource.pData)[iEndIndex].vPosition, vPos[0]);
-    XMStoreFloat3(&((VTXTEX*)tSubResource.pData)[iEndIndex + 1].vPosition, vPos[1]);
-
-    for (_uint i = 0; i < m_iLerpPointNum; ++i)
-    {
-         _uint iIndex = i * 2 + m_iVtxCnt - 2;
-        _float fWeight = _float(i + 1) / (m_iLerpPointNum + 1);
-
-        _vector vPos0 = XMLoadFloat3(&((VTXTEX*)tSubResource.pData)[m_iCatMullRomIndex[0]].vPosition);
-        _vector vPos1 = XMLoadFloat3(&((VTXTEX*)tSubResource.pData)[m_iCatMullRomIndex[1]].vPosition);
-        _vector vPos2 = XMLoadFloat3(&((VTXTEX*)tSubResource.pData)[m_iCatMullRomIndex[2]].vPosition);
-        _vector vPos3 = XMLoadFloat3(&((VTXTEX*)tSubResource.pData)[m_iCatMullRomIndex[3]].vPosition);
-       
-        _vector LerpPoint = XMVectorCatmullRom(vPos0, vPos1, vPos2, vPos3,fWeight);
-        XMStoreFloat3(&((VTXTEX*)tSubResource.pData)[iIndex].vPosition, LerpPoint);
-
-        vPos0 = XMLoadFloat3(&((VTXTEX*)tSubResource.pData)[m_iCatMullRomIndex[0]+1].vPosition);
-        vPos1 = XMLoadFloat3(&((VTXTEX*)tSubResource.pData)[m_iCatMullRomIndex[1]+1].vPosition);
-        vPos2 = XMLoadFloat3(&((VTXTEX*)tSubResource.pData)[m_iCatMullRomIndex[2]+1].vPosition);
-        vPos3 = XMLoadFloat3(&((VTXTEX*)tSubResource.pData)[m_iCatMullRomIndex[3]+1].vPosition);
-
-        LerpPoint = XMVectorCatmullRom(vPos0, vPos1, vPos2, vPos3, fWeight);
-        XMStoreFloat3(&((VTXTEX*)tSubResource.pData)[iIndex+1].vPosition, LerpPoint);
-
-    }
-
-    m_iVtxCnt = iEndIndex + 2;
-
-    m_iCatMullRomIndex[0] = m_iCatMullRomIndex[1];
-    m_iCatMullRomIndex[1] = m_iCatMullRomIndex[2];
-
-#pragma endregion CatMullRom
+//#pragma region CatMullRom
+//    _uint iEndIndex = m_iVtxCnt + m_iLerpPointNum * 2;
+//    m_iCatMullRomIndex[2] = iEndIndex - 2;//2개씩 빼는 이유 : 위 아래 2개 쌍 만큼 계산하기 때문에     
+//    m_iCatMullRomIndex[3] = iEndIndex;
+//
+//    XMStoreFloat3(&((VTXTEX*)tSubResource.pData)[iEndIndex-2].vPosition, XMLoadFloat3((&((VTXTEX*)tSubResource.pData)[m_iVtxCnt - 2].vPosition)));
+//    XMStoreFloat3(&((VTXTEX*)tSubResource.pData)[iEndIndex - 1].vPosition, XMLoadFloat3((&((VTXTEX*)tSubResource.pData)[m_iVtxCnt - 1].vPosition)));
+//
+//    XMStoreFloat3(&((VTXTEX*)tSubResource.pData)[iEndIndex].vPosition, vPos[0]);
+//    XMStoreFloat3(&((VTXTEX*)tSubResource.pData)[iEndIndex + 1].vPosition, vPos[1]);
+//
+//    for (_uint i = 0; i < m_iLerpPointNum; ++i)
+//    {
+//         _uint iIndex = i * 2 + m_iVtxCnt - 2;
+//        _float fWeight = _float(i + 1) / (m_iLerpPointNum + 1);
+//
+//        _vector vPos0 = XMLoadFloat3(&((VTXTEX*)tSubResource.pData)[m_iCatMullRomIndex[0]].vPosition);
+//        _vector vPos1 = XMLoadFloat3(&((VTXTEX*)tSubResource.pData)[m_iCatMullRomIndex[1]].vPosition);
+//        _vector vPos2 = XMLoadFloat3(&((VTXTEX*)tSubResource.pData)[m_iCatMullRomIndex[2]].vPosition);
+//        _vector vPos3 = XMLoadFloat3(&((VTXTEX*)tSubResource.pData)[m_iCatMullRomIndex[3]].vPosition);
+//       
+//        _vector LerpPoint = XMVectorCatmullRom(vPos0, vPos1, vPos2, vPos3,fWeight);
+//        XMStoreFloat3(&((VTXTEX*)tSubResource.pData)[iIndex].vPosition, LerpPoint);
+//
+//        vPos0 = XMLoadFloat3(&((VTXTEX*)tSubResource.pData)[m_iCatMullRomIndex[0]+1].vPosition);
+//        vPos1 = XMLoadFloat3(&((VTXTEX*)tSubResource.pData)[m_iCatMullRomIndex[1]+1].vPosition);
+//        vPos2 = XMLoadFloat3(&((VTXTEX*)tSubResource.pData)[m_iCatMullRomIndex[2]+1].vPosition);
+//        vPos3 = XMLoadFloat3(&((VTXTEX*)tSubResource.pData)[m_iCatMullRomIndex[3]+1].vPosition);
+//
+//        LerpPoint = XMVectorCatmullRom(vPos0, vPos1, vPos2, vPos3, fWeight);
+//        XMStoreFloat3(&((VTXTEX*)tSubResource.pData)[iIndex+1].vPosition, LerpPoint);
+//
+//    }
+//
+//    m_iVtxCnt = iEndIndex + 2;
+//
+//    m_iCatMullRomIndex[0] = m_iCatMullRomIndex[1];
+//    m_iCatMullRomIndex[1] = m_iCatMullRomIndex[2];
+//
+//#pragma endregion CatMullRom
     for (_uint i = 0; i < m_iVtxCnt; i += 2)
     {
         ((VTXTEX*)tSubResource.pData)[i].vTexUV = _float2(_float(i) / _float(m_iVtxCnt - 2.f), 0.f);

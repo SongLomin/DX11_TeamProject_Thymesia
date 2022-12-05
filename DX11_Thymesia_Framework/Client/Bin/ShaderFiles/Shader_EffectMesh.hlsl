@@ -225,6 +225,48 @@ PS_OUT_DISTORTION PS_DISTORTION(PS_IN In)
 }
 //  Pixel  Shaders  //
 
+
+PS_OUT PS_EXTRACTBRIGHT(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    if (g_bDiffuseWrap)
+        Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.x + g_vUVDiff);
+    else
+        Out.vColor = g_DiffuseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.x + g_vUVDiff);
+    
+    vector vNoise = (vector) 0;
+    if (g_bNoiseWrap)
+        vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
+    else
+        vNoise = g_NoiseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
+    
+    vector vMask = (vector) 0;
+    if (g_bMaskWrap)
+        vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
+    else
+        vMask = g_MaskTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
+    
+    // (0, +1) => (-1, +1)
+    if (g_bDynamicNoiseOption)
+        vNoise.rgb = vNoise.rgb * 2 - 1;
+    
+    Out.vColor *= g_vColor;
+    Out.vColor.rgb *= vNoise.rgb;
+    Out.vColor.a *= vMask.r;
+    
+    if (g_fDiscardRatio > Out.vColor.a)
+        discard;
+    if(0.8f < Out.vColor.a)
+    {
+        Out.vExtractBloom = Out.vColor;
+        Out.vExtractGlow = g_vGlowColor;
+    }
+
+    
+    return Out;
+}
+
 // Shader Passes //
 technique11 DefaultTechnique
 {
@@ -259,6 +301,17 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN_SOFT();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_SOFT();
+    }
+
+    pass ExtractBright//3
+    {
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_NonCulling);
+		
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_EXTRACTBRIGHT();
     }
 }
 // Shader Passes //
