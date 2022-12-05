@@ -2590,7 +2590,7 @@ void CEffect_Rect::Tool_Color_EasingAlpha()
 		ImGui::DragFloat("##Alpha_Total_Easing_Time", &m_tEffectParticleDesc.fAlphaEasingTotalTime, 0.01f, 0.f, 0.f, "%.5f");
 
 		ImGui::Text("Target Alpha"); ImGui::SetNextItemWidth(300.f);
-		ImGui::DragFloat("##Target_Alpha", &m_tEffectParticleDesc.vMinColorSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
+		ImGui::DragFloat("##Target_Alpha", &m_tEffectParticleDesc.vMinColorSpeed.w, 0.1f, 0.f, 0.f, "%.5f");
 
 		ImGui::TreePop();
 	}
