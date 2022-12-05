@@ -103,8 +103,8 @@ HRESULT CStatic_Instancing_Prop::Render()
 	m_pMaskingTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 92);
 
 
-	_vector vLightFlag = { 1.f, 1.f, 1.f, 1.f };
-	m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector));
+	_vector vShaderFlag = { 0.f, 0.f, 0.f, 0.f };
+	m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector));
 
 	_uint iNumMeshContainers = m_pInstanceModelCom.lock()->Get_NumMeshContainers();
 

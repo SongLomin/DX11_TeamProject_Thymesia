@@ -2,7 +2,7 @@
 #include "Client_Shader_Defines.hpp"
 
 matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
-float4	g_vLightFlag;
+float4 g_vShaderFlag;
 texture2D	g_DiffuseTexture;
 texture2D   g_NormalTexture;
 texture2D   g_MaskTexture;
@@ -74,7 +74,7 @@ struct PS_OUT
 	vector		vDiffuse : SV_TARGET0;	
 	vector		vNormal : SV_TARGET1;
 	vector		vDepth : SV_TARGET2;
-    vector		vLightFlag : SV_Target3;
+    vector      vShaderFlag : SV_Target3;
     vector      vORM : SV_Target4;
 };
 
@@ -85,7 +85,7 @@ PS_OUT PS_MAIN(PS_IN In)
 	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);	
 	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
-    Out.vLightFlag = g_vLightFlag;
+    Out.vShaderFlag = g_vShaderFlag;
 	
 	if (Out.vDiffuse.a < 0.1f)
 		discard;
@@ -213,7 +213,7 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 
     Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
-    Out.vLightFlag = g_vLightFlag;
+    Out.vShaderFlag = g_vShaderFlag;
     Out.vORM = 0;
     
     if (Out.vDiffuse.a < 0.1f)
@@ -254,7 +254,7 @@ PS_OUT PS_MAIN_NORMAL_MASKING(PS_IN_NORMAL In)
 
     Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
-    Out.vLightFlag = g_vLightFlag;
+    Out.vShaderFlag = g_vShaderFlag;
 
     if (Out.vDiffuse.a < 0.1f)
         discard;
@@ -293,7 +293,7 @@ PS_OUT PS_MAIN_NORMAL_MASKING_SCALAR(PS_IN_NORMAL In)
 
     Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
-    Out.vLightFlag = g_vLightFlag;
+    Out.vShaderFlag = g_vShaderFlag;
 
     if (Out.vDiffuse.a < 0.1f)
         discard;
@@ -325,7 +325,7 @@ PS_OUT      PS_MAIN_PICK(PS_IN In)
     Out.vDiffuse    = vector(1.f, 0.f, 0.f, 0.5f);
     Out.vNormal     = vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
     Out.vDepth      = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
-    Out.vLightFlag  = g_vLightFlag;
+    Out.vShaderFlag = g_vShaderFlag;
 
     if (Out.vDiffuse.a < 0.1f)
         discard;
@@ -338,7 +338,7 @@ struct PS_OUT_PBR
     vector		vDiffuse : SV_TARGET0;
     vector		vNormal : SV_TARGET1;
     vector		vDepth : SV_TARGET2;
-    vector		vLightFlag : SV_Target3;
+    vector      vShaderFlag : SV_Target3;
     vector      vORM : SV_Target4;
 };
 
@@ -361,7 +361,7 @@ PS_OUT_PBR PS_MAIN_NORMAL_PBR(PS_IN_NORMAL In)
 
     Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
-    Out.vLightFlag = g_vLightFlag;
+    Out.vShaderFlag = g_vShaderFlag;
 
     Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
    // Out.vORM = g_ORMTexture.Sample(DefaultSampler, In.vTexUV);

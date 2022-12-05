@@ -107,16 +107,10 @@ HRESULT CMonster::Render()
 
     m_pDissolveTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DissolveTexture", 0);
 
-    _float3 g_vDissolveStartWorldPos;
-    XMStoreFloat3(&g_vDissolveStartWorldPos, m_pTransformCom.lock()->Get_Position());
 
     m_pShaderCom.lock()->Set_RawValue("g_vDissolveDir", &vDissolveDir, sizeof(_float3));
-    m_pShaderCom.lock()->Set_RawValue("g_vDissolveStartWorldPos", &g_vDissolveStartWorldPos, sizeof(_float3));
-
-
     m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &m_fDissolveAmount, sizeof(_float));
-    m_pShaderCom.lock()->Set_RawValue("g_vDissolveDirection", &vDissolveDir, sizeof(_float3));
-
+ 
     __super::Render();
 
 
@@ -191,9 +185,9 @@ void CMonster::SetUp_ShaderResource()
 {
     __super::SetUp_ShaderResource();
 
-    _vector vLightFlag = { 0.f, 1.f, 0.f, 0.f };
+    _vector vShaderFlag = { 0.f, 0.f, 0.f, 0.f };
 
-    m_pShaderCom.lock()->Set_RawValue("g_vLightFlag", &vLightFlag, sizeof(_vector));
+    m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector));
 
 
     /*const LIGHTDESC& LightDesc = GAMEINSTANCE->Get_LightDesc(2);

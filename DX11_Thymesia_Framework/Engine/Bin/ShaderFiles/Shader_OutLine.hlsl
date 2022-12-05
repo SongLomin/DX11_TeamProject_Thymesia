@@ -6,10 +6,14 @@ texture2D g_NormalTexture;
 texture2D g_OutLineTexture;
 texture2D g_OriginalRenderTexture;
 
+texture2D g_ShaderFlagTexture;
+texture2D g_IntensityFlagTexture;
+
 float g_ViewPortWidth = 1600.f;
 float g_ViewPortHeight = 900.f;
 
 float g_Divider = 1.f;
+
 
 // Laplacian Filter
 float mask[9] =
@@ -76,10 +80,21 @@ struct PS_OUT
 	vector		vColor : SV_TARGET0;
 };
 
+struct PS_BLUROUT
+{
+    vector vColor : SV_TARGET0;
+    vector vIntensity : SV_TARGET1;
+};
+
 PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 	
+    vector vShaderFlag = g_ShaderFlagTexture.Sample(DefaultSampler, In.vTexUV);
+ 
+    if(0.1f > vShaderFlag.r)
+        discard;
+    
     float4 Color = 0;
     float4 Ret;
    
@@ -87,43 +102,54 @@ PS_OUT PS_MAIN(PS_IN In)
     {
         Color += mask[i] * 
 		g_DepthTexture.Sample(DefaultSampler,
-		In.vTexUV + float2(coord[i % (uint)3] / (g_ViewPortWidth), coord[i / (uint)3] / (g_ViewPortHeight)));
+		In.vTexUV + float2(coord[i % (uint) 3] / (g_ViewPortWidth), coord[i / (uint) 3] / (g_ViewPortHeight))) ;
         
         Color += mask[i] *
 		g_NormalTexture.Sample(DefaultSampler,
-		In.vTexUV + float2(coord[i % (uint)3] / (g_ViewPortWidth), coord[i / (uint)3] / (g_ViewPortHeight))) * 0.1f;
+		In.vTexUV + float2(coord[i % (uint) 3] / (g_ViewPortWidth), coord[i / (uint) 3] / (g_ViewPortHeight))) * 0.1f;
 
     }
-   
+   //?
+    
     float gray = 1.f - (Color.r * 0.3f + Color.g * 0.59f + Color.b * 0.11f);
     Ret = float4(gray, gray, gray, 1.f) / 1.f;
+    
+    Out.vColor = vector(1.f, 1.f, 1.f, 1.f);
    
     Out.vColor = smoothstep(0.8f, 1.f, Ret);
 	
 	return Out;
 }
 
-PS_OUT PS_MAIN_BLUR(PS_IN In)
+PS_BLUROUT PS_MAIN_BLUR(PS_IN In)
 {
-    PS_OUT Out = (PS_OUT) 0;
-	
+    PS_BLUROUT Out = (PS_BLUROUT) 0;
+    
+    
     float4 Color = 0;
     float4 Ret;
     
     float2 tex;
+    float fIntensity = 0.f;
     
     for (int i = 0; i < 9; i++)
     {
-        tex = In.vTexUV + float2(coord[i % (uint)3] / (g_ViewPortWidth), coord[i / (uint)3] / (g_ViewPortHeight));
+        tex = In.vTexUV + float2(coord[i % (uint) 3] / (g_ViewPortWidth), coord[i / (uint) 3] / (g_ViewPortHeight));
         tex = saturate(tex);
         
         Color += Blur_mask[i] * g_OutLineTexture.Sample(DefaultSampler, tex);
+        
+        vector vIntenxity = g_ShaderFlagTexture.Sample(DefaultSampler, tex);
+        if(0.f < vIntenxity.g)
+            fIntensity = vIntenxity.g;
+
     }
     
-    Color /= 9.f;
+   // Color /= 9.f;
     //Color.a = 1.f;
 	
     Out.vColor = Color;
+    Out.vIntensity = fIntensity;
     
     return Out;
 }
@@ -132,12 +158,17 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
 	
+    vector vShaderFlagDesc = g_ShaderFlagTexture.Sample(DefaultSampler, In.vTexUV);
+
+    if (0.f < vShaderFlagDesc.r)
+        discard;
+    
+    vector vIntensity = g_IntensityFlagTexture.Sample(DefaultSampler, In.vTexUV);
+    
     vector vOutLine = g_OutLineTexture.Sample(DefaultSampler, In.vTexUV);
     vector vOriginal = g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV);
 	
-    Out.vColor = vOutLine * vOriginal;
-	
-    
+    Out.vColor = vOutLine * vIntensity + vOriginal;
 	
     return Out;
 }

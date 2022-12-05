@@ -29,7 +29,6 @@ public:
 	void Blend_PreTransformationMatrices(_float fBlendTime, _float In_fRatio);
 
 	void Reset_KeyFrame();
-
 public:
 	HRESULT SetUp_BoneNodePtr(weak_ptr<CModel> pModel);
 

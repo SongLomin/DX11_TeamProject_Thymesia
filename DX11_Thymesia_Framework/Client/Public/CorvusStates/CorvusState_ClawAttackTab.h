@@ -22,9 +22,11 @@ protected:
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
 
+
 public:
     void Call_AnimationEnd();
-    void Play_AttackWithIndex(const _tchar& In_iAttackIndex);
+    void Call_NextAnimationKey(const _uint& In_iKeyIndex);
+    //void Play_AttackWithIndex(const _tchar& In_iAttackIndex);
     void Attack();
     void Check_InputNextAttack();
 
@@ -38,7 +40,17 @@ private:
 
     // TODO : Delete
 
+    _float m_fDissolveTime = 0.f;
+    _float m_fDissolveAmount = 0.f;
+    _float3 m_vDissolveDir = { 0.f,0.f,0.f };
+
     _bool bTrigger = false;
+
+    _bool m_bDissolve = false;
+    _bool m_bDissolveAppear = false;
+
+    
+    weak_ptr<CAnimation> m_ThisStateAnimationCom;
 
 protected:
     virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;

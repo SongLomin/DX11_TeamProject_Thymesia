@@ -89,7 +89,15 @@ void CCorvus::Tick(_float fTimeDelta)
 		bEnable = !bEnable;
 		m_pPhysXControllerCom.lock()->Set_EnableSimulation(bEnable);
 	}
-
+	//메쉬 찾기용
+	if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
+	{
+		++m_iContainerIndex;
+		if (m_iContainerIndex >= m_iNumMeshContainers)\
+			m_iContainerIndex = 0;
+		cout << "m_iContainerIndex : " << m_iContainerIndex << endl;
+	}
+	
 	// TODO : frame test
 	//if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
 	//{
@@ -131,9 +139,18 @@ HRESULT CCorvus::Render()
 	// _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 	for (_uint i(0); i < m_iNumMeshContainers; ++i)
 	{
-		if (i == 4 || i == 9 || i == 12)
+		//4번 날개
+		//9번 ??
+		//12번
+		//if (i == 4||i==5 || i == 9 || i == 12)
+		//{
+		//	if(i != m_iDissolveMeshIndex)
+		//		continue;
+		//}
+	////메쉬 확인 용	
+		if (i == m_iContainerIndex)
 			continue;
-			
+
 		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
@@ -147,6 +164,16 @@ HRESULT CCorvus::Render()
 			else
 				m_iPassIndex = 5;
 		}
+		//if (i == m_iDissolveMeshIndex)
+		//{
+		//	m_pShaderCom.lock()->Set_RawValue("g_vDissolveDir", &m_vDissolveDir, sizeof(_float3));
+		//	m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &m_fDissolveAmount, sizeof(_float));
+		//	cout << "g_fDissolveAmount : " << m_fDissolveAmount << endl;
+		//	m_iPassIndex = 6;
+		//	m_iDissolveMeshIndex = -1;//다시 초기화
+
+		//}
+		//	
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones");
 		
 	}

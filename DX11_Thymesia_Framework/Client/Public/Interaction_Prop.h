@@ -18,6 +18,9 @@ public:
     virtual HRESULT Render() override;
     virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix) override;
        
+protected:
+    virtual void SetUp_ShaderResource() override;
+	
 public:
     virtual _bool IsPicking(const RAY& In_Ray, _float& Out_fRange) override;
 
@@ -30,7 +33,6 @@ public:
 
 protected:
     _bool   m_bOnceAct = false;
-
 public:
     void Free();
 };

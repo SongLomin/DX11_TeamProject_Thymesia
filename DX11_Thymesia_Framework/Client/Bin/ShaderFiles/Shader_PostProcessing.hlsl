@@ -151,7 +151,7 @@ PS_OUT PS_MAIN_LIFTGAMMAGAIN(PS_IN In)
 	//vector vGain = vector(1.f,1.f,1.f,1.f,);
     vColor *= 1.f;
 	
-	//Gamma =1.3f <- 임시
+	                              //Gamma =1.3f <- 임시
     vector vGamma = vector(1.f, 1.f, 1.2f, 1.f);
     Out.vColor = pow(vColor, 1.0 / vGamma); //Gamma
 
