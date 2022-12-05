@@ -267,11 +267,14 @@ namespace Client
 		_bool		IsGrayOnlyUseRed;// when random colors, grayscales
 
 		_bool		bEasingAlpha;
+		_int		iAlphaEasingType;
+
+		_float		fAlphaEasingTotalTime;
 
 		_float4		vMinStartColor;
 		_float4		vMaxStartColor;
 
-		_float4		vMinColorSpeed;
+		_float4		vMinColorSpeed;		// w is TargetAlpha when Easing Alpha
 		_float4		vMaxColorSpeed;
 
 		_float4		vMinColorForce;

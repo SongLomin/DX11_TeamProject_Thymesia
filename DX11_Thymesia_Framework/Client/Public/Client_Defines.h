@@ -126,7 +126,7 @@
 #pragma endregion // Console Outputs
 
 #pragma region Map
-#define _BRIGHT_LIGHT_
+#undef _BRIGHT_LIGHT_
 #undef _GENERATE_PROP_COLLIDER_ true
 #define _STAGE_1_
 #undef _STAGE_2_

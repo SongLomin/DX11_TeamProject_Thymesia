@@ -18,7 +18,6 @@ namespace Engine
 	{
 		_float4	vValue;
 		_float	fTime;
-
 	} ROTATIONKEY_DATA;
 
 	typedef struct tagKeyFrame
@@ -388,6 +387,9 @@ namespace Engine
 
 		_float4			vTargetColorSpeed;
 		_float4			vTargetColorForce;
+
+		// For. Easing Alpha
+		_float			fStartAlpha;
 
 		// For. UV
 		_float2         vCurrentUV;
