@@ -34,7 +34,7 @@ void CEffect_Trail::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	m_pVIBuffer.lock()->Update(fTimeDelta, m_pOwnerTransform, m_pOwnerBoneNode, m_pOwnerModel_Data);
+	//m_pVIBuffer.lock()->Update(fTimeDelta, m_pOwnerTransform, m_pOwnerBoneNode, m_pOwnerModel_Data);
 }
 
 void CEffect_Trail::LateTick(_float fTimeDelta)

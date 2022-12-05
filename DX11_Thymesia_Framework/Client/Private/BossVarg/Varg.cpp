@@ -108,15 +108,17 @@ HRESULT CVarg::Initialize(void* pArg)
 	Add_Component<CVargBossState_Attack2b1>(&m_tLinkStateDesc);
 	Add_Component<CVargBossState_Attack2b2>(&m_tLinkStateDesc);
 
-	/*TRAIL_DESC TrailDesc;
+	TRAIL_DESC TrailDesc;
 	ZeroMemory(&TrailDesc, sizeof(TRAIL_DESC));
 
-	TrailDesc.iMaxCnt = 240;
-	TrailDesc.vPos_0 = _float3(0.f, 1.f, 0.f);
-	TrailDesc.vPos_1 = _float3(0.f, -0.3f, 0.f);
-	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail_EyeLight>(LEVEL_GAMEPLAY, &TrailDesc);*/
+	TrailDesc.iMaxCnt = 100;
+	//position 0.163, 0.12,0.055 , z 0.1¾¿
+	TrailDesc.vPos_0 = _float3(0.163, 0.12, 0.155);
+	TrailDesc.vPos_1 = _float3(0.163, 0.12, -0.045);
+	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail_EyeLight>(LEVEL_GAMEPLAY, &TrailDesc);
 
-	GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
+	//GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
+
 
 	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom));
 
@@ -129,6 +131,9 @@ HRESULT CVarg::Initialize(void* pArg)
 HRESULT CVarg::Start()
 {
 	__super::Start();
+
+	m_pTrailBoneNode = m_pModelCom.lock()->Find_BoneNode("Bip001-Head");
+
 
 
 	Change_State<CVargBossState_Start>();
@@ -151,6 +156,8 @@ void CVarg::Tick(_float fTimeDelta)
 
 	PxControllerFilters Filters = Filters;
 	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+
+	m_pTrailEffect.lock()->Update(fTimeDelta, m_pTransformCom, m_pTrailBoneNode, m_pModelCom.lock()->Get_ModelData());
 
 
 }

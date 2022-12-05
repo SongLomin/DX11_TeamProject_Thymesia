@@ -51,7 +51,7 @@
 #pragma endregion // Normal Mobs
 
 #pragma region Effects
-// #define		_DAGGER_TRAIL_
+ #define		_DAGGER_TRAIL_
 #define		_CORVUS_EFFECT_
 #pragma endregion // Effects
 
