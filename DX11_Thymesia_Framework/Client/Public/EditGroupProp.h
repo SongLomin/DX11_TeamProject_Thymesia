@@ -33,18 +33,15 @@ public:
 
 private:
     void    View_CreateProp();
-    void    View_SelectModelComponent();
-    void    View_PickingInfo();
 
-    void    View_Picking_Prop();
-    void    View_Picking_List();
-    void    View_Picking_Option();
-    void    View_Picking_Option_Y();
-    void    View_ModelCopy();
-    void    View_SelectTransformInfo();
+    void    View_PickProp();
+    void    View_EditProp();
 
 private:
     _bool    Pick_Prop(RAY& _pMouseRayInWorldSpace);
+    _bool    RenderView_SelectModelComponent();
+    void     RenderView_Transform_Info(weak_ptr<CGameObject> In_Obj);
+    void     RenderView_Transform_Edit(weak_ptr<CGameObject> In_Obj);
 
 private:
     HRESULT SetUp_ShaderResource();
@@ -58,13 +55,11 @@ private:
 
     _bool               m_bSubDraw            = false;
                                               
-    _int                m_iPickingIndex       = -1;
+    _int                m_iPickingIndex       = 0;
     _uint               m_iOption             = 0;
+    _float4x4           m_PickingMatrix;
 
-    string              m_szSelectPropType    = "CStatic_Prop";
     string              m_szSelectModelName   = "";
-    _float4             m_vPickingPos         = _float4(0.f, 0.f, 0.f, 0.f);
-    _float              m_fPosY               = 0.f;
 
     RESOURCE_LIST       m_ModelList;
 

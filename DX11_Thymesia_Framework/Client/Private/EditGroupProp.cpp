@@ -38,6 +38,8 @@ HRESULT CEditGroupProp::Initialize(void* pArg)
 	m_pVIBufferCom = Add_Component<CVIBuffer_DynamicCube>();
 	m_ModelList    = GET_SINGLE(CGameInstance)->Get_AllNoneAnimModelKeys();
 
+	XMStoreFloat4x4(&m_PickingMatrix, XMMatrixIdentity());
+
 	return S_OK;
 }
 
@@ -94,7 +96,7 @@ HRESULT CEditGroupProp::SetUp_ShaderResource()
 	if (!m_bSubDraw)
 		return S_OK;
 
-	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditSetActor).hash_code());
+	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditGroupProp).hash_code());
 
 	if (iter_collider == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
 		return E_FAIL;
@@ -136,7 +138,7 @@ void CEditGroupProp::Write_Json(json& Out_Json)
 
 _bool CEditGroupProp::IsPicking(const RAY& In_Ray, _float& Out_fRange)
 {
-	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditSetActor).hash_code());
+	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditGroupProp).hash_code());
 
 	if (iter_collider == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
 		return false;
@@ -200,26 +202,14 @@ void CEditGroupProp::OnEventMessage(_uint iArg)
 				if (ImGui::BeginTabItem("Create"))
 				{
 					View_CreateProp();
-					View_SelectModelComponent();
-					View_PickingInfo();
 
 					ImGui::EndTabItem();
 				}
 
-				if (ImGui::BeginTabItem("Pick"))
+				if (ImGui::BeginTabItem("Edit"))
 				{
-					View_Picking_Prop();
-					View_Picking_List();
-					View_Picking_Option();
-					View_Picking_Option_Y();
-					View_ModelCopy();
-					View_SelectTransformInfo();
-
-					ImGui::EndTabItem();
-				}
-
-				if (ImGui::BeginTabItem("Save & Load"))
-				{
+					View_PickProp();
+					View_EditProp();
 
 					ImGui::EndTabItem();
 				}
@@ -266,46 +256,140 @@ void CEditGroupProp::View_CreateProp()
 	if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) || !Pick_Prop(MouseRayInWorldSpace))
 		return;
 
+	CWindow_HierarchyView::GAMEOBJECT_DESC tObjDesc;
+
 	if (0 == iSelect_PropType)
 	{
 		switch (iSelect_PropName)
 		{
 			case 0:
 			{
-				weak_ptr<CGameObject> pObj = GAMEINSTANCE->Add_GameObject<CInteraction_Door>(LEVEL::LEVEL_EDIT);
+				if (RenderView_SelectModelComponent())
+					return;
+
+				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_Door>(LEVEL::LEVEL_EDIT);
+				tObjDesc.HashCode  = typeid(CInteraction_Door).hash_code();
+				tObjDesc.TypeName  = typeid(CInteraction_Door).name();
+
+				tObjDesc.pInstance.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str());
 			}
 			break;
 
 			case 1:
 			{
-				weak_ptr<CGameObject> pObj = GAMEINSTANCE->Add_GameObject<CInteraction_CheckPoint>(LEVEL::LEVEL_EDIT);
+				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_CheckPoint>(LEVEL::LEVEL_EDIT);
+				tObjDesc.HashCode  = typeid(CInteraction_CheckPoint).hash_code();
+				tObjDesc.TypeName  = typeid(CInteraction_CheckPoint).name();
 			}
 			break;
 
 			case 2:
 			{
-				weak_ptr<CGameObject> pObj = GAMEINSTANCE->Add_GameObject<CInteraction_Elevator>(LEVEL::LEVEL_EDIT);
+				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_Elevator>(LEVEL::LEVEL_EDIT);
+				tObjDesc.HashCode  = typeid(CInteraction_Elevator).hash_code();
+				tObjDesc.TypeName  = typeid(CInteraction_Elevator).name();
 			}
 			break;
 
 			case 3:
 			{
-				weak_ptr<CGameObject> pObj = GAMEINSTANCE->Add_GameObject<CInteraction_Ladder>(LEVEL::LEVEL_EDIT);
+				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_Ladder>(LEVEL::LEVEL_EDIT);
+				tObjDesc.HashCode  = typeid(CInteraction_Ladder).hash_code();
+				tObjDesc.TypeName  = typeid(CInteraction_Ladder).name();
 			}
 			break;
 		}
 	}
-	else
+	else if (1 == iSelect_PropType)
 	{
+		if (RenderView_SelectModelComponent())
+			return;
+
+		tObjDesc.pInstance.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str());
 	}
 
-	
+	else if (2 == iSelect_PropType)
+	{
+		if (RenderView_SelectModelComponent())
+			return;
 
+		tObjDesc.pInstance.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str());
+	}
+
+	else
+	{
+		return;
+	}
+
+	if (!tObjDesc.pInstance.lock())
+		return;
+
+	tObjDesc.pInstance.lock()->Get_Transform()->Set_WorldMatrix(XMLoadFloat4x4(&m_PickingMatrix));
+	tObjDesc.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
+
+	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditGroupProp).hash_code());
+
+	if (iter_collider == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
+	{
+		vector<CWindow_HierarchyView::GAMEOBJECT_DESC> List;
+		List.push_back(tObjDesc);
+
+		GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup[typeid(CEditGroupProp).hash_code()] = List;
+	}
+	else
+	{
+		iter_collider->second.push_back(tObjDesc);
+	}
+	
+	//ON_EDITINIT
 	ImGui::Text("");
 	ImGui::Separator();
 }
 
-void CEditGroupProp::View_SelectModelComponent()
+void    CEditGroupProp::View_PickProp()
+{
+	RAY MouseRayInWorldSpace;
+
+	if (!KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) || !KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
+		return;
+
+	_uint   iIndex       = 0;
+	_float  fDistance    = 99999999.f;
+	_float4	vCamPosition = GAMEINSTANCE->Get_CamPosition();
+	_vector vCamPos = XMLoadFloat4(&vCamPosition);
+
+	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditGroupProp).hash_code());
+
+	if (iter_collider == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
+		return;
+
+	for (auto& iter : iter_collider->second)
+	{
+		weak_ptr<CTransform> pTransform = iter.pInstance.lock()->Get_Component<CTransform>();
+		weak_ptr<CModel>     pModel     = iter.pInstance.lock()->Get_Component<CModel>();
+
+		if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, pModel.lock()->Get_MeshVertexInfo(), pTransform.lock()->Get_WorldMatrix()))
+		{
+			_float  fLength = XMVectorGetX(XMVector3Length(vCamPos - pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION)));
+
+			if (fLength < fDistance)
+			{
+				fDistance = fLength;
+				m_iPickingIndex = iIndex;
+				XMStoreFloat4x4(&m_PickingMatrix, pTransform.lock()->Get_WorldMatrix());
+			}
+		}
+
+		++iIndex;
+	}
+
+	if (0 > m_iPickingIndex && (_int)iter_collider->second.size() <= m_iPickingIndex)
+	{
+		m_iPickingIndex = 0;
+	}
+}
+
+_bool CEditGroupProp::RenderView_SelectModelComponent()
 {
 	static _int		iSelect_NonAnimModel	 = 0;
 	static _char    szFindModelTag[MAX_PATH] = "";
@@ -349,291 +433,177 @@ void CEditGroupProp::View_SelectModelComponent()
 	ImGui::Text("");
 	ImGui::Text("");
 	ImGui::Separator();
+
+	return ("" != m_szSelectModelName);
 }
 
-void CEditGroupProp::View_PickingInfo()
+void CEditGroupProp::View_EditProp()
 {
-	//RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+	auto iter_prop = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditGroupProp).hash_code());
 
-	//if (ImGui::TreeNode("[ Mouse Info ] "))
-	//{
-	//	ImGui::DragFloat3("##Pos", &MouseRayInWorldSpace.vOrigin.x, 1.f);
-	//	ImGui::SameLine();
-	//	ImGui::Text("Mouse Pos");
+	if (iter_prop == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
+		return;
 
-	//	ImGui::DragFloat3("##Dir", &MouseRayInWorldSpace.vDirection.x, 1.f);
-	//	ImGui::SameLine();
-	//	ImGui::Text("Mouse Dir");
+	if (iter_prop->second.empty() || 0 > m_iPickingIndex || iter_prop->second.size() <= m_iPickingIndex)
+		return;
 
-	//	ImGui::TreePop();
-	//}
+	RenderView_Transform_Info(iter_prop->second[m_iPickingIndex].pInstance);
+	RenderView_Transform_Edit(iter_prop->second[m_iPickingIndex].pInstance);
 
-	//ImGui::Text("");
-
-	//SMath::Is_Picked_AbstractTerrain(MouseRayInWorldSpace, &m_vPickingPos);
-
-	//if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD) && KEY_INPUT(KEY::C, KEY_STATE::HOLD))
-	//{
-	//	_long		MouseMove = 0;
-	//	if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
-	//	{
-	//		m_fPosY += 0.01f * MouseMove;
-	//	}
-	//}
-
-	//m_vPickingPos.y = m_fPosY;
-
-	//ImGui::Text("[ Picking Info ] ");
-	//ImGui::DragFloat4("##PickPos", &m_vPickingPos.x, 1.f);
-	//ImGui::SameLine();
-	//ImGui::Text("Pick Pos");
-
-	//string szPickingTag = string("[ Obj Info ] : ") + "( " + to_string(m_iPickingIndex) + " )";
-
-	//szPickingTag += (0 > m_iPickingIndex || (_int)m_PropList.size() <= m_iPickingIndex)
-	//	? (" None ") 
-	//	: (m_PropList[m_iPickingIndex].szName);
-
-	//ImGui::Text(szPickingTag.c_str());
-
-	//if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) && KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
-	//{	
-	//	if ("" == m_szSelectModelName)
-	//		return;
-
-	//	if ("CStatic_Prop" == m_szSelectPropType)
-	//	{
-	//		PROPS_DESC Desc;
-	//		Desc.pProp	= GAMEINSTANCE->Add_GameObject<CStatic_Prop>(m_CreatedLevel);
-	//		Desc.hash	= typeid(CStatic_Prop).hash_code();
-	//		Desc.szName	= typeid(CStatic_Prop).name();
-
-	//		Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
-	//		Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
-	//		m_PropList.push_back(Desc);
-	//	}
-
-	//	else if ("CDynamic_Prop" == m_szSelectPropType)
-	//	{
-	//		PROPS_DESC Desc;
-	//		Desc.pProp	= GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(m_CreatedLevel);
-	//		Desc.hash	= typeid(CDynamic_Prop).hash_code();
-	//		Desc.szName	= typeid(CDynamic_Prop).name();
-
-	//		Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
-	//		Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
-	//		m_PropList.push_back(Desc);
-	//	}
-
-	//	else if ("CLight_Prop" == m_szSelectPropType)
-	//	{
-	//		PROPS_DESC Desc;
-	//		//Desc.pProp	= GAMEINSTANCE->Add_GameObject<CLight_Prop>(m_CreatedLevel);
-	//		Desc.hash	= typeid(CLight_Prop).hash_code();
-	//		Desc.szName	= typeid(CLight_Prop).name();
-
-	//		Desc.pProp.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str(), "");
-	//		Desc.pProp.lock()->Get_Component<CTransform>().lock()->Set_Position(XMLoadFloat4(&m_vPickingPos));
-	//		m_PropList.push_back(Desc);
-	//	}
-	//}
-
-	//ImGui::Text("");
-	//ImGui::Separator();
+	iter_prop->second[m_iPickingIndex].pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW);
+	
+	ImGui::Text("");
+	ImGui::Separator();
 }
 
-void CEditGroupProp::View_Picking_Prop()
+void CEditGroupProp::RenderView_Transform_Info(weak_ptr<CGameObject> In_Obj)
 {
-	//if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) && KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
-	//{
-	//	RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+	weak_ptr<CTransform> pTransformCom = In_Obj.lock()->Get_Transform();
 
-	//	_uint iIndex = 0;
-	//	for (auto& iter : m_PropList)
-	//	{
-	//		weak_ptr<CModel>		pModelCom     = iter.pProp.lock()->Get_Component<CModel>();
-	//		weak_ptr<CTransform>	pTransformCom = iter.pProp.lock()->Get_Component<CTransform>();
+	// Position
+	_vector vPositionVector = pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
 
-	//		if (!pModelCom.lock() || !pTransformCom.lock())
-	//			continue;
+	ImGui::Text("Position");
+	ImGui::DragFloat3("##Position", &vPositionVector.m128_f32[0], 1.f);
 
-	//		/*if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION)))
-	//			continue;*/
+	pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPositionVector);
 
-	//		MESH_VTX_INFO Info = pModelCom.lock()->Get_ModelData().lock()->VertexInfo;
+	// Quaternion
+	_matrix matWorld = pTransformCom.lock()->Get_WorldMatrix();
+	_float3 vPitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(matWorld));
 
-	//		if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, Info, pTransformCom.lock()->Get_WorldMatrix()))
-	//		{
-	//			m_iPickingIndex = iIndex;
-	//		}
+	ImGui::Text("Pitch Yaw Roll");
+	ImGui::DragFloat3("##Pitch Yaw Roll", &vPitchYawRoll.x, 0.01f);
+	_vector vQuaternion = XMQuaternionRotationRollPitchYaw(vPitchYawRoll.x, vPitchYawRoll.y, vPitchYawRoll.z);
 
-	//		++iIndex;
-	//	}
-	//}
+	pTransformCom.lock()->Rotation_Quaternion(vQuaternion);
+
+	// Scale
+	_float3 vScaleFloat3 = pTransformCom.lock()->Get_Scaled();
+	_vector vScaleVector = XMLoadFloat3(&vScaleFloat3);
+
+	ImGui::Text("Scale");
+	ImGui::DragFloat3("##Scale", &vScaleVector.m128_f32[0], 0.1f);
+
+	vScaleVector.m128_f32[0] = max(0.00001f, vScaleVector.m128_f32[0]);
+	vScaleVector.m128_f32[1] = max(0.00001f, vScaleVector.m128_f32[1]);
+	vScaleVector.m128_f32[2] = max(0.00001f, vScaleVector.m128_f32[2]);
+	XMStoreFloat3(&vScaleFloat3, vScaleVector);
+
+	pTransformCom.lock()->Set_Scaled(vScaleFloat3);
+	ImGui::Text("");
+
+	XMStoreFloat4x4(&m_PickingMatrix, pTransformCom.lock()->Get_WorldMatrix());
 }
 
-void CEditGroupProp::View_Picking_List()
+void CEditGroupProp::RenderView_Transform_Edit(weak_ptr<CGameObject> In_Obj)
 {
-	//if (ImGui::BeginListBox("##Prop Info List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
-	//{
-	//	for (_uint i = 0; i < (_uint)m_PropList.size(); ++i)
-	//	{
-	//		const bool is_selected = (m_iPickingIndex == i);
+	weak_ptr<CTransform> pTransformCom = In_Obj.lock()->Get_Transform();
 
-	//		string szTag = "( " + to_string(i) + " ) " + m_PropList[i].szName;
+	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
+	{
+		if (KEY_INPUT(KEY::Z, KEY_STATE::HOLD))
+		{
+			RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+			_float4 vMouseDir;
 
-	//		if (ImGui::Selectable(szTag.c_str(), is_selected))
-	//		{
-	//			m_iPickingIndex = i;
-	//		}
+			vMouseDir.y = m_PickingMatrix._42;
 
-	//		if (is_selected)
-	//			ImGui::SetItemDefaultFocus();
-	//	}
+			if (!SMath::Is_Picked_AbstractTerrain(MouseRayInWorldSpace, &vMouseDir))
+				return;
 
-	//	ImGui::EndListBox();
-	//}
-}
+			pTransformCom.lock()->Set_State
+			(
+				CTransform::STATE_TRANSLATION,
+				XMVectorSet(vMouseDir.x, m_PickingMatrix._42, vMouseDir.z, 1.f)
+			);
+		}
 
-void CEditGroupProp::View_Picking_Option()
-{
-	//if (m_PropList.empty() || 0 > m_iPickingIndex || m_PropList.size() <= m_iPickingIndex)
-	//	return;
+		else if (KEY_INPUT(KEY::X, KEY_STATE::HOLD))
+		{
+			_long		MouseMove = 0;
+			if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_X))
+			{
+				_matrix matWorld      = pTransformCom.lock()->Get_WorldMatrix();
+				_float3 vPitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(matWorld));
 
-	//RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+				vPitchYawRoll.y += 0.01f * MouseMove;
 
-	//_float4 vMouseDir;
-	//ZeroMemory(&vMouseDir, sizeof(_float4));
+				_vector vQuaternion = XMQuaternionRotationRollPitchYaw(vPitchYawRoll.x, vPitchYawRoll.y, vPitchYawRoll.z);
 
-	//if (!SMath::Is_Picked_AbstractTerrain(MouseRayInWorldSpace, &vMouseDir))
-	//	return;
+				pTransformCom.lock()->Rotation_Quaternion(vQuaternion);
+			}
+		}
 
-	//weak_ptr<CTransform>	pTransformCom = m_PropList[m_iPickingIndex].pProp.lock()->Get_Component<CTransform>();
+		else if (KEY_INPUT(KEY::C, KEY_STATE::HOLD))
+		{
+			_long		MouseMove = 0;
+			if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
+			{
+				_vector vPos = pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+				vPos = XMVectorSetY(vPos, XMVectorGetY(vPos) + MouseMove * -0.01f);
 
-	//if (!pTransformCom.lock())
-	//	return;
+				pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
+			}
+		}
+	}
+	else
+	{
+		if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) && KEY_INPUT(KEY::R, KEY_STATE::TAP))
+		{
+			auto iter_prop = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditGroupProp).hash_code());
 
-	//// Z : 이동, X : 로테이션, 마우스 휠 : y축 이동
+			auto iter = iter_prop->second.begin() + m_iPickingIndex;
 
-	//if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
-	//{
-	//	if (KEY_INPUT(KEY::Z, KEY_STATE::HOLD))
-	//	{
-	//		_vector vObjPos = pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-	//		_vector vAddPos = XMVectorSet(vMouseDir.x, vObjPos.m128_f32[1], vMouseDir.z, 1.f);
+			if (iter_prop->second.end() != iter)
+			{
+				iter->pInstance.lock()->Set_Dead();
+				iter_prop->second.erase(iter);
+			}
+		}
 
-	//		pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vAddPos);
-	//	}
+		else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) && KEY_INPUT(KEY::H, KEY_STATE::HOLD))
+		{
+			if (KEY_INPUT(KEY::X, KEY_STATE::TAP))
+			{
+				pTransformCom.lock()->Rotation_Quaternion(XMVectorSet(0.f, 0.f, 0.f, 0.f));
+			}
 
-	//	else if (KEY_INPUT(KEY::X, KEY_STATE::HOLD))
-	//	{
-	//		_vector vObjPos = pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-	//		_vector vAddPos = XMVectorSet(vMouseDir.x, vObjPos.m128_f32[1], vMouseDir.z, 1.f);
+			else if (KEY_INPUT(KEY::C, KEY_STATE::TAP))
+			{
+				pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMVectorSet(0.f, 0.f, 0.f, 1.f));
+			}
 
-	//		pTransformCom.lock()->LookAt(vAddPos);
-	//	}
-	//}
-}
-
-void CEditGroupProp::View_Picking_Option_Y()
-{
-	//if (m_PropList.empty() || 0 > m_iPickingIndex || m_PropList.size() <= m_iPickingIndex)
-	//	return;
-
-	//weak_ptr<CTransform>	pTransformCom = m_PropList[m_iPickingIndex].pProp.lock()->Get_Component<CTransform>();
-
-	//if (!pTransformCom.lock())
-	//	return;
-
-	//if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
-	//{
-	//	if (KEY_INPUT(KEY::C, KEY_STATE::HOLD))
-	//	{
-	//		_long		MouseMove = 0;
-	//		if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
-	//		{
-	//			_vector vObjPos = pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-	//			vObjPos.m128_f32[1] += (MouseMove * -0.01f);
-
-	//			pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vObjPos);
-	//		}
-	//	}
-	//}
-
-	//_float3 vPos = { 0.f, 0.f, 0.f };
-	//XMStoreFloat3(&vPos, pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION));
-
-	//ImGui::DragFloat3("OBJ Pos", &vPos.x, 1.f);
-	//ImGui::Text("");
-}
-
-void CEditGroupProp::View_ModelCopy()
-{
-	//if (m_PropList.empty() || 0 > m_iPickingIndex || m_PropList.size() <= m_iPickingIndex)
-	//	return;
-
-	//if (ImGui::Button("Copy", ImVec2(100.f, 25.f)))
-	//{
-	//	weak_ptr<CModel> pModel = m_PropList[m_iPickingIndex].pProp.lock()->Get_Component<CModel>();
-
-	//	if (!pModel.lock())
-	//		return;
-
-	//	m_szSelectModelName = pModel.lock()->Get_ModelKey();
-	//}
-
-	//ImGui::Text("");
-	//ImGui::Separator();
-	//ImGui::Text("");
-}
-
-void CEditGroupProp::View_SelectTransformInfo()
-{
-	//if (m_PropList.empty() || 0 > m_iPickingIndex || m_PropList.size() <= m_iPickingIndex)
-	//	return;
-
-	//weak_ptr<CTransform> pTransformCom = m_PropList[m_iPickingIndex].pProp.lock()->Get_Component<CTransform>();
-
-	// // Position
-	//_vector vPositionVector = pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-
-	//ImGui::Text("Position");
-	//ImGui::DragFloat3("##Position", &vPositionVector.m128_f32[0], 1.f);
-
-	//pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPositionVector);
-	//
-	// // Quaternion
-	//_matrix matWorld = pTransformCom.lock()->Get_WorldMatrix();
-	//_float3 vPitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(matWorld));
-
-	//ImGui::Text("Pitch Yaw Roll");
-	//ImGui::DragFloat3("##Pitch Yaw Roll", &vPitchYawRoll.x, 0.01f);
-	//_vector vQuaternion = XMQuaternionRotationRollPitchYaw(vPitchYawRoll.x, vPitchYawRoll.y, vPitchYawRoll.z);
-
-	//pTransformCom.lock()->Rotation_Quaternion(vQuaternion);
-	//
-	// // Scale
-	//_float3 vScaleFloat3 = pTransformCom.lock()->Get_Scaled();
-	//_vector vScaleVector = XMLoadFloat3(&vScaleFloat3);
-
-	//ImGui::Text("Scale");
-	//ImGui::DragFloat3("##Scale", &vScaleVector.m128_f32[0], 0.1f);
-
-	//vScaleVector.m128_f32[0] = max(0.00001f, vScaleVector.m128_f32[0]);
-	//vScaleVector.m128_f32[1] = max(0.00001f, vScaleVector.m128_f32[1]);
-	//vScaleVector.m128_f32[2] = max(0.00001f, vScaleVector.m128_f32[2]);
-	//XMStoreFloat3(&vScaleFloat3, vScaleVector);
-
-	//pTransformCom.lock()->Set_Scaled(vScaleFloat3);
-	//ImGui::Text("");
+			else if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
+			{
+				pTransformCom.lock()->Set_Scaled(_float3(1.f, 1.f, 1.f));
+			}
+		}
+	}
 }
 
 _bool CEditGroupProp::Pick_Prop(RAY& _pMouseRayInWorldSpace)
 {
+	if (!KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
+		return false;
+
+	_pMouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+
+	_float4 vOutPos;
+	ZeroMemory(&vOutPos, sizeof(_float4));
+	vOutPos.y = m_PickingMatrix._42;
+
+	if (SMath::Is_Picked_AbstractTerrain(_pMouseRayInWorldSpace, &vOutPos))
+	{
+		vOutPos.y = m_PickingMatrix._42;
+		memcpy(&m_PickingMatrix.m[3], &vOutPos, sizeof(_float3));
+
+		return true;
+	}
+
 	return false;
 }
 
 void CEditGroupProp::Free()
 {
-
 }
