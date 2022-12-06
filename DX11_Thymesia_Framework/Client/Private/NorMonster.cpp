@@ -346,14 +346,17 @@ void CNorMonster::OnDisable()
 	__super::OnDisable();
 }
 
-void CNorMonster::Free()
+void CNorMonster::OnDestroy()
 {
-	// TODO : AN 로민아 모르겠어 도와줘
-	// 맵툴에서 몬스터 소멸시키면 무기만 남아 있어
+	__super::OnDestroy();
 
 	for (auto& elem : m_pWeapons)
 		elem.lock()->Set_Dead();
 
 	for (auto& elem : m_pActorDecor)
 		elem.lock()->Set_Dead();
+}
+
+void CNorMonster::Free()
+{
 }

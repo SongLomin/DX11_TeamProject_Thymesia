@@ -17,9 +17,6 @@ public:
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render() override;
     virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix) override;
-       
-protected:
-    virtual void SetUp_ShaderResource() override;
 	
 public:
     virtual _bool IsPicking(const RAY& In_Ray, _float& Out_fRange) override;
@@ -32,8 +29,12 @@ public:
     virtual void Act_Interaction();
 
 protected:
+    HRESULT SetUp_ShaderResource();
+
+protected:
     _bool   m_bOnceAct = false;
-public:
+
+protected:
     void Free();
 };
 

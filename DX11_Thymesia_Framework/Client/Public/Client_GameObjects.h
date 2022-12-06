@@ -5,9 +5,6 @@
 #include "Camera_Free.h"
 #include "Camera_Target.h"
 #include "Camera_Static.h"
-#include "Stage1.h"
-#include "Stage2.h"
-#include "Stage3.h"
 #include "SkyBox.h"
 #include "Ground.h"
 
@@ -26,7 +23,6 @@
 #include "Interaction_CheckPoint.h"
 #include "Interaction_Elevator.h"
 #include "Interaction_Door.h"
-
 
 #include "EditGround.h"
 #include "EditGroupProp.h"

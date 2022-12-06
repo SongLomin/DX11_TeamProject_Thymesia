@@ -6,7 +6,7 @@
 
 GAMECLASS_C(CCustomLight)
 
-_uint CCustomLight::g_iLightIndex;
+_uint CCustomLight::g_iLightIndex = 0;
 
 HRESULT CCustomLight::Initialize(const LIGHTDESC& LightDesc)
 {

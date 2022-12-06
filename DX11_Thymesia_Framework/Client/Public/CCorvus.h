@@ -38,13 +38,12 @@ private:
     virtual void OnBattleEnd() override;
     virtual void OnEnable(void* pArg) override;
     virtual void OnDisable() override;
-    virtual void OnDestroy() override;
     void Free();
 
     //TODO¿”Ω√
 private:
     weak_ptr<CTalent_Sword>  m_pSword;
-    _uint m_iContainerIndex = 0;
+    _uint                    m_iContainerIndex = 0;
 
 private:
     weak_ptr<CCamera_Target> m_pCamera;

@@ -31,13 +31,12 @@ public:
     virtual void Write_Json(json& Out_Json) override;
     virtual void Load_FromJson(const json& In_Json) override;
 
-    virtual void SetUp_ShaderResource() override;
-
 private:
     void    SetUpColliderDesc();
 
 private:
     weak_ptr<CCollider>     m_pColliderCom;
+    LEVEL                   m_eNextLevel    = LEVEL::LEVEL_END;
     _float                  m_fColliderPosY = 1.5f;
 };
 

@@ -48,6 +48,8 @@ public:
     virtual void Load_FromJson(const json& In_Json) override;
 
 private:
+    virtual HRESULT SetUp_ShaderResource() override;
+
     HRESULT SetUp_ShaderResource_Up();
     HRESULT SetUp_ShaderResource_Mid();
     HRESULT SetUp_ShaderResource_Down();

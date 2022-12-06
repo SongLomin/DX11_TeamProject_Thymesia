@@ -63,6 +63,7 @@ public:
 protected:
     virtual void OnEnable(void* pArg) override;
     virtual void OnDisable() override;
+    virtual void OnDestroy() override;
 
 private:
     void Free();

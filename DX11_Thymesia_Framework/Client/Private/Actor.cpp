@@ -140,6 +140,20 @@ void CActor::OnDisable()
     {
         GET_SINGLE(CGameManager)->UnUse_EffectGroup(elem.first, elem.second);
     }
+    
+    m_EffectIndexList.clear();
+}
+
+void CActor::OnDestroy()
+{
+    __super::OnDestroy();
+
+    for (auto& elem : m_EffectIndexList)
+    {
+        GET_SINGLE(CGameManager)->UnUse_EffectGroup(elem.first, elem.second);
+    }
+
+    m_EffectIndexList.clear();
 }
 
 void CActor::Free()

@@ -60,6 +60,7 @@ private:
     _float4x4           m_PickingMatrix;
 
     string              m_szSelectModelName   = "";
+    _bool               m_bChangModel         = false;
 
     RESOURCE_LIST       m_ModelList;
 

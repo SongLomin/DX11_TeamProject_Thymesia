@@ -33,6 +33,8 @@ HRESULT CInteraction_Door::Initialize(void* pArg)
         VTXMODEL_DECLARATION::iNumElements
     );
 
+    GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_StaticCast<CGameObject>(m_this));
+
     return S_OK;
 }
 
@@ -73,9 +75,7 @@ void CInteraction_Door::LateTick(_float fTimeDelta)
 
 HRESULT CInteraction_Door::Render()
 {
-    SetUp_ShaderResource();
-
-    return S_OK;
+    return __super::Render();
 }
 
 void CInteraction_Door::OnEventMessage(_uint iArg)
@@ -92,6 +92,8 @@ void CInteraction_Door::OnEventMessage(_uint iArg)
         case EVENT_TYPE::ON_EDITDRAW:
         {
             m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+
+            SetUp_Invisibility();
 
             ImGui::DragFloat("Rotation Speed ", &m_fRotationtSpeed);
             ImGui::DragFloat("Rotation Radian", &m_fRotationtRadian);
@@ -168,46 +170,17 @@ void CInteraction_Door::Load_FromJson(const json& In_Json)
         SetUpColliderDesc(fDefaultDesc);
     }
 
-
     m_fFirstRadian = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(m_pTransformCom.lock()->Get_WorldMatrix())).y;
-    m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
 
     if ("" == string(m_pModelCom.lock()->Get_ModelKey()))
         m_pModelCom.lock()->Init_Model("Door01_05", "");
+
+    m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
 }
 
 void CInteraction_Door::Act_Interaction()
 {
     m_ActionFlag |= ACTION_FLAG::ACTIVATE;
-}
-
-void CInteraction_Door::SetUp_ShaderResource()
-{
-    __super::SetUp_ShaderResource();
-
-    _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
-    for (_uint i = 0; i < iNumMeshContainers; ++i)
-    {
-        m_iPassIndex = 3;
-
-        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-            return;
-
-        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-        {
-            m_iPassIndex = 0;
-        }
-        else
-        {
-            /*if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-                m_iPassIndex = 6;
-            else
-                m_iPassIndex = 7;*/
-        }
-
-        m_pShaderCom.lock()->Begin(m_iPassIndex);
-        m_pModelCom.lock()->Render_Mesh(i);
-    }
 }
 
 void CInteraction_Door::SetUpColliderDesc(_float* _pColliderDesc)

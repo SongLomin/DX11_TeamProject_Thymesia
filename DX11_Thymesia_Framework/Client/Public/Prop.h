@@ -27,8 +27,13 @@ public:
     virtual void Custom_Thread1(_float fTimeDelta) override;
     virtual HRESULT Render() override;
 
+public:
+    virtual void Write_Json(json& Out_Json) override;
+    virtual void Load_FromJson(const json& In_Json) override;
+
 protected:
-    virtual void SetUp_ShaderResource();
+    virtual HRESULT SetUp_ShaderResource();
+    void            SetUp_Invisibility();
 
 protected:
     weak_ptr<CTexture>  m_pMaskingTextureCom;
@@ -42,11 +47,12 @@ protected:
     _uint       m_iPassIndex            = 0;
     _float      m_fCullingOffsetRange   = 0.f;
     _bool       m_bRendering            = true;
+    _bool       m_bInvisibility         = true;
 
     _float3     m_vCenterOffset{ 0.f, 0.f, 0.f };
 
-    _bool   m_bNearPlayer = false;//플레이어 근처에 있을 때 아웃라인 활성화
-    _float  m_fOutLineBlurIntensity = 0.f;//For Interaction Props;
+    _bool       m_bNearPlayer = false;//플레이어 근처에 있을 때 아웃라인 활성화
+    _float      m_fOutLineBlurIntensity = 0.f;//For Interaction Props;
 
 protected:
     void Free();

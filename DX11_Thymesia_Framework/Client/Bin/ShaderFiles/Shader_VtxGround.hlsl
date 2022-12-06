@@ -2,7 +2,7 @@
 #include "Client_Shader_Defines.hpp"
 
 matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
-float4	g_vLightFlag;
+float4 g_vShaderFlag;
 
 texture2D	g_Texture_Sorc_Diff	 ,	g_Texture_Sorc_Norm;   float g_fSorc_Density;
 texture2D	g_Texture_AddNo1_Diff,	g_Texture_AddNo1_Norm; float g_fAddNo1_Density;
@@ -71,7 +71,7 @@ struct PS_OUT
     vector vDiffuse : SV_TARGET0;
     vector vNormal : SV_TARGET1;
     vector vDepth : SV_TARGET2;
-    vector vLightFlag : SV_Target3;
+    vector vShaderFlag : SV_Target3;
     vector vORM : SV_Target4;
 };
 
@@ -112,7 +112,7 @@ PS_OUT		PS_MAIN_DEFAULT(PS_IN In)
 	Out.vDiffuse.a	= 1.f;
 	Out.vNormal		= In.vNormal;
 	Out.vDepth		= vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
-    Out.vLightFlag	= g_vLightFlag;
+    Out.vShaderFlag = g_vShaderFlag;
     Out.vORM = 0;
 
 	return Out;
@@ -164,7 +164,7 @@ PS_OUT		PS_MAIN_NORM(PS_IN In)
 	Out.vDiffuse.a	= 1.f;
 	Out.vNormal		= vector(vPixelNorm.xyz * 0.5f + 0.5f, 0.f);
 	Out.vDepth		= vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
-    Out.vLightFlag	= g_vLightFlag;
+    Out.vShaderFlag = g_vShaderFlag;
     Out.vORM = 0;
 	return Out;
 }
@@ -176,7 +176,7 @@ PS_OUT		PS_MAIN_WIREFRAM(PS_IN In)
     Out.vDiffuse	= vector(1.f, 1.f, 0.f, 1.f);
 	Out.vNormal		= In.vNormal;
 	Out.vDepth		= vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
-    Out.vLightFlag	= g_vLightFlag;
+    Out.vShaderFlag = g_vShaderFlag;
     Out.vORM = 0;
 	return Out;
 }
@@ -201,7 +201,7 @@ PS_OUT		PS_MAIN_FILLTER(PS_IN In)
 	Out.vDiffuse.a	= 1.f;
 	Out.vNormal		= In.vNormal;
 	Out.vDepth		= vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
-    Out.vLightFlag	= g_vLightFlag;
+    Out.vShaderFlag = g_vShaderFlag;
     Out.vORM = 0;
 	return Out;
 }

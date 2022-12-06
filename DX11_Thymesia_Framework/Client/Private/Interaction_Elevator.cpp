@@ -9,7 +9,7 @@
 #include "Model.h"
 
 #include "GameInstance.h"
-#include "Level_GamePlay.h"
+#include "ClientLevel.h"
 
 GAMECLASS_C(CInteraction_Elevator);
 CLONE_C(CInteraction_Elevator, CGameObject);
@@ -54,9 +54,7 @@ void CInteraction_Elevator::LateTick(_float fTimeDelta)
 
 HRESULT CInteraction_Elevator::Render()
 {
-    SetUp_ShaderResource();
-
-    return S_OK;
+    return __super::Render();
 }
 
 void CInteraction_Elevator::OnEventMessage(_uint iArg)
@@ -71,6 +69,8 @@ void CInteraction_Elevator::OnEventMessage(_uint iArg)
 
         case EVENT_TYPE::ON_EDITDRAW:
         {
+            m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+
             if (ImGui::InputFloat("Offset Y", &m_fColliderPosY))
             {
                 COLLIDERDESC ColliderDesc;
@@ -82,6 +82,24 @@ void CInteraction_Elevator::OnEventMessage(_uint iArg)
                 m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
                 m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
             }
+
+            static const char* item_LevelTag[] =
+            {
+                "LEVEL_STATIC",
+                "LEVEL_LOADING",
+                "LEVEL_LOGO",
+                "LEVEL_LOBBY",
+                "LEVEL_GAMEPLAY",
+                "LEVEL_STAGE2",
+                "LEVEL_STAGE3",
+                "LEVEL_EDIT",
+                "LEVEL_TEST",
+            };
+
+            _int iSelect_Level = (_int)m_eNextLevel;
+
+            if (ImGui::Combo("Level", &iSelect_Level, item_LevelTag, IM_ARRAYSIZE(item_LevelTag)))
+                m_eNextLevel = (LEVEL)iSelect_Level;
         }
         break;
     }
@@ -92,6 +110,7 @@ void CInteraction_Elevator::Write_Json(json& Out_Json)
     __super::Write_Json(Out_Json);
 
     Out_Json["ColliderPosY"] = m_fColliderPosY;
+    Out_Json["NextLevel"]    = (_int)m_eNextLevel;
 
     auto iter = Out_Json["Component"].find("Model");
     Out_Json["Component"].erase(iter);
@@ -102,8 +121,12 @@ void CInteraction_Elevator::Load_FromJson(const json& In_Json)
     __super::Load_FromJson(In_Json);
 
     if (In_Json.end() != In_Json.find("ColliderPosY"))
-    {
         m_fColliderPosY = In_Json["ColliderPosY"];
+
+    if (In_Json.end() != In_Json.find("NextLevel"))
+    {
+        _int iLevel = In_Json["NextLevel"];
+        m_eNextLevel = (LEVEL)iLevel;
     }
     
     SetUpColliderDesc();
@@ -111,13 +134,10 @@ void CInteraction_Elevator::Load_FromJson(const json& In_Json)
 
 void CInteraction_Elevator::Act_Interaction()
 {
-    Weak_Cast<CLevel_GamePlay>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(LEVEL::LEVEL_STAGE2);
-}
+    if (LEVEL::LEVEL_END == m_eNextLevel)
+        return;
 
-void CInteraction_Elevator::SetUp_ShaderResource()
-{
-    __super::SetUp_ShaderResource();
-
+    Weak_Cast<CClientLevel>(GAMEINSTANCE->Get_CurrentLevel()).lock()->ExitLevel(m_eNextLevel);
 }
 
 void CInteraction_Elevator::SetUpColliderDesc()

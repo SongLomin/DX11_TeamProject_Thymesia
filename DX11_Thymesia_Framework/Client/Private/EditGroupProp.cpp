@@ -96,16 +96,16 @@ HRESULT CEditGroupProp::SetUp_ShaderResource()
 	if (!m_bSubDraw)
 		return S_OK;
 
-	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditGroupProp).hash_code());
+	auto iter_prop = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditGroupProp).hash_code());
 
-	if (iter_collider == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
+	if (iter_prop == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
 		return E_FAIL;
 
-	if (iter_collider->second.empty() || 0 > m_iPickingIndex || iter_collider->second.size() <= m_iPickingIndex)
+	if (iter_prop->second.empty() || 0 > m_iPickingIndex || iter_prop->second.size() <= m_iPickingIndex)
 		return E_FAIL;
 
-	weak_ptr<CTransform>	pTransform = iter_collider->second[m_iPickingIndex].pInstance.lock()->Get_Component<CTransform>();
-	weak_ptr<CModel>		pModel     = iter_collider->second[m_iPickingIndex].pInstance.lock()->Get_Component<CModel>();
+	weak_ptr<CTransform>	pTransform = iter_prop->second[m_iPickingIndex].pInstance.lock()->Get_Component<CTransform>();
+	weak_ptr<CModel>		pModel     = iter_prop->second[m_iPickingIndex].pInstance.lock()->Get_Component<CModel>();
 
 	if (!pModel.lock() || !pTransform.lock())
 		return E_FAIL;
@@ -138,16 +138,16 @@ void CEditGroupProp::Write_Json(json& Out_Json)
 
 _bool CEditGroupProp::IsPicking(const RAY& In_Ray, _float& Out_fRange)
 {
-	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditGroupProp).hash_code());
+	auto iter_prop = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditGroupProp).hash_code());
 
-	if (iter_collider == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
+	if (iter_prop == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
 		return false;
 
 	_float fPickedDist;
 	_bool bPicked = false;
 	_uint iIndex  = 0;
 
-	for (auto& iter : iter_collider->second)
+	for (auto& iter : iter_prop->second)
 	{
 		weak_ptr<CModel>		pModelCom     = iter.pInstance.lock()->Get_Component<CModel>();
 		weak_ptr<CTransform>	pTransformCom = iter.pInstance.lock()->Get_Component<CTransform>();
@@ -228,6 +228,7 @@ void CEditGroupProp::View_CreateProp()
 	static const char* items_PropType[] =
 	{
 		"Interaction_Prop",
+		"Static_Prop",
 		"Dynamic_Prop",
 		"Light_Prop",
 	};
@@ -248,14 +249,7 @@ void CEditGroupProp::View_CreateProp()
 		iSelect_PropName = 0;
 	}
 
-	if (0 == iSelect_PropType)
-		ImGui::Combo("Prop Name", &iSelect_PropName, items_Interaction_Prop, IM_ARRAYSIZE(items_Interaction_Prop));
-
 	RAY MouseRayInWorldSpace;
-
-	if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) || !Pick_Prop(MouseRayInWorldSpace))
-		return;
-
 	CWindow_HierarchyView::GAMEOBJECT_DESC tObjDesc;
 
 	if (0 == iSelect_PropType)
@@ -264,7 +258,12 @@ void CEditGroupProp::View_CreateProp()
 		{
 			case 0:
 			{
+				ImGui::Combo("Prop Name", &iSelect_PropName, items_Interaction_Prop, IM_ARRAYSIZE(items_Interaction_Prop));
+
 				if (RenderView_SelectModelComponent())
+					return;
+
+				if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) || !Pick_Prop(MouseRayInWorldSpace))
 					return;
 
 				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_Door>(LEVEL::LEVEL_EDIT);
@@ -277,6 +276,9 @@ void CEditGroupProp::View_CreateProp()
 
 			case 1:
 			{
+				if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) || !Pick_Prop(MouseRayInWorldSpace))
+					return;
+
 				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_CheckPoint>(LEVEL::LEVEL_EDIT);
 				tObjDesc.HashCode  = typeid(CInteraction_CheckPoint).hash_code();
 				tObjDesc.TypeName  = typeid(CInteraction_CheckPoint).name();
@@ -285,6 +287,9 @@ void CEditGroupProp::View_CreateProp()
 
 			case 2:
 			{
+				if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) || !Pick_Prop(MouseRayInWorldSpace))
+					return;
+
 				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_Elevator>(LEVEL::LEVEL_EDIT);
 				tObjDesc.HashCode  = typeid(CInteraction_Elevator).hash_code();
 				tObjDesc.TypeName  = typeid(CInteraction_Elevator).name();
@@ -293,6 +298,9 @@ void CEditGroupProp::View_CreateProp()
 
 			case 3:
 			{
+				if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) || !Pick_Prop(MouseRayInWorldSpace))
+					return;
+
 				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_Ladder>(LEVEL::LEVEL_EDIT);
 				tObjDesc.HashCode  = typeid(CInteraction_Ladder).hash_code();
 				tObjDesc.TypeName  = typeid(CInteraction_Ladder).name();
@@ -305,6 +313,13 @@ void CEditGroupProp::View_CreateProp()
 		if (RenderView_SelectModelComponent())
 			return;
 
+		if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) || !Pick_Prop(MouseRayInWorldSpace))
+			return;
+
+		tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CStatic_Prop>(LEVEL::LEVEL_EDIT);
+		tObjDesc.HashCode  = typeid(CStatic_Prop).hash_code();
+		tObjDesc.TypeName  = typeid(CStatic_Prop).name();
+
 		tObjDesc.pInstance.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str());
 	}
 
@@ -312,6 +327,28 @@ void CEditGroupProp::View_CreateProp()
 	{
 		if (RenderView_SelectModelComponent())
 			return;
+
+		if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) || !Pick_Prop(MouseRayInWorldSpace))
+			return;
+
+		tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL::LEVEL_EDIT);
+		tObjDesc.HashCode = typeid(CDynamic_Prop).hash_code();
+		tObjDesc.TypeName = typeid(CDynamic_Prop).name();
+
+		tObjDesc.pInstance.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str());
+	}
+
+	else if (3 == iSelect_PropType)
+	{
+		if (RenderView_SelectModelComponent())
+			return;
+
+		if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) || !Pick_Prop(MouseRayInWorldSpace))
+			return;
+
+		tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL::LEVEL_EDIT);
+		tObjDesc.HashCode  = typeid(CLight_Prop).hash_code();
+		tObjDesc.TypeName  = typeid(CLight_Prop).name();
 
 		tObjDesc.pInstance.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str());
 	}
@@ -327,18 +364,18 @@ void CEditGroupProp::View_CreateProp()
 	tObjDesc.pInstance.lock()->Get_Transform()->Set_WorldMatrix(XMLoadFloat4x4(&m_PickingMatrix));
 	tObjDesc.pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
 
-	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditGroupProp).hash_code());
+	auto iter_prop = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditGroupProp).hash_code());
 
-	if (iter_collider == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
+	if (iter_prop == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
 	{
 		vector<CWindow_HierarchyView::GAMEOBJECT_DESC> List;
 		List.push_back(tObjDesc);
-
+		
 		GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup[typeid(CEditGroupProp).hash_code()] = List;
 	}
 	else
 	{
-		iter_collider->second.push_back(tObjDesc);
+		iter_prop->second.push_back(tObjDesc);
 	}
 	
 	//ON_EDITINIT
@@ -348,22 +385,22 @@ void CEditGroupProp::View_CreateProp()
 
 void    CEditGroupProp::View_PickProp()
 {
-	RAY MouseRayInWorldSpace;
-
 	if (!KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) || !KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
 		return;
 
 	_uint   iIndex       = 0;
 	_float  fDistance    = 99999999.f;
 	_float4	vCamPosition = GAMEINSTANCE->Get_CamPosition();
-	_vector vCamPos = XMLoadFloat4(&vCamPosition);
+	_vector vCamPos      = XMLoadFloat4(&vCamPosition);
 
-	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditGroupProp).hash_code());
+	auto iter_prop = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditGroupProp).hash_code());
 
-	if (iter_collider == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
+	if (iter_prop == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
 		return;
 
-	for (auto& iter : iter_collider->second)
+	RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+
+	for (auto& iter : iter_prop->second)
 	{
 		weak_ptr<CTransform> pTransform = iter.pInstance.lock()->Get_Component<CTransform>();
 		weak_ptr<CModel>     pModel     = iter.pInstance.lock()->Get_Component<CModel>();
@@ -374,7 +411,7 @@ void    CEditGroupProp::View_PickProp()
 
 			if (fLength < fDistance)
 			{
-				fDistance = fLength;
+				fDistance       = fLength;
 				m_iPickingIndex = iIndex;
 				XMStoreFloat4x4(&m_PickingMatrix, pTransform.lock()->Get_WorldMatrix());
 			}
@@ -383,7 +420,7 @@ void    CEditGroupProp::View_PickProp()
 		++iIndex;
 	}
 
-	if (0 > m_iPickingIndex && (_int)iter_collider->second.size() <= m_iPickingIndex)
+	if (0 > m_iPickingIndex && (_int)iter_prop->second.size() <= m_iPickingIndex)
 	{
 		m_iPickingIndex = 0;
 	}
@@ -391,6 +428,9 @@ void    CEditGroupProp::View_PickProp()
 
 _bool CEditGroupProp::RenderView_SelectModelComponent()
 {
+	ImGui::Text("");
+	ImGui::Separator();
+
 	static _int		iSelect_NonAnimModel	 = 0;
 	static _char    szFindModelTag[MAX_PATH] = "";
 
@@ -418,7 +458,6 @@ _bool CEditGroupProp::RenderView_SelectModelComponent()
 			if (ImGui::Selectable(iter.c_str(), is_selected))
 			{
 				iSelect_NonAnimModel = iIndex;
-				m_szSelectModelName  = iter;
 			}
 
 			if (is_selected)
@@ -430,11 +469,16 @@ _bool CEditGroupProp::RenderView_SelectModelComponent()
 		ImGui::EndListBox();
 	}
 
+	if (m_bChangModel = ImGui::Button("Chage Model", ImVec2(100.f, 25.f)))
+	{
+		m_szSelectModelName = m_ModelList[iSelect_NonAnimModel];	
+	}
+
 	ImGui::Text("");
 	ImGui::Text("");
 	ImGui::Separator();
 
-	return ("" != m_szSelectModelName);
+	return ("" == m_szSelectModelName);
 }
 
 void CEditGroupProp::View_EditProp()
@@ -447,8 +491,60 @@ void CEditGroupProp::View_EditProp()
 	if (iter_prop->second.empty() || 0 > m_iPickingIndex || iter_prop->second.size() <= m_iPickingIndex)
 		return;
 
+	ImGui::Text(string(string(" Size  : ") + to_string((_uint)iter_prop->second.size())).c_str());
+	ImGui::Text(string(string(" Index : ") + to_string(m_iPickingIndex)).c_str());
+
+	if (ImGui::TreeNode("[ Show List ]"))
+	{
+		if (ImGui::BeginListBox("##Prop Info List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+		{
+			for (_uint i = 0; i < (_uint)iter_prop->second.size(); ++i)
+			{
+				const bool is_selected = (m_iPickingIndex == i);
+
+				string szTag = "( " + to_string(i) + " )  " + iter_prop->second[i].TypeName;
+
+				if (ImGui::Selectable(szTag.c_str(), is_selected))
+				{
+					m_iPickingIndex = i;
+				}
+
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+
+			ImGui::EndListBox();
+		}
+
+		ImGui::TreePop();
+	}
+
+	ImGui::Text("");
+	ImGui::Separator();
+
 	RenderView_Transform_Info(iter_prop->second[m_iPickingIndex].pInstance);
 	RenderView_Transform_Edit(iter_prop->second[m_iPickingIndex].pInstance);
+
+	if (typeid(CInteraction_Door).hash_code() == iter_prop->second[m_iPickingIndex].HashCode ||
+		typeid(CStatic_Prop).hash_code()      == iter_prop->second[m_iPickingIndex].HashCode ||
+		typeid(CLight_Prop).hash_code()       == iter_prop->second[m_iPickingIndex].HashCode)
+	{
+		weak_ptr<CModel> pModel = iter_prop->second[m_iPickingIndex].pInstance.lock()->Get_Component<CModel>();
+		string szModelKeyName = pModel.lock()->Get_ModelKey();
+
+		ImGui::Text(string(string("ModelCom : " + szModelKeyName)).c_str());
+
+		if (!RenderView_SelectModelComponent() && m_bChangModel)
+		{
+			if (szModelKeyName != m_szSelectModelName)
+			{
+				pModel.lock()->Init_Model(m_szSelectModelName.c_str());
+			}
+		}
+
+		ImGui::Text("");
+		ImGui::Separator();
+	}
 
 	iter_prop->second[m_iPickingIndex].pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW);
 	

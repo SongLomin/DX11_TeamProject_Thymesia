@@ -80,6 +80,14 @@ void CInteraction_Ladder::LateTick(_float fTimeDelta)
 
 HRESULT CInteraction_Ladder::Render()
 {
+    if (FAILED(SetUp_ShaderResource()))
+        return E_FAIL;
+
+    return S_OK;
+}
+
+HRESULT CInteraction_Ladder::SetUp_ShaderResource()
+{
     if (FAILED(SetUp_ShaderResource_Up()))
         return E_FAIL;
     if (FAILED(SetUp_ShaderResource_Mid()))
@@ -87,7 +95,7 @@ HRESULT CInteraction_Ladder::Render()
     if (FAILED(SetUp_ShaderResource_Down()))
         return E_FAIL;
 
-    return S_OK;
+    return CGameObject::Render();
 }
 
 void CInteraction_Ladder::OnEventMessage(_uint iArg)

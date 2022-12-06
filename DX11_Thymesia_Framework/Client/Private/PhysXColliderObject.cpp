@@ -2,7 +2,7 @@
 #include "PhysXColliderObject.h"
 #include "PhysXCollider.h"
 #include "Client_Presets.h"
-#include "VIBuffer_DynamicCube.h"
+#include "VIBuffer_Cube.h"
 #include "Renderer.h"
 #include "Shader.h"
 
@@ -24,15 +24,16 @@ HRESULT CPhysXColliderObject::Initialize(void* pArg)
 	}
 	else
 	{
-		m_pVIBufferCom = Add_Component<CVIBuffer_DynamicCube>();
-		m_pShaderCom = Add_Component<CShader>();
+		m_pVIBufferCom = Add_Component<CVIBuffer_Cube>();
+		m_pShaderCom   = Add_Component<CShader>();
+		m_pRendererCom = Add_Component<CRenderer>();
+
 		m_pShaderCom.lock()->Set_ShaderInfo
 		(
 			TEXT("Shader_VtxCubeTex"),
 			VTXCUBETEX_DECLARATION::Element,
 			VTXCUBETEX_DECLARATION::iNumElements
 		);
-		m_pRendererCom = Add_Component<CRenderer>();
 	}
 
 	return S_OK;
@@ -76,9 +77,6 @@ HRESULT CPhysXColliderObject::Render()
 		if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
 			return E_FAIL;
 
-		if (1.f == m_vColor.y)
-			int a = 0;
-
 		m_pShaderCom.lock()->Begin(3);
 		m_pVIBufferCom.lock()->Render();
 	}
@@ -110,7 +108,6 @@ _bool CPhysXColliderObject::IsPicking(const RAY& In_Ray, _float& Out_fRange)
 void CPhysXColliderObject::Write_Json(json& Out_Json)
 {
 	__super::Write_Json(Out_Json);
-
 }
 
 void CPhysXColliderObject::Load_FromJson(const json& In_Json)

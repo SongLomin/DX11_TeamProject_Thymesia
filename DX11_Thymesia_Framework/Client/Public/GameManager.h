@@ -25,6 +25,7 @@ class CPlayer_FeatherUI;
 class CStatus_Player;
 
 class CMonster;
+class CInteraction_CheckPoint;
 
 class CGameManager :
     public CBase
@@ -44,8 +45,6 @@ public:
     
     void Enable_Layer(const OBJECT_LAYER& In_Layer);
     void Disable_Layer(const OBJECT_LAYER& In_Layer);
-
-
 
     list<weak_ptr<CGameObject>> Get_Layer(const OBJECT_LAYER& In_Layer);
     list<weak_ptr<CGameObject>> Get_LayerSelectEnable(const OBJECT_LAYER& In_Layer);
@@ -93,6 +92,10 @@ public:
     void Deactivate_Zoom();
     _vector Get_PlayerPos();
 
+public:
+    void Registration_CheckPoint(weak_ptr<CInteraction_CheckPoint> In_CheckPoint);
+    void Respawn_LastCheckPoint();
+
 private:
     void Start_Peace();
     void Start_Battle();
@@ -134,10 +137,13 @@ private:
 private:
     map<_hashcode, map<_int, map<_int, KEYFRAME_EVENT>>>         m_KeyEvents;
     typedef map<_int, KEYFRAME_EVENT>                            KEYEVENT;
-    typedef map<_int, KEYEVENT>                                   ANIM_MAP;
+    typedef map<_int, KEYEVENT>                                  ANIM_MAP;
 
 private:
-    _int                                                        m_iMonsterCount = 0;
+    _int                                                        m_iMonsterCount   = 0;
+
+private:
+    weak_ptr<CInteraction_CheckPoint>                           m_pCurSavePoint;
 
 protected:
     void Free();

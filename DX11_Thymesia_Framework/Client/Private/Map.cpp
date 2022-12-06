@@ -71,7 +71,7 @@ HRESULT CMap::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightP
 
 
 
-void CMap::SetUp_ShaderResource()
+HRESULT CMap::SetUp_ShaderResource()
 {
     __super::SetUp_ShaderResource();
 

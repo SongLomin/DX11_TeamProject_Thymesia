@@ -889,9 +889,10 @@ void CEffect_Rect::Play(_float fTimeDelta)
 
 						XMStoreFloat4x4(&m_tParticleDescs[i].matParentMatrix, BoneMatrix * m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
 					}
-					else
+					else if(m_pParentTransformCom.lock())
+					{
 						XMStoreFloat4x4(&m_tParticleDescs[i].matParentMatrix, m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
-
+					}
 				}
 			}
 			else

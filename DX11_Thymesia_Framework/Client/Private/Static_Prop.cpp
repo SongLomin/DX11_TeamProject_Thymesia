@@ -21,14 +21,14 @@ HRESULT CStatic_Prop::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
+    m_pPhyxXColliderCom = Add_Component<CPhysXCollider>();
+
     m_pShaderCom.lock()->Set_ShaderInfo
     (
         TEXT("Shader_VtxModel"),
         VTXMODEL_DECLARATION::Element,
         VTXMODEL_DECLARATION::iNumElements
     );
-
-    m_pPhyxXColliderCom = Add_Component<CPhysXCollider>();
 
     GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_StaticCast<CGameObject>(m_this));
 
@@ -37,17 +37,12 @@ HRESULT CStatic_Prop::Initialize(void* pArg)
 
 HRESULT CStatic_Prop::Start()
 {
-    __super::Start();
-    
-    
-
-    return S_OK;
+    return  __super::Start();
 }
 
 void CStatic_Prop::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
-
 }
 
 void CStatic_Prop::LateTick(_float fTimeDelta)
@@ -62,48 +57,17 @@ void CStatic_Prop::Before_Render(_float fTimeDelta)
 
 HRESULT CStatic_Prop::Render()
 {
-    __super::Render();
-
-    _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
-    for (_uint i = 0; i < iNumMeshContainers; ++i)
-    {
-        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-        {
-            // Do Nothing.
-        }
-
-        // 노말인데 5에 저장되어 있다..
-
-        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-        {
-            // 노말 텍스쳐가 없는 경우
-            m_iPassIndex = 0;
-        }
-        // 노말 텍스쳐가 있는 경우
-        else
-        {
-            if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-            {
-                m_iPassIndex = 6;
-
-            }
-            else
-                m_iPassIndex = 7;
-        }
-
-        m_pShaderCom.lock()->Begin(m_iPassIndex);
-        m_pModelCom.lock()->Render_Mesh(i);
-    }
-
-    return S_OK;
+    return __super::Render();
 }
 
 HRESULT CStatic_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix)
 {
-    m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
-
-    m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)&In_LightViewMatrix, sizeof(_float4x4));
-    m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)&In_LightProjMatrix, sizeof(_float4x4));
+    if (FAILED(m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
+        return E_FAIL;
+    if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)&In_LightViewMatrix, sizeof(_float4x4))))
+        return E_FAIL;
+    if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)&In_LightProjMatrix, sizeof(_float4x4))))
+        return E_FAIL;
 
     _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
     for (_uint i = 0; i < iNumMeshContainers; ++i)
@@ -120,6 +84,40 @@ _bool CStatic_Prop::IsPicking(const RAY& In_Ray, _float& Out_fRange)
     return m_pModelCom.lock()->IsModelPicking(In_Ray, Out_fRange);
 }
 
+HRESULT CStatic_Prop::SetUp_ShaderResource()
+{
+    if (FAILED(CProp::SetUp_ShaderResource()))
+        return E_FAIL;
+
+    _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
+    for (_uint i = 0; i < iNumMeshContainers; ++i)
+    {
+        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)));
+
+        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+        {
+            m_iPassIndex = 0;
+        }
+        else
+        {
+            if (m_bInvisibility)
+            {
+                if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+                    m_iPassIndex = 6;
+                else
+                    m_iPassIndex = 7;
+            }
+            else
+            {
+                m_iPassIndex = 3;
+            }
+        }
+
+        m_pShaderCom.lock()->Begin(m_iPassIndex);
+        m_pModelCom.lock()->Render_Mesh(i);
+    }
+}
+
 void CStatic_Prop::Write_Json(json& Out_Json)
 {
     __super::Write_Json(Out_Json);
@@ -132,9 +130,7 @@ void CStatic_Prop::Load_FromJson(const json& In_Json)
     __super::Load_FromJson(In_Json);
 
     if (In_Json.find("PhysX_Collider_Type") != In_Json.end())
-    {
         m_iColliderType = In_Json["PhysX_Collider_Type"];
-    }
 
     if ((_uint)LEVEL_EDIT == m_CreatedLevel)
     {
@@ -187,6 +183,8 @@ void CStatic_Prop::OnEventMessage(_uint iArg)
 
     if ((_uint)EVENT_TYPE::ON_EDITDRAW == iArg)
     {
+        SetUp_Invisibility();
+
         const _char* items[] = { "None", "Model", "ConvexModel" };
 
         if (ImGui::BeginListBox("PhysX Collider Type"))

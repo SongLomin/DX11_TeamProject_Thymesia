@@ -486,13 +486,13 @@ void CEditGround::SetUp_Textures()
 
 void CEditGround::SetUp_File()
 {
-	_char szName[64];
-	strcpy_s(szName, m_szMeshName.c_str());
+	_char szMeshName[64];
+	strcpy_s(szMeshName, m_szMeshName.c_str());
 	
 	ImGui::Text("[ Mesh ]");
-	if (ImGui::InputText("MeshName", szName, 64))
+	if (ImGui::InputText("MeshName", szMeshName, 64))
 	{
-		m_szMeshName = szName;
+		m_szMeshName = szMeshName;
 	}
 
 	static int	iSelect_MeshData = 0;
@@ -525,6 +525,7 @@ void CEditGround::SetUp_File()
 	if (ImGui::Button("Save", ImVec2(100.f, 25.f)))
 	{
 		Bake_Mesh();
+		MSG_BOX("Save Done : Bake_Mesh()");
 	}
 
 	ImGui::SameLine();
@@ -540,7 +541,9 @@ void CEditGround::SetUp_File()
 	ImGui::Text("[ Filter Texture ]");
 
 	static int	iSelect_FilterData		= 0;
-	static char	szFilterName[MAX_PATH]	= "";
+
+	_char szFilterName[64];
+	strcpy_s(szFilterName, m_szSaveTextureTag.c_str());
 
 	if (ImGui::InputText("Filter Name", szFilterName, MAX_PATH))
 		m_szSaveTextureTag = szFilterName;
@@ -582,6 +585,7 @@ void CEditGround::SetUp_File()
 	if (ImGui::Button("Save_Fltr", ImVec2(100.f, 25.f)))
 	{
 		Bake_FilterTexture();
+		MSG_BOX("Save Done : Bake_FilterTexture()");
 	}
 
 	ImGui::SameLine();
@@ -1083,9 +1087,7 @@ void CEditGround::Write_Json(json& Out_Json)
 	}
 
 	if (!Check_File("../bin/GroundInfo/Filter" + m_szSaveTextureTag + ".dds"))
-	{
 		Bake_FilterTexture();
-	}
 
 	Out_Json.emplace("g_FilterTexture", string(m_szSaveTextureTag));
 	Out_Json.emplace("TextureInfo"    , TexInfo);
@@ -1093,19 +1095,13 @@ void CEditGround::Write_Json(json& Out_Json)
 	Out_Json.emplace("ShaderPass"     , m_iShaderPass);
 
 	if (!Check_File("../bin/GroundInfo/Mesh/" + m_szSaveTextureTag + ".bin"))
-	{
 		Bake_Mesh();
-	}
 
 	if (Out_Json.end() != Out_Json.find("Hash"))
-	{
 		Out_Json["Hash"] = typeid(CGround).hash_code();
-	}
 	
 	if (Out_Json.end() != Out_Json.find("Name"))
-	{
 		Out_Json["Name"] = typeid(CGround).name();
-	}
 }
 
 void CEditGround::Load_FromJson(const json& In_Json)
@@ -1217,6 +1213,9 @@ void CEditGround::Load_FromJson(const json& In_Json)
 
 		Load_FilterTexture_FromJson(m_szSaveTextureTag);
 	}
+
+	if (In_Json.find("ShaderPass") != In_Json.end())
+		m_iShaderPass = In_Json["ShaderPass"];
 }
 
 void CEditGround::Load_AllMeshInfo()
@@ -1233,7 +1232,7 @@ void CEditGround::Load_AllMeshInfo()
 		szFileName = szFileName.substr(0, szFileName.size() - 4);
 
 		if (FAILED(GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::GROUND, XMMatrixIdentity())))
-			DEBUG_ASSERT;
+			continue;
 
 		itr++;
 	}

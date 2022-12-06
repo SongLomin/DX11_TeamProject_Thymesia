@@ -197,7 +197,6 @@ HRESULT CLevel_GamePlay::Render()
 
 void CLevel_GamePlay::ExitLevel(LEVEL eLevel)
 {
-
 	if (eLevel == LEVEL::LEVEL_STAGE2)
 	{
 		m_eNextLevel = eLevel;

@@ -102,9 +102,6 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading Prototype Objects..."));
 	GAMEINSTANCE->Add_Prototype_GameObject<CFadeMask>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CCamera_Target>();
-	GAMEINSTANCE->Add_Prototype_GameObject<CStage1>();
-	GAMEINSTANCE->Add_Prototype_GameObject<CStage2>();
-	GAMEINSTANCE->Add_Prototype_GameObject<CStage3>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CCorvus>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CNorMonster>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CTerrain>();
@@ -367,7 +364,6 @@ HRESULT CLoader::Loading_ForStage2Level()
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/GroundInfo/Mesh/ ]"));
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
 
-	CEditGround::Load_AllMeshInfo();
 #endif // _LOAD_CAPTURED_RESOURCE_
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Skybox Texture..."));

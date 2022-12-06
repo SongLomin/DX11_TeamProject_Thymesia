@@ -14,7 +14,7 @@ public:
 	void Set_LightDesc(const LIGHTDESC& LightDesc);
 
 public:
-	_uint Add_Light(const LIGHTDESC& LightDesc);
+	const LIGHTDESC& Add_Light(const LIGHTDESC& LightDesc);
 	_bool Remove_Light(const _uint& iIndex);
 	HRESULT Render_Lights(weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect> pVIBuffer);
 

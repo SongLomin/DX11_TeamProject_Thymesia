@@ -49,7 +49,7 @@ namespace Engine
 		_float4 vLightFlag = { 0.f, 0.f, 0.f, 0.f };
 
 	private:
-		_uint iLightIndex = 0;
+		_uint iLightIndex = _uint(-1);
 
 	public:
 		const _uint Get_LightIndex() const { return iLightIndex; }

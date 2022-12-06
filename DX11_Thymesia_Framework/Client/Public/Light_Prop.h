@@ -41,7 +41,8 @@ public:
 
     virtual void OnEventMessage(_uint iArg) override;
 
-public:
+private:
+    virtual void OnDestroy() override;
     void Free();
 };
 
