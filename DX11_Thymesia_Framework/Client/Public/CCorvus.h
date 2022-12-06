@@ -24,13 +24,13 @@ public:
     virtual HRESULT Render()                       override;
 
 
-
 protected:
     virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
 
 private:
+    void Debug_KeyInput(_float fTimeDelta);
     void Ready_Weapon();
     void Ready_States();
     virtual void SetUp_ShaderResource() override;
@@ -41,7 +41,6 @@ private:
     virtual void OnDestroy() override;
     void Free();
 
-    //TODO¿”Ω√
 private:
     weak_ptr<CTalent_Sword>  m_pSword;
     _uint m_iContainerIndex = 0;
