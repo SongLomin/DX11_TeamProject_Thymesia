@@ -32,7 +32,7 @@ void CCorvusState_PS_Axe::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_PW_Axe");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_PW_Axe");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_Axe::Call_AnimationEnd, this);
 }
 

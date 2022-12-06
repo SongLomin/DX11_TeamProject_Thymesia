@@ -32,7 +32,7 @@ void CCorvusState_NorMob_Execution::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_StunExecute_StartL_L");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_StunExecute_StartL_L");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_NorMob_Execution::Call_AnimationEnd, this);
 }
 

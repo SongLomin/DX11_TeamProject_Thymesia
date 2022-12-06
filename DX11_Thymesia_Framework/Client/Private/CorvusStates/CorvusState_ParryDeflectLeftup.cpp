@@ -29,7 +29,7 @@ void CCorvusState_ParryDeflectLeftup::Start()
 	__super::Start();
 
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD_ParryDeflect_LUp");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_ParryDeflect_LUp");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_ParryDeflectLeftup::Call_AnimationEnd, this);
 }
 

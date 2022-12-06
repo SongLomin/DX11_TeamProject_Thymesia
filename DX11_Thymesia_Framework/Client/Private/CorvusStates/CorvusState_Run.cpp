@@ -36,7 +36,7 @@ void CCorvusState_Run::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD_RunF_24");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_RunF_24");
 }
 
 void CCorvusState_Run::Tick(_float fTimeDelta)

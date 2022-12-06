@@ -36,7 +36,7 @@ void CCorvusState_Sprint::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD1_Sprint");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD1_Sprint");
 	m_pTransform = m_pOwner.lock()->Get_Component<CTransform>();
 }
 

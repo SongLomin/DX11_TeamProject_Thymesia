@@ -27,7 +27,7 @@ void CCorvusState_Fall_End::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD_Fall_End");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_Fall_End");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Fall_End::Call_AnimationEnd, this);
 }
 
