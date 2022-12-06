@@ -74,8 +74,20 @@ private:
     void Key_Input_ControlMesh(_float fTimeDelta);
     void Apply_ImGui_Controls_to_Mesh();
 #endif // _JOJO_EFFECT_TOOL_
-
-
+    void Tool_Control();
+    void Tool_Spawn_Life_Time();
+    void Tool_AnimationSync();
+    void Tool_Boner();
+    void Tool_Position();
+    void Tool_Speed();
+    void Tool_Rotation();
+    void Tool_Scale();
+    void Tool_Shaders();
+    void Tool_Colors();
+    void Tool_Texture_Diffuse();
+    void Tool_Texture_Noise();
+    void Tool_Texture_Mask();
+    void Tool_Collider();
 #endif // _DEBUG
 
 private:

@@ -690,6 +690,477 @@ void CCustomEffectMesh::Apply_ImGui_Controls_to_Mesh()
 	}
 }
 #endif // _JOJO_EFFECT_TOOL_
+
+void CCustomEffectMesh::Tool_Control()
+{
+	if (ImGui::Button("All Control##All_Control"))
+	{
+		m_tEffectMeshDesc.bOnFocus = true;
+		m_tEffectMeshDesc.bSyncStartPositionToController = true;
+		m_tEffectMeshDesc.bSyncStartRotationToController = true;
+	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("No Control##No_Control"))
+	{
+		m_tEffectMeshDesc.bOnFocus = false;
+		m_tEffectMeshDesc.bSyncStartPositionToController = false;
+		m_tEffectMeshDesc.bSyncStartRotationToController = false;
+	}
+
+	if (m_tEffectMeshDesc.bOnFocus)
+	{
+		if (ImGui::TreeNode("Control Key Info"))
+		{
+			ImGui::Text("Control Keys");
+			ImGui::Text("NumPad 8 : move  forward"); ImGui::SameLine();
+			ImGui::Text("NumPad 2 : move  backward");
+			ImGui::Text("NumPad 4 : move  leftward"); ImGui::SameLine();
+			ImGui::Text("NumPad 6 : move rightward");
+			ImGui::Text("NumPad 1 : move      down"); ImGui::SameLine();
+			ImGui::Text("NumPad 3 : move        up");
+			ImGui::Text("! Hold LShift to move by World Axis !");
+			ImGui::Separator();
+			ImGui::Separator();
+
+			ImGui::Text("Control Speed");
+			ImGui::DragFloat("##Control Speed", &m_tEffectMeshDesc.fSpeedPerSec);
+
+			ImGui::TreePop();
+		}
+	}
+}
+
+void CCustomEffectMesh::Tool_Spawn_Life_Time()
+{
+	ImGui::Text("[ Init Time ]");
+	ImGui::SetNextItemWidth(100.f);
+	ImGui::DragFloat("##Init Time", &m_tEffectMeshDesc.fInitTime, 0.2f);
+
+	ImGui::Text("[ Life Time ]");
+	ImGui::SetNextItemWidth(100.f);
+	ImGui::DragFloat("##Life Time", &m_tEffectMeshDesc.fLifeTime, 0.2f);
+}
+
+void CCustomEffectMesh::Tool_AnimationSync()
+{
+	ImGui::Text("Sync Animation");
+	ImGui::SameLine();
+	ImGui::Checkbox("##SyncAnimation", &m_tEffectMeshDesc.bSyncAnimation);
+	ImGui::SameLine();
+	ImGui::SetNextItemWidth(100.f);
+	ImGui::InputInt("##SyncAnimationKey", &m_tEffectMeshDesc.iSyncAnimationKey);
+}
+
+void CCustomEffectMesh::Tool_Boner()
+{
+	ImGui::Text("Boner"); ImGui::SameLine();
+	ImGui::Checkbox("##Is_Boner", &m_tEffectMeshDesc.bBoner);
+
+	if (m_tEffectMeshDesc.bBoner)
+	{
+		weak_ptr<CPreViewAnimationModel> pPreviewModel = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel();
+
+		if (!pPreviewModel.lock())
+		{
+			m_tEffectMeshDesc.bBoner = false;
+			return;
+		}
+
+		if (ImGui::Button("Get Bone List"))
+		{
+			m_pParentModel = pPreviewModel.lock()->Get_CurrentModel();
+			m_pParentTransformCom = pPreviewModel.lock()->Get_Transform();
+			m_AllBoneNames = GET_SINGLE(CWindow_AnimationModelView)->Get_AllBoneNames();
+		}
+
+		if (m_pParentModel.lock() && m_pParentTransformCom.lock())
+		{
+			if (ImGui::BeginListBox("Bone List - Mesh Effect"))
+			{
+				for (_int n(0); n < m_AllBoneNames.size(); n++)
+				{
+					const _bool is_selected = (m_iCurrentBoneIndex == n);
+					if (ImGui::Selectable(m_AllBoneNames[n].c_str(), is_selected))
+						m_strBoneName = m_AllBoneNames[n];
+
+					if (is_selected)
+						ImGui::SetItemDefaultFocus();
+				}
+
+				ImGui::EndListBox();
+			}
+		}
+
+		if (ImGui::Button("Bind##Bind_to_Bone"))
+		{
+			m_pBoneNode = m_pParentModel.lock()->Find_BoneNode(m_strBoneName);
+
+			if (!m_pBoneNode.lock())
+				assert(0);
+		}
+
+		if (m_pBoneNode.lock())
+		{
+			ImGui::Text("Binded to [ "); ImGui::SameLine();
+			ImGui::Text("m_strBoneName"); ImGui::SameLine(); ImGui::Text(" ] ");
+		}
+	}
+	else
+	{
+		m_pBoneNode.reset();
+		m_strBoneName.clear();
+	}
+}
+
+void CCustomEffectMesh::Tool_Position()
+{
+	ImGui::Checkbox("Sync Controller##Sync_Start_Position_to_Controller", &m_tEffectMeshDesc.bSyncStartPositionToController);
+	ImGui::Text("Start Position");
+	ImGui::DragFloat3("##Start Position", &m_tEffectMeshDesc.vStartPosition.x, 0.1f);
+}
+
+void CCustomEffectMesh::Tool_Speed()
+{
+	ImGui::Text("Speed");
+	ImGui::DragFloat3("##Speed", &m_tEffectMeshDesc.vSpeed.x, 0.1f);
+
+	ImGui::Text("Force");
+	ImGui::DragFloat3("##Force", &m_tEffectMeshDesc.vForce.x, 0.1f);
+
+	ImGui::Text("Min Speed");
+	ImGui::DragFloat3("##Min Speed", &m_tEffectMeshDesc.vMinSpeed.x, 0.1f);
+
+	ImGui::Text("Max Speed");
+	ImGui::DragFloat3("##Max Speed", &m_tEffectMeshDesc.vMaxSpeed.x, 0.1f);
+}
+
+void CCustomEffectMesh::Tool_Rotation()
+{
+	ImGui::Checkbox("Sync Controller##Sync_Start_Rotation_to_Controller", &m_tEffectMeshDesc.bSyncStartRotationToController);
+
+	ImGui::Text("Start Rotation");
+	ImGui::DragFloat3("##Start Rotation", &m_tEffectMeshDesc.vStartRotation.x, 0.01f);
+
+	ImGui::Text("Rotation Speed");
+	ImGui::DragFloat3("##Rotation Speed", &m_tEffectMeshDesc.vRotationSpeed.x, 0.01f);
+
+	ImGui::Text("Rotation Force");
+	ImGui::DragFloat3("##Rotation Force", &m_tEffectMeshDesc.vRotationForce.x, 0.01f);
+
+	ImGui::Text("Max Rotation");
+	ImGui::DragFloat3("##Max Rotation", &m_tEffectMeshDesc.vMaxRotation.x, 0.01f);
+}
+
+void CCustomEffectMesh::Tool_Scale()
+{
+	ImGui::Checkbox("Sync##Sync_Start_Scale", &m_tEffectMeshDesc.bSyncStartScale);
+
+	ImGui::Text("Start Scale");
+	ImGui::DragFloat3("##Start Scale", &m_tEffectMeshDesc.vStartScale.x, 0.01f);
+
+	if (m_tEffectMeshDesc.bSyncStartScale)
+	{
+		m_tEffectMeshDesc.vStartScale.y = m_tEffectMeshDesc.vStartScale.x;
+		m_tEffectMeshDesc.vStartScale.z = m_tEffectMeshDesc.vStartScale.x;
+	}
+
+	m_tEffectMeshDesc.vStartScale.x = max(FLT_MIN, m_tEffectMeshDesc.vStartScale.x);
+	m_tEffectMeshDesc.vStartScale.y = max(FLT_MIN, m_tEffectMeshDesc.vStartScale.y);
+	m_tEffectMeshDesc.vStartScale.z = max(FLT_MIN, m_tEffectMeshDesc.vStartScale.z);
+
+	ImGui::NewLine();
+
+	ImGui::Checkbox("Sync##Sync_Scale_Speed", &m_tEffectMeshDesc.bSyncScaleSpeed);
+
+	ImGui::Text("Scale Speed");
+	ImGui::DragFloat3("##Scale Speed", &m_tEffectMeshDesc.vScaleSpeed.x, 0.01f);
+
+	if (m_tEffectMeshDesc.bSyncScaleSpeed)
+	{
+		m_tEffectMeshDesc.vScaleSpeed.y = m_tEffectMeshDesc.vScaleSpeed.x;
+		m_tEffectMeshDesc.vScaleSpeed.z = m_tEffectMeshDesc.vScaleSpeed.x;
+	}
+
+	ImGui::NewLine();
+
+	ImGui::Checkbox("Sync##Sync_Scale_Force", &m_tEffectMeshDesc.bSyncScaleForce);
+
+	ImGui::Text("Scale Force");
+	ImGui::DragFloat3("##Scale Force", &m_tEffectMeshDesc.vScaleForce.x, 0.01f);
+
+	if (m_tEffectMeshDesc.bSyncScaleForce)
+	{
+		m_tEffectMeshDesc.vScaleForce.y = m_tEffectMeshDesc.vScaleForce.x;
+		m_tEffectMeshDesc.vScaleForce.z = m_tEffectMeshDesc.vScaleForce.x;
+	}
+
+	ImGui::NewLine();
+
+	ImGui::Checkbox("Sync##Sync_Min_Scale", &m_tEffectMeshDesc.bSyncMinScale);
+
+	ImGui::Text("Min Scale");
+	ImGui::DragFloat3("##Min Scale", &m_tEffectMeshDesc.vMinScale.x, 0.01f);
+
+	if (m_tEffectMeshDesc.bSyncMinScale)
+	{
+		m_tEffectMeshDesc.vMinScale.y = m_tEffectMeshDesc.vMinScale.x;
+		m_tEffectMeshDesc.vMinScale.z = m_tEffectMeshDesc.vMinScale.x;
+	}
+
+	ImGui::NewLine();
+
+	ImGui::Checkbox("Sync##Sync_Max_Scale", &m_tEffectMeshDesc.bSyncMaxScale);
+
+	ImGui::Text("Max Scale");
+	ImGui::DragFloat3("##Max Scale", &m_tEffectMeshDesc.vMaxScale.x, 0.01f);
+
+	if (m_tEffectMeshDesc.bSyncMaxScale)
+	{
+		m_tEffectMeshDesc.vMaxScale.y = m_tEffectMeshDesc.vMaxScale.x;
+		m_tEffectMeshDesc.vMaxScale.z = m_tEffectMeshDesc.vMaxScale.x;
+	}
+}
+
+void CCustomEffectMesh::Tool_Shaders()
+{
+	ImGui::Text("[0]Default"); ImGui::SameLine(); ImGui::Text(" | "); ImGui::SameLine();
+	ImGui::Text("[1]Distortion");
+	ImGui::Text("[2]Soft");
+	ImGui::SetNextItemWidth(100.f);
+	ImGui::InputInt("##Shader_Pass_Index", &m_tEffectMeshDesc.iShaderPassIndex);
+
+	ImGui::Checkbox("Distortion##Distortion", &m_tEffectMeshDesc.bDistortion); ImGui::SameLine();
+	ImGui::Checkbox("Bloom##Bloom", &m_tEffectMeshDesc.bBloom); ImGui::SameLine();
+	ImGui::Checkbox("Glow##Glow", &m_tEffectMeshDesc.bGlow);
+
+	if (m_tEffectMeshDesc.bGlow)
+	{
+		if (ImGui::TreeNode("Glow Options"))
+		{
+			ImGui::Text("Start Glow Color");
+			ImGui::DragFloat4("##Start_Glow_Color", &m_tEffectMeshDesc.vStartGlowColor.x, 0.01f);
+
+			ImGui::Text("Glow Color Speed ");
+			ImGui::DragFloat4("##Glow_Color_Speed", &m_tEffectMeshDesc.vGlowColorSpeed.x, 0.01f);
+
+			ImGui::Text("Glow Color Force");
+			ImGui::DragFloat4("##Glow_Color_Force", &m_tEffectMeshDesc.vGlowColorForce.x, 0.01f);
+
+			ImGui::TreePop();
+		}
+	}
+}
+
+void CCustomEffectMesh::Tool_Colors()
+{
+	ImGui::Text("Discard Ratio"); ImGui::SameLine();
+	ImGui::SetNextItemWidth(100.f);
+	ImGui::DragFloat("##Discard Ratio", &m_tEffectMeshDesc.fDiscardRatio, 0.01f, 0.f, 1.f, "%.3f", 0);
+
+	ImGui::Text("Start Color");
+	ImGui::DragFloat4("##Start Color", &m_tEffectMeshDesc.vStartColor.x, 0.01f, 0.f, 1.f, "%.5f");
+
+	ImGui::Text("Color Speed");
+	ImGui::DragFloat4("##Color Speed", &m_tEffectMeshDesc.vColorSpeed.x, 0.01f, -1.f, 1.f, "%.5f");
+
+	ImGui::Text("Color Force");
+	ImGui::DragFloat4("##Color Force", &m_tEffectMeshDesc.vColorForce.x, 0.01f, -1.f, 1.f, "%.5f");
+
+	ImGui::Text("Min Color");
+	ImGui::DragFloat4("##Min Color", &m_tEffectMeshDesc.vMinColor.x, 0.01f, 0.f, 1.f, "%.5f");
+
+	ImGui::Text("Max Color");
+	ImGui::DragFloat4("##Max Color", &m_tEffectMeshDesc.vMaxColor.x, 0.01f, 0.f, 1.f, "%.5f");
+}
+
+void CCustomEffectMesh::Tool_Texture_Diffuse()
+{
+	ImGui::Text("Texture Index"); ImGui::SameLine();
+	ImGui::SetNextItemWidth(100.f);
+	ImGui::InputInt("##DiffuseTextureIndex", &m_tEffectMeshDesc.iDiffuseTextureIndex, 1, 0);
+
+	ImGui::Checkbox("Wrap##WrapOption_Diffuse", &m_tEffectMeshDesc.bDiffuseWrap);
+
+	if (m_tEffectMeshDesc.bDiffuseWrap)
+	{
+		ImGui::Text("Wrap Weight"); ImGui::SameLine();
+		ImGui::SetNextItemWidth(100.f);
+		ImGui::DragFloat("##DiffuseTextureWrapWeight", &m_tEffectMeshDesc.vWrapWeight.x, 0.01f);
+	}
+
+	if (ImGui::TreeNode("Diffuse UV Options"))
+	{
+		ImGui::Text("Start UV");
+		ImGui::DragFloat2("##Diffuse Start UV", &m_tEffectMeshDesc.vDiffuseStartUV.x, 0.01f, 0.f, 1.f, "%.5f");
+
+		ImGui::Text("UV Speed");
+		ImGui::DragFloat2("##Diffuse UV Speed", &m_tEffectMeshDesc.vDiffuseUVSpeed.x, 0.01f);
+
+		ImGui::Text("UV Force");
+		ImGui::DragFloat2("##Diffuse UV Force", &m_tEffectMeshDesc.vDiffuseUVForce.x, 0.01f);
+
+		ImGui::Text("UV Min");
+		ImGui::DragFloat2("##Diffuse UV Min", &m_tEffectMeshDesc.vDiffuseUVMin.x, 0.01f);
+
+		ImGui::Text("UV Max");
+		ImGui::DragFloat2("##Diffuse UV Max", &m_tEffectMeshDesc.vDiffuseUVMax.x, 0.01f);
+
+		ImGui::TreePop();
+	}
+}
+
+void CCustomEffectMesh::Tool_Texture_Noise()
+{
+	ImGui::Text("Texture Index"); ImGui::SameLine();
+	ImGui::SetNextItemWidth(100.f);
+	ImGui::InputInt("##NoiseTextureIndex", &m_tEffectMeshDesc.iNoiseTextureIndex, 1, 0);
+
+	ImGui::Text("Dynamic Noise"); ImGui::SameLine();
+	ImGui::Checkbox("##Dynamic Noise Option", &m_tEffectMeshDesc.bDynamicNoiseOption);
+
+	ImGui::Text("Checked : Wrap | Unchecked : Clamp"); ImGui::SameLine();
+	ImGui::Checkbox("##WrapOption_Noise", &m_tEffectMeshDesc.bNoiseWrap);
+
+	if (m_tEffectMeshDesc.bNoiseWrap)
+	{
+		ImGui::Text("Wrap Weight"); ImGui::SameLine();
+		ImGui::SetNextItemWidth(100.f);
+		ImGui::DragFloat("##NoiseTextureWrapWeight", &m_tEffectMeshDesc.vWrapWeight.x, 0.01f);
+	}
+
+	if (ImGui::TreeNode("Noise UV Options"))
+	{
+		ImGui::Text("Start UV");
+		ImGui::DragFloat2("##Noise Start UV", &m_tEffectMeshDesc.vNoiseStartUV.x, 0.01f, 0.f, 1.f, "%.5f");
+
+		ImGui::Text("UV Speed");
+		ImGui::DragFloat2("##Noise UV Speed", &m_tEffectMeshDesc.vNoiseUVSpeed.x, 0.01f);
+
+		ImGui::Text("UV Force");
+		ImGui::DragFloat2("##Noise UV Force", &m_tEffectMeshDesc.vNoiseUVForce.x, 0.01f);
+
+		ImGui::Text("UV Min");
+		ImGui::DragFloat2("##Noise UV Min", &m_tEffectMeshDesc.vNoiseUVMin.x, 0.01f);
+
+		ImGui::Text("UV Max");
+		ImGui::DragFloat2("##Noise UV Max", &m_tEffectMeshDesc.vNoiseUVMax.x, 0.01f);
+
+		ImGui::TreePop();
+	}
+}
+
+void CCustomEffectMesh::Tool_Texture_Mask()
+{
+	ImGui::Text("Texture Index"); ImGui::SameLine();
+	ImGui::SetNextItemWidth(100.f);
+	ImGui::InputInt("##MaskTextureIndex", &m_tEffectMeshDesc.iMaskTextureIndex, 1, 0);
+
+	ImGui::Text("Checked : Wrap | Unchecked : Clamp"); ImGui::SameLine();
+	ImGui::Checkbox("##WrapOption_Mask", &m_tEffectMeshDesc.bMaskWrap);
+
+	if (m_tEffectMeshDesc.bMaskWrap)
+	{
+		ImGui::Text("Wrap Weight"); ImGui::SameLine();
+		ImGui::SetNextItemWidth(100.f);
+		ImGui::DragFloat("##MaskTextureWrapWeight", &m_tEffectMeshDesc.vWrapWeight.x, 0.01f);
+	}
+
+	if (ImGui::TreeNode("Mask UV Options"))
+	{
+		ImGui::Text("Start UV");
+		ImGui::DragFloat2("##Mask Start UV", &m_tEffectMeshDesc.vMaskStartUV.x, 0.01f, 0.f, 1.f, "%.5f");
+
+		ImGui::Text("UV Speed");
+		ImGui::DragFloat2("##Mask UV Speed", &m_tEffectMeshDesc.vMaskUVSpeed.x, 0.01f);
+
+		ImGui::Text("UV Force");
+		ImGui::DragFloat2("##Mask UV Force", &m_tEffectMeshDesc.vMaskUVForce.x, 0.01f);
+
+		ImGui::Text("UV Min");
+		ImGui::DragFloat2("##Mask UV Min", &m_tEffectMeshDesc.vMaskUVMin.x, 0.01f);
+
+		ImGui::Text("UV Max");
+		ImGui::DragFloat2("##Mask UV Max", &m_tEffectMeshDesc.vMaskUVMax.x, 0.01f);
+
+		ImGui::TreePop();
+	}
+}
+
+void CCustomEffectMesh::Tool_Collider()
+{
+	ImGui::Text("Collider"); ImGui::SameLine();
+	ImGui::Checkbox("##Collider", &m_tEffectMeshDesc.bCollider);
+
+	if (m_tEffectMeshDesc.bCollider)
+	{
+		ImGui::Text("Sync Transform"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);
+		ImGui::Checkbox("##Sync_Transform", &m_tEffectMeshDesc.bWeaponSyncTransform);
+
+		ImGui::DragFloat("Collider_Life_Time", &m_tEffectMeshDesc.fWeaponLifeTime, 0.05f);
+
+		ImGui::Text("Weapon Scale"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);
+		ImGui::DragFloat("##Weapon_Scale", &m_tEffectMeshDesc.fWeaponScale, 0.1f);
+
+		if (ImGui::TreeNode("Hit Type"))
+		{
+			const char* HitType_items[] = { "Normal", "Upper", "Down", "Warning","left","right","excute","Parry" };
+
+			if (ImGui::BeginListBox("Hit Type"))
+			{
+				for (int n(0); n < IM_ARRAYSIZE(HitType_items); n++)
+				{
+					const bool is_selected = (m_tEffectMeshDesc.iHitType == n);
+					if (ImGui::Selectable(HitType_items[n], is_selected))
+					{
+						m_tEffectMeshDesc.iHitType = n;
+					}
+
+					// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+					if (is_selected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndListBox();
+			}
+
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("Option Type"))
+		{
+			const char* Option_items[] = { "None", "Normal", "Plague", "Special_Attack","Parry" };
+
+			if (ImGui::BeginListBox("Option Type"))
+			{
+				for (int n(0); n < IM_ARRAYSIZE(Option_items); n++)
+				{
+					const bool is_selected = (m_tEffectMeshDesc.iHitType == n);
+					if (ImGui::Selectable(Option_items[n], is_selected))
+					{
+						m_tEffectMeshDesc.iOptionType = n;
+					}
+
+					// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+					if (is_selected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndListBox();
+			}
+
+			ImGui::TreePop();
+		}
+
+		ImGui::Text("Damage"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);
+		ImGui::DragFloat("##Damage", &m_tEffectMeshDesc.fDamage);
+
+		ImGui::Text("Weapon Offset");
+		ImGui::DragFloat3("##Weapon_Offset", &m_tEffectMeshDesc.vWeaponOffset.x, 0.05f);
+
+		ImGui::Text("HitFreq"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);
+		ImGui::DragFloat("##HitFreq", &m_tEffectMeshDesc.fHitFreq);
+	}
+}
+
 #endif // _DEBUG
 void CCustomEffectMesh::Play_Internal(_float fFrameTime)
 {
@@ -958,60 +1429,17 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 	{
 		if (ImGui::CollapsingHeader("CustomEffectMesh"), ImGuiTreeNodeFlags_DefaultOpen)
 		{
-			if (ImGui::Button("Clone"))
+			if (ImGui::Button("Clone##Clone_EffectMesh"))
 				this->Clone_EffectMesh();
 
 			// TODO : for imgui - mesh keyboard control
 			ImGui::Checkbox("Focus Control##Control_Focus", &m_tEffectMeshDesc.bOnFocus);
 
-			if (ImGui::Button("All Control##All_Control"))
-			{
-				m_tEffectMeshDesc.bOnFocus = true;
-				m_tEffectMeshDesc.bSyncStartPositionToController = true;
-				m_tEffectMeshDesc.bSyncStartRotationToController = true;
-			}
+			this->Tool_Control();
 
-			ImGui::SameLine();
-
-			if (ImGui::Button("No Control##No_Control"))
-			{
-				m_tEffectMeshDesc.bOnFocus = false;
-				m_tEffectMeshDesc.bSyncStartPositionToController = false;
-				m_tEffectMeshDesc.bSyncStartRotationToController = false;
-			}
-
-			if (m_tEffectMeshDesc.bOnFocus)
-			{
-				if (ImGui::TreeNode("Control Key Info"))
-				{
-					ImGui::Text("Control Keys");
-					ImGui::Text("NumPad 8 : move  forward"); ImGui::SameLine();
-					ImGui::Text("NumPad 2 : move  backward");
-					ImGui::Text("NumPad 4 : move  leftward"); ImGui::SameLine();
-					ImGui::Text("NumPad 6 : move rightward");
-					ImGui::Text("NumPad 1 : move      down"); ImGui::SameLine();
-					ImGui::Text("NumPad 3 : move        up");
-					ImGui::Text("! Hold LShift to move by World Axis !");
-					ImGui::Separator();
-					ImGui::Separator();
-
-					ImGui::Text("Control Speed");
-					ImGui::DragFloat("##Control Speed", &m_tEffectMeshDesc.fSpeedPerSec);
-
-					ImGui::TreePop();
-				}
-			}
 
 			if (ImGui::CollapsingHeader("Spawn & Life Time"))
-			{
-				ImGui::Text("[ Init Time ]");
-				ImGui::SetNextItemWidth(100.f);
-				ImGui::DragFloat("##Init Time", &m_tEffectMeshDesc.fInitTime, 0.2f);
-
-				ImGui::Text("[ Life Time ]");
-				ImGui::SetNextItemWidth(100.f);
-				ImGui::DragFloat("##Life Time", &m_tEffectMeshDesc.fLifeTime, 0.2f);
-			}
+				this->Tool_Spawn_Life_Time();
 
 			ImGui::Text("Follow Transform");
 			ImGui::SameLine();
@@ -1022,443 +1450,51 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::Checkbox("##BillBoard", &m_tEffectMeshDesc.bBillBoard);
 
 			if (ImGui::CollapsingHeader("Animation Sync"))
-			{
-				ImGui::Text("Sync Animation");
-				ImGui::SameLine();
-				ImGui::Checkbox("##SyncAnimation", &m_tEffectMeshDesc.bSyncAnimation);
-				ImGui::SameLine();
-				ImGui::SetNextItemWidth(100.f);
-				ImGui::InputInt("##SyncAnimationKey", &m_tEffectMeshDesc.iSyncAnimationKey);
-			}
-#pragma region Boner
+				this->Tool_AnimationSync();
+
 			if (ImGui::CollapsingHeader("Boner"))
-			{
-				ImGui::Text("Boner"); ImGui::SameLine();
-				ImGui::Checkbox("##Is_Boner", &m_tEffectMeshDesc.bBoner);
+				this->Tool_Boner();
 
-				if (m_tEffectMeshDesc.bBoner)
-				{
-					weak_ptr<CPreViewAnimationModel> pPreviewModel = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel();
-
-					if (!pPreviewModel.lock())
-					{
-						m_tEffectMeshDesc.bBoner = false;
-						return;
-					}
-
-					if (ImGui::Button("Get Bone List"))
-					{
-						m_pParentModel = pPreviewModel.lock()->Get_CurrentModel();
-						m_pParentTransformCom = pPreviewModel.lock()->Get_Transform();
-						m_AllBoneNames = GET_SINGLE(CWindow_AnimationModelView)->Get_AllBoneNames();
-					}
-
-					if (m_pParentModel.lock() && m_pParentTransformCom.lock())
-					{
-						if (ImGui::BeginListBox("Bone List - Mesh Effect"))
-						{
-							for (_int n(0); n < m_AllBoneNames.size(); n++)
-							{
-								const _bool is_selected = (m_iCurrentBoneIndex == n);
-								if (ImGui::Selectable(m_AllBoneNames[n].c_str(), is_selected))
-									m_strBoneName = m_AllBoneNames[n];
-
-								if (is_selected)
-									ImGui::SetItemDefaultFocus();
-							}
-
-							ImGui::EndListBox();
-						}
-					}
-
-					if (ImGui::Button("Bind##Bind_to_Bone"))
-					{
-						m_pBoneNode = m_pParentModel.lock()->Find_BoneNode(m_strBoneName);
-
-						if (!m_pBoneNode.lock())
-							assert(0);
-					}
-
-					if (m_pBoneNode.lock())
-					{
-						ImGui::Text("Binded to [ "); ImGui::SameLine();
-						ImGui::Text("m_strBoneName"); ImGui::SameLine(); ImGui::Text(" ] ");
-					}
-				}
-				else
-				{
-					m_pBoneNode.reset();
-					m_strBoneName.clear();
-				}
-			}
-#pragma endregion
 
 			if (ImGui::CollapsingHeader("Position"))
-			{
-				ImGui::Text("Sync Controller"); ImGui::SameLine();
-				ImGui::Checkbox("##Sync_Start_Position_to_Controller", &m_tEffectMeshDesc.bSyncStartPositionToController);
-				ImGui::Text("Start Position");
-				ImGui::DragFloat3("##Start Position", &m_tEffectMeshDesc.vStartPosition.x, 0.1f);
-			}
+				this->Tool_Position();
 
 			if (ImGui::CollapsingHeader("Speed"))
-			{
-				ImGui::Text("Speed");
-				ImGui::DragFloat3("##Speed", &m_tEffectMeshDesc.vSpeed.x, 0.1f);
-
-				ImGui::Text("Force");
-				ImGui::DragFloat3("##Force", &m_tEffectMeshDesc.vForce.x, 0.1f);
-
-				ImGui::Text("Min Speed");
-				ImGui::DragFloat3("##Min Speed", &m_tEffectMeshDesc.vMinSpeed.x, 0.1f);
-
-				ImGui::Text("Max Speed");
-				ImGui::DragFloat3("##Max Speed", &m_tEffectMeshDesc.vMaxSpeed.x, 0.1f);
-			}
+				this->Tool_Speed();
 
 			if (ImGui::CollapsingHeader("Rotation"))
-			{
-				ImGui::Text("Sync Controller"); ImGui::SameLine();
-				ImGui::Checkbox("##Sync_Start_Rotation_to_Controller", &m_tEffectMeshDesc.bSyncStartRotationToController);
-
-				ImGui::Text("Start Rotation");
-				ImGui::DragFloat3("##Start Rotation", &m_tEffectMeshDesc.vStartRotation.x, 0.01f);
-
-				ImGui::Text("Rotation Speed");
-				ImGui::DragFloat3("##Rotation Speed", &m_tEffectMeshDesc.vRotationSpeed.x, 0.01f);
-
-				ImGui::Text("Rotation Force");
-				ImGui::DragFloat3("##Rotation Force", &m_tEffectMeshDesc.vRotationForce.x, 0.01f);
-
-				ImGui::Text("Max Rotation");
-				ImGui::DragFloat3("##Max Rotation", &m_tEffectMeshDesc.vMaxRotation.x, 0.01f);
-			}
+				this->Tool_Rotation();
 
 			if (ImGui::CollapsingHeader("Scale"))
-			{
-#pragma region Start Scale
-				ImGui::Text("Sync"); ImGui::SameLine();
-				ImGui::Checkbox("##Sync_Start_Scale", &m_tEffectMeshDesc.bSyncStartScale);
-
-				ImGui::Text("Start Scale");
-				ImGui::DragFloat3("##Start Scale", &m_tEffectMeshDesc.vStartScale.x, 0.01f);
-
-				if (m_tEffectMeshDesc.bSyncStartScale)
-				{
-					m_tEffectMeshDesc.vStartScale.y = m_tEffectMeshDesc.vStartScale.x;
-					m_tEffectMeshDesc.vStartScale.z = m_tEffectMeshDesc.vStartScale.x;
-				}
-
-				m_tEffectMeshDesc.vStartScale.x = max(FLT_MIN, m_tEffectMeshDesc.vStartScale.x);
-				m_tEffectMeshDesc.vStartScale.y = max(FLT_MIN, m_tEffectMeshDesc.vStartScale.y);
-				m_tEffectMeshDesc.vStartScale.z = max(FLT_MIN, m_tEffectMeshDesc.vStartScale.z);
-#pragma endregion
-				ImGui::NewLine();
-#pragma region Scale Speed
-				ImGui::Text("Sync"); ImGui::SameLine();
-				ImGui::Checkbox("##Sync_Scale_Speed", &m_tEffectMeshDesc.bSyncScaleSpeed);
-
-				ImGui::Text("Scale Speed");
-				ImGui::DragFloat3("##Scale Speed", &m_tEffectMeshDesc.vScaleSpeed.x, 0.01f);
-
-				if (m_tEffectMeshDesc.bSyncScaleSpeed)
-				{
-					m_tEffectMeshDesc.vScaleSpeed.y = m_tEffectMeshDesc.vScaleSpeed.x;
-					m_tEffectMeshDesc.vScaleSpeed.z = m_tEffectMeshDesc.vScaleSpeed.x;
-				}
-#pragma endregion
-				ImGui::NewLine();
-#pragma region Scale Force
-				ImGui::Text("Sync"); ImGui::SameLine();
-				ImGui::Checkbox("##Sync_Scale_Force", &m_tEffectMeshDesc.bSyncScaleForce);
-
-				ImGui::Text("Scale Force");
-				ImGui::DragFloat3("##Scale Force", &m_tEffectMeshDesc.vScaleForce.x, 0.01f);
-
-				if (m_tEffectMeshDesc.bSyncScaleForce)
-				{
-					m_tEffectMeshDesc.vScaleForce.y = m_tEffectMeshDesc.vScaleForce.x;
-					m_tEffectMeshDesc.vScaleForce.z = m_tEffectMeshDesc.vScaleForce.x;
-				}
-#pragma endregion
-				ImGui::NewLine();
-#pragma region Min Scale
-				ImGui::Text("Sync"); ImGui::SameLine();
-				ImGui::Checkbox("##Sync_Min_Scale", &m_tEffectMeshDesc.bSyncMinScale);
-
-				ImGui::Text("Min Scale");
-				ImGui::DragFloat3("##Min Scale", &m_tEffectMeshDesc.vMinScale.x, 0.01f);
-
-				if (m_tEffectMeshDesc.bSyncMinScale)
-				{
-					m_tEffectMeshDesc.vMinScale.y = m_tEffectMeshDesc.vMinScale.x;
-					m_tEffectMeshDesc.vMinScale.z = m_tEffectMeshDesc.vMinScale.x;
-				}
-#pragma endregion
-				ImGui::NewLine();
-#pragma region Max Scale
-				ImGui::Text("Sync"); ImGui::SameLine();
-				ImGui::Checkbox("##Sync_Max_Scale", &m_tEffectMeshDesc.bSyncMaxScale);
-
-				ImGui::Text("Max Scale");
-				ImGui::DragFloat3("##Max Scale", &m_tEffectMeshDesc.vMaxScale.x, 0.01f);
-
-				if (m_tEffectMeshDesc.bSyncMaxScale)
-				{
-					m_tEffectMeshDesc.vMaxScale.y = m_tEffectMeshDesc.vMaxScale.x;
-					m_tEffectMeshDesc.vMaxScale.z = m_tEffectMeshDesc.vMaxScale.x;
-				}
-#pragma endregion
-			}
+				this->Tool_Scale();
 
 			if (ImGui::CollapsingHeader("Shaders"))
-			{
-				ImGui::Text("[0]Default"); ImGui::SameLine(); ImGui::Text(" | "); ImGui::SameLine();
-				ImGui::Text("[1]Distortion");
-				ImGui::Text("[2]Soft");
-				ImGui::SetNextItemWidth(100.f);
-				ImGui::InputInt("##Shader_Pass_Index", &m_tEffectMeshDesc.iShaderPassIndex);
-
-				ImGui::Text("Distortion"); ImGui::SameLine();
-				ImGui::Checkbox("##Distortion", &m_tEffectMeshDesc.bDistortion); ImGui::SameLine();
-
-				ImGui::Text("Bloom"); ImGui::SameLine();
-				ImGui::Checkbox("##Bloom", &m_tEffectMeshDesc.bBloom); ImGui::SameLine();
-
-				ImGui::Text("Glow"); ImGui::SameLine();
-				ImGui::Checkbox("##Glow", &m_tEffectMeshDesc.bGlow);
-
-				if (m_tEffectMeshDesc.bGlow)
-				{
-					if (ImGui::TreeNode("Glow Options"))
-					{
-						ImGui::Text("Start Glow Color");
-						ImGui::DragFloat4("##Start_Glow_Color", &m_tEffectMeshDesc.vStartGlowColor.x, 0.01f);
-
-						ImGui::Text("Glow Color Speed ");
-						ImGui::DragFloat4("##Glow_Color_Speed", &m_tEffectMeshDesc.vGlowColorSpeed.x, 0.01f);
-
-						ImGui::Text("Glow Color Force");
-						ImGui::DragFloat4("##Glow_Color_Force", &m_tEffectMeshDesc.vGlowColorForce.x, 0.01f);
-
-						ImGui::TreePop();
-					}
-				}
-			}
+				this->Tool_Shaders();
 
 			if (ImGui::CollapsingHeader("Colors"))
-			{
-				ImGui::Text("Discard Ratio"); ImGui::SameLine();
-				ImGui::SetNextItemWidth(100.f);
-				ImGui::DragFloat("##Discard Ratio", &m_tEffectMeshDesc.fDiscardRatio, 0.01f, 0.f, 1.f, "%.3f", 0);
-
-				ImGui::Text("Start Color");
-				ImGui::DragFloat4("##Start Color", &m_tEffectMeshDesc.vStartColor.x, 0.01f, 0.f, 1.f, "%.5f");
-
-				ImGui::Text("Color Speed");
-				ImGui::DragFloat4("##Color Speed", &m_tEffectMeshDesc.vColorSpeed.x, 0.01f, -1.f, 1.f, "%.5f");
-
-				ImGui::Text("Color Force");
-				ImGui::DragFloat4("##Color Force", &m_tEffectMeshDesc.vColorForce.x, 0.01f, -1.f, 1.f, "%.5f");
-
-				ImGui::Text("Min Color");
-				ImGui::DragFloat4("##Min Color", &m_tEffectMeshDesc.vMinColor.x, 0.01f, 0.f, 1.f, "%.5f");
-
-				ImGui::Text("Max Color");
-				ImGui::DragFloat4("##Max Color", &m_tEffectMeshDesc.vMaxColor.x, 0.01f, 0.f, 1.f, "%.5f");
-			}
+				this->Tool_Colors();
 
 			if (ImGui::CollapsingHeader("Textures"))
 			{
 				if (ImGui::TreeNode("Diffuse"))
 				{
-					ImGui::Text("Texture Index"); ImGui::SameLine();
-					ImGui::SetNextItemWidth(100.f);
-					ImGui::InputInt("##DiffuseTextureIndex", &m_tEffectMeshDesc.iDiffuseTextureIndex, 1, 0);
-
-					ImGui::Text("Checked : Wrap | Unchecked : Clamp"); ImGui::SameLine();
-					ImGui::Checkbox("##WrapOption_Diffuse", &m_tEffectMeshDesc.bDiffuseWrap);
-
-					if (m_tEffectMeshDesc.bDiffuseWrap)
-					{
-						ImGui::Text("Wrap Weight"); ImGui::SameLine();
-						ImGui::SetNextItemWidth(100.f);
-						ImGui::DragFloat("##DiffuseTextureWrapWeight", &m_tEffectMeshDesc.vWrapWeight.x, 0.01f);
-					}
-
-					if (ImGui::TreeNode("Diffuse UV Options"))
-					{
-						ImGui::Text("Start UV");
-						ImGui::DragFloat2("##Diffuse Start UV", &m_tEffectMeshDesc.vDiffuseStartUV.x, 0.01f, 0.f, 1.f, "%.5f");
-
-						ImGui::Text("UV Speed");
-						ImGui::DragFloat2("##Diffuse UV Speed", &m_tEffectMeshDesc.vDiffuseUVSpeed.x, 0.01f);
-
-						ImGui::Text("UV Force");
-						ImGui::DragFloat2("##Diffuse UV Force", &m_tEffectMeshDesc.vDiffuseUVForce.x, 0.01f);
-
-						ImGui::Text("UV Min");
-						ImGui::DragFloat2("##Diffuse UV Min", &m_tEffectMeshDesc.vDiffuseUVMin.x, 0.01f);
-
-						ImGui::Text("UV Max");
-						ImGui::DragFloat2("##Diffuse UV Max", &m_tEffectMeshDesc.vDiffuseUVMax.x, 0.01f);
-
-						ImGui::TreePop();
-					}
+					this->Tool_Texture_Diffuse();
 					ImGui::TreePop();
 				}
 				if (ImGui::TreeNode("Noise"))
 				{
-					ImGui::Text("Texture Index"); ImGui::SameLine();
-					ImGui::SetNextItemWidth(100.f);
-					ImGui::InputInt("##NoiseTextureIndex", &m_tEffectMeshDesc.iNoiseTextureIndex, 1, 0);
-
-					ImGui::Text("Dynamic Noise"); ImGui::SameLine();
-					ImGui::Checkbox("##Dynamic Noise Option", &m_tEffectMeshDesc.bDynamicNoiseOption);
-
-					ImGui::Text("Checked : Wrap | Unchecked : Clamp"); ImGui::SameLine();
-					ImGui::Checkbox("##WrapOption_Noise", &m_tEffectMeshDesc.bNoiseWrap);
-
-					if (m_tEffectMeshDesc.bNoiseWrap)
-					{
-						ImGui::Text("Wrap Weight"); ImGui::SameLine();
-						ImGui::SetNextItemWidth(100.f);
-						ImGui::DragFloat("##NoiseTextureWrapWeight", &m_tEffectMeshDesc.vWrapWeight.x, 0.01f);
-					}
-
-					if (ImGui::TreeNode("Noise UV Options"))
-					{
-						ImGui::Text("Start UV");
-						ImGui::DragFloat2("##Noise Start UV", &m_tEffectMeshDesc.vNoiseStartUV.x, 0.01f, 0.f, 1.f, "%.5f");
-
-						ImGui::Text("UV Speed");
-						ImGui::DragFloat2("##Noise UV Speed", &m_tEffectMeshDesc.vNoiseUVSpeed.x, 0.01f);
-
-						ImGui::Text("UV Force");
-						ImGui::DragFloat2("##Noise UV Force", &m_tEffectMeshDesc.vNoiseUVForce.x, 0.01f);
-
-						ImGui::Text("UV Min");
-						ImGui::DragFloat2("##Noise UV Min", &m_tEffectMeshDesc.vNoiseUVMin.x, 0.01f);
-
-						ImGui::Text("UV Max");
-						ImGui::DragFloat2("##Noise UV Max", &m_tEffectMeshDesc.vNoiseUVMax.x, 0.01f);
-
-						ImGui::TreePop();
-					}
+					this->Tool_Texture_Noise();
 					ImGui::TreePop();
 				}
 				if (ImGui::TreeNode("Mask"))
 				{
-					ImGui::Text("Texture Index"); ImGui::SameLine();
-					ImGui::SetNextItemWidth(100.f);
-					ImGui::InputInt("##MaskTextureIndex", &m_tEffectMeshDesc.iMaskTextureIndex, 1, 0);
-
-					ImGui::Text("Checked : Wrap | Unchecked : Clamp"); ImGui::SameLine();
-					ImGui::Checkbox("##WrapOption_Mask", &m_tEffectMeshDesc.bMaskWrap);
-
-					if (m_tEffectMeshDesc.bMaskWrap)
-					{
-						ImGui::Text("Wrap Weight"); ImGui::SameLine();
-						ImGui::SetNextItemWidth(100.f);
-						ImGui::DragFloat("##MaskTextureWrapWeight", &m_tEffectMeshDesc.vWrapWeight.x, 0.01f);
-					}
-
-					if (ImGui::TreeNode("Mask UV Options"))
-					{
-						ImGui::Text("Start UV");
-						ImGui::DragFloat2("##Mask Start UV", &m_tEffectMeshDesc.vMaskStartUV.x, 0.01f, 0.f, 1.f, "%.5f");
-
-						ImGui::Text("UV Speed");
-						ImGui::DragFloat2("##Mask UV Speed", &m_tEffectMeshDesc.vMaskUVSpeed.x, 0.01f);
-
-						ImGui::Text("UV Force");
-						ImGui::DragFloat2("##Mask UV Force", &m_tEffectMeshDesc.vMaskUVForce.x, 0.01f);
-
-						ImGui::Text("UV Min");
-						ImGui::DragFloat2("##Mask UV Min", &m_tEffectMeshDesc.vMaskUVMin.x, 0.01f);
-
-						ImGui::Text("UV Max");
-						ImGui::DragFloat2("##Mask UV Max", &m_tEffectMeshDesc.vMaskUVMax.x, 0.01f);
-
-						ImGui::TreePop();
-					}
-
+					this->Tool_Texture_Mask();
 					ImGui::TreePop();
 				}
 			}
 
 			if (ImGui::CollapsingHeader("Collider"))
-			{
-				ImGui::Text("Collider"); ImGui::SameLine();
-				ImGui::Checkbox("##Collider", &m_tEffectMeshDesc.bCollider);
-
-				if (m_tEffectMeshDesc.bCollider)
-				{
-					ImGui::Text("Sync Transform"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);
-					ImGui::Checkbox("##Sync_Transform", &m_tEffectMeshDesc.bWeaponSyncTransform);
-
-					ImGui::DragFloat("Collider_Life_Time", &m_tEffectMeshDesc.fWeaponLifeTime, 0.05f);
-
-					ImGui::Text("Weapon Scale"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);
-					ImGui::DragFloat("##Weapon_Scale", &m_tEffectMeshDesc.fWeaponScale, 0.1f);
-
-					if (ImGui::TreeNode("Hit Type"))
-					{
-						const char* HitType_items[] = { "Normal", "Upper", "Down", "Warning","left","right","excute","Parry" };
-
-						if (ImGui::BeginListBox("Hit Type"))
-						{
-							for (int n(0); n < IM_ARRAYSIZE(HitType_items); n++)
-							{
-								const bool is_selected = (m_tEffectMeshDesc.iHitType == n);
-								if (ImGui::Selectable(HitType_items[n], is_selected))
-								{
-									m_tEffectMeshDesc.iHitType = n;
-								}
-
-								// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-								if (is_selected)
-									ImGui::SetItemDefaultFocus();
-							}
-							ImGui::EndListBox();
-						}
-
-						ImGui::TreePop();
-					}
-					if (ImGui::TreeNode("Option Type"))
-					{
-						const char* Option_items[] = { "None", "Normal", "Plague", "Special_Attack","Parry" };
-
-						if (ImGui::BeginListBox("Option Type"))
-						{
-							for (int n(0); n < IM_ARRAYSIZE(Option_items); n++)
-							{
-								const bool is_selected = (m_tEffectMeshDesc.iHitType == n);
-								if (ImGui::Selectable(Option_items[n], is_selected))
-								{
-									m_tEffectMeshDesc.iOptionType = n;
-								}
-
-								// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-								if (is_selected)
-									ImGui::SetItemDefaultFocus();
-							}
-							ImGui::EndListBox();
-						}
-
-						ImGui::TreePop();
-					}
-
-					ImGui::Text("Damage"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);
-					ImGui::DragFloat("##Damage", &m_tEffectMeshDesc.fDamage);
-
-					ImGui::Text("Weapon Offset");
-					ImGui::DragFloat3("##Weapon_Offset", &m_tEffectMeshDesc.vWeaponOffset.x, 0.05f);
-
-					ImGui::Text("HitFreq"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);
-					ImGui::DragFloat("##HitFreq", &m_tEffectMeshDesc.fHitFreq);
-				}
-			}
+				this->Tool_Collider();
 		}
 	}
 #endif // _DEBUG
