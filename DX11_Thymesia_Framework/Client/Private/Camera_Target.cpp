@@ -325,6 +325,7 @@ void CCamera_Target::Look_At_Target(_float fTimeDelta)//타겟 고정
 
 void CCamera_Target::Free_MouseMove(_float fTimeDelta)//마우스 움직임
 {
+	
 	_long		MouseMove = 0;
 
 	if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_X))
@@ -336,10 +337,23 @@ void CCamera_Target::Free_MouseMove(_float fTimeDelta)//마우스 움직임
 	{
 		m_iMouseMovementY += MouseMove;
 	}
-	if (fabs(m_iMouseMovementY) > DBL_EPSILON)
-		m_pTransformCom.lock()->Turn(m_pTransformCom.lock()->Get_State(CTransform::STATE_RIGHT), fTimeDelta * m_iMouseMovementY * 0.2f * 0.1f);
 
-	m_iMouseMovementY = _long(m_iMouseMovementY * 0.8f);
+	_matrix RotationMatrix = XMMatrixRotationAxis(m_pTransformCom.lock()->Get_State(CTransform::STATE_RIGHT), fTimeDelta * m_iMouseMovementY * 0.2f * 0.1f);
+	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+	vLook = XMVector3TransformNormal(vLook, RotationMatrix);
+
+	_vector vPlayerUp= m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_UP);
+	_float fDotValue = XMVector3Dot(vLook, vPlayerUp).m128_f32[0];
+	if (0.9f > fDotValue && -0.99f < fDotValue )
+	{
+		if (fabs(m_iMouseMovementY) > DBL_EPSILON)
+			m_pTransformCom.lock()->Turn(m_pTransformCom.lock()->Get_State(CTransform::STATE_RIGHT), fTimeDelta * m_iMouseMovementY * 0.2f * 0.1f);
+		m_iMouseMovementY = _long(m_iMouseMovementY * 0.8f);
+	}
+	else
+	{
+		m_iMouseMovementY = 0;
+	}
 
 	if (fabs(m_iMouseMovementX) > DBL_EPSILON)
 		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * 0.1f * m_iMouseMovementX * 0.2f);
