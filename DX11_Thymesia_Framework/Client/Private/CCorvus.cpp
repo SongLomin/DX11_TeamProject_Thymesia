@@ -36,7 +36,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
 
-	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
+	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Translation", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
 
 	m_iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 
@@ -252,11 +252,6 @@ void CCorvus::Ready_States()
 	MACRO(CCorvusState_Climb_Fall_Attack);
 
 
-
-
-
-	
-
 #undef MACRO
 }
 
@@ -296,23 +291,6 @@ void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 void CCorvus::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 	__super::OnCollisionStay(pMyCollider, pOtherCollider);
-
-	//여기추후 4개추가해야됨 
-	
-
-	
-
-
-	//유아이 충돌하면 보인다
-	//유아이보일때 눌르면 
-	// 여기서 저 아더코라이더랑 내콜라이더를 트랜스폼 룩엣을 일단하고
-	// 상대한테 던져준다 
-
-
-
-
-
-	
 }
 
 void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
@@ -341,15 +319,13 @@ void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 
 void CCorvus::RootMove()
 {
-	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)) * XMMatrixRotationZ(XMConvertToRadians(180.f)));
+	_vector vMoveDir(XMVectorSet(0.f, 0.f, 0.f, 0.f));
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
 	//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
 
 	PxControllerFilters Filters;
 	
 	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, GAMEINSTANCE->Get_DeltaTime(), Filters, nullptr, m_pTransformCom);
-	
-	
 }
 
 void CCorvus::OnBattleEnd()
