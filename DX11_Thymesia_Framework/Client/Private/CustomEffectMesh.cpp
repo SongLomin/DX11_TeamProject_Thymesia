@@ -1054,18 +1054,18 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 						}
 					}
 
-					if (ImGui::Button("Bind to Bone"))
+					if (ImGui::Button("Bind##Bind_to_Bone"))
 					{
 						m_pBoneNode = m_pParentModel.lock()->Find_BoneNode(m_strBoneName);
 
 						if (!m_pBoneNode.lock())
 							assert(0);
-						else
-						{
-							ImGui::Text("Binded to [ "); ImGui::SameLine();
-							ImGui::Text(m_pBoneNode.lock()->Get_Name()); ImGui::SameLine();
-							ImGui::Text(" ]");
-						}
+					}
+
+					if (m_pBoneNode.lock())
+					{
+						ImGui::Text("Binded to [ "); ImGui::SameLine();
+						ImGui::Text("m_strBoneName"); ImGui::SameLine(); ImGui::Text(" ] ");
 					}
 				}
 				else

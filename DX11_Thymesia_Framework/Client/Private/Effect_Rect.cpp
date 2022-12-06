@@ -1945,7 +1945,7 @@ void CEffect_Rect::Tool_Boner()
 {
 	weak_ptr<CPreViewAnimationModel> pPreviewModel(GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel());
 
-	if (ImGui::ColorButton("Refresh##Get_Bone_List", ImVec4{ 1.f, 0.f, 0.f, 1.f }))
+	if (ImGui::Button("Refresh##Get_Bone_List"))
 	{
 		m_pParentModel = pPreviewModel.lock()->Get_CurrentModel();
 		m_pParentTransformCom = pPreviewModel.lock()->Get_Transform();
