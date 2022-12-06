@@ -8,6 +8,8 @@ CLIENT_DECLATION_UI
 
 class CFadeMask;
 class CEasingTransform;
+class CUI_EvolveMenu_Level_BG;
+
 
 class CUI_EvolveMenu_Level : public CUI_Container
 {
@@ -59,7 +61,7 @@ private:
 
 private:
 	weak_ptr<CCustomUI> m_pPauseMenuBackground;
-	weak_ptr<CCustomUI> m_pPauseMenuBackground_Main;
+	weak_ptr<CUI_EvolveMenu_Level_BG> m_pPauseMenuBackground_Main;
 	weak_ptr<CCustomUI> m_pPauseMenuBackground_Top;
 
 private:

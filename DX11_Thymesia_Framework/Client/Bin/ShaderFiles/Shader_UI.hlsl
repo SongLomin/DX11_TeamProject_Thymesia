@@ -5,6 +5,7 @@ texture2D	g_DiffuseTexture;
 texture2D	g_MaskTexture;
 texture2D	g_DepthTexture;
 texture2D	g_DissolveTexture;
+texture2D	g_SrcTexture;
 
 float   g_fAhlpaScale;
 float   g_MaskAhlpaScale;
@@ -276,16 +277,17 @@ PS_OUT PS_MAIN_BORDER_OUT(PS_IN In)
 	return Out;
 }
 
-
 PS_OUT PS_MASK_UV_ANIM(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
-	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-	Out.vColor.a *= g_fAlphaColor;
+	float4 destColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
-	if (In.vTexUV.x > g_Ratio)
-		discard;
+	float4	SrcColor = g_SrcTexture.Sample(DefaultSampler, In.vTexUV);
+
+	Out.vColor = (destColor * g_fAlphaColor) + SrcColor * (1 - g_fAlphaColor);
+
+	//Out.vColor.a *= g_fAlphaColor;
 
 	if (Out.vColor.a < 0.1f)
 	{
@@ -293,13 +295,20 @@ PS_OUT PS_MASK_UV_ANIM(PS_IN In)
 	}
 	else
 	{
+		float	maskMag = 4.f;
 		float2	maskUV = In.vTexUV.rg;
-		maskUV.xy *= 3.f;
-
-		float4	mask = g_MaskTexture.Sample(DefaultSampler, maskUV + g_UVOffset);
-		Out.vColor.rgb += mask.rgb;
-	}
-
+		
+		float4	mask = g_MaskTexture.Sample(DefaultSampler, maskUV + g_UVOffset);//마스크 생성.
+		//마스크의 알파값에 따라 출력할 색상을 처리해줌.
+		//얘의 색상을 그대로 쓰는게 아니라, 배율로 처리해줄거임..
+	
+		/*
+			0~1값이 최대 4배가 되어야함.
+		
+			마스킹 위치가 1이다.->4에 가깝게
+		*/
+        Out.vColor.rgb = (Out.vColor.rgb * max((mask * maskMag).x, 1.f));
+    }
 	return Out;
 }
 

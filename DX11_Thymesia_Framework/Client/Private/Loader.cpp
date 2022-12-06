@@ -942,6 +942,11 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Talent_Information_BG"), TEXT("../Bin/Resources/Textures/UI/TexUI_TipDialogBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	GAMEINSTANCE->Load_Textures(("None"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_None.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("UI_EvolveMenu_Level_BG_Mask"), TEXT("../Bin/Resources/Textures/Mask/648.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("UI_Corvus"), TEXT("../Bin/Resources/Textures/UI/corvus.png"), MEMORY_TYPE::MEMORY_STATIC);
+
 #endif // _JOJO_EFFECT_TOOL_
 }
 

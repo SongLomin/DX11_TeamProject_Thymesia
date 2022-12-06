@@ -28,6 +28,9 @@ private:
 
 private:
 	weak_ptr<CTexture>	m_pUVAnimMask;
+	weak_ptr<CTexture>	m_pSrcTexture;
+
+
 	_float2				m_fUVOffset;
 	_float				m_fUVOffsetAmount;
 
