@@ -30,7 +30,12 @@ protected:
 public:
     void Update(_float fTimeDelta, weak_ptr <CTransform> _pOwnerTransform, weak_ptr<CBoneNode> _pOwnerBoneNode, weak_ptr<MODEL_DATA> _pOwnerModel_Data);
     void Set_OwnerDesc(weak_ptr <CTransform> _pOwnerTransform, weak_ptr<CBoneNode> _pOwnerBoneNode, weak_ptr<MODEL_DATA> _pOwnerModel_Data);
-   
+    void Set_TextureIndex(_uint In_iDiffuseIndex,_uint In_iMaskIndex, _uint In_iNoiseIndex)
+    {
+        m_iDiffuseIndex = In_iDiffuseIndex;
+        m_iMaskIndex = In_iMaskIndex;
+        m_iNoiseIndex = In_iNoiseIndex;
+    }
 protected:
     virtual void SetUp_ShaderResource() override;
 
@@ -43,6 +48,10 @@ protected:
 
     weak_ptr<CTexture> m_pMaskTextureCom;
     weak_ptr<CTexture> m_pNoiseTextureCom;
+
+    _uint m_iDiffuseIndex = 0;
+    _uint m_iMaskIndex =0;
+    _uint m_iNoiseIndex=0;
 
 
    

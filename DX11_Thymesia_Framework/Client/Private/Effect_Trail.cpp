@@ -25,7 +25,14 @@ HRESULT CEffect_Trail::Initialize(void* pArg)//trail을 사용하는 객체로부터 trail
 		VTXTEX_DECLARATION::Element, 
 		VTXTEX_DECLARATION::iNumElements);
 	
-	m_pTextureCom.lock()->Use_Texture(("Snow"));
+	m_pTextureCom.lock()->Use_Texture(("UVColorDiffuse"));
+
+
+	m_pNoiseTextureCom = Add_Component<CTexture>();
+	m_pNoiseTextureCom.lock()->Use_Texture(("UVNoise"));
+
+	m_pMaskTextureCom = Add_Component<CTexture>();
+	m_pMaskTextureCom.lock()->Use_Texture("UVMask");
 
 	return S_OK;
 }
@@ -69,6 +76,11 @@ void CEffect_Trail::Set_OwnerDesc(weak_ptr <CTransform> _pOwnerTransform, weak_p
 void CEffect_Trail::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
+
+	m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", m_iDiffuseIndex);
+
+	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture", m_iNoiseIndex);
+	m_pMaskTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", m_iMaskIndex);
 
 }
 

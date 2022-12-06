@@ -239,9 +239,6 @@
     <ClInclude Include="..\Public\PhysXController.h">
       <Filter>01. Elements\03. Component\14. PhysXController</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\VIBuffer_Trail_EyeLight.h">
-      <Filter>01. Elements\03. Component\01. VIBuffer\08. Trail\VIBuffer_Trail_EyeLight</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -459,9 +456,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\PhysXController.cpp">
       <Filter>01. Elements\03. Component\14. PhysXController</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\VIBuffer_Trail_EyeLight.cpp">
-      <Filter>01. Elements\03. Component\01. VIBuffer\08. Trail\VIBuffer_Trail_EyeLight</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Easing_Utillity.cpp">
       <Filter>01. Elements\05. Utility\02. Easing_Utillity</Filter>
@@ -701,9 +695,6 @@
     </Filter>
     <Filter Include="01. Elements\03. Component\14. PhysXController">
       <UniqueIdentifier>{46b08401-a31e-4346-a0ca-00b1e76c91d1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Elements\03. Component\01. VIBuffer\08. Trail\VIBuffer_Trail_EyeLight">
-      <UniqueIdentifier>{b19230d0-a1ab-41b9-9ddb-a493e16239fb}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Elements\03. Component\11. Collider">
       <UniqueIdentifier>{c271f883-4bee-4c5d-b829-a78a7f5f0177}</UniqueIdentifier>

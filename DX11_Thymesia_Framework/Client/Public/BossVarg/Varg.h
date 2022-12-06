@@ -30,6 +30,9 @@ public:
     virtual void SetUp_ShaderResource() override;
 
 public:
+    void Set_TrailEnable(_bool In_bEnable);
+
+public:
     virtual void Init_Desc() override;
 
 private:

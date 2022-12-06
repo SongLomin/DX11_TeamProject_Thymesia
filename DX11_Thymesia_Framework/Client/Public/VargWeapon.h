@@ -31,7 +31,8 @@ public:
     _bool Set_TrailEnable(const _bool In_bEnable);
 
 private:
-    weak_ptr<class CEffect_Trail> m_pTrailEffect;
+    weak_ptr<class CEffect_Trail> m_pTrailDistortion;
+    weak_ptr<class CEffect_Trail> m_pTrailDiffuse;
 
 private:
     void SetUp_ShaderResource();

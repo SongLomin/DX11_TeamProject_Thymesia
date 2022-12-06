@@ -96,6 +96,7 @@ HRESULT CVarg::Start()
 {
 	__super::Start();
 
+	m_pTrailEffect.lock()->Set_TextureIndex(1,869, 0);
 	m_pTrailBoneNode = m_pModelCom.lock()->Find_BoneNode("Bip001-Head");
 
 
@@ -165,6 +166,12 @@ void CVarg::SetUp_ShaderResource()
 	__super::SetUp_ShaderResource();
 
 }
+
+void CVarg::Set_TrailEnable(_bool In_bEnable)
+{
+	Weak_Cast<CVargWeapon>(m_pWeapons.front()).lock()->Set_TrailEnable(In_bEnable);
+}
+
 
 void CVarg::Init_Desc()
 {
