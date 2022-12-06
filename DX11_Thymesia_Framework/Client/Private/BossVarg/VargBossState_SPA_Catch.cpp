@@ -35,7 +35,7 @@ void CVargBossState_SPA_Catch::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_SPAttack1_Catch");
 
 
-	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_SPA_Catch::Call_AnimationEnd, this);*/
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_SPA_Catch::Call_AnimationEnd, this);
 }
 
 void CVargBossState_SPA_Catch::Tick(_float fTimeDelta)
@@ -81,20 +81,20 @@ void CVargBossState_SPA_Catch::OnStateEnd()
 }
 
 
-//
-//void CVargBossState_SPA_Catch::Call_AnimationEnd()
-//{
-//	if (!Get_Enable())
-//		return;
-//
-//
-//	Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Catch>(0.05f);
-//}
 
-//void CVargBossState_SPA_Catch::OnDestroy()
-//{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_SPA_Catch::Call_AnimationEnd, this);
-//}
+void CVargBossState_SPA_Catch::Call_AnimationEnd()
+{
+	if (!Get_Enable())
+		return;
+
+
+	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
+}
+
+void CVargBossState_SPA_Catch::OnDestroy()
+{
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_SPA_Catch::Call_AnimationEnd, this);
+}
 
 void CVargBossState_SPA_Catch::Free()
 {
@@ -106,12 +106,6 @@ _bool CVargBossState_SPA_Catch::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
-
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
-	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Catch>(0.05f);
-		return true;
-	}
 
 	return false;
 }

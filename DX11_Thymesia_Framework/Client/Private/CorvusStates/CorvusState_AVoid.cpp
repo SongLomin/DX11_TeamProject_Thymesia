@@ -134,6 +134,8 @@ _bool CCorvusState_AVoid::Check_AndChangeNextState()
 		}
 	}
 
+	
+
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 15)
 	{
 		if (Check_RequirementAttackState())

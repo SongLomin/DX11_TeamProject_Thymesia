@@ -61,6 +61,15 @@ void CCorvusState_ParryDeflectLeft::OnStateStart(const _float& In_fAnimationBlen
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Parry1>().lock())
+	{
+		m_bParry1ORParry2 = true;
+	}
+	else
+	{
+		m_bParry1ORParry2 = false;
+	}
+
 	//if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_ParryDeflectLeft>().lock())
 	//{
 	//	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 5);
@@ -114,9 +123,26 @@ _bool CCorvusState_ParryDeflectLeft::Check_AndChangeNextState()
 		return false;
 
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->get_r)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.17f)
 	{
+		if (Check_RequirementParryState())
+		{
+			if (m_bParry1ORParry2)
+			{
+				Get_OwnerPlayer()->Change_State<CCorvusState_Parry2>();
+			}
+			else
+			{
+				Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
+			}
+		}
 
+		if (Check_RequirementRunState())
+		{
+			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
+		}
+		
+		return true;
 	}
 
 	//이전상태가 페리1이면 페리2가나가고

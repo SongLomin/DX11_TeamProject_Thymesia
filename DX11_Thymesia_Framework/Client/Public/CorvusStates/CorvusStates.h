@@ -15,6 +15,7 @@
 #include "CorvusStates/CorvusState_SprintStart.h"
 #include "CorvusStates/CorvusState_Run.h"
 #include "CorvusStates/CorvusState_AVoid.h"
+#include "CorvusStates/CorvusState_ShortAvoid.h"
 #include "CorvusStates/CorvusState_AVoidSlash.h"
 #include "CorvusStates/CorvusState_AVoidThrust.h"
 #include "CorvusStates/CorvusState_SprintAttack.h"

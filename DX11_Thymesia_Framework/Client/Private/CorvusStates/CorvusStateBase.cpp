@@ -14,6 +14,7 @@
 #include "NorMonStates.h"
 #include "PhysXCharacterController.h"
 #include "Interaction_Ladder.h"
+#include "VargStates.h"
 
 
 GAMECLASS_C(CCorvusStateBase)
@@ -422,7 +423,9 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 
 	if (pOtherCollider.lock()->Get_CollisionLayer() == (_uint)COLLISION_LAYER::MONSTER_ATTACK)
 	{
-		//어쩃든 여기 닿으면 데미지 입음.
+		
+	
+
 		weak_ptr<CStatus_Player> pStatus = Weak_StaticCast<CStatus_Player>(m_pStatusCom);
 
 		if (!pStatus.lock())
@@ -437,22 +440,31 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 		if (!pMonsterStatusCom.lock())
 			MSG_BOX("Error : Can't Find CStatus_Monster From CorvusStateBase");
 
-		//타격콜라이더(사다리일경우)
-		/*
-		Climb_Start로이동
-		Climb_Start눌르시 포지션이동 ->사다리쪽으로 
-		애니메이션이 탓을떄 w눌르고면위로s눌르면 아래로
-		홀드눌를때 w눌르면 lUP끝나면 Rup  !홀드면  전상태가 lUp이면 Lidle이고 rUP이면 Ridle이면됨
+		//pMonsterStatusCom.lock()->OnEventMessage();
+		ATTACK_OPTION eAttackOption = pAttackArea.lock()->Get_OptionType();
 
-		
+		switch (eAttackOption)
+		{
+		case Client::ATTACK_OPTION::NONE:
+			Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+			pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
+			break;
+		case Client::ATTACK_OPTION::NORMAL:
+			break;
+		case Client::ATTACK_OPTION::PLAGUE:
+			break;
+		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
+			//Get_OwnerPlayer()->Get_CurState().lock()->OnEventMessage(Weak_Cast<CBase>(pTargetObject));			
+			break;
+		}
 
-		*/
 
-
-		Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
-		pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
 	
 	}
+
+
+
+
 }
 
 void CCorvusStateBase::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)

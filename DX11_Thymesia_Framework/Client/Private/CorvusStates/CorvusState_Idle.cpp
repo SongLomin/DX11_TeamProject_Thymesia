@@ -128,32 +128,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	//if (Check_RequirementUltimateState())
-	//{
-	//	Rotation_NearToLookDir();
-	//	Get_OwnerPlayer()->Change_State<CNorMonState_UltimateSkill>();
-	//	return true;
-	//}
-	//
-	//if (Check_RequirementAttackState())
-	//{
-	//	if (!Rotation_InputToLookDir())
-	//		Rotation_NearToLookDir();
-	//
-	//	Get_OwnerPlayer()->Change_State<CNorMonState_Attack>();
-	//	Get_OwnerPlayer()->Get_Component<CNorMonState_Attack>().lock()->Play_AttackWithIndex(0);
-	//	return true;
-	//}
-	//
-	//if (Check_RequirementDashState())
-	//{
-	//	Rotation_InputToLookDir();
-	//	//Open_HyperSpace();
-	//	Get_OwnerPlayer()->Change_State<CNorMonState_Dash>();
-	//	return true;
-	//}
 
-	//TODO 야매애요ㅎ
 	
 		PxControllerCollisionFlags Flags = Get_OwnerCharacter().lock()->Get_LastCollisionFlags();
 
@@ -167,9 +142,6 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 			}
 		}
 
-
-	
-	
 	
 
 

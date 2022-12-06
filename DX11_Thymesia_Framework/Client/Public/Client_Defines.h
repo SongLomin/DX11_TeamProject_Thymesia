@@ -206,6 +206,7 @@ namespace Client
 		ON_EXCUTION_NORMOB,
 		ON_GROGGY,
 		ON_LADDERMOVEUP,
+		ON_CATCH,
 		EVENT_END
 	};
 
@@ -277,6 +278,7 @@ namespace Client
 		LADDER_DOWN,
 		DOOR,
 		ELEVATOR,
+
 		LAYER_END
 	};
 
@@ -303,7 +305,8 @@ namespace Client
 		KNIFEWOMAN, // 기본단검여자
 		SKULL, // 기본해골
 		GARDENER, // 낫든몬스터
-		SHIELDAXEMAN,
+		SHIELDAXEMAN,// 실드도끼남자
+		BALLOON, // 풍선
 
 		START_ELITE_MONSTER = 10000,
 		ELITEGARDENER,

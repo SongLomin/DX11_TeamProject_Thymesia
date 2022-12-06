@@ -117,8 +117,8 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 		_vector vViewPosition;
 		_matrix ViewProjMatrix;
 
-		vViewPosition = pMyCollider.lock()->Get_CurrentPosition();
-
+		vViewPosition = pMyCollider.lock()->Get_Owner().lock()->Get_Transform()->Get_Position();
+			
 		vViewPosition += XMVectorSet(0.f, 2.f, 0.f, 1.f);
 
 		ViewProjMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_VIEW) * GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_PROJ);
@@ -128,8 +128,6 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 		/* -1 ~ 1 to 0 ~ ViewPort */
 		vViewPosition.m128_f32[0] = (vViewPosition.m128_f32[0] + 1.f) * (_float)g_iWinCX * 0.5f;
 		vViewPosition.m128_f32[1] = (-1.f * vViewPosition.m128_f32[1] + 1.f) * (_float)g_iWinCY * 0.5f;
-
-		
 
 		weak_ptr<CUI_DamageFont> pDamageFont = GAMEINSTANCE->Add_GameObject<CUI_DamageFont>(LEVEL_STATIC);
 
@@ -196,39 +194,50 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 
 		//공격 형태에 따라서 애니메이션 변경
 
+		if (m_eMonType != MONSTERTYPE::BALLOON)
+		{
+			if (Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_GroggyLoop>().lock()->Get_StateIndex()
+				|| Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_GroggyStart>().lock()->Get_StateIndex())
+			{
+				Get_OwnerMonster()->Change_State<CNorMonState_Die>();
+			}
+			else if (m_pStatusCom.lock()->Is_Dead())
+			{
+				Get_OwnerMonster()->Change_State<CNorMonState_GroggyStart>();
+			}
+			else if (Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Idle>().lock()->Get_StateIndex() ||
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Run>().lock()->Get_StateIndex() ||
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Walk_F>().lock()->Get_StateIndex() ||
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Walk_L>().lock()->Get_StateIndex() ||
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Walk_R>().lock()->Get_StateIndex() ||
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Walk_B>().lock()->Get_StateIndex() ||
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_TurnL90>().lock()->Get_StateIndex() ||
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_TurnR90>().lock()->Get_StateIndex() ||
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_HurtR>().lock()->Get_StateIndex() ||
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_HurtL>().lock()->Get_StateIndex())
+
+			{
+				if (In_eHitType == HIT_TYPE::LEFT_HIT)
+				{
+					Get_OwnerMonster()->Change_State<CNorMonState_HurtL>();
+				}
+
+				else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
+				{
+
+					Get_OwnerMonster()->Change_State<CNorMonState_HurtR>();
+				}
+			}
+		}
+		else
+		{
+			if (m_pStatusCom.lock()->Is_Dead())
+			{
+				Get_OwnerMonster()->Change_State<CNorMonState_Die>();
+			}
+		}
 		
-		if (Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_GroggyLoop>().lock()->Get_StateIndex()
-			|| Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_GroggyStart>().lock()->Get_StateIndex())
-		{
-			Get_OwnerMonster()->Change_State<CNorMonState_Die>();
-		}
-		else if (m_pStatusCom.lock()->Is_Dead())
-		{
-			Get_OwnerMonster()->Change_State<CNorMonState_GroggyStart>();
-		}	
-		else if (Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Idle>().lock()->Get_StateIndex()||
-			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Run>().lock()->Get_StateIndex()||
-			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Walk_F>().lock()->Get_StateIndex()||
-			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Walk_L>().lock()->Get_StateIndex()||
-			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Walk_R>().lock()->Get_StateIndex()||
-			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Walk_B>().lock()->Get_StateIndex()||
-			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_TurnL90>().lock()->Get_StateIndex()||
-			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_TurnR90>().lock()->Get_StateIndex()||
-			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_HurtR>().lock()->Get_StateIndex()||
-			Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_HurtL>().lock()->Get_StateIndex())
-
-		{
-			if (In_eHitType == HIT_TYPE::LEFT_HIT)
-			{
-				Get_OwnerMonster()->Change_State<CNorMonState_HurtL>();
-			}
-
-			else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
-			{
-
-				Get_OwnerMonster()->Change_State<CNorMonState_HurtR>();
-			}
-		}
+		
 
 	}
 

@@ -12,7 +12,7 @@ HRESULT CUI_DamageFont::Initialize(void* pArg)
 
 
 	m_pEasingTransform = Add_Component<CEasingTransform>();
-	m_fDefaultSize = 32.f;
+	m_fDefaultSize = 48.f;
     return S_OK;
 }
 
@@ -55,7 +55,6 @@ void CUI_DamageFont::SetUp_DamageFont(_uint iDmg, _float2 vPos, ATTACK_OPTION eA
 	m_vPos = vPos;
 	m_vPos.x += rand() % 30;
 	m_vPos.y += rand() % 30;
-
 
 
 	m_fOffsetX = m_fDefaultSize * 0.5f;
@@ -102,7 +101,8 @@ void CUI_DamageFont::SetUp_DamageFont(_uint iDmg, _float2 vPos, ATTACK_OPTION eA
 		pDamageFont = GAMEINSTANCE->Get_GameObject_UseMemoryPool<CCustomUI>(LEVEL_STATIC);
 		if (!pDamageFont.lock())
 			pDamageFont = ADD_STATIC_CUSTOMUI;
-
+		
+		pDamageFont.lock()->Set_AlphaColor(1.f);
 		pDamageFont.lock()->Set_UIPosition
 		(
 			vPos.x + fOffset,
@@ -124,7 +124,7 @@ void CUI_DamageFont::SetUp_DamageFont(_uint iDmg, _float2 vPos, ATTACK_OPTION eA
 	fOffset.x = 0.f;
 	fOffset.y = fOffsetY;
 
-	m_pEasingTransform.lock()->Set_LerpFloat2(_float2(0.f,0.f), fOffset, 0.5f, EASING_TYPE::QUINT_IN);
+	m_pEasingTransform.lock()->Set_LerpFloat2(_float2(0.f,0.f), fOffset, 1.5f, EASING_TYPE::QUINT_IN);
 	m_pEasingTransform.lock()->Callback_LerpEnd += bind(&CUI_DamageFont::Call_LerpEnd_FadeOut, this);
 
 	//Add_Shaking(1.5f, 30.f);
@@ -153,7 +153,7 @@ void CUI_DamageFont::Call_Shaking_End()
 	fOffset.x = 0.f;
 	fOffset.y = fOffsetY;
 
-	m_pEasingTransform.lock()->Set_LerpFloat2(_float2(0.f,0.f), fOffset, 0.2f);
+	m_pEasingTransform.lock()->Set_LerpFloat2(_float2(0.f,0.f), fOffset, 0.5f);
 	m_pEasingTransform.lock()->Callback_LerpEnd += bind(&CUI_DamageFont::Call_LerpEnd_FadeOut, this);
 }
 

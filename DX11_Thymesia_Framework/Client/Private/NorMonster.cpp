@@ -81,6 +81,8 @@ HRESULT CNorMonster::Start()
 
 void CNorMonster::Init_Desc()
 {
+	__super::Init_Desc();
+
 	switch (m_tLinkStateDesc.eMonType)
 	{
 	case  MONSTERTYPE::AXEMAN:
@@ -140,6 +142,9 @@ void CNorMonster::Init_Desc()
 		m_pWeapons.back().lock()->Add_Collider({ 0.71f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		m_pWeapons.back().lock()->Add_Collider({ 0.81f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		break;
+	case MONSTERTYPE::BALLOON:
+		m_pModelCom.lock()->Init_Model("Balloon", "", (_uint)TIMESCALE_LAYER::MONSTER);
+		break;
 	}
 
 
@@ -161,6 +166,8 @@ void CNorMonster::Init_Desc()
 	case MONSTERTYPE::SHIELDAXEMAN:
 		m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
 		break;
+	case MONSTERTYPE::BALLOON:
+		m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
 
 	}
 	_vector vecStartPositon = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
@@ -238,8 +245,13 @@ void CNorMonster::Tick(_float fTimeDelta)
 		//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDirs, m_pNaviMeshCom);
 		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 		break;
+	case MONSTERTYPE::BALLOON:
+		vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
+		//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDirs, m_pNaviMeshCom);
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		break;
 	}
-
 }
 
 void CNorMonster::LateTick(_float fTimeDelta)
@@ -300,10 +312,7 @@ void CNorMonster::SetUp_ShaderResource()
 
 void CNorMonster::Respawn_Monster(_fvector In_vPosition)
 {
-	//__super::Respawn_Monster(In_vPosition);
-
-	//Change_State<CMonster1State_Stand>();
-	//GAMEINSTANCE->PlaySoundW(TEXT("MonsterBorn.wav"), 0.3f);
+	
 }
 
 void Init_MonsterDesc(void* In_Arg)

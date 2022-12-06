@@ -55,11 +55,23 @@ void CCorvusState_Climb_Fall_Attack::Call_AnimationEnd()
 
 }
 
+void CCorvusState_Climb_Fall_Attack::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
+	if (!Get_Enable())
+		return;
+
+	_vector fOffSet = { 0.f, -0.8771929824f ,0.f };
+
+	PxControllerFilters Filters;
+
+	m_pPhysXControllerCom.lock()->MoveWithRotation(fOffSet, 0.f, GAMEINSTANCE->Get_DeltaTime(),
+		Filters, nullptr, m_pTransformCom);
+}
+
 void CCorvusState_Climb_Fall_Attack::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
 
 	if (!m_pModelCom.lock().get())
 	{
@@ -67,6 +79,11 @@ void CCorvusState_Climb_Fall_Attack::OnStateStart(const _float& In_fAnimationBle
 	}
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+
+		m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey +=
+		bind(&CCorvusState_Climb_Fall_Attack::Call_NextKeyFrame, this, placeholders::_1);
 
 #ifdef _DEBUG
 	#ifdef _DEBUG_COUT_
@@ -79,6 +96,9 @@ void CCorvusState_Climb_Fall_Attack::OnStateStart(const _float& In_fAnimationBle
 void CCorvusState_Climb_Fall_Attack::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -=
+		bind(&CCorvusState_Climb_Fall_Attack::Call_NextKeyFrame, this, placeholders::_1);
 }
 
 void CCorvusState_Climb_Fall_Attack::OnDestroy()
@@ -95,7 +115,6 @@ _bool CCorvusState_Climb_Fall_Attack::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
 		return false;
-
 
 	return false;
 }

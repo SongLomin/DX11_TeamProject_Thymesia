@@ -60,6 +60,15 @@ void CCorvusState_ParryDeflectRight::OnStateStart(const _float& In_fAnimationBle
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Parry1>().lock())
+	{
+		m_bParry1ORParry2 = true;
+	}
+	else
+	{
+		m_bParry1ORParry2 = false;
+	}
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 	//if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_ParryDeflectRight>().lock())
@@ -112,6 +121,27 @@ _bool CCorvusState_ParryDeflectRight::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.17f)
+	{
+		if (Check_RequirementParryState())
+		{
+			if (m_bParry1ORParry2)
+			{
+				Get_OwnerPlayer()->Change_State<CCorvusState_Parry2>();
+			}
+			else
+			{
+				Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
+			}
+		}
+
+		if (Check_RequirementRunState())
+		{
+			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
+		}
+
+		return true;
+	}
 
 	return false;
 }

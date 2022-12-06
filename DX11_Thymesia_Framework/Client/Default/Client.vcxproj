@@ -238,6 +238,7 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Magician.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_UrdSword.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_VargSword.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ShortAvoid.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV1.h" />
@@ -572,6 +573,7 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Magician.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_UrdSword.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_VargSword.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ShortAvoid.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV1.cpp" />

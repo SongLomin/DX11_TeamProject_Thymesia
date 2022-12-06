@@ -243,6 +243,16 @@ void CVarg::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider>
 	__super::OnCollisionExit(pMyCollider, pOtherCollider);
 }
 
+void CVarg::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_CATCH == iArg)
+	{
+		Change_State<CVargBossState_SPA_Catch>();
+	}
+}
+
 void CVarg::OnEnable(void* _Arg)
 {
 	__super::OnEnable(_Arg);

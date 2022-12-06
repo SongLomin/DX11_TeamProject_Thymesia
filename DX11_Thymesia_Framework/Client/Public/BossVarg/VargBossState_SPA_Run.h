@@ -28,12 +28,16 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
+private:
+	//TODO юс╫ц
+	_uint m_iCount = 0;
+
 
 
 private:
-	//void Call_AnimationEnd();
+	void Call_AnimationEnd();
 protected:
-	//virtual void OnDestroy() override;
+	virtual void OnDestroy() override;
 	void Free();
 
 };

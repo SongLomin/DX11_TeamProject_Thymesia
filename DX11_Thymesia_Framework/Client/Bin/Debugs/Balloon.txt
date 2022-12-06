@@ -1,0 +1,11 @@
+0. Idle
+1. Die
+RootNode
+Armature
+Bone
+Bone_end
+Bone_end_end
+root
+root_end
+root_end_end
+P_CircusBalloonDamage02.mo

@@ -54,6 +54,7 @@ public:
 
 
 
+
 public:
 	//void		CreatePhysXActor(PHYSXCOLLIDERDESC& PhysXColliderDesc);
 	//void		Add_PhysXActorAtScene(const PxVec3& In_MassSpaceInertiaTensor = { 0.f, 0.f, 0.f }, const PxReal In_fMass = 0.f);
@@ -66,6 +67,9 @@ private:
 private:
 	static	_uint							m_iClonedControllerIndex;
 	_uint									m_iControllerIndex;
+	
+
+	
 
 protected:
 	// 최대 속도는 XZ,Y 로 나뉘어 진다. XZ에 들어가있는 값은 X에 있는 값을 사용한다.

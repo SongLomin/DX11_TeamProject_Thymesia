@@ -14,6 +14,7 @@
 #include "Status_Monster.h"
 #include "Monster.h"
 #include "Status.h"
+#include "VargStates.h"
 
 
 GAMECLASS_C(CVargBossStateBase)
@@ -86,15 +87,15 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 
 		//맞았을때 플레이어를 바라보는 시선 처리
 		weak_ptr<CAttackArea> pAttackArea = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner());
-	
-
-
-		
+			
 		weak_ptr<CStatus_Monster> pStatus = m_pOwner.lock()->Get_Component<CStatus_Monster>();
 		
 		pStatus.lock()->Get_Desc().m_fCurrentHP_white;
 		//pMonsterStatusCom.lock()->Get_Desc();
-
+		if (pStatus.lock()->Get_Desc().m_fCurrentHP_white <= 300.f)
+		{
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Roar>(0.05f);
+		}
 		
 
 
@@ -140,9 +141,6 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 			break;
 		}
 
-	
-
-	
 
 
 	}
