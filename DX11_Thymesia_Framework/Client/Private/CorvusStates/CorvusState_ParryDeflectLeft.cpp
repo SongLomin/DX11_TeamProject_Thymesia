@@ -114,6 +114,16 @@ _bool CCorvusState_ParryDeflectLeft::Check_AndChangeNextState()
 		return false;
 
 
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->get_r)
+	{
+
+	}
+
+	//이전상태가 페리1이면 페리2가나가고
+	//절반정도흐르고 다시패링할수있게 
+	//이전상태가 페리2이면 페리1이나간다
+
+
 	return false;
 }
 

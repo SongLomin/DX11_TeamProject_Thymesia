@@ -198,7 +198,7 @@ _bool CCorvusState_LAttack1::Check_AndChangeNextState()
 			Rotation_InputToLookDir();
 
 			Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
-			return true;
+			return true;	
 		}
 
 	}

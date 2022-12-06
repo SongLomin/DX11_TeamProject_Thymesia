@@ -63,7 +63,7 @@ public:
     virtual void Write_Json(json& Out_Json) override;
     virtual void Load_FromJson(const json& In_Json) override;
 
-    virtual void Init_Desc() { };
+    virtual void Init_Desc();
 
 protected:
     virtual void SetUp_ShaderResource() override;    

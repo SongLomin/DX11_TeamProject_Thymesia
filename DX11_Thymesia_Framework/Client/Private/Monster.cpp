@@ -200,6 +200,11 @@ void  CMonster::Load_FromJson(const json& In_Json)
     Init_Desc();
 }
 
+void CMonster::Init_Desc()
+{
+    m_pStatus.lock()->Init_Status(&m_tLinkStateDesc);
+}
+
 
 
 void CMonster::SetUp_ShaderResource()

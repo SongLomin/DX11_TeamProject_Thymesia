@@ -406,10 +406,6 @@ _bool CCorvusStateBase::Check_RequirementAttackClose(weak_ptr<CGameObject>& Out_
 	list<weak_ptr<CGameObject>>  pGameObjects = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::MONSTER);
 
 
-
-
-
-
 	if (!Out_pGameObject.lock())
 		return false;
 
@@ -455,7 +451,7 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 
 		Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 		pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
-
+	
 	}
 }
 

@@ -11,6 +11,9 @@
 #include "Attack_Area.h"
 //#include "DamageUI.h"
 #include "Status_Player.h"
+#include "Status_Monster.h"
+#include "Monster.h"
+#include "Status.h"
 
 
 GAMECLASS_C(CVargBossStateBase)
@@ -83,6 +86,17 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 
 		//맞았을때 플레이어를 바라보는 시선 처리
 		weak_ptr<CAttackArea> pAttackArea = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner());
+	
+
+
+		
+		weak_ptr<CStatus_Monster> pStatus = m_pOwner.lock()->Get_Component<CStatus_Monster>();
+		
+		pStatus.lock()->Get_Desc().m_fCurrentHP_white;
+		//pMonsterStatusCom.lock()->Get_Desc();
+
+		
+
 
 		if (!pAttackArea.lock())
 			return;
@@ -91,11 +105,6 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 			Get_ParentObject().lock()->
 			Get_Component<CTransform>().lock()->
 			Get_State(CTransform::STATE_TRANSLATION);
-
-		/*_vector vOtherColliderPosition = Weak_Cast<CWeapon>(pOtherCollider.lock()->Get_Owner()).lock()->
-			Get_ParentObject().lock()->
-			Get_Component<CTransform>().lock()->
-			Get_State(CTransform::STATE_TRANSLATION);*/
 
 		_vector vSameHeightOtherColliderPosition = vOtherColliderPosition;
 		vSameHeightOtherColliderPosition.m128_f32[1] = vMyPosition.m128_f32[1];
@@ -111,19 +120,10 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 			->Get_Desc(&tPlayerDesc);
 		
 
-		//데미지 적용
-		//m_pStatusCom.lock()->Add_Damage(In_fDamage);
-		//GAMEINSTANCE->Get_GameObjects<CDamageUI>(LEVEL::LEVEL_STATIC).front().lock()->Add_DamageText(vMyPosition, In_fDamage, bRandom);
-
-		//GAMEINSTANCE->Get_GameObjects<CMonsterHpBar>(LEVEL::LEVEL_STATIC).front().lock()->OnHit(m_pOwner);
-		//GAMEINSTANCE->Get_GameObjects<CComboTimer>(LEVEL::LEVEL_STATIC).front().lock()->Update_Combo();
-
-		//GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Set_TargetMonster(Get_OwnerMonster());
-
 		Play_OnHitEffect();
 
 		_float fMagnifiedDamage = In_fDamage * 50.f ;
-		//m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+
 
 		switch (eAttackOption)
 		{
@@ -140,24 +140,9 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 			break;
 		}
 
-		//공격 형태에 따라서 애니메이션 변경
+	
 
-		//if (m_pStatusCom.lock()->Is_Dead())
-		//{
-		//	Get_OwnerMonster()->Change_State<CMonster1State_Death>();
-		//}
-
-		//else if (In_eHitType == HIT_TYPE::NORMAL_HIT)
-		//{
-		//	Get_OwnerMonster()->Change_State<CMonster1State_Hit>();
-		//	GET_SINGLE(CGameManager)->Add_Shaking(SHAKE_DIRECTION::LOOK, 0.15f, 0.2f);
-		//}
-		//
-		//else if (In_eHitType == HIT_TYPE::DOWN_HIT)
-		//{
-		//	Get_OwnerMonster()->Change_State<CMonster1State_HitDown>(0.1f);
-		//	GET_SINGLE(CGameManager)->Add_Shaking(SHAKE_DIRECTION::RIGHT, 0.25f, 0.3f);
-		//}
+	
 
 
 	}

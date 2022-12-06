@@ -37,6 +37,7 @@ HRESULT CVarg::Initialize(void* pArg)
 	pHPBar.lock()->Set_Owner(Weak_Cast<CMonster>(m_this));
 	
 	m_pStandState = Add_Component<CVargBossState_Start>();
+
 	Add_Component<CVargBossState_Attack1a>();
 	Add_Component<CVargBossState_Attack1b>();
 	Add_Component<CVargBossState_Attack2a>();
@@ -158,6 +159,8 @@ void CVarg::SetUp_ShaderResource()
 
 void CVarg::Init_Desc()
 {
+	__super::Init_Desc();
+
 	m_pModelCom.lock()->Init_Model("Boss_Varg", "", (_uint)TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Model("Boss_VargWeapon", TIMESCALE_LAYER::MONSTER);
