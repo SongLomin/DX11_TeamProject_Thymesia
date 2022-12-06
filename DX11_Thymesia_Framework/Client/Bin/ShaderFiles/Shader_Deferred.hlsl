@@ -506,7 +506,6 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
     vector vDepthDesc     = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
     vector vFogDesc       = g_FogTexture.Sample(DefaultSampler, In.vTexUV);
     vector vAmbientDesc   = g_AmbientTexture.Sample(DefaultSampler, In.vTexUV);
-    vSpecular.a = 0.f;
 
     if (vAmbientDesc.a > 0.f)
     {

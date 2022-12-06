@@ -42,7 +42,7 @@ HRESULT CRender_Manager::Initialize()
 
 	/* For.Target_Depth */
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Depth"), 
-		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 1.f, 0.f, 1.f))))
+		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 1.f,  0.f, 1.f))))
 		DEBUG_ASSERT;
 
 	/* For.Target_Shade */
