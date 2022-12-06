@@ -49,14 +49,13 @@ public:
     virtual void OnEventMessage(_uint iArg) override;
     void OnChangeAnimationKey(const _uint& In_Key);
 
+#ifdef _DEBUG
     const void Trigger_Reset(weak_ptr<CTransform> pPreviewModelTransform) 
     {
         m_pPreviewModelTransform = pPreviewModelTransform;
         m_bResetTrigger = true;
     }
-
-    //FDelegate<>                         CallBack_Rebake;
-    //FDelegate<weak_ptr<CTransform>>     CallBack_Reset;
+#endif // _DEBUG
 
 private:
     virtual HRESULT Initialize_Prototype()   override;

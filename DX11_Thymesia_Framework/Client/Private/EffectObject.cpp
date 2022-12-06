@@ -24,7 +24,6 @@ HRESULT CEffectObject::Initialize(void* pArg)
 void CEffectObject::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
 }
 
 void CEffectObject::LateTick(_float fTimeDelta)

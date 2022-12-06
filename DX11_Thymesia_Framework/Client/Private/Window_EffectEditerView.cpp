@@ -45,7 +45,7 @@ void CWindow_EffectEditerView::Tick(_float fTimeDelta)
     {
         if (m_pCurrentEffectGroup.lock())
         {
-            m_pCurrentEffectGroup.lock()->ReBake_EditParticle();
+           //  m_pCurrentEffectGroup.lock()->ReBake_EditParticle();
             m_pCurrentEffectGroup.lock()->Reset_Effects();
         }
         

@@ -71,7 +71,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     MACRO("SK_C_Corvus.ao|Corvus_SD1_Sprint_Start", 2.25f);
     MACRO("SK_C_Corvus.ao|Corvus_Raven_ClawCommonV2_ChargeStart", 1.25f);
     MACRO("SK_C_Corvus.ao|Corvus_Raven_ClawCommon_ChargeLoop", 1.5f);
-    MACRO("SK_C_Corvus.ao|Corvus_Raven_ClawLong_ChargeFull", 1.75f);
+    MACRO("SK_C_Corvus.ao|Corvus_Raven_ClawLong_ChargeFull", 2.625f);
     MACRO("SK_C_Corvus.ao|Corvus_SD_TD2Thorw2", 1.75f);
     MACRO("SK_C_Corvus.ao|Corvus_PW_Axe", 3.f);
     MACRO("SK_C_Corvus.ao|Corvus_PW_Knife_A_V1", 2.75f);

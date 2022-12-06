@@ -202,6 +202,8 @@ void CCustomEffectMesh::Sync_Animation()
 
 void CCustomEffectMesh::Play(_float fTimeDelta)
 {
+	fTimeDelta = fTimeDelta * GAMEINSTANCE->Get_TimeScale(m_iTimeScaleLayerIndex);
+
 	if (0.f < m_fCurrentInitTime)
 	{
 		m_fCurrentInitTime -= fTimeDelta;
@@ -951,7 +953,6 @@ void CCustomEffectMesh::Clone_EffectMesh()
 
 void CCustomEffectMesh::OnEventMessage(_uint iArg)
 {
-
 #ifdef _DEBUG
 	if ((_uint)EVENT_TYPE::ON_EDITDRAW == iArg)
 	{
@@ -961,8 +962,24 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 				this->Clone_EffectMesh();
 
 			// TODO : for imgui - mesh keyboard control
-			ImGui::Text("Focus Control"); ImGui::SameLine();
-			ImGui::Checkbox("##Control Focus", &m_tEffectMeshDesc.bOnFocus);
+			ImGui::Checkbox("Focus Control##Control_Focus", &m_tEffectMeshDesc.bOnFocus);
+
+			if (ImGui::Button("All Control##All_Control"))
+			{
+				m_tEffectMeshDesc.bOnFocus = true;
+				m_tEffectMeshDesc.bSyncStartPositionToController = true;
+				m_tEffectMeshDesc.bSyncStartRotationToController = true;
+			}
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("No Control##No_Control"))
+			{
+				m_tEffectMeshDesc.bOnFocus = false;
+				m_tEffectMeshDesc.bSyncStartPositionToController = false;
+				m_tEffectMeshDesc.bSyncStartRotationToController = false;
+			}
+
 			if (m_tEffectMeshDesc.bOnFocus)
 			{
 				if (ImGui::TreeNode("Control Key Info"))

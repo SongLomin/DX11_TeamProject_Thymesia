@@ -114,7 +114,6 @@ HRESULT CEffect_Rect::Initialize(void* pArg)
 	m_pNoiseTextureCom.lock()->Use_Texture("UVNoise");
 	CBase::Set_Enable(false);
 
-
 #ifdef _USE_THREAD_
 	CGameObject::Use_Thread(THREAD_TYPE::TICK);
 #endif // _USE_THREAD_
@@ -124,7 +123,7 @@ HRESULT CEffect_Rect::Initialize(void* pArg)
 
 void CEffect_Rect::Tick(_float fTimeDelta)
 {
-	__super::Tick(fTimeDelta);
+		CGameObject::CallBack_Tick(fTimeDelta);
 
 #ifdef _DEBUG
 	if (m_bResetTrigger && m_pPreviewModelTransform.lock())
@@ -522,6 +521,7 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	if (this->Is_Sprite())
 	{
 		Out_Json["Loop_Sprite"] = m_tEffectParticleDesc.bLoopSprite;
+		Out_Json["Is_Stop_At_End_Frame"] = m_tEffectParticleDesc.bStopAtEndFrame;
 
 		Out_Json["Sprite_NumFrameX"] = m_tEffectParticleDesc.iNumFrameX;
 		Out_Json["Sprite_NumFrameY"] = m_tEffectParticleDesc.iNumFrameY;
@@ -834,6 +834,9 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 		if (In_Json.find("Loop_Sprite") != In_Json.end())
 			m_tEffectParticleDesc.bLoopSprite = In_Json["Loop_Sprite"];
 
+		if (In_Json.find("Is_Stop_At_End_Frame") != In_Json.end())
+			m_tEffectParticleDesc.bStopAtEndFrame = In_Json["Is_Stop_At_End_Frame"];
+
 		m_tEffectParticleDesc.iNumFrameX = In_Json["Sprite_NumFrameX"];
 		m_tEffectParticleDesc.iNumFrameY = In_Json["Sprite_NumFrameY"];
 		m_tEffectParticleDesc.fSpriteSpeed = In_Json["Sprite_FrameSpeed"];
@@ -846,6 +849,8 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 
 void CEffect_Rect::Play(_float fTimeDelta)
 {
+	fTimeDelta = fTimeDelta * GAMEINSTANCE->Get_TimeScale(m_iTimeScaleLayerIndex);
+
 	if (0.f < m_fCurrentInitTime)
 	{
 		m_fCurrentInitTime -= fTimeDelta;
@@ -1512,7 +1517,11 @@ void CEffect_Rect::Update_ParticleSpriteFrame(const _uint& i, _float fTimeDelta)
 				}
 				else
 				{
-					m_tParticleDescs[i].vSpriteUV = { 1.f, 1.f };
+					if (m_tEffectParticleDesc.bStopAtEndFrame)
+						m_tParticleDescs[i].vSpriteUV = { 1.f - 1.f / m_tEffectParticleDesc.iNumFrameX, 1.f - 1.f / m_tEffectParticleDesc.iNumFrameY };
+					else
+						m_tParticleDescs[i].vSpriteUV = { 1.f, 1.f };
+					
 					m_bStopSprite = true;
 					return;
 				}
@@ -2472,6 +2481,9 @@ void CEffect_Rect::Tool_Sprite()
 	if (ImGui::TreeNode("Sprite Option"))
 	{
 		ImGui::Checkbox("Loop Sprite##LoopSprite", &m_tEffectParticleDesc.bLoopSprite);
+		ImGui::SameLine();
+		ImGui::Checkbox("Stop At End##Stop_At_End_Frame", &m_tEffectParticleDesc.bStopAtEndFrame);
+		ImGui::NewLine();
 
 		ImGui::InputInt("NumFramesX", &m_tEffectParticleDesc.iNumFrameX);
 		ImGui::InputInt("NumFramesY", &m_tEffectParticleDesc.iNumFrameY);

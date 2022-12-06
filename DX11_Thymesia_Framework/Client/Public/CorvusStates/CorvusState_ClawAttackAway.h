@@ -28,13 +28,17 @@ public:
     void Attack();
     void Check_InputNextAttack();
 
+    void Call_NextKeyFrame(const _uint& In_KeyIndex);
+
+private:
+    weak_ptr<CAnimation> m_pThisAnimationCom;
 
 private:
     _bool m_IsNextAttack = false;
 
     _float m_fDebugAnimationSpeed = 1.f;
 
-    _int m_iEndAttackEffectIndex = -1;
+    _uint m_iEffectIndex = 0;
 
 protected:
     virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;

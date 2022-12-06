@@ -231,7 +231,7 @@ technique11 DefaultTechnique
     pass Default // 0
     {
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
         SetRasterizerState(RS_NonCulling);
 		
         VertexShader = compile vs_5_0 VS_MAIN();
@@ -242,7 +242,7 @@ technique11 DefaultTechnique
     pass Distortion // 1
     {
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
         SetRasterizerState(RS_NonCulling);
 		
         VertexShader = compile vs_5_0 VS_MAIN();
@@ -253,7 +253,7 @@ technique11 DefaultTechnique
     pass SoftEffect // 2
     {
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
         SetRasterizerState(RS_NonCulling);
 		
         VertexShader = compile vs_5_0 VS_MAIN_SOFT();

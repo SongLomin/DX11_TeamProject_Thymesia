@@ -57,13 +57,19 @@ namespace Client
 		_float3		vMinScale;
 		_float3		vMaxScale;
 #pragma endregion
+
 		_int		iShaderPassIndex;
 
 #pragma region Colors
 		_float		fDiscardRatio;
 
+		_bool		bEasingAlpha;
+		_int		iAlphaEasingType;
+
+		_float		fAlphaEasingTotalTime;
+
 		_float4		vStartColor;
-		_float4		vColorSpeed;
+		_float4		vColorSpeed;	// w is TargetAlpha when Easing Alpha
 		_float4		vColorForce;
 		_float4		vMinColor;
 		_float4		vMaxColor;
@@ -321,6 +327,7 @@ namespace Client
 		_int		iNumFrameX;
 		_int		iNumFrameY;
 		_float		fSpriteSpeed;
+		_bool		bStopAtEndFrame;
 #pragma endregion
 	};
 
