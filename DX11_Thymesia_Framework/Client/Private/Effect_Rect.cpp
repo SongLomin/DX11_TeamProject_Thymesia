@@ -143,12 +143,7 @@ void CEffect_Rect::Tick(_float fTimeDelta)
 
 void CEffect_Rect::LateTick(_float fTimeDelta)
 {
-	_bool bUseParentMatrix(false);
-	if ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType)
-		bUseParentMatrix = true;
-
-	m_pVIBuffer.lock()->Update(m_tParticleDescs, bUseParentMatrix);
-
+	m_pVIBuffer.lock()->Update(m_tParticleDescs, ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType));
 	__super::LateTick(fTimeDelta);
 
 	if (this->Check_DisableAllParticle())
@@ -255,8 +250,7 @@ void CEffect_Rect::SetUp_ShaderResource()
 	if ((_uint)TRANSFORMTYPE::STATIC != m_tEffectParticleDesc.iFollowTransformType)
 		this->Update_ParentTransform();
 
-	_matrix BoneMatrix(XMMatrixIdentity());
-	_matrix WorldMatrix(XMMatrixIdentity());
+	_matrix WorldMatrix(XMMatrixIdentity()), BoneMatrix(XMMatrixIdentity());
 
 	if (m_pBoneNode.lock() && ((_uint)TRANSFORMTYPE::CHILD == m_tEffectParticleDesc.iFollowTransformType))
 	{
@@ -270,7 +264,6 @@ void CEffect_Rect::SetUp_ShaderResource()
 	}
 
 	WorldMatrix = BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix();
-
 	WorldMatrix = XMMatrixTranspose(WorldMatrix);
 
 	m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_float4x4));
