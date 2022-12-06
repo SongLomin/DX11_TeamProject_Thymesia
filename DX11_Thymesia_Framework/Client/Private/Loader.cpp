@@ -163,6 +163,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	Load_AllTexture("../Bin/GroundInfo/Filter/", MEMORY_TYPE::MEMORY_STATIC);
 #endif // _JOJO_EFFECT_TOOL_
 
+	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));
 	this->Load_CorvusModel();
 	this->Load_BossMobModel();
 #ifndef _JOJO_EFFECT_TOOL_
