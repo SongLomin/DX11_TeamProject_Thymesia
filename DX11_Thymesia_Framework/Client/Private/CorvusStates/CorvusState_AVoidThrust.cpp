@@ -32,7 +32,7 @@ void CCorvusState_AVoidThrust::Start()
 	__super::Start();
 	
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD_AvoidAttack_E2");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_AvoidAttack_E2");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_AVoidThrust::Call_AnimationEnd, this);
 }
 

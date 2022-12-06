@@ -26,7 +26,7 @@ HRESULT CCorvusState_ClawAttackAway::Initialize(void* pArg)
 void CCorvusState_ClawAttackAway::Start()
 {
 	__super::Start();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_Raven_ClawLong_ChargeFull");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_Raven_ClawLong_ChargeFull");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_ClawAttackAway::Call_AnimationEnd, this);
 }
 

@@ -147,7 +147,7 @@ HRESULT CCorvus::Render()
 		//	if(i != m_iDissolveMeshIndex)
 		//		continue;
 		//}
-	////메쉬 확인 용	
+
 		if (i == m_iContainerIndex)
 			continue;
 
@@ -251,11 +251,6 @@ void CCorvus::Ready_States()
 	MACRO(CCorvusState_Climb_Start);
 	MACRO(CCorvusState_Climb_Fall_Attack);
 
-
-
-
-
-	
 
 #undef MACRO
 }

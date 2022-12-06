@@ -32,7 +32,7 @@ void CCorvusState_ClawAttackHoldLoop::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_Raven_ClawCommon_ChargeLoop");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_Raven_ClawCommon_ChargeLoop");
 	//m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_ClawAttackHoldLoop::Call_AnimationEnd, this);
 }
 
