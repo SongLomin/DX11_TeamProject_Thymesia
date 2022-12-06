@@ -153,7 +153,7 @@
 #undef _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
 #undef _JOJO_EFFECTS_
-// #define _ANIMATION_TOOL_CORVUS_WEAPON_
+#define _ANIMATION_TOOL_CORVUS_WEAPON_
 #pragma endregion // Effects
 
 #endif // _JOJO_EFFECT_TOOL_

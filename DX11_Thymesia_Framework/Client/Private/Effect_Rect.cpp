@@ -123,7 +123,7 @@ HRESULT CEffect_Rect::Initialize(void* pArg)
 
 void CEffect_Rect::Tick(_float fTimeDelta)
 {
-		CGameObject::CallBack_Tick(fTimeDelta);
+	CGameObject::CallBack_Tick(fTimeDelta);
 
 #ifdef _DEBUG
 	if (m_bResetTrigger && m_pPreviewModelTransform.lock())
@@ -227,11 +227,21 @@ void CEffect_Rect::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 			BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
 			BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
 
+#ifdef _DEBUG
+			if (pParentTransform.lock())
+				m_pTransformCom.lock()->Set_WorldMatrix(BoneMatrix * pParentTransform.lock()->Get_UnScaledWorldMatrix());
+#else _DEBUG
 			m_pTransformCom.lock()->Set_WorldMatrix(BoneMatrix * pParentTransform.lock()->Get_UnScaledWorldMatrix());
+#endif // _DEBUG
 		}
 		else
 		{
+#ifdef _DEBUG
+			if (pParentTransform.lock())
+				m_pTransformCom.lock()->Set_WorldMatrix(pParentTransform.lock()->Get_UnScaledWorldMatrix());
+#else // _DEBUG
 			m_pTransformCom.lock()->Set_WorldMatrix(pParentTransform.lock()->Get_UnScaledWorldMatrix());
+#endif // _DEBUG
 		}
 	}
 
@@ -849,8 +859,6 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 
 void CEffect_Rect::Play(_float fTimeDelta)
 {
-	fTimeDelta = fTimeDelta * GAMEINSTANCE->Get_TimeScale(m_iTimeScaleLayerIndex);
-
 	if (0.f < m_fCurrentInitTime)
 	{
 		m_fCurrentInitTime -= fTimeDelta;

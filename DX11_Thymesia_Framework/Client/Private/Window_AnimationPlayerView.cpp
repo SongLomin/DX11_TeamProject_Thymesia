@@ -452,7 +452,7 @@ void CWindow_AnimationPlayerView::Draw_AnimationList()
         if (m_bHold)
             byFlag = (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Z;
             
-        pCurrentModel.lock()->Set_RootNode("root", byFlag);
+        pCurrentModel.lock()->Set_RootNode("root_$AssimpFbx$_Translation", byFlag);
     }
 
     ImGui::SameLine();

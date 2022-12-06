@@ -79,11 +79,8 @@ void CCustomEffectMesh::Tick(_float fTimeDelta)
 	this->Play(fTimeDelta * GAMEINSTANCE->Get_TimeScale(m_iTimeScaleLayerIndex));
 #ifdef _DEBUG
 #ifdef _JOJO_EFFECT_TOOL_
-	if ((_uint)LEVEL_EDIT == m_CreatedLevel)
-	{
-		this->Key_Input_ControlMesh(fTimeDelta);
-		this->Apply_ImGui_Controls_to_Mesh();
-	}
+	this->Key_Input_ControlMesh(fTimeDelta);
+	this->Apply_ImGui_Controls_to_Mesh();
 #endif // _JOJO_EFFECT_TOOL_
 #endif // _DEBUG
 }
