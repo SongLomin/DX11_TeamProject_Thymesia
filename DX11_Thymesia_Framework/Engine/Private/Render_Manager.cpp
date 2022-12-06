@@ -42,7 +42,7 @@ HRESULT CRender_Manager::Initialize()
 
 	/* For.Target_Depth */
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Depth"), 
-		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 1.f,  0.f, 1.f))))
+		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(1.f, 1.f,  0.f, 1.f))))
 		DEBUG_ASSERT;
 
 	/* For.Target_Shade */
@@ -393,8 +393,8 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Render_Lights()))
 		DEBUG_ASSERT;
 
-	/*if (FAILED(Bake_Fog()))
-		DEBUG_ASSERT;*/
+	if (FAILED(Bake_Fog()))
+		DEBUG_ASSERT;
 
 	if (FAILED(Bake_ViewShadow()))
 		DEBUG_ASSERT;
