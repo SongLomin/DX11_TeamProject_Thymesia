@@ -31,6 +31,13 @@ public:
 		}*/
 	}
 
+	FDelegate& operator = (std::function<void(ARGS...)> const& func)
+	{
+		functions.clear();
+		functions.push_back(func);
+		return *this;
+	}
+
 	FDelegate& operator += (std::function<void(ARGS...)> const& func)
 	{
 		functions.push_back(func);
@@ -84,6 +91,11 @@ public:
 	{
 		functions.clear();
 	}
+
+	/*_size_t size()
+	{
+		return functions.size();
+	}*/
 
 
 private:

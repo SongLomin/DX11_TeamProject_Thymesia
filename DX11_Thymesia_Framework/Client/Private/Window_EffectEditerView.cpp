@@ -58,12 +58,6 @@ void CWindow_EffectEditerView::Tick(_float fTimeDelta)
             GET_SINGLE(CImGui_Manager)->Save_EffectJson();
         }
     }
-
-    /*if (GET_SINGLE(CWindow_AnimationPlayerView)->Is_Stop())
-        return;
-
-    if (m_pCurrentEffectGroup.lock())
-        m_pCurrentEffectGroup.lock()->Play(fTimeDelta * GET_SINGLE(CWindow_AnimationPlayerView)->Get_Speed());*/
 }
 
 HRESULT CWindow_EffectEditerView::Render()

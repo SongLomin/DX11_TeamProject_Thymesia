@@ -139,10 +139,11 @@ void CEffectGroup::Add_EditParticle(const _char* In_szName, const _char* In_szTe
 
 void CEffectGroup::ReBake_EditParticle()
 {
-    for (auto& elem : m_pEffectParticles)
-    {
-        elem.lock()->ReBake_EditParticle();
-    }
+    //for (auto& elem : m_pEffectParticles)
+    //{
+    //    // elem.lock()->CallBack_Rebake = std::bind(&CEffect_Rect::ReBake_EditParticle, elem.lock());
+    //    // elem.lock()->ReBake_EditParticle();
+    //}
 }
 
 void CEffectGroup::Add_EffectMesh()
@@ -237,10 +238,14 @@ void CEffectGroup::Reset_Effects()
     for (auto& elem : m_pEffectMeshs)
         elem.lock()->Reset_Effect(pPreviewModelTransform);
 
+    // std::sinf() / 2.f + 2;
+
 
     for (auto& elem : m_pEffectParticles)
-        elem.lock()->Reset_Effect(pPreviewModelTransform);
-
+    {
+        elem.lock()->Trigger_Reset(pPreviewModelTransform);
+        // elem.lock()->CallBack_Reset = std::bind(&CEffect_Rect::Reset_Effect, elem.lock(), pPreviewModelTransform);
+    }
 }
 
 void CEffectGroup::Reset_Effects(weak_ptr<CTransform> pParentTransformCom)

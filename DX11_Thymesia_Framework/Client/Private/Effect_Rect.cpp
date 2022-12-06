@@ -119,13 +119,22 @@ HRESULT CEffect_Rect::Initialize(void* pArg)
 	CGameObject::Use_Thread(THREAD_TYPE::TICK);
 #endif // _USE_THREAD_
 
-
 	return S_OK;
 }
 
 void CEffect_Rect::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+#ifdef _DEBUG
+	if (m_bResetTrigger && m_pPreviewModelTransform.lock())
+	{
+		this->ReBake_EditParticle();
+		this->Reset_Effect(m_pPreviewModelTransform.lock());
+		m_pPreviewModelTransform = weak_ptr<CTransform>();
+		m_bResetTrigger = false;
+	}
+#endif // _DEBUG
 
 	if (m_pVIBuffer.lock()->Get_InstanceCount() != m_tEffectParticleDesc.iMaxInstance)
 		this->Reset_Instance(m_tEffectParticleDesc.iMaxInstance);
@@ -2203,10 +2212,18 @@ void CEffect_Rect::Tool_Rotation()
 		if (m_tEffectParticleDesc.bIsMinMaxSame_StartRotation)
 			m_tEffectParticleDesc.vMaxStartRotation = m_tEffectParticleDesc.vMinStartRotation;
 
-		ImGui::Text("Min Start Rotation"); ImGui::SetNextItemWidth(300.f);
+		ImGui::Text("Min Start Rotation");
+		if (ImGui::Button("Default##Defulat_Min_Start_Rotation"))
+			m_tEffectParticleDesc.vMinStartRotation.x = m_tEffectParticleDesc.vMinStartRotation.y = m_tEffectParticleDesc.vMinStartRotation.z = -3.14f;
+
+		ImGui::SameLine(); ImGui::SetNextItemWidth(300.f);
 		ImGui::DragFloat3("##Min_Start_Rotation", &m_tEffectParticleDesc.vMinStartRotation.x, 0.01f, 0.f, 0.f, "%.5f");
 
-		ImGui::Text("Max Start Rotation"); ImGui::SetNextItemWidth(300.f);
+		ImGui::Text("Max Start Rotation");
+		if (ImGui::Button("Default##Defulat_Max_Start_Rotation"))
+			m_tEffectParticleDesc.vMaxStartRotation.x = m_tEffectParticleDesc.vMaxStartRotation.y = m_tEffectParticleDesc.vMaxStartRotation.z = 3.14f;
+
+		ImGui::SameLine(); ImGui::SetNextItemWidth(300.f);
 		ImGui::DragFloat3("##Max_Start_Rotation", &m_tEffectParticleDesc.vMaxStartRotation.x, 0.01f, 0.f, 0.f, "%.5f");
 
 		ImGui::TreePop();

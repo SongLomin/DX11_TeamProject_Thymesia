@@ -49,6 +49,15 @@ public:
     virtual void OnEventMessage(_uint iArg) override;
     void OnChangeAnimationKey(const _uint& In_Key);
 
+    const void Trigger_Reset(weak_ptr<CTransform> pPreviewModelTransform) 
+    {
+        m_pPreviewModelTransform = pPreviewModelTransform;
+        m_bResetTrigger = true;
+    }
+
+    //FDelegate<>                         CallBack_Rebake;
+    //FDelegate<weak_ptr<CTransform>>     CallBack_Reset;
+
 private:
     virtual HRESULT Initialize_Prototype()   override;
     virtual HRESULT Initialize(void* pArg)   override;
@@ -174,6 +183,12 @@ private:
     weak_ptr<CModel>                    m_pParentModel;
     std::string                         m_strBoneName   = "";
     _int                                m_iCurrentBoneIndex = 0;
+
+#ifdef _DEBUG
+    // For. Thread
+    _bool                   m_bResetTrigger = false;
+    weak_ptr<CTransform>    m_pPreviewModelTransform;
+#endif // _DEBUG
 };
 
 END
