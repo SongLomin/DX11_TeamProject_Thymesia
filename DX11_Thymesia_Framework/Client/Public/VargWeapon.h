@@ -1,5 +1,5 @@
 #pragma once
-#include "Weapon.h"
+#include "MobWeapon.h"
 #include "Client_Defines.h"
 
 BEGIN(Engine)
@@ -12,11 +12,12 @@ END
 
 BEGIN(Client)
 
-class CCorvus_DefaultDagger :
-    public CWeapon
+class CVargWeapon final :
+    public CMobWeapon
 {
-    GAMECLASS_H(CCorvus_DefaultDagger);
-    CLONE_H(CCorvus_DefaultDagger, CGameObject);
+public:
+    GAMECLASS_H(CVargWeapon);
+    CLONE_H(CVargWeapon, CGameObject);
 
 public:// CGameObject을(를) 통해 상속됨
     virtual HRESULT Initialize_Prototype() override;
@@ -29,19 +30,18 @@ public:// CGameObject을(를) 통해 상속됨
 public:
     _bool Set_TrailEnable(const _bool In_bEnable);
 
-
-protected:
+private:
     weak_ptr<class CEffect_Trail> m_pTrailEffect;
 
-protected:
+private:
     void SetUp_ShaderResource();
 
-protected:
+private:
     virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
 
-private:
+public:
     void Free();
 };
 

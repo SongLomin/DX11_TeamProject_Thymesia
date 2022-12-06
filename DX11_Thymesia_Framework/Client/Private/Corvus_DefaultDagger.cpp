@@ -38,7 +38,7 @@ HRESULT CCorvus_DefaultDagger::Start()
 	__super::Start();
 
 #ifdef _DAGGER_TRAIL_
-	m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
+	//m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
 #endif // _DAGGER_TRAIL_
 
 	return S_OK;
@@ -64,6 +64,15 @@ HRESULT CCorvus_DefaultDagger::Render()
 
 	return S_OK;
 }
+_bool CCorvus_DefaultDagger::Set_TrailEnable(const _bool In_bEnable)
+{
+	if (!m_pTrailEffect.lock())
+		return false;
+
+	return m_pTrailEffect.lock()->Set_Enable(In_bEnable);
+
+}
+
 void CCorvus_DefaultDagger::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();

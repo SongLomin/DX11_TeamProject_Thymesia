@@ -41,6 +41,9 @@ private:
     virtual void OnDestroy() override;
     void Free();
 
+private:
+    void Look_At_Mosnter();
+
     //TODO¿”Ω√
 private:
     weak_ptr<CTalent_Sword>  m_pSword;

@@ -9,6 +9,7 @@
 #include "CorvusStates/CorvusStates.h"
 #include "GameManager.h"
 #include "Monster.h"
+#include "Effect_Trail.h"
 #include "NorMonStates.h"
 
 GAMECLASS_C(CCorvusState_PS_VargSword);
@@ -39,7 +40,6 @@ void CCorvusState_PS_VargSword::Start()
 void CCorvusState_PS_VargSword::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }

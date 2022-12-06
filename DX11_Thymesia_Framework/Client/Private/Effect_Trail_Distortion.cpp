@@ -19,6 +19,7 @@ HRESULT CEffect_Trail_Distortion::Initialize(void* pArg)//trailÀ» »ç¿ëÇÏ´Â °´Ã¼·
 {
 	__super::Initialize(pArg);
 
+	m_pNoiseTextureCom = Add_Component<CTexture>();
 	m_pNoiseTextureCom.lock()->Use_Texture(("UVNoise"));
 
 	m_pMaskTextureCom = Add_Component<CTexture>();
@@ -58,7 +59,7 @@ void CEffect_Trail_Distortion::SetUp_ShaderResource()
 	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4));
 	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
 	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture", 8);
-	m_pMaskTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 39);
+	m_pMaskTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 869);
 
 	_float4 vColor = _float4(1.f, 1.f, 1.f, 1.f);
 

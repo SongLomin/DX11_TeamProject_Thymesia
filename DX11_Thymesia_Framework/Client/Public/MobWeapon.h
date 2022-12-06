@@ -12,7 +12,7 @@ END
 
 BEGIN(Client)
 
-class CMobWeapon final :
+class CMobWeapon  :
     public CWeapon
 {
 public:
@@ -27,10 +27,10 @@ public:// CGameObject을(를) 통해 상속됨
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render() override;
 
-private:
+protected:
     void SetUp_ShaderResource();
 
-private:
+protected:
     virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;

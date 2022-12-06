@@ -139,33 +139,47 @@ _vector CPlayerStateBase::Get_InputToLookDir()
 	/*if (m_bEdit)
 		return XMVectorSet(0.f, 0.f, 0.f, 0.f);*/
 
-	_matrix CurrentCamWorldMatrix;
+	_matrix MoveMatrix;
 
-	CurrentCamWorldMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD);
-	CurrentCamWorldMatrix = SMath::Get_MatrixNormalize(CurrentCamWorldMatrix);
+	if(m_pOwnerFromPlayer.lock()->Get_Focused())
+	{
+		//타겟 포커싱 했을 때 몬스터를 바라보게 해야함               
+		//MoveMatrix = m_pOwnerFromPlayer.lock()->Get_Component<CTransform>().lock()->Get_WorldMatrix();
+		_vector vPlayerPos = GET_SINGLE(CGameManager)->Get_PlayerPos();
+		_vector vMonsterPos = GET_SINGLE(CGameManager)->Get_TargetMonster().lock()->Get_Component<CTransform>().lock()->Get_Position();
 
+		_vector vLook = vMonsterPos - vPlayerPos;
+		
+		MoveMatrix = SMath::Bake_MatrixNormalizeUseLookVector(vLook);
+	}
+	else
+	{
+		MoveMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD);
+	}
+
+	MoveMatrix = SMath::Get_MatrixNormalize(MoveMatrix);
 	_vector vLookDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 
 	if (KEY_INPUT(KEY::W, KEY_STATE::HOLD))
 	{
-		vLookDir += CurrentCamWorldMatrix.r[2];
+		vLookDir += MoveMatrix.r[2];
 	}
 
 	if (KEY_INPUT(KEY::A, KEY_STATE::HOLD))
 	{
-		vLookDir += -CurrentCamWorldMatrix.r[0];
+		vLookDir += -MoveMatrix.r[0];
 	}
 
 	if (KEY_INPUT(KEY::S, KEY_STATE::HOLD))
 	{
-		vLookDir += -CurrentCamWorldMatrix.r[2];
+		vLookDir += -MoveMatrix.r[2];
 	}
 
 	if (KEY_INPUT(KEY::D, KEY_STATE::HOLD))
 	{
-		vLookDir += CurrentCamWorldMatrix.r[0];
+		vLookDir += MoveMatrix.r[0];
 	}
-
+	
 	return vLookDir;
 }
 

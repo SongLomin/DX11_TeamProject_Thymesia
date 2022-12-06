@@ -65,6 +65,9 @@ public:
     void Release_Focus();
     weak_ptr<CMonster> Get_TargetMonster();
 
+private:
+    weak_ptr<CMonster> Forced_SearchNearTargetMonster();
+
 public:
     void Register_EffectGroup(const string& In_szEffectGroupName, weak_ptr<CEffectGroup> In_pEffectGroup);
     // 해당 이펙트 그룹의 인덱스를 반환합니다. (메모리 풀)
@@ -79,7 +82,6 @@ private:
 
 public:
     void Load_AllKeyEventFromJson();
-
     // 키 이벤트가 있는 애니메이션에게만 함수를 바인드합니다. 
     // 다음 애니메이션 키 이벤트가 들어오면 Bind_Function을 호출합니다. 
     void Bind_KeyEvent(const string& In_szModelName, weak_ptr<CModel> ModelCom, function<void(const _uint&)> Bind_Function);

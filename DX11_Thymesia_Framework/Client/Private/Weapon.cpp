@@ -4,8 +4,7 @@
 #include "GameManager.h"
 #include "Character.h"
 #include "Weapon.h"
-#include "Effect_Trail.h"
-#include "VIBuffer_Trail.h"
+
 
 GAMECLASS_C(CWeapon);
 CLONE_C(CWeapon, CGameObject);
@@ -139,13 +138,6 @@ void CWeapon::Enable_Weapon()
 	}
 }
 
-void CWeapon::Init_Trail(TRAIL_DESC& TrailDesc)
-{
-	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail>(m_CreatedLevel, &TrailDesc);
-	m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
-	m_pTrailEffect.lock()->Set_Enable(false);
-}
-
 void CWeapon::Add_Collider(_fvector In_vOffset, const _float In_fScale, const COLLISION_LAYER In_Layer)
 {
 	m_pHitColliderComs.push_back(Add_Component<CCollider>());
@@ -160,14 +152,7 @@ void CWeapon::Add_Collider(_fvector In_vOffset, const _float In_fScale, const CO
 	m_pHitColliderComs.back().lock()->Init_Collider(COLLISION_TYPE::SPHERE, tDesc);
 }
 
-_bool CWeapon::Set_TrailEnable(const _bool In_bEnable)
-{
-	if (!m_pTrailEffect.lock())
-		return false;
 
-	return m_pTrailEffect.lock()->Set_Enable(In_bEnable);
-	
-}
 
 
 void CWeapon::Disable_Weapon()

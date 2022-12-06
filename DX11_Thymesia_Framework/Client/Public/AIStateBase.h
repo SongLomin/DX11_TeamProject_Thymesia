@@ -39,6 +39,8 @@ protected:
     _bool           Rotation_InputToLookDir();
     _bool           Rotation_TargetToLookDir();
     _float          Get_DistanceWithPlayer() const;
+    _bool           Check_RequirementIsTargeted();
+
   
    
 protected:

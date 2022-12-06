@@ -75,6 +75,7 @@ HRESULT CCorvus::Start()
 void CCorvus::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+	
 	this->RootMove();
 
 	PxControllerFilters Filters;
@@ -97,7 +98,7 @@ void CCorvus::Tick(_float fTimeDelta)
 			m_iContainerIndex = 0;
 		cout << "m_iContainerIndex : " << m_iContainerIndex << endl;
 	}
-	
+
 	// TODO : frame test
 	//if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
 	//{
@@ -180,6 +181,7 @@ HRESULT CCorvus::Render()
 
 	return S_OK;
 }
+
 
 void CCorvus::Ready_Weapon()
 {
