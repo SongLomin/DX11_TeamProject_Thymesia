@@ -53,7 +53,8 @@ HRESULT CPlayer::Initialize(void* pArg)
     m_eAttackCollisionLayer = COLLISION_LAYER::PLAYER_ATTACK;
 
     
-    m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom));
+    m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom),
+        (_uint)PHYSX_COLLISION_LAYER::PLAYER);
     //m_pPhysXControllerCom.lock()->Get_Controller()->setPosition();
 
     

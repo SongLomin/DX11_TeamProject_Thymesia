@@ -7,7 +7,8 @@ struct MODEL_DATA;
 struct MESH_DATA;
 class CVIBuffer_Model_Instance;
 
-class ENGINE_DLL CPhysXController : public CComponent, public PxControllerFilterCallback, public PxUserControllerHitReport
+class ENGINE_DLL CPhysXController : 
+	public CComponent, public PxControllerFilterCallback, public PxUserControllerHitReport, public PxQueryFilterCallback
 {
 	GAMECLASS_H(CPhysXController);
 	SHALLOW_COPY(CPhysXController);
@@ -19,7 +20,7 @@ public:
 	void	Set_EnableSimulation(const _bool In_EnableSimulation) { m_EnableSimulation = In_EnableSimulation; }
 	void	Set_CurrentCameraController();
 	PxController* Get_Controller();
-	_vector	Get_Position();
+	virtual _vector	Get_Position();
 
 	void	Enable_Gravity(const _bool In_bGravity);
 
@@ -36,8 +37,15 @@ public: // Hit Report
 	virtual void onControllerHit(const PxControllersHit& hit) override;
 	virtual void onObstacleHit(const PxControllerObstacleHit& hit) override;
 
+	// PxQueryFilterCallback을(를) 통해 상속됨
+	virtual PxQueryHitType::Enum preFilter(const PxFilterData& filterData, const PxShape* shape, const PxRigidActor* actor, PxHitFlags& queryFlags) override;
+	virtual PxQueryHitType::Enum postFilter(const PxFilterData& filterData, const PxQueryHit& hit) override;
+
+protected:
+	void Bind_FilterOptions(PxControllerFilters& Out_Filters);
+
 public:
-	virtual void	Init_Controller(const PxCapsuleControllerDesc& In_ControllerDesc);
+	virtual void	Init_Controller(const PxCapsuleControllerDesc& In_ControllerDesc, const _uint In_CollisionLayer);
 
 protected:
 	void			Create_Controller();
@@ -50,7 +58,7 @@ public:
 	virtual PxControllerCollisionFlags	MoveWithRotation(_fvector disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles, weak_ptr<CTransform> pTransform);
 	virtual PxControllerCollisionFlags	Move(_fvector disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles = nullptr);
 	virtual PxControllerCollisionFlags	MoveGravity(const _float fDeltaTime, PxControllerFilters& filters);
-	void						Reset_Gravity();
+	void								Reset_Gravity();
 
 
 
@@ -66,9 +74,11 @@ private:
 private:
 	static	_uint							m_iClonedControllerIndex;
 	_uint									m_iControllerIndex;
+	
 
 protected:
 	// 최대 속도는 XZ,Y 로 나뉘어 진다. XZ에 들어가있는 값은 X에 있는 값을 사용한다.
+	PxFilterData							m_FilterData;
 	_vector									m_vMaxVelocity;
 	_float									m_fGravityAcc = 0.f;
 

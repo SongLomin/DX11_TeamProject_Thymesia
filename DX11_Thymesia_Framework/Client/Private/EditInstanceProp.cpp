@@ -975,7 +975,7 @@ void CEditInstanceProp::View_SelectJson()
 
 void CEditInstanceProp::View_PhysXOption()
 {
-	const _char* items[] = { "None", "Model", "ConvexModel" };
+	const _char* items[] = { "None", "Model", "ConvexModel", "Dynamic"};
 
 	if (ImGui::BeginListBox("PhysX Collider Type"))
 	{

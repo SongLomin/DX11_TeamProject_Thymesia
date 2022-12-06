@@ -207,6 +207,10 @@ public: /* For.PhysX_Manager */
 	void			Create_ConvexMesh(PxVec3** pVertices, _uint iNumVertice, PxConvexMesh** ppOut);
 	void			Create_Material(_float fStaticFriction, _float fDynamicFriction, _float fRestitution, PxMaterial** ppOut);
 
+	weak_ptr<CPhysXCollider>			Find_PhysXCollider(const _uint In_iPhysXColliderIndex);
+	weak_ptr<CPhysXController>			Find_PhysXController(const _uint In_iPhysXControllerIndex);
+	_uint			Get_PhysXFilterGroup(const _uint In_iIndex);
+
 private:
 	shared_ptr<CGraphic_Device> m_pGraphic_Device;
 	shared_ptr<CInput_Device> m_pInput_Device;

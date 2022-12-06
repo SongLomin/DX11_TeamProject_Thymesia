@@ -255,37 +255,47 @@ PxFilterFlags CollisionFilterShader(
 	//return PxFilterFlag::eDEFAULT;
 
 	// let triggers through
-	if (filterData0.word2 == 2 && filterData1.word2 == 2)
-	{
-		if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
-		{
-			pairFlags = PxPairFlag::eTRIGGER_DEFAULT;
-			return PxFilterFlag::eDEFAULT;
-		}
-		else
-		{
-			return PxFilterFlag::eKILL;
-		}
-		//cout << "Is Exit? filterData0.word2 : " << filterData0.word2 << endl;
-		//cout << "Is Exit? filterData1.word2 : " << filterData1.word2 << endl;
-	}
+	//if (filterData0.word2 == 2 && filterData1.word2 == 2)
+	//{
+	//	if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+	//	{
+	//		pairFlags = PxPairFlag::eTRIGGER_DEFAULT;
+	//		return PxFilterFlag::eDEFAULT;
+	//	}
+	//	else
+	//	{
+	//		return PxFilterFlag::eKILL;
+	//	}
+	//	//cout << "Is Exit? filterData0.word2 : " << filterData0.word2 << endl;
+	//	//cout << "Is Exit? filterData1.word2 : " << filterData1.word2 << endl;
+	//}
 
-	else if (filterData0.word2 == 0 && filterData1.word2 == 0)
-	{
-		pairFlags = PxPairFlag::eCONTACT_DEFAULT;
-		return PxFilterFlag::eDEFAULT;
-	}
+	//else if (filterData0.word2 == 0 && filterData1.word2 == 0)
+	//{
+	//	pairFlags = PxPairFlag::eCONTACT_DEFAULT;
+	//	return PxFilterFlag::eDEFAULT;
+	//}
 
-	else
-	{
-		//pairFlags = PxPairFlag::eCONTACT_DEFAULT;
-		return PxFilterFlag::eKILL;
-	}
+	//else
+	//{
+	//	//pairFlags = PxPairFlag::eCONTACT_DEFAULT;
+	//	return PxFilterFlag::eKILL;
+	//}
 
 	// trigger the contact callback for pairs (A,B) where 
 	// the filtermask of A contains the ID of B and vice versa.
 	if ((filterData0.word0 & filterData1.word1) && (filterData1.word0 & filterData0.word1))
+	{
+
+		PxPairFlag::eDETECT_DISCRETE_CONTACT;
+		pairFlags |= PxPairFlag::eCONTACT_DEFAULT;
 		pairFlags |= PxPairFlag::eNOTIFY_TOUCH_FOUND;
+		return PxFilterFlag::eDEFAULT;
+	}
+	else
+	{
+		return PxFilterFlag::eKILL;
+	}
 
 	return PxFilterFlag::eDEFAULT;
 }

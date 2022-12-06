@@ -616,6 +616,21 @@ void CGameInstance::Create_Material(_float fStaticFriction, _float fDynamicFrict
 	m_pPhysX_Manager->Create_Material(fStaticFriction, fDynamicFriction, fRestitution, ppOut);
 }
 
+weak_ptr<CPhysXCollider> CGameInstance::Find_PhysXCollider(const _uint In_iPhysXColliderIndex)
+{
+	return m_pPhysX_Manager->Find_PhysXCollider(In_iPhysXColliderIndex);
+}
+
+weak_ptr<CPhysXController> CGameInstance::Find_PhysXController(const _uint In_iPhysXControllerIndex)
+{
+	return m_pPhysX_Manager->Find_PhysXController(In_iPhysXControllerIndex);
+}
+
+_uint CGameInstance::Get_PhysXFilterGroup(const _uint In_iIndex)
+{
+	return m_pPhysX_Manager->Get_PhysXFilterGroup(In_iIndex);
+}
+
 void CGameInstance::Free()
 {
 	__super::Free();

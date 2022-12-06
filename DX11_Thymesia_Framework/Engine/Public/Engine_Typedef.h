@@ -37,6 +37,8 @@ namespace Engine
 	typedef XMMATRIX					_matrix;
 	typedef FXMMATRIX					_fmatrix;
 
+	typedef unsigned long long			_flag;
+
 
 
 	typedef struct tagInt32

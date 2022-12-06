@@ -32,6 +32,11 @@ public:
     virtual void Load_FromJson(const json& In_Json) override;
 
 private:
+    void Bake_PhysXColliderCom();
+    void Bake_DynamicColliderComs();
+    void Synchronize_DynamicColliderComs();
+
+private:
     typedef vector<INSTANCE_MESH_DESC>    PROP_INFO;
 
     weak_ptr<CTexture>                  m_pMaskingTextureCom;
@@ -42,6 +47,8 @@ private:
 
     _int                                m_iColliderType = 0;
     _bool                               m_bNonCulling   = false;
+
+    vector<weak_ptr<CPhysXCollider>>      m_pDynamicColliderComs;
 
 public:
     void Free();

@@ -10,6 +10,10 @@ class CPhysXCameraController :
 	GAMECLASS_H(CPhysXCameraController);
 	SHALLOW_COPY(CPhysXCameraController);
 	DECLARE_CLONABLE(CPhysXCameraController, CComponent);
+	
+public:
+	_bool Is_Collision() const { return m_bCollision; }
+	virtual _vector	Get_Position() override;
 
 protected:
 	HRESULT Initialize_Prototype();
@@ -28,10 +32,13 @@ public: // Hit Report
 	virtual PxControllerBehaviorFlags getBehaviorFlags(const PxShape& shape, const PxActor& actor) override;
 	virtual PxControllerBehaviorFlags getBehaviorFlags(const PxController& controller) override;
 	virtual PxControllerBehaviorFlags getBehaviorFlags(const PxObstacle& obstacle) override;
-
+	
+	// PxQueryFilterCallback을(를) 통해 상속됨
+	virtual PxQueryHitType::Enum preFilter(const PxFilterData& filterData, const PxShape* shape, const PxRigidActor* actor, PxHitFlags& queryFlags) override;
+	virtual PxQueryHitType::Enum postFilter(const PxFilterData& filterData, const PxQueryHit& hit) override;
 
 public:
-	virtual void Init_Controller(const PxCapsuleControllerDesc& In_ControllerDesc) override;
+	virtual void Init_Controller(const PxCapsuleControllerDesc& In_ControllerDesc, const _uint In_CollisionLayer) override;
 
 public:
 	virtual void						Synchronize_Transform(weak_ptr<CTransform> pTransform, _fvector In_vOffset = { 0.f, 0.f, 0.f }) override;
@@ -55,10 +62,11 @@ private:
 	PxShape* m_pLastHitShape = nullptr;
 	PxRigidActor* m_pLastHitActor = nullptr;
 
+	_bool	m_bCollision = false;
+
 
 private:
 	void Free();
-
 
 };
 

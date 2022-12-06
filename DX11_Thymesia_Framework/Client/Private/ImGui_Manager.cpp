@@ -202,9 +202,9 @@ HRESULT CImGui_Manager::Render(void)
 				Load_FromJson(m_szJsonPath + m_szCurrentLocalPath);
 			}
 
-			if (ImGui::MenuItem("Stage_Lv3-1"))
+			if (ImGui::MenuItem("97. Test Level"))
 			{
-				m_szCurrentLocalPath = "Stage_Lv3-1.json";
+				m_szCurrentLocalPath = "Test_Level.json";
 				Load_FromJson(m_szJsonPath + m_szCurrentLocalPath);
 			}
 
@@ -213,6 +213,8 @@ HRESULT CImGui_Manager::Render(void)
 				m_szCurrentLocalPath = "Static.json";
 				Load_FromJson(m_szJsonPath + m_szCurrentLocalPath);
 			}
+
+
 
 			ImGui::EndMenu();
 		}

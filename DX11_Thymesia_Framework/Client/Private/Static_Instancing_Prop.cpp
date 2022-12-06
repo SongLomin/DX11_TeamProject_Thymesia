@@ -60,7 +60,8 @@ void CStatic_Instancing_Prop::LateTick(_float fTimeDelta)
 void CStatic_Instancing_Prop::Custom_Thread1(_float fTimeDelta)
 {
 #ifdef _INSTANCE_CULLING_
-	m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos));
+	if (m_pDynamicColliderComs.empty())
+		m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos));
 #endif
 }
 
@@ -68,8 +69,13 @@ void CStatic_Instancing_Prop::Before_Render(_float fTimeDelta)
 {
 	__super::Before_Render(fTimeDelta);
 
+	if(!m_pDynamicColliderComs.empty())
+		Synchronize_DynamicColliderComs();
+
 #ifdef _INSTANCE_CULLING_
-	m_pInstanceModelCom.lock()->Update_VisibleInstance();
+	// Don't Culling DynamicProps
+	if(m_pDynamicColliderComs.empty())
+		m_pInstanceModelCom.lock()->Update_VisibleInstance();
 #endif
 }
 
@@ -254,17 +260,77 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 		cout << "Create_PhysX: " << m_pInstanceModelCom.lock()->Get_ModelKey() << endl;
 #endif // _DEBUG_COUT_
 
-		_bool bConvex = m_iColliderType == 2;
+		Bake_PhysXColliderCom();
+	}
+#endif // _GENERATE_PROP_COLLIDER_
 
+	
+}
+
+void CStatic_Instancing_Prop::Bake_PhysXColliderCom()
+{
+	_bool bConvex = m_iColliderType == 2;
+
+	switch (m_iColliderType)
+	{
+	case 0:
+		DEBUG_ASSERT;
+		break;
+
+		// Mesh, ConvexMesh
+	case 1:
+	case 2:
+	{
 		m_pPhysXColliderCom.lock()->Init_ModelInstanceCollider(m_pInstanceModelCom.lock()->Get_ModelData(), m_pPropInfos, m_iColliderType);
 		PhysXColliderDesc tDesc;
 		Preset::PhysXColliderDesc::StaticInstancingPropSetting(tDesc, m_pTransformCom);
 		m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
 		m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
 	}
-#endif // _GENERATE_PROP_COLLIDER_
+		break;
 
-	
+		// Dynamic Instancing ColliderComs;
+	case 3:
+	{
+		Bake_DynamicColliderComs();
+	}
+		break;
+
+	default:
+		break;
+	}
+}
+
+void CStatic_Instancing_Prop::Bake_DynamicColliderComs()
+{
+	weak_ptr<CPhysXCollider> pDynamicPhysXColliderCom;
+	PhysXColliderDesc tDesc;
+
+	for (auto& elem : m_pPropInfos)
+	{
+		pDynamicPhysXColliderCom = Add_Component<CPhysXCollider>();
+		pDynamicPhysXColliderCom.lock()->Init_ModelCollider(m_pInstanceModelCom.lock()->Get_ModelData(), true);
+		Preset::PhysXColliderDesc::DynamicBottleSetting(tDesc, elem.Get_Matrix());
+		pDynamicPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
+		pDynamicPhysXColliderCom.lock()->Add_PhysXActorAtScene();
+		pDynamicPhysXColliderCom.lock()->PutToSleep();
+		m_pDynamicColliderComs.push_back(pDynamicPhysXColliderCom);
+	}
+}
+
+void CStatic_Instancing_Prop::Synchronize_DynamicColliderComs()
+{
+	_matrix WorldMatrix;
+
+
+	for (_size_t i = 0; i < m_pPropInfos.size(); ++i)
+	{
+		WorldMatrix = m_pDynamicColliderComs[i].lock()->Get_WorldMatrix();
+
+		m_pPropInfos[i].vRotation = SMath::Extract_PitchYawRollFromRotationMatrix(WorldMatrix);
+		XMStoreFloat3(&m_pPropInfos[i].vTarnslation, WorldMatrix.r[3]);
+	}
+
 }
 
 

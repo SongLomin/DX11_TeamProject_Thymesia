@@ -4,47 +4,47 @@
 #include "GameInstance.h"
 #include "Client_Components.h"
 
-void Preset::PhysXColliderDesc::PlayerBodySetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform)
-{
-    Out_Desc.eShape = PHYSXCOLLIDER_TYPE::CYLINDER;
-    Out_Desc.eActorType = PHYSXACTOR_TYPE::DYNAMIC;
-    Out_Desc.iFilterType = (_uint)COLLISION_LAYER::PLAYER;
-    Out_Desc.fDensity = 1000.f;
-    PxConvexMesh* pCylinderMesh = nullptr;
-    GAMEINSTANCE->Create_CylinderMesh(0.6f, 0.6f, 3.f, &pCylinderMesh);
-    Out_Desc.pConvecMesh = pCylinderMesh;
-    Out_Desc.vAngles = { 0.f, 0.f, 0.f, 0.f };
-    Out_Desc.vPosition = pTransform.lock()->Get_Position();
-    Out_Desc.vScale = { 1.f, 1.f, 1.f };
-    PxMaterial* pMaterial = nullptr;
-    GAMEINSTANCE->Create_Material(1.f, 1.f, 0.f, &pMaterial);
-    Out_Desc.pMaterial = pMaterial;
-    Out_Desc.bTrigger = false;
-}
-
-void Preset::PhysXColliderDesc::PlayerBodyTriggerSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform)
-{
-    Out_Desc.eShape = PHYSXCOLLIDER_TYPE::CYLINDER;
-    Out_Desc.eActorType = PHYSXACTOR_TYPE::DYNAMIC;
-    Out_Desc.iFilterType = (_uint)COLLISION_LAYER::PLAYER;
-    Out_Desc.fDensity = 10.f;
-    PxConvexMesh* pCylinderMesh = nullptr;
-    GAMEINSTANCE->Create_CylinderMesh(0.5f, 0.5f, 1.f, &pCylinderMesh);
-    Out_Desc.pConvecMesh = pCylinderMesh;
-    Out_Desc.vAngles = { 0.f, 0.f, 0.f, 0.f };
-    Out_Desc.vPosition = pTransform.lock()->Get_Position();
-    Out_Desc.vScale = { 1.f, 1.f, 1.f };
-    PxMaterial* pMaterial = nullptr;
-    GAMEINSTANCE->Create_Material(1.f, 1.f, 0.f, &pMaterial);
-    Out_Desc.pMaterial = pMaterial;
-    Out_Desc.bTrigger = true;
-}
+//void Preset::PhysXColliderDesc::PlayerBodySetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform)
+//{
+//    Out_Desc.eShape = PHYSXCOLLIDER_TYPE::CYLINDER;
+//    Out_Desc.eActorType = PHYSXACTOR_TYPE::DYNAMIC;
+//    Out_Desc.iFilterType = (_uint)COLLISION_LAYER::PLAYER;
+//    Out_Desc.fDensity = 1000.f;
+//    PxConvexMesh* pCylinderMesh = nullptr;
+//    GAMEINSTANCE->Create_CylinderMesh(0.6f, 0.6f, 3.f, &pCylinderMesh);
+//    Out_Desc.pConvecMesh = pCylinderMesh;
+//    Out_Desc.vAngles = { 0.f, 0.f, 0.f, 0.f };
+//    Out_Desc.vPosition = pTransform.lock()->Get_Position();
+//    Out_Desc.vScale = { 1.f, 1.f, 1.f };
+//    PxMaterial* pMaterial = nullptr;
+//    GAMEINSTANCE->Create_Material(1.f, 1.f, 0.f, &pMaterial);
+//    Out_Desc.pMaterial = pMaterial;
+//    Out_Desc.bTrigger = false;
+//}
+//
+//void Preset::PhysXColliderDesc::PlayerBodyTriggerSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform)
+//{
+//    Out_Desc.eShape = PHYSXCOLLIDER_TYPE::CYLINDER;
+//    Out_Desc.eActorType = PHYSXACTOR_TYPE::DYNAMIC;
+//    Out_Desc.iFilterType = (_uint)COLLISION_LAYER::PLAYER;
+//    Out_Desc.fDensity = 10.f;
+//    PxConvexMesh* pCylinderMesh = nullptr;
+//    GAMEINSTANCE->Create_CylinderMesh(0.5f, 0.5f, 1.f, &pCylinderMesh);
+//    Out_Desc.pConvecMesh = pCylinderMesh;
+//    Out_Desc.vAngles = { 0.f, 0.f, 0.f, 0.f };
+//    Out_Desc.vPosition = pTransform.lock()->Get_Position();
+//    Out_Desc.vScale = { 1.f, 1.f, 1.f };
+//    PxMaterial* pMaterial = nullptr;
+//    GAMEINSTANCE->Create_Material(1.f, 1.f, 0.f, &pMaterial);
+//    Out_Desc.pMaterial = pMaterial;
+//    Out_Desc.bTrigger = true;
+//}
 
 void Preset::PhysXColliderDesc::GroundSetting(PHYSXCOLLIDERDESC& Out_Desc, const _bool bTrigger)
 {
     Out_Desc.eShape = PHYSXCOLLIDER_TYPE::MESH;
     Out_Desc.eActorType = PHYSXACTOR_TYPE::STATIC;
-    Out_Desc.iFilterType = (_uint)COLLISION_LAYER::TERRAIN;
+    Out_Desc.iFilterType = (_uint)PHYSX_COLLISION_LAYER::GROUND;
     Out_Desc.fDensity = 0.f;
     PxMaterial* pMaterial = nullptr;
     GAMEINSTANCE->Create_Material(0.f, 0.f, 0.f, &pMaterial);
@@ -59,7 +59,7 @@ void Preset::PhysXColliderDesc::TestLightPropSetting(PHYSXCOLLIDERDESC& Out_Desc
 {
     Out_Desc.eShape = PHYSXCOLLIDER_TYPE::CONVEXMODEL;
     Out_Desc.eActorType = PHYSXACTOR_TYPE::STATIC;
-    Out_Desc.iFilterType = (_uint)COLLISION_LAYER::MONSTER;
+    Out_Desc.iFilterType = (_uint)PHYSX_COLLISION_LAYER::MONSTER;
     Out_Desc.fDensity = 5.f;
     PxConvexMesh* pCylinderMesh = nullptr;
     //GAMEINSTANCE->Create_CylinderMesh(0.3f, 0.3f, 1.f, &pCylinderMesh);
@@ -77,7 +77,7 @@ void Preset::PhysXColliderDesc::TestLightPropTriggerSetting(PHYSXCOLLIDERDESC& O
 {
     Out_Desc.eShape = PHYSXCOLLIDER_TYPE::CYLINDER;
     Out_Desc.eActorType = PHYSXACTOR_TYPE::DYNAMIC;
-    Out_Desc.iFilterType = (_uint)COLLISION_LAYER::MONSTER;
+    Out_Desc.iFilterType = (_uint)PHYSX_COLLISION_LAYER::MONSTER;
     Out_Desc.fDensity = 5.f;
     PxConvexMesh* pCylinderMesh = nullptr;
     GAMEINSTANCE->Create_CylinderMesh(0.3f, 0.3f, 1.f, &pCylinderMesh);
@@ -95,7 +95,7 @@ void Preset::PhysXColliderDesc::StaticPropSetting(PHYSXCOLLIDERDESC& Out_Desc, w
 {
     Out_Desc.eShape = PHYSXCOLLIDER_TYPE::MODEL;
     Out_Desc.eActorType = PHYSXACTOR_TYPE::STATIC;
-    Out_Desc.iFilterType = (_uint)COLLISION_LAYER::STATIC_PROP;
+    Out_Desc.iFilterType = (_uint)PHYSX_COLLISION_LAYER::STATIC_PROP;
     Out_Desc.fDensity = 5.f;
     Out_Desc.pConvecMesh = nullptr;
 
@@ -119,7 +119,7 @@ void Preset::PhysXColliderDesc::DynamicPropSetting(PHYSXCOLLIDERDESC& Out_Desc, 
 {
     Out_Desc.eShape = PHYSXCOLLIDER_TYPE::CONVEXMODEL;
     Out_Desc.eActorType = PHYSXACTOR_TYPE::STATIC;
-    Out_Desc.iFilterType = (_uint)COLLISION_LAYER::STATIC_PROP;
+    Out_Desc.iFilterType = (_uint)PHYSX_COLLISION_LAYER::DYNAMIC_PROP;
     Out_Desc.fDensity = 5.f;
     Out_Desc.pConvecMesh = nullptr;
 
@@ -138,11 +138,32 @@ void Preset::PhysXColliderDesc::DynamicPropSetting(PHYSXCOLLIDERDESC& Out_Desc, 
     Out_Desc.bTrigger = false;
 }
 
+void Preset::PhysXColliderDesc::DynamicBottleSetting(PHYSXCOLLIDERDESC& Out_Desc, _fmatrix In_WorldMatrix)
+{
+    Out_Desc.eShape = PHYSXCOLLIDER_TYPE::CONVEXMODEL;
+    Out_Desc.eActorType = PHYSXACTOR_TYPE::DYNAMIC;
+    Out_Desc.iFilterType = (_uint)PHYSX_COLLISION_LAYER::DYNAMIC_PEICE;
+    Out_Desc.fDensity = 5.f;
+    Out_Desc.pConvecMesh = nullptr;
+
+    _float3 PitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(In_WorldMatrix));
+    Out_Desc.vAngles = XMLoadFloat3(&PitchYawRoll);
+
+    Out_Desc.vPosition = In_WorldMatrix.r[3];
+
+    Out_Desc.vScale = SMath::Get_Scale(In_WorldMatrix);
+    PxMaterial* pMaterial = nullptr;
+    GAMEINSTANCE->Create_Material(0.5f, 0.5f, 0.5f, &pMaterial);
+    Out_Desc.pMaterial = pMaterial;
+    Out_Desc.bTrigger = false;
+
+}
+
 void Preset::PhysXColliderDesc::DynamicPieceSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform)
 {
     Out_Desc.eShape = PHYSXCOLLIDER_TYPE::CONVEXMODEL;
     Out_Desc.eActorType = PHYSXACTOR_TYPE::DYNAMIC;
-    Out_Desc.iFilterType = (_uint)COLLISION_LAYER::STATIC_PROP;
+    Out_Desc.iFilterType = (_uint)PHYSX_COLLISION_LAYER::DYNAMIC_PEICE;
     Out_Desc.fDensity = 5.f;
     Out_Desc.pConvecMesh = nullptr;
 
@@ -165,7 +186,7 @@ void Preset::PhysXColliderDesc::StaticInstancingPropSetting(PHYSXCOLLIDERDESC& O
 {
     Out_Desc.eShape = PHYSXCOLLIDER_TYPE::CONVEXMODEL;
     Out_Desc.eActorType = PHYSXACTOR_TYPE::STATIC;
-    Out_Desc.iFilterType = (_uint)COLLISION_LAYER::STATIC_PROP;
+    Out_Desc.iFilterType = (_uint)PHYSX_COLLISION_LAYER::STATIC_PROP;
     Out_Desc.fDensity = 5.f;
     Out_Desc.pConvecMesh = nullptr;
 
@@ -185,7 +206,7 @@ void Preset::PhysXColliderDesc::StaticBoxDefaultSetting(PHYSXCOLLIDERDESC& Out_D
 {
     Out_Desc.eShape = PHYSXCOLLIDER_TYPE::BOX;
     Out_Desc.eActorType = PHYSXACTOR_TYPE::STATIC;
-    Out_Desc.iFilterType = (_uint)COLLISION_LAYER::STATIC_PROP;
+    Out_Desc.iFilterType = (_uint)PHYSX_COLLISION_LAYER::STATIC_PROP;
     Out_Desc.fDensity = 5.f;
     Out_Desc.pConvecMesh = nullptr;
 

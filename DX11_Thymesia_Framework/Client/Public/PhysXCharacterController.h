@@ -30,8 +30,10 @@ public: // Hit Report
 	virtual PxControllerBehaviorFlags getBehaviorFlags(const PxObstacle& obstacle) override;
 
 
+
+
 public:
-	virtual void Init_Controller(const PxCapsuleControllerDesc& In_ControllerDesc) override;
+	virtual void Init_Controller(const PxCapsuleControllerDesc& In_ControllerDesc, const _uint In_CollisionLayer) override;
 
 public:
 	virtual void						Synchronize_Transform(weak_ptr<CTransform> pTransform, _fvector In_vOffset = { 0.f, 0.f, 0.f }) override;
@@ -41,6 +43,7 @@ public:
 	virtual PxControllerCollisionFlags	Move(_fvector disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles = nullptr) override;
 	virtual PxControllerCollisionFlags	MoveGravity(const _float fDeltaTime, PxControllerFilters& filters)  override;
 
+public:
 
 public:
 	_bool Move_FootOffset(const _float fTimeDelta);
@@ -54,7 +57,6 @@ private:
 
 private:
 	void Free();
-
 
 };
 

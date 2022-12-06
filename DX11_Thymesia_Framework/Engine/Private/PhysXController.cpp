@@ -51,7 +51,10 @@ bool CPhysXController::filter(const PxController& a, const PxController& b)
 
 void CPhysXController::onShapeHit(const PxControllerShapeHit& hit)
 {
+	PxTriangleMesh* pMesh;
 
+	pMesh->getTriangles;
+	 hit.triangleIndex;
 }
 
 void CPhysXController::onControllerHit(const PxControllersHit& hit)
@@ -65,11 +68,50 @@ void CPhysXController::onObstacleHit(const PxControllerObstacleHit& hit)
 
 }
 
-void CPhysXController::Init_Controller(const PxCapsuleControllerDesc& In_ControllerDesc)
+PxQueryHitType::Enum CPhysXController::preFilter(const PxFilterData& filterData, const PxShape* shape, const PxRigidActor* actor, PxHitFlags& queryFlags)
+{
+	PxFilterData OtherFilter = shape->getSimulationFilterData();
+
+	if ((m_FilterData.word0 & OtherFilter.word1) && (OtherFilter.word0 & m_FilterData.word1))
+	{
+		return PxQueryHitType::eBLOCK;
+	}
+
+	return PxQueryHitType::eNONE;
+}
+
+PxQueryHitType::Enum CPhysXController::postFilter(const PxFilterData& filterData, const PxQueryHit& hit)
+{
+	PxFilterData OtherFilter = hit.shape->getSimulationFilterData();
+
+	if ((filterData.word0 & OtherFilter.word1) && (OtherFilter.word0 & filterData.word1))
+	{
+		return PxQueryHitType::eBLOCK;
+	}
+
+	return PxQueryHitType::eNONE;
+}
+
+void CPhysXController::Bind_FilterOptions(PxControllerFilters& Out_Filters)
+{
+	Out_Filters.mCCTFilterCallback = this;
+	Out_Filters.mFilterCallback = this;
+	//Out_Filters.mFilterData = &m_FilterData;
+
+	if (!m_EnableSimulation)
+	{
+		//cout << "Null Filter" << endl;
+		Out_Filters.mFilterFlags = PxQueryFlags(0);
+	}
+}
+
+
+void CPhysXController::Init_Controller(const PxCapsuleControllerDesc& In_ControllerDesc, const _uint In_CollisionLayer)
 {
 	m_pControllerDesc = In_ControllerDesc;
 	m_pControllerDesc.reportCallback = this;
-
+	m_FilterData.word0 = (1 << In_CollisionLayer);
+	m_FilterData.word1 = GET_SINGLE(CPhysX_Manager)->Get_PhysXFilterGroup(In_CollisionLayer);
 	Create_Controller();
 }
 
@@ -103,13 +145,7 @@ PxControllerCollisionFlags CPhysXController::Synchronize_Controller(weak_ptr<CTr
 
 	m_pController->setFootPosition(SMath::Convert_PxExtendedVec3(pTransform.lock()->Get_Position()));
 
-	filters.mCCTFilterCallback = this;
-
-	if (!m_EnableSimulation)
-	{
-		//cout << "Null Filter" << endl;
-		filters.mFilterFlags = PxQueryFlags(0);
-	}
+	Bind_FilterOptions(filters);
 
 	return m_pController->move({ 0.f, 0.f, 0.f }, 0.f, elapsedTime, filters);
 }
@@ -118,10 +154,7 @@ PxControllerCollisionFlags CPhysXController::Set_Position(_fvector In_vPosition,
 {
 	m_pController->setFootPosition(SMath::Convert_PxExtendedVec3(In_vPosition));
 
-	filters.mCCTFilterCallback = this;
-
-	if (!m_EnableSimulation)
-		filters.mFilterFlags = PxQueryFlags(0);
+	Bind_FilterOptions(filters);
 
 	return m_pController->move({ 0.f, 0.f, 0.f }, 0.f, elapsedTime, filters);
 }
@@ -145,13 +178,7 @@ PxControllerCollisionFlags CPhysXController::MoveWithRotation(_fvector disp, PxF
 
 	_vector vRotatedPosition = XMVector3TransformCoord(disp, SMath::Get_RotationMatrix(pTransform.lock()->Get_WorldMatrix()));
 
-	filters.mCCTFilterCallback = this;
-
-	if (!m_EnableSimulation)
-	{
-		//cout << "Null Filter" << endl;
-		filters.mFilterFlags = PxQueryFlags(0);
-	}
+	Bind_FilterOptions(filters);
 
 	PxVec3 vRotatedPositionFromPx = SMath::Convert_PxVec3(vRotatedPosition);
 
@@ -180,10 +207,7 @@ PxControllerCollisionFlags CPhysXController::Move(_fvector disp, PxF32 minDist, 
 
 	PxVec3 vPositionFromPx = SMath::Convert_PxVec3(disp);
 
-	filters.mCCTFilterCallback = this;
-
-	if (!m_EnableSimulation)
-		filters.mFilterFlags = PxQueryFlags(0);
+	Bind_FilterOptions(filters);
 
 	return m_pController->move(vPositionFromPx, minDist, elapsedTime, filters, obstacles);
 }
@@ -207,10 +231,7 @@ PxControllerCollisionFlags CPhysXController::MoveGravity(const _float fDeltaTime
 	_float m_fCurrentHeight = -0.5f * 9.81f * m_fGravityAcc * m_fGravityAcc;
 	m_fCurrentHeight -= m_fPreHeight;*/
 
-	filters.mCCTFilterCallback = this;
-
-	if (!m_EnableSimulation)
-		filters.mFilterFlags = PxQueryFlags(0);
+	Bind_FilterOptions(filters);
 
 	_float fDeltaHeight = -0.5f * 9.81f * fDeltaTime * (m_fGravityAcc * 2.f + fDeltaTime);
 	fDeltaHeight += 0.0001f;
@@ -275,3 +296,4 @@ void CPhysXController::OnDestroy()
 void CPhysXController::Free()
 {
 }
+

@@ -37,7 +37,8 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 
 	 m_pPhysXCameraControllerCom = Add_Component<CPhysXCameraController>();
 	 m_pPhysXCameraControllerCom.lock()->Set_CurrentCameraController();
-	 m_pPhysXCameraControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::CameraSetting(m_pTransformCom));
+	 m_pPhysXCameraControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::CameraSetting(m_pTransformCom),
+															(_uint)PHYSX_COLLISION_LAYER::CAMERA);
 	
 	return S_OK;
 }
@@ -274,8 +275,16 @@ HRESULT CCamera_Target::Bind_PipeLine()
 	_matrix WorldMatrix;
 	if (!m_bCinematic)
 	{
+		if (m_bCollision)
+		{
+			WorldMatrix = XMLoadFloat4x4(&m_CollisionMatrix);
+		}
+		else
+		{
+			WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
+		}
+
 		GAMEINSTANCE->Set_Transform(CPipeLine::D3DTS_WORLD, m_pTransformCom.lock()->Get_WorldMatrix());
-		WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
 	}
 	else
 	{
@@ -516,7 +525,18 @@ void CCamera_Target::Update_PhysXCollider(_float fTimeDelta)
 	m_pPhysXCameraControllerCom.lock()->Update_Ray(m_pCurrentPlayerTransformCom);
 	m_pPhysXCameraControllerCom.lock()->Synchronize_Controller(m_pTransformCom, fTimeDelta, Filters);
 	m_pPhysXCameraControllerCom.lock()->Update_RayCastCollision(fTimeDelta);
-	m_pPhysXCameraControllerCom.lock()->Synchronize_Transform(m_pTransformCom);
+
+	m_bCollision = m_pPhysXCameraControllerCom.lock()->Is_Collision();
+
+	if (m_bCollision)
+	{
+		_vector vCollisionPosition = m_pPhysXCameraControllerCom.lock()->Get_Position();
+
+		_matrix vCollisionMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
+		vCollisionMatrix.r[3] = vCollisionPosition;
+
+		XMStoreFloat4x4(&m_CollisionMatrix, vCollisionMatrix);
+	}
 }
 
 void CCamera_Target::OnLevelExit()

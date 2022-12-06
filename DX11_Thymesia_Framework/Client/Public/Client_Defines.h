@@ -17,7 +17,7 @@
 #define		_144HZ_
 #define		_RENDER_FPS_
 //#define		_INSTANCE_CULLING_
-//#define		_LOAD_CAPTURED_RESOURCE_
+#define		_LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
 #define _USE_GRAVITY_
@@ -30,11 +30,11 @@
 
 #pragma region Map
 #define _BRIGHT_LIGHT_
-// #define _GENERATE_PROP_COLLIDER_ true
-#define _STAGE_1_
-// #define _STAGE_2_
+#define _GENERATE_PROP_COLLIDER_ true
+// #define _STAGE_1_
+#define _STAGE_2_
 #define _TEST_STATIC_PROPS_
-// #define _TEST_DYNAMIC_PROPS_
+#define _TEST_DYNAMIC_PROPS_
 #pragma endregion // Map
 
 #pragma region Tool
@@ -264,19 +264,29 @@ namespace Client
 		NONE,
 		PLAYER,
 		MONSTER,
-		TERRAIN,
 		PLAYER_ATTACK,
 		MONSTER_ATTACK,
-		PLAYER_RIGIDBODY,
-		MONSTER_RIGIDBODY,
 		EDIT_NAVIMESH,
-		TRIGGER,
-		STATIC_PROP,
 		DYNAMIC_PROP,
+		TRIGGER,
 		LADDER_UP,
 		LADDER_DOWN,
 		DOOR,
 		ELEVATOR,
+		LAYER_END
+	};
+
+	enum class PHYSX_COLLISION_LAYER
+	{
+		NONE,
+		PLAYER,
+		MONSTER,
+		TERRAIN,
+		STATIC_PROP,
+		DYNAMIC_PROP,
+		DYNAMIC_PEICE,
+		GROUND,
+		CAMERA,
 		LAYER_END
 	};
 
@@ -476,7 +486,7 @@ extern HINSTANCE g_hInst;
 using namespace Client;
 namespace fs = std::filesystem;
 
-typedef unsigned long long _flag;
+
 
 
 #define EVENT_DRAW_EDITER 1

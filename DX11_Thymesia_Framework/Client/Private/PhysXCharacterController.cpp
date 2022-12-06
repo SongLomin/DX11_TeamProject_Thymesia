@@ -1,6 +1,8 @@
 ﻿#include "stdafx.h"
 #include "PhysXCharacterController.h"
 #include "Transform.h"
+#include "PhysXCollider.h"
+#include "GameInstance.h"
 
 GAMECLASS_C(CPhysXCharacterController);
 IMPLEMENT_CLONABLE(CPhysXCharacterController, CComponent);
@@ -62,13 +64,48 @@ PxControllerBehaviorFlags CPhysXCharacterController::getBehaviorFlags(const PxOb
 	return PxControllerBehaviorFlags(0);
 }
 
-void CPhysXCharacterController::Init_Controller(const PxCapsuleControllerDesc& In_ControllerDesc)
+//PxQueryHitType::Enum CPhysXCharacterController::preFilter(const PxFilterData& filterData, const PxShape* shape, const PxRigidActor* actor, PxHitFlags& queryFlags)
+//{
+//	PxFilterData Filter = shape->getSimulationFilterData();
+//
+//
+//	/*if (!actor->userData)
+//	{
+//		return PxQueryHitType::eNONE;
+//	}
+//
+//	_uint iColliderIndex = *(_uint*)actor->userData;
+//
+//	weak_ptr<CPhysXCollider> pPhysXColliderCom = GAMEINSTANCE->Find_PhysXCollider(iColliderIndex);*/
+//
+//	if (Filter.word0 &  ( 1<< (_uint)COLLISION_LAYER::DYNAMIC_PEICE))
+//	{
+//		return PxQueryHitType::eNONE;
+//	}
+//
+//	return PxQueryHitType::eBLOCK;
+//}
+//
+//PxQueryHitType::Enum CPhysXCharacterController::postFilter(const PxFilterData& filterData, const PxQueryHit& hit)
+//{
+//	if (filterData.word0 & (_uint)COLLISION_LAYER::DYNAMIC_PEICE)
+//	{
+//		return PxQueryHitType::eNONE;
+//	}
+//
+//	return PxQueryHitType::eBLOCK;
+//}
+
+
+
+void CPhysXCharacterController::Init_Controller(const PxCapsuleControllerDesc& In_ControllerDesc, const _uint In_CollisionLayer)
 {
 	m_pControllerDesc = In_ControllerDesc;
 	m_pControllerDesc.reportCallback = this;
 	m_pControllerDesc.behaviorCallback = this;
 	m_vPrePosition = { (_float)m_pControllerDesc.position.x, (_float)m_pControllerDesc.position.y, (_float)m_pControllerDesc.position.z };
-
+	m_FilterData.word0 = (1 << In_CollisionLayer);
+	m_FilterData.word1 = GAMEINSTANCE->Get_PhysXFilterGroup(In_CollisionLayer);
 	Create_Controller();
 }
 
@@ -82,21 +119,29 @@ void CPhysXCharacterController::Synchronize_Transform(weak_ptr<CTransform> pTran
 
 PxControllerCollisionFlags CPhysXCharacterController::Synchronize_Controller(weak_ptr<CTransform> pTransform, PxF32 elapsedTime, PxControllerFilters& filters, _fvector In_vOffset)
 {
+	filters.mFilterCallback = this;
+
 	return __super::Synchronize_Controller(pTransform, elapsedTime, filters, In_vOffset);
 }
 
 PxControllerCollisionFlags CPhysXCharacterController::Set_Position(_fvector In_vPosition, PxF32 elapsedTime, PxControllerFilters& filters)
 {
+	filters.mFilterCallback = this;
+
 	return  __super::Set_Position(In_vPosition, elapsedTime, filters);
 }
 
 PxControllerCollisionFlags CPhysXCharacterController::MoveWithRotation(_fvector disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles, weak_ptr<CTransform> pTransform)
 {
+	filters.mFilterCallback = this;
+
 	return  __super::MoveWithRotation(disp, minDist, elapsedTime, filters, obstacles, pTransform);
 }
 
 PxControllerCollisionFlags CPhysXCharacterController::Move(_fvector disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles)
 {
+	filters.mFilterCallback = this;
+
 	return  __super::Move(disp, minDist, elapsedTime, filters, obstacles);
 }
 
@@ -108,16 +153,19 @@ PxControllerCollisionFlags CPhysXCharacterController::MoveGravity(const _float f
 	if (!m_bEnableGravity)
 		return PxControllerCollisionFlags();
 
+	filters.mFilterCallback = this;
+
 	PxControllerCollisionFlags ResultFlags = __super::MoveGravity(fDeltaTime, filters);
 
-	if (m_PreResultFlags & PxControllerCollisionFlag::eCOLLISION_DOWN &&
+
+	/*if (m_PreResultFlags & PxControllerCollisionFlag::eCOLLISION_DOWN &&
 		!(ResultFlags & PxControllerCollisionFlag::eCOLLISION_DOWN))
 	{
 		if (Move_FootOffset(fDeltaTime))
 		{
 			ResultFlags |= PxControllerCollisionFlag::eCOLLISION_DOWN;
 		}
-	}
+	}*/
 
 	m_PreResultFlags = ResultFlags;
 
@@ -132,11 +180,12 @@ _bool CPhysXCharacterController::Move_FootOffset(const _float fTimeDelta)
 		return false;
 	}
 
-
 	PxRaycastHit newHit;
 
 	PxVec3 RayPos = SMath::Convert_PxVec3(m_pController->getFootPosition());
 	PxVec3 RayDir = -m_pController->getUpDirection();
+
+	//m_pLastCollisionActor.
 
 	PxU32 iHitCount = PxShapeExt::raycast(
 		*m_pLastCollisionShape, *m_pLastCollisionActor
@@ -149,6 +198,9 @@ _bool CPhysXCharacterController::Move_FootOffset(const _float fTimeDelta)
 		m_pController->setFootPosition(SMath::Convert_PxExtendedVec3(newHit.position));
 		return true;
 	}
+
+	m_pLastCollisionActor = nullptr;
+	m_pLastCollisionShape = nullptr;
 
 	return false;
 }

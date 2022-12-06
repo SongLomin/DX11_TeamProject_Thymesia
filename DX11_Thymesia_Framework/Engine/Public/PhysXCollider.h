@@ -15,10 +15,12 @@ class ENGINE_DLL CPhysXCollider final : public CComponent
 
 public:
 	_vector	Get_Position();
+	_vector	Get_Quaternion();
 	_vector	Get_Velocity();
 	_float	Get_Mess();
 	_vector	Get_AngularVelocity();
 	_vector	Get_LinearVelocity();
+	_matrix Get_WorldMatrix();
 
 	_uint	Get_PColliderIndex() const { return m_iColliderIndex; }
 
@@ -59,6 +61,7 @@ public:
 	void	Synchronize_Transform(weak_ptr<CTransform> pTransform, _fvector In_vOffset = {0.f, 0.f, 0.f});
 	void	Synchronize_Transform_Position(weak_ptr<CTransform> pTransform);
 	void	Synchronize_Transform_Rotation(weak_ptr<CTransform> pTransform);
+	_matrix	Synchronize_Matrix(_fmatrix In_WorldMatrix);
 
 	void	Synchronize_Collider(weak_ptr<CTransform> pTransform, _fvector In_vOffset = { 0.f, 0.f, 0.f });
 

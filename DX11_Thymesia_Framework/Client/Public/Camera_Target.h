@@ -123,7 +123,8 @@ private:
 	_float m_fShakingDecreaseTime = 0.f;
 
 
-		
+	_float4x4 m_CollisionMatrix;
+	_bool		m_bCollision = false;
 
 private:
 	virtual void OnLevelExit() override;

@@ -265,6 +265,15 @@ void CPhysXCollider::Synchronize_Transform_Rotation(weak_ptr<CTransform> pTransf
 	pTransform.lock()->Rotation_Quaternion(vQuaternion);
 }
 
+_matrix CPhysXCollider::Synchronize_Matrix(_fmatrix In_WorldMatrix)
+{
+	_matrix ResultMatrix = SMath::Get_ScaleMatrix(In_WorldMatrix);
+
+	ResultMatrix *= Get_WorldMatrix();
+
+	return ResultMatrix;
+}
+
 void CPhysXCollider::Synchronize_Collider(weak_ptr<CTransform> pTransform, _fvector In_vOffset)
 {
 	_vector vPos = pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION);
@@ -378,8 +387,23 @@ _vector CPhysXCollider::Get_Position()
 
 	if (m_pRigidStatic)
 		Transform = m_pRigidStatic->getGlobalPose();
+	
 
 	return XMVectorSet(Transform.p.x, Transform.p.y, Transform.p.z, 1.f);
+}
+
+_vector CPhysXCollider::Get_Quaternion()
+{
+	PxTransform	Transform;
+	if (m_pRigidDynamic)
+		Transform = m_pRigidDynamic->getGlobalPose();
+
+	if (m_pRigidStatic)
+		Transform = m_pRigidStatic->getGlobalPose();
+
+	_vector vQuaternion = { Transform.q.x, Transform.q.y, Transform.q.z, Transform.q.w };
+
+	return vQuaternion;
 }
 
 _vector CPhysXCollider::Get_Velocity()
@@ -415,6 +439,25 @@ _vector CPhysXCollider::Get_LinearVelocity()
 
 	PxVec3 vVelocity = m_pRigidDynamic->getLinearVelocity();
 	return XMVectorSet(vVelocity.x, vVelocity.y, vVelocity.z, 0.f);
+}
+
+_matrix CPhysXCollider::Get_WorldMatrix()
+{
+	PxTransform	Transform;
+	if (m_pRigidDynamic)
+		Transform = m_pRigidDynamic->getGlobalPose();
+
+	if (m_pRigidStatic)
+		Transform = m_pRigidStatic->getGlobalPose();
+
+	_vector vPos = { Transform.p.x, Transform.p.y, Transform.p.z };
+	vPos.m128_f32[3] = 1.f;
+	_vector vQuaternion = { Transform.q.x, Transform.q.y, Transform.q.z, Transform.q.w };
+	
+	_matrix ResultMatrix = XMMatrixRotationQuaternion(vQuaternion);
+	ResultMatrix.r[3] = vPos;
+
+	return ResultMatrix;
 }
 
 HRESULT CPhysXCollider::Set_Position(_vector _vPos, _vector _vQuaternion)
@@ -831,7 +874,7 @@ void CPhysXCollider::Create_StaticActor(PHYSXCOLLIDERDESC& tPhysXColliderDesc, P
 
 		m_FilterData.word0 = (1 << m_PhysXColliderDesc.iFilterType);
 		m_FilterData.word1 = GET_SINGLE(CPhysX_Manager)->Get_PhysXFilterGroup(m_PhysXColliderDesc.iFilterType);
-
+		m_FilterData.word3 = m_iColliderIndex;
 
 		if (!pShape)
 		{
