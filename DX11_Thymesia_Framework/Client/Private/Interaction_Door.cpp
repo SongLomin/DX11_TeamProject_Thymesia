@@ -46,31 +46,13 @@ HRESULT CInteraction_Door::Start()
 void CInteraction_Door::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
-
-    if (m_ActionFlag & ACTION_FLAG::ACTIVATE)
-    {
-        m_fAddRadian += fTimeDelta * m_fRotationtSpeed;
-
-        _float fDir = (0.f == m_fRotationtSpeed) ? (1.f) : (m_fRotationtSpeed / abs(m_fRotationtSpeed));
-
-        if (m_ActionFlag & ACTION_FLAG::ROTATION)
-            m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 1.f), ((m_fFirstRadian + (m_fAddRadian))));
-        else
-            m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 1.f), ((m_fFirstRadian + (m_fRotationtRadian * fDir)) - (m_fAddRadian)));
-
-        if (m_fRotationtRadian <= fabs(m_fAddRadian))
-        {
-            m_ActionFlag  ^= ACTION_FLAG::ROTATION;
-            m_ActionFlag  ^= ACTION_FLAG::ACTIVATE;
-            m_bOnceAct      = false;
-            m_fAddRadian    = 0.f;
-        }
-    }
 }
 
 void CInteraction_Door::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
+
+    m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
 }
 
 HRESULT CInteraction_Door::Render()
@@ -176,11 +158,52 @@ void CInteraction_Door::Load_FromJson(const json& In_Json)
         m_pModelCom.lock()->Init_Model("Door01_05", "");
 
     m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
+    PhysXColliderDesc tDesc;
+    Preset::PhysXColliderDesc::ConvexStaticPropSetting(tDesc, m_pTransformCom);
+    m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
+    m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
+}
+
+void CInteraction_Door::Act_OpenDoor(_float fTimeDelta, _bool& Out_IsEnd)
+{
+    m_fAddRadian += fTimeDelta * m_fRotationtSpeed;
+
+    _float fDir = (0.f == m_fRotationtSpeed) ? (1.f) : (m_fRotationtSpeed / abs(m_fRotationtSpeed));
+    m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 1.f), ((m_fFirstRadian + (m_fAddRadian))));
+
+    if (m_fRotationtRadian <= fabs(m_fAddRadian))
+    {
+        m_ActionFlag ^= ACTION_FLAG::ROTATION;
+        Out_IsEnd     = true;
+        m_fAddRadian  = 0.f;
+
+        Callback_ActEnd();
+    }
+}
+
+void CInteraction_Door::Act_CloseDoor(_float fTimeDelta, _bool& Out_IsEnd)
+{
+    m_fAddRadian += fTimeDelta * m_fRotationtSpeed;
+
+    _float fDir = (0.f == m_fRotationtSpeed) ? (1.f) : (m_fRotationtSpeed / abs(m_fRotationtSpeed));
+    m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 1.f), ((m_fFirstRadian + (m_fRotationtRadian * fDir)) - (m_fAddRadian)));
+
+    if (m_fRotationtRadian <= fabs(m_fAddRadian))
+    {
+        m_ActionFlag ^= ACTION_FLAG::ROTATION;
+        Out_IsEnd     = true;
+        m_fAddRadian  = 0.f;
+
+        Callback_ActEnd();
+    }
 }
 
 void CInteraction_Door::Act_Interaction()
 {
-    m_ActionFlag |= ACTION_FLAG::ACTIVATE;
+    if (m_ActionFlag & ACTION_FLAG::ROTATION)
+        Callback_ActUpdate += bind(&CInteraction_Door::Act_OpenDoor, this, placeholders::_1, placeholders::_2);
+    else
+        Callback_ActUpdate += bind(&CInteraction_Door::Act_CloseDoor, this, placeholders::_1, placeholders::_2);
 }
 
 void CInteraction_Door::SetUpColliderDesc(_float* _pColliderDesc)

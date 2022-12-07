@@ -71,6 +71,7 @@ shared_ptr<CLevel_Stage2> CLevel_Stage2::Create()
 	shared_ptr<CLevel_Stage2>		pInstance = make_shared<CLevel_Stage2>();
 	pInstance->m_eMyLevel = LEVEL_STAGE2;
 	pInstance->Initialize();
+
 	return pInstance;
 }
 

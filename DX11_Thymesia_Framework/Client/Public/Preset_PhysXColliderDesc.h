@@ -15,6 +15,7 @@ namespace Preset
 		void TestLightPropSetting(PHYSXCOLLIDERDESC& Out_Desc);
 		void TestLightPropTriggerSetting(PHYSXCOLLIDERDESC& Out_Desc);
 		void DynamicPropSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform);
+		void ConvexStaticPropSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform);
 		void StaticPropSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform);
 		void DynamicPropSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform);
 		void DynamicPieceSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform);

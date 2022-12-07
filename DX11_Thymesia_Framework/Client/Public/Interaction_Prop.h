@@ -31,8 +31,11 @@ public:
 protected:
     HRESULT SetUp_ShaderResource();
 
-protected:
-    _bool   m_bOnceAct = false;
+public:
+    FDelegate<>                 Callback_ActStart;
+    FDelegate<_float, _bool&>   Callback_ActUpdate;
+    FDelegate<>                 Callback_ActEnd;
+
 
 protected:
     void Free();

@@ -94,7 +94,7 @@ public:
 
 public:
     void Registration_CheckPoint(weak_ptr<CInteraction_CheckPoint> In_CheckPoint);
-    void Respawn_LastCheckPoint();
+    _vector Respawn_LastCheckPoint();
 
 private:
     void Start_Peace();

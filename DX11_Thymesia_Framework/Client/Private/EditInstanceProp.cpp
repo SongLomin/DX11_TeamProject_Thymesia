@@ -275,8 +275,9 @@ void CEditInstanceProp::Write_Json(json& Out_Json)
 		PropInfo.emplace(string("Prop Matrix (" + to_string(iIndex++) + ")"), PropMatrix.m);
 	}
 
-	Out_Json.emplace("PropDesc", PropInfo);
-	Out_Json.emplace("ModelCom", m_pInstanceModelCom.lock()->Get_ModelKey());
+	Out_Json.emplace("PropDesc"    , PropInfo);
+	Out_Json.emplace("ModelCom"    , m_pInstanceModelCom.lock()->Get_ModelKey());
+	Out_Json.emplace("Invisibility", m_bInvisibility);
 
 	if (m_bNonCulling)
 		Out_Json.emplace("NonCulling", 1);
@@ -308,6 +309,11 @@ void CEditInstanceProp::Load_FromJson(const json& In_Json)
 		if ("NonCulling" == szKey)
 		{
 			m_bNonCulling = (1 == iter.value()) ? (true) : (false);
+		}
+
+		else if ("Invisibility" == szKey)
+		{
+			m_bNonCulling = In_Json["Invisibility"];
 		}
 
 		else if ("ModelCom" == szKey)
@@ -513,7 +519,7 @@ void CEditInstanceProp::View_SelectModelComponent()
 	}
 
 	ImGui::Checkbox("No CCW", &m_bNonCulling);
-
+	ImGui::Checkbox("Invisibility", &m_bInvisibility);
 
 	ImGui::DragFloat("##DissolveSpeed", &m_fDissolveSpeed, 1.f);
 	ImGui::SameLine();

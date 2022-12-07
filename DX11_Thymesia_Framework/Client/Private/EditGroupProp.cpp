@@ -202,6 +202,8 @@ void CEditGroupProp::OnEventMessage(_uint iArg)
 				if (ImGui::BeginTabItem("Create"))
 				{
 					View_CreateProp();
+					View_PickProp();
+					View_EditProp();
 
 					ImGui::EndTabItem();
 				}
@@ -372,12 +374,14 @@ void CEditGroupProp::View_CreateProp()
 		List.push_back(tObjDesc);
 		
 		GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup[typeid(CEditGroupProp).hash_code()] = List;
+		m_iPickingIndex = 0;
 	}
 	else
 	{
 		iter_prop->second.push_back(tObjDesc);
+		m_iPickingIndex = (_int)iter_prop->second.size() - 1;
 	}
-	
+
 	//ON_EDITINIT
 	ImGui::Text("");
 	ImGui::Separator();

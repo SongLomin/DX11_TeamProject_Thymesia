@@ -81,6 +81,7 @@ private:
     string              m_szSelectModelName   = "";
     INSTANCE_MESH_DESC  m_PickingDesc;
     _uint               m_iPassIndex          = 0;
+    _bool               m_bInvisibility       = true;
 
     RESOURCE_LIST       m_ModelList;
     RESOURCE_LIST       m_JsonList;

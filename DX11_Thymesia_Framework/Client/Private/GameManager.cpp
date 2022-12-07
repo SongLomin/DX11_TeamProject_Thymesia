@@ -506,15 +506,12 @@ void CGameManager::Registration_CheckPoint(weak_ptr<CInteraction_CheckPoint> In_
 	m_pCurSavePoint = In_CheckPoint;
 }
 
-void CGameManager::Respawn_LastCheckPoint()
+_vector CGameManager::Respawn_LastCheckPoint()
 {
 	if (!m_pCurrentPlayer.lock() && !m_pCurSavePoint.lock())
-		return;
+		return _vector{ 0.f, 0.f, 0.f, 1.f };
 
-	_vector vRespawnPos = m_pCurSavePoint.lock()->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
-	XMVectorSetY(vRespawnPos, XMVectorGetY(vRespawnPos) + 30.f);
-
-	m_pCurrentPlayer.lock()->Get_Transform().get()->Set_State(CTransform::STATE_TRANSLATION, vRespawnPos);
+	return m_pCurSavePoint.lock()->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
 }
 
 
@@ -524,7 +521,6 @@ void CGameManager::Start_Peace()
 	{
 		elem.lock()->Set_Enable(false);
 	}
-
 }
 
 void CGameManager::Start_Battle()

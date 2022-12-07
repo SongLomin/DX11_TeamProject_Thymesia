@@ -43,6 +43,11 @@ void CInteraction_Prop::Tick(_float fTimeDelta)
         m_fOutLineBlurIntensity = max(0.f, m_fOutLineBlurIntensity);
     }
 
+    _bool isActEnd = false;
+    Callback_ActUpdate(fTimeDelta, isActEnd);
+
+    if (isActEnd)
+        Callback_ActUpdate.Clear();
 }
 
 void CInteraction_Prop::LateTick(_float fTimeDelta)
@@ -65,31 +70,29 @@ _bool CInteraction_Prop::IsPicking(const RAY& In_Ray, _float& Out_fRange)
 
 void CInteraction_Prop::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    m_bOnceAct    = false;
     m_bNearPlayer = true;
 }
 
 void CInteraction_Prop::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    if (m_bOnceAct)
-        return;
+    if (Callback_ActUpdate.empty())
+    {
+    }
 
-    if (KEY_INPUT(KEY::E, KEY_STATE::TAP))
+  
+    if (Callback_ActUpdate.empty() && KEY_INPUT(KEY::E, KEY_STATE::TAP))
     {
         Act_Interaction();
-        m_bOnceAct = true;
     }
 }
 
 void CInteraction_Prop::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    m_bOnceAct    = false;
     m_bNearPlayer = false;
 }
 
 void CInteraction_Prop::Act_Interaction()
 {
-
 }
 
 HRESULT CInteraction_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix)

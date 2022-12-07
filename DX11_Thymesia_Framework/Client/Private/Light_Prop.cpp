@@ -41,11 +41,11 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	m_tLightDesc.eActorType = LIGHTDESC::TYPE::TYPE_POINT;
 	m_tLightDesc.bEnable    = true;
 
-	XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_Position());
-	m_tLightDesc.vDiffuse   = { 1.f ,  1.f,  0.8f, 0.f };
-	m_tLightDesc.vAmbient   = { 0.6f, 0.6f, 0.48f, 0.f };
-	m_tLightDesc.vSpecular  = { 0.7f, 0.7f, 0.58f, 1.f };
-	m_tLightDesc.vLightFlag = {  1.f,  1.f,   1.f, 1.f };
+	m_tLightDesc.vPosition  = { 0.f, 0.f, 0.f, 1.f };
+	m_tLightDesc.vDiffuse   = { 1.f, 1.f, 1.f, 0.f };
+	m_tLightDesc.vAmbient   = { 1.f, 1.f, 1.f, 0.f };
+	m_tLightDesc.vSpecular  = { 1.f, 1.f, 1.f, 1.f };
+	m_tLightDesc.vLightFlag = { 1.f, 1.f, 1.f, 1.f };
 	m_tLightDesc.fRange     = 5.f;
 
 	m_tLightDesc = GAMEINSTANCE->Add_Light(m_tLightDesc);
@@ -109,7 +109,6 @@ HRESULT CLight_Prop::Render()
 			m_iPassIndex = 3;
 		else
 			m_iPassIndex = 7;
-	
 
 		m_pShaderCom.lock()->Begin(m_iPassIndex);
 		m_pModelCom.lock()->Render_Mesh(i);
@@ -156,60 +155,71 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 {
 	__super::OnEventMessage(iArg);
 
-	if ((_uint)EVENT_TYPE::ON_EDITDRAW == iArg)
+	switch ((EVENT_TYPE)iArg)
 	{
-		if (ImGui::CollapsingHeader("Light_Prop GameObject"))
+		case EVENT_TYPE::ON_EDITINIT:
 		{
-			const char* LightTypeItems[]  = { "Direction", "Point", "HalfPoint" };
-			_int        iSelect_LightType = (_int)m_tLightDesc.eActorType;
-			_bool       bChangeData       = false;
+			XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_Position());
 
-			if (ImGui::Combo("Light Type", &iSelect_LightType, LightTypeItems, IM_ARRAYSIZE(LightTypeItems)))
-			{
-				m_tLightDesc.eActorType = (LIGHTDESC::TYPE)iSelect_LightType;
-				bChangeData = true;
-			}
-
-			switch (m_tLightDesc.eActorType)
-			{
-				case LIGHTDESC::TYPE_DIRECTIONAL:
-				{
-					bChangeData |= ImGui::DragFloat3("Light_Position" , &m_tLightDesc.vPosition.x , 0.01f);
-					bChangeData |= ImGui::DragFloat3("Light_Direction", &m_tLightDesc.vDirection.x, 0.01f);
-					bChangeData |= ImGui::DragFloat3("Light_Diffuse"  , &m_tLightDesc.vDiffuse.x  , 0.01f);
-					bChangeData |= ImGui::DragFloat3("Light_Ambient"  , &m_tLightDesc.vAmbient.x  , 0.01f);
-					bChangeData |= ImGui::DragFloat3("Light_Specular" , &m_tLightDesc.vSpecular.x , 0.01f);
-					bChangeData |= ImGui::DragFloat4("Light_Flag"     , &m_tLightDesc.vLightFlag.x, 0.01f);
-				}
-				break;
-
-				case LIGHTDESC::TYPE_POINT:
-				{
-					bChangeData |= ImGui::DragFloat3("Light_Position", &m_tLightDesc.vPosition.x , 0.01f);
-					bChangeData |= ImGui::DragFloat3("Light_Diffuse" , &m_tLightDesc.vDiffuse.x  , 0.01f);
-					bChangeData |= ImGui::DragFloat3("Light_Ambient" , &m_tLightDesc.vAmbient.x  , 0.01f);
-					bChangeData |= ImGui::DragFloat3("Light_Specular", &m_tLightDesc.vSpecular.x , 0.01f);
-					bChangeData |= ImGui::DragFloat("Light_Range"    , &m_tLightDesc.fRange      , 0.01f);
-					bChangeData |= ImGui::DragFloat4("Light_Flag"    , &m_tLightDesc.vLightFlag.x, 0.01f);
-				}
-				break;
-			
-				case LIGHTDESC::TYPE_HALFPOINT:
-				{
-					bChangeData |= ImGui::DragFloat3("Light_Position" , &m_tLightDesc.vPosition.x , 0.01f);
-					bChangeData |= ImGui::DragFloat3("Light_Direction", &m_tLightDesc.vDirection.x, 0.01f);
-					bChangeData |= ImGui::DragFloat3("Light_Diffuse"  , &m_tLightDesc.vDiffuse.x  , 0.01f);
-					bChangeData |= ImGui::DragFloat3("Light_Ambient"  , &m_tLightDesc.vAmbient.x  , 0.01f);
-					bChangeData |= ImGui::DragFloat3("Light_Specular" , &m_tLightDesc.vSpecular.x , 0.01f);
-					bChangeData |= ImGui::DragFloat("Light_Range"     , &m_tLightDesc.fRange      , 0.01f);
-					bChangeData |= ImGui::DragFloat4("Light_Flag"     , &m_tLightDesc.vLightFlag.x, 0.01f);
-				}
-				break;
-			}
-
-			if (bChangeData)
-				GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+			GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
 		}
+		break;
+
+		case EVENT_TYPE::ON_EDITDRAW:
+		{
+			if (ImGui::CollapsingHeader("Light_Prop GameObject"))
+			{
+				const char* LightTypeItems[]  = { "Direction", "Point", "HalfPoint" };
+				_int        iSelect_LightType = (_int)m_tLightDesc.eActorType;
+				_bool       bChangeData       = false;
+
+				if (ImGui::Combo("Light Type", &iSelect_LightType, LightTypeItems, IM_ARRAYSIZE(LightTypeItems)))
+				{
+					m_tLightDesc.eActorType = (LIGHTDESC::TYPE)iSelect_LightType;
+					bChangeData = true;
+				}
+
+				switch (m_tLightDesc.eActorType)
+				{
+					case LIGHTDESC::TYPE_DIRECTIONAL:
+					{
+						bChangeData |= ImGui::DragFloat3("Light_Direction", &m_tLightDesc.vDirection.x, 0.01f);
+						bChangeData |= ImGui::DragFloat3("Light_Diffuse"  , &m_tLightDesc.vDiffuse.x  , 0.01f);
+						bChangeData |= ImGui::DragFloat3("Light_Ambient"  , &m_tLightDesc.vAmbient.x  , 0.01f);
+						bChangeData |= ImGui::DragFloat3("Light_Specular" , &m_tLightDesc.vSpecular.x , 0.01f);
+						bChangeData |= ImGui::DragFloat4("Light_Flag"     , &m_tLightDesc.vLightFlag.x, 0.01f);
+					}
+					break;
+
+					case LIGHTDESC::TYPE_POINT:
+					{
+						bChangeData |= ImGui::DragFloat3("Light_Position", &m_tLightDesc.vPosition.x , 0.01f);
+						bChangeData |= ImGui::DragFloat3("Light_Diffuse" , &m_tLightDesc.vDiffuse.x  , 0.01f);
+						bChangeData |= ImGui::DragFloat3("Light_Ambient" , &m_tLightDesc.vAmbient.x  , 0.01f);
+						bChangeData |= ImGui::DragFloat3("Light_Specular", &m_tLightDesc.vSpecular.x , 0.01f);
+						bChangeData |= ImGui::DragFloat("Light_Range"    , &m_tLightDesc.fRange      , 0.01f);
+						bChangeData |= ImGui::DragFloat4("Light_Flag"    , &m_tLightDesc.vLightFlag.x, 0.01f);
+					}
+					break;
+			
+					case LIGHTDESC::TYPE_HALFPOINT:
+					{
+						bChangeData |= ImGui::DragFloat3("Light_Position" , &m_tLightDesc.vPosition.x , 0.01f);
+						bChangeData |= ImGui::DragFloat3("Light_Direction", &m_tLightDesc.vDirection.x, 0.01f);
+						bChangeData |= ImGui::DragFloat3("Light_Diffuse"  , &m_tLightDesc.vDiffuse.x  , 0.01f);
+						bChangeData |= ImGui::DragFloat3("Light_Ambient"  , &m_tLightDesc.vAmbient.x  , 0.01f);
+						bChangeData |= ImGui::DragFloat3("Light_Specular" , &m_tLightDesc.vSpecular.x , 0.01f);
+						bChangeData |= ImGui::DragFloat("Light_Range"     , &m_tLightDesc.fRange      , 0.01f);
+						bChangeData |= ImGui::DragFloat4("Light_Flag"     , &m_tLightDesc.vLightFlag.x, 0.01f);
+					}
+					break;
+				}
+
+				if (bChangeData)
+					GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+			}
+		}
+		break;
 	}
 }
 

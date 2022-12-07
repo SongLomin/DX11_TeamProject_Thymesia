@@ -29,10 +29,10 @@
 #pragma endregion // Console Outputs
 
 #pragma region Map
-#define _BRIGHT_LIGHT_
-// #define _GENERATE_PROP_COLLIDER_ true
-#define _STAGE_1_
-// #define _STAGE_2_
+//#define _BRIGHT_LIGHT_
+//#define _GENERATE_PROP_COLLIDER_ true
+//#define _STAGE_1_
+#define _STAGE_2_
 #define _TEST_STATIC_PROPS_
 // #define _TEST_DYNAMIC_PROPS_
 #pragma endregion // Map
