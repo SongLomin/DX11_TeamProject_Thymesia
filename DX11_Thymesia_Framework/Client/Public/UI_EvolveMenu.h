@@ -13,6 +13,8 @@ BEGIN(Client)
 CLIENT_DECLATION_UI
 
 class CFadeMask;
+class CUI_EvolveLeftBG;
+class CUI_EvolveMenu_SelectDecoration;
 
 class CUI_EvolveMenu final : public CUI_Container
 {
@@ -51,7 +53,7 @@ public:
 
 private: //Left UI
 
-    weak_ptr<CCustomUI> m_pLeftBG;
+    weak_ptr<CUI_EvolveLeftBG> m_pLeftBG;
     weak_ptr<CCustomUI> m_pSelectHighlight;
 
     weak_ptr<CCustomUI> m_pMenuTitleBG;
@@ -62,6 +64,10 @@ private: //Left UI
     _bool               m_bOpenedPage[(_uint)EVOLVEMENU_TYPE::EVOLVE_END];
     _uint               m_iSelectedIndex;
     _char              m_MenuTextKey[(_uint)EVOLVEMENU_TYPE::EVOLVE_END][MAX_PATH];
+
+    weak_ptr< CUI_EvolveMenu_SelectDecoration> m_pLeftSelectDecoration;
+
+
 
 
 

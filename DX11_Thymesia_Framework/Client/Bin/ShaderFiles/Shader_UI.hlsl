@@ -22,6 +22,9 @@ float	g_DissolveRange;
 
 float2	g_UVOffset;
 
+int		g_UVIndex;
+float2	g_UVAnimMaxSize;
+float2 g_NoneAnimRatio = {0.f, 0.f }; //UV가 어디서부터 먹을지 제한해주는 변수.
 
 
 struct VS_IN
@@ -277,7 +280,7 @@ PS_OUT PS_MAIN_BORDER_OUT(PS_IN In)
 	return Out;
 }
 
-PS_OUT PS_MASK_UV_ANIM(PS_IN In)
+PS_OUT PS_MASK_UV_ANIM_EVOLVE_LEVELBG(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
@@ -285,9 +288,11 @@ PS_OUT PS_MASK_UV_ANIM(PS_IN In)
 
 	float4	SrcColor = g_SrcTexture.Sample(DefaultSampler, In.vTexUV);
 
-	Out.vColor = (destColor * g_fAlphaColor) + SrcColor * (1 - g_fAlphaColor);
+    SrcColor.rgba *= 0.4f;
+	
+    Out.vColor = (destColor * g_fAlphaColor) + SrcColor * (1 - g_fAlphaColor);
 
-	//Out.vColor.a *= g_fAlphaColor;
+	Out.vColor.a *= g_fAlphaColor;
 
 	if (Out.vColor.a < 0.1f)
 	{
@@ -295,7 +300,7 @@ PS_OUT PS_MASK_UV_ANIM(PS_IN In)
 	}
 	else
 	{
-		float	maskMag = 4.f;
+		float	maskMag = 8.f;
 		float2	maskUV = In.vTexUV.rg;
 		
 		float4	mask = g_MaskTexture.Sample(DefaultSampler, maskUV + g_UVOffset);//마스크 생성.
@@ -309,8 +314,90 @@ PS_OUT PS_MASK_UV_ANIM(PS_IN In)
 		*/
         Out.vColor.rgb = (Out.vColor.rgb * max((mask * maskMag).x, 1.f));
     }
+
 	return Out;
 }
+
+PS_OUT PS_MASK_UV_TEST(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+	
+    float4 diffuseColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+	
+	
+    float2 MaskUV = In.vTexUV;
+	
+    int2 MaskIndex;
+    int  index = (int)g_Ratio;
+	
+	
+    MaskIndex.x = index % 4; //0~3
+    MaskIndex.y = index / 4; //0~1
+
+    float2 MaskOffset;
+	
+    MaskOffset.x = ((float) MaskIndex.x) / 4.f;
+    MaskOffset.y = ((float) MaskIndex.y) / 2.f;
+	
+	
+	/*
+	0~0.25
+	0.25~0.5
+
+
+
+	*/
+	
+
+    MaskUV.x = MaskOffset.x + (In.vTexUV.x / 4.f);
+    MaskUV.y = MaskOffset.y + (In.vTexUV.y / 2.f);
+	
+    float4 maskColor = g_MaskTexture.Sample(DefaultSampler, MaskUV);
+	
+	
+    diffuseColor.rgb *= maskColor.rgb;
+	
+    if (maskColor.r < 0.7f)
+    {
+        discard;
+    }
+    Out.vColor = diffuseColor;
+    Out.vColor.a *= g_fAlphaColor;
+	
+	
+	return Out;
+}
+
+PS_OUT PS_MASK_UV_ANIM(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    float4 destColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+	
+    Out.vColor = destColor;
+    
+	//해당 비율 범위 내에 있는 애들은 마스킹 무시하고 출력
+    if (g_NoneAnimRatio.x > In.vTexUV.x || g_NoneAnimRatio.y > In.vTexUV.y)
+    {
+        return Out;
+    }
+	
+    float2 maskUV = In.vTexUV.rg;
+    
+	float4 mask = g_MaskTexture.Sample(DefaultSampler, maskUV + g_UVOffset); //마스크 생성.
+
+    Out.vColor.a *= g_fAlphaColor;
+    Out.vColor.a +=  mask.r;
+    
+    if (Out.vColor.a < 0.1f)
+    {
+        discard;
+    }
+    return Out;
+}
+
+
 
 
 
@@ -414,7 +501,7 @@ technique11 DefaultTechnique
 		PixelShader    = compile ps_5_0 PS_MAIN_BORDER_OUT();
 	}
 
-	pass UI_UVAnimaiton//9
+	pass UI_UVAnimaitonEvolveLevel//9
 	{
 		SetBlendState(BS_AlphaBlend, vector(1.f, 1.f, 1.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
@@ -422,7 +509,26 @@ technique11 DefaultTechnique
 
 		VertexShader = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MASK_UV_ANIM();
-	}
+        PixelShader = compile ps_5_0 PS_MASK_UV_ANIM_EVOLVE_LEVELBG();
+    }
+    pass UI_UVTest//10
+    {
+        SetBlendState(BS_AlphaBlend, vector(1.f, 1.f, 1.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+        SetRasterizerState(RS_Default);
 
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MASK_UV_TEST();
+    }
+    pass UI_UVAnimaiton//11
+    {
+        SetBlendState(BS_AlphaBlend, vector(1.f, 1.f, 1.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MASK_UV_ANIM();
+    }
 }

@@ -841,21 +841,6 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_Fall_Attack.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\14.CorvusState_Climb_Fall_Attack</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_NorSwordLV2.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\01.Talent_Effect_NorSwordLV2</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidThrustLV1.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\04.Talent_Effect_AvoidThrustLV1</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV1.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\02.Talent_Effect_AvoidSlashLV1</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV2.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\03.Talent_Effect_AvoidSlashLV2</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidThrustLV2.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\05.Talent_Effect_AvoidThrustLV2</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\UI_DamageFont.h" />
     <ClInclude Include="..\Public\UI_ScriptQueue.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidSlash.h">
@@ -967,6 +952,13 @@
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UI_EvolveMenu_Level_BG.h" />
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV1.h" />
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV2.h" />
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidThrustLV2.h" />
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_NorSwordLV2.h" />
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidThrustLV1.h" />
+    <ClInclude Include="..\Public\UI_EvolveLeftBG.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_SelectDecoration.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1855,21 +1847,6 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_Fall_Attack.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\14.CorvusState_Climb_Fall_Attack</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_NorSwordLV2.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\01.Talent_Effect_NorSwordLV2</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV1.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\02.Talent_Effect_AvoidSlashLV1</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidThrustLV1.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\04.Talent_Effect_AvoidThrustLV1</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV2.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\03.Talent_Effect_AvoidSlashLV2</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidThrustLV2.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\05.Talent_Effect_AvoidThrustLV2</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\UI_DamageFont.cpp" />
     <ClCompile Include="..\Private\UI_Script.cpp" />
     <ClCompile Include="..\Private\UI_ScriptQueue.cpp" />
@@ -1981,6 +1958,13 @@
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UI_EvolveMenu_Level_BG.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV1.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV2.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidThrustLV2.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_NorSwordLV2.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidThrustLV1.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveLeftBG.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_SelectDecoration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -2924,24 +2908,6 @@
     <Filter Include="06. DataPreset\04. Preset_AddGameObject">
       <UniqueIdentifier>{9945984e-3b3a-4360-916d-6b7a7ec51ad8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\01.Talent_Effect_NorSwordLV2">
-      <UniqueIdentifier>{d9a1d9b8-03ad-46f8-9e67-8f884a1c4a72}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\02.Talent_Effect_AvoidSlashLV1">
-      <UniqueIdentifier>{f43eeb07-9c48-44ba-b06e-0e1d38344ec6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\04.Talent_Effect_AvoidThrustLV1">
-      <UniqueIdentifier>{989bd577-31b8-4026-b45d-12127d3851ef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\03.Talent_Effect_AvoidSlashLV2">
-      <UniqueIdentifier>{0fd32713-6362-4dd1-a739-5e57fa51b8eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\05.Talent_Effect_AvoidThrustLV2">
-      <UniqueIdentifier>{bce2e1a2-7ad8-4d0b-8205-f50ff1d70d2d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\00.Talent_Efftct_NorSwordLV1">
-      <UniqueIdentifier>{43b13b45-05da-4cfe-9a11-cf855d491f00}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement">
       <UniqueIdentifier>{d448ba0b-2790-47ce-8b37-f43a368800bb}</UniqueIdentifier>
     </Filter>
@@ -2980,6 +2946,12 @@
     </Filter>
     <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\99. JoJoParticleShaderManager">
       <UniqueIdentifier>{56e52612-b0d5-4d2d-bb49-ef2395eaece2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\UI_Container\Evolve\LeftBG">
+      <UniqueIdentifier>{86c0985d-b72f-4d0e-816d-0fcad76a7fd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\UI_Container\Evolve\EvolveSelectDecoration">
+      <UniqueIdentifier>{1b35a49e-b905-4cf0-88a7-340bc6369283}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -935,7 +935,7 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Stab1_Title"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/LAtk_Stab1_Title.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Stab1_Information"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/LAtk_Stab1_Information.png"), MEMORY_TYPE::MEMORY_STATIC);
 
-	GAMEINSTANCE->Load_Textures(("Test"), TEXT("../Bin/Resources/Textures/UI/Test.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Test"), TEXT("../Bin/Resources/Textures/Mask/545.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	GAMEINSTANCE->Load_Textures(("MediaFrame"), TEXT("../Bin/Resources/Textures/UI/TexUI_MediaFrame.png"), MEMORY_TYPE::MEMORY_STATIC);
 
@@ -946,6 +946,12 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("UI_EvolveMenu_Level_BG_Mask"), TEXT("../Bin/Resources/Textures/Mask/648.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	GAMEINSTANCE->Load_Textures(("UI_Corvus"), TEXT("../Bin/Resources/Textures/UI/corvus.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("HighLight"), TEXT("../Bin/Resources/Textures/UI/TexUI_BoxHighlightEffect.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_LeftBG_Mask"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_LeftMask2.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
 
 #endif // _JOJO_EFFECT_TOOL_
 }

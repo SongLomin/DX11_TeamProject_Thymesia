@@ -979,20 +979,20 @@ void CUI_EvolveMenu_Level::ChangeSelectedIndex()
     {
     case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::STR:
         m_pHighlight.lock()->Set_UIPosition(231.f, 465.f, ALIGN_LEFTTOP);
-        m_pStatusArrowLeft.lock()->Set_UIPosition(673.f, 465.f, ALIGN_LEFTTOP);
-        m_pStatusArrowRight.lock()->Set_UIPosition(757.f,465.f, ALIGN_LEFTTOP);
+        m_pStatusArrowLeft.lock()->Set_UIPosition(680.f, 465.f, ALIGN_LEFTTOP);
+        m_pStatusArrowRight.lock()->Set_UIPosition(750.f,465.f, ALIGN_LEFTTOP);
 
         break;  
     case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::VIT:
         m_pHighlight.lock()->Set_UIPosition(231.f, 542.f, ALIGN_LEFTTOP);
-        m_pStatusArrowLeft.lock()->Set_UIPosition(673., 541.f, ALIGN_LEFTTOP);
-        m_pStatusArrowRight.lock()->Set_UIPosition(757.f, 541.f, ALIGN_LEFTTOP);
+        m_pStatusArrowLeft.lock()->Set_UIPosition(680., 541.f, ALIGN_LEFTTOP);
+        m_pStatusArrowRight.lock()->Set_UIPosition(750.f, 541.f, ALIGN_LEFTTOP);
 
         break;
     case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::PLA:
         m_pHighlight.lock()->Set_UIPosition(231.f, 619.f, ALIGN_LEFTTOP);
-        m_pStatusArrowLeft.lock()->Set_UIPosition(673.f, 618.f, ALIGN_LEFTTOP);
-        m_pStatusArrowRight.lock()->Set_UIPosition(757.f, 618.f, ALIGN_LEFTTOP);
+        m_pStatusArrowLeft.lock()->Set_UIPosition(680.f, 618.f, ALIGN_LEFTTOP);
+        m_pStatusArrowRight.lock()->Set_UIPosition(750.f, 618.f, ALIGN_LEFTTOP);
 
         break;
     case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::APPLY:

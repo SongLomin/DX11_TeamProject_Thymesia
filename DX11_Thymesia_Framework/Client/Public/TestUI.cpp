@@ -21,22 +21,35 @@ HRESULT CTestUI::Initialize(void* pArg)
     tUIDesc.fX = g_iWinCX >> 1;
     tUIDesc.fY = g_iWinCY >> 1;
 
-    tUIDesc.fSizeX = 600.f;
-    tUIDesc.fSizeY = 35.f;
+    tUIDesc.fSizeX = 128.f;
+    tUIDesc.fSizeY = 128.f;
 
     __super::Initialize(&tUIDesc);
 
-    Set_Texture("EvolveMenu_Text_SelectHighlight");
+    Set_Texture("HighLight");
 
     m_pMaskingTextureCom = Add_Component<CTexture>();
-    m_pMaskingTextureCom.lock()->Use_Texture("Mask");
+    m_pMaskingTextureCom.lock()->Use_Texture("Test");
 
-    Set_PassIndex(9);
+    Set_PassIndex(10);
 
     m_pEasingTransformCom = Add_Component<CEasingTransform>();
     m_vUXOffset = { 0.f,0.f };
     Set_Selected(true);
     
+    m_pEasingTransformCom.lock()->Set_Lerp_Alpha
+     (1.f, EASING_TYPE::SINE_IN, true,
+        CEasingTransform::GO_AND_BACK_ALPHA);
+  
+
+    m_tTest.bAlways = false;
+    m_tTest.bCenterAlign = true;
+    m_tTest.fRotation = 0.f;
+    m_tTest.vColor = _float4(1.f, 1.f, 1.f, 1.f);
+    m_tTest.vPosition = _float2(500, 500);
+    m_tTest.vScale = _float2(2.f, 2.f);
+
+
     return S_OK;
 }
 
@@ -55,11 +68,7 @@ void CTestUI::Tick(_float fTimeDelta)
 
     m_vUXOffset.x -= 0.08f * fTimeDelta;
  
-    if (KEY_INPUT(KEY::X, KEY_STATE::TAP))
-    {
-        m_pEasingTransformCom.lock()->Set_Lerp_Alpha(1.5f, EASING_TYPE::EXPO_OUT, false, CEasingTransform::JUST_START,
-            CEasingTransform::USING_CUSTOM);
-    }   
+     
 }
 void CTestUI::LateTick(_float fTimeDelta)
 {
@@ -68,6 +77,10 @@ void CTestUI::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 
     m_pEasingTransformCom.lock()->LateTick(fTimeDelta);
+
+    m_tTest.szText = to_wstring((_uint)(m_pEasingTransformCom.lock()->Get_Lerp().x * 8));
+
+    GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::PRETENDARD, m_tTest);
 
 }
 
@@ -89,13 +102,9 @@ HRESULT CTestUI::SetUp_ShaderResource()
     __super::SetUp_ShaderResource();
 
     m_pMaskingTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 0);
-    
-    
-    m_pShaderCom.lock()->Set_RawValue("g_UVOffset", &m_vUXOffset, sizeof(_float2));
-
-    _float fRatio = (m_pEasingTransformCom.lock()->Get_Lerp().x);
+  
+    _float fRatio =  (((m_pEasingTransformCom.lock()->Get_Lerp().x) * 8.f));
     m_pShaderCom.lock()->Set_RawValue("g_Ratio", &fRatio, sizeof(_float));
-
 
     return S_OK;
 }

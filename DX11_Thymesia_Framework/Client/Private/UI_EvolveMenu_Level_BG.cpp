@@ -27,7 +27,7 @@ HRESULT CUI_EvolveMenu_Level_BG::Initialize(void* pArg)
 
     m_iPassIndex = 9;
 
-    Set_AlphaColor(0.7f);
+    Set_AlphaColor(0.8f);
     Set_Depth(0.8f);
 
     return S_OK;

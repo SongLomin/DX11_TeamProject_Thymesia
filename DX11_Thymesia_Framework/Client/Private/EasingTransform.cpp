@@ -55,9 +55,18 @@ void CEasingTransform::Tick(_float fTimeDelta)
             case Client::CEasingTransform::JUST_START:
                 Set_LerpFloat2_StartFromZero(_float2(m_vTarget.x, m_vTarget.y), m_fLerpTime, m_eLerpType, m_bLoop, m_eLooping_Type);
                 break;
+
             case Client::CEasingTransform::GO_AND_BACK:
                 Set_LerpFloat2(_float2(m_vTarget.x, m_vTarget.y),
                     _float2(m_vStart.x, m_vStart.y), m_fLerpTime, m_eLerpType, m_bLoop, m_eLooping_Type);
+                break;
+
+            case Client::CEasingTransform::JUST_START_ALPHA:
+                Set_Lerp_Alpha(m_fLerpTime, m_eLerpType, m_bLoop, m_eLooping_Type);
+                break;
+            case Client::CEasingTransform::GO_AND_BACK_ALPHA:
+                Set_LerpFloat(m_vTarget.x, m_vStart.x, m_fLerpTime, m_eLerpType, m_bLoop, m_eLooping_Type,
+                    CEasingTransform::USING_ONLY_ALPHA);
                 break;
             default:
                 break;
@@ -109,10 +118,8 @@ void CEasingTransform::LateTick(_float fTimeDelta)
 
 void CEasingTransform::Set_Lerp_Alpha(_float In_fTime, EASING_TYPE eType, _bool bLoop, LOOPING_TYPE eLoopingType, EASING_TRANSFORM_USING_TYPE eUsingType)
 {
-
     m_eUsingType = m_eUsingType;
     Set_LerpFloat(0.f, 1.f, In_fTime, eType, bLoop, eLoopingType, m_eUsingType);
- 
 }
 
 void CEasingTransform::Set_LerpFloat(_float In_fStart, _float In_fEnd, _float In_fTime, EASING_TYPE eType, _bool bLoop, LOOPING_TYPE eLoopingType, EASING_TRANSFORM_USING_TYPE eUsingType)
