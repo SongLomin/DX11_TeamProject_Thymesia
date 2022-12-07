@@ -44,7 +44,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 	this->Ready_States();
 
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
-	
+
 #ifdef _CORVUS_EFFECT_
 	// Key Frame Effect ON
 	GET_SINGLE(CGameManager)->Bind_KeyEvent("Corvus", m_pModelCom, bind(&CCorvus::Call_NextAnimationKey, this, placeholders::_1));

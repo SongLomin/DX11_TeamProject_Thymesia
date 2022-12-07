@@ -120,3 +120,23 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     }
 
 }
+
+void ANIMATION_DATA::Bake_ReverseAnimation(shared_ptr<ANIMATION_DATA>& Out_AnimationData)
+{
+
+    Out_AnimationData->szName = szName + "_Reverse";
+
+    Out_AnimationData->iNumChannels = iNumChannels;
+
+    /* 현재 애니메이션을 재상하는데 걸리는 시간. */
+    Out_AnimationData->fDuration = fDuration;
+    Out_AnimationData->fTickPerSecond = fTickPerSecond;
+
+
+    for (_uint i = 0; i < iNumChannels; i++)
+    {
+        shared_ptr<CHANNEL_DATA> pChannelData = make_shared<CHANNEL_DATA>();
+        Channel_Datas[i]->Bake_ReverseChannel(pChannelData, fDuration);
+        Out_AnimationData->Channel_Datas.push_back(pChannelData);
+    }
+}

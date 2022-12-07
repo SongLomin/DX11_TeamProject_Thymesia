@@ -51,10 +51,6 @@ bool CPhysXController::filter(const PxController& a, const PxController& b)
 
 void CPhysXController::onShapeHit(const PxControllerShapeHit& hit)
 {
-	PxTriangleMesh* pMesh;
-
-	pMesh->getTriangles;
-	 hit.triangleIndex;
 }
 
 void CPhysXController::onControllerHit(const PxControllersHit& hit)

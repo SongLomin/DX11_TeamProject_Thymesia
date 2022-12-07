@@ -81,6 +81,7 @@ public:
 	
 public:
 	void Init_Model(const char* sModelKey, const string& szTexturePath = "", _uint iTimeScaleLayer = 0);
+	void Add_ReverseAnimation(const _uint In_iAnimationIndex, _uint iTimeScaleLayer);
 	HRESULT Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eActorType);
 	weak_ptr<CBoneNode> Find_BoneNode(const string& pBoneName);
 	void Reset_DeltaBonePositions();
@@ -100,6 +101,7 @@ private:
 	void Create_Materials(const char* pModelFilePath);
 	void Create_BoneNodes(shared_ptr<NODE_DATA> pNodeData, weak_ptr<CBoneNode> pParent, _uint iDepth);
 	void Create_Animations(_uint iTimeScaleLayer);
+	
 
 protected:
 	shared_ptr<MODEL_DATA>					m_pModelData;

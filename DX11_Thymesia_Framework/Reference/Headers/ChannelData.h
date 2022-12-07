@@ -22,6 +22,6 @@ struct ENGINE_DLL CHANNEL_DATA
 public:
     void Bake_Binary(ofstream& os);
     void Load_FromBinary(ifstream& is);
-
+    void Bake_ReverseChannel(shared_ptr<CHANNEL_DATA>& Out_ChannelData, const _float In_fDuration);
 };
 END

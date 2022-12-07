@@ -701,6 +701,21 @@ void CModel::Create_Animations(_uint iTimeScaleLayer)
 
 }
 
+void CModel::Add_ReverseAnimation(const _uint In_iAnimationIndex, _uint iTimeScaleLayer)
+{
+	weak_ptr<CModel> ThisToModel = Weak_StaticCast<CModel>(m_this);
+
+	shared_ptr<ANIMATION_DATA> pReverseAnimationData = make_shared<ANIMATION_DATA>();
+	m_pModelData->Animation_Datas[In_iAnimationIndex]->Bake_ReverseAnimation(pReverseAnimationData);
+	m_pModelData->Animation_Datas.emplace_back(pReverseAnimationData);
+
+	weak_ptr<CAnimation> pAnimation = m_pOwner.lock()->Add_Component<CAnimation>();
+	pAnimation.lock()->Init_Animation(pReverseAnimationData, ThisToModel, iTimeScaleLayer);
+	m_Animations.emplace_back(pAnimation);
+
+	m_iNumAnimations = ++m_pModelData->iNumAnimations;
+}
+
 void CModel::OnDestroy()
 {
 	UNUSE_START(CModel);

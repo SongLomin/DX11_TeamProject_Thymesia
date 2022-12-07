@@ -19,6 +19,7 @@ struct ENGINE_DLL ANIMATION_DATA
 public:
     void Bake_Binary(ofstream& os);
     void Load_FromBinary(ifstream& is);
+    void Bake_ReverseAnimation(shared_ptr<ANIMATION_DATA>& Out_AnimationData);
 
 };
 END
