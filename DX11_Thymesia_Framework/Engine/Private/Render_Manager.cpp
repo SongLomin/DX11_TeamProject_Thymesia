@@ -464,14 +464,14 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	return S_OK;
   }
 
-HRESULT CRender_Manager::Set_MotionBlur(const _float& In_fBlurScale)
+HRESULT CRender_Manager::Set_MotionBlur(const _float In_fBlurScale)
 {
 	m_fBlurWitdh = In_fBlurScale;
 
 	return S_OK;
 }
 
-HRESULT CRender_Manager::Add_MotionBlur(const _float& In_fBlurScale)
+HRESULT CRender_Manager::Add_MotionBlur(const _float In_fBlurScale)
 {
 	m_fBlurWitdh += In_fBlurScale;
 	m_fBlurWitdh = max(0.f, m_fBlurWitdh);
@@ -491,6 +491,30 @@ HRESULT CRender_Manager::Add_Chromatic(const _float In_fChormaticStrangth)
 {
 	m_fChromaticStrengthAcc += In_fChormaticStrangth;
 	m_fChromaticStrengthAcc = max(0.f, m_fChromaticStrengthAcc);
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Set_RadialBlur(const _float In_fRadialBlurStength, _float3 In_vBlurWorldPosition)
+{
+	m_fRadialBlurStrength = In_fRadialBlurStength;
+	m_vRadialBlurWorldPos = In_vBlurWorldPosition;
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Add_RedialBlur(const _float In_fRadialBlurStrength)
+{
+	m_fRadialBlurStrength = max(0.f, In_fRadialBlurStrength);
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Set_LiftGammaGain(const _float3 In_vLift, const _float3 In_vGamma, const _float3 In_vGain)
+{
+	m_vLift = In_vLift;
+	m_vGamma = In_vGamma;
+	m_vGain = In_vGain;
 
 	return S_OK;
 }
