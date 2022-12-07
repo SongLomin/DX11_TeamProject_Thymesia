@@ -13,8 +13,18 @@ vector		g_vAngularVelocity;
 
 texture2D	g_DepthTexture;
 texture2D	g_OriginalRenderTexture;
+//Chromatic
+float		g_fChromaticStrength = 0.f;
 
-float		g_BlurStrength = 0.1f;
+//MotionBlur
+float		g_fMotionBlurStrength = 0.f;
+
+//RadialBlur
+float3		g_vBlurWorldPosition;
+float		g_fRadialBlurStrength;
+matrix		g_CameraViewMatrix;
+//liftgammaain
+vector g_vLift, g_vGamma, g_vGain;
 
 static const float BlurWeights[13] =
 {
@@ -105,7 +115,7 @@ PS_OUT PS_MAIN_MOTION_BLUR(PS_IN In)
 
 	for (int i = -5; i < 5; ++i)
 	{
-        texCoord += vPixelVelocity * 0.001f * i;
+        texCoord += vPixelVelocity * (0.001f + g_fMotionBlurStrength) * i;
 		float4 currentColor = g_OriginalRenderTexture.Sample(ClampSampler, texCoord);
 		vColor += currentColor;
 	}
@@ -126,8 +136,8 @@ PS_OUT PS_MAIN_CHROMATIC(PS_IN In)
 	vector vColor;
 
 	vColor.r = g_OriginalRenderTexture.Sample(ClampSampler, In.vTexUV).r;
-	vColor.g = g_OriginalRenderTexture.Sample(ClampSampler, In.vTexUV - BlurDir * g_BlurStrength * 0.5f).g;
-	vColor.b = g_OriginalRenderTexture.Sample(ClampSampler, In.vTexUV - BlurDir* g_BlurStrength).b;
+    vColor.g = g_OriginalRenderTexture.Sample(ClampSampler, In.vTexUV - BlurDir * g_fChromaticStrength * 0.5f).g;
+    vColor.b = g_OriginalRenderTexture.Sample(ClampSampler, In.vTexUV - BlurDir * g_fChromaticStrength).b;
 
 	//vColor *= (1.0 - g_BlurStrength * 0.5); //안해주면 그냥 밝아짐
 
@@ -143,25 +153,74 @@ PS_OUT PS_MAIN_LIFTGAMMAGAIN(PS_IN In)
     vector vColor = g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV);
 	
 	//Lift
-    vector vLift = vector(1.f, 1.f, 0.9f, 1.f);
+    vector vLift = g_vLift;
     vColor = vColor * (1.5f - 0.5f * vLift) + 0.5f * vLift - 0.5f;
     vColor = saturate(vColor); //isn't strictly necessary, but doesn't cost performance.
 	
 	//Gain = 1.f <- 임시
 	//vector vGain = vector(1.f,1.f,1.f,1.f,);
-    vColor *= 1.f;
+    vColor *= g_vGain;
 	
 	                              //Gamma =1.3f <- 임시
-    vector vGamma = vector(1.f, 1.f, 1.2f, 1.f);
+    vector vGamma = g_vGamma;
     Out.vColor = pow(vColor, 1.0 / vGamma); //Gamma
 
     return Out;
 }
 
+PS_OUT PS_MAIN_RADIALBLUR(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    vector vColor = vector(0.f, 0.f, 0.f, 0.f);
+
+    float fBlurStart = 1.f;
+	
+    matrix matVP = mul(g_CameraViewMatrix, g_CamProjMatrix);
+    vector vBlurCenter = mul(vector(g_vBlurWorldPosition, 1.f), matVP);
+    vBlurCenter /= vBlurCenter.w;
+
+    vBlurCenter.x = vBlurCenter.x*0.5f + 0.5f;
+    vBlurCenter.y = vBlurCenter.y * -0.5f + 0.5f;
+	
+    float2 center = float2(vBlurCenter.x, vBlurCenter.y); //중심점<-마우스의 위치를 받아오면 마우스를 중심으로 블러됨
+
+    In.vTexUV.xy -= center;
+
+    float fPrecompute = g_fRadialBlurStrength * (1.0f / 19.f);
+
+    for (uint i = 0; i < 20; ++i)
+    {
+        float scale = fBlurStart + (float(i) * fPrecompute);
+        float2 uv = In.vTexUV.xy * scale + center;
+
+        vColor += g_OriginalRenderTexture.Sample(ClampSampler, uv);
+    }
+
+    vColor /= 20.f;
+	
+    Out.vColor = vColor;
+
+    return Out;
+}
+
+DepthStencilState DSS_None_ZTestWrite_True_StencilTest
+{
+    DepthEnable = false;
+    DepthWriteMask = zero;
+
+    StencilEnable = true;
+    StencilReadMask = 0xff;
+	
+    FrontFaceStencilFunc = less;
+    FrontFaceStencilPass = keep;
+    FrontFaceStencilFail = keep;
+};
+
 
 technique11 DefaultTechnique
 {
-	pass Chromatic_Aberration//2
+	pass Chromatic_Aberration//0
 	{
 		SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
@@ -191,6 +250,17 @@ technique11 DefaultTechnique
 		GeometryShader = NULL;
 		PixelShader    = compile ps_5_0 PS_MAIN_MOTION_BLUR();
 	}
+
+    pass RadialBlur//3
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_None_ZTestWrite_True_StencilTest, 1);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_RADIALBLUR();
+    }
 
 
 }

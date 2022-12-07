@@ -21,10 +21,8 @@ HRESULT CEffect_Trail_EyeLight::Initialize(void* pArg)//trailÀ» »ç¿ëÇÏ´Â °´Ã¼·Îº
 
 	m_pTextureCom.lock()->Use_Texture("UVColorDiffuse");
 
-	m_pNoiseTextureCom = Add_Component<CTexture>();
 	m_pNoiseTextureCom.lock()->Use_Texture(("UVNoise"));
 
-	m_pMaskTextureCom = Add_Component<CTexture>();
 	m_pMaskTextureCom.lock()->Use_Texture("UVMask");
 	return S_OK;
 }
@@ -47,7 +45,7 @@ HRESULT CEffect_Trail_EyeLight::Render()
 	SetUp_ShaderResource();
 	CallBack_Render();
 
-	m_pShaderCom.lock()->Begin(0);
+	m_pShaderCom.lock()->Begin(3);
 	m_pVIBuffer.lock()->Render();
 
 	return S_OK;
@@ -56,14 +54,8 @@ HRESULT CEffect_Trail_EyeLight::Render()
 
 void CEffect_Trail_EyeLight::SetUp_ShaderResource()
 {
-	CallBack_Bind_SRV(m_pShaderCom, "");
+	__super::SetUp_ShaderResource();
 
-	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4));
-	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
-	m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", 1);
-
-	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture", 0);
-	m_pMaskTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 66);
 
 	_float4 vColor = _float4(1.f, 1.f, 1.f, 1.f);
 
@@ -73,9 +65,11 @@ void CEffect_Trail_EyeLight::SetUp_ShaderResource()
 	vColor = _float4(0.f, 0.f, 0.f, 0.f);
 	m_pShaderCom.lock()->Set_RawValue("g_vUVNoise", &vColor, sizeof(_float4));
 
-	_bool bFlag = true;
-	m_pShaderCom.lock()->Set_RawValue("g_bBloom", &bFlag, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_bGlow", &bFlag, sizeof(_bool));
+	_bool bBloomFlag = false;
+	m_pShaderCom.lock()->Set_RawValue("g_bBloom", &bBloomFlag, sizeof(_bool));
+
+	_bool bGlow = false;
+	m_pShaderCom.lock()->Set_RawValue("g_bGlow", &bGlow, sizeof(_bool));
 	
 	vColor = _float4(1.f, 0.f, 0.f, 1.f);
 	m_pShaderCom.lock()->Set_RawValue("g_vGlowColor", &vColor, sizeof(_float4));

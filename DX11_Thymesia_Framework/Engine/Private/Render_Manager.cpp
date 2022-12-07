@@ -42,7 +42,7 @@ HRESULT CRender_Manager::Initialize()
 
 	/* For.Target_Depth */
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Depth"), 
-		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(0.f, 1.f, 0.f, 1.f))))
+		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(1.f, 1.f,  0.f, 1.f))))
 		DEBUG_ASSERT;
 
 	/* For.Target_Shade */
@@ -393,8 +393,8 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Render_Lights()))
 		DEBUG_ASSERT;
 
-	/*if (FAILED(Bake_Fog()))
-		DEBUG_ASSERT;*/
+	if (FAILED(Bake_Fog()))
+		DEBUG_ASSERT;
 
 	if (FAILED(Bake_ViewShadow()))
 		DEBUG_ASSERT;
@@ -464,17 +464,17 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	return S_OK;
   }
 
-HRESULT CRender_Manager::Set_MotionBlur(const _float& In_fBlurScale)
+HRESULT CRender_Manager::Set_MotionBlur(const _float In_fBlurScale)
 {
 	m_fBlurWitdh = In_fBlurScale;
 
 	return S_OK;
 }
 
-HRESULT CRender_Manager::Add_MotionBlur(const _float& In_fBlurScale)
+HRESULT CRender_Manager::Add_MotionBlur(const _float In_fBlurScale)
 {
 	m_fBlurWitdh += In_fBlurScale;
-	m_fBlurWitdh = max(0.f, m_fBlurWitdh);
+	m_fBlurWitdh = min(1.f,max(0.f, m_fBlurWitdh));
 
 	return S_OK;
 }
@@ -491,6 +491,32 @@ HRESULT CRender_Manager::Add_Chromatic(const _float In_fChormaticStrangth)
 {
 	m_fChromaticStrengthAcc += In_fChormaticStrangth;
 	m_fChromaticStrengthAcc = max(0.f, m_fChromaticStrengthAcc);
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Set_RadialBlur(const _float In_fRadialBlurStength, _float3 In_vBlurWorldPosition)
+{
+	m_fRadialBlurStrength = In_fRadialBlurStength;
+	m_fRadialBlurStrengthAcc = In_fRadialBlurStength;
+	m_vRadialBlurWorldPos = In_vBlurWorldPosition;
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Add_RedialBlur(const _float In_fRadialBlurStrength)
+{
+	m_fRadialBlurStrengthAcc += In_fRadialBlurStrength;
+	m_fRadialBlurStrengthAcc = max(0.f, In_fRadialBlurStrength);
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain)
+{
+	m_vLift = In_vLift;
+	m_vGamma = In_vGamma;
+	m_vGain = In_vGain;
 
 	return S_OK;
 }
@@ -1408,8 +1434,10 @@ HRESULT CRender_Manager::PostProcessing()
 	shared_ptr<CPipeLine> pPipeLine = GET_SINGLE(CPipeLine);
 
 	_float4x4		ViewMatrixInv, ProjMatrixInv,ViewMatrix,ProjMatrix;
+	_matrix			CamViewMatrix= pPipeLine->Get_Transform(CPipeLine::D3DTS_VIEW);
 
-	XMStoreFloat4x4(&ViewMatrixInv, XMMatrixTranspose(XMMatrixInverse(nullptr, pPipeLine->Get_Transform(CPipeLine::D3DTS_VIEW))));
+
+	XMStoreFloat4x4(&ViewMatrixInv, XMMatrixTranspose(XMMatrixInverse(nullptr, CamViewMatrix)));
 	XMStoreFloat4x4(&ProjMatrixInv, XMMatrixTranspose(XMMatrixInverse(nullptr, pPipeLine->Get_Transform(CPipeLine::D3DTS_PROJ))));
 
 	ProjMatrix = *pPipeLine->Get_Transform_TP(CPipeLine::D3DTS_PROJ);
@@ -1422,21 +1450,42 @@ HRESULT CRender_Manager::PostProcessing()
 
 	m_pPostProcessingShader->Set_RawValue("g_vCamPosition", &ViewMatrixInv.m[3],sizeof(_float4));
 
+	m_pPostProcessingShader->Set_RawValue("g_vLift", &m_vLift, sizeof(_float4));
+	m_pPostProcessingShader->Set_RawValue("g_vGamma", &m_vGamma, sizeof(_float4));
+	m_pPostProcessingShader->Set_RawValue("g_vGain", &m_vGain, sizeof(_float4));
+
+	m_pPostProcessingShader->Set_RawValue("g_fRadialBlurStrength", &m_fRadialBlurStrength, sizeof(_float));
+
 	
-	_float fLerpValue = 0.f;
+	_float fChromaticLerpValue = 0.f;
 	if (0.f < m_fChromaticStrengthAcc)
 	{
 		_vector vLerp = XMVectorSet(m_fChromaticStrangth, 0.f, 0.f, 0.f);
 		vLerp = CEasing_Utillity::CubicOut(XMVectorSet(0.f, 0.f, 0.f, 0.f), vLerp, m_fChromaticStrengthAcc, m_fChromaticStrangth);
-		fLerpValue = vLerp.m128_f32[0];
+		fChromaticLerpValue = vLerp.m128_f32[0];
 	}
-	
 
-	m_pPostProcessingShader->Set_RawValue("g_BlurStrength", &fLerpValue, sizeof(_float));//chromatic 전용
+	_float fRadialLerpValue = 0.f;
+	if (0.f < m_fChromaticStrengthAcc)
+	{
+		_vector vLerp = XMVectorSet(m_fChromaticStrangth, 0.f, 0.f, 0.f);
+		vLerp = CEasing_Utillity::CubicOut(XMVectorSet(0.f, 0.f, 0.f, 0.f), vLerp, m_fChromaticStrengthAcc, m_fChromaticStrangth);
+		fRadialLerpValue = vLerp.m128_f32[0];
+	}
 
+	fRadialLerpValue = 0.04f;
+
+	m_pPostProcessingShader->Set_RawValue("g_fChromaticStrength", &fChromaticLerpValue, sizeof(_float));//chromatic 전용
+
+	m_pPostProcessingShader->Set_RawValue("g_fMotionBlurStrength", &m_fBlurWitdh, sizeof(_float));//MotionBlur 전용
 	m_pPostProcessingShader->Set_RawValue("g_PreCamViewMatrix", &XMMatrixTranspose(XMLoadFloat4x4(&pPipeLine->Get_PreViewMatrix())), sizeof(_float4x4));
 
-	for (_int i = 0; i < 3; ++i)
+	m_pPostProcessingShader->Set_RawValue("g_fRadialBlurStrength", &fRadialLerpValue, sizeof(_float));//RadialBlur 전용
+	m_pPostProcessingShader->Set_RawValue("g_vBlurWorldPosition", &m_vRadialBlurWorldPos, sizeof(_float3));//RadialBlur 전용
+	m_pPostProcessingShader->Set_RawValue("g_CameraViewMatrix", &XMMatrixTranspose(CamViewMatrix), sizeof(_float4x4));//RadialBlur 전용
+
+
+	for (_int i = 0; i < 4; ++i)
 	{
 		Bake_OriginalRenderTexture();
 		if (FAILED(m_pPostProcessingShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")))))

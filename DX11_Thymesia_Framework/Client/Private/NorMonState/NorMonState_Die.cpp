@@ -63,10 +63,6 @@ void CNorMonState_Die::Start()
 
 
 	m_fDissolveTime = 5.f;
-	weak_ptr<CPlayer> pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
-	
-	if (pPlayer.lock())
-		pPlayer.lock()->Forced_SearchNearTargetMonster();
 
 	m_bAnimEnd = false;
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Die::Call_AnimationEnd, this);
@@ -125,6 +121,9 @@ void CNorMonState_Die::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pOwner.lock()->Get_ComponentByType<CStatus_Monster>().lock()->CallBack_UI_Disable();
 
 	GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
+
+	if (Check_RequirementIsTargeted())
+		GET_SINGLE(CGameManager)->Release_Focus();
 
 	Get_OwnerMonster()->Release_Monster();
 	

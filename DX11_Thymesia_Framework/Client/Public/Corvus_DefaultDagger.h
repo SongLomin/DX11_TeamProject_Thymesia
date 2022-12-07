@@ -26,6 +26,12 @@ public:// CGameObject을(를) 통해 상속됨
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render() override;
 
+public:
+    _bool Set_TrailEnable(const _bool In_bEnable);
+
+
+protected:
+    weak_ptr<class CEffect_Trail> m_pTrailEffect;
 
 protected:
     void SetUp_ShaderResource();

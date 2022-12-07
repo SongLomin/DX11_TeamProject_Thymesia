@@ -506,7 +506,6 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
     vector vDepthDesc     = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
     vector vFogDesc       = g_FogTexture.Sample(DefaultSampler, In.vTexUV);
     vector vAmbientDesc   = g_AmbientTexture.Sample(DefaultSampler, In.vTexUV);
-    vSpecular.a = 0.f;
 
     if (vAmbientDesc.a > 0.f)
     {
@@ -522,7 +521,10 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
     {
         Out.vColor = vDiffuse * vShade + vSpecular;
         Out.vColor.rgb *= vViewShadow.rgb;
-        Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * vector(0.8f, 0.8f, 0.8f, 1.f);
+        if(0.f < Out.vColor.a)
+            Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * vector(0.8f, 0.8f, 0.8f, 1.f);
+        else
+            Out.vColor = vFogDesc.r * vector(0.8f, 0.8f, 0.8f, 1.f);
     }
 
     //if (vLightFlagDesc.r > 0.f || vLightFlagDesc.g > 0.f)
@@ -719,6 +721,7 @@ PS_OUT_FOG PS_MAIN_FOG(PS_IN In)
 
     /* 월드페이스 상  위치를 구한다. */
     vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
+    
 
     vector vFogDir = vWorldPos - g_vCamPosition;
 
@@ -726,8 +729,10 @@ PS_OUT_FOG PS_MAIN_FOG(PS_IN In)
 
     //float			fAtt = saturate((g_fRange - fDistance) / g_fRange);
     float fAtt = saturate((40.f - fDistance) / 40.f);
+    
+    Out.vFog = (1.f - (fAtt * fAtt));
+    
 
-    Out.vFog = (0.8f - (fAtt*fAtt));
    // Out.vShade.a = 1.f;
     return Out;
 }
@@ -810,7 +815,7 @@ technique11 DefaultTechnique
 
     pass Blend //3
     {
-		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetBlendState(BS_ForwardAlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
 		SetRasterizerState(RS_Default);
 		VertexShader   = compile vs_5_0 VS_MAIN();

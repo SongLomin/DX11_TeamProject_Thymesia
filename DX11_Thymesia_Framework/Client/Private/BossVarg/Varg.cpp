@@ -5,7 +5,7 @@
 #include "Renderer.h"
 #include "RigidBody.h"
 #include "GameManager.h"
-#include "MobWeapon.h"
+#include "VargWeapon.h"
 #include "VargStates.h"
 #include "Effect_Trail_EyeLight.h"
 //#include "MonsterWeapon.h"
@@ -75,13 +75,16 @@ HRESULT CVarg::Initialize(void* pArg)
 	Add_Component<CVargBossState_Attack2b1>();
 	Add_Component<CVargBossState_Attack2b2>();
 
-	/*TRAIL_DESC TrailDesc;
+	TRAIL_DESC TrailDesc;
 	ZeroMemory(&TrailDesc, sizeof(TRAIL_DESC));
 
-	TrailDesc.iMaxCnt = 240;
-	TrailDesc.vPos_0 = _float3(0.f, 1.f, 0.f);
-	TrailDesc.vPos_1 = _float3(0.f, -0.3f, 0.f);
-	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail_EyeLight>(LEVEL_GAMEPLAY, &TrailDesc);*/
+	TrailDesc.iMaxCnt = 30;
+	//position 0.163, 0.12,0.055 , z 0.1¾¿
+	TrailDesc.vPos_0 = _float3(0.163, 0.17, 0.075);
+	TrailDesc.vPos_1 = _float3(0.163, 0.17, 0.035);
+	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail_EyeLight>(LEVEL_GAMEPLAY, &TrailDesc);
+
+	//GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
 
 	m_fCullingRange = 999.f;
 
@@ -92,6 +95,10 @@ HRESULT CVarg::Initialize(void* pArg)
 HRESULT CVarg::Start()
 {
 	__super::Start();
+
+	m_pTrailEffect.lock()->Set_TextureIndex(1,869, 0);
+	m_pTrailBoneNode = m_pModelCom.lock()->Find_BoneNode("Bip001-Head");
+
 
 
 	Change_State<CVargBossState_Start>();
@@ -110,8 +117,12 @@ void CVarg::Tick(_float fTimeDelta)
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
 
-	PxControllerFilters Filters = Filters;
+	PxControllerFilters Filters;
 	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+
+	m_pTrailEffect.lock()->Update(fTimeDelta, m_pTransformCom, m_pTrailBoneNode, m_pModelCom.lock()->Get_ModelData());
+
+
 }
 
 void CVarg::LateTick(_float fTimeDelta)
@@ -156,10 +167,16 @@ void CVarg::SetUp_ShaderResource()
 
 }
 
+void CVarg::Set_TrailEnable(_bool In_bEnable)
+{
+	Weak_Cast<CVargWeapon>(m_pWeapons.front()).lock()->Set_TrailEnable(In_bEnable);
+}
+
+
 void CVarg::Init_Desc()
 {
 	m_pModelCom.lock()->Init_Model("Boss_Varg", "", (_uint)TIMESCALE_LAYER::MONSTER);
-	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
+	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CVargWeapon>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Model("Boss_VargWeapon", TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
 

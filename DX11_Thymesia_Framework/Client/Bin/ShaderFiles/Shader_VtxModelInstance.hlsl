@@ -427,7 +427,7 @@ technique11 DefaultTechnique
 	}
 	pass NoneCulling_Masking//6
 	{
-		SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_Default, 0);
         SetRasterizerState(RS_NonCulling);
 
@@ -438,7 +438,7 @@ technique11 DefaultTechnique
 
     pass Culling_Masking //7
     {
-        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_Default, 0);
         SetRasterizerState(RS_Default);
 

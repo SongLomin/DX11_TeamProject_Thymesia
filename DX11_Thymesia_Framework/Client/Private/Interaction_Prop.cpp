@@ -34,12 +34,12 @@ void CInteraction_Prop::Tick(_float fTimeDelta)
     __super::Tick(fTimeDelta);
     if (m_bNearPlayer)
     {
-        m_fOutLineBlurIntensity += fTimeDelta;
+        m_fOutLineBlurIntensity += fTimeDelta*2.f;
         m_fOutLineBlurIntensity = min(1.f, m_fOutLineBlurIntensity);
     }
     else
     {
-        m_fOutLineBlurIntensity -= fTimeDelta;
+        m_fOutLineBlurIntensity -= fTimeDelta*2.f;
         m_fOutLineBlurIntensity = max(0.f, m_fOutLineBlurIntensity);
     }
 

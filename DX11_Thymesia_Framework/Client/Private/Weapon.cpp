@@ -4,8 +4,7 @@
 #include "GameManager.h"
 #include "Character.h"
 #include "Weapon.h"
-#include "Effect_Trail.h"
-#include "VIBuffer_Trail.h"
+
 
 GAMECLASS_C(CWeapon);
 CLONE_C(CWeapon, CGameObject);
@@ -43,17 +42,19 @@ void CWeapon::Tick(_float fTimeDelta)
 	if (!m_pParentTransformCom.lock() || !m_pTargetBoneNode.lock())
 		return;
 
-	_matrix		ParentMatrix = m_pTargetBoneNode.lock()->Get_CombinedMatrix() * XMLoadFloat4x4(&m_TransformationMatrix);
+	_matrix		BoneMatrix = m_pTargetBoneNode.lock()->Get_CombinedMatrix()
+		* XMLoadFloat4x4(&m_TransformationMatrix);
 
-	ParentMatrix.r[0] = XMVector3Normalize(ParentMatrix.r[0]);
-	ParentMatrix.r[1] = XMVector3Normalize(ParentMatrix.r[1]);
-	ParentMatrix.r[2] = XMVector3Normalize(ParentMatrix.r[2]);
-	
-	ParentMatrix = SMath::Go_Right(ParentMatrix, m_vOffset.x);
-	ParentMatrix = SMath::Go_Up(ParentMatrix, m_vOffset.y);
-	ParentMatrix = SMath::Go_Straight(ParentMatrix, m_vOffset.z);
+	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
+	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
+	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
 
-	m_pTransformCom.lock()->Set_WorldMatrix(ParentMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix());
+	//무기 오프셋 나중에 캐릭터별로 매개변수로 받아서 처리하자.
+	//ParentMatrix = SMath::Go_Right(ParentMatrix, m_vOffset.x);
+	//ParentMatrix = SMath::Go_Up(ParentMatrix, m_vOffset.y);
+	//ParentMatrix = SMath::Go_Straight(ParentMatrix, m_vOffset.z);
+
+	m_pTransformCom.lock()->Set_WorldMatrix(BoneMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix());
 		
 	for (auto& elem : m_pHitColliderComs)
 		elem.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
@@ -130,13 +131,6 @@ void CWeapon::Enable_Weapon()
 	}
 }
 
-void CWeapon::Init_Trail(TRAIL_DESC& TrailDesc)
-{
-	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail>(m_CreatedLevel, &TrailDesc);
-	m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
-	m_pTrailEffect.lock()->Set_Enable(false);
-}
-
 void CWeapon::Add_Collider(_fvector In_vOffset, const _float In_fScale, const COLLISION_LAYER In_Layer)
 {
 	m_pHitColliderComs.push_back(Add_Component<CCollider>());
@@ -151,14 +145,7 @@ void CWeapon::Add_Collider(_fvector In_vOffset, const _float In_fScale, const CO
 	m_pHitColliderComs.back().lock()->Init_Collider(COLLISION_TYPE::SPHERE, tDesc);
 }
 
-_bool CWeapon::Set_TrailEnable(const _bool In_bEnable)
-{
-	if (!m_pTrailEffect.lock())
-		return false;
 
-	return m_pTrailEffect.lock()->Set_Enable(In_bEnable);
-	
-}
 
 
 void CWeapon::Disable_Weapon()

@@ -82,10 +82,9 @@ void CCamera_Target::Tick(_float fTimeDelta)
 	{
 		if (KEY_INPUT(KEY::MBUTTON, KEY_STATE::TAP))
 		{
-			m_bIsFocused = !m_bIsFocused;
 			if (m_bIsFocused)
 			{
-				GET_SINGLE(CGameManager)->Focus_Monster();
+				GET_SINGLE(CGameManager)->Release_Focus();
 				//TODO: 임시 쉐이킹 기본 타격 셰이킹은 이거 쓰면 될 듯
 				//GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 1.f, 0.f), 0.5f,0.1f);
 				//TODO: 과격한 타격 쉐이킹
@@ -95,7 +94,7 @@ void CCamera_Target::Tick(_float fTimeDelta)
 			}
 			else
 			{
-				GET_SINGLE(CGameManager)->Release_Focus();
+				GET_SINGLE(CGameManager)->Focus_Monster();
 				//TODO: 과격한 타격 쉐이킹
 				// GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 1.f, 0.f), 0.5f, 0.6f);
 				//GET_SINGLE(CGameManager)->Deactivate_Zoom();
@@ -156,6 +155,10 @@ void CCamera_Target::Change_Target()
 
 void CCamera_Target::Focus_Monster(weak_ptr<CGameObject> _pMonster)
 {
+	if (!_pMonster.lock())
+		return;
+
+	m_bIsFocused = true;
 	m_pTargetMonster = _pMonster;
 	m_pTargetMonsterTransformCom = _pMonster.lock()->Get_Component<CTransform>();
 
@@ -163,6 +166,7 @@ void CCamera_Target::Focus_Monster(weak_ptr<CGameObject> _pMonster)
 
 void CCamera_Target::Release_Focus()
 {
+	m_bIsFocused = false;
 	m_pTargetMonster = weak_ptr<CGameObject>();
 	m_pTargetMonsterTransformCom = weak_ptr<CTransform>();
 
@@ -252,20 +256,28 @@ void CCamera_Target::Deactivate_Zoom()
 	m_fZoomTimeAcc = 0.f;
 }
 
-void CCamera_Target::Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime,_float fFrequency)
+void CCamera_Target::Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime,_float fFrequency, _float fDecreaseRatio)
 {
-	vShakingDir = XMVector3TransformNormal(vShakingDir, m_pTransformCom.lock()->Get_WorldMatrix());
-	vShakingDir = XMVector3Normalize(vShakingDir);
-	XMStoreFloat3(&m_vShakingDir, vShakingDir);
-	XMStoreFloat3(&m_vShakingEndOffSet, vShakingDir* fRatio);
+	if (0.5f < vShakingDir.m128_f32[3])
+		m_bRandomShaking = true;
+	else
+	{
+		vShakingDir = XMVector3TransformNormal(vShakingDir, m_pTransformCom.lock()->Get_WorldMatrix());
+		vShakingDir = XMVector3Normalize(vShakingDir);
+		XMStoreFloat3(&m_vShakingDir, vShakingDir);
+	}
+
 	m_vShakingStartOffSet = m_vShaking;
 	m_fShakingTime = fShakingTime;
 	m_fShakingFrequency = fFrequency;
 
 	m_fShakeRatio = fRatio;
+	m_fDecreaseRatio = fDecreaseRatio;
 	m_fShakingTimeAcc = 0.f;
 	m_fShakingQuarterFrequency = 0.f;
 	m_fShakingDecreaseTime = 0.f;
+
+	m_bRandomShaking = false;
 
 }
 
@@ -303,16 +315,21 @@ HRESULT CCamera_Target::Bind_PipeLine()
 void CCamera_Target::Look_At_Target(_float fTimeDelta)//타겟 고정
 {
 	_vector vPlayerPos = m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+	vPlayerPos.m128_f32[1] = 0.f;
 	_vector vTargetPos = m_pTargetMonsterTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-	_vector vLookDir = XMVector3Normalize(vTargetPos - vPlayerPos - XMVectorSet(0.f, 1.5f, 0.f, 0.f));
+	vTargetPos.m128_f32[1] = 0.f;
+	_vector vLookDir = XMVector3Normalize(vTargetPos - vPlayerPos);
 
 	_vector vRight = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLookDir);
 	_vector vUp = XMVector3Cross(vLookDir, vRight);
 
 	_matrix vLookTargetMatrix;
-	vLookTargetMatrix.r[0] = vRight;
-	vLookTargetMatrix.r[1] = vUp;
-	vLookTargetMatrix.r[2] = vLookDir;
+
+	_matrix RotationMatrix = XMMatrixRotationAxis(vRight, XMConvertToRadians(30.f));
+	
+	vLookTargetMatrix.r[0] = XMVector3TransformNormal(vRight,RotationMatrix);
+	vLookTargetMatrix.r[1] = XMVector3TransformNormal(vUp,RotationMatrix);
+	vLookTargetMatrix.r[2] = XMVector3TransformNormal(vLookDir,RotationMatrix);
 	vLookTargetMatrix.r[3] = vPlayerPos;
 
 	_vector vLookTargetQuaternion = XMQuaternionRotationMatrix(vLookTargetMatrix);
@@ -324,10 +341,12 @@ void CCamera_Target::Look_At_Target(_float fTimeDelta)//타겟 고정
 	_vector vLerpQuaternion = XMQuaternionSlerp(vCurCameraQuaternion, vLookTargetQuaternion, 2.f*fTimeDelta);
 
 	m_pTransformCom.lock()->Rotation_Quaternion(vLerpQuaternion);
+	
 }
 
 void CCamera_Target::Free_MouseMove(_float fTimeDelta)//마우스 움직임
 {
+	
 	_long		MouseMove = 0;
 
 	if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_X))
@@ -339,10 +358,23 @@ void CCamera_Target::Free_MouseMove(_float fTimeDelta)//마우스 움직임
 	{
 		m_iMouseMovementY += MouseMove;
 	}
-	if (fabs(m_iMouseMovementY) > DBL_EPSILON)
-		m_pTransformCom.lock()->Turn(m_pTransformCom.lock()->Get_State(CTransform::STATE_RIGHT), fTimeDelta * m_iMouseMovementY * 0.2f * 0.1f);
 
-	m_iMouseMovementY = _long(m_iMouseMovementY * 0.8f);
+	_matrix RotationMatrix = XMMatrixRotationAxis(m_pTransformCom.lock()->Get_State(CTransform::STATE_RIGHT), fTimeDelta * m_iMouseMovementY * 0.2f * 0.1f);
+	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+	vLook = XMVector3TransformNormal(vLook, RotationMatrix);
+
+	_vector vPlayerUp= m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_UP);
+	_float fDotValue = XMVector3Dot(vLook, vPlayerUp).m128_f32[0];
+	if (0.9f > fDotValue && -0.99f < fDotValue )
+	{
+		if (fabs(m_iMouseMovementY) > DBL_EPSILON)
+			m_pTransformCom.lock()->Turn(m_pTransformCom.lock()->Get_State(CTransform::STATE_RIGHT), fTimeDelta * m_iMouseMovementY * 0.2f * 0.1f);
+		m_iMouseMovementY = _long(m_iMouseMovementY * 0.8f);
+	}
+	else
+	{
+		m_iMouseMovementY = 0;
+	}
 
 	if (fabs(m_iMouseMovementX) > DBL_EPSILON)
 		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * 0.1f * m_iMouseMovementX * 0.2f);
@@ -382,12 +414,18 @@ void CCamera_Target::Calculate_ShakingOffSet(_float fTimeDelta)
 	if (m_fShakingTime > DBL_EPSILON)
 	{
 		_float fRadian = m_fShakingTimeAcc;
+		if (m_bRandomShaking)
+		{
+			m_vShakingDir = SMath::vRandom(_float3(-1.f, -1.f, -1.f), _float3(1.f, 1.f, 1.f));
+			XMStoreFloat3(&m_vShakingDir, XMVector3Normalize(XMLoadFloat3(&m_vShakingDir)));
+		}
+
 		XMStoreFloat3(&m_vShaking, sinf(fRadian * m_fShakingFrequency*XM_2PI) * m_fShakeRatio * XMLoadFloat3(&m_vShakingDir));
 
 		m_fShakingQuarterFrequency += fTimeDelta;
 		if (m_fShakingQuarterFrequency > 1/(m_fShakingFrequency)*0.5f)
 		{
-			m_fShakeRatio *= 0.5f;
+			m_fShakeRatio *= m_fDecreaseRatio;
 			m_fShakingQuarterFrequency = 0.f;
 		}
 		m_vShakingStartOffSet = m_vShaking;
@@ -405,41 +443,9 @@ void CCamera_Target::Calculate_ShakingOffSet(_float fTimeDelta)
 			//XMStoreFloat3(&m_vShaking, XMVectorLerp(XMLoadFloat3(&m_vShaking), XMVectorSet(0.f, 0.f, 0.f, 0.f), fTimeDelta*fTimeDelta));
 		}
 
-
+		m_bRandomShaking = false;
 	}
 
-	/*if (m_bIncreaseShake)
-	{
-		if (0.1f < m_fShakingTimeAcc)
-		{
-			m_bIncreaseShake = false;
-			m_bDecreaseShake = true;
-			m_vShakingStartOffSet = m_vShaking;
-			m_fShakingTimeAcc = 0.f;
-		}
-		else
-		{
-			_vector vStartPoint = XMLoadFloat3(&m_vShakingStartOffSet);
-			_vector vEndPoint = XMLoadFloat3(&m_vShakingEndOffSet);
-
-			XMStoreFloat3(&m_vShaking, CEasing_Utillity::CircOut(vStartPoint, vEndPoint, m_fShakingTimeAcc, 0.1f));
-		}
-	}
-	else if (m_bDecreaseShake)
-	{
-		if (0.7f < m_fShakingTimeAcc)
-		{
-			m_bDecreaseShake = false;
-			m_fShakingTimeAcc = 0.f;
-		}
-		else
-		{
-			_vector vStartPoint = XMLoadFloat3(&m_vShakingStartOffSet);
-			_vector vEndPoint = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-
-			XMStoreFloat3(&m_vShaking, CEasing_Utillity::CircOut(vStartPoint, vEndPoint, m_fShakingTimeAcc, 0.7f));
-		}
-	}*/
 
 }
 
@@ -474,7 +480,7 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 	}
 
 	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
-	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * ( - 2.5f + m_fZoom) + XMVectorSet(0.f, 1.1f, 0.f, 0.f) + XMLoadFloat3(&m_vShaking);
+	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * ( - 4.5f + m_fZoom) + XMVectorSet(0.f, 1.1f, 0.f, 0.f) + XMLoadFloat3(&m_vShaking);
 	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
 
 	_float3 vPitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(m_pTransformCom.lock()->Get_WorldMatrix()));

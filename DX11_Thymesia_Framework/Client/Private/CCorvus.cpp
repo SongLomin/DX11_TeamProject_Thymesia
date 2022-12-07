@@ -64,6 +64,7 @@ HRESULT CCorvus::Start()
 void CCorvus::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+	
 	this->RootMove();
 
 	// TODO : get rid of this

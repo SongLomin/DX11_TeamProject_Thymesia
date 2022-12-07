@@ -18,10 +18,8 @@ HRESULT CEffect_Trail_Distortion::Initialize_Prototype()
 HRESULT CEffect_Trail_Distortion::Initialize(void* pArg)//trail을 사용하는 객체로부터 traildesc를 받는다.
 {
 	__super::Initialize(pArg);
-
 	m_pNoiseTextureCom.lock()->Use_Texture(("UVNoise"));
 
-	m_pMaskTextureCom = Add_Component<CTexture>();
 	m_pMaskTextureCom.lock()->Use_Texture("UVMask");
 	return S_OK;
 }
@@ -53,12 +51,7 @@ HRESULT CEffect_Trail_Distortion::Render()
 
 void CEffect_Trail_Distortion::SetUp_ShaderResource()
 {
-	CallBack_Bind_SRV(m_pShaderCom, "");
-
-	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4));
-	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
-	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture", 8);
-	m_pMaskTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 39);
+	__super::SetUp_ShaderResource();
 
 	_float4 vColor = _float4(1.f, 1.f, 1.f, 1.f);
 

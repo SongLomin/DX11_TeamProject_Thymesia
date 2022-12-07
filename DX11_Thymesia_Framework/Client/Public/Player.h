@@ -46,6 +46,14 @@ public: /* For. Talent */
     _bool Get_LadderCheck() { return m_bLadderCheck; }
 
 public:
+    void Focus_Monster(weak_ptr<CGameObject> In_pMonster);
+    void Release_Focus();
+    _bool Get_Focused() const
+    {
+        return m_bIsFocused;
+    }
+
+public:
     void Set_DissolveAmount(const _int In_iDissolveMeshIndex, const _float In_fDissolveAmount, const _float3 In_vDissolveDir)
     {
         m_fDissolveAmount = In_fDissolveAmount;
@@ -53,9 +61,7 @@ public:
         m_vDissolveDir = In_vDissolveDir;
     }
 
-public:
-    void Search_NearTargetMonster(_float fTimeDelta);
-    void Forced_SearchNearTargetMonster();
+
 
 protected:
     virtual void SetUp_ShaderResource() override;
@@ -89,6 +95,12 @@ protected:
     _int m_iDissolveMeshIndex = -1;
     _float3 m_vDissolveDir = { 0.f,0.f,0.f };
     _uint m_iNumMeshContainers = 0;
+
+
+    weak_ptr<CGameObject> m_pMonster;
+    weak_ptr<CTransform> m_pMonsterTransform;
+    _bool               m_bIsFocused = false;
+
 
 private:
     _float              m_fNearSearchDelay = 0.f; 

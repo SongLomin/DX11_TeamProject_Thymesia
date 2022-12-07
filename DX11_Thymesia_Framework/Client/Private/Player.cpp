@@ -66,14 +66,6 @@ HRESULT CPlayer::Start()
 {
 
     __super::Start();
-
-#pragma region DummyMonsterSetting
-
-    Search_NearTargetMonster(100.f);
-
-#pragma endregion
-    
-    
     
 
     return S_OK;
@@ -82,7 +74,8 @@ HRESULT CPlayer::Start()
 void CPlayer::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
- 
+    //if (m_bIsFocused)
+    //    Look_At_Mosnter();
 
     if(m_pCurState.lock())
         m_pCurState.lock()->Tick(fTimeDelta);
@@ -165,55 +158,23 @@ _flag CPlayer::Check_RequirementForTalentEffects()
 }
 
 
-
-void CPlayer::Search_NearTargetMonster(_float fTimeDelta)
+void CPlayer::Focus_Monster(weak_ptr<CGameObject> In_pMonster)
 {
-    if (m_fNearSearchDelay > 0.f)
-    {
-        m_fNearSearchDelay -= fTimeDelta;
+    if (!In_pMonster.lock())
         return;
-    }
 
-    //가장 가까운 몬스터 탐색
-    Forced_SearchNearTargetMonster();
+    m_bIsFocused = true;
+    m_pMonster = In_pMonster;
+    m_pMonsterTransform = In_pMonster.lock()->Get_Component<CTransform>();
 }
 
-void CPlayer::Forced_SearchNearTargetMonster()
+void CPlayer::Release_Focus()
 {
-    m_fNearSearchDelay = 2.f;
-
-    list<weak_ptr<CGameObject>> pMonsters = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::MONSTER);
-
-    if (pMonsters.empty())
-    {
-        return;
-    }
-
-    _vector vMyPosition = Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
-    _vector vMonsterPosition;
-    weak_ptr<CGameObject> pTargetMonster = pMonsters.front();
-    _float fMinDistance = 99999.f;
-    _float fDistance = 0.f;
-
-    for (auto& elem : pMonsters)
-    {
-        if (!elem.lock())
-        {
-            continue;
-        }
-
-        vMonsterPosition = elem.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
-        fDistance = XMVector3Length(vMonsterPosition - vMyPosition).m128_f32[0];
-
-        if (fDistance < fMinDistance)
-        {
-            pTargetMonster = elem;
-            fMinDistance = fDistance;
-        }
-    }
-
-    Set_TargetMonster(Weak_Cast<CMonster>(pTargetMonster));
+    m_bIsFocused = false;
+    m_pMonster = weak_ptr<CGameObject>();
+    m_pMonsterTransform = weak_ptr<CTransform>();
 }
+
 
 void CPlayer::Set_TargetMonster(weak_ptr<CMonster> In_pMonster)
 {
@@ -293,6 +254,7 @@ void CPlayer::Set_CollisionObjectFlag(const _flag In_CollisionObjectFlags, const
         m_CollisionObjectFlags &= ~In_CollisionObjectFlags;
     }
 }
+
 
 void CPlayer::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {

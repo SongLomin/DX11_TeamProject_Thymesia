@@ -210,7 +210,7 @@ weak_ptr<CCamera_Target> CGameManager::Get_TargetCamera()
 	return m_pTargetCamera;
 }
 
-void CGameManager::Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime,_float fFrequency)
+void CGameManager::Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime,_float fFrequency, _float fDecreaseRatio)
 {
 	if (m_pTargetCamera.lock().get() != m_pCurrentCamera.lock().get())
 	{
@@ -220,7 +220,7 @@ void CGameManager::Add_Shaking(_vector vShakingDir, _float fRatio, _float fShaki
 	if (!m_pTargetCamera.lock())
 		DEBUG_ASSERT;
 
-	m_pTargetCamera.lock()->Add_Shaking(vShakingDir, fRatio, fShakingTime, fFrequency);
+	m_pTargetCamera.lock()->Add_Shaking(vShakingDir, fRatio, fShakingTime, fFrequency, fDecreaseRatio);
 	
 
 }
@@ -229,16 +229,19 @@ void CGameManager::Focus_Monster()
 {
 //Å¸°Ù Ã£°í
 //
-	weak_ptr<CGameObject> pTargetMonster = Get_Layer(OBJECT_LAYER::MONSTER).front();
+	m_pTargetMonster = Forced_SearchNearTargetMonster();
+	if (!m_pTargetMonster.lock())
+		return;
 
-	m_pTargetMonster = Weak_StaticCast<CMonster>(pTargetMonster);
 
-	m_pTargetCamera.lock()->Focus_Monster(pTargetMonster);
+	m_pTargetCamera.lock()->Focus_Monster(m_pTargetMonster);
+	m_pCurrentPlayer.lock()->Focus_Monster(m_pTargetMonster);
 }
 
 void CGameManager::Release_Focus()
 {
 	m_pTargetCamera.lock()->Release_Focus();
+	m_pCurrentPlayer.lock()->Release_Focus();
 }
 
 weak_ptr<CMonster> CGameManager::Get_TargetMonster()
@@ -337,6 +340,63 @@ void CGameManager::Enable_WeaponFromEvent(weak_ptr<CTransform> pParentTransformC
 {
 	weak_ptr<CCharacter> pCharacter = Weak_Cast<CCharacter>(pParentTransformCom.lock()->Get_Owner());
 	pCharacter.lock()->Enable_Weapons(In_bEnable);
+}
+
+
+weak_ptr<CMonster> CGameManager::Forced_SearchNearTargetMonster()
+{
+	list<weak_ptr<CGameObject>> pMonsters =Get_Layer(OBJECT_LAYER::MONSTER);
+
+	if (pMonsters.empty())
+	{
+		return weak_ptr<CMonster>();
+	}
+
+
+	for (auto iter = pMonsters.begin(); iter != pMonsters.end();)
+	{
+		_vector vMonsterPosition = iter->lock()->Get_Transform()->Get_Position();
+
+		if (!GAMEINSTANCE->isIn_Frustum_InWorldSpace(vMonsterPosition, 5.f))
+		{
+			iter = pMonsters.erase(iter);
+		}
+		else
+			++iter;
+	}
+
+	if (pMonsters.empty())
+	{
+		return weak_ptr<CMonster>();
+	}
+
+	_vector vMyPosition =m_pCurrentPlayer.lock()->Get_Transform()->Get_Position();
+
+	_vector vMonsterPosition;
+	weak_ptr<CGameObject> pTargetMonster = pMonsters.front();
+	_float fMinDistance = 99999.f;
+	_float fDistance = 0.f;
+
+
+
+	for (auto& elem : pMonsters)
+	{
+		if (!elem.lock())
+		{
+			continue;
+		}
+
+		vMonsterPosition = elem.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
+		fDistance = XMVector3Length(vMonsterPosition - vMyPosition).m128_f32[0];
+
+		if (fDistance < fMinDistance)
+		{
+			pTargetMonster = elem;
+			fMinDistance = fDistance;
+		}
+	}
+
+	return Weak_Cast<CMonster>(pTargetMonster);
 }
 
 void CGameManager::Load_AllKeyEventFromJson()

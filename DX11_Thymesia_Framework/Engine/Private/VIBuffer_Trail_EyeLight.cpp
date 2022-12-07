@@ -211,8 +211,8 @@ void CVIBuffer_Trail_EyeLight::Update(_float _fTimeDelta, weak_ptr <CTransform> 
 #pragma endregion CatMullRom
     for (_uint i = 0; i < m_iVtxCnt; i += 2)
     {
-        ((VTXTEX*)tSubResource.pData)[i].vTexUV = _float2(_float(i) / _float(m_iVtxCnt - 2.f), 0.f);
-        ((VTXTEX*)tSubResource.pData)[i + 1].vTexUV = _float2(_float(i) / _float(m_iVtxCnt - 2.f), 1.f);
+        ((VTXTEX*)tSubResource.pData)[i].vTexUV = _float2(_float(i) / _float(m_iVtxCnt - 2.f), 1.f);
+        ((VTXTEX*)tSubResource.pData)[i + 1].vTexUV = _float2(_float(i) / _float(m_iVtxCnt - 2.f), 0.f);
     }
     
     DEVICECONTEXT->Unmap(m_pVB.Get(), 0);

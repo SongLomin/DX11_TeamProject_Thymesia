@@ -78,6 +78,14 @@ _bool CAIStateBase::Check_RequirementCoolDown(weak_ptr<CAIStateBase> pTargetStat
 	return false;
 }
 
+_bool CAIStateBase::Check_RequirementIsTargeted()
+{
+	if (GET_SINGLE(CGameManager)->Get_TargetMonster().lock() == m_pOwner.lock())
+		return true;
+
+	return false;
+}
+
 
 
 

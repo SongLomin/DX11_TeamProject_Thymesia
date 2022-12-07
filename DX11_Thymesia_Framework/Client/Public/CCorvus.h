@@ -41,6 +41,10 @@ private:
     void Free();
 
 private:
+    void Look_At_Mosnter();
+
+    //TODO¿”Ω√
+private:
     weak_ptr<CTalent_Sword>  m_pSword;
     _uint                    m_iContainerIndex = 0;
 

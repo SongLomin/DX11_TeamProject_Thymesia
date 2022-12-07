@@ -26,8 +26,8 @@ HRESULT CCorvus_DefaultDagger::Initialize(void* pArg)
 	ZeroMemory(&TrailDesc, sizeof(TRAIL_DESC));
 
 	TrailDesc.iMaxCnt = 240;
-	TrailDesc.vPos_0 = _float3(0.f, 1.f, 0.f);
-	TrailDesc.vPos_1 = _float3(0.f, -0.3f, 0.f);
+	TrailDesc.vPos_0 = _float3(0.f, 0.f, 0.f);
+	TrailDesc.vPos_1 = _float3(0.5f, 0.f, 0.f);
 	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail_EyeLight>(LEVEL_GAMEPLAY, &TrailDesc);
 #endif // _DAGGER_TRAIL_
 	return S_OK;
@@ -38,7 +38,7 @@ HRESULT CCorvus_DefaultDagger::Start()
 	__super::Start();
 
 #ifdef _DAGGER_TRAIL_
-	m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
+	//m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
 #endif // _DAGGER_TRAIL_
 
 	return S_OK;
@@ -48,6 +48,9 @@ void CCorvus_DefaultDagger::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+#ifdef _DAGGER_TRAIL_
+	m_pTrailEffect.lock()->Update(fTimeDelta, m_pTransformCom, weak_ptr<CBoneNode>(), m_pModelCom.lock()->Get_ModelData());
+#endif // _DAGGER_TRAIL_
 }
 
 void CCorvus_DefaultDagger::LateTick(_float fTimeDelta)
@@ -61,6 +64,15 @@ HRESULT CCorvus_DefaultDagger::Render()
 
 	return S_OK;
 }
+_bool CCorvus_DefaultDagger::Set_TrailEnable(const _bool In_bEnable)
+{
+	if (!m_pTrailEffect.lock())
+		return false;
+
+	return m_pTrailEffect.lock()->Set_Enable(In_bEnable);
+
+}
+
 void CCorvus_DefaultDagger::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
