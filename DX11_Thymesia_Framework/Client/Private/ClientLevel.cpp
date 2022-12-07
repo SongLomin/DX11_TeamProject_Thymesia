@@ -30,6 +30,9 @@
 #include "UI_ScriptQueue.h"
 #include "UI_DamageFont.h"
 #include "TestUI.h"
+#include "UI_EvolveMenu_SelectDecoration.h"
+
+
 
 GAMECLASS_C(CClientLevel)
 
@@ -120,8 +123,7 @@ void CClientLevel::SetUp_UI()
 
 #ifdef _ONLY_UI_
 
-	GAMEINSTANCE->Add_GameObject<CTestUI>(LEVEL_STATIC);
-
+	//GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu_SelectDecoration>(LEVEL_STATIC);
 
 #endif
 

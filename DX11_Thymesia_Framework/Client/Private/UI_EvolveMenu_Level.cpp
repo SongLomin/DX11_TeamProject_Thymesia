@@ -8,7 +8,7 @@
 #include "EasingTransform.h"
 #include "State_Player.h"
 #include "Player.h"
-
+#include "UI_EvolveMenu_Level_BG.h"
 
 GAMECLASS_C(CUI_EvolveMenu_Level)
 CLONE_C(CUI_EvolveMenu_Level, CGameObject)
@@ -184,9 +184,9 @@ void CUI_EvolveMenu_Level::Create_Background()
     m_pPauseMenuBackground.lock()->Set_Texture("PauseMenu_Background0");
     m_pPauseMenuBackground.lock()->Set_Depth(0.9f);
 
-    m_pPauseMenuBackground_Main = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
-    m_pPauseMenuBackground_Main.lock()->Set_Texture("PauseMenu_Background1");
-    m_pPauseMenuBackground_Main.lock()->Set_Depth(0.8f);
+    m_pPauseMenuBackground_Main = GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu_Level_BG>(LEVEL_STATIC);
+    //m_pPauseMenuBackground_Main.lock()->Set_Texture("PauseMenu_Background1");
+
 
     m_pPauseMenuBackground_Top = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
     m_pPauseMenuBackground_Top.lock()->Set_Texture("PauseMenu_Background3");
@@ -979,20 +979,20 @@ void CUI_EvolveMenu_Level::ChangeSelectedIndex()
     {
     case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::STR:
         m_pHighlight.lock()->Set_UIPosition(231.f, 465.f, ALIGN_LEFTTOP);
-        m_pStatusArrowLeft.lock()->Set_UIPosition(673.f, 465.f, ALIGN_LEFTTOP);
-        m_pStatusArrowRight.lock()->Set_UIPosition(757.f,465.f, ALIGN_LEFTTOP);
+        m_pStatusArrowLeft.lock()->Set_UIPosition(680.f, 465.f, ALIGN_LEFTTOP);
+        m_pStatusArrowRight.lock()->Set_UIPosition(750.f,465.f, ALIGN_LEFTTOP);
 
         break;  
     case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::VIT:
         m_pHighlight.lock()->Set_UIPosition(231.f, 542.f, ALIGN_LEFTTOP);
-        m_pStatusArrowLeft.lock()->Set_UIPosition(673., 541.f, ALIGN_LEFTTOP);
-        m_pStatusArrowRight.lock()->Set_UIPosition(757.f, 541.f, ALIGN_LEFTTOP);
+        m_pStatusArrowLeft.lock()->Set_UIPosition(680., 541.f, ALIGN_LEFTTOP);
+        m_pStatusArrowRight.lock()->Set_UIPosition(750.f, 541.f, ALIGN_LEFTTOP);
 
         break;
     case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::PLA:
         m_pHighlight.lock()->Set_UIPosition(231.f, 619.f, ALIGN_LEFTTOP);
-        m_pStatusArrowLeft.lock()->Set_UIPosition(673.f, 618.f, ALIGN_LEFTTOP);
-        m_pStatusArrowRight.lock()->Set_UIPosition(757.f, 618.f, ALIGN_LEFTTOP);
+        m_pStatusArrowLeft.lock()->Set_UIPosition(680.f, 618.f, ALIGN_LEFTTOP);
+        m_pStatusArrowRight.lock()->Set_UIPosition(750.f, 618.f, ALIGN_LEFTTOP);
 
         break;
     case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::APPLY:
@@ -1098,10 +1098,10 @@ void CUI_EvolveMenu_Level::TickReconfirmWindow()
             if (m_iReconfirmWindowIndex == (_uint)LEVEL_RECONFIRM_TYPE::YES)
             {
                 m_tOriginStatus = m_tChangeStatus;
-
+#ifndef _ONLY_UI_
                 GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Status().lock()
                     ->Set_Desc(&m_tChangeStatus);
-
+#endif
             }
             m_iReconfirmWindowIndex = 0;
             m_bOpenableReconfirmWindow = true;

@@ -937,6 +937,9 @@
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\VargWeapon.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_Level_BG.h" />
+    <ClInclude Include="..\Public\UI_EvolveLeftBG.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_SelectDecoration.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV1.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV2.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidThrustLV2.h" />
@@ -1929,6 +1932,9 @@
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\VargWeapon.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_Level_BG.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveLeftBG.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_SelectDecoration.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV1.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV2.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidThrustLV2.cpp" />
@@ -2924,6 +2930,15 @@
     </Filter>
     <Filter Include="95. Utils\EasingTranform">
       <UniqueIdentifier>{fefbb47b-bd98-4a8a-9ebf-0887800940dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\99. JoJoParticleShaderManager">
+      <UniqueIdentifier>{56e52612-b0d5-4d2d-bb49-ef2395eaece2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\UI_Container\Evolve\LeftBG">
+      <UniqueIdentifier>{86c0985d-b72f-4d0e-816d-0fcad76a7fd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\UI_Container\Evolve\EvolveSelectDecoration">
+      <UniqueIdentifier>{1b35a49e-b905-4cf0-88a7-340bc6369283}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

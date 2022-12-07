@@ -9,11 +9,11 @@ END
 
 BEGIN(Client)
 
-class CUI_EvolveMenu_Level_BG : public CCustomUI
+class CUI_EvolveLeftBG: public CCustomUI
 {
 public:
-	GAMECLASS_H(CUI_EvolveMenu_Level_BG)
-	CLONE_H(CUI_EvolveMenu_Level_BG, CGameObject)
+	GAMECLASS_H(CUI_EvolveLeftBG)
+		CLONE_H(CUI_EvolveLeftBG, CGameObject)
 
 public:
 	virtual HRESULT Initialize(void* pArg);
@@ -28,11 +28,12 @@ private:
 
 private:
 	weak_ptr<CTexture>	m_pUVAnimMask;
-	weak_ptr<CTexture>	m_pSrcTexture;
 
 
 	_float2				m_fUVOffset;
 	_float				m_fUVOffsetAmount;
+
+	_float2				m_fNoneAnimRatio;
 
 protected:
 	virtual HRESULT SetUp_ShaderResource() override;

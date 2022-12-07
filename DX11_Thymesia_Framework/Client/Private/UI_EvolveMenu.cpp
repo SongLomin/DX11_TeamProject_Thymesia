@@ -7,6 +7,8 @@
 #include "FadeMask.h"
 #include "UI_EvolveMenu_Level.h"
 #include "UI_EvolveMenu_Talent.h"
+#include "UI_EvolveLeftBG.h"
+#include "UI_EvolveMenu_SelectDecoration.h"
 
 GAMECLASS_C(CUI_EvolveMenu)
 CLONE_C(CUI_EvolveMenu, CGameObject)
@@ -35,10 +37,9 @@ HRESULT CUI_EvolveMenu::Initialize(void* pArg)
 
 	//Left
 
-	m_pLeftBG = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
+	m_pLeftBG = GAMEINSTANCE->Add_GameObject<CUI_EvolveLeftBG>(LEVEL_STATIC);
 	m_pLeftBG.lock()->Set_UIPosition(223.f, 150.f + (g_iWinCY / 2.f), 480.f, 1200.f);
 	m_pLeftBG.lock()->Set_Depth(0.3f);
-	m_pLeftBG.lock()->Set_Texture("EvolveMenu_LeftBG");
 	Add_Child(m_pLeftBG);
 
 
@@ -48,6 +49,11 @@ HRESULT CUI_EvolveMenu::Initialize(void* pArg)
 	m_pSelectHighlight.lock()->Set_Texture("EvolveMenu_Text_SelectHighlight");
 	Add_Child(m_pSelectHighlight);
 	
+
+	m_pLeftSelectDecoration = GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu_SelectDecoration>(LEVEL_STATIC);
+	m_pLeftSelectDecoration.lock()->Set_Depth(0.0f);
+	Add_Child(m_pLeftSelectDecoration);
+
 
 	m_pMenuTitleBG = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
 	m_pMenuTitleBG.lock()->Set_UIPosition((465 * 0.5f), 106.f, 465.f, 62.f);
@@ -145,9 +151,6 @@ HRESULT CUI_EvolveMenu::Initialize(void* pArg)
 	Add_Child(m_pQuestInformationsDecoration);
 
 	
-
-
-
 	SetUpFromCurrentLevel();
 
 
@@ -180,8 +183,7 @@ HRESULT CUI_EvolveMenu::Initialize(void* pArg)
 	}
 #pragma endregion CREATE_TEXTUI
 
-
-	ChangeButtonIndex();
+	
 	SetUpFromCurrentLevel();
 	m_bEnabledThisFrame = false;
 
@@ -217,7 +219,7 @@ void CUI_EvolveMenu::Tick(_float fTimeDelta)
 
 
 	m_bEnabledThisFrame = false;
-	ChangeButtonIndex();
+	
 }
 
 void CUI_EvolveMenu::LateTick(_float fTimeDelta)
@@ -236,7 +238,7 @@ void CUI_EvolveMenu::OnEnable(void* _Arg)
 		m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
 	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
-
+	ChangeButtonIndex();
 
 }
 
@@ -265,8 +267,6 @@ void CUI_EvolveMenu::Call_ChangeUI_EvolveMenu_Talent()
 	GAMEINSTANCE->Get_GameObjects<CUI_EveolveMenu_Talent>(LEVEL_STATIC).front().lock()->Set_Enable(true);
 }
 
-
-
 void CUI_EvolveMenu::Free()
 {
 }
@@ -274,8 +274,19 @@ void CUI_EvolveMenu::Free()
 void CUI_EvolveMenu::ChangeButtonIndex()
 {
 	m_pSelectHighlight.lock()->Set_Y(m_pMenuText[m_iSelectedIndex].lock()->Get_UIDESC().fY);
+	m_pLeftSelectDecoration.lock()->Start_Animation();
 
 
+	_float2		fDecorationPos;
+
+
+	fDecorationPos = m_pSelectHighlight.lock()->Get_Point(UI_POINT::LEFT);
+
+	m_pLeftSelectDecoration.lock()->Set_UIPosition
+	(
+		fDecorationPos.x + 32.f,
+		fDecorationPos.y
+	);
 	for (_uint i = 0; i < (_uint)EVOLVEMENU_TYPE::EVOLVE_END; i++)
 	{
 		if (i == m_iSelectedIndex)
@@ -283,13 +294,11 @@ void CUI_EvolveMenu::ChangeButtonIndex()
 		else
 			m_pMenuText[i].lock()->Set_AlphaColor(0.4f);
 	}
-
 }
 void CUI_EvolveMenu::SetUpFromCurrentLevel()
 {
 	//82
 	m_eLastOpenedLevel = Weak_StaticCast<CClientLevel>(GAMEINSTANCE->Get_CurrentLevel()).lock()->Get_MyLevel();
-
 
 	UI_DESC		tRightBGDesc = m_pRightBG.lock()->Get_UIDESC();
 
