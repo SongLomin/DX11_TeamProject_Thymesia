@@ -510,7 +510,7 @@ HRESULT CRender_Manager::Add_RedialBlur(const _float In_fRadialBlurStrength)
 	return S_OK;
 }
 
-HRESULT CRender_Manager::Set_LiftGammaGain(const _float3 In_vLift, const _float3 In_vGamma, const _float3 In_vGain)
+HRESULT CRender_Manager::Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain)
 {
 	m_vLift = In_vLift;
 	m_vGamma = In_vGamma;
@@ -1432,8 +1432,10 @@ HRESULT CRender_Manager::PostProcessing()
 	shared_ptr<CPipeLine> pPipeLine = GET_SINGLE(CPipeLine);
 
 	_float4x4		ViewMatrixInv, ProjMatrixInv,ViewMatrix,ProjMatrix;
+	_matrix			CamViewMatrix= pPipeLine->Get_Transform(CPipeLine::D3DTS_VIEW);
 
-	XMStoreFloat4x4(&ViewMatrixInv, XMMatrixTranspose(XMMatrixInverse(nullptr, pPipeLine->Get_Transform(CPipeLine::D3DTS_VIEW))));
+
+	XMStoreFloat4x4(&ViewMatrixInv, XMMatrixTranspose(XMMatrixInverse(nullptr, CamViewMatrix)));
 	XMStoreFloat4x4(&ProjMatrixInv, XMMatrixTranspose(XMMatrixInverse(nullptr, pPipeLine->Get_Transform(CPipeLine::D3DTS_PROJ))));
 
 	ProjMatrix = *pPipeLine->Get_Transform_TP(CPipeLine::D3DTS_PROJ);
@@ -1446,6 +1448,12 @@ HRESULT CRender_Manager::PostProcessing()
 
 	m_pPostProcessingShader->Set_RawValue("g_vCamPosition", &ViewMatrixInv.m[3],sizeof(_float4));
 
+	m_pPostProcessingShader->Set_RawValue("g_vLift", &m_vLift, sizeof(_float4));
+	m_pPostProcessingShader->Set_RawValue("g_vGamma", &m_vGamma, sizeof(_float4));
+	m_pPostProcessingShader->Set_RawValue("g_vGain", &m_vGain, sizeof(_float4));
+
+	m_pPostProcessingShader->Set_RawValue("g_fRadialBlurStrength", &m_fRadialBlurStrength, sizeof(_float));
+
 	
 	_float fLerpValue = 0.f;
 	if (0.f < m_fChromaticStrengthAcc)
@@ -1456,11 +1464,16 @@ HRESULT CRender_Manager::PostProcessing()
 	}
 	
 
-	m_pPostProcessingShader->Set_RawValue("g_BlurStrength", &fLerpValue, sizeof(_float));//chromatic 전용
+	m_pPostProcessingShader->Set_RawValue("g_fChromaticStrength", &fLerpValue, sizeof(_float));//chromatic 전용
 
+	m_pPostProcessingShader->Set_RawValue("g_fMotionBlurStrength", &m_fBlurWitdh, sizeof(_float));//MotionBlur 전용
 	m_pPostProcessingShader->Set_RawValue("g_PreCamViewMatrix", &XMMatrixTranspose(XMLoadFloat4x4(&pPipeLine->Get_PreViewMatrix())), sizeof(_float4x4));
 
-	for (_int i = 0; i < 3; ++i)
+	m_pPostProcessingShader->Set_RawValue("g_vBlurWorldPosition", &m_vRadialBlurWorldPos, sizeof(_float3));//RadialBlur 전용
+	m_pPostProcessingShader->Set_RawValue("g_CameraViewMatrix", &XMMatrixTranspose(CamViewMatrix), sizeof(_float4x4));//RadialBlur 전용
+
+
+	for (_int i = 0; i < 4; ++i)
 	{
 		Bake_OriginalRenderTexture();
 		if (FAILED(m_pPostProcessingShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")))))

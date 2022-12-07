@@ -26,7 +26,7 @@ public:
 	HRESULT Add_Chromatic(const _float In_fChormaticStrangth);
 	HRESULT Set_RadialBlur(const _float In_fRadialBlurStength, _float3 In_vBlurWorldPosition);
 	HRESULT Add_RedialBlur(const _float In_fRadialBlurStrength);
-	HRESULT Set_LiftGammaGain(const _float3 In_vLift, const _float3 In_vGamma, const _float3 In_vGain);
+	HRESULT Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain);
 	
 
 	HRESULT	Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt);
@@ -105,6 +105,7 @@ private:
 
 private:
 	_float		m_fBlurWitdh = 0.f;
+
 	_float		m_fChromaticStrengthAcc = 0.f;
 	_float		m_fChromaticStrangth = 0.f;
 
@@ -112,9 +113,9 @@ private:
 	_float3		m_vRadialBlurWorldPos = { 0.f,0.f,0.f };
 	_bool		m_bFirst = true;
 
-	_float3		m_vLift;
-	_float3		m_vGamma;
-	_float3		m_vGain;
+	_float4		m_vLift = { 1.f, 1.f, 0.9f, 1.f };
+	_float4		m_vGamma = { 1.f, 1.f, 1.2f, 1.f };
+	_float4		m_vGain = { 1.f,1.f,1.f,1.f };
 
 public:
 	virtual void OnDestroy() override;

@@ -13,15 +13,18 @@ vector		g_vAngularVelocity;
 
 texture2D	g_DepthTexture;
 texture2D	g_OriginalRenderTexture;
+//Chromatic
+float		g_fChromaticStrength = 0.f;
+
 //MotionBlur
-float		g_BlurStrength = 0.1f;
+float		g_fMotionBlurStrength = 0.f;
 
 //RadialBlur
 float3		g_vBlurWorldPosition;
-float		g_fBlurWidth;
+float		g_fRadialBlurStrength;
 matrix		g_CameraViewMatrix;
 //liftgammaain
-float3 g_vLift, g_vGamma, g_vGain;
+vector g_vLift, g_vGamma, g_vGain;
 
 static const float BlurWeights[13] =
 {
@@ -112,7 +115,7 @@ PS_OUT PS_MAIN_MOTION_BLUR(PS_IN In)
 
 	for (int i = -5; i < 5; ++i)
 	{
-        texCoord += vPixelVelocity * 0.001f * i;
+        texCoord += vPixelVelocity * (0.001f + g_fMotionBlurStrength) * i;
 		float4 currentColor = g_OriginalRenderTexture.Sample(ClampSampler, texCoord);
 		vColor += currentColor;
 	}
@@ -133,8 +136,8 @@ PS_OUT PS_MAIN_CHROMATIC(PS_IN In)
 	vector vColor;
 
 	vColor.r = g_OriginalRenderTexture.Sample(ClampSampler, In.vTexUV).r;
-	vColor.g = g_OriginalRenderTexture.Sample(ClampSampler, In.vTexUV - BlurDir * g_BlurStrength * 0.5f).g;
-	vColor.b = g_OriginalRenderTexture.Sample(ClampSampler, In.vTexUV - BlurDir* g_BlurStrength).b;
+    vColor.g = g_OriginalRenderTexture.Sample(ClampSampler, In.vTexUV - BlurDir * g_fChromaticStrength * 0.5f).g;
+    vColor.b = g_OriginalRenderTexture.Sample(ClampSampler, In.vTexUV - BlurDir * g_fChromaticStrength).b;
 
 	//vColor *= (1.0 - g_BlurStrength * 0.5); //안해주면 그냥 밝아짐
 
@@ -150,16 +153,16 @@ PS_OUT PS_MAIN_LIFTGAMMAGAIN(PS_IN In)
     vector vColor = g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV);
 	
 	//Lift
-    vector vLift = vector(1.f, 1.f, 0.9f, 1.f);
+    vector vLift = g_vLift;
     vColor = vColor * (1.5f - 0.5f * vLift) + 0.5f * vLift - 0.5f;
     vColor = saturate(vColor); //isn't strictly necessary, but doesn't cost performance.
 	
 	//Gain = 1.f <- 임시
 	//vector vGain = vector(1.f,1.f,1.f,1.f,);
-    vColor *= 1.f;
+    vColor *= g_vGain;
 	
 	                              //Gamma =1.3f <- 임시
-    vector vGamma = vector(1.f, 1.f, 1.2f, 1.f);
+    vector vGamma = g_vGamma;
     Out.vColor = pow(vColor, 1.0 / vGamma); //Gamma
 
     return Out;
@@ -184,7 +187,7 @@ PS_OUT PS_MAIN_RADIALBLUR(PS_IN In)
 
     In.vTexUV.xy -= center;
 
-    float fPrecompute = g_fBlurWidth * (1.0f / 19.f);
+    float fPrecompute = g_fRadialBlurStrength * (1.0f / 19.f);
 
     for (uint i = 0; i < 20; ++i)
     {
