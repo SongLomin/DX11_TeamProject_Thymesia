@@ -28,6 +28,8 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
 
+
+
 	// Corvus_SD_Ladder_Climb_R_UP_End_Reverse
 	m_pModelCom.lock()->Add_ReverseAnimation(m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_Ladder_Climb_R_UP_End"), (_uint)TIMESCALE_LAYER::PLAYER);
 	// Corvus_SD_Ladder_Climb_L_UP_End_Reverse
@@ -54,6 +56,8 @@ HRESULT CCorvus::Initialize(void* pArg)
 		"Corvus_PassiveFeather",
 		GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_PassiveFeather", m_pTransformCom, (_uint)TIMESCALE_LAYER::PLAYER)
 	});
+
+	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
 #endif // _CORVUS_EFFECT_
 	return S_OK;

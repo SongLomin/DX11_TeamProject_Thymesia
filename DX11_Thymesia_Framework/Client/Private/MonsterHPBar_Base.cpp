@@ -332,6 +332,17 @@ void CMonsterHPBar_Base::Call_Restart()
 	m_pGreen.lock()->Set_Ratio(pStatus_Monster.lock()->Get_GreenRatio());
 }
 
+void CMonsterHPBar_Base::OnEnable(void* pArg)
+{
+	if (!m_pOwner.lock())
+		return;
+
+	if (false == m_pOwner.lock()->Get_Enable())
+		return;
+
+	__super::OnEnable(pArg);
+}
+
 void CMonsterHPBar_Base::OnDisable()
 {
 	__super::OnDisable();

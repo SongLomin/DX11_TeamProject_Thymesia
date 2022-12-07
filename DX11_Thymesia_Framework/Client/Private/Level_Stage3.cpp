@@ -43,6 +43,9 @@ HRESULT CLevel_Stage3::Initialize()
 
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
+	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_GAMEPLAY);
+	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
+
 
 	FaderDesc tFaderDesc;
 	tFaderDesc.eFaderType = FADER_TYPE::FADER_IN;

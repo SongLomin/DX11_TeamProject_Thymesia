@@ -208,12 +208,14 @@ PS_OUT PS_MAIN_NORMAL_MASKING(PS_IN_NORMAL In)
 
 	vPixelNormal = mul(vPixelNormal, WorldMatrix);
 
+	if (Out.vDiffuse.a < 0.1f)
+		discard;
+
 	Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
-
-	if (Out.vDiffuse.a < 0.1f)
-		discard;
+	Out.vDiffuse.a = 1.f;
+	
 
 	return Out;
 }

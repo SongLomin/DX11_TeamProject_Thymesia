@@ -57,12 +57,12 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     }
 
     // TODO : change animation speed here
-    MACRO("Corvus_SD_LAttack1", 2.5f);
-    MACRO("Corvus_SD_LAttack2", 2.5f);
-    MACRO("Corvus_SD_LAttack3_New", 2.5f);
-    MACRO("Corvus_SD1_ParryL_NEW", 4.f);
-    MACRO("Corvus_SD1_ParryR_NEW", 4.f);
-    MACRO("Corvus_VSVarg_TakeSPAttack", 1.853f);
+   SET_ANIM_SPEED("Corvus_SD_LAttack1", 2.5f);
+   SET_ANIM_SPEED("Corvus_SD_LAttack2", 2.5f);
+   SET_ANIM_SPEED("Corvus_SD_LAttack3_New", 2.5f);
+   SET_ANIM_SPEED("Corvus_SD1_ParryL_NEW", 4.f);
+   SET_ANIM_SPEED("Corvus_SD1_ParryR_NEW", 4.f);
+   SET_ANIM_SPEED("Corvus_VSVarg_TakeSPAttack", 1.853f);
 
 	SET_ANIM_SPEED("Corvus_Raven_ClawLong_L01", 2.f);
 	SET_ANIM_SPEED("Corvus_Raven_ClawLong_L02", 2.f);
@@ -101,11 +101,13 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 	SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_R_Down", 2.f);
 
 
-    MACRO("SK_C_Varg.ao|Varg_Seq_BossFightStart", 5.5f);
-    MACRO("SK_C_Varg.ao|Varg_SPAttack1_Catch", 2.306f);
-    MACRO("SK_C_Varg.ao|Varg_ComboAttack1_1", 1.25f);
-    MACRO("SK_C_Varg.ao|Varg_ComboAttack1_2", 1.25f);
-    MACRO("SK_C_Varg.ao|Varg_ComboAttack1_3", 1.25f);
+	SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 3.f);
+
+    // SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Seq_BossFightStart", 5.5f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Catch", 2.306f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_1", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_2", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_3", 1.25f);
 
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_1", 2.5f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_2", 2.5f);

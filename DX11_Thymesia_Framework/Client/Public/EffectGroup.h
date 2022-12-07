@@ -44,8 +44,8 @@ public:
     void Add_EditParticle(const _char* In_szName, const _char* In_szTextureKey);
     void ReBake_EditParticle();
 
-    void Add_EffectMesh();
-    void Add_Particle();
+    void Add_EffectMesh(const _uint iLevelIndex);
+    void Add_Particle(const _uint iLevelIndex);
 
 
     void Remove_EffectMesh(weak_ptr<CCustomEffectMesh> pEffectMesh);

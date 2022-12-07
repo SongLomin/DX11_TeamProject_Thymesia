@@ -169,7 +169,7 @@ _bool CUI_Loading::Get_Finish()
 	{
 		if (KEY_INPUT(KEY::ENTER, KEY_STATE::TAP) && !m_bIsChangeLevel)
 		{
-			GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::BATTLEUI);
+			//GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::BATTLEUI);
 
 			m_bIsChangeLevel = true;
 			FaderDesc tFaderDesc;

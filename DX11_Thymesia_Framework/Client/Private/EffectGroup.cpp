@@ -146,15 +146,15 @@ void CEffectGroup::ReBake_EditParticle()
     //}
 }
 
-void CEffectGroup::Add_EffectMesh()
+void CEffectGroup::Add_EffectMesh(const _uint iLevelIndex)
 {
-    weak_ptr<CCustomEffectMesh> pEffectMesh = GAMEINSTANCE->Add_GameObject<CCustomEffectMesh>(LEVEL_STATIC);
+    weak_ptr<CCustomEffectMesh> pEffectMesh = GAMEINSTANCE->Add_GameObject<CCustomEffectMesh>(iLevelIndex);
     m_pEffectMeshs.emplace_back(pEffectMesh);
 }
 
-void CEffectGroup::Add_Particle()
+void CEffectGroup::Add_Particle(const _uint iLevelIndex)
 {
-    weak_ptr<CEffect_Rect> pEffectParticle = GAMEINSTANCE->Add_GameObject<CEffect_Rect>(LEVEL_STATIC);
+    weak_ptr<CEffect_Rect> pEffectParticle = GAMEINSTANCE->Add_GameObject<CEffect_Rect>(iLevelIndex);
     m_pEffectParticles.emplace_back(pEffectParticle);
 }
 
@@ -359,13 +359,13 @@ void CEffectGroup::Load_EffectJson(const string& In_szPath, const _uint& In_iTim
 
     for (_int i(0); i < (_int)iEffectMeshCount; ++i)
     {
-        this->Add_EffectMesh();
+        this->Add_EffectMesh(In_iCreatedLevel);
         m_pEffectMeshs[i].lock()->Load_EffectJson(Load_Json["EffectMesh"][to_string(i)], In_iTimeScaleLayer);
     }
 
     for (_int i(0); i < (_int)iEffectParticleCount; i++)
     {
-        this->Add_Particle();
+        this->Add_Particle(In_iCreatedLevel);
         m_pEffectParticles[i].lock()->Load_EffectJson(Load_Json["EffectParticle"][to_string(i)], In_iTimeScaleLayer);
     }
 

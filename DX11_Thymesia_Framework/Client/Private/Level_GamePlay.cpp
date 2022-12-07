@@ -31,6 +31,20 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
+
+	CCamera::CAMERADESC CameraDesc;
+	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
+	CameraDesc.vEye = _float4(0.0f, 2.5f, -2.5f, 1.f);
+	CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
+	CameraDesc.fFovy = XMConvertToRadians(65.0f);
+	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
+	CameraDesc.fNear = 0.2f;
+	CameraDesc.fFar = 300.f;
+
+	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_GAMEPLAY, &CameraDesc);
+	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
+
+
 #ifndef _ONLY_UI_
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
 #pragma region GAMEOBJECT
@@ -65,17 +79,6 @@ HRESULT CLevel_GamePlay::Initialize()
 	Load_FromJson(m_szDefaultJsonPath + "Stage2-2.json", LEVEL::LEVEL_GAMEPLAY);
 #endif // _STAGE_2_2_
 
-	CCamera::CAMERADESC CameraDesc;
-	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
-	CameraDesc.vEye    = _float4(0.0f, 2.5f, -2.5f, 1.f);
-	CameraDesc.vAt     = _float4(0.f, 0.f, 0.f, 1.f);
-	CameraDesc.fFovy   = XMConvertToRadians(65.0f);
-	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
-	CameraDesc.fNear   = 0.2f;
-	CameraDesc.fFar    = 300.f;
-
-	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_GAMEPLAY, &CameraDesc);
-	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
 
 	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_GAMEPLAY);
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);

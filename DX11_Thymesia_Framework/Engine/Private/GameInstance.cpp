@@ -342,10 +342,10 @@ HRESULT CGameInstance::Set_LiftGammaGain(const _float4 In_vLift, const _float4 I
 
 }
 
-HRESULT  CGameInstance::Set_FogColor(const _float4 In_vFogColor)
+HRESULT  CGameInstance::Set_FogColor(_float4 In_vFogColor)
 {
 	return m_pRender_Manager->Set_FogColor(In_vFogColor);
-
+	//return E_FAIL;
 }
 
 

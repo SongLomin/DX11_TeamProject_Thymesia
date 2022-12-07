@@ -19,7 +19,7 @@
 #define		_144HZ_
 #define		_RENDER_FPS_
 //#define		_INSTANCE_CULLING_
-#define		_LOAD_CAPTURED_RESOURCE_
+// #define		_LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
 #define _USE_GRAVITY_
@@ -31,8 +31,8 @@
 #pragma endregion // Console Outputs
 
 #pragma region Map
-#define _BRIGHT_LIGHT_
-#define _GENERATE_PROP_COLLIDER_ true
+// #define _BRIGHT_LIGHT_
+// #define _GENERATE_PROP_COLLIDER_ true
 // #define _STAGE_1_
 #define _STAGE_2_
 #define _TEST_STATIC_PROPS_
@@ -72,9 +72,9 @@
 #pragma region System
 #define _USE_THREAD_
 #define _144HZ_
-#define _RENDER_FPS_
+// #define _RENDER_FPS_
 //#define		_INSTANCE_CULLING_
-#define _LOAD_CAPTURED_RESOURCE_
+// #define _LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
 #define _USE_GRAVITY_
@@ -100,6 +100,7 @@
 #pragma region Effects
 // #define _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
+#define _JOJO_EFFECTS_
 #pragma endregion // Effects
 
 #endif // NDEBUG

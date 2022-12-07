@@ -48,6 +48,7 @@ public:
 
 
 public:
+	virtual void OnEnable(void* pArg) override;
 	virtual void OnDisable() override;
 
 

@@ -46,7 +46,7 @@ void CCorvusState_RaidAttack1Hurt::Tick(_float fTimeDelta)
 	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
 
 
-	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat, CINEMATIC_TYPE::CINEMATIC);
+	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat, CINEMATIC_TYPE::EXECUTION);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }

@@ -257,6 +257,13 @@ void CPlayer_HPBar::Bind_Player()
 
 }
 
+void CPlayer_HPBar::OnDisable()
+{
+    __super::OnDisable();
+
+    m_pTrack.lock()->Set_Enable(false);
+}
+
 void CPlayer_HPBar::Free()
 {
     __super::Free();

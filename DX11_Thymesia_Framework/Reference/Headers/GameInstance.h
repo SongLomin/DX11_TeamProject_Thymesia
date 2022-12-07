@@ -130,7 +130,7 @@ public: /* For.Render_Manager */
 	HRESULT Set_RadialBlur(const _float In_fRadialBlurStength, _float3 In_vBlurWorldPosition);
 	HRESULT Add_RedialBlur(const _float In_fRadialBlurStrength);
 	HRESULT Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain);
-	HRESULT Set_FogColor(const _float4 In_vFogColor);
+	HRESULT Set_FogColor(_float4 In_vFogColor);
 	HRESULT	Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt);
 
 

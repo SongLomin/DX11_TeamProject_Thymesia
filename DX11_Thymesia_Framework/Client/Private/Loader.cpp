@@ -193,17 +193,10 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	LightDesc.bEnable = true;
 
 #else // _BRIGHT_LIGHT_
-	/*LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse   = _float4(0.4f, 0.4f, 0.4f, 1.f);
-	LightDesc.vAmbient   = _float4(0.7f, 0.7f, 0.7f, 1.f);
-	LightDesc.vSpecular  = _float4(0.5f, 0.5f, 0.5f, 1.f);
-	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable    = true;*/
 
 	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4( 1.f, -1.f,  1.f, 0.f);
-	LightDesc.vDiffuse   = _float4( 1.f,  1.f,  1.f, 1.f);
+	LightDesc.vDiffuse   = _float4( 0.45f, 0.45f, 0.45f, 1.f);
 	LightDesc.vAmbient   = _float4(0.3f, 0.3f, 0.3f, 1.f);
 	LightDesc.vSpecular  = _float4(0.1f, 0.1f, 0.1f, 1.f);
 	LightDesc.vLightFlag = _float4( 1.f,  1.f,  1.f, 1.f);
@@ -667,9 +660,6 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Loading_Font_RoyalGarden_Title"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/RoyalGarden_Name.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Loading_Font_RoyalGarden_Desc"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/RoyalGarden_Desc.png"), MEMORY_TYPE::MEMORY_STATIC);
 	
-
-
-
 	//MainMenu(LogoLevel)
 	GAMEINSTANCE->Load_Textures(("MainMenu_Background"), TEXT("../Bin/Resources/Textures/UI/MainMenuBackrgound.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("GameLogo"), TEXT("../Bin/Resources/Textures/UI/GameLogo2.dds"), MEMORY_TYPE::MEMORY_STATIC);

@@ -7,7 +7,7 @@ BEGIN(Engine)
 struct ENGINE_DLL ANIMATION_DATA
 {
 
-    vector<shared_ptr<CHANNEL_DATA>>        Channel_Datas;
+	vector<shared_ptr<CHANNEL_DATA>>        Channel_Datas;
 
     string			                    szName;
     _uint			                    iNumChannels = 0;

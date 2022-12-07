@@ -479,7 +479,7 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 			Get_OwnerPlayer()->Change_State<CCorvusState_RaidAttack1Hurt>();
 			break;
 		default:
-			Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+ 			Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 			pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
 			break;
 		}

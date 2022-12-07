@@ -135,7 +135,7 @@ PxControllerCollisionFlags CPhysXCharacterController::MoveWithRotation(_fvector 
 {
 	filters.mFilterCallback = this;
 
-	return ResultFlags;
+	return __super::MoveWithRotation(disp, minDist, elapsedTime, filters, obstacles, pTransform);
 }
 
 PxControllerCollisionFlags CPhysXCharacterController::Move(_fvector disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles)

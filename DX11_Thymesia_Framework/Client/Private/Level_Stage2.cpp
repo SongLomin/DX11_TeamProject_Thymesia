@@ -6,6 +6,7 @@
 #include "FadeMask.h"
 #include "Fader.h"
 
+#include "PhysXCharacterController.h"
 
 CLevel_Stage2::CLevel_Stage2()
 {
@@ -23,8 +24,8 @@ HRESULT CLevel_Stage2::Initialize()
 		return E_FAIL;
 
 #ifndef  _ONLY_UI_
-
-	Load_FromJson(m_szDefaultJsonPath + "Stage2-2.json", LEVEL::LEVEL_STAGE2);
+	
+	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_STAGE2);
 
 	CCamera::CAMERADESC CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
@@ -38,7 +39,15 @@ HRESULT CLevel_Stage2::Initialize()
 	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_GAMEPLAY, &CameraDesc);
 	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
 
-	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_GAMEPLAY);
+	Load_FromJson(m_szDefaultJsonPath + "Stage2-2.json", LEVEL::LEVEL_STAGE2);
+
+	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_STAGE2);
+	PxControllerFilters Filters;
+	pCorvus.lock()->Get_Component<CPhysXCharacterController>().lock()->Set_Position(_fvector{ 60.f, 0.f, 5.7f, 1.f }, 0.01f, Filters);
+	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
+
+
+	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_STAGE2);
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
 
 #endif // ! _ONLY_UI_
@@ -62,7 +71,7 @@ void CLevel_Stage2::Tick(_float fTimeDelta)
 		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 0.f);
 
 		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
-
+		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CLevel_Stage2::Call_FadeOutToStartGame, this);
 		m_bFadeTrigger = true;
 	}
 
@@ -95,5 +104,11 @@ shared_ptr<CLevel_Stage2> CLevel_Stage2::Create()
 void CLevel_Stage2::Free()
 {
 
+}
+
+void CLevel_Stage2::Call_FadeOutToStartGame()
+{
+	m_pFadeMask.lock()->Set_Enable(false);
+	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::BATTLEUI);
 }
 

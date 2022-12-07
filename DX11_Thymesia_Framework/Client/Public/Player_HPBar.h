@@ -35,6 +35,7 @@ public:
 protected:
     virtual void      Bind_Player();
 
+    virtual void OnDisable() override;
 
 private:
     weak_ptr< CProgressBar>   m_pMainBar;

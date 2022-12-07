@@ -1,3 +1,4 @@
+
 matrix g_WorldMatrix    , g_ViewMatrix, g_ProjMatrix;
 matrix g_ProjMatrixInv  , g_ViewMatrixInv;
 matrix g_LightViewMatrix, g_LightProjMatrix;
@@ -523,10 +524,10 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
     {
         Out.vColor = vDiffuse * vShade + vSpecular;
         Out.vColor.rgb *= vViewShadow.rgb;
-        if(0.f < Out.vColor.a)
+        if (0.f < Out.vColor.a)
             Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor;
         else
-            Out.vColor = vFogDesc.r * vector(0.8f, 0.8f, 0.8f, 1.f);
+            Out.vColor = vFogDesc.r * g_vFogColor;
     }
 
     //if (vLightFlagDesc.r > 0.f || vLightFlagDesc.g > 0.f)
