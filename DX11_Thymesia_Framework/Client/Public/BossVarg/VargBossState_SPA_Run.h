@@ -28,6 +28,9 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
+public:
+	void   Set_Count(_bool iCount) { m_iCount = iCount; }
+
 private:
 	//TODO юс╫ц
 	_uint m_iCount = 0;

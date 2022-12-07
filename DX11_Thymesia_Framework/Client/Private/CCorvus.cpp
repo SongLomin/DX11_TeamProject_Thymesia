@@ -250,6 +250,7 @@ void CCorvus::Ready_States()
 	MACRO(CCorvusState_Fall_Start);
 	MACRO(CCorvusState_Climb_Start);
 	MACRO(CCorvusState_Climb_Fall_Attack);
+	MACRO(CCorvusState_RaidAttack1Hurt);
 
 
 #undef MACRO
@@ -283,6 +284,10 @@ void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 	case Client::COLLISION_LAYER::DOOR:
 		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::DOOR;
 		break;
+
+	case Client::COLLISION_LAYER::CHECKPOINT:
+		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::CHECKPOINT;
+		break;
 	}
 
 	__super::OnCollisionEnter(pMyCollider,pOtherCollider);
@@ -312,6 +317,9 @@ void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 		break;
 	case Client::COLLISION_LAYER::DOOR:
 		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::DOOR;
+		break;
+	case Client::COLLISION_LAYER::CHECKPOINT:
+		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::CHECKPOINT;
 		break;
 	}
 	

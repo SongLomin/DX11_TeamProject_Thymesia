@@ -61,6 +61,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     MACRO("Corvus_StunExecute_StartL_L", 3.f);
     MACRO("Corvus_SD1_ParryL_NEW", 4.f);
     MACRO("Corvus_SD1_ParryR_NEW", 4.f);
+    MACRO("Corvus_VSVarg_TakeSPAttack", 1.853f);
 
 
     MACRO("Corvus_Raven_ClawLong_L01", 2.f);
@@ -94,6 +95,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 
 
     MACRO("SK_C_Varg.ao|Varg_Seq_BossFightStart", 5.5f);
+    MACRO("SK_C_Varg.ao|Varg_SPAttack1_Catch", 2.306f);
 
     MACRO("SK_C_Varg.ao|Varg_ComboAttack1_1", 1.25f);
     MACRO("SK_C_Varg.ao|Varg_ComboAttack1_2", 1.25f);

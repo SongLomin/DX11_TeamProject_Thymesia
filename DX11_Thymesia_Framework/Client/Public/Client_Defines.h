@@ -278,6 +278,7 @@ namespace Client
 		LADDER_DOWN,
 		DOOR,
 		ELEVATOR,
+		CHECKPOINT,
 
 		LAYER_END
 	};
@@ -465,6 +466,7 @@ namespace Client
 		LADDERDOWN = (1 << 1),
 		ELEVATOR = (1 << 2),
 		DOOR = (1 << 3),
+		CHECKPOINT = (1 <<4),
 		FLAG_END
 	};
 

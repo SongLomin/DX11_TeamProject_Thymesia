@@ -42,6 +42,10 @@ void CVargBossState_SPA_Catch::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	Rotation_TargetToLookDir();
+
+	Get_Owner().lock()->Get_Component<CVargBossState_SPA_Run>().lock()->Set_Count(0);
+
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -61,6 +65,9 @@ void CVargBossState_SPA_Catch::LateTick(_float fTimeDelta)
 void CVargBossState_SPA_Catch::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	
+		
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -106,6 +113,11 @@ _bool CVargBossState_SPA_Catch::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+
+	if (ComputeAngleWithPlayer() > 0.99f && m_bAttackLookAtLimit)
+	{
+		Rotation_TargetToLookDir();
+	}
 
 	return false;
 }

@@ -251,6 +251,8 @@ void CVarg::OnEventMessage(_uint iArg)
 	{
 		Change_State<CVargBossState_SPA_Catch>();
 	}
+
+	
 }
 
 void CVarg::OnEnable(void* _Arg)

@@ -32,6 +32,7 @@ protected:
 
 public:
     virtual void OnEventMessage(_uint iArg) override;
+    virtual void OnEventMessage(weak_ptr<CBase> pArg)override;
     void Free();
 
 

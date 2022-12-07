@@ -167,7 +167,11 @@ void CVargBossStateBase::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_p
 
 void CVargBossStateBase::OnEventMessage(_uint iArg)
 {
-	GAMEINSTANCE->PlaySoundW(TEXT("Monstet1_Hit.wav"), 1.f);
+	
+}
+
+void CVargBossStateBase::OnEventMessage(weak_ptr<CBase> pArg)
+{
 }
 
 void CVargBossStateBase::Free()

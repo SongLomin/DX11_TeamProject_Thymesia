@@ -61,6 +61,9 @@
 #include "CorvusStates/CorvusState_Fall_Loop.h"
 #include "CorvusStates/CorvusState_Fall_Start.h"
 #include "CorvusStates/CorvusState_Climb_Fall_Attack.h"
+#include "CorvusStates/CorvusState_CheckPointEnd.h"
+#include "CorvusStates/CorvusState_CheckPointLoop.h"
+#include "CorvusStates/CorvusState_CheckPointStart.h"
 
 
 
@@ -69,6 +72,7 @@
 //플레이어 처형 스테이트
 #include "CorvusStates/StateExecution/Varg_Execution.h"
 #include "CorvusStates/StateExecution/CorvusState_NorMob_Execution.h"
+#include "CorvusStates/StateExecution/CorvusState_RaidAttack1Hurt.h"
 //플레이어 처형 스테이트
 // 
 // 

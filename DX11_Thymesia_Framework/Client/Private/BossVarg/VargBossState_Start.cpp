@@ -99,7 +99,6 @@ void CVargBossState_Start::OnStateEnd()
 		GET_SINGLE(CGameManager)->End_Cinematic();
 
 
-	
 
 }
 
@@ -140,11 +139,6 @@ _bool CVargBossState_Start::Check_AndChangeNextState()
 		return false;
 
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
-
-	//if (fPToMDistance <= 8.f)
-	//{
-	//	m_bNextState = true;
-	//}
 
 
 	switch (m_eBossStartType)

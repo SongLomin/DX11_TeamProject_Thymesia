@@ -73,8 +73,6 @@ void CCorvusState_SprintStart::OnStateEnd()
 {
 	__super::OnStateEnd();
 	
-
-
 }
 
 void CCorvusState_SprintStart::Call_AnimationEnd()
@@ -87,6 +85,11 @@ void CCorvusState_SprintStart::Call_AnimationEnd()
 }
 
 void CCorvusState_SprintStart::Free()
+{
+
+}
+
+void CCorvusState_SprintStart::OnDestroy()
 {
 	if (m_pModelCom.lock())
 		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_SprintStart::Call_AnimationEnd, this);

@@ -46,7 +46,7 @@ private:
 
 protected:
     void Free();
-
+    virtual void OnDestroy() override;
     // CNorMonStateBase을(를) 통해 상속됨
     virtual _bool Check_AndChangeNextState() override;
     _bool Check_RuquireMnetRepeatAvoidkState();

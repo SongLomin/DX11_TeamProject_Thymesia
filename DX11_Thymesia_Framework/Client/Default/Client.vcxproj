@@ -209,6 +209,9 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_TurnAttack.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidSlash.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidThrust.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_CheckPointEnd.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_CheckPointLoop.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_CheckPointStart.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHoldLoop.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_Fall_Attack.h" />
@@ -239,6 +242,7 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_UrdSword.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_VargSword.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ShortAvoid.h" />
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_RaidAttack1Hurt.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV1.h" />
@@ -544,6 +548,9 @@
     <ClCompile Include="..\Private\BossVarg\VargBossState_TurnAttack.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_AvoidSlash.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidThrust.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_CheckPointEnd.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_CheckPointLoop.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_CheckPointStart.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackHoldLoop.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_Fall_Attack.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_L_Down.cpp" />
@@ -593,6 +600,7 @@
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_SharpWeaponLV1.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_SharpWeaponLV2.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Sword.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_RaidAttack1Hurt.cpp" />
     <ClCompile Include="..\Private\CustomFont.cpp" />
     <ClCompile Include="..\Private\CUtils_EasingTransform.cpp" />
     <ClCompile Include="..\Private\Dynamic_Piece.cpp" />

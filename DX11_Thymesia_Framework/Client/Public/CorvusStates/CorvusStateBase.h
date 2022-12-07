@@ -4,6 +4,7 @@
 
 BEGIN(Engine)
 class CCollider;
+class CModel;
 END
 
 BEGIN(Client)

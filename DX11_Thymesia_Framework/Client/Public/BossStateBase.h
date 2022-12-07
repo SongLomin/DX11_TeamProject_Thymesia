@@ -70,12 +70,6 @@ protected:
 
 
 
-
-
-
-
-
-
 private:
     weak_ptr<CMonster> m_pOwnerFromMonster;
 
