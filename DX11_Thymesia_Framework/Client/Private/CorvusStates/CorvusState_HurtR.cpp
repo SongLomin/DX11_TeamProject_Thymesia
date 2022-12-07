@@ -30,7 +30,7 @@ void CCorvusState_HurtR::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD_HurtSR");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_HurtSR");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_HurtR::Call_AnimationEnd, this);
 }
 

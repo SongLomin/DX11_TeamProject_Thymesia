@@ -49,6 +49,14 @@ public:
     virtual void OnEventMessage(_uint iArg) override;
     void OnChangeAnimationKey(const _uint& In_Key);
 
+#ifdef _DEBUG
+    const void Trigger_Reset(weak_ptr<CTransform> pPreviewModelTransform) 
+    {
+        m_pPreviewModelTransform = pPreviewModelTransform;
+        m_bResetTrigger = true;
+    }
+#endif // _DEBUG
+
 private:
     virtual HRESULT Initialize_Prototype()   override;
     virtual HRESULT Initialize(void* pArg)   override;
@@ -78,29 +86,59 @@ private:
     // For. Easing
     void Apply_Easing
     (
-        _float3&        vTarget
-        , EASING_TYPE   eEasingType
-        , _vector       vStartPoint
-        , _vector       vTargetPoint
-        , _float        fElapsedTime
-        , _float        fTotalTime
+        _float3& vTarget
+        , EASING_TYPE eEasingType
+        , _vector vStartPoint
+        , _vector vTargetPoint
+        , _float  fElapsedTime
+        , _float  fTotalTime
     );
 
     void Apply_Easing
     (
         _float2& vTarget
-        , EASING_TYPE   eEasingType
-        , _vector       vStartPoint
-        , _vector       vTargetPoint
-        , _float        fElapsedTime
-        , _float        fTotalTime
+        , EASING_TYPE eEasingType
+        , _vector vStartPoint
+        , _vector vTargetPoint
+        , _float  fElapsedTime
+        , _float  fTotalTime
     );
 
-    // For. Tool
+    void Apply_Easing
+    (
+        _float& fTarget
+        , EASING_TYPE eEasingType
+        , _float fStartPoint
+        , _float fTargetPoint
+        , _float fElapsedTime
+        , _float fTotalTime
+    );
+
+    const _bool Is_Sprite() const;
+
+#ifdef _DEBUG
+private: // For. Tool
 #ifdef _JOJO_EFFECT_TOOL_
     void Show_ShaderPasses();
 #endif // _JOJO_EFFECT_TOOL_
-
+    void Tool_Spawn_Life_Time();
+    void Tool_Boner();
+    void Tool_Position();
+    void Tool_Position_Easing();
+    void Tool_Speed();
+    void Tool_Speed_Easing();
+    void Tool_Rotation();
+    void Tool_Rotation_Easing();
+    void Tool_Scale();
+    void Tool_Scale_Easing();
+    void Tool_Sprite();
+    void Tool_Color();
+    void Tool_Color_EasingAlpha();
+    void Tool_Texture_Diffuse();
+    void Tool_Texture_Mask();
+    void Tool_Texture_Noise();
+    void Tool_Glow();
+#endif // _DEBUG
 private:
     void Free();
 
@@ -144,6 +182,12 @@ private:
     weak_ptr<CModel>                    m_pParentModel;
     std::string                         m_strBoneName   = "";
     _int                                m_iCurrentBoneIndex = 0;
+
+#ifdef _DEBUG
+    // For. Thread
+    _bool                   m_bResetTrigger = false;
+    weak_ptr<CTransform>    m_pPreviewModelTransform;
+#endif // _DEBUG
 };
 
 END

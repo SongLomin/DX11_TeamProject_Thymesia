@@ -314,7 +314,7 @@ void CGameManager::UnUse_EffectGroup(const string& In_szEffectGroupName, const _
 	_hashcode hashcode = hash<string>()(In_szEffectGroupName);
 	_uint iIndex = 0;
 
-	#ifdef _DEBUG_COUT_
+#ifdef _DEBUG_COUT_
 		cout << "Init UnUse EffectGroup: " << In_szEffectGroupName << endl;
 #endif
 
@@ -322,7 +322,7 @@ void CGameManager::UnUse_EffectGroup(const string& In_szEffectGroupName, const _
 	{
 		if (In_EffectGroupIndex == iIndex)
 		{
-			#ifdef _DEBUG_COUT_
+#ifdef _DEBUG_COUT_
 		cout << "UnUse EffectGroup: " << In_szEffectGroupName << endl;
 #endif
 			if (elem.lock())

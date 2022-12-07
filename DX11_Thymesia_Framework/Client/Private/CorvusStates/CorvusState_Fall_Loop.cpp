@@ -28,7 +28,7 @@ void CCorvusState_Fall_Loop::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD_Fall_Loop");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_Fall_Loop");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Fall_Loop::Call_AnimationEnd, this);
 }
 

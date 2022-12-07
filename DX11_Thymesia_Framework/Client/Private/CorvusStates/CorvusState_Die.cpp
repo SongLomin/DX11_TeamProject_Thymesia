@@ -33,7 +33,7 @@ void CCorvusState_Die::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD_Dead_1");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_Dead_1");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Die::Call_AnimationEnd, this);
 }
 

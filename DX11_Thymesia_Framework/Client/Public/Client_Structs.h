@@ -1,6 +1,4 @@
 #pragma once
-
-
 namespace Client
 {
 	struct EFFECTMESH_DESC
@@ -38,6 +36,8 @@ namespace Client
 
 		_float3		vStartPosition;
 
+
+
 #pragma region Speed
 		_float3		vSpeed;
 		_float3		vForce;
@@ -59,6 +59,7 @@ namespace Client
 		_float3		vMinScale;
 		_float3		vMaxScale;
 #pragma endregion
+
 		_int		iShaderPassIndex;
 
 #pragma region Colors
@@ -269,11 +270,14 @@ namespace Client
 		_bool		IsGrayOnlyUseRed;// when random colors, grayscales
 
 		_bool		bEasingAlpha;
+		_int		iAlphaEasingType;
+
+		_float		fAlphaEasingTotalTime;
 
 		_float4		vMinStartColor;
 		_float4		vMaxStartColor;
 
-		_float4		vMinColorSpeed;
+		_float4		vMinColorSpeed;		// w is TargetAlpha when Easing Alpha
 		_float4		vMaxColorSpeed;
 
 		_float4		vMinColorForce;
@@ -320,6 +324,7 @@ namespace Client
 		_int		iNumFrameX;
 		_int		iNumFrameY;
 		_float		fSpriteSpeed;
+		_bool		bStopAtEndFrame;
 #pragma endregion
 	};
 

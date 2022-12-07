@@ -31,7 +31,7 @@ HRESULT CCorvusState_ClawAttackTab2::Initialize(void* pArg)
 void CCorvusState_ClawAttackTab2::Start()
 {
 	__super::Start();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_Raven_ClawLong_L02");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_Raven_ClawLong_L02");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_ClawAttackTab2::Call_AnimationEnd, this);
 }
 

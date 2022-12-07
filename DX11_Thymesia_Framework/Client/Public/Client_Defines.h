@@ -3,6 +3,8 @@
 #include "SMath.h"
 #include <filesystem>
 
+#define _JOJO_EFFECT_TOOL_
+
 #include "Client_Structs.h"
 #include "Client_Presets.h"
 #include "imgui.h"
@@ -43,13 +45,13 @@
 #pragma endregion // Tool
 
 #pragma region Boss Mobs
-#define _BOSS_VARG_
+// #define _BOSS_VARG_
 // #define _BOSS_URD_
 #pragma endregion // Boss Mobs
 
 #pragma region Normal Mobs
 #define _STAGE_1_MONSTER_
-// #define _STAGE_2_MONSTER_
+#define _STAGE_2_MONSTER_
 #pragma endregion // Normal Mobs
 
 #pragma region Effects
@@ -124,9 +126,9 @@
 #pragma endregion // Console Outputs
 
 #pragma region Map
-#define _BRIGHT_LIGHT_
+#undef _BRIGHT_LIGHT_
 #undef _GENERATE_PROP_COLLIDER_ true
-#undef _STAGE_1_
+#define _STAGE_1_
 #undef _STAGE_2_
 #undef _TEST_STATIC_PROPS_
 #undef _TEST_DYNAMIC_PROPS_
@@ -152,6 +154,7 @@
 #define _CORVUS_EFFECT_
 #undef _JOJO_EFFECTS_
 #define _ANIMATION_TOOL_CORVUS_WEAPON_
+// #define _BAKE_EFFECTMESH_FBX_
 #pragma endregion // Effects
 
 #endif // _JOJO_EFFECT_TOOL_

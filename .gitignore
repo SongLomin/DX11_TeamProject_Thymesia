@@ -23,6 +23,11 @@ Map_Lv1_Circus/
 Map_Lv2_Fortress/
 Map_Lv3_Garden/
 Map_Else/
+Corvus.bin
+PhysX_64.dll
+PhysXCommon_64.dll
+PhysXCooking_64.dll
+PhysXFoundation_64.dll
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

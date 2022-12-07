@@ -1,7 +1,7 @@
 #pragma once
-#ifdef _JOJO_EFFECT_TOOL_
 #include "Base.h"
 #include "Client_Defines.h"
+#ifdef _JOJO_EFFECT_TOOL_
 BEGIN(Client)
 class CJoJoParticleShaderManager final :
     public CBase

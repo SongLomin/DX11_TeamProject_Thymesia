@@ -11,9 +11,9 @@ class CCorvusState_ClawAttackAway :
     public CCorvusStateBase
 {
 
-    GAMECLASS_H(CCorvusState_ClawAttackAway);
+    GAMECLASS_H(CCorvusState_ClawAttackAway)
     SHALLOW_COPY(CCorvusState_ClawAttackAway)
-        CLONE_H(CCorvusState_ClawAttackAway, CComponent)
+    CLONE_H(CCorvusState_ClawAttackAway, CComponent)
 
 protected:
     virtual HRESULT Initialize_Prototype() override;
@@ -28,13 +28,17 @@ public:
     void Attack();
     void Check_InputNextAttack();
 
+    void Call_NextKeyFrame(const _uint& In_KeyIndex);
+
+private:
+    weak_ptr<CAnimation> m_pThisAnimationCom;
 
 private:
     _bool m_IsNextAttack = false;
 
     _float m_fDebugAnimationSpeed = 1.f;
 
-    _int m_iEndAttackEffectIndex = -1;
+    _uint m_iEffectIndex = 0;
 
 protected:
     virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;

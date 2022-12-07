@@ -100,7 +100,6 @@ HRESULT CTerrain::SetUp_ShaderResource()
 		return E_FAIL;
 
 	_vector vShaderFlag = { 0.f, 0.f, 0.f, 0.f };
-
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector))))
 		return E_FAIL;
 

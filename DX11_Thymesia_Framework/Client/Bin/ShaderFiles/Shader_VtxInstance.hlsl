@@ -104,18 +104,18 @@ VS_OUT VS_MAIN(VS_IN In)
         float3 vRight = normalize(cross(float3(0.f, 1.f, 0.f), vLook));
         float3 vUp = normalize(cross(vLook, vRight));
 
-        TransformMatrix[0]   = float4(vRight, 0.f)          * length(TransformMatrix[0]);
-        TransformMatrix[1]   = float4(vUp, 0.f)             * length(TransformMatrix[1]);
-        TransformMatrix[2]   = float4(vLook, 0.f)           * length(TransformMatrix[2]);
+		TransformMatrix[0] = float4(vRight, 0.f) * length(TransformMatrix[0]);
+		TransformMatrix[1] = float4(vUp, 0.f) * length(TransformMatrix[1]);
+		TransformMatrix[2] = float4(vLook, 0.f) * length(TransformMatrix[2]);
     }
 
-    vector vPosition       = mul(vector(In.vPosition, 1.f),  TransformMatrix);
+    vector vPosition = mul(vector(In.vPosition, 1.f),  TransformMatrix);
 
     matrix matVP;
-    matVP        = mul(g_ViewMatrix, g_ProjMatrix);
-    Out.vPosition = mul(vPosition, matVP);
-    Out.vTexUV    = In.vTexUV;
-    Out.vColor    = In.vColor;
+	matVP = mul(g_ViewMatrix, g_ProjMatrix);
+	Out.vPosition = mul(vPosition, matVP);
+	Out.vTexUV = In.vTexUV;
+	Out.vColor = In.vColor;
 
     return Out;
 }
@@ -152,26 +152,23 @@ VS_OUT_SPRITE VS_SPRITE(VS_IN_SPRITE In)
 {
     VS_OUT_SPRITE Out = (VS_OUT_SPRITE) 0;
 
-    // billboard
-    float3 vLook  = normalize((g_vCamDirection * -1.f).xyz);
+    matrix TransformMatrix = mul(float4x4(In.vRight, In.vUp, In.vLook, In.vTranslation), g_WorldMatrix);
+
+    float3 vLook = normalize((g_vCamDirection * -1.f).xyz);
     float3 vRight = normalize(cross(float3(0.f, 1.f, 0.f), vLook));
-    float3 vUp    = normalize(cross(vLook, vRight));
-		
-    In.vRight     = float4(vRight, 0.f) * length(In.vRight);
-    In.vUp        = float4(vUp, 0.f)    * length(In.vUp);
-    In.vLook      = float4(vLook, 0.f)  * length(In.vLook);
-    // **billboard
-	
-    matrix TransformMatrix = float4x4(In.vRight, In.vUp, In.vLook, In.vTranslation);
-    vector vPosition       = mul(vector(In.vPosition, 1.f), TransformMatrix);
+    float3 vUp = normalize(cross(vLook, vRight));
 
-    matrix matWV, matWVP;
-    matWV         = mul(g_WorldMatrix, g_ViewMatrix);
-    matWVP        = mul(matWV, g_ProjMatrix);
+    TransformMatrix[0] = float4(vRight, 0.f) * length(TransformMatrix[0]);
+    TransformMatrix[1] = float4(vUp, 0.f) * length(TransformMatrix[1]);
+    TransformMatrix[2] = float4(vLook, 0.f) * length(TransformMatrix[2]);
 
-    Out.vPosition = mul(vPosition, matWVP);
-    Out.vTexUV    = In.vTexUV;
-    Out.vColor    = In.vColor;
+    vector vPosition = mul(vector(In.vPosition, 1.f), TransformMatrix);
+
+    matrix matVP;
+    matVP = mul(g_ViewMatrix, g_ProjMatrix);
+    Out.vPosition = mul(vPosition, matVP);
+    Out.vTexUV = In.vTexUV;
+    Out.vColor = In.vColor;
 
     Out.vSpriteUV = In.vSpriteUV;
 

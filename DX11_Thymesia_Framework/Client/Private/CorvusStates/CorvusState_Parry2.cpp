@@ -32,7 +32,7 @@ HRESULT CCorvusState_Parry2::Initialize(void* pArg)
 void CCorvusState_Parry2::Start()
 {
 	__super::Start();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD1_ParryR_NEW");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD1_ParryR_NEW");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Parry2::Call_AnimationEnd, this);
 }
 

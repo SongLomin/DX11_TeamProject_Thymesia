@@ -32,7 +32,7 @@ HRESULT CCorvusState_LAttack3::Initialize(void* pArg)
 void CCorvusState_LAttack3::Start()
 {
 	__super::Start();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD_LAttack3_New");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_LAttack3_New");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_LAttack3::Call_AnimationEnd, this);
 }
 

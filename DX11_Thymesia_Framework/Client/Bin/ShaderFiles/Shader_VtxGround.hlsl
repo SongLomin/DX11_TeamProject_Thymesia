@@ -85,7 +85,7 @@ PS_OUT PS_MAIN_DEFAULT(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
 
-    Out.vDiffuse = g_Texture_Sorc_Diff.Sample(DefaultSampler, In.vTexUV * g_fSorc_Density);
+	Out.vDiffuse = g_Texture_Sorc_Diff.Sample(DefaultSampler, In.vTexUV * g_fSorc_Density);
 
     vector vFilterDiffuse = g_FilterTexture.Sample(DefaultSampler, In.vTexUV);
 
@@ -189,7 +189,7 @@ PS_OUT PS_MAIN_FILLTER(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
 
-    Out.vDiffuse = g_Texture_Sorc_Diff.Sample(DefaultSampler, In.vTexUV * g_fSorc_Density);
+	Out.vDiffuse = g_Texture_Sorc_Diff.Sample(DefaultSampler, In.vTexUV * g_fSorc_Density);
 
     vector vFilterDiffuse = g_FilterTexture.Sample(DefaultSampler, In.vTexUV);
 

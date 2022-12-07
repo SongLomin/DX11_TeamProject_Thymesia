@@ -74,6 +74,20 @@ private:
     void Key_Input_ControlMesh(_float fTimeDelta);
     void Apply_ImGui_Controls_to_Mesh();
 #endif // _JOJO_EFFECT_TOOL_
+    void Tool_Control();
+    void Tool_Spawn_Life_Time();
+    void Tool_AnimationSync();
+    void Tool_Boner();
+    void Tool_Position();
+    void Tool_Speed();
+    void Tool_Rotation();
+    void Tool_Scale();
+    void Tool_Shaders();
+    void Tool_Colors();
+    void Tool_Texture_Diffuse();
+    void Tool_Texture_Noise();
+    void Tool_Texture_Mask();
+    void Tool_Collider();
 #endif // _DEBUG
 
 private:
@@ -88,12 +102,11 @@ private:
     string                m_szEffectName;
     EFFECTMESH_DESC       m_tEffectMeshDesc;
 
-    _float2               m_vUv;
-
     weak_ptr<CTexture>    m_pColorDiffuseTextureCom;
     weak_ptr<CTexture>    m_pMaskTextureCom;
     weak_ptr<CTexture>    m_pNoiseTextureCom;
-    // weak_ptr<CTexture>    m_pGradientTextureCom;
+
+    _uint m_iNumMeshContainers;
 
     _float                m_fCurrentLifeTime = 0.f;
     _float                m_fCurrentInitTime = 0.f;

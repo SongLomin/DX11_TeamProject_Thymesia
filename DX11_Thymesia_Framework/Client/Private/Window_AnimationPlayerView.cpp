@@ -451,8 +451,17 @@ void CWindow_AnimationPlayerView::Draw_AnimationList()
 
         if (m_bHold)
             byFlag = (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Z;
-            
-        pCurrentModel.lock()->Set_RootNode("root", byFlag);
+
+		if (!strcmp(pCurrentModel.lock()->Get_ModelKey(), "Corvus"))
+		{
+            pCurrentModel.lock()->Set_RootNode("root_$AssimpFbx$_Translation", byFlag);
+        }
+
+        if (!strcmp(pCurrentModel.lock()->Get_ModelKey(), "Boss_Varg"))
+        {
+			pCurrentModel.lock()->Set_RootNode("root", byFlag);
+		}
+        
     }
 
     ImGui::SameLine();

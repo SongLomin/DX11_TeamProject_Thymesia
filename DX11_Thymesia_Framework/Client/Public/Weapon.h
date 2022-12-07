@@ -27,6 +27,12 @@ protected:// CGameObject을(를) 통해 상속됨
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render() override;
 
+	void SetUp_ShaderResource();
+
+	virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+	virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+	virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
+
 public:
     void Init_Weapon(weak_ptr<CModel> In_pModelCom, weak_ptr<CTransform> In_ParentTransformCom, const string& szTargetNode = "WeaponCase1");
     void Init_Model(const string& strWeaponName, TIMESCALE_LAYER eLayer);
@@ -39,13 +45,12 @@ public:
     void Set_WeaponDesc(const WEAPON_DESC& In_Weapon);
     void Set_WeaponDesc(const HIT_TYPE In_eHitType, const _float In_fDamage, const ATTACK_OPTION In_eOptionType = ATTACK_OPTION::OPTION_END);
     _bool Set_TrailEnable(const _bool In_bEnable);
-public:
+
+	virtual void OnSetDead() override;
+	void Free();
+
     FDelegate<weak_ptr<CCollider>> CallBack_Attack;
     FDelegate<weak_ptr<CCollider>> CallBack_AttackOnce;
-
-
-protected:
-    void SetUp_ShaderResource();
 
 protected:
     weak_ptr<class CEffect_Trail> m_pTrailEffect;
@@ -55,25 +60,13 @@ protected:
     
     weak_ptr<CBoneNode> m_pTargetBoneNode;
 
+    WEAPON_DESC             m_tWeaponDesc;
+
     _float4x4				m_WorldMatrix;
     _float4x4               m_TransformationMatrix;
     _float3                 m_vOffset;
 
-protected:
-    WEAPON_DESC             m_tWeaponDesc;
-
-protected:
-    virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
-    virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
-    virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
-
-public:
-    virtual void OnSetDead() override;
-
-    void Free();
-
-
-
+    _uint m_iNumMeshContainers;
 };
 
 

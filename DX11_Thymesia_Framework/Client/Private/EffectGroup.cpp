@@ -139,10 +139,11 @@ void CEffectGroup::Add_EditParticle(const _char* In_szName, const _char* In_szTe
 
 void CEffectGroup::ReBake_EditParticle()
 {
-    for (auto& elem : m_pEffectParticles)
-    {
-        elem.lock()->ReBake_EditParticle();
-    }
+    //for (auto& elem : m_pEffectParticles)
+    //{
+    //    // elem.lock()->CallBack_Rebake = std::bind(&CEffect_Rect::ReBake_EditParticle, elem.lock());
+    //    // elem.lock()->ReBake_EditParticle();
+    //}
 }
 
 void CEffectGroup::Add_EffectMesh()
@@ -211,49 +212,39 @@ void CEffectGroup::Remove_AllEffects()
 void CEffectGroup::Sync_Animation()
 {
     for (auto& elem : m_pEffectMeshs)
-    {
         elem.lock()->Sync_Animation();
-    }
 
     for (auto& elem : m_pEffectParticles)
-    {
         elem.lock()->Sync_Animation();
-    }
 
 }
 
 void CEffectGroup::Play(_float fTimeDelta)
 {
     for (auto& elem : m_pEffectMeshs)
-    {
         elem.lock()->Play(fTimeDelta);
-    }
 }
 
 void CEffectGroup::Reset_Effects()
 {
-    weak_ptr<CTransform> pPreviewModelTransform = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Transform();
+    weak_ptr<CTransform> pPreviewModelTransform(GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Transform());
 
     for (auto& elem : m_pEffectMeshs)
         elem.lock()->Reset_Effect(pPreviewModelTransform);
 
-
+#ifdef _DEBUG
     for (auto& elem : m_pEffectParticles)
-        elem.lock()->Reset_Effect(pPreviewModelTransform);
-
+        elem.lock()->Trigger_Reset(pPreviewModelTransform);
+#endif // _DEBUG
 }
 
 void CEffectGroup::Reset_Effects(weak_ptr<CTransform> pParentTransformCom)
 {
     for (auto& elem : m_pEffectMeshs)
-    {
         elem.lock()->Reset_Effect(pParentTransformCom);
-    }
 
     for (auto& elem : m_pEffectParticles)
-    {
         elem.lock()->Reset_Effect(pParentTransformCom);
-    }
 }
 
 _bool CEffectGroup::Use_EffectGroup(weak_ptr<CTransform> pParentTransformCom, const _uint& In_iTimeScaleLayer)
@@ -268,7 +259,7 @@ _bool CEffectGroup::Use_EffectGroup(weak_ptr<CTransform> pParentTransformCom, co
     if (In_iTimeScaleLayer != (_uint)-1)
     {
         m_iTimeScaleLayer = In_iTimeScaleLayer;
-        Set_TimeScaleLayerForEffects(m_iTimeScaleLayer);
+        this->Set_TimeScaleLayerForEffects(m_iTimeScaleLayer);
     }
 
 
@@ -277,11 +268,6 @@ _bool CEffectGroup::Use_EffectGroup(weak_ptr<CTransform> pParentTransformCom, co
 
 void CEffectGroup::UnUse_EffectGroup()
 {
-    /*if (!m_bUsing)
-    {
-        DEBUG_ASSERT;
-    }*/
-
     for (auto& elem : m_pEffectMeshs)
     {
         if (elem.lock())
@@ -297,7 +283,7 @@ void CEffectGroup::UnUse_EffectGroup()
 
 weak_ptr<CEffectGroup> CEffectGroup::Clone_EffectGroup()
 {
-    weak_ptr<CEffectGroup> m_pClonedEffectGroup = GAMEINSTANCE->Add_GameObject<CEffectGroup>(m_iCreatedLevel);
+    weak_ptr<CEffectGroup> m_pClonedEffectGroup(GAMEINSTANCE->Add_GameObject<CEffectGroup>(m_iCreatedLevel));
     m_pClonedEffectGroup.lock()->Load_EffectJson(m_szPath, m_iTimeScaleLayer, m_iCreatedLevel);
     
     return m_pClonedEffectGroup;
@@ -317,10 +303,8 @@ void CEffectGroup::Load_FromBinary(const string& In_szPath)
     is.read(&m_szEffectGroupName[0], istringSize);
 
     size_t iEffectMeshSize;
-
     read_typed_data(is, iEffectMeshSize);
-
-    for (_size_t i = 0; i < iEffectMeshSize; ++i)
+    for (_size_t i(0); i < iEffectMeshSize; ++i)
     {
         read_typed_data(is, istringSize);
         string szModelKey;
@@ -338,11 +322,11 @@ void CEffectGroup::Load_FromBinary(const string& In_szPath)
 
 void CEffectGroup::Write_FromBinary()
 {
-    string szPath = "../Bin/EffectData/";
+    std::string szPath("../Bin/EffectData/");
     szPath += m_szEffectGroupName;
     szPath += ".bin";
 
-    ofstream os(szPath, ios::binary);
+    std::ofstream os(szPath, std::ios::binary);
 
     if (!os.is_open())
     {
@@ -350,12 +334,12 @@ void CEffectGroup::Write_FromBinary()
         return;
     }
 
-    write_typed_data(os, m_szEffectGroupName.size());
+    Engine::write_typed_data(os, m_szEffectGroupName.size());
     os.write(&m_szEffectGroupName[0], m_szEffectGroupName.size());
     
-    write_typed_data(os, m_pEffectMeshs.size());
+    Engine::write_typed_data(os, m_pEffectMeshs.size());
 
-    for (_size_t i = 0; i < m_pEffectMeshs.size(); ++i)
+    for (_size_t i(0); i < m_pEffectMeshs.size(); ++i)
     {
         m_pEffectMeshs[i].lock()->Write_FromBinary(os);
     }
@@ -375,24 +359,23 @@ void CEffectGroup::Load_EffectJson(const string& In_szPath, const _uint& In_iTim
 
     for (_int i(0); i < (_int)iEffectMeshCount; ++i)
     {
-        Add_EffectMesh();
+        this->Add_EffectMesh();
         m_pEffectMeshs[i].lock()->Load_EffectJson(Load_Json["EffectMesh"][to_string(i)], In_iTimeScaleLayer);
     }
 
     for (_int i(0); i < (_int)iEffectParticleCount; i++)
     {
-        Add_Particle();
+        this->Add_Particle();
         m_pEffectParticles[i].lock()->Load_EffectJson(Load_Json["EffectParticle"][to_string(i)], In_iTimeScaleLayer);
     }
 
-    UnUse_EffectGroup();
+    this->UnUse_EffectGroup();
 
     m_szPath = In_szPath;
     m_iTimeScaleLayer = In_iTimeScaleLayer;
     m_iCreatedLevel = In_iCreatedLevel;
 
-    GET_SINGLE(CGameManager)->Register_EffectGroup(m_szEffectGroupName,
-        Weak_Cast<CEffectGroup>(m_this));
+    GET_SINGLE(CGameManager)->Register_EffectGroup(m_szEffectGroupName, Weak_Cast<CEffectGroup>(m_this));
 
 }
 
@@ -402,7 +385,7 @@ void CEffectGroup::Write_EffectJson(json& Out_Json)
     Out_Json["EffectMeshCount"] = m_pEffectMeshs.size();
     Out_Json["EffectParticleCount"] = m_pEffectParticles.size();
 
-    _int iIndex = 0;
+    _int iIndex(0);
 
     for (auto& elem : m_pEffectMeshs)
     {
@@ -458,5 +441,4 @@ void CEffectGroup::OnChangeAnimationKey(const _uint& In_Key)
 
 void CEffectGroup::Free()
 {
-
 }
