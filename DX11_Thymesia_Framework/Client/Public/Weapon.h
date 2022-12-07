@@ -64,6 +64,9 @@ protected:
     _float3                 m_vOffset;
 
     _uint m_iNumMeshContainers;
+
+private:
+    void Free();
 };
 
 

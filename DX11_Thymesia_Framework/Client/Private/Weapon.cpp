@@ -72,7 +72,7 @@ HRESULT CWeapon::Render()
 	__super::Render();
 
 	_int iPassIndex;
-	
+	m_iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 	for (_uint i(0); i < m_iNumMeshContainers; ++i)
 	{
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
@@ -222,10 +222,6 @@ void CWeapon::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 }
 
 void CWeapon::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
-{
-}
-
-void CWeapon::OnSetDead()
 {
 }
 

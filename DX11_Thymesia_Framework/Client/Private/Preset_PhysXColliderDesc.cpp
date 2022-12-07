@@ -163,7 +163,7 @@ void Preset::PhysXColliderDesc::ConvexStaticPropSetting(PHYSXCOLLIDERDESC& Out_D
 {
     Out_Desc.eShape = PHYSXCOLLIDER_TYPE::CONVEXMODEL;
     Out_Desc.eActorType = PHYSXACTOR_TYPE::STATIC;
-    Out_Desc.iFilterType = (_uint)COLLISION_LAYER::STATIC_PROP;
+    Out_Desc.iFilterType = (_uint)PHYSX_COLLISION_LAYER::STATIC_PROP;
     Out_Desc.fDensity = 5.f;
     Out_Desc.pConvecMesh = nullptr;
 
