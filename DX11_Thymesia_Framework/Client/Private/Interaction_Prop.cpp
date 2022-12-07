@@ -105,6 +105,11 @@ HRESULT CInteraction_Prop::SetUp_ShaderResource()
     if (FAILED(CProp::SetUp_ShaderResource()))
         return E_FAIL;
 
+    _vector	vShaderFlag = { 1.f,m_fOutLineBlurIntensity,0.f,0.f };
+    if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector))))
+        return;
+
+
     _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
