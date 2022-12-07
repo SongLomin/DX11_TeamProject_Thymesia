@@ -40,14 +40,9 @@ public:
 	void Activate_Zoom(_float fRatio, _float fZoomTime);
 	void Deactivate_Zoom();
 
-	void Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime, _float fFrequency);
-	/*
-	* 플레이어한테도 해당 타겟을 넘겨줌 <-선형 보간으로 플레이어 방향을 몬스터를 향하게 도렬둠
-	* 게임 매니저에서 몬스터의포인터를 가지고 있음
-	* 게임 매니저에서 몬스터 정렬하고 카메라 절두체 내부에 있는 몬스터들 추려냄 범위 내에 있는지 플레이어 거리 순으로 오름차순 정렬 그 중 가장 가까운애를 
-	* 게임매니저에서 Focus_Monster를 부르면 카메라의 focus_Monster,플레이어의 focus_Monster를 호출 각각 한번씩만 해줌
-	* 한번 타겟을 찾으면 바꾸기 전까지 고정이므로 바꿀때마다 갱신
-	*/
+	void Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime, _float fFrequency, _float fDecreaseRatio);//특정 방향으로
+
+
 
 protected:
 	virtual HRESULT Bind_PipeLine() override;
@@ -111,13 +106,14 @@ private:
 	_float m_fZoomTime = 0.f; // 줌 지속 시간
 	_float m_fZoomTimeAcc = 0.f;
 
+	_bool	m_bRandomShaking = false;
 	_float3 m_vShakingStartOffSet = _float3(0.f, 0.f, 0.f);
 	_float3 m_vShaking = _float3(0.f, 0.f, 0.f);
-	_float3 m_vShakingEndOffSet = _float3(0.f, 0.f, 0.f);
 	_float3 m_vShakingDir = _float3(0.f, 0.f, 0.f);
 	_float m_fShakingTime = 0.f;
 	_float m_fShakingFrequency = 0.f;
 	_float m_fShakeRatio = 0.f;
+	_float m_fDecreaseRatio = 0.f;
 	_float m_fShakingTimeAcc = 0.f;
 	_float m_fShakingQuarterFrequency = 0.f;
 	_float m_fShakingDecreaseTime = 0.f;

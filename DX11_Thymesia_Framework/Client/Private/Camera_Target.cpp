@@ -255,20 +255,28 @@ void CCamera_Target::Deactivate_Zoom()
 	m_fZoomTimeAcc = 0.f;
 }
 
-void CCamera_Target::Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime,_float fFrequency)
+void CCamera_Target::Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime,_float fFrequency, _float fDecreaseRatio)
 {
-	vShakingDir = XMVector3TransformNormal(vShakingDir, m_pTransformCom.lock()->Get_WorldMatrix());
-	vShakingDir = XMVector3Normalize(vShakingDir);
-	XMStoreFloat3(&m_vShakingDir, vShakingDir);
-	XMStoreFloat3(&m_vShakingEndOffSet, vShakingDir* fRatio);
+	if (0.5f < vShakingDir.m128_f32[3])
+		m_bRandomShaking = true;
+	else
+	{
+		vShakingDir = XMVector3TransformNormal(vShakingDir, m_pTransformCom.lock()->Get_WorldMatrix());
+		vShakingDir = XMVector3Normalize(vShakingDir);
+		XMStoreFloat3(&m_vShakingDir, vShakingDir);
+	}
+
 	m_vShakingStartOffSet = m_vShaking;
 	m_fShakingTime = fShakingTime;
 	m_fShakingFrequency = fFrequency;
 
 	m_fShakeRatio = fRatio;
+	m_fDecreaseRatio = fDecreaseRatio;
 	m_fShakingTimeAcc = 0.f;
 	m_fShakingQuarterFrequency = 0.f;
 	m_fShakingDecreaseTime = 0.f;
+
+	m_bRandomShaking = false;
 
 }
 
@@ -393,12 +401,18 @@ void CCamera_Target::Calculate_ShakingOffSet(_float fTimeDelta)
 	if (m_fShakingTime > DBL_EPSILON)
 	{
 		_float fRadian = m_fShakingTimeAcc;
+		if (m_bRandomShaking)
+		{
+			m_vShakingDir = SMath::vRandom(_float3(-1.f, -1.f, -1.f), _float3(1.f, 1.f, 1.f));
+			XMStoreFloat3(&m_vShakingDir, XMVector3Normalize(XMLoadFloat3(&m_vShakingDir)));
+		}
+
 		XMStoreFloat3(&m_vShaking, sinf(fRadian * m_fShakingFrequency*XM_2PI) * m_fShakeRatio * XMLoadFloat3(&m_vShakingDir));
 
 		m_fShakingQuarterFrequency += fTimeDelta;
 		if (m_fShakingQuarterFrequency > 1/(m_fShakingFrequency)*0.5f)
 		{
-			m_fShakeRatio *= 0.5f;
+			m_fShakeRatio *= m_fDecreaseRatio;
 			m_fShakingQuarterFrequency = 0.f;
 		}
 		m_vShakingStartOffSet = m_vShaking;
@@ -416,7 +430,7 @@ void CCamera_Target::Calculate_ShakingOffSet(_float fTimeDelta)
 			//XMStoreFloat3(&m_vShaking, XMVectorLerp(XMLoadFloat3(&m_vShaking), XMVectorSet(0.f, 0.f, 0.f, 0.f), fTimeDelta*fTimeDelta));
 		}
 
-
+		m_bRandomShaking = false;
 	}
 
 
