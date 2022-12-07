@@ -102,12 +102,11 @@ private:
     string                m_szEffectName;
     EFFECTMESH_DESC       m_tEffectMeshDesc;
 
-    _float2               m_vUv;
-
     weak_ptr<CTexture>    m_pColorDiffuseTextureCom;
     weak_ptr<CTexture>    m_pMaskTextureCom;
     weak_ptr<CTexture>    m_pNoiseTextureCom;
-    // weak_ptr<CTexture>    m_pGradientTextureCom;
+
+    _uint m_iNumMeshContainers;
 
     _float                m_fCurrentLifeTime = 0.f;
     _float                m_fCurrentInitTime = 0.f;

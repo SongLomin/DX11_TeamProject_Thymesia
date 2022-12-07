@@ -31,7 +31,6 @@ HRESULT CCustomEffectMesh::Initialize_Prototype()
 
 	m_eRenderGroup = RENDERGROUP::RENDER_ALPHABLEND;
 	m_iPassIndex = 2;
-	m_vUv = { 0.f ,0.f };
 
 	return S_OK;
 }

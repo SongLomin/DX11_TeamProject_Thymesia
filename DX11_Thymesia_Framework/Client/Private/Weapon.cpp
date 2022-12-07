@@ -40,20 +40,15 @@ HRESULT CWeapon::Start()
 
 void CWeapon::Tick(_float fTimeDelta)
 {
-	// 부모 틱 돌면 안됨!!
-
-	//부모 게임 오브젝트가 없음.
 	if (!m_pParentTransformCom.lock() || !m_pTargetBoneNode.lock())
 		return;
 
-	_matrix		ParentMatrix = m_pTargetBoneNode.lock()->Get_CombinedMatrix()
-		* XMLoadFloat4x4(&m_TransformationMatrix);
+	_matrix		ParentMatrix = m_pTargetBoneNode.lock()->Get_CombinedMatrix() * XMLoadFloat4x4(&m_TransformationMatrix);
 
 	ParentMatrix.r[0] = XMVector3Normalize(ParentMatrix.r[0]);
 	ParentMatrix.r[1] = XMVector3Normalize(ParentMatrix.r[1]);
 	ParentMatrix.r[2] = XMVector3Normalize(ParentMatrix.r[2]);
-
-	//무기 오프셋 나중에 캐릭터별로 매개변수로 받아서 처리하자.
+	
 	ParentMatrix = SMath::Go_Right(ParentMatrix, m_vOffset.x);
 	ParentMatrix = SMath::Go_Up(ParentMatrix, m_vOffset.y);
 	ParentMatrix = SMath::Go_Straight(ParentMatrix, m_vOffset.z);
@@ -76,8 +71,8 @@ HRESULT CWeapon::Render()
 	__super::Render();
 
 	_int iPassIndex;
-	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
-	for (_uint i = 0; i < iNumMeshContainers; ++i)
+	
+	for (_uint i(0); i < m_iNumMeshContainers; ++i)
 	{
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 		{
@@ -101,18 +96,14 @@ HRESULT CWeapon::Render()
 		}
 
 		m_pShaderCom.lock()->Begin(iPassIndex);
-
 		m_pModelCom.lock()->Render_Mesh(i);
 	}
-
-	
 
 	return S_OK;
 }
 
 void CWeapon::Init_Weapon(weak_ptr<CModel> In_pModelCom, weak_ptr<CTransform> In_ParentTransformCom, const string& szTargetNode)
 {
-	//m_pModelCom.lock()->Init_Model(In_pModelCom.lock()->Get_ModelKey());
 	m_pParentTransformCom = In_ParentTransformCom;
 	m_pTargetBoneNode = In_pModelCom.lock()->Find_BoneNode(szTargetNode);
 	m_TransformationMatrix = In_pModelCom.lock()->Get_TransformationMatrix();
@@ -249,12 +240,12 @@ void CWeapon::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 
 void CWeapon::OnSetDead()
 {
-	int i = 0;
 }
 
 void CWeapon::Init_Model(const string& strWeaponName, TIMESCALE_LAYER eLayer)
 {
 	m_pModelCom.lock()->Init_Model(strWeaponName.c_str(), "", (_uint)eLayer);
+	m_iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 }
 
 void CWeapon::Free()

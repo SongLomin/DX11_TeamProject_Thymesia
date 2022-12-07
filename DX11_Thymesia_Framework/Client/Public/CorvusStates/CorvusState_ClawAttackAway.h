@@ -11,9 +11,9 @@ class CCorvusState_ClawAttackAway :
     public CCorvusStateBase
 {
 
-    GAMECLASS_H(CCorvusState_ClawAttackAway);
+    GAMECLASS_H(CCorvusState_ClawAttackAway)
     SHALLOW_COPY(CCorvusState_ClawAttackAway)
-        CLONE_H(CCorvusState_ClawAttackAway, CComponent)
+    CLONE_H(CCorvusState_ClawAttackAway, CComponent)
 
 protected:
     virtual HRESULT Initialize_Prototype() override;

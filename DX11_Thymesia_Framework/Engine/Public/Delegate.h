@@ -77,6 +77,16 @@ public:
 		return *this;
 	}
 
+	bool empty()
+	{
+		return functions.empty();
+	}
+
+	size_t size()
+	{
+		return functions.size();
+	}
+
 	iterator begin()
 	{
 		return functions.begin();
@@ -91,11 +101,6 @@ public:
 	{
 		functions.clear();
 	}
-
-	/*_size_t size()
-	{
-		return functions.size();
-	}*/
 
 
 private:
