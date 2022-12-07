@@ -309,15 +309,18 @@ void CCamera_Target::Look_At_Target(_float fTimeDelta)//타겟 고정
 	vPlayerPos.m128_f32[1] = 0.f;
 	_vector vTargetPos = m_pTargetMonsterTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
 	vTargetPos.m128_f32[1] = 0.f;
-	_vector vLookDir = XMVector3Normalize(vTargetPos - vPlayerPos - XMVectorSet(0.f, 1.f, 0.f, 0.f));
+	_vector vLookDir = XMVector3Normalize(vTargetPos - vPlayerPos);
 
 	_vector vRight = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLookDir);
 	_vector vUp = XMVector3Cross(vLookDir, vRight);
 
 	_matrix vLookTargetMatrix;
-	vLookTargetMatrix.r[0] = vRight;
-	vLookTargetMatrix.r[1] = vUp;
-	vLookTargetMatrix.r[2] = vLookDir;
+
+	_matrix RotationMatrix = XMMatrixRotationAxis(vRight, XMConvertToRadians(30.f));
+	
+	vLookTargetMatrix.r[0] = XMVector3TransformNormal(vRight,RotationMatrix);
+	vLookTargetMatrix.r[1] = XMVector3TransformNormal(vUp,RotationMatrix);
+	vLookTargetMatrix.r[2] = XMVector3TransformNormal(vLookDir,RotationMatrix);
 	vLookTargetMatrix.r[3] = vPlayerPos;
 
 	_vector vLookTargetQuaternion = XMQuaternionRotationMatrix(vLookTargetMatrix);
@@ -329,6 +332,7 @@ void CCamera_Target::Look_At_Target(_float fTimeDelta)//타겟 고정
 	_vector vLerpQuaternion = XMQuaternionSlerp(vCurCameraQuaternion, vLookTargetQuaternion, 2.f*fTimeDelta);
 
 	m_pTransformCom.lock()->Rotation_Quaternion(vLerpQuaternion);
+	
 }
 
 void CCamera_Target::Free_MouseMove(_float fTimeDelta)//마우스 움직임
