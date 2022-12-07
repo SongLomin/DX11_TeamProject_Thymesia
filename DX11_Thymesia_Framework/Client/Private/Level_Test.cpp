@@ -39,8 +39,11 @@ HRESULT CLevel_Test::Initialize()
 #ifdef _TEST_STATIC_PROPS_
 	Load_FromJson(m_szDefaultJsonPath + "Test_Level.json", LEVEL::LEVEL_TEST);
 #else
-	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_TEST);
+	//Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_TEST);
 #endif // _TEST_STATIC_PROPS_
+
+	//Load_FromJson(m_szDefaultJsonPath + "Stage_Lv3-1.json", LEVEL::LEVEL_TEST);
+	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_TEST);
 
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
@@ -75,6 +78,9 @@ HRESULT CLevel_Test::Initialize()
 void CLevel_Test::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	if (KEY_INPUT(KEY::M, KEY_STATE::TAP))
+		GET_SINGLE(CGameManager).get()->Respawn_LastCheckPoint();
 
 	if (KEY_INPUT(KEY::CTRL, KEY_STATE::TAP))
 	{
@@ -118,7 +124,6 @@ HRESULT CLevel_Test::Render()
 	if (FAILED(__super::Render()))
 		return E_FAIL;
 
-
 	SetWindowText(g_hWnd, TEXT("Thymesia : TEST"));
 	return S_OK;
 }
@@ -133,6 +138,23 @@ shared_ptr<CLevel_Test> CLevel_Test::Create()
 	return pInstance;
 }
 
+void CLevel_Test::ExitLevel(LEVEL eLevel)
+{
+	if (eLevel == LEVEL::LEVEL_STAGE2)
+	{
+		m_eNextLevel = eLevel;
+
+		FaderDesc tFaderDesc;
+		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+		tFaderDesc.fFadeMaxTime = 1.f;
+		tFaderDesc.fDelayTime = 0.5f;
+		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+		m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
+		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
+	}
+}
 void CLevel_Test::OnEventMessage(_uint iArg)
 {
 	__super::OnEventMessage(iArg);

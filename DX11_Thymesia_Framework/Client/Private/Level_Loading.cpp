@@ -6,7 +6,7 @@
 #include "Level_Edit.h"
 #include "Level_Test.h"
 //#include "Level_Lobby.h"
-//#include "Level_Stage2.h"
+#include "Level_Stage2.h"
 //#include "Level_Stage3.h"
 #include "GameInstance.h"
 #include "UI_Loading.h"
@@ -73,6 +73,7 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 
 	if (true == m_pLoader->is_Finished())
 	{
+
 		if (m_eNextLevel == LEVEL_GAMEPLAY)
 		{
 			m_pUILoading.lock()->Set_Complete();
@@ -133,7 +134,7 @@ void CLevel_Loading::Create_Level()
 		break;
 
 	case LEVEL_STAGE2:
-		//pLevel = CLevel_Stage2::Create();
+		pLevel = CLevel_Stage2::Create();
 		break;
 
 	case LEVEL_STAGE3:

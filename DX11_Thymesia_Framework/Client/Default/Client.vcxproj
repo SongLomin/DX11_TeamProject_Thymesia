@@ -273,6 +273,7 @@
     <ClInclude Include="..\Public\Interaction_Elevator.h" />
     <ClInclude Include="..\Public\Interaction_Ladder.h" />
     <ClInclude Include="..\Public\JoJoParticleShaderManager.h" />
+    <ClInclude Include="..\Public\Level_Stage2.h" />
     <ClInclude Include="..\Public\Level_Test.h" />
     <ClInclude Include="..\Public\MonsterParryingBar.h" />
     <ClInclude Include="..\Public\PhysXCameraController.h">
@@ -422,17 +423,12 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="..\Public\Level_Stage2.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="..\Public\Level_Stage3.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\Light_Prop.h" />
     <ClInclude Include="..\Public\LoadingTextUI.h" />
-    <ClInclude Include="..\Public\Map.h" />
     <ClInclude Include="..\Public\MonsterHPBar_Boss.h" />
     <ClInclude Include="..\Public\MonsterHPBar_Elite.h" />
     <ClInclude Include="..\Public\NorMonStates.h" />
@@ -482,9 +478,6 @@
     <ClInclude Include="..\Public\PreView_Prop.h" />
     <ClInclude Include="..\Public\Prop.h" />
     <ClInclude Include="..\Public\SkyBox.h" />
-    <ClInclude Include="..\Public\Stage1.h" />
-    <ClInclude Include="..\Public\Stage2.h" />
-    <ClInclude Include="..\Public\Stage3.h" />
     <ClInclude Include="..\Public\StateBase.h" />
     <ClInclude Include="..\Public\Static_Instancing_Prop.h" />
     <ClInclude Include="..\Public\Static_Prop.h" />
@@ -603,6 +596,7 @@
     <ClCompile Include="..\Private\Interaction_Elevator.cpp" />
     <ClCompile Include="..\Private\Interaction_Ladder.cpp" />
     <ClCompile Include="..\Private\JoJoParticleShaderManager.cpp" />
+    <ClCompile Include="..\Private\Level_Stage2.cpp" />
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Parry.cpp" />
     <ClCompile Include="..\Private\PhysXCameraController.cpp">
@@ -741,17 +735,12 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\Private\Level_Stage2.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\Private\Level_Stage3.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\Light_Prop.cpp" />
     <ClCompile Include="..\Private\LoadingTextUI.cpp" />
-    <ClCompile Include="..\Private\Map.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\MonsterHPBar_Boss.cpp" />
     <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp" />
@@ -798,9 +787,6 @@
     <ClCompile Include="..\Private\PreView_Prop.cpp" />
     <ClCompile Include="..\Private\Prop.cpp" />
     <ClCompile Include="..\Private\SkyBox.cpp" />
-    <ClCompile Include="..\Private\Stage1.cpp" />
-    <ClCompile Include="..\Private\Stage2.cpp" />
-    <ClCompile Include="..\Private\Stage3.cpp" />
     <ClCompile Include="..\Private\StateBase.cpp" />
     <ClCompile Include="..\Private\Static_Instancing_Prop.cpp" />
     <ClCompile Include="..\Private\Static_Prop.cpp" />

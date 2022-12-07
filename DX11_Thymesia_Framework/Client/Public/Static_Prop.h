@@ -27,6 +27,13 @@ public:
    
 public:
     virtual _bool IsPicking(const RAY& In_Ray, _float& Out_fRange) override;
+    virtual void OnEventMessage(_uint iArg) override;
+
+private:
+    virtual HRESULT SetUp_ShaderResource() override;
+
+    virtual void Load_FromJson(const json& In_Json) override;
+    virtual void Write_Json(json& Out_Json) override;
 
 private:
     weak_ptr<CPhysXCollider>    m_pPhyxXColliderCom;
@@ -35,11 +42,6 @@ private:
     _float                      m_fModelMidOffset;
 
 private:
-    virtual void Write_Json(json& Out_Json) override;
-    virtual void Load_FromJson(const json& In_Json) override;
-
-public:
-    void OnEventMessage(_uint iArg) override;
     void Free();
 };
 

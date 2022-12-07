@@ -102,9 +102,6 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading Prototype Objects..."));
 	GAMEINSTANCE->Add_Prototype_GameObject<CFadeMask>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CCamera_Target>();
-	GAMEINSTANCE->Add_Prototype_GameObject<CStage1>();
-	GAMEINSTANCE->Add_Prototype_GameObject<CStage2>();
-	GAMEINSTANCE->Add_Prototype_GameObject<CStage3>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CCorvus>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CNorMonster>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CTerrain>();
@@ -193,14 +190,23 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
 	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.bEnable = true;
+
 #else // _BRIGHT_LIGHT_
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+	/*LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.4f, 0.4f, 0.4f, 1.f);
-	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
-	LightDesc.vSpecular = _float4(0.5f, 0.5f, 0.5f, 1.f);
+	LightDesc.vDiffuse   = _float4(0.4f, 0.4f, 0.4f, 1.f);
+	LightDesc.vAmbient   = _float4(0.7f, 0.7f, 0.7f, 1.f);
+	LightDesc.vSpecular  = _float4(0.5f, 0.5f, 0.5f, 1.f);
 	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable = true;
+	LightDesc.bEnable    = true;*/
+
+	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+	LightDesc.vDirection = _float4( 1.f, -1.f,  1.f, 0.f);
+	LightDesc.vDiffuse   = _float4( 1.f,  1.f,  1.f, 1.f);
+	LightDesc.vAmbient   = _float4(0.3f, 0.3f, 0.3f, 1.f);
+	LightDesc.vSpecular  = _float4(0.1f, 0.1f, 0.1f, 1.f);
+	LightDesc.vLightFlag = _float4( 1.f,  1.f,  1.f, 1.f);
+	LightDesc.bEnable    = true;
 #endif // _BRIGHT_LIGHT_
 
 	GAMEINSTANCE->Add_Light(LightDesc);
@@ -367,7 +373,6 @@ HRESULT CLoader::Loading_ForStage2Level()
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/GroundInfo/Mesh/ ]"));
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
 
-	CEditGround::Load_AllMeshInfo();
 #endif // _LOAD_CAPTURED_RESOURCE_
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Skybox Texture..."));

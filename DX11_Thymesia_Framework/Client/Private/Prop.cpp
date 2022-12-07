@@ -20,10 +20,11 @@ HRESULT CProp::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
-    m_pModelCom     = Add_Component<CModel>();
-    m_pShaderCom    = Add_Component<CShader>();
-    m_pRendererCom  = Add_Component<CRenderer>();
+    m_pModelCom          = Add_Component<CModel>();
+    m_pShaderCom         = Add_Component<CShader>();
+    m_pRendererCom       = Add_Component<CRenderer>();
 	m_pMaskingTextureCom = Add_Component<CTexture>();
+
 	m_pMaskingTextureCom.lock()->Use_Texture("UVMask");
 
 #ifdef _USE_THREAD_
@@ -87,21 +88,35 @@ void CProp::Custom_Thread1(_float fTimeDelta)
 
 HRESULT CProp::Render()
 {
-    SetUp_ShaderResource();
+	if (FAILED(SetUp_ShaderResource()))
+		return E_FAIL;
 
-    __super::Render();
-
-    return S_OK;
+	return __super::Render();
 }
 
-void CProp::SetUp_ShaderResource()
+void CProp::Write_Json(json& Out_Json)
+{
+	__super::Write_Json(Out_Json);
+
+	Out_Json["Invisibility"] = m_bInvisibility;
+}
+
+void CProp::Load_FromJson(const json& In_Json)
+{
+	__super::Load_FromJson(In_Json);
+
+	if (In_Json.find("Invisibility") != In_Json.end())
+		m_bInvisibility = In_Json["Invisibility"];
+}
+
+HRESULT CProp::SetUp_ShaderResource()
 {
 	if (FAILED(m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
-		return;
+		return E_FAIL;
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
-		return;
+		return E_FAIL;
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4))))
-		return;
+		return E_FAIL;
 
 	_float4 vCamDesc;
 	XMStoreFloat4(&vCamDesc, GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[3]);
@@ -115,11 +130,18 @@ void CProp::SetUp_ShaderResource()
 	m_pShaderCom.lock()->Set_RawValue("g_vPlayerPosition", &vPlayerPos, sizeof(_float4));
 
 	if (FAILED(m_pMaskingTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 92)))
-		return;
+		return E_FAIL;
 
 	_vector	vShaderFlag = { 0.f,0.f,0.f,0.f };
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector))))
-		return;
+		return E_FAIL;
+}
+
+void CProp::SetUp_Invisibility()
+{
+	ImGui::Checkbox("Invisibility", &m_bInvisibility);
+	ImGui::Text("");
+	ImGui::Separator();
 }
 
 void CProp::Free()

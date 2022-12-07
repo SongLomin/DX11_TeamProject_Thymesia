@@ -83,7 +83,6 @@ private:
 protected:
     weak_ptr<CPhysXCollider> m_pPhysXColliderCom;
 
-
 protected:
     list<weak_ptr<CMobWeapon>> m_pWeapons;
     list<weak_ptr<CActorDecor>> m_pActorDecor;

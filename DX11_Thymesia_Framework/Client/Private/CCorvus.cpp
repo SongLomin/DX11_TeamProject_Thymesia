@@ -50,10 +50,12 @@ HRESULT CCorvus::Initialize(void* pArg)
 	GET_SINGLE(CGameManager)->Bind_KeyEvent("Corvus", m_pModelCom, bind(&CCorvus::Call_NextAnimationKey, this, placeholders::_1));
 
 	// Passive Effect ON
-	GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_PassiveFeather", m_pTransformCom, (_uint)TIMESCALE_LAYER::PLAYER);
+	m_EffectIndexList.push_back
+	({
+		"Corvus_PassiveFeather",
+		GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_PassiveFeather", m_pTransformCom, (_uint)TIMESCALE_LAYER::PLAYER)
+	});
 
-	// TODO : test for boner
-	GET_SINGLE(CGameManager)->Use_EffectGroup("TestBoner", m_pTransformCom, (_uint)TIMESCALE_LAYER::PLAYER);
 #endif // _CORVUS_EFFECT_
 	//USE_START(CCorvus);
 	return S_OK;
@@ -358,14 +360,12 @@ void CCorvus::OnBattleEnd()
 
 void CCorvus::OnEnable(void* pArg)
 {
+	__super::OnEnable(pArg);
 }
 
 void CCorvus::OnDisable()
 {
-}
-
-void CCorvus::OnDestroy()
-{
+	__super::OnDisable();
 }
 
 void CCorvus::Free()

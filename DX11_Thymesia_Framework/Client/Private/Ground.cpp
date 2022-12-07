@@ -82,30 +82,10 @@ HRESULT CGround::Render()
 	return S_OK;
 }
 
-void CGround::Write_Json(json& Out_Json)
-{
-	json TexInfo;
-
-	for (auto& iter : m_pTextureDescs)
-	{
-		json Texture;
-
-		Texture.emplace("Diff", iter.second.pDiffTex.lock()->Get_TextureKey());
-		Texture.emplace("Norm", iter.second.pNormTex.lock()->Get_TextureKey());
-		Texture.emplace("Density", iter.second.fDensity);
-		TexInfo.emplace(iter.first, Texture);
-	}
-
-	Out_Json.emplace("TextureInfo", TexInfo);
-
-	Out_Json.emplace("g_FilterTexture", string(m_pFilterTextureCom.lock()->Get_TextureKey()));
-	Out_Json.emplace("VIBufferCom", m_szModelName);
-	Out_Json.emplace("ShaderPass", m_iShaderPath);
-
-}
-
 void CGround::Load_FromJson(const json& In_Json)
 {
+	__super::Load_FromJson(In_Json);
+
 	if (In_Json.find("TextureInfo") != In_Json.end())
 	{
 		json TexInfo = In_Json["TextureInfo"];
@@ -181,8 +161,6 @@ void CGround::Load_FromJson(const json& In_Json)
 
 HRESULT CGround::SetUp_ShaderResource()
 {
-	//CallBack_Bind_SRV(m_pShaderCom, "");
-
 	if (FAILED(m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
 		return E_FAIL;
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW)), sizeof(_float4x4))))

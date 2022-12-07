@@ -346,6 +346,7 @@ void CEditSetActor::View_Picking_List()
 		}
 	}
 }
+
 void CEditSetActor::View_SelectTransformInfo()
 {
 	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditSetActor).hash_code());

@@ -256,9 +256,41 @@ void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
 			continue;
 		}
 
-		else if (typeid(CEditMapCollider).hash_code() == TempDesc.HashCode ||
-			     typeid(CEditSetActor).hash_code()    == TempDesc.HashCode)
+		else if (typeid(CStatic_Prop).hash_code()            == TempDesc.HashCode ||
+			     typeid(CDynamic_Prop).hash_code()           == TempDesc.HashCode ||
+				 typeid(CLight_Prop).hash_code()             == TempDesc.HashCode ||
+				 typeid(CInteraction_Door).hash_code()       == TempDesc.HashCode ||
+				 typeid(CInteraction_CheckPoint).hash_code() == TempDesc.HashCode ||
+				 typeid(CInteraction_Elevator).hash_code()   == TempDesc.HashCode ||
+				 typeid(CInteraction_Ladder).hash_code()     == TempDesc.HashCode)
+		{
+			weak_ptr<CGameObject> pNewGameObject = GAMEINSTANCE->Add_GameObject(TempDesc.HashCode, LEVEL::LEVEL_EDIT);
+			pNewGameObject.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
+			pNewGameObject.lock()->Load_FromJson(Elem_GameObject);
+
+			auto iter_find = m_pObjGroup.find(typeid(CEditGroupProp).hash_code());
+
+			if (iter_find == m_pObjGroup.end())
+			{
+				vector<GAMEOBJECT_DESC> List;
+				List.push_back({ TempDesc.HashCode, TempDesc.TypeName, pNewGameObject });
+
+				m_pObjGroup[typeid(CEditGroupProp).hash_code()] = List;
+			}
+			else
+			{
+				iter_find->second.push_back({ TempDesc.HashCode, TempDesc.TypeName, pNewGameObject });
+			}
+
 			continue;
+		}
+
+		else if (typeid(CEditMapCollider).hash_code() == TempDesc.HashCode ||
+			     typeid(CEditSetActor).hash_code()    == TempDesc.HashCode ||
+			     typeid(CEditGroupProp).hash_code()   == TempDesc.HashCode)
+		{
+			continue;
+		}
 
 		Call_Add_GameObject_Internal(TempDesc.HashCode, TempDesc.TypeName.c_str());
 		m_pGameObjects.back().pInstance.lock()->Set_Enable(Elem_GameObject["Setting"]["Enable"]);
@@ -282,6 +314,16 @@ void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
 		GAMEOBJECT_DESC TempDesc;
 		TempDesc.HashCode = typeid(CEditSetActor).hash_code();
 		TempDesc.TypeName = typeid(CEditSetActor).name();
+
+		Call_Add_GameObject_Internal(TempDesc.HashCode, TempDesc.TypeName.c_str());
+		m_pGameObjects.back().pInstance.lock()->Set_Enable(true);
+	}
+
+	if (m_pObjGroup.end() != m_pObjGroup.find(typeid(CEditGroupProp).hash_code()))
+	{
+		GAMEOBJECT_DESC TempDesc;
+		TempDesc.HashCode = typeid(CEditGroupProp).hash_code();
+		TempDesc.TypeName = typeid(CEditGroupProp).name();
 
 		Call_Add_GameObject_Internal(TempDesc.HashCode, TempDesc.TypeName.c_str());
 		m_pGameObjects.back().pInstance.lock()->Set_Enable(true);

@@ -62,7 +62,7 @@ void CWindow_ComponentView::Draw_Components()
 
 	PICKED_GAMEOBJECT->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW);
 
-	if (ImGui::CollapsingHeader("GameObject Setting"), ImGuiTreeNodeFlags_DefaultOpen)
+	if (ImGui::CollapsingHeader("GameObject Setting"))
 	{
 		if (ImGui::Button("Delete Object"))
 		{
@@ -103,7 +103,7 @@ void CWindow_ComponentView::Draw_Components()
 		if (bSelect_ActivateHotkey)
 			TransformComponent_PickingAction(pTransformCom);
 
-		if (ImGui::CollapsingHeader("Transform Component"), ImGuiTreeNodeFlags_DefaultOpen)
+		if (ImGui::CollapsingHeader("Transform Component"))
 		{
 			ImGui::Checkbox("Trasnfrom HotKey", &bSelect_ActivateHotkey);
 
@@ -158,7 +158,7 @@ void CWindow_ComponentView::Draw_Components()
 	{
 		if (typeid(CInteraction_Ladder).hash_code() != m_tPickedGameObjectDesc.HashCode)
 		{
-			if (ImGui::CollapsingHeader("CModel Component"), ImGuiTreeNodeFlags_DefaultOpen)
+			if (ImGui::CollapsingHeader("CModel Component"))
 			{
 				ImGui::Text("[ Model List ]");
 				ImGui::Text(string("Select MD : " + string(pModel.lock()->Get_ModelKey())).c_str());

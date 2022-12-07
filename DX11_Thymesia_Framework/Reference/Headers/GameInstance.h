@@ -174,7 +174,7 @@ public: /* For.Collision_Manager */
 public: /* For.Light_Manager */
 	const LIGHTDESC& Get_LightDesc(_uint iIndex) const;
 	void Set_LightDesc(const LIGHTDESC& LightDesc);
-	_uint Add_Light(const LIGHTDESC& LightDesc); 
+	const LIGHTDESC& Add_Light(const LIGHTDESC& LightDesc);
 	_bool Remove_Light(const _uint& iIndex);
 
 public: /* For.Frustum */

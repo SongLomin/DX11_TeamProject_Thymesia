@@ -61,12 +61,6 @@
     <ClInclude Include="..\Public\Prop.h">
       <Filter>02. GameObject\04. Prop</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Stage1.h">
-      <Filter>02. GameObject\04. Prop\00. Map\00. Stage1_Map</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Map.h">
-      <Filter>02. GameObject\04. Prop\00. Map</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Window_ComponentView.h">
       <Filter>97. Tool\00. IMGUI\Windows\01. SceneEditer\02. Component</Filter>
     </ClInclude>
@@ -139,17 +133,8 @@
     <ClInclude Include="..\Public\EditNaviMesh.h">
       <Filter>02. GameObject\99. Other\02. EditNaviMesh</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Stage2.h">
-      <Filter>02. GameObject\04. Prop\00. Map\01. Stage2_Map</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Stage3.h">
-      <Filter>02. GameObject\04. Prop\00. Map\02. Stage3_Map</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\SkyBox.h">
       <Filter>02. GameObject\09. SkyBox</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\Level_Stage2.h">
-      <Filter>01. ClientLevel\03. Stage2</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Stage3.h">
       <Filter>01. ClientLevel\04. Stage3</Filter>
@@ -841,21 +826,6 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_Fall_Attack.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\14.CorvusState_Climb_Fall_Attack</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_NorSwordLV2.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\01.Talent_Effect_NorSwordLV2</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidThrustLV1.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\04.Talent_Effect_AvoidThrustLV1</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV1.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\02.Talent_Effect_AvoidSlashLV1</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV2.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\03.Talent_Effect_AvoidSlashLV2</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidThrustLV2.h">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\05.Talent_Effect_AvoidThrustLV2</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\UI_DamageFont.h" />
     <ClInclude Include="..\Public\UI_ScriptQueue.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidSlash.h">
@@ -966,6 +936,14 @@
     <ClInclude Include="..\Public\Interaction_Ladder.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV1.h" />
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV2.h" />
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidThrustLV2.h" />
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_NorSwordLV2.h" />
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidThrustLV1.h" />
+    <ClInclude Include="..\Public\Level_Stage2.h">
+      <Filter>01. ClientLevel\03. Stage2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1012,12 +990,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Prop.cpp">
       <Filter>02. GameObject\04. Prop</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Stage1.cpp">
-      <Filter>02. GameObject\04. Prop\00. Map\00. Stage1_Map</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Map.cpp">
-      <Filter>02. GameObject\04. Prop\00. Map</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Window_ComponentView.cpp">
       <Filter>97. Tool\00. IMGUI\Windows\01. SceneEditer\02. Component</Filter>
@@ -1085,17 +1057,8 @@
     <ClCompile Include="..\Private\EditNaviMesh.cpp">
       <Filter>02. GameObject\99. Other\02. EditNaviMesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Stage2.cpp">
-      <Filter>02. GameObject\04. Prop\00. Map\01. Stage2_Map</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Stage3.cpp">
-      <Filter>02. GameObject\04. Prop\00. Map\02. Stage3_Map</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\SkyBox.cpp">
       <Filter>02. GameObject\09. SkyBox</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Level_Stage2.cpp">
-      <Filter>01. ClientLevel\03. Stage2</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Stage3.cpp">
       <Filter>01. ClientLevel\04. Stage3</Filter>
@@ -1854,21 +1817,6 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_Fall_Attack.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\14.CorvusState_Climb_Fall_Attack</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_NorSwordLV2.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\01.Talent_Effect_NorSwordLV2</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV1.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\02.Talent_Effect_AvoidSlashLV1</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidThrustLV1.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\04.Talent_Effect_AvoidThrustLV1</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV2.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\03.Talent_Effect_AvoidSlashLV2</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidThrustLV2.cpp">
-      <Filter>02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\05.Talent_Effect_AvoidThrustLV2</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\UI_DamageFont.cpp" />
     <ClCompile Include="..\Private\UI_Script.cpp" />
     <ClCompile Include="..\Private\UI_ScriptQueue.cpp" />
@@ -1979,6 +1927,14 @@
     <ClCompile Include="..\Private\Interaction_Ladder.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV1.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV2.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidThrustLV2.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_NorSwordLV2.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidThrustLV1.cpp" />
+    <ClCompile Include="..\Private\Level_Stage2.cpp">
+      <Filter>01. ClientLevel\03. Stage2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -2087,18 +2043,6 @@
     </Filter>
     <Filter Include="02. GameObject\04. Prop">
       <UniqueIdentifier>{37ef6a25-ef8c-49c6-b632-dc8c8a6240a1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\04. Prop\00. Map">
-      <UniqueIdentifier>{ea0eaaa8-1686-46a3-9112-ab37840d1fbe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\04. Prop\00. Map\00. Stage1_Map">
-      <UniqueIdentifier>{fc7e4ed8-6e33-4640-9564-da4065ee9037}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\04. Prop\00. Map\01. Stage2_Map">
-      <UniqueIdentifier>{b52b4238-f1cb-4085-8b2a-cc1c3a49bb65}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\04. Prop\00. Map\02. Stage3_Map">
-      <UniqueIdentifier>{28f5080e-d4d9-4cbd-920a-2b5518befb34}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\06. WorldUI">
       <UniqueIdentifier>{b7e8f8a1-eeb4-4a72-8ff4-7fc18d9326e2}</UniqueIdentifier>

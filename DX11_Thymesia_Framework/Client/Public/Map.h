@@ -25,7 +25,7 @@ public:
     virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix) override;
 
 protected:
-    virtual void SetUp_ShaderResource() override;
+    virtual HRESULT SetUp_ShaderResource() override;
 
 protected:
     weak_ptr<CNavigation> m_pNaviMeshCom;

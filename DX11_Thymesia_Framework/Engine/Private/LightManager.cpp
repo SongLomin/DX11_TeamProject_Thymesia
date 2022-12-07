@@ -19,7 +19,6 @@ const LIGHTDESC& CLight_Manager::Get_LightDesc(_uint iIndex) const
 
 void CLight_Manager::Set_LightDesc(const LIGHTDESC& LightDesc)
 {
-
 	for (auto& elem : m_pLights)
 	{
 		if (LightDesc.Get_LightIndex() == elem->Get_LightDesc().Get_LightIndex())
@@ -30,11 +29,11 @@ void CLight_Manager::Set_LightDesc(const LIGHTDESC& LightDesc)
 	}
 }
 
-_uint CLight_Manager::Add_Light(const LIGHTDESC& LightDesc)
+const LIGHTDESC& CLight_Manager::Add_Light(const LIGHTDESC& LightDesc)
 {
 	m_pLights.push_back(CCustomLight::Create(LightDesc));
 
-	return m_pLights.back()->Get_LightDesc().Get_LightIndex();
+	return m_pLights.back()->Get_LightDesc();
 }
 
 _bool CLight_Manager::Remove_Light(const _uint& iIndex)

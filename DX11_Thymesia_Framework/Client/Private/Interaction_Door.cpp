@@ -33,6 +33,8 @@ HRESULT CInteraction_Door::Initialize(void* pArg)
         VTXMODEL_DECLARATION::iNumElements
     );
 
+    GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_StaticCast<CGameObject>(m_this));
+
     return S_OK;
 }
 
@@ -44,38 +46,18 @@ HRESULT CInteraction_Door::Start()
 void CInteraction_Door::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
-
-    if (m_ActionFlag & ACTION_FLAG::ACTIVATE)
-    {
-        m_fAddRadian += fTimeDelta * m_fRotationtSpeed;
-
-        _float fDir = (0.f == m_fRotationtSpeed) ? (1.f) : (m_fRotationtSpeed / abs(m_fRotationtSpeed));
-
-        if (m_ActionFlag & ACTION_FLAG::ROTATION)
-            m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 1.f), ((m_fFirstRadian + (m_fAddRadian))));
-        else
-            m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 1.f), ((m_fFirstRadian + (m_fRotationtRadian * fDir)) - (m_fAddRadian)));
-
-        if (m_fRotationtRadian <= fabs(m_fAddRadian))
-        {
-            m_ActionFlag  ^= ACTION_FLAG::ROTATION;
-            m_ActionFlag  ^= ACTION_FLAG::ACTIVATE;
-            m_bOnceAct      = false;
-            m_fAddRadian    = 0.f;
-        }
-    }
 }
 
 void CInteraction_Door::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
+
+    m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
 }
 
 HRESULT CInteraction_Door::Render()
 {
-    SetUp_ShaderResource();
-
-    return S_OK;
+    return __super::Render();
 }
 
 void CInteraction_Door::OnEventMessage(_uint iArg)
@@ -92,6 +74,8 @@ void CInteraction_Door::OnEventMessage(_uint iArg)
         case EVENT_TYPE::ON_EDITDRAW:
         {
             m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+
+            SetUp_Invisibility();
 
             ImGui::DragFloat("Rotation Speed ", &m_fRotationtSpeed);
             ImGui::DragFloat("Rotation Radian", &m_fRotationtRadian);
@@ -168,46 +152,58 @@ void CInteraction_Door::Load_FromJson(const json& In_Json)
         SetUpColliderDesc(fDefaultDesc);
     }
 
-
     m_fFirstRadian = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(m_pTransformCom.lock()->Get_WorldMatrix())).y;
-    m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
 
     if ("" == string(m_pModelCom.lock()->Get_ModelKey()))
         m_pModelCom.lock()->Init_Model("Door01_05", "");
+
+    m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
+    PhysXColliderDesc tDesc;
+    Preset::PhysXColliderDesc::ConvexStaticPropSetting(tDesc, m_pTransformCom);
+    m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
+    m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
+}
+
+void CInteraction_Door::Act_OpenDoor(_float fTimeDelta, _bool& Out_IsEnd)
+{
+    m_fAddRadian += fTimeDelta * m_fRotationtSpeed;
+
+    _float fDir = (0.f == m_fRotationtSpeed) ? (1.f) : (m_fRotationtSpeed / abs(m_fRotationtSpeed));
+    m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 1.f), ((m_fFirstRadian + (m_fAddRadian))));
+
+    if (m_fRotationtRadian <= fabs(m_fAddRadian))
+    {
+        m_ActionFlag ^= ACTION_FLAG::ROTATION;
+        Out_IsEnd     = true;
+        m_fAddRadian  = 0.f;
+
+        Callback_ActEnd();
+    }
+}
+
+void CInteraction_Door::Act_CloseDoor(_float fTimeDelta, _bool& Out_IsEnd)
+{
+    m_fAddRadian += fTimeDelta * m_fRotationtSpeed;
+
+    _float fDir = (0.f == m_fRotationtSpeed) ? (1.f) : (m_fRotationtSpeed / abs(m_fRotationtSpeed));
+    m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 1.f), ((m_fFirstRadian + (m_fRotationtRadian * fDir)) - (m_fAddRadian)));
+
+    if (m_fRotationtRadian <= fabs(m_fAddRadian))
+    {
+        m_ActionFlag ^= ACTION_FLAG::ROTATION;
+        Out_IsEnd     = true;
+        m_fAddRadian  = 0.f;
+
+        Callback_ActEnd();
+    }
 }
 
 void CInteraction_Door::Act_Interaction()
 {
-    m_ActionFlag |= ACTION_FLAG::ACTIVATE;
-}
-
-void CInteraction_Door::SetUp_ShaderResource()
-{
-    __super::SetUp_ShaderResource();
-
-    _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
-    for (_uint i = 0; i < iNumMeshContainers; ++i)
-    {
-        m_iPassIndex = 3;
-
-        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-            return;
-
-        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-        {
-            m_iPassIndex = 0;
-        }
-        else
-        {
-            /*if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-                m_iPassIndex = 6;
-            else
-                m_iPassIndex = 7;*/
-        }
-
-        m_pShaderCom.lock()->Begin(m_iPassIndex);
-        m_pModelCom.lock()->Render_Mesh(i);
-    }
+    if (m_ActionFlag & ACTION_FLAG::ROTATION)
+        Callback_ActUpdate += bind(&CInteraction_Door::Act_OpenDoor, this, placeholders::_1, placeholders::_2);
+    else
+        Callback_ActUpdate += bind(&CInteraction_Door::Act_CloseDoor, this, placeholders::_1, placeholders::_2);
 }
 
 void CInteraction_Door::SetUpColliderDesc(_float* _pColliderDesc)

@@ -109,8 +109,8 @@ private:
     _float                              m_fBufferPower        = 1.f;
     string                              m_szMeshName          = "";
 
-    BRUSH_MODE                          m_eBrushMode        = BRUSH_MODE::BRUSH_NO1;
-    string                              m_szSaveTextureTag  = "";
+    BRUSH_MODE                          m_eBrushMode          = BRUSH_MODE::BRUSH_NO1;
+    string                              m_szSaveTextureTag    = "";
     ComPtr<ID3D11Texture2D>             m_pTexture2D;
     ComPtr<ID3D11ShaderResourceView>    m_pFilterTexture;
     vector<_uint>                       m_vColors;

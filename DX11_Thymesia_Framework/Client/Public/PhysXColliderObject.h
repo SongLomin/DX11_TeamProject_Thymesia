@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 class CPhysXCollider;
-class CVIBuffer_DynamicCube;
+class CVIBuffer_Cube;
 class CShader;
 class CRenderer;
 END
@@ -28,14 +28,12 @@ private:
     virtual _bool IsPicking(const RAY& In_Ray, _float& Out_fRange) override;
 
 private:
-    weak_ptr<CPhysXCollider>            m_pPhysXColliderCom;
-
-private: /* For. Edit */
-    weak_ptr<CVIBuffer_DynamicCube>     m_pVIBufferCom;
-    weak_ptr<CShader>                   m_pShaderCom;
-    weak_ptr<CRenderer>                 m_pRendererCom;
-    _bool                               m_bViewPhysXInfo = false;
-    _float4                             m_vColor = { 1.f, 0.f, 0.f, 1.f };
+    weak_ptr<CPhysXCollider>     m_pPhysXColliderCom;
+    weak_ptr<CVIBuffer_Cube>     m_pVIBufferCom;
+    weak_ptr<CShader>            m_pShaderCom;
+    weak_ptr<CRenderer>          m_pRendererCom;
+    _bool                        m_bViewPhysXInfo = false;
+    _float4                      m_vColor = { 1.f, 0.f, 0.f, 1.f };
 
 public:
     virtual void Write_Json(json& Out_Json) override;

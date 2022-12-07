@@ -20,8 +20,7 @@ class CInteraction_Door final :
 private:
     enum ACTION_FLAG
     {
-        ACTIVATE = ( 1 << 0 ), // 1
-        ROTATION = ( 1 << 1 ), // 2
+        ROTATION = ( 1 << 0 ), // 1
     };
 
 public:
@@ -30,7 +29,11 @@ public:
     virtual HRESULT Start() override;
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
-    virtual HRESULT Render() override; 
+    virtual HRESULT Render() override;
+    
+private:
+    void Act_OpenDoor(_float fTimeDelta, _bool& Out_IsEnd);
+    void Act_CloseDoor(_float fTimeDelta, _bool& Out_IsEnd);
 
 public:
     virtual void Act_Interaction() override;
@@ -40,8 +43,6 @@ public:
 
     virtual void Write_Json(json& Out_Json) override;
     virtual void Load_FromJson(const json& In_Json) override;
-
-    virtual void SetUp_ShaderResource() override;
 
 private:
     void    SetUpColliderDesc(_float* _pColliderDesc);

@@ -4,6 +4,7 @@
 
 BEGIN(Client)
 class CUI_PauseMenu;
+
 class CLevel_GamePlay final : public CClientLevel
 {
 public:
@@ -17,7 +18,6 @@ public:
 	static shared_ptr<CLevel_GamePlay> Create();
 
 	virtual void ExitLevel(LEVEL eLevel);
-
 
 private:
 	virtual void OnEventMessage(_uint iArg) override;

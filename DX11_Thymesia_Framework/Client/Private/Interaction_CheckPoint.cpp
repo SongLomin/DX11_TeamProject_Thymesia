@@ -8,8 +8,10 @@
 #include "Texture.h"
 #include "Collider.h"
 #include "UI_Landing.h"
+
 #include "GameInstance.h"
 #include "ClientLevel.h"
+#include "GameManager.h"
 
 GAMECLASS_C(CInteraction_CheckPoint);
 CLONE_C(CInteraction_CheckPoint, CGameObject);
@@ -54,36 +56,8 @@ void CInteraction_CheckPoint::LateTick(_float fTimeDelta)
 
 HRESULT CInteraction_CheckPoint::Render()
 {
-    SetUp_ShaderResource();
-
-
-    _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
-    for (_uint i = 0; i < iNumMeshContainers; ++i)
-    {
-        m_iPassIndex = 3;
-
-        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-            return E_FAIL;
-
-        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-        {
-            m_iPassIndex = 0;
-        }
-        else
-        {
-            /* if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-                 m_iPassIndex = 6;
-             else
-                 m_iPassIndex = 7;*/
-        }
-
-        m_pShaderCom.lock()->Begin(m_iPassIndex);
-        m_pModelCom.lock()->Render_Mesh(i);
-    }
-
-    return S_OK;
+    return __super::Render();
 }
-
 void CInteraction_CheckPoint::OnEventMessage(_uint iArg)
 {
     switch ((EVENT_TYPE)iArg)
@@ -110,6 +84,8 @@ void CInteraction_CheckPoint::OnEventMessage(_uint iArg)
                 m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
                 m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
             }
+
+            ImGui::InputInt("CheckIndex", &m_iCheckIndex);
         }
         break;
     }
@@ -122,11 +98,23 @@ void CInteraction_CheckPoint::Write_Json(json& Out_Json)
 
     auto iter = Out_Json["Component"].find("Model");
     Out_Json["Component"].erase(iter);
+
+    Out_Json["CheckIndex"] = m_iCheckIndex;
 }
 
 void CInteraction_CheckPoint::Load_FromJson(const json& In_Json)
 {
     __super::Load_FromJson(In_Json);
+
+    if (In_Json.end() != In_Json.find("CheckIndex"))
+    {
+        m_iCheckIndex = In_Json["CheckIndex"];
+
+        if (0 == m_iCheckIndex)
+            GET_SINGLE(CGameManager).get()->Registration_CheckPoint(Weak_Cast<CInteraction_CheckPoint>(m_this));
+    }
+
+
 
     SetUpColliderDesc();
 }
@@ -134,13 +122,8 @@ void CInteraction_CheckPoint::Load_FromJson(const json& In_Json)
 void CInteraction_CheckPoint::Act_Interaction()
 {
     GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front().lock()->Call_Landing(CUI_Landing::LANDING_BECONFOUND);
-   // Weak_StaticCast<CClientLevel>(GAMEINSTANCE->Get_CurrentLevel()).lock()->Call_Enable_EvolveMenu();
-}
 
-void CInteraction_CheckPoint::SetUp_ShaderResource()
-{
-    __super::SetUp_ShaderResource();
-
+    GET_SINGLE(CGameManager).get()->Registration_CheckPoint(Weak_Cast<CInteraction_CheckPoint>(m_this));
 }
 
 void CInteraction_CheckPoint::SetUpColliderDesc()

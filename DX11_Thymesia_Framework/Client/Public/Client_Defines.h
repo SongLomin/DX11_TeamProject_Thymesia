@@ -12,7 +12,7 @@
 
 #pragma region System
 // #define		_ONLY_UI_
-// #define		_BAKE_MIPMAPS_
+//#define		_BAKE_MIPMAPS_
 #define		_USE_THREAD_
 #define		_144HZ_
 #define		_RENDER_FPS_
@@ -38,7 +38,7 @@
 #pragma endregion // Map
 
 #pragma region Tool
-// #define _MAP_TOOL_
+#define _MAP_TOOL_
 #define _EFFECT_TOOL_
 #pragma endregion // Tool
 

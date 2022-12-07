@@ -510,7 +510,7 @@ void CGameInstance::Set_LightDesc(const LIGHTDESC& LightDesc)
 	m_pLight_Manager->Set_LightDesc(LightDesc);
 }
 
-_uint CGameInstance::Add_Light(const LIGHTDESC& LightDesc)
+const LIGHTDESC& CGameInstance::Add_Light(const LIGHTDESC& LightDesc)
 {
 	return m_pLight_Manager->Add_Light(LightDesc);
 }
