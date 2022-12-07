@@ -33,9 +33,7 @@ void CCorvusState_ClawAttackAway::Start()
 void CCorvusState_ClawAttackAway::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
-
 	if (KEY_INPUT(KEY::N, KEY_STATE::TAP))
 	{
 		if (m_fDebugAnimationSpeed < 0.5f)
@@ -61,13 +59,10 @@ void CCorvusState_ClawAttackAway::Call_AnimationEnd()
 		return;
 
 	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
-
 }
 
 void CCorvusState_ClawAttackAway::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 {
-
-
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	m_pModelCom.lock()->Set_AnimationSpeed(2.5f);
@@ -113,8 +108,6 @@ void CCorvusState_ClawAttackAway::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	}
 }
 
-
-
 void CCorvusState_ClawAttackAway::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
@@ -134,7 +127,6 @@ void CCorvusState_ClawAttackAway::OnStateStart(const _float& In_fAnimationBlendT
 
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
-	//m_iAttackIndex = 7;
 
 	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
 
@@ -205,12 +197,8 @@ void CCorvusState_ClawAttackAway::Free()
 
 _bool CCorvusState_ClawAttackAway::Check_AndChangeNextState()
 {
-	if (!Check_Requirement())
+	if (!CPlayerStateBase::Check_Requirement())
 		return false;
-
-
-
-
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
@@ -232,8 +220,6 @@ _bool CCorvusState_ClawAttackAway::Check_AndChangeNextState()
 		}
 	}
 
-
-
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
 		if (Check_RequirementParryState())
@@ -254,26 +240,16 @@ _bool CCorvusState_ClawAttackAway::Check_AndChangeNextState()
 		}
 	}
 
-
-
-
-
-
 	return false;
 }
 
 _bool CCorvusState_ClawAttackAway::Check_RequirementNextAttackState()
 {
-
 	_uint iTargetKeyFrameFirst = 15;
 	_uint iTargetKeyFrameSecond = 50;
 
-
-
 	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameFirst, iTargetKeyFrameSecond) && m_IsNextAttack)
-	{
 		return true;
-	}
 
 	return false;
 }
@@ -283,15 +259,8 @@ _bool CCorvusState_ClawAttackAway::Check_RuquireMnetFirstAttackState()
 	_uint iTargetKeyFrameMin = 51;
 	_uint iTargetKeyFrameMax = 80;
 
-
-
 	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameMin, iTargetKeyFrameMax) && m_IsNextAttack)
-	{
 		return true;
-	}
-
-
 
 	return false;
 }
-
