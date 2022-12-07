@@ -474,7 +474,7 @@ HRESULT CRender_Manager::Set_MotionBlur(const _float In_fBlurScale)
 HRESULT CRender_Manager::Add_MotionBlur(const _float In_fBlurScale)
 {
 	m_fBlurWitdh += In_fBlurScale;
-	m_fBlurWitdh = max(0.f, m_fBlurWitdh);
+	m_fBlurWitdh = min(1.f,max(0.f, m_fBlurWitdh));
 
 	return S_OK;
 }
@@ -498,6 +498,7 @@ HRESULT CRender_Manager::Add_Chromatic(const _float In_fChormaticStrangth)
 HRESULT CRender_Manager::Set_RadialBlur(const _float In_fRadialBlurStength, _float3 In_vBlurWorldPosition)
 {
 	m_fRadialBlurStrength = In_fRadialBlurStength;
+	m_fRadialBlurStrengthAcc = In_fRadialBlurStength;
 	m_vRadialBlurWorldPos = In_vBlurWorldPosition;
 
 	return S_OK;
@@ -505,7 +506,8 @@ HRESULT CRender_Manager::Set_RadialBlur(const _float In_fRadialBlurStength, _flo
 
 HRESULT CRender_Manager::Add_RedialBlur(const _float In_fRadialBlurStrength)
 {
-	m_fRadialBlurStrength = max(0.f, In_fRadialBlurStrength);
+	m_fRadialBlurStrengthAcc += In_fRadialBlurStrength;
+	m_fRadialBlurStrengthAcc = max(0.f, In_fRadialBlurStrength);
 
 	return S_OK;
 }
@@ -1455,20 +1457,30 @@ HRESULT CRender_Manager::PostProcessing()
 	m_pPostProcessingShader->Set_RawValue("g_fRadialBlurStrength", &m_fRadialBlurStrength, sizeof(_float));
 
 	
-	_float fLerpValue = 0.f;
+	_float fChromaticLerpValue = 0.f;
 	if (0.f < m_fChromaticStrengthAcc)
 	{
 		_vector vLerp = XMVectorSet(m_fChromaticStrangth, 0.f, 0.f, 0.f);
 		vLerp = CEasing_Utillity::CubicOut(XMVectorSet(0.f, 0.f, 0.f, 0.f), vLerp, m_fChromaticStrengthAcc, m_fChromaticStrangth);
-		fLerpValue = vLerp.m128_f32[0];
+		fChromaticLerpValue = vLerp.m128_f32[0];
 	}
-	
 
-	m_pPostProcessingShader->Set_RawValue("g_fChromaticStrength", &fLerpValue, sizeof(_float));//chromatic 전용
+	_float fRadialLerpValue = 0.f;
+	if (0.f < m_fChromaticStrengthAcc)
+	{
+		_vector vLerp = XMVectorSet(m_fChromaticStrangth, 0.f, 0.f, 0.f);
+		vLerp = CEasing_Utillity::CubicOut(XMVectorSet(0.f, 0.f, 0.f, 0.f), vLerp, m_fChromaticStrengthAcc, m_fChromaticStrangth);
+		fRadialLerpValue = vLerp.m128_f32[0];
+	}
+
+	fRadialLerpValue = 0.04f;
+
+	m_pPostProcessingShader->Set_RawValue("g_fChromaticStrength", &fChromaticLerpValue, sizeof(_float));//chromatic 전용
 
 	m_pPostProcessingShader->Set_RawValue("g_fMotionBlurStrength", &m_fBlurWitdh, sizeof(_float));//MotionBlur 전용
 	m_pPostProcessingShader->Set_RawValue("g_PreCamViewMatrix", &XMMatrixTranspose(XMLoadFloat4x4(&pPipeLine->Get_PreViewMatrix())), sizeof(_float4x4));
 
+	m_pPostProcessingShader->Set_RawValue("g_fRadialBlurStrength", &fRadialLerpValue, sizeof(_float));//RadialBlur 전용
 	m_pPostProcessingShader->Set_RawValue("g_vBlurWorldPosition", &m_vRadialBlurWorldPos, sizeof(_float3));//RadialBlur 전용
 	m_pPostProcessingShader->Set_RawValue("g_CameraViewMatrix", &XMMatrixTranspose(CamViewMatrix), sizeof(_float4x4));//RadialBlur 전용
 

@@ -110,6 +110,7 @@ private:
 	_float		m_fChromaticStrangth = 0.f;
 
 	_float		m_fRadialBlurStrength = 0.f;
+	_float		m_fRadialBlurStrengthAcc = 0.f;
 	_float3		m_vRadialBlurWorldPos = { 0.f,0.f,0.f };
 	_bool		m_bFirst = true;
 
