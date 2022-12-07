@@ -107,12 +107,6 @@ _bool CVargBossState_SPA_Roar_Getup::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
-	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Roar_Getup>(0.05f);
-		return true;
-	}
-
 	return false;
 }
 

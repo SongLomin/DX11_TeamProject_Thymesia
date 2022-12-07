@@ -80,7 +80,7 @@ void CVargBossState_Attack1a::OnStateStart(const _float& In_fAnimationBlendTime)
 	cout << "VargState: Attack1a -> OnStateStart" << endl;
 #endif
 #endif
-	m_pModelCom.lock()->Set_AnimationSpeed(1.3f);
+	
 
 }
 
@@ -88,7 +88,7 @@ void CVargBossState_Attack1a::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+
 }
 
 

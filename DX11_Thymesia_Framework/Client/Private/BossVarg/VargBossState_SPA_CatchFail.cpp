@@ -35,7 +35,7 @@ void CVargBossState_SPA_CatchFail::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_SPAttack1_Fail");
 
 
-	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_SPA_CatchFail::Call_AnimationEnd, this);*/
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_SPA_CatchFail::Call_AnimationEnd, this);
 }
 
 void CVargBossState_SPA_CatchFail::Tick(_float fTimeDelta)
@@ -62,7 +62,17 @@ void CVargBossState_SPA_CatchFail::OnStateStart(const _float& In_fAnimationBlend
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_SPA_Run>().lock())
+	{
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 29);
+	}
+
+	else
+	{
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	}
+
+	
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
@@ -81,20 +91,20 @@ void CVargBossState_SPA_CatchFail::OnStateEnd()
 }
 
 
-//
-//void CVargBossState_SPA_CatchFail::Call_AnimationEnd()
-//{
-//	if (!Get_Enable())
-//		return;
-//
-//
-//	Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_CatchFail>(0.05f);
-//}
 
-//void CVargBossState_SPA_CatchFail::OnDestroy()
-//{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_SPA_CatchFail::Call_AnimationEnd, this);
-//}
+void CVargBossState_SPA_CatchFail::Call_AnimationEnd()
+{
+	if (!Get_Enable())
+		return;
+
+
+	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
+}
+
+void CVargBossState_SPA_CatchFail::OnDestroy()
+{
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_SPA_CatchFail::Call_AnimationEnd, this);
+}
 
 void CVargBossState_SPA_CatchFail::Free()
 {
@@ -107,11 +117,8 @@ _bool CVargBossState_SPA_CatchFail::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
-	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_CatchFail>(0.05f);
-		return true;
-	}
+
+	
 
 	return false;
 }

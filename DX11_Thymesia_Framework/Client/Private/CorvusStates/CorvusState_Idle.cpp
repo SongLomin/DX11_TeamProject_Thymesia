@@ -52,12 +52,17 @@ void CCorvusState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	if (Get_OwnerCharacter().lock()->Get_PreState().lock() != Get_Owner().lock()->Get_Component<CCorvusState_Climb_L_Down_End>().lock() ||
-		Get_OwnerCharacter().lock()->Get_PreState().lock() != Get_Owner().lock()->Get_Component<CCorvusState_Climb_R_Down_End>().lock() ||
-		Get_OwnerCharacter().lock()->Get_PreState().lock() != Get_Owner().lock()->Get_Component<CCorvusState_Climb_R_UP_End>().lock())
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Climb_L_Down_End>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Climb_R_Down_End>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Climb_R_UP_End>().lock())
 	{
 		m_bLadderLock = true;
 	}
+	else
+	{
+		m_bLadderLock = false;
+	}
+
 
 	if (!m_pModelCom.lock().get())
 	{
@@ -116,8 +121,6 @@ void CCorvusState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 void CCorvusState_Idle::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-	m_bLadderLock = false;
 }
 
 _bool CCorvusState_Idle::Check_AndChangeNextState()
@@ -125,32 +128,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	//if (Check_RequirementUltimateState())
-	//{
-	//	Rotation_NearToLookDir();
-	//	Get_OwnerPlayer()->Change_State<CNorMonState_UltimateSkill>();
-	//	return true;
-	//}
-	//
-	//if (Check_RequirementAttackState())
-	//{
-	//	if (!Rotation_InputToLookDir())
-	//		Rotation_NearToLookDir();
-	//
-	//	Get_OwnerPlayer()->Change_State<CNorMonState_Attack>();
-	//	Get_OwnerPlayer()->Get_Component<CNorMonState_Attack>().lock()->Play_AttackWithIndex(0);
-	//	return true;
-	//}
-	//
-	//if (Check_RequirementDashState())
-	//{
-	//	Rotation_InputToLookDir();
-	//	//Open_HyperSpace();
-	//	Get_OwnerPlayer()->Change_State<CNorMonState_Dash>();
-	//	return true;
-	//}
 
-	//TODO 야매애요ㅎ
 	
 		PxControllerCollisionFlags Flags = Get_OwnerCharacter().lock()->Get_LastCollisionFlags();
 
@@ -164,9 +142,6 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 			}
 		}
 
-
-	
-	
 	
 
 

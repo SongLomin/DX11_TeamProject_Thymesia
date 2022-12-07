@@ -92,7 +92,7 @@ void CCorvusState_AVoid::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	//m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+
 }
 
 void CCorvusState_AVoid::Call_AnimationEnd()
@@ -111,6 +111,11 @@ void CCorvusState_AVoid::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 }
 
 void CCorvusState_AVoid::Free()
+{
+
+}
+
+void CCorvusState_AVoid::OnDestroy()
 {
 	if (m_pModelCom.lock())
 		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_AVoid::Call_AnimationEnd, this);
@@ -133,6 +138,8 @@ _bool CCorvusState_AVoid::Check_AndChangeNextState()
 			return false;
 		}
 	}
+
+	
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 15)
 	{

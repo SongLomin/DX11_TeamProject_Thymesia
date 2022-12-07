@@ -9,6 +9,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
+#include "Collider.h"
 
 GAMECLASS_C(CVargBossState_SPA_Run);
 CLONE_C(CVargBossState_SPA_Run, CComponent)
@@ -35,13 +36,15 @@ void CVargBossState_SPA_Run::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_SPAttack1_Run");
 
 
-	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_SPA_Run::Call_AnimationEnd, this);*/
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_SPA_Run::Call_AnimationEnd, this);
 }
 
 void CVargBossState_SPA_Run::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+
+	TurnAttack(fTimeDelta * 2.f);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -50,7 +53,6 @@ void CVargBossState_SPA_Run::Tick(_float fTimeDelta)
 void CVargBossState_SPA_Run::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
-
 
 
 	Check_AndChangeNextState();
@@ -69,49 +71,50 @@ void CVargBossState_SPA_Run::OnStateStart(const _float& In_fAnimationBlendTime)
 	cout << "VargState: SPA_Run -> OnStateStart" << endl;
 #endif
 #endif
-
-
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 void CVargBossState_SPA_Run::OnStateEnd()
 {
 	__super::OnStateEnd();
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 
 
 }
 
+void CVargBossState_SPA_Run::Call_AnimationEnd()
+{
+	if (!Get_Enable())
+		return;
 
-//
-//void CVargBossState_SPA_Run::Call_AnimationEnd()
-//{
-//	if (!Get_Enable())
-//		return;
-//
-//
-//	Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Run>(0.05f);
-//}
+	if (m_iCount >= 1)
+	{
+		m_iCount = 0;
+		Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_CatchFail>(0.05f);
+	}
+	else
+	{
+		m_iCount += 1;
+		Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Run>(0.05f);
+	}
 
-//void CVargBossState_SPA_Run::OnDestroy()
-//{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_SPA_Run::Call_AnimationEnd, this);
-//}
+}
+
+
+
+void CVargBossState_SPA_Run::OnDestroy()
+{
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_SPA_Run::Call_AnimationEnd, this);
+}
 
 void CVargBossState_SPA_Run::Free()
 {
-
 }
 
 _bool CVargBossState_SPA_Run::Check_AndChangeNextState()
 {
-
 	if (!Check_Requirement())
 		return false;
-
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
-	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Run>(0.05f);
-		return true;
-	}
 
 	return false;
 }

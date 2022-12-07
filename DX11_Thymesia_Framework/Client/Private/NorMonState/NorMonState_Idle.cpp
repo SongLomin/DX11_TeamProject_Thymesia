@@ -111,6 +111,11 @@ void CNorMonState_Idle::Start()
 		}
 	}
 
+	if (m_eMonType == MONSTERTYPE::BALLOON)
+	{
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Idle");
+	}
+
 	
 }
 

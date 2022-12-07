@@ -35,12 +35,16 @@ void CVargBossState_SPA_Catch::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_SPAttack1_Catch");
 
 
-	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_SPA_Catch::Call_AnimationEnd, this);*/
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_SPA_Catch::Call_AnimationEnd, this);
 }
 
 void CVargBossState_SPA_Catch::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	Rotation_TargetToLookDir();
+
+	Get_Owner().lock()->Get_Component<CVargBossState_SPA_Run>().lock()->Set_Count(0);
 
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
@@ -62,6 +66,9 @@ void CVargBossState_SPA_Catch::OnStateStart(const _float& In_fAnimationBlendTime
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	
+		
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
@@ -81,20 +88,20 @@ void CVargBossState_SPA_Catch::OnStateEnd()
 }
 
 
-//
-//void CVargBossState_SPA_Catch::Call_AnimationEnd()
-//{
-//	if (!Get_Enable())
-//		return;
-//
-//
-//	Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Catch>(0.05f);
-//}
 
-//void CVargBossState_SPA_Catch::OnDestroy()
-//{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_SPA_Catch::Call_AnimationEnd, this);
-//}
+void CVargBossState_SPA_Catch::Call_AnimationEnd()
+{
+	if (!Get_Enable())
+		return;
+
+
+	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
+}
+
+void CVargBossState_SPA_Catch::OnDestroy()
+{
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_SPA_Catch::Call_AnimationEnd, this);
+}
 
 void CVargBossState_SPA_Catch::Free()
 {
@@ -107,10 +114,9 @@ _bool CVargBossState_SPA_Catch::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
+	if (ComputeAngleWithPlayer() > 0.99f && m_bAttackLookAtLimit)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Catch>(0.05f);
-		return true;
+		Rotation_TargetToLookDir();
 	}
 
 	return false;

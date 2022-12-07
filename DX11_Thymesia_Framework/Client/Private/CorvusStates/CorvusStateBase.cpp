@@ -14,6 +14,9 @@
 #include "NorMonStates.h"
 #include "PhysXCharacterController.h"
 #include "Interaction_Ladder.h"
+#include "VargStates.h"
+#include "BoneNode.h"
+#include "Model.h"
 
 
 GAMECLASS_C(CCorvusStateBase)
@@ -368,9 +371,7 @@ _bool CCorvusStateBase::Check_AndChangeLadderState(weak_ptr<CCollider> pMyCollid
 			Get_OwnerPlayer()->Change_State<CCorvusState_Climb_L_UP_End>();
 		}
 	
-
-	}
-		
+	}		
 		break;
 
 	case Client::COLLISION_LAYER::LADDER_DOWN:
@@ -378,7 +379,6 @@ _bool CCorvusStateBase::Check_AndChangeLadderState(weak_ptr<CCollider> pMyCollid
 		{
 			vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.02f, -1.f, 0.f));
 			m_pPhysXControllerCom.lock()->Enable_Gravity(false);
-			//m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vOtherPos + vLadderOffSetDown + XMVectorSet(0.f, 0.f, 0.f, 0.f));
 			m_pPhysXControllerCom.lock()->Set_Position(
 				vResultOtherWorldMatrix.r[3],
 				GAMEINSTANCE->Get_DeltaTime(),
@@ -395,12 +395,37 @@ _bool CCorvusStateBase::Check_AndChangeLadderState(weak_ptr<CCollider> pMyCollid
 	case Client::COLLISION_LAYER::DOOR:
 		break;
 
+	case Client::COLLISION_LAYER::CHECKPOINT:
+		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.02f, -1.f, 0.f));
+		m_pPhysXControllerCom.lock()->Enable_Gravity(false);
+		m_pPhysXControllerCom.lock()->Set_Position(
+			vResultOtherWorldMatrix.r[3],
+			GAMEINSTANCE->Get_DeltaTime(),
+			Filters);
+		m_pTransformCom.lock()->Set_Look2D(vOtherWorldMatrix.r[2]);
+		Get_OwnerPlayer()->Set_LadderCheck(true);
+		Get_OwnerPlayer()->Change_State<CCorvusState_CheckPointStart>();
+		break;
+
 	default:
 		bChanged = false;
 		break;
 	}
 
 	return bChanged;
+}
+
+_bool CCorvusStateBase::Check_RequirementAttackClose(weak_ptr<CGameObject>& Out_pGameObject)
+{
+	list<weak_ptr<CGameObject>>  pGameObjects = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::MONSTER);
+
+
+	if (!Out_pGameObject.lock())
+		return false;
+
+
+
+	return false();
 }
 
 void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
@@ -411,8 +436,11 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 
 	if (pOtherCollider.lock()->Get_CollisionLayer() == (_uint)COLLISION_LAYER::MONSTER_ATTACK)
 	{
-		//어쩃든 여기 닿으면 데미지 입음.
+		
+	
+
 		weak_ptr<CStatus_Player> pStatus = Weak_StaticCast<CStatus_Player>(m_pStatusCom);
+		PxControllerFilters Filters;
 
 		if (!pStatus.lock())
 		{
@@ -421,27 +449,50 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 
 		weak_ptr<CAttackArea>	pAttackArea = Weak_StaticCast<CAttackArea>(pOtherCollider.lock()->Get_Owner());
 		weak_ptr<CCharacter>	pMonsterFromCharacter = pAttackArea.lock()->Get_ParentObject();
+		weak_ptr<CActor>        pActorMonster = Weak_StaticCast<CActor>(pMonsterFromCharacter);
 		weak_ptr<CStatus_Monster>	pMonsterStatusCom = pMonsterFromCharacter.lock()->Get_Component<CStatus_Monster>();
+		_matrix vOtherWorldMatrix = pOtherCollider.lock()->Get_Owner().lock()->Get_Transform()->Get_WorldMatrix();
+		_matrix vResultOtherWorldMatrix;
 
 		if (!pMonsterStatusCom.lock())
 			MSG_BOX("Error : Can't Find CStatus_Monster From CorvusStateBase");
 
-		//타격콜라이더(사다리일경우)
-		/*
-		Climb_Start로이동
-		Climb_Start눌르시 포지션이동 ->사다리쪽으로 
-		애니메이션이 탓을떄 w눌르고면위로s눌르면 아래로
-		홀드눌를때 w눌르면 lUP끝나면 Rup  !홀드면  전상태가 lUp이면 Lidle이고 rUP이면 Ridle이면됨
+		//pMonsterStatusCom.lock()->OnEventMessage();
+		ATTACK_OPTION eAttackOption = pAttackArea.lock()->Get_OptionType();
+
+		switch (eAttackOption)
+		{
+
+		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
+			
+			pMonsterFromCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_CATCH);
+			vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, 0.f, 0.f));
+			m_pPhysXControllerCom.lock()->Set_Position(
+				vResultOtherWorldMatrix.r[3],
+				GAMEINSTANCE->Get_DeltaTime(),
+				Filters);
+			m_pTransformCom.lock()->Set_Look2D(vOtherWorldMatrix.r[2]);
+			Get_OwnerPlayer()->Change_State<CCorvusState_RaidAttack1Hurt>();
+			break;
+		default:
+			Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+			pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
+			break;
+		}
 
 		
+		
+		
+		
+	
 
-		*/
 
-
-		Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
-		pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
-
+	
 	}
+
+
+
+
 }
 
 void CCorvusStateBase::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)

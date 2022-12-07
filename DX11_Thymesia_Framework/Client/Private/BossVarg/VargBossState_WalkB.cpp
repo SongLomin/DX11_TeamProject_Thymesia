@@ -36,7 +36,7 @@ void CVargBossState_WalkB::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_WalkB");
 
 
-	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_WalkB::Call_AnimationEnd, this);*/
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_WalkB::Call_AnimationEnd, this);
 }
 
 void CVargBossState_WalkB::Tick(_float fTimeDelta)
@@ -88,20 +88,20 @@ void CVargBossState_WalkB::OnStateEnd()
 }
 
 
-//
-//void CVargBossState_WalkB::Call_AnimationEnd()
-//{
-//	if (!Get_Enable())
-//		return;
-//
-//
-//	Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkB>(0.05f);
-//}
 
-//void CVargBossState_WalkB::OnDestroy()
-//{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_WalkB::Call_AnimationEnd, this);
-//}
+void CVargBossState_WalkB::Call_AnimationEnd()
+{
+	if (!Get_Enable())
+		return;
+
+
+	Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidB>(0.05f);
+}
+
+void CVargBossState_WalkB::OnDestroy()
+{
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_WalkB::Call_AnimationEnd, this);
+}
 
 void CVargBossState_WalkB::Free()
 {
@@ -115,15 +115,15 @@ _bool CVargBossState_WalkB::Check_AndChangeNextState()
 		return false;
 
 
-	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
+	//_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 
 
-	if (fPToMDistance >= 3.f)
-	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidB>(0.05f);
-
-		return true;
-	}
+	//if (fPToMDistance >= 3.f)
+	//{
+	//	Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidB>(0.05f);
+	//
+	//	return true;
+	//}
 
 
 

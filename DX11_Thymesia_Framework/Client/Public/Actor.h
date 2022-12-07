@@ -35,7 +35,7 @@ public:
 
 public:
     void Call_NextAnimationKey(const _uint& In_iKeyIndex);
-
+    weak_ptr<CModel>   Get_Model() { return m_pModelCom; }
 protected:
     virtual void SetUp_ShaderResource();
 

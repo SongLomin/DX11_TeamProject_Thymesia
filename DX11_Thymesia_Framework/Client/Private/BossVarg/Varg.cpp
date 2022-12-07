@@ -37,6 +37,7 @@ HRESULT CVarg::Initialize(void* pArg)
 	pHPBar.lock()->Set_Owner(Weak_Cast<CMonster>(m_this));
 	
 	m_pStandState = Add_Component<CVargBossState_Start>();
+
 	Add_Component<CVargBossState_Attack1a>();
 	Add_Component<CVargBossState_Attack1b>();
 	Add_Component<CVargBossState_Attack2a>();
@@ -175,6 +176,8 @@ void CVarg::Set_TrailEnable(_bool In_bEnable)
 
 void CVarg::Init_Desc()
 {
+	__super::Init_Desc();
+
 	m_pModelCom.lock()->Init_Model("Boss_Varg", "", (_uint)TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CVargWeapon>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Model("Boss_VargWeapon", TIMESCALE_LAYER::MONSTER);
@@ -256,6 +259,18 @@ void CVarg::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider>
 void CVarg::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 	__super::OnCollisionExit(pMyCollider, pOtherCollider);
+}
+
+void CVarg::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_CATCH == iArg)
+	{
+		Change_State<CVargBossState_SPA_Catch>();
+	}
+
+	
 }
 
 void CVarg::OnEnable(void* _Arg)

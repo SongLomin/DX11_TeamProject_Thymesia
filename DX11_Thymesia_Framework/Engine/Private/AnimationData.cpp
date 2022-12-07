@@ -101,6 +101,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 
 
     MACRO("SK_C_Varg.ao|Varg_Seq_BossFightStart", 5.5f);
+    MACRO("SK_C_Varg.ao|Varg_SPAttack1_Catch", 2.306f);
 
     MACRO("SK_C_Varg.ao|Varg_ComboAttack1_1", 1.25f);
     MACRO("SK_C_Varg.ao|Varg_ComboAttack1_2", 1.25f);
@@ -109,8 +110,13 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     MACRO("SK_C_Varg.ao|Varg_ComboAttack2_1", 2.5f);
     MACRO("SK_C_Varg.ao|Varg_ComboAttack2_2", 2.5f);
 
+    MACRO("SK_C_Varg.ao|Varg_ComboAttack3_1", 2.5f);
+
     MACRO("SK_C_Varg.ao|Varg_ComboAttack2_2b", 2.f);
     MACRO("SK_C_Varg.ao|Varg_ComboAttack2_2b1", 2.f);
+    MACRO("SK_C_Varg.ao|Varg_ComboAttack2_2b2", 2.f);
+    MACRO("SK_C_Varg.ao|Varg_ComboAttack2_3b", 2.f);
+    MACRO("SK_C_Varg.ao|Varg_TurnAttack1", 2.5f);
 
     MACRO("SK_C_Varg.ao|Varg_AvoidB", 1.25f);
 

@@ -3,6 +3,7 @@
 
 BEGIN(Engine)
 class CAnimation;
+class CBoneNode;
 class CNavigation;
 
 END
@@ -47,6 +48,11 @@ protected:
 
     _uint m_iNextCombatKeyFrame;
     _uint m_iNextMovementKeyFrame;
+
+    weak_ptr<CTransform> m_pParentTransformCom;
+    weak_ptr<CBoneNode> m_pTargetBoneNode;
+    
+    _float3                 m_vOffset;
 
 
     weak_ptr<CPlayer>       m_pOwnerFromPlayer;

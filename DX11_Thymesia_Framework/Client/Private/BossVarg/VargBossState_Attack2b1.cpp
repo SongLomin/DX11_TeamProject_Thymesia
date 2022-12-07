@@ -71,14 +71,14 @@ void CVargBossState_Attack2b1::OnStateStart(const _float& In_fAnimationBlendTime
 #endif
 #endif
 
-	//m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+	
 }
 
 void CVargBossState_Attack2b1::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	//m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+
 }
 
 

@@ -133,7 +133,7 @@ _bool CCorvusState_AVoidSalsh::Check_AndChangeNextState()
 		if (Check_RequirementAttackState())
 		{
 			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack2>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack3>();
 			return true;
 		}
 

@@ -29,6 +29,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
 	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Translation", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
 
+
 	m_iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 
 	this->Ready_Weapon();
@@ -250,6 +251,10 @@ void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 	case Client::COLLISION_LAYER::DOOR:
 		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::DOOR;
 		break;
+
+	case Client::COLLISION_LAYER::CHECKPOINT:
+		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::CHECKPOINT;
+		break;
 	}
 
 	__super::OnCollisionEnter(pMyCollider,pOtherCollider);
@@ -279,6 +284,9 @@ void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 		break;
 	case Client::COLLISION_LAYER::DOOR:
 		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::DOOR;
+		break;
+	case Client::COLLISION_LAYER::CHECKPOINT:
+		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::CHECKPOINT;
 		break;
 	}
 }

@@ -688,7 +688,7 @@
       <Filter>05. Component\04. Status\02. Status_Boss</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectLeft.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\20.State_FeatherAttack\19.State_ParryDefense\00.CorvusState_ParryDeflectLeft</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectLeft</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Parry1.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\12.State_Parry\State_Paary1</Filter>
@@ -697,13 +697,13 @@
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\12.State_Parry\State_Parry2</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectRightup.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\20.State_FeatherAttack\19.State_ParryDefense\00.CorvusState_ParryDeflectRightup</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectRightup</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectRight.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\20.State_FeatherAttack\19.State_ParryDefense\00.CorvusState_ParryDeflectRight</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectRight</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectLeftup.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\20.State_FeatherAttack\19.State_ParryDefense\00.CorvusState_ParryDeflectLeftup</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectLeftup</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_NorMob_Execution.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\00.NorMob_Execution</Filter>
@@ -936,6 +936,26 @@
     <ClInclude Include="..\Public\Interaction_Ladder.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ShortAvoid.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\02.CorvusState_ShortAvoid</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV1.h" />
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV2.h" />
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidThrustLV2.h" />
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_NorSwordLV2.h" />
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidThrustLV1.h" />
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_RaidAttack1Hurt.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Player\00.RaidAttack1Hurt</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_CheckPointLoop.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\23.CheckPoint\01.CorvusState_CheckPointLoop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_CheckPointEnd.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\23.CheckPoint\02.CorvusState_CheckPointEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_CheckPointStart.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\23.CheckPoint\00.CorvusState_CheckPointStart</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\VargWeapon.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Level_BG.h" />
     <ClInclude Include="..\Public\UI_EvolveLeftBG.h" />
@@ -1153,9 +1173,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_SprintStart.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\08.State_SprintStart</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_SprintAttack.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\10.State_SprintAttack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoid.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid</Filter>
@@ -1682,16 +1699,16 @@
       <Filter>05. Component\04. Status\02. Status_Boss</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectLeft.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\20.State_FeatherAttack\19.State_ParryDefense\00.CorvusState_ParryDeflectLeft</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectLeft</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectRightup.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\20.State_FeatherAttack\19.State_ParryDefense\00.CorvusState_ParryDeflectRightup</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectRightup</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectRight.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\20.State_FeatherAttack\19.State_ParryDefense\00.CorvusState_ParryDeflectRight</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectRight</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectLeftup.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\20.State_FeatherAttack\19.State_ParryDefense\00.CorvusState_ParryDeflectLeftup</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectLeftup</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeapon_Main.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\PlagueWeapon\main</Filter>
@@ -1930,6 +1947,29 @@
     </ClCompile>
     <ClCompile Include="..\Private\Interaction_Ladder.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_SprintAttack.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\10.State_SprintAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ShortAvoid.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\02.CorvusState_ShortAvoid</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV1.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV2.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidThrustLV2.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_NorSwordLV2.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidThrustLV1.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_RaidAttack1Hurt.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Player\00.RaidAttack1Hurt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_CheckPointLoop.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\23.CheckPoint\01.CorvusState_CheckPointLoop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_CheckPointEnd.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\23.CheckPoint\02.CorvusState_CheckPointEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_CheckPointStart.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\23.CheckPoint\00.CorvusState_CheckPointStart</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\VargWeapon.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Level_BG.cpp" />
@@ -2853,21 +2893,6 @@
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\01.CorvusState_Thurst">
       <UniqueIdentifier>{3798389d-940d-4bee-a6aa-1abe043130f0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\20.State_FeatherAttack\19.State_ParryDefense">
-      <UniqueIdentifier>{9ed78e6d-ae3d-46ba-921f-4572a1a75765}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\20.State_FeatherAttack\19.State_ParryDefense\00.CorvusState_ParryDeflectLeft">
-      <UniqueIdentifier>{f17d88bf-cbee-46c9-b8fe-1454dc17a445}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\20.State_FeatherAttack\19.State_ParryDefense\00.CorvusState_ParryDeflectLeftup">
-      <UniqueIdentifier>{741f6502-a6fd-450f-a3e7-b6feb1f44ebd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\20.State_FeatherAttack\19.State_ParryDefense\00.CorvusState_ParryDeflectRightup">
-      <UniqueIdentifier>{3c883226-d809-42da-bba8-0668854138d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\20.State_FeatherAttack\19.State_ParryDefense\00.CorvusState_ParryDeflectRight">
-      <UniqueIdentifier>{350860d7-21a4-4f03-8f61-84b8b15bc682}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\02.ClawHoldAttack\00.ClawHoldAttackLoop">
       <UniqueIdentifier>{2165c307-3cb9-4f9e-ab85-7fc719c31ed0}</UniqueIdentifier>
     </Filter>
@@ -2933,6 +2958,42 @@
     </Filter>
     <Filter Include="97. Tool\00. IMGUI\Windows\02. Effect\99. JoJoParticleShaderManager">
       <UniqueIdentifier>{56e52612-b0d5-4d2d-bb49-ef2395eaece2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense">
+      <UniqueIdentifier>{9ed78e6d-ae3d-46ba-921f-4572a1a75765}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectLeft">
+      <UniqueIdentifier>{f17d88bf-cbee-46c9-b8fe-1454dc17a445}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectLeftup">
+      <UniqueIdentifier>{741f6502-a6fd-450f-a3e7-b6feb1f44ebd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectRightup">
+      <UniqueIdentifier>{3c883226-d809-42da-bba8-0668854138d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\19.State_ParryDefense\00.CorvusState_ParryDeflectRight">
+      <UniqueIdentifier>{350860d7-21a4-4f03-8f61-84b8b15bc682}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\02.CorvusState_ShortAvoid">
+      <UniqueIdentifier>{7559e13c-39e5-4685-8aab-739a2aa4d793}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Player">
+      <UniqueIdentifier>{3d204116-eb23-431c-bd7e-88c5c933202a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Player\00.RaidAttack1Hurt">
+      <UniqueIdentifier>{caf8d0f5-330f-4477-aaab-14aa496d0651}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\23.CheckPoint">
+      <UniqueIdentifier>{45d4f916-65c8-44ac-8cde-7100916d3c45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\23.CheckPoint\00.CorvusState_CheckPointStart">
+      <UniqueIdentifier>{8f45c483-ea79-4a0a-aaa4-43cd77ea4b4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\23.CheckPoint\01.CorvusState_CheckPointLoop">
+      <UniqueIdentifier>{55ffcbbb-d449-4f8e-b44c-aae97f826cec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\23.CheckPoint\02.CorvusState_CheckPointEnd">
+      <UniqueIdentifier>{b99b5e37-f336-45ab-92fa-30d9fd3291b9}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\01. UI\UI_Container\Evolve\LeftBG">
       <UniqueIdentifier>{86c0985d-b72f-4d0e-816d-0fcad76a7fd0}</UniqueIdentifier>
