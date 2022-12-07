@@ -132,7 +132,6 @@ private:
 
 	
 private:
-	vector<CStatus_Player::PLAYERDESC>	m_stackChangedPlayerDesc;
 	_uint								m_iCurrentMemory;
 	_uint								m_iNeedMemory;
 	_float4								m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::EVOLOVE_TEXT_COLOR_END];
@@ -143,8 +142,6 @@ private:
 	TEXTINFO					m_tTextInfo_OriginStr;
 	TEXTINFO					m_tTextInfo_OriginVit;
 	TEXTINFO					m_tTextInfo_OriginPlague;
-
-
 
 	TEXTINFO					m_tTextInfo_OriginAttackDamage;
 	TEXTINFO					m_tTextInfo_OriginWound;

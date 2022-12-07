@@ -54,6 +54,11 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevel)
 		m_pUILoading = GAMEINSTANCE->Add_GameObject<CUI_Loading>(LEVEL_LOADING);
 		m_pUILoading.lock()->SetUp_LoadingUI(LEVEL::LEVEL_GAMEPLAY);
 	}
+	else if (m_eNextLevel == LEVEL::LEVEL_STAGE2)
+	{
+		m_pUILoading = GAMEINSTANCE->Add_GameObject<CUI_Loading>(LEVEL_LOADING);
+		m_pUILoading.lock()->SetUp_LoadingUI(LEVEL::LEVEL_STAGE2);
+	}
 
 	m_pLoader = CLoader::Create(eNextLevel);
 	if (nullptr == m_pLoader.get())
@@ -88,10 +93,19 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 			m_pUILoading.lock()->Set_Complete();
 			if (m_pUILoading.lock()->Get_Finish())
 			{
+
 				Create_Level();
 			}
 		}	
+		else if (m_eNextLevel == LEVEL_STAGE2)
+		{
+			m_pUILoading.lock()->Set_Complete();
+			if (m_pUILoading.lock()->Get_Finish())
+			{
 
+				Create_Level();
+			}
+		}
 		else
 		{
 			Create_Level();

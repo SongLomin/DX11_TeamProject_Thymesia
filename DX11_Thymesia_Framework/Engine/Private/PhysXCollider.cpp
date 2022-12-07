@@ -146,7 +146,7 @@ void CPhysXCollider::Init_ConvexMeshCollider(weak_ptr<MESH_DATA> pMeshData, cons
 			meshDesc.points.stride = sizeof(PxVec3);
 			meshDesc.points.data = pVertices;
 
-			meshDesc.flags |= PxConvexFlag::Enum::ePLANE_SHIFTING;
+			//meshDesc.flags |= PxConvexFlag::Enum::ePLANE_SHIFTING;
 			meshDesc.flags |= PxConvexFlag::Enum::eGPU_COMPATIBLE;
 			meshDesc.flags |= PxConvexFlag::Enum::eCOMPUTE_CONVEX;
 
@@ -169,7 +169,7 @@ void CPhysXCollider::Init_ConvexMeshCollider(weak_ptr<MESH_DATA> pMeshData, cons
 		meshDesc.points.stride = sizeof(PxVec3);
 		meshDesc.points.data = pVertices;
 
-		meshDesc.flags |= PxConvexFlag::Enum::ePLANE_SHIFTING;
+		//meshDesc.flags |= PxConvexFlag::Enum::ePLANE_SHIFTING;
 		meshDesc.flags |= PxConvexFlag::Enum::eGPU_COMPATIBLE;
 		meshDesc.flags |= PxConvexFlag::Enum::eCOMPUTE_CONVEX;
 

@@ -22,6 +22,9 @@ protected:
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
 
+public:
+    void Call_AnimationEnd();
+
 protected:
     virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
     virtual void OnStateEnd() override;
@@ -29,10 +32,12 @@ protected:
 
 private:
     _bool m_bLadderLock = false;
+    _bool m_bFirstFoot = true;
     //TODO юс╫ц
     _uint m_iSkillType = 0;
 
 protected:
+    virtual void OnDestroy() override;
     void Free();
 
 };

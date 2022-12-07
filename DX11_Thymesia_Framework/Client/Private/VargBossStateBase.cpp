@@ -97,6 +97,13 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 			Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Roar>(0.05f);
 		}
 		
+		weak_ptr<CCharacter> pOtherCharacter = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner()).lock()->Get_ParentObject();
+
+		_float3 vShakingOffset = pOtherCharacter.lock()->Get_CurState().lock()->Get_ShakingOffset();
+		_vector vShakingOffsetToVector = XMLoadFloat3(&vShakingOffset);
+
+		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.55f, 0.1f);//일반 공격
+
 
 
 		if (!pAttackArea.lock())

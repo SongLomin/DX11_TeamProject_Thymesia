@@ -219,11 +219,13 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_L_Down_End.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_L_Idle.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_L_UP.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_L_Up_Down_End.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_L_UP_End.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_R_Down.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_R_Down_End.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_R_Idle.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_R_UP.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_R_Up_Down_End.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_R_UP_End.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_Start.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Fall_End.h" />
@@ -554,11 +556,13 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_L_Down_End.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_L_Idle.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_L_UP.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_L_Up_Down_End.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_L_UP_End.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_R_Down.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_R_Down_End.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_R_Idle.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_R_UP.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_R_Up_Down_End.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_R_UP_End.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_Start.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Fall_End.cpp" />

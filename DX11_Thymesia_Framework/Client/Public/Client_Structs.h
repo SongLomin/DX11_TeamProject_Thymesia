@@ -351,6 +351,12 @@ namespace Client
 		list<_bool>		Enable_Weapon; // Enable은 한개지만 리스트가 비어있으면 이벤트가 없다는 것을 알려준다.
 	};
 
+	struct DISSOLVE_DESC
+	{
+		_float fAmount;
+		_float3 vDirection = { 0.f,0.f,0.f };
+	};
+
 	struct CINEMA_DESC
 	{
 		_float3		vPitchYawRoll;

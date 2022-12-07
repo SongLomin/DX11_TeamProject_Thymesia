@@ -316,8 +316,37 @@ HRESULT CGameInstance::Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt)
 {
 	return m_pRender_Manager->Set_ShadowLight(In_vEye, In_vLookAt);
 }
+HRESULT CGameInstance::Set_MotionBlur(const _float In_fBlurScale)
+{
+	return m_pRender_Manager->Set_MotionBlur(In_fBlurScale);
+}
+HRESULT CGameInstance::Add_MotionBlur(const _float In_fBlurScale)
+{
+	return m_pRender_Manager->Add_MotionBlur(In_fBlurScale);
 
+}
+HRESULT CGameInstance::Set_RadialBlur(const _float In_fRadialBlurStength, _float3 In_vBlurWorldPosition)
+{
+	return m_pRender_Manager->Set_RadialBlur(In_fRadialBlurStength, In_vBlurWorldPosition);
 
+}
+HRESULT CGameInstance::Add_RedialBlur(const _float In_fRadialBlurStrength)
+{
+	return m_pRender_Manager->Add_RedialBlur(In_fRadialBlurStrength);
+
+}
+
+HRESULT CGameInstance::Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain)
+{
+	return m_pRender_Manager->Set_LiftGammaGain(In_vLift, In_vGamma, In_vGain);
+
+}
+
+HRESULT  CGameInstance::Set_FogColor(const _float4 In_vFogColor)
+{
+	return m_pRender_Manager->Set_FogColor(In_vFogColor);
+
+}
 
 
 

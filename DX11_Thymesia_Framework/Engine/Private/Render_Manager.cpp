@@ -512,6 +512,14 @@ HRESULT CRender_Manager::Add_RedialBlur(const _float In_fRadialBlurStrength)
 	return S_OK;
 }
 
+HRESULT CRender_Manager::Set_FogColor(const _float4 In_vFogColor)
+{
+	m_vFogColor = In_vFogColor;
+
+	return S_OK;
+}
+
+
 HRESULT CRender_Manager::Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain)
 {
 	m_vLift = In_vLift;
@@ -815,6 +823,7 @@ HRESULT CRender_Manager::Render_Blend()
 	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_LightViewMatrix", &m_LightViewMatrixTranspose, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_LightProjMatrix", &m_LightProjMatrixTranspose, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_vFogColor", &m_vFogColor, sizeof(_float4));
 
 	shared_ptr<CPipeLine> pPipeLine = GET_SINGLE(CPipeLine);
 

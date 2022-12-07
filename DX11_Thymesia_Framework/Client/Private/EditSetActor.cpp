@@ -132,7 +132,8 @@ void CEditSetActor::View_CreateActor()
 	{
 		"Monster",
 		"Elite",
-		"Boss"
+		"Boss",
+		"Player"
 	};
 
 	static const char* ActorList_Nor[] =
@@ -185,10 +186,10 @@ void CEditSetActor::View_CreateActor()
 		ImGui::Combo("Monster Name", &iSelect_ActorList, ActorList_Elite, IM_ARRAYSIZE(ActorList_Elite));
 	else if (2 == iSelect_ActorTypeList)
 		ImGui::Combo("Monster Name", &iSelect_ActorList, ActorList_Boss, IM_ARRAYSIZE(ActorList_Boss));
-	else
+	else if (4 != iSelect_ActorTypeList)
 		ImGui::Combo("Monster Name", &iSelect_ActorList, ActorList_Nor, IM_ARRAYSIZE(ActorList_Nor));
 
-	if (2 == iSelect_ActorList)
+	if (2 == iSelect_ActorTypeList)
 	{
 		ImGui::Combo("Boss State", &iSelect_BossActionList, BossActionList, IM_ARRAYSIZE(BossActionList));
 		bNorMonsterCreate = false;
@@ -246,6 +247,16 @@ void CEditSetActor::View_CreateActor()
 			pObj.lock()->Init_Desc();
 			pObj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
 			pObj.lock()->Get_Transform()->Set_WorldMatrix(XMLoadFloat4x4(&m_PickingDesc));
+		}
+		break;
+
+		case 3:
+		{
+			weak_ptr<CGameObject> pObj =GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL::LEVEL_EDIT);
+			pObj.lock()->Get_Transform()->Set_WorldMatrix(XMLoadFloat4x4(&m_PickingDesc));
+			pObj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
+
+			Add_ActorToTool(typeid(CCorvus).hash_code(), typeid(CCorvus).name(), pObj);
 		}
 		break;
 	}

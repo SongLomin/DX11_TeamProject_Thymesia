@@ -62,7 +62,7 @@ void CCorvusState_Climb_R_UP_End::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	if (!Get_Enable())
 		return;
 
-	_vector fOffSet = { 0.f, -0.00196721311f ,0.f };
+	_vector fOffSet = { 0.f, 0.00163934426f ,0.f };
 
 	PxControllerFilters Filters;
 
@@ -79,7 +79,7 @@ void CCorvusState_Climb_R_UP_End::OnStateStart(const _float& In_fAnimationBlendT
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
 
-	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Y | (_byte)ROOTNODE_FLAG::Z);
+	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Translation", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Y | (_byte)ROOTNODE_FLAG::Z);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 

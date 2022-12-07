@@ -129,13 +129,22 @@ HRESULT CStatic_Instancing_Prop::Render()
 		else
 		{
 			if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+			{
 				m_iPassIndex = 0;
+			}
 			else
 			{
- 				if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-					m_iPassIndex = 7;
+				if (m_bInvisibility)
+				{
+					if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+						m_iPassIndex = 7;
+					else
+						m_iPassIndex = 8;
+				}
 				else
-					m_iPassIndex = 8;
+				{
+					m_iPassIndex = 3;
+				}
 			}
 		}
 

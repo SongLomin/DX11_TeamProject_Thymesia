@@ -49,9 +49,9 @@ HRESULT CHUD_PlagueWeapon_Main::Initialize(void* pArg)
     m_pHover = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_STATIC, &m_tUIDesc);
     m_pHover.lock()->Get_Component<CTexture>().lock()->Use_Texture("HUD_Frame_Hover");
 
-    m_vecChildUI.push_back(m_pPlagueWeapon_Main);
-    m_vecChildUI.push_back(m_pPlagueWeapon_Icon);
 
+    Add_Child(m_pPlagueWeapon_Main);
+    Add_Child(m_pPlagueWeapon_Icon);
 
 
     //HoverDesc

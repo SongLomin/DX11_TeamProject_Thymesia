@@ -52,7 +52,7 @@ public:
 #ifdef _DEBUG
     const void Trigger_Reset(weak_ptr<CTransform> pPreviewModelTransform) 
     {
-        m_pPreviewModelTransform = pPreviewModelTransform;
+        m_pParentTransformCom = pPreviewModelTransform;
         m_bResetTrigger = true;
     }
 #endif // _DEBUG

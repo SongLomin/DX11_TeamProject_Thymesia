@@ -19,6 +19,9 @@ public:
 public:
 	static shared_ptr<CLevel_Stage2> Create();
 	void Free();
+private:
+	_bool m_bFadeTrigger = false;
+
 };
 
 END

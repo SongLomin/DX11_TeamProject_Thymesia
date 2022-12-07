@@ -3,7 +3,7 @@
 #include "SMath.h"
 #include <filesystem>
 
-// #define _JOJO_EFFECT_TOOL_
+//#define _JOJO_EFFECT_TOOL_
 
 #include "Client_Structs.h"
 #include "Client_Presets.h"
@@ -13,13 +13,13 @@
 #ifdef _DEBUG
 
 #pragma region System
-// #define		_ONLY_UI_
+//#define		_ONLY_UI_
 //#define		_BAKE_MIPMAPS_
 #define		_USE_THREAD_
 #define		_144HZ_
 #define		_RENDER_FPS_
 //#define		_INSTANCE_CULLING_
-//#define		_LOAD_CAPTURED_RESOURCE_
+#define		_LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
 #define _USE_GRAVITY_

@@ -79,7 +79,7 @@ HRESULT CUI_Loading::Initialize(void* pArg)
 
 	m_pStageTitle = GAMEINSTANCE->Add_GameObject<CLoadingTextUI>(LEVEL_LOADING, &tIconDesc);
 	m_pStageTitle.lock()->Set_Texture("Loading_Font_Fortress_Title");
-	m_pStageTitle.lock()->Set_DelayAlpha(1.f, 1.f);//1초뒤에, 1초걸리면 1.찍히는 알파 넣음
+	//m_pStageTitle.lock()->Set_DelayAlpha(1.f, 1.f);//1초뒤에, 1초걸리면 1.찍히는 알파 넣음
 	//563 900
 	tIconDesc.fX = 597.f;
 	tIconDesc.fY = 748.f;
@@ -89,7 +89,7 @@ HRESULT CUI_Loading::Initialize(void* pArg)
 
 	m_pStageDesc= GAMEINSTANCE->Add_GameObject<CLoadingTextUI>(LEVEL_LOADING, &tIconDesc);
 	m_pStageDesc.lock()->Set_Texture("Loading_Font_Fortress_Desc");
-	m_pStageDesc.lock()->Set_DelayAlpha(3.f, 2.f);
+	//m_pStageDesc.lock()->Set_DelayAlpha(3.f, 2.f);
 	m_bLoadComplete = false;
 	m_bCallFadeOut = false;
 	m_bIsChangeLevel = false;
@@ -106,10 +106,6 @@ HRESULT CUI_Loading::Start()
 void CUI_Loading::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
-
-
-
 }
 
 void CUI_Loading::LateTick(_float fTimeDelta)
@@ -125,6 +121,11 @@ void CUI_Loading::Call_FadeEnd()
 
 void CUI_Loading::SetUp_LoadingUI(LEVEL eLevel)
 {
+	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
+
+	m_pStageTitle.lock()->Set_DelayAlpha(1.f, 1.f);//1초뒤에, 1초걸리면 1.찍히는 알파 넣음
+	m_pStageDesc.lock()->Set_DelayAlpha(3.f, 2.f);
+
 	switch (eLevel)
 	{
 	case Client::LEVEL_STATIC:
@@ -139,7 +140,9 @@ void CUI_Loading::SetUp_LoadingUI(LEVEL eLevel)
 		m_pLoadingBG.lock()->Set_Texture("Loading_Tutorial");
 		break;
 	case Client::LEVEL_STAGE2:
-		m_pLoadingBG.lock()->Set_Texture("Loading_Tutorial");
+		m_pLoadingBG.lock()->Set_Texture("Loading_OceanOfMemories");
+		m_pStageTitle.lock()->Set_Texture("Loading_Font_RoyalGarden_Title");
+		m_pStageDesc.lock()->Set_Texture("Loading_Font_RoyalGarden_Desc");
 		break;
 	case Client::LEVEL_STAGE3:
 		m_pLoadingBG.lock()->Set_Texture("Loading_Tutorial");
@@ -166,6 +169,8 @@ _bool CUI_Loading::Get_Finish()
 	{
 		if (KEY_INPUT(KEY::ENTER, KEY_STATE::TAP) && !m_bIsChangeLevel)
 		{
+			GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::BATTLEUI);
+
 			m_bIsChangeLevel = true;
 			FaderDesc tFaderDesc;
 			tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;

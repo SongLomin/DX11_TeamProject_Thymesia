@@ -125,6 +125,7 @@ void CFadeMask::Call_FadeEnd(FADER_TYPE In_eFaderType)
 {
 	CallBack_FadeEnd();
 	CallBack_FadeEnd.Clear();
+
 }
 
 void CFadeMask::Free()

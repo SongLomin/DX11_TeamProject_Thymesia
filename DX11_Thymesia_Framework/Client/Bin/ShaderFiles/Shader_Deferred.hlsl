@@ -18,6 +18,8 @@ vector g_vLightFlag;
 vector g_vMtrlAmbient  = vector(1.f, 1.f, 1.f, 1.f);
 vector g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
 
+vector g_vFogColor;
+
 texture2D g_ORMTexture;
 texture2D g_SpecularTexture;
 texture2D g_DepthTexture;
@@ -515,14 +517,14 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
         Out.vColor = pow(Out.vColor, 1.f / 2.2);
 
         Out.vColor.rgb *= vViewShadow.rgb;
-        Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * vector(0.8f, 0.8f, 0.8f, 1.f);
+        Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor;
     }
     else
     {
         Out.vColor = vDiffuse * vShade + vSpecular;
         Out.vColor.rgb *= vViewShadow.rgb;
         if(0.f < Out.vColor.a)
-            Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * vector(0.8f, 0.8f, 0.8f, 1.f);
+            Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor;
         else
             Out.vColor = vFogDesc.r * vector(0.8f, 0.8f, 0.8f, 1.f);
     }

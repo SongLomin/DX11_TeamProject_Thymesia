@@ -802,7 +802,7 @@ void CCustomEffectMesh::Tool_Boner()
 		if (m_pBoneNode.lock())
 		{
 			ImGui::Text("Binded to [ "); ImGui::SameLine();
-			ImGui::Text("m_strBoneName"); ImGui::SameLine(); ImGui::Text(" ] ");
+			ImGui::Text(m_strBoneName.c_str()); ImGui::SameLine(); ImGui::Text(" ] ");
 		}
 	}
 	else

@@ -314,6 +314,9 @@ _int CCorvusStateBase::Check_AndChangeSuccessParrying(weak_ptr<CCollider> pMyCol
 		{
 			return (_uint)PARRY_SUCCESS::LEFT;
 		}
+	
+		
+
 
 	}
 	else if (CorssResult == CORSS_RESULT::RIGHT)
@@ -367,8 +370,9 @@ _bool CCorvusStateBase::Check_AndChangeLadderState(weak_ptr<CCollider> pMyCollid
 			//m_pTransformCom.lock()->LookAt2D(vOtherWorldMatrix.r[3]);
 			m_pTransformCom.lock()->Set_Look2D(vOtherWorldMatrix.r[2]);
 			m_pPhysXControllerCom.lock()->Enable_Gravity(false);
-			Get_OwnerPlayer()->Set_LadderCheck(true);
-			Get_OwnerPlayer()->Change_State<CCorvusState_Climb_L_UP_End>();
+			Get_OwnerPlayer()->Set_LadderCheck(true);		
+			Get_OwnerPlayer()->Change_State<CCorvusState_Climb_R_Up_Down_End>();
+			
 		}
 	
 	}		
@@ -451,7 +455,7 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 		weak_ptr<CCharacter>	pMonsterFromCharacter = pAttackArea.lock()->Get_ParentObject();
 		weak_ptr<CActor>        pActorMonster = Weak_StaticCast<CActor>(pMonsterFromCharacter);
 		weak_ptr<CStatus_Monster>	pMonsterStatusCom = pMonsterFromCharacter.lock()->Get_Component<CStatus_Monster>();
-		_matrix vOtherWorldMatrix = pOtherCollider.lock()->Get_Owner().lock()->Get_Transform()->Get_WorldMatrix();
+	
 		_matrix vResultOtherWorldMatrix;
 
 		if (!pMonsterStatusCom.lock())
@@ -464,9 +468,9 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 		{
 
 		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
-			
+			_matrix vOtherWorldMatrix = pMonsterFromCharacter.lock()->Get_Transform()->Get_WorldMatrix();
 			pMonsterFromCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_CATCH);
-			vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, 0.f, 0.f));
+			vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, -2.f, 0.f));
 			m_pPhysXControllerCom.lock()->Set_Position(
 				vResultOtherWorldMatrix.r[3],
 				GAMEINSTANCE->Get_DeltaTime(),

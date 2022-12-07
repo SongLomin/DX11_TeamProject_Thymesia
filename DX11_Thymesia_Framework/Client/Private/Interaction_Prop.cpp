@@ -26,6 +26,8 @@ HRESULT CInteraction_Prop::Initialize(void* pArg)
 
 HRESULT CInteraction_Prop::Start()
 {
+    __super::Start();
+
     return S_OK;
 }
 
@@ -107,7 +109,10 @@ HRESULT CInteraction_Prop::SetUp_ShaderResource()
 
     _vector	vShaderFlag = { 1.f,m_fOutLineBlurIntensity,0.f,0.f };
     if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector))))
-        return;
+    {
+        DEBUG_ASSERT;
+    }
+        
 
 
     _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
@@ -138,6 +143,7 @@ HRESULT CInteraction_Prop::SetUp_ShaderResource()
         m_pShaderCom.lock()->Begin(m_iPassIndex);
         m_pModelCom.lock()->Render_Mesh(i);
     }
+    return S_OK;
 }
 
 void CInteraction_Prop::Free()

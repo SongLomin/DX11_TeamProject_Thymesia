@@ -280,7 +280,7 @@ void CEditInstanceProp::Write_Json(json& Out_Json)
 	Out_Json.emplace("Invisibility", m_bInvisibility);
 
 	if (m_bNonCulling)
-		Out_Json.emplace("NonCulling", 1);
+		Out_Json.emplace("NonCulling", m_bNonCulling);
 
 	if (m_bDissolve)
 	{
@@ -307,14 +307,10 @@ void CEditInstanceProp::Load_FromJson(const json& In_Json)
 		string szKey = iter.key();
 
 		if ("NonCulling" == szKey)
-		{
 			m_bNonCulling = (1 == iter.value()) ? (true) : (false);
-		}
 
 		else if ("Invisibility" == szKey)
-		{
-			m_bNonCulling = In_Json["Invisibility"];
-		}
+			m_bInvisibility = In_Json["Invisibility"];
 
 		else if ("ModelCom" == szKey)
 		{

@@ -100,7 +100,7 @@ HRESULT CStatic_Prop::SetUp_ShaderResource()
         }
         else
         {
-            if (m_bInvisibility)
+            if (m_bInvisibility || LEVEL::LEVEL_EDIT != Get_CreatedLevel())
             {
                 if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
                     m_iPassIndex = 6;
@@ -131,6 +131,9 @@ void CStatic_Prop::Load_FromJson(const json& In_Json)
 
     if (In_Json.find("PhysX_Collider_Type") != In_Json.end())
         m_iColliderType = In_Json["PhysX_Collider_Type"];
+
+    if (In_Json.find("Invisibility") != In_Json.end())
+        m_bInvisibility = In_Json["Invisibility"];
 
     if ((_uint)LEVEL_EDIT == m_CreatedLevel)
     {
@@ -197,7 +200,6 @@ void CStatic_Prop::OnEventMessage(_uint iArg)
                     m_iColliderType = n;
                 }
 
-                // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
                 if (is_selected)
                     ImGui::SetItemDefaultFocus();
             }

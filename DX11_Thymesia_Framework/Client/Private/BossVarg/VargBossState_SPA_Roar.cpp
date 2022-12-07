@@ -3,6 +3,7 @@
 #include "VargBossStateBase.h"
 #include "Model.h"
 #include "GameInstance.h"
+#include "GameManager.h"
 #include "GameObject.h"
 #include "Player.h"
 //#include "BehaviorBase.h"
@@ -43,6 +44,11 @@ void CVargBossState_SPA_Roar::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 
+	if (m_bShakingCamera)
+	{
+		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.6f, 1.f,3.f,0.9f);
+	}
+
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -64,6 +70,11 @@ void CVargBossState_SPA_Roar::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey +=
+		bind(&CVargBossState_SPA_Roar::Call_NextKeyFrame, this, placeholders::_1);
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: SPA_Roar -> OnStateStart" << endl;
@@ -77,7 +88,8 @@ void CVargBossState_SPA_Roar::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -=
+		bind(&CVargBossState_SPA_Roar::Call_NextKeyFrame, this, placeholders::_1);
 }
 
 
@@ -89,6 +101,26 @@ void CVargBossState_SPA_Roar::Call_AnimationEnd()
 
 
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Run>(0.05f);
+}
+
+void CVargBossState_SPA_Roar::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
+	if (!Get_Enable())
+		return;
+
+	switch (In_KeyIndex)
+	{
+	case 40:
+		m_bShakingCamera = true;
+		break;
+
+	case 75:
+		m_bShakingCamera = false;
+		break;
+	}
+
+
+
 }
 
 void CVargBossState_SPA_Roar::OnDestroy()

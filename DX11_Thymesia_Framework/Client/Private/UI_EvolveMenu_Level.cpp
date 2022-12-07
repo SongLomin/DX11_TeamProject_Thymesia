@@ -18,7 +18,6 @@ HRESULT CUI_EvolveMenu_Level::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
-
     m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::GRAY] = _float4(0.7f, 0.7f, 0.7f, 0.7f);
     m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::RED] = _float4(1.f, 0.f, 0.f, 1.f);
     m_fColorType[(_uint)EVOLOVE_TEXT_COLOR::LIGHT_GREEN] = _float4(104.f / 255.f, 209.f / 255.f, 170.f / 255.f, 1.f);
@@ -51,7 +50,6 @@ HRESULT CUI_EvolveMenu_Level::Initialize(void* pArg)
     m_tChangeStatus = m_tOriginStatus;
 
 
-    m_stackChangedPlayerDesc.push_back(m_tOriginStatus);
 
     
     m_iArrowArraySize = 10;
@@ -89,6 +87,9 @@ HRESULT CUI_EvolveMenu_Level::Initialize(void* pArg)
 
     ChangeSelectedIndex();
     Set_Enable(false);
+
+    m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
+
     return S_OK;
 }
 
@@ -168,11 +169,17 @@ void CUI_EvolveMenu_Level::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
 
-
     //GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::HEIROLIGHT, m_tTextInfo_Memory);
-
+    if (m_bOpenableReconfirmWindow)
+    {
+        GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::HEIROLIGHT, m_tTextInfo_OriginStr);
+        GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::HEIROLIGHT, m_tTextInfo_ChangeStr);
+        GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::HEIROLIGHT, m_tTextInfo_ChangeVit);
+    }
     for (auto& elem : m_vecTextInfo)
     {
+     
+
         GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::HEIROLIGHT, elem);
     }
 
@@ -885,7 +892,6 @@ void CUI_EvolveMenu_Level::Update_FontInfo()
 
     m_vecTextInfo.push_back(m_tTextInfo_OriginLevel);
     m_vecTextInfo.push_back(m_tTextInfo_OriginMemory);
-    m_vecTextInfo.push_back(m_tTextInfo_OriginStr);
     m_vecTextInfo.push_back(m_tTextInfo_OriginVit);
     m_vecTextInfo.push_back(m_tTextInfo_OriginPlague);
     m_vecTextInfo.push_back(m_tTextInfo_OriginAttackDamage);
@@ -897,8 +903,8 @@ void CUI_EvolveMenu_Level::Update_FontInfo()
     m_vecTextInfo.push_back(m_tTextInfo_ChangeLevel);
     m_vecTextInfo.push_back(m_tTextInfo_ChangeMemory);
     m_vecTextInfo.push_back(m_tTextInfo_RequireMemory);
-    m_vecTextInfo.push_back(m_tTextInfo_ChangeStr);
-    m_vecTextInfo.push_back(m_tTextInfo_ChangeVit);
+ //   m_vecTextInfo.push_back(m_tTextInfo_ChangeStr);
+ //   m_vecTextInfo.push_back(m_tTextInfo_ChangeVit);
     m_vecTextInfo.push_back(m_tTextInfo_ChangePlague);
     m_vecTextInfo.push_back(m_tTextInfo_ChangeAttackDamage);
     m_vecTextInfo.push_back(m_tTextInfo_ChangeWound);
@@ -968,7 +974,7 @@ void CUI_EvolveMenu_Level::OnDisable()
     {
         elem.lock()->Set_Enable(false);
     }
-    m_stackChangedPlayerDesc.clear();
+
 }
 
 void CUI_EvolveMenu_Level::ChangeSelectedIndex()
@@ -1203,6 +1209,7 @@ void CUI_EvolveMenu_Level::OnEnable(void* pArg)
 void CUI_EvolveMenu_Level::Call_ReturnToEvolveMenu()
 {
     Set_Enable(false);
+    m_pFadeMask.lock()->Set_Enable(false);
     GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL_STATIC).front().lock()->Set_Enable(true);
 
 }

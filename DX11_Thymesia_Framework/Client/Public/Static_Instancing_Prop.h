@@ -48,7 +48,7 @@ private:
     _int                                m_iColliderType = 0;
     _bool                               m_bNonCulling   = false;
 
-    vector<weak_ptr<CPhysXCollider>>      m_pDynamicColliderComs;
+    vector<weak_ptr<CPhysXCollider>>    m_pDynamicColliderComs;
 
 public:
     void Free();

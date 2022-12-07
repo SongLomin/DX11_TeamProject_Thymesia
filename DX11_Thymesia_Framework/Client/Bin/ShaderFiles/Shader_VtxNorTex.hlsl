@@ -1,3 +1,4 @@
+
 #include "Client_Shader_Defines.hpp"
 
 matrix   g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;

@@ -126,11 +126,10 @@ void CEffect_Rect::Tick(_float fTimeDelta)
 	CGameObject::CallBack_Tick(fTimeDelta);
 
 #ifdef _DEBUG
-	if (m_bResetTrigger && m_pPreviewModelTransform.lock())
+	if (m_bResetTrigger && m_pParentTransformCom.lock())
 	{
 		this->ReBake_EditParticle();
-		this->Reset_Effect(m_pPreviewModelTransform.lock());
-		m_pPreviewModelTransform = weak_ptr<CTransform>();
+		this->Reset_Effect(m_pParentTransformCom.lock());
 		m_bResetTrigger = false;
 	}
 #endif // _DEBUG

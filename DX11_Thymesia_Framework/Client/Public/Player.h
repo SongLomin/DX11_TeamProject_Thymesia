@@ -56,9 +56,11 @@ public:
 public:
     void Set_DissolveAmount(const _int In_iDissolveMeshIndex, const _float In_fDissolveAmount, const _float3 In_vDissolveDir)
     {
-        m_fDissolveAmount = In_fDissolveAmount;
-        m_iDissolveMeshIndex = In_iDissolveMeshIndex;
-        m_vDissolveDir = In_vDissolveDir;
+        DISSOLVE_DESC DissolveDesc;
+        DissolveDesc.fAmount= In_fDissolveAmount;
+        DissolveDesc.vDirection= In_vDissolveDir;
+
+        m_DissolveDescs[In_iDissolveMeshIndex] = DissolveDesc;
     }
 
 
@@ -92,8 +94,7 @@ protected:
 
     list<weak_ptr<CTalent_Effect>> m_pTalent_Effects;
 
-    _int m_iDissolveMeshIndex = -1;
-    _float3 m_vDissolveDir = { 0.f,0.f,0.f };
+    unordered_map<_uint, DISSOLVE_DESC>  m_DissolveDescs;
     _uint m_iNumMeshContainers = 0;
 
 

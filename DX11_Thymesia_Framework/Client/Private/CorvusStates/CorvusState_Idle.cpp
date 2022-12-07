@@ -32,6 +32,7 @@ void CCorvusState_Idle::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_WalkIdle");
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Idle::Call_AnimationEnd, this);
 }
 
 void CCorvusState_Idle::Tick(_float fTimeDelta)
@@ -48,13 +49,21 @@ void CCorvusState_Idle::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
+void CCorvusState_Idle::Call_AnimationEnd()
+{
+
+}
+
 void CCorvusState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	m_bFirstFoot = true;
+
 	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Climb_L_Down_End>().lock() ||
 		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Climb_R_Down_End>().lock() ||
-		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Climb_R_UP_End>().lock())
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Climb_R_UP_End>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Climb_L_UP_End>().lock())
 	{
 		m_bLadderLock = true;
 	}
@@ -131,15 +140,23 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 
 	
 		PxControllerCollisionFlags Flags = Get_OwnerCharacter().lock()->Get_LastCollisionFlags();
-
+		cout << "Flag: " << (_uint)Flags << endl;
 		if (!m_bLadderLock)
 		{
-			if (!(Flags & PxControllerCollisionFlag::eCOLLISION_DOWN))
+			if (!m_bFirstFoot)
 			{
-				Rotation_InputToLookDir();
-				Get_OwnerPlayer()->Change_State<CCorvusState_Fall_Start>();
-				return true;
+				if (!(Flags & PxControllerCollisionFlag::eCOLLISION_DOWN))
+				{
+					Rotation_InputToLookDir();
+					Get_OwnerPlayer()->Change_State<CCorvusState_Fall_Start>();
+					return true;
+				}
 			}
+			else
+			{
+				m_bFirstFoot = false;
+			}
+			
 		}
 
 	
@@ -266,6 +283,11 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 
 	return false;
 
+}
+
+void CCorvusState_Idle::OnDestroy()
+{
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Idle::Call_AnimationEnd, this);
 }
 
 

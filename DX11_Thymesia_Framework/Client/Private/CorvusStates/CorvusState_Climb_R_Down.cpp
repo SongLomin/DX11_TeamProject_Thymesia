@@ -89,6 +89,7 @@ void CCorvusState_Climb_R_Down::OnStateStart(const _float& In_fAnimationBlendTim
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
 
+	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Translation", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Y | (_byte)ROOTNODE_FLAG::Z);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 0, 0.05f);
 

@@ -27,6 +27,12 @@ HRESULT CCorvus::Initialize(void* pArg)
 	m_pStatus = CGameObject::Add_Component<CStatus_Player>();
 
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
+
+	// Corvus_SD_Ladder_Climb_R_UP_End_Reverse
+	m_pModelCom.lock()->Add_ReverseAnimation(m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_Ladder_Climb_R_UP_End"), (_uint)TIMESCALE_LAYER::PLAYER);
+	// Corvus_SD_Ladder_Climb_L_UP_End_Reverse
+	m_pModelCom.lock()->Add_ReverseAnimation(m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_Ladder_Climb_L_UP_End"), (_uint)TIMESCALE_LAYER::PLAYER);
+
 	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Translation", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
 
 
@@ -57,8 +63,12 @@ HRESULT CCorvus::Start()
 {
 	__super::Start();
 	CCharacter::Change_State<CCorvusState_Idle>();
+
 	m_pCamera = GET_SINGLE(CGameManager)->Get_TargetCamera();
-	m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
+
+	if (m_pCamera.lock())
+		m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
+
 	return S_OK;
 }
 
@@ -95,14 +105,23 @@ HRESULT CCorvus::Render()
 	for (_uint i(0); i < m_iNumMeshContainers; ++i)
 	{
 #ifdef _DEBUG
-		if (i == m_iContainerIndex)
-			continue;
+		/*if (i == m_iContainerIndex)
+			continue;*/
 #endif // _DEBUG
+		if (4 == i || 5 == i || 9 == i || 10 == i || 11 == i|| 12 == i|| 13 == i)
+		{
+			unordered_map<_uint, DISSOLVE_DESC>::iterator iter = m_DissolveDescs.find(i);
 
-		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
+			if (iter == m_DissolveDescs.end())
+			{
+				continue;
+			}
 
-		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-			m_iPassIndex = 0;
+			m_pShaderCom.lock()->Set_RawValue("g_vDissolveDir", &iter->second.vDirection, sizeof(_float3));
+			m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &iter->second.fAmount, sizeof(_float));
+	
+			m_iPassIndex = 6;
+		}
 		else
 		{
 			if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
@@ -110,17 +129,16 @@ HRESULT CCorvus::Render()
 			else
 				m_iPassIndex = 5;
 		}
-		//if (i == m_iDissolveMeshIndex)
-		//{
-		//	m_pShaderCom.lock()->Set_RawValue("g_vDissolveDir", &m_vDissolveDir, sizeof(_float3));
-		//	m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &m_fDissolveAmount, sizeof(_float));
-		//	cout << "g_fDissolveAmount : " << m_fDissolveAmount << endl;
-		//	m_iPassIndex = 6;
-		//	m_iDissolveMeshIndex = -1;//다시 초기화
+		
+		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 
-		//}
+		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+			m_iPassIndex = 0;
+	
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones");
 	}
+
+	m_DissolveDescs.clear();
 
 	return S_OK;
 }
@@ -222,6 +240,9 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_Fall_Start);
 	ADD_STATE_MACRO(CCorvusState_Climb_Start);
 	ADD_STATE_MACRO(CCorvusState_Climb_Fall_Attack);
+	ADD_STATE_MACRO(CCorvusState_Climb_L_Up_Down_End);
+	ADD_STATE_MACRO(CCorvusState_Climb_R_Up_Down_End);
+	ADD_STATE_MACRO(CCorvusState_RaidAttack1Hurt);
 
 #undef ADD_STATE_MACRO
 }
@@ -241,9 +262,11 @@ void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 	{
 	case Client::COLLISION_LAYER::LADDER_UP:
 		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::LADDERUP;
+		m_bLadderCheck = true;
 		break;
 	case Client::COLLISION_LAYER::LADDER_DOWN:
 		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::LADDERDOWN;
+		m_bLadderCheck = true;
 		break;
 	case Client::COLLISION_LAYER::ELEVATOR:
 		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::ELEVATOR;

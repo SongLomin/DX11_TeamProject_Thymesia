@@ -64,7 +64,7 @@ void CCorvusState_Climb_L_Down_End::OnStateStart(const _float& In_fAnimationBlen
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
 
-	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Y |(_byte)ROOTNODE_FLAG::Z);
+	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Translation", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Y |(_byte)ROOTNODE_FLAG::Z);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -80,7 +80,7 @@ void CCorvusState_Climb_L_Down_End::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Z);
+	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Translation", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Z);
 }
 
 void CCorvusState_Climb_L_Down_End::OnDestroy()

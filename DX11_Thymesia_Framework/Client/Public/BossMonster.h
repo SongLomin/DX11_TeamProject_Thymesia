@@ -67,9 +67,7 @@ protected:
 
     weak_ptr<CCharacter>      m_pTargetCharacter; // = player
     weak_ptr<CTexture>        m_pDissolveTextureCom;
-    STATE_LINK_MONSTER_DESC   m_tLinkStateDesc;
     MONSTERWEAPONTYPE         m_eMonWeaPonType = MONSTERWEAPONTYPE::MON_WEAPON_END;
- 
 
     weak_ptr<CStatus_Monster>           m_pStatus;
 

@@ -173,7 +173,7 @@ void CPreViewAnimationModel::Init_EditPreViewAnimationModel(const string& In_szM
 		//m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, "weapon_l");
 #endif // _ANIMATION_TOOL_CORVUS_WEAPON_
 
-		m_pModelCom.lock()->Add_ReverseAnimation(m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Corvus.ao|Corvus_SD_Ladder_Climb_R_UP_End"), (_uint)TIMESCALE_LAYER::EDITER);
+		m_pModelCom.lock()->Add_ReverseAnimation(m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_Ladder_Climb_R_UP_End"), (_uint)TIMESCALE_LAYER::EDITER);
 	}
 
 	if (strcmp(In_szModelKey.c_str(), "Boss_Varg") == 0)

@@ -89,6 +89,8 @@ HRESULT CLevel_GamePlay::Initialize()
 #pragma endregion GAMEOBJECT
 #endif	// ONLY_UI
 
+	GAMEINSTANCE->Set_FogColor(_float4(0.49f, 0.43f, 0.2f, 1.f));
+
 	SetUp_UI();
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 	return S_OK;
@@ -172,7 +174,13 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 			Client::ATTACK_OPTION::NORMAL
 		);	
 	}
-
+	if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
+	{
+		if (m_pPauseMenu.lock()->Get_Enable() == false)
+		{
+			ExitLevel(LEVEL::LEVEL_STAGE2);
+		}
+	}
 #endif // _ONLY_UI_
 
 #ifndef _LOAD_CAPTURED_RESOURCE_

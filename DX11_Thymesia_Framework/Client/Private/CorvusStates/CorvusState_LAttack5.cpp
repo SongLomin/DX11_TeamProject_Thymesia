@@ -24,6 +24,8 @@ HRESULT CCorvusState_LAttack5::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
+	m_vShakingOffSet = { 0.2f,1.f,0.f };
+
 	return S_OK;
 }
 

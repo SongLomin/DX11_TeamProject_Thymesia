@@ -37,7 +37,6 @@ HRESULT CVarg::Initialize(void* pArg)
 	pHPBar.lock()->Set_Owner(Weak_Cast<CMonster>(m_this));
 	
 	m_pStandState = Add_Component<CVargBossState_Start>();
-
 	Add_Component<CVargBossState_Attack1a>();
 	Add_Component<CVargBossState_Attack1b>();
 	Add_Component<CVargBossState_Attack2a>();
@@ -99,8 +98,6 @@ HRESULT CVarg::Start()
 
 	m_pTrailEffect.lock()->Set_TextureIndex(1,869, 0);
 	m_pTrailBoneNode = m_pModelCom.lock()->Find_BoneNode("Bip001-Head");
-
-
 
 	Change_State<CVargBossState_Start>();
 

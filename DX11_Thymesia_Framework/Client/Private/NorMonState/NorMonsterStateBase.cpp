@@ -144,17 +144,18 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 		vHitPos.x += fRandom(mt);
 		vHitPos.y += fRandom(mt);
 
+		int iRand = rand() % 8 + 1;
 
 		switch (eAttackOption)
 		{
 		case Client::ATTACK_OPTION::NONE:
-			fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+			fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk + iRand;
 			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, ATTACK_OPTION::NORMAL);		
 			GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 			pDamageFont.lock()->SetUp_DamageFont((_uint)fMagnifiedDamage, vHitPos, eAttackOption);
 			break;
 		case Client::ATTACK_OPTION::NORMAL:
-			fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+			fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk + iRand;
 			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);		
 			GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 			pDamageFont.lock()->SetUp_DamageFont((_uint)fMagnifiedDamage, vHitPos, eAttackOption);

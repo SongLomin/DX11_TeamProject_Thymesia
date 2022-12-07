@@ -1,314 +1,312 @@
-0. Corvus_Approach
-1. Corvus_ArchiveGetup
-2. Corvus_ArchiveLight_up
-3. Corvus_ArchiveSitLoop
-4. Corvus_ArchiveSitStart
-5. Corvus_Healing2_Blend
-6. Corvus_Healing2_InPlace
-7. Corvus_Healing_Big
-8. Corvus_Healing_Little
-9. Corvus_Lobby_FirstWakeUp
-10. Corvus_Lobby_Idle01
-11. Corvus_Lobby_Idle01_End
-12. Corvus_Lobby_Idle02
-13. Corvus_Lobby_Idle02_End
-14. Corvus_LobbyIdle03
-15. Corvus_LobbyIdle03_End
-16. Corvus_PW_Axe
-17. Corvus_PW_Axe_B_V1
-18. Corvus_PW_Bat_Roar_A
-19. Corvus_PW_Bat_Roar_B
-20. Corvus_PW_BigHand_B_End
-21. Corvus_PW_BigHand_B_Loop
-22. Corvus_PW_BigHand_B_Start
-23. Corvus_PW_BigHand_End
-24. Corvus_PW_BigHand_Start
-25. Corvus_PW_Bloodwhip
-26. Corvus_PW_Bloodwhip_End
-27. Corvus_PW_Bloodwhip_Jump
-28. Corvus_PW_Bloodwhip_Loop
-29. Corvus_PW_BloodwhipPull
-30. Corvus_PW_Bow_B
-31. Corvus_PW_Bow_End
-32. Corvus_PW_Bow_Start
-33. Corvus_PW_CaneSword_Fast
-34. Corvus_PW_CaneSword_SP01
-35. Corvus_PW_CaneSword_SP02
-36. Corvus_PW_Darts_A_B_V1
-37. Corvus_PW_Darts_A_F_V1
-38. Corvus_PW_Darts_A_L_V1
-39. Corvus_PW_Darts_A_R_V1
-40. Corvus_PW_Darts_A_V1
-41. Corvus_PW_Darts_B_01
-42. Corvus_PW_Darts_B_02
-43. Corvus_PW_Darts_B_03
-44. Corvus_PW_Darts_B_04
-45. Corvus_PW_Darts_B_Start
-46. Corvus_PW_DualKnife
-47. Corvus_PW_DualKnife_B
-48. Corvus_PW_DualKnife_B_Suc
-49. Corvus_PW_GiantMaggot_A_V1
-50. Corvus_PW_GreatSword
-51. Corvus_PW_GreatSword_B
-52. Corvus_PW_GreatSwordStep
-53. Corvus_PW_Halberds
-54. Corvus_PW_Halberds_B
-55. Corvus_PW_Hammer_A
-56. Corvus_PW_Hammer_A_AI
-57. Corvus_PW_Hammer_B_Ver2
-58. Corvus_PW_Hammer_B_Ver2_AI
-59. Corvus_PW_Knife_A_V1
-60. Corvus_PW_Magician_A
-61. Corvus_PW_MagicianLV2
-62. Corvus_PW_Puppet_V1_A
-63. Corvus_PW_Puppet_V1_A_End
-64. Corvus_PW_Puppet_V1_B
-65. Corvus_PW_Puppet_V1_Start
-66. Corvus_PW_Researcher
-67. Corvus_PW_Researcher_B
-68. Corvus_PW_Scythe
-69. Corvus_PW_Scythe_B
-70. Corvus_PW_Shield
-71. Corvus_PW_Shield_B
-72. Corvus_PW_Shield_B_Suc
-73. Corvus_PW_ShieldBlock
-74. Corvus_PW_Slide_B
-75. Corvus_PW_Slide_L
-76. Corvus_PW_Slide_R
-77. Corvus_PW_TwinSwords_1
-78. Corvus_PW_TwinSwords_2
-79. Corvus_PW_TwinSwords_3
-80. Corvus_PW_TwinSwords_4
-81. Corvus_PW_TwinSwords_B
-82. Corvus_PW_UrdSword01
-83. Corvus_PW_UrdSword_B_End_Ver2
-84. Corvus_PW_UrdSword_B_Loop_Ver2
-85. Corvus_PW_UrdSword_B_Start_Ver2
-86. Corvus_PW_VargSword_A
-87. Corvus_PW_VargSword_B
-88. Corvus_PW_VargSword_Start
-89. Corvus_QuicklyRecoverUP_B
-90. Corvus_QuicklyRecoverUP_F
-91. Corvus_QuicklyRecoverUP_L
-92. Corvus_QuicklyRecoverUP_R
-93. Corvus_Raven_ClawCommon_ChargeLoop
-94. Corvus_Raven_ClawCommon_ChargeStep
-95. Corvus_Raven_ClawCommonV2_ChargeStart
-96. Corvus_Raven_ClawLong_ChargeFull
-97. Corvus_Raven_ClawLong_L01
-98. Corvus_Raven_ClawLong_L02
-99. Corvus_Raven_ClawLong_PlunderAttack1
-100. Corvus_Raven_ClawLong_PlunderAttack2TTT
-101. Corvus_Raven_ClawNear
-102. Corvus_Raven_ClawParry_End
-103. Corvus_Raven_ClawShort_ChargeFull
-104. Corvus_Raven_ClawShort_PlunderAttack1
-105. Corvus_Raven_ClawShort_PlunderAttack2TT
-106. Corvus_Raven_ClawShortV2_Fast01
-107. Corvus_Raven_ClawShortV2_Fast01_Slow
-108. Corvus_Raven_ClawShortV2_Fast02
-109. Corvus_Raven_ClawShortV2_Fast03
-110. Corvus_Raven_ClawShortV2_Fast031
-111. Corvus_Raven_FeatherRoundAttack
-112. Corvus_Raven_FeatherRoundJump
-113. Corvus_Raven_FeatherRush
-114. Corvus_Raven_FeatherRushAI
-115. Corvus_Raven_Idle
-116. Corvus_Raven_WingsParry
-117. Corvus_RavenAttack_End
-118. Corvus_RavenAttack_Loop
-119. Corvus_RavenAttack_Near
-120. Corvus_RavenAttack_Start
-121. Corvus_RavenJumpBack
-122. Corvus_RavenJumpBack_Start
-123. Corvus_RootFix_BMedium
-124. Corvus_RootFix_BSmall
-125. Corvus_SD1_Fall_Attack
-126. Corvus_SD1_ParryL_NEW
-127. Corvus_SD1_ParryR_NEW
-128. Corvus_SD1_Sprint
-129. Corvus_SD1_Sprint_Start
-130. Corvus_SD2Raven
-131. Corvus_SD_AvoidAttack_D
-132. Corvus_SD_AvoidAttack_E2
-133. Corvus_SD_AvoidAttack_E3
-134. Corvus_SD_AvoidF
-135. Corvus_SD_AvoidLongB_NEW
-136. Corvus_SD_AvoidLongF
-137. Corvus_SD_AvoidLongL_NEW
-138. Corvus_SD_AvoidLongR_NEW
-139. Corvus_SD_AvoidShort_B_NEW
-140. Corvus_SD_AvoidShort_F
-141. Corvus_SD_AvoidShort_L
-142. Corvus_SD_AvoidShort_R
-143. Corvus_SD_AvoidShortMag_B
-144. Corvus_SD_AvoidShortMag_F
-145. Corvus_SD_AvoidShortMag_L
-146. Corvus_SD_AvoidShortMag_R
-147. Corvus_SD_Bounce
-148. Corvus_SD_Dead_1
-149. Corvus_SD_Defense_Hurt
-150. Corvus_SD_Defense_Hurt_Large
-151. Corvus_SD_Defense_Loop
-152. Corvus_SD_Fall_End
-153. Corvus_SD_Fall_Loop
-154. Corvus_SD_Fall_Start
-155. Corvus_SD_GetUp
-156. Corvus_SD_Headache1_End
-157. Corvus_SD_Headache1_Loop
-158. Corvus_SD_Headache1_Start
-159. Corvus_SD_Headache2_Loop
-160. Corvus_SD_Headache2_Start
-161. Corvus_SD_HurtBlown
-162. Corvus_SD_HurtFallDown
-163. Corvus_SD_HurtFallDown_End
-164. Corvus_SD_HurtKnockDown
-165. Corvus_SD_HurtLF
-166. Corvus_SD_HurtMFL
-167. Corvus_SD_HurtMFR
-168. Corvus_SD_HurtSF_1
-169. Corvus_SD_HurtSL
-170. Corvus_SD_HurtSR
-171. Corvus_SD_HurtXLF
-172. Corvus_SD_HurtXXLF
-173. Corvus_SD_Idle
-174. Corvus_SD_KnockBackF
-175. Corvus_SD_Ladder_Climb_L_Down
-176. Corvus_SD_Ladder_Climb_L_Down_End
-177. Corvus_SD_Ladder_Climb_L_UP
-178. Corvus_SD_Ladder_Climb_L_UP_End
-179. Corvus_SD_Ladder_Climb_R_Down
-180. Corvus_SD_Ladder_Climb_R_Down_End
-181. Corvus_SD_Ladder_Climb_R_UP
-182. Corvus_SD_Ladder_Climb_R_UP_End
-183. Corvus_SD_Ladder_Climb_Start
-184. Corvus_SD_Ladder_L_Idle
-185. Corvus_SD_Ladder_R_Idle
-186. Corvus_SD_LAttack1
-187. Corvus_SD_LAttack1_Slow
-188. Corvus_SD_LAttack2
-189. Corvus_SD_LAttack3_New
-190. Corvus_SD_LAttack3_New_Slow
-191. Corvus_SD_LAttack4
-192. Corvus_SD_LAttack5
-193. Corvus_SD_M01_SneakAttack_End
-194. Corvus_SD_M01_SneakAttack_Suc
-195. Corvus_SD_ParryDefance
-196. Corvus_SD_ParryDeflect_L
-197. Corvus_SD_ParryDeflect_Large
-198. Corvus_SD_ParryDeflect_LUp
-199. Corvus_SD_ParryDeflect_LUP_AI
-200. Corvus_SD_ParryDeflect_R
-201. Corvus_SD_ParryDeflect_RUp
-202. Corvus_SD_ParryDeflect_RUp_AI
-203. Corvus_SD_Rebound_L
-204. Corvus_SD_Rebound_R
-205. Corvus_SD_RootFixJokerRunAttack1
-206. Corvus_SD_RunB
-207. Corvus_SD_RunBL
-208. Corvus_SD_RunBR
-209. Corvus_SD_RunF_24
-210. Corvus_SD_RunFL
-211. Corvus_SD_RunFR
-212. Corvus_SD_RunL
-213. Corvus_SD_RunR
-214. Corvus_SD_SprintAttack_1
-215. Corvus_SD_TD2Thorw2
-216. Corvus_SD_TD2Thorw2_Slow
-217. Corvus_SD_VSVarg_Execution
-218. Corvus_SD_VSVarg_Execution_Blending
-219. Corvus_SD_Walk_Poison_Pose
-220. Corvus_SD_WalkB
-221. Corvus_SD_WalkB_LEnd
-222. Corvus_SD_WalkB_REnd
-223. Corvus_SD_WalkB_Start
-224. Corvus_SD_WalkBL
-225. Corvus_SD_WalkBR
-226. Corvus_SD_WalkF
-227. Corvus_SD_WalkF_LEnd
-228. Corvus_SD_WalkF_REnd
-229. Corvus_SD_WalkF_Start
-230. Corvus_SD_WalkFL
-231. Corvus_SD_WalkFR
-232. Corvus_SD_WalkIdle
-233. Corvus_SD_WalkL
-234. Corvus_SD_WalkL_LEnd
-235. Corvus_SD_WalkL_REnd
-236. Corvus_SD_WalkL_Start
-237. Corvus_SD_WalkR
-238. Corvus_SD_WalkR_LEnd
-239. Corvus_SD_WalkR_REnd
-240. Corvus_SD_WalkR_Start
-241. Corvus_SD_WeakGetUp_F
-242. Corvus_Seq_BossFightStart_Sit
-243. Corvus_Seq_BossFightStart_Stand
-244. Corvus_Seq_GameEnd
-245. Corvus_Seq_GameEnd_Idle
-246. Corvus_Seq_GameEnd_SP
-247. Corvus_Seq_GameEnd_SP_walk
-248. Corvus_StunExecute_StartL_L
-249. Corvus_StunExecute_StartL_R
-250. Corvus_StunExecute_StartR_L
-251. Corvus_StunExecute_StartR_R
-252. Corvus_StunExecute_StartRDown_L
-253. Corvus_StunExecute_StartRDown_R
-254. Corvus_StunnedEnd
-255. Corvus_StunnedLoop
-256. Corvus_StunnedStart
-257. Corvus_Suicide
-258. Corvus_VS_Armor_Execution_01
-259. Corvus_VS_Armor_Execution_02
-260. Corvus_VS_Blood01_Execution
-261. Corvus_VS_Blood01_RaidAttack1Hurt
-262. Corvus_VS_GiantMaggotExecution_Attack03_L
-263. Corvus_VS_GiantMaggotExecution_Attack03_R
-264. Corvus_VS_GiantMaggotExecution_End
-265. Corvus_VS_GiantMaggotExecutionL
-266. Corvus_VS_GiantMaggotExecutionR
-267. Corvus_VS_LArmorLV2_Execution
-268. Corvus_VS_LightExecute01L
-269. Corvus_VS_LightExecute01R
-270. Corvus_VS_MagicianLV1_Seq_BossFightStart
-271. Corvus_VS_MagicianLV2_Execution_V1
-272. Corvus_VS_MagicianLV2_SPAttack1_Hurt
-273. Corvus_VS_Puppet_Execution_Attack
-274. Corvus_VS_Puppet_Execution_End
-275. Corvus_VS_Puppet_Execution_Start
-276. Corvus_VS_Researcher01_Execution
-277. Corvus_VS_Researcher01_Execution_NCamera
-278. Corvus_VS_Researcher01_SP01Hurt
-279. Corvus_VSBossBat_Execution01
-280. Corvus_VSGiantMaggot_SP1Hurt
-281. Corvus_VSGrace_Execution
-282. Corvus_VSHArmorLV1_Execution
-283. Corvus_VSHArmorLV1_Execution_NCamera
-284. Corvus_VSJoker_Execution
-285. Corvus_VSLV1Villager_M_Execution
-286. Corvus_VSLV2Villager01_M_Execution
-287. Corvus_VSMagician_Execution
-288. Corvus_VSMagician_SP1Hurt
-289. Corvus_VSMagician_SP2Hurt
-290. Corvus_VSSelf_ExecuteL_V1
-291. Corvus_VSSelf_ExecuteS
-292. Corvus_VSSelf_TakeExecuteL
-293. Corvus_VSSelf_TakeExecuteS_V1
-294. Corvus_VSUrd_Execution
-295. Corvus_VSVarg_TakeSPAttack
-296. Corvus_VSVarg_TakeSPAttackSeq1
-297. Corvus_WalkN
-298. O_Corvus_SD1_SprintF
-299. O_Corvus_SD1_SprintF1
+0. SK_C_Corvus.ao|Corvus_ArchiveGetup
+1. SK_C_Corvus.ao|Corvus_ArchiveLight_up
+2. SK_C_Corvus.ao|Corvus_ArchiveSitLoop
+3. SK_C_Corvus.ao|Corvus_ArchiveSitStart
+4. SK_C_Corvus.ao|Corvus_Healing2_Blend
+5. SK_C_Corvus.ao|Corvus_Healing2_InPlace
+6. SK_C_Corvus.ao|Corvus_Healing_Big
+7. SK_C_Corvus.ao|Corvus_Healing_Little
+8. SK_C_Corvus.ao|Corvus_Lobby_FirstWakeUp
+9. SK_C_Corvus.ao|Corvus_Lobby_Idle01
+10. SK_C_Corvus.ao|Corvus_Lobby_Idle01_End
+11. SK_C_Corvus.ao|Corvus_Lobby_Idle02
+12. SK_C_Corvus.ao|Corvus_Lobby_Idle02_End
+13. SK_C_Corvus.ao|Corvus_LobbyIdle03
+14. SK_C_Corvus.ao|Corvus_LobbyIdle03_End
+15. SK_C_Corvus.ao|Corvus_PW_Axe
+16. SK_C_Corvus.ao|Corvus_PW_Axe_B_V1
+17. SK_C_Corvus.ao|Corvus_PW_Bat_Roar_A
+18. SK_C_Corvus.ao|Corvus_PW_Bat_Roar_B
+19. SK_C_Corvus.ao|Corvus_PW_BigHand_B_End
+20. SK_C_Corvus.ao|Corvus_PW_BigHand_B_Loop
+21. SK_C_Corvus.ao|Corvus_PW_BigHand_B_Start
+22. SK_C_Corvus.ao|Corvus_PW_BigHand_End
+23. SK_C_Corvus.ao|Corvus_PW_BigHand_Start
+24. SK_C_Corvus.ao|Corvus_PW_Bloodwhip
+25. SK_C_Corvus.ao|Corvus_PW_Bloodwhip_End
+26. SK_C_Corvus.ao|Corvus_PW_Bloodwhip_Jump
+27. SK_C_Corvus.ao|Corvus_PW_Bloodwhip_Loop
+28. SK_C_Corvus.ao|Corvus_PW_BloodwhipPull
+29. SK_C_Corvus.ao|Corvus_PW_Bow_B
+30. SK_C_Corvus.ao|Corvus_PW_Bow_End
+31. SK_C_Corvus.ao|Corvus_PW_Bow_Start
+32. SK_C_Corvus.ao|Corvus_PW_CaneSword_Fast
+33. SK_C_Corvus.ao|Corvus_PW_CaneSword_SP01
+34. SK_C_Corvus.ao|Corvus_PW_CaneSword_SP02
+35. SK_C_Corvus.ao|Corvus_PW_Darts_A_B_V1
+36. SK_C_Corvus.ao|Corvus_PW_Darts_A_F_V1
+37. SK_C_Corvus.ao|Corvus_PW_Darts_A_L_V1
+38. SK_C_Corvus.ao|Corvus_PW_Darts_A_R_V1
+39. SK_C_Corvus.ao|Corvus_PW_Darts_A_V1
+40. SK_C_Corvus.ao|Corvus_PW_Darts_B_01
+41. SK_C_Corvus.ao|Corvus_PW_Darts_B_02
+42. SK_C_Corvus.ao|Corvus_PW_Darts_B_03
+43. SK_C_Corvus.ao|Corvus_PW_Darts_B_04
+44. SK_C_Corvus.ao|Corvus_PW_Darts_B_Start
+45. SK_C_Corvus.ao|Corvus_PW_DualKnife
+46. SK_C_Corvus.ao|Corvus_PW_DualKnife_B
+47. SK_C_Corvus.ao|Corvus_PW_DualKnife_B_Suc
+48. SK_C_Corvus.ao|Corvus_PW_GiantMaggot_A_V1
+49. SK_C_Corvus.ao|Corvus_PW_GreatSword
+50. SK_C_Corvus.ao|Corvus_PW_GreatSword_B
+51. SK_C_Corvus.ao|Corvus_PW_GreatSwordStep
+52. SK_C_Corvus.ao|Corvus_PW_Halberds
+53. SK_C_Corvus.ao|Corvus_PW_Halberds_B
+54. SK_C_Corvus.ao|Corvus_PW_Hammer_A
+55. SK_C_Corvus.ao|Corvus_PW_Hammer_B_Ver2
+56. SK_C_Corvus.ao|Corvus_PW_Knife_A_V1
+57. SK_C_Corvus.ao|Corvus_PW_Magician_A
+58. SK_C_Corvus.ao|Corvus_PW_MagicianLV2
+59. SK_C_Corvus.ao|Corvus_PW_Puppet_V1_A
+60. SK_C_Corvus.ao|Corvus_PW_Puppet_V1_A_End
+61. SK_C_Corvus.ao|Corvus_PW_Puppet_V1_B
+62. SK_C_Corvus.ao|Corvus_PW_Puppet_V1_Start
+63. SK_C_Corvus.ao|Corvus_PW_Researcher
+64. SK_C_Corvus.ao|Corvus_PW_Researcher_B
+65. SK_C_Corvus.ao|Corvus_PW_Scythe
+66. SK_C_Corvus.ao|Corvus_PW_Scythe_B
+67. SK_C_Corvus.ao|Corvus_PW_Shield
+68. SK_C_Corvus.ao|Corvus_PW_Shield_B
+69. SK_C_Corvus.ao|Corvus_PW_Shield_B_Suc
+70. SK_C_Corvus.ao|Corvus_PW_ShieldBlock
+71. SK_C_Corvus.ao|Corvus_PW_Slide_B
+72. SK_C_Corvus.ao|Corvus_PW_Slide_L
+73. SK_C_Corvus.ao|Corvus_PW_Slide_R
+74. SK_C_Corvus.ao|Corvus_PW_TwinSwords_1
+75. SK_C_Corvus.ao|Corvus_PW_TwinSwords_2
+76. SK_C_Corvus.ao|Corvus_PW_TwinSwords_3
+77. SK_C_Corvus.ao|Corvus_PW_TwinSwords_4
+78. SK_C_Corvus.ao|Corvus_PW_TwinSwords_B
+79. SK_C_Corvus.ao|Corvus_PW_UrdSword01
+80. SK_C_Corvus.ao|Corvus_PW_UrdSword_B_End_Ver2
+81. SK_C_Corvus.ao|Corvus_PW_UrdSword_B_Loop_Ver2
+82. SK_C_Corvus.ao|Corvus_PW_UrdSword_B_Start_Ver2
+83. SK_C_Corvus.ao|Corvus_PW_VargSword_A
+84. SK_C_Corvus.ao|Corvus_PW_VargSword_B
+85. SK_C_Corvus.ao|Corvus_PW_VargSword_Start
+86. SK_C_Corvus.ao|Corvus_QuicklyRecoverUP_B
+87. SK_C_Corvus.ao|Corvus_QuicklyRecoverUP_F
+88. SK_C_Corvus.ao|Corvus_QuicklyRecoverUP_L
+89. SK_C_Corvus.ao|Corvus_QuicklyRecoverUP_R
+90. SK_C_Corvus.ao|Corvus_Raven_ClawCommon_ChargeLoop
+91. SK_C_Corvus.ao|Corvus_Raven_ClawCommon_ChargeStep
+92. SK_C_Corvus.ao|Corvus_Raven_ClawCommonV2_ChargeStart
+93. SK_C_Corvus.ao|Corvus_Raven_ClawLong_ChargeFull
+94. SK_C_Corvus.ao|Corvus_Raven_ClawLong_L01
+95. SK_C_Corvus.ao|Corvus_Raven_ClawLong_L02
+96. SK_C_Corvus.ao|Corvus_Raven_ClawLong_PlunderAttack1
+97. SK_C_Corvus.ao|Corvus_Raven_ClawLong_PlunderAttack2TTT
+98. SK_C_Corvus.ao|Corvus_Raven_ClawNear
+99. SK_C_Corvus.ao|Corvus_Raven_ClawParry_End
+100. SK_C_Corvus.ao|Corvus_Raven_ClawShort_ChargeFull
+101. SK_C_Corvus.ao|Corvus_Raven_ClawShort_PlunderAttack1
+102. SK_C_Corvus.ao|Corvus_Raven_ClawShort_PlunderAttack2TT
+103. SK_C_Corvus.ao|Corvus_Raven_ClawShortV2_Fast01
+104. SK_C_Corvus.ao|Corvus_Raven_ClawShortV2_Fast01_Slow
+105. SK_C_Corvus.ao|Corvus_Raven_ClawShortV2_Fast02
+106. SK_C_Corvus.ao|Corvus_Raven_ClawShortV2_Fast03
+107. SK_C_Corvus.ao|Corvus_Raven_ClawShortV2_Fast031
+108. SK_C_Corvus.ao|Corvus_Raven_FeatherRoundAttack
+109. SK_C_Corvus.ao|Corvus_Raven_FeatherRoundJump
+110. SK_C_Corvus.ao|Corvus_Raven_FeatherRush
+111. SK_C_Corvus.ao|Corvus_Raven_FeatherRushAI
+112. SK_C_Corvus.ao|Corvus_Raven_Idle
+113. SK_C_Corvus.ao|Corvus_Raven_WingsParry
+114. SK_C_Corvus.ao|Corvus_RavenAttack_End
+115. SK_C_Corvus.ao|Corvus_RavenAttack_Loop
+116. SK_C_Corvus.ao|Corvus_RavenAttack_Near
+117. SK_C_Corvus.ao|Corvus_RavenAttack_Start
+118. SK_C_Corvus.ao|Corvus_RavenJumpBack
+119. SK_C_Corvus.ao|Corvus_RavenJumpBack_Start
+120. SK_C_Corvus.ao|Corvus_RootFix_BMedium
+121. SK_C_Corvus.ao|Corvus_RootFix_BSmall
+122. SK_C_Corvus.ao|Corvus_SD1_Fall_Attack
+123. SK_C_Corvus.ao|Corvus_SD1_ParryL_NEW
+124. SK_C_Corvus.ao|Corvus_SD1_ParryR_NEW
+125. SK_C_Corvus.ao|Corvus_SD1_Sprint
+126. SK_C_Corvus.ao|Corvus_SD1_Sprint_Start
+127. SK_C_Corvus.ao|Corvus_SD2Raven
+128. SK_C_Corvus.ao|Corvus_SD_AvoidAttack_D
+129. SK_C_Corvus.ao|Corvus_SD_AvoidAttack_E2
+130. SK_C_Corvus.ao|Corvus_SD_AvoidAttack_E3
+131. SK_C_Corvus.ao|Corvus_SD_AvoidF
+132. SK_C_Corvus.ao|Corvus_SD_AvoidLongB_NEW
+133. SK_C_Corvus.ao|Corvus_SD_AvoidLongF
+134. SK_C_Corvus.ao|Corvus_SD_AvoidLongL_NEW
+135. SK_C_Corvus.ao|Corvus_SD_AvoidLongR_NEW
+136. SK_C_Corvus.ao|Corvus_SD_AvoidShort_B_NEW
+137. SK_C_Corvus.ao|Corvus_SD_AvoidShort_F
+138. SK_C_Corvus.ao|Corvus_SD_AvoidShort_L
+139. SK_C_Corvus.ao|Corvus_SD_AvoidShort_R
+140. SK_C_Corvus.ao|Corvus_SD_AvoidShortMag_B
+141. SK_C_Corvus.ao|Corvus_SD_AvoidShortMag_F
+142. SK_C_Corvus.ao|Corvus_SD_AvoidShortMag_L
+143. SK_C_Corvus.ao|Corvus_SD_AvoidShortMag_R
+144. SK_C_Corvus.ao|Corvus_SD_Bounce
+145. SK_C_Corvus.ao|Corvus_SD_Dead_1
+146. SK_C_Corvus.ao|Corvus_SD_Defense_Hurt
+147. SK_C_Corvus.ao|Corvus_SD_Defense_Hurt_Large
+148. SK_C_Corvus.ao|Corvus_SD_Defense_Loop
+149. SK_C_Corvus.ao|Corvus_SD_Fall_End
+150. SK_C_Corvus.ao|Corvus_SD_Fall_Loop
+151. SK_C_Corvus.ao|Corvus_SD_Fall_Start
+152. SK_C_Corvus.ao|Corvus_SD_GetUp
+153. SK_C_Corvus.ao|Corvus_SD_Headache1_End
+154. SK_C_Corvus.ao|Corvus_SD_Headache1_Loop
+155. SK_C_Corvus.ao|Corvus_SD_Headache1_Start
+156. SK_C_Corvus.ao|Corvus_SD_Headache2_Loop
+157. SK_C_Corvus.ao|Corvus_SD_Headache2_Start
+158. SK_C_Corvus.ao|Corvus_SD_HurtBlown
+159. SK_C_Corvus.ao|Corvus_SD_HurtFallDown
+160. SK_C_Corvus.ao|Corvus_SD_HurtFallDown_End
+161. SK_C_Corvus.ao|Corvus_SD_HurtKnockDown
+162. SK_C_Corvus.ao|Corvus_SD_HurtLF
+163. SK_C_Corvus.ao|Corvus_SD_HurtMFL
+164. SK_C_Corvus.ao|Corvus_SD_HurtMFR
+165. SK_C_Corvus.ao|Corvus_SD_HurtSF_1
+166. SK_C_Corvus.ao|Corvus_SD_HurtSL
+167. SK_C_Corvus.ao|Corvus_SD_HurtSR
+168. SK_C_Corvus.ao|Corvus_SD_HurtXLF
+169. SK_C_Corvus.ao|Corvus_SD_HurtXXLF
+170. SK_C_Corvus.ao|Corvus_SD_Idle
+171. SK_C_Corvus.ao|Corvus_SD_KnockBackF
+172. SK_C_Corvus.ao|Corvus_SD_Ladder_Climb_L_Down
+173. SK_C_Corvus.ao|Corvus_SD_Ladder_Climb_L_Down_End
+174. SK_C_Corvus.ao|Corvus_SD_Ladder_Climb_L_UP
+175. SK_C_Corvus.ao|Corvus_SD_Ladder_Climb_L_UP_End
+176. SK_C_Corvus.ao|Corvus_SD_Ladder_Climb_R_Down
+177. SK_C_Corvus.ao|Corvus_SD_Ladder_Climb_R_Down_End
+178. SK_C_Corvus.ao|Corvus_SD_Ladder_Climb_R_UP
+179. SK_C_Corvus.ao|Corvus_SD_Ladder_Climb_R_UP_End
+180. SK_C_Corvus.ao|Corvus_SD_Ladder_Climb_Start
+181. SK_C_Corvus.ao|Corvus_SD_Ladder_L_Idle
+182. SK_C_Corvus.ao|Corvus_SD_Ladder_R_Idle
+183. SK_C_Corvus.ao|Corvus_SD_LAttack1
+184. SK_C_Corvus.ao|Corvus_SD_LAttack1_Slow
+185. SK_C_Corvus.ao|Corvus_SD_LAttack2
+186. SK_C_Corvus.ao|Corvus_SD_LAttack3_New
+187. SK_C_Corvus.ao|Corvus_SD_LAttack3_New_Slow
+188. SK_C_Corvus.ao|Corvus_SD_LAttack4
+189. SK_C_Corvus.ao|Corvus_SD_LAttack5
+190. SK_C_Corvus.ao|Corvus_SD_M01_SneakAttack_End
+191. SK_C_Corvus.ao|Corvus_SD_M01_SneakAttack_Suc
+192. SK_C_Corvus.ao|Corvus_SD_ParryDefance
+193. SK_C_Corvus.ao|Corvus_SD_ParryDeflect_L
+194. SK_C_Corvus.ao|Corvus_SD_ParryDeflect_Large
+195. SK_C_Corvus.ao|Corvus_SD_ParryDeflect_LUp
+196. SK_C_Corvus.ao|Corvus_SD_ParryDeflect_LUP_AI
+197. SK_C_Corvus.ao|Corvus_SD_ParryDeflect_R
+198. SK_C_Corvus.ao|Corvus_SD_ParryDeflect_RUp
+199. SK_C_Corvus.ao|Corvus_SD_ParryDeflect_RUp_AI
+200. SK_C_Corvus.ao|Corvus_SD_Rebound_L
+201. SK_C_Corvus.ao|Corvus_SD_Rebound_R
+202. SK_C_Corvus.ao|Corvus_SD_RootFixJokerRunAttack1
+203. SK_C_Corvus.ao|Corvus_SD_RunB
+204. SK_C_Corvus.ao|Corvus_SD_RunBL
+205. SK_C_Corvus.ao|Corvus_SD_RunBR
+206. SK_C_Corvus.ao|Corvus_SD_RunF_24
+207. SK_C_Corvus.ao|Corvus_SD_RunFL
+208. SK_C_Corvus.ao|Corvus_SD_RunFR
+209. SK_C_Corvus.ao|Corvus_SD_RunL
+210. SK_C_Corvus.ao|Corvus_SD_RunR
+211. SK_C_Corvus.ao|Corvus_SD_SprintAttack_1
+212. SK_C_Corvus.ao|Corvus_SD_TD2Thorw2
+213. SK_C_Corvus.ao|Corvus_SD_TD2Thorw2_Slow
+214. SK_C_Corvus.ao|Corvus_SD_VSVarg_Execution
+215. SK_C_Corvus.ao|Corvus_SD_VSVarg_Execution_Blending
+216. SK_C_Corvus.ao|Corvus_SD_Walk_Poison_Pose
+217. SK_C_Corvus.ao|Corvus_SD_WalkB
+218. SK_C_Corvus.ao|Corvus_SD_WalkB_LEnd
+219. SK_C_Corvus.ao|Corvus_SD_WalkB_REnd
+220. SK_C_Corvus.ao|Corvus_SD_WalkB_Start
+221. SK_C_Corvus.ao|Corvus_SD_WalkBL
+222. SK_C_Corvus.ao|Corvus_SD_WalkBR
+223. SK_C_Corvus.ao|Corvus_SD_WalkF
+224. SK_C_Corvus.ao|Corvus_SD_WalkF_LEnd
+225. SK_C_Corvus.ao|Corvus_SD_WalkF_REnd
+226. SK_C_Corvus.ao|Corvus_SD_WalkF_Start
+227. SK_C_Corvus.ao|Corvus_SD_WalkFL
+228. SK_C_Corvus.ao|Corvus_SD_WalkFR
+229. SK_C_Corvus.ao|Corvus_SD_WalkIdle
+230. SK_C_Corvus.ao|Corvus_SD_WalkL
+231. SK_C_Corvus.ao|Corvus_SD_WalkL_LEnd
+232. SK_C_Corvus.ao|Corvus_SD_WalkL_REnd
+233. SK_C_Corvus.ao|Corvus_SD_WalkL_Start
+234. SK_C_Corvus.ao|Corvus_SD_WalkR
+235. SK_C_Corvus.ao|Corvus_SD_WalkR_LEnd
+236. SK_C_Corvus.ao|Corvus_SD_WalkR_REnd
+237. SK_C_Corvus.ao|Corvus_SD_WalkR_Start
+238. SK_C_Corvus.ao|Corvus_SD_WeakGetUp_F
+239. SK_C_Corvus.ao|Corvus_Seq_BossFightStart_Sit
+240. SK_C_Corvus.ao|Corvus_Seq_BossFightStart_Stand
+241. SK_C_Corvus.ao|Corvus_Seq_GameEnd
+242. SK_C_Corvus.ao|Corvus_Seq_GameEnd_Idle
+243. SK_C_Corvus.ao|Corvus_Seq_GameEnd_SP
+244. SK_C_Corvus.ao|Corvus_Seq_GameEnd_SP_walk
+245. SK_C_Corvus.ao|Corvus_StunExecute_StartL_L
+246. SK_C_Corvus.ao|Corvus_StunExecute_StartL_R
+247. SK_C_Corvus.ao|Corvus_StunExecute_StartR_L
+248. SK_C_Corvus.ao|Corvus_StunExecute_StartR_R
+249. SK_C_Corvus.ao|Corvus_StunExecute_StartRDown_L
+250. SK_C_Corvus.ao|Corvus_StunExecute_StartRDown_R
+251. SK_C_Corvus.ao|Corvus_StunnedEnd
+252. SK_C_Corvus.ao|Corvus_StunnedLoop
+253. SK_C_Corvus.ao|Corvus_StunnedStart
+254. SK_C_Corvus.ao|Corvus_Suicide
+255. SK_C_Corvus.ao|Corvus_VS_Armor_Execution_01
+256. SK_C_Corvus.ao|Corvus_VS_Armor_Execution_02
+257. SK_C_Corvus.ao|Corvus_VS_Blood01_Execution
+258. SK_C_Corvus.ao|Corvus_VS_Blood01_RaidAttack1Hurt
+259. SK_C_Corvus.ao|Corvus_VS_GiantMaggotExecution_Attack03_L
+260. SK_C_Corvus.ao|Corvus_VS_GiantMaggotExecution_Attack03_R
+261. SK_C_Corvus.ao|Corvus_VS_GiantMaggotExecution_End
+262. SK_C_Corvus.ao|Corvus_VS_GiantMaggotExecutionL
+263. SK_C_Corvus.ao|Corvus_VS_GiantMaggotExecutionR
+264. SK_C_Corvus.ao|Corvus_VS_LArmorLV2_Execution
+265. SK_C_Corvus.ao|Corvus_VS_LightExecute01L
+266. SK_C_Corvus.ao|Corvus_VS_LightExecute01R
+267. SK_C_Corvus.ao|Corvus_VS_MagicianLV1_Seq_BossFightStart
+268. SK_C_Corvus.ao|Corvus_VS_MagicianLV2_Execution_V1
+269. SK_C_Corvus.ao|Corvus_VS_MagicianLV2_SPAttack1_Hurt
+270. SK_C_Corvus.ao|Corvus_VS_Puppet_Execution_Attack
+271. SK_C_Corvus.ao|Corvus_VS_Puppet_Execution_End
+272. SK_C_Corvus.ao|Corvus_VS_Puppet_Execution_Start
+273. SK_C_Corvus.ao|Corvus_VS_Researcher01_Execution
+274. SK_C_Corvus.ao|Corvus_VS_Researcher01_Execution_NCamera
+275. SK_C_Corvus.ao|Corvus_VS_Researcher01_SP01Hurt
+276. SK_C_Corvus.ao|Corvus_VSBossBat_Execution01
+277. SK_C_Corvus.ao|Corvus_VSGiantMaggot_SP1Hurt
+278. SK_C_Corvus.ao|Corvus_VSGrace_Execution
+279. SK_C_Corvus.ao|Corvus_VSHArmorLV1_Execution
+280. SK_C_Corvus.ao|Corvus_VSHArmorLV1_Execution_NCamera
+281. SK_C_Corvus.ao|Corvus_VSJoker_Execution
+282. SK_C_Corvus.ao|Corvus_VSLV1Villager_M_Execution
+283. SK_C_Corvus.ao|Corvus_VSLV2Villager01_M_Execution
+284. SK_C_Corvus.ao|Corvus_VSMagician_Execution
+285. SK_C_Corvus.ao|Corvus_VSMagician_SP1Hurt
+286. SK_C_Corvus.ao|Corvus_VSMagician_SP2Hurt
+287. SK_C_Corvus.ao|Corvus_VSSelf_ExecuteL_V1
+288. SK_C_Corvus.ao|Corvus_VSSelf_ExecuteS
+289. SK_C_Corvus.ao|Corvus_VSSelf_TakeExecuteL
+290. SK_C_Corvus.ao|Corvus_VSSelf_TakeExecuteS_V1
+291. SK_C_Corvus.ao|Corvus_VSUrd_Execution
+292. SK_C_Corvus.ao|Corvus_VSVarg_TakeSPAttack
+293. SK_C_Corvus.ao|Corvus_VSVarg_TakeSPAttackSeq1
+294. SK_C_Corvus.ao|Corvus_WalkN
+295. SK_C_Corvus.ao|O_Corvus_SD1_SprintF
+296. SK_C_Corvus.ao|O_Corvus_SD1_SprintF1
 RootNode
-root_$AssimpFbx$_Translation
-root_$AssimpFbx$_PreRotation
-root_$AssimpFbx$_Rotation
-root_$AssimpFbx$_Scaling
+SK_C_Corvus.ao
 root
 ik_hand_gun
 ik_hand_r
+ik_hand_r_end
 ik_foot_r
+ik_foot_r_end
 ik_foot_l
+ik_foot_l_end
 ik_hand_l
+ik_hand_l_end
 Bip001
 Bip001-Pelvis
 Bip001-Spine
@@ -317,14 +315,17 @@ Bip001-Spine2
 Bip001-Neck
 Bip001-Head
 Bip001-HeadNub
+Bip001-HeadNub_end
 Bip001-Xtra07
 Bip001-Xtra0702
 Bip001-Xtra0703
 Bip001-Xtra07Nub
+Bip001-Xtra07Nub_end
 Bip001-Xtra07Opp
 Bip001-Xtra07Opp02
 Bip001-Xtra07Opp03
 Bip001-Xtra07OppNub
+Bip001-Xtra07OppNub_end
 Bip001-R-Clavicle
 Bip001-R-UpperArm
 Bip001-R-Forearm
@@ -333,42 +334,54 @@ Bip001-R-Finger0
 Bip001-R-Finger01
 Bip001-R-Finger02
 Bip001-R-Finger0Nub
+Bip001-R-Finger0Nub_end
 Bip001-R-Finger1
 Bip001-R-Finger11
 Bip001-R-Finger12
 Bip001-R-Finger1Nub
+Bip001-R-Finger1Nub_end
 Bip001-R-Finger2
 Bip001-R-Finger21
 Bip001-R-Finger22
 Bip001-R-Finger2Nub
+Bip001-R-Finger2Nub_end
 Bip001-R-Finger3
 Bip001-R-Finger31
 Bip001-R-Finger32
 Bip001-R-Finger3Nub
+Bip001-R-Finger3Nub_end
 Bip001-R-Finger4
 Bip001-R-Finger41
 Bip001-R-Finger42
 Bip001-R-Finger4Nub
+Bip001-R-Finger4Nub_end
 Bone001(mirrored)
+Bone001(mirrored)_end
 weapon_r
+weapon_r_end
 Claw_Bone_05
 Claw_Bone_06
 Claw_Bone_07
 Claw_Bone_08_End
+Claw_Bone_08_End_end
 Claw_Bone_09
 Claw_Bone_10
 Claw_Bone_11
 Claw_Bone_12_End
+Claw_Bone_12_End_end
 Claw_Bone_13
 Claw_Bone_14
 Claw_Bone_15
 Claw_Bone_16_End
+Claw_Bone_16_End_end
 Claw_Bone_01
 Claw_Bone_02
 Claw_Bone_03
 Claw_Bone_04_End
+Claw_Bone_04_End_end
 Bip001-Xtra04Opp
 Bip001-Xtra04OppNub
+Bip001-Xtra04OppNub_end
 Bip001-Xtra05Opp
 Bip001-Xtra05Opp02
 Bip001-Xtra05Opp03
@@ -379,6 +392,7 @@ Bip001-Xtra05Opp07
 Bip001-Xtra05Opp08
 Bip001-Xtra05Opp09
 Bip001-Xtra05OppNub
+Bip001-Xtra05OppNub_end
 Bip001-L-Clavicle
 Bip001-L-UpperArm
 Bip001-L-Forearm
@@ -387,54 +401,72 @@ Bip001-L-Finger0
 Bip001-L-Finger01
 Bip001-L-Finger02
 Bip001-L-Finger0Nub
+Bip001-L-Finger0Nub_end
 Bip001-L-Finger1
 Bip001-L-Finger11
 Bip001-L-Finger12
 Bip001-L-Finger1Nub
+Bip001-L-Finger1Nub_end
 Bip001-L-Finger2
 Bip001-L-Finger21
 Bip001-L-Finger22
 Bip001-L-Finger2Nub
+Bip001-L-Finger2Nub_end
 Bip001-L-Finger3
 Bip001-L-Finger31
 Bip001-L-Finger32
 Bip001-L-Finger3Nub
+Bip001-L-Finger3Nub_end
 Bip001-L-Finger4
 Bip001-L-Finger41
 Bip001-L-Finger42
 Bip001-L-Finger4Nub
+Bip001-L-Finger4Nub_end
 Bone001
+Bone001_end
 weapon_l
+weapon_l_end
 Claw_Bone_01(mirrored)
 Claw_Bone_02(mirrored)
 Claw_Bone_03(mirrored)
 Claw_Bone_04_End(mirrored)
+Claw_Bone_04_End(mirrored)_end
 Claw_Bone_05(mirrored)
 Claw_Bone_06(mirrored)
 Claw_Bone_07(mirrored)
 Claw_Bone_08_End(mirrored)
+Claw_Bone_08_End(mirrored)_end
 Claw_Bone_09(mirrored)
 Claw_Bone_10(mirrored)
 Claw_Bone_11(mirrored)
 Claw_Bone_12_End(mirrored)
+Claw_Bone_12_End(mirrored)_end
 Claw_Bone_13(mirrored)
 Claw_Bone_14(mirrored)
 Claw_Bone_15(mirrored)
 Claw_Bone_16_End(mirrored)
+Claw_Bone_16_End(mirrored)_end
 Feather_Bone01
+Feather_Bone01_end
 Feather_Bone02
+Feather_Bone02_end
 Feather_Bone03
+Feather_Bone03_end
 Wings_Bone04
 Wings_Bone05
 Wings_Bone06_End
+Wings_Bone06_End_end
 Wings_Bone07
 Wings_Bone08
 Wings_Bone09_End
+Wings_Bone09_End_end
 Wings_Bone01
 Wings_Bone02
 Wings_Bone03_End
+Wings_Bone03_End_end
 Bip001-Xtra04
 Bip001-Xtra04Nub
+Bip001-Xtra04Nub_end
 Bip001-Xtra05
 Bip001-Xtra0502
 Bip001-Xtra0503
@@ -445,41 +477,52 @@ Bip001-Xtra0507
 Bip001-Xtra0508
 Bip001-Xtra0509
 Bip001-Xtra05Nub
+Bip001-Xtra05Nub_end
 Bip001-R-Thigh
 Bip001-R-Calf
 Bip001-R-Foot
 Bip001-R-Toe0
 Bip001-R-Toe0Nub
+Bip001-R-Toe0Nub_end
 Bip001-L-Thigh
 Bip001-L-Calf
 Bip001-L-Foot
 Bip001-L-Toe0
 Bip001-L-Toe0Nub
+Bip001-L-Toe0Nub_end
 Bip001-Xtra01
 Bip001-Xtra01Nub
+Bip001-Xtra01Nub_end
 Bip001-Xtra02
 Bip001-Xtra0202
 Bip001-Xtra0203
 Bip001-Xtra02Nub
+Bip001-Xtra02Nub_end
 Bip001-Xtra02Opp
 Bip001-Xtra02Opp02
 Bip001-Xtra02Opp03
 Bip001-Xtra02OppNub
+Bip001-Xtra02OppNub_end
 Bip001-Xtra03
 Bip001-Xtra0302
 Bip001-Xtra0303
 Bip001-Xtra03Nub
+Bip001-Xtra03Nub_end
 Bip001-Xtra03Opp
 Bip001-Xtra03Opp02
 Bip001-Xtra03Opp03
 Bip001-Xtra03OppNub
+Bip001-Xtra03OppNub_end
 Bip001-Xtra06
 Bip001-Xtra0602
 Bip001-Xtra06Nub
+Bip001-Xtra06Nub_end
 Bip001-Xtra06Opp
 Bip001-Xtra06Opp02
 Bip001-Xtra06OppNub
+Bip001-Xtra06OppNub_end
 AnimTargetPoint
+AnimTargetPoint_end
 camera
-SK_C_Corvus_$AssimpFbx$_PreRotation
-SK_C_Corvus
+camera_end
+SK_C_Corvus.mo

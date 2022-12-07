@@ -14,7 +14,12 @@
       "Setting": { "Enable": true }
     },
     {
-      "Component": { "Transform": { "": null } },
+      "Component": { "Transform": [
+        [ 1, 0, 0, 0 ],
+        [ 0, 1, 0, 0 ],
+        [ 0, 0, 1, 0 ],
+        [ 0, 0, 0, 1 ]
+      ] },
       "Hash": 12159710856434595157,
       "Name": "class Client::CGround",
       "Setting": { "Enable": true },
@@ -30,7 +35,12 @@
       "g_FilterTexture": "Test2_Filter"
     },
     {
-      "Component": { "Transform": { "": null } },
+      "Component": { "Transform": [
+        [ 1, 0, 0, 0 ],
+        [ 0, 1, 0, 0 ],
+        [ 0, 0, 1, 0 ],
+        [ 0, 0, 0, 1 ]
+      ] },
       "Hash": 12159710856434595157,
       "Name": "class Client::CGround",
       "Setting": { "Enable": true },

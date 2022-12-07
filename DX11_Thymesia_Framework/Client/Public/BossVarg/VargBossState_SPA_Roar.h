@@ -15,6 +15,8 @@ class CVargBossState_SPA_Roar :
 		SHALLOW_COPY(CVargBossState_SPA_Roar)
 
 
+public:
+	void Call_NextKeyFrame(const _uint& In_KeyIndex);
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
@@ -28,7 +30,9 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
-
+private:
+	weak_ptr<CAnimation> m_pThisAnimationCom;
+	_bool	m_bShakingCamera = false;
 
 private:
 	void Call_AnimationEnd();

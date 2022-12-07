@@ -89,7 +89,7 @@ _bool CCorvusState_Climb_R_Idle::Check_AndChangeNextState()
 	{
 		if (Check_RequirementUpLadderState())
 		{
-			Get_OwnerPlayer()->Change_State<CCorvusState_Climb_R_UP_End>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Climb_L_UP_End>();
 			return true;
 		}
 	}

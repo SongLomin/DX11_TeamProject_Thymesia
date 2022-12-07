@@ -265,6 +265,7 @@ void CCamera_Target::Add_Shaking(_vector vShakingDir, _float fRatio, _float fSha
 		vShakingDir = XMVector3TransformNormal(vShakingDir, m_pTransformCom.lock()->Get_WorldMatrix());
 		vShakingDir = XMVector3Normalize(vShakingDir);
 		XMStoreFloat3(&m_vShakingDir, vShakingDir);
+		m_bRandomShaking = false;
 	}
 
 	m_vShakingStartOffSet = m_vShaking;
@@ -277,7 +278,6 @@ void CCamera_Target::Add_Shaking(_vector vShakingDir, _float fRatio, _float fSha
 	m_fShakingQuarterFrequency = 0.f;
 	m_fShakingDecreaseTime = 0.f;
 
-	m_bRandomShaking = false;
 
 }
 
@@ -418,15 +418,20 @@ void CCamera_Target::Calculate_ShakingOffSet(_float fTimeDelta)
 		{
 			m_vShakingDir = SMath::vRandom(_float3(-1.f, -1.f, -1.f), _float3(1.f, 1.f, 1.f));
 			XMStoreFloat3(&m_vShakingDir, XMVector3Normalize(XMLoadFloat3(&m_vShakingDir)));
-		}
 
-		XMStoreFloat3(&m_vShaking, sinf(fRadian * m_fShakingFrequency*XM_2PI) * m_fShakeRatio * XMLoadFloat3(&m_vShakingDir));
-
-		m_fShakingQuarterFrequency += fTimeDelta;
-		if (m_fShakingQuarterFrequency > 1/(m_fShakingFrequency)*0.5f)
-		{
+			XMStoreFloat3(&m_vShaking, m_fShakeRatio * XMLoadFloat3(&m_vShakingDir));
 			m_fShakeRatio *= m_fDecreaseRatio;
-			m_fShakingQuarterFrequency = 0.f;
+		}
+		else
+		{
+			XMStoreFloat3(&m_vShaking, sinf(fRadian * m_fShakingFrequency * XM_2PI) * m_fShakeRatio * XMLoadFloat3(&m_vShakingDir));
+
+			m_fShakingQuarterFrequency += fTimeDelta;
+			if (m_fShakingQuarterFrequency > 1 / (m_fShakingFrequency) * 0.5f)
+			{
+				m_fShakeRatio *= m_fDecreaseRatio;
+				m_fShakingQuarterFrequency = 0.f;
+			}
 		}
 		m_vShakingStartOffSet = m_vShaking;
 

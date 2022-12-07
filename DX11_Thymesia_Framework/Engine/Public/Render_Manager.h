@@ -26,6 +26,7 @@ public:
 	HRESULT Add_Chromatic(const _float In_fChormaticStrangth);
 	HRESULT Set_RadialBlur(const _float In_fRadialBlurStength, _float3 In_vBlurWorldPosition);
 	HRESULT Add_RedialBlur(const _float In_fRadialBlurStrength);
+	HRESULT Set_FogColor(const _float4 In_vFogColor);
 	HRESULT Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain);
 	
 
@@ -117,6 +118,10 @@ private:
 	_float4		m_vLift = { 1.f, 1.f, 0.9f, 1.f };
 	_float4		m_vGamma = { 1.f, 1.f, 1.2f, 1.f };
 	_float4		m_vGain = { 1.f,1.f,1.f,1.f };
+
+	
+	_float4		m_vFogColor = { 0.8f, 0.8f, 0.8f, 1.f };
+	
 
 public:
 	virtual void OnDestroy() override;

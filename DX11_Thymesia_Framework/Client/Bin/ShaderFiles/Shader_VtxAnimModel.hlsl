@@ -431,7 +431,7 @@ PS_OUT_SPECULAR PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_NORMAL In)
     {
         Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     }
-    else if (fDotValue + 0.05f > g_fDissolveAmount)
+    else if (fDotValue + 0.08f > g_fDissolveAmount)
     {
         float DissolveDesc = g_DissolveTexture.Sample(DefaultSampler, In.vTexUV*2.f).r;
     

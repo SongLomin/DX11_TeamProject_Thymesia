@@ -25,6 +25,9 @@ HRESULT CCorvusState_Parry1::Initialize_Prototype()
 HRESULT CCorvusState_Parry1::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
+
+	m_vShakingOffSet = { -1.f,0.2f,0.f };
+
 	return S_OK;
 }
 
@@ -167,6 +170,7 @@ void CCorvusState_Parry1::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_bParryed = false;
 
+	
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
@@ -300,6 +304,8 @@ void CCorvusState_Parry1::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
 				pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
 				break;
 			}
+			
+			GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.6f, 0.1f);//일반 공격
 			break;
 		case Client::PARRY_TYPE::NORMAL:
 			//퍼펙트는 몬스터 게이지 적게깍고 플레이어피는안달고  상태는 왼쪽오른쪽 위아래 판단해서 상태를 그걸로바꿔주는용도
@@ -330,6 +336,8 @@ void CCorvusState_Parry1::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
 				pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
 				break;
 			}
+
+			GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet) , 0.55f, 0.1f);//일반 공격
 			break;
 		case Client::PARRY_TYPE::FAIL:
 			Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);

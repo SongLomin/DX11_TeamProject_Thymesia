@@ -23,11 +23,11 @@ HRESULT CHUD_PlagueWeapon::Initialize(void* pArg)
 	UI_DESC tMainSKillDesc = {1405.f, 785.f, 93.f, 93.f, 0.f };
 
 
-	m_pMainSkill = GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon_Main>(LEVEL_GAMEPLAY, &tMainSKillDesc);
+	m_pMainSkill = GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon_Main>(LEVEL_STATIC, &tMainSKillDesc);
 
 	UI_DESC tStealSKillDesc = { 1502.f, 785.f, 93.f, 93.f, 0.f };
 
-	m_pStealSkill = GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon_Steal>(LEVEL_GAMEPLAY, &tStealSKillDesc);
+	m_pStealSkill = GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon_Steal>(LEVEL_STATIC, &tStealSKillDesc);
 
 
 	m_vecChildUI.push_back(m_pMainSkill);

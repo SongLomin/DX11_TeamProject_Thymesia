@@ -968,6 +968,12 @@
     <ClInclude Include="..\Public\Level_Stage2.h">
       <Filter>01. ClientLevel\03. Stage2</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_L_Up_Down_End.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\15.CorvusState_Climb_L_Up_Down_End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_R_Up_Down_End.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\16.CorvusState_Climb_R_Up_Down_End</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1983,6 +1989,12 @@
     <ClCompile Include="..\Private\Level_Stage2.cpp">
       <Filter>01. ClientLevel\03. Stage2</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_L_Up_Down_End.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\15.CorvusState_Climb_L_Up_Down_End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_R_Up_Down_End.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\16.CorvusState_Climb_R_Up_Down_End</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -2899,24 +2911,6 @@
     <Filter Include="06. DataPreset\04. Preset_AddGameObject">
       <UniqueIdentifier>{9945984e-3b3a-4360-916d-6b7a7ec51ad8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\01.Talent_Effect_NorSwordLV2">
-      <UniqueIdentifier>{d9a1d9b8-03ad-46f8-9e67-8f884a1c4a72}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\02.Talent_Effect_AvoidSlashLV1">
-      <UniqueIdentifier>{f43eeb07-9c48-44ba-b06e-0e1d38344ec6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\04.Talent_Effect_AvoidThrustLV1">
-      <UniqueIdentifier>{989bd577-31b8-4026-b45d-12127d3851ef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\03.Talent_Effect_AvoidSlashLV2">
-      <UniqueIdentifier>{0fd32713-6362-4dd1-a739-5e57fa51b8eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\05.Talent_Effect_AvoidThrustLV2">
-      <UniqueIdentifier>{bce2e1a2-7ad8-4d0b-8205-f50ff1d70d2d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03. Actor\00. Character\00. Player\00. Corvus\01.Corvus_Talent\01.Talent_Effect\00.Sword\00.Talent_Effect_Sword\00.Talent_Efftct_NorSwordLV1">
-      <UniqueIdentifier>{43b13b45-05da-4cfe-9a11-cf855d491f00}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement">
       <UniqueIdentifier>{d448ba0b-2790-47ce-8b37-f43a368800bb}</UniqueIdentifier>
     </Filter>
@@ -3000,6 +2994,12 @@
     </Filter>
     <Filter Include="02. GameObject\01. UI\UI_Container\Evolve\EvolveSelectDecoration">
       <UniqueIdentifier>{1b35a49e-b905-4cf0-88a7-340bc6369283}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\15.CorvusState_Climb_L_Up_Down_End">
+      <UniqueIdentifier>{6e6b18a9-02ea-4e53-8112-43244384a6f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\16.CorvusState_Climb_R_Up_Down_End">
+      <UniqueIdentifier>{c7b84338-bd6a-4a77-8845-b055b4e76165}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

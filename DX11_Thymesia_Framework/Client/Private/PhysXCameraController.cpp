@@ -50,9 +50,6 @@ void CPhysXCameraController::onShapeHit(const PxControllerShapeHit& hit)
 
 	m_pLastHitShape = hit.shape;
 	m_pLastHitActor = hit.actor;
-
-	cout << "OnShapeHit" << endl;
-
 }
 
 void CPhysXCameraController::onControllerHit(const PxControllersHit& hit)
@@ -222,8 +219,6 @@ void CPhysXCameraController::Update_RayCastCollision(_float fDeltaTime)
 
 		m_pController->setPosition({ newHit.position.x, newHit.position.y, newHit.position.z });
 		m_bCollision = true;
-
-		cout << "m_bCollision True" << endl;
 
 		//Print_Vector(SMath::Convert_PxExtendedVec3ToVector(position));
 		//m_pController->move(MovePosition, 0.f, fDeltaTime, Filters);

@@ -55,25 +55,53 @@ void CCorvusState_ClawAttackTab::Tick(_float fTimeDelta)
 			m_fDebugAnimationSpeed = 0.1f;
 		}
 	}
+
 	if (m_bDissolve)
 	{
-		m_fDissolveTime -= fTimeDelta;
-		if (0.f > m_fDissolveTime)
-			m_bDissolve = false;
 
 		if (m_bDissolveAppear)
 		{
-			m_fDissolveAmount = SMath::Lerp(0.f, 1.f, m_fDissolveTime / 0.7f);
-			m_vDissolveDir = { 1.f,0.f,0.f };
+			if (0.f > m_fDissolveTimeArm)
+			{
+				m_fDissolveTimeClaw -= fTimeDelta;
+				m_fDissolveAmountClaw = SMath::Lerp(0.f, 1.f, m_fDissolveTimeClaw / 0.7f);
+				m_vDissolveDir = { 1.f,0.f,0.f };
+				Get_OwnerPlayer()->Set_DissolveAmount(5, m_fDissolveAmountClaw, m_vDissolveDir);
+
+			}
+			else
+			{
+				m_fDissolveTimeArm -= fTimeDelta;
+				m_fDissolveAmountArm = SMath::Lerp(0.f, 1.f, m_fDissolveTimeArm / 0.7f);
+				m_vDissolveDir = { 1.f,0.f,0.f };
+				Get_OwnerPlayer()->Set_DissolveAmount(9, m_fDissolveAmountArm, m_vDissolveDir);
+
+			}
+
 		}
 		else
 		{
-			m_fDissolveAmount = SMath::Lerp(1.f, 0.f, m_fDissolveTime / 0.7f);
-			m_vDissolveDir = { -1.f,0.f,0.f };
+
+			if (0.f > m_fDissolveTimeArm)
+			{
+				m_fDissolveTimeClaw -= fTimeDelta;
+				m_fDissolveAmountClaw = SMath::Lerp(1.f, 0.f, m_fDissolveTimeClaw / 0.7f);
+				m_vDissolveDir = { -1.f,0.f,0.f };
+				Get_OwnerPlayer()->Set_DissolveAmount(5, m_fDissolveAmountClaw, m_vDissolveDir);
+
+			}
+			else
+			{
+				m_fDissolveTimeArm -= fTimeDelta;
+				m_fDissolveAmountArm = SMath::Lerp(1.f, 0.f, m_fDissolveTimeArm / 0.7f);
+				m_vDissolveDir = { -1.f,0.f,0.f };
+				Get_OwnerPlayer()->Set_DissolveAmount(9, m_fDissolveAmountArm, m_vDissolveDir);
+
+
+			}
 		}
 	}
 
-	Get_OwnerPlayer()->Set_DissolveAmount(5, m_fDissolveAmount, m_vDissolveDir);
 
 	Attack();
 }
@@ -104,12 +132,14 @@ void CCorvusState_ClawAttackTab::Call_NextAnimationKey(const _uint& In_iKeyIndex
 	switch (In_iKeyIndex)
 	{
 	case 10:
-		m_fDissolveTime = 0.7f;
+		m_fDissolveTimeArm = 0.4f;
+		m_fDissolveTimeClaw = 0.3f;
 		m_bDissolve = true;
 		m_bDissolveAppear = true;
 		break;
 	case 100:
-		m_fDissolveTime = 0.7f;
+		m_fDissolveTimeArm = 0.4f;
+		m_fDissolveTimeClaw = 0.3f;
 		m_bDissolve = true;
 		m_bDissolveAppear = false;
 		break;

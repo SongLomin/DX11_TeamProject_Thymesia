@@ -135,7 +135,7 @@ PxControllerCollisionFlags CPhysXCharacterController::MoveWithRotation(_fvector 
 {
 	filters.mFilterCallback = this;
 
-	return  __super::MoveWithRotation(disp, minDist, elapsedTime, filters, obstacles, pTransform);
+	return ResultFlags;
 }
 
 PxControllerCollisionFlags CPhysXCharacterController::Move(_fvector disp, PxF32 minDist, PxF32 elapsedTime, PxControllerFilters& filters, const PxObstacleContext* obstacles)
@@ -157,17 +157,28 @@ PxControllerCollisionFlags CPhysXCharacterController::MoveGravity(const _float f
 
 	PxControllerCollisionFlags ResultFlags = __super::MoveGravity(fDeltaTime, filters);
 
-
-	/*if (m_PreResultFlags & PxControllerCollisionFlag::eCOLLISION_DOWN &&
-		!(ResultFlags & PxControllerCollisionFlag::eCOLLISION_DOWN))
+	if (!(ResultFlags & PxControllerCollisionFlag::eCOLLISION_DOWN))
 	{
-		if (Move_FootOffset(fDeltaTime))
+		PxControllerCollisionFlags FootChecker;
+
+		FootChecker = this->Move(XMVectorSet(0.f, -1.f, 0.f, 1.f), 0.f, fDeltaTime, filters);
+
+		if (FootChecker & PxControllerCollisionFlag::eCOLLISION_DOWN)
 		{
 			ResultFlags |= PxControllerCollisionFlag::eCOLLISION_DOWN;
+			return ResultFlags;
 		}
+
+		this->Move(XMVectorSet(0.f, 1.f, 0.f, 1.f), 0.f, fDeltaTime, filters);
+	}
+
+
+	/*if (Move_FootOffset(fDeltaTime))
+	{
+		ResultFlags |= PxControllerCollisionFlag::eCOLLISION_DOWN;
 	}*/
 
-	m_PreResultFlags = ResultFlags;
+	//m_PreResultFlags = ResultFlags;
 
 	return ResultFlags;
 }
@@ -182,7 +193,7 @@ _bool CPhysXCharacterController::Move_FootOffset(const _float fTimeDelta)
 
 	PxRaycastHit newHit;
 
-	PxVec3 RayPos = SMath::Convert_PxVec3(m_pController->getFootPosition());
+	PxVec3 RayPos = SMath::Convert_PxVec3(m_pController->getPosition());
 	PxVec3 RayDir = -m_pController->getUpDirection();
 
 	//m_pLastCollisionActor.
@@ -190,7 +201,7 @@ _bool CPhysXCharacterController::Move_FootOffset(const _float fTimeDelta)
 	PxU32 iHitCount = PxShapeExt::raycast(
 		*m_pLastCollisionShape, *m_pLastCollisionActor
 		, RayPos, RayDir,
-		m_pController->getStepOffset() * 1.1f,
+		m_pController->getStepOffset() * 100.f,
 		PxHitFlag::ePOSITION, 1, &newHit);
 
 	if (iHitCount != 0)
@@ -199,8 +210,8 @@ _bool CPhysXCharacterController::Move_FootOffset(const _float fTimeDelta)
 		return true;
 	}
 
-	m_pLastCollisionActor = nullptr;
-	m_pLastCollisionShape = nullptr;
+	//m_pLastCollisionActor = nullptr;
+	//m_pLastCollisionShape = nullptr;
 
 	return false;
 }
