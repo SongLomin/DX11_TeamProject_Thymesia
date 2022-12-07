@@ -75,7 +75,11 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     MACRO("Corvus_SD_TD2Thorw2", 1.75f);
     MACRO("Corvus_PW_Axe", 3.f);
     MACRO("Corvus_PW_Knife_A_V1", 2.75f);
+
     MACRO("Corvus_PW_VargSword_B", 1.75f);
+    MACRO("Corvus_PW_VargSword_Start", 1.75f);
+
+
     MACRO("Corvus_PW_UrdSword01", 2.25f);
     MACRO("Corvus_PW_Magician_A", 1.75f);
     MACRO("Corvus_PW_CaneSword_SP02", 2.f);

@@ -36,6 +36,8 @@ namespace Client
 
 		_float3		vStartPosition;
 
+
+
 #pragma region Speed
 		_float3		vSpeed;
 		_float3		vForce;

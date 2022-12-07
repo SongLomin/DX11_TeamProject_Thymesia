@@ -520,10 +520,12 @@ void CLoader::Load_AllEffectMeshInPath_Recursive(const filesystem::path& In_Path
 		szFileName = entry.path().filename().string().c_str();
 		szFileName = szFileName.substr(0, szFileName.size() - 4);
 
+#ifndef _BAKE_EFFECTMESH_FBX_
 		if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
 		{
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
 		}
+#endif // _BAKE_EFFECTMESH_FBX_
 
 #ifdef _DEBUG
 #ifdef _BAKE_EFFECTMESH_FBX_

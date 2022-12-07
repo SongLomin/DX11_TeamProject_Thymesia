@@ -86,20 +86,36 @@ VS_OUT VS_MAIN(VS_IN In)
 
 VS_OUT_SOFT VS_MAIN_SOFT(VS_IN In)
 {
-    VS_OUT_SOFT Out = (VS_OUT_SOFT) 0;
+    VS_OUT_SOFT Out = (VS_OUT_SOFT)0;
 
-    matrix matWV, matWVP;
+	matrix WorldMatrix = g_WorldMatrix;
 
-    matWV = mul(g_WorldMatrix, g_ViewMatrix);
-    matWVP = mul(matWV, g_ProjMatrix);
+	if (g_bBillboard)
+	{
+		float3 vLook = normalize((g_vCamDirection * -1.f).xyz);
+		float3 vRight = normalize(cross(float3(0.f, 1.f, 0.f), vLook));
+		float3 vUp = normalize(cross(vLook, vRight));
 
-    Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
-    Out.vTexUV = In.vTexUV;
+		WorldMatrix[0] = float4(vRight, 0.f) * length(WorldMatrix[0]);
+		WorldMatrix[1] = float4(vUp, 0.f) * length(WorldMatrix[1]);
+		WorldMatrix[2] = float4(vLook, 0.f) * length(WorldMatrix[2]);
+	}
+
+	matrix matWV, matWVP;
+
+	matWV = mul(WorldMatrix, g_ViewMatrix);
+	matWVP = mul(matWV, g_ProjMatrix);
+
+	Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
+	Out.vTexUV = In.vTexUV;
     Out.vProjPos = Out.vPosition;
 
     return Out;
 }
 //  Vertex Shaders  //
+
+
+
 //  Pixel  Shaders  //
 struct PS_IN
 {
@@ -128,9 +144,35 @@ struct PS_OUT_DISTORTION
 
 PS_OUT PS_MAIN_SOFT(PS_IN_SOFT In)
 {
-    PS_OUT Out = (PS_OUT) 0;
+	PS_OUT Out = (PS_OUT)0;
 
-    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+	if (g_bDiffuseWrap)
+		Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.x + g_vUVDiff);
+	else
+		Out.vColor = g_DiffuseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.x + g_vUVDiff);
+
+	vector vNoise = (vector) 0;
+	if (g_bNoiseWrap)
+		vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
+	else
+		vNoise = g_NoiseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
+
+	vector vMask = (vector) 0;
+	if (g_bMaskWrap)
+		vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
+	else
+		vMask = g_MaskTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
+
+	// (0, +1) => (-1, +1)
+	if (g_bDynamicNoiseOption)
+		vNoise.rgb = vNoise.rgb * 2 - 1;
+
+	Out.vColor *= g_vColor;
+	Out.vColor.rgb *= vNoise.rgb;
+	Out.vColor.a *= vMask.r;
+
+	if (g_fDiscardRatio > Out.vColor.a)
+		discard;
 
     float2 vTexUV;
     
@@ -141,22 +183,16 @@ PS_OUT PS_MAIN_SOFT(PS_IN_SOFT In)
     vTexUV.y = vTexUV.y * -0.5f + 0.5f;
 
     vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, vTexUV);
-
     float fViewZ = vDepthDesc.y * 300.f;
-
     Out.vColor.a = Out.vColor.a * saturate(fViewZ - In.vProjPos.w);
     
     if (g_bBloom)
-    {
         Out.vExtractBloom = Out.vColor;
-    }
+
     if (g_bGlow)
-    {
         Out.vExtractGlow = g_vGlowColor;
-    }
 
     return Out;
-
 }
 
 PS_OUT PS_DEFAULT(PS_IN In)

@@ -157,6 +157,8 @@ void CCustomEffectMesh::SetUp_ShaderResource()
 	m_pMaskTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", m_tEffectMeshDesc.iMaskTextureIndex);
 	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture", m_tEffectMeshDesc.iNoiseTextureIndex);
 
+	m_pShaderCom.lock()->Set_RawValue("g_fDiscardRatio", &m_tEffectMeshDesc.fDiscardRatio, sizeof(_float));
+
 	m_pShaderCom.lock()->Set_RawValue("g_bDynamicNoiseOption", &m_tEffectMeshDesc.bDynamicNoiseOption, sizeof(_bool));
 
 	m_pShaderCom.lock()->Set_RawValue("g_bDiffuseWrap", &m_tEffectMeshDesc.bDiffuseWrap, sizeof(_bool));
@@ -168,7 +170,7 @@ void CCustomEffectMesh::SetUp_ShaderResource()
 	m_pShaderCom.lock()->Set_RawValue("g_vUVNoise", &m_vNoiseCurrentUV, sizeof(_float2));
 	m_pShaderCom.lock()->Set_RawValue("g_vUVMask", &m_vMaskCurrentUV, sizeof(_float2));
 
-	m_pShaderCom.lock()->Set_RawValue("g_fDiscardRatio", &m_tEffectMeshDesc.fDiscardRatio, sizeof(_float));
+	m_pShaderCom.lock()->Set_ShaderResourceView("g_DepthTexture", GAMEINSTANCE->Get_RenderTarget_SRV(TEXT("Target_Depth")));
 
 	m_pShaderCom.lock()->Set_RawValue("g_vColor", &m_vCurrentColor, sizeof(_float4));
 
