@@ -62,16 +62,27 @@ namespace Client
 		_int		iShaderPassIndex;
 
 #pragma region Dissolve
-		enum class DISSOLVE_TYPE { DEFAULT, DIRECTIONAL, TYPE_END };
-		DISSOLVE_TYPE eDissolveType;
+		_bool	bDissolve;
+
+		_int iDissolveAppearShaderPassIndex;
+		_int iDissolveDisappearShaderPassIndex;
 
 		// For. All Dissolve
-		_float fDissolveAmount;
-		_float fDissolveSpeed;
+		_float  fDissolveAppearTime;
+		_float  fDissolveDisappearTime;
 
-		_float4 vDissolveColor;
-		_float	fGradiationDistance;
+		_int	iDissolveTextureIndex;
 
+		_float4 vDissolveGradiationStartColor;
+		_float4 vDissolveGradiationGoalColor;
+
+		_float	fDissolveGradiationDistance;
+
+		_float fDissolveAppearAmount;
+		_float fDissolveAppearSpeed;
+
+		_float fDissolveDisappearAmount;
+		_float fDissolveDisappearSpeed;
 
 		// For. Directional Dissolve
 		_float3 vDissolveDirection;
@@ -90,7 +101,7 @@ namespace Client
 
 		_bool		bDynamicNoiseOption;
 		/**
-		* x : Diffuse | y : Mask | z : Noise | w : None
+		* x : Diffuse | y : Mask | z : Noise | w : Dissolve
 		*/
 		_float4		vWrapWeight;
 

@@ -953,6 +953,67 @@ void CCustomEffectMesh::Tool_Shaders()
 
 void CCustomEffectMesh::Tool_Dissolve()
 {
+	if (ImGui::TreeNode("Appear Option##Dissolve_Appear_Option"))
+	{
+		ImGui::Text("Used Shader Pass");
+		ImGui::InputInt("##Dissolve_Appear_ShaderPassIndex", &m_tEffectMeshDesc.iDissolveAppearShaderPassIndex);
+
+		ImGui::Text("Appear Time");
+		ImGui::SetNextItemWidth(100.f);
+		ImGui::DragFloat("##Dissolve_Appear_Time", &m_tEffectMeshDesc.fDissolveAppearTime, 0.1f);
+
+		ImGui::Text("Amount");
+		ImGui::SetNextItemWidth(100.f);
+		ImGui::DragFloat("##Dissolve_Appear_Amount", &m_tEffectMeshDesc.fDissolveAppearAmount, 0.1f);
+
+		ImGui::Text("Speed");
+		ImGui::SetNextItemWidth(100.f);
+		ImGui::DragFloat("##Dissolve_Appear_Speed", &m_tEffectMeshDesc.fDissolveAppearSpeed, 0.1f);
+
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNode("Disappear Option##Dissolve_Disappear_Option"))
+	{
+		ImGui::Text("Used Shader Pass");
+		ImGui::InputInt("##Dissolve_Disappear_ShaderPassIndex", &m_tEffectMeshDesc.iDissolveDisappearShaderPassIndex);
+
+		ImGui::Text("Disappear Time");
+		ImGui::SetNextItemWidth(100.f);
+		ImGui::DragFloat("##Dissolve_Disappear_Time", &m_tEffectMeshDesc.fDissolveDisappearTime, 0.1f);
+
+		ImGui::Text("Amount");
+		ImGui::SetNextItemWidth(100.f);
+		ImGui::DragFloat("##Dissolve_Disappear_Amount", &m_tEffectMeshDesc.fDissolveDisappearAmount, 0.1f);
+
+		ImGui::Text("Speed");
+		ImGui::SetNextItemWidth(100.f);
+		ImGui::DragFloat("##Dissolve_Disappear_Speed", &m_tEffectMeshDesc.fDissolveDisappearSpeed, 0.1f);
+
+		ImGui::TreePop();
+	}
+
+	ImGui::Text("Texture Index"); ImGui::SameLine();
+	ImGui::SetNextItemWidth(100.f);
+	ImGui::InputInt("##DissolveTextureIndex", &m_tEffectMeshDesc.iDissolveTextureIndex, 1, 0);
+
+	if (ImGui::TreeNode("Gradiation##Dissolve_Gradiation"))
+	{
+		ImGui::Text("Start Color");
+		ImGui::ColorPicker4("##Dissolve_Gradation_Start_Color", &m_tEffectMeshDesc.vDissolveGradiationStartColor.x);
+
+		ImGui::Text("Goal Color");
+		ImGui::ColorPicker4("##Dissolve_Gradation_Goal_Color", &m_tEffectMeshDesc.vDissolveGradiationGoalColor.x);
+
+		ImGui::Text("Gradiation Distance");
+		ImGui::DragFloat("##Dissolve_Gradiation_Distance", &m_tEffectMeshDesc.fDissolveGradiationDistance, 0.1f);
+
+		ImGui::TreePop();
+	}
+
+	ImGui::Text("For : Direcitonal Dissolve");
+	ImGui::Text("Dissolve Direction");
+	ImGui::DragFloat3("##Dissolve_Direction", &m_tEffectMeshDesc.vDissolveDirection.x, 0.1f);
 }
 
 void CCustomEffectMesh::Tool_Colors()
@@ -1473,9 +1534,12 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			if (ImGui::CollapsingHeader("Shaders"))
 				this->Tool_Shaders();
 
-			if (true/*shader pass is dissolve pass*/)
-			{
+			ImGui::Checkbox("Apply Dissolve##Is_Dissolve", &m_tEffectMeshDesc.bDissolve);
 
+			if (m_tEffectMeshDesc.bDissolve)
+			{
+				if (ImGui::CollapsingHeader("Dissolve"))
+					this->Tool_Dissolve();
 			}
 
 			if (ImGui::CollapsingHeader("Colors"))
