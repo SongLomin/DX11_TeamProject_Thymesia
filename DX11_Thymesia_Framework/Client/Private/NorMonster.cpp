@@ -30,6 +30,8 @@ HRESULT CNorMonster::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
+	m_pStatus = Add_Component<CStatus_Monster>(pArg);
+
 	m_pShaderCom.lock()->Set_ShaderInfo(
 		TEXT("Shader_VtxAnimModel"),
 		VTXANIM_DECLARATION::Element,

@@ -39,8 +39,6 @@ HRESULT CMonster::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-    m_pStatus = Add_Component<CStatus_Monster>(pArg);
-
     m_pHitColliderCom = Add_Component<CCollider>();
 
     COLLIDERDESC			ColliderDesc;

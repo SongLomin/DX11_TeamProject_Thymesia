@@ -49,7 +49,6 @@ void CMonsterHPBar_Boss::Tick(_float fTimeDelta)
     __super::Tick(fTimeDelta);
 }
 
-
 void CMonsterHPBar_Boss::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);

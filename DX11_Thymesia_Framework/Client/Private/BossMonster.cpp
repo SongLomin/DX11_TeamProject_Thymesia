@@ -12,7 +12,7 @@
 #include "Client_Presets.h"
 #include "PhysXCollider.h"
 #include "Status_Monster.h"
-
+#include "Status_Boss.h"
 
 GAMECLASS_C(CBossMonster);
 CLONE_C(CBossMonster, CGameObject);
@@ -37,7 +37,7 @@ HRESULT CBossMonster::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
-   
+    m_pStatus = Add_Component<CStatus_Boss>(pArg);
 
     return S_OK;
 }

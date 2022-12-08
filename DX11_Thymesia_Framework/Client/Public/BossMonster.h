@@ -4,7 +4,7 @@
 BEGIN(Client)
 
 class CMobWeapon;
-class CStatus_Monster;
+class CStatus_Boss;
 
 class CBossMonster :
     public CMonster
@@ -70,7 +70,7 @@ protected:
     weak_ptr<CTexture>        m_pDissolveTextureCom;
     MONSTERWEAPONTYPE         m_eMonWeaPonType = MONSTERWEAPONTYPE::MON_WEAPON_END;
 
-    weak_ptr<CStatus_Monster>           m_pStatus;
+    weak_ptr<CStatus_Boss>           m_pStatus;
 
 private:
 

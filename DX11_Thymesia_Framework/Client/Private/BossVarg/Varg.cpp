@@ -13,6 +13,8 @@
 #include "Client_Components.h"
 #include "MonsterHPBar_Boss.h"
 #include "Status_Monster.h"
+#include "Status_Boss.h"
+
 
 GAMECLASS_C(CVarg);
 CLONE_C(CVarg, CGameObject);

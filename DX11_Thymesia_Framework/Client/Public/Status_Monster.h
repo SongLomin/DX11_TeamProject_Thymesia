@@ -91,7 +91,7 @@ protected:
 
 	void			Set_ParryRecoveryTime(const _float fRatio);
 
-	void			Update_HitedTime(_float fTimeDelta);
+	virtual void			Update_HitedTime(_float fTimeDelta);
 	void			Update_ParryRecoveryTime(_float fTimeDelta);
 
 protected:
