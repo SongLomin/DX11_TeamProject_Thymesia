@@ -62,27 +62,25 @@ namespace Client
 		_int		iShaderPassIndex;
 
 #pragma region Dissolve
-		_bool	bDissolve;
+		_bool bApplyDissolve;
 
 		_int iDissolveAppearShaderPassIndex;
 		_int iDissolveDisappearShaderPassIndex;
 
-		// For. All Dissolve
-		_float  fDissolveAppearTime;
-		_float  fDissolveDisappearTime;
-
-		_int	iDissolveTextureIndex;
+		_int iDissolveTextureIndex;
 
 		_float4 vDissolveGradiationStartColor;
 		_float4 vDissolveGradiationGoalColor;
 
 		_float	fDissolveGradiationDistance;
 
-		_float fDissolveAppearAmount;
-		_float fDissolveAppearSpeed;
+		_float  fDissolveAppearTime;
+		_float	fDissolveAppearAmount;
+		_float	fDissolveAppearSpeed;
 
-		_float fDissolveDisappearAmount;
-		_float fDissolveDisappearSpeed;
+		_float  fDissolveDisappearTime;
+		_float	fDissolveDisappearAmount;
+		_float	fDissolveDisappearSpeed;
 
 		// For. Directional Dissolve
 		_float3 vDissolveDirection;

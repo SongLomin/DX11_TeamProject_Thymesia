@@ -12,6 +12,7 @@ texture2D g_DepthTexture;
 // TODO :  bDynamicNoiseOption temporary for test
 bool g_bDynamicNoiseOption;
 
+// For. Dissolve
 float3 g_vDissolveDir;
 float g_fDissolveAmount;
 

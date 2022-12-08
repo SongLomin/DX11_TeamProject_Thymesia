@@ -41,6 +41,7 @@ private:
     void Free();
 
     virtual void SetUp_ShaderResource() override;
+    virtual void SetUp_ShaderResource_Dissolve();
 
     virtual void OnEnable(void* _Arg = nullptr) override;
     virtual void OnDisable() override;
@@ -106,6 +107,7 @@ private:
     weak_ptr<CTexture>    m_pColorDiffuseTextureCom;
     weak_ptr<CTexture>    m_pMaskTextureCom;
     weak_ptr<CTexture>    m_pNoiseTextureCom;
+    weak_ptr<CTexture>    m_pDissolveTextureCom;
 
     _uint m_iNumMeshContainers;
 
@@ -128,6 +130,7 @@ private:
     // For. Color
     _float4               m_vCurrentColor;
     _float4               m_vCurrentColorForce;
+
 
     // For. UV
     _float2               m_vDiffuseCurrentUV;
