@@ -5,6 +5,9 @@
 #include "UI_Utils.h"
 #include "Collider.h"
 
+GAMECLASS_C(CUI_Interaction);
+CLONE_C(CUI_Interaction, CGameObject);
+
 
 HRESULT CUI_Interaction::Initialize_Prototype()
 {

@@ -9,6 +9,11 @@ class CInteraction_Prop;
 class CUI_Interaction : public CCustomUI
 {
 public:
+	GAMECLASS_H(CUI_Interaction);
+	CLONE_H(CUI_Interaction, CGameObject);
+
+
+public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
 	virtual HRESULT Start();
