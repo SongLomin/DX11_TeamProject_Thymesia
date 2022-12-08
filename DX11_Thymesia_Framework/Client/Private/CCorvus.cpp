@@ -147,6 +147,8 @@ HRESULT CCorvus::Render()
 	return S_OK;
 }
 
+
+
 void CCorvus::Debug_KeyInput(_float fTimeDelta)
 {
 	PxControllerFilters Filters;
@@ -340,6 +342,18 @@ void CCorvus::OnEnable(void* pArg)
 void CCorvus::OnDisable()
 {
 	__super::OnDisable();
+}
+
+
+void CCorvus::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_VARGEXECUTION == iArg)
+	{
+		Change_State<CVarg_Execution>();
+	
+	}
 }
 
 void CCorvus::Free()

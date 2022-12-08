@@ -60,7 +60,7 @@ HRESULT CVarg::Initialize(void* pArg)
 	Add_Component<CVargBossState_Idle>();
 	Add_Component<CVargBossState_Stun_End>();
 	Add_Component<CVargBossState_Stun_Exe_Dead>();
-	Add_Component<CVargBossState_Stun_Exe_SitDown>();
+	Add_Component<CVargBossState_Exe_NoDeadEnd>();
 	Add_Component<CVargBossState_Stun_Exe_SitLoop>();
 	Add_Component<CVargBossState_Stun_Exe_Start>();
 	Add_Component<CVargBossState_Stun_Loop>();
@@ -74,6 +74,7 @@ HRESULT CVarg::Initialize(void* pArg)
 	Add_Component<CVargBossState_TurnAttack>();
 	Add_Component<CVargBossState_Attack2b1>();
 	Add_Component<CVargBossState_Attack2b2>();
+	Add_Component<CVargBossState_Stun_Exe_End>();
 
 	TRAIL_DESC TrailDesc;
 	ZeroMemory(&TrailDesc, sizeof(TRAIL_DESC));
@@ -221,7 +222,8 @@ void CVarg::Init_Desc()
 	INIT_STATE(CVargBossState_Idle);
 	INIT_STATE(CVargBossState_Stun_End);
 	INIT_STATE(CVargBossState_Stun_Exe_Dead);
-	INIT_STATE(CVargBossState_Stun_Exe_SitDown);
+	INIT_STATE(CVargBossState_Stun_Exe_End);
+	INIT_STATE(CVargBossState_Exe_NoDeadEnd);
 	INIT_STATE(CVargBossState_Stun_Exe_SitLoop);
 	INIT_STATE(CVargBossState_Stun_Exe_Start);
 	INIT_STATE(CVargBossState_Stun_Loop);
@@ -262,11 +264,17 @@ void CVarg::OnEventMessage(_uint iArg)
 {
 	__super::OnEventMessage(iArg);
 
+
+
 	if ((_uint)EVENT_TYPE::ON_CATCH == iArg)
 	{
 		Change_State<CVargBossState_SPA_Catch>();
 	}
 
+	if ((_uint)EVENT_TYPE::ON_VARGEXECUTION == iArg)
+	{
+		Change_State<CVargBossState_Stun_Exe_Start>();
+	}
 	
 }
 

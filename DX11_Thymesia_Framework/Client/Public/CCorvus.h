@@ -30,6 +30,7 @@ protected:
     virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
 
 private:
+    virtual void OnEventMessage(_uint iArg) override;
     void Debug_KeyInput(_float fTimeDelta);
     void Ready_Weapon();
     void Ready_States();

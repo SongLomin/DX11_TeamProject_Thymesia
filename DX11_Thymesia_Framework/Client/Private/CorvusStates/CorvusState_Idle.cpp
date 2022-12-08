@@ -202,7 +202,9 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		}
 		else
 		{
-			Rotation_InputToLookDir();
+			if (!Rotation_InputToLookDir())
+				Rotation_TargetToLookDir();
+
 			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
 
 		}

@@ -437,7 +437,7 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_End.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\33.Execution_End</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_SitDown.h">
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_NoDeadEnd.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\30.Execution_SitDown</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_SitLoop.h">
@@ -1370,7 +1370,7 @@
     <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_End.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\33.Execution_End</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_SitDown.cpp">
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_NoDeadEnd.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\30.Execution_SitDown</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_SitLoop.cpp">

@@ -7,12 +7,12 @@ END
 
 BEGIN(Client)
 
-class CVargBossState_Stun_Exe_SitDown :
+class CVargBossState_Exe_NoDeadEnd :
 	public CVargBossStateBase
 {
-	GAMECLASS_H(CVargBossState_Stun_Exe_SitDown);
-	CLONE_H(CVargBossState_Stun_Exe_SitDown, CComponent)
-		SHALLOW_COPY(CVargBossState_Stun_Exe_SitDown)
+	GAMECLASS_H(CVargBossState_Exe_NoDeadEnd);
+	CLONE_H(CVargBossState_Exe_NoDeadEnd, CComponent)
+		SHALLOW_COPY(CVargBossState_Exe_NoDeadEnd)
 
 
 
@@ -31,9 +31,9 @@ protected:
 
 
 private:
-	//void Call_AnimationEnd();
+	void Call_AnimationEnd();
 protected:
-	//virtual void OnDestroy() override;
+	virtual void OnDestroy() override;
 	void Free();
 
 };

@@ -31,11 +31,7 @@ void CVargBossState_Stun_Loop::Start()
 {
 	__super::Start();
 
-
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_StunLoop");
-
-
-	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Stun_Loop::Call_AnimationEnd, this);*/
 }
 
 void CVargBossState_Stun_Loop::Tick(_float fTimeDelta)
@@ -81,20 +77,6 @@ void CVargBossState_Stun_Loop::OnStateEnd()
 }
 
 
-//
-//void CVargBossState_Stun_Loop::Call_AnimationEnd()
-//{
-//	if (!Get_Enable())
-//		return;
-//
-//
-//	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Stun_Loop>(0.05f);
-//}
-
-//void CVargBossState_Stun_Loop::OnDestroy()
-//{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Stun_Loop::Call_AnimationEnd, this);
-//}
 
 void CVargBossState_Stun_Loop::Free()
 {
@@ -106,12 +88,6 @@ _bool CVargBossState_Stun_Loop::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
-
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
-	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Stun_Loop>(0.05f);
-		return true;
-	}
 
 	return false;
 }

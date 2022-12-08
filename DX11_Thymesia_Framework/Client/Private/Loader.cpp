@@ -414,6 +414,10 @@ HRESULT CLoader::Loading_ForEditLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Distructable/Wagon03/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Distructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
+	this->Load_CorvusModel();
+	this->Load_BossMobModel();
+	this->Load_NormalMobModel();
+
 #endif // _MAP_TOOL_
 #endif // _JOJO_EFFECT_TOOL_
 

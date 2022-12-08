@@ -345,7 +345,7 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidR.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_Dead.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_End.h" />
-    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_SitDown.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_NoDeadEnd.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_SitLoop.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_Start.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Hurt.h" />
@@ -673,7 +673,7 @@
     <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidR.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_Dead.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_End.cpp" />
-    <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_SitDown.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_NoDeadEnd.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_SitLoop.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_Start.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Hurt.cpp" />
