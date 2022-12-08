@@ -43,6 +43,9 @@ public:
 	void Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime, _float fFrequency, _float fDecreaseRatio);//특정 방향으로
 
 
+public:
+	_bool Get_IsFocused() { return m_bIsFocused; }
+
 
 protected:
 	virtual HRESULT Bind_PipeLine() override;

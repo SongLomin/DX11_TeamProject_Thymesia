@@ -36,7 +36,7 @@ void CVargBossState_WalkF::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_WalkF");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_WalkF::Call_AnimationEnd, this);
+	//m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_WalkF::Call_AnimationEnd, this);
 
 }
 
@@ -92,22 +92,22 @@ void CVargBossState_WalkF::OnStateEnd()
 	m_bOneCheck = false;
 }
 
-void CVargBossState_WalkF::Call_AnimationEnd()
-{
-	if (!Get_Enable())
-		return;
-
-	if (m_bOneCheck)
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Run>(0.05f);
-}
-
-
-
-
-void CVargBossState_WalkF::OnDestroy()
-{
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_WalkF::Call_AnimationEnd, this);
-}
+//void CVargBossState_WalkF::Call_AnimationEnd()
+//{
+//	if (!Get_Enable())
+//		return;
+//
+//	if (m_bOneCheck)
+//		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Run>(0.05f);
+//}
+//
+//
+//
+//
+//void CVargBossState_WalkF::OnDestroy()
+//{
+//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_WalkF::Call_AnimationEnd, this);
+//}
 
 void CVargBossState_WalkF::Free()
 {
@@ -124,38 +124,57 @@ _bool CVargBossState_WalkF::Check_AndChangeNextState()
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 
 
-	if (fPToMDistance > 5.f)
+	if (m_bOneCheck)
 	{
-		int iRand = rand() % 2;
-
-		switch (iRand)
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.99f)
 		{
-		case 0:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidL>(0.05f);
-			break;
-		case 1:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidR>(0.05f);
-			break;
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Run>(0.05f);
+			return true;
 		}
-
-		return true;
 	}
+
 	else
 	{
-		int iRand = rand() % 2;
-
-		switch (iRand)
+		if (fPToMDistance > 5.f)
 		{
-		case 0:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1a>(0.05f);
-			break;
-		case 1:
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1b>(0.05f);
-			break;
+			int iRand = rand() % 2 + m_iPhase2;
+
+			switch (iRand)
+			{
+			case 0:
+				Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidL>(0.05f);
+				break;
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidR>(0.05f);
+				break;
+			case 2:
+				Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Roar>(0.05f);
+				break;
+			}
+
+			return true;
+		}
+		else
+		{
+			int iRand = rand() % 2;
+
+			switch (iRand)
+			{
+			case 0:
+				Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1a>(0.05f);
+				break;
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CVargBossState_Attack1b>(0.05f);
+				break;
+			}
+
+			return true;
 		}
 
-		return true;
 	}
+
+	
+	
 
 
 

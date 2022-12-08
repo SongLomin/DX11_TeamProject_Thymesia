@@ -32,6 +32,7 @@ private:
 	_float m_fMaxSpeed = 4.f;
 	_float m_fCurrentSpeed = 2.5f;
 	_float m_fAccel = 0.f;
+	_bool  m_bFirstLookAt = true;
 
 private:
 	void Call_AnimationEnd();

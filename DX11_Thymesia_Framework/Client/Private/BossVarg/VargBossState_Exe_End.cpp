@@ -58,6 +58,11 @@ void CVargBossState_Stun_Exe_End::LateTick(_float fTimeDelta)
 
 
 
+void CVargBossState_Stun_Exe_End::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CBossStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+}
+
 void CVargBossState_Stun_Exe_End::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
@@ -79,10 +84,6 @@ void CVargBossState_Stun_Exe_End::OnStateEnd()
 
 
 }
-
-
-
-
 
 
 

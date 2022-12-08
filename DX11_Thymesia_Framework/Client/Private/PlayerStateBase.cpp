@@ -6,6 +6,7 @@
 #include "Monster.h"
 #include "Player.h"
 #include "Model.h"
+#include "Camera_Target.h"
 
 GAMECLASS_C(CPlayerStateBase);
 
@@ -33,6 +34,8 @@ void CPlayerStateBase::Start()
 void CPlayerStateBase::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+	
+	_bool ansrhkdgus =  GET_SINGLE(CGameManager)->Get_TargetCamera().lock()->Get_IsFocused();
 }
 
 void CPlayerStateBase::LateTick(_float fTimeDelta)

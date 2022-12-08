@@ -110,7 +110,7 @@ void CVargBossState_Start::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkF>(0.05f);
+	
 
 	weak_ptr<CCharacter> pCharacter = Weak_StaticCast<CCharacter>(m_pOwner);
 
@@ -123,6 +123,8 @@ void CVargBossState_Start::Call_AnimationEnd()
 	pScriptQeuue.lock()->Call_SetScript_Tutorial_Varg();
 
 	Weak_StaticCast<CBossMonster>(m_pOwner).lock()->Get_HPBar().lock()->Set_Enable(true);
+
+	Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkF>(0.05f);
 }
  
 void CVargBossState_Start::OnDestroy()
