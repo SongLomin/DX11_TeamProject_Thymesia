@@ -84,7 +84,7 @@ void CCorvusState_RaidAttack1Hurt::OnHit(weak_ptr<CCollider> pMyCollider, weak_p
 		weak_ptr<CCharacter>	pMonsterFromCharacter = pAttackArea.lock()->Get_ParentObject();
 		weak_ptr<CStatus_Monster>	pMonsterStatusCom = Weak_StaticCast<CStatus_Monster>(pMonsterFromCharacter.lock()->Get_Status());
 
-		pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
+		pStatus.lock()->Add_Damage(In_fDamage);
 
 		if (pStatus.lock()->Is_Dead())
 		{

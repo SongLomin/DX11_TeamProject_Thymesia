@@ -374,6 +374,14 @@ namespace Client
 		CORSS_END
 	};
 
+	enum class DOT_RESULT
+	{
+		LEFT,
+		MID,
+		RIGHT,
+		DOT_RESULT_END
+	};
+
 	enum class PARRY_SUCCESS
 	{
 		LEFT,

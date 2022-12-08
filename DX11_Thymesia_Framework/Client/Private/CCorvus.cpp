@@ -249,6 +249,13 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_Climb_L_Up_Down_End);
 	ADD_STATE_MACRO(CCorvusState_Climb_R_Up_Down_End);
 	ADD_STATE_MACRO(CCorvusState_RaidAttack1Hurt);
+	ADD_STATE_MACRO(CCorvusState_RunB);
+	ADD_STATE_MACRO(CCorvusState_RunL);
+	ADD_STATE_MACRO(CCorvusState_RunR);
+	ADD_STATE_MACRO(CCorvusState_AVoidB);
+	ADD_STATE_MACRO(CCorvusState_AVoidL);
+	ADD_STATE_MACRO(CCorvusState_AVoidR);
+
 
 #undef ADD_STATE_MACRO
 }

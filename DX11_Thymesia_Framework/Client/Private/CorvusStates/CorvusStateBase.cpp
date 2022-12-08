@@ -17,6 +17,7 @@
 #include "VargStates.h"
 #include "BoneNode.h"
 #include "Model.h"
+#include "Camera_Target.h"
 
 
 GAMECLASS_C(CCorvusStateBase)
@@ -469,12 +470,13 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
 			_matrix vOtherWorldMatrix = pMonsterFromCharacter.lock()->Get_Transform()->Get_WorldMatrix();
 			pMonsterFromCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_CATCH);
-			vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, -2.f, 0.f));
+			vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, -1.75f, 0.f));
 			m_pPhysXControllerCom.lock()->Set_Position(
 				vResultOtherWorldMatrix.r[3],
 				GAMEINSTANCE->Get_DeltaTime(),
 				Filters);
 			m_pTransformCom.lock()->Set_Look2D(vOtherWorldMatrix.r[2]);
+	
 			Get_OwnerPlayer()->Change_State<CCorvusState_RaidAttack1Hurt>();
 			break;
 		default:

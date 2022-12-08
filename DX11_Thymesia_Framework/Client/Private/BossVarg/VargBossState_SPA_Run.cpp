@@ -44,7 +44,7 @@ void CVargBossState_SPA_Run::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 
-	TurnAttack(fTimeDelta * 2.f);
+	Rotation_TargetToLookDir();
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }

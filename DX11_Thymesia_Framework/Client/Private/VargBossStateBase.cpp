@@ -52,6 +52,42 @@ _bool CVargBossStateBase::Check_RequirementRunState()
 	return false;
 }
 
+_uint CVargBossStateBase::Check_RequirementDotState()
+{
+
+	DOT_RESULT DotResult = DOT_RESULT::DOT_RESULT_END;
+	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+	_vector vMyDotPositon = m_pOwner.lock()->Get_Transform()->Get_Position();
+	vMyDotPositon.m128_f32[1] = 0.f;
+	_vector vOtherDotPositon = pCurrentPlayer.lock()->Get_Transform()->Get_Position();
+	vOtherDotPositon.m128_f32[1] = 0.f;
+
+	_vector vOtherColliderToPlayerClollider = XMVector3Normalize(vOtherDotPositon - vMyDotPositon);
+
+	_vector vMyLookVecTor = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+	vMyLookVecTor.m128_f32[1] = 0;
+	vMyLookVecTor = XMVector3Normalize(vMyLookVecTor);
+
+	_float fCos = XMVectorGetX(XMVector3Dot(vOtherColliderToPlayerClollider, vMyLookVecTor));
+
+
+	if (fCos >= 0.173f && fCos <= 1)
+	{
+		return (_uint)DOT_RESULT::LEFT;
+	}
+	else if (fCos >= -0.173f && fCos <= 0.173)
+	{
+		return (_uint)DOT_RESULT::MID;
+	}
+	else
+	{
+		return (_uint)DOT_RESULT::RIGHT;
+	}
+	
+	
+	
+}
+
 _bool CVargBossStateBase::Check_RequirementPlayerInRange(const _float& In_fRange)
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
@@ -170,7 +206,7 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 				pStatus.lock()->Minus_LifePoint(1);
 				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGEXECUTION);
 				_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
-				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, -0.3f, 2.8f, 0.f));
+				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, 2.2f, 0.f));
 				pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
 					vResultOtherWorldMatrix.r[3],
 					GAMEINSTANCE->Get_DeltaTime(),
@@ -178,15 +214,13 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 				pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
 				Get_Owner().lock()->Get_Component<CVargBossState_Stun_Exe_Start>().lock()->Set_DieType(true);				
 				Get_OwnerCharacter().lock()->Change_State<CVargBossState_Stun_Exe_Start>(0.05f);
-
-				return;
 				
 			}
-			if (pStatus.lock()->Get_Desc().m_iLifeCount == 1)
+			else
 			{
 				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGEXECUTION);
 				_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
-				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, -0.3f, 2.8f, 0.f));
+				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, 2.2f, 0.f));
 				pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
 					vResultOtherWorldMatrix.r[3],
 					GAMEINSTANCE->Get_DeltaTime(),
@@ -194,7 +228,6 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 				pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
 				Get_Owner().lock()->Get_Component<CVargBossState_Stun_Exe_Start>().lock()->Set_DieType(false);
 				Get_OwnerCharacter().lock()->Change_State<CVargBossState_Stun_Exe_Start>(0.05f);
-				return;
 				
 			}
 			

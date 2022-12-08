@@ -14,7 +14,8 @@ class CVargBossState_WalkF :
 	CLONE_H(CVargBossState_WalkF, CComponent)
 		SHALLOW_COPY(CVargBossState_WalkF)
 
-
+public:
+	void Set_bPhase2(_bool iPhase2) { m_iPhase2 = iPhase2; }
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
@@ -32,15 +33,16 @@ private:
 	_float m_fMaxSpeed = 4.f;
 	_float m_fCurrentSpeed = 1.5f;
 	_float m_fAccel = 0.f;
+	_uint  m_iPhase2 = 0;
 
 
 private:
 	_bool      m_bOneCheck = false;
 
 private:
-	void Call_AnimationEnd();
+	//void Call_AnimationEnd();
 protected:
-	virtual void OnDestroy() override;
+	//virtual void OnDestroy() override;
 	void Free();
 
 };

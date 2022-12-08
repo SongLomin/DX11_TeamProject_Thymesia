@@ -58,6 +58,7 @@ void CVargBossState_WalkB::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+	if(m_bFirstLookAt)
 	Rotation_TargetToLookDir();
 
 	Check_AndChangeNextState();
@@ -68,6 +69,8 @@ void CVargBossState_WalkB::LateTick(_float fTimeDelta)
 void CVargBossState_WalkB::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	m_bFirstLookAt = true;
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -113,17 +116,19 @@ _bool CVargBossState_WalkB::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
+	{
+		m_bFirstLookAt = false;
+	}
 
-
-	//_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
-
-
-	//if (fPToMDistance >= 3.f)
-	//{
-	//	Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidB>(0.05f);
-	//
-	//	return true;
-	//}
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	{
+		
+		Get_Owner().lock()->Get_Component<CVargBossState_Idle>().lock()->Set_BackReset(true);
+		Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidB>(0.05f);
+		return true;
+	}
+	
 
 
 

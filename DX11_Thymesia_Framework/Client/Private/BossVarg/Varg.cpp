@@ -68,6 +68,7 @@ HRESULT CVarg::Initialize(void* pArg)
 	Add_Component<CVargBossState_TurnR>();
 	Add_Component<CVargBossState_WalkB>();
 	Add_Component<CVargBossState_WalkF>();
+	Add_Component<CVargBossState_WalkL>();
 	Add_Component<CVargBossState_WalkR>();
 	Add_Component<CVargBossState_RaidAttack>();
 	Add_Component<CVargBossState_TurnAttack>();
@@ -232,6 +233,7 @@ void CVarg::Init_Desc()
 	INIT_STATE(CVargBossState_TurnR);
 	INIT_STATE(CVargBossState_WalkB);
 	INIT_STATE(CVargBossState_WalkF);
+	INIT_STATE(CVargBossState_WalkL);
 	INIT_STATE(CVargBossState_WalkR);
 	INIT_STATE(CVargBossState_RaidAttack);
 	INIT_STATE(CVargBossState_TurnAttack);
