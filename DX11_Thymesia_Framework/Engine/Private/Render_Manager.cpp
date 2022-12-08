@@ -175,10 +175,8 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_PBR"))))
 		DEBUG_ASSERT;
-	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_ExtractBloom"))))
-		DEBUG_ASSERT;
-	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_ExtractGlow"))))
-		DEBUG_ASSERT;
+
+ 
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_ExtractEffect"), TEXT("Target_OriginalEffect"))))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_ExtractEffect"), TEXT("Target_ExtractBloom"))))
@@ -513,9 +511,10 @@ HRESULT CRender_Manager::Add_RadialBlur(const _float In_fRadialBlurStrength)
 	return S_OK;
 }
 
-HRESULT CRender_Manager::Set_FogColor(const _float4 In_vFogColor)
+HRESULT CRender_Manager::Set_FogDesc(const _float4 In_vFogColor, const _float In_fFogRange)
 {
 	m_vFogColor = In_vFogColor;
+	m_fFogRange = In_fFogRange;
 
 	return S_OK;
 }
@@ -732,6 +731,8 @@ HRESULT CRender_Manager::Bake_Fog()
 	m_pShader->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
 
 	m_pShader->Set_RawValue("g_vCamPosition", &pPipeLine->Get_CamPosition(), sizeof(_float4));
+	m_pShader->Set_RawValue("g_fFogRange", &m_fFogRange, sizeof(_float));
+
 
 	m_pShader->Begin(11);
 	m_pVIBuffer->Render();

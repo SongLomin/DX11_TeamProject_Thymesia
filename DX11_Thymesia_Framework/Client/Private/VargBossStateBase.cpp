@@ -150,7 +150,6 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 		GAMEINSTANCE->Set_MotionBlur(0.05f);
 
 
-
 	}
 
 }

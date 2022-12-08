@@ -41,6 +41,10 @@ void CCorvusState_NorMob_Execution::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	
+	_float3 vPosition;
+	XMStoreFloat3(&vPosition, m_pOwner.lock()->Get_Transform()->Get_Position());
+	GAMEINSTANCE->Set_RadialBlur(0.3f, vPosition);
+
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 

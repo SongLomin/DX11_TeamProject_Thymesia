@@ -356,6 +356,7 @@ namespace Client
 		_float fAmount;
 		_float3 vDirection;
 		_float4	vGlowColor;
+		_float3 vStartPos;
 		_bool bGlow;
 		_bool bBloom;
 	};

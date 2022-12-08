@@ -10,6 +10,9 @@ texture2D   g_SpecularTexture;
 
 float g_fFar = 300.f;
 //directional dissolve
+float3 g_vDissolveStartPos;
+float3 g_vDissolveStartEnd;
+
 float3 g_vDissolveDir;
 float g_fDissolveAmount;
 
@@ -433,7 +436,7 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_NORMAL In)
     PS_OUT Out = (PS_OUT) 0;
 
     //directional dissolve
-    float3 vPixelDir = In.vLocalPos.xyz;
+    float3 vPixelDir = In.vLocalPos.xyz - g_vDissolveStartPos;
     vPixelDir = normalize(vPixelDir);
     float3 vDissolveDir = normalize(g_vDissolveDir);
     

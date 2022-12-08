@@ -46,6 +46,8 @@ static const float BlurWeights[13] =
     0.002216,
 };  
 
+
+
 struct VS_IN
 {
 	float3		vPosition : POSITION;	

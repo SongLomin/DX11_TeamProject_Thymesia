@@ -127,6 +127,7 @@ HRESULT CCorvus::Render()
 
 
 			m_pShaderCom.lock()->Set_RawValue("g_vDissolveDir", &iter->second.vDirection, sizeof(_float3));
+			m_pShaderCom.lock()->Set_RawValue("g_vDissolveStartPos", &iter->second.vStartPos, sizeof(_float3));
 			m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &iter->second.fAmount, sizeof(_float));
 	
 			m_iPassIndex = 6;
