@@ -53,6 +53,7 @@ protected:
     weak_ptr<CBoneNode> m_pTargetBoneNode;
     
     _float3                 m_vOffset;
+    _bool                   m_bLockOn = false;
 
 
     weak_ptr<CPlayer>       m_pOwnerFromPlayer;

@@ -205,8 +205,8 @@ void CTalent::OnLButtonClick()
     }
 
     list<weak_ptr<CTalent>> visitNodes;
-
-    TALENT_RESULT eResult = Check_Requiment(tPlayerDesc.m_iTalent,m_iNodeLevel, visitNodes);
+    int                     iCost = 0;
+    TALENT_RESULT eResult = Check_Requiment(tPlayerDesc.m_iTalent, iCost, visitNodes);
 
     switch (eResult)
     {
@@ -218,7 +218,8 @@ void CTalent::OnLButtonClick()
         return;
         break;
     case Client::TALENT_RESULT::SUCCESS:
-    {
+    {   
+        tPlayerDesc.m_iTalent -= iCost;
         weak_ptr<CTalent> pTalent;
         for (auto& elem : visitNodes)
         {
@@ -228,11 +229,14 @@ void CTalent::OnLButtonClick()
             m_pPlayer.lock()->Bind_TalentEffects(elem.lock()->Get_Effect());
 #endif
         }
+        GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Status().lock()->Set_Desc(&tPlayerDesc);
+
         if (pTalent.lock()->m_pParent.lock())
             pTalent.lock()->m_pParent.lock()->CheckLButtonClick();
         break;
     }
     case Client::TALENT_RESULT::SUBSCRIPTPOINT:
+        tPlayerDesc.m_iTalent += iCost;//ºÎ¸ð´Â »©°í
         for (auto& elem : visitNodes)
         {
             if (elem.lock()->m_pParent.lock())
@@ -243,6 +247,7 @@ void CTalent::OnLButtonClick()
 #endif // !_ONLY_UI_
             }
         }
+        GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Status().lock()->Set_Desc(&tPlayerDesc);
         break;
     case Client::TALENT_RESULT::RESULT_END:
         break;
@@ -510,10 +515,12 @@ void CTalent::Find_ActiveChild_Recursive(weak_ptr<CTalent> In_pTalent, list<weak
         return;
     }
 
-    
     if (In_pTalent.lock()->m_bActive)
     {
-        ++out_iDepth;
+        if (In_pTalent.lock()->m_pParent.lock())
+        {
+            ++out_iDepth;
+        }
         out_pActiveChild.push_back(In_pTalent);
 
         for (auto& elem : In_pTalent.lock()->m_pChilds)
@@ -664,6 +671,7 @@ void CTalent::OnDisable()
 
     for (auto& elem : m_pChilds)
     {
-        elem.lock()->Set_Enable(false);
+ 
++        elem.lock()->Set_Enable(false);
     }
 }

@@ -35,7 +35,7 @@ void CPlayerStateBase::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 	
-	_bool ansrhkdgus =  GET_SINGLE(CGameManager)->Get_TargetCamera().lock()->Get_IsFocused();
+	m_bLockOn =  GET_SINGLE(CGameManager)->Get_TargetCamera().lock()->Get_IsFocused();
 }
 
 void CPlayerStateBase::LateTick(_float fTimeDelta)

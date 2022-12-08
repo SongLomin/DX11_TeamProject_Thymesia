@@ -141,6 +141,10 @@ void CPlayer::UnBind_TalentEffects(weak_ptr<CTalent_Effect> pTalentEffect)
             m_pTalent_Effects.erase(iter);
             break;
         }
+        else
+        {
+            iter++;
+        }
     }
 }
 

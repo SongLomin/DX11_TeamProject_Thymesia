@@ -125,6 +125,7 @@ void CMonsterHPBar_Boss::Set_Owner(weak_ptr<CMonster> pMonster)
 		);
 		pLifeDecoration.lock()->Set_Texture("Font_Diamond");
 		pLifeDecoration.lock()->Set_Enable(false);
+		pLifeDecoration.lock()->Set_RenderGroup(RENDERGROUP::RENDER_BEFOREUI);
 		m_listLifeDecoration.push_back(pLifeDecoration);
 	}
 }
