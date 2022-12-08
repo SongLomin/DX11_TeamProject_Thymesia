@@ -37,7 +37,6 @@ namespace Client
 		_float3		vStartPosition;
 
 
-
 #pragma region Speed
 		_float3		vSpeed;
 		_float3		vForce;
@@ -61,6 +60,23 @@ namespace Client
 #pragma endregion
 
 		_int		iShaderPassIndex;
+
+#pragma region Dissolve
+		enum class DISSOLVE_TYPE { DEFAULT, DIRECTIONAL, TYPE_END };
+		DISSOLVE_TYPE eDissolveType;
+
+		// For. All Dissolve
+		_float fDissolveAmount;
+		_float fDissolveSpeed;
+
+		_float4 vDissolveColor;
+		_float	fGradiationDistance;
+
+
+		// For. Directional Dissolve
+		_float3 vDissolveDirection;
+
+#pragma endregion
 
 #pragma region Colors
 		_float		fDiscardRatio;

@@ -83,6 +83,7 @@ private:
     void Tool_Rotation();
     void Tool_Scale();
     void Tool_Shaders();
+    void Tool_Dissolve();
     void Tool_Colors();
     void Tool_Texture_Diffuse();
     void Tool_Texture_Noise();

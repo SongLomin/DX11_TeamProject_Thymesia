@@ -951,6 +951,10 @@ void CCustomEffectMesh::Tool_Shaders()
 	}
 }
 
+void CCustomEffectMesh::Tool_Dissolve()
+{
+}
+
 void CCustomEffectMesh::Tool_Colors()
 {
 	ImGui::Text("Discard Ratio"); ImGui::SameLine();
@@ -1468,6 +1472,11 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 			if (ImGui::CollapsingHeader("Shaders"))
 				this->Tool_Shaders();
+
+			if (true/*shader pass is dissolve pass*/)
+			{
+
+			}
 
 			if (ImGui::CollapsingHeader("Colors"))
 				this->Tool_Colors();
