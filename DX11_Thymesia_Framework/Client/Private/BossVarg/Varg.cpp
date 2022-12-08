@@ -103,7 +103,13 @@ HRESULT CVarg::Start()
 
 	//weak_ptr<CBoneNode> pTargetBoneNode = m_pModelCom.lock()->Find_BoneNode();
 	//m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
-	//m_EffectIndexList.emplace_back("Character_Target", GET_SINGLE(CGameManager)->Use_EffectGroup("Character_Target", m_pTransformCom));
+	// m_EffectIndexList.emplace_back("Character_Target", GET_SINGLE(CGameManager)->Use_EffectGroup("Character_Target", m_pTransformCom));
+	
+	m_EffectIndexList.push_back
+	({
+		"Varg_Eye",
+		GET_SINGLE(CGameManager)->Use_EffectGroup("Varg_Eye", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER)
+		});
 
 	return S_OK;
 }

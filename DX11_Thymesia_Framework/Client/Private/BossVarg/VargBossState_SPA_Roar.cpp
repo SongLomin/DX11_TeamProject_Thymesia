@@ -46,7 +46,10 @@ void CVargBossState_SPA_Roar::Tick(_float fTimeDelta)
 
 	if (m_bShakingCamera)
 	{
-		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.6f, 1.f,3.f,0.9f);
+		_float3 vPosition;
+		XMStoreFloat3(&vPosition, m_pOwner.lock()->Get_Transform()->Get_Position());
+		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.15f, 2.f,3.f,0.95f);
+		GAMEINSTANCE->Set_RadialBlur(0.3f, vPosition);
 	}
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);

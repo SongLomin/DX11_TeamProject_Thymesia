@@ -292,16 +292,6 @@ HRESULT CGameInstance::Draw_RenderGroup()
 	return m_pRender_Manager->Draw_RenderGroup();
 }
 
-HRESULT CGameInstance::Set_MotionBlurScale(const _float& In_fScale)
-{
-	return m_pRender_Manager->Set_MotionBlur(In_fScale);
-}
-
-HRESULT CGameInstance::Add_MotionBlurScale(const _float& In_fScale)
-{
-	return m_pRender_Manager->Add_MotionBlur(In_fScale);
-}
-
 HRESULT CGameInstance::Set_Chromatic(const _float In_fChormaticStrangth)
 {
 	return m_pRender_Manager->Set_Chromatic(In_fChormaticStrangth);
@@ -330,9 +320,9 @@ HRESULT CGameInstance::Set_RadialBlur(const _float In_fRadialBlurStength, _float
 	return m_pRender_Manager->Set_RadialBlur(In_fRadialBlurStength, In_vBlurWorldPosition);
 
 }
-HRESULT CGameInstance::Add_RedialBlur(const _float In_fRadialBlurStrength)
+HRESULT CGameInstance::Add_RadialBlur(const _float In_fRadialBlurStrength)
 {
-	return m_pRender_Manager->Add_RedialBlur(In_fRadialBlurStrength);
+	return m_pRender_Manager->Add_RadialBlur(In_fRadialBlurStrength);
 
 }
 

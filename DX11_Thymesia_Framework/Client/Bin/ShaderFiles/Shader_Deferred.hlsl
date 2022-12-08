@@ -338,12 +338,14 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 	vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
 
 	vector	vLightDir = vWorldPos - g_vLightPos;
-    float fDistance = max(0.0001f, length(vLightDir));
+    float fDistance =  length(vLightDir); 
     
     if(g_fRange < fDistance)
         discard;
+
     
-    float fAtt = 1.f / fDistance * fDistance + 1.f;
+    float fAtt = 0.5f * cos(fDistance / g_fRange * 3.14159265f) + 0.5f;
+
 
     vector vLook = normalize(g_vCamPosition - vWorldPos);
     
@@ -527,9 +529,11 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
         if (0.f < Out.vColor.a)
             Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor;
         else
+        {
             Out.vColor = vFogDesc.r * g_vFogColor;
+            Out.vColor.a = 0.5f;
+        }
     }
-
     //if (vLightFlagDesc.r > 0.f || vLightFlagDesc.g > 0.f)
     //    return Out;
 

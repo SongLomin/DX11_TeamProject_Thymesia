@@ -99,12 +99,6 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 		
 		weak_ptr<CCharacter> pOtherCharacter = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner()).lock()->Get_ParentObject();
 
-		_float3 vShakingOffset = pOtherCharacter.lock()->Get_CurState().lock()->Get_ShakingOffset();
-		_vector vShakingOffsetToVector = XMLoadFloat3(&vShakingOffset);
-
-		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.55f, 0.1f);//일반 공격
-
-
 
 		if (!pAttackArea.lock())
 			return;
@@ -131,7 +125,7 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 		Play_OnHitEffect();
 
 		_float fMagnifiedDamage = In_fDamage * 50.f ;
-
+		_int iRand = rand() % 8 + 1;
 
 		switch (eAttackOption)
 		{
@@ -147,6 +141,13 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
 			break;
 		}
+		_float3 vShakingOffset = pOtherCharacter.lock()->Get_CurState().lock()->Get_ShakingOffset();
+		_vector vShakingOffsetToVector = XMLoadFloat3(&vShakingOffset);
+		_float fShakingRatio = 0.01f * iRand;
+
+
+		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.1f + fShakingRatio, 1.f, 9.f, 0.5f);//일반 공격
+		GAMEINSTANCE->Set_MotionBlur(0.05f);
 
 
 

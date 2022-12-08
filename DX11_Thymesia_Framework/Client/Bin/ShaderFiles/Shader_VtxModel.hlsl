@@ -76,6 +76,8 @@ struct PS_OUT
 	vector		vDepth : SV_TARGET2;
     vector      vShaderFlag : SV_Target3;
     vector      vORM : SV_Target4;
+    vector      vExtractBloom : SV_Target5;
+    vector      vExtractGlow : SV_Target6;
 };
 
 PS_OUT PS_MAIN(PS_IN In)
@@ -89,6 +91,8 @@ PS_OUT PS_MAIN(PS_IN In)
 	
 	if (Out.vDiffuse.a < 0.1f)
 		discard;
+    Out.vExtractBloom = 0;
+    Out.vExtractGlow = 0;
 
 	return Out;	
 }
@@ -218,6 +222,10 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
     
     if (Out.vDiffuse.a < 0.1f)
         discard;
+    Out.vDiffuse.a = 1.f;
+    
+    Out.vExtractBloom = 0;
+    Out.vExtractGlow = 0;
 
     return Out;
 }
@@ -258,7 +266,10 @@ PS_OUT PS_MAIN_NORMAL_MASKING(PS_IN_NORMAL In)
 
     if (Out.vDiffuse.a < 0.1f)
         discard;
-
+    Out.vDiffuse.a = 1.f;
+    Out.vExtractBloom = 0;
+    Out.vExtractGlow = 0;
+    
     return Out;
 }
 
@@ -297,6 +308,10 @@ PS_OUT PS_MAIN_NORMAL_MASKING_SCALAR(PS_IN_NORMAL In)
 
     if (Out.vDiffuse.a < 0.1f)
         discard;
+    Out.vDiffuse.a = 1.f;
+    
+    Out.vExtractBloom = 0;
+    Out.vExtractGlow = 0;
 
     return Out;
 }
@@ -333,18 +348,10 @@ PS_OUT      PS_MAIN_PICK(PS_IN In)
     return Out;
 }
 
-struct PS_OUT_PBR
-{
-    vector		vDiffuse : SV_TARGET0;
-    vector		vNormal : SV_TARGET1;
-    vector		vDepth : SV_TARGET2;
-    vector      vShaderFlag : SV_Target3;
-    vector      vORM : SV_Target4;
-};
 
-PS_OUT_PBR PS_MAIN_NORMAL_PBR(PS_IN_NORMAL In)
+PS_OUT PS_MAIN_NORMAL_PBR(PS_IN_NORMAL In)
 {
-    PS_OUT_PBR Out = (PS_OUT_PBR)0;
+    PS_OUT Out = (PS_OUT) 0;
 
     Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
@@ -368,6 +375,9 @@ PS_OUT_PBR PS_MAIN_NORMAL_PBR(PS_IN_NORMAL In)
 
     if (Out.vDiffuse.a < 0.1f)
         discard;
+    
+    Out.vExtractBloom = 0;
+    Out.vExtractGlow = 0;
 
     return Out;
 }

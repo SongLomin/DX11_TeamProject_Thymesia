@@ -37,17 +37,17 @@ HRESULT CLevel_Test::Initialize()
 #endif // _JOJO_EFFECTS_
 	
 #ifdef	_STAGE_1_MONSTER_
-	//Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_TEST);
+	Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_TEST);
 #endif
 
 #ifdef _TEST_STATIC_PROPS_
-	Load_FromJson(m_szDefaultJsonPath + "Test_Level.json", LEVEL::LEVEL_TEST);
+	//Load_FromJson(m_szDefaultJsonPath + "Test_Level.json", LEVEL::LEVEL_TEST);
 #else // _TEST_STATIC_PROPS_
 	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_TEST);
 #endif // _TEST_STATIC_PROPS_
 
 	//Load_FromJson(m_szDefaultJsonPath + "Stage_Lv3-1.json", LEVEL::LEVEL_TEST);
-	//Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_TEST);
+	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_TEST);
 
 	//Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_TEST);
 

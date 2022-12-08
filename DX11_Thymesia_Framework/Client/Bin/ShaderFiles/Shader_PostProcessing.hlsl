@@ -113,14 +113,14 @@ PS_OUT PS_MAIN_MOTION_BLUR(PS_IN In)
 
 	vector vColor = vector(0.f,0.f,0.f,0.f);
 
-	for (int i = -5; i < 5; ++i)
+	for (int i = -10; i < 10; ++i)
 	{
         texCoord += vPixelVelocity * (0.001f + g_fMotionBlurStrength) * i;
 		float4 currentColor = g_OriginalRenderTexture.Sample(ClampSampler, texCoord);
 		vColor += currentColor;
 	}
 
-	Out.vColor = vColor / 10.f;
+	Out.vColor = vColor / 20.f;
 	
 	return Out;
 }
@@ -212,7 +212,7 @@ DepthStencilState DSS_None_ZTestWrite_True_StencilTest
     StencilEnable = true;
     StencilReadMask = 0xff;
 	
-    FrontFaceStencilFunc = less;
+    FrontFaceStencilFunc = greater;
     FrontFaceStencilPass = keep;
     FrontFaceStencilFail = keep;
 };
@@ -255,7 +255,8 @@ technique11 DefaultTechnique
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_None_ZTestWrite_True_StencilTest, 1);
-        SetRasterizerState(RS_Default);
+       // SetDepthStencilState(DSS_None_ZTest_And_Write, 0);    
+		SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;

@@ -57,6 +57,13 @@ void CStateBase::Set_Animation(_uint In_iNumIndex, _float In_fFixedPlayRatio)
 		m_fFixedPlayRatio = In_fFixedPlayRatio;
 }
 
+_float3 CStateBase::Get_ShakingOffset()
+{
+	_vector vWorldPos = XMVector3TransformNormal(XMLoadFloat3(&m_vShakingOffSet), m_pOwner.lock()->Get_Transform()->Get_WorldMatrix());
+	XMStoreFloat3(&m_vShakingOffSet, vWorldPos);
+
+	return m_vShakingOffSet;
+}
 
 
 weak_ptr<CCharacter> CStateBase::Get_OwnerCharacter() const

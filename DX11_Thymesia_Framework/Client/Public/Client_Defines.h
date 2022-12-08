@@ -45,7 +45,7 @@
 #pragma endregion // Tool
 
 #pragma region Boss Mobs
-// #define _BOSS_VARG_
+ #define _BOSS_VARG_
 // #define _BOSS_URD_
 #pragma endregion // Boss Mobs
 

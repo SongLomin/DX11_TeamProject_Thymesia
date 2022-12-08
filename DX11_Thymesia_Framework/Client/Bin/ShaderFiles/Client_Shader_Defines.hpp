@@ -14,6 +14,12 @@ sampler		ClampSampler = sampler_state
 	AddressV = clamp;
 };
 
+sampler		BorderSampler = sampler_state
+{
+	filter = min_mag_mip_linear;
+	AddressU = border;
+	AddressV = border;
+};
 
 
 sampler		PointSampler = sampler_state

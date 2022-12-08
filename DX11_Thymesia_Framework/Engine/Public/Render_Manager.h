@@ -25,7 +25,7 @@ public:
 	HRESULT Set_Chromatic(const _float In_fChormaticStrangth);
 	HRESULT Add_Chromatic(const _float In_fChormaticStrangth);
 	HRESULT Set_RadialBlur(const _float In_fRadialBlurStength, _float3 In_vBlurWorldPosition);
-	HRESULT Add_RedialBlur(const _float In_fRadialBlurStrength);
+	HRESULT Add_RadialBlur(const _float In_fRadialBlurStrength);
 	HRESULT Set_FogColor(const _float4 In_vFogColor);
 	HRESULT Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain);
 	
@@ -106,6 +106,9 @@ private:
 
 private:
 	_float		m_fBlurWitdh = 0.f;
+
+	_float		m_fMotionBlurStrength = 0.f;
+	_float		m_fMotionBlurStrengthAcc = 0.f;
 
 	_float		m_fChromaticStrengthAcc = 0.f;
 	_float		m_fChromaticStrangth = 0.f;
