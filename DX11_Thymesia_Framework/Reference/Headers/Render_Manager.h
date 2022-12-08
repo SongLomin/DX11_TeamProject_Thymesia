@@ -54,6 +54,7 @@ private:
 	HRESULT Render_Font();
 	HRESULT Extract_Brightness();
 	HRESULT Blur_ExtractBloom();
+	HRESULT ReBlur_ExtractBloom();
 	HRESULT Blend_Bloom();
 	HRESULT Render_PostEffect();
 	HRESULT Render_AfterPostEffect();

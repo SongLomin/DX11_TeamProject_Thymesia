@@ -157,7 +157,7 @@ PS_OUT_EXTRACT PS_MAIN_EXTRACT_BRIGHTNESS(PS_IN In)
     return Out;
 }
 
-PS_OUT PS_MAIN_BLURX_WITH_ORIGINAL_RENDER_TEXTURE(PS_IN In)
+PS_OUT PS_MAIN_BLURX_GLOW(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
 
@@ -193,40 +193,96 @@ PS_OUT PS_MAIN_BLURX_WITH_ORIGINAL_RENDER_TEXTURE(PS_IN In)
     return Out;
 }
 
-PS_OUT PS_MAIN_BLURY_WITH_ORIGINAL_RENDER_TEXTURE(PS_IN In)
+PS_OUT PS_MAIN_BLURY_GLOW(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
 
-	// Apply surrounding pixels  
-    float4 color = 0;
-    float2 samp = In.vTexUV;
-    float4 SampleColor = 0;
-    uint Index = 0;
-  
-    for (uint i = 0; i < 13; i++)
-    {
-        samp.y = In.vTexUV.y + PixelKernel[i] * g_PixelHeight;
-        SampleColor = g_ExtractMapTexture.Sample(DefaultSampler, samp);
-        
-        if (SampleColor.a > 0.03f)
-        {
-            color.rgb += SampleColor.rgb;
-            ++Index;
-        }
-        
-        color.a += SampleColor.a * BlurWeights[i] * g_BlurStrength;
-    }
-    
-    color.rgb /= Index;
-    
-    Out.vBlurTexture = color;
-    
-    if (Out.vBlurTexture.a < 0.01f)
-    {
-        discard;
-    }
+	float4 color = 0;
+	float2 samp = In.vTexUV;
+	float4 SampleColor = 0;
+	uint Index = 0;
 
-    return Out;
+	for (uint i = 0; i < 13; i++)
+	{
+		samp.y = In.vTexUV.y + PixelKernel[i] * g_PixelHeight;
+		SampleColor = g_ExtractMapTexture.Sample(DefaultSampler, samp);
+
+		if (SampleColor.a > 0.03f)
+		{
+			color.rgb += SampleColor.rgb;
+			++Index;
+		}
+
+		color.a += SampleColor.a * BlurWeights[i] * g_BlurStrength;
+	}
+
+	color.rgb /= Index;
+
+	Out.vBlurTexture = color;
+
+	if (Out.vBlurTexture.a < 0.01f)
+	{
+		discard;
+	}
+
+	return Out;
+
+}
+
+PS_OUT PS_MAIN_BLURX_WITH_ORIGINAL_RENDER_TEXTURE(PS_IN In)
+{
+	PS_OUT Out = (PS_OUT)0;
+
+
+	float4 color = 0;
+	float2 samp = In.vTexUV;
+	float4 SampleColor = 0;
+	uint Index = 0;
+
+	for (uint i = 0; i < 13; i++)
+	{
+		samp.x = In.vTexUV.x + PixelKernel[i] * g_PixelWidth;
+		SampleColor = g_ExtractMapTexture.Sample(DefaultSampler, samp);
+
+		if (SampleColor.a > 0.03f)
+		{
+			color.rgb += SampleColor.rgb;
+			++Index;
+		}
+
+		color.a += SampleColor.a * BlurWeights[i] * g_BlurStrength;
+	}
+
+	color.rgb /= Index;
+
+	Out.vBlurTexture = color;
+
+	if (Out.vBlurTexture.a < 0.01f)
+	{
+		discard;
+	}
+
+	return Out;
+}
+
+PS_OUT PS_MAIN_BLURY_WITH_ORIGINAL_RENDER_TEXTURE(PS_IN In)
+{
+	PS_OUT Out = (PS_OUT)0;
+
+	float4 color = 0;
+	float2 samp = In.vTexUV;
+
+	//vector vExtractBloom = ;
+
+	for (int i = 0; i < 13; i++)
+	{
+		samp.y = In.vTexUV.y + PixelKernel[i] * g_PixelHeight;
+		color.a += g_ExtractMapTexture.Sample(DefaultSampler, samp).a * BlurWeights[i] * g_BlurStrength;
+	}
+
+	Out.vBlurTexture = color;
+
+	return Out;
 }
 
 
@@ -265,7 +321,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_EXTRACT_BRIGHTNESS();
     }
 
-    pass BlurX_With_Origin //3
+    pass BlurX_Glow //3
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
@@ -273,10 +329,10 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_BLURX_WITH_ORIGINAL_RENDER_TEXTURE();
+        PixelShader = compile ps_5_0 PS_MAIN_BLURX_GLOW();
     }
 
-    pass BlurY_With_Origin //4
+    pass BlurY_Glow //4
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
@@ -284,6 +340,28 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_BLURY_WITH_ORIGINAL_RENDER_TEXTURE();
+        PixelShader = compile ps_5_0 PS_MAIN_BLURY_GLOW();
     }
+
+	pass BlurX_With_Origin //5
+	{
+		SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_BLURX_WITH_ORIGINAL_RENDER_TEXTURE();
+	}
+
+	pass BlurY_With_Origin //6
+	{
+		SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MAIN_BLURY_WITH_ORIGINAL_RENDER_TEXTURE();
+	}
 }

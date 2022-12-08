@@ -583,23 +583,28 @@ PS_OUT PS_MAIN_POSTEFFECT_BLOOM(PS_IN In)
 {
     PS_OUT Out = (PS_OUT)0;
 	
-    float fPower = 2.2f;
-    
-    Out.vColor = float4(1.f, 1.f, 1.f, 1.f);
+    //float fPower = 2.2f;
+    //
+    //Out.vColor = float4(1.f, 1.f, 1.f, 1.f);
 	
-    float4 vHDRColor    = g_XBlurTexture.Sample(DefaultSampler, In.vTexUV.xy);
-    float4 vBloomColor  = g_ExtractBloomTexture.Sample(DefaultSampler, In.vTexUV.xy);
-    float4 vBloomOriTex = g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV.xy);
-    vBloomOriTex.a = 1.f;
+    //float4 vHDRColor    = g_XBlurTexture.Sample(DefaultSampler, In.vTexUV.xy);
+    //float4 vBloomColor  = g_ExtractBloomTexture.Sample(DefaultSampler, In.vTexUV.xy);
+    //float4 vBloomOriTex = g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV.xy);
+     //vBloomOriTex.a = 1.f;
 
-    float4 vBloom = pow(pow(abs(vBloomColor), fPower) + pow(abs(vBloomOriTex), fPower), 1.f / fPower);
+    //float4 vBloom = pow(pow(abs(vBloomColor), fPower) + pow(abs(vBloomOriTex), fPower), 1.f / fPower);
+   
 
-    Out.vColor = pow(abs(vHDRColor), fPower);
-    vBloom = pow(abs(vBloom), fPower);
+    //Out.vColor = pow(abs(vHDRColor), fPower);
+    //vBloom = pow(abs(vBloom), fPower);
 
-    Out.vColor += vBloom;
+    //Out.vColor += vBloom;
 
-    Out.vColor = pow(abs(Out.vColor), 1 / fPower);
+    // Out.vColor = pow(abs(Out.vColor), 1 / fPower);
+
+    Out.vColor = g_XBlurTexture.Sample(DefaultSampler, In.vTexUV.xy);
+    //Out.vColor.a = vBloomOriTex.a;
+
     return Out;
 }
 
