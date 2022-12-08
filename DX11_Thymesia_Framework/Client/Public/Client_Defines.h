@@ -251,6 +251,7 @@ namespace Client
 		FADEMASK,
 		GROOGYMOSNTER,
 		BATTLEUI,
+		INTERACTIONUI,
 		PLAYERHUD,
 		SWAPUI,
 		LAYER_END
@@ -485,7 +486,7 @@ namespace Client
 		FLAG_END
 	};
 
-
+	
 
 
 }

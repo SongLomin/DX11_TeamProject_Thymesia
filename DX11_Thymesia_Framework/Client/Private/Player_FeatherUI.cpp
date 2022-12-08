@@ -71,6 +71,7 @@ HRESULT CPlayer_FeatherUI::Initialize(void* pArg)
     m_tCurrentFeatherTextInfo.vColor = _float4(0.7f, 0.7f, 0.7f, 1.f);
     m_tCurrentFeatherTextInfo.vScale = _float2(0.5, 0.5f);
     m_tCurrentFeatherTextInfo.vPosition = _float2(m_tUIDesc.fX + 25.f, m_tUIDesc.fY - 10.f);
+    m_tCurrentFeatherTextInfo.eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
 
 
     m_tMaxFeatherTextInfo.bAlways = false;
@@ -79,7 +80,7 @@ HRESULT CPlayer_FeatherUI::Initialize(void* pArg)
     m_tMaxFeatherTextInfo.vColor = _float4(0.7f, 0.7f, 0.7f, 1.f);
     m_tMaxFeatherTextInfo.vScale = _float2(0.5, 0.5f);
     m_tMaxFeatherTextInfo.vPosition = _float2(m_tUIDesc.fX + 45.f, m_tUIDesc.fY - 10.f);
-
+    m_tMaxFeatherTextInfo.eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
 
 
     //HoverDesc

@@ -65,6 +65,7 @@ HRESULT CPlayer_PotionUI::Initialize(void* pArg)
    m_tCurrentPotionTextInfo.vColor = _float4(0.7f, 0.7f, 0.7f, 1.f);
    m_tCurrentPotionTextInfo.vScale = _float2(0.5, 0.5f);
    m_tCurrentPotionTextInfo.vPosition = _float2(m_tUIDesc.fX + 25.f, m_tUIDesc.fY - 10.f);
+   m_tCurrentPotionTextInfo.eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
 
    m_tMaxPotionTextInfo.bAlways = false;
    m_tMaxPotionTextInfo.bCenterAlign = false;
@@ -72,6 +73,8 @@ HRESULT CPlayer_PotionUI::Initialize(void* pArg)
    m_tMaxPotionTextInfo.vColor = _float4(0.7f, 0.7f, 0.7f, 1.f);
    m_tMaxPotionTextInfo.vScale = _float2(0.5, 0.5f);
    m_tMaxPotionTextInfo.vPosition = _float2(m_tUIDesc.fX + 45.f, m_tUIDesc.fY - 10.f);
+   m_tMaxPotionTextInfo.eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
+
 
     return S_OK;
 }

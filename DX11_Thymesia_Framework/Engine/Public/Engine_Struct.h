@@ -89,7 +89,7 @@ namespace Engine
 			ZeroMemory(&vColor, sizeof(_float4));
 			ZeroMemory(&bAlways, sizeof(_bool));
 			ZeroMemory(&bCenterAlign, sizeof(_bool));
-			ZeroMemory(&eRenderGroup, sizeof(_float));
+			eRenderGroup = RENDERGROUP::RENDER_UI;
 		}
 	} TEXTINFO;
 

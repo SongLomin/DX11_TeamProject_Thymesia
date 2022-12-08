@@ -171,13 +171,6 @@ void CUI_EvolveMenu_Level::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
 
-    //GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::HEIROLIGHT, m_tTextInfo_Memory);
-    if (m_bOpenableReconfirmWindow)
-    {
-        GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::HEIROLIGHT, m_tTextInfo_OriginStr);
-        GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::HEIROLIGHT, m_tTextInfo_ChangeStr);
-        GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::HEIROLIGHT, m_tTextInfo_ChangeVit);
-    }
     for (auto& elem : m_vecTextInfo)
     {
      
@@ -524,6 +517,9 @@ void CUI_EvolveMenu_Level::Create_ReconfirmWindow()
     );
     m_pReconfirmWindowBG.lock()->Set_Depth(0.3f);
     m_pReconfirmWindowBG.lock()->Set_Texture("LevelUp_ReconfirmWindowBG");
+    m_pReconfirmWindowBG.lock()->Set_RenderGroup(RENDERGROUP::RENDER_AFTER_UI);
+
+
 
     m_pReconfirmWindowNotice = ADD_STATIC_CUSTOMUI;
     m_pReconfirmWindowNotice.lock()->Set_UIPosition
@@ -536,6 +532,7 @@ void CUI_EvolveMenu_Level::Create_ReconfirmWindow()
     m_pReconfirmWindowNotice.lock()->Set_Depth(0.2f);
     m_pReconfirmWindowNotice.lock()->Set_Texture("LevelUp_ReconfirmWindow_ChangedStatusApply");
     m_pReconfirmWindowNotice.lock()->Set_AlphaColor(1.f);
+    m_pReconfirmWindowNotice.lock()->Set_RenderGroup(RENDERGROUP::RENDER_AFTER_UI);
 
 
     m_pReconfirmWindowYes = ADD_STATIC_CUSTOMUI;
@@ -548,6 +545,7 @@ void CUI_EvolveMenu_Level::Create_ReconfirmWindow()
         ALIGN_LEFTTOP);
     m_pReconfirmWindowYes.lock()->Set_Depth(0.1f);
     m_pReconfirmWindowYes.lock()->Set_Texture("LevelUp_ReconfirmWindow_Yes");
+    m_pReconfirmWindowYes.lock()->Set_RenderGroup(RENDERGROUP::RENDER_AFTER_UI);
 
 
 
@@ -561,6 +559,7 @@ void CUI_EvolveMenu_Level::Create_ReconfirmWindow()
         ALIGN_LEFTTOP);
     m_pReconfirmWindowNo.lock()->Set_Depth(0.1f);
     m_pReconfirmWindowNo.lock()->Set_Texture("LevelUp_ReconfirmWindow_No");
+    m_pReconfirmWindowNo.lock()->Set_RenderGroup(RENDERGROUP::RENDER_AFTER_UI);
 
 
 
@@ -574,7 +573,7 @@ void CUI_EvolveMenu_Level::Create_ReconfirmWindow()
         ALIGN_LEFTTOP);
     m_pReconfirmWindowHighlight.lock()->Set_Depth(0.2f);
     m_pReconfirmWindowHighlight.lock()->Set_Texture("MainMenu_SelectableButton_2");
-
+    m_pReconfirmWindowHighlight.lock()->Set_RenderGroup(RENDERGROUP::RENDER_AFTER_UI);
 
 
 
@@ -583,6 +582,7 @@ void CUI_EvolveMenu_Level::Create_ReconfirmWindow()
     m_vecEventChildUI.push_back(m_pReconfirmWindowYes);
     m_vecEventChildUI.push_back(m_pReconfirmWindowNo);
     m_vecEventChildUI.push_back(m_pReconfirmWindowHighlight);
+
 
     Disable_AllEventChild();
 }
@@ -661,9 +661,6 @@ void CUI_EvolveMenu_Level::Init_OriginFontInfo()
     m_tTextInfo_OriginClawDamage.vPosition = _float2(1186.f - m_fFontSize * 0.5f, 387.f- m_fFontSize * 0.5f);
 
     
-
-
-
     m_tTextInfo_OriginHP.bAlways = false;
     m_tTextInfo_OriginHP.bCenterAlign = true;
     m_tTextInfo_OriginHP.fRotation = 0;
@@ -679,14 +676,6 @@ void CUI_EvolveMenu_Level::Init_OriginFontInfo()
     m_tTextInfo_OriginMP.vColor = _float4(1.f, 1.f, 1.f, 1.f);
     m_tTextInfo_OriginMP.vScale = _float2(m_fFontScale, m_fFontScale);
     m_tTextInfo_OriginMP.vPosition = _float2(1186.f - m_fFontSize * 0.5f, 518.f - m_fFontSize * 0.5f);
-
-
-
-
-
-
-
-
 
 }
 
@@ -794,8 +783,6 @@ void CUI_EvolveMenu_Level::Init_ChangeFontInfo()
 }
 
 
-
-
 void CUI_EvolveMenu_Level::Update_FontInfo()
 {
 
@@ -892,6 +879,7 @@ void CUI_EvolveMenu_Level::Update_FontInfo()
 
     m_vecTextInfo.push_back(m_tTextInfo_OriginLevel);
     m_vecTextInfo.push_back(m_tTextInfo_OriginMemory);
+    m_vecTextInfo.push_back(m_tTextInfo_OriginStr);
     m_vecTextInfo.push_back(m_tTextInfo_OriginVit);
     m_vecTextInfo.push_back(m_tTextInfo_OriginPlague);
     m_vecTextInfo.push_back(m_tTextInfo_OriginAttackDamage);
@@ -903,8 +891,8 @@ void CUI_EvolveMenu_Level::Update_FontInfo()
     m_vecTextInfo.push_back(m_tTextInfo_ChangeLevel);
     m_vecTextInfo.push_back(m_tTextInfo_ChangeMemory);
     m_vecTextInfo.push_back(m_tTextInfo_RequireMemory);
- //   m_vecTextInfo.push_back(m_tTextInfo_ChangeStr);
- //   m_vecTextInfo.push_back(m_tTextInfo_ChangeVit);
+    m_vecTextInfo.push_back(m_tTextInfo_ChangeStr);
+    m_vecTextInfo.push_back(m_tTextInfo_ChangeVit);
     m_vecTextInfo.push_back(m_tTextInfo_ChangePlague);
     m_vecTextInfo.push_back(m_tTextInfo_ChangeAttackDamage);
     m_vecTextInfo.push_back(m_tTextInfo_ChangeWound);

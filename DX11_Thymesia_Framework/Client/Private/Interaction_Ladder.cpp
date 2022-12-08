@@ -56,6 +56,7 @@ HRESULT CInteraction_Ladder::Initialize(void* pArg)
 
     SetUpColliderDesc();
 
+    m_eInteractionType = INTERACTION_LADDER;
 
     m_fCullingOffsetRange = 9999.f;
     return S_OK;

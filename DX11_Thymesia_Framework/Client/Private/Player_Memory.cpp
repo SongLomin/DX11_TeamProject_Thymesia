@@ -114,7 +114,8 @@ void CPlayer_Memory::LateTick(_float fTimeDelta)
     tTextInfo.bCenterAlign = false;
     tTextInfo.vScale = _float2(0.4f, 0.4f);
     tTextInfo.szText = szMemoryStr;
-    
+    tTextInfo.eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
+
 
     GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::DREAM, tTextInfo);
 }

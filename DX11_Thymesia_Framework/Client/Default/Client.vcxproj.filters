@@ -976,6 +976,8 @@
     </ClInclude>
     <ClInclude Include="..\Public\EasingComponent.h" />
     <ClInclude Include="..\Public\EasingComponent_Alpha.h" />
+    <ClInclude Include="..\Public\UI_Interaction.h" />
+    <ClInclude Include="..\Public\UI_Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1999,6 +2001,8 @@
     </ClCompile>
     <ClCompile Include="..\Private\EasingComponent.cpp" />
     <ClCompile Include="..\Private\EasingComponent_Alpha.cpp" />
+    <ClCompile Include="..\Private\UI_Interaction.cpp" />
+    <ClCompile Include="..\Private\UI_Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

@@ -73,7 +73,7 @@ HRESULT CPlayer_HPBar::Initialize(void* pArg)
     m_pTrack = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_STATIC, &tTrackDesc);
     m_pTrack.lock()->Get_Component<CTexture>().lock()->Use_Texture("Player_HPBar_Track");
     m_pTrack.lock()->Init_Fader(tFaderDesc, tHoverDesc);
-
+    m_pTrack.lock()->Set_RenderGroup(RENDERGROUP::RENDER_BEFOREUI);
 
     m_fLerpHp = 0.f;
     m_fCurrentHp = 0.f;
@@ -85,6 +85,7 @@ HRESULT CPlayer_HPBar::Initialize(void* pArg)
     m_tTextInfo.vColor = _float4(0.7f, 0.7f, 0.7f, 0.7f);
     m_tTextInfo.vScale = _float2(0.5, 0.5f);
     m_tTextInfo.vPosition = _float2(m_tUIDesc.fX + m_tUIDesc.fSizeX * 0.5f + 20.f, m_tUIDesc.fY - 10.f);
+    m_tTextInfo.eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
 
     m_tUIDesc.fDepth = 0.f;
 

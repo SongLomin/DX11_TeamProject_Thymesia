@@ -61,20 +61,7 @@ void CLevel_Stage2::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);	
 
-	if (!m_bFadeTrigger)
-	{
-		FaderDesc tFaderDesc;
-		tFaderDesc.eFaderType = FADER_TYPE::FADER_IN;
-		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
-		tFaderDesc.fFadeMaxTime = 3.f;
-		tFaderDesc.fDelayTime = 0.f;
-		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 0.f);
-
-		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
-		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CLevel_Stage2::Call_FadeOutToStartGame, this);
-		m_bFadeTrigger = true;
-	}
-
+	Tick_Key_InputEvent();
 	if (KEY_INPUT(KEY::HOME, KEY_STATE::TAP))
 	{
 		GAMEINSTANCE->Write_JsonUsingResource("../Bin/LevelData/CapturedResource/Stage2.json");
