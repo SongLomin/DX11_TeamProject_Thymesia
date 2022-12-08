@@ -79,10 +79,6 @@ HRESULT CLevel_GamePlay::Initialize()
 	Load_FromJson(m_szDefaultJsonPath + "Stage2-2.json", LEVEL::LEVEL_GAMEPLAY);
 #endif // _STAGE_2_2_
 
-
-	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_GAMEPLAY);
-	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
-
 	CMonster::STATE_LINK_MONSTER_DESC MONSTER;
 	
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_GAMEPLAY);

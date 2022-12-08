@@ -233,6 +233,7 @@ void CEditGroupProp::View_CreateProp()
 		"Static_Prop",
 		"Dynamic_Prop",
 		"Light_Prop",
+		"Section_Eventer"
 	};
 
 	static const char* items_Interaction_Prop[] =
@@ -310,6 +311,7 @@ void CEditGroupProp::View_CreateProp()
 			break;
 		}
 	}
+
 	else if (1 == iSelect_PropType)
 	{
 		if (RenderView_SelectModelComponent())
@@ -355,6 +357,16 @@ void CEditGroupProp::View_CreateProp()
 		tObjDesc.pInstance.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str());
 	}
 
+	else if (4 == iSelect_PropType)
+	{
+		if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) || !Pick_Prop(MouseRayInWorldSpace))
+			return;
+
+		tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CSection_Eventer>(LEVEL::LEVEL_EDIT);
+		tObjDesc.HashCode  = typeid(CSection_Eventer).hash_code();
+		tObjDesc.TypeName  = typeid(CSection_Eventer).name();
+	}
+
 	else
 	{
 		return;
@@ -382,7 +394,6 @@ void CEditGroupProp::View_CreateProp()
 		m_iPickingIndex = (_int)iter_prop->second.size() - 1;
 	}
 
-	//ON_EDITINIT
 	ImGui::Text("");
 	ImGui::Separator();
 }
@@ -409,15 +420,36 @@ void    CEditGroupProp::View_PickProp()
 		weak_ptr<CTransform> pTransform = iter.pInstance.lock()->Get_Component<CTransform>();
 		weak_ptr<CModel>     pModel     = iter.pInstance.lock()->Get_Component<CModel>();
 
-		if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, pModel.lock()->Get_MeshVertexInfo(), pTransform.lock()->Get_WorldMatrix()))
+		if (pModel.lock())
 		{
-			_float  fLength = XMVectorGetX(XMVector3Length(vCamPos - pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION)));
-
-			if (fLength < fDistance)
+			if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, pModel.lock()->Get_MeshVertexInfo(), pTransform.lock()->Get_WorldMatrix()))
 			{
-				fDistance       = fLength;
-				m_iPickingIndex = iIndex;
-				XMStoreFloat4x4(&m_PickingMatrix, pTransform.lock()->Get_WorldMatrix());
+				_float  fLength = XMVectorGetX(XMVector3Length(vCamPos - pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION)));
+
+				if (fLength < fDistance)
+				{
+					fDistance = fLength;
+					m_iPickingIndex = iIndex;
+					XMStoreFloat4x4(&m_PickingMatrix, pTransform.lock()->Get_WorldMatrix());
+				}
+			}
+		}
+		else
+		{
+			MESH_VTX_INFO	VtxInfo;
+			VtxInfo.vMin = { 0.f, 0.f, 0.f };
+			VtxInfo.vMax = { 1.f, 1.f, 1.f };
+
+			if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, VtxInfo, pTransform.lock()->Get_WorldMatrix()))
+			{
+				_float  fLength = XMVectorGetX(XMVector3Length(vCamPos - pTransform.lock()->Get_State(CTransform::STATE_TRANSLATION)));
+
+				if (fLength < fDistance)
+				{
+					fDistance = fLength;
+					m_iPickingIndex = iIndex;
+					XMStoreFloat4x4(&m_PickingMatrix, pTransform.lock()->Get_WorldMatrix());
+				}
 			}
 		}
 

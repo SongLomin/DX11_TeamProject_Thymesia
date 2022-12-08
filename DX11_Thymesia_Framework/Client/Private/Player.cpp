@@ -100,6 +100,7 @@ HRESULT CPlayer::Render()
     __super::Render();
     _float fDissolveAmount(-1.1f);
     m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &fDissolveAmount, sizeof(_float));
+
     return S_OK;
 }
 
@@ -200,6 +201,31 @@ void CPlayer::SetUp_ShaderResource()
 void CPlayer::OnBattleEnd()
 {
     __super::OnBattleEnd();
+}
+
+void CPlayer::Write_Json(json& Out_Json)
+{
+    __super::Write_Json(Out_Json);
+
+    auto iter = Out_Json["Component"].find("Model");
+    Out_Json["Component"].erase(iter);
+}
+
+void CPlayer::Load_FromJson(const json& In_Json)
+{
+    __super::Load_FromJson(In_Json);
+
+    _float4x4 WorldMatrix;
+    ZeroMemory(&WorldMatrix, sizeof(_float4x4));
+    CJson_Utility::Load_JsonFloat4x4(In_Json["Component"]["Transform"], WorldMatrix);
+
+    PxControllerFilters Filters;
+    m_pPhysXControllerCom.lock()->Set_Position
+    (
+        XMVectorSet(WorldMatrix._41, WorldMatrix._42, WorldMatrix._43, 1.f),
+        0.f,
+        Filters
+    );
 }
 
 void CPlayer::OnEnable(void* pArg)

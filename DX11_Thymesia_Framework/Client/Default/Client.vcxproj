@@ -306,6 +306,7 @@
     <ClInclude Include="..\Public\Player_ItemSkillCollection.h" />
     <ClInclude Include="..\Public\Preset_AddGameObject.h" />
     <ClInclude Include="..\Public\Preset_DynamicProp.h" />
+    <ClInclude Include="..\Public\Section_Eventer.h" />
     <ClInclude Include="..\Public\State_Monster.h" />
     <ClInclude Include="..\Public\State_Player.h" />
     <ClInclude Include="..\Public\Status_Boss.h" />
@@ -626,6 +627,7 @@
     <ClCompile Include="..\Private\Player_ItemSkillCollection.cpp" />
     <ClCompile Include="..\Private\Preset_DynamicProp.cpp" />
     <ClCompile Include="..\Private\Preset_AddGameObject.cpp" />
+    <ClCompile Include="..\Private\Section_Eventer.cpp" />
     <ClCompile Include="..\Private\Status_Boss.cpp" />
     <ClCompile Include="..\Private\UI_Button.cpp" />
     <ClCompile Include="..\Private\UI_Container.cpp" />

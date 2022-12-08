@@ -359,12 +359,6 @@ void CNorMonster::OnDisable()
 void CNorMonster::OnDestroy()
 {
 	__super::OnDestroy();
-
-	for (auto& elem : m_pWeapons)
-		elem.lock()->Set_Dead();
-
-	for (auto& elem : m_pActorDecor)
-		elem.lock()->Set_Dead();
 }
 
 void CNorMonster::Free()

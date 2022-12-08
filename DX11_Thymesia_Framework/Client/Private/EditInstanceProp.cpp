@@ -268,36 +268,22 @@ void CEditInstanceProp::Write_Json(json& Out_Json)
 		_float4x4 PropMatrix;
 		ZeroMemory(&PropMatrix, sizeof(_float4x4));
 
-		memcpy(&PropMatrix.m[0], &iter.vRotation.x		, sizeof(_float3));
-		memcpy(&PropMatrix.m[1], &iter.vScale.x			, sizeof(_float3));
-		memcpy(&PropMatrix.m[2], &iter.vTarnslation.x	, sizeof(_float3));
+		memcpy(&PropMatrix.m[0], &iter.vRotation.x	 , sizeof(_float3));
+		memcpy(&PropMatrix.m[1], &iter.vScale.x		 , sizeof(_float3));
+		memcpy(&PropMatrix.m[2], &iter.vTarnslation.x, sizeof(_float3));
 
 		PropInfo.emplace(string("Prop Matrix (" + to_string(iIndex++) + ")"), PropMatrix.m);
 	}
 
-	Out_Json.emplace("PropDesc"    , PropInfo);
-	Out_Json.emplace("ModelCom"    , m_pInstanceModelCom.lock()->Get_ModelKey());
-	Out_Json.emplace("Invisibility", m_bInvisibility);
-
-	if (m_bNonCulling)
-		Out_Json.emplace("NonCulling", m_bNonCulling);
-
-	if (m_bDissolve)
-	{
-		Out_Json.emplace("Dissolve", m_fDissolveSpeed);
-	}
-
-	if (Out_Json.end() != Out_Json.find("Hash"))
-	{
-		Out_Json["Hash"] = typeid(CStatic_Instancing_Prop).hash_code();
-	}
-
-	if (Out_Json.end() != Out_Json.find("Name"))
-	{
-		Out_Json["Name"] = typeid(CStatic_Instancing_Prop).name();
-	}
-
+	Out_Json.emplace("PropDesc"     , PropInfo);
+	Out_Json.emplace("ModelCom"     , m_pInstanceModelCom.lock()->Get_ModelKey());
+	Out_Json.emplace("Invisibility" , m_bInvisibility);
+	Out_Json.emplace("NonCulling"   , m_bNonCulling);
+	Out_Json.emplace("Dissolve"     , m_fDissolveSpeed);
 	Out_Json.emplace("Collider_Type", m_iColliderType);
+
+	Out_Json["Hash"] = typeid(CStatic_Instancing_Prop).hash_code();
+	Out_Json["Name"] = typeid(CStatic_Instancing_Prop).name();
 }
 
 void CEditInstanceProp::Load_FromJson(const json& In_Json)
@@ -307,7 +293,7 @@ void CEditInstanceProp::Load_FromJson(const json& In_Json)
 		string szKey = iter.key();
 
 		if ("NonCulling" == szKey)
-			m_bNonCulling = (1 == iter.value()) ? (true) : (false);
+			m_bNonCulling = In_Json["NonCulling"];
 
 		else if ("Invisibility" == szKey)
 			m_bInvisibility = In_Json["Invisibility"];
@@ -352,21 +338,21 @@ void CEditInstanceProp::Load_FromJson(const json& In_Json)
 				m_pPropInfos.push_back(Desc);
 			}
 		}
+
+		else if ("Collider_Type" == szKey)
+		{
+			m_iColliderType = In_Json["Collider_Type"];
+		}
+
+		else if ("Dissolve" == szKey)
+		{
+			m_fDissolveSpeed = In_Json["Dissolve"];
+			m_bDissolve      = true;
+		}
 	}
 
 	m_pInstanceModelCom.lock()->Init_Instance((_uint)m_pPropInfos.size());
 	m_pInstanceModelCom.lock()->Update(m_pPropInfos, true);
-		
-	if (In_Json.end() != In_Json.find("Collider_Type"))
-	{
-		m_iColliderType = In_Json["Collider_Type"];
-	}
-
-	if (In_Json.end() != In_Json.find("Dissolve"))
-	{
-		m_fDissolveSpeed = In_Json["Dissolve"];
-		m_bDissolve = true;
-	}
 }
 
 _bool CEditInstanceProp::IsPicking(const RAY& In_Ray, _float& Out_fRange)
@@ -444,6 +430,13 @@ void CEditInstanceProp::OnEventMessage(_uint iArg)
 					View_Picking_List();
 					View_Picking_Option();
 					View_SelectTransformInfo();
+
+					ImGui::EndTabItem();
+				}
+
+				if (ImGui::BeginTabItem("Mul Pick"))
+				{
+					View_MultiPicking();
 
 					ImGui::EndTabItem();
 				}
@@ -973,6 +966,92 @@ void CEditInstanceProp::View_SelectJson()
 
 		ImGui::EndListBox();
 	}
+}
+
+void CEditInstanceProp::View_MultiPicking()
+{
+	if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) && KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
+	{
+		RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
+
+		MESH_VTX_INFO VtxInfo = m_pInstanceModelCom.lock()->Get_ModelData().lock()->VertexInfo;
+
+		_uint   iIndex       = 0;
+		_float  fDistance    = 99999999.f;
+		_float4	vCamPosition = GAMEINSTANCE->Get_CamPosition();
+		_vector vCamPos      = XMLoadFloat4(&vCamPosition);
+
+		_int   iPickingIndex = -1;
+		for (auto& iter : m_pPropInfos)
+		{
+			auto& iter_find = find_if(m_MultPickingIndex.begin(), m_MultPickingIndex.end(), [&](_uint _iIndex)->_bool { return (_iIndex == iIndex); });
+
+			if (iter_find != m_MultPickingIndex.end())
+			{
+				++iIndex;
+				continue;
+			}
+
+			_matrix WorlMatrix     = XMMatrixIdentity();
+			_matrix RotationMatrix = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&iter.vRotation));
+
+			WorlMatrix.r[0] = RotationMatrix.r[0] * iter.vScale.x;
+			WorlMatrix.r[1] = RotationMatrix.r[1] * iter.vScale.y;
+			WorlMatrix.r[2] = RotationMatrix.r[2] * iter.vScale.z;
+			WorlMatrix.r[3] = XMVectorSetW(XMLoadFloat3(&iter.vTarnslation), 1.f);
+
+			if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(WorlMatrix.r[3], iter.vScale.x))
+			{
+				if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, VtxInfo, WorlMatrix))
+				{
+					_float  fLength = XMVectorGetX(XMVector3Length(vCamPos - XMLoadFloat3(&iter.vTarnslation)));
+
+					if (fLength < fDistance)
+					{
+						fDistance       = fLength;
+						iPickingIndex   = iIndex;
+					}
+				}				
+			}
+
+			++iIndex;
+		}
+
+		if (0 <= iPickingIndex)
+		{
+			if (m_MultPickingIndex.empty())
+				m_PickingDesc.vTarnslation.y = m_pPropInfos[iPickingIndex].vTarnslation.y;
+
+			m_MultPickingIndex.push_back(iPickingIndex);
+		}
+	}
+
+	ImGui::Text(string(string("Size : " + to_string(m_MultPickingIndex.size()))).c_str());
+
+	ImGui::InputFloat("Set Pos Y", &m_PickingDesc.vTarnslation.y);
+
+	if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
+		m_PickingDesc.vTarnslation.y += 0.1f;
+	else if (KEY_INPUT(KEY::DOWN, KEY_STATE::TAP))
+		m_PickingDesc.vTarnslation.y -= 0.1f;
+	if (KEY_INPUT(KEY::RIGHT, KEY_STATE::TAP))
+		m_PickingDesc.vTarnslation.y += 1.f;
+	else if (KEY_INPUT(KEY::LEFT, KEY_STATE::TAP))
+		m_PickingDesc.vTarnslation.y -= 1.f;
+
+	if ((ImGui::Button("Clear")) || (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) && KEY_INPUT(KEY::Y, KEY_STATE::TAP)))
+	{
+		m_MultPickingIndex.clear();
+	}
+
+	else if ((ImGui::Button("Set Y")) || (KEY_INPUT(KEY::Y, KEY_STATE::TAP)))
+	{
+		for (auto& elem : m_MultPickingIndex)
+		{
+			m_pPropInfos[elem].vTarnslation.y = m_PickingDesc.vTarnslation.y;
+		}
+	}
+
 }
 
 void CEditInstanceProp::View_PhysXOption()

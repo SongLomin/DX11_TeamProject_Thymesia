@@ -23,7 +23,6 @@ public:
     virtual void Custom_Thread1(_float fTimeDelta) override;
     virtual HRESULT Render()                       override;
 
-
 protected:
     virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;

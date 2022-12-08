@@ -41,12 +41,6 @@ HRESULT CLevel_Stage2::Initialize()
 
 	Load_FromJson(m_szDefaultJsonPath + "Stage2-2.json", LEVEL::LEVEL_STAGE2);
 
-	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_STAGE2);
-	PxControllerFilters Filters;
-	pCorvus.lock()->Get_Component<CPhysXCharacterController>().lock()->Set_Position(_fvector{ 60.f, 0.f, 5.7f, 1.f }, 0.01f, Filters);
-	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
-
-
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_STAGE2);
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
 
@@ -64,11 +58,11 @@ void CLevel_Stage2::Tick(_float fTimeDelta)
 	if (!m_bFadeTrigger)
 	{
 		FaderDesc tFaderDesc;
-		tFaderDesc.eFaderType = FADER_TYPE::FADER_IN;
-		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+		tFaderDesc.eFaderType   = FADER_TYPE::FADER_IN;
+		tFaderDesc.eLinearType  = LINEAR_TYPE::LNIEAR;
 		tFaderDesc.fFadeMaxTime = 3.f;
-		tFaderDesc.fDelayTime = 0.f;
-		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 0.f);
+		tFaderDesc.fDelayTime   = 0.f;
+		tFaderDesc.vFadeColor   = _float4(0.f, 0.f, 0.f, 0.f);
 
 		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
 		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CLevel_Stage2::Call_FadeOutToStartGame, this);

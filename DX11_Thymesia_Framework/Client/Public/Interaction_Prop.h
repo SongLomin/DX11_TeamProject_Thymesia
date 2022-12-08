@@ -33,8 +33,8 @@ protected:
 
 public:
     FDelegate<>                 Callback_ActStart;
-    FDelegate<_float, _bool&>   Callback_ActUpdate;
     FDelegate<>                 Callback_ActEnd;
+    FDelegate<_float, _bool&>   Callback_ActUpdate;
 
 
 protected:

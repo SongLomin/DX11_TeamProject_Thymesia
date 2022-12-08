@@ -81,12 +81,8 @@ void CStatic_Instancing_Prop::Before_Render(_float fTimeDelta)
 
 HRESULT CStatic_Instancing_Prop::Render()
 {
-	// 오브젝트
-
 	if ("TEMP_Corvus" == m_pInstanceModelCom.lock()->Get_ModelKey())
-	{
 		return S_OK;
-	}
 
 	_float4x4 WorldMatrix;
 	XMStoreFloat4x4(&WorldMatrix, XMMatrixIdentity());
@@ -143,7 +139,7 @@ HRESULT CStatic_Instancing_Prop::Render()
 				}
 				else
 				{
-					m_iPassIndex = 3;
+					m_iPassIndex = 1;
 				}
 			}
 		}
@@ -172,32 +168,6 @@ HRESULT CStatic_Instancing_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix,
 	return S_OK;
 }
 
-void CStatic_Instancing_Prop::Write_Json(json& Out_Json)
-{
-	json PropInfo;
-
-	_uint iIndex = 0;
-	for (auto& iter : m_pPropInfos)
-	{
-		json Prop;
-
-		_float4x4 PropMatrix;
-		ZeroMemory(&PropMatrix, sizeof(_float4x4));
-
-		memcpy(&PropMatrix.m[0], &iter.vRotation.x	 , sizeof(_float3));
-		memcpy(&PropMatrix.m[1], &iter.vScale.x		 , sizeof(_float3));
-		memcpy(&PropMatrix.m[2], &iter.vTarnslation.x, sizeof(_float3));
-
-		PropInfo.emplace(string("Prop Matrix (" + to_string(iIndex++) + ")"), Prop);
-	}
-
-	Out_Json.emplace("PropDesc", PropInfo);
-	Out_Json.emplace("ModelCom", m_pInstanceModelCom.lock()->Get_ModelKey());
-
-	if (m_bNonCulling)
-		Out_Json.emplace("NonCulling", 1);
-}
-
 void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 {
 	for (auto& iter : In_Json.items())
@@ -205,14 +175,14 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 		string szKey = iter.key();
 
 		if ("NonCulling" == szKey)
-		{
-			m_bNonCulling = (1 == iter.value()) ? (true) : (false);
-		}
+			m_bNonCulling = In_Json["NonCulling"];
+
+		else if ("Invisibility" == szKey)
+			m_bInvisibility = In_Json["Invisibility"];
 
 		else if ("ModelCom" == szKey)
 		{
 			string szModelTag = iter.value();
-
 			m_pInstanceModelCom.lock()->Init_Model(szModelTag.c_str());
 		}
 
@@ -241,7 +211,7 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 				
 				MESH_VTX_INFO tInfo = m_pInstanceModelCom.lock()->Get_ModelData().lock()->VertexInfo;
 
-				vOffsetRange = XMLoadFloat3(&tInfo.vMax) - XMLoadFloat3(&tInfo.vMin);
+				vOffsetRange  = XMLoadFloat3(&tInfo.vMax) - XMLoadFloat3(&tInfo.vMin);
 				vOffsetRange *= XMLoadFloat3(&Desc.vScale);
 				Desc.fMaxRange = XMVectorGetX(XMVector3Length(vOffsetRange));
 				Desc.vCenter = tInfo.vCenter;
@@ -255,7 +225,12 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 		{
 			m_iColliderType = iter.value();
 		}
-		
+
+		else if ("Dissolve" == szKey)
+		{
+			m_fDissolveSpeed = In_Json["Dissolve"];
+			m_bDissolve      = true;
+		}
 	}
 
 
