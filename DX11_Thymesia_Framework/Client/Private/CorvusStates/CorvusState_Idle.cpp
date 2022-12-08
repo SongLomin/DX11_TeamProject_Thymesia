@@ -140,7 +140,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 
 	
 		PxControllerCollisionFlags Flags = Get_OwnerCharacter().lock()->Get_LastCollisionFlags();
-		cout << "Flag: " << (_uint)Flags << endl;
+
 		if (!m_bLadderLock)
 		{
 			if (!m_bFirstFoot)

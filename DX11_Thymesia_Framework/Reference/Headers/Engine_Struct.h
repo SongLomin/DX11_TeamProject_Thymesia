@@ -64,6 +64,7 @@ namespace Engine
 	} MESH_VTX_INFO;
 
 	// !!! DO NOT ZeroMemory() !!!
+	// When created, it is automatically initialized. If you want to reset, call the Reset function. 
 	typedef struct tagTextInfo
 	{
 		tstring	szText;
@@ -73,6 +74,23 @@ namespace Engine
 		_float4	vColor;
 		_bool	bAlways;
 		_bool	bCenterAlign;
+		RENDERGROUP	eRenderGroup;
+
+		tagTextInfo()
+		{
+			Reset();
+		}
+
+		void Reset()
+		{
+			ZeroMemory(&vPosition, sizeof(_float2));
+			ZeroMemory(&vScale, sizeof(_float2));
+			ZeroMemory(&fRotation, sizeof(_float));
+			ZeroMemory(&vColor, sizeof(_float4));
+			ZeroMemory(&bAlways, sizeof(_bool));
+			ZeroMemory(&bCenterAlign, sizeof(_bool));
+			ZeroMemory(&eRenderGroup, sizeof(_float));
+		}
 	} TEXTINFO;
 
 	typedef struct tagRayDesc

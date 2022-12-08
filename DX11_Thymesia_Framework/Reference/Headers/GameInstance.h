@@ -167,7 +167,6 @@ public: /* For.Font_Manager */
 	HRESULT Add_Font(_uint iFontTag, const _tchar* pFontFilePath);
 	HRESULT Render_Font(_uint iFontTag, const _tchar* pString, const _float2& vPosition, _fvector vColor);
 	void	Render_Font(_uint iFontTag);
-	void	Add_Text(const _uint& iFontTag, const tstring& pString, const _float2& vPosition, _fvector vColor, const _bool& bAlways, _bool bCenterAlign = false);
 	void	Add_Text(const _uint& iFontTag, const TEXTINFO& In_tTextInfo);
 	
 public: /* For.Event_Manager */

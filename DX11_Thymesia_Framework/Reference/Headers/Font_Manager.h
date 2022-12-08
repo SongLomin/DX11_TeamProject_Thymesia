@@ -13,9 +13,10 @@ public:
 	HRESULT Add_Font(_uint iFontTag, const _tchar* pFontFilePath);
 	HRESULT Render_Font(_uint iFontTag, const _tchar* pString, const _float2& vPosition, _fvector vColor);
 	HRESULT Render_Font(_uint iFontTag);
+	HRESULT Render_AllFontWithRenderGroup(const RENDERGROUP In_eRenderGroup);
 	HRESULT Render_AllFont();
 
-	void	Add_Text(const _uint& iFontTag, const tstring& pString, const _float2& vPosition, _fvector vColor, const _bool& bAlways, _bool bCenterAlign = false);
+	//void	Add_Text(const _uint& iFontTag, const tstring& pString, const _float2& vPosition, _fvector vColor, const _bool& bAlways, _bool bCenterAlign = false);
 	void	Add_Text(const _uint& iFontTag, const TEXTINFO& In_tTextInfo);
 
 private:

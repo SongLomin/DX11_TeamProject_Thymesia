@@ -16,6 +16,7 @@ public:
 	HRESULT Initialize(const _tchar* pFontFilePath);
 	HRESULT Render(const _tchar* pString, const _float2& vPosition, _fvector vColor);
 	void	Render();
+	void	RenderWithRenderGroup(const RENDERGROUP In_eRenderGroup);
 
 
 
