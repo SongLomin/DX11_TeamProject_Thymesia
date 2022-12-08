@@ -172,7 +172,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 		_float fShakingRatio = 0.01f*iRand;
 
 		
-		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.1f+ fShakingRatio, 1.f, 9.f, 0.5f);//일반 공격
+		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.05f+ fShakingRatio, 1.f, 9.f, 0.25f);//일반 쉐이킹
 		GAMEINSTANCE->Set_MotionBlur(0.05f);
 
 		//GAMEINSTANCE->Get_GameObjects<CDamageUI>(LEVEL::LEVEL_STATIC).front().lock()->Add_DamageText(vMyPosition, In_fDamage, bRandom);

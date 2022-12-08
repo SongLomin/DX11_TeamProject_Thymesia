@@ -64,7 +64,8 @@ void CCorvusState_HurtXXL::OnStateStart(const _float& In_fAnimationBlendTime)
 	_float3 vRandDir = SMath::vRandom(_float3(-1.f, -1.f, 0.f), _float3(1.f, 1.f, 0.f));
 
 	_matrix WorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
-	GET_SINGLE(CGameManager)->Add_Shaking(XMVector3TransformNormal(XMLoadFloat3(&vRandDir), WorldMatrix), 0.2f, 1.f, 9.f, 0.4f);
+
+	GET_SINGLE(CGameManager)->Add_Shaking(XMVector3TransformNormal(XMLoadFloat3(&vRandDir), WorldMatrix), 0.25f, 1.f, 9.f, 0.4f);
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
