@@ -10,11 +10,11 @@ texture2D g_DissolveTexture;//dissovle
 
 texture2D g_DepthTexture;
 // TODO :  bDynamicNoiseOption temporary for test
-bool g_bDynamicNoiseOption;
+bool   g_bDynamicNoiseOption;
 
 // For. Dissolve
 float3 g_vDissolveDir;
-float g_fDissolveAmount;
+float  g_fDissolveAmount;
 
 float3 g_vDissolveGradiationStartColor;
 float3 g_vDissolveGradiationGoalColor;
@@ -24,24 +24,24 @@ float  g_fDissolveGradiationDistance;
 * Wrap Weight for Textures
 *  x : Diff, y : Noise, z : Mask, w : None
 */
-bool g_bDiffuseWrap;
-bool g_bNoiseWrap;
-bool g_bMaskWrap;
+bool   g_bDiffuseWrap;
+bool   g_bNoiseWrap;
+bool   g_bMaskWrap;
 vector g_vWrapWeight;
 
 float2 g_vUVDiff;
 float2 g_vUVNoise;
 float2 g_vUVMask;
 
-float g_fDiscardRatio;
+float  g_fDiscardRatio;
 
 float4 g_vColor;
 
-bool g_bBillboard;
+bool   g_bBillboard;
 
-bool g_bBloom;
+bool   g_bBloom;
 
-bool g_bGlow;
+bool   g_bGlow;
 float4 g_vGlowColor;
 
 // Vertex Shaders //
@@ -49,34 +49,34 @@ float4 g_vGlowColor;
 struct VS_IN
 {
 	float3 vPosition : POSITION;
-	float2 vTexUV : TEXCOORD0;
+	float2 vTexUV    : TEXCOORD0;
 };
 
 struct VS_OUT
 {
 	float4 vPosition : SV_POSITION;
-	float2 vTexUV : TEXCOORD0;
+	float2 vTexUV    : TEXCOORD0;
 };
 
 struct VS_OUT_SOFT
 {
 	float4 vPosition : SV_POSITION;
-	float2 vTexUV : TEXCOORD0;
-	float4 vProjPos : TEXCOORD1;
+	float2 vTexUV    : TEXCOORD0;
+	float4 vProjPos  : TEXCOORD1;
 };
 
 struct VS_OUT_DIRECTIONAL_DISSOLVE
 {
 	float4 vPosition : SV_POSITION;
-	float2 vTexUV : TEXCOORD0;
+	float2 vTexUV    : TEXCOORD0;
 	float3 vLocalPos : TEXCOORD1;
 };
 
 struct VS_OUT_SOFT_DIRECTIONAL_DISSOLVE
 {
 	float4 vPosition : SV_POSITION;
-	float2 vTexUV : TEXCOORD0;
-	float4 vProjPos : TEXCOORD1;
+	float2 vTexUV    : TEXCOORD0;
+	float4 vProjPos  : TEXCOORD1;
 	float3 vLocalPos : TEXCOORD2;
 };
 
@@ -199,43 +199,43 @@ VS_OUT_SOFT_DIRECTIONAL_DISSOLVE VS_MAIN_SOFT_DIRECTIONAL_DISSOLVE(VS_IN In)
 //  Pixel  Shaders  //
 struct PS_IN
 {
-	float4 vPosition : SV_POSITION;
-	float2 vTexUV : TEXCOORD0;
+	float4 vPosition     : SV_POSITION;
+	float2 vTexUV        : TEXCOORD0;
 };
 
 struct PS_IN_DIRECTIONAL_DISSOLVE
 {
-	float4 vPosition : SV_POSITION;
-	float2 vTexUV : TEXCOORD0;
-	float3 vLocalPos : TEXCOORD1;
+	float4 vPosition     : SV_POSITION;
+	float2 vTexUV        : TEXCOORD0;
+	float3 vLocalPos     : TEXCOORD1;
 };
 
 struct PS_IN_SOFT_DIRECTIONAL_DISSOLVE
 {
-	float4 vPosition : SV_POSITION;
-	float2 vTexUV : TEXCOORD0;
-	float4 vProjPos : TEXCOORD1;
-	float3 vLocalPos : TEXCOORD2;
+	float4 vPosition     : SV_POSITION;
+	float2 vTexUV        : TEXCOORD0;
+	float4 vProjPos      : TEXCOORD1;
+	float3 vLocalPos     : TEXCOORD2;
 };
 
 struct PS_IN_SOFT
 {
-	float4 vPosition : SV_POSITION;
-	float2 vTexUV : TEXCOORD0;
-	float4 vProjPos : TEXCOORD1;
+	float4 vPosition     : SV_POSITION;
+	float2 vTexUV        : TEXCOORD0;
+	float4 vProjPos      : TEXCOORD1;
 };
 
 struct PS_OUT
 {
-	vector vColor : SV_TARGET0;
+	vector vColor        : SV_TARGET0;
 	vector vExtractBloom : SV_Target1;
-	vector vExtractGlow : SV_Target2;
+	vector vExtractGlow  : SV_Target2;
 };
 
 
 struct PS_OUT_DISTORTION
 {
-	vector vColor : SV_TARGET0;
+	vector vColor        : SV_TARGET0;
 };
 
 PS_OUT PS_MAIN_SOFT(PS_IN_SOFT In)
@@ -300,17 +300,17 @@ PS_OUT PS_DEFAULT(PS_IN In)
 	else
 		Out.vColor = g_DiffuseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.x + g_vUVDiff);
 
-	vector vNoise = (vector) 0;
+	vector vNoise  = (vector) 0;
 	if (g_bNoiseWrap)
-		vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
+		vNoise     = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
 	else
-		vNoise = g_NoiseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
+		vNoise     = g_NoiseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
 
-	vector vMask = (vector) 0;
+	vector vMask   = (vector) 0;
 	if (g_bMaskWrap)
-		vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
+		vMask      = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
 	else
-		vMask = g_MaskTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
+		vMask      = g_MaskTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
 
 	// (0, +1) => (-1, +1)
 	if (g_bDynamicNoiseOption)
@@ -367,17 +367,17 @@ PS_OUT PS_EXTRACTBRIGHT(PS_IN In)
 	else
 		Out.vColor = g_DiffuseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.x + g_vUVDiff);
 
-	vector vNoise = (vector) 0;
+	vector vNoise  = (vector) 0;
 	if (g_bNoiseWrap)
-		vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
+		vNoise     = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
 	else
-		vNoise = g_NoiseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
+		vNoise     = g_NoiseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
 
-	vector vMask = (vector) 0;
+	vector vMask   = (vector) 0;
 	if (g_bMaskWrap)
-		vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
+		vMask      = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
 	else
-		vMask = g_MaskTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
+		vMask      = g_MaskTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
 
 	// (0, +1) => (-1, +1)
 	if (g_bDynamicNoiseOption)
@@ -568,9 +568,9 @@ PS_OUT PS_MAIN_NORMAL_DISSOLVE_SOFT(PS_IN_SOFT In)
 	if (g_bDynamicNoiseOption)
 		vNoise.rgb = vNoise.rgb * 2 - 1;
 
-	Out.vColor *= g_vColor;
+	Out.vColor     *= g_vColor;
 	Out.vColor.rgb *= vNoise.rgb;
-	Out.vColor.a *= vMask.r;
+	Out.vColor.a   *= vMask.r;
 
 	if (g_fDiscardRatio > Out.vColor.a)
 		discard;
@@ -687,9 +687,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
-		VertexShader = compile vs_5_0 VS_MAIN();
+		VertexShader   = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_DEFAULT();
+		PixelShader    = compile ps_5_0 PS_DEFAULT();
 	}
 
 	pass Distortion // 1
@@ -698,9 +698,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
-		VertexShader = compile vs_5_0 VS_MAIN();
+		VertexShader   = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_DISTORTION();
+		PixelShader    = compile ps_5_0 PS_DISTORTION();
 	}
 
 	pass SoftEffect // 2
@@ -709,9 +709,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
-		VertexShader = compile vs_5_0 VS_MAIN_SOFT();
+		VertexShader   = compile vs_5_0 VS_MAIN_SOFT();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN_SOFT();
+		PixelShader    = compile ps_5_0 PS_MAIN_SOFT();
 	}
 
 	pass ExtractBright//3
@@ -720,9 +720,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_Default, 0);
 		SetRasterizerState(RS_NonCulling);
 
-		VertexShader = compile vs_5_0 VS_MAIN();
+		VertexShader   = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_EXTRACTBRIGHT();
+		PixelShader    = compile ps_5_0 PS_EXTRACTBRIGHT();
 	}
 
 	pass Dissolve//4
@@ -731,9 +731,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
-		VertexShader = compile vs_5_0 VS_MAIN();
+		VertexShader   = compile vs_5_0 VS_MAIN();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN_NORMAL_DISSOLVE();
+		PixelShader    = compile ps_5_0 PS_MAIN_NORMAL_DISSOLVE();
 	}
 
 
@@ -743,9 +743,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
-		VertexShader = compile vs_5_0 VS_MAIN_DIRECTIONAL_DISSOLVE();
+		VertexShader   = compile vs_5_0 VS_MAIN_DIRECTIONAL_DISSOLVE();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE();
+		PixelShader    = compile ps_5_0 PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE();
 	}
 
 	pass Dissolve_Soft //6
@@ -754,9 +754,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
-		VertexShader = compile vs_5_0 VS_MAIN_SOFT();
+		VertexShader   = compile vs_5_0 VS_MAIN_SOFT();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN_NORMAL_DISSOLVE_SOFT();
+		PixelShader    = compile ps_5_0 PS_MAIN_NORMAL_DISSOLVE_SOFT();
 	}
 
 
@@ -766,9 +766,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
-		VertexShader = compile vs_5_0 VS_MAIN_SOFT_DIRECTIONAL_DISSOLVE();
+		VertexShader   = compile vs_5_0 VS_MAIN_SOFT_DIRECTIONAL_DISSOLVE();
 		GeometryShader = NULL;
-		PixelShader = compile ps_5_0 PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE_SOFT();
+		PixelShader    = compile ps_5_0 PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE_SOFT();
 	}
 }
 // Shader Passes //

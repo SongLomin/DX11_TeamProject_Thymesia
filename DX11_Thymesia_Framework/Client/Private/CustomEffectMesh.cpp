@@ -9,7 +9,6 @@
 #include "Attack_Area.h"
 #include "PreViewAnimationModel.h"
 #include "Easing_Utillity.h"
-
 #include "BoneNode.h"
 
 GAMECLASS_C(CCustomEffectMesh)
@@ -42,9 +41,9 @@ HRESULT CCustomEffectMesh::Initialize(void* pArg)
 	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_EffectMesh"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements);
 
 	m_pColorDiffuseTextureCom = CGameObject::Add_Component<CTexture>();
-	m_pNoiseTextureCom = CGameObject::Add_Component<CTexture>();
-	m_pMaskTextureCom = CGameObject::Add_Component<CTexture>();
-	m_pDissolveTextureCom = CGameObject::Add_Component<CTexture>();
+	m_pNoiseTextureCom        = CGameObject::Add_Component<CTexture>();
+	m_pMaskTextureCom         = CGameObject::Add_Component<CTexture>();
+	m_pDissolveTextureCom     = CGameObject::Add_Component<CTexture>();
 	// m_pGradientTextureCom = CGameObject::Add_Component<CTexture>();
 
 	m_pColorDiffuseTextureCom.lock()->Use_Texture("UVColorDiffuse");
@@ -171,33 +170,32 @@ void CCustomEffectMesh::SetUp_ShaderResource()
 	_vector vCamDir(GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[2]);
 	m_pShaderCom.lock()->Set_RawValue("g_vCamDirection", &vCamDir, sizeof(_vector));
 #pragma endregion // World, View, Proj, Camera
+	m_pShaderCom.lock()->Set_RawValue("g_bBillboard",          &m_tEffectMeshDesc.bBillBoard,          sizeof(_bool));
 	
 	m_pColorDiffuseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", m_tEffectMeshDesc.iDiffuseTextureIndex);
-	m_pMaskTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", m_tEffectMeshDesc.iMaskTextureIndex);
-	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture", m_tEffectMeshDesc.iNoiseTextureIndex);
-
-	m_pShaderCom.lock()->Set_RawValue("g_fDiscardRatio", &m_tEffectMeshDesc.fDiscardRatio, sizeof(_float));
+	m_pMaskTextureCom.lock()->        Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", m_tEffectMeshDesc.iMaskTextureIndex);
+	m_pNoiseTextureCom.lock()->       Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture", m_tEffectMeshDesc.iNoiseTextureIndex);
 
 	m_pShaderCom.lock()->Set_RawValue("g_bDynamicNoiseOption", &m_tEffectMeshDesc.bDynamicNoiseOption, sizeof(_bool));
 
-	m_pShaderCom.lock()->Set_RawValue("g_bDiffuseWrap", &m_tEffectMeshDesc.bDiffuseWrap, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_bNoiseWrap",   &m_tEffectMeshDesc.bNoiseWrap, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_bMaskWrap",    &m_tEffectMeshDesc.bMaskWrap, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_vWrapWeight",  &m_tEffectMeshDesc.vWrapWeight, sizeof(_float4));
+	m_pShaderCom.lock()->             Set_ShaderResourceView("g_DepthTexture", GAMEINSTANCE->Get_RenderTarget_SRV(TEXT("Target_Depth")));
 
-	m_pShaderCom.lock()->Set_RawValue("g_vUVDiff", &m_vDiffuseCurrentUV, sizeof(_float2));
-	m_pShaderCom.lock()->Set_RawValue("g_vUVNoise", &m_vNoiseCurrentUV, sizeof(_float2));
-	m_pShaderCom.lock()->Set_RawValue("g_vUVMask", &m_vMaskCurrentUV, sizeof(_float2));
+	m_pShaderCom.lock()->Set_RawValue("g_fDiscardRatio",       &m_tEffectMeshDesc.fDiscardRatio,       sizeof(_float));
 
-	m_pShaderCom.lock()->Set_ShaderResourceView("g_DepthTexture", GAMEINSTANCE->Get_RenderTarget_SRV(TEXT("Target_Depth")));
+	m_pShaderCom.lock()->Set_RawValue("g_bDiffuseWrap",        &m_tEffectMeshDesc.bDiffuseWrap,        sizeof(_bool));
+	m_pShaderCom.lock()->Set_RawValue("g_bNoiseWrap",          &m_tEffectMeshDesc.bNoiseWrap,          sizeof(_bool));
+	m_pShaderCom.lock()->Set_RawValue("g_bMaskWrap",           &m_tEffectMeshDesc.bMaskWrap,           sizeof(_bool));
 
-	m_pShaderCom.lock()->Set_RawValue("g_vColor", &m_vCurrentColor, sizeof(_float4));
+	m_pShaderCom.lock()->Set_RawValue("g_vWrapWeight",         &m_tEffectMeshDesc.vWrapWeight,         sizeof(_float4));
 
-	m_pShaderCom.lock()->Set_RawValue("g_bBillboard", &m_tEffectMeshDesc.bBillBoard, sizeof(_bool));
+	m_pShaderCom.lock()->Set_RawValue("g_vUVDiff",             &m_vDiffuseCurrentUV,                   sizeof(_float2));
+	m_pShaderCom.lock()->Set_RawValue("g_vUVNoise",            &m_vNoiseCurrentUV,                     sizeof(_float2));
+	m_pShaderCom.lock()->Set_RawValue("g_vUVMask",             &m_vMaskCurrentUV,                      sizeof(_float2));
 
-	m_pShaderCom.lock()->Set_RawValue("g_bBloom", &m_tEffectMeshDesc.bBloom, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_bGlow", &m_tEffectMeshDesc.bGlow, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_vGlowColor", &m_vCurrentGlowColor, sizeof(_float4));
+	m_pShaderCom.lock()->Set_RawValue("g_vColor",              &m_vCurrentColor,                       sizeof(_float4));
+	m_pShaderCom.lock()->Set_RawValue("g_bBloom",              &m_tEffectMeshDesc.bBloom,              sizeof(_bool));
+	m_pShaderCom.lock()->Set_RawValue("g_bGlow",               &m_tEffectMeshDesc.bGlow,               sizeof(_bool));
+	m_pShaderCom.lock()->Set_RawValue("g_vGlowColor",          &m_vCurrentGlowColor,                   sizeof(_float4));
 }
 
 void CCustomEffectMesh::SetUp_ShaderResource_Dissolve()
@@ -332,12 +330,12 @@ void CCustomEffectMesh::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 
 		ATTACKAREA_DESC WeaponDesc;
 		ZeroMemory(&WeaponDesc, sizeof(ATTACKAREA_DESC));
-		WeaponDesc.fWeaponScale = m_tEffectMeshDesc.fWeaponScale;
-		WeaponDesc.iHitType = m_tEffectMeshDesc.iHitType;
-		WeaponDesc.iOptionType = m_tEffectMeshDesc.iOptionType;
-		WeaponDesc.fDamage = m_tEffectMeshDesc.fDamage;
+		WeaponDesc.fWeaponScale  = m_tEffectMeshDesc.fWeaponScale;
+		WeaponDesc.iHitType      = m_tEffectMeshDesc.iHitType;
+		WeaponDesc.iOptionType   = m_tEffectMeshDesc.iOptionType;
+		WeaponDesc.fDamage       = m_tEffectMeshDesc.fDamage;
 		WeaponDesc.vWeaponOffset = m_tEffectMeshDesc.vWeaponOffset;
-		WeaponDesc.fHitFreq = m_tEffectMeshDesc.fHitFreq;
+		WeaponDesc.fHitFreq      = m_tEffectMeshDesc.fHitFreq;
 
 		m_pAttackArea.lock()->Init_AttackArea(WeaponDesc, pParentTransform);
 		m_pAttackArea.lock()->Enable_Weapon(m_tEffectMeshDesc.fWeaponLifeTime, m_tEffectMeshDesc.bWeaponSyncTransform);
@@ -1351,6 +1349,9 @@ void CCustomEffectMesh::Play_Internal(_float fFrameTime)
 	this->Updaste_Noise(fFrameTime);
 	this->Update_Mask(fFrameTime);
 	this->Update_Glow(fFrameTime);
+
+	if (m_tEffectMeshDesc.bApplyDissolve)
+		this->Update_Dissolve(fFrameTime);
 }
 
 void CCustomEffectMesh::Update_Position(_float fFrameTime)
@@ -1492,6 +1493,24 @@ void CCustomEffectMesh::Update_Glow(_float fFrameTime)
 	XMStoreFloat4(&m_vCurrentGlowColor, vCurrentGlowColor);
 }
 
+void CCustomEffectMesh::Update_Dissolve(_float fFrameTime)
+{
+	if (m_tEffectMeshDesc.fDissolveDisappearTime <= m_fCurrentLifeTime)
+	{
+		if (1.f > m_tEffectMeshDesc.fDissolveDisappearAmount)
+			m_tEffectMeshDesc.fDissolveDisappearAmount += fFrameTime * m_tEffectMeshDesc.fDissolveDisappearSpeed;
+		else
+			m_tEffectMeshDesc.fDissolveDisappearAmount = 1.f;
+	}
+	else
+	{
+		if (1.f > m_tEffectMeshDesc.fDissolveAppearAmount)
+			m_tEffectMeshDesc.fDissolveAppearAmount += fFrameTime * m_tEffectMeshDesc.fDissolveAppearSpeed;
+		else
+			m_tEffectMeshDesc.fDissolveAppearAmount = 1.f;
+	}
+}
+
 void CCustomEffectMesh::Apply_Easing
 (
 	_float2& vTarget
@@ -1616,7 +1635,6 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 			this->Tool_Control();
 
-
 			if (ImGui::CollapsingHeader("Spawn & Life Time"))
 				this->Tool_Spawn_Life_Time();
 
@@ -1633,7 +1651,6 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 			if (ImGui::CollapsingHeader("Boner"))
 				this->Tool_Boner();
-
 
 			if (ImGui::CollapsingHeader("Position"))
 				this->Tool_Position();
