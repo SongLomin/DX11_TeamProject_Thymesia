@@ -1260,7 +1260,7 @@ HRESULT CRender_Manager::Blur_ExtractBloom()
 	_float fBlurStrength = 1.f;
 	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
 	// Blur X
-	m_pXBlurShader->Begin(3);
+	m_pXBlurShader->Begin(5);
 	m_pVIBuffer->Render();
 
 	pRenderTargetManager->End_MRT();
@@ -1271,7 +1271,7 @@ HRESULT CRender_Manager::Blur_ExtractBloom()
 		DEBUG_ASSERT;
 
 	// Blur Y
-	m_pXBlurShader->Begin(4);
+	m_pXBlurShader->Begin(6);
 	m_pVIBuffer->Render();
 
 	pRenderTargetManager->End_MRT();
@@ -1297,10 +1297,10 @@ HRESULT CRender_Manager::ReBlur_ExtractBloom()
 	m_pXBlurShader->Set_RawValue("g_PixelWidth", &fPixelWidth, sizeof(_float));
 	m_pXBlurShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));
 
-	_float fBlurStrength = 1.f;
+	_float fBlurStrength = 1.1f;
 	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
 	// Blur X
-	m_pXBlurShader->Begin(3);
+	m_pXBlurShader->Begin(5);
 	m_pVIBuffer->Render();
 
 	pRenderTargetManager->End_MRT();
@@ -1311,7 +1311,7 @@ HRESULT CRender_Manager::ReBlur_ExtractBloom()
 		DEBUG_ASSERT;
 
 	// Blur Y
-	m_pXBlurShader->Begin(4);
+	m_pXBlurShader->Begin(6);
 	m_pVIBuffer->Render();
 
 	pRenderTargetManager->End_MRT();
