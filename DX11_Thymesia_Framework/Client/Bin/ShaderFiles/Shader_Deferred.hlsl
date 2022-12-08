@@ -603,6 +603,20 @@ PS_OUT PS_MAIN_POSTEFFECT_BLOOM(PS_IN In)
     // Out.vColor = pow(abs(Out.vColor), 1 / fPower);
 
 
+    // ---------------------------------------------------------------------------------
+	//const float gamma = 2.2;
+    //   float4 BlurTexture = g_XBlurTexture.Sample(DefaultSampler, In.vTexUV.xy);
+    //   float3 hdrColor = BlurTexture.rgb;
+    //   float fStrength = 0.2f;
+
+    //// exposure tone mapping
+    //float3 mapped = float3(1.f, 1.f, 1.f) - exp(-hdrColor * fStrength);
+    //// gamma correction 
+    //mapped = pow(mapped, (1.0 / gamma));
+
+    //   Out.vColor = float4(mapped, BlurTexture.a);
+
+    // ------------------------------------------------------------------------------------
 
     Out.vColor = g_XBlurTexture.Sample(DefaultSampler, In.vTexUV.xy);
     //Out.vColor.a = vBloomOriTex.a;

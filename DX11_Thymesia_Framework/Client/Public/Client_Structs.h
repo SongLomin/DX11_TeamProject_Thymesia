@@ -269,6 +269,11 @@ namespace Client
 #pragma endregion
 #pragma region Scale
 		_bool		bSquareScale;
+		_bool		bRatioScale;
+
+		// For. Ratio Scale
+		_float		fMinYScaleRatio;
+		_float		fMaxYScaleRatio;
 
 		_bool		bEasingScale;
 		_int		iScaleEasingType;

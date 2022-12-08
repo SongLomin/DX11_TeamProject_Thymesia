@@ -1656,6 +1656,15 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			if (ImGui::CollapsingHeader("Shaders"))
 				this->Tool_Shaders();
 
+			ImGui::Text("Render Group");
+			if (ImGui::Button("Non Alpha Effect##RenderGroup_NonAlphaEffect"))
+				m_eRenderGroup = RENDERGROUP::RENDER_NONALPHA_EFFECT;
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("Alpha Blend##RenderGroup_AlphaBlend"))
+				m_eRenderGroup = RENDERGROUP::RENDER_ALPHABLEND;
+
 			ImGui::Checkbox("Apply Dissolve##Is_Dissolve", &m_tEffectMeshDesc.bApplyDissolve);
 
 			if (m_tEffectMeshDesc.bApplyDissolve)

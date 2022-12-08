@@ -381,6 +381,9 @@ namespace Engine
 		_float2			vTargetScaleSpeed;
 		_float2			vTargetScaleForce;
 
+		// For. Ratio Scale
+		_float			fTargetYScaleRatio;
+
 		// For. Color
 		_float4         vCurrentColor;
 		_float4         vCurrentColorForce;

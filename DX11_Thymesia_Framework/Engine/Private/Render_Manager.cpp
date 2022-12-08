@@ -409,20 +409,28 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 
 	if (FAILED(Render_NonLight()))
 		DEBUG_ASSERT;
+
+	if (FAILED(Render_NonAlphaEffect()))
+		DEBUG_ASSERT;
+	if (FAILED(Blur_ExtractGlow(3.f)))
+		DEBUG_ASSERT;
+	if (FAILED(ReBlur_ExtractGlow(3.f)))
+		DEBUG_ASSERT;
+	if (FAILED(Blend_Glow()))
+		DEBUG_ASSERT;
+
 	if (FAILED(Render_AlphaBlend()))
+		DEBUG_ASSERT;
+	if (FAILED(Blur_ExtractGlow(3.f)))
+		DEBUG_ASSERT;
+	if (FAILED(ReBlur_ExtractGlow(3.f)))
+		DEBUG_ASSERT;
+	if (FAILED(Blend_Glow()))
 		DEBUG_ASSERT;
 
 	if (FAILED(Extract_Distortion()))
 		DEBUG_ASSERT;
 	if (FAILED(Blend_Distortion()))
-		DEBUG_ASSERT;
-
-	if (FAILED(Blur_ExtractGlow(3.f)))
-		DEBUG_ASSERT;
-	if (FAILED(ReBlur_ExtractGlow(3.f)))
-		DEBUG_ASSERT;
-
-	if (FAILED(Blend_Glow()))
 		DEBUG_ASSERT;
 	
 	if (FAILED(Render_Font()))
@@ -434,8 +442,9 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(this->ReBlur_ExtractBloom()))
 		DEBUG_ASSERT;
 
-	//if (FAILED(this->ReBlur_ExtractBloom()))
-	//	DEBUG_ASSERT;
+	if (FAILED(this->ReBlur_ExtractBloom()))
+
+		DEBUG_ASSERT;
 
 	if (FAILED(Blend_Bloom()))
 		DEBUG_ASSERT;
@@ -861,6 +870,38 @@ HRESULT CRender_Manager::Render_NonLight()
 			pGameObject.lock()->Render();
 	}
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONLIGHT].clear();
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Render_NonAlphaEffect()
+{
+	for (auto iter = m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHA_EFFECT].begin(); iter != m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHA_EFFECT].end();)
+	{
+		if (!(*iter).lock())
+		{
+			iter = m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHA_EFFECT].erase(iter);
+		}
+		else
+		{
+			++iter;
+		}
+	}
+
+	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
+
+
+	pRenderTargetManager->Begin_MRT(TEXT("MRT_ExtractEffect"));
+
+	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHA_EFFECT])
+	{
+		if (pGameObject.lock())
+			pGameObject.lock()->Render();
+	}
+	m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHA_EFFECT].clear();
+
+	if (FAILED(pRenderTargetManager->End_MRT()))
+		DEBUG_ASSERT;
 
 	return S_OK;
 }

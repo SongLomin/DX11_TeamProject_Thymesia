@@ -173,18 +173,13 @@ void CEffect_Rect::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 
 	if (m_tEffectParticleDesc.bBoner)
 	{
-		try
-		{
-			if (!pParentTransform.lock())
-				throw;
+		if (!pParentTransform.lock())
+			throw;
 
+		if (pParentTransform.lock())
+		{
 			m_pParentModel = pParentTransform.lock()->Get_Owner().lock()->Get_Component<CModel>();
 			m_pBoneNode = m_pParentModel.lock()->Find_BoneNode(m_strBoneName);
-		}
-		catch (const std::exception&)
-		{
-			// TODO : do nothing
-			void(0);
 		}
 	}
 
@@ -426,6 +421,15 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 
 #pragma region Scale
 	Out_Json["Is_Square_Scale"] = m_tEffectParticleDesc.bSquareScale;
+	Out_Json["Is_Ratio_Scale"] = m_tEffectParticleDesc.bRatioScale;
+
+	if (m_tEffectParticleDesc.bRatioScale)
+	{
+		Out_Json["Min_Y_Scale_Ratio"] = m_tEffectParticleDesc.fMinYScaleRatio;
+		Out_Json["Max_Y_Scale_Ratio"] = m_tEffectParticleDesc.fMaxYScaleRatio;
+	}
+	
+
 	Out_Json["Is_Easing_Scale"] = m_tEffectParticleDesc.bEasingScale;
 
 	if (m_tEffectParticleDesc.bEasingScale)
@@ -452,6 +456,8 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 #pragma endregion
 
 #pragma region Color
+	Out_Json["Render_Group"] = m_eRenderGroup;
+
 	Out_Json["Discard_Ratio"] = m_tEffectParticleDesc.fDiscardRatio;
 	Out_Json["Is_Gray_Only_Use_Red"] = m_tEffectParticleDesc.IsGrayOnlyUseRed;
 	Out_Json["Is_Easing_Alpha"] = m_tEffectParticleDesc.bEasingAlpha;
@@ -715,6 +721,15 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	if (In_Json.find("Is_Square_Scale") != In_Json.end())
 		m_tEffectParticleDesc.bSquareScale = In_Json["Is_Square_Scale"];
 
+	if (In_Json.find("Is_Ratio_Scale") != In_Json.end())
+		m_tEffectParticleDesc.bRatioScale = In_Json["Is_Ratio_Scale"];
+
+	if (m_tEffectParticleDesc.bRatioScale)
+	{
+		m_tEffectParticleDesc.fMinYScaleRatio = In_Json["Min_Y_Scale_Ratio"];
+		m_tEffectParticleDesc.fMaxYScaleRatio = In_Json["Max_Y_Scale_Ratio"];
+	}
+	
 	if (In_Json.find("Is_Easing_Scale") != In_Json.end())
 		m_tEffectParticleDesc.bEasingScale = In_Json["Is_Easing_Scale"];
 
@@ -749,6 +764,8 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma endregion
 
 #pragma region Color
+	if (In_Json.find("Render_Group") != In_Json.end())
+		m_eRenderGroup = In_Json["Render_Group"];
 	if (In_Json.find("Discard_Ratio") != In_Json.end())
 		m_tEffectParticleDesc.fDiscardRatio = In_Json["Discard_Ratio"];
 	if (In_Json.find("Is_Gray_Only_Use_Red") != In_Json.end())
@@ -979,6 +996,11 @@ void CEffect_Rect::Reset_ParticleDescs()
 
 void CEffect_Rect::Reset_ParticleDesc(const _uint& In_iIndex)
 {
+#ifdef _DEBUG
+	if (0 == m_tParticleDescs.size() || 0 == m_tOriginalParticleDescs.size())
+		return;
+#endif // _DEBUG
+
 	memcpy(&m_tParticleDescs[In_iIndex], &m_tOriginalParticleDescs[In_iIndex], sizeof(PARTICLE_DESC));
 
 	SMath::Add_Float3(&m_tParticleDescs[In_iIndex].vCurrentTranslation, m_tParticleDescs[In_iIndex].vOffsetPosition);
@@ -1077,8 +1099,8 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 		m_tOriginalParticleDescs[i].vCurrentScale.x = max(FLT_MIN, m_tOriginalParticleDescs[i].vCurrentScale.x);
 		m_tOriginalParticleDescs[i].vCurrentScale.y = max(FLT_MIN, m_tOriginalParticleDescs[i].vCurrentScale.y);
 
-		if (m_tEffectParticleDesc.bSquareScale)
-			m_tOriginalParticleDescs[i].vCurrentScale.y = m_tOriginalParticleDescs[i].vCurrentScale.x;
+		if (m_tEffectParticleDesc.bRatioScale)
+			m_tOriginalParticleDescs[i].fTargetYScaleRatio = SMath::fRandom(m_tEffectParticleDesc.fMinYScaleRatio, m_tEffectParticleDesc.fMaxYScaleRatio);
 	}
 }
 
@@ -1352,8 +1374,11 @@ void CEffect_Rect::Update_ParticleScale(const _uint& i, _float fTimeDelta)
 
 	m_tParticleDescs[i].vCurrentScale.x = max(m_tEffectParticleDesc.vMinLimitScale.x, min(m_tEffectParticleDesc.vMaxLimitScale.x, m_tParticleDescs[i].vCurrentScale.x));
 
+
 	if (m_tEffectParticleDesc.bSquareScale)
 		m_tParticleDescs[i].vCurrentScale.y = m_tParticleDescs[i].vCurrentScale.x;
+	else if (m_tEffectParticleDesc.bRatioScale)
+		m_tParticleDescs[i].vCurrentScale.y = m_tParticleDescs[i].vCurrentScale.x * m_tParticleDescs[i].fTargetYScaleRatio;
 	else
 		m_tParticleDescs[i].vCurrentScale.y = max(m_tEffectParticleDesc.vMinLimitScale.y, min(m_tEffectParticleDesc.vMaxLimitScale.y, m_tParticleDescs[i].vCurrentScale.y));
 }
@@ -2873,6 +2898,23 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			if (ImGui::CollapsingHeader("Scale"))
 			{
 				ImGui::Checkbox("Square Scale##Is_Square_Scale", &m_tEffectParticleDesc.bSquareScale);
+				ImGui::SameLine();
+				ImGui::Checkbox("Equal Ratio Scale##Is_Ratio_Scale", &m_tEffectParticleDesc.bRatioScale);
+
+				if (m_tEffectParticleDesc.bRatioScale)
+				{
+					ImGui::Text("Y = X * ?");
+
+					ImGui::Text("Min Ratio"); ImGui::SameLine();
+					ImGui::SetNextItemWidth(100.f);
+					ImGui::DragFloat("##Min_Y_Scale_Ratio", &m_tEffectParticleDesc.fMinYScaleRatio, 0.1f, 0.f, 0.f, "%.5f");
+
+					ImGui::Text("Max Ratio"); ImGui::SameLine();
+					ImGui::SetNextItemWidth(100.f);
+					ImGui::DragFloat("##Max_Y_Scale_Ratio", &m_tEffectParticleDesc.fMaxYScaleRatio, 0.1f, 0.f, 0.f, "%.5f");
+				}
+
+
 				ImGui::Checkbox("Apply Easing##Is_Easing_Scale", &m_tEffectParticleDesc.bEasingScale);
 				ImGui::Separator();
 
@@ -2892,6 +2934,17 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					ImGui::InputInt("Shader Pass", &m_tEffectParticleDesc.iShaderPassIndex);
 					ImGui::TreePop();
 				}
+
+				ImGui::Text("Render Group");
+				if (ImGui::Button("Non Alpha Effect##RenderGroup_NonAlphaEffect"))
+					m_eRenderGroup = RENDERGROUP::RENDER_NONALPHA_EFFECT;
+
+				ImGui::SameLine();
+
+				if (ImGui::Button("Alpha Blend##RenderGroup_AlphaBlend"))
+					m_eRenderGroup = RENDERGROUP::RENDER_ALPHABLEND;
+				
+
 				if (this->Is_Sprite())
 					this->Tool_Sprite();
 
