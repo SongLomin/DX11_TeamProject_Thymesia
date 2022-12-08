@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "UI_Script.h"
 #include "UI_Elements.h"
-#include "EasingTransform.h"
+#include "EasingComponent_Alpha.h"
 
 GAMECLASS_C(CUI_Script)
 CLONE_C(CUI_Script, CGameObject)
@@ -11,7 +11,7 @@ HRESULT CUI_Script::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
-    m_pEasingTrnaformCom = Add_Component<CEasingTransform>();
+    m_pEasingAlphaCom = Add_Component<CEasingComponent_Alpha>();
  
     m_fLifeTime = 0.f;
     m_fLifeTick = 0.f;
@@ -26,19 +26,15 @@ HRESULT CUI_Script::Initialize(void* pArg)
 void CUI_Script::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
-    m_pEasingTrnaformCom.lock()->Tick(fTimeDelta);
-    if (m_pEasingTrnaformCom.lock()->Is_Lerping())
-    {
-       Set_AlphaColor(m_pEasingTrnaformCom.lock()->Get_Lerp().x);
-    }
+    
     if (m_eScriptPlaying == CUI_Script::SCRIPTPLAYINGTYPE::SCRIPT_PLAYING)
     {
         if (m_fLifeTick >= m_fLifeTime)
         {
-            if (m_bLerp)
+            if (m_bLerp)//서서히 사라지게
             {
-                m_pEasingTrnaformCom.lock()->Set_Lerp_Alpha(1.f);
-                m_pEasingTrnaformCom.lock()->Callback_LerpEnd += bind(
+                m_pEasingAlphaCom.lock()->Set_Lerp(1.f, 0.f, 1.f, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE, false);
+                m_pEasingAlphaCom.lock()->Callback_LerpEnd += bind(
                     &CUI_Script::Call_LerpEnd_FadeOut, this);
                 m_eScriptPlaying = CUI_Script::SCRIPTPLAYINGTYPE::SCRIPT_FADEOUT;
             }
@@ -53,7 +49,7 @@ void CUI_Script::Tick(_float fTimeDelta)
 void CUI_Script::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
-    m_pEasingTrnaformCom.lock()->LateTick(fTimeDelta);
+  
 }
 
 void CUI_Script::ReadyScript(SCRIPTDESC tScriptDesc)
@@ -80,8 +76,8 @@ void CUI_Script::ReadyScript(SCRIPTDESC tScriptDesc)
     m_bLerp = tScriptDesc.bLerp;
     if (m_bLerp)
     {
-        m_pEasingTrnaformCom.lock()->Set_Lerp_Alpha(1.f);
-        m_pEasingTrnaformCom.lock()->Callback_LerpEnd += bind(
+        m_pEasingAlphaCom.lock()->Set_Lerp(0.f, 1.f, 1.f, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE, false);
+        m_pEasingAlphaCom.lock()->Callback_LerpEnd += bind(
             &CUI_Script::Call_LerpEnd_FadeIn, this);
     }
     else

@@ -237,14 +237,14 @@ void CUI_EvolveMenu::OnEnable(void* _Arg)
 	if (!m_pFadeMask.lock())
 		m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
-	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
+	//GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
 	ChangeButtonIndex();
 
 }
 
 void CUI_EvolveMenu::Call_FadeEndEnableEvolveMenu()
 {
-	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::BATTLEUI);
+	//GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::BATTLEUI);
 	Set_Enable(false);
 	m_pFadeMask.lock()->Set_Enable(false);
 }

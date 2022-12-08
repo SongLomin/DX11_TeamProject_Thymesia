@@ -88,8 +88,8 @@ HRESULT CPlayer_HPBar::Initialize(void* pArg)
 
     m_tUIDesc.fDepth = 0.f;
 
-    m_eRenderGroup = RENDERGROUP::RENDER_UI;
-    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
+    m_eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::PLAYERHUD, Cast<CGameObject>(m_this));
 
     /*
        weak_ptr< CProgressBar>   m_pMainBar;
@@ -99,10 +99,10 @@ HRESULT CPlayer_HPBar::Initialize(void* pArg)
     weak_ptr< CHUD_Hover>   m_pTrack;
     */
 
-    m_vecChildUI.push_back(m_pMainBar);
-    m_vecChildUI.push_back(m_pBG);
-    m_vecChildUI.push_back(m_pBorderLeft);
-    m_vecChildUI.push_back(m_pBorderRight);
+    Add_Child(m_pMainBar);
+    Add_Child(m_pBG);
+    Add_Child(m_pBorderLeft);
+    Add_Child(m_pBorderRight);
 
     return S_OK;
 }
@@ -120,26 +120,7 @@ void CPlayer_HPBar::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
-
-    //TODO : HPBar Lerp Test Code;
-
-    if (KEY_INPUT(KEY::Z, KEY_STATE::TAP))
-    {
-
-        _float Hp = m_fCurrentHp -= 100.f;
-
-        Set_CurrentHp(Hp, true);
-
-    }
-
-
-    else if (KEY_INPUT(KEY::X, KEY_STATE::TAP))
-    {
-
-        _float Hp = m_fCurrentHp += 100.f;
-        Set_CurrentHp(Hp, true);
-    }
-
+    //TODO : HPBar Lerp Test Code
     if (m_fCurrentHp < 0.f)
         m_fCurrentHp = 0.f;
     else if (m_fCurrentHp > m_fMaxHp)
@@ -147,30 +128,6 @@ void CPlayer_HPBar::Tick(_float fTimeDelta)
 
     if (Is_Lerping())
         m_fLerpHp = Get_Lerp().x;
-
-    //구 러프코드
-    /*구 러프 코드
-    if (m_fCurrentHp != m_fLerpHp)
-    {
-       _float fRight = max(m_fCurrentHp, m_fLerpHp);
-       _float fLeft = min(m_fCurrentHp, m_fLerpHp);
-       _float fLerp;
-
-       fLerp = SMath::Lerp(fLeft, fRight, fTimeDelta * m_fLerpAcc);
-
-       if (fabs(m_fCurrentHp - m_fLerpHp) > 1.f)
-       {
-          m_fLerpHp -= (fLerp - fLeft);//러프 차이값만큼 빼줌
-          m_fLerpAcc += 0.4f;
-       }
-       else
-       {
-          m_fLerpHp = m_fCurrentHp;
-          m_fLerpAcc = 1.f;
-       }
-    }
-    */
-
 
     _float fRatio = m_fLerpHp / m_fMaxHp;
 

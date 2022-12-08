@@ -25,7 +25,6 @@ HRESULT CProgressBar::Initialize(void* pArg)
     
     m_iPassIndex = 2;
 
-    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
 
     return S_OK;
 }

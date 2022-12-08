@@ -271,7 +271,9 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h" />
-    <ClInclude Include="..\Public\EasingTransform.h" />
+    <ClInclude Include="..\Public\EasingComponent.h" />
+    <ClInclude Include="..\Public\EasingComponent_Alpha.h" />
+    <ClInclude Include="..\Public\EasingComponent_Transform.h" />
     <ClInclude Include="..\Public\EditMapCollider.h" />
     <ClInclude Include="..\Public\EditSetActor.h" />
     <ClInclude Include="..\Public\Interaction_CheckPoint.h" />
@@ -605,7 +607,9 @@
     <ClCompile Include="..\Private\CustomFont.cpp" />
     <ClCompile Include="..\Private\CUtils_EasingTransform.cpp" />
     <ClCompile Include="..\Private\Dynamic_Piece.cpp" />
-    <ClCompile Include="..\Private\EasingTransform.cpp" />
+    <ClCompile Include="..\Private\EasingComponent.cpp" />
+    <ClCompile Include="..\Private\EasingComponent_Alpha.cpp" />
+    <ClCompile Include="..\Private\EasingComponent_Transform.cpp" />
     <ClCompile Include="..\Private\EditMapCollider.cpp" />
     <ClCompile Include="..\Private\EditSetActor.cpp" />
     <ClCompile Include="..\Private\Interaction_CheckPoint.cpp" />

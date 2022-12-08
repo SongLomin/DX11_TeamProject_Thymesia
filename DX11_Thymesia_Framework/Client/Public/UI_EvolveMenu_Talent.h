@@ -54,9 +54,7 @@ private:
 	
 	weak_ptr<CTalent>	m_pRoot[(_uint)TALENT_TAP::TALENT_TAP_END];
 
-
 private:
-
 
 private:
 	weak_ptr<CCustomUI>	m_pTalentImage;

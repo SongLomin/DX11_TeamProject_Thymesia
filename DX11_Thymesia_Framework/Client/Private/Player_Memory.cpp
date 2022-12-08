@@ -34,10 +34,10 @@ HRESULT CPlayer_Memory::Initialize(void* pArg)
     m_pIcon.lock()->Set_UIPosition(m_tUIDesc.fX - (m_tUIDesc.fSizeX * 0.5f) + 15.f, m_tUIDesc.fY, 15.f, m_tUIDesc.fSizeY);
     m_pIcon.lock()->Set_Depth(0.1f);
 
+    m_eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
 
-
-    m_vecChildUI.push_back(m_pBG);
-    m_vecChildUI.push_back(m_pIcon);
+    Add_Child(m_pBG);
+    Add_Child(m_pIcon);
 
 
 

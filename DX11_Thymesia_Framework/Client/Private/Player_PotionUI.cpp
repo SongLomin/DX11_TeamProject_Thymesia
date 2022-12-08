@@ -51,10 +51,12 @@ HRESULT CPlayer_PotionUI::Initialize(void* pArg)
     m_pFontBG.lock()->Set_Depth(0.1f);
 
 
-    m_vecChildUI.push_back(m_pIcon);
-    m_vecChildUI.push_back(m_pFrameBorder);
-    m_vecChildUI.push_back(m_pFrame);
-    m_vecChildUI.push_back(m_pFontBG);
+    m_eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
+
+   Add_Child(m_pIcon);
+   Add_Child(m_pFrameBorder);
+   Add_Child(m_pFrame);
+   Add_Child(m_pFontBG);
 
     //left 
    m_tCurrentPotionTextInfo.bAlways = false;

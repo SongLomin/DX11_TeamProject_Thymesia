@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "UI_EvolveMenu_SelectDecoration.h"
 #include "Texture.h"
-#include "EasingTransform.h"
+#include "EasingComponent_Alpha.h"
 #include "Shader.h"
 
 GAMECLASS_C(CUI_EvolveMenu_SelectDecoration )
@@ -27,7 +27,7 @@ HRESULT CUI_EvolveMenu_SelectDecoration ::Initialize(void* pArg)
 
     Set_PassIndex(10);
 
-    m_pEasingTransformCom = Add_Component<CEasingTransform>();
+    m_pEasingAlphaCom = Add_Component<CEasingComponent_Alpha>();
     m_vUXOffset = { 0.f,0.f };
 
     return S_OK;
@@ -52,7 +52,6 @@ void CUI_EvolveMenu_SelectDecoration ::LateTick(_float fTimeDelta)
 
     __super::LateTick(fTimeDelta);
 
-    m_pEasingTransformCom.lock()->LateTick(fTimeDelta);
 }
 
 HRESULT CUI_EvolveMenu_SelectDecoration ::Render()
@@ -64,8 +63,8 @@ HRESULT CUI_EvolveMenu_SelectDecoration ::Render()
 
 void CUI_EvolveMenu_SelectDecoration::Start_Animation()
 {
-    m_pEasingTransformCom.lock()->Set_Lerp_Alpha
-    (1.f, EASING_TYPE::CIRC_OUT, false);
+    m_pEasingAlphaCom.lock()->Set_Lerp
+    (0.f,1.f, 1.f, EASING_TYPE::CIRC_OUT, CEasingComponent::ONCE, true);
 }
 
 HRESULT CUI_EvolveMenu_SelectDecoration ::SetUp_ShaderResource()
@@ -73,7 +72,7 @@ HRESULT CUI_EvolveMenu_SelectDecoration ::SetUp_ShaderResource()
     __super::SetUp_ShaderResource();
 
     m_pMaskingTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 0);
-    _float fRatio = 8.f - (((m_pEasingTransformCom.lock()->Get_Lerp().x) * 8.f));
+    _float fRatio = 8.f - (((m_pEasingAlphaCom.lock()->Get_Lerp()) * 8.f));
     m_pShaderCom.lock()->Set_RawValue("g_Ratio", &fRatio, sizeof(_float));
 
     return S_OK;

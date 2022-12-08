@@ -5,7 +5,9 @@
 #include "GameManager.h"
 #include "FadeMask.h"
 #include "UI_EvolveMenu.h"
-#include "EasingTransform.h"
+#include "EasingComponent_Alpha.h"
+
+#include "EasingComponent_Transform.h"
 #include "State_Player.h"
 #include "Player.h"
 #include "UI_EvolveMenu_Level_BG.h"
@@ -24,7 +26,7 @@ HRESULT CUI_EvolveMenu_Level::Initialize(void* pArg)
 
     m_fFontSize = m_fFontOriginSize * m_fFontScale;
     
-    GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
+    //GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
 
     weak_ptr<CPlayer>   pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock();
     if (pPlayer.lock())
@@ -81,7 +83,7 @@ HRESULT CUI_EvolveMenu_Level::Initialize(void* pArg)
 
     m_bOpenableReconfirmWindow = true;
     m_iReconfirmWindowIndex = 0;
-    m_pEasingTransformCom = Add_Component<CEasingTransform>();
+    m_pEasingAlphaCom = Add_Component<CEasingComponent_Alpha>();
     m_iReconfirmWindowIndex = 0;
     m_iSelectedIndex = 0;
 
@@ -482,27 +484,25 @@ void CUI_EvolveMenu_Level::Create_NoneGrouping()
     m_pStatusArrowLeft.lock()->Set_UIPosition(0, 0, 18.f, 41.f);
     m_pStatusArrowLeft.lock()->Set_Texture("Keyboard_Arrow_Left");
     m_pStatusArrowLeft.lock()->Set_Depth(0.5f);
-    m_pStatusArrowLeft.lock()->Add_Component<CEasingTransform>();
+    m_pStatusArrowLeft.lock()->Add_Component<CEasingComponent_Transform>();
 
-    weak_ptr<CEasingTransform> pEasingTransformCom = m_pStatusArrowLeft.lock()->Get_Component<CEasingTransform>();
+    weak_ptr<CEasingComponent_Transform> pEasingTransformCom = m_pStatusArrowLeft.lock()->Get_Component<CEasingComponent_Transform>();
 
     _float2 vOffset = { -8.f , 0 };
 
-    pEasingTransformCom.lock()->Set_LerpFloat2_StartFromZero(vOffset, 0.6f, EASING_TYPE::SINE_IN, true,
-        CEasingTransform::GO_AND_BACK);
+    pEasingTransformCom.lock()->Set_Lerp(_float2(0.f,0.f), vOffset, 0.6f, EASING_TYPE::SINE_IN, CEasingComponent::LOOP_GO_AND_BACK, false);
 
 
     m_pStatusArrowRight = ADD_STATIC_CUSTOMUI;
     m_pStatusArrowRight.lock()->Set_UIPosition(0, 0, 18.f, 41.f);
     m_pStatusArrowRight.lock()->Set_Texture("Keyboard_Arrow_Right");
     m_pStatusArrowRight.lock()->Set_Depth(0.5f);
-    m_pStatusArrowRight.lock()->Add_Component<CEasingTransform>();
+    m_pStatusArrowRight.lock()->Add_Component<CEasingComponent_Transform>();
 
     vOffset = { 8.f, 0 };
 
-    pEasingTransformCom = m_pStatusArrowRight.lock()->Get_Component<CEasingTransform>();
-    pEasingTransformCom.lock()->Set_LerpFloat2_StartFromZero(vOffset, 0.6f, EASING_TYPE::SINE_IN, true,
-       CEasingTransform::GO_AND_BACK);
+    pEasingTransformCom = m_pStatusArrowRight.lock()->Get_Component<CEasingComponent_Transform>();
+    pEasingTransformCom.lock()->Set_Lerp(_float2(0.f, 0.f), vOffset, 0.6f, EASING_TYPE::SINE_IN, CEasingComponent::LOOP_GO_AND_BACK, false);
 
     Add_Child(m_pStatusArrowLeft);
     Add_Child(m_pStatusArrowRight);
@@ -1060,10 +1060,7 @@ void CUI_EvolveMenu_Level::OpenReconfirmWindow()
     m_bOpenReconfirmWindowThisFrame = true;
 
     m_iReconfirmWindowIndex = 0;
-    m_pEasingTransformCom.lock()->Set_Lerp_Alpha
-    (
-        0.3f,   EASING_TYPE::QUAD_IN
-    );
+    m_pEasingAlphaCom.lock()->Set_Lerp(0.f, 1.f, 0.3, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE, true);
     Enable_AllEventChild();
     TickReconfirmWindow();
 }
@@ -1074,11 +1071,11 @@ void CUI_EvolveMenu_Level::TickReconfirmWindow()
     if (m_bOpenableReconfirmWindow)
         return;
     
-    if (m_pEasingTransformCom.lock()->Is_Lerping())
+    if (m_pEasingAlphaCom.lock()->Is_Lerping())
     {
         for (auto& elem : m_vecEventChildUI)
         {
-            elem.lock()->Set_AlphaColor(m_pEasingTransformCom.lock()->Get_Lerp().x);
+            elem.lock()->Set_AlphaColor(m_pEasingAlphaCom.lock()->Get_Lerp());
         }
     }
 
@@ -1186,7 +1183,7 @@ void CUI_EvolveMenu_Level::OnEnable(void* pArg)
     if (!m_pFadeMask.lock())
         m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
-    GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
+    //GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
 
     weak_ptr<CPlayer>   pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock();
     if (pPlayer.lock())

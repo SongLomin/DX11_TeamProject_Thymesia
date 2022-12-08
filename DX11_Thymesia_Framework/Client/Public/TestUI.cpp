@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "TestUI.h"
 #include "Texture.h"
-#include "EasingTransform.h"
+#include "EasingComponent_Transform.h"
+#include "EasingComponent_Alpha.h"
+
 #include "Shader.h"
 
 GAMECLASS_C(CTestUI)
@@ -33,13 +35,10 @@ HRESULT CTestUI::Initialize(void* pArg)
 
     Set_PassIndex(10);
 
-    m_pEasingTransformCom = Add_Component<CEasingTransform>();
+    m_pEasingTransformCom = Add_Component<CEasingComponent_Alpha>();
     m_vUXOffset = { 0.f,0.f };
     Set_Selected(true);
-    
-    m_pEasingTransformCom.lock()->Set_Lerp_Alpha
-     (1.f, EASING_TYPE::SINE_IN, true,
-        CEasingTransform::GO_AND_BACK_ALPHA);
+
   
 
     m_tTest.bAlways = false;
@@ -78,7 +77,7 @@ void CTestUI::LateTick(_float fTimeDelta)
 
     m_pEasingTransformCom.lock()->LateTick(fTimeDelta);
 
-    m_tTest.szText = to_wstring((_uint)(m_pEasingTransformCom.lock()->Get_Lerp().x * 8));
+    //m_tTest.szText = to_wstring((_uint)(m_pEasingTransformCom.lock()->Get_Lerp().x * 8));
 
     GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::PRETENDARD, m_tTest);
 
@@ -103,7 +102,7 @@ HRESULT CTestUI::SetUp_ShaderResource()
 
     m_pMaskingTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 0);
   
-    _float fRatio =  (((m_pEasingTransformCom.lock()->Get_Lerp().x) * 8.f));
+    _float fRatio =  (((m_pEasingTransformCom.lock()->Get_Lerp()) * 8.f));
     m_pShaderCom.lock()->Set_RawValue("g_Ratio", &fRatio, sizeof(_float));
 
     return S_OK;

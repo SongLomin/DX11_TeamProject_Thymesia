@@ -743,7 +743,7 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h" />
-    <ClInclude Include="..\Public\EasingTransform.h" />
+    <ClInclude Include="..\Public\EasingComponent_Transform.h" />
     <ClInclude Include="..\Public\EditMapCollider.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Parry.h" />
     <ClInclude Include="..\Public\UI_Script.h" />
@@ -974,6 +974,8 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_R_Up_Down_End.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\16.CorvusState_Climb_R_Up_Down_End</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\EasingComponent.h" />
+    <ClInclude Include="..\Public\EasingComponent_Alpha.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1765,7 +1767,7 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackAway.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackHold.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab2.cpp" />
-    <ClCompile Include="..\Private\EasingTransform.cpp" />
+    <ClCompile Include="..\Private\EasingComponent_Transform.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Parry.cpp" />
     <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
@@ -1995,6 +1997,8 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_R_Up_Down_End.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\16.CorvusState_Climb_R_Up_Down_End</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\EasingComponent.cpp" />
+    <ClCompile Include="..\Private\EasingComponent_Alpha.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3000,6 +3004,9 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\16.CorvusState_Climb_R_Up_Down_End">
       <UniqueIdentifier>{c7b84338-bd6a-4a77-8845-b055b4e76165}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\UI\EasingComponent">
+      <UniqueIdentifier>{1c473d4e-be3f-46dd-9715-ee36e7a53ad0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

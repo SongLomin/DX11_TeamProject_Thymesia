@@ -24,7 +24,7 @@ HRESULT CPlayer_HPBar_Default::Initialize(void* pArg)
 
 	m_eRenderGroup = RENDERGROUP::RENDER_FINAL;
 
-	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, Cast<CGameObject>(m_this));
+	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::PLAYERHUD, Cast<CGameObject>(m_this));
 
 	m_tUIDesc.fDepth = 0.f;
 

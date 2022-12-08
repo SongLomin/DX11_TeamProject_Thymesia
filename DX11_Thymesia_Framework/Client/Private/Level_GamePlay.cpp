@@ -31,7 +31,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-
+#ifndef _ONLY_UI_
 	CCamera::CAMERADESC CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
 	CameraDesc.vEye = _float4(0.0f, 2.5f, -2.5f, 1.f);
@@ -45,7 +45,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
 
 
-#ifndef _ONLY_UI_
+
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
 #pragma region GAMEOBJECT
 

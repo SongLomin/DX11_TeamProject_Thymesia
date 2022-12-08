@@ -55,11 +55,12 @@ HRESULT CPlayer_FeatherUI::Initialize(void* pArg)
     m_pFontBG.lock()->Set_UIPosition(m_tUIDesc.fX + m_tUIDesc.fSizeX, m_tUIDesc.fY, 80.f, 28.f);
     m_pFontBG.lock()->Set_Depth(0.4f);
 
+    m_eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
 
-    m_vecChildUI.push_back(m_pIcon);
-    m_vecChildUI.push_back(m_pFrameBorder);
-    m_vecChildUI.push_back(m_pFrame);
-    m_vecChildUI.push_back(m_pFontBG);
+    Add_Child(m_pIcon);
+    Add_Child(m_pFrameBorder);
+    Add_Child(m_pFrame);
+    Add_Child(m_pFontBG);
 
 
 
