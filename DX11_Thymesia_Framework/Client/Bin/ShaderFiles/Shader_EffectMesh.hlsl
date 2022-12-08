@@ -24,10 +24,12 @@ float  g_fDissolveGradiationDistance;
 * Wrap Weight for Textures
 *  x : Diff, y : Noise, z : Mask, w : None
 */
+vector g_vWrapWeight;
+
+
 bool   g_bDiffuseWrap;
 bool   g_bNoiseWrap;
 bool   g_bMaskWrap;
-vector g_vWrapWeight;
 
 float2 g_vUVDiff;
 float2 g_vUVNoise;
@@ -408,11 +410,9 @@ PS_OUT PS_MAIN_NORMAL_DISSOLVE(PS_IN In)
 
 	clip(DissolveDesc - g_fDissolveAmount);
 
-	vector vTexDiff;
-
-	if (g_fDissolveAmount + g_fDissolveGradiationDistance >= DissolveDesc.r)
+	if (g_fDissolveAmount + g_fDissolveGradiationDistance >= DissolveDesc)
 	{
-		float fLerpRatio = (DissolveDesc.r - g_fDissolveAmount) / g_fDissolveGradiationDistance;
+		float fLerpRatio = (DissolveDesc - g_fDissolveAmount) / g_fDissolveGradiationDistance;
 		Out.vColor = vector(lerp(g_vDissolveGradiationStartColor, g_vDissolveGradiationGoalColor, fLerpRatio), 1.f);
 	}
 	else
@@ -420,10 +420,7 @@ PS_OUT PS_MAIN_NORMAL_DISSOLVE(PS_IN In)
 		Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 	}
 
-	if (g_bDiffuseWrap)
-		Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.x + g_vUVDiff);
-	else
-		Out.vColor = g_DiffuseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.x + g_vUVDiff);
+	// Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
 	vector vNoise = (vector) 0;
 	if (g_bNoiseWrap)
@@ -466,7 +463,6 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_DIRECTIONAL_DISSOLVE In)
 	vPixelDir = normalize(vPixelDir);
 	float3 vDissolveDir = normalize(g_vDissolveDir);
 
-
 	float fDotValue = dot(vPixelDir.xyz, vDissolveDir);
 	fDotValue = fDotValue * 0.5f + 0.5f;
 
@@ -480,19 +476,14 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_DIRECTIONAL_DISSOLVE In)
 
 		clip(DissolveDesc - g_fDissolveAmount);
 
-		float fLerpRatio = (DissolveDesc.r - g_fDissolveAmount) / g_fDissolveGradiationDistance;
-		Out.vColor = vector(lerp(g_vDissolveGradiationStartColor, g_vDissolveGradiationGoalColor, fLerpRatio), 1.f);
+		Out.vColor = vector(0.f, 0.9f, 0.5f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
+		//float fLerpRatio = (DissolveDesc - g_fDissolveAmount) / g_fDissolveGradiationDistance;
+		//Out.vColor = vector(lerp(g_vDissolveGradiationStartColor, g_vDissolveGradiationGoalColor, fLerpRatio), 1.f);
 	}
 	else
 	{
 		discard;
 	}
-
-
-	if (g_bDiffuseWrap)
-		Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.x + g_vUVDiff);
-	else
-		Out.vColor = g_DiffuseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.x + g_vUVDiff);
 
 	vector vNoise = (vector) 0;
 	if (g_bNoiseWrap)
@@ -537,20 +528,15 @@ PS_OUT PS_MAIN_NORMAL_DISSOLVE_SOFT(PS_IN_SOFT In)
 
 	vector vTexDiff;
 
-	if (g_fDissolveAmount + g_fDissolveGradiationDistance >= DissolveDesc.r)
+	if (g_fDissolveAmount + g_fDissolveGradiationDistance >= DissolveDesc)
 	{
-		float fLerpRatio = (DissolveDesc.r - g_fDissolveAmount) / g_fDissolveGradiationDistance;
+		float fLerpRatio = (DissolveDesc - g_fDissolveAmount) / g_fDissolveGradiationDistance;
 		Out.vColor = vector(lerp(g_vDissolveGradiationStartColor, g_vDissolveGradiationGoalColor, fLerpRatio), 1.f);
 	}
 	else
 	{
 		Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 	}
-
-	if (g_bDiffuseWrap)
-		Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.x + g_vUVDiff);
-	else
-		Out.vColor = g_DiffuseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.x + g_vUVDiff);
 
 	vector vNoise = (vector) 0;
 	if (g_bNoiseWrap)
@@ -619,19 +605,13 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE_SOFT(PS_IN_SOFT_DIRECTIONAL_DISSOLVE 
 
 		clip(DissolveDesc - g_fDissolveAmount);
 
-		float fLerpRatio = (DissolveDesc.r - g_fDissolveAmount) / g_fDissolveGradiationDistance;
+		float fLerpRatio = (DissolveDesc - g_fDissolveAmount) / g_fDissolveGradiationDistance;
 		Out.vColor = vector(lerp(g_vDissolveGradiationStartColor, g_vDissolveGradiationGoalColor, fLerpRatio), 1.f);
 	}
 	else
 	{
 		discard;
 	}
-
-
-	if (g_bDiffuseWrap)
-		Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.x + g_vUVDiff);
-	else
-		Out.vColor = g_DiffuseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.x + g_vUVDiff);
 
 	vector vNoise = (vector) 0;
 	if (g_bNoiseWrap)

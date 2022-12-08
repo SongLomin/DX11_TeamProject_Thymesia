@@ -27,7 +27,7 @@
 
 #pragma region Console Outputs
 // #define _DEBUG_COUT_
-// #define _DEBUG_COUT_JOJO
+#define _DEBUG_COUT_JOJO
 #pragma endregion // Console Outputs
 
 #pragma region Map
@@ -123,7 +123,7 @@
 
 #pragma region Console Outputs
 #undef _DEBUG_COUT_
-#undef _DEBUG_COUT_JOJO
+#define _DEBUG_COUT_JOJO
 #pragma endregion // Console Outputs
 
 #pragma region Map

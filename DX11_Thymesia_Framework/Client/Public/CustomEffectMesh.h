@@ -132,6 +132,9 @@ private:
     _float4               m_vCurrentColor;
     _float4               m_vCurrentColorForce;
 
+    // For. Dissolve
+    _float                m_fDissolveAmountAcc = 1.f;
+
     // For. UV
     _float2               m_vDiffuseCurrentUV;
     _float2               m_vDiffuseCurrentUVForce;

@@ -74,12 +74,9 @@ namespace Client
 
 		_float	fDissolveGradiationDistance;
 
-		_float  fDissolveAppearTime;
-		_float	fDissolveAppearAmount;
 		_float	fDissolveAppearSpeed;
 
 		_float  fDissolveDisappearTime;
-		_float	fDissolveDisappearAmount;
 		_float	fDissolveDisappearSpeed;
 
 		// For. Directional Dissolve

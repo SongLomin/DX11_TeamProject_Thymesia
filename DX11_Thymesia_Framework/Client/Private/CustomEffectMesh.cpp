@@ -44,13 +44,13 @@ HRESULT CCustomEffectMesh::Initialize(void* pArg)
 	m_pNoiseTextureCom        = CGameObject::Add_Component<CTexture>();
 	m_pMaskTextureCom         = CGameObject::Add_Component<CTexture>();
 	m_pDissolveTextureCom     = CGameObject::Add_Component<CTexture>();
-	// m_pGradientTextureCom = CGameObject::Add_Component<CTexture>();
 
 	m_pColorDiffuseTextureCom.lock()->Use_Texture("UVColorDiffuse");
 	m_pNoiseTextureCom.lock()->Use_Texture("UVNoise");
 	m_pMaskTextureCom.lock()->Use_Texture("UVMask");
-	m_pDissolveTextureCom.lock()->Use_Texture("UVDissolve");
-	// m_pGradientTextureCom.lock()->Use_Texture(("Gradient"));
+
+	// TODO : Change to Dissolve...
+	m_pDissolveTextureCom.lock()->Use_Texture("UVNoise");
 
 	CBase::Set_Enable(false);
 
@@ -116,10 +116,17 @@ HRESULT CCustomEffectMesh::Render()
 		CGameObject::CallBack_Render();
 
 		_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
+		_uint iShaderPassIndex(0);
+
+		if (m_tEffectMeshDesc.fDissolveDisappearTime <= m_fCurrentLifeTime)
+			iShaderPassIndex = m_tEffectMeshDesc.iDissolveDisappearShaderPassIndex;
+		else
+			iShaderPassIndex = m_tEffectMeshDesc.iDissolveAppearShaderPassIndex;
+
 		for (_uint i(0); i < iNumMeshContainers; ++i)
 		{
 			m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
-			m_pShaderCom.lock()->Begin(m_tEffectMeshDesc.iDissolveAppearShaderPassIndex);
+			m_pShaderCom.lock()->Begin(iShaderPassIndex);
 			m_pModelCom.lock()->Render_Mesh(i);
 		}
 	}
@@ -200,15 +207,24 @@ void CCustomEffectMesh::SetUp_ShaderResource()
 
 void CCustomEffectMesh::SetUp_ShaderResource_Dissolve()
 {
-	m_pDissolveTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DissolveTexture", m_tEffectMeshDesc.iDissolveTextureIndex);
+	try
+	{
+		m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &m_fDissolveAmountAcc, sizeof(_float));
 
-	m_pShaderCom.lock()->Set_RawValue("g_vDissolveDir", &m_tEffectMeshDesc.vDissolveDirection, sizeof(_float3));
-	m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &m_tEffectMeshDesc.fDissolveAppearAmount, sizeof(_float));
-	
-	m_pShaderCom.lock()->Set_RawValue("g_vDissolveGradiationStartColor", &m_tEffectMeshDesc.vDissolveGradiationStartColor, sizeof(_float3));
-	m_pShaderCom.lock()->Set_RawValue("g_vDissolveGradiationGoalColor", &m_tEffectMeshDesc.vDissolveGradiationGoalColor, sizeof(_float3));
+		if (FAILED(m_pDissolveTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DissolveTexture", m_tEffectMeshDesc.iDissolveTextureIndex)))
+			throw 0;
 
-	m_pShaderCom.lock()->Set_RawValue("g_fDissolveGradiationDistance", &m_tEffectMeshDesc.fDissolveGradiationDistance, sizeof(_float));
+		m_pShaderCom.lock()->Set_RawValue("g_vDissolveDir", &m_tEffectMeshDesc.vDissolveDirection, sizeof(_float3));
+
+		m_pShaderCom.lock()->Set_RawValue("g_vDissolveGradiationStartColor", &m_tEffectMeshDesc.vDissolveGradiationStartColor, sizeof(_float3));
+		m_pShaderCom.lock()->Set_RawValue("g_vDissolveGradiationGoalColor", &m_tEffectMeshDesc.vDissolveGradiationGoalColor, sizeof(_float3));
+
+		m_pShaderCom.lock()->Set_RawValue("g_fDissolveGradiationDistance", &m_tEffectMeshDesc.fDissolveGradiationDistance, sizeof(_float));
+	}
+	catch (const std::exception&)
+	{
+		assert(0);
+	}
 }
 
 void CCustomEffectMesh::Init_EffectMesh(const EFFECTMESH_DESC& In_tEffectMeshDesc, const _char* In_szModelKey)
@@ -402,14 +418,12 @@ void CCustomEffectMesh::Write_EffectJson(json& Out_Json)
 	{
 		// For. Appear Option
 		Out_Json["Dissolve_Appear_Shader_Pass_Index"] = m_tEffectMeshDesc.iDissolveAppearShaderPassIndex;
-		Out_Json["Dissolve_Appear_Time"] = m_tEffectMeshDesc.fDissolveAppearTime;
-		Out_Json["Dissolve_Appear_Amount"] = m_tEffectMeshDesc.fDissolveAppearAmount;
+
 		Out_Json["Dissolve_Appear_Speed"] = m_tEffectMeshDesc.fDissolveAppearSpeed;
 
 		// For. Disappear Option
 		Out_Json["Dissolve_Disappear_Shader_Pass_Index"] = m_tEffectMeshDesc.iDissolveDisappearShaderPassIndex;
 		Out_Json["Dissolve_Disappear_Time"] = m_tEffectMeshDesc.fDissolveDisappearTime;
-		Out_Json["Dissolve_Disappear_Amount"] = m_tEffectMeshDesc.fDissolveDisappearAmount;
 		Out_Json["Dissolve_Disappear_Speed"] = m_tEffectMeshDesc.fDissolveDisappearSpeed;
 
 		// For. Texture
@@ -586,12 +600,6 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 		if (In_Json.find("Dissolve_Appear_Shader_Pass_Index") != In_Json.end())
 			m_tEffectMeshDesc.iDissolveAppearShaderPassIndex = In_Json["Dissolve_Appear_Shader_Pass_Index"];
 
-		if (In_Json.find("Dissolve_Appear_Time") != In_Json.end())
-			m_tEffectMeshDesc.fDissolveAppearTime = In_Json["Dissolve_Appear_Time"];
-
-		if (In_Json.find("Dissolve_Appear_Amount") != In_Json.end())
-			m_tEffectMeshDesc.fDissolveAppearAmount = In_Json["Dissolve_Appear_Amount"];
-
 		if (In_Json.find("Dissolve_Appear_Speed") != In_Json.end())
 			m_tEffectMeshDesc.fDissolveAppearSpeed = In_Json["Dissolve_Appear_Speed"];
 
@@ -602,9 +610,6 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 
 		if (In_Json.find("Dissolve_Disappear_Time") != In_Json.end())
 			m_tEffectMeshDesc.fDissolveDisappearTime = In_Json["Dissolve_Disappear_Time"];
-
-		if (In_Json.find("Dissolve_Disappear_Amount") != In_Json.end())
-			m_tEffectMeshDesc.fDissolveDisappearAmount = In_Json["Dissolve_Disappear_Amount"];
 
 		if (In_Json.find("Dissolve_Disappear_Speed") != In_Json.end())
 			m_tEffectMeshDesc.fDissolveDisappearSpeed = In_Json["Dissolve_Disappear_Speed"];
@@ -1068,14 +1073,6 @@ void CCustomEffectMesh::Tool_Dissolve()
 		ImGui::Text("Used Shader Pass");
 		ImGui::InputInt("##Dissolve_Appear_ShaderPassIndex", &m_tEffectMeshDesc.iDissolveAppearShaderPassIndex);
 
-		ImGui::Text("Appear Time");
-		ImGui::SetNextItemWidth(100.f);
-		ImGui::DragFloat("##Dissolve_Appear_Time", &m_tEffectMeshDesc.fDissolveAppearTime, 0.1f);
-
-		ImGui::Text("Amount");
-		ImGui::SetNextItemWidth(100.f);
-		ImGui::DragFloat("##Dissolve_Appear_Amount", &m_tEffectMeshDesc.fDissolveAppearAmount, 0.1f);
-
 		ImGui::Text("Speed");
 		ImGui::SetNextItemWidth(100.f);
 		ImGui::DragFloat("##Dissolve_Appear_Speed", &m_tEffectMeshDesc.fDissolveAppearSpeed, 0.1f);
@@ -1091,10 +1088,6 @@ void CCustomEffectMesh::Tool_Dissolve()
 		ImGui::Text("Disappear Time");
 		ImGui::SetNextItemWidth(100.f);
 		ImGui::DragFloat("##Dissolve_Disappear_Time", &m_tEffectMeshDesc.fDissolveDisappearTime, 0.1f);
-
-		ImGui::Text("Amount");
-		ImGui::SetNextItemWidth(100.f);
-		ImGui::DragFloat("##Dissolve_Disappear_Amount", &m_tEffectMeshDesc.fDissolveDisappearAmount, 0.1f);
 
 		ImGui::Text("Speed");
 		ImGui::SetNextItemWidth(100.f);
@@ -1496,19 +1489,15 @@ void CCustomEffectMesh::Update_Glow(_float fFrameTime)
 void CCustomEffectMesh::Update_Dissolve(_float fFrameTime)
 {
 	if (m_tEffectMeshDesc.fDissolveDisappearTime <= m_fCurrentLifeTime)
-	{
-		if (1.f > m_tEffectMeshDesc.fDissolveDisappearAmount)
-			m_tEffectMeshDesc.fDissolveDisappearAmount += fFrameTime * m_tEffectMeshDesc.fDissolveDisappearSpeed;
-		else
-			m_tEffectMeshDesc.fDissolveDisappearAmount = 1.f;
-	}
+		m_fDissolveAmountAcc = min(1.f, m_fDissolveAmountAcc + fFrameTime * m_tEffectMeshDesc.fDissolveAppearSpeed);
 	else
-	{
-		if (1.f > m_tEffectMeshDesc.fDissolveAppearAmount)
-			m_tEffectMeshDesc.fDissolveAppearAmount += fFrameTime * m_tEffectMeshDesc.fDissolveAppearSpeed;
-		else
-			m_tEffectMeshDesc.fDissolveAppearAmount = 1.f;
-	}
+		m_fDissolveAmountAcc = max(0.f, m_fDissolveAmountAcc - fFrameTime * m_tEffectMeshDesc.fDissolveAppearSpeed);
+
+#ifdef _DEBUG_COUT_JOJO
+	cout << "Dissolve Amount Acc : " << m_fDissolveAmountAcc << endl;
+#endif // _DEBUG_COUT_JOJO
+	// TODO : erase
+	int a = 0;
 }
 
 void CCustomEffectMesh::Apply_Easing
