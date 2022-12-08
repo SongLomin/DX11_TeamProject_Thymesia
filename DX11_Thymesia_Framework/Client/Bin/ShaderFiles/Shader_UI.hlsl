@@ -27,6 +27,9 @@ float2	g_UVAnimMaxSize;
 float2 g_NoneAnimRatio = {0.f, 0.f }; //UV가 어디서부터 먹을지 제한해주는 변수.
 
 
+float	g_fRange;
+
+
 struct VS_IN
 {
 	float3 vPosition : POSITION;
@@ -398,6 +401,24 @@ PS_OUT PS_MASK_UV_ANIM(PS_IN In)
 }
 
 
+PS_OUT PS_MASK_UV_DISCARD_RANGE(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    float MaskAlpha = g_MaskTexture.Sample(DefaultSampler, In.vTexUV).r;
+	
+	//제곱 먹여서 알파값이 더욱 극명하게 나오도록
+    MaskAlpha = pow(MaskAlpha, 3);
+
+    float DissolveDesc = g_DissolveTexture.Sample(DefaultSampler, In.vTexUV).r + g_Ratio;
+    float fDissolveAmount = g_Ratio;
+	
+    clip(DissolveDesc - fDissolveAmount);
+
+    return Out;
+}
+
 
 
 
@@ -530,5 +551,15 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MASK_UV_ANIM();
+    }
+    pass UI_UV_Discard_Range//12
+    {
+        SetBlendState(BS_AlphaBlend, vector(1.f, 1.f, 1.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MASK_UV_DISCARD_RANGE();
     }
 }

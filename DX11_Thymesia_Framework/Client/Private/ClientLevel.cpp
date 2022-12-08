@@ -32,7 +32,7 @@
 #include "TestUI.h"
 #include "UI_EvolveMenu_SelectDecoration.h"
 #include "UI_Interaction.h"
-
+#include "UI_Utils.h"
 GAMECLASS_C(CClientLevel)
 
 HRESULT CClientLevel::Initialize()
@@ -122,8 +122,8 @@ void CClientLevel::SetUp_UI()
 
 #ifdef _ONLY_UI_
 
-	//GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu_SelectDecoration>(LEVEL_STATIC);
-
+	GAMEINSTANCE->Add_GameObject<CTestUI>(LEVEL_STATIC);
+	
 #endif
 
 

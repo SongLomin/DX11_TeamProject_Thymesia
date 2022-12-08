@@ -743,7 +743,6 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h" />
-    <ClInclude Include="..\Public\EasingTransform.h" />
     <ClInclude Include="..\Public\EditMapCollider.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Parry.h" />
     <ClInclude Include="..\Public\UI_Script.h" />
@@ -977,6 +976,11 @@
     <ClInclude Include="..\Public\Section_Eventer.h">
       <Filter>02. GameObject\13. Section_Eventer</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\EasingComponent.h" />
+    <ClInclude Include="..\Public\EasingComponent_Alpha.h" />
+    <ClInclude Include="..\Public\EasingComponent_Transform.h" />
+    <ClInclude Include="..\Public\UI_Interaction.h" />
+    <ClInclude Include="..\Public\UI_Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1768,7 +1772,6 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackAway.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackHold.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab2.cpp" />
-    <ClCompile Include="..\Private\EasingTransform.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Parry.cpp" />
     <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
@@ -2001,6 +2004,11 @@
     <ClCompile Include="..\Private\Section_Eventer.cpp">
       <Filter>02. GameObject\13. Section_Eventer</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\EasingComponent.cpp" />
+    <ClCompile Include="..\Private\EasingComponent_Alpha.cpp" />
+    <ClCompile Include="..\Private\EasingComponent_Transform.cpp" />
+    <ClCompile Include="..\Private\UI_Interaction.cpp" />
+    <ClCompile Include="..\Private\UI_Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3009,6 +3017,9 @@
     </Filter>
     <Filter Include="02. GameObject\13. Section_Eventer">
       <UniqueIdentifier>{e9d1683f-b3ae-4f2a-8986-0a9d60fbb210}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\UI_Container\CTalentDecoration">
+      <UniqueIdentifier>{03b63a6e-e09f-4f6d-a2f8-2d7b5cee5c4e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

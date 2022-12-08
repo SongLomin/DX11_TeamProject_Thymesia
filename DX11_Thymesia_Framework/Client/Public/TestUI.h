@@ -38,6 +38,8 @@ private:
 	_float2						m_vUXOffset;
 	_bool						m_bSelected;
 	TEXTINFO					m_tTest;
+	_float						m_fRange;
+
 };
 
 

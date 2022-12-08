@@ -118,12 +118,10 @@ public:
 public:
     void Change_NextLevel(void* pArg);
 
-
-
-
 public:// For UI;
     POINT Get_MousePoint();
-    
+    _uint   m_iTestTalent = 2;
+
 public:
     FDelegate<>                 CallBack_ChangePlayer;
 

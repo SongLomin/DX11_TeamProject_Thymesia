@@ -15,6 +15,7 @@
 #include "UI_EvolveMenu_Level.h"
 #include "UI_Button.h"
 #include "UI_EvolveMenu_Talent.h"
+#include "UI_Utils.h"
 GAMECLASS_C(CTalent)
 CLONE_C(CTalent, CGameObject)
 
@@ -197,7 +198,7 @@ void CTalent::OnLButtonClick()
 
     if (!GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock())
     {
-        tPlayerDesc.m_iTalent = 5;
+        tPlayerDesc.m_iTalent = GET_SINGLE(CGameManager)->m_iTestTalent;
     }
     else
     {
@@ -205,9 +206,8 @@ void CTalent::OnLButtonClick()
     }
 
     list<weak_ptr<CTalent>> visitNodes;
-
-    TALENT_RESULT eResult = Check_Requiment(tPlayerDesc.m_iTalent,m_iNodeLevel, visitNodes);
-
+    int                 iCost;
+    TALENT_RESULT eResult = Check_Requiment(tPlayerDesc.m_iTalent, iCost, visitNodes);
     switch (eResult)
     {
     case Client::TALENT_RESULT::FAILED:
@@ -219,6 +219,7 @@ void CTalent::OnLButtonClick()
         break;
     case Client::TALENT_RESULT::SUCCESS:
     {
+        tPlayerDesc.m_iTalent -= iCost;
         weak_ptr<CTalent> pTalent;
         for (auto& elem : visitNodes)
         {
@@ -226,13 +227,16 @@ void CTalent::OnLButtonClick()
             elem.lock()->CheckLButtonClick();
 #ifndef _ONLY_UI_
             m_pPlayer.lock()->Bind_TalentEffects(elem.lock()->Get_Effect());
+            m_pPlayer.lock()->Get_Status().lock()->Set_Desc(&tPlayerDesc);
 #endif
+
         }
         if (pTalent.lock()->m_pParent.lock())
             pTalent.lock()->m_pParent.lock()->CheckLButtonClick();
         break;
     }
     case Client::TALENT_RESULT::SUBSCRIPTPOINT:
+        tPlayerDesc.m_iTalent += iCost;
         for (auto& elem : visitNodes)
         {
             if (elem.lock()->m_pParent.lock())
@@ -243,6 +247,7 @@ void CTalent::OnLButtonClick()
 #endif // !_ONLY_UI_
             }
         }
+
         break;
     case Client::TALENT_RESULT::RESULT_END:
         break;
@@ -450,9 +455,11 @@ TALENT_RESULT CTalent::Check_Requiment(const int In_iPoint, int& Out_iCost, list
         Find_ActiveChild_Recursive(Weak_StaticCast<CTalent>(m_this), Out_pVisitNodes, iDepth);
         Out_iCost = iDepth;
 
+        if (m_pParent.lock())//최상위 루트라면
+        {
+            Out_iCost--;//하나 뺴고 돌려줌
+        }
         return TALENT_RESULT::SUBSCRIPTPOINT;
-
-
     }
     else
     {
@@ -510,7 +517,6 @@ void CTalent::Find_ActiveChild_Recursive(weak_ptr<CTalent> In_pTalent, list<weak
         return;
     }
 
-    
     if (In_pTalent.lock()->m_bActive)
     {
         ++out_iDepth;
