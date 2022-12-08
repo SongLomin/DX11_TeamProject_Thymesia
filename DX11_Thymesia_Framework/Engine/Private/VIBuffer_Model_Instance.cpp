@@ -127,30 +127,117 @@ void CVIBuffer_Model_Instance::Create_Materials(const char* pModelFilePath)
 
 		for (_uint j = 0; j < (_uint)AI_TEXTURE_TYPE_MAX; ++j)
 		{
-			char	szFullPath[MAX_PATH] = "";
-			string	strPath;
+			//char			szFullddsPath[MAX_PATH] = "";
+			//char			szFullpngPath[MAX_PATH] = "";
+			string			szFullPath;
+
+			string		strPath;
+
+			//if (FAILED(AISCENE->mMaterials[i]->GetTexture(aiTextureType(j), 0, &strPath)))
+			//	continue;
 
 			strPath = m_pModelData->Material_Datas[i]->szTextureName[j];
 
-			char	szFileName[MAX_PATH] = "";
-			char	szExt[MAX_PATH] = "";
+			if (strPath.empty()) //스페큘러 인덱스 처리. 함수 따로 파서 ㅇㅇ 모델이 논애님이고
+			{
+				if (j == (_uint)aiTextureType_SPECULAR && MODEL_TYPE::NONANIM == m_pModelData->eModelType)
+				{
+					Create_ORM_Material(Material, i, pModelFilePath);
+				}
+
+				continue;
+			}
+
+
+			char			szFileName[MAX_PATH] = "";
+			char			szExt[MAX_PATH] = "";
 
 			_splitpath_s(strPath.c_str(), nullptr, 0, nullptr, 0, szFileName, MAX_PATH, szExt, MAX_PATH);
 
-			strcpy_s(szFullPath, pModelFilePath);
-			strcat_s(szFullPath, szFileName);
-			strcat_s(szFullPath, szExt);
+			szFullPath = pModelFilePath;
+			szFullPath += szFileName;
 
-			_tchar		szTextureFilePath[MAX_PATH] = TEXT("");
+			//strcpy_s(szFullPath, pModelFilePath);
+			//strcat_s(szFullPath, szFileName);
 
-			MultiByteToWideChar(CP_ACP, 0, szFullPath, (_int)strlen(szFullPath), szTextureFilePath, MAX_PATH);
+			//strcpy_s(szFullddsPath, szFullpngPath);
+			//strcat_s(szFullddsPath, ".dds");
+			//strcat_s(szFullpngPath, ".png");
 
-			GAMEINSTANCE->Load_Textures(szFileName, szTextureFilePath, MEMORY_TYPE::MEMORY_STATIC);
-			Material.pTextures[j] = m_pOwner.lock()->Add_Component<CTexture>();
-			Material.pTextures[j].lock().get()->Use_Texture(szFileName);
+
+			tstring		szTextureFileddsPath = filesystem::path(szFullPath + ".dds").wstring();
+			tstring		szTextureFilepngPath = filesystem::path(szFullPath + ".png").wstring();
+
+
+#ifdef _DEBUG
+			//cout << "Load_Texture: " << szFullPath << endl;
+#endif // _DEBUG
+
+			HRESULT hr = GET_SINGLE(CResource_Manager)->Load_Textures(szFileName, szTextureFileddsPath.c_str(), MEMORY_TYPE::MEMORY_STATIC);
+
+			if (FAILED(hr))
+			{
+				hr = GET_SINGLE(CResource_Manager)->Load_Textures(szFileName, szTextureFilepngPath.c_str(), MEMORY_TYPE::MEMORY_STATIC);
+			}
+
+			if (SUCCEEDED(hr))
+			{
+				Material.pTextures[j] = m_pOwner.lock()->Add_Component<CTexture>();
+				Material.pTextures[j].lock().get()->Use_Texture(szFileName);
+			}
+
 		}
 
 		m_Materials.push_back(Material);
+	}
+}
+
+void CVIBuffer_Model_Instance::Create_ORM_Material(MODEL_MATERIAL& Out_Material, const _uint In_iMaterialIndex, const _char* pModelFilePath)
+{
+	string			szFullPath;
+
+	string		strPath;
+
+	strPath = m_pModelData->Material_Datas[In_iMaterialIndex]->szTextureName[(_uint)aiTextureType_NORMALS];
+
+
+	char			szFileName[MAX_PATH] = "";
+	char			szExt[MAX_PATH] = "";
+	string			szFileNameToString;
+
+	_splitpath_s(strPath.c_str(), nullptr, 0, nullptr, 0, szFileName, MAX_PATH, szExt, MAX_PATH);
+	szFileNameToString = szFileName;
+
+	/*filesystem::path strPathToPathType = filesystem::path(strPath);
+	string			szFileName = strPathToPathType.filename().string();*/
+	szFileNameToString = szFileNameToString.substr(0, szFileNameToString.size() - 1);
+	szFileNameToString += "ORM";
+
+	szFullPath = pModelFilePath;
+	szFullPath += szFileNameToString;
+
+	tstring		szTextureFileddsPath = filesystem::path(szFullPath + ".dds").wstring();
+	tstring		szTextureFilepngPath = filesystem::path(szFullPath + ".png").wstring();
+
+
+	//MultiByteToWideChar(CP_ACP, 0, szFullddsPath, (_int)strlen(szFullddsPath), szTextureFileddsPath, MAX_PATH);
+	//MultiByteToWideChar(CP_ACP, 0, szFullpngPath, (_int)strlen(szFullpngPath), szTextureFilepngPath, MAX_PATH);
+
+#ifdef _DEBUG
+			//cout << "Load_Texture: " << szFullPath << endl;
+#endif // _DEBUG
+
+	HRESULT hr = GET_SINGLE(CResource_Manager)->Load_Textures(szFileNameToString.c_str(), szTextureFileddsPath.c_str(), MEMORY_TYPE::MEMORY_STATIC);
+
+	if (FAILED(hr))
+	{
+		hr = GET_SINGLE(CResource_Manager)->Load_Textures(szFileNameToString.c_str(), szTextureFilepngPath.c_str(), MEMORY_TYPE::MEMORY_STATIC);
+	}
+
+	if (SUCCEEDED(hr))
+	{
+		Out_Material.pTextures[(_uint)aiTextureType_SPECULAR] = m_pOwner.lock()->Add_Component<CTexture>();
+		Out_Material.pTextures[(_uint)aiTextureType_SPECULAR].lock().get()->Use_Texture(szFileNameToString.c_str());
 	}
 }
 

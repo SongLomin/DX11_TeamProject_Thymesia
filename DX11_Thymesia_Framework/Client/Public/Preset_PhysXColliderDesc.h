@@ -16,6 +16,7 @@ namespace Preset
 		void TestLightPropTriggerSetting(PHYSXCOLLIDERDESC& Out_Desc);
 		void DynamicPropSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform);
 		void DynamicBottleSetting(PHYSXCOLLIDERDESC& Out_Desc, _fmatrix In_WorldMatrix);
+		void PlayerWeaponSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform);
 		void ConvexStaticPropSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform);
 		void StaticPropSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform);
 		void DynamicPieceSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform);

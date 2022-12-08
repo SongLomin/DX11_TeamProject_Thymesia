@@ -99,6 +99,7 @@ private:
 private:
 	void Create_MeshContainers();
 	void Create_Materials(const char* pModelFilePath);
+	void Create_ORM_Material(MODEL_MATERIAL& Out_Material, const _uint In_iMaterialIndex, const _char* pModelFilePath);
 	void Create_BoneNodes(shared_ptr<NODE_DATA> pNodeData, weak_ptr<CBoneNode> pParent, _uint iDepth);
 	void Create_Animations(_uint iTimeScaleLayer);
 	

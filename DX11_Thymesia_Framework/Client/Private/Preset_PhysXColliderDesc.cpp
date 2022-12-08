@@ -142,7 +142,7 @@ void Preset::PhysXColliderDesc::DynamicBottleSetting(PHYSXCOLLIDERDESC& Out_Desc
 {
     Out_Desc.eShape = PHYSXCOLLIDER_TYPE::CONVEXMODEL;
     Out_Desc.eActorType = PHYSXACTOR_TYPE::DYNAMIC;
-    Out_Desc.iFilterType = (_uint)PHYSX_COLLISION_LAYER::DYNAMIC_PEICE;
+    Out_Desc.iFilterType = (_uint)PHYSX_COLLISION_LAYER::DYNAMIC_PROP;
     Out_Desc.fDensity = 5.f;
     Out_Desc.pConvecMesh = nullptr;
 
@@ -152,6 +152,30 @@ void Preset::PhysXColliderDesc::DynamicBottleSetting(PHYSXCOLLIDERDESC& Out_Desc
     Out_Desc.vPosition = In_WorldMatrix.r[3];
 
     Out_Desc.vScale = SMath::Get_Scale(In_WorldMatrix);
+    PxMaterial* pMaterial = nullptr;
+    GAMEINSTANCE->Create_Material(0.5f, 0.5f, 0.5f, &pMaterial);
+    Out_Desc.pMaterial = pMaterial;
+    Out_Desc.bTrigger = false;
+
+}
+
+void Preset::PhysXColliderDesc::PlayerWeaponSetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform)
+{
+    Out_Desc.eShape = PHYSXCOLLIDER_TYPE::CONVEXMODEL;
+    Out_Desc.eActorType = PHYSXACTOR_TYPE::STATIC;
+    Out_Desc.iFilterType = (_uint)PHYSX_COLLISION_LAYER::PLAYER_WEAPON;
+    Out_Desc.fDensity = 5.f;
+    Out_Desc.pConvecMesh = nullptr;
+
+    _float3 PitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(pTransform.lock()->Get_WorldMatrix()));
+    Out_Desc.vAngles = XMLoadFloat3(&PitchYawRoll);
+    _float3 vScale = pTransform.lock()->Get_Scaled();
+
+    _vector vPos = pTransform.lock()->Get_Position();
+    // vPos.m128_f32[1] += fCenterY * vScale.y;
+    Out_Desc.vPosition = vPos;
+
+    Out_Desc.vScale =  1.5f * XMLoadFloat3(&vScale);
     PxMaterial* pMaterial = nullptr;
     GAMEINSTANCE->Create_Material(0.5f, 0.5f, 0.5f, &pMaterial);
     Out_Desc.pMaterial = pMaterial;

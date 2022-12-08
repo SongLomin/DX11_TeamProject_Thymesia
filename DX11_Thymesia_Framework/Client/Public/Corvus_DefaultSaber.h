@@ -8,6 +8,7 @@ class CShader;
 class CRenderer;
 class CBoneNode;
 class CCollider;
+class CPhysXCollider;
 END
 
 BEGIN(Client)
@@ -30,6 +31,9 @@ public:// CGameObject을(를) 통해 상속됨
 
 protected:
     void SetUp_ShaderResource();
+
+private:
+    weak_ptr<CPhysXCollider> m_pPhysXColliderCom;
 
 protected:
     virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;

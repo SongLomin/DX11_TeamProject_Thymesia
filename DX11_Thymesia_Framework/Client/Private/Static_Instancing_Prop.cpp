@@ -136,7 +136,7 @@ HRESULT CStatic_Instancing_Prop::Render()
 			{
 				if (m_bInvisibility)
 				{
-					if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+                					if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
 						m_iPassIndex = 7;
 					else
 						m_iPassIndex = 8;
@@ -314,11 +314,12 @@ void CStatic_Instancing_Prop::Bake_DynamicColliderComs()
 {
 	weak_ptr<CPhysXCollider> pDynamicPhysXColliderCom;
 	PhysXColliderDesc tDesc;
+	weak_ptr<MODEL_DATA> pModelData = m_pInstanceModelCom.lock()->Get_ModelData();
 
 	for (auto& elem : m_pPropInfos)
 	{
 		pDynamicPhysXColliderCom = Add_Component<CPhysXCollider>();
-		pDynamicPhysXColliderCom.lock()->Init_ModelCollider(m_pInstanceModelCom.lock()->Get_ModelData(), true);
+		pDynamicPhysXColliderCom.lock()->Init_ModelCollider(pModelData, true);
 		Preset::PhysXColliderDesc::DynamicBottleSetting(tDesc, elem.Get_Matrix());
 		pDynamicPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
 		pDynamicPhysXColliderCom.lock()->Add_PhysXActorAtScene();
@@ -336,10 +337,11 @@ void CStatic_Instancing_Prop::Synchronize_DynamicColliderComs()
 	{
 		WorldMatrix = m_pDynamicColliderComs[i].lock()->Get_WorldMatrix();
 
-		m_pPropInfos[i].vRotation = SMath::Extract_PitchYawRollFromRotationMatrix(WorldMatrix);
+		m_pPropInfos[i].vRotation = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(WorldMatrix));
 		XMStoreFloat3(&m_pPropInfos[i].vTarnslation, WorldMatrix.r[3]);
 	}
 
+	m_pInstanceModelCom.lock()->Update(m_pPropInfos, false);
 }
 
 

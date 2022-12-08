@@ -371,9 +371,6 @@
     <ClInclude Include="..\Public\Client_Presets.h">
       <Filter>99. Defines</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Preset_PhysXColliderDesc.h">
-      <Filter>06. DataPreset</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Client_Presets.h">
       <Filter>99. Defines</Filter>
     </ClInclude>
@@ -974,6 +971,9 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_R_Up_Down_End.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\16.CorvusState_Climb_R_Up_Down_End</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Preset_PhysXColliderDesc.h">
+      <Filter>06. DataPreset\00. Preset_PhysXColliderDesc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1316,9 +1316,6 @@
       <Filter>02. GameObject\01. UI\UI_Container\PauseMenu</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal.cpp" />
-    <ClCompile Include="..\Private\Preset_PhysXColliderDesc.cpp">
-      <Filter>06. DataPreset</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\HUD_PlagueWeapon_Steal.cpp">
       <Filter>02. GameObject\01. UI\PlayerUI\HUD\PlagueWeapon\Steal</Filter>
     </ClCompile>
@@ -1994,6 +1991,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_R_Up_Down_End.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\16.CorvusState_Climb_R_Up_Down_End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Preset_PhysXColliderDesc.cpp">
+      <Filter>06. DataPreset\00. Preset_PhysXColliderDesc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
