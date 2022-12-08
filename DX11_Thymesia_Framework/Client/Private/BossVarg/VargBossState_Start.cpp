@@ -9,6 +9,7 @@
 #include "Character.h"
 #include "VargStates.h"
 #include "UI_ScriptQueue.h"
+#include "MonsterHPBar_Boss.h"
 GAMECLASS_C(CVargBossState_Start);
 CLONE_C(CVargBossState_Start, CComponent)
 
@@ -120,6 +121,8 @@ void CVargBossState_Start::Call_AnimationEnd()
 
 	weak_ptr<CUI_ScriptQueue> pScriptQeuue = GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL_STATIC).front();
 	pScriptQeuue.lock()->Call_SetScript_Tutorial_Varg();
+
+	Weak_StaticCast<CBossMonster>(m_pOwner).lock()->Get_HPBar().lock()->Set_Enable(true);
 }
  
 void CVargBossState_Start::OnDestroy()

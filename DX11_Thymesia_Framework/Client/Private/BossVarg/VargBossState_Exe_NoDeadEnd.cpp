@@ -9,6 +9,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
+#include "Status_Boss.h"
 
 GAMECLASS_C(CVargBossState_Exe_NoDeadEnd);
 CLONE_C(CVargBossState_Exe_NoDeadEnd, CComponent)
@@ -87,7 +88,9 @@ void CVargBossState_Exe_NoDeadEnd::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-
+	m_pOwner.lock()->Get_Component<CStatus_Boss>().lock()->Set_NextPhase();
+	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);
+	
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Roar_Getup>(0.05f);
 }
 

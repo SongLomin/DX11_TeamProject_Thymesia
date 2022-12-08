@@ -45,7 +45,7 @@ void CStatus_Player::LateTick(_float fTimeDelta)
 
 _bool CStatus_Player::Is_Dead()
 {
-    return m_tDesc.m_fCurrentHP <= 0.f ? true : false;
+    return m_tDesc.m_fCurrentHP <= 0.f + DBL_EPSILON ? true : false;
 }
 
 void CStatus_Player::Init_Status(const void* pArg)

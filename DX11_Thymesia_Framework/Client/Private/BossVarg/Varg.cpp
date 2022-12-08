@@ -35,9 +35,6 @@ HRESULT CVarg::Initialize(void* pArg)
 		VTXANIM_DECLARATION::Element,
 		VTXANIM_DECLARATION::iNumElements);
 
-	weak_ptr<CMonsterHPBar_Boss> pHPBar = GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Boss>(LEVEL_STATIC);
-	pHPBar.lock()->Set_Owner(Weak_Cast<CMonster>(m_this));
-	
 	m_pStandState = Add_Component<CVargBossState_Start>();
 	Add_Component<CVargBossState_Attack1a>();
 	Add_Component<CVargBossState_Attack1b>();
@@ -102,6 +99,7 @@ HRESULT CVarg::Start()
 	m_pTrailEffect.lock()->Set_TextureIndex(1,869, 0);
 	m_pTrailBoneNode = m_pModelCom.lock()->Find_BoneNode("Bip001-Head");
 
+	
 	Change_State<CVargBossState_Start>();
 
 	//weak_ptr<CBoneNode> pTargetBoneNode = m_pModelCom.lock()->Find_BoneNode();

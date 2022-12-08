@@ -454,7 +454,7 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 		weak_ptr<CAttackArea>	pAttackArea = Weak_StaticCast<CAttackArea>(pOtherCollider.lock()->Get_Owner());
 		weak_ptr<CCharacter>	pMonsterFromCharacter = pAttackArea.lock()->Get_ParentObject();
 		weak_ptr<CActor>        pActorMonster = Weak_StaticCast<CActor>(pMonsterFromCharacter);
-		weak_ptr<CStatus_Monster>	pMonsterStatusCom = pMonsterFromCharacter.lock()->Get_Component<CStatus_Monster>();
+		weak_ptr<CStatus_Monster>	pMonsterStatusCom = Weak_StaticCast<CStatus_Monster>(pMonsterFromCharacter.lock()->Get_Status());
 	
 		_matrix vResultOtherWorldMatrix;
 
@@ -466,7 +466,6 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 
 		switch (eAttackOption)
 		{
-
 		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
 			_matrix vOtherWorldMatrix = pMonsterFromCharacter.lock()->Get_Transform()->Get_WorldMatrix();
 			pMonsterFromCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_CATCH);
@@ -479,20 +478,11 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 			Get_OwnerPlayer()->Change_State<CCorvusState_RaidAttack1Hurt>();
 			break;
 		default:
- 			Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 			pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
+			Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 			break;
 		}
 
-		
-
-
-
-		
-		
-		
-		
-	
 
 
 	

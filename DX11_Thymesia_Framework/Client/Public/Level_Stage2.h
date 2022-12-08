@@ -21,7 +21,6 @@ public:
 	void Free();
 
 public:
-	void	Call_FadeOutToStartGame();
 
 
 private:

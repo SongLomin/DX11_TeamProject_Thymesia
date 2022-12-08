@@ -96,7 +96,6 @@ protected:
     MONSTERWEAPONTYPE    m_eMonWeaPonType =     MONSTERWEAPONTYPE::MON_WEAPON_END;
     NORMONSTERIDLETYPE   m_eNorMonIdleType =    NORMONSTERIDLETYPE::IDLEEND;
 
-    weak_ptr<CStatus_Monster>           m_pStatus;
 
 private:
     

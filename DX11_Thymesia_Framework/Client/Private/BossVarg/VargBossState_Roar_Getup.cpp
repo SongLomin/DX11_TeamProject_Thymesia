@@ -10,6 +10,8 @@
 #include "Character.h"
 #include "VargStates.h"
 #include "Status_Monster.h"
+#include "Status_Boss.h"
+
 
 GAMECLASS_C(CVargBossState_SPA_Roar_Getup);
 CLONE_C(CVargBossState_SPA_Roar_Getup, CComponent)
@@ -63,7 +65,7 @@ void CVargBossState_SPA_Roar_Getup::OnStateStart(const _float& In_fAnimationBlen
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	weak_ptr<CStatus_Monster> pStatus = m_pOwner.lock()->Get_Component<CStatus_Monster>();
+	weak_ptr<CStatus_Boss> pStatus = m_pOwner.lock()->Get_Component<CStatus_Boss>();
 
 	pStatus.lock()->Set_FullHp(100.f);
 

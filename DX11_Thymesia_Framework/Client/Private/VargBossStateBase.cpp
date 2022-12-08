@@ -16,6 +16,7 @@
 #include "Status.h"
 #include "VargStates.h"
 #include "PhysXCharacterController.h"
+#include "Status_Boss.h"
 
 GAMECLASS_C(CVargBossStateBase)
 
@@ -88,10 +89,9 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 		//맞았을때 플레이어를 바라보는 시선 처리
 		weak_ptr<CAttackArea> pAttackArea = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner());
 			
-		weak_ptr<CStatus_Monster> pStatus = m_pOwner.lock()->Get_Component<CStatus_Monster>();
+		weak_ptr<CStatus_Boss> pStatus = m_pOwner.lock()->Get_Component<CStatus_Boss>();
 		
 	
-		
 		
 		weak_ptr<CCharacter> pOtherCharacter = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner()).lock()->Get_ParentObject();
 
@@ -170,7 +170,7 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 				pStatus.lock()->Minus_LifePoint(1);
 				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGEXECUTION);
 				_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
-				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, 2.8f, 0.f));
+				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, -0.3f, 2.8f, 0.f));
 				pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
 					vResultOtherWorldMatrix.r[3],
 					GAMEINSTANCE->Get_DeltaTime(),
@@ -178,13 +178,15 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 				pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
 				Get_Owner().lock()->Get_Component<CVargBossState_Stun_Exe_Start>().lock()->Set_DieType(true);				
 				Get_OwnerCharacter().lock()->Change_State<CVargBossState_Stun_Exe_Start>(0.05f);
+
+				return;
 				
 			}
-			else
+			if (pStatus.lock()->Get_Desc().m_iLifeCount == 1)
 			{
 				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGEXECUTION);
 				_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
-				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, 2.8f, 0.f));
+				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, -0.3f, 2.8f, 0.f));
 				pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
 					vResultOtherWorldMatrix.r[3],
 					GAMEINSTANCE->Get_DeltaTime(),
@@ -192,6 +194,7 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 				pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
 				Get_Owner().lock()->Get_Component<CVargBossState_Stun_Exe_Start>().lock()->Set_DieType(false);
 				Get_OwnerCharacter().lock()->Change_State<CVargBossState_Stun_Exe_Start>(0.05f);
+				return;
 				
 			}
 			

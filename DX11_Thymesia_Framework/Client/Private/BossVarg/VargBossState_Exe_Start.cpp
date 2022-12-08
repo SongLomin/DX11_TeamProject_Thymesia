@@ -69,6 +69,10 @@ void CVargBossState_Stun_Exe_Start::OnStateStart(const _float& In_fAnimationBlen
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::PLAYERHUD);
+	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
+
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Exe_Start -> OnStateStart" << endl;
@@ -92,7 +96,7 @@ void CVargBossState_Stun_Exe_Start::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-
+	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Stun_Exe_Dead>(0.05f);
 }
 

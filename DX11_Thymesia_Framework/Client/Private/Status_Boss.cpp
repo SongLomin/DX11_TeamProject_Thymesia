@@ -20,7 +20,6 @@ void CStatus_Boss::Update_HitedTime(_float fTimeDelta)
 
 	if (m_tMonsterDesc.m_fHitedTime >= m_tMonsterDesc.m_fHpBarDisableTime)//15
 	{
-		//º¸½º´Â ¾È²¨Áü.
 		return;
 	}
 	else if (m_tMonsterDesc.m_fHitedTime >= m_tMonsterDesc.m_fRecoveryTime)//8
@@ -46,4 +45,13 @@ void CStatus_Boss::Update_HitedTime(_float fTimeDelta)
 
 		return;
 	}
+}
+
+void CStatus_Boss::Set_NextPhase()
+{
+	m_tMonsterDesc.m_fCurrentHP_white = m_tMonsterDesc.m_fMaxHP_white;
+	m_tMonsterDesc.m_fCurrentHP_Green = m_tMonsterDesc.m_fMaxHP_Green;
+	m_tMonsterDesc.m_iLifeCount -= 1;
+
+	Callback_NextPhase();
 }

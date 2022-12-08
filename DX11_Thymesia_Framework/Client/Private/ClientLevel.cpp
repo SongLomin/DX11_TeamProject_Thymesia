@@ -173,7 +173,7 @@ void CClientLevel::Tick_Key_InputEvent()
 		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 0.f);
 
 		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
-
+		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToStartGame, this);
 		m_bFadeTrigger = true;
 	}
 #ifdef _ONLY_UI_
@@ -244,6 +244,12 @@ void CClientLevel::Call_Enable_EvolveMenu()
 {
 	m_pEvolveMenu.lock()->Set_Enable(true);
 	m_pFadeMask.lock()->Set_Enable(false);
+}
+
+void CClientLevel::Call_FadeOutToStartGame()
+{
+	m_pFadeMask.lock()->Set_Enable(false);
+	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);
 }
 
 void CClientLevel::Free()

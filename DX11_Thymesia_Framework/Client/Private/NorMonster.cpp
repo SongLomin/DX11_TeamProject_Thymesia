@@ -204,7 +204,11 @@ void CNorMonster::Init_Desc()
 	INIT_STATE(CNorMonState_Die);
 	INIT_STATE(CNorMonState_Parry);
 
-	GET_SINGLE(CGameManager)->Bind_KeyEvent(m_pStatus.lock()->Get_Desc().m_szModelKey, m_pModelCom, bind(&CNorMonster::Call_NextAnimationKey, this, placeholders::_1));
+
+	string	strModelKey = Weak_StaticCast<CStatus_Monster>(m_pStatus).lock()->Get_Desc().m_szModelKey;
+
+
+	GET_SINGLE(CGameManager)->Bind_KeyEvent(strModelKey, m_pModelCom, bind(&CNorMonster::Call_NextAnimationKey, this, placeholders::_1));
 
 	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom),
 		(_uint)PHYSX_COLLISION_LAYER::MONSTER);

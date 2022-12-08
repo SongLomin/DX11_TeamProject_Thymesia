@@ -92,9 +92,4 @@ void CLevel_Stage2::Free()
 
 }
 
-void CLevel_Stage2::Call_FadeOutToStartGame()
-{
-	m_pFadeMask.lock()->Set_Enable(false);
-	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);
-}
 

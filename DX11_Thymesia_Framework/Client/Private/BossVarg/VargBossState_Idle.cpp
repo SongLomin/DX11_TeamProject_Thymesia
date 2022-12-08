@@ -112,12 +112,9 @@ _bool CVargBossState_Idle::Check_AndChangeNextState()
 
 
 
-	//조건 8보다클때
-
-	//보스존나어렵다 시발 ㅠㅠ ㅇㅇㅇ? ㅇㅇ 아 이거 랜덤으로 안하면 내가 정썜떄릴듯 ㄱㅊ? ㅇㅋㅇㅋ 최대한줄여봄 ㅇㅇ
-	// 그럼 탈주함
-
-	if (fPToMDistance < 1.5f)
+	
+	
+	if (fPToMDistance < 1.f)
 	{
 		Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkB>(0.05f);
 		return true;
@@ -163,6 +160,8 @@ _bool CVargBossState_Idle::Check_AndChangeNextState()
 
 		return true;
 	}
+
+
 
 
 

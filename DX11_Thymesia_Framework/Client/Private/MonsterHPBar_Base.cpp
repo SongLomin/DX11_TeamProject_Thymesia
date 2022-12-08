@@ -85,6 +85,7 @@ HRESULT CMonsterHPBar_Base::Initialize(void* pArg)
 
 	m_pTrack = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &tTrackDesc);
 	m_pTrack.lock()->Set_Texture("Monster_HPBar_Track");
+	m_pTrack.lock()->Set_RenderGroup(RENDERGROUP::RENDER_BEFOREUI);
 
 	
 	tTrackDesc = m_tUIDesc;
@@ -97,6 +98,7 @@ HRESULT CMonsterHPBar_Base::Initialize(void* pArg)
 
 	m_pGreenTrack = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_STATIC, &tTrackDesc);
 	m_pGreenTrack.lock()->Set_Texture("Monster_HPBar_GreenTrack");
+	m_pGreenTrack.lock()->Set_RenderGroup(RENDERGROUP::RENDER_BEFOREUI);
 
 	tTrackDesc = m_tUIDesc;
 
@@ -107,6 +109,7 @@ HRESULT CMonsterHPBar_Base::Initialize(void* pArg)
 
 	m_pRecovery = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_STATIC, &tRecoveryDesc);
 	m_pRecovery.lock()->Set_Texture("Monster_HPBar_RecoveryShine");
+	m_pRecovery.lock()->Set_RenderGroup(RENDERGROUP::RENDER_BEFOREUI);
 
 
 	UI_DESC tStunDesc = m_tUIDesc;
@@ -116,6 +119,8 @@ HRESULT CMonsterHPBar_Base::Initialize(void* pArg)
 
 	m_pStunned = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_STATIC, &tRecoveryDesc);
 	m_pStunned.lock()->Set_Texture("Monster_HPBar_StunnedShine");
+	m_pStunned.lock()->Set_RenderGroup(RENDERGROUP::RENDER_BEFOREUI);
+
 
 	m_bStun = false;
 
@@ -129,6 +134,9 @@ HRESULT CMonsterHPBar_Base::Initialize(void* pArg)
 	tParryingDesc.fDepth = 0.f;
 
 	m_pParryingBar = GAMEINSTANCE->Add_GameObject<CMonsterParryingBar>(LEVEL_STATIC, &tParryingDesc);
+
+
+	m_eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
 
 	Add_Child(m_pBorder);
 	Add_Child(m_pWhite);

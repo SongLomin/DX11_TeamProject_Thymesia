@@ -66,6 +66,7 @@ public:
 public:
     void		Call_Enable_PauseMenu();
     void		Call_Enable_EvolveMenu();
+    void	    Call_FadeOutToStartGame();
 
 
 

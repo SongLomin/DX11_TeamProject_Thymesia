@@ -16,6 +16,10 @@ public:
 
 	virtual void			Update_HitedTime(_float fTimeDelta);
 
+	void					Set_NextPhase();
+
+public:
+	FDelegate<>				Callback_NextPhase;
 
 private:
 	void			Free() { return; }

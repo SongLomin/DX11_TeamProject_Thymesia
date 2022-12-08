@@ -25,9 +25,8 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
-
 public:
-	void			Set_Owner(weak_ptr<CMonster> pMonster);
+	virtual void			Set_Owner(weak_ptr<CMonster> pMonster);
 	void			Reset();
 	void			FollowOwner();
 	void			Set_Offset(_float3 _vOffset) { m_vOffset = _vOffset; }
@@ -45,7 +44,6 @@ public:
 	void			Call_Disable();
 	void			Call_Stun();
 	void			Call_Restart();
-
 
 public:
 	virtual void OnEnable(void* pArg) override;
