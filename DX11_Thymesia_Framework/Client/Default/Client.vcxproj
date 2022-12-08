@@ -271,7 +271,9 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h" />
-    <ClInclude Include="..\Public\EasingTransform.h" />
+    <ClInclude Include="..\Public\EasingComponent.h" />
+    <ClInclude Include="..\Public\EasingComponent_Alpha.h" />
+    <ClInclude Include="..\Public\EasingComponent_Transform.h" />
     <ClInclude Include="..\Public\EditMapCollider.h" />
     <ClInclude Include="..\Public\EditSetActor.h" />
     <ClInclude Include="..\Public\Interaction_CheckPoint.h" />
@@ -326,12 +328,14 @@
     <ClInclude Include="..\Public\UI_EvolveMenu_Level_BG.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_SelectDecoration.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Talent.h" />
+    <ClInclude Include="..\Public\UI_Interaction.h" />
     <ClInclude Include="..\Public\UI_LerpBar.h" />
     <ClInclude Include="..\Public\UI_MenuText.h" />
     <ClInclude Include="..\Public\UI_PauseMenu_PlagueWeapon.h" />
     <ClInclude Include="..\Public\UI_Script.h" />
     <ClInclude Include="..\Public\UI_ScriptQueue.h" />
     <ClInclude Include="..\Public\UI_T_Dissolve.h" />
+    <ClInclude Include="..\Public\UI_Utils.h" />
     <ClInclude Include="..\Public\VargBossStateBase.h" />
     <ClInclude Include="..\Public\BossVarg\Varg.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack1a.h" />
@@ -606,7 +610,9 @@
     <ClCompile Include="..\Private\CustomFont.cpp" />
     <ClCompile Include="..\Private\CUtils_EasingTransform.cpp" />
     <ClCompile Include="..\Private\Dynamic_Piece.cpp" />
-    <ClCompile Include="..\Private\EasingTransform.cpp" />
+    <ClCompile Include="..\Private\EasingComponent.cpp" />
+    <ClCompile Include="..\Private\EasingComponent_Alpha.cpp" />
+    <ClCompile Include="..\Private\EasingComponent_Transform.cpp" />
     <ClCompile Include="..\Private\EditMapCollider.cpp" />
     <ClCompile Include="..\Private\EditSetActor.cpp" />
     <ClCompile Include="..\Private\Interaction_CheckPoint.cpp" />
@@ -638,6 +644,7 @@
     <ClCompile Include="..\Private\UI_EvolveMenu_Level_BG.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_SelectDecoration.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp" />
+    <ClCompile Include="..\Private\UI_Interaction.cpp" />
     <ClCompile Include="..\Private\UI_LerpBar.cpp" />
     <ClCompile Include="..\Private\BossMonster.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab.cpp" />
@@ -661,6 +668,7 @@
     <ClCompile Include="..\Private\UI_Script.cpp" />
     <ClCompile Include="..\Private\UI_ScriptQueue.cpp" />
     <ClCompile Include="..\Private\UI_T_Dissolve.cpp" />
+    <ClCompile Include="..\Private\UI_Utils.cpp" />
     <ClCompile Include="..\Private\VargBossStateBase.cpp" />
     <ClCompile Include="..\Private\BossVarg\Varg.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack1a.cpp" />

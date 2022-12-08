@@ -87,20 +87,6 @@ void CCorvusState_ClawAttackHoldLoop::Play_AttackWithIndex(const _tchar& In_iAtt
 
 void CCorvusState_ClawAttackHoldLoop::Attack()
 {
-#ifdef _DEBUG
-	if (GAMEINSTANCE->Is_Debug())
-	{
-		tstring szDebugText;
-		szDebugText += TEXT("Current Animation Index: ");
-		szDebugText += to_wstring(m_pModelCom.lock()->Get_CurrentAnimationIndex());
-		szDebugText += TEXT(", Current KeyFrame: ");
-		szDebugText += to_wstring(m_pModelCom.lock()->Get_CurrentAnimationKeyIndex());
-		_float2 vPosition(0.f, 3.f);
-		_vector vColor = XMVectorSet(1.f, 1.f, 0.f, 1.f);
-
-		GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::DREAM, szDebugText, vPosition, vColor, false);
-	}
-#endif // _DEBUG
 
 }
 

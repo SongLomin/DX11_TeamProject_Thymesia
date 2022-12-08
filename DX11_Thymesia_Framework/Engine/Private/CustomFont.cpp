@@ -96,6 +96,47 @@ void CCustomFont::Render()
 
 }
 
+void CCustomFont::RenderWithRenderGroup(const RENDERGROUP In_eRenderGroup)
+{
+    DEVICECONTEXT->GSSetShader(nullptr, nullptr, 0);
+
+    m_pBatch->Begin();
+
+    _vector vColor;
+
+    for (auto iter = m_TextInfos.begin(); iter != m_TextInfos.end();)
+    {
+        // Assert: The TextInfo belongs to an invalid RenderGroup.
+        if (!(RENDERGROUP::RENDER_BEFOREUI <= (*iter).eRenderGroup &&
+            (*iter).eRenderGroup <= RENDERGROUP::RENDER_AFTER_UI))
+            DEBUG_ASSERT;
+
+        if (In_eRenderGroup != (*iter).eRenderGroup)
+        {
+            iter++;
+            continue;
+        }
+
+        vColor = XMLoadFloat4(&(*iter).vColor);
+
+        if (!(*iter).bAlways)
+        {
+            m_pFont->DrawString(m_pBatch.get(), (*iter).szText.c_str(), (*iter).vPosition, vColor, (*iter).fRotation, { 0.f, 0.f }, (*iter).vScale);
+
+            iter = m_TextInfos.erase(iter);
+        }
+
+        else
+        {
+            m_pFont->DrawString(m_pBatch.get(), (*iter).szText.c_str(), (*iter).vPosition, vColor, (*iter).fRotation, { 0.f, 0.f }, (*iter).vScale);
+
+            iter++;
+        }
+    }
+
+    m_pBatch->End();
+}
+
 shared_ptr<CCustomFont> CCustomFont::Create(const _tchar* pFontFilePath)
 {
     shared_ptr<CCustomFont>		pInstance = make_shared<CCustomFont>();

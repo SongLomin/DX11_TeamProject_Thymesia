@@ -53,14 +53,14 @@ HRESULT CPlayer_MPBar::Initialize(void* pArg)
 	m_tTextInfo.vColor = _float4(0.7f, 0.7f, 0.7f, 0.7f);
 	m_tTextInfo.vScale = _float2(0.5, 0.5f);
 	m_tTextInfo.vPosition = _float2(m_tUIDesc.fX + m_tUIDesc.fSizeX * 0.5f + 20.f, m_tUIDesc.fY - 10.f);
+	m_tTextInfo.eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
 
-	m_eRenderGroup = RENDERGROUP::RENDER_UI;
+	m_eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
 	
-
-	m_vecChildUI.push_back(m_pMainBar);
-	m_vecChildUI.push_back(m_pBG);
-	m_vecChildUI.push_back(m_pBorderLeft);
-	m_vecChildUI.push_back(m_pBorderRight);
+	Add_Child(m_pMainBar);
+	Add_Child(m_pBG);
+	Add_Child(m_pBorderLeft);
+	Add_Child(m_pBorderRight);
 
 	return S_OK;
 }

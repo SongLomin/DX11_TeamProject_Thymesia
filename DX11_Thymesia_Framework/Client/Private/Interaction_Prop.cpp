@@ -9,6 +9,7 @@
 
 #include "GameInstance.h"
 #include "ClientLevel.h"
+#include "UI_Interaction.h"
 
 GAMECLASS_C(CInteraction_Prop);
 
@@ -96,6 +97,16 @@ void CInteraction_Prop::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_p
 {
     m_bNearPlayer = true;
 
+
+    weak_ptr<CUI_Interaction> pUI_Interaction = GAMEINSTANCE->Get_GameObjects<CUI_Interaction>(LEVEL_STATIC).front();
+
+    if (!pUI_Interaction.lock())
+        return;
+
+    pUI_Interaction.lock()->Call_CollisionEnter(pMyCollider, (_uint)m_eInteractionType);
+
+}
+
     if (Callback_ActUpdate.empty())
     {
 
@@ -113,6 +124,13 @@ void CInteraction_Prop::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_pt
 void CInteraction_Prop::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
     m_bNearPlayer = false;
+
+    weak_ptr<CUI_Interaction> pUI_Interaction = GAMEINSTANCE->Get_GameObjects<CUI_Interaction>(LEVEL_STATIC).front();
+
+    if (!pUI_Interaction.lock())
+        return;
+
+    pUI_Interaction.lock()->Call_CollisionExit();
 }
 
 void CInteraction_Prop::Act_Interaction()

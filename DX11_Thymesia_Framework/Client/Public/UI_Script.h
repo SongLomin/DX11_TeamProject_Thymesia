@@ -4,7 +4,7 @@
 
 BEGIN(Client)
 
-class CEasingTransform;
+class CEasingComponent_Alpha;
 
 
 class CUI_Script : public CCustomUI
@@ -67,7 +67,7 @@ public:
 	void				Call_LerpEnd_FadeOut();
 
 private:
-	weak_ptr<CEasingTransform>		m_pEasingTrnaformCom;
+	weak_ptr<CEasingComponent_Alpha>		m_pEasingAlphaCom;
 	SCRIPTDESC						m_tPlayScript;
 
 

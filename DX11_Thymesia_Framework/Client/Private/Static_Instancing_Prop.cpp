@@ -238,7 +238,7 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 	m_pInstanceModelCom.lock()->Update(m_pPropInfos, true);
 
 #ifdef _GENERATE_PROP_COLLIDER_
-	if ((_uint)LEVEL_GAMEPLAY == m_CreatedLevel && m_iColliderType != 0)
+	if ((_uint)LEVEL_EDIT != m_CreatedLevel && m_iColliderType != 0)
 	{
 #ifdef _DEBUG_COUT_
 		cout << "Create_PhysX: " << m_pInstanceModelCom.lock()->Get_ModelKey() << endl;

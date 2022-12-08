@@ -25,7 +25,6 @@ public:
 
 
 private:
-	_bool m_bFadeTrigger = false;
 
 };
 

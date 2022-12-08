@@ -121,6 +121,7 @@ void CUI_Loading::Call_FadeEnd()
 
 void CUI_Loading::SetUp_LoadingUI(LEVEL eLevel)
 {
+	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::PLAYERHUD);
 	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
 
 	m_pStageTitle.lock()->Set_DelayAlpha(1.f, 1.f);//1초뒤에, 1초걸리면 1.찍히는 알파 넣음

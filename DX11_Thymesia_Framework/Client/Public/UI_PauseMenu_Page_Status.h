@@ -25,10 +25,6 @@ private:
         weak_ptr<CUI_PauseMenu_Tap_PlagueWeapon> m_pPlagueWeaponTap;
         weak_ptr<CUI_PauseMenu_Tap_Potion>      m_pPotionTap;
 
-        
-        //    weak_ptr<CUI_PauseMenu_Tap_PlagueWeapon> m_pPlagueWeaponTap;
-    //    weak_ptr<CUI_PauseMenu_Tap_Potion>       m_pPotionTap;    
-
 
 };
 

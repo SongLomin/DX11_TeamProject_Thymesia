@@ -34,10 +34,10 @@ HRESULT CPlayer_Memory::Initialize(void* pArg)
     m_pIcon.lock()->Set_UIPosition(m_tUIDesc.fX - (m_tUIDesc.fSizeX * 0.5f) + 15.f, m_tUIDesc.fY, 15.f, m_tUIDesc.fSizeY);
     m_pIcon.lock()->Set_Depth(0.1f);
 
+    m_eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
 
-
-    m_vecChildUI.push_back(m_pBG);
-    m_vecChildUI.push_back(m_pIcon);
+    Add_Child(m_pBG);
+    Add_Child(m_pIcon);
 
 
 
@@ -114,7 +114,8 @@ void CPlayer_Memory::LateTick(_float fTimeDelta)
     tTextInfo.bCenterAlign = false;
     tTextInfo.vScale = _float2(0.4f, 0.4f);
     tTextInfo.szText = szMemoryStr;
-    
+    tTextInfo.eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
+
 
     GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::DREAM, tTextInfo);
 }

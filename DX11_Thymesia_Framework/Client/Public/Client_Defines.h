@@ -13,13 +13,13 @@
 #ifdef _DEBUG
 
 #pragma region System
-//#define		_ONLY_UI_
+#define		_ONLY_UI_
 //#define		_BAKE_MIPMAPS_
 #define		_USE_THREAD_
 #define		_144HZ_
 #define		_RENDER_FPS_
 //#define		_INSTANCE_CULLING_
-// #define		_LOAD_CAPTURED_RESOURCE_
+#define		_LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
 #define _USE_GRAVITY_
@@ -32,7 +32,7 @@
 
 #pragma region Map
 // #define _BRIGHT_LIGHT_
-// #define _GENERATE_PROP_COLLIDER_ true
+#define _GENERATE_PROP_COLLIDER_ true
 // #define _STAGE_1_
 #define _STAGE_2_
 #define _TEST_STATIC_PROPS_
@@ -251,6 +251,8 @@ namespace Client
 		FADEMASK,
 		GROOGYMOSNTER,
 		BATTLEUI,
+		INTERACTIONUI,
+		PLAYERHUD,
 		SWAPUI,
 		LAYER_END
 	};
@@ -484,7 +486,7 @@ namespace Client
 		FLAG_END
 	};
 
-
+	
 
 
 }
