@@ -201,7 +201,7 @@ PS_OUT PS_MAIN_RADIALBLUR(PS_IN In)
 	
     float2 vBlurDir = In.vTexUV.xy - center;
 	
-    for (int i = -5; i < 5; ++i)
+    for (int i = 0; i < 10; ++i)
     {
         float4 currentColor = g_OriginalRenderTexture.Sample(ClampSampler, In.vTexUV + vBlurDir * g_fRadialBlurStrength*0.05f * i);
         vColor += currentColor;
