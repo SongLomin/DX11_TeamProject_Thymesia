@@ -4,7 +4,7 @@
 BEGIN(Client)
 
 class CCustomUI;
-class CEasingTransform;
+class CEasingComponent_Transform;
 
 class CUI_DamageFont : public CUI_Container
 {
@@ -30,7 +30,7 @@ private:
 	_float		m_fDefaultSize;
 	FONT_PLAY_TYPE		m_ePlayingType = FONT_PLAY_TYPE::FONT_END;
 	
-	weak_ptr<CEasingTransform>	m_pEasingTransform;
+	weak_ptr<CEasingComponent_Transform>	m_pEasingTransform;
 
 	_float		m_fLifeTime;
 	_float		m_fLifeTick;

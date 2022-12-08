@@ -25,7 +25,6 @@ private:
 
 private:
 	_bool m_bCheckMonster = false;
-	_bool m_bFadeTrigger  = false;
 	_int  m_iWaveCount    = 3;
 };
 END

@@ -31,8 +31,7 @@
 #include "UI_DamageFont.h"
 #include "TestUI.h"
 #include "UI_EvolveMenu_SelectDecoration.h"
-
-
+#include "UI_Interaction.h"
 
 GAMECLASS_C(CClientLevel)
 
@@ -97,7 +96,6 @@ void CClientLevel::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	
 
 }
 
@@ -112,14 +110,15 @@ void CClientLevel::SetUp_UI()
 	GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu_Level>(LEVEL_STATIC);
 
 	Preset::AddGameObject::TalentSetting();
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_MPBar>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_Memory>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_PotionUI>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_MPBar>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_Memory>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_PotionUI>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CUI_ScriptQueue>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::INTERACTIONUI, GAMEINSTANCE->Add_GameObject<CUI_Interaction>(LEVEL_STATIC));
+
 
 #ifdef _ONLY_UI_
 
@@ -144,6 +143,73 @@ void CClientLevel::SetUp_UI()
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Boss>(LEVEL_STATIC, &tDesc));
 	*/
 	
+}
+
+void CClientLevel::Tick_Key_InputEvent()
+{
+	if (KEY_INPUT(KEY::CTRL, KEY_STATE::TAP))
+	{
+		if (m_pPauseMenu.lock()->Get_Enable() == false)
+		{
+			FaderDesc tFaderDesc;
+			tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+			tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+			tFaderDesc.fFadeMaxTime = 0.3f;
+			tFaderDesc.fDelayTime = 0.f;
+			tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+
+			m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_Enable_PauseMenu, this);
+		}
+	}
+
+	if (!m_bFadeTrigger)
+	{
+		FaderDesc tFaderDesc;
+		tFaderDesc.eFaderType = FADER_TYPE::FADER_IN;
+		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+		tFaderDesc.fFadeMaxTime = 3.f;
+		tFaderDesc.fDelayTime = 0.f;
+		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 0.f);
+
+		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+
+		m_bFadeTrigger = true;
+	}
+#ifdef _ONLY_UI_
+	if (KEY_INPUT(KEY::T, KEY_STATE::TAP))
+	{
+		if (m_pEvolveMenu.lock()->Get_Enable() == false)
+		{
+			FaderDesc tFaderDesc;
+			tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+			tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+			tFaderDesc.fFadeMaxTime = 0.2f;
+			tFaderDesc.fDelayTime = 0.f;
+			tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+
+			m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_Enable_EvolveMenu, this);
+		}
+	}
+	if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
+	{
+		GAMEINSTANCE->Add_GameObject<CUI_DamageFont>(LEVEL_STATIC).lock()->SetUp_DamageFont
+		(
+			557,
+			_float2(g_iWinCX >> 1, g_iWinCY >> 1),
+			Client::ATTACK_OPTION::NORMAL
+		);
+	}
+	if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
+	{
+		if (m_pPauseMenu.lock()->Get_Enable() == false)
+		{
+			ExitLevel(LEVEL::LEVEL_STAGE2);
+		}
+	}
+#endif // _ONLY_UI_
+
 }
 
 void CClientLevel::Change_NextLevel(void* pArg)

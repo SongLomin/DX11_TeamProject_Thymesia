@@ -5,6 +5,7 @@ BEGIN(Client)
 
 class CMobWeapon;
 class CStatus_Monster;
+
 class CBossMonster :
     public CMonster
 {

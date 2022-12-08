@@ -22,6 +22,7 @@ public:
 public:
 	void		Set_PassIndex(_uint _iPassIndex);
 	void		Set_DeffuseIndex(_uint _iDeffuseIndex);
+	void		Set_RenderGroup(RENDERGROUP eRenderGroup) { m_eRenderGroup = eRenderGroup; }
 
 protected:
 	virtual HRESULT SetUp_ShaderResource() override;

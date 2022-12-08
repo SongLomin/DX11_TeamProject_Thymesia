@@ -116,6 +116,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Elevator>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Door>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CVarg>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CSection_Eventer>();
 #endif
 
 #ifndef _ONLY_UI_
@@ -958,7 +959,13 @@ void CLoader::Load_UIResource()
 
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_LeftBG_Mask"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_LeftMask2.png"), MEMORY_TYPE::MEMORY_STATIC);
 
+	//interaction
 
+	GAMEINSTANCE->Load_Textures(("Interaction_Open"), TEXT("../Bin/Resources/Textures/UI/Interaction/Open.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("Interaction_Climb"), TEXT("../Bin/Resources/Textures/UI/Interaction/Climb.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("Interaction_Elevator"), TEXT("../Bin/Resources/Textures/UI/Interaction/Elevator.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 #endif // _JOJO_EFFECT_TOOL_
 }

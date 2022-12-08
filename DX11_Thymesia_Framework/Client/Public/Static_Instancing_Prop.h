@@ -28,7 +28,6 @@ public:
     virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix);
 
 public:
-    virtual void Write_Json(json& Out_Json) override;
     virtual void Load_FromJson(const json& In_Json) override;
 
 private:
@@ -40,15 +39,15 @@ private:
     typedef vector<INSTANCE_MESH_DESC>    PROP_INFO;
 
     weak_ptr<CTexture>                  m_pMaskingTextureCom;
-
     weak_ptr<CVIBuffer_Model_Instance>  m_pInstanceModelCom;
-    PROP_INFO                           m_pPropInfos;
     weak_ptr<CPhysXCollider>            m_pPhysXColliderCom;
-
-    _int                                m_iColliderType = 0;
-    _bool                               m_bNonCulling   = false;
-
+    PROP_INFO                           m_pPropInfos;
     vector<weak_ptr<CPhysXCollider>>    m_pDynamicColliderComs;
+
+    _int                                m_iColliderType  = 0;
+    _bool                               m_bNonCulling    = false;
+    _bool                               m_bDissolve      = false;
+    _float                              m_fDissolveSpeed = 1.f;
 
 public:
     void Free();

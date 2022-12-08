@@ -70,6 +70,9 @@ protected:
 
 public:
     virtual void OnBattleEnd() override;
+
+    virtual void Write_Json(json& Out_Json) override;
+    virtual void Load_FromJson(const json& In_Json) override;
     
 protected:
     virtual void OnEnable(void* pArg = nullptr) override;

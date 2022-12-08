@@ -52,8 +52,7 @@ protected:
     _float3     m_vMoveDir;
     _float      m_fSpeed = 0.4f;
 
-    _bool       m_bRendering = true;
-
+    _bool       m_bRendering    = true;
     _float      m_fCullingRange = 0.f;
 
 public:

@@ -173,6 +173,7 @@ void CEditSetActor::View_CreateActor()
 	static _int		iSelect_ActorList			= 0;
 	static _int		iSelect_MonsterActionList	= 0;
 	static _int		iSelect_BossActionList		= 0;
+	static _int		iSelect_MonsterSection		= 0;
 	_bool			bNorMonsterCreate			= true;
 
 	if (ImGui::Combo("Monster Type", &iSelect_ActorTypeList, ActorTypeList, IM_ARRAYSIZE(ActorTypeList)))
@@ -194,11 +195,13 @@ void CEditSetActor::View_CreateActor()
 		ImGui::Combo("Boss State", &iSelect_BossActionList, BossActionList, IM_ARRAYSIZE(BossActionList));
 		bNorMonsterCreate = false;
 	}
-	else
+	else if (4 != iSelect_ActorTypeList)
 	{
 		ImGui::Combo("Monster State", &iSelect_MonsterActionList, MonsterActionList, IM_ARRAYSIZE(MonsterActionList));
 		bNorMonsterCreate = true;
 	}
+
+	ImGui::InputInt("Section Index", &iSelect_MonsterSection);
 
 	RAY MouseRayInWorldSpace;
 
@@ -211,6 +214,7 @@ void CEditSetActor::View_CreateActor()
 	tMonsterDesc.eBossStartType  = (!bNorMonsterCreate) ? ((BOSSSTARTTYPE)iSelect_BossActionList)         : (BOSSSTARTTYPE::BOSSSTARTEND);
 	tMonsterDesc.eNorMonIdleType = (bNorMonsterCreate)  ? ((NORMONSTERIDLETYPE)iSelect_MonsterActionList) : (NORMONSTERIDLETYPE::IDLEEND);
 	tMonsterDesc.eMonType        = (MONSTERTYPE)((iSelect_ActorTypeList * (_int)MONSTERTYPE::START_ELITE_MONSTER) + 1);
+	tMonsterDesc.iSectionIndex   = iSelect_MonsterSection;
 	memcpy(&tMonsterDesc.m_fStartPositon, m_PickingDesc.m[3], sizeof(_float4));
 
 	switch (iSelect_ActorTypeList)
@@ -275,7 +279,7 @@ void CEditSetActor::View_Picking_Actor()
 	VtxInfo.vMax = {  1.f, 2.f,  1.f };
 
 	_uint   iIndex			= 0;
-	_float  fDistance		= 99999999.f;
+	_float  fDistance		= 99999999.f; 
 	_float4	vCamPosition	= GAMEINSTANCE->Get_CamPosition();
 	_vector vCamPos			= XMLoadFloat4(&vCamPosition);
 

@@ -393,8 +393,8 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Render_Lights()))
 		DEBUG_ASSERT;
 
-	if (FAILED(Bake_Fog()))
-		DEBUG_ASSERT;
+	/*if (FAILED(Bake_Fog()))
+		DEBUG_ASSERT;*/
 
 	if (FAILED(Bake_ViewShadow()))
 		DEBUG_ASSERT;
@@ -449,8 +449,6 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 
 	if (FAILED(Render_UI()))
 		DEBUG_ASSERT;
-
-	GET_SINGLE(CFont_Manager)->Render_AllFont();
 
 	if (FAILED(Render_Final()))
 		DEBUG_ASSERT;
@@ -1174,6 +1172,8 @@ HRESULT CRender_Manager::Render_UI()
 	}
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_BEFOREUI].clear();
 
+	GET_SINGLE(CFont_Manager)->Render_AllFontWithRenderGroup(RENDERGROUP::RENDER_BEFOREUI);
+
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_UI].sort([](weak_ptr<CGameObject> pSour, weak_ptr<CGameObject> pDest)
 		{
 			return pSour.lock()->Get_CamDistance() > pDest.lock()->Get_CamDistance();
@@ -1186,6 +1186,8 @@ HRESULT CRender_Manager::Render_UI()
 	}
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_UI].clear();
 
+	GET_SINGLE(CFont_Manager)->Render_AllFontWithRenderGroup(RENDERGROUP::RENDER_UI);
+
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_AFTER_UI].sort([](weak_ptr<CGameObject> pSour, weak_ptr<CGameObject> pDest)
 		{
 			return pSour.lock()->Get_CamDistance() > pDest.lock()->Get_CamDistance();
@@ -1197,6 +1199,8 @@ HRESULT CRender_Manager::Render_UI()
 			pGameObject.lock()->Render();
 	}
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_AFTER_UI].clear();
+
+	GET_SINGLE(CFont_Manager)->Render_AllFontWithRenderGroup(RENDERGROUP::RENDER_AFTER_UI);
 
 	return S_OK;
 }

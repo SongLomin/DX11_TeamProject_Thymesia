@@ -30,8 +30,10 @@ HRESULT CHUD_PlagueWeapon::Initialize(void* pArg)
 	m_pStealSkill = GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon_Steal>(LEVEL_STATIC, &tStealSKillDesc);
 
 
-	m_vecChildUI.push_back(m_pMainSkill);
-	m_vecChildUI.push_back(m_pStealSkill);
+	m_eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
+
+	Add_Child(m_pMainSkill);
+	Add_Child(m_pStealSkill);
 
 
 	return S_OK;

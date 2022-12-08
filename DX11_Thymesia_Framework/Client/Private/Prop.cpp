@@ -88,9 +88,6 @@ void CProp::Custom_Thread1(_float fTimeDelta)
 
 HRESULT CProp::Render()
 {
-	if (FAILED(SetUp_ShaderResource()))
-		return E_FAIL;
-
 	return __super::Render();
 }
 

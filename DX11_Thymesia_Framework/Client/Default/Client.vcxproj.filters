@@ -974,6 +974,9 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_R_Up_Down_End.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\16.CorvusState_Climb_R_Up_Down_End</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Section_Eventer.h">
+      <Filter>02. GameObject\13. Section_Eventer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1995,6 +1998,9 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_R_Up_Down_End.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\16.CorvusState_Climb_R_Up_Down_End</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Section_Eventer.cpp">
+      <Filter>02. GameObject\13. Section_Eventer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3000,6 +3006,9 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\16.CorvusState_Climb_R_Up_Down_End">
       <UniqueIdentifier>{c7b84338-bd6a-4a77-8845-b055b4e76165}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\13. Section_Eventer">
+      <UniqueIdentifier>{e9d1683f-b3ae-4f2a-8986-0a9d60fbb210}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
