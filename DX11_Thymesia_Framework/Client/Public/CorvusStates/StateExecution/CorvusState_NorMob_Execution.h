@@ -21,6 +21,9 @@ protected:
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
 
+public:
+    void Call_NextAnimationKey(const _uint& In_iKeyIndex);
+
 protected:
     virtual void OnDisable() override;
 
@@ -33,6 +36,8 @@ public:
 private:
     weak_ptr<CGameObject> m_pTargetObject;
     _uint m_iDustEffectIndex;
+
+    weak_ptr<CAnimation> m_ThisStateAnimationCom;
 
 protected:
     virtual void OnEventMessage(weak_ptr<CBase> pArg) override;

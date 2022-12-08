@@ -123,7 +123,7 @@ void CMainApp::Tick(float fTimeDelta)
 	if (nullptr == GAMEINSTANCE)
 		return;
 
-	GAMEINSTANCE->Add_Chromatic(-0.4f * fTimeDelta);
+	GAMEINSTANCE->Add_Chromatic(-0.5f * fTimeDelta);
 	GAMEINSTANCE->Add_RadialBlur(-0.5f * fTimeDelta);
 	GAMEINSTANCE->Add_MotionBlur(-0.4f * fTimeDelta);
 

@@ -1499,7 +1499,7 @@ HRESULT CRender_Manager::PostProcessing()
 	m_pPostProcessingShader->Set_RawValue("g_fMotionBlurStrength", &m_fMotionBlurStrengthAcc, sizeof(_float));//MotionBlur 전용
 	m_pPostProcessingShader->Set_RawValue("g_PreCamViewMatrix", &XMMatrixTranspose(XMLoadFloat4x4(&pPipeLine->Get_PreViewMatrix())), sizeof(_float4x4));
 
-	m_pPostProcessingShader->Set_RawValue("g_fRadialBlurStrength", &m_fRadialBlurStrengthAcc, sizeof(_float));//RadialBlur 전용
+	m_pPostProcessingShader->Set_RawValue("g_fRadialBlurStrength", &fRadialLerpValue, sizeof(_float));//RadialBlur 전용
 	m_pPostProcessingShader->Set_RawValue("g_vBlurWorldPosition", &m_vRadialBlurWorldPos, sizeof(_float3));//RadialBlur 전용
 	m_pPostProcessingShader->Set_RawValue("g_CameraViewMatrix", &XMMatrixTranspose(CamViewMatrix), sizeof(_float4x4));//RadialBlur 전용
 
