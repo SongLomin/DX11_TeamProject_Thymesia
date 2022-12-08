@@ -1,6 +1,11 @@
 #pragma once
 #include "CustomUI.h"
 
+
+BEGIN(Engine)
+class CCollider;
+
+END
 BEGIN(Client)
 
 class CEasingComponent_Alpha;
@@ -28,6 +33,10 @@ public:
 	void			Call_CollisionExit();
 	void			Call_ActionStart();
 	void			Call_ActionEnd();
+	
+private:
+	_bool			m_bActiveAble;
+	weak_ptr< CCollider>	m_pCollisionCollider;
 };
 
 END

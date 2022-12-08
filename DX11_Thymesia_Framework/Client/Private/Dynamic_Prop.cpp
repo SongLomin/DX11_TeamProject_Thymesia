@@ -94,7 +94,7 @@ void CDynamic_Prop::Before_Render(_float fTimeDelta)
 
 HRESULT CDynamic_Prop::Render()
 {
-    __super::Render();
+    CProp::SetUp_ShaderResource();
 
     _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
     for (_uint i = 0; i < iNumMeshContainers; ++i)
@@ -120,6 +120,8 @@ HRESULT CDynamic_Prop::Render()
         m_pShaderCom.lock()->Begin(m_iPassIndex);
         m_pModelCom.lock()->Render_Mesh(i);
     }
+
+    CProp::Render();
 
     return S_OK;
 }

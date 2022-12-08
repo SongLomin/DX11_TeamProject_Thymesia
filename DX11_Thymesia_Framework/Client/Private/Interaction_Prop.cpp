@@ -97,26 +97,23 @@ void CInteraction_Prop::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_p
 {
     m_bNearPlayer = true;
 
-
     weak_ptr<CUI_Interaction> pUI_Interaction = GAMEINSTANCE->Get_GameObjects<CUI_Interaction>(LEVEL_STATIC).front();
 
     if (!pUI_Interaction.lock())
         return;
 
+    Callback_ActStart += bind(&CUI_Interaction::Call_ActionStart, pUI_Interaction.lock());
+    Callback_ActEnd += bind(&CUI_Interaction::Call_ActionEnd, pUI_Interaction.lock());
+
     pUI_Interaction.lock()->Call_CollisionEnter(pMyCollider, (_uint)m_eInteractionType);
-
-}
-
-    if (Callback_ActUpdate.empty())
-    {
-
-    }
 }
 
 void CInteraction_Prop::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
     if (Callback_ActUpdate.empty() && KEY_INPUT(KEY::E, KEY_STATE::TAP))
     {
+        Callback_ActStart();
+
         Act_Interaction();
     }
 }

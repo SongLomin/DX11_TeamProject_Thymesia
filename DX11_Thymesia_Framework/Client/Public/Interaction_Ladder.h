@@ -26,9 +26,7 @@ private:
     enum LADDER_COL_TYPE
     {
         UP_USE,
-        UP_ANIM,
         DOWN_USE,
-        DOWN_ANIM,
 
         TYPE_END
     };

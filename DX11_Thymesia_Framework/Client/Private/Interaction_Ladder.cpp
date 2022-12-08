@@ -361,8 +361,6 @@ void CInteraction_Ladder::SetUpColliderDesc()
     COLLIDERDESC ColliderDesc;
     ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
 
-   
-
     _float3 vUse_Size  = {  1.5f, 0.f, 0.f };
     _float3 vAnim_Size = { 1.5f, 0.f, 0.f };
 
@@ -377,10 +375,6 @@ void CInteraction_Ladder::SetUpColliderDesc()
    ColliderDesc.vTranslation = { 0.f, m_fOffset * (m_iMidSize + OFFSET_INDEX) + 0.2f, 0.f };
    ColliderDesc.vScale = vUse_Size;
    m_pColliderCom[LADDER_COL_TYPE::UP_USE].lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
-   //
-   //ColliderDesc.vScale = vAnim_Size;
-   //m_pColliderCom[LADDER_COL_TYPE::UP_ANIM].lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
-
 
     for (_uint i = 0; i < LADDER_COL_TYPE::TYPE_END; ++i)
         m_pColliderCom[i].lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());

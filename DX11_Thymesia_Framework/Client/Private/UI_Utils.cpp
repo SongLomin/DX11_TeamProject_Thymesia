@@ -7,7 +7,7 @@ _float2 CUI_Utils::ConvertWorldPosToUIPos(_fvector vWorldPos)
 	_vector vViewPosition = vWorldPos;
 	_matrix ViewProjMatrix;
 
-	vViewPosition += XMVectorSet(0.f, 2.f, 0.f, 1.f);
+	vViewPosition += XMVectorSet(0.f, 1.f, 0.f, 1.f);
 
 	ViewProjMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_VIEW) * GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_PROJ);
 

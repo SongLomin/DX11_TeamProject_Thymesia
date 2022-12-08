@@ -5,7 +5,8 @@
 #include "GameManager.h"
 #include "FadeMask.h"
 #include "Fader.h"
-
+#include "UI_EvolveMenu.h"
+#include "UI_PauseMenu.h"
 #include "PhysXCharacterController.h"
 
 CLevel_Stage2::CLevel_Stage2()
@@ -47,6 +48,10 @@ HRESULT CLevel_Stage2::Initialize()
 #endif // ! _ONLY_UI_
 
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
+
+
+	m_pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL_STATIC).front();
+	m_pPauseMenu = GAMEINSTANCE->Get_GameObjects<CUI_PauseMenu>(LEVEL_STATIC).front();
 
 	return S_OK;
 }
