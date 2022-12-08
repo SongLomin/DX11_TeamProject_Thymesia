@@ -91,7 +91,7 @@ public:
     void End_Cinematic();
 
     void Activate_Zoom(_float fRatio, _float fZoomTime);
-    void Deactivate_Zoom();
+    void Deactivate_Zoom(_float fZoomTime);
     _vector Get_PlayerPos();
 
 public:

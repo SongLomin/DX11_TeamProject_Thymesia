@@ -544,9 +544,9 @@ void CGameManager::Activate_Zoom(_float fRatio, _float fZoomTime)
 	m_pTargetCamera.lock()->Activate_Zoom(fRatio, fZoomTime);
 }
 
-void CGameManager::Deactivate_Zoom()
+void CGameManager::Deactivate_Zoom(_float fZoomTime)
 {
-	m_pTargetCamera.lock()->Deactivate_Zoom();
+	m_pTargetCamera.lock()->Deactivate_Zoom(fZoomTime);
 }
 
 _vector CGameManager::Get_PlayerPos()

@@ -249,10 +249,11 @@ void CCamera_Target::Activate_Zoom(_float fRatio, _float fZoomTime)
 	m_fZoomTime = fZoomTime;
 }
 
-void CCamera_Target::Deactivate_Zoom()
+void CCamera_Target::Deactivate_Zoom(_float fZoomTime)
 {
 	m_fZoomStartOffSet = m_fZoom;
 	m_fZoomEndOffSet = 0.f;
+	m_fZoomTime = fZoomTime;
 	m_fZoomTimeAcc = 0.f;
 }
 
@@ -390,18 +391,15 @@ void CCamera_Target::Calculate_ZoomOffSet(_float fTimeDelta)
 	else
 		m_fZoomTimeAcc += fTimeDelta;
 
-	if (1.f >= m_fZoomTimeAcc)
+	if (m_fZoomTime >= m_fZoomTimeAcc)
 	{
 
 		_vector vStartPoint = XMVectorSet(m_fZoomStartOffSet, 0.f, 0.f, 0.f);
 		_vector vEndPoint = XMVectorSet(m_fZoomEndOffSet, 0.f, 0.f, 0.f);
 
-		m_fZoom = CEasing_Utillity::QuartOut(vStartPoint, vEndPoint, m_fZoomTimeAcc, 1.f).m128_f32[0];
+		m_fZoom = CEasing_Utillity::SineOut(vStartPoint, vEndPoint, m_fZoomTimeAcc, m_fZoomTime).m128_f32[0];
 	}
-	if (m_fZoomTime < m_fZoomTimeAcc)
-	{
-		GET_SINGLE(CGameManager)->Deactivate_Zoom();
-	}
+
 }
 
 void CCamera_Target::Calculate_ShakingOffSet(_float fTimeDelta)
@@ -461,14 +459,20 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 	_vector vPrePlayerPos = XMLoadFloat4(&m_vPrePlayerPos);
 	XMStoreFloat4(&m_vPrePlayerPos, vPlayerPos);
 
+	_float fDistance = XMVector3Length(vPlayerPos - vPrePlayerPos).m128_f32[0];
 
-	if (fTimeDelta < XMVector3Length(vPlayerPos - vPrePlayerPos).m128_f32[0])
+	if (fTimeDelta < fDistance)
 	{
 		_vector  vPlayerFollowLerpPostiion = XMLoadFloat4(&m_vPlayerFollowLerpPosition);
 		
 		m_fSpeed += m_fAccel * fTimeDelta;
-		if (5.f < m_fSpeed)
-			m_fSpeed = 5.f;
+
+		
+
+		if (5.f + fDistance < m_fSpeed)
+			m_fSpeed = 5.f + fDistance;
+
+		//플레이어와 카메라 사이 거리에 따라서 거리 이동 보간 비율을 크게 주기
 
 		vPlayerFollowLerpPostiion = XMVectorLerp(vPlayerFollowLerpPostiion, vPrePlayerPos, m_fSpeed * fTimeDelta);
 		XMStoreFloat4(&m_vPlayerFollowLerpPosition, vPlayerFollowLerpPostiion);
