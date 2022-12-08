@@ -502,11 +502,6 @@ void CGameInstance::Render_Font(_uint iFontTag)
 
 }
 
-void CGameInstance::Add_Text(const _uint& iFontTag, const tstring& pString, const _float2& vPosition, _fvector vColor, const _bool& bAlways, _bool bCenterAlign)
-{
-	m_pFont_Manager->Add_Text(iFontTag, pString, vPosition, vColor, bAlways, bCenterAlign);
-}
-
 void CGameInstance::Add_Text(const _uint& iFontTag, const TEXTINFO& In_tTextInfo)
 {
 	m_pFont_Manager->Add_Text(iFontTag, In_tTextInfo);

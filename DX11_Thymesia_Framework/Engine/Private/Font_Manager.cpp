@@ -37,6 +37,16 @@ HRESULT CFont_Manager::Render_Font(_uint iFontTag)
 	return S_OK;
 }
 
+HRESULT CFont_Manager::Render_AllFontWithRenderGroup(const RENDERGROUP In_eRenderGroup)
+{
+	for (auto& elem : m_Fonts)
+	{
+		elem.second->RenderWithRenderGroup(In_eRenderGroup);
+	}
+
+	return S_OK;
+}
+
 HRESULT CFont_Manager::Render_AllFont()
 {
 	for (auto& elem : m_Fonts)
@@ -48,14 +58,14 @@ HRESULT CFont_Manager::Render_AllFont()
 	return S_OK;
 }
 
-void CFont_Manager::Add_Text(const _uint& iFontTag, const tstring& pString, const _float2& vPosition, _fvector vColor, const _bool& bAlways, _bool bCenterAlign)
-{
-	shared_ptr<CCustomFont> pFont = Find_Font(iFontTag);
-	if (!pFont)
-		return;
-
-	pFont->Add_Text(pString, vPosition, vColor, bAlways, bCenterAlign);
-}
+//void CFont_Manager::Add_Text(const _uint& iFontTag, const tstring& pString, const _float2& vPosition, _fvector vColor, const _bool& bAlways, _bool bCenterAlign)
+//{
+//	shared_ptr<CCustomFont> pFont = Find_Font(iFontTag);
+//	if (!pFont)
+//		return;
+//
+//	pFont->Add_Text(pString, vPosition, vColor, bAlways, bCenterAlign);
+//}
 
 void CFont_Manager::Add_Text(const _uint& iFontTag, const TEXTINFO& In_tTextInfo)
 {
