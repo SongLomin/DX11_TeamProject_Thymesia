@@ -5,6 +5,7 @@
 #include "UI_Utils.h"
 #include "Collider.h"
 
+
 HRESULT CUI_Interaction::Initialize_Prototype()
 {
     __super::Initialize_Prototype();
@@ -53,11 +54,29 @@ void CUI_Interaction::LateTick(_float fTimeDelta)
 
 void CUI_Interaction::Call_CollisionEnter(weak_ptr<CCollider> pMyCollider, _uint _iInteractionType)
 {
+    Set_Enable(true);
+
     _float2     m_fCollsionPos = CUI_Utils::ConvertWorldPosToUIPos(pMyCollider.lock()->Get_CurrentPosition());
 
     Set_UIPosition(m_fCollsionPos.x, m_fCollsionPos.y);
     m_pEasingAlphaCom.lock()->Set_Lerp(0.f, 1.f, 1.f, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE, false);
 
+    CInteraction_Prop::INTERACTIONTYPE eInteractionType = (CInteraction_Prop::INTERACTIONTYPE)_iInteractionType;
+    
+    switch (eInteractionType)
+    {
+    case CInteraction_Prop::INTERACTIONTYPE::INTERACTION_DOOR:
+        Set_Texture("Interaction_Open");
+        break;
+    case CInteraction_Prop::INTERACTIONTYPE::INTERACTION_LADDER:
+        Set_Texture("Interaction_Climb");
+        break;
+    case CInteraction_Prop::INTERACTIONTYPE::INTERACTION_ELEVATOR:
+        Set_Texture("Interaction_Elevator");
+        break;
+    default:
+        break;
+    }
 }
 
 void CUI_Interaction::Call_CollisionExit()
