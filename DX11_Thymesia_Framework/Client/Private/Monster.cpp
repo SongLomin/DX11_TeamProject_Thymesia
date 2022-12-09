@@ -76,17 +76,12 @@ void CMonster::Tick(_float fTimeDelta)
 
     __super::Tick(fTimeDelta);
 
-    m_pCurState.lock()->Tick(fTimeDelta);
-    m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
     m_pStatus.lock()->Tick(fTimeDelta);
-
-
 }
 
 void CMonster::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
-    m_pCurState.lock()->LateTick(fTimeDelta);
     m_pStatus.lock()->LateTick(fTimeDelta);
 
     GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_SHADOWDEPTH, Weak_Cast<CGameObject>(m_this));

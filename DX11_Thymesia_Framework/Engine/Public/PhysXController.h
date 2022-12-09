@@ -60,7 +60,8 @@ public:
 	virtual PxControllerCollisionFlags	MoveGravity(const _float fDeltaTime, PxControllerFilters& filters);
 	void								Reset_Gravity();
 
-
+public:
+	FDelegate<const PxControllersHit&>	Callback_ControllerHit;
 
 
 public:

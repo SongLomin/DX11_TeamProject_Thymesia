@@ -7,6 +7,7 @@
 #include "Animation.h"
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
+#include "PhysXController.h"
 
 
 GAMECLASS_C(CCorvusState_ClawAttackHold);
@@ -113,6 +114,9 @@ void CCorvusState_ClawAttackHold::OnStateStart(const _float& In_fAnimationBlendT
 
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
+
+	
+
 	//m_iAttackIndex = 7;
 	//m_iEndAttackEffectIndex = -1;
 

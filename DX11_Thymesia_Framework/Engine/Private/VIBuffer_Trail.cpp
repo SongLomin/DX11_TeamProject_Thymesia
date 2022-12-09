@@ -179,6 +179,7 @@ void CVIBuffer_Trail::Update(_float _fTimeDelta, weak_ptr <CTransform> _pOwnerTr
         XMStoreFloat3(&((VTXTEX*)tSubResource.pData)[m_iVtxCnt + 1].vPosition, vPos[1]);
     }
 
+    // 12개가 포함된 개수라며 6개면, 6 * (12 + 2) = VtxCnt
     m_iVtxCnt += 2;
 
 #pragma region CatMullRom

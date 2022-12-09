@@ -17,6 +17,7 @@
 #include "VargStates.h"
 #include "BoneNode.h"
 #include "Model.h"
+#include "RequirementChecker.h"
 
 
 GAMECLASS_C(CCorvusStateBase)
@@ -430,6 +431,14 @@ _bool CCorvusStateBase::Check_RequirementAttackClose(weak_ptr<CGameObject>& Out_
 
 
 	return false();
+}
+
+void CCorvusStateBase::Call_OtherControllerHit(const PxControllersHit& In_hit)
+{
+	shared_ptr<CRequirement_State> pReq_Once = make_shared<CRequirement_State>();
+	pReq_Once->Init_Req(m_pOwnerFromPlayer, m_iStateIndex);
+
+	m_pOwnerFromPlayer.lock()->Get_Requirement("RootMotion").lock()->Add_Requirement(pReq_Once);
 }
 
 void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)

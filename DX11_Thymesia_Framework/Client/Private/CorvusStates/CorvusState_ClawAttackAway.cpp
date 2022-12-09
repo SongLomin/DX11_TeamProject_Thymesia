@@ -7,6 +7,7 @@
 #include "Animation.h"
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
+#include "PhysXCharacterController.h"
 
 GAMECLASS_C(CCorvusState_ClawAttackAway);
 CLONE_C(CCorvusState_ClawAttackAway, CComponent)
@@ -118,6 +119,9 @@ void CCorvusState_ClawAttackAway::OnStateStart(const _float& In_fAnimationBlendT
 
 	m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_ClawAttackAway::Call_NextKeyFrame, this, placeholders::_1);
 
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
+		bind(&CCorvusState_ClawAttackAway::Call_OtherControllerHit, this, placeholders::_1);
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "NorMonState: Attack -> OnStateStart" << endl;
@@ -133,6 +137,9 @@ void CCorvusState_ClawAttackAway::OnStateEnd()
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 	m_IsNextAttack = false;
 	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CCorvusState_ClawAttackAway::Call_NextKeyFrame, this, placeholders::_1);
+
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit -=
+		bind(&CCorvusState_ClawAttackAway::Call_OtherControllerHit, this, placeholders::_1);
 }
 
 void CCorvusState_ClawAttackAway::OnEventMessage(_uint iArg)

@@ -7,6 +7,7 @@
 #include "Animation.h"
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
+#include "PhysXController.h"
 
 
 GAMECLASS_C(CCorvusState_ClawAttackTab);
@@ -193,7 +194,11 @@ void CCorvusState_ClawAttackTab::OnStateStart(const _float& In_fAnimationBlendTi
 	}
 
 	m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
-	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_ClawAttackTab::Call_NextAnimationKey, this, placeholders::_1);
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey += 
+		bind(&CCorvusState_ClawAttackTab::Call_NextAnimationKey, this, placeholders::_1);
+
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
+		bind(&CCorvusState_ClawAttackTab::Call_OtherControllerHit, this, placeholders::_1);
 
 	//m_iAttackIndex = 7;
 	//m_iEndAttackEffectIndex = -1;
@@ -216,7 +221,11 @@ void CCorvusState_ClawAttackTab::OnStateEnd()
 	//Disable_Weapons();
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 	m_IsNextAttack = false;
-	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CCorvusState_ClawAttackTab::Call_NextAnimationKey, this, placeholders::_1);
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -= 
+		bind(&CCorvusState_ClawAttackTab::Call_NextAnimationKey, this, placeholders::_1);
+
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit -=
+		bind(&CCorvusState_ClawAttackTab::Call_OtherControllerHit, this, placeholders::_1);
 }
 
 void CCorvusState_ClawAttackTab::OnEventMessage(_uint iArg)

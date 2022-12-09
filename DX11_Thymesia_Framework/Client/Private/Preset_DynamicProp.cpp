@@ -11,6 +11,11 @@ void Preset::Dynamic_Prop::GateWay_DynamicPropSetting(const string& In_szModelKe
 		Wagon3_DynamicPropSetting(In_iCreatedLevel, Out_Pieces);
 	}
 
+    else if (hash<string>()("Fence_16a_Origin") == ModelKeyToHash)
+    {
+        Fence_16a_DynamicPropSetting(In_iCreatedLevel, Out_Pieces);
+    }
+
 }
 
 void Preset::Dynamic_Prop::Wagon3_DynamicPropSetting(const _uint In_iCreatedLevel, list<weak_ptr<CDynamic_Piece>>& Out_Pieces)
@@ -39,4 +44,11 @@ void Preset::Dynamic_Prop::Wagon3_DynamicPropSetting(const _uint In_iCreatedLeve
     Out_Pieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(In_iCreatedLevel, (void*)"Wagon3_22"));
     Out_Pieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(In_iCreatedLevel, (void*)"Wagon3_23"));
     Out_Pieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(In_iCreatedLevel, (void*)"Wagon3_24"));
+}
+
+void Preset::Dynamic_Prop::Fence_16a_DynamicPropSetting(const _uint In_iCreatedLevel, list<weak_ptr<Client::CDynamic_Piece>>& Out_Pieces)
+{
+    Out_Pieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(In_iCreatedLevel, (void*)"Fence_16a_1"));
+    Out_Pieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(In_iCreatedLevel, (void*)"Fence_16a_2"));
+    Out_Pieces.push_back(GAMEINSTANCE->Add_GameObject<CDynamic_Piece>(In_iCreatedLevel, (void*)"Fence_16a_3"));
 }

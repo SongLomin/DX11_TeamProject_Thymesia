@@ -1,11 +1,7 @@
 #include "stdafx.h"
 #include "Character.h"
 //#include "BehaviorBase.h"
-#include "Navigation.h"
-#include "StateBase.h"
-#include "Status.h"
-#include "Collider.h"
-#include "PhysXCharacterController.h"
+#include "Client_Components.h"
 
 GAMECLASS_C(CCharacter)
 CLONE_C(CCharacter, CGameObject)
@@ -23,6 +19,10 @@ HRESULT CCharacter::Initialize(void* pArg)
 
 	m_pNaviMeshCom = Add_Component<CNavigation>();
 	m_pPhysXControllerCom = Add_Component<CPhysXCharacterController>();
+
+	
+	m_pRequirementCheckerComs.emplace(hash<string>()("RootMotion"), Add_Component<CRequirementChecker>());
+
 	return S_OK;
 }
 
@@ -65,7 +65,23 @@ void CCharacter::Tick(_float fTimeDelta)
 #endif
 	}
 #endif
+
+	if (m_pCurState.lock())
+		m_pCurState.lock()->Tick(fTimeDelta);
+
+	Move_RootMotion(fTimeDelta);
+
+	if (m_pHitColliderCom.lock())
+		m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 	
+}
+
+void CCharacter::LateTick(_float fTimeDelta)
+{
+	__super::LateTick(fTimeDelta);
+
+	if (m_pCurState.lock())
+		m_pCurState.lock()->LateTick(fTimeDelta);
 }
 
 void CCharacter::Before_Render(_float fTimeDelta)
@@ -73,6 +89,16 @@ void CCharacter::Before_Render(_float fTimeDelta)
 	m_pPhysXControllerCom.lock()->Synchronize_Transform(m_pTransformCom);
 
 	__super::Before_Render(fTimeDelta);
+}
+
+void CCharacter::Move_RootMotion(_float fTimeDelta)
+{
+	if (!m_pRequirementCheckerComs[hash<string>()("RootMotion")].lock()->Check_Requirments())
+	{
+		return;
+	}
+
+	Move_RootMotion_Internal();
 }
 
 weak_ptr<CStateBase> CCharacter::Get_PreState() const

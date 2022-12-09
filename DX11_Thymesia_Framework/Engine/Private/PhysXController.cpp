@@ -55,7 +55,7 @@ void CPhysXController::onShapeHit(const PxControllerShapeHit& hit)
 
 void CPhysXController::onControllerHit(const PxControllersHit& hit)
 {
-
+	Callback_ControllerHit(hit);
 }
 
 

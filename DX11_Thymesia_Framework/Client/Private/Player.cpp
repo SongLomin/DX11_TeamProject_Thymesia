@@ -77,20 +77,13 @@ void CPlayer::Tick(_float fTimeDelta)
     //if (m_bIsFocused)
     //    Look_At_Mosnter();
 
-    if(m_pCurState.lock())
-        m_pCurState.lock()->Tick(fTimeDelta);
-
-    if(m_pHitColliderCom.lock())
-        m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+    
 
 }
 
 void CPlayer::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
-
-    if (m_pCurState.lock())
-        m_pCurState.lock()->LateTick(fTimeDelta);
 
     GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_SHADOWDEPTH, m_thisToPlayer);
 }

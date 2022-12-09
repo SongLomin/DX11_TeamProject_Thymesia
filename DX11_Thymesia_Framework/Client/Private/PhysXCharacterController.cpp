@@ -43,6 +43,8 @@ void CPhysXCharacterController::onShapeHit(const PxControllerShapeHit& hit)
 
 void CPhysXCharacterController::onControllerHit(const PxControllersHit& hit)
 {
+	__super::onControllerHit(hit);
+
 }
 
 void CPhysXCharacterController::onObstacleHit(const PxControllerObstacleHit& hit)

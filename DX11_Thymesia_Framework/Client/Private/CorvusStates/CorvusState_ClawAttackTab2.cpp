@@ -7,6 +7,7 @@
 #include "Animation.h"
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
+#include "PhysXController.h"
 
 
 GAMECLASS_C(CCorvusState_ClawAttackTab2);
@@ -113,6 +114,10 @@ void CCorvusState_ClawAttackTab2::OnStateStart(const _float& In_fAnimationBlendT
 
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
+
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit += 
+		bind(&CCorvusState_ClawAttackTab2::Call_OtherControllerHit, this, placeholders::_1);
+
 	//m_iAttackIndex = 7;
 	//m_iEndAttackEffectIndex = -1;
 
@@ -134,6 +139,9 @@ void CCorvusState_ClawAttackTab2::OnStateEnd()
 	//Disable_Weapons();
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 	m_IsNextAttack = false;
+
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit -=
+		bind(&CCorvusState_ClawAttackTab2::Call_OtherControllerHit, this, placeholders::_1);
 
 }
 

@@ -6,6 +6,7 @@
 #include "Transform.h"
 #include "RigidBody.h"
 #include "GameManager.h"
+#include "RequirementChecker.h"
 
 GAMECLASS_C(CActor)
 CLONE_C(CActor, CGameObject)
@@ -72,7 +73,11 @@ void CActor::Before_Render(_float fTimeDelta)
 
 void CActor::Custom_Thread0(_float fTimeDelta)
 {
-    m_pModelCom.lock()->Update_BoneMatrices();
+    if (m_bRendering)
+    {
+        m_pModelCom.lock()->Update_BoneMatrices();
+    }
+
 }
 
 void CActor::Custom_Thread1(_float fTimeDelta)
@@ -112,6 +117,12 @@ void CActor::Call_NextAnimationKey(const _uint& In_iKeyIndex)
     GET_SINGLE(CGameManager)->Active_KeyEvent(m_pModelCom, m_pTransformCom, In_iKeyIndex);
 
 }
+
+weak_ptr<CRequirementChecker> CActor::Get_Requirement(const string& In_szCheckerKey)
+{
+    return m_pRequirementCheckerComs[hash<string>()(In_szCheckerKey)];
+}
+
 
 void CActor::SetUp_ShaderResource()
 {

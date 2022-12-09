@@ -78,8 +78,6 @@ void CDynamic_Piece::Tick(_float fTimeDelta)
 void CDynamic_Piece::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
-
-    m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
 }
 
 void CDynamic_Piece::Before_Render(_float fTimeDelta)
@@ -119,7 +117,10 @@ HRESULT CDynamic_Piece::Render()
         // 노말 텍스쳐가 있는 경우
         else
         {
-            m_iPassIndex = 8;
+            if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+                m_iPassIndex = 8;
+            else
+                m_iPassIndex = 9;
         }
 
         m_pShaderCom.lock()->Begin(m_iPassIndex);

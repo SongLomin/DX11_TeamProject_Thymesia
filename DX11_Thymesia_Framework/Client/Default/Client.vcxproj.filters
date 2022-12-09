@@ -974,6 +974,18 @@
     <ClInclude Include="..\Public\Preset_PhysXColliderDesc.h">
       <Filter>06. DataPreset\00. Preset_PhysXColliderDesc</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\RequirementBase.h">
+      <Filter>07. Requirement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Requirement_Once.h">
+      <Filter>07. Requirement\02. Requirement_Once</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\RequirementChecker.h">
+      <Filter>05. Component\01. RequirementChecker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Requirement_State.h">
+      <Filter>07. Requirement\03. Requirement_State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1995,6 +2007,18 @@
     <ClCompile Include="..\Private\Preset_PhysXColliderDesc.cpp">
       <Filter>06. DataPreset\00. Preset_PhysXColliderDesc</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\RequirementBase.cpp">
+      <Filter>07. Requirement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Requirement_Once.cpp">
+      <Filter>07. Requirement\02. Requirement_Once</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\RequirementChecker.cpp">
+      <Filter>05. Component\01. RequirementChecker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Requirement_State.cpp">
+      <Filter>07. Requirement\03. Requirement_State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3000,6 +3024,24 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\16.CorvusState_Climb_R_Up_Down_End">
       <UniqueIdentifier>{c7b84338-bd6a-4a77-8845-b055b4e76165}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07. Requirement">
+      <UniqueIdentifier>{2b7c1ad3-66de-4c0c-be0e-e6beaf77b418}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07. Requirement\00. Requirement_Time">
+      <UniqueIdentifier>{ca548547-1a4a-487c-acf8-dbb29996661a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07. Requirement\01. Requirement_Count">
+      <UniqueIdentifier>{4b84d24a-498f-491a-ba57-d952fc2a90e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07. Requirement\02. Requirement_Once">
+      <UniqueIdentifier>{6292024f-ccce-42e3-9934-d055f9acc74b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\01. RequirementChecker">
+      <UniqueIdentifier>{5fde1552-d613-4fd0-8bee-5b936e9e0c27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07. Requirement\03. Requirement_State">
+      <UniqueIdentifier>{2aae9c0e-209d-4609-8b52-3ac57181093f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

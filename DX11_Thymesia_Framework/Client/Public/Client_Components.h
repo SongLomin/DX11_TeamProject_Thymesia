@@ -18,6 +18,8 @@
 #include "PhysXController.h"
 #include "PhysXCameraController.h"
 #include "PhysXCharacterController.h"
+#include "RequirementChecker.h"
+#include "StateBase.h"
 
 
 

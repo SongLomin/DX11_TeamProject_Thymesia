@@ -79,8 +79,6 @@ HRESULT CCorvus::Start()
 void CCorvus::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-	
-	this->RootMove();
 
 	// TODO : get rid of this
 	this->Debug_KeyInput(fTimeDelta);
@@ -260,6 +258,16 @@ void CCorvus::SetUp_ShaderResource()
 #endif // !_USE_THREAD_
 }
 
+void CCorvus::Move_RootMotion_Internal()
+{
+	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
+	//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
+
+	PxControllerFilters Filters;
+	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, GAMEINSTANCE->Get_DeltaTime(), Filters, nullptr, m_pTransformCom);
+}
+
 void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 	switch ((COLLISION_LAYER)pOtherCollider.lock()->Get_CollisionLayer())
@@ -316,16 +324,6 @@ void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::CHECKPOINT;
 		break;
 	}
-}
-
-void CCorvus::RootMove()
-{
-	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
-	//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
-
-	PxControllerFilters Filters;
-	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, GAMEINSTANCE->Get_DeltaTime(), Filters, nullptr, m_pTransformCom);
 }
 
 void CCorvus::OnBattleEnd()

@@ -8,9 +8,13 @@ class CShader;
 class CRenderer;
 class CRigidBody;
 
+
 END
 
 BEGIN(Client)
+class CRequirementBase;
+
+class CRequirementChecker;
 
 class CActor :
     public CGameObject
@@ -36,6 +40,8 @@ public:
 public:
     void Call_NextAnimationKey(const _uint& In_iKeyIndex);
     weak_ptr<CModel>   Get_Model() { return m_pModelCom; }
+    weak_ptr<CRequirementChecker> Get_Requirement(const string& In_szCheckerKey);
+
 protected:
     virtual void SetUp_ShaderResource();
 
@@ -43,6 +49,7 @@ protected:
     weak_ptr<CModel> m_pModelCom;
     weak_ptr<CShader> m_pShaderCom;
     weak_ptr<CRenderer> m_pRendererCom;
+    map<_hashcode, weak_ptr<CRequirementChecker>> m_pRequirementCheckerComs;
 
     list<pair<string, _uint>>   m_EffectIndexList;
 
@@ -54,7 +61,7 @@ protected:
 
     _bool       m_bRendering = true;
 
-    _float      m_fCullingRange = 0.f;
+    _float      m_fCullingRange = 5.f;
 
 public:
     // 전투가 끝나면 호출됩니다. 주로 승리 연출

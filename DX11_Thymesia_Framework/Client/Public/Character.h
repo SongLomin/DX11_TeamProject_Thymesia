@@ -49,7 +49,12 @@ public:
 
 protected:
     virtual void Tick(_float fTimeDelta) override;
+    virtual void LateTick(_float fTimeDelta) override;
     virtual void Before_Render(_float fTimeDelta) override;
+    
+protected:
+    void            Move_RootMotion(_float fTimeDelta);
+    virtual void    Move_RootMotion_Internal() {};
 
 protected:
     weak_ptr<CCollider>     m_pHitColliderCom;
@@ -67,6 +72,9 @@ private:
     _bool m_isEdit = false;
     _bool     m_bSuperArmor = false;
     PxControllerCollisionFlags m_LastCollisionFlags;
+
+private: /* For. RootMotion */
+    
 
 
 public:

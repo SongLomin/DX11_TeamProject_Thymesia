@@ -199,7 +199,7 @@ void CPhysXCameraController::Update_RayCastCollision(_float fDeltaTime)
 		PxHitFlag::ePOSITION, 1, &newHit);
 
 
-	PxVec3 RayDirOffset = (RayDir * -1.f);
+	//PxVec3 RayDirOffset = (RayDir * -1.f);
 
 	// 충돌했는지?
 	if (n > 0)
@@ -208,7 +208,7 @@ void CPhysXCameraController::Update_RayCastCollision(_float fDeltaTime)
 
 		// + PxExtendedVec3(RayDirOffset.x, RayDirOffset.y, RayDirOffset.z)
 
-		newHit.position += RayDirOffset;
+		//newHit.position += RayDirOffset;
 
 		PxExtendedVec3 position = m_pController->getPosition();
 

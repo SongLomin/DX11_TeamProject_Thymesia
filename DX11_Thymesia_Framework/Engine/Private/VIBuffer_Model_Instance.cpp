@@ -157,13 +157,6 @@ void CVIBuffer_Model_Instance::Create_Materials(const char* pModelFilePath)
 			szFullPath = pModelFilePath;
 			szFullPath += szFileName;
 
-			//strcpy_s(szFullPath, pModelFilePath);
-			//strcat_s(szFullPath, szFileName);
-
-			//strcpy_s(szFullddsPath, szFullpngPath);
-			//strcat_s(szFullddsPath, ".dds");
-			//strcat_s(szFullpngPath, ".png");
-
 
 			tstring		szTextureFileddsPath = filesystem::path(szFullPath + ".dds").wstring();
 			tstring		szTextureFilepngPath = filesystem::path(szFullPath + ".png").wstring();

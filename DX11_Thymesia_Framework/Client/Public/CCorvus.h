@@ -34,7 +34,7 @@ private:
     void Ready_Weapon();
     void Ready_States();
     virtual void SetUp_ShaderResource() override;
-    void RootMove();
+    virtual void Move_RootMotion_Internal() override;
     virtual void OnBattleEnd() override;
     virtual void OnEnable(void* pArg) override;
     virtual void OnDisable() override;

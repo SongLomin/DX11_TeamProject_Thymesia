@@ -136,7 +136,7 @@ HRESULT CStatic_Instancing_Prop::Render()
 			{
 				if (m_bInvisibility)
 				{
-                					if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+                	if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
 						m_iPassIndex = 7;
 					else
 						m_iPassIndex = 8;

@@ -174,6 +174,11 @@ HRESULT CLoader::Loading_ForLogoLevel()
 #ifdef _ONLY_UI_
 	Load_UIResource();
 #endif
+
+	//DamageFont
+	GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("DamageFont_Normal"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Normal/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("DamageFont_Parry"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Parry/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 	
 	
 #ifndef _ONLY_UI_
@@ -266,6 +271,7 @@ HRESULT CLoader::Loading_ForTestLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Distructable/Wagon03/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Distructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
+	Load_AllMeshes("../Bin/Resources/Meshes/Distructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
 #ifdef _TEST_STATIC_PROPS_
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/ForTest_Mesh/ ]"));
@@ -285,7 +291,9 @@ HRESULT CLoader::Loading_ForTestLevel()
 #endif // _TEST_STATIC_PROPS_
 
 #endif // _LOAD_CAPTURED_RESOURCE_
-
+	_matrix TransformMatrix;
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
+	Load_AllMeshes("../Bin/Resources/Meshes/Distructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 	lstrcpy(m_szLoadingText, TEXT("Loading Complete for : Level Test"));
 
 #endif _ONLY_UI_

@@ -211,48 +211,6 @@ void CNorMonster::Init_Desc()
 void CNorMonster::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
-	PxControllerFilters Filters = Filters;
-
-	switch (m_tLinkStateDesc.eMonType)
-	{
-	case  MONSTERTYPE::AXEMAN:
-		_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
-		//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDirs, m_pNaviMeshCom);
-		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
-		break;
-	case  MONSTERTYPE::KNIFEWOMAN:	
-		vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
-		//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
-		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
-		break;
-	case  MONSTERTYPE::GARDENER:
-		vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
-		//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
-		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
-		break;
-	case MONSTERTYPE::ELITEGARDENER:
-		vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
-		//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
-		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
-		break;
-	case  MONSTERTYPE::SHIELDAXEMAN:
-		vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
-		//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDirs, m_pNaviMeshCom);
-		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
-		break;
-	case MONSTERTYPE::BALLOON:
-		vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
-		//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDirs, m_pNaviMeshCom);
-		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
-		break;
-	}
 }
 
 void CNorMonster::LateTick(_float fTimeDelta)
@@ -308,6 +266,41 @@ void CNorMonster::SetUp_ShaderResource()
 #ifndef _USE_THREAD_
 	m_pModelCom.lock()->Update_BoneMatrices();
 #endif // !_USE_THREAD_
+
+}
+
+void CNorMonster::Move_RootMotion_Internal()
+{
+	PxControllerFilters Filters = Filters;
+	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+
+	switch (m_tLinkStateDesc.eMonType)
+	{
+	case  MONSTERTYPE::AXEMAN:
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		break;
+	case  MONSTERTYPE::KNIFEWOMAN:
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		break;
+	case  MONSTERTYPE::GARDENER:
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		break;
+	case MONSTERTYPE::ELITEGARDENER:
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		break;
+	case  MONSTERTYPE::SHIELDAXEMAN:
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		break;
+	case MONSTERTYPE::BALLOON:
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		break;
+	}
 
 }
 

@@ -63,6 +63,9 @@ HRESULT CEffect_Trail::Render()
 }
 void CEffect_Trail::Update(_float fTimeDelta, weak_ptr <CTransform> _pOwnerTransform, weak_ptr<CBoneNode> _pOwnerBoneNode, weak_ptr<MODEL_DATA> _pOwnerModel_Data)
 {
+	if (!Get_Enable())
+		return;
+
 	m_pVIBuffer.lock()->Update(fTimeDelta, _pOwnerTransform, _pOwnerBoneNode, _pOwnerModel_Data);
 }
 
@@ -90,12 +93,14 @@ void CEffect_Trail::OnEnable(void* pArg)
 {
 	__super::OnEnable(pArg);
 
-	m_pVIBuffer.lock()->Reset_Points(m_pOwnerTransform, m_pOwnerBoneNode, m_pOwnerModel_Data);
+	
 }
 
 void CEffect_Trail::OnDisable()
 {
 	__super::OnDisable();
+
+	m_pVIBuffer.lock()->Reset_Points(m_pOwnerTransform, m_pOwnerBoneNode, m_pOwnerModel_Data);
 }
 
 

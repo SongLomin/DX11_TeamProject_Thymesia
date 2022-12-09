@@ -67,8 +67,8 @@ HRESULT CLevel_Test::Initialize()
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
 
 #ifdef _TEST_DYNAMIC_PROPS_
-	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 5.f, 0.f, 5.f });
-	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 15.f, 0.f, 15.f });
+	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 5.f, 2.f, 5.f });
+	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 15.f, 2.f, 15.f });
 #endif
 
 	//야매에요

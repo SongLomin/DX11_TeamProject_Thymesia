@@ -37,7 +37,7 @@ HRESULT CDynamic_Prop::Start()
 {
     if (!m_pModelCom.lock()->Get_ModelData().lock() && (_uint)LEVEL_EDIT != m_CreatedLevel)
     {
-        m_pModelCom.lock()->Init_Model("Wagon3_Origin");
+        m_pModelCom.lock()->Init_Model("Fence_16a_Origin");
         m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
         Preset::Dynamic_Prop::GateWay_DynamicPropSetting(m_pModelCom.lock()->Get_ModelKey(), m_CreatedLevel, m_pPieces);
     }
@@ -114,7 +114,10 @@ HRESULT CDynamic_Prop::Render()
         // 노말 텍스쳐가 있는 경우
         else
         {
-            m_iPassIndex = 3;
+            if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+                m_iPassIndex = 6;
+            else
+                m_iPassIndex = 7;
         }
 
         m_pShaderCom.lock()->Begin(m_iPassIndex);

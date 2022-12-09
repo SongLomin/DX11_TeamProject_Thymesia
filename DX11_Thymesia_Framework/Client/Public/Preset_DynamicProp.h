@@ -12,5 +12,6 @@ namespace Preset
 	{
 		void GateWay_DynamicPropSetting(const string& In_szModelKey, const _uint In_iCreatedLevel, list<weak_ptr<Client::CDynamic_Piece>>& Out_Pieces);
 		void Wagon3_DynamicPropSetting(const _uint In_iCreatedLevel, list<weak_ptr<Client::CDynamic_Piece>>& Out_Pieces);
+		void Fence_16a_DynamicPropSetting(const _uint In_iCreatedLevel, list<weak_ptr<Client::CDynamic_Piece>>& Out_Pieces);
 	}
 }

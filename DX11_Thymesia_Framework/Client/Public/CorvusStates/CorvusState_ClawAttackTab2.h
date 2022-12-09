@@ -24,6 +24,7 @@ protected:
 
 public:
     void Call_AnimationEnd();
+    
     void Play_AttackWithIndex(const _tchar& In_iAttackIndex);
     void Attack();
     void Check_InputNextAttack();

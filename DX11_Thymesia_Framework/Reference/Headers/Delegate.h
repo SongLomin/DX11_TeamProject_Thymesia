@@ -41,6 +41,16 @@ public:
 	FDelegate& operator += (std::function<void(ARGS...)> const& func)
 	{
 		functions.push_back(func);
+
+#ifdef _DEBUG
+		if (functions.size() % 100 == 0)
+		{
+			cout << "Warning: " << functions.size() << " functions have been bound to Delegate." << endl;
+		}
+#endif // _DEBUG
+
+		
+
 		return *this;
 	}
 
