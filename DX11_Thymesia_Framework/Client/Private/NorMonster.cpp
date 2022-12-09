@@ -75,9 +75,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 HRESULT CNorMonster::Start()
 {
 	__super::Start();
-
 	Change_State<CNorMonState_Idle>();
-	
 	return S_OK;
 }
 

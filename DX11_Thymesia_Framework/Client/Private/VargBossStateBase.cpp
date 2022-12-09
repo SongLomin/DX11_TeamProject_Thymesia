@@ -159,6 +159,7 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 		Play_OnHitEffect();
 
 		_float fMagnifiedDamage = In_fDamage;
+		_uint iRand = rand() % 8 + 1;
 
 		switch (eAttackOption)
 		{

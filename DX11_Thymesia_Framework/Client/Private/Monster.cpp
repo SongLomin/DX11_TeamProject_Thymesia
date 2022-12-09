@@ -205,8 +205,8 @@ void  CMonster::Load_FromJson(const json& In_Json)
 
 
    //TODO : 테스트용으로 반드시 삭제하시오
-   /* if (LEVEL::LEVEL_EDIT != m_CreatedLevel)
-        Set_Enable(false);*/
+    if (LEVEL::LEVEL_EDIT != m_CreatedLevel)
+        Set_Enable(false);
 }
 
 void CMonster::Init_Desc()
@@ -269,14 +269,11 @@ void CMonster::OnEnable(void* _Arg)
 
     GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::MONSTER, Weak_Cast<CGameObject>(m_this));
     m_pHitColliderCom.lock()->Set_Enable(true);
-    
 }
 
 void CMonster::OnDisable()
 {
     __super::OnDisable();
-
-    
 }
 
 void CMonster::OnDestroy()

@@ -297,7 +297,6 @@ HRESULT CLoader::Loading_ForTestLevel()
 #endif // _TEST_STATIC_PROPS_
 
 #endif // _LOAD_CAPTURED_RESOURCE_
-	_matrix TransformMatrix;
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
 	Load_AllMeshes("../Bin/Resources/Meshes/Distructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 	lstrcpy(m_szLoadingText, TEXT("Loading Complete for : Level Test"));

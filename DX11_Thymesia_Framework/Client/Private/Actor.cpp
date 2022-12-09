@@ -80,8 +80,6 @@ void CActor::Custom_Thread0(_float fTimeDelta)
         m_pModelCom.lock()->Update_BoneMatrices();
 }
 
-}
-
 void CActor::Custom_Thread1(_float fTimeDelta)
 {
     __super::Custom_Thread1(fTimeDelta);

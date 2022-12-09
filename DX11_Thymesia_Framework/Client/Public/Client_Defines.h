@@ -38,7 +38,6 @@
 #define _STAGE_2_
 #define _TEST_STATIC_PROPS_
 #define _TEST_DYNAMIC_PROPS_
-#define	_Actor_Culling_
 #pragma endregion // Map
 
 #pragma region Tool
