@@ -403,8 +403,6 @@ void CMonsterHPBar_Base::FollowOwner()
 void CMonsterHPBar_Base::Set_Owner(weak_ptr<CMonster> pMonster)
 {
 	m_pOwner = pMonster;
-
-
 	weak_ptr<CStatus_Monster> pStatus_Monster;
 
 	pStatus_Monster = Weak_StaticCast<CStatus_Monster>(pMonster.lock()->Get_ComponentByType<CStatus>());

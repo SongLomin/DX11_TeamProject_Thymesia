@@ -37,8 +37,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		VTXANIM_DECLARATION::Element,
 		VTXANIM_DECLARATION::iNumElements);
 
-	weak_ptr<CMonsterHPBar_Base> pHPBar = GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Base>(LEVEL_STATIC);
-	pHPBar.lock()->Set_Owner(Weak_Cast<CMonster>(m_this));
+	
 
 	m_pStandState = Add_Component<CNorMonState_Idle>();
 	Add_Component<CNorMonState_Stop>();
@@ -76,6 +75,9 @@ HRESULT CNorMonster::Start()
 {
 	__super::Start();
 	Change_State<CNorMonState_Idle>();
+
+	m_pHPBar = GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Base>(LEVEL_STATIC);
+	m_pHPBar.lock()->Set_Owner(Weak_Cast<CMonster>(m_this));
 	return S_OK;
 }
 
@@ -215,6 +217,12 @@ void CNorMonster::Init_Desc()
 void CNorMonster::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	//TestCode
+	if (m_pHPBar.lock())
+	{
+	}
+
 }
 
 void CNorMonster::LateTick(_float fTimeDelta)
