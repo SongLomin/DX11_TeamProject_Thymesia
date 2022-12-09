@@ -371,6 +371,7 @@ void CUI_EveolveMenu_Talent::SetUp_TalentNode(weak_ptr<CTalent> pNode, UI_DESC t
 void CUI_EveolveMenu_Talent::Call_ReturnToEvolveMenu()
 {
     Set_Enable(false);
+    m_pFadeMask.lock()->Set_Enable(false);
     GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL_STATIC).front().lock()->Set_Enable(true);
 }
 

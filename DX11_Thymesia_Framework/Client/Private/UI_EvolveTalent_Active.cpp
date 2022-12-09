@@ -94,11 +94,7 @@ void CUI_EvolveTalent_Active::Set_Click(_bool bSelected)
 
 void CUI_EvolveTalent_Active::Animation_MouseOver()
 {
-
-    if (m_pEasingTransformCom.lock()->Is_Lerping())
-    {
-        return;
-    }
+    m_pEasingTransformCom.lock()->Stop();
 
     if (m_bSelected)
     {
@@ -117,10 +113,7 @@ void CUI_EvolveTalent_Active::Animation_MouseOver()
 
 void CUI_EvolveTalent_Active::Animation_MouseOut()
 {
-    if (m_pEasingTransformCom.lock()->Is_Lerping())
-    {
-        return;
-    }
+    m_pEasingTransformCom.lock()->Stop();
 
     if (m_bSelected)
     {

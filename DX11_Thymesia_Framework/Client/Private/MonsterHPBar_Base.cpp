@@ -143,6 +143,9 @@ HRESULT CMonsterHPBar_Base::Initialize(void* pArg)
 	Add_Child(m_pGreen);
 	Add_Child(m_pDecoration_Head);
 	Add_Child(m_pParryingBar);
+
+	Set_Enable(false);
+
 	return S_OK;
 }
 
@@ -440,6 +443,7 @@ void CMonsterHPBar_Base::Set_Owner(weak_ptr<CMonster> pMonster)
 	(
 		&CMonsterHPBar_Base::Call_Restart, this
 	);
+	Set_Enable(false);
 }
 
 

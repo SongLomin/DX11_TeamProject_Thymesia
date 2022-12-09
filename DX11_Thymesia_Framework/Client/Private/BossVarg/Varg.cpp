@@ -35,6 +35,8 @@ HRESULT CVarg::Initialize(void* pArg)
 		VTXANIM_DECLARATION::Element,
 		VTXANIM_DECLARATION::iNumElements);
 
+	m_pModelCom.lock()->Init_Model("Boss_Varg", "", (_uint)TIMESCALE_LAYER::MONSTER);
+
 	m_pStandState = Add_Component<CVargBossState_Start>();
 	Add_Component<CVargBossState_Attack1a>();
 	Add_Component<CVargBossState_Attack1b>();
@@ -79,13 +81,13 @@ HRESULT CVarg::Initialize(void* pArg)
 	TRAIL_DESC TrailDesc;
 	ZeroMemory(&TrailDesc, sizeof(TRAIL_DESC));
 
-	//TrailDesc.iMaxCnt = 30;
-	////position 0.163, 0.12,0.055 , z 0.1¾¿
-	//TrailDesc.vPos_0 = _float3(0.163, 0.17, 0.075);
-	//TrailDesc.vPos_1 = _float3(0.163, 0.17, 0.035);
-	//m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail_EyeLight>(LEVEL_GAMEPLAY, &TrailDesc);
+	TrailDesc.iMaxCnt = 30;
+	//position 0.163, 0.12,0.055 , z 0.1¾¿
+	TrailDesc.vPos_0 = _float3(0.163, 0.17, 0.075);
+	TrailDesc.vPos_1 = _float3(0.163, 0.17, 0.035);
+	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail_EyeLight>(LEVEL_GAMEPLAY, &TrailDesc);
 
-	//GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
+	GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
 
 	m_fCullingRange = 999.f;
 
@@ -97,15 +99,16 @@ HRESULT CVarg::Start()
 {
 	__super::Start();
 
-	//m_pTrailEffect.lock()->Set_TextureIndex(1,869, 0);
+	m_pTrailEffect.lock()->Set_TextureIndex(1,869, 0);
 	m_pTrailBoneNode = m_pModelCom.lock()->Find_BoneNode("Bip001-Head");
 
+	CBase::Set_Enable(true);
 	
 	Change_State<CVargBossState_Start>();
 
-	//weak_ptr<CBoneNode> pTargetBoneNode = m_pModelCom.lock()->Find_BoneNode();
-	//m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
-	// m_EffectIndexList.emplace_back("Character_Target", GET_SINGLE(CGameManager)->Use_EffectGroup("Character_Target", m_pTransformCom));
+	// weak_ptr<CBoneNode> pTargetBoneNode = m_pModelCom.lock()->Find_BoneNode();
+	// m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
+	 m_EffectIndexList.emplace_back("Character_Target", GET_SINGLE(CGameManager)->Use_EffectGroup("Character_Target", m_pTransformCom));
 	
 	m_EffectIndexList.push_back
 	({

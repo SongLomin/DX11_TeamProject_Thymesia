@@ -29,7 +29,7 @@ public:
 
 	_float4		Get_Start() { return m_vStart; }
 	_float4		Get_Target() { return m_vStart; }
-
+	void		Stop();
 	void		Set_PlayType(PLAY_TYPE ePlayType) { m_ePlay_Type = ePlayType; }
 
 protected:
