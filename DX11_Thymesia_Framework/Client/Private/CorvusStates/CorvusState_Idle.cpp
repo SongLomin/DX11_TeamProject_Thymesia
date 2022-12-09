@@ -143,99 +143,128 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 
 		if(m_bLockOn)
 		{
-		}
 
-
-		if (!m_bLadderLock)
-		{
-			if (!m_bFirstFoot)
-			{
-				if (!(Flags & PxControllerCollisionFlag::eCOLLISION_DOWN))
-				{
-					Rotation_InputToLookDir();
-					Get_OwnerPlayer()->Change_State<CCorvusState_Fall_Start>();
-					return true;
-				}
+			if (KEY_INPUT(KEY::W, KEY_STATE::HOLD))
+			{		
+			   Get_OwnerPlayer()->Change_State<CCorvusState_Run>();			
+			   return true;
 			}
-			else
+			
+			else  if (KEY_INPUT(KEY::S, KEY_STATE::HOLD))
+			{			
+				Get_OwnerPlayer()->Change_State<CCorvusState_RunB>();
+				return true;
+			}	
+
+			else  if (KEY_INPUT(KEY::A, KEY_STATE::HOLD))
 			{
-				m_bFirstFoot = false;
+				Get_OwnerPlayer()->Change_State<CCorvusState_RunL>();	
+				return true;
+			}
+
+			else  if (KEY_INPUT(KEY::D, KEY_STATE::HOLD))
+			{
+				Get_OwnerPlayer()->Change_State<CCorvusState_RunR>();
+				return true;
 			}
 			
 		}
-
-	
-
-
-	if (Check_RequirementRunState())
-	{
-		Rotation_InputToLookDir();
-		Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
-		return true;
-	}
-
-	if (Check_RequirementJoggingState())
-	{
-		Rotation_InputToLookDir();
-		Get_OwnerPlayer()->Change_State<CCorvusState_JoggingStart>();
-		return true;
-	}
-
-
-	if (Check_RequirementSprintState())
-	{
-		Rotation_InputToLookDir();
-		Get_OwnerPlayer()->Change_State<CCorvusState_SprintStart>();
-		return true;
-	}
-
-	if (Check_RequirementAVoidState())
-	{
-		Rotation_InputToLookDir();
-		Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
-		return true;
-	}
-
-	if (Check_RequirementAttackState())
-	{
-		weak_ptr<CGameObject> pTargetObject;
-
-		if (Check_RequirementExcuteState(pTargetObject))
-		{
-			Get_OwnerPlayer()->Change_State<CCorvusState_NorMob_Execution>();
-			Get_OwnerPlayer()->Get_CurState().lock()->OnEventMessage(Weak_Cast<CBase>(pTargetObject));
-		}
 		else
 		{
-			if (!Rotation_InputToLookDir())
-				Rotation_TargetToLookDir();
+			if (!m_bLadderLock)
+			{
+				if (!m_bFirstFoot)
+				{
+					if (!(Flags & PxControllerCollisionFlag::eCOLLISION_DOWN))
+					{
+						Rotation_InputToLookDir();
+						Get_OwnerPlayer()->Change_State<CCorvusState_Fall_Start>();
+						return true;
+					}
+				}
+				else
+				{
+					m_bFirstFoot = false;
+				}
 
-			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
+			}
 
+
+
+
+			if (Check_RequirementRunState())
+			{
+				Rotation_InputToLookDir();
+				Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
+				return true;
+			}
+
+			if (Check_RequirementJoggingState())
+			{
+				Rotation_InputToLookDir();
+				Get_OwnerPlayer()->Change_State<CCorvusState_JoggingStart>();
+				return true;
+			}
+
+
+			if (Check_RequirementSprintState())
+			{
+				Rotation_InputToLookDir();
+				Get_OwnerPlayer()->Change_State<CCorvusState_SprintStart>();
+				return true;
+			}
+
+			if (Check_RequirementAVoidState())
+			{
+				Rotation_InputToLookDir();
+				Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
+				return true;
+			}
+
+			if (Check_RequirementAttackState())
+			{
+				weak_ptr<CGameObject> pTargetObject;
+
+				if (Check_RequirementExcuteState(pTargetObject))
+				{
+					Get_OwnerPlayer()->Change_State<CCorvusState_NorMob_Execution>();
+					Get_OwnerPlayer()->Get_CurState().lock()->OnEventMessage(Weak_Cast<CBase>(pTargetObject));
+				}
+				else
+				{
+					if (!Rotation_InputToLookDir())
+						Rotation_TargetToLookDir();
+
+					Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
+
+				}
+				return true;
+			}
+
+			if (Check_RequirementParryState())
+			{
+				Rotation_InputToLookDir();
+				Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
+				return true;
+			}
+
+			if (Check_RequirementHealingState())
+			{
+				Rotation_InputToLookDir();
+				Get_OwnerPlayer()->Change_State<CCorvusState_BasicHealing>();
+				return true;
+			}
+
+			if (Check_RequirementClawAttackHoldState())
+			{
+				Rotation_InputToLookDir();
+				Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackHold>();
+				return true;
+			}
 		}
-		return true;
-	}
 
-	if (Check_RequirementParryState())
-	{
-		Rotation_InputToLookDir();
-		Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
-		return true;
-	}
 
-	if (Check_RequirementHealingState())
-	{
-		Rotation_InputToLookDir();
-		Get_OwnerPlayer()->Change_State<CCorvusState_BasicHealing>();
-		return true;
-	}
-
-	if (Check_RequirementClawAttackHoldState())
-	{
-		Rotation_InputToLookDir();
-		Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackHold>();
-		return true;
-	}
+		
 
 
 

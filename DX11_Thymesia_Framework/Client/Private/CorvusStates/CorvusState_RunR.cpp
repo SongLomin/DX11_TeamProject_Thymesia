@@ -36,14 +36,14 @@ void CCorvusState_RunR::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_RunF_24");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_RunR");
 }
 
 void CCorvusState_RunR::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	Turn_Transform(fTimeDelta);
+	//Turn_Transform(fTimeDelta);
 
 	m_fCurrentSpeed += m_fAccel * fTimeDelta;
 	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
@@ -52,7 +52,7 @@ void CCorvusState_RunR::Tick(_float fTimeDelta)
 
 	PxControllerFilters Filters;
 
-	m_pPhysXControllerCom.lock()->MoveWithRotation({0.f, 0.f, m_fCurrentSpeed * fTimeDelta}, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
+	m_pPhysXControllerCom.lock()->MoveWithRotation({ m_fCurrentSpeed * fTimeDelta, 0.f, 0.f }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
 
 	//m_pTransformCom.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta, m_pNaviCom);
 }
@@ -60,6 +60,8 @@ void CCorvusState_RunR::Tick(_float fTimeDelta)
 void CCorvusState_RunR::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	Rotation_TargetToLookDir();
 
 	Check_AndChangeNextState();
 }
@@ -108,92 +110,48 @@ _bool CCorvusState_RunR::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	//if (Check_RequirementUltimateState())
-	//{
-	//	Rotation_NearToLookDir();
-	//	Get_OwnerPlayer()->Change_State<CNorMonState_UltimateSkill>();
-	//	return true;
-	//}
-	//
-	//if (Check_RequirementAttackState())
-	//{
-	//	if (!Rotation_InputToLookDir())
-	//		Rotation_NearToLookDir();
-	//
-	//	Get_OwnerPlayer()->Change_State<CNorMonState_Attack>();
-	//	Get_OwnerPlayer()->Get_Component<CNorMonState_Attack>().lock()->Play_AttackWithIndex(0);
-	//	return true;
-	//}
-	//
-	//if (Check_RequirementDashState())
-	//{
-	//	Rotation_InputToLookDir();
-	//	Get_OwnerPlayer()->Change_State<CNorMonState_Dash>();
-	//	return true;
-	//}
 
-	if (KEY_INPUT(KEY::W, KEY_STATE::HOLD)
-		|| KEY_INPUT(KEY::A, KEY_STATE::HOLD)
-		|| KEY_INPUT(KEY::S, KEY_STATE::HOLD)
-		|| KEY_INPUT(KEY::D, KEY_STATE::HOLD))
-	{
-		if (KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))
+	
+		if (Check_RequirementAttackState())
 		{
-			Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
+			
+
+			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
 			return true;
 		}
-	}
 
-	if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
-	{
-		if (KEY_INPUT(KEY::W, KEY_STATE::HOLD)
-			|| KEY_INPUT(KEY::A, KEY_STATE::HOLD)
-			|| KEY_INPUT(KEY::S, KEY_STATE::HOLD)
-			|| KEY_INPUT(KEY::D, KEY_STATE::HOLD))
+		if (Check_RequirementParryState())
 		{
-			Get_OwnerPlayer()->Change_State<CCorvusState_SprintStart>();
-				return true;
+	
+			Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
+			return true;
 		}
-	}
 
-	if (Check_RequirementClawAttackHoldState())
+		if (Check_RequirementClawAttackState())
+		{
+			
+			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackTab>();
+			return true;
+		}
+
+	
+	
+
+	if (KEY_INPUT(KEY::D, KEY_STATE::HOLD)
+		&& KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))
 	{
-		Rotation_InputToLookDir();
-		Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackHold>();
+		Get_OwnerPlayer()->Change_State<CCorvusState_AVoidR>();
 		return true;
 	}
-	
+
+
+
+
 	
 
-	if (!KEY_INPUT(KEY::W, KEY_STATE::HOLD)
-		&& !KEY_INPUT(KEY::A, KEY_STATE::HOLD)
-		&& !KEY_INPUT(KEY::S, KEY_STATE::HOLD)
-		&& !KEY_INPUT(KEY::D, KEY_STATE::HOLD))
+	if (!KEY_INPUT(KEY::D, KEY_STATE::HOLD))
 	{
 		Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
-		return true;
-	}
-
-	if (Check_RequirementJoggingState())
-	{
-		Rotation_InputToLookDir();
-		Get_OwnerPlayer()->Change_State<CCorvusState_JoggingStart>();
-		return true;
-	}
-
-	if (Check_RequirementAttackState())
-	{
-		if (!Rotation_InputToLookDir())
-			Rotation_TargetToLookDir();
-
-		Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
-		return true;
-	}
-
-	if (Check_RequirementParryState())
-	{
-		Rotation_InputToLookDir();
-		Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
 		return true;
 	}
 
@@ -205,12 +163,6 @@ _bool CCorvusState_RunR::Check_AndChangeNextState()
 		return true;
 	}
 
-	if (Check_RequirementClawAttackState())
-	{
-		Rotation_InputToLookDir();
-		Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackTab>();
-		return true;
-	}
 
 
 	

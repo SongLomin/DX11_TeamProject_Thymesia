@@ -32,7 +32,7 @@ void CCorvusState_AVoidB::Start()
 	__super::Start();
 	
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_AvoidF");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_AvoidShortMag_B");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_AVoidB::Call_AnimationEnd, this);
 }
 
@@ -130,8 +130,6 @@ _bool CCorvusState_AVoidB::Check_AndChangeNextState()
 	{
 		if (Check_RequirementDashState())
 		{
-			if (!Rotation_InputToLookDir())
-				Rotation_TargetToLookDir();
 
 			m_IsAgainAvoid = false;
 			Get_OwnerPlayer()->Change_State<CCorvusState_AVoidB>();
@@ -145,7 +143,7 @@ _bool CCorvusState_AVoidB::Check_AndChangeNextState()
 	{
 		if (Check_RequirementAttackState())
 		{
-			Rotation_InputToLookDir();
+			
 			_flag TalentEffectFlags = Get_OwnerPlayer()->Check_RequirementForTalentEffects();
 
 			if (TalentEffectFlags & (_flag)TALENT_EFFECT_FLAG::AVOID_SLASH_LV1)
@@ -166,28 +164,19 @@ _bool CCorvusState_AVoidB::Check_AndChangeNextState()
 
 		if (Check_RequirementParryState())
 		{
-			Rotation_InputToLookDir();
+			
 			Get_OwnerPlayer()->Change_State<CCorvusState_Parry2>();
 			return true;
 		}
 
 		if (Check_RequirementClawAttackState())
 		{
-			Rotation_InputToLookDir();
+			
 			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackTab>();
 			return true;
 		}
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > m_fNextNonCombatRatio)
-	{
-		if (Check_RequirementRunState())
-		{
-			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
-			return true;
-		}
-	}
 
 	
 

@@ -208,6 +208,7 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_TurnAttack.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidB.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidF.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidL.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidR.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidSlash.h" />
@@ -247,6 +248,10 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_UrdSword.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_VargSword.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_RunB.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_RunBL.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_RunBR.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_RunFL.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_RunFR.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_RunL.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_RunR.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ShortAvoid.h" />
@@ -562,6 +567,7 @@
     <ClCompile Include="..\Private\BossVarg\VargBossState_RaidAttack.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_TurnAttack.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidB.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidF.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidL.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidR.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_AvoidSlash.cpp" />
@@ -601,6 +607,10 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_UrdSword.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_VargSword.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_RunB.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_RunBL.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_RunBR.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_RunFL.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_RunFR.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_RunL.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_RunR.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ShortAvoid.cpp" />
