@@ -13,7 +13,7 @@
 #ifdef _DEBUG
 
 #pragma region System
-#define		_ONLY_UI_
+//#define		_ONLY_UI_
 //#define		_BAKE_MIPMAPS_
 #define		_USE_THREAD_
 #define		_144HZ_

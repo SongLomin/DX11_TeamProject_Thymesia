@@ -533,3 +533,55 @@ void CTalent::OnDisable()
 +        elem.lock()->Set_Enable(false);
     }
 }
+
+void CTalent::Set_TALENT_NAME(TALENT_NAME TalentName)
+{
+    m_eTalentName = TalentName;
+
+    switch (m_eTalentName)
+    {
+    case Client::TALENT_NAME::NORSWORDLV1:
+        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Basic");
+        break;
+    case Client::TALENT_NAME::NORSWORDLV2:
+        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Basic");
+        break;
+    case Client::TALENT_NAME::AVOIDSLASHLV1:
+        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Cross");
+        break;
+    case Client::TALENT_NAME::AVOIDSLASHLV2:
+        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Cross");
+        break;
+    case Client::TALENT_NAME::AVOIDTHRUSTLV1:
+        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Stab");
+        break;
+    case Client::TALENT_NAME::AVOIDTHRUSTLV2:
+        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Stab");
+        break;
+    case Client::TALENT_NAME::JUMPATTACKLV1:
+        break;
+    case Client::TALENT_NAME::JUMPATTACKLV2:
+        break;
+    case Client::TALENT_NAME::JUMPATTACKLV3:
+        break;
+    case Client::TALENT_NAME::EXECUTION:
+        break;
+    case Client::TALENT_NAME::HEALINGEXECUTIONLV1:
+        break;
+    case Client::TALENT_NAME::HEALINGEXECUTIONLV2:
+        break;
+    case Client::TALENT_NAME::SHARPWEAPONLV1:
+        break;
+    case Client::TALENT_NAME::SHARPWEAPONLV2:
+        break;
+    case Client::TALENT_NAME::ENERGISEDWEAPONLV1:
+        break;
+    case Client::TALENT_NAME::ENERGISEDWEAPONLV2:
+        break;
+    case Client::TALENT_NAME::TALENT_NAME_END:
+        break;
+    default:
+        break;
+    }
+
+}
