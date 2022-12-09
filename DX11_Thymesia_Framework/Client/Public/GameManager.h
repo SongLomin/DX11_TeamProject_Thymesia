@@ -63,6 +63,7 @@ public:
     void Focus_Monster();
     void Release_Focus();
     weak_ptr<CMonster> Get_TargetMonster();
+    weak_ptr<CCamera_Target> Get_Target() { return m_pTargetCamera; }
 
 private:
     weak_ptr<CMonster> Forced_SearchNearTargetMonster();
@@ -118,12 +119,10 @@ public:
 public:
     void Change_NextLevel(void* pArg);
 
-
-
-
 public:// For UI;
     POINT Get_MousePoint();
-    
+    _uint   m_iTestTalent = 2;
+
 public:
     FDelegate<>                 CallBack_ChangePlayer;
 

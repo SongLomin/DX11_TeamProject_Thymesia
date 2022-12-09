@@ -64,9 +64,8 @@ HRESULT CUI_PlagueWeapon::Initialize(void* pArg)
 	m_WeaponTextInfo.vScale = _float2(0.7f, 0.7f);
 
 
-
-	m_vecChildUI.push_back(m_pIcon);
-	m_vecChildUI.push_back(m_pDecoration);
+	Add_Child(m_pIcon);
+	Add_Child(m_pDecoration);
 
 	return S_OK;
 }

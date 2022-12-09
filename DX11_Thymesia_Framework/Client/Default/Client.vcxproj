@@ -207,6 +207,9 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b2.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_TurnAttack.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidB.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidL.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidR.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidSlash.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidThrust.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_CheckPointEnd.h" />
@@ -243,6 +246,9 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Magician.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_UrdSword.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_VargSword.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_RunB.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_RunL.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_RunR.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ShortAvoid.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_RaidAttack1Hurt.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent.h" />
@@ -271,7 +277,9 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h" />
-    <ClInclude Include="..\Public\EasingTransform.h" />
+    <ClInclude Include="..\Public\EasingComponent.h" />
+    <ClInclude Include="..\Public\EasingComponent_Alpha.h" />
+    <ClInclude Include="..\Public\EasingComponent_Transform.h" />
     <ClInclude Include="..\Public\EditMapCollider.h" />
     <ClInclude Include="..\Public\EditSetActor.h" />
     <ClInclude Include="..\Public\Interaction_CheckPoint.h" />
@@ -310,6 +318,7 @@
     <ClInclude Include="..\Public\RequirementChecker.h" />
     <ClInclude Include="..\Public\Requirement_Once.h" />
     <ClInclude Include="..\Public\Requirement_State.h" />
+    <ClInclude Include="..\Public\Section_Eventer.h" />
     <ClInclude Include="..\Public\State_Monster.h" />
     <ClInclude Include="..\Public\State_Player.h" />
     <ClInclude Include="..\Public\Status_Boss.h" />
@@ -329,12 +338,15 @@
     <ClInclude Include="..\Public\UI_EvolveMenu_Level_BG.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_SelectDecoration.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Talent.h" />
+    <ClInclude Include="..\Public\UI_EvolveTalent_Active.h" />
+    <ClInclude Include="..\Public\UI_Interaction.h" />
     <ClInclude Include="..\Public\UI_LerpBar.h" />
     <ClInclude Include="..\Public\UI_MenuText.h" />
     <ClInclude Include="..\Public\UI_PauseMenu_PlagueWeapon.h" />
     <ClInclude Include="..\Public\UI_Script.h" />
     <ClInclude Include="..\Public\UI_ScriptQueue.h" />
     <ClInclude Include="..\Public\UI_T_Dissolve.h" />
+    <ClInclude Include="..\Public\UI_Utils.h" />
     <ClInclude Include="..\Public\VargBossStateBase.h" />
     <ClInclude Include="..\Public\BossVarg\Varg.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack1a.h" />
@@ -349,7 +361,7 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidR.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_Dead.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_End.h" />
-    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_SitDown.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_NoDeadEnd.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_SitLoop.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_Start.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Hurt.h" />
@@ -549,6 +561,9 @@
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b2.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_RaidAttack.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_TurnAttack.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidB.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidL.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidR.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_AvoidSlash.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidThrust.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_CheckPointEnd.cpp" />
@@ -585,6 +600,9 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Magician.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_UrdSword.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_VargSword.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_RunB.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_RunL.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_RunR.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ShortAvoid.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect.cpp" />
@@ -609,7 +627,9 @@
     <ClCompile Include="..\Private\CustomFont.cpp" />
     <ClCompile Include="..\Private\CUtils_EasingTransform.cpp" />
     <ClCompile Include="..\Private\Dynamic_Piece.cpp" />
-    <ClCompile Include="..\Private\EasingTransform.cpp" />
+    <ClCompile Include="..\Private\EasingComponent.cpp" />
+    <ClCompile Include="..\Private\EasingComponent_Alpha.cpp" />
+    <ClCompile Include="..\Private\EasingComponent_Transform.cpp" />
     <ClCompile Include="..\Private\EditMapCollider.cpp" />
     <ClCompile Include="..\Private\EditSetActor.cpp" />
     <ClCompile Include="..\Private\Interaction_CheckPoint.cpp" />
@@ -630,6 +650,7 @@
     <ClCompile Include="..\Private\Player_ItemSkillCollection.cpp" />
     <ClCompile Include="..\Private\Preset_DynamicProp.cpp" />
     <ClCompile Include="..\Private\Preset_AddGameObject.cpp" />
+    <ClCompile Include="..\Private\Section_Eventer.cpp" />
     <ClCompile Include="..\Private\RequirementBase.cpp" />
     <ClCompile Include="..\Private\RequirementChecker.cpp" />
     <ClCompile Include="..\Private\Requirement_Once.cpp" />
@@ -644,6 +665,8 @@
     <ClCompile Include="..\Private\UI_EvolveMenu_Level_BG.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_SelectDecoration.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveTalent_Active.cpp" />
+    <ClCompile Include="..\Private\UI_Interaction.cpp" />
     <ClCompile Include="..\Private\UI_LerpBar.cpp" />
     <ClCompile Include="..\Private\BossMonster.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab.cpp" />
@@ -667,6 +690,7 @@
     <ClCompile Include="..\Private\UI_Script.cpp" />
     <ClCompile Include="..\Private\UI_ScriptQueue.cpp" />
     <ClCompile Include="..\Private\UI_T_Dissolve.cpp" />
+    <ClCompile Include="..\Private\UI_Utils.cpp" />
     <ClCompile Include="..\Private\VargBossStateBase.cpp" />
     <ClCompile Include="..\Private\BossVarg\Varg.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack1a.cpp" />
@@ -681,7 +705,7 @@
     <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidR.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_Dead.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_End.cpp" />
-    <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_SitDown.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_NoDeadEnd.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_SitLoop.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_Start.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Hurt.cpp" />

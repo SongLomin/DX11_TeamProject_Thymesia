@@ -24,6 +24,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 	__super::Initialize(pArg);
 	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_VtxAnimModel"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements);
 
+
 	m_pStatus = CGameObject::Add_Component<CStatus_Player>();
 
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
@@ -145,6 +146,8 @@ HRESULT CCorvus::Render()
 	return S_OK;
 }
 
+
+
 void CCorvus::Debug_KeyInput(_float fTimeDelta)
 {
 	PxControllerFilters Filters;
@@ -245,6 +248,13 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_Climb_L_Up_Down_End);
 	ADD_STATE_MACRO(CCorvusState_Climb_R_Up_Down_End);
 	ADD_STATE_MACRO(CCorvusState_RaidAttack1Hurt);
+	ADD_STATE_MACRO(CCorvusState_RunB);
+	ADD_STATE_MACRO(CCorvusState_RunL);
+	ADD_STATE_MACRO(CCorvusState_RunR);
+	ADD_STATE_MACRO(CCorvusState_AVoidB);
+	ADD_STATE_MACRO(CCorvusState_AVoidL);
+	ADD_STATE_MACRO(CCorvusState_AVoidR);
+
 
 #undef ADD_STATE_MACRO
 }
@@ -338,6 +348,18 @@ void CCorvus::OnEnable(void* pArg)
 void CCorvus::OnDisable()
 {
 	__super::OnDisable();
+}
+
+
+void CCorvus::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_VARGEXECUTION == iArg)
+	{
+		Change_State<CVarg_Execution>();
+	
+	}
 }
 
 void CCorvus::Free()

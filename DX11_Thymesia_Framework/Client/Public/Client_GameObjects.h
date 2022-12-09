@@ -23,6 +23,7 @@
 #include "Interaction_CheckPoint.h"
 #include "Interaction_Elevator.h"
 #include "Interaction_Door.h"
+#include "Section_Eventer.h"
 
 #include "EditGround.h"
 #include "EditGroupProp.h"

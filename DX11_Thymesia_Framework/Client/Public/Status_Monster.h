@@ -65,6 +65,8 @@ public:
 	virtual _bool   Is_Dead();
 	virtual void    Init_Status(const void* pArg);
 	virtual void    Add_Damage(const _float In_fDamage, ATTACK_OPTION eAttackOption) override;
+	virtual void    Minus_LifePoint(const _uint In_iCount) override;
+	virtual void    Set_FullHp(const _float In_fHp)override;
 	virtual _float	Get_WhiteRatio() {
 		return m_tMonsterDesc.m_fCurrentHP_white / m_tMonsterDesc.m_fMaxHP_white
 			;
@@ -89,7 +91,7 @@ protected:
 
 	void			Set_ParryRecoveryTime(const _float fRatio);
 
-	void			Update_HitedTime(_float fTimeDelta);
+	virtual void			Update_HitedTime(_float fTimeDelta);
 	void			Update_ParryRecoveryTime(_float fTimeDelta);
 
 protected:

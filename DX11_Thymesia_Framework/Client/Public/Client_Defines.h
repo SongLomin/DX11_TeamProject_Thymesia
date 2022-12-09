@@ -19,7 +19,7 @@
 #define		_144HZ_
 #define		_RENDER_FPS_
 //#define		_INSTANCE_CULLING_
-#define		_LOAD_CAPTURED_RESOURCE_
+//#define		_LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
 #define _USE_GRAVITY_
@@ -212,6 +212,7 @@ namespace Client
 		ON_GROGGY,
 		ON_LADDERMOVEUP,
 		ON_CATCH,
+		ON_VARGEXECUTION,
 		EVENT_END
 	};
 
@@ -252,6 +253,8 @@ namespace Client
 		FADEMASK,
 		GROOGYMOSNTER,
 		BATTLEUI,
+		INTERACTIONUI,
+		PLAYERHUD,
 		SWAPUI,
 		LAYER_END
 	};
@@ -373,6 +376,14 @@ namespace Client
 		CORSS_END
 	};
 
+	enum class DOT_RESULT
+	{
+		LEFT,
+		MID,
+		RIGHT,
+		DOT_RESULT_END
+	};
+
 	enum class PARRY_SUCCESS
 	{
 		LEFT,
@@ -486,7 +497,7 @@ namespace Client
 		FLAG_END
 	};
 
-
+	
 
 
 }

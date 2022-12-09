@@ -33,7 +33,7 @@ public:
     _bool Is_Edit() const { return m_isEdit; }
     PxControllerCollisionFlags Get_LastCollisionFlags() const { return m_LastCollisionFlags; }
   
-    
+    weak_ptr<CPhysXCharacterController> Get_PhysX() { return m_pPhysXControllerCom; }
     weak_ptr<CStatus>   Get_Status() { return m_pStatus; }
 
     void Set_DissolveAmount(const _float& In_fAmount) { m_fDissolveAmount = In_fAmount; }

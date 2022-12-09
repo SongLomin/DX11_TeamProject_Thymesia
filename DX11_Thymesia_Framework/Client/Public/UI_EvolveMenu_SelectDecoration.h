@@ -4,6 +4,7 @@
 
 BEGIN(Engine)
 class CTexture;
+class CEasingComponent_Alpha;
 END
 
 BEGIN(Client)
@@ -31,7 +32,7 @@ protected:
 private:
 	weak_ptr<CTexture>	m_pMaskingTextureCom;
 
-	weak_ptr<CEasingTransform>	m_pEasingTransformCom;
+	weak_ptr<CEasingComponent_Alpha>	m_pEasingAlphaCom;
 	_float2						m_vUXOffset;
 };
 

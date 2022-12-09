@@ -13,6 +13,7 @@
 #include "PhysXCollider.h"
 #include "Status_Monster.h"
 #include "MobWeapon.h"
+#include "ActorDecor.h"
 
 GAMECLASS_C(CMonster);
 CLONE_C(CMonster, CGameObject);
@@ -37,8 +38,6 @@ HRESULT CMonster::Initialize_Prototype()
 HRESULT CMonster::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
-    m_pStatus = Add_Component<CStatus_Monster>(pArg);
 
     m_pHitColliderCom = Add_Component<CCollider>();
 
@@ -179,6 +178,10 @@ void  CMonster::Write_Json(json& Out_Json)
     Out_Json["MonsterDesc"]["MonsterType"]      = m_tLinkStateDesc.eMonType;
     Out_Json["MonsterDesc"]["IdleType_Monster"] = m_tLinkStateDesc.eNorMonIdleType;
     Out_Json["MonsterDesc"]["IdleType_Boss"]    = m_tLinkStateDesc.eBossStartType;
+    Out_Json["MonsterDesc"]["SectionIndex"]     = m_tLinkStateDesc.iSectionIndex;
+
+    auto iter = Out_Json["Component"].find("Model");
+    Out_Json["Component"].erase(iter);
 }
 
 void  CMonster::Load_FromJson(const json& In_Json)
@@ -190,6 +193,7 @@ void  CMonster::Load_FromJson(const json& In_Json)
     m_tLinkStateDesc.eMonType           = In_Json["MonsterDesc"]["MonsterType"];
     m_tLinkStateDesc.eNorMonIdleType    = In_Json["MonsterDesc"]["IdleType_Monster"];
     m_tLinkStateDesc.eBossStartType     = In_Json["MonsterDesc"]["IdleType_Boss"];
+    //m_tLinkStateDesc.iSectionIndex      = In_Json["MonsterDesc"]["SectionIndex"];
     XMStoreFloat4(&m_tLinkStateDesc.m_fStartPositon, m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION));
 
     Init_Desc();
@@ -199,8 +203,6 @@ void CMonster::Init_Desc()
 {
     m_pStatus.lock()->Init_Status(&m_tLinkStateDesc);
 }
-
-
 
 void CMonster::SetUp_ShaderResource()
 {
@@ -257,6 +259,20 @@ void CMonster::OnDisable()
     __super::OnDisable();
 
     
+}
+
+void CMonster::OnDestroy()
+{
+    __super::OnDestroy();
+
+    for (auto& elem : m_pWeapons)
+        elem.lock()->Set_Dead();
+
+    for (auto& elem : m_pActorDecor)
+        elem.lock()->Set_Dead();
+
+    m_pWeapons.clear();
+    m_pActorDecor.clear();
 }
 
 void CMonster::Free()

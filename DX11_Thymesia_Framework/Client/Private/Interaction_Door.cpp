@@ -34,6 +34,7 @@ HRESULT CInteraction_Door::Initialize(void* pArg)
     );
 
     GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_StaticCast<CGameObject>(m_this));
+    m_eInteractionType = INTERACTION_DOOR;
 
     return S_OK;
 }

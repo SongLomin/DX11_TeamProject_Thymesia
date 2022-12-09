@@ -34,6 +34,8 @@ HRESULT CInteraction_Elevator::Initialize(void* pArg)
 
     m_pModelCom.lock()->Init_Model("Greenhouse_Elevator01", "");
 
+    m_eInteractionType = INTERACTION_ELEVATOR;
+
     return S_OK;
 }
 

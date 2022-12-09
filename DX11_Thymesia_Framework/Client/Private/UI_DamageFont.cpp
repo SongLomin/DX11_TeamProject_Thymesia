@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "UI_DamageFont.h"
 #include "CustomUI.h"
-#include "EasingTransform.h"
+#include "EasingComponent_Transform.h"
+
 
 GAMECLASS_C(CUI_DamageFont)
 CLONE_C(CUI_DamageFont, CGameObject)
@@ -10,8 +11,7 @@ HRESULT CUI_DamageFont::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-
-	m_pEasingTransform = Add_Component<CEasingTransform>();
+	m_pEasingTransform = Add_Component<CEasingComponent_Transform>();
 	m_fDefaultSize = 48.f;
     return S_OK;
 }
@@ -124,7 +124,7 @@ void CUI_DamageFont::SetUp_DamageFont(_uint iDmg, _float2 vPos, ATTACK_OPTION eA
 	fOffset.x = 0.f;
 	fOffset.y = fOffsetY;
 
-	m_pEasingTransform.lock()->Set_LerpFloat2(_float2(0.f,0.f), fOffset, 1.5f, EASING_TYPE::QUINT_IN);
+	m_pEasingTransform.lock()->Set_Lerp(_float2(0.f,0.f), fOffset, 1.5f, EASING_TYPE::QUINT_IN, CEasingComponent::ONCE, false);
 	m_pEasingTransform.lock()->Callback_LerpEnd += bind(&CUI_DamageFont::Call_LerpEnd_FadeOut, this);
 
 	//Add_Shaking(1.5f, 30.f);
@@ -143,18 +143,18 @@ void CUI_DamageFont::Call_LerpEnd_FadeOut()
 
 void CUI_DamageFont::Call_Shaking_End()
 {
-	_float fOffsetY;
-
-	fOffsetY = -m_fDefaultSize * 1.5f;
-
-
-	_float2	fOffset;
-
-	fOffset.x = 0.f;
-	fOffset.y = fOffsetY;
-
-	m_pEasingTransform.lock()->Set_LerpFloat2(_float2(0.f,0.f), fOffset, 0.5f);
-	m_pEasingTransform.lock()->Callback_LerpEnd += bind(&CUI_DamageFont::Call_LerpEnd_FadeOut, this);
+	//_float fOffsetY;
+	//
+	//fOffsetY = -m_fDefaultSize * 1.5f;
+	//
+	//
+	//_float2	fOffset;
+	//
+	//fOffset.x = 0.f;
+	//fOffset.y = fOffsetY;
+	//
+	//m_pEasingTransform.lock()->Set_LerpFloat2(_float2(0.f,0.f), fOffset, 0.5f);
+	//m_pEasingTransform.lock()->Callback_LerpEnd += bind(&CUI_DamageFont::Call_LerpEnd_FadeOut, this);
 }
 
 void CUI_DamageFont::Free()

@@ -31,7 +31,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-
+#ifndef _ONLY_UI_
 	CCamera::CAMERADESC CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
 	CameraDesc.vEye = _float4(0.0f, 2.5f, -2.5f, 1.f);
@@ -45,7 +45,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
 
 
-#ifndef _ONLY_UI_
+
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
 #pragma region GAMEOBJECT
 
@@ -79,10 +79,6 @@ HRESULT CLevel_GamePlay::Initialize()
 	Load_FromJson(m_szDefaultJsonPath + "Stage2-2.json", LEVEL::LEVEL_GAMEPLAY);
 #endif // _STAGE_2_2_
 
-
-	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_GAMEPLAY);
-	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
-
 	CMonster::STATE_LINK_MONSTER_DESC MONSTER;
 	
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_GAMEPLAY);
@@ -103,88 +99,7 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);		
 
-	if (KEY_INPUT(KEY::CTRL, KEY_STATE::TAP))
-	{
-		if (m_pPauseMenu.lock()->Get_Enable() == false)
-		{
-			FaderDesc tFaderDesc;
-			tFaderDesc.eFaderType   = FADER_TYPE::FADER_OUT;
-			tFaderDesc.eLinearType  = LINEAR_TYPE::LNIEAR;
-			tFaderDesc.fFadeMaxTime = 0.3f;
-			tFaderDesc.fDelayTime   = 0.f;
-			tFaderDesc.vFadeColor   = _float4(0.f, 0.f, 0.f, 1.f);
-
-			m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
-			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CLevel_GamePlay::Call_Enable_PauseMenu, this);
-		}
-	}
-
-	if (!m_bFadeTrigger)
-	{
-		FaderDesc tFaderDesc;
-		tFaderDesc.eFaderType = FADER_TYPE::FADER_IN;
-		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
-		tFaderDesc.fFadeMaxTime = 3.f;
-		tFaderDesc.fDelayTime = 0.f;
-		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 0.f);
-
-		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
-
-		m_bFadeTrigger = true;
-	}
-	/*
-	if (m_bChangeNextLevel)
-	{
-		m_bChangeNextLevel = false;
-
-		m_eNextLevel = LEVEL_STAGE2;
-
-		FaderDesc tFaderDesc;
-		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
-		tFaderDesc.eLinearType = LINEAR_TYPE::POW;
-		tFaderDesc.fFadeMaxTime = 1.f;
-		tFaderDesc.fDelayTime = 0.5f;
-		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
-
-		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
-		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
-
-	}
-	*/
-
-#ifdef _ONLY_UI_
-	if (KEY_INPUT(KEY::T, KEY_STATE::TAP))
-	{
-		if (m_pEvolveMenu.lock()->Get_Enable() == false)
-		{
-			FaderDesc tFaderDesc;
-			tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
-			tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
-			tFaderDesc.fFadeMaxTime = 0.2f;
-			tFaderDesc.fDelayTime = 0.f;
-			tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
-
-			m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
-			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_Enable_EvolveMenu, this);
-		}
-	}
-	if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
-	{
-		GAMEINSTANCE->Add_GameObject<CUI_DamageFont>(LEVEL_STATIC).lock()->SetUp_DamageFont
-		(
-			557,
-			_float2(g_iWinCX >> 1, g_iWinCY >> 1),
-			Client::ATTACK_OPTION::NORMAL
-		);	
-	}
-	if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
-	{
-		if (m_pPauseMenu.lock()->Get_Enable() == false)
-		{
-			ExitLevel(LEVEL::LEVEL_STAGE2);
-		}
-	}
-#endif // _ONLY_UI_
+	Tick_Key_InputEvent();
 
 #ifndef _LOAD_CAPTURED_RESOURCE_
 	if (KEY_INPUT(KEY::HOME, KEY_STATE::TAP))

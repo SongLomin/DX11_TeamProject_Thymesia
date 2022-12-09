@@ -9,7 +9,9 @@ END
 
 BEGIN(Client)
 
-class CEasingTransform;
+class CEasingComponent_Alpha;
+class CEasingComponent_Transform;
+
 
 class CTestUI : public CCustomUI
 {
@@ -32,10 +34,12 @@ protected:
 private:
 	weak_ptr<CTexture>	m_pMaskingTextureCom;
 
-	weak_ptr<CEasingTransform>	m_pEasingTransformCom;
+	weak_ptr<CEasingComponent_Alpha>	m_pEasingTransformCom;
 	_float2						m_vUXOffset;
 	_bool						m_bSelected;
 	TEXTINFO					m_tTest;
+	_float						m_fRange;
+
 };
 
 

@@ -49,7 +49,6 @@ HRESULT CPhysXColliderObject::Start()
 void CPhysXColliderObject::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-	
 }
 
 void CPhysXColliderObject::LateTick(_float fTimeDelta)
@@ -57,9 +56,7 @@ void CPhysXColliderObject::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 
 	if ((_uint)LEVEL_EDIT == m_CreatedLevel && m_bViewPhysXInfo)
-	{
 		m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONLIGHT, Weak_StaticCast<CGameObject>(m_this));
-	}
 }
 
 HRESULT CPhysXColliderObject::Render()

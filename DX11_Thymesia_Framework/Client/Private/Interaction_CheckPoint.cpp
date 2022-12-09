@@ -114,8 +114,6 @@ void CInteraction_CheckPoint::Load_FromJson(const json& In_Json)
             GET_SINGLE(CGameManager).get()->Registration_CheckPoint(Weak_Cast<CInteraction_CheckPoint>(m_this));
     }
 
-
-
     SetUpColliderDesc();
 }
 

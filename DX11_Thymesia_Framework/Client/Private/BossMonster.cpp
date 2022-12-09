@@ -12,6 +12,8 @@
 #include "Client_Presets.h"
 #include "PhysXCollider.h"
 #include "Status_Monster.h"
+#include "Status_Boss.h"
+#include "MonsterHPBar_Boss.h"
 
 
 GAMECLASS_C(CBossMonster);
@@ -37,7 +39,7 @@ HRESULT CBossMonster::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
-   
+    m_pStatus = Add_Component<CStatus_Boss>(pArg);
 
     return S_OK;
 }
@@ -46,9 +48,16 @@ HRESULT CBossMonster::Start()
 {
     __super::Start();
 
+    m_pHPBar = GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Boss>(LEVEL_STATIC);
+    m_pHPBar.lock()->Set_Owner(Weak_Cast<CMonster>(m_this));
+
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, m_pHPBar);
+
 
     return S_OK;
 }
+
+
 
 void CBossMonster::Tick(_float fTimeDelta)
 {
@@ -124,6 +133,10 @@ void CBossMonster::OnDisable()
 
 
 }
+
+
+
+
 
 void CBossMonster::Free()
 {

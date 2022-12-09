@@ -434,7 +434,7 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_End.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\33.Execution_End</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_SitDown.h">
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_NoDeadEnd.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\30.Execution_SitDown</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_SitLoop.h">
@@ -740,7 +740,6 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h" />
-    <ClInclude Include="..\Public\EasingTransform.h" />
     <ClInclude Include="..\Public\EditMapCollider.h" />
     <ClInclude Include="..\Public\NorMonState\NorMonState_Parry.h" />
     <ClInclude Include="..\Public\UI_Script.h" />
@@ -971,6 +970,21 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Climb_R_Up_Down_End.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\16.CorvusState_Climb_R_Up_Down_End</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Section_Eventer.h">
+      <Filter>02. GameObject\13. Section_Eventer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EasingComponent.h" />
+    <ClInclude Include="..\Public\EasingComponent_Alpha.h" />
+    <ClInclude Include="..\Public\EasingComponent_Transform.h" />
+    <ClInclude Include="..\Public\UI_Interaction.h" />
+    <ClInclude Include="..\Public\UI_Utils.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidB.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidL.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidR.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_RunB.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_RunL.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_RunR.h" />
+    <ClInclude Include="..\Public\UI_EvolveTalent_Active.h" />
     <ClInclude Include="..\Public\Preset_PhysXColliderDesc.h">
       <Filter>06. DataPreset\00. Preset_PhysXColliderDesc</Filter>
     </ClInclude>
@@ -1379,7 +1393,7 @@
     <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_End.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\33.Execution_End</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_SitDown.cpp">
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_NoDeadEnd.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\30.Execution_SitDown</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_SitLoop.cpp">
@@ -1774,7 +1788,6 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackAway.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackHold.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab2.cpp" />
-    <ClCompile Include="..\Private\EasingTransform.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Parry.cpp" />
     <ClCompile Include="..\Private\MonsterHPBar_Elite.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
@@ -2004,6 +2017,21 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Climb_R_Up_Down_End.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\16.CorvusState_Climb_R_Up_Down_End</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Section_Eventer.cpp">
+      <Filter>02. GameObject\13. Section_Eventer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EasingComponent.cpp" />
+    <ClCompile Include="..\Private\EasingComponent_Alpha.cpp" />
+    <ClCompile Include="..\Private\EasingComponent_Transform.cpp" />
+    <ClCompile Include="..\Private\UI_Interaction.cpp" />
+    <ClCompile Include="..\Private\UI_Utils.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidB.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidL.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidR.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_RunB.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_RunL.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_RunR.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveTalent_Active.cpp" />
     <ClCompile Include="..\Private\Preset_PhysXColliderDesc.cpp">
       <Filter>06. DataPreset\00. Preset_PhysXColliderDesc</Filter>
     </ClCompile>
@@ -3024,6 +3052,15 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\22.State_Climb\16.CorvusState_Climb_R_Up_Down_End">
       <UniqueIdentifier>{c7b84338-bd6a-4a77-8845-b055b4e76165}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\13. Section_Eventer">
+      <UniqueIdentifier>{e9d1683f-b3ae-4f2a-8986-0a9d60fbb210}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\UI_Container\CTalentDecoration">
+      <UniqueIdentifier>{03b63a6e-e09f-4f6d-a2f8-2d7b5cee5c4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\NewFilter1">
+      <UniqueIdentifier>{7b0dc55d-b3c3-46f0-b6b6-df5590d34e8c}</UniqueIdentifier>
     </Filter>
     <Filter Include="07. Requirement">
       <UniqueIdentifier>{2b7c1ad3-66de-4c0c-be0e-e6beaf77b418}</UniqueIdentifier>

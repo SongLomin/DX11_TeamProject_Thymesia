@@ -9,6 +9,9 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
+#include "Status_Monster.h"
+#include "Status_Boss.h"
+
 
 GAMECLASS_C(CVargBossState_SPA_Roar_Getup);
 CLONE_C(CVargBossState_SPA_Roar_Getup, CComponent)
@@ -35,7 +38,7 @@ void CVargBossState_SPA_Roar_Getup::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_SPAttack1_Roar_GetUp");
 
 
-	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_SPA_Roar_Getup::Call_AnimationEnd, this);*/
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_SPA_Roar_Getup::Call_AnimationEnd, this);
 }
 
 void CVargBossState_SPA_Roar_Getup::Tick(_float fTimeDelta)
@@ -62,6 +65,10 @@ void CVargBossState_SPA_Roar_Getup::OnStateStart(const _float& In_fAnimationBlen
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	weak_ptr<CStatus_Boss> pStatus = m_pOwner.lock()->Get_Component<CStatus_Boss>();
+
+	pStatus.lock()->Set_FullHp(100.f);
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
@@ -81,20 +88,20 @@ void CVargBossState_SPA_Roar_Getup::OnStateEnd()
 }
 
 
-//
-//void CVargBossState_SPA_Roar_Getup::Call_AnimationEnd()
-//{
-//	if (!Get_Enable())
-//		return;
-//
-//
-//	Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Roar_Getup>(0.05f);
-//}
 
-//void CVargBossState_SPA_Roar_Getup::OnDestroy()
-//{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_SPA_Roar_Getup::Call_AnimationEnd, this);
-//}
+void CVargBossState_SPA_Roar_Getup::Call_AnimationEnd()
+{
+	if (!Get_Enable())
+		return;
+
+
+	Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Run>(0.05f);
+}
+
+void CVargBossState_SPA_Roar_Getup::OnDestroy()
+{
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_SPA_Roar_Getup::Call_AnimationEnd, this);
+}
 
 void CVargBossState_SPA_Roar_Getup::Free()
 {

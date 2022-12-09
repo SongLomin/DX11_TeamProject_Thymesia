@@ -15,7 +15,8 @@
 #include "Monster.h"
 #include "Status.h"
 #include "VargStates.h"
-
+#include "PhysXCharacterController.h"
+#include "Status_Boss.h"
 
 GAMECLASS_C(CVargBossStateBase)
 
@@ -49,6 +50,42 @@ _bool CVargBossStateBase::Check_RequirementRunState()
 	}
 
 	return false;
+}
+
+_uint CVargBossStateBase::Check_RequirementDotState()
+{
+
+	DOT_RESULT DotResult = DOT_RESULT::DOT_RESULT_END;
+	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+	_vector vMyDotPositon = m_pOwner.lock()->Get_Transform()->Get_Position();
+	vMyDotPositon.m128_f32[1] = 0.f;
+	_vector vOtherDotPositon = pCurrentPlayer.lock()->Get_Transform()->Get_Position();
+	vOtherDotPositon.m128_f32[1] = 0.f;
+
+	_vector vOtherColliderToPlayerClollider = XMVector3Normalize(vOtherDotPositon - vMyDotPositon);
+
+	_vector vMyLookVecTor = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+	vMyLookVecTor.m128_f32[1] = 0;
+	vMyLookVecTor = XMVector3Normalize(vMyLookVecTor);
+
+	_float fCos = XMVectorGetX(XMVector3Dot(vOtherColliderToPlayerClollider, vMyLookVecTor));
+
+
+	if (fCos >= 0.173f && fCos <= 1)
+	{
+		return (_uint)DOT_RESULT::LEFT;
+	}
+	else if (fCos >= -0.173f && fCos <= 0.173)
+	{
+		return (_uint)DOT_RESULT::MID;
+	}
+	else
+	{
+		return (_uint)DOT_RESULT::RIGHT;
+	}
+	
+	
+	
 }
 
 _bool CVargBossStateBase::Check_RequirementPlayerInRange(const _float& In_fRange)
@@ -88,14 +125,9 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 		//맞았을때 플레이어를 바라보는 시선 처리
 		weak_ptr<CAttackArea> pAttackArea = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner());
 			
-		weak_ptr<CStatus_Monster> pStatus = m_pOwner.lock()->Get_Component<CStatus_Monster>();
+		weak_ptr<CStatus_Boss> pStatus = m_pOwner.lock()->Get_Component<CStatus_Boss>();
 		
-		pStatus.lock()->Get_Desc().m_fCurrentHP_white;
-		//pMonsterStatusCom.lock()->Get_Desc();
-		if (pStatus.lock()->Get_Desc().m_fCurrentHP_white <= 300.f)
-		{
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Roar>(0.05f);
-		}
+	
 		
 		weak_ptr<CCharacter> pOtherCharacter = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner()).lock()->Get_ParentObject();
 
@@ -116,6 +148,7 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 
 		_vector vSameHeightOtherColliderPosition = vOtherColliderPosition;
 		vSameHeightOtherColliderPosition.m128_f32[1] = vMyPosition.m128_f32[1];
+		PxControllerFilters Filters;
 
 		m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
 
@@ -123,6 +156,7 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 
 
 		CStatus_Player::PLAYERDESC tPlayerDesc;
+		_matrix                    vResultOtherWorldMatrix;
 
 		pAttackArea.lock()->Get_ParentObject().lock()->Get_ComponentByType<CStatus>().lock()
 			->Get_Desc(&tPlayerDesc);
@@ -130,24 +164,85 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 
 		Play_OnHitEffect();
 
-		_float fMagnifiedDamage = In_fDamage * 50.f ;
+		_float fMagnifiedDamage = In_fDamage;
 
 
 		switch (eAttackOption)
 		{
 		case Client::ATTACK_OPTION::NONE:
+			fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
 			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, ATTACK_OPTION::NORMAL);
 			break;
 		case Client::ATTACK_OPTION::NORMAL:
+			fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
 			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 			break;
 		case Client::ATTACK_OPTION::PLAGUE:
+			fMagnifiedDamage *= tPlayerDesc.m_fParryingAtk;
 			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 			break;
 		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
 			break;
 		}
 
+
+		//이거는한번만호출되게 해야함 
+		//현재상태가 스턴스타트나 루프가아닌경우
+		//혹시몰르니 예외처리해줌 
+		if (Get_OwnerCharacter().lock()->Get_CurState().lock() != Get_Owner().lock()->Get_Component<CVargBossState_Stun_Start>().lock() &&
+			Get_OwnerCharacter().lock()->Get_CurState().lock() != Get_Owner().lock()->Get_Component<CVargBossState_Stun_Loop>().lock())
+		{
+			if (pStatus.lock()->Get_Desc().m_fCurrentHP_Green <= 0.f)
+			{
+				Get_OwnerCharacter().lock()->Change_State<CVargBossState_Stun_Start>(0.05f);
+				
+			}
+		}
+		else
+		{
+			//이떄 플레이어한테 이벤트를 던져줍시다
+			if (pStatus.lock()->Get_Desc().m_iLifeCount == 2)
+			{
+				pStatus.lock()->Minus_LifePoint(1);
+				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGEXECUTION);
+				_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
+				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, 2.2f, 0.f));
+				pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
+					vResultOtherWorldMatrix.r[3],
+					GAMEINSTANCE->Get_DeltaTime(),
+					Filters);
+				pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
+				Get_Owner().lock()->Get_Component<CVargBossState_Stun_Exe_Start>().lock()->Set_DieType(true);				
+				Get_OwnerCharacter().lock()->Change_State<CVargBossState_Stun_Exe_Start>(0.05f);
+				
+			}
+			else
+			{
+				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGEXECUTION);
+				_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
+				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, 2.2f, 0.f));
+				pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
+					vResultOtherWorldMatrix.r[3],
+					GAMEINSTANCE->Get_DeltaTime(),
+					Filters);
+				pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
+				Get_Owner().lock()->Get_Component<CVargBossState_Stun_Exe_Start>().lock()->Set_DieType(false);
+				Get_OwnerCharacter().lock()->Change_State<CVargBossState_Stun_Exe_Start>(0.05f);
+				
+			}
+			
+			
+		}
+
+		
+		
+			
+
+		
+
+		//현재상태가 스턴스타트나 스턴루프인경우에 
+		//다시 검사를해준다 플레이어의 공격이 들어오면 바그처형으로 갑니다 
+		// 바그처형으로가고 바그처형으로 갈떄 그 애니메이션한태 값하나던져주면 해결ㅇ완료 
 
 
 	}

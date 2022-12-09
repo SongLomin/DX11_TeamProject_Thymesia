@@ -132,7 +132,9 @@ _bool CCorvusState_AVoidThrust::Check_AndChangeNextState()
 	{
 		if (Check_RequirementAttackState())
 		{
-			Rotation_InputToLookDir();
+			if (!Rotation_InputToLookDir())
+				Rotation_TargetToLookDir();
+
 			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack2>();
 			return true;
 		}

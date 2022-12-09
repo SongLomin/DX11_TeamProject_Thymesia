@@ -8,6 +8,8 @@ class CFadeMask;
 class CUI_EvolveMenu_TalentButton;
 class CTalent;
 
+
+
 class CUI_EveolveMenu_Talent : public CUI_Container
 {
 public:
@@ -54,9 +56,7 @@ private:
 	
 	weak_ptr<CTalent>	m_pRoot[(_uint)TALENT_TAP::TALENT_TAP_END];
 
-
 private:
-
 
 private:
 	weak_ptr<CCustomUI>	m_pTalentImage;
@@ -67,7 +67,7 @@ private:
 public:
 	void	Call_TalentMouseOver(TALENT_NAME eTalent_Name);
 	void	Call_TalentMouseOut();
-
+	
 
 
 private:
@@ -82,6 +82,10 @@ private:
 private:
 	_float				m_fTreeOffsetY;
 	_float				m_fTreeOffsetX;
+
+
+private:
+	TEXTINFO			m_tTalentInfo;
 
 public:
 	void            Call_ReturnToEvolveMenu();

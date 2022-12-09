@@ -30,6 +30,7 @@ HRESULT CHUD_PlagueWeapon_Main::Initialize(void* pArg)
     m_pPlagueWeapon_Border.lock()->Set_Depth(0.4f);
     m_pPlagueWeapon_Border.lock()->Set_PassIndex(3);
     m_pPlagueWeapon_Border.lock()->Set_Enable(false);
+    m_pPlagueWeapon_Border.lock()->Set_RenderGroup(RENDERGROUP::RENDER_BEFOREUI);
 
     m_pPlagueWeapon_Main = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &m_tUIDesc);
     m_pPlagueWeapon_Main.lock()->Set_Texture("HUD_PlagueWeapon_Frame");
@@ -45,9 +46,15 @@ HRESULT CHUD_PlagueWeapon_Main::Initialize(void* pArg)
     m_pPlagueWeapon_Ready.lock()->Set_Depth(0.1f);
     m_pPlagueWeapon_Ready.lock()->Set_AlphaColor(0.3f);
     m_pPlagueWeapon_Ready.lock()->Set_Enable(false);
+    m_pPlagueWeapon_Ready.lock()->Set_RenderGroup(RENDERGROUP::RENDER_BEFOREUI);
+
 
     m_pHover = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_STATIC, &m_tUIDesc);
     m_pHover.lock()->Get_Component<CTexture>().lock()->Use_Texture("HUD_Frame_Hover");
+    m_pHover.lock()->Set_RenderGroup(RENDERGROUP::RENDER_BEFOREUI);
+
+
+    m_eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
 
 
     Add_Child(m_pPlagueWeapon_Main);

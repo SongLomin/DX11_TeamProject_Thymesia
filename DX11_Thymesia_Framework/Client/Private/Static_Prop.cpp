@@ -57,6 +57,37 @@ void CStatic_Prop::Before_Render(_float fTimeDelta)
 
 HRESULT CStatic_Prop::Render()
 {
+    if (FAILED(SetUp_ShaderResource()))
+        return E_FAIL;
+
+    _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
+    for (_uint i = 0; i < iNumMeshContainers; ++i)
+    {
+        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)));
+
+        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+        {
+            m_iPassIndex = 0;
+        }
+        else
+        {
+            if (m_bInvisibility || LEVEL::LEVEL_EDIT != Get_CreatedLevel())
+            {
+                if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+                    m_iPassIndex = 6;
+                else
+                    m_iPassIndex = 7;
+            }
+            else
+            {
+                m_iPassIndex = 3;
+            }
+        }
+
+        m_pShaderCom.lock()->Begin(m_iPassIndex);
+        m_pModelCom.lock()->Render_Mesh(i);
+    }
+
     return __super::Render();
 }
 
@@ -87,35 +118,7 @@ _bool CStatic_Prop::IsPicking(const RAY& In_Ray, _float& Out_fRange)
 HRESULT CStatic_Prop::SetUp_ShaderResource()
 {
     if (FAILED(CProp::SetUp_ShaderResource()))
-        return E_FAIL;
-
-    _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
-    for (_uint i = 0; i < iNumMeshContainers; ++i)
-    {
-        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)));
-
-        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-        {
-            m_iPassIndex = 0;
-        }
-        else
-        {
-            if (m_bInvisibility || LEVEL::LEVEL_EDIT != Get_CreatedLevel())
-            {
-                if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-                    m_iPassIndex = 6;
-                else
-                    m_iPassIndex = 7;
-            }
-            else
-            {
-                m_iPassIndex = 3;
-            }
-        }
-
-        m_pShaderCom.lock()->Begin(m_iPassIndex);
-        m_pModelCom.lock()->Render_Mesh(i);
-    }
+        return E_FAIL; 
 }
 
 void CStatic_Prop::Write_Json(json& Out_Json)

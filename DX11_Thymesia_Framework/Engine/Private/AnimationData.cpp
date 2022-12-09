@@ -99,7 +99,8 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 	SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_R_UP", 2.f);
 	SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_L_Down", 2.f);
 	SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_R_Down", 2.f);
-
+	//SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution", 1.2f);
+    
 
 	SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 3.f);
 
@@ -119,6 +120,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_2b2", 2.f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_3b", 2.f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TurnAttack1", 2.5f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_Start_FIX", 1.25f);
 
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_AvoidB", 1.25f);
 

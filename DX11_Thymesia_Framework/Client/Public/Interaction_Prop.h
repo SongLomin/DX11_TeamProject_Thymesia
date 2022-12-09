@@ -10,6 +10,14 @@ class CInteraction_Prop abstract :
     GAMECLASS_H(CInteraction_Prop);
 
 public:
+    typedef enum Interaction_Type
+    {
+        INTERACTION_DOOR,
+        INTERACTION_LADDER,
+        INTERACTION_ELEVATOR
+    }INTERACTIONTYPE;
+
+public:
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize(void* pArg) override;
     virtual HRESULT Start() override;
@@ -31,10 +39,15 @@ public:
 protected:
     HRESULT SetUp_ShaderResource();
 
+
+protected:
+    INTERACTIONTYPE         m_eInteractionType;
+
+
 public:
     FDelegate<>                 Callback_ActStart;
-    FDelegate<_float, _bool&>   Callback_ActUpdate;
     FDelegate<>                 Callback_ActEnd;
+    FDelegate<_float, _bool&>   Callback_ActUpdate;
 
 
 protected:

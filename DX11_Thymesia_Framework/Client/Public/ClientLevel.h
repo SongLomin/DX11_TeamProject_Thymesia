@@ -30,6 +30,9 @@ protected:
     virtual void Tick(_float fTimeDelta) override;
     virtual void		SetUp_UI();
 
+    void    Tick_Key_InputEvent();
+
+
 protected:
     string  m_szDefaultJsonPath = "../Bin/LevelData/";
     LEVEL   m_eMyLevel = LEVEL::LEVEL_END;
@@ -49,6 +52,10 @@ protected:
     weak_ptr<CUI_EvolveMenu> m_pEvolveMenu;
 
 
+protected:
+    _bool m_bFadeTrigger = false;
+
+
 public:
     void Call_FadeOutToLevelChange();
 
@@ -59,6 +66,7 @@ public:
 public:
     void		Call_Enable_PauseMenu();
     void		Call_Enable_EvolveMenu();
+    void	    Call_FadeOutToStartGame();
 
 
 

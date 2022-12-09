@@ -14,7 +14,7 @@
 #include "BossVarg/VargBossState_AvoidR.h"
 #include "BossVarg/VargBossState_Exe_Dead.h"
 #include "BossVarg/VargBossState_Exe_End.h"
-#include "BossVarg/VargBossState_Exe_SitDown.h"
+#include "BossVarg/VargBossState_Exe_NoDeadEnd.h"
 #include "BossVarg/VargBossState_Exe_SitLoop.h"
 #include "BossVarg/VargBossState_Exe_Start.h"
 #include "BossVarg/VargBossState_Hurt.h"

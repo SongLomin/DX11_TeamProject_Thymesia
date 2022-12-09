@@ -15,6 +15,7 @@
 #include "UI_EvolveMenu_Level.h"
 #include "UI_Button.h"
 #include "UI_EvolveMenu_Talent.h"
+#include "UI_EvolveTalent_Active.h"
 GAMECLASS_C(CTalent)
 CLONE_C(CTalent, CGameObject)
 
@@ -41,7 +42,7 @@ HRESULT CTalent::Initialize(void* pArg)
     m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame");
     m_pButtonFrame.lock()->Set_Depth(0.2f);
 
-    m_pButtonActive = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
+    m_pButtonActive = GAMEINSTANCE->Add_GameObject<CUI_EvolveTalent_Active>(LEVEL_STATIC);
 
     m_pButtonActive.lock()->Set_UIPosition
     (
@@ -205,8 +206,8 @@ void CTalent::OnLButtonClick()
     }
 
     list<weak_ptr<CTalent>> visitNodes;
-
-    TALENT_RESULT eResult = Check_Requiment(tPlayerDesc.m_iTalent,m_iNodeLevel, visitNodes);
+    int                     iCost = 0;
+    TALENT_RESULT eResult = Check_Requiment(tPlayerDesc.m_iTalent, iCost, visitNodes);
 
     switch (eResult)
     {
@@ -218,7 +219,8 @@ void CTalent::OnLButtonClick()
         return;
         break;
     case Client::TALENT_RESULT::SUCCESS:
-    {
+    {   
+        tPlayerDesc.m_iTalent -= iCost;
         weak_ptr<CTalent> pTalent;
         for (auto& elem : visitNodes)
         {
@@ -228,11 +230,15 @@ void CTalent::OnLButtonClick()
             m_pPlayer.lock()->Bind_TalentEffects(elem.lock()->Get_Effect());
 #endif
         }
+#ifndef _ONLY_UI_
+        GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Status().lock()->Set_Desc(&tPlayerDesc);
+#endif
         if (pTalent.lock()->m_pParent.lock())
             pTalent.lock()->m_pParent.lock()->CheckLButtonClick();
         break;
     }
     case Client::TALENT_RESULT::SUBSCRIPTPOINT:
+        tPlayerDesc.m_iTalent += iCost;//부모는 빼고
         for (auto& elem : visitNodes)
         {
             if (elem.lock()->m_pParent.lock())
@@ -240,78 +246,35 @@ void CTalent::OnLButtonClick()
                 elem.lock()->UnCheckLButtonClick();
 #ifndef _ONLY_UI_
                 m_pPlayer.lock()->UnBind_TalentEffects(elem.lock()->Get_Effect());
-#endif // !_ONLY_UI_
+#endif
             }
         }
+#ifndef _ONLY_UI_
+        GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Status().lock()->Set_Desc(&tPlayerDesc);
+#endif
         break;
     case Client::TALENT_RESULT::RESULT_END:
         break;
     default:
         break;
     }
-    /*
-    m_bActive = !m_bActive;
-    if (m_bActive)
-    {
-        CheckLButtonClick();
-    }
-    else
-    {
-        UnCheckLButtonClick();
-    }
-    */
-    /*
-    if (true)//모종의 조건이 성립한다면
-    {
-        if (m_bActive)//켜진거면 내 위로 모든 부모들 클릭된상태로
-        {
-            weak_ptr<CTalent>   pParent = m_pParent;
-            while (pParent.lock())
-            {
-                pParent.lock()->CheckLButtonClick();
-                pParent = pParent.lock()->m_pParent;
-            }
-            if (pParent.lock())
-                pParent.lock()->CheckLButtonClick();
-        }
-        else
-        {
-            weak_ptr<CTalent>   pChild;
-
-            for (auto& elem : m_pChilds)//활성화된 자식 찾기
-            {
-                if (elem.lock()->m_bActive)
-                {
-                    pChild = elem;
-                    break;
-                }
-            }
-            if (!pChild.lock())
-                return;
-            list<weak_ptr<CTalent>> listChild;
-            int i = 0;
-            Find_ActiveChild_Recursive(pChild, listChild, i);
-            
-            pChild.lock()->UnCheckLButtonClick();
-            for (auto& elem : listChild)
-            {
-                elem.lock()->UnCheckLButtonClick();
-            }
-        }
-    }*/
 }
 
 void CTalent::CheckMouseOver()//체크되어 있는 상태에서 마우스오버
 {
+    m_pButtonActive.lock()->Animation_MouseOver();
 
-    m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Active_Hover");
+   // m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Active_Hover");
     m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame_Active");
 
 }
 
-void CTalent::CheckMouseOut()//체크되어 있는 상태에서 마우스아웃
+void CTalent::CheckMouseOut()//체크되어 있는 상태에서 마우스아웃KO
 {
-    m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Active");
+
+    m_pButtonActive.lock()->Animation_MouseOut();
+
+    //m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Active");
     m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame_Active");
 }
 
@@ -320,15 +283,22 @@ void CTalent::CheckLButtonClick()//마우스 버튼 켜진시점
     if (!m_pParent.lock())
         return;
     m_bActive = true;
-    m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Active");
+    //m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Active");
     m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame_Active");
+
+    m_pButtonActive.lock()->Set_Click(true);
+
 }
 
 void CTalent::UnCheckMouseOver()//클릭 X일떄 마우스오버
 {
     if (!m_pParent.lock())
         return;
-    m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Frame_Hover");
+
+
+    m_pButtonActive.lock()->Animation_MouseOver();
+
+//    m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Frame_Hover");
     m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame");
 
 }
@@ -338,7 +308,9 @@ void CTalent::UnCheckMouseOut()//클릭 X일때 마우스아웃
     if (!m_pParent.lock())
         return;
 
-    m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_None");
+    m_pButtonActive.lock()->Animation_MouseOut();
+
+//    m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_None");
     m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame");
 }
 
@@ -349,7 +321,18 @@ void CTalent::UnCheckLButtonClick()//눌러서 버튼 꺼진시점
         return;
     m_bActive = false;
     m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame");
-    m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_None");
+   // m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_None");
+
+    m_pButtonActive.lock()->Set_Click(false);
+
+}
+
+void CTalent::Set_Root()
+{
+    m_bActive = true;
+    //m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Active");
+    m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame_Active");
+    m_pButtonActive.lock()->Set_Click(true);
 }
 
 _uint CTalent::GetActiveNodeCount(weak_ptr<CTalent> In_Talent)
@@ -430,14 +413,7 @@ void CTalent::LateTick(_float fTimeDelta)
         내가 건담이 된다   
     */
     //만약에, 내 버튼 상태가 MouseOver라면.
-    if (Get_ButtonState() == CUI_Button_Base::UI_BUTTON_OVER)
-    {
-       
-    }
-    else if (Get_ButtonState() == CUI_Button_Base::UI_BUTTON_OUT)
-    {
-     
-    }
+   
 }
 
 
@@ -510,10 +486,12 @@ void CTalent::Find_ActiveChild_Recursive(weak_ptr<CTalent> In_pTalent, list<weak
         return;
     }
 
-    
     if (In_pTalent.lock()->m_bActive)
     {
-        ++out_iDepth;
+        if (In_pTalent.lock()->m_pParent.lock())
+        {
+            ++out_iDepth;
+        }
         out_pActiveChild.push_back(In_pTalent);
 
         for (auto& elem : In_pTalent.lock()->m_pChilds)
@@ -541,52 +519,30 @@ void CTalent::Find_AllParent_Recursive(weak_ptr<CTalent> In_pTalent, list<weak_p
     Find_AllParent_Recursive(In_pTalent.lock()->m_pParent, out_pActiveParent);
 }
 
-
-void  CTalent::TestTalentCheck()
+void CTalent::Free()
 {
-    
+}
 
-    int iCost = 0;
-    int iMyTalentPoint = 5;
+void CTalent::OnEnable(void* pArg)
+{
+    __super::OnEnable(pArg);
 
-    TALENT_RESULT eResult;
-
-    //임시
-    //m_pPlayer.lock()->Bind_TalentEffects(pAvoidThrustLV1.lock()->Get_Effect());
-    //m_pPlayer.lock()->Bind_TalentEffects(pSwordLV2.lock()->Get_Effect());
-    list<weak_ptr<CTalent>> pVisitNodes;
-    eResult = Check_Requiment(iMyTalentPoint, iCost, pVisitNodes);
-
-    switch (eResult)
+    for (auto& elem : m_pChilds)
     {
-    case Client::TALENT_RESULT::FAILED:
-        break;
-    case Client::TALENT_RESULT::NOT_ENOUGHTPOINT:
-        break;
-    case Client::TALENT_RESULT::USING_ATHORTREE:
-        break;
-    case Client::TALENT_RESULT::SUCCESS:
-        iMyTalentPoint -= iCost;
-        for (auto& elem : pVisitNodes)
-        {
-            elem.lock()->Set_Active(true);
-            m_pPlayer.lock()->Bind_TalentEffects(elem.lock()->Get_Effect());
-        }
-        //m_pPlayer.lock()->Bind_TalentEffects(pSwordLV2.lock()->Get_Effect());
-        //m_pPlayer.lock()->Bind_TalentEffects(pAvoidThrustLV1.lock()->Get_Effect());
-        break;
-    case Client::TALENT_RESULT::SUBSCRIPTPOINT:
-        iMyTalentPoint += iCost;
-        for (auto& elem : pVisitNodes)
-        {
-            elem.lock()->Set_Active(false);
-            m_pPlayer.lock()->UnBind_TalentEffects(elem.lock()->Get_Effect());
-        }
-
-        break;
+        elem.lock()->Set_Enable(true);
     }
-    cout << "iTalent Point : " << iMyTalentPoint << endl;
 
+}
+
+void CTalent::OnDisable()
+{
+    __super::OnDisable();
+
+    for (auto& elem : m_pChilds)
+    {
+ 
++        elem.lock()->Set_Enable(false);
+    }
 }
 
 void CTalent::Set_TALENT_NAME(TALENT_NAME TalentName)
@@ -638,32 +594,5 @@ void CTalent::Set_TALENT_NAME(TALENT_NAME TalentName)
     default:
         break;
     }
-    
-}
 
-
-
-void CTalent::Free()
-{
-}
-
-void CTalent::OnEnable(void* pArg)
-{
-    __super::OnEnable(pArg);
-
-    for (auto& elem : m_pChilds)
-    {
-        elem.lock()->Set_Enable(true);
-    }
-
-}
-
-void CTalent::OnDisable()
-{
-    __super::OnDisable();
-
-    for (auto& elem : m_pChilds)
-    {
-        elem.lock()->Set_Enable(false);
-    }
 }

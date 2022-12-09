@@ -9,6 +9,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CVargBossState_WalkL);
 CLONE_C(CVargBossState_WalkL, CComponent)
@@ -42,8 +43,15 @@ void CVargBossState_WalkL::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	m_fCurrentSpeed += m_fAccel * fTimeDelta;
+	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
+	_vector vDirLook = Get_CurMonToStartMonDir();
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
+
+	PxControllerFilters Filters;
+
+	m_pPhysXControllerCom.lock()->MoveWithRotation({ -m_fCurrentSpeed * fTimeDelta, 0.f, 0.f }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
 }
 
 
@@ -51,7 +59,8 @@ void CVargBossState_WalkL::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-
+	if (m_bFirstLookAt)
+		Rotation_TargetToLookDir();
 
 	Check_AndChangeNextState();
 }
@@ -107,9 +116,11 @@ _bool CVargBossState_WalkL::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkL>(0.05f);
+		m_bFirstLookAt = false;
+		Get_Owner().lock()->Get_Component<CVargBossState_Idle>().lock()->Set_BackReset(true);
+		Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidL>(0.05f);
 		return true;
 	}
 

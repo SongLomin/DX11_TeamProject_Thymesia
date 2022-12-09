@@ -21,11 +21,9 @@ public:
 	void Free();
 
 public:
-	void	Call_FadeOutToStartGame();
 
 
 private:
-	_bool m_bFadeTrigger = false;
 
 };
 

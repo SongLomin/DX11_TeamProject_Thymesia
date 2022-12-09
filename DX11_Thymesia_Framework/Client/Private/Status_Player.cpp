@@ -45,7 +45,7 @@ void CStatus_Player::LateTick(_float fTimeDelta)
 
 _bool CStatus_Player::Is_Dead()
 {
-    return m_tDesc.m_fCurrentHP <= 0.f ? true : false;
+    return m_tDesc.m_fCurrentHP <= 0.f + DBL_EPSILON ? true : false;
 }
 
 void CStatus_Player::Init_Status(const void* pArg)
@@ -63,7 +63,7 @@ void CStatus_Player::Init_Status(const void* pArg)
     m_tDesc.m_iWound = 1;
     m_tDesc.m_iMaxFeather = 3;
     m_tDesc.m_iMemory = 100000;
-    m_tDesc.m_iTalent = 1;
+    m_tDesc.m_iTalent = 10;
 
     m_PotionDesc[(_uint)POTIONTYPE::POTION_DEFAULT].m_iMaxPotion = 3;
     m_PotionDesc[(_uint)POTIONTYPE::POTION_DEFAULT].m_fHealingAmount = 0.3f;

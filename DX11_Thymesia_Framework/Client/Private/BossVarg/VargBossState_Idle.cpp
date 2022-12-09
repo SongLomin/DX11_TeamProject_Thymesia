@@ -76,6 +76,15 @@ void CVargBossState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 	{
 
 		m_bTurnCheck = true;
+		
+	}
+
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack2a>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack2b>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack2b1>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack2b2>().lock())
+	{
+		m_bBackReset = false;
 	}
 
 
@@ -110,17 +119,39 @@ _bool CVargBossState_Idle::Check_AndChangeNextState()
 
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 
+	DOT_RESULT DotReuslt = DOT_RESULT::DOT_RESULT_END;
 
-
-	//조건 8보다클때
-
-	//보스존나어렵다 시발 ㅠㅠ ㅇㅇㅇ? ㅇㅇ 아 이거 랜덤으로 안하면 내가 정썜떄릴듯 ㄱㅊ? ㅇㅋㅇㅋ 최대한줄여봄 ㅇㅇ
-	// 그럼 탈주함
-
+	
+	
 	if (fPToMDistance < 1.5f)
 	{
+		//DotReuslt = (DOT_RESULT)Check_RequirementDotState();
+		//
+		//switch (DotReuslt)
+		//{
+		//case Client::DOT_RESULT::LEFT:
+		//	if (!m_bBackReset)
+		//	{
+		//		Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkL>(0.05f);
+		//	}
+		//	break;
+		//case Client::DOT_RESULT::MID:
+		//	if (!m_bBackReset)
+		//	{
+		//		Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkB>(0.05f);
+		//	}
+		//	break;
+		//case Client::DOT_RESULT::RIGHT:
+		//	if (!m_bBackReset)
+		//	{
+		//		Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkR>(0.05f);
+		//	}
+		//	break;
+		//}
 		Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkB>(0.05f);
 		return true;
+		
+
 	}
 	if (fPToMDistance >= 7.f) // 5보다크다
 	{
@@ -163,6 +194,8 @@ _bool CVargBossState_Idle::Check_AndChangeNextState()
 
 		return true;
 	}
+
+
 
 
 

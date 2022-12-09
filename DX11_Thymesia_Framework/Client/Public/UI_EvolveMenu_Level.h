@@ -7,7 +7,7 @@ BEGIN(Client)
 CLIENT_DECLATION_UI
 
 class CFadeMask;
-class CEasingTransform;
+class CEasingComponent_Alpha;
 class CUI_EvolveMenu_Level_BG;
 
 
@@ -180,8 +180,7 @@ private:
 	TEXTINFO         m_tTextInfo_Memory;
 
 private:
-	weak_ptr<CEasingTransform> m_pEasingTransformCom;
-
+	weak_ptr<CEasingComponent_Alpha> m_pEasingAlphaCom;
 
 
 

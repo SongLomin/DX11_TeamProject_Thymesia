@@ -10,7 +10,7 @@ END
 BEGIN(Client)
 class CTalent_Effect;
 class CCustomUI;
-
+class CUI_EvolveTalent_Active;
 class CTalent :
     public CUI_Button_Base
 {
@@ -50,7 +50,6 @@ public:
         return m_iNodeLevel;
     }
 
-    void TestTalentCheck();
     void Set_TALENT_NAME(TALENT_NAME TalentName);
 
 public:
@@ -66,7 +65,7 @@ private:
 private:
     void			Update_ChildUI();
 
-private:
+public:
     virtual void	OnMouseOver()		override;
     virtual void	OnMouseOut()		override;
     virtual void	OnLButtonDown()		override;
@@ -80,7 +79,7 @@ private:
     virtual void	UnCheckMouseOut()     override;
     virtual void	UnCheckLButtonClick() override;
 
-
+    void            Set_Root();
 public:
     _uint			GetActiveNodeCount(weak_ptr<CTalent> In_Talent);
     weak_ptr<CTalent> Get_RootNode();
@@ -93,9 +92,9 @@ private:
 
     _int                           m_iNodeLevel;
     
-private:
+public:
     weak_ptr<CCustomUI>	m_pButtonFrame;//프레임
-    weak_ptr<CCustomUI>	m_pButtonActive;//버튼 눌렸을대
+    weak_ptr<CUI_EvolveTalent_Active>	m_pButtonActive;//버튼 눌렸을대
     weak_ptr<CCustomUI> m_pIcon;
 
 private:

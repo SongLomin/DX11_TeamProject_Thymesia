@@ -37,6 +37,7 @@ public:
     virtual void   OnEventMessage(_uint iArg) override;
 
 private:
+    void    View_PhysXOption();
     void    View_SelectModelComponent();
     void    View_PickingInfo();
 
@@ -44,10 +45,9 @@ private:
     void    View_Picking_List();
     void    View_Picking_Option();
     void    View_SelectTransformInfo();
-
     void    View_SelectJson();
 
-    void    View_PhysXOption();
+    void    View_MultiPicking();
 
 private:
     HRESULT SetUp_ShaderResource();
@@ -92,9 +92,9 @@ private:
     _bool               m_bNonCulling         = false;
     _bool               m_bDissolve           = false;
     _float              m_fDissolveRatio      = 0.f;
-    _float              m_fDissolveSpeed      = 1.f;
+    _float              m_fDissolveSpeed      = 0.f;
 
-    _bool               m_bUpdateTick         = true;
+    vector<_uint>       m_MultPickingIndex;
 
 public:
     void Free();

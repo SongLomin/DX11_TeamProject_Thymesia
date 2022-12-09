@@ -8,6 +8,8 @@ END
 
 BEGIN(Client)
 
+class CMonsterHPBar_Boss;
+
 class CVarg :
     public CBossMonster
 {
@@ -32,6 +34,8 @@ public:
 public:
     void Set_TrailEnable(_bool In_bEnable);
 
+
+
 public:
     virtual void Init_Desc() override;
 
@@ -51,6 +55,9 @@ private:
     virtual void OnEnable(void* _Arg = nullptr) override;
     //객체의 상태가 비활성화 상태로 변경될 때, 호출되는 이벤트입니다.
     virtual void OnDisable() override;
+
+private:
+
 
 private:
     void Free();

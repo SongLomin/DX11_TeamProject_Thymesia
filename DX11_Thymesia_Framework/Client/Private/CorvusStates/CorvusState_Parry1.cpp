@@ -190,7 +190,7 @@ void CCorvusState_Parry1::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
 
 		weak_ptr<CAttackArea>	pAttackArea = Weak_StaticCast<CAttackArea>(pOtherCollider.lock()->Get_Owner());
 		weak_ptr<CCharacter>	pMonsterFromCharacter = pAttackArea.lock()->Get_ParentObject();
-		weak_ptr<CStatus_Monster>	pMonsterStatusCom = pMonsterFromCharacter.lock()->Get_Component<CStatus_Monster>();
+		weak_ptr<CStatus_Monster>	pMonsterStatusCom = Weak_StaticCast< CStatus_Monster>( pMonsterFromCharacter.lock()->Get_Status());
 
 		_vector vMyPosition = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
 

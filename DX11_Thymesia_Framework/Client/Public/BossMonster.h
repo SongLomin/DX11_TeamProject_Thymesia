@@ -4,7 +4,9 @@
 BEGIN(Client)
 
 class CMobWeapon;
-class CStatus_Monster;
+class CStatus_Boss;
+class CMonsterHPBar_Boss;
+
 class CBossMonster :
     public CMonster
 {
@@ -31,6 +33,8 @@ public:
 
     void Set_DissolveAmount(const _float& In_fAmount) { m_fDissolveAmount = In_fAmount; }
 
+
+    weak_ptr<CMonsterHPBar_Boss>  Get_HPBar() { return m_pHPBar; }
 public:
     // CGameObject을(를) 통해 상속됨
     virtual HRESULT Initialize_Prototype() override;
@@ -69,8 +73,7 @@ protected:
     weak_ptr<CTexture>        m_pDissolveTextureCom;
     MONSTERWEAPONTYPE         m_eMonWeaPonType = MONSTERWEAPONTYPE::MON_WEAPON_END;
 
-    weak_ptr<CStatus_Monster>           m_pStatus;
-
+    weak_ptr<CMonsterHPBar_Boss>   m_pHPBar;
 private:
 
     void Free();

@@ -35,7 +35,7 @@ void CVargBossState_Stun_Exe_Start::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_TakeExecution_Start_FIX");
 
 
-	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Stun_Exe_Start::Call_AnimationEnd, this);*/
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Stun_Exe_Start::Call_AnimationEnd, this);
 }
 
 void CVargBossState_Stun_Exe_Start::Tick(_float fTimeDelta)
@@ -58,11 +58,20 @@ void CVargBossState_Stun_Exe_Start::LateTick(_float fTimeDelta)
 
 
 
+void CVargBossState_Stun_Exe_Start::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CBossStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+}
+
 void CVargBossState_Stun_Exe_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+
+	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::PLAYERHUD);
+	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
+
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
@@ -81,20 +90,20 @@ void CVargBossState_Stun_Exe_Start::OnStateEnd()
 }
 
 
-//
-//void CVargBossState_Stun_Exe_Start::Call_AnimationEnd()
-//{
-//	if (!Get_Enable())
-//		return;
-//
-//
-//	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Stun_Exe_Start>(0.05f);
-//}
 
-//void CVargBossState_Stun_Exe_Start::OnDestroy()
-//{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Stun_Exe_Start::Call_AnimationEnd, this);
-//}
+void CVargBossState_Stun_Exe_Start::Call_AnimationEnd()
+{
+	if (!Get_Enable())
+		return;
+
+	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);
+	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Stun_Exe_Dead>(0.05f);
+}
+
+void CVargBossState_Stun_Exe_Start::OnDestroy()
+{
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Stun_Exe_Start::Call_AnimationEnd, this);
+}
 
 void CVargBossState_Stun_Exe_Start::Free()
 {
@@ -107,11 +116,19 @@ _bool CVargBossState_Stun_Exe_Start::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
+	//여서조건을줘봐요 어떻게 ? 라이프가 2보다클떄 즉목숨이하나잇으면 여기로들어오고 안들어오면 ㅇㅇ
+	
+
+
+	if (m_bDieType)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Stun_Exe_Start>(0.05f);
-		return true;
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 154)
+		{
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_NoDeadEnd>(0.05f);
+			return true;
+		}
 	}
+
 
 	return false;
 }
