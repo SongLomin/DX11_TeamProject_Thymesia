@@ -4,6 +4,8 @@
 
 BEGIN(Client)
 
+class CMonsterHPBar_Base;
+
 class CNorMonster :
     public CMonster
 {
@@ -43,6 +45,9 @@ private:
     virtual void OnEnable(void* _Arg = nullptr) override;
     virtual void OnDisable() override;
     virtual void OnDestroy() override;
+
+private:
+    weak_ptr< CMonsterHPBar_Base>   m_pHPBar;
 
 private:
     void Free();

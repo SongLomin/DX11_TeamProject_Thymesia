@@ -132,7 +132,7 @@ _bool CCorvusState_JoggingStartEnd::Check_AndChangeNextState()
 	else if (Check_RequirementSprintState())
 	{
 		Rotation_InputToLookDir();
-		Get_OwnerPlayer()->Change_State<CCorvusState_SprintStart>();
+		Get_OwnerPlayer()->Change_State<CCorvusState_Sprint>();
 		return true;
 	}
 

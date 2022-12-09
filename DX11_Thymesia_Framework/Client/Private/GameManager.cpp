@@ -240,6 +240,7 @@ void CGameManager::Focus_Monster()
 
 void CGameManager::Release_Focus()
 {
+	m_pTargetMonster = weak_ptr<CMonster>();
 	m_pTargetCamera.lock()->Release_Focus();
 	m_pCurrentPlayer.lock()->Release_Focus();
 }
@@ -345,7 +346,7 @@ void CGameManager::Enable_WeaponFromEvent(weak_ptr<CTransform> pParentTransformC
 
 weak_ptr<CMonster> CGameManager::Forced_SearchNearTargetMonster()
 {
-	list<weak_ptr<CGameObject>> pMonsters =Get_Layer(OBJECT_LAYER::MONSTER);
+	list<weak_ptr<CGameObject>> pMonsters = Get_LayerSelectEnable(OBJECT_LAYER::MONSTER);
 
 	if (pMonsters.empty())
 	{
@@ -370,7 +371,7 @@ weak_ptr<CMonster> CGameManager::Forced_SearchNearTargetMonster()
 		return weak_ptr<CMonster>();
 	}
 
-	_vector vMyPosition =m_pCurrentPlayer.lock()->Get_Transform()->Get_Position();
+	_vector vMyPosition = m_pCurrentPlayer.lock()->Get_Transform()->Get_Position();
 
 	_vector vMonsterPosition;
 	weak_ptr<CGameObject> pTargetMonster = pMonsters.front();

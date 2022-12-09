@@ -167,6 +167,37 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 				Get_OwnerPlayer()->Change_State<CCorvusState_RunR>();
 				return true;
 			}
+
+			else if (Check_RequirementAttackState())
+			{
+				weak_ptr<CGameObject> pTargetObject;
+
+				if (Check_RequirementExcuteState(pTargetObject))
+				{
+					Get_OwnerPlayer()->Change_State<CCorvusState_NorMob_Execution>();
+					Get_OwnerPlayer()->Get_CurState().lock()->OnEventMessage(Weak_Cast<CBase>(pTargetObject));
+				}
+				else
+				{
+			
+					Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
+
+				}
+				return true;
+			}
+
+			else if (Check_RequirementParryState())
+			{
+				Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
+				return true;
+			}
+
+			else if (Check_RequirementClawAttackHoldState())
+			{
+				Rotation_InputToLookDir();
+				Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackHold>();
+				return true;
+			}
 			
 		}
 		else
@@ -210,7 +241,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 			if (Check_RequirementSprintState())
 			{
 				Rotation_InputToLookDir();
-				Get_OwnerPlayer()->Change_State<CCorvusState_SprintStart>();
+				Get_OwnerPlayer()->Change_State<CCorvusState_Sprint>();
 				return true;
 			}
 
@@ -248,6 +279,13 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 				return true;
 			}
 
+			if (Check_RequirementClawAttackHoldState())
+			{
+				Rotation_InputToLookDir();
+				Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackHold>();
+				return true;
+			}
+
 			if (Check_RequirementHealingState())
 			{
 				Rotation_InputToLookDir();
@@ -255,12 +293,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 				return true;
 			}
 
-			if (Check_RequirementClawAttackHoldState())
-			{
-				Rotation_InputToLookDir();
-				Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackHold>();
-				return true;
-			}
+			
 		}
 
 

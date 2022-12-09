@@ -46,6 +46,14 @@ void CVargBossState_SPA_Roar_Getup::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 
+	if (m_bShakingCamera)
+	{
+		_float3 vPosition;
+		XMStoreFloat3(&vPosition, m_pOwner.lock()->Get_Transform()->Get_Position());
+		GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 0.f, 0.f, 1.f), 0.15f, 2.f, 3.f, 0.95f);
+		GAMEINSTANCE->Set_RadialBlur(0.3f, vPosition);
+	}
+
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -71,6 +79,12 @@ void CVargBossState_SPA_Roar_Getup::OnStateStart(const _float& In_fAnimationBlen
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey +=
+		bind(&CVargBossState_SPA_Roar_Getup::Call_NextKeyFrame, this, placeholders::_1);
+
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: SPA_Getup -> OnStateStart" << endl;
@@ -83,6 +97,29 @@ void CVargBossState_SPA_Roar_Getup::OnStateStart(const _float& In_fAnimationBlen
 void CVargBossState_SPA_Roar_Getup::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -=
+		bind(&CVargBossState_SPA_Roar_Getup::Call_NextKeyFrame, this, placeholders::_1);
+
+
+
+}
+void CVargBossState_SPA_Roar_Getup::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
+	if (!Get_Enable())
+		return;
+
+	switch (In_KeyIndex)
+	{
+	case 62:
+		m_bShakingCamera = true;
+		break;
+
+	case 97:
+		m_bShakingCamera = false;
+		break;
+	}
+
 
 
 }

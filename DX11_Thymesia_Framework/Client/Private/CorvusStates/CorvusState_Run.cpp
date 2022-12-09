@@ -213,7 +213,7 @@ _bool CCorvusState_Run::Check_AndChangeNextState()
 				|| KEY_INPUT(KEY::S, KEY_STATE::HOLD)
 				|| KEY_INPUT(KEY::D, KEY_STATE::HOLD))
 			{
-				Get_OwnerPlayer()->Change_State<CCorvusState_SprintStart>();
+				Get_OwnerPlayer()->Change_State<CCorvusState_Sprint>();
 				return true;
 			}
 		}

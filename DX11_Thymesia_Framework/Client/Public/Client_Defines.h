@@ -3,7 +3,7 @@
 #include "SMath.h"
 #include <filesystem>
 
-// #define _JOJO_EFFECT_TOOL_
+ // #define _JOJO_EFFECT_TOOL_
 
 #include "Client_Structs.h"
 #include "Client_Presets.h"
@@ -20,7 +20,7 @@
 #define		_RENDER_FPS_
 #define     _Actor_Culling_
 //#define		_INSTANCE_CULLING_
-//#define		_LOAD_CAPTURED_RESOURCE_
+// #define		_LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
 #define _USE_GRAVITY_
@@ -33,7 +33,7 @@
 
 #pragma region Map
 // #define _BRIGHT_LIGHT_
-#define _GENERATE_PROP_COLLIDER_ true
+// #define _GENERATE_PROP_COLLIDER_ true
 // #define _STAGE_1_
 #define _STAGE_2_
 #define _TEST_STATIC_PROPS_
@@ -71,10 +71,10 @@
 #undef _ONLY_UI_
 
 #pragma region System
-//#define _USE_THREAD_
+#define _USE_THREAD_
 #define _144HZ_
 // #define _RENDER_FPS_
-//#define		_INSTANCE_CULLING_
+//#define	_INSTANCE_CULLING_
 // #define _LOAD_CAPTURED_RESOURCE_
 #define     _Actor_Culling_
 #pragma endregion // System
@@ -87,7 +87,7 @@
 #define _GENERATE_PROP_COLLIDER_ true
 // #define _STAGE_1_
 #define _STAGE_2_
-#define _MAP_TOOL_
+// #define _MAP_TOOL_
 #pragma endregion // Map
 
 #pragma region Boss Mobs

@@ -1,19 +1,13 @@
 #include "stdafx.h"
 #include "Monster.h"
-#include "Collider.h"
-#include "Shader.h"
-#include "StateBase.h"
 #include "GameObject.h"
 #include "GameManager.h"
-#include "Model.h"
-#include "Status.h"
-#include "Player.h"
-#include "Texture.h"
 #include "Client_Presets.h"
-#include "PhysXCollider.h"
-#include "Status_Monster.h"
 #include "MobWeapon.h"
 #include "ActorDecor.h"
+#include "Player.h"
+#include "Client_Components.h"
+
 
 GAMECLASS_C(CMonster);
 CLONE_C(CMonster, CGameObject);
@@ -159,6 +153,7 @@ void CMonster::Release_Monster()
 {
     GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::MONSTER, Weak_Cast<CGameObject>(m_this));
     m_pHitColliderCom.lock()->Set_Enable(false);
+    m_pPhysXControllerCom.lock()->Set_Enable(false);
 }
 
 void CMonster::Enable_Weapons(const _bool In_bEnable)
@@ -205,7 +200,7 @@ void  CMonster::Load_FromJson(const json& In_Json)
 
 
    //TODO : 테스트용으로 반드시 삭제하시오
-    if (LEVEL::LEVEL_EDIT != m_CreatedLevel)
+    if ((_uint)LEVEL::LEVEL_EDIT != m_CreatedLevel)
         Set_Enable(false);
 }
 
@@ -269,6 +264,7 @@ void CMonster::OnEnable(void* _Arg)
 
     GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::MONSTER, Weak_Cast<CGameObject>(m_this));
     m_pHitColliderCom.lock()->Set_Enable(true);
+    m_pPhysXControllerCom.lock()->Set_Enable(true);
 }
 
 void CMonster::OnDisable()

@@ -37,8 +37,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 		VTXANIM_DECLARATION::Element,
 		VTXANIM_DECLARATION::iNumElements);
 
-	weak_ptr<CMonsterHPBar_Base> pHPBar = GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Base>(LEVEL_STATIC);
-	pHPBar.lock()->Set_Owner(Weak_Cast<CMonster>(m_this));
+	
 
 	m_pStandState = Add_Component<CNorMonState_Idle>();
 	Add_Component<CNorMonState_Stop>();
@@ -76,6 +75,9 @@ HRESULT CNorMonster::Start()
 {
 	__super::Start();
 	Change_State<CNorMonState_Idle>();
+
+	m_pHPBar = GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Base>(LEVEL_STATIC);
+	m_pHPBar.lock()->Set_Owner(Weak_Cast<CMonster>(m_this));
 	return S_OK;
 }
 
@@ -103,6 +105,10 @@ void CNorMonster::Init_Desc()
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Knife", TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
+		m_pWeapons.back().lock()->Add_Collider({ 0.51f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.61f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.71f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.81f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 
 		break;
 	case MONSTERTYPE::SKULL:
@@ -115,6 +121,10 @@ void CNorMonster::Init_Desc()
 		m_pActorDecor.push_back(GAMEINSTANCE->Add_GameObject<CActorDecor>(m_CreatedLevel));
 		m_pActorDecor.back().lock()->Init_Model("Mon_Vain", TIMESCALE_LAYER::MONSTER);
 		m_pActorDecor.back().lock()->Init_ActorDecor(m_pModelCom, m_pTransformCom, "spine_03");
+		m_pWeapons.back().lock()->Add_Collider({ 0.51f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.61f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.71f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.81f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		break;
 	case MONSTERTYPE::ELITEGARDENER:
 		m_pModelCom.lock()->Init_Model("Mon_Gardner", "", (_uint)TIMESCALE_LAYER::MONSTER);
@@ -127,6 +137,10 @@ void CNorMonster::Init_Desc()
 		m_pActorDecor.push_back(GAMEINSTANCE->Add_GameObject<CActorDecor>(m_CreatedLevel));
 		m_pActorDecor.back().lock()->Init_Model("Mon_Vain", TIMESCALE_LAYER::MONSTER);
 		m_pActorDecor.back().lock()->Init_ActorDecor(m_pModelCom, m_pTransformCom, "spine_03");
+		m_pWeapons.back().lock()->Add_Collider({ 0.51f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.61f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.71f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.81f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		break;
 	case MONSTERTYPE::SHIELDAXEMAN:
 		m_pModelCom.lock()->Init_Model("Mon_AxeMan", "", (_uint)TIMESCALE_LAYER::MONSTER);
@@ -215,6 +229,12 @@ void CNorMonster::Init_Desc()
 void CNorMonster::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	//TestCode
+	if (m_pHPBar.lock())
+	{
+	}
+
 }
 
 void CNorMonster::LateTick(_float fTimeDelta)
