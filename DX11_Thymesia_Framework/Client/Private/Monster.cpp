@@ -200,7 +200,10 @@ void  CMonster::Load_FromJson(const json& In_Json)
     m_tLinkStateDesc.eMonType           = In_Json["MonsterDesc"]["MonsterType"];
     m_tLinkStateDesc.eNorMonIdleType    = In_Json["MonsterDesc"]["IdleType_Monster"];
     m_tLinkStateDesc.eBossStartType     = In_Json["MonsterDesc"]["IdleType_Boss"];
-    m_tLinkStateDesc.iSectionIndex      = In_Json["MonsterDesc"]["SectionIndex"];
+
+    if (In_Json["MonsterDesc"].end() != In_Json["MonsterDesc"].find("SectionIndex"))
+        m_tLinkStateDesc.iSectionIndex = In_Json["MonsterDesc"]["SectionIndex"];
+
     XMStoreFloat4(&m_tLinkStateDesc.m_fStartPositon, m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION));
 
     GET_SINGLE(CGameManager)->Registration_Section(m_tLinkStateDesc.iSectionIndex, Weak_Cast<CGameObject>(m_this));

@@ -119,6 +119,8 @@ HRESULT CStatic_Prop::SetUp_ShaderResource()
 {
     if (FAILED(CProp::SetUp_ShaderResource()))
         return E_FAIL; 
+
+    return S_OK;
 }
 
 void CStatic_Prop::Write_Json(json& Out_Json)

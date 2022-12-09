@@ -53,7 +53,7 @@ protected:
     _float      m_fSpeed = 0.4f;
 
     _bool       m_bRendering    = true;
-    _float      m_fCullingRange = 0.f;
+    _float      m_fCullingRange = 1.f;
 
 public:
     // 전투가 끝나면 호출됩니다. 주로 승리 연출

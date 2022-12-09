@@ -568,7 +568,7 @@ void CGameManager::Registration_CheckPoint(weak_ptr<CInteraction_CheckPoint> In_
 
 HRESULT CGameManager::Respawn_LastCheckPoint(_float4* Out_RespawnPos)
 {
-	if (!m_pCurrentPlayer.lock() && !m_pCurSavePoint.lock())
+	if (!m_pCurrentPlayer.lock() || !m_pCurSavePoint.lock())
 		return E_FAIL;
 
 	XMStoreFloat4(Out_RespawnPos, m_pCurSavePoint.lock()->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION));

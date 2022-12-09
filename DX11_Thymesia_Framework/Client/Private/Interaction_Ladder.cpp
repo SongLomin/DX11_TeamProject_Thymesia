@@ -252,6 +252,8 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Up()
         m_pShaderCom.lock()->Begin(m_iPassIndex);
         m_pUpModelCom.lock()->Render_Mesh(i);
     }
+
+    return S_OK;
 }
 
 HRESULT CInteraction_Ladder::SetUp_ShaderResource_Mid()
@@ -302,6 +304,8 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Mid()
         m_pInstanceShaderCom.lock()->Begin(m_iPassIndex);
         m_pInstanceModelCom.lock()->Render_Mesh(i);
     }
+
+    return S_OK;
 }
 
 HRESULT CInteraction_Ladder::SetUp_ShaderResource_Down()
@@ -353,6 +357,8 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Down()
         m_pShaderCom.lock()->Begin(m_iPassIndex);
         m_pModelCom.lock()->Render_Mesh(i);
     }
+
+    return S_OK;
 }
 
 void CInteraction_Ladder::SetUpColliderDesc()
