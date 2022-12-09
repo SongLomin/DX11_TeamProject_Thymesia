@@ -42,6 +42,7 @@ private:
 	HRESULT Bake_ViewShadow();
 	HRESULT Render_Blend(); /* Diffuse * Shade 백버퍼에 그린다. */
 	HRESULT Render_NonLight();
+	HRESULT Render_NonAlphaEffect();
 	HRESULT Render_AlphaBlend();
 	HRESULT Extract_OutLine();
 	HRESULT Blur_OutLine();
@@ -54,6 +55,7 @@ private:
 	HRESULT Render_Font();
 	HRESULT Extract_Brightness();
 	HRESULT Blur_ExtractBloom();
+	HRESULT ReBlur_ExtractBloom();
 	HRESULT Blend_Bloom();
 	HRESULT Render_PostEffect();
 	HRESULT Render_AfterPostEffect();

@@ -32,15 +32,16 @@ public: // Get & Set
     void Load_EffectJson(const json& In_Json, const _uint& In_iTimeScaleLayer);
 
 private:
-    virtual HRESULT Initialize_Prototype() override;
-    virtual HRESULT Initialize(void* pArg) override;
-    virtual HRESULT Start() override;
-    virtual void    Tick(_float fTimeDelta) override;
-    virtual void LateTick(_float fTimeDelta) override;
-    virtual HRESULT Render() override;
+	virtual HRESULT Initialize_Prototype()   override;
+	virtual HRESULT Initialize(void* pArg)   override;
+	virtual HRESULT Start()                  override;
+	virtual void    Tick(_float fTimeDelta)  override;
+	virtual void LateTick(_float fTimeDelta) override;
+	virtual HRESULT Render()                 override;
     void Free();
 
     virtual void SetUp_ShaderResource() override;
+    virtual void SetUp_ShaderResource_Dissolve();
 
     virtual void OnEnable(void* _Arg = nullptr) override;
     virtual void OnDisable() override;
@@ -55,6 +56,7 @@ private:
     void Updaste_Noise  (_float fFrameTime);
     void Update_Mask    (_float fFrameTime);
     void Update_Glow    (_float fFrameTime);
+    void Update_Dissolve(_float fFrameTime);
 
     // For. Easing
     void Apply_Easing
@@ -83,6 +85,7 @@ private:
     void Tool_Rotation();
     void Tool_Scale();
     void Tool_Shaders();
+    void Tool_Dissolve();
     void Tool_Colors();
     void Tool_Texture_Diffuse();
     void Tool_Texture_Noise();
@@ -105,8 +108,9 @@ private:
     weak_ptr<CTexture>    m_pColorDiffuseTextureCom;
     weak_ptr<CTexture>    m_pMaskTextureCom;
     weak_ptr<CTexture>    m_pNoiseTextureCom;
+    weak_ptr<CTexture>    m_pDissolveTextureCom;
 
-    _uint m_iNumMeshContainers;
+    _uint                 m_iNumMeshContainers;
 
     _float                m_fCurrentLifeTime = 0.f;
     _float                m_fCurrentInitTime = 0.f;
@@ -128,6 +132,9 @@ private:
     _float4               m_vCurrentColor;
     _float4               m_vCurrentColorForce;
 
+    // For. Dissolve
+    _float                m_fDissolveAmountAcc = 1.f;
+
     // For. UV
     _float2               m_vDiffuseCurrentUV;
     _float2               m_vDiffuseCurrentUVForce;
@@ -141,10 +148,10 @@ private:
     _float4               m_vCurrentGlowForce;
 
     // For. Boner
-    std::vector<std::string>            m_AllBoneNames;
-    weak_ptr<CBoneNode>                 m_pBoneNode;
-    weak_ptr<CModel>                    m_pParentModel;
-    std::string                         m_strBoneName = "";
-    _int                                m_iCurrentBoneIndex = 0;
+    std::vector<std::string> m_AllBoneNames;
+    weak_ptr<CBoneNode>      m_pBoneNode;
+    weak_ptr<CModel>         m_pParentModel;
+    std::string              m_strBoneName = "";
+    _int                     m_iCurrentBoneIndex = 0;
 };
 END

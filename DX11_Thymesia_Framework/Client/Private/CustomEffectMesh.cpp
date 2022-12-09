@@ -9,7 +9,6 @@
 #include "Attack_Area.h"
 #include "PreViewAnimationModel.h"
 #include "Easing_Utillity.h"
-
 #include "BoneNode.h"
 
 GAMECLASS_C(CCustomEffectMesh)
@@ -42,14 +41,16 @@ HRESULT CCustomEffectMesh::Initialize(void* pArg)
 	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_EffectMesh"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements);
 
 	m_pColorDiffuseTextureCom = CGameObject::Add_Component<CTexture>();
-	m_pNoiseTextureCom = CGameObject::Add_Component<CTexture>();
-	m_pMaskTextureCom = CGameObject::Add_Component<CTexture>();
-	// m_pGradientTextureCom = CGameObject::Add_Component<CTexture>();
+	m_pNoiseTextureCom        = CGameObject::Add_Component<CTexture>();
+	m_pMaskTextureCom         = CGameObject::Add_Component<CTexture>();
+	m_pDissolveTextureCom     = CGameObject::Add_Component<CTexture>();
 
-	m_pColorDiffuseTextureCom.lock()->Use_Texture(("UVColorDiffuse"));
-	m_pNoiseTextureCom.lock()->Use_Texture(("UVNoise"));
-	m_pMaskTextureCom.lock()->Use_Texture(("UVMask"));
-	// m_pGradientTextureCom.lock()->Use_Texture(("Gradient"));
+	m_pColorDiffuseTextureCom.lock()->Use_Texture("UVColorDiffuse");
+	m_pNoiseTextureCom.lock()->Use_Texture("UVNoise");
+	m_pMaskTextureCom.lock()->Use_Texture("UVMask");
+
+	// TODO : Change to Dissolve...
+	m_pDissolveTextureCom.lock()->Use_Texture("UVNoise");
 
 	CBase::Set_Enable(false);
 
@@ -108,15 +109,39 @@ HRESULT CCustomEffectMesh::Render()
 	if (!CBase::Get_Enable())
 		return E_FAIL;
 
-	this->SetUp_ShaderResource();
-	CGameObject::CallBack_Render();
-
-	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
-	for (_uint i(0); i < iNumMeshContainers; ++i)
+	if (m_tEffectMeshDesc.bApplyDissolve)
 	{
-		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
-		m_pShaderCom.lock()->Begin(m_tEffectMeshDesc.iShaderPassIndex);
-		m_pModelCom.lock()->Render_Mesh(i);
+		this->SetUp_ShaderResource();
+		this->SetUp_ShaderResource_Dissolve();
+		CGameObject::CallBack_Render();
+
+		_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
+		_uint iShaderPassIndex(0);
+
+		if (m_tEffectMeshDesc.fDissolveDisappearTime <= m_fCurrentLifeTime)
+			iShaderPassIndex = m_tEffectMeshDesc.iDissolveDisappearShaderPassIndex;
+		else
+			iShaderPassIndex = m_tEffectMeshDesc.iDissolveAppearShaderPassIndex;
+
+		for (_uint i(0); i < iNumMeshContainers; ++i)
+		{
+			m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
+			m_pShaderCom.lock()->Begin(iShaderPassIndex);
+			m_pModelCom.lock()->Render_Mesh(i);
+		}
+	}
+	else
+	{
+		this->SetUp_ShaderResource();
+		CGameObject::CallBack_Render();
+
+		_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
+		for (_uint i(0); i < iNumMeshContainers; ++i)
+		{
+			m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
+			m_pShaderCom.lock()->Begin(m_tEffectMeshDesc.iShaderPassIndex);
+			m_pModelCom.lock()->Render_Mesh(i);
+		}
 	}
 
 	return S_OK;
@@ -151,34 +176,55 @@ void CCustomEffectMesh::SetUp_ShaderResource()
 
 	_vector vCamDir(GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[2]);
 	m_pShaderCom.lock()->Set_RawValue("g_vCamDirection", &vCamDir, sizeof(_vector));
-#pragma endregion
+#pragma endregion // World, View, Proj, Camera
+	m_pShaderCom.lock()->Set_RawValue("g_bBillboard",          &m_tEffectMeshDesc.bBillBoard,          sizeof(_bool));
 	
 	m_pColorDiffuseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", m_tEffectMeshDesc.iDiffuseTextureIndex);
-	m_pMaskTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", m_tEffectMeshDesc.iMaskTextureIndex);
-	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture", m_tEffectMeshDesc.iNoiseTextureIndex);
-
-	m_pShaderCom.lock()->Set_RawValue("g_fDiscardRatio", &m_tEffectMeshDesc.fDiscardRatio, sizeof(_float));
+	m_pMaskTextureCom.lock()->        Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", m_tEffectMeshDesc.iMaskTextureIndex);
+	m_pNoiseTextureCom.lock()->       Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture", m_tEffectMeshDesc.iNoiseTextureIndex);
 
 	m_pShaderCom.lock()->Set_RawValue("g_bDynamicNoiseOption", &m_tEffectMeshDesc.bDynamicNoiseOption, sizeof(_bool));
 
-	m_pShaderCom.lock()->Set_RawValue("g_bDiffuseWrap", &m_tEffectMeshDesc.bDiffuseWrap, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_bNoiseWrap",   &m_tEffectMeshDesc.bNoiseWrap, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_bMaskWrap",    &m_tEffectMeshDesc.bMaskWrap, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_vWrapWeight",  &m_tEffectMeshDesc.vWrapWeight, sizeof(_float4));
+	m_pShaderCom.lock()->             Set_ShaderResourceView("g_DepthTexture", GAMEINSTANCE->Get_RenderTarget_SRV(TEXT("Target_Depth")));
 
-	m_pShaderCom.lock()->Set_RawValue("g_vUVDiff", &m_vDiffuseCurrentUV, sizeof(_float2));
-	m_pShaderCom.lock()->Set_RawValue("g_vUVNoise", &m_vNoiseCurrentUV, sizeof(_float2));
-	m_pShaderCom.lock()->Set_RawValue("g_vUVMask", &m_vMaskCurrentUV, sizeof(_float2));
+	m_pShaderCom.lock()->Set_RawValue("g_fDiscardRatio",       &m_tEffectMeshDesc.fDiscardRatio,       sizeof(_float));
 
-	m_pShaderCom.lock()->Set_ShaderResourceView("g_DepthTexture", GAMEINSTANCE->Get_RenderTarget_SRV(TEXT("Target_Depth")));
+	m_pShaderCom.lock()->Set_RawValue("g_bDiffuseWrap",        &m_tEffectMeshDesc.bDiffuseWrap,        sizeof(_bool));
+	m_pShaderCom.lock()->Set_RawValue("g_bNoiseWrap",          &m_tEffectMeshDesc.bNoiseWrap,          sizeof(_bool));
+	m_pShaderCom.lock()->Set_RawValue("g_bMaskWrap",           &m_tEffectMeshDesc.bMaskWrap,           sizeof(_bool));
 
-	m_pShaderCom.lock()->Set_RawValue("g_vColor", &m_vCurrentColor, sizeof(_float4));
+	m_pShaderCom.lock()->Set_RawValue("g_vWrapWeight",         &m_tEffectMeshDesc.vWrapWeight,         sizeof(_float4));
 
-	m_pShaderCom.lock()->Set_RawValue("g_bBillboard", &m_tEffectMeshDesc.bBillBoard, sizeof(_bool));
+	m_pShaderCom.lock()->Set_RawValue("g_vUVDiff",             &m_vDiffuseCurrentUV,                   sizeof(_float2));
+	m_pShaderCom.lock()->Set_RawValue("g_vUVNoise",            &m_vNoiseCurrentUV,                     sizeof(_float2));
+	m_pShaderCom.lock()->Set_RawValue("g_vUVMask",             &m_vMaskCurrentUV,                      sizeof(_float2));
 
-	m_pShaderCom.lock()->Set_RawValue("g_bBloom", &m_tEffectMeshDesc.bBloom, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_bGlow", &m_tEffectMeshDesc.bGlow, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_vGlowColor", &m_vCurrentGlowColor, sizeof(_float4));
+	m_pShaderCom.lock()->Set_RawValue("g_vColor",              &m_vCurrentColor,                       sizeof(_float4));
+	m_pShaderCom.lock()->Set_RawValue("g_bBloom",              &m_tEffectMeshDesc.bBloom,              sizeof(_bool));
+	m_pShaderCom.lock()->Set_RawValue("g_bGlow",               &m_tEffectMeshDesc.bGlow,               sizeof(_bool));
+	m_pShaderCom.lock()->Set_RawValue("g_vGlowColor",          &m_vCurrentGlowColor,                   sizeof(_float4));
+}
+
+void CCustomEffectMesh::SetUp_ShaderResource_Dissolve()
+{
+	try
+	{
+		m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &m_fDissolveAmountAcc, sizeof(_float));
+
+		if (FAILED(m_pDissolveTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DissolveTexture", m_tEffectMeshDesc.iDissolveTextureIndex)))
+			throw 0;
+
+		m_pShaderCom.lock()->Set_RawValue("g_vDissolveDir", &m_tEffectMeshDesc.vDissolveDirection, sizeof(_float3));
+
+		m_pShaderCom.lock()->Set_RawValue("g_vDissolveGradiationStartColor", &m_tEffectMeshDesc.vDissolveGradiationStartColor, sizeof(_float3));
+		m_pShaderCom.lock()->Set_RawValue("g_vDissolveGradiationGoalColor", &m_tEffectMeshDesc.vDissolveGradiationGoalColor, sizeof(_float3));
+
+		m_pShaderCom.lock()->Set_RawValue("g_fDissolveGradiationDistance", &m_tEffectMeshDesc.fDissolveGradiationDistance, sizeof(_float));
+	}
+	catch (const std::exception&)
+	{
+		assert(0);
+	}
 }
 
 void CCustomEffectMesh::Init_EffectMesh(const EFFECTMESH_DESC& In_tEffectMeshDesc, const _char* In_szModelKey)
@@ -300,12 +346,12 @@ void CCustomEffectMesh::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 
 		ATTACKAREA_DESC WeaponDesc;
 		ZeroMemory(&WeaponDesc, sizeof(ATTACKAREA_DESC));
-		WeaponDesc.fWeaponScale = m_tEffectMeshDesc.fWeaponScale;
-		WeaponDesc.iHitType = m_tEffectMeshDesc.iHitType;
-		WeaponDesc.iOptionType = m_tEffectMeshDesc.iOptionType;
-		WeaponDesc.fDamage = m_tEffectMeshDesc.fDamage;
+		WeaponDesc.fWeaponScale  = m_tEffectMeshDesc.fWeaponScale;
+		WeaponDesc.iHitType      = m_tEffectMeshDesc.iHitType;
+		WeaponDesc.iOptionType   = m_tEffectMeshDesc.iOptionType;
+		WeaponDesc.fDamage       = m_tEffectMeshDesc.fDamage;
 		WeaponDesc.vWeaponOffset = m_tEffectMeshDesc.vWeaponOffset;
-		WeaponDesc.fHitFreq = m_tEffectMeshDesc.fHitFreq;
+		WeaponDesc.fHitFreq      = m_tEffectMeshDesc.fHitFreq;
 
 		m_pAttackArea.lock()->Init_AttackArea(WeaponDesc, pParentTransform);
 		m_pAttackArea.lock()->Enable_Weapon(m_tEffectMeshDesc.fWeaponLifeTime, m_tEffectMeshDesc.bWeaponSyncTransform);
@@ -365,6 +411,34 @@ void CCustomEffectMesh::Write_EffectJson(json& Out_Json)
 	CJson_Utility::Write_Float3(Out_Json["Max_Scale"],      m_tEffectMeshDesc.vMaxScale);
 
 	Out_Json["Shader_Pass_Index"] = m_tEffectMeshDesc.iShaderPassIndex;
+
+	Out_Json["Is_Dissolve"] = m_tEffectMeshDesc.bApplyDissolve;
+
+	if (m_tEffectMeshDesc.bApplyDissolve)
+	{
+		// For. Appear Option
+		Out_Json["Dissolve_Appear_Shader_Pass_Index"] = m_tEffectMeshDesc.iDissolveAppearShaderPassIndex;
+
+		Out_Json["Dissolve_Appear_Speed"] = m_tEffectMeshDesc.fDissolveAppearSpeed;
+
+		// For. Disappear Option
+		Out_Json["Dissolve_Disappear_Shader_Pass_Index"] = m_tEffectMeshDesc.iDissolveDisappearShaderPassIndex;
+		Out_Json["Dissolve_Disappear_Time"] = m_tEffectMeshDesc.fDissolveDisappearTime;
+		Out_Json["Dissolve_Disappear_Speed"] = m_tEffectMeshDesc.fDissolveDisappearSpeed;
+
+		// For. Texture
+		Out_Json["Dissolve_Texture_Index"] = m_tEffectMeshDesc.iDissolveTextureIndex;
+
+		// For. Gradiation
+		CJson_Utility::Write_Float4(Out_Json["Dissolve_Gradation_Start_Color"], m_tEffectMeshDesc.vDissolveGradiationStartColor);
+		CJson_Utility::Write_Float4(Out_Json["Dissolve_Gradation_Goal_Color"], m_tEffectMeshDesc.vDissolveGradiationGoalColor);
+		Out_Json["Dissolve_Gradiation_Distance"] = m_tEffectMeshDesc.fDissolveGradiationDistance;
+
+		// For. Directional Dissolve
+		CJson_Utility::Write_Float3(Out_Json["Dissolve_Direction"], m_tEffectMeshDesc.vDissolveDirection);
+		CJson_Utility::Write_Float3(Out_Json["Dissolve_Start_Position"], m_tEffectMeshDesc.vDissolveStartPosition);
+	}
+
 
 	Out_Json["Alpha_Discard_Ratio"] = m_tEffectMeshDesc.fDiscardRatio;
 
@@ -517,6 +591,52 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 
 	if (In_Json.find("Shader_Pass_Index") != In_Json.end())
 		m_tEffectMeshDesc.iShaderPassIndex = In_Json["Shader_Pass_Index"];
+
+	if (In_Json.find("Is_Dissolve") != In_Json.end())
+		m_tEffectMeshDesc.bApplyDissolve = In_Json["Is_Dissolve"];
+
+	if (m_tEffectMeshDesc.bApplyDissolve)
+	{
+		// For. Appear Option
+		if (In_Json.find("Dissolve_Appear_Shader_Pass_Index") != In_Json.end())
+			m_tEffectMeshDesc.iDissolveAppearShaderPassIndex = In_Json["Dissolve_Appear_Shader_Pass_Index"];
+
+		if (In_Json.find("Dissolve_Appear_Speed") != In_Json.end())
+			m_tEffectMeshDesc.fDissolveAppearSpeed = In_Json["Dissolve_Appear_Speed"];
+
+
+		// For. Disappear Option
+		if (In_Json.find("Dissolve_Disappear_Shader_Pass_Index") != In_Json.end())
+			m_tEffectMeshDesc.iDissolveDisappearShaderPassIndex = In_Json["Dissolve_Disappear_Shader_Pass_Index"];
+
+		if (In_Json.find("Dissolve_Disappear_Time") != In_Json.end())
+			m_tEffectMeshDesc.fDissolveDisappearTime = In_Json["Dissolve_Disappear_Time"];
+
+		if (In_Json.find("Dissolve_Disappear_Speed") != In_Json.end())
+			m_tEffectMeshDesc.fDissolveDisappearSpeed = In_Json["Dissolve_Disappear_Speed"];
+
+		// For. Texture
+		if (In_Json.find("Dissolve_Texture_Index") != In_Json.end())
+			m_tEffectMeshDesc.iDissolveTextureIndex = In_Json["Dissolve_Texture_Index"];
+
+		// For. Gradiation
+		if (In_Json.find("Dissolve_Gradation_Start_Color") != In_Json.end())
+			CJson_Utility::Load_Float4(In_Json["Dissolve_Gradation_Start_Color"], m_tEffectMeshDesc.vDissolveGradiationStartColor);
+
+		if (In_Json.find("Dissolve_Gradation_Goal_Color") != In_Json.end())
+			CJson_Utility::Load_Float4(In_Json["Dissolve_Gradation_Goal_Color"], m_tEffectMeshDesc.vDissolveGradiationGoalColor);
+
+		if (In_Json.find("Dissolve_Gradiation_Distance") != In_Json.end())
+			m_tEffectMeshDesc.fDissolveGradiationDistance = In_Json["Dissolve_Gradiation_Distance"];
+
+		// For. Directional Dissolve
+		if (In_Json.find("Dissolve_Direction") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Dissolve_Direction"], m_tEffectMeshDesc.vDissolveDirection);
+
+		// For. Directional Dissolve
+		if (In_Json.find("Dissolve_Start_Position") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Dissolve_Start_Position"], m_tEffectMeshDesc.vDissolveStartPosition);
+	}
 
 	if (In_Json.find("Alpha_Discard_Ratio") != In_Json.end())
 		m_tEffectMeshDesc.fDiscardRatio = In_Json["Alpha_Discard_Ratio"];
@@ -951,6 +1071,68 @@ void CCustomEffectMesh::Tool_Shaders()
 	}
 }
 
+void CCustomEffectMesh::Tool_Dissolve()
+{
+	if (ImGui::TreeNode("Appear Option##Dissolve_Appear_Option"))
+	{
+		ImGui::Text("Used Shader Pass");
+		ImGui::InputInt("##Dissolve_Appear_ShaderPassIndex", &m_tEffectMeshDesc.iDissolveAppearShaderPassIndex);
+
+		ImGui::Text("Speed");
+		ImGui::SetNextItemWidth(100.f);
+		ImGui::DragFloat("##Dissolve_Appear_Speed", &m_tEffectMeshDesc.fDissolveAppearSpeed, 0.1f);
+
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNode("Disappear Option##Dissolve_Disappear_Option"))
+	{
+		ImGui::Text("Used Shader Pass");
+		ImGui::InputInt("##Dissolve_Disappear_ShaderPassIndex", &m_tEffectMeshDesc.iDissolveDisappearShaderPassIndex);
+
+		ImGui::Text("Disappear Time");
+		ImGui::SetNextItemWidth(100.f);
+		ImGui::DragFloat("##Dissolve_Disappear_Time", &m_tEffectMeshDesc.fDissolveDisappearTime, 0.1f);
+
+		ImGui::Text("Speed");
+		ImGui::SetNextItemWidth(100.f);
+		ImGui::DragFloat("##Dissolve_Disappear_Speed", &m_tEffectMeshDesc.fDissolveDisappearSpeed, 0.1f);
+
+		ImGui::TreePop();
+	}
+
+	ImGui::Text("Texture Index"); ImGui::SameLine();
+	ImGui::SetNextItemWidth(100.f);
+	ImGui::InputInt("##DissolveTextureIndex", &m_tEffectMeshDesc.iDissolveTextureIndex, 1, 0);
+
+	ImGui::Text("Wrap Weight"); ImGui::SameLine();
+	ImGui::SetNextItemWidth(100.f);
+	ImGui::DragFloat("##Dissolve_Wrap_Weight", &m_tEffectMeshDesc.vWrapWeight.w, 0.1f);
+
+	if (ImGui::TreeNode("Gradiation##Dissolve_Gradiation"))
+	{
+		ImGui::Text("Start Color");
+		ImGui::ColorPicker4("##Dissolve_Gradation_Start_Color", &m_tEffectMeshDesc.vDissolveGradiationStartColor.x);
+
+		ImGui::Text("Goal Color");
+		ImGui::ColorPicker4("##Dissolve_Gradation_Goal_Color", &m_tEffectMeshDesc.vDissolveGradiationGoalColor.x);
+
+		ImGui::Text("Gradiation Distance");
+		ImGui::DragFloat("##Dissolve_Gradiation_Distance", &m_tEffectMeshDesc.fDissolveGradiationDistance, 0.1f);
+
+		ImGui::TreePop();
+	}
+
+	if (ImGui::TreeNode("Directional Dissolve Option"))
+	{
+		ImGui::Text("Dissolve Start Position");
+		ImGui::DragFloat3("##Dissolve_Start_Position", &m_tEffectMeshDesc.vDissolveStartPosition.x, 0.1f);
+
+		ImGui::Text("Dissolve Direction");
+		ImGui::DragFloat3("##Dissolve_Direction", &m_tEffectMeshDesc.vDissolveDirection.x, 0.1f);
+	}
+}
+
 void CCustomEffectMesh::Tool_Colors()
 {
 	ImGui::Text("Discard Ratio"); ImGui::SameLine();
@@ -1170,6 +1352,9 @@ void CCustomEffectMesh::Play_Internal(_float fFrameTime)
 	this->Updaste_Noise(fFrameTime);
 	this->Update_Mask(fFrameTime);
 	this->Update_Glow(fFrameTime);
+
+	if (m_tEffectMeshDesc.bApplyDissolve)
+		this->Update_Dissolve(fFrameTime);
 }
 
 void CCustomEffectMesh::Update_Position(_float fFrameTime)
@@ -1311,6 +1496,18 @@ void CCustomEffectMesh::Update_Glow(_float fFrameTime)
 	XMStoreFloat4(&m_vCurrentGlowColor, vCurrentGlowColor);
 }
 
+void CCustomEffectMesh::Update_Dissolve(_float fFrameTime)
+{
+	if (m_tEffectMeshDesc.fDissolveDisappearTime <= m_fCurrentLifeTime)
+		m_fDissolveAmountAcc = min(1.f, m_fDissolveAmountAcc + fFrameTime * m_tEffectMeshDesc.fDissolveAppearSpeed);
+	else
+		m_fDissolveAmountAcc = max(0.f, m_fDissolveAmountAcc - fFrameTime * m_tEffectMeshDesc.fDissolveAppearSpeed);
+
+#ifdef _DEBUG_COUT_JOJO
+	cout << "Dissolve Amount Acc : " << m_fDissolveAmountAcc << endl;
+#endif // _DEBUG_COUT_JOJO
+}
+
 void CCustomEffectMesh::Apply_Easing
 (
 	_float2& vTarget
@@ -1435,7 +1632,6 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 			this->Tool_Control();
 
-
 			if (ImGui::CollapsingHeader("Spawn & Life Time"))
 				this->Tool_Spawn_Life_Time();
 
@@ -1453,7 +1649,6 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			if (ImGui::CollapsingHeader("Boner"))
 				this->Tool_Boner();
 
-
 			if (ImGui::CollapsingHeader("Position"))
 				this->Tool_Position();
 
@@ -1468,6 +1663,23 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 
 			if (ImGui::CollapsingHeader("Shaders"))
 				this->Tool_Shaders();
+
+			ImGui::Text("Render Group");
+			if (ImGui::Button("Non Alpha Effect##RenderGroup_NonAlphaEffect"))
+				m_eRenderGroup = RENDERGROUP::RENDER_NONALPHA_EFFECT;
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("Alpha Blend##RenderGroup_AlphaBlend"))
+				m_eRenderGroup = RENDERGROUP::RENDER_ALPHABLEND;
+
+			ImGui::Checkbox("Apply Dissolve##Is_Dissolve", &m_tEffectMeshDesc.bApplyDissolve);
+
+			if (m_tEffectMeshDesc.bApplyDissolve)
+			{
+				if (ImGui::CollapsingHeader("Dissolve"))
+					this->Tool_Dissolve();
+			}
 
 			if (ImGui::CollapsingHeader("Colors"))
 				this->Tool_Colors();

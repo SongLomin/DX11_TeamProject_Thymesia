@@ -37,7 +37,6 @@ namespace Client
 		_float3		vStartPosition;
 
 
-
 #pragma region Speed
 		_float3		vSpeed;
 		_float3		vForce;
@@ -62,6 +61,30 @@ namespace Client
 
 		_int		iShaderPassIndex;
 
+#pragma region Dissolve
+		_bool bApplyDissolve;
+
+		_int iDissolveAppearShaderPassIndex;
+		_int iDissolveDisappearShaderPassIndex;
+
+		_int iDissolveTextureIndex;
+
+		_float4 vDissolveGradiationStartColor;
+		_float4 vDissolveGradiationGoalColor;
+
+		_float	fDissolveGradiationDistance;
+
+		_float	fDissolveAppearSpeed;
+
+		_float  fDissolveDisappearTime;
+		_float	fDissolveDisappearSpeed;
+
+		// For. Directional Dissolve
+		_float3 vDissolveStartPosition;
+		_float3 vDissolveDirection;
+
+#pragma endregion
+
 #pragma region Colors
 		_float		fDiscardRatio;
 
@@ -74,7 +97,7 @@ namespace Client
 
 		_bool		bDynamicNoiseOption;
 		/**
-		* x : Diffuse | y : Mask | z : Noise | w : None
+		* x : Diffuse | y : Mask | z : Noise | w : Dissolve
 		*/
 		_float4		vWrapWeight;
 
@@ -247,6 +270,11 @@ namespace Client
 #pragma endregion
 #pragma region Scale
 		_bool		bSquareScale;
+		_bool		bRatioScale;
+
+		// For. Ratio Scale
+		_float		fMinYScaleRatio;
+		_float		fMaxYScaleRatio;
 
 		_bool		bEasingScale;
 		_int		iScaleEasingType;

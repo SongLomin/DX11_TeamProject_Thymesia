@@ -87,7 +87,7 @@ void CCorvusState_Parry1::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
 
 #ifdef _DEBUG_COUT_
-	cout << "AttackIndex: " << m_iAttackIndex << endl;
+	// cout << "AttackIndex: " << m_iAttackIndex << endl;
 #endif
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);

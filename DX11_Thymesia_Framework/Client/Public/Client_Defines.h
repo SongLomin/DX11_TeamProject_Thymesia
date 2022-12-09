@@ -3,7 +3,7 @@
 #include "SMath.h"
 #include <filesystem>
 
-//#define _JOJO_EFFECT_TOOL_
+// #define _JOJO_EFFECT_TOOL_
 
 #include "Client_Structs.h"
 #include "Client_Presets.h"
@@ -41,7 +41,7 @@
 #pragma endregion // Map
 
 #pragma region Tool
-#define _MAP_TOOL_
+// #define _MAP_TOOL_
 #define _EFFECT_TOOL_
 #pragma endregion // Tool
 
@@ -51,8 +51,8 @@
 #pragma endregion // Boss Mobs
 
 #pragma region Normal Mobs
-#define _STAGE_1_MONSTER_
-#define _STAGE_2_MONSTER_
+// #define _STAGE_1_MONSTER_
+// #define _STAGE_2_MONSTER_
 #pragma endregion // Normal Mobs
 
 #pragma region Effects
@@ -124,7 +124,7 @@
 
 #pragma region Console Outputs
 #undef _DEBUG_COUT_
-#undef _DEBUG_COUT_JOJO
+#define _DEBUG_COUT_JOJO
 #pragma endregion // Console Outputs
 
 #pragma region Map
