@@ -51,6 +51,7 @@ void CStatus_Boss::Set_NextPhase()
 {
 	m_tMonsterDesc.m_fCurrentHP_white = m_tMonsterDesc.m_fMaxHP_white;
 	m_tMonsterDesc.m_fCurrentHP_Green = m_tMonsterDesc.m_fMaxHP_Green;
+	m_tMonsterDesc.m_fCurrentParryingGauge = 0.f;
 	m_tMonsterDesc.m_iLifeCount -= 1;
 
 	Callback_NextPhase();

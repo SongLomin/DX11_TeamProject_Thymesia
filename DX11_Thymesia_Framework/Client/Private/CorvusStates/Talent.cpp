@@ -262,15 +262,19 @@ void CTalent::OnLButtonClick()
 
 void CTalent::CheckMouseOver()//체크되어 있는 상태에서 마우스오버
 {
+    m_pButtonActive.lock()->Animation_MouseOver();
 
-    m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Active_Hover");
+   // m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Active_Hover");
     m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame_Active");
 
 }
 
-void CTalent::CheckMouseOut()//체크되어 있는 상태에서 마우스아웃
+void CTalent::CheckMouseOut()//체크되어 있는 상태에서 마우스아웃KO
 {
-    m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Active");
+
+    m_pButtonActive.lock()->Animation_MouseOut();
+
+    //m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Active");
     m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame_Active");
 }
 
@@ -279,10 +283,10 @@ void CTalent::CheckLButtonClick()//마우스 버튼 켜진시점
     if (!m_pParent.lock())
         return;
     m_bActive = true;
-    m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Active");
+    //m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Active");
     m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame_Active");
 
-    m_pButtonActive.lock()->Set_Selected(true);
+    m_pButtonActive.lock()->Set_Click(true);
 
 }
 
@@ -290,7 +294,11 @@ void CTalent::UnCheckMouseOver()//클릭 X일떄 마우스오버
 {
     if (!m_pParent.lock())
         return;
-    m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Frame_Hover");
+
+
+    m_pButtonActive.lock()->Animation_MouseOver();
+
+//    m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Frame_Hover");
     m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame");
 
 }
@@ -300,7 +308,9 @@ void CTalent::UnCheckMouseOut()//클릭 X일때 마우스아웃
     if (!m_pParent.lock())
         return;
 
-    m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_None");
+    m_pButtonActive.lock()->Animation_MouseOut();
+
+//    m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_None");
     m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame");
 }
 
@@ -311,10 +321,18 @@ void CTalent::UnCheckLButtonClick()//눌러서 버튼 꺼진시점
         return;
     m_bActive = false;
     m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame");
- //   m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_None");
+   // m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_None");
 
-    m_pButtonActive.lock()->Set_Selected(false);
+    m_pButtonActive.lock()->Set_Click(false);
 
+}
+
+void CTalent::Set_Root()
+{
+    m_bActive = true;
+    //m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Active");
+    m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame_Active");
+    m_pButtonActive.lock()->Set_Click(true);
 }
 
 _uint CTalent::GetActiveNodeCount(weak_ptr<CTalent> In_Talent)
@@ -395,14 +413,7 @@ void CTalent::LateTick(_float fTimeDelta)
         내가 건담이 된다   
     */
     //만약에, 내 버튼 상태가 MouseOver라면.
-    if (Get_ButtonState() == CUI_Button_Base::UI_BUTTON_OVER)
-    {
-       
-    }
-    else if (Get_ButtonState() == CUI_Button_Base::UI_BUTTON_OUT)
-    {
-     
-    }
+   
 }
 
 

@@ -12,6 +12,7 @@
 #include "Monster.h"
 #include "Status_Boss.h"
 #include "BossMonster.h"
+#include "MonsterParryingBar.h"
 GAMECLASS_C(CMonsterHPBar_Boss)
 CLONE_C(CMonsterHPBar_Boss, CGameObject)
 
@@ -182,6 +183,7 @@ void CMonsterHPBar_Boss::Call_NextPhase()
 	m_pBorder.lock()->Set_Enable(true);
     m_pWhite.lock()->Set_Ratio(1.f);
     m_pGreen.lock()->Set_Ratio(1.f);
+	m_pParryingBar.lock()->Set_Ratio(0.f,false);
 	m_listLifeDecoration.back().lock()->Set_Enable(false);
 	m_listLifeDecoration.pop_back();
 	for (auto& elem : m_listLifeDecoration)

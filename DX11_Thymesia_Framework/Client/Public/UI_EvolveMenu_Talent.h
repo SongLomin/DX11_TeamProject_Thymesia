@@ -67,7 +67,7 @@ private:
 public:
 	void	Call_TalentMouseOver(TALENT_NAME eTalent_Name);
 	void	Call_TalentMouseOut();
-
+	
 
 
 private:
@@ -82,6 +82,10 @@ private:
 private:
 	_float				m_fTreeOffsetY;
 	_float				m_fTreeOffsetX;
+
+
+private:
+	TEXTINFO			m_tTalentInfo;
 
 public:
 	void            Call_ReturnToEvolveMenu();

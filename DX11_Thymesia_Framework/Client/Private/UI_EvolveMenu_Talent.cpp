@@ -9,6 +9,8 @@
 #include "FadeMask.h"
 #include "Talent_Effects.h"
 #include "CorvusStates/Talent.h"
+#include "UI_EvolveTalent_Active.h"
+
 
 GAMECLASS_C(CUI_EveolveMenu_Talent)
 CLONE_C(CUI_EveolveMenu_Talent, CGameObject)
@@ -225,6 +227,7 @@ void CUI_EveolveMenu_Talent::OnEnable(void* pArg)
         if (m_pRoot[i].lock())
         {
             m_pRoot[i].lock()->Set_Enable(true);
+            m_pRoot[i].lock()->Set_Root();
         }
     }
 
