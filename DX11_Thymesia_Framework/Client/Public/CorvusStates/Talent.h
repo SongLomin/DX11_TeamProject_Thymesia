@@ -10,7 +10,7 @@ END
 BEGIN(Client)
 class CTalent_Effect;
 class CCustomUI;
-
+class CUI_EvolveTalent_Active;
 class CTalent :
     public CUI_Button_Base
 {
@@ -95,7 +95,7 @@ private:
     
 private:
     weak_ptr<CCustomUI>	m_pButtonFrame;//프레임
-    weak_ptr<CCustomUI>	m_pButtonActive;//버튼 눌렸을대
+    weak_ptr<CUI_EvolveTalent_Active>	m_pButtonActive;//버튼 눌렸을대
     weak_ptr<CCustomUI> m_pIcon;
 
 private:

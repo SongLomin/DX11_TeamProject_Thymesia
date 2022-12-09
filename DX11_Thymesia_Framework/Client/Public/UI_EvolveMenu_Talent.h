@@ -8,6 +8,8 @@ class CFadeMask;
 class CUI_EvolveMenu_TalentButton;
 class CTalent;
 
+
+
 class CUI_EveolveMenu_Talent : public CUI_Container
 {
 public:

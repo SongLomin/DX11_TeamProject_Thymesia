@@ -981,6 +981,13 @@
     <ClInclude Include="..\Public\EasingComponent_Transform.h" />
     <ClInclude Include="..\Public\UI_Interaction.h" />
     <ClInclude Include="..\Public\UI_Utils.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidB.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidL.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidR.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_RunB.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_RunL.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_RunR.h" />
+    <ClInclude Include="..\Public\UI_EvolveTalent_Active.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2009,6 +2016,13 @@
     <ClCompile Include="..\Private\EasingComponent_Transform.cpp" />
     <ClCompile Include="..\Private\UI_Interaction.cpp" />
     <ClCompile Include="..\Private\UI_Utils.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidB.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidL.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidR.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_RunB.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_RunL.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_RunR.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveTalent_Active.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3020,6 +3034,9 @@
     </Filter>
     <Filter Include="02. GameObject\01. UI\UI_Container\CTalentDecoration">
       <UniqueIdentifier>{03b63a6e-e09f-4f6d-a2f8-2d7b5cee5c4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\NewFilter1">
+      <UniqueIdentifier>{7b0dc55d-b3c3-46f0-b6b6-df5590d34e8c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -15,6 +15,7 @@
 #include "UI_EvolveMenu_Level.h"
 #include "UI_Button.h"
 #include "UI_EvolveMenu_Talent.h"
+#include "UI_EvolveTalent_Active.h"
 GAMECLASS_C(CTalent)
 CLONE_C(CTalent, CGameObject)
 
@@ -41,7 +42,7 @@ HRESULT CTalent::Initialize(void* pArg)
     m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame");
     m_pButtonFrame.lock()->Set_Depth(0.2f);
 
-    m_pButtonActive = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
+    m_pButtonActive = GAMEINSTANCE->Add_GameObject<CUI_EvolveTalent_Active>(LEVEL_STATIC);
 
     m_pButtonActive.lock()->Set_UIPosition
     (
@@ -327,6 +328,9 @@ void CTalent::CheckLButtonClick()//마우스 버튼 켜진시점
     m_bActive = true;
     m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Active");
     m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame_Active");
+
+    m_pButtonActive.lock()->Set_Selected(true);
+
 }
 
 void CTalent::UnCheckMouseOver()//클릭 X일떄 마우스오버
@@ -354,7 +358,10 @@ void CTalent::UnCheckLButtonClick()//눌러서 버튼 꺼진시점
         return;
     m_bActive = false;
     m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame");
-    m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_None");
+ //   m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_None");
+
+    m_pButtonActive.lock()->Set_Selected(false);
+
 }
 
 _uint CTalent::GetActiveNodeCount(weak_ptr<CTalent> In_Talent)
