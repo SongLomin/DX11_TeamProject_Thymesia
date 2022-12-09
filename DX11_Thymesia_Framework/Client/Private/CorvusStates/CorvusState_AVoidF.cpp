@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CorvusStates/CorvusState_AVoidR.h"
+#include "CorvusStates/CorvusState_AVoidF.h"
 #include "Model.h"
 #include "GameInstance.h"
 #include "GameObject.h"
@@ -9,16 +9,16 @@
 #include "CorvusStates/CorvusStates.h"
 #include "GameManager.h"
 
-GAMECLASS_C(CCorvusState_AVoidR);
-CLONE_C(CCorvusState_AVoidR, CComponent)
+GAMECLASS_C(CCorvusState_AVoidF);
+CLONE_C(CCorvusState_AVoidF, CComponent)
 
-HRESULT CCorvusState_AVoidR::Initialize_Prototype()
+HRESULT CCorvusState_AVoidF::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 	return S_OK;
 }
 
-HRESULT CCorvusState_AVoidR::Initialize(void* pArg)
+HRESULT CCorvusState_AVoidF::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 	m_fNextCombatRatio = 0.23f;
@@ -27,16 +27,16 @@ HRESULT CCorvusState_AVoidR::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CCorvusState_AVoidR::Start()
+void CCorvusState_AVoidF::Start()
 {
 	__super::Start();
 	
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_AvoidShortMag_R");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_AVoidR::Call_AnimationEnd, this);
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_AvoidShortMag_F");
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_AVoidF::Call_AnimationEnd, this);
 }
 
-void CCorvusState_AVoidR::Tick(_float fTimeDelta)
+void CCorvusState_AVoidF::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
@@ -44,7 +44,7 @@ void CCorvusState_AVoidR::Tick(_float fTimeDelta)
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
-void CCorvusState_AVoidR::LateTick(_float fTimeDelta)
+void CCorvusState_AVoidF::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
@@ -53,7 +53,7 @@ void CCorvusState_AVoidR::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-void CCorvusState_AVoidR::Check_InputAgainAvoid()
+void CCorvusState_AVoidF::Check_InputAgainAvoid()
 {
 	if (!KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))
 	{
@@ -62,16 +62,16 @@ void CCorvusState_AVoidR::Check_InputAgainAvoid()
 	m_IsAgainAvoid = true;
 }
 
-void CCorvusState_AVoidR::OnDisable()
+void CCorvusState_AVoidF::OnDisable()
 {
 
 }
 
-void CCorvusState_AVoidR::OnStateStart(const _float& In_fAnimationBlendTime)
+void CCorvusState_AVoidF::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_AVoidR>().lock())
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_AVoidF>().lock())
 	{
 		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 5);
 	}
@@ -88,14 +88,14 @@ void CCorvusState_AVoidR::OnStateStart(const _float& In_fAnimationBlendTime)
 	//m_pModelCom.lock()->Set_AnimationSpeed(3.f);
 }
 
-void CCorvusState_AVoidR::OnStateEnd()
+void CCorvusState_AVoidF::OnStateEnd()
 {
 	__super::OnStateEnd();
 
 
 }
 
-void CCorvusState_AVoidR::Call_AnimationEnd()
+void CCorvusState_AVoidF::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
@@ -104,24 +104,24 @@ void CCorvusState_AVoidR::Call_AnimationEnd()
 
 }
 
-void CCorvusState_AVoidR::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
+void CCorvusState_AVoidF::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 {
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 }
 
-void CCorvusState_AVoidR::Free()
+void CCorvusState_AVoidF::Free()
 {
 
 }
 
-void CCorvusState_AVoidR::OnDestroy()
+void CCorvusState_AVoidF::OnDestroy()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_AVoidR::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_AVoidF::Call_AnimationEnd, this);
 }
 
-_bool CCorvusState_AVoidR::Check_AndChangeNextState()
+_bool CCorvusState_AVoidF::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
 		return false;
@@ -131,8 +131,9 @@ _bool CCorvusState_AVoidR::Check_AndChangeNextState()
 		if (Check_RequirementDashState())
 		{
 			
+
 			m_IsAgainAvoid = false;
-			Get_OwnerPlayer()->Change_State<CCorvusState_AVoidR>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_AVoidF>();
 			return false;
 		}
 	}
@@ -195,7 +196,7 @@ _bool CCorvusState_AVoidR::Check_AndChangeNextState()
 	return false;
 }
 
-_bool CCorvusState_AVoidR::Check_RuquireMnetRepeatAvoidkState()
+_bool CCorvusState_AVoidF::Check_RuquireMnetRepeatAvoidkState()
 {
 	_uint iTargetKeyFrameMin = 80;
 	_uint iTargetKeyFrameMax = 999;

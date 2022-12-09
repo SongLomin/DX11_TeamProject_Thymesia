@@ -252,9 +252,14 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_RunB);
 	ADD_STATE_MACRO(CCorvusState_RunL);
 	ADD_STATE_MACRO(CCorvusState_RunR);
+	ADD_STATE_MACRO(CCorvusState_RunFR);
+	ADD_STATE_MACRO(CCorvusState_RunFL);
+	ADD_STATE_MACRO(CCorvusState_RunBR);
+	ADD_STATE_MACRO(CCorvusState_RunBL);
 	ADD_STATE_MACRO(CCorvusState_AVoidB);
 	ADD_STATE_MACRO(CCorvusState_AVoidL);
 	ADD_STATE_MACRO(CCorvusState_AVoidR);
+	ADD_STATE_MACRO(CCorvusState_AVoidF);
 
 
 #undef ADD_STATE_MACRO

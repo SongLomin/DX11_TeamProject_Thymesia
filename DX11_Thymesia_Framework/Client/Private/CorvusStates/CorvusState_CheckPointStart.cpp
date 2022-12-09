@@ -99,7 +99,11 @@ _bool CCorvusState_CheckPointStart::Check_AndChangeNextState()
 		return false;
 
 	
-
+	if (KEY_INPUT(KEY::E, KEY_STATE::AWAY))
+	{
+		return true;
+	}
+	
 		
 
 	return false;

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CorvusStates/CorvusState_RunL.h"
+#include "CorvusStates/CorvusState_RunFR.h"
 #include "Model.h"
 #include "Transform.h"
 #include "GameInstance.h"
@@ -11,18 +11,18 @@
 #include "PhysXController.h"
 
 
-GAMECLASS_C(CCorvusState_RunL);
-CLONE_C(CCorvusState_RunL, CComponent)
+GAMECLASS_C(CCorvusState_RunFR);
+CLONE_C(CCorvusState_RunFR, CComponent)
 
 
 
-HRESULT CCorvusState_RunL::Initialize_Prototype()
+HRESULT CCorvusState_RunFR::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 	return S_OK;
 }
 
-HRESULT CCorvusState_RunL::Initialize(void* pArg)
+HRESULT CCorvusState_RunFR::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
@@ -32,14 +32,14 @@ HRESULT CCorvusState_RunL::Initialize(void* pArg)
 
 
 
-void CCorvusState_RunL::Start()
+void CCorvusState_RunFR::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_RunL");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_RunFR");
 }
 
-void CCorvusState_RunL::Tick(_float fTimeDelta)
+void CCorvusState_RunFR::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
@@ -52,12 +52,12 @@ void CCorvusState_RunL::Tick(_float fTimeDelta)
 
 	PxControllerFilters Filters;
 
-	m_pPhysXControllerCom.lock()->MoveWithRotation({ -m_fCurrentSpeed * fTimeDelta, 0.f, 0.f }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
+	m_pPhysXControllerCom.lock()->MoveWithRotation({ m_fCurrentSpeed * fTimeDelta, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
 
 	//m_pTransformCom.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta, m_pNaviCom);
 }
 
-void CCorvusState_RunL::LateTick(_float fTimeDelta)
+void CCorvusState_RunFR::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
@@ -66,7 +66,7 @@ void CCorvusState_RunL::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-void CCorvusState_RunL::OnStateStart(const _float& In_fAnimationBlendTime)
+void CCorvusState_RunFR::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
@@ -95,25 +95,35 @@ void CCorvusState_RunL::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif
 }
 
-void CCorvusState_RunL::OnStateEnd()
+void CCorvusState_RunFR::OnStateEnd()
 {
 	__super::OnStateEnd();
 
 }
 
-void CCorvusState_RunL::Free()
+void CCorvusState_RunFR::Free()
 {
 }
 
-_bool CCorvusState_RunL::Check_AndChangeNextState()
+_bool CCorvusState_RunFR::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
 		return false;
 
 	
+	if (KEY_INPUT(KEY::W, KEY_STATE::HOLD)
+		&& KEY_INPUT(KEY::D, KEY_STATE::HOLD))
+	{
+		if (Check_RequirementAVoidState())
+		{
+			Get_OwnerPlayer()->Change_State<CCorvusState_AVoidR>();
+			return true;
+		}
+
+	}
+
 		if (Check_RequirementAttackState())
 		{
-			
 
 			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
 			return true;
@@ -121,38 +131,25 @@ _bool CCorvusState_RunL::Check_AndChangeNextState()
 
 		if (Check_RequirementParryState())
 		{
-			
 			Get_OwnerPlayer()->Change_State<CCorvusState_Parry1>();
 			return true;
 		}
+
 		if (Check_RequirementClawAttackState())
 		{
-		
 			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackTab>();
 			return true;
 		}
-	
-	
-
-	if (KEY_INPUT(KEY::A, KEY_STATE::HOLD)
-		&& KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))
-	{
-		Get_OwnerPlayer()->Change_State<CCorvusState_AVoidL>();
-		return true;
-	}
-
-
-
 
 	
 	
 
-	if (!KEY_INPUT(KEY::A, KEY_STATE::HOLD))
+	if (!KEY_INPUT(KEY::W, KEY_STATE::HOLD)
+		|| !KEY_INPUT(KEY::D, KEY_STATE::HOLD))
 	{
 		Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
 		return true;
 	}
-
 
 
 	if(Check_RequirementHealingState())
