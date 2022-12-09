@@ -158,7 +158,6 @@ _bool CCorvusState_RunR::Check_AndChangeNextState()
 
 	if(Check_RequirementHealingState())
 	{
-		Rotation_InputToLookDir();
 		Get_OwnerPlayer()->Change_State<CCorvusState_BasicHealing>();
 		return true;
 	}
