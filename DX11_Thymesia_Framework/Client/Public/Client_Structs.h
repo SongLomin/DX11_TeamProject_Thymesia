@@ -80,6 +80,7 @@ namespace Client
 		_float	fDissolveDisappearSpeed;
 
 		// For. Directional Dissolve
+		_float3 vDissolveStartPosition;
 		_float3 vDissolveDirection;
 
 #pragma endregion

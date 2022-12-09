@@ -436,6 +436,7 @@ void CCustomEffectMesh::Write_EffectJson(json& Out_Json)
 
 		// For. Directional Dissolve
 		CJson_Utility::Write_Float3(Out_Json["Dissolve_Direction"], m_tEffectMeshDesc.vDissolveDirection);
+		CJson_Utility::Write_Float3(Out_Json["Dissolve_Start_Position"], m_tEffectMeshDesc.vDissolveStartPosition);
 	}
 
 
@@ -631,6 +632,10 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 		// For. Directional Dissolve
 		if (In_Json.find("Dissolve_Direction") != In_Json.end())
 			CJson_Utility::Load_Float3(In_Json["Dissolve_Direction"], m_tEffectMeshDesc.vDissolveDirection);
+
+		// For. Directional Dissolve
+		if (In_Json.find("Dissolve_Start_Position") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Dissolve_Start_Position"], m_tEffectMeshDesc.vDissolveStartPosition);
 	}
 
 	if (In_Json.find("Alpha_Discard_Ratio") != In_Json.end())
@@ -1118,9 +1123,14 @@ void CCustomEffectMesh::Tool_Dissolve()
 		ImGui::TreePop();
 	}
 
-	ImGui::Text("For : Direcitonal Dissolve");
-	ImGui::Text("Dissolve Direction");
-	ImGui::DragFloat3("##Dissolve_Direction", &m_tEffectMeshDesc.vDissolveDirection.x, 0.1f);
+	if (ImGui::TreeNode("Directional Dissolve Option"))
+	{
+		ImGui::Text("Dissolve Start Position");
+		ImGui::DragFloat3("##Dissolve_Start_Position", &m_tEffectMeshDesc.vDissolveStartPosition.x, 0.1f);
+
+		ImGui::Text("Dissolve Direction");
+		ImGui::DragFloat3("##Dissolve_Direction", &m_tEffectMeshDesc.vDissolveDirection.x, 0.1f);
+	}
 }
 
 void CCustomEffectMesh::Tool_Colors()
