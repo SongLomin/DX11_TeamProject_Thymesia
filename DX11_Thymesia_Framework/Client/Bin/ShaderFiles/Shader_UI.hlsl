@@ -116,7 +116,7 @@ PS_OUT PS_MAIN_DISSOLVE(PS_IN In)
 
 	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
-	float DissolveDesc    = g_DissolveTexture.Sample(DefaultSampler, In.vTexUV).r + g_Ratio;
+	float DissolveDesc    = g_DissolveTexture.Sample(DefaultSampler, In.vTexUV).r - g_Ratio;
 	float fDissolveAmount = 1.f - g_Ratio;
 
 	clip(DissolveDesc - fDissolveAmount);

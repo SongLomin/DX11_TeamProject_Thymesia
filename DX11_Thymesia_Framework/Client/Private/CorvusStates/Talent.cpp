@@ -230,8 +230,9 @@ void CTalent::OnLButtonClick()
             m_pPlayer.lock()->Bind_TalentEffects(elem.lock()->Get_Effect());
 #endif
         }
+#ifndef _ONLY_UI_
         GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Status().lock()->Set_Desc(&tPlayerDesc);
-
+#endif
         if (pTalent.lock()->m_pParent.lock())
             pTalent.lock()->m_pParent.lock()->CheckLButtonClick();
         break;
@@ -245,66 +246,18 @@ void CTalent::OnLButtonClick()
                 elem.lock()->UnCheckLButtonClick();
 #ifndef _ONLY_UI_
                 m_pPlayer.lock()->UnBind_TalentEffects(elem.lock()->Get_Effect());
-#endif // !_ONLY_UI_
+#endif
             }
         }
+#ifndef _ONLY_UI_
         GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Status().lock()->Set_Desc(&tPlayerDesc);
+#endif
         break;
     case Client::TALENT_RESULT::RESULT_END:
         break;
     default:
         break;
     }
-    /*
-    m_bActive = !m_bActive;
-    if (m_bActive)
-    {
-        CheckLButtonClick();
-    }
-    else
-    {
-        UnCheckLButtonClick();
-    }
-    */
-    /*
-    if (true)//모종의 조건이 성립한다면
-    {
-        if (m_bActive)//켜진거면 내 위로 모든 부모들 클릭된상태로
-        {
-            weak_ptr<CTalent>   pParent = m_pParent;
-            while (pParent.lock())
-            {
-                pParent.lock()->CheckLButtonClick();
-                pParent = pParent.lock()->m_pParent;
-            }
-            if (pParent.lock())
-                pParent.lock()->CheckLButtonClick();
-        }
-        else
-        {
-            weak_ptr<CTalent>   pChild;
-
-            for (auto& elem : m_pChilds)//활성화된 자식 찾기
-            {
-                if (elem.lock()->m_bActive)
-                {
-                    pChild = elem;
-                    break;
-                }
-            }
-            if (!pChild.lock())
-                return;
-            list<weak_ptr<CTalent>> listChild;
-            int i = 0;
-            Find_ActiveChild_Recursive(pChild, listChild, i);
-            
-            pChild.lock()->UnCheckLButtonClick();
-            for (auto& elem : listChild)
-            {
-                elem.lock()->UnCheckLButtonClick();
-            }
-        }
-    }*/
 }
 
 void CTalent::CheckMouseOver()//체크되어 있는 상태에서 마우스오버
@@ -554,108 +507,6 @@ void CTalent::Find_AllParent_Recursive(weak_ptr<CTalent> In_pTalent, list<weak_p
     
     Find_AllParent_Recursive(In_pTalent.lock()->m_pParent, out_pActiveParent);
 }
-
-
-void  CTalent::TestTalentCheck()
-{
-    
-
-    int iCost = 0;
-    int iMyTalentPoint = 5;
-
-    TALENT_RESULT eResult;
-
-    //임시
-    //m_pPlayer.lock()->Bind_TalentEffects(pAvoidThrustLV1.lock()->Get_Effect());
-    //m_pPlayer.lock()->Bind_TalentEffects(pSwordLV2.lock()->Get_Effect());
-    list<weak_ptr<CTalent>> pVisitNodes;
-    eResult = Check_Requiment(iMyTalentPoint, iCost, pVisitNodes);
-
-    switch (eResult)
-    {
-    case Client::TALENT_RESULT::FAILED:
-        break;
-    case Client::TALENT_RESULT::NOT_ENOUGHTPOINT:
-        break;
-    case Client::TALENT_RESULT::USING_ATHORTREE:
-        break;
-    case Client::TALENT_RESULT::SUCCESS:
-        iMyTalentPoint -= iCost;
-        for (auto& elem : pVisitNodes)
-        {
-            elem.lock()->Set_Active(true);
-            m_pPlayer.lock()->Bind_TalentEffects(elem.lock()->Get_Effect());
-        }
-        //m_pPlayer.lock()->Bind_TalentEffects(pSwordLV2.lock()->Get_Effect());
-        //m_pPlayer.lock()->Bind_TalentEffects(pAvoidThrustLV1.lock()->Get_Effect());
-        break;
-    case Client::TALENT_RESULT::SUBSCRIPTPOINT:
-        iMyTalentPoint += iCost;
-        for (auto& elem : pVisitNodes)
-        {
-            elem.lock()->Set_Active(false);
-            m_pPlayer.lock()->UnBind_TalentEffects(elem.lock()->Get_Effect());
-        }
-
-        break;
-    }
-    cout << "iTalent Point : " << iMyTalentPoint << endl;
-
-}
-
-void CTalent::Set_TALENT_NAME(TALENT_NAME TalentName)
-{
-    m_eTalentName = TalentName;
-
-    switch (m_eTalentName)
-    {
-    case Client::TALENT_NAME::NORSWORDLV1:
-        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Basic");
-        break;
-    case Client::TALENT_NAME::NORSWORDLV2:
-        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Basic");
-        break;
-    case Client::TALENT_NAME::AVOIDSLASHLV1:
-        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Cross");
-        break;
-    case Client::TALENT_NAME::AVOIDSLASHLV2:
-        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Cross");
-        break;
-    case Client::TALENT_NAME::AVOIDTHRUSTLV1:
-        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Stab");
-        break;
-    case Client::TALENT_NAME::AVOIDTHRUSTLV2:
-        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Stab");
-        break;
-    case Client::TALENT_NAME::JUMPATTACKLV1:
-        break;
-    case Client::TALENT_NAME::JUMPATTACKLV2:
-        break;
-    case Client::TALENT_NAME::JUMPATTACKLV3:
-        break;
-    case Client::TALENT_NAME::EXECUTION:
-        break;
-    case Client::TALENT_NAME::HEALINGEXECUTIONLV1:
-        break;
-    case Client::TALENT_NAME::HEALINGEXECUTIONLV2:
-        break;
-    case Client::TALENT_NAME::SHARPWEAPONLV1:
-        break;
-    case Client::TALENT_NAME::SHARPWEAPONLV2:
-        break;
-    case Client::TALENT_NAME::ENERGISEDWEAPONLV1:
-        break;
-    case Client::TALENT_NAME::ENERGISEDWEAPONLV2:
-        break;
-    case Client::TALENT_NAME::TALENT_NAME_END:
-        break;
-    default:
-        break;
-    }
-    
-}
-
-
 
 void CTalent::Free()
 {

@@ -50,7 +50,6 @@ public:
         return m_iNodeLevel;
     }
 
-    void TestTalentCheck();
     void Set_TALENT_NAME(TALENT_NAME TalentName);
 
 public:
