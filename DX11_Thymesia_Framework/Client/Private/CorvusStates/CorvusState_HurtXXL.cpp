@@ -39,7 +39,7 @@ void CCorvusState_HurtXXL::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	Turn_Transform(fTimeDelta);
+	//Turn_Transform(fTimeDelta);
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
