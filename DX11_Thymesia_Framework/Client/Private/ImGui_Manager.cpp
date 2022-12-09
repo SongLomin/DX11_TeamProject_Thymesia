@@ -142,6 +142,7 @@ HRESULT CImGui_Manager::Render(void)
 
 			ImGui::EndMenu();
 		}
+
 		if (ImGui::BeginMenu("View"))
 		{
 			if (ImGui::MenuItem("PhysX_Collider", "PgUp")) 
@@ -152,6 +153,7 @@ HRESULT CImGui_Manager::Render(void)
 			}
 			ImGui::EndMenu();
 		}
+
 		if (ImGui::BeginMenu("Level"))
 		{
 			if (ImGui::MenuItem("-1. Loading"))

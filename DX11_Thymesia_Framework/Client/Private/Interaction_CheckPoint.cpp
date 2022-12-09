@@ -129,7 +129,7 @@ void CInteraction_CheckPoint::SetUpColliderDesc()
     COLLIDERDESC ColliderDesc;
     ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
 
-    ColliderDesc.iLayer = (_uint)COLLISION_LAYER::TRIGGER;
+    ColliderDesc.iLayer = (_uint)COLLISION_LAYER::CHECKPOINT;
     ColliderDesc.vScale = _float3(3.f, 0.f, 0.f);
 
     m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);

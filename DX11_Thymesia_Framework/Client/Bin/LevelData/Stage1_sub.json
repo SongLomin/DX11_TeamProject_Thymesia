@@ -3,10 +3,10 @@
     {
       "Component": {
         "Transform": [
-          [ 0.9700210094451904, 1.1641532182693481e-10, -0.24300849437713623, 0.0 ],
-          [ 0.07063215970993042, 0.9568251967430115, 0.28194659948349, 0.0 ],
-          [ 0.23251648247241974, -0.2906592786312103, 0.9281468987464905, 0.0 ],
-          [ 7.542574405670166, 4.937244892120361, -1.2267342805862427, 1.0 ]
+          [ 0.40522581338882446, 1.7462298274040222e-10, 0.9142125844955444, 0.0 ],
+          [ -0.26385989785194397, 0.9574428200721741, 0.11695599555969238, 0.0 ],
+          [ -0.8753098249435425, -0.2886177897453308, 0.38798120617866516, 0.0 ],
+          [ 27.03015899658203, 5.7809600830078125, 12.148077964782715, 1.0 ]
         ]
       },
       "Hash": 8675365520207489377,
@@ -62,7 +62,7 @@
       "Setting": { "Enable": true }
     },
     {
-      "CheckIndex": -1,
+      "CheckIndex": 0,
       "Component": {
         "Transform": [
           [ 1.0, 0.0, 0.0, 0.0 ],
@@ -74,6 +74,68 @@
       "Hash": 10178373209891377349,
       "Invisibility": true,
       "Name": "class Client::CInteraction_CheckPoint",
+      "Setting": { "Enable": true }
+    },
+    {
+      "CheckIndex": 1,
+      "Component": {
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 14.697685241699219, 0.0, 6.613065719604492, 1.0 ]
+        ]
+      },
+      "Hash": 10178373209891377349,
+      "Invisibility": true,
+      "Name": "class Client::CInteraction_CheckPoint",
+      "Setting": { "Enable": true }
+    },
+    {
+      "CheckIndex": 2,
+      "Component": {
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 19.38924789428711, 0.0, 12.73189926147461, 1.0 ]
+        ]
+      },
+      "Hash": 10178373209891377349,
+      "Invisibility": true,
+      "Name": "class Client::CInteraction_CheckPoint",
+      "Setting": { "Enable": true }
+    },
+    {
+      "ColliderSize": 5.0,
+      "Component": {
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 8.65831184387207, 0.0, 8.653007507324219, 1.0 ]
+        ]
+      },
+      "Flag": 1025,
+      "Hash": 5625473776470221284,
+      "Name": "class Client::CSection_Eventer",
+      "SectionIndex": 0,
+      "Setting": { "Enable": true }
+    },
+    {
+      "ColliderSize": 5.0,
+      "Component": {
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 18.70303726196289, 0.0, 16.650413513183594, 1.0 ]
+        ]
+      },
+      "Flag": 1025,
+      "Hash": 5625473776470221284,
+      "Name": "class Client::CSection_Eventer",
+      "SectionIndex": 1,
       "Setting": { "Enable": true }
     },
     {
@@ -89,10 +151,11 @@
       "MonsterDesc": {
         "IdleType_Boss": 2,
         "IdleType_Monster": 0,
-        "MonsterType": 1
+        "MonsterType": 1,
+        "SectionIndex": 0
       },
       "Name": "class Client::CNorMonster",
-      "Setting": { "Enable": true }
+      "Setting": { "Enable": false }
     },
     {
       "Component": {
@@ -107,28 +170,144 @@
       "MonsterDesc": {
         "IdleType_Boss": 2,
         "IdleType_Monster": 0,
-        "MonsterType": 1
+        "MonsterType": 1,
+        "SectionIndex": 0
       },
       "Name": "class Client::CNorMonster",
-      "Setting": { "Enable": true }
+      "Setting": { "Enable": false }
     },
     {
       "Component": {
         "Transform": [
-          [ -0.7071065902709961, 0.0, 0.7071067094802856, 0.0 ],
-          [ 0.0, 1.0, 0.0, 0.0 ],
-          [ -0.7071067094802856, 0.0, -0.7071065902709961, 0.0 ],
-          [ 8.844812393188477, 0.0, 15.44349479675293, 1.0 ]
+          [ -0.7071070671081543, -5.4569690779993074e-12, 0.7071064114570618, 0.0 ],
+          [ -1.9050366972805932e-05, 1.0, -1.9050377886742353e-05, 0.0 ],
+          [ -0.7071064114570618, -2.6941299438476563e-05, -0.7071070671081543, 0.0 ],
+          [ 4.923652648925781, 0.0, 12.048294067382813, 1.0 ]
         ]
       },
-      "Hash": 13883423221805443591,
+      "Hash": 12933828336327676828,
       "MonsterDesc": {
         "IdleType_Boss": 2,
         "IdleType_Monster": 0,
-        "MonsterType": 20001
+        "MonsterType": 1,
+        "SectionIndex": 0
       },
-      "Name": "class Client::CVarg",
-      "Setting": { "Enable": true }
+      "Name": "class Client::CNorMonster",
+      "Setting": { "Enable": false }
+    },
+    {
+      "Component": {
+        "Transform": [
+          [ -0.7071070671081543, -5.4569690779993074e-12, 0.7071064114570618, 0.0 ],
+          [ -1.9050366972805932e-05, 1.0, -1.9050377886742353e-05, 0.0 ],
+          [ -0.7071064114570618, -2.6941299438476563e-05, -0.7071070671081543, 0.0 ],
+          [ 4.592284202575684, 0.0, 17.00925064086914, 1.0 ]
+        ]
+      },
+      "Hash": 12933828336327676828,
+      "MonsterDesc": {
+        "IdleType_Boss": 2,
+        "IdleType_Monster": 0,
+        "MonsterType": 1,
+        "SectionIndex": 0
+      },
+      "Name": "class Client::CNorMonster",
+      "Setting": { "Enable": false }
+    },
+    {
+      "Component": {
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 19.19978904724121, 0.0, 20.37652015686035, 1.0 ]
+        ]
+      },
+      "Hash": 12933828336327676828,
+      "MonsterDesc": {
+        "IdleType_Boss": 2,
+        "IdleType_Monster": 0,
+        "MonsterType": 2,
+        "SectionIndex": 1
+      },
+      "Name": "class Client::CNorMonster",
+      "Setting": { "Enable": false }
+    },
+    {
+      "Component": {
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 16.903030395507813, 0.0, 21.310888290405273, 1.0 ]
+        ]
+      },
+      "Hash": 12933828336327676828,
+      "MonsterDesc": {
+        "IdleType_Boss": 2,
+        "IdleType_Monster": 0,
+        "MonsterType": 2,
+        "SectionIndex": 1
+      },
+      "Name": "class Client::CNorMonster",
+      "Setting": { "Enable": false }
+    },
+    {
+      "Component": {
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 16.951568603515625, 0.0, 24.877273559570313, 1.0 ]
+        ]
+      },
+      "Hash": 12933828336327676828,
+      "MonsterDesc": {
+        "IdleType_Boss": 2,
+        "IdleType_Monster": 0,
+        "MonsterType": 2,
+        "SectionIndex": 1
+      },
+      "Name": "class Client::CNorMonster",
+      "Setting": { "Enable": false }
+    },
+    {
+      "Component": {
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 14.415712356567383, 0.0, 22.578271865844727, 1.0 ]
+        ]
+      },
+      "Hash": 12933828336327676828,
+      "MonsterDesc": {
+        "IdleType_Boss": 2,
+        "IdleType_Monster": 0,
+        "MonsterType": 2,
+        "SectionIndex": 1
+      },
+      "Name": "class Client::CNorMonster",
+      "Setting": { "Enable": false }
+    },
+    {
+      "Component": {
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 14.31100845336914, 0.0, 26.21906280517578, 1.0 ]
+        ]
+      },
+      "Hash": 12933828336327676828,
+      "MonsterDesc": {
+        "IdleType_Boss": 2,
+        "IdleType_Monster": 0,
+        "MonsterType": 2,
+        "SectionIndex": 1
+      },
+      "Name": "class Client::CNorMonster",
+      "Setting": { "Enable": false }
     }
   ]
 }

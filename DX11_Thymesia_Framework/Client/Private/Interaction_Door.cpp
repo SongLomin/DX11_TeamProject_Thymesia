@@ -105,7 +105,7 @@ void CInteraction_Door::Write_Json(json& Out_Json)
     __super::Write_Json(Out_Json);
 
     Out_Json["RotationtRadian"]   = m_fRotationtRadian;
-    Out_Json["RotationSpeed"] = m_fRotationtSpeed;
+    Out_Json["RotationSpeed"]     = m_fRotationtSpeed;
 
     if (m_pColliderCom.lock())
     {

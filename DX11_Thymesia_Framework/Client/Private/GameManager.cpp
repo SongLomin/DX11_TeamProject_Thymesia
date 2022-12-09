@@ -566,12 +566,14 @@ void CGameManager::Registration_CheckPoint(weak_ptr<CInteraction_CheckPoint> In_
 	m_pCurSavePoint = In_CheckPoint;
 }
 
-_vector CGameManager::Respawn_LastCheckPoint()
+HRESULT CGameManager::Respawn_LastCheckPoint(_float4* Out_RespawnPos)
 {
 	if (!m_pCurrentPlayer.lock() && !m_pCurSavePoint.lock())
-		return _vector{ 0.f, 0.f, 0.f, 1.f };
+		return E_FAIL;
 
-	return m_pCurSavePoint.lock()->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION);
+	XMStoreFloat4(Out_RespawnPos, m_pCurSavePoint.lock()->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION));
+
+	return S_OK;
 }
 
 
@@ -691,6 +693,8 @@ void CGameManager::Change_NextLevel(void* pArg)
 	}
 
 	pCurrentLevel.lock()->Change_NextLevel(nullptr);
+	m_SectionObejects.clear();
+
 }
 
 POINT CGameManager::Get_MousePoint()
@@ -701,6 +705,37 @@ POINT CGameManager::Get_MousePoint()
 	ClientToScreen(g_hWnd, &tMousePt);
 
 	return tMousePt;
+}
+
+void CGameManager::Registration_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj)
+{
+	auto iter_find = m_SectionObejects.find(In_iSection);
+
+	if (iter_find == m_SectionObejects.end())
+	{
+		list<weak_ptr<CGameObject>> ObjList;
+		ObjList.push_back(In_pObj);
+
+		m_SectionObejects[In_iSection] = ObjList;
+	}
+	else
+	{
+		iter_find->second.push_back(In_pObj);
+	}
+}
+
+
+void CGameManager::Activate_Section(_uint In_iSection, _bool In_bState)
+{
+	auto iter_find = m_SectionObejects.find(In_iSection);
+
+	if (iter_find == m_SectionObejects.end())
+		return;
+
+	for (auto& elem : iter_find->second)
+	{
+		elem.lock()->OnEventMessage((In_bState) ? ((_uint)EVENT_TYPE::ON_ENTER_SECTION) : ((_uint)EVENT_TYPE::ON_EXIT_SECTION));
+	}
 }
 
 //void CGameManager::Set_TargetForTargetCamera(weak_ptr<CGameObject> In_TargetGameObject)

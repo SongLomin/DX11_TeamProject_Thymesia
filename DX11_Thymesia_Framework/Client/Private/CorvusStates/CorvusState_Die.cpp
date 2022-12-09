@@ -10,6 +10,7 @@
 #include "GameManager.h"
 #include "UI_Landing.h"
 #include "GameObject.h"
+#include "PhysXCharacterController.h"
 
 
 GAMECLASS_C(CCorvusState_Die);
@@ -34,15 +35,38 @@ void CCorvusState_Die::Start()
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_Dead_1");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Die::Call_AnimationEnd, this);
+	
 }
 
 void CCorvusState_Die::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	//Turn_Transform(fTimeDelta);
-	m_pModelCom.lock()->Play_Animation(fTimeDelta);
+	if (m_bAnimPlay)
+	{
+		m_pModelCom.lock()->Play_Animation(fTimeDelta);
+	}
+	else
+	{
+		_float4 vOutPos;
+
+		if (FAILED(GET_SINGLE(CGameManager)->Respawn_LastCheckPoint(&vOutPos)))
+		{
+			Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
+		}
+		else
+		{
+			Get_OwnerPlayer()->Change_State<CCorvusState_JoggingStartEnd>();
+
+			PxControllerFilters Filters;
+			m_pPhysXControllerCom.lock()->Set_Position
+			(
+				XMLoadFloat4(&vOutPos),
+				0.f,
+				Filters
+			);
+		}
+	}
 }
 
 void CCorvusState_Die::LateTick(_float fTimeDelta)
@@ -91,19 +115,18 @@ void CCorvusState_Die::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 	// Do Nothing
 }
 
-void CCorvusState_Die::Call_AnimationEnd()
-{
-	if (!Get_Enable())
-		return;
-
-	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
-
-}
+//void CCorvusState_Die::Call_AnimationEnd()
+//{
+//	if (!Get_Enable())
+//		return;
+//
+//	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
+//
+//}
 
 void CCorvusState_Die::Free()
 {
-	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Die::Call_AnimationEnd, this);
+	
 }
 
 _bool CCorvusState_Die::Check_AndChangeNextState()
@@ -111,6 +134,11 @@ _bool CCorvusState_Die::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.99f)
+	{
+		m_bAnimPlay = false;
+	}
 
 	return false;
 }

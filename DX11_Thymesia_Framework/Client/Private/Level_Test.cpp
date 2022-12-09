@@ -41,15 +41,15 @@ HRESULT CLevel_Test::Initialize()
 #endif
 
 #ifdef _TEST_STATIC_PROPS_
-	Load_FromJson(m_szDefaultJsonPath + "Test_Level.json", LEVEL::LEVEL_TEST);
+	//Load_FromJson(m_szDefaultJsonPath + "Test_Level.json", LEVEL::LEVEL_TEST);
 #else // _TEST_STATIC_PROPS_
 	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_TEST);
 #endif // _TEST_STATIC_PROPS_
 
 	//Load_FromJson(m_szDefaultJsonPath + "Stage_Lv3-1.json", LEVEL::LEVEL_TEST);
-	//Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_TEST);
 
-	//Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_TEST);
+	Load_FromJson(m_szDefaultJsonPath + "Test_Level.json", LEVEL::LEVEL_TEST);
+	Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_TEST);
 
 	CCamera::CAMERADESC			CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
@@ -84,9 +84,6 @@ HRESULT CLevel_Test::Initialize()
 void CLevel_Test::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
-	if (KEY_INPUT(KEY::M, KEY_STATE::TAP))
-		GET_SINGLE(CGameManager).get()->Respawn_LastCheckPoint();
 
 	if (KEY_INPUT(KEY::CTRL, KEY_STATE::TAP))
 	{

@@ -66,6 +66,7 @@ public:
     virtual void Load_FromJson(const json& In_Json) override;
 
     virtual void Init_Desc();
+    virtual void OnEventMessage(_uint iArg)override;
 
 protected:
     virtual void SetUp_ShaderResource() override;    

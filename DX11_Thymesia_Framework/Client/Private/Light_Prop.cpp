@@ -122,8 +122,9 @@ void CLight_Prop::Write_Json(json& Out_Json)
 {
 	__super::Write_Json(Out_Json);
 
-	Out_Json.emplace("Light_Type" , (_int)m_tLightDesc.eActorType);
-	Out_Json.emplace("Light_Range", m_tLightDesc.fRange);
+	Out_Json["Light_Type"]   = (_int)m_tLightDesc.eActorType;
+	Out_Json["Light_Range"]  = m_tLightDesc.fRange;
+	Out_Json["SectionIndex"] = m_iSectionIndex;
 	
 	CJson_Utility::Write_Float4(Out_Json["Light_Position"] , m_tLightDesc.vPosition);
 	CJson_Utility::Write_Float4(Out_Json["Light_Direction"], m_tLightDesc.vDirection);
@@ -140,6 +141,7 @@ void CLight_Prop::Load_FromJson(const json& In_Json)
 	_int iLightTypeFromInt  = In_Json["Light_Type"];
 	m_tLightDesc.eActorType = (LIGHTDESC::TYPE)iLightTypeFromInt;
 	m_tLightDesc.fRange     = In_Json["Light_Range"];
+	m_iSectionIndex         = In_Json["SectionIndex"];
 
 	CJson_Utility::Load_Float4(In_Json["Light_Position"] , m_tLightDesc.vPosition);
 	CJson_Utility::Load_Float4(In_Json["Light_Direction"], m_tLightDesc.vDirection);
@@ -149,6 +151,10 @@ void CLight_Prop::Load_FromJson(const json& In_Json)
 	CJson_Utility::Load_Float4(In_Json["Light_Flag"]     , m_tLightDesc.vLightFlag);
 
 	GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+
+	//TODO : 테스트용으로 반드시 삭제하시오
+	if (LEVEL::LEVEL_EDIT != m_CreatedLevel)
+		Set_Enable(false);
 }
 
 void CLight_Prop::OnEventMessage(_uint iArg)
@@ -160,13 +166,14 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 		case EVENT_TYPE::ON_EDITINIT:
 		{
 			XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_Position());
-
 			GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
 		}
 		break;
 
 		case EVENT_TYPE::ON_EDITDRAW:
 		{
+			GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+
 			if (ImGui::CollapsingHeader("Light_Prop GameObject"))
 			{
 				const char* LightTypeItems[]  = { "Direction", "Point", "HalfPoint" };
@@ -179,45 +186,52 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 					bChangeData = true;
 				}
 
+				ImGui::InputInt("Section Index", &m_iSectionIndex);
+
 				switch (m_tLightDesc.eActorType)
 				{
 					case LIGHTDESC::TYPE_DIRECTIONAL:
 					{
-						bChangeData |= ImGui::DragFloat3("Light_Direction", &m_tLightDesc.vDirection.x, 0.01f);
-						bChangeData |= ImGui::DragFloat3("Light_Diffuse"  , &m_tLightDesc.vDiffuse.x  , 0.01f);
-						bChangeData |= ImGui::DragFloat3("Light_Ambient"  , &m_tLightDesc.vAmbient.x  , 0.01f);
-						bChangeData |= ImGui::DragFloat3("Light_Specular" , &m_tLightDesc.vSpecular.x , 0.01f);
+						bChangeData |= ImGui::DragFloat4("Light_Direction", &m_tLightDesc.vDirection.x, 0.01f);
+						bChangeData |= ImGui::DragFloat4("Light_Diffuse"  , &m_tLightDesc.vDiffuse.x  , 0.01f);
+						bChangeData |= ImGui::DragFloat4("Light_Ambient"  , &m_tLightDesc.vAmbient.x  , 0.01f);
+						bChangeData |= ImGui::DragFloat4("Light_Specular" , &m_tLightDesc.vSpecular.x , 0.01f);
 						bChangeData |= ImGui::DragFloat4("Light_Flag"     , &m_tLightDesc.vLightFlag.x, 0.01f);
 					}
 					break;
 
 					case LIGHTDESC::TYPE_POINT:
 					{
-						bChangeData |= ImGui::DragFloat3("Light_Position", &m_tLightDesc.vPosition.x , 0.01f);
-						bChangeData |= ImGui::DragFloat3("Light_Diffuse" , &m_tLightDesc.vDiffuse.x  , 0.01f);
-						bChangeData |= ImGui::DragFloat3("Light_Ambient" , &m_tLightDesc.vAmbient.x  , 0.01f);
-						bChangeData |= ImGui::DragFloat3("Light_Specular", &m_tLightDesc.vSpecular.x , 0.01f);
-						bChangeData |= ImGui::DragFloat("Light_Range"    , &m_tLightDesc.fRange      , 0.01f);
-						bChangeData |= ImGui::DragFloat4("Light_Flag"    , &m_tLightDesc.vLightFlag.x, 0.01f);
+						bChangeData |= ImGui::DragFloat3("Offset", &m_vOffset.x, 0.01f);
+
+						ImGui::DragFloat4("Light_Position", &m_tLightDesc.vPosition.x , 0.01f);
+						ImGui::DragFloat4("Light_Diffuse" , &m_tLightDesc.vDiffuse.x  , 0.01f);
+						ImGui::DragFloat4("Light_Ambient" , &m_tLightDesc.vAmbient.x  , 0.01f);
+						ImGui::DragFloat4("Light_Specular", &m_tLightDesc.vSpecular.x , 0.01f);
+						ImGui::DragFloat("Light_Range"    , &m_tLightDesc.fRange      , 0.01f);
+						ImGui::DragFloat4("Light_Flag"    , &m_tLightDesc.vLightFlag.x, 0.01f);
+
+						XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_Position() + XMLoadFloat3(&m_vOffset));
+						GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
 					}
 					break;
 			
 					case LIGHTDESC::TYPE_HALFPOINT:
 					{
-						bChangeData |= ImGui::DragFloat3("Light_Position" , &m_tLightDesc.vPosition.x , 0.01f);
-						bChangeData |= ImGui::DragFloat3("Light_Direction", &m_tLightDesc.vDirection.x, 0.01f);
-						bChangeData |= ImGui::DragFloat3("Light_Diffuse"  , &m_tLightDesc.vDiffuse.x  , 0.01f);
-						bChangeData |= ImGui::DragFloat3("Light_Ambient"  , &m_tLightDesc.vAmbient.x  , 0.01f);
-						bChangeData |= ImGui::DragFloat3("Light_Specular" , &m_tLightDesc.vSpecular.x , 0.01f);
-						bChangeData |= ImGui::DragFloat("Light_Range"     , &m_tLightDesc.fRange      , 0.01f);
-						bChangeData |= ImGui::DragFloat4("Light_Flag"     , &m_tLightDesc.vLightFlag.x, 0.01f);
+						ImGui::DragFloat4("Light_Position" , &m_tLightDesc.vPosition.x , 0.01f);
+						ImGui::DragFloat4("Light_Direction", &m_tLightDesc.vDirection.x, 0.01f);
+						ImGui::DragFloat4("Light_Diffuse"  , &m_tLightDesc.vDiffuse.x  , 0.01f);
+						ImGui::DragFloat4("Light_Ambient"  , &m_tLightDesc.vAmbient.x  , 0.01f);
+						ImGui::DragFloat4("Light_Specular" , &m_tLightDesc.vSpecular.x , 0.01f);
+						ImGui::DragFloat("Light_Range"     , &m_tLightDesc.fRange      , 0.01f);
+						ImGui::DragFloat4("Light_Flag"     , &m_tLightDesc.vLightFlag.x, 0.01f);
 					}
 					break;
 				}
-
-				if (bChangeData)
-					GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
 			}
+
+			ImGui::Text("");
+			ImGui::Separator();
 		}
 		break;
 	}

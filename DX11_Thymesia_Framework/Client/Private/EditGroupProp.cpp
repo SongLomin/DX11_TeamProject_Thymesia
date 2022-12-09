@@ -9,6 +9,7 @@
 #include "Shader.h"
 #include "Renderer.h"
 #include "Model.h"
+#include "Collider.h"
 
 #include "Client_GameObjects.h"
 
@@ -107,14 +108,28 @@ HRESULT CEditGroupProp::SetUp_ShaderResource()
 	weak_ptr<CTransform>	pTransform = iter_prop->second[m_iPickingIndex].pInstance.lock()->Get_Component<CTransform>();
 	weak_ptr<CModel>		pModel     = iter_prop->second[m_iPickingIndex].pInstance.lock()->Get_Component<CModel>();
 
-	if (!pModel.lock() || !pTransform.lock())
-		return E_FAIL;
+	if (!pModel.lock())
+	{
+		COLLIDERDESC CollDesc = iter_prop->second[m_iPickingIndex].pInstance.lock()->Get_Component<CCollider>().lock()->Get_ColliderDesc();
 
-	m_pVIBufferCom.lock()->Update
-	(
-		pModel.lock()->Get_MeshVertexInfo(),
-		pTransform.lock()->Get_WorldMatrix()
-	);
+		MESH_VTX_INFO	VtxInfo;
+		VtxInfo.vMin = { CollDesc.vScale.x * -0.5f, CollDesc.vScale.x * -0.5f, CollDesc.vScale.x * -0.5f };
+		VtxInfo.vMax = { CollDesc.vScale.x *  0.5f, CollDesc.vScale.x *  0.5f, CollDesc.vScale.x *  0.5f };
+
+		m_pVIBufferCom.lock()->Update
+		(
+			VtxInfo,
+			pTransform.lock()->Get_WorldMatrix()
+		);
+	}
+	else
+	{
+		m_pVIBufferCom.lock()->Update
+		(
+			pModel.lock()->Get_MeshVertexInfo(),
+			pTransform.lock()->Get_WorldMatrix()
+		);
+	}
 
 	_float4x4 Matrix;
 	XMStoreFloat4x4(&Matrix, XMMatrixIdentity());
@@ -203,7 +218,7 @@ void CEditGroupProp::OnEventMessage(_uint iArg)
 				{
 					View_CreateProp();
 					View_PickProp();
-					View_EditProp();
+					View_OnlyTranformEdit();
 
 					ImGui::EndTabItem();
 				}
@@ -398,6 +413,19 @@ void CEditGroupProp::View_CreateProp()
 	ImGui::Separator();
 }
 
+void    CEditGroupProp::View_OnlyTranformEdit()
+{
+	auto iter_prop = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditGroupProp).hash_code());
+
+	if (iter_prop == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
+		return;
+
+	if (iter_prop->second.empty() || 0 > m_iPickingIndex || iter_prop->second.size() <= m_iPickingIndex)
+		return;
+
+	RenderView_Transform_Edit(iter_prop->second[m_iPickingIndex].pInstance);
+}
+
 void    CEditGroupProp::View_PickProp()
 {
 	if (!KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) || !KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
@@ -436,9 +464,17 @@ void    CEditGroupProp::View_PickProp()
 		}
 		else
 		{
+			if (typeid(CSection_Eventer).hash_code() != iter.HashCode)
+			{
+				++iIndex;
+				continue;
+			}
+
+			COLLIDERDESC CollDesc = iter.pInstance.lock()->Get_Component<CCollider>().lock()->Get_ColliderDesc();
+
 			MESH_VTX_INFO	VtxInfo;
-			VtxInfo.vMin = { 0.f, 0.f, 0.f };
-			VtxInfo.vMax = { 1.f, 1.f, 1.f };
+			VtxInfo.vMin = { CollDesc.vScale.x * -0.5f, 0.f              , CollDesc.vScale.x * -0.5f };
+			VtxInfo.vMax = { CollDesc.vScale.x *  0.5f, CollDesc.vScale.x, CollDesc.vScale.x *  0.5f };
 
 			if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, VtxInfo, pTransform.lock()->Get_WorldMatrix()))
 			{
@@ -446,7 +482,7 @@ void    CEditGroupProp::View_PickProp()
 
 				if (fLength < fDistance)
 				{
-					fDistance = fLength;
+					fDistance       = fLength;
 					m_iPickingIndex = iIndex;
 					XMStoreFloat4x4(&m_PickingMatrix, pTransform.lock()->Get_WorldMatrix());
 				}
@@ -558,9 +594,6 @@ void CEditGroupProp::View_EditProp()
 	ImGui::Text("");
 	ImGui::Separator();
 
-	RenderView_Transform_Info(iter_prop->second[m_iPickingIndex].pInstance);
-	RenderView_Transform_Edit(iter_prop->second[m_iPickingIndex].pInstance);
-
 	if (typeid(CInteraction_Door).hash_code() == iter_prop->second[m_iPickingIndex].HashCode ||
 		typeid(CStatic_Prop).hash_code()      == iter_prop->second[m_iPickingIndex].HashCode ||
 		typeid(CLight_Prop).hash_code()       == iter_prop->second[m_iPickingIndex].HashCode)
@@ -583,6 +616,9 @@ void CEditGroupProp::View_EditProp()
 	}
 
 	iter_prop->second[m_iPickingIndex].pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW);
+
+	RenderView_Transform_Info(iter_prop->second[m_iPickingIndex].pInstance);
+	RenderView_Transform_Edit(iter_prop->second[m_iPickingIndex].pInstance);
 	
 	ImGui::Text("");
 	ImGui::Separator();

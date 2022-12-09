@@ -96,7 +96,7 @@ public:
 
 public:
     void Registration_CheckPoint(weak_ptr<CInteraction_CheckPoint> In_CheckPoint);
-    _vector Respawn_LastCheckPoint();
+    HRESULT Respawn_LastCheckPoint(_float4* Out_RespawnPos);
 
 private:
     void Start_Peace();
@@ -118,12 +118,13 @@ public:
 public:
     void Change_NextLevel(void* pArg);
 
-
-
-
 public:// For UI;
     POINT Get_MousePoint();
-    
+
+public:
+    void  Registration_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj);
+    void  Activate_Section(_uint In_iSection, _bool In_bState);
+
 public:
     FDelegate<>                 CallBack_ChangePlayer;
 
@@ -140,6 +141,11 @@ private:
     map<_hashcode, map<_int, map<_int, KEYFRAME_EVENT>>>         m_KeyEvents;
     typedef map<_int, KEYFRAME_EVENT>                            KEYEVENT;
     typedef map<_int, KEYEVENT>                                  ANIM_MAP;
+
+private:
+    typedef map<_int, list<weak_ptr<CGameObject>>>               SECTION_OBJ;
+
+    SECTION_OBJ             m_SectionObejects;
 
 private:
     _int                                                        m_iMonsterCount   = 0;

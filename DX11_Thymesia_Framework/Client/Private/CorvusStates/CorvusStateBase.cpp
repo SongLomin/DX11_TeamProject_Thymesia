@@ -400,13 +400,13 @@ _bool CCorvusStateBase::Check_AndChangeLadderState(weak_ptr<CCollider> pMyCollid
 		break;
 
 	case Client::COLLISION_LAYER::CHECKPOINT:
-		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.02f, -1.f, 0.f));
+		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, -0.5f, 0.f));
 		m_pPhysXControllerCom.lock()->Enable_Gravity(false);
 		m_pPhysXControllerCom.lock()->Set_Position(
 			vResultOtherWorldMatrix.r[3],
 			GAMEINSTANCE->Get_DeltaTime(),
 			Filters);
-		m_pTransformCom.lock()->Set_Look2D(vOtherWorldMatrix.r[2]);
+		m_pTransformCom.lock()->Set_Look2D(-vOtherWorldMatrix.r[2]);
 		Get_OwnerPlayer()->Set_LadderCheck(true);
 		Get_OwnerPlayer()->Change_State<CCorvusState_CheckPointStart>();
 		break;

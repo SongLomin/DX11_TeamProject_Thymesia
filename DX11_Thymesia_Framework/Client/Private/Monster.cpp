@@ -200,10 +200,17 @@ void  CMonster::Load_FromJson(const json& In_Json)
     m_tLinkStateDesc.eMonType           = In_Json["MonsterDesc"]["MonsterType"];
     m_tLinkStateDesc.eNorMonIdleType    = In_Json["MonsterDesc"]["IdleType_Monster"];
     m_tLinkStateDesc.eBossStartType     = In_Json["MonsterDesc"]["IdleType_Boss"];
-    //m_tLinkStateDesc.iSectionIndex      = In_Json["MonsterDesc"]["SectionIndex"];
+    m_tLinkStateDesc.iSectionIndex      = In_Json["MonsterDesc"]["SectionIndex"];
     XMStoreFloat4(&m_tLinkStateDesc.m_fStartPositon, m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION));
 
+    GET_SINGLE(CGameManager)->Registration_Section(m_tLinkStateDesc.iSectionIndex, Weak_Cast<CGameObject>(m_this));
+
     Init_Desc();
+
+
+   //TODO : 테스트용으로 반드시 삭제하시오
+   /* if (LEVEL::LEVEL_EDIT != m_CreatedLevel)
+        Set_Enable(false);*/
 }
 
 void CMonster::Init_Desc()
@@ -232,6 +239,16 @@ void CMonster::SetUp_ShaderResource()
     m_pShaderCom.lock()->Set_RawValue("g_vLightSpecular", (void*)&LightDesc.vSpecular, sizeof(_float4));*/
 }
 
+void CMonster::OnEventMessage(_uint iArg)
+{
+    __super::OnEventMessage(iArg);
+
+    if ((_uint)EVENT_TYPE::ON_EDITDRAW == iArg)
+    {
+        ImGui::InputInt("SectionIndex", (_int*)(&m_tLinkStateDesc.iSectionIndex));
+    }
+}
+
 void CMonster::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
     __super::OnCollisionEnter(pMyCollider, pOtherCollider);
@@ -248,8 +265,6 @@ void CMonster::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 void CMonster::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
     __super::OnCollisionExit(pMyCollider, pOtherCollider);
-
-
 }
 
 void CMonster::OnEnable(void* _Arg)
