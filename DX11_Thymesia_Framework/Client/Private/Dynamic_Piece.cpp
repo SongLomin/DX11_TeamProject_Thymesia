@@ -90,6 +90,8 @@ void CDynamic_Piece::Before_Render(_float fTimeDelta)
 
 HRESULT CDynamic_Piece::Render()
 {
+    SetUp_ShaderResource();
+
     __super::Render();
 
     _vector vStart = XMVectorSet(1.f, 0.f, 0.f, 0.f);
