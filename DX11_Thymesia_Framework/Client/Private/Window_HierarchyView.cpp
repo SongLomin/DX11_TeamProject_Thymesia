@@ -192,7 +192,7 @@ void CWindow_HierarchyView::Write_Json_ObjectListLayer()
 		+ to_string(TimeDesc.tm_sec)  + ").json";
 
 	// 레이어 세이브
-	/*for (auto& elem : m_pObjGroup)
+	for (auto& elem : m_pObjGroup)
 	{
 		_uint iIndex = 0;
 		for (auto& elem_obj : elem.second)
@@ -203,6 +203,8 @@ void CWindow_HierarchyView::Write_Json_ObjectListLayer()
 			Out_Json["GameObject"][iIndex]["Component"]["Transform"].emplace();
 
 			elem_obj.pInstance.lock()->Write_Json(Out_Json["GameObject"][iIndex]);
+
+			++iIndex;
 		}
 
 		string szFilePath = string("../Bin/LevelData/AutoSave/LayerSave ") + to_string(elem.first) + " " + szDayInfo;
@@ -210,7 +212,7 @@ void CWindow_HierarchyView::Write_Json_ObjectListLayer()
 		CJson_Utility::Save_Json(szFilePath.c_str() , Out_Json);
 
 		Out_Json.clear();
-	}*/
+	}
 
 	// 자동 세이브
 	Write_Json(Out_Json);
