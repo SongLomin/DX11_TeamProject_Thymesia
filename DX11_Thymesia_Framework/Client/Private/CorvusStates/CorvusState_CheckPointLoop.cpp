@@ -86,6 +86,12 @@ _bool CCorvusState_CheckPointLoop::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	if (KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))
+	{
+		Get_OwnerPlayer()->Change_State<CCorvusState_CheckPointEnd>();
+		return true;
+	}
+
 	return false;
 }
 

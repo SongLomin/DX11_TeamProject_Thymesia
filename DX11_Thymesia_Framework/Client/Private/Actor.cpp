@@ -73,10 +73,12 @@ void CActor::Before_Render(_float fTimeDelta)
 
 void CActor::Custom_Thread0(_float fTimeDelta)
 {
+    if (!Get_Enable())
+        return;
+
     if (m_bRendering)
-    {
         m_pModelCom.lock()->Update_BoneMatrices();
-    }
+}
 
 }
 

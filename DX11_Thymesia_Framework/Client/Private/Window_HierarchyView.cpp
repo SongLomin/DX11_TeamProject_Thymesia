@@ -53,26 +53,7 @@ void CWindow_HierarchyView::Tick(_float fTimeDelta)
 
 	if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) && KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) && KEY_INPUT(KEY::S, KEY_STATE::TAP))
 	{
-		json NewJson;
-		Write_Json(NewJson);
-
-		if (!NewJson.empty())
-		{
-			time_t timer = time(NULL);
-			tm     TimeDesc;
-
-			localtime_s(&TimeDesc, &timer);
-
-			string szPath
-				= string("../Bin/LevelData/AutoSave/AutoSave ")
-				+ to_string(TimeDesc.tm_mon) + "."
-				+ to_string(TimeDesc.tm_wday) + " ("
-				+ to_string(TimeDesc.tm_hour) + "-"
-				+ to_string(TimeDesc.tm_min) + "-"
-				+ to_string(TimeDesc.tm_sec) + ").json";
-
-			CJson_Utility::Save_Json(szPath.c_str(), NewJson);
-		}
+		Write_Json_ObjectListLayer();
 	}
 }
 
@@ -87,6 +68,12 @@ HRESULT CWindow_HierarchyView::Render()
 	ImGui::InputText("##Find", _szFindTag, MAX_PATH);
 
 	_uint iIndex = 0;
+
+	static _float AccTime = 0.f;
+	static _int   FPSCnt = 0;
+
+	AccTime += GAMEINSTANCE->Get_DeltaTime();
+	++FPSCnt;
 
 	for (auto& elem : m_pGameObjects)
 	{
@@ -123,6 +110,15 @@ HRESULT CWindow_HierarchyView::Render()
 
 		++iIndex;
 	}
+
+	if (AccTime >= 1.f)
+	{
+		cout << FPSCnt << endl;
+
+		AccTime = 0.f;
+		FPSCnt = 0;
+	}
+
 	
 	__super::End();
 
@@ -179,8 +175,52 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 		MSG_BOX("Save_Done");
 }
 
-void CWindow_HierarchyView::Write_Json_ModelList()
+void CWindow_HierarchyView::Write_Json_ObjectListLayer()
 {
+	json Out_Json;
+
+	time_t timer = time(NULL);
+	tm     TimeDesc;
+
+	localtime_s(&TimeDesc, &timer);
+
+	string szDayInfo
+		= to_string(TimeDesc.tm_mon)  + "."
+		+ to_string(TimeDesc.tm_wday) + " ("
+		+ to_string(TimeDesc.tm_hour) + "-"
+		+ to_string(TimeDesc.tm_min)  + "-"
+		+ to_string(TimeDesc.tm_sec)  + ").json";
+
+	// 레이어 세이브
+	for (auto& elem : m_pObjGroup)
+	{
+		_uint iIndex = 0;
+		for (auto& elem_obj : elem.second)
+		{
+			Out_Json["GameObject"][iIndex]["Name"]              = elem_obj.TypeName;
+			Out_Json["GameObject"][iIndex]["Hash"]              = elem_obj.HashCode;
+			Out_Json["GameObject"][iIndex]["Setting"]["Enable"] = elem_obj.pInstance.lock()->Get_Enable();
+			Out_Json["GameObject"][iIndex]["Component"]["Transform"].emplace();
+
+			elem_obj.pInstance.lock()->Write_Json(Out_Json["GameObject"][iIndex]);
+
+			++iIndex;
+		}
+
+		string szFilePath = string("../Bin/LevelData/AutoSave/LayerSave ") + to_string(elem.first) + " " + szDayInfo;
+
+		CJson_Utility::Save_Json(szFilePath.c_str() , Out_Json);
+
+		Out_Json.clear();
+	}
+
+	// 자동 세이브
+	Write_Json(Out_Json);
+
+	if (!Out_Json.empty())
+		CJson_Utility::Save_Json(string(string("../Bin/LevelData/AutoSave/AutoSave ") + szDayInfo).c_str(), Out_Json);
+	Out_Json.clear();
+
 }
 
 void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
@@ -417,26 +457,7 @@ void CWindow_HierarchyView::OnDestroy()
 {
 	m_RenderMSG_BOX = false;
 
-	json NewJson;
-	Write_Json(NewJson);
-
-	if (!NewJson.empty())
-	{
-		time_t timer = time(NULL);
-		tm     TimeDesc;
-
-		localtime_s(&TimeDesc, &timer);
-
-		string szPath
-			= string("../Bin/LevelData/AutoSave/AutoSave ")
-			+ to_string(TimeDesc.tm_mon) + "."
-			+ to_string(TimeDesc.tm_wday) + " ("
-			+ to_string(TimeDesc.tm_hour) + "-"
-			+ to_string(TimeDesc.tm_min) + "-"
-			+ to_string(TimeDesc.tm_sec) + ").json";
-
-		CJson_Utility::Save_Json(szPath.c_str(), NewJson);
-	}
+	Write_Json_ObjectListLayer();
 }
 
 void CWindow_HierarchyView::Free()

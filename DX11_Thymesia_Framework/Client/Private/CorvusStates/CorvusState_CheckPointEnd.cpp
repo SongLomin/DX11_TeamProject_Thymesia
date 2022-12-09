@@ -79,7 +79,7 @@ void CCorvusState_CheckPointEnd::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	Get_OwnerPlayer()->Change_State<CCorvusState_Jogging>();
+	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
 
 }
 

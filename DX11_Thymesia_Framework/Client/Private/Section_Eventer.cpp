@@ -1,12 +1,11 @@
 #include "stdafx.h"
 #include "Section_Eventer.h"
 
-#include "Shader.h"
-#include "Renderer.h"
 #include "Transform.h"
 #include "Collider.h"
 
 #include "GameInstance.h"
+#include "GameManager.h"
 
 GAMECLASS_C(CSection_Eventer);
 CLONE_C(CSection_Eventer, CGameObject);
@@ -20,16 +19,7 @@ HRESULT CSection_Eventer::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
-    m_pShaderCom        = Add_Component<CShader>();
-    m_pRendererCom      = Add_Component<CRenderer>();
-    m_pColliderCom      = Add_Component<CCollider>();
-
-    m_pShaderCom.lock()->Set_ShaderInfo
-    (
-        TEXT("Shader_VtxModel"),
-        VTXMODEL_DECLARATION::Element,
-        VTXMODEL_DECLARATION::iNumElements
-    );
+    m_pColliderCom = Add_Component<CCollider>();
 
     return S_OK;
 }
@@ -60,7 +50,7 @@ void CSection_Eventer::OnEventMessage(_uint iArg)
     {
         case EVENT_TYPE::ON_EDITINIT:
         {
-            _float fDefaultDesc[4] = { 3.f, 0.f, 1.5f, 0.f };
+            _float fDefaultDesc[4] = { 6.f, 0.f, 0.f, 0.f };
             SetUpColliderDesc(fDefaultDesc);
         }
         break;
@@ -68,6 +58,10 @@ void CSection_Eventer::OnEventMessage(_uint iArg)
         case EVENT_TYPE::ON_EDITDRAW:
         {
             m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+            
+            ImGui::Text("");
+            ImGui::Separator();
+
 
             COLLIDERDESC ColliderDesc;
             ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
@@ -76,14 +70,51 @@ void CSection_Eventer::OnEventMessage(_uint iArg)
 
             _bool bChage = false;
 
-            bChage |= ImGui::DragFloat3("Coll Transform", &ColliderDesc.vTranslation.x);
-            bChage |= ImGui::DragFloat ("Coll Size"     , &ColliderDesc.vScale.x);
+            bChage |= ImGui::InputFloat("Coll Size", &ColliderDesc.vScale.x);
+
+            if (KEY_INPUT(KEY::RIGHT, KEY_STATE::TAP))
+            {
+                ColliderDesc.vScale.x += 0.1f;
+                bChage = true;
+            }
+            else if (KEY_INPUT(KEY::LEFT, KEY_STATE::TAP))
+            {
+                ColliderDesc.vScale.x -= 0.1f;
+                bChage = true;
+            }
 
             if (bChage)
             {
                 m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
                 m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
             }
+
+            ImGui::InputInt("Section", &m_iSectionIndex);
+
+            _bool bCheckState[] =
+            {
+                (m_Flag & EVENT_FLAG::ACT_SECTION),
+                (m_Flag & EVENT_FLAG::ACT_MONSTER_TRIGGER),
+
+                (m_Flag & EVENT_FLAG::EVENT_ENTER),
+                (m_Flag & EVENT_FLAG::EVENT_STAY),
+                (m_Flag & EVENT_FLAG::EVENT_EXIT)
+            };
+
+            if (ImGui::Checkbox("ACT_SECTION", &bCheckState[0]))
+                m_Flag ^= EVENT_FLAG::ACT_SECTION;
+
+            if (ImGui::Checkbox("ACT_MONSTER_TRIGGER", &bCheckState[1]))
+                m_Flag ^= EVENT_FLAG::ACT_MONSTER_TRIGGER;
+
+            if (ImGui::Checkbox("EVENT_ENTER", &bCheckState[2]))
+                m_Flag ^= EVENT_FLAG::EVENT_ENTER;
+
+            if (ImGui::Checkbox("EVENT_STAY", &bCheckState[3]))
+                m_Flag ^= EVENT_FLAG::EVENT_STAY;
+
+            if (ImGui::Checkbox("EVENT_Exit", &bCheckState[4]))
+                m_Flag ^= EVENT_FLAG::EVENT_EXIT;
         }
         break;
     }
@@ -92,23 +123,64 @@ void CSection_Eventer::OnEventMessage(_uint iArg)
 void CSection_Eventer::Write_Json(json& Out_Json)
 {
     __super::Write_Json(Out_Json);
+
+    Out_Json["Flag"]         = m_Flag;
+    Out_Json["ColliderSize"] = m_pColliderCom.lock()->Get_ColliderDesc().vScale.x;
+    Out_Json["SectionIndex"] = m_iSectionIndex;
 }
 
 void CSection_Eventer::Load_FromJson(const json& In_Json)
 {
     __super::Load_FromJson(In_Json);
+
+    m_Flag          = In_Json["Flag"];
+    m_iSectionIndex = In_Json["SectionIndex"];
+
+    _float fColliderSize   = In_Json["ColliderSize"];
+    _float fDefaultDesc[4] = { fColliderSize, 0.f, 0.f, 0.f };
+    SetUpColliderDesc(fDefaultDesc);
 }
 
 void CSection_Eventer::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
+    if (!(m_Flag & EVENT_FLAG::EVENT_ENTER))
+        return;
+
+    __super::OnCollisionEnter(pMyCollider, pOtherCollider);
+
+    if (m_Flag & EVENT_FLAG::ACT_SECTION)
+    {
+        GET_SINGLE(CGameManager)->Activate_Section(m_iSectionIndex, true);
+        m_pColliderCom.lock()->Set_Enable(false);
+    }
 }
 
 void CSection_Eventer::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
+    if (!(m_Flag & EVENT_FLAG::EVENT_STAY))
+        return;
+
+    __super::OnCollisionStay(pMyCollider, pOtherCollider);
+
+    if (m_Flag & EVENT_FLAG::ACT_SECTION)
+    {
+        GET_SINGLE(CGameManager)->Activate_Section(m_iSectionIndex, true);
+        m_pColliderCom.lock()->Set_Enable(false);
+    }
 }
 
 void CSection_Eventer::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
+    if (!(m_Flag & EVENT_FLAG::EVENT_EXIT))
+        return;
+
+    __super::OnCollisionExit(pMyCollider, pOtherCollider);
+
+    if (m_Flag & EVENT_FLAG::ACT_SECTION)
+    {
+        GET_SINGLE(CGameManager)->Activate_Section(m_iSectionIndex, true);
+        m_pColliderCom.lock()->Set_Enable(false);
+    }
 }
 
 void CSection_Eventer::SetUpColliderDesc(_float* _pColliderDesc)

@@ -26,14 +26,15 @@ public:
     virtual HRESULT Render() override;
 
 private:
-	LIGHTDESC   m_tLightDesc;
-    _int        m_iLightIndex;
-	_float      m_fMinLightRange = 0.f;
-	_float      m_fMaxLightRange = 0.f;
-
-private:
     weak_ptr<CPhysXCollider> m_pPhysXColliderCom;
     weak_ptr<CPhysXCollider> m_pPhysXTriggerColliderCom;
+
+	LIGHTDESC   m_tLightDesc;
+    _int        m_iSectionIndex  = 0;
+	_float      m_fMinLightRange = 0.f;
+	_float      m_fMaxLightRange = 0.f;
+    _float3     m_vOffset        = { 0.f, 0.f, 0.f };
+
 
 public:
     virtual void Write_Json(json& Out_Json) override;

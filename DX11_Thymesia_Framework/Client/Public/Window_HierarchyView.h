@@ -22,7 +22,7 @@ public:
 public:
 	void Call_Add_GameObject(const _hashcode& TypeHash, const char* TypeName);
 	void Write_Json(json& Out_Json);
-	void Write_Json_ModelList();
+	void Write_Json_ObjectListLayer();
 	void Load_FromJson(const json& In_Json);
 
 private:

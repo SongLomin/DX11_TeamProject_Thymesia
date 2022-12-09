@@ -62,11 +62,11 @@ void CProp::LateTick(_float fTimeDelta)
 		m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Weak_StaticCast<CGameObject>(m_this));
 	}
 #else
-	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position() + vCenterOffsetToVector, m_fCullingOffsetRange))
-	{
-		if (RENDERGROUP::RENDER_END != m_eRenderGroup)
-			m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Weak_StaticCast<CGameObject>(m_this));
-	}
+	//if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position() + vCenterOffsetToVector, m_fCullingOffsetRange))
+	//{
+	//	if (RENDERGROUP::RENDER_END != m_eRenderGroup)
+	//		m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Weak_StaticCast<CGameObject>(m_this));
+	//}
 
 #endif // !_USE_THREAD_
 
@@ -132,6 +132,8 @@ HRESULT CProp::SetUp_ShaderResource()
 	_vector	vShaderFlag = { 0.f,0.f,0.f,0.f };
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector))))
 		return E_FAIL;
+
+	return S_OK;
 }
 
 void CProp::SetUp_Invisibility()

@@ -85,9 +85,6 @@ void CLevel_Test::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	if (KEY_INPUT(KEY::M, KEY_STATE::TAP))
-		GET_SINGLE(CGameManager).get()->Respawn_LastCheckPoint();
-
 	if (KEY_INPUT(KEY::CTRL, KEY_STATE::TAP))
 	{
 		if (m_pPauseMenu.lock()->Get_Enable() == false)

@@ -984,7 +984,7 @@ void CEditInstanceProp::View_MultiPicking()
 		_int   iPickingIndex = -1;
 		for (auto& iter : m_pPropInfos)
 		{
-			auto& iter_find = find_if(m_MultPickingIndex.begin(), m_MultPickingIndex.end(), [&](_uint _iIndex)->_bool { return (_iIndex == iIndex); });
+			auto iter_find = find_if(m_MultPickingIndex.begin(), m_MultPickingIndex.end(), [&](_uint _iIndex)->_bool { return (_iIndex == iIndex); });
 
 			if (iter_find != m_MultPickingIndex.end())
 			{

@@ -265,6 +265,9 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_AVoidL);
 	ADD_STATE_MACRO(CCorvusState_AVoidR);
 
+	ADD_STATE_MACRO(CCorvusState_CheckPointStart);
+	ADD_STATE_MACRO(CCorvusState_CheckPointEnd);
+	ADD_STATE_MACRO(CCorvusState_CheckPointLoop);
 
 #undef ADD_STATE_MACRO
 }

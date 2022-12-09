@@ -39,6 +39,7 @@ private:
     void    View_Picking_List();
     void    View_SelectTransformInfo();
     void    View_Picking_Option();
+    void    View_Picking_MessageEdit();
 
 private:
     void    SetUp_ShaderResource_Select();

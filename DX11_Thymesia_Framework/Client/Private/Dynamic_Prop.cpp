@@ -94,7 +94,8 @@ void CDynamic_Prop::Before_Render(_float fTimeDelta)
 
 HRESULT CDynamic_Prop::Render()
 {
-    CProp::SetUp_ShaderResource();
+    if (FAILED(CProp::SetUp_ShaderResource()))
+        return E_FAIL;
 
     _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
     for (_uint i = 0; i < iNumMeshContainers; ++i)

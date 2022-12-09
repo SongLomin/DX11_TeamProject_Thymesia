@@ -18,6 +18,7 @@
 #define		_USE_THREAD_
 #define		_144HZ_
 #define		_RENDER_FPS_
+#define     _Actor_Culling_
 //#define		_INSTANCE_CULLING_
 //#define		_LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
@@ -71,11 +72,12 @@
 #undef _ONLY_UI_
 
 #pragma region System
-#define _USE_THREAD_
+//#define _USE_THREAD_
 #define _144HZ_
 // #define _RENDER_FPS_
 //#define		_INSTANCE_CULLING_
 // #define _LOAD_CAPTURED_RESOURCE_
+#define     _Actor_Culling_
 #pragma endregion // System
 
 #define _USE_GRAVITY_
@@ -86,6 +88,7 @@
 #define _GENERATE_PROP_COLLIDER_ true
 // #define _STAGE_1_
 #define _STAGE_2_
+#define _MAP_TOOL_
 #pragma endregion // Map
 
 #pragma region Boss Mobs
@@ -212,6 +215,8 @@ namespace Client
 		ON_GROGGY,
 		ON_LADDERMOVEUP,
 		ON_CATCH,
+		ON_ENTER_SECTION,
+		ON_EXIT_SECTION,
 		ON_VARGEXECUTION,
 		EVENT_END
 	};

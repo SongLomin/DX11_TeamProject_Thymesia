@@ -24,9 +24,9 @@ public:
         ACT_SECTION         = (1 << 0),
         ACT_MONSTER_TRIGGER = (1 << 1),
 
-        EVENT_START         = (1 << 1000),
-        EVENT_ENTER         = (1 << 1001),
-        EVENT_STAY          = (1 << 1002)
+        EVENT_ENTER         = (1 << 10),
+        EVENT_STAY          = (1 << 11),
+        EVENT_EXIT          = (1 << 12)
     };
 
 public:
@@ -52,12 +52,11 @@ private:
     void    SetUpColliderDesc(_float* _pColliderDesc);
 
 private:
-    weak_ptr<CShader>           m_pShaderCom;
-    weak_ptr<CRenderer>         m_pRendererCom;
-    weak_ptr<CCollider>         m_pColliderCom;  
+    weak_ptr<CCollider>   m_pColliderCom;  
 
-    _flag                       m_Flag   = 0;
-    _float4                     m_vColor = { 1.f, 0.f, 0.f, 1.f };
+    _flag                 m_Flag          = 0;
+    _int                  m_iSectionIndex = 0;
+    _float4               m_vColor        = { 1.f, 0.f, 0.f, 1.f };
 };
 
 END

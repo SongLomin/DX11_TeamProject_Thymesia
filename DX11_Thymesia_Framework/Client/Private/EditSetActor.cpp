@@ -100,6 +100,12 @@ void CEditSetActor::OnEventMessage(_uint iArg)
 
 				if (ImGui::BeginTabItem("Select"))
 				{
+					View_Picking_Actor();
+					View_Picking_List();
+					View_SelectTransformInfo();
+					View_Picking_Option();
+					View_Picking_MessageEdit();
+
 					ImGui::EndTabItem();
 				}
 
@@ -213,7 +219,7 @@ void CEditSetActor::View_CreateActor()
 
 	tMonsterDesc.eBossStartType  = (!bNorMonsterCreate) ? ((BOSSSTARTTYPE)iSelect_BossActionList)         : (BOSSSTARTTYPE::BOSSSTARTEND);
 	tMonsterDesc.eNorMonIdleType = (bNorMonsterCreate)  ? ((NORMONSTERIDLETYPE)iSelect_MonsterActionList) : (NORMONSTERIDLETYPE::IDLEEND);
-	tMonsterDesc.eMonType        = (MONSTERTYPE)((iSelect_ActorTypeList * (_int)MONSTERTYPE::START_ELITE_MONSTER) + 1);
+	tMonsterDesc.eMonType        = (MONSTERTYPE)((iSelect_ActorList + iSelect_ActorTypeList * (_int)MONSTERTYPE::START_ELITE_MONSTER) + 1);
 	tMonsterDesc.iSectionIndex   = iSelect_MonsterSection;
 	memcpy(&tMonsterDesc.m_fStartPositon, m_PickingDesc.m[3], sizeof(_float4));
 
@@ -307,7 +313,6 @@ void CEditSetActor::View_Picking_Actor()
 		++iIndex;
 	}
 	
-
 	if (0 > m_iPickingIndex && (_int)iter_collider->second.size() <= m_iPickingIndex)
 	{
 		m_iPickingIndex = -1;
@@ -524,6 +529,22 @@ void CEditSetActor::View_Picking_Option()
 	}
 }
 
+void    CEditSetActor::View_Picking_MessageEdit()
+{
+	ImGui::Text("");
+	ImGui::Separator();
+
+	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditSetActor).hash_code());
+
+	if (iter_collider == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
+		return;
+
+	if (iter_collider->second.empty() || 0 > m_iPickingIndex || iter_collider->second.size() <= m_iPickingIndex)
+		return;
+
+	iter_collider->second[m_iPickingIndex].pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW);
+}
+
 void CEditSetActor::SetUp_ShaderResource_Select()
 {
 	if (!m_bSubDraw)
@@ -577,10 +598,14 @@ void CEditSetActor::Add_ActorToTool(_hashcode _HashCode, string _szTypeName, wea
 		List.push_back(tObjDesc);
 
 		GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup[typeid(CEditSetActor).hash_code()] = List;
+
+		m_iPickingIndex = 0;
 	}
 	else
 	{
 		iter_collider->second.push_back(tObjDesc);
+
+		m_iPickingIndex = (_uint)iter_collider->second.size() - 1;
 	}
 }
 
