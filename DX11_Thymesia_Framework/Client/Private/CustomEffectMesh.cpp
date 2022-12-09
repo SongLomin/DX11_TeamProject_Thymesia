@@ -1506,8 +1506,6 @@ void CCustomEffectMesh::Update_Dissolve(_float fFrameTime)
 #ifdef _DEBUG_COUT_JOJO
 	cout << "Dissolve Amount Acc : " << m_fDissolveAmountAcc << endl;
 #endif // _DEBUG_COUT_JOJO
-	// TODO : erase
-	int a = 0;
 }
 
 void CCustomEffectMesh::Apply_Easing
