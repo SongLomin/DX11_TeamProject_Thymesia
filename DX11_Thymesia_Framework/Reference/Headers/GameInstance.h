@@ -121,16 +121,14 @@ public: /* For.Timer_Manager */
 public: /* For.Render_Manager */
 	HRESULT Add_RenderGroup(RENDERGROUP	eGroup, weak_ptr<CGameObject> pGameObject);
 	HRESULT Draw_RenderGroup();
-	HRESULT Set_MotionBlurScale(const _float& In_fScale);
-	HRESULT Add_MotionBlurScale(const _float& In_fScale);
 	HRESULT Set_Chromatic(const _float In_fChormaticStrangth);
 	HRESULT Add_Chromatic(const _float In_fChormaticStrangth);
 	HRESULT Set_MotionBlur(const _float In_fBlurScale);
 	HRESULT Add_MotionBlur(const _float In_fBlurScale);
 	HRESULT Set_RadialBlur(const _float In_fRadialBlurStength, _float3 In_vBlurWorldPosition);
-	HRESULT Add_RedialBlur(const _float In_fRadialBlurStrength);
+	HRESULT Add_RadialBlur(const _float In_fRadialBlurStrength);
 	HRESULT Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain);
-	HRESULT Set_FogColor(_float4 In_vFogColor);
+	HRESULT Set_FogDesc(const _float4 In_vFogColor, const _float In_fFogRange);
 	HRESULT	Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt);
 
 

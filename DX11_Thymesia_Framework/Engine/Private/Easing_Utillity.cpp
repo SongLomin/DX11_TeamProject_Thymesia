@@ -106,6 +106,12 @@ _vector CEasing_Utillity::LerpToType(_vector vStartPoint, _vector vTargetPoint, 
 	case EASING_TYPE::BOUNCE_OUT:
 		return BounceOut(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
 		break;
+	case EASING_TYPE::OUT_BACK:
+		return OutBack(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+		break;
+	case EASING_TYPE::INOUT_BACK:
+		return InOutBack(vStartPoint, vTargetPoint, fPassedTime, fTotalTime);
+		break;
 	case EASING_TYPE::TYPE_END:
 		break;
 	default:
@@ -504,6 +510,28 @@ _float CEasing_Utillity::BounceOut(_float fStartPoint, _float fTargetPoint, _flo
 		return _float((fTargetPoint - fStartPoint) * (7.5625f * (fPassedTime -= (2.25f / 2.75f)) * fPassedTime + .9375f) + fStartPoint);
 	else
 		return _float((fTargetPoint - fStartPoint) * (7.5625f * (fPassedTime -= (2.625f / 2.75f)) * fPassedTime + .984375f) + fStartPoint);
+}
+
+_vector CEasing_Utillity::OutBack(_vector vStartPoint, _vector vTargetPoint, _float fPassedTime, _float fTotalTime)
+{
+	const _float c1 = 1.70158f;
+	const _float c3 = c1 + 1.f;
+
+
+	return (vTargetPoint - vStartPoint) * (1.f + c3 * pow(fPassedTime / fTotalTime - 1, 3) + c1 * pow(fPassedTime / fTotalTime - 1, 2)) + vStartPoint;
+}
+
+_vector CEasing_Utillity::InOutBack(_vector vStartPoint, _vector vTargetPoint, _float fPassedTime, _float fTotalTime)
+{
+	const _float c1 = 1.70158f;
+	const _float c2 = c1 * 1.525f;
+
+	_float x = fPassedTime / fTotalTime;
+
+	return x < 0.5f
+		? (vTargetPoint - vStartPoint) * ((pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2) + vStartPoint
+		: (vTargetPoint - vStartPoint) * ((pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2) + vStartPoint;
+	
 }
 
 

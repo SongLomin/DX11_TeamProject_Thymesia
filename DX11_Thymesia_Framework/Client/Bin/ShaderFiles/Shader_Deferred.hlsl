@@ -20,6 +20,7 @@ vector g_vMtrlAmbient  = vector(1.f, 1.f, 1.f, 1.f);
 vector g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
 
 vector g_vFogColor;
+float g_fFogRange;
 
 texture2D g_ORMTexture;
 texture2D g_SpecularTexture;
@@ -338,12 +339,14 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 	vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
 
 	vector	vLightDir = vWorldPos - g_vLightPos;
-    float fDistance = max(0.0001f, length(vLightDir));
+    float fDistance =  length(vLightDir); 
     
     if(g_fRange < fDistance)
         discard;
+
     
-    float fAtt = 1.f / fDistance * fDistance + 1.f;
+    float fAtt = 0.5f * cos(fDistance / g_fRange * 3.14159265f) + 0.5f;
+
 
     vector vLook = normalize(g_vCamPosition - vWorldPos);
     
@@ -514,26 +517,49 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
     {
         vAmbientDesc.a = 0.f;
         Out.vColor = vDiffuse*0.03f+ vAmbientDesc + vSpecular;
-        Out.vColor = Out.vColor / (Out.vColor + vector(1.f, 1.f, 1.f, 0.f));
-        Out.vColor = pow(Out.vColor, 1.f / 2.2);
-
         Out.vColor.rgb *= vViewShadow.rgb;
+     
+        
+       // Out.vColor.rgb = Out.vColor.rgb / (Out.vColor.rgb + float3(1.f, 1.f, 1.f));
+        float3 mapped = 1.f - exp(-Out.vColor.rgb * 0.5f/*exposure*/);
+        
+       // Out.vColor.rgb = pow(Out.vColor.rgb, 1.f / 2.2f);
+        Out.vColor.rgb = pow(mapped, 1.f / 2.2f);
+        Out.vColor.a = 1.f;
+        
         Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor;
+
+        
+        
     }
     else
     {
         Out.vColor = vDiffuse * vShade + vSpecular;
         Out.vColor.rgb *= vViewShadow.rgb;
+      
+        //Out.vColor.rgb = Out.vColor.rgb / (Out.vColor.rgb + float3(1.f, 1.f, 1.f));
+        //Out.vColor.rgb = pow(Out.vColor.rgb, 1.f / 2.2f);
+        
+        float3 mapped = 1.f - exp(-Out.vColor.rgb * 0.5f /*exposure*/);
+        Out.vColor.rgb = pow(mapped, 1.f / 2.2f);
+        
         if (0.f < Out.vColor.a)
+        {
             Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor;
+        }
         else
-            Out.vColor = vFogDesc.r * g_vFogColor;
-    }
+        {
+           Out.vColor = vFogDesc.r * g_vFogColor;
+           Out.vColor.a = 0.8f;
+           
+        }
+        
 
+    }
     //if (vLightFlagDesc.r > 0.f || vLightFlagDesc.g > 0.f)
     //    return Out;
 
-    if (Out.vColor.a == 0.f)
+    if (Out.vColor.a < 0.1f)
         discard;
 
 	return Out;
@@ -752,7 +778,7 @@ PS_OUT_FOG PS_MAIN_FOG(PS_IN In)
     float fDistance = length(vFogDir);
 
     //float			fAtt = saturate((g_fRange - fDistance) / g_fRange);
-    float fAtt = saturate((40.f - fDistance) / 40.f);
+    float fAtt = saturate((g_fFogRange - fDistance) / g_fFogRange);
     
     Out.vFog = (1.f - (fAtt * fAtt));
     

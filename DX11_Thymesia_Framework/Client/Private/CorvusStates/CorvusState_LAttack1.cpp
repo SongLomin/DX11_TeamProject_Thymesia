@@ -39,6 +39,8 @@ void CCorvusState_LAttack1::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+
+
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 
 	if (KEY_INPUT(KEY::N, KEY_STATE::TAP))

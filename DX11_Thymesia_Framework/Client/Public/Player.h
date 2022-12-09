@@ -54,13 +54,9 @@ public:
     }
 
 public:
-    void Set_DissolveAmount(const _int In_iDissolveMeshIndex, const _float In_fDissolveAmount, const _float3 In_vDissolveDir)
+    void Set_DissolveAmount(const _uint In_iDissolveMeshIndex,const DISSOLVE_DESC In_DissolveDesc)
     {
-        DISSOLVE_DESC DissolveDesc;
-        DissolveDesc.fAmount= In_fDissolveAmount;
-        DissolveDesc.vDirection= In_vDissolveDir;
-
-        m_DissolveDescs[In_iDissolveMeshIndex] = DissolveDesc;
+        m_DissolveDescs[In_iDissolveMeshIndex] = In_DissolveDesc;
     }
 
 

@@ -79,6 +79,9 @@ public:
 	static _float  BounceIn(_float	fStartPoint, _float fTargetPoint, _float fPassedTime, _float fTotalTime);
 	static _vector BounceOut(_vector vStartPoint, _vector vTargetPoint, _float fPassedTime, _float fTotalTime);
 	static _float  BounceOut(_float	fStartPoint, _float fTargetPoint, _float fPassedTime, _float fTotalTime);
+
+	static _vector OutBack(_vector vStartPoint, _vector vTargetPoint, _float fPassedTime, _float fTotalTime);
+	static _vector InOutBack(_vector vStartPoint, _vector vTargetPoint, _float fPassedTime, _float fTotalTime);
 };
 
 END

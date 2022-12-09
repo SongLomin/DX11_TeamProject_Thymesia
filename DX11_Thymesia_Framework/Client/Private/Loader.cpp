@@ -235,6 +235,11 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	
 #endif // _ONLY_UI_
 	lstrcpy(m_szLoadingText, TEXT("Loading Complete"));	
+
+	GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("DamageFont_Normal"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Normal/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("DamageFont_Parry"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Parry/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
+
 	m_isFinished = true;
 
 	return S_OK;

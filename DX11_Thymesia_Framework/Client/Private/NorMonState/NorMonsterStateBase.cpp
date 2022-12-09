@@ -86,10 +86,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 
 		weak_ptr<CCharacter> pOtherCharacter = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner()).lock()->Get_ParentObject();
 		
-		_float3 vShakingOffset = pOtherCharacter.lock()->Get_CurState().lock()->Get_ShakingOffset();
-		_vector vShakingOffsetToVector = XMLoadFloat3(&vShakingOffset);
-
-		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.55f, 0.1f);//일반 공격
+		
 
 		_vector vOtherColliderPosition = pOtherCharacter.lock()->
 			Get_Component<CTransform>().lock()->
@@ -144,7 +141,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 		vHitPos.x += fRandom(mt);
 		vHitPos.y += fRandom(mt);
 
-		int iRand = rand() % 8 + 1;
+		_int iRand = rand() % 8 + 1;
 
 		switch (eAttackOption)
 		{
@@ -169,6 +166,15 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
 			break;
 		}
+
+		_float3 vShakingOffset = pOtherCharacter.lock()->Get_CurState().lock()->Get_ShakingOffset();
+		_vector vShakingOffsetToVector = XMLoadFloat3(&vShakingOffset);
+		_float fShakingRatio = 0.01f*iRand;
+
+		
+		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.08f + fShakingRatio, 1.f, 9.f, 0.25f);
+		GAMEINSTANCE->Set_MotionBlur(0.05f);
+
 		//GAMEINSTANCE->Get_GameObjects<CDamageUI>(LEVEL::LEVEL_STATIC).front().lock()->Add_DamageText(vMyPosition, In_fDamage, bRandom);
 
 		//GAMEINSTANCE->Get_GameObjects<CMonsterHpBar>(LEVEL::LEVEL_STATIC).front().lock()->OnHit(m_pOwner);

@@ -88,7 +88,8 @@ HRESULT CLevel_GamePlay::Initialize()
 #pragma endregion GAMEOBJECT
 #endif	// ONLY_UI
 
-	GAMEINSTANCE->Set_FogColor(_float4(0.49f, 0.43f, 0.2f, 1.f));
+	GAMEINSTANCE->Set_FogDesc(_float4(0.1f, 0.07f, 0.f, 1.f),35.f);
+	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 
 	SetUp_UI();
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();

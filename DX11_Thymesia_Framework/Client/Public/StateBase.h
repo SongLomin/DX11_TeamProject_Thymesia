@@ -34,7 +34,7 @@ public:
 
     void Set_Animation(_uint In_iNumIndex, _float In_fFixedPlayRatio = -1.f);
     _uint Get_StateIndex()const { return m_iStateIndex; }
-    _float3 Get_ShakingOffset() const { return m_vShakingOffSet; }
+    _float3 Get_ShakingOffset();
 
     weak_ptr<CCharacter> Get_OwnerCharacter() const;
 

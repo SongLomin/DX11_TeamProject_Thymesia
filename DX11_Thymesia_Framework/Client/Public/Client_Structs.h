@@ -382,7 +382,11 @@ namespace Client
 	struct DISSOLVE_DESC
 	{
 		_float fAmount;
-		_float3 vDirection = { 0.f,0.f,0.f };
+		_float3 vDirection;
+		_float4	vGlowColor;
+		_float3 vStartPos;
+		_bool bGlow;
+		_bool bBloom;
 	};
 
 	struct CINEMA_DESC

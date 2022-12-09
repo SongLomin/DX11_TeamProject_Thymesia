@@ -58,7 +58,7 @@ public:
 public:
     void Set_TargetCamera(weak_ptr<CCamera_Target> In_TargetCamera);
     weak_ptr<CCamera_Target> Get_TargetCamera();
-    void Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime, _float fFrequency = 1.5f, _float fDecreaseRatio = 0.5f);
+    void Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime, _float fFrequency = 2.f, _float fDecreaseRatio = 0.5f);
     //void Set_TargetForTargetCamera(weak_ptr<CGameObject> In_TargetGameObject);
     void Focus_Monster();
     void Release_Focus();
@@ -91,8 +91,8 @@ public:
     void Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName,_matrix& OffSetMatrix, CINEMATIC_TYPE iCinematicType);
     void End_Cinematic();
 
-    void Activate_Zoom(_float fRatio, _float fZoomTime);
-    void Deactivate_Zoom();
+    void Activate_Zoom(_float fRatio, _float fZoomTime, EASING_TYPE eZoomLerpFunc);
+    void Deactivate_Zoom(_float fZoomTime, EASING_TYPE eZoomLerpFunc);
     _vector Get_PlayerPos();
 
 public:

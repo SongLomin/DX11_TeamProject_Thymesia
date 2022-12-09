@@ -79,11 +79,11 @@ HRESULT CVarg::Initialize(void* pArg)
 	TRAIL_DESC TrailDesc;
 	ZeroMemory(&TrailDesc, sizeof(TRAIL_DESC));
 
-	TrailDesc.iMaxCnt = 30;
-	//position 0.163, 0.12,0.055 , z 0.1¾¿
-	TrailDesc.vPos_0 = _float3(0.163, 0.17, 0.075);
-	TrailDesc.vPos_1 = _float3(0.163, 0.17, 0.035);
-	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail_EyeLight>(LEVEL_GAMEPLAY, &TrailDesc);
+	//TrailDesc.iMaxCnt = 30;
+	////position 0.163, 0.12,0.055 , z 0.1¾¿
+	//TrailDesc.vPos_0 = _float3(0.163, 0.17, 0.075);
+	//TrailDesc.vPos_1 = _float3(0.163, 0.17, 0.035);
+	//m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail_EyeLight>(LEVEL_GAMEPLAY, &TrailDesc);
 
 	//GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
 
@@ -97,7 +97,7 @@ HRESULT CVarg::Start()
 {
 	__super::Start();
 
-	m_pTrailEffect.lock()->Set_TextureIndex(1,869, 0);
+	//m_pTrailEffect.lock()->Set_TextureIndex(1,869, 0);
 	m_pTrailBoneNode = m_pModelCom.lock()->Find_BoneNode("Bip001-Head");
 
 	
@@ -105,7 +105,13 @@ HRESULT CVarg::Start()
 
 	//weak_ptr<CBoneNode> pTargetBoneNode = m_pModelCom.lock()->Find_BoneNode();
 	//m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
-	//m_EffectIndexList.emplace_back("Character_Target", GET_SINGLE(CGameManager)->Use_EffectGroup("Character_Target", m_pTransformCom));
+	// m_EffectIndexList.emplace_back("Character_Target", GET_SINGLE(CGameManager)->Use_EffectGroup("Character_Target", m_pTransformCom));
+	
+	m_EffectIndexList.push_back
+	({
+		"Varg_Eye",
+		GET_SINGLE(CGameManager)->Use_EffectGroup("Varg_Eye", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER)
+		});
 
 	return S_OK;
 }

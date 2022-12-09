@@ -85,6 +85,21 @@ struct VS_OUT_SOFT_DIRECTIONAL_DISSOLVE
 	float3 vLocalPos : TEXCOORD2;
 };
 
+struct VS_OUT_DIRECTIONAL_DISSOLVE
+{
+    float4 vPosition : SV_POSITION;
+    float2 vTexUV : TEXCOORD0;
+    float3 vLocalPos : TEXCOORD1;
+};
+
+struct VS_OUT_SOFT_DIRECTIONAL_DISSOLVE
+{
+    float4 vPosition : SV_POSITION;
+    float2 vTexUV : TEXCOORD0;
+    float4 vProjPos : TEXCOORD1;
+    float3 vLocalPos : TEXCOORD2;
+};
+
 VS_OUT VS_MAIN(VS_IN In)
 {
 	VS_OUT Out = (VS_OUT)0;
@@ -221,6 +236,21 @@ struct PS_IN_SOFT_DIRECTIONAL_DISSOLVE
 	float2 vTexUV        : TEXCOORD0;
 	float4 vProjPos      : TEXCOORD1;
 	float3 vLocalPos     : TEXCOORD2;
+};
+
+struct PS_IN_DIRECTIONAL_DISSOLVE
+{
+    float4 vPosition : SV_POSITION;
+    float2 vTexUV : TEXCOORD0;
+    float3 vLocalPos : TEXCOORD1;
+};
+
+struct PS_IN_SOFT_DIRECTIONAL_DISSOLVE
+{
+    float4 vPosition : SV_POSITION;
+    float2 vTexUV : TEXCOORD0;
+    float4 vProjPos : TEXCOORD1;
+    float3 vLocalPos : TEXCOORD2;
 };
 
 struct PS_IN_SOFT

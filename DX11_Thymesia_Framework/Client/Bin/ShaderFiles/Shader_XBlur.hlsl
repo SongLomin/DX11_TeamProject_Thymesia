@@ -190,6 +190,8 @@ static const float WideBlurWeights[55] =
 1.58452e-06,
 2.14441e-07,*/
 
+
+
 struct VS_IN
 {
 	float3		vPosition : POSITION;	

@@ -10,10 +10,17 @@ texture2D   g_SpecularTexture;
 
 float g_fFar = 300.f;
 //directional dissolve
+float3 g_vDissolveStartPos;
+float3 g_vDissolveStartEnd;
+
 float3 g_vDissolveDir;
 float g_fDissolveAmount;
 
 float4 g_vDiffuse;
+
+bool g_bBloom;
+bool g_bGlow;
+float4 g_vGlowColor;
 
 float4  g_vCamDir;
 float   g_fAhlpa;
@@ -90,11 +97,13 @@ struct PS_IN
 
 struct PS_OUT
 {	
-	vector		vDiffuse : SV_TARGET0;
-	vector		vNormal : SV_TARGET1;
-	vector		vDepth : SV_TARGET2;
-    vector		vShaderFlag : SV_Target3;
-    vector      vORM : SV_Target4;
+    vector vDiffuse : SV_TARGET0;
+    vector vNormal : SV_TARGET1;
+    vector vDepth : SV_TARGET2;
+    vector vShaderFlag : SV_Target3;
+    vector vORM : SV_Target4;
+    vector vExtractBloom : SV_Target5;
+    vector vExtractGlow : SV_Target6;
 };
 
 PS_OUT PS_MAIN(PS_IN In)
@@ -116,6 +125,12 @@ PS_OUT PS_MAIN(PS_IN In)
 
 	if (Out.vDiffuse.a < 0.1f)
 		discard;
+    
+    Out.vDiffuse.a = 1.f;
+    
+    
+    Out.vExtractBloom = 0;
+    Out.vExtractGlow = 0;
 
 	return Out;	
 }
@@ -346,24 +361,21 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
     Out.vORM = 0;
     if (Out.vDiffuse.a < 0.1f)
         discard;
-
+    
+    Out.vDiffuse.a = 1.f;
+    
+    Out.vExtractBloom = 0;
+    Out.vExtractGlow = 0;
+    
     return Out;
 }
 
 
-struct PS_OUT_SPECULAR
-{
-    vector		vDiffuse : SV_TARGET0;
-    vector		vNormal : SV_TARGET1;
-    vector		vDepth : SV_TARGET2;
-    vector      vShaderFlag : SV_Target3;
-    vector      vORM : SV_Target4;
-};
 
 
-PS_OUT_SPECULAR PS_MAIN_NORMAL_SPECULAR(PS_IN_NORMAL In)
+PS_OUT PS_MAIN_NORMAL_SPECULAR(PS_IN_NORMAL In)
 {
-    PS_OUT_SPECULAR Out = (PS_OUT_SPECULAR)0;
+    PS_OUT Out = (PS_OUT) 0;
 
      // normal dissolve
     float DissolveDesc = g_DissolveTexture.Sample(DefaultSampler, In.vTexUV).r;
@@ -410,16 +422,21 @@ PS_OUT_SPECULAR PS_MAIN_NORMAL_SPECULAR(PS_IN_NORMAL In)
 
     if (Out.vDiffuse.a < 0.1f)
         discard;
+    
+    if (g_bBloom)
+        Out.vExtractBloom = Out.vDiffuse;
+    if (g_bGlow)
+        Out.vExtractGlow = g_vGlowColor;
 
     return Out;
 }
 
-PS_OUT_SPECULAR PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_NORMAL In)
+PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_NORMAL In)
 {
-    PS_OUT_SPECULAR Out = (PS_OUT_SPECULAR) 0;
+    PS_OUT Out = (PS_OUT) 0;
 
     //directional dissolve
-    float3 vPixelDir = In.vLocalPos.xyz;
+    float3 vPixelDir = In.vLocalPos.xyz - g_vDissolveStartPos;
     vPixelDir = normalize(vPixelDir);
     float3 vDissolveDir = normalize(g_vDissolveDir);
     
@@ -431,12 +448,12 @@ PS_OUT_SPECULAR PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_NORMAL In)
     {
         Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     }
-    else if (fDotValue + 0.08f > g_fDissolveAmount)
+    else if (fDotValue + 0.03f > g_fDissolveAmount)
     {
         float DissolveDesc = g_DissolveTexture.Sample(DefaultSampler, In.vTexUV*2.f).r;
     
-        clip(DissolveDesc - fDotValue);
-        Out.vDiffuse = vector(0.f, 0.9f, 0.5f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
+        //clip(DissolveDesc - fDotValue);
+        Out.vDiffuse = vector(0.8f, 1.f, 0.9f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
     }
     else
     {
@@ -461,6 +478,11 @@ PS_OUT_SPECULAR PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_NORMAL In)
 
     if (Out.vDiffuse.a < 0.1f)
         discard;
+    
+    if (g_bBloom)
+        Out.vExtractBloom = Out.vDiffuse;
+    if (g_bGlow)
+        Out.vExtractGlow = g_vGlowColor;
 
     return Out;
 }
