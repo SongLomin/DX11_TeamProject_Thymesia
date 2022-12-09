@@ -241,15 +241,16 @@ void CCamera_Target::End_Cinematic()
 
 }
 
-void CCamera_Target::Activate_Zoom(_float fRatio, _float fZoomTime)
+void CCamera_Target::Activate_Zoom(_float fRatio, _float fZoomTime, EASING_TYPE eZoomLerpFunc)
 {
 	m_fZoomEndOffSet = fRatio;
 	m_fZoomStartOffSet = m_fZoom;
 	m_fZoomTimeAcc = 0.f;
 	m_fZoomTime = fZoomTime;
+	m_eZoomLerpFunc = eZoomLerpFunc;
 }
 
-void CCamera_Target::Deactivate_Zoom(_float fZoomTime)
+void CCamera_Target::Deactivate_Zoom(_float fZoomTime, EASING_TYPE eZoomLerpFunc)
 {
 	m_fZoomStartOffSet = m_fZoom;
 	m_fZoomEndOffSet = 0.f;
@@ -397,7 +398,7 @@ void CCamera_Target::Calculate_ZoomOffSet(_float fTimeDelta)
 		_vector vStartPoint = XMVectorSet(m_fZoomStartOffSet, 0.f, 0.f, 0.f);
 		_vector vEndPoint = XMVectorSet(m_fZoomEndOffSet, 0.f, 0.f, 0.f);
 
-		m_fZoom = CEasing_Utillity::SineOut(vStartPoint, vEndPoint, m_fZoomTimeAcc, m_fZoomTime).m128_f32[0];
+		m_fZoom = CEasing_Utillity::LerpToType(vStartPoint, vEndPoint, m_fZoomTimeAcc, m_fZoomTime,m_eZoomLerpFunc).m128_f32[0];
 	}
 
 }

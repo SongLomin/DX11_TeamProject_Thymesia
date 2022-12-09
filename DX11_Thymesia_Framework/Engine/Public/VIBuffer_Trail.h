@@ -37,7 +37,7 @@ protected:
 	TRAIL_DESC m_tTrailDesc;
 	
 	_uint m_iLerpPointNum = 12;
-	_uint m_iCatMullRomIndex[4];
+	_int m_iCatMullRomIndex[4];
 
 private:
 	 void Free();

@@ -99,9 +99,17 @@ void CCorvusState_ClawAttackAway::Call_NextKeyFrame(const _uint& In_KeyIndex)
 {
 	switch (In_KeyIndex)
 	{
+	case 10:
+		GET_SINGLE(CGameManager)->Deactivate_Zoom(1.f, EASING_TYPE::LINEAR);
+	/*	_float3 vPosition;
+		XMStoreFloat3(&vPosition, m_pOwner.lock()->Get_Transform()->Get_Position() + XMVectorSet(0.f, 1.3f, 0.f, 0.f));
+		GAMEINSTANCE->Set_RadialBlur(0.3f, vPosition);
+	*/	GAMEINSTANCE->Set_MotionBlur(0.05f);
+		break;
 	case 45:
 		m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_ClawChargeAtk_FollowParticle", m_pTransformCom, _uint(TIMESCALE_LAYER::PLAYER));
 		return;
+
 	case 74:
 		GET_SINGLE(CGameManager)->UnUse_EffectGroup("Corvus_ClawChargeAtk_FollowParticle", m_iEffectIndex);
 		return;
@@ -131,6 +139,8 @@ void CCorvusState_ClawAttackAway::OnStateStart(const _float& In_fAnimationBlendT
 	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
 
 	m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_ClawAttackAway::Call_NextKeyFrame, this, placeholders::_1);
+
+
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_

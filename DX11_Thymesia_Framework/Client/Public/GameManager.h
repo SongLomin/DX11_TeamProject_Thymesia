@@ -90,8 +90,8 @@ public:
     void Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName,_matrix& OffSetMatrix, CINEMATIC_TYPE iCinematicType);
     void End_Cinematic();
 
-    void Activate_Zoom(_float fRatio, _float fZoomTime);
-    void Deactivate_Zoom(_float fZoomTime);
+    void Activate_Zoom(_float fRatio, _float fZoomTime, EASING_TYPE eZoomLerpFunc);
+    void Deactivate_Zoom(_float fZoomTime, EASING_TYPE eZoomLerpFunc);
     _vector Get_PlayerPos();
 
 public:

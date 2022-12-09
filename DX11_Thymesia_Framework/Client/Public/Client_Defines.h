@@ -19,7 +19,7 @@
 #define		_144HZ_
 #define		_RENDER_FPS_
 //#define		_INSTANCE_CULLING_
-// #define		_LOAD_CAPTURED_RESOURCE_
+#define		_LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
 #define _USE_GRAVITY_

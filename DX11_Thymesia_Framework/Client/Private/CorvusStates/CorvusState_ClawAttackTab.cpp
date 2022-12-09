@@ -93,16 +93,12 @@ void CCorvusState_ClawAttackTab::Tick(_float fTimeDelta)
 				m_fDissolveTimeArm -= fTimeDelta;
 				m_fDissolveAmountArm = SMath::Lerp(1.f, 0.f, m_fDissolveTimeArm / 0.7f);
 				m_vDissolveDir = { 1.f,0.f,0.f };
-
-				cout << "m_fDissolveAmountArm : " << m_fDissolveAmountArm << endl;
-
 			}
 			else 
 			{
 				m_fDissolveTimeClaw -= fTimeDelta;
 				m_fDissolveAmountClaw = SMath::Lerp(1.f, 0.f, m_fDissolveTimeClaw / 0.7f);
 				m_vDissolveDir = { 1.f,0.f,0.f };
-				cout << "m_fDissolveAmountClaw : " << m_fDissolveAmountClaw << endl;
 			}
 		}
 	}
@@ -165,15 +161,14 @@ void CCorvusState_ClawAttackTab::Call_NextAnimationKey(const _uint& In_iKeyIndex
 		break;
 
 	case 30:
-		GET_SINGLE(CGameManager)->Activate_Zoom(-0.5f,0.4f);
-		//AMEINSTANCE->Set_MotionBlur(0.15f);
+		GET_SINGLE(CGameManager)->Activate_Zoom(-0.5f,0.4f, EASING_TYPE::SINE_OUT);
 		_float3 vPosition;
 		XMStoreFloat3(&vPosition, m_pOwner.lock()->Get_Transform()->Get_Position() + XMVectorSet(0.f, 1.3f, 0.f, 0.f));
 		GAMEINSTANCE->Set_RadialBlur(0.2f, vPosition);
 		break;
 
 	case 70:
-		GET_SINGLE(CGameManager)->Deactivate_Zoom(1.f);
+		GET_SINGLE(CGameManager)->Deactivate_Zoom(1.f, EASING_TYPE::SINE_OUT);
 		break;
 	case 100:
 		m_fDissolveTimeArm = 0.7f;

@@ -54,6 +54,7 @@ void CCorvusState_ClawAttackHold::Tick(_float fTimeDelta)
 		}
 	}
 
+
 	Attack();
 }
 
@@ -114,6 +115,21 @@ void CCorvusState_ClawAttackHold::Check_InputNextAttack()
 
 }
 
+void CCorvusState_ClawAttackHold::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
+	switch (In_KeyIndex)
+	{
+	case 18:
+		GET_SINGLE(CGameManager)->Activate_Zoom(1.5f, 0.5f, EASING_TYPE::INOUT_BACK);
+		return;
+	case 33:
+		_float3 vPosition;
+		XMStoreFloat3(&vPosition, m_pOwner.lock()->Get_Transform()->Get_Position() + XMVectorSet(0.f, 1.3f, 0.f, 0.f));
+		GAMEINSTANCE->Set_RadialBlur(0.25f, vPosition);
+		return;
+
+	}
+}
 
 
 void CCorvusState_ClawAttackHold::OnStateStart(const _float& In_fAnimationBlendTime)
@@ -133,6 +149,12 @@ void CCorvusState_ClawAttackHold::OnStateStart(const _float& In_fAnimationBlendT
 
 	//Disable_Weapons();
 
+
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_ClawAttackHold::Call_NextKeyFrame, this, placeholders::_1);
+
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "NorMonState: Attack -> OnStateStart" << endl;
@@ -147,6 +169,7 @@ void CCorvusState_ClawAttackHold::OnStateEnd()
 
 	//Disable_Weapons();
 	m_IsNextAttack = false;
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CCorvusState_ClawAttackHold::Call_NextKeyFrame, this, placeholders::_1);
 
 }
 
