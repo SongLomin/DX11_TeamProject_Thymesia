@@ -13,12 +13,15 @@ texture2D g_DepthTexture;
 bool   g_bDynamicNoiseOption;
 
 // For. Dissolve
-float3 g_vDissolveDir;
 float  g_fDissolveAmount;
 
 float3 g_vDissolveGradiationStartColor;
 float3 g_vDissolveGradiationGoalColor;
 float  g_fDissolveGradiationDistance;
+
+// For. Directional Dissolve
+float3 g_vDissolveStartPos;
+float3 g_vDissolveDir;
 
 /**
 * Wrap Weight for Textures
