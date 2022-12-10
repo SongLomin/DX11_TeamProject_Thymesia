@@ -1524,11 +1524,18 @@ void CEffect_Rect::Update_ParticleColor(const _uint& i, _float fTimeDelta)
 void CEffect_Rect::Update_ParticleGlowColor(_float fTimeDelta)
 {
 	_float4 vColor = SMath::Mul_Float4(m_tEffectParticleDesc.vGlowColorSpeed, fTimeDelta);
+
 	SMath::Add_Float4(&m_vCurrentGlowColorForce, SMath::Mul_Float4(m_tEffectParticleDesc.vGlowColorForce, fTimeDelta));
 
 	SMath::Add_Float4(&vColor, m_vCurrentGlowColorForce);
 	SMath::Add_Float4(&vColor, m_vCurrentGlowColor);
 
+	//vColor.x = max(0.f, min(1.f, vColor.x));
+	//vColor.y = max(0.f, min(1.f, vColor.y));
+	//vColor.z = max(0.f, min(1.f, vColor.z));
+	//vColor.w = max(0.f, min(1.f, vColor.w));
+
+	vColor.w = min(1.f, max(0.f, vColor.w));
 	vColor.x = min(1.f, max(0.f, vColor.x));
 	vColor.y = min(1.f, max(0.f, vColor.y));
 	vColor.z = min(1.f, max(0.f, vColor.z));
