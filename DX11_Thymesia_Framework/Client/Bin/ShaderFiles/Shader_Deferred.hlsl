@@ -654,6 +654,8 @@ PS_OUT PS_MAIN_GLOW(PS_IN In)
 	
     if (OriginalEffect.a > 0.05f)
         Out.vColor = OriginalEffect;
+    
+    //Out.vColor *= 1.5f; //Intensity;
 	
     return Out;
 }

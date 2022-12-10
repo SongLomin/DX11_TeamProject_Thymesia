@@ -103,7 +103,6 @@ struct PS_OUT
     vector vShaderFlag : SV_Target3;
     vector vORM : SV_Target4;
     vector vExtractBloom : SV_Target5;
-    vector vExtractGlow : SV_Target6;
 };
 
 PS_OUT PS_MAIN(PS_IN In)
@@ -130,7 +129,6 @@ PS_OUT PS_MAIN(PS_IN In)
     
     
     Out.vExtractBloom = 0;
-    Out.vExtractGlow = 0;
 
 	return Out;	
 }
@@ -364,10 +362,11 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
     
     Out.vDiffuse.a = 1.f;
     
-    Out.vExtractBloom = 0;
-    Out.vExtractGlow = 0;
-    
-    return Out;
+    if(g_bBloom)
+    {
+        Out.vExtractBloom = Out.vDiffuse;
+    }
+        return Out;
 }
 
 
@@ -425,8 +424,6 @@ PS_OUT PS_MAIN_NORMAL_SPECULAR(PS_IN_NORMAL In)
     
     if (g_bBloom)
         Out.vExtractBloom = Out.vDiffuse;
-    if (g_bGlow)
-        Out.vExtractGlow = g_vGlowColor;
 
     return Out;
 }
@@ -481,8 +478,6 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_NORMAL In)
     
     if (g_bBloom)
         Out.vExtractBloom = Out.vDiffuse;
-    if (g_bGlow)
-        Out.vExtractGlow = g_vGlowColor;
 
     return Out;
 }

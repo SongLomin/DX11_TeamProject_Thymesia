@@ -28,7 +28,11 @@ void CCorvusState_ClawAttackAway::Start()
 {
 	__super::Start();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_Raven_ClawLong_ChargeFull");
+	
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_ClawAttackAway::Call_AnimationEnd, this);
+
+	m_fDissolveAmountArm = 0.f;
+	m_fDissolveAmountClaw = 0.f;
 }
 
 void CCorvusState_ClawAttackAway::Tick(_float fTimeDelta)
@@ -42,6 +46,47 @@ void CCorvusState_ClawAttackAway::Tick(_float fTimeDelta)
 		else
 			m_fDebugAnimationSpeed = 0.1f;
 	}
+
+	DISSOLVE_DESC	ArmDissolveDesc;
+	ZeroMemory(&ArmDissolveDesc, sizeof(DISSOLVE_DESC));
+	DISSOLVE_DESC	ClawDissolveDesc;
+	ZeroMemory(&ClawDissolveDesc, sizeof(DISSOLVE_DESC));
+
+	if (m_bDissolve)
+	{
+		
+			if (0.4f > m_fDissolveTimeClaw)
+			{
+				m_fDissolveTimeArm -= fTimeDelta;
+				m_fDissolveAmountArm = SMath::Lerp(1.f, 0.f, m_fDissolveTimeArm / 0.7f);
+				m_vDissolveDir = { 1.f,0.f,0.f };
+			}
+			else
+			{
+				m_fDissolveTimeClaw -= fTimeDelta;
+				m_fDissolveAmountClaw = SMath::Lerp(1.f, 0.f, m_fDissolveTimeClaw / 0.7f);
+				m_vDissolveDir = { 1.f,0.f,0.f };
+			}
+		
+	}
+
+	ArmDissolveDesc.bBloom = true;
+	ArmDissolveDesc.bGlow = true;
+	ArmDissolveDesc.fAmount = m_fDissolveAmountArm;
+	ArmDissolveDesc.vDirection = m_vDissolveDir;
+	ArmDissolveDesc.vGlowColor = { 0.f, 1.f, 0.7f, 1.f };
+	ArmDissolveDesc.vStartPos = { -3.f,0.f,0.f };
+
+	ClawDissolveDesc.bBloom = true;
+	ClawDissolveDesc.bGlow = true;
+	ClawDissolveDesc.fAmount = m_fDissolveAmountClaw;
+	ClawDissolveDesc.vDirection = m_vDissolveDir;
+	ClawDissolveDesc.vGlowColor = { 0.f, 1.f, 0.7f, 1.f };
+	ClawDissolveDesc.vStartPos = { -3.f,0.f,0.f };
+
+
+	Get_OwnerPlayer()->Set_DissolveAmount(5, ClawDissolveDesc);
+	Get_OwnerPlayer()->Set_DissolveAmount(9, ArmDissolveDesc);
 
 	Attack();
 }

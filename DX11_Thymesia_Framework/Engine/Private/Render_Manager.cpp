@@ -175,6 +175,9 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_PBR"))))
 		DEBUG_ASSERT;
+	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_ExtractBloom"))))
+		DEBUG_ASSERT;
+
 
  
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_ExtractEffect"), TEXT("Target_OriginalEffect"))))
@@ -899,7 +902,7 @@ HRESULT CRender_Manager::Render_NonAlphaEffect()
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
 
-	pRenderTargetManager->Begin_MRT(TEXT("MRT_ExtractEffect"));
+	pRenderTargetManager->Begin_MRTWithNoneClearWithIndex(TEXT("MRT_ExtractEffect"), 1);
 
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHA_EFFECT])
 	{
@@ -936,7 +939,8 @@ HRESULT CRender_Manager::Render_AlphaBlend()
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
 
-	pRenderTargetManager->Begin_MRT(TEXT("MRT_ExtractEffect"));
+	//pRenderTargetManager->Begin_MRT(TEXT("MRT_ExtractEffect"));
+	pRenderTargetManager->Begin_MRTWithNoneClearWithIndex(TEXT("MRT_ExtractEffect"), 1);
 
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_ALPHABLEND])
 	{

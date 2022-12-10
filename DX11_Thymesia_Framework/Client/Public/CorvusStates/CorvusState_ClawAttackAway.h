@@ -40,6 +40,15 @@ private:
 
     _uint m_iEffectIndex = 0;
 
+    _float m_fDissolveTimeClaw = 0.f;
+    _float m_fDissolveTimeArm = 0.f;
+    _float m_fDissolveAmountClaw = 0.f;
+    _float m_fDissolveAmountArm = 0.f;
+    _float3 m_vDissolveDir = { 0.f,0.f,0.f };
+
+    _bool m_bDissolve = false;
+    _bool m_bDissolveAppear = false;
+
 protected:
     virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
     virtual void OnStateEnd() override;

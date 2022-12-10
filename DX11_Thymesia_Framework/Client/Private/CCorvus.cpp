@@ -142,7 +142,6 @@ HRESULT CCorvus::Render()
 			else
 				m_iPassIndex = 5;
 		}
-		
 		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))

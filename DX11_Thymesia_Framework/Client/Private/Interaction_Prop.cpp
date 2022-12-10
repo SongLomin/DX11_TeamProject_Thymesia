@@ -6,7 +6,7 @@
 #include "Renderer.h"
 #include "Transform.h"
 #include "PhysXCollider.h"
-
+#include "Collider.h"
 #include "GameInstance.h"
 #include "ClientLevel.h"
 #include "UI_Interaction.h"

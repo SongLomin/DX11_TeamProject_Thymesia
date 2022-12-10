@@ -55,6 +55,55 @@ void CCorvusState_ClawAttackHold::Tick(_float fTimeDelta)
 		}
 	}
 
+	DISSOLVE_DESC	ArmDissolveDesc;
+	ZeroMemory(&ArmDissolveDesc, sizeof(DISSOLVE_DESC));
+	DISSOLVE_DESC	ClawDissolveDesc;
+	ZeroMemory(&ClawDissolveDesc, sizeof(DISSOLVE_DESC));
+
+	if (m_bDissolve)
+	{
+
+		
+			if (0.4f > m_fDissolveTimeArm)
+			{
+				m_fDissolveTimeClaw -= fTimeDelta;
+				m_fDissolveAmountClaw = SMath::Lerp(0.f, 1.f, m_fDissolveTimeClaw / 0.7f);
+				m_vDissolveDir = { -1.f,0.f,0.f };
+
+				cout << "m_fDissolveAmountClaw : " << m_fDissolveAmountClaw << endl;
+			}
+			else
+			{
+				m_fDissolveTimeArm -= fTimeDelta;
+				m_fDissolveAmountArm = SMath::Lerp(0.f, 1.f, m_fDissolveTimeArm / 0.7f);
+				m_vDissolveDir = { -1.f,0.f,0.f };
+
+				cout << "m_fDissolveAmountArm : " << m_fDissolveAmountArm << endl;
+
+			}
+
+		
+	
+	}
+
+	ArmDissolveDesc.bBloom = true;
+	ArmDissolveDesc.bGlow = true;
+	ArmDissolveDesc.fAmount = m_fDissolveAmountArm;
+	ArmDissolveDesc.vDirection = m_vDissolveDir;
+	ArmDissolveDesc.vGlowColor = { 0.f, 1.f, 0.7f, 1.f };
+	ArmDissolveDesc.vStartPos = { -3.f,0.f,0.f };
+
+	ClawDissolveDesc.bBloom = true;
+	ClawDissolveDesc.bGlow = true;
+	ClawDissolveDesc.fAmount = m_fDissolveAmountClaw;
+	ClawDissolveDesc.vDirection = m_vDissolveDir;
+	ClawDissolveDesc.vGlowColor = { 0.f, 1.f, 0.7f, 1.f };
+	ClawDissolveDesc.vStartPos = { -3.f,0.f,0.f };
+
+
+	Get_OwnerPlayer()->Set_DissolveAmount(5, ClawDissolveDesc);
+	Get_OwnerPlayer()->Set_DissolveAmount(9, ArmDissolveDesc);
+
 
 	Attack();
 }
@@ -106,7 +155,14 @@ void CCorvusState_ClawAttackHold::Call_NextKeyFrame(const _uint& In_KeyIndex)
 {
 	switch (In_KeyIndex)
 	{
-	case 18:
+	case 0:
+		m_fDissolveTimeArm = 0.7f;
+		m_fDissolveTimeClaw = 0.7f;
+		m_bDissolve = true;
+		m_fDissolveAmountArm = 1.f;
+		m_fDissolveAmountClaw = 1.f;
+		break;
+	case 20:
 		GET_SINGLE(CGameManager)->Activate_Zoom(1.5f, 0.5f, EASING_TYPE::INOUT_BACK);
 		return;
 	case 33:
@@ -136,6 +192,8 @@ void CCorvusState_ClawAttackHold::OnStateStart(const _float& In_fAnimationBlendT
 	//m_iAttackIndex = 7;
 	//m_iEndAttackEffectIndex = -1;
 
+	m_fDissolveAmountClaw = 1.f;
+	m_fDissolveAmountArm = 1.f;
 
 	//Disable_Weapons();
 

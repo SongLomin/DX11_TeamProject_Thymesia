@@ -160,6 +160,73 @@ HRESULT CRenderTarget_Manager::Begin_MRTWithNoneClear(const _tchar* pMRTTag)
 	return S_OK;
 }
 
+HRESULT CRenderTarget_Manager::Begin_MRTWithNoneClearWithIndex(const _tchar* pMRTTag, const _uint In_iIndex)
+{
+	list<shared_ptr<CRenderTarget>>* pMRTList = Find_MRT(pMRTTag);
+	if (nullptr == pMRTList)
+		DEBUG_ASSERT;
+
+	if (8 <= pMRTList->size())
+		DEBUG_ASSERT;
+
+	ID3D11ShaderResourceView* pSRVs[128] = { nullptr };
+
+	DEVICECONTEXT->PSSetShaderResources(0, 128, pSRVs);
+
+	ID3D11RenderTargetView* RTVs[8] = { nullptr };
+
+	_uint iNumRTVs(0);
+
+	for (auto& pRenderTarget : *pMRTList)
+	{
+		if (In_iIndex != iNumRTVs)
+			pRenderTarget->Clear();
+		RTVs[iNumRTVs++] = pRenderTarget->Get_RTV().Get();
+	}
+
+	/* 기존에 바인딩되어있던(백버퍼 + 깊이스텐실버퍼)를 얻어온다. */
+	DEVICECONTEXT->OMGetRenderTargets(1, m_pBackBufferView.GetAddressOf(), m_pDepthStencilView.GetAddressOf());
+
+	/* 렌더타겟들을 장치에 바인딩한다. */
+	DEVICECONTEXT->OMSetRenderTargets(iNumRTVs, RTVs, m_pDepthStencilView.Get());
+
+	return S_OK;
+}
+
+HRESULT CRenderTarget_Manager::Begin_MRTWithClearWithIndex(const _tchar* pMRTTag, const _uint In_iIndex)
+{
+	list<shared_ptr<CRenderTarget>>* pMRTList = Find_MRT(pMRTTag);
+	if (nullptr == pMRTList)
+		DEBUG_ASSERT;
+
+	if (8 <= pMRTList->size())
+		DEBUG_ASSERT;
+
+	ID3D11ShaderResourceView* pSRVs[128] = { nullptr };
+
+	DEVICECONTEXT->PSSetShaderResources(0, 128, pSRVs);
+
+	ID3D11RenderTargetView* RTVs[8] = { nullptr };
+
+	_uint iNumRTVs(0);
+
+	for (auto& pRenderTarget : *pMRTList)
+	{
+		if (In_iIndex == iNumRTVs)
+			pRenderTarget->Clear();
+		RTVs[iNumRTVs++] = pRenderTarget->Get_RTV().Get();
+	}
+
+	/* 기존에 바인딩되어있던(백버퍼 + 깊이스텐실버퍼)를 얻어온다. */
+	DEVICECONTEXT->OMGetRenderTargets(1, m_pBackBufferView.GetAddressOf(), m_pDepthStencilView.GetAddressOf());
+
+	/* 렌더타겟들을 장치에 바인딩한다. */
+	DEVICECONTEXT->OMSetRenderTargets(iNumRTVs, RTVs, m_pDepthStencilView.Get());
+
+	return S_OK;
+}
+
+
 HRESULT CRenderTarget_Manager::Begin_MRTWithOriginalRenderTarget(const _tchar* pMRTTag)
 {
 	/* 기존에 바인딩되어있던(백버퍼 + 깊이스텐실버퍼)를 얻어온다. */
