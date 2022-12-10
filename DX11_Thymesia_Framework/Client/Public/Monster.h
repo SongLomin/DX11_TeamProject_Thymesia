@@ -6,7 +6,7 @@ BEGIN(Client)
 class CActorDecor;
 class CMobWeapon;
 class CStatus_Monster;
-
+class CMonsterHPBar_Base;
 #define INIT_STATE(STATE) Weak_StaticCast<STATE>(m_pComponents.find(typeid(STATE).hash_code())->second.front()).lock()->Init_Desc(&m_tLinkStateDesc);
 
 class CMonster :
@@ -38,6 +38,9 @@ public:
     weak_ptr<CCharacter> Get_TargetCharacter() const;
     virtual _float  Get_CamOffset() const { return 0.f; }
     _float  Get_TimeAcc() const { return m_fTimeAcc; }
+
+    weak_ptr<CMonsterHPBar_Base>    Get_HPBar() { return m_pHPBar; }
+
     const STATE_LINK_MONSTER_DESC& Get_LinkStateDesc() { return m_tLinkStateDesc; }
 
     void Set_DissolveAmount(const _float& In_fAmount) { m_fDissolveAmount = In_fAmount; }
@@ -79,6 +82,10 @@ protected:
     virtual void OnDisable() override;
     virtual void OnDestroy() override;
 
+protected://From Moon
+    virtual void    Bind_HPBar();
+
+
 private:
     _float      m_fTimeAcc = 0.f;
 
@@ -96,6 +103,8 @@ protected:
     STATE_LINK_MONSTER_DESC      m_tLinkStateDesc;
     MONSTERWEAPONTYPE    m_eMonWeaPonType =     MONSTERWEAPONTYPE::MON_WEAPON_END;
     NORMONSTERIDLETYPE   m_eNorMonIdleType =    NORMONSTERIDLETYPE::IDLEEND;
+
+    weak_ptr<CMonsterHPBar_Base>   m_pHPBar;
 
 
 private:

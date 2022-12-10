@@ -56,8 +56,6 @@ protected:
     _float m_fFixedPlayRatio = 0.f;
     _float3 m_vShakingOffSet = {0.f,0.f,0.f};
 
-
-
     //weak_ptr<CBehaviorBase> m_pBehavior;
     weak_ptr<CNavigation> m_pNaviCom;
     weak_ptr<CTransform> m_pTransformCom;

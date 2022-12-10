@@ -129,6 +129,9 @@ public:
 
 public:
     FDelegate<>                 CallBack_ChangePlayer;
+    FDelegate<>                 CallBack_FocusInMonster;
+    FDelegate<>                 CallBack_FocusOutMonster;
+
 
 private:
     list<weak_ptr<CGameObject>> m_pLayers[(_uint)OBJECT_LAYER::LAYER_END];

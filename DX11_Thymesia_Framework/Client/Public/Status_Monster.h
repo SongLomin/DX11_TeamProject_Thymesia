@@ -48,6 +48,8 @@ public:
 	FDelegate<>			CallBack_ReStart;
 	FDelegate<_float, _bool> CallBack_UpdateParryGauge;
 
+	
+	FDelegate<>				Callback_NextPhase;
 
 public:
 	virtual HRESULT Initialize_Prototype();

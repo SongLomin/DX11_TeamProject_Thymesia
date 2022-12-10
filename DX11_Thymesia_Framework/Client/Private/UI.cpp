@@ -9,6 +9,8 @@
 #include "GameManager.h"
 #include "Player.h"
 #include "Status_Player.h"
+#include "UI.h"
+
 
 GAMECLASS_C(CUI)
 CLONE_C(CUI, CGameObject)
@@ -224,15 +226,12 @@ void CUI::Add_Child(weak_ptr<CUI> pChild)
 {
 	m_vecChildUI.push_back(pChild);
 
-	pChild.lock()->Set_Owner(m_this);
-
-	//부모가 안그려지는데, 자식이 그려지는 경우는 없음.
 	pChild.lock()->m_eRenderGroup = m_eRenderGroup;//자식의 렌더그룹을 부모의 렌더그룹으로 옮긴다.
 }
 
-void CUI::Set_Owner(weak_ptr<CBase> pOwner)
+void CUI::Set_Target(weak_ptr<CBase> pTarget)
 {
-	m_pOwner = pOwner;
+	m_pTarget = pTarget;
 }
 
 void CUI::Enable_AllEventChild()
@@ -357,6 +356,10 @@ void CUI::Update_Shaking(_float fTimeDelta)
 
 	m_fCurrentFreq = m_fShakeFreq;
 
+}
+
+void CUI::SetUp_Component()
+{
 }
 
 

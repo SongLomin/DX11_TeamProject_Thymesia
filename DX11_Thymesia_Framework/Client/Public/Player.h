@@ -53,6 +53,11 @@ public:
         return m_bIsFocused;
     }
 
+    weak_ptr<CMonster>  Get_TargetMonster() 
+    {
+        return m_pTargetMonster;
+    }
+
 public:
     void Set_DissolveAmount(const _uint In_iDissolveMeshIndex,const DISSOLVE_DESC In_DissolveDesc)
     {

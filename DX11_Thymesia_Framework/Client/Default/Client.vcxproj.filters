@@ -1027,6 +1027,10 @@
     <ClInclude Include="..\Public\Requirement_State.h">
       <Filter>07. Requirement\03. Requirement_State</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_MonsterFocus.h" />
+    <ClInclude Include="..\Public\Preset_UIDesc.h">
+      <Filter>06. DataPreset\05.Preset_UIDesc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2101,6 +2105,10 @@
     <ClCompile Include="..\Private\Requirement_State.cpp">
       <Filter>07. Requirement\03. Requirement_State</Filter>
     </ClCompile>
+    <ClCompile Include="..\UI_MonsterFocus.cpp" />
+    <ClCompile Include="..\Private\Preset_UIDesc.cpp">
+      <Filter>06. DataPreset\05.Preset_UIDesc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3166,6 +3174,9 @@
     </Filter>
     <Filter Include="07. Requirement\03. Requirement_State">
       <UniqueIdentifier>{2aae9c0e-209d-4609-8b52-3ac57181093f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. DataPreset\05.Preset_UIDesc">
+      <UniqueIdentifier>{71809176-0df8-42ac-bee8-0ce093e9a2b7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

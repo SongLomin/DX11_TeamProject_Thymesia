@@ -8,6 +8,7 @@ class CEasingTransform;
 
 class CCustomUI : public CUI
 {
+	friend class CPreset_UIDesc;
 public:
 	GAMECLASS_H(CCustomUI);
 	CLONE_H(CCustomUI, CGameObject);

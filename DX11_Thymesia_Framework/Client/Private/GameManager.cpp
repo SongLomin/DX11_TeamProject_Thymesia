@@ -222,7 +222,6 @@ void CGameManager::Add_Shaking(_vector vShakingDir, _float fRatio, _float fShaki
 
 	m_pTargetCamera.lock()->Add_Shaking(vShakingDir, fRatio, fShakingTime, fFrequency, fDecreaseRatio);
 	
-
 }
 
 void CGameManager::Focus_Monster()
@@ -233,9 +232,10 @@ void CGameManager::Focus_Monster()
 	if (!m_pTargetMonster.lock())
 		return;
 
-
 	m_pTargetCamera.lock()->Focus_Monster(m_pTargetMonster);
 	m_pCurrentPlayer.lock()->Focus_Monster(m_pTargetMonster);
+	
+	CallBack_FocusInMonster();
 }
 
 void CGameManager::Release_Focus()
@@ -243,6 +243,8 @@ void CGameManager::Release_Focus()
 	m_pTargetMonster = weak_ptr<CMonster>();
 	m_pTargetCamera.lock()->Release_Focus();
 	m_pCurrentPlayer.lock()->Release_Focus();
+
+	CallBack_FocusOutMonster();
 }
 
 weak_ptr<CMonster> CGameManager::Get_TargetMonster()

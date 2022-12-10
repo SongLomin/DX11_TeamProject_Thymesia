@@ -52,8 +52,7 @@ HRESULT CUI_Logo::Initialize(void* pArg)
     m_pMainMenuBG = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_LOGO);
     m_pMainMenuBG.lock()->Set_Depth(0.3f);
     m_pMainMenuBG.lock()->Set_Texture("MainMenu_Background");
-    m_pMainMenuBG.lock()->Set_PassIndex(1);
-
+    
     m_pLogo = GAMEINSTANCE->Add_GameObject<CHUD_Hover>(LEVEL_LOGO);
     m_pLogo.lock()->Set_Depth(0.2f);
     m_pLogo.lock()->Set_Texture("GameLogo");

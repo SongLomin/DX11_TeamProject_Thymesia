@@ -1,6 +1,6 @@
 #include "UI_Utils.h"
 #include "GameInstance.h"
-
+#include "GameManager.h"
 
 _float2 CUI_Utils::ConvertWorldPosToUIPos(_fvector vWorldPos)
 {
@@ -25,4 +25,9 @@ _float2 CUI_Utils::ConvertWorldPosToUIPos(_fvector vWorldPos)
 
 
     return vUIPos;
+}
+
+_float CUI_Utils::UI_TimeDelta(_float fTimeDelta)
+{
+	return fTimeDelta * GAMEINSTANCE->Get_TimeScale((_uint)TIMESCALE_LAYER::UI);
 }
