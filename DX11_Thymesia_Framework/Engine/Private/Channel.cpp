@@ -24,51 +24,52 @@ void CChannel::Start()
 
 void CChannel::Init_Channel(shared_ptr<CHANNEL_DATA> pChannelData, weak_ptr<CModel> pModel)
 {
+	m_pChannelData = pChannelData;
 	m_szName = pChannelData->szNodeName;
 
 	SetUp_BoneNodePtr(pModel);
 
+	//m_iNumKeyframes = pChannelData->iNumKeyframes;
+	//m_iNumKeyframes = max(pChannelData->iNumScalingKeys, pChannelData->iNumRotationKeys);
+	//m_iNumKeyframes = max(m_iNumKeyframes, pChannelData->iNumPositionKeys);
 
-	m_iNumKeyframes = max(pChannelData->iNumScalingKeys, pChannelData->iNumRotationKeys);
-	m_iNumKeyframes = max(m_iNumKeyframes, pChannelData->iNumPositionKeys);
+	//_float3		vScale;
+	//_float4		vRotation;
+	//_float3		vPosition;
 
-	_float3		vScale;
-	_float4		vRotation;
-	_float3		vPosition;
+	//for (_uint i = 0; i < m_iNumKeyframes; ++i)
+	//{
+	//	KEYFRAME		KeyFrame;
+	//	ZeroMemory(&KeyFrame, sizeof(KEYFRAME));
 
-	for (_uint i = 0; i < m_iNumKeyframes; ++i)
-	{
-		KEYFRAME		KeyFrame;
-		ZeroMemory(&KeyFrame, sizeof(KEYFRAME));
+	//	if (pChannelData->iNumScalingKeys > i)
+	//	{
+	//		memcpy(&vScale, &pChannelData->tScalingKeys[i].vValue, sizeof(_float3));
+	//		KeyFrame.fTime = (_float)pChannelData->tScalingKeys[i].fTime;
+	//	}
 
-		if (pChannelData->iNumScalingKeys > i)
-		{
-			memcpy(&vScale, &pChannelData->tScalingKeys[i].vValue, sizeof(_float3));
-			KeyFrame.fTime = (_float)pChannelData->tScalingKeys[i].fTime;
-		}
+	//	if (pChannelData->iNumRotationKeys > i)
+	//	{
+	//		/*memcpy(&vRotation, &pAIChannel->mRotationKeys[i].mValue, sizeof(_float4));*/
+	//		vRotation.x = pChannelData->tRotationKeys[i].vValue.x;
+	//		vRotation.y = pChannelData->tRotationKeys[i].vValue.y;
+	//		vRotation.z = pChannelData->tRotationKeys[i].vValue.z;
+	//		vRotation.w = pChannelData->tRotationKeys[i].vValue.w;
+	//		KeyFrame.fTime = (_float)pChannelData->tRotationKeys[i].fTime;
+	//	}
 
-		if (pChannelData->iNumRotationKeys > i)
-		{
-			/*memcpy(&vRotation, &pAIChannel->mRotationKeys[i].mValue, sizeof(_float4));*/
-			vRotation.x = pChannelData->tRotationKeys[i].vValue.x;
-			vRotation.y = pChannelData->tRotationKeys[i].vValue.y;
-			vRotation.z = pChannelData->tRotationKeys[i].vValue.z;
-			vRotation.w = pChannelData->tRotationKeys[i].vValue.w;
-			KeyFrame.fTime = (_float)pChannelData->tRotationKeys[i].fTime;
-		}
+	//	if (pChannelData->iNumPositionKeys > i)
+	//	{
+	//		memcpy(&vPosition, &pChannelData->tPositionKeys[i].vValue, sizeof(_float3));
+	//		KeyFrame.fTime = (_float)pChannelData->tPositionKeys[i].fTime;
+	//	}
 
-		if (pChannelData->iNumPositionKeys > i)
-		{
-			memcpy(&vPosition, &pChannelData->tPositionKeys[i].vValue, sizeof(_float3));
-			KeyFrame.fTime = (_float)pChannelData->tPositionKeys[i].fTime;
-		}
+	//	KeyFrame.vScale = vScale;
+	//	KeyFrame.vRotation = vRotation;
+	//	KeyFrame.vPosition = vPosition;
 
-		KeyFrame.vScale = vScale;
-		KeyFrame.vRotation = vRotation;
-		KeyFrame.vPosition = vPosition;
-
-		m_KeyFrames.push_back(KeyFrame);
-	}
+	//	m_KeyFrames.push_back(KeyFrame);
+	//}
 
 
 
@@ -77,12 +78,13 @@ void CChannel::Init_Channel(shared_ptr<CHANNEL_DATA> pChannelData, weak_ptr<CMod
 void CChannel::Update_TransformationMatrices(_float fCurrentTime)
 {
 	_vector			vScale, vRotation, vPosition;
+	vector<KEYFRAME>& MyKeyFrames = m_pChannelData->tKeyFrames;
 
-	if (fCurrentTime >= m_KeyFrames.back().fTime)
+	if (fCurrentTime >= MyKeyFrames.back().fTime)
 	{
-		vScale = XMLoadFloat3(&m_KeyFrames.back().vScale);
-		vRotation = XMLoadFloat4(&m_KeyFrames.back().vRotation);
-		vPosition = XMLoadFloat3(&m_KeyFrames.back().vPosition);
+		vScale = XMLoadFloat3(&MyKeyFrames.back().vScale);
+		vRotation = XMLoadFloat4(&MyKeyFrames.back().vRotation);
+		vPosition = XMLoadFloat3(&MyKeyFrames.back().vPosition);
 		vPosition = XMVectorSetW(vPosition, 1.f);
 	}
 
@@ -90,24 +92,24 @@ void CChannel::Update_TransformationMatrices(_float fCurrentTime)
 	{
 		m_iCurrentKeyFrame = 0;
 
-		while (fCurrentTime > m_KeyFrames[m_iCurrentKeyFrame + 1].fTime)
+		while (fCurrentTime > MyKeyFrames[m_iCurrentKeyFrame + 1].fTime)
 		{
 			++m_iCurrentKeyFrame;
 		}
 
-		_float fRatio = (fCurrentTime - m_KeyFrames[m_iCurrentKeyFrame].fTime)
-			/ (m_KeyFrames[m_iCurrentKeyFrame + 1].fTime - m_KeyFrames[m_iCurrentKeyFrame].fTime);
+		_float fRatio = (fCurrentTime - MyKeyFrames[m_iCurrentKeyFrame].fTime)
+			/ (MyKeyFrames[m_iCurrentKeyFrame + 1].fTime - MyKeyFrames[m_iCurrentKeyFrame].fTime);
 
 		_vector			vSourScale, vSourRotation, vSourPosition;
 		_vector			vDestScale, vDestRotation, vDestPosition;
 
-		vSourScale = XMLoadFloat3(&m_KeyFrames[m_iCurrentKeyFrame].vScale);
-		vSourRotation = XMLoadFloat4(&m_KeyFrames[m_iCurrentKeyFrame].vRotation);
-		vSourPosition = XMLoadFloat3(&m_KeyFrames[m_iCurrentKeyFrame].vPosition);
+		vSourScale = XMLoadFloat3(&MyKeyFrames[m_iCurrentKeyFrame].vScale);
+		vSourRotation = XMLoadFloat4(&MyKeyFrames[m_iCurrentKeyFrame].vRotation);
+		vSourPosition = XMLoadFloat3(&MyKeyFrames[m_iCurrentKeyFrame].vPosition);
 
-		vDestScale = XMLoadFloat3(&m_KeyFrames[m_iCurrentKeyFrame + 1].vScale);
-		vDestRotation = XMLoadFloat4(&m_KeyFrames[m_iCurrentKeyFrame + 1].vRotation);
-		vDestPosition = XMLoadFloat3(&m_KeyFrames[m_iCurrentKeyFrame + 1].vPosition);
+		vDestScale = XMLoadFloat3(&MyKeyFrames[m_iCurrentKeyFrame + 1].vScale);
+		vDestRotation = XMLoadFloat4(&MyKeyFrames[m_iCurrentKeyFrame + 1].vRotation);
+		vDestPosition = XMLoadFloat3(&MyKeyFrames[m_iCurrentKeyFrame + 1].vPosition);
 
 		vScale = XMVectorLerp(vSourScale, vDestScale, fRatio);
 		vRotation = XMQuaternionSlerp(vSourRotation, vDestRotation, fRatio);
@@ -131,37 +133,38 @@ void CChannel::Blend_PreTransformationMatrices(_float fBlendTime, _float In_fRat
 	ZeroMemory(&Key, sizeof(KEYFRAME));
 
 	_vector			vScale, vRotation, vPosition;
+	vector<KEYFRAME>& MyKeyFrames = m_pChannelData->tKeyFrames;
 	_uint			iCurrentKeyFrame = 0;
 
 
-	if (fBlendTime >= m_KeyFrames.back().fTime)
+	if (fBlendTime >= MyKeyFrames.back().fTime)
 	{
-		vScale = XMLoadFloat3(&m_KeyFrames.back().vScale);
-		vRotation = XMLoadFloat4(&m_KeyFrames.back().vRotation);
-		vPosition = XMLoadFloat3(&m_KeyFrames.back().vPosition);
+		vScale = XMLoadFloat3(&MyKeyFrames.back().vScale);
+		vRotation = XMLoadFloat4(&MyKeyFrames.back().vRotation);
+		vPosition = XMLoadFloat3(&MyKeyFrames.back().vPosition);
 		vPosition = XMVectorSetW(vPosition, 1.f);
 	}
 
 	else
 	{
-		while (fBlendTime > m_KeyFrames[iCurrentKeyFrame + 1].fTime)
+		while (fBlendTime > MyKeyFrames[iCurrentKeyFrame + 1].fTime)
 		{
 			++iCurrentKeyFrame;
 		}
 
-		_float fRatio = (fBlendTime - m_KeyFrames[iCurrentKeyFrame].fTime)
-			/ (m_KeyFrames[iCurrentKeyFrame + 1].fTime - m_KeyFrames[iCurrentKeyFrame].fTime);
+		_float fRatio = (fBlendTime - MyKeyFrames[iCurrentKeyFrame].fTime)
+			/ (MyKeyFrames[iCurrentKeyFrame + 1].fTime - MyKeyFrames[iCurrentKeyFrame].fTime);
 
 		_vector			vSourScale, vSourRotation, vSourPosition;
 		_vector			vDestScale, vDestRotation, vDestPosition;
 
-		vSourScale = XMLoadFloat3(&m_KeyFrames[iCurrentKeyFrame].vScale);
-		vSourRotation = XMLoadFloat4(&m_KeyFrames[iCurrentKeyFrame].vRotation);
-		vSourPosition = XMLoadFloat3(&m_KeyFrames[iCurrentKeyFrame].vPosition);
+		vSourScale = XMLoadFloat3(&MyKeyFrames[iCurrentKeyFrame].vScale);
+		vSourRotation = XMLoadFloat4(&MyKeyFrames[iCurrentKeyFrame].vRotation);
+		vSourPosition = XMLoadFloat3(&MyKeyFrames[iCurrentKeyFrame].vPosition);
 
-		vDestScale = XMLoadFloat3(&m_KeyFrames[iCurrentKeyFrame + 1].vScale);
-		vDestRotation = XMLoadFloat4(&m_KeyFrames[iCurrentKeyFrame + 1].vRotation);
-		vDestPosition = XMLoadFloat3(&m_KeyFrames[iCurrentKeyFrame + 1].vPosition);
+		vDestScale = XMLoadFloat3(&MyKeyFrames[iCurrentKeyFrame + 1].vScale);
+		vDestRotation = XMLoadFloat4(&MyKeyFrames[iCurrentKeyFrame + 1].vRotation);
+		vDestPosition = XMLoadFloat3(&MyKeyFrames[iCurrentKeyFrame + 1].vPosition);
 
 		vScale = XMVectorLerp(vSourScale, vDestScale, fRatio);
 		vRotation = XMQuaternionSlerp(vSourRotation, vDestRotation, fRatio);

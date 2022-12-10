@@ -35,10 +35,11 @@ public:
 private:
 	string						m_szName;
 	_uint						m_iNumKeyframes = 0;
-	vector<KEYFRAME>			m_KeyFrames;
+	//vector<KEYFRAME>			m_KeyFrames;
 	weak_ptr<CBoneNode>			m_pBoneNode;
 	_uint						m_iCurrentKeyFrame = 0;
 	weak_ptr<CModel>			m_pModel;
+	shared_ptr<CHANNEL_DATA>	m_pChannelData;
 
 public:
 	void Free();
