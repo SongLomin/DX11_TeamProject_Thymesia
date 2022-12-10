@@ -645,6 +645,9 @@ PS_OUT PS_MAIN_POSTEFFECT_BLOOM(PS_IN In)
     // ------------------------------------------------------------------------------------
 
     Out.vColor = g_XBlurTexture.Sample(DefaultSampler, In.vTexUV.xy);
+
+    // Out.vColor *= g_vIntensity;
+
     //Out.vColor.a = vBloomOriTex.a;
 
     return Out;
