@@ -118,19 +118,6 @@ void CCamera_Target::Tick(_float fTimeDelta)
 
 	Update_PhysXCollider(fTimeDelta);
 	
-	/*RAY PlayerToCameraRay;
-	_vector vPlayerToCameraDir = m_pTransformCom.lock()->Get_Position() - m_pCurrentPlayerTransformCom.lock()->Get_Position();
-	_float fLength = XMVectorGetX(XMVector3Length(vPlayerToCameraDir));
-	vPlayerToCameraDir = XMVector3Normalize(vPlayerToCameraDir);
-	_vector vPlayerPosition = m_pTransformCom.lock()->Get_Position();
-
-	XMStoreFloat4(&PlayerToCameraRay.vOrigin, vPlayerPosition);
-	XMStoreFloat3(&PlayerToCameraRay.vDirection, vPlayerToCameraDir);
-	PlayerToCameraRay.vOrigin.w = 1.f;
-	PlayerToCameraRay.fLength = fLength;*/
-
-	
-	
 }
 
 void CCamera_Target::LateTick(_float fTimeDelta)

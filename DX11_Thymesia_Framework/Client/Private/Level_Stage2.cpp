@@ -63,11 +63,13 @@ void CLevel_Stage2::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);	
 
+
 	Tick_Key_InputEvent();
 	if (KEY_INPUT(KEY::HOME, KEY_STATE::TAP))
 	{
 		GAMEINSTANCE->Write_JsonUsingResource("../Bin/LevelData/CapturedResource/Stage2.json");
 	}
+	
 }
 
 HRESULT CLevel_Stage2::Render()

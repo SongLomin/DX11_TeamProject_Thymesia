@@ -544,6 +544,13 @@ HRESULT CRender_Manager::Set_LiftGammaGain(const _float4 In_vLift, const _float4
 	return S_OK;
 }
 
+HRESULT CRender_Manager::Set_GrayScale(const _float In_fGrayScale)
+{
+	m_fGrayScale = In_fGrayScale;
+
+	return S_OK;
+}
+
 HRESULT CRender_Manager::Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt)
 {
 	XMStoreFloat3(&m_vShadowLightEye, In_vEye);
@@ -1562,7 +1569,8 @@ HRESULT CRender_Manager::PostProcessing()
 	m_pPostProcessingShader->Set_RawValue("g_vGamma", &m_vGamma, sizeof(_float4));
 	m_pPostProcessingShader->Set_RawValue("g_vGain", &m_vGain, sizeof(_float4));
 
-	
+	m_pPostProcessingShader->Set_RawValue("g_fGrayScale", &m_fGrayScale, sizeof(_float));
+
 	_float fChromaticLerpValue = 0.f;
 	if (0.f < m_fChromaticStrengthAcc)
 	{
@@ -1601,7 +1609,7 @@ HRESULT CRender_Manager::PostProcessing()
 	m_pPostProcessingShader->Set_RawValue("g_CameraViewMatrix", &XMMatrixTranspose(CamViewMatrix), sizeof(_float4x4));//RadialBlur Àü¿ë
 
 
-	for (_int i = 0; i < 4; ++i)
+	for (_int i = 0; i < 5; ++i)
 	{
 		Bake_OriginalRenderTexture();
 		if (FAILED(m_pPostProcessingShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")))))

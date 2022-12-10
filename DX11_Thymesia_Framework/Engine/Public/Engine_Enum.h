@@ -51,6 +51,7 @@ enum class KEY
 	BACKSPACE,
 	DELETEKEY,
 	HOME,
+	INSERTKEY,
 	LAST,
 };
 
