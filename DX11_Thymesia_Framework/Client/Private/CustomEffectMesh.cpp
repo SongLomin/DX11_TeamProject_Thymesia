@@ -1043,6 +1043,17 @@ void CCustomEffectMesh::Tool_Scale()
 
 void CCustomEffectMesh::Tool_Shaders()
 {
+	if (ImGui::TreeNode("Render Group##Render_Group"))
+	{
+		if (ImGui::Button("Non Alpha Effect##RenderGroup_NonAlphaEffect"))
+			m_eRenderGroup = RENDERGROUP::RENDER_NONALPHA_EFFECT;
+
+		if (ImGui::Button("Alpha Blend##RenderGroup_AlphaBlend"))
+			m_eRenderGroup = RENDERGROUP::RENDER_ALPHABLEND;
+
+		ImGui::TreePop();
+	}
+	
 	ImGui::Text("[0]Default"); ImGui::SameLine(); ImGui::Text(" | "); ImGui::SameLine();
 	ImGui::Text("[1]Distortion");
 	ImGui::Text("[2]Soft");
@@ -1664,14 +1675,6 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			if (ImGui::CollapsingHeader("Shaders"))
 				this->Tool_Shaders();
 
-			ImGui::Text("Render Group");
-			if (ImGui::Button("Non Alpha Effect##RenderGroup_NonAlphaEffect"))
-				m_eRenderGroup = RENDERGROUP::RENDER_NONALPHA_EFFECT;
-
-			ImGui::SameLine();
-
-			if (ImGui::Button("Alpha Blend##RenderGroup_AlphaBlend"))
-				m_eRenderGroup = RENDERGROUP::RENDER_ALPHABLEND;
 
 			ImGui::Checkbox("Apply Dissolve##Is_Dissolve", &m_tEffectMeshDesc.bApplyDissolve);
 

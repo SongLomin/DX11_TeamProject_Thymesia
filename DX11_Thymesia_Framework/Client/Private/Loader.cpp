@@ -164,9 +164,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));
 	this->Load_CorvusModel();
 	this->Load_BossMobModel();
-#ifndef _JOJO_EFFECT_TOOL_
 	this->Load_NormalMobModel();
-#endif // _JOJO_EFFECT_TOOL_
 
 #endif // _LOAD_CAPTURED_RESOURCE_
 

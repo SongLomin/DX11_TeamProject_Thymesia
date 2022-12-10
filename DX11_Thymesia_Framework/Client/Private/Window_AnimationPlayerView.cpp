@@ -456,12 +456,10 @@ void CWindow_AnimationPlayerView::Draw_AnimationList()
 		{
             pCurrentModel.lock()->Set_RootNode("root_$AssimpFbx$_Translation", byFlag);
         }
-
-        if (!strcmp(pCurrentModel.lock()->Get_ModelKey(), "Boss_Varg"))
+        else
         {
 			pCurrentModel.lock()->Set_RootNode("root", byFlag);
-		}
-        
+		}     
     }
 
     ImGui::SameLine();
