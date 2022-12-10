@@ -528,8 +528,6 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
         Out.vColor.a = 1.f;
         
         Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor;
-
-        
         
     }
     else
@@ -583,16 +581,6 @@ PS_OUT PS_MAIN_POSTEFFECT_MASK(PS_IN In)
     {
         float scale = fBlurStart + (float(i) * fPrecompute);
         float2 uv = In.vTexUV.xy * scale + center;
-
-        if (0.f > uv.x)
-            uv.x = 0.f;
-        else if (1.f < uv.x)
-            uv.x = 1.f;
-
-        if (0.f > uv.y)
-            uv.y = 0.f;
-        else if (1.f < uv.y)
-            uv.y = 1.f;
 
         vColor += g_BloomTexture.Sample(DefaultSampler, uv);
     }
@@ -780,7 +768,7 @@ PS_OUT_FOG PS_MAIN_FOG(PS_IN In)
     //float			fAtt = saturate((g_fRange - fDistance) / g_fRange);
     float fAtt = saturate((g_fFogRange - fDistance) / g_fFogRange);
     
-    Out.vFog = (1.f - (fAtt * fAtt));
+    Out.vFog = (g_vFogColor.a - (fAtt * fAtt));
     
 
    // Out.vShade.a = 1.f;

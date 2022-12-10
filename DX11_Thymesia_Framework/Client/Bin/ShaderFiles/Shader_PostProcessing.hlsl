@@ -185,29 +185,38 @@ PS_OUT PS_MAIN_RADIALBLUR(PS_IN In)
 	
     float2 center = float2(vBlurCenter.x, vBlurCenter.y); //중심점<-마우스의 위치를 받아오면 마우스를 중심으로 블러됨
 	
-    //In.vTexUV.xy -= center;
+    In.vTexUV.xy -= center;
 
-    //float fPrecompute = g_fRadialBlurStrength * (1.0f / 19.f);
-
-    //for (uint i = 0; i < 20; ++i)
-    //{
-    //    float scale = fBlurStart + (float(i) * fPrecompute);
-    //    float2 uv = In.vTexUV.xy * scale + center;
-
-    //    vColor += g_OriginalRenderTexture.Sample(ClampSampler, uv);
-    //}
-
-    //vColor /= 20.f;
+    float fPrecompute = g_fRadialBlurStrength * (1.0f / 19.f);
+    int iDivision = 0;
 	
-    float2 vBlurDir = In.vTexUV.xy - center;
-	
-    for (int i = 0; i < 10; ++i)
+    for (uint i = 0; i < 20; ++i)
     {
-        float4 currentColor = g_OriginalRenderTexture.Sample(ClampSampler, In.vTexUV + vBlurDir * g_fRadialBlurStrength*0.05f * i);
-        vColor += currentColor;
+        float scale = fBlurStart + (float(i) * fPrecompute);
+        float2 uv = In.vTexUV.xy * scale + center;
+		
+        if (0.f > uv.x || 1.f < uv.x)
+            continue;
+		
+        if (0.f > uv.y || 1.f < uv.y)
+            continue;
+
+
+        vColor += g_OriginalRenderTexture.Sample(ClampSampler, uv);
+        ++iDivision;
     }
+
+    vColor /= (float) iDivision;
 	
-    Out.vColor = vColor / 10.f;
+    //float2 vBlurDir = In.vTexUV.xy - center;
+	
+    //for (int i = 0; i < 10; ++i)
+    //{
+    //    float4 currentColor = g_OriginalRenderTexture.Sample(ClampSampler, In.vTexUV + vBlurDir * g_fRadialBlurStrength*0.05f * i);
+    //    vColor += currentColor;
+    //}
+	
+    Out.vColor = vColor;
 	
     return Out;
 }

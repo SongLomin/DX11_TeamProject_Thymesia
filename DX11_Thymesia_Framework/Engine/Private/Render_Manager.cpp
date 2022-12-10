@@ -747,6 +747,7 @@ HRESULT CRender_Manager::Bake_Fog()
 
 	m_pShader->Set_RawValue("g_vCamPosition", &pPipeLine->Get_CamPosition(), sizeof(_float4));
 	m_pShader->Set_RawValue("g_fFogRange", &m_fFogRange, sizeof(_float));
+	m_pShader->Set_RawValue("g_vFogColor", &m_vFogColor, sizeof(_float4));
 
 
 	m_pShader->Begin(11);
@@ -840,7 +841,7 @@ HRESULT CRender_Manager::Render_Blend()
 	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_LightViewMatrix", &m_LightViewMatrixTranspose, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_LightProjMatrix", &m_LightProjMatrixTranspose, sizeof(_float4x4));
-	m_pShader->Set_RawValue("g_vFogColor", &m_vFogColor, sizeof(_float4));
+
 
 	shared_ptr<CPipeLine> pPipeLine = GET_SINGLE(CPipeLine);
 
@@ -1571,21 +1572,21 @@ HRESULT CRender_Manager::PostProcessing()
 	}
 
 	_float fRadialLerpValue = 0.f;
-	if (0.f < m_fRadialBlurStrengthAcc)
-	{
-		_vector vLerp = XMVectorSet(m_fRadialBlurStrength, 0.f, 0.f, 0.f);
-		vLerp = CEasing_Utillity::CubicOut(XMVectorSet(0.f, 0.f, 0.f, 0.f), vLerp, m_fRadialBlurStrengthAcc, m_fRadialBlurStrength);
-		fRadialLerpValue = vLerp.m128_f32[0];
-	}
+	//if (0.f < m_fRadialBlurStrengthAcc)
+	//{
+	//	_vector vLerp = XMVectorSet(m_fRadialBlurStrength, 0.f, 0.f, 0.f);
+	//	vLerp = CEasing_Utillity::CubicOut(XMVectorSet(0.f, 0.f, 0.f, 0.f), vLerp, m_fRadialBlurStrengthAcc, m_fRadialBlurStrength);
+	//	fRadialLerpValue = vLerp.m128_f32[0];
+	//}
 
 
 	_float fMotionLerpValue = 0.f;
-	if (0.f < m_fMotionBlurStrengthAcc)
-	{
-		_vector vLerp = XMVectorSet(m_fMotionBlurStrength, 0.f, 0.f, 0.f);
-		vLerp = CEasing_Utillity::CubicOut(XMVectorSet(0.f, 0.f, 0.f, 0.f), vLerp, m_fMotionBlurStrengthAcc, m_fMotionBlurStrength);
-		fMotionLerpValue = vLerp.m128_f32[0];
-	}
+	//if (0.f < m_fMotionBlurStrengthAcc)
+	//{
+	//	_vector vLerp = XMVectorSet(m_fMotionBlurStrength, 0.f, 0.f, 0.f);
+	//	vLerp = CEasing_Utillity::CubicOut(XMVectorSet(0.f, 0.f, 0.f, 0.f), vLerp, m_fMotionBlurStrengthAcc, m_fMotionBlurStrength);
+	//	fMotionLerpValue = vLerp.m128_f32[0];
+	//}
 
 	fMotionLerpValue *= 0.01f;
 
@@ -1595,7 +1596,7 @@ HRESULT CRender_Manager::PostProcessing()
 	m_pPostProcessingShader->Set_RawValue("g_fMotionBlurStrength", &m_fMotionBlurStrengthAcc, sizeof(_float));//MotionBlur 전용
 	m_pPostProcessingShader->Set_RawValue("g_PreCamViewMatrix", &XMMatrixTranspose(XMLoadFloat4x4(&pPipeLine->Get_PreViewMatrix())), sizeof(_float4x4));
 
-	m_pPostProcessingShader->Set_RawValue("g_fRadialBlurStrength", &fRadialLerpValue, sizeof(_float));//RadialBlur 전용
+	m_pPostProcessingShader->Set_RawValue("g_fRadialBlurStrength", &m_fRadialBlurStrengthAcc, sizeof(_float));//RadialBlur 전용
 	m_pPostProcessingShader->Set_RawValue("g_vBlurWorldPosition", &m_vRadialBlurWorldPos, sizeof(_float3));//RadialBlur 전용
 	m_pPostProcessingShader->Set_RawValue("g_CameraViewMatrix", &XMMatrixTranspose(CamViewMatrix), sizeof(_float4x4));//RadialBlur 전용
 

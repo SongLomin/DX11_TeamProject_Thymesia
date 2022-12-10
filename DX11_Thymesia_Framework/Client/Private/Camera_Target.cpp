@@ -510,7 +510,10 @@ void CCamera_Target::Reposition_Camera_AfterCinematic(_float fTimeDelta)
 	{
 		_float fRatio = 5.f * fTimeDelta;
 		if (1.f < fRatio)
+		{
+			m_bCinematicEnd = false;
 			fRatio = 1.f;
+		}
 		XMStoreFloat4(&m_vCamPosAfterCinematic, XMVectorLerp(vCamPosAfterCinematic, vDescCamPosition, fRatio));
 	}
 	else
