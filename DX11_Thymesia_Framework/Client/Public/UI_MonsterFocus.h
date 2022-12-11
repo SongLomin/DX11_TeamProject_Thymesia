@@ -38,6 +38,7 @@ public:
 	void					Call_ChangeState(weak_ptr<class CStateBase> pChangedState);
 	
 private:
+	weak_ptr<class CBoneNode>	FindTargetBone(weak_ptr<class CModel> pTargetModel);
 	void					FollowTargetBone();
 	_bool					Compare_StateFlag(weak_ptr<CStateBase> pStateBase, STATE_FLAG Checkflag);
 		
@@ -46,7 +47,6 @@ private:
 
 private:
 	_float4					m_vColor;
-	string					m_strTargetMonsterBone;
 	weak_ptr<CMonster>		m_pTargetMonster;
 	weak_ptr<CEasingComponent_Alpha>	m_pEasingAlphaCom;
 

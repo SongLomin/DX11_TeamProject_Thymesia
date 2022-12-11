@@ -154,11 +154,22 @@ void CUI_MonsterFocus::SetUp_Component()
     m_pEasingAlphaCom = Add_Component<CEasingComponent_Alpha>();
 }
 
+weak_ptr<CBoneNode> CUI_MonsterFocus::FindTargetBone(weak_ptr<class CModel> pTargetModel)
+{
+    weak_ptr<CBoneNode> pBoneNode;
+    
+    pBoneNode = pTargetModel.lock()->Find_BoneNode("Spine01");
+    if (!pBoneNode.lock())
+    {
+        pBoneNode = pTargetModel.lock()->Find_BoneNode("Bip001-Spine");
+    }
+
+    return pBoneNode;
+}
+
 void CUI_MonsterFocus::FollowTargetBone()
 {
-   weak_ptr<CBoneNode> pBoneNode =  m_pTargetMonster.lock()->Get_Model().lock()->
-       Find_BoneNode(m_strTargetMonsterBone);
-
+    weak_ptr<CBoneNode> pBoneNode = FindTargetBone(m_pTargetMonster.lock()->Get_Model());
    if (!pBoneNode.lock())//찾은 본이 없다면 그냥 출력 X.
    {
        Call_FocusOutTarget();
