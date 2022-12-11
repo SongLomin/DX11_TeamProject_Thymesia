@@ -34,8 +34,6 @@ void CWindow_AnimationModelView::Start()
 void CWindow_AnimationModelView::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
-
-    
 }
 
 HRESULT CWindow_AnimationModelView::Render()
