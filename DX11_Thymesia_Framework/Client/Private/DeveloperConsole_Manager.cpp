@@ -12,21 +12,21 @@ IMPLEMENT_SINGLETON(CDeveloperConsole_Manager)
 
 void CDeveloperConsole_Manager::Initialize()
 {
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	ImGui::StyleColorsLight();
+	//IMGUI_CHECKVERSION();
+	//ImGui::CreateContext();
+	//ImGuiIO& io = ImGui::GetIO(); (void)io;
+	//ImGui::StyleColorsLight();
 
-	ImGuiStyle& style = ImGui::GetStyle();
-	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-	{
-		style.WindowRounding = 0.0f;
-		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-	}
+	//ImGuiStyle& style = ImGui::GetStyle();
+	//if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	//{
+	//	style.WindowRounding = 0.0f;
+	//	style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+	//}
 
-	// Setup Platform/Renderer backends
-	ImGui_ImplWin32_Init(g_hWnd);
-	ImGui_ImplDX11_Init(DEVICE, DEVICECONTEXT);
+	//// Setup Platform/Renderer backends
+	//ImGui_ImplWin32_Init(g_hWnd);
+	//ImGui_ImplDX11_Init(DEVICE, DEVICECONTEXT);
 
 	Init_Windows();
 }
@@ -90,7 +90,7 @@ void CDeveloperConsole_Manager::Release_Windows()
 
 void CDeveloperConsole_Manager::Free()
 {
-	ImGui_ImplDX11_Shutdown();
-	ImGui_ImplWin32_Shutdown();
-	ImGui::DestroyContext();
+	//ImGui_ImplDX11_Shutdown();
+	//ImGui_ImplWin32_Shutdown();
+	// ImGui::DestroyContext();
 }

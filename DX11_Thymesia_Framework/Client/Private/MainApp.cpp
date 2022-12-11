@@ -10,7 +10,8 @@
 #ifdef _JOJO_EFFECT_TOOL_
 #include "JoJoParticleShaderManager.h"
 #endif // _JOJO_EFFECT_TOOL_
-
+#include <imgui_impl_dx11.h>
+#include "imgui_impl_win32.h"
 
 
 CMainApp::CMainApp()
@@ -99,7 +100,32 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 #endif // _BAKE_MIPMAPS_
 
-	
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
+
+
+	// Setup Dear ImGui style
+	ImGui::StyleColorsLight();
+
+	//ImGui::StyleColorsClassic();
+
+	ImGuiStyle& style = ImGui::GetStyle();
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		style.WindowRounding = 0.0f;
+		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+	}
+
+	// Setup Platform/Renderer backends
+	ImGui_ImplWin32_Init(g_hWnd);
+	ImGui_ImplDX11_Init(DEVICE, DEVICECONTEXT);
+
+
 #ifdef _DEBUG
 	m_pDeveloperConsole = CDeveloperConsole_Manager::Create_Instance();
 	m_pDeveloperConsole->Initialize();
@@ -290,6 +316,10 @@ unique_ptr<CMainApp> CMainApp::Create()
 
 void CMainApp::Free()
 {
+	ImGui_ImplDX11_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
+
 	CGameInstance::Release_Engine();
 	CGameInstance::Destroy_Instance();
 	CGameManager::Destroy_Instance();
@@ -298,8 +328,6 @@ void CMainApp::Free()
 	m_pDeveloperConsole.reset();
 	CDeveloperConsole_Manager::Destroy_Instance();
 #endif // _DEBUG
-
-	
 
 
 #ifdef _JOJO_EFFECT_TOOL_

@@ -32,30 +32,7 @@ IMPLEMENT_SINGLETON(CImGui_Manager)
 HRESULT CImGui_Manager::Initialize()
 {
 	// Setup Dear ImGui context
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
-
-
-	// Setup Dear ImGui style
-	ImGui::StyleColorsLight();
 	
-	//ImGui::StyleColorsClassic();
-
-	ImGuiStyle& style = ImGui::GetStyle();
-	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-	{
-		style.WindowRounding = 0.0f;
-		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-	}
-
-	// Setup Platform/Renderer backends
-	ImGui_ImplWin32_Init(g_hWnd);
-	ImGui_ImplDX11_Init(DEVICE, DEVICECONTEXT);
 
 	Init_SceneEditer();
 	
@@ -452,9 +429,5 @@ void CImGui_Manager::Toggle_PhysXInfo()
 
 void CImGui_Manager::Free()
 {
-	ImGui_ImplDX11_Shutdown();
-	ImGui_ImplWin32_Shutdown();
-	ImGui::DestroyContext();
-
 	Release_CurrentEditer();
 }

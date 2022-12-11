@@ -38,8 +38,12 @@
 GAMECLASS_C(CEffect_Rect)
 CLONE_C(CEffect_Rect, CGameObject)
 
+#ifdef _DEBUG
+#ifdef _JOJO_EFFECT_TOOL_
 const _int CEffect_Rect::m_iScaleType_Square = 1;
 const _int CEffect_Rect::m_iScaleType_Ratio = 2;
+#endif // _JOJO_EFFECT_TOOL_
+#endif // _DEBUG
 
 const _char* CEffect_Rect::Get_EffectName() const
 {
@@ -731,12 +735,14 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	}
 
 #ifdef _DEBUG
+#ifdef _JOJO_EFFECT_TOOL_
 	if (m_tEffectParticleDesc.bSquareScale && !m_tEffectParticleDesc.bRatioScale)
 		m_iScaleType = m_iScaleType_Square;
 	else if (!m_tEffectParticleDesc.bSquareScale && m_tEffectParticleDesc.bRatioScale)
 		m_iScaleType = m_iScaleType_Ratio;
 	else
 		m_iScaleType = 0;
+#endif // _JOJO_EFFECT_TOOL_
 #endif // _DEBUG
 
 	if (m_tEffectParticleDesc.bRatioScale)

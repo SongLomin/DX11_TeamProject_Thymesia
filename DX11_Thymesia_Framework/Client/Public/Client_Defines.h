@@ -3,7 +3,7 @@
 #include "SMath.h"
 #include <filesystem>
 
-#define _JOJO_EFFECT_TOOL_
+// #define _JOJO_EFFECT_TOOL_
 
 #include "Client_Structs.h"
 #include "Client_Presets.h"
@@ -33,7 +33,7 @@
 
 #pragma region Map
 // #define _BRIGHT_LIGHT_
-// #define _GENERATE_PROP_COLLIDER_ true
+#define _GENERATE_PROP_COLLIDER_ true
 // #define _STAGE_1_
 #define _STAGE_2_
 #define _TEST_STATIC_PROPS_
@@ -42,7 +42,7 @@
 
 #pragma region Tool
 #define _MAP_TOOL_
-#define _EFFECT_TOOL_
+// #define _EFFECT_TOOL_
 #pragma endregion // Tool
 
 #pragma region Boss Mobs
@@ -73,7 +73,7 @@
 #pragma region System
 #define _USE_THREAD_
 #define _144HZ_
-// #define _RENDER_FPS_
+#define _RENDER_FPS_
 //#define	_INSTANCE_CULLING_
 // #define _LOAD_CAPTURED_RESOURCE_
 #define     _Actor_Culling_
@@ -216,7 +216,6 @@ namespace Client
 		ON_CATCH,
 		ON_ENTER_SECTION,
 		ON_EXIT_SECTION,
-		ON_SITUP,
 		ON_VARGEXECUTION,
 		ON_SITUP,
 		EVENT_END

@@ -1,16 +1,13 @@
 #pragma once
 #include "UI.h"
 
-
-
 BEGIN(Client)
-
 class CCustomUI;
 class CProgressBar;
 class CHUD_Hover;
 class CMonster;
 class CMonsterParryingBar;
-
+class CStatus_Monster;
 class CMonsterHPBar_Base : public CUI
 {
 public:
