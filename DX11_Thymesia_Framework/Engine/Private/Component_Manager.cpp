@@ -1,5 +1,6 @@
 #include "..\Public\Component_Manager.h"
 #include "Component.h"
+#include "GameObject.h"
 
 IMPLEMENT_SINGLETON(CComponent_Manager);
 
@@ -64,6 +65,20 @@ IMPLEMENT_SINGLETON(CComponent_Manager);
 //
 //	return iter->second;
 //}
+
+void CComponent_Manager::Receive_EngineEventMessage(weak_ptr<CGameObject> pGameObject, const ENGINE_EVENT_TYPE In_eEngineEvent)
+{
+	map<_hashcode, list<shared_ptr<CComponent>>> pComponents = pGameObject.lock()->Get_AllComponents();
+
+	for (auto& Com_List : pComponents)
+	{
+		for (auto& Component : Com_List.second)
+		{
+			Component->OnEngineEventMessage(In_eEngineEvent);
+		}
+	}
+
+}
 
 void CComponent_Manager::Free()
 {

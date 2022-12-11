@@ -205,6 +205,24 @@ void CObject_Manager::Free()
 
 }
 
+void CObject_Manager::OnEngineEventMessage(const ENGINE_EVENT_TYPE In_eEngineEvent)
+{
+	for (_uint i = 0; i < m_iNumLevels; ++i)
+	{
+		for (auto& Pair : m_pLayers[i])
+		{
+			for (auto iter = Pair.second.begin(); iter != Pair.second.end();)
+			{
+				if ((*iter))
+				{
+					(*iter)->OnEngineEventMessage(In_eEngineEvent);
+				}
+				++iter;
+			}
+		}
+	}
+}
+
 weak_ptr<CGameObject> CObject_Manager::Add_GameObject(size_t iTypeHash, _uint iLevelIndex, void* pArg)
 {
 	if (m_iNumLevels <= iLevelIndex)

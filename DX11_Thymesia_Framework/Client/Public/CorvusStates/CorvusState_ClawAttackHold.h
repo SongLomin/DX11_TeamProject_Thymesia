@@ -38,6 +38,14 @@ private:
 
     _int m_iEndAttackEffectIndex = -1;
 
+    _float m_fDissolveTimeClaw = 0.f;
+    _float m_fDissolveTimeArm = 0.f;
+    _float m_fDissolveAmountClaw = 1.f;
+    _float m_fDissolveAmountArm = 1.f;
+    _float3 m_vDissolveDir = { 1.f,0.f,0.f };
+
+    _bool m_bDissolve = false;
+
 
 private:
     weak_ptr<CAnimation> m_pThisAnimationCom;

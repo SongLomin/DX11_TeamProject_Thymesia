@@ -22,7 +22,7 @@ HRESULT CNorMonState_GroggyStart::Initialize_Prototype()
 HRESULT CNorMonState_GroggyStart::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
+	m_StateFlag |= (_uint)STATE_FLAG::EXECUTABLE;
 
 	return S_OK;
 }
@@ -43,7 +43,7 @@ void CNorMonState_GroggyStart::Start()
 	case Client::MONSTERTYPE::GARDENER:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_HurtStunStart");
 		break;
-	case Client::MONSTERTYPE::ELITEGARDENER:
+	case Client::MONSTERTYPE::ENHANCE_GARDENER:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_HurtStunStart");
 		break;
 	case Client::MONSTERTYPE::SHIELDAXEMAN:

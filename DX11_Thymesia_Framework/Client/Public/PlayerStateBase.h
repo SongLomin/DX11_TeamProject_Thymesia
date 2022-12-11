@@ -12,6 +12,7 @@ BEGIN(Client)
 
 class CBehaviorBase;
 class CPlayer;
+class CWeapon;
 
 class CPlayerStateBase abstract:
     public CStateBase
@@ -55,7 +56,7 @@ protected:
     _float3                 m_vOffset;
     _bool                   m_bLockOn = false;
 
-
+  
     weak_ptr<CPlayer>       m_pOwnerFromPlayer;
 
 public: /* For. EventFunction */

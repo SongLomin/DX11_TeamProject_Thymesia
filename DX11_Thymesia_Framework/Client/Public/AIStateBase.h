@@ -68,12 +68,8 @@ protected:
     _int ComputeDirectionToPlayer();
 
 
-
-
-
-   
-
-
+public:
+    
 
 private:
     weak_ptr<CMonster> m_pOwnerFromMonster;

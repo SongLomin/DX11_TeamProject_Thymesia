@@ -1,6 +1,7 @@
 #include "Resource_Manager.h"
 #include "GameInstance.h"
 #include "ModelData.h"
+#include "Shader.h"
 
 IMPLEMENT_SINGLETON(CResource_Manager)
 
@@ -783,13 +784,41 @@ vector<string> CResource_Manager::Get_AllAnimModelKeys()
 
 HRESULT CResource_Manager::Load_Shader(const _tchar* sKey, const _tchar* sShaderFilePath)
 {
-	ID3DX11Effect* pEffect = Get_ShaderEffect(sKey);
+	if (FAILED(Load_Shader_Internal(sKey, sShaderFilePath)))
+	{
+		return E_FAIL;
+	}
+	_hashcode KeyToHashcode = hash<tstring>()(sKey);
+
+#ifdef _DEBUG
+
+	auto iter = m_ShaderFilePaths.find(KeyToHashcode);
+
+	if (iter == m_ShaderFilePaths.end())
+	{
+		m_ShaderFilePaths.emplace(KeyToHashcode, SHADER_FILEPATH());
+		m_ShaderFilePaths[KeyToHashcode].szKey = sKey;
+		m_ShaderFilePaths[KeyToHashcode].szFilePath = sShaderFilePath;
+		m_ShaderFilePaths[KeyToHashcode].iFileSize = filesystem::file_size(filesystem::path(sShaderFilePath));
+	}
+
+	
+
+#endif // _DEBUG
+
+
+	return S_OK;
+}
+
+HRESULT CResource_Manager::Load_Shader_Internal(const _tchar* sKey, const _tchar* sShaderFilePath, ID3DBlob** ppError)
+{
+	/*ID3DX11Effect* pEffect = Get_ShaderEffect(sKey);
 
 	if (pEffect)
 	{
 		DEBUG_ASSERT;
 		return E_FAIL;
-	}
+	}*/
 
 	ComPtr<ID3DX11Effect> pNewEffect;
 
@@ -797,27 +826,106 @@ HRESULT CResource_Manager::Load_Shader(const _tchar* sKey, const _tchar* sShader
 
 	//ComPtr<ID3DX11Effect> pEffect;
 
+	
 #ifdef _DEBUG
-	iHLSLFlag = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION | D3DCOMPILE_OPTIMIZATION_LEVEL0;
+	iHLSLFlag = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION | D3DCOMPILE_OPTIMIZATION_LEVEL1;
+	HRESULT hr = D3DX11CompileEffectFromFile(sShaderFilePath, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, iHLSLFlag, 0, DEVICE, pNewEffect.GetAddressOf(), ppError);
+
 #else
 	iHLSLFlag = D3DCOMPILE_OPTIMIZATION_LEVEL1;
+	HRESULT hr = D3DX11CompileEffectFromFile(sShaderFilePath, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, iHLSLFlag, 0, DEVICE, pNewEffect.GetAddressOf(), /*&pError*/nullptr);
 #endif
-	D3DX11CompileEffectFromFile(sShaderFilePath, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, iHLSLFlag, 0, DEVICE, pNewEffect.GetAddressOf(), /*&pError*/nullptr);
+	
+	if (SUCCEEDED(hr))
+	{
+		_hashcode KeyToHashcode = hash<tstring>()(sKey);
 
-	m_pShaderEffect.emplace(sKey, pNewEffect);
+		m_pShaderEffect[KeyToHashcode] = pNewEffect;
+	}
+
+	return hr;
+}
+
+
+HRESULT CResource_Manager::ReLoad_AllShader(list<pair<_bool, string>>& Out_CompileMessage)
+{
+	Update_ChangedShaderFile(Out_CompileMessage);
+
+	GET_SINGLE(CObject_Manager)->OnEngineEventMessage(ENGINE_EVENT_TYPE::ON_SHADER_UPDATE);
+	GET_SINGLE(CRender_Manager)->OnEngineEventMessage(ENGINE_EVENT_TYPE::ON_SHADER_UPDATE);
+
 
 	return S_OK;
 }
 
 ID3DX11Effect* CResource_Manager::Get_ShaderEffect(const _tchar* sKey)
 {
-	auto	iter = find_if(m_pShaderEffect.begin(), m_pShaderEffect.end(), CTag_Finder(sKey));
+	_hashcode KeyToHashcode = hash<tstring>()(sKey);
+
+	auto	iter = m_pShaderEffect.find(KeyToHashcode);//find_if(m_pShaderEffect.begin(), m_pShaderEffect.end(), CTag_Finder(sKey));
 
 	if(m_pShaderEffect.end() == iter)
 		return nullptr;
 
+	if (nullptr == iter->second)
+	{
+		return nullptr;
+	}
+
 	return (*iter).second.Get();
 }
+
+void CResource_Manager::Update_ChangedShaderFile(list<pair<_bool, string>>& Out_CompileMessage)
+{
+	uintmax_t iNewFileSize;
+
+	ID3DBlob* pError = nullptr;
+	HRESULT hr = S_OK;
+	string szOut_Message;
+
+	for (auto& ShaderFile : m_ShaderFilePaths)
+	{
+		iNewFileSize = filesystem::file_size(filesystem::path(ShaderFile.second.szFilePath));
+
+		if (iNewFileSize != ShaderFile.second.iFileSize)
+		{
+			auto Shader_Iter = m_pShaderEffect.find(ShaderFile.first);
+			ComPtr<ID3DX11Effect> pPreShader = Shader_Iter->second;
+			//Shader_Iter->second.Reset();
+			//m_pShaderEffect.erase(Shader_Iter);
+
+			pError = nullptr;
+			hr = Load_Shader_Internal(ShaderFile.second.szKey.c_str(), ShaderFile.second.szFilePath.c_str(), &pError);
+			
+			if (SUCCEEDED(hr))
+			{
+				pPreShader.Reset();
+			}
+		}
+		else
+		{
+			hr = S_OK;
+		}
+
+		szOut_Message = filesystem::path(ShaderFile.second.szKey).string() + ": ";
+
+		if (pError != nullptr)
+		{
+			// 에러라면
+			Out_CompileMessage.push_back(make_pair<_bool, string>(false, szOut_Message + (char*)pError->GetBufferPointer()));
+		}
+
+		else
+		{
+			// 정상 컴파일
+			//string szHR = std::system_category().message(hr);
+			Out_CompileMessage.push_back(make_pair<_bool, string>(true, szOut_Message + "S_OK"));
+		}
+	}
+
+}
+
+
 
 void CResource_Manager::OnLevelExit()
 {

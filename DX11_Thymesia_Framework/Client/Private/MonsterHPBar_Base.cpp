@@ -160,7 +160,7 @@ void CMonsterHPBar_Base::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	FollowOwner();
+	FollowTarget();
 	Set_ChildPosFromThis();
 	Check_Track();
 
@@ -313,7 +313,7 @@ void CMonsterHPBar_Base::Call_Recovery()
 		Set_RecoveryAlram(false);
 
 	weak_ptr<CStatus_Monster> pStatus_Monster;
-	pStatus_Monster = Weak_Cast< CStatus_Monster>(m_pOwner.lock()->Get_ComponentByType<CStatus>());
+	pStatus_Monster = Weak_Cast< CStatus_Monster>(m_pTarget.lock()->Get_Status());
 
 	_float fRatio = pStatus_Monster.lock()->Get_WhiteRatio();
 
@@ -336,7 +336,7 @@ void CMonsterHPBar_Base::Call_Restart()
 	Set_Stun(false);
 
 	weak_ptr<CStatus_Monster> pStatus_Monster;
-	pStatus_Monster = Weak_Cast< CStatus_Monster>(m_pOwner.lock()->Get_ComponentByType<CStatus>());
+	pStatus_Monster = Weak_Cast< CStatus_Monster>(m_pTarget.lock()->Get_Status());
 
 
 	m_pWhite.lock()->Set_Ratio(pStatus_Monster.lock()->Get_WhiteRatio());
@@ -345,10 +345,10 @@ void CMonsterHPBar_Base::Call_Restart()
 
 void CMonsterHPBar_Base::OnEnable(void* pArg)
 {
-	if (!m_pOwner.lock())
+	if (!m_pTarget.lock())
 		return;
 
-	if (false == m_pOwner.lock()->Get_Enable())
+	if (false == m_pTarget.lock()->Get_Enable())
 		return;
 
 	__super::OnEnable(pArg);
@@ -372,15 +372,15 @@ void CMonsterHPBar_Base::OnDisable()
 	Set_RecoveryAlram(false);
 }
 
-void CMonsterHPBar_Base::FollowOwner()
+void CMonsterHPBar_Base::FollowTarget()
 {
-	if (!m_pOwner.lock())
+	if (!m_pTarget.lock())
 		return;
 
 	_vector vViewPosition;
 	_matrix ViewProjMatrix;
 	
-	vViewPosition = m_pOwner.lock()->Get_WorldPosition();
+	vViewPosition = m_pTarget.lock()->Get_WorldPosition();
 
 	vViewPosition += XMVectorSet(0.f,2.f, 0.f, 1.f);
 
@@ -400,13 +400,8 @@ void CMonsterHPBar_Base::FollowOwner()
 	
 }
 
-void CMonsterHPBar_Base::Set_Owner(weak_ptr<CMonster> pMonster)
+void CMonsterHPBar_Base::Bind_EventFunction(weak_ptr<CStatus_Monster> pStatus_Monster)
 {
-	m_pOwner = pMonster;
-	weak_ptr<CStatus_Monster> pStatus_Monster;
-
-	pStatus_Monster = Weak_StaticCast<CStatus_Monster>(pMonster.lock()->Get_ComponentByType<CStatus>());
-	
 	pStatus_Monster.lock()->CallBack_UpdateParryGauge += bind
 	(
 		&CMonsterHPBar_Base::Call_Update_ParryGauge, this,
@@ -419,29 +414,51 @@ void CMonsterHPBar_Base::Set_Owner(weak_ptr<CMonster> pMonster)
 		placeholders::_1
 	);
 
-	pStatus_Monster.lock()->CallBack_Damged_Green+= bind
+	pStatus_Monster.lock()->CallBack_Damged_Green += bind
 	(
 		&CMonsterHPBar_Base::Call_Damaged_Green, this,
 		placeholders::_1
 	);
 
-	pStatus_Monster.lock()->CallBack_RecoeoryAlram+= bind
+	pStatus_Monster.lock()->CallBack_RecoeoryAlram += bind
 	(
 		&CMonsterHPBar_Base::Call_RecoveryAlram, this
 	);
-	pStatus_Monster.lock()->CallBack_RecoeoryStart+= bind
+	pStatus_Monster.lock()->CallBack_RecoeoryStart += bind
 	(
 		&CMonsterHPBar_Base::Call_Recovery, this
 	);
-	pStatus_Monster.lock()->CallBack_UI_Disable+= bind
+	pStatus_Monster.lock()->CallBack_UI_Disable += bind
 	(
 		&CMonsterHPBar_Base::Call_Disable, this
 	);
-	pStatus_Monster.lock()->CallBack_ReStart+= bind
+	pStatus_Monster.lock()->CallBack_ReStart += bind
 	(
 		&CMonsterHPBar_Base::Call_Restart, this
 	);
+}
+void	CMonsterHPBar_Base::Reset_UI()
+{
+	m_pWhite.lock()->Set_Ratio(1.f);
+	m_pGreen.lock()->Set_Ratio(1.f);
+	m_pParryingBar.lock()->Set_Ratio(0.f, false);
+
+}
+
+void CMonsterHPBar_Base::Set_Target(weak_ptr<CBase> pMonster)
+{
+	m_pTarget =  Weak_StaticCast<CMonster>(pMonster);
+
+	weak_ptr<CStatus_Monster> pStatus_Monster;
+
+	pStatus_Monster = Weak_StaticCast<CStatus_Monster>(m_pTarget.lock()->Get_Status());
+
+	Bind_EventFunction(pStatus_Monster);
+	Reset_UI();
 	Set_Enable(false);
+
+
+
 }
 
 

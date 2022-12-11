@@ -34,7 +34,6 @@ public:
     void Set_DissolveAmount(const _float& In_fAmount) { m_fDissolveAmount = In_fAmount; }
 
 
-    weak_ptr<CMonsterHPBar_Boss>  Get_HPBar() { return m_pHPBar; }
 public:
     // CGameObject을(를) 통해 상속됨
     virtual HRESULT Initialize_Prototype() override;
@@ -46,6 +45,10 @@ public:
     virtual HRESULT Render() override;
     virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix) override;
 
+    weak_ptr<CMonsterHPBar_Boss>  Get_HPBar();
+
+protected:
+    virtual void Bind_HPBar();
 
 protected:
     virtual void SetUp_ShaderResource() override;
@@ -65,7 +68,6 @@ private:
 protected:
     weak_ptr<CPhysXCollider> m_pPhysXColliderCom;
 
-
 protected:
     weak_ptr<CStateBase> m_pStandState;
 
@@ -73,9 +75,7 @@ protected:
     weak_ptr<CTexture>        m_pDissolveTextureCom;
     MONSTERWEAPONTYPE         m_eMonWeaPonType = MONSTERWEAPONTYPE::MON_WEAPON_END;
 
-    weak_ptr<CMonsterHPBar_Boss>   m_pHPBar;
 private:
-
     void Free();
 
 

@@ -1,16 +1,13 @@
 #pragma once
 #include "UI.h"
 
-
-
 BEGIN(Client)
-
 class CCustomUI;
 class CProgressBar;
 class CHUD_Hover;
 class CMonster;
 class CMonsterParryingBar;
-
+class CStatus_Monster;
 class CMonsterHPBar_Base : public CUI
 {
 public:
@@ -26,15 +23,19 @@ public:
 	virtual HRESULT Render();
 
 public:
-	virtual void			Set_Owner(weak_ptr<CMonster> pMonster);
+	virtual void	Set_Target(weak_ptr<CBase> pMonster) override;
+
 	void			Reset();
-	void			FollowOwner();
+	void			FollowTarget();
 	void			Set_Offset(_float3 _vOffset) { m_vOffset = _vOffset; }
+	
+	
+protected:
+	virtual void	Bind_EventFunction(weak_ptr<CStatus_Monster> pStatus_Monster);
+
 	//CallEventFuncitons
 public:
 	void			Call_Update_ParryGauge(_float _fRatio, _bool bLerp);
-
-	
 	void			Call_Damaged_White(_float _fRatio);
 	void			Call_Damaged_Green(_float _fRatio);
 	void			Call_Damaged_Parry(_float _fRatio);
@@ -49,11 +50,13 @@ public:
 	virtual void OnEnable(void* pArg) override;
 	virtual void OnDisable() override;
 
-
 protected:
 	virtual void			Green_Damaged(_float fRatio);
 	virtual void			Set_RecoveryAlram(_bool _bRecovery);
 	virtual void			Set_Stun(bool _bStun);
+
+	virtual void			Reset_UI();
+
 
 
 protected:
@@ -78,7 +81,7 @@ protected:
 	weak_ptr<CCustomUI>		m_pTrack;
 	weak_ptr<CHUD_Hover>	m_pRecovery;
 	weak_ptr<CHUD_Hover>	m_pStunned;
-	weak_ptr<CMonster>		m_pOwner;
+	weak_ptr<CMonster>		m_pTarget;
 
 
 	weak_ptr<CMonsterParryingBar> m_pParryingBar;

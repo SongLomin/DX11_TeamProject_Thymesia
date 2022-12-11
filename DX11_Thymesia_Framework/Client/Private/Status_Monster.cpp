@@ -91,7 +91,7 @@ void CStatus_Monster::Init_Status(const void* pArg)
 		m_tMonsterDesc.m_fMaxParryingGauge = 200.f;
 		m_tMonsterDesc.m_iLifeCount        = 1;
 		m_tMonsterDesc.m_iMaxParryCount    = 10000;
-		m_tMonsterDesc.m_szModelKey        = "Mon_KnifeWoMan";
+		m_tMonsterDesc.m_szModelKey        = "Mon_KnifeWoman";
 		break;
 	case Client::MONSTERTYPE::SKULL:
 		break;
@@ -113,7 +113,7 @@ void CStatus_Monster::Init_Status(const void* pArg)
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
 		m_tMonsterDesc.m_szModelKey = "Boss_Varg";
 		break;
-	case Client::MONSTERTYPE::ELITEGARDENER:
+	case Client::MONSTERTYPE::ENHANCE_GARDENER:
 		m_tMonsterDesc.m_fAtk = 1.f;
 		m_tMonsterDesc.m_fMaxHP_white = 200.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 200.f;

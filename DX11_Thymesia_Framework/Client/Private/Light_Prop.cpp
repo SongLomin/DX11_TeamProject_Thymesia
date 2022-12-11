@@ -152,9 +152,8 @@ void CLight_Prop::Load_FromJson(const json& In_Json)
 
 	GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
 
-	//TODO : 테스트용으로 반드시 삭제하시오
-	if (LEVEL::LEVEL_EDIT != m_CreatedLevel)
-		Set_Enable(false);
+	if (LEVEL::LEVEL_EDIT == m_CreatedLevel)
+		Set_Enable(true);
 }
 
 void CLight_Prop::OnEventMessage(_uint iArg)

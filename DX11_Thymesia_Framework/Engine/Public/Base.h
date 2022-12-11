@@ -44,6 +44,9 @@ public: /* For Event Function */
 	virtual void OnEventMessage(_uint iArg) {}
 	virtual void OnEventMessage(void* pArg) {}
 
+private:
+	virtual void OnEngineEventMessage(const ENGINE_EVENT_TYPE In_eEngineEvent) {};
+
 protected:
 	weak_ptr<CBase> m_this;
 

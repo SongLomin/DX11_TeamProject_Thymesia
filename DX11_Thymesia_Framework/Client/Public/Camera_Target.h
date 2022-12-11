@@ -20,6 +20,9 @@ class CCamera_Target final : public CCamera
 
 public:
 	CCamera_Target(const CCamera_Target& rhs);
+	
+public:
+	void Set_StopCamera(const _bool In_bStop) { m_bStop = In_bStop; }
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -58,7 +61,6 @@ private:
 	void Calculate_ShakingOffSet(_float fTimeDelta);
 
 	void Interpolate_Camera(_float fTimeDelta);
-	void Reposition_Camera_AfterCinematic(_float fTimeDelta);
 
 	void Update_Bone();
 	void Update_PhysXCollider(_float fTimeDelta);
@@ -69,10 +71,6 @@ private:
 
 	//연출이 끝난 후에 위치 보정 용
 	CINEMATIC_TYPE					m_eCinematicType = CINEMATIC_TYPE::TYPE_END;
-	_bool					m_bCinematicEnd = false;
-	_float4					m_vDestCamPosition;
-	_float4					m_vCamPosAfterCinematic;
-
 
 	_bool					m_bCinematic = false;
 	weak_ptr<CTransform>	m_pCameraBoneParentTransform;
@@ -125,6 +123,7 @@ private:
 
 	_float4x4 m_CollisionMatrix;
 	_bool		m_bCollision = false;
+	_bool		m_bStop = false;
 
 private:
 	virtual void OnLevelExit() override;

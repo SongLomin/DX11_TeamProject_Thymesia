@@ -91,7 +91,7 @@ void CNorMonState_Idle::Start()
 		}
 	}
 
-	if (m_eMonType == MONSTERTYPE::ELITEGARDENER)
+	if (m_eMonType == MONSTERTYPE::ENHANCE_GARDENER)
 	{
 		switch (m_eNorMonIdleType)
 		{
@@ -250,7 +250,7 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 				break;
 			}
 			break;
-		case Client::MONSTERTYPE::ELITEGARDENER:
+		case Client::MONSTERTYPE::ENHANCE_GARDENER:
 			switch (m_eNorMonIdleType)
 			{
 			case Client::NORMONSTERIDLETYPE::NORIDLE:
@@ -293,7 +293,7 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 		case Client::MONSTERTYPE::GARDENER:
 			TurnMechanism();
 			break;
-		case Client::MONSTERTYPE::ELITEGARDENER:
+		case Client::MONSTERTYPE::ENHANCE_GARDENER:
 			TurnMechanism();
 			break;
 		case Client::MONSTERTYPE::SHIELDAXEMAN:
@@ -383,7 +383,7 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 				}
 			}
 			break;
-		case Client::MONSTERTYPE::ELITEGARDENER:
+		case Client::MONSTERTYPE::ENHANCE_GARDENER:
 			if (ComputeAngleWithPlayer() <= 0.f)
 			{
 				TurnMechanism();
@@ -475,7 +475,7 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 				break;
 			}
 			break;
-		case Client::MONSTERTYPE::ELITEGARDENER:
+		case Client::MONSTERTYPE::ENHANCE_GARDENER:
 			switch (iRunORWalk)
 			{
 			case 0:

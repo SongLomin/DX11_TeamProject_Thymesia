@@ -44,13 +44,19 @@ public: /* For. Talent */
     _flag Check_RequirementForTalentEffects();
     void  Set_LadderCheck(_bool LadderCheck) { m_bLadderCheck = LadderCheck; }
     _bool Get_LadderCheck() { return m_bLadderCheck; }
-
+    list<weak_ptr<CWeapon>> Get_Weapon() { return m_pWeapons; }
+  
 public:
     void Focus_Monster(weak_ptr<CGameObject> In_pMonster);
     void Release_Focus();
     _bool Get_Focused() const
     {
         return m_bIsFocused;
+    }
+
+    weak_ptr<CMonster>  Get_TargetMonster() 
+    {
+        return m_pTargetMonster;
     }
 
 public:

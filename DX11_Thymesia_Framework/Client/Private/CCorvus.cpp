@@ -74,6 +74,8 @@ HRESULT CCorvus::Start()
 	if (m_pCamera.lock())
 		m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
 
+	CBase::Set_Enable(true);
+
 	return S_OK;
 }
 
@@ -142,7 +144,6 @@ HRESULT CCorvus::Render()
 			else
 				m_iPassIndex = 5;
 		}
-		
 		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
@@ -376,7 +377,11 @@ void CCorvus::OnEventMessage(_uint iArg)
 	if ((_uint)EVENT_TYPE::ON_VARGEXECUTION == iArg)
 	{
 		Change_State<CVarg_Execution>();
-	
+	}
+
+	if ((_uint)EVENT_TYPE::ON_SITUP == iArg)
+	{
+		Change_State<CCorvusState_CheckPointEnd>();
 	}
 }
 

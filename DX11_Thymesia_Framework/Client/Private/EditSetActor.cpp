@@ -144,35 +144,37 @@ void CEditSetActor::View_CreateActor()
 
 	static const char* ActorList_Nor[] =
 	{
-		"AXEMAN",
-		"KNIFEWOMAN",
-		"SKULL",
-		"GARDENER",
-		"SHIELDAXEMAN",
+		"Axe Man",
+		"Knife Woman",
+		"Skull",
+		"Gardener",
+		"Shield Axe Man",
+		"Balloon",
+		"Enhance_Gardener"
 	};
 
 	static const char* ActorList_Elite[] =
 	{
-		"GARDENER"
+		"Joker"
 	};
 
 
 	static const char* ActorList_Boss[] =
 	{
-		"VARG"
+		"Varg"
 	};
 
 	static const char* MonsterActionList[] =
 	{
-		"NORIDLE",
-		"SITIDLE",
-		"FIDGETIDLE",
+		"Idle",
+		"Sit",
+		"Fidget",
 	};
 
 	static const char* BossActionList[] =
 	{
-		"BEGINSTART",
-		"NORMALSTART"
+		"BEGIN START",
+		"NORMAL START"
 	};
 
 	static _int		iSelect_ActorTypeList		= 0;
@@ -180,7 +182,21 @@ void CEditSetActor::View_CreateActor()
 	static _int		iSelect_MonsterActionList	= 0;
 	static _int		iSelect_BossActionList		= 0;
 	static _int		iSelect_MonsterSection		= 0;
+	static _bool	bRenderActor                = false;
 	_bool			bNorMonsterCreate			= true;
+
+	if (ImGui::Checkbox("Render Actor", &bRenderActor))
+	{
+		auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditSetActor).hash_code());
+
+		if (iter_collider == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
+			return;
+
+		bRenderActor != bRenderActor;
+
+		for (auto& elem : iter_collider->second)
+			elem.pInstance.lock()->Set_Enable(bRenderActor);
+	}
 
 	if (ImGui::Combo("Monster Type", &iSelect_ActorTypeList, ActorTypeList, IM_ARRAYSIZE(ActorTypeList)))
 	{
@@ -239,7 +255,21 @@ void CEditSetActor::View_CreateActor()
 
 		case 1:
 		{
+			weak_ptr<CMonster> pObj;
 
+			if (MONSTERTYPE::ENHANCE_GARDENER == tMonsterDesc.eMonType)
+			{
+				pObj = Weak_StaticCast<CMonster>(GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL::LEVEL_EDIT));
+				Add_ActorToTool(typeid(CVarg).hash_code(), typeid(CVarg).name(), pObj);
+			}
+
+			if (!pObj.lock())
+				return;
+
+			pObj.lock()->Set_LinkStateDesc(tMonsterDesc);
+			pObj.lock()->Init_Desc();
+			pObj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
+			pObj.lock()->Get_Transform()->Set_WorldMatrix(XMLoadFloat4x4(&m_PickingDesc));
 		}
 		break;
 
@@ -252,6 +282,9 @@ void CEditSetActor::View_CreateActor()
 				pObj = Weak_StaticCast<CMonster>(GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL::LEVEL_EDIT));
 				Add_ActorToTool(typeid(CVarg).hash_code(), typeid(CVarg).name(), pObj);
 			}
+
+			if (!pObj.lock())
+				return;
 
 			pObj.lock()->Set_LinkStateDesc(tMonsterDesc);
 			pObj.lock()->Init_Desc();

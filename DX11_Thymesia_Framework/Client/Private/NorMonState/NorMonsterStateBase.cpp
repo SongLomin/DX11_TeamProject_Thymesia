@@ -221,7 +221,9 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 				Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_TurnL90>().lock()->Get_StateIndex() ||
 				Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_TurnR90>().lock()->Get_StateIndex() ||
 				Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_HurtR>().lock()->Get_StateIndex() ||
-				Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_HurtL>().lock()->Get_StateIndex())
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_HurtL>().lock()->Get_StateIndex() ||
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Awake>().lock()->Get_StateIndex() ||
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_SitToIdle>().lock()->Get_StateIndex())
 
 			{
 				if (In_eHitType == HIT_TYPE::LEFT_HIT)

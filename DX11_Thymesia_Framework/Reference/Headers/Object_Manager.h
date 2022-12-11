@@ -63,6 +63,9 @@ private:
 
 public:
 	FDelegate<> CallBack_Start;
+
+public:
+	virtual void OnEngineEventMessage(const ENGINE_EVENT_TYPE In_eEngineEvent) override;
 	
 public:
 	weak_ptr<CGameObject> Add_GameObject(size_t iTypeHash, _uint iLevelIndex, void* pArg = nullptr);

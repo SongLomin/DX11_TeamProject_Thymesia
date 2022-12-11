@@ -7,6 +7,7 @@
 #include "Animation.h"
 #include "CorvusStates/CorvusStates.h"
 #include "PhysXCharacterController.h"
+#include "Weapon.h"
 
 GAMECLASS_C(CCorvusState_Climb_R_Up_Down_End);
 CLONE_C(CCorvusState_Climb_R_Up_Down_End, CComponent)
@@ -72,6 +73,14 @@ void CCorvusState_Climb_R_Up_Down_End::Call_NextKeyFrame(const _uint& In_KeyInde
 void CCorvusState_Climb_R_Up_Down_End::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	weak_ptr<CPlayer> pPlayer = Weak_Cast<CPlayer>(m_pOwner);
+	list<weak_ptr<CWeapon>>	pWeapons = pPlayer.lock()->Get_Weapon();
+
+	for (auto& elem : pWeapons)
+	{
+		elem.lock()->Set_RenderOnOff(false);
+	}
 
 	if (!m_pModelCom.lock().get())
 	{

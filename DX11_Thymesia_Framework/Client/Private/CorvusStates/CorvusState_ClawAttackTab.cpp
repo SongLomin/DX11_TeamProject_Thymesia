@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
 #include "PhysXController.h"
+#include "Weapon.h"
 
 
 GAMECLASS_C(CCorvusState_ClawAttackTab);
@@ -75,15 +76,14 @@ void CCorvusState_ClawAttackTab::Tick(_float fTimeDelta)
 
 				cout << "m_fDissolveAmountClaw : " << m_fDissolveAmountClaw << endl;
 			}
-			else
-			{
+			
 				m_fDissolveTimeArm -= fTimeDelta;
 				m_fDissolveAmountArm = SMath::Lerp(0.f, 1.f, m_fDissolveTimeArm / 0.7f);
 				m_vDissolveDir = { -1.f,0.f,0.f };
 
 				cout << "m_fDissolveAmountArm : " << m_fDissolveAmountArm << endl;
 
-			}
+			
 
 		}
 		else
@@ -95,12 +95,11 @@ void CCorvusState_ClawAttackTab::Tick(_float fTimeDelta)
 				m_fDissolveAmountArm = SMath::Lerp(1.f, 0.f, m_fDissolveTimeArm / 0.7f);
 				m_vDissolveDir = { 1.f,0.f,0.f };
 			}
-			else 
-			{
+			
 				m_fDissolveTimeClaw -= fTimeDelta;
 				m_fDissolveAmountClaw = SMath::Lerp(1.f, 0.f, m_fDissolveTimeClaw / 0.7f);
 				m_vDissolveDir = { 1.f,0.f,0.f };
-			}
+			
 		}
 	}
 
@@ -370,8 +369,16 @@ _bool CCorvusState_ClawAttackTab::Check_AndChangeNextState()
 		}
 	}
 
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.9f)
+	{
+		weak_ptr<CPlayer> pPlayer = Weak_Cast<CPlayer>(m_pOwner);
+		list<weak_ptr<CWeapon>>	pWeapons = pPlayer.lock()->Get_Weapon();
+
+		pWeapons.front().lock()->Set_RenderOnOff(true);
+	}
 
 
+	
 
 
 

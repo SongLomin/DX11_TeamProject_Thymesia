@@ -36,6 +36,7 @@ HRESULT CHUD_PlagueWeapon_Steal::Initialize(void* pArg)
     m_pPlagueWeapon_Main.lock()->Set_Texture("HUD_PlagueWeapon_Frame_Steal");
     m_pPlagueWeapon_Main.lock()->Set_Depth(0.3f);
     m_pPlagueWeapon_Main.lock()->Set_Size(201.f, 201.f);
+    m_pPlagueWeapon_Main.lock()->Set_RenderGroup(RENDERGROUP::RENDER_BEFOREUI);
 
 
     m_pPlagueWeapon_Icon = GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon_Steal_Icon>(LEVEL_STATIC, &m_tUIDesc);
@@ -67,8 +68,7 @@ HRESULT CHUD_PlagueWeapon_Steal::Initialize(void* pArg)
     Add_Child(m_pPlagueWeapon_Main);
     Add_Child(m_pPlagueWeapon_Icon);
     Add_Child(m_pPlagueWeapon_Decoration);
-
-
+    Add_Child(m_pPlagueWeapon_Border);
 
     //HoverDesc
     //HoverFaderDesc

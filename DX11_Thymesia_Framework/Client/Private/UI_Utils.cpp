@@ -1,6 +1,6 @@
 #include "UI_Utils.h"
 #include "GameInstance.h"
-
+#include "GameManager.h"
 
 _float2 CUI_Utils::ConvertWorldPosToUIPos(_fvector vWorldPos)
 {
@@ -25,4 +25,38 @@ _float2 CUI_Utils::ConvertWorldPosToUIPos(_fvector vWorldPos)
 
 
     return vUIPos;
+}
+
+_float CUI_Utils::UI_TimeDelta(_float fTimeDelta)
+{
+	return fTimeDelta * GAMEINSTANCE->Get_TimeScale((_uint)TIMESCALE_LAYER::UI);
+}
+
+_float4& CUI_Utils::GET_COLOR(COLOR_PALETTE eColor)
+{
+	_float4		fColor;
+
+	ZeroMemory(&fColor, sizeof(_float4));
+	
+	switch (eColor)
+	{
+	case Client::COLOR_PALETTE::COLOR_WHITE:
+		fColor = { 1.f,1.f,1.f,1.f };
+		break;
+	case Client::COLOR_PALETTE::COLOR_BLACK:
+		fColor = { 0.f,0.f,0.f,1.f };
+		break;
+	case Client::COLOR_PALETTE::COLOR_RED:
+		fColor = { 1.f,0.f,0.f,1.f };
+		break;
+	case Client::COLOR_PALETTE::COLOR_GREEN:
+		fColor = { 0.f,1.f,0.f,1.f };
+		break;
+	case Client::COLOR_PALETTE::COLOR_BLUE:
+		fColor = { 0.f,0.f,1.f,1.f };
+		break;
+	default:
+		break;
+	}
+	return fColor;
 }

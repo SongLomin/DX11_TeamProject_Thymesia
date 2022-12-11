@@ -15,7 +15,7 @@ HRESULT CAnimation::Initialize_Prototype()
 
 HRESULT CAnimation::Initialize(void* pArg)
 {
-
+	m_fTimeAcc = 0.f;
 	return S_OK;
 }
 

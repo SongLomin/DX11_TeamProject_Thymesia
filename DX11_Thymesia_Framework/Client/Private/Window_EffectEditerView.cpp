@@ -18,7 +18,7 @@ HRESULT CWindow_EffectEditerView::Initialize()
     ImGuiWindowFlags window_flags = 0;
     window_flags |= ImGuiWindowFlags_HorizontalScrollbar;
     window_flags |= ImGuiWindowFlags_NoResize;
-    window_flags |= ImGuiWindowFlags_NoMove;
+    // window_flags |= ImGuiWindowFlags_NoMove;
 
     m_bEnable = true;
     SetUp_ImGuiDESC("EffectEditer_View", ImVec2(300.f, 500.f), window_flags);
@@ -68,7 +68,7 @@ HRESULT CWindow_EffectEditerView::Render()
     ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 
     ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
-    if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
+    if (ImGui::BeginTabBar("CWindow_EffectEditerView", tab_bar_flags))
     {
         if (EFFECTRESOURCE_TYPE::MESH == m_eCurrentEffectType)
         {

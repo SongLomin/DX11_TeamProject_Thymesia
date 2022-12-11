@@ -57,6 +57,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     }
 
     // TODO : change animation speed here
+#pragma region Corvus
    SET_ANIM_SPEED("Corvus_SD_LAttack1", 2.5f);
    SET_ANIM_SPEED("Corvus_SD_LAttack2", 2.5f);
    SET_ANIM_SPEED("Corvus_SD_LAttack3_New", 2.5f);
@@ -66,6 +67,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 
 	SET_ANIM_SPEED("Corvus_Raven_ClawLong_L01", 2.f);
 	SET_ANIM_SPEED("Corvus_Raven_ClawLong_L02", 2.f);
+	SET_ANIM_SPEED("Corvus_SD1_Fall_Attack", 2.5f);
 
     SET_ANIM_SPEED("Corvus_SD_RunF_24", 1.5f);
     SET_ANIM_SPEED("Corvus_SD_RunB", 1.5f);
@@ -88,6 +90,8 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("Corvus_SD_TD2Thorw2", 1.75f);
     SET_ANIM_SPEED("Corvus_PW_Axe", 3.f);
     SET_ANIM_SPEED("Corvus_PW_Knife_A_V1", 2.75f);
+
+    // SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 3.f);
 
     SET_ANIM_SPEED("Corvus_PW_VargSword_B", 1.75f);
     SET_ANIM_SPEED("Corvus_PW_VargSword_Start", 1.75f);
@@ -113,7 +117,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 	//SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution", 1.2f);
     
 
-	SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 3.f);
+	SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 4.5f);
 
     // SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Seq_BossFightStart", 5.5f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Catch", 2.306f);
@@ -134,11 +138,15 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_Start_FIX", 1.25f);
 
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_AvoidB", 1.25f);
+#pragma endregion // Varg
 
+#pragma region Mon_AxeMan
+    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtStunStart|BaseLaye", 2.f);
+#pragma endregion // Mon_AxeMan
 
 #undef SET_ANIM_SPEED
 
-    for (_uint i = 0; i < iNumChannels; i++)
+    for (_uint i(0); i < iNumChannels; i++)
     {
         shared_ptr<CHANNEL_DATA> pChannelData = make_shared<CHANNEL_DATA>();
         pChannelData->Load_FromBinary(is);

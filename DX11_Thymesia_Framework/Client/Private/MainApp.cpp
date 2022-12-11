@@ -4,11 +4,14 @@
 #include "Level_Loading.h"
 #include "GameManager.h"
 #include "FadeMask.h"
+#include "DeveloperConsole_Manager.h"
+#include "Camera_Target.h"
 
 #ifdef _JOJO_EFFECT_TOOL_
 #include "JoJoParticleShaderManager.h"
 #endif // _JOJO_EFFECT_TOOL_
-
+#include <imgui_impl_dx11.h>
+#include "imgui_impl_win32.h"
 
 
 CMainApp::CMainApp()
@@ -97,8 +100,38 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 #endif // _BAKE_MIPMAPS_
 
-	
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
 
+
+	// Setup Dear ImGui style
+	ImGui::StyleColorsLight();
+
+	//ImGui::StyleColorsClassic();
+
+	ImGuiStyle& style = ImGui::GetStyle();
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		style.WindowRounding = 0.0f;
+		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+	}
+
+	// Setup Platform/Renderer backends
+	ImGui_ImplWin32_Init(g_hWnd);
+	ImGui_ImplDX11_Init(DEVICE, DEVICECONTEXT);
+
+
+#ifdef _DEBUG
+	m_pDeveloperConsole = CDeveloperConsole_Manager::Create_Instance();
+	m_pDeveloperConsole->Initialize();
+#endif // _DEBUG
+
+	
 
 
 	return S_OK;
@@ -127,6 +160,18 @@ void CMainApp::Tick(float fTimeDelta)
 		}
 	}
 
+	if (KEY_INPUT(KEY::GRAVE, KEY_STATE::TAP))
+	{
+		m_bEnableConsole = !m_bEnableConsole;
+		ShowCursor(m_bEnableConsole);
+		weak_ptr<CCamera_Target> pTargetCamera = GET_SINGLE(CGameManager)->Get_TargetCamera();
+
+		if (pTargetCamera.lock())
+		{
+			pTargetCamera.lock()->Set_StopCamera(m_bEnableConsole);
+		}
+	}
+
 	if (nullptr == GAMEINSTANCE)
 		return;
 
@@ -135,6 +180,16 @@ void CMainApp::Tick(float fTimeDelta)
 	GAMEINSTANCE->Add_MotionBlur(-0.4f * fTimeDelta);
 
 	GAMEINSTANCE->Tick_Engine(fTimeDelta);
+	
+#ifdef _DEBUG
+	if (m_pDeveloperConsole && m_bEnableConsole)
+	{
+		m_pDeveloperConsole->Tick(fTimeDelta);
+	}
+#endif // _DEBUG
+
+
+	
 
 	GET_SINGLE(CGameManager)->LateTick(fTimeDelta);
 
@@ -164,6 +219,13 @@ HRESULT CMainApp::Render()
 	GAMEINSTANCE->Clear_DepthStencil_View();
 	GAMEINSTANCE->Draw_RenderGroup();
 	GAMEINSTANCE->Render_Engine();
+
+#ifdef _DEBUG
+	if (m_pDeveloperConsole && m_bEnableConsole)
+	{
+		m_pDeveloperConsole->Render();
+	}
+#endif // _DEBUG
 
 	GAMEINSTANCE->Present();
 	return S_OK;
@@ -254,9 +316,20 @@ unique_ptr<CMainApp> CMainApp::Create()
 
 void CMainApp::Free()
 {
+	ImGui_ImplDX11_Shutdown();
+	ImGui_ImplWin32_Shutdown();
+	ImGui::DestroyContext();
+
 	CGameInstance::Release_Engine();
 	CGameInstance::Destroy_Instance();
 	CGameManager::Destroy_Instance();
+
+#ifdef _DEBUG
+	m_pDeveloperConsole.reset();
+	CDeveloperConsole_Manager::Destroy_Instance();
+#endif // _DEBUG
+
+
 #ifdef _JOJO_EFFECT_TOOL_
 	CJoJoParticleShaderManager::Destroy_Instance();
 #endif // _JOJO_EFFECT_TOOL_

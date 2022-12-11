@@ -306,6 +306,11 @@ HRESULT CGameInstance::Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt)
 {
 	return m_pRender_Manager->Set_ShadowLight(In_vEye, In_vLookAt);
 }
+
+HRESULT CGameInstance::Set_GrayScale(const _float In_fGrayScale)
+{
+	return m_pRender_Manager->Set_GrayScale(In_fGrayScale);
+}
 HRESULT CGameInstance::Set_MotionBlur(const _float In_fBlurScale)
 {
 	return m_pRender_Manager->Set_MotionBlur(In_fBlurScale);
@@ -469,6 +474,11 @@ HRESULT CGameInstance::Load_Shader(const _tchar* sKey, const _tchar* sShaderFile
 ID3DX11Effect* CGameInstance::Get_ShaderEffect(const _tchar* sKey)
 {
 	return m_pResource_Manager->Get_ShaderEffect(sKey);
+}
+
+HRESULT CGameInstance::ReLoad_AllShader(list<pair<_bool, string>>& Out_CompileMessage)
+{
+	return m_pResource_Manager->ReLoad_AllShader(Out_CompileMessage);
 }
 
 HRESULT CGameInstance::Release_ResourceByMemoryType(MEMORY_TYPE _eMemType)

@@ -39,10 +39,6 @@ void CCorvusState_NorMob_Execution::Start()
 void CCorvusState_NorMob_Execution::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
-	
-	
-
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 

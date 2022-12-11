@@ -16,7 +16,6 @@
 GAMECLASS_C(CMonsterHPBar_Boss)
 CLONE_C(CMonsterHPBar_Boss, CGameObject)
 
-
 HRESULT CMonsterHPBar_Boss::Initialize_Prototype()
 {
     __super::Initialize_Prototype();
@@ -62,60 +61,41 @@ HRESULT CMonsterHPBar_Boss::Render()
     return S_OK;
 }
 
-void CMonsterHPBar_Boss::Set_Owner(weak_ptr<CMonster> pMonster)
+void CMonsterHPBar_Boss::Set_Target(weak_ptr<CBase> pTarget)
 {
-	m_pOwner = pMonster;
+	__super::Set_Target(pTarget);
 
+	weak_ptr<CStatus_Boss> pStatus_Monster;
+	pStatus_Monster = Weak_StaticCast<CStatus_Boss>(m_pTarget.lock()->Get_Status());
+
+	Create_Decoration(pStatus_Monster);
+}
+
+
+void	CMonsterHPBar_Boss::Bind_EventFunction(weak_ptr<CStatus_Monster> pStatus_Monster)
+{
+	__super::Bind_EventFunction(pStatus_Monster);
+
+	pStatus_Monster.lock()->Callback_NextPhase += bind(&CMonsterHPBar_Boss::Call_NextPhase, this);
+	pStatus_Monster.lock()->CallBack_ReStart += bind
+	(
+		&CMonsterHPBar_Base::Call_Restart, this
+	);
+}
+
+void	CMonsterHPBar_Boss::Create_Decoration(weak_ptr<CStatus_Monster> pStatus_Monster)
+{
 	for (auto& elem : m_listLifeDecoration)
 	{
 		elem.lock()->Set_Enable(false);
 	}
 	m_listLifeDecoration.clear();
 
-	weak_ptr<CStatus_Boss> pStatus_Monster;
-
-	pStatus_Monster = Weak_StaticCast<CStatus_Boss>(pMonster.lock()->Get_Status());
-
-	pStatus_Monster.lock()->CallBack_UpdateParryGauge += bind
-	(
-		&CMonsterHPBar_Base::Call_Update_ParryGauge, this,
-		placeholders::_1, placeholders::_2
-	);
-
-	pStatus_Monster.lock()->CallBack_Damged_White += bind
-	(
-		&CMonsterHPBar_Base::Call_Damaged_White, this,
-		placeholders::_1
-	);
-
-	pStatus_Monster.lock()->CallBack_Damged_Green += bind
-	(
-		&CMonsterHPBar_Base::Call_Damaged_Green, this,
-		placeholders::_1
-	);
-
-	pStatus_Monster.lock()->CallBack_RecoeoryAlram += bind
-	(
-		&CMonsterHPBar_Base::Call_RecoveryAlram, this
-	);
-	pStatus_Monster.lock()->CallBack_RecoeoryStart += bind
-	(
-		&CMonsterHPBar_Base::Call_Recovery, this
-	);
-	pStatus_Monster.lock()->CallBack_UI_Disable += bind
-	(
-		&CMonsterHPBar_Base::Call_Disable, this
-	);
-	pStatus_Monster.lock()->CallBack_ReStart += bind
-	(
-		&CMonsterHPBar_Base::Call_Restart, this
-	);
-	pStatus_Monster.lock()->Callback_NextPhase += bind(&CMonsterHPBar_Boss::Call_NextPhase, this);
 
 	weak_ptr<CCustomUI>	pLifeDecoration;
 	_float				DecorationOffset = 16.f;
 	_float2				DecorationStartPos = m_pBorder.lock()->Get_Point(CUI::UI_POINT::RIGHT);
-	
+
 	for (_uint i = 1; i <= pStatus_Monster.lock()->Get_Desc().m_iLifeCount; i++)
 	{
 		pLifeDecoration = ADD_STATIC_CUSTOMUI;
@@ -130,6 +110,7 @@ void CMonsterHPBar_Boss::Set_Owner(weak_ptr<CMonster> pMonster)
 		m_listLifeDecoration.push_back(pLifeDecoration);
 	}
 }
+
 
 void CMonsterHPBar_Boss::Set_Stun(bool _bStun)
 {

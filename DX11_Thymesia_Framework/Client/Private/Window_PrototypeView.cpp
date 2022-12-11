@@ -21,6 +21,12 @@ HRESULT CWindow_PrototypeView::Initialize()
 	return S_OK;
 }
 
+
+void CWindow_PrototypeView::Start()
+{
+}
+
+
 void CWindow_PrototypeView::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
@@ -35,7 +41,7 @@ HRESULT CWindow_PrototypeView::Render()
 	ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 
     ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
-    if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
+    if (ImGui::BeginTabBar("CWindow_PrototypeView", tab_bar_flags))
     {
         if (ImGui::BeginTabItem("Actor"))
         {
@@ -130,6 +136,8 @@ void CWindow_PrototypeView::Add_Prototypes()
 
     ADD_PROTOTYPE(PROTOTYPE_ACTOR, CNorMonster);
     ADD_PROTOTYPE(PROTOTYPE_ACTOR, CVarg);
+    ADD_PROTOTYPE(PROTOTYPE_ACTOR, CJoker);
+
 
     ADD_PROTOTYPE(PROTOTYPE_PROP, CTerrain);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStatic_Prop);
@@ -157,9 +165,5 @@ void CWindow_PrototypeView::Add_Prototypes()
 
 
 void CWindow_PrototypeView::Free()
-{
-}
-
-void CWindow_PrototypeView::Start()
 {
 }

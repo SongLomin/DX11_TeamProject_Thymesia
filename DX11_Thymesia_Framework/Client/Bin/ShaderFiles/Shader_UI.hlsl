@@ -14,7 +14,7 @@ float   g_fAlphaColor;
 float   g_Ratio;
 
 float2  g_MaskUV;
-float4	g_vColor;
+float4 g_vColor = {1.f,1.f,1.f,1.f};
 
 float2	g_DissolveStartPt;
 float	g_DissolveRange;
@@ -82,7 +82,7 @@ PS_OUT PS_MAIN_CUSTOMUI_LOGO_BG(PS_IN In)
 	PS_OUT Out = (PS_OUT)0;
 
 	Out.vColor		= g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-	Out.vColor.rgb *= 7.f;
+    Out.vColor.rgb *= 7.f;
 	return Out;
 }
 
@@ -343,16 +343,6 @@ PS_OUT PS_MASK_UV_TEST(PS_IN In)
     MaskOffset.x = ((float) MaskIndex.x) / 4.f;
     MaskOffset.y = ((float) MaskIndex.y) / 2.f;
 	
-	
-	/*
-	0~0.25
-	0.25~0.5
-
-
-
-	*/
-	
-
     MaskUV.x = MaskOffset.x + (In.vTexUV.x / 4.f);
     MaskUV.y = MaskOffset.y + (In.vTexUV.y / 2.f);
 	
@@ -417,10 +407,30 @@ PS_OUT PS_MASK_UV_DISCARD_RANGE(PS_IN In)
     clip(DissolveDesc - fDissolveAmount);
 
     return Out;
+
 }
 
+PS_OUT PS_COLORTOALPHADIFFUSE(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
 
+    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+ 
+    Out.vColor.a = Out.vColor.r;
+	
+    Out.vColor *= g_fAlphaColor;
 
+	if (Out.vColor.a *= g_fAlphaColor)
+    {
+        discard;
+    }
+	else
+    {
+		Out.vColor.rgb += g_vColor.rgb;	
+    }
+	
+    return Out;
+}
 
 technique11 DefaultTechnique
 {
@@ -561,5 +571,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MASK_UV_DISCARD_RANGE();
+    }
+
+    pass UI_UV_ColorToAlphaDiffuse//13
+    {
+        SetBlendState(BS_AlphaBlend, vector(1.f, 1.f, 1.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_COLORTOALPHADIFFUSE();
     }
 }

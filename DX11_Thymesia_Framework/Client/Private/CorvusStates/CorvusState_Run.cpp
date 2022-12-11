@@ -9,6 +9,7 @@
 #include "CorvusStates/CorvusStates.h"
 #include "GameManager.h"
 #include "PhysXController.h"
+#include "Weapon.h"
 
 
 GAMECLASS_C(CCorvusState_Run);
@@ -78,6 +79,12 @@ void CCorvusState_Run::LateTick(_float fTimeDelta)
 void CCorvusState_Run::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	weak_ptr<CPlayer> pPlayer = Weak_Cast<CPlayer>(m_pOwner);
+	list<weak_ptr<CWeapon>>	pWeapons = pPlayer.lock()->Get_Weapon();
+
+	pWeapons.front().lock()->Set_RenderOnOff(true);
+	
 
 	if (!m_pModelCom.lock().get())
 	{

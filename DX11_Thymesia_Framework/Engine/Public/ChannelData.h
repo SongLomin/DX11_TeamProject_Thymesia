@@ -12,10 +12,12 @@ struct ENGINE_DLL CHANNEL_DATA
     _uint                               iNumScalingKeys;
     _uint                               iNumRotationKeys;
     _uint                               iNumPositionKeys;
+    _uint                               iNumKeyframes;
 
-    vector<KEY_DATA>                    tScalingKeys;
-    vector<ROTATIONKEY_DATA>            tRotationKeys;
-    vector<KEY_DATA>                    tPositionKeys;
+    vector<KEYFRAME>                    tKeyFrames;
+    //vector<KEY_DATA>                    tScalingKeys;
+    //vector<ROTATIONKEY_DATA>            tRotationKeys;
+    //vector<KEY_DATA>                    tPositionKeys;
 
     HRESULT Make_ChannelData(aiNodeAnim* In_pChannel);
 

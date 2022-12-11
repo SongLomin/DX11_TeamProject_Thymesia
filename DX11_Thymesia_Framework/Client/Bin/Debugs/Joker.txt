@@ -1,0 +1,155 @@
+0. Joker_ComboA01
+1. Joker_ComboA02
+2. Joker_ComboB01
+3. Joker_ComboB02
+4. Joker_Dead
+5. Joker_Dead_LieDown
+6. Joker_HurtCounter
+7. Joker_HurtS_FL
+8. Joker_HurtS_FR
+9. Joker_Idle
+10. Joker_JumpAttack
+11. Joker_RunAttackEnd
+12. Joker_RunAttackLoop
+13. Joker_RunAttackStart
+14. Joker_ShockAttack
+15. Joker_SP_Open
+16. Joker_StrongAttack
+17. Joker_Stun_End
+18. Joker_Stun_Loop
+19. Joker_Stun_Start
+20. Joker_TakeExecution_End
+21. Joker_TakeExecution_Loop
+22. Joker_TakeExecution_Start
+23. Joker_TurnAttackL
+24. Joker_TurnAttackR
+25. Joker_TurnL180
+26. Joker_TurnL90
+27. Joker_TurnR180
+28. Joker_TurnR90
+29. Joker_WalkB
+30. Joker_WalkF
+31. Joker_WalkL
+32. Joker_WalkR
+33. Joker_WheelAttackEnd
+34. Joker_WheelAttackEnd_1
+35. Joker_WheelAttackLoop
+36. Joker_WheelAttackStart
+RootNode
+root_$AssimpFbx$_Translation
+root_$AssimpFbx$_PreRotation
+root_$AssimpFbx$_Rotation
+root_$AssimpFbx$_Scaling
+root
+pelvis
+Bip001-Pelvis
+spine_01
+spine_02
+spine_03
+Bip001-Neck
+Bip001-Head
+Fitting_Bone04
+Fitting_Bone05
+Fitting_Bone06
+Fitting_Bone07_End
+Fitting_Bone08
+Fitting_Bone09
+Fitting_Bone10_End
+Fitting_Bone15
+Fitting_Bone16_End
+Fitting_Bone01
+Fitting_Bone02
+Fitting_Bone03_End
+Fitting_Bone13
+Fitting_Bone14_End
+Fitting_Bone11
+Fitting_Bone12_End
+clavicle_r
+upperarm_r
+lowerarm_r
+hand_r
+thumb_01_r
+thumb_02_r
+thumb_03_r
+index_01_r
+index_02_r
+index_03_r
+middle_01_r
+middle_02_r
+middle_03_r
+ring_01_r
+ring_02_r
+ring_03_r
+pinky_01_r
+pinky_02_r
+pinky_03_r
+weapon_r
+weapon_r_Hammer
+weapon_r_end
+Bracers_R
+Chain_Bone004
+Chain_Bone005
+Chain_Bone006
+Chain_Bone007
+Chain_Bone008_End
+clavicle_l
+upperarm_l
+lowerarm_l
+hand_l
+thumb_01_l
+thumb_02_l
+thumb_03_l
+index_01_l
+index_02_l
+index_03_l
+middle_01_l
+middle_02_l
+middle_03_l
+ring_01_l
+ring_02_l
+ring_03_l
+pinky_01_l
+pinky_02_l
+pinky_03_l
+weapon_l
+Bracers_L
+Chain_Bone001
+Chain_Bone002
+Chain_Bone003_End
+thigh_r
+calf_r
+foot_r
+ball_r
+thigh_l
+calf_l
+foot_l
+ball_l
+Bone_Hen_Root
+Bone_Hen13
+Bone_Hen14
+Bone_Hen15
+Bone_Hen16
+Bone_Hen17
+Bone_Hen18
+Bone_Hen07
+Bone_Hen08
+Bone_Hen09
+Bone_Hen10
+Bone_Hen11
+Bone_Hen12
+Bone_Hen01
+Bone_Hen02
+Bone_Hen03
+Bone_Hen04
+Bone_Hen05
+Bone_Hen06
+ik_foot_l
+ik_foot_r
+ik_hand_l
+ik_hand_r
+ik_weapon_r
+AnimTargetPoint
+camera
+SK_C_Joker_$AssimpFbx$_PreRotation
+SK_C_Joker_$AssimpFbx$_Scaling
+SK_C_Joker

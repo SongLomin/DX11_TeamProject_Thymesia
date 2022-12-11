@@ -45,7 +45,7 @@ void CNorMonState_GroggyEnd::Start()
 	case Client::MONSTERTYPE::GARDENER:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_HurtStunEnd");
 		break;
-	case Client::MONSTERTYPE::ELITEGARDENER:
+	case Client::MONSTERTYPE::ENHANCE_GARDENER:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_HurtStunEnd");
 		break;
 	case Client::MONSTERTYPE::SHIELDAXEMAN:
@@ -53,9 +53,7 @@ void CNorMonState_GroggyEnd::Start()
 		break;
 	}
 
-	
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_GroggyEnd::Call_AnimationEnd, this);
-
 }
 
 void CNorMonState_GroggyEnd::Tick(_float fTimeDelta)

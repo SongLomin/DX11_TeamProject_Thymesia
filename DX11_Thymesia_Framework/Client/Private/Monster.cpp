@@ -7,7 +7,8 @@
 #include "ActorDecor.h"
 #include "Player.h"
 #include "Client_Components.h"
-
+#include "UI.h"
+#include "MonsterHPBar_Base.h"
 
 GAMECLASS_C(CMonster);
 CLONE_C(CMonster, CGameObject);
@@ -149,6 +150,19 @@ void CMonster::Respawn_Monster(_fvector In_vPosition)
     Set_Enable(true);
 }
 
+void     CMonster::Bind_HPBar()
+{
+    //UI 재활용
+    m_pHPBar = GAMEINSTANCE->Get_GameObject_UseMemoryPool<CMonsterHPBar_Base>(LEVEL_STATIC);
+    if (!m_pHPBar.lock())
+    {
+        m_pHPBar = GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Base>(LEVEL_STATIC);
+    }
+    m_pHPBar.lock()->Set_Target(m_this);
+
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, m_pHPBar);
+}
+
 void CMonster::Release_Monster()
 {
     GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::MONSTER, Weak_Cast<CGameObject>(m_this));
@@ -198,10 +212,8 @@ void  CMonster::Load_FromJson(const json& In_Json)
 
     Init_Desc();
 
-
-   //TODO : 테스트용으로 반드시 삭제하시오
-    if ((_uint)LEVEL::LEVEL_EDIT != m_CreatedLevel)
-        Set_Enable(false);
+    if ((_uint)LEVEL::LEVEL_EDIT == m_CreatedLevel)
+        Set_Enable(true);
 }
 
 void CMonster::Init_Desc()
@@ -264,7 +276,9 @@ void CMonster::OnEnable(void* _Arg)
 
     GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::MONSTER, Weak_Cast<CGameObject>(m_this));
     m_pHitColliderCom.lock()->Set_Enable(true);
-    m_pPhysXControllerCom.lock()->Set_Enable(true);
+
+    if (LEVEL::LEVEL_EDIT != m_CreatedLevel)
+        m_pPhysXControllerCom.lock()->Set_Enable(true);
 }
 
 void CMonster::OnDisable()

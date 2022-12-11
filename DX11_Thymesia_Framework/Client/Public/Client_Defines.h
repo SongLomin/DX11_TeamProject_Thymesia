@@ -3,7 +3,7 @@
 #include "SMath.h"
 #include <filesystem>
 
- // #define _JOJO_EFFECT_TOOL_
+// #define _JOJO_EFFECT_TOOL_
 
 #include "Client_Structs.h"
 #include "Client_Presets.h"
@@ -13,14 +13,14 @@
 #ifdef _DEBUG
 
 #pragma region System
-//#define		_ONLY_UI_
-//#define		_BAKE_MIPMAPS_
-#define		_USE_THREAD_
-#define		_144HZ_
-#define		_RENDER_FPS_
-#define     _Actor_Culling_
-//#define		_INSTANCE_CULLING_
-// #define		_LOAD_CAPTURED_RESOURCE_
+//#define _ONLY_UI_
+//#define _BAKE_MIPMAPS_
+#define _USE_THREAD_
+#define _144HZ_
+#define _RENDER_FPS_
+#define _Actor_Culling_
+//#define _INSTANCE_CULLING_
+//#define _LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
 #define _USE_GRAVITY_
@@ -42,7 +42,7 @@
 
 #pragma region Tool
 #define _MAP_TOOL_
-#define _EFFECT_TOOL_
+// #define _EFFECT_TOOL_
 #pragma endregion // Tool
 
 #pragma region Boss Mobs
@@ -51,7 +51,7 @@
 #pragma endregion // Boss Mobs
 
 #pragma region Normal Mobs
-// #define _STAGE_1_MONSTER_
+#define _STAGE_1_MONSTER_
 // #define _STAGE_2_MONSTER_
 #pragma endregion // Normal Mobs
 
@@ -73,7 +73,7 @@
 #pragma region System
 #define _USE_THREAD_
 #define _144HZ_
-// #define _RENDER_FPS_
+#define _RENDER_FPS_
 //#define	_INSTANCE_CULLING_
 // #define _LOAD_CAPTURED_RESOURCE_
 #define     _Actor_Culling_
@@ -217,6 +217,7 @@ namespace Client
 		ON_ENTER_SECTION,
 		ON_EXIT_SECTION,
 		ON_VARGEXECUTION,
+		ON_SITUP,
 		EVENT_END
 	};
 
@@ -320,20 +321,24 @@ namespace Client
 		WEAPON_KNIFE,
 		WEAPON_BOSSVARG,
 		WEAPON_SCYTHE,
+		WEAPON_JOKER,
+		WEAPON_GREATSWORD,
 		MON_WEAPON_END
 	};
 
 	enum class  MONSTERTYPE {
 		START_NORMAL_MONSTER = 0,
-		AXEMAN,  // 도끼든남자 방패든도끼든남자
-		KNIFEWOMAN, // 기본단검여자
-		SKULL, // 기본해골
-		GARDENER, // 낫든몬스터
-		SHIELDAXEMAN,// 실드도끼남자
-		BALLOON, // 풍선
+		AXEMAN,			   // 도끼든남자 방패든도끼든남자
+		KNIFEWOMAN,		   // 기본단검여자
+		SKULL,			   // 기본해골
+		GARDENER,		   // 낫든몬스터
+		SHIELDAXEMAN,	   // 실드도끼남자
+		BALLOON,		   // 풍선
+		ENHANCE_GARDENER,  // 강화 가드너
+
 
 		START_ELITE_MONSTER = 10000,
-		ELITEGARDENER,
+		JOCKER,
 
 		STARTBOSS_MONSTER = 20000,
 		VARG, // 보스바그
@@ -501,7 +506,21 @@ namespace Client
 		FLAG_END
 	};
 
-	
+	enum class STATE_FLAG
+	{
+		EXECUTABLE = (1 << 0),
+		READY_SPECIAL_ATK = (1 << 1),
+		FLAG_END
+	};
+
+	enum class COLOR_PALETTE
+	{
+		COLOR_WHITE,
+		COLOR_BLACK,
+		COLOR_RED,
+		COLOR_GREEN,
+		COLOR_BLUE
+	};
 
 
 }

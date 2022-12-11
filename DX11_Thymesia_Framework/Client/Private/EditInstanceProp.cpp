@@ -1052,6 +1052,18 @@ void CEditInstanceProp::View_MultiPicking()
 		}
 	}
 
+	else if (KEY_INPUT(KEY::C, KEY_STATE::HOLD))
+	{
+		_long		MouseMoveZ = 0;
+		if (MouseMoveZ = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
+		{
+			for (auto& elem : m_MultPickingIndex)
+			{
+				m_pPropInfos[elem].vTarnslation.y -= 0.01f * MouseMoveZ;
+			}
+		}
+	}
+
 }
 
 void CEditInstanceProp::View_PhysXOption()

@@ -163,7 +163,7 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 		{
 			Out_Json["GameObject"][iIndex]["Name"]				= elem.TypeName;
 			Out_Json["GameObject"][iIndex]["Hash"]				= elem.HashCode;
-			Out_Json["GameObject"][iIndex]["Setting"]["Enable"] = elem.pInstance.lock()->Get_Enable();
+			Out_Json["GameObject"][iIndex]["Setting"]["Enable"] = (elem_group.first == typeid(CEditSetActor).hash_code()) ? (false) : (elem.pInstance.lock()->Get_Enable());
 			Out_Json["GameObject"][iIndex]["Component"]["Transform"].emplace();
 
 			elem.pInstance.lock()->Write_Json(Out_Json["GameObject"][iIndex]);
@@ -274,11 +274,13 @@ void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
 
 		else if (typeid(CNorMonster).hash_code() == TempDesc.HashCode ||
 			     typeid(CVarg).hash_code()       == TempDesc.HashCode || 
-			     typeid(CCorvus).hash_code()     == TempDesc.HashCode)
+			     typeid(CCorvus).hash_code()     == TempDesc.HashCode ||
+			     typeid(CJoker).hash_code()      == TempDesc.HashCode)
 		{
 			weak_ptr<CGameObject> pNewGameObject = GAMEINSTANCE->Add_GameObject(TempDesc.HashCode, LEVEL::LEVEL_EDIT);
 			pNewGameObject.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
 			pNewGameObject.lock()->Load_FromJson(Elem_GameObject);
+			pNewGameObject.lock()->Set_Enable(false);
 
 			auto iter_find = m_pObjGroup.find(typeid(CEditSetActor).hash_code());
 

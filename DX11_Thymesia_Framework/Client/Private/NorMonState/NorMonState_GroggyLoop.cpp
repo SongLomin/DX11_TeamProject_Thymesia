@@ -21,7 +21,7 @@ HRESULT CNorMonState_GroggyLoop::Initialize_Prototype()
 HRESULT CNorMonState_GroggyLoop::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
+	m_StateFlag |= (_uint)STATE_FLAG::EXECUTABLE;
 
 	return S_OK;
 }
@@ -43,7 +43,7 @@ void CNorMonState_GroggyLoop::Start()
 	case Client::MONSTERTYPE::GARDENER:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_HurtStunLoop");
 		break;
-	case Client::MONSTERTYPE::ELITEGARDENER:
+	case Client::MONSTERTYPE::ENHANCE_GARDENER:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_HurtStunLoop");
 		break;
 	case Client::MONSTERTYPE::SHIELDAXEMAN:

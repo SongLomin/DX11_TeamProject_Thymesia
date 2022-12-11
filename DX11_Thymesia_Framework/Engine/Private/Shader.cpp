@@ -61,24 +61,45 @@ HRESULT CShader::Begin(_uint iPassIndex)
 
 HRESULT CShader::Set_ShaderInfo(const _tchar* pShaderKey, const D3D11_INPUT_ELEMENT_DESC* pElements, _uint iNumElement)
 {
+	m_szShaderKey = pShaderKey;
+	m_InputDesc = pElements;
+	m_iNumElement = iNumElement;
+
+	m_bInit = true;
+
+	if (FAILED(Set_ShaderInfo_Internal()))
+	{
+		DEBUG_ASSERT;
+	}
+
+	return S_OK;
+}
+
+HRESULT CShader::Set_ShaderInfo_Internal()
+{
+	if (!m_bInit)
+	{
+		// Call the 'Set_ShaderInfo' function at least once.
+		return E_FAIL;
+	}
+	
+	for (auto& elem : m_Passes)
+	{
+		elem.pInputLayout->Release();
+	}
 
 	m_Passes.clear();
 	
-//	_uint		iHLSLFlag = 0;
-//
-//#ifdef _DEBUG
-//	iHLSLFlag = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION | D3DCOMPILE_OPTIMIZATION_LEVEL0;
-//#else
-//	iHLSLFlag = D3DCOMPILE_OPTIMIZATION_LEVEL1;
-//#endif
-//	D3DX11CompileEffectFromFile(pShaderFilePath, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, iHLSLFlag, 0, DEVICE, m_pEffect.GetAddressOf(), /*&pError*/nullptr);
+	/*if (m_pEffect)
+	{
+		m_pEffect->Release();
+	}*/
 
-
-	m_pEffect = GAMEINSTANCE->Get_ShaderEffect(pShaderKey);
+	m_pEffect = GAMEINSTANCE->Get_ShaderEffect(m_szShaderKey.c_str());
 
 	if (m_pEffect == nullptr)
 		DEBUG_ASSERT;
-	
+
 	ID3DX11EffectTechnique* pTechnique = m_pEffect->GetTechniqueByIndex(0);
 	if (nullptr == pTechnique)
 		return E_FAIL;
@@ -107,11 +128,12 @@ HRESULT CShader::Set_ShaderInfo(const _tchar* pShaderKey, const D3D11_INPUT_ELEM
 
 		PassDesc.pPass->GetDesc(&Pass);
 
-		if (FAILED(DEVICE->CreateInputLayout(pElements, iNumElement, Pass.pIAInputSignature, Pass.IAInputSignatureSize, &PassDesc.pInputLayout)))
+		if (FAILED(DEVICE->CreateInputLayout(m_InputDesc, m_iNumElement, Pass.pIAInputSignature, Pass.IAInputSignatureSize, &PassDesc.pInputLayout)))
 			return E_FAIL;
 
 		m_Passes.push_back(PassDesc);
 	}
+
 	return S_OK;
 }
 
@@ -121,6 +143,7 @@ HRESULT CShader::Set_ShaderResourceView(const char* pConstantName, ComPtr<ID3D11
 	if (nullptr == m_pEffect)
 		return E_FAIL;
 
+	//m_pEffect->GetV
 	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
 	if (nullptr == pVariable)
 		return E_FAIL;
@@ -162,6 +185,14 @@ void CShader::OnDestroy()
 {
 }
 
+void CShader::OnEngineEventMessage(const ENGINE_EVENT_TYPE In_eEngineEvent)
+{
+	if (In_eEngineEvent == ENGINE_EVENT_TYPE::ON_SHADER_UPDATE)
+	{
+		Set_ShaderInfo_Internal();
+	}
+}
+
 void CShader::Free()
 {
 	for (auto& elem : m_Passes)
@@ -171,6 +202,5 @@ void CShader::Free()
 
 	m_Passes.clear();
 	m_pEffect = nullptr;
-
 	
 }

@@ -38,6 +38,13 @@
 GAMECLASS_C(CEffect_Rect)
 CLONE_C(CEffect_Rect, CGameObject)
 
+#ifdef _DEBUG
+#ifdef _JOJO_EFFECT_TOOL_
+const _int CEffect_Rect::m_iScaleType_Square = 1;
+const _int CEffect_Rect::m_iScaleType_Ratio = 2;
+#endif // _JOJO_EFFECT_TOOL_
+#endif // _DEBUG
+
 const _char* CEffect_Rect::Get_EffectName() const
 {
 	return m_szEffectName.c_str();
@@ -721,8 +728,22 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	if (In_Json.find("Is_Square_Scale") != In_Json.end())
 		m_tEffectParticleDesc.bSquareScale = In_Json["Is_Square_Scale"];
 
-	if (In_Json.find("Is_Ratio_Scale") != In_Json.end())
-		m_tEffectParticleDesc.bRatioScale = In_Json["Is_Ratio_Scale"];
+	if (!m_tEffectParticleDesc.bSquareScale)
+	{
+		if (In_Json.find("Is_Ratio_Scale") != In_Json.end())
+			m_tEffectParticleDesc.bRatioScale = In_Json["Is_Ratio_Scale"];
+	}
+
+#ifdef _DEBUG
+#ifdef _JOJO_EFFECT_TOOL_
+	if (m_tEffectParticleDesc.bSquareScale && !m_tEffectParticleDesc.bRatioScale)
+		m_iScaleType = m_iScaleType_Square;
+	else if (!m_tEffectParticleDesc.bSquareScale && m_tEffectParticleDesc.bRatioScale)
+		m_iScaleType = m_iScaleType_Ratio;
+	else
+		m_iScaleType = 0;
+#endif // _JOJO_EFFECT_TOOL_
+#endif // _DEBUG
 
 	if (m_tEffectParticleDesc.bRatioScale)
 	{
@@ -1509,11 +1530,18 @@ void CEffect_Rect::Update_ParticleColor(const _uint& i, _float fTimeDelta)
 void CEffect_Rect::Update_ParticleGlowColor(_float fTimeDelta)
 {
 	_float4 vColor = SMath::Mul_Float4(m_tEffectParticleDesc.vGlowColorSpeed, fTimeDelta);
+
 	SMath::Add_Float4(&m_vCurrentGlowColorForce, SMath::Mul_Float4(m_tEffectParticleDesc.vGlowColorForce, fTimeDelta));
 
 	SMath::Add_Float4(&vColor, m_vCurrentGlowColorForce);
 	SMath::Add_Float4(&vColor, m_vCurrentGlowColor);
 
+	//vColor.x = max(0.f, min(1.f, vColor.x));
+	//vColor.y = max(0.f, min(1.f, vColor.y));
+	//vColor.z = max(0.f, min(1.f, vColor.z));
+	//vColor.w = max(0.f, min(1.f, vColor.w));
+
+	vColor.w = min(1.f, max(0.f, vColor.w));
 	vColor.x = min(1.f, max(0.f, vColor.x));
 	vColor.y = min(1.f, max(0.f, vColor.y));
 	vColor.z = min(1.f, max(0.f, vColor.z));
@@ -2897,23 +2925,47 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			}
 			if (ImGui::CollapsingHeader("Scale"))
 			{
+
+#ifdef _JOJO_EFFECT_TOOL_
+				ImGui::RadioButton("Square Scale##Is_Square_Scale", &m_iScaleType, m_iScaleType_Square);
+				ImGui::SameLine();
+				ImGui::RadioButton("Ratio Scale##Is_Ratio_Scale", &m_iScaleType, m_iScaleType_Ratio);
+				switch (m_iScaleType)
+				{
+				case 1:
+					m_tEffectParticleDesc.bSquareScale = true;
+					m_tEffectParticleDesc.bRatioScale = false;
+					break;
+				case 2:
+					m_tEffectParticleDesc.bSquareScale = false;
+					m_tEffectParticleDesc.bRatioScale = true;
+					break;
+				default:
+					m_tEffectParticleDesc.bSquareScale = false;
+					m_tEffectParticleDesc.bRatioScale = false;
+					break;
+				}
+#else // _JOJO_EFFECT_TOOL_
 				ImGui::Checkbox("Square Scale##Is_Square_Scale", &m_tEffectParticleDesc.bSquareScale);
 				ImGui::SameLine();
-				ImGui::Checkbox("Equal Ratio Scale##Is_Ratio_Scale", &m_tEffectParticleDesc.bRatioScale);
+				ImGui::Checkbox("Ratio Scale##Is_Ratio_Scale", &m_tEffectParticleDesc.bRatioScale);
+#endif // _JOJO_EFFECT_TOOL_
 
 				if (m_tEffectParticleDesc.bRatioScale)
 				{
-					ImGui::Text("Y = X * ?");
+					if (ImGui::TreeNode("Y = X * ?"))
+					{
+						ImGui::Text("Min Ratio"); ImGui::SameLine();
+						ImGui::SetNextItemWidth(100.f);
+						ImGui::DragFloat("##Min_Y_Scale_Ratio", &m_tEffectParticleDesc.fMinYScaleRatio, 0.1f, 0.f, 0.f, "%.5f");
 
-					ImGui::Text("Min Ratio"); ImGui::SameLine();
-					ImGui::SetNextItemWidth(100.f);
-					ImGui::DragFloat("##Min_Y_Scale_Ratio", &m_tEffectParticleDesc.fMinYScaleRatio, 0.1f, 0.f, 0.f, "%.5f");
+						ImGui::Text("Max Ratio"); ImGui::SameLine();
+						ImGui::SetNextItemWidth(100.f);
+						ImGui::DragFloat("##Max_Y_Scale_Ratio", &m_tEffectParticleDesc.fMaxYScaleRatio, 0.1f, 0.f, 0.f, "%.5f");
 
-					ImGui::Text("Max Ratio"); ImGui::SameLine();
-					ImGui::SetNextItemWidth(100.f);
-					ImGui::DragFloat("##Max_Y_Scale_Ratio", &m_tEffectParticleDesc.fMaxYScaleRatio, 0.1f, 0.f, 0.f, "%.5f");
+						ImGui::TreePop();
+					}
 				}
-
 
 				ImGui::Checkbox("Apply Easing##Is_Easing_Scale", &m_tEffectParticleDesc.bEasingScale);
 				ImGui::Separator();

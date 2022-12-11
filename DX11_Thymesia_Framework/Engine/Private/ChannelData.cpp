@@ -7,42 +7,44 @@ HRESULT CHANNEL_DATA::Make_ChannelData(aiNodeAnim* In_pChannel)
 	iNumRotationKeys = In_pChannel->mNumRotationKeys;
 	iNumPositionKeys = In_pChannel->mNumPositionKeys;
 
-	tScalingKeys.reserve(iNumScalingKeys);
-	for (_uint i = 0; i < iNumScalingKeys; i++)
+	iNumKeyframes = max(iNumScalingKeys, iNumRotationKeys);
+	iNumKeyframes = max(iNumKeyframes, iNumPositionKeys);
+
+	KEYFRAME			KeyFrame;
+	//KEY_DATA			ScalingKey;
+	//ROTATIONKEY_DATA	RotationKey;
+	//KEY_DATA			PositionKey;
+
+	tKeyFrames.reserve(iNumKeyframes);
+	//tScalingKeys.reserve(iNumKeyframes);
+	//tRotationKeys.reserve(iNumKeyframes);
+	//tPositionKeys.reserve(iNumKeyframes);
+
+	for (_uint i = 0; i < iNumKeyframes; i++)
 	{
-		KEY_DATA Key;
+		if (iNumScalingKeys > i)
+		{
+			memcpy(&KeyFrame.vScale, &In_pChannel->mScalingKeys[i].mValue, sizeof(_float3));
+			KeyFrame.fTime = (_float)In_pChannel->mScalingKeys[i].mTime;
+		}
 
-		memcpy(&Key.vValue, &In_pChannel->mScalingKeys[i].mValue, sizeof(_float3));
-		Key.fTime = (_float)In_pChannel->mScalingKeys[i].mTime;
+		if (iNumRotationKeys > i)
+		{
+			KeyFrame.vRotation.x = In_pChannel->mRotationKeys[i].mValue.x;
+			KeyFrame.vRotation.y = In_pChannel->mRotationKeys[i].mValue.y;
+			KeyFrame.vRotation.z = In_pChannel->mRotationKeys[i].mValue.z;
+			KeyFrame.vRotation.w = In_pChannel->mRotationKeys[i].mValue.w;
+			KeyFrame.fTime = (_float)In_pChannel->mRotationKeys[i].mTime;
+		}
 
-		tScalingKeys.push_back(Key);
+		if (iNumPositionKeys > i)
+		{
+			memcpy(&KeyFrame.vPosition, &In_pChannel->mPositionKeys[i].mValue, sizeof(_float3));
+			KeyFrame.fTime = (_float)In_pChannel->mPositionKeys[i].mTime;
+		}
+
+		tKeyFrames.emplace_back(KeyFrame);
 	}
-
-
-	tRotationKeys.reserve(iNumRotationKeys);
-	for (_uint i = 0; i < iNumRotationKeys; i++)
-	{
-		ROTATIONKEY_DATA Key;
-		Key.vValue.x = In_pChannel->mRotationKeys[i].mValue.x;
-		Key.vValue.y = In_pChannel->mRotationKeys[i].mValue.y;
-		Key.vValue.z = In_pChannel->mRotationKeys[i].mValue.z;
-		Key.vValue.w = In_pChannel->mRotationKeys[i].mValue.w;
-		Key.fTime = (_float)In_pChannel->mRotationKeys[i].mTime;
-
-		tRotationKeys.push_back(Key);
-	}
-
-
-	tPositionKeys.reserve(iNumPositionKeys);
-	for (_uint i = 0; i < iNumPositionKeys; i++)
-	{
-		KEY_DATA Key;
-		memcpy(&Key.vValue, &In_pChannel->mPositionKeys[i].mValue, sizeof(_float3));
-		Key.fTime = (_float)In_pChannel->mPositionKeys[i].mTime;
-
-		tPositionKeys.push_back(Key);
-	}
-
 
 	return S_OK;
 }
@@ -55,8 +57,15 @@ void CHANNEL_DATA::Bake_Binary(ofstream& os)
 	write_typed_data(os, iNumScalingKeys);
 	write_typed_data(os, iNumRotationKeys);
 	write_typed_data(os, iNumPositionKeys);
+	write_typed_data(os, iNumKeyframes);
 
-	for (_uint i = 0; i < iNumScalingKeys; i++)
+	for (_uint i = 0; i < iNumKeyframes; i++)
+	{
+		write_typed_data(os, tKeyFrames[i]);
+	}
+
+
+	/*for (_uint i = 0; i < iNumScalingKeys; i++)
 	{
 		write_typed_data(os, tScalingKeys[i]);
 	}
@@ -69,7 +78,9 @@ void CHANNEL_DATA::Bake_Binary(ofstream& os)
 	for (_uint i = 0; i < iNumPositionKeys; i++)
 	{
 		write_typed_data(os, tPositionKeys[i]);
-	}
+	}*/
+
+
 }
 
 void CHANNEL_DATA::Load_FromBinary(ifstream& is)
@@ -82,8 +93,21 @@ void CHANNEL_DATA::Load_FromBinary(ifstream& is)
 	read_typed_data(is, iNumScalingKeys);
 	read_typed_data(is, iNumRotationKeys);
 	read_typed_data(is, iNumPositionKeys);
+	read_typed_data(is, iNumKeyframes);
 
-	tScalingKeys.reserve(iNumScalingKeys);
+	tKeyFrames.reserve(iNumKeyframes);
+
+	KEYFRAME KeyFrame;
+
+	for (_uint i = 0; i < iNumKeyframes; i++)
+	{
+		read_typed_data(is, KeyFrame);
+		tKeyFrames.emplace_back(KeyFrame);
+	}
+
+	int i = 0;
+
+	/*tScalingKeys.reserve(iNumScalingKeys);
 	for (_uint i = 0; i < iNumScalingKeys; i++)
 	{
 		KEY_DATA Key;
@@ -113,7 +137,7 @@ void CHANNEL_DATA::Load_FromBinary(ifstream& is)
 		read_typed_data(is, Key);
 
 		tPositionKeys.push_back(Key);
-	}
+	}*/
 }
 
 void CHANNEL_DATA::Bake_ReverseChannel(shared_ptr<CHANNEL_DATA>& Out_ChannelData, const _float In_fDuration)
@@ -122,8 +146,22 @@ void CHANNEL_DATA::Bake_ReverseChannel(shared_ptr<CHANNEL_DATA>& Out_ChannelData
 	Out_ChannelData->iNumScalingKeys = iNumScalingKeys;
 	Out_ChannelData->iNumRotationKeys = iNumRotationKeys;
 	Out_ChannelData->iNumPositionKeys = iNumPositionKeys;
+	Out_ChannelData->iNumKeyframes = iNumKeyframes;
 
-	KEY_DATA Key;
+	Out_ChannelData->tKeyFrames.reserve(Out_ChannelData->iNumKeyframes);
+
+	KEYFRAME			KeyFrame;
+
+	for (_int i = (_int)Out_ChannelData->iNumKeyframes - 1; i >= 0; --i)
+	{
+		memcpy(&KeyFrame, &tKeyFrames[i], sizeof(KEYFRAME));
+		KeyFrame.fTime = In_fDuration - KeyFrame.fTime;
+
+		Out_ChannelData->tKeyFrames.emplace_back(KeyFrame);
+	}
+
+
+	/*KEY_DATA Key;
 	ROTATIONKEY_DATA RotationKey;
 
 	Out_ChannelData->tScalingKeys.reserve(iNumScalingKeys);
@@ -153,7 +191,7 @@ void CHANNEL_DATA::Bake_ReverseChannel(shared_ptr<CHANNEL_DATA>& Out_ChannelData
 		Key.fTime = In_fDuration - tPositionKeys[i].fTime;
 
 		Out_ChannelData->tPositionKeys.push_back(Key);
-	}
+	}*/
 
 
 

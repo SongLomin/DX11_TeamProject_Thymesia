@@ -55,7 +55,6 @@ void CLevel_Logo::Tick(_float fTimeDelta)
 	{
 		GAMEINSTANCE->Write_JsonUsingResource("../Bin/LevelData/CapturedResource/Logo.json");
 	}
-
 }
 
 HRESULT CLevel_Logo::Render()

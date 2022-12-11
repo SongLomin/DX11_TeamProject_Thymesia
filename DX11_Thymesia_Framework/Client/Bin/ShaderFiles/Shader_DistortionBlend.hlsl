@@ -50,9 +50,9 @@ PS_OUT PS_MAIN(PS_IN In)
 	vector vDistortion = g_DistortionTexture.Sample(DefaultSampler, In.vTexUV);
 
 	if(0.01f < vDistortion.r)
-        Out.vColor = g_OriginTexture.Sample(DefaultSampler, In.vTexUV + (vDistortion.r * 0.1f));
+        Out.vColor = g_OriginTexture.Sample(ClampSampler, In.vTexUV + (vDistortion.r * 0.1f));
 	else
-		Out.vColor = g_OriginTexture.Sample(DefaultSampler, In.vTexUV);
+        Out.vColor = g_OriginTexture.Sample(ClampSampler, In.vTexUV);
 	
 	return Out;
 }

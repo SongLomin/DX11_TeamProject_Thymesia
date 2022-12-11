@@ -35,6 +35,8 @@ HRESULT CBossMonster::Initialize_Prototype()
     return S_OK;
 }
 
+
+
 HRESULT CBossMonster::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
@@ -47,17 +49,31 @@ HRESULT CBossMonster::Initialize(void* pArg)
 HRESULT CBossMonster::Start()
 {
     __super::Start();
-
-    m_pHPBar = GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Boss>(LEVEL_STATIC);
-    m_pHPBar.lock()->Set_Owner(Weak_Cast<CMonster>(m_this));
-
-    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, m_pHPBar);
-
+    
+    Bind_HPBar();
 
     return S_OK;
 }
 
+void CBossMonster::Bind_HPBar()
+{
+    //UI ÀçÈ°¿ë
+    m_pHPBar = GAMEINSTANCE->Get_GameObject_UseMemoryPool<CMonsterHPBar_Boss>(LEVEL_STATIC);
 
+    if (!m_pHPBar.lock())
+    {
+        m_pHPBar = GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Boss>(LEVEL_STATIC);
+    }
+    m_pHPBar.lock()->Set_Target(m_this);
+
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, m_pHPBar);
+}
+
+
+weak_ptr<CMonsterHPBar_Boss>  CBossMonster::Get_HPBar()
+{
+    return Weak_StaticCast<CMonsterHPBar_Boss>(m_pHPBar);
+}
 
 void CBossMonster::Tick(_float fTimeDelta)
 {

@@ -28,7 +28,7 @@ public:
 	HRESULT Add_RadialBlur(const _float In_fRadialBlurStrength);
 	HRESULT Set_FogDesc(const _float4 In_vFogColor,const _float In_fFogRange);
 	HRESULT Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain);
-	
+	HRESULT Set_GrayScale(const _float In_fGrayScale);
 
 	HRESULT	Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt);
 	
@@ -128,9 +128,11 @@ private:
 	_float4		m_vFogColor = { 0.8f, 0.8f, 0.8f, 1.f };
 	_float		m_fFogRange = 30.f;
 	
+	_float		m_fGrayScale = 1.f;
 
 public:
 	virtual void OnDestroy() override;
+	virtual void OnEngineEventMessage(const ENGINE_EVENT_TYPE In_eEngineEvent) override;
 
 protected:
 	void Free();
