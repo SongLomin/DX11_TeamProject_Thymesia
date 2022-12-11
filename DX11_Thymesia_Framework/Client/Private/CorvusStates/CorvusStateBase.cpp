@@ -362,7 +362,7 @@ _bool CCorvusStateBase::Check_AndChangeLadderState(weak_ptr<CCollider> pMyCollid
 		{
 			_float fHeightOffset = Weak_Cast<CInteraction_Ladder>(pOtherCollider.lock()->Get_Owner()).lock()->Get_UpLadderHeight();
 
-			vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, fHeightOffset, 0.4f, 0.f));
+			vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, fHeightOffset -0.12f, 0.485f, 0.f));
 
 			m_pPhysXControllerCom.lock()->Set_Position(
 				vResultOtherWorldMatrix.r[3],
@@ -373,7 +373,7 @@ _bool CCorvusStateBase::Check_AndChangeLadderState(weak_ptr<CCollider> pMyCollid
 			m_pTransformCom.lock()->Set_Look2D(vOtherWorldMatrix.r[2]);
 			m_pPhysXControllerCom.lock()->Enable_Gravity(false);
 			Get_OwnerPlayer()->Set_LadderCheck(true);		
-			Get_OwnerPlayer()->Change_State<CCorvusState_Climb_R_Up_Down_End>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Climb_L_Up_Down_End>();
 			
 		}
 	
@@ -383,7 +383,7 @@ _bool CCorvusStateBase::Check_AndChangeLadderState(weak_ptr<CCollider> pMyCollid
 	case Client::COLLISION_LAYER::LADDER_DOWN:
 		if (!Get_OwnerPlayer()->Get_LadderCheck())
 		{
-			vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.02f, -1.f, 0.f));
+			vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, -0.02f, -1.02f, 0.f));
 			m_pPhysXControllerCom.lock()->Enable_Gravity(false);
 			m_pPhysXControllerCom.lock()->Set_Position(
 				vResultOtherWorldMatrix.r[3],
@@ -403,7 +403,6 @@ _bool CCorvusStateBase::Check_AndChangeLadderState(weak_ptr<CCollider> pMyCollid
 
 	case Client::COLLISION_LAYER::CHECKPOINT:
 		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, -0.5f, 0.f));
-		m_pPhysXControllerCom.lock()->Enable_Gravity(false);
 		m_pPhysXControllerCom.lock()->Set_Position(
 			vResultOtherWorldMatrix.r[3],
 			GAMEINSTANCE->Get_DeltaTime(),

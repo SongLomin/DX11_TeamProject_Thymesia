@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Model.h"
 #include "Camera_Target.h"
+#include "Weapon.h"
 
 GAMECLASS_C(CPlayerStateBase);
 

@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
 #include "GameManager.h"
+#include "Weapon.h"
 
 GAMECLASS_C(CCorvusState_AVoid);
 CLONE_C(CCorvusState_AVoid, CComponent)
@@ -70,6 +71,11 @@ void CCorvusState_AVoid::OnDisable()
 void CCorvusState_AVoid::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	weak_ptr<CPlayer> pPlayer = Weak_Cast<CPlayer>(m_pOwner);
+	list<weak_ptr<CWeapon>>	pWeapons = pPlayer.lock()->Get_Weapon();
+
+	pWeapons.front().lock()->Set_RenderOnOff(true);
 
 	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_AVoid>().lock())
 	{

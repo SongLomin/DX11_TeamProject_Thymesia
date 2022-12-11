@@ -116,6 +116,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Elevator>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Door>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CVarg>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CJoker>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CSection_Eventer>();
 #endif
 
@@ -164,6 +165,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));
 	this->Load_CorvusModel();
 	this->Load_BossMobModel();
+	this->Load_EliteMobModel();
 	this->Load_NormalMobModel();
 
 #endif // _LOAD_CAPTURED_RESOURCE_
@@ -428,6 +430,7 @@ HRESULT CLoader::Loading_ForEditLevel()
 	this->Load_CorvusModel();
 	this->Load_BossMobModel();
 	this->Load_NormalMobModel();
+	this->Load_EliteMobModel();
 
 #endif // _MAP_TOOL_
 #endif // _JOJO_EFFECT_TOOL_
@@ -1037,6 +1040,21 @@ void CLoader::Load_NormalMobModel()
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(-90.f)) * XMMatrixRotationY(XMConvertToRadians(-90.f)) * XMMatrixRotationZ(XMConvertToRadians(-20.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Mon_Scarf", "../Bin/Resources/Meshes/NorMonster/Gardner/Scarf.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
+}
+
+void CLoader::Load_RareMobModel()
+{
+}
+
+void CLoader::Load_EliteMobModel()
+{
+	_matrix TransformMatrix = XMMatrixIdentity();
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.0037f, 0.0037f, 0.0037f);
+	GAMEINSTANCE->Load_Model("Elite_Joker", "../Bin/Resources/Meshes/EliteMonster/Joker/Joker.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Joker_Weapon", "../Bin/Resources/Meshes/EliteMonster/Joker/Hammer/Hammer.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 }
 
 void CLoader::Load_BossMobModel()

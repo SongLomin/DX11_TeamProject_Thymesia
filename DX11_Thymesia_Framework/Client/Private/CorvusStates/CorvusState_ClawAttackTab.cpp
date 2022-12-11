@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
 #include "PhysXController.h"
+#include "Weapon.h"
 
 
 GAMECLASS_C(CCorvusState_ClawAttackTab);
@@ -368,8 +369,16 @@ _bool CCorvusState_ClawAttackTab::Check_AndChangeNextState()
 		}
 	}
 
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.9f)
+	{
+		weak_ptr<CPlayer> pPlayer = Weak_Cast<CPlayer>(m_pOwner);
+		list<weak_ptr<CWeapon>>	pWeapons = pPlayer.lock()->Get_Weapon();
+
+		pWeapons.front().lock()->Set_RenderOnOff(true);
+	}
 
 
+	
 
 
 

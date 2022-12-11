@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
 #include "PhysXController.h"
+#include "Weapon.h"
 
 GAMECLASS_C(CCorvusState_Idle);
 CLONE_C(CCorvusState_Idle, CComponent)
@@ -58,12 +59,24 @@ void CCorvusState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	weak_ptr<CPlayer> pPlayer = Weak_Cast<CPlayer>(m_pOwner);
+
+	list<weak_ptr<CWeapon>>	pWeapons = pPlayer.lock()->Get_Weapon();
+
+
+	for (auto& elem : pWeapons)
+	{
+
+		elem.lock()->Set_RenderOnOff(true);
+	}
+
 	m_bFirstFoot = true;
 
 	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Climb_L_Down_End>().lock() ||
 		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Climb_R_Down_End>().lock() ||
 		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Climb_R_UP_End>().lock() ||
-		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Climb_L_UP_End>().lock())
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Climb_L_UP_End>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_CheckPointEnd>().lock())
 	{
 		m_bLadderLock = true;
 	}

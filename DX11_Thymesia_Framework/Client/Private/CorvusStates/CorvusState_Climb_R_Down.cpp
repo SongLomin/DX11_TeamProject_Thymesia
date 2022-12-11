@@ -44,7 +44,7 @@ void CCorvusState_Climb_R_Down::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	if (!Get_Enable())
 		return;
 
-	_vector fOffSet = { 0.f, -0.001047619047f ,0.f };
+	_vector fOffSet = { 0.f, -0.00088095238f ,0.f };
 
 	PxControllerFilters Filters;
 

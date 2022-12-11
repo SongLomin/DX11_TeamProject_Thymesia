@@ -73,32 +73,36 @@ HRESULT CWeapon::Render()
 
 	_int iPassIndex;
 	m_iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
-	for (_uint i(0); i < m_iNumMeshContainers; ++i)
+	if (m_bWeaponRenderOnOff)
 	{
-		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+		for (_uint i(0); i < m_iNumMeshContainers; ++i)
 		{
-
-		}
-
-		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-		{
-			iPassIndex = 0;
-		}
-		else
-		{
-			iPassIndex = 3;
-
-			/*if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+			if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			{
-				iPassIndex = 3;
+
+			}
+
+			if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+			{
+				iPassIndex = 0;
 			}
 			else
-				iPassIndex = 7;*/
-		}
+			{
+				iPassIndex = 3;
 
-		m_pShaderCom.lock()->Begin(iPassIndex);
-		m_pModelCom.lock()->Render_Mesh(i);
+				/*if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+				{
+					iPassIndex = 3;
+				}
+				else
+					iPassIndex = 7;*/
+			}
+
+			m_pShaderCom.lock()->Begin(iPassIndex);
+			m_pModelCom.lock()->Render_Mesh(i);
+		}
 	}
+	
 
 	return S_OK;
 }

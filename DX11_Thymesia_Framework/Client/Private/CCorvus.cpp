@@ -376,6 +376,11 @@ void CCorvus::OnEventMessage(_uint iArg)
 	{
 		Change_State<CVarg_Execution>();
 	}
+
+	if ((_uint)EVENT_TYPE::ON_SITUP == iArg)
+	{
+		Change_State<CCorvusState_CheckPointEnd>();
+	}
 }
 
 void CCorvus::Free()

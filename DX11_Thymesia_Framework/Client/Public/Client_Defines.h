@@ -218,6 +218,7 @@ namespace Client
 		ON_EXIT_SECTION,
 		ON_SITUP,
 		ON_VARGEXECUTION,
+		ON_SITUP,
 		EVENT_END
 	};
 
@@ -321,6 +322,8 @@ namespace Client
 		WEAPON_KNIFE,
 		WEAPON_BOSSVARG,
 		WEAPON_SCYTHE,
+		WEAPON_JOKER,
+		WEAPON_GREATSWORD,
 		MON_WEAPON_END
 	};
 
@@ -333,6 +336,7 @@ namespace Client
 		SHIELDAXEMAN,	   // 실드도끼남자
 		BALLOON,		   // 풍선
 		ENHANCE_GARDENER,  // 강화 가드너
+
 
 		START_ELITE_MONSTER = 10000,
 		JOCKER,
