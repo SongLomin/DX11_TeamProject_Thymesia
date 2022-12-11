@@ -26,6 +26,10 @@ private: /* For. Fog */
 	_float4 m_vFogColor = {};
 	_float	m_fFogRange = 0.f;
 
+private: /* For. ShadowLight */
+	_float3 m_vEye = {};
+	_float3 m_vLookAt = {};
+
 private:
     void Free();
 
