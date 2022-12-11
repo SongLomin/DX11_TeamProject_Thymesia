@@ -666,7 +666,7 @@ technique11 DefaultTechnique
 {
 	pass Default // 0
 	{
-		SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
