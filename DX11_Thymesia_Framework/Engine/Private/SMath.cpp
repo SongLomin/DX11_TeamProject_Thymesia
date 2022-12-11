@@ -257,6 +257,11 @@ float ENGINE_DLL Engine::SMath::Lerp(const float& fLeft, const float& fRight, fl
 	return (fLeft * (1.f - fRatio)) + (fRight * (fRatio));
 }
 
+//XMVECTOR ENGINE_DLL Engine::SMath::Lerp_BezierCurve(FXMVECTOR In_Left, FXMVECTOR In_Mid, FXMVECTOR In_Right, const _float In_fRatio)
+//{
+//	return XMVECTOR ENGINE_DLL();
+//}
+
 int ENGINE_DLL Engine::SMath::Random(const int& _iMin, const int& _iMax)
 {
 	if (_iMin >= _iMax)

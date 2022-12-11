@@ -50,6 +50,7 @@ namespace Engine
 		void			ENGINE_DLL Mul_Float4(XMFLOAT4* InOut_Left, const float& Right);
 
 		float			ENGINE_DLL Lerp(const float& fLeft, const float& fRight, float fRatio);
+		//XMVECTOR		ENGINE_DLL Lerp_BezierCurve(FXMVECTOR In_Left, FXMVECTOR In_Mid, FXMVECTOR In_Right, const _float In_fRatio);
 
 		int				ENGINE_DLL Random(const int& _iMin, const int& _iMax);
 		float			ENGINE_DLL fRandom(const float& _fMin, const float& _fMax);

@@ -16,7 +16,7 @@ HRESULT CWindow_AnimationModelView::Initialize()
 {
     ImGuiWindowFlags window_flags = 0;
     window_flags |= ImGuiWindowFlags_HorizontalScrollbar;
-    window_flags |= ImGuiWindowFlags_NoResize;
+    // window_flags |= ImGuiWindowFlags_NoResize;
     // window_flags |= ImGuiWindowFlags_NoMove;
 
     m_bEnable = true;
@@ -34,8 +34,6 @@ void CWindow_AnimationModelView::Start()
 void CWindow_AnimationModelView::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
-
-    
 }
 
 HRESULT CWindow_AnimationModelView::Render()
@@ -54,7 +52,7 @@ HRESULT CWindow_AnimationModelView::Render()
             //ImGui::InputText("##ModelKey", m_szModelKey, MAX_PATH);
 
             ImGui::Text("Model List");
-            if (ImGui::BeginListBox("##Model List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+            if (ImGui::BeginListBox("##Model List", ImVec2(-FLT_MIN, 10 * ImGui::GetTextLineHeightWithSpacing())))
             {
 
                 for (int i = 0; i < m_AllModelKeys.size(); i++)
@@ -77,75 +75,75 @@ HRESULT CWindow_AnimationModelView::Render()
                 Update_PreViewModel();
             }
 
-            if (ImGui::CollapsingHeader("Load NoAnimModel"), ImGuiTreeNodeFlags_DefaultOpen)
-            {
-                //ImGui::Text("Input Model Key");
-                //ImGui::InputText("##ModelKey", m_szModelKey, MAX_PATH);
+            //if (ImGui::CollapsingHeader("Load NoAnimModel"), ImGuiTreeNodeFlags_DefaultOpen)
+            //{
+            //    //ImGui::Text("Input Model Key");
+            //    //ImGui::InputText("##ModelKey", m_szModelKey, MAX_PATH);
 
-                ImGui::Text(" NoAnimModel List");
-                if (ImGui::BeginListBox("## NoAnimModel List", ImVec2(-FLT_MIN, 15 * ImGui::GetTextLineHeightWithSpacing())))
-                {
+            //    ImGui::Text(" NoAnimModel List");
+            //    if (ImGui::BeginListBox("## NoAnimModel List", ImVec2(-FLT_MIN, 15 * ImGui::GetTextLineHeightWithSpacing())))
+            //    {
 
-                    for (int i = 0; i < m_AllNoAnimModelKeys.size(); i++)
-                    {
-                        const bool is_selected = (m_CurrentNoAnimModelIndex == i);
-                        if (ImGui::Selectable(m_AllNoAnimModelKeys[i].c_str(), is_selected))
-                            m_CurrentNoAnimModelIndex = i;
+            //        for (int i = 0; i < m_AllNoAnimModelKeys.size(); i++)
+            //        {
+            //            const bool is_selected = (m_CurrentNoAnimModelIndex == i);
+            //            if (ImGui::Selectable(m_AllNoAnimModelKeys[i].c_str(), is_selected))
+            //                m_CurrentNoAnimModelIndex = i;
 
-                        // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-                        if (is_selected)
-                            ImGui::SetItemDefaultFocus();
-                    }
-                    ImGui::EndListBox();
-                }
+            //            // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+            //            if (is_selected)
+            //                ImGui::SetItemDefaultFocus();
+            //        }
+            //        ImGui::EndListBox();
+            //    }
 
-                if (ImGui::Button("Load_NonAnim"))
-                {
-                    // TODO : comment because explode
-                    m_pPreViewNoAnimModel.lock()->Get_Component<CModel>().lock()->
-                        Get_Owner().lock()->
-                            Get_Component<CModel>().lock()->Init_Model(m_AllNoAnimModelKeys[m_CurrentModelIndex].c_str());
-                   
-                }
-            }
+            //    if (ImGui::Button("Load_NonAnim"))
+            //    {
+            //        // TODO : comment because explode
+            //        m_pPreViewNoAnimModel.lock()->Get_Component<CModel>().lock()->
+            //            Get_Owner().lock()->
+            //                Get_Component<CModel>().lock()->Init_Model(m_AllNoAnimModelKeys[m_CurrentModelIndex].c_str());
+            //       
+            //    }
+            //}
 
 
-            if (m_pPreViewModel.lock())
-            {
-                if (ImGui::CollapsingHeader("Bone Collider"), ImGuiTreeNodeFlags_DefaultOpen)
-                {
+            //if (m_pPreViewModel.lock())
+            //{
+            //    if (ImGui::CollapsingHeader("Bone Collider"), ImGuiTreeNodeFlags_DefaultOpen)
+            //    {
 
-                    ImGui::Text("Bone List");
-                    if (ImGui::BeginListBox("##Bone List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
-                    {
+            //        ImGui::Text("Bone List");
+            //        if (ImGui::BeginListBox("##Bone List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+            //        {
 
-                        for (int i = 0; i < m_AllBoneNames.size(); i++)
-                        {
-                            const bool is_selected = (m_CurrentBoneIndex == i);
-                            if (ImGui::Selectable(m_AllBoneNames[i].c_str(), is_selected))
-                                m_CurrentBoneIndex = i;
+            //            for (int i = 0; i < m_AllBoneNames.size(); i++)
+            //            {
+            //                const bool is_selected = (m_CurrentBoneIndex == i);
+            //                if (ImGui::Selectable(m_AllBoneNames[i].c_str(), is_selected))
+            //                    m_CurrentBoneIndex = i;
 
-                            // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-                            if (is_selected)
-                                ImGui::SetItemDefaultFocus();
-                        }
-                        ImGui::EndListBox();
-                    }
+            //                // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+            //                if (is_selected)
+            //                    ImGui::SetItemDefaultFocus();
+            //            }
+            //            ImGui::EndListBox();
+            //        }
 
-                    if (ImGui::Button("Create"))
-                    {
-                        m_pPreViewModel.lock()->Clear_DebugWeapon();
-                        m_pPreViewModel.lock()->Add_DebugWeapon(m_AllBoneNames[m_CurrentBoneIndex]);
-                    }
+            //        if (ImGui::Button("Create"))
+            //        {
+            //            m_pPreViewModel.lock()->Clear_DebugWeapon();
+            //            m_pPreViewModel.lock()->Add_DebugWeapon(m_AllBoneNames[m_CurrentBoneIndex]);
+            //        }
 
-                    ImGui::SameLine();
+            //        ImGui::SameLine();
 
-                    /*if (ImGui::Button("Clear"))
-                    {
-                        m_pPreViewModel.lock()->Clear_DebugWeapon();
-                    }*/
-                }
-            }
+            //        /*if (ImGui::Button("Clear"))
+            //        {
+            //            m_pPreViewModel.lock()->Clear_DebugWeapon();
+            //        }*/
+            //    }
+            //}
             
         }
 

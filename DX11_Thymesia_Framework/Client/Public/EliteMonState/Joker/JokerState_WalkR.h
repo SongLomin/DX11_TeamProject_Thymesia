@@ -1,5 +1,5 @@
 #pragma once
-#include "EliteMonState/EliteStateBase.h"
+#include "JokerStateBase.h"
 
 BEGIN(Engine)
 class CModel;
@@ -7,12 +7,12 @@ END
 
 BEGIN(Client)
 
-class CJokerState_Idle :
-	public CEliteStateBase
+class CJokerState_WalkR :
+	public CJokerStateBase
 {
-	GAMECLASS_H(CJokerState_Idle);
-	CLONE_H(CJokerState_Idle, CComponent)
-		SHALLOW_COPY(CJokerState_Idle)
+	GAMECLASS_H(CJokerState_WalkR);
+	CLONE_H(CJokerState_WalkR, CComponent)
+		SHALLOW_COPY(CJokerState_WalkR)
 
 public:
 	void Set_TurnCheck(_bool TurnCheck) { m_bTurnCheck = TurnCheck; }
@@ -36,9 +36,12 @@ private:
 	_bool    m_bBackReset = false;
 
 private:
-	//void Call_AnimationEnd();
+
+	_float m_fMaxSpeed = 3.f;
+	_float m_fCurrentSpeed = 1.2f;
+	_float m_fAccel = 0.f;
+
 protected:
-	//virtual void OnDestroy() override;
 	void Free();
 
 };

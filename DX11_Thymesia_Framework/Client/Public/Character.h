@@ -23,6 +23,7 @@ public:
     // CGameObject을(를) 통해 상속됨
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize(void* pArg) override;
+    virtual HRESULT Start() override;
 
 public:
     weak_ptr<CStateBase> Get_PreState() const;
@@ -72,6 +73,8 @@ protected:
 
     _float m_fDissolveAmount = 0.f;
 
+    string                  m_szClientComponentPath = "../Bin/ClientComponentData/";
+
 private:
     _bool m_isEdit = false;
     _bool     m_bSuperArmor = false;
@@ -79,7 +82,6 @@ private:
 
 private: /* For. RootMotion */
     
-
 
 public:
     virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage);

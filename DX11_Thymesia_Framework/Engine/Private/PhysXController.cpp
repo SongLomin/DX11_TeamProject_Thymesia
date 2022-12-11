@@ -78,6 +78,9 @@ PxQueryHitType::Enum CPhysXController::preFilter(const PxFilterData& filterData,
 
 PxQueryHitType::Enum CPhysXController::postFilter(const PxFilterData& filterData, const PxQueryHit& hit)
 {
+	if (!Get_Enable())
+		return PxQueryHitType::eNONE;
+
 	PxFilterData OtherFilter = hit.shape->getSimulationFilterData();
 
 	if ((filterData.word0 & OtherFilter.word1) && (OtherFilter.word0 & filterData.word1))
@@ -233,6 +236,8 @@ PxControllerCollisionFlags CPhysXController::MoveGravity(const _float fDeltaTime
 	fDeltaHeight += 0.0001f;
 	m_fGravityAcc += fDeltaTime;
 
+	m_fGravityAcc = min(3.f, m_fGravityAcc);
+
 	return m_pController->move({ 0.f, fDeltaHeight, 0.f }, 0.f, fDeltaTime, filters);
 }
 
@@ -266,8 +271,6 @@ void CPhysXController::OnEnable(void* pArg)
 	{
 		GET_SINGLE(CPhysX_Manager)->Create_Controller(m_pControllerDesc, &m_pController);
 	}*/
-
-	m_EnableSimulation = true;
 }
 
 void CPhysXController::OnDisable()
@@ -280,7 +283,6 @@ void CPhysXController::OnDisable()
 		m_pController = nullptr;
 	}*/
 
-	m_EnableSimulation = false;
 }
 
 void CPhysXController::OnDestroy()

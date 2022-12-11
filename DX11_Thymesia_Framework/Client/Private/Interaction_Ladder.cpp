@@ -58,13 +58,15 @@ HRESULT CInteraction_Ladder::Initialize(void* pArg)
 
     m_eInteractionType = INTERACTION_LADDER;
 
-    m_fCullingOffsetRange = 9999.f;
+    
     return S_OK;
 }
 
 HRESULT CInteraction_Ladder::Start()
 {
     __super::Start();
+
+    m_fCullingOffsetRange = 30.f;
 
     return S_OK;
 }
@@ -160,9 +162,6 @@ void CInteraction_Ladder::Load_FromJson(const json& In_Json)
     m_fOffset  = In_Json["Offset"];
     m_iMidSize = In_Json["MidSize"];
 
-    //m_pModelCom.lock()->Init_Model("P_Ladder02_Down", "");
-    //m_pUpModelCom.lock()->Init_Model("P_Ladder02_Up", "");
-
     if (0 < m_iMidSize)
     {
         vector<INSTANCE_MESH_DESC> Prop_Desc;
@@ -242,10 +241,7 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Up()
         else
         {
             if (FAILED(m_pUpModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-            {
                 m_iPassIndex = 6;
-
-            }
             else
                 m_iPassIndex = 7;
         }
@@ -347,10 +343,7 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Down()
         else
         {
             if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-            {
                 m_iPassIndex = 6;
-
-            }
             else
                 m_iPassIndex = 7;
         }

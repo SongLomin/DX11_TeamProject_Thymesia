@@ -10,16 +10,16 @@
 #include "Character.h"
 #include "VargStates.h"
 
-GAMECLASS_C(CVargBossState_Stun_Exe_End);
-CLONE_C(CVargBossState_Stun_Exe_End, CComponent)
+GAMECLASS_C(CVargBossState_Exe_End);
+CLONE_C(CVargBossState_Exe_End, CComponent)
 
-HRESULT CVargBossState_Stun_Exe_End::Initialize_Prototype()
+HRESULT CVargBossState_Exe_End::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 	return S_OK;
 }
 
-HRESULT CVargBossState_Stun_Exe_End::Initialize(void* pArg)
+HRESULT CVargBossState_Exe_End::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
@@ -27,7 +27,7 @@ HRESULT CVargBossState_Stun_Exe_End::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CVargBossState_Stun_Exe_End::Start()
+void CVargBossState_Exe_End::Start()
 {
 	__super::Start();
 
@@ -38,7 +38,7 @@ void CVargBossState_Stun_Exe_End::Start()
 	
 }
 
-void CVargBossState_Stun_Exe_End::Tick(_float fTimeDelta)
+void CVargBossState_Exe_End::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
@@ -47,7 +47,7 @@ void CVargBossState_Stun_Exe_End::Tick(_float fTimeDelta)
 }
 
 
-void CVargBossState_Stun_Exe_End::LateTick(_float fTimeDelta)
+void CVargBossState_Exe_End::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
@@ -58,12 +58,12 @@ void CVargBossState_Stun_Exe_End::LateTick(_float fTimeDelta)
 
 
 
-void CVargBossState_Stun_Exe_End::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+void CVargBossState_Exe_End::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
 	CBossStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 }
 
-void CVargBossState_Stun_Exe_End::OnStateStart(const _float& In_fAnimationBlendTime)
+void CVargBossState_Exe_End::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
@@ -78,7 +78,7 @@ void CVargBossState_Stun_Exe_End::OnStateStart(const _float& In_fAnimationBlendT
 
 }
 
-void CVargBossState_Stun_Exe_End::OnStateEnd()
+void CVargBossState_Exe_End::OnStateEnd()
 {
 	__super::OnStateEnd();
 
@@ -87,12 +87,12 @@ void CVargBossState_Stun_Exe_End::OnStateEnd()
 
 
 
-void CVargBossState_Stun_Exe_End::Free()
+void CVargBossState_Exe_End::Free()
 {
 
 }
 
-_bool CVargBossState_Stun_Exe_End::Check_AndChangeNextState()
+_bool CVargBossState_Exe_End::Check_AndChangeNextState()
 {
 
 	if (!Check_Requirement())

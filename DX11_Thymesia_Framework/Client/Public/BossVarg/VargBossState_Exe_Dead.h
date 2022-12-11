@@ -7,12 +7,12 @@ END
 
 BEGIN(Client)
 
-class CVargBossState_Stun_Exe_Dead :
+class CVargBossState_Exe_Dead :
 	public CVargBossStateBase
 {
-	GAMECLASS_H(CVargBossState_Stun_Exe_Dead);
-	CLONE_H(CVargBossState_Stun_Exe_Dead, CComponent)
-		SHALLOW_COPY(CVargBossState_Stun_Exe_Dead)
+	GAMECLASS_H(CVargBossState_Exe_Dead);
+	CLONE_H(CVargBossState_Exe_Dead, CComponent)
+		SHALLOW_COPY(CVargBossState_Exe_Dead)
 
 
 

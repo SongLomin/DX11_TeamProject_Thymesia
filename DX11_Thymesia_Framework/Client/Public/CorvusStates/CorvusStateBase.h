@@ -36,7 +36,7 @@ protected:
     virtual _bool Check_RequirementAttackClose(weak_ptr<CGameObject>& Out_pGameObject);
 
 public:
-    virtual void Call_OtherControllerHit(const PxControllersHit& In_hit);
+    virtual void Call_OtherControllerHit(const PxControllersHit& In_hit) override;
 
 protected:
     virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage) override;

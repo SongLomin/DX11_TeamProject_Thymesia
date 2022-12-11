@@ -49,9 +49,6 @@ void CUI_Button_Base::Update_MouseOver()
 	GetCursorPos(&pt);
 	ScreenToClient(g_hWnd, &pt);
 
-	if (KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))
-		int a = 10;
-
 	if (pt.x < ((m_tUIDesc.fX) - (m_tUIDesc.fSizeX * 0.5f)) ||
 		pt.x >((m_tUIDesc.fX) + (m_tUIDesc.fSizeX * 0.5f)) ||
 		pt.y < ((m_tUIDesc.fY) - (m_tUIDesc.fSizeY * 0.5f)) ||
@@ -62,9 +59,8 @@ void CUI_Button_Base::Update_MouseOver()
 		{
 			Callback_OnMouseOut();
 			OnMouseOut();
-		}
-		m_eButtonState = UI_BUTTON_OUT;
-		
+			m_eButtonState = UI_BUTTON_OUT;
+		}		
 	}
 	else 
 	{
@@ -72,10 +68,8 @@ void CUI_Button_Base::Update_MouseOver()
 		{
 			Callback_OnMouseOver();
 			OnMouseOver();
+			m_eButtonState = UI_BUTTON_OVER;
 		}
-		
-		m_eButtonState = UI_BUTTON_OVER;
-		
 	}
 }
 

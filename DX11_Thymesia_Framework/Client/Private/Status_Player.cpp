@@ -16,6 +16,9 @@ HRESULT CStatus_Player::Initialize(void* pArg)
 {
     Init_Status(pArg);
 
+    m_szFieldName = "Status_Player";
+
+ 
     return S_OK;
 }
 
@@ -43,6 +46,17 @@ void CStatus_Player::LateTick(_float fTimeDelta)
 
 }
 
+void CStatus_Player::Write_Json(json& Out_Json)
+{
+    __super::Load_FromJson(Out_Json);
+
+}
+
+void CStatus_Player::Load_FromJson(const json& In_Json)
+{
+    __super::Load_FromJson(In_Json);
+}
+
 _bool CStatus_Player::Is_Dead()
 {
     return m_tDesc.m_fCurrentHP <= 0.f + DBL_EPSILON ? true : false;
@@ -50,6 +64,8 @@ _bool CStatus_Player::Is_Dead()
 
 void CStatus_Player::Init_Status(const void* pArg)
 {
+    ZeroMemory(&m_tDesc, sizeof(PLAYERDESC));
+    m_tDesc.m_fCurrentHP = 300.f;
     m_tDesc.m_fMaxHP = 300.f;
     m_tDesc.m_fMaxMP = 150.f;
     m_tDesc.m_fNormalAtk = 25.f;
@@ -90,10 +106,10 @@ void CStatus_Player::Add_Damage(const _float& In_fDamage)
 
 void CStatus_Player::Full_Recovery()
 {
-    m_tDesc.m_fCurrentHP = m_tDesc.m_fMaxHP;
+    Heal_Player(m_tDesc.m_fMaxHP);
+
     m_tDesc.m_fCurrentMP = m_tDesc.m_fMaxMP;
     m_tDesc.m_iCurrentFeather = m_tDesc.m_iMaxFeather;
-
 
     m_PotionDesc[(_uint)POTIONTYPE::POTION_DEFAULT].m_iCurrentPotion =
         m_PotionDesc[(_uint)POTIONTYPE::POTION_DEFAULT].m_iMaxPotion;
@@ -101,9 +117,10 @@ void CStatus_Player::Full_Recovery()
     m_PotionDesc[(_uint)POTIONTYPE::POTION_BUFF].m_iCurrentPotion =
         m_PotionDesc[(_uint)POTIONTYPE::POTION_BUFF].m_iMaxPotion;
 
-
     m_PotionDesc[(_uint)POTIONTYPE::POTION_IMMEDIATE].m_iCurrentPotion =
         m_PotionDesc[(_uint)POTIONTYPE::POTION_IMMEDIATE].m_iMaxPotion;
+
+    Callback_ChangePotion(m_PotionDesc[m_iCurrentPotionIndex].m_iCurrentPotion, m_PotionDesc[m_iCurrentPotionIndex].m_iMaxPotion);
 }
 
 void CStatus_Player::Get_Desc(void* Out_pDesc)
@@ -116,6 +133,24 @@ CStatus_Player::PLAYERDESC CStatus_Player::Get_Desc() const
     return m_tDesc;
 }
 
+_bool CStatus_Player::Get_UseableCurrentPotion()
+{
+    return m_PotionDesc[m_iCurrentPotionIndex].m_iCurrentPotion > 0 ? true : false;
+}
+
+void CStatus_Player::Use_Potion()
+{
+    m_PotionDesc[m_iCurrentPotionIndex].m_iCurrentPotion -= 1;
+
+    m_tDesc.m_fCurrentHP += m_tDesc.m_fMaxHP * m_PotionDesc[m_iCurrentPotionIndex].m_fHealingAmount;
+    
+    if (m_tDesc.m_fCurrentHP >= m_tDesc.m_fMaxHP)
+        m_tDesc.m_fCurrentHP = m_tDesc.m_fMaxHP;
+    
+    Callback_ChangeHP(m_tDesc.m_fCurrentHP);
+    Callback_ChangePotion(m_PotionDesc[m_iCurrentPotionIndex].m_iCurrentPotion, m_PotionDesc[m_iCurrentPotionIndex].m_iMaxPotion);
+}
+
 void CStatus_Player::Heal_Player(const _float fAmount)
 {
     m_tDesc.m_fCurrentHP += fAmount;
@@ -123,6 +158,16 @@ void CStatus_Player::Heal_Player(const _float fAmount)
         m_tDesc.m_fCurrentHP = m_tDesc.m_fMaxHP;
 
     Callback_ChangeHP(m_tDesc.m_fCurrentHP);
+}
+
+_uint CStatus_Player::Get_CurrentPotionCount()
+{
+    return m_PotionDesc[m_iCurrentPotionIndex].m_iCurrentPotion;
+}
+
+_uint CStatus_Player::Get_MaxPotionCount()
+{
+    return m_PotionDesc[m_iCurrentPotionIndex].m_iMaxPotion;
 }
 
 void CStatus_Player::Set_Desc(void* In_Desc)

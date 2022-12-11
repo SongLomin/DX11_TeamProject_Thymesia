@@ -19,6 +19,7 @@
 #include "BossVarg/VargBossState_Exe_Start.h"
 #include "BossVarg/VargBossState_Hurt.h"
 #include "BossVarg/VargBossState_Idle.h"
+#include "BossVarg/VargBossState_IdleGeneral.h"
 #include "BossVarg/VargBossState_Parry.h"
 #include "BossVarg/VargBossState_Roar_Getup.h"
 #include "BossVarg/VargBossState_Run.h"

@@ -7,7 +7,7 @@
 #include "Animation.h"
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
-
+#include "PhysXCharacterController.h"
 
 GAMECLASS_C(CCorvusState_SprintAttack);
 CLONE_C(CCorvusState_SprintAttack, CComponent)
@@ -110,7 +110,8 @@ void CCorvusState_SprintAttack::OnStateStart(const _float& In_fAnimationBlendTim
 	}
 	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 
-
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
+		bind(&CCorvusState_SprintAttack::Call_OtherControllerHit, this, placeholders::_1);
 
 
 #ifdef _DEBUG
@@ -128,6 +129,9 @@ void CCorvusState_SprintAttack::OnStateEnd()
 	//Disable_Weapons();
 	m_IsNextAttack = false;
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
+		bind(&CCorvusState_SprintAttack::Call_OtherControllerHit, this, placeholders::_1);
 }
 
 void CCorvusState_SprintAttack::OnEventMessage(_uint iArg)

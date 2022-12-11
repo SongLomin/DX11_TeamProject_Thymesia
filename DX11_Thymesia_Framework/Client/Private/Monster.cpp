@@ -60,7 +60,6 @@ HRESULT CMonster::Start()
 {
     __super::Start();
 
-
     return S_OK;
 }
 
@@ -211,9 +210,6 @@ void  CMonster::Load_FromJson(const json& In_Json)
     GET_SINGLE(CGameManager)->Registration_Section(m_tLinkStateDesc.iSectionIndex, Weak_Cast<CGameObject>(m_this));
 
     Init_Desc();
-
-    if ((_uint)LEVEL::LEVEL_EDIT == m_CreatedLevel)
-        Set_Enable(true);
 }
 
 void CMonster::Init_Desc()

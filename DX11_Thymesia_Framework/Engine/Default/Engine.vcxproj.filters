@@ -239,6 +239,9 @@
     <ClInclude Include="..\Public\PhysXController.h">
       <Filter>01. Elements\03. Component\14. PhysXController</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VIBuffer_Curve.h">
+      <Filter>01. Elements\03. Component\01. VIBuffer\12. Curve</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -459,6 +462,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Easing_Utillity.cpp">
       <Filter>01. Elements\05. Utility\02. Easing_Utillity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\VIBuffer_Curve.cpp">
+      <Filter>01. Elements\03. Component\01. VIBuffer\12. Curve</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -698,6 +704,9 @@
     </Filter>
     <Filter Include="01. Elements\03. Component\11. Collider">
       <UniqueIdentifier>{c271f883-4bee-4c5d-b829-a78a7f5f0177}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Elements\03. Component\01. VIBuffer\12. Curve">
+      <UniqueIdentifier>{9a64bd57-4b5a-4841-8180-1fb880d790fb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

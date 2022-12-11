@@ -6,6 +6,7 @@
 #include "Monster.h"
 #include "Model.h"
 #include "Player.h"
+#include "JokerStates.h"
 
 
 GAMECLASS_C(CEliteStateBase);
@@ -264,47 +265,51 @@ void CEliteStateBase::TurnMechanism()
 	_float fDistance = Get_DistanceWithPlayer();
 
 
-//	if (fDistance > 3.f)
-//	{
-//		if (ComputeAngleWithPlayer() <= 0.f) // 90일때 0 90보다크면 -값이다 90보다 작으면 +값이다
-//		{
-//			switch (ComputeDirectionToPlayer())
-//			{
-//			case 1:
-//				Get_OwnerCharacter().lock()->Change_State<CVargBossState_TurnR>(0.05f);
-//				break;
-//			case -1:
-//				Get_OwnerCharacter().lock()->Change_State<CVargBossState_TurnL>(0.05f);
-//				break;
-//			default:
-//				assert(0);
-//				return;
-//			}
-//		}
-//
-//		else
-//		{
-//			Rotation_TargetToLookDir();
-//			Get_Owner().lock()->Get_Component<CVargBossState_Idle>().lock()->Set_TurnCheck(false);
-//			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
-//		}
-//	}
-//	else
-//	{
-//		if (ComputeAngleWithPlayer() <= 0.f)
-//		{
-//			Get_OwnerCharacter().lock()->Change_State<CVargBossState_TurnAttack>(0.05f);
-//		}
-//		else
-//		{
-//			Rotation_TargetToLookDir();
-//			Get_Owner().lock()->Get_Component<CVargBossState_Idle>().lock()->Set_TurnCheck(false);
-//			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
-//		}
-//
-//	}
-//
-//
+	if (fDistance > 3.f)
+	{
+		if (ComputeAngleWithPlayer() <= 0.f) // 90일때 0 90보다크면 -값이다 90보다 작으면 +값이다
+		{
+			switch (ComputeDirectionToPlayer())
+			{
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CJokerState_TurnR90>(0.05f);
+				break;
+			case -1:
+				Get_OwnerCharacter().lock()->Change_State<CJokerState_TurnL90>(0.05f);
+				break;
+			default:
+				assert(0);
+				return;
+			}
+		}
+
+		else
+		{
+			Rotation_TargetToLookDir();
+			Get_Owner().lock()->Get_Component<CJokerState_Idle>().lock()->Set_TurnCheck(false);
+			Get_OwnerCharacter().lock()->Change_State<CJokerState_Idle>(0.05f);
+		}
+	}
+	else
+	{
+		//오른쪽 왼쪾 구분해주고 	
+		if (ComputeAngleWithPlayer() <= 0.f)
+		{
+			if (ComputeDirectionToPlayer() == 1)
+			{
+				//오른쪽
+				Get_OwnerCharacter().lock()->Change_State<CJokerState_TurnAtkR>(0.05f);
+			}
+			else
+			{
+
+				Get_OwnerCharacter().lock()->Change_State<CJokerState_TurnAtkL>(0.05f);
+			}
+		}
+
+	}
+
+
 
 
 

@@ -25,18 +25,27 @@ public:
     virtual void    Tick(_float fTimeDelta) override;
     virtual void    LateTick(_float fTimeDelta) override;
 
-public:
+public://Node Search Function
+    _bool Is_Active() { return m_bActive; }
+
     TALENT_RESULT Check_Requiment(const int In_iPoint, int& Out_iCost, list<weak_ptr<CTalent>>& Out_pVisitNodes);
+    
     void Find_ActiveParent_Recursive(weak_ptr<CTalent> In_pTalent, list<weak_ptr<CTalent>>& out_pActiveParent, int& out_iDepth);
+    
     void Find_ActiveChild_Recursive(weak_ptr<CTalent> In_pTalent, list<weak_ptr<CTalent>>& out_pActiveChild, int& out_iDepth);
+    
     _bool Check_ActiveAble_ThisNode();
+    
     void Find_AllParent_Recursive(weak_ptr<CTalent> In_pTalent, list<weak_ptr<CTalent>>& out_pActiveParent);
 
-    void    Set_TalentInfo(_bool In_bActive, 
-        weak_ptr<CTalent_Effect> In_pEffet, weak_ptr<CTalent> In_pParent);
+    void    Set_TalentInfo(_bool In_bActive,  weak_ptr<CTalent_Effect> In_pEffet, weak_ptr<CTalent> In_pParent);
+    
     void    Set_Parent(weak_ptr<CTalent> In_Parent);
+    
     void Set_Active(_bool Active);
+
     weak_ptr<CTalent_Effect> Get_Effect() { return m_pEffect; }
+    
     list<weak_ptr<CTalent>> Get_Child()
     {
         return m_pChilds;
@@ -50,11 +59,13 @@ public:
         return m_iNodeLevel;
     }
 
-    void Set_TALENT_NAME(TALENT_NAME TalentName);
+    void            Set_TalentName(TALENT_NAME TalentName);
+    TALENT_NAME     Get_TalentName() { return m_eTalentName; }
+
 
 public:
-    FDelegate<TALENT_NAME>		Callback_OnMouseOver;
-    FDelegate<>		            Callback_OnMouseOut;
+    FDelegate<weak_ptr<CTalent>>		Callback_OnMouseOver;
+    FDelegate<weak_ptr<CTalent>>		Callback_OnMouseOut;
 
 private:
     void                        Add_TalentChild(weak_ptr<CTalent> In_pChild);
@@ -68,16 +79,12 @@ private:
 public:
     virtual void	OnMouseOver()		override;
     virtual void	OnMouseOut()		override;
-    virtual void	OnLButtonDown()		override;
     virtual void	OnLButtonClick()	override;
 
     virtual void	CheckMouseOver()      override;
     virtual void	CheckMouseOut()       override;
-    virtual void	CheckLButtonClick()   override;
+    virtual void	CheckLButtonClick(_bool bActive);
                                           
-    virtual void	UnCheckMouseOver()    override;
-    virtual void	UnCheckMouseOut()     override;
-    virtual void	UnCheckLButtonClick() override;
 
     void            Set_Root();
 public:

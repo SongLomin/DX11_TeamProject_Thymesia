@@ -23,6 +23,7 @@
 #include "Interaction_CheckPoint.h"
 #include "Interaction_Elevator.h"
 #include "Interaction_Door.h"
+#include "Interaction_Note.h"
 #include "Section_Eventer.h"
 
 #include "EditGround.h"
@@ -30,13 +31,14 @@
 #include "EditInstanceProp.h"
 #include "EditMapCollider.h"
 #include "EditSetActor.h"
+#include "EditLights.h"
 
 #include "CCorvus.h"
 #include "PreViewAnimationModel.h"
 
 #include "Player_HPBar.h"
 #include "Player_MPBar.h"
-#include "Player_Memory.h"
+#include "HUD_Player_Memory.h"
 #include "Player_PotionUI.h"
 #include "Player_FeatherUI.h"
 
@@ -50,3 +52,5 @@
 #include "Status_Player.h"
 #include "Status_Monster.h"
 #include "Attack_Area.h"
+
+#include "TargetCurve.h"

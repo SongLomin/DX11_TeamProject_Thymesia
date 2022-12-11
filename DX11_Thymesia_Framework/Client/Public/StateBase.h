@@ -48,6 +48,8 @@ public:
 public:
     _bool Get_NearGameObjectInDistance(weak_ptr<CGameObject>& Out_pGameObject, list<weak_ptr<CGameObject>> In_pGameObjects, const _float In_fDistance);
 
+public:
+    virtual void Call_OtherControllerHit(const PxControllersHit& In_hit) {};
 
 
 protected:

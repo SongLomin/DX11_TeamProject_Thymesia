@@ -47,12 +47,13 @@ void CCorvusState_RunFL::Tick(_float fTimeDelta)
 
 	m_fCurrentSpeed += m_fAccel * fTimeDelta;
 	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
+	_float fRealSpeed = m_fCurrentSpeed * fTimeDelta * 0.7071067811865475f;
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 
 	PxControllerFilters Filters;
 
-	m_pPhysXControllerCom.lock()->MoveWithRotation({ -m_fCurrentSpeed * fTimeDelta, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
+	m_pPhysXControllerCom.lock()->MoveWithRotation({ -m_fCurrentSpeed * fTimeDelta * 0.70710678118f, 0.f, m_fCurrentSpeed * fTimeDelta * 0.70710678118f }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
 
 	//m_pTransformCom.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta, m_pNaviCom);
 }
@@ -125,7 +126,21 @@ _bool CCorvusState_RunFL::Check_AndChangeNextState()
 		if (Check_RequirementAttackState())
 		{
 
-			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
+			weak_ptr<CGameObject> pTargetObject;
+
+			if (Check_RequirementExcuteState(pTargetObject))
+			{
+				_vector vTargetPos = pTargetObject.lock()->Get_Transform()->Get_Position();
+				m_pTransformCom.lock()->LookAt2D(vTargetPos);
+				Get_OwnerPlayer()->Change_State<CCorvusState_NorMob_Execution>();
+				Get_OwnerPlayer()->Get_CurState().lock()->OnEventMessage(Weak_Cast<CBase>(pTargetObject));
+			}
+			else
+			{
+
+				Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
+
+			};
 			return true;
 		}
 

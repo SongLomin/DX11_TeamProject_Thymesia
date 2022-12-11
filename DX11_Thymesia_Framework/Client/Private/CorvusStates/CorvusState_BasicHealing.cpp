@@ -65,7 +65,8 @@ void CCorvusState_BasicHealing::OnStateStart(const _float& In_fAnimationBlendTim
 	cout << "NorMonState: RunStart -> OnStateStart" << endl;
 #endif // _DEBUG_COUT_
 	
-	Weak_StaticCast<CStatus_Player>(m_pStatusCom).lock()->Heal_Player(300.f);
+	Weak_StaticCast<CStatus_Player>(m_pStatusCom).lock()->Use_Potion();
+	//Weak_StaticCast<CStatus_Player>(m_pStatusCom).lock()->Heal_Player(300.f);
 }
 
 void CCorvusState_BasicHealing::OnStateEnd()
@@ -94,11 +95,6 @@ _bool CCorvusState_BasicHealing::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
 		return false;
-
-
-
-	
-
 
 	return false;
 }

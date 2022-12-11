@@ -11,7 +11,7 @@
 #include "Client_Components.h"
 #include "Status_Monster.h"
 #include "JokerStates.h"
-
+#include "MonsterHPBar_Elite.h"
 
 
 GAMECLASS_C(CJoker);
@@ -38,7 +38,37 @@ HRESULT CJoker::Initialize(void* pArg)
 
 	m_pModelCom.lock()->Init_Model("Elite_Joker", "", (_uint)TIMESCALE_LAYER::MONSTER);
 
-	m_pStandState = Add_Component<CJokerState_Idle>();
+	m_pStandState = Add_Component<CJokerState_Sp_Open>();
+	Add_Component<CJokerState_ComboA1>();
+	Add_Component<CJokerState_ComboA2>();
+	Add_Component<CJokerState_Combob1>();
+	Add_Component<CJokerState_ComboB2>();
+	Add_Component<CJokerState_Dead>();
+	Add_Component<CJokerState_Execution_End>();
+	Add_Component<CJokerState_Execution_Loop>();
+	Add_Component<CJokerState_Idle>();
+	Add_Component<CJokerState_JumpAttack>();
+	Add_Component<CJokerState_RunAtkEnd>();
+	Add_Component<CJokerState_RunAttackLoop>();
+	Add_Component<CJokerState_ShockAttack>();
+	Add_Component<CJokerState_StrongAttack>();
+	Add_Component<CJokerState_Stun_End>();
+	Add_Component<CJokerState_Stun_Loop>();
+	Add_Component<CJokerState_Stun_Start>();
+	Add_Component<CJokerState_TakeExecution_Start>();
+	Add_Component<CJokerState_TurnAtkL>();
+	Add_Component<CJokerState_TurnAtkR>();
+	Add_Component<CJokerState_TurnL90>();
+	Add_Component<CJokerState_TurnR90>();
+	Add_Component<CJokerState_WalkB>();
+	Add_Component<CJokerState_WalkR>();
+	Add_Component<CJokerState_WalkF>();
+	Add_Component<CJokerState_WalkL>();
+	Add_Component<CJokerState_WheelAtkEnd>();
+	Add_Component<CJokerState_WheelAtkEnd2>();
+	Add_Component<CJokerState_WheelAtkLoop>();
+	Add_Component<CJokerState_WheelAtkStart>();
+	Add_Component<CJokerState_RunAttackStart>();
 
 	GET_SINGLE(CGameManager)->Bind_KeyEvent("Elite_Joker", m_pModelCom, bind(&CJoker::Call_NextAnimationKey, this, placeholders::_1));
 
@@ -54,8 +84,8 @@ HRESULT CJoker::Start()
 
 	CBase::Set_Enable(true);
 	
-	Change_State<CJokerState_Idle>();
-
+	Change_State<CJokerState_Sp_Open>();
+	Bind_HPBar();
 	// weak_ptr<CBoneNode> pTargetBoneNode = m_pModelCom.lock()->Find_BoneNode();
 	// m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
 	
@@ -111,6 +141,7 @@ void CJoker::SetUp_ShaderResource()
 }
 
 
+
 void CJoker::Init_Desc()
 {
 	__super::Init_Desc();
@@ -120,26 +151,46 @@ void CJoker::Init_Desc()
 	m_pWeapons.back().lock()->Init_Model("Joker_Weapon", TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
 
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.9f,-2.4f,1.0f }, 0.4f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.8f,-2.2f,1.0f }, 0.4f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.7f,-2.0f,1.0f }, 0.4f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.6f,-1.8f,1.0f }, 0.4f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.5f,-1.6f,1.0f }, 0.4f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.4f,-1.4f,1.0f }, 0.4f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.3f,-1.2f,1.0f }, 0.4f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.2f,-1.f,1.0f }, 0.4f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.1f,-0.8f,1.0f }, 0.4f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.0f,-0.6f,1.0f }, 0.4f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.0f,-0.4f,1.0f }, 0.4f, COLLISION_LAYER::MONSTER_ATTACK);
+	//m_pWeapons.back().lock()->Add_Collider({ 0.f,0.9f,-2.4f,1.0f }, 0.4f, COLLISION_LAYER::MONSTER_ATTACK);
 
 	//m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(-135.0f));
 	//TODO 여기서하는 이유는 몬스터가 배치되고 원점에서 우리가 피킹한위치만큼더해지고 난뒤에 그월드포지션값저장하기위해서 여기서함
 
 	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Translation", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
 
+	INIT_STATE(CJokerState_ComboA1);
+	INIT_STATE(CJokerState_ComboA2);
+	INIT_STATE(CJokerState_Combob1);
+	INIT_STATE(CJokerState_ComboB2);
+	INIT_STATE(CJokerState_Dead);
+	INIT_STATE(CJokerState_Execution_End);
+	INIT_STATE(CJokerState_Execution_Loop);
 	INIT_STATE(CJokerState_Idle);
+	INIT_STATE(CJokerState_JumpAttack);
+	INIT_STATE(CJokerState_RunAtkEnd);
+	INIT_STATE(CJokerState_RunAttackLoop);
+	INIT_STATE(CJokerState_ShockAttack);
+	INIT_STATE(CJokerState_Sp_Open);
+	INIT_STATE(CJokerState_StrongAttack);
+	INIT_STATE(CJokerState_Stun_End);
+	INIT_STATE(CJokerState_Stun_Loop);
+	INIT_STATE(CJokerState_Stun_Start);
+	INIT_STATE(CJokerState_TakeExecution_Start);
+	INIT_STATE(CJokerState_TurnAtkL);
+	INIT_STATE(CJokerState_TurnAtkR);
+	INIT_STATE(CJokerState_TurnL90);
+	INIT_STATE(CJokerState_TurnR90);
+	INIT_STATE(CJokerState_WalkB);
+	INIT_STATE(CJokerState_WalkR);
+	INIT_STATE(CJokerState_WalkF);
+	INIT_STATE(CJokerState_WalkL);
+	INIT_STATE(CJokerState_WheelAtkEnd);
+	INIT_STATE(CJokerState_WheelAtkEnd2);
+	INIT_STATE(CJokerState_WheelAtkLoop);
+	INIT_STATE(CJokerState_WheelAtkStart);
+	INIT_STATE(CJokerState_RunAttackStart);
 	
-
+	m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(-180.0f));
 	GET_SINGLE(CGameManager)->Bind_KeyEvent("Elite_Joker", m_pModelCom, bind(&CJoker::Call_NextAnimationKey, this, placeholders::_1));
 
 	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom),
@@ -150,7 +201,7 @@ void CJoker::Init_Desc()
 void CJoker::Move_RootMotion_Internal()
 {
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
 
 	PxControllerFilters Filters;
 	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);

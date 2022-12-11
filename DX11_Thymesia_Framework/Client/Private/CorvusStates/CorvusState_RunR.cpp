@@ -110,13 +110,41 @@ _bool CCorvusState_RunR::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	if (KEY_INPUT(KEY::S, KEY_STATE::HOLD))
+	{
+		Get_OwnerPlayer()->Change_State<CCorvusState_RunBR>();
+		return true;
+	}
+
+	if (KEY_INPUT(KEY::W, KEY_STATE::HOLD))
+	{
+		Get_OwnerPlayer()->Change_State<CCorvusState_RunFR>();
+		return true;
+	}
+
+
+
 
 	
 		if (Check_RequirementAttackState())
 		{
 			
 
-			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
+			weak_ptr<CGameObject> pTargetObject;
+
+			if (Check_RequirementExcuteState(pTargetObject))
+			{
+				_vector vTargetPos = pTargetObject.lock()->Get_Transform()->Get_Position();
+				m_pTransformCom.lock()->LookAt2D(vTargetPos);
+				Get_OwnerPlayer()->Change_State<CCorvusState_NorMob_Execution>();
+				Get_OwnerPlayer()->Get_CurState().lock()->OnEventMessage(Weak_Cast<CBase>(pTargetObject));
+			}
+			else
+			{
+
+				Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
+
+			}
 			return true;
 		}
 

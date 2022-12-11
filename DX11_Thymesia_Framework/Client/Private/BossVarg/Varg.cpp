@@ -60,10 +60,10 @@ HRESULT CVarg::Initialize(void* pArg)
 	Add_Component<CVargBossState_SPA_Run>();
 	Add_Component<CVargBossState_Idle>();
 	Add_Component<CVargBossState_Stun_End>();
-	Add_Component<CVargBossState_Stun_Exe_Dead>();
+	Add_Component<CVargBossState_Exe_Dead>();
 	Add_Component<CVargBossState_Exe_NoDeadEnd>();
-	Add_Component<CVargBossState_Stun_Exe_SitLoop>();
-	Add_Component<CVargBossState_Stun_Exe_Start>();
+	Add_Component<CVargBossState_Exe_SitLoop>();
+	Add_Component<CVargBossState_Exe_Start>();
 	Add_Component<CVargBossState_Stun_Loop>();
 	Add_Component<CVargBossState_Stun_Start>();
 	Add_Component<CVargBossState_TurnL>();
@@ -76,7 +76,8 @@ HRESULT CVarg::Initialize(void* pArg)
 	Add_Component<CVargBossState_TurnAttack>();
 	Add_Component<CVargBossState_Attack2b1>();
 	Add_Component<CVargBossState_Attack2b2>();
-	Add_Component<CVargBossState_Stun_Exe_End>();
+	Add_Component<CVargBossState_Exe_End>();
+	Add_Component<CVargBossState_IdleGeneral>();
 
 	TRAIL_DESC TrailDesc;
 	ZeroMemory(&TrailDesc, sizeof(TRAIL_DESC));
@@ -104,7 +105,16 @@ HRESULT CVarg::Start()
 
 	CBase::Set_Enable(true);
 	
-	Change_State<CVargBossState_Start>();
+	switch (m_eBossStartType)
+	{
+	case Client::BOSSSTARTTYPE::BEGINSTART:
+		Change_State<CVargBossState_Start>();
+		break;
+	case Client::BOSSSTARTTYPE::NORMALSTART:
+		Change_State<CVargBossState_IdleGeneral>();
+		break;
+	}
+	
 
 	// weak_ptr<CBoneNode> pTargetBoneNode = m_pModelCom.lock()->Find_BoneNode();
 	// m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
@@ -223,11 +233,11 @@ void CVarg::Init_Desc()
 	INIT_STATE(CVargBossState_SPA_Run);
 	INIT_STATE(CVargBossState_Idle);
 	INIT_STATE(CVargBossState_Stun_End);
-	INIT_STATE(CVargBossState_Stun_Exe_Dead);
-	INIT_STATE(CVargBossState_Stun_Exe_End);
+	INIT_STATE(CVargBossState_Exe_Dead);
+	INIT_STATE(CVargBossState_Exe_End);
 	INIT_STATE(CVargBossState_Exe_NoDeadEnd);
-	INIT_STATE(CVargBossState_Stun_Exe_SitLoop);
-	INIT_STATE(CVargBossState_Stun_Exe_Start);
+	INIT_STATE(CVargBossState_Exe_SitLoop);
+	INIT_STATE(CVargBossState_Exe_Start);
 	INIT_STATE(CVargBossState_Stun_Loop);
 	INIT_STATE(CVargBossState_Stun_Start);
 	INIT_STATE(CVargBossState_TurnL);
@@ -240,6 +250,7 @@ void CVarg::Init_Desc()
 	INIT_STATE(CVargBossState_TurnAttack);
 	INIT_STATE(CVargBossState_Attack2b1);
 	INIT_STATE(CVargBossState_Attack2b2);
+	INIT_STATE(CVargBossState_IdleGeneral);
 
 	GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
 
@@ -285,7 +296,7 @@ void CVarg::OnEventMessage(_uint iArg)
 
 	if ((_uint)EVENT_TYPE::ON_VARGEXECUTION == iArg)
 	{
-		Change_State<CVargBossState_Stun_Exe_Start>();
+		Change_State<CVargBossState_Exe_Start>();
 	}
 	
 }

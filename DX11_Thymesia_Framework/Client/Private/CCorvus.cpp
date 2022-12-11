@@ -24,8 +24,8 @@ HRESULT CCorvus::Initialize(void* pArg)
 	__super::Initialize(pArg);
 	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_VtxAnimModel"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements);
 
-
 	m_pStatus = CGameObject::Add_Component<CStatus_Player>();
+	m_pStatus.lock()->Load_FromJson(m_szClientComponentPath + "Corvus/SaveData.json");
 
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
 
@@ -73,8 +73,6 @@ HRESULT CCorvus::Start()
 
 	if (m_pCamera.lock())
 		m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
-
-	CBase::Set_Enable(true);
 
 	return S_OK;
 }
@@ -131,14 +129,18 @@ HRESULT CCorvus::Render()
 			m_pShaderCom.lock()->Set_RawValue("g_vDissolveStartPos", &iter->second.vStartPos, sizeof(_float3));
 			m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &iter->second.fAmount, sizeof(_float));
 	
+			_float4 vShaderFlag = { 0.f,0.f,1.f,0.f };
+
+			m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_float4));
+
 			m_iPassIndex = 6;
 		}
 		else
 		{
-			_bool bFalse = false;
-			m_pShaderCom.lock()->Set_RawValue("g_bGlow", &bFalse, sizeof(_bool));
-			m_pShaderCom.lock()->Set_RawValue("g_bBloom", &bFalse, sizeof(_bool));
-		
+			
+			_float4 vShaderFlag = { 0.f,0.f,0.f,0.f };
+
+			m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_float4));
 			if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
 				m_iPassIndex = 4;
 			else

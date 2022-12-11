@@ -181,7 +181,7 @@ void CEditMapCollider::View_Picking_Collider()
 		RAY MouseRayInWorldSpace = SMath::Get_MouseRayInWorldSpace(g_iWinCX, g_iWinCY);
 
 		MESH_VTX_INFO VtxInfo;
-		VtxInfo.vMax = { 0.5f,   0.5f,  0.5f };
+		VtxInfo.vMax = {  0.5f,  0.5f,  0.5f };
 		VtxInfo.vMin = { -0.5f, -0.5f, -0.5f };
 
 		_uint   iIndex			= 0;

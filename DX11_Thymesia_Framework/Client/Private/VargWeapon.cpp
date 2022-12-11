@@ -25,7 +25,7 @@ HRESULT CVargWeapon::Initialize(void* pArg)
 	TrailDesc.vPos_0 = _float3(0.f, 0.f, 0.f);
 	TrailDesc.vPos_1 = _float3(0.f, 3.f, 0.f);
 	m_pTrailDistortion = GAMEINSTANCE->Add_GameObject<CEffect_Trail_Distortion>(LEVEL_GAMEPLAY, &TrailDesc);
-	//m_pTrailDiffuse = GAMEINSTANCE->Add_GameObject<CEffect_Trail>(LEVEL_GAMEPLAY, &TrailDesc);
+	m_pTrailDiffuse = GAMEINSTANCE->Add_GameObject<CEffect_Trail>(LEVEL_GAMEPLAY, &TrailDesc);
 	
 	return S_OK;
 }
@@ -33,9 +33,14 @@ HRESULT CVargWeapon::Initialize(void* pArg)
 HRESULT CVargWeapon::Start()
 {
 	__super::Start();
+	m_pTrailDistortion.lock()->Set_OwnerDesc(m_pTransformCom, weak_ptr<CBoneNode>(), m_pModelCom.lock()->Get_ModelData());
+	m_pTrailDiffuse.lock()->Set_OwnerDesc(m_pTransformCom, weak_ptr<CBoneNode>(), m_pModelCom.lock()->Get_ModelData());
 
 	m_pTrailDistortion.lock()->Set_TextureIndex(0, 869, 8);//781
-	//m_pTrailDiffuse.lock()->Set_TextureIndex(83, 701, 0);
+	m_pTrailDiffuse.lock()->Set_TextureIndex(83, 701, 0);
+
+	m_pTrailDistortion.lock()->Set_Enable(false);
+	m_pTrailDiffuse.lock()->Set_Enable(false);
 
 	return S_OK;
 }

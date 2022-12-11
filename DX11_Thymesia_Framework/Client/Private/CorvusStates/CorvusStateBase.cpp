@@ -19,7 +19,7 @@
 #include "Model.h"
 #include "Camera_Target.h"
 #include "RequirementChecker.h"
-
+#include "Status_Player.h"
 
 GAMECLASS_C(CCorvusStateBase)
 
@@ -129,9 +129,13 @@ _bool CCorvusStateBase::Check_RequirementHealingState()
 {
 	if (KEY_INPUT(KEY::Q, KEY_STATE::TAP))
 	{
-		return true;
-	}
 
+		weak_ptr<CStatus_Player> pStatus = GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status();
+		if (pStatus.lock()->Get_UseableCurrentPotion())
+		{
+			return true;
+		}
+	}
 	return false;
 }
 
@@ -435,6 +439,8 @@ _bool CCorvusStateBase::Check_RequirementAttackClose(weak_ptr<CGameObject>& Out_
 
 void CCorvusStateBase::Call_OtherControllerHit(const PxControllersHit& In_hit)
 {
+	__super::Call_OtherControllerHit(In_hit);
+
 	shared_ptr<CRequirement_State> pReq_Once = make_shared<CRequirement_State>();
 	pReq_Once->Init_Req(m_pOwnerFromPlayer, m_iStateIndex);
 
@@ -445,13 +451,8 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 {
 	__super::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 
-
-
 	if (pOtherCollider.lock()->Get_CollisionLayer() == (_uint)COLLISION_LAYER::MONSTER_ATTACK)
 	{
-		
-	
-
 		weak_ptr<CStatus_Player> pStatus = Weak_StaticCast<CStatus_Player>(m_pStatusCom);
 		PxControllerFilters Filters;
 

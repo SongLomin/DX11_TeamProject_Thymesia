@@ -100,6 +100,18 @@ HRESULT CWindow_Shader_Dev::Render()
 		}
 	}
 	
+	if (ImGui::CollapsingHeader("Shadow Light"))
+	{
+		ImGui::DragFloat4("Shadow Eye", &m_vEye.x);
+		
+		ImGui::DragFloat4("Shadow LookAt", &m_vLookAt.x);
+
+	
+		if (ImGui::Button("Update ShadowLight"))
+		{
+			GAMEINSTANCE->Set_ShadowLight(XMLoadFloat3(&m_vEye), XMLoadFloat3(&m_vLookAt));
+		}
+	}
 
 
 	// Draw actual text bounding box, following by marker of our expected limit (should not overlap!)

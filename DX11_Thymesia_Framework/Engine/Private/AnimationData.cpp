@@ -69,29 +69,19 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 	SET_ANIM_SPEED("Corvus_Raven_ClawLong_L02", 2.f);
 	SET_ANIM_SPEED("Corvus_SD1_Fall_Attack", 2.5f);
 
-    SET_ANIM_SPEED("Corvus_SD_RunF_24", 1.5f);
-    SET_ANIM_SPEED("Corvus_SD_RunB", 1.5f);
-    SET_ANIM_SPEED("Corvus_SD_RunBR", 1.5f);
-    SET_ANIM_SPEED("Corvus_SD_RunBL", 1.5f);
-    SET_ANIM_SPEED("Corvus_SD_RunL", 1.5f);
-    SET_ANIM_SPEED("Corvus_SD_RunR", 1.5f);
-    SET_ANIM_SPEED("Corvus_SD_RunFR", 1.5f);
-    SET_ANIM_SPEED("Corvus_SD_RunFL", 1.5f);
     SET_ANIM_SPEED("Corvus_SD_AvoidF", 2.25f);
     SET_ANIM_SPEED("Corvus_SD_AvoidShortMag_B", 2.25f);
     SET_ANIM_SPEED("Corvus_SD_AvoidShortMag_F", 2.25f);
     SET_ANIM_SPEED("Corvus_SD_AvoidShortMag_L", 2.25f);
     SET_ANIM_SPEED("Corvus_SD_AvoidShortMag_R", 2.25f);
-    SET_ANIM_SPEED("Corvus_SD1_Sprint", 2.25f);
-    SET_ANIM_SPEED("Corvus_SD1_Sprint_Start", 2.25f);
+    SET_ANIM_SPEED("Corvus_SD1_Sprint", 2.f);
+    SET_ANIM_SPEED("Corvus_SD1_Sprint_Start", 2.f);
     SET_ANIM_SPEED("Corvus_Raven_ClawCommonV2_ChargeStart", 1.25f);
     SET_ANIM_SPEED("Corvus_Raven_ClawCommon_ChargeLoop", 1.5f);
     SET_ANIM_SPEED("Corvus_Raven_ClawLong_ChargeFull", 2.f);
     SET_ANIM_SPEED("Corvus_SD_TD2Thorw2", 1.75f);
     SET_ANIM_SPEED("Corvus_PW_Axe", 3.f);
     SET_ANIM_SPEED("Corvus_PW_Knife_A_V1", 2.75f);
-
-    // SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 3.f);
 
     SET_ANIM_SPEED("Corvus_PW_VargSword_B", 1.75f);
     SET_ANIM_SPEED("Corvus_PW_VargSword_Start", 1.75f);
@@ -117,9 +107,9 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 	//SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution", 1.2f);
     
 
-	SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 4.5f);
+	SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 7.f);
 
-    // SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Seq_BossFightStart", 5.5f);
+#pragma region Varg
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Catch", 2.306f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_1", 1.25f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_2", 1.25f);
@@ -136,8 +126,37 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_3b", 2.f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TurnAttack1", 2.5f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_Start_FIX", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Seq_TutorialBossFightStart", 5.f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Seq_BossFightStart", 5.f);
 
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_AvoidB", 1.25f);
+
+
+
+
+    SET_ANIM_SPEED("Joker_ComboA01", 1.25f);
+    SET_ANIM_SPEED("Joker_ComboA02", 1.25f);
+    SET_ANIM_SPEED("Joker_ComboB01", 1.25f);
+    SET_ANIM_SPEED("Joker_ComboB02", 1.25f);
+    SET_ANIM_SPEED("Joker_JumpAttack", 1.25f);
+    SET_ANIM_SPEED("Joker_ShockAttack", 1.25f);
+    SET_ANIM_SPEED("Joker_Stun_Start", 1.25f);
+    SET_ANIM_SPEED("Joker_Stun_Loop", 1.25f);
+    SET_ANIM_SPEED("Joker_Stun_End", 1.25f);
+    SET_ANIM_SPEED("Joker_TurnAttackL", 1.25f);
+    SET_ANIM_SPEED("Joker_TurnAttackR", 1.25f);
+    SET_ANIM_SPEED("Joker_TurnL90", 1.25f);
+    SET_ANIM_SPEED("Joker_TurnR90", 1.25f);
+    SET_ANIM_SPEED("Joker_WheelAttackStart", 1.25f);
+    SET_ANIM_SPEED("Joker_WheelAttackLoop", 1.25f);
+    SET_ANIM_SPEED("Joker_WheelAttackEnd", 1.25f);
+
+
+
+
+
+
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Seq_BossFightStart", 5.f);
 #pragma endregion // Varg
 
 #pragma region Mon_AxeMan
@@ -152,7 +171,6 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
         pChannelData->Load_FromBinary(is);
         Channel_Datas.push_back(pChannelData);
     }
-
 }
 
 void ANIMATION_DATA::Bake_ReverseAnimation(shared_ptr<ANIMATION_DATA>& Out_AnimationData)

@@ -26,6 +26,19 @@ HRESULT CCharacter::Initialize(void* pArg)
 	return S_OK;
 }
 
+HRESULT CCharacter::Start()
+{
+	__super::Start();
+
+	if (LEVEL::LEVEL_EDIT == m_CreatedLevel)
+	{
+		if (m_pHitColliderCom.lock())
+			m_pHitColliderCom.lock()->Set_Enable(false);
+	}
+
+	return S_OK;
+}
+
 _uint CCharacter::Get_CurrentStateIndex() const
 {
 

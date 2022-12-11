@@ -7,7 +7,7 @@
 #include "Animation.h"
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
-
+#include "PhysXCharacterController.h"
 
 GAMECLASS_C(CCorvusState_LAttack3);
 CLONE_C(CCorvusState_LAttack3, CComponent)
@@ -125,7 +125,8 @@ void CCorvusState_LAttack3::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	//Disable_Weapons();
 
-
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
+		bind(&CCorvusState_LAttack3::Call_OtherControllerHit, this, placeholders::_1);
 
 
 #ifdef _DEBUG
@@ -142,6 +143,9 @@ void CCorvusState_LAttack3::OnStateEnd()
 
 	//Disable_Weapons();
 	m_IsNextAttack = false;
+
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit -=
+		bind(&CCorvusState_LAttack3::Call_OtherControllerHit, this, placeholders::_1);
 }
 
 void CCorvusState_LAttack3::OnEventMessage(_uint iArg)
@@ -239,10 +243,23 @@ _bool CCorvusState_LAttack3::Check_AndChangeNextState()
 
 			if (TalentEffectFlags & (_flag)TALENT_EFFECT_FLAG::SABER_ATTACK_LV2)
 			{
-				if (!Rotation_InputToLookDir())
-					Rotation_TargetToLookDir();
+				weak_ptr<CGameObject> pTargetObject;
 
-				Get_OwnerPlayer()->Change_State<CCorvusState_LAttack4>();
+				if (Check_RequirementExcuteState(pTargetObject))
+				{
+					_vector vTargetPos = pTargetObject.lock()->Get_Transform()->Get_Position();
+					m_pTransformCom.lock()->LookAt2D(vTargetPos);
+					Get_OwnerPlayer()->Change_State<CCorvusState_NorMob_Execution>();
+					Get_OwnerPlayer()->Get_CurState().lock()->OnEventMessage(Weak_Cast<CBase>(pTargetObject));
+				}
+				else
+				{
+					if (!Rotation_InputToLookDir())
+						Rotation_TargetToLookDir();
+
+					Get_OwnerPlayer()->Change_State<CCorvusState_LAttack4>();
+
+				}
 				return true;
 			}
 		}
@@ -255,8 +272,23 @@ _bool CCorvusState_LAttack3::Check_AndChangeNextState()
 		if (Check_RequirementAttackState())
 		{
 
-			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
+			weak_ptr<CGameObject> pTargetObject;
+
+			if (Check_RequirementExcuteState(pTargetObject))
+			{
+				_vector vTargetPos = pTargetObject.lock()->Get_Transform()->Get_Position();
+				m_pTransformCom.lock()->LookAt2D(vTargetPos);
+				Get_OwnerPlayer()->Change_State<CCorvusState_NorMob_Execution>();
+				Get_OwnerPlayer()->Get_CurState().lock()->OnEventMessage(Weak_Cast<CBase>(pTargetObject));
+			}
+			else
+			{
+				if (!Rotation_InputToLookDir())
+					Rotation_TargetToLookDir();
+
+				Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
+
+			}
 			return true;
 		}
 	}

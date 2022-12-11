@@ -9,7 +9,10 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
+#include "../Public/BossVarg/Varg.h"
+#include "VargWeapon.h"
 #include "MobWeapon.h"
+#include "PhysXCharacterController.h"
 
 GAMECLASS_C(CVargBossState_Attack2a);
 CLONE_C(CVargBossState_Attack2a, CComponent)
@@ -78,6 +81,11 @@ void CVargBossState_Attack2a::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(true);
+
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
+		bind(&CVargBossState_Attack2a::Call_OtherControllerHit, this, placeholders::_1);
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Attack2a -> OnStateStart" << endl;
@@ -91,7 +99,10 @@ void CVargBossState_Attack2a::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	
+	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(false);
+
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit -=
+		bind(&CVargBossState_Attack2a::Call_OtherControllerHit, this, placeholders::_1);
 }
 
 

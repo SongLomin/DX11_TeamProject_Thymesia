@@ -68,7 +68,7 @@ void CCorvusState_ClawAttackTab::Tick(_float fTimeDelta)
 		
 		if (m_bDissolveAppear)
 		{
-			if (0.4f > m_fDissolveTimeArm)
+			if (0.6f > m_fDissolveTimeArm)
 			{
 				m_fDissolveTimeClaw -= fTimeDelta;
 				m_fDissolveAmountClaw = SMath::Lerp(0.f, 1.f, m_fDissolveTimeClaw / 0.7f);
@@ -89,7 +89,7 @@ void CCorvusState_ClawAttackTab::Tick(_float fTimeDelta)
 		else
 		{
 
-			if(0.4f > m_fDissolveTimeClaw)
+			if(0.6f > m_fDissolveTimeClaw)
 			{
 				m_fDissolveTimeArm -= fTimeDelta;
 				m_fDissolveAmountArm = SMath::Lerp(1.f, 0.f, m_fDissolveTimeArm / 0.7f);

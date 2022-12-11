@@ -191,7 +191,7 @@ weak_ptr<CStatus_Player> CGameManager::Get_CurrentPlayer_Status()
 
 	pPlayer = Get_CurrentPlayer();	
 
-	return	 Weak_StaticCast<CStatus_Player>(pPlayer.lock()->Get_Component<CStatus>());
+	return	 Weak_StaticCast<CStatus_Player>(pPlayer.lock()->Get_Component<CStatus_Player>());
 }
 
 weak_ptr<CPlayer> CGameManager::Get_CurrentPlayer()

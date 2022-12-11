@@ -69,7 +69,7 @@ void CCorvusState_ClawAttackHold::Tick(_float fTimeDelta)
 	{
 
 		
-			if (0.4f > m_fDissolveTimeArm)
+			if (0.7f > m_fDissolveTimeArm)
 			{
 				m_fDissolveTimeClaw -= fTimeDelta;
 				m_fDissolveAmountClaw = SMath::Lerp(0.f, 1.f, m_fDissolveTimeClaw / 0.7f);

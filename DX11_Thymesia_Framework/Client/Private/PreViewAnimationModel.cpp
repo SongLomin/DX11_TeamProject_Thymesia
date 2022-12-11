@@ -40,6 +40,7 @@ HRESULT CPreViewAnimationModel::Initialize(void* pArg)
 
 	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::MONSTER, Weak_Cast<CGameObject>(m_this));
 
+	m_fCullingRange = FLT_MAX;
 	return S_OK;
 }
 
@@ -176,12 +177,9 @@ void CPreViewAnimationModel::Init_EditPreViewAnimationModel(const string& In_szM
 	{
 		Clear_ModelWeapon();
 
-		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
-		m_pModelWeapons.back().lock()->Init_Model("Boss_VargWeapon", TIMESCALE_LAYER::MONSTER);
-		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, "weapon_r");
-		
 		/*m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
-		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, Weak_Cast<CGameObject>(m_this), "weapon_l");*/
+		m_pModelWeapons.back().lock()->Init_Model("Boss_VargWeapon", TIMESCALE_LAYER::MONSTER);
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, "weapon_r");*/
 	}
 }
 

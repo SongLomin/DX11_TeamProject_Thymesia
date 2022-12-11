@@ -69,6 +69,12 @@ void CInteraction_Elevator::OnEventMessage(_uint iArg)
         }
         break;
 
+        case EVENT_TYPE::ON_EDIT_UDATE:
+        {
+            m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+        }
+        break;
+
         case EVENT_TYPE::ON_EDITDRAW:
         {
             m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());

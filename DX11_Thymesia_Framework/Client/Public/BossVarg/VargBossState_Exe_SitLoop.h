@@ -7,12 +7,12 @@ END
 
 BEGIN(Client)
 
-class CVargBossState_Stun_Exe_SitLoop :
+class CVargBossState_Exe_SitLoop :
 	public CVargBossStateBase
 {
-	GAMECLASS_H(CVargBossState_Stun_Exe_SitLoop);
-	CLONE_H(CVargBossState_Stun_Exe_SitLoop, CComponent)
-		SHALLOW_COPY(CVargBossState_Stun_Exe_SitLoop)
+	GAMECLASS_H(CVargBossState_Exe_SitLoop);
+	CLONE_H(CVargBossState_Exe_SitLoop, CComponent)
+		SHALLOW_COPY(CVargBossState_Exe_SitLoop)
 
 
 

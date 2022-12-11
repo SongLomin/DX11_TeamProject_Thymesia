@@ -9,7 +9,10 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
+#include "../Public/BossVarg/Varg.h"
+#include "VargWeapon.h"
 #include "MobWeapon.h"
+#include "PhysXCharacterController.h"
 
 
 GAMECLASS_C(CVargBossState_AvoidAttack);
@@ -76,6 +79,10 @@ void CVargBossState_AvoidAttack::OnStateStart(const _float& In_fAnimationBlendTi
 	}
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(true);
+
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
+		bind(&CVargBossState_AvoidAttack::Call_OtherControllerHit, this, placeholders::_1);
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
@@ -95,6 +102,11 @@ void CVargBossState_AvoidAttack::OnStateEnd()
 	m_bAttackLookAtLimit = false;
 
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(false);
+
+
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit -=
+		bind(&CVargBossState_AvoidAttack::Call_OtherControllerHit, this, placeholders::_1);
 }
 
 

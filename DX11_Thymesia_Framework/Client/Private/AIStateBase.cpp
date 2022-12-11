@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "NorMonStateS.h"
 #include "Status.h"
+#include "RequirementChecker.h"
 
 GAMECLASS_C(CAIStateBase);
 
@@ -84,6 +85,16 @@ _bool CAIStateBase::Check_RequirementIsTargeted()
 		return true;
 
 	return false;
+}
+
+void CAIStateBase::Call_OtherControllerHit(const PxControllersHit& In_hit)
+{
+	__super::Call_OtherControllerHit(In_hit);
+
+	shared_ptr<CRequirement_State> pReq_Once = make_shared<CRequirement_State>();
+	pReq_Once->Init_Req(m_pOwnerFromMonster, m_iStateIndex);
+
+	m_pOwnerFromMonster.lock()->Get_Requirement("RootMotion").lock()->Add_Requirement(pReq_Once);
 }
 
 

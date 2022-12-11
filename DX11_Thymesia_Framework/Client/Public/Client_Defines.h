@@ -19,15 +19,15 @@
 #define _144HZ_
 #define _RENDER_FPS_
 #define _Actor_Culling_
-//#define _INSTANCE_CULLING_
+//#define _INSTANCE_CULLING_t
 //#define _LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
 #define _USE_GRAVITY_
-#define _LIFEGUARD_FOR_FALL_
+// #define _LIFEGUARD_FOR_FALL_
 
 #pragma region Console Outputs
-// #define _DEBUG_COUT_
+#define _DEBUG_COUT_
 // #define _DEBUG_COUT_JOJO
 #pragma endregion // Console Outputs
 
@@ -41,7 +41,7 @@
 #pragma endregion // Map
 
 #pragma region Tool
-#define _MAP_TOOL_
+// #define _MAP_TOOL_
 // #define _EFFECT_TOOL_
 #pragma endregion // Tool
 
@@ -204,6 +204,7 @@ namespace Client
 		ON_EDIT_PHYSXINFO,
 		ON_EDIT_PHYSXINFO_N,
 		ON_EDIT_DELETE,
+		ON_EDIT_UDATE,
 		ON_ANIMATIONEND,
 		ON_MOVING,
 		ON_MONSTERDEAD,

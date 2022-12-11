@@ -22,9 +22,10 @@ void CStatus::Start()
 
 void CStatus::Decrease_HP(_float& InOut_fCurrentHP, const _float In_fDamage)
 {
-	InOut_fCurrentHP -= In_fDamage;
-	if (InOut_fCurrentHP <= 0.f)
+	if (InOut_fCurrentHP <= In_fDamage)
 		InOut_fCurrentHP = 0.f;
+	else
+		InOut_fCurrentHP -= In_fDamage;
 }
 
 void CStatus::Increase_HP(_float& InOut_fCurrentHP, const _float In_fMaxHP, const _float In_fAmount)

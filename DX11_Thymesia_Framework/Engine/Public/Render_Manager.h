@@ -31,6 +31,7 @@ public:
 	HRESULT Set_GrayScale(const _float In_fGrayScale);
 
 	HRESULT	Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt);
+	HRESULT Set_DynamicShadowLight(_fvector In_vEye, _fvector In_vLookAt);
 	
 
 private:
@@ -103,6 +104,11 @@ private:
 	_float4x4	m_LightViewMatrixTranspose;
 	_float4x4	m_LightProjMatrixTranspose;
 
+	_float3		m_vDynamicShadowLightEye{ 0.f, 1.f, 0.f };
+	_float3		m_vDynamicShadowLightLookAt{ 0.f, 0.f, 0.f };
+	_float4x4	m_DynamicLightViewMatrixTranspose;
+	_float4x4	m_DynamicLightProjMatrixTranspose;
+
 	_float4x4	m_AntiAliasingWorldMatrix;
 	_float4x4	m_AntiAliasingProjMatrixTranspose;
 
@@ -120,11 +126,10 @@ private:
 	_float3		m_vRadialBlurWorldPos = { 0.f,0.f,0.f };
 	_bool		m_bFirst = true;
 
-	_float4		m_vLift = { 1.f, 1.f, 0.9f, 1.f };
+	_float4		m_vLift  = { 1.f, 1.f, 0.9f, 1.f };
 	_float4		m_vGamma = { 1.f, 1.f, 1.2f, 1.f };
-	_float4		m_vGain = { 1.f,1.f,1.f,1.f };
+	_float4		m_vGain  = { 1.f,1.f,1.f,1.f };
 
-	
 	_float4		m_vFogColor = { 0.8f, 0.8f, 0.8f, 1.f };
 	_float		m_fFogRange = 30.f;
 	

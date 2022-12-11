@@ -12,6 +12,7 @@
 #include "GameInstance.h"
 #include "ClientLevel.h"
 #include "GameManager.h"
+#include "Status_Player.h"
 
 GAMECLASS_C(CInteraction_CheckPoint);
 CLONE_C(CInteraction_CheckPoint, CGameObject);
@@ -68,6 +69,12 @@ void CInteraction_CheckPoint::OnEventMessage(_uint iArg)
         }
         break;
 
+        case EVENT_TYPE::ON_EDIT_UDATE:
+        {
+            m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+        }
+        break;
+
         case EVENT_TYPE::ON_EDITDRAW:
         {
             m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
@@ -120,6 +127,11 @@ void CInteraction_CheckPoint::Load_FromJson(const json& In_Json)
 void CInteraction_CheckPoint::Act_Interaction()
 {
     GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front().lock()->Call_Landing(CUI_Landing::LANDING_BECONFOUND);
+
+    weak_ptr<CStatus_Player> pPlayerStatus = GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status();
+
+    if (pPlayerStatus.lock())
+        pPlayerStatus.lock()->Full_Recovery();
 
     GET_SINGLE(CGameManager).get()->Registration_CheckPoint(Weak_Cast<CInteraction_CheckPoint>(m_this));
 }

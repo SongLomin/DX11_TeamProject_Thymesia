@@ -1,0 +1,48 @@
+#pragma once
+#include "UI.h"
+
+
+BEGIN(Client)
+
+class CCustomUI;
+
+
+class CHUD_Player_Memory final : public CUI
+{
+	GAMECLASS_H(CHUD_Player_Memory);
+	CLONE_H(CHUD_Player_Memory, CGameObject);
+public:
+	virtual HRESULT Initialize_Prototype();
+	virtual HRESULT Initialize(void* pArg);
+	virtual HRESULT Start();
+	virtual void Tick(_float fTimeDelta);
+	virtual void LateTick(_float fTimeDelta);
+	virtual HRESULT Render();
+public:
+
+public:
+	virtual void OnEventMessage(_uint iArg) override;
+
+
+protected:
+	virtual HRESULT SetUp_ShaderResource() override;
+
+private:
+	weak_ptr<CCustomUI>		m_pBG;
+	weak_ptr<CCustomUI>		m_pIcon;
+	weak_ptr<CCustomUI>		m_pDecoration;
+
+private:
+	_float					m_fMemory;
+
+	_float					m_fLerpMemory;
+	_float					m_fDifference;
+
+public:
+	void	Call_ChangeMemory(_float fMemory);
+public:
+	void Free();
+};
+
+END
+
