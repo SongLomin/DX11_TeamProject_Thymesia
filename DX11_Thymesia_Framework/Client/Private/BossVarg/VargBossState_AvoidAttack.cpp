@@ -10,6 +10,7 @@
 #include "Character.h"
 #include "VargStates.h"
 #include "MobWeapon.h"
+#include "PhysXCharacterController.h"
 
 
 GAMECLASS_C(CVargBossState_AvoidAttack);
@@ -77,6 +78,9 @@ void CVargBossState_AvoidAttack::OnStateStart(const _float& In_fAnimationBlendTi
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
+		bind(&CVargBossState_AvoidAttack::Call_OtherControllerHit, this, placeholders::_1);
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: AvoidAttack -> OnStateStart" << endl;
@@ -95,6 +99,9 @@ void CVargBossState_AvoidAttack::OnStateEnd()
 	m_bAttackLookAtLimit = false;
 
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit -=
+		bind(&CVargBossState_AvoidAttack::Call_OtherControllerHit, this, placeholders::_1);
 }
 
 

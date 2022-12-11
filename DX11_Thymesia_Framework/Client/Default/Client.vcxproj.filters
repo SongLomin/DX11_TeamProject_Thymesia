@@ -1025,10 +1025,10 @@
       <Filter>07. Requirement\03. Requirement_State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\EliteMonster.h">
-      <Filter>02. GameObject\03.Actor\00.Joker</Filter>
+      <Filter>02. GameObject\03. Actor\00.Joker</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\JokerWeapon.h">
-      <Filter>02. GameObject\03.Actor\00.Joker</Filter>
+      <Filter>02. GameObject\03. Actor\00.Joker</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\EliteMonState\Joker\JokerState_Idle.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\02.EliteState\00.JokerState\00.Idle</Filter>
@@ -1040,7 +1040,7 @@
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\02.EliteState\00.JokerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\EliteMonState\Joker\Joker.h">
-      <Filter>02. GameObject\03.Actor\00.Joker</Filter>
+      <Filter>02. GameObject\03. Actor\00.Joker</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\GameManager.h">
       <Filter>96. Managers_Client\00. GameManager</Filter>
@@ -1054,6 +1054,9 @@
     <ClInclude Include="..\Public\UI_MonsterFocus.h" />
     <ClInclude Include="..\Public\Preset_UIDesc.h">
       <Filter>06. DataPreset\05.Preset_UIDesc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\TargetCurve.h">
+      <Filter>02. GameObject\14. TargetCurve</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2127,10 +2130,10 @@
       <Filter>07. Requirement\03. Requirement_State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\EliteMonster.cpp">
-      <Filter>02. GameObject\03.Actor\00.Joker</Filter>
+      <Filter>02. GameObject\03. Actor\00.Joker</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\JokerWeapon.cpp">
-      <Filter>02. GameObject\03.Actor\00.Joker</Filter>
+      <Filter>02. GameObject\03. Actor\00.Joker</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\EliteMonState\Joker\EliteStateBase.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\02.EliteState</Filter>
@@ -2139,7 +2142,7 @@
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\02.EliteState\00.JokerState\00.Idle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\EliteMonState\Joker\Joker.cpp">
-      <Filter>02. GameObject\03.Actor\00.Joker</Filter>
+      <Filter>02. GameObject\03. Actor\00.Joker</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\GameManager.cpp">
       <Filter>96. Managers_Client\00. GameManager</Filter>
@@ -2153,6 +2156,9 @@
     <ClCompile Include="..\UI_MonsterFocus.cpp" />
     <ClCompile Include="..\Private\Preset_UIDesc.cpp">
       <Filter>06. DataPreset\05.Preset_UIDesc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\TargetCurve.cpp">
+      <Filter>02. GameObject\14. TargetCurve</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3220,12 +3226,6 @@
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\02.EliteState\00.JokerState\00.Idle">
       <UniqueIdentifier>{203a4db9-e906-402e-bf94-4552798a9cb1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03.Actor">
-      <UniqueIdentifier>{0db45e45-0d0e-46c2-bc1e-fc8bdb676af6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03.Actor\00.Joker">
-      <UniqueIdentifier>{19627968-7699-4f4f-934c-858f9cfa3641}</UniqueIdentifier>
-    </Filter>
     <Filter Include="96. Managers_Client">
       <UniqueIdentifier>{754a09b8-9237-4e34-871e-e6aeaa3022d6}</UniqueIdentifier>
     </Filter>
@@ -3243,6 +3243,15 @@
     </Filter>
     <Filter Include="06. DataPreset\05.Preset_UIDesc">
       <UniqueIdentifier>{71809176-0df8-42ac-bee8-0ce093e9a2b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor">
+      <UniqueIdentifier>{0db45e45-0d0e-46c2-bc1e-fc8bdb676af6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\00.Joker">
+      <UniqueIdentifier>{19627968-7699-4f4f-934c-858f9cfa3641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\14. TargetCurve">
+      <UniqueIdentifier>{66d0937f-5399-43b2-a234-749bac8f599a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -3314,6 +3323,9 @@
       <Filter>04. ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxColor.hlsl">
+      <Filter>04. ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCurve.hlsl">
       <Filter>04. ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

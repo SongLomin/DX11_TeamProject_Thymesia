@@ -338,6 +338,7 @@
     <ClInclude Include="..\Public\Status_Monster.h" />
     <ClInclude Include="..\Public\Status_Player.h" />
     <ClInclude Include="..\Public\Preset_PhysXControllerDesc.h" />
+    <ClInclude Include="..\Public\TargetCurve.h" />
     <ClInclude Include="..\Public\TestUI.h" />
     <ClInclude Include="..\Public\UI_Button.h" />
     <ClInclude Include="..\Public\Talent_Effects.h" />
@@ -683,6 +684,7 @@
     <ClCompile Include="..\Private\Requirement_Once.cpp" />
     <ClCompile Include="..\Private\Requirement_State.cpp" />
     <ClCompile Include="..\Private\Status_Boss.cpp" />
+    <ClCompile Include="..\Private\TargetCurve.cpp" />
     <ClCompile Include="..\Private\UI_Button.cpp" />
     <ClCompile Include="..\Private\UI_Container.cpp" />
     <ClCompile Include="..\Private\UI_DamageFont.cpp" />
@@ -952,6 +954,7 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCubeTex.hlsl" />
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxCurve.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxGround.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxInstance.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxModel.hlsl">

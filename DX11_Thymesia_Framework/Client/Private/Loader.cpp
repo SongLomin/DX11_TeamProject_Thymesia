@@ -230,6 +230,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_EffectMesh"), TEXT("../Bin/ShaderFiles/Shader_EffectMesh.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxGround"), TEXT("../Bin/ShaderFiles/Shader_VtxGround.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxModelInstance"), TEXT("../Bin/ShaderFiles/Shader_VtxModelInstance.hlsl"));
+	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxCurve"), TEXT("../Bin/ShaderFiles/Shader_VtxCurve.hlsl"));
 
 #ifndef _ONLY_UI_
 	lstrcpy(m_szLoadingText, TEXT("Loading All Key Event from Json...."));

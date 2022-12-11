@@ -7,6 +7,7 @@
 #include "Animation.h"
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
+#include "PhysXCharacterController.h"
 
 
 GAMECLASS_C(CCorvusState_LAttack1);
@@ -117,6 +118,9 @@ void CCorvusState_LAttack1::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	//Disable_Weapons();
 
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
+		bind(&CCorvusState_LAttack1::Call_OtherControllerHit, this, placeholders::_1);
+
 #ifdef _DEBUG
 	#ifdef _DEBUG_COUT_
 		cout << "CorvusState: Attack -> OnStateStart" << endl;
@@ -131,6 +135,9 @@ void CCorvusState_LAttack1::OnStateEnd()
 
 	//Disable_Weapons();
 	m_IsNextAttack = false;
+
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit -=
+		bind(&CCorvusState_LAttack1::Call_OtherControllerHit, this, placeholders::_1);
 	
 }
 

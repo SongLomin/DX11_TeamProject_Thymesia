@@ -435,6 +435,8 @@ _bool CCorvusStateBase::Check_RequirementAttackClose(weak_ptr<CGameObject>& Out_
 
 void CCorvusStateBase::Call_OtherControllerHit(const PxControllersHit& In_hit)
 {
+	__super::Call_OtherControllerHit(In_hit);
+
 	shared_ptr<CRequirement_State> pReq_Once = make_shared<CRequirement_State>();
 	pReq_Once->Init_Req(m_pOwnerFromPlayer, m_iStateIndex);
 

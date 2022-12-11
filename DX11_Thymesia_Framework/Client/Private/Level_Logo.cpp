@@ -37,6 +37,7 @@ HRESULT CLevel_Logo::Initialize()
 	Load_FromJson(m_szDefaultJsonPath + "Logo.json", LEVEL_LOGO);
 
 	GAMEINSTANCE->Add_GameObject<CUI_Logo>(LEVEL_LOGO);
+	//GAMEINSTANCE->Add_GameObject<CTargetCurve>(LEVEL_LOGO);
 
 	return S_OK;
 }

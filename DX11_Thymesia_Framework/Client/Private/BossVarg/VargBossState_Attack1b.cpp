@@ -10,6 +10,7 @@
 #include "Character.h"
 #include "VargStates.h"
 #include "MobWeapon.h"
+#include "PhysXCharacterController.h"
 
 GAMECLASS_C(CVargBossState_Attack1b);
 CLONE_C(CVargBossState_Attack1b, CComponent)
@@ -82,6 +83,10 @@ void CVargBossState_Attack1b::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
+		bind(&CVargBossState_Attack1b::Call_OtherControllerHit, this, placeholders::_1);
+
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Attack1b -> OnStateStart" << endl;
@@ -98,7 +103,8 @@ void CVargBossState_Attack1b::OnStateEnd()
 
 	m_bNextAttack = false;
 
-	
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit -=
+		bind(&CVargBossState_Attack1b::Call_OtherControllerHit, this, placeholders::_1);
 }
 
 

@@ -7,7 +7,7 @@
 #include "Animation.h"
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
-
+#include "PhysXCharacterController.h"
 
 GAMECLASS_C(CCorvusState_LAttack4);
 CLONE_C(CCorvusState_LAttack4, CComponent)
@@ -118,7 +118,8 @@ void CCorvusState_LAttack4::OnStateStart(const _float& In_fAnimationBlendTime)
 
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
-
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
+		bind(&CCorvusState_LAttack4::Call_OtherControllerHit, this, placeholders::_1);
 	//m_iAttackIndex = 7;
 	//m_iEndAttackEffectIndex = -1;
 
@@ -142,6 +143,9 @@ void CCorvusState_LAttack4::OnStateEnd()
 
 	//Disable_Weapons();
 	m_IsNextAttack = false;
+
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit -=
+		bind(&CCorvusState_LAttack4::Call_OtherControllerHit, this, placeholders::_1);
 }
 
 void CCorvusState_LAttack4::OnEventMessage(_uint iArg)

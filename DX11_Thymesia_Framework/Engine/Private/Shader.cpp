@@ -128,8 +128,12 @@ HRESULT CShader::Set_ShaderInfo_Internal()
 
 		PassDesc.pPass->GetDesc(&Pass);
 
-		if (FAILED(DEVICE->CreateInputLayout(m_InputDesc, m_iNumElement, Pass.pIAInputSignature, Pass.IAInputSignatureSize, &PassDesc.pInputLayout)))
-			return E_FAIL;
+		HRESULT hr = (DEVICE->CreateInputLayout(m_InputDesc, m_iNumElement, Pass.pIAInputSignature, Pass.IAInputSignatureSize, &PassDesc.pInputLayout));
+		
+		if (FAILED(hr))
+		{
+			return hr;
+		}
 
 		m_Passes.push_back(PassDesc);
 	}

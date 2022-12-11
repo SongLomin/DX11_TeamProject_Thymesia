@@ -240,6 +240,11 @@ namespace Engine
 		XMFLOAT4			vTranslation;
 	}VTXINSTANCE;
 
+	struct VTXCURVE
+	{
+		XMFLOAT2			vRatio;
+	};
+
 	typedef struct tagVertex_Color_Instance
 	{
 		XMFLOAT4			vRight;
@@ -281,6 +286,12 @@ namespace Engine
 		static const unsigned int		iNumElements = 8;
 		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
 	} VTXTEXCOLOR_INSTANCE_DECLARATION;
+
+	typedef struct ENGINE_DLL tagVertex_Texture_Curve_Instance_Declaration
+	{
+		static const unsigned int		iNumElements = 3;
+		static const D3D11_INPUT_ELEMENT_DESC	Element[iNumElements];
+	} VTXTEXCURVE_INSTANCE_DECLARATION;
 
 
 	typedef struct tagGraphicDesc
