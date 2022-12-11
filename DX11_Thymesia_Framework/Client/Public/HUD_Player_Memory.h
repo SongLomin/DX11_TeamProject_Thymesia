@@ -7,10 +7,10 @@ BEGIN(Client)
 class CCustomUI;
 
 
-class CPlayer_Memory final : public CUI
+class CHUD_Player_Memory final : public CUI
 {
-	GAMECLASS_H(CPlayer_Memory);
-	CLONE_H(CPlayer_Memory, CGameObject);
+	GAMECLASS_H(CHUD_Player_Memory);
+	CLONE_H(CHUD_Player_Memory, CGameObject);
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
@@ -36,8 +36,6 @@ private:
 	_float					m_fMemory;
 
 	_float					m_fLerpMemory;
-	_float					m_fLerpAcc;
-
 	_float					m_fDifference;
 
 public:

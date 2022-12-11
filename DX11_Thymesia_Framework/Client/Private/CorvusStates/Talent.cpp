@@ -96,6 +96,57 @@ void CTalent::Set_TalentInfo(_bool In_bActive,
     m_pParent = In_pParent;
 }
 
+void CTalent::Set_TalentName(TALENT_NAME TalentName)
+{
+    m_eTalentName = TalentName;
+
+    switch (m_eTalentName)
+    {
+    case Client::TALENT_NAME::NORSWORDLV1:
+        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Basic");
+        break;
+    case Client::TALENT_NAME::NORSWORDLV2:
+        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Basic");
+        break;
+    case Client::TALENT_NAME::AVOIDSLASHLV1:
+        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Cross");
+        break;
+    case Client::TALENT_NAME::AVOIDSLASHLV2:
+        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Cross");
+        break;
+    case Client::TALENT_NAME::AVOIDTHRUSTLV1:
+        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Stab");
+        break;
+    case Client::TALENT_NAME::AVOIDTHRUSTLV2:
+        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Stab");
+        break;
+    case Client::TALENT_NAME::JUMPATTACKLV1:
+        break;
+    case Client::TALENT_NAME::JUMPATTACKLV2:
+        break;
+    case Client::TALENT_NAME::JUMPATTACKLV3:
+        break;
+    case Client::TALENT_NAME::EXECUTION:
+        break;
+    case Client::TALENT_NAME::HEALINGEXECUTIONLV1:
+        break;
+    case Client::TALENT_NAME::HEALINGEXECUTIONLV2:
+        break;
+    case Client::TALENT_NAME::SHARPWEAPONLV1:
+        break;
+    case Client::TALENT_NAME::SHARPWEAPONLV2:
+        break;
+    case Client::TALENT_NAME::ENERGISEDWEAPONLV1:
+        break;
+    case Client::TALENT_NAME::ENERGISEDWEAPONLV2:
+        break;
+    case Client::TALENT_NAME::TALENT_NAME_END:
+        break;
+    default:
+        break;
+    }
+}
+
 void CTalent::Add_TalentChild(weak_ptr<CTalent> In_pChild)
 {
     m_pChilds.push_back(In_pChild);
@@ -118,44 +169,15 @@ void CTalent::OnMouseOver()
 {
     __super::OnMouseOver();
 
-    Callback_OnMouseOver(m_eTalentName);
-    if (m_bActive)
-    {
-        CheckMouseOver();
- 
-        list<weak_ptr<CTalent>> listChild;
-        int i = 0;
-        Find_ActiveChild_Recursive(Weak_StaticCast<CTalent>(m_this), listChild, i);
-        for (auto& elem : listChild)
-        {
-            elem.lock()->CheckMouseOver();
-        }
-    }
-    else
-    {
-        UnCheckMouseOver();
-        list<weak_ptr<CTalent>> listParents;
-
-        int i = 0;
-        Find_ActiveParent_Recursive(m_pParent, listParents, i);
-        for (auto& elem : listParents)
-        {
-            if (elem.lock()->m_bActive)
-            {
-                elem.lock()->CheckMouseOver();
-            }
-            else
-            {
-                elem.lock()->UnCheckMouseOver();
-            }
-        }
-    }
+    Callback_OnMouseOver(Weak_StaticCast<CTalent>(m_this));
+   
 }
 
 void CTalent::OnMouseOut()
 {
     __super::OnMouseOut();
-    Callback_OnMouseOut();
+    Callback_OnMouseOut(Weak_StaticCast<CTalent>(m_this));
+    /*
     if (m_bActive)
     {
         CheckMouseOut();
@@ -183,16 +205,12 @@ void CTalent::OnMouseOut()
             elem.lock()->m_bActive ? elem.lock()->CheckMouseOut() : elem.lock()->UnCheckMouseOut();
         }
     }
-}
-
-void CTalent::OnLButtonDown()
-{
+    */
 }
 
 void CTalent::OnLButtonClick()
 {
     __super::OnLButtonClick();
-
 
     CStatus_Player::PLAYERDESC tPlayerDesc;
 
@@ -225,7 +243,7 @@ void CTalent::OnLButtonClick()
         for (auto& elem : visitNodes)
         {
             pTalent = elem;
-            elem.lock()->CheckLButtonClick();
+            elem.lock()->CheckLButtonClick(true);
 #ifndef _ONLY_UI_
             m_pPlayer.lock()->Bind_TalentEffects(elem.lock()->Get_Effect());
 #endif
@@ -234,7 +252,7 @@ void CTalent::OnLButtonClick()
         GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Status().lock()->Set_Desc(&tPlayerDesc);
 #endif
         if (pTalent.lock()->m_pParent.lock())
-            pTalent.lock()->m_pParent.lock()->CheckLButtonClick();
+            pTalent.lock()->m_pParent.lock()->CheckLButtonClick(true);
         break;
     }
     case Client::TALENT_RESULT::SUBSCRIPTPOINT:
@@ -243,12 +261,13 @@ void CTalent::OnLButtonClick()
         {
             if (elem.lock()->m_pParent.lock())
             {
-                elem.lock()->UnCheckLButtonClick();
+                elem.lock()->CheckLButtonClick(false);
 #ifndef _ONLY_UI_
                 m_pPlayer.lock()->UnBind_TalentEffects(elem.lock()->Get_Effect());
 #endif
             }
         }
+        
 #ifndef _ONLY_UI_
         GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Status().lock()->Set_Desc(&tPlayerDesc);
 #endif
@@ -262,68 +281,58 @@ void CTalent::OnLButtonClick()
 
 void CTalent::CheckMouseOver()//체크되어 있는 상태에서 마우스오버
 {
+    if (m_bActive)
+    {
+        m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame_Active");
+
+    }
+    else
+    {
+        if (!m_pParent.lock())
+            return;
+
+        m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame");
+    }
     m_pButtonActive.lock()->Animation_MouseOver();
-
-   // m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Active_Hover");
-    m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame_Active");
-
 }
 
 void CTalent::CheckMouseOut()//체크되어 있는 상태에서 마우스아웃KO
 {
-
     m_pButtonActive.lock()->Animation_MouseOut();
 
-    //m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Active");
-    m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame_Active");
-}
+    if (m_bActive)
+    {
+        m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame_Active");
 
-void CTalent::CheckLButtonClick()//마우스 버튼 켜진시점
-{
-    if (!m_pParent.lock())
-        return;
-    m_bActive = true;
-    //m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Active");
-    m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame_Active");
+    }
+    else
+    {
+        if (!m_pParent.lock())
+            return;
 
-    m_pButtonActive.lock()->Set_Click(true);
-
-}
-
-void CTalent::UnCheckMouseOver()//클릭 X일떄 마우스오버
-{
-    if (!m_pParent.lock())
-        return;
-
-
-    m_pButtonActive.lock()->Animation_MouseOver();
-
-//    m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Frame_Hover");
-    m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame");
+        m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame");
+    }
 
 }
 
-void CTalent::UnCheckMouseOut()//클릭 X일때 마우스아웃
+void CTalent::CheckLButtonClick(_bool bActive)//마우스 버튼 켜진시점
 {
     if (!m_pParent.lock())
+    {
+        m_pButtonActive.lock()->Animation_MouseOut();
         return;
-
-    m_pButtonActive.lock()->Animation_MouseOut();
-
-//    m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_None");
-    m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame");
-}
-
-
-void CTalent::UnCheckLButtonClick()//눌러서 버튼 꺼진시점
-{
-    if (!m_pParent.lock())
-        return;
-    m_bActive = false;
-    m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame");
-   // m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_None");
-
-    m_pButtonActive.lock()->Set_Click(false);
+    }
+    m_bActive = bActive;
+    if (m_bActive)
+    {
+        m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame_Active");
+    }
+    else
+    {
+        m_pButtonFrame.lock()->Set_Texture("EvolveMenu_PW_Frame");
+    }
+ 
+    m_pButtonActive.lock()->Set_Click(m_bActive);
 
 }
 
@@ -543,56 +552,4 @@ void CTalent::OnDisable()
  
 +        elem.lock()->Set_Enable(false);
     }
-}
-
-void CTalent::Set_TALENT_NAME(TALENT_NAME TalentName)
-{
-    m_eTalentName = TalentName;
-
-    switch (m_eTalentName)
-    {
-    case Client::TALENT_NAME::NORSWORDLV1:
-        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Basic");
-        break;
-    case Client::TALENT_NAME::NORSWORDLV2:
-        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Basic");
-        break;
-    case Client::TALENT_NAME::AVOIDSLASHLV1:
-        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Cross");
-        break;
-    case Client::TALENT_NAME::AVOIDSLASHLV2:
-        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Cross");
-        break;
-    case Client::TALENT_NAME::AVOIDTHRUSTLV1:
-        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Stab");
-        break;
-    case Client::TALENT_NAME::AVOIDTHRUSTLV2:
-        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Stab");
-        break;
-    case Client::TALENT_NAME::JUMPATTACKLV1:
-        break;
-    case Client::TALENT_NAME::JUMPATTACKLV2:
-        break;
-    case Client::TALENT_NAME::JUMPATTACKLV3:
-        break;
-    case Client::TALENT_NAME::EXECUTION:
-        break;
-    case Client::TALENT_NAME::HEALINGEXECUTIONLV1:
-        break;
-    case Client::TALENT_NAME::HEALINGEXECUTIONLV2:
-        break;
-    case Client::TALENT_NAME::SHARPWEAPONLV1:
-        break;
-    case Client::TALENT_NAME::SHARPWEAPONLV2:
-        break;
-    case Client::TALENT_NAME::ENERGISEDWEAPONLV1:
-        break;
-    case Client::TALENT_NAME::ENERGISEDWEAPONLV2:
-        break;
-    case Client::TALENT_NAME::TALENT_NAME_END:
-        break;
-    default:
-        break;
-    }
-
 }

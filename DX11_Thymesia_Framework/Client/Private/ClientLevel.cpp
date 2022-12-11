@@ -23,7 +23,7 @@
 #include "UI_EvolveMenu_Talent.h"
 #include "Player_MPBar.h"
 #include "Player_HPBar.h"
-#include "Player_Memory.h"
+#include "HUD_Player_Memory.h"
 #include "Player_PotionUI.h"
 #include "Player_FeatherUI.h"
 #include "UI_Script.h"
@@ -89,7 +89,6 @@ void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint
 		cout << entry.path().filename() << std::endl;
 #endif
 
-
 		itr++;
 	}
 }
@@ -114,7 +113,7 @@ void CClientLevel::SetUp_UI()
 	Preset::AddGameObject::TalentSetting();
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_MPBar>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_Memory>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CHUD_Player_Memory>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_PotionUI>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));

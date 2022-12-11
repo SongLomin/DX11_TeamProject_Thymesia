@@ -28,13 +28,12 @@ public:
 
 public:
 	void	SetRootTalent(weak_ptr<CTalent> In_pTalent, TALENT_TAP eRootType);
+	
 
 private:
 	void	Create_Background();
 	void	Create_TalentInformation();
-
 	void	Init_Tap();
-
 	void	Update_UI();
 
 private:
@@ -57,6 +56,11 @@ private:
 	weak_ptr<CTalent>	m_pRoot[(_uint)TALENT_TAP::TALENT_TAP_END];
 
 private:
+	void				TalentAnimation_MouseOver(weak_ptr<CTalent> pSelectedTalent);
+	void				TalentAnimation_MouseOut(weak_ptr<CTalent> pSelectedTalent);
+
+	
+	void				TalentViewInformaiton_MouseOver(TALENT_NAME eTalentName);
 
 private:
 	weak_ptr<CCustomUI>	m_pTalentImage;
@@ -65,9 +69,9 @@ private:
 	weak_ptr<CCustomUI>	m_pTalentInformation;//정보
 	weak_ptr<CCustomUI>	m_pTalentInformationBG;//정보배경
 public:
-	void	Call_TalentMouseOver(TALENT_NAME eTalent_Name);
-	void	Call_TalentMouseOut();
-	
+	void	Call_TalentMouseOver(weak_ptr<CTalent> pSelectedTalent);
+	void	Call_TalentMouseOut(weak_ptr<CTalent> pSelectedTalent);
+	void	Call_TalentButtonClick(weak_ptr<CTalent> PSelectTalent);
 
 
 private:
@@ -86,6 +90,7 @@ private:
 
 private:
 	TEXTINFO			m_tTalentInfo;
+	weak_ptr<CTalent>	m_pSelectedTalent;
 
 public:
 	void            Call_ReturnToEvolveMenu();

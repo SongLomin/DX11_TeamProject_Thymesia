@@ -10,7 +10,7 @@
 #include "Talent_Effects.h"
 #include "CorvusStates/Talent.h"
 #include "UI_EvolveTalent_Active.h"
-
+#include "UI_Utils.h"
 
 GAMECLASS_C(CUI_EveolveMenu_Talent)
 CLONE_C(CUI_EveolveMenu_Talent, CGameObject)
@@ -41,19 +41,10 @@ HRESULT CUI_EveolveMenu_Talent::Initialize(void* pArg)
     m_fTreeOffsetY = 100.f;
     m_fTreeOffsetX = 50.f;
 
-
-
-
     Create_TalentInformation();
 
 
-
-
-
     Set_Enable(false);
-
-
-
 
     return S_OK;
 }
@@ -99,8 +90,11 @@ void CUI_EveolveMenu_Talent::Tick(_float fTimeDelta)
 
 void CUI_EveolveMenu_Talent::LateTick(_float fTimeDelta)
 {
+    fTimeDelta = CUI_Utils::UI_TimeDelta(fTimeDelta);
+
     __super::LateTick(fTimeDelta);
 
+    Update_UI();
 }
 
 void CUI_EveolveMenu_Talent::SetRootTalent(weak_ptr<CTalent> In_pTalent, TALENT_TAP eRootType)
@@ -262,14 +256,47 @@ void CUI_EveolveMenu_Talent::UI_ChangeTap()
 }
 
 
-void CUI_EveolveMenu_Talent::Call_TalentMouseOver(TALENT_NAME eTalent_Name)
+void CUI_EveolveMenu_Talent::TalentAnimation_MouseOver(weak_ptr<CTalent> pSelectedTalent)
 {
-    switch (eTalent_Name)
+    if (pSelectedTalent.lock()->Is_Active())
+    {
+        pSelectedTalent.lock()->CheckMouseOver();
+    }
+    else
+    { 
+        list<weak_ptr<CTalent>> listParentNode;
+        pSelectedTalent.lock()->Find_AllParent_Recursive(pSelectedTalent, listParentNode);
+
+        for (auto& elem : listParentNode)
+        {
+            elem.lock()->CheckMouseOver();
+        }
+    }
+    
+}
+
+void CUI_EveolveMenu_Talent::TalentAnimation_MouseOut(weak_ptr<CTalent> pSelectedTalent)
+{
+    
+    pSelectedTalent.lock()->CheckMouseOut();
+    
+    list<weak_ptr<CTalent>> listParentNode;
+    pSelectedTalent.lock()->Find_AllParent_Recursive(pSelectedTalent, listParentNode);
+
+    for (auto& elem : listParentNode)
+    {
+        elem.lock()->CheckMouseOut();
+    }
+
+}
+
+void CUI_EveolveMenu_Talent::TalentViewInformaiton_MouseOver(TALENT_NAME eTalentName)
+{
+    switch (eTalentName)
     {
     case Client::TALENT_NAME::NORSWORDLV1:
         m_pTalentTitle.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Basic0_Title");
         m_pTalentInformation.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Basic0_Information");
-
         break;
     case Client::TALENT_NAME::NORSWORDLV2:
         m_pTalentTitle.lock()->Set_Texture("EvolveMenu_Talent_Icon_LAttack_Basic1_Title");
@@ -319,14 +346,84 @@ void CUI_EveolveMenu_Talent::Call_TalentMouseOver(TALENT_NAME eTalent_Name)
     default:
         break;
     }
-
-
 }
 
-void CUI_EveolveMenu_Talent::Call_TalentMouseOut()
+void CUI_EveolveMenu_Talent::Call_TalentMouseOver(weak_ptr<CTalent> pSelectedTalent)
+{
+    m_pSelectedTalent = pSelectedTalent;
+    TALENT_NAME eTalent_Name = m_pSelectedTalent.lock()->Get_TalentName();
+
+    TalentViewInformaiton_MouseOver(eTalent_Name);// 뷰 인포메이션 정보 갱신
+
+    //지금 마우스오버한 상태에 따라 분기를 가름.
+    TALENT_RESULT eTalentResult;
+
+    CStatus_Player::PLAYERDESC tPlayerDesc;
+
+    if (!GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock())
+    {
+        tPlayerDesc.m_iTalent = 5;
+    }
+    else
+    {
+        GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Status().lock()->Get_Desc(&tPlayerDesc);
+    }
+    _int        iCost = 0;
+    list<weak_ptr<CTalent>> visitNodes;
+    eTalentResult = m_pSelectedTalent.lock()->Check_Requiment(tPlayerDesc.m_iTalent, iCost, visitNodes);
+    
+    switch (eTalentResult)
+    {
+    case Client::TALENT_RESULT::FAILED:
+        break;
+    case Client::TALENT_RESULT::NOT_ENOUGHTPOINT:
+        break;
+    case Client::TALENT_RESULT::USING_ATHORTREE:
+        break;
+    case Client::TALENT_RESULT::SUCCESS:
+        break;
+    case Client::TALENT_RESULT::SUBSCRIPTPOINT:
+        break;
+    case Client::TALENT_RESULT::RESULT_END:
+        break;
+    default:
+        break;
+    }
+    TalentAnimation_MouseOver(m_pSelectedTalent);
+}
+
+
+void CUI_EveolveMenu_Talent::Call_TalentMouseOut(weak_ptr<CTalent> pSelectedTalent)
 {
     m_pTalentTitle.lock()->Set_Texture("None");
     m_pTalentInformation.lock()->Set_Texture("None");
+
+    m_pSelectedTalent = pSelectedTalent;
+
+
+    //지금 마우스오버한 상태에 따라 분기를 가름.
+    TALENT_RESULT eTalentResult;
+
+    CStatus_Player::PLAYERDESC tPlayerDesc;
+
+    if (!GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock())
+    {
+        tPlayerDesc.m_iTalent = 5;
+    }
+    else
+    {
+        GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Status().lock()->Get_Desc(&tPlayerDesc);
+    }
+    _int        iCost = 0;
+    list<weak_ptr<CTalent>> visitNodes;
+    m_pSelectedTalent.lock()->Check_Requiment(tPlayerDesc.m_iTalent, iCost, visitNodes);
+
+    TalentAnimation_MouseOut(m_pSelectedTalent);
+}
+
+void CUI_EveolveMenu_Talent::Call_TalentButtonClick(weak_ptr<CTalent> PSelectTalent)
+{
+
 }
 
 void CUI_EveolveMenu_Talent::SetUp_TalentNode(weak_ptr<CTalent> pNode, UI_DESC tUIDesc)

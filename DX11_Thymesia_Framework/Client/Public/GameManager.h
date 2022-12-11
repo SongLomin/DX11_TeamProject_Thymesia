@@ -19,7 +19,7 @@ class CSwapPlayerUI;
 //Player_UI
 class CPlayer_MPBar;
 class CPlayer_HPBar;
-class CPlayer_Memory;
+class CHUD_Player_Memory;
 class CPlayer_PotionUI;
 class CPlayer_FeatherUI;
 class CStatus_Player;

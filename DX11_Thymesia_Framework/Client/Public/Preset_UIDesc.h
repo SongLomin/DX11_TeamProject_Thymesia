@@ -8,7 +8,7 @@ class CPreset_UIDesc
 public:
 	static void		Set_CUI_MonsterFocus(weak_ptr<class CUI_MonsterFocus> pUI);
 
-
+	static void		Set_CUI_PlayerHPBar(weak_ptr<class CPlayer_HPBar> pUI);
 
 };
 
