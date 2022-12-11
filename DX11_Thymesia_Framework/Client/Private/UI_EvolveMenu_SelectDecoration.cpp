@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "UI_EvolveMenu_SelectDecoration.h"
 #include "Texture.h"
+#include "EasingComponent.h"
 #include "EasingComponent_Alpha.h"
 #include "Shader.h"
 
@@ -63,8 +64,7 @@ HRESULT CUI_EvolveMenu_SelectDecoration ::Render()
 
 void CUI_EvolveMenu_SelectDecoration::Start_Animation()
 {
-    m_pEasingAlphaCom.lock()->Set_Lerp
-    (0.f,1.f, 1.f, EASING_TYPE::CIRC_OUT, CEasingComponent::ONCE, true);
+    m_pEasingAlphaCom.lock()->Set_Lerp(0.f,1.f, 1.f, EASING_TYPE::CIRC_OUT, CEasingComponent::ONCE, true);
 }
 
 HRESULT CUI_EvolveMenu_SelectDecoration ::SetUp_ShaderResource()

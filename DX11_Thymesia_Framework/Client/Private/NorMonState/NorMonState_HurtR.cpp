@@ -138,23 +138,27 @@ _bool CNorMonState_HurtR::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	switch (m_eMonType)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
-	case Client::MONSTERTYPE::AXEMAN:
-		break;
-	case Client::MONSTERTYPE::SHIELDAXEMAN:
-		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+		if (m_iParryCount >= 10)
 		{
-			if (m_iParryCount >= 10)
+			switch (m_eMonType)
 			{
+			case Client::MONSTERTYPE::AXEMAN:
+				Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock()->Set_ZeroParryCount(0);
+				Get_OwnerCharacter().lock()->Change_State<CNorMonState_LightAttack1>(0.05f);
+				m_iParryCount = 0;
+				break;
+			case Client::MONSTERTYPE::SHIELDAXEMAN:
 				Get_Owner().lock()->Get_Component<CNorMonState_HurtL>().lock()->Set_ZeroParryCount(0);
 				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Parry>(0.05f);
 				m_iParryCount = 0;
-			}
-			return true;
-		}
-		break;
+				break;
 
+			}
+
+		}
+		return true;
 	}
 
 	return false;

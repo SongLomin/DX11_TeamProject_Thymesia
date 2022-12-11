@@ -148,12 +148,12 @@ void CEditSetActor::View_CreateActor()
 		"KNIFEWOMAN",
 		"SKULL",
 		"GARDENER",
-		"SHIELDAXEMAN",
+		"SHIELDAXEMAN"
 	};
 
 	static const char* ActorList_Elite[] =
 	{
-		"GARDENER"
+		"JOKER"
 	};
 
 
@@ -239,7 +239,13 @@ void CEditSetActor::View_CreateActor()
 
 		case 1:
 		{
+			weak_ptr<CMonster> pObj = Weak_StaticCast<CMonster>(GAMEINSTANCE->Add_GameObject<CJoker>(LEVEL::LEVEL_EDIT));
+			pObj.lock()->Set_LinkStateDesc(tMonsterDesc);
+			pObj.lock()->Init_Desc();
+			pObj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
+			pObj.lock()->Get_Transform()->Set_WorldMatrix(XMLoadFloat4x4(&m_PickingDesc));
 
+			Add_ActorToTool(typeid(CJoker).hash_code(), typeid(CJoker).name(), pObj);
 		}
 		break;
 

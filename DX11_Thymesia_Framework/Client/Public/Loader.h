@@ -59,6 +59,8 @@ private:
 	void	Load_UIResource();
 	void	Load_CorvusModel();
 	void	Load_NormalMobModel();
+	void    Load_RareMobModel();
+	void    Load_EliteMobModel();
 	void	Load_BossMobModel();
 
 private:

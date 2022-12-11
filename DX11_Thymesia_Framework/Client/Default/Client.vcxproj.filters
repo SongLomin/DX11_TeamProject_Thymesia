@@ -1027,6 +1027,24 @@
     <ClInclude Include="..\Public\Requirement_State.h">
       <Filter>07. Requirement\03. Requirement_State</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\EliteMonster.h">
+      <Filter>02. GameObject\03.Actor\00.Joker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\JokerWeapon.h">
+      <Filter>02. GameObject\03.Actor\00.Joker</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\Joker\JokerState_Idle.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\02.EliteState\00.JokerState\00.Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\EliteStateBase.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\02.EliteState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\JokerStates.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\02.EliteState\00.JokerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\Joker\Joker.h">
+      <Filter>02. GameObject\03.Actor\00.Joker</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2101,6 +2119,21 @@
     <ClCompile Include="..\Private\Requirement_State.cpp">
       <Filter>07. Requirement\03. Requirement_State</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\EliteMonster.cpp">
+      <Filter>02. GameObject\03.Actor\00.Joker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\JokerWeapon.cpp">
+      <Filter>02. GameObject\03.Actor\00.Joker</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\Joker\EliteStateBase.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\02.EliteState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\Joker\JokerState_Idle.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\02.EliteState\00.JokerState\00.Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EliteMonState\Joker\Joker.cpp">
+      <Filter>02. GameObject\03.Actor\00.Joker</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3166,6 +3199,18 @@
     </Filter>
     <Filter Include="07. Requirement\03. Requirement_State">
       <UniqueIdentifier>{2aae9c0e-209d-4609-8b52-3ac57181093f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\02.EliteState\00.JokerState">
+      <UniqueIdentifier>{ffcdcf06-d268-41b8-a050-8e18ff22c766}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\02.EliteState\00.JokerState\00.Idle">
+      <UniqueIdentifier>{203a4db9-e906-402e-bf94-4552798a9cb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03.Actor">
+      <UniqueIdentifier>{0db45e45-0d0e-46c2-bc1e-fc8bdb676af6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03.Actor\00.Joker">
+      <UniqueIdentifier>{19627968-7699-4f4f-934c-858f9cfa3641}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

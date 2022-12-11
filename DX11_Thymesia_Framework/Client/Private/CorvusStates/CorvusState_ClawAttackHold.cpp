@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
 #include "PhysXController.h"
+#include "Weapon.h"
 
 
 GAMECLASS_C(CCorvusState_ClawAttackHold);
@@ -122,6 +123,11 @@ void CCorvusState_ClawAttackHold::Call_NextKeyFrame(const _uint& In_KeyIndex)
 void CCorvusState_ClawAttackHold::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	weak_ptr<CPlayer> pPlayer = Weak_Cast<CPlayer>(m_pOwner);
+	list<weak_ptr<CWeapon>>	pWeapons = pPlayer.lock()->Get_Weapon();
+
+	pWeapons.front().lock()->Set_RenderOnOff(false);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 

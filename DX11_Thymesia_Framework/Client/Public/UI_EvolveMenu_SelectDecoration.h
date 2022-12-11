@@ -4,11 +4,12 @@
 
 BEGIN(Engine)
 class CTexture;
-class CEasingComponent_Alpha;
 END
 
 BEGIN(Client)
 
+
+class CEasingComponent_Alpha;
 
 class CUI_EvolveMenu_SelectDecoration : public CCustomUI
 {
@@ -33,7 +34,7 @@ private:
 	weak_ptr<CTexture>	m_pMaskingTextureCom;
 
 	weak_ptr<CEasingComponent_Alpha>	m_pEasingAlphaCom;
-	_float2						m_vUXOffset;
+	_float2								m_vUXOffset;
 };
 
 END
