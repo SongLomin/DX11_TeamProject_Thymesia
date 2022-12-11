@@ -33,6 +33,7 @@ void CCorvusState_ClawAttackAway::Start()
 
 	m_fDissolveAmountArm = 0.f;
 	m_fDissolveAmountClaw = 0.f;
+	m_bDissolve = false;
 }
 
 void CCorvusState_ClawAttackAway::Tick(_float fTimeDelta)
@@ -61,12 +62,11 @@ void CCorvusState_ClawAttackAway::Tick(_float fTimeDelta)
 				m_fDissolveAmountArm = SMath::Lerp(1.f, 0.f, m_fDissolveTimeArm / 0.7f);
 				m_vDissolveDir = { 1.f,0.f,0.f };
 			}
-			else
-			{
-				m_fDissolveTimeClaw -= fTimeDelta;
-				m_fDissolveAmountClaw = SMath::Lerp(1.f, 0.f, m_fDissolveTimeClaw / 0.7f);
-				m_vDissolveDir = { 1.f,0.f,0.f };
-			}
+		
+			m_fDissolveTimeClaw -= fTimeDelta;
+			m_fDissolveAmountClaw = SMath::Lerp(1.f, 0.f, m_fDissolveTimeClaw / 0.7f);
+			m_vDissolveDir = { 1.f,0.f,0.f };
+		
 		
 	}
 
@@ -75,14 +75,14 @@ void CCorvusState_ClawAttackAway::Tick(_float fTimeDelta)
 	ArmDissolveDesc.fAmount = m_fDissolveAmountArm;
 	ArmDissolveDesc.vDirection = m_vDissolveDir;
 	ArmDissolveDesc.vGlowColor = { 0.f, 1.f, 0.7f, 1.f };
-	ArmDissolveDesc.vStartPos = { -3.f,0.f,0.f };
+	ArmDissolveDesc.vStartPos = { 3.f,0.f,0.f };
 
 	ClawDissolveDesc.bBloom = true;
 	ClawDissolveDesc.bGlow = true;
 	ClawDissolveDesc.fAmount = m_fDissolveAmountClaw;
 	ClawDissolveDesc.vDirection = m_vDissolveDir;
 	ClawDissolveDesc.vGlowColor = { 0.f, 1.f, 0.7f, 1.f };
-	ClawDissolveDesc.vStartPos = { -3.f,0.f,0.f };
+	ClawDissolveDesc.vStartPos = { 3.f,0.f,0.f };
 
 
 	Get_OwnerPlayer()->Set_DissolveAmount(5, ClawDissolveDesc);
@@ -145,6 +145,14 @@ void CCorvusState_ClawAttackAway::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	case 74:
 		GET_SINGLE(CGameManager)->UnUse_EffectGroup("Corvus_ClawChargeAtk_FollowParticle", m_iEffectIndex);
 		return;
+
+	case 130:
+		m_fDissolveTimeArm = 0.7f;
+		m_fDissolveTimeClaw = 0.7f;
+		m_bDissolve = true;
+		m_fDissolveAmountArm = 0.f;
+		m_fDissolveAmountClaw = 0.f;
+		return;
 	}
 }
 
@@ -174,6 +182,10 @@ void CCorvusState_ClawAttackAway::OnStateStart(const _float& In_fAnimationBlendT
 
 	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
 		bind(&CCorvusState_ClawAttackAway::Call_OtherControllerHit, this, placeholders::_1);
+
+	m_fDissolveAmountArm = 0.f;
+	m_fDissolveAmountClaw = 0.f;
+	m_bDissolve = false;
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_

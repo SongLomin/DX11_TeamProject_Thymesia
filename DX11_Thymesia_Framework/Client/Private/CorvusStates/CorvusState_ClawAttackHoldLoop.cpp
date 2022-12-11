@@ -65,14 +65,14 @@ void CCorvusState_ClawAttackHoldLoop::Tick(_float fTimeDelta)
 	ArmDissolveDesc.fAmount = 0.f;
 	ArmDissolveDesc.vDirection = { 1.f,0.f,0.f };
 	ArmDissolveDesc.vGlowColor = { 0.f, 1.f, 0.7f, 1.f };
-	ArmDissolveDesc.vStartPos = { -3.f,0.f,0.f };
+	ArmDissolveDesc.vStartPos = { 3.f,0.f,0.f };
 
 	ClawDissolveDesc.bBloom = true;
 	ClawDissolveDesc.bGlow = true;
 	ClawDissolveDesc.fAmount = 0.f;
 	ClawDissolveDesc.vDirection = { 1.f,0.f,0.f };
 	ClawDissolveDesc.vGlowColor = { 0.f, 1.f, 0.7f, 1.f };
-	ClawDissolveDesc.vStartPos = { -3.f,0.f,0.f };
+	ClawDissolveDesc.vStartPos = { 3.f,0.f,0.f };
 
 
 	Get_OwnerPlayer()->Set_DissolveAmount(5, ClawDissolveDesc);
