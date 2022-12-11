@@ -116,6 +116,8 @@ _bool CVargBossState_WalkB::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+
+
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
 	{
 		m_bFirstLookAt = false;

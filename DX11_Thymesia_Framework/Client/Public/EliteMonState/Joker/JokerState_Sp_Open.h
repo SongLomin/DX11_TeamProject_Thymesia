@@ -7,16 +7,13 @@ END
 
 BEGIN(Client)
 
-class CJokerState_Idle :
+class CJokerState_Sp_Open :
 	public CEliteStateBase
 {
-	GAMECLASS_H(CJokerState_Idle);
-	CLONE_H(CJokerState_Idle, CComponent)
-		SHALLOW_COPY(CJokerState_Idle)
+	GAMECLASS_H(CJokerState_Sp_Open);
+	CLONE_H(CJokerState_Sp_Open, CComponent)
+		SHALLOW_COPY(CJokerState_Sp_Open)
 
-public:
-	void Set_TurnCheck(_bool TurnCheck) { m_bTurnCheck = TurnCheck; }
-	void Set_BackReset(_bool BackReset) { m_bBackReset = BackReset; }
 
 
 protected:
@@ -32,13 +29,11 @@ protected:
 	virtual _bool Check_AndChangeNextState() override;
 
 private:
-	_bool    m_bTurnCheck = false;
-	_bool    m_bBackReset = false;
-
+	_bool m_bCloseStart = false;
 private:
-	//void Call_AnimationEnd();
+	void Call_AnimationEnd();
 protected:
-	//virtual void OnDestroy() override;
+	virtual void OnDestroy() override;
 	void Free();
 
 };

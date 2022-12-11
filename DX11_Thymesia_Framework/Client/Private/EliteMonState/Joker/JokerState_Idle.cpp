@@ -62,6 +62,16 @@ void CJokerState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CJokerState_ComboA2>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CJokerState_ComboB2>().lock()  ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CJokerState_RunAtkEnd>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CJokerState_JumpAttack>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CJokerState_WheelAtkEnd>().lock())
+	
+	{
+		m_bTurnCheck = true;
+	}
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
@@ -90,6 +100,99 @@ _bool CJokerState_Idle::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+
+	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+
+	if (!pCurrentPlayer.lock())
+		return false;
+
+	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
+	_float fMToMDistance = GetStartPositionToCurrentPositionDir(); // 몬스터스타트포지션과 몬스터현재 포지션 사이의 거리
+
+
+
+	if (fPToMDistance < 1.f)
+	{
+		int iRand = rand() % 3;
+
+		switch (iRand)
+		{
+		case 0:
+			Get_OwnerCharacter().lock()->Change_State<CJokerState_WalkB>(0.05f);
+			break;
+		case 1:
+			Get_OwnerCharacter().lock()->Change_State<CJokerState_WalkL>(0.05f);
+			break;
+		case 2:
+			Get_OwnerCharacter().lock()->Change_State<CJokerState_WalkR>(0.05f);
+			break;
+		}
+		
+		return true;
+	
+	}
+
+	if (fPToMDistance >= 5.f)
+	{
+		if (m_bTurnCheck)
+		{
+			TurnMechanism();
+		}
+		else
+		{
+			int iRand = rand() % 3;
+
+			switch (iRand)
+			{
+			case 0:
+				Get_OwnerCharacter().lock()->Change_State<CJokerState_JumpAttack>(0.05f);
+				break;
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CJokerState_RunAttackStart>(0.05f);
+				break;
+			case 2:
+				Get_OwnerCharacter().lock()->Change_State<CJokerState_WalkF>(0.05f);
+				break;
+			}
+		}
+
+
+		return true;
+	}
+
+	if (fPToMDistance >= 1.f && fPToMDistance < 5.f)  // 5보다 작다
+	{
+		if (m_bTurnCheck)
+		{
+			TurnMechanism();
+		}
+		else
+		{
+			int iRand = rand() % 5;
+			switch (iRand)
+			{
+			case 0:
+				Get_OwnerCharacter().lock()->Change_State<CJokerState_ComboA1>(0.05f);
+				break;
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CJokerState_ShockAttack>(0.05f);
+				break;
+			case 2:
+				Get_OwnerCharacter().lock()->Change_State<CJokerState_RunAttackStart>(0.05f);
+				break;
+			case 3:
+				Get_OwnerCharacter().lock()->Change_State<CJokerState_WheelAtkStart>(0.05f);
+				break;
+			case 4:
+				Get_OwnerCharacter().lock()->Change_State<CJokerState_Combob1>(0.05f);
+				break;
+			}
+		}
+
+		// 5보다 작을떄 1보다 작을떄
+
+		return true;
+	}
 
 
 

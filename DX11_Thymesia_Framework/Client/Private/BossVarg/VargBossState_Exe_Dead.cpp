@@ -10,16 +10,16 @@
 #include "Character.h"
 #include "VargStates.h"
 
-GAMECLASS_C(CVargBossState_Stun_Exe_Dead);
-CLONE_C(CVargBossState_Stun_Exe_Dead, CComponent)
+GAMECLASS_C(CVargBossState_Exe_Dead);
+CLONE_C(CVargBossState_Exe_Dead, CComponent)
 
-HRESULT CVargBossState_Stun_Exe_Dead::Initialize_Prototype()
+HRESULT CVargBossState_Exe_Dead::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 	return S_OK;
 }
 
-HRESULT CVargBossState_Stun_Exe_Dead::Initialize(void* pArg)
+HRESULT CVargBossState_Exe_Dead::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
@@ -27,7 +27,7 @@ HRESULT CVargBossState_Stun_Exe_Dead::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CVargBossState_Stun_Exe_Dead::Start()
+void CVargBossState_Exe_Dead::Start()
 {
 	__super::Start();
 
@@ -35,10 +35,10 @@ void CVargBossState_Stun_Exe_Dead::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_TakeExecution_Dead");
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Stun_Exe_Dead::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Exe_Dead::Call_AnimationEnd, this);
 }
 
-void CVargBossState_Stun_Exe_Dead::Tick(_float fTimeDelta)
+void CVargBossState_Exe_Dead::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
@@ -47,7 +47,7 @@ void CVargBossState_Stun_Exe_Dead::Tick(_float fTimeDelta)
 }
 
 
-void CVargBossState_Stun_Exe_Dead::LateTick(_float fTimeDelta)
+void CVargBossState_Exe_Dead::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
@@ -58,12 +58,12 @@ void CVargBossState_Stun_Exe_Dead::LateTick(_float fTimeDelta)
 
 
 
-void CVargBossState_Stun_Exe_Dead::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+void CVargBossState_Exe_Dead::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
 	CBossStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 }
 
-void CVargBossState_Stun_Exe_Dead::OnStateStart(const _float& In_fAnimationBlendTime)
+void CVargBossState_Exe_Dead::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
@@ -78,7 +78,7 @@ void CVargBossState_Stun_Exe_Dead::OnStateStart(const _float& In_fAnimationBlend
 
 }
 
-void CVargBossState_Stun_Exe_Dead::OnStateEnd()
+void CVargBossState_Exe_Dead::OnStateEnd()
 {
 	__super::OnStateEnd();
 
@@ -87,26 +87,26 @@ void CVargBossState_Stun_Exe_Dead::OnStateEnd()
 
 
 
-void CVargBossState_Stun_Exe_Dead::Call_AnimationEnd()
+void CVargBossState_Exe_Dead::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
 
 
-	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Stun_Exe_End>(0.05f);
+	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_End>(0.05f);
 }
 
-void CVargBossState_Stun_Exe_Dead::OnDestroy()
+void CVargBossState_Exe_Dead::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Stun_Exe_Dead::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Exe_Dead::Call_AnimationEnd, this);
 }
 
-void CVargBossState_Stun_Exe_Dead::Free()
+void CVargBossState_Exe_Dead::Free()
 {
 
 }
 
-_bool CVargBossState_Stun_Exe_Dead::Check_AndChangeNextState()
+_bool CVargBossState_Exe_Dead::Check_AndChangeNextState()
 {
 
 	if (!Check_Requirement())

@@ -4,6 +4,7 @@
 
 BEGIN(Engine)
 class CBoneNode;
+class CModel;
 END
 
 BEGIN(Client)
@@ -47,7 +48,7 @@ private:
 		
 private:
 	void					OnEnable(void* pArg) override;
-
+	
 private:
 	_float4					m_vColor;
 	weak_ptr<CMonster>		m_pTargetMonster;

@@ -7,12 +7,12 @@ END
 
 BEGIN(Client)
 
-class CJokerState_Idle :
+class CJokerState_WalkB :
 	public CEliteStateBase
 {
-	GAMECLASS_H(CJokerState_Idle);
-	CLONE_H(CJokerState_Idle, CComponent)
-		SHALLOW_COPY(CJokerState_Idle)
+	GAMECLASS_H(CJokerState_WalkB);
+	CLONE_H(CJokerState_WalkB, CComponent)
+		SHALLOW_COPY(CJokerState_WalkB)
 
 public:
 	void Set_TurnCheck(_bool TurnCheck) { m_bTurnCheck = TurnCheck; }
@@ -36,9 +36,17 @@ private:
 	_bool    m_bBackReset = false;
 
 private:
-	//void Call_AnimationEnd();
+
+	_float m_fMaxSpeed = 3.f;
+	_float m_fCurrentSpeed = 1.2f;
+	_float m_fAccel = 0.f;
+
+
+	//TODO 가라에요 ㅎ
+	_bool  m_bPlayerToClose = false;
+
+
 protected:
-	//virtual void OnDestroy() override;
 	void Free();
 
 };
