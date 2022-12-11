@@ -104,11 +104,7 @@ _bool CCorvusState_CheckPointStart::Check_AndChangeNextState()
 		return true;
 	}
 	
-	if (KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))
-	{
-		Get_OwnerPlayer()->Change_State<CCorvusState_CheckPointEnd>();
-		return true;
-	}
+
 
 		
 
