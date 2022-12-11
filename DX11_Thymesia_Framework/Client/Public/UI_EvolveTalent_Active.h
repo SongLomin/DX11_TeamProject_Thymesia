@@ -12,8 +12,6 @@ public:
 	GAMECLASS_H(CUI_EvolveTalent_Active)
 	CLONE_H(CUI_EvolveTalent_Active, CGameObject)
 
-
-
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);
@@ -28,12 +26,8 @@ public:
 	void		Animation_MouseOut();
 
 
-
 protected:
 	virtual HRESULT SetUp_ShaderResource() override;
-
-
-
 
 
 private:

@@ -445,8 +445,6 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 {
 	__super::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 
-
-
 	if (pOtherCollider.lock()->Get_CollisionLayer() == (_uint)COLLISION_LAYER::MONSTER_ATTACK)
 	{
 		

@@ -122,7 +122,7 @@ HRESULT CUI_EvolveMenu::Initialize(void* pArg)
 		4.f,
 		CUI::ALIGN_LEFTTOP
 	);
-	m_pQuestTitleDecoration.lock()->Set_Texture("Player_Memory_Decoration");
+	m_pQuestTitleDecoration.lock()->Set_Texture("HUD_Player_Memory_Decoration");
 	m_pQuestTitleDecoration.lock()->Set_AlphaColor(0.3f);
 
 	Add_Child(m_pQuestTitleDecoration);

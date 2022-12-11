@@ -285,6 +285,7 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h" />
     <ClInclude Include="..\Public\EasingComponent.h" />
     <ClInclude Include="..\Public\EasingComponent_Alpha.h" />
+    <ClInclude Include="..\Public\EasingComponent_Float.h" />
     <ClInclude Include="..\Public\EasingComponent_Transform.h" />
     <ClInclude Include="..\Public\EditMapCollider.h" />
     <ClInclude Include="..\Public\EditSetActor.h" />
@@ -509,7 +510,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\Player_HPBar.h" />
-    <ClInclude Include="..\Public\Player_Memory.h" />
+    <ClInclude Include="..\Public\HUD_Player_Memory.h" />
     <ClInclude Include="..\Public\Player_MPBar.h" />
     <ClInclude Include="..\Public\Player_PotionUI.h" />
     <ClInclude Include="..\Public\ProgressBar.h" />
@@ -650,6 +651,7 @@
     <ClCompile Include="..\Private\Dynamic_Piece.cpp" />
     <ClCompile Include="..\Private\EasingComponent.cpp" />
     <ClCompile Include="..\Private\EasingComponent_Alpha.cpp" />
+    <ClCompile Include="..\Private\EasingComponent_Float.cpp" />
     <ClCompile Include="..\Private\EasingComponent_Transform.cpp" />
     <ClCompile Include="..\Private\EditMapCollider.cpp" />
     <ClCompile Include="..\Private\EditSetActor.cpp" />
@@ -858,7 +860,7 @@
     <ClCompile Include="..\Private\PlayerStateBase.cpp" />
     <ClCompile Include="..\Private\Player_FeatherUI.cpp" />
     <ClCompile Include="..\Private\Player_HPBar.cpp" />
-    <ClCompile Include="..\Private\Player_Memory.cpp" />
+    <ClCompile Include="..\Private\HUD_Player_Memory.cpp" />
     <ClCompile Include="..\Private\Player_MPBar.cpp" />
     <ClCompile Include="..\Private\Player_PotionUI.cpp" />
     <ClCompile Include="..\Private\ProgressBar.cpp" />

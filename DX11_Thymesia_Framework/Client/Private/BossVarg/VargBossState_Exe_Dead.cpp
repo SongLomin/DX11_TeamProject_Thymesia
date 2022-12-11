@@ -9,6 +9,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
+#include "UI_Landing.h"
 
 GAMECLASS_C(CVargBossState_Stun_Exe_Dead);
 CLONE_C(CVargBossState_Stun_Exe_Dead, CComponent)
@@ -85,8 +86,6 @@ void CVargBossState_Stun_Exe_Dead::OnStateEnd()
 
 }
 
-
-
 void CVargBossState_Stun_Exe_Dead::Call_AnimationEnd()
 {
 	if (!Get_Enable())
@@ -94,6 +93,9 @@ void CVargBossState_Stun_Exe_Dead::Call_AnimationEnd()
 
 
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Stun_Exe_End>(0.05f);
+
+	GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front().lock()->
+		Call_Landing(CUI_Landing::LANDING_KILL_BOSS);
 }
 
 void CVargBossState_Stun_Exe_Dead::OnDestroy()
