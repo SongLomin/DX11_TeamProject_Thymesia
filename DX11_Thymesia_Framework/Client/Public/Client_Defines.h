@@ -51,7 +51,7 @@
 #pragma endregion // Boss Mobs
 
 #pragma region Normal Mobs
-// #define _STAGE_1_MONSTER_
+#define _STAGE_1_MONSTER_
 // #define _STAGE_2_MONSTER_
 #pragma endregion // Normal Mobs
 

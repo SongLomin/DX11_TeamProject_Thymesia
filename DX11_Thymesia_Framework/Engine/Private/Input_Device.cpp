@@ -26,7 +26,9 @@ int g_Arr[(int)KEY::LAST] = {
 	VK_MBUTTON,
 	VK_BACK,//BACKSPACE
 	VK_DELETE,
-	VK_HOME
+	VK_HOME,
+	VK_INSERT
+	
 	//LAST
 };
 

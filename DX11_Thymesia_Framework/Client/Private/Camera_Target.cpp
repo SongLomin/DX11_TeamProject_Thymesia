@@ -80,12 +80,6 @@ void CCamera_Target::Tick(_float fTimeDelta)
 	{ 
 		Update_Bone();
 	}
-
-	
-	else if (m_bCinematicEnd)
-	{
-		Reposition_Camera_AfterCinematic(fTimeDelta);
-	}
 	else
 	{
 		if (KEY_INPUT(KEY::MBUTTON, KEY_STATE::TAP))
@@ -130,19 +124,6 @@ void CCamera_Target::Tick(_float fTimeDelta)
 
 	Update_PhysXCollider(fTimeDelta);
 	
-	/*RAY PlayerToCameraRay;
-	_vector vPlayerToCameraDir = m_pTransformCom.lock()->Get_Position() - m_pCurrentPlayerTransformCom.lock()->Get_Position();
-	_float fLength = XMVectorGetX(XMVector3Length(vPlayerToCameraDir));
-	vPlayerToCameraDir = XMVector3Normalize(vPlayerToCameraDir);
-	_vector vPlayerPosition = m_pTransformCom.lock()->Get_Position();
-
-	XMStoreFloat4(&PlayerToCameraRay.vOrigin, vPlayerPosition);
-	XMStoreFloat3(&PlayerToCameraRay.vDirection, vPlayerToCameraDir);
-	PlayerToCameraRay.vOrigin.w = 1.f;
-	PlayerToCameraRay.fLength = fLength;*/
-
-	
-	
 }
 
 void CCamera_Target::LateTick(_float fTimeDelta)
@@ -183,6 +164,9 @@ void CCamera_Target::Release_Focus()
 void CCamera_Target::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName, _fmatrix OffSetMatrix, CINEMATIC_TYPE eType)
 {
 
+	m_iMouseMovementX = 0;
+	m_iMouseMovementY = 0;
+
 	m_pCameraBoneNode = _pModel.lock()->Find_BoneNode(pBoneName);
 	m_pCameraBoneParentTransform = _pModel.lock()->Get_Owner().lock()->Get_Component<CTransform>();
 	m_TransformationMatrix = _pModel.lock()->Get_TransformationMatrix();
@@ -194,7 +178,6 @@ void CCamera_Target::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBon
 
 	Update_Bone();
 
-	XMStoreFloat4x4(&m_OriginalMatrix, m_pTransformCom.lock()->Get_WorldMatrix());
 }
 
 void CCamera_Target::End_Cinematic()
@@ -211,22 +194,14 @@ void CCamera_Target::End_Cinematic()
 		_matrix TotalMatrix = XMLoadFloat4x4(&m_CinematicOffSetMatrix) * ParentMatrix * m_pCameraBoneParentTransform.lock()->Get_WorldMatrix();
 
 		m_pTransformCom.lock()->Set_WorldMatrix(TotalMatrix);
-		_vector vCurPlayerPos = m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-		XMStoreFloat4(&m_vPlayerFollowLerpPosition, vCurPlayerPos);
-		XMStoreFloat4(&m_vPrePlayerPos, vCurPlayerPos);
-
 		_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
-		_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * -4.5f + XMVectorSet(0.f, 1.1f, 0.f, 0.f);
-
-		XMStoreFloat4(&m_vDestCamPosition, vPos);
-		XMStoreFloat4(&m_vCamPosAfterCinematic, TotalMatrix.r[3]);
-
-		//XMStoreFloat4(&m_vPlayerFollowLerpPosition, TotalMatrix.r[3]);
+		_vector vCurPlayerPos = m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+		XMStoreFloat4(&m_vPlayerFollowLerpPosition, TotalMatrix.r[3] + vLook * 4.5f - XMVectorSet(0.f, 1.1f, 0.f, 0.f));
+		XMStoreFloat4(&m_vPrePlayerPos, vCurPlayerPos);
 
 		m_pCameraBoneNode = weak_ptr<CBoneNode>();
 		m_pCameraBoneParentTransform = weak_ptr<CTransform>();
-		m_bCinematic = false;
-		m_bCinematicEnd = true;
+	
 	}
 	else if (m_eCinematicType == CINEMATIC_TYPE::CINEMATIC)
 	{
@@ -243,10 +218,9 @@ void CCamera_Target::End_Cinematic()
 		/*그냥 대충 페이드아웃*/
 		m_pCameraBoneNode = weak_ptr<CBoneNode>();
 		m_pCameraBoneParentTransform = weak_ptr<CTransform>();
-		m_bCinematic = false;
-		m_bCinematicEnd = false;
-	}
 
+	}
+	m_bCinematic = false;
 }
 
 void CCamera_Target::Activate_Zoom(_float fRatio, _float fZoomTime, EASING_TYPE eZoomLerpFunc)
@@ -507,26 +481,6 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 	m_pTransformCom.lock()->Rotation_PitchYawRoll(vPitchYawRoll);
 }
 
-void CCamera_Target::Reposition_Camera_AfterCinematic(_float fTimeDelta)
-{
-	_vector vDescCamPosition = XMLoadFloat4(&m_vDestCamPosition);
-	_vector vCamPosAfterCinematic = XMLoadFloat4(&m_vCamPosAfterCinematic);
-
-	_float fLength = XMVector3Length(vDescCamPosition - vCamPosAfterCinematic).m128_f32[0];
-
-	if (0.5f*fTimeDelta < fLength)
-	{
-		_float fRatio = 5.f * fTimeDelta;
-		if (1.f < fRatio)
-			fRatio = 1.f;
-		XMStoreFloat4(&m_vCamPosAfterCinematic, XMVectorLerp(vCamPosAfterCinematic, vDescCamPosition, fRatio));
-	}
-	else
-		m_bCinematicEnd = false;
-
-	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, XMLoadFloat4(&m_vCamPosAfterCinematic));
-
-}
 void CCamera_Target::Update_Bone()
 {
 	_matrix		ParentMatrix = m_pCameraBoneNode.lock()->Get_CombinedMatrix()

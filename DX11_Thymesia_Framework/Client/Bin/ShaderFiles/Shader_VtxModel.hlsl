@@ -92,7 +92,7 @@ PS_OUT PS_MAIN(PS_IN In)
 	if (Out.vDiffuse.a < 0.1f)
 		discard;
     Out.vExtractBloom = 0;
-    Out.vExtractGlow = 0;
+
 
 	return Out;	
 }
@@ -225,7 +225,6 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
     Out.vDiffuse.a = 1.f;
     
     Out.vExtractBloom = 0;
-    Out.vExtractGlow = 0;
 
     return Out;
 }
@@ -268,7 +267,6 @@ PS_OUT PS_MAIN_NORMAL_MASKING(PS_IN_NORMAL In)
         discard;
     Out.vDiffuse.a = 1.f;
     Out.vExtractBloom = 0;
-    Out.vExtractGlow = 0;
     
     return Out;
 }
@@ -305,7 +303,6 @@ PS_OUT PS_MAIN_NORMAL_MASKING_SCALAR(PS_IN_NORMAL In)
     Out.vDiffuse.a = 1.f;
     
     Out.vExtractBloom = 0;
-    Out.vExtractGlow = 0;
 
     return Out;
 }
@@ -371,7 +368,6 @@ PS_OUT PS_MAIN_NORMAL_PBR(PS_IN_NORMAL In)
         discard;
     
     Out.vExtractBloom = 0;
-    Out.vExtractGlow = 0;
 
     return Out;
 }

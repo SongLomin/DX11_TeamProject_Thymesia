@@ -75,15 +75,14 @@ void CCorvusState_ClawAttackTab::Tick(_float fTimeDelta)
 
 				cout << "m_fDissolveAmountClaw : " << m_fDissolveAmountClaw << endl;
 			}
-			else
-			{
+			
 				m_fDissolveTimeArm -= fTimeDelta;
 				m_fDissolveAmountArm = SMath::Lerp(0.f, 1.f, m_fDissolveTimeArm / 0.7f);
 				m_vDissolveDir = { -1.f,0.f,0.f };
 
 				cout << "m_fDissolveAmountArm : " << m_fDissolveAmountArm << endl;
 
-			}
+			
 
 		}
 		else
@@ -95,12 +94,11 @@ void CCorvusState_ClawAttackTab::Tick(_float fTimeDelta)
 				m_fDissolveAmountArm = SMath::Lerp(1.f, 0.f, m_fDissolveTimeArm / 0.7f);
 				m_vDissolveDir = { 1.f,0.f,0.f };
 			}
-			else 
-			{
+			
 				m_fDissolveTimeClaw -= fTimeDelta;
 				m_fDissolveAmountClaw = SMath::Lerp(1.f, 0.f, m_fDissolveTimeClaw / 0.7f);
 				m_vDissolveDir = { 1.f,0.f,0.f };
-			}
+			
 		}
 	}
 

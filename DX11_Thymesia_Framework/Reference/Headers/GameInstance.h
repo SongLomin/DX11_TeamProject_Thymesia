@@ -130,7 +130,9 @@ public: /* For.Render_Manager */
 	HRESULT Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain);
 	HRESULT Set_FogDesc(const _float4 In_vFogColor, const _float In_fFogRange);
 	HRESULT	Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt);
-	
+	HRESULT Set_GrayScale(const _float In_fGrayScale);
+
+
 
 
 public: /* For.PipeLine */

@@ -108,6 +108,8 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 		GAMEINSTANCE->Write_JsonUsingResource("../Bin/LevelData/CapturedResource/GamePlay.json");
 	}
 #endif // _LOAD_CAPTURED_RESOURCE_
+
+
 }
 
 HRESULT CLevel_GamePlay::Render()
