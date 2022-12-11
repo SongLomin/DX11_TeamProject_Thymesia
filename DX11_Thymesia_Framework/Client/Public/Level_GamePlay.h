@@ -4,6 +4,7 @@
 
 BEGIN(Client)
 class CUI_PauseMenu;
+class CPlayer;
 
 class CLevel_GamePlay final : public CClientLevel
 {
@@ -22,6 +23,9 @@ public:
 private:
 	virtual void OnEventMessage(_uint iArg) override;
 	void Free();
+
+private:
+	weak_ptr<CPlayer> m_pPlayer;
 
 private:
 	_bool m_bCheckMonster = false;

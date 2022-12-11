@@ -18,6 +18,7 @@
 #include "UI_EvolveMenu_Level.h"
 #include "UI_Script.h"
 #include "UI_ScriptQueue.h"
+#include "Player.h"
 #include "UI_DamageFont.h"
 
 CLevel_GamePlay::CLevel_GamePlay()
@@ -93,6 +94,9 @@ HRESULT CLevel_GamePlay::Initialize()
 
 	SetUp_UI();
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
+
+	m_pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+
 	return S_OK;
 }
 
@@ -108,7 +112,9 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 		GAMEINSTANCE->Write_JsonUsingResource("../Bin/LevelData/CapturedResource/GamePlay.json");
 	}
 #endif // _LOAD_CAPTURED_RESOURCE_
+	_vector vPosition = m_pPlayer.lock()->Get_WorldPosition();
 
+	GAMEINSTANCE->Set_DynamicShadowLight({ -15.f +vPosition.m128_f32[0], 30.f+vPosition.m128_f32[1], -15.f + vPosition.m128_f32[2] }, { vPosition.m128_f32[0], vPosition.m128_f32[1], vPosition.m128_f32[2] });
 
 }
 
