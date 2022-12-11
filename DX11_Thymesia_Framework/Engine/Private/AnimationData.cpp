@@ -69,7 +69,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 	SET_ANIM_SPEED("Corvus_Raven_ClawLong_L02", 2.f);
 	SET_ANIM_SPEED("Corvus_SD1_Fall_Attack", 2.5f);
 
-    SET_ANIM_SPEED("Corvus_SD_RunF_24", 1.5f);
+    // SET_ANIM_SPEED("Corvus_SD_RunF_24", 1.f);
     SET_ANIM_SPEED("Corvus_SD_RunB", 1.5f);
     SET_ANIM_SPEED("Corvus_SD_RunBR", 1.5f);
     SET_ANIM_SPEED("Corvus_SD_RunBL", 1.5f);

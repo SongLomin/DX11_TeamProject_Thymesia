@@ -178,16 +178,10 @@ void CEffect_Rect::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 	m_bStopParticle = false;
 	m_bStopSprite = false;
 
-	if (m_tEffectParticleDesc.bBoner)
+	if (m_tEffectParticleDesc.bBoner && pParentTransform.lock())
 	{
-		if (!pParentTransform.lock())
-			throw;
-
-		if (pParentTransform.lock())
-		{
-			m_pParentModel = pParentTransform.lock()->Get_Owner().lock()->Get_Component<CModel>();
-			m_pBoneNode = m_pParentModel.lock()->Find_BoneNode(m_strBoneName);
-		}
+		m_pParentModel = pParentTransform.lock()->Get_Owner().lock()->Get_Component<CModel>();
+		m_pBoneNode = m_pParentModel.lock()->Find_BoneNode(m_strBoneName);
 	}
 
 	m_pTransformCom.lock()->Set_WorldMatrix(XMMatrixIdentity());
@@ -2033,9 +2027,10 @@ void CEffect_Rect::Tool_Boner()
 			for (_int n(0); n < m_AllBoneNames.size(); n++)
 			{
 				const _bool is_selected = (m_iCurrentBoneIndex == n);
-				if (ImGui::Selectable(m_AllBoneNames[n].c_str(), is_selected))
+				if (ImGui::Selectable(m_AllBoneNames[n].c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
+				{
 					m_strBoneName = m_AllBoneNames[n];
-
+				}
 				// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
