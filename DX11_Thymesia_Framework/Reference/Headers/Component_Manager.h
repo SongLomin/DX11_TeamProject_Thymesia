@@ -26,6 +26,7 @@ public:
 	//class CComponent* Clone_Component(_uint iLevelIndex, const _tchar* pPrototypeTag, void* pArg);
 public:
 	//void Clear(_uint iLevelIndex);
+	void Receive_EngineEventMessage(weak_ptr<CGameObject> pGameObject, const ENGINE_EVENT_TYPE In_eEngineEvent);
 
 private:
 

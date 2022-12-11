@@ -928,7 +928,7 @@ HRESULT CRender_Manager::Render_AlphaBlend()
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
 
-	pRenderTargetManager->Begin_MRT(TEXT("MRT_ExtractEffect"));
+	pRenderTargetManager->Begin_MRTWithNoneClearWithIndex(TEXT("MRT_ExtractEffect"), 1);
 
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_ALPHABLEND])
 	{
@@ -1807,8 +1807,25 @@ void CRender_Manager::OnDestroy()
 
 }
 
+void CRender_Manager::OnEngineEventMessage(const ENGINE_EVENT_TYPE In_eEngineEvent)
+{
+	if (In_eEngineEvent == ENGINE_EVENT_TYPE::ON_SHADER_UPDATE)
+	{
+		m_pShader->Set_ShaderInfo_Internal();
+		m_pXBlurShader->Set_ShaderInfo_Internal();
+		m_pOutLineShader->Set_ShaderInfo_Internal();
+		m_pDistortionShader->Set_ShaderInfo_Internal();
+		m_pPostProcessingShader->Set_ShaderInfo_Internal();
+	}
+
+}
+
 void CRender_Manager::Free()
 {
 	m_pShader.reset();
+	m_pXBlurShader.reset();
+	m_pOutLineShader.reset();
+	m_pDistortionShader.reset();
+	m_pPostProcessingShader.reset();
 	m_pVIBuffer.reset();
 }

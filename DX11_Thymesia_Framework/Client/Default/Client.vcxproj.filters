@@ -79,9 +79,6 @@
     <ClInclude Include="..\Public\StateBase.h">
       <Filter>05. Component\03. State</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\GameManager.h">
-      <Filter>96. GameManager</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Level_Lobby.h">
       <Filter>01. ClientLevel\02. Lobby</Filter>
     </ClInclude>
@@ -1027,6 +1024,15 @@
     <ClInclude Include="..\Public\Requirement_State.h">
       <Filter>07. Requirement\03. Requirement_State</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\GameManager.h">
+      <Filter>96. Managers_Client\00. GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DeveloperConsole_Manager.h">
+      <Filter>97. Tool\01. DeveloperConsole</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Window_Shader_Dev.h">
+      <Filter>97. Tool\01. DeveloperConsole\Windows\00. Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1085,9 +1091,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Camera_Target.cpp">
       <Filter>02. GameObject\00. Camera\01. Camera_Target</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\GameManager.cpp">
-      <Filter>96. GameManager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Lobby.cpp">
       <Filter>01. ClientLevel\02. Lobby</Filter>
@@ -1950,7 +1953,7 @@
       <Filter>05. Component\00. PhysXController\01. PhysXPlayerController</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\StateBase.cpp">
-      <Filter>96. GameManager</Filter>
+      <Filter>96. Managers_Client</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\MobWeapon.cpp" />
     <ClCompile Include="..\Private\MobWeapon.cpp" />
@@ -2101,6 +2104,15 @@
     <ClCompile Include="..\Private\Requirement_State.cpp">
       <Filter>07. Requirement\03. Requirement_State</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\GameManager.cpp">
+      <Filter>96. Managers_Client\00. GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DeveloperConsole_Manager.cpp">
+      <Filter>97. Tool\01. DeveloperConsole</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Window_Shader_Dev.cpp">
+      <Filter>97. Tool\01. DeveloperConsole\Windows\00. Shader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -2125,9 +2137,6 @@
     </Filter>
     <Filter Include="97. Tool\00. IMGUI\Windows\00. UI">
       <UniqueIdentifier>{f680c8aa-9d60-42d0-9d0d-462fa61d8d83}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="96. GameManager">
-      <UniqueIdentifier>{754a09b8-9237-4e34-871e-e6aeaa3022d6}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. ClientLevel">
       <UniqueIdentifier>{21371941-8fc0-43d9-b47a-6f347c9fae61}</UniqueIdentifier>
@@ -2182,9 +2191,6 @@
     </Filter>
     <Filter Include="01. ClientLevel\Loader">
       <UniqueIdentifier>{33e1de52-700d-4cac-9e56-af962b2b6268}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="96. GameManager\00. GameState">
-      <UniqueIdentifier>{297f4c57-9297-455a-99b4-9a82b4e402f7}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject">
       <UniqueIdentifier>{57f74c26-08d1-4431-861b-7a6105d37c3f}</UniqueIdentifier>
@@ -3166,6 +3172,21 @@
     </Filter>
     <Filter Include="07. Requirement\03. Requirement_State">
       <UniqueIdentifier>{2aae9c0e-209d-4609-8b52-3ac57181093f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. Managers_Client">
+      <UniqueIdentifier>{754a09b8-9237-4e34-871e-e6aeaa3022d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. Managers_Client\00. GameManager">
+      <UniqueIdentifier>{cbc4cfcd-9713-48fe-993c-034aafe67e85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\01. DeveloperConsole">
+      <UniqueIdentifier>{d713dfc5-38a7-4166-abdf-e1774ee9da57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\01. DeveloperConsole\Windows">
+      <UniqueIdentifier>{22ec56c9-da29-40d6-8976-b40a4e879484}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\01. DeveloperConsole\Windows\00. Shader">
+      <UniqueIdentifier>{ef717d74-ad6f-4372-bf3e-0033a2dec2ab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

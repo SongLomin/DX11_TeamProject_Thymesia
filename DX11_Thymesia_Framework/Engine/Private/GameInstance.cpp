@@ -471,6 +471,11 @@ ID3DX11Effect* CGameInstance::Get_ShaderEffect(const _tchar* sKey)
 	return m_pResource_Manager->Get_ShaderEffect(sKey);
 }
 
+HRESULT CGameInstance::ReLoad_AllShader(list<pair<_bool, string>>& Out_CompileMessage)
+{
+	return m_pResource_Manager->ReLoad_AllShader(Out_CompileMessage);
+}
+
 HRESULT CGameInstance::Release_ResourceByMemoryType(MEMORY_TYPE _eMemType)
 {
 	return m_pResource_Manager->Release_ResourceByMemoryType(_eMemType);

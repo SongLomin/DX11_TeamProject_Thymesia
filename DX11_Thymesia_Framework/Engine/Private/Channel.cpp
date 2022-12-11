@@ -22,6 +22,11 @@ void CChannel::Start()
 {
 }
 
+_uint CChannel::Get_NumKeyFrames()
+{
+	return m_pChannelData->iNumKeyframes;
+}
+
 void CChannel::Init_Channel(shared_ptr<CHANNEL_DATA> pChannelData, weak_ptr<CModel> pModel)
 {
 	m_pChannelData = pChannelData;

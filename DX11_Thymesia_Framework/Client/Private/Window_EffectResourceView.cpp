@@ -38,7 +38,7 @@ HRESULT CWindow_EffectResourceView::Render()
     ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 
     ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
-    if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
+    if (ImGui::BeginTabBar("CWindow_EffectResourceView", tab_bar_flags))
     {
         if (ImGui::BeginTabItem("Mesh"))
         {

@@ -4,6 +4,8 @@
 #include "Level_Loading.h"
 #include "GameManager.h"
 #include "FadeMask.h"
+#include "DeveloperConsole_Manager.h"
+#include "Camera_Target.h"
 
 #ifdef _JOJO_EFFECT_TOOL_
 #include "JoJoParticleShaderManager.h"
@@ -98,7 +100,12 @@ HRESULT CMainApp::Initialize()
 #endif // _BAKE_MIPMAPS_
 
 	
+#ifdef _DEBUG
+	m_pDeveloperConsole = CDeveloperConsole_Manager::Create_Instance();
+	m_pDeveloperConsole->Initialize();
+#endif // _DEBUG
 
+	
 
 
 	return S_OK;
@@ -127,6 +134,18 @@ void CMainApp::Tick(float fTimeDelta)
 		}
 	}
 
+	if (KEY_INPUT(KEY::GRAVE, KEY_STATE::TAP))
+	{
+		m_bEnableConsole = !m_bEnableConsole;
+		ShowCursor(m_bEnableConsole);
+		weak_ptr<CCamera_Target> pTargetCamera = GET_SINGLE(CGameManager)->Get_TargetCamera();
+
+		if (pTargetCamera.lock())
+		{
+			pTargetCamera.lock()->Set_StopCamera(m_bEnableConsole);
+		}
+	}
+
 	if (nullptr == GAMEINSTANCE)
 		return;
 
@@ -135,6 +154,16 @@ void CMainApp::Tick(float fTimeDelta)
 	GAMEINSTANCE->Add_MotionBlur(-0.4f * fTimeDelta);
 
 	GAMEINSTANCE->Tick_Engine(fTimeDelta);
+	
+#ifdef _DEBUG
+	if (m_pDeveloperConsole && m_bEnableConsole)
+	{
+		m_pDeveloperConsole->Tick(fTimeDelta);
+	}
+#endif // _DEBUG
+
+
+	
 
 	GET_SINGLE(CGameManager)->LateTick(fTimeDelta);
 
@@ -164,6 +193,13 @@ HRESULT CMainApp::Render()
 	GAMEINSTANCE->Clear_DepthStencil_View();
 	GAMEINSTANCE->Draw_RenderGroup();
 	GAMEINSTANCE->Render_Engine();
+
+#ifdef _DEBUG
+	if (m_pDeveloperConsole && m_bEnableConsole)
+	{
+		m_pDeveloperConsole->Render();
+	}
+#endif // _DEBUG
 
 	GAMEINSTANCE->Present();
 	return S_OK;
@@ -257,6 +293,15 @@ void CMainApp::Free()
 	CGameInstance::Release_Engine();
 	CGameInstance::Destroy_Instance();
 	CGameManager::Destroy_Instance();
+
+#ifdef _DEBUG
+	m_pDeveloperConsole.reset();
+	CDeveloperConsole_Manager::Destroy_Instance();
+#endif // _DEBUG
+
+	
+
+
 #ifdef _JOJO_EFFECT_TOOL_
 	CJoJoParticleShaderManager::Destroy_Instance();
 #endif // _JOJO_EFFECT_TOOL_

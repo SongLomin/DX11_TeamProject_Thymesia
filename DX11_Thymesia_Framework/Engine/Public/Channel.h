@@ -20,7 +20,7 @@ protected:
 	virtual void Start() override;
 
 public:
-	_uint Get_NumKeyFrames() { return m_iNumKeyframes; }
+	_uint Get_NumKeyFrames();
 
 public:
 	void Init_Channel(shared_ptr<CHANNEL_DATA> pChannelData, weak_ptr<CModel> pModel);
@@ -34,7 +34,7 @@ public:
 
 private:
 	string						m_szName;
-	_uint						m_iNumKeyframes = 0;
+	//_uint						m_iNumKeyframes = 0;
 	//vector<KEYFRAME>			m_KeyFrames;
 	weak_ptr<CBoneNode>			m_pBoneNode;
 	_uint						m_iCurrentKeyFrame = 0;

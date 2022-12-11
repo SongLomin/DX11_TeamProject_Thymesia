@@ -13,6 +13,7 @@ BEGIN(Client)
 //class CGameInstance;
 
 class CImGui_Manager;
+class CDeveloperConsole_Manager;
 
 class CMainApp final
 	: public CBase
@@ -35,6 +36,9 @@ private:
 
 	_bool	m_bClip = false;
 
+	shared_ptr<CDeveloperConsole_Manager>	m_pDeveloperConsole;
+	_bool									m_bEnableConsole = false;
+
 private:
 	/* 그리기 상태를 셋팅하낟. */
 	//HRESULT SetUp_RenderState();
@@ -42,6 +46,7 @@ private:
 	HRESULT Open_Level(LEVEL eLevelID);
 	void	Bake_MipMaps();
 	void	Bake_MipMaps_Recursive(const filesystem::path& In_Path);
+
 
 public:
 	static unique_ptr<CMainApp> Create();

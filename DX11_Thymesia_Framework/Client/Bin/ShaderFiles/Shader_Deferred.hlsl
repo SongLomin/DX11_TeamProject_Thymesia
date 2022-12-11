@@ -527,7 +527,7 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
         Out.vColor.rgb = pow(mapped, 1.f / 2.2f);
         Out.vColor.a = 1.f;
         
-        Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor;
+        Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor.rgb;
 
         
         
@@ -545,7 +545,7 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
         
         if (0.f < Out.vColor.a)
         {
-            Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor;
+            Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor.rgb;
         }
         else
         {
@@ -778,7 +778,7 @@ PS_OUT_FOG PS_MAIN_FOG(PS_IN In)
     float fDistance = length(vFogDir);
 
     //float			fAtt = saturate((g_fRange - fDistance) / g_fRange);
-    float fAtt = saturate((g_fFogRange - fDistance) / g_fFogRange);
+    float fAtt = saturate((g_fFogRange - fDistance) / g_fFogRange)  ;
     
     Out.vFog = (1.f - (fAtt * fAtt));
     

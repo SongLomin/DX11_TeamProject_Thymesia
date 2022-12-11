@@ -131,6 +131,7 @@ private:
 
 public:
 	virtual void OnDestroy() override;
+	virtual void OnEngineEventMessage(const ENGINE_EVENT_TYPE In_eEngineEvent) override;
 
 protected:
 	void Free();

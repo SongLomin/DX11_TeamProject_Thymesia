@@ -29,6 +29,7 @@ HRESULT CGameObject::Initialize(void* pArg)
 	//USE_START(CGameObject);
 	m_pTransformCom = Add_Component<CTransform>();
 	m_iGameObjectIndex = g_iGameObjectIndex++;
+	m_thisToGameObject = Weak_StaticCast<CGameObject>(m_this);
 	return S_OK;
 }
 
@@ -82,6 +83,11 @@ HRESULT CGameObject::Render()
 HRESULT CGameObject::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix)
 {
 	return S_OK;
+}
+
+const map<_hashcode, list<shared_ptr<CComponent>>>& CGameObject::Get_AllComponents() const
+{
+	return m_pComponents;
 }
 
 void CGameObject::Write_Json(json& Out_Json)
@@ -174,6 +180,11 @@ void CGameObject::OnEventMessage(_uint iArg)
 		}
 	}
 
+}
+
+void CGameObject::OnEngineEventMessage(const ENGINE_EVENT_TYPE In_eEngineEvent)
+{
+	GET_SINGLE(CComponent_Manager)->Receive_EngineEventMessage(m_thisToGameObject, In_eEngineEvent);
 }
 
 void CGameObject::Free()

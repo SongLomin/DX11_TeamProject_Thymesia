@@ -25,6 +25,9 @@ public:
 	HRESULT	Set_Owner(weak_ptr<CGameObject> _pOwner);
 	weak_ptr<CGameObject> Get_Owner();
 
+private:
+	virtual void OnEngineEventMessage(const ENGINE_EVENT_TYPE In_eEngineEvent) override {};
+
 protected:
 	_bool						m_isCloned = false;
 	weak_ptr<CGameObject>		m_pOwner;

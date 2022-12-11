@@ -20,6 +20,9 @@ class CCamera_Target final : public CCamera
 
 public:
 	CCamera_Target(const CCamera_Target& rhs);
+	
+public:
+	void Set_StopCamera(const _bool In_bStop) { m_bStop = In_bStop; }
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -125,6 +128,7 @@ private:
 
 	_float4x4 m_CollisionMatrix;
 	_bool		m_bCollision = false;
+	_bool		m_bStop = false;
 
 private:
 	virtual void OnLevelExit() override;

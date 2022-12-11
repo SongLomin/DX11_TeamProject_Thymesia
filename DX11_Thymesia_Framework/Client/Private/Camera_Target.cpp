@@ -70,10 +70,18 @@ void CCamera_Target::Tick(_float fTimeDelta)
 	if (!m_pCurrentPlayer.lock().get())
 		return;
 
+	if (m_bStop)
+	{
+		return;
+	}
+
+
 	if(m_bCinematic)
 	{ 
 		Update_Bone();
 	}
+
+	
 	else if (m_bCinematicEnd)
 	{
 		Reposition_Camera_AfterCinematic(fTimeDelta);

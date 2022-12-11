@@ -20,6 +20,11 @@ public:
 	HRESULT Begin_MRT(const _tchar* pMRTTag);
 	HRESULT Begin_SingleRT(const _tchar* pMRTTag, const _uint& In_iIndex);
 	HRESULT Begin_MRTWithNoneClear(const _tchar* pMRTTag);
+
+	// 해당 인덱스 SRT만 제외하고 모두 클리어합니다.
+	HRESULT Begin_MRTWithNoneClearWithIndex(const _tchar* pMRTTag, const _uint In_iIndex);
+	// 해당 인덱스 SRT만 클리어합니다.
+	HRESULT Begin_MRTWithClearWithIndex(const _tchar* pMRTTag, const _uint In_iIndex);
 	HRESULT Begin_MRTWithOriginalRenderTarget(const _tchar* pMRTTag);
 	HRESULT End_MRT();
 

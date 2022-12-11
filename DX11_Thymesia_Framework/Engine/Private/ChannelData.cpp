@@ -97,10 +97,15 @@ void CHANNEL_DATA::Load_FromBinary(ifstream& is)
 
 	tKeyFrames.reserve(iNumKeyframes);
 
+	KEYFRAME KeyFrame;
+
 	for (_uint i = 0; i < iNumKeyframes; i++)
 	{
-		read_typed_data(is, tKeyFrames[i]);
+		read_typed_data(is, KeyFrame);
+		tKeyFrames.emplace_back(KeyFrame);
 	}
+
+	int i = 0;
 
 	/*tScalingKeys.reserve(iNumScalingKeys);
 	for (_uint i = 0; i < iNumScalingKeys; i++)

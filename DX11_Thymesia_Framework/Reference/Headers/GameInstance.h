@@ -130,6 +130,7 @@ public: /* For.Render_Manager */
 	HRESULT Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain);
 	HRESULT Set_FogDesc(const _float4 In_vFogColor, const _float In_fFogRange);
 	HRESULT	Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt);
+	
 
 
 public: /* For.PipeLine */
@@ -158,6 +159,7 @@ public: /* For.Resource_Manager */
 
 	HRESULT Load_Shader(const _tchar* sKey, const _tchar* sShaderFilePath);
 	ID3DX11Effect* Get_ShaderEffect(const _tchar* sKey);
+	HRESULT	ReLoad_AllShader(list<pair<_bool, string>>& Out_CompileMessage);
 
 	HRESULT Release_ResourceByMemoryType(MEMORY_TYPE _eMemType);
 

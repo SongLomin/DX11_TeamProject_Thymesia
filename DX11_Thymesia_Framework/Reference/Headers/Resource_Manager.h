@@ -4,6 +4,7 @@
 BEGIN(Engine)
 
 class CGameObject;
+class CShader;
 struct MODEL_DATA;
 
 class CResource_Manager :
@@ -14,8 +15,15 @@ class CResource_Manager :
 private: /* For. Captured Resources */
 	struct TEXTURE_DATA
 	{
-		string	szFilePath;
-		_int	MipMapLevels;
+		string		szFilePath;
+		_int		MipMapLevels;
+	};
+
+	struct SHADER_FILEPATH
+	{
+		tstring		szKey;
+		tstring		szFilePath;
+		uintmax_t	iFileSize;
 	};
 
 public: /* For Texture */
@@ -41,11 +49,19 @@ private:
 
 public: /* For Shader */
 	HRESULT Load_Shader(const _tchar* sKey, const _tchar* sShaderFilePath);
+	HRESULT ReLoad_AllShader(list<pair<_bool, string>>& Out_CompileMessage);
 	ID3DX11Effect* Get_ShaderEffect(const _tchar* sKey);
+	void	Update_ChangedShaderFile(list<pair<_bool, string>>& Out_CompileMessage);
 	//HRESULT SetUp_AllShaderRawValue();
 
 private:
-	unordered_map<tstring, ComPtr<ID3DX11Effect>> m_pShaderEffect;
+	HRESULT Load_Shader_Internal(const _tchar* sKey, const _tchar* sShaderFilePath, ID3DBlob** ppError = nullptr);
+	
+
+private:
+	map<_hashcode, ComPtr<ID3DX11Effect>>			m_pShaderEffect;
+	map<_hashcode, SHADER_FILEPATH>					m_ShaderFilePaths;
+	
 
 //public: /* For Navigation Mesh */
 //	HRESULT Load_NaviMesh(const _char* sKey, const _char* sShaderFilePath);

@@ -46,7 +46,7 @@ HRESULT CWindow_AnimationModelView::Render()
     ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 
     ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
-    if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
+    if (ImGui::BeginTabBar("AnimationModelView", tab_bar_flags))
     {
         if (ImGui::CollapsingHeader("Load Model"), ImGuiTreeNodeFlags_DefaultOpen)
         {

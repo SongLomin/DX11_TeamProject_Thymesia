@@ -30,15 +30,25 @@ public:
 	HRESULT Begin(_uint iPassIndex);
 
 	HRESULT Set_ShaderInfo(const _tchar* pShaderKey, const D3D11_INPUT_ELEMENT_DESC* pElements, _uint iNumElement);
+	HRESULT Set_ShaderInfo_Internal();
 
 public:
 	virtual void OnDestroy() override;
 
 private:
-	ID3DX11Effect* m_pEffect;
+	virtual void OnEngineEventMessage(const ENGINE_EVENT_TYPE In_eEngineEvent) override;
+
+private:
+	ID3DX11Effect*					m_pEffect = nullptr;
 
 	vector<PASSDESC>				m_Passes;
 	typedef vector<PASSDESC>		PASSES;
+
+	tstring							m_szShaderKey;
+	const D3D11_INPUT_ELEMENT_DESC*	m_InputDesc;
+	_uint							m_iNumElement;
+	
+	_bool							m_bInit = false;
 
 public:
 	/*static CShader* Create(ID3D11Device * pDevice, ID3D11DeviceContext * pContext, const _tchar * pShaderFilePath, const D3D11_INPUT_ELEMENT_DESC * pElements, _uint iNumElement);

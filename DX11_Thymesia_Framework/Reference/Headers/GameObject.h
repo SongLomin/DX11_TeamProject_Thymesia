@@ -51,6 +51,9 @@ public:
 	virtual _bool IsPicking(const RAY& In_Ray, _float& Out_fRange) { return false; }
 
 public:
+	const map<_hashcode, list<shared_ptr<CComponent>>>& Get_AllComponents() const;
+
+public:
 	virtual void Write_Json(json& Out_Json) override;
 	virtual void Load_FromJson(const json& In_Json) override;
 
@@ -77,6 +80,7 @@ protected:
 	void Set_OwnerForMyComponents();
 
 protected:
+	weak_ptr<CGameObject>		m_thisToGameObject;
 	_float						m_fCamDistance = 0.f;
 	_uint						m_CreatedLevel;
 	_uint						m_ThreadFlag = 0;
@@ -108,6 +112,9 @@ private:
 
 public: /* For Event Function */
 	virtual void OnEventMessage(_uint iArg) override;
+
+private:
+	virtual void OnEngineEventMessage(const ENGINE_EVENT_TYPE In_eEngineEvent) override;
 
 
 public:

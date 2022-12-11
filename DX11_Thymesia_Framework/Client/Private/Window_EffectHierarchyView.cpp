@@ -57,7 +57,7 @@ HRESULT CWindow_EffectHierarchyView::Render()
     ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 
     ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
-    if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
+    if (ImGui::BeginTabBar("CWindow_EffectHierarchyView", tab_bar_flags))
     {
         if (!m_pEffectGroup.lock())
         {
