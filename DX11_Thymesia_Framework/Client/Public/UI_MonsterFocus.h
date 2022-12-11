@@ -23,26 +23,29 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
-public:
-	void					Call_FocusInTarget();
-	void					Call_GroggyStart();
-	
-	
-
-
-	void					Call_FocusOutTarget();	
-	void					Bind_Callback();
-
 private:
 	virtual void			SetUp_Component() override;
 
+public:
+	void					Bind_Callback();
+	void					Bind_Callback_LockOnTriger(weak_ptr<CMonster> pTargetMonster);
+
+	void					Call_FocusInTarget();
+	void					Call_GroggyStart();	
+	void					Call_FocusOutTarget();	
+
+	//타겟팅 직후 바인딩
+	void					Call_ChangeState(weak_ptr<class CStateBase> pChangedState);
+	
 private:
 	void					FollowTargetBone();
-
+	_bool					Compare_StateFlag(weak_ptr<CStateBase> pStateBase, STATE_FLAG Checkflag);
+		
 private:
 	void					OnEnable(void* pArg) override;
 
 private:
+	_float4					m_vColor;
 	string					m_strTargetMonsterBone;
 	weak_ptr<CMonster>		m_pTargetMonster;
 	weak_ptr<CEasingComponent_Alpha>	m_pEasingAlphaCom;

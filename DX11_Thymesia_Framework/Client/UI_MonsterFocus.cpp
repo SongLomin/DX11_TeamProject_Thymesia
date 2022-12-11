@@ -10,7 +10,8 @@
 #include "EasingComponent_Alpha.h"
 #include "NorMonState/NorMonState_GroggyStart.h"
 #include "NorMonState/NorMonState_GroggyEnd.h"
-
+#include "StateBase.h"
+#include "UI_Utils.h"
 
 GAMECLASS_C(CUI_MonsterFocus)
 CLONE_C(CUI_MonsterFocus, CGameObject)
@@ -31,7 +32,6 @@ HRESULT CUI_MonsterFocus::Initialize(void* pArg)
     CPreset_UIDesc::Set_CUI_MonsterFocus(Weak_StaticCast<CUI_MonsterFocus>(m_this));
 
     Bind_Callback();
-
     SetUp_Component();
 
     Set_Enable(false);
@@ -50,6 +50,9 @@ void CUI_MonsterFocus::Tick(_float fTimeDelta)
     fTimeDelta = CUI_Utils::UI_TimeDelta(fTimeDelta);
 
     __super::Tick(fTimeDelta);
+
+
+
 
 }
 
@@ -77,6 +80,8 @@ void CUI_MonsterFocus::Call_FocusInTarget()
 
     m_pEasingAlphaCom.lock()->Set_Lerp(0.f, 1.f, 1.f, EASING_TYPE::QUAD_IN, CEasingComponent::LOOP_GO_AND_BACK, false);
 
+    Bind_Callback_LockOnTriger(m_pTargetMonster);
+
     Set_Enable(true);
 }
 
@@ -89,7 +94,35 @@ void CUI_MonsterFocus::Call_FocusOutTarget()
 {
     m_pTargetMonster = weak_ptr<CMonster>();
 
+
+    m_pTargetMonster.lock()->Callback_OnChangeState -= 
+        bind(&CUI_MonsterFocus::Call_ChangeState, this, placeholders::_1);
+
     Set_Enable(false);
+}
+
+void CUI_MonsterFocus::Call_ChangeState(weak_ptr<class CStateBase> pChangedState)
+{
+    //여기서 상태에 따라 변화시켜줌.
+    //상태를 검사.
+    /*
+       몬스터를 처형 가능? 불가능?으로만 알고싶은데
+       근데 이러면 장점은있긴하다.
+       나중에 위험한 공격같은거 캐치할 때, 
+       락온이 초록색으로 빛나게 할 수 있음.
+    */
+    if (Compare_StateFlag(pChangedState, STATE_FLAG::EXECUTABLE))
+    {
+        m_vColor = CUI_Utils::GET_COLOR(COLOR_PALETTE::COLOR_RED);
+    }
+    else if (Compare_StateFlag(pChangedState, STATE_FLAG::READY_SPECIAL_ATK))
+    {
+        m_vColor = CUI_Utils::GET_COLOR(COLOR_PALETTE::COLOR_GREEN);
+    }
+    else
+    {
+        m_vColor = CUI_Utils::GET_COLOR(COLOR_PALETTE::COLOR_WHITE);
+    }
 }
 
 void CUI_MonsterFocus::Bind_Callback()
@@ -97,6 +130,23 @@ void CUI_MonsterFocus::Bind_Callback()
     GET_SINGLE(CGameManager)->CallBack_FocusInMonster += bind(&CUI_MonsterFocus::Call_FocusInTarget, this);
     GET_SINGLE(CGameManager)->CallBack_FocusOutMonster += bind(&CUI_MonsterFocus::Call_FocusOutTarget, this);
 
+}
+
+void CUI_MonsterFocus::Bind_Callback_LockOnTriger(weak_ptr<CMonster> pTargetMonster)
+{
+    weak_ptr<CStateBase> pCurrentStateBase = pTargetMonster.lock()->Get_CurState();
+
+    if (pTargetMonster.lock()->Get_CurState().lock()->Get_StateFlag() & (_uint)STATE_FLAG::EXECUTABLE)
+    { 
+        Call_ChangeState(pCurrentStateBase);
+    }
+    else
+    {
+        pTargetMonster.lock()->Callback_OnChangeState +=
+            bind(&CUI_MonsterFocus::Call_ChangeState, this, placeholders::_1);
+    }
+
+  
 }
 
 void CUI_MonsterFocus::SetUp_Component()
@@ -122,6 +172,11 @@ void CUI_MonsterFocus::FollowTargetBone()
    _float2   fMyPos = CUI_Utils::ConvertWorldPosToUIPos(vTargetCombinedWorldPos);
 
    Set_UIPosition(fMyPos.x, fMyPos.y);
+}
+
+_bool CUI_MonsterFocus::Compare_StateFlag(weak_ptr<CStateBase> pStateBase, STATE_FLAG Checkflag)
+{
+    return pStateBase.lock()->Get_StateFlag() & (_flag)Checkflag;
 }
 
 void CUI_MonsterFocus::OnEnable(void* pArg)

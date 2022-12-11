@@ -376,7 +376,6 @@ void CCorvus::OnEventMessage(_uint iArg)
 	if ((_uint)EVENT_TYPE::ON_VARGEXECUTION == iArg)
 	{
 		Change_State<CVarg_Execution>();
-	
 	}
 }
 

@@ -21,14 +21,15 @@ public:
 	virtual HRESULT Render();
 
 public:
+	void			SetUp_Component();
+
+public:
 	void		Set_PassIndex(_uint _iPassIndex);
 	void		Set_DeffuseIndex(_uint _iDeffuseIndex);
 	void		Set_RenderGroup(RENDERGROUP eRenderGroup) { m_eRenderGroup = eRenderGroup; }
 
 protected:
 	virtual HRESULT SetUp_ShaderResource() override;
-
-
 
 private:
 	_uint	m_iDeffuseIndex = 0;

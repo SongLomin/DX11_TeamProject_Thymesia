@@ -87,7 +87,6 @@ public:
 public: /* Shaking */
     virtual void    Add_Shaking(const _float& In_ShakeTime, const _float& _fShakePower = 5.f);
 
-
 public:
     virtual void            OnEnable(void* _Arg = nullptr);
     //객체의 상태            가 비활성화 상태로 변경될 때, 호출되는 이벤트입니다.
@@ -121,7 +120,7 @@ private:
 
 protected:
    virtual void                    SetUp_Component();
-
+  
 protected:
     weak_ptr<CShader> m_pShaderCom;
     weak_ptr<CRenderer> m_pRendererCom;

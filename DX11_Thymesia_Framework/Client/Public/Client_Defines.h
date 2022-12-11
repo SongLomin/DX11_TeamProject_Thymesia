@@ -13,7 +13,7 @@
 #ifdef _DEBUG
 
 #pragma region System
-#define		_ONLY_UI_
+//#define		_ONLY_UI_
 //#define		_BAKE_MIPMAPS_
 #define		_USE_THREAD_
 #define		_144HZ_
@@ -216,6 +216,7 @@ namespace Client
 		ON_CATCH,
 		ON_ENTER_SECTION,
 		ON_EXIT_SECTION,
+		ON_SITUP,
 		ON_VARGEXECUTION,
 		EVENT_END
 	};
@@ -501,7 +502,21 @@ namespace Client
 		FLAG_END
 	};
 
-	
+	enum class STATE_FLAG
+	{
+		EXECUTABLE = (1 << 0),
+		READY_SPECIAL_ATK = (1 << 1),
+		FLAG_END
+	};
+
+	enum class COLOR_PALETTE
+	{
+		COLOR_WHITE,
+		COLOR_BLACK,
+		COLOR_RED,
+		COLOR_GREEN,
+		COLOR_BLUE
+	};
 
 
 }

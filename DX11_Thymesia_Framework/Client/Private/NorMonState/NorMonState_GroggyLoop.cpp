@@ -21,7 +21,7 @@ HRESULT CNorMonState_GroggyLoop::Initialize_Prototype()
 HRESULT CNorMonState_GroggyLoop::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
+	m_StateFlag |= (_uint)STATE_FLAG::EXECUTABLE;
 
 	return S_OK;
 }

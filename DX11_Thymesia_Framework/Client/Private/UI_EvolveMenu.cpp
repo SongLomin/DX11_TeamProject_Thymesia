@@ -9,6 +9,8 @@
 #include "UI_EvolveMenu_Talent.h"
 #include "UI_EvolveLeftBG.h"
 #include "UI_EvolveMenu_SelectDecoration.h"
+#include "Player.h"
+
 
 GAMECLASS_C(CUI_EvolveMenu)
 CLONE_C(CUI_EvolveMenu, CGameObject)
@@ -247,6 +249,9 @@ void CUI_EvolveMenu::Call_FadeEndEnableEvolveMenu()
 	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);
 	Set_Enable(false);
 	m_pFadeMask.lock()->Set_Enable(false);
+
+	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+	pCurrentPlayer.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_SITUP);
 }
 
 
