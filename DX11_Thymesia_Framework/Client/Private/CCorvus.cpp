@@ -381,7 +381,7 @@ void CCorvus::OnEventMessage(_uint iArg)
 
 	if ((_uint)EVENT_TYPE::ON_SITUP == iArg)
 	{
-		Change_State<CCorvusState_CheckPointEnd>
+		Change_State<CCorvusState_CheckPointEnd>();
 	}
 }
 
