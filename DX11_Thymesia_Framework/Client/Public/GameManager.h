@@ -2,6 +2,7 @@
 #include "Base.h"
 #include "Client_Defines.h"
 
+
 BEGIN(Engine)
 class CGameObject;
 class CCamera;
@@ -129,18 +130,18 @@ public:
     */
 public:// For UI;
     POINT   Get_MousePoint();
-    void    Set_PlayerStatus(CStatus_Player::PLAYERDESC tPlayerDesc)
-    {
-        m_tPlayerDesc = tPlayerDesc;
-    }
-    CStatus_Player::PLAYERDESC Get_PlayerDesc()
-    {
-        return m_tPlayerDesc;
-    }
+   // void    Set_PlayerStatus(CStatus_Player::PLAYERDESC tPlayerDesc)
+   // {
+   //     m_tPlayerDesc = tPlayerDesc;
+   // }
+   // CStatus_Player::PLAYERDESC Get_PlayerDesc()
+   // {
+   //     return m_tPlayerDesc;
+   // }
 
 public:
     _uint   m_iTestTalent = 2;
-    CStatus_Player::PLAYERDESC m_tPlayerDesc;
+    //CStatus_Player::PLAYERDESC m_tPlayerDesc;
 
 
 public:

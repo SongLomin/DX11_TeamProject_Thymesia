@@ -50,8 +50,6 @@ void CStatus_Player::Write_Json(json& Out_Json)
 {
     __super::Load_FromJson(Out_Json);
 
-    Out_Json.emplace("PLAYERDESC", m_tDesc);
-
 }
 
 void CStatus_Player::Load_FromJson(const json& In_Json)
