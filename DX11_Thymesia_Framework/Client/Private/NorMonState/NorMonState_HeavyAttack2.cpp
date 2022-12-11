@@ -46,7 +46,7 @@ void CNorMonState_HeavyAttack2::Start()
 	case Client::MONSTERTYPE::GARDENER:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_ComboB01");
 		break;
-	case Client::MONSTERTYPE::ELITEGARDENER:
+	case Client::MONSTERTYPE::ENHANCE_GARDENER:
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Gardener01_Base01.ao|Gardener_ComboB01");
 		break;
 	case Client::MONSTERTYPE::SHIELDAXEMAN:
@@ -79,7 +79,7 @@ void CNorMonState_HeavyAttack2::Tick(_float fTimeDelta)
 			m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
 		}
 		break;
-	case Client::MONSTERTYPE::ELITEGARDENER:
+	case Client::MONSTERTYPE::ENHANCE_GARDENER:
 		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 20 &&
 			m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() <= 51)
 		{
@@ -160,7 +160,7 @@ void CNorMonState_HeavyAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 		case Client::MONSTERTYPE::GARDENER:
 			m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 			break;
-		case Client::MONSTERTYPE::ELITEGARDENER:
+		case Client::MONSTERTYPE::ENHANCE_GARDENER:
 			m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 			break;
 		case Client::MONSTERTYPE::SHIELDAXEMAN:
@@ -220,7 +220,7 @@ _bool CNorMonState_HeavyAttack2::Check_AndChangeNextState()
 			m_bAttackLookAtLimit = false;
 		}
 	break;
-	case Client::MONSTERTYPE::ELITEGARDENER:
+	case Client::MONSTERTYPE::ENHANCE_GARDENER:
 		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 51)
 		{
 			m_bAttackLookAtLimit = false;
@@ -235,7 +235,7 @@ _bool CNorMonState_HeavyAttack2::Check_AndChangeNextState()
 		case Client::MONSTERTYPE::GARDENER:
 		m_bAttackLookAtLimit = false;
 		break;
-		case Client::MONSTERTYPE::ELITEGARDENER:
+		case Client::MONSTERTYPE::ENHANCE_GARDENER:
 		m_bAttackLookAtLimit = false;
 		break;
 		}
