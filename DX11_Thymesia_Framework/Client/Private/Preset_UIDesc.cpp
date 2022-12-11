@@ -19,7 +19,7 @@ void CPreset_UIDesc::Set_CUI_MonsterFocus(weak_ptr<class CUI_MonsterFocus> pUI)
 	pUI.lock()->Set_Depth(0.f);
 	pUI.lock()->Set_RenderGroup(RENDERGROUP::RENDER_BEFOREUI);
 	pUI.lock()->Set_Texture("Target_Icon");
-
+    pUI.lock()->Set_PassIndex(0);
 }
 
 void CPreset_UIDesc::Set_CUI_PlayerHPBar(weak_ptr<class CPlayer_HPBar> pUI)
