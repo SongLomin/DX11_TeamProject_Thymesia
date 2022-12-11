@@ -82,8 +82,8 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("Corvus_SD_AvoidShortMag_F", 2.25f);
     SET_ANIM_SPEED("Corvus_SD_AvoidShortMag_L", 2.25f);
     SET_ANIM_SPEED("Corvus_SD_AvoidShortMag_R", 2.25f);
-    SET_ANIM_SPEED("Corvus_SD1_Sprint", 2.25f);
-    SET_ANIM_SPEED("Corvus_SD1_Sprint_Start", 2.25f);
+    SET_ANIM_SPEED("Corvus_SD1_Sprint", 2.f);
+    SET_ANIM_SPEED("Corvus_SD1_Sprint_Start", 2.f);
     SET_ANIM_SPEED("Corvus_Raven_ClawCommonV2_ChargeStart", 1.25f);
     SET_ANIM_SPEED("Corvus_Raven_ClawCommon_ChargeLoop", 1.5f);
     SET_ANIM_SPEED("Corvus_Raven_ClawLong_ChargeFull", 2.f);
