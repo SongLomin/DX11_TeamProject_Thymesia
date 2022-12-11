@@ -31,7 +31,10 @@ HRESULT CCharacter::Start()
 	__super::Start();
 
 	if (LEVEL::LEVEL_EDIT == m_CreatedLevel)
-		m_pHitColliderCom.lock()->Set_Enable(false);
+	{
+		if (m_pHitColliderCom.lock())
+			m_pHitColliderCom.lock()->Set_Enable(false);
+	}
 
 	return S_OK;
 }

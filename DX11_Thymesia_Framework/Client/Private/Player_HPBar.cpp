@@ -88,8 +88,7 @@ void CPlayer_HPBar::Set_CurrentHp(_float _fCurrentHp)
     else if (m_fCurrentHp > m_fMaxHp)
         m_fCurrentHp = m_fMaxHp;
 
-    m_pEasingFloatCom.lock()->Set_Lerp(m_fLerpHp, m_fCurrentHp, 0.5f, EASING_TYPE::QUAD_IN,
-        CEasingComponent::ONCE);
+    m_pEasingFloatCom.lock()->Set_Lerp(m_fLerpHp, m_fCurrentHp, 0.5f, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE);
 }
 
 void CPlayer_HPBar::Call_UpdateStatus()

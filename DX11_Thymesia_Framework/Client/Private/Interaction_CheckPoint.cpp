@@ -128,7 +128,10 @@ void CInteraction_CheckPoint::Act_Interaction()
 {
     GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front().lock()->Call_Landing(CUI_Landing::LANDING_BECONFOUND);
 
-    GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status().lock()->Full_Recovery();
+    weak_ptr<CStatus_Player> pPlayerStatus = GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status();
+
+    if (pPlayerStatus.lock())
+        pPlayerStatus.lock()->Full_Recovery();
 
     GET_SINGLE(CGameManager).get()->Registration_CheckPoint(Weak_Cast<CInteraction_CheckPoint>(m_this));
 }

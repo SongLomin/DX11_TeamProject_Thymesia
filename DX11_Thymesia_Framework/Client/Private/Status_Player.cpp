@@ -64,6 +64,8 @@ _bool CStatus_Player::Is_Dead()
 
 void CStatus_Player::Init_Status(const void* pArg)
 {
+    ZeroMemory(&m_tDesc, sizeof(PLAYERDESC));
+    m_tDesc.m_fCurrentHP = 300.f;
     m_tDesc.m_fMaxHP = 300.f;
     m_tDesc.m_fMaxMP = 150.f;
     m_tDesc.m_fNormalAtk = 25.f;

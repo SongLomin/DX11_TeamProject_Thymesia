@@ -422,8 +422,8 @@ PS_OUT PS_MAIN_NORMAL_SPECULAR(PS_IN_NORMAL In)
     if (Out.vDiffuse.a < 0.1f)
         discard;
     
-    if (g_bBloom)
-        Out.vExtractBloom = Out.vDiffuse;
+    //if (g_bBloom)
+    //    Out.vExtractBloom = Out.vDiffuse;
 
     return Out;
 }
