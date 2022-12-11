@@ -6,6 +6,7 @@ BEGIN(Engine)
 class CVIBuffer_Curve;
 class CShader;
 class CRenderer;
+class CTexture;
 END
 
 BEGIN(Client)
@@ -47,6 +48,8 @@ private: /* ParentTransform */
     weak_ptr<CTransform>        m_pTargetTransformCom;
     weak_ptr<CModel>            m_pTargetModelCom;
     weak_ptr<CBoneNode>         m_pTargetBoneNodeCom;
+
+    weak_ptr<CTexture>          m_pTextureCom;
 
 private:
     _float4x4                   m_CurvePoints;
