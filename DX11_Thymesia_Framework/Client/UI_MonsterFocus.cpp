@@ -160,7 +160,12 @@ weak_ptr<CBoneNode> CUI_MonsterFocus::FindTargetBone(weak_ptr<class CModel> pTar
     pBoneNode = pTargetModel.lock()->Find_BoneNode("Spine01");
     if (!pBoneNode.lock())
     {
-        pBoneNode = pTargetModel.lock()->Find_BoneNode("Bip001-Spine");
+        pBoneNode = pTargetModel.lock()->Find_BoneNode("Bip001-Spine1");
+    }
+
+    if (!pBoneNode.lock())
+    {
+        pBoneNode = pTargetModel.lock()->Find_BoneNode("spine_01");
     }
 
     return pBoneNode;
@@ -176,10 +181,21 @@ void CUI_MonsterFocus::FollowTargetBone()
    }
 
    _matrix  matTargetCombined = pBoneNode.lock()->Get_CombinedMatrix();
-   _vector vTargetWorldPos =    m_pTargetMonster.lock()->Get_WorldPosition();
-   _vector  vTargetCombinedWorldPos = XMVector3TransformCoord(vTargetWorldPos, matTargetCombined);
+   // _vector vTargetWorldPos =    m_pTargetMonster.lock()->Get_WorldPosition();
 
-   _float2   fMyPos = CUI_Utils::ConvertWorldPosToUIPos(vTargetCombinedWorldPos);
+   _matrix  matTargetMonsterWorld = XMLoadFloat4x4(&m_pTargetMonster.lock()->Get_Component<CModel>().lock()->Get_TransformationMatrix());
+
+   _matrix BoneMatrix = matTargetCombined * matTargetMonsterWorld;
+
+   BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
+   BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
+   BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
+
+   _matrix WorldMatrix = BoneMatrix * m_pTargetMonster.lock()->Get_Transform()->Get_UnScaledWorldMatrix();
+
+   // _vector  vTargetCombinedWorldPos = XMVector3TransformCoord(vTargetWorldPos, BoneMatrix);
+
+   _float2   fMyPos = CUI_Utils::ConvertWorldPosToUIPos(WorldMatrix.r[3], XMVectorSet(0.f, 0.f, 0.f, 1.f));
 
    Set_UIPosition(fMyPos.x, fMyPos.y);
 }
