@@ -143,7 +143,7 @@ void CSection_Eventer::Load_FromJson(const json& In_Json)
 
 void CSection_Eventer::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    if (!(m_Flag & EVENT_FLAG::EVENT_ENTER))
+    if (!(m_Flag & EVENT_FLAG::EVENT_ENTER) && LEVEL::LEVEL_EDIT == m_CreatedLevel)
         return;
 
     __super::OnCollisionEnter(pMyCollider, pOtherCollider);
@@ -157,7 +157,7 @@ void CSection_Eventer::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_pt
 
 void CSection_Eventer::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    if (!(m_Flag & EVENT_FLAG::EVENT_STAY))
+    if (!(m_Flag & EVENT_FLAG::EVENT_STAY) && LEVEL::LEVEL_EDIT == m_CreatedLevel)
         return;
 
     __super::OnCollisionStay(pMyCollider, pOtherCollider);
@@ -171,7 +171,7 @@ void CSection_Eventer::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr
 
 void CSection_Eventer::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    if (!(m_Flag & EVENT_FLAG::EVENT_EXIT))
+    if (!(m_Flag & EVENT_FLAG::EVENT_EXIT) && LEVEL::LEVEL_EDIT == m_CreatedLevel)
         return;
 
     __super::OnCollisionExit(pMyCollider, pOtherCollider);

@@ -126,7 +126,7 @@ void CNorMonster::Init_Desc()
 		m_pWeapons.back().lock()->Add_Collider({ 0.71f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		m_pWeapons.back().lock()->Add_Collider({ 0.81f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		break;
-	case MONSTERTYPE::ELITEGARDENER:
+	case MONSTERTYPE::ENHANCE_GARDENER:
 		m_pModelCom.lock()->Init_Model("Mon_Gardner", "", (_uint)TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Scythe", TIMESCALE_LAYER::MONSTER);
@@ -174,7 +174,7 @@ void CNorMonster::Init_Desc()
 	case  MONSTERTYPE::GARDENER:
 		m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
 		break;
-	case MONSTERTYPE::ELITEGARDENER:
+	case MONSTERTYPE::ENHANCE_GARDENER:
 		m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
 		break;
 	case MONSTERTYPE::SHIELDAXEMAN:
@@ -312,7 +312,7 @@ void CNorMonster::Move_RootMotion_Internal()
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
 		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 		break;
-	case MONSTERTYPE::ELITEGARDENER:
+	case MONSTERTYPE::ENHANCE_GARDENER:
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
 		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 		break;

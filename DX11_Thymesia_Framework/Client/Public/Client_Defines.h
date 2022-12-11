@@ -325,15 +325,16 @@ namespace Client
 
 	enum class  MONSTERTYPE {
 		START_NORMAL_MONSTER = 0,
-		AXEMAN,  // 도끼든남자 방패든도끼든남자
-		KNIFEWOMAN, // 기본단검여자
-		SKULL, // 기본해골
-		GARDENER, // 낫든몬스터
-		SHIELDAXEMAN,// 실드도끼남자
-		BALLOON, // 풍선
+		AXEMAN,			   // 도끼든남자 방패든도끼든남자
+		KNIFEWOMAN,		   // 기본단검여자
+		SKULL,			   // 기본해골
+		GARDENER,		   // 낫든몬스터
+		SHIELDAXEMAN,	   // 실드도끼남자
+		BALLOON,		   // 풍선
+		ENHANCE_GARDENER,  // 강화 가드너
 
 		START_ELITE_MONSTER = 10000,
-		ELITEGARDENER,
+		JOCKER,
 
 		STARTBOSS_MONSTER = 20000,
 		VARG, // 보스바그
