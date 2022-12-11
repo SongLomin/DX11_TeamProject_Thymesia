@@ -24,8 +24,8 @@ HRESULT CCorvus::Initialize(void* pArg)
 	__super::Initialize(pArg);
 	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_VtxAnimModel"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements);
 
-
 	m_pStatus = CGameObject::Add_Component<CStatus_Player>();
+	m_pStatus.lock()->Load_FromJson(m_szClientComponentPath + "Corvus/SaveData.json");
 
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
 

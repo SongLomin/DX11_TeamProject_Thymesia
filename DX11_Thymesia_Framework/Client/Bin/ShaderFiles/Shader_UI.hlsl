@@ -420,13 +420,13 @@ PS_OUT PS_COLORTOALPHADIFFUSE(PS_IN In)
 	
     Out.vColor *= g_fAlphaColor;
 
-	if (Out.vColor.a *= g_fAlphaColor)
+	if (Out.vColor.a < 0.3)
     {
         discard;
     }
 	else
     {
-		Out.vColor.rgb += g_vColor.rgb;	
+		Out.vColor.rgb *= g_vColor.rgb;	
     }
 	
     return Out;

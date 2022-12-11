@@ -5,6 +5,8 @@
 #include "GameManager.h"
 #include "Engine_Defines.h"
 #include "CustomUI.h"
+#include "Status_Player.h"
+
 
 GAMECLASS_C(CPlayer_PotionUI)
 CLONE_C(CPlayer_PotionUI, CGameObject);
@@ -75,6 +77,8 @@ HRESULT CPlayer_PotionUI::Initialize(void* pArg)
    m_tMaxPotionTextInfo.vPosition = _float2(m_tUIDesc.fX + 45.f, m_tUIDesc.fY - 10.f);
    m_tMaxPotionTextInfo.eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
 
+   GET_SINGLE(CGameManager)->CallBack_ChangePlayer +=
+       bind(&CPlayer_PotionUI::Bind_Player, this);
 
     return S_OK;
 }
@@ -121,6 +125,27 @@ void CPlayer_PotionUI::LateTick(_float fTimeDelta)
 HRESULT CPlayer_PotionUI::Render()
 {
     return S_OK;
+}
+
+void CPlayer_PotionUI::Bind_Player()
+{
+#ifndef _ONLY_UI_
+    weak_ptr<CStatus_Player> pStatus_Player;
+    pStatus_Player = GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status();
+
+    pStatus_Player.lock()->Callback_ChangePotion +=
+        bind(&CPlayer_PotionUI::Call_ChangePotion, this, placeholders::_1, placeholders::_2);
+
+    Set_MaxPotion(pStatus_Player.lock()->Get_CurrentPotionDesc().m_iMaxPotion);
+    Set_CurrentPotion(pStatus_Player.lock()->Get_CurrentPotionDesc().m_iCurrentPotion);
+#endif
+}
+
+void CPlayer_PotionUI::Call_ChangePotion(_uint iCurrentPotion, _uint iMaxPotion)
+{
+    Set_CurrentPotion(iCurrentPotion);
+
+    Set_MaxPotion(iMaxPotion);
 }
 
 _uint CPlayer_PotionUI::Get_CrrrentPotion()

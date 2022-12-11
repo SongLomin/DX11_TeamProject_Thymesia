@@ -12,6 +12,8 @@
 #include "NorMonState/NorMonState_GroggyEnd.h"
 #include "StateBase.h"
 #include "UI_Utils.h"
+#include "Shader.h"
+
 
 GAMECLASS_C(CUI_MonsterFocus)
 CLONE_C(CUI_MonsterFocus, CGameObject)
@@ -51,9 +53,6 @@ void CUI_MonsterFocus::Tick(_float fTimeDelta)
 
     __super::Tick(fTimeDelta);
 
-
-
-
 }
 
 void CUI_MonsterFocus::LateTick(_float fTimeDelta)
@@ -78,17 +77,23 @@ void CUI_MonsterFocus::Call_FocusInTarget()
 {
     m_pTargetMonster = GET_SINGLE(CGameManager)->Get_TargetMonster();
 
-    m_pEasingAlphaCom.lock()->Set_Lerp(0.f, 1.f, 1.f, EASING_TYPE::QUAD_IN, CEasingComponent::LOOP_GO_AND_BACK, false);
+    m_pEasingAlphaCom.lock()->Set_Lerp(0.f, 1.f, 5.f, EASING_TYPE::QUAD_IN, CEasingComponent::LOOP_GO_AND_BACK, false);
+
+    m_vColor = CUI_Utils::GET_COLOR(COLOR_PALETTE::COLOR_WHITE);
 
     Bind_Callback_LockOnTriger(m_pTargetMonster);
+
+    m_pBoneNode = FindTargetBone(m_pTargetMonster.lock()->Get_Model());
+    if (!m_pBoneNode.lock())//찾은 본이 없다면 그냥 출력 X.
+    {
+        Call_FocusOutTarget();
+        return;
+    }
 
     Set_Enable(true);
 }
 
-void CUI_MonsterFocus::Call_GroggyStart()
-{
-    m_pEasingAlphaCom.lock()->Set_Lerp(0.f, 1.f, 1.f, EASING_TYPE::QUAD_IN, CEasingComponent::LOOP_GO_AND_BACK, false);
-}
+
 
 void CUI_MonsterFocus::Call_FocusOutTarget()
 {
@@ -96,6 +101,8 @@ void CUI_MonsterFocus::Call_FocusOutTarget()
         m_pTargetMonster.lock()->Callback_OnChangeState -= bind(&CUI_MonsterFocus::Call_ChangeState, this, placeholders::_1);
 
     m_pTargetMonster = weak_ptr<CMonster>();
+
+    m_pBoneNode = weak_ptr<CBoneNode>();
 
     Set_Enable(false);
 }
@@ -113,6 +120,8 @@ void CUI_MonsterFocus::Call_ChangeState(weak_ptr<class CStateBase> pChangedState
     if (Compare_StateFlag(pChangedState, STATE_FLAG::EXECUTABLE))
     {
         m_vColor = CUI_Utils::GET_COLOR(COLOR_PALETTE::COLOR_RED);
+        m_pEasingAlphaCom.lock()->Set_Lerp(0.f, 1.f, 1.f, EASING_TYPE::QUAD_IN, CEasingComponent::LOOP_GO_AND_BACK, false);
+
     }
     else if (Compare_StateFlag(pChangedState, STATE_FLAG::READY_SPECIAL_ATK))
     {
@@ -145,12 +154,20 @@ void CUI_MonsterFocus::Bind_Callback_LockOnTriger(weak_ptr<CMonster> pTargetMons
             bind(&CUI_MonsterFocus::Call_ChangeState, this, placeholders::_1);
     }
 
-  
 }
 
 void CUI_MonsterFocus::SetUp_Component()
 {
     m_pEasingAlphaCom = Add_Component<CEasingComponent_Alpha>();
+}
+
+HRESULT CUI_MonsterFocus::SetUp_ShaderResource()
+{
+    __super::SetUp_ShaderResource();
+
+    m_pShaderCom.lock()->Set_RawValue("g_vColor", &m_vColor, sizeof(_float4));
+
+    return S_OK;
 }
 
 weak_ptr<CBoneNode> CUI_MonsterFocus::FindTargetBone(weak_ptr<class CModel> pTargetModel)
@@ -162,7 +179,6 @@ weak_ptr<CBoneNode> CUI_MonsterFocus::FindTargetBone(weak_ptr<class CModel> pTar
     {
         pBoneNode = pTargetModel.lock()->Find_BoneNode("Bip001-Spine1");
     }
-
     if (!pBoneNode.lock())
     {
         pBoneNode = pTargetModel.lock()->Find_BoneNode("spine_01");
@@ -173,14 +189,8 @@ weak_ptr<CBoneNode> CUI_MonsterFocus::FindTargetBone(weak_ptr<class CModel> pTar
 
 void CUI_MonsterFocus::FollowTargetBone()
 {
-    weak_ptr<CBoneNode> pBoneNode = FindTargetBone(m_pTargetMonster.lock()->Get_Model());
-   if (!pBoneNode.lock())//찾은 본이 없다면 그냥 출력 X.
-   {
-       Call_FocusOutTarget();
-       return;
-   }
-
-   _matrix  matTargetCombined = pBoneNode.lock()->Get_CombinedMatrix();
+  
+   _matrix  matTargetCombined = m_pBoneNode.lock()->Get_CombinedMatrix();
    // _vector vTargetWorldPos =    m_pTargetMonster.lock()->Get_WorldPosition();
 
    _matrix  matTargetMonsterWorld = XMLoadFloat4x4(&m_pTargetMonster.lock()->Get_Component<CModel>().lock()->Get_TransformationMatrix());

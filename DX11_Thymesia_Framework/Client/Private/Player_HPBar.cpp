@@ -32,6 +32,9 @@ HRESULT CPlayer_HPBar::Initialize(void* pArg)
 
     SetUp_Component();
 
+    GET_SINGLE(CGameManager)->CallBack_ChangePlayer +=
+        bind(&CPlayer_HPBar::Bind_Player, this);
+
     return S_OK;
 }
 

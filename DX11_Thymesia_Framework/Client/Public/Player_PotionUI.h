@@ -20,6 +20,14 @@ public:
 
 
 public:
+	void			Bind_Player() override;
+
+public:
+	void			Call_ChangePotion(_uint iCurrentPotion, _uint iMaxPotion);
+
+
+
+public:
 	_uint			Get_CrrrentPotion();
 
 public:

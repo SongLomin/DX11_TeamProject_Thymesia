@@ -42,6 +42,10 @@ HRESULT CHUD_Player_Memory::Initialize(void* pArg)
     m_fMemory = 0.f;
     m_fLerpMemory = 0.f;
 
+
+    GET_SINGLE(CGameManager)->CallBack_ChangePlayer +=
+        bind(&CHUD_Player_Memory::Bind_Player, this);
+
     return S_OK;
 }
 
@@ -136,6 +140,12 @@ HRESULT CHUD_Player_Memory::SetUp_ShaderResource()
         MSG_BOX("CHUD_Player_Memory");
     }
     return S_OK;
+}
+
+
+void CHUD_Player_Memory::Call_ChangeMemory(_float fMemory)
+{
+    
 }
 
 void CHUD_Player_Memory::Free()

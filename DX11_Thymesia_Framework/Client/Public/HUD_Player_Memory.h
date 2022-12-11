@@ -39,6 +39,8 @@ private:
 	_float					m_fDifference;
 
 public:
+	void	Call_ChangeMemory(_float fMemory);
+public:
 	void Free();
 };
 

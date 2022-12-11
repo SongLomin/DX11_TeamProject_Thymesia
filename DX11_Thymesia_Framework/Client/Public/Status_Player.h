@@ -60,12 +60,17 @@ public:
 
 
 public:
-    FDelegate<>   Callback_Update_Status;
+    virtual void Write_Json(json& Out_Json) override;
+    virtual void Load_FromJson(const json& In_Json) override;
+
+public:
+    FDelegate<>         Callback_Update_Status;
     FDelegate<_float>   Callback_ChangeHP;
     FDelegate<_float>   Callback_ChangeMP;
-    FDelegate<_uint>   Callback_ChangePotion;
-    FDelegate<_uint>   Callback_ChangeFeather;
+    FDelegate<_uint>    Callback_ChangeFeather;
 
+
+    FDelegate<_uint, _uint> Callback_ChangePotion;
 public:
     virtual _bool   Is_Dead();
     virtual void    Init_Status(const void* pArg);
@@ -79,13 +84,25 @@ public:
     virtual void   Get_Desc(void* Out_pDesc);
     PLAYERDESC      Get_Desc() const;
 
+public://For HPBar
     _float         Get_MaxHP() { return m_tDesc.m_fMaxHP; }
     _float         Get_CurrentHP() { return m_tDesc.m_fCurrentHP; }
+   
 
-    void Heal_Player(const _float fAmount);
 
     _float         Get_Atk() { return m_tDesc.m_fNormalAtk; }
     virtual void    Set_Desc(void* In_Desc) override;
+    void            Heal_Player(const _float fAmount);
+
+
+
+public: //For Potion
+    _bool            Get_UseableCurrentPotion();
+    void             Use_Potion();
+    _uint            Get_CurrentPotionCount();
+    _uint            Get_MaxPotionCount();
+
+
 private:
     _float         m_fPotionTime;
     _uint         m_iCurrentPotionIndex;
@@ -93,7 +110,7 @@ private:
 
 protected:
     PLAYERDESC      m_tDesc; // m_tPlayerDesc
-
+    
 private:
     void         Free();
 

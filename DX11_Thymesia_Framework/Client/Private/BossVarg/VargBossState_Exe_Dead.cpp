@@ -10,6 +10,8 @@
 #include "Character.h"
 #include "VargStates.h"
 
+#include "UI_Landing.h"
+
 GAMECLASS_C(CVargBossState_Exe_Dead);
 CLONE_C(CVargBossState_Exe_Dead, CComponent)
 
@@ -92,6 +94,8 @@ void CVargBossState_Exe_Dead::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
+
+	GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front().lock()->Call_Landing(CUI_Landing::LANDING_KILL_BOSS);
 
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_End>(0.05f);
 }
