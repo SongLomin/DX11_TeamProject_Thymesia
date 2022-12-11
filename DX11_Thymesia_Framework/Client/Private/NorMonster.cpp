@@ -101,7 +101,7 @@ void CNorMonster::Init_Desc()
 
 		//나중에추가할거미리해둠
 	case  MONSTERTYPE::KNIFEWOMAN:
-		m_pModelCom.lock()->Init_Model("Mon_KnifeWoMan", "", (_uint)TIMESCALE_LAYER::MONSTER);
+		m_pModelCom.lock()->Init_Model("Mon_KnifeWoman", "", (_uint)TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Knife", TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
