@@ -64,6 +64,8 @@ void CJokerState_WheelAtkLoop::OnStateStart(const _float& In_fAnimationBlendTime
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	m_iCount += 1;
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
@@ -92,6 +94,10 @@ void CJokerState_WheelAtkLoop::Call_AnimationEnd()
 		m_iCount = 0;
 		Get_OwnerCharacter().lock()->Change_State<CJokerState_WheelAtkEnd>(0.05f);
 	}
+	else
+	{
+		Get_OwnerCharacter().lock()->Change_State<CJokerState_WheelAtkLoop>(0.05f);
+	}
 }
 
 void CJokerState_WheelAtkLoop::OnDestroy()
@@ -110,14 +116,8 @@ _bool CJokerState_WheelAtkLoop::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.99f)
-	{
-		m_iCount += 1;
-		Get_OwnerCharacter().lock()->Change_State<CJokerState_WheelAtkLoop>(0.05f);
-		return true;
-	}
-
-
+	
+		
 
 	return false;
 }

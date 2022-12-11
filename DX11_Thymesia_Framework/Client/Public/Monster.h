@@ -103,7 +103,7 @@ protected:
     STATE_LINK_MONSTER_DESC      m_tLinkStateDesc;
     MONSTERWEAPONTYPE    m_eMonWeaPonType =     MONSTERWEAPONTYPE::MON_WEAPON_END;
     NORMONSTERIDLETYPE   m_eNorMonIdleType =    NORMONSTERIDLETYPE::IDLEEND;
-
+    BOSSSTARTTYPE        m_eBossStartType = BOSSSTARTTYPE::BOSSSTARTEND;
     weak_ptr<CMonsterHPBar_Base>   m_pHPBar;
 
 

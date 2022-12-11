@@ -77,6 +77,7 @@ HRESULT CVarg::Initialize(void* pArg)
 	Add_Component<CVargBossState_Attack2b1>();
 	Add_Component<CVargBossState_Attack2b2>();
 	Add_Component<CVargBossState_Exe_End>();
+	Add_Component<CVargBossState_IdleGeneral>();
 
 	TRAIL_DESC TrailDesc;
 	ZeroMemory(&TrailDesc, sizeof(TRAIL_DESC));
@@ -104,7 +105,16 @@ HRESULT CVarg::Start()
 
 	CBase::Set_Enable(true);
 	
-	Change_State<CVargBossState_Start>();
+	switch (m_eBossStartType)
+	{
+	case Client::BOSSSTARTTYPE::BEGINSTART:
+		Change_State<CVargBossState_Start>();
+		break;
+	case Client::BOSSSTARTTYPE::NORMALSTART:
+		Change_State<CVargBossState_IdleGeneral>();
+		break;
+	}
+	
 
 	// weak_ptr<CBoneNode> pTargetBoneNode = m_pModelCom.lock()->Find_BoneNode();
 	// m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
@@ -240,6 +250,7 @@ void CVarg::Init_Desc()
 	INIT_STATE(CVargBossState_TurnAttack);
 	INIT_STATE(CVargBossState_Attack2b1);
 	INIT_STATE(CVargBossState_Attack2b2);
+	INIT_STATE(CVargBossState_IdleGeneral);
 
 	GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
 

@@ -116,7 +116,7 @@ _bool CJokerState_RunAtkEnd::Check_AndChangeNextState()
 	}
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.4f &&
-		m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() <= 0.5f)
+		m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() <= 0.47f)
 	{
 		m_bAttackLookAtLimit = true;
 	}

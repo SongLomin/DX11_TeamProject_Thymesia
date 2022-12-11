@@ -11,7 +11,7 @@
 
 #include "PhysXColliderObject.h"
 #include "Window_HierarchyView.h"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+
 GAMECLASS_C(CEditSetActor)
 CLONE_C(CEditSetActor, CGameObject)
 
@@ -26,7 +26,7 @@ HRESULT CEditSetActor::Initialize(void* pArg)
 
 	XMStoreFloat4x4(&m_PickingDesc, XMMatrixIdentity());
 
-	m_pSelect_ShaderCom   = Add_Component<CShader>();
+	m_pSelect_ShaderCom = Add_Component<CShader>();
 	m_pSelect_VIBufferCom = Add_Component<CVIBuffer_DynamicCube>();
 
 	m_pSelect_ShaderCom.lock()->Set_ShaderInfo
@@ -36,12 +36,12 @@ HRESULT CEditSetActor::Initialize(void* pArg)
 		VTXCUBETEX_DECLARATION::iNumElements
 	);
 
-    return S_OK;
+	return S_OK;
 }
 
 HRESULT CEditSetActor::Start()
 {
-    return S_OK;
+	return S_OK;
 }
 
 void CEditSetActor::Tick(_float fTimeDelta)
@@ -59,73 +59,73 @@ HRESULT CEditSetActor::Render()
 {
 	SetUp_ShaderResource_Select();
 
-    return S_OK;
+	return S_OK;
 }
 
 void CEditSetActor::OnEventMessage(_uint iArg)
 {
 	__super::OnEventMessage(iArg);
 
-    switch ((EVENT_TYPE)iArg)
-    {
-		case EVENT_TYPE::ON_EDITDRAW_ACCEPT:
+	switch ((EVENT_TYPE)iArg)
+	{
+	case EVENT_TYPE::ON_EDITDRAW_ACCEPT:
+	{
+		m_bSubDraw = true;
+	}
+	break;
+
+	case EVENT_TYPE::ON_EDITDRAW_NONE:
+	{
+		m_bSubDraw = false;
+	}
+	break;
+
+	case EVENT_TYPE::ON_EDITDRAW:
+	{
+		if (!m_bSubDraw)
+			return;
+
+		if (ImGui::BeginTabBar("Edit"))
 		{
-			m_bSubDraw = true;
-		}
-		break;
-
-		case EVENT_TYPE::ON_EDITDRAW_NONE:
-		{
-			m_bSubDraw = false;
-		}
-		break;
-
-        case EVENT_TYPE::ON_EDITDRAW:
-        {
-			if (!m_bSubDraw)
-				return;
-
-            if (ImGui::BeginTabBar("Edit"))
-            {
-                if (ImGui::BeginTabItem("Create"))
-                {
-					View_CreateActor();
-					View_Picking_Actor();
-					View_Picking_List();
-					View_SelectTransformInfo();
-					View_Picking_Option();
-
-					ImGui::EndTabItem();
-                }
-
-				if (ImGui::BeginTabItem("Select"))
-				{
-					View_Picking_Actor();
-					View_Picking_List();
-					View_SelectTransformInfo();
-					View_Picking_Option();
-					View_Picking_MessageEdit();
-
-					ImGui::EndTabItem();
-				}
-
-                ImGui::EndTabBar();
-            }
-        }
-        break;
-
-		case EVENT_TYPE::ON_EDIT_DELETE:
-		{
-			auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditSetActor).hash_code());
-
-			if (iter_collider != GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
+			if (ImGui::BeginTabItem("Create"))
 			{
-				for (auto& elem : iter_collider->second)
-					elem.pInstance.lock()->Set_Dead();
+				View_CreateActor();
+				View_Picking_Actor();
+				View_Picking_List();
+				View_SelectTransformInfo();
+				View_Picking_Option();
+
+				ImGui::EndTabItem();
 			}
+
+			if (ImGui::BeginTabItem("Select"))
+			{
+				View_Picking_Actor();
+				View_Picking_List();
+				View_SelectTransformInfo();
+				View_Picking_Option();
+				View_Picking_MessageEdit();
+
+				ImGui::EndTabItem();
+			}
+
+			ImGui::EndTabBar();
 		}
-		break;
-    }
+	}
+	break;
+
+	case EVENT_TYPE::ON_EDIT_DELETE:
+	{
+		auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditSetActor).hash_code());
+
+		if (iter_collider != GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
+		{
+			for (auto& elem : iter_collider->second)
+				elem.pInstance.lock()->Set_Dead();
+		}
+	}
+	break;
+	}
 }
 
 void CEditSetActor::Write_Json(json& Out_Json)
@@ -177,13 +177,13 @@ void CEditSetActor::View_CreateActor()
 		"NORMAL START"
 	};
 
-	static _int		iSelect_ActorTypeList		= 0;
-	static _int		iSelect_ActorList			= 0;
-	static _int		iSelect_MonsterActionList	= 0;
-	static _int		iSelect_BossActionList		= 0;
-	static _int		iSelect_MonsterSection		= 0;
-	static _bool	bRenderActor                = false;
-	_bool			bNorMonsterCreate			= true;
+	static _int		iSelect_ActorTypeList = 0;
+	static _int		iSelect_ActorList = 0;
+	static _int		iSelect_MonsterActionList = 0;
+	static _int		iSelect_BossActionList = 0;
+	static _int		iSelect_MonsterSection = 0;
+	static _bool	bRenderActor = false;
+	_bool			bNorMonsterCreate = true;
 
 	if (ImGui::Checkbox("Render Actor", &bRenderActor))
 	{
@@ -200,11 +200,11 @@ void CEditSetActor::View_CreateActor()
 
 	if (ImGui::Combo("Monster Type", &iSelect_ActorTypeList, ActorTypeList, IM_ARRAYSIZE(ActorTypeList)))
 	{
-		iSelect_ActorList         = 0;
+		iSelect_ActorList = 0;
 		iSelect_MonsterActionList = 0;
-		iSelect_BossActionList    = 0;
+		iSelect_BossActionList = 0;
 	}
-	
+
 	if (1 == iSelect_ActorTypeList)
 		ImGui::Combo("Monster Name", &iSelect_ActorList, ActorList_Elite, IM_ARRAYSIZE(ActorList_Elite));
 	else if (2 == iSelect_ActorTypeList)
@@ -233,75 +233,75 @@ void CEditSetActor::View_CreateActor()
 	CMonster::STATE_LINK_MONSTER_DESC tMonsterDesc;
 	ZeroMemory(&tMonsterDesc, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 
-	tMonsterDesc.eBossStartType  = (!bNorMonsterCreate) ? ((BOSSSTARTTYPE)iSelect_BossActionList)         : (BOSSSTARTTYPE::BOSSSTARTEND);
-	tMonsterDesc.eNorMonIdleType = (bNorMonsterCreate)  ? ((NORMONSTERIDLETYPE)iSelect_MonsterActionList) : (NORMONSTERIDLETYPE::IDLEEND);
-	tMonsterDesc.eMonType        = (MONSTERTYPE)((iSelect_ActorList + iSelect_ActorTypeList * (_int)MONSTERTYPE::START_ELITE_MONSTER) + 1);
-	tMonsterDesc.iSectionIndex   = iSelect_MonsterSection;
+	tMonsterDesc.eBossStartType = (!bNorMonsterCreate) ? ((BOSSSTARTTYPE)iSelect_BossActionList) : (BOSSSTARTTYPE::BOSSSTARTEND);
+	tMonsterDesc.eNorMonIdleType = (bNorMonsterCreate) ? ((NORMONSTERIDLETYPE)iSelect_MonsterActionList) : (NORMONSTERIDLETYPE::IDLEEND);
+	tMonsterDesc.eMonType = (MONSTERTYPE)((iSelect_ActorList + iSelect_ActorTypeList * (_int)MONSTERTYPE::START_ELITE_MONSTER) + 1);
+	tMonsterDesc.iSectionIndex = iSelect_MonsterSection;
 	memcpy(&tMonsterDesc.m_fStartPositon, m_PickingDesc.m[3], sizeof(_float4));
 
 	switch (iSelect_ActorTypeList)
 	{
-		case 0:
+	case 0:
+	{
+		weak_ptr<CMonster> pObj = Weak_StaticCast<CMonster>(GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL::LEVEL_EDIT));
+		pObj.lock()->Set_LinkStateDesc(tMonsterDesc);
+		pObj.lock()->Init_Desc();
+		pObj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
+		pObj.lock()->Get_Transform()->Set_WorldMatrix(XMLoadFloat4x4(&m_PickingDesc));
+
+		Add_ActorToTool(typeid(CNorMonster).hash_code(), typeid(CNorMonster).name(), pObj);
+	}
+	break;
+
+	case 1:
+	{
+		weak_ptr<CMonster> pObj;
+
+		if (MONSTERTYPE::JOCKER == tMonsterDesc.eMonType)
 		{
-			weak_ptr<CMonster> pObj = Weak_StaticCast<CMonster>(GAMEINSTANCE->Add_GameObject<CNorMonster>(LEVEL::LEVEL_EDIT));
-			pObj.lock()->Set_LinkStateDesc(tMonsterDesc);
-			pObj.lock()->Init_Desc();
-			pObj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
-			pObj.lock()->Get_Transform()->Set_WorldMatrix(XMLoadFloat4x4(&m_PickingDesc));
-
-			Add_ActorToTool(typeid(CNorMonster).hash_code(), typeid(CNorMonster).name(), pObj);
+			pObj = Weak_StaticCast<CMonster>(GAMEINSTANCE->Add_GameObject<CJoker>(LEVEL::LEVEL_EDIT));
+			Add_ActorToTool(typeid(CJoker).hash_code(), typeid(CJoker).name(), pObj);
 		}
-		break;
 
-		case 1:
+		if (!pObj.lock())
+			return;
+
+		pObj.lock()->Set_LinkStateDesc(tMonsterDesc);
+		pObj.lock()->Init_Desc();
+		pObj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
+		pObj.lock()->Get_Transform()->Set_WorldMatrix(XMLoadFloat4x4(&m_PickingDesc));
+	}
+	break;
+
+	case 2:
+	{
+		weak_ptr<CMonster> pObj;
+
+		if (MONSTERTYPE::VARG == tMonsterDesc.eMonType)
 		{
-			weak_ptr<CMonster> pObj;
-
-			if (MONSTERTYPE::ENHANCE_GARDENER == tMonsterDesc.eMonType)
-			{
-				pObj = Weak_StaticCast<CMonster>(GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL::LEVEL_EDIT));
-				Add_ActorToTool(typeid(CVarg).hash_code(), typeid(CVarg).name(), pObj);
-			}
-
-			if (!pObj.lock())
-				return;
-
-			pObj.lock()->Set_LinkStateDesc(tMonsterDesc);
-			pObj.lock()->Init_Desc();
-			pObj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
-			pObj.lock()->Get_Transform()->Set_WorldMatrix(XMLoadFloat4x4(&m_PickingDesc));
+			pObj = Weak_StaticCast<CMonster>(GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL::LEVEL_EDIT));
+			Add_ActorToTool(typeid(CVarg).hash_code(), typeid(CVarg).name(), pObj);
 		}
-		break;
 
-		case 2:
-		{
-			weak_ptr<CMonster> pObj;
+		if (!pObj.lock())
+			return;
 
-			if (MONSTERTYPE::VARG == tMonsterDesc.eMonType)
-			{
-				pObj = Weak_StaticCast<CMonster>(GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL::LEVEL_EDIT));
-				Add_ActorToTool(typeid(CVarg).hash_code(), typeid(CVarg).name(), pObj);
-			}
+		pObj.lock()->Set_LinkStateDesc(tMonsterDesc);
+		pObj.lock()->Init_Desc();
+		pObj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
+		pObj.lock()->Get_Transform()->Set_WorldMatrix(XMLoadFloat4x4(&m_PickingDesc));
+	}
+	break;
 
-			if (!pObj.lock())
-				return;
+	case 3:
+	{
+		weak_ptr<CGameObject> pObj = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL::LEVEL_EDIT);
+		pObj.lock()->Get_Transform()->Set_WorldMatrix(XMLoadFloat4x4(&m_PickingDesc));
+		pObj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
 
-			pObj.lock()->Set_LinkStateDesc(tMonsterDesc);
-			pObj.lock()->Init_Desc();
-			pObj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
-			pObj.lock()->Get_Transform()->Set_WorldMatrix(XMLoadFloat4x4(&m_PickingDesc));
-		}
-		break;
-
-		case 3:
-		{
-			weak_ptr<CGameObject> pObj =GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL::LEVEL_EDIT);
-			pObj.lock()->Get_Transform()->Set_WorldMatrix(XMLoadFloat4x4(&m_PickingDesc));
-			pObj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
-
-			Add_ActorToTool(typeid(CCorvus).hash_code(), typeid(CCorvus).name(), pObj);
-		}
-		break;
+		Add_ActorToTool(typeid(CCorvus).hash_code(), typeid(CCorvus).name(), pObj);
+	}
+	break;
 	}
 
 }
@@ -315,12 +315,12 @@ void CEditSetActor::View_Picking_Actor()
 
 	MESH_VTX_INFO VtxInfo;
 	VtxInfo.vMin = { -1.f, 0.f, -1.f };
-	VtxInfo.vMax = {  1.f, 2.f,  1.f };
+	VtxInfo.vMax = { 1.f, 2.f,  1.f };
 
-	_uint   iIndex			= 0;
-	_float  fDistance		= 99999999.f; 
-	_float4	vCamPosition	= GAMEINSTANCE->Get_CamPosition();
-	_vector vCamPos			= XMLoadFloat4(&vCamPosition);
+	_uint   iIndex = 0;
+	_float  fDistance = 99999999.f;
+	_float4	vCamPosition = GAMEINSTANCE->Get_CamPosition();
+	_vector vCamPos = XMLoadFloat4(&vCamPosition);
 
 	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditSetActor).hash_code());
 
@@ -337,15 +337,15 @@ void CEditSetActor::View_Picking_Actor()
 
 			if (fLength < fDistance)
 			{
-				fDistance		= fLength;
-				m_iPickingIndex	= iIndex;
+				fDistance = fLength;
+				m_iPickingIndex = iIndex;
 				XMStoreFloat4x4(&m_PickingDesc, pTransform.lock()->Get_WorldMatrix());
 			}
 		}
 
 		++iIndex;
 	}
-	
+
 	if (0 > m_iPickingIndex && (_int)iter_collider->second.size() <= m_iPickingIndex)
 	{
 		m_iPickingIndex = -1;
@@ -494,7 +494,7 @@ void CEditSetActor::View_Picking_Option()
 			if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_X))
 			{
 				weak_ptr<CTransform> pTransformCom = iter_collider->second[m_iPickingIndex].pInstance.lock()->Get_Component<CTransform>();
-				_matrix matWorld      = pTransformCom.lock()->Get_WorldMatrix();
+				_matrix matWorld = pTransformCom.lock()->Get_WorldMatrix();
 				_float3 vPitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(matWorld));
 
 				vPitchYawRoll.y += 0.01f * MouseMove;
@@ -593,7 +593,7 @@ void CEditSetActor::SetUp_ShaderResource_Select()
 
 	MESH_VTX_INFO VtxInfo;
 	VtxInfo.vMin = { -1.f, 0.f, -1.f };
-	VtxInfo.vMax = {  1.f, 2.f,  1.f };
+	VtxInfo.vMax = { 1.f, 2.f,  1.f };
 
 	m_pSelect_VIBufferCom.lock()->Update
 	(
@@ -621,9 +621,9 @@ void CEditSetActor::Add_ActorToTool(_hashcode _HashCode, string _szTypeName, wea
 
 	CWindow_HierarchyView::GAMEOBJECT_DESC tObjDesc;
 
-	tObjDesc.HashCode	= _HashCode;
-	tObjDesc.pInstance	= _pInstance;
-	tObjDesc.TypeName	= _szTypeName;
+	tObjDesc.HashCode = _HashCode;
+	tObjDesc.pInstance = _pInstance;
+	tObjDesc.TypeName = _szTypeName;
 
 	if (iter_collider == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
 	{

@@ -52,7 +52,7 @@ void CCorvusState_RunFR::Tick(_float fTimeDelta)
 
 	PxControllerFilters Filters;
 
-	m_pPhysXControllerCom.lock()->MoveWithRotation({ m_fCurrentSpeed * fTimeDelta, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
+	m_pPhysXControllerCom.lock()->MoveWithRotation({ m_fCurrentSpeed * fTimeDelta * 0.70710678118f, 0.f, m_fCurrentSpeed * fTimeDelta  * 0.70710678118f}, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
 
 	//m_pTransformCom.lock()->Go_Straight(m_fCurrentSpeed * fTimeDelta, m_pNaviCom);
 }

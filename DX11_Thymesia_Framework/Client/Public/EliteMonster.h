@@ -4,7 +4,7 @@
 BEGIN(Client)
 
 class CMobWeapon;
-
+class CMonsterHPBar_Elite;
 
 class CEliteMonster :
     public CMonster
@@ -31,6 +31,7 @@ public:
     _float  Get_TimeAcc() const { return m_fTimeAcc; }
 
     void Set_DissolveAmount(const _float& In_fAmount) { m_fDissolveAmount = In_fAmount; }
+    virtual void    Bind_HPBar() override;
 
 
     //weak_ptr<CMonsterHPBar_Boss>  Get_HPBar() { return m_pHPBar; }

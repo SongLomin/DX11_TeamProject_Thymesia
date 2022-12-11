@@ -210,6 +210,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 			}
 			else if (m_pStatusCom.lock()->Is_Dead())
 			{
+				GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
 				Get_OwnerMonster()->Change_State<CNorMonState_GroggyStart>();
 			}
 			else if (Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Idle>().lock()->Get_StateIndex() ||

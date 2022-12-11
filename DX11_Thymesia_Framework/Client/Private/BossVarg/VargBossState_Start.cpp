@@ -53,10 +53,9 @@ void CVargBossState_Start::Tick(_float fTimeDelta)
 	LocalMat *= XMMatrixRotationX(XMConvertToRadians(-90.f));
 	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
 
-	if (m_fSinematic == 4.f)
-	{
-		GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat, CINEMATIC_TYPE::CINEMATIC);
-	}
+	
+	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat, CINEMATIC_TYPE::CINEMATIC);
+	
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -65,8 +64,6 @@ void CVargBossState_Start::Tick(_float fTimeDelta)
 void CVargBossState_Start::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
-
-	m_pModelCom.lock()->Set_AnimationSpeed(m_fSinematic);
 
 	Check_AndChangeNextState();
 }
@@ -85,7 +82,7 @@ void CVargBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 	cout << "VargState: Start -> OnStateStart" << endl;
 #endif
 #endif
-	m_pModelCom.lock()->Set_AnimationSpeed(m_fSinematic);
+
 
 }
 
@@ -94,12 +91,7 @@ void CVargBossState_Start::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
-
-	if (m_fSinematic == 4.f)
-		GET_SINGLE(CGameManager)->End_Cinematic();
-
-
+	GET_SINGLE(CGameManager)->End_Cinematic();
 
 }
 
@@ -143,33 +135,12 @@ _bool CVargBossState_Start::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
-
-
-	switch (m_eBossStartType)
-	{
-	case Client::BOSSSTARTTYPE::BEGINSTART:
-		if (fPToMDistance <= 10.f)
-		{
-			m_fSinematic = 4.f;
-		}
-		break;
-	case Client::BOSSSTARTTYPE::NORMALSTART:
-		if (fPToMDistance <= 10.f)
-		{
-			m_fSinematic = 4.f;
-		}
-		break;
-	}
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 925)
 	{
 		weak_ptr<CUI_ScriptQueue> pScriptQeuue = GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL_STATIC).front();
 		pScriptQeuue.lock()->Call_SetScript_Tutorial_Varg_Appear();
 	}
-
-
-	
 
 
 

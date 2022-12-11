@@ -116,6 +116,13 @@ _bool CCorvusState_RunR::Check_AndChangeNextState()
 		return true;
 	}
 
+	if (KEY_INPUT(KEY::W, KEY_STATE::HOLD))
+	{
+		Get_OwnerPlayer()->Change_State<CCorvusState_RunFR>();
+		return true;
+	}
+
+
 
 
 	

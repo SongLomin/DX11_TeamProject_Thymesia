@@ -114,7 +114,7 @@ _bool CJokerState_Sp_Open::Check_AndChangeNextState()
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 	//_float fMToMDistance = GetStartPositionToCurrentPositionDir(); // 몬스터스타트포지션과 몬스터현재 포지션 사이의 거리
 
-	if (fPToMDistance <= 8.f)
+	if (fPToMDistance <= 15.f)
 		m_bCloseStart = true;
 
 

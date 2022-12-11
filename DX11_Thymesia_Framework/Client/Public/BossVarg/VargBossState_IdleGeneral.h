@@ -1,5 +1,5 @@
 #pragma once
-#include "JokerStateBase.h"
+#include "VargBossStateBase.h"
 
 BEGIN(Engine)
 class CModel;
@@ -7,12 +7,12 @@ END
 
 BEGIN(Client)
 
-class CJokerState_Sp_Open :
-	public CJokerStateBase
+class CVargBossState_IdleGeneral :
+	public CVargBossStateBase
 {
-	GAMECLASS_H(CJokerState_Sp_Open);
-	CLONE_H(CJokerState_Sp_Open, CComponent)
-		SHALLOW_COPY(CJokerState_Sp_Open)
+	GAMECLASS_H(CVargBossState_IdleGeneral);
+	CLONE_H(CVargBossState_IdleGeneral, CComponent)
+		SHALLOW_COPY(CVargBossState_IdleGeneral)
 
 
 
@@ -28,12 +28,10 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
-private:
-	_bool m_bCloseStart = false;
-private:
-	void Call_AnimationEnd();
+
+
+
 protected:
-	virtual void OnDestroy() override;
 	void Free();
 
 };

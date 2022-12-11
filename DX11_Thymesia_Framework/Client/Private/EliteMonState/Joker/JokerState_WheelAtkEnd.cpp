@@ -53,6 +53,9 @@ void CJokerState_WheelAtkEnd::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+	if(m_bAttackLookAtLimit)
+	TurnAttack(fTimeDelta);
+
 	Check_AndChangeNextState();
 }
 
@@ -61,6 +64,8 @@ void CJokerState_WheelAtkEnd::LateTick(_float fTimeDelta)
 void CJokerState_WheelAtkEnd::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	m_bAttackLookAtLimit = true;
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -103,7 +108,17 @@ _bool CJokerState_WheelAtkEnd::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+	
 
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.3f)
+	{
+		m_bAttackLookAtLimit = false;
+	}
+
+	if (ComputeAngleWithPlayer() > 0.99f && m_bAttackLookAtLimit)
+	{
+		Rotation_TargetToLookDir();
+	}
 
 
 	return false;

@@ -132,7 +132,7 @@ _bool CJokerState_Idle::Check_AndChangeNextState()
 	
 	}
 
-	if (fPToMDistance >= 5.f)
+	if (fPToMDistance >= 4.f)
 	{
 		if (m_bTurnCheck)
 		{
@@ -160,7 +160,7 @@ _bool CJokerState_Idle::Check_AndChangeNextState()
 		return true;
 	}
 
-	if (fPToMDistance >= 1.f && fPToMDistance < 5.f)  // 5보다 작다
+	if (fPToMDistance >= 1.f && fPToMDistance < 4.f)  // 5보다 작다
 	{
 		if (m_bTurnCheck)
 		{

@@ -50,6 +50,8 @@ void CCorvusState_AVoidB::LateTick(_float fTimeDelta)
 
 	Check_InputAgainAvoid();
 
+	Rotation_TargetToLookDir();
+
 	Check_AndChangeNextState();
 }
 
@@ -128,13 +130,88 @@ _bool CCorvusState_AVoidB::Check_AndChangeNextState()
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 24)
 	{
-		if (Check_RequirementDashState())
+		if (KEY_INPUT(KEY::S, KEY_STATE::HOLD))
 		{
+			if (Check_RequirementDashState())
+			{
 
-			m_IsAgainAvoid = false;
-			Get_OwnerPlayer()->Change_State<CCorvusState_AVoidB>();
-			return false;
+				m_IsAgainAvoid = false;
+				Get_OwnerPlayer()->Change_State<CCorvusState_AVoidB>();
+				return false;
+			}
 		}
+		
+	   else if (!KEY_INPUT(KEY::S, KEY_STATE::HOLD) &&
+			KEY_INPUT(KEY::W, KEY_STATE::HOLD) && 
+			KEY_INPUT(KEY::D, KEY_STATE::HOLD))
+		{
+			if (Check_RequirementDashState())
+			{
+				Get_OwnerPlayer()->Change_State<CCorvusState_AVoidR>();
+				return true;
+			}
+			
+		}
+
+		else if (!KEY_INPUT(KEY::S, KEY_STATE::HOLD) &&
+			KEY_INPUT(KEY::W, KEY_STATE::HOLD) &&
+			KEY_INPUT(KEY::A, KEY_STATE::HOLD))
+		{
+			if (Check_RequirementDashState())
+			{
+				Get_OwnerPlayer()->Change_State<CCorvusState_AVoidL>();
+				return true;
+			}
+			
+		}
+
+		else if (!KEY_INPUT(KEY::S, KEY_STATE::HOLD) &&
+			KEY_INPUT(KEY::W, KEY_STATE::HOLD))
+		{
+			if (Check_RequirementDashState())
+			{
+				Get_OwnerPlayer()->Change_State<CCorvusState_AVoidF>();
+				return true;
+			}
+
+		}
+
+		else if (!KEY_INPUT(KEY::S, KEY_STATE::HOLD) &&
+			KEY_INPUT(KEY::W, KEY_STATE::HOLD))
+		{
+			if (Check_RequirementDashState())
+			{
+				Get_OwnerPlayer()->Change_State<CCorvusState_AVoidF>();
+				return true;
+			}
+
+		}
+
+		else if (!KEY_INPUT(KEY::S, KEY_STATE::HOLD) &&
+			KEY_INPUT(KEY::A, KEY_STATE::HOLD))
+		{
+			if (Check_RequirementDashState())
+			{
+				Get_OwnerPlayer()->Change_State<CCorvusState_AVoidL>();
+				return true;
+			}
+
+		}
+		
+		else if (!KEY_INPUT(KEY::S, KEY_STATE::HOLD) &&
+			KEY_INPUT(KEY::D, KEY_STATE::HOLD))
+		{
+			if (Check_RequirementDashState())
+			{
+				Get_OwnerPlayer()->Change_State<CCorvusState_AVoidR>();
+				return true;
+			}
+
+		}
+
+
+
+
 	}
 
 	
@@ -176,6 +253,31 @@ _bool CCorvusState_AVoidB::Check_AndChangeNextState()
 			return true;
 		}
 	}
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.75f)
+	{
+		if (KEY_INPUT(KEY::W, KEY_STATE::HOLD))
+		{
+			Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
+			return true;
+		}
+		else if (KEY_INPUT(KEY::A, KEY_STATE::HOLD))
+		{
+			Get_OwnerPlayer()->Change_State<CCorvusState_RunL>();
+			return true;
+		}
+		else if (KEY_INPUT(KEY::D, KEY_STATE::HOLD))
+		{
+			Get_OwnerPlayer()->Change_State<CCorvusState_RunR>();
+			return true;
+		}
+		else if (KEY_INPUT(KEY::S, KEY_STATE::HOLD))
+		{
+			Get_OwnerPlayer()->Change_State<CCorvusState_RunB>();
+			return true;
+		}
+
+	}
+
 
 
 	

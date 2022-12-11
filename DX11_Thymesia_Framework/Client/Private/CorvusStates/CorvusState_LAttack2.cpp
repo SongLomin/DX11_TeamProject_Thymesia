@@ -264,7 +264,7 @@ _bool CCorvusState_LAttack2::Check_AndChangeNextState()
 				if (!Rotation_InputToLookDir())
 					Rotation_TargetToLookDir();
 
-				Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
+				Get_OwnerPlayer()->Change_State<CCorvusState_LAttack3>();
 
 			}
 			return true;
