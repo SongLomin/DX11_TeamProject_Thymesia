@@ -40,6 +40,7 @@ CLONE_C(CEffect_Rect, CGameObject)
 
 #ifdef _DEBUG
 #ifdef _JOJO_EFFECT_TOOL_
+const _int CEffect_Rect::m_iScaleType_None = 0;
 const _int CEffect_Rect::m_iScaleType_Square = 1;
 const _int CEffect_Rect::m_iScaleType_Ratio = 2;
 #endif // _JOJO_EFFECT_TOOL_
@@ -178,16 +179,10 @@ void CEffect_Rect::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 	m_bStopParticle = false;
 	m_bStopSprite = false;
 
-	if (m_tEffectParticleDesc.bBoner)
+	if (m_tEffectParticleDesc.bBoner && pParentTransform.lock())
 	{
-		if (!pParentTransform.lock())
-			throw;
-
-		if (pParentTransform.lock())
-		{
-			m_pParentModel = pParentTransform.lock()->Get_Owner().lock()->Get_Component<CModel>();
-			m_pBoneNode = m_pParentModel.lock()->Find_BoneNode(m_strBoneName);
-		}
+		m_pParentModel = pParentTransform.lock()->Get_Owner().lock()->Get_Component<CModel>();
+		m_pBoneNode = m_pParentModel.lock()->Find_BoneNode(m_strBoneName);
 	}
 
 	m_pTransformCom.lock()->Set_WorldMatrix(XMMatrixIdentity());
@@ -2033,9 +2028,10 @@ void CEffect_Rect::Tool_Boner()
 			for (_int n(0); n < m_AllBoneNames.size(); n++)
 			{
 				const _bool is_selected = (m_iCurrentBoneIndex == n);
-				if (ImGui::Selectable(m_AllBoneNames[n].c_str(), is_selected))
+				if (ImGui::Selectable(m_AllBoneNames[n].c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
+				{
 					m_strBoneName = m_AllBoneNames[n];
-
+				}
 				// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -2927,6 +2923,9 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			{
 
 #ifdef _JOJO_EFFECT_TOOL_
+				
+				ImGui::RadioButton("None##Is_None_Scale_Type", &m_iScaleType, m_iScaleType_None);
+				ImGui::SameLine();
 				ImGui::RadioButton("Square Scale##Is_Square_Scale", &m_iScaleType, m_iScaleType_Square);
 				ImGui::SameLine();
 				ImGui::RadioButton("Ratio Scale##Is_Ratio_Scale", &m_iScaleType, m_iScaleType_Ratio);
