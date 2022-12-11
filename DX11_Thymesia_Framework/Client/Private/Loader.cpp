@@ -6,7 +6,7 @@
 #include "GameManager.h"
 #include "Player_HPBar.h"
 #include "Player_MPBar.h"
-#include "Player_Memory.h"
+#include "HUD_Player_Memory.h"
 #include "Player.h"
 #include "Player_PotionUI.h"
 #include "Player_FeatherUI.h"
@@ -717,11 +717,11 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Player_MPBar_MainBar"), TEXT("../Bin/Resources/Textures/UI/HUD/PlayerHPBar/TexUI_MPBar_3MainBar.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
-	//Player_Memory
-	GAMEINSTANCE->Load_Textures(("Player_Memory_Icon"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_MemoryShardsIcon.png"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures(("Player_Memory_BG"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_ContentBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures(("Player_Memory_BG2"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SquareFrame.png"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures(("Player_Memory_Decoration"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_DecorationLine_05.png"), MEMORY_TYPE::MEMORY_STATIC);
+	//HUD_Player_Memory
+	GAMEINSTANCE->Load_Textures(("HUD_Player_Memory_Icon"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_MemoryShardsIcon.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("HUD_Player_Memory_BG"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_ContentBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("HUD_Player_Memory_BG2"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SquareFrame.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("HUD_Player_Memory_Decoration"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_DecorationLine_05.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
 	//Player Skill & ItemUI
@@ -927,7 +927,7 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_PW_Frame"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Frame.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_PW_Frame_Active"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Frame_Active.png"), MEMORY_TYPE::MEMORY_STATIC);
 
-	GAMEINSTANCE->Load_Textures(("EvolveMenu_PW_Frame_Hover"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Hover.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_PW_Frame_Hover"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Hover.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_PW_Active"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Active.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_PW_Active_Hover"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_ActiveHover.png"), MEMORY_TYPE::MEMORY_STATIC);
 	
@@ -1045,6 +1045,31 @@ void CLoader::Load_NormalMobModel()
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(-90.f)) * XMMatrixRotationY(XMConvertToRadians(-90.f)) * XMMatrixRotationZ(XMConvertToRadians(-20.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Mon_Scarf", "../Bin/Resources/Meshes/NorMonster/Gardner/Scarf.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(0.f)) * XMMatrixRotationY(XMConvertToRadians(-40.f)) * XMMatrixRotationZ(XMConvertToRadians(50.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Mon_Vine", "../Bin/Resources/Meshes/NorMonster/Gardner/Vine.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(10.f)) * XMMatrixRotationY(XMConvertToRadians(10.f)) * XMMatrixRotationZ(XMConvertToRadians(10.f)) * XMMatrixScaling(0.1f, 0.1f, 0.1f);
+	GAMEINSTANCE->Load_Model("Mon_Mutation1", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation1.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(0.f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixRotationZ(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Mon_Mutation2", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation2.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(0.f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixRotationZ(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Mon_Mutation3", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation3.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(0.f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixRotationZ(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Mon_Mutation4", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation4.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(0.f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixRotationZ(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Mon_Mutation5", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation5.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(0.f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixRotationZ(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Mon_Mutation6", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation6.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(0.f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixRotationZ(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Mon_Mutation7", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation7.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	
 }
 
 void CLoader::Load_RareMobModel()

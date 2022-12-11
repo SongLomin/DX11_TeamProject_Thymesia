@@ -25,7 +25,7 @@ HRESULT CUI_EvolveTalent_Active::Initialize(void* pArg)
     m_pMaskingTextureCom = Add_Component<CTexture>();
     m_pMaskingTextureCom.lock()->Use_Texture("Dissolve_1");
 
-    Set_PassIndex(4);
+    Set_PassIndex(0);
 
     m_pEasingTransformCom = Add_Component<CEasingComponent_Alpha>();
     m_iDissolveIndex = 0;
@@ -94,7 +94,8 @@ void CUI_EvolveTalent_Active::Set_Click(_bool bSelected)
 
 void CUI_EvolveTalent_Active::Animation_MouseOver()
 {
-    m_pEasingTransformCom.lock()->Stop();
+    if (m_pEasingTransformCom.lock()->Is_Lerping())
+        return;
 
     if (m_bSelected)
     {
@@ -113,7 +114,10 @@ void CUI_EvolveTalent_Active::Animation_MouseOver()
 
 void CUI_EvolveTalent_Active::Animation_MouseOut()
 {
-    m_pEasingTransformCom.lock()->Stop();
+    if (m_pEasingTransformCom.lock()->Is_Lerping())
+        return;
+
+    //m_pEasingTransformCom.lock()->Stop();
 
     if (m_bSelected)
     {
@@ -149,5 +153,6 @@ void CUI_EvolveTalent_Active::Call_SelectedFalseEnd()//비활성화가 끝나면
     Set_Texture("None");
 
     Set_PassIndex(0);
+    m_fAlphaColor = 1.f;
 }
 

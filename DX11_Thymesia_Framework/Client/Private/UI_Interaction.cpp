@@ -49,7 +49,8 @@ void CUI_Interaction::Tick(_float fTimeDelta)
 
     if (m_pCollisionCollider.lock())
     {
-        _float2     m_fCollsionPos = CUI_Utils::ConvertWorldPosToUIPos(m_pCollisionCollider.lock()->Get_CurrentPosition());
+        _float2     m_fCollsionPos = CUI_Utils::ConvertWorldPosToUIPos(m_pCollisionCollider.lock()->Get_CurrentPosition(), 
+            XMVectorSet(0.f, 1.f,0.f,1.f));
         Set_UIPosition(m_fCollsionPos.x, m_fCollsionPos.y);
     }
 

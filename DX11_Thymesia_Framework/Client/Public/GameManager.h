@@ -2,6 +2,7 @@
 #include "Base.h"
 #include "Client_Defines.h"
 
+
 BEGIN(Engine)
 class CGameObject;
 class CCamera;
@@ -19,7 +20,7 @@ class CSwapPlayerUI;
 //Player_UI
 class CPlayer_MPBar;
 class CPlayer_HPBar;
-class CPlayer_Memory;
+class CHUD_Player_Memory;
 class CPlayer_PotionUI;
 class CPlayer_FeatherUI;
 class CStatus_Player;
@@ -119,9 +120,29 @@ public:
 public:
     void Change_NextLevel(void* pArg);
 
+    /*
+    문광현 무공비급 함수모음.
+    
+    무공비급 함수란?
+    낙후된 컴퓨터 환경 및 빡빡한 일정마감을 위해
+    인륜을 져버린 함수 및 변수들을 모아놓은 공간.
+    나중에 무조건 유연하게 바꿔놓겠음.
+    */
 public:// For UI;
-    POINT Get_MousePoint();
+    POINT   Get_MousePoint();
+   // void    Set_PlayerStatus(CStatus_Player::PLAYERDESC tPlayerDesc)
+   // {
+   //     m_tPlayerDesc = tPlayerDesc;
+   // }
+   // CStatus_Player::PLAYERDESC Get_PlayerDesc()
+   // {
+   //     return m_tPlayerDesc;
+   // }
+
+public:
     _uint   m_iTestTalent = 2;
+    //CStatus_Player::PLAYERDESC m_tPlayerDesc;
+
 
 public:
     void  Registration_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj);

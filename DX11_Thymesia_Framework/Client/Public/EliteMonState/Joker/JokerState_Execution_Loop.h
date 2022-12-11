@@ -7,12 +7,12 @@ END
 
 BEGIN(Client)
 
-class CJokerState_Idle :
+class CJokerState_Execution_Loop :
 	public CEliteStateBase
 {
-	GAMECLASS_H(CJokerState_Idle);
-	CLONE_H(CJokerState_Idle, CComponent)
-		SHALLOW_COPY(CJokerState_Idle)
+	GAMECLASS_H(CJokerState_Execution_Loop);
+	CLONE_H(CJokerState_Execution_Loop, CComponent)
+		SHALLOW_COPY(CJokerState_Execution_Loop)
 
 public:
 	void Set_TurnCheck(_bool TurnCheck) { m_bTurnCheck = TurnCheck; }

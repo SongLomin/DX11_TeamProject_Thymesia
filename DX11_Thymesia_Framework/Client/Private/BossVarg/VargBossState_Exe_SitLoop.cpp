@@ -10,16 +10,16 @@
 #include "Character.h"
 #include "VargStates.h"
 
-GAMECLASS_C(CVargBossState_Stun_Exe_SitLoop);
-CLONE_C(CVargBossState_Stun_Exe_SitLoop, CComponent)
+GAMECLASS_C(CVargBossState_Exe_SitLoop);
+CLONE_C(CVargBossState_Exe_SitLoop, CComponent)
 
-HRESULT CVargBossState_Stun_Exe_SitLoop::Initialize_Prototype()
+HRESULT CVargBossState_Exe_SitLoop::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 	return S_OK;
 }
 
-HRESULT CVargBossState_Stun_Exe_SitLoop::Initialize(void* pArg)
+HRESULT CVargBossState_Exe_SitLoop::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
@@ -27,7 +27,7 @@ HRESULT CVargBossState_Stun_Exe_SitLoop::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CVargBossState_Stun_Exe_SitLoop::Start()
+void CVargBossState_Exe_SitLoop::Start()
 {
 	__super::Start();
 
@@ -35,10 +35,10 @@ void CVargBossState_Stun_Exe_SitLoop::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_TakeExecution_Loop");
 
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Stun_Exe_SitLoop::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Exe_SitLoop::Call_AnimationEnd, this);
 }
 
-void CVargBossState_Stun_Exe_SitLoop::Tick(_float fTimeDelta)
+void CVargBossState_Exe_SitLoop::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
@@ -47,7 +47,7 @@ void CVargBossState_Stun_Exe_SitLoop::Tick(_float fTimeDelta)
 }
 
 
-void CVargBossState_Stun_Exe_SitLoop::LateTick(_float fTimeDelta)
+void CVargBossState_Exe_SitLoop::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
@@ -58,7 +58,7 @@ void CVargBossState_Stun_Exe_SitLoop::LateTick(_float fTimeDelta)
 
 
 
-void CVargBossState_Stun_Exe_SitLoop::OnStateStart(const _float& In_fAnimationBlendTime)
+void CVargBossState_Exe_SitLoop::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
@@ -73,7 +73,7 @@ void CVargBossState_Stun_Exe_SitLoop::OnStateStart(const _float& In_fAnimationBl
 
 }
 
-void CVargBossState_Stun_Exe_SitLoop::OnStateEnd()
+void CVargBossState_Exe_SitLoop::OnStateEnd()
 {
 	__super::OnStateEnd();
 
@@ -82,26 +82,26 @@ void CVargBossState_Stun_Exe_SitLoop::OnStateEnd()
 
 
 
-void CVargBossState_Stun_Exe_SitLoop::Call_AnimationEnd()
+void CVargBossState_Exe_SitLoop::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
 
 
-	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Stun_Exe_Dead>(0.05f);
+	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_Dead>(0.05f);
 }
 
-void CVargBossState_Stun_Exe_SitLoop::OnDestroy()
+void CVargBossState_Exe_SitLoop::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Stun_Exe_SitLoop::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Exe_SitLoop::Call_AnimationEnd, this);
 }
 
-void CVargBossState_Stun_Exe_SitLoop::Free()
+void CVargBossState_Exe_SitLoop::Free()
 {
 
 }
 
-_bool CVargBossState_Stun_Exe_SitLoop::Check_AndChangeNextState()
+_bool CVargBossState_Exe_SitLoop::Check_AndChangeNextState()
 {
 
 	if (!Check_Requirement())

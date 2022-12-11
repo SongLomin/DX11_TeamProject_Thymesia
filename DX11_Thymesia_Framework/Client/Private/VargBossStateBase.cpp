@@ -211,8 +211,8 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 					GAMEINSTANCE->Get_DeltaTime(),
 					Filters);
 				pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
-				Get_Owner().lock()->Get_Component<CVargBossState_Stun_Exe_Start>().lock()->Set_DieType(true);				
-				Get_OwnerCharacter().lock()->Change_State<CVargBossState_Stun_Exe_Start>(0.05f);
+				Get_Owner().lock()->Get_Component<CVargBossState_Exe_Start>().lock()->Set_DieType(true);				
+				Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_Start>(0.05f);
 				
 			}
 			else
@@ -225,8 +225,8 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 					GAMEINSTANCE->Get_DeltaTime(),
 					Filters);
 				pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
-				Get_Owner().lock()->Get_Component<CVargBossState_Stun_Exe_Start>().lock()->Set_DieType(false);
-				Get_OwnerCharacter().lock()->Change_State<CVargBossState_Stun_Exe_Start>(0.05f);
+				Get_Owner().lock()->Get_Component<CVargBossState_Exe_Start>().lock()->Set_DieType(false);
+				Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_Start>(0.05f);
 				
 			}
 			

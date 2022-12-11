@@ -38,7 +38,7 @@
 
 #include "Player_HPBar.h"
 #include "Player_MPBar.h"
-#include "Player_Memory.h"
+#include "HUD_Player_Memory.h"
 #include "Player_PotionUI.h"
 #include "Player_FeatherUI.h"
 

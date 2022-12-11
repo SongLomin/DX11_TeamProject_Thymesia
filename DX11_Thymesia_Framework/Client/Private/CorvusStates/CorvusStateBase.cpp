@@ -19,7 +19,7 @@
 #include "Model.h"
 #include "Camera_Target.h"
 #include "RequirementChecker.h"
-
+#include "Status_Player.h"
 
 GAMECLASS_C(CCorvusStateBase)
 
@@ -129,9 +129,13 @@ _bool CCorvusStateBase::Check_RequirementHealingState()
 {
 	if (KEY_INPUT(KEY::Q, KEY_STATE::TAP))
 	{
-		return true;
-	}
 
+		weak_ptr<CStatus_Player> pStatus = GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status();
+		if (pStatus.lock()->Get_UseableCurrentPotion())
+		{
+			return true;
+		}
+	}
 	return false;
 }
 
@@ -446,8 +450,6 @@ void CCorvusStateBase::Call_OtherControllerHit(const PxControllersHit& In_hit)
 void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
 	__super::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
-
-
 
 	if (pOtherCollider.lock()->Get_CollisionLayer() == (_uint)COLLISION_LAYER::MONSTER_ATTACK)
 	{

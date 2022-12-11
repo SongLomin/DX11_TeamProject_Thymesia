@@ -7,12 +7,12 @@ END
 
 BEGIN(Client)
 
-class CVargBossState_Stun_Exe_Start :
+class CVargBossState_Exe_Start :
 	public CVargBossStateBase
 {
-	GAMECLASS_H(CVargBossState_Stun_Exe_Start);
-	CLONE_H(CVargBossState_Stun_Exe_Start, CComponent)
-		SHALLOW_COPY(CVargBossState_Stun_Exe_Start)
+	GAMECLASS_H(CVargBossState_Exe_Start);
+	CLONE_H(CVargBossState_Exe_Start, CComponent)
+		SHALLOW_COPY(CVargBossState_Exe_Start)
 
 public:
 	void  Set_DieType(_bool DieType) { m_bDieType = DieType; }

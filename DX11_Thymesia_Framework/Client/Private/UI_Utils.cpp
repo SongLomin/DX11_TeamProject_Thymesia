@@ -2,12 +2,10 @@
 #include "GameInstance.h"
 #include "GameManager.h"
 
-_float2 CUI_Utils::ConvertWorldPosToUIPos(_fvector vWorldPos)
+_float2 CUI_Utils::ConvertWorldPosToUIPos(_fvector vWorldPos, _fvector vOffset)
 {
-	_vector vViewPosition = vWorldPos;
+	_vector vViewPosition = vWorldPos + vOffset;
 	_matrix ViewProjMatrix;
-
-	vViewPosition += XMVectorSet(0.f, 1.f, 0.f, 1.f);
 
 	ViewProjMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_VIEW) * GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_PROJ);
 
