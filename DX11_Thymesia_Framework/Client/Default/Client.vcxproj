@@ -286,6 +286,7 @@
     <ClInclude Include="..\Public\EasingComponent.h" />
     <ClInclude Include="..\Public\EasingComponent_Alpha.h" />
     <ClInclude Include="..\Public\EasingComponent_Transform.h" />
+    <ClInclude Include="..\Public\EditLights.h" />
     <ClInclude Include="..\Public\EditMapCollider.h" />
     <ClInclude Include="..\Public\EditSetActor.h" />
     <ClInclude Include="..\Public\EliteMonState\EliteStateBase.h" />
@@ -297,6 +298,7 @@
     <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h" />
     <ClInclude Include="..\Public\Interaction_Elevator.h" />
     <ClInclude Include="..\Public\Interaction_Ladder.h" />
+    <ClInclude Include="..\Public\Interaction_Note.h" />
     <ClInclude Include="..\Public\JoJoParticleShaderManager.h" />
     <ClInclude Include="..\Public\JokerStates.h" />
     <ClInclude Include="..\Public\JokerWeapon.h" />
@@ -652,6 +654,7 @@
     <ClCompile Include="..\Private\EasingComponent.cpp" />
     <ClCompile Include="..\Private\EasingComponent_Alpha.cpp" />
     <ClCompile Include="..\Private\EasingComponent_Transform.cpp" />
+    <ClCompile Include="..\Private\EditLights.cpp" />
     <ClCompile Include="..\Private\EditMapCollider.cpp" />
     <ClCompile Include="..\Private\EditSetActor.cpp" />
     <ClCompile Include="..\Private\EliteMonState\Joker\EliteStateBase.cpp" />
@@ -663,6 +666,7 @@
     <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\Interaction_Elevator.cpp" />
     <ClCompile Include="..\Private\Interaction_Ladder.cpp" />
+    <ClCompile Include="..\Private\Interaction_Note.cpp" />
     <ClCompile Include="..\Private\JoJoParticleShaderManager.cpp" />
     <ClCompile Include="..\Private\JokerWeapon.cpp" />
     <ClCompile Include="..\Private\Level_Stage2.cpp" />

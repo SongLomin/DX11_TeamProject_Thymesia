@@ -138,7 +138,6 @@ void CWindow_PrototypeView::Add_Prototypes()
     ADD_PROTOTYPE(PROTOTYPE_ACTOR, CVarg);
     ADD_PROTOTYPE(PROTOTYPE_ACTOR, CJoker);
 
-
     ADD_PROTOTYPE(PROTOTYPE_PROP, CTerrain);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStatic_Prop);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStatic_Instancing_Prop);
@@ -155,6 +154,7 @@ void CWindow_PrototypeView::Add_Prototypes()
     ADD_PROTOTYPE(PROTOTYPE_EDIT, CEditInstanceProp);
     ADD_PROTOTYPE(PROTOTYPE_EDIT, CEditMapCollider);
     ADD_PROTOTYPE(PROTOTYPE_EDIT, CEditSetActor);
+    ADD_PROTOTYPE(PROTOTYPE_EDIT, CEditLights);
 
     ADD_PROTOTYPE(PROTOTYPE_UI, CFadeMask);
 

@@ -542,6 +542,7 @@ HRESULT CRender_Manager::Set_FogDesc(const _float4 In_vFogColor, const _float In
 }
 
 
+
 HRESULT CRender_Manager::Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain)
 {
 	m_vLift = In_vLift;

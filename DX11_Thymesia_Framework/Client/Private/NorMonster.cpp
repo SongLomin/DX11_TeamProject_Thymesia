@@ -35,9 +35,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	m_pShaderCom.lock()->Set_ShaderInfo(
 		TEXT("Shader_VtxAnimModel"),
 		VTXANIM_DECLARATION::Element,
-		VTXANIM_DECLARATION::iNumElements);
-
-	
+		VTXANIM_DECLARATION::iNumElements);	
 
 	m_pStandState = Add_Component<CNorMonState_Idle>();
 	Add_Component<CNorMonState_Stop>();

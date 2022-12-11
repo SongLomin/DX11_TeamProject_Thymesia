@@ -163,7 +163,12 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 		{
 			Out_Json["GameObject"][iIndex]["Name"]				= elem.TypeName;
 			Out_Json["GameObject"][iIndex]["Hash"]				= elem.HashCode;
-			Out_Json["GameObject"][iIndex]["Setting"]["Enable"] = (elem_group.first == typeid(CEditSetActor).hash_code()) ? (false) : (elem.pInstance.lock()->Get_Enable());
+
+			if (elem_group.first == typeid(CEditSetActor).hash_code())
+				Out_Json["GameObject"][iIndex]["Setting"]["Enable"] = (typeid(CCorvus).hash_code() == elem.HashCode) ? (true) : (false);
+			else
+				Out_Json["GameObject"][iIndex]["Setting"]["Enable"] = elem.pInstance.lock()->Get_Enable();
+
 			Out_Json["GameObject"][iIndex]["Component"]["Transform"].emplace();
 
 			elem.pInstance.lock()->Write_Json(Out_Json["GameObject"][iIndex]);

@@ -53,7 +53,8 @@ HRESULT CLevel_Stage2::Initialize()
 	m_pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL_STATIC).front();
 	m_pPauseMenu = GAMEINSTANCE->Get_GameObjects<CUI_PauseMenu>(LEVEL_STATIC).front();
 
-	GAMEINSTANCE->Set_FogDesc(_float4(0.35f, 0.005f, 0.005f, 0.8f), 30.f);
+	//GAMEINSTANCE->Set_FogDesc(_float4(0.35f, 0.005f, 0.005f, 0.8f), 30.f);
+	GAMEINSTANCE->Set_FogDesc(_float4(1.f, 0.95f, 0.95f, 0.5f), 15.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 
 	return S_OK;

@@ -21,6 +21,7 @@ private:
     enum ACTION_FLAG
     {
         ROTATION = ( 1 << 0 ), // 1
+        UP       = ( 1 << 1 ), // 2
     };
 
 public:

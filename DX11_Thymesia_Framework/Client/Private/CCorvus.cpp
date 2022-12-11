@@ -74,8 +74,6 @@ HRESULT CCorvus::Start()
 	if (m_pCamera.lock())
 		m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
 
-	CBase::Set_Enable(true);
-
 	return S_OK;
 }
 
