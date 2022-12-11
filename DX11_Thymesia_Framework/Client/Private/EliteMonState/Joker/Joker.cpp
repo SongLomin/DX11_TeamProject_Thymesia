@@ -11,7 +11,7 @@
 #include "Client_Components.h"
 #include "Status_Monster.h"
 #include "JokerStates.h"
-
+#include "MonsterHPBar_Elite.h"
 
 
 GAMECLASS_C(CJoker);
@@ -85,7 +85,7 @@ HRESULT CJoker::Start()
 	CBase::Set_Enable(true);
 	
 	Change_State<CJokerState_Sp_Open>();
-
+	Bind_HPBar();
 	// weak_ptr<CBoneNode> pTargetBoneNode = m_pModelCom.lock()->Find_BoneNode();
 	// m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
 	
@@ -141,6 +141,7 @@ void CJoker::SetUp_ShaderResource()
 }
 
 
+
 void CJoker::Init_Desc()
 {
 	__super::Init_Desc();
@@ -150,7 +151,7 @@ void CJoker::Init_Desc()
 	m_pWeapons.back().lock()->Init_Model("Joker_Weapon", TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
 
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.9f,-2.4f,1.0f }, 0.4f, COLLISION_LAYER::MONSTER_ATTACK);
+	//m_pWeapons.back().lock()->Add_Collider({ 0.f,0.9f,-2.4f,1.0f }, 0.4f, COLLISION_LAYER::MONSTER_ATTACK);
 
 	//m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(-135.0f));
 	//TODO 여기서하는 이유는 몬스터가 배치되고 원점에서 우리가 피킹한위치만큼더해지고 난뒤에 그월드포지션값저장하기위해서 여기서함
@@ -189,7 +190,7 @@ void CJoker::Init_Desc()
 	INIT_STATE(CJokerState_WheelAtkStart);
 	INIT_STATE(CJokerState_RunAttackStart);
 	
-
+	m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(-180.0f));
 	GET_SINGLE(CGameManager)->Bind_KeyEvent("Elite_Joker", m_pModelCom, bind(&CJoker::Call_NextAnimationKey, this, placeholders::_1));
 
 	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom),

@@ -1133,6 +1133,12 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_LAttack5.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack\State_Attack5</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_IdleGeneral.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\36.IdleGeneral</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\JokerStateBase.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\00.JokerState</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\EditLights.h">
       <Filter>02. GameObject\99. Other\09. EditLights</Filter>
     </ClInclude>
@@ -2355,6 +2361,12 @@
     <ClCompile Include="..\Private\EliteMonState\Joker\JokerState_StrongAttack.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\00.JokerState\29.StrongAttack</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_IdleGeneral.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\36.IdleGeneral</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\JokerStateBase.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\00.JokerState</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\EditLights.cpp">
       <Filter>02. GameObject\99. Other\09. EditLights</Filter>
     </ClCompile>
@@ -2808,27 +2820,6 @@
     </Filter>
     <Filter Include="01. ClientLevel\05. Level_Test">
       <UniqueIdentifier>{fc760025-3469-4bd1-81c4-0e8169a05da1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\36.TurnAttack">
-      <UniqueIdentifier>{e3ecf8f1-6d57-49e6-a712-42a92d7a7056}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\37.RaidAttack">
-      <UniqueIdentifier>{2bf40a21-4198-40fb-9ffa-df0c573030f9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\38.AvoidAttack">
-      <UniqueIdentifier>{b265d678-024d-488b-8087-0d62ee58a5ea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\39.RunAttack">
-      <UniqueIdentifier>{13759428-b980-4052-b66b-3ee124d6ed1a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\09.ComboAttack2b1">
-      <UniqueIdentifier>{9a02c479-3f7d-4056-a69b-206f31a4a048}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\11.ComboAttack3b">
-      <UniqueIdentifier>{848c1e5f-47ba-485b-9542-aee5c3026da4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState\00.VargState\10.ComboAttack2b2">
-      <UniqueIdentifier>{f2ca2667-f0a7-49e2-9524-5b2568f63a75}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\12. PhysXColliderObject">
       <UniqueIdentifier>{f4627d52-ffad-4ed1-962a-b028ee22ba52}</UniqueIdentifier>
@@ -3582,6 +3573,12 @@
     </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle">
       <UniqueIdentifier>{d4020cdb-cd3a-4888-96a8-4ab6f434e72b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\36.IdleGeneral">
+      <UniqueIdentifier>{64b1ed35-ec2a-412f-b468-980b4602596b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\01.Joker_Execution">
+      <UniqueIdentifier>{2818273c-8bb0-43db-9fa1-71d80b1fd2cb}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\99. Other\09. EditLights">
       <UniqueIdentifier>{a7f64318-a0bc-44e2-a110-f4df374554f2}</UniqueIdentifier>

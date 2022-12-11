@@ -18,7 +18,9 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
+
 protected:
+
 	virtual void	Set_ChildPosFromThis();
 
 private:

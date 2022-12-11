@@ -12,7 +12,8 @@
 #include "Client_Presets.h"
 #include "PhysXCollider.h"
 #include "Status_Monster.h"
-
+#include "MonsterHPBar_Base.h"
+#include "MonsterHPBar_Elite.h"
 
 
 
@@ -47,7 +48,9 @@ HRESULT CEliteMonster::Initialize(void* pArg)
 HRESULT CEliteMonster::Start()
 {
     __super::Start();
-//
+
+    Bind_HPBar();
+    //
 // m_pHPBar = GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Boss>(LEVEL_STATIC);
 // m_pHPBar.lock()->Set_Owner(Weak_Cast<CMonster>(m_this));
 //
@@ -92,6 +95,20 @@ HRESULT CEliteMonster::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix 
     return S_OK;
 }
 
+
+void   CEliteMonster::Bind_HPBar()
+{
+    //UI ÀçÈ°¿ë
+    m_pHPBar = GAMEINSTANCE->Get_GameObject_UseMemoryPool<CMonsterHPBar_Elite>(LEVEL_STATIC);
+
+    if (!m_pHPBar.lock())
+    {
+        m_pHPBar = GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Elite>(LEVEL_STATIC);
+    }
+    m_pHPBar.lock()->Set_Target(m_this);
+
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, m_pHPBar);
+}
 
 
 void CEliteMonster::SetUp_ShaderResource()

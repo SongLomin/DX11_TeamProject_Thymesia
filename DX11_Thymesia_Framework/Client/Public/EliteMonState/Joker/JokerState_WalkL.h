@@ -1,5 +1,5 @@
 #pragma once
-#include "EliteMonState/EliteStateBase.h"
+#include "JokerStateBase.h"
 
 BEGIN(Engine)
 class CModel;
@@ -8,7 +8,7 @@ END
 BEGIN(Client)
 
 class CJokerState_WalkL :
-	public CEliteStateBase
+	public CJokerStateBase
 {
 	GAMECLASS_H(CJokerState_WalkL);
 	CLONE_H(CJokerState_WalkL, CComponent)

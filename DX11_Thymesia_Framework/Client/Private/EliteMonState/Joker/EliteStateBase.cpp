@@ -292,9 +292,7 @@ void CEliteStateBase::TurnMechanism()
 	}
 	else
 	{
-
-		//오른쪽 왼쪾 구분해주고 
-		
+		//오른쪽 왼쪾 구분해주고 	
 		if (ComputeAngleWithPlayer() <= 0.f)
 		{
 			if (ComputeDirectionToPlayer() == 1)
@@ -307,12 +305,6 @@ void CEliteStateBase::TurnMechanism()
 
 				Get_OwnerCharacter().lock()->Change_State<CJokerState_TurnAtkL>(0.05f);
 			}
-		}
-		else
-		{
-			Rotation_TargetToLookDir();
-			Get_Owner().lock()->Get_Component<CJokerState_Idle>().lock()->Set_TurnCheck(false);
-			Get_OwnerCharacter().lock()->Change_State<CJokerState_Idle>(0.05f);
 		}
 
 	}

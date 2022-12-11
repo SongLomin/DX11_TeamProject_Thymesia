@@ -53,7 +53,7 @@ void CJokerState_WheelAtkStart::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	Rotation_TargetToLookDir();
+	TurnAttack(fTimeDelta);
 
 	Check_AndChangeNextState();
 }

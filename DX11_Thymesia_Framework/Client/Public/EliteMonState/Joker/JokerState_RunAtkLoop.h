@@ -1,5 +1,5 @@
 #pragma once
-#include "EliteMonState/EliteStateBase.h"
+#include "JokerStateBase.h"
 
 BEGIN(Engine)
 class CModel;
@@ -8,7 +8,7 @@ END
 BEGIN(Client)
 
 class CJokerState_RunAttackLoop :
-	public CEliteStateBase
+	public CJokerStateBase
 {
 	GAMECLASS_H(CJokerState_RunAttackLoop);
 	CLONE_H(CJokerState_RunAttackLoop, CComponent)
@@ -35,10 +35,7 @@ private:
 	_bool    m_bTurnCheck = false;
 	_bool    m_bBackReset = false;
 
-private:
-	void Call_AnimationEnd();
 protected:
-	virtual void OnDestroy() override;
 	void Free();
 
 };

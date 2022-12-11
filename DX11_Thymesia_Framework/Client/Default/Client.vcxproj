@@ -205,6 +205,7 @@
     <ClInclude Include="..\Public\BossUrd\UrdStates.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b1.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b2.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_IdleGeneral.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_TurnAttack.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidB.h" />
@@ -332,6 +333,7 @@
     <ClInclude Include="..\Public\Interaction_Ladder.h" />
     <ClInclude Include="..\Public\Interaction_Note.h" />
     <ClInclude Include="..\Public\JoJoParticleShaderManager.h" />
+    <ClInclude Include="..\Public\JokerStateBase.h" />
     <ClInclude Include="..\Public\JokerStates.h" />
     <ClInclude Include="..\Public\JokerWeapon.h" />
     <ClInclude Include="..\Public\Level_Stage2.h" />
@@ -609,6 +611,7 @@
     <ClCompile Include="..\Private\BossUrd\UrdBossState_Start.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b1.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b2.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_IdleGeneral.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_RaidAttack.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_TurnAttack.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidB.cpp" />
@@ -731,6 +734,7 @@
     <ClCompile Include="..\Private\Interaction_Ladder.cpp" />
     <ClCompile Include="..\Private\Interaction_Note.cpp" />
     <ClCompile Include="..\Private\JoJoParticleShaderManager.cpp" />
+    <ClCompile Include="..\Private\JokerStateBase.cpp" />
     <ClCompile Include="..\Private\JokerWeapon.cpp" />
     <ClCompile Include="..\Private\Level_Stage2.cpp" />
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />

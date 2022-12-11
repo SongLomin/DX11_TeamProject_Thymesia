@@ -162,6 +162,13 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 			   Get_OwnerPlayer()->Change_State<CCorvusState_Run>();			
 			   return true;
 			}
+
+			else if (Check_RequirementAVoidState())
+			{
+				Rotation_InputToLookDir();
+				Get_OwnerPlayer()->Change_State<CCorvusState_AVoidB>();
+				return true;
+			}
 			
 			else  if (KEY_INPUT(KEY::S, KEY_STATE::HOLD))
 			{			
@@ -273,6 +280,8 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 
 				if (Check_RequirementExcuteState(pTargetObject))
 				{
+					_vector vTargetPos = pTargetObject.lock()->Get_Transform()->Get_Position();
+					m_pTransformCom.lock()->LookAt2D(vTargetPos);
 					Get_OwnerPlayer()->Change_State<CCorvusState_NorMob_Execution>();
 					Get_OwnerPlayer()->Get_CurState().lock()->OnEventMessage(Weak_Cast<CBase>(pTargetObject));
 				}

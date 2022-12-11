@@ -129,7 +129,14 @@ void CStatus_Monster::Init_Status(const void* pArg)
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
 		m_tMonsterDesc.m_szModelKey = "Mon_AxeMan";
 		break;
-
+	case Client::MONSTERTYPE::JOCKER:
+		m_tMonsterDesc.m_fAtk = 1.f;
+		m_tMonsterDesc.m_fMaxHP_white = 500.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 500.f;
+		m_tMonsterDesc.m_iLifeCount = 1;
+		m_tMonsterDesc.m_iMaxParryCount = 10000;
+		m_tMonsterDesc.m_szModelKey = "Elite_Joker";
+		break;
 	}
 	m_tMonsterDesc.m_fCurrentHP_white = m_tMonsterDesc.m_fMaxHP_white;
 	m_tMonsterDesc.m_fCurrentHP_Green = m_tMonsterDesc.m_fMaxHP_white;
