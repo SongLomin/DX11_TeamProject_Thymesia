@@ -35,6 +35,7 @@ public:
     void Set_Animation(_uint In_iNumIndex, _float In_fFixedPlayRatio = -1.f);
     _uint Get_StateIndex()const { return m_iStateIndex; }
     _float3 Get_ShakingOffset();
+    _flag   Get_StateFlag() const {return m_StateFlag;}
 
     weak_ptr<CCharacter> Get_OwnerCharacter() const;
 
@@ -50,13 +51,12 @@ public:
 
 
 protected:
+    _flag m_StateFlag = 0;
     _uint m_iAnimIndex = 0;
     _uint m_iTimeScaleLayer = 0;
     _uint m_iStateIndex;
     _float m_fFixedPlayRatio = 0.f;
     _float3 m_vShakingOffSet = {0.f,0.f,0.f};
-
-
 
     //weak_ptr<CBehaviorBase> m_pBehavior;
     weak_ptr<CNavigation> m_pNaviCom;

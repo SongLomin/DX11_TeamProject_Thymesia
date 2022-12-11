@@ -110,11 +110,6 @@ void CUI_PauseMenu::OnEnable(void* _Arg)
 
 	m_bOpenThisFrame = true;
 
-	//레지스터에 등록된 배틀UI들 모조리 꺼버리기.
-	list<weak_ptr<CGameObject>> uiList = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::BATTLEUI);
-	for (auto& elem : uiList)
-		elem.lock()->Set_Enable(false);
-
 	OnPaging();
 }
 
@@ -122,10 +117,7 @@ void CUI_PauseMenu::OnDisable()
 {
 	__super::OnDisable();
 
-	//레지스터에 등록된 배틀UI들 모조리 다시 켜주기.
-	//list<weak_ptr<CGameObject>> uiList = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::BATTLEUI);
-	//for (auto& elem : uiList)
-	//	elem.lock()->Set_Enable(true);
+
 }
 
 void CUI_PauseMenu::OnPaging()

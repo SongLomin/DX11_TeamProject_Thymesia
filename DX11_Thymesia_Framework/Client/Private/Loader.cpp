@@ -678,7 +678,7 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Loading_Font_RoyalGarden_Desc"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/RoyalGarden_Desc.png"), MEMORY_TYPE::MEMORY_STATIC);
 	
 	//MainMenu(LogoLevel)
-	GAMEINSTANCE->Load_Textures(("MainMenu_Background"), TEXT("../Bin/Resources/Textures/UI/MainMenuBackrgound.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("MainMenu_Background"), TEXT("../Bin/Resources/Textures/UI/MainMenuBackrgound.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("GameLogo"), TEXT("../Bin/Resources/Textures/UI/GameLogo2.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_1"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_SelectableButtonBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
@@ -972,12 +972,18 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_LeftBG_Mask"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_LeftMask2.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	//interaction
-
 	GAMEINSTANCE->Load_Textures(("Interaction_Open"), TEXT("../Bin/Resources/Textures/UI/Interaction/Open.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	GAMEINSTANCE->Load_Textures(("Interaction_Climb"), TEXT("../Bin/Resources/Textures/UI/Interaction/Climb.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	GAMEINSTANCE->Load_Textures(("Interaction_Elevator"), TEXT("../Bin/Resources/Textures/UI/Interaction/Elevator.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+
+	//battle
+	GAMEINSTANCE->Load_Textures(("Target_Icon"), TEXT("../Bin/Resources/Textures/UI/Target.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
 
 #endif // _JOJO_EFFECT_TOOL_
 }

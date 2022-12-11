@@ -76,8 +76,8 @@ HRESULT CNorMonster::Start()
 	__super::Start();
 	Change_State<CNorMonState_Idle>();
 
-	m_pHPBar = GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Base>(LEVEL_STATIC);
-	m_pHPBar.lock()->Set_Owner(Weak_Cast<CMonster>(m_this));
+	Bind_HPBar();
+
 	return S_OK;
 }
 

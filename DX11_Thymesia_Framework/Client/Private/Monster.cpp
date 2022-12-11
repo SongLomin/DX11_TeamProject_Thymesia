@@ -7,7 +7,8 @@
 #include "ActorDecor.h"
 #include "Player.h"
 #include "Client_Components.h"
-
+#include "UI.h"
+#include "MonsterHPBar_Base.h"
 
 GAMECLASS_C(CMonster);
 CLONE_C(CMonster, CGameObject);
@@ -147,6 +148,19 @@ void CMonster::Respawn_Monster(_fvector In_vPosition)
     m_fTimeAcc = 0.f;
     m_fDissolveAmount = 0.f;
     Set_Enable(true);
+}
+
+void     CMonster::Bind_HPBar()
+{
+    //UI ÀçÈ°¿ë
+    m_pHPBar = GAMEINSTANCE->Get_GameObject_UseMemoryPool<CMonsterHPBar_Base>(LEVEL_STATIC);
+    if (!m_pHPBar.lock())
+    {
+        m_pHPBar = GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Base>(LEVEL_STATIC);
+    }
+    m_pHPBar.lock()->Set_Target(m_this);
+
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, m_pHPBar);
 }
 
 void CMonster::Release_Monster()

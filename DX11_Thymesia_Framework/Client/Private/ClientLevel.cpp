@@ -33,6 +33,8 @@
 #include "UI_EvolveMenu_SelectDecoration.h"
 #include "UI_Interaction.h"
 #include "UI_Utils.h"
+#include "UI_MonsterFocus.h"
+
 GAMECLASS_C(CClientLevel)
 
 HRESULT CClientLevel::Initialize()
@@ -119,7 +121,7 @@ void CClientLevel::SetUp_UI()
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CUI_ScriptQueue>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::INTERACTIONUI, GAMEINSTANCE->Add_GameObject<CUI_Interaction>(LEVEL_STATIC));
 
-
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CUI_MonsterFocus>(LEVEL_STATIC));
 #ifdef _ONLY_UI_
 
 	GAMEINSTANCE->Add_GameObject<CTestUI>(LEVEL_STATIC);

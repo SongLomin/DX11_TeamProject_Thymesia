@@ -18,13 +18,25 @@ public:
 	virtual HRESULT Render();
 
 public:
-	virtual void			Set_Owner(weak_ptr<CMonster> pMonster) override;
+	virtual void			Set_Target(weak_ptr<CBase> pTarget) override;
+
+
+
+protected:
+	virtual void			Bind_EventFunction(weak_ptr<CStatus_Monster> pStatus_Monster) override;
+	virtual void			Create_Decoration(weak_ptr<CStatus_Monster> pStatus_Monster);
+
 
 public:
 	virtual void	Set_Stun(bool _bStun);
-	void			Call_NextPhase();
+
 protected:
 	virtual void	Set_ChildPosFromThis();
+
+
+private:
+	list<weak_ptr<CCustomUI>>		m_listLifeDecoration;
+
 
 
 private:
@@ -32,8 +44,9 @@ private:
 	virtual void			OnDisable() override;
 
 
-private:
-	list<weak_ptr<CCustomUI>>		m_listLifeDecoration;
+public:
+	void			Call_NextPhase();
+
 };
 
 END

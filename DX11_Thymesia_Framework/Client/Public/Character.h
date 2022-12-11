@@ -56,6 +56,10 @@ protected:
     void            Move_RootMotion(_float fTimeDelta);
     virtual void    Move_RootMotion_Internal() {};
 
+
+public:
+    FDelegate<weak_ptr<CStateBase>> Callback_OnChangeState;
+
 protected:
     weak_ptr<CCollider>     m_pHitColliderCom;
     weak_ptr<CNavigation>   m_pNaviMeshCom;
@@ -122,6 +126,10 @@ public: /* For Template Function */
         m_pCurState = pNextState;
 
         m_pCurState.lock()->OnStateStart(In_fAnimationBlendTime);
+
+        Callback_OnChangeState(m_pCurState);
+
+
         m_pCurState.lock()->Set_Enable(true);
 
         return true;

@@ -1033,6 +1033,10 @@
     <ClInclude Include="..\Public\Window_Shader_Dev.h">
       <Filter>97. Tool\01. DeveloperConsole\Windows\00. Shader</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_MonsterFocus.h" />
+    <ClInclude Include="..\Public\Preset_UIDesc.h">
+      <Filter>06. DataPreset\05.Preset_UIDesc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2113,6 +2117,10 @@
     <ClCompile Include="..\Private\Window_Shader_Dev.cpp">
       <Filter>97. Tool\01. DeveloperConsole\Windows\00. Shader</Filter>
     </ClCompile>
+    <ClCompile Include="..\UI_MonsterFocus.cpp" />
+    <ClCompile Include="..\Private\Preset_UIDesc.cpp">
+      <Filter>06. DataPreset\05.Preset_UIDesc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3187,6 +3195,9 @@
     </Filter>
     <Filter Include="97. Tool\01. DeveloperConsole\Windows\00. Shader">
       <UniqueIdentifier>{ef717d74-ad6f-4372-bf3e-0033a2dec2ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. DataPreset\05.Preset_UIDesc">
+      <UniqueIdentifier>{71809176-0df8-42ac-bee8-0ce093e9a2b7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

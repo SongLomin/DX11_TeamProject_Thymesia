@@ -6,10 +6,11 @@ BEGIN(Client)
 
 class CUI_Utils
 {
+
 public:
 	static _float2		ConvertWorldPosToUIPos(_fvector	vWorldPos);
-
-
+	static _float		UI_TimeDelta(_float fTimeDelta);
+	static _float4&		GET_COLOR(COLOR_PALETTE eColor);
 };
 
 END

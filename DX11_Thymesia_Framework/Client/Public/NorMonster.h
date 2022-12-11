@@ -47,7 +47,7 @@ private:
     virtual void OnDestroy() override;
 
 private:
-    weak_ptr< CMonsterHPBar_Base>   m_pHPBar;
+   
 
 private:
     void Free();

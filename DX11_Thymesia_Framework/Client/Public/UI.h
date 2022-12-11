@@ -72,7 +72,6 @@ public:
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render() override;
    
-
 public:
     void            Set_TextureIndex(const _uint& Index) { m_iTextureIndex = Index; }
     virtual void    Set_Texture(const _char* sKey);
@@ -88,9 +87,6 @@ public:
 public: /* Shaking */
     virtual void    Add_Shaking(const _float& In_ShakeTime, const _float& _fShakePower = 5.f);
 
-
-
-
 public:
     virtual void            OnEnable(void* _Arg = nullptr);
     //객체의 상태            가 비활성화 상태로 변경될 때, 호출되는 이벤트입니다.
@@ -99,7 +95,7 @@ public:
    //Moon Functions
 protected:
     virtual void             Add_Child(weak_ptr<CUI> pChild);
-    virtual void             Set_Owner(weak_ptr<CBase> pOwner);
+    virtual void             Set_Target(weak_ptr<CBase> pTarget);
 
 public:
     _float2                  Get_Point(UI_POINT eType);
@@ -123,6 +119,9 @@ private:
     virtual void Update_Shaking(_float fTimeDelta);
 
 protected:
+   virtual void                    SetUp_Component();
+  
+protected:
     weak_ptr<CShader> m_pShaderCom;
     weak_ptr<CRenderer> m_pRendererCom;
     weak_ptr<CTexture> m_pTextureCom;
@@ -134,7 +133,6 @@ protected:
     FDelegate<>     CallBack_ShakingStart;
     FDelegate<>     CallBack_ShakingEnd;
     
-
 protected:
     UI_DESC         m_tUIDesc;
     _float4x4		m_ProjMatrix;
@@ -147,9 +145,8 @@ protected:
 protected:
     vector<weak_ptr<CUI>> m_vecChildUI;
     vector<weak_ptr<CUI>> m_vecEventChildUI;
-    weak_ptr<CBase>       m_pOwner;
-
-
+   
+    weak_ptr<CBase>       m_pTarget;
 
     weak_ptr<CPlayer> m_pPlayer;
     weak_ptr<CStatus_Player> m_pPlayerStatus;

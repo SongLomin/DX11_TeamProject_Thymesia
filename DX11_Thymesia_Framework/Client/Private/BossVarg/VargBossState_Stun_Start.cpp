@@ -25,7 +25,7 @@ HRESULT CVargBossState_Stun_Start::Initialize_Prototype()
 HRESULT CVargBossState_Stun_Start::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
+	m_StateFlag |= (_uint)STATE_FLAG::EXECUTABLE;
 
 	return S_OK;
 }

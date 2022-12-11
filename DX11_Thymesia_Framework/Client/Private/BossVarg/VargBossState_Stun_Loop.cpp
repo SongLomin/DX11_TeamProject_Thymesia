@@ -22,7 +22,7 @@ HRESULT CVargBossState_Stun_Loop::Initialize_Prototype()
 HRESULT CVargBossState_Stun_Loop::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
+	m_StateFlag |= (_uint)STATE_FLAG::EXECUTABLE;
 
 	return S_OK;
 }

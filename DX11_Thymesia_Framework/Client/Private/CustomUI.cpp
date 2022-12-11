@@ -62,6 +62,10 @@ HRESULT CCustomUI::Render()
 	return S_OK;
 }
 
+void CCustomUI::SetUp_Component()
+{
+}
+
 void CCustomUI::Set_PassIndex(_uint _iPassIndex)
 {
 	m_iPassIndex = _iPassIndex;
