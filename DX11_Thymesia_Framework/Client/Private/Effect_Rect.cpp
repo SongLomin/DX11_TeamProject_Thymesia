@@ -40,6 +40,7 @@ CLONE_C(CEffect_Rect, CGameObject)
 
 #ifdef _DEBUG
 #ifdef _JOJO_EFFECT_TOOL_
+const _int CEffect_Rect::m_iScaleType_None = 0;
 const _int CEffect_Rect::m_iScaleType_Square = 1;
 const _int CEffect_Rect::m_iScaleType_Ratio = 2;
 #endif // _JOJO_EFFECT_TOOL_
@@ -2922,6 +2923,9 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			{
 
 #ifdef _JOJO_EFFECT_TOOL_
+				
+				ImGui::RadioButton("None##Is_None_Scale_Type", &m_iScaleType, m_iScaleType_None);
+				ImGui::SameLine();
 				ImGui::RadioButton("Square Scale##Is_Square_Scale", &m_iScaleType, m_iScaleType_Square);
 				ImGui::SameLine();
 				ImGui::RadioButton("Ratio Scale##Is_Ratio_Scale", &m_iScaleType, m_iScaleType_Ratio);

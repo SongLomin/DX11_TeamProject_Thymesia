@@ -86,7 +86,6 @@ void CVargBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif
 #endif
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fSinematic);
-
 }
 
 
@@ -98,9 +97,6 @@ void CVargBossState_Start::OnStateEnd()
 
 	if (m_fSinematic == 4.f)
 		GET_SINGLE(CGameManager)->End_Cinematic();
-
-
-
 }
 
 
@@ -167,11 +163,6 @@ _bool CVargBossState_Start::Check_AndChangeNextState()
 		weak_ptr<CUI_ScriptQueue> pScriptQeuue = GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL_STATIC).front();
 		pScriptQeuue.lock()->Call_SetScript_Tutorial_Varg_Appear();
 	}
-
-
-	
-
-
 
 	return false;
 }
