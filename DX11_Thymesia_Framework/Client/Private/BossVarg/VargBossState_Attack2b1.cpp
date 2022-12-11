@@ -9,6 +9,8 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
+#include "../Public/BossVarg/Varg.h"
+#include "VargWeapon.h"
 #include "PhysXCharacterController.h"
 
 GAMECLASS_C(CVargBossState_Attack2b1);
@@ -66,6 +68,9 @@ void CVargBossState_Attack2b1::OnStateStart(const _float& In_fAnimationBlendTime
 
 	m_bAttackLookAtLimit = true;  // 애니메이션시작할떄 룩엣시작
 
+	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(true);
+
+
 	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
 		bind(&CVargBossState_Attack2b1::Call_OtherControllerHit, this, placeholders::_1);
 
@@ -81,6 +86,8 @@ void CVargBossState_Attack2b1::OnStateStart(const _float& In_fAnimationBlendTime
 void CVargBossState_Attack2b1::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(false);
 
 	m_pPhysXControllerCom.lock()->Callback_ControllerHit -=
 		bind(&CVargBossState_Attack2b1::Call_OtherControllerHit, this, placeholders::_1);

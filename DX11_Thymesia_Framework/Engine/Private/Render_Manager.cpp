@@ -53,6 +53,10 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_PBR"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
+	///* For.Target_Emissive*/
+	//if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Emissive"),
+	//	(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+	//	DEBUG_ASSERT;
 
 	/* For.Target_Specular */
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Specular"), 
@@ -562,6 +566,15 @@ HRESULT CRender_Manager::Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt)
 	return S_OK;
 }
 
+HRESULT CRender_Manager::Set_DynamicShadowLight(_fvector In_vEye, _fvector In_vLookAt)
+{
+	XMStoreFloat3(&m_vDynamicShadowLightEye, In_vEye);
+	XMStoreFloat3(&m_vDynamicShadowLightLookAt, In_vLookAt);
+
+	return S_OK;
+}
+
+
 HRESULT CRender_Manager::Render_Priority()
 {
 
@@ -603,8 +616,8 @@ HRESULT CRender_Manager::Render_ShadowDepth()
 	_float fFar = 300.f;
 
 
-	_vector		vLightEye = XMLoadFloat3(&m_vShadowLightEye);
-	_vector		vLightAt = XMLoadFloat3(&m_vShadowLightLookAt);
+	_vector		vLightEye = XMLoadFloat3(&m_vDynamicShadowLightEye);
+	_vector		vLightAt = XMLoadFloat3(&m_vDynamicShadowLightLookAt);
 
 	/*_vector		vLightEye = { -iHeight, iHeight, -iHeight };
 	_vector		vLightAt = { 0.f, 0.f, 0.f };*/
@@ -613,12 +626,12 @@ HRESULT CRender_Manager::Render_ShadowDepth()
 	_matrix LightViewMatrix = XMMatrixLookAtLH(vLightEye, vLightAt, vLightUp);
 	LightViewMatrix = XMMatrixTranspose(LightViewMatrix);
 
-	XMStoreFloat4x4(&m_LightViewMatrixTranspose, LightViewMatrix);
+	XMStoreFloat4x4(&m_DynamicLightViewMatrixTranspose, LightViewMatrix);
 
 	_matrix LightProjMatrix = XMMatrixPerspectiveFovLH(fFovy, fAspect, fNear, fFar);
 	LightProjMatrix = XMMatrixTranspose(LightProjMatrix);
 
-	XMStoreFloat4x4(&m_LightProjMatrixTranspose, LightProjMatrix);
+	XMStoreFloat4x4(&m_DynamicLightProjMatrixTranspose, LightProjMatrix);
 
 
 	//m_pShader->Set_RawValue("g_ViewMatrix", &LightViewMatrix, sizeof(_float4x4));
@@ -640,6 +653,23 @@ HRESULT CRender_Manager::Render_ShadowDepth()
 		m_bFirst = false;
 		if (FAILED(GET_SINGLE(CRenderTarget_Manager)->Begin_StaticShadowMRT(TEXT("MRT_StaticShadowDepth"))))
 			DEBUG_ASSERT;
+
+		vLightEye = XMLoadFloat3(&m_vShadowLightEye);
+		vLightAt = XMLoadFloat3(&m_vShadowLightLookAt);
+
+		/*_vector		vLightEye = { -iHeight, iHeight, -iHeight };
+		_vector		vLightAt = { 0.f, 0.f, 0.f };*/
+		_vector		vLightUp = { 0.f, 1.f, 0.f };
+
+		LightViewMatrix = XMMatrixLookAtLH(vLightEye, vLightAt, vLightUp);
+		LightViewMatrix = XMMatrixTranspose(LightViewMatrix);
+
+		XMStoreFloat4x4(&m_LightViewMatrixTranspose, LightViewMatrix);
+
+		LightProjMatrix = XMMatrixPerspectiveFovLH(fFovy, fAspect, fNear, fFar);
+		LightProjMatrix = XMMatrixTranspose(LightProjMatrix);
+
+		XMStoreFloat4x4(&m_LightProjMatrixTranspose, LightProjMatrix);
 
 		for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_STATICSHADOWDEPTH])
 		{
@@ -788,8 +818,12 @@ HRESULT CRender_Manager::Bake_ViewShadow()
 	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+
 	m_pShader->Set_RawValue("g_LightViewMatrix", &m_LightViewMatrixTranspose, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_LightProjMatrix", &m_LightProjMatrixTranspose, sizeof(_float4x4));
+
+	m_pShader->Set_RawValue("g_DynamicLightViewMatrix", &m_DynamicLightViewMatrixTranspose, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_DynamicLightProjMatrix", &m_DynamicLightProjMatrixTranspose, sizeof(_float4x4));
 
 	shared_ptr<CPipeLine> pPipeLine = GET_SINGLE(CPipeLine);
 
@@ -1392,6 +1426,8 @@ HRESULT CRender_Manager::Blend_Bloom()
 	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 
+	m_pShader->Set_ShaderResourceView("g_ShaderFlagTexture", pRenderTargetManager->Get_SRV(TEXT("Target_ShaderFlag")));
+		
 	m_pShader->Set_ShaderResourceView("g_ExtractBloomTexture", pRenderTargetManager->Get_SRV(TEXT("Target_ExtractBloom")));
 	m_pShader->Set_ShaderResourceView("g_XBlurTexture", pRenderTargetManager->Get_SRV(TEXT("Target_BlurForBloom")));
 	m_pShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")));

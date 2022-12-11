@@ -306,6 +306,10 @@ HRESULT CGameInstance::Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt)
 {
 	return m_pRender_Manager->Set_ShadowLight(In_vEye, In_vLookAt);
 }
+HRESULT CGameInstance::Set_DynamicShadowLight(_fvector In_vEye, _fvector In_vLookAt)
+{
+	return m_pRender_Manager->Set_DynamicShadowLight(In_vEye, In_vLookAt);
+}
 
 HRESULT CGameInstance::Set_GrayScale(const _float In_fGrayScale)
 {

@@ -9,6 +9,8 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
+#include "../Public/BossVarg/Varg.h"
+#include "VargWeapon.h"
 #include "MobWeapon.h"
 #include "PhysXCharacterController.h"
 
@@ -79,6 +81,7 @@ void CVargBossState_RaidAttack::OnStateStart(const _float& In_fAnimationBlendTim
 	}
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(true);
 
 	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
 		bind(&CVargBossState_RaidAttack::Call_OtherControllerHit, this, placeholders::_1);
@@ -97,6 +100,8 @@ void CVargBossState_RaidAttack::OnStateEnd()
 	__super::OnStateEnd();
 
 	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(false);
+
 
 	m_pPhysXControllerCom.lock()->Callback_ControllerHit -=
 		bind(&CVargBossState_RaidAttack::Call_OtherControllerHit, this, placeholders::_1);
