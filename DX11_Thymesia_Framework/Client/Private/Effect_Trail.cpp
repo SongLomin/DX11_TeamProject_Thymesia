@@ -100,6 +100,8 @@ void CEffect_Trail::OnDisable()
 {
 	__super::OnDisable();
 
+	
+
 	m_pVIBuffer.lock()->Reset_Points(m_pOwnerTransform, m_pOwnerBoneNode, m_pOwnerModel_Data);
 }
 

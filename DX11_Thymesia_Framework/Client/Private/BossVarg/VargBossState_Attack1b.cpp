@@ -9,7 +9,8 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
-#include "MobWeapon.h"
+#include "../Public/BossVarg/Varg.h"
+#include "VargWeapon.h"
 
 GAMECLASS_C(CVargBossState_Attack1b);
 CLONE_C(CVargBossState_Attack1b, CComponent)
@@ -82,6 +83,8 @@ void CVargBossState_Attack1b::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(true);
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Attack1b -> OnStateStart" << endl;
@@ -98,7 +101,8 @@ void CVargBossState_Attack1b::OnStateEnd()
 
 	m_bNextAttack = false;
 
-	
+	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(false);
+
 }
 
 

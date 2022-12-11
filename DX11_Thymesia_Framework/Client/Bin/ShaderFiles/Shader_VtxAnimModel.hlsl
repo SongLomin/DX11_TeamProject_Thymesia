@@ -362,10 +362,10 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
     
     Out.vDiffuse.a = 1.f;
     
-    if(g_bBloom)
-    {
-        Out.vExtractBloom = Out.vDiffuse;
-    }
+    //if(g_bBloom)
+    //{
+    //    Out.vExtractBloom = Out.vDiffuse;
+    //}
         return Out;
 }
 
@@ -445,12 +445,14 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_NORMAL In)
     {
         Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     }
-    else if (fDotValue + 0.03f > g_fDissolveAmount)
+    else if (fDotValue + 0.015f > g_fDissolveAmount)
     {
         float DissolveDesc = g_DissolveTexture.Sample(DefaultSampler, In.vTexUV*2.f).r;
     
         //clip(DissolveDesc - fDotValue);
-        Out.vDiffuse = vector(0.8f, 1.f, 0.9f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
+        //Out.vDiffuse = vector(0.4659f, 1.f, 0.98f, 1.f)  /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
+        Out.vDiffuse = vector(0.f, 1.f, 0.408f, 1.f);
+        Out.vExtractBloom = Out.vDiffuse;
     }
     else
     {
@@ -476,8 +478,6 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_NORMAL In)
     if (Out.vDiffuse.a < 0.1f)
         discard;
     
-    if (g_bBloom)
-        Out.vExtractBloom = Out.vDiffuse;
 
     return Out;
 }

@@ -38,6 +38,7 @@ texture2D g_FogTexture;
 texture2D g_XBlurTexture;
 texture2D g_ExtractBloomTexture;
 texture2D g_OriginalRenderTexture;
+texture2D g_ShaderFlagTexture;
 
 texture2D g_PostEffectMaskTexture;
 texture2D g_BloomTexture;
@@ -633,8 +634,13 @@ PS_OUT PS_MAIN_POSTEFFECT_BLOOM(PS_IN In)
     //   Out.vColor = float4(mapped, BlurTexture.a);
 
     // ------------------------------------------------------------------------------------
-
-    Out.vColor = g_XBlurTexture.Sample(DefaultSampler, In.vTexUV.xy);
+    vector vShaderFlag = g_ShaderFlagTexture.Sample(DefaultSampler, In.vTexUV.xy);
+    vector vBloomColor = 0;
+   
+    if(0.5f < vShaderFlag.b)
+        vBloomColor= g_ExtractBloomTexture.Sample(DefaultSampler, In.vTexUV.xy);
+    
+    Out.vColor = g_XBlurTexture.Sample(DefaultSampler, In.vTexUV.xy) + vBloomColor;
 
     // Out.vColor *= g_vIntensity;
 

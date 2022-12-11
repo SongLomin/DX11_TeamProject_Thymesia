@@ -386,12 +386,21 @@ void CVIBuffer_Trail::Tick(_float fTimeDelta)
 
 void CVIBuffer_Trail::Reset_Points(weak_ptr <CTransform> _pOwnerTransform, weak_ptr<CBoneNode> _pOwnerBoneNode, weak_ptr<MODEL_DATA> _pOwnerModel_Data)
 {
-    _matrix		ParentMatrix
-        = _pOwnerBoneNode.lock()->Get_OffsetMatrix()
-        /** _pOwnerBoneNode.lock()->Get_CombinedMatrix() */
-        * XMLoadFloat4x4(&_pOwnerModel_Data.lock()->TransformMatrix)
-        * _pOwnerTransform.lock()->Get_WorldMatrix();
+    _matrix ParentMatrix;
 
+    if (_pOwnerBoneNode.lock())
+    {
+        ParentMatrix
+            = _pOwnerBoneNode.lock()->Get_CombinedMatrix()
+            * XMLoadFloat4x4(&_pOwnerModel_Data.lock()->TransformMatrix)
+            * _pOwnerTransform.lock()->Get_WorldMatrix();
+    }
+    else//weapon
+    {
+        ParentMatrix
+            = XMLoadFloat4x4(&_pOwnerModel_Data.lock()->TransformMatrix)
+            * _pOwnerTransform.lock()->Get_WorldMatrix();
+    }
     ParentMatrix.r[0] = XMVector3Normalize(ParentMatrix.r[0]);
     ParentMatrix.r[1] = XMVector3Normalize(ParentMatrix.r[1]);
     ParentMatrix.r[2] = XMVector3Normalize(ParentMatrix.r[2]);

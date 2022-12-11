@@ -131,14 +131,18 @@ HRESULT CCorvus::Render()
 			m_pShaderCom.lock()->Set_RawValue("g_vDissolveStartPos", &iter->second.vStartPos, sizeof(_float3));
 			m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &iter->second.fAmount, sizeof(_float));
 	
+			_float4 vShaderFlag = { 0.f,0.f,1.f,0.f };
+
+			m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_float4));
+
 			m_iPassIndex = 6;
 		}
 		else
 		{
-			_bool bFalse = false;
-			m_pShaderCom.lock()->Set_RawValue("g_bGlow", &bFalse, sizeof(_bool));
-			m_pShaderCom.lock()->Set_RawValue("g_bBloom", &bFalse, sizeof(_bool));
-		
+			
+			_float4 vShaderFlag = { 0.f,0.f,0.f,0.f };
+
+			m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_float4));
 			if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
 				m_iPassIndex = 4;
 			else
