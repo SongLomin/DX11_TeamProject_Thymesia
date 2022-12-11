@@ -257,10 +257,10 @@ void CEditSetActor::View_CreateActor()
 		{
 			weak_ptr<CMonster> pObj;
 
-			if (MONSTERTYPE::ENHANCE_GARDENER == tMonsterDesc.eMonType)
+			if (MONSTERTYPE::JOCKER == tMonsterDesc.eMonType)
 			{
-				pObj = Weak_StaticCast<CMonster>(GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL::LEVEL_EDIT));
-				Add_ActorToTool(typeid(CVarg).hash_code(), typeid(CVarg).name(), pObj);
+				pObj = Weak_StaticCast<CMonster>(GAMEINSTANCE->Add_GameObject<CJoker>(LEVEL::LEVEL_EDIT));
+				Add_ActorToTool(typeid(CJoker).hash_code(), typeid(CJoker).name(), pObj);
 			}
 
 			if (!pObj.lock())

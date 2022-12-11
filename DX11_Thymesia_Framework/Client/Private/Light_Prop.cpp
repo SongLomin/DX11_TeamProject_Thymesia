@@ -169,6 +169,13 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 		}
 		break;
 
+		case EVENT_TYPE::ON_EDIT_UDATE:
+		{
+			XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_Position() + XMLoadFloat3(&m_vOffset));
+			GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+		}
+		break;
+
 		case EVENT_TYPE::ON_EDITDRAW:
 		{
 			GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
@@ -209,9 +216,6 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 						ImGui::DragFloat4("Light_Specular", &m_tLightDesc.vSpecular.x , 0.01f);
 						ImGui::DragFloat("Light_Range"    , &m_tLightDesc.fRange      , 0.01f);
 						ImGui::DragFloat4("Light_Flag"    , &m_tLightDesc.vLightFlag.x, 0.01f);
-
-						XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_Position() + XMLoadFloat3(&m_vOffset));
-						GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
 					}
 					break;
 			

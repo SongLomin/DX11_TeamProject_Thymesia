@@ -72,6 +72,12 @@ void CInteraction_Door::OnEventMessage(_uint iArg)
         }
         break;
 
+        case EVENT_TYPE::ON_EDIT_UDATE:
+        {
+            m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+        }
+        break;
+
         case EVENT_TYPE::ON_EDITDRAW:
         {
             m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
@@ -149,7 +155,6 @@ void CInteraction_Door::Load_FromJson(const json& In_Json)
     else
     {
         _float fDefaultDesc[4] = { 3.f, 0.f, 1.5f, 0.f };
-
         SetUpColliderDesc(fDefaultDesc);
     }
 

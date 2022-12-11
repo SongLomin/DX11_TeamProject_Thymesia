@@ -256,7 +256,8 @@ void CEditGroupProp::View_CreateProp()
 		"Door",
 		"CheckPoint",
 		"Elevator",
-		"Ladder"
+		"Ladder",
+		"Note"
 	};
 
 	static _int iSelect_PropType = 0;
@@ -272,12 +273,12 @@ void CEditGroupProp::View_CreateProp()
 
 	if (0 == iSelect_PropType)
 	{
+		ImGui::Combo("Prop Name", &iSelect_PropName, items_Interaction_Prop, IM_ARRAYSIZE(items_Interaction_Prop));
+
 		switch (iSelect_PropName)
 		{
 			case 0:
 			{
-				ImGui::Combo("Prop Name", &iSelect_PropName, items_Interaction_Prop, IM_ARRAYSIZE(items_Interaction_Prop));
-
 				if (RenderView_SelectModelComponent())
 					return;
 
@@ -322,6 +323,22 @@ void CEditGroupProp::View_CreateProp()
 				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_Ladder>(LEVEL::LEVEL_EDIT);
 				tObjDesc.HashCode  = typeid(CInteraction_Ladder).hash_code();
 				tObjDesc.TypeName  = typeid(CInteraction_Ladder).name();
+			}
+			break;
+			
+			case 4:
+			{
+				if (RenderView_SelectModelComponent())
+					return;
+
+				if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) || !Pick_Prop(MouseRayInWorldSpace))
+					return;
+
+				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_Note>(LEVEL::LEVEL_EDIT);
+				tObjDesc.HashCode  = typeid(CInteraction_Note).hash_code();
+				tObjDesc.TypeName  = typeid(CInteraction_Note).name();
+
+				tObjDesc.pInstance.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str());
 			}
 			break;
 		}
@@ -424,6 +441,7 @@ void    CEditGroupProp::View_OnlyTranformEdit()
 		return;
 
 	RenderView_Transform_Edit(iter_prop->second[m_iPickingIndex].pInstance);
+	iter_prop->second[m_iPickingIndex].pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDIT_UDATE);
 }
 
 void    CEditGroupProp::View_PickProp()
@@ -456,7 +474,7 @@ void    CEditGroupProp::View_PickProp()
 
 				if (fLength < fDistance)
 				{
-					fDistance = fLength;
+					fDistance       = fLength;
 					m_iPickingIndex = iIndex;
 					XMStoreFloat4x4(&m_PickingMatrix, pTransform.lock()->Get_WorldMatrix());
 				}
@@ -727,6 +745,8 @@ void CEditGroupProp::RenderView_Transform_Edit(weak_ptr<CGameObject> In_Obj)
 			{
 				iter->pInstance.lock()->Set_Dead();
 				iter_prop->second.erase(iter);
+
+				m_iPickingIndex = --m_iPickingIndex;
 			}
 		}
 
@@ -748,6 +768,8 @@ void CEditGroupProp::RenderView_Transform_Edit(weak_ptr<CGameObject> In_Obj)
 			}
 		}
 	}
+
+	XMStoreFloat4x4(&m_PickingMatrix, pTransformCom.lock()->Get_WorldMatrix());
 }
 
 _bool CEditGroupProp::Pick_Prop(RAY& _pMouseRayInWorldSpace)

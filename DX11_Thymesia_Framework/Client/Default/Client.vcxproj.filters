@@ -733,7 +733,6 @@
     <ClInclude Include="..\Public\PhysXCameraController.h">
       <Filter>05. Component\00. PhysXController\00. PhysXCameraController</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\ActorDecor.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackAway.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackHold.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawAttackTab2.h" />
@@ -833,18 +832,10 @@
     <ClInclude Include="..\Public\Preset_AddGameObject.h">
       <Filter>06. DataPreset\04. Preset_AddGameObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Actor.h" />
-    <ClInclude Include="..\Public\BossUrd\Urd.h" />
-    <ClInclude Include="..\Public\BossMonster.h" />
     <ClInclude Include="..\Public\MobWeapon.h" />
     <ClInclude Include="..\Public\UI_Button.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Talent.h" />
-    <ClInclude Include="..\Public\BossVarg\Varg.h" />
-    <ClInclude Include="..\Public\Character.h" />
-    <ClInclude Include="..\Public\Monster.h" />
-    <ClInclude Include="..\Public\NorMonster.h" />
     <ClInclude Include="..\Public\PreViewAnimationModel.h" />
-    <ClInclude Include="..\Public\Player.h" />
     <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClInclude>
@@ -876,7 +867,6 @@
     <ClInclude Include="..\Public\PhysXCharacterController.h">
       <Filter>05. Component\00. PhysXController\01. PhysXPlayerController</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CCorvus.h" />
     <ClInclude Include="..\Public\MonsterParryingBar.h">
       <Filter>02. GameObject\01. UI\UI_Elem\Parrying</Filter>
     </ClInclude>
@@ -894,8 +884,6 @@
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect.h" />
     <ClInclude Include="..\Public\Talent_Effects.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Sword.h" />
-    <ClInclude Include="..\Public\Corvus_DefaultDagger.h" />
-    <ClInclude Include="..\Public\Corvus_DefaultSaber.h" />
     <ClInclude Include="..\Public\EditSetActor.h">
       <Filter>02. GameObject\99. Other\08. EditSetActor</Filter>
     </ClInclude>
@@ -1025,10 +1013,10 @@
       <Filter>07. Requirement\03. Requirement_State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\EliteMonster.h">
-      <Filter>02. GameObject\03.Actor\00.Joker</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Elite\00.Joker</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\JokerWeapon.h">
-      <Filter>02. GameObject\03.Actor\00.Joker</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Elite\00.Joker</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\EliteMonState\Joker\JokerState_Idle.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\02.EliteState\00.JokerState\00.Idle</Filter>
@@ -1040,7 +1028,7 @@
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\02.EliteState\00.JokerState</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\EliteMonState\Joker\Joker.h">
-      <Filter>02. GameObject\03.Actor\00.Joker</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Elite\00.Joker</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\GameManager.h">
       <Filter>96. Managers_Client\00. GameManager</Filter>
@@ -1054,6 +1042,48 @@
     <ClInclude Include="..\Public\UI_MonsterFocus.h" />
     <ClInclude Include="..\Public\Preset_UIDesc.h">
       <Filter>06. DataPreset\05.Preset_UIDesc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EditLights.h">
+      <Filter>02. GameObject\99. Other\09. EditLights</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Actor.h">
+      <Filter>02. GameObject\03. Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Character.h">
+      <Filter>02. GameObject\03. Actor\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossMonster.h">
+      <Filter>02. GameObject\03. Actor\Character\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ActorDecor.h">
+      <Filter>02. GameObject\03. Actor\Deco</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Monster.h">
+      <Filter>02. GameObject\03. Actor\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonster.h">
+      <Filter>02. GameObject\03. Actor\Character\Normal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CCorvus.h">
+      <Filter>02. GameObject\03. Actor\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Player.h">
+      <Filter>02. GameObject\03. Actor\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\Urd.h">
+      <Filter>02. GameObject\03. Actor\Character\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\Varg.h">
+      <Filter>02. GameObject\03. Actor\Character\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Corvus_DefaultDagger.h">
+      <Filter>02. GameObject\03. Actor\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Corvus_DefaultSaber.h">
+      <Filter>02. GameObject\03. Actor\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_Note.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1836,7 +1866,6 @@
     <ClCompile Include="..\Private\EditMapCollider.cpp">
       <Filter>02. GameObject\99. Other\07. EditMapCollider</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\ActorDecor.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackAway.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackHold.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab2.cpp" />
@@ -1933,17 +1962,9 @@
     <ClCompile Include="..\Private\Preset_AddGameObject.cpp">
       <Filter>06. DataPreset\04. Preset_AddGameObject</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Actor.cpp" />
-    <ClCompile Include="..\Private\BossUrd\Urd.cpp" />
     <ClCompile Include="..\Private\UI_Button.cpp" />
-    <ClCompile Include="..\Private\BossMonster.cpp" />
     <ClCompile Include="..\Private\MobWeapon.cpp" />
-    <ClCompile Include="..\Private\BossVarg\Varg.cpp" />
-    <ClCompile Include="..\Private\Character.cpp" />
-    <ClCompile Include="..\Private\Monster.cpp" />
-    <ClCompile Include="..\Private\NorMonster.cpp" />
     <ClCompile Include="..\Private\PreViewAnimationModel.cpp" />
-    <ClCompile Include="..\Private\Player.cpp" />
     <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClCompile>
@@ -1979,7 +2000,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\MobWeapon.cpp" />
     <ClCompile Include="..\Private\MobWeapon.cpp" />
-    <ClCompile Include="..\Private\CCorvus.cpp" />
     <ClCompile Include="..\Private\MonsterParryingBar.cpp">
       <Filter>02. GameObject\01. UI\UI_Elem\Parrying</Filter>
     </ClCompile>
@@ -1993,8 +2013,6 @@
     <ClCompile Include="..\Private\CorvusStates\Talent.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Sword.cpp" />
-    <ClCompile Include="..\Private\Corvus_DefaultDagger.cpp" />
-    <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp" />
     <ClCompile Include="..\Private\EditSetActor.cpp">
       <Filter>02. GameObject\99. Other\08. EditSetActor</Filter>
     </ClCompile>
@@ -2127,10 +2145,10 @@
       <Filter>07. Requirement\03. Requirement_State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\EliteMonster.cpp">
-      <Filter>02. GameObject\03.Actor\00.Joker</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Elite\00.Joker</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\JokerWeapon.cpp">
-      <Filter>02. GameObject\03.Actor\00.Joker</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Elite\00.Joker</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\EliteMonState\Joker\EliteStateBase.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\02.EliteState</Filter>
@@ -2139,7 +2157,7 @@
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\02.EliteState\00.JokerState\00.Idle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\EliteMonState\Joker\Joker.cpp">
-      <Filter>02. GameObject\03.Actor\00.Joker</Filter>
+      <Filter>02. GameObject\03. Actor\Character\Elite\00.Joker</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\GameManager.cpp">
       <Filter>96. Managers_Client\00. GameManager</Filter>
@@ -2153,6 +2171,48 @@
     <ClCompile Include="..\UI_MonsterFocus.cpp" />
     <ClCompile Include="..\Private\Preset_UIDesc.cpp">
       <Filter>06. DataPreset\05.Preset_UIDesc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EditLights.cpp">
+      <Filter>02. GameObject\99. Other\09. EditLights</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Actor.cpp">
+      <Filter>02. GameObject\03. Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Character.cpp">
+      <Filter>02. GameObject\03. Actor\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossMonster.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ActorDecor.cpp">
+      <Filter>02. GameObject\03. Actor\Deco</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Monster.cpp">
+      <Filter>02. GameObject\03. Actor\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonster.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Normal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CCorvus.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Player.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\Urd.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\Varg.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Corvus_DefaultDagger.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Interaction_Note.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3220,12 +3280,6 @@
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\02.EliteState\00.JokerState\00.Idle">
       <UniqueIdentifier>{203a4db9-e906-402e-bf94-4552798a9cb1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03.Actor">
-      <UniqueIdentifier>{0db45e45-0d0e-46c2-bc1e-fc8bdb676af6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03.Actor\00.Joker">
-      <UniqueIdentifier>{19627968-7699-4f4f-934c-858f9cfa3641}</UniqueIdentifier>
-    </Filter>
     <Filter Include="96. Managers_Client">
       <UniqueIdentifier>{754a09b8-9237-4e34-871e-e6aeaa3022d6}</UniqueIdentifier>
     </Filter>
@@ -3243,6 +3297,33 @@
     </Filter>
     <Filter Include="06. DataPreset\05.Preset_UIDesc">
       <UniqueIdentifier>{71809176-0df8-42ac-bee8-0ce093e9a2b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\99. Other\09. EditLights">
+      <UniqueIdentifier>{a7f64318-a0bc-44e2-a110-f4df374554f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor">
+      <UniqueIdentifier>{0db45e45-0d0e-46c2-bc1e-fc8bdb676af6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character">
+      <UniqueIdentifier>{30896b56-9c1b-4019-a755-d6124a55feaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Elite">
+      <UniqueIdentifier>{028cf067-e2ce-465c-90a4-f81675aeeb82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Normal">
+      <UniqueIdentifier>{7707f144-8bc9-4a36-8d54-523c0a2cc8de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Boss">
+      <UniqueIdentifier>{2f69797e-b059-4f60-b21a-872dfb6bd432}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Deco">
+      <UniqueIdentifier>{8afbfee2-0cfc-4f8b-aa29-89e16c8ccd7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player">
+      <UniqueIdentifier>{1dec331a-b1cd-4bf4-84b6-066637e30aca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Elite\00.Joker">
+      <UniqueIdentifier>{19627968-7699-4f4f-934c-858f9cfa3641}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

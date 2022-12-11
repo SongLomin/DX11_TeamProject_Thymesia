@@ -23,6 +23,7 @@
 #include "Interaction_CheckPoint.h"
 #include "Interaction_Elevator.h"
 #include "Interaction_Door.h"
+#include "Interaction_Note.h"
 #include "Section_Eventer.h"
 
 #include "EditGround.h"
@@ -30,6 +31,7 @@
 #include "EditInstanceProp.h"
 #include "EditMapCollider.h"
 #include "EditSetActor.h"
+#include "EditLights.h"
 
 #include "CCorvus.h"
 #include "PreViewAnimationModel.h"

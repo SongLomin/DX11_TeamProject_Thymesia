@@ -33,7 +33,7 @@
 
 #pragma region Map
 // #define _BRIGHT_LIGHT_
-// #define _GENERATE_PROP_COLLIDER_ true
+#define _GENERATE_PROP_COLLIDER_ true
 // #define _STAGE_1_
 #define _STAGE_2_
 #define _TEST_STATIC_PROPS_
@@ -204,6 +204,7 @@ namespace Client
 		ON_EDIT_PHYSXINFO,
 		ON_EDIT_PHYSXINFO_N,
 		ON_EDIT_DELETE,
+		ON_EDIT_UDATE,
 		ON_ANIMATIONEND,
 		ON_MOVING,
 		ON_MONSTERDEAD,

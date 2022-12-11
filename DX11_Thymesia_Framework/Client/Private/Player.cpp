@@ -64,7 +64,6 @@ HRESULT CPlayer::Initialize(void* pArg)
 
 HRESULT CPlayer::Start()
 {
-
     __super::Start();
     
 

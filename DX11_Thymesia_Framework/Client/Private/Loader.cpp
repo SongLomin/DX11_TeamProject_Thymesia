@@ -115,6 +115,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_CheckPoint>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Elevator>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Door>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Note>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CVarg>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CJoker>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CSection_Eventer>();
