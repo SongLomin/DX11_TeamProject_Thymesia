@@ -2,12 +2,15 @@
 #include "CustomUI.h"
 
 
+BEGIN(Engine)
+class CBoneNode;
+END
+
 BEGIN(Client)
 
 class CMonster;
 
 class CEasingComponent_Alpha;
-
 class CUI_MonsterFocus : public CCustomUI
 {
 	friend class CPreset_UIDesc;

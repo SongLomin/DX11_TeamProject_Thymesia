@@ -92,11 +92,10 @@ void CUI_MonsterFocus::Call_GroggyStart()
 
 void CUI_MonsterFocus::Call_FocusOutTarget()
 {
+    if (m_pTargetMonster.lock())
+        m_pTargetMonster.lock()->Callback_OnChangeState -= bind(&CUI_MonsterFocus::Call_ChangeState, this, placeholders::_1);
+
     m_pTargetMonster = weak_ptr<CMonster>();
-
-
-    m_pTargetMonster.lock()->Callback_OnChangeState -= 
-        bind(&CUI_MonsterFocus::Call_ChangeState, this, placeholders::_1);
 
     Set_Enable(false);
 }
