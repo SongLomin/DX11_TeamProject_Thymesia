@@ -117,7 +117,7 @@ _bool CJokerState_RunAtkEnd::Check_AndChangeNextState()
 
 		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
 
-		pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 30.f);
+		pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
 		m_bAttackLookAtLimit = false;
 	}
 
@@ -128,7 +128,7 @@ _bool CJokerState_RunAtkEnd::Check_AndChangeNextState()
 
 		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
 
-		pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::DOWN_HIT, 60.f);
+		pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::DOWN_HIT, 1.5f);
 		m_bAttackLookAtLimit = true;
 	}
 	else

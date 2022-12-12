@@ -69,7 +69,7 @@ void CJokerState_WheelAtkLoop::OnStateStart(const _float& In_fAnimationBlendTime
 
 	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
 
-	pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 40.f);
+	pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.2f);
 
 	m_iCount += 1;
 

@@ -66,7 +66,7 @@ void CHUD_Player_Memory::Tick(_float fTimeDelta)
 
     __super::Tick(fTimeDelta);
 
-//TODO: UI: ÇÃ·¹ÀÌ¾î ÀçÈ­ Å×½ºÆ® ÄÚµå
+//TODO: UI: ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½È­ ï¿½×½ï¿½Æ® ï¿½Úµï¿½
 
 }
 

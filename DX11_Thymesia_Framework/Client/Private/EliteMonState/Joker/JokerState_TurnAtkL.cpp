@@ -67,7 +67,7 @@ void CJokerState_TurnAtkL::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
 
-	pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 40.f);
+	pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.3f);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 

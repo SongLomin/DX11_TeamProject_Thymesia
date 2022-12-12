@@ -74,7 +74,7 @@ void CJokerState_RunAttackLoop::OnStateStart(const _float& In_fAnimationBlendTim
 		Get_OwnerCharacter().lock()->Get_CurState().lock() == Get_Owner().lock()->Get_Component<CJokerState_RunAttackLoop>().lock())
 
 	{
-		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 15);
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 16);
 	}
 	else
 	{
