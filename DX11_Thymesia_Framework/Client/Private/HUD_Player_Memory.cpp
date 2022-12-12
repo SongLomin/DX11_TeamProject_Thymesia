@@ -5,7 +5,9 @@
 #include "GameManager.h"
 #include "Engine_Defines.h"
 #include "CustomUI.h"
-
+#include "Status_Player.h"
+#include "EasingComponent_Float.h"
+#include "UI_Utils.h"
 
 GAMECLASS_C(CHUD_Player_Memory)
 CLONE_C(CHUD_Player_Memory, CGameObject);
@@ -39,9 +41,7 @@ HRESULT CHUD_Player_Memory::Initialize(void* pArg)
     Add_Child(m_pBG);
     Add_Child(m_pIcon);
 
-    m_fMemory = 0.f;
     m_fLerpMemory = 0.f;
-
 
     GET_SINGLE(CGameManager)->CallBack_ChangePlayer +=
         bind(&CHUD_Player_Memory::Bind_Player, this);
@@ -53,50 +53,29 @@ HRESULT CHUD_Player_Memory::Start()
 {
     __super::Start();
 
+    Bind_Player();
+
     return S_OK;
 }
 
 void CHUD_Player_Memory::Tick(_float fTimeDelta)
 {
+    fTimeDelta = CUI_Utils::UI_TimeDelta(fTimeDelta);
+
     __super::Tick(fTimeDelta);
 
 //TODO: UI: 플레이어 재화 테스트 코드
-#ifdef _DEBUG
-    if (KEY_INPUT(KEY::J, KEY_STATE::TAP))
-    {
-        m_fMemory -= 1000.f;
-        m_fLerpMemory = m_fMemory;
-    }
-    if (KEY_INPUT(KEY::K, KEY_STATE::TAP))
-    {
-        m_fMemory += 1000;
-    }
-#endif
 
-    if (m_fMemory < 0.f)
-    {
-        m_fMemory = 0.f;
-        m_fLerpMemory = m_fMemory;
-    }
-    if (m_fMemory != m_fLerpMemory)
-    {
-        //m_fLerpMemory = SMath::Lerp(m_fLerpMemory, m_fMemory, fTimeDelta * m_fLerpAcc);
-        //m_fLerpAcc += (m_fLerpAcc + 1.f);
-
-     //   m_fLerpMemory += m_fLerpAcc;
-        
-        if (m_fLerpMemory >= m_fMemory || fabsf(m_fLerpMemory - m_fMemory) < 1.f)
-        {
-            m_fLerpMemory = m_fMemory;
-          //  m_fLerpAcc = 1.f;
-        }
-    }
-   
 }
 
 void CHUD_Player_Memory::LateTick(_float fTimeDelta)
 {
+    fTimeDelta = CUI_Utils::UI_TimeDelta(fTimeDelta);
+
     __super::LateTick(fTimeDelta);
+
+    if (m_pEasingComFloat.lock()->Is_Lerping())
+        m_fLerpMemory = m_pEasingComFloat.lock()->Get_Lerp();
 
     TEXTINFO tTextInfo;
 
@@ -124,6 +103,14 @@ HRESULT CHUD_Player_Memory::Render()
     return S_OK;
 }
 
+void CHUD_Player_Memory::Bind_Player()
+{
+    m_fLerpMemory = (_float)m_pPlayerStatus.lock()->Get_Desc().m_iMemory;
+
+    m_pPlayerStatus.lock()->Callback_RootingMemory +=
+        bind(&CHUD_Player_Memory::Call_ChangeMemory, this, placeholders::_1);
+}
+
 
 void CHUD_Player_Memory::OnEventMessage(_uint iArg)
 {
@@ -134,7 +121,6 @@ HRESULT CHUD_Player_Memory::SetUp_ShaderResource()
 {
     __super::SetUp_ShaderResource();
 
-
     if (FAILED(m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture")))
     {
         MSG_BOX("CHUD_Player_Memory");
@@ -142,10 +128,9 @@ HRESULT CHUD_Player_Memory::SetUp_ShaderResource()
     return S_OK;
 }
 
-
 void CHUD_Player_Memory::Call_ChangeMemory(_float fMemory)
 {
-    
+    m_pEasingComFloat.lock()->Set_Lerp(m_fLerpMemory, fMemory, 1.f, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE);
 }
 
 void CHUD_Player_Memory::Free()

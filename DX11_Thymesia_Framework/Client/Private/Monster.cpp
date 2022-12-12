@@ -9,6 +9,8 @@
 #include "Client_Components.h"
 #include "UI.h"
 #include "MonsterHPBar_Base.h"
+#include "Status_Monster.h"
+#include "Status_Player.h"
 
 GAMECLASS_C(CMonster);
 CLONE_C(CMonster, CGameObject);
@@ -167,6 +169,13 @@ void CMonster::Release_Monster()
     GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::MONSTER, Weak_Cast<CGameObject>(m_this));
     m_pHitColliderCom.lock()->Set_Enable(false);
     m_pPhysXControllerCom.lock()->Set_Enable(false);
+
+    CStatus_Monster::MONSTERDESC tMonsterDesc;
+
+    m_pStatus.lock()->Get_Desc(&tMonsterDesc);
+        
+    GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status().lock()->Add_Memory(tMonsterDesc.m_iDropMemory);
+
 }
 
 void CMonster::Enable_Weapons(const _bool In_bEnable)

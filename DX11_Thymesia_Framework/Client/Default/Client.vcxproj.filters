@@ -154,9 +154,6 @@
     <ClInclude Include="..\Public\Player_MPBar.h">
       <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\HP&amp;MP</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Player_Memory.h">
-      <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\Memory</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CustomUI.h">
       <Filter>02. GameObject\01. UI\UI_Elem\CustomUI</Filter>
     </ClInclude>
@@ -1184,6 +1181,12 @@
     <ClInclude Include="..\Public\TargetCurve.h">
       <Filter>02. GameObject\14. TargetCurve</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\EasingComponent_Float.h" />
+    <ClInclude Include="..\Public\HUD_Player_Memory.h" />
+    <ClInclude Include="..\Public\Skill_base.h" />
+    <ClInclude Include="..\Public\Client_Enum.h">
+      <Filter>99. Defines</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1347,9 +1350,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Player_MPBar.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\HP&amp;MP</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\Player_Memory.cpp">
-      <Filter>02. GameObject\01. UI\UI_Container\PlayerUI\HUD\Memory</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CustomUI.cpp">
       <Filter>02. GameObject\01. UI\UI_Elem\CustomUI</Filter>
@@ -2412,6 +2412,9 @@
     <ClCompile Include="..\Private\TargetCurve.cpp">
       <Filter>02. GameObject\14. TargetCurve</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\EasingComponent_Float.cpp" />
+    <ClCompile Include="..\Private\HUD_Player_Memory.cpp" />
+    <ClCompile Include="..\Skill_base.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3223,9 +3226,6 @@
     <Filter Include="02. GameObject\03.Actor\00.Joker">
       <UniqueIdentifier>{19627968-7699-4f4f-934c-858f9cfa3641}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\02.EliteState\00.JokerState">
-      <UniqueIdentifier>{ffcdcf06-d268-41b8-a050-8e18ff22c766}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\02.EliteState\00.JokerState\00.Idle">
       <UniqueIdentifier>{203a4db9-e906-402e-bf94-4552798a9cb1}</UniqueIdentifier>
     </Filter>
@@ -3615,6 +3615,9 @@
     </Filter>
     <Filter Include="02. GameObject\14. TargetCurve">
       <UniqueIdentifier>{66d0937f-5399-43b2-a234-749bac8f599a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\05. Skill">
+      <UniqueIdentifier>{4afe9d2e-fd7e-4b08-801b-6647cc21d4b4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

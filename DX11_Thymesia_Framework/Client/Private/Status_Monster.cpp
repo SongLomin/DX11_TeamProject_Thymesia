@@ -150,6 +150,7 @@ void CStatus_Monster::Init_Status(const void* pArg)
 	m_tMonsterDesc.m_fCurrentParryingGauge = 0.f;
 	m_tMonsterDesc.m_fRecoveryAmountPercentageFromSecond = 0.3f;
 	m_tMonsterDesc.m_fRecoveryMag                        = 1.f;
+	m_tMonsterDesc.m_iDropMemory = 1000;
 }
 
 void CStatus_Monster::Add_Damage(const _float In_fDamage, ATTACK_OPTION eAttackOption)

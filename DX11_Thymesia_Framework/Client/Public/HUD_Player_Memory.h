@@ -5,7 +5,7 @@
 BEGIN(Client)
 
 class CCustomUI;
-
+class CEasingComponent_Float;
 
 class CHUD_Player_Memory final : public CUI
 {
@@ -18,8 +18,8 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
-public:
-
+private:
+	virtual void Bind_Player();
 public:
 	virtual void OnEventMessage(_uint iArg) override;
 
@@ -33,10 +33,12 @@ private:
 	weak_ptr<CCustomUI>		m_pDecoration;
 
 private:
-	_float					m_fMemory;
-
 	_float					m_fLerpMemory;
 	_float					m_fDifference;
+
+
+private:
+	weak_ptr<CEasingComponent_Float> m_pEasingComFloat;
 
 public:
 	void	Call_ChangeMemory(_float fMemory);

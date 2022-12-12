@@ -68,22 +68,23 @@ public:
     FDelegate<_float>   Callback_ChangeHP;
     FDelegate<_float>   Callback_ChangeMP;
     FDelegate<_uint>    Callback_ChangeFeather;
-
+    FDelegate<_uint>    Callback_RootingMemory;
 
     FDelegate<_uint, _uint> Callback_ChangePotion;
 public:
     virtual _bool   Is_Dead();
     virtual void    Init_Status(const void* pArg);
     virtual void    Add_Damage(const _float& In_fDamage);
+    void            Add_Memory(_uint    iRootedMemory);
 
     virtual void   Full_Recovery();
+
 
     PLAYERDESC Get_PlayerDesc() { return m_tDesc; }
     PLAYERPOTIONDESC Get_CurrentPotionDesc() { return m_PotionDesc[m_iCurrentPotionIndex]; }
 
     virtual void   Get_Desc(void* Out_pDesc);
     PLAYERDESC      Get_Desc() const;
-
 public://For HPBar
     _float         Get_MaxHP() { return m_tDesc.m_fMaxHP; }
     _float         Get_CurrentHP() { return m_tDesc.m_fCurrentHP; }
