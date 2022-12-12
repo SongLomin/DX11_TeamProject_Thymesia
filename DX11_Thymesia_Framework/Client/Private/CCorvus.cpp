@@ -282,6 +282,9 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_AVoidR);
 	ADD_STATE_MACRO(CCorvusState_AVoidF);
 	ADD_STATE_MACRO(CCorvusState_Getup);
+	ADD_STATE_MACRO(CCorvusState_Headache_End);
+	ADD_STATE_MACRO(CCorvusState_Headache_Start);
+	ADD_STATE_MACRO(CCorvusState_Headache_Loop);
 
 
 	ADD_STATE_MACRO(CCorvusState_CheckPointStart);

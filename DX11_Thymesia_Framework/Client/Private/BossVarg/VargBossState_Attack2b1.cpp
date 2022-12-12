@@ -12,6 +12,7 @@
 #include "../Public/BossVarg/Varg.h"
 #include "VargWeapon.h"
 #include "PhysXCharacterController.h"
+#include "MobWeapon.h"
 
 GAMECLASS_C(CVargBossState_Attack2b1);
 CLONE_C(CVargBossState_Attack2b1, CComponent)
@@ -63,6 +64,15 @@ void CVargBossState_Attack2b1::LateTick(_float fTimeDelta)
 void CVargBossState_Attack2b1::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+
+	for (auto& elem : pWeapons)
+	{
+		elem.lock()->Set_WeaponDesc(HIT_TYPE::DOWN_HIT, 1.3f);
+	}
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 

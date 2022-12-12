@@ -294,6 +294,11 @@ void CVarg::OnEventMessage(_uint iArg)
 	{
 		Change_State<CVargBossState_Exe_Start>();
 	}
+
+	if ((_uint)EVENT_TYPE::ON_GROGGY == iArg)
+	{
+		Change_State<CVargBossState_Stun_Start>();
+	}
 	
 	if ((_uint)EVENT_TYPE::ON_ENTER_SECTION == iArg)
 	{

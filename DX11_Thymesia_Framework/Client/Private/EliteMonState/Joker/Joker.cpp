@@ -224,6 +224,11 @@ void CJoker::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 void CJoker::OnEventMessage(_uint iArg)
 {
 	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_GROGGY == iArg)
+	{
+		Change_State<CJokerState_Stun_Start>();
+	}
 	
 }
 

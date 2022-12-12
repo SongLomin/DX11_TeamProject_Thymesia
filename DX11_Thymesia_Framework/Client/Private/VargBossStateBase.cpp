@@ -191,10 +191,9 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 		if (Get_OwnerCharacter().lock()->Get_CurState().lock() != Get_Owner().lock()->Get_Component<CVargBossState_Stun_Start>().lock() &&
 			Get_OwnerCharacter().lock()->Get_CurState().lock() != Get_Owner().lock()->Get_Component<CVargBossState_Stun_Loop>().lock())
 		{
-			if (pStatus.lock()->Get_Desc().m_fCurrentHP_Green <= 0.f)
+			if (pStatus.lock()->Is_Dead())
 			{
-				Get_OwnerCharacter().lock()->Change_State<CVargBossState_Stun_Start>(0.05f);
-				
+				Get_OwnerCharacter().lock()->Change_State<CVargBossState_Stun_Start>(0.05f);		
 			}
 		}
 		else
