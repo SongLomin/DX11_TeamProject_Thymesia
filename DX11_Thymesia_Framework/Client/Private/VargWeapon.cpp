@@ -50,7 +50,7 @@ void CVargWeapon::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	m_pTrailDistortion.lock()->Update(fTimeDelta, m_pTransformCom, weak_ptr<CBoneNode>(), m_pModelCom.lock()->Get_ModelData());
-	//m_pTrailDiffuse.lock()->Update(fTimeDelta, m_pTransformCom, weak_ptr<CBoneNode>(), m_pModelCom.lock()->Get_ModelData());
+	m_pTrailDiffuse.lock()->Update(fTimeDelta, m_pTransformCom, weak_ptr<CBoneNode>(), m_pModelCom.lock()->Get_ModelData());
 
 }
 
@@ -70,8 +70,9 @@ _bool CVargWeapon::Set_TrailEnable(const _bool In_bEnable)
 {
 	if (!m_pTrailDistortion.lock() || !m_pTrailDiffuse.lock())
 		return false;
-
-	return m_pTrailDistortion.lock()->Set_Enable(In_bEnable) || m_pTrailDiffuse.lock()->Set_Enable(In_bEnable);
+	m_pTrailDistortion.lock()->Set_Enable(In_bEnable);
+	m_pTrailDiffuse.lock()->Set_Enable(In_bEnable);
+	return true;
 
 }
 

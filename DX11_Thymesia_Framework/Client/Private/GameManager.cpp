@@ -137,7 +137,6 @@ void CGameManager::Enable_Layer(const OBJECT_LAYER& In_Layer)
 	for (auto& elem : pObjectLayer)
 	{
 		elem.lock()->Set_Enable(true);
-
 	}
 
 }
@@ -149,7 +148,6 @@ void CGameManager::Disable_Layer(const OBJECT_LAYER& In_Layer)
 	for (auto& elem : pObjectLayer)
 	{
 		elem.lock()->Set_Enable(false);
-
 	}
 }
 
@@ -696,8 +694,6 @@ void CGameManager::Change_NextLevel(void* pArg)
 	}
 
 	pCurrentLevel.lock()->Change_NextLevel(nullptr);
-	m_SectionObejects.clear();
-
 }
 
 POINT CGameManager::Get_MousePoint()
@@ -750,6 +746,10 @@ void CGameManager::Activate_Section(_uint In_iSection, _bool In_bState)
 //	m_pTargetCamera.lock()->Set_Target(In_TargetGameObject);
 //}
 
+void CGameManager::OnLevelExit()
+{
+	m_SectionObejects.clear();
+}
 
 void CGameManager::Free()
 {

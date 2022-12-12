@@ -39,7 +39,7 @@ private:
 
 private:
     weak_ptr<CCollider>     m_pColliderCom;
-    _int                    m_iCheckIndex = -1;
+    _int                    m_iCheckIndex = 0;
 };
 
 END

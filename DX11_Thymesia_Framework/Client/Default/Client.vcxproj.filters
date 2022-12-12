@@ -1183,6 +1183,8 @@
     </ClInclude>
     <ClInclude Include="..\Public\EasingComponent_Float.h" />
     <ClInclude Include="..\Public\HUD_Player_Memory.h" />
+    <ClInclude Include="..\Public\EasingComponent_Float.h" />
+    <ClInclude Include="..\Public\HUD_Player_Memory.h" />
     <ClInclude Include="..\Public\Skill_base.h" />
     <ClInclude Include="..\Public\Client_Enum.h">
       <Filter>99. Defines</Filter>
@@ -2417,6 +2419,8 @@
     <ClCompile Include="..\Private\TargetCurve.cpp">
       <Filter>02. GameObject\14. TargetCurve</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\EasingComponent_Float.cpp" />
+    <ClCompile Include="..\Private\HUD_Player_Memory.cpp" />
     <ClCompile Include="..\Private\EasingComponent_Float.cpp" />
     <ClCompile Include="..\Private\HUD_Player_Memory.cpp" />
     <ClCompile Include="..\Skill_base.cpp" />
