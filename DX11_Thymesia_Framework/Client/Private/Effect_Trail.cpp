@@ -27,7 +27,6 @@ HRESULT CEffect_Trail::Initialize(void* pArg)//trail을 사용하는 객체로부터 trail
 	
 	m_pTextureCom.lock()->Use_Texture(("UVColorDiffuse"));
 
-
 	m_pNoiseTextureCom = Add_Component<CTexture>();
 	m_pNoiseTextureCom.lock()->Use_Texture(("UVNoise"));
 

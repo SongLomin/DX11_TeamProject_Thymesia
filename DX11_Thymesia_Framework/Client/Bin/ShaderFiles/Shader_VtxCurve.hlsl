@@ -4,7 +4,10 @@
 matrix	g_WorldMatrix, g_ViewMatrix, g_ProjMatrix, g_RotationMatrix;
 matrix	g_Points;
 
-texture2D	g_DiffuseTexture;
+float2 g_vUVMask;
+float fWrapWeight;
+
+texture2D	g_MaskTexture;
 
 struct VS_IN
 {
@@ -139,13 +142,17 @@ PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 
-	//Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexUV);
-
+	
 	//if (Out.vColor.a < 0.1f)
 	//	discard;
 
     Out.vColor = 1.f;
-    Out.vColor.a = 0.3f;
+//    Out.vColor.a = 0.3f;
+	
+    Out.vColor.a*= g_MaskTexture.Sample(DefaultSampler, In.vTexUV * fWrapWeight - g_vUVMask).r;
+	
+	if(0.3f > Out.vColor.a)
+        discard;
 	
 	return Out;	
 }
@@ -155,7 +162,7 @@ technique11 DefaultTechnique
 	pass Default
 	{
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
 		VertexShader = compile vs_5_0 VS_MAIN();

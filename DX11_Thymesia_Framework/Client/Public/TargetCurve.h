@@ -6,6 +6,7 @@ BEGIN(Engine)
 class CVIBuffer_Curve;
 class CShader;
 class CRenderer;
+class CTexture;
 END
 
 BEGIN(Client)
@@ -48,8 +49,11 @@ private: /* ParentTransform */
     weak_ptr<CModel>            m_pTargetModelCom;
     weak_ptr<CBoneNode>         m_pTargetBoneNodeCom;
 
+    weak_ptr<CTexture>          m_pTextureCom;
+
 private:
     _float4x4                   m_CurvePoints;
+    _float2                     m_vMaskUV = {0.f,0.f};
 
 private:
     virtual void OnDestroy() override;
