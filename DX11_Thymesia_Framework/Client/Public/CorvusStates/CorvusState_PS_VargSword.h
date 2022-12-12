@@ -29,10 +29,12 @@ protected:
 
 public:
     void Call_AnimationEnd();
+    void Call_NextKeyFrame(const _uint& In_KeyIndex);
 
 private:
     weak_ptr<CGameObject> m_pTargetObject;
     _uint m_iDustEffectIndex;
+	weak_ptr<CAnimation> m_pThisAnimationCom;
 
 protected:
     virtual void OnEventMessage(weak_ptr<CBase> pArg) override;
