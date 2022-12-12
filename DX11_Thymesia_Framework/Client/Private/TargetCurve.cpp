@@ -58,8 +58,8 @@ void CTargetCurve::Tick(_float fTimeDelta)
 
 	__super::Tick(fTimeDelta);
 
-
-	_matrix  matTargetMonsterWorld = XMLoadFloat4x4(&m_pTargetModelCom.lock()->Get_TransformationMatrix());
+	_float4x4 matTargetModelTransformationMatrix = m_pTargetModelCom.lock()->Get_TransformationMatrix();
+	_matrix  matTargetMonsterWorld = XMLoadFloat4x4(&matTargetModelTransformationMatrix);
 	_matrix  matTargetCombined = m_pTargetBoneNodeCom.lock()->Get_CombinedMatrix();
 
 

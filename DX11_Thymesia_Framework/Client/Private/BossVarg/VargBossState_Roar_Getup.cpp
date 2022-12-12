@@ -12,7 +12,6 @@
 #include "Status_Monster.h"
 #include "Status_Boss.h"
 
-
 GAMECLASS_C(CVargBossState_SPA_Roar_Getup);
 CLONE_C(CVargBossState_SPA_Roar_Getup, CComponent)
 
@@ -111,6 +110,10 @@ void CVargBossState_SPA_Roar_Getup::Call_NextKeyFrame(const _uint& In_KeyIndex)
 
 	switch (In_KeyIndex)
 	{
+	case 34:
+		Weak_Cast<CVarg>(m_pOwner).lock()->Set_EyeTrailEnable(true);
+		GET_SINGLE(CGameManager)->Store_EffectIndex_Temp(GET_SINGLE(CGameManager)->Use_EffectGroup("Varg_Eye", m_pTransformCom, _uint(TIMESCALE_LAYER::MONSTER)));
+		break;
 	case 62:
 		m_bShakingCamera = true;
 		break;
@@ -119,8 +122,6 @@ void CVargBossState_SPA_Roar_Getup::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		m_bShakingCamera = false;
 		break;
 	}
-
-
 
 }
 

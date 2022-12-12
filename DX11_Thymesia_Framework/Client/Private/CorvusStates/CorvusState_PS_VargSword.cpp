@@ -62,6 +62,11 @@ void CCorvusState_PS_VargSword::OnStateStart(const _float& In_fAnimationBlendTim
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+
+	if (m_pThisAnimationCom.lock())
+		m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_PS_VargSword::Call_NextKeyFrame, this, placeholders::_1);
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "NorMonState: RunStart -> OnStateStart" << endl;
@@ -73,7 +78,8 @@ void CCorvusState_PS_VargSword::OnStateStart(const _float& In_fAnimationBlendTim
 void CCorvusState_PS_VargSword::OnStateEnd()
 {
 	__super::OnStateEnd();
-
+	if (m_pThisAnimationCom.lock())
+		m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CCorvusState_PS_VargSword::Call_NextKeyFrame, this, placeholders::_1);
 }
 
 void CCorvusState_PS_VargSword::Call_AnimationEnd()
@@ -83,6 +89,31 @@ void CCorvusState_PS_VargSword::Call_AnimationEnd()
 
 	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
 
+}
+
+void CCorvusState_PS_VargSword::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
+	switch (In_KeyIndex)
+	{
+	case 41:
+	{
+		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_vector vShakingOffset = XMVectorSet(-1.f, -0.2f, 0.f, 0.f);
+		vShakingOffset = XMVector3TransformNormal(vShakingOffset, OwnerWorldMatrix);
+		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffset, 0.2f, 1.f, 9.f, 0.4f);
+		GAMEINSTANCE->Set_MotionBlur(0.2f);
+	}
+		return;
+	case 97:
+	{
+		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_vector vShakingOffset = XMVectorSet(0.f, -1.f, 0.f, 0.f);
+		vShakingOffset = XMVector3TransformNormal(vShakingOffset, OwnerWorldMatrix);
+		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffset, 0.3f, 1.f, 9.f, 0.4f);
+		GAMEINSTANCE->Set_MotionBlur(0.3f);
+	}
+		return;
+	}
 }
 
 

@@ -6,7 +6,7 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
 
     iNumChannels = In_pAiAnimation->mNumChannels;
 
-    /* ÇöÀç ¾Ö´Ï¸ÞÀÌ¼ÇÀ» Àç»óÇÏ´Âµ¥ °É¸®´Â ½Ã°£. */
+    /* ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´Âµï¿½ ï¿½É¸ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½. */
     fDuration = (_float)In_pAiAnimation->mDuration;
     fTickPerSecond = (_float)In_pAiAnimation->mTicksPerSecond * In_fSpeed;
 
@@ -134,6 +134,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Seq_BossFightStart", 5.f);
 
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_AvoidB", 1.25f);
+#pragma endregion // Varg
 
 
 
@@ -185,7 +186,7 @@ void ANIMATION_DATA::Bake_ReverseAnimation(shared_ptr<ANIMATION_DATA>& Out_Anima
 
     Out_AnimationData->iNumChannels = iNumChannels;
 
-    /* ÇöÀç ¾Ö´Ï¸ÞÀÌ¼ÇÀ» Àç»óÇÏ´Âµ¥ °É¸®´Â ½Ã°£. */
+    /* ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´Âµï¿½ ï¿½É¸ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½. */
     Out_AnimationData->fDuration = fDuration;
     Out_AnimationData->fTickPerSecond = fTickPerSecond;
 

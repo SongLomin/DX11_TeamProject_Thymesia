@@ -732,9 +732,7 @@ void CGameManager::Activate_Section(_uint In_iSection, _bool In_bState)
 		return;
 
 	for (auto& elem : iter_find->second)
-	{
 		elem.lock()->OnEventMessage((In_bState) ? ((_uint)EVENT_TYPE::ON_ENTER_SECTION) : ((_uint)EVENT_TYPE::ON_EXIT_SECTION));
-	}
 }
 
 //void CGameManager::Set_TargetForTargetCamera(weak_ptr<CGameObject> In_TargetGameObject)
