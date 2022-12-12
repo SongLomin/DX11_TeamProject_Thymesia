@@ -193,7 +193,8 @@ void CUI_MonsterFocus::FollowTargetBone()
    _matrix  matTargetCombined = m_pBoneNode.lock()->Get_CombinedMatrix();
    // _vector vTargetWorldPos =    m_pTargetMonster.lock()->Get_WorldPosition();
 
-   _matrix  matTargetMonsterWorld = XMLoadFloat4x4(&m_pTargetMonster.lock()->Get_Component<CModel>().lock()->Get_TransformationMatrix());
+   _float4x4 matTransformation = m_pTargetMonster.lock()->Get_Component<CModel>().lock()->Get_TransformationMatrix();
+   _matrix  matTargetMonsterWorld = XMLoadFloat4x4(&matTransformation);
 
    _matrix BoneMatrix = matTargetCombined * matTargetMonsterWorld;
 
