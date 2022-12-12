@@ -67,7 +67,6 @@ void CJokerState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CJokerState_RunAtkEnd>().lock() ||
 		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CJokerState_JumpAttack>().lock() ||
 		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CJokerState_WheelAtkEnd>().lock())
-	
 	{
 		m_bTurnCheck = true;
 	}
@@ -111,90 +110,95 @@ _bool CJokerState_Idle::Check_AndChangeNextState()
 
 
 
-	if (fPToMDistance < 1.f)
+	if (fPToMDistance <= 1.f)
 	{
-		int iRand = rand() % 3;
+		if (m_bTurnCheck)
+		{
+			TurnMechanism();
+		}
+		
+		Get_OwnerCharacter().lock()->Change_State<CJokerState_WalkB>(0.05f);
+
+		return true;
+
+		
+	}
+
+	if (fPToMDistance > 1.f && fPToMDistance <= 4.f)
+	{
+		if (m_bTurnCheck)
+		{
+			TurnMechanism();
+		}
+
+		int iRand = rand() % 4;
+
+		while (true)
+		{
+			if (iRand == m_iPreCount)
+			{
+				iRand = rand() % 5;
+				continue;
+			}
+			else
+			{
+				break;
+			}
+
+
+		}
 
 		switch (iRand)
 		{
 		case 0:
-			Get_OwnerCharacter().lock()->Change_State<CJokerState_WalkB>(0.05f);
+			Get_OwnerCharacter().lock()->Change_State<CJokerState_ComboA1>(0.05f);
 			break;
 		case 1:
-			Get_OwnerCharacter().lock()->Change_State<CJokerState_WalkL>(0.05f);
+			Get_OwnerCharacter().lock()->Change_State<CJokerState_ShockAttack>(0.05f);
 			break;
 		case 2:
-			Get_OwnerCharacter().lock()->Change_State<CJokerState_WalkR>(0.05f);
+			Get_OwnerCharacter().lock()->Change_State<CJokerState_StrongAttack>(0.05f);
+			break;
+		case 3:
+			Get_OwnerCharacter().lock()->Change_State<CJokerState_RunAttackStart>(0.05f);
+			break;
+		case 4:
+			Get_OwnerCharacter().lock()->Change_State<CJokerState_WheelAtkStart>(0.05f);
+			break;
+		}
+		m_iPreCount = iRand;
+		return true;
+	}
+
+	if (fPToMDistance > 4.f && fPToMDistance <= 7.f)
+	{
+		if (m_bTurnCheck)
+		{
+			TurnMechanism();
+		}
+
+		Get_OwnerCharacter().lock()->Change_State<CJokerState_WalkF>(0.05f);
+
+		return true;
+	}
+
+	if (fPToMDistance > 7.f)
+	{
+		int iRand = rand() % 2;
+
+		switch (iRand)
+		{
+		case 0:
+			Get_OwnerCharacter().lock()->Change_State<CJokerState_JumpAttack>(0.05f);
+			break;
+		case 1:
+			Get_OwnerCharacter().lock()->Change_State<CJokerState_RunAttackStart>(0.05f);
 			break;
 		}
 		
-		return true;
-	
-	}
-
-	if (fPToMDistance >= 4.f)
-	{
-		if (m_bTurnCheck)
-		{
-			TurnMechanism();
-		}
-		else
-		{
-			int iRand = rand() % 3;
-
-			switch (iRand)
-			{
-			case 0:
-				Get_OwnerCharacter().lock()->Change_State<CJokerState_JumpAttack>(0.05f);
-				break;
-			case 1:
-				Get_OwnerCharacter().lock()->Change_State<CJokerState_RunAttackStart>(0.05f);
-				break;
-			case 2:
-				Get_OwnerCharacter().lock()->Change_State<CJokerState_WalkF>(0.05f);
-				break;
-			}
-		}
-
 
 		return true;
 	}
-
-	if (fPToMDistance >= 1.f && fPToMDistance < 4.f)  // 5보다 작다
-	{
-		if (m_bTurnCheck)
-		{
-			TurnMechanism();
-		}
-		else
-		{
-			int iRand = rand() % 5;
-			switch (iRand)
-			{
-			case 0:
-				Get_OwnerCharacter().lock()->Change_State<CJokerState_ComboA1>(0.05f);
-				break;
-			case 1:
-				Get_OwnerCharacter().lock()->Change_State<CJokerState_ShockAttack>(0.05f);
-				break;
-			case 2:
-				Get_OwnerCharacter().lock()->Change_State<CJokerState_RunAttackStart>(0.05f);
-				break;
-			case 3:
-				Get_OwnerCharacter().lock()->Change_State<CJokerState_WheelAtkStart>(0.05f);
-				break;
-			case 4:
-				Get_OwnerCharacter().lock()->Change_State<CJokerState_Combob1>(0.05f);
-				break;
-			}
-		}
-
-		// 5보다 작을떄 1보다 작을떄
-
-		return true;
-	}
-
-
 
 	return false;
 }

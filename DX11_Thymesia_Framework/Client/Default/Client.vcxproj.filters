@@ -1076,9 +1076,6 @@
     <ClInclude Include="..\Public\EliteMonState\Joker\JokerState_RunAtkStart.h">
       <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\00.JokerState\12.RunAtkStart</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\EliteMonState\Joker\JokerState_RunAtkLoop.h">
-      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\00.JokerState\11.RunAtkLoop</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\EliteMonState\Joker\JokerState_WheelAtkEnd.h">
       <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\00.JokerState\25.WheelAtkEnd</Filter>
     </ClInclude>
@@ -1180,6 +1177,20 @@
     </ClInclude>
     <ClInclude Include="..\Public\TargetCurve.h">
       <Filter>02. GameObject\14. TargetCurve</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EasingComponent_Float.h" />
+    <ClInclude Include="..\Public\HUD_Player_Memory.h" />
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Joker_Execution.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\01.Joker_Execution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EliteMonState\Joker\JokerState_RunAtkLoop.h">
+      <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\00.JokerState\11.RunAtkLoop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Getup.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\24.Getup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtXL.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL\00.State_HurtXL</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\EasingComponent_Float.h" />
     <ClInclude Include="..\Public\HUD_Player_Memory.h" />
@@ -2421,6 +2432,17 @@
     </ClCompile>
     <ClCompile Include="..\Private\EasingComponent_Float.cpp" />
     <ClCompile Include="..\Private\HUD_Player_Memory.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Joker_Execution.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\01.Joker_Execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Getup.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\24.Getup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXL.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL\00.State_HurtXL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\EasingComponent_Float.cpp" />
+    <ClCompile Include="..\Private\HUD_Player_Memory.cpp" />
     <ClCompile Include="..\Private\EasingComponent_Float.cpp" />
     <ClCompile Include="..\Private\HUD_Player_Memory.cpp" />
     <ClCompile Include="..\Skill_base.cpp" />
@@ -3629,6 +3651,12 @@
     </Filter>
     <Filter Include="02. GameObject\14. TargetCurve">
       <UniqueIdentifier>{66d0937f-5399-43b2-a234-749bac8f599a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\24.Getup">
+      <UniqueIdentifier>{c9ce0292-2ece-4ee0-8f1d-d765c4728d6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL\00.State_HurtXL">
+      <UniqueIdentifier>{8a8b1c43-b1ec-443b-aca0-66f05e014609}</UniqueIdentifier>
     </Filter>
     <Filter Include="05. Component\05. Skill">
       <UniqueIdentifier>{4afe9d2e-fd7e-4b08-801b-6647cc21d4b4}</UniqueIdentifier>

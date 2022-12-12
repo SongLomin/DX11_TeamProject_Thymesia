@@ -118,35 +118,29 @@ _bool CJokerState_WalkF::Check_AndChangeNextState()
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 	_float fMToMDistance = GetStartPositionToCurrentPositionDir(); // 몬스터스타트포지션과 몬스터현재 포지션 사이의 거리
 
-	if (fPToMDistance <= 4.f)
+
+
+
+	if (fPToMDistance < 4.f)
 	{
-		int iRand = rand() % 2;
+		int iRand = rand() % 3;
 
 		switch (iRand)
 		{
-		case 0:
-			Get_OwnerCharacter().lock()->Change_State<CJokerState_ComboA1>(0.05f);
-			break;
 		case 1:
 			Get_OwnerCharacter().lock()->Change_State<CJokerState_WheelAtkStart>(0.05f);
 			break;
+		case 2:
+			Get_OwnerCharacter().lock()->Change_State<CJokerState_ComboA1>(0.05f);
+			break;
+
 		}
+		return true;
 	}
 
-	else
-	{
-		int iRand = rand() % 2;
 
-		switch (iRand)
-		{
-		case 0:
-			Get_OwnerCharacter().lock()->Change_State<CJokerState_JumpAttack>(0.05f);
-			break;
-		case 1:
-			Get_OwnerCharacter().lock()->Change_State<CJokerState_RunAttackStart>(0.05f);
-			break;
-		}
-	}
+	
+
 
 
 	return false;

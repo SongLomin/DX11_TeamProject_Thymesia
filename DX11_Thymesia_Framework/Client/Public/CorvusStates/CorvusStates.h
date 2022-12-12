@@ -46,6 +46,7 @@
 #include "CorvusStates/CorvusState_HurtXXL.h"
 #include "CorvusStates/CorvusState_HurtL.h"
 #include "CorvusStates/CorvusState_HurtR.h"
+#include "CorvusStates/CorvusState_HurtXL.h"
 #include "CorvusStates/CorvusState_Die.h"
 #include "CorvusStates/CorvusState_ParryDeflectLeft.h"
 #include "CorvusStates/CorvusState_ParryDeflectLeftup.h"
@@ -70,6 +71,7 @@
 #include "CorvusStates/CorvusState_Climb_Start.h"
 #include "CorvusStates/CorvusState_Climb_R_Up_Down_End.h"
 #include "CorvusStates/CorvusState_Climb_L_Up_Down_End.h"
+#include "CorvusStates/CorvusState_Getup.h"
 
 
 
@@ -90,6 +92,7 @@
 #include "CorvusStates/StateExecution/Varg_Execution.h"
 #include "CorvusStates/StateExecution/CorvusState_NorMob_Execution.h"
 #include "CorvusStates/StateExecution/CorvusState_RaidAttack1Hurt.h"
+#include "CorvusStates/StateExecution/CorvusState_Joker_Execution.h"
 //플레이어 처형 스테이트
 // 
 // 

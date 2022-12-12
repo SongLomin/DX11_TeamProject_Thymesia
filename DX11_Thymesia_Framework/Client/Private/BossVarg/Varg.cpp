@@ -103,17 +103,9 @@ HRESULT CVarg::Start()
 	m_pTrailEffect.lock()->Set_TextureIndex(1,869, 0);
 	m_pTrailBoneNode = m_pModelCom.lock()->Find_BoneNode("Bip001-Head");
 
+	CBase::Set_Enable(true);
+	
 	Change_State<CVargBossState_IdleGeneral>();
-
-	//switch (m_eBossStartType)
-	//{
-	//case Client::BOSSSTARTTYPE::BEGINSTART:
-	//	Change_State<CVargBossState_Start>();
-	//	break;
-	//case Client::BOSSSTARTTYPE::NORMALSTART:
-	//	Change_State<CVargBossState_IdleGeneral>();
-	//	break;
-	//}
 	
 
 	// weak_ptr<CBoneNode> pTargetBoneNode = m_pModelCom.lock()->Find_BoneNode();

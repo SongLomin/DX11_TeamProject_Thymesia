@@ -234,11 +234,11 @@ _bool CCorvusState_LAttack4::Check_AndChangeNextState()
 			return true;
 		}
 	}
-
-	if (Check_RequirementAttackState())
+	if (Check_RequirementNextAttackState())
 	{
-		if (Check_RequirementNextAttackState())
+		if (Check_RequirementAttackState())
 		{
+
 			weak_ptr<CGameObject> pTargetObject;
 
 			if (Check_RequirementExcuteState(pTargetObject))
@@ -257,6 +257,7 @@ _bool CCorvusState_LAttack4::Check_AndChangeNextState()
 
 			}
 			return true;
+
 		}
 	}
 

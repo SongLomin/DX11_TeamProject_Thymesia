@@ -50,7 +50,7 @@ HRESULT CMonster::Initialize(void* pArg)
 
     m_eAttackCollisionLayer = COLLISION_LAYER::MONSTER_ATTACK;
 
-    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::MONSTER, Weak_Cast<CGameObject>(m_this));
+    //GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::MONSTER, Weak_Cast<CGameObject>(m_this));
 
     m_pDissolveTextureCom = Add_Component<CTexture>();
     m_pDissolveTextureCom.lock()->Use_Texture("Dissolve_1");
@@ -166,7 +166,7 @@ void     CMonster::Bind_HPBar()
 
 void CMonster::Release_Monster()
 {
-    GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::MONSTER, Weak_Cast<CGameObject>(m_this));
+    GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::MONSTER, m_thisToGameObject);
     m_pHitColliderCom.lock()->Set_Enable(false);
     m_pPhysXControllerCom.lock()->Set_Enable(false);
 

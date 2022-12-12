@@ -38,7 +38,7 @@ void CJokerState_Stun_Start::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Joker_Stun_Start");
 
 
-	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_Stun_Start::Call_AnimationEnd, this);*/
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_Stun_Start::Call_AnimationEnd, this);
 }
 
 void CJokerState_Stun_Start::Tick(_float fTimeDelta)
@@ -78,6 +78,19 @@ void CJokerState_Stun_Start::OnStateEnd()
 	__super::OnStateEnd();
 
 
+}
+
+void CJokerState_Stun_Start::Call_AnimationEnd()
+{
+	if (!Get_Enable())
+		return;
+
+	Get_OwnerCharacter().lock()->Change_State<CJokerState_Stun_Loop>(0.05f);
+}
+
+void CJokerState_Stun_Start::OnDestroy()
+{
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_Stun_Start::Call_AnimationEnd, this);
 }
 
 void CJokerState_Stun_Start::Free()

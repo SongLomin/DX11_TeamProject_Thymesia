@@ -109,3 +109,8 @@ _bool CJokerState_TakeExecution_Start::Check_AndChangeNextState()
 	return false;
 }
 
+void CJokerState_TakeExecution_Start::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CEliteStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+}
+

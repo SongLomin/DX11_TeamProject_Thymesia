@@ -9,6 +9,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "JokerStates.h"
+#include "MobWeapon.h"
 
 
 
@@ -112,12 +113,22 @@ _bool CJokerState_RunAtkEnd::Check_AndChangeNextState()
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.2f &&
 		m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() <= 0.4f)
 	{
+		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+
+		pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 30.f);
 		m_bAttackLookAtLimit = false;
 	}
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.4f &&
-		m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() <= 0.47f)
+		m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() <= 0.42f)
 	{
+		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+
+		pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::DOWN_HIT, 60.f);
 		m_bAttackLookAtLimit = true;
 	}
 	else

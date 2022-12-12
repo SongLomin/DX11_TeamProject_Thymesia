@@ -14,9 +14,7 @@ class CJokerState_RunAttackLoop :
 	CLONE_H(CJokerState_RunAttackLoop, CComponent)
 		SHALLOW_COPY(CJokerState_RunAttackLoop)
 
-public:
-	void Set_TurnCheck(_bool TurnCheck) { m_bTurnCheck = TurnCheck; }
-	void Set_BackReset(_bool BackReset) { m_bBackReset = BackReset; }
+
 
 
 protected:
@@ -32,10 +30,14 @@ protected:
 	virtual _bool Check_AndChangeNextState() override;
 
 private:
-	_bool    m_bTurnCheck = false;
-	_bool    m_bBackReset = false;
+	_float m_fMaxSpeed = 4.f;
+	_float m_fCurrentSpeed = 1.5f;
+	_float m_fAccel = 0.f;
 
+private:
+	void Call_AnimationEnd();
 protected:
+	virtual void OnDestroy() override;
 	void Free();
 
 };
