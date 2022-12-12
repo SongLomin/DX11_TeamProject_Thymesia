@@ -7,6 +7,7 @@ class CVIBuffer_Curve;
 class CShader;
 class CRenderer;
 class CTexture;
+class CBoneNode;
 END
 
 BEGIN(Client)
