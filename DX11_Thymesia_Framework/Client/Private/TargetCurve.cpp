@@ -94,6 +94,9 @@ void CTargetCurve::Tick(_float fTimeDelta)
 
 	XMStoreFloat4x4(&m_CurvePoints, CurvePoints);
 
+	m_vMaskUV.x += fTimeDelta;
+	if (1.f < m_vMaskUV.x)
+		m_vMaskUV.x = 0.f;
 }
 
 void CTargetCurve::LateTick(_float fTimeDelta)
@@ -145,16 +148,14 @@ void CTargetCurve::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_RotationMatrix", (void*)(&RotationMatrix), sizeof(_float4x4))))
 		DEBUG_ASSERT;
 
-	_float2 vUVMask = { 0.f,0.f };
-
-	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vUVMask", &vUVMask, sizeof(_float2))))
+	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vUVMask", &m_vMaskUV, sizeof(_float2))))
 		DEBUG_ASSERT;
 
 	_float fWrapWeight = 1.f;
 
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("fWrapWeight", &fWrapWeight, sizeof(_float))))
 		DEBUG_ASSERT;
-	if (FAILED(m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 628)))
+	if (FAILED(m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 882)))
 		DEBUG_ASSERT;
 }
 

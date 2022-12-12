@@ -53,6 +53,7 @@ private: /* ParentTransform */
 
 private:
     _float4x4                   m_CurvePoints;
+    _float2                     m_vMaskUV = {0.f,0.f};
 
 private:
     virtual void OnDestroy() override;
