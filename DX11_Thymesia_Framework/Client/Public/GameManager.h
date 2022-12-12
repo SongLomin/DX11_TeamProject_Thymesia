@@ -99,6 +99,7 @@ public:
 public:
     void Registration_CheckPoint(weak_ptr<CInteraction_CheckPoint> In_CheckPoint);
     HRESULT Respawn_LastCheckPoint(_float4* Out_RespawnPos);
+    virtual void OnLevelExit() override;
 
 private:
     void Start_Peace();

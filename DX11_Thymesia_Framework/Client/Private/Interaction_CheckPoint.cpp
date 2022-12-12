@@ -117,6 +117,7 @@ void CInteraction_CheckPoint::Load_FromJson(const json& In_Json)
     {
         m_iCheckIndex = In_Json["CheckIndex"];
 
+        // TODO : Save 기능이 구현될 경우 수정하기, 스테이지 시작시 처음 인덱스 의자를 체크포인트로 등록하는 기능임
         if (0 == m_iCheckIndex)
             GET_SINGLE(CGameManager).get()->Registration_CheckPoint(Weak_Cast<CInteraction_CheckPoint>(m_this));
     }

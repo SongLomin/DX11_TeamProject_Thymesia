@@ -176,6 +176,7 @@ shared_ptr<CLevel_Loading> CLevel_Loading::Create(LEVEL eNextLevel)
 	shared_ptr<CLevel_Loading>		pInstance = make_shared<CLevel_Loading>();
 	pInstance->m_eMyLevel = LEVEL_LOADING;
 	GAMEINSTANCE->LevelExit();
+	GET_SINGLE(CGameManager)->OnLevelExit();
 	pInstance->Initialize(eNextLevel);
 	
 	return pInstance;

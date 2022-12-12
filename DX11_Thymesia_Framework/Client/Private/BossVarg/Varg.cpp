@@ -103,17 +103,17 @@ HRESULT CVarg::Start()
 	m_pTrailEffect.lock()->Set_TextureIndex(1,869, 0);
 	m_pTrailBoneNode = m_pModelCom.lock()->Find_BoneNode("Bip001-Head");
 
-	CBase::Set_Enable(true);
-	
-	switch (m_eBossStartType)
-	{
-	case Client::BOSSSTARTTYPE::BEGINSTART:
-		Change_State<CVargBossState_Start>();
-		break;
-	case Client::BOSSSTARTTYPE::NORMALSTART:
-		Change_State<CVargBossState_IdleGeneral>();
-		break;
-	}
+	Change_State<CVargBossState_IdleGeneral>();
+
+	//switch (m_eBossStartType)
+	//{
+	//case Client::BOSSSTARTTYPE::BEGINSTART:
+	//	Change_State<CVargBossState_Start>();
+	//	break;
+	//case Client::BOSSSTARTTYPE::NORMALSTART:
+	//	Change_State<CVargBossState_IdleGeneral>();
+	//	break;
+	//}
 	
 
 	// weak_ptr<CBoneNode> pTargetBoneNode = m_pModelCom.lock()->Find_BoneNode();
@@ -287,8 +287,6 @@ void CVarg::OnEventMessage(_uint iArg)
 {
 	__super::OnEventMessage(iArg);
 
-
-
 	if ((_uint)EVENT_TYPE::ON_CATCH == iArg)
 	{
 		Change_State<CVargBossState_SPA_Catch>();
@@ -299,6 +297,10 @@ void CVarg::OnEventMessage(_uint iArg)
 		Change_State<CVargBossState_Exe_Start>();
 	}
 	
+	if ((_uint)EVENT_TYPE::ON_ENTER_SECTION == iArg)
+	{
+		Set_Enable(true);
+	}
 }
 
 void CVarg::OnEnable(void* _Arg)
