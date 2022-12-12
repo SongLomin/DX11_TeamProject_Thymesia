@@ -157,14 +157,12 @@
 #undef _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
 #undef _JOJO_EFFECTS_
-#define _ANIMATION_TOOL_CORVUS_WEAPON_
+#define _ANIMATION_TOOL_WEAPON_
 // #define _BAKE_EFFECTMESH_FBX_
 #pragma endregion // Effects
 
 #endif // _JOJO_EFFECT_TOOL_
 /////////////// For. JoJo Effect Tool ///////////////
-
-
 
 #define CLIENT_DECLATION_UI class CUI; class CCustomUI; class CProgressBar; class CHUD_Hover;
 #define ENGINE_DECLATION_UI class CTexture; class CShader;   
@@ -491,18 +489,14 @@ namespace Client
 		ENERGISEDWEAPONLV2,
 
 		TALENT_NAME_END
-
-
-
-
 	};
 
 	enum class COLISIONOBJECT_FLAG
 	{
-		LADDERUP = (1 << 0),
+		LADDERUP   = (1 << 0),
 		LADDERDOWN = (1 << 1),
-		ELEVATOR = (1 << 2),
-		DOOR = (1 << 3),
+		ELEVATOR   = (1 << 2),
+		DOOR       = (1 << 3),
 		CHECKPOINT = (1 <<4),
 		FLAG_END
 	};
@@ -531,9 +525,6 @@ extern HINSTANCE g_hInst;
 
 using namespace Client;
 namespace fs = std::filesystem;
-
-
-
 
 #define EVENT_DRAW_EDITER 1
 #define EVENT_INIT_EDITER 0
