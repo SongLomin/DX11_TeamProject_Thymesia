@@ -64,6 +64,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
    SET_ANIM_SPEED("Corvus_SD1_ParryL_NEW", 4.f);
    SET_ANIM_SPEED("Corvus_SD1_ParryR_NEW", 4.f);
    SET_ANIM_SPEED("Corvus_VSVarg_TakeSPAttack", 1.853f);
+ 
 
 	SET_ANIM_SPEED("Corvus_Raven_ClawLong_L01", 2.f);
 	SET_ANIM_SPEED("Corvus_Raven_ClawLong_L02", 2.f);
@@ -96,6 +97,8 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 
     SET_ANIM_SPEED("Corvus_SD_ParryDeflect_L", 2.f);
     SET_ANIM_SPEED("Corvus_SD_ParryDeflect_LUp", 2.f);
+    SET_ANIM_SPEED("Corvus_SD_HurtXLF", 2.f);
+    SET_ANIM_SPEED("Corvus_SD_HurtXXLF", 2.f);
 
 	SET_ANIM_SPEED("Corvus_SD_ParryDeflect_R", 2.f);
 	SET_ANIM_SPEED("Corvus_SD_ParryDeflect_RUp", 2.f);
@@ -104,6 +107,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 	SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_R_UP", 2.f);
 	SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_L_Down", 2.f);
 	SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_R_Down", 2.f);
+	SET_ANIM_SPEED("Corvus_SD_GetUp", 2.f);
 	//SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution", 1.2f);
     
 
@@ -150,6 +154,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("Joker_WheelAttackStart", 1.25f);
     SET_ANIM_SPEED("Joker_WheelAttackLoop", 1.25f);
     SET_ANIM_SPEED("Joker_WheelAttackEnd", 1.25f);
+    SET_ANIM_SPEED("Joker_TakeExecution_Start", 1.45f);
 
 
 

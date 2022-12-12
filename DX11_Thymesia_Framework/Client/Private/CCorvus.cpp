@@ -229,6 +229,7 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_HurtL);
 	ADD_STATE_MACRO(CCorvusState_HurtR);
 	ADD_STATE_MACRO(CCorvusState_HurtXXL);
+	ADD_STATE_MACRO(CCorvusState_HurtXL);
 	ADD_STATE_MACRO(CCorvusState_NorMob_Execution);
 	ADD_STATE_MACRO(CCorvusState_ParryDeflectLeft);
 	ADD_STATE_MACRO(CCorvusState_ParryDeflectLeftup);
@@ -272,10 +273,13 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_AVoidL);
 	ADD_STATE_MACRO(CCorvusState_AVoidR);
 	ADD_STATE_MACRO(CCorvusState_AVoidF);
+	ADD_STATE_MACRO(CCorvusState_Getup);
+
 
 	ADD_STATE_MACRO(CCorvusState_CheckPointStart);
 	ADD_STATE_MACRO(CCorvusState_CheckPointEnd);
 	ADD_STATE_MACRO(CCorvusState_CheckPointLoop);
+	ADD_STATE_MACRO(CCorvusState_Joker_Execution);
 
 #undef ADD_STATE_MACRO
 }
@@ -384,6 +388,11 @@ void CCorvus::OnEventMessage(_uint iArg)
 	if ((_uint)EVENT_TYPE::ON_SITUP == iArg)
 	{
 		Change_State<CCorvusState_CheckPointEnd>();
+	}
+
+	if ((_uint)EVENT_TYPE::ON_JOKEREXCUTION == iArg)
+	{
+		Change_State<CCorvusState_Joker_Execution>();
 	}
 }
 

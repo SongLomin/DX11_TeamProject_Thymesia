@@ -115,7 +115,7 @@ void CNorMonState_HeavyAttack1::OnStateStart(const _float& In_fAnimationBlendTim
 
 			for (auto& elem : pWeapons)
 			{
-				elem.lock()->Set_WeaponDesc(HIT_TYPE::DOWN_HIT, 1.f);
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::UPPER_HIT, 1.f);
 			}
 		}
 			

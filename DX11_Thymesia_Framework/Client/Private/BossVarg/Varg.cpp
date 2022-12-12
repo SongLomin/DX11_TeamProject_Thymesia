@@ -105,15 +105,7 @@ HRESULT CVarg::Start()
 
 	CBase::Set_Enable(true);
 	
-	switch (m_eBossStartType)
-	{
-	case Client::BOSSSTARTTYPE::BEGINSTART:
-		Change_State<CVargBossState_Start>();
-		break;
-	case Client::BOSSSTARTTYPE::NORMALSTART:
-		Change_State<CVargBossState_IdleGeneral>();
-		break;
-	}
+	Change_State<CVargBossState_IdleGeneral>();
 	
 
 	// weak_ptr<CBoneNode> pTargetBoneNode = m_pModelCom.lock()->Find_BoneNode();

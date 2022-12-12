@@ -199,13 +199,10 @@ void CJokerStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider>
 		}
 		else
 		{
-			//이떄 플레이어한테 이벤트를 던져줍시다
-			if (pStatus.lock()->Get_Desc().m_iLifeCount == 2)
-			{
-				pStatus.lock()->Minus_LifePoint(1);
-				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGEXECUTION);
+			
+				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_JOKEREXCUTION);
 				_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
-				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, 2.2f, 0.f));
+				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, -0.4f, 0.f));
 				pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
 					vResultOtherWorldMatrix.r[3],
 					GAMEINSTANCE->Get_DeltaTime(),
@@ -213,22 +210,6 @@ void CJokerStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider>
 				pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
 				Get_OwnerCharacter().lock()->Change_State<CJokerState_TakeExecution_Start>(0.05f);
 				
-			}
-			else
-			{
-				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGEXECUTION);
-				_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
-				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, 2.2f, 0.f));
-				pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
-					vResultOtherWorldMatrix.r[3],
-					GAMEINSTANCE->Get_DeltaTime(),
-					Filters);
-				pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
-				Get_OwnerCharacter().lock()->Change_State<CJokerState_TakeExecution_Start>(0.05f);
-				
-			}
-			
-			
 		}
 
 		

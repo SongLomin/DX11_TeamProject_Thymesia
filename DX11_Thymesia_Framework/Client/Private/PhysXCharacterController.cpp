@@ -28,6 +28,14 @@ void CPhysXCharacterController::Start()
 
 bool CPhysXCharacterController::filter(const PxController& a, const PxController& b)
 {
+	if (!Get_Enable())
+		return false;
+
+	_uint iIndex = *(_uint*)b.getUserData();
+
+	if (!GAMEINSTANCE->Find_PhysXController(iIndex).lock()->Get_Enable())
+		return false;
+
 	return true;
 }
 

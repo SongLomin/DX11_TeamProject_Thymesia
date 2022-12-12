@@ -236,6 +236,8 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Fall_End.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Fall_Loop.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Fall_Start.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Getup.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtXL.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_LAttack5.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Parry1.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Parry2.h" />
@@ -257,6 +259,7 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_RunL.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_RunR.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ShortAvoid.h" />
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Joker_Execution.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_RaidAttack1Hurt.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect.h" />
@@ -641,6 +644,8 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Fall_End.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Fall_Loop.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Fall_Start.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Getup.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXL.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectLeft.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectLeftup.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectRight.cpp" />
@@ -681,6 +686,7 @@
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_SharpWeaponLV1.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_SharpWeaponLV2.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Sword.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Joker_Execution.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_RaidAttack1Hurt.cpp" />
     <ClCompile Include="..\Private\CustomFont.cpp" />
     <ClCompile Include="..\Private\CUtils_EasingTransform.cpp" />

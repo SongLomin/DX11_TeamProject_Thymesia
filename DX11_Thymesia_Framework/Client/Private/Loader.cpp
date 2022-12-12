@@ -128,6 +128,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading Captured Resources..."));
 	GAMEINSTANCE->Load_ResourcesFromJson("../Bin/LevelData/CapturedResource/Logo.json");
 	GAMEINSTANCE->Load_ResourcesFromJson("../Bin/LevelData/CapturedResource/Loading.json");
+	Load_UIResource();
 
 #else // _LOAD_CAPTURED_RESOURCE_
 	lstrcpy(m_szLoadingText, TEXT("Loading Default Resources..."));

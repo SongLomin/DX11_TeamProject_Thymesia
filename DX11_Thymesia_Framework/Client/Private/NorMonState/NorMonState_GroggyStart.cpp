@@ -78,6 +78,8 @@ void CNorMonState_GroggyStart::OnStateStart(const _float& In_fAnimationBlendTime
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG

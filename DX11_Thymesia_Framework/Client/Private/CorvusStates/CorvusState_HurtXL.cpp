@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CorvusStates/CorvusState_HurtXXL.h"
+#include "CorvusStates/CorvusState_HurtXL.h"
 #include "Model.h"
 #include "GameInstance.h"
 #include "GameObject.h"
@@ -10,16 +10,16 @@
 #include "GameManager.h"
 
 
-GAMECLASS_C(CCorvusState_HurtXXL);
-CLONE_C(CCorvusState_HurtXXL, CComponent)
+GAMECLASS_C(CCorvusState_HurtXL);
+CLONE_C(CCorvusState_HurtXL, CComponent)
 
-HRESULT CCorvusState_HurtXXL::Initialize_Prototype()
+HRESULT CCorvusState_HurtXL::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 	return S_OK;
 }
 
-HRESULT CCorvusState_HurtXXL::Initialize(void* pArg)
+HRESULT CCorvusState_HurtXL::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
@@ -27,15 +27,15 @@ HRESULT CCorvusState_HurtXXL::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CCorvusState_HurtXXL::Start()
+void CCorvusState_HurtXL::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_HurtXXLF");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_HurtXXL::Call_AnimationEnd, this);
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_HurtXLF");
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_HurtXL::Call_AnimationEnd, this);
 }
 
-void CCorvusState_HurtXXL::Tick(_float fTimeDelta)
+void CCorvusState_HurtXL::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
@@ -43,19 +43,19 @@ void CCorvusState_HurtXXL::Tick(_float fTimeDelta)
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
-void CCorvusState_HurtXXL::LateTick(_float fTimeDelta)
+void CCorvusState_HurtXL::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
 	Check_AndChangeNextState();
 }
 
-void CCorvusState_HurtXXL::OnDisable()
+void CCorvusState_HurtXL::OnDisable()
 {
 
 }
 
-void CCorvusState_HurtXXL::OnStateStart(const _float& In_fAnimationBlendTime)
+void CCorvusState_HurtXL::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
@@ -72,18 +72,18 @@ void CCorvusState_HurtXXL::OnStateStart(const _float& In_fAnimationBlendTime)
 	cout << "NorMonState: RunStart -> OnStateStart" << endl;
 #endif
 #endif
-	
+	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 
 }
 
-void CCorvusState_HurtXXL::OnStateEnd()
+void CCorvusState_HurtXL::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
-void CCorvusState_HurtXXL::Call_AnimationEnd()
+void CCorvusState_HurtXL::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
@@ -92,13 +92,13 @@ void CCorvusState_HurtXXL::Call_AnimationEnd()
 
 }
 
-void CCorvusState_HurtXXL::Free()
+void CCorvusState_HurtXL::Free()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_HurtXXL::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_HurtXL::Call_AnimationEnd, this);
 }
 
-_bool CCorvusState_HurtXXL::Check_AndChangeNextState()
+_bool CCorvusState_HurtXL::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
 		return false;

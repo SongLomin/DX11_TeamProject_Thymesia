@@ -53,9 +53,9 @@ void CJokerState_TurnR90::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	_float fTurnValue = 1.57f / 0.766f;
+	_float fTurnValue = 1.57f / 1.333f;
 
-	m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue);
+	m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * 1.5f);
 
 	Check_AndChangeNextState();
 }
@@ -74,14 +74,14 @@ void CJokerState_TurnR90::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif
 #endif
 
-
+	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 }
 
 void CJokerState_TurnR90::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 void CJokerState_TurnR90::Call_AnimationEnd()
