@@ -234,11 +234,11 @@ _bool CCorvusState_LAttack3::Check_AndChangeNextState()
 			return true;
 		}
 	}
-
-	if (Check_RequirementAttackState())
+	if (Check_RequirementNextAttackState())
 	{
-		if (Check_RequirementNextAttackState())
+		if (Check_RequirementAttackState())
 		{
+
 			_flag TalentEffectFlags = Get_OwnerPlayer()->Check_RequirementForTalentEffects();
 
 			if (TalentEffectFlags & (_flag)TALENT_EFFECT_FLAG::SABER_ATTACK_LV2)
@@ -262,6 +262,7 @@ _bool CCorvusState_LAttack3::Check_AndChangeNextState()
 				}
 				return true;
 			}
+
 		}
 	}
 
