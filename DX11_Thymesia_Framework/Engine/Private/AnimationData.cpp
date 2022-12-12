@@ -136,9 +136,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_AvoidB", 1.25f);
 #pragma endregion // Varg
 
-
-
-
+#pragma region Joker
     SET_ANIM_SPEED("Joker_ComboA01", 1.25f);
     SET_ANIM_SPEED("Joker_ComboA02", 1.25f);
     SET_ANIM_SPEED("Joker_ComboB01", 1.25f);
@@ -156,14 +154,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("Joker_WheelAttackLoop", 1.25f);
     SET_ANIM_SPEED("Joker_WheelAttackEnd", 1.25f);
     SET_ANIM_SPEED("Joker_TakeExecution_Start", 1.45f);
-
-
-
-
-
-
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Seq_BossFightStart", 5.f);
-#pragma endregion // Varg
+#pragma endregion // Joker
 
 #pragma region Mon_AxeMan
     SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtStunStart|BaseLaye", 2.f);

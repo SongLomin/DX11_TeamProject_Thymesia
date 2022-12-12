@@ -31,6 +31,7 @@ HRESULT CTargetCurve::Initialize(void* pArg)
 		VTXTEXCURVE_INSTANCE_DECLARATION::Element,
 		VTXTEXCURVE_INSTANCE_DECLARATION::iNumElements);
 
+	GET_SINGLE(CGameManager)->CallBack_ChangePlayer += bind(&CTargetCurve::Call_UpdatePlayer, this);
 	GET_SINGLE(CGameManager)->CallBack_FocusInMonster += bind(&CTargetCurve::Call_UpdateTarget, this);
 	GET_SINGLE(CGameManager)->CallBack_FocusOutMonster += bind(&CTargetCurve::Call_ReleaseTarget, this);
 
@@ -43,9 +44,6 @@ HRESULT CTargetCurve::Initialize(void* pArg)
 HRESULT CTargetCurve::Start()
 {
 	__super::Start();
-
-	m_pParentTransformCom = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Transform();
-
 	return S_OK;
 }
 
@@ -169,6 +167,11 @@ void CTargetCurve::Set_Target(weak_ptr<CTransform> pTargetTransform)
 	m_pTargetTransformCom = pTargetTransform;
 }
 
+void CTargetCurve::Call_UpdatePlayer()
+{
+	m_pParentTransformCom = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Transform();
+}
+
 void CTargetCurve::Call_UpdateTarget()
 {
 	weak_ptr<CMonster> pMonster = GET_SINGLE(CGameManager)->Get_TargetMonster();
@@ -197,6 +200,7 @@ void CTargetCurve::Call_ReleaseTarget()
 
 void CTargetCurve::OnDestroy()
 {
+	GET_SINGLE(CGameManager)->CallBack_ChangePlayer -= bind(&CTargetCurve::Call_UpdatePlayer, this);
 	GET_SINGLE(CGameManager)->CallBack_FocusInMonster -= bind(&CTargetCurve::Call_UpdateTarget, this);
 	GET_SINGLE(CGameManager)->CallBack_FocusOutMonster -= bind(&CTargetCurve::Call_ReleaseTarget, this);
 }

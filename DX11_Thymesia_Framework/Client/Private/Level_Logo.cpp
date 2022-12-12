@@ -39,6 +39,8 @@ HRESULT CLevel_Logo::Initialize()
 	GAMEINSTANCE->Add_GameObject<CUI_Logo>(LEVEL_LOGO);
 	//GAMEINSTANCE->Add_GameObject<CTargetCurve>(LEVEL_LOGO);
 
+	GAMEINSTANCE->Add_SingleGameObject<CTargetCurve>(LEVEL_STATIC);
+
 	return S_OK;
 }
 

@@ -36,6 +36,7 @@ public:
     void Set_Target(weak_ptr<CTransform> pTargetTransform);
 
 public:
+    void Call_UpdatePlayer();
     void Call_UpdateTarget();
     void Call_ReleaseTarget();
 
