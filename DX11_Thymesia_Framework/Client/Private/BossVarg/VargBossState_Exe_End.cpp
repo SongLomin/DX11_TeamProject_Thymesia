@@ -68,7 +68,7 @@ void CVargBossState_Exe_End::OnStateStart(const _float& In_fAnimationBlendTime)
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-
+	Weak_Cast<CVarg>(m_pOwner).lock()->Set_EyeTrailEnable(false);
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Exe_End -> OnStateStart" << endl;

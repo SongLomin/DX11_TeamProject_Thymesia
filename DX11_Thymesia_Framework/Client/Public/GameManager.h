@@ -54,7 +54,11 @@ public:
     weak_ptr<CStatus_Player>    Get_CurrentPlayer_Status();
     weak_ptr<CPlayer>           Get_CurrentPlayer();
 
-public:
+public: // For. Varg Eye Effect
+    void Store_EffectIndex_Temp(const _uint iEffectIndex) { m_iEffectIndex_ForStorage = iEffectIndex; }
+    const _uint Get_EffectIndex_Stored() const { return m_iEffectIndex_ForStorage; }
+private:
+    _uint m_iEffectIndex_ForStorage = 0;
    
 public:
     void Set_TargetCamera(weak_ptr<CCamera_Target> In_TargetCamera);

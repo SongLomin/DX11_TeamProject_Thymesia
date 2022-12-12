@@ -87,7 +87,7 @@ HRESULT CVarg::Initialize(void* pArg)
 	TrailDesc.vPos_0 = _float3(0.163, 0.17, 0.075);
 	TrailDesc.vPos_1 = _float3(0.163, 0.17, 0.035);
 	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail_EyeLight>(LEVEL_GAMEPLAY, &TrailDesc);
-
+	m_pTrailEffect.lock()->Set_Enable(false);
 	GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
 
 	m_fCullingRange = 999.f;
@@ -181,6 +181,11 @@ void CVarg::SetUp_ShaderResource()
 void CVarg::Set_TrailEnable(_bool In_bEnable)
 {
 	Weak_Cast<CVargWeapon>(m_pWeapons.front()).lock()->Set_TrailEnable(In_bEnable);
+}
+
+void CVarg::Set_EyeTrailEnable(_bool In_bEnable)
+{
+	m_pTrailEffect.lock()->Set_Enable(In_bEnable);
 }
 
 
