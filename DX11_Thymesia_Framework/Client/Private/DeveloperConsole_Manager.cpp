@@ -88,7 +88,6 @@ void CDeveloperConsole_Manager::Release_Windows()
 	m_arrWindows.clear();
 	CWindow_Shader_Dev::Destroy_Instance();
 	CWindow_Level_Dev::Destroy_Instance();
-
 }
 
 void CDeveloperConsole_Manager::OnEnableConsole(const _bool In_bEnable)
