@@ -132,6 +132,9 @@ public: /* For.Render_Manager */
 	HRESULT	Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt);
 	HRESULT	Set_DynamicShadowLight(_fvector In_vEye, _fvector In_vLookAt);
 	HRESULT Set_GrayScale(const _float In_fGrayScale);
+	_float4 Get_FogColor();
+	_float Get_FogRange();
+	LIFTGAMMAGAIN_DESC& Get_LiftGammaGain();
 
 
 

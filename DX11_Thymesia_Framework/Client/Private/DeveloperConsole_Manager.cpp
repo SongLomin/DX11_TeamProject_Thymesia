@@ -88,6 +88,16 @@ void CDeveloperConsole_Manager::Release_Windows()
 
 }
 
+void CDeveloperConsole_Manager::OnEnableConsole(const _bool In_bEnable)
+{
+	EVENT_TYPE eType = In_bEnable ? EVENT_TYPE::ON_CONSOLE_ENABLE : EVENT_TYPE::ON_CONSOLE_DISABLE;
+
+	for (auto& elem : m_arrWindows)
+	{
+		elem->OnEventMessage((_uint)eType);
+	}
+}
+
 void CDeveloperConsole_Manager::Free()
 {
 	//ImGui_ImplDX11_Shutdown();

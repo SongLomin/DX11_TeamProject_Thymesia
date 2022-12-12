@@ -315,6 +315,21 @@ HRESULT CGameInstance::Set_GrayScale(const _float In_fGrayScale)
 {
 	return m_pRender_Manager->Set_GrayScale(In_fGrayScale);
 }
+_float4 CGameInstance::Get_FogColor()
+{
+	return m_pRender_Manager->Get_FogColor();
+}
+_float CGameInstance::Get_FogRange()
+{
+	return m_pRender_Manager->Get_FogRange();
+
+}
+LIFTGAMMAGAIN_DESC& CGameInstance::Get_LiftGammaGain()
+{
+	return m_pRender_Manager->Get_LiftGammaGain();
+}
+
+
 HRESULT CGameInstance::Set_MotionBlur(const _float In_fBlurScale)
 {
 	return m_pRender_Manager->Set_MotionBlur(In_fBlurScale);

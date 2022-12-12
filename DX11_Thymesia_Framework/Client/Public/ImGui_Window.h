@@ -46,6 +46,7 @@ public:
 
 public:
 	virtual void OnLevelLoad() {};
+	virtual void OnEventMessage(_uint iArg) {}
 
 protected:
 	_bool			m_bEnable = false;
