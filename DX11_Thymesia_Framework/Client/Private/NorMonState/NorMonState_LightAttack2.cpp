@@ -120,6 +120,17 @@ void CNorMonState_LightAttack2::OnStateStart(const _float& In_fAnimationBlendTim
 		case Client::MONSTERTYPE::SKULL:
 			break;
 		case Client::MONSTERTYPE::GARDENER:
+		{
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+			}
+		}
+			
 			break;
 		case Client::MONSTERTYPE::SHIELDAXEMAN:
 		{

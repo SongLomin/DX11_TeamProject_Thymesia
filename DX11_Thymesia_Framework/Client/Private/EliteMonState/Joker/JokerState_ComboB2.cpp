@@ -70,7 +70,7 @@ void CJokerState_ComboB2::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
 
-	pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::DOWN_HIT, 85.f);
+	pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::DOWN_HIT, 1.4f);
 
 	m_bAttackLookAtLimit = false;
 

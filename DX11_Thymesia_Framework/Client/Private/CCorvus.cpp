@@ -398,7 +398,7 @@ void CCorvus::OnEventMessage(_uint iArg)
 		Change_State<CCorvusState_CheckPointEnd>();
 	}
 
-	if ((_uint)EVENT_TYPE::ON_JOKEREXCUTION == iArg)
+	if ((_uint)EVENT_TYPE::ON_JOKEREXECUTION == iArg)
 	{
 		Change_State<CCorvusState_Joker_Execution>();
 	}

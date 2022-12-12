@@ -43,6 +43,8 @@ HRESULT CHUD_Player_Memory::Initialize(void* pArg)
 
     m_fLerpMemory = 0.f;
 
+    m_pEasingComFloat = Add_Component<CEasingComponent_Float>();
+
     GET_SINGLE(CGameManager)->CallBack_ChangePlayer +=
         bind(&CHUD_Player_Memory::Bind_Player, this);
 
@@ -105,6 +107,8 @@ HRESULT CHUD_Player_Memory::Render()
 
 void CHUD_Player_Memory::Bind_Player()
 {
+    __super::Bind_Player();
+
     m_fLerpMemory = (_float)m_pPlayerStatus.lock()->Get_Desc().m_iMemory;
 
     m_pPlayerStatus.lock()->Callback_RootingMemory +=
