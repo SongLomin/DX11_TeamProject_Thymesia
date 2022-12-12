@@ -23,6 +23,9 @@ private:
 public:
     vector<shared_ptr<CImGui_Window>> m_arrWindows;
 
+public:
+    void OnEnableConsole(const _bool In_bEnable);
+
 private:
     void Free();
 

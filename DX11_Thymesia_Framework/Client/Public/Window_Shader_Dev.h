@@ -31,6 +31,9 @@ private: /* For. ShadowLight */
 	_float3 m_vLookAt = {};
 
 private:
+	virtual void OnEventMessage(_uint iArg) override;
+
+private:
     void Free();
 
 };
