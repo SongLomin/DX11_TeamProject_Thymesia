@@ -155,7 +155,7 @@ void CTargetCurve::SetUp_ShaderResource()
 
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("fWrapWeight", &fWrapWeight, sizeof(_float))))
 		DEBUG_ASSERT;
-	if (FAILED(m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 882)))
+	if (FAILED(m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 693)))
 		DEBUG_ASSERT;
 }
 

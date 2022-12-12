@@ -71,7 +71,7 @@ _bool CVargWeapon::Set_TrailEnable(const _bool In_bEnable)
 	if (!m_pTrailDistortion.lock() || !m_pTrailDiffuse.lock())
 		return false;
 
-	return m_pTrailDistortion.lock()->Set_Enable(In_bEnable) || m_pTrailDiffuse.lock()->Set_Enable(In_bEnable);
+	return m_pTrailDistortion.lock()->Set_Enable(In_bEnable) && m_pTrailDiffuse.lock()->Set_Enable(In_bEnable);
 
 }
 
