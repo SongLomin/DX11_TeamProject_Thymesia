@@ -33,7 +33,7 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 		VTXMODEL_DECLARATION::iNumElements
 	);
 
-	GET_SINGLE(CGameManager)->Use_EffectGroup("TorchFire", m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
+	// GET_SINGLE(CGameManager)->Use_EffectGroup("TorchFire", m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
 
 	m_eRenderGroup = RENDERGROUP::RENDER_NONALPHABLEND;
 

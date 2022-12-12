@@ -69,11 +69,16 @@ void CVargBossState_Exe_End::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	Weak_Cast<CVarg>(m_pOwner).lock()->Set_EyeTrailEnable(false);
+	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Corvus_ClawChargeAtk_FollowParticle", GET_SINGLE(CGameManager)->Get_EffectIndex_Stored());
+
+	if (Check_RequirementIsTargeted())
+		GET_SINGLE(CGameManager)->Release_Focus();
+	
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Exe_End -> OnStateStart" << endl;
-#endif
-#endif
+#endif // _DEBUG_COUT_
+#endif // _DEBUG
 
 
 }
@@ -82,7 +87,7 @@ void CVargBossState_Exe_End::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-
+	Get_OwnerMonster()->Release_Monster();
 }
 
 

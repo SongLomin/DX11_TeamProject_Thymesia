@@ -4,7 +4,6 @@
 #include "Client_Components.h"
 #include "Player.h"
 #include "ClientLevel.h"
-#include "Status_Player.h"
 
 
 IMPLEMENT_SINGLETON(CGameManager)
@@ -704,6 +703,12 @@ POINT CGameManager::Get_MousePoint()
 	ClientToScreen(g_hWnd, &tMousePt);
 
 	return tMousePt;
+}
+
+void CGameManager::Set_PlayerStatusDesc(void* pArg
+)
+{
+	memcpy(&m_tPlayerDesc, pArg, sizeof(CStatus_Player::PLAYERDESC));
 }
 
 void CGameManager::Registration_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj)

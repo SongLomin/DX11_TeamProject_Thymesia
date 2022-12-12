@@ -26,11 +26,9 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_pStatus = CGameObject::Add_Component<CStatus_Player>();
 	
-	void* pStatus_PlayerDesc = GET_SINGLE(CGameManager)->Get_PlayerStatusDesc();
-	if (pStatus_PlayerDesc)
-	{
-		m_pStatus.lock()->Set_Desc(pStatus_PlayerDesc);
-	}
+	CStatus_Player::PLAYERDESC& pStatus_PlayerDesc = GET_SINGLE(CGameManager)->Get_PlayerStatusDesc();
+	
+	m_pStatus.lock()->Set_Desc(&pStatus_PlayerDesc);
 	
 	
 	//m_pStatus.lock()->Load_FromJson(m_szClientComponentPath + "Corvus/SaveData.json");
@@ -90,7 +88,9 @@ void CCorvus::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	// TODO : get rid of this
+#ifdef _DEBUG
 	this->Debug_KeyInput(fTimeDelta);
+#endif // _DEBUG
 }
 
 void CCorvus::LateTick(_float fTimeDelta)
@@ -116,10 +116,10 @@ HRESULT CCorvus::Render()
 	for (_uint i(0); i < m_iNumMeshContainers; ++i)
 	{
 #ifdef _DEBUG
-		/*if (i == m_iContainerIndex)
-			continue;*/
+		//if (i == m_iContainerIndex)
+		//	continue;
 #endif // _DEBUG
-		if (4 == i || 5 == i || 9 == i || 10 == i || 11 == i|| 12 == i|| 13 == i)
+		if (4 == i || 5 == i || 8 == i || 9 == i || 10 == i || 11 == i|| 12 == i|| 13 == i)
 		{
 			unordered_map<_uint, DISSOLVE_DESC>::iterator iter = m_DissolveDescs.find(i);
 

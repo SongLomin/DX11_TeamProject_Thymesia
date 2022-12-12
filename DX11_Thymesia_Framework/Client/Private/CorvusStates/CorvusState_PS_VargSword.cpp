@@ -11,6 +11,7 @@
 #include "Monster.h"
 #include "Effect_Trail.h"
 #include "NorMonStates.h"
+#include "PhysXCharacterController.h"
 
 GAMECLASS_C(CCorvusState_PS_VargSword);
 CLONE_C(CCorvusState_PS_VargSword, CComponent)
@@ -51,7 +52,7 @@ void CCorvusState_PS_VargSword::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-void CCorvusState_PS_VargSword::OnDisable()
+void CCorvusState_PS_VargSword1Disable()
 {
 
 }
@@ -67,6 +68,8 @@ void CCorvusState_PS_VargSword::OnStateStart(const _float& In_fAnimationBlendTim
 	if (m_pThisAnimationCom.lock())
 		m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_PS_VargSword::Call_NextKeyFrame, this, placeholders::_1);
 
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit += bind(&CCorvusState_PS_VargSword::Call_OtherControllerHit, this, placeholders::_1);
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "NorMonState: RunStart -> OnStateStart" << endl;
@@ -80,6 +83,8 @@ void CCorvusState_PS_VargSword::OnStateEnd()
 	__super::OnStateEnd();
 	if (m_pThisAnimationCom.lock())
 		m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CCorvusState_PS_VargSword::Call_NextKeyFrame, this, placeholders::_1);
+
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit -= bind(&CCorvusState_PS_VargSword::Call_OtherControllerHit, this, placeholders::_1);
 }
 
 void CCorvusState_PS_VargSword::Call_AnimationEnd()

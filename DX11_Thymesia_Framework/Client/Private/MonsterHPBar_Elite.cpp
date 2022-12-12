@@ -35,7 +35,10 @@ HRESULT CMonsterHPBar_Elite::Initialize(void* pArg)
 
     Add_Child(m_pEliteBorder);
 
-    Set_Enable(false);
+
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, m_pEliteBorder);
+
+    CBase::Set_Enable(false);
     return S_OK;
 }
 

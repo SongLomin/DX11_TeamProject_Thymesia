@@ -47,7 +47,25 @@ public:
         _uint      m_iPlague;
         _uint      m_iWound;
 
-
+        tagPlayerDesc()
+        {
+            ZeroMemory(this, sizeof(tagPlayerDesc));
+		    m_fCurrentHP = 300.f;
+			m_fMaxHP = 300.f;
+			m_fMaxMP = 150.f;
+			m_fNormalAtk = 25.f;
+			m_fPlagueAtk = 200.f;
+			m_fFeatherAtk = 30.f;
+			m_fParryingAtk = 50.f;
+			m_iLevel = 1;
+			m_iStr = 1;
+			m_iVital = 1;
+			m_iPlague = 1;
+			m_iWound = 1;
+			m_iMaxFeather = 3;
+			m_iMemory = 1000;//시작할때는 알거지로
+			m_iTalent = 10;
+        }
     }PLAYERDESC;
 
 public:

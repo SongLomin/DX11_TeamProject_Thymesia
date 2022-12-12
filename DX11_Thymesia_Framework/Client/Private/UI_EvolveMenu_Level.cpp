@@ -1087,9 +1087,9 @@ void CUI_EvolveMenu_Level::TickReconfirmWindow()
             {
                 m_tOriginStatus = m_tChangeStatus;
 #ifndef _ONLY_UI_
-                GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Status().lock()
-                    ->Set_Desc(&m_tChangeStatus);
-#endif
+                GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Status().lock()->Set_Desc(&m_tChangeStatus);
+                GET_SINGLE(CGameManager)->Set_PlayerStatusDesc(&m_tChangeStatus);
+#endif // _ONLY_UI_ 
             }
             m_iReconfirmWindowIndex = 0;
             m_bOpenableReconfirmWindow = true;
@@ -1101,8 +1101,6 @@ void CUI_EvolveMenu_Level::TickReconfirmWindow()
 }
 void CUI_EvolveMenu_Level::IncreaseStatus(EVOLVE_LEVEL_TYPE eEvolveType)
 {
-    m_tChangeStatus;
-
     switch (eEvolveType)
     {
     case Client::CUI_EvolveMenu_Level::EVOLVE_LEVEL_TYPE::STR:

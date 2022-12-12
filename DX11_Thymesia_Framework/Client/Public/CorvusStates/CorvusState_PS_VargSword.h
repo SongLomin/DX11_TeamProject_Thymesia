@@ -22,8 +22,6 @@ protected:
     virtual void LateTick(_float fTimeDelta) override;
 
 protected:
-    virtual void OnDisable() override;
-
     virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
     virtual void OnStateEnd() override;
 

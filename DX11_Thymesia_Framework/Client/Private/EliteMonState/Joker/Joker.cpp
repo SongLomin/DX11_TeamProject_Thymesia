@@ -13,7 +13,6 @@
 #include "JokerStates.h"
 #include "MonsterHPBar_Elite.h"
 
-
 GAMECLASS_C(CJoker);
 CLONE_C(CJoker, CGameObject);
 
@@ -190,7 +189,7 @@ void CJoker::Init_Desc()
 	INIT_STATE(CJokerState_WheelAtkStart);
 	INIT_STATE(CJokerState_RunAttackStart);
 	
-	m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(-180.0f));
+	m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(-90.f));
 	GET_SINGLE(CGameManager)->Bind_KeyEvent("Elite_Joker", m_pModelCom, bind(&CJoker::Call_NextAnimationKey, this, placeholders::_1));
 
 	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom),

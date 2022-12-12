@@ -93,7 +93,7 @@
 
 #pragma region Boss Mobs
 #define _BOSS_VARG_
-#define _BOSS_URD_
+// #define _BOSS_URD_
 #pragma endregion // Boss Mobs
 
 #pragma region Normal Mobs

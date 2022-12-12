@@ -1,7 +1,7 @@
 #pragma once
 #include "Base.h"
 #include "Client_Defines.h"
-
+#include "Status_Player.h"
 
 BEGIN(Engine)
 class CGameObject;
@@ -135,18 +135,15 @@ public:
     */
 public:// For UI;
     POINT   Get_MousePoint();
-    void    Set_PlayerStatusDesc(void* pArg)
-    {
-        m_tPlayerDesc = pArg;;
-    }
-    void* Get_PlayerStatusDesc()
+    void    Set_PlayerStatusDesc(void* pArg);
+    CStatus_Player::PLAYERDESC&   Get_PlayerStatusDesc()
     {
         return m_tPlayerDesc;
     }
 
 public:
     _uint   m_iTestTalent = 2;
-    void* m_tPlayerDesc = nullptr;
+    CStatus_Player::PLAYERDESC m_tPlayerDesc;
 
 
 public:
