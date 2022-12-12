@@ -7,6 +7,7 @@
 #include "imgui_impl_win32.h"
 
 #include "Window_Shader_Dev.h"
+#include "Window_Level_Dev.h"
 
 IMPLEMENT_SINGLETON(CDeveloperConsole_Manager)
 
@@ -64,6 +65,7 @@ void CDeveloperConsole_Manager::Init_Windows()
 	Release_Windows();
 
 	m_arrWindows.emplace_back(CWindow_Shader_Dev::Create_Instance());
+	m_arrWindows.emplace_back(CWindow_Level_Dev::Create_Instance());
 
 	for (auto& elem : m_arrWindows)
 	{
@@ -85,6 +87,7 @@ void CDeveloperConsole_Manager::Release_Windows()
 
 	m_arrWindows.clear();
 	CWindow_Shader_Dev::Destroy_Instance();
+	CWindow_Level_Dev::Destroy_Instance();
 
 }
 

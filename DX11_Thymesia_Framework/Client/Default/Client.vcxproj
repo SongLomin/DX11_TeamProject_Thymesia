@@ -579,6 +579,7 @@
     <ClInclude Include="..\Public\Window_EffectHierarchyView.h" />
     <ClInclude Include="..\Public\Window_EffectResourceView.h" />
     <ClInclude Include="..\Public\Window_HierarchyView.h" />
+    <ClInclude Include="..\Public\Window_Level_Dev.h" />
     <ClInclude Include="..\Public\Window_PrototypeView.h" />
     <ClInclude Include="..\Public\Window_Shader_Dev.h" />
     <ClInclude Include="..\Public\Window_UI.h" />
@@ -963,6 +964,7 @@
     <ClCompile Include="..\Private\Window_EffectHierarchyView.cpp" />
     <ClCompile Include="..\Private\Window_EffectResourceView.cpp" />
     <ClCompile Include="..\Private\Window_HierarchyView.cpp" />
+    <ClCompile Include="..\Private\Window_Level_Dev.cpp" />
     <ClCompile Include="..\Private\Window_PrototypeView.cpp" />
     <ClCompile Include="..\Private\Window_Shader_Dev.cpp" />
     <ClCompile Include="..\Private\Window_UI.cpp" />

@@ -81,7 +81,7 @@ HRESULT CMainApp::Initialize()
 
 
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxColor"), TEXT("../Bin/ShaderFiles/Shader_VtxColor.hlsl"));
-	GAMEINSTANCE->Add_GameObject<CFadeMask>(LEVEL_STATIC);
+	GAMEINSTANCE->Add_SingleGameObject<CFadeMask>(LEVEL_STATIC);
 
 #ifdef _JOJO_EFFECT_TOOL_
 	GET_SINGLE(CJoJoParticleShaderManager)->Initialize();

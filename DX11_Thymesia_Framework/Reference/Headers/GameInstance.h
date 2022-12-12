@@ -81,8 +81,13 @@ public: /* For.Object_Manager */
 	template <typename T>
 	weak_ptr<T> Add_GameObject(_uint iLevelIndex, void* pArg = nullptr)
 	{
-		int i = 0;
 		return m_pObject_Manager->Add_GameObject<T>(iLevelIndex, pArg);
+	}
+
+	template <typename T>
+	weak_ptr<T> Add_SingleGameObject(_uint iLevelIndex, /*CTransform* pParent = nullptr,*/ void* pArg = nullptr)
+	{
+		return m_pObject_Manager->Add_SingleGameObject<T>(iLevelIndex, pArg);
 	}
 
 	template <typename T>
