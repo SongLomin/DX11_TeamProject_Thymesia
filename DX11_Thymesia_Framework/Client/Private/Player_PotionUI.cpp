@@ -87,6 +87,8 @@ HRESULT CPlayer_PotionUI::Start()
 {
     __super::Start();
 
+    Bind_Player();
+
     return S_OK;
 }
 

@@ -1012,8 +1012,6 @@ void CUI_EvolveMenu_Level::ChangeSelectedIndex()
         m_pStatusArrowRight.lock()->Set_Texture("None");
     }
 
-
-
     LEVEL_RECONFIRM_TYPE eReconfirmType = (LEVEL_RECONFIRM_TYPE)m_iReconfirmWindowIndex;
 
     switch (eReconfirmType)
@@ -1033,7 +1031,6 @@ void CUI_EvolveMenu_Level::ChangeSelectedIndex()
             ALIGN_LEFTTOP);
         break;
     }
-
 }
 
 void CUI_EvolveMenu_Level::SelectButton()

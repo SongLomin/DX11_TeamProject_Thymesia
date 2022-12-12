@@ -208,6 +208,7 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_IdleGeneral.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_TurnAttack.h" />
+    <ClInclude Include="..\Public\Client_Enum.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidB.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidF.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidL.h" />
@@ -368,6 +369,7 @@
     <ClInclude Include="..\Public\Requirement_Once.h" />
     <ClInclude Include="..\Public\Requirement_State.h" />
     <ClInclude Include="..\Public\Section_Eventer.h" />
+    <ClInclude Include="..\Public\Skill_base.h" />
     <ClInclude Include="..\Public\State_Monster.h" />
     <ClInclude Include="..\Public\State_Player.h" />
     <ClInclude Include="..\Public\Status_Boss.h" />
@@ -979,6 +981,7 @@
     <ClCompile Include="..\Private\UI.cpp" />
     <ClCompile Include="..\Private\WorldUI.cpp" />
     <ClCompile Include="..\Public\TestUI.cpp" />
+    <ClCompile Include="..\Skill_base.cpp" />
     <ClCompile Include="..\UI_MonsterFocus.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">

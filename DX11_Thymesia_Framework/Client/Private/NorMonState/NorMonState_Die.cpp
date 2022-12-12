@@ -12,7 +12,7 @@
 #include "Monster.h"
 #include "MobWeapon.h"
 #include "Status_Monster.h"
-
+#include "Status_Player.h"
 GAMECLASS_C(CNorMonState_Die);
 CLONE_C(CNorMonState_Die, CComponent)
 
@@ -149,7 +149,6 @@ void CNorMonState_Die::OnStateEnd()
 
 }
 
-
 void CNorMonState_Die::OnDestroy()
 {
 	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CNorMonState_Die::Call_AnimationEnd, this);
@@ -162,7 +161,6 @@ void CNorMonState_Die::Call_AnimationEnd()
 		return;
 
 	m_bAnimEnd = true;
-
 	//Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
 }
 

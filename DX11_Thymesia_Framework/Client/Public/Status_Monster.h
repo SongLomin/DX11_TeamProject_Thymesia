@@ -27,7 +27,7 @@ public:
 		_float m_fHpBarDisableTime; //ui디스에이블되기까지의시간
 		_float m_fCurrentParryingGauge; //패링게이지현재수치
 		_float m_fMaxParryingGauge; //패링게이지최대수치
-		
+		_uint	m_iDropMemory;//떨구는 돈
 
 		_uint  m_iCueentParryCount; // 패링하는몬스터의 패링카운트
 		_uint  m_iMaxParryCount; //  패링몬스터최대카운트되면패링

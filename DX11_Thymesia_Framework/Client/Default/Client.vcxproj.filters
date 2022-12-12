@@ -1183,6 +1183,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\EasingComponent_Float.h" />
     <ClInclude Include="..\Public\HUD_Player_Memory.h" />
+    <ClInclude Include="..\Public\Skill_base.h" />
+    <ClInclude Include="..\Public\Client_Enum.h">
+      <Filter>99. Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\EasingComponent_Float.h" />
+    <ClInclude Include="..\Public\HUD_Player_Memory.h" />
     <ClInclude Include="..\Public\Window_Level_Dev.h">
       <Filter>97. Tool\01. DeveloperConsole\Windows\01. Level</Filter>
     </ClInclude>
@@ -2413,6 +2419,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\EasingComponent_Float.cpp" />
     <ClCompile Include="..\Private\HUD_Player_Memory.cpp" />
+    <ClCompile Include="..\Skill_base.cpp" />
+    <ClCompile Include="..\Private\EasingComponent_Float.cpp" />
+    <ClCompile Include="..\Private\HUD_Player_Memory.cpp" />
     <ClCompile Include="..\Private\Window_Level_Dev.cpp">
       <Filter>97. Tool\01. DeveloperConsole\Windows\01. Level</Filter>
     </ClCompile>
@@ -3616,6 +3625,9 @@
     </Filter>
     <Filter Include="02. GameObject\14. TargetCurve">
       <UniqueIdentifier>{66d0937f-5399-43b2-a234-749bac8f599a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\05. Skill">
+      <UniqueIdentifier>{4afe9d2e-fd7e-4b08-801b-6647cc21d4b4}</UniqueIdentifier>
     </Filter>
     <Filter Include="97. Tool\01. DeveloperConsole\Windows\01. Level">
       <UniqueIdentifier>{1c111566-b799-41b6-a0f7-0d8a51c44e6e}</UniqueIdentifier>
