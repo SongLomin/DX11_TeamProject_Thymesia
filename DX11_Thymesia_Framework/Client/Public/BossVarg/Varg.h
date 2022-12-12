@@ -33,6 +33,7 @@ public:
 
 public:
     void Set_TrailEnable(_bool In_bEnable);
+    void Set_EyeTrailEnable(_bool In_bEnable);
 
 
 

@@ -122,7 +122,7 @@ void CCorvusState_RaidAttack1Hurt::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
+	Get_OwnerPlayer()->Change_State<CCorvusState_Getup>();
 
 }
 

@@ -25,6 +25,7 @@ HRESULT CStatus_Player::Initialize(void* pArg)
 void CStatus_Player::Start()
 {
     __super::Start();
+    Init_Status(nullptr);
 }
 
 void CStatus_Player::Tick(_float fTimeDelta)
@@ -33,11 +34,10 @@ void CStatus_Player::Tick(_float fTimeDelta)
 
     m_fPotionTime -= fTimeDelta;
 
-    if (m_fPotionTime >= 0.f)
-    {
-        m_tDesc.m_fCurrentHP += ((m_tDesc.m_fMaxHP * m_PotionDesc[m_iCurrentPotionIndex].m_fHealingAmount) /
-            m_PotionDesc[m_iCurrentPotionIndex].m_fHealingTime) * fTimeDelta;
-    }
+    //if (m_fPotionTime >= 0.f)
+    //{
+    //    m_tDesc.m_fCurrentHP += ((m_tDesc.m_fMaxHP * m_PotionDesc[m_iCurrentPotionIndex].m_fHealingAmount) / m_PotionDesc[m_iCurrentPotionIndex].m_fHealingTime) * fTimeDelta;
+    //}
 }
 
 void CStatus_Player::LateTick(_float fTimeDelta)
@@ -78,19 +78,19 @@ void CStatus_Player::Init_Status(const void* pArg)
     m_tDesc.m_iPlague = 1;
     m_tDesc.m_iWound = 1;
     m_tDesc.m_iMaxFeather = 3;
-    m_tDesc.m_iMemory = 100000;
+    m_tDesc.m_iMemory = 1000;//시작할때는 알거지로
     m_tDesc.m_iTalent = 10;
 
     m_PotionDesc[(_uint)POTIONTYPE::POTION_DEFAULT].m_iMaxPotion = 3;
-    m_PotionDesc[(_uint)POTIONTYPE::POTION_DEFAULT].m_fHealingAmount = 0.3f;
+    m_PotionDesc[(_uint)POTIONTYPE::POTION_DEFAULT].m_fHealingAmount = 50.f;
     m_PotionDesc[(_uint)POTIONTYPE::POTION_DEFAULT].m_fHealingTime = 0.f;//0초면 바로 회복됨.
 
     m_PotionDesc[(_uint)POTIONTYPE::POTION_BUFF].m_iMaxPotion = 0;
-    m_PotionDesc[(_uint)POTIONTYPE::POTION_BUFF].m_fHealingAmount = 0.5f;
+    m_PotionDesc[(_uint)POTIONTYPE::POTION_BUFF].m_fHealingAmount = 200.f;
     m_PotionDesc[(_uint)POTIONTYPE::POTION_BUFF].m_fHealingTime = 5.f;//0초면 바로 회복됨.
 
     m_PotionDesc[(_uint)POTIONTYPE::POTION_IMMEDIATE].m_iMaxPotion = 0;
-    m_PotionDesc[(_uint)POTIONTYPE::POTION_IMMEDIATE].m_fHealingAmount = 0.2f;
+    m_PotionDesc[(_uint)POTIONTYPE::POTION_IMMEDIATE].m_fHealingAmount = 25.f;
     m_PotionDesc[(_uint)POTIONTYPE::POTION_IMMEDIATE].m_fHealingTime = 0.1f;//0초면 바로 회복됨.
 
     m_iCurrentPotionIndex = 0;
@@ -102,6 +102,13 @@ void CStatus_Player::Add_Damage(const _float& In_fDamage)
     Decrease_HP(m_tDesc.m_fCurrentHP, In_fDamage);
 
     Callback_ChangeHP(m_tDesc.m_fCurrentHP);
+}
+
+void CStatus_Player::Add_Memory(_uint iRootedMemory)
+{
+    m_tDesc.m_iMemory += iRootedMemory;
+
+    Callback_RootingMemory(m_tDesc.m_iMemory);
 }
 
 void CStatus_Player::Full_Recovery()
@@ -142,7 +149,13 @@ void CStatus_Player::Use_Potion()
 {
     m_PotionDesc[m_iCurrentPotionIndex].m_iCurrentPotion -= 1;
 
-    m_tDesc.m_fCurrentHP += m_tDesc.m_fMaxHP * m_PotionDesc[m_iCurrentPotionIndex].m_fHealingAmount;
+    if ((m_tDesc.m_fMaxHP - m_tDesc.m_fCurrentHP) < 0.1f)
+    {
+        Callback_ChangePotion(m_PotionDesc[m_iCurrentPotionIndex].m_iCurrentPotion, m_PotionDesc[m_iCurrentPotionIndex].m_iMaxPotion);
+        return;
+    }
+
+    m_tDesc.m_fCurrentHP += m_PotionDesc[m_iCurrentPotionIndex].m_fHealingAmount;
     
     if (m_tDesc.m_fCurrentHP >= m_tDesc.m_fMaxHP)
         m_tDesc.m_fCurrentHP = m_tDesc.m_fMaxHP;
@@ -172,7 +185,8 @@ _uint CStatus_Player::Get_MaxPotionCount()
 
 void CStatus_Player::Set_Desc(void* In_Desc)
 {
-    memcpy(&m_tDesc, In_Desc, sizeof(PLAYERDESC));
+    PLAYERDESC* Temp = (PLAYERDESC*)(In_Desc);
+    memcpy(&m_tDesc, Temp, sizeof(PLAYERDESC));
     Callback_Update_Status();
 }
 

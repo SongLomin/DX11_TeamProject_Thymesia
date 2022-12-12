@@ -9,6 +9,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "JokerStates.h"
+#include "MobWeapon.h"
 
 
 
@@ -38,7 +39,7 @@ void CJokerState_StrongAttack::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Joker_StrongAttack");
 
 
-	/*m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_StrongAttack::Call_AnimationEnd, this);*/
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_StrongAttack::Call_AnimationEnd, this);
 }
 
 void CJokerState_StrongAttack::Tick(_float fTimeDelta)
@@ -53,6 +54,9 @@ void CJokerState_StrongAttack::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+	if (m_bAttackLookAtLimit)
+		TurnAttack(fTimeDelta);
+
 	Check_AndChangeNextState();
 }
 
@@ -61,6 +65,14 @@ void CJokerState_StrongAttack::LateTick(_float fTimeDelta)
 void CJokerState_StrongAttack::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+
+	pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::DOWN_HIT, 65.f);
+
+	m_bAttackLookAtLimit = true;
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -80,6 +92,19 @@ void CJokerState_StrongAttack::OnStateEnd()
 
 }
 
+void CJokerState_StrongAttack::Call_AnimationEnd()
+{
+	if (!Get_Enable())
+		return;
+
+	Get_OwnerCharacter().lock()->Change_State<CJokerState_Idle>(0.05f);
+}
+
+void CJokerState_StrongAttack::OnDestroy()
+{
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_StrongAttack::Call_AnimationEnd, this);
+}
+
 void CJokerState_StrongAttack::Free()
 {
 
@@ -91,6 +116,15 @@ _bool CJokerState_StrongAttack::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.3f)
+	{
+		m_bAttackLookAtLimit = false;
+	}
+
+	if (ComputeAngleWithPlayer() > 0.99f && m_bAttackLookAtLimit)
+	{
+		Rotation_TargetToLookDir();
+	}
 
 
 	return false;

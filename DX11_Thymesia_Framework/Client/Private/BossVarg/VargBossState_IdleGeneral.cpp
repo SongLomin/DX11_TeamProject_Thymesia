@@ -97,7 +97,7 @@ _bool CVargBossState_IdleGeneral::Check_AndChangeNextState()
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 
 
-	if (fPToMDistance <= 10.f)
+	if (fPToMDistance <= 30.f)
 	{
 		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Start>(0.05f);
 		return true;

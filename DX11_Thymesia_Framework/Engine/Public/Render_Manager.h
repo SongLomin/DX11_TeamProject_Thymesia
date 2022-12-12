@@ -27,11 +27,24 @@ public:
 	HRESULT Set_RadialBlur(const _float In_fRadialBlurStength, _float3 In_vBlurWorldPosition);
 	HRESULT Add_RadialBlur(const _float In_fRadialBlurStrength);
 	HRESULT Set_FogDesc(const _float4 In_vFogColor,const _float In_fFogRange);
+	_float4 Get_FogColor()
+	{
+		return m_vFogColor;
+	}
+	_float Get_FogRange()
+	{
+		return m_fFogRange;
+	}
+
 	HRESULT Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain);
 	HRESULT Set_GrayScale(const _float In_fGrayScale);
 
 	HRESULT	Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt);
 	HRESULT Set_DynamicShadowLight(_fvector In_vEye, _fvector In_vLookAt);
+	LIFTGAMMAGAIN_DESC& Get_LiftGammaGain()
+	{
+		return m_LiftGammaGainDesc;
+	}
 	
 
 private:
@@ -126,9 +139,7 @@ private:
 	_float3		m_vRadialBlurWorldPos = { 0.f,0.f,0.f };
 	_bool		m_bFirst = true;
 
-	_float4		m_vLift  = { 1.f, 1.f, 0.9f, 1.f };
-	_float4		m_vGamma = { 1.f, 1.f, 1.2f, 1.f };
-	_float4		m_vGain  = { 1.f,1.f,1.f,1.f };
+	LIFTGAMMAGAIN_DESC m_LiftGammaGainDesc;
 
 	_float4		m_vFogColor = { 0.8f, 0.8f, 0.8f, 1.f };
 	_float		m_fFogRange = 30.f;

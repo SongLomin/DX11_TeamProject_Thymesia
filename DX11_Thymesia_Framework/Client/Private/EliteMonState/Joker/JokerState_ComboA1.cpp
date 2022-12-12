@@ -9,7 +9,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "JokerStates.h"
-
+#include "MobWeapon.h"
 
 
 GAMECLASS_C(CJokerState_ComboA1);
@@ -66,6 +66,12 @@ void CJokerState_ComboA1::LateTick(_float fTimeDelta)
 void CJokerState_ComboA1::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+
+	pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.3f);
 
 	m_bAttackLookAtLimit = true;
 

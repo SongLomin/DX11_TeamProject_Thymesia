@@ -47,7 +47,25 @@ public:
         _uint      m_iPlague;
         _uint      m_iWound;
 
-
+        tagPlayerDesc()
+        {
+            ZeroMemory(this, sizeof(tagPlayerDesc));
+		    m_fCurrentHP = 300.f;
+			m_fMaxHP = 300.f;
+			m_fMaxMP = 150.f;
+			m_fNormalAtk = 25.f;
+			m_fPlagueAtk = 200.f;
+			m_fFeatherAtk = 30.f;
+			m_fParryingAtk = 50.f;
+			m_iLevel = 1;
+			m_iStr = 1;
+			m_iVital = 1;
+			m_iPlague = 1;
+			m_iWound = 1;
+			m_iMaxFeather = 3;
+			m_iMemory = 1000;//시작할때는 알거지로
+			m_iTalent = 10;
+        }
     }PLAYERDESC;
 
 public:
@@ -68,22 +86,23 @@ public:
     FDelegate<_float>   Callback_ChangeHP;
     FDelegate<_float>   Callback_ChangeMP;
     FDelegate<_uint>    Callback_ChangeFeather;
-
+    FDelegate<_uint>    Callback_RootingMemory;
 
     FDelegate<_uint, _uint> Callback_ChangePotion;
 public:
     virtual _bool   Is_Dead();
     virtual void    Init_Status(const void* pArg);
     virtual void    Add_Damage(const _float& In_fDamage);
+    void            Add_Memory(_uint    iRootedMemory);
 
     virtual void   Full_Recovery();
+
 
     PLAYERDESC Get_PlayerDesc() { return m_tDesc; }
     PLAYERPOTIONDESC Get_CurrentPotionDesc() { return m_PotionDesc[m_iCurrentPotionIndex]; }
 
     virtual void   Get_Desc(void* Out_pDesc);
     PLAYERDESC      Get_Desc() const;
-
 public://For HPBar
     _float         Get_MaxHP() { return m_tDesc.m_fMaxHP; }
     _float         Get_CurrentHP() { return m_tDesc.m_fCurrentHP; }

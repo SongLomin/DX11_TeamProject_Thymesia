@@ -34,6 +34,11 @@ HRESULT CMonsterHPBar_Elite::Initialize(void* pArg)
     m_pEliteBorder.lock()->Set_Texture("Monster_HPBar_Border_Elite");
 
     Add_Child(m_pEliteBorder);
+
+
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, m_pEliteBorder);
+
+    CBase::Set_Enable(false);
     return S_OK;
 }
 

@@ -9,6 +9,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "JokerStates.h"
+#include "GameManager.h"
 
 
 
@@ -60,8 +61,14 @@ void CJokerState_Execution_Loop::OnStateStart(const _float& In_fAnimationBlendTi
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	
 
+	if (Check_RequirementIsTargeted())
+		GET_SINGLE(CGameManager)->Release_Focus();
+
+	Get_OwnerMonster()->Release_Monster();
+
+	
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Idle -> OnStateStart" << endl;
@@ -93,5 +100,10 @@ _bool CJokerState_Execution_Loop::Check_AndChangeNextState()
 
 
 	return false;
+}
+
+void CJokerState_Execution_Loop::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CEliteStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 }
 

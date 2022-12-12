@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "JokerStates.h"
+#include "PhysXController.h"
 
 
 
@@ -36,7 +37,7 @@ void CJokerState_RunAttackLoop::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Joker_RunAttackLoop");
 
-
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_RunAttackLoop::Call_AnimationEnd, this);
 	
 }
 
@@ -44,7 +45,13 @@ void CJokerState_RunAttackLoop::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	m_fCurrentSpeed += m_fAccel * fTimeDelta;
+	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
+
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
+
+	PxControllerFilters Filters;
+	m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
 }
 
 
@@ -62,6 +69,18 @@ void CJokerState_RunAttackLoop::LateTick(_float fTimeDelta)
 void CJokerState_RunAttackLoop::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CJokerState_RunAttackStart>().lock() ||
+		Get_OwnerCharacter().lock()->Get_CurState().lock() == Get_Owner().lock()->Get_Component<CJokerState_RunAttackLoop>().lock())
+
+	{
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 16);
+	}
+	else
+	{
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	}
+
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -82,6 +101,20 @@ void CJokerState_RunAttackLoop::OnStateEnd()
 }
 
 
+
+void CJokerState_RunAttackLoop::Call_AnimationEnd()
+{
+
+	if (!Get_Enable())
+		return;
+
+	Get_OwnerCharacter().lock()->Change_State<CJokerState_RunAttackLoop>(0.05f);
+}
+
+void CJokerState_RunAttackLoop::OnDestroy()
+{
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CJokerState_RunAttackLoop::Call_AnimationEnd, this);
+}
 
 void CJokerState_RunAttackLoop::Free()
 {
@@ -105,11 +138,6 @@ _bool CJokerState_RunAttackLoop::Check_AndChangeNextState()
 	{
 		Get_OwnerCharacter().lock()->Change_State<CJokerState_RunAtkEnd>(0.05f);
 		return true;
-	}
-	else
-	{
-		Get_OwnerCharacter().lock()->Change_State<CJokerState_RunAttackLoop>(0.05f);
-		return false;
 	}
 
 

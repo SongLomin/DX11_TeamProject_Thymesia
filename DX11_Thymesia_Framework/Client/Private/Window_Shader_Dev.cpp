@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Window_Shader_Dev.h"
 #include "GameInstance.h"
-
+#include "Engine_Struct.h"
 IMPLEMENT_SINGLETON(CWindow_Shader_Dev)
 
 HRESULT CWindow_Shader_Dev::Initialize()
@@ -10,11 +10,6 @@ HRESULT CWindow_Shader_Dev::Initialize()
 	window_flags |= ImGuiWindowFlags_HorizontalScrollbar;
 
 	SetUp_ImGuiDESC("Shader_Option", ImVec2(400.f, 200.f), window_flags);
-
-	m_vLiftColor.w = 1.f;
-	m_vGammaColor.w = 1.f;
-	m_vGainColor.w = 1.f;
-	m_vFogColor.w = 1.f;
 
 	return S_OK;
 }
@@ -26,6 +21,7 @@ void CWindow_Shader_Dev::Start()
 void CWindow_Shader_Dev::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+	
 }
 
 HRESULT CWindow_Shader_Dev::Render()
@@ -122,6 +118,28 @@ HRESULT CWindow_Shader_Dev::Render()
     __super::End();
 
 	return S_OK;
+}
+
+void CWindow_Shader_Dev::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_CONSOLE_ENABLE == iArg)
+	{
+		m_vFogColor = GAMEINSTANCE->Get_FogColor();
+		m_fFogRange = GAMEINSTANCE->Get_FogRange();
+		LIFTGAMMAGAIN_DESC LiftGammaGain = GAMEINSTANCE->Get_LiftGammaGain();
+
+		m_vLiftColor = LiftGammaGain.vLift;
+		m_vGammaColor = LiftGammaGain.vGamma;
+		m_vGainColor = LiftGammaGain.vGain;
+	}
+
+	if ((_uint)EVENT_TYPE::ON_CONSOLE_DISABLE == iArg)
+	{
+
+	}
+
 }
 
 void CWindow_Shader_Dev::Free()

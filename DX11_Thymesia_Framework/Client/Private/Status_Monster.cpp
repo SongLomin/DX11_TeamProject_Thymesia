@@ -106,7 +106,7 @@ void CStatus_Monster::Init_Status(const void* pArg)
 		break;
 	case Client::MONSTERTYPE::VARG:
 		//TODO 공격력몰름 임시 
-		m_tMonsterDesc.m_fAtk = 0.3f;
+		m_tMonsterDesc.m_fAtk = 50.f;
 		m_tMonsterDesc.m_fMaxHP_white = 100.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 100.f;
 		m_tMonsterDesc.m_iLifeCount = 2;
@@ -114,7 +114,7 @@ void CStatus_Monster::Init_Status(const void* pArg)
 		m_tMonsterDesc.m_szModelKey = "Boss_Varg";
 		break;
 	case Client::MONSTERTYPE::ENHANCE_GARDENER:
-		m_tMonsterDesc.m_fAtk = 1.f;
+		m_tMonsterDesc.m_fAtk = 30.f;
 		m_tMonsterDesc.m_fMaxHP_white = 200.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 200.f;
 		m_tMonsterDesc.m_iLifeCount = 1;
@@ -122,7 +122,7 @@ void CStatus_Monster::Init_Status(const void* pArg)
 		m_tMonsterDesc.m_szModelKey = "Mon_Gardner";
 		break;
 	case Client::MONSTERTYPE::SHIELDAXEMAN:
-		m_tMonsterDesc.m_fAtk = 1.f;
+		m_tMonsterDesc.m_fAtk = 40.f;
 		m_tMonsterDesc.m_fMaxHP_white = 300.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 300.f;
 		m_tMonsterDesc.m_iLifeCount = 1;
@@ -130,9 +130,9 @@ void CStatus_Monster::Init_Status(const void* pArg)
 		m_tMonsterDesc.m_szModelKey = "Mon_AxeMan";
 		break;
 	case Client::MONSTERTYPE::JOCKER:
-		m_tMonsterDesc.m_fAtk = 1.f;
-		m_tMonsterDesc.m_fMaxHP_white = 500.f;
-		m_tMonsterDesc.m_fMaxParryingGauge = 500.f;
+		m_tMonsterDesc.m_fAtk = 40.f;
+		m_tMonsterDesc.m_fMaxHP_white = 200.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 200.f;
 		m_tMonsterDesc.m_iLifeCount = 1;
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
 		m_tMonsterDesc.m_szModelKey = "Elite_Joker";
@@ -150,6 +150,7 @@ void CStatus_Monster::Init_Status(const void* pArg)
 	m_tMonsterDesc.m_fCurrentParryingGauge = 0.f;
 	m_tMonsterDesc.m_fRecoveryAmountPercentageFromSecond = 0.3f;
 	m_tMonsterDesc.m_fRecoveryMag                        = 1.f;
+	m_tMonsterDesc.m_iDropMemory = 1000;
 }
 
 void CStatus_Monster::Add_Damage(const _float In_fDamage, ATTACK_OPTION eAttackOption)

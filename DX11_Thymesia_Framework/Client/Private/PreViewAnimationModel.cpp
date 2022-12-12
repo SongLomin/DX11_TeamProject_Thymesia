@@ -12,7 +12,6 @@
 GAMECLASS_C(CPreViewAnimationModel)
 CLONE_C(CPreViewAnimationModel, CGameObject)
 
-
 weak_ptr<CModel> CPreViewAnimationModel::Get_CurrentModel()
 {
 	return m_pModelCom;
@@ -22,7 +21,6 @@ weak_ptr<CModel> CPreViewAnimationModel::Get_CurrentModel()
 HRESULT CPreViewAnimationModel::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
-
 	return S_OK;
 }
 
@@ -47,8 +45,6 @@ HRESULT CPreViewAnimationModel::Initialize(void* pArg)
 void CPreViewAnimationModel::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
-	
 }
 
 void CPreViewAnimationModel::LateTick(_float fTimeDelta)
@@ -66,13 +62,13 @@ void CPreViewAnimationModel::Custom_Thread0(_float fTimeDelta)
 
 HRESULT CPreViewAnimationModel::Render()
 {
-		__super::Render();
+	__super::Render();
 
 	if (!m_pCurrentModelCom.lock())
 		return E_FAIL;
 
-	_uint iNumMeshContainers = m_pCurrentModelCom.lock()->Get_NumMeshContainers();
-	for (_uint i = 0; i < iNumMeshContainers; ++i)
+	_uint iNumMeshContainers(m_pCurrentModelCom.lock()->Get_NumMeshContainers());
+	for (_uint i(0); i < iNumMeshContainers; ++i)
 	{
 		if (FAILED(m_pCurrentModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
@@ -92,14 +88,14 @@ HRESULT CPreViewAnimationModel::Render_ShadowDepth(_fmatrix In_LightViewMatrix, 
 
 	CallBack_Bind_SRV(m_pShaderCom, "");
 
-	_float	fDissolveAmount = -1.1f;
+	_float	fDissolveAmount(-1.1f);
 	m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &fDissolveAmount, sizeof(_float));
 
 	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)&In_LightViewMatrix, sizeof(_float4x4));
 	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)&In_LightProjMatrix, sizeof(_float4x4));
 
-	_uint iNumMeshContainers = m_pCurrentModelCom.lock()->Get_NumMeshContainers();
-	for (_uint i = 0; i < iNumMeshContainers; ++i)
+	_uint iNumMeshContainers(m_pCurrentModelCom.lock()->Get_NumMeshContainers());
+	for (_uint i(0); i < iNumMeshContainers; ++i)
 	{
 		//m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 		/*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
@@ -117,11 +113,8 @@ HRESULT CPreViewAnimationModel::Render_ShadowDepth(_fmatrix In_LightViewMatrix, 
 void CPreViewAnimationModel::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
-
-	_vector vShaderFlag = { 0.f, 0.f, 0.f, 0.f };
-
+	_vector vShaderFlag(XMVectorSet(0.f, 0.f, 0.f, 0.f));
 	m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector));
-
 #ifndef _USE_THREAD_
 	if(m_pCurrentModelCom.lock())
 		m_pCurrentModelCom.lock()->Update_BoneMatrices();
@@ -130,56 +123,32 @@ void CPreViewAnimationModel::SetUp_ShaderResource()
 
 void CPreViewAnimationModel::Init_EditPreViewAnimationModel(const string& In_szModelKey)
 {
-	//auto iter = find_if(m_pModelComs.begin(), m_pModelComs.end(), CTag_Finder_c_str(In_szModelKey.c_str()));
-
-	/*if (m_pModelComs.end() != iter)
-	{
-		m_pCurrentModelCom = iter->second;
-		m_pCurrentModelCom.lock()->Set_CurrentAnimation(0);
-		return;
-	}
-
-
-	Clear_DebugWeapon();
-
-	shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey(In_szModelKey.c_str());
-
-	if (!pModelData)
-	{
-		DEBUG_ASSERT;
-		return;
-	}
-
-	weak_ptr<CModel> pModel = Add_Component<CModel>();*/
-
 	m_pModelCom.lock()->Init_Model(In_szModelKey.c_str(),"", (_uint)TIMESCALE_LAYER::EDITER);
 	m_pCurrentModelCom = m_pModelCom;
 
-	/*m_pModelComs.emplace(In_szModelKey, pModel);
-	m_pCurrentModelCom = pModel;
-	m_pCurrentModelCom.lock()->Set_CurrentAnimation(0);*/
-
-	if (strcmp(In_szModelKey.c_str(), "Corvus") == 0)
+	if (!strcmp(In_szModelKey.c_str(), "Corvus"))
 	{
 		Clear_ModelWeapon();
-#ifdef _ANIMATION_TOOL_CORVUS_WEAPON_
+#ifdef _ANIMATION_TOOL_WEAPON_
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultSaber>(LEVEL_STATIC));
 		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, "weapon_r");
 
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultDagger>(LEVEL_STATIC));
 		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, "weapon_l");
-#endif // _ANIMATION_TOOL_CORVUS_WEAPON_
+#endif // _ANIMATION_TOOL_WEAPON_
 
 		m_pModelCom.lock()->Add_ReverseAnimation(m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_Ladder_Climb_R_UP_End"), (_uint)TIMESCALE_LAYER::EDITER);
 	}
 
-	if (strcmp(In_szModelKey.c_str(), "Boss_Varg") == 0)
+	if (!strcmp(In_szModelKey.c_str(), "Boss_Varg"))
 	{
 		Clear_ModelWeapon();
 
-		/*m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
+#ifdef _ANIMATION_TOOL_WEAPON_
+		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
 		m_pModelWeapons.back().lock()->Init_Model("Boss_VargWeapon", TIMESCALE_LAYER::MONSTER);
-		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, "weapon_r");*/
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, "weapon_r");
+#endif // _ANIMATION_TOOL_WEAPON_
 	}
 }
 
@@ -194,7 +163,6 @@ void CPreViewAnimationModel::Play_Animation(_float fTimeDelta)
 		return;
 
 	m_pCurrentModelCom.lock()->Play_Animation(fTimeDelta);
-
 }
 
 void CPreViewAnimationModel::Add_DebugWeapon(const string& In_szBoneName)
@@ -205,28 +173,21 @@ void CPreViewAnimationModel::Add_DebugWeapon(const string& In_szBoneName)
 
 void CPreViewAnimationModel::Set_WeaponDesc(const _float& In_fScale, const _float3& In_vOffset, const _float& In_fDamage, const HIT_TYPE& In_eHitType)
 {
-	/*for (auto& elem : m_pDebugWeapons)
-	{
-		elem.lock()->Set_WeaponDesc(In_fScale, In_vOffset, In_eHitType, In_fDamage);
-	}*/
-
 }
 
 void CPreViewAnimationModel::Clear_DebugWeapon()
 {
 	for (auto& elem : m_pDebugWeapons)
-	{
 		elem.lock()->Set_Dead();
-	}
+
 	m_pDebugWeapons.clear();
 }
 
 void CPreViewAnimationModel::Clear_ModelWeapon()
 {
 	for (auto& elem : m_pModelWeapons)
-	{
 		elem.lock()->Set_Dead();
-	}
+
 	m_pModelWeapons.clear();
 }
 

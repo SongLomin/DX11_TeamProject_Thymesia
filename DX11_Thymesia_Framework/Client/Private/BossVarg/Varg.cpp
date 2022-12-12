@@ -86,8 +86,15 @@ HRESULT CVarg::Initialize(void* pArg)
 	//position 0.163, 0.12,0.055 , z 0.1¾¿
 	TrailDesc.vPos_0 = _float3(0.163, 0.17, 0.075);
 	TrailDesc.vPos_1 = _float3(0.163, 0.17, 0.035);
-	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail_EyeLight>(LEVEL_GAMEPLAY, &TrailDesc);
+	m_pTrailEffect = GAMEINSTANCE->Add_GameObject<CEffect_Trail_EyeLight>(m_CreatedLevel, &TrailDesc);
+	m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTrailBoneNode, m_pModelCom.lock()->Get_ModelData());
 
+	if (!m_pTrailEffect.lock())
+		assert(0);
+
+	// m_pTrailEffect.lock()->();
+
+	m_pTrailEffect.lock()->Set_Enable(false);
 	GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
 
 	m_fCullingRange = 999.f;
@@ -105,26 +112,12 @@ HRESULT CVarg::Start()
 
 	CBase::Set_Enable(true);
 	
-	switch (m_eBossStartType)
-	{
-	case Client::BOSSSTARTTYPE::BEGINSTART:
-		Change_State<CVargBossState_Start>();
-		break;
-	case Client::BOSSSTARTTYPE::NORMALSTART:
-		Change_State<CVargBossState_IdleGeneral>();
-		break;
-	}
+	Change_State<CVargBossState_IdleGeneral>();
 	
 
 	// weak_ptr<CBoneNode> pTargetBoneNode = m_pModelCom.lock()->Find_BoneNode();
 	// m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
 	 m_EffectIndexList.emplace_back("Character_Target", GET_SINGLE(CGameManager)->Use_EffectGroup("Character_Target", m_pTransformCom));
-	
-	m_EffectIndexList.push_back
-	({
-		"Varg_Eye",
-		GET_SINGLE(CGameManager)->Use_EffectGroup("Varg_Eye", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER)
-		});
 
 	return S_OK;
 }
@@ -181,6 +174,11 @@ void CVarg::SetUp_ShaderResource()
 void CVarg::Set_TrailEnable(_bool In_bEnable)
 {
 	Weak_Cast<CVargWeapon>(m_pWeapons.front()).lock()->Set_TrailEnable(In_bEnable);
+}
+
+void CVarg::Set_EyeTrailEnable(_bool In_bEnable)
+{
+	m_pTrailEffect.lock()->Set_Enable(In_bEnable);
 }
 
 
@@ -287,8 +285,6 @@ void CVarg::OnEventMessage(_uint iArg)
 {
 	__super::OnEventMessage(iArg);
 
-
-
 	if ((_uint)EVENT_TYPE::ON_CATCH == iArg)
 	{
 		Change_State<CVargBossState_SPA_Catch>();
@@ -299,6 +295,10 @@ void CVarg::OnEventMessage(_uint iArg)
 		Change_State<CVargBossState_Exe_Start>();
 	}
 	
+	if ((_uint)EVENT_TYPE::ON_ENTER_SECTION == iArg)
+	{
+		Set_Enable(true);
+	}
 }
 
 void CVarg::OnEnable(void* _Arg)

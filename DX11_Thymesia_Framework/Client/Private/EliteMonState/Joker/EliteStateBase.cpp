@@ -22,6 +22,7 @@ HRESULT CEliteStateBase::Initialize(void* pArg)
 
 	m_iTimeScaleLayer = (_uint)TIMESCALE_LAYER::MONSTER;
 	m_pOwnerFromMonster = Weak_Cast<CMonster>(m_pOwner);
+	Set_Enable(false);
 
 	return S_OK;
 }

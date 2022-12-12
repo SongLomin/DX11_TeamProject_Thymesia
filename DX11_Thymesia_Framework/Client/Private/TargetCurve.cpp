@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Model.h"
 #include "BoneNode.h"
+#include "Texture.h"
 
 GAMECLASS_C(CTargetCurve)
 CLONE_C(CTargetCurve, CGameObject)
@@ -30,8 +31,12 @@ HRESULT CTargetCurve::Initialize(void* pArg)
 		VTXTEXCURVE_INSTANCE_DECLARATION::Element,
 		VTXTEXCURVE_INSTANCE_DECLARATION::iNumElements);
 
+	GET_SINGLE(CGameManager)->CallBack_ChangePlayer += bind(&CTargetCurve::Call_UpdatePlayer, this);
 	GET_SINGLE(CGameManager)->CallBack_FocusInMonster += bind(&CTargetCurve::Call_UpdateTarget, this);
 	GET_SINGLE(CGameManager)->CallBack_FocusOutMonster += bind(&CTargetCurve::Call_ReleaseTarget, this);
+
+	m_pTextureCom = Add_Component<CTexture>();
+	m_pTextureCom.lock()->Use_Texture("UVMask");
 
 	return S_OK;
 }
@@ -39,9 +44,6 @@ HRESULT CTargetCurve::Initialize(void* pArg)
 HRESULT CTargetCurve::Start()
 {
 	__super::Start();
-
-	m_pParentTransformCom = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Transform();
-
 	return S_OK;
 }
 
@@ -54,8 +56,8 @@ void CTargetCurve::Tick(_float fTimeDelta)
 
 	__super::Tick(fTimeDelta);
 
-
-	_matrix  matTargetMonsterWorld = XMLoadFloat4x4(&m_pTargetModelCom.lock()->Get_TransformationMatrix());
+	_float4x4 matTargetModelTransformationMatrix = m_pTargetModelCom.lock()->Get_TransformationMatrix();
+	_matrix  matTargetMonsterWorld = XMLoadFloat4x4(&matTargetModelTransformationMatrix);
 	_matrix  matTargetCombined = m_pTargetBoneNodeCom.lock()->Get_CombinedMatrix();
 
 
@@ -69,21 +71,30 @@ void CTargetCurve::Tick(_float fTimeDelta)
 
 	_matrix CurvePoints;
 	
-	CurvePoints.r[1] = m_pParentTransformCom.lock()->Get_Position();
-	CurvePoints.r[1].m128_f32[1] += 2.2f;
-	CurvePoints.r[2] = MonsterWorldMatrix.r[3];
+	CurvePoints.r[0] = m_pParentTransformCom.lock()->Get_Position();
+	CurvePoints.r[0].m128_f32[1] += 1.2f;
+	CurvePoints.r[3] = MonsterWorldMatrix.r[3];
 
-	_vector vLook = CurvePoints.r[2] - CurvePoints.r[1];
-	vLook = XMVectorSetW(XMVector3Normalize(vLook), 1.f);
+	_vector vLook = CurvePoints.r[3] - CurvePoints.r[0];
+	vLook = XMVector3Normalize(vLook);
 	_vector vRight = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook));
 
-	CurvePoints.r[0] = XMVector3TransformNormal(vLook, XMMatrixRotationAxis(vRight, XMConvertToRadians(-75.0f)));
-	CurvePoints.r[0] = CurvePoints.r[1] - CurvePoints.r[0];
-	CurvePoints.r[3] = XMVector3TransformNormal(vLook, XMMatrixRotationAxis(vRight, XMConvertToRadians(75.0f)));
-	CurvePoints.r[3] = CurvePoints.r[2] + CurvePoints.r[3];
+	_vector vDir = XMVector3TransformNormal(vLook, XMMatrixRotationAxis(vRight, XMConvertToRadians(-75.0f)));
+	vDir = XMVector3TransformNormal(vDir, XMMatrixRotationAxis(vLook, XMConvertToRadians(50.0f)));
+
+	//CurvePoints.r[0] = XMVector3TransformNormal(vLook, XMMatrixRotationAxis(vRight, XMConvertToRadians(-75.0f)));
+	CurvePoints.r[1] = CurvePoints.r[0] + vDir*2.f;
+
+	vDir = XMVector3TransformNormal(vLook, XMMatrixRotationAxis(vRight, XMConvertToRadians(75.0f)));
+	vDir = XMVector3TransformNormal(vDir, XMMatrixRotationAxis(vRight, XMConvertToRadians(50.0f)));
+	
+	CurvePoints.r[2] = CurvePoints.r[3] - vDir*2.f;
 
 	XMStoreFloat4x4(&m_CurvePoints, CurvePoints);
 
+	m_vMaskUV.x += fTimeDelta;
+	if (1.f < m_vMaskUV.x)
+		m_vMaskUV.x = 0.f;
 }
 
 void CTargetCurve::LateTick(_float fTimeDelta)
@@ -135,6 +146,15 @@ void CTargetCurve::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_RotationMatrix", (void*)(&RotationMatrix), sizeof(_float4x4))))
 		DEBUG_ASSERT;
 
+	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vUVMask", &m_vMaskUV, sizeof(_float2))))
+		DEBUG_ASSERT;
+
+	_float fWrapWeight = 1.f;
+
+	if (FAILED(m_pShaderCom.lock()->Set_RawValue("fWrapWeight", &fWrapWeight, sizeof(_float))))
+		DEBUG_ASSERT;
+	if (FAILED(m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 693)))
+		DEBUG_ASSERT;
 }
 
 void CTargetCurve::Init_ParentCurve(weak_ptr<CTransform> pParentTransform)
@@ -145,6 +165,11 @@ void CTargetCurve::Init_ParentCurve(weak_ptr<CTransform> pParentTransform)
 void CTargetCurve::Set_Target(weak_ptr<CTransform> pTargetTransform)
 {
 	m_pTargetTransformCom = pTargetTransform;
+}
+
+void CTargetCurve::Call_UpdatePlayer()
+{
+	m_pParentTransformCom = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Transform();
 }
 
 void CTargetCurve::Call_UpdateTarget()
@@ -175,6 +200,7 @@ void CTargetCurve::Call_ReleaseTarget()
 
 void CTargetCurve::OnDestroy()
 {
+	GET_SINGLE(CGameManager)->CallBack_ChangePlayer -= bind(&CTargetCurve::Call_UpdatePlayer, this);
 	GET_SINGLE(CGameManager)->CallBack_FocusInMonster -= bind(&CTargetCurve::Call_UpdateTarget, this);
 	GET_SINGLE(CGameManager)->CallBack_FocusOutMonster -= bind(&CTargetCurve::Call_ReleaseTarget, this);
 }

@@ -7,12 +7,12 @@ END
 
 BEGIN(Client)
 
-class CCorvusState_NorMob_Execution :
+class CCorvusState_Joker_Execution :
     public CCorvusStateBase
 {
-    GAMECLASS_H(CCorvusState_NorMob_Execution);
-    CLONE_H(CCorvusState_NorMob_Execution, CComponent)
-        SHALLOW_COPY(CCorvusState_NorMob_Execution)
+    GAMECLASS_H(CCorvusState_Joker_Execution);
+    CLONE_H(CCorvusState_Joker_Execution, CComponent)
+        SHALLOW_COPY(CCorvusState_Joker_Execution)
 
 protected:
     virtual HRESULT Initialize_Prototype() override;
@@ -42,7 +42,7 @@ private:
 protected:
     virtual void OnEventMessage(weak_ptr<CBase> pArg) override;
     void Free();
-
+    virtual void OnDestroy() override;
     // CNorMonStateBase을(를) 통해 상속됨
     virtual _bool Check_AndChangeNextState() override;
 

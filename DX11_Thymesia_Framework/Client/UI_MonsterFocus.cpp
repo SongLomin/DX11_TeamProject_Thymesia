@@ -77,7 +77,7 @@ void CUI_MonsterFocus::Call_FocusInTarget()
 {
     m_pTargetMonster = GET_SINGLE(CGameManager)->Get_TargetMonster();
 
-    m_pEasingAlphaCom.lock()->Set_Lerp(0.f, 1.f, 5.f, EASING_TYPE::QUAD_IN, CEasingComponent::LOOP_GO_AND_BACK, false);
+    m_fAlphaColor = 1.f;
 
     m_vColor = CUI_Utils::GET_COLOR(COLOR_PALETTE::COLOR_WHITE);
 
@@ -120,7 +120,7 @@ void CUI_MonsterFocus::Call_ChangeState(weak_ptr<class CStateBase> pChangedState
     if (Compare_StateFlag(pChangedState, STATE_FLAG::EXECUTABLE))
     {
         m_vColor = CUI_Utils::GET_COLOR(COLOR_PALETTE::COLOR_RED);
-        m_pEasingAlphaCom.lock()->Set_Lerp(0.f, 1.f, 1.f, EASING_TYPE::QUAD_IN, CEasingComponent::LOOP_GO_AND_BACK, false);
+        m_pEasingAlphaCom.lock()->Set_Lerp(0.f, 1.f, 0.3f, EASING_TYPE::QUAD_IN, CEasingComponent::LOOP_GO_AND_BACK, false);
 
     }
     else if (Compare_StateFlag(pChangedState, STATE_FLAG::READY_SPECIAL_ATK))
@@ -193,7 +193,8 @@ void CUI_MonsterFocus::FollowTargetBone()
    _matrix  matTargetCombined = m_pBoneNode.lock()->Get_CombinedMatrix();
    // _vector vTargetWorldPos =    m_pTargetMonster.lock()->Get_WorldPosition();
 
-   _matrix  matTargetMonsterWorld = XMLoadFloat4x4(&m_pTargetMonster.lock()->Get_Component<CModel>().lock()->Get_TransformationMatrix());
+   _float4x4 matTransformation = m_pTargetMonster.lock()->Get_Component<CModel>().lock()->Get_TransformationMatrix();
+   _matrix  matTargetMonsterWorld = XMLoadFloat4x4(&matTransformation);
 
    _matrix BoneMatrix = matTargetCombined * matTargetMonsterWorld;
 

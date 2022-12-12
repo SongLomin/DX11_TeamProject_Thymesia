@@ -266,6 +266,23 @@ void CCorvusStateBase::Check_AndChangeHitState(weak_ptr<CCollider> pMyCollider, 
 		Get_OwnerPlayer()->Change_State<CCorvusState_HurtXXL>();
 	}
 
+	else if (In_eHitType == HIT_TYPE::UPPER_HIT)
+	{
+		_vector vMyPosition = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+
+		_vector vOtherColliderPosition = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner()).lock()->
+			Get_ParentObject().lock()->
+			Get_Component<CTransform>().lock()->
+			Get_State(CTransform::STATE_TRANSLATION);
+
+		_vector vSameHeightOtherColliderPosition = vOtherColliderPosition;
+		vSameHeightOtherColliderPosition.m128_f32[1] = vMyPosition.m128_f32[1];
+
+		m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
+
+		Get_OwnerPlayer()->Change_State<CCorvusState_HurtXL>();
+	}
+
 
 }
 

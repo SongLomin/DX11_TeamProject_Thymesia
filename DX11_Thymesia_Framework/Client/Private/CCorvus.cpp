@@ -25,7 +25,13 @@ HRESULT CCorvus::Initialize(void* pArg)
 	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_VtxAnimModel"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements);
 
 	m_pStatus = CGameObject::Add_Component<CStatus_Player>();
-	m_pStatus.lock()->Load_FromJson(m_szClientComponentPath + "Corvus/SaveData.json");
+	
+	CStatus_Player::PLAYERDESC& pStatus_PlayerDesc = GET_SINGLE(CGameManager)->Get_PlayerStatusDesc();
+	
+	m_pStatus.lock()->Set_Desc(&pStatus_PlayerDesc);
+	
+	
+	//m_pStatus.lock()->Load_FromJson(m_szClientComponentPath + "Corvus/SaveData.json");
 
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
 
@@ -82,7 +88,9 @@ void CCorvus::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	// TODO : get rid of this
+#ifdef _DEBUG
 	this->Debug_KeyInput(fTimeDelta);
+#endif // _DEBUG
 }
 
 void CCorvus::LateTick(_float fTimeDelta)
@@ -108,10 +116,10 @@ HRESULT CCorvus::Render()
 	for (_uint i(0); i < m_iNumMeshContainers; ++i)
 	{
 #ifdef _DEBUG
-		/*if (i == m_iContainerIndex)
-			continue;*/
+		//if (i == m_iContainerIndex)
+		//	continue;
 #endif // _DEBUG
-		if (4 == i || 5 == i || 9 == i || 10 == i || 11 == i|| 12 == i|| 13 == i)
+		if (4 == i || 5 == i || 8 == i || 9 == i || 10 == i || 11 == i|| 12 == i|| 13 == i)
 		{
 			unordered_map<_uint, DISSOLVE_DESC>::iterator iter = m_DissolveDescs.find(i);
 
@@ -229,6 +237,7 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_HurtL);
 	ADD_STATE_MACRO(CCorvusState_HurtR);
 	ADD_STATE_MACRO(CCorvusState_HurtXXL);
+	ADD_STATE_MACRO(CCorvusState_HurtXL);
 	ADD_STATE_MACRO(CCorvusState_NorMob_Execution);
 	ADD_STATE_MACRO(CCorvusState_ParryDeflectLeft);
 	ADD_STATE_MACRO(CCorvusState_ParryDeflectLeftup);
@@ -272,10 +281,13 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_AVoidL);
 	ADD_STATE_MACRO(CCorvusState_AVoidR);
 	ADD_STATE_MACRO(CCorvusState_AVoidF);
+	ADD_STATE_MACRO(CCorvusState_Getup);
+
 
 	ADD_STATE_MACRO(CCorvusState_CheckPointStart);
 	ADD_STATE_MACRO(CCorvusState_CheckPointEnd);
 	ADD_STATE_MACRO(CCorvusState_CheckPointLoop);
+	ADD_STATE_MACRO(CCorvusState_Joker_Execution);
 
 #undef ADD_STATE_MACRO
 }
@@ -385,9 +397,15 @@ void CCorvus::OnEventMessage(_uint iArg)
 	{
 		Change_State<CCorvusState_CheckPointEnd>();
 	}
+
+	if ((_uint)EVENT_TYPE::ON_JOKEREXECUTION == iArg)
+	{
+		Change_State<CCorvusState_Joker_Execution>();
+	}
 }
 
 void CCorvus::Free()
 {
+
 }
 

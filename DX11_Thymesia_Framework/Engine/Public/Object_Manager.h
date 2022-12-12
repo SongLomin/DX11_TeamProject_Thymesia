@@ -130,6 +130,57 @@ public: /* For Template Function */
 		return dynamic_pointer_cast<T>(pCloneObject);
 	}
 
+	template <typename T>
+	weak_ptr<T> Add_SingleGameObject(_uint iLevelIndex, /*CTransform* pParent = nullptr,*/ void* pArg = nullptr)
+	{
+		static_assert(is_base_of<CGameObject, T>::value, "T Isn't base of CGameObject");
+
+		if (m_iNumLevels <= iLevelIndex)
+		{
+			//잘못된 레벨 인덱스
+#ifdef _DEBUG
+			assert(false);
+#endif
+			return weak_ptr<T>();
+		}
+
+		weak_ptr<CGameObject> pPrototype;
+
+		_hashcode HashCode = typeid(T).hash_code();
+
+		auto iter = m_Prototypes.find(HashCode);
+
+		if (iter != m_Prototypes.end())
+		{
+			pPrototype = (*iter).second;
+		}
+
+		if (0 == pPrototype.lock())
+		{
+			pPrototype = Add_Prototype<T>();
+		}
+
+		if (0 == pPrototype.use_count())
+			return weak_ptr<T>();
+
+
+		auto GameObjectMap_iter = m_pLayers[iLevelIndex].find(HashCode);
+
+		if (GameObjectMap_iter != m_pLayers[iLevelIndex].end())
+		{
+			if (!GameObjectMap_iter->second.empty())
+			{
+				return dynamic_pointer_cast<T>(GameObjectMap_iter->second.front());
+			}
+		}
+
+		shared_ptr<CGameObject> pCloneObject = pPrototype.lock()->Clone(iLevelIndex, pArg);
+
+		m_ReservedObjects.push_back({ HashCode, iLevelIndex, pCloneObject });
+
+		return dynamic_pointer_cast<T>(pCloneObject);
+	}
+
 	template<typename T>
 	list<weak_ptr<T>> Get_GameObjects(_uint iLevelIndex)
 	{

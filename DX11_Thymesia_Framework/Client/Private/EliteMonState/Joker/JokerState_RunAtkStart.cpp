@@ -106,21 +106,6 @@ _bool CJokerState_RunAttackStart::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
-
-	if (!pCurrentPlayer.lock())
-		return false;
-
-	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
-
-	if (fPToMDistance <= 2.f)
-	{
-		Get_OwnerCharacter().lock()->Change_State<CJokerState_RunAtkEnd>(0.05f);
-		return true;
-	}
-
-
-
 	return false;
 }
 

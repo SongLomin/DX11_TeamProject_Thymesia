@@ -122,7 +122,7 @@ void CJokerStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider>
 	{
 		_vector vMyPosition = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
 
-		//¸Â¾ÒÀ»¶§ ÇÃ·¹ÀÌ¾î¸¦ ¹Ù¶óº¸´Â ½Ã¼± Ã³¸®
+		//ï¿½Â¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½Ù¶óº¸´ï¿½ ï¿½Ã¼ï¿½ Ã³ï¿½ï¿½
 		weak_ptr<CAttackArea> pAttackArea = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner());
 			
 		weak_ptr<CStatus_Monster> pStatus = m_pOwner.lock()->Get_Component<CStatus_Monster>();
@@ -185,9 +185,9 @@ void CJokerStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider>
 
 		
 
-		//ÀÌ°Å´ÂÇÑ¹ø¸¸È£ÃâµÇ°Ô ÇØ¾ßÇÔ 
-		//ÇöÀç»óÅÂ°¡ ½ºÅÏ½ºÅ¸Æ®³ª ·çÇÁ°¡¾Æ´Ñ°æ¿ì
-		//È¤½Ã¸ô¸£´Ï ¿¹¿ÜÃ³¸®ÇØÁÜ 
+		//ï¿½Ì°Å´ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½È£ï¿½ï¿½Ç°ï¿½ ï¿½Ø¾ï¿½ï¿½ï¿½ 
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â°ï¿½ ï¿½ï¿½ï¿½Ï½ï¿½Å¸Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ´Ñ°ï¿½ï¿½
+		//È¤ï¿½Ã¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
 		if (Get_OwnerCharacter().lock()->Get_CurState().lock() != Get_Owner().lock()->Get_Component<CJokerState_Stun_Start>().lock() &&
 			Get_OwnerCharacter().lock()->Get_CurState().lock() != Get_Owner().lock()->Get_Component<CJokerState_Stun_Loop>().lock())
 		{
@@ -199,13 +199,10 @@ void CJokerStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider>
 		}
 		else
 		{
-			//ÀÌ‹š ÇÃ·¹ÀÌ¾îÇÑÅ× ÀÌº¥Æ®¸¦ ´øÁ®ÁÝ½Ã´Ù
-			if (pStatus.lock()->Get_Desc().m_iLifeCount == 2)
-			{
-				pStatus.lock()->Minus_LifePoint(1);
-				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGEXECUTION);
+			
+				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_JOKEREXECUTION);
 				_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
-				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, 2.2f, 0.f));
+				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, -0.4f, 0.f));
 				pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
 					vResultOtherWorldMatrix.r[3],
 					GAMEINSTANCE->Get_DeltaTime(),
@@ -213,34 +210,18 @@ void CJokerStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider>
 				pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
 				Get_OwnerCharacter().lock()->Change_State<CJokerState_TakeExecution_Start>(0.05f);
 				
-			}
-			else
-			{
-				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGEXECUTION);
-				_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
-				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, 2.2f, 0.f));
-				pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
-					vResultOtherWorldMatrix.r[3],
-					GAMEINSTANCE->Get_DeltaTime(),
-					Filters);
-				pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
-				Get_OwnerCharacter().lock()->Change_State<CJokerState_TakeExecution_Start>(0.05f);
-				
-			}
-			
-			
 		}
 
 		
 		
-		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.1f + fShakingRatio, 1.f, 9.f, 0.5f);//ÀÏ¹Ý °ø°Ý
+		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.1f + fShakingRatio, 1.f, 9.f, 0.5f);//ï¿½Ï¹ï¿½ ï¿½ï¿½ï¿½ï¿½
 		GAMEINSTANCE->Set_MotionBlur(0.05f);
 
 		
 
-		//ÇöÀç»óÅÂ°¡ ½ºÅÏ½ºÅ¸Æ®³ª ½ºÅÏ·çÇÁÀÎ°æ¿ì¿¡ 
-		//´Ù½Ã °Ë»ç¸¦ÇØÁØ´Ù ÇÃ·¹ÀÌ¾îÀÇ °ø°ÝÀÌ µé¾î¿À¸é ¹Ù±×Ã³ÇüÀ¸·Î °©´Ï´Ù 
-		// ¹Ù±×Ã³ÇüÀ¸·Î°¡°í ¹Ù±×Ã³ÇüÀ¸·Î °¥‹š ±× ¾Ö´Ï¸ÞÀÌ¼ÇÇÑÅÂ °ªÇÏ³ª´øÁ®ÁÖ¸é ÇØ°á¤·¿Ï·á 
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â°ï¿½ ï¿½ï¿½ï¿½Ï½ï¿½Å¸Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½Î°ï¿½ì¿¡ 
+		//ï¿½Ù½ï¿½ ï¿½Ë»ç¸¦ï¿½ï¿½ï¿½Ø´ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù±ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½ 
+		// ï¿½Ù±ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½ï¿½ï¿½ ï¿½Ù±ï¿½Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ ï¿½Ø°á¤·ï¿½Ï·ï¿½ 
 
 
 	}

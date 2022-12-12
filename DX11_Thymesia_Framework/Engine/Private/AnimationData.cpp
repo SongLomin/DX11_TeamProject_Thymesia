@@ -6,7 +6,7 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
 
     iNumChannels = In_pAiAnimation->mNumChannels;
 
-    /* ÇöÀç ¾Ö´Ï¸ÞÀÌ¼ÇÀ» Àç»óÇÏ´Âµ¥ °É¸®´Â ½Ã°£. */
+    /* ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´Âµï¿½ ï¿½É¸ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½. */
     fDuration = (_float)In_pAiAnimation->mDuration;
     fTickPerSecond = (_float)In_pAiAnimation->mTicksPerSecond * In_fSpeed;
 
@@ -64,6 +64,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
    SET_ANIM_SPEED("Corvus_SD1_ParryL_NEW", 4.f);
    SET_ANIM_SPEED("Corvus_SD1_ParryR_NEW", 4.f);
    SET_ANIM_SPEED("Corvus_VSVarg_TakeSPAttack", 1.853f);
+ 
 
 	SET_ANIM_SPEED("Corvus_Raven_ClawLong_L01", 2.f);
 	SET_ANIM_SPEED("Corvus_Raven_ClawLong_L02", 2.f);
@@ -96,6 +97,8 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 
     SET_ANIM_SPEED("Corvus_SD_ParryDeflect_L", 2.f);
     SET_ANIM_SPEED("Corvus_SD_ParryDeflect_LUp", 2.f);
+    SET_ANIM_SPEED("Corvus_SD_HurtXLF", 2.f);
+    SET_ANIM_SPEED("Corvus_SD_HurtXXLF", 2.f);
 
 	SET_ANIM_SPEED("Corvus_SD_ParryDeflect_R", 2.f);
 	SET_ANIM_SPEED("Corvus_SD_ParryDeflect_RUp", 2.f);
@@ -104,6 +107,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 	SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_R_UP", 2.f);
 	SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_L_Down", 2.f);
 	SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_R_Down", 2.f);
+	SET_ANIM_SPEED("Corvus_SD_GetUp", 2.f);
 	//SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution", 1.2f);
     
 
@@ -130,10 +134,9 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Seq_BossFightStart", 5.f);
 
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_AvoidB", 1.25f);
+#pragma endregion // Varg
 
-
-
-
+#pragma region Joker
     SET_ANIM_SPEED("Joker_ComboA01", 1.25f);
     SET_ANIM_SPEED("Joker_ComboA02", 1.25f);
     SET_ANIM_SPEED("Joker_ComboB01", 1.25f);
@@ -150,14 +153,8 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("Joker_WheelAttackStart", 1.25f);
     SET_ANIM_SPEED("Joker_WheelAttackLoop", 1.25f);
     SET_ANIM_SPEED("Joker_WheelAttackEnd", 1.25f);
-
-
-
-
-
-
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Seq_BossFightStart", 5.f);
-#pragma endregion // Varg
+    SET_ANIM_SPEED("Joker_TakeExecution_Start", 1.45f);
+#pragma endregion // Joker
 
 #pragma region Mon_AxeMan
     SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtStunStart|BaseLaye", 2.f);
@@ -180,7 +177,7 @@ void ANIMATION_DATA::Bake_ReverseAnimation(shared_ptr<ANIMATION_DATA>& Out_Anima
 
     Out_AnimationData->iNumChannels = iNumChannels;
 
-    /* ÇöÀç ¾Ö´Ï¸ÞÀÌ¼ÇÀ» Àç»óÇÏ´Âµ¥ °É¸®´Â ½Ã°£. */
+    /* ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´Âµï¿½ ï¿½É¸ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½. */
     Out_AnimationData->fDuration = fDuration;
     Out_AnimationData->fTickPerSecond = fTickPerSecond;
 

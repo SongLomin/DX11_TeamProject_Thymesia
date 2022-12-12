@@ -14,9 +14,7 @@ class CJokerState_Stun_Loop :
 	CLONE_H(CJokerState_Stun_Loop, CComponent)
 		SHALLOW_COPY(CJokerState_Stun_Loop)
 
-public:
-	void Set_TurnCheck(_bool TurnCheck) { m_bTurnCheck = TurnCheck; }
-	void Set_BackReset(_bool BackReset) { m_bBackReset = BackReset; }
+
 
 
 protected:
@@ -31,9 +29,7 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
-private:
-	_bool    m_bTurnCheck = false;
-	_bool    m_bBackReset = false;
+
 
 private:
 	//void Call_AnimationEnd();

@@ -1,6 +1,6 @@
 
 #pragma once
-#include "StateBase.h"
+#include "AIStateBase.h"
 
 BEGIN(Engine)
 class CAnimation;
@@ -11,7 +11,7 @@ BEGIN(Client)
 
 class CMonster;
 class CEliteStateBase abstract :
-    public CStateBase
+    public CAIStateBase
 {
     GAMECLASS_H(CEliteStateBase);
 

@@ -103,25 +103,7 @@ _bool CJokerState_WalkB::Check_AndChangeNextState()
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
-		int iRand = rand() % 5;
-		switch (iRand)
-		{
-		case 0:
-			Get_OwnerCharacter().lock()->Change_State<CJokerState_ComboA1>(0.05f);
-			break;
-		case 1:
-			Get_OwnerCharacter().lock()->Change_State<CJokerState_Combob1>(0.05f);
-			break;
-		case 2:
-			Get_OwnerCharacter().lock()->Change_State<CJokerState_ShockAttack>(0.05f);
-			break;
-		case 3:
-			Get_OwnerCharacter().lock()->Change_State<CJokerState_WheelAtkStart>(0.05f);
-			break;
-		case 4:
-			Get_OwnerCharacter().lock()->Change_State<CJokerState_RunAttackStart>(0.05f);
-			break;
-		}
+		Get_OwnerCharacter().lock()->Change_State<CJokerState_Idle>(0.05f);
 		return true;
 	}
 

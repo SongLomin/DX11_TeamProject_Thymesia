@@ -78,8 +78,6 @@ HRESULT CLevel_Test::Initialize()
 
 	SetUp_UI();
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
-
-	GAMEINSTANCE->Add_GameObject<CTargetCurve>(LEVEL_TEST);
 	
 	return S_OK;
 }

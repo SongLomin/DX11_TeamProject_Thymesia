@@ -480,4 +480,12 @@ namespace Engine
 		_float3		vPos_1;
 		_uint		iMaxCnt;
 	} TRAIL_DESC;
+
+	struct LIFTGAMMAGAIN_DESC
+	{
+		_float4 vLift;
+		_float4 vGamma;
+		_float4 vGain;
+	};
+	
 }

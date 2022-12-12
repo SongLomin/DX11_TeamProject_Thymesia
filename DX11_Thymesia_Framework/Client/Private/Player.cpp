@@ -108,9 +108,12 @@ HRESULT CPlayer::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_Lig
 
     m_pModelCom.lock()->Update_BoneMatrices();
 
-    _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
-    for (_uint i = 0; i < iNumMeshContainers; ++i)
+    _uint iNumMeshContainers(m_pModelCom.lock()->Get_NumMeshContainers());
+    for (_uint i(0); i < iNumMeshContainers; ++i)
     {
+        if (4 == i || 5 == i || 8 == i || 9 == i || 10 == i || 11 == i || 12 == i || 13 == i)
+            continue;
+
         m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, 1, "g_Bones");
     }
 

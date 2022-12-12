@@ -1,7 +1,7 @@
 #pragma once
 #include "Base.h"
 #include "Client_Defines.h"
-
+#include "Status_Player.h"
 
 BEGIN(Engine)
 class CGameObject;
@@ -54,7 +54,11 @@ public:
     weak_ptr<CStatus_Player>    Get_CurrentPlayer_Status();
     weak_ptr<CPlayer>           Get_CurrentPlayer();
 
-public:
+public: // For. Varg Eye Effect
+    void Store_EffectIndex_Temp(const _uint iEffectIndex) { m_iEffectIndex_ForStorage = iEffectIndex; }
+    const _uint Get_EffectIndex_Stored() const { return m_iEffectIndex_ForStorage; }
+private:
+    _uint m_iEffectIndex_ForStorage = 0;
    
 public:
     void Set_TargetCamera(weak_ptr<CCamera_Target> In_TargetCamera);
@@ -99,6 +103,7 @@ public:
 public:
     void Registration_CheckPoint(weak_ptr<CInteraction_CheckPoint> In_CheckPoint);
     HRESULT Respawn_LastCheckPoint(_float4* Out_RespawnPos);
+    virtual void OnLevelExit() override;
 
 private:
     void Start_Peace();
@@ -121,27 +126,24 @@ public:
     void Change_NextLevel(void* pArg);
 
     /*
-    문광현 무공비급 함수모음.
+    문광현 임펠다운 함수모음.
     
     무공비급 함수란?
-    낙후된 컴퓨터 환경 및 빡빡한 일정마감을 위해
-    인륜을 져버린 함수 및 변수들을 모아놓은 공간.
-    나중에 무조건 유연하게 바꿔놓겠음.
+    낙후된 컴퓨터 환경 및 빡빡한 일정마감을 완수하기 위해
+    인륜을 져버린 사악한 함수 및 변수들을 모아놓은 공간.
+    나중에 무조건 사형(없앤다)시키겠음.
     */
 public:// For UI;
     POINT   Get_MousePoint();
-   // void    Set_PlayerStatus(CStatus_Player::PLAYERDESC tPlayerDesc)
-   // {
-   //     m_tPlayerDesc = tPlayerDesc;
-   // }
-   // CStatus_Player::PLAYERDESC Get_PlayerDesc()
-   // {
-   //     return m_tPlayerDesc;
-   // }
+    void    Set_PlayerStatusDesc(void* pArg);
+    CStatus_Player::PLAYERDESC&   Get_PlayerStatusDesc()
+    {
+        return m_tPlayerDesc;
+    }
 
 public:
     _uint   m_iTestTalent = 2;
-    //CStatus_Player::PLAYERDESC m_tPlayerDesc;
+    CStatus_Player::PLAYERDESC m_tPlayerDesc;
 
 
 public:

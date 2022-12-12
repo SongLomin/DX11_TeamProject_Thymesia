@@ -9,6 +9,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "JokerStates.h"
+#include "MobWeapon.h"
 
 
 
@@ -61,6 +62,12 @@ void CJokerState_TurnAtkL::LateTick(_float fTimeDelta)
 void CJokerState_TurnAtkL::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+
+	pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.3f);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 

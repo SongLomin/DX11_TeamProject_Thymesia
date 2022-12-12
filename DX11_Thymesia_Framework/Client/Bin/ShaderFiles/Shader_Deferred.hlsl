@@ -529,6 +529,32 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
         Out.vColor.rgb = pow(mapped, 1.f / 2.2f);
         Out.vColor.a = 1.f;
         
+        float fViewZ = vDepthDesc.y * 300.f;
+
+        vector vWorldPos;
+
+	/* 투영스페이스 상의 위치르 ㄹ구한다. */
+	/* 뷰스페이스 상 * 투영행렬 / w 까지 위치를 구한다. */
+        vWorldPos.x = In.vTexUV.x * 2.f - 1.f;
+        vWorldPos.y = In.vTexUV.y * -2.f + 1.f;
+        vWorldPos.z = vDepthDesc.x;
+        vWorldPos.w = 1.0f;
+
+	/* 뷰스페이스 상 * 투영행렬까지 곱해놓은 위치를 구한다. */
+        vWorldPos *= fViewZ;
+
+	/* 뷰스페이스 상  위치를 구한다. */
+        vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
+
+	/* 월드페이스 상  위치를 구한다. */
+        vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
+        
+        float fCamDistance = length(vWorldPos - g_vCamPosition);
+        
+        float fRatio = 1.f - exp(-fCamDistance / (g_fFogRange * 0.4f));
+        
+        Out.vColor.rgb = lerp(Out.vColor.rgb, float3(0.f, 0.f, 0.f), fRatio);
+        
         Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor.rgb;
 
         
@@ -545,14 +571,41 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
         float3 mapped = 1.f - exp(-Out.vColor.rgb * 0.5f /*exposure*/);
         Out.vColor.rgb = pow(mapped, 1.f / 2.2f);
         
+        float fViewZ = vDepthDesc.y * 300.f;
+
+        vector vWorldPos;
+
+	/* 투영스페이스 상의 위치르 ㄹ구한다. */
+	/* 뷰스페이스 상 * 투영행렬 / w 까지 위치를 구한다. */
+        vWorldPos.x = In.vTexUV.x * 2.f - 1.f;
+        vWorldPos.y = In.vTexUV.y * -2.f + 1.f;
+        vWorldPos.z = vDepthDesc.x;
+        vWorldPos.w = 1.0f;
+
+	/* 뷰스페이스 상 * 투영행렬까지 곱해놓은 위치를 구한다. */
+        vWorldPos *= fViewZ;
+
+	/* 뷰스페이스 상  위치를 구한다. */
+        vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
+
+	/* 월드페이스 상  위치를 구한다. */
+        vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
+        
+        float fCamDistance = length(vWorldPos - g_vCamPosition);
+        
+        float fRatio = 1.f - exp(-fCamDistance / (g_fFogRange * 0.4f));
+        
+        Out.vColor.rgb = lerp(Out.vColor.rgb, float3(0.f, 0.f, 0.f), fRatio);
+        
         if (0.f < Out.vColor.a)
         {
             Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor.rgb;
         }
         else
         {
-           Out.vColor = vFogDesc.r * g_vFogColor;
-           Out.vColor.a = 0.8f;
+           Out.vColor.rgb = float3(0.f, 0.f, 0.f);
+           Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor.rgb;
+           Out.vColor.a = 1.f;
            
         }
         

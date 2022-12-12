@@ -545,9 +545,9 @@ HRESULT CRender_Manager::Set_FogDesc(const _float4 In_vFogColor, const _float In
 
 HRESULT CRender_Manager::Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain)
 {
-	m_vLift = In_vLift;
-	m_vGamma = In_vGamma;
-	m_vGain = In_vGain;
+	m_LiftGammaGainDesc.vLift = In_vLift;
+	m_LiftGammaGainDesc.vGamma = In_vGamma;
+	m_LiftGammaGainDesc.vGain = In_vGain;
 
 	return S_OK;
 }
@@ -897,6 +897,7 @@ HRESULT CRender_Manager::Render_Blend()
 
 	m_pShader->Set_RawValue("g_ViewMatrixInv", &ViewMatrixInv, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_vCamPosition", &pPipeLine->Get_CamPosition(), sizeof(_float4));
 
 	m_pShader->Begin(3);
 
@@ -1606,9 +1607,9 @@ HRESULT CRender_Manager::PostProcessing()
 
 	m_pPostProcessingShader->Set_RawValue("g_vCamPosition", &ViewMatrixInv.m[3],sizeof(_float4));
 
-	m_pPostProcessingShader->Set_RawValue("g_vLift", &m_vLift, sizeof(_float4));
-	m_pPostProcessingShader->Set_RawValue("g_vGamma", &m_vGamma, sizeof(_float4));
-	m_pPostProcessingShader->Set_RawValue("g_vGain", &m_vGain, sizeof(_float4));
+	m_pPostProcessingShader->Set_RawValue("g_vLift", &m_LiftGammaGainDesc.vLift, sizeof(_float4));
+	m_pPostProcessingShader->Set_RawValue("g_vGamma", &m_LiftGammaGainDesc.vGamma, sizeof(_float4));
+	m_pPostProcessingShader->Set_RawValue("g_vGain", &m_LiftGammaGainDesc.vGain, sizeof(_float4));
 
 	m_pPostProcessingShader->Set_RawValue("g_fGrayScale", &m_fGrayScale, sizeof(_float));
 
