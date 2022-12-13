@@ -53,6 +53,7 @@ namespace Client
 		ON_SITUP,
 		ON_CONSOLE_ENABLE,
 		ON_CONSOLE_DISABLE,
+		ON_DIE,
 		EVENT_END
 	};
 
@@ -174,7 +175,7 @@ namespace Client
 
 
 		START_ELITE_MONSTER = 10000,
-		JOCKER,
+		JOKER,
 
 		STARTBOSS_MONSTER = 20000,
 		VARG, // 보스바그

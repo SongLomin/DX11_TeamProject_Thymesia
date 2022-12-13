@@ -24,7 +24,7 @@ HRESULT CMobWeapon::Initialize(void* pArg)
 HRESULT CMobWeapon::Start()
 {
 	__super::Start();
-
+	CWeapon::Disable_Weapon();
 	return S_OK;
 }
 

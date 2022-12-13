@@ -22,11 +22,18 @@ public:
 	virtual HRESULT Render();
 public:
 	/*Delegate Funtion*/
-	virtual void		Call_UseSkill();
+	virtual void		Call_UseSkill(_float _fCoolTime);
 	
 public:
 	//HoverEvent
 	virtual void			Call_HoverFadeEnd(FADER_TYPE eFaderType);
+	
+public:
+	virtual void			Bind_Player();
+
+private:
+	
+
 
 protected:
 	weak_ptr<CCustomUI>	m_pPlagueWeapon_Main;//«¡∑π¿”

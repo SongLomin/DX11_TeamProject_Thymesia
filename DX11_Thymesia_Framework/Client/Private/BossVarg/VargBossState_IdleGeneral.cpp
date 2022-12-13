@@ -58,13 +58,13 @@ void CVargBossState_IdleGeneral::OnStateStart(const _float& In_fAnimationBlendTi
 #endif // _DEBUG_COUT_
 #endif// _DEBUG
 
-	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+	
 }
 
 void CVargBossState_IdleGeneral::OnStateEnd()
 {
 	__super::OnStateEnd();
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+	
 }
 
 
@@ -80,7 +80,7 @@ _bool CVargBossState_IdleGeneral::Check_AndChangeNextState()
 
 	_float fPToMDistance(CBossStateBase::Get_DistanceWithPlayer()); // 플레이어와 몬스터 거리
 
-	if (fPToMDistance <= 30.f)
+	if (fPToMDistance <= 22.f)
 	{
 		CStateBase::Get_OwnerCharacter().lock()->Change_State<CVargBossState_Start>(0.05f);
 		return true;

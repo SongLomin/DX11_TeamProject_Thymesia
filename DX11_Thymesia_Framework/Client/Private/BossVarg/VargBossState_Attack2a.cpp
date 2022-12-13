@@ -76,7 +76,7 @@ void CVargBossState_Attack2a::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	for (auto& elem : pWeapons)
 	{
-		elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 150.f);
+		elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.2f);
 	}
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);

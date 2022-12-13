@@ -92,7 +92,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("Corvus_PW_CaneSword_SP02", 2.f);
     SET_ANIM_SPEED("Corvus_SD_LAttack4", 2.5f);
     SET_ANIM_SPEED("Corvus_SD_LAttack5", 2.5f);
-    SET_ANIM_SPEED("Corvus_SD_AvoidAttack_D", 2.5f);
+    SET_ANIM_SPEED("Corvus_SD_AvoidAttack_D", 3.5f);
     SET_ANIM_SPEED("Corvus_SD_AvoidAttack_E2", 2.5f);
 
     SET_ANIM_SPEED("Corvus_SD_ParryDeflect_L", 2.f);
@@ -107,7 +107,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 	SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_R_UP", 2.f);
 	SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_L_Down", 2.f);
 	SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_R_Down", 2.f);
-	SET_ANIM_SPEED("Corvus_SD_GetUp", 2.f);
+
 	//SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution", 1.2f);
     
 
@@ -153,7 +153,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("Joker_WheelAttackStart", 1.25f);
     SET_ANIM_SPEED("Joker_WheelAttackLoop", 1.25f);
     SET_ANIM_SPEED("Joker_WheelAttackEnd", 1.25f);
-    SET_ANIM_SPEED("Joker_TakeExecution_Start", 1.45f);
+    SET_ANIM_SPEED("Joker_TakeExecution_Start", 1.4f);
 #pragma endregion // Joker
 
 #pragma region Mon_AxeMan

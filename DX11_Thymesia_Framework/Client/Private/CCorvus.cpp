@@ -88,9 +88,9 @@ void CCorvus::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	// TODO : get rid of this
-#ifdef _DEBUG
+
 	this->Debug_KeyInput(fTimeDelta);
-#endif // _DEBUG
+
 }
 
 void CCorvus::LateTick(_float fTimeDelta)
@@ -176,6 +176,9 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	// TODO : test jump key R
 	if (KEY_INPUT(KEY::R, KEY_STATE::HOLD))
 		m_pPhysXControllerCom.lock()->Move(_vector{ 0.f, 500.f * fTimeDelta, 0.f }, 0.f, fTimeDelta, Filters);
+
+	if (KEY_INPUT(KEY::Y, KEY_STATE::HOLD))
+		m_pPhysXControllerCom.lock()->Move(_vector{ 0.f, 0.f, 500.f * fTimeDelta }, 0.f, fTimeDelta, Filters);
 
 	if (KEY_INPUT(KEY::NUM0, KEY_STATE::TAP))
 	{
@@ -282,6 +285,9 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_AVoidR);
 	ADD_STATE_MACRO(CCorvusState_AVoidF);
 	ADD_STATE_MACRO(CCorvusState_Getup);
+	ADD_STATE_MACRO(CCorvusState_Headache_End);
+	ADD_STATE_MACRO(CCorvusState_Headache_Start);
+	ADD_STATE_MACRO(CCorvusState_Headache_Loop);
 
 
 	ADD_STATE_MACRO(CCorvusState_CheckPointStart);
@@ -401,6 +407,11 @@ void CCorvus::OnEventMessage(_uint iArg)
 	if ((_uint)EVENT_TYPE::ON_JOKEREXECUTION == iArg)
 	{
 		Change_State<CCorvusState_Joker_Execution>();
+	}
+
+	if ((_uint)EVENT_TYPE::ON_DIE == iArg)
+	{
+		Change_State<CCorvusState_Die>();
 	}
 }
 

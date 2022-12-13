@@ -12,6 +12,9 @@
 #include "Effect_Trail.h"
 #include "NorMonStates.h"
 #include "PhysXCharacterController.h"
+#include "Collider.h"
+#include "Attack_Area.h"
+#include "Status_Monster.h"
 
 GAMECLASS_C(CCorvusState_PS_VargSword);
 CLONE_C(CCorvusState_PS_VargSword, CComponent)
@@ -126,6 +129,28 @@ void CCorvusState_PS_VargSword::Call_NextKeyFrame(const _uint& In_KeyIndex)
 void CCorvusState_PS_VargSword::OnEventMessage(weak_ptr<CBase> pArg)
 {
 
+}
+
+void CCorvusState_PS_VargSword::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
+{
+	CPlayerStateBase::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
+
+	if (pOtherCollider.lock()->Get_CollisionLayer() == (_uint)COLLISION_LAYER::MONSTER_ATTACK)
+	{
+		weak_ptr<CStatus_Player> pStatus = Weak_StaticCast<CStatus_Player>(m_pStatusCom);
+
+		weak_ptr<CAttackArea>	pAttackArea = Weak_StaticCast<CAttackArea>(pOtherCollider.lock()->Get_Owner());
+		weak_ptr<CCharacter>	pMonsterFromCharacter = pAttackArea.lock()->Get_ParentObject();
+		weak_ptr<CStatus_Monster>	pMonsterStatusCom = Weak_StaticCast< CStatus_Monster>(pMonsterFromCharacter.lock()->Get_Status());
+
+		pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
+		_bool bGroggy = pMonsterStatusCom.lock()->Is_Groggy();
+
+		if (bGroggy)
+		{
+			pMonsterFromCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_GROGGY);
+		}
+	}
 }
 
 void CCorvusState_PS_VargSword::Free()

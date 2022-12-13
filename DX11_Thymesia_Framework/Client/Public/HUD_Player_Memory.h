@@ -41,6 +41,8 @@ private:
 	weak_ptr<CEasingComponent_Float> m_pEasingComFloat;
 
 public:
+	void	Call_UpdateMemory();
+
 	void	Call_ChangeMemory(_float fMemory);
 public:
 	void Free();

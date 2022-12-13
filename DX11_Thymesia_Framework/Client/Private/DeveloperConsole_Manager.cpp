@@ -98,6 +98,8 @@ void CDeveloperConsole_Manager::OnEnableConsole(const _bool In_bEnable)
 	{
 		elem->OnEventMessage((_uint)eType);
 	}
+
+	FLT_MIN;
 }
 
 void CDeveloperConsole_Manager::Free()

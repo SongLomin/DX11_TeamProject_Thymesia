@@ -88,7 +88,7 @@ void CStatus_Monster::Init_Status(const void* pArg)
 	case Client::MONSTERTYPE::KNIFEWOMAN:
 		m_tMonsterDesc.m_fAtk              = 45.f;
 		m_tMonsterDesc.m_fMaxHP_white      = 125.f;
-		m_tMonsterDesc.m_fMaxParryingGauge = 200.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 300.f;
 		m_tMonsterDesc.m_iLifeCount        = 1;
 		m_tMonsterDesc.m_iMaxParryCount    = 10000;
 		m_tMonsterDesc.m_szModelKey        = "Mon_KnifeWoman";
@@ -98,8 +98,8 @@ void CStatus_Monster::Init_Status(const void* pArg)
 	case Client::MONSTERTYPE::GARDENER:
 		//TODO 공격력몰름 임시 
 		m_tMonsterDesc.m_fAtk              = 30.f;
-		m_tMonsterDesc.m_fMaxHP_white      = 125.f;
-		m_tMonsterDesc.m_fMaxParryingGauge = 200.f;
+		m_tMonsterDesc.m_fMaxHP_white      = 175.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 400.f;
 		m_tMonsterDesc.m_iLifeCount        = 1;
 		m_tMonsterDesc.m_iMaxParryCount    = 10000;
 		m_tMonsterDesc.m_szModelKey        = "Mon_Gardner";
@@ -107,15 +107,15 @@ void CStatus_Monster::Init_Status(const void* pArg)
 	case Client::MONSTERTYPE::VARG:
 		//TODO 공격력몰름 임시 
 		m_tMonsterDesc.m_fAtk = 50.f;
-		m_tMonsterDesc.m_fMaxHP_white = 100.f;
-		m_tMonsterDesc.m_fMaxParryingGauge = 100.f;
+		m_tMonsterDesc.m_fMaxHP_white = 2500.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 1000.f;
 		m_tMonsterDesc.m_iLifeCount = 2;
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
 		m_tMonsterDesc.m_szModelKey = "Boss_Varg";
 		break;
 	case Client::MONSTERTYPE::ENHANCE_GARDENER:
 		m_tMonsterDesc.m_fAtk = 30.f;
-		m_tMonsterDesc.m_fMaxHP_white = 200.f;
+		m_tMonsterDesc.m_fMaxHP_white = 250.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 200.f;
 		m_tMonsterDesc.m_iLifeCount = 1;
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
@@ -124,15 +124,15 @@ void CStatus_Monster::Init_Status(const void* pArg)
 	case Client::MONSTERTYPE::SHIELDAXEMAN:
 		m_tMonsterDesc.m_fAtk = 40.f;
 		m_tMonsterDesc.m_fMaxHP_white = 300.f;
-		m_tMonsterDesc.m_fMaxParryingGauge = 300.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 600.f;
 		m_tMonsterDesc.m_iLifeCount = 1;
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
 		m_tMonsterDesc.m_szModelKey = "Mon_AxeMan";
 		break;
-	case Client::MONSTERTYPE::JOCKER:
+	case Client::MONSTERTYPE::JOKER:
 		m_tMonsterDesc.m_fAtk = 40.f;
-		m_tMonsterDesc.m_fMaxHP_white = 200.f;
-		m_tMonsterDesc.m_fMaxParryingGauge = 200.f;
+		m_tMonsterDesc.m_fMaxHP_white = 500.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 800.f;
 		m_tMonsterDesc.m_iLifeCount = 1;
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
 		m_tMonsterDesc.m_szModelKey = "Elite_Joker";

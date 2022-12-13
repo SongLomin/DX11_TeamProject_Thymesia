@@ -9,6 +9,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
+#include "Status_Boss.h"
 
 GAMECLASS_C(CVargBossState_Exe_Start);
 CLONE_C(CVargBossState_Exe_Start, CComponent)
@@ -124,6 +125,7 @@ _bool CVargBossState_Exe_Start::Check_AndChangeNextState()
 	{
 		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 154)
 		{
+			m_pOwner.lock()->Get_Component<CStatus_Boss>().lock()->Set_NextPhase();
 			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_NoDeadEnd>(0.05f);
 			return true;
 		}

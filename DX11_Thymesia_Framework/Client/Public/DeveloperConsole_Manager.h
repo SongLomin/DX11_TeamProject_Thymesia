@@ -16,6 +16,7 @@ public:
     void	Tick(_float fTimeDelta);
     HRESULT Render();
 
+
 private:
     void    Init_Windows();
     void    Release_Windows();

@@ -66,12 +66,14 @@ void CCorvusState_Getup::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif
 #endif
 
+	
 }
 
 void CCorvusState_Getup::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	
 }
 
 void CCorvusState_Getup::Call_AnimationEnd()
@@ -98,6 +100,8 @@ _bool CCorvusState_Getup::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
 		return false;
+
+
 
 
 	return false;

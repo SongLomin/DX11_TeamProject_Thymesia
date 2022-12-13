@@ -8,6 +8,8 @@ class CCustomUI;
 
 class CHUD_PlagueWeapon_Main : public CHUD_PlagueWeaponBase
 {
+public:
+	friend class CHUD_PlagueWeapon;
 	GAMECLASS_H(CHUD_PlagueWeapon_Main);
 	CLONE_H(CHUD_PlagueWeapon_Main, CGameObject);
 
@@ -18,6 +20,9 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
+
+
+
 
 private:
 	weak_ptr<CCustomUI>	m_pPlagueWeapon_Icon;//æ∆¿Ãƒ‹

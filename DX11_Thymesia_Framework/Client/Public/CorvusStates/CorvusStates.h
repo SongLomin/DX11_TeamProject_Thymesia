@@ -72,7 +72,9 @@
 #include "CorvusStates/CorvusState_Climb_R_Up_Down_End.h"
 #include "CorvusStates/CorvusState_Climb_L_Up_Down_End.h"
 #include "CorvusStates/CorvusState_Getup.h"
-
+#include "CorvusStates/CorvusState_Headache_Start.h"
+#include "CorvusStates/CorvusState_Headache_Loop.h"
+#include "CorvusStates/CorvusState_Headache_End.h"
 
 
 

@@ -8,6 +8,7 @@
 #include "ProgressBar.h"
 #include "HUD_Hover.h"
 #include "CustomUI.h"
+#include "Player.h"
 
 
 GAMECLASS_C(CHUD_PlagueWeaponBase);
@@ -27,6 +28,13 @@ HRESULT CHUD_PlagueWeaponBase::Initialize(void* pArg)
     if (nullptr == pArg)
         MSG_BOX("Argument Error : PlagueWeaponBase");
 
+
+
+    GET_SINGLE(CGameManager)->CallBack_ChangePlayer +=
+        bind(&CHUD_PlagueWeaponBase::Bind_Player, this);
+
+
+    Bind_Player();
     return S_OK;
 }
 
@@ -63,12 +71,6 @@ void CHUD_PlagueWeaponBase::Tick(_float fTimeDelta)
         }
         m_pPlagueWeapon_Border.lock()->Set_Ratio(m_fNowTime / m_fCoolTime);
     }
-#ifdef _DEBUG
-    if (KEY_INPUT(KEY::Q, KEY_STATE::TAP))
-    {
-        Call_UseSkill();
-    }
-#endif // _DEBUG
 }
 
 void CHUD_PlagueWeaponBase::LateTick(_float fTimeDelta)
@@ -84,12 +86,9 @@ HRESULT CHUD_PlagueWeaponBase::Render()
     return S_OK;
 }
 
-void CHUD_PlagueWeaponBase::Call_UseSkill()
+void CHUD_PlagueWeaponBase::Call_UseSkill(_float _fCoolTime)
 {
-    //TODO : 역병무기 쿨타임 테스트 입니다.
-    Add_Shaking(2.f, 5.f);
-
-    m_fCoolTime = 5.f;
+    m_fCoolTime = _fCoolTime;
     m_fNowTime = 0.f;
     m_bIsCoolTime = true;
     m_pPlagueWeapon_Border.lock()->Set_Enable(true);
@@ -100,6 +99,14 @@ void CHUD_PlagueWeaponBase::Call_HoverFadeEnd(FADER_TYPE eFaderType)
 {
     m_pHover.lock()->Set_UIDesc(m_tUIDesc);
     m_pHover.lock()->Set_Enable(false);
+
+}
+
+void CHUD_PlagueWeaponBase::Bind_Player()
+{
+    __super::Bind_Player();
+
+    m_pPlayer.lock()->Callback_UseSkill += bind(&CHUD_PlagueWeaponBase::Call_UseSkill, this, placeholders::_1);
 
 }
 

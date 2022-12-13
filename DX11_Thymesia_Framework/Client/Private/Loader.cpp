@@ -202,12 +202,10 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	LightDesc.vSpecular  = _float4(0.6f, 0.6f, 0.6f, 1.f);
 	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.bEnable    = true;
-
 #else // _BRIGHT_LIGHT_
-
 	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4( 1.f, -1.f,  1.f, 0.f);
-	LightDesc.vDiffuse   = _float4( 0.3f, 0.3f, 0.3f, 1.f);
+	LightDesc.vDiffuse   = _float4( 0.4f, 0.39f, 0.38f, 1.f);
 	LightDesc.vAmbient   = _float4(0.3f, 0.3f, 0.3f, 1.f);
 	LightDesc.vSpecular  = _float4(0.1f, 0.1f, 0.1f, 1.f);
 	LightDesc.vLightFlag = _float4( 1.f,  1.f,  1.f, 1.f);
@@ -356,7 +354,8 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 #endif // _LOAD_CAPTURED_RESOURCE_
-
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
+	Load_AllMeshes("../Bin/Resources/Meshes/Distructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 #endif // _ONLY_UI_
 	m_isFinished = true;
 	return S_OK;
@@ -437,7 +436,8 @@ HRESULT CLoader::Loading_ForEditLevel()
 	this->Load_BossMobModel();
 	this->Load_NormalMobModel();
 	this->Load_EliteMobModel();
-
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
+	Load_AllMeshes("../Bin/Resources/Meshes/Distructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 #endif // _MAP_TOOL_
 #endif // _JOJO_EFFECT_TOOL_
 
@@ -758,6 +758,12 @@ void CLoader::Load_UIResource()
 
 	//skill Icon
 	GAMEINSTANCE->Load_Textures(("SkillIcon_Axe"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_Axe.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("SkillIcon_VargSword"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_VargSword.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+
+
+
 
 	//Landing
 	GAMEINSTANCE->Load_Textures(("Landing_MemoriesRetrived"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_MemoriesRetrived.png"), MEMORY_TYPE::MEMORY_STATIC);

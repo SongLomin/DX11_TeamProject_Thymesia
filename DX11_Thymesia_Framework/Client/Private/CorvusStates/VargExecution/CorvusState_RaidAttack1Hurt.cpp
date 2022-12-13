@@ -126,16 +126,27 @@ void CCorvusState_RaidAttack1Hurt::Call_AnimationEnd()
 
 }
 
-void CCorvusState_RaidAttack1Hurt::Free()
+void CCorvusState_RaidAttack1Hurt::OnDestroy()
 {
 	if (m_pModelCom.lock())
 		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_RaidAttack1Hurt::Call_AnimationEnd, this);
+}
+
+void CCorvusState_RaidAttack1Hurt::Free()
+{
 }
 
 _bool CCorvusState_RaidAttack1Hurt::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
 		return false;
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.9f)
+	{
+		Get_OwnerPlayer()->Change_State<CCorvusState_Getup>();
+		return true;
+	}
+
 
 	return false;
 }

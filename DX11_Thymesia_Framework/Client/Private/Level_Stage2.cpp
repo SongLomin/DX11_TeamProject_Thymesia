@@ -30,12 +30,12 @@ HRESULT CLevel_Stage2::Initialize()
 
 	CCamera::CAMERADESC CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
-	CameraDesc.vEye = _float4(0.0f, 2.5f, -2.5f, 1.f);
-	CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
-	CameraDesc.fFovy = XMConvertToRadians(65.0f);
+	CameraDesc.vEye    = _float4(0.0f, 2.5f, -2.5f, 1.f);
+	CameraDesc.vAt     = _float4(0.f, 0.f, 0.f, 1.f);
+	CameraDesc.fFovy   = XMConvertToRadians(65.0f);
 	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
-	CameraDesc.fNear = 0.2f;
-	CameraDesc.fFar = 300.f;
+	CameraDesc.fNear   = 0.2f;
+	CameraDesc.fFar    = 300.f;
 
 	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_GAMEPLAY, &CameraDesc);
 	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
@@ -47,14 +47,12 @@ HRESULT CLevel_Stage2::Initialize()
 
 #endif // ! _ONLY_UI_
 
-	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
+	m_pFadeMask   = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
+    m_pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL_STATIC).front();
+	m_pPauseMenu  = GAMEINSTANCE->Get_GameObjects<CUI_PauseMenu>(LEVEL_STATIC).front();
 
 
-	m_pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL_STATIC).front();
-	m_pPauseMenu = GAMEINSTANCE->Get_GameObjects<CUI_PauseMenu>(LEVEL_STATIC).front();
-
-	//GAMEINSTANCE->Set_FogDesc(_float4(0.35f, 0.005f, 0.005f, 0.8f), 30.f);
-	GAMEINSTANCE->Set_FogDesc(_float4(1.f, 0.95f, 0.95f, 0.5f), 40.f);
+	GAMEINSTANCE->Set_FogDesc(_float4(1.f, 1.f, 1.f, 0.65f), 70.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 
 	return S_OK;

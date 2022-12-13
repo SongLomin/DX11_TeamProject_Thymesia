@@ -79,12 +79,24 @@ void CVargBossState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 		
 	}
 
-	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack2a>().lock() ||
-		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack2b>().lock() ||
-		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack2b1>().lock() ||
-		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack2b2>().lock())
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack3a>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_AvoidAttack>().lock())
+
 	{
-		m_bBackReset = false;
+		m_iBackCount = 1;
+	}
+
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack2b>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_RunAttack>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack2b1>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack2b2>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack2a>().lock()  ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_RaidAttack>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack3b>().lock())
+	{
+
+		m_iBackCount = 0;
+
 	}
 
 
@@ -123,31 +135,8 @@ _bool CVargBossState_Idle::Check_AndChangeNextState()
 
 	
 	
-	if (fPToMDistance < 1.5f)
+	if (fPToMDistance >= 0.8f && fPToMDistance < 1.5f &&  m_iBackCount == 0)
 	{
-		//DotReuslt = (DOT_RESULT)Check_RequirementDotState();
-		//
-		//switch (DotReuslt)
-		//{
-		//case Client::DOT_RESULT::LEFT:
-		//	if (!m_bBackReset)
-		//	{
-		//		Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkL>(0.05f);
-		//	}
-		//	break;
-		//case Client::DOT_RESULT::MID:
-		//	if (!m_bBackReset)
-		//	{
-		//		Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkB>(0.05f);
-		//	}
-		//	break;
-		//case Client::DOT_RESULT::RIGHT:
-		//	if (!m_bBackReset)
-		//	{
-		//		Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkR>(0.05f);
-		//	}
-		//	break;
-		//}
 		Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkB>(0.05f);
 		return true;
 		
@@ -179,7 +168,7 @@ _bool CVargBossState_Idle::Check_AndChangeNextState()
 
 		return true;
 	}
-	if (fPToMDistance >= 1.f && fPToMDistance < 7.f)  // 5보다 작다
+	if (fPToMDistance >= 0.8f && fPToMDistance < 7.f)  // 5보다 작다
 	{
 		if (m_bTurnCheck)
 		{

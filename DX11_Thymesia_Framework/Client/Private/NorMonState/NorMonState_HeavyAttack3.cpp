@@ -8,6 +8,7 @@
 #include "AIStateBase.h"
 #include "NorMonStateS.h"
 #include "Character.h"
+#include "MobWeapon.h"
 
 
 GAMECLASS_C(CNorMonState_HeavyAttack3);
@@ -104,11 +105,31 @@ void CNorMonState_HeavyAttack3::OnStateStart(const _float& In_fAnimationBlendTim
 		case Client::MONSTERTYPE::SKULL:
 			break;
 		case Client::MONSTERTYPE::GARDENER:
-			m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
-			break;
+		{
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+			}
+		}
+		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+		break;
 		case Client::MONSTERTYPE::ENHANCE_GARDENER:
-			m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
-			break;
+		{
+			weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+			list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+
+			for (auto& elem : pWeapons)
+			{
+				elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.f);
+			}
+		}
+		m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+		break;
 		case Client::MONSTERTYPE::SHIELDAXEMAN:
 			m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 			break;

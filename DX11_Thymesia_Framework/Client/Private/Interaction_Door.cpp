@@ -183,6 +183,8 @@ void CInteraction_Door::Act_OpenDoor(_float fTimeDelta, _bool& Out_IsEnd)
         Out_IsEnd     = true;
         m_fAddRadian  = 0.f;
 
+        m_pPhysXColliderCom.lock()->Set_Enable(true);
+
         Callback_ActEnd();
     }
 }
@@ -207,7 +209,10 @@ void CInteraction_Door::Act_CloseDoor(_float fTimeDelta, _bool& Out_IsEnd)
 void CInteraction_Door::Act_Interaction()
 {
     if (m_ActionFlag & ACTION_FLAG::ROTATION)
+    {
         Callback_ActUpdate += bind(&CInteraction_Door::Act_OpenDoor, this, placeholders::_1, placeholders::_2);
+        m_pPhysXColliderCom.lock()->Set_Enable(false);
+    }
     else
         Callback_ActUpdate += bind(&CInteraction_Door::Act_CloseDoor, this, placeholders::_1, placeholders::_2);
 }

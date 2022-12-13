@@ -186,18 +186,52 @@ _bool CCorvusState_SprintAttack::Check_AndChangeNextState()
 		return false;
 
 
-	if(Check_RequirementNextAttackState())
+
+	if (m_bLockOn)
 	{
-		if (Check_RequirementAttackState())
+		if (Check_RequirementNextAttackState())
 		{
+			if (Check_RequirementAttackState())
+			{
 
-			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_LAttack2>();
+				weak_ptr<CGameObject> pTargetObject;
 
-			return true;
+				if (Check_RequirementExcuteState(pTargetObject))
+				{
+					_vector vTargetPos = pTargetObject.lock()->Get_Transform()->Get_Position();
+					m_pTransformCom.lock()->LookAt2D(vTargetPos);
+					Get_OwnerPlayer()->Change_State<CCorvusState_NorMob_Execution>();
+					Get_OwnerPlayer()->Get_CurState().lock()->OnEventMessage(Weak_Cast<CBase>(pTargetObject));
+				}
+				else
+				{
+					if (!Rotation_InputToLookDir())
+						Rotation_TargetToLookDir();
+
+					Get_OwnerPlayer()->Change_State<CCorvusState_LAttack2>();
+
+				}
+				return true;
+			}
 		}
-	}
 
+	}
+	else
+	{
+		if (Check_RequirementNextAttackState())
+		{
+			if (Check_RequirementAttackState())
+			{
+
+				Rotation_InputToLookDir();
+				Get_OwnerPlayer()->Change_State<CCorvusState_LAttack2>();
+
+				return true;
+			}
+		}
+
+	}
+	
 
 
 

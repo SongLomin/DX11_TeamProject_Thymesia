@@ -143,7 +143,7 @@ void CDynamic_Piece::OnEnable(void* pArg)
     __super::OnEnable(pArg);
 
     m_pPhysXColliderCom.lock()->Set_Enable(true);
-
+    m_pPhysXColliderCom.lock()->WakeUp();
 }
 
 void CDynamic_Piece::OnDisable()
