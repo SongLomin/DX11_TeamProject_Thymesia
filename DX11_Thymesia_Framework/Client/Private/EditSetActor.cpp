@@ -259,7 +259,7 @@ void CEditSetActor::View_CreateActor()
 	{
 		weak_ptr<CMonster> pObj;
 
-		if (MONSTERTYPE::JOCKER == tMonsterDesc.eMonType)
+		if (MONSTERTYPE::JOKER == tMonsterDesc.eMonType)
 		{
 			pObj = Weak_StaticCast<CMonster>(GAMEINSTANCE->Add_GameObject<CJoker>(LEVEL::LEVEL_EDIT));
 			Add_ActorToTool(typeid(CJoker).hash_code(), typeid(CJoker).name(), pObj);

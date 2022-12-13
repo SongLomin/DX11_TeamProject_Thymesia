@@ -32,7 +32,7 @@ protected:
 
 private:
     _float                      m_fCurrentLifeTime = 0.f;
-    _float                      m_fMaxLifeTime = 15.f;
+    _float                      m_fMaxLifeTime = 10.f;
 
 private:
     virtual void OnEnable(void* pArg) override;

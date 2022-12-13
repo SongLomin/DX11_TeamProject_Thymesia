@@ -9,7 +9,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "JokerStates.h"
-
+#include "MonsterHPBar_Elite.h"
 
 
 GAMECLASS_C(CJokerState_Dead);
@@ -66,11 +66,11 @@ void CJokerState_Dead::OnStateStart(const _float& In_fAnimationBlendTime)
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "VargState: Idle -> OnStateStart" << endl;
-#endif
-#endif
+	cout << "JokerState: Idle -> OnStateStart" << endl;
+#endif // _DEBUG
+#endif // _DEBUG_COUT_
 
-
+	Weak_StaticCast<CMonster>(m_pOwner).lock()->Get_HPBar().lock()->Set_Enable(false);
 }
 
 void CJokerState_Dead::OnStateEnd()

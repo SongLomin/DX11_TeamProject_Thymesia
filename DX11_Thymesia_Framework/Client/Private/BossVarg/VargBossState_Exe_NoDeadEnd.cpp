@@ -88,7 +88,7 @@ void CVargBossState_Exe_NoDeadEnd::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	m_pOwner.lock()->Get_Component<CStatus_Boss>().lock()->Set_NextPhase();
+	
 	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);
 	
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Roar_Getup>(0.05f);
