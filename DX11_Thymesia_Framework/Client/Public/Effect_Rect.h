@@ -83,7 +83,6 @@ private:
     void Update_ParticleSpriteFrame(const _uint& i, _float fTimeDelta);
     void Update_ParentTransform();
 
-    // For. Easing
     void Apply_Easing
     (
         _float3& vTarget
@@ -190,7 +189,7 @@ private:
 
 #ifdef _JOJO_EFFECT_TOOL_
     // For. Tool
-    _int    m_iScaleType = 0;
+    _int m_iScaleType = 0;
     static const _int m_iScaleType_None;
     static const _int m_iScaleType_Square;
     static const _int m_iScaleType_Ratio;

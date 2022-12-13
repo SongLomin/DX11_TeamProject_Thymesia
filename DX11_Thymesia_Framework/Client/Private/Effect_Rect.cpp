@@ -1183,10 +1183,10 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 
 		if (m_tEffectParticleDesc.bMoveLook)
 		{
-			_vector vSpawnPos = XMLoadFloat3(&m_tParticleDescs[i].vTargetSpeed);
-			_vector vMovePosition = XMLoadFloat3(&vMove);
+			_vector vSpawnPos(XMLoadFloat3(&m_tParticleDescs[i].vTargetSpeed));
+			_vector vMovePosition(XMLoadFloat3(&vMove));
 			vMovePosition -= vSpawnPos;
-			_vector vRotatedPosition = XMVector3TransformCoord(vMovePosition, XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_tParticleDescs[i].vCurrentRotation)));
+			_vector vRotatedPosition(XMVector3TransformCoord(vMovePosition, XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_tParticleDescs[i].vCurrentRotation))));
 			vRotatedPosition += vSpawnPos;
 			// _vector vCurrentPosition = XMLoadFloat3(&m_tParticleDescs[i].vCurrentTranslation);
 			// vCurrentPosition +       = vRotatedPosition;
@@ -1200,7 +1200,7 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 	{
 		if (m_tEffectParticleDesc.bEasingSpeed)
 		{
-			_float fElapsedTime = m_tParticleDescs[i].fCurrentLifeTime;
+			_float fElapsedTime(m_tParticleDescs[i].fCurrentLifeTime);
 
 			if (0.f > fElapsedTime)
 				return;
@@ -1297,9 +1297,11 @@ void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
 {
 	if ((_int)PARTICLETYPE::OUTBURST == m_tEffectParticleDesc.iParticleType)
 	{
-		_vector vUp = XMLoadFloat3(&m_tOriginalParticleDescs[i].vCurrentTranslation); //커런트 포지션
-		_matrix ReverseAxisRotationMatrix = SMath::Bake_MatrixNormalizeUseLookVector(vUp);
-		_matrix RotationMatrix = { ReverseAxisRotationMatrix.r[0],
+		_vector vUp(XMLoadFloat3(&m_tOriginalParticleDescs[i].vCurrentTranslation));
+		_matrix ReverseAxisRotationMatrix(SMath::Bake_MatrixNormalizeUseLookVector(vUp));
+		_matrix RotationMatrix = 
+		{
+			ReverseAxisRotationMatrix.r[0],
 			ReverseAxisRotationMatrix.r[2],
 			ReverseAxisRotationMatrix.r[1],
 			ReverseAxisRotationMatrix.r[3]
@@ -1314,7 +1316,7 @@ void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
 
 		if (m_tEffectParticleDesc.bEasingRotation)
 		{
-			_float fElapsedTime = m_tParticleDescs[i].fCurrentLifeTime;
+			_float fElapsedTime(m_tParticleDescs[i].fCurrentLifeTime);
 
 			if (0.f > fElapsedTime)
 				return;
@@ -1359,7 +1361,7 @@ void CEffect_Rect::Update_ParticleScale(const _uint& i, _float fTimeDelta)
 
 	if (m_tEffectParticleDesc.bEasingScale)
 	{
-		_float fElapsedTime = m_tParticleDescs[i].fCurrentLifeTime;
+		_float fElapsedTime(m_tParticleDescs[i].fCurrentLifeTime);
 
 		if (0.f > fElapsedTime)
 			return;
@@ -2006,7 +2008,7 @@ void CEffect_Rect::Tool_Spawn_Life_Time()
 
 void CEffect_Rect::Tool_Boner()
 {
-	weak_ptr<CPreViewAnimationModel> pPreviewModel(GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel());
+	weak_ptr<CPreviewAnimationModel> pPreviewModel(GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel());
 
 	if (ImGui::Button("Refresh##Get_Bone_List"))
 	{

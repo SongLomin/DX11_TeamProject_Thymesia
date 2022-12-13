@@ -8,7 +8,7 @@ END
 BEGIN(Client)
 class CEffectGroup;
 class CCustomEffectMesh;
-class CPreViewAnimationModel;
+class CPreviewAnimationModel;
 class CEffect_Rect;
 
 class CWindow_EffectEditerView final
@@ -53,7 +53,7 @@ private:
 
 	EFFECTRESOURCE_TYPE			m_eCurrentEffectType = EFFECTRESOURCE_TYPE::TYPE_END;
 
-	weak_ptr<CPreViewAnimationModel> m_pPreViewModel;
+	weak_ptr<CPreviewAnimationModel> m_pPreViewModel;
 
 public:
 	void Free();

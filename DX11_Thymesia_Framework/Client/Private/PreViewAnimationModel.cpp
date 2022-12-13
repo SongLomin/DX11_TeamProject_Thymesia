@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "PreViewAnimationModel.h"
+#include "PreviewAnimationModel.h"
 #include "Model.h"
 #include "shader.h"
 #include "Animation.h"
@@ -9,23 +9,23 @@
 #include "MobWeapon.h"
 #include "Weapon.h"
 
-GAMECLASS_C(CPreViewAnimationModel)
-CLONE_C(CPreViewAnimationModel, CGameObject)
+GAMECLASS_C(CPreviewAnimationModel)
+CLONE_C(CPreviewAnimationModel, CGameObject)
 
-weak_ptr<CModel> CPreViewAnimationModel::Get_CurrentModel()
+weak_ptr<CModel> CPreviewAnimationModel::Get_CurrentModel()
 {
 	return m_pModelCom;
 }
 
 
-HRESULT CPreViewAnimationModel::Initialize_Prototype()
+HRESULT CPreviewAnimationModel::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 	return S_OK;
 }
 
 
-HRESULT CPreViewAnimationModel::Initialize(void* pArg)
+HRESULT CPreviewAnimationModel::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
@@ -42,25 +42,25 @@ HRESULT CPreViewAnimationModel::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CPreViewAnimationModel::Tick(_float fTimeDelta)
+void CPreviewAnimationModel::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 }
 
-void CPreViewAnimationModel::LateTick(_float fTimeDelta)
+void CPreviewAnimationModel::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
 	GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_SHADOWDEPTH, Weak_Cast<CGameObject>(m_this));
 }
 
-void CPreViewAnimationModel::Custom_Thread0(_float fTimeDelta)
+void CPreviewAnimationModel::Custom_Thread0(_float fTimeDelta)
 {
 	if (m_pCurrentModelCom.lock())
 		m_pCurrentModelCom.lock()->Update_BoneMatrices();
 }
 
-HRESULT CPreViewAnimationModel::Render()
+HRESULT CPreviewAnimationModel::Render()
 {
 	__super::Render();
 
@@ -81,7 +81,11 @@ HRESULT CPreViewAnimationModel::Render()
 	return S_OK;
 }
 
-HRESULT CPreViewAnimationModel::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix)
+HRESULT CPreviewAnimationModel::Render_ShadowDepth
+(
+	_fmatrix In_LightViewMatrix
+	, _fmatrix In_LightProjMatrix
+)
 {
 	if (!m_pCurrentModelCom.lock())
 		return E_FAIL;
@@ -110,7 +114,7 @@ HRESULT CPreViewAnimationModel::Render_ShadowDepth(_fmatrix In_LightViewMatrix, 
 	return S_OK;
 }
 
-void CPreViewAnimationModel::SetUp_ShaderResource()
+void CPreviewAnimationModel::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
 	_vector vShaderFlag(XMVectorSet(0.f, 0.f, 0.f, 0.f));
@@ -121,14 +125,14 @@ void CPreViewAnimationModel::SetUp_ShaderResource()
 #endif // !_USE_THREAD_
 }
 
-void CPreViewAnimationModel::Init_EditPreViewAnimationModel(const string& In_szModelKey)
+void CPreviewAnimationModel::Init_EditPreViewAnimationModel(const string& In_szModelKey)
 {
 	m_pModelCom.lock()->Init_Model(In_szModelKey.c_str(),"", (_uint)TIMESCALE_LAYER::EDITER);
 	m_pCurrentModelCom = m_pModelCom;
 
 	if (!strcmp(In_szModelKey.c_str(), "Corvus"))
 	{
-		Clear_ModelWeapon();
+		this->Clear_ModelWeapon();
 #ifdef _ANIMATION_TOOL_WEAPON_
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultSaber>(LEVEL_STATIC));
 		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, "weapon_r");
@@ -142,7 +146,7 @@ void CPreViewAnimationModel::Init_EditPreViewAnimationModel(const string& In_szM
 
 	if (!strcmp(In_szModelKey.c_str(), "Boss_Varg"))
 	{
-		Clear_ModelWeapon();
+		this->Clear_ModelWeapon();
 
 #ifdef _ANIMATION_TOOL_WEAPON_
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
@@ -150,14 +154,25 @@ void CPreViewAnimationModel::Init_EditPreViewAnimationModel(const string& In_szM
 		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, "weapon_r");
 #endif // _ANIMATION_TOOL_WEAPON_
 	}
+
+	if (!strcmp(In_szModelKey.c_str(), "Elite_Joker"))
+	{
+		this->Clear_ModelWeapon();
+
+#ifdef _ANIMATION_TOOL_WEAPON_
+		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
+		m_pModelWeapons.back().lock()->Init_Model("Joker_Weapon", TIMESCALE_LAYER::MONSTER);
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, "weapon_r");
+#endif // _ANIMATION_TOOL_WEAPON_
+	}
 }
 
-void CPreViewAnimationModel::Change_AnimationFromIndex(const _uint& In_iAnimIndex)
+void CPreviewAnimationModel::Change_AnimationFromIndex(const _uint& In_iAnimIndex)
 {
 	m_pCurrentModelCom.lock()->Set_CurrentAnimation(In_iAnimIndex, 0, 0.f);
 }
 
-void CPreViewAnimationModel::Play_Animation(_float fTimeDelta)
+void CPreviewAnimationModel::Play_Animation(_float fTimeDelta)
 {
 	if (!m_pCurrentModelCom.lock())
 		return;
@@ -165,17 +180,13 @@ void CPreViewAnimationModel::Play_Animation(_float fTimeDelta)
 	m_pCurrentModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
-void CPreViewAnimationModel::Add_DebugWeapon(const string& In_szBoneName)
+void CPreviewAnimationModel::Add_DebugWeapon(const string& In_szBoneName)
 {
 	m_pDebugWeapons.push_back(GAMEINSTANCE->Add_GameObject<CWeapon>(LEVEL_EDIT));
 	m_pDebugWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, In_szBoneName);
 }
 
-void CPreViewAnimationModel::Set_WeaponDesc(const _float& In_fScale, const _float3& In_vOffset, const _float& In_fDamage, const HIT_TYPE& In_eHitType)
-{
-}
-
-void CPreViewAnimationModel::Clear_DebugWeapon()
+void CPreviewAnimationModel::Clear_DebugWeapon()
 {
 	for (auto& elem : m_pDebugWeapons)
 		elem.lock()->Set_Dead();
@@ -183,7 +194,7 @@ void CPreViewAnimationModel::Clear_DebugWeapon()
 	m_pDebugWeapons.clear();
 }
 
-void CPreViewAnimationModel::Clear_ModelWeapon()
+void CPreviewAnimationModel::Clear_ModelWeapon()
 {
 	for (auto& elem : m_pModelWeapons)
 		elem.lock()->Set_Dead();
@@ -192,12 +203,12 @@ void CPreViewAnimationModel::Clear_ModelWeapon()
 }
 
 
-void CPreViewAnimationModel::Release_BeforeModel()
+void CPreviewAnimationModel::Release_BeforeModel()
 {
 
 }
 
-void CPreViewAnimationModel::Free()
+void CPreviewAnimationModel::Free()
 {
 
 }

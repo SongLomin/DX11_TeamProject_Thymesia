@@ -878,7 +878,7 @@ void CCustomEffectMesh::Tool_Boner()
 
 	if (m_tEffectMeshDesc.bBoner)
 	{
-		weak_ptr<CPreViewAnimationModel> pPreviewModel = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel();
+		weak_ptr<CPreviewAnimationModel> pPreviewModel = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel();
 
 		if (!pPreviewModel.lock())
 		{

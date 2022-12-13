@@ -6,12 +6,12 @@ BEGIN(Client)
 class CLuxiya;
 class CWeapon;
 class CMobWeapon;
-class CPreViewAnimationModel :
+class CPreviewAnimationModel final :
     public CCharacter
 {
-    GAMECLASS_H(CPreViewAnimationModel)
-    SHALLOW_COPY(CPreViewAnimationModel)
-    CLONE_H(CPreViewAnimationModel, CGameObject)
+    GAMECLASS_H(CPreviewAnimationModel)
+    SHALLOW_COPY(CPreviewAnimationModel)
+    CLONE_H(CPreviewAnimationModel, CGameObject)
 
 public:
     weak_ptr<CModel> Get_CurrentModel();
@@ -32,7 +32,6 @@ public:
     void Change_AnimationFromIndex(const _uint& In_iAnimIndex);
     void Play_Animation(_float fTimeDelta);
     void Add_DebugWeapon(const string& In_szBoneName);
-    void Set_WeaponDesc(const _float& In_fScale, const _float3& In_vOffset, const _float& In_fDamage, const HIT_TYPE& In_eHitType);
     void Clear_DebugWeapon();
     void Clear_ModelWeapon();
 

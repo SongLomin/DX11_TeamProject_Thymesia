@@ -829,7 +829,7 @@
     <ClInclude Include="..\Public\MobWeapon.h" />
     <ClInclude Include="..\Public\UI_Button.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Talent.h" />
-    <ClInclude Include="..\Public\PreViewAnimationModel.h" />
+    <ClInclude Include="..\Public\PreviewAnimationModel.h" />
     <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClInclude>
@@ -2090,7 +2090,7 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_Button.cpp" />
     <ClCompile Include="..\Private\MobWeapon.cpp" />
-    <ClCompile Include="..\Private\PreViewAnimationModel.cpp" />
+    <ClCompile Include="..\Private\PreviewAnimationModel.cpp" />
     <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClCompile>

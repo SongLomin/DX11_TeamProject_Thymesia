@@ -3,7 +3,7 @@
 #include "SMath.h"
 #include <filesystem>
 
-// #define _JOJO_EFFECT_TOOL_
+#define _JOJO_EFFECT_TOOL_
 
 #include "Client_Structs.h"
 #include "Client_Presets.h"
@@ -158,7 +158,7 @@
 #undef _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
 #undef _JOJO_EFFECTS_
-#define _ANIMATION_TOOL_CORVUS_WEAPON_
+#define _ANIMATION_TOOL_WEAPON_
 // #define _BAKE_EFFECTMESH_FBX_
 #pragma endregion // Effects
 
