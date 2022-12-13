@@ -68,63 +68,65 @@ void CEditSetActor::OnEventMessage(_uint iArg)
 
 	switch ((EVENT_TYPE)iArg)
 	{
-	case EVENT_TYPE::ON_EDITDRAW_ACCEPT:
-	{
-		m_bSubDraw = true;
-	}
-	break;
-
-	case EVENT_TYPE::ON_EDITDRAW_NONE:
-	{
-		m_bSubDraw = false;
-	}
-	break;
-
-	case EVENT_TYPE::ON_EDITDRAW:
-	{
-		if (!m_bSubDraw)
-			return;
-
-		if (ImGui::BeginTabBar("Edit"))
+		case EVENT_TYPE::ON_EDITDRAW_ACCEPT:
 		{
-			if (ImGui::BeginTabItem("Create"))
-			{
-				View_CreateActor();
-				View_Picking_Actor();
-				View_Picking_List();
-				View_SelectTransformInfo();
-				View_Picking_Option();
+			m_bSubDraw = true;
+		}
+		break;
 
-				ImGui::EndTabItem();
+		case EVENT_TYPE::ON_EDITDRAW_NONE:
+		{
+			m_bSubDraw = false;
+		}
+		break;
+
+		case EVENT_TYPE::ON_EDITDRAW:
+		{
+			if (!m_bSubDraw)
+				return;
+
+			if (ImGui::BeginTabBar("Edit"))
+			{
+				if (ImGui::BeginTabItem("Create"))
+				{
+					View_CreateActor();
+					View_Picking_Actor();
+					View_Picking_List();
+					View_SelectTransformInfo();
+					View_Picking_Option();
+
+					ImGui::EndTabItem();
+				}
+
+				if (ImGui::BeginTabItem("Select"))
+				{
+					View_Picking_Actor();
+					View_Picking_List();
+					View_SelectTransformInfo();
+					View_Picking_Option();
+					View_Picking_MessageEdit();
+
+					ImGui::EndTabItem();
+				}
+
+				ImGui::EndTabBar();
+			}
+		}
+		break;
+
+		case EVENT_TYPE::ON_EDIT_DELETE:
+		{
+			auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditSetActor).hash_code());
+
+			if (iter_collider != GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
+			{
+				for (auto& elem : iter_collider->second)
+					elem.pInstance.lock()->Set_Dead();
 			}
 
-			if (ImGui::BeginTabItem("Select"))
-			{
-				View_Picking_Actor();
-				View_Picking_List();
-				View_SelectTransformInfo();
-				View_Picking_Option();
-				View_Picking_MessageEdit();
-
-				ImGui::EndTabItem();
-			}
-
-			ImGui::EndTabBar();
+			iter_collider->second.clear();
 		}
-	}
-	break;
-
-	case EVENT_TYPE::ON_EDIT_DELETE:
-	{
-		auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditSetActor).hash_code());
-
-		if (iter_collider != GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
-		{
-			for (auto& elem : iter_collider->second)
-				elem.pInstance.lock()->Set_Dead();
-		}
-	}
-	break;
+		break;
 	}
 }
 

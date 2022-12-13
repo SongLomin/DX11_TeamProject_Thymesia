@@ -193,21 +193,21 @@ _bool CEditGroupProp::IsPicking(const RAY& In_Ray, _float& Out_fRange)
 
 void CEditGroupProp::OnEventMessage(_uint iArg)
 {
-	switch (iArg)
+	switch ((EVENT_TYPE)iArg)
 	{
-		case (_uint)EVENT_TYPE::ON_EDITDRAW_ACCEPT:
+		case EVENT_TYPE::ON_EDITDRAW_ACCEPT:
 		{
 			m_bSubDraw = true;
 		}
 		break;
 
-		case (_uint)EVENT_TYPE::ON_EDITDRAW_NONE:
+		case EVENT_TYPE::ON_EDITDRAW_NONE:
 		{
 			m_bSubDraw = false;
 		}
 		break;
 
-		case (_uint)EVENT_TYPE::ON_EDITDRAW:
+		case EVENT_TYPE::ON_EDITDRAW:
 		{
 			if (!m_bSubDraw)
 				return;
@@ -233,6 +233,20 @@ void CEditGroupProp::OnEventMessage(_uint iArg)
 
 				ImGui::EndTabBar();
 			}
+		}
+		break;
+
+		case EVENT_TYPE::ON_EDIT_DELETE:
+		{
+			auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditGroupProp).hash_code());
+
+			if (iter_collider != GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
+			{
+				for (auto& elem : iter_collider->second)
+					elem.pInstance.lock()->Set_Dead();
+			}
+
+			iter_collider->second.clear();
 		}
 		break;
 	}

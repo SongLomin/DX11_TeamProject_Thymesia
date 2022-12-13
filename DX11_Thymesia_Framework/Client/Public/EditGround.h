@@ -43,7 +43,7 @@ private:
     {
         weak_ptr<CTexture>       pDiffTex;
         weak_ptr<CTexture>       pNormTex;
-        _float                   fDensity       = 30.f;
+        _float                   fDensity  = 30.f;
     } TEXTURES_INFO;
 
 public:
@@ -99,11 +99,11 @@ private:
     weak_ptr<CVIBuffer_Ground>          m_pVIBufferCom;
     TEXTURES                            m_pTextureCom;
 
-    EDIT_MODE                           m_eEditMode     = EDIT_MODE::NON;
-    _bool                               m_bEdit         = false;
-    _bool                               m_bCreate       = false;
-    _float4                             m_vBufferInfo   = _float4(128.f, 128.f, 0.5f, 0.f);
-    _int                                m_iShaderPass   = 0;
+    EDIT_MODE                           m_eEditMode           = EDIT_MODE::NON;
+    _bool                               m_bEdit               = false;
+    _bool                               m_bCreate             = false;
+    _float4                             m_vBufferInfo         = _float4(128.f, 128.f, 0.5f, 0.f);
+    _int                                m_iShaderPass         = 0;
 
     _float                              m_fBufferDrawRadious  = 1.f;
     _float                              m_fBufferPower        = 1.f;
