@@ -87,13 +87,13 @@ void CCorvusState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif // _DEBUG_COUT_
 
 	/*
-	1: ¹Ù±×´ë°Ë
-	2: µµ³¢
-	3. ´Ü°Ë
-	4. ¹Ù±×Ã³Çü
-	5. ´©³ª°Ë
-	6. ¸¶¹ý»ç
-	7. ÄÉÀÎ(¸¶¹ý»ç)?¸ô¸§
+	1: ï¿½Ù±×´ï¿½ï¿½
+	2: ï¿½ï¿½ï¿½ï¿½
+	3. ï¿½Ü°ï¿½
+	4. ï¿½Ù±ï¿½Ã³ï¿½ï¿½
+	5. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	6. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	7. ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)?ï¿½ï¿½ï¿½ï¿½
 	*/
 }
 
@@ -262,7 +262,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 			}
 		}
 
-	// TODO : ÀÓ½Ã ÄÚµå
+	// TODO : ï¿½Ó½ï¿½ ï¿½Úµï¿½
 	if (KEY_INPUT(KEY::O, KEY_STATE::TAP))
 	{
 		Rotation_InputToLookDir();
@@ -293,7 +293,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		return true;
 	}
 
-	// TODO : ÀÓ½Ã ÄÚµå
+	// TODO : ï¿½Ó½ï¿½ ï¿½Úµï¿½
 	if (KEY_INPUT(KEY::NUM9, KEY_STATE::TAP))
 	{
 		if (6 == m_iSkillType)
@@ -301,7 +301,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		else
 			m_iSkillType++;
 	}
-	// TODO : ÀÓ½Ã ÄÚµå
+	// TODO : ï¿½Ó½ï¿½ ï¿½Úµï¿½
 	if (KEY_INPUT(KEY::NUM8, KEY_STATE::TAP))
 	{
 		if (0 == m_iSkillType)

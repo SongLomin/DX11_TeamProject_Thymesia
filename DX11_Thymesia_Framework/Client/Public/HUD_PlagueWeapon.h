@@ -20,9 +20,6 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render() { return S_OK; }
 
-public:
-	
-
 private:
 	weak_ptr<CHUD_PlagueWeapon_Main> m_pMainSkill;
 	weak_ptr<CHUD_PlagueWeapon_Steal> m_pStealSkill;

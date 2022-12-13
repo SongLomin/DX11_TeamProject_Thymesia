@@ -113,6 +113,9 @@ void CHUD_Player_Memory::Bind_Player()
 
     m_pPlayerStatus.lock()->Callback_RootingMemory +=
         bind(&CHUD_Player_Memory::Call_ChangeMemory, this, placeholders::_1);
+
+    m_pPlayerStatus.lock()-> Callback_Update_Status+=
+        bind(&CHUD_Player_Memory::Call_UpdateMemory, this);
 }
 
 
@@ -130,6 +133,13 @@ HRESULT CHUD_Player_Memory::SetUp_ShaderResource()
         MSG_BOX("CHUD_Player_Memory");
     }
     return S_OK;
+}
+
+void CHUD_Player_Memory::Call_UpdateMemory()
+{
+    _float fMemory = (_float)m_pPlayerStatus.lock()->Get_Desc().m_iMemory;
+
+    m_pEasingComFloat.lock()->Set_Lerp(m_fLerpMemory, fMemory, 1.f, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE);
 }
 
 void CHUD_Player_Memory::Call_ChangeMemory(_float fMemory)
