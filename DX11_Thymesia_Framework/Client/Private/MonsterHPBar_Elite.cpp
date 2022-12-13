@@ -22,6 +22,8 @@ HRESULT CMonsterHPBar_Elite::Initialize_Prototype()
 
 HRESULT CMonsterHPBar_Elite::Initialize(void* pArg)
 {
+    m_eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
+
     __super::Initialize(pArg);
 
     UI_DESC EliteBorderDesc = m_tUIDesc;
@@ -34,11 +36,10 @@ HRESULT CMonsterHPBar_Elite::Initialize(void* pArg)
     m_pEliteBorder.lock()->Set_Texture("Monster_HPBar_Border_Elite");
 
     Add_Child(m_pEliteBorder);
-
-
     GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, m_pEliteBorder);
+    m_pEliteBorder.lock()->Set_Enable(false);
 
-    CBase::Set_Enable(false);
+    Set_Enable(false);
     return S_OK;
 }
 
@@ -46,6 +47,7 @@ HRESULT CMonsterHPBar_Elite::Start()
 {
     __super::Start();
 
+    
 
     return S_OK;
 }
@@ -63,6 +65,16 @@ void CMonsterHPBar_Elite::LateTick(_float fTimeDelta)
 HRESULT CMonsterHPBar_Elite::Render()
 {
     return S_OK;
+}
+
+void CMonsterHPBar_Elite::OnEnable(void* pArg)
+{
+    __super::OnEnable(pArg);
+}
+
+void CMonsterHPBar_Elite::OnDisable()
+{
+    __super::OnDisable();
 }
 
 void CMonsterHPBar_Elite::Set_ChildPosFromThis()

@@ -25,7 +25,7 @@
 #pragma endregion // System
 
 #define _USE_GRAVITY_
-// #define _LIFEGUARD_FOR_FALL_
+ #define _LIFEGUARD_FOR_FALL_
 
 #pragma region Console Outputs
 #define _DEBUG_COUT_

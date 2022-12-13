@@ -10,7 +10,7 @@
 #include "Character.h"
 #include "JokerStates.h"
 #include "MonsterHPBar_Base.h"
-
+#include "Status_Monster.h"
 
 GAMECLASS_C(CJokerState_TakeExecution_Start);
 CLONE_C(CJokerState_TakeExecution_Start, CComponent)
@@ -63,14 +63,15 @@ void CJokerState_TakeExecution_Start::OnStateStart(const _float& In_fAnimationBl
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-
+	
+	m_pOwner.lock()->Get_Component<CStatus_Monster>().lock()->CallBack_UI_Disable();
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Idle -> OnStateStart" << endl;
 #endif
 #endif
-	Weak_StaticCast<CMonster>(m_pOwner).lock()->Get_HPBar().lock()->Set_Enable(false);
+
 }
 
 void CJokerState_TakeExecution_Start::OnStateEnd()

@@ -1,7 +1,8 @@
 ﻿#include "stdafx.h"
 #include "Status_Player.h"
 #include "Status.h"
-
+#include "GameInstance.h"
+#include "Engine_Defines.h"
 
 GAMECLASS_C(CStatus_Player)
 CLONE_C(CStatus_Player, CComponent)
@@ -33,6 +34,12 @@ void CStatus_Player::Tick(_float fTimeDelta)
     __super::Tick(fTimeDelta);
 
     m_fPotionTime -= fTimeDelta;
+
+    if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
+    {
+        m_tDesc.m_iMemory += 10000;
+        Callback_Update_Status();
+    }
 
     //if (m_fPotionTime >= 0.f)
     //{

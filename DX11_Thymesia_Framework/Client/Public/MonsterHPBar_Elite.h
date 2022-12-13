@@ -19,9 +19,13 @@ public:
 	virtual HRESULT Render();
 
 
-protected:
+private:
+	void			OnEnable(void* pArg) override;
+	void			OnDisable() override;
 
-	virtual void	Set_ChildPosFromThis();
+
+protected:
+	virtual void	Set_ChildPosFromThis() override;
 
 private:
 	weak_ptr<CCustomUI>		m_pEliteBorder;

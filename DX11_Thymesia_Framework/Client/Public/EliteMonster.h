@@ -45,7 +45,7 @@ public:
     virtual void Before_Render(_float fTimeDelta) override;
     virtual HRESULT Render() override;
     virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix) override;
-
+    virtual void    Bind_HPBar() override;
 
 protected:
     virtual void SetUp_ShaderResource() override;

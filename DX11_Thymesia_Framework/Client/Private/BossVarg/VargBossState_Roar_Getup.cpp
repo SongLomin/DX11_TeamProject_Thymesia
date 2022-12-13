@@ -66,15 +66,9 @@ void CVargBossState_SPA_Roar_Getup::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-
-
 void CVargBossState_SPA_Roar_Getup::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
-
-	weak_ptr<CStatus_Boss> pStatus = m_pOwner.lock()->Get_Component<CStatus_Boss>();
-
-	pStatus.lock()->Set_FullHp(100.f);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
