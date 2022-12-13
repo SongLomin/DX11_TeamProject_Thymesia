@@ -20,7 +20,7 @@ class CTargetCurve :
     SHALLOW_COPY(CTargetCurve)
 
 private:
-    // CGameObjectÀ»(¸¦) ÅëÇØ »ó¼ÓµÊ
+    // CGameObjectï¿½ï¿½(ï¿½ï¿½) ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Óµï¿½
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize(void* pArg) override;
     virtual HRESULT Start() override;
