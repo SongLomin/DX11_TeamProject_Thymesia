@@ -324,7 +324,7 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 
 	Out_Json["Sync_Animation"] = m_tEffectParticleDesc.bSyncAnimation;
 	Out_Json["Sync_AnimationKey"] = m_tEffectParticleDesc.iSyncAnimationKey;
-
+	
 #pragma region Life Time
 	Out_Json["Init_Time"]      = m_tEffectParticleDesc.fInitTime;
 	Out_Json["Min_Spawn_Time"] = m_tEffectParticleDesc.fMinSpawnTime;
