@@ -27,13 +27,13 @@ HRESULT CHUD_PlagueWeapon::Initialize(void* pArg)
 
 	UI_DESC tStealSKillDesc = { 1502.f, 785.f, 93.f, 93.f, 0.f };
 
-	m_pStealSkill = GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon_Steal>(LEVEL_STATIC, &tStealSKillDesc);
+	//m_pStealSkill = GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon_Steal>(LEVEL_STATIC, &tStealSKillDesc);
 
 
 	m_eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
 
 	Add_Child(m_pMainSkill);
-	Add_Child(m_pStealSkill);
+	//Add_Child(m_pStealSkill);
 
 
 	return S_OK;
@@ -57,3 +57,4 @@ void CHUD_PlagueWeapon::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 }
+

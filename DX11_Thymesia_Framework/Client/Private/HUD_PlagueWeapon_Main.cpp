@@ -8,6 +8,9 @@
 #include "CustomUI.h"
 #include "ProgressBar.h"
 #include "HUD_Hover.h"
+#include "Status_Player.h"
+#include "Engine_Macro.h"
+
 
 GAMECLASS_C(CHUD_PlagueWeapon_Main);
 CLONE_C(CHUD_PlagueWeapon_Main, CGameObject);
@@ -37,7 +40,7 @@ HRESULT CHUD_PlagueWeapon_Main::Initialize(void* pArg)
     m_pPlagueWeapon_Main.lock()->Set_Depth(0.3f);
 
     m_pPlagueWeapon_Icon = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &m_tUIDesc);
-    m_pPlagueWeapon_Icon.lock()->Set_Texture("SkillIcon_Axe");
+    m_pPlagueWeapon_Icon.lock()->Set_Texture("SkillIcon_VargSword");
     m_pPlagueWeapon_Icon.lock()->Set_Depth(0.2f);
     m_pPlagueWeapon_Icon.lock()->Set_Size(160.f, 160.f);
 
@@ -69,11 +72,8 @@ HRESULT CHUD_PlagueWeapon_Main::Initialize(void* pArg)
     m_tFaderDesc.fFadeMaxTime = 1.f;
     m_tFaderDesc.vFadeColor = _float4(0, 0, 0, 0.7f);
 
-    m_fCoolTime = 5.f;
-    m_fNowTime = 5.f;
-
-
-
+    m_fCoolTime = 0.f;
+    m_fNowTime = 0.f;
 
     return S_OK;
 }
@@ -102,3 +102,6 @@ HRESULT CHUD_PlagueWeapon_Main::Render()
 
     return S_OK;
 }
+
+
+

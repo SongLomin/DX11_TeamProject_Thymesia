@@ -39,6 +39,16 @@ void CPlayerStateBase::Tick(_float fTimeDelta)
 	weak_ptr<CCamera_Target> pTargetCamera = GET_SINGLE(CGameManager)->Get_TargetCamera();
 	if (pTargetCamera.lock())
 		m_bLockOn =  pTargetCamera.lock()->Get_IsFocused();
+
+	if (m_bUseableSkill == false)
+		m_fSkillColldown -= fTimeDelta;
+
+	if (m_fSkillColldown < 0.f)
+	{
+		m_fSkillColldown = 0.f;
+		m_bUseableSkill = true;
+	}
+
 }
 
 void CPlayerStateBase::LateTick(_float fTimeDelta)

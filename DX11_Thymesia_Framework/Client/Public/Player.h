@@ -65,7 +65,8 @@ public:
         m_DissolveDescs[In_iDissolveMeshIndex] = In_DissolveDesc;
     }
 
-
+public:
+    FDelegate<_float>       Callback_UseSkill;
 
 protected:
     virtual void SetUp_ShaderResource() override;
@@ -116,7 +117,10 @@ protected:
     _flag      m_CollisionObjectFlags = 0;
     _bool      m_bLadderCheck = false;
    
+
     //TODO ¾ß¸Å
+
+
 
 
 

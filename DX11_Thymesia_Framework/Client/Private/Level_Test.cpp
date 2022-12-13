@@ -35,7 +35,7 @@ HRESULT CLevel_Test::Initialize()
 #ifdef _JOJO_EFFECTS_
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_TEST);
 #endif // _JOJO_EFFECTS_
-	
+
 #ifdef	_STAGE_1_MONSTER_
 	Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_TEST);
 #endif
@@ -75,10 +75,11 @@ HRESULT CLevel_Test::Initialize()
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_TEST);
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_TEST);
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
-
+	GAMEINSTANCE->Set_FogDesc(_float4(1.f, 0.95f, 0.95f, 0.f), 9999.f);
+	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 	SetUp_UI();
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
-	
+
 	return S_OK;
 }
 
