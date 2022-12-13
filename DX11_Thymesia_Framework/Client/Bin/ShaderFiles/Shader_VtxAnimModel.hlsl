@@ -317,29 +317,37 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
     float DissolveDesc = g_DissolveTexture.Sample(DefaultSampler, In.vTexUV).r;
     
     clip(DissolveDesc - g_fDissolveAmount);
-    
     vector vTexDiff;
+    Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    Out.vShaderFlag = g_vShaderFlag;
     
-    if (g_fDissolveAmount + 0.03f >= DissolveDesc.r)
+    if(0.f < g_fDissolveAmount)
     {
-        Out.vDiffuse = vector(0.3f, 0.0f, 0.f, 1.f);
+        if (g_fDissolveAmount + 0.03f >= DissolveDesc)
+        {
+            Out.vDiffuse = vector(0.3f, 0.0f, 0.f, 1.f);
+        }
+        else if (g_fDissolveAmount + 0.05f >= DissolveDesc)
+        {
+            Out.vDiffuse = vector(0.9f, 0.1f, 0.f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
+            Out.vExtractBloom = Out.vDiffuse;
+            Out.vShaderFlag = vector(0.f, 0.f, 1.f, 0.f);
+        }
+        else if (g_fDissolveAmount + 0.065f >= DissolveDesc)
+        {
+            Out.vDiffuse = vector(1.f, 0.9f, 0.4f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
+            Out.vExtractBloom = Out.vDiffuse;
+            Out.vShaderFlag = vector(0.f, 0.f, 1.f, 0.f);
+        }
+        else if (g_fDissolveAmount + 0.08f >= DissolveDesc)
+        {
+            Out.vDiffuse = vector(1.f, 0.95f, 0.9f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
+            Out.vExtractBloom = Out.vDiffuse;
+            Out.vShaderFlag = vector(0.f, 0.f, 1.f, 0.f);
+        }
+
     }
-    else if (g_fDissolveAmount + 0.05f >= DissolveDesc.r)
-    {
-        Out.vDiffuse = vector(0.9f, 0.1f, 0.f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
-    }
-    else if (g_fDissolveAmount + 0.065f >= DissolveDesc.r)
-    {
-        Out.vDiffuse = vector(1.f, 0.9f, 0.4f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
-    }
-    else if (g_fDissolveAmount + 0.08f >= DissolveDesc.r)
-    {
-        Out.vDiffuse = vector(1.f, 0.95f, 0.9f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
-    }
-    else
-    {
-        Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-    }
+
     
   
     /* 0 ~ 1 */
@@ -355,7 +363,6 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
     Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
     
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
-    Out.vShaderFlag = g_vShaderFlag;
     Out.vORM = 0;
     if (Out.vDiffuse.a < 0.1f)
         discard;
@@ -381,52 +388,58 @@ PS_OUT PS_MAIN_NORMAL_SPECULAR(PS_IN_NORMAL In)
     
     clip(DissolveDesc - g_fDissolveAmount);
     
-    vector vTexDiff;
+    Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    Out.vShaderFlag = g_vShaderFlag;
     
-    if (g_fDissolveAmount + 0.03f >= DissolveDesc.r)
+    if (0.f < g_fDissolveAmount)
     {
-        Out.vDiffuse = vector(0.3f, 0.0f, 0.f, 1.f);
+        if (g_fDissolveAmount + 0.03f >= DissolveDesc)
+        {
+            Out.vDiffuse = vector(0.3f, 0.0f, 0.f, 1.f);
+        }
+        else if (g_fDissolveAmount + 0.05f >= DissolveDesc)
+        {
+            Out.vDiffuse = vector(0.9f, 0.1f, 0.f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
+            Out.vExtractBloom = Out.vDiffuse;
+            Out.vShaderFlag = vector(0.f, 0.f, 1.f, 0.f);
+        }
+        else if (g_fDissolveAmount + 0.065f >= DissolveDesc)
+        {
+            Out.vDiffuse = vector(1.f, 0.9f, 0.4f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
+            Out.vExtractBloom = Out.vDiffuse;
+            Out.vShaderFlag = vector(0.f, 0.f, 1.f, 0.f);
+        }
+        else if (g_fDissolveAmount + 0.08f >= DissolveDesc)
+        {
+            Out.vDiffuse = vector(1.f, 0.95f, 0.9f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
+            Out.vExtractBloom = Out.vDiffuse;
+            Out.vShaderFlag = vector(0.f, 0.f, 1.f, 0.f);
+        }
+
     }
-    else if (g_fDissolveAmount + 0.05f >= DissolveDesc.r)
-    {
-        Out.vDiffuse = vector(0.9f, 0.1f, 0.f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
-    }
-    else if (g_fDissolveAmount + 0.065f >= DissolveDesc.r)
-    {
-        Out.vDiffuse = vector(1.f, 0.9f, 0.4f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
-    }
-    else if (g_fDissolveAmount + 0.08f >= DissolveDesc.r)
-    {
-        Out.vDiffuse = vector(1.f, 0.95f, 0.9f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
-    }
-    else
-    {
-        Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-    }
-    
-    float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
+
+        float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
 
     /* -1 ~ 1 */
-    vPixelNormal = vPixelNormal * 2.f - 1.f;
+        vPixelNormal = vPixelNormal * 2.f - 1.f;
 
-    float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));
+        float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));
 
-    vPixelNormal = mul(vPixelNormal, WorldMatrix);
+        vPixelNormal = mul(vPixelNormal, WorldMatrix);
 
-    Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
-    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
-    Out.vShaderFlag = g_vShaderFlag;
+        Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
+        Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
 
-    Out.vORM= g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
+        Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
 
-    if (Out.vDiffuse.a < 0.1f)
-        discard;
+        if (Out.vDiffuse.a < 0.1f)
+            discard;
     
     //if (g_bBloom)
     //    Out.vExtractBloom = Out.vDiffuse;
 
-    return Out;
-}
+        return Out;
+    }
 
 PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_NORMAL In)
 {

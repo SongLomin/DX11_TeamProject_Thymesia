@@ -80,15 +80,15 @@ void CTargetCurve::Tick(_float fTimeDelta)
 	_vector vRight = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLook));
 
 	_vector vDir = XMVector3TransformNormal(vLook, XMMatrixRotationAxis(vRight, XMConvertToRadians(-75.0f)));
-	vDir = XMVector3TransformNormal(vDir, XMMatrixRotationAxis(vLook, XMConvertToRadians(50.0f)));
+	vDir = XMVector3TransformNormal(vDir, XMMatrixRotationAxis(vLook, XMConvertToRadians(35.0f)));
 
 	//CurvePoints.r[0] = XMVector3TransformNormal(vLook, XMMatrixRotationAxis(vRight, XMConvertToRadians(-75.0f)));
-	CurvePoints.r[1] = CurvePoints.r[0] + vDir*2.f;
+	CurvePoints.r[1] = CurvePoints.r[0] + vDir;
 
 	vDir = XMVector3TransformNormal(vLook, XMMatrixRotationAxis(vRight, XMConvertToRadians(75.0f)));
-	vDir = XMVector3TransformNormal(vDir, XMMatrixRotationAxis(vRight, XMConvertToRadians(50.0f)));
+	vDir = XMVector3TransformNormal(vDir, XMMatrixRotationAxis(vLook, XMConvertToRadians(35.0f)));
 	
-	CurvePoints.r[2] = CurvePoints.r[3] - vDir*2.f;
+	CurvePoints.r[2] = CurvePoints.r[3] - vDir;
 
 	XMStoreFloat4x4(&m_CurvePoints, CurvePoints);
 

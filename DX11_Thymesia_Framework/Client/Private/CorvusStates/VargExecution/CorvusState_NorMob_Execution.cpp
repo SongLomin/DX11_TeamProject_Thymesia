@@ -61,8 +61,8 @@ void CCorvusState_NorMob_Execution::OnStateStart(const _float& In_fAnimationBlen
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 
-	m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
-	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_NorMob_Execution::Call_NextAnimationKey, this, placeholders::_1);
+	//m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+	//m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_NorMob_Execution::Call_NextAnimationKey, this, placeholders::_1);
 
 
 	//GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera",XMMatrixIdentity());
@@ -85,8 +85,8 @@ void CCorvusState_NorMob_Execution::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CCorvusState_NorMob_Execution::Call_NextAnimationKey, this, placeholders::_1);
-	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
+	//m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CCorvusState_NorMob_Execution::Call_NextAnimationKey, this, placeholders::_1);
+	//Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
 
 }
 
@@ -95,16 +95,6 @@ void CCorvusState_NorMob_Execution::Call_NextAnimationKey(const _uint& In_iKeyIn
 	if (!Get_Enable())
 		return;
 
-	switch (In_iKeyIndex)
-	{
-	case 3:
-		_float3 vPosition;
-		XMStoreFloat3(&vPosition, m_pOwner.lock()->Get_Transform()->Get_Position() + XMVectorSet(0.f, 1.f, 0.f, 0.f));
-		GAMEINSTANCE->Set_RadialBlur(0.2f, vPosition);
-		GAMEINSTANCE->Set_Chromatic(0.1f);
-		
-		break;
-	}
 }
 
 void CCorvusState_NorMob_Execution::OnEventMessage(weak_ptr<CBase> pArg)
