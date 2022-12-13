@@ -70,8 +70,9 @@ HRESULT CLevel_Test::Initialize()
 	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 5.f, 2.f, 5.f });
 	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 15.f, 2.f, 15.f });
 #endif
+	GAMEINSTANCE->Set_FogDesc(_float4(1.f, 1.f, 1.f, 0.f), 9999.f);
+	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 
-	//야매에요
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_TEST);
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_TEST);
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });

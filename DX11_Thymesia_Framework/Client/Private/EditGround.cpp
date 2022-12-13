@@ -227,7 +227,7 @@ void CEditGround::SetUp_EditMode()
 		"Clear"
 	};
 
-	if (KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
+	if (KEY_INPUT(KEY::G, KEY_STATE::HOLD))
 	{
 		if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
 			m_eBrushMode = BRUSH_MODE::BRUSH_NO1;
