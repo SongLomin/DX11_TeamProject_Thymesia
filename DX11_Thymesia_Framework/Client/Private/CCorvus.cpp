@@ -405,6 +405,11 @@ void CCorvus::OnEventMessage(_uint iArg)
 	{
 		Change_State<CCorvusState_Joker_Execution>();
 	}
+
+	if ((_uint)EVENT_TYPE::ON_DIE == iArg)
+	{
+		Change_State<CCorvusState_Die>();
+	}
 }
 
 void CCorvus::Free()

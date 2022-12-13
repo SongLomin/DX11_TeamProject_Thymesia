@@ -36,6 +36,7 @@ private:
 
 protected:
     virtual void OnEventMessage(weak_ptr<CBase> pArg) override;
+    virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage) override;
     void Free();
 
     // CNorMonStateBase을(를) 통해 상속됨

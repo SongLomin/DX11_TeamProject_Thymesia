@@ -8,6 +8,7 @@
 #include "Model.h"
 #include "Camera_Target.h"
 #include "Weapon.h"
+#include "CorvusStates/CorvusStates.h"
 
 GAMECLASS_C(CPlayerStateBase);
 
@@ -39,6 +40,9 @@ void CPlayerStateBase::Tick(_float fTimeDelta)
 	weak_ptr<CCamera_Target> pTargetCamera = GET_SINGLE(CGameManager)->Get_TargetCamera();
 	if (pTargetCamera.lock())
 		m_bLockOn =  pTargetCamera.lock()->Get_IsFocused();
+
+
+
 }
 
 void CPlayerStateBase::LateTick(_float fTimeDelta)

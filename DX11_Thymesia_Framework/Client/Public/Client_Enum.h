@@ -53,6 +53,7 @@ namespace Client
 		ON_SITUP,
 		ON_CONSOLE_ENABLE,
 		ON_CONSOLE_DISABLE,
+		ON_DIE,
 		EVENT_END
 	};
 
