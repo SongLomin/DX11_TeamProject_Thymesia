@@ -329,19 +329,19 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
         }
         else if (g_fDissolveAmount + 0.05f >= DissolveDesc)
         {
-            Out.vDiffuse = vector(0.9f, 0.1f, 0.f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
+            Out.vDiffuse = vector(0.9f, 0.1f, 0.f, 1.f);
             Out.vExtractBloom = Out.vDiffuse;
             Out.vShaderFlag = vector(0.f, 0.f, 1.f, 0.f);
         }
         else if (g_fDissolveAmount + 0.065f >= DissolveDesc)
         {
-            Out.vDiffuse = vector(1.f, 0.9f, 0.4f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
+            Out.vDiffuse = vector(1.f, 0.9f, 0.4f, 1.f);
             Out.vExtractBloom = Out.vDiffuse;
             Out.vShaderFlag = vector(0.f, 0.f, 1.f, 0.f);
         }
         else if (g_fDissolveAmount + 0.08f >= DissolveDesc)
         {
-            Out.vDiffuse = vector(1.f, 0.95f, 0.9f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
+            Out.vDiffuse = vector(1.f, 0.95f, 0.9f, 1.f);
             Out.vExtractBloom = Out.vDiffuse;
             Out.vShaderFlag = vector(0.f, 0.f, 1.f, 0.f);
         }
@@ -399,19 +399,19 @@ PS_OUT PS_MAIN_NORMAL_SPECULAR(PS_IN_NORMAL In)
         }
         else if (g_fDissolveAmount + 0.05f >= DissolveDesc)
         {
-            Out.vDiffuse = vector(0.9f, 0.1f, 0.f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
+            Out.vDiffuse = vector(0.9f, 0.1f, 0.f, 1.f);
             Out.vExtractBloom = Out.vDiffuse;
             Out.vShaderFlag = vector(0.f, 0.f, 1.f, 0.f);
         }
         else if (g_fDissolveAmount + 0.065f >= DissolveDesc)
         {
-            Out.vDiffuse = vector(1.f, 0.9f, 0.4f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
+            Out.vDiffuse = vector(1.f, 0.9f, 0.4f, 1.f);
             Out.vExtractBloom = Out.vDiffuse;
             Out.vShaderFlag = vector(0.f, 0.f, 1.f, 0.f);
         }
         else if (g_fDissolveAmount + 0.08f >= DissolveDesc)
         {
-            Out.vDiffuse = vector(1.f, 0.95f, 0.9f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
+            Out.vDiffuse = vector(1.f, 0.95f, 0.9f, 1.f);
             Out.vExtractBloom = Out.vDiffuse;
             Out.vShaderFlag = vector(0.f, 0.f, 1.f, 0.f);
         }
