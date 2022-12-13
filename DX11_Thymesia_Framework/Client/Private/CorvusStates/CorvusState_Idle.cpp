@@ -270,6 +270,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		{
 		case 0:
 			Get_OwnerPlayer()->Change_State<CCorvusState_PS_VargSword>();
+			Weak_StaticCast<CPlayer>(m_pOwner).lock()->Callback_UseSkill(5.f);
 			break;
 		case 1:
 			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Axe>();
