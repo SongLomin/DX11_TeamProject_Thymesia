@@ -179,9 +179,6 @@ extern HINSTANCE g_hInst;
 using namespace Client;
 namespace fs = std::filesystem;
 
-
-
-
 #define EVENT_DRAW_EDITER 1
 #define EVENT_INIT_EDITER 0
 
