@@ -428,9 +428,6 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_End.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\33.Execution_End</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_NoDeadEnd.h">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\30.Execution_SitDown</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_SitLoop.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\31.Execution_SitLoop</Filter>
     </ClInclude>
@@ -1213,6 +1210,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Headache_Start.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\00.Start</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_NoDeadEnd.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\30.Execution_SitDown</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

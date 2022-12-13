@@ -99,8 +99,8 @@ void CStatus_Player::Init_Status(const void* pArg)
 
 void CStatus_Player::Add_Damage(const _float& In_fDamage)
 {
-    if (0.f > In_fDamage)
-        assert(0);
+    //if (0.f > In_fDamage)
+    //    assert(0);
 
     Decrease_HP(m_tDesc.m_fCurrentHP, In_fDamage);
     Callback_ChangeHP(m_tDesc.m_fCurrentHP);

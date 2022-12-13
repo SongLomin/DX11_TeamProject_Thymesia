@@ -17,6 +17,7 @@ class CVargBossState_Idle :
 public:
 	void Set_TurnCheck(_bool TurnCheck) { m_bTurnCheck = TurnCheck; }
 	void Set_BackReset(_bool BackReset) { m_bBackReset = BackReset; }
+	void Set_BackCount(_uint BackCount) { m_iBackCount = BackCount; }
 
 
 protected:
@@ -34,6 +35,7 @@ protected:
 private:
 	_bool    m_bTurnCheck = false;
 	_bool    m_bBackReset = false;
+	_uint    m_iBackCount = 0;
 
 private:
 	//void Call_AnimationEnd();
