@@ -70,13 +70,9 @@ HRESULT CInteraction_Prop::Render()
             return E_FAIL;
 
         if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-        {
             m_iPassIndex = 0;
-        }
         else
-        {
-            m_iPassIndex = 3;
-        }
+            m_iPassIndex = 7;
 
         m_pShaderCom.lock()->Begin(m_iPassIndex);
         m_pModelCom.lock()->Render_Mesh(i);
