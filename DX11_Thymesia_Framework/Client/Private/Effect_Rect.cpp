@@ -212,7 +212,7 @@ void CEffect_Rect::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 		{
 			_float4x4 TempMat(m_pParentModel.lock()->Get_TransformationMatrix());
 			_matrix ModelTranMat(XMLoadFloat4x4(&TempMat));
-			_matrix BoneMatrix = m_pBoneNode.lock()->Get_CombinedMatrix() * ModelTranMat;
+			_matrix BoneMatrix(m_pBoneNode.lock()->Get_CombinedMatrix() * ModelTranMat);
 
 			BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
 			BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
@@ -298,9 +298,9 @@ void CEffect_Rect::SetUp_ShaderResource()
 #pragma endregion
 
 #pragma region Bloom & Glow
-	m_pShaderCom.lock()->Set_RawValue("g_bBloom", &m_tEffectParticleDesc.bBloom, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_bGlow", &m_tEffectParticleDesc.bGlow, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_vGlowColor", &m_vCurrentGlowColor, sizeof(_float4));
+	m_pShaderCom.lock()->Set_RawValue("g_bBloom",     &m_tEffectParticleDesc.bBloom, sizeof(_bool));
+	m_pShaderCom.lock()->Set_RawValue("g_bGlow",      &m_tEffectParticleDesc.bGlow,  sizeof(_bool));
+	m_pShaderCom.lock()->Set_RawValue("g_vGlowColor", &m_vCurrentGlowColor,          sizeof(_float4));
 #pragma endregion
 }
 
@@ -431,7 +431,6 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 		Out_Json["Max_Y_Scale_Ratio"] = m_tEffectParticleDesc.fMaxYScaleRatio;
 	}
 	
-
 	Out_Json["Is_Easing_Scale"] = m_tEffectParticleDesc.bEasingScale;
 
 	if (m_tEffectParticleDesc.bEasingScale)
@@ -449,9 +448,6 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 
 		CJson_Utility::Write_Float2(Out_Json["Min_Scale_Force"], m_tEffectParticleDesc.vMinScaleForce);
 		CJson_Utility::Write_Float2(Out_Json["Max_Scale_Force"], m_tEffectParticleDesc.vMaxScaleForce);
-
-		// CJson_Utility::Write_Float3(Out_Json["Scale_Speed"], m_tEffectParticleDesc.vScaleSpeed);
-		// CJson_Utility::Write_Float3(Out_Json["Scale_Force"], m_tEffectParticleDesc.vScaleForce);
 	}
 	CJson_Utility::Write_Float2(Out_Json["Min_Scale"], m_tEffectParticleDesc.vMinLimitScale);
 	CJson_Utility::Write_Float2(Out_Json["Max_Scale"], m_tEffectParticleDesc.vMaxLimitScale);
