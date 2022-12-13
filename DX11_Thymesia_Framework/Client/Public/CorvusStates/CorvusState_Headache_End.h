@@ -1,5 +1,5 @@
 #pragma once
-#include  "CorvusStates/CorvusStateBase.h"
+#include "CorvusStateBase.h"
 
 BEGIN(Engine)
 class CModel;
@@ -7,12 +7,12 @@ END
 
 BEGIN(Client)
 
-class CCorvusState_RaidAttack1Hurt :
+class CCorvusState_Headache_End :
     public CCorvusStateBase
 {
-    GAMECLASS_H(CCorvusState_RaidAttack1Hurt);
-    CLONE_H(CCorvusState_RaidAttack1Hurt, CComponent)
-        SHALLOW_COPY(CCorvusState_RaidAttack1Hurt)
+    GAMECLASS_H(CCorvusState_Headache_End);
+    CLONE_H(CCorvusState_Headache_End, CComponent)
+        SHALLOW_COPY(CCorvusState_Headache_End)
 
 protected:
     virtual HRESULT Initialize_Prototype() override;
@@ -23,22 +23,19 @@ protected:
 
 protected:
     virtual void OnDisable() override;
-    virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage) override;
+
     virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
     virtual void OnStateEnd() override;
 
 public:
     void Call_AnimationEnd();
-    void Init_Varg(weak_ptr<CModel> In_pModelCom, weak_ptr<CTransform> In_ParentTransformCom, const string& szTargetNode = "WeaponCase1");
 
 private:
     _uint m_iDustEffectIndex;
-    _float4x4  m_TransformationMatrix;
 
 protected:
-    virtual void OnDestroy() override;
     void Free();
-
+    virtual void OnDestroy() override;
     // CNorMonStateBase을(를) 통해 상속됨
     virtual _bool Check_AndChangeNextState() override;
 

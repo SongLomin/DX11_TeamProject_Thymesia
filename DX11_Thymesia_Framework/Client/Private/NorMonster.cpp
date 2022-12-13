@@ -116,29 +116,39 @@ void CNorMonster::Init_Desc()
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Scythe", TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
-		m_pActorDecor.push_back(GAMEINSTANCE->Add_GameObject<CActorDecor>(m_CreatedLevel));
-		m_pActorDecor.back().lock()->Init_Model("Mon_Vain", TIMESCALE_LAYER::MONSTER);
-		m_pActorDecor.back().lock()->Init_ActorDecor(m_pModelCom, m_pTransformCom, "spine_03");
 		m_pWeapons.back().lock()->Add_Collider({ 0.51f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		m_pWeapons.back().lock()->Add_Collider({ 0.61f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		m_pWeapons.back().lock()->Add_Collider({ 0.71f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		m_pWeapons.back().lock()->Add_Collider({ 0.81f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.91f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 1.01f,0.f,0.2f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 1.11f,0.f,0.4f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 1.21f,0.f,0.6f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pActorDecor.push_back(GAMEINSTANCE->Add_GameObject<CActorDecor>(m_CreatedLevel));
+		m_pActorDecor.back().lock()->Init_Model("Mon_Vain", TIMESCALE_LAYER::MONSTER);
+		m_pActorDecor.back().lock()->Init_ActorDecor(m_pModelCom, m_pTransformCom, "spine_03");
+
 		break;
 	case MONSTERTYPE::ENHANCE_GARDENER:
 		m_pModelCom.lock()->Init_Model("Mon_Gardner", "", (_uint)TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Scythe", TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
+		m_pWeapons.back().lock()->Add_Collider({ 0.51f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.61f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.71f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.81f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.91f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 1.01f,0.f,0.2f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 1.11f,0.f,0.4f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 1.21f,0.f,0.6f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		m_pActorDecor.push_back(GAMEINSTANCE->Add_GameObject<CActorDecor>(m_CreatedLevel));
 		m_pActorDecor.back().lock()->Init_Model("Mon_Scarf", TIMESCALE_LAYER::MONSTER);
 		m_pActorDecor.back().lock()->Init_ActorDecor(m_pModelCom, m_pTransformCom, "head");
 		m_pActorDecor.push_back(GAMEINSTANCE->Add_GameObject<CActorDecor>(m_CreatedLevel));
 		m_pActorDecor.back().lock()->Init_Model("Mon_Vain", TIMESCALE_LAYER::MONSTER);
 		m_pActorDecor.back().lock()->Init_ActorDecor(m_pModelCom, m_pTransformCom, "spine_03");
-		m_pWeapons.back().lock()->Add_Collider({ 0.51f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
-		m_pWeapons.back().lock()->Add_Collider({ 0.61f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
-		m_pWeapons.back().lock()->Add_Collider({ 0.71f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
-		m_pWeapons.back().lock()->Add_Collider({ 0.81f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+
 		break;
 	case MONSTERTYPE::SHIELDAXEMAN:
 		m_pModelCom.lock()->Init_Model("Mon_AxeMan", "", (_uint)TIMESCALE_LAYER::MONSTER);
@@ -146,13 +156,13 @@ void CNorMonster::Init_Desc()
 		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Axe", TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
+		m_pWeapons.front().lock()->Add_Collider({0.51f,0.f,0.0f,1.f}, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.front().lock()->Add_Collider({ 0.61f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.front().lock()->Add_Collider({ 0.71f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.front().lock()->Add_Collider({ 0.81f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Shield", TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_l");
-	
-
-
-		m_pWeapons.back().lock()->Add_Collider({ 0.f,0.f,0.0f,1.f }, 2.f, COLLISION_LAYER::MONSTER_ATTACK);
-	
+		
 		break;
 	case MONSTERTYPE::BALLOON:
 		m_pModelCom.lock()->Init_Model("Balloon", "", (_uint)TIMESCALE_LAYER::MONSTER);

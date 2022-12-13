@@ -8,6 +8,7 @@
 #include "Model.h"
 #include "Camera_Target.h"
 #include "Weapon.h"
+#include "CorvusStates/CorvusStates.h"
 
 GAMECLASS_C(CPlayerStateBase);
 
@@ -101,7 +102,7 @@ void CPlayerStateBase::Turn_Transform(_float fTimeDelta)
 		vLookDir += CurrentCamWorldMatrix.r[0];
 	}
 
-	//»õ·Î¿î È¸Àü °ªÀÌ ÀÖÀ» °æ¿ì
+	//ï¿½ï¿½ï¿½Î¿ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	if (XMVector3Length(vLookDir).m128_f32[0] > DBL_EPSILON)
 	{
 		vLookDir.m128_f32[1] = 0.f;
@@ -110,10 +111,10 @@ void CPlayerStateBase::Turn_Transform(_float fTimeDelta)
 		m_fCurrentRotateTime = 0.f;
 	}
 
-	//‹š¸®°íÀÖ´Â¸ó½ºÅÍ¹Þ¾Æ¿Í¼­ »óÅÂÃ¼Å© -> 
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´Â¸ï¿½ï¿½Í¹Þ¾Æ¿Í¼ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¼Å© -> 
 	
 
-	//°»½ÅµÇ°Å³ª ±âÁ¸ È¸Àü °ªÀÌ ÀÖ´Â °æ¿ì
+	//ï¿½ï¿½ï¿½ÅµÇ°Å³ï¿½ ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½
 	if (XMVector3Length(XMLoadFloat3(&m_vLookAtDir)).m128_f32[0] > DBL_EPSILON)
 	{
 		m_fCurrentRotateTime += fTimeDelta*6.f;
@@ -158,7 +159,7 @@ _vector CPlayerStateBase::Get_InputToLookDir()
 
 	if(m_pOwnerFromPlayer.lock()->Get_Focused())
 	{
-		//Å¸°Ù Æ÷Ä¿½Ì ÇßÀ» ¶§ ¸ó½ºÅÍ¸¦ ¹Ù¶óº¸°Ô ÇØ¾ßÇÔ               
+		//Å¸ï¿½ï¿½ ï¿½ï¿½Ä¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½Ù¶óº¸°ï¿½ ï¿½Ø¾ï¿½ï¿½ï¿½               
 		//MoveMatrix = m_pOwnerFromPlayer.lock()->Get_Component<CTransform>().lock()->Get_WorldMatrix();
 		_vector vPlayerPos = GET_SINGLE(CGameManager)->Get_PlayerPos();
 		_vector vMonsterPos = GET_SINGLE(CGameManager)->Get_TargetMonster().lock()->Get_Component<CTransform>().lock()->Get_Position();

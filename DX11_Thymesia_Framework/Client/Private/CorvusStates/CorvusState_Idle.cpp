@@ -166,8 +166,15 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 
 			else if (Check_RequirementClawAttackHoldState())
 			{
-				Rotation_InputToLookDir();
+				
 				Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackHold>();
+				return true;
+			}
+
+			else if (Check_RequirementHealingState())
+			{
+
+				Get_OwnerPlayer()->Change_State<CCorvusState_BasicHealing>();
 				return true;
 			}
 			

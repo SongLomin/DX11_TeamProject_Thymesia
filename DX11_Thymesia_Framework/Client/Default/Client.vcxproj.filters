@@ -1205,6 +1205,15 @@
     <ClInclude Include="..\Public\Window_Level_Dev.h">
       <Filter>97. Tool\01. DeveloperConsole\Windows\01. Level</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Headache_End.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\02.End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Headache_Loop.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\01.Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Headache_Start.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\00.Start</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2451,6 +2460,15 @@
     <ClCompile Include="..\Private\Window_Level_Dev.cpp">
       <Filter>97. Tool\01. DeveloperConsole\Windows\01. Level</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Headache_End.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\02.End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Headache_Loop.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\01.Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Headache_Start.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\00.Start</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -3262,9 +3280,6 @@
     <Filter Include="02. GameObject\03.Actor\00.Joker">
       <UniqueIdentifier>{19627968-7699-4f4f-934c-858f9cfa3641}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\02.EliteState\00.JokerState\00.Idle">
-      <UniqueIdentifier>{203a4db9-e906-402e-bf94-4552798a9cb1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="96. Managers_Client">
       <UniqueIdentifier>{754a09b8-9237-4e34-871e-e6aeaa3022d6}</UniqueIdentifier>
     </Filter>
@@ -3663,6 +3678,18 @@
     </Filter>
     <Filter Include="97. Tool\01. DeveloperConsole\Windows\01. Level">
       <UniqueIdentifier>{1c111566-b799-41b6-a0f7-0d8a51c44e6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache">
+      <UniqueIdentifier>{ad38a96d-b7a2-4b6b-ae43-f69b50b80eda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\00.Start">
+      <UniqueIdentifier>{82910b27-e22e-4a04-8d34-e3148e5fa4a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\01.Loop">
+      <UniqueIdentifier>{4d2e57c4-978a-42ec-bc2f-3147baa0318e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\02.End">
+      <UniqueIdentifier>{3f8496d0-c7e7-442f-ba6f-7dce40cc4e70}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

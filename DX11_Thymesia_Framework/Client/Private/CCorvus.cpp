@@ -282,6 +282,9 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_AVoidR);
 	ADD_STATE_MACRO(CCorvusState_AVoidF);
 	ADD_STATE_MACRO(CCorvusState_Getup);
+	ADD_STATE_MACRO(CCorvusState_Headache_End);
+	ADD_STATE_MACRO(CCorvusState_Headache_Start);
+	ADD_STATE_MACRO(CCorvusState_Headache_Loop);
 
 
 	ADD_STATE_MACRO(CCorvusState_CheckPointStart);
@@ -401,6 +404,11 @@ void CCorvus::OnEventMessage(_uint iArg)
 	if ((_uint)EVENT_TYPE::ON_JOKEREXECUTION == iArg)
 	{
 		Change_State<CCorvusState_Joker_Execution>();
+	}
+
+	if ((_uint)EVENT_TYPE::ON_DIE == iArg)
+	{
+		Change_State<CCorvusState_Die>();
 	}
 }
 

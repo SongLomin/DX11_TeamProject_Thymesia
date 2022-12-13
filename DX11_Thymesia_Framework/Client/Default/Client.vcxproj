@@ -238,6 +238,9 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Fall_Loop.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Fall_Start.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Getup.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Headache_End.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Headache_Loop.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Headache_Start.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtXL.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_LAttack5.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Parry1.h" />
@@ -648,6 +651,9 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Fall_Loop.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Fall_Start.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Getup.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Headache_End.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Headache_Loop.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Headache_Start.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXL.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectLeft.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectLeftup.cpp" />
