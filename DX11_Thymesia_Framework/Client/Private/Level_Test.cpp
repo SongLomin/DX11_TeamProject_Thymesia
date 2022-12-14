@@ -46,9 +46,7 @@ HRESULT CLevel_Test::Initialize()
 	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_TEST);
 #endif // _TEST_STATIC_PROPS_
 	//Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_TEST);
-	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_TEST);
-	//Load_FromJson(m_szDefaultJsonPath + "Stage_Lv3-1.json", LEVEL::LEVEL_TEST);
-	//Load_FromJson(m_szDefaultJsonPath + "Test_Level.json", LEVEL::LEVEL_TEST);
+	Load_FromJson(m_szDefaultJsonPath + "Test_Level.json", LEVEL::LEVEL_TEST);
 	//Load_FromJson(m_szDefaultJsonPath + "Stage1_Song.json", LEVEL::LEVEL_TEST);
 
 	CCamera::CAMERADESC			CameraDesc;
@@ -146,20 +144,25 @@ shared_ptr<CLevel_Test> CLevel_Test::Create()
 
 void CLevel_Test::ExitLevel(LEVEL eLevel)
 {
-	if (eLevel == LEVEL::LEVEL_STAGE2)
+	switch (eLevel)
 	{
-		m_eNextLevel = eLevel;
+		case  LEVEL::LEVEL_STAGE2:
+		case  LEVEL::LEVEL_STAGE3:
+		{
+			FaderDesc tFaderDesc;
+			tFaderDesc.eFaderType	= FADER_TYPE::FADER_OUT;
+			tFaderDesc.eLinearType	= LINEAR_TYPE::LNIEAR;
+			tFaderDesc.fFadeMaxTime = 1.f;
+			tFaderDesc.fDelayTime	= 0.5f;
+			tFaderDesc.vFadeColor	= _float4(0.f, 0.f, 0.f, 1.f);
 
-		FaderDesc tFaderDesc;
-		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
-		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
-		tFaderDesc.fFadeMaxTime = 1.f;
-		tFaderDesc.fDelayTime = 0.5f;
-		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
-		m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
-		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
-		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
+			m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
+			m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
+		}
+		break;
 	}
+
 }
 void CLevel_Test::OnEventMessage(_uint iArg)
 {

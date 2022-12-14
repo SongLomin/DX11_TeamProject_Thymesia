@@ -45,7 +45,6 @@ private:
     void    View_Picking_List();
     void    View_Picking_Option();
     void    View_SelectTransformInfo();
-    void    View_SelectJson();
 
     void    View_MultiPicking();
 
@@ -84,7 +83,6 @@ private:
     _bool               m_bInvisibility       = true;
 
     RESOURCE_LIST       m_ModelList;
-    RESOURCE_LIST       m_JsonList;
     _bool               m_bSubDraw            = false;
 
     _int                m_iColliderType       = 0;

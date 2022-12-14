@@ -1,11 +1,14 @@
 #include "stdafx.h"
 #include "Level_Stage3.h"
+
 #include "GameInstance.h"
 #include "Client_GameObjects.h"
 #include "GameManager.h"
 #include "FadeMask.h"
 #include "Fader.h"
-
+#include "UI_EvolveMenu.h"
+#include "UI_PauseMenu.h"
+#include "PhysXCharacterController.h"
 
 CLevel_Stage3::CLevel_Stage3()
 {
@@ -22,39 +25,36 @@ HRESULT CLevel_Stage3::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-	//ShowCursor(false);
 
-	CCamera::CAMERADESC			CameraDesc;
+#ifndef  _ONLY_UI_
+	
+	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_STAGE3);
+
+	CCamera::CAMERADESC CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
-	CameraDesc.vEye = _float4(0.0f, 2.5f, -2.5f, 1.f);
-	CameraDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
-	CameraDesc.fFovy = XMConvertToRadians(65.0f);
+	CameraDesc.vEye    = _float4(0.0f, 2.5f, -2.5f, 1.f);
+	CameraDesc.vAt     = _float4(0.f, 0.f, 0.f, 1.f);
+	CameraDesc.fFovy   = XMConvertToRadians(65.0f);
 	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
-	CameraDesc.fNear = 0.2f;
-	CameraDesc.fFar = 300.f;
+	CameraDesc.fNear   = 0.2f;
+	CameraDesc.fFar    = 300.f;
 
 	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_GAMEPLAY, &CameraDesc);
-
 	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
 
-	Load_FromJson(m_szDefaultJsonPath + "Stage3.json", LEVEL::LEVEL_STAGE3);
+	Load_FromJson(m_szDefaultJsonPath + "Stage_Lv3-1.json", LEVEL::LEVEL_STAGE3);
 
-	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_GAMEPLAY);
+	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL::LEVEL_STAGE3);
+	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
 
-	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
+#endif // ! _ONLY_UI_
 
-	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_GAMEPLAY);
-	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
+	m_pFadeMask   = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL::LEVEL_STATIC).front();
+    m_pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL::LEVEL_STATIC).front();
+	m_pPauseMenu  = GAMEINSTANCE->Get_GameObjects<CUI_PauseMenu>(LEVEL::LEVEL_STATIC).front();
 
-
-	FaderDesc tFaderDesc;
-	tFaderDesc.eFaderType = FADER_TYPE::FADER_IN;
-	tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
-	tFaderDesc.fFadeMaxTime = 3.f;
-	tFaderDesc.fDelayTime = 0.5f;
-	tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 0.f);
-
-	m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+	GAMEINSTANCE->Set_FogDesc(_float4(1.f, 1.f, 1.f, 0.f), 70.f);
+	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 
 	return S_OK;
 }

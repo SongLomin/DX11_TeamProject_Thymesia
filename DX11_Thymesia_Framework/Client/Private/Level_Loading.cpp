@@ -7,7 +7,7 @@
 #include "Level_Test.h"
 //#include "Level_Lobby.h"
 #include "Level_Stage2.h"
-//#include "Level_Stage3.h"
+#include "Level_Stage3.h"
 #include "GameInstance.h"
 #include "UI_Loading.h"
 #include "FadeMask.h"
@@ -106,6 +106,15 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 				Create_Level();
 			}
 		}
+		else if (m_eNextLevel == LEVEL_STAGE3)
+		{
+			m_pUILoading.lock()->Set_Complete();
+			if (m_pUILoading.lock()->Get_Finish())
+			{
+
+				Create_Level();
+			}
+		}
 		else
 		{
 			Create_Level();
@@ -152,7 +161,7 @@ void CLevel_Loading::Create_Level()
 		break;
 
 	case LEVEL_STAGE3:
-		//pLevel = CLevel_Stage3::Create();
+		pLevel = CLevel_Stage3::Create();
 		break;
 
 	case LEVEL_EDIT:
