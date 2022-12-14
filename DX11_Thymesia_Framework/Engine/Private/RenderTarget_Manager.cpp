@@ -84,6 +84,38 @@ HRESULT CRenderTarget_Manager::Begin_MRT(const _tchar* pMRTTag)
 	return S_OK;
 }
 
+HRESULT CRenderTarget_Manager::Begin_DeferredMRT(const _tchar* pMRTTag, ID3D11DeviceContext* pDeviceContext)
+{
+	list<shared_ptr<CRenderTarget>>* pMRTList = Find_MRT(pMRTTag);
+	if (nullptr == pMRTList)
+		DEBUG_ASSERT;
+
+	if (8 <= pMRTList->size())
+		DEBUG_ASSERT;
+
+	ID3D11ShaderResourceView* pSRVs[128] = { nullptr };
+
+	pDeviceContext->PSSetShaderResources(0, 128, pSRVs);
+
+	ID3D11RenderTargetView* RTVs[8] = { nullptr };
+
+	_uint iNumRTVs(0);
+
+	for (auto& pRenderTarget : *pMRTList)
+	{
+		pRenderTarget->Clear();
+		RTVs[iNumRTVs++] = pRenderTarget->Get_RTV().Get();
+	}
+
+	/* 기존에 바인딩되어있던(백버퍼 + 깊이스텐실버퍼)를 얻어온다. */
+	pDeviceContext->OMGetRenderTargets(1, m_pBackBufferView.GetAddressOf(), m_pDepthStencilView.GetAddressOf());
+
+	/* 렌더타겟들을 장치에 바인딩한다. */
+	DEVICECONTEXT->OMSetRenderTargets(iNumRTVs, RTVs, m_pDepthStencilView.Get());
+
+	return S_OK;
+}
+
 HRESULT CRenderTarget_Manager::Begin_SingleRT(const _tchar* pMRTTag, const _uint& In_iIndex)
 {
 	list<shared_ptr<CRenderTarget>>* pMRTList = Find_MRT(pMRTTag);
@@ -272,6 +304,19 @@ HRESULT CRenderTarget_Manager::End_MRT()
 
 	ID3D11ShaderResourceView* pSRV = NULL;
 	DEVICECONTEXT->PSSetShaderResources(0, 1, &pSRV);
+
+	return S_OK;
+}
+
+HRESULT CRenderTarget_Manager::End_DeferredMRT(ID3D11DeviceContext* pDeviceContext)
+{
+	pDeviceContext->OMSetRenderTargets(1, m_pBackBufferView.GetAddressOf(), m_pDepthStencilView.Get());
+
+	m_pBackBufferView.Reset();
+	m_pDepthStencilView.Reset();
+
+	ID3D11ShaderResourceView* pSRV = NULL;
+	pDeviceContext->PSSetShaderResources(0, 1, &pSRV);
 
 	return S_OK;
 }
