@@ -38,14 +38,6 @@
 GAMECLASS_C(CEffect_Rect)
 CLONE_C(CEffect_Rect, CGameObject)
 
-#ifdef _DEBUG
-#ifdef _JOJO_EFFECT_TOOL_
-const _int CEffect_Rect::m_iScaleType_None = 0;
-const _int CEffect_Rect::m_iScaleType_Square = 1;
-const _int CEffect_Rect::m_iScaleType_Ratio = 2;
-#endif // _JOJO_EFFECT_TOOL_
-#endif // _DEBUG
-
 const _char* CEffect_Rect::Get_EffectName() const
 {
 	return m_szEffectName.c_str();
@@ -96,11 +88,10 @@ HRESULT CEffect_Rect::Initialize_Prototype()
 	m_vCurrentGlowColor = { 1.f, 1.f, 1.f, 1.f };
 	ZeroMemory(&m_vCurrentGlowColorForce, sizeof(_float2));
 
-	m_bFinish		= false;
+	m_bFinish = false;
 	m_bStopParticle = false;
 	return S_OK;
 }
-
 
 HRESULT CEffect_Rect::Initialize(void* pArg)
 {
@@ -120,10 +111,10 @@ HRESULT CEffect_Rect::Initialize(void* pArg)
 
 	m_pNoiseTextureCom = Add_Component<CTexture>();
 	m_pNoiseTextureCom.lock()->Use_Texture("UVNoise");
-	CBase::Set_Enable(false);
+	Set_Enable(false);
 
 #ifdef _USE_THREAD_
-	CGameObject::Use_Thread(THREAD_TYPE::TICK);
+	Use_Thread(THREAD_TYPE::TICK);
 #endif // _USE_THREAD_
 
 	return S_OK;
@@ -131,21 +122,21 @@ HRESULT CEffect_Rect::Initialize(void* pArg)
 
 void CEffect_Rect::Tick(_float fTimeDelta)
 {
-	CGameObject::CallBack_Tick(fTimeDelta);
+	CallBack_Tick(fTimeDelta);
 
 #ifdef _DEBUG
 	if (m_bResetTrigger && m_pParentTransformCom.lock())
 	{
-		this->ReBake_EditParticle();
-		this->Reset_Effect(m_pParentTransformCom.lock());
+		ReBake_EditParticle();
+		Reset_Effect(m_pParentTransformCom.lock());
 		m_bResetTrigger = false;
 	}
 #endif // _DEBUG
 
 	if (m_pVIBuffer.lock()->Get_InstanceCount() != m_tEffectParticleDesc.iMaxInstance)
-		this->Reset_Instance(m_tEffectParticleDesc.iMaxInstance);
+		Reset_Instance(m_tEffectParticleDesc.iMaxInstance);
 
-	this->Play(fTimeDelta * GAMEINSTANCE->Get_TimeScale(m_iTimeScaleLayerIndex));
+	Play(fTimeDelta * GAMEINSTANCE->Get_TimeScale(m_iTimeScaleLayerIndex));
 }
 
 void CEffect_Rect::LateTick(_float fTimeDelta)
@@ -153,13 +144,13 @@ void CEffect_Rect::LateTick(_float fTimeDelta)
 	m_pVIBuffer.lock()->Update(m_tParticleDescs, ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType));
 	__super::LateTick(fTimeDelta);
 
-	if (this->Check_DisableAllParticle())
+	if (Check_DisableAllParticle())
 		Set_Enable(false);
 }
 
 HRESULT CEffect_Rect::Render()
 {
-	this->SetUp_ShaderResource();
+	SetUp_ShaderResource();
 	__super::Render();
 	m_pShaderCom.lock()->Begin(m_tEffectParticleDesc.iShaderPassIndex);
 	m_pVIBuffer.lock()->Render();
@@ -174,7 +165,7 @@ void CEffect_Rect::Init_EffectParticle(const _char* In_szName, const _char* In_s
 
 void CEffect_Rect::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 {
-	CBase::Set_Enable(true);
+	Set_Enable(true);
 	m_bFinish = false;
 	m_bStopParticle = false;
 	m_bStopSprite = false;
@@ -236,15 +227,15 @@ void CEffect_Rect::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 		}
 	}
 
-	this->Update_ParentTransform();
-	this->Reset_ParticleDescs();
+	Update_ParentTransform();
+	Reset_ParticleDescs();
 }
 
 void CEffect_Rect::SetUp_ShaderResource()
 {
 #pragma region Base
 	if ((_uint)TRANSFORMTYPE::STATIC != m_tEffectParticleDesc.iFollowTransformType)
-		this->Update_ParentTransform();
+		Update_ParentTransform();
 
 	_matrix WorldMatrix(XMMatrixIdentity()), BoneMatrix(XMMatrixIdentity());
 
@@ -294,13 +285,13 @@ void CEffect_Rect::SetUp_ShaderResource()
 	m_pShaderCom.lock()->Set_RawValue("g_vCamDirection", &vCamDir, sizeof(_vector));
 
 	_bool isBillboard(m_tEffectParticleDesc.iParticleType == (_int)PARTICLETYPE::BILLBOARD);
-	m_pShaderCom.lock()->Set_RawValue("g_bBillboard", &isBillboard, sizeof(_bool));	
+	m_pShaderCom.lock()->Set_RawValue("g_bBillboard", &isBillboard, sizeof(_bool));
 #pragma endregion
 
 #pragma region Bloom & Glow
-	m_pShaderCom.lock()->Set_RawValue("g_bBloom",     &m_tEffectParticleDesc.bBloom, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_bGlow",      &m_tEffectParticleDesc.bGlow,  sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_vGlowColor", &m_vCurrentGlowColor,          sizeof(_float4));
+	m_pShaderCom.lock()->Set_RawValue("g_bBloom", &m_tEffectParticleDesc.bBloom, sizeof(_bool));
+	m_pShaderCom.lock()->Set_RawValue("g_bGlow", &m_tEffectParticleDesc.bGlow, sizeof(_bool));
+	m_pShaderCom.lock()->Set_RawValue("g_vGlowColor", &m_vCurrentGlowColor, sizeof(_float4));
 #pragma endregion
 }
 
@@ -324,13 +315,13 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 
 	Out_Json["Sync_Animation"] = m_tEffectParticleDesc.bSyncAnimation;
 	Out_Json["Sync_AnimationKey"] = m_tEffectParticleDesc.iSyncAnimationKey;
-	
+
 #pragma region Life Time
-	Out_Json["Init_Time"]      = m_tEffectParticleDesc.fInitTime;
+	Out_Json["Init_Time"] = m_tEffectParticleDesc.fInitTime;
 	Out_Json["Min_Spawn_Time"] = m_tEffectParticleDesc.fMinSpawnTime;
 	Out_Json["Max_Spawn_Time"] = m_tEffectParticleDesc.fMaxSpawnTime;
-	Out_Json["Min_Life_Time"]  = m_tEffectParticleDesc.fMinLifeTime;
-	Out_Json["Max_Life_Time"]  = m_tEffectParticleDesc.fMaxLifeTime;
+	Out_Json["Min_Life_Time"] = m_tEffectParticleDesc.fMinLifeTime;
+	Out_Json["Max_Life_Time"] = m_tEffectParticleDesc.fMaxLifeTime;
 #pragma endregion
 
 	Out_Json["Is_Boner"] = m_tEffectParticleDesc.bBoner;
@@ -342,18 +333,18 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	}
 
 #pragma region Spawn Position
-	CJson_Utility::Write_Float3(Out_Json["Min_Spawn_Position"]        , m_tEffectParticleDesc.vMinSpawnPosition);
-	CJson_Utility::Write_Float3(Out_Json["Max_Spawn_Position"]        , m_tEffectParticleDesc.vMaxSpawnPosition);
+	CJson_Utility::Write_Float3(Out_Json["Min_Spawn_Position"], m_tEffectParticleDesc.vMinSpawnPosition);
+	CJson_Utility::Write_Float3(Out_Json["Max_Spawn_Position"], m_tEffectParticleDesc.vMaxSpawnPosition);
 
 	CJson_Utility::Write_Float3(Out_Json["Min_Spawn_Offset_Direction"], m_tEffectParticleDesc.vMinSpawnOffsetDirection);
 	CJson_Utility::Write_Float3(Out_Json["Max_Spawn_Offset_Direction"], m_tEffectParticleDesc.vMaxSpawnOffsetDirection);
 
-	CJson_Utility::Write_Float3(Out_Json["Min_Spawn_Offset_Range"]    , m_tEffectParticleDesc.vMinSpawnOffsetRange);
-	CJson_Utility::Write_Float3(Out_Json["Max_Spawn_Offset_Range"]    , m_tEffectParticleDesc.vMaxSpawnOffsetRange);
+	CJson_Utility::Write_Float3(Out_Json["Min_Spawn_Offset_Range"], m_tEffectParticleDesc.vMinSpawnOffsetRange);
+	CJson_Utility::Write_Float3(Out_Json["Max_Spawn_Offset_Range"], m_tEffectParticleDesc.vMaxSpawnOffsetRange);
 #pragma endregion
 
 	Out_Json["Is_MoveLook"] = m_tEffectParticleDesc.bMoveLook;
-	
+
 	Out_Json["Is_Use_Gravity"] = m_tEffectParticleDesc.bUseGravity;
 
 	if (m_tEffectParticleDesc.bUseGravity)
@@ -422,15 +413,15 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 #pragma endregion
 
 #pragma region Scale
-	Out_Json["Is_Square_Scale"] = m_tEffectParticleDesc.bSquareScale;
-	Out_Json["Is_Ratio_Scale"] = m_tEffectParticleDesc.bRatioScale;
+	//Out_Json["Is_Square_Scale"] = m_tEffectParticleDesc.bSquareScale;
+	//Out_Json["Is_Ratio_Scale"] = m_tEffectParticleDesc.bRatioScale;
 
-	if (m_tEffectParticleDesc.bRatioScale)
-	{
-		Out_Json["Min_Y_Scale_Ratio"] = m_tEffectParticleDesc.fMinYScaleRatio;
-		Out_Json["Max_Y_Scale_Ratio"] = m_tEffectParticleDesc.fMaxYScaleRatio;
-	}
-	
+	//if (m_tEffectParticleDesc.bRatioScale)
+	//{
+	//	Out_Json["Min_Y_Scale_Ratio"] = m_tEffectParticleDesc.fMinYScaleRatio;
+	//	Out_Json["Max_Y_Scale_Ratio"] = m_tEffectParticleDesc.fMaxYScaleRatio;
+	//}
+
 	Out_Json["Is_Easing_Scale"] = m_tEffectParticleDesc.bEasingScale;
 
 	if (m_tEffectParticleDesc.bEasingScale)
@@ -451,6 +442,10 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	}
 	CJson_Utility::Write_Float2(Out_Json["Min_Scale"], m_tEffectParticleDesc.vMinLimitScale);
 	CJson_Utility::Write_Float2(Out_Json["Max_Scale"], m_tEffectParticleDesc.vMaxLimitScale);
+
+
+	///////////////////////////////////////////////////////////////////////////
+	Out_Json["Scale_Flag"] = m_tEffectParticleDesc.byScaleFlag;
 #pragma endregion
 
 #pragma region Color
@@ -524,7 +519,7 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 #pragma endregion
 
 #pragma region For. Sprite
-	if (this->Is_Sprite())
+	if (Is_Sprite())
 	{
 		Out_Json["Loop_Sprite"] = m_tEffectParticleDesc.bLoopSprite;
 		Out_Json["Is_Stop_At_End_Frame"] = m_tEffectParticleDesc.bStopAtEndFrame;
@@ -542,10 +537,10 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	m_iTimeScaleLayerIndex = In_iTimeScaleLayer;
 
 	m_szEffectName = In_Json["Name"];
-	m_tEffectParticleDesc.iMaxInstance         = In_Json["Max_Instance"];
-	m_tEffectParticleDesc.bLooping             = In_Json["Is_Looping"];
+	m_tEffectParticleDesc.iMaxInstance = In_Json["Max_Instance"];
+	m_tEffectParticleDesc.bLooping = In_Json["Is_Looping"];
 
-	m_tEffectParticleDesc.iParticleType        = In_Json["ParticleType"];
+	m_tEffectParticleDesc.iParticleType = In_Json["ParticleType"];
 	m_tEffectParticleDesc.iFollowTransformType = In_Json["Follow_Transform"];
 
 	if (In_Json.find("Is_Attraction") != In_Json.end())
@@ -599,7 +594,7 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 				m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
 			}
 		}
-		catch (const std::exception&)
+		catch (const exception&)
 		{
 			assert(0);
 		}
@@ -716,32 +711,55 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma endregion
 
 #pragma region Scale
-	if (In_Json.find("Is_Square_Scale") != In_Json.end())
-		m_tEffectParticleDesc.bSquareScale = In_Json["Is_Square_Scale"];
+	if (In_Json.find("Scale_Flag") != In_Json.end())
+		m_tEffectParticleDesc.byScaleFlag = In_Json["Scale_Flag"];
 
-	if (!m_tEffectParticleDesc.bSquareScale)
+	if ((m_tEffectParticleDesc.byScaleFlag & EFFECTPARTICLE_DESC::SCALE_FLAG::SCALE_FLAG_SPEED) && (m_tEffectParticleDesc.byScaleFlag & EFFECTPARTICLE_DESC::SCALE_FLAG::SCALE_FLAG_FORCE))
 	{
-		if (In_Json.find("Is_Ratio_Scale") != In_Json.end())
-			m_tEffectParticleDesc.bRatioScale = In_Json["Is_Ratio_Scale"];
+		if (In_Json.find("Min_Scale_Speed") != In_Json.end())
+			CJson_Utility::Load_Float2(In_Json["Min_Scale_Speed"], m_tEffectParticleDesc.vMinScaleSpeed);
+		if (In_Json.find("Max_Scale_Speed") != In_Json.end())
+			CJson_Utility::Load_Float2(In_Json["Max_Scale_Speed"], m_tEffectParticleDesc.vMaxScaleSpeed);
+
+		if (In_Json.find("Min_Scale_Force") != In_Json.end())
+			CJson_Utility::Load_Float2(In_Json["Min_Scale_Force"], m_tEffectParticleDesc.vMinScaleForce);
+		if (In_Json.find("Max_Scale_Force") != In_Json.end())
+			CJson_Utility::Load_Float2(In_Json["Max_Scale_Force"], m_tEffectParticleDesc.vMaxScaleForce);
+
+		CallBack_UpdateParticle += bind(&CEffect_Rect::Update_ParticleScale_ApplyScaleSpeedAndForce, this, placeholders::_1, placeholders::_2);
+	}
+	else if (m_tEffectParticleDesc.byScaleFlag & EFFECTPARTICLE_DESC::SCALE_FLAG::SCALE_FLAG_SPEED)
+	{
+		if (In_Json.find("Min_Scale_Speed") != In_Json.end())
+			CJson_Utility::Load_Float2(In_Json["Min_Scale_Speed"], m_tEffectParticleDesc.vMinScaleSpeed);
+		if (In_Json.find("Max_Scale_Speed") != In_Json.end())
+			CJson_Utility::Load_Float2(In_Json["Max_Scale_Speed"], m_tEffectParticleDesc.vMaxScaleSpeed);
+
+		CallBack_UpdateParticle += bind(&CEffect_Rect::Update_ParticleScale_ApplyScaleSpeed, this, placeholders::_1, placeholders::_2);
+	}
+	else if (m_tEffectParticleDesc.byScaleFlag & EFFECTPARTICLE_DESC::SCALE_FLAG::SCALE_FLAG_FORCE)
+	{
+		if (In_Json.find("Min_Scale_Force") != In_Json.end())
+			CJson_Utility::Load_Float2(In_Json["Min_Scale_Force"], m_tEffectParticleDesc.vMinScaleForce);
+		if (In_Json.find("Max_Scale_Force") != In_Json.end())
+			CJson_Utility::Load_Float2(In_Json["Max_Scale_Force"], m_tEffectParticleDesc.vMaxScaleForce);
+
+		CallBack_UpdateParticle += bind(&CEffect_Rect::Update_ParticleScale_ApplyScaleForce, this, placeholders::_1, placeholders::_2);
 	}
 
-#ifdef _DEBUG
-#ifdef _JOJO_EFFECT_TOOL_
-	if (m_tEffectParticleDesc.bSquareScale && !m_tEffectParticleDesc.bRatioScale)
-		m_iScaleType = m_iScaleType_Square;
-	else if (!m_tEffectParticleDesc.bSquareScale && m_tEffectParticleDesc.bRatioScale)
-		m_iScaleType = m_iScaleType_Ratio;
-	else
-		m_iScaleType = 0;
-#endif // _JOJO_EFFECT_TOOL_
-#endif // _DEBUG
-
-	if (m_tEffectParticleDesc.bRatioScale)
+	if (m_tEffectParticleDesc.byScaleFlag & EFFECTPARTICLE_DESC::SCALE_FLAG::SCALE_FLAG_SQUARE)
+		CallBack_LateUpdateParticle += bind(&CEffect_Rect::Update_ParticleScale_ApplySquareScale, this, placeholders::_1, placeholders::_2);
+	else if (m_tEffectParticleDesc.byScaleFlag & EFFECTPARTICLE_DESC::SCALE_FLAG::SCALE_FLAG_RATIO)
 	{
 		m_tEffectParticleDesc.fMinYScaleRatio = In_Json["Min_Y_Scale_Ratio"];
 		m_tEffectParticleDesc.fMaxYScaleRatio = In_Json["Max_Y_Scale_Ratio"];
+
+		CallBack_LateUpdateParticle += bind(&CEffect_Rect::Update_ParticleScale_ApplyRatioScale, this, placeholders::_1, placeholders::_2);
 	}
-	
+	else if (m_tEffectParticleDesc.byScaleFlag & EFFECTPARTICLE_DESC::SCALE_FLAG::SCALE_FLAG_CUSTOM)
+		CallBack_LateUpdateParticle += bind(&CEffect_Rect::Update_ParticleScale_ApplyCustomScale, this, placeholders::_1, placeholders::_2);
+
+
 	if (In_Json.find("Is_Easing_Scale") != In_Json.end())
 		m_tEffectParticleDesc.bEasingScale = In_Json["Is_Easing_Scale"];
 
@@ -758,16 +776,6 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 			CJson_Utility::Load_Float2(In_Json["Min_Start_Scale"], m_tEffectParticleDesc.vMinStartScale);
 		if (In_Json.find("Max_Start_Scale") != In_Json.end())
 			CJson_Utility::Load_Float2(In_Json["Max_Start_Scale"], m_tEffectParticleDesc.vMaxStartScale);
-
-		if (In_Json.find("Min_Scale_Speed") != In_Json.end())
-			CJson_Utility::Load_Float2(In_Json["Min_Scale_Speed"], m_tEffectParticleDesc.vMinScaleSpeed);
-		if (In_Json.find("Max_Scale_Speed") != In_Json.end())
-			CJson_Utility::Load_Float2(In_Json["Max_Scale_Speed"], m_tEffectParticleDesc.vMaxScaleSpeed);
-
-		if (In_Json.find("Min_Scale_Force") != In_Json.end())
-			CJson_Utility::Load_Float2(In_Json["Min_Scale_Force"], m_tEffectParticleDesc.vMinScaleForce);
-		if (In_Json.find("Max_Scale_Force") != In_Json.end())
-			CJson_Utility::Load_Float2(In_Json["Max_Scale_Force"], m_tEffectParticleDesc.vMaxScaleForce);
 	}
 	if (In_Json.find("Min_Scale") != In_Json.end())
 		CJson_Utility::Load_Float2(In_Json["Min_Scale"], m_tEffectParticleDesc.vMinLimitScale);
@@ -860,7 +868,7 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma endregion
 
 #pragma region For. Sprite
-	if (this->Is_Sprite())
+	if (Is_Sprite())
 	{
 		if (In_Json.find("Loop_Sprite") != In_Json.end())
 			m_tEffectParticleDesc.bLoopSprite = In_Json["Loop_Sprite"];
@@ -918,7 +926,7 @@ void CEffect_Rect::Play(_float fTimeDelta)
 
 						XMStoreFloat4x4(&m_tParticleDescs[i].matParentMatrix, BoneMatrix * m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
 					}
-					else if(m_pParentTransformCom.lock())
+					else if (m_pParentTransformCom.lock())
 					{
 						XMStoreFloat4x4(&m_tParticleDescs[i].matParentMatrix, m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
 					}
@@ -937,7 +945,7 @@ void CEffect_Rect::Play(_float fTimeDelta)
 			{
 				if (m_tEffectParticleDesc.bLooping && !m_bStopParticle)
 				{
-					this->Reset_ParticleDesc((_uint)i);
+					Reset_ParticleDesc((_uint)i);
 				}
 				else
 				{
@@ -950,15 +958,14 @@ void CEffect_Rect::Play(_float fTimeDelta)
 			m_tParticleDescs[i].fCurrentLifeTime += fTimeDelta;
 		}
 
-
 		for (_int x(0); x < iTickCount; ++x)
-			this->Play_Internal(i, fFrameTime);
+			Play_Internal(i, fFrameTime);
 	}
 
 	for (_int x(0); x < iTickCount; ++x)
 	{
-		this->Update_ParticleUV(fFrameTime);
-		this->Update_ParticleGlowColor(fFrameTime);
+		Update_ParticleUV(fFrameTime);
+		Update_ParticleGlowColor(fFrameTime);
 	}
 }
 
@@ -967,14 +974,14 @@ void CEffect_Rect::Sync_Animation()
 	if (!m_tEffectParticleDesc.bSyncAnimation)
 		return;
 
-	this->Reset_Effect(weak_ptr<CTransform>());
+	Reset_Effect(weak_ptr<CTransform>());
 }
 
 void CEffect_Rect::UnUse_EffectParticle()
 {
 	if (0.f < m_fCurrentInitTime)
 	{
-		CBase::Set_Enable(false);
+		Set_Enable(false);
 		return;
 	}
 
@@ -983,7 +990,7 @@ void CEffect_Rect::UnUse_EffectParticle()
 
 void CEffect_Rect::ReBake_EditParticle()
 {
-	this->Reset_Instance(m_tEffectParticleDesc.iMaxInstance);
+	Reset_Instance(m_tEffectParticleDesc.iMaxInstance);
 }
 
 void CEffect_Rect::Reset_Instance(const _uint& In_ParticleCount)
@@ -996,14 +1003,14 @@ void CEffect_Rect::Reset_Instance(const _uint& In_ParticleCount)
 	m_tOriginalParticleDescs = vector<PARTICLE_DESC>(In_ParticleCount, PARTICLE_DESC());
 
 	m_pVIBuffer.lock()->Init_Particle(In_ParticleCount);
-	this->Generate_RandomOriginalParticleDesc();
-	this->Reset_ParticleDescs();
+	Generate_RandomOriginalParticleDesc();
+	Reset_ParticleDescs();
 }
 
 void CEffect_Rect::Reset_ParticleDescs()
 {
 	for (_int i(0); i < m_tEffectParticleDesc.iMaxInstance; ++i)
-		this->Reset_ParticleDesc((_uint)i);
+		Reset_ParticleDesc((_uint)i);
 }
 
 void CEffect_Rect::Reset_ParticleDesc(const _uint& In_iIndex)
@@ -1111,7 +1118,7 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 		m_tOriginalParticleDescs[i].vCurrentScale.x = max(FLT_MIN, m_tOriginalParticleDescs[i].vCurrentScale.x);
 		m_tOriginalParticleDescs[i].vCurrentScale.y = max(FLT_MIN, m_tOriginalParticleDescs[i].vCurrentScale.y);
 
-		if (m_tEffectParticleDesc.bRatioScale)
+		if (m_tEffectParticleDesc.byScaleFlag & EFFECTPARTICLE_DESC::SCALE_FLAG::SCALE_FLAG_RATIO)
 			m_tOriginalParticleDescs[i].fTargetYScaleRatio = SMath::fRandom(m_tEffectParticleDesc.fMinYScaleRatio, m_tEffectParticleDesc.fMaxYScaleRatio);
 	}
 }
@@ -1138,11 +1145,14 @@ _bool CEffect_Rect::Check_DisableAllParticle()
 
 void CEffect_Rect::Play_Internal(const _uint& i, _float fTimeDelta)
 {
-	this->Update_ParticleRotation(i, fTimeDelta);
-	this->Update_ParticlePosition(i, fTimeDelta);
-	this->Update_ParticleScale(i, fTimeDelta);
-	this->Update_ParticleColor(i, fTimeDelta);
-	this->Update_ParticleSpriteFrame(i, fTimeDelta);
+	CallBack_UpdateParticle(i, fTimeDelta);
+	CallBack_LateUpdateParticle(i, fTimeDelta);
+
+	Update_ParticleRotation(i, fTimeDelta);
+	Update_ParticlePosition(i, fTimeDelta);
+	// Update_ParticleScale(i, fTimeDelta);
+	Update_ParticleColor(i, fTimeDelta);
+	Update_ParticleSpriteFrame(i, fTimeDelta);
 }
 
 void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
@@ -1171,7 +1181,7 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 		if (0.f > fElapsedTime)
 			return;
 
-		this->Apply_Easing
+		Apply_Easing
 		(
 			vMove
 			, (EASING_TYPE)m_tEffectParticleDesc.iSpeedEasingType
@@ -1205,7 +1215,7 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 			if (0.f > fElapsedTime)
 				return;
 
-			this->Apply_Easing
+			Apply_Easing
 			(
 				vMove
 				, (EASING_TYPE)m_tEffectParticleDesc.iSpeedEasingType
@@ -1299,7 +1309,7 @@ void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
 	{
 		_vector vUp(XMLoadFloat3(&m_tOriginalParticleDescs[i].vCurrentTranslation));
 		_matrix ReverseAxisRotationMatrix(SMath::Bake_MatrixNormalizeUseLookVector(vUp));
-		_matrix RotationMatrix = 
+		_matrix RotationMatrix =
 		{
 			ReverseAxisRotationMatrix.r[0],
 			ReverseAxisRotationMatrix.r[2],
@@ -1321,7 +1331,7 @@ void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
 			if (0.f > fElapsedTime)
 				return;
 
-			this->Apply_Easing
+			Apply_Easing
 			(
 				vRotation
 				, (EASING_TYPE)m_tEffectParticleDesc.iRotationEasingType
@@ -1354,58 +1364,57 @@ void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
 	}
 }
 
-void CEffect_Rect::Update_ParticleScale(const _uint& i, _float fTimeDelta)
-{
-	_float2 vScale;
-	ZeroMemory(&vScale, sizeof(_float2));
-
-	if (m_tEffectParticleDesc.bEasingScale)
-	{
-		_float fElapsedTime(m_tParticleDescs[i].fCurrentLifeTime);
-
-		if (0.f > fElapsedTime)
-			return;
-
-		this->Apply_Easing
-		(
-			vScale
-			, (EASING_TYPE)m_tEffectParticleDesc.iScaleEasingType
-			, XMLoadFloat2(&m_tEffectParticleDesc.vMinLimitScale)
-			, XMLoadFloat2(&m_tEffectParticleDesc.vMaxLimitScale)
-			, fElapsedTime
-			, m_tEffectParticleDesc.fScaleEasingTotalTime
-		);
-
-		m_tParticleDescs[i].vCurrentScale = vScale;
-	}
-	else
-	{
-		vScale = SMath::Mul_Float2(m_tParticleDescs[i].vTargetScaleSpeed, fTimeDelta);
-		m_tParticleDescs[i].vCurrentScaleForce = SMath::Add_Float2(m_tParticleDescs[i].vCurrentScaleForce, SMath::Mul_Float2(m_tParticleDescs[i].vTargetScaleForce, fTimeDelta));
-		SMath::Add_Float2(&m_tParticleDescs[i].vCurrentScale, m_tParticleDescs[i].vCurrentScaleForce);
-		m_tParticleDescs[i].vCurrentScale = SMath::Add_Float2(m_tParticleDescs[i].vCurrentScale, vScale);
-	}
-
-	m_tParticleDescs[i].vCurrentScale.x = max(m_tEffectParticleDesc.vMinLimitScale.x, min(m_tEffectParticleDesc.vMaxLimitScale.x, m_tParticleDescs[i].vCurrentScale.x));
-
-
-	if (m_tEffectParticleDesc.bSquareScale)
-		m_tParticleDescs[i].vCurrentScale.y = m_tParticleDescs[i].vCurrentScale.x;
-	else if (m_tEffectParticleDesc.bRatioScale)
-		m_tParticleDescs[i].vCurrentScale.y = m_tParticleDescs[i].vCurrentScale.x * m_tParticleDescs[i].fTargetYScaleRatio;
-	else
-		m_tParticleDescs[i].vCurrentScale.y = max(m_tEffectParticleDesc.vMinLimitScale.y, min(m_tEffectParticleDesc.vMaxLimitScale.y, m_tParticleDescs[i].vCurrentScale.y));
-}
+//void CEffect_Rect::Update_ParticleScale(const _uint& i, _float fTimeDelta)
+//{
+//	_float2 vScale;
+//	ZeroMemory(&vScale, sizeof(_float2));
+//
+//	if (m_tEffectParticleDesc.bEasingScale)
+//	{
+//		_float fElapsedTime(m_tParticleDescs[i].fCurrentLifeTime);
+//
+//		if (0.f > fElapsedTime)
+//			return;
+//
+//		Apply_Easing
+//		(
+//			vScale
+//			, (EASING_TYPE)m_tEffectParticleDesc.iScaleEasingType
+//			, XMLoadFloat2(&m_tEffectParticleDesc.vMinLimitScale)
+//			, XMLoadFloat2(&m_tEffectParticleDesc.vMaxLimitScale)
+//			, fElapsedTime
+//			, m_tEffectParticleDesc.fScaleEasingTotalTime
+//		);
+//
+//		m_tParticleDescs[i].vCurrentScale = vScale;
+//	}
+//	else
+//	{
+//		vScale = SMath::Mul_Float2(m_tParticleDescs[i].vTargetScaleSpeed, fTimeDelta);
+//		m_tParticleDescs[i].vCurrentScaleForce = SMath::Add_Float2(m_tParticleDescs[i].vCurrentScaleForce, SMath::Mul_Float2(m_tParticleDescs[i].vTargetScaleForce, fTimeDelta));
+//		SMath::Add_Float2(&m_tParticleDescs[i].vCurrentScale, m_tParticleDescs[i].vCurrentScaleForce);
+//		m_tParticleDescs[i].vCurrentScale = SMath::Add_Float2(m_tParticleDescs[i].vCurrentScale, vScale);
+//	}
+//
+//	m_tParticleDescs[i].vCurrentScale.x = max(m_tEffectParticleDesc.vMinLimitScale.x, min(m_tEffectParticleDesc.vMaxLimitScale.x, m_tParticleDescs[i].vCurrentScale.x));
+//
+//	if (m_tEffectParticleDesc.bSquareScale)
+//		m_tParticleDescs[i].vCurrentScale.y = m_tParticleDescs[i].vCurrentScale.x;
+//	else if (m_tEffectParticleDesc.bRatioScale)
+//		m_tParticleDescs[i].vCurrentScale.y = m_tParticleDescs[i].vCurrentScale.x * m_tParticleDescs[i].fTargetYScaleRatio;
+//	else
+//		m_tParticleDescs[i].vCurrentScale.y = max(m_tEffectParticleDesc.vMinLimitScale.y, min(m_tEffectParticleDesc.vMaxLimitScale.y, m_tParticleDescs[i].vCurrentScale.y));
+//}
 
 void CEffect_Rect::Update_ParticleUV(_float fTimeDelta)
 {
 #pragma region Diffuse
-	_vector vDiffuseUVSpeed = XMLoadFloat2(&m_tEffectParticleDesc.vDiffuseUVSpeed) * fTimeDelta;
+	_vector vDiffuseUVSpeed(XMLoadFloat2(&m_tEffectParticleDesc.vDiffuseUVSpeed) * fTimeDelta);
 	m_vDiffuseCurrentUVForce.x += m_tEffectParticleDesc.vDiffuseUVForce.x * fTimeDelta;
 	m_vDiffuseCurrentUVForce.y += m_tEffectParticleDesc.vDiffuseUVForce.y * fTimeDelta;
 
-	_vector vDiffuseMoveUV = vDiffuseUVSpeed + XMLoadFloat2(&m_vDiffuseCurrentUVForce);
-	_vector vDiffuseCurrentUV = XMLoadFloat2(&m_vDiffuseCurrentUV);
+	_vector vDiffuseMoveUV(vDiffuseUVSpeed + XMLoadFloat2(&m_vDiffuseCurrentUVForce));
+	_vector vDiffuseCurrentUV(XMLoadFloat2(&m_vDiffuseCurrentUV));
 	vDiffuseCurrentUV += vDiffuseMoveUV;
 
 	vDiffuseCurrentUV = XMVectorSetX(vDiffuseCurrentUV, min(m_tEffectParticleDesc.vDiffuseUVMax.x, XMVectorGetX(vDiffuseCurrentUV)));
@@ -1415,12 +1424,12 @@ void CEffect_Rect::Update_ParticleUV(_float fTimeDelta)
 #pragma endregion
 
 #pragma region Mask
-	_vector vMaskUVSpeed = XMLoadFloat2(&m_tEffectParticleDesc.vMaskUVSpeed) * fTimeDelta;
+	_vector vMaskUVSpeed(XMLoadFloat2(&m_tEffectParticleDesc.vMaskUVSpeed) * fTimeDelta);
 	m_vMaskCurrentUVForce.x += m_tEffectParticleDesc.vMaskUVForce.x * fTimeDelta;
 	m_vMaskCurrentUVForce.y += m_tEffectParticleDesc.vMaskUVForce.y * fTimeDelta;
 
-	_vector vMaskMoveUV = vMaskUVSpeed + XMLoadFloat2(&m_vMaskCurrentUVForce);
-	_vector vMaskCurrentUV = XMLoadFloat2(&m_vMaskCurrentUV);
+	_vector vMaskMoveUV(vMaskUVSpeed + XMLoadFloat2(&m_vMaskCurrentUVForce));
+	_vector vMaskCurrentUV(XMLoadFloat2(&m_vMaskCurrentUV));
 	vMaskCurrentUV += vMaskMoveUV;
 
 	vMaskCurrentUV = XMVectorSetX(vMaskCurrentUV, min(m_tEffectParticleDesc.vMaskUVMax.x, XMVectorGetX(vMaskCurrentUV)));
@@ -1430,12 +1439,12 @@ void CEffect_Rect::Update_ParticleUV(_float fTimeDelta)
 #pragma endregion
 
 #pragma region Noise
-	_vector vNoiseUVSpeed = XMLoadFloat2(&m_tEffectParticleDesc.vNoiseUVSpeed) * fTimeDelta;
+	_vector vNoiseUVSpeed(XMLoadFloat2(&m_tEffectParticleDesc.vNoiseUVSpeed) * fTimeDelta);
 	m_vNoiseCurrentUVForce.x += m_tEffectParticleDesc.vNoiseUVForce.x * fTimeDelta;
 	m_vNoiseCurrentUVForce.y += m_tEffectParticleDesc.vNoiseUVForce.y * fTimeDelta;
 
-	_vector vNoiseMoveUV = vNoiseUVSpeed + XMLoadFloat2(&m_vNoiseCurrentUVForce);
-	_vector vNoiseCurrentUV = XMLoadFloat2(&m_vNoiseCurrentUV);
+	_vector vNoiseMoveUV(vNoiseUVSpeed + XMLoadFloat2(&m_vNoiseCurrentUVForce));
+	_vector vNoiseCurrentUV(XMLoadFloat2(&m_vNoiseCurrentUV));
 	vNoiseCurrentUV += vNoiseMoveUV;
 
 	vNoiseCurrentUV = XMVectorSetX(vNoiseCurrentUV, min(m_tEffectParticleDesc.vNoiseUVMax.x, XMVectorGetX(vNoiseCurrentUV)));
@@ -1482,7 +1491,7 @@ void CEffect_Rect::Update_ParticleColor(const _uint& i, _float fTimeDelta)
 			if (0.f > fElapsedTime)
 				return;
 
-			this->Apply_Easing
+			Apply_Easing
 			(
 				fAlpha
 				, (EASING_TYPE)m_tEffectParticleDesc.iAlphaEasingType
@@ -1493,7 +1502,7 @@ void CEffect_Rect::Update_ParticleColor(const _uint& i, _float fTimeDelta)
 			);
 		}
 
-		_float4 Temp = SMath::Mul_Float4(m_tParticleDescs[i].vTargetColorSpeed, fTimeDelta);
+		_float4 Temp(SMath::Mul_Float4(m_tParticleDescs[i].vTargetColorSpeed, fTimeDelta));
 		vColor = XMLoadFloat4(&Temp);
 		SMath::Add_Float4(&m_tParticleDescs[i].vCurrentColorForce, SMath::Mul_Float4(m_tParticleDescs[i].vTargetColorForce, fTimeDelta));
 
@@ -1501,11 +1510,11 @@ void CEffect_Rect::Update_ParticleColor(const _uint& i, _float fTimeDelta)
 		ZeroMemory(&float4Color, sizeof(_float4));
 		XMStoreFloat4(&float4Color, vColor);
 
-		_float4 Temp2 = SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColorForce);
+		_float4 Temp2(SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColorForce));
 		vColor = XMLoadFloat4(&Temp2);
 		XMStoreFloat4(&float4Color, vColor);
 
-		_float4 Temp3 = SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColor);
+		_float4 Temp3(SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColor));
 		vColor = XMLoadFloat4(&Temp3);
 
 		vColor = XMVectorSetX(vColor, max(m_tEffectParticleDesc.vMinColor.x, min(m_tEffectParticleDesc.vMaxColor.x, XMVectorGetX(vColor))));
@@ -1568,7 +1577,7 @@ void CEffect_Rect::Update_ParticleSpriteFrame(const _uint& i, _float fTimeDelta)
 						m_tParticleDescs[i].vSpriteUV = { 1.f - 1.f / m_tEffectParticleDesc.iNumFrameX, 1.f - 1.f / m_tEffectParticleDesc.iNumFrameY };
 					else
 						m_tParticleDescs[i].vSpriteUV = { 1.f, 1.f };
-					
+
 					m_bStopSprite = true;
 					return;
 				}
@@ -1592,20 +1601,58 @@ void CEffect_Rect::Update_ParentTransform()
 	if ((_int)TRANSFORMTYPE::STATIC != m_tEffectParticleDesc.iFollowTransformType)
 	{
 		if ((_int)PARTICLETYPE::BILLBOARD == m_tEffectParticleDesc.iParticleType)
-		{
 			m_pTransformCom.lock()->Set_WorldMatrix(m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
-		}
-
 		if ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType)
-		{
 			m_pTransformCom.lock()->Set_WorldMatrix(XMMatrixIdentity());
-
-		}
 		else if ((_int)TRANSFORMTYPE::CHILD == m_tEffectParticleDesc.iFollowTransformType)
-		{
 			m_pTransformCom.lock()->Set_WorldMatrix(m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
-		}
 	}
+}
+
+void CEffect_Rect::Update_ParticleScale_ApplyScaleSpeed(const _uint& i, _float fTimeDelta)
+{
+	_float2 vScale;
+	ZeroMemory(&vScale, sizeof(_float2));
+
+	vScale = SMath::Mul_Float2(m_tParticleDescs[i].vTargetScaleSpeed, fTimeDelta);
+
+	m_tParticleDescs[i].vCurrentScale = SMath::Add_Float2(m_tParticleDescs[i].vCurrentScale, vScale);
+	m_tParticleDescs[i].vCurrentScale.x = max(m_tEffectParticleDesc.vMinLimitScale.x, min(m_tEffectParticleDesc.vMaxLimitScale.x, m_tParticleDescs[i].vCurrentScale.x));
+}
+
+void CEffect_Rect::Update_ParticleScale_ApplyScaleForce(const _uint& i, _float fTimeDelta)
+{
+	m_tParticleDescs[i].vCurrentScaleForce = SMath::Add_Float2(m_tParticleDescs[i].vCurrentScaleForce, SMath::Mul_Float2(m_tParticleDescs[i].vTargetScaleForce, fTimeDelta));
+	SMath::Add_Float2(&m_tParticleDescs[i].vCurrentScale, m_tParticleDescs[i].vCurrentScaleForce);
+	m_tParticleDescs[i].vCurrentScale.x = max(m_tEffectParticleDesc.vMinLimitScale.x, min(m_tEffectParticleDesc.vMaxLimitScale.x, m_tParticleDescs[i].vCurrentScale.x));
+}
+
+void CEffect_Rect::Update_ParticleScale_ApplyScaleSpeedAndForce(const _uint& i, _float fTimeDelta)
+{
+	_float2 vScale;
+	ZeroMemory(&vScale, sizeof(_float2));
+
+	vScale = SMath::Mul_Float2(m_tParticleDescs[i].vTargetScaleSpeed, fTimeDelta);
+	m_tParticleDescs[i].vCurrentScaleForce = SMath::Add_Float2(m_tParticleDescs[i].vCurrentScaleForce, SMath::Mul_Float2(m_tParticleDescs[i].vTargetScaleForce, fTimeDelta));
+	SMath::Add_Float2(&m_tParticleDescs[i].vCurrentScale, m_tParticleDescs[i].vCurrentScaleForce);
+
+	m_tParticleDescs[i].vCurrentScale = SMath::Add_Float2(m_tParticleDescs[i].vCurrentScale, vScale);
+	m_tParticleDescs[i].vCurrentScale.x = max(m_tEffectParticleDesc.vMinLimitScale.x, min(m_tEffectParticleDesc.vMaxLimitScale.x, m_tParticleDescs[i].vCurrentScale.x));
+}
+
+void CEffect_Rect::Update_ParticleScale_ApplySquareScale(const _uint& i, _float fTimeDelta)
+{
+	m_tParticleDescs[i].vCurrentScale.y = m_tParticleDescs[i].vCurrentScale.x;
+}
+
+void CEffect_Rect::Update_ParticleScale_ApplyRatioScale(const _uint& i, _float fTimeDelta)
+{
+	m_tParticleDescs[i].vCurrentScale.y = m_tParticleDescs[i].vCurrentScale.x * m_tParticleDescs[i].fTargetYScaleRatio;
+}
+
+void CEffect_Rect::Update_ParticleScale_ApplyCustomScale(const _uint& i, _float fTimeDelta)
+{
+	m_tParticleDescs[i].vCurrentScale.y = max(m_tEffectParticleDesc.vMinLimitScale.y, min(m_tEffectParticleDesc.vMaxLimitScale.y, m_tParticleDescs[i].vCurrentScale.y));
 }
 
 void CEffect_Rect::Apply_Easing
@@ -1808,7 +1855,7 @@ XMStoreFloat2(&vTarget, FunctionName(vStartPoint, vTargetPoint, fElapsedTime, fT
 
 void CEffect_Rect::Apply_Easing
 (
-	_float & fTarget
+	_float& fTarget
 	, EASING_TYPE eEasingType
 	, _float fStartPoint
 	, _float fTargetPoint
@@ -2027,10 +2074,8 @@ void CEffect_Rect::Tool_Boner()
 			{
 				const _bool is_selected = (m_iCurrentBoneIndex == n);
 				if (ImGui::Selectable(m_AllBoneNames[n].c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
-				{
 					m_strBoneName = m_AllBoneNames[n];
-				}
-				// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
 			}
@@ -2388,6 +2433,37 @@ void CEffect_Rect::Tool_Rotation_Easing()
 
 void CEffect_Rect::Tool_Scale()
 {
+	// TODO : 비트플래그 연산으로 바꾸기 (실험용 bool변수)
+#ifdef _DEBUG
+#ifdef _JOJO_EFFECT_TOOL_
+
+	ImGui::Text("Scale Flag Status");
+
+	ShowFlagStatus_And_CreatToggleButton("Speed", "Toggle##Toggle_ScaleFlag_Speed", m_tEffectParticleDesc.byScaleFlag, EFFECTPARTICLE_DESC::SCALE_FLAG::SCALE_FLAG_SPEED);
+	ShowFlagStatus_And_CreatToggleButton("Force", "Toggle##Toggle_ScaleFlag_Force", m_tEffectParticleDesc.byScaleFlag, EFFECTPARTICLE_DESC::SCALE_FLAG::SCALE_FLAG_FORCE);
+	ShowFlagStatus_And_CreatToggleButton("Square Scale", "Toggle##Toggle_ScaleFlag_SquareScale", m_tEffectParticleDesc.byScaleFlag, EFFECTPARTICLE_DESC::SCALE_FLAG::SCALE_FLAG_SQUARE);
+	ShowFlagStatus_And_CreatToggleButton("Ratio Scale", "Toggle##Toggle_ScaleFlag_RatioScale", m_tEffectParticleDesc.byScaleFlag, EFFECTPARTICLE_DESC::SCALE_FLAG::SCALE_FLAG_RATIO);
+	ShowFlagStatus_And_CreatToggleButton("Custom Scale", "Toggle##Toggle_ScaleFlag_CustomScale", m_tEffectParticleDesc.byScaleFlag, EFFECTPARTICLE_DESC::SCALE_FLAG::SCALE_FLAG_CUSTOM);
+#endif // _JOJO_EFFECT_TOOL_
+#endif // _DEBUG
+
+	if (m_tEffectParticleDesc.byScaleFlag & EFFECTPARTICLE_DESC::SCALE_FLAG::SCALE_FLAG_RATIO)
+	{
+		if (ImGui::TreeNode("Y = X * ?"))
+		{
+			ImGui::Text("Min Ratio"); ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.f);
+			ImGui::DragFloat("##Min_Y_Scale_Ratio", &m_tEffectParticleDesc.fMinYScaleRatio, 0.1f, 0.f, 0.f, "%.5f");
+
+			ImGui::Text("Max Ratio"); ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.f);
+			ImGui::DragFloat("##Max_Y_Scale_Ratio", &m_tEffectParticleDesc.fMaxYScaleRatio, 0.1f, 0.f, 0.f, "%.5f");
+
+			ImGui::TreePop();
+		}
+	}
+
+
 	if (ImGui::TreeNode("Start Scale"))
 	{
 		ImGui::Checkbox("Min = Max##Is_MinMaxSame_StartScale", &m_tEffectParticleDesc.bIsMinMaxSame_StartScale);
@@ -2401,7 +2477,7 @@ void CEffect_Rect::Tool_Scale()
 		ImGui::Text("Max Start Scale"); ImGui::SetNextItemWidth(300.f);
 		ImGui::DragFloat2("##Max_Start_Scale", &m_tEffectParticleDesc.vMaxStartScale.x, 0.1f, 0.f, 0.f, "%.5f");
 
-		if (m_tEffectParticleDesc.bSquareScale)
+		if (m_tEffectParticleDesc.byScaleFlag & EFFECTPARTICLE_DESC::SCALE_FLAG::SCALE_FLAG_SQUARE)
 		{
 			m_tEffectParticleDesc.vMinStartScale.y = m_tEffectParticleDesc.vMinStartScale.x;
 			m_tEffectParticleDesc.vMaxStartScale.y = m_tEffectParticleDesc.vMaxStartScale.x;
@@ -2410,49 +2486,56 @@ void CEffect_Rect::Tool_Scale()
 		ImGui::TreePop();
 	}
 
-	if (ImGui::TreeNode("Scale Speed"))
+	if (m_tEffectParticleDesc.byScaleFlag & EFFECTPARTICLE_DESC::SCALE_FLAG::SCALE_FLAG_SPEED)
 	{
-		ImGui::Checkbox("Min = Max##Is_MinMaxSame_ScaleSpeed", &m_tEffectParticleDesc.bIsMinMaxSame_ScaleSpeed);
-
-		if (m_tEffectParticleDesc.bIsMinMaxSame_ScaleSpeed)
-			m_tEffectParticleDesc.vMaxScaleSpeed = m_tEffectParticleDesc.vMinScaleSpeed;
-
-		ImGui::Text("Min Scale Speed"); ImGui::SetNextItemWidth(300.f);
-		ImGui::DragFloat2("##Min_Scale_Speed", &m_tEffectParticleDesc.vMinScaleSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
-
-		ImGui::Text("Max Scale Speed"); ImGui::SetNextItemWidth(300.f);
-		ImGui::DragFloat2("##Max_Scale_Speed", &m_tEffectParticleDesc.vMaxScaleSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
-
-		if (m_tEffectParticleDesc.bSquareScale)
+		if (ImGui::TreeNode("Scale Speed"))
 		{
-			m_tEffectParticleDesc.vMinScaleSpeed.y = m_tEffectParticleDesc.vMinScaleSpeed.x;
-			m_tEffectParticleDesc.vMaxScaleSpeed.y = m_tEffectParticleDesc.vMaxScaleSpeed.x;
-		}
+			ImGui::Checkbox("Min = Max##Is_MinMaxSame_ScaleSpeed", &m_tEffectParticleDesc.bIsMinMaxSame_ScaleSpeed);
 
-		ImGui::TreePop();
+			if (m_tEffectParticleDesc.bIsMinMaxSame_ScaleSpeed)
+				m_tEffectParticleDesc.vMaxScaleSpeed = m_tEffectParticleDesc.vMinScaleSpeed;
+
+			ImGui::Text("Min Scale Speed"); ImGui::SetNextItemWidth(300.f);
+			ImGui::DragFloat2("##Min_Scale_Speed", &m_tEffectParticleDesc.vMinScaleSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
+
+			ImGui::Text("Max Scale Speed"); ImGui::SetNextItemWidth(300.f);
+			ImGui::DragFloat2("##Max_Scale_Speed", &m_tEffectParticleDesc.vMaxScaleSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
+
+			if (m_tEffectParticleDesc.byScaleFlag & EFFECTPARTICLE_DESC::SCALE_FLAG::SCALE_FLAG_SQUARE)
+			{
+				m_tEffectParticleDesc.vMinScaleSpeed.y = m_tEffectParticleDesc.vMinScaleSpeed.x;
+				m_tEffectParticleDesc.vMaxScaleSpeed.y = m_tEffectParticleDesc.vMaxScaleSpeed.x;
+			}
+
+			ImGui::TreePop();
+		}
 	}
 
-	if (ImGui::TreeNode("Scale Force"))
+	if (m_tEffectParticleDesc.byScaleFlag & EFFECTPARTICLE_DESC::SCALE_FLAG::SCALE_FLAG_FORCE)
 	{
-		ImGui::Checkbox("Min = Max##Is_MinMaxSame_ScaleForce", &m_tEffectParticleDesc.bIsMinMaxSame_ScaleForce);
-
-		if (m_tEffectParticleDesc.bIsMinMaxSame_ScaleForce)
-			m_tEffectParticleDesc.vMaxScaleForce = m_tEffectParticleDesc.vMinScaleForce;
-
-		ImGui::Text("Min Scale Force"); ImGui::SetNextItemWidth(300.f);
-		ImGui::DragFloat2("##Min_Scale_Force", &m_tEffectParticleDesc.vMinScaleForce.x, 0.1f, 0.f, 0.f, "%.5f");
-
-		ImGui::Text("Max Scale Force"); ImGui::SetNextItemWidth(300.f);
-		ImGui::DragFloat2("##Max_Scale_Force", &m_tEffectParticleDesc.vMaxScaleForce.x, 0.1f, 0.f, 0.f, "%.5f");
-
-		if (m_tEffectParticleDesc.bSquareScale)
+		if (ImGui::TreeNode("Scale Force"))
 		{
-			m_tEffectParticleDesc.vMinScaleForce.y = m_tEffectParticleDesc.vMinScaleForce.x;
-			m_tEffectParticleDesc.vMaxScaleForce.y = m_tEffectParticleDesc.vMaxScaleForce.x;
-		}
+			ImGui::Checkbox("Min = Max##Is_MinMaxSame_ScaleForce", &m_tEffectParticleDesc.bIsMinMaxSame_ScaleForce);
 
-		ImGui::TreePop();
+			if (m_tEffectParticleDesc.bIsMinMaxSame_ScaleForce)
+				m_tEffectParticleDesc.vMaxScaleForce = m_tEffectParticleDesc.vMinScaleForce;
+
+			ImGui::Text("Min Scale Force"); ImGui::SetNextItemWidth(300.f);
+			ImGui::DragFloat2("##Min_Scale_Force", &m_tEffectParticleDesc.vMinScaleForce.x, 0.1f, 0.f, 0.f, "%.5f");
+
+			ImGui::Text("Max Scale Force"); ImGui::SetNextItemWidth(300.f);
+			ImGui::DragFloat2("##Max_Scale_Force", &m_tEffectParticleDesc.vMaxScaleForce.x, 0.1f, 0.f, 0.f, "%.5f");
+
+			if (m_tEffectParticleDesc.byScaleFlag & EFFECTPARTICLE_DESC::SCALE_FLAG::SCALE_FLAG_SQUARE)
+			{
+				m_tEffectParticleDesc.vMinScaleForce.y = m_tEffectParticleDesc.vMinScaleForce.x;
+				m_tEffectParticleDesc.vMaxScaleForce.y = m_tEffectParticleDesc.vMaxScaleForce.x;
+			}
+
+			ImGui::TreePop();
+		}
 	}
+
 
 	if (ImGui::TreeNode("Scale Limit"))
 	{
@@ -2467,7 +2550,7 @@ void CEffect_Rect::Tool_Scale()
 		ImGui::Text("Max Limit Scale"); ImGui::SetNextItemWidth(300.f);
 		ImGui::DragFloat2("##Max_Limit_Scale", &m_tEffectParticleDesc.vMaxLimitScale.x, 0.1f, 0.f, 0.f, "%.5f");
 
-		if (m_tEffectParticleDesc.bSquareScale)
+		if (m_tEffectParticleDesc.byScaleFlag & EFFECTPARTICLE_DESC::SCALE_FLAG::SCALE_FLAG_SQUARE)
 		{
 			m_tEffectParticleDesc.vMinLimitScale.y = m_tEffectParticleDesc.vMinLimitScale.x;
 			m_tEffectParticleDesc.vMaxLimitScale.y = m_tEffectParticleDesc.vMaxLimitScale.x;
@@ -2769,6 +2852,18 @@ void CEffect_Rect::Tool_Glow()
 		ImGui::TreePop();
 	}
 }
+void CEffect_Rect::ShowFlagStatus_And_CreatToggleButton(const char* szText, const char* szButtonIDText, _ubyte& byTargetFlagStatus, _ubyte byFlagToCheck)
+{
+	_bool bSingleFlagStatus(byTargetFlagStatus & byFlagToCheck);
+
+	ImGui::Text("Apply "); ImGui::SameLine();
+	ImGui::Text(szText); ImGui::SameLine();
+	ImGui::Text(" : %d", bSingleFlagStatus);
+
+	ImGui::SameLine();
+	if (ImGui::Button(szButtonIDText))
+		byTargetFlagStatus ^= byFlagToCheck;
+}
 #endif // _DEBUG
 void CEffect_Rect::Clone_EffectRect()
 {
@@ -2783,15 +2878,15 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 		{
 			// TODO : SongRoMin IlHaeRa
 			if (ImGui::Button("Clone"))
-				this->Clone_EffectRect();
+				Clone_EffectRect();
 
 			ImGui::Text("Max Instance"); ImGui::SameLine();
 			ImGui::DragInt("##Max_Instance", &m_tEffectParticleDesc.iMaxInstance, 1, 0, 9999, "%d", ImGuiSliderFlags_AlwaysClamp);
-			
+
 			ImGui::Separator();
 
 			ImGui::Checkbox("Is Looping##Is_Looping", &m_tEffectParticleDesc.bLooping);
-			
+
 			if (ImGui::CollapsingHeader("Particle Type"))
 			{
 				const char* items[] = { "None", "Outburst", "Attraction", "Billboard" };
@@ -2849,7 +2944,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			}
 
 			if (ImGui::CollapsingHeader("Spawn & Life Time"))
-				this->Tool_Spawn_Life_Time();
+				Tool_Spawn_Life_Time();
 
 			ImGui::Separator();
 			ImGui::Checkbox("Is Move Look##Is_MoveLook", &m_tEffectParticleDesc.bMoveLook);
@@ -2875,7 +2970,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 				ImGui::Checkbox("Follow Bone##Is_Boner", &m_tEffectParticleDesc.bBoner);
 
 				if (m_tEffectParticleDesc.bBoner)
-					this->Tool_Boner();
+					Tool_Boner();
 				else
 				{
 					m_pBoneNode.reset();
@@ -2886,7 +2981,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			{
 				ImGui::Checkbox("Easing Position##Is_Easing_Position", &m_tEffectParticleDesc.bEasingPosition);
 				ImGui::Separator();
-				this->Tool_Position();
+				Tool_Position();
 			}
 			if (!m_tEffectParticleDesc.bEasingPosition)
 			{
@@ -2895,13 +2990,13 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					ImGui::Checkbox("Apply Easing##Is_Easing_Speed", &m_tEffectParticleDesc.bEasingSpeed);
 
 					if (!m_tEffectParticleDesc.bEasingSpeed)
-						this->Tool_Speed();
+						Tool_Speed();
 					else
-						this->Tool_Speed_Easing();
+						Tool_Speed_Easing();
 				}
 			}
 			else
-				this->Tool_Position_Easing();
+				Tool_Position_Easing();
 
 			if (_int(PARTICLETYPE::OUTBURST) != m_tEffectParticleDesc.iParticleType)
 			{
@@ -2912,72 +3007,27 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					ImGui::Separator();
 
 					if (!m_tEffectParticleDesc.bEasingRotation)
-						this->Tool_Rotation();
+						Tool_Rotation();
 					else
-						this->Tool_Rotation_Easing();
+						Tool_Rotation_Easing();
 				}
 			}
 			if (ImGui::CollapsingHeader("Scale"))
 			{
-
-#ifdef _JOJO_EFFECT_TOOL_
-				
-				ImGui::RadioButton("None##Is_None_Scale_Type", &m_iScaleType, m_iScaleType_None);
-				ImGui::SameLine();
-				ImGui::RadioButton("Square Scale##Is_Square_Scale", &m_iScaleType, m_iScaleType_Square);
-				ImGui::SameLine();
-				ImGui::RadioButton("Ratio Scale##Is_Ratio_Scale", &m_iScaleType, m_iScaleType_Ratio);
-				switch (m_iScaleType)
-				{
-				case 1:
-					m_tEffectParticleDesc.bSquareScale = true;
-					m_tEffectParticleDesc.bRatioScale = false;
-					break;
-				case 2:
-					m_tEffectParticleDesc.bSquareScale = false;
-					m_tEffectParticleDesc.bRatioScale = true;
-					break;
-				default:
-					m_tEffectParticleDesc.bSquareScale = false;
-					m_tEffectParticleDesc.bRatioScale = false;
-					break;
-				}
-#else // _JOJO_EFFECT_TOOL_
-				ImGui::Checkbox("Square Scale##Is_Square_Scale", &m_tEffectParticleDesc.bSquareScale);
-				ImGui::SameLine();
-				ImGui::Checkbox("Ratio Scale##Is_Ratio_Scale", &m_tEffectParticleDesc.bRatioScale);
-#endif // _JOJO_EFFECT_TOOL_
-
-				if (m_tEffectParticleDesc.bRatioScale)
-				{
-					if (ImGui::TreeNode("Y = X * ?"))
-					{
-						ImGui::Text("Min Ratio"); ImGui::SameLine();
-						ImGui::SetNextItemWidth(100.f);
-						ImGui::DragFloat("##Min_Y_Scale_Ratio", &m_tEffectParticleDesc.fMinYScaleRatio, 0.1f, 0.f, 0.f, "%.5f");
-
-						ImGui::Text("Max Ratio"); ImGui::SameLine();
-						ImGui::SetNextItemWidth(100.f);
-						ImGui::DragFloat("##Max_Y_Scale_Ratio", &m_tEffectParticleDesc.fMaxYScaleRatio, 0.1f, 0.f, 0.f, "%.5f");
-
-						ImGui::TreePop();
-					}
-				}
-
 				ImGui::Checkbox("Apply Easing##Is_Easing_Scale", &m_tEffectParticleDesc.bEasingScale);
 				ImGui::Separator();
 
 				if (!m_tEffectParticleDesc.bEasingScale)
-					this->Tool_Scale();
+					Tool_Scale();
 				else
-					this->Tool_Scale_Easing();
+					Tool_Scale_Easing();
 			}
 			if (ImGui::CollapsingHeader("Colors"))
 			{
 				if (ImGui::TreeNode("Shader Pass"))
 				{
 #ifdef _JOJO_EFFECT_TOOL_
-					this->Show_ShaderPasses();
+					Show_ShaderPasses();
 #endif // _JOJO_EFFECT_TOOL_
 
 					ImGui::InputInt("Shader Pass", &m_tEffectParticleDesc.iShaderPassIndex);
@@ -2992,24 +3042,24 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 				if (ImGui::Button("Alpha Blend##RenderGroup_AlphaBlend"))
 					m_eRenderGroup = RENDERGROUP::RENDER_ALPHABLEND;
-				
 
-				if (this->Is_Sprite())
-					this->Tool_Sprite();
+
+				if (Is_Sprite())
+					Tool_Sprite();
 
 				ImGui::Text("Discard Ratio"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);
 				ImGui::DragFloat("##Discard_Ratio", &m_tEffectParticleDesc.fDiscardRatio, 0.01f, 0.f, 3.f);
 				ImGui::Checkbox("Is Gray Only Use Red##Is_Gray_Only_Use_Red", &m_tEffectParticleDesc.IsGrayOnlyUseRed);
 				ImGui::Checkbox("Easing Alpha##Is_Easing_Alpha", &m_tEffectParticleDesc.bEasingAlpha);
-				this->Tool_Color();
+				Tool_Color();
 				if (m_tEffectParticleDesc.bEasingAlpha)
-					this->Tool_Color_EasingAlpha();
+					Tool_Color_EasingAlpha();
 			}
 			if (ImGui::CollapsingHeader("Textures"))
 			{
-				this->Tool_Texture_Diffuse();
-				this->Tool_Texture_Mask();
-				this->Tool_Texture_Noise();
+				Tool_Texture_Diffuse();
+				Tool_Texture_Mask();
+				Tool_Texture_Noise();
 			}
 			if (ImGui::CollapsingHeader("Bloom & Glow"))
 			{
@@ -3020,7 +3070,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 				ImGui::Checkbox("Glow##Glow", &m_tEffectParticleDesc.bGlow);
 
 				if (m_tEffectParticleDesc.bGlow)
-					this->Tool_Glow();
+					Tool_Glow();
 
 			}
 		}
@@ -3030,6 +3080,8 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 void CEffect_Rect::Free()
 {
+	CallBack_UpdateParticle.Clear();
+	CallBack_LateUpdateParticle.Clear();
 }
 
 void CEffect_Rect::OnChangeAnimationKey(const _uint& In_Key)

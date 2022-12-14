@@ -269,8 +269,20 @@ namespace Client
 		_float3		vMaxLimitRotation;
 #pragma endregion
 #pragma region Scale
-		_bool		bSquareScale;
-		_bool		bRatioScale;
+		// TODO : 비트플래그 연산으로 바꾸기 (실험용 bool변수)
+#ifdef _DEBUG
+#endif // _DEBUG
+
+		_ubyte byScaleFlag;
+		enum SCALE_FLAG
+		{
+			SCALE_FLAG_SPEED    = 1 << 0
+			, SCALE_FLAG_FORCE  = 1 << 1
+			, SCALE_FLAG_SQUARE = 1 << 2
+			, SCALE_FLAG_RATIO  = 1 << 3
+			, SCALE_FLAG_CUSTOM = 1 << 4
+			, SCALE_FLAG_END
+		};
 
 		// For. Ratio Scale
 		_float		fMinYScaleRatio;
