@@ -692,8 +692,6 @@ void CEditGroupProp::RenderView_Transform_Info(weak_ptr<CGameObject> In_Obj)
 
 	pTransformCom.lock()->Set_Scaled(vScaleFloat3);
 	ImGui::Text("");
-
-	XMStoreFloat4x4(&m_PickingMatrix, pTransformCom.lock()->Get_WorldMatrix());
 }
 
 void CEditGroupProp::RenderView_Transform_Edit(weak_ptr<CGameObject> In_Obj)
@@ -729,9 +727,7 @@ void CEditGroupProp::RenderView_Transform_Edit(weak_ptr<CGameObject> In_Obj)
 
 				vPitchYawRoll.y += 0.01f * MouseMove;
 
-				_vector vQuaternion = XMQuaternionRotationRollPitchYaw(vPitchYawRoll.x, vPitchYawRoll.y, vPitchYawRoll.z);
-
-				pTransformCom.lock()->Rotation_Quaternion(vQuaternion);
+				pTransformCom.lock()->Rotation_PitchYawRoll(vPitchYawRoll);
 			}
 		}
 

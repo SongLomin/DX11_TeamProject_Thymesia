@@ -600,7 +600,7 @@ void CLoader::Load_AllMeshes(const filesystem::path& In_Path, MODEL_TYPE In_eMod
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), In_eModelType, TransformationMatrix, In_eMemoryType);
 		}
 
-		else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0 || strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
+ 		else if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0 || strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
 		{
 			cout << "Load_AllMeshes() <.fbx> " << szFileName << endl;
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), In_eModelType, TransformationMatrix, In_eMemoryType);
@@ -608,7 +608,7 @@ void CLoader::Load_AllMeshes(const filesystem::path& In_Path, MODEL_TYPE In_eMod
 
 		itr++;
 	}
-}
+ }
 
 void CLoader::Load_AllTexture(const filesystem::path& In_Path, const MEMORY_TYPE& In_eMemoryType)
 {
