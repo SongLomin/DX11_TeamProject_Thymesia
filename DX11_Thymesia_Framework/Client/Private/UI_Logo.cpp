@@ -158,7 +158,7 @@ void CUI_Logo::LateTick(_float fTimeDelta)
     }
 }
 
-HRESULT CUI_Logo::Render()
+HRESULT CUI_Logo::Render(ID3D11DeviceContext* pDeviceContext)
 {
 
 

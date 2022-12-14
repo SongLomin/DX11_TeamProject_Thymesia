@@ -60,7 +60,7 @@ void CUI_LerpBar::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 }
 
-HRESULT CUI_LerpBar::Render()
+HRESULT CUI_LerpBar::Render(ID3D11DeviceContext* pDeviceContext)
 {
 
     return S_OK;

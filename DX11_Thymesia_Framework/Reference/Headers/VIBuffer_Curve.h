@@ -20,7 +20,7 @@ protected:
 	virtual void	Start() override;
 
 public:
-	virtual HRESULT Render() override;
+	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 	//void Update(_fvector In_vLeft, _fvector In_vLeftDir, _fvector In_vRight, _fvector in_vRightDir);
 
 

@@ -98,10 +98,10 @@ void CActor::Custom_Thread1(_float fTimeDelta)
 #endif // _Actor_Culling_
 }
 
-HRESULT CActor::Render()
+HRESULT CActor::Render(ID3D11DeviceContext* pDeviceContext)
 {
     this->SetUp_ShaderResource();
-    __super::Render();
+    __super::Render(pDeviceContext);
     return S_OK;
 }
 

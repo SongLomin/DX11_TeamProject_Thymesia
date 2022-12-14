@@ -13,9 +13,9 @@ public:
 	void	Add_Text(const tstring& pString, const _float2& vPosition, _fvector vColor, _bool bAlways, _bool bCenterAlign = false);
 	void	Add_Text(const TEXTINFO& In_tTextInfo);
 	
-	HRESULT Initialize(const _tchar* pFontFilePath);
+	HRESULT Initialize(const _tchar* pFontFilePath, ComPtr<ID3D11DeviceContext> pDeviceContext);
 	HRESULT Render(const _tchar* pString, const _float2& vPosition, _fvector vColor);
-	void	Render();
+	void	Render(ID3D11DeviceContext* pDeviceContext);
 	void	RenderWithRenderGroup(const RENDERGROUP In_eRenderGroup);
 
 
@@ -26,8 +26,10 @@ private:
 
 	list<TEXTINFO>			m_TextInfos;
 
+	ComPtr<ID3D11DeviceContext> m_pDeviceContext;
+
 public:
-	static shared_ptr<CCustomFont> Create(const _tchar* pFontFilePath);
+	static shared_ptr<CCustomFont> Create(const _tchar* pFontFilePath, ComPtr<ID3D11DeviceContext> pDeviceContext);
 	void Free();
 };
 

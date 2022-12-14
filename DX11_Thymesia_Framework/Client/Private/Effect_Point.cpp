@@ -46,14 +46,14 @@ void CEffect_Point::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CEffect_Point::Render()
+HRESULT CEffect_Point::Render(ID3D11DeviceContext* pDeviceContext)
 {
 
 	SetUp_ShaderResource();
 
-	__super::Render();
+	__super::Render(pDeviceContext);
 	m_pShaderCom.lock()->Begin(0);
-	m_pVIBuffer.lock()->Render();
+	m_pVIBuffer.lock()->Render(pDeviceContext);
 
 	return S_OK;
 }

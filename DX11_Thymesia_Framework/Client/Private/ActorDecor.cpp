@@ -69,11 +69,11 @@ void CActorDecor::LateTick(_float fTimeDelta)
 	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Cast<CGameObject>(m_this));
 }
 
-HRESULT CActorDecor::Render()
+HRESULT CActorDecor::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	SetUp_ShaderResource();
 
-	__super::Render();
+	__super::Render(pDeviceContext);
 
 	_int iPassIndex;
 	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
@@ -95,7 +95,7 @@ HRESULT CActorDecor::Render()
 
 		m_pShaderCom.lock()->Begin(iPassIndex);
 
-		m_pModelCom.lock()->Render_Mesh(i);
+		m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
 	}
 
 #ifdef _DEBUG

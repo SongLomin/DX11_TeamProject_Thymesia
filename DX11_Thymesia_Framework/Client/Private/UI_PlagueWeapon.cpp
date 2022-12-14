@@ -92,9 +92,9 @@ void CUI_PlagueWeapon::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CUI_PlagueWeapon::Render()
+HRESULT CUI_PlagueWeapon::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	__super::Render();
+	__super::Render(pDeviceContext);
 
 	return S_OK;
 }

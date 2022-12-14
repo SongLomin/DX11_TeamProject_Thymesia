@@ -88,11 +88,11 @@ void CDynamic_Piece::Before_Render(_float fTimeDelta)
 
 }
 
-HRESULT CDynamic_Piece::Render()
+HRESULT CDynamic_Piece::Render(ID3D11DeviceContext* pDeviceContext)
 {
     SetUp_ShaderResource();
 
-    __super::Render();
+    __super::Render(pDeviceContext);
 
     _vector vStart = XMVectorSet(1.f, 0.f, 0.f, 0.f);
     _vector vEnd = XMVectorSet(0.f, 0.f, 0.f, 0.f);
@@ -126,7 +126,7 @@ HRESULT CDynamic_Piece::Render()
         }
 
         m_pShaderCom.lock()->Begin(m_iPassIndex);
-        m_pModelCom.lock()->Render_Mesh(i);
+        m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
     }
 
     return S_OK;

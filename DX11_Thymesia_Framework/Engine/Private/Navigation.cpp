@@ -166,7 +166,7 @@ void CNavigation::Reset_VisitedTable()
 
 #ifdef _DEBUG
 
-HRESULT CNavigation::Render()
+HRESULT CNavigation::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	if (!GAMEINSTANCE->Is_Debug())
 		return E_FAIL;
@@ -193,7 +193,7 @@ HRESULT CNavigation::Render()
 		m_pShader.lock()->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
 		m_pShader.lock()->Begin(0);
 
-		m_pCells[m_NaviDesc.m_iCurrentIndex]->Render();
+		m_pCells[m_NaviDesc.m_iCurrentIndex]->Render(pDeviceContext);
 	}
 	else
 	{
@@ -208,7 +208,7 @@ HRESULT CNavigation::Render()
 		for (auto& pCell : m_pCells)
 		{
 			if (nullptr != pCell)
-				pCell->Render();
+				pCell->Render(pDeviceContext);
 		}
 
 	}

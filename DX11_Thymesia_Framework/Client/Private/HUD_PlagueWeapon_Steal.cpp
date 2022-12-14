@@ -106,7 +106,7 @@ void CHUD_PlagueWeapon_Steal::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CHUD_PlagueWeapon_Steal::Render()
+HRESULT CHUD_PlagueWeapon_Steal::Render(ID3D11DeviceContext* pDeviceContext)
 {
     //Render    
 

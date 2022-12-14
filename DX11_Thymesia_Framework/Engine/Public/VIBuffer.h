@@ -14,7 +14,7 @@ public:
 public:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
-	virtual HRESULT Render() override;
+	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
 protected:
 	D3D11_BUFFER_DESC				m_BufferDesc;

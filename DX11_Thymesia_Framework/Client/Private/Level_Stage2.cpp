@@ -71,9 +71,9 @@ void CLevel_Stage2::Tick(_float fTimeDelta)
 	
 }
 
-HRESULT CLevel_Stage2::Render()
+HRESULT CLevel_Stage2::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	if (FAILED(__super::Render()))
+	if (FAILED(__super::Render(pDeviceContext)))
 		return E_FAIL;
 
 

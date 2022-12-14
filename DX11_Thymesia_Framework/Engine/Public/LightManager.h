@@ -16,7 +16,7 @@ public:
 public:
 	const LIGHTDESC& Add_Light(const LIGHTDESC& LightDesc);
 	_bool Remove_Light(const _uint& iIndex);
-	HRESULT Render_Lights(weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect> pVIBuffer);
+	HRESULT Render_Lights(weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect> pVIBuffer, ID3D11DeviceContext* pDeviceContext);
 
 private:
 	list<shared_ptr<CCustomLight>> m_pLights;

@@ -19,7 +19,7 @@ void CLevel::Tick(_float TimeDelta)
 {
 }
 
-HRESULT CLevel::Render()
+HRESULT CLevel::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	return S_OK;
 }

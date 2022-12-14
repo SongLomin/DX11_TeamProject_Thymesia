@@ -104,7 +104,7 @@ void CCustomEffectMesh::LateTick(_float fTimeDelta)
 	}
 }
 
-HRESULT CCustomEffectMesh::Render()
+HRESULT CCustomEffectMesh::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	if (!CBase::Get_Enable())
 		return E_FAIL;
@@ -127,7 +127,7 @@ HRESULT CCustomEffectMesh::Render()
 		{
 			m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 			m_pShaderCom.lock()->Begin(iShaderPassIndex);
-			m_pModelCom.lock()->Render_Mesh(i);
+			m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
 		}
 	}
 	else
@@ -140,7 +140,7 @@ HRESULT CCustomEffectMesh::Render()
 		{
 			m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 			m_pShaderCom.lock()->Begin(m_tEffectMeshDesc.iShaderPassIndex);
-			m_pModelCom.lock()->Render_Mesh(i);
+			m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
 		}
 	}
 

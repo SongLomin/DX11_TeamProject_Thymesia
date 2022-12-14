@@ -91,7 +91,7 @@ void CMonster::Before_Render(_float fTimeDelta)
     __super::Before_Render(fTimeDelta);
 }
 
-HRESULT CMonster::Render()
+HRESULT CMonster::Render(ID3D11DeviceContext* pDeviceContext)
 {
     _float3 vDissolveDir = { 0.f,1.f,0.f };
 
@@ -101,7 +101,7 @@ HRESULT CMonster::Render()
     m_pShaderCom.lock()->Set_RawValue("g_vDissolveDir", &vDissolveDir, sizeof(_float3));
     m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &m_fDissolveAmount, sizeof(_float));
  
-    __super::Render();
+    __super::Render(pDeviceContext);
 
 
 #ifdef _DEBUG
@@ -110,7 +110,7 @@ HRESULT CMonster::Render()
     return S_OK;
 }
 
-HRESULT CMonster::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix)
+HRESULT CMonster::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix, ID3D11DeviceContext* pDeviceContext)
 {
     CallBack_Bind_SRV(m_pShaderCom, "");
     m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
@@ -128,8 +128,8 @@ HRESULT CMonster::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_Li
 
             //m_pShaderCom.lock()->Begin(m_iPassIndex);
 
-        m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, 1, "g_Bones");
-        //m_pModelCom.lock()->Render_Mesh(i);
+        m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, 1, "g_Bones", pDeviceContext);
+        //m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
     }
 
     return S_OK;

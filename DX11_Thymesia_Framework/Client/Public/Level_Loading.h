@@ -21,7 +21,7 @@ public:
 public:
 	virtual HRESULT Initialize(LEVEL eNextLevel);
 	virtual void Tick(_float TimeDelta);
-	virtual HRESULT Render();
+	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext);
 
 
 private:

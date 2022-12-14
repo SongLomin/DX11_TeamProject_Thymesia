@@ -73,14 +73,14 @@ void CGameObject::Custom_Thread3(_float fTimeDelta)
 {
 }
 
-HRESULT CGameObject::Render()
+HRESULT CGameObject::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	CallBack_Render();
 
 	return S_OK;
 }
 
-HRESULT CGameObject::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix)
+HRESULT CGameObject::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix, ID3D11DeviceContext* pDeviceContext)
 {
 	return S_OK;
 }

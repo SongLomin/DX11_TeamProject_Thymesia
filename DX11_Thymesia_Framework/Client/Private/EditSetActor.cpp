@@ -55,9 +55,9 @@ void CEditSetActor::LateTick(_float fTimeDelta)
 	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Cast<CGameObject>(m_this));
 }
 
-HRESULT CEditSetActor::Render()
+HRESULT CEditSetActor::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	SetUp_ShaderResource_Select();
+	SetUp_ShaderResource_Select(pDeviceContext);
 
 	return S_OK;
 }
@@ -580,7 +580,7 @@ void    CEditSetActor::View_Picking_MessageEdit()
 	iter_collider->second[m_iPickingIndex].pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW);
 }
 
-void CEditSetActor::SetUp_ShaderResource_Select()
+void CEditSetActor::SetUp_ShaderResource_Select(ID3D11DeviceContext* pDeviceContext)
 {
 	if (!m_bSubDraw)
 		return;
@@ -614,7 +614,7 @@ void CEditSetActor::SetUp_ShaderResource_Select()
 		return;
 
 	m_pSelect_ShaderCom.lock()->Begin(1);
-	m_pSelect_VIBufferCom.lock()->Render();
+	m_pSelect_VIBufferCom.lock()->Render(pDeviceContext);
 }
 
 void CEditSetActor::Add_ActorToTool(_hashcode _HashCode, string _szTypeName, weak_ptr<CGameObject>_pInstance)

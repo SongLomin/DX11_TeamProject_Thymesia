@@ -108,7 +108,7 @@ void CUI_PauseMenu_Tap_Potion::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CUI_PauseMenu_Tap_Potion::Render()
+HRESULT CUI_PauseMenu_Tap_Potion::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	//
 	return S_OK;

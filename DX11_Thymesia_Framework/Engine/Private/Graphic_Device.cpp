@@ -60,6 +60,24 @@ HRESULT CGraphic_Device::Clear_DepthStencil_View()
 	return S_OK;
 }
 
+void CGraphic_Device::SyncronizeDeferredContext(ID3D11DeviceContext* pDeferredDeviceContext)
+{
+	pDeferredDeviceContext->ClearState();
+
+	ID3D11RenderTargetView* rtv = nullptr;
+	ID3D11DepthStencilView* dsv = nullptr;
+	m_pDeviceContext->OMGetRenderTargets(1, &rtv, &dsv);
+	pDeferredDeviceContext->OMSetRenderTargets(1, &rtv, dsv);
+
+	UINT numViewports = 1;
+	D3D11_VIEWPORT viewport;
+	m_pDeviceContext->RSGetViewports(&numViewports, &viewport);
+	pDeferredDeviceContext->RSSetViewports(1, &viewport);
+
+	rtv->Release();
+	dsv->Release();
+}
+
 HRESULT CGraphic_Device::Present()
 {
 	if (nullptr == m_pSwapChain.Get())

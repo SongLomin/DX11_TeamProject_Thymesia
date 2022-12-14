@@ -34,7 +34,7 @@ void CUI_T_Dissolve::LateTick(_float fTimeDelta)
 {
 }
 
-HRESULT CUI_T_Dissolve::Render()
+HRESULT CUI_T_Dissolve::Render(ID3D11DeviceContext* pDeviceContext)
 {
     return E_NOTIMPL;
 }

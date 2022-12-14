@@ -157,12 +157,12 @@ void CEffect_Rect::LateTick(_float fTimeDelta)
 		Set_Enable(false);
 }
 
-HRESULT CEffect_Rect::Render()
+HRESULT CEffect_Rect::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	this->SetUp_ShaderResource();
-	__super::Render();
+	__super::Render(pDeviceContext);
 	m_pShaderCom.lock()->Begin(m_tEffectParticleDesc.iShaderPassIndex);
-	m_pVIBuffer.lock()->Render();
+	m_pVIBuffer.lock()->Render(pDeviceContext);
 	return S_OK;
 }
 

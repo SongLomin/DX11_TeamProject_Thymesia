@@ -36,9 +36,9 @@ void CInteraction_Dynamic_Prop::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 }
 
-HRESULT CInteraction_Dynamic_Prop::Render()
+HRESULT CInteraction_Dynamic_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    __super::Render();
+    __super::Render(pDeviceContext);
 
     return S_OK;
 }

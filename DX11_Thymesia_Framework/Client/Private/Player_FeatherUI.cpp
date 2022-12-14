@@ -159,7 +159,7 @@ void CPlayer_FeatherUI::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CPlayer_FeatherUI::Render()
+HRESULT CPlayer_FeatherUI::Render(ID3D11DeviceContext* pDeviceContext)
 {
     return S_OK;
 }

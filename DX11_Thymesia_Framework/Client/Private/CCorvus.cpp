@@ -109,9 +109,9 @@ void CCorvus::Custom_Thread1(_float fTimeDelta)
 		m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Weak_StaticCast<CGameObject>(m_this));
 }
 
-HRESULT CCorvus::Render()
+HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	__super::Render();
+	__super::Render(pDeviceContext);
 	 _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 	for (_uint i(0); i < m_iNumMeshContainers; ++i)
 	{
@@ -159,7 +159,7 @@ HRESULT CCorvus::Render()
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 			m_iPassIndex = 0;
 	
-		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones");
+		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones", pDeviceContext);
 	}
 
 	m_DissolveDescs.clear();

@@ -95,7 +95,7 @@ void CUI_PauseMenu_Tap_PlagueWeapon::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CUI_PauseMenu_Tap_PlagueWeapon::Render()
+HRESULT CUI_PauseMenu_Tap_PlagueWeapon::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	//
 	return S_OK;

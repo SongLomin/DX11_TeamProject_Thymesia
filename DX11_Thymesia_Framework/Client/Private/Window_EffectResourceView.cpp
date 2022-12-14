@@ -28,7 +28,7 @@ void CWindow_EffectResourceView::Tick(_float fTimeDelta)
     __super::Tick(fTimeDelta);
 }
 
-HRESULT CWindow_EffectResourceView::Render()
+HRESULT CWindow_EffectResourceView::Render(ID3D11DeviceContext* pDeviceContext)
 {
     if (FAILED(__super::Begin()))
         return E_FAIL;

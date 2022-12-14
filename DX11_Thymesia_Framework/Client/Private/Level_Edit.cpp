@@ -58,9 +58,9 @@ void CLevel_Edit::Tick(_float fTimeDelta)
 #endif // _RENDER_FPS_
 }
 
-HRESULT CLevel_Edit::Render()
+HRESULT CLevel_Edit::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	if (FAILED(__super::Render()))
+	if (FAILED(__super::Render(pDeviceContext)))
 		return E_FAIL;
 
 #ifdef	_RENDER_FPS_

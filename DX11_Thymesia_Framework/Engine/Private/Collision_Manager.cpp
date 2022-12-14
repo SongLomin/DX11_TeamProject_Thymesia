@@ -87,7 +87,7 @@ void CCollision_Manager::Render_Collider()
 	for (auto& elem_List : m_pColliderList)
 	{
 		for (auto& elem : elem_List)
-			elem.lock()->Render();
+			elem.lock()->Render(DEVICECONTEXT);
 	}
 
 }

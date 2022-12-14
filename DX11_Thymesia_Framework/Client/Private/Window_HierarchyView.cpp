@@ -57,7 +57,7 @@ void CWindow_HierarchyView::Tick(_float fTimeDelta)
 	}
 }
 
-HRESULT CWindow_HierarchyView::Render()
+HRESULT CWindow_HierarchyView::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	if (FAILED(__super::Begin()))
 		return E_FAIL;

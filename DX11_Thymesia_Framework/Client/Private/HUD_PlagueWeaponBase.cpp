@@ -79,7 +79,7 @@ void CHUD_PlagueWeaponBase::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CHUD_PlagueWeaponBase::Render()
+HRESULT CHUD_PlagueWeaponBase::Render(ID3D11DeviceContext* pDeviceContext)
 {
     
 

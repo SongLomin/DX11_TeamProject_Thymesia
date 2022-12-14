@@ -114,15 +114,15 @@ void CTargetCurve::Before_Render(_float fTimeDelta)
 	__super::Before_Render(fTimeDelta);
 }
 
-HRESULT CTargetCurve::Render()
+HRESULT CTargetCurve::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	SetUp_ShaderResource();
 
-	__super::Render();
+	__super::Render(pDeviceContext);
 
 	m_pShaderCom.lock()->Begin(0);
 
-	m_pVIBufferCom.lock()->Render();
+	m_pVIBufferCom.lock()->Render(pDeviceContext);
 
 	return S_OK;
 }

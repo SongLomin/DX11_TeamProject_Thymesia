@@ -99,7 +99,9 @@ HRESULT CRenderTarget_Manager::Begin_DeferredMRT(const _tchar* pMRTTag, ID3D11De
 
 	ID3D11RenderTargetView* RTVs[8] = { nullptr };
 
-	_uint iNumRTVs(0);
+	_uint		iNumRTVs = 1;
+
+	RTVs[0] = m_pBackBufferView.Get();
 
 	for (auto& pRenderTarget : *pMRTList)
 	{
@@ -111,7 +113,7 @@ HRESULT CRenderTarget_Manager::Begin_DeferredMRT(const _tchar* pMRTTag, ID3D11De
 	pDeviceContext->OMGetRenderTargets(1, m_pBackBufferView.GetAddressOf(), m_pDepthStencilView.GetAddressOf());
 
 	/* 렌더타겟들을 장치에 바인딩한다. */
-	DEVICECONTEXT->OMSetRenderTargets(iNumRTVs, RTVs, m_pDepthStencilView.Get());
+	pDeviceContext->OMSetRenderTargets(iNumRTVs, RTVs, m_pDepthStencilView.Get());
 
 	return S_OK;
 }

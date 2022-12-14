@@ -259,7 +259,7 @@ HRESULT CVIBuffer_Model_Instance::Bind_SRV(weak_ptr<CShader> pShader, const char
 }
 
 
-HRESULT CVIBuffer_Model_Instance::Render()
+HRESULT CVIBuffer_Model_Instance::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	ID3D11Buffer* pVertexBuffers[] = {
 		m_pVB.Get(),
@@ -286,7 +286,7 @@ HRESULT CVIBuffer_Model_Instance::Render()
 }
 
 
-HRESULT CVIBuffer_Model_Instance::Render_Mesh(_uint iMeshContainerIndex)
+HRESULT CVIBuffer_Model_Instance::Render_Mesh(_uint iMeshContainerIndex, ID3D11DeviceContext* pDeviceContext)
 {
 	if (iMeshContainerIndex >= m_iNumMeshContainers)
 		return E_FAIL;

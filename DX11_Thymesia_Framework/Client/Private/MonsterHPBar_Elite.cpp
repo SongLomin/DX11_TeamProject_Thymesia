@@ -60,7 +60,7 @@ void CMonsterHPBar_Elite::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 }
 
-HRESULT CMonsterHPBar_Elite::Render()
+HRESULT CMonsterHPBar_Elite::Render(ID3D11DeviceContext* pDeviceContext)
 {
     return S_OK;
 }

@@ -59,9 +59,9 @@ void CPhysXColliderObject::LateTick(_float fTimeDelta)
 		m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONLIGHT, Weak_StaticCast<CGameObject>(m_this));
 }
 
-HRESULT CPhysXColliderObject::Render()
+HRESULT CPhysXColliderObject::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	__super::Render();
+	__super::Render(pDeviceContext);
 
 	if ((_uint)LEVEL_EDIT == m_CreatedLevel)
 	{
@@ -75,7 +75,7 @@ HRESULT CPhysXColliderObject::Render()
 			return E_FAIL;
 
 		m_pShaderCom.lock()->Begin(3);
-		m_pVIBufferCom.lock()->Render();
+		m_pVIBufferCom.lock()->Render(pDeviceContext);
 	}
 
 	return S_OK;

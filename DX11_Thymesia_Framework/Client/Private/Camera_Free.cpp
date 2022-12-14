@@ -60,7 +60,7 @@ void CCamera_Free::LateTick
 #endif // _DEBUG
 }
 
-HRESULT CCamera_Free::Render()
+HRESULT CCamera_Free::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	return S_OK;
 }

@@ -32,7 +32,7 @@ void CWindow_ComponentView::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 }
 
-HRESULT CWindow_ComponentView::Render()
+HRESULT CWindow_ComponentView::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	if (FAILED(__super::Begin()))
 		return E_FAIL;

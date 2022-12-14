@@ -39,9 +39,9 @@ void CMobWeapon::LateTick(_float fTimeDelta)
 }
 
 
-HRESULT CMobWeapon::Render()
+HRESULT CMobWeapon::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	__super::Render();
+	__super::Render(pDeviceContext);
 	return S_OK;
 }
 

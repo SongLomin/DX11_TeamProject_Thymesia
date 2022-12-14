@@ -128,7 +128,7 @@ void CVIBuffer_Curve::Start()
 {
 }
 
-HRESULT CVIBuffer_Curve::Render()
+HRESULT CVIBuffer_Curve::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	ID3D11Buffer* pVertexBuffers[] = {
 		m_pVB.Get(),

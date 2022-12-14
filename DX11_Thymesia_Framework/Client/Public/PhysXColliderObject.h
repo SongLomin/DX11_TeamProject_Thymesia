@@ -24,7 +24,7 @@ private:
     virtual HRESULT Start();
     virtual void Tick(_float fTimeDelta);
     virtual void LateTick(_float fTimeDelta);
-    virtual HRESULT Render();
+    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext);
     virtual _bool IsPicking(const RAY& In_Ray, _float& Out_fRange) override;
 
 private:

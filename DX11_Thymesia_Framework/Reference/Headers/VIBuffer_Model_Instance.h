@@ -25,8 +25,8 @@ public:
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize(void* pArg) override;
     virtual void	Start() override;
-    virtual HRESULT Render() override;
-    HRESULT         Render_Mesh(_uint iMeshContainerIndex);
+    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
+    HRESULT         Render_Mesh(_uint iMeshContainerIndex, ID3D11DeviceContext* pDeviceContext);
 
 public:
     _uint Get_InstanceCount() const { return m_iNumInstance; }

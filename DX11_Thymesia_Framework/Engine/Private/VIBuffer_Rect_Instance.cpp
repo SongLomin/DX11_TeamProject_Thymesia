@@ -139,7 +139,7 @@ void CVIBuffer_Rect_Instance::Init_Particle(const _uint& In_Size)
 
 }
 
-HRESULT CVIBuffer_Rect_Instance::Render()
+HRESULT CVIBuffer_Rect_Instance::Render(ID3D11DeviceContext* pDeviceContext)
 {
 
 	ID3D11Buffer* pVertexBuffers[] = {

@@ -56,9 +56,9 @@ void CFadeMask::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CFadeMask::Render()
+HRESULT CFadeMask::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	__super::Render();
+	__super::Render(pDeviceContext);
 
 	return S_OK;
 }

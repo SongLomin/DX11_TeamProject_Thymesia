@@ -136,7 +136,7 @@ void CVIBuffer_Point_Instance::Start()
 {
 }
 
-HRESULT CVIBuffer_Point_Instance::Render()
+HRESULT CVIBuffer_Point_Instance::Render(ID3D11DeviceContext* pDeviceContext)
 {
 
 	ID3D11Buffer* pVertexBuffers[] = {

@@ -49,7 +49,7 @@ void CWindow_EffectHierarchyView::Tick(_float fTimeDelta)
     __super::Tick(fTimeDelta);
 }
 
-HRESULT CWindow_EffectHierarchyView::Render()
+HRESULT CWindow_EffectHierarchyView::Render(ID3D11DeviceContext* pDeviceContext)
 {
     if (FAILED(__super::Begin()))
         return E_FAIL;

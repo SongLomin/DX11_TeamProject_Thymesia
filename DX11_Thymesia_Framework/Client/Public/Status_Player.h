@@ -74,7 +74,7 @@ public:
     virtual void Start();
     virtual void Tick(_float fTimeDelta);
     virtual void LateTick(_float fTimeDelta);
-    virtual HRESULT Render() { return S_OK; }
+    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) { return S_OK; }
 
 
 public:

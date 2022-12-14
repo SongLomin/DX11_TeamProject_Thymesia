@@ -16,7 +16,7 @@ public:
 	HRESULT Open_Level(_uint iLevelID, shared_ptr<class CLevel> pLevel);
 	weak_ptr<CLevel> Get_CurrentLevel() { return m_pCurrentLevel; }
 	void Tick(_float fTimeDelta);
-	HRESULT Render();
+	HRESULT Render(ID3D11DeviceContext* pDeviceContext);
 
 	GETSET(_uint, iLastCreatedLevelID)
 

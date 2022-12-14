@@ -42,7 +42,7 @@ void CCamera_Static::LateTick(_float fTimeDelta)
 {
 }
 
-HRESULT CCamera_Static::Render()
+HRESULT CCamera_Static::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	return S_OK;
 }

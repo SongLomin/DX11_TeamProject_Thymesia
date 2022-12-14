@@ -113,7 +113,7 @@ HRESULT CGameInstance::Render_Engine()
 {
 	m_pObject_Manager->Before_Render(m_fDeltaTime);
 
-	GET_SINGLE(CLevel_Manager)->Render();
+	GET_SINGLE(CLevel_Manager)->Render(DEVICECONTEXT);
 
 	m_pObject_Manager->After_Render();
 

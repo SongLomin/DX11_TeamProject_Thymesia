@@ -96,9 +96,9 @@ void CHUD_PlagueWeapon_Main::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 }
 
-HRESULT CHUD_PlagueWeapon_Main::Render()
+HRESULT CHUD_PlagueWeapon_Main::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    //__super::Render();
+    //__super::Render(pDeviceContext);
 
     return S_OK;
 }

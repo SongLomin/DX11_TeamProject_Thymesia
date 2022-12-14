@@ -30,7 +30,7 @@ void CUI_Container::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 }
 
-HRESULT CUI_Container::Render()
+HRESULT CUI_Container::Render(ID3D11DeviceContext* pDeviceContext)
 {
 
     return S_OK;

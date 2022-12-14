@@ -58,9 +58,9 @@ void CInteraction_Prop::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 }
 
-HRESULT CInteraction_Prop::Render()
+HRESULT CInteraction_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    if (FAILED(SetUp_ShaderResource()))
+    if (FAILED(SetUp_ShaderResource(pDeviceContext)))
         return E_FAIL;
 
     _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
@@ -79,10 +79,10 @@ HRESULT CInteraction_Prop::Render()
         }
 
         m_pShaderCom.lock()->Begin(m_iPassIndex);
-        m_pModelCom.lock()->Render_Mesh(i);
+        m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
     }
 
-    return __super::Render();
+    return __super::Render(pDeviceContext);
 }
 
 _bool CInteraction_Prop::IsPicking(const RAY& In_Ray, _float& Out_fRange)
@@ -134,12 +134,12 @@ void CInteraction_Prop::Act_Interaction()
 {
 }
 
-HRESULT CInteraction_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix)
+HRESULT CInteraction_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix, ID3D11DeviceContext* pDeviceContext)
 {
     return S_OK;
 }
 
-HRESULT CInteraction_Prop::SetUp_ShaderResource()
+HRESULT CInteraction_Prop::SetUp_ShaderResource(ID3D11DeviceContext* pDeviceContext)
 {
     if (FAILED(CProp::SetUp_ShaderResource()))
         return E_FAIL;

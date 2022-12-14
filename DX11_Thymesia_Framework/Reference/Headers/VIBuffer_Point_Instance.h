@@ -19,7 +19,7 @@ private:
     virtual void	Start() override;
 
 public:
-    virtual HRESULT Render() override;
+    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
     void Update(_float fTimeDelta);
 
 private:

@@ -50,7 +50,7 @@ void CCamera::LateTick(_float fTimeDelta)
 {
 }
 
-HRESULT CCamera::Render()
+HRESULT CCamera::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	return S_OK;
 }

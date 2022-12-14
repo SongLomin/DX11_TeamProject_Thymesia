@@ -55,7 +55,7 @@ void CStatic_Prop::Before_Render(_float fTimeDelta)
     __super::Before_Render(fTimeDelta);
 }
 
-HRESULT CStatic_Prop::Render()
+HRESULT CStatic_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 {
     if (FAILED(SetUp_ShaderResource()))
         return E_FAIL;
@@ -85,13 +85,13 @@ HRESULT CStatic_Prop::Render()
         }
 
         m_pShaderCom.lock()->Begin(m_iPassIndex);
-        m_pModelCom.lock()->Render_Mesh(i);
+        m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
     }
 
-    return __super::Render();
+    return __super::Render(pDeviceContext);
 }
 
-HRESULT CStatic_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix)
+HRESULT CStatic_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix, ID3D11DeviceContext* pDeviceContext)
 {
     if (FAILED(m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
         return E_FAIL;
@@ -104,7 +104,7 @@ HRESULT CStatic_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix I
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
         m_pShaderCom.lock()->Begin(1);
-        m_pModelCom.lock()->Render_Mesh(i);
+        m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
     }
 
     return S_OK;

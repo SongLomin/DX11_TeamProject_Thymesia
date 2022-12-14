@@ -32,7 +32,7 @@ void CWindow_PrototypeView::Tick(_float fTimeDelta)
     __super::Tick(fTimeDelta);
 }
 
-HRESULT CWindow_PrototypeView::Render()
+HRESULT CWindow_PrototypeView::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	if (FAILED(__super::Begin()))
 		return E_FAIL;

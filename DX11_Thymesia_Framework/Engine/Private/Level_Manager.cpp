@@ -30,12 +30,12 @@ void CLevel_Manager::Tick(_float fTimeDelta)
 	m_pCurrentLevel->Tick(fTimeDelta);
 }
 
-HRESULT CLevel_Manager::Render()
+HRESULT CLevel_Manager::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	if (nullptr == m_pCurrentLevel)
 		return E_FAIL;
 
-	return m_pCurrentLevel->Render();
+	return m_pCurrentLevel->Render(pDeviceContext);
 }
 
 void CLevel_Manager::OnDestroy()

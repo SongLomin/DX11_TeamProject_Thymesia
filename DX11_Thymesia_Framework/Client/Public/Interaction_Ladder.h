@@ -37,7 +37,7 @@ public:
     virtual HRESULT Start() override;
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
-    virtual HRESULT Render() override; 
+    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override; 
 
 public:
     virtual void OnEventMessage(_uint iArg) override;
@@ -46,11 +46,11 @@ public:
     virtual void Load_FromJson(const json& In_Json) override;
 
 private:
-    virtual HRESULT SetUp_ShaderResource() override;
+    virtual HRESULT SetUp_ShaderResource(ID3D11DeviceContext* pDeviceContext) override;
 
-    HRESULT SetUp_ShaderResource_Up();
-    HRESULT SetUp_ShaderResource_Mid();
-    HRESULT SetUp_ShaderResource_Down();
+    HRESULT SetUp_ShaderResource_Up(ID3D11DeviceContext* pDeviceContext);
+    HRESULT SetUp_ShaderResource_Mid(ID3D11DeviceContext* pDeviceContext);
+    HRESULT SetUp_ShaderResource_Down(ID3D11DeviceContext* pDeviceContext);
 
     void    SetUpColliderDesc();
 

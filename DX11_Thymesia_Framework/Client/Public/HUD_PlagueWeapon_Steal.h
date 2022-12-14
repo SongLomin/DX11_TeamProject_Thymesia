@@ -23,7 +23,7 @@ public:
 	virtual HRESULT Start();
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
-	virtual HRESULT Render();
+	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext);
 
 private:
 	weak_ptr<CCustomUI>				m_pPlagueWeapon_Decoration;//쿨타임 알려주는 게이지 프레임

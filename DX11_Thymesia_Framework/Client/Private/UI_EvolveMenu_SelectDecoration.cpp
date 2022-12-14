@@ -55,9 +55,9 @@ void CUI_EvolveMenu_SelectDecoration ::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CUI_EvolveMenu_SelectDecoration ::Render()
+HRESULT CUI_EvolveMenu_SelectDecoration ::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    __super::Render();
+    __super::Render(pDeviceContext);
 
     return S_OK;
 }

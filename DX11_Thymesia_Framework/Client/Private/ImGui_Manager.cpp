@@ -222,12 +222,13 @@ HRESULT CImGui_Manager::Render(void)
 		ImGui::EndMainMenuBar();
 	}
 
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
 
 	for (_uint i = 0; i < m_arrWindows.size(); ++i)
 	{
 		if (m_arrWindows[i]->Is_Enable())
 		{
-			if (FAILED(m_arrWindows[i]->Render()))
+			if (FAILED(m_arrWindows[i]->Render(pDeviceContext)))
 				return E_FAIL;
 		}
 	}

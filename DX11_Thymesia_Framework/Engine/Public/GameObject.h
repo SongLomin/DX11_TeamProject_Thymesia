@@ -45,8 +45,8 @@ public:
 	virtual void Custom_Thread1(_float fTimeDelta);
 	virtual void Custom_Thread2(_float fTimeDelta);
 	virtual void Custom_Thread3(_float fTimeDelta);
-	virtual HRESULT Render(); 
-	virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix);
+	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext); 
+	virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix, ID3D11DeviceContext* pDeviceContext);
 
 	virtual _bool IsPicking(const RAY& In_Ray, _float& Out_fRange) { return false; }
 

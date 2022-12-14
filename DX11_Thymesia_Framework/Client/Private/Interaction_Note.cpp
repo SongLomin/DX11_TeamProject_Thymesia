@@ -52,9 +52,9 @@ void CInteraction_Note::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 }
 
-HRESULT CInteraction_Note::Render()
+HRESULT CInteraction_Note::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    return __super::Render();
+    return __super::Render(pDeviceContext);
 }
 void CInteraction_Note::OnEventMessage(_uint iArg)
 {

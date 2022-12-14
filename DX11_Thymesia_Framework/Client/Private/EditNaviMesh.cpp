@@ -68,7 +68,7 @@ void CEditNaviMesh::LateTick(_float fTimeDelta)
     m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONLIGHT, Weak_StaticCast<CGameObject>(m_this));
 }
 
-HRESULT CEditNaviMesh::Render()
+HRESULT CEditNaviMesh::Render(ID3D11DeviceContext* pDeviceContext)
 {
     if (!m_bEdit && !GAMEINSTANCE->Is_Debug())
     {
@@ -98,10 +98,10 @@ HRESULT CEditNaviMesh::Render()
 
     for (auto& elem : m_pCells)
     {
-        elem.lock()->Render();
+        elem.lock()->Render(pDeviceContext);
     }
 
-    __super::Render();
+    __super::Render(pDeviceContext);
 #endif // _DEBUG
 
     return S_OK;

@@ -57,9 +57,9 @@ void CWorldUI::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CWorldUI::Render()
+HRESULT CWorldUI::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	__super::Render();
+	__super::Render(pDeviceContext);
 
 	_matrix CamWorldMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD);
 	CamWorldMatrix = SMath::Get_MatrixNormalize(CamWorldMatrix);
@@ -77,7 +77,7 @@ HRESULT CWorldUI::Render()
 
 	m_pShaderCom.lock()->Begin(m_iPassIndex);
 
-	m_pVIBufferCom.lock()->Render();
+	m_pVIBufferCom.lock()->Render(pDeviceContext);
 
 	return S_OK;
 }

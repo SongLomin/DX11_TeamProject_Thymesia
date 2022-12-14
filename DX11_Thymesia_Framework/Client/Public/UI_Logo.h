@@ -32,7 +32,7 @@ public:
 	virtual HRESULT Start();
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
-	virtual HRESULT Render();
+	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext);
 
 protected:
 	virtual HRESULT SetUp_ShaderResource();

@@ -54,9 +54,9 @@ void CInteraction_Elevator::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 }
 
-HRESULT CInteraction_Elevator::Render()
+HRESULT CInteraction_Elevator::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    return __super::Render();
+    return __super::Render(pDeviceContext);
 }
 
 void CInteraction_Elevator::OnEventMessage(_uint iArg)

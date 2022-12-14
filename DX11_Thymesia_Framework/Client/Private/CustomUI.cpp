@@ -55,9 +55,9 @@ void CCustomUI::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CCustomUI::Render()
+HRESULT CCustomUI::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	__super::Render();
+	__super::Render(pDeviceContext);
 
 	return S_OK;
 }

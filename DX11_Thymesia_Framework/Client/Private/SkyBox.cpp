@@ -54,7 +54,7 @@ void CSkyBox::LateTick(_float fTimeDelta)
 		Weak_StaticCast<CGameObject>(m_this));
 }
 
-HRESULT CSkyBox::Render()
+HRESULT CSkyBox::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	_float4 vCamPosition = GAMEINSTANCE->Get_CamPosition();
 
@@ -66,9 +66,9 @@ HRESULT CSkyBox::Render()
 
 	m_pShaderCom.lock()->Begin(0);
 
-	__super::Render();
+	__super::Render(pDeviceContext);
 
-	m_pVIBufferCom.lock()->Render();
+	m_pVIBufferCom.lock()->Render(pDeviceContext);
 
 	return S_OK;
 }

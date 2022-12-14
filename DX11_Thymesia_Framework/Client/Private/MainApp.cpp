@@ -228,7 +228,7 @@ HRESULT CMainApp::Render()
 #ifdef _DEBUG
 	if (m_pDeveloperConsole && m_bEnableConsole)
 	{
-		m_pDeveloperConsole->Render();
+		m_pDeveloperConsole->Render(DEVICECONTEXT);
 	}
 #endif // _DEBUG
 

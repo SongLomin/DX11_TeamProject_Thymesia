@@ -34,9 +34,9 @@ void CEffectObject::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CEffectObject::Render()
+HRESULT CEffectObject::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	__super::Render();
+	__super::Render(pDeviceContext);
 
 	return S_OK;
 }

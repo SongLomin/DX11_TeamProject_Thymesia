@@ -125,9 +125,9 @@ void CLevel_Test::Tick(_float fTimeDelta)
 }
 
 
-HRESULT CLevel_Test::Render()
+HRESULT CLevel_Test::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	if (FAILED(__super::Render()))
+	if (FAILED(__super::Render(pDeviceContext)))
 		return E_FAIL;
 
 	SetWindowText(g_hWnd, TEXT("Thymesia : TEST"));

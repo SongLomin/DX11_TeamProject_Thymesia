@@ -38,13 +38,13 @@ void CEffectMesh::LateTick(_float fTimeDelta)
     m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Cast<CGameObject>(m_this));
 }
 
-HRESULT CEffectMesh::Render()
+HRESULT CEffectMesh::Render(ID3D11DeviceContext* pDeviceContext)
 {
     SetUp_ShaderResource();
 
     //m_pShaderCom.lock()->Begin(m_iPassIndex);
 
-    __super::Render();
+    __super::Render(pDeviceContext);
 
     return S_OK;
 }

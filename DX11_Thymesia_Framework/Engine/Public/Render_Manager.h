@@ -13,6 +13,15 @@ class CRender_Manager :
 {
 	DECLARE_SINGLETON(CRender_Manager)
 
+private:
+	enum DEFERRED_GROUP
+	{
+		DEFERRED_EFFECT,
+		DEFERRED_UI,
+		DEFERRED_END
+	};
+
+
 public:
 	HRESULT Initialize();
 
@@ -55,6 +64,7 @@ private:
 	HRESULT Bake_Fog();
 	HRESULT Bake_ViewShadow();
 	HRESULT Render_Blend(); /* Diffuse * Shade 백버퍼에 그린다. */
+	HRESULT Render_Effect();
 	HRESULT Render_NonLight();
 	HRESULT Render_NonAlphaEffect();
 	HRESULT Render_AlphaBlend();
@@ -148,7 +158,7 @@ private:
 
 
 private:
-	ComPtr<ID3D11DeviceContext> m_pDeferredContext;
+	ComPtr<ID3D11DeviceContext> m_pDeferredContext[DEFERRED_END];
 
 public:
 	virtual void OnDestroy() override;

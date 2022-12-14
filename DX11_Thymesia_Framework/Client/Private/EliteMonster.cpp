@@ -78,17 +78,17 @@ void CEliteMonster::Before_Render(_float fTimeDelta)
     __super::Before_Render(fTimeDelta);
 }
 
-HRESULT CEliteMonster::Render()
+HRESULT CEliteMonster::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    __super::Render();
+    __super::Render(pDeviceContext);
 
 
     return S_OK;
 }
 
-HRESULT CEliteMonster::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix)
+HRESULT CEliteMonster::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix, ID3D11DeviceContext* pDeviceContext)
 {
-    __super::Render_ShadowDepth(In_LightViewMatrix, In_LightProjMatrix);
+    __super::Render_ShadowDepth(In_LightViewMatrix, In_LightProjMatrix, pDeviceContext);
 
     return S_OK;
 }

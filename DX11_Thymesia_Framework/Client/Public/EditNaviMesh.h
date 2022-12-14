@@ -32,7 +32,7 @@ protected:
     virtual HRESULT Start() override;
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
-    virtual HRESULT Render() override;
+    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
 public:
     void Init_Collider(const _float& In_iWidth, const _float& In_iHeight, const _float& In_fPitch, ifstream* is = nullptr);

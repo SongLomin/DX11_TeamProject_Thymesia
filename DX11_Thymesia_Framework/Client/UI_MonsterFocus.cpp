@@ -66,9 +66,9 @@ void CUI_MonsterFocus::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CUI_MonsterFocus::Render()
+HRESULT CUI_MonsterFocus::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    __super::Render();
+    __super::Render(pDeviceContext);
 
     return S_OK;
 }

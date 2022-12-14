@@ -93,17 +93,17 @@ void CBossMonster::Before_Render(_float fTimeDelta)
     __super::Before_Render(fTimeDelta);
 }
 
-HRESULT CBossMonster::Render()
+HRESULT CBossMonster::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    __super::Render();
+    __super::Render(pDeviceContext);
 
 
     return S_OK;
 }
 
-HRESULT CBossMonster::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix)
+HRESULT CBossMonster::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix, ID3D11DeviceContext* pDeviceContext)
 {
-    __super::Render_ShadowDepth(In_LightViewMatrix, In_LightProjMatrix);
+    __super::Render_ShadowDepth(In_LightViewMatrix, In_LightProjMatrix, pDeviceContext);
 
     return S_OK;
 }

@@ -116,9 +116,9 @@ void CPlayer_MPBar::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CPlayer_MPBar::Render()
+HRESULT CPlayer_MPBar::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	//__super::Render();
+	//__super::Render(pDeviceContext);
 
 	return S_OK;;
 }

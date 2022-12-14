@@ -25,7 +25,7 @@ protected:
     virtual HRESULT Initialize(void* pArg) override;
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
-    virtual HRESULT Render() override;
+    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
 public:
     void Update(_float fTimeDelta, weak_ptr <CTransform> _pOwnerTransform, weak_ptr<CBoneNode> _pOwnerBoneNode, weak_ptr<MODEL_DATA> _pOwnerModel_Data);

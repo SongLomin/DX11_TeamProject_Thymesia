@@ -92,7 +92,7 @@ void CDynamic_Prop::Before_Render(_float fTimeDelta)
     m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 }
 
-HRESULT CDynamic_Prop::Render()
+HRESULT CDynamic_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 {
     if (FAILED(CProp::SetUp_ShaderResource()))
         return E_FAIL;
@@ -122,10 +122,10 @@ HRESULT CDynamic_Prop::Render()
         }
 
         m_pShaderCom.lock()->Begin(m_iPassIndex);
-        m_pModelCom.lock()->Render_Mesh(i);
+        m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
     }
 
-    CProp::Render();
+    CProp::Render(pDeviceContext);
 
     return S_OK;
 }

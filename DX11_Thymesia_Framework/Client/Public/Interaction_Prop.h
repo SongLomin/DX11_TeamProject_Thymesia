@@ -23,8 +23,8 @@ public:
     virtual HRESULT Start() override;
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
-    virtual HRESULT Render() override;
-    virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix) override;
+    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
+    virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix, ID3D11DeviceContext* pDeviceContext) override;
 	
 public:
     virtual _bool IsPicking(const RAY& In_Ray, _float& Out_fRange) override;
@@ -37,7 +37,7 @@ public:
     virtual void Act_Interaction();
 
 protected:
-    HRESULT SetUp_ShaderResource();
+    virtual HRESULT SetUp_ShaderResource(ID3D11DeviceContext* pDeviceContext);
 
 
 protected:

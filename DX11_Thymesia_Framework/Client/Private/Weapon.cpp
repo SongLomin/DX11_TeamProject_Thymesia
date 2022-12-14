@@ -65,11 +65,11 @@ void CWeapon::LateTick(_float fTimeDelta)
 	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Cast<CGameObject>(m_this));
 }
 
-HRESULT CWeapon::Render()
+HRESULT CWeapon::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	SetUp_ShaderResource();
 
-	__super::Render();
+	__super::Render(pDeviceContext);
 
 	_int iPassIndex;
 	m_iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
@@ -99,7 +99,7 @@ HRESULT CWeapon::Render()
 			}
 
 			m_pShaderCom.lock()->Begin(iPassIndex);
-			m_pModelCom.lock()->Render_Mesh(i);
+			m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
 		}
 	}
 	

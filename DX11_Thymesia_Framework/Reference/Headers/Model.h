@@ -74,9 +74,9 @@ public:
 	virtual void Start() override;
 
 	HRESULT Play_Animation(_float fTimeDelta);
-	HRESULT Render_Mesh(_uint iMeshContainerIndex);
+	HRESULT Render_Mesh(_uint iMeshContainerIndex, ID3D11DeviceContext* pDeviceContext);
 	HRESULT Update_BoneMatrices();
-	HRESULT Render_AnimModel(_uint iMeshContainerIndex, weak_ptr<CShader> pShader, _uint iPassIndex, const char* pConstantBoneName);
+	HRESULT Render_AnimModel(_uint iMeshContainerIndex, weak_ptr<CShader> pShader, _uint iPassIndex, const char* pConstantBoneName, ID3D11DeviceContext* pDeviceContext);
 	virtual void OnDestroy() override;
 	
 public:

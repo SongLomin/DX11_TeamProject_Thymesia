@@ -242,6 +242,12 @@
     <ClInclude Include="..\Public\VIBuffer_Curve.h">
       <Filter>01. Elements\03. Component\01. VIBuffer\12. Curve</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Thread.h">
+      <Filter>98. Managers\15. ThreadManager\00. Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GameObject_Thread.h">
+      <Filter>98. Managers\15. ThreadManager\00. Thread\00. GameObject_Thread</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -465,6 +471,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\VIBuffer_Curve.cpp">
       <Filter>01. Elements\03. Component\01. VIBuffer\12. Curve</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Thread.cpp">
+      <Filter>98. Managers\15. ThreadManager\00. Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GameObject_Thread.cpp">
+      <Filter>98. Managers\15. ThreadManager\00. Thread\00. GameObject_Thread</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -707,6 +719,12 @@
     </Filter>
     <Filter Include="01. Elements\03. Component\01. VIBuffer\12. Curve">
       <UniqueIdentifier>{9a64bd57-4b5a-4841-8180-1fb880d790fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Managers\15. ThreadManager\00. Thread">
+      <UniqueIdentifier>{70a09821-c058-4b1d-a396-227ce41da140}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Managers\15. ThreadManager\00. Thread\00. GameObject_Thread">
+      <UniqueIdentifier>{f4db48c9-fe9a-499e-9893-335bf595448e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

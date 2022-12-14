@@ -69,15 +69,15 @@ void CGround::LateTick(_float fTimeDelta)
 	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Cast<CGameObject>(m_this));
 }
 
-HRESULT CGround::Render()
+HRESULT CGround::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	__super::Render();
+	__super::Render(pDeviceContext);
 
 	if (FAILED(SetUp_ShaderResource()))
 		DEBUG_ASSERT;
 
 	m_pShaderCom.lock()->Begin(m_iShaderPath);
-	m_pVIBufferCom.lock()->Render();
+	m_pVIBufferCom.lock()->Render(pDeviceContext);
 
 	return S_OK;
 }

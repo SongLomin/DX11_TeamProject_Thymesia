@@ -78,7 +78,7 @@ void CEditGround::LateTick(_float fTimeDelta)
 	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Cast<CGameObject>(m_this));
 }
 
-HRESULT CEditGround::Render()
+HRESULT CEditGround::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	if (!m_bCreate)
 		return S_OK;
@@ -87,7 +87,7 @@ HRESULT CEditGround::Render()
 		return E_FAIL;
 
 	m_pShaderCom.lock()->Begin(m_iShaderPass);
-	m_pVIBufferCom.lock()->Render();
+	m_pVIBufferCom.lock()->Render(pDeviceContext);
 
 	return S_OK;
 }

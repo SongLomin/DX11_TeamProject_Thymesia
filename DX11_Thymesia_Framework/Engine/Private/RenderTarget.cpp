@@ -80,7 +80,7 @@ HRESULT CRenderTarget::Render_Debug(weak_ptr<CShader> pShader, weak_ptr<CVIBuffe
 	if (FAILED(pShader.lock()->Begin(0)))
 		return E_FAIL;
 
-	return pVIBuffer.lock()->Render();
+	return pVIBuffer.lock()->Render(DEVICECONTEXT);
 }
 
 

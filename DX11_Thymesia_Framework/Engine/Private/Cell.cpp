@@ -87,12 +87,12 @@ _bool CCell::isIn(_fvector vPosition, _int* pNeighborIndex, _float3* Out_vNormal
 
 
 #ifdef _DEBUG
-HRESULT CCell::Render()
+HRESULT CCell::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	if (nullptr == m_pVIBuffer.lock().get())
 		DEBUG_ASSERT;
 
-	m_pVIBuffer.lock()->Render();
+	m_pVIBuffer.lock()->Render(pDeviceContext);
 
 	return S_OK;
 }

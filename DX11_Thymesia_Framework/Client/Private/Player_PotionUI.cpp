@@ -124,7 +124,7 @@ void CPlayer_PotionUI::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CPlayer_PotionUI::Render()
+HRESULT CPlayer_PotionUI::Render(ID3D11DeviceContext* pDeviceContext)
 {
     return S_OK;
 }

@@ -21,7 +21,7 @@ public:
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
     virtual void Before_Render(_float fTimeDelta) override;
-    virtual HRESULT Render() override;
+    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
 public:
     void Set_WorldMatrixWithPhysX(_fmatrix In_WorldMatrix);

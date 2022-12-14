@@ -110,9 +110,9 @@ void CEditInstanceProp::Before_Render(_float fTimeDelta)
 #endif
 }
 
-HRESULT CEditInstanceProp::Render()
+HRESULT CEditInstanceProp::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	if (FAILED(SetUp_ShaderResource()))
+	if (FAILED(SetUp_ShaderResource(pDeviceContext)))
 		return E_FAIL;
 
 	return S_OK;
@@ -143,7 +143,7 @@ void CEditInstanceProp::Load_ResourceList(vector<string>& In_List, const filesys
 	}
 }
 
-HRESULT CEditInstanceProp::SetUp_ShaderResource()
+HRESULT CEditInstanceProp::SetUp_ShaderResource(ID3D11DeviceContext* pDeviceContext)
 {
 	_float4x4 WorldMatrix;
 	XMStoreFloat4x4(&WorldMatrix, XMMatrixIdentity());
@@ -208,15 +208,15 @@ HRESULT CEditInstanceProp::SetUp_ShaderResource()
 		}
 
 		m_pShaderCom.lock()->Begin(m_iPassIndex);
-		m_pInstanceModelCom.lock()->Render_Mesh(i);
+		m_pInstanceModelCom.lock()->Render_Mesh(i, pDeviceContext);
 	}
 
-	SetUp_ShaderResource_Select();
+	SetUp_ShaderResource_Select(pDeviceContext);
 
-	return __super::Render();
+	return __super::Render(pDeviceContext);
 }
 
-void CEditInstanceProp::SetUp_ShaderResource_Select()
+void CEditInstanceProp::SetUp_ShaderResource_Select(ID3D11DeviceContext* pDeviceContext)
 {
 	if (m_pPropInfos.empty() || 0 > m_iPickingIndex || m_pPropInfos.size() <= m_iPickingIndex)
 		return;
@@ -249,7 +249,7 @@ void CEditInstanceProp::SetUp_ShaderResource_Select()
 		return;
 
 	m_pSelect_ShaderCom.lock()->Begin(1);
-	m_pSelect_VIBufferCom.lock()->Render();
+	m_pSelect_VIBufferCom.lock()->Render(pDeviceContext);
 }
 
 void CEditInstanceProp::Write_Json(json& Out_Json)

@@ -36,7 +36,7 @@ void CWindow_AnimationModelView::Tick(_float fTimeDelta)
     __super::Tick(fTimeDelta);
 }
 
-HRESULT CWindow_AnimationModelView::Render()
+HRESULT CWindow_AnimationModelView::Render(ID3D11DeviceContext* pDeviceContext)
 {
     if (FAILED(__super::Begin()))
         return E_FAIL;

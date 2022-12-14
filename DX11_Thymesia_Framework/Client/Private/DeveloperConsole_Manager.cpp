@@ -41,7 +41,7 @@ void CDeveloperConsole_Manager::Tick(_float fTimeDelta)
 	}
 }
 
-HRESULT CDeveloperConsole_Manager::Render()
+HRESULT CDeveloperConsole_Manager::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	// Start the Dear ImGui frame
 	ImGui_ImplDX11_NewFrame();
@@ -51,7 +51,7 @@ HRESULT CDeveloperConsole_Manager::Render()
 	for (auto& elem : m_arrWindows)
 	{
 		if (elem->Get_Enable())
-			elem->Render();
+			elem->Render(pDeviceContext);
 	}
 
 	ImGui::Render();

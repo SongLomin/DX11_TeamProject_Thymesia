@@ -35,7 +35,7 @@ void CEditMapCollider::LateTick(_float fTimeDelta)
 {
 }
 
-HRESULT CEditMapCollider::Render()
+HRESULT CEditMapCollider::Render(ID3D11DeviceContext* pDeviceContext)
 {
     return S_OK;
 }

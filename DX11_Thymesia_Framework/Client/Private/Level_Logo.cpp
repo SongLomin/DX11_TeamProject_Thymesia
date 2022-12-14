@@ -60,9 +60,9 @@ void CLevel_Logo::Tick(_float fTimeDelta)
 	}
 }
 
-HRESULT CLevel_Logo::Render()
+HRESULT CLevel_Logo::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	if (FAILED(__super::Render()))
+	if (FAILED(__super::Render(pDeviceContext)))
 		return E_FAIL;
 
 	SetWindowText(g_hWnd, TEXT("Thymesia : LOGO"));

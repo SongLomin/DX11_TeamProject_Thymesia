@@ -23,7 +23,7 @@ private:
 	HRESULT Initialize(const LIGHTDESC& LightDesc);
 	
 public:
-	HRESULT Render(weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect> pVIBuffer);
+	HRESULT Render(weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect> pVIBuffer, ID3D11DeviceContext* pDeviceContext);
 
 
 private:

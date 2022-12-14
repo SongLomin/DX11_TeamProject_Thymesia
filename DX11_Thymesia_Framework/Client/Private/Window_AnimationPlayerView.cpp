@@ -49,7 +49,7 @@ void CWindow_AnimationPlayerView::Tick(_float fTimeDelta)
     }
 }
 
-HRESULT CWindow_AnimationPlayerView::Render()
+HRESULT CWindow_AnimationPlayerView::Render(ID3D11DeviceContext* pDeviceContext)
 {
     if (FAILED(__super::Begin()))
         return E_FAIL;
