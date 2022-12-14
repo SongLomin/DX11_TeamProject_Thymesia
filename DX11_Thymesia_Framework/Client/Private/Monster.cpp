@@ -173,7 +173,6 @@ void CMonster::Release_Monster()
     CStatus_Monster::MONSTERDESC tMonsterDesc;
 
     m_pStatus.lock()->Get_Desc(&tMonsterDesc);
-        
     GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status().lock()->Add_Memory(tMonsterDesc.m_iDropMemory);
 
 }

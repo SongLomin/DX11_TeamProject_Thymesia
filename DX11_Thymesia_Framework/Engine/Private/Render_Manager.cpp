@@ -116,11 +116,6 @@ HRESULT CRender_Manager::Initialize()
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
-
-	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Bloom"), 
-		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 1.f))))
-		DEBUG_ASSERT;
-
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_CopyOriginalRender"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
@@ -198,8 +193,6 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_BlurForBloom"), TEXT("Target_BlurForBloom"))))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_BlurForGlow"), TEXT("Target_BlurForGlow"))))
-		DEBUG_ASSERT;
-	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Bloom"), TEXT("Target_Bloom"))))
 		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_BlurEffect"), TEXT("Target_BlurForEffect"))))
@@ -288,8 +281,6 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_BlurForBloom"), ViewPortDesc.Width - fHalf, fHalf + fSize * 2.f, fSize, fSize)))
 		DEBUG_ASSERT;
-	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Bloom"), ViewPortDesc.Width - fHalf, fHalf + fSize * 3.f, fSize, fSize)))
-		DEBUG_ASSERT; 
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_PBR"), ViewPortDesc.Width - fHalf, fHalf + fSize * 4.f, fSize, fSize)))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Ambient"), ViewPortDesc.Width - fHalf, fHalf + fSize * 5.f, fSize, fSize)))
@@ -410,57 +401,47 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Blend_OutLine()))
 		DEBUG_ASSERT;
 
-
-
 	if (FAILED(Render_NonLight()))
 		DEBUG_ASSERT;
 
-	if (FAILED(Render_NonAlphaEffect()))
-		DEBUG_ASSERT;
-	if (FAILED(Blur_ExtractGlow(3.f)))
-		DEBUG_ASSERT;
-	if (FAILED(ReBlur_ExtractGlow(3.f)))
-		DEBUG_ASSERT;
-	if (FAILED(Blend_Glow()))
-		DEBUG_ASSERT;
+	if (SUCCEEDED(Render_NonAlphaEffect()))
+	{
+		if (FAILED(Blur_ExtractGlow(3.f)))
+			DEBUG_ASSERT;
+		if (FAILED(ReBlur_ExtractGlow(3.f)))
+			DEBUG_ASSERT;
+		if (FAILED(Blend_Glow()))
+			DEBUG_ASSERT;
+	}
 
-	if (FAILED(Render_AlphaBlend()))
-		DEBUG_ASSERT;
-	if (FAILED(Blur_ExtractGlow(3.f)))
-		DEBUG_ASSERT;
-	if (FAILED(ReBlur_ExtractGlow(3.f)))
-		DEBUG_ASSERT;
-	if (FAILED(Blend_Glow()))
-		DEBUG_ASSERT;
-
-	if (FAILED(Extract_Distortion()))
-		DEBUG_ASSERT;
-	if (FAILED(Blend_Distortion()))
-		DEBUG_ASSERT;
+	if (SUCCEEDED(Render_AlphaBlend()))
+	{
+		if (FAILED(Blur_ExtractGlow(3.f)))
+			DEBUG_ASSERT;
+		if (FAILED(ReBlur_ExtractGlow(3.f)))
+			DEBUG_ASSERT;
+		if (FAILED(Blend_Glow()))
+			DEBUG_ASSERT;
+	}
 	
+	if (SUCCEEDED(Extract_Distortion()))
+	{
+		if (FAILED(Blend_Distortion()))
+			DEBUG_ASSERT;
+	}
 	if (FAILED(Render_Font()))
 		DEBUG_ASSERT;
 
 	if (FAILED(Blur_ExtractBloom()))
 		DEBUG_ASSERT;
 
-	if (FAILED(this->ReBlur_ExtractBloom()))
+	if (FAILED(ReBlur_ExtractBloom()))
 		DEBUG_ASSERT;
 
-	if (FAILED(this->ReBlur_ExtractBloom()))
-
+	if (FAILED(ReBlur_ExtractBloom()))
 		DEBUG_ASSERT;
 
 	if (FAILED(Blend_Bloom()))
-		DEBUG_ASSERT;
-
-	if (FAILED(Render_PostEffect()))
-		DEBUG_ASSERT;
-
-	if (FAILED(Render_AfterPostEffect()))
-		DEBUG_ASSERT;
-
-	if (FAILED(Render_AfterPostEffectGlow()))
 		DEBUG_ASSERT;
 
 	if (FAILED(PostProcessing()))
@@ -937,8 +918,16 @@ HRESULT CRender_Manager::Render_NonAlphaEffect()
 
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
+	
 
 	pRenderTargetManager->Begin_MRTWithNoneClearWithIndex(TEXT("MRT_ExtractEffect"), 1);
+
+	if (m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHA_EFFECT].empty())
+	{
+		pRenderTargetManager->End_MRT();
+
+		return E_FAIL;
+	}
 
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHA_EFFECT])
 	{
@@ -975,8 +964,16 @@ HRESULT CRender_Manager::Render_AlphaBlend()
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
 
-	//pRenderTargetManager->Begin_MRT(TEXT("MRT_ExtractEffect"));
+
+
 	pRenderTargetManager->Begin_MRTWithNoneClearWithIndex(TEXT("MRT_ExtractEffect"), 1);
+
+	if (m_RenderObjects[(_uint)RENDERGROUP::RENDER_ALPHABLEND].empty())
+	{
+		pRenderTargetManager->End_MRT();
+
+		return E_FAIL;
+	}
 
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_ALPHABLEND])
 	{
@@ -1093,14 +1090,14 @@ HRESULT CRender_Manager::Blur_ExtractGlow(const _float& In_PixelPitchScalar)
 
 	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurForGlow"));
 
-	m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
-	m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
-	m_pXBlurShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+	//m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	//m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	//m_pXBlurShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 
-	m_pXBlurShader->Set_RawValue("g_PixelWidth", &fPixelWidth, sizeof(_float));
-	m_pXBlurShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));
+	//m_pXBlurShader->Set_RawValue("g_PixelWidth", &fPixelWidth, sizeof(_float));
+	//m_pXBlurShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));
 
-	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
+	//m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
 
 	// Blur Y
 	m_pXBlurShader->Begin(4);
@@ -1120,17 +1117,17 @@ HRESULT CRender_Manager::ReBlur_ExtractGlow(const _float& In_PixelPitchScalar)
 	if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture", pRenderTargetManager->Get_SRV(TEXT("Target_BlurForGlow")))))
 		DEBUG_ASSERT;
 
-	m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
-	m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
-	m_pXBlurShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+	//m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	//m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	//m_pXBlurShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 
 	_float fPixelWidth = 1 / 1600.f * In_PixelPitchScalar;
 	_float fPixelHeight = 1 / 900.f * In_PixelPitchScalar;
 	m_pXBlurShader->Set_RawValue("g_PixelWidth", &fPixelWidth, sizeof(_float));
 	m_pXBlurShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));
 
-	_float fBlurStrength = 1.f;
-	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
+	/*_float fBlurStrength = 1.f;
+	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));*/
 
 	// Blur X
 	m_pXBlurShader->Begin(3);
@@ -1147,14 +1144,14 @@ HRESULT CRender_Manager::ReBlur_ExtractGlow(const _float& In_PixelPitchScalar)
 
 	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurForGlow"));
 
-	m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
-	m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
-	m_pXBlurShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+	//m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	//m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	//m_pXBlurShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 
-	m_pXBlurShader->Set_RawValue("g_PixelWidth", &fPixelWidth, sizeof(_float));
-	m_pXBlurShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));
+	//m_pXBlurShader->Set_RawValue("g_PixelWidth", &fPixelWidth, sizeof(_float));
+	//m_pXBlurShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));
 
-	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
+	//m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
 
 	// Blur Y
 	m_pXBlurShader->Begin(4);
@@ -1198,9 +1195,19 @@ HRESULT CRender_Manager::Blend_OutLine()
 
 HRESULT CRender_Manager::Extract_Distortion()
 {
-	if (FAILED(GET_SINGLE(CRenderTarget_Manager)->Begin_MRT(TEXT("MRT_Distortion"))))
+	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
+
+
+
+	if (m_RenderObjects[(_uint)RENDERGROUP::RENDER_DISTORTION].empty())
+	{
+		return E_FAIL;
+	}
+
+	if (FAILED(pRenderTargetManager->Begin_MRT(TEXT("MRT_Distortion"))))
 		DEBUG_ASSERT;
 
+		
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_DISTORTION])
 	{
 		if (pGameObject.lock())
@@ -1383,7 +1390,7 @@ HRESULT CRender_Manager::ReBlur_ExtractBloom()
 	if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture", pRenderTargetManager->Get_SRV(TEXT("Target_BlurForBloom")))))
 		DEBUG_ASSERT;
 
-	m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	/*m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 	m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
 	m_pXBlurShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 
@@ -1393,7 +1400,7 @@ HRESULT CRender_Manager::ReBlur_ExtractBloom()
 	m_pXBlurShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));
 
 	_float fBlurStrength = 1.1f;
-	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
+	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));*/
 	// Blur X
 	m_pXBlurShader->Begin(5);
 	m_pVIBuffer->Render();
@@ -1422,7 +1429,6 @@ HRESULT CRender_Manager::Blend_Bloom()
 
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
-	// pRenderTargetManager->Begin_MRT(TEXT("MRT_Bloom"));
 
 	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
@@ -1437,135 +1443,6 @@ HRESULT CRender_Manager::Blend_Bloom()
 	/* 블룸 만들기. */
 	m_pShader->Begin(5);
 	m_pVIBuffer->Render();
-
-	// pRenderTargetManager->End_MRT();
-
-	return S_OK;
-}
-
-HRESULT CRender_Manager::Render_PostEffect()
-{
-	//shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
-
-	//m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
-	//m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
-	//m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
-	//
-	//if (m_fBlurWitdh < 0.f)
-	//	m_fBlurWitdh = 0.f;
-
-	//m_pShader->Set_RawValue("g_fBlurWidth", &m_fBlurWitdh, sizeof(_float));
-
-	////m_pShader->Set_ShaderResourceView("g_PostEffectMaskTexture", GAMEINSTANCE->Get_TexturesFromKey("PostEffectMask").front());
-	//m_pShader->Set_ShaderResourceView("g_BloomTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Bloom")));
-	//
-
-
-	///* 셰이더 합치기. */
-	//m_pShader->Begin(4);
-	//m_pVIBuffer->Render();
-
-	
-
-	return S_OK;
-}
-
-
-
-HRESULT CRender_Manager::Render_AfterPostEffect()
-{
-	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
-
-	Bake_OriginalRenderTexture();
-
-	
-
-	m_RenderObjects[(_uint)RENDERGROUP::RENDER_AFTER_POSTPROCESS].sort([](weak_ptr<CGameObject> pSour, weak_ptr<CGameObject> pDest)
-		{
-			return pSour.lock()->Get_CamDistance() < pDest.lock()->Get_CamDistance();
-		});
-
-	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_AFTER_POSTPROCESS])
-	{
-
-		if (pGameObject.lock())
-			pGameObject.lock()->Render();
-	}
-	m_RenderObjects[(_uint)RENDERGROUP::RENDER_AFTER_POSTPROCESS].clear();
-
-	pRenderTargetManager->Begin_MRT(TEXT("MRT_ExtractEffect"));
-	
-	m_RenderObjects[(_uint)RENDERGROUP::RENDER_AFTER_POSTPROCESS_EFFECT].sort([](weak_ptr<CGameObject> pSour, weak_ptr<CGameObject> pDest)
-		{
-			return pSour.lock()->Get_CamDistance() < pDest.lock()->Get_CamDistance();
-		});
-
-	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_AFTER_POSTPROCESS_EFFECT])
-	{
-
-		if (pGameObject.lock())
-			pGameObject.lock()->Render();
-	}
-
-	m_RenderObjects[(_uint)RENDERGROUP::RENDER_AFTER_POSTPROCESS_EFFECT].clear();
-
-	pRenderTargetManager->End_MRT();
-	return S_OK;
-}
-
-HRESULT CRender_Manager::Render_AfterPostEffectGlow()
-{
-	Blur_Effect();
-	Blur_ExtractGlow(3.f);
-	ReBlur_ExtractGlow(3.f);
-	
-	Blend_Glow();
-
-	Blur_ExtractBloom();
-	Extract_Brightness();
-	Blend_Bloom();
-	Render_PostEffect();
-
-	return S_OK;
-}
-
-HRESULT CRender_Manager::Blur_Effect()
-{
-	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
-
-	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurEffect"));
-
-	if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture", pRenderTargetManager->Get_SRV(TEXT("Target_OriginalEffect")))))
-		DEBUG_ASSERT;
-
-	m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
-	m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
-	m_pXBlurShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
-
-	_float fPixelWidth = 1 / 1600.f * 1.f;
-	_float fPixelHeight = 1 / 900.f * 1.f;
-	m_pXBlurShader->Set_RawValue("g_PixelWidth", &fPixelWidth, sizeof(_float));
-	m_pXBlurShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));
-
-	_float fBlurStrength = 2.f;
-	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
-	// Blur X
-	m_pXBlurShader->Begin(0);
-	m_pVIBuffer->Render();
-
-	pRenderTargetManager->End_MRT();
-
-	pRenderTargetManager->Begin_SingleRT(TEXT("MRT_ExtractEffect"), 0);
-
-	if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture", pRenderTargetManager->Get_SRV(TEXT("Target_BlurForEffect")))))
-		DEBUG_ASSERT;
-
-	// Blur Y
-	m_pXBlurShader->Begin(1);
-	m_pVIBuffer->Render();
-
-
-	pRenderTargetManager->End_MRT();
 
 
 	return S_OK;
@@ -1817,7 +1694,6 @@ HRESULT CRender_Manager::Render_Debug()
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ExtractEffect"), m_pShader, m_pVIBuffer);
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurForBloom"), m_pShader, m_pVIBuffer);
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurForGlow"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Bloom"), m_pShader, m_pVIBuffer);
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_CopyOriginalRender"), m_pShader, m_pVIBuffer);
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurEffect"), m_pShader, m_pVIBuffer);
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ExtractOutLine"), m_pShader, m_pVIBuffer);

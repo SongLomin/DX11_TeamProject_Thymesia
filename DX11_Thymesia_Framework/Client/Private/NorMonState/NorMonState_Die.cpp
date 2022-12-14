@@ -79,9 +79,10 @@ void CNorMonState_Die::Tick(_float fTimeDelta)
 		m_pModelCom.lock()->Play_Animation(fTimeDelta);
 	else
 	{
+		Get_OwnerMonster()->Set_PassIndex(7);
 		m_fDissolveTime -= fTimeDelta;
 
-		_float fDissolveAmount = SMath::Lerp(1.f, 0.f, m_fDissolveTime / 4.f);
+		_float fDissolveAmount = SMath::Lerp(1.f, -0.1f, m_fDissolveTime / 4.f);
 		Get_OwnerMonster()->Set_DissolveAmount(fDissolveAmount);		
 	}
 }

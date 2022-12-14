@@ -71,10 +71,6 @@ private:
 	HRESULT Blur_ExtractBloom();
 	HRESULT ReBlur_ExtractBloom();
 	HRESULT Blend_Bloom();
-	HRESULT Render_PostEffect();
-	HRESULT Render_AfterPostEffect();
-	HRESULT Render_AfterPostEffectGlow();
-	HRESULT Blur_Effect();
 
 	HRESULT PostProcessing();
 	HRESULT AntiAliasing();

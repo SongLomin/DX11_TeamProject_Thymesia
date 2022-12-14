@@ -44,6 +44,7 @@ public:
 
     void Set_SuperArmor(const _bool In_bSuperArmor) { m_bSuperArmor = In_bSuperArmor; }
     _bool Get_SuperArmor() const { return m_bSuperArmor; }
+    void Set_PassIndex(const _uint In_iPassIndex) { m_iPassIndex = In_iPassIndex; }
 
 public:
     virtual void Enable_Weapons(const _bool In_bEnable) {};
