@@ -79,6 +79,8 @@ namespace Engine
 		_bool			ENGINE_DLL Is_Picked_AbstractCube(const RAY& _Ray, MESH_VTX_INFO _VtxInfo, _matrix _WorldMatrix, _float* Out_fDist = nullptr);
 
 		// For. Particle
-
+		const _bool ENGINE_DLL Is_Zero(const XMFLOAT2 Source);
+		const _bool ENGINE_DLL Is_Zero(const XMFLOAT3 Source);
+		const _bool ENGINE_DLL Is_Zero(const XMFLOAT4 Source);
 	}
 }

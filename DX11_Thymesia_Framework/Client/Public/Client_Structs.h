@@ -269,18 +269,13 @@ namespace Client
 		_float3		vMaxLimitRotation;
 #pragma endregion
 #pragma region Scale
-		// TODO : 비트플래그 연산으로 바꾸기 (실험용 bool변수)
-#ifdef _DEBUG
-#endif // _DEBUG
-
 		_ubyte byScaleFlag;
-		enum SCALE_FLAG
+		enum class SCALE_FLAG
 		{
-			SCALE_FLAG_SPEED    = 1 << 0
-			, SCALE_FLAG_FORCE  = 1 << 1
-			, SCALE_FLAG_SQUARE = 1 << 2
-			, SCALE_FLAG_RATIO  = 1 << 3
-			, SCALE_FLAG_CUSTOM = 1 << 4
+			SPEED    = 1 << 0
+			, FORCE  = 1 << 1
+			, SQUARE = 1 << 2
+			, RATIO  = 1 << 3
 			, SCALE_FLAG_END
 		};
 
@@ -307,17 +302,24 @@ namespace Client
 #pragma endregion
 #pragma region Color
 		_float		fDiscardRatio;
-		_bool		IsGrayOnlyUseRed;// when random colors, grayscales
+		
+		_ubyte byColorFlag;
+		enum class COLOR_FLAG
+		{
+			GRAY_USE_RED   = 1 << 0
+			, EASING_ALPHA = 1 << 1
+			, SPEED        = 1 << 2
+			, FORCE        = 1 << 3
+			, COLOR_FLAG_END
+		};
 
-		_bool		bEasingAlpha;
 		_int		iAlphaEasingType;
-
 		_float		fAlphaEasingTotalTime;
 
 		_float4		vMinStartColor;
 		_float4		vMaxStartColor;
 
-		_float4		vMinColorSpeed;		// w is TargetAlpha when Easing Alpha
+		_float4		vMinColorSpeed; // w is TargetAlpha when Easing Alpha
 		_float4		vMaxColorSpeed;
 
 		_float4		vMinColorForce;
@@ -328,16 +330,32 @@ namespace Client
 #pragma endregion
 #pragma region Texture
 #pragma region Diffuse
-		_bool		bDiffuseXInverse;
-		_bool		bDiffuseYInverse;
+		_ubyte byDiffuseTextureFlag;
+		enum class DIFFUSE_TEXTURE_FLAG
+		{
+			X_INVERSE   = 1 << 0
+			, Y_INVERSE = 1 << 1
+			, UV_SPEED  = 1 << 2
+			, UV_FORCE  = 1 << 3
+			, DIFFUSE_TEXTURE_FLAG_END
+		};
 
 		_int		iDiffuseIndex;
 		_float2		vDiffuseStartUV;
+
 		_float2		vDiffuseUVSpeed;
 		_float2		vDiffuseUVForce;
 		_float2		vDiffuseUVMax;
 #pragma endregion
 #pragma region Mask
+		_ubyte byMaskTextureFlag;
+		enum class MASK_TEXTURE_FLAG
+		{
+			UV_SPEED = 1 << 0
+			, UV_FORCE = 1 << 1
+			, DIFFUSE_TEXTURE_FLAG_END
+		};
+
 		_int		iMaskIndex;
 		_float2		vMaskStartUV;
 		_float2		vMaskUVSpeed;
@@ -345,6 +363,14 @@ namespace Client
 		_float2		vMaskUVMax;
 #pragma endregion
 #pragma region Noise
+		_ubyte byNoiseTextureFlag;
+		enum class NOISE_TEXTURE_FLAG
+		{
+			UV_SPEED = 1 << 0
+			, UV_FORCE = 1 << 1
+			, DIFFUSE_TEXTURE_FLAG_END
+		};
+
 		_int		iNoiseIndex;
 		_float2		vNoiseStartUV;
 		_float2		vNoiseUVSpeed;
@@ -353,8 +379,16 @@ namespace Client
 #pragma endregion
 #pragma endregion
 #pragma region Bloom & Glow
-		_bool		bBloom;
-		_bool		bGlow;
+		_ubyte byGloomFlag;
+		enum class GLOOM_FLAG
+		{
+			BLOOM        = 1 << 0
+			, GLOW       = 1 << 1
+			, GLOW_SPEED = 1 << 2
+			, GLOW_FORCE = 1 << 3
+			, GLOOM_FLAG_END
+		};
+
 		_float4		vStartGlowColor;
 		_float4		vGlowColorSpeed;
 		_float4		vGlowColorForce;
