@@ -663,33 +663,6 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked_AbstractCube(const RAY& _Ray, MESH_VTX
 	return false;
 }
 
-const _bool ENGINE_DLL Engine::SMath::Is_Zero(const XMFLOAT2 Source)
-{
-	XMVECTOR vSource = XMLoadFloat2(&Source);
-	if ((0 == XMVectorGetX(vSource)) && (0 == XMVectorGetY(vSource)))
-		return true;
-	else
-		return false;
-}
-
-const _bool ENGINE_DLL Engine::SMath::Is_Zero(const XMFLOAT3 Source)
-{
-	XMVECTOR vSource = XMLoadFloat3(&Source);
-	if ((0 == XMVectorGetX(vSource)) && (0 == XMVectorGetY(vSource)) && (0 == XMVectorGetZ(vSource)))
-		return true;
-	else
-		return false;
-}
-
-const _bool ENGINE_DLL Engine::SMath::Is_Zero(const XMFLOAT4 Source)
-{
-	XMVECTOR vSource = XMLoadFloat4(&Source);
-	if ((0 == XMVectorGetX(vSource)) && (0 == XMVectorGetY(vSource)) && (0 == XMVectorGetZ(vSource)) && (0 == XMVectorGetW(vSource)))
-		return true;
-	else
-		return false;
-}
-
 
 void ENGINE_DLL Engine::SMath::Convert_PxVec3FromMeshData(PxVec3* In_PxVec3, weak_ptr<MESH_DATA> pMeshData)
 {

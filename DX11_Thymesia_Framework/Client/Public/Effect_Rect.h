@@ -13,8 +13,8 @@ class CEffect_Rect final :
 	public CEffectObject
 {
 	GAMECLASS_H(CEffect_Rect)
-	SHALLOW_COPY(CEffect_Rect)
-	CLONE_H(CEffect_Rect, CGameObject)
+		SHALLOW_COPY(CEffect_Rect)
+		CLONE_H(CEffect_Rect, CGameObject)
 
 private:
 	enum class PARTICLETYPE
@@ -45,16 +45,6 @@ public:
 	void ReBake_EditParticle();
 	void Write_EffectJson(json& Out_Json);
 	void Load_EffectJson(const json& In_Json, const _uint& In_iTimeScaleLayer);
-
-private:
-	void Load_EffectJson_Scale(const json& In_Json);
-	void Load_EffectJson_Diffuse_Texture(const json& In_Json);
-	void Load_EffectJson_Mask_Texture(const json& In_Json);
-	void Load_EffectJson_Noise_Texture(const json& In_Json);
-	void Load_EffectJson_Color(const json& In_Json);
-	void Load_EffectJson_Gloom(const json& In_Json);
-
-public:
 	void Clone_EffectRect();
 	virtual void OnEventMessage(_uint iArg) override;
 	void OnChangeAnimationKey(const _uint& In_Key);
@@ -87,9 +77,9 @@ private:
 	void Update_ParticlePosition(const _uint& i, _float fTimeDelta);
 	void Update_ParticleRotation(const _uint& i, _float fTimeDelta);
 	// void Update_ParticleScale(const _uint& i, _float fTimeDelta);
-	// void Update_ParticleUV(_float fTimeDelta);
-	// void Update_ParticleColor(const _uint& i, _float fTimeDelta);
-	// void Update_ParticleGlowColor(_float fTimeDelta);
+	void Update_ParticleUV(_float fTimeDelta);
+	void Update_ParticleColor(const _uint& i, _float fTimeDelta);
+	void Update_ParticleGlowColor(_float fTimeDelta);
 	void Update_ParticleSpriteFrame(const _uint& i, _float fTimeDelta);
 	void Update_ParentTransform();
 
@@ -97,9 +87,6 @@ private:
 	// Changing to Delegate
 	FDelegate<const _uint&, _float> CallBack_UpdateParticle;
 	FDelegate<const _uint&, _float> CallBack_LateUpdateParticle;
-	FDelegate<_float> CallBack_UpdateAllParticle;
-	FDelegate<_float> CallBack_LateUpdateAllParticle;
-	void Update_CallBacks();
 #pragma region Position
 #pragma endregion // Position
 
@@ -116,33 +103,12 @@ private:
 #pragma endregion // Scale
 
 #pragma region UV
-	void Update_ParticleDiffuseTexture_ApplyUVSpeed(_float fTimeDelta);
-	void Update_ParticleDiffuseTexture_ApplyUVForce(_float fTimeDelta);
-	void Update_ParticleDiffuseTexture_ApplyUVSpeedAndForce(_float fTimeDelta);
-
-	void Update_ParticleMaskTexture_ApplyUVSpeed(_float fTimeDelta);
-	void Update_ParticleMaskTexture_ApplyUVForce(_float fTimeDelta);
-	void Update_ParticleMaskTexture_ApplyUVSpeedAndForce(_float fTimeDelta);
-
-	void Update_ParticleNoiseTexture_ApplyUVSpeed(_float fTimeDelta);
-	void Update_ParticleNoiseTexture_ApplyUVForce(_float fTimeDelta);
-	void Update_ParticleNoiseTexture_ApplyUVSpeedAndForce(_float fTimeDelta);
 #pragma endregion // UV
 
 #pragma region Color
-	void Update_ParticleColor_ApplyGrayScale(const _uint& i, _float fTimeDelta);
-	void Update_ParticleColor_ApplyColorSpeed(const _uint& i, _float fTimeDelta);
-	void Update_ParticleColor_ApplyColorSpeed_EasingAlpha(const _uint& i, _float fTimeDelta);
-	void Update_ParticleColor_ApplyColorForce(const _uint& i, _float fTimeDelta);
-	void Update_ParticleColor_ApplyColorForce_EasingAlpha(const _uint& i, _float fTimeDelta);
-	void Update_ParticleColor_ApplyColorSpeedAndForce(const _uint& i, _float fTimeDelta);
-	void Update_ParticleColor_ApplyColorSpeedAndForce_EasingAlpha(const _uint& i, _float fTimeDelta);
 #pragma endregion // Color
 
 #pragma region Glow Color
-	void Update_ParticleGloom_ApplyGlowSpeed(_float fTimeDelta);
-	void Update_ParticleGloom_ApplyGlowForce(_float fTimeDelta);
-	void Update_ParticleGloom_ApplyGlowSpeedAndForce(_float fTimeDelta);
 #pragma endregion // Glow Color
 
 #pragma region Sprite Frame
@@ -202,9 +168,9 @@ private: // For. Tool
 	void Tool_Texture_Diffuse();
 	void Tool_Texture_Mask();
 	void Tool_Texture_Noise();
-	void Tool_Gloom();
+	void Tool_Glow();
 
-	void ShowFlagStatus_And_CreatToggleButton(const char* szText, const char* szButtonIDText, _ubyte& In_byTargetFlagStatus, _ubyte byFlagToCheck);
+	void ShowFlagStatus_And_CreatToggleButton(const char* szText, const char* szButtonIDText, _ubyte& byTargetFlagStatus, _ubyte byFlagToCheck);
 #endif // _DEBUG
 
 private:
