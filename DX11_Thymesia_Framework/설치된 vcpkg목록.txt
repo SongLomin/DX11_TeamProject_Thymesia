@@ -3,7 +3,7 @@ vcpkg install imgui[core,dx11-binding,win32-binding,docking-experimental]:x64-wi
 
 vcpkg install physx:x64-windows
 
-DirectXTK
+vcpkg install directXTK:x64-windows
 
 //DirectXTex
 vcpkg install DirectXTex:x64-windows

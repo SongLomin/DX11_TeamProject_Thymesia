@@ -18,6 +18,9 @@ public:
 	HRESULT Add_MRT(const _tchar* pMRTTag, const _tchar* pTargetTag);
 
 	HRESULT Begin_MRT(const _tchar* pMRTTag);
+
+	//HRESULT Begin_DeferredMRT(const _tchar* pMRTTag, ID3D11DeviceContext* );
+
 	HRESULT Begin_SingleRT(const _tchar* pMRTTag, const _uint& In_iIndex);
 	HRESULT Begin_MRTWithNoneClear(const _tchar* pMRTTag);
 

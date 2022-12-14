@@ -75,6 +75,7 @@ private:
 	_uint								m_iNumBones = 0;
 
 	_float4x4							m_BoneMatrices[2][256];
+	
 
 	_int								m_iSwapBoneIndex = -1;
 

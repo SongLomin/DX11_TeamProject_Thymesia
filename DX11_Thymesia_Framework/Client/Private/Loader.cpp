@@ -257,6 +257,7 @@ HRESULT CLoader::Loading_ForLobby()
 
 HRESULT CLoader::Loading_ForTestLevel()
 {
+
 #ifndef _ONLY_UI_
 	lstrcpy(m_szLoadingText, TEXT("Loading Skybox Texture..."));
 
@@ -276,10 +277,8 @@ HRESULT CLoader::Loading_ForTestLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/GroundInfo/Mesh/ ]"));
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
 
-	
-	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
-
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Distructable/Wagon03/ ]"));
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
 	Load_AllMeshes("../Bin/Resources/Meshes/Distructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 	Load_AllMeshes("../Bin/Resources/Meshes/Distructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
@@ -315,6 +314,8 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading Effect Group..."));
 	//Loading_ForEffectGroup("../Bin/EffectData/");
 	
+	_matrix TransformMatrix;
+
 #ifndef _ONLY_UI_
 	lstrcpy(m_szLoadingText, TEXT("Loading Skybox Texture..."));
 	GAMEINSTANCE->Load_Textures("Sky", TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
@@ -333,7 +334,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/ ]"));
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
 
-	_matrix TransformMatrix;
+	
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
 	//GAMEINSTANCE->Load_Model("DistructableTest", "../Bin/Resources/Meshes/Distructable/WagonTest2.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Distructable/Wagon03/ ]"));

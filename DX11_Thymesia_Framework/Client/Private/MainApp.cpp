@@ -219,6 +219,9 @@ HRESULT CMainApp::Render()
 
 	GAMEINSTANCE->Clear_BackBuffer_View(_float4(0.f, 0.215686f, 0.588235f, 1.f));
 	GAMEINSTANCE->Clear_DepthStencil_View();
+
+	//DEVICECONTEXT->ExecuteCommandList();
+
 	GAMEINSTANCE->Draw_RenderGroup();
 	GAMEINSTANCE->Render_Engine();
 

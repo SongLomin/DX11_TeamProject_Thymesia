@@ -20,6 +20,14 @@ HRESULT CRender_Manager::Initialize()
 
 	DEVICECONTEXT->RSGetViewports(&iNumViewports, &ViewPortDesc);
 
+	DEVICE->CreateDeferredContext(0, m_pDeferredContext.GetAddressOf());
+
+	//D3D11_QUERY_DESC queryDesc;
+	//queryDesc.MiscFlags;
+	//queryDesc.Query = ;
+	//ID3D11Query* pQuery = DEVICE->CreateQuery();
+
+	//m_pDeferredContext->Begin();
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 		
 	/*For. Target_AntiAliasing*/
@@ -382,6 +390,12 @@ HRESULT CRender_Manager::Add_RenderGroup(RENDERGROUP eGroup, weak_ptr<CGameObjec
 
 HRESULT CRender_Manager::Draw_RenderGroup()
 {
+	//future<HRESULT> DrawUIThread = async(launch::async, bind(&CRender_Manager::Render_UI, this));
+
+	/*if (FAILED(Render_UI()))
+		DEBUG_ASSERT;*/
+
+
 	if (FAILED(Render_Priority()))
 		DEBUG_ASSERT;
 	if (FAILED(Render_ShadowDepth()))
@@ -415,24 +429,26 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Render_NonLight()))
 		DEBUG_ASSERT;
 
-	if (FAILED(Render_NonAlphaEffect()))
-		DEBUG_ASSERT;
-	if (FAILED(Blur_ExtractGlow(3.f)))
-		DEBUG_ASSERT;
-	if (FAILED(ReBlur_ExtractGlow(3.f)))
-		DEBUG_ASSERT;
-	if (FAILED(Blend_Glow()))
-		DEBUG_ASSERT;
+	if (SUCCEEDED(Render_NonAlphaEffect()))
+	{
+		if (FAILED(Blur_ExtractGlow(3.f)))
+			DEBUG_ASSERT;
+		if (FAILED(ReBlur_ExtractGlow(3.f)))
+			DEBUG_ASSERT;
+		if (FAILED(Blend_Glow()))
+			DEBUG_ASSERT;
+	}
 
-	if (FAILED(Render_AlphaBlend()))
-		DEBUG_ASSERT;
-	if (FAILED(Blur_ExtractGlow(3.f)))
-		DEBUG_ASSERT;
-	if (FAILED(ReBlur_ExtractGlow(3.f)))
-		DEBUG_ASSERT;
-	if (FAILED(Blend_Glow()))
-		DEBUG_ASSERT;
-
+	if (SUCCEEDED(Render_AlphaBlend()))
+	{
+		if (FAILED(Blur_ExtractGlow(3.f)))
+			DEBUG_ASSERT;
+		if (FAILED(ReBlur_ExtractGlow(3.f)))
+			DEBUG_ASSERT;
+		if (FAILED(Blend_Glow()))
+			DEBUG_ASSERT;
+	}
+	
 	if (FAILED(Extract_Distortion()))
 		DEBUG_ASSERT;
 	if (FAILED(Blend_Distortion()))
@@ -448,7 +464,6 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 		DEBUG_ASSERT;
 
 	if (FAILED(this->ReBlur_ExtractBloom()))
-
 		DEBUG_ASSERT;
 
 	if (FAILED(Blend_Bloom()))
@@ -468,6 +483,9 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 
 	if (FAILED(AntiAliasing()))
 		DEBUG_ASSERT;
+
+
+	//HRESULT hr = DrawUIThread.get();
 
 	if (FAILED(Render_UI()))
 		DEBUG_ASSERT;
@@ -937,8 +955,16 @@ HRESULT CRender_Manager::Render_NonAlphaEffect()
 
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
+	
 
 	pRenderTargetManager->Begin_MRTWithNoneClearWithIndex(TEXT("MRT_ExtractEffect"), 1);
+
+	if (m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHA_EFFECT].empty())
+	{
+		pRenderTargetManager->End_MRT();
+
+		return E_FAIL;
+	}
 
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHA_EFFECT])
 	{
@@ -975,8 +1001,16 @@ HRESULT CRender_Manager::Render_AlphaBlend()
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
 
-	//pRenderTargetManager->Begin_MRT(TEXT("MRT_ExtractEffect"));
+
+
 	pRenderTargetManager->Begin_MRTWithNoneClearWithIndex(TEXT("MRT_ExtractEffect"), 1);
+
+	if (m_RenderObjects[(_uint)RENDERGROUP::RENDER_ALPHABLEND].empty())
+	{
+		pRenderTargetManager->End_MRT();
+
+		return E_FAIL;
+	}
 
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_ALPHABLEND])
 	{
@@ -1272,7 +1306,7 @@ HRESULT CRender_Manager::Render_UI()
 	}
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_BEFOREUI].clear();
 
-	GET_SINGLE(CFont_Manager)->Render_AllFontWithRenderGroup(RENDERGROUP::RENDER_BEFOREUI);
+	//GET_SINGLE(CFont_Manager)->Render_AllFontWithRenderGroup(RENDERGROUP::RENDER_BEFOREUI);
 
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_UI].sort([](weak_ptr<CGameObject> pSour, weak_ptr<CGameObject> pDest)
 		{
@@ -1286,7 +1320,7 @@ HRESULT CRender_Manager::Render_UI()
 	}
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_UI].clear();
 
-	GET_SINGLE(CFont_Manager)->Render_AllFontWithRenderGroup(RENDERGROUP::RENDER_UI);
+	//GET_SINGLE(CFont_Manager)->Render_AllFontWithRenderGroup(RENDERGROUP::RENDER_UI);
 
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_AFTER_UI].sort([](weak_ptr<CGameObject> pSour, weak_ptr<CGameObject> pDest)
 		{
@@ -1300,7 +1334,7 @@ HRESULT CRender_Manager::Render_UI()
 	}
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_AFTER_UI].clear();
 
-	GET_SINGLE(CFont_Manager)->Render_AllFontWithRenderGroup(RENDERGROUP::RENDER_AFTER_UI);
+	//GET_SINGLE(CFont_Manager)->Render_AllFontWithRenderGroup(RENDERGROUP::RENDER_AFTER_UI);
 
 	return S_OK;
 }
@@ -1855,6 +1889,7 @@ void CRender_Manager::OnDestroy()
 {
 	m_pShader->OnDestroy();
 	m_pVIBuffer->OnDestroy();
+	m_pDeferredContext.Reset();
 
 }
 

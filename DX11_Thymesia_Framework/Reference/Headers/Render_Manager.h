@@ -146,6 +146,10 @@ private:
 	
 	_float		m_fGrayScale = 1.f;
 
+
+private:
+	ComPtr<ID3D11DeviceContext> m_pDeferredContext;
+
 public:
 	virtual void OnDestroy() override;
 	virtual void OnEngineEventMessage(const ENGINE_EVENT_TYPE In_eEngineEvent) override;
