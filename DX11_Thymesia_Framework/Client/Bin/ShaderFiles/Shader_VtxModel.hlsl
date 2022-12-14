@@ -85,12 +85,12 @@ PS_OUT PS_MAIN(PS_IN In)
 	PS_OUT		Out = (PS_OUT)0;
 
 	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);	
+    clip(Out.vDiffuse.a - 0.1f);
+    
 	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
 	
-	if (Out.vDiffuse.a < 0.1f)
-		discard;
     Out.vExtractBloom = 0;
 
 
@@ -204,7 +204,7 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
     PS_OUT Out = (PS_OUT) 0;
 
     Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-
+    clip(Out.vDiffuse.a - 0.1f);
 	/* 0 ~ 1 */
     float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
 
@@ -219,9 +219,7 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
     Out.vORM = 0;
-    
-    if (Out.vDiffuse.a < 0.1f)
-        discard;
+
     Out.vDiffuse.a = 1.f;
     
     Out.vExtractBloom = 0;
@@ -241,14 +239,12 @@ PS_OUT PS_MAIN_NORMAL_MASKING(PS_IN_NORMAL In)
     float fCamToPlayer = length(g_vCamPosition - g_vPlayerPosition);
 
     vector vMaskTexture = g_MaskTexture.Sample(DefaultSampler, 8.f * vPixelTexUV);
-    if (fCamToPixelWorld / fCamToPlayer > vMaskTexture.r)
-        Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-    else
-        discard;
+   
+    clip(fCamToPixelWorld / fCamToPlayer - vMaskTexture.r);
 
+    Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
-
-
+    clip(Out.vDiffuse.a - 0.1f);
     /* 0 ~ 1 */
     float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
 
@@ -263,8 +259,6 @@ PS_OUT PS_MAIN_NORMAL_MASKING(PS_IN_NORMAL In)
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
 
-    if (Out.vDiffuse.a < 0.1f)
-        discard;
     Out.vDiffuse.a = 1.f;
     Out.vExtractBloom = 0;
     
@@ -282,8 +276,9 @@ PS_OUT PS_MAIN_NORMAL_MASKING_SCALAR(PS_IN_NORMAL In)
     vector vMaskTexture = g_MaskTexture.Sample(DefaultSampler, 8.f * vPixelTexUV);
     clip(g_fMaskingScalar - vMaskTexture.r);
 
-
-
+    Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    clip(Out.vDiffuse.a - 0.1f);
+    
     /* 0 ~ 1 */
     float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
 
@@ -298,8 +293,6 @@ PS_OUT PS_MAIN_NORMAL_MASKING_SCALAR(PS_IN_NORMAL In)
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
 
-    if (Out.vDiffuse.a < 0.1f)
-        discard;
     Out.vDiffuse.a = 1.f;
     
     Out.vExtractBloom = 0;
@@ -329,12 +322,12 @@ PS_OUT      PS_MAIN_PICK(PS_IN In)
     PS_OUT		Out = (PS_OUT)0;
 
     Out.vDiffuse    = vector(1.f, 0.f, 0.f, 0.5f);
+    clip(Out.vDiffuse.a - 0.1f);
+    
     Out.vNormal     = vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
     Out.vDepth      = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
 
-    if (Out.vDiffuse.a < 0.1f)
-        discard;
 
     return Out;
 }
@@ -345,7 +338,8 @@ PS_OUT PS_MAIN_NORMAL_PBR(PS_IN_NORMAL In)
     PS_OUT Out = (PS_OUT) 0;
 
     Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-
+    clip(Out.vDiffuse.a - 0.1f);
+    
     /* 0 ~ 1 */
     float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
 
@@ -364,9 +358,6 @@ PS_OUT PS_MAIN_NORMAL_PBR(PS_IN_NORMAL In)
     Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
    // Out.vORM = g_ORMTexture.Sample(DefaultSampler, In.vTexUV);
 
-    if (Out.vDiffuse.a < 0.1f)
-        discard;
-    
     Out.vExtractBloom = 0;
 
     return Out;
@@ -386,7 +377,8 @@ PS_OUT PS_MAIN_NORMAL_MASKING_SCALAR_PBR(PS_IN_NORMAL In)
     clip(g_fMaskingScalar - vMaskTexture.r);
     
     Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-
+    clip(Out.vDiffuse.a - 0.1f);
+    
     /* 0 ~ 1 */
     float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
 
@@ -404,9 +396,6 @@ PS_OUT PS_MAIN_NORMAL_MASKING_SCALAR_PBR(PS_IN_NORMAL In)
 
     Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
    // Out.vORM = g_ORMTexture.Sample(DefaultSampler, In.vTexUV);
-
-    if (Out.vDiffuse.a < 0.1f)
-        discard;
 
     return Out;
 }
