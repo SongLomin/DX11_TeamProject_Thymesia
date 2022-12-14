@@ -2683,19 +2683,19 @@ void CEffect_Rect::Tool_Texture_Diffuse()
 
 		ImGui::Checkbox("YInverse##Is_YInverse_Diffuse_Texture", &m_tEffectParticleDesc.bDiffuseYInverse);
 
-		ImGui::Text("Index");  ImGui::SetNextItemWidth(300.f);
+		ImGui::Text("Index");  ImGui::SetNextItemWidth(100.f);
 		ImGui::InputInt("##Diffuse_Index", &m_tEffectParticleDesc.iDiffuseIndex);
 
-		ImGui::Text("Start UV"); ImGui::SetNextItemWidth(300.f);
+		ImGui::Text("Start UV"); ImGui::SetNextItemWidth(200.f);
 		ImGui::DragFloat2("##Diffuse_Start_UV", &m_tEffectParticleDesc.vDiffuseStartUV.x, 0.01f, 0.f, 0.f, "%.5f");
 
-		ImGui::Text("UV Speed"); ImGui::SetNextItemWidth(300.f);
+		ImGui::Text("UV Speed"); ImGui::SetNextItemWidth(200.f);
 		ImGui::DragFloat2("##Diffuse_UV_Speed", &m_tEffectParticleDesc.vDiffuseUVSpeed.x, 0.01f, 0.f, 0.f, "%.5f");
 
-		ImGui::Text("UV Force"); ImGui::SetNextItemWidth(300.f);
+		ImGui::Text("UV Force"); ImGui::SetNextItemWidth(200.f);
 		ImGui::DragFloat2("##Diffuse UV_Force", &m_tEffectParticleDesc.vDiffuseUVForce.x, 0.01f, 0.f, 0.f, "%.5f");
 
-		ImGui::Text("UV Max"); ImGui::SetNextItemWidth(300.f);
+		ImGui::Text("UV Max"); ImGui::SetNextItemWidth(200.f);
 		ImGui::DragFloat2("##Diffuse_UV_Max", &m_tEffectParticleDesc.vDiffuseUVMax.x, 0.01f, 0.f, 0.f, "%.5f");
 
 		ImGui::TreePop();
@@ -2706,19 +2706,19 @@ void CEffect_Rect::Tool_Texture_Mask()
 {
 	if (ImGui::TreeNode("Mask"))
 	{
-		ImGui::Text("Index"); ImGui::SetNextItemWidth(300.f);
+		ImGui::Text("Index"); ImGui::SetNextItemWidth(100.f);
 		ImGui::InputInt("##Mask_Index", &m_tEffectParticleDesc.iMaskIndex);
 
-		ImGui::Text("Start UV"); ImGui::SetNextItemWidth(300.f);
+		ImGui::Text("Start UV"); ImGui::SetNextItemWidth(200.f);
 		ImGui::DragFloat2("##Mask_Start_UV", &m_tEffectParticleDesc.vMaskStartUV.x, 0.01f, 0.f, 0.f, "%.5f");
 
-		ImGui::Text("UV Speed"); ImGui::SetNextItemWidth(300.f);
+		ImGui::Text("UV Speed"); ImGui::SetNextItemWidth(200.f);
 		ImGui::DragFloat2("##Mask_UV_Speed", &m_tEffectParticleDesc.vMaskUVSpeed.x, 0.01f, 0.f, 0.f, "%.5f");
 
-		ImGui::Text("UV Force"); ImGui::SetNextItemWidth(300.f);
+		ImGui::Text("UV Force"); ImGui::SetNextItemWidth(200.f);
 		ImGui::DragFloat2("##Mask UV_Force", &m_tEffectParticleDesc.vMaskUVForce.x, 0.01f, 0.f, 0.f, "%.5f");
 
-		ImGui::Text("UV Max"); ImGui::SetNextItemWidth(300.f);
+		ImGui::Text("UV Max"); ImGui::SetNextItemWidth(200.f);
 		ImGui::DragFloat2("##Mask_UV_Max", &m_tEffectParticleDesc.vMaskUVMax.x, 0.01f, 0.f, 0.f, "%.5f");
 
 		ImGui::TreePop();
@@ -2729,19 +2729,19 @@ void CEffect_Rect::Tool_Texture_Noise()
 {
 	if (ImGui::TreeNode("Noise"))
 	{
-		ImGui::Text("Index"); ImGui::SetNextItemWidth(300.f);
+		ImGui::Text("Index"); ImGui::SetNextItemWidth(100.f);
 		ImGui::InputInt("##Noise_Index", &m_tEffectParticleDesc.iNoiseIndex);
 
-		ImGui::Text("Start UV"); ImGui::SetNextItemWidth(300.f);
+		ImGui::Text("Start UV"); ImGui::SetNextItemWidth(200.f);
 		ImGui::DragFloat2("##Noise_Start_UV", &m_tEffectParticleDesc.vNoiseStartUV.x, 0.01f, 0.f, 0.f, "%.5f");
 
-		ImGui::Text("UV Speed"); ImGui::SetNextItemWidth(300.f);
+		ImGui::Text("UV Speed"); ImGui::SetNextItemWidth(200.f);
 		ImGui::DragFloat2("##Noise_UV_Speed", &m_tEffectParticleDesc.vNoiseUVSpeed.x, 0.01f, 0.f, 0.f, "%.5f");
 
-		ImGui::Text("UV Force"); ImGui::SetNextItemWidth(300.f);
+		ImGui::Text("UV Force"); ImGui::SetNextItemWidth(200.f);
 		ImGui::DragFloat2("##Noise UV_Force", &m_tEffectParticleDesc.vNoiseUVForce.x, 0.01f, 0.f, 0.f, "%.5f");
 
-		ImGui::Text("UV Max"); ImGui::SetNextItemWidth(300.f);
+		ImGui::Text("UV Max"); ImGui::SetNextItemWidth(200.f);
 		ImGui::DragFloat2("##Noise_UV_Max", &m_tEffectParticleDesc.vNoiseUVMax.x, 0.01f, 0.f, 0.f, "%.5f");
 
 		ImGui::TreePop();
@@ -2752,7 +2752,7 @@ void CEffect_Rect::Tool_Glow()
 {
 	if (ImGui::TreeNode("Glow Options"))
 	{
-		ImGui::Text("Start Glow Color");
+		ImGui::Text("Start Glow Color"); ImGui::SetNextItemWidth(150.f);
 		ImGui::DragFloat4("##Start_Glow_Color", &m_tEffectParticleDesc.vStartGlowColor.x, 0.01f);
 		if (ImGui::TreeNode("Glow Color Picker"))
 		{
@@ -2760,10 +2760,10 @@ void CEffect_Rect::Tool_Glow()
 			ImGui::TreePop();
 		}
 
-		ImGui::Text("Glow Color Speed ");
+		ImGui::Text("Glow Color Speed "); ImGui::SetNextItemWidth(150.f);
 		ImGui::DragFloat4("##Glow_Color_Speed", &m_tEffectParticleDesc.vGlowColorSpeed.x, 0.01f);
 
-		ImGui::Text("Glow Color Force");
+		ImGui::Text("Glow Color Force"); ImGui::SetNextItemWidth(150.f);
 		ImGui::DragFloat4("##Glow_Color_Force", &m_tEffectParticleDesc.vGlowColorForce.x, 0.01f);
 
 		ImGui::TreePop();
@@ -2979,7 +2979,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 #ifdef _JOJO_EFFECT_TOOL_
 					this->Show_ShaderPasses();
 #endif // _JOJO_EFFECT_TOOL_
-
+					ImGui::SetNextItemWidth(100.f);
 					ImGui::InputInt("Shader Pass", &m_tEffectParticleDesc.iShaderPassIndex);
 					ImGui::TreePop();
 				}
