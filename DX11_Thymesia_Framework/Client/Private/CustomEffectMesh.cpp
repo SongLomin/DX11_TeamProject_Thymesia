@@ -126,7 +126,7 @@ HRESULT CCustomEffectMesh::Render(ID3D11DeviceContext* pDeviceContext)
 		for (_uint i(0); i < iNumMeshContainers; ++i)
 		{
 			m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
-			m_pShaderCom.lock()->Begin(iShaderPassIndex);
+			m_pShaderCom.lock()->Begin(iShaderPassIndex, pDeviceContext);
 			m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
 		}
 	}
@@ -139,7 +139,7 @@ HRESULT CCustomEffectMesh::Render(ID3D11DeviceContext* pDeviceContext)
 		for (_uint i(0); i < iNumMeshContainers; ++i)
 		{
 			m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
-			m_pShaderCom.lock()->Begin(m_tEffectMeshDesc.iShaderPassIndex);
+			m_pShaderCom.lock()->Begin(m_tEffectMeshDesc.iShaderPassIndex, pDeviceContext);
 			m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
 		}
 	}

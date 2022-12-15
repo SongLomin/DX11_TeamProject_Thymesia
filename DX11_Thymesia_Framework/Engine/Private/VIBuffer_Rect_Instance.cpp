@@ -157,12 +157,12 @@ HRESULT CVIBuffer_Rect_Instance::Render(ID3D11DeviceContext* pDeviceContext)
 		0
 	};
 
-	DEVICECONTEXT->IASetVertexBuffers(0, m_iNumVertexBuffers, pVertexBuffers, iStrides, iOffsets);
-	DEVICECONTEXT->IASetIndexBuffer(m_pIB.Get(), m_eIndexFormat, 0);
-	DEVICECONTEXT->IASetPrimitiveTopology(m_eToplogy);
+	pDeviceContext->IASetVertexBuffers(0, m_iNumVertexBuffers, pVertexBuffers, iStrides, iOffsets);
+	pDeviceContext->IASetIndexBuffer(m_pIB.Get(), m_eIndexFormat, 0);
+	pDeviceContext->IASetPrimitiveTopology(m_eToplogy);
 
 	/* 6 : 하나의 도형을 그리기위해 사용하는 인덱스의 갯수. 네모라서 여섯개.  */
-	DEVICECONTEXT->DrawIndexedInstanced(6, m_iNumInstance, 0, 0, 0);
+	pDeviceContext->DrawIndexedInstanced(6, m_iNumInstance, 0, 0, 0);
 
 	return S_OK;
 }

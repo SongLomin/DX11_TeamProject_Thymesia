@@ -99,21 +99,19 @@ HRESULT CRenderTarget_Manager::Begin_DeferredMRT(const _tchar* pMRTTag, ID3D11De
 
 	ID3D11RenderTargetView* RTVs[8] = { nullptr };
 
-	_uint		iNumRTVs = 1;
-
-	RTVs[0] = m_pBackBufferView.Get();
+	_uint iNumRTVs(0);
 
 	for (auto& pRenderTarget : *pMRTList)
 	{
-		pRenderTarget->Clear();
+		pRenderTarget->Clear(pDeviceContext);
 		RTVs[iNumRTVs++] = pRenderTarget->Get_RTV().Get();
 	}
 
 	/* 기존에 바인딩되어있던(백버퍼 + 깊이스텐실버퍼)를 얻어온다. */
-	pDeviceContext->OMGetRenderTargets(1, m_pBackBufferView.GetAddressOf(), m_pDepthStencilView.GetAddressOf());
+	pDeviceContext->OMGetRenderTargets(1, m_pDeferredContextBackBufferView.GetAddressOf(), m_pDeferredContextDepthStencilView.GetAddressOf());
 
 	/* 렌더타겟들을 장치에 바인딩한다. */
-	pDeviceContext->OMSetRenderTargets(iNumRTVs, RTVs, m_pDepthStencilView.Get());
+	pDeviceContext->OMSetRenderTargets(iNumRTVs, RTVs, m_pDeferredContextDepthStencilView.Get());
 
 	return S_OK;
 }
@@ -227,6 +225,39 @@ HRESULT CRenderTarget_Manager::Begin_MRTWithNoneClearWithIndex(const _tchar* pMR
 	return S_OK;
 }
 
+HRESULT CRenderTarget_Manager::Begin_MRTWithDeferredContextNoneClearIndex(const _tchar* pMRTTag, const _uint In_iIndex, ID3D11DeviceContext* pDeviceContext)
+{
+	list<shared_ptr<CRenderTarget>>* pMRTList = Find_MRT(pMRTTag);
+	if (nullptr == pMRTList)
+		DEBUG_ASSERT;
+
+	if (8 <= pMRTList->size())
+		DEBUG_ASSERT;
+
+	ID3D11ShaderResourceView* pSRVs[128] = { nullptr };
+
+	pDeviceContext->PSSetShaderResources(0, 128, pSRVs);
+
+	ID3D11RenderTargetView* RTVs[8] = { nullptr };
+
+	_uint iNumRTVs(0);
+
+	for (auto& pRenderTarget : *pMRTList)
+	{
+		if (In_iIndex != iNumRTVs)
+			pRenderTarget->Clear(pDeviceContext);
+		RTVs[iNumRTVs++] = pRenderTarget->Get_RTV().Get();
+	}
+
+	/* 기존에 바인딩되어있던(백버퍼 + 깊이스텐실버퍼)를 얻어온다. */
+	pDeviceContext->OMGetRenderTargets(1, m_pDeferredContextBackBufferView.GetAddressOf(), m_pDeferredContextDepthStencilView.GetAddressOf());
+
+	/* 렌더타겟들을 장치에 바인딩한다. */
+	pDeviceContext->OMSetRenderTargets(iNumRTVs, RTVs, m_pDeferredContextDepthStencilView.Get());
+
+	return S_OK;
+}
+
 HRESULT CRenderTarget_Manager::Begin_MRTWithClearWithIndex(const _tchar* pMRTTag, const _uint In_iIndex)
 {
 	list<shared_ptr<CRenderTarget>>* pMRTList = Find_MRT(pMRTTag);
@@ -312,10 +343,10 @@ HRESULT CRenderTarget_Manager::End_MRT()
 
 HRESULT CRenderTarget_Manager::End_DeferredMRT(ID3D11DeviceContext* pDeviceContext)
 {
-	pDeviceContext->OMSetRenderTargets(1, m_pBackBufferView.GetAddressOf(), m_pDepthStencilView.Get());
+	pDeviceContext->OMSetRenderTargets(1, m_pDeferredContextBackBufferView.GetAddressOf(), m_pDeferredContextDepthStencilView.Get());
 
-	m_pBackBufferView.Reset();
-	m_pDepthStencilView.Reset();
+	m_pDeferredContextBackBufferView.Reset();
+	m_pDeferredContextDepthStencilView.Reset();
 
 	ID3D11ShaderResourceView* pSRV = NULL;
 	pDeviceContext->PSSetShaderResources(0, 1, &pSRV);

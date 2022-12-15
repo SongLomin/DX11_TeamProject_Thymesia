@@ -242,11 +242,14 @@
     <ClInclude Include="..\Public\VIBuffer_Curve.h">
       <Filter>01. Elements\03. Component\01. VIBuffer\12. Curve</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Thread.h">
+    <ClInclude Include="..\Public\CustomThread.h">
       <Filter>98. Managers\15. ThreadManager\00. Thread</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\GameObject_Thread.h">
       <Filter>98. Managers\15. ThreadManager\00. Thread\00. GameObject_Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DeferredCommand_Thread.h">
+      <Filter>98. Managers\15. ThreadManager\00. Thread\01. DeferredCommand_Thread</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -472,11 +475,14 @@
     <ClCompile Include="..\Private\VIBuffer_Curve.cpp">
       <Filter>01. Elements\03. Component\01. VIBuffer\12. Curve</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Thread.cpp">
+    <ClCompile Include="..\Private\CustomThread.cpp">
       <Filter>98. Managers\15. ThreadManager\00. Thread</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\GameObject_Thread.cpp">
       <Filter>98. Managers\15. ThreadManager\00. Thread\00. GameObject_Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DeferredCommand_Thread.cpp">
+      <Filter>98. Managers\15. ThreadManager\00. Thread\01. DeferredCommand_Thread</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -725,6 +731,12 @@
     </Filter>
     <Filter Include="98. Managers\15. ThreadManager\00. Thread\00. GameObject_Thread">
       <UniqueIdentifier>{f4db48c9-fe9a-499e-9893-335bf595448e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Managers\15. ThreadManager\00. Thread\01. DeferredCommand_Thread">
+      <UniqueIdentifier>{b93d26b9-8005-40e8-8553-31def97920b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Managers\15. ThreadManager\00. Thread\02. Thread_Pool">
+      <UniqueIdentifier>{306f5578-8517-48e6-94f3-b1a92bc16cd8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

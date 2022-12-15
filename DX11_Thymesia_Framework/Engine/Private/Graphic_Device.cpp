@@ -74,8 +74,10 @@ void CGraphic_Device::SyncronizeDeferredContext(ID3D11DeviceContext* pDeferredDe
 	m_pDeviceContext->RSGetViewports(&numViewports, &viewport);
 	pDeferredDeviceContext->RSSetViewports(1, &viewport);
 
-	rtv->Release();
-	dsv->Release();
+	if(rtv)
+		rtv->Release();
+	if(dsv)
+		dsv->Release();
 }
 
 HRESULT CGraphic_Device::Present()

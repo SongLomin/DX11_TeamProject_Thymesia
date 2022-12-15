@@ -24,6 +24,7 @@ public:
 	HRESULT Begin_MRTWithNoneClear(const _tchar* pMRTTag);
 
 	HRESULT Begin_MRTWithNoneClearWithIndex(const _tchar* pMRTTag, const _uint In_iIndex);
+	HRESULT Begin_MRTWithDeferredContextNoneClearIndex(const _tchar* pMRTTag, const _uint In_iIndex, ID3D11DeviceContext* pDeviceContext);
 	// 해당 인덱스 SRT만 클리어합니다.
 	HRESULT Begin_MRTWithClearWithIndex(const _tchar* pMRTTag, const _uint In_iIndex);
 	HRESULT Begin_MRTWithOriginalRenderTarget(const _tchar* pMRTTag);
@@ -59,6 +60,9 @@ private:
 private:
 	ComPtr<ID3D11RenderTargetView> m_pBackBufferView = nullptr;
 	ComPtr<ID3D11DepthStencilView> m_pDepthStencilView = nullptr;
+
+	ComPtr<ID3D11RenderTargetView> m_pDeferredContextBackBufferView = nullptr;
+	ComPtr<ID3D11DepthStencilView> m_pDeferredContextDepthStencilView = nullptr;
 	
 	ComPtr<ID3D11DepthStencilView> m_pShadowDepthStencilView = nullptr;
 	ComPtr<ID3D11DepthStencilView> m_pStaticShadowDepthStencilView = nullptr;

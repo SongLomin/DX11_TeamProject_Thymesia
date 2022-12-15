@@ -24,7 +24,7 @@ public:
 	/* 2. ID3D11RenderTargetView甫 积己. */
 	/* 3. ID3D11ShaderResourceView甫 积己. */
 	HRESULT Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT eFormat, _float4 vClearColor);
-	HRESULT Clear();
+	HRESULT Clear(ID3D11DeviceContext* pDeviceContext = nullptr);
 
 #ifdef _DEBUG
 	HRESULT Ready_Debug(_float fX, _float fY, _float fSizeX, _float fSizeY);

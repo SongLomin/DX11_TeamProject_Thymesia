@@ -71,7 +71,7 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uin
 	m_pSound_Manager->Initialize();
 
 	m_pPhysX_Manager->Initialize(iNumCollsionLayer);
-	m_pThread_Manager->Initialize(1290123);
+	m_pThread_Manager->Initialize(8);
 
 	return S_OK;	
 }
@@ -79,6 +79,8 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uin
 HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 {
 	m_fDeltaTime = fTimeDelta;
+
+	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks();
 
 	GET_SINGLE(CInput_Device)->SetUp_DeviceState();
 	m_pInput_Device->Tick();

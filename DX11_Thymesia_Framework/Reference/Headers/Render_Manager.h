@@ -13,7 +13,7 @@ class CRender_Manager :
 {
 	DECLARE_SINGLETON(CRender_Manager)
 
-private:
+public:
 	enum DEFERRED_GROUP
 	{
 		DEFERRED_EFFECT,
@@ -64,17 +64,18 @@ private:
 	HRESULT Bake_Fog();
 	HRESULT Bake_ViewShadow();
 	HRESULT Render_Blend(); /* Diffuse * Shade 백버퍼에 그린다. */
+	HRESULT Render_Effect();
 	HRESULT Render_NonLight();
-	HRESULT Render_NonAlphaEffect();
-	HRESULT Render_AlphaBlend();
+	HRESULT Render_NonAlphaEffect(ID3D11DeviceContext* pDeviceContext = nullptr);
+	HRESULT Render_AlphaBlend(ID3D11DeviceContext* pDeviceContext = nullptr);
 	HRESULT Extract_OutLine();
 	HRESULT Blur_OutLine();
-	HRESULT Blur_ExtractGlow(const _float& In_PixelPitchScalar);
-	HRESULT ReBlur_ExtractGlow(const _float& In_PixelPitchScalar);
+	HRESULT Blur_ExtractGlow(const _float& In_PixelPitchScalar, ID3D11DeviceContext* pDeviceContext = nullptr);
+	HRESULT ReBlur_ExtractGlow(const _float& In_PixelPitchScalar, ID3D11DeviceContext* pDeviceContext = nullptr);
 	HRESULT Blend_OutLine();
 	HRESULT Extract_Distortion();
 	HRESULT Blend_Distortion();
-	HRESULT Blend_Glow(); // 원본이 글로우보다 위에 그려진다.
+	HRESULT Blend_Glow(ID3D11DeviceContext* pDeviceContext = nullptr); // 원본이 글로우보다 위에 그려진다.
 	HRESULT Render_Font();
 	HRESULT Extract_Brightness();
 	HRESULT Blur_ExtractBloom();

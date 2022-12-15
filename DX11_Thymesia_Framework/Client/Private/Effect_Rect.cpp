@@ -161,7 +161,7 @@ HRESULT CEffect_Rect::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	this->SetUp_ShaderResource();
 	__super::Render(pDeviceContext);
-	m_pShaderCom.lock()->Begin(m_tEffectParticleDesc.iShaderPassIndex);
+	m_pShaderCom.lock()->Begin(m_tEffectParticleDesc.iShaderPassIndex, pDeviceContext);
 	m_pVIBuffer.lock()->Render(pDeviceContext);
 	return S_OK;
 }

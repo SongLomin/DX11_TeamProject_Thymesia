@@ -399,8 +399,16 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[DEFERRED_EFFECT].Get());	
 	GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[DEFERRED_UI].Get());
 
-	future<HRESULT> DrawUIThread = async(launch::async, bind(&CRender_Manager::Render_UI, this));
+	std::list<std::future<HRESULT>> futures;
+	
+	futures.emplace_back(GET_SINGLE(CThread_Manager)->EnqueueJob(bind(&CRender_Manager::Render_UI, this)));
+	futures.emplace_back(GET_SINGLE(CThread_Manager)->EnqueueJob(bind(&CRender_Manager::Render_Effect, this)));
+
+	//future<HRESULT> DrawUIThread = async(launch::async, bind(&CRender_Manager::Render_UI, this));
 	//future<HRESULT> DrawEffectThread = async(launch::async, bind(&CRender_Manager::Render_Effect, this));
+
+	HRESULT hr;
+	ID3D11CommandList* pCommandList = nullptr;
 
 	/*if (FAILED(Render_UI()))
 		DEBUG_ASSERT;*/
@@ -434,11 +442,24 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Blend_OutLine()))
 		DEBUG_ASSERT;
 
-	Render_Effect();
 
 	if (FAILED(Render_NonLight()))
 		DEBUG_ASSERT;
+	//Render_Effect();
 	
+	//hr = DrawEffectThread.get();
+
+	futures.front().get();
+
+	m_pDeferredContext[DEFERRED_EFFECT]->FinishCommandList(false, &pCommandList);
+
+	if (pCommandList)
+	{
+		DEVICECONTEXT->ExecuteCommandList(pCommandList, true);
+		pCommandList->Release();
+		pCommandList = nullptr;
+	}
+
 	if (FAILED(Extract_Distortion()))
 		DEBUG_ASSERT;
 	if (FAILED(Blend_Distortion()))
@@ -475,16 +496,17 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 		DEBUG_ASSERT;
 
 
-	HRESULT hr = DrawUIThread.get();
-
-
-	ID3D11CommandList* pCommandList = nullptr;
+	
+	//hr = DrawUIThread.get();
+	futures.back().get();
+	
 	m_pDeferredContext[DEFERRED_UI]->FinishCommandList(false, &pCommandList);
 
 	if (pCommandList)
 	{
 		DEVICECONTEXT->ExecuteCommandList(pCommandList, true);
 		pCommandList->Release();
+		pCommandList = nullptr;
 	}
 	
 
@@ -944,23 +966,25 @@ HRESULT CRender_Manager::Render_Blend()
 
 HRESULT CRender_Manager::Render_Effect()
 {
-	if (SUCCEEDED(Render_NonAlphaEffect()))
+	ID3D11DeviceContext* pDeviceContext = m_pDeferredContext[DEFERRED_EFFECT].Get();
+
+	if (SUCCEEDED(Render_NonAlphaEffect(pDeviceContext)))
 	{
-		if (FAILED(Blur_ExtractGlow(3.f)))
+		if (FAILED(Blur_ExtractGlow(3.f, pDeviceContext)))
 			DEBUG_ASSERT;
-		if (FAILED(ReBlur_ExtractGlow(3.f)))
+		if (FAILED(ReBlur_ExtractGlow(3.f, pDeviceContext)))
 			DEBUG_ASSERT;
-		if (FAILED(Blend_Glow()))
+		if (FAILED(Blend_Glow(pDeviceContext)))
 			DEBUG_ASSERT;
 	}
 
-	if (SUCCEEDED(Render_AlphaBlend()))
+	if (SUCCEEDED(Render_AlphaBlend(pDeviceContext)))
 	{
-		if (FAILED(Blur_ExtractGlow(3.f)))
+		if (FAILED(Blur_ExtractGlow(3.f, pDeviceContext)))
 			DEBUG_ASSERT;
-		if (FAILED(ReBlur_ExtractGlow(3.f)))
+		if (FAILED(ReBlur_ExtractGlow(3.f, pDeviceContext)))
 			DEBUG_ASSERT;
-		if (FAILED(Blend_Glow()))
+		if (FAILED(Blend_Glow(pDeviceContext)))
 			DEBUG_ASSERT;
 	}
 
@@ -981,10 +1005,8 @@ HRESULT CRender_Manager::Render_NonLight()
 	return S_OK;
 }
 
-HRESULT CRender_Manager::Render_NonAlphaEffect()
+HRESULT CRender_Manager::Render_NonAlphaEffect(ID3D11DeviceContext* pDeviceContext)
 {
-	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
-
 	for (auto iter = m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHA_EFFECT].begin(); iter != m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHA_EFFECT].end();)
 	{
 		if (!(*iter).lock())
@@ -1001,11 +1023,11 @@ HRESULT CRender_Manager::Render_NonAlphaEffect()
 
 	
 
-	pRenderTargetManager->Begin_MRTWithNoneClearWithIndex(TEXT("MRT_ExtractEffect"), 1);
+	pRenderTargetManager->Begin_MRTWithDeferredContextNoneClearIndex(TEXT("MRT_ExtractEffect"), 1, pDeviceContext);
 
 	if (m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHA_EFFECT].empty())
 	{
-		pRenderTargetManager->End_MRT();
+		pRenderTargetManager->End_DeferredMRT(pDeviceContext);
 
 		return E_FAIL;
 	}
@@ -1017,15 +1039,14 @@ HRESULT CRender_Manager::Render_NonAlphaEffect()
 	}
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHA_EFFECT].clear();
 
-	if (FAILED(pRenderTargetManager->End_MRT()))
+	if (FAILED(pRenderTargetManager->End_DeferredMRT(pDeviceContext)))
 		DEBUG_ASSERT;
 
 	return S_OK;
 }
 
-HRESULT CRender_Manager::Render_AlphaBlend()
+HRESULT CRender_Manager::Render_AlphaBlend(ID3D11DeviceContext* pDeviceContext)
 {
-	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
 
 	for (auto iter = m_RenderObjects[(_uint)RENDERGROUP::RENDER_ALPHABLEND].begin(); iter != m_RenderObjects[(_uint)RENDERGROUP::RENDER_ALPHABLEND].end();)
 	{
@@ -1049,11 +1070,11 @@ HRESULT CRender_Manager::Render_AlphaBlend()
 
 
 
-	pRenderTargetManager->Begin_MRTWithNoneClearWithIndex(TEXT("MRT_ExtractEffect"), 1);
+	pRenderTargetManager->Begin_MRTWithDeferredContextNoneClearIndex(TEXT("MRT_ExtractEffect"), 1, pDeviceContext);
 
 	if (m_RenderObjects[(_uint)RENDERGROUP::RENDER_ALPHABLEND].empty())
 	{
-		pRenderTargetManager->End_MRT();
+		pRenderTargetManager->End_DeferredMRT(pDeviceContext);
 
 		return E_FAIL;
 	}
@@ -1065,7 +1086,7 @@ HRESULT CRender_Manager::Render_AlphaBlend()
 	}
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_ALPHABLEND].clear();
 
-	if (FAILED(pRenderTargetManager->End_MRT()))
+	if (FAILED(pRenderTargetManager->End_DeferredMRT(pDeviceContext)))
 		DEBUG_ASSERT;
 
 	return S_OK;
@@ -1141,13 +1162,12 @@ HRESULT CRender_Manager::Blur_OutLine()
 	return S_OK;
 }
 
-HRESULT CRender_Manager::Blur_ExtractGlow(const _float& In_PixelPitchScalar)
+HRESULT CRender_Manager::Blur_ExtractGlow(const _float& In_PixelPitchScalar, ID3D11DeviceContext* pDeviceContext)
 {
-	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
 
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
-	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurXForGlow"));
+	pRenderTargetManager->Begin_DeferredMRT(TEXT("MRT_BlurXForGlow"), pDeviceContext);
 
 	if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture", pRenderTargetManager->Get_SRV(TEXT("Target_ExtractGlow")))))
 		DEBUG_ASSERT;
@@ -1165,10 +1185,10 @@ HRESULT CRender_Manager::Blur_ExtractGlow(const _float& In_PixelPitchScalar)
 	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
 
 	// Blur X
-	m_pXBlurShader->Begin(3);
+	m_pXBlurShader->Begin(3, pDeviceContext);
 	m_pVIBuffer->Render(pDeviceContext);
 
-	pRenderTargetManager->End_MRT();
+	pRenderTargetManager->End_DeferredMRT(pDeviceContext);
 
 	/*if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture", pRenderTargetManager->Get_SRV(TEXT("Target_BlurForGlow")))))
 		DEBUG_ASSERT;*/
@@ -1177,7 +1197,7 @@ HRESULT CRender_Manager::Blur_ExtractGlow(const _float& In_PixelPitchScalar)
 		pRenderTargetManager->Get_SRV(TEXT("Target_BlurXForGlow")))))
 		DEBUG_ASSERT;
 
-	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurForGlow"));
+	pRenderTargetManager->Begin_DeferredMRT(TEXT("MRT_BlurForGlow"), pDeviceContext);
 
 	m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 	m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
@@ -1189,21 +1209,20 @@ HRESULT CRender_Manager::Blur_ExtractGlow(const _float& In_PixelPitchScalar)
 	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
 
 	// Blur Y
-	m_pXBlurShader->Begin(4);
+	m_pXBlurShader->Begin(4, pDeviceContext);
 	m_pVIBuffer->Render(pDeviceContext);
 
-	pRenderTargetManager->End_MRT();
+	pRenderTargetManager->End_DeferredMRT(pDeviceContext);
 
 	return S_OK;
 }
 
-HRESULT CRender_Manager::ReBlur_ExtractGlow(const _float& In_PixelPitchScalar)
+HRESULT CRender_Manager::ReBlur_ExtractGlow(const _float& In_PixelPitchScalar, ID3D11DeviceContext* pDeviceContext)
 {
-	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
 
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
-	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurXForGlow"));
+	pRenderTargetManager->Begin_DeferredMRT(TEXT("MRT_BlurXForGlow"), pDeviceContext);
 
 	if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture", pRenderTargetManager->Get_SRV(TEXT("Target_BlurForGlow")))))
 		DEBUG_ASSERT;
@@ -1221,10 +1240,10 @@ HRESULT CRender_Manager::ReBlur_ExtractGlow(const _float& In_PixelPitchScalar)
 	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
 
 	// Blur X
-	m_pXBlurShader->Begin(3);
+	m_pXBlurShader->Begin(3, pDeviceContext);
 	m_pVIBuffer->Render(pDeviceContext);
 
-	pRenderTargetManager->End_MRT();
+	pRenderTargetManager->End_DeferredMRT(pDeviceContext);
 
 	/*if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture", pRenderTargetManager->Get_SRV(TEXT("Target_BlurForGlow")))))
 		DEBUG_ASSERT;*/
@@ -1233,7 +1252,7 @@ HRESULT CRender_Manager::ReBlur_ExtractGlow(const _float& In_PixelPitchScalar)
 		pRenderTargetManager->Get_SRV(TEXT("Target_BlurXForGlow")))))
 		DEBUG_ASSERT;
 
-	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurForGlow"));
+	pRenderTargetManager->Begin_DeferredMRT(TEXT("MRT_BlurForGlow"), pDeviceContext);
 
 	m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 	m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
@@ -1245,10 +1264,10 @@ HRESULT CRender_Manager::ReBlur_ExtractGlow(const _float& In_PixelPitchScalar)
 	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
 
 	// Blur Y
-	m_pXBlurShader->Begin(4);
+	m_pXBlurShader->Begin(4, pDeviceContext);
 	m_pVIBuffer->Render(pDeviceContext);
 
-	pRenderTargetManager->End_MRT();
+	pRenderTargetManager->End_DeferredMRT(pDeviceContext);
 
 	return S_OK;
 }
@@ -1329,9 +1348,8 @@ HRESULT CRender_Manager::Blend_Distortion()
 	return S_OK;
 }
 
-HRESULT CRender_Manager::Blend_Glow()
+HRESULT CRender_Manager::Blend_Glow(ID3D11DeviceContext* pDeviceContext)
 {
-	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
 
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
@@ -1344,7 +1362,7 @@ HRESULT CRender_Manager::Blend_Glow()
 	//m_pShader->Set_ShaderResourceView("g_OriginalRenderTexture", GET_SINGLE(CGraphic_Device)->Get_SRV());
 
 
-	m_pShader->Begin(6);
+	m_pShader->Begin(6, pDeviceContext);
 	m_pVIBuffer->Render(pDeviceContext);
 
 	/*m_pShader->Begin(7);
@@ -1624,9 +1642,11 @@ HRESULT CRender_Manager::Render_AfterPostEffect()
 
 HRESULT CRender_Manager::Render_AfterPostEffectGlow()
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
 	Blur_Effect();
-	Blur_ExtractGlow(3.f);
-	ReBlur_ExtractGlow(3.f);
+	Blur_ExtractGlow(3.f, pDeviceContext);
+	ReBlur_ExtractGlow(3.f, pDeviceContext);
 	
 	Blend_Glow();
 
