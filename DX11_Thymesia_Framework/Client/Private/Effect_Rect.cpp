@@ -136,16 +136,16 @@ void CEffect_Rect::Tick(_float fTimeDelta)
 #ifdef _DEBUG
 	if (m_bResetTrigger && m_pParentTransformCom.lock())
 	{
-		this->ReBake_EditParticle();
-		this->Reset_Effect(m_pParentTransformCom.lock());
+		ReBake_EditParticle();
+		Reset_Effect(m_pParentTransformCom.lock());
 		m_bResetTrigger = false;
 	}
 #endif // _DEBUG
 
 	if (m_pVIBuffer.lock()->Get_InstanceCount() != m_tEffectParticleDesc.iMaxInstance)
-		this->Reset_Instance(m_tEffectParticleDesc.iMaxInstance);
+		Reset_Instance(m_tEffectParticleDesc.iMaxInstance);
 
-	this->Play(fTimeDelta * GAMEINSTANCE->Get_TimeScale(m_iTimeScaleLayerIndex));
+	Play(fTimeDelta * GAMEINSTANCE->Get_TimeScale(m_iTimeScaleLayerIndex));
 }
 
 void CEffect_Rect::LateTick(_float fTimeDelta)
@@ -153,13 +153,13 @@ void CEffect_Rect::LateTick(_float fTimeDelta)
 	m_pVIBuffer.lock()->Update(m_tParticleDescs, ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType));
 	__super::LateTick(fTimeDelta);
 
-	if (this->Check_DisableAllParticle())
+	if (Check_DisableAllParticle())
 		Set_Enable(false);
 }
 
 HRESULT CEffect_Rect::Render()
 {
-	this->SetUp_ShaderResource();
+	SetUp_ShaderResource();
 	__super::Render();
 	m_pShaderCom.lock()->Begin(m_tEffectParticleDesc.iShaderPassIndex);
 	m_pVIBuffer.lock()->Render();
@@ -174,7 +174,7 @@ void CEffect_Rect::Init_EffectParticle(const _char* In_szName, const _char* In_s
 
 void CEffect_Rect::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 {
-	CBase::Set_Enable(true);
+	Set_Enable(true);
 	m_bFinish = false;
 	m_bStopParticle = false;
 	m_bStopSprite = false;
@@ -236,15 +236,15 @@ void CEffect_Rect::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 		}
 	}
 
-	this->Update_ParentTransform();
-	this->Reset_ParticleDescs();
+	Update_ParentTransform();
+	Reset_ParticleDescs();
 }
 
 void CEffect_Rect::SetUp_ShaderResource()
 {
 #pragma region Base
 	if ((_uint)TRANSFORMTYPE::STATIC != m_tEffectParticleDesc.iFollowTransformType)
-		this->Update_ParentTransform();
+		Update_ParentTransform();
 
 	_matrix WorldMatrix(XMMatrixIdentity()), BoneMatrix(XMMatrixIdentity());
 
@@ -524,7 +524,7 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 #pragma endregion
 
 #pragma region For. Sprite
-	if (this->Is_Sprite())
+	if (Is_Sprite())
 	{
 		Out_Json["Loop_Sprite"] = m_tEffectParticleDesc.bLoopSprite;
 		Out_Json["Is_Stop_At_End_Frame"] = m_tEffectParticleDesc.bStopAtEndFrame;
@@ -860,7 +860,7 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma endregion
 
 #pragma region For. Sprite
-	if (this->Is_Sprite())
+	if (Is_Sprite())
 	{
 		if (In_Json.find("Loop_Sprite") != In_Json.end())
 			m_tEffectParticleDesc.bLoopSprite = In_Json["Loop_Sprite"];
@@ -937,7 +937,7 @@ void CEffect_Rect::Play(_float fTimeDelta)
 			{
 				if (m_tEffectParticleDesc.bLooping && !m_bStopParticle)
 				{
-					this->Reset_ParticleDesc((_uint)i);
+					Reset_ParticleDesc((_uint)i);
 				}
 				else
 				{
@@ -952,13 +952,13 @@ void CEffect_Rect::Play(_float fTimeDelta)
 
 
 		for (_int x(0); x < iTickCount; ++x)
-			this->Play_Internal(i, fFrameTime);
+			Play_Internal(i, fFrameTime);
 	}
 
 	for (_int x(0); x < iTickCount; ++x)
 	{
-		this->Update_ParticleUV(fFrameTime);
-		this->Update_ParticleGlowColor(fFrameTime);
+		Update_ParticleUV(fFrameTime);
+		Update_ParticleGlowColor(fFrameTime);
 	}
 }
 
@@ -967,7 +967,7 @@ void CEffect_Rect::Sync_Animation()
 	if (!m_tEffectParticleDesc.bSyncAnimation)
 		return;
 
-	this->Reset_Effect(weak_ptr<CTransform>());
+	Reset_Effect(weak_ptr<CTransform>());
 }
 
 void CEffect_Rect::UnUse_EffectParticle()
@@ -983,7 +983,7 @@ void CEffect_Rect::UnUse_EffectParticle()
 
 void CEffect_Rect::ReBake_EditParticle()
 {
-	this->Reset_Instance(m_tEffectParticleDesc.iMaxInstance);
+	Reset_Instance(m_tEffectParticleDesc.iMaxInstance);
 }
 
 void CEffect_Rect::Reset_Instance(const _uint& In_ParticleCount)
@@ -996,14 +996,14 @@ void CEffect_Rect::Reset_Instance(const _uint& In_ParticleCount)
 	m_tOriginalParticleDescs = vector<PARTICLE_DESC>(In_ParticleCount, PARTICLE_DESC());
 
 	m_pVIBuffer.lock()->Init_Particle(In_ParticleCount);
-	this->Generate_RandomOriginalParticleDesc();
-	this->Reset_ParticleDescs();
+	Generate_RandomOriginalParticleDesc();
+	Reset_ParticleDescs();
 }
 
 void CEffect_Rect::Reset_ParticleDescs()
 {
 	for (_int i(0); i < m_tEffectParticleDesc.iMaxInstance; ++i)
-		this->Reset_ParticleDesc((_uint)i);
+		Reset_ParticleDesc((_uint)i);
 }
 
 void CEffect_Rect::Reset_ParticleDesc(const _uint& In_iIndex)
@@ -1138,11 +1138,11 @@ _bool CEffect_Rect::Check_DisableAllParticle()
 
 void CEffect_Rect::Play_Internal(const _uint& i, _float fTimeDelta)
 {
-	this->Update_ParticleRotation(i, fTimeDelta);
-	this->Update_ParticlePosition(i, fTimeDelta);
-	this->Update_ParticleScale(i, fTimeDelta);
-	this->Update_ParticleColor(i, fTimeDelta);
-	this->Update_ParticleSpriteFrame(i, fTimeDelta);
+	Update_ParticleRotation(i, fTimeDelta);
+	Update_ParticlePosition(i, fTimeDelta);
+	Update_ParticleScale(i, fTimeDelta);
+	Update_ParticleColor(i, fTimeDelta);
+	Update_ParticleSpriteFrame(i, fTimeDelta);
 }
 
 void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
@@ -1171,7 +1171,7 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 		if (0.f > fElapsedTime)
 			return;
 
-		this->Apply_Easing
+		Apply_Easing
 		(
 			vMove
 			, (EASING_TYPE)m_tEffectParticleDesc.iSpeedEasingType
@@ -1205,7 +1205,7 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 			if (0.f > fElapsedTime)
 				return;
 
-			this->Apply_Easing
+			Apply_Easing
 			(
 				vMove
 				, (EASING_TYPE)m_tEffectParticleDesc.iSpeedEasingType
@@ -1321,7 +1321,7 @@ void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
 			if (0.f > fElapsedTime)
 				return;
 
-			this->Apply_Easing
+			Apply_Easing
 			(
 				vRotation
 				, (EASING_TYPE)m_tEffectParticleDesc.iRotationEasingType
@@ -1366,7 +1366,7 @@ void CEffect_Rect::Update_ParticleScale(const _uint& i, _float fTimeDelta)
 		if (0.f > fElapsedTime)
 			return;
 
-		this->Apply_Easing
+		Apply_Easing
 		(
 			vScale
 			, (EASING_TYPE)m_tEffectParticleDesc.iScaleEasingType
@@ -1482,7 +1482,7 @@ void CEffect_Rect::Update_ParticleColor(const _uint& i, _float fTimeDelta)
 			if (0.f > fElapsedTime)
 				return;
 
-			this->Apply_Easing
+			Apply_Easing
 			(
 				fAlpha
 				, (EASING_TYPE)m_tEffectParticleDesc.iAlphaEasingType
@@ -2783,7 +2783,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 		{
 			// TODO : SongRoMin IlHaeRa
 			if (ImGui::Button("Clone"))
-				this->Clone_EffectRect();
+				Clone_EffectRect();
 
 			ImGui::Text("Max Instance"); ImGui::SameLine();
 			ImGui::DragInt("##Max_Instance", &m_tEffectParticleDesc.iMaxInstance, 1, 0, 9999, "%d", ImGuiSliderFlags_AlwaysClamp);
@@ -2849,7 +2849,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			}
 
 			if (ImGui::CollapsingHeader("Spawn & Life Time"))
-				this->Tool_Spawn_Life_Time();
+				Tool_Spawn_Life_Time();
 
 			ImGui::Separator();
 			ImGui::Checkbox("Is Move Look##Is_MoveLook", &m_tEffectParticleDesc.bMoveLook);
@@ -2875,7 +2875,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 				ImGui::Checkbox("Follow Bone##Is_Boner", &m_tEffectParticleDesc.bBoner);
 
 				if (m_tEffectParticleDesc.bBoner)
-					this->Tool_Boner();
+					Tool_Boner();
 				else
 				{
 					m_pBoneNode.reset();
@@ -2886,7 +2886,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			{
 				ImGui::Checkbox("Easing Position##Is_Easing_Position", &m_tEffectParticleDesc.bEasingPosition);
 				ImGui::Separator();
-				this->Tool_Position();
+				Tool_Position();
 			}
 			if (!m_tEffectParticleDesc.bEasingPosition)
 			{
@@ -2895,13 +2895,13 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					ImGui::Checkbox("Apply Easing##Is_Easing_Speed", &m_tEffectParticleDesc.bEasingSpeed);
 
 					if (!m_tEffectParticleDesc.bEasingSpeed)
-						this->Tool_Speed();
+						Tool_Speed();
 					else
-						this->Tool_Speed_Easing();
+						Tool_Speed_Easing();
 				}
 			}
 			else
-				this->Tool_Position_Easing();
+				Tool_Position_Easing();
 
 			if (_int(PARTICLETYPE::OUTBURST) != m_tEffectParticleDesc.iParticleType)
 			{
@@ -2912,9 +2912,9 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					ImGui::Separator();
 
 					if (!m_tEffectParticleDesc.bEasingRotation)
-						this->Tool_Rotation();
+						Tool_Rotation();
 					else
-						this->Tool_Rotation_Easing();
+						Tool_Rotation_Easing();
 				}
 			}
 			if (ImGui::CollapsingHeader("Scale"))
@@ -2968,16 +2968,16 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 				ImGui::Separator();
 
 				if (!m_tEffectParticleDesc.bEasingScale)
-					this->Tool_Scale();
+					Tool_Scale();
 				else
-					this->Tool_Scale_Easing();
+					Tool_Scale_Easing();
 			}
 			if (ImGui::CollapsingHeader("Colors"))
 			{
 				if (ImGui::TreeNode("Shader Pass"))
 				{
 #ifdef _JOJO_EFFECT_TOOL_
-					this->Show_ShaderPasses();
+					Show_ShaderPasses();
 #endif // _JOJO_EFFECT_TOOL_
 					ImGui::SetNextItemWidth(100.f);
 					ImGui::InputInt("Shader Pass", &m_tEffectParticleDesc.iShaderPassIndex);
@@ -2994,22 +2994,22 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					m_eRenderGroup = RENDERGROUP::RENDER_ALPHABLEND;
 				
 
-				if (this->Is_Sprite())
-					this->Tool_Sprite();
+				if (Is_Sprite())
+					Tool_Sprite();
 
 				ImGui::Text("Discard Ratio"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);
 				ImGui::DragFloat("##Discard_Ratio", &m_tEffectParticleDesc.fDiscardRatio, 0.01f, 0.f, 3.f);
 				ImGui::Checkbox("Is Gray Only Use Red##Is_Gray_Only_Use_Red", &m_tEffectParticleDesc.IsGrayOnlyUseRed);
 				ImGui::Checkbox("Easing Alpha##Is_Easing_Alpha", &m_tEffectParticleDesc.bEasingAlpha);
-				this->Tool_Color();
+				Tool_Color();
 				if (m_tEffectParticleDesc.bEasingAlpha)
-					this->Tool_Color_EasingAlpha();
+					Tool_Color_EasingAlpha();
 			}
 			if (ImGui::CollapsingHeader("Textures"))
 			{
-				this->Tool_Texture_Diffuse();
-				this->Tool_Texture_Mask();
-				this->Tool_Texture_Noise();
+				Tool_Texture_Diffuse();
+				Tool_Texture_Mask();
+				Tool_Texture_Noise();
 			}
 			if (ImGui::CollapsingHeader("Bloom & Glow"))
 			{
@@ -3020,7 +3020,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 				ImGui::Checkbox("Glow##Glow", &m_tEffectParticleDesc.bGlow);
 
 				if (m_tEffectParticleDesc.bGlow)
-					this->Tool_Glow();
+					Tool_Glow();
 
 			}
 		}
