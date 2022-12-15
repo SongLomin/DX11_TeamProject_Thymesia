@@ -6,6 +6,8 @@ BEGIN(Client)
 class CCamera_Target;
 class CTalent_Effect;
 class CTalent_Sword;
+class CPlayerSkill_System;
+
 
 class CCorvus : 
     public CPlayer
@@ -21,7 +23,7 @@ public:
     virtual void LateTick(_float fTimeDelta)       override;
     virtual void Before_Render(_float fTimeDelta)  override;
     virtual void Custom_Thread1(_float fTimeDelta) override;
-    virtual HRESULT Render()                       override;
+    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
 protected:
     virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
@@ -33,12 +35,22 @@ private:
     void Debug_KeyInput(_float fTimeDelta);
     void Ready_Weapon();
     void Ready_States();
+    void Ready_Skills();
+
+
     virtual void SetUp_ShaderResource() override;
     virtual void Move_RootMotion_Internal() override;
     virtual void OnBattleEnd() override;
     virtual void OnEnable(void* pArg) override;
     virtual void OnDisable() override;
     void Free();
+
+public:
+    void       Test_BindSkill();
+
+
+private://Moon SkillSytem RequireMent;
+    virtual void SetUp_Requirement();
 
 private:
     void Look_At_Mosnter();
@@ -47,7 +59,7 @@ private:
 private:
     weak_ptr<CTalent_Sword>  m_pSword;
     _uint                    m_iContainerIndex = 0;
-
+    weak_ptr<CPlayerSkill_System> m_pSkillSystem;
 private:
     weak_ptr<CCamera_Target> m_pCamera;
     weak_ptr<CTransform> m_pCameraTransform;

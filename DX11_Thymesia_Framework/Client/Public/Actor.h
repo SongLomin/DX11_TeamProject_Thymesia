@@ -31,7 +31,7 @@ public:
     virtual void Before_Render(_float fTimeDelta) override;
     virtual void Custom_Thread0(_float fTimeDelta) override;
     virtual void Custom_Thread1(_float fTimeDelta) override;
-    virtual HRESULT Render() override;
+    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
     
 public:
     _vector Get_WorldPosition();
@@ -49,7 +49,7 @@ protected:
     weak_ptr<CModel> m_pModelCom;
     weak_ptr<CShader> m_pShaderCom;
     weak_ptr<CRenderer> m_pRendererCom;
-    map<_hashcode, weak_ptr<CRequirementChecker>> m_pRequirementCheckerComs;
+    map<_hashcode, shared_ptr<CRequirementChecker>> m_pRequirementChecker;
 
     list<pair<string, _uint>>   m_EffectIndexList;
 

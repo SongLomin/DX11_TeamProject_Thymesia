@@ -60,7 +60,7 @@ void CWindow_EffectEditerView::Tick(_float fTimeDelta)
     }
 }
 
-HRESULT CWindow_EffectEditerView::Render()
+HRESULT CWindow_EffectEditerView::Render(ID3D11DeviceContext* pDeviceContext)
 {
     if (FAILED(__super::Begin()))
         return E_FAIL;

@@ -55,9 +55,9 @@ void CCorvus_DefaultSaber::LateTick(_float fTimeDelta)
 	m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
 }
 
-HRESULT CCorvus_DefaultSaber::Render()
+HRESULT CCorvus_DefaultSaber::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	__super::Render();
+	__super::Render(pDeviceContext);
 
 	return S_OK;
 }

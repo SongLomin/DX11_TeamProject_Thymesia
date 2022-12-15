@@ -1,0 +1,207 @@
+0. SK_C_BossBat_NEW_V1.ao|BossBat_AttackL_01_1
+1. SK_C_BossBat_NEW_V1.ao|BossBat_AttackL_01_2a
+2. SK_C_BossBat_NEW_V1.ao|BossBat_AttackL_01_2b
+3. SK_C_BossBat_NEW_V1.ao|BossBat_AttackL_01_3a
+4. SK_C_BossBat_NEW_V1.ao|BossBat_AttackR_01_1
+5. SK_C_BossBat_NEW_V1.ao|BossBat_AttackR_01_2a
+6. SK_C_BossBat_NEW_V1.ao|BossBat_AttackR_01_2b
+7. SK_C_BossBat_NEW_V1.ao|BossBat_Bite_1
+8. SK_C_BossBat_NEW_V1.ao|BossBat_Bite_2
+9. SK_C_BossBat_NEW_V1.ao|BossBat_Car
+10. SK_C_BossBat_NEW_V1.ao|BossBat_Charge
+11. SK_C_BossBat_NEW_V1.ao|BossBat_FTurn_L
+12. SK_C_BossBat_NEW_V1.ao|BossBat_FTurn_R
+13. SK_C_BossBat_NEW_V1.ao|BossBat_Hellscream
+14. SK_C_BossBat_NEW_V1.ao|BossBat_HurtXL_F
+15. SK_C_BossBat_NEW_V1.ao|BossBat_HurtXL_L
+16. SK_C_BossBat_NEW_V1.ao|BossBat_Idle
+17. SK_C_BossBat_NEW_V1.ao|BossBat_JumpSmash_Chest
+18. SK_C_BossBat_NEW_V1.ao|BossBat_JumpSmashForwardL
+19. SK_C_BossBat_NEW_V1.ao|BossBat_JumpSmashL
+20. SK_C_BossBat_NEW_V1.ao|BossBat_Seq_BossFightStart_Loop
+21. SK_C_BossBat_NEW_V1.ao|BossBat_Seq_BossFightStart_V1
+22. SK_C_BossBat_NEW_V1.ao|BossBat_SonicBoom
+23. SK_C_BossBat_NEW_V1.ao|BossBat_SP01
+24. SK_C_BossBat_NEW_V1.ao|BossBat_Storm_1
+25. SK_C_BossBat_NEW_V1.ao|BossBat_StunEnd
+26. SK_C_BossBat_NEW_V1.ao|BossBat_StunLoop
+27. SK_C_BossBat_NEW_V1.ao|BossBat_StunStart
+28. SK_C_BossBat_NEW_V1.ao|BossBat_TakeExecution_End
+29. SK_C_BossBat_NEW_V1.ao|BossBat_TakeExecution_Loop
+30. SK_C_BossBat_NEW_V1.ao|BossBat_TakeExecution_Start01
+31. SK_C_BossBat_NEW_V1.ao|BossBat_TurnL90
+32. SK_C_BossBat_NEW_V1.ao|BossBat_TurnR90
+33. SK_C_BossBat_NEW_V1.ao|BossBat_WalkF
+RootNode
+SK_C_BossBat_NEW_V1.ao
+root
+pelvis
+Bip001-Pelvis
+spine_01
+spine_02
+neck_01
+head
+mouth
+mouth_end
+ear_l
+ear_l_end
+ear_r
+ear_r_end
+clavicle_l
+upperarm_l
+lowerarm_l
+hand_l
+thumb_01_l
+thumb_02_l
+thumb_03_l
+Bip001-L-Finger0Nub
+Bip001-L-Finger0Nub_end
+index_01_l
+index_02_l
+index_03_l
+Bip001-L-Finger1Nub
+Bip001-L-Finger1Nub_end
+middle_01_l
+middle_02_l
+middle_03_l
+Bip001-L-Finger2Nub
+Bip001-L-Finger2Nub_end
+ring_01_l
+ring_02_l
+ring_03_l
+Bip001-L-Finger3Nub
+Bip001-L-Finger3Nub_end
+wing_20_l
+wing_21_l
+wing_22_l
+Bip001-Xtra02Nub
+Bip001-Xtra02Nub_end
+wing_10_l
+wing_11_l
+wing_12_l
+Bip001-Xtra03Nub
+Bip001-Xtra03Nub_end
+wing_00_l
+wing_01_l
+wing_02_l
+Bip001-Xtra04Nub
+Bip001-Xtra04Nub_end
+wing_30_l
+wing_31_l
+wing_32_l
+pelvis-Xtra06Nub
+pelvis-Xtra06Nub_end
+wing_40_l
+wing_41_l
+wing_42_l
+Bip001-Xtra05Nub
+Bip001-Xtra05Nub_end
+clavicle_r
+upperarm_r
+lowerarm_r
+hand_r
+thumb_01_r
+thumb_02_r
+thumb_03_r
+Bip001-R-Finger0Nub
+Bip001-R-Finger0Nub_end
+index_01_r
+index_02_r
+index_03_r
+Bip001-R-Finger1Nub
+Bip001-R-Finger1Nub_end
+middle_01_r
+middle_02_r
+middle_03_r
+Bip001-R-Finger2Nub
+Bip001-R-Finger2Nub_end
+ring_01_r
+ring_02_r
+ring_03_r
+Bip001-R-Finger3Nub
+Bip001-R-Finger3Nub_end
+wing_20_r
+wing_21_r
+wing_22_r
+Bip001-Xtra02OppNub
+Bip001-Xtra02OppNub_end
+wing_10_r
+wing_11_r
+wing_12_r
+Bip001-Xtra03OppNub
+Bip001-Xtra03OppNub_end
+wing_00_r
+wing_01_r
+wing_02_r
+Bip001-Xtra04OppNub
+Bip001-Xtra04OppNub_end
+wing_30_r
+wing_31_r
+wing_32_r
+pelvis-Xtra06OppNub
+pelvis-Xtra06OppNub_end
+wing_40_r
+wing_41_r
+wing_42_r
+pelvis-Xtra05OppNub
+pelvis-Xtra05OppNub_end
+chest
+chest_end
+thigh_l
+calf_l
+foot_l
+Toe_00_l
+Toe_01_l
+Toe_02_l
+Toe_02_l_end
+Toe_10_l
+Toe_11_l
+Toe_12_l
+Toe_12_l_end
+Toe_20_l
+Toe_21_l
+Toe_22_l
+Toe_22_l_end
+Toe_30_l
+Toe_31_l
+Toe_32_l
+Toe_32_l_end
+thigh_r
+calf_r
+foot_r
+Toe_00_r
+Toe_01_r
+Toe_02_r
+Toe_02_r_end
+Toe_10_r
+Toe_11_r
+Toe_12_r
+Toe_12_r_end
+Toe_20_r
+Toe_21_r
+Toe_22_r
+Toe_22_r_end
+Toe_30_r
+Toe_31_r
+Toe_32_r
+Toe_32_r_end
+tail_01
+tail_02
+tail_03
+Bip001-TailNub
+Bip001-TailNub_end
+ik_foot_r
+ik_foot_r_end
+ik_hand_r
+ik_hand_r_end
+ik_foot_l
+ik_foot_l_end
+ik_hand_l
+ik_hand_l_end
+AnimTargetPoint
+AnimTargetPoint_end
+camera
+camera_end
+ik_head
+ik_head_end
+SK_C_BossBat_NEW_V1.mo

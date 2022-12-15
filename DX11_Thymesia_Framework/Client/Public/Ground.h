@@ -32,7 +32,7 @@ public:
     virtual HRESULT Start() override;
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
-    virtual HRESULT Render() override;
+    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
 public:
     virtual void Load_FromJson(const json& In_Json) override;
@@ -56,6 +56,10 @@ private:
     _uint                           m_iShaderPath = 0;
 
     string                          m_szModelName;
+
+//TODO: 물 쉐이더 테스트
+    _float2 m_vNoiseUV = {0.f,0.f};
+    weak_ptr<CTexture>              m_pNoiseTextureCom;
 
 public:
     void Free();

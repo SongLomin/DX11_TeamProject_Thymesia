@@ -79,7 +79,7 @@ void CStatic_Instancing_Prop::Before_Render(_float fTimeDelta)
 #endif
 }
 
-HRESULT CStatic_Instancing_Prop::Render()
+HRESULT CStatic_Instancing_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	if ("TEMP_Corvus" == m_pInstanceModelCom.lock()->Get_ModelKey())
 		return S_OK;
@@ -144,14 +144,14 @@ HRESULT CStatic_Instancing_Prop::Render()
 			}
 		}
 
-		m_pShaderCom.lock()->Begin(m_iPassIndex);
-		m_pInstanceModelCom.lock()->Render_Mesh(i);
+		m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
+		m_pInstanceModelCom.lock()->Render_Mesh(i, pDeviceContext);
 	}
 
     return S_OK;
 }
 
-HRESULT CStatic_Instancing_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix)
+HRESULT CStatic_Instancing_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix, ID3D11DeviceContext* pDeviceContext)
 {
 	m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
 
@@ -161,8 +161,8 @@ HRESULT CStatic_Instancing_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix,
 	_uint iNumMeshContainers = m_pInstanceModelCom.lock()->Get_NumMeshContainers();
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
-		m_pShaderCom.lock()->Begin(2);
-		m_pInstanceModelCom.lock()->Render_Mesh(i);
+		m_pShaderCom.lock()->Begin(2, pDeviceContext);
+		m_pInstanceModelCom.lock()->Render_Mesh(i, pDeviceContext);
 	}
 
 	return S_OK;

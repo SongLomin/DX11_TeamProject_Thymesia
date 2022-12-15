@@ -59,7 +59,7 @@ private:
 #ifdef _DEBUG
 public:
 	void	Set_DebugColor(_fvector In_vColor);
-	HRESULT Render();
+	HRESULT Render(ID3D11DeviceContext* pDeviceContext);
 	HRESULT Render_IgnoreDebugCheck();
 
 private:

@@ -47,9 +47,9 @@ void CProgressBar::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CProgressBar::Render()
+HRESULT CProgressBar::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    __super::Render();
+    __super::Render(pDeviceContext);
 
 
     return S_OK;

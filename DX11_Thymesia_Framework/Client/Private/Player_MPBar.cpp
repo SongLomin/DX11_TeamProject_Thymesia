@@ -6,7 +6,9 @@
 #include "Engine_Defines.h"
 #include "ProgressBar.h"
 #include "UI_LerpBar.h"
-
+#include "Preset_UIDesc.h"
+#include "Status_Player.h"
+#include "EasingComponent_Float.h"
 
 
 GAMECLASS_C(CPlayer_MPBar)
@@ -21,47 +23,16 @@ HRESULT CPlayer_MPBar::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-	Set_UIPosition(200.f, 830.f, 300.f, 8.f);
+	CPreset_UIDesc::Set_CUI_PlayerMPBar(Weak_StaticCast<CPlayer_MPBar>(m_this));
 
-	m_pBG = GAMEINSTANCE->Add_GameObject<CProgressBar>(LEVEL_STATIC);
-	m_pBG.lock()->Get_Component<CTexture>().lock()->Use_Texture("Player_MPBar_BG");
-	m_pBG.lock()->Set_UIPosition(m_tUIDesc.fX, m_tUIDesc.fY, m_tUIDesc.fSizeX, m_tUIDesc.fSizeY);
+	SetUp_Component();
 
-	m_pMainBar = GAMEINSTANCE->Add_GameObject<CProgressBar>(LEVEL_STATIC);
-	m_pMainBar.lock()->Get_Component<CTexture>().lock()->Use_Texture("Player_MPBar_MainBar");
-	m_pMainBar.lock()->Set_UIPosition(m_tUIDesc.fX, m_tUIDesc.fY, m_tUIDesc.fSizeX, m_tUIDesc.fSizeY - 5.f);
 
-	m_pBorderLeft = GAMEINSTANCE->Add_GameObject<CProgressBar>(LEVEL_STATIC);
-	m_pBorderLeft.lock()->Get_Component<CTexture>().lock()->Use_Texture("Player_MPBar_Border_Left");
-	m_pBorderLeft.lock()->Set_UIPosition(m_tUIDesc.fX - (m_tUIDesc.fSizeX * 0.5f), m_tUIDesc.fY, 11.f, 8.f);
+	GET_SINGLE(CGameManager)->CallBack_ChangePlayer +=
+		bind(&CPlayer_MPBar::Bind_Player, this);
 
-	m_pBorderRight = GAMEINSTANCE->Add_GameObject<CProgressBar>(LEVEL_STATIC);
-	m_pBorderRight.lock()->Get_Component<CTexture>().lock()->Use_Texture("Player_MPBar_Border_Right");
-	m_pBorderRight.lock()->Set_UIPosition(m_tUIDesc.fX + (m_tUIDesc.fSizeX * 0.5f), m_tUIDesc.fY, 26.f, 8.f);
 
-	m_tUIDesc.fDepth = 0.f;
-	
-	m_fMaxMp = 150.f;
-	m_fCurrentMp = m_fMaxMp;
-	m_fLerpedMp = m_fMaxMp;
-
-	m_tUIDesc.fDepth = 0.f;
-
-	m_tTextInfo.bAlways = false;
-	m_tTextInfo.bCenterAlign = false;
-	m_tTextInfo.fRotation = 0.f;
-	m_tTextInfo.vColor = _float4(0.7f, 0.7f, 0.7f, 0.7f);
-	m_tTextInfo.vScale = _float2(0.5, 0.5f);
-	m_tTextInfo.vPosition = _float2(m_tUIDesc.fX + m_tUIDesc.fSizeX * 0.5f + 20.f, m_tUIDesc.fY - 10.f);
-	m_tTextInfo.eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
-
-	m_eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
-	
-	Add_Child(m_pMainBar);
-	Add_Child(m_pBG);
-	Add_Child(m_pBorderLeft);
-	Add_Child(m_pBorderRight);
-
+	Bind_Player();
 	return S_OK;
 }
 
@@ -76,32 +47,11 @@ void CPlayer_MPBar::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	if (KEY_INPUT(KEY::Z, KEY_STATE::TAP))
+	if (m_pEasingFloatCom.lock()->Is_Lerping())
 	{
-
-		_float Hp = m_fCurrentMp -= 100.f;
-		Set_CurrentHp(Hp, true);
-
+		m_fLerpedMp = m_pEasingFloatCom.lock()->Get_Lerp();
 	}
-
-	else if (KEY_INPUT(KEY::X, KEY_STATE::TAP))
-	{
-		_float Hp = m_fCurrentMp += 100.f;
-		Set_CurrentHp(Hp, true);
-	}
-
-	if (m_fCurrentMp < 0.f)
-		m_fCurrentMp = 0.f;
-	else if (m_fCurrentMp > m_fMaxMp)
-		m_fCurrentMp = m_fMaxMp;
-
-	if (Is_Lerping())
-		m_fLerpedMp = Get_Lerp().x;
-
-	_float fRatio = m_fLerpedMp / m_fMaxMp;
-
-	m_pMainBar.lock()->Set_Ratio(fRatio);
-
+	m_pMainBar.lock()->Set_Ratio(m_fLerpedMp / m_fMaxMp);
 	m_tTextInfo.szText = to_wstring((_uint)m_fLerpedMp);
 	m_tTextInfo.szText.append(L"/");
 	m_tTextInfo.szText.append(to_wstring((_uint)m_fMaxMp));
@@ -116,36 +66,71 @@ void CPlayer_MPBar::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CPlayer_MPBar::Render()
+HRESULT CPlayer_MPBar::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	//__super::Render();
+	//__super::Render(pDeviceContext);
 
 	return S_OK;;
 }
 
 void CPlayer_MPBar::OnEventMessage(_uint iArg)
 {
+	
 }
 
-void CPlayer_MPBar::Set_CurrentHp(_float _fCurrentHp, _bool bLerp, EASING_TYPE eLerpType)
+void CPlayer_MPBar::ChangeMP(_float fCurrentMP)
 {
-	m_fCurrentMp = _fCurrentHp;
+	m_fCurrentMp = fCurrentMP;
 
-	if (m_fCurrentMp <= 0.f)
-		m_fCurrentMp = 0.f;
-
-	if (!bLerp)
-		m_fLerpedMp = m_fCurrentMp;
-	else
-		Set_Lerp(m_fLerpedMp, m_fCurrentMp, 1.f, eLerpType);
+	m_pEasingFloatCom.lock()->Set_Lerp(m_fLerpedMp, m_fCurrentMp, 1.f, EASING_TYPE::QUAD_IN,
+		CEasingComponent::ONCE);
 }
 
+
+void CPlayer_MPBar::SetUp_Component()
+{
+	__super::SetUp_Component();
+
+	m_pEasingFloatCom = Add_Component<CEasingComponent_Float>();
+}
 
 HRESULT CPlayer_MPBar::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
 
 	return S_OK;
+}
+
+void CPlayer_MPBar::Bind_Player()
+{
+	__super::Bind_Player();
+
+	m_pPlayerStatus.lock()->Callback_ChangeMP
+		+= bind(&CPlayer_MPBar::Call_ChangeMP, this, placeholders::_1);
+
+	m_pPlayerStatus.lock()->Callback_Update_Status
+		+= bind(&CPlayer_MPBar::Call_UpdateStatus, this);
+
+	Update_MPBar();
+}
+
+void CPlayer_MPBar::Update_MPBar()
+{
+	CStatus_Player::PLAYERDESC tPlayerDesc = m_pPlayerStatus.lock()->Get_PlayerDesc();
+
+	m_fMaxMp = tPlayerDesc.m_fMaxMP;
+	m_fCurrentMp = tPlayerDesc.m_fCurrentMP;
+	m_fLerpedMp = tPlayerDesc.m_fCurrentMP;
+}
+
+void CPlayer_MPBar::Call_UpdateStatus()
+{
+	Update_MPBar();
+}
+
+void CPlayer_MPBar::Call_ChangeMP(_float	fCurrentMp)
+{
+	ChangeMP(fCurrentMp);
 }
 
 void CPlayer_MPBar::Free()

@@ -95,9 +95,9 @@ void CHUD_Hover::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CHUD_Hover::Render()
+HRESULT CHUD_Hover::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	__super::Render();
+	__super::Render(pDeviceContext);
 
 
 	return S_OK;

@@ -95,7 +95,7 @@ void CLight_Prop::Before_Render(_float fTimeDelta)
 	m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom, XMVectorSet(0.f, -0.13f, 0.f, 1.f));
 }
 
-HRESULT CLight_Prop::Render()
+HRESULT CLight_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	__super::SetUp_ShaderResource();
 
@@ -110,11 +110,11 @@ HRESULT CLight_Prop::Render()
 		else
 			m_iPassIndex = 7;
 
-		m_pShaderCom.lock()->Begin(m_iPassIndex);
-		m_pModelCom.lock()->Render_Mesh(i);
+		m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
+		m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
 	}
 
-	CGameObject::Render();
+	CGameObject::Render(pDeviceContext);
 	return S_OK;
 }
 

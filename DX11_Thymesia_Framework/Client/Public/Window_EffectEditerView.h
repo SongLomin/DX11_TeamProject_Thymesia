@@ -8,9 +8,8 @@ END
 BEGIN(Client)
 class CEffectGroup;
 class CCustomEffectMesh;
-class CPreViewAnimationModel;
+class CPreviewAnimationModel;
 class CEffect_Rect;
-
 class CWindow_EffectEditerView final
 	: public CImGui_Window
 {
@@ -29,7 +28,7 @@ public:
 	virtual HRESULT Initialize() override;
 	virtual void Start() override;
 	virtual void Tick(_float fTimeDelta) override;
-	virtual HRESULT Render() override;
+	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
 public:
 
@@ -53,7 +52,7 @@ private:
 
 	EFFECTRESOURCE_TYPE			m_eCurrentEffectType = EFFECTRESOURCE_TYPE::TYPE_END;
 
-	weak_ptr<CPreViewAnimationModel> m_pPreViewModel;
+	weak_ptr<CPreviewAnimationModel> m_pPreViewModel;
 
 public:
 	void Free();

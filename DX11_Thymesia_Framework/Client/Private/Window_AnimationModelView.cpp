@@ -7,7 +7,7 @@
 
 IMPLEMENT_SINGLETON(CWindow_AnimationModelView)
 
-weak_ptr<CPreViewAnimationModel> CWindow_AnimationModelView::Get_PreViewModel()
+weak_ptr<CPreviewAnimationModel> CWindow_AnimationModelView::Get_PreViewModel()
 {
     return m_pPreViewModel;
 }
@@ -36,7 +36,7 @@ void CWindow_AnimationModelView::Tick(_float fTimeDelta)
     __super::Tick(fTimeDelta);
 }
 
-HRESULT CWindow_AnimationModelView::Render()
+HRESULT CWindow_AnimationModelView::Render(ID3D11DeviceContext* pDeviceContext)
 {
     if (FAILED(__super::Begin()))
         return E_FAIL;
@@ -157,7 +157,7 @@ HRESULT CWindow_AnimationModelView::Render()
 
 void CWindow_AnimationModelView::Load_PreViewModels()
 {
-    m_pPreViewModel = GAMEINSTANCE->Add_GameObject<CPreViewAnimationModel>(LEVEL_EDIT);
+    m_pPreViewModel = GAMEINSTANCE->Add_GameObject<CPreviewAnimationModel>(LEVEL_EDIT);
     m_AllModelKeys = GAMEINSTANCE->Get_AllAnimModelKeys();
 
     // TODO : comment because explode

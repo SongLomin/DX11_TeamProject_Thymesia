@@ -4,210 +4,132 @@
 
 IMPLEMENT_SINGLETON(CThread_Manager)
 
-
-mutex g_Mutex;
-
-
-
-void Loop(const THREAD_TYPE In_eThread_Type)
-{
-
-
-	shared_ptr<CTimer> pTimer = CTimer::Create();
-	_float fTimeDelta;
-	_uint	iLoopIndex = -1;
-
-	weak_ptr<CGameInstance> pGameInstance = GAMEINSTANCE;
-	iLoopIndex = pGameInstance.lock()->Get_LoopIndex();
-
-	list<weak_ptr<CGameObject>>	ThreadObjects;
-
-	shared_ptr<CThread_Manager> pThreadManager = GET_SINGLE(CThread_Manager);
-
-	_bool bDead = false;
-
-	while (true)
-	{
-		//std::scoped_lock(g_Mutex);
-
-		bDead = pThreadManager->m_bDead;
-
-		if (bDead)
-			break;
-
-		if (pGameInstance.lock()->Get_LoopIndex() == iLoopIndex)
-		{
-			//this_thread::sleep_for(std::chrono::milliseconds(3));
-			continue;
-		}
-
-		fTimeDelta = pTimer->Compute_Timer();
-
-		//cout << "Thread! : " << (_uint)In_eThread_Type << endl;
-
-		for (auto iter = ThreadObjects.begin(); iter != ThreadObjects.end();)
-		{
-			if (!(*iter).lock())
-			{
-				iter = ThreadObjects.erase(iter);
-			}
-			else if ((*iter).lock()->Get_Enable())
-			{
-				switch (In_eThread_Type)
-				{
-				case THREAD_TYPE::TICK:
-					(*iter).lock()->Tick(fTimeDelta);
-					break;
-
-				case THREAD_TYPE::LATE_TICK:
-					(*iter).lock()->LateTick(fTimeDelta);
-					break;
-
-				case THREAD_TYPE::CUSTOM_THREAD0:
-					(*iter).lock()->Custom_Thread0(fTimeDelta);
-					break;
-
-				case THREAD_TYPE::CUSTOM_THREAD1:
-					(*iter).lock()->Custom_Thread1(fTimeDelta);
-					break;
-
-				case THREAD_TYPE::CUSTOM_THREAD2:
-					(*iter).lock()->Custom_Thread2(fTimeDelta);
-					break;
-
-				case THREAD_TYPE::CUSTOM_THREAD3:
-					(*iter).lock()->Custom_Thread3(fTimeDelta);
-					break;
-
-				default:
-					break;
-				}
-				++iter;
-			}
-			else
-			{
-				++iter;
-			}
-
-			
-		}
-
-		//GET_SINGLE(CThread_Manager)->m_ReservedThreadObjects[(_uint)In_eThread_Type];
-
-		for (auto& elem : pThreadManager->m_ReservedThreadObjects[(_uint)In_eThread_Type])
-		{
-			//cout << "Thread [" << (_uint)In_eThread_Type << "] Push_Back" << endl;
-			ThreadObjects.push_back(elem);
-		}
-
-
-		pThreadManager->m_ReservedThreadObjects[(_uint)In_eThread_Type].clear();
-
-		//Update(In_eThread_Type, ThreadObjects, fTimeDelta);
-
-		//GET_SINGLE(CThread_Manager)->Add_ThreadObject(In_eThread_Type, ThreadObjects);
-
-		iLoopIndex = pGameInstance.lock()->Get_LoopIndex();
-
-	}
-
-	pTimer.reset();
-
-	for (auto& elem : ThreadObjects)
-	{
-		elem.reset();
-	}
-
-	ThreadObjects.clear();
-
-	pGameInstance.reset();
-
-	/*while (true)
-	{
-
-		if (m_bDead)
-			break;
-
-		cout << "Thread! : " << (_uint)In_eThread_Type << endl;
-
-
-	}*/
-
-}
-
 void CThread_Manager::Initialize(const _uint In_iNumLayer)
 {
-	weak_ptr<CGameInstance> pGameInstance = GAMEINSTANCE;
+	num_threads_ = In_iNumLayer;
+	stop_all = false;
 
-	/*for (_uint i = 0; i < (_uint)THREAD_TYPE::TYPE_END; ++i)
-	{
-		function<void(const THREAD_TYPE)> function;
-		function = bind(&CThread_Manager::Loop, this, placeholders::_1);
 
-		m_Threads.push_back(async(launch::async, function, (THREAD_TYPE)i));
-	}*/
-
-	/*for (_uint i = (_uint)THREAD_TYPE::TICK; i < (_uint)THREAD_TYPE::TYPE_END; ++i)
-	{
-		m_Threads.push_back(async(launch::async, Loop, (THREAD_TYPE)i));
-	}*/
-
-	//m_Threads.push_back(async(launch::async, Loop, (THREAD_TYPE::CUSTOM_THREAD0)));
-
-	//m_Threads.push_back(async(launch::async, Loop, (THREAD_TYPE::TICK)));
-
+	worker_threads_.reserve(num_threads_);
+	for (size_t i = 0; i < num_threads_; ++i) {
+		worker_threads_.emplace_back([this]() { this->WorkerThread(); });
+	}
 }
 
 
 void CThread_Manager::Bind_ThreadObject(const THREAD_TYPE In_eThread_Type, weak_ptr<CGameObject> pGameObject)
 {
-	m_ReservedThreadObjects[(_uint)In_eThread_Type].emplace_back(pGameObject);
-
-	if (!(m_ThreadEnableFlag & (1 << (_uint)In_eThread_Type)))
+	if (!m_GameObject_Threads[(_uint)In_eThread_Type].pInstance)
 	{
-		m_Threads.push_back(async(launch::async, Loop, In_eThread_Type));
-		m_ThreadEnableFlag |= (1 << (_uint)In_eThread_Type);
+		m_GameObject_Threads[(_uint)In_eThread_Type].pInstance = CGameObject_Thread::Create(In_eThread_Type);
+		m_GameObject_Threads[(_uint)In_eThread_Type].pInstance->Add_ThreadObject(pGameObject);
+		//m_GameObject_Threads[(_uint)In_eThread_Type].pInstance->Add_ReserveThreadObject(pGameObject);
+		//m_GameObject_Threads[(_uint)In_eThread_Type].Future = m_GameObject_Threads[(_uint)In_eThread_Type].pInstance->Async(In_eThread_Type);
+	}
+	else
+	{
+		m_GameObject_Threads[(_uint)In_eThread_Type].pInstance->Add_ThreadObject(pGameObject);
 	}
 }
 
-void CThread_Manager::Clear_EngineThreads(const THREAD_TYPE In_eThread_Type)
+void CThread_Manager::Bind_GameObjectWorks(const _flag In_ThreadTypeFlag)
 {
-	
-	for (auto& elem : m_ReservedThreadObjects[(_uint)In_eThread_Type])
+	for (_uint i = 0; i < (_uint)THREAD_TYPE::TYPE_END; ++i)
 	{
-		elem.reset();
+		if (In_ThreadTypeFlag & (1 << i))
+		{
+			if (m_GameObject_Threads[i].pInstance)
+			{
+				m_GameObject_Threads[i].pInstance->Bind_Works();
+			}
+		}
 	}
 
-	m_ReservedThreadObjects[(_uint)In_eThread_Type].clear();
+}
+
+void CThread_Manager::Clear_EngineThreads(const THREAD_TYPE In_eThread_Type)
+{	
+	if (m_GameObject_Threads[(_uint)In_eThread_Type].pInstance)
+	{
+		m_GameObject_Threads[(_uint)In_eThread_Type].pInstance->Set_Enable(false);
+	}
+
+}
+
+void CThread_Manager::WorkerThread()
+{
+	while (true) {
+		std::unique_lock<std::mutex> lock(m_job_q_);
+		cv_job_q_.wait(lock, [this]() { return !this->jobs_.empty() || stop_all; });
+		if (stop_all && this->jobs_.empty()) {
+			return;
+		}
+
+		// 맨 앞의 job 을 뺀다.
+		std::function<void()> job = std::move(jobs_.front());
+		jobs_.pop();
+		lock.unlock();
+
+		// 해당 job 을 수행한다 :)
+		job();
+	}
+}
+
+_bool CThread_Manager::Check_JobDone()
+{
+	return jobs_.empty();
+}
+
+void CThread_Manager::Wait_JobDone(const _char* In_szConsoleText)
+{
+	while (!Check_JobDone())
+	{
+#ifdef _DEBUG
+		if (In_szConsoleText)
+		{
+			cout << In_szConsoleText << endl;
+		}
+#endif // _DEBUG
+
+		continue;
+	}
+
 }
 
 void CThread_Manager::OnDestroy()
 {
-	m_bDead = true;
-
-	for (auto& Thread : m_Threads)
-	{
-		Thread.wait();
-	}
-
-	for (auto& Thread : m_Threads)
-	{
-		Thread.get();
-	}
-
-	//WaitForSecon
 
 	for (_uint i = 0; i < (_uint)THREAD_TYPE::TYPE_END; ++i)
 	{
 		Clear_EngineThreads((THREAD_TYPE)i);
 	}
 
-	//m_ReservedThreadObjects.clear();
-	
-	m_Threads.clear();
+	for (_uint i = 0; i < (_uint)THREAD_TYPE::TYPE_END; ++i)
+	{
+		if (m_GameObject_Threads->pInstance)
+		{
+			m_GameObject_Threads->Future.wait();
+		}
+	}
+
+	for (_uint i = 0; i < (_uint)THREAD_TYPE::TYPE_END; ++i)
+	{
+		if (m_GameObject_Threads->pInstance)
+		{
+			m_GameObject_Threads->Future.get();
+		}
+	}
+
+	stop_all = true;
+	cv_job_q_.notify_all();
+
+	for (auto& t : worker_threads_) {
+		t.join();
+	}
+
 }
 
 void CThread_Manager::Free()
 {
-	int t = 0;
+
 }

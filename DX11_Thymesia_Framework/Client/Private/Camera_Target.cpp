@@ -133,7 +133,7 @@ void CCamera_Target::LateTick(_float fTimeDelta)
 	Bind_PipeLine();
 }
 
-HRESULT CCamera_Target::Render()
+HRESULT CCamera_Target::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	return S_OK;
 }

@@ -17,7 +17,7 @@ HRESULT CCustomLight::Initialize(const LIGHTDESC& LightDesc)
 	return S_OK;
 }
 
-HRESULT CCustomLight::Render(weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect> pVIBuffer)
+HRESULT CCustomLight::Render(weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect> pVIBuffer, ID3D11DeviceContext* pDeviceContext)
 {
 	if (!m_LightDesc.bEnable)
 		return E_FAIL;
@@ -86,10 +86,10 @@ HRESULT CCustomLight::Render(weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect>
 	/*if (FAILED(pShader.lock()->Set_RawValue("g_vShaderFlag", &m_LightDesc.vLightFlag, sizeof(_float4))))
 		DEBUG_ASSERT;*/
 
-	pShader.lock()->Begin(iPassIndex);
+	pShader.lock()->Begin(iPassIndex, pDeviceContext);
 
 	/* ¼ÎÀÌµå Å¸°Ù¿¡ ±×¸°´Ù.  */
-	pVIBuffer.lock()->Render();
+	pVIBuffer.lock()->Render(pDeviceContext);
 
 	return S_OK;
 }

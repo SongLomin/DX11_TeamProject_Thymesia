@@ -55,9 +55,9 @@ void CInteraction_CheckPoint::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 }
 
-HRESULT CInteraction_CheckPoint::Render()
+HRESULT CInteraction_CheckPoint::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    return __super::Render();
+    return __super::Render(pDeviceContext);
 }
 void CInteraction_CheckPoint::OnEventMessage(_uint iArg)
 {

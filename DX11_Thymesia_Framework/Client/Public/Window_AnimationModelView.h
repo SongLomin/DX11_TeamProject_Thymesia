@@ -6,7 +6,7 @@ class CGameObject;
 END
 
 BEGIN(Client)
-class CPreViewAnimationModel;
+class CPreviewAnimationModel;
 class CPreView_Prop;
 
 class CWindow_AnimationModelView final
@@ -19,11 +19,11 @@ public:
 	virtual HRESULT Initialize() override;
 	virtual void Start() override;
 	virtual void Tick(_float fTimeDelta) override;
-	virtual HRESULT Render() override;
+	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
 
 public:
-	weak_ptr<CPreViewAnimationModel> Get_PreViewModel();
+	weak_ptr<CPreviewAnimationModel> Get_PreViewModel();
 	ATTACKAREA_DESC Get_DebugWeaponDesc() const { return m_tWeaponDesc; }
 	const std::vector<std::string> Get_AllBoneNames() const { return m_AllBoneNames; };
 
@@ -35,7 +35,7 @@ private:
 	void Update_PreViewModel();
 
 private:
-	weak_ptr<CPreViewAnimationModel>	m_pPreViewModel;
+	weak_ptr<CPreviewAnimationModel>	m_pPreViewModel;
 	// TODO : comment because explode
 	weak_ptr<CPreView_Prop>				m_pPreViewNoAnimModel;
 	vector<string>	                    m_AllModelKeys;

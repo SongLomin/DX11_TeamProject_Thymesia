@@ -58,9 +58,9 @@ void CUI_EvolveLeftBG::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CUI_EvolveLeftBG::Render()
+HRESULT CUI_EvolveLeftBG::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    __super::Render();
+    __super::Render(pDeviceContext);
 
     return S_OK;
 }

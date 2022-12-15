@@ -62,10 +62,10 @@ void CLoadingTextUI::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 }
 
-HRESULT CLoadingTextUI::Render()
+HRESULT CLoadingTextUI::Render(ID3D11DeviceContext* pDeviceContext)
 {
     if (m_fRatio >= 0.01f)
-        __super::Render();
+        __super::Render(pDeviceContext);
 
     return S_OK;
 }

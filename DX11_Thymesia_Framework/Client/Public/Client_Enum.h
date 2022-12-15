@@ -15,8 +15,10 @@ namespace Client
 		LEVEL_LOGO,
 		LEVEL_LOBBY,
 		LEVEL_GAMEPLAY,
+		LEVEL_STAGE1,
 		LEVEL_STAGE2,
 		LEVEL_STAGE3,
+		LEVEL_STAGE4,
 		LEVEL_EDIT,
 		LEVEL_TEST,
 		LEVEL_END
@@ -179,6 +181,9 @@ namespace Client
 
 		STARTBOSS_MONSTER = 20000,
 		VARG, // 보스바그
+		BAT, // 보스박쥐
+		URD, //보스우두루
+
 		NMON_END
 	};
 
@@ -364,4 +369,11 @@ namespace Client
 		SKILL_BUFF,
 		SKILL_TYPE_END
 	};
+
+	enum class SKILL_NAME
+	{
+		SKILL_VARGSWORD,
+		SKILL_END
+	};
+
 }

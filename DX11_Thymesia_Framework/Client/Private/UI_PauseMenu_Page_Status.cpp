@@ -55,7 +55,7 @@ void CUI_PauseMenu_Page_Status::LateTick(_float fTimeDelta)
 }
 
 
-HRESULT CUI_PauseMenu_Page_Status::Render()
+HRESULT CUI_PauseMenu_Page_Status::Render(ID3D11DeviceContext* pDeviceContext)
 {
 
 	//

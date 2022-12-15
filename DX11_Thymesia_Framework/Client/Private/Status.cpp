@@ -59,13 +59,6 @@ void CStatus::Set_Desc(void* In_Desc)
 {
 }
 
-void CStatus::Minus_LifePoint(const _uint In_iCount)
-{
-}
-
-void CStatus::Set_FullHp(const _float In_Hp)
-{
-}
 
 void CStatus::Free()
 {

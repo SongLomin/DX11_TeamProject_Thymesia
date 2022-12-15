@@ -40,9 +40,14 @@ HRESULT CRenderTarget::Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT eForm
     return S_OK;
 }
 
-HRESULT CRenderTarget::Clear()
+HRESULT CRenderTarget::Clear(ID3D11DeviceContext* pDeviceContext)
 {
-	DEVICECONTEXT->ClearRenderTargetView(m_pRTV.Get(), (_float*)&m_vClearColor);
+	if (!pDeviceContext)
+	{
+		pDeviceContext = DEVICECONTEXT;
+	}
+
+	pDeviceContext->ClearRenderTargetView(m_pRTV.Get(), (_float*)&m_vClearColor);
 
     return S_OK;
 }
@@ -77,10 +82,10 @@ HRESULT CRenderTarget::Render_Debug(weak_ptr<CShader> pShader, weak_ptr<CVIBuffe
 	if (FAILED(pShader.lock()->Set_ShaderResourceView("g_Texture", m_pSRV)))
 		return E_FAIL;
 
-	if (FAILED(pShader.lock()->Begin(0)))
+	if (FAILED(pShader.lock()->Begin(0, DEVICECONTEXT)))
 		return E_FAIL;
 
-	return pVIBuffer.lock()->Render();
+	return pVIBuffer.lock()->Render(DEVICECONTEXT);
 }
 
 

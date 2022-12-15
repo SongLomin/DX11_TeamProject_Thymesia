@@ -57,7 +57,7 @@ public:
 	virtual void Start();
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
-	virtual HRESULT Render() { return S_OK; }
+	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) { return S_OK; }
 
 
 public:
@@ -67,8 +67,7 @@ public:
 	virtual _bool   Is_Dead();
 	virtual void    Init_Status(const void* pArg);
 	virtual void    Add_Damage(const _float In_fDamage, ATTACK_OPTION eAttackOption) override;
-	virtual void    Minus_LifePoint(const _uint In_iCount) override;
-	virtual void    Set_FullHp(const _float In_fHp)override;
+
 	virtual _float	Get_WhiteRatio() {
 		return m_tMonsterDesc.m_fCurrentHP_white / m_tMonsterDesc.m_fMaxHP_white
 			;
@@ -83,7 +82,6 @@ public:
 	virtual void    Get_Desc(void* Out_pDesc);
 
 	void			Add_ParryGauge(const _float In_fDamage);
-
 	_bool			Is_Groggy() const;
 
 protected:

@@ -38,7 +38,7 @@ void CPlayer_ItemSkillCollection::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 }
 
-HRESULT CPlayer_ItemSkillCollection::Render()
+HRESULT CPlayer_ItemSkillCollection::Render(ID3D11DeviceContext* pDeviceContext)
 {
 
 

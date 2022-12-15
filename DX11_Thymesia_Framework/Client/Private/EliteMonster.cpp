@@ -78,19 +78,32 @@ void CEliteMonster::Before_Render(_float fTimeDelta)
     __super::Before_Render(fTimeDelta);
 }
 
-HRESULT CEliteMonster::Render()
+HRESULT CEliteMonster::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    __super::Render();
+    __super::Render(pDeviceContext);
 
 
     return S_OK;
 }
 
-HRESULT CEliteMonster::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix)
+HRESULT CEliteMonster::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix, ID3D11DeviceContext* pDeviceContext)
 {
-    __super::Render_ShadowDepth(In_LightViewMatrix, In_LightProjMatrix);
+    __super::Render_ShadowDepth(In_LightViewMatrix, In_LightProjMatrix, pDeviceContext);
 
     return S_OK;
+}
+
+void CEliteMonster::Bind_HPBar()
+{
+    //UI ÀçÈ°¿ë
+    m_pHPBar = GAMEINSTANCE->Get_GameObject_UseMemoryPool<CMonsterHPBar_Elite>(LEVEL_STATIC);
+    if (!m_pHPBar.lock())
+    {
+        m_pHPBar = GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Elite>(LEVEL_STATIC);
+    }
+    m_pHPBar.lock()->Set_Target(m_this);
+
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, m_pHPBar);
 }
 
 

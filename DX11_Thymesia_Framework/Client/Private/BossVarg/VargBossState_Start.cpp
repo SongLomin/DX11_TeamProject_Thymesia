@@ -74,6 +74,8 @@ void CVargBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::PLAYERHUD);
+	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -101,9 +103,8 @@ void CVargBossState_Start::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
-
+	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);
 	
-
 	weak_ptr<CCharacter> pCharacter = Weak_StaticCast<CCharacter>(m_pOwner);
 
 	if (pCharacter.lock()->Is_Edit())

@@ -39,14 +39,14 @@ void CEffect_Trail_EyeLight::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CEffect_Trail_EyeLight::Render()
+HRESULT CEffect_Trail_EyeLight::Render(ID3D11DeviceContext* pDeviceContext)
 {
 
 	SetUp_ShaderResource();
 	CallBack_Render();
 
-	m_pShaderCom.lock()->Begin(3);
-	m_pVIBuffer.lock()->Render();
+	m_pShaderCom.lock()->Begin(3, pDeviceContext);
+	m_pVIBuffer.lock()->Render(pDeviceContext);
 
 	return S_OK;
 }

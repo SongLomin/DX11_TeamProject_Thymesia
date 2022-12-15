@@ -35,8 +35,8 @@ protected:
 
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
-    virtual HRESULT Render() override;
-    virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix) override;
+    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
+    virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix, ID3D11DeviceContext* pDeviceContext) override;
 
 public: /* For. Talent */
     void Bind_TalentEffects(weak_ptr<CTalent_Effect> pTalentEffect);
@@ -70,7 +70,7 @@ public:
 
 protected:
     virtual void SetUp_ShaderResource() override;
-
+    virtual void SetUp_Requirement();
 public:
     virtual void OnBattleEnd() override;
 

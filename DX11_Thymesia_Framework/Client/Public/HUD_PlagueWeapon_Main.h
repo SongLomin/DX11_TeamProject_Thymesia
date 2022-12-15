@@ -19,13 +19,13 @@ public:
 	virtual HRESULT Start();
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
-	virtual HRESULT Render();
+	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext);
 
 
 
 
 private:
-	weak_ptr<CCustomUI>	m_pPlagueWeapon_Icon;//æ∆¿Ãƒ‹
+
 
 
 };

@@ -5,9 +5,13 @@
 BEGIN(Client)
 
 class CProgressBar;
+class CEasingComponent_Float;
 
-class CPlayer_MPBar final : public CUI_LerpBar
+
+class CPlayer_MPBar final : public CUI
 {
+	friend class CPreset_UIDesc;
+public:
 	GAMECLASS_H(CPlayer_MPBar);
 	CLONE_H(CPlayer_MPBar, CGameObject);
 
@@ -17,17 +21,23 @@ public:
 	virtual HRESULT Start();
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
-	virtual HRESULT Render();
+	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext);
 
 public:
 	virtual void OnEventMessage(_uint iArg) override;
 
-	void		Set_CurrentHp(_float	_fCurrentHp, _bool bLerp = false,
-		EASING_TYPE eLerpType = EASING_TYPE::QUAD_IN);
-	void		Set_MaxMp(_float	_fMaxMp) { m_fMaxMp = _fMaxMp; }
+	void		ChangeMP(_float fCurrentMP);
+
+
 
 protected:
+	virtual void	SetUp_Component() override;
 	virtual HRESULT SetUp_ShaderResource() override;
+	
+
+public:
+	virtual void	Bind_Player() override;
+	virtual void	Update_MPBar();
 
 private:
 	weak_ptr< CProgressBar>	m_pMainBar;
@@ -36,7 +46,17 @@ private:
 	weak_ptr< CProgressBar>	m_pBorderRight;
 
 private:
+	weak_ptr<CEasingComponent_Float> m_pEasingFloatCom;
+
+
+public:
+	void			Call_UpdateStatus();
+	void			Call_ChangeMP(_float	fCurrentMp);
+
+
+private:
 	_float			m_fMaxMp;
+
 	_float			m_fLerpedMp;
 	_float			m_fCurrentMp;
 

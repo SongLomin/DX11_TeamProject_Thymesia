@@ -46,7 +46,7 @@ void CRenderer::Start()
 //		for (auto& pGameObject : m_RenderObjects[i])
 //		{
 //			if (nullptr != pGameObject.lock().get())
-//				pGameObject.lock().get()->Render();
+//				pGameObject.lock().get()->Render(pDeviceContext);
 //		}
 //		m_RenderObjects[i].clear();
 //	}

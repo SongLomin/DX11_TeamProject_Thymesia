@@ -140,7 +140,7 @@ void CVIBuffer_Triangle_Instance::Init_Particle(const _uint& In_Size)
 
 }
 
-HRESULT CVIBuffer_Triangle_Instance::Render()
+HRESULT CVIBuffer_Triangle_Instance::Render(ID3D11DeviceContext* pDeviceContext)
 {
 
 	ID3D11Buffer* pVertexBuffers[] = {

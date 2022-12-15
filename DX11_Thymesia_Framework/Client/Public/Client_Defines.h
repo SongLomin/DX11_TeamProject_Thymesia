@@ -25,7 +25,7 @@
 #pragma endregion // System
 
 #define _USE_GRAVITY_
-// #define _LIFEGUARD_FOR_FALL_
+ #define _LIFEGUARD_FOR_FALL_
 
 #pragma region Console Outputs
 #define _DEBUG_COUT_
@@ -33,7 +33,7 @@
 #pragma endregion // Console Outputs
 
 #pragma region Map
-#define _BRIGHT_LIGHT_
+// #define _BRIGHT_LIGHT_
 // #define _GENERATE_PROP_COLLIDER_ true
 // #define _STAGE_1_
 #define _STAGE_2_
@@ -42,7 +42,7 @@
 #pragma endregion // Map
 
 #pragma region Tool
-#define _MAP_TOOL_
+// #define _MAP_TOOL_
 // #define _EFFECT_TOOL_
 #pragma endregion // Tool
 
@@ -158,7 +158,7 @@
 #undef _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
 #undef _JOJO_EFFECTS_
-#define _ANIMATION_TOOL_CORVUS_WEAPON_
+#define _ANIMATION_TOOL_WEAPON_
 // #define _BAKE_EFFECTMESH_FBX_
 #pragma endregion // Effects
 
@@ -178,9 +178,6 @@ extern HINSTANCE g_hInst;
 
 using namespace Client;
 namespace fs = std::filesystem;
-
-
-
 
 #define EVENT_DRAW_EDITER 1
 #define EVENT_INIT_EDITER 0

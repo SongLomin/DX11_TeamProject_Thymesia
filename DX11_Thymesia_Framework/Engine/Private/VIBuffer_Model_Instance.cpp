@@ -259,7 +259,7 @@ HRESULT CVIBuffer_Model_Instance::Bind_SRV(weak_ptr<CShader> pShader, const char
 }
 
 
-HRESULT CVIBuffer_Model_Instance::Render()
+HRESULT CVIBuffer_Model_Instance::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	ID3D11Buffer* pVertexBuffers[] = {
 		m_pVB.Get(),
@@ -286,7 +286,7 @@ HRESULT CVIBuffer_Model_Instance::Render()
 }
 
 
-HRESULT CVIBuffer_Model_Instance::Render_Mesh(_uint iMeshContainerIndex)
+HRESULT CVIBuffer_Model_Instance::Render_Mesh(_uint iMeshContainerIndex, ID3D11DeviceContext* pDeviceContext)
 {
 	if (iMeshContainerIndex >= m_iNumMeshContainers)
 		return E_FAIL;
@@ -416,7 +416,7 @@ void CVIBuffer_Model_Instance::Update(vector<INSTANCE_MESH_DESC>& In_ParticleDes
 	D3D11_MAPPED_SUBRESOURCE		SubResource;
 
 	DEVICECONTEXT->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
-
+	
 	for (_uint i = 0; i < m_iNumInstance; ++i)
 	{
 		_matrix RotationMatrix = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&In_ParticleDescs[i].vRotation));

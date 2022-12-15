@@ -9,6 +9,10 @@
 #include "CorvusStates/CorvusStates.h"
 #include "PhysXController.h"
 #include "Weapon.h"
+#include "ClientComponent_Utils.h"
+#include "PlayerSkill_System.h"
+#include "Skill_Base.h"
+
 
 GAMECLASS_C(CCorvusState_Idle);
 CLONE_C(CCorvusState_Idle, CComponent)
@@ -276,8 +280,9 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		switch (m_iSkillType)
 		{
 		case 0:
-			Get_OwnerPlayer()->Change_State<CCorvusState_PS_VargSword>();
-			Weak_StaticCast<CPlayer>(m_pOwner).lock()->Callback_UseSkill(5.f);
+		{
+			m_pOwner.lock()->Get_Component<CPlayerSkill_System>().lock()->Get_MainSkill().lock()->UseSkill();
+		}
 			break;
 		case 1:
 			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Axe>();

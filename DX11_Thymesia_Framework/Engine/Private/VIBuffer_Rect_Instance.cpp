@@ -139,7 +139,7 @@ void CVIBuffer_Rect_Instance::Init_Particle(const _uint& In_Size)
 
 }
 
-HRESULT CVIBuffer_Rect_Instance::Render()
+HRESULT CVIBuffer_Rect_Instance::Render(ID3D11DeviceContext* pDeviceContext)
 {
 
 	ID3D11Buffer* pVertexBuffers[] = {
@@ -157,12 +157,12 @@ HRESULT CVIBuffer_Rect_Instance::Render()
 		0
 	};
 
-	DEVICECONTEXT->IASetVertexBuffers(0, m_iNumVertexBuffers, pVertexBuffers, iStrides, iOffsets);
-	DEVICECONTEXT->IASetIndexBuffer(m_pIB.Get(), m_eIndexFormat, 0);
-	DEVICECONTEXT->IASetPrimitiveTopology(m_eToplogy);
+	pDeviceContext->IASetVertexBuffers(0, m_iNumVertexBuffers, pVertexBuffers, iStrides, iOffsets);
+	pDeviceContext->IASetIndexBuffer(m_pIB.Get(), m_eIndexFormat, 0);
+	pDeviceContext->IASetPrimitiveTopology(m_eToplogy);
 
 	/* 6 : 하나의 도형을 그리기위해 사용하는 인덱스의 갯수. 네모라서 여섯개.  */
-	DEVICECONTEXT->DrawIndexedInstanced(6, m_iNumInstance, 0, 0, 0);
+	pDeviceContext->DrawIndexedInstanced(6, m_iNumInstance, 0, 0, 0);
 
 	return S_OK;
 }
@@ -172,7 +172,7 @@ void CVIBuffer_Rect_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDes
 	if (In_ParticleDescs.size() == 0 || 0 == m_iNumInstance)
 		return;
 
-	D3D11_MAPPED_SUBRESOURCE		SubResource;
+	D3D11_MAPPED_SUBRESOURCE SubResource;
 
 	/* D3D11_MAP_WRITE_NO_OVERWRITE : SubResource구조체가 받아온 pData에 유요한 값이 담겨잇는 형태로 얻어오낟. */
 	/* D3D11_MAP_WRITE_DISCARD : SubResource구조체가 받아온 pData에 값이 초기화된 형태로 얻어오낟. */

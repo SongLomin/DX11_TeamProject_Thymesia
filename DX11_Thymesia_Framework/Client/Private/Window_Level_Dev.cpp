@@ -28,7 +28,7 @@ void CWindow_Level_Dev::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 }
 
-HRESULT CWindow_Level_Dev::Render()
+HRESULT CWindow_Level_Dev::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	ImGui::PushStyleColor(ImGuiCol_PopupBg, m_BackgroundColor);
 

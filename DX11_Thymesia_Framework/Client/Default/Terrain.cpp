@@ -71,16 +71,16 @@ void CTerrain::LateTick(_float fTimeDelta)
 	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Cast<CGameObject>(m_this));
 }
 
-HRESULT CTerrain::Render()
+HRESULT CTerrain::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	if (FAILED(SetUp_ShaderResource()))
 		return E_FAIL;
 
-	__super::Render();
+	__super::Render(pDeviceContext);
 
-	m_pShaderCom.lock()->Begin(0);
+	m_pShaderCom.lock()->Begin(0, pDeviceContext);
 
-	m_pVIBufferCom.lock()->Render();
+	m_pVIBufferCom.lock()->Render(pDeviceContext);
 
 	return S_OK;
 }

@@ -87,16 +87,16 @@ void CPlayer::LateTick(_float fTimeDelta)
     GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_SHADOWDEPTH, m_thisToPlayer);
 }
 
-HRESULT CPlayer::Render()
+HRESULT CPlayer::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    __super::Render();
+    __super::Render(pDeviceContext);
     _float fDissolveAmount(-1.1f);
     m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &fDissolveAmount, sizeof(_float));
 
     return S_OK;
 }
 
-HRESULT CPlayer::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix)
+HRESULT CPlayer::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix, ID3D11DeviceContext* pDeviceContext)
 {
     CallBack_Bind_SRV(m_pShaderCom, "");
     //플레이어 그림자는 위 callback이 안불려서 이전 그림자 렌더했던 월드를 쓰고 있었음
@@ -114,7 +114,7 @@ HRESULT CPlayer::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_Lig
         if (4 == i || 5 == i || 8 == i || 9 == i || 10 == i || 11 == i || 12 == i || 13 == i)
             continue;
 
-        m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, 1, "g_Bones");
+        m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, 1, "g_Bones", pDeviceContext);
     }
 
     return S_OK;
@@ -195,6 +195,10 @@ void CPlayer::SetUp_ShaderResource()
     m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector));
 
    
+}
+
+void CPlayer::SetUp_Requirement()
+{
 }
 
 void CPlayer::OnBattleEnd()

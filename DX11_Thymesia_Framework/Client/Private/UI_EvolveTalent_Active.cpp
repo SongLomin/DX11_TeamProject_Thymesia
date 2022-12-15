@@ -59,9 +59,9 @@ void CUI_EvolveTalent_Active::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CUI_EvolveTalent_Active::Render()
+HRESULT CUI_EvolveTalent_Active::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    __super::Render();
+    __super::Render(pDeviceContext);
 
     return S_OK;
 }

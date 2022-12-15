@@ -31,7 +31,7 @@ public:
 	virtual HRESULT Initialize() override;
 	virtual void Start() override;
 	virtual void Tick(_float fTimeDelta) override;
-	virtual HRESULT Render() override;
+	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
 public:
 	void Write_FromBinary();

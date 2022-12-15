@@ -37,7 +37,7 @@ private:
 
 #ifdef _DEBUG
 public:
-	HRESULT Render();
+	HRESULT Render(ID3D11DeviceContext* pDeviceContext);
 #endif // _DEBUG
 
 

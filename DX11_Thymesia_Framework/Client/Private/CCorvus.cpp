@@ -9,6 +9,9 @@
 #include "Light_Prop.h"
 #include "Status_Player.h"
 #include "PhysXController.h"
+#include "PlayerSkill_System.h"
+#include "Skill_VargSword.h"
+
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -22,6 +25,8 @@ HRESULT CCorvus::Initialize_Prototype()
 HRESULT CCorvus::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
+
+
 	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_VtxAnimModel"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements);
 
 	m_pStatus = CGameObject::Add_Component<CStatus_Player>();
@@ -49,8 +54,17 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	this->Ready_Weapon();
 	this->Ready_States();
+	Ready_Skills();
+
 
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
+
+
+	
+
+	
+
+
 
 #ifdef _CORVUS_EFFECT_
 	// Key Frame Effect ON
@@ -79,15 +93,21 @@ HRESULT CCorvus::Start()
 
 	if (m_pCamera.lock())
 		m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
+	
+	Test_BindSkill();
 
 	return S_OK;
 }
 
 void CCorvus::Tick(_float fTimeDelta)
 {
+	fTimeDelta *= GAMEINSTANCE->Get_TimeScale((_uint)TIMESCALE_LAYER::PLAYER);
+
 	__super::Tick(fTimeDelta);
 
 	// TODO : get rid of this
+	m_pSkillSystem.lock()->Tick(fTimeDelta);
+	m_pStatus.lock()->Tick(fTimeDelta);
 
 	this->Debug_KeyInput(fTimeDelta);
 
@@ -95,6 +115,8 @@ void CCorvus::Tick(_float fTimeDelta)
 
 void CCorvus::LateTick(_float fTimeDelta)
 {
+	fTimeDelta *= GAMEINSTANCE->Get_TimeScale((_uint)TIMESCALE_LAYER::PLAYER);
+
 	__super::LateTick(fTimeDelta);
 }
 
@@ -109,9 +131,9 @@ void CCorvus::Custom_Thread1(_float fTimeDelta)
 		m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Weak_StaticCast<CGameObject>(m_this));
 }
 
-HRESULT CCorvus::Render()
+HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	__super::Render();
+	__super::Render(pDeviceContext);
 	 _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 	for (_uint i(0); i < m_iNumMeshContainers; ++i)
 	{
@@ -159,7 +181,7 @@ HRESULT CCorvus::Render()
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 			m_iPassIndex = 0;
 	
-		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones");
+		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones", pDeviceContext);
 	}
 
 	m_DissolveDescs.clear();
@@ -298,6 +320,15 @@ void CCorvus::Ready_States()
 #undef ADD_STATE_MACRO
 }
 
+void CCorvus::Ready_Skills()
+{
+	//스킬 추가입니다.
+
+	m_pSkillSystem = Add_Component<CPlayerSkill_System>();
+	Add_Component<CSkill_VargSword>();
+
+}
+
 void CCorvus::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
@@ -418,5 +449,15 @@ void CCorvus::OnEventMessage(_uint iArg)
 void CCorvus::Free()
 {
 
+}
+
+void CCorvus::SetUp_Requirement()
+{
+
+}
+
+void CCorvus::Test_BindSkill()
+{
+	m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_VargSword>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_MAIN);
 }
 

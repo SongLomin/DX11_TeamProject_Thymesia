@@ -21,7 +21,7 @@ HRESULT CCharacter::Initialize(void* pArg)
 	m_pPhysXControllerCom = Add_Component<CPhysXCharacterController>();
 
 	
-	m_pRequirementCheckerComs.emplace(hash<string>()("RootMotion"), Add_Component<CRequirementChecker>());
+	m_pRequirementChecker.emplace(hash<string>()("RootMotion"), CRequirementChecker::Create());
 
 	return S_OK;
 }
@@ -106,7 +106,7 @@ void CCharacter::Before_Render(_float fTimeDelta)
 
 void CCharacter::Move_RootMotion(_float fTimeDelta)
 {
-	if (!m_pRequirementCheckerComs[hash<string>()("RootMotion")].lock()->Check_Requirments())
+	if (!m_pRequirementChecker[hash<string>()("RootMotion")]->Check_Requirments())
 	{
 		return;
 	}

@@ -17,11 +17,21 @@ public:
     virtual _bool       Is_Valid() PURE;
 
 protected:
-    virtual HRESULT     Initialize(void* pArg = nullptr) { return S_OK; }
+    virtual HRESULT     Initialize(void* pArg = nullptr);
 
 protected:
     virtual void Free() {};
 
+public:
+    template <class  T >
+    static shared_ptr<T> Create(void* pArg = nullptr)
+    {
+        shared_ptr<T> pRequirement = make_shared<T>();
+
+        pRequirement->Initialize(pArg);
+
+        return pRequirement;
+    }
 };
 
 END

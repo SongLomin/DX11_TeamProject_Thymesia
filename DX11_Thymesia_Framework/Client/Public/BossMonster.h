@@ -42,8 +42,8 @@ public:
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
     virtual void Before_Render(_float fTimeDelta) override;
-    virtual HRESULT Render() override;
-    virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix) override;
+    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
+    virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix, ID3D11DeviceContext* pDeviceContext) override;
 
     weak_ptr<CMonsterHPBar_Boss>  Get_HPBar();
 

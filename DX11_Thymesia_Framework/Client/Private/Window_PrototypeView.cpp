@@ -32,7 +32,7 @@ void CWindow_PrototypeView::Tick(_float fTimeDelta)
     __super::Tick(fTimeDelta);
 }
 
-HRESULT CWindow_PrototypeView::Render()
+HRESULT CWindow_PrototypeView::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	if (FAILED(__super::Begin()))
 		return E_FAIL;
@@ -137,6 +137,7 @@ void CWindow_PrototypeView::Add_Prototypes()
     ADD_PROTOTYPE(PROTOTYPE_ACTOR, CNorMonster);
     ADD_PROTOTYPE(PROTOTYPE_ACTOR, CVarg);
     ADD_PROTOTYPE(PROTOTYPE_ACTOR, CJoker);
+    ADD_PROTOTYPE(PROTOTYPE_ACTOR, CBat);
 
     ADD_PROTOTYPE(PROTOTYPE_PROP, CTerrain);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStatic_Prop);

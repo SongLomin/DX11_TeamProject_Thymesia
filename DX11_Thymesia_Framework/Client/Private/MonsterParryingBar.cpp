@@ -101,7 +101,7 @@ void CMonsterParryingBar::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CMonsterParryingBar::Render()
+HRESULT CMonsterParryingBar::Render(ID3D11DeviceContext* pDeviceContext)
 {
 
     return S_OK;

@@ -55,9 +55,9 @@ void CEditSetActor::LateTick(_float fTimeDelta)
 	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Cast<CGameObject>(m_this));
 }
 
-HRESULT CEditSetActor::Render()
+HRESULT CEditSetActor::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	SetUp_ShaderResource_Select();
+	SetUp_ShaderResource_Select(pDeviceContext);
 
 	return S_OK;
 }
@@ -163,7 +163,8 @@ void CEditSetActor::View_CreateActor()
 
 	static const char* ActorList_Boss[] =
 	{
-		"Varg"
+		"Varg",
+		"Bat"
 	};
 
 	static const char* MonsterActionList[] =
@@ -283,6 +284,11 @@ void CEditSetActor::View_CreateActor()
 		{
 			pObj = Weak_StaticCast<CMonster>(GAMEINSTANCE->Add_GameObject<CVarg>(LEVEL::LEVEL_EDIT));
 			Add_ActorToTool(typeid(CVarg).hash_code(), typeid(CVarg).name(), pObj);
+		}
+		else if (MONSTERTYPE::BAT == tMonsterDesc.eMonType)
+		{
+			pObj = Weak_StaticCast<CMonster>(GAMEINSTANCE->Add_GameObject<CBat>(LEVEL::LEVEL_EDIT));
+			Add_ActorToTool(typeid(CBat).hash_code(), typeid(CBat).name(), pObj);
 		}
 
 		if (!pObj.lock())
@@ -580,7 +586,7 @@ void    CEditSetActor::View_Picking_MessageEdit()
 	iter_collider->second[m_iPickingIndex].pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITDRAW);
 }
 
-void CEditSetActor::SetUp_ShaderResource_Select()
+void CEditSetActor::SetUp_ShaderResource_Select(ID3D11DeviceContext* pDeviceContext)
 {
 	if (!m_bSubDraw)
 		return;
@@ -613,8 +619,8 @@ void CEditSetActor::SetUp_ShaderResource_Select()
 	if (FAILED(m_pSelect_ShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ)), sizeof(_float4x4))))
 		return;
 
-	m_pSelect_ShaderCom.lock()->Begin(1);
-	m_pSelect_VIBufferCom.lock()->Render();
+	m_pSelect_ShaderCom.lock()->Begin(1, pDeviceContext);
+	m_pSelect_VIBufferCom.lock()->Render(pDeviceContext);
 }
 
 void CEditSetActor::Add_ActorToTool(_hashcode _HashCode, string _szTypeName, weak_ptr<CGameObject>_pInstance)

@@ -33,7 +33,13 @@ bool CPhysXCharacterController::filter(const PxController& a, const PxController
 
 	_uint iIndex = *(_uint*)b.getUserData();
 
-	if (!GAMEINSTANCE->Find_PhysXController(iIndex).lock()->Get_Enable())
+	weak_ptr<CPhysXController> pController = GAMEINSTANCE->Find_PhysXController(iIndex);
+	if (pController.lock())
+	{
+		if (!pController.lock()->Get_Enable())
+			return false;
+	}
+	else
 		return false;
 
 	return true;

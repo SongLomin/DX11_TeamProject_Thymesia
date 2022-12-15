@@ -65,7 +65,7 @@ void CNorMonState_Die::Start()
 	}
 
 
-	m_fDissolveTime = 5.f;
+	m_fDissolveTime = 4.f;
 
 	m_bAnimEnd = false;
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CNorMonState_Die::Call_AnimationEnd, this);
@@ -79,13 +79,11 @@ void CNorMonState_Die::Tick(_float fTimeDelta)
 		m_pModelCom.lock()->Play_Animation(fTimeDelta);
 	else
 	{
+		Get_OwnerMonster()->Set_PassIndex(7);
 		m_fDissolveTime -= fTimeDelta;
 
-		if (4.f > m_fDissolveTime)
-		{
-			_float fDissolveAmount = SMath::Lerp(1.f, 0.f, m_fDissolveTime / 4.f);
-			Get_OwnerMonster()->Set_DissolveAmount(fDissolveAmount);
-		}
+		_float fDissolveAmount = SMath::Lerp(1.f, -0.1f, m_fDissolveTime / 4.f);
+		Get_OwnerMonster()->Set_DissolveAmount(fDissolveAmount);		
 	}
 }
 
@@ -109,7 +107,6 @@ void CNorMonState_Die::LateTick(_float fTimeDelta)
 	}
 
 	Check_AndChangeNextState();
-
 
 }
 
@@ -137,15 +134,11 @@ void CNorMonState_Die::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif
 #endif
 
-
-	// TODO : test chromatic aberration
-
 }
 
 void CNorMonState_Die::OnStateEnd()
 {
 	__super::OnStateEnd();
-
 
 }
 
@@ -165,18 +158,14 @@ void CNorMonState_Die::Call_AnimationEnd()
 }
 
 
-
 _bool CNorMonState_Die::Check_AndChangeNextState()
 {
 
 	if (!Check_Requirement())
 		return false;
 
-
-
 	return false;
 }
-
 
 
 void CNorMonState_Die::Free()

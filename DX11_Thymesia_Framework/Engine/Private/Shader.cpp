@@ -46,14 +46,19 @@ HRESULT CShader::Set_RawValue(const char* pConstantName, void* pData, _uint iDat
 	return pVariable->SetRawValue(pData, 0, iDataSize);
 }
 
-HRESULT CShader::Begin(_uint iPassIndex)
+HRESULT CShader::Begin(_uint iPassIndex, ID3D11DeviceContext* pDeviceContext)
 {
+	if (!pDeviceContext)
+	{
+		pDeviceContext = DEVICECONTEXT;
+	}
+
 	if (iPassIndex >= m_Passes.size())
 		return E_FAIL;
 	
-	DEVICECONTEXT->IASetInputLayout(m_Passes[iPassIndex].pInputLayout);
+	pDeviceContext->IASetInputLayout(m_Passes[iPassIndex].pInputLayout);
 
-	if (FAILED(m_Passes[iPassIndex].pPass->Apply(0, DEVICECONTEXT)))
+	if (FAILED(m_Passes[iPassIndex].pPass->Apply(0, pDeviceContext)))
 		return E_FAIL;
 
 	return S_OK;

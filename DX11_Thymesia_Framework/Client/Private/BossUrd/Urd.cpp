@@ -72,9 +72,9 @@ void CUrd::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 }
 
-HRESULT CUrd::Render()
+HRESULT CUrd::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	__super::Render();
+	__super::Render(pDeviceContext);
 
 	_int iPassIndex = 0;
 	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
@@ -96,10 +96,10 @@ HRESULT CUrd::Render()
 			iPassIndex = 4;
 		}
 
-		//m_pShaderCom.lock()->Begin(m_iPassIndex);
+		//m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
 
-		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, iPassIndex, "g_Bones");
-		//m_pModelCom.lock()->Render_Mesh(i);
+		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, iPassIndex, "g_Bones", pDeviceContext);
+		//m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
 	}
 
 	return S_OK;

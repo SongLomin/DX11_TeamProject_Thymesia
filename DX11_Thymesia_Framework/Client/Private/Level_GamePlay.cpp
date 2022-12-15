@@ -118,9 +118,9 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 
 }
 
-HRESULT CLevel_GamePlay::Render()
+HRESULT CLevel_GamePlay::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	if (FAILED(__super::Render()))
+	if (FAILED(__super::Render(pDeviceContext)))
 		return E_FAIL;
 
 

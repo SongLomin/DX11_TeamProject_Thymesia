@@ -33,6 +33,8 @@ HRESULT CGround::Initialize(void* pArg)
 	m_pRendererCom = Add_Component<CRenderer>();
 	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
 	m_pPhysXColliderCom = Add_Component<CPhysXCollider>();
+	m_pNoiseTextureCom = Add_Component<CTexture>();
+	m_pNoiseTextureCom.lock()->Use_Texture("UVNoise");
 	
 	/*if((_uint)LEVEL_EDIT != m_CreatedLevel)
 		USE_START(CGround);*/
@@ -60,6 +62,8 @@ HRESULT CGround::Start()
 void CGround::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	m_vNoiseUV.x += fTimeDelta;
 }
 
 void CGround::LateTick(_float fTimeDelta)
@@ -69,15 +73,21 @@ void CGround::LateTick(_float fTimeDelta)
 	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Cast<CGameObject>(m_this));
 }
 
-HRESULT CGround::Render()
+HRESULT CGround::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	__super::Render();
+	__super::Render(pDeviceContext);
 
 	if (FAILED(SetUp_ShaderResource()))
 		DEBUG_ASSERT;
+	
+	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture1", 676);
+	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture2", 65);
+	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DisplacementTexture", 77);
 
-	m_pShaderCom.lock()->Begin(m_iShaderPath);
-	m_pVIBufferCom.lock()->Render();
+	m_pShaderCom.lock()->Set_RawValue("g_vUVNoise", &m_vNoiseUV, sizeof(_float2));
+
+	m_pShaderCom.lock()->Begin(m_iShaderPath, pDeviceContext);
+	m_pVIBufferCom.lock()->Render(pDeviceContext);
 
 	return S_OK;
 }

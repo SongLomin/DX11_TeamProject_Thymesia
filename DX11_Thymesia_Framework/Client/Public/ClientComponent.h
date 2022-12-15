@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "Client_Defines.h"
+#include "Player.h"
 
 BEGIN(Client)
 

@@ -59,9 +59,9 @@ void CUI_EvolveMenu_Level_BG::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CUI_EvolveMenu_Level_BG::Render()
+HRESULT CUI_EvolveMenu_Level_BG::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    __super::Render();
+    __super::Render(pDeviceContext);
 
     return S_OK;
 }

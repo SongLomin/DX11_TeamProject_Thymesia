@@ -27,7 +27,7 @@ public:
 public:
 	HRESULT Set_RawValue(const char* pConstantName, void* pData, _uint iDataSize);
 	HRESULT Set_ShaderResourceView(const char* pConstantName, ComPtr<ID3D11ShaderResourceView> pSRV);
-	HRESULT Begin(_uint iPassIndex);
+	HRESULT Begin(_uint iPassIndex, ID3D11DeviceContext* pDeviceContext);
 
 	HRESULT Set_ShaderInfo(const _tchar* pShaderKey, const D3D11_INPUT_ELEMENT_DESC* pElements, _uint iNumElement);
 	HRESULT Set_ShaderInfo_Internal();

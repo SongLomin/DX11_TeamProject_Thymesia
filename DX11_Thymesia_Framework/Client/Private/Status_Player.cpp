@@ -1,7 +1,8 @@
 ﻿#include "stdafx.h"
 #include "Status_Player.h"
 #include "Status.h"
-
+#include "GameInstance.h"
+#include "Engine_Defines.h"
 
 GAMECLASS_C(CStatus_Player)
 CLONE_C(CStatus_Player, CComponent)
@@ -33,6 +34,12 @@ void CStatus_Player::Tick(_float fTimeDelta)
     __super::Tick(fTimeDelta);
 
     m_fPotionTime -= fTimeDelta;
+
+    if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
+    {
+        m_tDesc.m_iMemory += 10000;
+        Callback_Update_Status();
+    }
 
     //if (m_fPotionTime >= 0.f)
     //{
@@ -66,6 +73,7 @@ void CStatus_Player::Init_Status(const void* pArg)
 {
     ZeroMemory(&m_tDesc, sizeof(PLAYERDESC));
     m_tDesc.m_fCurrentHP = 300.f;
+    m_tDesc.m_fCurrentMP = 150.f;
     m_tDesc.m_fMaxHP = 300.f;
     m_tDesc.m_fMaxMP = 150.f;
     m_tDesc.m_fNormalAtk = 25.f;
@@ -99,8 +107,6 @@ void CStatus_Player::Init_Status(const void* pArg)
 
 void CStatus_Player::Add_Damage(const _float& In_fDamage)
 {
-    if (0.f > In_fDamage)
-        assert(0);
 
     Decrease_HP(m_tDesc.m_fCurrentHP, In_fDamage);
     Callback_ChangeHP(m_tDesc.m_fCurrentHP);
@@ -111,6 +117,14 @@ void CStatus_Player::Add_Memory(_uint iRootedMemory)
     m_tDesc.m_iMemory += iRootedMemory;
 
     Callback_RootingMemory(m_tDesc.m_iMemory);
+}
+
+void CStatus_Player::Consumed_Mana(_float fRequireMana)
+{
+    m_tDesc.m_fCurrentMP -= fRequireMana;
+
+    Callback_ChangeMP(m_tDesc.m_fCurrentMP);
+
 }
 
 void CStatus_Player::Full_Recovery()

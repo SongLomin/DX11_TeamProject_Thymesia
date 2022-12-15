@@ -54,9 +54,9 @@ void CInteraction_Elevator::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 }
 
-HRESULT CInteraction_Elevator::Render()
+HRESULT CInteraction_Elevator::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    return __super::Render();
+    return __super::Render(pDeviceContext);
 }
 
 void CInteraction_Elevator::OnEventMessage(_uint iArg)
@@ -98,8 +98,10 @@ void CInteraction_Elevator::OnEventMessage(_uint iArg)
                 "LEVEL_LOGO",
                 "LEVEL_LOBBY",
                 "LEVEL_GAMEPLAY",
+                "LEVEL_STAGE1",
                 "LEVEL_STAGE2",
                 "LEVEL_STAGE3",
+                "LEVEL_STAGE4",
                 "LEVEL_EDIT",
                 "LEVEL_TEST",
             };

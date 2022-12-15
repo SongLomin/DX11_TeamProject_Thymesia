@@ -7,7 +7,7 @@ class CAnimation;
 END
 
 BEGIN(Client)
-class CPreViewAnimationModel;
+class CPreviewAnimationModel;
 
 
 class CWindow_AnimationPlayerView final
@@ -23,7 +23,7 @@ public:
 	virtual HRESULT Initialize() override;
 	virtual void Start() override;
 	virtual void Tick(_float fTimeDelta) override;
-	virtual HRESULT Render() override;
+	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
 public:
 	void Call_UpdatePreViewModel();
@@ -48,7 +48,7 @@ public:
 	_bool								m_bKeyEventEditer = false;
 
 private:
-	weak_ptr<CPreViewAnimationModel>	m_pPreViewModel;
+	weak_ptr<CPreviewAnimationModel>	m_pPreViewModel;
 	weak_ptr<CAnimation>				m_pCurrentAnimation;
 
 	_float m_fCurrentTime = 0.f;

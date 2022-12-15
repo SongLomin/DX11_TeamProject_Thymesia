@@ -89,9 +89,9 @@ void CDissolveUI::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CDissolveUI::Render()
+HRESULT CDissolveUI::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    __super::Render();
+    __super::Render(pDeviceContext);
 
 
     return S_OK;

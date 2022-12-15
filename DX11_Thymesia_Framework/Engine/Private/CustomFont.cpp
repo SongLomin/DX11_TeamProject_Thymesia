@@ -3,10 +3,11 @@
 
 GAMECLASS_C(CCustomFont)
 
-HRESULT CCustomFont::Initialize(const _tchar* pFontFilePath)
+HRESULT CCustomFont::Initialize(const _tchar* pFontFilePath, ComPtr<ID3D11DeviceContext> pDeviceContext)
 {
-    m_pBatch = make_unique<SpriteBatch>(DEVICECONTEXT); //new SpriteBatch(m_pContext);
-    m_pFont = make_unique<SpriteFont>(DEVICE, pFontFilePath); //new SpriteFont(m_pDevice, pFontFilePath);
+    m_pDeviceContext = pDeviceContext;
+    m_pBatch = make_unique<SpriteBatch>(pDeviceContext.Get()); 
+    m_pFont = make_unique<SpriteFont>(DEVICE, pFontFilePath); 
 
     return S_OK;
 }
@@ -51,8 +52,8 @@ void CCustomFont::Add_Text(const TEXTINFO& In_tTextInfo)
 }
 
 HRESULT CCustomFont::Render(const _tchar* pString, const _float2& vPosition, _fvector vColor)
-{
-    DEVICECONTEXT->GSSetShader(nullptr, nullptr, 0);
+{/*
+    m_pDeviceContext->GSSetShader(nullptr, nullptr, 0);*/
 
     m_pBatch->Begin();
 
@@ -65,9 +66,9 @@ HRESULT CCustomFont::Render(const _tchar* pString, const _float2& vPosition, _fv
     return S_OK;
 }
 
-void CCustomFont::Render()
-{
-    DEVICECONTEXT->GSSetShader(nullptr, nullptr, 0);
+void CCustomFont::Render(ID3D11DeviceContext* pDeviceContext)
+{/*
+	m_pDeviceContext->GSSetShader(nullptr, nullptr, 0);*/
 
     m_pBatch->Begin();
 
@@ -98,7 +99,7 @@ void CCustomFont::Render()
 
 void CCustomFont::RenderWithRenderGroup(const RENDERGROUP In_eRenderGroup)
 {
-    DEVICECONTEXT->GSSetShader(nullptr, nullptr, 0);
+    // m_pDeviceContext->GSSetShader(nullptr, nullptr, 0);
 
     m_pBatch->Begin();
 
@@ -137,10 +138,10 @@ void CCustomFont::RenderWithRenderGroup(const RENDERGROUP In_eRenderGroup)
     m_pBatch->End();
 }
 
-shared_ptr<CCustomFont> CCustomFont::Create(const _tchar* pFontFilePath)
+shared_ptr<CCustomFont> CCustomFont::Create(const _tchar* pFontFilePath, ComPtr<ID3D11DeviceContext> pDeviceContext)
 {
     shared_ptr<CCustomFont>		pInstance = make_shared<CCustomFont>();
-    pInstance->Initialize(pFontFilePath);
+    pInstance->Initialize(pFontFilePath, pDeviceContext.Get());
     pInstance->m_this = pInstance;
     return pInstance;
 }

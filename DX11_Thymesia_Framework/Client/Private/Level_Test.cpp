@@ -46,9 +46,7 @@ HRESULT CLevel_Test::Initialize()
 	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_TEST);
 #endif // _TEST_STATIC_PROPS_
 	//Load_FromJson(m_szDefaultJsonPath + "Stage1_sub.json", LEVEL::LEVEL_TEST);
-	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_TEST);
-	//Load_FromJson(m_szDefaultJsonPath + "Stage_Lv3-1.json", LEVEL::LEVEL_TEST);
-	//Load_FromJson(m_szDefaultJsonPath + "Test_Level.json", LEVEL::LEVEL_TEST);
+	Load_FromJson(m_szDefaultJsonPath + "Test_Level.json", LEVEL::LEVEL_TEST);
 	//Load_FromJson(m_szDefaultJsonPath + "Stage1_Song.json", LEVEL::LEVEL_TEST);
 
 	CCamera::CAMERADESC			CameraDesc;
@@ -69,13 +67,13 @@ HRESULT CLevel_Test::Initialize()
 #ifdef _TEST_DYNAMIC_PROPS_
 	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 5.f, 2.f, 5.f });
 	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 15.f, 2.f, 15.f });
-#endif
-	GAMEINSTANCE->Set_FogDesc(_float4(1.f, 1.f, 1.f, 0.f), 9999.f);
-	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
+#endif // _TEST_DYNAMIC_PROPS_
 
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_TEST);
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_TEST);
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
+
+
 	GAMEINSTANCE->Set_FogDesc(_float4(1.f, 0.95f, 0.95f, 0.f), 9999.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 	SetUp_UI();
@@ -125,9 +123,9 @@ void CLevel_Test::Tick(_float fTimeDelta)
 }
 
 
-HRESULT CLevel_Test::Render()
+HRESULT CLevel_Test::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	if (FAILED(__super::Render()))
+	if (FAILED(__super::Render(pDeviceContext)))
 		return E_FAIL;
 
 	SetWindowText(g_hWnd, TEXT("Thymesia : TEST"));
@@ -138,28 +136,36 @@ HRESULT CLevel_Test::Render()
 
 shared_ptr<CLevel_Test> CLevel_Test::Create()
 {
-	shared_ptr<CLevel_Test>		pInstance = make_shared<CLevel_Test>();
-	pInstance->m_eMyLevel = LEVEL_TEST;
+	shared_ptr<CLevel_Test> pInstance = make_shared<CLevel_Test>();
+	pInstance->m_eMyLevel = LEVEL::LEVEL_TEST;
 	pInstance->Initialize();
+
 	return pInstance;
 }
 
 void CLevel_Test::ExitLevel(LEVEL eLevel)
 {
-	if (eLevel == LEVEL::LEVEL_STAGE2)
+	switch (eLevel)
 	{
-		m_eNextLevel = eLevel;
+		case  LEVEL::LEVEL_STAGE2:
+		case  LEVEL::LEVEL_STAGE3:
+		{
+			m_eNextLevel = eLevel;
 
-		FaderDesc tFaderDesc;
-		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
-		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
-		tFaderDesc.fFadeMaxTime = 1.f;
-		tFaderDesc.fDelayTime = 0.5f;
-		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
-		m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
-		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
-		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
+			FaderDesc tFaderDesc;
+			tFaderDesc.eFaderType	= FADER_TYPE::FADER_OUT;
+			tFaderDesc.eLinearType	= LINEAR_TYPE::LNIEAR;
+			tFaderDesc.fFadeMaxTime = 1.f;
+			tFaderDesc.fDelayTime	= 0.5f;
+			tFaderDesc.vFadeColor	= _float4(0.f, 0.f, 0.f, 1.f);
+
+			m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
+			m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
+		}
+		break;
 	}
+
 }
 void CLevel_Test::OnEventMessage(_uint iArg)
 {

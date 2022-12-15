@@ -58,9 +58,9 @@ void CInteraction_Prop::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 }
 
-HRESULT CInteraction_Prop::Render()
+HRESULT CInteraction_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    if (FAILED(SetUp_ShaderResource()))
+    if (FAILED(SetUp_ShaderResource(pDeviceContext)))
         return E_FAIL;
 
     _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
@@ -70,19 +70,15 @@ HRESULT CInteraction_Prop::Render()
             return E_FAIL;
 
         if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-        {
             m_iPassIndex = 0;
-        }
         else
-        {
-            m_iPassIndex = 3;
-        }
+            m_iPassIndex = 7;
 
-        m_pShaderCom.lock()->Begin(m_iPassIndex);
-        m_pModelCom.lock()->Render_Mesh(i);
+        m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
+        m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
     }
 
-    return __super::Render();
+    return __super::Render(pDeviceContext);
 }
 
 _bool CInteraction_Prop::IsPicking(const RAY& In_Ray, _float& Out_fRange)
@@ -103,7 +99,7 @@ void CInteraction_Prop::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_p
         return;
 
     Callback_ActStart += bind(&CUI_Interaction::Call_ActionStart, pUI_Interaction.lock());
-    Callback_ActEnd += bind(&CUI_Interaction::Call_ActionEnd, pUI_Interaction.lock());
+    Callback_ActEnd   += bind(&CUI_Interaction::Call_ActionEnd, pUI_Interaction.lock());
 
     pUI_Interaction.lock()->Call_CollisionEnter(pMyCollider, (_uint)m_eInteractionType);
 }
@@ -134,12 +130,12 @@ void CInteraction_Prop::Act_Interaction()
 {
 }
 
-HRESULT CInteraction_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix)
+HRESULT CInteraction_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix, ID3D11DeviceContext* pDeviceContext)
 {
     return S_OK;
 }
 
-HRESULT CInteraction_Prop::SetUp_ShaderResource()
+HRESULT CInteraction_Prop::SetUp_ShaderResource(ID3D11DeviceContext* pDeviceContext)
 {
     if (FAILED(CProp::SetUp_ShaderResource()))
         return E_FAIL;

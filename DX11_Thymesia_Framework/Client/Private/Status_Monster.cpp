@@ -137,6 +137,14 @@ void CStatus_Monster::Init_Status(const void* pArg)
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
 		m_tMonsterDesc.m_szModelKey = "Elite_Joker";
 		break;
+	case Client::MONSTERTYPE::BAT:
+		m_tMonsterDesc.m_fAtk = 40.f;
+		m_tMonsterDesc.m_fMaxHP_white = 500.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 800.f;
+		m_tMonsterDesc.m_iLifeCount = 1;
+		m_tMonsterDesc.m_iMaxParryCount = 10000;
+		m_tMonsterDesc.m_szModelKey = "Boss_Bat";
+		break;
 	}
 	m_tMonsterDesc.m_fCurrentHP_white = m_tMonsterDesc.m_fMaxHP_white;
 	m_tMonsterDesc.m_fCurrentHP_Green = m_tMonsterDesc.m_fMaxHP_white;
@@ -174,17 +182,6 @@ void CStatus_Monster::Add_Damage(const _float In_fDamage, ATTACK_OPTION eAttackO
 	default:
 		break;
 	}
-}
-
-void CStatus_Monster::Minus_LifePoint(const _uint In_iCount)
-{
-	m_tMonsterDesc.m_iLifeCount -= In_iCount;
-}
-
-void CStatus_Monster::Set_FullHp(const _float In_fHp)
-{
-	m_tMonsterDesc.m_fCurrentHP_white = In_fHp;
-	m_tMonsterDesc.m_fCurrentHP_Green = m_tMonsterDesc.m_fCurrentHP_white;
 }
 
 void CStatus_Monster::Get_Desc(void* pOutDesc)

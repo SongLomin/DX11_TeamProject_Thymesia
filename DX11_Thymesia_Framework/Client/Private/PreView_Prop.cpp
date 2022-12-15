@@ -44,9 +44,9 @@ void CPreView_Prop::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 }
 
-HRESULT CPreView_Prop::Render()
+HRESULT CPreView_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    return __super::Render();
+    return __super::Render(pDeviceContext);
 }
 
 void CPreView_Prop::Free()

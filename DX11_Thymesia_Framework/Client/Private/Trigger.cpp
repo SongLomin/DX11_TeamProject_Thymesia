@@ -41,11 +41,11 @@ void CTrigger::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CTrigger::Render()
+HRESULT CTrigger::Render(ID3D11DeviceContext* pDeviceContext)
 {
     SetUp_ShaderResource();
 
-    __super::Render();
+    __super::Render(pDeviceContext);
     return S_OK;
 }
 

@@ -28,6 +28,7 @@ private:
 	
 private:
 	vector<list<weak_ptr<CCollider>>>	m_pColliderList; // 충돌 컴포넌트들만 충돌 타입별로 모아놓은 리스트
+	vector<list<weak_ptr<CCollider>>>	m_pReservedColliderList; // 충돌 컴포넌트들만 충돌 타입별로 모아놓은 리스트
 	vector<_uint>						m_arrCheck;
 
 public: /* For. PhysxCollision */
@@ -38,7 +39,7 @@ private:
 	CollisionCallBack* m_pCollisionCallBack = nullptr;
 	CollisionSimulationEventCallBack* m_pCollisionSimulationEventCallBack = nullptr;
 
-
+	std::mutex m_job_q_;
 
 public:
 	void Free();

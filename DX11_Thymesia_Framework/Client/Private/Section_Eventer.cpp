@@ -39,9 +39,9 @@ void CSection_Eventer::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 }
 
-HRESULT CSection_Eventer::Render()
+HRESULT CSection_Eventer::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    return __super::Render();
+    return __super::Render(pDeviceContext);
 }
 
 void CSection_Eventer::OnEventMessage(_uint iArg)

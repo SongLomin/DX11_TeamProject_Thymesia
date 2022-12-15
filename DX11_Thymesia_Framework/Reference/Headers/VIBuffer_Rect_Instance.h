@@ -21,7 +21,7 @@ private:
 public:
     void Init_Particle(const _uint& In_Size);
 
-    virtual HRESULT Render() override;
+    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
     void Update(const vector<PARTICLE_DESC>& In_ParticleDescs, const _bool In_UseParentMatrix = false);
 
 private:

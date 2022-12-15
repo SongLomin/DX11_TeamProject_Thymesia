@@ -358,7 +358,7 @@ void CCollider::Set_DebugColor(_fvector In_vColor)
 	XMStoreFloat4(&m_vColor, In_vColor);
 }
 
-HRESULT CCollider::Render()
+HRESULT CCollider::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	if (!GAMEINSTANCE->Is_Debug())
 		return E_FAIL;

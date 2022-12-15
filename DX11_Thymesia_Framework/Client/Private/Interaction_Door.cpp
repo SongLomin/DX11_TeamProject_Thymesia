@@ -56,9 +56,9 @@ void CInteraction_Door::LateTick(_float fTimeDelta)
     m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
 }
 
-HRESULT CInteraction_Door::Render()
+HRESULT CInteraction_Door::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    return __super::Render();
+    return __super::Render(pDeviceContext);
 }
 
 void CInteraction_Door::OnEventMessage(_uint iArg)

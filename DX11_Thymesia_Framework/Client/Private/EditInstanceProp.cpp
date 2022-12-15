@@ -110,9 +110,9 @@ void CEditInstanceProp::Before_Render(_float fTimeDelta)
 #endif
 }
 
-HRESULT CEditInstanceProp::Render()
+HRESULT CEditInstanceProp::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	if (FAILED(SetUp_ShaderResource()))
+	if (FAILED(SetUp_ShaderResource(pDeviceContext)))
 		return E_FAIL;
 
 	return S_OK;
@@ -143,7 +143,7 @@ void CEditInstanceProp::Load_ResourceList(vector<string>& In_List, const filesys
 	}
 }
 
-HRESULT CEditInstanceProp::SetUp_ShaderResource()
+HRESULT CEditInstanceProp::SetUp_ShaderResource(ID3D11DeviceContext* pDeviceContext)
 {
 	_float4x4 WorldMatrix;
 	XMStoreFloat4x4(&WorldMatrix, XMMatrixIdentity());
@@ -207,16 +207,16 @@ HRESULT CEditInstanceProp::SetUp_ShaderResource()
 			m_iPassIndex = 3;
 		}
 
-		m_pShaderCom.lock()->Begin(m_iPassIndex);
-		m_pInstanceModelCom.lock()->Render_Mesh(i);
+		m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
+		m_pInstanceModelCom.lock()->Render_Mesh(i, pDeviceContext);
 	}
 
-	SetUp_ShaderResource_Select();
+	SetUp_ShaderResource_Select(pDeviceContext);
 
-	return __super::Render();
+	return __super::Render(pDeviceContext);
 }
 
-void CEditInstanceProp::SetUp_ShaderResource_Select()
+void CEditInstanceProp::SetUp_ShaderResource_Select(ID3D11DeviceContext* pDeviceContext)
 {
 	if (m_pPropInfos.empty() || 0 > m_iPickingIndex || m_pPropInfos.size() <= m_iPickingIndex)
 		return;
@@ -248,8 +248,8 @@ void CEditInstanceProp::SetUp_ShaderResource_Select()
 	if (FAILED(m_pSelect_ShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ)), sizeof(_float4x4))))
 		return;
 
-	m_pSelect_ShaderCom.lock()->Begin(1);
-	m_pSelect_VIBufferCom.lock()->Render();
+	m_pSelect_ShaderCom.lock()->Begin(1, pDeviceContext);
+	m_pSelect_VIBufferCom.lock()->Render(pDeviceContext);
 }
 
 void CEditInstanceProp::Write_Json(json& Out_Json)
@@ -437,13 +437,6 @@ void CEditInstanceProp::OnEventMessage(_uint iArg)
 				if (ImGui::BeginTabItem("Mul Pick"))
 				{
 					View_MultiPicking();
-
-					ImGui::EndTabItem();
-				}
-
-				if (ImGui::BeginTabItem("Save & Load"))
-				{
-					View_SelectJson();
 
 					ImGui::EndTabItem();
 				}
@@ -749,19 +742,13 @@ void CEditInstanceProp::View_Picking_Option()
 			switch (m_iOption)
 			{
 				case 0:
-				case 2:
 				{
-					_long		MouseMoveX = 0;
-					if (MouseMoveX = GAMEINSTANCE->Get_DIMouseMoveState(MMS_X))
+					_long		MouseMove = 0;
+					if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
 					{
-						m_pPropInfos[m_iPickingIndex].vTarnslation.x += 0.01f * MouseMoveX;
+						m_pPropInfos[m_iPickingIndex].vTarnslation.x -= 0.01f * MouseMove;
 					}
 
-					_long		MouseMoveZ = 0;
-					if (MouseMoveZ = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
-					{
-						m_pPropInfos[m_iPickingIndex].vTarnslation.z -= 0.01f * MouseMoveZ;
-					}
 				}
 				break;
 
@@ -771,6 +758,16 @@ void CEditInstanceProp::View_Picking_Option()
 					if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
 					{
 						m_pPropInfos[m_iPickingIndex].vTarnslation.y -= 0.01f * MouseMove;
+					}
+				}
+				break;
+
+				case 2:
+				{
+					_long		MouseMove = 0;
+					if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
+					{
+						m_pPropInfos[m_iPickingIndex].vTarnslation.z -= 0.01f * MouseMove;
 					}
 				}
 				break;
@@ -930,42 +927,6 @@ void CEditInstanceProp::View_SelectTransformInfo()
 
 	ImGui::Text("");
 	ImGui::Separator();
-}
-
-void CEditInstanceProp::View_SelectJson()
-{
-	static _char szJsonFileTag[MAX_PATH] = "";
-	ImGui::InputText("Name", szJsonFileTag, MAX_PATH);
-
-	static int	iSelect_MeshData = 0;
-	if (ImGui::BeginListBox("##Json List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
-	{
-		_uint iIndex = 0;
-
-		for (auto& iter : m_JsonList)
-		{
-			const bool is_selected = (iSelect_MeshData == iIndex);
-
-			if (0 < strlen(szJsonFileTag))
-			{
-				if (string::npos == m_JsonList[iIndex].find(szJsonFileTag))
-					continue;
-			}
-
-			if (ImGui::Selectable(iter.c_str(), is_selected))
-			{
-				iSelect_MeshData = iIndex;
-				strcpy_s(szJsonFileTag, m_JsonList[iIndex].c_str());
-			}
-
-			if (is_selected)
-				ImGui::SetItemDefaultFocus();
-
-			++iIndex;
-		}
-
-		ImGui::EndListBox();
-	}
 }
 
 void CEditInstanceProp::View_MultiPicking()

@@ -107,16 +107,16 @@ void CUI::LateTick(_float fTimeDelta)
 		-m_tUIDesc.fY + (g_iWinCY * 0.5f) - m_fOffsetPosition.y, 0.f, 1.f));
 }
 
-HRESULT CUI::Render()
+HRESULT CUI::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	//__super::Render();
+	//__super::Render(pDeviceContext);
 
 	/* 셰이더 전역변수에 값을 던진다. */
 	SetUp_ShaderResource();
 
-	m_pShaderCom.lock()->Begin(m_iPassIndex);
+	m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
 
-	m_pVIBufferCom.lock()->Render();
+	m_pVIBufferCom.lock()->Render(pDeviceContext);
 
 	return S_OK;
 }

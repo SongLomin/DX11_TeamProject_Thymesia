@@ -99,7 +99,7 @@ void CUI_PauseMenu::LateTick(_float fTimeDelta)
 	}
 }
 
-HRESULT CUI_PauseMenu::Render()
+HRESULT CUI_PauseMenu::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	return S_OK;
 }

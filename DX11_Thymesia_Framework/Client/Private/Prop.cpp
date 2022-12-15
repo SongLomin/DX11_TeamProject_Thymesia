@@ -86,9 +86,9 @@ void CProp::Custom_Thread1(_float fTimeDelta)
 	}
 }
 
-HRESULT CProp::Render()
+HRESULT CProp::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	return __super::Render();
+	return __super::Render(pDeviceContext);
 }
 
 void CProp::Write_Json(json& Out_Json)

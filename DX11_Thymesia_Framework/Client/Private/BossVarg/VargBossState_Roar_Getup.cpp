@@ -66,15 +66,9 @@ void CVargBossState_SPA_Roar_Getup::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-
-
 void CVargBossState_SPA_Roar_Getup::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
-
-	weak_ptr<CStatus_Boss> pStatus = m_pOwner.lock()->Get_Component<CStatus_Boss>();
-
-	pStatus.lock()->Set_FullHp(100.f);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -112,7 +106,7 @@ void CVargBossState_SPA_Roar_Getup::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	{
 	case 34:
 		Weak_Cast<CVarg>(m_pOwner).lock()->Set_EyeTrailEnable(true);
-		GET_SINGLE(CGameManager)->Store_EffectIndex_Temp(GET_SINGLE(CGameManager)->Use_EffectGroup("Varg_Eye", m_pTransformCom, _uint(TIMESCALE_LAYER::MONSTER)));
+		GET_SINGLE(CGameManager)->Store_EffectIndex("Varg_Eye", GET_SINGLE(CGameManager)->Use_EffectGroup("Varg_Eye", m_pTransformCom, _uint(TIMESCALE_LAYER::MONSTER)));
 		break;
 	case 62:
 		m_bShakingCamera = true;

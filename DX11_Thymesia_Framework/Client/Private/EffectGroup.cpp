@@ -112,10 +112,10 @@ void CEffectGroup::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CEffectGroup::Render()
+HRESULT CEffectGroup::Render(ID3D11DeviceContext* pDeviceContext)
 {
 
-    __super::Render();
+    __super::Render(pDeviceContext);
 
     return S_OK;
 }

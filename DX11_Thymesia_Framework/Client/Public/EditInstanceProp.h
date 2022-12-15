@@ -31,7 +31,7 @@ public:
     virtual void LateTick(_float fTimeDelta) override;
     virtual void Custom_Thread1(_float fTimeDelta) override;
     virtual void Before_Render(_float fTimeDelta) override;
-    virtual HRESULT Render() override;
+    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
 public:
     virtual void   OnEventMessage(_uint iArg) override;
@@ -45,13 +45,12 @@ private:
     void    View_Picking_List();
     void    View_Picking_Option();
     void    View_SelectTransformInfo();
-    void    View_SelectJson();
 
     void    View_MultiPicking();
 
 private:
-    HRESULT SetUp_ShaderResource();
-    void    SetUp_ShaderResource_Select();
+    HRESULT SetUp_ShaderResource(ID3D11DeviceContext* pDeviceContext);
+    void    SetUp_ShaderResource_Select(ID3D11DeviceContext* pDeviceContext);
 
     void Load_ResourceList(vector<string>& In_List, const filesystem::path& In_Path, string _szCutName = "");
 public:
@@ -84,7 +83,6 @@ private:
     _bool               m_bInvisibility       = true;
 
     RESOURCE_LIST       m_ModelList;
-    RESOURCE_LIST       m_JsonList;
     _bool               m_bSubDraw            = false;
 
     _int                m_iColliderType       = 0;

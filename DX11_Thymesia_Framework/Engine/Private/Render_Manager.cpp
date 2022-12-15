@@ -20,6 +20,20 @@ HRESULT CRender_Manager::Initialize()
 
 	DEVICECONTEXT->RSGetViewports(&iNumViewports, &ViewPortDesc);
 
+	for (_int i = 0; i < (_int)DEFERRED_END; ++i)
+	{
+		DEVICE->CreateDeferredContext(0, m_pDeferredContext[i].GetAddressOf());
+		GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[i].Get());
+	}
+	
+	GET_SINGLE(CFont_Manager)->Init_DeviceContext(m_pDeferredContext[DEFERRED_UI]);
+
+	//D3D11_QUERY_DESC queryDesc;
+	//queryDesc.MiscFlags;
+	//queryDesc.Query = ;
+	//ID3D11Query* pQuery = DEVICE->CreateQuery();
+
+	//m_pDeferredContext->Begin();
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 		
 	/*For. Target_AntiAliasing*/
@@ -116,11 +130,6 @@ HRESULT CRender_Manager::Initialize()
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
-
-	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Bloom"), 
-		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 1.f))))
-		DEBUG_ASSERT;
-
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_CopyOriginalRender"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
@@ -198,8 +207,6 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_BlurForBloom"), TEXT("Target_BlurForBloom"))))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_BlurForGlow"), TEXT("Target_BlurForGlow"))))
-		DEBUG_ASSERT;
-	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Bloom"), TEXT("Target_Bloom"))))
 		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_BlurEffect"), TEXT("Target_BlurForEffect"))))
@@ -288,8 +295,6 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_BlurForBloom"), ViewPortDesc.Width - fHalf, fHalf + fSize * 2.f, fSize, fSize)))
 		DEBUG_ASSERT;
-	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Bloom"), ViewPortDesc.Width - fHalf, fHalf + fSize * 3.f, fSize, fSize)))
-		DEBUG_ASSERT; 
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_PBR"), ViewPortDesc.Width - fHalf, fHalf + fSize * 4.f, fSize, fSize)))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Ambient"), ViewPortDesc.Width - fHalf, fHalf + fSize * 5.f, fSize, fSize)))
@@ -382,6 +387,31 @@ HRESULT CRender_Manager::Add_RenderGroup(RENDERGROUP eGroup, weak_ptr<CGameObjec
 
 HRESULT CRender_Manager::Draw_RenderGroup()
 {
+	GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[DEFERRED_EFFECT].Get());	
+	GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[DEFERRED_UI].Get());
+
+
+	while (!GET_SINGLE(CThread_Manager)->Check_JobDone())
+	{
+		cout << "Wait For Object Jobs." << endl;
+		continue;
+	}
+
+	std::list<std::future<HRESULT>> futures;
+	
+	//futures.emplace_back(GET_SINGLE(CThread_Manager)->EnqueueJob(bind(&CRender_Manager::Render_Effect, this)));
+	// futures.emplace_back(GET_SINGLE(CThread_Manager)->EnqueueJob(bind(&CRender_Manager::Render_UI, this)));
+
+	//future<HRESULT> DrawUIThread = async(launch::async, bind(&CRender_Manager::Render_UI, this));
+	//future<HRESULT> DrawEffectThread = async(launch::async, bind(&CRender_Manager::Render_Effect, this));
+
+	HRESULT hr;
+	ID3D11CommandList* pCommandList = nullptr;
+
+	/*if (FAILED(Render_UI()))
+		DEBUG_ASSERT;*/
+
+
 	if (FAILED(Render_Priority()))
 		DEBUG_ASSERT;
 	if (FAILED(Render_ShadowDepth()))
@@ -404,39 +434,40 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Bake_ViewShadow()))
 		DEBUG_ASSERT;
 
+	///////SSR 넣기
+
 	if (FAILED(Render_Blend()))
 		DEBUG_ASSERT;
+	//////여기다가 화면 블룸
 
 	if (FAILED(Blend_OutLine()))
 		DEBUG_ASSERT;
 
 
-
 	if (FAILED(Render_NonLight()))
 		DEBUG_ASSERT;
+	
+	
+	Render_Effect();
+	
+	//hr = DrawEffectThread.get();
 
-	if (FAILED(Render_NonAlphaEffect()))
-		DEBUG_ASSERT;
-	if (FAILED(Blur_ExtractGlow(3.f)))
-		DEBUG_ASSERT;
-	if (FAILED(ReBlur_ExtractGlow(3.f)))
-		DEBUG_ASSERT;
-	if (FAILED(Blend_Glow()))
-		DEBUG_ASSERT;
+	
 
-	if (FAILED(Render_AlphaBlend()))
-		DEBUG_ASSERT;
-	if (FAILED(Blur_ExtractGlow(3.f)))
-		DEBUG_ASSERT;
-	if (FAILED(ReBlur_ExtractGlow(3.f)))
-		DEBUG_ASSERT;
-	if (FAILED(Blend_Glow()))
-		DEBUG_ASSERT;
+	/*m_pDeferredContext[DEFERRED_EFFECT]->FinishCommandList(false, &pCommandList);
 
-	if (FAILED(Extract_Distortion()))
-		DEBUG_ASSERT;
-	if (FAILED(Blend_Distortion()))
-		DEBUG_ASSERT;
+	if (pCommandList)
+	{
+		DEVICECONTEXT->ExecuteCommandList(pCommandList, true);
+		pCommandList->Release();
+		pCommandList = nullptr;
+	}*/
+
+	if (SUCCEEDED(Extract_Distortion()))
+	{
+		if (FAILED(Blend_Distortion()))
+			DEBUG_ASSERT;
+	}
 	
 	if (FAILED(Render_Font()))
 		DEBUG_ASSERT;
@@ -444,30 +475,40 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Blur_ExtractBloom()))
 		DEBUG_ASSERT;
 
-	if (FAILED(this->ReBlur_ExtractBloom()))
+	if (FAILED(ReBlur_ExtractBloom()))
 		DEBUG_ASSERT;
 
-	if (FAILED(this->ReBlur_ExtractBloom()))
-
+	if (FAILED(ReBlur_ExtractBloom()))
 		DEBUG_ASSERT;
 
 	if (FAILED(Blend_Bloom()))
 		DEBUG_ASSERT;
 
-	if (FAILED(Render_PostEffect()))
-		DEBUG_ASSERT;
-
-	if (FAILED(Render_AfterPostEffect()))
-		DEBUG_ASSERT;
-
-	if (FAILED(Render_AfterPostEffectGlow()))
-		DEBUG_ASSERT;
 
 	if (FAILED(PostProcessing()))
 		DEBUG_ASSERT;
 
 	if (FAILED(AntiAliasing()))
 		DEBUG_ASSERT;
+
+
+	
+	/*hr = futures.front().get();
+	while (!GET_SINGLE(CThread_Manager)->Check_JobDone())
+	{
+		cout << "Wait For Context Jobs." << endl;
+		continue;
+	}*/
+	
+	/*m_pDeferredContext[DEFERRED_UI]->FinishCommandList(false, &pCommandList);
+
+	if (pCommandList)
+	{
+		DEVICECONTEXT->ExecuteCommandList(pCommandList, true);
+		pCommandList->Release();
+		pCommandList = nullptr;
+	}*/
+	
 
 	if (FAILED(Render_UI()))
 		DEBUG_ASSERT;
@@ -578,18 +619,20 @@ HRESULT CRender_Manager::Set_DynamicShadowLight(_fvector In_vEye, _fvector In_vL
 
 HRESULT CRender_Manager::Render_Priority()
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
 
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_PRIORITY])
 	{
 		if (pGameObject.lock())
-			pGameObject.lock()->Render();
+			pGameObject.lock()->Render(pDeviceContext);
 	}
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_PRIORITY].clear();
 
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_AFTER_PRIORITY])
 	{
 		if (pGameObject.lock())
-			pGameObject.lock()->Render();
+			pGameObject.lock()->Render(pDeviceContext);
 	}
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_AFTER_PRIORITY].clear();
 
@@ -598,6 +641,8 @@ HRESULT CRender_Manager::Render_Priority()
 
 HRESULT CRender_Manager::Render_ShadowDepth()
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
 	if (FAILED(GET_SINGLE(CRenderTarget_Manager)->Begin_ShadowMRT(TEXT("MRT_ShadowDepth"))))
@@ -641,7 +686,7 @@ HRESULT CRender_Manager::Render_ShadowDepth()
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_SHADOWDEPTH])
 	{
 		if (pGameObject.lock())
-			pGameObject.lock()->Render_ShadowDepth(LightViewMatrix, LightProjMatrix);
+			pGameObject.lock()->Render_ShadowDepth(LightViewMatrix, LightProjMatrix, pDeviceContext);
 	}
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_SHADOWDEPTH].clear();
 
@@ -675,7 +720,7 @@ HRESULT CRender_Manager::Render_ShadowDepth()
 		for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_STATICSHADOWDEPTH])
 		{
 			if (pGameObject.lock())
-				pGameObject.lock()->Render_ShadowDepth(LightViewMatrix, LightProjMatrix);
+				pGameObject.lock()->Render_ShadowDepth(LightViewMatrix, LightProjMatrix, pDeviceContext);
 		}
 
 		m_RenderObjects[(_uint)RENDERGROUP::RENDER_STATICSHADOWDEPTH].clear();
@@ -690,6 +735,8 @@ HRESULT CRender_Manager::Render_ShadowDepth()
 
 HRESULT CRender_Manager::Render_NonAlphaBlend()
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
 	if (FAILED(GET_SINGLE(CRenderTarget_Manager)->Begin_MRT(TEXT("MRT_Deferred"))))
 		DEBUG_ASSERT;
 
@@ -697,7 +744,7 @@ HRESULT CRender_Manager::Render_NonAlphaBlend()
 	{
 		if (pGameObject.lock())
 		{
-			pGameObject.lock()->Render();
+			pGameObject.lock()->Render(pDeviceContext);
 			pGameObject.reset();
 		}
 	}
@@ -713,6 +760,8 @@ HRESULT CRender_Manager::Render_NonAlphaBlend()
 
 HRESULT CRender_Manager::Render_Lights()
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
 	/* 셰이드 타겟을 장치에 바인드한다. */
@@ -749,7 +798,7 @@ HRESULT CRender_Manager::Render_Lights()
 
 	m_pShader->Set_RawValue("g_vCamPosition", &pPipeLine->Get_CamPosition(), sizeof(_float4));
 
-	GET_SINGLE(CLight_Manager)->Render_Lights(m_pShader, m_pVIBuffer);
+	GET_SINGLE(CLight_Manager)->Render_Lights(m_pShader, m_pVIBuffer, pDeviceContext);
 
 	if (FAILED(pRenderTargetManager->End_MRT()))
 		DEBUG_ASSERT;
@@ -760,6 +809,8 @@ HRESULT CRender_Manager::Render_Lights()
 
 HRESULT CRender_Manager::Bake_Fog()
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
 	/* 셰이드 타겟을 장치에 바인드한다. */
@@ -791,8 +842,8 @@ HRESULT CRender_Manager::Bake_Fog()
 	m_pShader->Set_RawValue("g_vFogColor", &m_vFogColor, sizeof(_float4));
 
 
-	m_pShader->Begin(11);
-	m_pVIBuffer->Render();
+	m_pShader->Begin(11, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
 	if (FAILED(pRenderTargetManager->End_MRT()))
 		DEBUG_ASSERT;
@@ -802,6 +853,8 @@ HRESULT CRender_Manager::Bake_Fog()
 
 HRESULT CRender_Manager::Bake_ViewShadow()
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
 	if (FAILED(pRenderTargetManager->Begin_MRT(TEXT("MRT_ViewShadow"))))
@@ -836,9 +889,9 @@ HRESULT CRender_Manager::Bake_ViewShadow()
 	m_pShader->Set_RawValue("g_ViewMatrixInv", &ViewMatrixInv, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
 
-	m_pShader->Begin(10);
+	m_pShader->Begin(10, pDeviceContext);
 
-	m_pVIBuffer->Render();
+	m_pVIBuffer->Render(pDeviceContext);
 
 	pRenderTargetManager->End_MRT();
 
@@ -851,6 +904,8 @@ HRESULT CRender_Manager::Bake_ViewShadow()
 
 HRESULT CRender_Manager::Render_Blend()
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_DiffuseTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Diffuse")))))
@@ -899,29 +954,58 @@ HRESULT CRender_Manager::Render_Blend()
 	m_pShader->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_vCamPosition", &pPipeLine->Get_CamPosition(), sizeof(_float4));
 
-	m_pShader->Begin(3);
+	m_pShader->Begin(3, pDeviceContext);
 
 	/* 사각형 버퍼를 백버퍼위에 그려낸다. */
-	m_pVIBuffer->Render();
+	m_pVIBuffer->Render(pDeviceContext);
 
 	GET_SINGLE(CCollision_Manager)->Render_Collider();
 
 	return S_OK;
 }
 
+HRESULT CRender_Manager::Render_Effect()
+{
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
+	if (SUCCEEDED(Render_NonAlphaEffect(pDeviceContext)))
+	{
+		if (FAILED(Blur_ExtractGlow(3.f, pDeviceContext)))
+			DEBUG_ASSERT;
+		//if (FAILED(ReBlur_ExtractGlow(3.f, pDeviceContext)))
+		//	DEBUG_ASSERT;
+		if (FAILED(Blend_Glow(pDeviceContext)))
+			DEBUG_ASSERT;
+	}
+
+	if (SUCCEEDED(Render_AlphaBlend(pDeviceContext)))
+	{
+		if (FAILED(Blur_ExtractGlow(3.f, pDeviceContext)))
+			DEBUG_ASSERT;
+		//if (FAILED(ReBlur_ExtractGlow(3.f, pDeviceContext)))
+		//	DEBUG_ASSERT;
+		if (FAILED(Blend_Glow(pDeviceContext)))
+			DEBUG_ASSERT;
+	}
+
+	return S_OK;
+}
+
 HRESULT CRender_Manager::Render_NonLight()
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONLIGHT])
 	{
 		if (pGameObject.lock())
-			pGameObject.lock()->Render();
+			pGameObject.lock()->Render(pDeviceContext);
 	}
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONLIGHT].clear();
 
 	return S_OK;
 }
 
-HRESULT CRender_Manager::Render_NonAlphaEffect()
+HRESULT CRender_Manager::Render_NonAlphaEffect(ID3D11DeviceContext* pDeviceContext)
 {
 	for (auto iter = m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHA_EFFECT].begin(); iter != m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHA_EFFECT].end();)
 	{
@@ -937,13 +1021,21 @@ HRESULT CRender_Manager::Render_NonAlphaEffect()
 
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
+	
 
 	pRenderTargetManager->Begin_MRTWithNoneClearWithIndex(TEXT("MRT_ExtractEffect"), 1);
+
+	if (m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHA_EFFECT].empty())
+	{
+		pRenderTargetManager->End_MRT();
+
+		return E_FAIL;
+	}
 
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHA_EFFECT])
 	{
 		if (pGameObject.lock())
-			pGameObject.lock()->Render();
+			pGameObject.lock()->Render(pDeviceContext);
 	}
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHA_EFFECT].clear();
 
@@ -953,8 +1045,9 @@ HRESULT CRender_Manager::Render_NonAlphaEffect()
 	return S_OK;
 }
 
-HRESULT CRender_Manager::Render_AlphaBlend()
+HRESULT CRender_Manager::Render_AlphaBlend(ID3D11DeviceContext* pDeviceContext)
 {
+
 	for (auto iter = m_RenderObjects[(_uint)RENDERGROUP::RENDER_ALPHABLEND].begin(); iter != m_RenderObjects[(_uint)RENDERGROUP::RENDER_ALPHABLEND].end();)
 	{
 		if (!(*iter).lock())
@@ -975,13 +1068,21 @@ HRESULT CRender_Manager::Render_AlphaBlend()
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
 
-	//pRenderTargetManager->Begin_MRT(TEXT("MRT_ExtractEffect"));
+
+
 	pRenderTargetManager->Begin_MRTWithNoneClearWithIndex(TEXT("MRT_ExtractEffect"), 1);
+
+	if (m_RenderObjects[(_uint)RENDERGROUP::RENDER_ALPHABLEND].empty())
+	{
+		pRenderTargetManager->End_MRT();
+
+		return E_FAIL;
+	}
 
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_ALPHABLEND])
 	{
 		if (pGameObject.lock())
-			pGameObject.lock()->Render();
+			pGameObject.lock()->Render(pDeviceContext);
 	}
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_ALPHABLEND].clear();
 
@@ -993,6 +1094,8 @@ HRESULT CRender_Manager::Render_AlphaBlend()
 
 HRESULT CRender_Manager::Extract_OutLine()
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 	pRenderTargetManager->Begin_MRT(TEXT("MRT_ExtractOutLine"));
 
@@ -1017,8 +1120,8 @@ HRESULT CRender_Manager::Extract_OutLine()
 	_float fDivider = 1.f;
 	m_pOutLineShader->Set_RawValue("g_Divider", &fDivider, sizeof(_float));
 
-	m_pOutLineShader->Begin(0);
-	m_pVIBuffer->Render();
+	m_pOutLineShader->Begin(0, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
 	pRenderTargetManager->End_MRT();
 
@@ -1027,6 +1130,8 @@ HRESULT CRender_Manager::Extract_OutLine()
 
 HRESULT CRender_Manager::Blur_OutLine()
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurOutLine"));
 
@@ -1048,8 +1153,8 @@ HRESULT CRender_Manager::Blur_OutLine()
 	//m_pOutLineShader->Set_RawValue("g_PixelWidth", &fPixelWidth, sizeof(_float));
 	//m_pOutLineShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));
 
-	m_pOutLineShader->Begin(1);
-	m_pVIBuffer->Render();
+	m_pOutLineShader->Begin(1, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
 	pRenderTargetManager->End_MRT();
 
@@ -1057,8 +1162,9 @@ HRESULT CRender_Manager::Blur_OutLine()
 	return S_OK;
 }
 
-HRESULT CRender_Manager::Blur_ExtractGlow(const _float& In_PixelPitchScalar)
+HRESULT CRender_Manager::Blur_ExtractGlow(const _float& In_PixelPitchScalar, ID3D11DeviceContext* pDeviceContext)
 {
+
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
 	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurXForGlow"));
@@ -1079,62 +1185,8 @@ HRESULT CRender_Manager::Blur_ExtractGlow(const _float& In_PixelPitchScalar)
 	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
 
 	// Blur X
-	m_pXBlurShader->Begin(3);
-	m_pVIBuffer->Render();
-
-	pRenderTargetManager->End_MRT();
-
-	/*if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture", pRenderTargetManager->Get_SRV(TEXT("Target_BlurForGlow")))))
-		DEBUG_ASSERT;*/
-
-	if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture", 
-		pRenderTargetManager->Get_SRV(TEXT("Target_BlurXForGlow")))))
-		DEBUG_ASSERT;
-
-	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurForGlow"));
-
-	m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
-	m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
-	m_pXBlurShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
-
-	m_pXBlurShader->Set_RawValue("g_PixelWidth", &fPixelWidth, sizeof(_float));
-	m_pXBlurShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));
-
-	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
-
-	// Blur Y
-	m_pXBlurShader->Begin(4);
-	m_pVIBuffer->Render();
-
-	pRenderTargetManager->End_MRT();
-
-	return S_OK;
-}
-
-HRESULT CRender_Manager::ReBlur_ExtractGlow(const _float& In_PixelPitchScalar)
-{
-	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
-
-	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurXForGlow"));
-
-	if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture", pRenderTargetManager->Get_SRV(TEXT("Target_BlurForGlow")))))
-		DEBUG_ASSERT;
-
-	m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
-	m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
-	m_pXBlurShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
-
-	_float fPixelWidth = 1 / 1600.f * In_PixelPitchScalar;
-	_float fPixelHeight = 1 / 900.f * In_PixelPitchScalar;
-	m_pXBlurShader->Set_RawValue("g_PixelWidth", &fPixelWidth, sizeof(_float));
-	m_pXBlurShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));
-
-	_float fBlurStrength = 1.f;
-	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
-
-	// Blur X
-	m_pXBlurShader->Begin(3);
-	m_pVIBuffer->Render();
+	m_pXBlurShader->Begin(3, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
 	pRenderTargetManager->End_MRT();
 
@@ -1147,18 +1199,73 @@ HRESULT CRender_Manager::ReBlur_ExtractGlow(const _float& In_PixelPitchScalar)
 
 	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurForGlow"));
 
-	m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
-	m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
-	m_pXBlurShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+	//m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	//m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	//m_pXBlurShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 
+	//m_pXBlurShader->Set_RawValue("g_PixelWidth", &fPixelWidth, sizeof(_float));
+	//m_pXBlurShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));
+
+	//m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
+
+	// Blur Y
+	m_pXBlurShader->Begin(4, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
+
+	pRenderTargetManager->End_MRT();
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::ReBlur_ExtractGlow(const _float& In_PixelPitchScalar, ID3D11DeviceContext* pDeviceContext)
+{
+
+	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
+
+	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurXForGlow"));
+
+	if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture", pRenderTargetManager->Get_SRV(TEXT("Target_BlurForGlow")))))
+		DEBUG_ASSERT;
+
+	//m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	//m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	//m_pXBlurShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+
+	_float fPixelWidth = 1 / 1600.f * In_PixelPitchScalar;
+	_float fPixelHeight = 1 / 900.f * In_PixelPitchScalar;
 	m_pXBlurShader->Set_RawValue("g_PixelWidth", &fPixelWidth, sizeof(_float));
 	m_pXBlurShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));
 
-	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
+	/*_float fBlurStrength = 1.f;
+	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));*/
+
+	// Blur X
+	m_pXBlurShader->Begin(3, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
+
+	pRenderTargetManager->End_MRT();
+
+	/*if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture", pRenderTargetManager->Get_SRV(TEXT("Target_BlurForGlow")))))
+		DEBUG_ASSERT;*/
+
+	if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture",
+		pRenderTargetManager->Get_SRV(TEXT("Target_BlurXForGlow")))))
+		DEBUG_ASSERT;
+
+	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurForGlow"));
+
+	//m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	//m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	//m_pXBlurShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+
+	//m_pXBlurShader->Set_RawValue("g_PixelWidth", &fPixelWidth, sizeof(_float));
+	//m_pXBlurShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));
+
+	//m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
 
 	// Blur Y
-	m_pXBlurShader->Begin(4);
-	m_pVIBuffer->Render();
+	m_pXBlurShader->Begin(4, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
 	pRenderTargetManager->End_MRT();
 
@@ -1167,6 +1274,8 @@ HRESULT CRender_Manager::ReBlur_ExtractGlow(const _float& In_PixelPitchScalar)
 
 HRESULT CRender_Manager::Blend_OutLine()
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
 	Bake_OriginalRenderTexture();
 
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
@@ -1189,8 +1298,8 @@ HRESULT CRender_Manager::Blend_OutLine()
 	//m_pOutLineShader->Set_RawValue("g_PixelWidth", &fPixelWidth, sizeof(_float));
 	//m_pOutLineShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));
 
-	m_pOutLineShader->Begin(2);
-	m_pVIBuffer->Render();
+	m_pOutLineShader->Begin(2, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
 
 	return S_OK;
@@ -1198,13 +1307,24 @@ HRESULT CRender_Manager::Blend_OutLine()
 
 HRESULT CRender_Manager::Extract_Distortion()
 {
-	if (FAILED(GET_SINGLE(CRenderTarget_Manager)->Begin_MRT(TEXT("MRT_Distortion"))))
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
+
+
+
+	if (m_RenderObjects[(_uint)RENDERGROUP::RENDER_DISTORTION].empty())
+	{
+		return E_FAIL;
+	}
+
+	if (FAILED(pRenderTargetManager->Begin_MRT(TEXT("MRT_Distortion"))))
 		DEBUG_ASSERT;
 
+		
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_DISTORTION])
 	{
 		if (pGameObject.lock())
-			pGameObject.lock()->Render();
+			pGameObject.lock()->Render(pDeviceContext);
 	}
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_DISTORTION].clear();
 
@@ -1216,6 +1336,8 @@ HRESULT CRender_Manager::Extract_Distortion()
 
 HRESULT CRender_Manager::Blend_Distortion()
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
 	Bake_OriginalRenderTexture();
 
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
@@ -1229,14 +1351,15 @@ HRESULT CRender_Manager::Blend_Distortion()
 	m_pDistortionShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
 	m_pDistortionShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 
-	m_pDistortionShader->Begin(0);
-	m_pVIBuffer->Render();
+	m_pDistortionShader->Begin(0, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
 	return S_OK;
 }
 
-HRESULT CRender_Manager::Blend_Glow()
+HRESULT CRender_Manager::Blend_Glow(ID3D11DeviceContext* pDeviceContext)
 {
+
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
 	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
@@ -1248,11 +1371,11 @@ HRESULT CRender_Manager::Blend_Glow()
 	//m_pShader->Set_ShaderResourceView("g_OriginalRenderTexture", GET_SINGLE(CGraphic_Device)->Get_SRV());
 
 
-	m_pShader->Begin(6);
-	m_pVIBuffer->Render();
+	m_pShader->Begin(6, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
 	/*m_pShader->Begin(7);
-	m_pVIBuffer->Render();*/
+	m_pVIBuffer->Render(pDeviceContext);*/
 
 
 	return S_OK;
@@ -1260,15 +1383,21 @@ HRESULT CRender_Manager::Blend_Glow()
 
 HRESULT CRender_Manager::Render_UI()
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+	// ID3D11DeviceContext* pDeviceContext = m_pDeferredContext[DEFERRED_UI].Get();
+
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_BEFOREUI].sort([](weak_ptr<CGameObject> pSour, weak_ptr<CGameObject> pDest)
 		{
+			if (!pSour.lock() || !pDest.lock())
+				return false;
+
 			return pSour.lock()->Get_CamDistance() > pDest.lock()->Get_CamDistance();
 		});
 
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_BEFOREUI])
 	{
 		if (pGameObject.lock())
-			pGameObject.lock()->Render();
+			pGameObject.lock()->Render(pDeviceContext);
 	}
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_BEFOREUI].clear();
 
@@ -1276,13 +1405,17 @@ HRESULT CRender_Manager::Render_UI()
 
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_UI].sort([](weak_ptr<CGameObject> pSour, weak_ptr<CGameObject> pDest)
 		{
+			if (!pSour.lock() || !pDest.lock())
+				return false;
+
 			return pSour.lock()->Get_CamDistance() > pDest.lock()->Get_CamDistance();
 		});
 
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_UI])
 	{
+
 		if (pGameObject.lock())
-			pGameObject.lock()->Render();
+			pGameObject.lock()->Render(pDeviceContext);
 	}
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_UI].clear();
 
@@ -1290,13 +1423,16 @@ HRESULT CRender_Manager::Render_UI()
 
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_AFTER_UI].sort([](weak_ptr<CGameObject> pSour, weak_ptr<CGameObject> pDest)
 		{
+			if (!pSour.lock() || !pDest.lock())
+				return false;
+
 			return pSour.lock()->Get_CamDistance() > pDest.lock()->Get_CamDistance();
 		});
 
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_AFTER_UI])
 	{
 		if (pGameObject.lock())
-			pGameObject.lock()->Render();
+			pGameObject.lock()->Render(pDeviceContext);
 	}
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_AFTER_UI].clear();
 
@@ -1314,6 +1450,8 @@ HRESULT CRender_Manager::Render_Font()
 
 HRESULT CRender_Manager::Extract_Brightness()
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
 
@@ -1326,8 +1464,8 @@ HRESULT CRender_Manager::Extract_Brightness()
 	m_pXBlurShader->Set_ShaderResourceView("g_OriginalRenderTexture", GET_SINGLE(CGraphic_Device)->Get_SRV());
 
 	// Extract Brightness
-	m_pXBlurShader->Begin(2);
-	m_pVIBuffer->Render();
+	m_pXBlurShader->Begin(2, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
 	pRenderTargetManager->End_MRT();
 
@@ -1336,6 +1474,8 @@ HRESULT CRender_Manager::Extract_Brightness()
 
 HRESULT CRender_Manager::Blur_ExtractBloom()
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
 	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurXForBloom"));
@@ -1355,8 +1495,8 @@ HRESULT CRender_Manager::Blur_ExtractBloom()
 	_float fBlurStrength = 1.f;
 	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
 	// Blur X
-	m_pXBlurShader->Begin(5);
-	m_pVIBuffer->Render();
+	m_pXBlurShader->Begin(5, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
 	pRenderTargetManager->End_MRT();
 
@@ -1366,8 +1506,8 @@ HRESULT CRender_Manager::Blur_ExtractBloom()
 		DEBUG_ASSERT;
 
 	// Blur Y
-	m_pXBlurShader->Begin(6);
-	m_pVIBuffer->Render();
+	m_pXBlurShader->Begin(6, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
 	pRenderTargetManager->End_MRT();
 
@@ -1376,6 +1516,8 @@ HRESULT CRender_Manager::Blur_ExtractBloom()
 
 HRESULT CRender_Manager::ReBlur_ExtractBloom()
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
 	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurXForBloom"));
@@ -1383,7 +1525,7 @@ HRESULT CRender_Manager::ReBlur_ExtractBloom()
 	if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture", pRenderTargetManager->Get_SRV(TEXT("Target_BlurForBloom")))))
 		DEBUG_ASSERT;
 
-	m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	/*m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 	m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
 	m_pXBlurShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 
@@ -1393,10 +1535,10 @@ HRESULT CRender_Manager::ReBlur_ExtractBloom()
 	m_pXBlurShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));
 
 	_float fBlurStrength = 1.1f;
-	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
+	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));*/
 	// Blur X
-	m_pXBlurShader->Begin(5);
-	m_pVIBuffer->Render();
+	m_pXBlurShader->Begin(5, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
 	pRenderTargetManager->End_MRT();
 
@@ -1406,8 +1548,8 @@ HRESULT CRender_Manager::ReBlur_ExtractBloom()
 		DEBUG_ASSERT;
 
 	// Blur Y
-	m_pXBlurShader->Begin(6);
-	m_pVIBuffer->Render();
+	m_pXBlurShader->Begin(6, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
 	pRenderTargetManager->End_MRT();
 
@@ -1418,11 +1560,12 @@ HRESULT CRender_Manager::ReBlur_ExtractBloom()
 
 HRESULT CRender_Manager::Blend_Bloom()
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
 	this->Bake_OriginalRenderTexture();
 
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
-	// pRenderTargetManager->Begin_MRT(TEXT("MRT_Bloom"));
 
 	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
@@ -1435,137 +1578,8 @@ HRESULT CRender_Manager::Blend_Bloom()
 	m_pShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")));
 
 	/* 블룸 만들기. */
-	m_pShader->Begin(5);
-	m_pVIBuffer->Render();
-
-	// pRenderTargetManager->End_MRT();
-
-	return S_OK;
-}
-
-HRESULT CRender_Manager::Render_PostEffect()
-{
-	//shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
-
-	//m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
-	//m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
-	//m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
-	//
-	//if (m_fBlurWitdh < 0.f)
-	//	m_fBlurWitdh = 0.f;
-
-	//m_pShader->Set_RawValue("g_fBlurWidth", &m_fBlurWitdh, sizeof(_float));
-
-	////m_pShader->Set_ShaderResourceView("g_PostEffectMaskTexture", GAMEINSTANCE->Get_TexturesFromKey("PostEffectMask").front());
-	//m_pShader->Set_ShaderResourceView("g_BloomTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Bloom")));
-	//
-
-
-	///* 셰이더 합치기. */
-	//m_pShader->Begin(4);
-	//m_pVIBuffer->Render();
-
-	
-
-	return S_OK;
-}
-
-
-
-HRESULT CRender_Manager::Render_AfterPostEffect()
-{
-	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
-
-	Bake_OriginalRenderTexture();
-
-	
-
-	m_RenderObjects[(_uint)RENDERGROUP::RENDER_AFTER_POSTPROCESS].sort([](weak_ptr<CGameObject> pSour, weak_ptr<CGameObject> pDest)
-		{
-			return pSour.lock()->Get_CamDistance() < pDest.lock()->Get_CamDistance();
-		});
-
-	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_AFTER_POSTPROCESS])
-	{
-
-		if (pGameObject.lock())
-			pGameObject.lock()->Render();
-	}
-	m_RenderObjects[(_uint)RENDERGROUP::RENDER_AFTER_POSTPROCESS].clear();
-
-	pRenderTargetManager->Begin_MRT(TEXT("MRT_ExtractEffect"));
-	
-	m_RenderObjects[(_uint)RENDERGROUP::RENDER_AFTER_POSTPROCESS_EFFECT].sort([](weak_ptr<CGameObject> pSour, weak_ptr<CGameObject> pDest)
-		{
-			return pSour.lock()->Get_CamDistance() < pDest.lock()->Get_CamDistance();
-		});
-
-	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_AFTER_POSTPROCESS_EFFECT])
-	{
-
-		if (pGameObject.lock())
-			pGameObject.lock()->Render();
-	}
-
-	m_RenderObjects[(_uint)RENDERGROUP::RENDER_AFTER_POSTPROCESS_EFFECT].clear();
-
-	pRenderTargetManager->End_MRT();
-	return S_OK;
-}
-
-HRESULT CRender_Manager::Render_AfterPostEffectGlow()
-{
-	Blur_Effect();
-	Blur_ExtractGlow(3.f);
-	ReBlur_ExtractGlow(3.f);
-	
-	Blend_Glow();
-
-	Blur_ExtractBloom();
-	Extract_Brightness();
-	Blend_Bloom();
-	Render_PostEffect();
-
-	return S_OK;
-}
-
-HRESULT CRender_Manager::Blur_Effect()
-{
-	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
-
-	pRenderTargetManager->Begin_MRT(TEXT("MRT_BlurEffect"));
-
-	if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture", pRenderTargetManager->Get_SRV(TEXT("Target_OriginalEffect")))))
-		DEBUG_ASSERT;
-
-	m_pXBlurShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
-	m_pXBlurShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
-	m_pXBlurShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
-
-	_float fPixelWidth = 1 / 1600.f * 1.f;
-	_float fPixelHeight = 1 / 900.f * 1.f;
-	m_pXBlurShader->Set_RawValue("g_PixelWidth", &fPixelWidth, sizeof(_float));
-	m_pXBlurShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));
-
-	_float fBlurStrength = 2.f;
-	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
-	// Blur X
-	m_pXBlurShader->Begin(0);
-	m_pVIBuffer->Render();
-
-	pRenderTargetManager->End_MRT();
-
-	pRenderTargetManager->Begin_SingleRT(TEXT("MRT_ExtractEffect"), 0);
-
-	if (FAILED(m_pXBlurShader->Set_ShaderResourceView("g_ExtractMapTexture", pRenderTargetManager->Get_SRV(TEXT("Target_BlurForEffect")))))
-		DEBUG_ASSERT;
-
-	// Blur Y
-	m_pXBlurShader->Begin(1);
-	m_pVIBuffer->Render();
-
-
-	pRenderTargetManager->End_MRT();
+	m_pShader->Begin(5, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
 
 	return S_OK;
@@ -1575,6 +1589,8 @@ HRESULT CRender_Manager::PostProcessing()
 {
 	//모션 블러, 색수차, 중심 블러(얘는 위에 있음) 등등 화면 전체 해야하는 블러의 경우
 	//Bake_OriginalRenderTexture();
+
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
 
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
@@ -1657,8 +1673,8 @@ HRESULT CRender_Manager::PostProcessing()
 		if (FAILED(m_pPostProcessingShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")))))
 			DEBUG_ASSERT;
 
-		m_pPostProcessingShader->Begin(i);
-		m_pVIBuffer->Render();
+		m_pPostProcessingShader->Begin(i, pDeviceContext);
+		m_pVIBuffer->Render(pDeviceContext);
 	}
 
 
@@ -1667,6 +1683,8 @@ HRESULT CRender_Manager::PostProcessing()
 
 HRESULT CRender_Manager::AntiAliasing()
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
 	Bake_OriginalRenderTexture();
 
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
@@ -1680,8 +1698,8 @@ HRESULT CRender_Manager::AntiAliasing()
 	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ProjMatrix", &m_AntiAliasingProjMatrixTranspose, sizeof(_float4x4));
 
-	m_pShader->Begin(7);
-	m_pVIBuffer->Render();
+	m_pShader->Begin(7, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
 	pRenderTargetManager->End_AntiAliasingMRT();
 
@@ -1691,18 +1709,20 @@ HRESULT CRender_Manager::AntiAliasing()
 	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 
-	m_pShader->Begin(7);
-	m_pVIBuffer->Render();
+	m_pShader->Begin(7, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
 	return S_OK;
 }
 
 HRESULT CRender_Manager::Render_Final()
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_FINAL])
 	{
 		if (pGameObject.lock())
-			pGameObject.lock()->Render();
+			pGameObject.lock()->Render(pDeviceContext);
 	}
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_FINAL].clear();
 
@@ -1711,6 +1731,8 @@ HRESULT CRender_Manager::Render_Final()
 
 HRESULT CRender_Manager::Bake_OriginalRenderTexture()
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
 	pRenderTargetManager->Begin_MRT(TEXT("MRT_CopyOriginalRender"));
@@ -1722,8 +1744,8 @@ HRESULT CRender_Manager::Bake_OriginalRenderTexture()
 	m_pShader->Set_ShaderResourceView("g_OriginalRenderTexture", GET_SINGLE(CGraphic_Device)->Get_SRV());
 
 	/* 블룸 만들기. */
-	m_pShader->Begin(7);
-	m_pVIBuffer->Render();
+	m_pShader->Begin(7, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
 	pRenderTargetManager->End_MRT();
 
@@ -1732,6 +1754,8 @@ HRESULT CRender_Manager::Bake_OriginalRenderTexture()
 
 HRESULT CRender_Manager::Blur(const _float& In_PixelPitchScalar, const _tchar* In_szMRT, const _tchar* In_szTarget)
 {
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
 	pRenderTargetManager->Begin_MRT(TEXT("MRT_PublicBlur"));
@@ -1752,8 +1776,8 @@ HRESULT CRender_Manager::Blur(const _float& In_PixelPitchScalar, const _tchar* I
 	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
 
 	// Blur X
-	m_pXBlurShader->Begin(0);
-	m_pVIBuffer->Render();
+	m_pXBlurShader->Begin(0, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
 	pRenderTargetManager->End_MRT();
 
@@ -1773,8 +1797,8 @@ HRESULT CRender_Manager::Blur(const _float& In_PixelPitchScalar, const _tchar* I
 	m_pXBlurShader->Set_RawValue("g_BlurStrength", &fBlurStrength, sizeof(_float));
 
 	// Blur Y
-	m_pXBlurShader->Begin(1);
-	m_pVIBuffer->Render();
+	m_pXBlurShader->Begin(1, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
 	pRenderTargetManager->End_MRT();
 
@@ -1817,7 +1841,6 @@ HRESULT CRender_Manager::Render_Debug()
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ExtractEffect"), m_pShader, m_pVIBuffer);
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurForBloom"), m_pShader, m_pVIBuffer);
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurForGlow"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Bloom"), m_pShader, m_pVIBuffer);
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_CopyOriginalRender"), m_pShader, m_pVIBuffer);
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurEffect"), m_pShader, m_pVIBuffer);
 	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ExtractOutLine"), m_pShader, m_pVIBuffer);
@@ -1832,7 +1855,7 @@ HRESULT CRender_Manager::Render_Debug()
 	/*for (auto& pComponent : m_pDebugComponents)
 	{
 		if (pComponent.lock())
-			pComponent.lock()->Render();
+			pComponent.lock()->Render(pDeviceContext);
 	}*/
 
 	return S_OK;
@@ -1855,6 +1878,7 @@ void CRender_Manager::OnDestroy()
 {
 	m_pShader->OnDestroy();
 	m_pVIBuffer->OnDestroy();
+	m_pDeferredContext[DEFERRED_UI].Reset();
 
 }
 

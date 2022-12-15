@@ -172,7 +172,7 @@ void CMonsterHPBar_Base::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 }
 
-HRESULT CMonsterHPBar_Base::Render()
+HRESULT CMonsterHPBar_Base::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	//
 

@@ -31,9 +31,9 @@ HRESULT CVIBuffer::Initialize(void * pArg)
 	return S_OK;
 }
 
-HRESULT CVIBuffer::Render()
+HRESULT CVIBuffer::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	if (nullptr == DEVICECONTEXT)
+	if (nullptr == pDeviceContext)
 		return E_FAIL;
 
 	// Is VB null
@@ -54,11 +54,11 @@ HRESULT CVIBuffer::Render()
 		0,
 	};
 
-	DEVICECONTEXT->IASetVertexBuffers(0, m_iNumVertexBuffers, pVertexBuffers, iStrides, iOffsets);
-	DEVICECONTEXT->IASetIndexBuffer(m_pIB.Get(), m_eIndexFormat, 0);
-	DEVICECONTEXT->IASetPrimitiveTopology(m_eToplogy);
+	pDeviceContext->IASetVertexBuffers(0, m_iNumVertexBuffers, pVertexBuffers, iStrides, iOffsets);
+	pDeviceContext->IASetIndexBuffer(m_pIB.Get(), m_eIndexFormat, 0);
+	pDeviceContext->IASetPrimitiveTopology(m_eToplogy);
 
-	DEVICECONTEXT->DrawIndexed(m_iNumIndices, 0, 0);
+	pDeviceContext->DrawIndexed(m_iNumIndices, 0, 0);
 
 	return S_OK;
 }

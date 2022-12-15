@@ -59,10 +59,13 @@ void CEditGroupProp::LateTick(_float fTimeDelta)
 	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONLIGHT, Cast<CGameObject>(m_this));
 }
 
-HRESULT CEditGroupProp::Render()
+HRESULT CEditGroupProp::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	if (FAILED(SetUp_ShaderResource()))
 		return E_FAIL;
+
+	m_pShaderCom.lock()->Begin(1, pDeviceContext);
+	m_pVIBufferCom.lock()->Render(pDeviceContext);
 
 	return S_OK;
 }
@@ -140,9 +143,6 @@ HRESULT CEditGroupProp::SetUp_ShaderResource()
 		return E_FAIL;
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ)), sizeof(_float4x4))))
 		return E_FAIL;
-
-	m_pShaderCom.lock()->Begin(1);
-	m_pVIBufferCom.lock()->Render();
 
 	return S_OK;
 }
@@ -692,8 +692,6 @@ void CEditGroupProp::RenderView_Transform_Info(weak_ptr<CGameObject> In_Obj)
 
 	pTransformCom.lock()->Set_Scaled(vScaleFloat3);
 	ImGui::Text("");
-
-	XMStoreFloat4x4(&m_PickingMatrix, pTransformCom.lock()->Get_WorldMatrix());
 }
 
 void CEditGroupProp::RenderView_Transform_Edit(weak_ptr<CGameObject> In_Obj)
@@ -729,9 +727,7 @@ void CEditGroupProp::RenderView_Transform_Edit(weak_ptr<CGameObject> In_Obj)
 
 				vPitchYawRoll.y += 0.01f * MouseMove;
 
-				_vector vQuaternion = XMQuaternionRotationRollPitchYaw(vPitchYawRoll.x, vPitchYawRoll.y, vPitchYawRoll.z);
-
-				pTransformCom.lock()->Rotation_Quaternion(vQuaternion);
+				pTransformCom.lock()->Rotation_PitchYawRoll(vPitchYawRoll);
 			}
 		}
 

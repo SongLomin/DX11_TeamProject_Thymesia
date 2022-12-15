@@ -28,7 +28,7 @@ HRESULT CLevel_Edit::Initialize()
 	XMStoreFloat2(&m_TextInfo_FPS.vScale, XMVectorSet(0.55f, 0.55f, 0.f, 0.f));
 #endif // _RENDER_FPS_
 
-	GAMEINSTANCE->Set_FogDesc(_float4(1.f, 1.f, 1.f, 0.f), 99999.f);
+	GAMEINSTANCE->Set_FogDesc(_float4(0.f, 0.f, 1.f, 1.f), 500.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 
 	/*GAMEINSTANCE->Set_FogDesc(_float4(0.35f, 0.005f, 0.005f, 0.8f), 30.f);
@@ -58,9 +58,9 @@ void CLevel_Edit::Tick(_float fTimeDelta)
 #endif // _RENDER_FPS_
 }
 
-HRESULT CLevel_Edit::Render()
+HRESULT CLevel_Edit::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	if (FAILED(__super::Render()))
+	if (FAILED(__super::Render(pDeviceContext)))
 		return E_FAIL;
 
 #ifdef	_RENDER_FPS_

@@ -14,7 +14,7 @@ class CLevel_Edit final : public CClientLevel
 public:
 	virtual HRESULT Initialize();
 	virtual void Tick(_float TimeDelta);
-	virtual HRESULT Render();
+	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext);
 
 public:
 	static shared_ptr<CLevel_Edit> Create();

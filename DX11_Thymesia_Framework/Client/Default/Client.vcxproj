@@ -198,6 +198,43 @@
     <ClInclude Include="..\Public\ActorDecor.h" />
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
+    <ClInclude Include="..\Public\BossBat\Bat.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossStateBase.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_Atk_L01_1.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_Atk_L01_2a.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_Atk_L01_2b.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_Atk_L01_3a.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_Atk_R01_1.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_Atk_R01_2a.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_Atk_R01_2b.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_Bite_1.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_Bite_2.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_Car.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_Charge.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_FTurnL.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_FTurnR.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_Hellscream.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_HurtXL_F.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_HurtXL_L.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_Idle.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_JumpSmash_Chesh.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_JumpSmash_ForwardL.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_JumpSmash_SmarhL.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_SonicBoom.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_Sp.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_Start.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_Start_Loop.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_Storm.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_Stun_End.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_Stun_Loop.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_Stun_Start.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_TakeExecution_End.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_TakeExecution_Loop.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_TakeExecution_Start.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_TurnL.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_TurnR.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_WalkF.h" />
+    <ClInclude Include="..\Public\BossBat\BatStates.h" />
     <ClInclude Include="..\Public\BossUrd\Urd.h" />
     <ClInclude Include="..\Public\BossUrd\UrdBossStateBase.h" />
     <ClInclude Include="..\Public\BossUrd\UrdBossState_Idle.h" />
@@ -208,6 +245,7 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_IdleGeneral.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_TurnAttack.h" />
+    <ClInclude Include="..\Public\ClientComponent_Utils.h" />
     <ClInclude Include="..\Public\Client_Enum.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidB.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidF.h" />
@@ -365,6 +403,7 @@
     <ClInclude Include="..\Public\Effect_Trail_Distortion.h" />
     <ClInclude Include="..\Public\Effect_Trail_EyeLight.h" />
     <ClInclude Include="..\Public\MobWeapon.h" />
+    <ClInclude Include="..\Public\PlayerSkill_System.h" />
     <ClInclude Include="..\Public\PlayerUI_Defines.h" />
     <ClInclude Include="..\Public\Player_ItemSkillCollection.h" />
     <ClInclude Include="..\Public\Preset_AddGameObject.h" />
@@ -372,10 +411,13 @@
     <ClInclude Include="..\Public\Preset_UIDesc.h" />
     <ClInclude Include="..\Public\RequirementBase.h" />
     <ClInclude Include="..\Public\RequirementChecker.h" />
+    <ClInclude Include="..\Public\Requirement_PlayerStatusMana.h" />
     <ClInclude Include="..\Public\Requirement_Once.h" />
     <ClInclude Include="..\Public\Requirement_State.h" />
+    <ClInclude Include="..\Public\Requirement_Time.h" />
     <ClInclude Include="..\Public\Section_Eventer.h" />
-    <ClInclude Include="..\Public\Skill_base.h" />
+    <ClInclude Include="..\Public\Skill_Base.h" />
+    <ClInclude Include="..\Public\Skill_VargSword.h" />
     <ClInclude Include="..\Public\State_Monster.h" />
     <ClInclude Include="..\Public\State_Player.h" />
     <ClInclude Include="..\Public\Status_Boss.h" />
@@ -509,8 +551,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\Level_Stage3.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\Light_Prop.h" />
     <ClInclude Include="..\Public\LoadingTextUI.h" />
@@ -559,7 +601,7 @@
     <ClInclude Include="..\Public\Player_PotionUI.h" />
     <ClInclude Include="..\Public\ProgressBar.h" />
     <ClInclude Include="..\Public\Preset_PhysXColliderDesc.h" />
-    <ClInclude Include="..\Public\PreViewAnimationModel.h" />
+    <ClInclude Include="..\Public\PreviewAnimationModel.h" />
     <ClInclude Include="..\Public\PreView_Prop.h" />
     <ClInclude Include="..\Public\Prop.h" />
     <ClInclude Include="..\Public\SkyBox.h" />
@@ -613,6 +655,42 @@
     <ClCompile Include="..\Private\ActorDecor.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Attack_Area.cpp" />
+    <ClCompile Include="..\Private\BossBat\Bat.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossStateBase.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_Atk_L01_1.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_Atk_L01_2a.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_Atk_L01_2b.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_Atk_L01_3a.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_Atk_R01_1.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_Atk_R01_2a.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_Atk_R01_2b.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_Bite_1.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_Bite_2.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_Car.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_Charge.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_FTurnL.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_FTurnR.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_Hellscream.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_HurtXL_F.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_HurtXL_L.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_Idle.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_JumpSmash_Chest.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_JumpSmash_Forward.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_JumpSmash_SmarhL.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_SonicBoom.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_Sp.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_Start.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_Start_Loop.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_Storm.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_Stun_End.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_Stun_Loop.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_Stun_Start.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_TakeExecution_End.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_TakeExecution_Loop.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_TakeExecution_Start.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_TurnL.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_TurnR.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_WalkF.cpp" />
     <ClCompile Include="..\Private\BossStateBase.cpp" />
     <ClCompile Include="..\Private\BossUrd\Urd.cpp" />
     <ClCompile Include="..\Private\BossUrd\UrdBossStateBase.cpp" />
@@ -623,6 +701,7 @@
     <ClCompile Include="..\Private\BossVarg\VargBossState_IdleGeneral.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_RaidAttack.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_TurnAttack.cpp" />
+    <ClCompile Include="..\Private\ClientComponent_Utils.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidB.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidF.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidL.cpp" />
@@ -752,6 +831,7 @@
     <ClCompile Include="..\Private\JokerStateBase.cpp" />
     <ClCompile Include="..\Private\JokerWeapon.cpp" />
     <ClCompile Include="..\Private\Level_Stage2.cpp" />
+    <ClCompile Include="..\Private\Level_Test.cpp" />
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Parry.cpp" />
     <ClCompile Include="..\Private\PhysXCameraController.cpp">
@@ -759,16 +839,20 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\PhysXCharacterController.cpp" />
+    <ClCompile Include="..\Private\PlayerSkill_System.cpp" />
     <ClCompile Include="..\Private\Player_HPBar_Default.cpp" />
     <ClCompile Include="..\Private\Player_ItemSkillCollection.cpp" />
     <ClCompile Include="..\Private\Preset_DynamicProp.cpp" />
     <ClCompile Include="..\Private\Preset_AddGameObject.cpp" />
     <ClCompile Include="..\Private\Preset_UIDesc.cpp" />
+    <ClCompile Include="..\Private\Requirement_PlayerStatusMana.cpp" />
+    <ClCompile Include="..\Private\Requirement_Time.cpp" />
     <ClCompile Include="..\Private\Section_Eventer.cpp" />
     <ClCompile Include="..\Private\RequirementBase.cpp" />
     <ClCompile Include="..\Private\RequirementChecker.cpp" />
     <ClCompile Include="..\Private\Requirement_Once.cpp" />
     <ClCompile Include="..\Private\Requirement_State.cpp" />
+    <ClCompile Include="..\Private\Skill_VargSword.cpp" />
     <ClCompile Include="..\Private\Status_Boss.cpp" />
     <ClCompile Include="..\Private\TargetCurve.cpp" />
     <ClCompile Include="..\Private\UI_Button.cpp" />
@@ -799,7 +883,6 @@
     <ClCompile Include="..\Private\Status_Monster.cpp" />
     <ClCompile Include="..\Private\Status_Player.cpp" />
     <ClCompile Include="..\Private\Preset_PhysXControllerDesc.cpp" />
-    <ClCompile Include="..\Private\Level_Test.cpp" />
     <ClCompile Include="..\Private\PhysXColliderObject.cpp" />
     <ClCompile Include="..\Private\UI_MenuText.cpp" />
     <ClCompile Include="..\Private\UI_Script.cpp" />
@@ -904,8 +987,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Stage3.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\Light_Prop.cpp" />
     <ClCompile Include="..\Private\LoadingTextUI.cpp" />
@@ -951,7 +1034,7 @@
     <ClCompile Include="..\Private\Player_PotionUI.cpp" />
     <ClCompile Include="..\Private\ProgressBar.cpp" />
     <ClCompile Include="..\Private\Preset_PhysXColliderDesc.cpp" />
-    <ClCompile Include="..\Private\PreViewAnimationModel.cpp" />
+    <ClCompile Include="..\Private\PreviewAnimationModel.cpp" />
     <ClCompile Include="..\Private\PreView_Prop.cpp" />
     <ClCompile Include="..\Private\Prop.cpp" />
     <ClCompile Include="..\Private\SkyBox.cpp" />
@@ -993,7 +1076,7 @@
     <ClCompile Include="..\Private\UI.cpp" />
     <ClCompile Include="..\Private\WorldUI.cpp" />
     <ClCompile Include="..\Public\TestUI.cpp" />
-    <ClCompile Include="..\Skill_base.cpp" />
+    <ClCompile Include="..\Skill_Base.cpp" />
     <ClCompile Include="..\UI_MonsterFocus.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -1019,8 +1102,6 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_DistortionBlend.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_EffectMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_HPBar.hlsl" />
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_HyperSpace.hlsl" />
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_Luxiya.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_PostProcessing.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_UI.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimModel.hlsl">

@@ -14,6 +14,15 @@ class CRender_Manager :
 	DECLARE_SINGLETON(CRender_Manager)
 
 public:
+	enum DEFERRED_GROUP
+	{
+		DEFERRED_EFFECT,
+		DEFERRED_UI,
+		DEFERRED_END
+	};
+
+
+public:
 	HRESULT Initialize();
 
 	HRESULT Add_RenderGroup(RENDERGROUP	eGroup, weak_ptr<CGameObject> pGameObject);
@@ -55,26 +64,24 @@ private:
 	HRESULT Bake_Fog();
 	HRESULT Bake_ViewShadow();
 	HRESULT Render_Blend(); /* Diffuse * Shade 백버퍼에 그린다. */
+	HRESULT Render_Effect();
 	HRESULT Render_NonLight();
-	HRESULT Render_NonAlphaEffect();
-	HRESULT Render_AlphaBlend();
+	HRESULT Render_NonAlphaEffect(ID3D11DeviceContext* pDeviceContext = nullptr);
+	HRESULT Render_AlphaBlend(ID3D11DeviceContext* pDeviceContext = nullptr);
 	HRESULT Extract_OutLine();
 	HRESULT Blur_OutLine();
-	HRESULT Blur_ExtractGlow(const _float& In_PixelPitchScalar);
-	HRESULT ReBlur_ExtractGlow(const _float& In_PixelPitchScalar);
+	HRESULT Blur_ExtractGlow(const _float& In_PixelPitchScalar, ID3D11DeviceContext* pDeviceContext = nullptr);
+	HRESULT ReBlur_ExtractGlow(const _float& In_PixelPitchScalar, ID3D11DeviceContext* pDeviceContext = nullptr);
 	HRESULT Blend_OutLine();
 	HRESULT Extract_Distortion();
 	HRESULT Blend_Distortion();
-	HRESULT Blend_Glow(); // 원본이 글로우보다 위에 그려진다.
+	HRESULT Blend_Glow(ID3D11DeviceContext* pDeviceContext = nullptr); // 원본이 글로우보다 위에 그려진다.
 	HRESULT Render_Font();
 	HRESULT Extract_Brightness();
 	HRESULT Blur_ExtractBloom();
 	HRESULT ReBlur_ExtractBloom();
 	HRESULT Blend_Bloom();
-	HRESULT Render_PostEffect();
-	HRESULT Render_AfterPostEffect();
-	HRESULT Render_AfterPostEffectGlow();
-	HRESULT Blur_Effect();
+//	HRESULT Render_Water
 
 	HRESULT PostProcessing();
 	HRESULT AntiAliasing();
@@ -145,6 +152,10 @@ private:
 	_float		m_fFogRange = 30.f;
 	
 	_float		m_fGrayScale = 1.f;
+
+
+private:
+	ComPtr<ID3D11DeviceContext> m_pDeferredContext[DEFERRED_END];
 
 public:
 	virtual void OnDestroy() override;

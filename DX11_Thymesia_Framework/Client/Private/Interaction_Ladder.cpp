@@ -81,24 +81,26 @@ void CInteraction_Ladder::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 }
 
-HRESULT CInteraction_Ladder::Render()
+HRESULT CInteraction_Ladder::Render(ID3D11DeviceContext* pDeviceContext)
 {
-    if (FAILED(SetUp_ShaderResource()))
+    if (FAILED(SetUp_ShaderResource(pDeviceContext)))
         return E_FAIL;
+
+    CGameObject::Render(pDeviceContext);
 
     return S_OK;
 }
 
-HRESULT CInteraction_Ladder::SetUp_ShaderResource()
+HRESULT CInteraction_Ladder::SetUp_ShaderResource(ID3D11DeviceContext* pDeviceContext)
 {
-    if (FAILED(SetUp_ShaderResource_Up()))
+    if (FAILED(SetUp_ShaderResource_Up(pDeviceContext)))
         return E_FAIL;
-    if (FAILED(SetUp_ShaderResource_Mid()))
+    if (FAILED(SetUp_ShaderResource_Mid(pDeviceContext)))
         return E_FAIL;
-    if (FAILED(SetUp_ShaderResource_Down()))
+    if (FAILED(SetUp_ShaderResource_Down(pDeviceContext)))
         return E_FAIL;
 
-    return CGameObject::Render();
+    return S_OK;
 }
 
 void CInteraction_Ladder::OnEventMessage(_uint iArg)
@@ -194,7 +196,7 @@ void CInteraction_Ladder::Load_FromJson(const json& In_Json)
     }
 }
 
-HRESULT CInteraction_Ladder::SetUp_ShaderResource_Up()
+HRESULT CInteraction_Ladder::SetUp_ShaderResource_Up(ID3D11DeviceContext* pDeviceContext)
 {
     _float4x4 WorldMatrix;
     XMStoreFloat4x4(&WorldMatrix, m_pTransformCom.lock()->Get_WorldMatrix());
@@ -246,14 +248,14 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Up()
                 m_iPassIndex = 7;
         }
 
-        m_pShaderCom.lock()->Begin(m_iPassIndex);
-        m_pUpModelCom.lock()->Render_Mesh(i);
+        m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
+        m_pUpModelCom.lock()->Render_Mesh(i, pDeviceContext);
     }
 
     return S_OK;
 }
 
-HRESULT CInteraction_Ladder::SetUp_ShaderResource_Mid()
+HRESULT CInteraction_Ladder::SetUp_ShaderResource_Mid(ID3D11DeviceContext* pDeviceContext)
 {
     _float4x4 WorldMatrix;
     XMStoreFloat4x4(&WorldMatrix, XMMatrixIdentity());
@@ -298,14 +300,14 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Mid()
         else
             m_iPassIndex = 1;
         
-        m_pInstanceShaderCom.lock()->Begin(m_iPassIndex);
-        m_pInstanceModelCom.lock()->Render_Mesh(i);
+        m_pInstanceShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
+        m_pInstanceModelCom.lock()->Render_Mesh(i, pDeviceContext);
     }
 
     return S_OK;
 }
 
-HRESULT CInteraction_Ladder::SetUp_ShaderResource_Down()
+HRESULT CInteraction_Ladder::SetUp_ShaderResource_Down(ID3D11DeviceContext* pDeviceContext)
 {
     if (FAILED(m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix")))
         return E_FAIL;
@@ -348,8 +350,8 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Down()
                 m_iPassIndex = 7;
         }
 
-        m_pShaderCom.lock()->Begin(m_iPassIndex);
-        m_pModelCom.lock()->Render_Mesh(i);
+        m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
+        m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
     }
 
     return S_OK;

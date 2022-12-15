@@ -311,7 +311,7 @@ HRESULT CModel::Initialize(void* pArg)
 
 void CModel::Start()
 {
-	USE_RENDER(CModel);
+
 }
 
 HRESULT CModel::Play_Animation(_float fTimeDelta)
@@ -351,12 +351,12 @@ HRESULT CModel::Play_Animation(_float fTimeDelta)
 	return S_OK;
 }
 
-HRESULT CModel::Render_Mesh(_uint iMeshContainerIndex)
+HRESULT CModel::Render_Mesh(_uint iMeshContainerIndex, ID3D11DeviceContext* pDeviceContext)
 {
 	if (iMeshContainerIndex >= m_iNumMeshContainers)
 		return E_FAIL;
 
-	m_MeshContainers[iMeshContainerIndex].lock()->Render();
+	m_MeshContainers[iMeshContainerIndex].lock()->Render(pDeviceContext);
 
 	return S_OK;
 }
@@ -371,7 +371,7 @@ HRESULT CModel::Update_BoneMatrices()
 	return S_OK;
 }
 
-HRESULT CModel::Render_AnimModel(_uint iMeshContainerIndex, weak_ptr<CShader> pShader, _uint iPassIndex, const char* pConstantBoneName)
+HRESULT CModel::Render_AnimModel(_uint iMeshContainerIndex, weak_ptr<CShader> pShader, _uint iPassIndex, const char* pConstantBoneName, ID3D11DeviceContext* pDeviceContext)
 {
 	if (!Get_Enable())
 		return E_FAIL;
@@ -395,9 +395,9 @@ HRESULT CModel::Render_AnimModel(_uint iMeshContainerIndex, weak_ptr<CShader> pS
 		}
 	}
 
-	pShader.lock()->Begin(iPassIndex);
+	pShader.lock()->Begin(iPassIndex, pDeviceContext);
 
-	m_MeshContainers[iMeshContainerIndex].lock()->Render();
+	m_MeshContainers[iMeshContainerIndex].lock()->Render(pDeviceContext);
 
 	//delete[](BoneMatrices);
 
@@ -768,7 +768,6 @@ void CModel::Add_ReverseAnimation(const _uint In_iAnimationIndex, _uint iTimeSca
 void CModel::OnDestroy()
 {
 	UNUSE_START(CModel);
-	UNUSE_RENDER(CModel);
 }
 
 void CModel::Free()

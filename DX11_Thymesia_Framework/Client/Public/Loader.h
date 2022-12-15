@@ -34,7 +34,7 @@ public:
 	HRESULT Initialize(LEVEL eNextLevel);
 	HRESULT Loading_ForLogoLevel();
 	HRESULT Loading_ForLobby();
-	HRESULT Loading_ForGamePlayLevel();
+	HRESULT Loading_ForGamePlayLevel();	
 	HRESULT Loading_ForStage2Level();
 	HRESULT Loading_ForStage3Level();
 	HRESULT Loading_ForEditLevel();
@@ -64,7 +64,7 @@ private:
 	void	Load_BossMobModel();
 
 private:
-	LEVEL						m_eNextLevel = LEVEL_END;
+	LEVEL					m_eNextLevel = LEVEL_END;
 
 private:
 	HANDLE					m_hThread;

@@ -78,6 +78,7 @@ void CCorvusState_NorMob_Execution::OnStateEnd()
 {
 	__super::OnStateEnd();
 	//GET_SINGLE(CGameManager)->End_Cinematic();
+	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CCorvusState_NorMob_Execution::Call_NextAnimationKey, this, placeholders::_1);
 }
 
 void CCorvusState_NorMob_Execution::Call_AnimationEnd()
@@ -85,26 +86,14 @@ void CCorvusState_NorMob_Execution::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CCorvusState_NorMob_Execution::Call_NextAnimationKey, this, placeholders::_1);
+	
 	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
-
 }
 
 void CCorvusState_NorMob_Execution::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 {
 	if (!Get_Enable())
 		return;
-
-	switch (In_iKeyIndex)
-	{
-	case 3:
-		_float3 vPosition;
-		XMStoreFloat3(&vPosition, m_pOwner.lock()->Get_Transform()->Get_Position() + XMVectorSet(0.f, 1.f, 0.f, 0.f));
-		GAMEINSTANCE->Set_RadialBlur(0.2f, vPosition);
-		GAMEINSTANCE->Set_Chromatic(0.1f);
-		
-		break;
-	}
 }
 
 void CCorvusState_NorMob_Execution::OnEventMessage(weak_ptr<CBase> pArg)
@@ -140,9 +129,6 @@ _bool CCorvusState_NorMob_Execution::Check_AndChangeNextState()
 	//	Get_OwnerPlayer()->Get_Component<CNorMonState_Attack>().lock()->Play_AttackWithIndex(0);
 	//	return true;
 	//}
-
-
-
 
 	return false;
 }

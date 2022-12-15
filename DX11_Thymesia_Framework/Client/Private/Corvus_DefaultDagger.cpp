@@ -58,9 +58,9 @@ void CCorvus_DefaultDagger::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 }
 
-HRESULT CCorvus_DefaultDagger::Render()
+HRESULT CCorvus_DefaultDagger::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	__super::Render();
+	__super::Render(pDeviceContext);
 
 	return S_OK;
 }

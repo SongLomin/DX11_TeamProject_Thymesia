@@ -70,7 +70,7 @@ void CUI_PauseMenu_Tap_Status::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CUI_PauseMenu_Tap_Status::Render()
+HRESULT CUI_PauseMenu_Tap_Status::Render(ID3D11DeviceContext* pDeviceContext)
 {
     //
     return S_OK;

@@ -59,7 +59,7 @@ void CEditLights::LateTick(_float fTimeDelta)
 	//m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONLIGHT, Cast<CGameObject>(m_this));
 }
 
-HRESULT CEditLights::Render()
+HRESULT CEditLights::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	if (FAILED(SetUp_ShaderResource()))
 		return E_FAIL;

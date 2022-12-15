@@ -1,14 +1,20 @@
 #include "Font_Manager.h"
 #include "CustomFont.h"
+#include "GameInstance.h"
 
 IMPLEMENT_SINGLETON(CFont_Manager)
+
+void CFont_Manager::Init_DeviceContext(ComPtr<ID3D11DeviceContext> pDeviceContext)
+{
+	m_pDeviceContext = DEVICECONTEXT;
+}
 
 HRESULT CFont_Manager::Add_Font(_uint iFontTag, const _tchar* pFontFilePath)
 {
 	if (nullptr != Find_Font(iFontTag))
 		return E_FAIL;
 
-	shared_ptr<CCustomFont> pFont = CCustomFont::Create(pFontFilePath);
+	shared_ptr<CCustomFont> pFont = CCustomFont::Create(pFontFilePath, m_pDeviceContext);
 	if (nullptr == pFont)
 		return E_FAIL;
 
@@ -32,7 +38,7 @@ HRESULT CFont_Manager::Render_Font(_uint iFontTag)
 	if (nullptr == pFont)
 		return E_FAIL;
 
-	pFont->Render();
+	pFont->Render(DEVICECONTEXT);
 
 	return S_OK;
 }
@@ -51,7 +57,7 @@ HRESULT CFont_Manager::Render_AllFont()
 {
 	for (auto& elem : m_Fonts)
 	{
-		elem.second->Render();
+		elem.second->Render(DEVICECONTEXT);
 	}
 
 

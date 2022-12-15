@@ -110,7 +110,7 @@ void CUI_Landing::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CUI_Landing::Render()
+HRESULT CUI_Landing::Render(ID3D11DeviceContext* pDeviceContext)
 {
 
     return S_OK;
