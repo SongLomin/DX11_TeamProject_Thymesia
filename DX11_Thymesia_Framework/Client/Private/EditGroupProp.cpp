@@ -238,15 +238,17 @@ void CEditGroupProp::OnEventMessage(_uint iArg)
 
 		case EVENT_TYPE::ON_EDIT_DELETE:
 		{
+
 			auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditGroupProp).hash_code());
 
 			if (iter_collider != GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
 			{
 				for (auto& elem : iter_collider->second)
 					elem.pInstance.lock()->Set_Dead();
+
+				iter_collider->second.clear();
 			}
 
-			iter_collider->second.clear();
 		}
 		break;
 	}
