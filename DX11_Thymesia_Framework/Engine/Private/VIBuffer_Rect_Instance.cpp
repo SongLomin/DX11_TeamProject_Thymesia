@@ -172,7 +172,7 @@ void CVIBuffer_Rect_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDes
 	if (In_ParticleDescs.size() == 0 || 0 == m_iNumInstance)
 		return;
 
-	D3D11_MAPPED_SUBRESOURCE		SubResource;
+	D3D11_MAPPED_SUBRESOURCE SubResource;
 
 	/* D3D11_MAP_WRITE_NO_OVERWRITE : SubResource구조체가 받아온 pData에 유요한 값이 담겨잇는 형태로 얻어오낟. */
 	/* D3D11_MAP_WRITE_DISCARD : SubResource구조체가 받아온 pData에 값이 초기화된 형태로 얻어오낟. */

@@ -3,7 +3,7 @@
 #include "SMath.h"
 #include <filesystem>
 
-// #define _JOJO_EFFECT_TOOL_
+#define _JOJO_EFFECT_TOOL_
 
 #include "Client_Structs.h"
 #include "Client_Presets.h"
@@ -33,7 +33,7 @@
 #pragma endregion // Console Outputs
 
 #pragma region Map
-#define _BRIGHT_LIGHT_
+// #define _BRIGHT_LIGHT_
 // #define _GENERATE_PROP_COLLIDER_ true
 // #define _STAGE_1_
 #define _STAGE_2_
@@ -158,7 +158,7 @@
 #undef _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
 #undef _JOJO_EFFECTS_
-#define _ANIMATION_TOOL_CORVUS_WEAPON_
+#define _ANIMATION_TOOL_WEAPON_
 // #define _BAKE_EFFECTMESH_FBX_
 #pragma endregion // Effects
 
@@ -178,9 +178,6 @@ extern HINSTANCE g_hInst;
 
 using namespace Client;
 namespace fs = std::filesystem;
-
-
-
 
 #define EVENT_DRAW_EDITER 1
 #define EVENT_INIT_EDITER 0

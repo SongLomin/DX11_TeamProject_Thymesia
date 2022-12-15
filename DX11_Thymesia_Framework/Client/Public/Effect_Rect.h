@@ -45,7 +45,6 @@ public:
     void ReBake_EditParticle();
     void Write_EffectJson(json& Out_Json);
     void Load_EffectJson(const json& In_Json, const _uint& In_iTimeScaleLayer);
-    void Clone_EffectRect();
     virtual void OnEventMessage(_uint iArg) override;
     void OnChangeAnimationKey(const _uint& In_Key);
 
@@ -83,7 +82,6 @@ private:
     void Update_ParticleSpriteFrame(const _uint& i, _float fTimeDelta);
     void Update_ParentTransform();
 
-    // For. Easing
     void Apply_Easing
     (
         _float3& vTarget
@@ -190,7 +188,7 @@ private:
 
 #ifdef _JOJO_EFFECT_TOOL_
     // For. Tool
-    _int    m_iScaleType = 0;
+    _int m_iScaleType = 0;
     static const _int m_iScaleType_None;
     static const _int m_iScaleType_Square;
     static const _int m_iScaleType_Ratio;

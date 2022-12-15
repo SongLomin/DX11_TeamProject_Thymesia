@@ -76,11 +76,11 @@ void CCustomEffectMesh::Tick(_float fTimeDelta)
 
 	__super::Tick(fTimeDelta);
 
-	this->Play(fTimeDelta * GAMEINSTANCE->Get_TimeScale(m_iTimeScaleLayerIndex));
+	Play(fTimeDelta * GAMEINSTANCE->Get_TimeScale(m_iTimeScaleLayerIndex));
 #ifdef _DEBUG
 #ifdef _JOJO_EFFECT_TOOL_
-	this->Key_Input_ControlMesh(fTimeDelta);
-	this->Apply_ImGui_Controls_to_Mesh();
+	Key_Input_ControlMesh(fTimeDelta);
+	Apply_ImGui_Controls_to_Mesh();
 #endif // _JOJO_EFFECT_TOOL_
 #endif // _DEBUG
 }
@@ -111,8 +111,8 @@ HRESULT CCustomEffectMesh::Render(ID3D11DeviceContext* pDeviceContext)
 
 	if (m_tEffectMeshDesc.bApplyDissolve)
 	{
-		this->SetUp_ShaderResource();
-		this->SetUp_ShaderResource_Dissolve();
+		SetUp_ShaderResource();
+		SetUp_ShaderResource_Dissolve();
 		CGameObject::CallBack_Render();
 
 		_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
@@ -132,7 +132,7 @@ HRESULT CCustomEffectMesh::Render(ID3D11DeviceContext* pDeviceContext)
 	}
 	else
 	{
-		this->SetUp_ShaderResource();
+		SetUp_ShaderResource();
 		CGameObject::CallBack_Render();
 
 		_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
@@ -272,7 +272,7 @@ void CCustomEffectMesh::Play(_float fTimeDelta)
 	}
 
 	for (_int i(0); i < iTickCount; ++i)
-		this->Play_Internal(fFrameTime);
+		Play_Internal(fFrameTime);
 
 	m_fCurrentLifeTime += fTimeDelta;
 }
@@ -878,7 +878,7 @@ void CCustomEffectMesh::Tool_Boner()
 
 	if (m_tEffectMeshDesc.bBoner)
 	{
-		weak_ptr<CPreViewAnimationModel> pPreviewModel = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel();
+		weak_ptr<CPreviewAnimationModel> pPreviewModel = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel();
 
 		if (!pPreviewModel.lock())
 		{
@@ -1355,17 +1355,17 @@ void CCustomEffectMesh::Tool_Collider()
 #endif // _DEBUG
 void CCustomEffectMesh::Play_Internal(_float fFrameTime)
 {
-	this->Update_Position(fFrameTime);
-	this->Update_Rotation(fFrameTime);
-	this->Update_Scale(fFrameTime);
-	this->Update_Color(fFrameTime);
-	this->Update_Diffuse(fFrameTime);
-	this->Updaste_Noise(fFrameTime);
-	this->Update_Mask(fFrameTime);
-	this->Update_Glow(fFrameTime);
+	Update_Position(fFrameTime);
+	Update_Rotation(fFrameTime);
+	Update_Scale(fFrameTime);
+	Update_Color(fFrameTime);
+	Update_Diffuse(fFrameTime);
+	Updaste_Noise(fFrameTime);
+	Update_Mask(fFrameTime);
+	Update_Glow(fFrameTime);
 
 	if (m_tEffectMeshDesc.bApplyDissolve)
-		this->Update_Dissolve(fFrameTime);
+		Update_Dissolve(fFrameTime);
 }
 
 void CCustomEffectMesh::Update_Position(_float fFrameTime)
@@ -1636,15 +1636,25 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 		if (ImGui::CollapsingHeader("CustomEffectMesh"), ImGuiTreeNodeFlags_DefaultOpen)
 		{
 			if (ImGui::Button("Clone##Clone_EffectMesh"))
-				this->Clone_EffectMesh();
+				Clone_EffectMesh();
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("Copy##Copy_EffectMesh"))
+				GET_SINGLE(CGameManager)->Store_EffectMeshInfo(m_tEffectMeshDesc);
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("Paste##Paste_EffectMesh"))
+				m_tEffectMeshDesc = GET_SINGLE(CGameManager)->Get_StoredEffectMeshInfo();
 
 			// TODO : for imgui - mesh keyboard control
 			ImGui::Checkbox("Focus Control##Control_Focus", &m_tEffectMeshDesc.bOnFocus);
 
-			this->Tool_Control();
+			Tool_Control();
 
 			if (ImGui::CollapsingHeader("Spawn & Life Time"))
-				this->Tool_Spawn_Life_Time();
+				Tool_Spawn_Life_Time();
 
 			ImGui::Text("Follow Transform");
 			ImGui::SameLine();
@@ -1655,25 +1665,25 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::Checkbox("##BillBoard", &m_tEffectMeshDesc.bBillBoard);
 
 			if (ImGui::CollapsingHeader("Animation Sync"))
-				this->Tool_AnimationSync();
+				Tool_AnimationSync();
 
 			if (ImGui::CollapsingHeader("Boner"))
-				this->Tool_Boner();
+				Tool_Boner();
 
 			if (ImGui::CollapsingHeader("Position"))
-				this->Tool_Position();
+				Tool_Position();
 
 			if (ImGui::CollapsingHeader("Speed"))
-				this->Tool_Speed();
+				Tool_Speed();
 
 			if (ImGui::CollapsingHeader("Rotation"))
-				this->Tool_Rotation();
+				Tool_Rotation();
 
 			if (ImGui::CollapsingHeader("Scale"))
-				this->Tool_Scale();
+				Tool_Scale();
 
 			if (ImGui::CollapsingHeader("Shaders"))
-				this->Tool_Shaders();
+				Tool_Shaders();
 
 
 			ImGui::Checkbox("Apply Dissolve##Is_Dissolve", &m_tEffectMeshDesc.bApplyDissolve);
@@ -1681,33 +1691,33 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			if (m_tEffectMeshDesc.bApplyDissolve)
 			{
 				if (ImGui::CollapsingHeader("Dissolve"))
-					this->Tool_Dissolve();
+					Tool_Dissolve();
 			}
 
 			if (ImGui::CollapsingHeader("Colors"))
-				this->Tool_Colors();
+				Tool_Colors();
 
 			if (ImGui::CollapsingHeader("Textures"))
 			{
 				if (ImGui::TreeNode("Diffuse"))
 				{
-					this->Tool_Texture_Diffuse();
+					Tool_Texture_Diffuse();
 					ImGui::TreePop();
 				}
 				if (ImGui::TreeNode("Noise"))
 				{
-					this->Tool_Texture_Noise();
+					Tool_Texture_Noise();
 					ImGui::TreePop();
 				}
 				if (ImGui::TreeNode("Mask"))
 				{
-					this->Tool_Texture_Mask();
+					Tool_Texture_Mask();
 					ImGui::TreePop();
 				}
 			}
 
 			if (ImGui::CollapsingHeader("Collider"))
-				this->Tool_Collider();
+				Tool_Collider();
 		}
 	}
 #endif // _DEBUG
@@ -1735,7 +1745,7 @@ void CCustomEffectMesh::OnChangeAnimationKey(const _uint& In_Key)
 
 	weak_ptr<CTransform> pPreviewModelTransform(GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Transform());
 
-	this->Reset_Effect(pPreviewModelTransform);
+	Reset_Effect(pPreviewModelTransform);
 }
 
 void CCustomEffectMesh::Free()
