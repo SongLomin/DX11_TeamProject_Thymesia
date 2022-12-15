@@ -6,23 +6,17 @@
 BEGIN(Client)
 
 class CRequirementChecker :
-    public CClientComponent
+    public CBase
 {
     GAMECLASS_H(CRequirementChecker)
     SHALLOW_COPY(CRequirementChecker)
-    CLONE_H(CRequirementChecker, CComponent)
 
 
 public:
     _size_t size() const { return m_pRequirements.size(); }
 
 protected:
-    // CClientComponent을(를) 통해 상속됨
-    virtual HRESULT Initialize_Prototype() override;
-    virtual HRESULT Initialize(void* pArg) override;
-    virtual void Start() override;
-
-    
+    HRESULT Initialize(void* pArg);
 
 public:
     void    Add_Requirement(shared_ptr<CRequirementBase> pRequirment);
@@ -33,6 +27,9 @@ private:
 
 private:
     list<shared_ptr<CRequirementBase>> m_pRequirements;
+
+public:
+    static  shared_ptr<CRequirementChecker> Create(void* pArg = nullptr);
 
 private:
     void Free();

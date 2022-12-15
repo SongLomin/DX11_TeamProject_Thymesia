@@ -245,6 +245,7 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_IdleGeneral.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_TurnAttack.h" />
+    <ClInclude Include="..\Public\ClientComponent_Utils.h" />
     <ClInclude Include="..\Public\Client_Enum.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidB.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidF.h" />
@@ -402,6 +403,7 @@
     <ClInclude Include="..\Public\Effect_Trail_Distortion.h" />
     <ClInclude Include="..\Public\Effect_Trail_EyeLight.h" />
     <ClInclude Include="..\Public\MobWeapon.h" />
+    <ClInclude Include="..\Public\PlayerSkill_System.h" />
     <ClInclude Include="..\Public\PlayerUI_Defines.h" />
     <ClInclude Include="..\Public\Player_ItemSkillCollection.h" />
     <ClInclude Include="..\Public\Preset_AddGameObject.h" />
@@ -409,10 +411,13 @@
     <ClInclude Include="..\Public\Preset_UIDesc.h" />
     <ClInclude Include="..\Public\RequirementBase.h" />
     <ClInclude Include="..\Public\RequirementChecker.h" />
+    <ClInclude Include="..\Public\Requirement_PlayerStatusMana.h" />
     <ClInclude Include="..\Public\Requirement_Once.h" />
     <ClInclude Include="..\Public\Requirement_State.h" />
+    <ClInclude Include="..\Public\Requirement_Time.h" />
     <ClInclude Include="..\Public\Section_Eventer.h" />
-    <ClInclude Include="..\Public\Skill_base.h" />
+    <ClInclude Include="..\Public\Skill_Base.h" />
+    <ClInclude Include="..\Public\Skill_VargSword.h" />
     <ClInclude Include="..\Public\State_Monster.h" />
     <ClInclude Include="..\Public\State_Player.h" />
     <ClInclude Include="..\Public\Status_Boss.h" />
@@ -696,6 +701,7 @@
     <ClCompile Include="..\Private\BossVarg\VargBossState_IdleGeneral.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_RaidAttack.cpp" />
     <ClCompile Include="..\Private\BossVarg\VargBossState_TurnAttack.cpp" />
+    <ClCompile Include="..\Private\ClientComponent_Utils.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidB.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidF.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_AVoidL.cpp" />
@@ -833,16 +839,20 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\PhysXCharacterController.cpp" />
+    <ClCompile Include="..\Private\PlayerSkill_System.cpp" />
     <ClCompile Include="..\Private\Player_HPBar_Default.cpp" />
     <ClCompile Include="..\Private\Player_ItemSkillCollection.cpp" />
     <ClCompile Include="..\Private\Preset_DynamicProp.cpp" />
     <ClCompile Include="..\Private\Preset_AddGameObject.cpp" />
     <ClCompile Include="..\Private\Preset_UIDesc.cpp" />
+    <ClCompile Include="..\Private\Requirement_PlayerStatusMana.cpp" />
+    <ClCompile Include="..\Private\Requirement_Time.cpp" />
     <ClCompile Include="..\Private\Section_Eventer.cpp" />
     <ClCompile Include="..\Private\RequirementBase.cpp" />
     <ClCompile Include="..\Private\RequirementChecker.cpp" />
     <ClCompile Include="..\Private\Requirement_Once.cpp" />
     <ClCompile Include="..\Private\Requirement_State.cpp" />
+    <ClCompile Include="..\Private\Skill_VargSword.cpp" />
     <ClCompile Include="..\Private\Status_Boss.cpp" />
     <ClCompile Include="..\Private\TargetCurve.cpp" />
     <ClCompile Include="..\Private\UI_Button.cpp" />
@@ -1066,7 +1076,7 @@
     <ClCompile Include="..\Private\UI.cpp" />
     <ClCompile Include="..\Private\WorldUI.cpp" />
     <ClCompile Include="..\Public\TestUI.cpp" />
-    <ClCompile Include="..\Skill_base.cpp" />
+    <ClCompile Include="..\Skill_Base.cpp" />
     <ClCompile Include="..\UI_MonsterFocus.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">

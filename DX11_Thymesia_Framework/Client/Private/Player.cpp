@@ -197,6 +197,10 @@ void CPlayer::SetUp_ShaderResource()
    
 }
 
+void CPlayer::SetUp_Requirement()
+{
+}
+
 void CPlayer::OnBattleEnd()
 {
     __super::OnBattleEnd();

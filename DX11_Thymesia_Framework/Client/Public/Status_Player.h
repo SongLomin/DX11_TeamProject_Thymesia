@@ -51,6 +51,7 @@ public:
         {
             ZeroMemory(this, sizeof(tagPlayerDesc));
 		    m_fCurrentHP = 300.f;
+            m_fCurrentMP = 150.f;
 			m_fMaxHP = 300.f;
 			m_fMaxMP = 150.f;
 			m_fNormalAtk = 25.f;
@@ -94,7 +95,7 @@ public:
     virtual void    Init_Status(const void* pArg);
     virtual void    Add_Damage(const _float& In_fDamage);
     void            Add_Memory(_uint    iRootedMemory);
-
+    void            Consumed_Mana(_float fRequireMana);
     virtual void   Full_Recovery();
 
 
@@ -107,6 +108,10 @@ public://For HPBar
     _float         Get_MaxHP() { return m_tDesc.m_fMaxHP; }
     _float         Get_CurrentHP() { return m_tDesc.m_fCurrentHP; }
    
+public://For MPBar
+    _float         Get_MaxMP() { return m_tDesc.m_fMaxMP; }
+    _float         Get_CurrentMP() { return m_tDesc.m_fCurrentMP; }
+
 
 
     _float         Get_Atk() { return m_tDesc.m_fNormalAtk; }

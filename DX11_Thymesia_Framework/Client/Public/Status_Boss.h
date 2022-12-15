@@ -17,7 +17,7 @@ public:
 	virtual void			Update_HitedTime(_float fTimeDelta);
 
 	void					Set_NextPhase();
-
+	void					Minus_LifePoint(_uint iPoint = 1);
 public:
 
 

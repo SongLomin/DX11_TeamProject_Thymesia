@@ -120,7 +120,7 @@ void CActor::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 
 weak_ptr<CRequirementChecker> CActor::Get_Requirement(const string& In_szCheckerKey)
 {
-    return m_pRequirementCheckerComs[hash<string>()(In_szCheckerKey)];
+    return m_pRequirementChecker[hash<string>()(In_szCheckerKey)];
 }
 
 

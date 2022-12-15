@@ -49,7 +49,7 @@ protected:
     weak_ptr<CModel> m_pModelCom;
     weak_ptr<CShader> m_pShaderCom;
     weak_ptr<CRenderer> m_pRendererCom;
-    map<_hashcode, weak_ptr<CRequirementChecker>> m_pRequirementCheckerComs;
+    map<_hashcode, shared_ptr<CRequirementChecker>> m_pRequirementChecker;
 
     list<pair<string, _uint>>   m_EffectIndexList;
 

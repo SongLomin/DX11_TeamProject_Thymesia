@@ -1188,7 +1188,6 @@
     <ClInclude Include="..\Public\HUD_Player_Memory.h" />
     <ClInclude Include="..\Public\EasingComponent_Float.h" />
     <ClInclude Include="..\Public\HUD_Player_Memory.h" />
-    <ClInclude Include="..\Public\Skill_base.h" />
     <ClInclude Include="..\Public\Client_Enum.h">
       <Filter>99. Defines</Filter>
     </ClInclude>
@@ -1335,6 +1334,18 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Headache_Start.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\00.Start</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\PlayerSkill_System.h">
+      <Filter>05. Component\05. Skill\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ClientComponent_Utils.h" />
+    <ClInclude Include="..\Public\Skill_Base.h">
+      <Filter>05. Component\05. Skill\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Skill_VargSword.h" />
+    <ClInclude Include="..\Public\Requirement_Time.h">
+      <Filter>07. Requirement\00. Requirement_Time</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Requirement_PlayerStatusMana.h" />
     <ClInclude Include="..\Public\Level_Test.h">
       <Filter>01. ClientLevel\05. Level_Test</Filter>
     </ClInclude>
@@ -2573,7 +2584,6 @@
     <ClCompile Include="..\Private\HUD_Player_Memory.cpp" />
     <ClCompile Include="..\Private\EasingComponent_Float.cpp" />
     <ClCompile Include="..\Private\HUD_Player_Memory.cpp" />
-    <ClCompile Include="..\Skill_base.cpp" />
     <ClCompile Include="..\Private\EasingComponent_Float.cpp" />
     <ClCompile Include="..\Private\HUD_Player_Memory.cpp" />
     <ClCompile Include="..\Private\Window_Level_Dev.cpp">
@@ -2588,6 +2598,18 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Headache_Start.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\00.Start</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\PlayerSkill_System.cpp">
+      <Filter>05. Component\05. Skill\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ClientComponent_Utils.cpp" />
+    <ClCompile Include="..\Skill_Base.cpp">
+      <Filter>05. Component\05. Skill\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Skill_VargSword.cpp" />
+    <ClCompile Include="..\Private\Requirement_Time.cpp">
+      <Filter>07. Requirement\00. Requirement_Time</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Requirement_PlayerStatusMana.cpp" />
     <ClCompile Include="..\Private\BossVarg\Varg.cpp">
       <Filter>02. GameObject\03. Actor\Character\Boss\00.Varg</Filter>
     </ClCompile>
@@ -3932,6 +3954,18 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\02.End">
       <UniqueIdentifier>{3f8496d0-c7e7-442f-ba6f-7dce40cc4e70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\05. Skill\System">
+      <UniqueIdentifier>{8c7460cf-5d79-495c-9677-c916c5cf5737}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\05. Skill\Base">
+      <UniqueIdentifier>{0a4b4c44-6d42-4ded-95e3-cd3693b8cc29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\05. Skill\VargSworld">
+      <UniqueIdentifier>{afad1ab2-842e-4e8f-970f-188a5b4990db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07. Requirement\04. Requirement_Compare">
+      <UniqueIdentifier>{e4a49362-08cf-404a-95b7-994a6f215706}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\03. Actor\Character\Boss\00.Varg">
       <UniqueIdentifier>{ddd2e752-5b8a-44fe-907b-e13bb62c97f1}</UniqueIdentifier>

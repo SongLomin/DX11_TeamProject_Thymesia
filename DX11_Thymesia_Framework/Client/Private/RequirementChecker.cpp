@@ -1,26 +1,12 @@
 #include "stdafx.h"
 #include "RequirementChecker.h"
 
-
 GAMECLASS_C(CRequirementChecker)
-CLONE_C(CRequirementChecker, CComponent)
-
-HRESULT CRequirementChecker::Initialize_Prototype()
-{
-	return S_OK;
-}
-
 
 HRESULT CRequirementChecker::Initialize(void* pArg)
 {
-	__super::Initialize(pArg);
 
 	return S_OK;
-}
-
-void CRequirementChecker::Start()
-{
-	__super::Start();
 }
 
 void CRequirementChecker::Add_Requirement(shared_ptr<CRequirementBase> pRequirment)
@@ -48,7 +34,6 @@ _bool CRequirementChecker::Check_Requirments()
 			++iter;
 		}
 	}
-
 	Update_Vaild();
 	
 	return bResult;
@@ -71,6 +56,15 @@ void CRequirementChecker::Update_Vaild()
 			++iter;
 		}
 	}
+}
+
+shared_ptr<CRequirementChecker> CRequirementChecker::Create(void* pArg)
+{
+	shared_ptr< CRequirementChecker> pRequireChecker = make_shared<CRequirementChecker>();
+
+	pRequireChecker->Initialize(pArg);
+
+	return pRequireChecker;
 }
 
 void CRequirementChecker::Free()
