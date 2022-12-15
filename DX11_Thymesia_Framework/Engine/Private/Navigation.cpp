@@ -14,34 +14,8 @@ CNavigation::CNavigation(const CNavigation& rhs)
 	*this = rhs;
 }
 
-HRESULT CNavigation::Initialize_Prototype() // const _tchar * pNavigationData
+HRESULT CNavigation::Initialize_Prototype()
 {
-	/*_ulong		dwByte = 0;
-
-	HANDLE		hFile = CreateFile(pNavigationData, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
-	if (0 == hFile)
-		return E_FAIL;
-
-	while (true)
-	{
-		_float3		vPoints[3];
-
-		ReadFile(hFile, vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
-
-		if (0 == dwByte)
-			break;
-
-		CCell* pCell = CCell::Create(m_pDevice, m_pContext, vPoints, m_Cells.size());
-		if (nullptr == pCell)
-			return E_FAIL;
-
-		m_Cells.push_back(pCell);
-	}
-
-	CloseHandle(hFile);*/
-
-	// 클라에서 따로 선언
-	//GAMEINSTANCE->Load_Shader(TEXT("Shader_Cell"), TEXT("../Bin/ShaderFiles/Shader_Cell.hlsl"));
 
 	return S_OK;
 }

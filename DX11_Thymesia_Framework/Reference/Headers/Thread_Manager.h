@@ -21,9 +21,10 @@ private:
 public:
 	void Initialize(const _uint In_iNumLayer);
 	void Bind_ThreadObject(const THREAD_TYPE In_eThread_Type, weak_ptr<CGameObject> pGameObject);
-	void Bind_GameObjectWorks();
+	void Bind_GameObjectWorks(const _flag In_ThreadTypeFlag);
 
 	_bool Check_JobDone();
+	void Wait_JobDone(const _char* In_szConsoleText = nullptr);
 
 private:
 

@@ -80,7 +80,13 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 {
 	m_fDeltaTime = fTimeDelta;
 
-	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks();
+	_flag ThreadFlag = (1 << (_flag)THREAD_TYPE::CUSTOM_THREAD0) |
+		(1 << (_flag)THREAD_TYPE::CUSTOM_THREAD1) |
+		(1 << (_flag)THREAD_TYPE::CUSTOM_THREAD2) | 
+		(1 << (_flag)THREAD_TYPE::CUSTOM_THREAD3);
+
+	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks(ThreadFlag);
+
 
 	GET_SINGLE(CInput_Device)->SetUp_DeviceState();
 	m_pInput_Device->Tick();
@@ -89,9 +95,15 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 
 	GET_SINGLE(CObject_Manager)->Tick(fTimeDelta);
 
+	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks(
+		(1 << (_flag)THREAD_TYPE::TICK)
+	);
+
+	GET_SINGLE(CThread_Manager)->Wait_JobDone("Wait For Custom Thread And Tick.");
+
 	GET_SINGLE(CObject_Manager)->LateTick(fTimeDelta);
 
-	m_pCollision_Manager->Tick();
+	GET_SINGLE(CThread_Manager)->EnqueueJob(bind(&CCollision_Manager::Tick, m_pCollision_Manager));
 
 	//m_pTimer_Manager->Tick();
 

@@ -30,6 +30,7 @@ HRESULT CGameObject::Initialize(void* pArg)
 	m_pTransformCom = Add_Component<CTransform>();
 	m_iGameObjectIndex = g_iGameObjectIndex++;
 	m_thisToGameObject = Weak_StaticCast<CGameObject>(m_this);
+
 	return S_OK;
 }
 

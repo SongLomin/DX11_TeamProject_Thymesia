@@ -6,8 +6,8 @@ GAMECLASS_C(CCustomFont)
 HRESULT CCustomFont::Initialize(const _tchar* pFontFilePath, ComPtr<ID3D11DeviceContext> pDeviceContext)
 {
     m_pDeviceContext = pDeviceContext;
-    m_pBatch = make_unique<SpriteBatch>(pDeviceContext.Get()); //new SpriteBatch(m_pContext);
-    m_pFont = make_unique<SpriteFont>(DEVICE, pFontFilePath); //new SpriteFont(m_pDevice, pFontFilePath);
+    m_pBatch = make_unique<SpriteBatch>(pDeviceContext.Get()); 
+    m_pFont = make_unique<SpriteFont>(DEVICE, pFontFilePath); 
 
     return S_OK;
 }

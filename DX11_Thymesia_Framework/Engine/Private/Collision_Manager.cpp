@@ -22,6 +22,8 @@ void CCollision_Manager::Initialize(const _uint& In_iNumLayer)
 
 void CCollision_Manager::Tick()
 {
+	std::unique_lock<std::mutex> lock(m_job_q_);
+
 	Remove_DeadCollision();
 
 	for (size_t iRow(0); iRow < m_arrCheck.size(); ++iRow)
@@ -31,7 +33,6 @@ void CCollision_Manager::Tick()
 			if (m_arrCheck[iRow] & (1 << iCol))
 			{
 				//auto Handle = async(&CCollision_Manager::CollisionGroupUpdate, this, (COLLISION_TYPE)iRow, (COLLISION_TYPE)iCol);
-
 				Update_CollisionGroup((_uint)iRow, (_uint)iCol);
 			}
 		}
@@ -39,10 +40,14 @@ void CCollision_Manager::Tick()
 
 	End_CollisionCheck();
 
+	lock.unlock();
+
 }
 
 void CCollision_Manager::Add_Collision(const _uint& In_iLayer, weak_ptr<CCollider> In_pCollider)
 {
+	std::unique_lock<std::mutex> lock(m_job_q_);
+
 	list<weak_ptr<CCollider>>::iterator iter = find_if(m_pColliderList[In_iLayer].begin(),
 		m_pColliderList[In_iLayer].end(),
 		[&](weak_ptr<CCollider> pPreOtherCollider)
@@ -61,7 +66,7 @@ void CCollision_Manager::Add_Collision(const _uint& In_iLayer, weak_ptr<CCollide
 		cout << In_pCollider.lock()->Get_ColliderIndex() << ": Add Collider" << endl;
 #endif // _DEBUG
 	}
-
+	lock.unlock();
 }
 
 void CCollision_Manager::Check_Group(const _uint& In_iLeftLayer, const _uint& In_iRightLayer)

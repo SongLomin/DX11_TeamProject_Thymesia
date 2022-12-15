@@ -32,13 +32,16 @@ void CThread_Manager::Bind_ThreadObject(const THREAD_TYPE In_eThread_Type, weak_
 	}
 }
 
-void CThread_Manager::Bind_GameObjectWorks()
+void CThread_Manager::Bind_GameObjectWorks(const _flag In_ThreadTypeFlag)
 {
 	for (_uint i = 0; i < (_uint)THREAD_TYPE::TYPE_END; ++i)
 	{
-		if (m_GameObject_Threads[i].pInstance)
+		if (In_ThreadTypeFlag & (1 << i))
 		{
-			m_GameObject_Threads[i].pInstance->Bind_Works();
+			if (m_GameObject_Threads[i].pInstance)
+			{
+				m_GameObject_Threads[i].pInstance->Bind_Works();
+			}
 		}
 	}
 
@@ -75,6 +78,22 @@ void CThread_Manager::WorkerThread()
 _bool CThread_Manager::Check_JobDone()
 {
 	return jobs_.empty();
+}
+
+void CThread_Manager::Wait_JobDone(const _char* In_szConsoleText)
+{
+	while (!Check_JobDone())
+	{
+#ifdef _DEBUG
+		if (In_szConsoleText)
+		{
+			cout << In_szConsoleText << endl;
+		}
+#endif // _DEBUG
+
+		continue;
+	}
+
 }
 
 void CThread_Manager::OnDestroy()

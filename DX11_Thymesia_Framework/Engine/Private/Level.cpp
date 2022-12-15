@@ -2,7 +2,6 @@
 #include "GameInstance.h"
 
 CLevel::CLevel()
-	 //: m_pDevice(pDevice), m_pContext(pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
 
 }

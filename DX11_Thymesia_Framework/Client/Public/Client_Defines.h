@@ -21,14 +21,14 @@
 #define _RENDER_FPS_
 #define _Actor_Culling_
 //#define _INSTANCE_CULLING_t
-// #define _LOAD_CAPTURED_RESOURCE_
+#define _LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
 #define _USE_GRAVITY_
 #define _LIFEGUARD_FOR_FALL_
 
 #pragma region Console Outputs
-#define _DEBUG_COUT_
+//#define _DEBUG_COUT_
 // #define _DEBUG_COUT_JOJO
 #pragma endregion // Console Outputs
 
@@ -76,7 +76,7 @@
 #define _144HZ_
 #define _RENDER_FPS_
 //#define	_INSTANCE_CULLING_
-// #define _LOAD_CAPTURED_RESOURCE_
+#define _LOAD_CAPTURED_RESOURCE_
 #define     _Actor_Culling_
 #pragma endregion // System
 
