@@ -93,12 +93,11 @@ PS_OUT PS_MAIN(PS_IN In)
 	PS_OUT		Out = (PS_OUT)0;
 
 	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    clip(Out.vDiffuse.a - 0.1f);
+	
 	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
-
-	if (Out.vDiffuse.a < 0.1f)
-		discard;
 
 	
 	
@@ -162,7 +161,8 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 	PS_OUT Out = (PS_OUT)0;
 
 	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-
+    clip(Out.vDiffuse.a - 0.1f);
+	
 	/* 0 ~ 1 */
 	float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
 
@@ -177,8 +177,7 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
     Out.vORM = 0;
-	if (Out.vDiffuse.a < 0.1f)
-		discard;
+
 
     Out.vExtractBloom = 0;
 	
@@ -198,11 +197,13 @@ PS_OUT PS_MAIN_NORMAL_MASKING(PS_IN_NORMAL In)
 	float fCamToPlayer = length(g_vCamPosition - g_vPlayerPosition);
 
 	vector vMaskTexture = g_MaskTexture.Sample(DefaultSampler, 8.f * vPixelTexUV);
-	if (fCamToPixelWorld / fCamToPlayer > vMaskTexture.r)
-		Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-	else
-		discard;
-
+	
+    clip(fCamToPixelWorld / fCamToPlayer - vMaskTexture.r);
+	
+	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+  
+	clip(Out.vDiffuse.a - 0.1f);
+	
 	/* 0 ~ 1 */
 	float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
 
@@ -212,9 +213,6 @@ PS_OUT PS_MAIN_NORMAL_MASKING(PS_IN_NORMAL In)
 	float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, In.vNormal);
 
 	vPixelNormal = mul(vPixelNormal, WorldMatrix);
-
-	if (Out.vDiffuse.a < 0.1f)
-		discard;
 
 	Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
@@ -278,13 +276,12 @@ PS_OUT PS_MAIN_RED(PS_IN In)
     PS_OUT Out = (PS_OUT) 0;
 
     Out.vDiffuse = vector(1.f, 0.f, 0.f, 1.f);
+    clip(Out.vDiffuse.a - 0.1f);
+	
     Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
 
-    if (Out.vDiffuse.a < 0.1f)
-        discard;
-	
     Out.vExtractBloom = 0;
 
     return Out;
@@ -295,6 +292,7 @@ PS_OUT PS_MAIN_NORMAL_PBR(PS_IN_NORMAL In)
 	PS_OUT Out = (PS_OUT)0;
 
 	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    clip(Out.vDiffuse.a - 0.1f);
 
 	/* 0 ~ 1 */
 	float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
@@ -313,13 +311,15 @@ PS_OUT PS_MAIN_NORMAL_PBR(PS_IN_NORMAL In)
 
 	Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
 	// Out.vORM = g_ORMTexture.Sample(DefaultSampler, In.vTexUV);
-
-	if (Out.vDiffuse.a < 0.1f)
-		discard;
 	
     Out.vExtractBloom = 0;
 
 	return Out;
+}
+
+float IsIn_Range(float fMin, float fMax, float fValue)
+{
+    return (fMin <= fValue) && (fMax >= fValue);
 }
 
 PS_OUT PS_MAIN_Dissove(PS_IN_NORMAL In)
@@ -328,19 +328,14 @@ PS_OUT PS_MAIN_Dissove(PS_IN_NORMAL In)
 
 	vector TexDissolve = g_DissolveTexture.Sample(DefaultSampler, In.vTexUV);
 
-	if (g_fDissolveRatio >= TexDissolve.r)
-		discard;
+    clip(TexDissolve - g_fDissolveRatio);
 
 	vector vTexDiff = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-
-	if (g_fDissolveRatio + 0.05f >= TexDissolve.r)
-	{
-		vTexDiff = g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV);
-	}
-	else
-	{
-		vTexDiff = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-	}
+    float fStepValue = IsIn_Range(0.f,0.05f,TexDissolve.r - g_fDissolveRatio);
+	
+    Out.vDiffuse = (1.f - fStepValue) * vTexDiff + fStepValue * g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV);
+	
+    clip(Out.vDiffuse.a - 0.1f);
 
 	float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
 	vPixelNormal = vPixelNormal * 2.f - 1.f;
@@ -349,13 +344,11 @@ PS_OUT PS_MAIN_Dissove(PS_IN_NORMAL In)
 
 	vPixelNormal = mul(vPixelNormal, WorldMatrix);
 
-	Out.vDiffuse   = vTexDiff;
+	
 	Out.vNormal    = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
 	Out.vDepth     = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
 
-	if (Out.vDiffuse.a < 0.1f)
-		discard;
 	
     Out.vExtractBloom = 0;
 

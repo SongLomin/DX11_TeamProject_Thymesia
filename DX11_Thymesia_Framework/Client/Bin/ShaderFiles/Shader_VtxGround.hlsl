@@ -14,6 +14,11 @@ texture2D g_Texture_AddNo3_Diff, g_Texture_AddNo3_Norm;
 float g_fAddNo3_Density;
 texture2D g_FilterTexture;
 
+texture2D g_NoiseTexture1;
+texture2D g_NoiseTexture2;
+texture2D g_DisplacementTexture;
+
+float2 g_vUVNoise;
 /* ---------------------------------------------------------- */
 
 struct VS_IN
@@ -42,10 +47,12 @@ VS_OUT VS_MAIN_DEFAULT(VS_IN In)
     VS_OUT Out = (VS_OUT) 0;
 
     matrix matWV, matWVP;
+    
 
     matWV = mul(g_WorldMatrix, g_ViewMatrix);
     matWVP = mul(matWV, g_ProjMatrix);
 
+    
     Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
     Out.vTexUV = In.vTexUV;
     Out.vNormal = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
@@ -160,7 +167,8 @@ PS_OUT PS_MAIN_NORM(PS_IN In)
         Out.vDiffuse = AddTex_Diff * vFilter + Out.vDiffuse * (1.f - vFilter);
         vPixelNorm = AddTex_Norm.xyz;
     }
-
+    
+    
     float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));
     vPixelNorm = vPixelNorm * 2.f - 1.f;
     vPixelNorm = mul(vPixelNorm, WorldMatrix);
@@ -202,6 +210,30 @@ PS_OUT PS_MAIN_FILLTER(PS_IN In)
     if (0.1f < vFilterDiffuse.b)
         Out.vDiffuse = vFilterDiffuse;
 
+    Out.vDiffuse.a = 1.f;
+    Out.vNormal = In.vNormal;
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vShaderFlag = g_vShaderFlag;
+    Out.vORM = 0;
+    return Out;
+}
+
+PS_OUT PS_MAIN_WATER(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    Out.vDiffuse = g_Texture_Sorc_Diff.Sample(DefaultSampler, In.vTexUV * g_fSorc_Density);
+
+    vector vFilterDiffuse = g_FilterTexture.Sample(DefaultSampler, In.vTexUV);
+     
+      //물쉐이더 테스트 용
+    vPixelNorm = g_NoiseTexture1.Sample(DefaultSampler, In.vTexUV * 10.f + g_vUVNoise * 0.1f) * 2.f - 1.f;
+    vPixelNorm += g_NoiseTexture2.Sample(DefaultSampler, In.vTexUV * 50.f + g_vUVNoise * -0.1f) * 2.f - 1.f;
+     
+     
+    vPixelNorm = float3(vPixelNorm.rg, lerp(1, vPixelNorm.b, 1.f));
+    Out.vDiffuse = 0.1f * Out.vDiffuse + 0.9f * vector(0.4f, 0.f, 0.05f, 1.f);
+    
     Out.vDiffuse.a = 1.f;
     Out.vNormal = In.vNormal;
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
@@ -256,5 +288,17 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN_DEFAULT();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_FILLTER();
+    }
+    
+    pass Water
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN_DEFAULT();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_WATER();
+
     }
 }

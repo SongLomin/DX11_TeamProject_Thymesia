@@ -82,6 +82,11 @@ void CNorMonState_GroggyStart::OnStateStart(const _float& In_fAnimationBlendTime
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	_float3 vPosition;
+	XMStoreFloat3(&vPosition, m_pOwner.lock()->Get_Transform()->Get_Position() + XMVectorSet(0.f, 1.f, 0.f, 0.f));
+	GAMEINSTANCE->Set_RadialBlur(0.2f, vPosition);
+	GAMEINSTANCE->Set_Chromatic(0.1f);
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "NorMonState: Stop -> StopStop" << endl;

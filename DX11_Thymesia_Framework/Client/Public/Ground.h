@@ -57,6 +57,10 @@ private:
 
     string                          m_szModelName;
 
+//TODO: 물 쉐이더 테스트
+    _float2 m_vNoiseUV = {0.f,0.f};
+    weak_ptr<CTexture>              m_pNoiseTextureCom;
+
 public:
     void Free();
 };

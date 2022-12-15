@@ -1019,8 +1019,6 @@
     <FxCompile Include="..\Bin\ShaderFiles\Shader_DistortionBlend.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_EffectMesh.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_HPBar.hlsl" />
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_HyperSpace.hlsl" />
-    <FxCompile Include="..\Bin\ShaderFiles\Shader_Luxiya.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_PostProcessing.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_UI.hlsl" />
     <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxAnimModel.hlsl">

@@ -89,7 +89,6 @@ protected://From Moon
 private:
     _float      m_fTimeAcc = 0.f;
 
-
 protected:
     weak_ptr<CPhysXCollider> m_pPhysXColliderCom;
 
