@@ -400,7 +400,7 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	std::list<std::future<HRESULT>> futures;
 	
 	//futures.emplace_back(GET_SINGLE(CThread_Manager)->EnqueueJob(bind(&CRender_Manager::Render_Effect, this)));
-	futures.emplace_back(GET_SINGLE(CThread_Manager)->EnqueueJob(bind(&CRender_Manager::Render_UI, this)));
+	// futures.emplace_back(GET_SINGLE(CThread_Manager)->EnqueueJob(bind(&CRender_Manager::Render_UI, this)));
 
 	//future<HRESULT> DrawUIThread = async(launch::async, bind(&CRender_Manager::Render_UI, this));
 	//future<HRESULT> DrawEffectThread = async(launch::async, bind(&CRender_Manager::Render_Effect, this));
@@ -493,25 +493,25 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 
 
 	
-	hr = futures.front().get();
+	/*hr = futures.front().get();
 	while (!GET_SINGLE(CThread_Manager)->Check_JobDone())
 	{
 		cout << "Wait For Context Jobs." << endl;
 		continue;
-	}
+	}*/
 	
-	m_pDeferredContext[DEFERRED_UI]->FinishCommandList(false, &pCommandList);
+	/*m_pDeferredContext[DEFERRED_UI]->FinishCommandList(false, &pCommandList);
 
 	if (pCommandList)
 	{
 		DEVICECONTEXT->ExecuteCommandList(pCommandList, true);
 		pCommandList->Release();
 		pCommandList = nullptr;
-	}
+	}*/
 	
 
-	/*if (FAILED(Render_UI()))
-		DEBUG_ASSERT;*/
+	if (FAILED(Render_UI()))
+		DEBUG_ASSERT;
 
 	if (FAILED(Render_Final()))
 		DEBUG_ASSERT;
@@ -972,8 +972,8 @@ HRESULT CRender_Manager::Render_Effect()
 	{
 		if (FAILED(Blur_ExtractGlow(3.f, pDeviceContext)))
 			DEBUG_ASSERT;
-		if (FAILED(ReBlur_ExtractGlow(3.f, pDeviceContext)))
-			DEBUG_ASSERT;
+		//if (FAILED(ReBlur_ExtractGlow(3.f, pDeviceContext)))
+		//	DEBUG_ASSERT;
 		if (FAILED(Blend_Glow(pDeviceContext)))
 			DEBUG_ASSERT;
 	}
@@ -982,8 +982,8 @@ HRESULT CRender_Manager::Render_Effect()
 	{
 		if (FAILED(Blur_ExtractGlow(3.f, pDeviceContext)))
 			DEBUG_ASSERT;
-		if (FAILED(ReBlur_ExtractGlow(3.f, pDeviceContext)))
-			DEBUG_ASSERT;
+		//if (FAILED(ReBlur_ExtractGlow(3.f, pDeviceContext)))
+		//	DEBUG_ASSERT;
 		if (FAILED(Blend_Glow(pDeviceContext)))
 			DEBUG_ASSERT;
 	}
@@ -1023,7 +1023,7 @@ HRESULT CRender_Manager::Render_NonAlphaEffect(ID3D11DeviceContext* pDeviceConte
 
 	
 
-	pRenderTargetManager->Begin_MRTWithClearWithIndex(TEXT("MRT_ExtractEffect"), 1);
+	pRenderTargetManager->Begin_MRTWithNoneClearWithIndex(TEXT("MRT_ExtractEffect"), 1);
 
 	if (m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHA_EFFECT].empty())
 	{
@@ -1383,8 +1383,8 @@ HRESULT CRender_Manager::Blend_Glow(ID3D11DeviceContext* pDeviceContext)
 
 HRESULT CRender_Manager::Render_UI()
 {
-	//ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
-	ID3D11DeviceContext* pDeviceContext = m_pDeferredContext[DEFERRED_UI].Get();
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+	// ID3D11DeviceContext* pDeviceContext = m_pDeferredContext[DEFERRED_UI].Get();
 
 	m_RenderObjects[(_uint)RENDERGROUP::RENDER_BEFOREUI].sort([](weak_ptr<CGameObject> pSour, weak_ptr<CGameObject> pDest)
 		{

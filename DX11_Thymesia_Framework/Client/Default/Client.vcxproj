@@ -552,7 +552,7 @@
     </ClInclude>
     <ClInclude Include="..\Public\Level_Stage3.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\Light_Prop.h" />
     <ClInclude Include="..\Public\LoadingTextUI.h" />
@@ -988,7 +988,7 @@
     </ClCompile>
     <ClCompile Include="..\Private\Level_Stage3.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\Light_Prop.cpp" />
     <ClCompile Include="..\Private\LoadingTextUI.cpp" />

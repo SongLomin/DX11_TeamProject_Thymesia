@@ -237,9 +237,9 @@ void CNorMonster::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	//TestCode
-	if (m_pHPBar.lock())
-	{
-	}
+	//if (m_pHPBar.lock())
+	//{
+	//}
 
 }
 

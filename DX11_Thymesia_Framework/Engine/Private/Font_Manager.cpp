@@ -6,7 +6,7 @@ IMPLEMENT_SINGLETON(CFont_Manager)
 
 void CFont_Manager::Init_DeviceContext(ComPtr<ID3D11DeviceContext> pDeviceContext)
 {
-	m_pDeviceContext = pDeviceContext;
+	m_pDeviceContext = DEVICECONTEXT;
 }
 
 HRESULT CFont_Manager::Add_Font(_uint iFontTag, const _tchar* pFontFilePath)
