@@ -54,7 +54,7 @@ public:
     weak_ptr<CStatus_Player>    Get_CurrentPlayer_Status();
     weak_ptr<CPlayer>           Get_CurrentPlayer();
 
-public: // For. Varg Eye Effect
+public: // For. ON / OFF Eye Effect
     void Store_EffectIndex(const char* szEffectName, const _uint iEffectIndex)
     {
         m_StoredEffects.emplace(szEffectName, iEffectIndex); 
@@ -66,6 +66,18 @@ public: // For. Varg Eye Effect
 
 private:
     std::unordered_map<const char*, _uint> m_StoredEffects;
+
+public: // For. Cloning Particle
+    void Store_ParticleInfo(EFFECTPARTICLE_DESC tParticleDesc)
+    {
+        m_tParticleDesc = tParticleDesc;
+    }
+    const EFFECTPARTICLE_DESC Get_StoredParticleInfo()
+    {
+        return m_tParticleDesc;
+    }
+
+    EFFECTPARTICLE_DESC m_tParticleDesc;
    
 public:
     void Set_TargetCamera(weak_ptr<CCamera_Target> In_TargetCamera);

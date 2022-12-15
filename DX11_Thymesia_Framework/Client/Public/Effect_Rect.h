@@ -46,6 +46,7 @@ public:
     void Write_EffectJson(json& Out_Json);
     void Load_EffectJson(const json& In_Json, const _uint& In_iTimeScaleLayer);
     void Clone_EffectRect();
+    void Paste_EffectRect();
     virtual void OnEventMessage(_uint iArg) override;
     void OnChangeAnimationKey(const _uint& In_Key);
 

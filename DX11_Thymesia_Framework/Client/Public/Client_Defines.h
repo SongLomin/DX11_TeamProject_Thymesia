@@ -3,7 +3,7 @@
 #include "SMath.h"
 #include <filesystem>
 
-#define _JOJO_EFFECT_TOOL_
+// #define _JOJO_EFFECT_TOOL_
 
 #include "Client_Structs.h"
 #include "Client_Presets.h"
@@ -20,7 +20,7 @@
 #define _144HZ_
 #define _RENDER_FPS_
 #define _Actor_Culling_
-//#define _INSTANCE_CULLING_t
+//#define _INSTANCE_CULLING_
 //#define _LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 

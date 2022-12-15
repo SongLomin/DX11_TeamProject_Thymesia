@@ -10,7 +10,6 @@ class CEffectGroup;
 class CCustomEffectMesh;
 class CPreviewAnimationModel;
 class CEffect_Rect;
-
 class CWindow_EffectEditerView final
 	: public CImGui_Window
 {

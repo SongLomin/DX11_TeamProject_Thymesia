@@ -11,6 +11,8 @@
 
 #include "Level.h"
 
+#include "GameManager.h"
+
 #ifdef _JOJO_EFFECT_TOOL_
 #include "JoJoParticleShaderManager.h"
 #endif // _JOJO_EFFECT_TOOL_
@@ -120,7 +122,7 @@ HRESULT CEffect_Rect::Initialize(void* pArg)
 
 	m_pNoiseTextureCom = Add_Component<CTexture>();
 	m_pNoiseTextureCom.lock()->Use_Texture("UVNoise");
-	CBase::Set_Enable(false);
+	Set_Enable(false);
 
 #ifdef _USE_THREAD_
 	CGameObject::Use_Thread(THREAD_TYPE::TICK);
@@ -974,7 +976,7 @@ void CEffect_Rect::UnUse_EffectParticle()
 {
 	if (0.f < m_fCurrentInitTime)
 	{
-		CBase::Set_Enable(false);
+		Set_Enable(false);
 		return;
 	}
 
@@ -2772,6 +2774,12 @@ void CEffect_Rect::Tool_Glow()
 #endif // _DEBUG
 void CEffect_Rect::Clone_EffectRect()
 {
+	GET_SINGLE(CGameManager)->Store_ParticleInfo(m_tEffectParticleDesc);
+}
+
+void CEffect_Rect::Paste_EffectRect()
+{
+	m_tEffectParticleDesc = GET_SINGLE(CGameManager)->Get_StoredParticleInfo();
 }
 
 void CEffect_Rect::OnEventMessage(_uint iArg)
@@ -2781,9 +2789,13 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 	{
 		if (ImGui::CollapsingHeader("Effect_Particle"), ImGuiTreeNodeFlags_DefaultOpen)
 		{
-			// TODO : SongRoMin IlHaeRa
-			if (ImGui::Button("Clone"))
+			if (ImGui::Button("Copy##Copy_Particle_Info"))
 				Clone_EffectRect();
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("Paste##Paste_Particle_Info"))
+				Paste_EffectRect();
 
 			ImGui::Text("Max Instance"); ImGui::SameLine();
 			ImGui::DragInt("##Max_Instance", &m_tEffectParticleDesc.iMaxInstance, 1, 0, 9999, "%d", ImGuiSliderFlags_AlwaysClamp);
