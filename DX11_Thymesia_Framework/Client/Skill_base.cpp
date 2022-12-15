@@ -44,15 +44,22 @@ void CSkill_Base::Start()
 {
 	__super::Start();
 
-	
 }
 
 void CSkill_Base::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	m_bUseAble = Is_UseAble();
+	_bool isUseAble = Is_UseAble();
 
+	if (isUseAble)
+	{
+		if (m_bUseAble == false)
+		{
+			Callback_EndCoolDown();
+		}
+	}
+	m_bUseAble = isUseAble;
 }
 
 void CSkill_Base::LateTick(_float fTimeDelta)
@@ -97,16 +104,6 @@ void CSkill_Base::Reset_Skill()
 	Init_SkillInfo();
 }
 
-void CSkill_Base::Init_SkillInfo()
-{
-
-}
-
-void CSkill_Base::Init_State()
-{
-
-}
-
 void CSkill_Base::Start_Skill()
 {
 	Callback_StartSkill();
@@ -120,7 +117,6 @@ void CSkill_Base::Start_Skill()
 void CSkill_Base::End_Skill()
 {
 	m_bUseAble = true;
-	m_pRequirementTime->Init_Req(m_fSkillCoolDown);
 	Callback_EndCoolDown();
 }
 

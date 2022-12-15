@@ -21,11 +21,8 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render();
 
-
-
-
 private:
-	weak_ptr<CCustomUI>	m_pPlagueWeapon_Icon;//æ∆¿Ãƒ‹
+
 
 
 };

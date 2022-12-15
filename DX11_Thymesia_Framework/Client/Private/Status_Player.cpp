@@ -125,7 +125,7 @@ void CStatus_Player::Consumed_Mana(_float fRequireMana)
 {
     m_tDesc.m_fCurrentMP -= fRequireMana;
 
-d    Callback_ChangeMP(m_tDesc.m_fCurrentMP);
+    Callback_ChangeMP(m_tDesc.m_fCurrentMP);
 
 }
 

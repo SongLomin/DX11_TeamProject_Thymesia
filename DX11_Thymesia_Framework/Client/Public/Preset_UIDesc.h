@@ -10,6 +10,9 @@ public:
 
 	static void		Set_CUI_PlayerHPBar(weak_ptr<class CPlayer_HPBar> pUI);
 
+	static void		Set_CUI_PlayerMPBar(weak_ptr<class CPlayer_MPBar> pUI);
+
+
 };
 
 END

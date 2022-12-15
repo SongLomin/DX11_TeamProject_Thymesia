@@ -26,19 +26,18 @@ public:
 	virtual void Start() override;
 
 public:
-	void			ResetAllSkillCoolDown();
+	void					ResetAllSkillCoolDown();
 
 public:
 	weak_ptr<CSkill_Base>	Get_MainSkill();
 
 
 public:
-	FDelegate<weak_ptr<CSkill_Base>>	Callback_BindSkill[(_uint)SOCKET_TYPE::SOCKET_END];
+	FDelegate<weak_ptr<CSkill_Base>>	Callback_OnChangeSkill[(_uint)SOCKET_TYPE::SOCKET_END];
 	
 
-
 public:
-	void			Bind_Skill(weak_ptr<CSkill_Base> pSkill, SOCKET_TYPE eType);
+	void			OnChangeSkill(weak_ptr<CSkill_Base> pSkill, SOCKET_TYPE eType);
 private:
 	void			Tick_SkillList(_float fTimeDelta);
 

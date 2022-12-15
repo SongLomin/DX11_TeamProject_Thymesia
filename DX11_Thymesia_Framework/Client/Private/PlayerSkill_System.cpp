@@ -57,12 +57,19 @@ weak_ptr<CSkill_Base> CPlayerSkill_System::Get_MainSkill()
 }
 
 
-void CPlayerSkill_System::Bind_Skill(weak_ptr<CSkill_Base> pSkill, SOCKET_TYPE eType)
+void CPlayerSkill_System::OnChangeSkill(weak_ptr<CSkill_Base> pSkill, SOCKET_TYPE eType)
 {
     pSkill.lock()->Reset_Skill();
     m_pSkillList[(_uint)eType] = pSkill;
-}
 
+
+   // Callback_OnChangeSkill[(_uint)eType].Clear();//스킬의 바인딩은 무조건 하나만 되어있어야한다. 
+    //기존 (기존에도 하나겠지만) 바인딩되었던 함수를 제거하고 콜백을 호출해야함.
+    //이러니까 내꺼 날려서 잠시 대기
+
+
+    Callback_OnChangeSkill[(_uint)eType](pSkill);
+}
 void CPlayerSkill_System::Tick_SkillList(_float fTimeDelta)
 {
     for (_uint i = 0; i < (_uint)SOCKET_TYPE::SOCKET_END; i++)

@@ -380,7 +380,6 @@
     <ClInclude Include="..\Public\Requirement_Time.h" />
     <ClInclude Include="..\Public\Section_Eventer.h" />
     <ClInclude Include="..\Public\Skill_Base.h" />
-    <ClInclude Include="..\Public\Skill_Interface.h" />
     <ClInclude Include="..\Public\Skill_VargSword.h" />
     <ClInclude Include="..\Public\State_Monster.h" />
     <ClInclude Include="..\Public\State_Player.h" />
@@ -779,7 +778,6 @@
     <ClCompile Include="..\Private\RequirementChecker.cpp" />
     <ClCompile Include="..\Private\Requirement_Once.cpp" />
     <ClCompile Include="..\Private\Requirement_State.cpp" />
-    <ClCompile Include="..\Private\Skill_Interface.cpp" />
     <ClCompile Include="..\Private\Skill_VargSword.cpp" />
     <ClCompile Include="..\Private\Status_Boss.cpp" />
     <ClCompile Include="..\Private\TargetCurve.cpp" />

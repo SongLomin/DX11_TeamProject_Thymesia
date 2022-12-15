@@ -54,11 +54,13 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	this->Ready_Weapon();
 	this->Ready_States();
+	Ready_Skills();
+
 
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
 
-	Ready_Skills();
+	
 
 	
 
@@ -105,7 +107,7 @@ void CCorvus::Tick(_float fTimeDelta)
 
 	// TODO : get rid of this
 	m_pSkillSystem.lock()->Tick(fTimeDelta);
-
+	m_pStatus.lock()->Tick(fTimeDelta);
 
 	this->Debug_KeyInput(fTimeDelta);
 
@@ -456,6 +458,6 @@ void CCorvus::SetUp_Requirement()
 
 void CCorvus::Test_BindSkill()
 {
-	m_pSkillSystem.lock()->Bind_Skill(Get_Component<CSkill_VargSword>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_MAIN);
+	m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_VargSword>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_MAIN);
 }
 

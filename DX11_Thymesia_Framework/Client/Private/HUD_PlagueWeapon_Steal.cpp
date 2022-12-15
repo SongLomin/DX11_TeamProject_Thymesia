@@ -78,8 +78,7 @@ HRESULT CHUD_PlagueWeapon_Steal::Initialize(void* pArg)
     m_tFaderDesc.fFadeMaxTime = 1.f;
     m_tFaderDesc.vFadeColor = _float4(0, 0, 0, 0.7f);
 
-    m_fCoolTime = 5.f;
-    m_fNowTime = 5.f;
+
 
 
 

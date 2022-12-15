@@ -1220,7 +1220,6 @@
     <ClInclude Include="..\Public\Skill_Base.h">
       <Filter>05. Component\05. Skill\Base</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Skill_Interface.h" />
     <ClInclude Include="..\Public\Skill_VargSword.h" />
     <ClInclude Include="..\Public\Requirement_Time.h">
       <Filter>07. Requirement\00. Requirement_Time</Filter>
@@ -2487,7 +2486,6 @@
     <ClCompile Include="..\Skill_Base.cpp">
       <Filter>05. Component\05. Skill\Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Skill_Interface.cpp" />
     <ClCompile Include="..\Private\Skill_VargSword.cpp" />
     <ClCompile Include="..\Private\Requirement_Time.cpp">
       <Filter>07. Requirement\00. Requirement_Time</Filter>
