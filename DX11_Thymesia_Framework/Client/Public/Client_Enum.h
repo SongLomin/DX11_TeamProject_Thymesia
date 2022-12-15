@@ -179,6 +179,9 @@ namespace Client
 
 		STARTBOSS_MONSTER = 20000,
 		VARG, // 보스바그
+		BAT, // 보스박쥐
+		URD, //보스우두루
+
 		NMON_END
 	};
 

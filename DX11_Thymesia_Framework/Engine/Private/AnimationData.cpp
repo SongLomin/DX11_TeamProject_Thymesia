@@ -156,6 +156,11 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("Joker_TakeExecution_Start", 1.4f);
 #pragma endregion // Joker
 
+#pragma region Bat
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Seq_BossFightStart_V1", 3.f);
+
+#pragma endregion // Bat
+
 #pragma region Mon_AxeMan
     SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtStunStart|BaseLaye", 2.f);
 #pragma endregion // Mon_AxeMan
