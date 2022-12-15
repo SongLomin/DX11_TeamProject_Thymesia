@@ -160,7 +160,7 @@ void CEffect_Rect::LateTick(_float fTimeDelta)
 
 HRESULT CEffect_Rect::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	this->SetUp_ShaderResource();
+	SetUp_ShaderResource();
 	__super::Render(pDeviceContext);
 	m_pShaderCom.lock()->Begin(m_tEffectParticleDesc.iShaderPassIndex, pDeviceContext);
 	m_pVIBuffer.lock()->Render(pDeviceContext);
@@ -2791,7 +2791,10 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			}
 
 			ImGui::Text("Max Instance"); ImGui::SameLine();
-			ImGui::DragInt("##Max_Instance", &m_tEffectParticleDesc.iMaxInstance, 1, 0, 9999, "%d", ImGuiSliderFlags_AlwaysClamp);
+			if (ImGui::DragInt("##Max_Instance", &m_tEffectParticleDesc.iMaxInstance, 1, 0, 0, "%d", ImGuiSliderFlags_AlwaysClamp))
+			{
+				ReBake_EditParticle();
+			}
 			
 			ImGui::Separator();
 
@@ -2852,15 +2855,15 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 				}
 			}
 
-			ImGui::SetNextItemWidth(150.f);
-			ImGui::InputInt("Sync Animation Key", &m_tEffectParticleDesc.iSyncAnimationKey);
+			/*ImGui::SetNextItemWidth(150.f);
+			ImGui::InputInt("Sync Animation Key", &m_tEffectParticleDesc.iSyncAnimationKey);*/
 
-			//if (ImGui::CollapsingHeader("Animation Sync"))
-			//{
-			//	ImGui::Checkbox("Sync Animation##Is_Sync_Animation", &m_tEffectParticleDesc.bSyncAnimation);
-			//	ImGui::SetNextItemWidth(150.f);
-			//	ImGui::InputInt("Sync Animation Key", &m_tEffectParticleDesc.iSyncAnimationKey);
-			//}
+			if (ImGui::CollapsingHeader("Animation Sync"))
+			{
+				ImGui::Checkbox("Sync Animation##Is_Sync_Animation", &m_tEffectParticleDesc.bSyncAnimation);
+				ImGui::SetNextItemWidth(150.f);
+				ImGui::InputInt("Sync Animation Key", &m_tEffectParticleDesc.iSyncAnimationKey);
+			}
 
 			if (ImGui::CollapsingHeader("Spawn & Life Time"))
 				Tool_Spawn_Life_Time();

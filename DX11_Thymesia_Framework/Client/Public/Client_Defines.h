@@ -3,8 +3,8 @@
 #include "SMath.h"
 #include <filesystem>
 
-// #define _JOJO_EFFECT_TOOL_
-
+#define _JOJO_EFFECT_TOOL_
+	
 #include "Client_Structs.h"
 #include "Client_Presets.h"
 #include "Client_Enum.h"	
@@ -74,7 +74,7 @@
 #pragma region System
 #define _USE_THREAD_
 #define _144HZ_
-// #define _RENDER_FPS_
+#define _RENDER_FPS_
 //#define	_INSTANCE_CULLING_
 // #define _LOAD_CAPTURED_RESOURCE_
 #define     _Actor_Culling_

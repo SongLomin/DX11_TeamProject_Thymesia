@@ -7,8 +7,11 @@ class ENGINE_DLL CVIBuffer_Rect_Instance :
     public CVIBuffer
 {
     GAMECLASS_H(CVIBuffer_Rect_Instance)
-    SHALLOW_COPY(CVIBuffer_Rect_Instance)
+    /*SHALLOW_COPY(CVIBuffer_Rect_Instance)*/
     CLONE_H(CVIBuffer_Rect_Instance, CComponent)
+
+public:
+    CVIBuffer_Rect_Instance(const CVIBuffer_Rect_Instance& rhs);
 
 public:
     _uint Get_InstanceCount() const { return m_iNumInstance; }
@@ -28,6 +31,8 @@ private:
     ComPtr<ID3D11Buffer>        m_pVBInstance;
     _uint						m_iInstanceStride = 0;
     _uint						m_iNumInstance = 0;
+
+    std::mutex m_job_q_;
 
 private:
     void Free();

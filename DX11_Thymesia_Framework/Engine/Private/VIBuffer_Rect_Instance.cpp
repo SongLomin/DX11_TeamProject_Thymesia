@@ -6,6 +6,11 @@
 GAMECLASS_C(CVIBuffer_Rect_Instance)
 CLONE_C(CVIBuffer_Rect_Instance, CComponent)
 
+CVIBuffer_Rect_Instance::CVIBuffer_Rect_Instance(const CVIBuffer_Rect_Instance& rhs)
+	: CVIBuffer(rhs)
+{
+}
+
 HRESULT CVIBuffer_Rect_Instance::Initialize_Prototype()
 {
 
@@ -98,6 +103,8 @@ void CVIBuffer_Rect_Instance::Start()
 
 void CVIBuffer_Rect_Instance::Init_Particle(const _uint& In_Size)
 {
+	std::unique_lock<std::mutex> lock(m_job_q_);
+
 	if (0 == In_Size)
 		return;
 
@@ -137,6 +144,7 @@ void CVIBuffer_Rect_Instance::Init_Particle(const _uint& In_Size)
 	Safe_Delete_Array(pInstance);
 #pragma endregion
 
+	lock.unlock();
 }
 
 HRESULT CVIBuffer_Rect_Instance::Render(ID3D11DeviceContext* pDeviceContext)
@@ -169,6 +177,8 @@ HRESULT CVIBuffer_Rect_Instance::Render(ID3D11DeviceContext* pDeviceContext)
 
 void CVIBuffer_Rect_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDescs, const _bool In_UseParentMatrix)
 {
+	std::unique_lock<std::mutex> lock(m_job_q_);
+
 	if (In_ParticleDescs.size() == 0 || 0 == m_iNumInstance)
 		return;
 
@@ -210,6 +220,7 @@ void CVIBuffer_Rect_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDes
 
 	DEVICECONTEXT->Unmap(m_pVBInstance.Get(), 0);
 
+	lock.unlock();
 }
 
 void CVIBuffer_Rect_Instance::Free()
