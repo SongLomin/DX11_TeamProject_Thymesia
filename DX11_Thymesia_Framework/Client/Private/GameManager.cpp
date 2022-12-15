@@ -752,6 +752,7 @@ void CGameManager::Activate_Section(_uint In_iSection, _bool In_bState)
 void CGameManager::OnLevelExit()
 {
 	m_SectionObejects.clear();
+	m_StoredEffects.clear();
 }
 
 void CGameManager::Free()

@@ -76,8 +76,7 @@ void CJokerState_Dead::OnStateStart(const _float& In_fAnimationBlendTime)
 void CJokerState_Dead::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-
+	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Joker_Passive", GET_SINGLE(CGameManager)->Get_EffectIndex("Joker_Passive"));
 }
 
 void CJokerState_Dead::Call_AnimationEnd()

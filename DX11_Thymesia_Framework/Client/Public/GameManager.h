@@ -55,10 +55,17 @@ public:
     weak_ptr<CPlayer>           Get_CurrentPlayer();
 
 public: // For. Varg Eye Effect
-    void Store_EffectIndex_Temp(const _uint iEffectIndex) { m_iEffectIndex_ForStorage = iEffectIndex; }
-    const _uint Get_EffectIndex_Stored() const { return m_iEffectIndex_ForStorage; }
+    void Store_EffectIndex(const char* szEffectName, const _uint iEffectIndex)
+    {
+        m_StoredEffects.emplace(szEffectName, iEffectIndex); 
+    }
+    const _uint Get_EffectIndex(const char* szEffectName)
+    {
+        return m_StoredEffects[szEffectName];
+    }
+
 private:
-    _uint m_iEffectIndex_ForStorage = 0;
+    std::unordered_map<const char*, _uint> m_StoredEffects;
    
 public:
     void Set_TargetCamera(weak_ptr<CCamera_Target> In_TargetCamera);
