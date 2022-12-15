@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Level_Stage2.h"
+
 #include "GameInstance.h"
 #include "Client_GameObjects.h"
 #include "GameManager.h"
@@ -47,10 +48,9 @@ HRESULT CLevel_Stage2::Initialize()
 
 #endif // ! _ONLY_UI_
 
-	m_pFadeMask   = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
-    m_pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL_STATIC).front();
-	m_pPauseMenu  = GAMEINSTANCE->Get_GameObjects<CUI_PauseMenu>(LEVEL_STATIC).front();
-
+	m_pFadeMask   = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL::LEVEL_STATIC).front();
+    m_pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL::LEVEL_STATIC).front();
+	m_pPauseMenu  = GAMEINSTANCE->Get_GameObjects<CUI_PauseMenu>(LEVEL::LEVEL_STATIC).front();
 
 	GAMEINSTANCE->Set_FogDesc(_float4(1.f, 1.f, 1.f, 0.65f), 70.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));

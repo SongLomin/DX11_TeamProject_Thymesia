@@ -70,13 +70,9 @@ HRESULT CInteraction_Prop::Render(ID3D11DeviceContext* pDeviceContext)
             return E_FAIL;
 
         if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-        {
             m_iPassIndex = 0;
-        }
         else
-        {
-            m_iPassIndex = 3;
-        }
+            m_iPassIndex = 7;
 
         m_pShaderCom.lock()->Begin(m_iPassIndex);
         m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
@@ -103,7 +99,7 @@ void CInteraction_Prop::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_p
         return;
 
     Callback_ActStart += bind(&CUI_Interaction::Call_ActionStart, pUI_Interaction.lock());
-    Callback_ActEnd += bind(&CUI_Interaction::Call_ActionEnd, pUI_Interaction.lock());
+    Callback_ActEnd   += bind(&CUI_Interaction::Call_ActionEnd, pUI_Interaction.lock());
 
     pUI_Interaction.lock()->Call_CollisionEnter(pMyCollider, (_uint)m_eInteractionType);
 }

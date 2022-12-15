@@ -7,7 +7,7 @@
 #include "Level_Test.h"
 //#include "Level_Lobby.h"
 #include "Level_Stage2.h"
-//#include "Level_Stage3.h"
+#include "Level_Stage3.h"
 #include "GameInstance.h"
 #include "UI_Loading.h"
 #include "FadeMask.h"
@@ -38,26 +38,17 @@ HRESULT CLevel_Loading::Initialize(LEVEL eNextLevel)
 	//일단 임시
 	pFadeMask.lock()->Set_Enable(false);
 
-	/*if(LEVEL_GAMEPLAY == eNextLevel)
-		GAMEINSTANCE->Add_GameObject<CUI_Loading>(LEVEL_LOADING);*/
-
 	m_eNextLevel = eNextLevel;
 
-	if (m_eNextLevel == LEVEL::LEVEL_GAMEPLAY)
+	if (LEVEL::LEVEL_STATIC		!= m_eNextLevel &&
+		LEVEL::LEVEL_LOADING	!= m_eNextLevel &&
+		LEVEL::LEVEL_LOGO		!= m_eNextLevel &&
+		LEVEL::LEVEL_LOBBY      != m_eNextLevel &&
+		LEVEL::LEVEL_EDIT       != m_eNextLevel &&
+		LEVEL::LEVEL_TEST       != m_eNextLevel)
 	{
 		m_pUILoading = GAMEINSTANCE->Add_GameObject<CUI_Loading>(LEVEL_LOADING);
 		m_pUILoading.lock()->SetUp_LoadingUI(LEVEL::LEVEL_GAMEPLAY);
-	}
-
-	else if (m_eNextLevel == LEVEL::LEVEL_TEST)
-	{
-		m_pUILoading = GAMEINSTANCE->Add_GameObject<CUI_Loading>(LEVEL_LOADING);
-		m_pUILoading.lock()->SetUp_LoadingUI(LEVEL::LEVEL_GAMEPLAY);
-	}
-	else if (m_eNextLevel == LEVEL::LEVEL_STAGE2)
-	{
-		m_pUILoading = GAMEINSTANCE->Add_GameObject<CUI_Loading>(LEVEL_LOADING);
-		m_pUILoading.lock()->SetUp_LoadingUI(LEVEL::LEVEL_STAGE2);
 	}
 
 	m_pLoader = CLoader::Create(eNextLevel);
@@ -78,33 +69,17 @@ void CLevel_Loading::Tick(_float fTimeDelta)
 
 	if (true == m_pLoader->is_Finished())
 	{
-
-		if (m_eNextLevel == LEVEL_GAMEPLAY)
+		if (LEVEL::LEVEL_STATIC		!= m_eNextLevel &&
+			LEVEL::LEVEL_LOADING	!= m_eNextLevel &&
+			LEVEL::LEVEL_LOGO		!= m_eNextLevel &&
+			LEVEL::LEVEL_LOBBY      != m_eNextLevel &&
+			LEVEL::LEVEL_EDIT       != m_eNextLevel &&
+			LEVEL::LEVEL_TEST       != m_eNextLevel)
 		{
 			m_pUILoading.lock()->Set_Complete();
-			if (m_pUILoading.lock()->Get_Finish())
-			{
-				Create_Level();
-			}
-		}
 
-		else if(m_eNextLevel == LEVEL_TEST)
-		{
-			m_pUILoading.lock()->Set_Complete();
 			if (m_pUILoading.lock()->Get_Finish())
-			{
-
 				Create_Level();
-			}
-		}	
-		else if (m_eNextLevel == LEVEL_STAGE2)
-		{
-			m_pUILoading.lock()->Set_Complete();
-			if (m_pUILoading.lock()->Get_Finish())
-			{
-
-				Create_Level();
-			}
 		}
 		else
 		{
@@ -134,40 +109,41 @@ void CLevel_Loading::Create_Level()
 
 	switch (m_eNextLevel)
 	{
-	case LEVEL_LOGO:
+		case LEVEL_LOGO:
+			pLevel = CLevel_Logo::Create();
+			break;
 
-		pLevel = CLevel_Logo::Create();
-		break;
+		case LEVEL_LOBBY:
+			//pLevel = CLevel_Lobby::Create();
+			break;
 
-	case LEVEL_LOBBY:
-		//pLevel = CLevel_Lobby::Create();
-		break;
+		case LEVEL_GAMEPLAY:
+			pLevel = CLevel_GamePlay::Create();
+			break;
 
-	case LEVEL_GAMEPLAY:
-		pLevel = CLevel_GamePlay::Create();
-		break;
+		case LEVEL_STAGE2:
+			pLevel = CLevel_Stage2::Create();
+			break;
 
-	case LEVEL_STAGE2:
-		pLevel = CLevel_Stage2::Create();
-		break;
+		case LEVEL_STAGE3:
+			pLevel = CLevel_Stage3::Create();
+			break;
 
-	case LEVEL_STAGE3:
-		//pLevel = CLevel_Stage3::Create();
-		break;
+		case LEVEL_EDIT:
+			pLevel = CLevel_Edit::Create();
+			break;
 
-	case LEVEL_EDIT:
-		pLevel = CLevel_Edit::Create();
-		break;
-
-	case LEVEL_TEST:
-		pLevel = CLevel_Test::Create();
-		break;
-
+		case LEVEL_TEST:
+			pLevel = CLevel_Test::Create();
+			break;
 	}
+
 	if (nullptr == pLevel)
 		return;
+
 	if (FAILED(GAMEINSTANCE->Open_Level(m_eNextLevel, pLevel)))
 		return;
+
 	GAMEINSTANCE->LevelEnter();
 }
 
