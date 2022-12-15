@@ -51,7 +51,7 @@ private:
 protected:
 	CPlayerSkill_System::SOCKET_TYPE m_eSkillSocketType = CPlayerSkill_System::SOCKET_TYPE::SOCKET_END;
 	weak_ptr<CCustomUI>		m_pPlagueWeapon_Main;//프레임
-	weak_ptr<CCustomUI>		m_pPlagueWeapon_Ready;//쿨타임시에만 나오는 회색 막
+	weak_ptr<CProgressBar>		m_pPlagueWeapon_Ready;//쿨타임시에만 나오는 회색 막
 	weak_ptr<CProgressBar>	m_pPlagueWeapon_Border;//쿨타임 알려주는 게이지 프레임
 	weak_ptr<CCustomUI>		m_pIcon;
 	weak_ptr<CHUD_Hover>	m_pHover;//스킬 쿨 다 돌았을시 나오는 이펙트.

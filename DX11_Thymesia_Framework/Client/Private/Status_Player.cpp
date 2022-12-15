@@ -3,7 +3,7 @@
 #include "Status.h"
 #include "GameInstance.h"
 #include "Engine_Defines.h"
-
+#include "GameManager.h"
 GAMECLASS_C(CStatus_Player)
 CLONE_C(CStatus_Player, CComponent)
 
@@ -40,7 +40,6 @@ void CStatus_Player::Tick(_float fTimeDelta)
         m_tDesc.m_iMemory += 10000;
         Callback_Update_Status();
     }
-
     //if (m_fPotionTime >= 0.f)
     //{
     //    m_tDesc.m_fCurrentHP += ((m_tDesc.m_fMaxHP * m_PotionDesc[m_iCurrentPotionIndex].m_fHealingAmount) / m_PotionDesc[m_iCurrentPotionIndex].m_fHealingTime) * fTimeDelta;

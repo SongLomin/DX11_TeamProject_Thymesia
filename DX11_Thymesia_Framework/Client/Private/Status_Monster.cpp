@@ -49,6 +49,8 @@ void CStatus_Monster::Restart()
 {
 	m_tMonsterDesc.m_fCurrentHP_white = m_tMonsterDesc.m_fMaxHP_white * 0.5f;
 	m_tMonsterDesc.m_fCurrentHP_Green= m_tMonsterDesc.m_fCurrentHP_white;
+	m_tMonsterDesc.m_fCurrentParryingGauge = 0.f;
+
 	CallBack_ReStart();
 }
 
