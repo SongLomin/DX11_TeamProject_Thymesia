@@ -2785,7 +2785,10 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			ImGui::SameLine();
 
 			if (ImGui::Button("Paste##Paste_Particle_Info"))
+			{
 				m_tEffectParticleDesc = GET_SINGLE(CGameManager)->Get_StoredParticleInfo();
+				ReBake_EditParticle();
+			}
 
 			ImGui::Text("Max Instance"); ImGui::SameLine();
 			ImGui::DragInt("##Max_Instance", &m_tEffectParticleDesc.iMaxInstance, 1, 0, 9999, "%d", ImGuiSliderFlags_AlwaysClamp);
@@ -2840,34 +2843,42 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 			if (m_tEffectParticleDesc.bAttraction)
 			{
-				ImGui::Text("Goal Position"); ImGui::SetNextItemWidth(300.f);
-				ImGui::DragFloat3("##Goal_Position", &m_tEffectParticleDesc.vGoalPosition.x, 0.01f, 0.f, 0.f, "%.5f");
+				if (ImGui::TreeNode("Attraction##Attraction_Option"))
+				{
+					ImGui::Text("Goal Position"); ImGui::SetNextItemWidth(300.f);
+					ImGui::DragFloat3("##Goal_Position", &m_tEffectParticleDesc.vGoalPosition.x, 0.01f, 0.f, 0.f, "%.5f");
+
+					ImGui::TreePop();
+				}
 			}
 
-			if (ImGui::CollapsingHeader("Animation Sync"))
-			{
-				ImGui::Checkbox("Sync Animation##Is_Sync_Animation", &m_tEffectParticleDesc.bSyncAnimation);
-				ImGui::InputInt("Sync Animation Key", &m_tEffectParticleDesc.iSyncAnimationKey);
-			}
+			ImGui::SetNextItemWidth(150.f);
+			ImGui::InputInt("Sync Animation Key", &m_tEffectParticleDesc.iSyncAnimationKey);
+
+			//if (ImGui::CollapsingHeader("Animation Sync"))
+			//{
+			//	ImGui::Checkbox("Sync Animation##Is_Sync_Animation", &m_tEffectParticleDesc.bSyncAnimation);
+			//	ImGui::SetNextItemWidth(150.f);
+			//	ImGui::InputInt("Sync Animation Key", &m_tEffectParticleDesc.iSyncAnimationKey);
+			//}
 
 			if (ImGui::CollapsingHeader("Spawn & Life Time"))
 				Tool_Spawn_Life_Time();
-
+			
 			ImGui::Separator();
 			ImGui::Checkbox("Is Move Look##Is_MoveLook", &m_tEffectParticleDesc.bMoveLook);
 			ImGui::Separator();
 
-			if (ImGui::TreeNode("Gravity Options"))
+			ImGui::Checkbox("Use Gravity##Use_Gravity", &m_tEffectParticleDesc.bUseGravity);
+			if (m_tEffectParticleDesc.bUseGravity)
 			{
-				ImGui::Checkbox("Use Gravity##Use_Gravity", &m_tEffectParticleDesc.bUseGravity);
-
-				if (m_tEffectParticleDesc.bUseGravity)
+				if (ImGui::TreeNode("Gravity Options"))
 				{
 					ImGui::Text("Gravity Force"); ImGui::SetNextItemWidth(300.f);
 					ImGui::DragFloat3("##Gravity_Force", &m_tEffectParticleDesc.vGravityForce.x, 0.1f, 0.f, 0.f, "%.5f");
-				}
 
-				ImGui::TreePop();
+					ImGui::TreePop();
+				}
 			}
 
 			ImGui::Separator();

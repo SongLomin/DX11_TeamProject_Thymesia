@@ -1638,12 +1638,14 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			if (ImGui::Button("Clone##Clone_EffectMesh"))
 				Clone_EffectMesh();
 
+			ImGui::SameLine();
+
 			if (ImGui::Button("Copy##Copy_EffectMesh"))
 				GET_SINGLE(CGameManager)->Store_EffectMeshInfo(m_tEffectMeshDesc);
 
 			ImGui::SameLine();
 
-			if (ImGui::Button("Paste#Paste_EffectMesh"))
+			if (ImGui::Button("Paste##Paste_EffectMesh"))
 				m_tEffectMeshDesc = GET_SINGLE(CGameManager)->Get_StoredEffectMeshInfo();
 
 			// TODO : for imgui - mesh keyboard control
