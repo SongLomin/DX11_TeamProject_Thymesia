@@ -43,7 +43,7 @@ public:
 public:
     void Register_Layer(const OBJECT_LAYER& In_Layer, weak_ptr<CGameObject> In_GameObject);
     void Remove_Layer(const OBJECT_LAYER& In_Layer, weak_ptr<CGameObject> In_GameObject);
-    
+
     void Enable_Layer(const OBJECT_LAYER& In_Layer);
     void Disable_Layer(const OBJECT_LAYER& In_Layer);
 
@@ -54,10 +54,11 @@ public:
     weak_ptr<CStatus_Player>    Get_CurrentPlayer_Status();
     weak_ptr<CPlayer>           Get_CurrentPlayer();
 
+#pragma region Created By. 炼己快
 public: // For. ON / OFF Eye Effect
     void Store_EffectIndex(const char* szEffectName, const _uint iEffectIndex)
     {
-        m_StoredEffects.emplace(szEffectName, iEffectIndex); 
+        m_StoredEffects.emplace(szEffectName, iEffectIndex);
     }
     const _uint Get_EffectIndex(const char* szEffectName)
     {
@@ -77,8 +78,23 @@ public: // For. Cloning Particle
         return m_tParticleDesc;
     }
 
+private:
     EFFECTPARTICLE_DESC m_tParticleDesc;
-   
+
+public: // For. Cloning Effect Mesh
+    void Store_EffectMeshInfo(EFFECTMESH_DESC tEffectMeshDesc)
+    {
+        m_tEffectMeshDesc = tEffectMeshDesc;
+    }
+    const EFFECTMESH_DESC Get_StoredEffectMeshInfo()
+    {
+        return m_tEffectMeshDesc;
+    }
+
+private:
+    EFFECTMESH_DESC m_tEffectMeshDesc;
+#pragma endregion // Created By. 炼己快
+
 public:
     void Set_TargetCamera(weak_ptr<CCamera_Target> In_TargetCamera);
     weak_ptr<CCamera_Target> Get_TargetCamera();
