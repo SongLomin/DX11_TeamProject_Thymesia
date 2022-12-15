@@ -136,9 +136,10 @@ HRESULT CLevel_Test::Render()
 
 shared_ptr<CLevel_Test> CLevel_Test::Create()
 {
-	shared_ptr<CLevel_Test>		pInstance = make_shared<CLevel_Test>();
-	pInstance->m_eMyLevel = LEVEL_TEST;
+	shared_ptr<CLevel_Test> pInstance = make_shared<CLevel_Test>();
+	pInstance->m_eMyLevel = LEVEL::LEVEL_TEST;
 	pInstance->Initialize();
+
 	return pInstance;
 }
 
@@ -149,6 +150,8 @@ void CLevel_Test::ExitLevel(LEVEL eLevel)
 		case  LEVEL::LEVEL_STAGE2:
 		case  LEVEL::LEVEL_STAGE3:
 		{
+			m_eNextLevel = eLevel;
+
 			FaderDesc tFaderDesc;
 			tFaderDesc.eFaderType	= FADER_TYPE::FADER_OUT;
 			tFaderDesc.eLinearType	= LINEAR_TYPE::LNIEAR;

@@ -64,7 +64,7 @@ private:
 	void	Load_BossMobModel();
 
 private:
-	LEVEL						m_eNextLevel = LEVEL_END;
+	LEVEL					m_eNextLevel = LEVEL_END;
 
 private:
 	HANDLE					m_hThread;

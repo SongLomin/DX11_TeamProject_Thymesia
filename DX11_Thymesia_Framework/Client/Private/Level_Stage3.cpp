@@ -39,7 +39,7 @@ HRESULT CLevel_Stage3::Initialize()
 	CameraDesc.fNear   = 0.2f;
 	CameraDesc.fFar    = 300.f;
 
-	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_GAMEPLAY, &CameraDesc);
+	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_STAGE3, &CameraDesc);
 	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
 
 	Load_FromJson(m_szDefaultJsonPath + "Stage_Lv3-1.json", LEVEL::LEVEL_STAGE3);
@@ -53,7 +53,7 @@ HRESULT CLevel_Stage3::Initialize()
     m_pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL::LEVEL_STATIC).front();
 	m_pPauseMenu  = GAMEINSTANCE->Get_GameObjects<CUI_PauseMenu>(LEVEL::LEVEL_STATIC).front();
 
-	GAMEINSTANCE->Set_FogDesc(_float4(1.f, 1.f, 1.f, 0.f), 70.f);
+	GAMEINSTANCE->Set_FogDesc(_float4(1.f, 1.f, 1.f, 1.f), 1000.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 
 	return S_OK;
@@ -63,15 +63,13 @@ void CLevel_Stage3::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);		
 
-	
-
+	Tick_Key_InputEvent();
 }
 
 HRESULT CLevel_Stage3::Render()
 {
 	if (FAILED(__super::Render()))
 		return E_FAIL;
-
 
 	SetWindowText(g_hWnd, TEXT("Thymesia : STAGE 3"));
 
@@ -80,9 +78,10 @@ HRESULT CLevel_Stage3::Render()
 
 shared_ptr<CLevel_Stage3> CLevel_Stage3::Create()
 {
-	shared_ptr<CLevel_Stage3>		pInstance = make_shared<CLevel_Stage3>();
-	pInstance->m_eMyLevel = LEVEL_GAMEPLAY;
+	shared_ptr<CLevel_Stage3> pInstance = make_shared<CLevel_Stage3>();
+	pInstance->m_eMyLevel = LEVEL::LEVEL_STAGE3;
 	pInstance->Initialize();
+
 	return pInstance;
 }
 

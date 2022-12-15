@@ -752,6 +752,7 @@
     <ClCompile Include="..\Private\JokerStateBase.cpp" />
     <ClCompile Include="..\Private\JokerWeapon.cpp" />
     <ClCompile Include="..\Private\Level_Stage2.cpp" />
+    <ClCompile Include="..\Private\Level_Test.cpp" />
     <ClCompile Include="..\Private\MonsterParryingBar.cpp" />
     <ClCompile Include="..\Private\NorMonState\NorMonState_Parry.cpp" />
     <ClCompile Include="..\Private\PhysXCameraController.cpp">
@@ -799,7 +800,6 @@
     <ClCompile Include="..\Private\Status_Monster.cpp" />
     <ClCompile Include="..\Private\Status_Player.cpp" />
     <ClCompile Include="..\Private\Preset_PhysXControllerDesc.cpp" />
-    <ClCompile Include="..\Private\Level_Test.cpp" />
     <ClCompile Include="..\Private\PhysXColliderObject.cpp" />
     <ClCompile Include="..\Private\UI_MenuText.cpp" />
     <ClCompile Include="..\Private\UI_Script.cpp" />

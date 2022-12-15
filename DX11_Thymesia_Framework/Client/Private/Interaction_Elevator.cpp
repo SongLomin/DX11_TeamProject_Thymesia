@@ -98,8 +98,10 @@ void CInteraction_Elevator::OnEventMessage(_uint iArg)
                 "LEVEL_LOGO",
                 "LEVEL_LOBBY",
                 "LEVEL_GAMEPLAY",
+                "LEVEL_STAGE1",
                 "LEVEL_STAGE2",
                 "LEVEL_STAGE3",
+                "LEVEL_STAGE4",
                 "LEVEL_EDIT",
                 "LEVEL_TEST",
             };
