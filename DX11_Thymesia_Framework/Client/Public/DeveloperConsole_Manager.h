@@ -17,6 +17,7 @@ public:
     HRESULT Render(ID3D11DeviceContext* pDeviceContext);
 
 
+
 private:
     void    Init_Windows();
     void    Release_Windows();

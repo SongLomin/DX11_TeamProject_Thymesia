@@ -24,6 +24,9 @@ public:
 
 
 
+
+
+
 private:
 	weak_ptr<CCustomUI>	m_pPlagueWeapon_Icon;//¾ÆÀÌÄÜ
 

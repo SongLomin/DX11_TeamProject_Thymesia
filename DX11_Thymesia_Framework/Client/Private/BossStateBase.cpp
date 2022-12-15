@@ -255,55 +255,74 @@ void CBossStateBase::TurnMechanism()
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
+
 	if (!pCurrentPlayer.lock())
 		return;
+
+	if (m_eMonType == MONSTERTYPE::NMON_END)
+		return;
+
+	switch (m_eMonType)
+	{
+	case Client::MONSTERTYPE::VARG:
+	{
+		_float fDistance = Get_DistanceWithPlayer();
+
+
+		if (fDistance > 3.f)
+		{
+			if (ComputeAngleWithPlayer() <= 0.f) // 90일때 0 90보다크면 -값이다 90보다 작으면 +값이다
+			{
+				switch (ComputeDirectionToPlayer())
+				{
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CVargBossState_TurnR>(0.05f);
+					break;
+				case -1:
+					Get_OwnerCharacter().lock()->Change_State<CVargBossState_TurnL>(0.05f);
+					break;
+				default:
+					assert(0);
+					return;
+				}
+			}
+
+			else
+			{
+				Rotation_TargetToLookDir();
+				Get_Owner().lock()->Get_Component<CVargBossState_Idle>().lock()->Set_TurnCheck(false);
+				Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
+			}
+		}
+		else
+		{
+			if (ComputeAngleWithPlayer() <= 0.f)
+			{
+				Get_OwnerCharacter().lock()->Change_State<CVargBossState_TurnAttack>(0.05f);
+			}
+			else
+			{
+				Rotation_TargetToLookDir();
+				Get_Owner().lock()->Get_Component<CVargBossState_Idle>().lock()->Set_TurnCheck(false);
+				Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
+			}
+
+		}
+	}
+		
+
+		break;
+	case Client::MONSTERTYPE::URD:
+		break;
+	case Client::MONSTERTYPE::BAT:
+		break;
+
+	}
 
 	//플레이어랑 몬스터거리구해서 5보다크면 그대로실행하고
 	//5보다 작으면 턴공격으로 
 
-	_float fDistance = Get_DistanceWithPlayer();
-
-
-	if (fDistance > 3.f)
-	{
-		if (ComputeAngleWithPlayer() <= 0.f) // 90일때 0 90보다크면 -값이다 90보다 작으면 +값이다
-		{
-			switch (ComputeDirectionToPlayer())
-			{
-			case 1:
-				Get_OwnerCharacter().lock()->Change_State<CVargBossState_TurnR>(0.05f);
-				break;
-			case -1:
-				Get_OwnerCharacter().lock()->Change_State<CVargBossState_TurnL>(0.05f);
-				break;
-			default:
-				assert(0);
-				return;
-			}
-		}
-
-		else
-		{
-			Rotation_TargetToLookDir();
-			Get_Owner().lock()->Get_Component<CVargBossState_Idle>().lock()->Set_TurnCheck(false);
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
-		}
-	}
-	else
-	{
-		if (ComputeAngleWithPlayer() <= 0.f)
-		{
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_TurnAttack>(0.05f);
-		}
-		else
-		{
-			Rotation_TargetToLookDir();
-			Get_Owner().lock()->Get_Component<CVargBossState_Idle>().lock()->Set_TurnCheck(false);
-			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
-		}
-
-	}
-
+	
 
 
 

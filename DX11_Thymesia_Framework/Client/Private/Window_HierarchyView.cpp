@@ -280,7 +280,8 @@ void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
 		else if (typeid(CNorMonster).hash_code() == TempDesc.HashCode ||
 			     typeid(CVarg).hash_code()       == TempDesc.HashCode || 
 			     typeid(CCorvus).hash_code()     == TempDesc.HashCode ||
-			     typeid(CJoker).hash_code()      == TempDesc.HashCode)
+			     typeid(CJoker).hash_code()      == TempDesc.HashCode ||
+			     typeid(CBat).hash_code() == TempDesc.HashCode)
 		{
 			weak_ptr<CGameObject> pNewGameObject = GAMEINSTANCE->Add_GameObject(TempDesc.HashCode, LEVEL::LEVEL_EDIT);
 			pNewGameObject.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);

@@ -108,7 +108,6 @@ void CNorMonState_Die::LateTick(_float fTimeDelta)
 
 	Check_AndChangeNextState();
 
-
 }
 
 
@@ -135,15 +134,11 @@ void CNorMonState_Die::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif
 #endif
 
-
-	// TODO : test chromatic aberration
-
 }
 
 void CNorMonState_Die::OnStateEnd()
 {
 	__super::OnStateEnd();
-
 
 }
 
@@ -163,18 +158,14 @@ void CNorMonState_Die::Call_AnimationEnd()
 }
 
 
-
 _bool CNorMonState_Die::Check_AndChangeNextState()
 {
 
 	if (!Check_Requirement())
 		return false;
 
-
-
 	return false;
 }
-
 
 
 void CNorMonState_Die::Free()

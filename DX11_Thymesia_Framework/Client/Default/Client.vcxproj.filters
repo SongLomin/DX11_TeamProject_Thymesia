@@ -428,9 +428,6 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_End.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\33.Execution_End</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_NoDeadEnd.h">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\30.Execution_SitDown</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_SitLoop.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\31.Execution_SitLoop</Filter>
     </ClInclude>
@@ -843,13 +840,11 @@
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Actor.h" />
-    <ClInclude Include="..\Public\BossUrd\Urd.h" />
     <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h" />
     <ClInclude Include="..\Public\Interaction_Ladder.h" />
     <ClInclude Include="..\Public\BossMonster.h" />
     <ClInclude Include="..\Public\MobWeapon.h" />
     <ClInclude Include="..\Public\UI_Button.h" />
-    <ClInclude Include="..\Public\BossVarg\Varg.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\Monster.h" />
     <ClInclude Include="..\Public\NorMonster.h" />
@@ -1204,6 +1199,135 @@
     <ClInclude Include="..\Public\HUD_Player_Memory.h" />
     <ClInclude Include="..\Public\Window_Level_Dev.h">
       <Filter>97. Tool\01. DeveloperConsole\Windows\01. Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Headache_End.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\02.End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Headache_Loop.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\01.Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Headache_Start.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\00.Start</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_NoDeadEnd.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\30.Execution_SitDown</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\Varg.h">
+      <Filter>02. GameObject\03. Actor\Character\Boss\00.Varg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\Urd.h">
+      <Filter>02. GameObject\03. Actor\Character\Boss\01.Urd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\Bat.h">
+      <Filter>02. GameObject\03. Actor\Character\Boss\02.Bat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossStateBase.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatStates.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_Idle.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_Start.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\00.Start</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_Atk_L01_1.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack\00.Atk_L01_1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_Atk_R01_1.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack\04.Atk_R01_1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_Bite_1.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\03.Bite\00.Bite_1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_Bite_2.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\03.Bite\01.Bite_2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_Atk_R01_2b.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack\06.Atk_R01_2b</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_Atk_R01_2a.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack\05.Atk_R01_2a</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_Atk_L01_3a.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack\03.Atk_L01_3a</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_Atk_L01_2b.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack\02.Atk_L01_2b</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_Atk_L01_2a.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack\01.Atk_L01_2a</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_Car.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\04.Car</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_Charge.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\05.Charge</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_TurnL.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\06.Turn\02.TurnL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_TurnR.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\06.Turn\03.TurnR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_FTurnL.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\06.Turn\00.FTurnL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_FTurnR.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\06.Turn\01.FTurnR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_Hellscream.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\07.Hellscream</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_HurtXL_F.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\08.Hurt\00.HurtXL_F</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_HurtXL_L.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\08.Hurt\01.HurtXL_L</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_JumpSmash_Chesh.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\09.JumpSmash\00.Crash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_JumpSmash_ForwardL.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\09.JumpSmash\01.ForwardL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_JumpSmash_SmarhL.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\09.JumpSmash\02.SmarhL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_SonicBoom.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\10.SonicBoom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_Sp.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\11.SP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_Storm.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\12.Storm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_Stun_Start.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\13.Stun\00.StunStart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_Stun_End.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\13.Stun\02.StunEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_Stun_Loop.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\13.Stun\01.StunLoop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_WalkF.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\15.Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_TakeExecution_Start.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\14.TakeExecution\00.Start</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_TakeExecution_Loop.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\14.TakeExecution\01.Loop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_TakeExecution_End.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\14.TakeExecution\02.End</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_Start_Loop.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\00.Start\00.StartLoop</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Headache_End.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\02.End</Filter>
@@ -2105,14 +2229,12 @@
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Actor.cpp" />
-    <ClCompile Include="..\Private\BossUrd\Urd.cpp" />
     <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\Interaction_Ladder.cpp" />
     <ClCompile Include="..\Private\UI_Button.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp" />
     <ClCompile Include="..\Private\BossMonster.cpp" />
     <ClCompile Include="..\Private\MobWeapon.cpp" />
-    <ClCompile Include="..\Private\BossVarg\Varg.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
     <ClCompile Include="..\Private\NorMonster.cpp" />
@@ -2459,6 +2581,129 @@
     <ClCompile Include="..\Private\HUD_Player_Memory.cpp" />
     <ClCompile Include="..\Private\Window_Level_Dev.cpp">
       <Filter>97. Tool\01. DeveloperConsole\Windows\01. Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Headache_End.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\02.End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Headache_Loop.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\01.Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Headache_Start.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\00.Start</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\Varg.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Boss\00.Varg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\Urd.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Boss\01.Urd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\Bat.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Boss\02.Bat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_Idle.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_Start.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\00.Start</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossStateBase.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_Atk_L01_1.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack\00.Atk_L01_1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_Atk_L01_2a.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack\01.Atk_L01_2a</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_Atk_L01_2b.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack\02.Atk_L01_2b</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_Atk_L01_3a.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack\03.Atk_L01_3a</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_Atk_R01_1.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack\04.Atk_R01_1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_Atk_R01_2a.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack\05.Atk_R01_2a</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_Atk_R01_2b.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack\06.Atk_R01_2b</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_Bite_1.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\03.Bite\00.Bite_1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_Bite_2.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\03.Bite\01.Bite_2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_Car.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\04.Car</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_Charge.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\05.Charge</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_TurnL.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\06.Turn\02.TurnL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_TurnR.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\06.Turn\03.TurnR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_FTurnL.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\06.Turn\00.FTurnL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_FTurnR.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\06.Turn\01.FTurnR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_Hellscream.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\07.Hellscream</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_HurtXL_F.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\08.Hurt\00.HurtXL_F</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_HurtXL_L.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\08.Hurt\01.HurtXL_L</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_JumpSmash_Chest.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\09.JumpSmash\00.Crash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_JumpSmash_Forward.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\09.JumpSmash\01.ForwardL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_JumpSmash_SmarhL.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\09.JumpSmash\02.SmarhL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_SonicBoom.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\10.SonicBoom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_Sp.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\11.SP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_Storm.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\12.Storm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_Stun_Start.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\13.Stun\00.StunStart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_Stun_End.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\13.Stun\02.StunEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_Stun_Loop.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\13.Stun\01.StunLoop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_TakeExecution_Start.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\14.TakeExecution\00.Start</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_TakeExecution_Loop.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\14.TakeExecution\01.Loop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_TakeExecution_End.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\14.TakeExecution\02.End</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_WalkF.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\15.Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_Start_Loop.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\00.Start\00.StartLoop</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Headache_End.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\02.End</Filter>
@@ -3678,6 +3923,153 @@
     </Filter>
     <Filter Include="97. Tool\01. DeveloperConsole\Windows\01. Level">
       <UniqueIdentifier>{1c111566-b799-41b6-a0f7-0d8a51c44e6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache">
+      <UniqueIdentifier>{ad38a96d-b7a2-4b6b-ae43-f69b50b80eda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\00.Start">
+      <UniqueIdentifier>{82910b27-e22e-4a04-8d34-e3148e5fa4a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\01.Loop">
+      <UniqueIdentifier>{4d2e57c4-978a-42ec-bc2f-3147baa0318e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\02.End">
+      <UniqueIdentifier>{3f8496d0-c7e7-442f-ba6f-7dce40cc4e70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Boss\00.Varg">
+      <UniqueIdentifier>{ddd2e752-5b8a-44fe-907b-e13bb62c97f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Boss\01.Urd">
+      <UniqueIdentifier>{34a1f2a8-e908-4503-99e6-45b894546db2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Boss\02.Bat">
+      <UniqueIdentifier>{ed4bf7d6-b3cc-4a1b-b62f-a7488500698b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState">
+      <UniqueIdentifier>{e8033976-b10a-4866-9358-aae115cacaac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\00.Start">
+      <UniqueIdentifier>{cc6744be-71ae-411e-ba10-8e296bdd5a57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle">
+      <UniqueIdentifier>{6b772af1-1ddd-4500-8987-c3e3e5ca9770}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\00.Start\00.StartLoop">
+      <UniqueIdentifier>{eefeac98-249a-480c-985a-2bd8d1f6c07b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack">
+      <UniqueIdentifier>{93a01d03-aba6-4c61-be03-6eb43d944d93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack\00.Atk_L01_1">
+      <UniqueIdentifier>{43b5f205-47a5-4d01-93de-3fcb81d4785b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack\01.Atk_L01_2a">
+      <UniqueIdentifier>{ad8d76bb-4dbf-4c9b-9d57-845c146ce8f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack\02.Atk_L01_2b">
+      <UniqueIdentifier>{9d24ab23-0061-445c-8ebb-1c02f72b2ea2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack\03.Atk_L01_3a">
+      <UniqueIdentifier>{e64c83d1-bfc6-449b-9e23-b5ab81a84ec9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack\04.Atk_R01_1">
+      <UniqueIdentifier>{7c099dc3-d50c-4abb-beaa-cc2106063a65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack\05.Atk_R01_2a">
+      <UniqueIdentifier>{c10ed558-ff87-4d03-a8c8-14267b571f5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\02.Attack\06.Atk_R01_2b">
+      <UniqueIdentifier>{ce3dd3f0-fae5-42b4-bb3e-1adc9a3b46ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\03.Bite">
+      <UniqueIdentifier>{cfd4f236-b7d3-48c1-bc8c-0e74ec190ef5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\03.Bite\00.Bite_1">
+      <UniqueIdentifier>{5cad162c-6783-4dbe-a56b-dde0103e4d5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\03.Bite\01.Bite_2">
+      <UniqueIdentifier>{a045e899-4188-4606-addf-f1c3b5829916}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\04.Car">
+      <UniqueIdentifier>{52b38fa2-89c5-42a7-bb92-bbd394f09878}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\05.Charge">
+      <UniqueIdentifier>{01b20c5f-6b0c-4cab-84ac-c6141b54f46b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\06.Turn">
+      <UniqueIdentifier>{706262eb-c8b7-434b-a373-669117c1fbbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\07.Hellscream">
+      <UniqueIdentifier>{4b284cfd-70f5-4a21-b99e-c885fecf567b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\08.Hurt">
+      <UniqueIdentifier>{d7895180-c593-4e3c-a9f0-b6fde53b3ae3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\08.Hurt\00.HurtXL_F">
+      <UniqueIdentifier>{b630fc7a-debc-44b7-a4e0-cfbd81856bed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\08.Hurt\01.HurtXL_L">
+      <UniqueIdentifier>{bea06f05-e0e4-4413-b3d8-f27e9f400bbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\09.JumpSmash">
+      <UniqueIdentifier>{98818714-e651-4da7-aa02-a292315915c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\09.JumpSmash\01.ForwardL">
+      <UniqueIdentifier>{2c1dcfab-cb87-4971-af8d-ef5a46a79ac6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\09.JumpSmash\02.SmarhL">
+      <UniqueIdentifier>{6fbfa27f-4d33-4e34-8273-3f085803fa9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\10.SonicBoom">
+      <UniqueIdentifier>{a25e95b1-0ee3-4783-acd8-51a222a21a7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\11.SP">
+      <UniqueIdentifier>{7fed26a4-8093-4e03-9928-adb345e52516}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\12.Storm">
+      <UniqueIdentifier>{cafeac13-c643-45f2-86b8-2a37f66ed3f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\13.Stun">
+      <UniqueIdentifier>{e2b7941f-c782-475e-b8fc-89be5e0c7a38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\13.Stun\00.StunStart">
+      <UniqueIdentifier>{bf9470c3-d7d8-4aa5-9b1e-01386e78fc28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\13.Stun\01.StunLoop">
+      <UniqueIdentifier>{10830de7-78a3-4e49-8ca7-a3d0b2b3e4f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\13.Stun\02.StunEnd">
+      <UniqueIdentifier>{9d03f3f9-7428-4f05-8860-47e7aa674fb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\14.TakeExecution">
+      <UniqueIdentifier>{0254b90c-8002-496d-9926-85daf0727d48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\14.TakeExecution\00.Start">
+      <UniqueIdentifier>{0d144da7-dfba-4cbe-bbc9-26b5119526c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\14.TakeExecution\01.Loop">
+      <UniqueIdentifier>{df2256ae-814a-4f16-a4f2-347f04ed57e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\14.TakeExecution\02.End">
+      <UniqueIdentifier>{3b939be3-7cb0-43b0-9c61-357b620455a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\06.Turn\00.FTurnL">
+      <UniqueIdentifier>{0f54ab04-2b91-4a1f-9ec8-ca96be3f12b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\06.Turn\01.FTurnR">
+      <UniqueIdentifier>{400c3def-deee-49bf-9c88-ff6b2c5f9e96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\06.Turn\02.TurnL">
+      <UniqueIdentifier>{c3b878c7-a0c7-41ae-887e-502b94684b71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\06.Turn\03.TurnR">
+      <UniqueIdentifier>{3a115057-f19a-47a8-bf06-79d7db81445b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\15.Walk">
+      <UniqueIdentifier>{4175d88c-696c-4404-8fc3-fc9e53d283ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\09.JumpSmash\00.Crash">
+      <UniqueIdentifier>{13ebabd6-78c2-4e1b-9efc-d07c87b8cfc3}</UniqueIdentifier>
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache">
       <UniqueIdentifier>{ad38a96d-b7a2-4b6b-ae43-f69b50b80eda}</UniqueIdentifier>
