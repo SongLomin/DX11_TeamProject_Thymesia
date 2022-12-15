@@ -364,4 +364,11 @@ namespace Client
 		SKILL_BUFF,
 		SKILL_TYPE_END
 	};
+
+	enum class SKILL_NAME
+	{
+		SKILL_VARGSWORD,
+		SKILL_END
+	};
+
 }

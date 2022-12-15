@@ -73,6 +73,7 @@ void CStatus_Player::Init_Status(const void* pArg)
 {
     ZeroMemory(&m_tDesc, sizeof(PLAYERDESC));
     m_tDesc.m_fCurrentHP = 300.f;
+    m_tDesc.m_fCurrentMP = 150.f;
     m_tDesc.m_fMaxHP = 300.f;
     m_tDesc.m_fMaxMP = 150.f;
     m_tDesc.m_fNormalAtk = 25.f;
@@ -118,6 +119,14 @@ void CStatus_Player::Add_Memory(_uint iRootedMemory)
     m_tDesc.m_iMemory += iRootedMemory;
 
     Callback_RootingMemory(m_tDesc.m_iMemory);
+}
+
+void CStatus_Player::Consumed_Mana(_float fRequireMana)
+{
+    m_tDesc.m_fCurrentMP -= fRequireMana;
+
+d    Callback_ChangeMP(m_tDesc.m_fCurrentMP);
+
 }
 
 void CStatus_Player::Full_Recovery()

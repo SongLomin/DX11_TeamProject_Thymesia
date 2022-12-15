@@ -176,17 +176,6 @@ void CStatus_Monster::Add_Damage(const _float In_fDamage, ATTACK_OPTION eAttackO
 	}
 }
 
-void CStatus_Monster::Minus_LifePoint(const _uint In_iCount)
-{
-	m_tMonsterDesc.m_iLifeCount -= In_iCount;
-}
-
-void CStatus_Monster::Set_FullHp(const _float In_fHp)
-{
-	m_tMonsterDesc.m_fCurrentHP_white = In_fHp;
-	m_tMonsterDesc.m_fCurrentHP_Green = m_tMonsterDesc.m_fCurrentHP_white;
-}
-
 void CStatus_Monster::Get_Desc(void* pOutDesc)
 {
 	MONSTERDESC* pMonsterDesc = (MONSTERDESC*)pOutDesc;

@@ -41,7 +41,6 @@ protected:
 
     // CNorMonStateBase을(를) 통해 상속됨
     virtual _bool Check_AndChangeNextState() override;
-
 };
 
 END

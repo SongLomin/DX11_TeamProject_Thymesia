@@ -56,3 +56,8 @@ void CStatus_Boss::Set_NextPhase()
 
 	Callback_NextPhase();
 }
+
+void CStatus_Boss::Minus_LifePoint(_uint iPoint)
+{
+	m_tMonsterDesc.m_iLifeCount -= iPoint;
+}

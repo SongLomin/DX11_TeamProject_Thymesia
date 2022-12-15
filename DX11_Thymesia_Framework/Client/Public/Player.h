@@ -70,7 +70,7 @@ public:
 
 protected:
     virtual void SetUp_ShaderResource() override;
-
+    virtual void SetUp_Requirement();
 public:
     virtual void OnBattleEnd() override;
 
