@@ -140,7 +140,7 @@ protected:
     _uint           m_iTextureIndex = 0;
     _uint           m_iPassIndex = 0;
     _float	        m_fAlphaColor = 1.f;
-
+    _bool           m_bRender = true;
 
 protected:
     vector<weak_ptr<CUI>> m_vecChildUI;

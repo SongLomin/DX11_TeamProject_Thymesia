@@ -21,9 +21,6 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext);
 
-
-
-
 private:
 
 

@@ -46,6 +46,8 @@ HRESULT CUI::Initialize(void* pArg)
 
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(g_iWinCX, g_iWinCY, 0.f, 1.f)));
 	m_bShaking = false;
+
+	m_bRender = true;
 	return S_OK;
 }
 
@@ -95,8 +97,10 @@ void CUI::LateTick(_float fTimeDelta)
 			listElem->LateTick(fTimeDelta);
 		}
 	}
-
-	m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Cast<CGameObject>(m_this));
+	if (m_bRender)
+	{
+		m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Cast<CGameObject>(m_this));
+	}
 
 
 	m_fShakedPos.x = m_tUIDesc.fX - (g_iWinCX * 0.5f) + m_fOffsetPosition.x;

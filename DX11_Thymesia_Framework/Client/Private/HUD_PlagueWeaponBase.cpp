@@ -55,7 +55,7 @@ void CHUD_PlagueWeaponBase::LateTick(_float fTimeDelta)
 
 }
 
-HRESULT CHUD_PlagueWeaponBase::Render(ID3D11DeviceContext* pDeviceContext)
+HRESULT CHUD_PlagueWeaponBase::Render()
 {
     
     return S_OK;
@@ -82,11 +82,16 @@ void CHUD_PlagueWeaponBase::Call_UseStartSkill()
 {
     m_pPlagueWeapon_Border.lock()->Set_Enable(true);
     m_pPlagueWeapon_Ready.lock()->Set_Enable(true);
+
+    m_pPlagueWeapon_Main.lock()->Set_AlphaColor(0.3f);
+    m_pIcon.lock()->Set_AlphaColor(0.3f);
+
 }
 
 void CHUD_PlagueWeaponBase::Call_UpdateCoolDown(_float fCoolDownRatio)
 {
     m_pPlagueWeapon_Border.lock()->Set_Ratio(fCoolDownRatio);
+    m_pPlagueWeapon_Ready.lock()->Set_Ratio(fCoolDownRatio);
 }
 
 void CHUD_PlagueWeaponBase::Call_EndCoolDown()
@@ -99,7 +104,9 @@ void CHUD_PlagueWeaponBase::Call_EndCoolDown()
     m_pHover.lock()->CallBack_FadeEnd += bind(&CHUD_PlagueWeaponBase::Call_HoverFadeEnd, this, placeholders::_1);
     m_pHover.lock()->Init_Fader(m_tFaderDesc, tHoverDesc);
 
-
+    m_pPlagueWeapon_Main.lock()->Set_AlphaColor(1.f);
+    m_pIcon.lock()->Set_AlphaColor(1.f);
+        
     m_pPlagueWeapon_Ready.lock()->Set_Enable(false);
 }
 
@@ -119,7 +126,6 @@ void CHUD_PlagueWeaponBase::Bind_Player()
     pSkillSystem.lock()->Callback_OnChangeSkill[(_uint)m_eSkillSocketType] =
         bind(&CHUD_PlagueWeaponBase::Call_OnChangeSkill, this, placeholders::_1);
 }
-
 
 void CHUD_PlagueWeaponBase::Init_UI()
 {
