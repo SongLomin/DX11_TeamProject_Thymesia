@@ -60,7 +60,7 @@ void CPreviewAnimationModel::Custom_Thread0(_float fTimeDelta)
 		m_pCurrentModelCom.lock()->Update_BoneMatrices();
 }
 
-HRESULT CPreViewAnimationModel::Render(ID3D11DeviceContext* pDeviceContext)
+HRESULT CPreviewAnimationModel::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	__super::Render(pDeviceContext);
 
@@ -81,7 +81,7 @@ HRESULT CPreViewAnimationModel::Render(ID3D11DeviceContext* pDeviceContext)
 	return S_OK;
 }
 
-HRESULT CPreViewAnimationModel::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix, ID3D11DeviceContext* pDeviceContext)
+HRESULT CPreviewAnimationModel::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix, ID3D11DeviceContext* pDeviceContext)
 {
 	if (!m_pCurrentModelCom.lock())
 		return E_FAIL;
@@ -101,7 +101,7 @@ HRESULT CPreViewAnimationModel::Render_ShadowDepth(_fmatrix In_LightViewMatrix, 
 		/*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 			return E_FAIL;*/
 
-			//m_pShaderCom.lock()->Begin(m_iPassIndex);
+			//m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
 
 		m_pCurrentModelCom.lock()->Render_AnimModel(i, m_pShaderCom, 1, "g_Bones", pDeviceContext);
 		//m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);

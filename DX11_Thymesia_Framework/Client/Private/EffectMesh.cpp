@@ -42,7 +42,7 @@ HRESULT CEffectMesh::Render(ID3D11DeviceContext* pDeviceContext)
 {
     SetUp_ShaderResource();
 
-    //m_pShaderCom.lock()->Begin(m_iPassIndex);
+    //m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
 
     __super::Render(pDeviceContext);
 

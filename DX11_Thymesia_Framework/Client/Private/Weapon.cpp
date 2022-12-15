@@ -98,7 +98,7 @@ HRESULT CWeapon::Render(ID3D11DeviceContext* pDeviceContext)
 					iPassIndex = 7;*/
 			}
 
-			m_pShaderCom.lock()->Begin(iPassIndex);
+			m_pShaderCom.lock()->Begin(iPassIndex, pDeviceContext);
 			m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
 		}
 	}

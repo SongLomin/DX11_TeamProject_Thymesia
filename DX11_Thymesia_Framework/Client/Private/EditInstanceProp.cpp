@@ -207,7 +207,7 @@ HRESULT CEditInstanceProp::SetUp_ShaderResource(ID3D11DeviceContext* pDeviceCont
 			m_iPassIndex = 3;
 		}
 
-		m_pShaderCom.lock()->Begin(m_iPassIndex);
+		m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
 		m_pInstanceModelCom.lock()->Render_Mesh(i, pDeviceContext);
 	}
 
@@ -248,7 +248,7 @@ void CEditInstanceProp::SetUp_ShaderResource_Select(ID3D11DeviceContext* pDevice
 	if (FAILED(m_pSelect_ShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ)), sizeof(_float4x4))))
 		return;
 
-	m_pSelect_ShaderCom.lock()->Begin(1);
+	m_pSelect_ShaderCom.lock()->Begin(1, pDeviceContext);
 	m_pSelect_VIBufferCom.lock()->Render(pDeviceContext);
 }
 

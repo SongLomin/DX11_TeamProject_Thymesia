@@ -165,7 +165,7 @@ HRESULT CNavigation::Render(ID3D11DeviceContext* pDeviceContext)
 		m_pShader.lock()->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_float4x4));
 		vColor = { 1.f, 0.f, 0.f, 1.f };
 		m_pShader.lock()->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
-		m_pShader.lock()->Begin(0);
+		m_pShader.lock()->Begin(0, pDeviceContext);
 
 		m_pCells[m_NaviDesc.m_iCurrentIndex]->Render(pDeviceContext);
 	}
@@ -177,7 +177,7 @@ HRESULT CNavigation::Render(ID3D11DeviceContext* pDeviceContext)
 		m_pShader.lock()->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_float4x4));
 		vColor = { 0.f, 1.f, 0.f, 1.f };
 		m_pShader.lock()->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
-		m_pShader.lock()->Begin(0);
+		m_pShader.lock()->Begin(0, pDeviceContext);
 
 		for (auto& pCell : m_pCells)
 		{

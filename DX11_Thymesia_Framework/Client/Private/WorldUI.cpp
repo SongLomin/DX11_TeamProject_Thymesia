@@ -75,7 +75,7 @@ HRESULT CWorldUI::Render(ID3D11DeviceContext* pDeviceContext)
 	if (FAILED(SetUp_ShaderResource()))
 		return E_FAIL;
 
-	m_pShaderCom.lock()->Begin(m_iPassIndex);
+	m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
 
 	m_pVIBufferCom.lock()->Render(pDeviceContext);
 

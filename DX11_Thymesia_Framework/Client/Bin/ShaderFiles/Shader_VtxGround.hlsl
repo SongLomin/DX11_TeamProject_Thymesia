@@ -227,7 +227,7 @@ PS_OUT PS_MAIN_WATER(PS_IN In)
     vector vFilterDiffuse = g_FilterTexture.Sample(DefaultSampler, In.vTexUV);
      
       //물쉐이더 테스트 용
-    vPixelNorm = g_NoiseTexture1.Sample(DefaultSampler, In.vTexUV * 10.f + g_vUVNoise * 0.1f) * 2.f - 1.f;
+    float3 vPixelNorm = g_NoiseTexture1.Sample(DefaultSampler, In.vTexUV * 10.f + g_vUVNoise * 0.1f) * 2.f - 1.f;
     vPixelNorm += g_NoiseTexture2.Sample(DefaultSampler, In.vTexUV * 50.f + g_vUVNoise * -0.1f) * 2.f - 1.f;
      
      

@@ -82,7 +82,7 @@ HRESULT CRenderTarget::Render_Debug(weak_ptr<CShader> pShader, weak_ptr<CVIBuffe
 	if (FAILED(pShader.lock()->Set_ShaderResourceView("g_Texture", m_pSRV)))
 		return E_FAIL;
 
-	if (FAILED(pShader.lock()->Begin(0)))
+	if (FAILED(pShader.lock()->Begin(0, DEVICECONTEXT)))
 		return E_FAIL;
 
 	return pVIBuffer.lock()->Render(DEVICECONTEXT);

@@ -84,7 +84,7 @@ HRESULT CStatic_Prop::Render(ID3D11DeviceContext* pDeviceContext)
             }
         }
 
-        m_pShaderCom.lock()->Begin(m_iPassIndex);
+        m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
         m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
     }
 
@@ -103,7 +103,7 @@ HRESULT CStatic_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix I
     _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
-        m_pShaderCom.lock()->Begin(1);
+        m_pShaderCom.lock()->Begin(1, pDeviceContext);
         m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
     }
 

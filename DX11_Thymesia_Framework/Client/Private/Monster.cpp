@@ -126,7 +126,7 @@ HRESULT CMonster::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_Li
         /*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
             return E_FAIL;*/
 
-            //m_pShaderCom.lock()->Begin(m_iPassIndex);
+            //m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
 
         m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, 1, "g_Bones", pDeviceContext);
         //m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);

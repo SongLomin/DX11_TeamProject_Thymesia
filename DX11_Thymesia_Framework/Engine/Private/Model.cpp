@@ -395,7 +395,7 @@ HRESULT CModel::Render_AnimModel(_uint iMeshContainerIndex, weak_ptr<CShader> pS
 		}
 	}
 
-	pShader.lock()->Begin(iPassIndex);
+	pShader.lock()->Begin(iPassIndex, pDeviceContext);
 
 	m_MeshContainers[iMeshContainerIndex].lock()->Render(pDeviceContext);
 

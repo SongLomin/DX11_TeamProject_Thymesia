@@ -42,7 +42,7 @@ HRESULT CEffect_Trail_Distortion::Render(ID3D11DeviceContext* pDeviceContext)
 	SetUp_ShaderResource();
 	CallBack_Render();
 
-	m_pShaderCom.lock()->Begin(1);
+	m_pShaderCom.lock()->Begin(1, pDeviceContext);
 	m_pVIBuffer.lock()->Render(pDeviceContext);
 
 	return S_OK;

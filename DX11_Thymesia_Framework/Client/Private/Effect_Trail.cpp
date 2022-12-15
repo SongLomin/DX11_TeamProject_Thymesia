@@ -55,7 +55,7 @@ HRESULT CEffect_Trail::Render(ID3D11DeviceContext* pDeviceContext)
 	SetUp_ShaderResource();
 
 	__super::Render(pDeviceContext);
-	m_pShaderCom.lock()->Begin(0);
+	m_pShaderCom.lock()->Begin(0, pDeviceContext);
 	m_pVIBuffer.lock()->Render(pDeviceContext);
 
 	return S_OK;

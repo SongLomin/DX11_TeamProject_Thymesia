@@ -74,7 +74,7 @@ HRESULT CPhysXColliderObject::Render(ID3D11DeviceContext* pDeviceContext)
 		if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vColor", &m_vColor, sizeof(_float4))))
 			return E_FAIL;
 
-		m_pShaderCom.lock()->Begin(3);
+		m_pShaderCom.lock()->Begin(3, pDeviceContext);
 		m_pVIBufferCom.lock()->Render(pDeviceContext);
 	}
 

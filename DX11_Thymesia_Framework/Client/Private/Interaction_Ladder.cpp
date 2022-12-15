@@ -248,7 +248,7 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Up(ID3D11DeviceContext* pDevic
                 m_iPassIndex = 7;
         }
 
-        m_pShaderCom.lock()->Begin(m_iPassIndex);
+        m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
         m_pUpModelCom.lock()->Render_Mesh(i, pDeviceContext);
     }
 
@@ -300,7 +300,7 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Mid(ID3D11DeviceContext* pDevi
         else
             m_iPassIndex = 1;
         
-        m_pInstanceShaderCom.lock()->Begin(m_iPassIndex);
+        m_pInstanceShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
         m_pInstanceModelCom.lock()->Render_Mesh(i, pDeviceContext);
     }
 
@@ -350,7 +350,7 @@ HRESULT CInteraction_Ladder::SetUp_ShaderResource_Down(ID3D11DeviceContext* pDev
                 m_iPassIndex = 7;
         }
 
-        m_pShaderCom.lock()->Begin(m_iPassIndex);
+        m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
         m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
     }
 

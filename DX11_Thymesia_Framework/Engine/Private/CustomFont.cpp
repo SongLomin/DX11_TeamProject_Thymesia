@@ -52,8 +52,8 @@ void CCustomFont::Add_Text(const TEXTINFO& In_tTextInfo)
 }
 
 HRESULT CCustomFont::Render(const _tchar* pString, const _float2& vPosition, _fvector vColor)
-{
-    m_pDeviceContext->GSSetShader(nullptr, nullptr, 0);
+{/*
+    m_pDeviceContext->GSSetShader(nullptr, nullptr, 0);*/
 
     m_pBatch->Begin();
 
@@ -67,8 +67,8 @@ HRESULT CCustomFont::Render(const _tchar* pString, const _float2& vPosition, _fv
 }
 
 void CCustomFont::Render(ID3D11DeviceContext* pDeviceContext)
-{
-    m_pDeviceContext->GSSetShader(nullptr, nullptr, 0);
+{/*
+	m_pDeviceContext->GSSetShader(nullptr, nullptr, 0);*/
 
     m_pBatch->Begin();
 
@@ -99,7 +99,7 @@ void CCustomFont::Render(ID3D11DeviceContext* pDeviceContext)
 
 void CCustomFont::RenderWithRenderGroup(const RENDERGROUP In_eRenderGroup)
 {
-    m_pDeviceContext->GSSetShader(nullptr, nullptr, 0);
+    // m_pDeviceContext->GSSetShader(nullptr, nullptr, 0);
 
     m_pBatch->Begin();
 

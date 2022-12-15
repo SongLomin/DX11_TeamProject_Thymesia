@@ -78,7 +78,7 @@ HRESULT CTerrain::Render(ID3D11DeviceContext* pDeviceContext)
 
 	__super::Render(pDeviceContext);
 
-	m_pShaderCom.lock()->Begin(0);
+	m_pShaderCom.lock()->Begin(0, pDeviceContext);
 
 	m_pVIBufferCom.lock()->Render(pDeviceContext);
 

@@ -64,7 +64,7 @@ HRESULT CSkyBox::Render(ID3D11DeviceContext* pDeviceContext)
 	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
 	m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", 0);
 
-	m_pShaderCom.lock()->Begin(0);
+	m_pShaderCom.lock()->Begin(0, pDeviceContext);
 
 	__super::Render(pDeviceContext);
 

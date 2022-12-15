@@ -94,7 +94,7 @@ HRESULT CEditNaviMesh::Render(ID3D11DeviceContext* pDeviceContext)
     _float4 vColor(0.f, 1.f, 0.f, 0.1f);
     m_pCellShaderCom.lock()->Set_RawValue("g_vColor", &vColor, sizeof(_float4));
 
-    m_pCellShaderCom.lock()->Begin(0);
+    m_pCellShaderCom.lock()->Begin(0, pDeviceContext);
 
     for (auto& elem : m_pCells)
     {

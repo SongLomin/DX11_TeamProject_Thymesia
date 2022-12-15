@@ -619,7 +619,7 @@ void CEditSetActor::SetUp_ShaderResource_Select(ID3D11DeviceContext* pDeviceCont
 	if (FAILED(m_pSelect_ShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)(GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ)), sizeof(_float4x4))))
 		return;
 
-	m_pSelect_ShaderCom.lock()->Begin(1);
+	m_pSelect_ShaderCom.lock()->Begin(1, pDeviceContext);
 	m_pSelect_VIBufferCom.lock()->Render(pDeviceContext);
 }
 

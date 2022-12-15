@@ -86,7 +86,7 @@ HRESULT CEditGround::Render(ID3D11DeviceContext* pDeviceContext)
 	if (FAILED(SetUp_ShaderResource()))
 		return E_FAIL;
 
-	m_pShaderCom.lock()->Begin(m_iShaderPass);
+	m_pShaderCom.lock()->Begin(m_iShaderPass, pDeviceContext);
 	m_pVIBufferCom.lock()->Render(pDeviceContext);
 
 	return S_OK;

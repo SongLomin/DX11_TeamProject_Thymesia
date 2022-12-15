@@ -154,7 +154,7 @@ void CHUD_PlagueWeaponBase::OnDisable()
     __super::OnDisable();
 
     m_pPlagueWeapon_Border.lock()->Set_Enable(false);
-    m_pPlagueWeapon_Ready.lock()->Set_Enable(false)
+    m_pPlagueWeapon_Ready.lock()->Set_Enable(false);
 }
 
 void CHUD_PlagueWeaponBase::Free()

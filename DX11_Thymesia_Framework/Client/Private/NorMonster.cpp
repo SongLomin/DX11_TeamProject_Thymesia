@@ -281,7 +281,7 @@ HRESULT CNorMonster::Render(ID3D11DeviceContext* pDeviceContext)
 		}
 		if (0 < m_iPassIndex)
 			iPassIndex = m_iPassIndex;
-		//m_pShaderCom.lock()->Begin(m_iPassIndex);
+		//m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
 
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, iPassIndex, "g_Bones", pDeviceContext);
 		//m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
