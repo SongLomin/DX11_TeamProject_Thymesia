@@ -395,8 +395,11 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Bake_ViewShadow()))
 		DEBUG_ASSERT;
 
+	///////SSR 넣기
+
 	if (FAILED(Render_Blend()))
 		DEBUG_ASSERT;
+	//////여기다가 화면 블룸
 
 	if (FAILED(Blend_OutLine()))
 		DEBUG_ASSERT;
@@ -443,6 +446,7 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 
 	if (FAILED(Blend_Bloom()))
 		DEBUG_ASSERT;
+
 
 	if (FAILED(PostProcessing()))
 		DEBUG_ASSERT;

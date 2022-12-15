@@ -169,15 +169,15 @@ PS_OUT PS_MAIN_NORM(PS_IN In)
     }
     
     //물쉐이더 테스트 용
-    vPixelNorm = g_NoiseTexture1.Sample(DefaultSampler, In.vTexUV*50.f + g_vUVNoise*0.1f);
-    vPixelNorm += g_NoiseTexture2.Sample(DefaultSampler, In.vTexUV * 10.f + g_vUVNoise * -0.1f);
-    
-    
-    
+    vPixelNorm = g_NoiseTexture1.Sample(DefaultSampler, In.vTexUV * 10.f + g_vUVNoise * 0.1f) * 2.f - 1.f;
+    vPixelNorm += g_NoiseTexture2.Sample(DefaultSampler, In.vTexUV * 50.f + g_vUVNoise * -0.1f) * 2.f - 1.f;
+     
+     
+    vPixelNorm = float3(vPixelNorm.rg, lerp(1, vPixelNorm.b, 1.f));
     Out.vDiffuse = 0.1f * Out.vDiffuse + 0.9f * vector(0.4f, 0.f, 0.05f, 1.f) ;
     
     float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));
-    vPixelNorm = vPixelNorm * 2.f - 1.f;
+  //  vPixelNorm = vPixelNorm * 2.f - 1.f;
     vPixelNorm = mul(vPixelNorm, WorldMatrix);
 
     Out.vDiffuse.a = 1.f;
