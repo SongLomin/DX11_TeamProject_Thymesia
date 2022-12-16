@@ -560,7 +560,9 @@ technique11 DefaultTechnique
         SetDepthStencilState(DSS_Default, 0);
         SetRasterizerState(RS_NonCulling);
 
-        VertexShader   = compile vs_5_0 VS_SPRITE();
+        VertexShader = compile vs_5_0 VS_SPRITE();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader    = compile ps_5_0 PS_SPRITE_BLACKDISCARD();
     }
@@ -572,6 +574,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_ALPHADISCARD();
     }
@@ -583,6 +587,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_BLACKDISCARD();
     }
@@ -594,6 +600,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_SPRITE();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_SPRITE_ALPHADISCARD();
     }
@@ -605,6 +613,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_SOFT();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_ALPHADISCARD_SOFT();
     }
@@ -616,6 +626,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_SOFT();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_BLACKDISCARD_SOFT();
     }
@@ -627,6 +639,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_SPRITE_SOFT();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_SPRITE_ALPHADISCARD_SOFT();
     }
@@ -638,6 +652,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_SPRITE_SOFT();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_SPRITE_BLACKDISCARD_SOFT();
     }
@@ -649,6 +665,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_SPRITE();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_SPRITE_BLACKDISCARD();
     }
@@ -660,6 +678,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_ALPHADISCARD();
     }
@@ -671,6 +691,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_BLACKDISCARD();
     }
@@ -682,6 +704,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_SPRITE();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_SPRITE_ALPHADISCARD();
     }
@@ -693,6 +717,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_SOFT();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_ALPHADISCARD_SOFT();
     }
@@ -704,6 +730,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_SOFT();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_BLACKDISCARD_SOFT();
     }
@@ -715,6 +743,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_SPRITE_SOFT();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_SPRITE_ALPHADISCARD_SOFT();
     }
@@ -726,6 +756,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_SPRITE_SOFT();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_SPRITE_BLACKDISCARD_SOFT();
     }

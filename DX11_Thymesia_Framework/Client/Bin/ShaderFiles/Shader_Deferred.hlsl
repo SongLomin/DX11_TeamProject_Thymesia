@@ -919,7 +919,9 @@ technique11 DefaultTechnique
 		SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
 		SetRasterizerState(RS_Default);
-		VertexShader   = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
 		GeometryShader = NULL;
 		PixelShader    = compile ps_5_0 PS_MAIN_DEBUG();
 	}
@@ -929,7 +931,9 @@ technique11 DefaultTechnique
         SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
 		SetRasterizerState(RS_Default);
-		VertexShader   = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
 		GeometryShader = NULL;
 		PixelShader    = compile ps_5_0 PS_MAIN_LIGHT_DIRECTIONAL();
 	}
@@ -939,7 +943,9 @@ technique11 DefaultTechnique
         SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
 		SetRasterizerState(RS_Default);
-		VertexShader   = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
 		GeometryShader = NULL;
 		PixelShader    = compile ps_5_0 PS_MAIN_LIGHT_POINT();
 	}
@@ -949,7 +955,9 @@ technique11 DefaultTechnique
         SetBlendState(BS_ForwardAlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
 		SetRasterizerState(RS_Default);
-		VertexShader   = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
 		GeometryShader = NULL;
 		PixelShader    = compile ps_5_0 PS_MAIN_BLEND();
 	}
@@ -959,7 +967,9 @@ technique11 DefaultTechnique
         SetBlendState(BS_ForwardAlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
         SetRasterizerState(RS_Default);
-        VertexShader   = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader    = compile ps_5_0 PS_MAIN_POSTEFFECT_MASK();
     }
@@ -969,7 +979,9 @@ technique11 DefaultTechnique
         SetBlendState(BS_ForwardAlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
         SetRasterizerState(RS_Default);
-        VertexShader   = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader    = compile ps_5_0 PS_MAIN_POSTEFFECT_BLOOM();
     }
@@ -979,7 +991,9 @@ technique11 DefaultTechnique
         SetBlendState(BS_ForwardAlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
         SetRasterizerState(RS_Default);
-        VertexShader   = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader    = compile ps_5_0 PS_MAIN_GLOW();
     }
@@ -989,7 +1003,9 @@ technique11 DefaultTechnique
         SetBlendState(BS_ForwardAlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
         SetRasterizerState(RS_Default);
-        VertexShader   = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader    = compile ps_5_0 PS_MAIN_COPY_ORIGIN();
     }
@@ -999,7 +1015,9 @@ technique11 DefaultTechnique
         SetBlendState(BS_ForwardAlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
         SetRasterizerState(RS_Default);
-        VertexShader   = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader    = compile ps_5_0 PS_MAIN_UP_GLOW();
     }
@@ -1009,7 +1027,9 @@ technique11 DefaultTechnique
         SetBlendState(BS_AlphaBlending, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
         SetRasterizerState(RS_Default);
-        VertexShader   = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader    = compile ps_5_0 PS_MAIN_LIGHT_HALF_POINT();
     }
@@ -1019,7 +1039,9 @@ technique11 DefaultTechnique
         SetBlendState(BS_ForwardAlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
         SetRasterizerState(RS_Default);
-        VertexShader   = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader    = compile ps_5_0 PS_MAIN_VIEW_SHADOW();
     }
@@ -1029,7 +1051,9 @@ technique11 DefaultTechnique
         SetBlendState(BS_ForwardAlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
         SetRasterizerState(RS_Default);
-        VertexShader   = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader    = compile ps_5_0 PS_MAIN_FOG();
     }
