@@ -47,7 +47,7 @@ HRESULT CMainApp::Initialize()
 	CGameInstance::Create_Instance();
 	CGameManager::Create_Instance();
 #ifdef _JOJO_EFFECT_TOOL_
-	// CJoJoParticleShaderManager::Create_Instance();
+	CJoJoParticleShaderManager::Create_Instance();
 #endif // #ifdef _JOJO_EFFECT_TOOL_
 
 	if (FAILED(GAMEINSTANCE->Initialize_Engine(g_hInst, LEVEL_END, (_uint)TIMESCALE_LAYER::LAYER_END, (_uint)COLLISION_LAYER::LAYER_END, GraphicDesc)))
@@ -85,7 +85,7 @@ HRESULT CMainApp::Initialize()
 	GAMEINSTANCE->Add_SingleGameObject<CFadeMask>(LEVEL_STATIC);
 
 #ifdef _JOJO_EFFECT_TOOL_
-	// GET_SINGLE(CJoJoParticleShaderManager)->Initialize();
+	GET_SINGLE(CJoJoParticleShaderManager)->Initialize();
 #endif // _JOJO_EFFECT_TOOL_
 
 
@@ -337,6 +337,6 @@ void CMainApp::Free()
 
 
 #ifdef _JOJO_EFFECT_TOOL_
-	// CJoJoParticleShaderManager::Destroy_Instance();
+	CJoJoParticleShaderManager::Destroy_Instance();
 #endif // _JOJO_EFFECT_TOOL_
 }

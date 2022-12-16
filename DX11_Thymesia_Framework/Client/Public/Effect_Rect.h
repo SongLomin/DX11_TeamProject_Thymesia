@@ -129,7 +129,7 @@ private:
 #ifdef _DEBUG
 private: // For. Tool
 #ifdef _JOJO_EFFECT_TOOL_
-    // void Show_ShaderPasses();
+    void Show_ShaderPasses();
 #endif // _JOJO_EFFECT_TOOL_
     void Tool_Spawn_Life_Time();
     void Tool_Boner();

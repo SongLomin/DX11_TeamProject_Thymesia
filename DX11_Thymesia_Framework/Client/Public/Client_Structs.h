@@ -166,7 +166,6 @@ namespace Client
 		_int		iParticleType;
 		_int		iFollowTransformType;
 
-		// _bool		bAttraction;
 		_float3		vGoalPosition;
 
 		_int		iShaderPassIndex;
@@ -185,9 +184,6 @@ namespace Client
 		_float		fMinLifeTime;
 		_float		fMaxLifeTime;
 #pragma endregion
-
-		// if true, particle position is according to bone
-		// _bool		bBoner;
 
 #ifdef _DEBUG
 		_bool		bIsMinMaxSame_StartSpeed;
@@ -221,9 +217,6 @@ namespace Client
 		_float3		vMaxSpawnOffsetRange;
 #pragma endregion
 
-		// particle moves toward look
-		// _bool		bMoveLook;
-
 		_ubyte		byParticleOption1 = 0;
 		enum class ParticleOption1
 		{
@@ -242,11 +235,8 @@ namespace Client
 		_float3		vGravityForce;
 
 #pragma region Speed
-		// _int		iSpeedEasingType;			// --> is position easing type when EasingPosition is true.
-		// _float	fSpeedEasingTotalTime;		// --> is position easing total time when EasingPosition is true. 
-
-		_float3		vMinStartSpeed;				// --> is min goal offset position when easing position is true.
-		_float3		vMaxStartSpeed;				// --> is max goal offset position when easing position is true.
+		_float3		vMinStartSpeed;
+		_float3		vMaxStartSpeed;
 
 		_float3		vMinSpeedForce;
 		_float3		vMaxSpeedForce;
@@ -256,10 +246,6 @@ namespace Client
 
 #pragma endregion
 #pragma region Rotation
-		//_bool		bEasingRotation;
-		//_int		iRotationEasingType;
-		//_float		fRotationEasingTotalTime;
-
 		_float3		vMinStartRotation;
 		_float3		vMaxStartRotation;
 
