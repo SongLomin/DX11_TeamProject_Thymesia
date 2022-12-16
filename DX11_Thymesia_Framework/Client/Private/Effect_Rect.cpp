@@ -378,25 +378,25 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 
 	// Out_Json["Is_Easing_Position"] = m_tEffectParticleDesc.bEasingPosition;
 
-	if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingPosition))
-	{
-		Out_Json["Position_Easing_Type"] = m_tEffectParticleDesc.iSpeedEasingType;
-		Out_Json["Position_Easing_Total_Time"] = m_tEffectParticleDesc.fSpeedEasingTotalTime;
+	//if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingPosition))
+	//{
+	//	Out_Json["Position_Easing_Type"] = m_tEffectParticleDesc.iSpeedEasingType;
+	//	Out_Json["Position_Easing_Total_Time"] = m_tEffectParticleDesc.fSpeedEasingTotalTime;
 
-		CJson_Utility::Write_Float3(Out_Json["Min_Goal_Offset_Position"], m_tEffectParticleDesc.vMinStartSpeed);
-		CJson_Utility::Write_Float3(Out_Json["Max_Goal_Offset_Position"], m_tEffectParticleDesc.vMaxStartSpeed);
-	}
-	else
+	//	CJson_Utility::Write_Float3(Out_Json["Min_Goal_Offset_Position"], m_tEffectParticleDesc.vMinStartSpeed);
+	//	CJson_Utility::Write_Float3(Out_Json["Max_Goal_Offset_Position"], m_tEffectParticleDesc.vMaxStartSpeed);
+	//}
+	//else
 	{
 #pragma region Speed
 		// Out_Json["Is_Easing_Speed"] = m_tEffectParticleDesc.bEasingSpeed;
 
-		if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingSpeed))
-		{
-			Out_Json["Speed_Easing_Type"] = m_tEffectParticleDesc.iSpeedEasingType;
-			Out_Json["Speed_Easing_Total_Time"] = m_tEffectParticleDesc.fSpeedEasingTotalTime;
-		}
-		else
+		//if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingSpeed))
+		//{
+		//	Out_Json["Speed_Easing_Type"] = m_tEffectParticleDesc.iSpeedEasingType;
+		//	Out_Json["Speed_Easing_Total_Time"] = m_tEffectParticleDesc.fSpeedEasingTotalTime;
+		//}
+		//else
 		{
 			CJson_Utility::Write_Float3(Out_Json["Min_Speed"], m_tEffectParticleDesc.vMinStartSpeed);
 			CJson_Utility::Write_Float3(Out_Json["Max_Speed"], m_tEffectParticleDesc.vMaxStartSpeed);
@@ -413,14 +413,14 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 #pragma region Rotation
 	if (_int(PARTICLETYPE::OUTBURST) != m_tEffectParticleDesc.iParticleType)
 	{
-		Out_Json["Is_Easing_Rotation"] = m_tEffectParticleDesc.bEasingRotation;
+		//Out_Json["Is_Easing_Rotation"] = m_tEffectParticleDesc.bEasingRotation;
 
-		if (m_tEffectParticleDesc.bEasingRotation)
-		{
-			Out_Json["Rotation_Easing_Type"] = m_tEffectParticleDesc.iRotationEasingType;
-			Out_Json["Rotation_Easing_Total_Time"] = m_tEffectParticleDesc.fRotationEasingTotalTime;
-		}
-		else
+		//if (m_tEffectParticleDesc.bEasingRotation)
+		//{
+		//	Out_Json["Rotation_Easing_Type"] = m_tEffectParticleDesc.iRotationEasingType;
+		//	Out_Json["Rotation_Easing_Total_Time"] = m_tEffectParticleDesc.fRotationEasingTotalTime;
+		//}
+		//else
 		{
 			CJson_Utility::Write_Float3(Out_Json["Min_Start_Rotation"], m_tEffectParticleDesc.vMinStartRotation);
 			CJson_Utility::Write_Float3(Out_Json["Max_Start_Rotation"], m_tEffectParticleDesc.vMaxStartRotation);
@@ -786,49 +786,49 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 
 #pragma endregion // Gravity
 
-#pragma region Easing Position
-#ifdef _BAKE_PARTICLE_
-	if (In_Json.find("Is_Easing_Position") != In_Json.end())
-	{
-		if (In_Json["Is_Easing_Position"])
-			TurnOn_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingPosition);
-	}
-#endif // _BAKE_PARTICLE_
-
-	if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingPosition))
-	{
-		if (In_Json.find("Position_Easing_Type") != In_Json.end())
-			m_tEffectParticleDesc.iSpeedEasingType = In_Json["Position_Easing_Type"];
-		if (In_Json.find("Position_Easing_Total_Time") != In_Json.end())
-			m_tEffectParticleDesc.fSpeedEasingTotalTime = In_Json["Position_Easing_Total_Time"];
-
-		TurnOn_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Use_Speed);
-
-		if (In_Json.find("Min_Goal_Offset_Position") != In_Json.end())
-			CJson_Utility::Load_Float3(In_Json["Min_Goal_Offset_Position"], m_tEffectParticleDesc.vMinStartSpeed);
-		if (In_Json.find("Max_Goal_Offset_Position") != In_Json.end())
-			CJson_Utility::Load_Float3(In_Json["Max_Goal_Offset_Position"], m_tEffectParticleDesc.vMaxStartSpeed);
-	}
-#pragma endregion // Easing Position
-	else
+//#pragma region Easing Position
+//#ifdef _BAKE_PARTICLE_
+//	if (In_Json.find("Is_Easing_Position") != In_Json.end())
+//	{
+//		if (In_Json["Is_Easing_Position"])
+//			TurnOn_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingPosition);
+//	}
+//#endif // _BAKE_PARTICLE_
+//
+//	if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingPosition))
+//	{
+//		if (In_Json.find("Position_Easing_Type") != In_Json.end())
+//			m_tEffectParticleDesc.iSpeedEasingType = In_Json["Position_Easing_Type"];
+//		if (In_Json.find("Position_Easing_Total_Time") != In_Json.end())
+//			m_tEffectParticleDesc.fSpeedEasingTotalTime = In_Json["Position_Easing_Total_Time"];
+//
+//		TurnOn_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Use_Speed);
+//
+//		if (In_Json.find("Min_Goal_Offset_Position") != In_Json.end())
+//			CJson_Utility::Load_Float3(In_Json["Min_Goal_Offset_Position"], m_tEffectParticleDesc.vMinStartSpeed);
+//		if (In_Json.find("Max_Goal_Offset_Position") != In_Json.end())
+//			CJson_Utility::Load_Float3(In_Json["Max_Goal_Offset_Position"], m_tEffectParticleDesc.vMaxStartSpeed);
+//	}
+//#pragma endregion // Easing Position
+//	else
 	{
 #pragma region Speed
-#ifdef _BAKE_PARTICLE_
-		if (In_Json.find("Is_Easing_Speed") != In_Json.end())
-		{
-			if (In_Json["Is_Easing_Speed"])
-				TurnOn_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingSpeed);
-		}
-#endif // _BAKE_PARTICLE_
-		if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingSpeed))
-		{
-			if (In_Json.find("Speed_Easing_Type") != In_Json.end())
-				m_tEffectParticleDesc.iSpeedEasingType = In_Json["Speed_Easing_Type"];
-			if (In_Json.find("Speed_Easing_Total_Time") != In_Json.end())
-				m_tEffectParticleDesc.fSpeedEasingTotalTime = In_Json["Speed_Easing_Total_Time"];
-		}
-		else
-		{
+//#ifdef _BAKE_PARTICLE_
+//		if (In_Json.find("Is_Easing_Speed") != In_Json.end())
+//		{
+//			if (In_Json["Is_Easing_Speed"])
+//				TurnOn_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingSpeed);
+//		}
+//#endif // _BAKE_PARTICLE_
+//		if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingSpeed))
+//		{
+//			if (In_Json.find("Speed_Easing_Type") != In_Json.end())
+//				m_tEffectParticleDesc.iSpeedEasingType = In_Json["Speed_Easing_Type"];
+//			if (In_Json.find("Speed_Easing_Total_Time") != In_Json.end())
+//				m_tEffectParticleDesc.fSpeedEasingTotalTime = In_Json["Speed_Easing_Total_Time"];
+//		}
+//		else
+//		{
 			if (In_Json.find("Min_Speed") != In_Json.end())
 				CJson_Utility::Load_Float3(In_Json["Min_Speed"], m_tEffectParticleDesc.vMinStartSpeed);
 			if (In_Json.find("Max_Speed") != In_Json.end())
@@ -837,7 +837,7 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 				CJson_Utility::Load_Float3(In_Json["Min_Speed_Force"], m_tEffectParticleDesc.vMinSpeedForce);
 			if (In_Json.find("Max_Speed_Force") != In_Json.end())
 				CJson_Utility::Load_Float3(In_Json["Max_Speed_Force"], m_tEffectParticleDesc.vMaxSpeedForce);
-		}
+		//}
 
 		if (In_Json.find("Min_Limit_Speed") != In_Json.end())
 			CJson_Utility::Load_Float3(In_Json["Min_Limit_Speed"], m_tEffectParticleDesc.vMinLimitSpeed);
@@ -849,17 +849,17 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma region Rotation
 	if (_int(PARTICLETYPE::OUTBURST) != m_tEffectParticleDesc.iParticleType)
 	{
-		if (In_Json.find("Is_Easing_Rotation") != In_Json.end())
-			m_tEffectParticleDesc.bEasingRotation = In_Json["Is_Easing_Rotation"];
+		//if (In_Json.find("Is_Easing_Rotation") != In_Json.end())
+		//	m_tEffectParticleDesc.bEasingRotation = In_Json["Is_Easing_Rotation"];
 
-		if (m_tEffectParticleDesc.bEasingRotation)
-		{
-			if (In_Json.find("Rotation_Easing_Type") != In_Json.end())
-				m_tEffectParticleDesc.iRotationEasingType = In_Json["Rotation_Easing_Type"];
-			if (In_Json.find("Rotation_Easing_Total_Time") != In_Json.end())
-				m_tEffectParticleDesc.fRotationEasingTotalTime = In_Json["Rotation_Easing_Total_Time"];
-		}
-		else
+		//if (m_tEffectParticleDesc.bEasingRotation)
+		//{
+		//	if (In_Json.find("Rotation_Easing_Type") != In_Json.end())
+		//		m_tEffectParticleDesc.iRotationEasingType = In_Json["Rotation_Easing_Type"];
+		//	if (In_Json.find("Rotation_Easing_Total_Time") != In_Json.end())
+		//		m_tEffectParticleDesc.fRotationEasingTotalTime = In_Json["Rotation_Easing_Total_Time"];
+		//}
+		//else
 		{
 			if (In_Json.find("Min_Start_Rotation") != In_Json.end())
 				CJson_Utility::Load_Float3(In_Json["Min_Start_Rotation"], m_tEffectParticleDesc.vMinStartRotation);
@@ -1242,21 +1242,21 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 		m_tOriginalParticleDescs[i].vTargetRotationForce =
 			SMath::vRandom(m_tEffectParticleDesc.vMinRotationForce, m_tEffectParticleDesc.vMaxRotationForce);
 
-		if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingPosition))
-		{
-			m_tOriginalParticleDescs[i].vTargetSpeed = SMath::Add_Float3(m_tOriginalParticleDescs[i].vCurrentTranslation, m_tOriginalParticleDescs[i].vOffsetPosition);
+		//if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingPosition))
+		//{
+		//	m_tOriginalParticleDescs[i].vTargetSpeed = SMath::Add_Float3(m_tOriginalParticleDescs[i].vCurrentTranslation, m_tOriginalParticleDescs[i].vOffsetPosition);
 
-			_float3 vGoalPos(SMath::vRandom(m_tEffectParticleDesc.vMinStartSpeed, m_tEffectParticleDesc.vMaxStartSpeed));
-			_vector vGoalOffsetPosition(XMLoadFloat3(&vGoalPos));
-			vGoalOffsetPosition = XMVectorSetX(vGoalOffsetPosition, XMVectorGetX(vGoalOffsetPosition) * m_tOriginalParticleDescs[i].vCurrentRotation.x);
-			vGoalOffsetPosition = XMVectorSetY(vGoalOffsetPosition, XMVectorGetY(vGoalOffsetPosition) * m_tOriginalParticleDescs[i].vCurrentRotation.y);
-			vGoalOffsetPosition = XMVectorSetZ(vGoalOffsetPosition, XMVectorGetZ(vGoalOffsetPosition) * m_tOriginalParticleDescs[i].vCurrentRotation.z);
+		//	_float3 vGoalPos(SMath::vRandom(m_tEffectParticleDesc.vMinStartSpeed, m_tEffectParticleDesc.vMaxStartSpeed));
+		//	_vector vGoalOffsetPosition(XMLoadFloat3(&vGoalPos));
+		//	vGoalOffsetPosition = XMVectorSetX(vGoalOffsetPosition, XMVectorGetX(vGoalOffsetPosition) * m_tOriginalParticleDescs[i].vCurrentRotation.x);
+		//	vGoalOffsetPosition = XMVectorSetY(vGoalOffsetPosition, XMVectorGetY(vGoalOffsetPosition) * m_tOriginalParticleDescs[i].vCurrentRotation.y);
+		//	vGoalOffsetPosition = XMVectorSetZ(vGoalOffsetPosition, XMVectorGetZ(vGoalOffsetPosition) * m_tOriginalParticleDescs[i].vCurrentRotation.z);
 
-			m_tOriginalParticleDescs[i].vTargetSpeedForce.x = m_tOriginalParticleDescs[i].vTargetSpeed.x + XMVectorGetX(vGoalOffsetPosition);
-			m_tOriginalParticleDescs[i].vTargetSpeedForce.y = m_tOriginalParticleDescs[i].vTargetSpeed.y + XMVectorGetY(vGoalOffsetPosition);
-			m_tOriginalParticleDescs[i].vTargetSpeedForce.z = m_tOriginalParticleDescs[i].vTargetSpeed.z + XMVectorGetZ(vGoalOffsetPosition);
-		}
-		else
+		//	m_tOriginalParticleDescs[i].vTargetSpeedForce.x = m_tOriginalParticleDescs[i].vTargetSpeed.x + XMVectorGetX(vGoalOffsetPosition);
+		//	m_tOriginalParticleDescs[i].vTargetSpeedForce.y = m_tOriginalParticleDescs[i].vTargetSpeed.y + XMVectorGetY(vGoalOffsetPosition);
+		//	m_tOriginalParticleDescs[i].vTargetSpeedForce.z = m_tOriginalParticleDescs[i].vTargetSpeed.z + XMVectorGetZ(vGoalOffsetPosition);
+		//}
+		//else
 		{
 			m_tOriginalParticleDescs[i].vTargetSpeed =
 				SMath::vRandom(m_tEffectParticleDesc.vMinStartSpeed, m_tEffectParticleDesc.vMaxStartSpeed);
@@ -1342,64 +1342,64 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta, _m
 	_float3 vMove;
 	ZeroMemory(&vMove, sizeof(_float3));
 
-	if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingPosition))
+	//if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingPosition))
+	//{
+	//	_float fElapsedTime(m_tParticleDescs[i].fCurrentLifeTime);
+
+	//	if (0.f > fElapsedTime)
+	//		return;
+
+	//	Apply_Easing
+	//	(
+	//		vMove
+	//		, (EASING_TYPE)m_tEffectParticleDesc.iSpeedEasingType
+	//		, XMLoadFloat3(&m_tParticleDescs[i].vTargetSpeed)
+	//		, XMLoadFloat3(&m_tParticleDescs[i].vTargetSpeedForce)
+	//		, fElapsedTime
+	//		, m_tEffectParticleDesc.fSpeedEasingTotalTime
+	//	);
+
+	//	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_MoveLook))
+	//	{
+	//		_vector vSpawnPos(XMLoadFloat3(&m_tParticleDescs[i].vTargetSpeed));
+	//		_vector vMovePosition(XMLoadFloat3(&vMove));
+	//		vMovePosition -= vSpawnPos;
+	//		_vector vRotatedPosition(XMVector3TransformCoord(vMovePosition, XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_tParticleDescs[i].vCurrentRotation))));
+	//		vRotatedPosition += vSpawnPos;
+	//		// _vector vCurrentPosition = XMLoadFloat3(&m_tParticleDescs[i].vCurrentTranslation);
+	//		// vCurrentPosition +       = vRotatedPosition;
+	//		XMStoreFloat3(&m_tParticleDescs[i].vCurrentTranslation, vRotatedPosition);
+	//	}
+	//	else
+	//		m_tParticleDescs[i].vCurrentTranslation = vMove;
+
+	//}
+	//else
 	{
-		_float fElapsedTime(m_tParticleDescs[i].fCurrentLifeTime);
+		//if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingSpeed))
+		//{
+		//	_float fElapsedTime(m_tParticleDescs[i].fCurrentLifeTime);
 
-		if (0.f > fElapsedTime)
-			return;
+		//	if (0.f > fElapsedTime)
+		//		return;
 
-		Apply_Easing
-		(
-			vMove
-			, (EASING_TYPE)m_tEffectParticleDesc.iSpeedEasingType
-			, XMLoadFloat3(&m_tParticleDescs[i].vTargetSpeed)
-			, XMLoadFloat3(&m_tParticleDescs[i].vTargetSpeedForce)
-			, fElapsedTime
-			, m_tEffectParticleDesc.fSpeedEasingTotalTime
-		);
+		//	Apply_Easing
+		//	(
+		//		vMove
+		//		, (EASING_TYPE)m_tEffectParticleDesc.iSpeedEasingType
+		//		, XMLoadFloat3(&m_tEffectParticleDesc.vMinLimitSpeed)
+		//		, XMLoadFloat3(&m_tEffectParticleDesc.vMaxLimitSpeed)
+		//		, fElapsedTime
+		//		, m_tEffectParticleDesc.fSpeedEasingTotalTime
+		//	);
 
-		if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_MoveLook))
-		{
-			_vector vSpawnPos(XMLoadFloat3(&m_tParticleDescs[i].vTargetSpeed));
-			_vector vMovePosition(XMLoadFloat3(&vMove));
-			vMovePosition -= vSpawnPos;
-			_vector vRotatedPosition(XMVector3TransformCoord(vMovePosition, XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_tParticleDescs[i].vCurrentRotation))));
-			vRotatedPosition += vSpawnPos;
-			// _vector vCurrentPosition = XMLoadFloat3(&m_tParticleDescs[i].vCurrentTranslation);
-			// vCurrentPosition +       = vRotatedPosition;
-			XMStoreFloat3(&m_tParticleDescs[i].vCurrentTranslation, vRotatedPosition);
-		}
-		else
-			m_tParticleDescs[i].vCurrentTranslation = vMove;
+		//	vMove.x = max(m_tEffectParticleDesc.vMinLimitSpeed.x, min(m_tEffectParticleDesc.vMaxLimitSpeed.x, vMove.x));
+		//	vMove.y = max(m_tEffectParticleDesc.vMinLimitSpeed.y, min(m_tEffectParticleDesc.vMaxLimitSpeed.y, vMove.y));
+		//	vMove.z = max(m_tEffectParticleDesc.vMinLimitSpeed.z, min(m_tEffectParticleDesc.vMaxLimitSpeed.z, vMove.z));
 
-	}
-	else
-	{
-		if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingSpeed))
-		{
-			_float fElapsedTime(m_tParticleDescs[i].fCurrentLifeTime);
-
-			if (0.f > fElapsedTime)
-				return;
-
-			Apply_Easing
-			(
-				vMove
-				, (EASING_TYPE)m_tEffectParticleDesc.iSpeedEasingType
-				, XMLoadFloat3(&m_tEffectParticleDesc.vMinLimitSpeed)
-				, XMLoadFloat3(&m_tEffectParticleDesc.vMaxLimitSpeed)
-				, fElapsedTime
-				, m_tEffectParticleDesc.fSpeedEasingTotalTime
-			);
-
-			vMove.x = max(m_tEffectParticleDesc.vMinLimitSpeed.x, min(m_tEffectParticleDesc.vMaxLimitSpeed.x, vMove.x));
-			vMove.y = max(m_tEffectParticleDesc.vMinLimitSpeed.y, min(m_tEffectParticleDesc.vMaxLimitSpeed.y, vMove.y));
-			vMove.z = max(m_tEffectParticleDesc.vMinLimitSpeed.z, min(m_tEffectParticleDesc.vMaxLimitSpeed.z, vMove.z));
-
-			m_tParticleDescs[i].vTargetSpeed = vMove;
-		}
-		else
+		//	m_tParticleDescs[i].vTargetSpeed = vMove;
+		//}
+		//else
 		{
 			vMove = SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeed, fTimeDelta);
 
@@ -1447,10 +1447,11 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta, _m
 			}
 			else
 			{
-				Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingSpeed) ?
-					m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, m_tParticleDescs[i].vTargetSpeed)
-					:
-					m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, vMove);
+				m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, vMove);
+				//Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingSpeed) ?
+				//	m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, m_tParticleDescs[i].vTargetSpeed)
+				//	:
+				//	m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, vMove);
 			}
 		}
 	}
@@ -1491,30 +1492,30 @@ void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
 		_float3 vRotation;
 		ZeroMemory(&vRotation, sizeof(_float3));
 
-		if (m_tEffectParticleDesc.bEasingRotation)
-		{
-			_float fElapsedTime(m_tParticleDescs[i].fCurrentLifeTime);
+		//if (m_tEffectParticleDesc.bEasingRotation)
+		//{
+		//	_float fElapsedTime(m_tParticleDescs[i].fCurrentLifeTime);
 
-			if (0.f > fElapsedTime)
-				return;
+		//	if (0.f > fElapsedTime)
+		//		return;
 
-			Apply_Easing
-			(
-				vRotation
-				, (EASING_TYPE)m_tEffectParticleDesc.iRotationEasingType
-				, XMLoadFloat3(&m_tEffectParticleDesc.vMinLimitRotation)
-				, XMLoadFloat3(&m_tEffectParticleDesc.vMaxLimitRotation)
-				, fElapsedTime
-				, m_tEffectParticleDesc.fRotationEasingTotalTime
-			);
+		//	Apply_Easing
+		//	(
+		//		vRotation
+		//		, (EASING_TYPE)m_tEffectParticleDesc.iRotationEasingType
+		//		, XMLoadFloat3(&m_tEffectParticleDesc.vMinLimitRotation)
+		//		, XMLoadFloat3(&m_tEffectParticleDesc.vMaxLimitRotation)
+		//		, fElapsedTime
+		//		, m_tEffectParticleDesc.fRotationEasingTotalTime
+		//	);
 
-			vRotation.x = max(m_tEffectParticleDesc.vMinLimitRotation.x, min(m_tEffectParticleDesc.vMaxLimitRotation.x, vRotation.x));
-			vRotation.y = max(m_tEffectParticleDesc.vMinLimitRotation.y, min(m_tEffectParticleDesc.vMaxLimitRotation.y, vRotation.y));
-			vRotation.z = max(m_tEffectParticleDesc.vMinLimitRotation.z, min(m_tEffectParticleDesc.vMaxLimitRotation.z, vRotation.z));
+		//	vRotation.x = max(m_tEffectParticleDesc.vMinLimitRotation.x, min(m_tEffectParticleDesc.vMaxLimitRotation.x, vRotation.x));
+		//	vRotation.y = max(m_tEffectParticleDesc.vMinLimitRotation.y, min(m_tEffectParticleDesc.vMaxLimitRotation.y, vRotation.y));
+		//	vRotation.z = max(m_tEffectParticleDesc.vMinLimitRotation.z, min(m_tEffectParticleDesc.vMaxLimitRotation.z, vRotation.z));
 
-			m_tParticleDescs[i].vCurrentRotation = vRotation;
-		}
-		else
+		//	m_tParticleDescs[i].vCurrentRotation = vRotation;
+		//}
+		//else
 		{
 			vRotation = SMath::Mul_Float3(m_tParticleDescs[i].vTargetRotationSpeed, fTimeDelta);
 			m_tParticleDescs[i].vCurrentRotationForce =
@@ -2410,7 +2411,7 @@ void CEffect_Rect::Tool_Position()
 
 void CEffect_Rect::Tool_Position_Easing()
 {
-	if (ImGui::TreeNode("Easing Position"))
+	/*if (ImGui::TreeNode("Easing Position"))
 	{
 		const char* EasingItems[] =
 		{
@@ -2452,7 +2453,7 @@ void CEffect_Rect::Tool_Position_Easing()
 		ImGui::DragFloat3("##Max_Goal_Offset_Position", &m_tEffectParticleDesc.vMaxStartSpeed.x, 0.01f, 0.f, 0.f, "%.5f");
 
 		ImGui::TreePop();
-	}
+	}*/
 }
 
 void CEffect_Rect::Tool_Speed()
@@ -2508,42 +2509,42 @@ void CEffect_Rect::Tool_Speed()
 
 void CEffect_Rect::Tool_Speed_Easing()
 {
-	if (ImGui::TreeNode("Speed Easing List"))
-	{
-		// open easing list
-		const char* EasingItems[] =
-		{
-			"Linear"   ,
-			"QuadIn"   , "QuadOut"	 , "QuadInOut"	 ,
-			"CubicIn"  , "CubicOut"	 , "CubicInOut"	 ,
-			"QuartIn"  , "QuartOut"	 , "QuartInOut"	 ,
-			"QuintIn"  , "QuintOut"	 , "QuintInOut"	 ,
-			"SineIn"   , "SineOut"	 , "SineInOut"	 ,
-			"ExpoIn"   , "ExpoOut"	 , "ExpoInOut"	 ,
-			"CircIn"   , "CircOut"	 , "CircInOut"	 ,
-			"ElasticIn", "ElasticOut", "ElasticInOut",
-			"BounceIn" , "BounceOut"
-		};
+	//if (ImGui::TreeNode("Speed Easing List"))
+	//{
+	//	// open easing list
+	//	const char* EasingItems[] =
+	//	{
+	//		"Linear"   ,
+	//		"QuadIn"   , "QuadOut"	 , "QuadInOut"	 ,
+	//		"CubicIn"  , "CubicOut"	 , "CubicInOut"	 ,
+	//		"QuartIn"  , "QuartOut"	 , "QuartInOut"	 ,
+	//		"QuintIn"  , "QuintOut"	 , "QuintInOut"	 ,
+	//		"SineIn"   , "SineOut"	 , "SineInOut"	 ,
+	//		"ExpoIn"   , "ExpoOut"	 , "ExpoInOut"	 ,
+	//		"CircIn"   , "CircOut"	 , "CircInOut"	 ,
+	//		"ElasticIn", "ElasticOut", "ElasticInOut",
+	//		"BounceIn" , "BounceOut"
+	//	};
 
-		if (ImGui::BeginListBox("##EasingType_Speed"))
-		{
-			for (int n(0); n < IM_ARRAYSIZE(EasingItems); n++)
-			{
-				const bool is_selected = (m_tEffectParticleDesc.iSpeedEasingType == n);
-				if (ImGui::Selectable(EasingItems[n], is_selected))
-					m_tEffectParticleDesc.iSpeedEasingType = n;
+	//	if (ImGui::BeginListBox("##EasingType_Speed"))
+	//	{
+	//		for (int n(0); n < IM_ARRAYSIZE(EasingItems); n++)
+	//		{
+	//			const bool is_selected = (m_tEffectParticleDesc.iSpeedEasingType == n);
+	//			if (ImGui::Selectable(EasingItems[n], is_selected))
+	//				m_tEffectParticleDesc.iSpeedEasingType = n;
 
-				if (is_selected)
-					ImGui::SetItemDefaultFocus();
-			}
-			ImGui::EndListBox();
-		}
+	//			if (is_selected)
+	//				ImGui::SetItemDefaultFocus();
+	//		}
+	//		ImGui::EndListBox();
+	//	}
 
-		ImGui::TreePop();
-	}
+	//	ImGui::TreePop();
+	//}
 
-	ImGui::Text("Total Time"); ImGui::SetNextItemWidth(300.f);
-	ImGui::DragFloat("##Speed_Total_Easing_Time", &m_tEffectParticleDesc.fSpeedEasingTotalTime, 0.01f, 0.f, 0.f, "%.5f");
+	//ImGui::Text("Total Time"); ImGui::SetNextItemWidth(300.f);
+	//ImGui::DragFloat("##Speed_Total_Easing_Time", &m_tEffectParticleDesc.fSpeedEasingTotalTime, 0.01f, 0.f, 0.f, "%.5f");
 
 	ImGui::Text("Start Speed"); ImGui::SetNextItemWidth(300.f);
 	ImGui::DragFloat3("##Min_Limit_Speed", &m_tEffectParticleDesc.vMinLimitSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
@@ -2633,44 +2634,44 @@ void CEffect_Rect::Tool_Rotation()
 
 void CEffect_Rect::Tool_Rotation_Easing()
 {
-	if (ImGui::TreeNode("Easing Rotation List"))
-	{
-		// open easing list
-		const char* EasingItems[] =
-		{
-			"Linear"   ,
-			"QuadIn"   , "QuadOut"	 , "QuadInOut"	 ,
-			"CubicIn"  , "CubicOut"	 , "CubicInOut"	 ,
-			"QuartIn"  , "QuartOut"	 , "QuartInOut"	 ,
-			"QuintIn"  , "QuintOut"	 , "QuintInOut"	 ,
-			"SineIn"   , "SineOut"	 , "SineInOut"	 ,
-			"ExpoIn"   , "ExpoOut"	 , "ExpoInOut"	 ,
-			"CircIn"   , "CircOut"	 , "CircInOut"	 ,
-			"ElasticIn", "ElasticOut", "ElasticInOut",
-			"BounceIn" , "BounceOut"
-		};
+	//if (ImGui::TreeNode("Easing Rotation List"))
+	//{
+	//	// open easing list
+	//	const char* EasingItems[] =
+	//	{
+	//		"Linear"   ,
+	//		"QuadIn"   , "QuadOut"	 , "QuadInOut"	 ,
+	//		"CubicIn"  , "CubicOut"	 , "CubicInOut"	 ,
+	//		"QuartIn"  , "QuartOut"	 , "QuartInOut"	 ,
+	//		"QuintIn"  , "QuintOut"	 , "QuintInOut"	 ,
+	//		"SineIn"   , "SineOut"	 , "SineInOut"	 ,
+	//		"ExpoIn"   , "ExpoOut"	 , "ExpoInOut"	 ,
+	//		"CircIn"   , "CircOut"	 , "CircInOut"	 ,
+	//		"ElasticIn", "ElasticOut", "ElasticInOut",
+	//		"BounceIn" , "BounceOut"
+	//	};
 
-		if (ImGui::BeginListBox("EasingType_Rotation"))
-		{
-			for (int n(0); n < IM_ARRAYSIZE(EasingItems); n++)
-			{
-				const bool is_selected = (m_tEffectParticleDesc.iRotationEasingType == n);
-				if (ImGui::Selectable(EasingItems[n], is_selected))
-				{
-					m_tEffectParticleDesc.iRotationEasingType = n;
-				}
+	//	if (ImGui::BeginListBox("EasingType_Rotation"))
+	//	{
+	//		for (int n(0); n < IM_ARRAYSIZE(EasingItems); n++)
+	//		{
+	//			const bool is_selected = (m_tEffectParticleDesc.iRotationEasingType == n);
+	//			if (ImGui::Selectable(EasingItems[n], is_selected))
+	//			{
+	//				m_tEffectParticleDesc.iRotationEasingType = n;
+	//			}
 
-				if (is_selected)
-					ImGui::SetItemDefaultFocus();
-			}
-			ImGui::EndListBox();
-		}
+	//			if (is_selected)
+	//				ImGui::SetItemDefaultFocus();
+	//		}
+	//		ImGui::EndListBox();
+	//	}
 
-		ImGui::TreePop();
-	}
+	//	ImGui::TreePop();
+	//}
 
-	ImGui::Text("Total Time"); ImGui::SameLine();
-	ImGui::DragFloat("##Rotation_Total_Easing_Time", &m_tEffectParticleDesc.fRotationEasingTotalTime, 0.01f, -100.f, 100.f, "%.5f");
+	//ImGui::Text("Total Time"); ImGui::SameLine();
+	//ImGui::DragFloat("##Rotation_Total_Easing_Time", &m_tEffectParticleDesc.fRotationEasingTotalTime, 0.01f, -100.f, 100.f, "%.5f");
 
 	ImGui::Text("Start Rotation"); ImGui::SetNextItemWidth(300.f);
 	ImGui::DragFloat3("##Min_Limit_Rotation", &m_tEffectParticleDesc.vMinLimitRotation.x, 0.01f, 0.f, 0.f, "%.5f");
@@ -3191,38 +3192,38 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 			if (ImGui::CollapsingHeader("Position"))
 			{
-				Tool_ToggleOption2("Easing Position", "##Is_Easing_Position", EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingPosition);
-				ImGui::Separator();
+				//Tool_ToggleOption2("Easing Position", "##Is_Easing_Position", EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingPosition);
+				//ImGui::Separator();
 				Tool_Position();
 			}
 
-			if (!Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingPosition))
-			{
+			//if (!Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingPosition))
+			//{
 				if (ImGui::CollapsingHeader("Speed"))
 				{
-					Tool_ToggleOption2("Easing Speed", "##Is_Easing_Speed", EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingSpeed);
+					//Tool_ToggleOption2("Easing Speed", "##Is_Easing_Speed", EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingSpeed);
 
-					if (!Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingSpeed))
+					//if (!Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingSpeed))
 						Tool_Speed();
-					else
-						Tool_Speed_Easing();
+					//else
+					//	Tool_Speed_Easing();
 				}
-			}
-			else
-				Tool_Position_Easing();
+			//}
+			//else
+			//	Tool_Position_Easing();
 
 			if (_int(PARTICLETYPE::OUTBURST) != m_tEffectParticleDesc.iParticleType)
 			{
 				if (ImGui::CollapsingHeader("Rotation"))
 				{
-					ImGui::Checkbox("Apply Easing##Is_Easing_Rotation", &m_tEffectParticleDesc.bEasingRotation);
+					//ImGui::Checkbox("Apply Easing##Is_Easing_Rotation", &m_tEffectParticleDesc.bEasingRotation);
 
-					ImGui::Separator();
+					//ImGui::Separator();
 
-					if (!m_tEffectParticleDesc.bEasingRotation)
+					//if (!m_tEffectParticleDesc.bEasingRotation)
 						Tool_Rotation();
-					else
-						Tool_Rotation_Easing();
+					//else
+					//	Tool_Rotation_Easing();
 				}
 			}
 			if (ImGui::CollapsingHeader("Scale"))

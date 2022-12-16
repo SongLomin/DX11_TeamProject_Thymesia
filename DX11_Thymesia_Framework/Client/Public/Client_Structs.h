@@ -242,8 +242,8 @@ namespace Client
 		_float3		vGravityForce;
 
 #pragma region Speed
-		_int		iSpeedEasingType;			// --> is position easing type when EasingPosition is true.
-		_float		fSpeedEasingTotalTime;		// --> is position easing total time when EasingPosition is true. 
+		// _int		iSpeedEasingType;			// --> is position easing type when EasingPosition is true.
+		// _float	fSpeedEasingTotalTime;		// --> is position easing total time when EasingPosition is true. 
 
 		_float3		vMinStartSpeed;				// --> is min goal offset position when easing position is true.
 		_float3		vMaxStartSpeed;				// --> is max goal offset position when easing position is true.
@@ -256,9 +256,9 @@ namespace Client
 
 #pragma endregion
 #pragma region Rotation
-		_bool		bEasingRotation;
-		_int		iRotationEasingType;
-		_float		fRotationEasingTotalTime;
+		//_bool		bEasingRotation;
+		//_int		iRotationEasingType;
+		//_float		fRotationEasingTotalTime;
 
 		_float3		vMinStartRotation;
 		_float3		vMaxStartRotation;
@@ -277,11 +277,11 @@ namespace Client
 		enum class ParticleOption2
 		{
 			Use_Gravity         = 0b0000'0001
-			, Is_EasingPosition = 0b0000'0010
-			, Is_EasingSpeed    = 0b0000'0100
+			//, Is_EasingPosition = 0b0000'0010
+			//, Is_EasingSpeed    = 0b0000'0100
 			, Use_Speed         = 0b0000'1000
 			, Use_Force         = 0b0001'0000
-			, Is_EasingRotation = 0b0010'0000
+			//, Is_EasingRotation = 0b0010'0000
 			, Use_RotationSpeed = 0b0100'0000
 			, Use_RotationForce = 0b1000'0000
 			, ParticleOption2_END
