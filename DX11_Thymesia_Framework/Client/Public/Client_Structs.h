@@ -166,7 +166,6 @@ namespace Client
 		_int		iParticleType;
 		_int		iFollowTransformType;
 
-		_bool		bAttraction;
 		_float3		vGoalPosition;
 
 		_int		iShaderPassIndex;
@@ -179,21 +178,14 @@ namespace Client
 #pragma region Life Time
 		_float		fInitTime;
 
-		_float		fMinSpawnTime; // becomse spawn time if bIsSpawnList is true
+		_float		fMinSpawnTime;
 		_float		fMaxSpawnTime;
 
 		_float		fMinLifeTime;
 		_float		fMaxLifeTime;
 #pragma endregion
 
-		// if true, particle position is according to bone
-		_bool		bBoner;
-
 #ifdef _DEBUG
-		_bool		bIsMinMaxSame_SpawnPosition;
-		_bool		bIsMinMaxSame_OffsetDirection;
-		_bool		bIsMinMaxSame_OffsetRange;
-
 		_bool		bIsMinMaxSame_StartSpeed;
 		_bool		bIsMinMaxSame_SpeedForce;
 		_bool		bIsMinMaxSame_SpeedLimit;
@@ -215,7 +207,7 @@ namespace Client
 #endif // _DEBUG
 
 #pragma region Spawn Position
-		_float3		vMinSpawnPosition; // becomes spawn position if bIsSpawnList is true
+		_float3		vMinSpawnPosition;
 		_float3		vMaxSpawnPosition;
 
 		_float3		vMinSpawnOffsetDirection;
@@ -225,38 +217,36 @@ namespace Client
 		_float3		vMaxSpawnOffsetRange;
 #pragma endregion
 
-		// particle moves toward look
-		_bool		bMoveLook;
+		_ubyte		byParticleOption1 = 0;
+		enum class ParticleOption1
+		{
+			Is_Attraction                     = 0b0000'0001
+			, Use_MinMax_SpawnTime            = 0b0000'0010
+			, Use_MinMax_LifeTime             = 0b0000'0100
+			, Is_Boner                        = 0b0000'1000
+			, Use_MinMax_SpawnPos             = 0b0001'0000
+			, Use_MinMax_SpawnOffsetDirection = 0b0010'0000
+			, Use_MinMax_SpawnOffsetRange     = 0b0100'0000
+			, Is_MoveLook                     = 0b1000'0000
+			, ParticleOption1_END
+		};
 
 		// For. Gravity
-		_bool		bUseGravity;
 		_float3		vGravityForce;
 
-#pragma region Easing Position
-		_bool		bEasingPosition;
-#pragma endregion
-
 #pragma region Speed
-		_bool		bEasingSpeed;
-		_int		iSpeedEasingType;			// --> is position easing type when EasingPosition is true.
-		_float		fSpeedEasingTotalTime;		// --> is position easing total time when EasingPosition is true. 
-
-		_float3		vMinSpeed;					// --> is min goal offset position when easing position is true.
-		_float3		vMaxSpeed;					// --> is max goal offset position when easing position is true.
+		_float3		vMinStartSpeed;
+		_float3		vMaxStartSpeed;
 
 		_float3		vMinSpeedForce;
 		_float3		vMaxSpeedForce;
 
 		_float3		vMinLimitSpeed;
 		_float3		vMaxLimitSpeed;
+
 #pragma endregion
 #pragma region Rotation
-		_bool		bEasingRotation;
-		_int		iRotationEasingType;
-
-		_float		fRotationEasingTotalTime;
-
-		_float3		vMinStartRotation; // // becomes spawn look if bIsSpawnList is true
+		_float3		vMinStartRotation;
 		_float3		vMaxStartRotation;
 
 		_float3		vMinRotationSpeed;
@@ -268,6 +258,21 @@ namespace Client
 		_float3		vMinLimitRotation;
 		_float3		vMaxLimitRotation;
 #pragma endregion
+
+		_ubyte		byParticleOption2 = 0;
+		enum class ParticleOption2
+		{
+			Use_Gravity            = 0b0000'0001
+			, Use_Speed            = 0b0000'0010
+			, Use_Force            = 0b0000'0100
+			, Use_SpeedMaxLimit    = 0b0000'1000
+			, Use_RotationSpeed    = 0b0001'0000
+			, Use_RotationForce    = 0b0010'0000
+			, Use_RotationMinLimit = 0b0100'0000
+			, Use_RotationMaxLimit = 0b1000'0000
+			, ParticleOption2_END
+		};
+
 #pragma region Scale
 		_bool		bSquareScale;
 		_bool		bRatioScale;

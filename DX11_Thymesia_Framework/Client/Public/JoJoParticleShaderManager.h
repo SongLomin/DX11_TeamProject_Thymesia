@@ -3,7 +3,7 @@
 #include "Client_Defines.h"
 #ifdef _JOJO_EFFECT_TOOL_
 BEGIN(Client)
-class CJoJoParticleShaderManager final :
+class CJoJoParticleShaderManager :
     public CBase
 {
     DECLARE_SINGLETON(CJoJoParticleShaderManager)

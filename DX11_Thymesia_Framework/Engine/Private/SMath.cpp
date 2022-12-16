@@ -663,6 +663,30 @@ _bool ENGINE_DLL Engine::SMath::Is_Picked_AbstractCube(const RAY& _Ray, MESH_VTX
 	return false;
 }
 
+const _bool ENGINE_DLL Engine::SMath::Is_Equal(const XMFLOAT2 Left, const XMFLOAT2 Right)
+{
+	_float fXDiff(fabs(Left.x - Right.x));
+	_float fYDiff(fabs(Left.y - Right.y));
+	return ((fXDiff < DBL_EPSILON) && (fYDiff < DBL_EPSILON)) ? true : false;
+}
+
+const _bool ENGINE_DLL Engine::SMath::Is_Equal(const XMFLOAT3 Left, const XMFLOAT3 Right)
+{
+	_float fXDiff(fabs(Left.x - Right.x));
+	_float fYDiff(fabs(Left.y - Right.y));
+	_float fZDiff(fabs(Left.z - Right.z));
+	return ((fXDiff < DBL_EPSILON) && (fYDiff < DBL_EPSILON) && (fZDiff < DBL_EPSILON)) ? true : false;
+}
+
+const _bool ENGINE_DLL Engine::SMath::Is_Equal(const XMFLOAT4 Left, const XMFLOAT4 Right)
+{
+	_float fXDiff(fabs(Left.x - Right.x));
+	_float fYDiff(fabs(Left.y - Right.y));
+	_float fZDiff(fabs(Left.z - Right.z));
+	_float fWDiff(fabs(Left.w - Right.w));
+	return ((fXDiff < DBL_EPSILON) && (fYDiff < DBL_EPSILON) && (fZDiff < DBL_EPSILON) && (fWDiff < DBL_EPSILON)) ? true : false;
+}
+
 
 void ENGINE_DLL Engine::SMath::Convert_PxVec3FromMeshData(PxVec3* In_PxVec3, weak_ptr<MESH_DATA> pMeshData)
 {

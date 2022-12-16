@@ -9,8 +9,7 @@ class CModel;
 END
 
 BEGIN(Client)
-class CEffect_Rect final :
-    public CEffectObject
+class CEffect_Rect final : public CEffectObject
 {
     GAMECLASS_H(CEffect_Rect)
     SHALLOW_COPY(CEffect_Rect)
@@ -62,7 +61,7 @@ private:
     virtual void Tick(_float fTimeDelta)     override;
     virtual void Thread_PreLateTick(_float fTimeDelta);
     virtual void LateTick(_float fTimeDelta) override;
-    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext)                 override;
+    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
     virtual void SetUp_ShaderResource();
 
@@ -73,8 +72,8 @@ private:
     void Generate_RandomOriginalParticleDesc();
     _bool Check_DisableAllParticle();
 
-    void Play_Internal(const _uint& i, _float fTimeDelta);
-    void Update_ParticlePosition(const _uint& i, _float fTimeDelta);
+    void Play_Internal(const _uint& i, _float fTimeDelta, _matrix BoneMatrix);
+    void Update_ParticlePosition(const _uint& i, _float fTimeDelta, _matrix BoneMatrix);
     void Update_ParticleRotation(const _uint& i, _float fTimeDelta);
     void Update_ParticleScale(const _uint& i, _float fTimeDelta);
     void Update_ParticleUV(_float fTimeDelta);
@@ -115,6 +114,19 @@ private:
 
     const _bool Is_Sprite() const;
 
+    const _bool Check_Option1(const EFFECTPARTICLE_DESC::ParticleOption1 eOption) const;
+    void TurnOn_Option1(const EFFECTPARTICLE_DESC::ParticleOption1 eOption);
+    void TurnOff_Option1(const EFFECTPARTICLE_DESC::ParticleOption1 eOption);
+
+	const _bool Check_Option2(const EFFECTPARTICLE_DESC::ParticleOption2 eOption) const;
+	void TurnOn_Option2(const EFFECTPARTICLE_DESC::ParticleOption2 eOption);
+	void TurnOff_Option2(const EFFECTPARTICLE_DESC::ParticleOption2 eOption);
+
+#ifdef _DEBUG
+    void Tool_ToggleOption1(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::ParticleOption1 eOption);
+    void Tool_ToggleOption2(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::ParticleOption2 eOption);
+#endif // _DEBUG
+
 #ifdef _DEBUG
 private: // For. Tool
 #ifdef _JOJO_EFFECT_TOOL_
@@ -138,6 +150,7 @@ private: // For. Tool
     void Tool_Texture_Noise();
     void Tool_Glow();
 #endif // _DEBUG
+
 private:
     void Free();
 
