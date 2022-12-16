@@ -262,14 +262,14 @@ namespace Client
 		_ubyte		byParticleOption2 = 0;
 		enum class ParticleOption2
 		{
-			Use_Gravity         = 0b0000'0001
-			//, Is_EasingPosition = 0b0000'0010
-			//, Is_EasingSpeed    = 0b0000'0100
-			, Use_Speed         = 0b0000'1000
-			, Use_Force         = 0b0001'0000
-			//, Is_EasingRotation = 0b0010'0000
-			, Use_RotationSpeed = 0b0100'0000
-			, Use_RotationForce = 0b1000'0000
+			Use_Gravity            = 0b0000'0001
+			, Use_Speed            = 0b0000'0010
+			, Use_Force            = 0b0000'0100
+			, Use_SpeedMaxLimit    = 0b0000'1000
+			, Use_RotationSpeed    = 0b0001'0000
+			, Use_RotationForce    = 0b0010'0000
+			, Use_RotationMinLimit = 0b0100'0000
+			, Use_RotationMaxLimit = 0b1000'0000
 			, ParticleOption2_END
 		};
 

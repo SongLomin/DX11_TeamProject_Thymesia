@@ -98,7 +98,7 @@ HRESULT CEffect_Rect::Initialize_Prototype()
 	m_vCurrentGlowColor = { 1.f, 1.f, 1.f, 1.f };
 	ZeroMemory(&m_vCurrentGlowColorForce, sizeof(_float2));
 
-	m_bFinish		= false;
+	m_bFinish = false;
 	m_bStopParticle = false;
 	return S_OK;
 }
@@ -295,13 +295,13 @@ void CEffect_Rect::SetUp_ShaderResource()
 	m_pShaderCom.lock()->Set_RawValue("g_vCamDirection", &vCamDir, sizeof(_vector));
 
 	_bool isBillboard(m_tEffectParticleDesc.iParticleType == (_int)PARTICLETYPE::BILLBOARD);
-	m_pShaderCom.lock()->Set_RawValue("g_bBillboard", &isBillboard, sizeof(_bool));	
+	m_pShaderCom.lock()->Set_RawValue("g_bBillboard", &isBillboard, sizeof(_bool));
 #pragma endregion
 
 #pragma region Bloom & Glow
-	m_pShaderCom.lock()->Set_RawValue("g_bBloom",     &m_tEffectParticleDesc.bBloom, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_bGlow",      &m_tEffectParticleDesc.bGlow,  sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_vGlowColor", &m_vCurrentGlowColor,          sizeof(_float4));
+	m_pShaderCom.lock()->Set_RawValue("g_bBloom", &m_tEffectParticleDesc.bBloom, sizeof(_bool));
+	m_pShaderCom.lock()->Set_RawValue("g_bGlow", &m_tEffectParticleDesc.bGlow, sizeof(_bool));
+	m_pShaderCom.lock()->Set_RawValue("g_vGlowColor", &m_vCurrentGlowColor, sizeof(_float4));
 #pragma endregion
 }
 
@@ -328,15 +328,15 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 
 	Out_Json["Sync_Animation"] = m_tEffectParticleDesc.bSyncAnimation;
 	Out_Json["Sync_AnimationKey"] = m_tEffectParticleDesc.iSyncAnimationKey;
-	
+
 #pragma region Life Time
-	Out_Json["Init_Time"]      = m_tEffectParticleDesc.fInitTime;
+	Out_Json["Init_Time"] = m_tEffectParticleDesc.fInitTime;
 
 	Out_Json["Min_Spawn_Time"] = m_tEffectParticleDesc.fMinSpawnTime;
 	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnTime))
 		Out_Json["Max_Spawn_Time"] = m_tEffectParticleDesc.fMaxSpawnTime;
 
-	Out_Json["Min_Life_Time"]  = m_tEffectParticleDesc.fMinLifeTime;
+	Out_Json["Min_Life_Time"] = m_tEffectParticleDesc.fMinLifeTime;
 	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_LifeTime))
 		Out_Json["Max_Life_Time"] = m_tEffectParticleDesc.fMaxLifeTime;
 #pragma endregion
@@ -365,31 +365,28 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 		CJson_Utility::Write_Float3(Out_Json["Gravity_Force"], m_tEffectParticleDesc.vGravityForce);
 
 
-		CJson_Utility::Write_Float3(Out_Json["Min_Speed"], m_tEffectParticleDesc.vMinStartSpeed);
-		CJson_Utility::Write_Float3(Out_Json["Max_Speed"], m_tEffectParticleDesc.vMaxStartSpeed);
+	CJson_Utility::Write_Float3(Out_Json["Min_Speed"], m_tEffectParticleDesc.vMinStartSpeed);
+	CJson_Utility::Write_Float3(Out_Json["Max_Speed"], m_tEffectParticleDesc.vMaxStartSpeed);
 
-		CJson_Utility::Write_Float3(Out_Json["Min_Speed_Force"], m_tEffectParticleDesc.vMinSpeedForce);
-		CJson_Utility::Write_Float3(Out_Json["Max_Speed_Force"], m_tEffectParticleDesc.vMaxSpeedForce);
+	CJson_Utility::Write_Float3(Out_Json["Min_Speed_Force"], m_tEffectParticleDesc.vMinSpeedForce);
+	CJson_Utility::Write_Float3(Out_Json["Max_Speed_Force"], m_tEffectParticleDesc.vMaxSpeedForce);
 
 	CJson_Utility::Write_Float3(Out_Json["Min_Limit_Speed"], m_tEffectParticleDesc.vMinLimitSpeed);
 	CJson_Utility::Write_Float3(Out_Json["Max_Limit_Speed"], m_tEffectParticleDesc.vMaxLimitSpeed);
 
 
 #pragma region Rotation
-	if (_int(PARTICLETYPE::OUTBURST) != m_tEffectParticleDesc.iParticleType)
-	{
-		CJson_Utility::Write_Float3(Out_Json["Min_Start_Rotation"], m_tEffectParticleDesc.vMinStartRotation);
-		CJson_Utility::Write_Float3(Out_Json["Max_Start_Rotation"], m_tEffectParticleDesc.vMaxStartRotation);
+	CJson_Utility::Write_Float3(Out_Json["Min_Start_Rotation"], m_tEffectParticleDesc.vMinStartRotation);
+	CJson_Utility::Write_Float3(Out_Json["Max_Start_Rotation"], m_tEffectParticleDesc.vMaxStartRotation);
 
-		CJson_Utility::Write_Float3(Out_Json["Min_Rotation_Speed"], m_tEffectParticleDesc.vMinRotationSpeed);
-		CJson_Utility::Write_Float3(Out_Json["Max_Rotation_Speed"], m_tEffectParticleDesc.vMaxRotationSpeed);
+	CJson_Utility::Write_Float3(Out_Json["Min_Rotation_Speed"], m_tEffectParticleDesc.vMinRotationSpeed);
+	CJson_Utility::Write_Float3(Out_Json["Max_Rotation_Speed"], m_tEffectParticleDesc.vMaxRotationSpeed);
 
-		CJson_Utility::Write_Float3(Out_Json["Min_Rotation_Force"], m_tEffectParticleDesc.vMinRotationForce);
-		CJson_Utility::Write_Float3(Out_Json["Max_Rotation_Force"], m_tEffectParticleDesc.vMaxRotationForce);
+	CJson_Utility::Write_Float3(Out_Json["Min_Rotation_Force"], m_tEffectParticleDesc.vMinRotationForce);
+	CJson_Utility::Write_Float3(Out_Json["Max_Rotation_Force"], m_tEffectParticleDesc.vMaxRotationForce);
 
-		CJson_Utility::Write_Float3(Out_Json["Min_Rotation"], m_tEffectParticleDesc.vMinLimitRotation);
-		CJson_Utility::Write_Float3(Out_Json["Max_Rotation"], m_tEffectParticleDesc.vMaxLimitRotation);
-	}
+	CJson_Utility::Write_Float3(Out_Json["Min_Rotation"], m_tEffectParticleDesc.vMinLimitRotation);
+	CJson_Utility::Write_Float3(Out_Json["Max_Rotation"], m_tEffectParticleDesc.vMaxLimitRotation);
 #pragma endregion
 
 #pragma region Scale
@@ -401,7 +398,7 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 		Out_Json["Min_Y_Scale_Ratio"] = m_tEffectParticleDesc.fMinYScaleRatio;
 		Out_Json["Max_Y_Scale_Ratio"] = m_tEffectParticleDesc.fMaxYScaleRatio;
 	}
-	
+
 	Out_Json["Is_Easing_Scale"] = m_tEffectParticleDesc.bEasingScale;
 
 	if (m_tEffectParticleDesc.bEasingScale)
@@ -513,10 +510,10 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	m_iTimeScaleLayerIndex = In_iTimeScaleLayer;
 
 	m_szEffectName = In_Json["Name"];
-	m_tEffectParticleDesc.iMaxInstance         = In_Json["Max_Instance"];
-	m_tEffectParticleDesc.bLooping             = In_Json["Is_Looping"];
+	m_tEffectParticleDesc.iMaxInstance = In_Json["Max_Instance"];
+	m_tEffectParticleDesc.bLooping = In_Json["Is_Looping"];
 
-	m_tEffectParticleDesc.iParticleType        = In_Json["ParticleType"];
+	m_tEffectParticleDesc.iParticleType = In_Json["ParticleType"];
 	m_tEffectParticleDesc.iFollowTransformType = In_Json["Follow_Transform"];
 
 #pragma region Particle Options
@@ -741,46 +738,42 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 
 #pragma endregion // Gravity
 
-	
-			if (In_Json.find("Min_Speed") != In_Json.end())
-				CJson_Utility::Load_Float3(In_Json["Min_Speed"], m_tEffectParticleDesc.vMinStartSpeed);
-			if (In_Json.find("Max_Speed") != In_Json.end())
-				CJson_Utility::Load_Float3(In_Json["Max_Speed"], m_tEffectParticleDesc.vMaxStartSpeed);
-			if (In_Json.find("Min_Speed_Force") != In_Json.end())
-				CJson_Utility::Load_Float3(In_Json["Min_Speed_Force"], m_tEffectParticleDesc.vMinSpeedForce);
-			if (In_Json.find("Max_Speed_Force") != In_Json.end())
-				CJson_Utility::Load_Float3(In_Json["Max_Speed_Force"], m_tEffectParticleDesc.vMaxSpeedForce);
-		//}
 
-		if (In_Json.find("Min_Limit_Speed") != In_Json.end())
-			CJson_Utility::Load_Float3(In_Json["Min_Limit_Speed"], m_tEffectParticleDesc.vMinLimitSpeed);
-		if (In_Json.find("Max_Limit_Speed") != In_Json.end())
-			CJson_Utility::Load_Float3(In_Json["Max_Limit_Speed"], m_tEffectParticleDesc.vMaxLimitSpeed);
+	if (In_Json.find("Min_Speed") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Min_Speed"], m_tEffectParticleDesc.vMinStartSpeed);
+	if (In_Json.find("Max_Speed") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Max_Speed"], m_tEffectParticleDesc.vMaxStartSpeed);
+	if (In_Json.find("Min_Speed_Force") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Min_Speed_Force"], m_tEffectParticleDesc.vMinSpeedForce);
+	if (In_Json.find("Max_Speed_Force") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Max_Speed_Force"], m_tEffectParticleDesc.vMaxSpeedForce);
+	//}
+
+	if (In_Json.find("Min_Limit_Speed") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Min_Limit_Speed"], m_tEffectParticleDesc.vMinLimitSpeed);
+	if (In_Json.find("Max_Limit_Speed") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Max_Limit_Speed"], m_tEffectParticleDesc.vMaxLimitSpeed);
 
 
 #pragma region Rotation
-	if (_int(PARTICLETYPE::OUTBURST) != m_tEffectParticleDesc.iParticleType)
-	{
-		
-			if (In_Json.find("Min_Start_Rotation") != In_Json.end())
-				CJson_Utility::Load_Float3(In_Json["Min_Start_Rotation"], m_tEffectParticleDesc.vMinStartRotation);
-			if (In_Json.find("Max_Start_Rotation") != In_Json.end())
-				CJson_Utility::Load_Float3(In_Json["Max_Start_Rotation"], m_tEffectParticleDesc.vMaxStartRotation);
-			if (In_Json.find("Min_Rotation_Speed") != In_Json.end())
-				CJson_Utility::Load_Float3(In_Json["Min_Rotation_Speed"], m_tEffectParticleDesc.vMinRotationSpeed);
-			if (In_Json.find("Max_Rotation_Speed") != In_Json.end())
-				CJson_Utility::Load_Float3(In_Json["Max_Rotation_Speed"], m_tEffectParticleDesc.vMaxRotationSpeed);
-			if (In_Json.find("Min_Rotation_Force") != In_Json.end())
-				CJson_Utility::Load_Float3(In_Json["Min_Rotation_Force"], m_tEffectParticleDesc.vMinRotationForce);
-			if (In_Json.find("Max_Rotation_Force") != In_Json.end())
-				CJson_Utility::Load_Float3(In_Json["Max_Rotation_Force"], m_tEffectParticleDesc.vMaxRotationForce);
-		
+	if (In_Json.find("Min_Start_Rotation") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Min_Start_Rotation"], m_tEffectParticleDesc.vMinStartRotation);
+	if (In_Json.find("Max_Start_Rotation") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Max_Start_Rotation"], m_tEffectParticleDesc.vMaxStartRotation);
+	if (In_Json.find("Min_Rotation_Speed") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Min_Rotation_Speed"], m_tEffectParticleDesc.vMinRotationSpeed);
+	if (In_Json.find("Max_Rotation_Speed") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Max_Rotation_Speed"], m_tEffectParticleDesc.vMaxRotationSpeed);
+	if (In_Json.find("Min_Rotation_Force") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Min_Rotation_Force"], m_tEffectParticleDesc.vMinRotationForce);
+	if (In_Json.find("Max_Rotation_Force") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Max_Rotation_Force"], m_tEffectParticleDesc.vMaxRotationForce);
 
-		if (In_Json.find("Min_Rotation") != In_Json.end())
-			CJson_Utility::Load_Float3(In_Json["Min_Rotation"], m_tEffectParticleDesc.vMinLimitRotation);
-		if (In_Json.find("Max_Rotation") != In_Json.end())
-			CJson_Utility::Load_Float3(In_Json["Max_Rotation"], m_tEffectParticleDesc.vMaxLimitRotation);
-	}
+
+	if (In_Json.find("Min_Rotation") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Min_Rotation"], m_tEffectParticleDesc.vMinLimitRotation);
+	if (In_Json.find("Max_Rotation") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Max_Rotation"], m_tEffectParticleDesc.vMaxLimitRotation);
 #pragma endregion
 
 #pragma region Scale
@@ -809,7 +802,7 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 		m_tEffectParticleDesc.fMinYScaleRatio = In_Json["Min_Y_Scale_Ratio"];
 		m_tEffectParticleDesc.fMaxYScaleRatio = In_Json["Max_Y_Scale_Ratio"];
 	}
-	
+
 	if (In_Json.find("Is_Easing_Scale") != In_Json.end())
 		m_tEffectParticleDesc.bEasingScale = In_Json["Is_Easing_Scale"];
 
@@ -1143,12 +1136,11 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 		m_tOriginalParticleDescs[i].vTargetRotationForce =
 			SMath::vRandom(m_tEffectParticleDesc.vMinRotationForce, m_tEffectParticleDesc.vMaxRotationForce);
 
-			m_tOriginalParticleDescs[i].vTargetSpeed =
-				SMath::vRandom(m_tEffectParticleDesc.vMinStartSpeed, m_tEffectParticleDesc.vMaxStartSpeed);
+		m_tOriginalParticleDescs[i].vTargetSpeed =
+			SMath::vRandom(m_tEffectParticleDesc.vMinStartSpeed, m_tEffectParticleDesc.vMaxStartSpeed);
 
-			m_tOriginalParticleDescs[i].vTargetSpeedForce =
-				SMath::vRandom(m_tEffectParticleDesc.vMinSpeedForce, m_tEffectParticleDesc.vMaxSpeedForce);
-		
+		m_tOriginalParticleDescs[i].vTargetSpeedForce =
+			SMath::vRandom(m_tEffectParticleDesc.vMinSpeedForce, m_tEffectParticleDesc.vMaxSpeedForce);
 
 		XMStoreFloat2(&m_tOriginalParticleDescs[i].vCurrentScale, SMath::vRandom(XMLoadFloat2(&m_tEffectParticleDesc.vMinStartScale), XMLoadFloat2(&m_tEffectParticleDesc.vMaxStartScale)));
 		XMStoreFloat2(&m_tOriginalParticleDescs[i].vTargetScaleSpeed, SMath::vRandom(XMLoadFloat2(&m_tEffectParticleDesc.vMinScaleSpeed), XMLoadFloat2(&m_tEffectParticleDesc.vMaxScaleSpeed)));
@@ -1226,53 +1218,33 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta, _m
 
 	_float3 vMove;
 	ZeroMemory(&vMove, sizeof(_float3));
+	vMove = SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeed, fTimeDelta);
 
+	m_tParticleDescs[i].vCurrentSpeedForce =
+		SMath::Add_Float3(m_tParticleDescs[i].vCurrentSpeedForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeedForce, fTimeDelta));
+
+	vMove = SMath::Add_Float3(vMove, m_tParticleDescs[i].vCurrentSpeedForce);
+
+	vMove.x = max(m_tEffectParticleDesc.vMinLimitSpeed.x, min(m_tEffectParticleDesc.vMaxLimitSpeed.x, vMove.x));
+	vMove.y = max(m_tEffectParticleDesc.vMinLimitSpeed.y, min(m_tEffectParticleDesc.vMaxLimitSpeed.y, vMove.y));
+	vMove.z = max(m_tEffectParticleDesc.vMinLimitSpeed.z, min(m_tEffectParticleDesc.vMaxLimitSpeed.z, vMove.z));
+
+	// For. Attraction
+	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_Attraction))
+		m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, SMath::Mul_Float3(m_tParticleDescs[i].vTargetLookAt, vMove.z));
+	else
+	{
+		if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_MoveLook))
 		{
-			vMove = SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeed, fTimeDelta);
-
-			m_tParticleDescs[i].vCurrentSpeedForce =
-				SMath::Add_Float3(m_tParticleDescs[i].vCurrentSpeedForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeedForce, fTimeDelta));
-
-			vMove = SMath::Add_Float3(vMove, m_tParticleDescs[i].vCurrentSpeedForce);
-
-			vMove.x = max(m_tEffectParticleDesc.vMinLimitSpeed.x, min(m_tEffectParticleDesc.vMaxLimitSpeed.x, vMove.x));
-			vMove.y = max(m_tEffectParticleDesc.vMinLimitSpeed.y, min(m_tEffectParticleDesc.vMaxLimitSpeed.y, vMove.y));
-			vMove.z = max(m_tEffectParticleDesc.vMinLimitSpeed.z, min(m_tEffectParticleDesc.vMaxLimitSpeed.z, vMove.z));
+			_vector vMovePosition(XMLoadFloat3(&vMove));
+			_vector vRotatedPosition(XMVector3TransformCoord(vMovePosition, XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_tParticleDescs[i].vCurrentRotation))));
+			_vector vCurrentPosition(XMLoadFloat3(&m_tParticleDescs[i].vCurrentTranslation));
+			vCurrentPosition += vRotatedPosition;
+			XMStoreFloat3(&m_tParticleDescs[i].vCurrentTranslation, vCurrentPosition);
 		}
-
-		// For. Attraction
-		if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_Attraction))
-			m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, SMath::Mul_Float3(m_tParticleDescs[i].vTargetLookAt, vMove.z));
 		else
-		{
-			if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_MoveLook))
-			{
-				if ((_int)PARTICLETYPE::OUTBURST == m_tEffectParticleDesc.iParticleType)
-				{
-					_vector vMovePosition(XMLoadFloat3(&vMove));
-					_vector vRotation(XMLoadFloat3(&m_tParticleDescs[i].vCurrentRotation));
-					_matrix vRotationMatrix(XMMatrixRotationRollPitchYawFromVector(vRotation));
-					vRotationMatrix.r[3] = vRotationMatrix.r[1];
-					vRotationMatrix.r[1] = vRotationMatrix.r[2];
-					vRotationMatrix.r[2] = vRotationMatrix.r[3];
-					vRotationMatrix.r[3] = XMVectorSet(0.f, 0.f, 0.f, 1.f);
-					_vector vRotatedPosition(XMVector3TransformCoord(vMovePosition, vRotationMatrix));
-					_vector vCurrentPosition(XMLoadFloat3(&m_tParticleDescs[i].vCurrentTranslation));
-					vCurrentPosition += vRotatedPosition;
-					XMStoreFloat3(&m_tParticleDescs[i].vCurrentTranslation, vCurrentPosition);
-				}
-				else
-				{
-					_vector vMovePosition(XMLoadFloat3(&vMove));
-					_vector vRotatedPosition(XMVector3TransformCoord(vMovePosition, XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_tParticleDescs[i].vCurrentRotation))));
-					_vector vCurrentPosition(XMLoadFloat3(&m_tParticleDescs[i].vCurrentTranslation));
-					vCurrentPosition += vRotatedPosition;
-					XMStoreFloat3(&m_tParticleDescs[i].vCurrentTranslation, vCurrentPosition);
-				}
-			}
-			else
-				m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, vMove);
-		}
+			m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, vMove);
+	}
 
 	if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Use_Gravity))
 	{
@@ -1291,37 +1263,19 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta, _m
 
 void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
 {
-	if ((_int)PARTICLETYPE::OUTBURST == m_tEffectParticleDesc.iParticleType)
-	{
-		_vector vUp(XMLoadFloat3(&m_tOriginalParticleDescs[i].vCurrentTranslation));
-		_matrix ReverseAxisRotationMatrix(SMath::Bake_MatrixNormalizeUseLookVector(vUp));
-		_matrix RotationMatrix =
-		{
-			ReverseAxisRotationMatrix.r[0],
-			ReverseAxisRotationMatrix.r[2],
-			ReverseAxisRotationMatrix.r[1],
-			ReverseAxisRotationMatrix.r[3]
-		};
+	_float3 vRotation;
+	ZeroMemory(&vRotation, sizeof(_float3));
 
-		m_tParticleDescs[i].vCurrentRotation = SMath::Extract_PitchYawRollFromRotationMatrix(RotationMatrix);
-	}
-	else
-	{
-		_float3 vRotation;
-		ZeroMemory(&vRotation, sizeof(_float3));
+	vRotation = SMath::Mul_Float3(m_tParticleDescs[i].vTargetRotationSpeed, fTimeDelta);
+	m_tParticleDescs[i].vCurrentRotationForce = SMath::Add_Float3(m_tParticleDescs[i].vCurrentRotationForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetRotationForce, fTimeDelta));
 
-		vRotation = SMath::Mul_Float3(m_tParticleDescs[i].vTargetRotationSpeed, fTimeDelta);
-		m_tParticleDescs[i].vCurrentRotationForce =
-			SMath::Add_Float3(m_tParticleDescs[i].vCurrentRotationForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetRotationForce, fTimeDelta));
+	vRotation = SMath::Add_Float3(vRotation, m_tParticleDescs[i].vCurrentRotationForce);
 
-		vRotation = SMath::Add_Float3(vRotation, m_tParticleDescs[i].vCurrentRotationForce);
+	vRotation.x = max(m_tEffectParticleDesc.vMinLimitRotation.x, min(m_tEffectParticleDesc.vMaxLimitRotation.x, vRotation.x));
+	vRotation.y = max(m_tEffectParticleDesc.vMinLimitRotation.y, min(m_tEffectParticleDesc.vMaxLimitRotation.y, vRotation.y));
+	vRotation.z = max(m_tEffectParticleDesc.vMinLimitRotation.z, min(m_tEffectParticleDesc.vMaxLimitRotation.z, vRotation.z));
 
-		vRotation.x = max(m_tEffectParticleDesc.vMinLimitRotation.x, min(m_tEffectParticleDesc.vMaxLimitRotation.x, vRotation.x));
-		vRotation.y = max(m_tEffectParticleDesc.vMinLimitRotation.y, min(m_tEffectParticleDesc.vMaxLimitRotation.y, vRotation.y));
-		vRotation.z = max(m_tEffectParticleDesc.vMinLimitRotation.z, min(m_tEffectParticleDesc.vMaxLimitRotation.z, vRotation.z));
-
-		m_tParticleDescs[i].vCurrentRotation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentRotation, vRotation);
-	}
+	m_tParticleDescs[i].vCurrentRotation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentRotation, vRotation);
 }
 
 void CEffect_Rect::Update_ParticleScale(const _uint& i, _float fTimeDelta)
@@ -1357,7 +1311,6 @@ void CEffect_Rect::Update_ParticleScale(const _uint& i, _float fTimeDelta)
 	}
 
 	m_tParticleDescs[i].vCurrentScale.x = max(m_tEffectParticleDesc.vMinLimitScale.x, min(m_tEffectParticleDesc.vMaxLimitScale.x, m_tParticleDescs[i].vCurrentScale.x));
-
 
 	if (m_tEffectParticleDesc.bSquareScale)
 		m_tParticleDescs[i].vCurrentScale.y = m_tParticleDescs[i].vCurrentScale.x;
@@ -1516,7 +1469,6 @@ void CEffect_Rect::Update_ParticleSpriteFrame(const _uint& i, _float fTimeDelta)
 		if (m_tEffectParticleDesc.fSpriteSpeed <= m_tParticleDescs[i].fCurrentSpriteTime)
 		{
 			m_tParticleDescs[i].fCurrentSpriteTime = 0.f;
-
 			m_tParticleDescs[i].vSpriteUV.x += (1.f / m_tEffectParticleDesc.iNumFrameX);
 
 			if ((1.f - 1.f / m_tEffectParticleDesc.iNumFrameX) <= m_tParticleDescs[i].vSpriteUV.x &&
@@ -1533,7 +1485,7 @@ void CEffect_Rect::Update_ParticleSpriteFrame(const _uint& i, _float fTimeDelta)
 						m_tParticleDescs[i].vSpriteUV = { 1.f - 1.f / m_tEffectParticleDesc.iNumFrameX, 1.f - 1.f / m_tEffectParticleDesc.iNumFrameY };
 					else
 						m_tParticleDescs[i].vSpriteUV = { 1.f, 1.f };
-					
+
 					m_bStopSprite = true;
 					return;
 				}
@@ -1557,19 +1509,11 @@ void CEffect_Rect::Update_ParentTransform()
 	if ((_int)TRANSFORMTYPE::STATIC != m_tEffectParticleDesc.iFollowTransformType)
 	{
 		if ((_int)PARTICLETYPE::BILLBOARD == m_tEffectParticleDesc.iParticleType)
-		{
 			m_pTransformCom.lock()->Set_WorldMatrix(m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
-		}
-
 		if ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType)
-		{
 			m_pTransformCom.lock()->Set_WorldMatrix(XMMatrixIdentity());
-
-		}
 		else if ((_int)TRANSFORMTYPE::CHILD == m_tEffectParticleDesc.iFollowTransformType)
-		{
 			m_pTransformCom.lock()->Set_WorldMatrix(m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
-		}
 	}
 }
 
@@ -1773,7 +1717,7 @@ XMStoreFloat2(&vTarget, FunctionName(vStartPoint, vTargetPoint, fElapsedTime, fT
 
 void CEffect_Rect::Apply_Easing
 (
-	_float & fTarget
+	_float& fTarget
 	, EASING_TYPE eEasingType
 	, _float fStartPoint
 	, _float fTargetPoint
@@ -2467,7 +2411,6 @@ void CEffect_Rect::Tool_Scale_Easing()
 			}
 			ImGui::EndListBox();
 		}
-
 		ImGui::TreePop();
 	}
 
@@ -2751,14 +2694,14 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			{
 				ReBake_EditParticle();
 			}
-			
+
 			ImGui::Separator();
 
 			ImGui::Checkbox("Is Looping##Is_Looping", &m_tEffectParticleDesc.bLooping);
-			
+
 			if (ImGui::CollapsingHeader("Particle Type"))
 			{
-				const char* items[] = { "None", "Outburst", "Attraction", "Billboard" };
+				const char* items[] = { "None", "Outburst_NoUse", "Attraction", "Billboard" };
 
 				if (ImGui::BeginListBox("##ParticleType"))
 				{
@@ -2819,7 +2762,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 			if (ImGui::CollapsingHeader("Spawn & Life Time"))
 				Tool_Spawn_Life_Time();
-			
+
 			ImGui::Separator();
 			Tool_ToggleOption1("Is Move Look", "##Is_MoveLook", EFFECTPARTICLE_DESC::ParticleOption1::Is_MoveLook);
 			ImGui::Separator();
@@ -2853,30 +2796,18 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			}
 
 			if (ImGui::CollapsingHeader("Position"))
-			{
-
 				Tool_Position();
-			}
 
+			if (ImGui::CollapsingHeader("Speed"))
+				Tool_Speed();
 
-				if (ImGui::CollapsingHeader("Speed"))
-				{
-						Tool_Speed();
-				}
+			if (ImGui::CollapsingHeader("Rotation"))
+				Tool_Rotation();
 
-
-			if (_int(PARTICLETYPE::OUTBURST) != m_tEffectParticleDesc.iParticleType)
-			{
-				if (ImGui::CollapsingHeader("Rotation"))
-				{
-						Tool_Rotation();
-				}
-			}
 			if (ImGui::CollapsingHeader("Scale"))
 			{
-
 #ifdef _JOJO_EFFECT_TOOL_
-				
+
 				ImGui::RadioButton("None##Is_None_Scale_Type", &m_iScaleType, m_iScaleType_None);
 				ImGui::SameLine();
 				ImGui::RadioButton("Square Scale##Is_Square_Scale", &m_iScaleType, m_iScaleType_Square);
@@ -2947,7 +2878,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 				if (ImGui::Button("Alpha Blend##RenderGroup_AlphaBlend"))
 					m_eRenderGroup = RENDERGROUP::RENDER_ALPHABLEND;
-				
+
 
 				if (Is_Sprite())
 					Tool_Sprite();
