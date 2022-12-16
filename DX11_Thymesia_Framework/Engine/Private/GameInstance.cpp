@@ -342,7 +342,15 @@ LIFTGAMMAGAIN_DESC& CGameInstance::Get_LiftGammaGain()
 {
 	return m_pRender_Manager->Get_LiftGammaGain();
 }
+HRESULT CGameInstance::Set_Contrast(const _float In_fContrast)
+{
+	return m_pRender_Manager->Set_Contrast(In_fContrast);
+}
 
+HRESULT CGameInstance::Set_Saturation(const _float In_fSaturation)
+{
+	return m_pRender_Manager->Set_Saturation(In_fSaturation);
+}
 
 HRESULT CGameInstance::Set_MotionBlur(const _float In_fBlurScale)
 {

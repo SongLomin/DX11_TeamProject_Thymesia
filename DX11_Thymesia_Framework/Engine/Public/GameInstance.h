@@ -140,6 +140,8 @@ public: /* For.Render_Manager */
 	_float4 Get_FogColor();
 	_float Get_FogRange();
 	LIFTGAMMAGAIN_DESC& Get_LiftGammaGain();
+	HRESULT Set_Contrast(const _float In_fContrast);
+	HRESULT Set_Saturation(const _float In_fSaturation);
 
 
 

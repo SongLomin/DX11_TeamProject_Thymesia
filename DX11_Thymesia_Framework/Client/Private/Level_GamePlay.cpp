@@ -116,6 +116,19 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 
 	GAMEINSTANCE->Set_DynamicShadowLight({ -15.f +vPosition.m128_f32[0], 30.f+vPosition.m128_f32[1], -15.f + vPosition.m128_f32[2] }, { vPosition.m128_f32[0], vPosition.m128_f32[1], vPosition.m128_f32[2] });
 
+	static _float fContrast = 1.f;
+
+	if (KEY_INPUT(KEY::INSERTKEY, KEY_STATE::HOLD))
+	{
+		fContrast += 0.01f;
+	}
+	else if(KEY_INPUT(KEY::DELETEKEY, KEY_STATE::HOLD))
+	{
+		fContrast -= 0.01f;
+	}
+
+	GAMEINSTANCE->Set_Saturation(fContrast);
+
 }
 
 HRESULT CLevel_GamePlay::Render(ID3D11DeviceContext* pDeviceContext)

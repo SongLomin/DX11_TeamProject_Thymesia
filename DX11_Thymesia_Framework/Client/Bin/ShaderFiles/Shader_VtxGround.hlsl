@@ -48,10 +48,12 @@ VS_OUT VS_MAIN_DEFAULT(VS_IN In)
 
     matrix matWV, matWVP;
     
+    //vector vDisplacement = g_DisplacementTexture.SampleLevel(DefaultSampler, In.vTexUV*10.f + g_vUVNoise*0.1f, 0);
 
     matWV = mul(g_WorldMatrix, g_ViewMatrix);
     matWVP = mul(matWV, g_ProjMatrix);
-
+    
+   // In.vPosition += vDisplacement*0.8f;
     
     Out.vPosition = mul(vector(In.vPosition, 1.f), matWVP);
     Out.vTexUV = In.vTexUV;
