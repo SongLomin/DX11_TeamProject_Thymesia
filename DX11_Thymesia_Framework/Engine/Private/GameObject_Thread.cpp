@@ -21,7 +21,7 @@ void CGameObject_Thread::Bind_Works()
 		}
 		else if ((*iter).lock()->Get_Enable())
 		{
-			pThreadManager->EnqueueJob(bind(&CGameObject_Thread::Do, this, (*iter)));
+			pThreadManager->Enqueue_Job(bind(&CGameObject_Thread::Do, this, (*iter)));
 		}
 		++iter;
 	}
@@ -81,24 +81,24 @@ void CGameObject_Thread::Loop(const THREAD_TYPE In_eThread_Type)
 					(*iter).lock()->Tick(fTimeDelta);
 					break;
 
-				case THREAD_TYPE::LATE_TICK:
+				case THREAD_TYPE::LATETICK:
 					(*iter).lock()->LateTick(fTimeDelta);
 					break;
 
-				case THREAD_TYPE::CUSTOM_THREAD0:
-					(*iter).lock()->Custom_Thread0(fTimeDelta);
+				case THREAD_TYPE::PRE_TICK:
+					(*iter).lock()->Thread_PreTick(fTimeDelta);
 					break;
 
-				case THREAD_TYPE::CUSTOM_THREAD1:
-					(*iter).lock()->Custom_Thread1(fTimeDelta);
+				case THREAD_TYPE::PRE_LATETICK:
+					(*iter).lock()->Thread_PreLateTick(fTimeDelta);
 					break;
 
-				case THREAD_TYPE::CUSTOM_THREAD2:
-					(*iter).lock()->Custom_Thread2(fTimeDelta);
+				case THREAD_TYPE::PRE_BEFORERENDER:
+					(*iter).lock()->Thread_PreBeforeRender(fTimeDelta);
 					break;
 
-				case THREAD_TYPE::CUSTOM_THREAD3:
-					(*iter).lock()->Custom_Thread3(fTimeDelta);
+				case THREAD_TYPE::PRE_RENDER:
+					(*iter).lock()->Thread_PreRender(fTimeDelta);
 					break;
 
 				default:
@@ -148,24 +148,24 @@ void CGameObject_Thread::Do(weak_ptr<CGameObject> pGameObject)
 		pGameObject.lock()->Tick(fTimeDelta);
 		break;
 
-	case THREAD_TYPE::LATE_TICK:
+	case THREAD_TYPE::LATETICK:
 		pGameObject.lock()->LateTick(fTimeDelta);
 		break;
 
-	case THREAD_TYPE::CUSTOM_THREAD0:
-		pGameObject.lock()->Custom_Thread0(fTimeDelta);
+	case THREAD_TYPE::PRE_TICK:
+		pGameObject.lock()->Thread_PreTick(fTimeDelta);
 		break;
 
-	case THREAD_TYPE::CUSTOM_THREAD1:
-		pGameObject.lock()->Custom_Thread1(fTimeDelta);
+	case THREAD_TYPE::PRE_LATETICK:
+		pGameObject.lock()->Thread_PreLateTick(fTimeDelta);
 		break;
 
-	case THREAD_TYPE::CUSTOM_THREAD2:
-		pGameObject.lock()->Custom_Thread2(fTimeDelta);
+	case THREAD_TYPE::PRE_BEFORERENDER:
+		pGameObject.lock()->Thread_PreBeforeRender(fTimeDelta);
 		break;
 
-	case THREAD_TYPE::CUSTOM_THREAD3:
-		pGameObject.lock()->Custom_Thread3(fTimeDelta);
+	case THREAD_TYPE::PRE_RENDER:
+		pGameObject.lock()->Thread_PreRender(fTimeDelta);
 		break;
 
 	default:

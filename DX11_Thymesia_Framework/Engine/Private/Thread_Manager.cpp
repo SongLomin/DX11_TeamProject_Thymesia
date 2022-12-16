@@ -12,7 +12,9 @@ void CThread_Manager::Initialize(const _uint In_iNumLayer)
 
 	worker_threads_.reserve(num_threads_);
 	for (size_t i = 0; i < num_threads_; ++i) {
-		worker_threads_.emplace_back([this]() { this->WorkerThread(); });
+		_bool* bCheck_JobDone = DBG_NEW _bool(true);
+		worker_jopdones.push_back(bCheck_JobDone);
+		worker_threads_.emplace_back([this]() { this->WorkerThread(*worker_jopdones.back()); });
 	}
 }
 
@@ -36,7 +38,7 @@ void CThread_Manager::Bind_GameObjectWorks(const _flag In_ThreadTypeFlag)
 {
 	for (_uint i = 0; i < (_uint)THREAD_TYPE::TYPE_END; ++i)
 	{
-		if (In_ThreadTypeFlag & (1 << i))
+		if (In_ThreadTypeFlag & (1 << (_flag)i))
 		{
 			if (m_GameObject_Threads[i].pInstance)
 			{
@@ -56,15 +58,18 @@ void CThread_Manager::Clear_EngineThreads(const THREAD_TYPE In_eThread_Type)
 
 }
 
-void CThread_Manager::WorkerThread()
+void CThread_Manager::WorkerThread(_bool& JobDoneChecker)
 {
 	while (true) {
 		std::unique_lock<std::mutex> lock(m_job_q_);
-		cv_job_q_.wait(lock, [this]() { return !this->jobs_.empty() || stop_all; });
+		cv_job_q_.wait(lock, [this]() { 
+			return !this->jobs_.empty() || stop_all; 
+			});
 		if (stop_all && this->jobs_.empty()) {
 			return;
 		}
 
+		JobDoneChecker = false;
 		// 맨 앞의 job 을 뺀다.
 		std::function<void()> job = std::move(jobs_.front());
 		jobs_.pop();
@@ -72,12 +77,20 @@ void CThread_Manager::WorkerThread()
 
 		// 해당 job 을 수행한다 :)
 		job();
+
+		JobDoneChecker = true;
 	}
 }
 
 _bool CThread_Manager::Check_JobDone()
 {
-	return jobs_.empty();
+	for (auto& elem : worker_jopdones)
+	{
+		if (!(*elem))
+			return false;
+	}
+
+	return true;
 }
 
 void CThread_Manager::Wait_JobDone(const _char* In_szConsoleText)
@@ -126,6 +139,13 @@ void CThread_Manager::OnDestroy()
 	for (auto& t : worker_threads_) {
 		t.join();
 	}
+
+	for (auto& elem : worker_jopdones)
+	{
+		Safe_Delete(elem);
+	}
+
+	worker_jopdones.clear();
 
 }
 

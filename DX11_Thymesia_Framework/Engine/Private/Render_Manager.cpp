@@ -8,6 +8,58 @@
 
 IMPLEMENT_SINGLETON(CRender_Manager)
 
+ComPtr<ID3D11DeviceContext> CRender_Manager::Get_BeforeRenderContext()
+{
+	std::unique_lock<std::mutex> lock(m_job_q_);
+
+	if (m_pBeforeRenderSleepContexts.empty())
+	{
+		Emplace_SleepContext(1);
+	}
+
+	ComPtr<ID3D11DeviceContext> pContext = m_pBeforeRenderSleepContexts.back();
+	m_pBeforeRenderSleepContexts.pop_back();
+
+	lock.unlock();
+
+	return pContext;
+	// 나중에 이펙트_렉트나 이펙트 메쉬, 맵언맵 등등 시간이 오래 걸리는 곳에 보내준다.
+	// 맵언맵이 끝나면 다시 돌려받을 것.
+	// 해당 Late_Tick은 쓰레드로 할 것.
+}
+
+void CRender_Manager::Release_BeforeRenderContext(ComPtr<ID3D11DeviceContext> pDeviceContext)
+{
+	std::unique_lock<std::mutex> lock(m_job_q_);
+
+	m_pBeforeRenderContexts.emplace_back(pDeviceContext);
+
+	lock.unlock();
+}
+
+void CRender_Manager::Execute_BeforeRenderCommandList()
+{
+	std::unique_lock<std::mutex> lock(m_job_q_);
+
+	ID3D11CommandList* pCommandList = nullptr;
+
+	for (auto& elem : m_pBeforeRenderContexts)
+	{
+		elem->FinishCommandList(false, &pCommandList);
+
+		if (pCommandList)
+		{
+			DEVICECONTEXT->ExecuteCommandList(pCommandList, true);
+			pCommandList->Release();
+			pCommandList = nullptr;
+		}
+	}
+
+	m_pBeforeRenderSleepContexts.insert(m_pBeforeRenderSleepContexts.begin(), m_pBeforeRenderContexts.begin(), m_pBeforeRenderContexts.end());
+	m_pBeforeRenderContexts.clear();
+	lock.unlock();
+}
+
 HRESULT CRender_Manager::Initialize()
 {
 
@@ -387,6 +439,8 @@ HRESULT CRender_Manager::Add_RenderGroup(RENDERGROUP eGroup, weak_ptr<CGameObjec
 
 HRESULT CRender_Manager::Draw_RenderGroup()
 {
+	
+
 	GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[DEFERRED_EFFECT].Get());	
 	GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[DEFERRED_UI].Get());
 
@@ -397,7 +451,9 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 		continue;
 	}
 
-	std::list<std::future<HRESULT>> futures;
+	Execute_BeforeRenderCommandList();
+
+	//std::list<std::future<HRESULT>> futures;
 	
 	//futures.emplace_back(GET_SINGLE(CThread_Manager)->EnqueueJob(bind(&CRender_Manager::Render_Effect, this)));
 	// futures.emplace_back(GET_SINGLE(CThread_Manager)->EnqueueJob(bind(&CRender_Manager::Render_UI, this)));
@@ -509,9 +565,20 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 		pCommandList = nullptr;
 	}*/
 	
+	std::future<HRESULT> UIFuture = GET_SINGLE(CThread_Manager)->Enqueue_Job(bind(&CRender_Manager::Render_UI, this));
+	UIFuture.get();
 
-	if (FAILED(Render_UI()))
-		DEBUG_ASSERT;
+	m_pDeferredContext[DEFERRED_UI]->FinishCommandList(false, &pCommandList);
+
+	if (pCommandList)
+	{
+		DEVICECONTEXT->ExecuteCommandList(pCommandList, true);
+		pCommandList->Release();
+		pCommandList = nullptr;
+	}
+
+	/*if (FAILED(Render_UI()))
+		DEBUG_ASSERT;*/
 
 	if (FAILED(Render_Final()))
 		DEBUG_ASSERT;
@@ -1078,6 +1145,7 @@ HRESULT CRender_Manager::Render_AlphaBlend(ID3D11DeviceContext* pDeviceContext)
 
 		return E_FAIL;
 	}
+
 
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_ALPHABLEND])
 	{
@@ -1803,6 +1871,14 @@ HRESULT CRender_Manager::Blur(const _float& In_PixelPitchScalar, const _tchar* I
 	pRenderTargetManager->End_MRT();
 
 	return S_OK;
+}
+
+void CRender_Manager::Emplace_SleepContext(const _uint In_iIndex)
+{
+	ComPtr<ID3D11DeviceContext> pContext;
+	DEVICE->CreateDeferredContext(0, pContext.GetAddressOf());
+	GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(pContext.Get());
+	m_pBeforeRenderSleepContexts.emplace_back(pContext);
 }
 
 #ifdef _DEBUG

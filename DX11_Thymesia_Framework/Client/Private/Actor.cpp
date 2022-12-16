@@ -26,8 +26,8 @@ HRESULT CActor::Initialize(void* pArg)
 
 
 #ifdef _USE_THREAD_
-    Use_Thread(THREAD_TYPE::CUSTOM_THREAD0);
-    Use_Thread(THREAD_TYPE::CUSTOM_THREAD1);
+    Use_Thread(THREAD_TYPE::PRE_TICK);
+    Use_Thread(THREAD_TYPE::PRE_LATETICK);
 #endif // _USE_THREAD_
 
 
@@ -71,7 +71,7 @@ void CActor::Before_Render(_float fTimeDelta)
 
 }
 
-void CActor::Custom_Thread0(_float fTimeDelta)
+void CActor::Thread_PreTick(_float fTimeDelta)
 {
     if (!Get_Enable())
         return;
@@ -80,9 +80,9 @@ void CActor::Custom_Thread0(_float fTimeDelta)
         m_pModelCom.lock()->Update_BoneMatrices();
 }
 
-void CActor::Custom_Thread1(_float fTimeDelta)
+void CActor::Thread_PreLateTick(_float fTimeDelta)
 {
-    __super::Custom_Thread1(fTimeDelta);
+    __super::Thread_PreLateTick(fTimeDelta);
 
 #ifdef _Actor_Culling_
     if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), m_fCullingRange))

@@ -60,6 +60,7 @@ private:
     virtual HRESULT Initialize_Prototype()   override;
     virtual HRESULT Initialize(void* pArg)   override;
     virtual void Tick(_float fTimeDelta)     override;
+    virtual void Thread_PreLateTick(_float fTimeDelta);
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext)                 override;
 

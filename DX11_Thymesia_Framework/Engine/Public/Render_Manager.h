@@ -23,6 +23,13 @@ public:
 
 
 public:
+	ComPtr<ID3D11DeviceContext> Get_BeforeRenderContext();
+	void Release_BeforeRenderContext(ComPtr<ID3D11DeviceContext> pDeviceContext);
+	
+private:
+	void Execute_BeforeRenderCommandList();
+
+public:
 	HRESULT Initialize();
 
 	HRESULT Add_RenderGroup(RENDERGROUP	eGroup, weak_ptr<CGameObject> pGameObject);
@@ -92,6 +99,9 @@ private:
 
 	HRESULT Blur(const _float& In_PixelPitchScalar, const _tchar* In_szMRT, const _tchar* In_szTarget);
 
+private:
+	void Emplace_SleepContext(const _uint In_iIndex);
+
 #ifdef _DEBUG
 public:
 	HRESULT Render_Debug();
@@ -156,6 +166,10 @@ private:
 
 private:
 	ComPtr<ID3D11DeviceContext> m_pDeferredContext[DEFERRED_END];
+	vector<ComPtr<ID3D11DeviceContext>> m_pBeforeRenderContexts;
+	vector<ComPtr<ID3D11DeviceContext>> m_pBeforeRenderSleepContexts;
+
+	std::mutex m_job_q_;
 
 public:
 	virtual void OnDestroy() override;

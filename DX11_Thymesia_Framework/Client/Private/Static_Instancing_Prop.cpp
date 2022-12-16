@@ -57,7 +57,7 @@ void CStatic_Instancing_Prop::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 }
 
-void CStatic_Instancing_Prop::Custom_Thread1(_float fTimeDelta)
+void CStatic_Instancing_Prop::Thread_PreLateTick(_float fTimeDelta)
 {
 #ifdef _INSTANCE_CULLING_
 	if (m_pDynamicColliderComs.empty())

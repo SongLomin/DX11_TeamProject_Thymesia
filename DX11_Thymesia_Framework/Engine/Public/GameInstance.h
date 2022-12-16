@@ -141,6 +141,9 @@ public: /* For.Render_Manager */
 	_float Get_FogRange();
 	LIFTGAMMAGAIN_DESC& Get_LiftGammaGain();
 
+	ComPtr<ID3D11DeviceContext> Get_BeforeRenderContext();
+	void Release_BeforeRenderContext(ComPtr<ID3D11DeviceContext> pDeviceContext);
+
 
 
 
@@ -226,6 +229,14 @@ public: /* For.PhysX_Manager */
 	weak_ptr<CPhysXCollider>			Find_PhysXCollider(const _uint In_iPhysXColliderIndex);
 	weak_ptr<CPhysXController>			Find_PhysXController(const _uint In_iPhysXControllerIndex);
 	_uint			Get_PhysXFilterGroup(const _uint In_iIndex);
+
+public: /* For. Thread_Manager */
+	template <class F, class... Args>
+	std::future<typename std::result_of<F(Args...)>::type> Enqueue_Job(
+		F&& f, Args&&... args) 
+	{
+		return m_pThread_Manager->Enqueue_Job(f, args);
+	}
 
 private:
 	shared_ptr<CGraphic_Device> m_pGraphic_Device;

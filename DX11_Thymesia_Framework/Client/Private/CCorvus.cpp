@@ -125,7 +125,7 @@ void CCorvus::Before_Render(_float fTimeDelta)
 	__super::Before_Render(fTimeDelta);
 }
 
-void CCorvus::Custom_Thread1(_float fTimeDelta)
+void CCorvus::Thread_PreLateTick(_float fTimeDelta)
 {
 	if (RENDERGROUP::RENDER_END != m_eRenderGroup)
 		m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Weak_StaticCast<CGameObject>(m_this));

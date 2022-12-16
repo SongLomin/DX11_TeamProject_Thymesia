@@ -28,7 +28,7 @@ HRESULT CProp::Initialize(void* pArg)
 	m_pMaskingTextureCom.lock()->Use_Texture("UVMask");
 
 #ifdef _USE_THREAD_
-	Use_Thread(THREAD_TYPE::CUSTOM_THREAD1);
+	Use_Thread(THREAD_TYPE::PRE_LATETICK);
 #endif
 
     return S_OK;
@@ -72,7 +72,7 @@ void CProp::LateTick(_float fTimeDelta)
 
 }
 
-void CProp::Custom_Thread1(_float fTimeDelta)
+void CProp::Thread_PreLateTick(_float fTimeDelta)
 {
 	_vector vCenterOffsetToVector = XMLoadFloat3(&m_vCenterOffset);
 

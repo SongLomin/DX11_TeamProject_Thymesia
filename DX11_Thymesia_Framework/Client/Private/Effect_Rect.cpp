@@ -125,6 +125,7 @@ HRESULT CEffect_Rect::Initialize(void* pArg)
 
 #ifdef _USE_THREAD_
 	CGameObject::Use_Thread(THREAD_TYPE::TICK);
+	CGameObject::Use_Thread(THREAD_TYPE::PRE_LATETICK);
 #endif // _USE_THREAD_
 
 	return S_OK;
@@ -149,9 +150,17 @@ void CEffect_Rect::Tick(_float fTimeDelta)
 	Play(fTimeDelta * GAMEINSTANCE->Get_TimeScale(m_iTimeScaleLayerIndex));
 }
 
+void CEffect_Rect::Thread_PreLateTick(_float fTimeDelta)
+{
+	ComPtr<ID3D11DeviceContext> pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
+
+	m_pVIBuffer.lock()->Update(m_tParticleDescs, pDeferredContext.Get(), ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType));
+
+	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
+}
+
 void CEffect_Rect::LateTick(_float fTimeDelta)
 {
-	m_pVIBuffer.lock()->Update(m_tParticleDescs, ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType));
 	__super::LateTick(fTimeDelta);
 
 	if (Check_DisableAllParticle())
