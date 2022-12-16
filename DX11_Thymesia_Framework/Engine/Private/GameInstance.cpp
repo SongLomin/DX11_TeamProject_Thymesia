@@ -342,6 +342,12 @@ HRESULT CGameInstance::Set_GrayScale(const _float In_fGrayScale)
 {
 	return m_pRender_Manager->Set_GrayScale(In_fGrayScale);
 }
+
+HRESULT CGameInstance::Set_Exposure(const _float In_fExposure)
+{
+	return m_pRender_Manager->Set_Exposure(In_fExposure);
+}
+
 _float4 CGameInstance::Get_FogColor()
 {
 	return m_pRender_Manager->Get_FogColor();

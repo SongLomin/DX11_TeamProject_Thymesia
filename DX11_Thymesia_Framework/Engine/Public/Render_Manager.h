@@ -55,6 +55,8 @@ public:
 	HRESULT Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain);
 	HRESULT Set_GrayScale(const _float In_fGrayScale);
 
+	HRESULT Set_Exposure(const _float In_fExposure);
+
 	HRESULT	Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt);
 	HRESULT Set_DynamicShadowLight(_fvector In_vEye, _fvector In_vLookAt);
 	LIFTGAMMAGAIN_DESC& Get_LiftGammaGain()
@@ -177,6 +179,8 @@ private:
 	_float		m_fGrayScale = 1.f;
 	_float		m_fContrastValue = 1.f;
 	_float		m_fSaturation = 1.f;
+
+	_float		m_fExposure = 1.f;
 
 
 private:

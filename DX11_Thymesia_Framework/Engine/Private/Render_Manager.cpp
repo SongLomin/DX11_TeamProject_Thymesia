@@ -680,6 +680,14 @@ HRESULT CRender_Manager::Set_GrayScale(const _float In_fGrayScale)
 	return S_OK;
 }
 
+HRESULT CRender_Manager::Set_Exposure(const _float In_fExposure)
+{
+	m_fExposure = In_fExposure;
+
+	return S_OK;
+}
+
+
 HRESULT CRender_Manager::Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt)
 {
 	XMStoreFloat3(&m_vShadowLightEye, In_vEye);
