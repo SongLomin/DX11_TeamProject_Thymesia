@@ -90,7 +90,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
 		SetRasterizerState(RS_Sky);
 
-		VertexShader = compile vs_5_0 VS_MAIN_SKY();
+        VertexShader = compile vs_5_0 VS_MAIN_SKY();
+        HullShader = NULL;
+        DomainShader = NULL;
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN_SKY();
 	}
@@ -101,7 +103,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
 		SetRasterizerState(RS_Wireframe);
 
-		VertexShader		= compile vs_5_0 VS_MAIN_SKY();
+        VertexShader = compile vs_5_0 VS_MAIN_SKY();
+        HullShader = NULL;
+        DomainShader = NULL;
 		GeometryShader		= NULL;
 		PixelShader			= compile ps_5_0 PS_MAIN_COLOR();
 	}
@@ -113,6 +117,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN_SKY();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_COLOR();
     }
@@ -123,7 +129,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_Default, 0);
 		SetRasterizerState(RS_Default);
 
-		VertexShader	= compile vs_5_0	VS_MAIN_SKY();
+        VertexShader = compile vs_5_0 VS_MAIN_SKY();
+        HullShader = NULL;
+        DomainShader = NULL;
 		GeometryShader	= NULL;
 		PixelShader		= compile ps_5_0	PS_MAIN_COLOR_PICK();
 	}

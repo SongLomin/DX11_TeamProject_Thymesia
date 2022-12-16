@@ -165,7 +165,9 @@ technique11 DefaultTechnique
         SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
-		VertexShader = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
 		GeometryShader = compile gs_5_0 GS_MAIN();
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}

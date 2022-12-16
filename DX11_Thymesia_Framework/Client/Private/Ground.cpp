@@ -86,7 +86,7 @@ HRESULT CGround::Render(ID3D11DeviceContext* pDeviceContext)
 
 	m_pShaderCom.lock()->Set_RawValue("g_vUVNoise", &m_vNoiseUV, sizeof(_float2));
 
-	m_pShaderCom.lock()->Begin(m_iShaderPath, pDeviceContext);
+	m_pShaderCom.lock()->Begin(2, pDeviceContext);
 	m_pVIBufferCom.lock()->Render(pDeviceContext);
 
 	return S_OK;

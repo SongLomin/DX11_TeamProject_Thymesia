@@ -670,7 +670,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
-		VertexShader   = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
 		GeometryShader = NULL;
 		PixelShader    = compile ps_5_0 PS_DEFAULT();
 	}
@@ -681,7 +683,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
-		VertexShader   = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
 		GeometryShader = NULL;
 		PixelShader    = compile ps_5_0 PS_DISTORTION();
 	}
@@ -692,7 +696,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_Default, 0);
 		SetRasterizerState(RS_NonCulling);
 
-		VertexShader   = compile vs_5_0 VS_MAIN_SOFT();
+        VertexShader = compile vs_5_0 VS_MAIN_SOFT();
+        HullShader = NULL;
+        DomainShader = NULL;
 		GeometryShader = NULL;
 		PixelShader    = compile ps_5_0 PS_MAIN_SOFT();
 	}
@@ -703,7 +709,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_Default, 0);
 		SetRasterizerState(RS_NonCulling);
 
-		VertexShader   = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
 		GeometryShader = NULL;
 		PixelShader    = compile ps_5_0 PS_EXTRACTBRIGHT();
 	}
@@ -714,7 +722,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
-		VertexShader   = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
 		GeometryShader = NULL;
 		PixelShader    = compile ps_5_0 PS_MAIN_NORMAL_DISSOLVE();
 	}
@@ -726,7 +736,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
-		VertexShader   = compile vs_5_0 VS_MAIN_DIRECTIONAL_DISSOLVE();
+        VertexShader = compile vs_5_0 VS_MAIN_DIRECTIONAL_DISSOLVE();
+        HullShader = NULL;
+        DomainShader = NULL;
 		GeometryShader = NULL;
 		PixelShader    = compile ps_5_0 PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE();
 	}
@@ -737,7 +749,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
-		VertexShader   = compile vs_5_0 VS_MAIN_SOFT();
+        VertexShader = compile vs_5_0 VS_MAIN_SOFT();
+        HullShader = NULL;
+        DomainShader = NULL;
 		GeometryShader = NULL;
 		PixelShader    = compile ps_5_0 PS_MAIN_NORMAL_DISSOLVE_SOFT();
 	}
@@ -749,7 +763,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
-		VertexShader   = compile vs_5_0 VS_MAIN_SOFT_DIRECTIONAL_DISSOLVE();
+        VertexShader = compile vs_5_0 VS_MAIN_SOFT_DIRECTIONAL_DISSOLVE();
+        HullShader = NULL;
+        DomainShader = NULL;
 		GeometryShader = NULL;
 		PixelShader    = compile ps_5_0 PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE_SOFT();
 	}
