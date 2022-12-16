@@ -138,6 +138,12 @@ _bool CJokerState_WalkF::Check_AndChangeNextState()
 		return true;
 	}
 
+	if (fPToMDistance >= 6.f && fPToMDistance < 8.f)
+	{
+		Get_OwnerCharacter().lock()->Change_State<CJokerState_RunAttackStart>(0.05f);
+		return true;
+	}
+
 
 	
 

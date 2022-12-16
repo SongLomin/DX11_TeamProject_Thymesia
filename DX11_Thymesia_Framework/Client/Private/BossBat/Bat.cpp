@@ -26,6 +26,8 @@ HRESULT CBat::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
+	CollsionContent(11.f);
+
 	m_pShaderCom.lock()->Set_ShaderInfo(
 		TEXT("Shader_VtxAnimModel"),
 		VTXANIM_DECLARATION::Element,
@@ -142,6 +144,22 @@ void CBat::SetUp_ShaderResource()
 	__super::SetUp_ShaderResource();
 }
 
+void CBat::CollsionContent(_float fScale)
+{
+	m_pHitColliderCom = Add_Component<CCollider>();
+
+	COLLIDERDESC			ColliderDesc;
+	ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
+
+
+	ColliderDesc.vScale = _float3(fScale, 1.f, 1.f);
+	ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
+	ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
+	ColliderDesc.iLayer = (_uint)COLLISION_LAYER::MONSTER;
+
+	m_pHitColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
+}
+
 void CBat::Init_Desc()
 {
 
@@ -156,7 +174,7 @@ void CBat::Init_Desc()
 	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
 
 	//GET_SINGLE(CGameManager)->Bind_KeyEvent("Monster1", m_pModelCom, bind(&CBat::Call_NextAnimationKey, this, placeholders::_1));
-	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom),
+	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::BossBatSetting(m_pTransformCom),
 		(_uint)PHYSX_COLLISION_LAYER::MONSTER);
 
 	INIT_STATE(CBatBossState_Start);

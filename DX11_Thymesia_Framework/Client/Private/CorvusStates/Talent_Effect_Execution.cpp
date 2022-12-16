@@ -8,7 +8,7 @@ CLONE_C(CTalent_Effect_Execution, CComponent);
 
 _flag CTalent_Effect_Execution::Check_Requirement(weak_ptr<CPlayer> pPlayer)
 {
-    return 0;
+    return (_flag)TALENT_EFFECT_FLAG::EXECUTION_LV1;
 }
 
 void CTalent_Effect_Execution::Bind_Talent_Effect(weak_ptr<CPlayer> pPlayer)

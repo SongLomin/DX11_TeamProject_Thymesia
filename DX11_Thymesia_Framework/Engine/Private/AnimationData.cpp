@@ -68,7 +68,21 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 
 	SET_ANIM_SPEED("Corvus_Raven_ClawLong_L01", 2.f);
 	SET_ANIM_SPEED("Corvus_Raven_ClawLong_L02", 2.f);
+	SET_ANIM_SPEED("Corvus_Raven_ClawShortV2_Fast01", 2.f);
+	SET_ANIM_SPEED("Corvus_Raven_ClawShortV2_Fast02", 2.f);
+	SET_ANIM_SPEED("Corvus_Raven_ClawShortV2_Fast03", 2.f);
+	SET_ANIM_SPEED("Corvus_Raven_ClawLong_PlunderAttack2TTT", 2.f);
 	SET_ANIM_SPEED("Corvus_SD1_Fall_Attack", 2.5f);
+
+    SET_ANIM_SPEED("Corvus_SD_AvoidShort_F", 1.75f);
+    SET_ANIM_SPEED("Corvus_SD_AvoidShort_L", 1.75f);
+    SET_ANIM_SPEED("Corvus_SD_AvoidShort_R", 1.75f);
+    SET_ANIM_SPEED("Corvus_SD_AvoidShort_B_NEW", 1.75f);
+
+    SET_ANIM_SPEED("Corvus_SD_AvoidLongB_NEW", 1.5f);
+    SET_ANIM_SPEED("Corvus_SD_AvoidLongF", 1.5f);
+    SET_ANIM_SPEED("Corvus_SD_AvoidLongL_NEW", 1.5f);
+    SET_ANIM_SPEED("Corvus_SD_AvoidLongR_NEW", 1.5f);
 
     SET_ANIM_SPEED("Corvus_SD_AvoidF", 2.25f);
     SET_ANIM_SPEED("Corvus_SD_AvoidShortMag_B", 2.25f);
@@ -112,6 +126,9 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     
 
 	SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 7.f);
+
+
+	SET_ANIM_SPEED("Corvus_SD_TD2Thorw2", 2.5f);
 
 #pragma region Varg
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Catch", 2.306f);

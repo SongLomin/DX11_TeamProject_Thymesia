@@ -310,6 +310,21 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_Headache_End);
 	ADD_STATE_MACRO(CCorvusState_Headache_Start);
 	ADD_STATE_MACRO(CCorvusState_Headache_Loop);
+	ADD_STATE_MACRO(CCorvusState_FeatherAttack);
+	ADD_STATE_MACRO(CCorvusState_ClawPlunderAttack);
+
+
+	ADD_STATE_MACRO(CCorvusState_Short_AvoidF);
+
+
+	ADD_STATE_MACRO(CCorvusState_Long_AvoidF);
+
+
+	ADD_STATE_MACRO(CCorvusState_Short_Claw_Atk1);
+	ADD_STATE_MACRO(CCorvusState_Short_Claw_Atk2);
+	ADD_STATE_MACRO(CCorvusState_Short_Claw_Atk3);
+
+
 
 
 	ADD_STATE_MACRO(CCorvusState_CheckPointStart);
@@ -366,9 +381,11 @@ void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 	case Client::COLLISION_LAYER::DOOR:
 		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::DOOR;
 		break;
-
 	case Client::COLLISION_LAYER::CHECKPOINT:
 		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::CHECKPOINT;
+		break;
+	case Client::COLLISION_LAYER::ITEM:
+		m_CollisionObjectFlags |= (_flag)COLISIONOBJECT_FLAG::ITEM;
 		break;
 	}
 
@@ -402,6 +419,9 @@ void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 		break;
 	case Client::COLLISION_LAYER::CHECKPOINT:
 		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::CHECKPOINT;
+		break;
+	case Client::COLLISION_LAYER::ITEM:
+		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::ITEM;
 		break;
 	}
 }

@@ -75,6 +75,19 @@
 #include "CorvusStates/CorvusState_Headache_Start.h"
 #include "CorvusStates/CorvusState_Headache_Loop.h"
 #include "CorvusStates/CorvusState_Headache_End.h"
+#include "CorvusStates/CorvusState_FeatherAttack.h"
+#include "CorvusStates/CorvusState_Short_Claw_Atk1.h"
+#include "CorvusStates/CorvusState_Short_Claw_Atk2.h"
+#include "CorvusStates/CorvusState_Short_Claw_Atk3.h"
+#include "CorvusStates/CorvusState_ClawPlunderAttack.h"
+
+
+
+
+
+
+#include "CorvusStates/CorvusState_Long_AvoidF.h"
+#include "CorvusStates/CorvusState_Short_AvoidF.h"
 
 
 

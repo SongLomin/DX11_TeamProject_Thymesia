@@ -84,22 +84,22 @@ void CBatBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 		if (!pAttackArea.lock())
 			return;
 
-		_vector vOtherColliderPosition = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner()).lock()->
-			Get_ParentObject().lock()->
-			Get_Component<CTransform>().lock()->
-			Get_State(CTransform::STATE_TRANSLATION);
-
-		/*_vector vOtherColliderPosition = Weak_Cast<CWeapon>(pOtherCollider.lock()->Get_Owner()).lock()->
-			Get_ParentObject().lock()->
-			Get_Component<CTransform>().lock()->
-			Get_State(CTransform::STATE_TRANSLATION);*/
-
-		_vector vSameHeightOtherColliderPosition = vOtherColliderPosition;
-		vSameHeightOtherColliderPosition.m128_f32[1] = vMyPosition.m128_f32[1];
-
-		m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
-
-		_bool bRandom = (_bool)(rand() % 2);
+		//_vector vOtherColliderPosition = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner()).lock()->
+		//	Get_ParentObject().lock()->
+		//	Get_Component<CTransform>().lock()->
+		//	Get_State(CTransform::STATE_TRANSLATION);
+		//
+		///*_vector vOtherColliderPosition = Weak_Cast<CWeapon>(pOtherCollider.lock()->Get_Owner()).lock()->
+		//	Get_ParentObject().lock()->
+		//	Get_Component<CTransform>().lock()->
+		//	Get_State(CTransform::STATE_TRANSLATION);*/
+		//
+		//_vector vSameHeightOtherColliderPosition = vOtherColliderPosition;
+		//vSameHeightOtherColliderPosition.m128_f32[1] = vMyPosition.m128_f32[1];
+		//
+		//m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
+		//
+		//_bool bRandom = (_bool)(rand() % 2);
 
 		//데미지 적용
 		//m_pStatusCom.lock()->Add_Damage(In_fDamage);

@@ -36,17 +36,8 @@ HRESULT CMonster::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-    m_pHitColliderCom = Add_Component<CCollider>();
-
-    COLLIDERDESC			ColliderDesc;
-    ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
-
-    ColliderDesc.vScale = _float3(1.8f, 1.f, 1.f);
-    ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
-    ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
-    ColliderDesc.iLayer = (_uint)COLLISION_LAYER::MONSTER;
-
-    m_pHitColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
+    
+    CollsionContent();
 
     m_eAttackCollisionLayer = COLLISION_LAYER::MONSTER_ATTACK;
 
@@ -133,6 +124,22 @@ HRESULT CMonster::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_Li
     }
 
     return S_OK;
+}
+
+void CMonster::CollsionContent(_float fScale)
+{
+    m_pHitColliderCom = Add_Component<CCollider>();
+
+    COLLIDERDESC			ColliderDesc;
+    ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
+
+
+    ColliderDesc.vScale = _float3(fScale, 1.f, 1.f);
+    ColliderDesc.vRotation = _float4(0.f, 0.f, 0.f, 1.f);
+    ColliderDesc.vTranslation = _float3(0.f, ColliderDesc.vScale.y * 0.5f, 0.f);
+    ColliderDesc.iLayer = (_uint)COLLISION_LAYER::MONSTER;
+
+    m_pHitColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
 }
 
 
