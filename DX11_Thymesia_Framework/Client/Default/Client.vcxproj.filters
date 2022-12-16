@@ -1522,6 +1522,9 @@
     <ClInclude Include="..\Public\Window_RenderTarget_Dev.h">
       <Filter>97. Tool\01. DeveloperConsole\Windows\02. RenderTarget</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Water.h">
+      <Filter>02. GameObject\15. Water</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3080,6 +3083,9 @@
     <ClCompile Include="..\Private\Window_RenderTarget_Dev.cpp">
       <Filter>97. Tool\01. DeveloperConsole\Windows\02. RenderTarget</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Water.cpp">
+      <Filter>02. GameObject\15. Water</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -4559,6 +4565,9 @@
     </Filter>
     <Filter Include="97. Tool\01. DeveloperConsole\Windows\02. RenderTarget">
       <UniqueIdentifier>{41d9ddcc-bb10-4076-8bd0-ec90796ddf37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\15. Water">
+      <UniqueIdentifier>{a4bc2bc1-f80a-47b7-8095-5c9aadcdd37f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

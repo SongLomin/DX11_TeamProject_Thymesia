@@ -134,11 +134,6 @@ void CWindow_PrototypeView::Add_Prototypes()
 
 #define ADD_PROTOTYPE(Layer, ClassType) m_pPrototypes[Layer].push_back({ typeid(ClassType).hash_code(), typeid(ClassType).name(), GAMEINSTANCE->Add_Prototype_GameObject<ClassType>() });
 
-    ADD_PROTOTYPE(PROTOTYPE_ACTOR, CNorMonster);
-    ADD_PROTOTYPE(PROTOTYPE_ACTOR, CVarg);
-    ADD_PROTOTYPE(PROTOTYPE_ACTOR, CJoker);
-    ADD_PROTOTYPE(PROTOTYPE_ACTOR, CBat);
-
     ADD_PROTOTYPE(PROTOTYPE_PROP, CTerrain);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStatic_Prop);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CStatic_Instancing_Prop);
@@ -149,6 +144,7 @@ void CWindow_PrototypeView::Add_Prototypes()
     ADD_PROTOTYPE(PROTOTYPE_PROP, CInteraction_CheckPoint);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CInteraction_Elevator);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CInteraction_Door);
+    ADD_PROTOTYPE(PROTOTYPE_PROP, CWater);
 
     ADD_PROTOTYPE(PROTOTYPE_EDIT, CEditGround);
     ADD_PROTOTYPE(PROTOTYPE_EDIT, CEditGroupProp);

@@ -267,7 +267,7 @@ void CEditGroupProp::View_CreateProp()
 		"Static_Prop",
 		"Dynamic_Prop",
 		"Light_Prop",
-		"Section_Eventer"
+		"Section_Eventer",
 	};
 
 	static const char* items_Interaction_Prop[] =

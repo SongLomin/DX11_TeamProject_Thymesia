@@ -235,7 +235,7 @@ _bool CVIBuffer_Ground::Compute_MouseRatio(RAY _Ray, _matrix _WorldMatrix, _floa
 	return false;
 }
 
-HRESULT CVIBuffer_Ground::Init_Mesh(shared_ptr<MESH_DATA> tMeshData)
+HRESULT CVIBuffer_Ground::Init_Mesh(shared_ptr<MESH_DATA> tMeshData, D3D11_PRIMITIVE_TOPOLOGY In_eToplogy)
 {
 	m_iStride			= sizeof(VTXGROUND);
 	m_iNumVertices		= tMeshData.get()->iNumVertices;
@@ -255,7 +255,7 @@ HRESULT CVIBuffer_Ground::Init_Mesh(shared_ptr<MESH_DATA> tMeshData)
 	m_iNumPrimitive		= tMeshData.get()->iNumFaces;
 	m_iNumIndices		= m_iNumPrimitive * 3;
 	m_eIndexFormat		= DXGI_FORMAT_R32_UINT;
-	m_eToplogy			= D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+	m_eToplogy			= In_eToplogy;
 
 	FACEINDICES32* pIndices = new FACEINDICES32[m_iNumPrimitive];
 	ZeroMemory(pIndices, sizeof(FACEINDICES32) * m_iNumPrimitive);
