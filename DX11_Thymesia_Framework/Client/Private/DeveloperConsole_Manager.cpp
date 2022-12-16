@@ -8,6 +8,7 @@
 
 #include "Window_Shader_Dev.h"
 #include "Window_Level_Dev.h"
+#include "Window_RenderTarget_Dev.h"
 
 IMPLEMENT_SINGLETON(CDeveloperConsole_Manager)
 
@@ -41,6 +42,15 @@ void CDeveloperConsole_Manager::Tick(_float fTimeDelta)
 	}
 }
 
+void CDeveloperConsole_Manager::Background_Tick(_float fTimeDelta)
+{
+	for (auto& elem : m_arrWindows)
+	{
+		if (elem->Get_Enable())
+			elem->Background_Tick(fTimeDelta);
+	}
+}
+
 HRESULT CDeveloperConsole_Manager::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	// Start the Dear ImGui frame
@@ -66,6 +76,7 @@ void CDeveloperConsole_Manager::Init_Windows()
 
 	m_arrWindows.emplace_back(CWindow_Shader_Dev::Create_Instance());
 	m_arrWindows.emplace_back(CWindow_Level_Dev::Create_Instance());
+	m_arrWindows.emplace_back(CWindow_RenderTarget_Dev::Create_Instance());
 
 	for (auto& elem : m_arrWindows)
 	{
@@ -88,6 +99,7 @@ void CDeveloperConsole_Manager::Release_Windows()
 	m_arrWindows.clear();
 	CWindow_Shader_Dev::Destroy_Instance();
 	CWindow_Level_Dev::Destroy_Instance();
+	CWindow_RenderTarget_Dev::Destroy_Instance();
 }
 
 void CDeveloperConsole_Manager::OnEnableConsole(const _bool In_bEnable)
@@ -98,8 +110,6 @@ void CDeveloperConsole_Manager::OnEnableConsole(const _bool In_bEnable)
 	{
 		elem->OnEventMessage((_uint)eType);
 	}
-
-	FLT_MIN;
 }
 
 void CDeveloperConsole_Manager::Free()

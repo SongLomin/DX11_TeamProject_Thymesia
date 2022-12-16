@@ -1,6 +1,8 @@
 #include "RenderTarget_Manager.h"
 #include "GameInstance.h"
 #include "RenderTarget.h"
+#include "Shader.h"
+#include "VIBuffer_Rect.h"
 
 IMPLEMENT_SINGLETON(CRenderTarget_Manager)
 
@@ -12,6 +14,18 @@ ComPtr<ID3D11ShaderResourceView> CRenderTarget_Manager::Get_SRV(const _tchar* pT
 		return nullptr;
 
 	return pRenderTarget->Get_SRV();
+}
+
+list<const _tchar*> CRenderTarget_Manager::Get_AllSRVNames()
+{
+	list<const _tchar*> szNameList;
+
+	for (auto& elem : m_RenderTargets)
+	{
+		szNameList.push_back(elem.first.c_str());
+	}
+
+	return szNameList;
 }
 
 HRESULT CRenderTarget_Manager::Add_RenderTarget(const _tchar* pTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT eFormat, _float4 vClearColor)
@@ -662,6 +676,20 @@ HRESULT CRenderTarget_Manager::Render_Debug(const _tchar* pMRTTag, weak_ptr<CSha
 	{
 		pRenderTarget->Render_Debug(pShader, pVIBuffer);
 	}
+
+	return S_OK;
+}
+HRESULT CRenderTarget_Manager::Render_DebugSRT(const _tchar* pTargetTag, weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect> pVIBuffer)
+{
+	shared_ptr<CRenderTarget> pRenderTarget = Find_RenderTarget(pTargetTag);
+
+	if (FAILED(pShader.lock()->Set_ShaderResourceView("g_Texture", pRenderTarget->Get_SRV())))
+		return E_FAIL;
+
+	if (FAILED(pShader.lock()->Begin(0, DEVICECONTEXT)))
+		return E_FAIL;
+
+	return pVIBuffer.lock()->Render(DEVICECONTEXT);
 
 	return S_OK;
 }

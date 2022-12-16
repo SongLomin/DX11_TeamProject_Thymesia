@@ -1898,6 +1898,7 @@ HRESULT CRender_Manager::Render_Debug()
 
 	if (!GAMEINSTANCE->Is_Debug())
 	{
+		m_szDebugRenderMRTNames.clear();
 		return S_OK;
 	}
 
@@ -1911,30 +1912,91 @@ HRESULT CRender_Manager::Render_Debug()
 	if (FAILED(m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
 		DEBUG_ASSERT;
 
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Deferred"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ShadowDepth"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ExtractEffect"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurForBloom"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurForGlow"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_CopyOriginalRender"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurEffect"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ExtractOutLine"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurOutLine"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ViewShadow"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_StaticShadowDepth"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Fog"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Distortion"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_AntiAliasing"), m_pShader, m_pVIBuffer);
-	//GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Glow"), m_pShader, m_pVIBuffer);
-
-	/*for (auto& pComponent : m_pDebugComponents)
+	if (m_bOldSchoolView)
 	{
-		if (pComponent.lock())
-			pComponent.lock()->Render(pDeviceContext);
-	}*/
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Deferred"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ShadowDepth"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ExtractEffect"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurForBloom"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurForGlow"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_CopyOriginalRender"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurEffect"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ExtractOutLine"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurOutLine"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ViewShadow"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_StaticShadowDepth"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Fog"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Distortion"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_AntiAliasing"), m_pShader, m_pVIBuffer);
+	}
+	else
+	{
+		for (_size_t i = 0; i < m_szDebugRenderMRTNames.size(); ++i)
+		{
+			Render_DebugSRT((_uint)i);
+		}		
+	}
+
+
+	m_szDebugRenderMRTNames.clear();
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Set_DebugSize(const _float2 vSize)
+{
+	m_vDebugSize = vSize;
 
 	return S_OK;
+}
+
+HRESULT CRender_Manager::Set_OldSchoolView(const _bool bOldSchool)
+{
+	m_bOldSchoolView = bOldSchool;
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Add_DebugSRT(const _tchar* In_szMRTName)
+{
+	m_szDebugRenderMRTNames.emplace_back(In_szMRTName);
+
+	return S_OK;
+}
+
+void CRender_Manager::Render_DebugSRT(const _uint In_iIndex)
+{
+	D3D11_VIEWPORT			ViewPortDesc;
+	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
+
+	_uint		iNumViewports = 1;
+
+	DEVICECONTEXT->RSGetViewports(&iNumViewports, &ViewPortDesc);
+
+	_matrix		WorldMatrix = XMMatrixIdentity();
+	_float fX = (m_vDebugSize.x * 0.5f);
+	_float fY = (m_vDebugSize.y * 0.5f);
+	//fY += In_iIndex * m_vDebugSize.y;
+
+	_int iH = ViewPortDesc.Height / m_vDebugSize.y;
+	_int iW = In_iIndex / iH;
+	iH = In_iIndex % iH;
+
+
+	fX += iW * m_vDebugSize.x;
+	fY += iH * m_vDebugSize.y;
+
+	WorldMatrix.r[0] = XMVectorSet(m_vDebugSize.x, 0.f, 0.f, 0.f);
+	WorldMatrix.r[1] = XMVectorSet(0.f, m_vDebugSize.y, 0.f, 0.f);
+	WorldMatrix.r[3] = XMVectorSet(fX - (ViewPortDesc.Width * 0.5f), -fY + (ViewPortDesc.Height * 0.5f), 0.f, 1.f);
+
+	WorldMatrix = XMMatrixTranspose(WorldMatrix);
+
+	if (FAILED(m_pShader->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_float4x4))))
+		DEBUG_ASSERT;
+
+	GET_SINGLE(CRenderTarget_Manager)->Render_DebugSRT(m_szDebugRenderMRTNames[In_iIndex].c_str(), m_pShader, m_pVIBuffer);
+
 }
 
 //HRESULT CRender_Manager::Add_DebugRenderGroup(weak_ptr<CComponent> pComponent)

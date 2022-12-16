@@ -631,6 +631,7 @@
     <ClInclude Include="..\Public\Window_HierarchyView.h" />
     <ClInclude Include="..\Public\Window_Level_Dev.h" />
     <ClInclude Include="..\Public\Window_PrototypeView.h" />
+    <ClInclude Include="..\Public\Window_RenderTarget_Dev.h" />
     <ClInclude Include="..\Public\Window_Shader_Dev.h" />
     <ClInclude Include="..\Public\Window_UI.h" />
     <ClInclude Include="..\Public\ImGui_Manager.h" />
@@ -1063,6 +1064,7 @@
     <ClCompile Include="..\Private\Window_HierarchyView.cpp" />
     <ClCompile Include="..\Private\Window_Level_Dev.cpp" />
     <ClCompile Include="..\Private\Window_PrototypeView.cpp" />
+    <ClCompile Include="..\Private\Window_RenderTarget_Dev.cpp" />
     <ClCompile Include="..\Private\Window_Shader_Dev.cpp" />
     <ClCompile Include="..\Private\Window_UI.cpp" />
     <ClCompile Include="..\Private\ImGui_Manager.cpp" />

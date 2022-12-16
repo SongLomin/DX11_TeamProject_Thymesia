@@ -144,6 +144,13 @@ public: /* For.Render_Manager */
 	ComPtr<ID3D11DeviceContext> Get_BeforeRenderContext();
 	void Release_BeforeRenderContext(ComPtr<ID3D11DeviceContext> pDeviceContext);
 
+#ifdef _DEBUG
+	HRESULT Set_DebugSize(const _float2 vSize);
+	HRESULT Set_OldSchoolView(const _bool bOldSchool);
+	HRESULT	Add_DebugSRT(const _tchar* In_szMRTName);
+#endif // _DEBUG
+
+
 
 
 
@@ -237,6 +244,9 @@ public: /* For. Thread_Manager */
 	{
 		return m_pThread_Manager->Enqueue_Job(f, args);
 	}
+
+public: /* For. RenderTarget_Manager */
+	list<const _tchar*> Get_AllSRVNames();
 
 private:
 	shared_ptr<CGraphic_Device> m_pGraphic_Device;

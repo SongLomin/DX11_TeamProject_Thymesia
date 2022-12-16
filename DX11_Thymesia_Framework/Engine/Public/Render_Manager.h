@@ -105,6 +105,17 @@ private:
 #ifdef _DEBUG
 public:
 	HRESULT Render_Debug();
+	HRESULT Set_DebugSize(const _float2 vSize);
+	HRESULT Set_OldSchoolView(const _bool bOldSchool);
+	HRESULT	Add_DebugSRT(const _tchar* In_szMRTName);
+
+private:
+	void Render_DebugSRT(const _uint In_iIndex);
+
+private:
+	vector<tstring> m_szDebugRenderMRTNames;
+	_float2			m_vDebugSize;
+	_bool			m_bOldSchoolView = true;
 #endif // _DEBUG
 
 #ifdef _DEBUG

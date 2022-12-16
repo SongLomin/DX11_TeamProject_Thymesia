@@ -14,6 +14,7 @@ class CDeveloperConsole_Manager :
 public:
     void    Initialize();
     void	Tick(_float fTimeDelta);
+    void    Background_Tick(_float fTimeDelta);
     HRESULT Render(ID3D11DeviceContext* pDeviceContext);
 
 

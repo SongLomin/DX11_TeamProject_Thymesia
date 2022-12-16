@@ -366,6 +366,22 @@ void CGameInstance::Release_BeforeRenderContext(ComPtr<ID3D11DeviceContext> pDev
 	m_pRender_Manager->Release_BeforeRenderContext(pDeviceContext);
 }
 
+#ifdef _DEBUG
+HRESULT CGameInstance::Set_DebugSize(const _float2 vSize)
+{
+	return m_pRender_Manager->Set_DebugSize(vSize);
+}
+
+HRESULT CGameInstance::Set_OldSchoolView(const _bool bOldSchool)
+{
+	return m_pRender_Manager->Set_OldSchoolView(bOldSchool);
+}
+
+HRESULT CGameInstance::Add_DebugSRT(const _tchar* In_szMRTName)
+{
+	return m_pRender_Manager->Add_DebugSRT(In_szMRTName);
+}
+#endif // _DEBUG
 
 HRESULT CGameInstance::Set_MotionBlur(const _float In_fBlurScale)
 {
@@ -709,6 +725,11 @@ weak_ptr<CPhysXController> CGameInstance::Find_PhysXController(const _uint In_iP
 _uint CGameInstance::Get_PhysXFilterGroup(const _uint In_iIndex)
 {
 	return m_pPhysX_Manager->Get_PhysXFilterGroup(In_iIndex);
+}
+
+list<const _tchar*> CGameInstance::Get_AllSRVNames()
+{
+	return m_pTarget_Manager->Get_AllSRVNames();
 }
 
 void CGameInstance::Free()
