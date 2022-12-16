@@ -1,6 +1,8 @@
 
 #include "Client_Shader_Defines.hpp"
 
+#define PATCH_SIZE 3
+
 matrix g_WorldMatrix, g_ViewMatrix, g_ProjMatrix;
 float4 g_vShaderFlag;
 
@@ -106,7 +108,7 @@ struct HS_OUT
 };
 
 // Constant HS
-PatchTess ConstantHS(InputPatch<VS_OUT_HULL, 3> input, int patchID : SV_PrimitiveID)
+PatchTess ConstantHS(InputPatch<VS_OUT_HULL, PATCH_SIZE> input, int patchID : SV_PrimitiveID)
 {
     PatchTess output = (PatchTess) 0.f;
        
@@ -114,7 +116,7 @@ PatchTess ConstantHS(InputPatch<VS_OUT_HULL, 3> input, int patchID : SV_Primitiv
     output.edgeTess[1] = 5;
     output.edgeTess[2] = 5;
     output.insideTess = 1;
-
+    
     return output;
 }
 
@@ -122,9 +124,9 @@ PatchTess ConstantHS(InputPatch<VS_OUT_HULL, 3> input, int patchID : SV_Primitiv
 [domain("tri")] // 패치의 종류 (tri, quad, isoline)
 [partitioning("integer")] // subdivision mode (integer 소수점 무시, fractional_even, fractional_odd)
 [outputtopology("triangle_cw")] // (triangle_cw, triangle_ccw, line)
-[outputcontrolpoints(3)] // 하나의 입력 패치에 대해, HS가 출력할 제어점 개수
+[outputcontrolpoints(PATCH_SIZE)] // 하나의 입력 패치에 대해, HS가 출력할 제어점 개수
 [patchconstantfunc("ConstantHS")] // ConstantHS 함수 이름
-HS_OUT HS_Main(InputPatch<VS_OUT_HULL, 3> input, int vertexIdx : SV_OutputControlPointID, int patchID : SV_PrimitiveID)
+HS_OUT HS_Main(InputPatch<VS_OUT_HULL, PATCH_SIZE> input, int vertexIdx : SV_OutputControlPointID, int patchID : SV_PrimitiveID)
 {
     HS_OUT output = (HS_OUT) 0.f;
 
@@ -152,7 +154,7 @@ struct DS_OUT
 };
 
 [domain("tri")]
-DS_OUT DS_Main(const OutputPatch<HS_OUT, 3> input, float3 location : SV_DomainLocation, PatchTess patch)
+DS_OUT DS_Main(const OutputPatch<HS_OUT, PATCH_SIZE> input, float3 location : SV_DomainLocation, PatchTess patch)
 {
     DS_OUT output = (DS_OUT) 0.f;
 
@@ -161,12 +163,12 @@ DS_OUT DS_Main(const OutputPatch<HS_OUT, 3> input, float3 location : SV_DomainLo
     float3 normal = input[0].vNormal * location.r + input[1].vNormal * location.g + input[2].vNormal * location.b;
     float3 tangent = input[0].vTangent * location.r + input[1].vTangent * location.g + input[2].vTangent * location.b;
     
-    vector vDisplacement = g_DisplacementTexture.SampleLevel(DefaultSampler, uv * 10.f + g_vUVNoise * 0.1f, 0);
-    
+    vector vDisplacement = g_NoiseTexture2.SampleLevel(DefaultSampler, uv + g_vUVNoise * 0.01f, 0);
+ 
     matrix matWV = mul(g_WorldMatrix, g_ViewMatrix);
     matrix matWVP = mul(matWV, g_ProjMatrix);
     
-    output.vPosition = mul(float4(localPos + vDisplacement.xyz*0.8f, 1.f), matWVP);
+    output.vPosition = mul(float4(localPos + vDisplacement.xyz, 1.f), matWVP);
     output.vTexUV = uv;
     output.vNormal = normalize(mul(vector(normal, 0.f), g_WorldMatrix));
     output.vWorldPos = mul(vector(localPos, 1.f), g_WorldMatrix);
@@ -279,10 +281,7 @@ PS_OUT PS_MAIN_NORM(PS_IN In)
         Out.vDiffuse = AddTex_Diff * vFilter + Out.vDiffuse * (1.f - vFilter);
         vPixelNorm = AddTex_Norm.xyz;
     }
-    //물쉐이더 테스트 용 
-    vPixelNorm = g_NoiseTexture1.Sample(DefaultSampler, In.vTexUV * 30.f + g_vUVNoise * 0.05f) * 2.f - 1.f;
-    vPixelNorm += g_NoiseTexture2.Sample(DefaultSampler, In.vTexUV * 10.f/* - g_vUVNoise * 0.01f*/) * 2.f - 1.f;
-    vPixelNorm = float3(vPixelNorm.rg, lerp(1, vPixelNorm.b, 1.f)); 
+  
     float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));
     //vPixelNorm = vPixelNorm * 2.f - 1.f;
     vPixelNorm = mul(vPixelNorm, WorldMatrix);
@@ -297,7 +296,7 @@ PS_OUT PS_MAIN_NORM(PS_IN In)
     return Out;
 }
 
-PS_OUT PS_MAIN_WIREFRAM(DS_OUT In)
+PS_OUT PS_MAIN_WIREFRAM(PS_IN In)
 {
     PS_OUT Out = (PS_OUT) 0;
 
@@ -334,24 +333,28 @@ PS_OUT PS_MAIN_FILLTER(PS_IN In)
     return Out;
 }
 
-PS_OUT PS_MAIN_WATER(PS_IN In)
+PS_OUT PS_MAIN_WATER(DS_OUT In)
 {
     PS_OUT Out = (PS_OUT) 0;
 
     Out.vDiffuse = g_Texture_Sorc_Diff.Sample(DefaultSampler, In.vTexUV * g_fSorc_Density);
 
     vector vFilterDiffuse = g_FilterTexture.Sample(DefaultSampler, In.vTexUV);
-     
+ 
       //물쉐이더 테스트 용
-    float3 vPixelNorm = g_NoiseTexture1.Sample(DefaultSampler, In.vTexUV * 10.f + g_vUVNoise * 0.1f) * 2.f - 1.f;
-    vPixelNorm += g_NoiseTexture2.Sample(DefaultSampler, In.vTexUV * 50.f + g_vUVNoise * -0.1f) * 2.f - 1.f;
-     
-     
-    vPixelNorm = float3(vPixelNorm.rg, lerp(1, vPixelNorm.b, 1.f));
-    Out.vDiffuse = 0.1f * Out.vDiffuse + 0.9f * vector(0.4f, 0.f, 0.05f, 1.f);
+    float3 vPixelNorm = g_NoiseTexture1.Sample(DefaultSampler, In.vTexUV * 50.f + g_vUVNoise * 0.1f) * 2.f - 1.f;
+    vPixelNorm += g_NoiseTexture2.Sample(DefaultSampler, In.vTexUV * 10.f + g_vUVNoise * 0.01f) * 2.f - 1.f;
     
+    vPixelNorm = float3(vPixelNorm.rg, lerp(1, vPixelNorm.b, 1.f));
+    
+    float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));
+    vPixelNorm = vPixelNorm * 2.f - 1.f;
+    vPixelNorm = mul(vPixelNorm, WorldMatrix);
+  
+    Out.vDiffuse = 0.1f * Out.vDiffuse + 0.9f * vector(0.4f, 0.f, 0.05f, 1.f);
+      
     Out.vDiffuse.a = 1.f;
-    Out.vNormal = In.vNormal;
+    Out.vNormal = vector(vPixelNorm.xyz * 0.5f + 0.5f, 0.f);
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
     Out.vORM = 0;
@@ -394,9 +397,9 @@ technique11 DefaultTechnique
         SetDepthStencilState(DSS_Default, 0);
         SetRasterizerState(RS_Wireframe);
 
-        VertexShader = compile vs_5_0 VS_MAIN_HULL();
-        HullShader = compile hs_5_0 HS_Main();
-        DomainShader = compile ds_5_0 DS_Main();
+        VertexShader = compile vs_5_0 VS_MAIN_DEFAULT();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_WIREFRAM();
     }
@@ -420,9 +423,9 @@ technique11 DefaultTechnique
         SetDepthStencilState(DSS_Default, 0);
         SetRasterizerState(RS_Default);
 
-        VertexShader = compile vs_5_0 VS_MAIN_DEFAULT();
-        HullShader = NULL;
-        DomainShader = NULL;
+        VertexShader = compile vs_5_0 VS_MAIN_HULL();
+        HullShader = compile hs_5_0 HS_Main();
+        DomainShader = compile ds_5_0 DS_Main();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_WATER();
 
