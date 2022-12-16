@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "CorvusStates/CorvusState_Long_AvoidF.h"
+#include "CorvusStates/CorvusState_Long_AvoidB.h"
 #include "Model.h"
 #include "GameInstance.h"
 #include "GameObject.h"
@@ -10,16 +10,16 @@
 #include "GameManager.h"
 #include "Weapon.h"
 
-GAMECLASS_C(CCorvusState_Long_AvoidF);
-CLONE_C(CCorvusState_Long_AvoidF, CComponent)
+GAMECLASS_C(CCorvusState_Long_AvoidB);
+CLONE_C(CCorvusState_Long_AvoidB, CComponent)
 
-HRESULT CCorvusState_Long_AvoidF::Initialize_Prototype()
+HRESULT CCorvusState_Long_AvoidB::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 	return S_OK;
 }
 
-HRESULT CCorvusState_Long_AvoidF::Initialize(void* pArg)
+HRESULT CCorvusState_Long_AvoidB::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 	m_fNextCombatRatio = 0.23f;
@@ -28,16 +28,16 @@ HRESULT CCorvusState_Long_AvoidF::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CCorvusState_Long_AvoidF::Start()
+void CCorvusState_Long_AvoidB::Start()
 {
 	__super::Start();
 	
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_AvoidLongF");
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Long_AvoidF::Call_AnimationEnd, this);
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_AvoidLongB_NEW");
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_Long_AvoidB::Call_AnimationEnd, this);
 }
 
-void CCorvusState_Long_AvoidF::Tick(_float fTimeDelta)
+void CCorvusState_Long_AvoidB::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
@@ -45,7 +45,7 @@ void CCorvusState_Long_AvoidF::Tick(_float fTimeDelta)
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
-void CCorvusState_Long_AvoidF::LateTick(_float fTimeDelta)
+void CCorvusState_Long_AvoidB::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
@@ -54,18 +54,18 @@ void CCorvusState_Long_AvoidF::LateTick(_float fTimeDelta)
 
 
 
-void CCorvusState_Long_AvoidF::OnDisable()
+void CCorvusState_Long_AvoidB::OnDisable()
 {
 
 }
 
-void CCorvusState_Long_AvoidF::OnStateStart(const _float& In_fAnimationBlendTime)
+void CCorvusState_Long_AvoidB::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	
 
-	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Long_AvoidF>().lock())
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Long_AvoidB>().lock())
 	{
 		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 5);
 	}
@@ -82,14 +82,14 @@ void CCorvusState_Long_AvoidF::OnStateStart(const _float& In_fAnimationBlendTime
 	//m_pModelCom.lock()->Set_AnimationSpeed(3.f);
 }
 
-void CCorvusState_Long_AvoidF::OnStateEnd()
+void CCorvusState_Long_AvoidB::OnStateEnd()
 {
 	__super::OnStateEnd();
 
 
 }
 
-void CCorvusState_Long_AvoidF::Call_AnimationEnd()
+void CCorvusState_Long_AvoidB::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
@@ -98,24 +98,24 @@ void CCorvusState_Long_AvoidF::Call_AnimationEnd()
 
 }
 
-void CCorvusState_Long_AvoidF::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
+void CCorvusState_Long_AvoidB::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 {
 	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 }
 
-void CCorvusState_Long_AvoidF::Free()
+void CCorvusState_Long_AvoidB::Free()
 {
 
 }
 
-void CCorvusState_Long_AvoidF::OnDestroy()
+void CCorvusState_Long_AvoidB::OnDestroy()
 {
 	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Long_AvoidF::Call_AnimationEnd, this);
+		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Long_AvoidB::Call_AnimationEnd, this);
 }
 
-_bool CCorvusState_Long_AvoidF::Check_AndChangeNextState()
+_bool CCorvusState_Long_AvoidB::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
 		return false;
@@ -128,7 +128,7 @@ _bool CCorvusState_Long_AvoidF::Check_AndChangeNextState()
 				Rotation_TargetToLookDir();
 
 			m_IsAgainAvoid = false;
-			Get_OwnerPlayer()->Change_State<CCorvusState_Long_AvoidF>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Long_AvoidB>();
 			return false;
 		}
 	}
@@ -191,7 +191,7 @@ _bool CCorvusState_Long_AvoidF::Check_AndChangeNextState()
 	return false;
 }
 
-_bool CCorvusState_Long_AvoidF::Check_RuquireMnetRepeatAvoidkState()
+_bool CCorvusState_Long_AvoidB::Check_RuquireMnetRepeatAvoidkState()
 {
 	_uint iTargetKeyFrameMin = 80;
 	_uint iTargetKeyFrameMax = 999;

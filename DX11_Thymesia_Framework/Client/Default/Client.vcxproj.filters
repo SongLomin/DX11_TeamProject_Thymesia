@@ -1492,6 +1492,24 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Long_AvoidF.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\07.CorvusState_LongAvoid\00.LongF</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_AvoidR.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\08.CorvusState_ShortAvoid\01.ShortR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_AvoidL.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\08.CorvusState_ShortAvoid\02.ShortL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_AvoidB.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\08.CorvusState_ShortAvoid\03.ShortB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Long_AvoidL.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\07.CorvusState_LongAvoid\01.LongL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Long_AvoidB.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\07.CorvusState_LongAvoid\02.LongB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Long_AvoidR.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\07.CorvusState_LongAvoid\03.LongR</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3019,6 +3037,24 @@
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Long_AvoidF.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\07.CorvusState_LongAvoid\00.LongF</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Short_AvoidR.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\08.CorvusState_ShortAvoid\01.ShortR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Short_AvoidL.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\08.CorvusState_ShortAvoid\02.ShortL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Short_AvoidB.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\08.CorvusState_ShortAvoid\03.ShortB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Long_AvoidL.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\07.CorvusState_LongAvoid\01.LongL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Long_AvoidB.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\07.CorvusState_LongAvoid\02.LongB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Long_AvoidR.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\07.CorvusState_LongAvoid\03.LongR</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

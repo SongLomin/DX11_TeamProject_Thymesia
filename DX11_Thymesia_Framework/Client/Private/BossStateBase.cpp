@@ -7,6 +7,7 @@
 #include "Model.h"
 #include "Player.h"
 #include  "VargStates.h"
+#include "BossBat/BatStates.h"
 
 GAMECLASS_C(CBossStateBase);
 
@@ -289,9 +290,18 @@ void CBossStateBase::TurnMechanism()
 
 			else
 			{
-				Rotation_TargetToLookDir();
-				Get_Owner().lock()->Get_Component<CVargBossState_Idle>().lock()->Set_TurnCheck(false);
-				Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
+				switch (ComputeDirectionToPlayer())
+				{
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CVargBossState_TurnR>(0.05f);
+					break;
+				case -1:
+					Get_OwnerCharacter().lock()->Change_State<CVargBossState_TurnL>(0.05f);
+					break;
+				default:
+					assert(0);
+					return;
+				}
 			}
 		}
 		else
@@ -315,6 +325,65 @@ void CBossStateBase::TurnMechanism()
 	case Client::MONSTERTYPE::URD:
 		break;
 	case Client::MONSTERTYPE::BAT:
+	{
+		_float fDistance = Get_DistanceWithPlayer();
+
+
+		if (fDistance > 3.f)
+		{
+			if (ComputeAngleWithPlayer() <= 0.f) // 90일때 0 90보다크면 -값이다 90보다 작으면 +값이다
+			{
+				switch (ComputeDirectionToPlayer())
+				{
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CBatBossState_TurnR>(0.05f);
+					break;
+				case -1:
+					Get_OwnerCharacter().lock()->Change_State<CBatBossState_TurnL>(0.05f);
+					break;
+				default:
+					assert(0);
+					return;
+				}
+			}
+			else
+			{
+				switch (ComputeDirectionToPlayer())
+				{
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CBatBossState_TurnR>(0.05f);
+					break;
+				case -1:
+					Get_OwnerCharacter().lock()->Change_State<CBatBossState_TurnL>(0.05f);
+					break;
+				default:
+					assert(0);
+					return;
+				}
+			}
+		}
+		else
+		{
+			//오른쪽 왼쪾 구분해주고 	
+			if (ComputeAngleWithPlayer() <= 0.f)
+			{
+				if (ComputeDirectionToPlayer() == 1)
+				{
+					//오른쪽
+					Get_OwnerCharacter().lock()->Change_State<CBatBossState_Atk_R01_2a>(0.05f);
+				}
+				else
+				{
+
+					Get_OwnerCharacter().lock()->Change_State<CBatBossState_Atk_L01_2a>(0.05f);
+				}
+			}
+
+		}
+
+
+
+	}
 		break;
 
 	}

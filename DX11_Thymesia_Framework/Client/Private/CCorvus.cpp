@@ -312,14 +312,16 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_Headache_Loop);
 	ADD_STATE_MACRO(CCorvusState_FeatherAttack);
 	ADD_STATE_MACRO(CCorvusState_ClawPlunderAttack);
-
-
+	ADD_STATE_MACRO(CCorvusState_LongHealing);
+	ADD_STATE_MACRO(CCorvusState_ShortHealing);
 	ADD_STATE_MACRO(CCorvusState_Short_AvoidF);
-
-
+	ADD_STATE_MACRO(CCorvusState_Short_AvoidB);
+	ADD_STATE_MACRO(CCorvusState_Short_AvoidL);
+	ADD_STATE_MACRO(CCorvusState_Short_AvoidR);
 	ADD_STATE_MACRO(CCorvusState_Long_AvoidF);
-
-
+	ADD_STATE_MACRO(CCorvusState_Long_AvoidB);
+	ADD_STATE_MACRO(CCorvusState_Long_AvoidR);
+	ADD_STATE_MACRO(CCorvusState_Long_AvoidL);
 	ADD_STATE_MACRO(CCorvusState_Short_Claw_Atk1);
 	ADD_STATE_MACRO(CCorvusState_Short_Claw_Atk2);
 	ADD_STATE_MACRO(CCorvusState_Short_Claw_Atk3);

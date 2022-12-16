@@ -284,7 +284,10 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtXL.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_LAttack5.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_LongHealing.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Long_AvoidB.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Long_AvoidF.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Long_AvoidL.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Long_AvoidR.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Parry1.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Parry2.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectLeft.h" />
@@ -306,7 +309,10 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_RunR.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ShortAvoid.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ShortHealing.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_AvoidB.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_AvoidF.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_AvoidL.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_AvoidR.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_Claw_Atk1.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_Claw_Atk2.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_Claw_Atk3.h" />
@@ -772,7 +778,10 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Headache_Start.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXL.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_LongHealing.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Long_AvoidB.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Long_AvoidF.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Long_AvoidL.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Long_AvoidR.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectLeft.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectLeftup.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ParryDeflectRight.cpp" />
@@ -795,7 +804,10 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_RunR.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ShortAvoid.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ShortHealing.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Short_AvoidB.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Short_AvoidF.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Short_AvoidL.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Short_AvoidR.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Short_Claw_Atk1.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Short_Claw_Atk2.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Short_Claw_Atk3.cpp" />

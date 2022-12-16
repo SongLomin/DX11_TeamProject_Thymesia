@@ -7,12 +7,12 @@ END
 
 BEGIN(Client)
 
-class CCorvusState_Short_AvoidF :
+class CCorvusState_Short_AvoidR :
     public CCorvusStateBase
 {
-    GAMECLASS_H(CCorvusState_Short_AvoidF);
-    CLONE_H(CCorvusState_Short_AvoidF, CComponent)
-        SHALLOW_COPY(CCorvusState_Short_AvoidF)
+    GAMECLASS_H(CCorvusState_Short_AvoidR);
+    CLONE_H(CCorvusState_Short_AvoidR, CComponent)
+        SHALLOW_COPY(CCorvusState_Short_AvoidR)
 
 protected:
     virtual HRESULT Initialize_Prototype() override;

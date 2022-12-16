@@ -80,14 +80,21 @@
 #include "CorvusStates/CorvusState_Short_Claw_Atk2.h"
 #include "CorvusStates/CorvusState_Short_Claw_Atk3.h"
 #include "CorvusStates/CorvusState_ClawPlunderAttack.h"
-
+#include "CorvusStates/CorvusState_LongHealing.h"
+#include "CorvusStates/CorvusState_ShortHealing.h"
 
 
 
 
 
 #include "CorvusStates/CorvusState_Long_AvoidF.h"
+#include "CorvusStates/CorvusState_Long_AvoidR.h"
+#include "CorvusStates/CorvusState_Long_AvoidL.h"
+#include "CorvusStates/CorvusState_Long_AvoidB.h"
 #include "CorvusStates/CorvusState_Short_AvoidF.h"
+#include "CorvusStates/CorvusState_Short_AvoidR.h"
+#include "CorvusStates/CorvusState_Short_AvoidL.h"
+#include "CorvusStates/CorvusState_Short_AvoidB.h"
 
 
 

@@ -15,6 +15,11 @@ class CBatBossState_Idle :
 		SHALLOW_COPY(CBatBossState_Idle)
 
 
+public:
+	void    Set_TurnCheck(_bool TurnCheck) { m_bTurnCheck = TurnCheck; }
+	void    Set_ChargeCount(_uint ChargeCount) { m_iChargeCount = ChargeCount; }
+	void    SeT_AttackCount(_uint AttackCount) { m_iAttackCount = AttackCount; }
+
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
@@ -30,8 +35,14 @@ protected:
 
 
 private:
-	_bool    m_bNextState = false;
-	_float   m_fSinematic = 0.f;
+	//필요한게 charge가 몇번쨰인지 
+	//charge상태인지 charge 상태가아닌지
+	//내가어택읆쳐번했는지 
+	_uint    m_iChargeCount = 0;
+	_uint    m_iAttackCount = 0;
+	_bool    m_bCheckCharge = false;
+	_bool    m_bTurnCheck = false;
+	
 
 private:
 //	void Call_AnimationEnd();

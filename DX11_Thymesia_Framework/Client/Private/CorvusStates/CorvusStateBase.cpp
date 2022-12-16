@@ -36,7 +36,7 @@ _bool CCorvusStateBase::Check_RequirementAttackState()
 
 _bool CCorvusStateBase::Check_RequirementFadderAttackState()
 {
-	if (KEY_INPUT(KEY::ALT, KEY_STATE::TAP))
+	if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
 	{
 		return true;
 	}
