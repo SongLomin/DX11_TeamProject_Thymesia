@@ -28,11 +28,6 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
-
-private:
-	_bool    m_bNextState = false;
-	_float   m_fSinematic = 0.f;
-
 private:
 	void Call_AnimationEnd();
 protected:

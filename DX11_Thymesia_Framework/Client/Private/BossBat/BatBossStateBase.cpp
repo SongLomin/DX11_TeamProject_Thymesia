@@ -9,6 +9,7 @@
 #include "Status.h"
 //#include "ComboTimer.h"
 #include "Attack_Area.h"
+#include "BossBat/BatStates.h"
 //#include "DamageUI.h"
 
 
@@ -67,6 +68,22 @@ void CBatBossStateBase::Play_OnHitEffect()
 	GET_SINGLE(CGameManager)->Use_EffectGroup("Hit_Monster1", ReverseLookMatrix);*/
 
 	GET_SINGLE(CGameManager)->Use_EffectGroup("Hit_Monster2", m_pTransformCom);
+
+}
+
+_bool CBatBossStateBase::Check_CrossAttackState()
+{
+	switch (ComputeDirectionToPlayer())
+	{
+	case 1:
+		Get_OwnerCharacter().lock()->Change_State<CBatBossState_Atk_R01_1>(0.05f);
+		break;
+	case -1:
+		Get_OwnerCharacter().lock()->Change_State<CBatBossState_Atk_L01_1>(0.05f);
+		break;
+	}
+
+	return true;
 
 }
 

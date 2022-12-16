@@ -173,8 +173,43 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("Joker_TakeExecution_Start", 1.4f);
 #pragma endregion // Joker
 
+
+
+
 #pragma region Bat
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Seq_BossFightStart_V1", 3.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Seq_BossFightStart_V1", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_AttackL_01_1", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_AttackL_01_2a", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_AttackL_01_2b", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_AttackL_01_3a", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_AttackR_01_1", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_AttackR_01_2a", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_AttackR_01_2b", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Bite_1", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Bite_2", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Car", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Charge", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_FTurn_L", 1.5f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_FTurn_R", 1.5f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Hellscream", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_HurtXL_F", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_HurtXL_L", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_JumpSmash_Chest", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_JumpSmashForwardL", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_JumpSmashL", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_SonicBoom", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_SP01", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Storm_1", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_StunEnd", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_StunLoop", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_StunStart", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TakeExecution_End", 2.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TakeExecution_Loop", 2.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TakeExecution_Start01", 2.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TurnL90", 1.5f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TurnR90", 1.5f);
+
+ 
 
 #pragma endregion // Bat
 

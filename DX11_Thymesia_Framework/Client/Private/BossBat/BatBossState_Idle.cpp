@@ -129,137 +129,533 @@ _bool CBatBossState_Idle::Check_AndChangeNextState()
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 
 
-
-	if (fPToMDistance >= 8.f)
+	if (m_bHeelScream)
 	{
-		if (m_bTurnCheck)
+		if (fPToMDistance >= 8.f)
 		{
-			TurnMechanism();
-		}
-
-		switch (m_iChargeCount)
-		{
-		case 0:
-			//차지한번도안했을때
-		{
-			int iRand = rand() % 3;
-
-			switch (iRand)
+			if (m_bTurnCheck)
 			{
-			case 0:
-				Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_ForwardL>(0.05f);
+				TurnMechanism();
+			}
+
+			switch (m_iChargeCount)
+			{
+			case 0: // 차지카운터 0 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+				switch (m_iAttackCount)
+				{
+				case 0:
+					//여기는 공격한번하면 카운트 1씩증가 
+				{
+					int iRand = rand() % 3;
+
+					switch (iRand)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_ForwardL>(0.05f);
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Car>(0.05f);
+						break;
+					case 2:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Storm>(0.05f);
+						break;
+					}
+
+				}
 				break;
-			case 1:
-				Get_OwnerCharacter().lock()->Change_State<CBatBossState_Car>(0.05f);
+				case 1:
+					// 공격한번더하면 카운트 또증가
+				{
+					int iRand = rand() % 2;
+
+					switch (iRand)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Sp>(0.05f);
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_ForwardL>(0.05f);
+						break;
+
+					}
+				}
 				break;
-			case 2:
-				Get_OwnerCharacter().lock()->Change_State<CBatBossState_Storm>(0.05f);
+				case 2:
+					// 여기까지마지막임
+				{
+					Get_OwnerCharacter().lock()->Change_State<CBatBossState_Sp>(0.05f);
+				}
+				break;
+				}
+
+				//차지한번도안했을때
+
+				break;
+			case 1: // 차지카운터가1일떄 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+				switch (m_iAttackCount)
+				{
+				case 0:
+					//여기는 공격한번하면 카운트 1씩증가 
+				{
+					int iRand = rand() % 3;
+
+					switch (iRand)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_ForwardL>(0.05f);
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Car>(0.05f);
+						break;
+					case 2:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Storm>(0.05f);
+						break;
+					}
+
+				}
+				break;
+				case 1:
+					// 공격한번더하면 카운트 또증가
+				{
+					int iRand = rand() % 2;
+
+					switch (iRand)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Charge>(0.05f);
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_ForwardL>(0.05f);
+						break;
+
+					}
+				}
+				break;
+				case 2:
+					// 여기까지마지막임
+				{
+					Get_OwnerCharacter().lock()->Change_State<CBatBossState_Charge>(0.05f);
+				}
+				break;
+				}
+				//차지 한번햇을때
+				break;
+			case 2: // 차지카운터가2일떄 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+				switch (m_iAttackCount)
+				{
+				case 0:
+					//여기는 공격한번하면 카운트 1씩증가 
+				{
+					int iRand = rand() % 3;
+
+					switch (iRand)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_ForwardL>(0.05f);
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Car>(0.05f);
+						break;
+					case 2:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Storm>(0.05f);
+						break;
+					}
+
+				}
+				break;
+				case 1:
+					// 공격한번더하면 카운트 또증가
+				{
+					int iRand = rand() % 2;
+
+					switch (iRand)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Charge>(0.05f);
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_ForwardL>(0.05f);
+						break;
+
+					}
+				}
+				break;
+				case 2:
+					// 여기까지마지막임
+				{
+					Get_OwnerCharacter().lock()->Change_State<CBatBossState_Charge>(0.05f);
+				}
+				break;
+				}
+				//차지 두번쨰일떄 
 				break;
 			}
-		}
-			break;
-		case 1:
-			//차지 한번햇을때
-			break;
-		case 2:
-			//차지 두번쨰일떄 
-			break;
-		}
 
-		return true;
+			return true;
 
+		}
+		else
+		{
+			if (m_bTurnCheck)
+			{
+				TurnMechanism();
+			}
+
+			switch (m_iChargeCount)
+			{
+			case 0:
+				switch (m_iAttackCount)
+				{
+				case 0:
+					//여기는 공격한번하면 카운트 1씩증가 
+				{
+					int iRand = rand() % 3;
+
+					switch (iRand)
+					{
+					case 0:
+						Check_CrossAttackState();
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_SmarhL>(0.05f);
+						break;
+					case 2:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Bite_2>(0.05f);
+						break;
+					}
+				}
+				break;
+				case 1:
+					// 공격한번더하면 카운트 또증가
+				{
+
+				}
+				break;
+				case 2:
+					// 여기까지마지막임
+				{
+
+				}
+				break;
+				}
+
+				break;
+			case 1:
+				switch (m_iAttackCount)
+				{
+				case 0:
+					//여기는 공격한번하면 카운트 1씩증가 
+				{
+
+				}
+				break;
+				case 1:
+					// 공격한번더하면 카운트 또증가
+				{
+
+				}
+				break;
+				case 2:
+					// 여기까지마지막임
+				{
+
+				}
+				break;
+				}
+
+				break;
+			case 2:
+				switch (m_iAttackCount)
+				{
+				case 0:
+					//여기는 공격한번하면 카운트 1씩증가 
+				{
+
+				}
+				break;
+				case 1:
+					// 공격한번더하면 카운트 또증가
+				{
+
+				}
+				break;
+				case 2:
+					// 여기까지마지막임
+				{
+
+				}
+				break;
+				}
+
+				break;
+			}
+
+
+
+
+
+			return true;
+
+		}
 	}
 	else
 	{
-		if (m_bTurnCheck)
+		if (fPToMDistance >= 8.f)
 		{
-			TurnMechanism();
-		}
+			if (m_bTurnCheck)
+			{
+				TurnMechanism();
+			}
 
-		switch (m_iChargeCount)
+			switch (m_iChargeCount)
+			{
+			case 0: // 차지카운터 0 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+				switch (m_iAttackCount)
+				{
+				case 0:
+					//여기는 공격한번하면 카운트 1씩증가 
+				{
+					int iRand = rand() % 3;
+
+					switch (iRand)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_ForwardL>(0.05f);
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Car>(0.05f);
+						break;
+					case 2:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Storm>(0.05f);
+						break;
+					}
+
+				}
+				break;
+				case 1:
+					// 공격한번더하면 카운트 또증가
+				{
+					int iRand = rand() % 2;
+
+					switch (iRand)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Charge>(0.05f);
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_ForwardL>(0.05f);
+						break;
+
+					}
+				}
+				break;
+				case 2:
+					// 여기까지마지막임
+				{
+					Get_OwnerCharacter().lock()->Change_State<CBatBossState_Charge>(0.05f);
+				}
+				break;
+				}
+
+				//차지한번도안했을때
+
+				break;
+			case 1: // 차지카운터가1일떄 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+				switch (m_iAttackCount)
+				{
+				case 0:
+					//여기는 공격한번하면 카운트 1씩증가 
+				{
+					int iRand = rand() % 3;
+
+					switch (iRand)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_ForwardL>(0.05f);
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Car>(0.05f);
+						break;
+					case 2:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Storm>(0.05f);
+						break;
+					}
+
+				}
+				break;
+				case 1:
+					// 공격한번더하면 카운트 또증가
+				{
+					int iRand = rand() % 2;
+
+					switch (iRand)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Charge>(0.05f);
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_ForwardL>(0.05f);
+						break;
+
+					}
+				}
+				break;
+				case 2:
+					// 여기까지마지막임
+				{
+					Get_OwnerCharacter().lock()->Change_State<CBatBossState_Charge>(0.05f);
+				}
+				break;
+				}
+				//차지 한번햇을때
+				break;
+			case 2: // 차지카운터가2일떄 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+				switch (m_iAttackCount)
+				{
+				case 0:
+					//여기는 공격한번하면 카운트 1씩증가 
+				{
+					int iRand = rand() % 3;
+
+					switch (iRand)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_ForwardL>(0.05f);
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Car>(0.05f);
+						break;
+					case 2:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Storm>(0.05f);
+						break;
+					}
+
+				}
+				break;
+				case 1:
+					// 공격한번더하면 카운트 또증가
+				{
+					int iRand = rand() % 2;
+
+					switch (iRand)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Charge>(0.05f);
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_ForwardL>(0.05f);
+						break;
+
+					}
+				}
+				break;
+				case 2:
+					// 여기까지마지막임
+				{
+					Get_OwnerCharacter().lock()->Change_State<CBatBossState_Charge>(0.05f);
+				}
+				break;
+				}
+				//차지 두번쨰일떄 
+				break;
+			}
+
+			return true;
+
+		}
+		else
 		{
-		case 0:
-			switch (m_iAttackCount)
+			if (m_bTurnCheck)
+			{
+				TurnMechanism();
+			}
+
+			switch (m_iChargeCount)
 			{
 			case 0:
-				//여기는 공격한번하면 카운트 1씩증가 
-			{
+				switch (m_iAttackCount)
+				{
+				case 0:
+					//여기는 공격한번하면 카운트 1씩증가 
+				{
 
-			}
-			break;
+				}
+				break;
+				case 1:
+					// 공격한번더하면 카운트 또증가
+				{
+
+				}
+				break;
+				case 2:
+					// 여기까지마지막임
+				{
+
+				}
+				break;
+				}
+
+				break;
 			case 1:
-				// 공격한번더하면 카운트 또증가
-			{
+				switch (m_iAttackCount)
+				{
+				case 0:
+					//여기는 공격한번하면 카운트 1씩증가 
+				{
 
-			}
-			break;
+				}
+				break;
+				case 1:
+					// 공격한번더하면 카운트 또증가
+				{
+
+				}
+				break;
+				case 2:
+					// 여기까지마지막임
+				{
+
+				}
+				break;
+				}
+
+				break;
 			case 2:
-				// 여기까지마지막임
-			{
+				switch (m_iAttackCount)
+				{
+				case 0:
+					//여기는 공격한번하면 카운트 1씩증가 
+				{
 
-			}
-			break;
-			}
+				}
+				break;
+				case 1:
+					// 공격한번더하면 카운트 또증가
+				{
 
-			break;
-		case 1:
-			switch (m_iAttackCount)
-			{
-			case 0:
-				//여기는 공격한번하면 카운트 1씩증가 
-			{
+				}
+				break;
+				case 2:
+					// 여기까지마지막임
+				{
 
-			}
-			break;
-			case 1:
-				// 공격한번더하면 카운트 또증가
-			{
+				}
+				break;
+				}
 
-			}
-			break;
-			case 2:
-				// 여기까지마지막임
-			{
-
-			}
-			break;
+				break;
 			}
 
-			break;
-		case 2:
-			switch (m_iAttackCount)
-			{
-			case 0:
-				//여기는 공격한번하면 카운트 1씩증가 
-			{
 
-			}
-			break;
-			case 1:
-				// 공격한번더하면 카운트 또증가
-			{
 
-			}
-			break;
-			case 2:
-				// 여기까지마지막임
-			{
 
-			}
-			break;
-			}
 
-			break;
+			return true;
+
 		}
-
-		
-		
-
-		
-
-
-		
 	}
+
+
 
 	return false;
 }

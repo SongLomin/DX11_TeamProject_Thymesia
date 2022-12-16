@@ -14,8 +14,8 @@ class CBatBossState_Charge :
 	CLONE_H(CBatBossState_Charge, CComponent)
 		SHALLOW_COPY(CBatBossState_Charge)
 
-
-
+public:
+	void Set_HellScream(_uint iHellSceram) { m_iHellSceram = iHellSceram; }
 protected:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
@@ -30,9 +30,7 @@ protected:
 
 
 private:
-	_bool    m_bNextState = false;
-	_float   m_fSinematic = 0.f;
-
+	_uint       m_iHellSceram = 0;
 private:
 	void Call_AnimationEnd();
 protected:

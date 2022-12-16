@@ -17,9 +17,9 @@ class CBatBossState_Idle :
 
 public:
 	void    Set_TurnCheck(_bool TurnCheck) { m_bTurnCheck = TurnCheck; }
-	void    Set_ChargeCount(_uint ChargeCount) { m_iChargeCount = ChargeCount; }
-	void    SeT_AttackCount(_uint AttackCount) { m_iAttackCount = AttackCount; }
-
+	void    Set_ChargeCount(_uint ChargeCount) { m_iChargeCount += ChargeCount; }
+	void    Set_AttackCount(_uint AttackCount) { m_iAttackCount += AttackCount; }
+	void    Set_HeelScream(_bool bHeelScream) { m_bHeelScream = bHeelScream; }
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
@@ -42,6 +42,7 @@ private:
 	_uint    m_iAttackCount = 0;
 	_bool    m_bCheckCharge = false;
 	_bool    m_bTurnCheck = false;
+	_bool    m_bHeelScream = false;
 	
 
 private:
