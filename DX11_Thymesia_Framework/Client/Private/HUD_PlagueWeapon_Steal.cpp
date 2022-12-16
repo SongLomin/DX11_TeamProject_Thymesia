@@ -44,7 +44,7 @@ HRESULT CHUD_PlagueWeapon_Steal::Initialize(void* pArg)
     m_pPlagueWeapon_Icon.lock()->Set_Depth(0.2f);
     m_pPlagueWeapon_Icon.lock()->Set_Size(160.f, 160.f);
 
-    m_pPlagueWeapon_Ready = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &m_tUIDesc);
+    m_pPlagueWeapon_Ready = GAMEINSTANCE->Add_GameObject<CProgressBar>(LEVEL_STATIC, &m_tUIDesc);
     m_pPlagueWeapon_Ready.lock()->Set_Texture("HUD_PlagueWeapon_Frame_Ready");
     m_pPlagueWeapon_Ready.lock()->Set_Depth(0.1f);
     m_pPlagueWeapon_Ready.lock()->Set_AlphaColor(0.3f);

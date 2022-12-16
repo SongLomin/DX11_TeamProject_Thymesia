@@ -62,7 +62,7 @@ HRESULT CHUD_Player_Memory::Start()
 
 void CHUD_Player_Memory::Tick(_float fTimeDelta)
 {
-    fTimeDelta = CUI_Utils::UI_TimeDelta(fTimeDelta);
+    fTimeDelta = CUI_Utils::UI_TimeDelta();
 
     __super::Tick(fTimeDelta);
 
@@ -72,7 +72,7 @@ void CHUD_Player_Memory::Tick(_float fTimeDelta)
 
 void CHUD_Player_Memory::LateTick(_float fTimeDelta)
 {
-    fTimeDelta = CUI_Utils::UI_TimeDelta(fTimeDelta);
+    fTimeDelta = CUI_Utils::UI_TimeDelta();
 
     __super::LateTick(fTimeDelta);
 

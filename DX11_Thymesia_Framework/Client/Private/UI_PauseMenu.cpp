@@ -10,7 +10,7 @@
 #include "Engine_Defines.h"
 #include "UI_PauseMenu_Page_Status.h"
 #include "FadeMask.h"
-
+#include "UI_PauseMenu_Page_Inventory.h"
 
 GAMECLASS_C(CUI_PauseMenu)
 CLONE_C(CUI_PauseMenu, CGameObject)
@@ -26,6 +26,8 @@ HRESULT CUI_PauseMenu::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
+	m_eRenderGroup = RENDERGROUP::RENDER_AFTER_UI;
+
 	Create_Background();
 	Create_Pages();
 	Create_PageText();
@@ -33,7 +35,6 @@ HRESULT CUI_PauseMenu::Initialize(void* pArg)
 
 
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
-
 
 	m_bOpenThisFrame = false;
 	Set_Enable(false);
@@ -117,14 +118,16 @@ void CUI_PauseMenu::OnDisable()
 {
 	__super::OnDisable();
 
+	m_pInventoryBG.lock()->Set_Enable(false);
+
 
 }
 
 void CUI_PauseMenu::OnPaging()
 {
-
 	for (_uint i = 0; i < (_uint)PAUSE_MENU_END; i++)
 	{
+		
 		if (i == m_iPageIndex)//현재 페이지 인덱스
 		{
 			if (m_pPages[i].lock() != nullptr)
@@ -144,12 +147,28 @@ void CUI_PauseMenu::OnPaging()
 			m_PageTexInfo[i].vColor = _float4(0.4f, 0.4f, 0.4f, 0.4f);
 
 			m_pPageIndicator[i].lock()->Set_Texture("PageIndex_Indicator_UnSelected");
-
-		
-
 		}
 	}
+	if (m_iPageIndex == (_uint)PAUSE_MENU_ITEM)
+	{
+		m_pPauseMenuBackground_Main.lock()->Set_Enable(false);
+		m_pPauseMenuBackground_MainFrame.lock()->Set_Enable(false);
+		m_pPauseMenuBackground.lock()->Set_Enable(false);
 
+		
+		m_pInventoryBG.lock()->Set_Enable(true);
+		
+	}
+	else
+	{
+		m_pPauseMenuBackground_Main.lock()->Set_Enable(true);
+		m_pPauseMenuBackground_MainFrame.lock()->Set_Enable(true);
+		m_pPauseMenuBackground.lock()->Set_Enable(true);
+
+
+
+		m_pInventoryBG.lock()->Set_Enable(false);
+	}
 }
 
 void CUI_PauseMenu::Call_FadeInPauseMenu()
@@ -164,26 +183,48 @@ void CUI_PauseMenu::Create_Background()
 	m_pPauseMenuBackground = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
 	m_pPauseMenuBackground.lock()->Set_Depth(1.f);
 	m_pPauseMenuBackground.lock()->Set_Texture("PauseMenu_Background0");
+	m_pPauseMenuBackground.lock()->Set_UIPosition(0, 0, 1600.f, 900.f, CUI::ALIGN_LEFTTOP);
+
+
+	m_pPauseMenuBackground_MainFrame = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
+	m_pPauseMenuBackground_MainFrame.lock()->Set_Depth(0.9f);
+	m_pPauseMenuBackground_MainFrame.lock()->Set_Texture("PauseMenu_Background1");
+	m_pPauseMenuBackground_MainFrame.lock()->Set_UIPosition(0, 0, 1600.f, 900.f, CUI::ALIGN_LEFTTOP);
+
 
 	m_pPauseMenuBackground_Main = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
-	m_pPauseMenuBackground_Main.lock()->Set_Depth(0.9f);
-	m_pPauseMenuBackground_Main.lock()->Set_Texture("PauseMenu_Background1");
+	m_pPauseMenuBackground_Main.lock()->Set_Depth(0.8f);
+	m_pPauseMenuBackground_Main.lock()->Set_Texture("PauseMenu_Background2");
+	m_pPauseMenuBackground_Main.lock()->Set_UIPosition(0.f, 0.f, 1598.f, 895.f, ALIGN_LEFTTOP);
 
 
 	m_pPauseMenuBackground_Top = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
 	m_pPauseMenuBackground_Top.lock()->Set_Depth(0.3f);
 	m_pPauseMenuBackground_Top.lock()->Set_Texture("PauseMenu_Background3");
+	m_pPauseMenuBackground_Top.lock()->Set_UIPosition(0, 0, 1600.f, 900.f, CUI::ALIGN_LEFTTOP);
 
 
-	m_vecChildUI.push_back(m_pPauseMenuBackground);
-	m_vecChildUI.push_back(m_pPauseMenuBackground_Main);
-	m_vecChildUI.push_back(m_pPauseMenuBackground_Top);
+	m_pInventoryBG = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
+	m_pInventoryBG.lock()->Set_Depth(0.4f);
+	m_pInventoryBG.lock()->Set_Texture("Inventory_BG");
+	m_pInventoryBG.lock()->Set_UIPosition(0, 0, 1600.f, 900.f, CUI::ALIGN_LEFTTOP);
+	m_pInventoryBG.lock()->Set_RenderGroup(RENDERGROUP::RENDER_AFTER_UI);
+	
+
+	Add_Child(m_pPauseMenuBackground);
+	Add_Child(m_pPauseMenuBackground_MainFrame);
+	Add_Child(m_pPauseMenuBackground_Main);
+	Add_Child(m_pPauseMenuBackground_Top);
 }
 
 void CUI_PauseMenu::Create_Pages()
 {
 	m_pPages[PAUSE_MENU_STATUS] = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu_Page_Status>(LEVEL_STATIC);
 	m_vecChildUI.push_back(m_pPages[PAUSE_MENU_STATUS]);
+
+
+	m_pPages[PAUSE_MENU_ITEM] = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu_Page_Inventory>(LEVEL_STATIC);
+	m_vecChildUI.push_back(m_pPages[PAUSE_MENU_ITEM]);
 }
 
 void CUI_PauseMenu::Create_PageText()
@@ -204,6 +245,7 @@ void CUI_PauseMenu::Create_PageText()
 		m_PageTexInfo[i].vColor = _float4(1.f, 1.f, 1.f, 1.f);
 		m_PageTexInfo[i].vPosition = _float2(440.f + (140.f * (_float)i), 30.f);
 		m_PageTexInfo[i].vScale = _float2(0.8f, 0.8f);
+		m_PageTexInfo[i].eRenderGroup = RENDERGROUP::RENDER_AFTER_UI;
 
 
 		/*
@@ -238,7 +280,7 @@ void CUI_PauseMenu::Create_PageIndicator()
 		m_pPageIndicator[i] = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &desc);
 		m_pPageIndicator[i].lock()->Set_Texture("PageIndex_Indicator_UnSelected");
 
-		m_vecChildUI.push_back(m_pPageIndicator[i]);
+		Add_Child(m_pPageIndicator[i]);
 	}
 
 	desc.fSizeX = 390.f;
@@ -248,7 +290,7 @@ void CUI_PauseMenu::Create_PageIndicator()
 	desc.fX = 789.f;
 	m_pPageIndicatorDecoration = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &desc);
 	m_pPageIndicatorDecoration.lock()->Set_Texture("PageIndex_Indicator_Decoration");
-	m_vecChildUI.push_back(m_pPageIndicatorDecoration);
+	Add_Child(m_pPageIndicatorDecoration);
 
 	desc.fSizeX = 65.;
 	desc.fSizeY = 17.f;
@@ -258,7 +300,7 @@ void CUI_PauseMenu::Create_PageIndicator()
 
 	m_pPageTitleUnderLine = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &desc);
 	m_pPageTitleUnderLine.lock()->Set_Texture("PageIndex_UnderLine");
-	m_vecChildUI.push_back(m_pPageTitleUnderLine);
+	Add_Child(m_pPageTitleUnderLine);
 
 
 }

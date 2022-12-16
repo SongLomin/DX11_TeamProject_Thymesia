@@ -3,7 +3,7 @@
 #include "Status.h"
 #include "GameInstance.h"
 #include "Engine_Defines.h"
-
+#include "GameManager.h"
 GAMECLASS_C(CStatus_Player)
 CLONE_C(CStatus_Player, CComponent)
 
@@ -40,7 +40,6 @@ void CStatus_Player::Tick(_float fTimeDelta)
         m_tDesc.m_iMemory += 10000;
         Callback_Update_Status();
     }
-
     //if (m_fPotionTime >= 0.f)
     //{
     //    m_tDesc.m_fCurrentHP += ((m_tDesc.m_fMaxHP * m_PotionDesc[m_iCurrentPotionIndex].m_fHealingAmount) / m_PotionDesc[m_iCurrentPotionIndex].m_fHealingTime) * fTimeDelta;
@@ -107,6 +106,8 @@ void CStatus_Player::Init_Status(const void* pArg)
 
 void CStatus_Player::Add_Damage(const _float& In_fDamage)
 {
+    if (0.f > In_fDamage)
+        assert(0);
 
     Decrease_HP(m_tDesc.m_fCurrentHP, In_fDamage);
     Callback_ChangeHP(m_tDesc.m_fCurrentHP);
@@ -132,6 +133,11 @@ void CStatus_Player::Full_Recovery()
     Heal_Player(m_tDesc.m_fMaxHP);
 
     m_tDesc.m_fCurrentMP = m_tDesc.m_fMaxMP;
+    
+    Callback_ChangeMP(m_tDesc.m_fCurrentMP);
+    
+    
+    
     m_tDesc.m_iCurrentFeather = m_tDesc.m_iMaxFeather;
 
     m_PotionDesc[(_uint)POTIONTYPE::POTION_DEFAULT].m_iCurrentPotion =

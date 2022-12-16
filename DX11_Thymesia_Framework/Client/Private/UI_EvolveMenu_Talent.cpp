@@ -90,7 +90,7 @@ void CUI_EveolveMenu_Talent::Tick(_float fTimeDelta)
 
 void CUI_EveolveMenu_Talent::LateTick(_float fTimeDelta)
 {
-    fTimeDelta = CUI_Utils::UI_TimeDelta(fTimeDelta);
+    fTimeDelta = CUI_Utils::UI_TimeDelta();
 
     __super::LateTick(fTimeDelta);
 
