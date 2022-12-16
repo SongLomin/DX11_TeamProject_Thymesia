@@ -203,6 +203,14 @@ private:
     // For. Thread
     _bool                   m_bResetTrigger = false;
     weak_ptr<CTransform>    m_pPreviewModelTransform;
+
+#ifdef _JOJO_EFFECT_TOOL_
+    // For. Tool
+    _int m_iScaleType = 0;
+    static const _int m_iScaleType_None;
+    static const _int m_iScaleType_Square;
+    static const _int m_iScaleType_Ratio;
+#endif // _JOJO_EFFECT_TOOL_
 #endif // _DEBUG
 };
 

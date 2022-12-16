@@ -69,6 +69,7 @@ void CProp::LateTick(_float fTimeDelta)
 	//}
 
 #endif // !_USE_THREAD_
+
 }
 
 void CProp::Thread_PreLateTick(_float fTimeDelta)

@@ -274,10 +274,14 @@ namespace Client
 		};
 
 #pragma region Scale
+		_bool		bSquareScale;
+		_bool		bRatioScale;
+
 		// For. Ratio Scale
 		_float		fMinYScaleRatio;
 		_float		fMaxYScaleRatio;
 
+		_bool		bEasingScale;
 		_int		iScaleEasingType;
 		_float		fScaleEasingTotalTime;
 
@@ -298,7 +302,7 @@ namespace Client
 		{
 			SquareScale         = 0b0000'0001
 			, RatioScale        = 0b0000'0010
-			//, CustomScale       = 0b0000'0100
+			, CustomScale       = 0b0000'0100
 			, Use_EasingScale   = 0b0000'1000
 			, Use_MaxStartScale = 0b0001'0000
 			, Use_ScaleSpeed    = 0b0010'0000
