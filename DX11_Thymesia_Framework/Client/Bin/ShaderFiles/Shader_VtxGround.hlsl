@@ -163,8 +163,8 @@ DS_OUT DS_Main(const OutputPatch<HS_OUT, PATCH_SIZE> input, float3 location : SV
     float3 normal = input[0].vNormal * location.r + input[1].vNormal * location.g + input[2].vNormal * location.b;
     float3 tangent = input[0].vTangent * location.r + input[1].vTangent * location.g + input[2].vTangent * location.b;
     
-    vector vDisplacement = g_NoiseTexture2.SampleLevel(DefaultSampler, uv + g_vUVNoise * 0.01f, 0);
- 
+    vector vDisplacement = g_NoiseTexture2.SampleLevel(DefaultSampler, uv + g_vUVNoise * 0.001f, 0)*1.5f;
+
     matrix matWV = mul(g_WorldMatrix, g_ViewMatrix);
     matrix matWVP = mul(matWV, g_ProjMatrix);
     
@@ -175,7 +175,6 @@ DS_OUT DS_Main(const OutputPatch<HS_OUT, PATCH_SIZE> input, float3 location : SV
     output.vProjPos = output.vPosition;
     output.vTangent = normalize(mul(vector(tangent, 0.f), g_WorldMatrix)).xyz;
     output.vBinormal = normalize(cross(float3(output.vNormal.xyz), output.vTangent));
-
     return output;
 }
 /* ---------------------------------------------------------- */
