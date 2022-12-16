@@ -834,8 +834,6 @@ HRESULT CRender_Manager::Render_NonAlphaBlend()
 		DEBUG_ASSERT;
 
 	return S_OK;
-
-	return S_OK;
 }
 
 HRESULT CRender_Manager::Render_Lights()

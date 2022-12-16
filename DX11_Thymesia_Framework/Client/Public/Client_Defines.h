@@ -4,6 +4,7 @@
 #include <filesystem>
 
 // #define _JOJO_EFFECT_TOOL_
+//  _BAKE_PARTICLE_ 절대 키지 마세요!
 // #define _BAKE_PARTICLE_
 	
 #include "Client_Structs.h"
@@ -22,7 +23,7 @@
 #define _RENDER_FPS_
 #define _Actor_Culling_
 //#define _INSTANCE_CULLING_t
-#define _LOAD_CAPTURED_RESOURCE_
+// #define _LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
 #define _SKYBOX_
