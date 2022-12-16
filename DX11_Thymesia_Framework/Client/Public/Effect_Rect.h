@@ -135,7 +135,6 @@ private: // For. Tool
     void Tool_Spawn_Life_Time();
     void Tool_Boner();
     void Tool_Position();
-    void Tool_Position_Easing();
     void Tool_Speed();
     void Tool_Speed_Easing();
     void Tool_Rotation();

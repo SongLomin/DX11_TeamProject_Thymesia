@@ -2031,6 +2031,24 @@ void CRender_Manager::OnDestroy()
 	m_pVIBuffer->OnDestroy();
 	m_pDeferredContext[DEFERRED_UI].Reset();
 
+	std::unique_lock<std::mutex> lock(m_job_q_);
+
+	for (auto& elem : m_pDeferredContext)
+	{
+		elem.Reset();
+	}
+
+	for (auto& elem : m_pBeforeRenderSleepContexts)
+	{
+		elem.Reset();
+	}
+
+	for (auto& elem : m_pBeforeRenderContexts)
+	{
+		elem.Reset();
+	}
+
+	lock.unlock();
 }
 
 void CRender_Manager::OnEngineEventMessage(const ENGINE_EVENT_TYPE In_eEngineEvent)
