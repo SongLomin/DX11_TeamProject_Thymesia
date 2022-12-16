@@ -565,7 +565,7 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 		pCommandList = nullptr;
 	}*/
 	
-	std::future<HRESULT> UIFuture = GET_SINGLE(CThread_Manager)->Enqueue_Job(bind(&CRender_Manager::Render_UI, this));
+	/*std::future<HRESULT> UIFuture = GET_SINGLE(CThread_Manager)->Enqueue_Job(bind(&CRender_Manager::Render_UI, this));
 	UIFuture.get();
 
 	m_pDeferredContext[DEFERRED_UI]->FinishCommandList(false, &pCommandList);
@@ -575,10 +575,10 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 		DEVICECONTEXT->ExecuteCommandList(pCommandList, true);
 		pCommandList->Release();
 		pCommandList = nullptr;
-	}
+	}*/
 
-	/*if (FAILED(Render_UI()))
-		DEBUG_ASSERT;*/
+	if (FAILED(Render_UI()))
+		DEBUG_ASSERT;
 
 	if (FAILED(Render_Final()))
 		DEBUG_ASSERT;
