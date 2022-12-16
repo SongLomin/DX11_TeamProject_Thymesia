@@ -114,17 +114,22 @@ private:
 
     const _bool Is_Sprite() const;
 
-    const _bool Check_Option1(const EFFECTPARTICLE_DESC::ParticleOption1 eOption) const;
-    void TurnOn_Option1(const EFFECTPARTICLE_DESC::ParticleOption1 eOption);
-    void TurnOff_Option1(const EFFECTPARTICLE_DESC::ParticleOption1 eOption);
+    const _bool Check_Option1(const EFFECTPARTICLE_DESC::Option_Spawn eOption) const;
+    void TurnOn_Option1(const EFFECTPARTICLE_DESC::Option_Spawn eOption);
+    void TurnOff_Option1(const EFFECTPARTICLE_DESC::Option_Spawn eOption);
 
-	const _bool Check_Option2(const EFFECTPARTICLE_DESC::ParticleOption2 eOption) const;
-	void TurnOn_Option2(const EFFECTPARTICLE_DESC::ParticleOption2 eOption);
-	void TurnOff_Option2(const EFFECTPARTICLE_DESC::ParticleOption2 eOption);
+	const _bool Check_Option2(const EFFECTPARTICLE_DESC::Option_SpeedRotation eOption) const;
+	void TurnOn_Option2(const EFFECTPARTICLE_DESC::Option_SpeedRotation eOption);
+	void TurnOff_Option2(const EFFECTPARTICLE_DESC::Option_SpeedRotation eOption);
+
+	const _bool Check_Option3(const EFFECTPARTICLE_DESC::Option_Scale eOption) const;
+	void TurnOn_Option3(const EFFECTPARTICLE_DESC::Option_Scale eOption);
+	void TurnOff_Option3(const EFFECTPARTICLE_DESC::Option_Scale eOption);
 
 #ifdef _DEBUG
-    void Tool_ToggleOption1(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::ParticleOption1 eOption);
-    void Tool_ToggleOption2(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::ParticleOption2 eOption);
+    void Tool_ToggleOption1(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option_Spawn eOption);
+    void Tool_ToggleOption2(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option_SpeedRotation eOption);
+    void Tool_ToggleOption3(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option_Scale eOption);
 #endif // _DEBUG
 
 #ifdef _DEBUG
