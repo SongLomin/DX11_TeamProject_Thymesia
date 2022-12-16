@@ -180,10 +180,18 @@ void CEffect_Rect::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 	m_bStopParticle = false;
 	m_bStopSprite = false;
 
-	if (m_tEffectParticleDesc.bBoner && pParentTransform.lock())
+	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_Boner))
 	{
+#ifdef _DEBUG
+		if (pParentTransform.lock())
+		{
+			m_pParentModel = pParentTransform.lock()->Get_Owner().lock()->Get_Component<CModel>();
+			m_pBoneNode = m_pParentModel.lock()->Find_BoneNode(m_strBoneName);
+		}
+#else // _DEBUG
 		m_pParentModel = pParentTransform.lock()->Get_Owner().lock()->Get_Component<CModel>();
 		m_pBoneNode = m_pParentModel.lock()->Find_BoneNode(m_strBoneName);
+#endif // _DEBUG
 	}
 
 	m_pTransformCom.lock()->Set_WorldMatrix(XMMatrixIdentity());
@@ -316,9 +324,9 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	Out_Json["ParticleType"] = m_tEffectParticleDesc.iParticleType;
 	Out_Json["Follow_Transform"] = m_tEffectParticleDesc.iFollowTransformType;
 
-	Out_Json["Is_Attraction"] = m_tEffectParticleDesc.bAttraction;
-
-	if (m_tEffectParticleDesc.bAttraction)
+	// Out_Json["Is_Attraction"] = m_tEffectParticleDesc.bAttraction;
+	Out_Json["ParticleOption1"] = m_tEffectParticleDesc.byParticleOption1;
+	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_Attraction))
 		CJson_Utility::Write_Float3(Out_Json["Goal_Position"], m_tEffectParticleDesc.vGoalPosition);
 
 	Out_Json["ShaderPassIndex"] = m_tEffectParticleDesc.iShaderPassIndex;
@@ -328,32 +336,37 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	
 #pragma region Life Time
 	Out_Json["Init_Time"]      = m_tEffectParticleDesc.fInitTime;
+
 	Out_Json["Min_Spawn_Time"] = m_tEffectParticleDesc.fMinSpawnTime;
-	Out_Json["Max_Spawn_Time"] = m_tEffectParticleDesc.fMaxSpawnTime;
+	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnTime))
+		Out_Json["Max_Spawn_Time"] = m_tEffectParticleDesc.fMaxSpawnTime;
+
 	Out_Json["Min_Life_Time"]  = m_tEffectParticleDesc.fMinLifeTime;
-	Out_Json["Max_Life_Time"]  = m_tEffectParticleDesc.fMaxLifeTime;
+	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_LifeTime))
+		Out_Json["Max_Life_Time"] = m_tEffectParticleDesc.fMaxLifeTime;
 #pragma endregion
 
-	Out_Json["Is_Boner"] = m_tEffectParticleDesc.bBoner;
-
-	if (m_tEffectParticleDesc.bBoner)
+	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_Boner))
 	{
 		if (!m_strBoneName.empty())
 			Out_Json["Bone_Name"] = m_strBoneName;
 	}
 
 #pragma region Spawn Position
-	CJson_Utility::Write_Float3(Out_Json["Min_Spawn_Position"]        , m_tEffectParticleDesc.vMinSpawnPosition);
-	CJson_Utility::Write_Float3(Out_Json["Max_Spawn_Position"]        , m_tEffectParticleDesc.vMaxSpawnPosition);
+	CJson_Utility::Write_Float3(Out_Json["Min_Spawn_Position"], m_tEffectParticleDesc.vMinSpawnPosition);
+	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnPos))
+		CJson_Utility::Write_Float3(Out_Json["Max_Spawn_Position"], m_tEffectParticleDesc.vMaxSpawnPosition);
 
 	CJson_Utility::Write_Float3(Out_Json["Min_Spawn_Offset_Direction"], m_tEffectParticleDesc.vMinSpawnOffsetDirection);
-	CJson_Utility::Write_Float3(Out_Json["Max_Spawn_Offset_Direction"], m_tEffectParticleDesc.vMaxSpawnOffsetDirection);
+	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnOffsetDirection))
+		CJson_Utility::Write_Float3(Out_Json["Max_Spawn_Offset_Direction"], m_tEffectParticleDesc.vMaxSpawnOffsetDirection);
 
-	CJson_Utility::Write_Float3(Out_Json["Min_Spawn_Offset_Range"]    , m_tEffectParticleDesc.vMinSpawnOffsetRange);
-	CJson_Utility::Write_Float3(Out_Json["Max_Spawn_Offset_Range"]    , m_tEffectParticleDesc.vMaxSpawnOffsetRange);
+	CJson_Utility::Write_Float3(Out_Json["Min_Spawn_Offset_Range"], m_tEffectParticleDesc.vMinSpawnOffsetRange);
+	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnOffsetRange))
+		CJson_Utility::Write_Float3(Out_Json["Max_Spawn_Offset_Range"], m_tEffectParticleDesc.vMaxSpawnOffsetRange);
 #pragma endregion
 
-	Out_Json["Is_MoveLook"] = m_tEffectParticleDesc.bMoveLook;
+	// Out_Json["Is_MoveLook"] = m_tEffectParticleDesc.bMoveLook;
 	
 	Out_Json["Is_Use_Gravity"] = m_tEffectParticleDesc.bUseGravity;
 
@@ -549,14 +562,28 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	m_tEffectParticleDesc.iParticleType        = In_Json["ParticleType"];
 	m_tEffectParticleDesc.iFollowTransformType = In_Json["Follow_Transform"];
 
-	if (In_Json.find("Is_Attraction") != In_Json.end())
-		m_tEffectParticleDesc.bAttraction = In_Json["Is_Attraction"];
+	if (In_Json.find("ParticleOption1") != In_Json.end())
+		m_tEffectParticleDesc.byParticleOption1 = In_Json["ParticleOption1"];
 
-	if (m_tEffectParticleDesc.bAttraction)
+#pragma region Attraction
+
+#ifdef _BAKE_PARTICLE_
+	if (In_Json.find("Is_Attraction") != In_Json.end())
+	{
+		if (In_Json["Is_Attraction"])
+			TurnOn_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_Attraction);
+		else
+			TurnOff_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_Attraction);
+	}
+#endif // _BAKE_PARTICLE_
+
+	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_Attraction))
 	{
 		if (In_Json.find("Goal_Position") != In_Json.end())
 			CJson_Utility::Load_Float3(In_Json["Goal_Position"], m_tEffectParticleDesc.vGoalPosition);
 	}
+
+#pragma endregion // Attraction
 
 	if (In_Json.find("ShaderPassIndex") != In_Json.end())
 		m_tEffectParticleDesc.iShaderPassIndex = In_Json["ShaderPassIndex"];
@@ -566,63 +593,163 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 		m_tEffectParticleDesc.bSyncAnimation = In_Json["Sync_Animation"];
 	if (In_Json.find("Sync_AnimationKey") != In_Json.end())
 		m_tEffectParticleDesc.iSyncAnimationKey = In_Json["Sync_AnimationKey"];
-#pragma endregion
+#pragma endregion // Animation Sync
 
-#pragma region Life Time
 	if (In_Json.find("Init_Time") != In_Json.end())
 		m_tEffectParticleDesc.fInitTime = In_Json["Init_Time"];
+
+#pragma region Spawn Time
+
 	if (In_Json.find("Min_Spawn_Time") != In_Json.end())
 		m_tEffectParticleDesc.fMinSpawnTime = In_Json["Min_Spawn_Time"];
+
+#ifndef _BAKE_PARTICLE_
+	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnTime))
+	{
+		if (In_Json.find("Max_Spawn_Time") != In_Json.end())
+			m_tEffectParticleDesc.fMaxSpawnTime = In_Json["Max_Spawn_Time"];
+	}
+#else // _BAKE_PARTICLE_
 	if (In_Json.find("Max_Spawn_Time") != In_Json.end())
 		m_tEffectParticleDesc.fMaxSpawnTime = In_Json["Max_Spawn_Time"];
+
+	if (m_tEffectParticleDesc.fMaxSpawnTime > m_tEffectParticleDesc.fMinSpawnTime)
+		TurnOn_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnTime);
+	else
+		TurnOff_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnTime);
+#endif // _BAKE_PARTICLE_
+
+#pragma endregion // Spawn Time
+
+#pragma region Life Time
+
 	if (In_Json.find("Min_Life_Time") != In_Json.end())
 		m_tEffectParticleDesc.fMinLifeTime = In_Json["Min_Life_Time"];
+
+#ifndef _BAKE_PARTICLE_
+	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_LifeTime))
+	{
+		if (In_Json.find("Max_Life_Time") != In_Json.end())
+			m_tEffectParticleDesc.fMaxLifeTime = In_Json["Max_Life_Time"];
+	}
+#else // _BAKE_PARTICLE_
 	if (In_Json.find("Max_Life_Time") != In_Json.end())
 		m_tEffectParticleDesc.fMaxLifeTime = In_Json["Max_Life_Time"];
-#pragma endregion
 
+	if (m_tEffectParticleDesc.fMaxLifeTime > m_tEffectParticleDesc.fMinLifeTime)
+		TurnOn_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_LifeTime);
+	else
+		TurnOff_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_LifeTime);
+#endif // _BAKE_PARTICLE_
+
+#pragma endregion // Life Time
+
+#pragma region Boner
+
+#ifdef _BAKE_PARTICLE_
 	if (In_Json.find("Is_Boner") != In_Json.end())
-		m_tEffectParticleDesc.bBoner = In_Json["Is_Boner"];
+	{
+		if (In_Json["Is_Boner"])
+			TurnOn_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_Boner);
+		else
+			TurnOff_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_Boner);
+	}
+#endif // _BAKE_PARTICLE_
 
-	if (m_tEffectParticleDesc.bBoner)
+	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_Boner))
 	{
 		if (In_Json.find("Bone_Name") != In_Json.end())
 			m_strBoneName = In_Json["Bone_Name"];
 
-		try
-		{
-			if (m_strBoneName.empty())
-				throw;
-
-			if ((_uint)LEVEL_EDIT == m_CreatedLevel)
-			{
-				m_pParentTransformCom = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Component<CTransform>().lock();
-				m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
-			}
-		}
-		catch (const std::exception&)
-		{
+		if (m_strBoneName.empty())
 			assert(0);
+
+#ifdef _DEBUG
+		if ((_uint)LEVEL_EDIT == m_CreatedLevel)
+		{
+			m_pParentTransformCom = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Component<CTransform>().lock();
+			m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
 		}
+#endif // _DEBUG
 	}
 
+#pragma endregion // Boner
+
 #pragma region Spawn Position
+
 	if (In_Json.find("Min_Spawn_Position") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Min_Spawn_Position"], m_tEffectParticleDesc.vMinSpawnPosition);
+#ifndef _BAKE_PARTICLE_
+	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnPos))
+	{
+		if (In_Json.find("Max_Spawn_Position") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Max_Spawn_Position"], m_tEffectParticleDesc.vMaxSpawnPosition);
+	}
+#else // _BAKE_PARTICLE_
 	if (In_Json.find("Max_Spawn_Position") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Max_Spawn_Position"], m_tEffectParticleDesc.vMaxSpawnPosition);
+
+	if (SMath::Is_Equal(m_tEffectParticleDesc.vMinSpawnPosition, m_tEffectParticleDesc.vMaxSpawnPosition))
+		TurnOff_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnPos);
+	else
+		TurnOn_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnPos);
+#endif // _BAKE_PARTICLE_
+
+#pragma endregion  // Spawn Position
+
+#pragma region Spawn Offset Direction
+
 	if (In_Json.find("Min_Spawn_Offset_Direction") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Min_Spawn_Offset_Direction"], m_tEffectParticleDesc.vMinSpawnOffsetDirection);
+
+#ifndef _BAKE_PARTICLE_
+	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnOffsetDirection))
+	{
+		if (In_Json.find("Max_Spawn_Offset_Direction") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Max_Spawn_Offset_Direction"], m_tEffectParticleDesc.vMaxSpawnOffsetDirection);
+	}
+#else // _BAKE_PARTICLE_
 	if (In_Json.find("Max_Spawn_Offset_Direction") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Max_Spawn_Offset_Direction"], m_tEffectParticleDesc.vMaxSpawnOffsetDirection);
+
+	if (SMath::Is_Equal(m_tEffectParticleDesc.vMinSpawnOffsetDirection, m_tEffectParticleDesc.vMaxSpawnOffsetDirection))
+		TurnOff_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnOffsetDirection);
+	else
+		TurnOn_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnOffsetDirection);
+#endif // _BAKE_PARTICLE_
+
+#pragma endregion // Spawn Offset Direction
+
+#pragma region Spawn Offset Range
+
 	if (In_Json.find("Min_Spawn_Offset_Range") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Min_Spawn_Offset_Range"], m_tEffectParticleDesc.vMinSpawnOffsetRange);
+
+#ifndef _BAKE_PARTICLE_
+	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnOffsetRange))
+	{
+		if (In_Json.find("Max_Spawn_Offset_Range") != In_Json.end())
+			CJson_Utility::Load_Float3(In_Json["Max_Spawn_Offset_Range"], m_tEffectParticleDesc.vMaxSpawnOffsetRange);
+	}
+#else // _BAKE_PARTICLE_
 	if (In_Json.find("Max_Spawn_Offset_Range") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Max_Spawn_Offset_Range"], m_tEffectParticleDesc.vMaxSpawnOffsetRange);
-#pragma endregion
 
+	if (SMath::Is_Equal(m_tEffectParticleDesc.vMinSpawnOffsetRange, m_tEffectParticleDesc.vMaxSpawnOffsetRange))
+		TurnOff_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnOffsetRange);
+	else
+		TurnOn_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnOffsetRange);
+#endif // _BAKE_PARTICLE_
+
+#pragma endregion // Spawn Offset Range
+
+#ifdef _BAKE_PARTICLE_
 	if (In_Json.find("Is_MoveLook") != In_Json.end())
-		m_tEffectParticleDesc.bMoveLook = In_Json["Is_MoveLook"];
+	{
+		if (In_Json["Is_MoveLook"])
+			TurnOn_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_MoveLook);
+	}
+#endif // _BAKE_PARTICLE_
 
 	if (In_Json.find("Is_Use_Gravity") != In_Json.end())
 		m_tEffectParticleDesc.bUseGravity = In_Json["Is_Use_Gravity"];
@@ -897,6 +1024,17 @@ void CEffect_Rect::Play(_float fTimeDelta)
 		m_fPreFrame -= fFrameTime;
 	}
 
+	_matrix BoneMatrix(XMMatrixIdentity());
+	if (m_pBoneNode.lock())
+	{
+		_float4x4 ModelTransMat(m_pParentModel.lock()->Get_TransformationMatrix());
+		BoneMatrix = m_pBoneNode.lock()->Get_CombinedMatrix() * XMLoadFloat4x4(&ModelTransMat);
+
+		BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
+		BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
+		BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
+	}
+
 	for (_int i(0); i < m_tEffectParticleDesc.iMaxInstance; ++i)
 	{
 		if (!m_tParticleDescs[i].bEnable)
@@ -906,24 +1044,7 @@ void CEffect_Rect::Play(_float fTimeDelta)
 				m_tParticleDescs[i].bEnable = true;
 
 				if ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType)
-				{
-					if (m_pBoneNode.lock())
-					{
-						_float4x4 TempMat(m_pParentModel.lock()->Get_TransformationMatrix());
-						_matrix ModelTranMat(XMLoadFloat4x4(&TempMat));
-						_matrix BoneMatrix(m_pBoneNode.lock()->Get_CombinedMatrix() * ModelTranMat);
-
-						BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
-						BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
-						BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
-
-						XMStoreFloat4x4(&m_tParticleDescs[i].matParentMatrix, BoneMatrix * m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
-					}
-					else if(m_pParentTransformCom.lock())
-					{
-						XMStoreFloat4x4(&m_tParticleDescs[i].matParentMatrix, m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
-					}
-				}
+					XMStoreFloat4x4(&m_tParticleDescs[i].matParentMatrix, BoneMatrix * m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
 			}
 			else
 			{
@@ -937,9 +1058,7 @@ void CEffect_Rect::Play(_float fTimeDelta)
 			if (m_tParticleDescs[i].fCurrentLifeTime > m_tParticleDescs[i].fTargetLifeTime)
 			{
 				if (m_tEffectParticleDesc.bLooping && !m_bStopParticle)
-				{
 					Reset_ParticleDesc((_uint)i);
-				}
 				else
 				{
 					m_tParticleDescs[i].bEnable = false;
@@ -953,7 +1072,7 @@ void CEffect_Rect::Play(_float fTimeDelta)
 
 
 		for (_int x(0); x < iTickCount; ++x)
-			Play_Internal(i, fFrameTime);
+			Play_Internal(i, fFrameTime, BoneMatrix);
 	}
 
 	for (_int x(0); x < iTickCount; ++x)
@@ -1020,7 +1139,7 @@ void CEffect_Rect::Reset_ParticleDesc(const _uint& In_iIndex)
 
 	SMath::Add_Float3(&m_tParticleDescs[In_iIndex].vCurrentTranslation, m_tParticleDescs[In_iIndex].vOffsetPosition);
 
-	if (m_tEffectParticleDesc.bAttraction)
+	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_Attraction))
 	{
 		_float3	f3LookAt(SMath::Add_Float3(m_tEffectParticleDesc.vGoalPosition, SMath::Mul_Float3(m_tParticleDescs[In_iIndex].vCurrentTranslation, -1.f)));
 		XMStoreFloat3(&m_tParticleDescs[In_iIndex].vTargetLookAt, XMVector3Normalize(XMLoadFloat3(&f3LookAt)));
@@ -1034,15 +1153,33 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 	{
 		m_tOriginalParticleDescs[i].Reset();
 
-		m_tOriginalParticleDescs[i].fTargetLifeTime = SMath::fRandom(m_tEffectParticleDesc.fMinLifeTime, m_tEffectParticleDesc.fMaxLifeTime);
+		if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_LifeTime))
+			m_tOriginalParticleDescs[i].fTargetLifeTime = SMath::fRandom(m_tEffectParticleDesc.fMinLifeTime, m_tEffectParticleDesc.fMaxLifeTime);
+		else
+			m_tOriginalParticleDescs[i].fTargetLifeTime = m_tEffectParticleDesc.fMinLifeTime;
 
-		m_tOriginalParticleDescs[i].fTargetSpawnTime = SMath::fRandom(m_tEffectParticleDesc.fMinSpawnTime, m_tEffectParticleDesc.fMaxSpawnTime);
+		if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnTime))
+			m_tOriginalParticleDescs[i].fTargetSpawnTime = SMath::fRandom(m_tEffectParticleDesc.fMinSpawnTime, m_tEffectParticleDesc.fMaxSpawnTime);
+		else
+			m_tOriginalParticleDescs[i].fTargetSpawnTime = m_tEffectParticleDesc.fMinSpawnTime;
 
-		_float3 vRandomDir(SMath::vRandom(m_tEffectParticleDesc.vMinSpawnOffsetDirection, m_tEffectParticleDesc.vMaxSpawnOffsetDirection));
+		_float3 vRandomDir;
+		ZeroMemory(&vRandomDir, sizeof(_float3));
+		if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnOffsetDirection))
+			vRandomDir = SMath::vRandom(m_tEffectParticleDesc.vMinSpawnOffsetDirection, m_tEffectParticleDesc.vMaxSpawnOffsetDirection);
+		else
+			vRandomDir = m_tEffectParticleDesc.vMinSpawnOffsetDirection;
+
 		_vector vRandomDirFromVector(XMLoadFloat3(&vRandomDir));
 		vRandomDirFromVector = XMVector3Normalize(vRandomDirFromVector);
 
-		_float3 vRandomScalar(SMath::vRandom(m_tEffectParticleDesc.vMinSpawnOffsetRange, m_tEffectParticleDesc.vMaxSpawnOffsetRange));
+		_float3 vRandomScalar;
+		ZeroMemory(&vRandomScalar, sizeof(_float3));
+		if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnOffsetRange))
+			vRandomScalar = SMath::vRandom(m_tEffectParticleDesc.vMinSpawnOffsetRange, m_tEffectParticleDesc.vMaxSpawnOffsetRange);
+		else
+			vRandomScalar = m_tEffectParticleDesc.vMinSpawnOffsetRange;
+
 		_vector vRandomScalarFromVector(XMLoadFloat3(&vRandomScalar));
 
 		_matrix RotationMatrix(SMath::Bake_MatrixNormalizeUseLookVector(vRandomDirFromVector));
@@ -1052,7 +1189,10 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 
 		XMStoreFloat3(&m_tOriginalParticleDescs[i].vCurrentTranslation, RotationMatrix.r[3]);
 
-		m_tOriginalParticleDescs[i].vOffsetPosition = SMath::vRandom(m_tEffectParticleDesc.vMinSpawnPosition, m_tEffectParticleDesc.vMaxSpawnPosition);
+		if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnPos))
+			m_tOriginalParticleDescs[i].vOffsetPosition = SMath::vRandom(m_tEffectParticleDesc.vMinSpawnPosition, m_tEffectParticleDesc.vMaxSpawnPosition);
+		else
+			m_tOriginalParticleDescs[i].vOffsetPosition = m_tEffectParticleDesc.vMinSpawnPosition;
 
 		m_tOriginalParticleDescs[i].vCurrentRotation =
 			SMath::vRandom(m_tEffectParticleDesc.vMinStartRotation, m_tEffectParticleDesc.vMaxStartRotation);
@@ -1139,29 +1279,25 @@ _bool CEffect_Rect::Check_DisableAllParticle()
 	return true;
 }
 
-void CEffect_Rect::Play_Internal(const _uint& i, _float fTimeDelta)
+void CEffect_Rect::Play_Internal(const _uint& i, _float fTimeDelta, _matrix BoneMatrix)
 {
 	Update_ParticleRotation(i, fTimeDelta);
-	Update_ParticlePosition(i, fTimeDelta);
+	Update_ParticlePosition(i, fTimeDelta, BoneMatrix);
 	Update_ParticleScale(i, fTimeDelta);
 	Update_ParticleColor(i, fTimeDelta);
 	Update_ParticleSpriteFrame(i, fTimeDelta);
 }
 
-void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
+void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta, _matrix BoneMatrix)
 {
 	if (m_pBoneNode.lock() && (_int)TRANSFORMTYPE::CHILD == m_tEffectParticleDesc.iFollowTransformType)
 	{
-		_float4x4 TempMat(m_pParentModel.lock()->Get_TransformationMatrix());
-		_matrix ModelTranMat(XMLoadFloat4x4(&TempMat));
-		_matrix BoneMatrix(m_pBoneNode.lock()->Get_CombinedMatrix() * ModelTranMat);
-
-		BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
-		BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
-		BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
-
+#ifdef _DEBUG
 		if (m_pParentTransformCom.lock())
 			m_pTransformCom.lock()->Set_WorldMatrix(BoneMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix());
+#else // _DEBUG
+		m_pTransformCom.lock()->Set_WorldMatrix(BoneMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix());
+#endif // _DEBUG
 	}
 
 	_float3 vMove;
@@ -1184,7 +1320,7 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 			, m_tEffectParticleDesc.fSpeedEasingTotalTime
 		);
 
-		if (m_tEffectParticleDesc.bMoveLook)
+		if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_MoveLook))
 		{
 			_vector vSpawnPos(XMLoadFloat3(&m_tParticleDescs[i].vTargetSpeed));
 			_vector vMovePosition(XMLoadFloat3(&vMove));
@@ -1239,13 +1375,13 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta)
 		}
 
 		// For. Attraction
-		if (m_tEffectParticleDesc.bAttraction)
+		if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_Attraction))
 		{
 			m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, SMath::Mul_Float3(m_tParticleDescs[i].vTargetLookAt, vMove.z));
 		}
 		else
 		{
-			if (m_tEffectParticleDesc.bMoveLook)
+			if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_MoveLook))
 			{
 				if ((_int)PARTICLETYPE::OUTBURST == m_tEffectParticleDesc.iParticleType)
 				{
@@ -1930,6 +2066,42 @@ const _bool CEffect_Rect::Is_Sprite() const
 		||
 		(PASS_SPRITE_BLACKDISCARD_SOFT_SPECIAL == m_tEffectParticleDesc.iShaderPassIndex);
 }
+
+const _bool CEffect_Rect::Check_Option1(const EFFECTPARTICLE_DESC::ParticleOption1 eOption) const
+{
+	return (m_tEffectParticleDesc.byParticleOption1 & (_ubyte)eOption) ? true : false;
+}
+
+void CEffect_Rect::TurnOn_Option1(const EFFECTPARTICLE_DESC::ParticleOption1 eOption)
+{
+	m_tEffectParticleDesc.byParticleOption1 |= (_ubyte)eOption;
+}
+
+void CEffect_Rect::TurnOff_Option1(const EFFECTPARTICLE_DESC::ParticleOption1 eOption)
+{
+	m_tEffectParticleDesc.byParticleOption1 &= ~(_ubyte)eOption;
+}
+
+#ifdef _DEBUG
+void CEffect_Rect::Tool_ToggleOption1(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::ParticleOption1 eOption)
+{
+	ImGuiColorEditFlags byButtonFlags(ImGuiColorEditFlags_NoBorder | ImGuiColorEditFlags_NoTooltip | ImGuiColorEditFlags_NoDragDrop);
+	if (Check_Option1(eOption))
+	{
+		if (ImGui::ColorButton(szOptionButtonName, ImVec4{ 0.f, 1.f, 0.f, 1.f }, byButtonFlags))
+			TurnOff_Option1(eOption);
+	}
+	else
+	{
+		if (ImGui::ColorButton(szOptionButtonName, ImVec4{ 1.f, 0.f, 0.f, 1.f }, byButtonFlags))
+			TurnOn_Option1(eOption);
+	}
+
+	ImGui::SameLine();
+	ImGui::Text(szOptionName);
+}
+#endif // _DEBUG
+
 #ifdef _DEBUG
 #ifdef _JOJO_EFFECT_TOOL_
 void CEffect_Rect::Show_ShaderPasses()
@@ -1992,21 +2164,45 @@ void CEffect_Rect::Tool_Spawn_Life_Time()
 	ImGui::SetNextItemWidth(100.f);
 	ImGui::DragFloat("##Init_Time", &m_tEffectParticleDesc.fInitTime, 0.1f);
 
-	ImGui::Text("Min Spawn Time"); ImGui::SameLine();
-	ImGui::SetNextItemWidth(100.f);
-	ImGui::DragFloat("##Min_Spawn_Time", &m_tEffectParticleDesc.fMinSpawnTime, 0.1f);
+	Tool_ToggleOption1("Min Max Spawn Time", "##Is_MinMaxSpawnTime", EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnTime);
+	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnTime))
+	{
+		ImGui::Text("Min Spawn Time"); ImGui::SameLine();
+		ImGui::SetNextItemWidth(100.f);
+		ImGui::DragFloat("##Min_Spawn_Time", &m_tEffectParticleDesc.fMinSpawnTime, 0.1f);
 
-	ImGui::Text("Max Spawn Time"); ImGui::SameLine();
-	ImGui::SetNextItemWidth(100.f);
-	ImGui::DragFloat("##Max_Spawn_Time", &m_tEffectParticleDesc.fMaxSpawnTime, 0.1f);
+		ImGui::Text("Max Spawn Time"); ImGui::SameLine();
+		ImGui::SetNextItemWidth(100.f);
+		ImGui::DragFloat("##Max_Spawn_Time", &m_tEffectParticleDesc.fMaxSpawnTime, 0.1f);
+	}
+	else
+	{
+		ImGui::Text("Spawn Time"); ImGui::SameLine();
+		ImGui::SetNextItemWidth(100.f);
+		ImGui::DragFloat("##Min_Spawn_Time", &m_tEffectParticleDesc.fMinSpawnTime, 0.1f);
 
-	ImGui::Text("Min Life Time"); ImGui::SameLine();
-	ImGui::SetNextItemWidth(100.f);
-	ImGui::DragFloat("##Min_Life_Time", &m_tEffectParticleDesc.fMinLifeTime, 0.1f);
+		m_tEffectParticleDesc.fMaxSpawnTime = 0.f;
+	}
 
-	ImGui::Text("Max Life Time"); ImGui::SameLine();
-	ImGui::SetNextItemWidth(100.f);
-	ImGui::DragFloat("##Max_Life_Time", &m_tEffectParticleDesc.fMaxLifeTime, 0.1f);
+	Tool_ToggleOption1("Min Max Life Time", "##Is_MinMaxLifeTime", EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_LifeTime);
+	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_LifeTime))
+	{
+		ImGui::Text("Min Life Time"); ImGui::SameLine();
+		ImGui::SetNextItemWidth(100.f);
+		ImGui::DragFloat("##Min_Life_Time", &m_tEffectParticleDesc.fMinLifeTime, 0.1f);
+
+		ImGui::Text("Max Life Time"); ImGui::SameLine();
+		ImGui::SetNextItemWidth(100.f);
+		ImGui::DragFloat("##Max_Life_Time", &m_tEffectParticleDesc.fMaxLifeTime, 0.1f);
+	}
+	else
+	{
+		ImGui::Text("Life Time"); ImGui::SameLine();
+		ImGui::SetNextItemWidth(100.f);
+		ImGui::DragFloat("##Min_Life_Time", &m_tEffectParticleDesc.fMinLifeTime, 0.1f);
+
+		m_tEffectParticleDesc.fMaxLifeTime = 0.f;
+	}
 }
 
 void CEffect_Rect::Tool_Boner()
@@ -2063,56 +2259,79 @@ void CEffect_Rect::Tool_Position()
 {
 	if (ImGui::TreeNode("Spawn Position"))
 	{
-		ImGui::Checkbox("Min = Max##Is_MinMaxSame_SpawnPosition", &m_tEffectParticleDesc.bIsMinMaxSame_SpawnPosition);
+		Tool_ToggleOption1("Min Max", "##Is_MinMaxSpawnPos", EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnPos);
 
-		if (m_tEffectParticleDesc.bIsMinMaxSame_SpawnPosition)
+		if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnPos))
+		{
+			ImGui::Text("Min Spawn Position"); ImGui::SetNextItemWidth(300.f);
+			ImGui::DragFloat3("##Min_Spawn_Position", &m_tEffectParticleDesc.vMinSpawnPosition.x, 0.01f, 0.f, 0.f, "%.5f");
+
+			ImGui::Text("Max Spawn Position"); ImGui::SetNextItemWidth(300.f);
+			ImGui::DragFloat3("##Max_Spawn_Position", &m_tEffectParticleDesc.vMaxSpawnPosition.x, 0.01f, 0.f, 0.f, "%.5f");
+		}
+		else
+		{
+			ImGui::Text("Spawn Position"); ImGui::SetNextItemWidth(300.f);
+			ImGui::DragFloat3("##Min_Spawn_Position", &m_tEffectParticleDesc.vMinSpawnPosition.x, 0.01f, 0.f, 0.f, "%.5f");
+
 			m_tEffectParticleDesc.vMaxSpawnPosition = m_tEffectParticleDesc.vMinSpawnPosition;
-
-		ImGui::Text("Min Spawn Position"); ImGui::SetNextItemWidth(300.f);
-		ImGui::DragFloat3("##Min_Spawn_Position", &m_tEffectParticleDesc.vMinSpawnPosition.x, 0.01f, 0.f, 0.f, "%.5f");
-
-		ImGui::Text("Max Spawn Position"); ImGui::SetNextItemWidth(300.f);
-		ImGui::DragFloat3("##Max_Spawn_Position", &m_tEffectParticleDesc.vMaxSpawnPosition.x, 0.01f, 0.f, 0.f, "%.5f");
+		}
 
 		ImGui::TreePop();
 	}
 	if (ImGui::TreeNode("Spawn Offset Direction"))
 	{
-		ImGui::Checkbox("Min = Max##Is_MinMaxSame_OffsetDirection", &m_tEffectParticleDesc.bIsMinMaxSame_OffsetDirection);
+		Tool_ToggleOption1("Min Max", "##Is_MinMaxSpawnOffsetDirection", EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnOffsetDirection);
 
-		if (m_tEffectParticleDesc.bIsMinMaxSame_OffsetDirection)
+		if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnOffsetDirection))
+		{
+			ImGui::Text("Min Offset Direction");
+			if (ImGui::Button("Default##Default_Min_Spawn_Offset_Direction"))
+				XMStoreFloat3(&m_tEffectParticleDesc.vMinSpawnOffsetDirection, XMVectorSet(-1.f, -1.f, -1.f, 0.f));
+
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(300.f);
+			ImGui::DragFloat3("##Min_Offset_Direction", &m_tEffectParticleDesc.vMinSpawnOffsetDirection.x, 0.01f, 0.f, 0.f, "%.5f");
+
+			ImGui::Text("Max Offset Direction");
+			if (ImGui::Button("Default##Default_Max_Spawn_Offset_Direction"))
+				XMStoreFloat3(&m_tEffectParticleDesc.vMaxSpawnOffsetDirection, XMVectorSet(1.f, 1.f, 1.f, 0.f));
+
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(300.f);
+			ImGui::DragFloat3("##Max_Offset_Direction", &m_tEffectParticleDesc.vMaxSpawnOffsetDirection.x, 0.01f, 0.f, 0.f, "%.5f");
+		}
+		else
+		{
+			ImGui::Text("Offset Direction");
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(300.f);
+			ImGui::DragFloat3("##Min_Offset_Direction", &m_tEffectParticleDesc.vMinSpawnOffsetDirection.x, 0.01f, 0.f, 0.f, "%.5f");
+
 			m_tEffectParticleDesc.vMaxSpawnOffsetDirection = m_tEffectParticleDesc.vMinSpawnOffsetDirection;
-
-		ImGui::Text("Min Offset Direction");
-		if (ImGui::Button("Default##Default_Min_Spawn_Offset_Direction"))
-			XMStoreFloat3(&m_tEffectParticleDesc.vMinSpawnOffsetDirection, XMVectorSet(-1.f, -1.f, -1.f, 0.f));
-
-		ImGui::SameLine();
-		ImGui::SetNextItemWidth(300.f);
-		ImGui::DragFloat3("##Min_Offset_Direction", &m_tEffectParticleDesc.vMinSpawnOffsetDirection.x, 0.01f, 0.f, 0.f, "%.5f");
-
-		ImGui::Text("Max Offset Direction");
-		if (ImGui::Button("Default##Default_Max_Spawn_Offset_Direction"))
-			XMStoreFloat3(&m_tEffectParticleDesc.vMaxSpawnOffsetDirection, XMVectorSet(1.f, 1.f, 1.f, 0.f));
-
-		ImGui::SameLine();
-		ImGui::SetNextItemWidth(300.f);
-		ImGui::DragFloat3("##Max_Offset_Direction", &m_tEffectParticleDesc.vMaxSpawnOffsetDirection.x, 0.01f, 0.f, 0.f, "%.5f");
+		}
 
 		ImGui::TreePop();
 	}
 	if (ImGui::TreeNode("Spawn Offset Range"))
 	{
-		ImGui::Checkbox("Min = Max##Is_MinMaxSame_OffsetRange", &m_tEffectParticleDesc.bIsMinMaxSame_OffsetRange);
+		Tool_ToggleOption1("Min Max", "##Is_MinMaxSpawnOffsetRange", EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnOffsetRange);
 
-		if (m_tEffectParticleDesc.bIsMinMaxSame_OffsetRange)
+		if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnOffsetRange))
+		{
+			ImGui::Text("Min Offset Range"); ImGui::SetNextItemWidth(300.f);
+			ImGui::DragFloat3("##Min_Offset_Range", &m_tEffectParticleDesc.vMinSpawnOffsetRange.x, 0.01f, 0.f, 0.f, "%.5f");
+
+			ImGui::Text("Max Offset Range"); ImGui::SetNextItemWidth(300.f);
+			ImGui::DragFloat3("##Max_Offset_Range", &m_tEffectParticleDesc.vMaxSpawnOffsetRange.x, 0.01f, 0.f, 0.f, "%.5f");
+		}
+		else
+		{
+			ImGui::Text("Offset Range"); ImGui::SetNextItemWidth(300.f);
+			ImGui::DragFloat3("##Min_Offset_Range", &m_tEffectParticleDesc.vMinSpawnOffsetRange.x, 0.01f, 0.f, 0.f, "%.5f");
+
 			m_tEffectParticleDesc.vMaxSpawnOffsetRange = m_tEffectParticleDesc.vMinSpawnOffsetRange;
-
-		ImGui::Text("Min Offset Range"); ImGui::SetNextItemWidth(300.f);
-		ImGui::DragFloat3("##Min_Offset_Range", &m_tEffectParticleDesc.vMinSpawnOffsetRange.x, 0.01f, 0.f, 0.f, "%.5f");
-
-		ImGui::Text("Max Offset Range"); ImGui::SetNextItemWidth(300.f);
-		ImGui::DragFloat3("##Max_Offset_Range", &m_tEffectParticleDesc.vMaxSpawnOffsetRange.x, 0.01f, 0.f, 0.f, "%.5f");
+		}
 
 		ImGui::TreePop();
 	}
@@ -2844,9 +3063,9 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 				}
 			}
 
-			ImGui::Checkbox("Attraction##Is_Attraction", &m_tEffectParticleDesc.bAttraction);
+			Tool_ToggleOption1("Attraction", "##Is_Attraction", EFFECTPARTICLE_DESC::ParticleOption1::Is_Attraction);
 
-			if (m_tEffectParticleDesc.bAttraction)
+			if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_Attraction))
 			{
 				if (ImGui::TreeNode("Attraction##Attraction_Option"))
 				{
@@ -2856,9 +3075,6 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					ImGui::TreePop();
 				}
 			}
-
-			/*ImGui::SetNextItemWidth(150.f);
-			ImGui::InputInt("Sync Animation Key", &m_tEffectParticleDesc.iSyncAnimationKey);*/
 
 			if (ImGui::CollapsingHeader("Animation Sync"))
 			{
@@ -2871,7 +3087,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 				Tool_Spawn_Life_Time();
 			
 			ImGui::Separator();
-			ImGui::Checkbox("Is Move Look##Is_MoveLook", &m_tEffectParticleDesc.bMoveLook);
+			Tool_ToggleOption1("Is Move Look", "##Is_MoveLook", EFFECTPARTICLE_DESC::ParticleOption1::Is_MoveLook);
 			ImGui::Separator();
 
 			ImGui::Checkbox("Use Gravity##Use_Gravity", &m_tEffectParticleDesc.bUseGravity);
@@ -2890,9 +3106,9 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 			if (ImGui::CollapsingHeader("Boner"))
 			{
-				ImGui::Checkbox("Follow Bone##Is_Boner", &m_tEffectParticleDesc.bBoner);
+				Tool_ToggleOption1("Is Boner", "##Is_Boner", EFFECTPARTICLE_DESC::ParticleOption1::Is_Boner);
 
-				if (m_tEffectParticleDesc.bBoner)
+				if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Is_Boner))
 					Tool_Boner();
 				else
 				{

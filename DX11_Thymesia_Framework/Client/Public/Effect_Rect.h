@@ -71,8 +71,8 @@ private:
     void Generate_RandomOriginalParticleDesc();
     _bool Check_DisableAllParticle();
 
-    void Play_Internal(const _uint& i, _float fTimeDelta);
-    void Update_ParticlePosition(const _uint& i, _float fTimeDelta);
+    void Play_Internal(const _uint& i, _float fTimeDelta, _matrix BoneMatrix);
+    void Update_ParticlePosition(const _uint& i, _float fTimeDelta, _matrix BoneMatrix);
     void Update_ParticleRotation(const _uint& i, _float fTimeDelta);
     void Update_ParticleScale(const _uint& i, _float fTimeDelta);
     void Update_ParticleUV(_float fTimeDelta);
@@ -112,6 +112,14 @@ private:
     );
 
     const _bool Is_Sprite() const;
+
+    const _bool Check_Option1(const EFFECTPARTICLE_DESC::ParticleOption1 eOption) const;
+    void TurnOn_Option1(const EFFECTPARTICLE_DESC::ParticleOption1 eOption);
+    void TurnOff_Option1(const EFFECTPARTICLE_DESC::ParticleOption1 eOption);
+
+#ifdef _DEBUG
+    void Tool_ToggleOption1(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::ParticleOption1 eOption);
+#endif // _DEBUG
 
 #ifdef _DEBUG
 private: // For. Tool
