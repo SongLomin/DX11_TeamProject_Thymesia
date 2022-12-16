@@ -564,6 +564,10 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 
 	if (In_Json.find("ParticleOption1") != In_Json.end())
 		m_tEffectParticleDesc.byParticleOption1 = In_Json["ParticleOption1"];
+#ifndef _BAKE_PARTICLE_
+	else
+		assert(0);
+#endif // _BAKE_PARTICLE_
 
 #pragma region Attraction
 
