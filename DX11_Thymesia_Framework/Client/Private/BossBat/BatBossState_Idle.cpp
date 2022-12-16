@@ -275,7 +275,7 @@ _bool CBatBossState_Idle::Check_AndChangeNextState()
 				case 0:
 					//여기는 공격한번하면 카운트 1씩증가 
 				{
-					int iRand = rand() % 3;
+					int iRand = rand() % 2;
 
 					switch (iRand)
 					{
@@ -284,9 +284,6 @@ _bool CBatBossState_Idle::Check_AndChangeNextState()
 						break;
 					case 1:
 						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Car>(0.05f);
-						break;
-					case 2:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Storm>(0.05f);
 						break;
 					}
 
