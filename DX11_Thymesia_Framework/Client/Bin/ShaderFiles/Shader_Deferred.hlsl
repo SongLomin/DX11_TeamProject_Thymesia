@@ -41,6 +41,9 @@ texture2D g_ExtractBloomTexture;
 texture2D g_OriginalRenderTexture;
 texture2D g_ShaderFlagTexture;
 
+textureCUBE g_IrradianceTexture;
+texture2D g_BRDFTexture;
+
 texture2D g_PostEffectMaskTexture;
 texture2D g_BloomTexture;
 
@@ -169,6 +172,10 @@ float schlickBeckmannGAF(float dotProduct, float roughness)
     return dotProduct / (dotProduct * (1 - k) + k);
 }
 
+float3 fresnelSchlickRoughness(float cosTheta, float3 F0, float roughness)
+{
+    return F0 + (max(1.0 - roughness, F0) - F0) * pow(clamp(1.0 - cosTheta, 0.0, 1.0), 5.0);
+}
 
 PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 {
@@ -216,7 +223,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 
     vector vLook = normalize(g_vCamPosition- vWorldPos);
     
-    float fIntensity = 5.f;
+    float fIntensity = 1.f;
  
     vLook.a = 0.f;
     float fOcclusion = vORMDesc.x;
@@ -251,25 +258,28 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
         vector vSpecular = vNumerator / max(fDenominator, 0.001f);
 
         vector vSpecularAcc = vSpecular * NdotL * g_vLightDiffuse /** fOcclusion*/;
-        vector vAmbientColor = vDiffuseColor / 3.141592265359 * kD  * NdotL * g_vLightDiffuse;
+        vector vAmbientColor = vDiffuseColor /*/ 3.141592265359*/ * kD  * NdotL * g_vLightDiffuse;
        
         //vector vLightColor = (kD * vDiffuseColor / 3.141592265359 + vSpecular) * NdotL * g_vLightDiffuse;
        
         
         //irradiance
-        kS = vector(fresnel(vMetalic, NdotV, fRoughness), 0.f);
+        kS = vector(fresnelSchlickRoughness(NdotV, vMetalic, fRoughness), 0.f);  
         kD = vector(1.f, 1.f, 1.f, 0.f) - kS;
 
-        //vector vIrradiance = vector(1.f, 1.f, 1.f, 0.f);
+        vector vIrradiance = g_IrradianceTexture.Sample(DefaultSampler,vNormal);
         //환경광은 흰색이라고 가정
-        vector vIrradianceDiffuse = vDiffuseColor * kD * /*fOcclusion **/ 0.5f;
-        vector vIrradianceSpecular = vMetalic * 0.5f;
-
-        vSpecular += vIrradianceSpecular;
+        vector vIrradianceDiffuse = vIrradiance*vDiffuseColor * kD * fOcclusion;
         vAmbientColor += vIrradianceDiffuse;
         
+        vector vReflect = reflect(-normalize(vLook), vNormal);
         
-
+        float3 prefilteredColor = g_IrradianceTexture.SampleLevel(DefaultSampler,vReflect, fRoughness).rgb;
+        float2 envBRDF = g_BRDFTexture.Sample(DefaultSampler, float2(NdotV, fRoughness)).rg;
+        float3 specular = prefilteredColor * (F * envBRDF.x + envBRDF.y);
+        
+        vSpecularAcc.rgb += specular * fOcclusion;
+        
         //shade
         vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(g_vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * vDiffuseColor));
         vResult *= fOcclusion;
@@ -279,8 +289,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 
         Out.vShade = vResult * fIntensity;
         Out.vShade.a = 1.f;
-
-        Out.vAmbient = vAmbientColor*fIntensity;
+        Out.vAmbient = vAmbientColor * fIntensity;
         Out.vAmbient.a = 1.f;
     }
     else
@@ -363,8 +372,9 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
     //float fintensity = 1.f;
    
     //float fAtt = fintensity / (fDenom * fDenom + 1.f);
-     
+    float fIntensity = 5.f;
     float fAtt = 0.5f * cos(fDistance / g_fRange * 3.14159265f) + 0.5f;
+    fAtt *= fIntensity;
     vector vLook = normalize(g_vCamPosition - vWorldPos);
     
     float fRoughness = vORMDesc.y;
@@ -399,21 +409,26 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
         vector vSpecular = vNumerator / max(fDenominator, 0.001f);
 
         vector vSpecularAcc = vSpecular * NdotL * g_vLightDiffuse * fAtt /** fOcclusion*/;
-        vector vAmbientColor = kD * vDiffuseColor / 3.141592265359  * fOcclusion * NdotL * g_vLightDiffuse * fAtt; 
+        vector vAmbientColor = kD * vDiffuseColor/* / 3.141592265359*/  * fOcclusion * NdotL * g_vLightDiffuse * fAtt; 
        
         //vector vLightColor = (kD * vDiffuseColor / 3.141592265359 + vSpecular) * NdotL * g_vLightDiffuse;
                 
-        ////irradiance
-        //kS = vector(fresnel(vMetalic, NdotV, fRoughness),0.f);
-        //kD = vector(1.f, 1.f, 1.f, 0.f) - kS;
+         //irradiance
+        kS = vector(fresnelSchlickRoughness(NdotV, vMetalic, fRoughness), 0.f);
+        kD = vector(1.f, 1.f, 1.f, 0.f) - kS;
 
-        ////vector vIrradiance = vector(1.f, 1.f, 1.f, 0.f);
-        ////환경광은 흰색이라고 가정
-        //vector vIrradianceDiffuse= vDiffuseColor * kD * fOcclusion * 0.5f;
-        //vector vIrradianceSpecular = vMetalic * 0.5f;
-
-        //vSpecular += vIrradianceSpecular;
-        //vAmbientColor += vIrradianceDiffuse;
+        vector vIrradiance = g_IrradianceTexture.Sample(DefaultSampler, vNormal);
+        //환경광은 흰색이라고 가정
+        vector vIrradianceDiffuse = vIrradiance * vDiffuseColor * kD * fOcclusion;
+        vAmbientColor += vIrradianceDiffuse;
+        
+        vector vReflect = reflect(-normalize(vLook), vNormal);
+        
+        float3 prefilteredColor = g_IrradianceTexture.SampleLevel(DefaultSampler, vReflect, fRoughness).rgb;
+        float2 envBRDF = g_BRDFTexture.Sample(DefaultSampler, float2(NdotV, fRoughness)).rg;
+        float3 specular = prefilteredColor * (F * envBRDF.x + envBRDF.y);
+        
+        vSpecularAcc.rgb += specular * fOcclusion;
 
         //shade
         vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * vDiffuseColor));
@@ -543,7 +558,7 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
     if (vAmbientDesc.a > 0.f)
     {
         vAmbientDesc.a = 0.f;
-        Out.vColor = vDiffuse*0.03f  + vAmbientDesc + vSpecular * (1 - bIsInShadow);
+        Out.vColor = /*vDiffuse*0.03f  + */vAmbientDesc + vSpecular /** (1 - bIsInShadow)*/;
         Out.vColor.rgb *= vViewShadow.rgb;
      
        // Out.vColor.rgb = Out.vColor.rgb / (Out.vColor.rgb + float3(1.f, 1.f, 1.f));
@@ -598,9 +613,9 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
 
     }
     
-          
+    
     float3 mapped = 1.f - exp(-Out.vColor.rgb * 1.f /*exposure*/);
-   // Out.vColor.rgb = pow(mapped, 1.f / 2.2f);
+    Out.vColor.rgb = pow(mapped, 1.f / 2.2f);
     
     float fViewZ = vDepthDesc.y * 300.f;
 

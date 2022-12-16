@@ -7,6 +7,7 @@ class CGameObject;
 class CShader;
 class CVIBuffer_Rect;
 class CComponent;
+class CTexture;
 
 class CRender_Manager :
     public CBase
@@ -138,6 +139,9 @@ private:
 	shared_ptr<CShader>			m_pDistortionShader;
 	shared_ptr<CShader>			m_pPostProcessingShader;
 	shared_ptr<CVIBuffer_Rect>	m_pVIBuffer;
+	shared_ptr<CTexture>		m_pIrradianceTextureCom;
+	shared_ptr<CTexture>		m_pBRDFLUTTextureCom;
+
 
 private:
 	list<weak_ptr<CGameObject>>				m_RenderObjects[(_uint)RENDERGROUP::RENDER_END];

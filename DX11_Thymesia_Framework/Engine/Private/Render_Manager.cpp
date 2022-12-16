@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "GameInstance.h"
 #include "Shader.h"
+#include "Texture.h"
 #include "VIBuffer_Rect.h"
 #include "Easing_Utillity.h"
 
@@ -419,7 +420,15 @@ HRESULT CRender_Manager::Initialize()
 
 	m_pVIBuffer = CVIBuffer_Rect::Create();
 	
-	GAMEINSTANCE->Load_Textures("PostEffectMask", TEXT("../Bin/Resources/Textures/UI/PostEffectMask.bmp"));
+	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap%d.dds"));
+	m_pIrradianceTextureCom = CTexture::Create();
+	m_pIrradianceTextureCom->Use_Texture("IrradianceMap");
+
+	GAMEINSTANCE->Load_Textures("BRDF", TEXT("../Bin/Resources/Textures/BRDF/brdf%d.png"));
+	m_pBRDFLUTTextureCom = CTexture::Create();
+	m_pBRDFLUTTextureCom->Use_Texture("BRDF");
+
+
 
 	return S_OK;
 }
@@ -865,6 +874,12 @@ HRESULT CRender_Manager::Render_Lights()
 	//if (FAILED(m_pShader->Set_ShaderResourceView("g_LightFlagTexture", pRenderTargetManager->Get_SRV(TEXT("Target_LightFlag")))))
 	//	DEBUG_ASSERT;
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_ORMTexture", pRenderTargetManager->Get_SRV(TEXT("Target_PBR")))))
+		DEBUG_ASSERT;
+
+	if (FAILED(m_pIrradianceTextureCom->Set_ShaderResourceView(m_pShader, "g_IrradianceTexture", 0)))
+		DEBUG_ASSERT;
+
+	if (FAILED(m_pBRDFLUTTextureCom->Set_ShaderResourceView(m_pShader, "g_BRDFTexture", 0)))
 		DEBUG_ASSERT;
 
 	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
