@@ -15,6 +15,7 @@ vector g_vCamPosition;
 vector g_vLightDiffuse;
 vector g_vLightAmbient;
 vector g_vLightSpecular;
+float g_fLightIntensity;
 vector g_vLightFlag;
        
 vector g_vMtrlAmbient  = vector(1.f, 1.f, 1.f, 1.f);
@@ -52,6 +53,8 @@ texture2D g_OriginalEffectTexture;
 
 // For Motion Blur
 float g_fBlurWidth;
+
+float g_fExposure = 1.f;;
 
 float g_fFar = 300;
 
@@ -284,12 +287,12 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
         vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(g_vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * vDiffuseColor));
         vResult *= fOcclusion;
 
-        Out.vSpecular = vSpecularAcc * fIntensity;
+        Out.vSpecular = vSpecularAcc * g_fLightIntensity;
         Out.vSpecular.a = 0.f;
 
-        Out.vShade = vResult * fIntensity;
+        Out.vShade = vResult * g_fLightIntensity;
         Out.vShade.a = 1.f;
-        Out.vAmbient = vAmbientColor * fIntensity;
+        Out.vAmbient = vAmbientColor * g_fLightIntensity;
         Out.vAmbient.a = 1.f;
     }
     else
@@ -300,7 +303,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
         if (vResult.r < 0.05f && vResult.g < 0.05f && vResult.b < 0.05f)
             discard;
 
-        Out.vShade = vResult * fIntensity;
+        Out.vShade = vResult * g_fLightIntensity;
         Out.vShade.a = 1.f;
 
         vector vReflect = reflect(normalize(g_vLightDir), vNormal);
@@ -374,7 +377,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
     //float fAtt = fintensity / (fDenom * fDenom + 1.f);
     float fIntensity = 5.f;
     float fAtt = 0.5f * cos(fDistance / g_fRange * 3.14159265f) + 0.5f;
-    fAtt *= fIntensity;
+    fAtt *= g_fLightIntensity;
     vector vLook = normalize(g_vCamPosition - vWorldPos);
     
     float fRoughness = vORMDesc.y;
@@ -613,8 +616,7 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
 
     }
     
-    
-    float3 mapped = 1.f - exp(-Out.vColor.rgb * 1.f /*exposure*/);
+    float3 mapped = 1.f - exp(-Out.vColor.rgb * g_fExposure);
     Out.vColor.rgb = pow(mapped, 1.f / 2.2f);
     
     float fViewZ = vDepthDesc.y * 300.f;
