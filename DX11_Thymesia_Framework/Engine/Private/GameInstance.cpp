@@ -355,6 +355,10 @@ LIFTGAMMAGAIN_DESC& CGameInstance::Get_LiftGammaGain()
 {
 	return m_pRender_Manager->Get_LiftGammaGain();
 }
+HRESULT CGameInstance::Set_Contrast(const _float In_fContrast)
+{
+	return m_pRender_Manager->Set_Contrast(In_fContrast);
+}
 
 ComPtr<ID3D11DeviceContext> CGameInstance::Get_BeforeRenderContext()
 {

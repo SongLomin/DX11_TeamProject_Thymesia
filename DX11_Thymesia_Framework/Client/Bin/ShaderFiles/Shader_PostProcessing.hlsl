@@ -26,6 +26,8 @@ matrix		g_CameraViewMatrix;
 vector g_vLift, g_vGamma, g_vGain;
 //ScreenTone
 float g_fGrayScale;
+float g_fContrastValue;
+float g_fSaturation;
 
 static const float BlurWeights[13] =
 {
@@ -177,13 +179,18 @@ PS_OUT PS_MAIN_SCREENTONE(PS_IN In)
 	
     vector vColor = g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV);
 	
+    vColor *= g_fSaturation;
+	
     float avg = (vColor.r + vColor.g + vColor.b) / 3.0;
     vector vNewColor;
     vNewColor.a = 1.0f;
     vNewColor.rgb = avg * (1.0 - g_fGrayScale) + vColor.rgb * g_fGrayScale;
   
+
+    Out.vColor = 0.5f + g_fContrastValue * (vNewColor - 0.5f);
+    
 	
-    Out.vColor = vNewColor;
+    //Out.vColor = vNewColor;
 	
     return Out;
 }

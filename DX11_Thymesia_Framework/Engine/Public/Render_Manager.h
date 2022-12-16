@@ -61,7 +61,9 @@ public:
 	{
 		return m_LiftGammaGainDesc;
 	}
-	
+
+	HRESULT Set_Contrast(const _float In_fContrast);
+	HRESULT Set_Saturation(const _float In_fSaturation);
 
 private:
 	HRESULT Render_Priority();
@@ -173,6 +175,8 @@ private:
 	_float		m_fFogRange = 30.f;
 	
 	_float		m_fGrayScale = 1.f;
+	_float		m_fContrastValue = 1.f;
+	_float		m_fSaturation = 1.f;
 
 
 private:

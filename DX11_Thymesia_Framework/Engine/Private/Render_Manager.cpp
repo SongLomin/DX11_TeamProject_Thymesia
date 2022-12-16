@@ -481,14 +481,15 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Blur_OutLine()))
 		DEBUG_ASSERT;
 
+	if (FAILED(Bake_ViewShadow()))
+		DEBUG_ASSERT;
+
 	if (FAILED(Render_Lights()))
 		DEBUG_ASSERT;
 
 	if (FAILED(Bake_Fog()))
 		DEBUG_ASSERT;
 
-	if (FAILED(Bake_ViewShadow()))
-		DEBUG_ASSERT;
 
 	///////SSR ³Ö±â
 
@@ -649,6 +650,18 @@ HRESULT CRender_Manager::Set_FogDesc(const _float4 In_vFogColor, const _float In
 	return S_OK;
 }
 
+HRESULT CRender_Manager::Set_Contrast(const _float In_fContrast)
+{
+	m_fContrastValue = In_fContrast;
+
+	return S_OK;
+}
+HRESULT CRender_Manager::Set_Saturation(const _float In_fSaturation)
+{
+	m_fSaturation = In_fSaturation;
+
+	return S_OK;
+}
 
 
 HRESULT CRender_Manager::Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain)
@@ -1696,6 +1709,8 @@ HRESULT CRender_Manager::PostProcessing()
 	m_pPostProcessingShader->Set_RawValue("g_vGain", &m_LiftGammaGainDesc.vGain, sizeof(_float4));
 
 	m_pPostProcessingShader->Set_RawValue("g_fGrayScale", &m_fGrayScale, sizeof(_float));
+	m_pPostProcessingShader->Set_RawValue("g_fSaturation", &m_fSaturation, sizeof(_float));
+	m_pPostProcessingShader->Set_RawValue("g_fContrastValue", &m_fContrastValue, sizeof(_float)); 
 
 	_float fChromaticLerpValue = 0.f;
 	if (0.f < m_fChromaticStrengthAcc)

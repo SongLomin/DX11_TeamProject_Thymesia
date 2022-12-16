@@ -79,6 +79,8 @@ HRESULT CLevel_Test::Initialize()
 	SetUp_UI();
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
+
+
 	return S_OK;
 }
 

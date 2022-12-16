@@ -284,7 +284,8 @@ VS_OUT_NORMAL VS_MAIN_NORMAL(VS_IN In)
     Out.vTexUV = In.vTexUV;
     Out.vProjPos = Out.vPosition;
     Out.vTangent = normalize(mul(vTangent,g_WorldMatrix)).xyz;
-   Out.vBinormal = normalize(cross(float3(Out.vNormal.xyz), Out.vTangent));
+    //Out.vTangent = vTangent.xyz;
+    Out.vBinormal = normalize(cross(float3(Out.vNormal.xyz), Out.vTangent));
 
     return Out;
 }

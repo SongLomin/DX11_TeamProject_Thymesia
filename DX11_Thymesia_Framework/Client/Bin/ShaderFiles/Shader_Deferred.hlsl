@@ -79,7 +79,7 @@ struct VS_OUT
 VS_OUT VS_MAIN(VS_IN In)
 {
 	VS_OUT Out = (VS_OUT)0;
-
+    
 	matrix matWV, matWVP;
 
 	matWV  = mul(g_WorldMatrix, g_ViewMatrix);
@@ -215,13 +215,16 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
     vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
 
     vector vLook = normalize(g_vCamPosition- vWorldPos);
+    
+    float fIntensity = 1.f;
+    
     vLook.a = 0.f;
     float fOcclusion = vORMDesc.x;
     float fRoughness = vORMDesc.y;
     float fMetalness = vORMDesc.z;
     if (fRoughness > 0.f || fMetalness > 0.f || fOcclusion > 0.f)
     {
-        fRoughness *= fRoughness;
+       // fRoughness *= fRoughness;
         
         vector vHalfVec = normalize(vLook + normalize(g_vLightDir) * -1.f);
 
@@ -266,10 +269,10 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
         vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(g_vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * vDiffuseColor));
         vResult *= fOcclusion;
 
-        Out.vSpecular = vSpecularAcc;
+        Out.vSpecular = vSpecularAcc * fIntensity;
         Out.vSpecular.a = 0.f;
 
-        Out.vShade = vResult;
+        Out.vShade = vResult * fIntensity;
         Out.vShade.a = 1.f;
 
         Out.vAmbient = vAmbientColor;
@@ -283,17 +286,20 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
         if (vResult.r < 0.05f && vResult.g < 0.05f && vResult.b < 0.05f)
             discard;
 
-        Out.vShade = vResult;
+        Out.vShade = vResult * fIntensity;
         Out.vShade.a = 1.f;
 
         vector vReflect = reflect(normalize(g_vLightDir), vNormal);
 
 
-        Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f);
+        Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f) * fIntensity;
 
         Out.vSpecular.a = 0.f;
         Out.vAmbient = vector(0.f, 0.f, 0.f, 0.f);
     }
+    
+    Out.vSpecular = pow(Out.vSpecular, 2.2f);
+    
 	return Out;
 }
 
@@ -343,13 +349,16 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 	vector	vLightDir = vWorldPos - g_vLightPos;
     float fDistance =  length(vLightDir); 
     
-    if(g_fRange < fDistance)
+    if (g_fRange*1.5f < fDistance)
         discard;
-
     
+    //float fDenom = fDistance / g_fRange;
+    //float fDist = fDistance / (1.f - fDenom * fDenom);
+    //float fintensity = 1.f;
+   
+    //float fAtt = fintensity / (fDenom * fDenom + 1.f);
+     
     float fAtt = 0.5f * cos(fDistance / g_fRange * 3.14159265f) + 0.5f;
-
-
     vector vLook = normalize(g_vCamPosition - vWorldPos);
     
     float fRoughness = vORMDesc.y;
@@ -380,7 +389,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
         vector vSpecular = vNumerator / max(fDenominator, 0.001f);
 
         vector vSpecularAcc = vSpecular * NdotL * g_vLightDiffuse * fAtt /** fOcclusion*/;
-        vector vAmbientColor = vDiffuseColor / 3.141592265359 * kD * fOcclusion * NdotL * g_vLightDiffuse * fAtt;
+        vector vAmbientColor = kD * vDiffuseColor / 3.141592265359  * fOcclusion * NdotL * g_vLightDiffuse * fAtt; 
        
         //vector vLightColor = (kD * vDiffuseColor / 3.141592265359 + vSpecular) * NdotL * g_vLightDiffuse;
                 
@@ -418,15 +427,18 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
         if (vResult.r < 0.05f && vResult.g < 0.05f && vResult.b < 0.05f)
             discard;
 
-        Out.vShade = vResult;
+        Out.vShade = vResult ;
         Out.vShade.a = 1.f;
 
         vector vReflect = reflect(normalize(vLightDir), vNormal);
    
-        Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f) * fAtt;
+        Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f) * fAtt ;
         Out.vSpecular.a = 0.f;
         Out.vAmbient = vector(0.f, 0.f, 0.f, 0.f);
     }
+    
+    Out.vSpecular = pow(Out.vSpecular, 2.2f);
+    
 	return Out;
 }
 
@@ -515,101 +527,106 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
     vector vFogDesc       = g_FogTexture.Sample(DefaultSampler, In.vTexUV);
     vector vAmbientDesc   = g_AmbientTexture.Sample(DefaultSampler, In.vTexUV);
 
+    bool bIsInShadow = 0.9f > vViewShadow.r;
+  
     if (vAmbientDesc.a > 0.f)
     {
         vAmbientDesc.a = 0.f;
-        Out.vColor = vDiffuse*0.03f+ vAmbientDesc + vSpecular;
+        Out.vColor = vDiffuse * 0.03f + vAmbientDesc + vSpecular * (1 - bIsInShadow);
         Out.vColor.rgb *= vViewShadow.rgb;
      
-        
        // Out.vColor.rgb = Out.vColor.rgb / (Out.vColor.rgb + float3(1.f, 1.f, 1.f));
-        float3 mapped = 1.f - exp(-Out.vColor.rgb * 0.5f/*exposure*/);
+       // float3 mapped = 1.f - exp(-Out.vColor.rgb * 5.f/*exposure*/);
         
-       // Out.vColor.rgb = pow(Out.vColor.rgb, 1.f / 2.2f);
-        Out.vColor.rgb = pow(mapped, 1.f / 2.2f);
+       //// Out.vColor.rgb = pow(Out.vColor.rgb, 1.f / 2.2f);
+       // Out.vColor.rgb = pow(mapped, 1.f / 2.2f);
         Out.vColor.a = 1.f;
         
-        float fViewZ = vDepthDesc.y * 300.f;
+ //       float fViewZ = vDepthDesc.y * 300.f;
 
-        vector vWorldPos;
+ //       vector vWorldPos;
 
-	/* 투영스페이스 상의 위치르 ㄹ구한다. */
-	/* 뷰스페이스 상 * 투영행렬 / w 까지 위치를 구한다. */
-        vWorldPos.x = In.vTexUV.x * 2.f - 1.f;
-        vWorldPos.y = In.vTexUV.y * -2.f + 1.f;
-        vWorldPos.z = vDepthDesc.x;
-        vWorldPos.w = 1.0f;
+	///* 투영스페이스 상의 위치르 ㄹ구한다. */
+	///* 뷰스페이스 상 * 투영행렬 / w 까지 위치를 구한다. */
+ //       vWorldPos.x = In.vTexUV.x * 2.f - 1.f;
+ //       vWorldPos.y = In.vTexUV.y * -2.f + 1.f;
+ //       vWorldPos.z = vDepthDesc.x;
+ //       vWorldPos.w = 1.0f;
 
-	/* 뷰스페이스 상 * 투영행렬까지 곱해놓은 위치를 구한다. */
-        vWorldPos *= fViewZ;
+	///* 뷰스페이스 상 * 투영행렬까지 곱해놓은 위치를 구한다. */
+ //       vWorldPos *= fViewZ;
 
-	/* 뷰스페이스 상  위치를 구한다. */
-        vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
+	///* 뷰스페이스 상  위치를 구한다. */
+ //       vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
 
-	/* 월드페이스 상  위치를 구한다. */
-        vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
+	///* 월드페이스 상  위치를 구한다. */
+ //       vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
         
-        float fCamDistance = length(vWorldPos - g_vCamPosition);
+ //       float fCamDistance = length(vWorldPos - g_vCamPosition);
         
-        float fRatio = 1.f - exp(-fCamDistance / (g_fFogRange * 0.4f));
+ //       float fRatio = 1.f - exp(-fCamDistance / (g_fFogRange * 0.4f));
         
-        Out.vColor.rgb = lerp(Out.vColor.rgb, float3(0.f, 0.f, 0.f), fRatio);
+ //       Out.vColor.rgb = lerp(Out.vColor.rgb, float3(0.f, 0.f, 0.f), fRatio);
         
-        Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor.rgb;
+ //       Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor.rgb;
 
         
         
-    }
+    }      
     else
     {
-        Out.vColor = vDiffuse * vShade + vSpecular;
+                                           
+        Out.vColor = vDiffuse * vShade + vSpecular * (1.f - bIsInShadow);
         Out.vColor.rgb *= vViewShadow.rgb;
       
         //Out.vColor.rgb = Out.vColor.rgb / (Out.vColor.rgb + float3(1.f, 1.f, 1.f));
-        //Out.vColor.rgb = pow(Out.vColor.rgb, 1.f / 2.2f);
+        //Out.vColor.rgb = pow(Out.vColor.rgb, 1.f / 2.2f)
         
-        float3 mapped = 1.f - exp(-Out.vColor.rgb * 0.5f /*exposure*/);
-        Out.vColor.rgb = pow(mapped, 1.f / 2.2f);
+  
         
-        float fViewZ = vDepthDesc.y * 300.f;
 
-        vector vWorldPos;
+    }
+    
+          
+    float3 mapped = 1.f - exp(-Out.vColor.rgb * 5.f /*exposure*/);
+    Out.vColor.rgb = pow(mapped, 1.f / 2.2f);
+    
+    float fViewZ = vDepthDesc.y * 300.f;
+
+    vector vWorldPos;
 
 	/* 투영스페이스 상의 위치르 ㄹ구한다. */
 	/* 뷰스페이스 상 * 투영행렬 / w 까지 위치를 구한다. */
-        vWorldPos.x = In.vTexUV.x * 2.f - 1.f;
-        vWorldPos.y = In.vTexUV.y * -2.f + 1.f;
-        vWorldPos.z = vDepthDesc.x;
-        vWorldPos.w = 1.0f;
+    vWorldPos.x = In.vTexUV.x * 2.f - 1.f;
+    vWorldPos.y = In.vTexUV.y * -2.f + 1.f;
+    vWorldPos.z = vDepthDesc.x;
+    vWorldPos.w = 1.0f;
 
 	/* 뷰스페이스 상 * 투영행렬까지 곱해놓은 위치를 구한다. */
-        vWorldPos *= fViewZ;
+    vWorldPos *= fViewZ;
 
 	/* 뷰스페이스 상  위치를 구한다. */
-        vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
+    vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
 
 	/* 월드페이스 상  위치를 구한다. */
-        vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
+    vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
         
-        float fCamDistance = length(vWorldPos - g_vCamPosition);
+    float fCamDistance = length(vWorldPos - g_vCamPosition);
         
-        float fRatio = 1.f - exp(-fCamDistance / (g_fFogRange * 0.4f));
+    float fRatio = 1.f - exp(-fCamDistance / (g_fFogRange * 0.4f));
         
-        Out.vColor.rgb = lerp(Out.vColor.rgb, float3(0.f, 0.f, 0.f), fRatio);
+    Out.vColor.rgb = lerp(Out.vColor.rgb, float3(0.f, 0.f, 0.f), fRatio);
         
-        if (0.f < Out.vColor.a)
-        {
-            Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor.rgb;
-        }
-        else
-        {
-           Out.vColor.rgb = float3(0.f, 0.f, 0.f);
-           Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor.rgb;
-           Out.vColor.a = 1.f;
+    if (0.f < Out.vColor.a)
+    {
+        Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor.rgb;
+    }
+    else
+    {
+        Out.vColor.rgb = float3(0.f, 0.f, 0.f);
+        Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor.rgb;
+        Out.vColor.a = 1.f;
            
-        }
-        
-
     }
     //if (vLightFlagDesc.r > 0.f || vLightFlagDesc.g > 0.f)
     //    return Out;
