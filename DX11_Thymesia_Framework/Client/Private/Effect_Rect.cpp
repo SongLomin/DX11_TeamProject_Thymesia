@@ -328,9 +328,8 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	Out_Json["Follow_Transform"] = m_tEffectParticleDesc.iFollowTransformType;
 
 #pragma region Particle Options
-	Out_Json["Option_Spawn"] = m_tEffectParticleDesc.byOption_Spawn;
-	Out_Json["Option_SpeedRotation"] = m_tEffectParticleDesc.byOption_SpeedRotation;
-	// Out_Json["ParticleOption3"] = m_tEffectParticleDesc.byOption_Scale;
+	Out_Json["ParticleOption1"] = m_tEffectParticleDesc.byOption_Spawn;
+	Out_Json["ParticleOption2"] = m_tEffectParticleDesc.byOption_SpeedRotation;
 #pragma endregion // Particle Options
 
 	if (Check_Option1(EFFECTPARTICLE_DESC::Option_Spawn::Is_Attraction))
@@ -409,11 +408,11 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 		CJson_Utility::Write_Float3(Out_Json["Max_Rotation_Force"], m_tEffectParticleDesc.vMaxRotationForce);
 	}
 
-	if (Check_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationMinLimit))
+	if (Check_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationLimit))
+	{
 		CJson_Utility::Write_Float3(Out_Json["Min_Rotation"], m_tEffectParticleDesc.vMinLimitRotation);
-
-	if (Check_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationMaxLimit))
 		CJson_Utility::Write_Float3(Out_Json["Max_Rotation"], m_tEffectParticleDesc.vMaxLimitRotation);
+	}
 #pragma endregion
 
 #pragma region Scale
@@ -544,15 +543,15 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 
 #pragma region Particle Options
 
-	if (In_Json.find("Option_Spawn") != In_Json.end())
-		m_tEffectParticleDesc.byOption_Spawn = In_Json["Option_Spawn"];
+	if (In_Json.find("ParticleOption1") != In_Json.end())
+		m_tEffectParticleDesc.byOption_Spawn = In_Json["ParticleOption1"];
 #ifndef _BAKE_PARTICLE_
 	//else
 	//	assert(0);
 #endif // _BAKE_PARTICLE_
 
-	if (In_Json.find("Option_SpeedRotation") != In_Json.end())
-		m_tEffectParticleDesc.byOption_SpeedRotation = In_Json["Option_SpeedRotation"];
+	if (In_Json.find("ParticleOption2") != In_Json.end())
+		m_tEffectParticleDesc.byOption_SpeedRotation = In_Json["ParticleOption2"];
 #ifndef _BAKE_PARTICLE_
 	//else
 	//	assert(0);
@@ -888,27 +887,32 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	}
 #endif // _BAKE_PARTICLE_
 
+#ifdef _BAKE_PARTICLE_
+	if (In_Json.find("Min_Rotation") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Min_Rotation"], m_tEffectParticleDesc.vMinLimitRotation);
 
+	if (In_Json.find("Max_Rotation") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Max_Rotation"], m_tEffectParticleDesc.vMaxLimitRotation);
 
-	if (Check_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationMinLimit))
+	if (SMath::Is_Equal(m_tEffectParticleDesc.vMinLimitRotation, _float3{ 0.f, 0.f, 0.f }) 
+		&& SMath::Is_Equal(m_tEffectParticleDesc.vMaxLimitRotation, _float3{ 0.f, 0.f, 0.f }))
+		TurnOff_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationLimit);
+	else
+		TurnOn_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationLimit);
+#else
+	if (Check_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationLimit))
 	{
 		if (In_Json.find("Min_Rotation") != In_Json.end())
 			CJson_Utility::Load_Float3(In_Json["Min_Rotation"], m_tEffectParticleDesc.vMinLimitRotation);
-	}
 
-	if (Check_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationMaxLimit))
-	{
 		if (In_Json.find("Max_Rotation") != In_Json.end())
 			CJson_Utility::Load_Float3(In_Json["Max_Rotation"], m_tEffectParticleDesc.vMaxLimitRotation);
 	}
+#endif // _BAKE_PARTICLE_
 
 #pragma endregion
 
 #pragma region Scale
-
-	if (Check_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationMinLimit))
-	{
-	}
 	if (In_Json.find("Is_Square_Scale") != In_Json.end())
 		m_tEffectParticleDesc.bSquareScale = In_Json["Is_Square_Scale"];
 
@@ -1431,23 +1435,11 @@ void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
 			vRotation = SMath::Add_Float3(vRotation, m_tParticleDescs[i].vCurrentRotationForce);
 		}
 
-		if (Check_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationMinLimit) && Check_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationMaxLimit))
+		if (Check_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationLimit))
 		{
 			vRotation.x = max(m_tEffectParticleDesc.vMinLimitRotation.x, min(m_tEffectParticleDesc.vMaxLimitRotation.x, vRotation.x));
 			vRotation.y = max(m_tEffectParticleDesc.vMinLimitRotation.y, min(m_tEffectParticleDesc.vMaxLimitRotation.y, vRotation.y));
 			vRotation.z = max(m_tEffectParticleDesc.vMinLimitRotation.z, min(m_tEffectParticleDesc.vMaxLimitRotation.z, vRotation.z));
-		}
-		else if (Check_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationMinLimit) && !Check_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationMaxLimit))
-		{
-			vRotation.x = max(m_tEffectParticleDesc.vMinLimitRotation.x, vRotation.x);
-			vRotation.y = max(m_tEffectParticleDesc.vMinLimitRotation.y, vRotation.y);
-			vRotation.z = max(m_tEffectParticleDesc.vMinLimitRotation.z, vRotation.z);
-		}
-		else if (!Check_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationMinLimit) && Check_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationMaxLimit))
-		{
-			vRotation.x = min(m_tEffectParticleDesc.vMaxLimitRotation.x, vRotation.x);
-			vRotation.y = min(m_tEffectParticleDesc.vMaxLimitRotation.y, vRotation.y);
-			vRotation.z = min(m_tEffectParticleDesc.vMaxLimitRotation.z, vRotation.z);
 		}
 	}
 
@@ -2043,19 +2035,6 @@ void CEffect_Rect::TurnOff_Option2(const EFFECTPARTICLE_DESC::Option_SpeedRotati
 	m_tEffectParticleDesc.byOption_SpeedRotation &= ~(_ubyte)eOption;
 }
 
-const _bool CEffect_Rect::Check_Option3(const EFFECTPARTICLE_DESC::Option_Scale eOption) const
-{
-	return _bool();
-}
-
-void CEffect_Rect::TurnOn_Option3(const EFFECTPARTICLE_DESC::Option_Scale eOption)
-{
-}
-
-void CEffect_Rect::TurnOff_Option3(const EFFECTPARTICLE_DESC::Option_Scale eOption)
-{
-}
-
 #ifdef _DEBUG
 void CEffect_Rect::Tool_ToggleOption1(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option_Spawn eOption)
 {
@@ -2092,9 +2071,7 @@ void CEffect_Rect::Tool_ToggleOption2(const char* szOptionName, const char* szOp
 	ImGui::SameLine();
 	ImGui::Text(szOptionName);
 }
-void CEffect_Rect::Tool_ToggleOption3(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option_Scale eOption)
-{
-}
+
 #endif // _DEBUG
 
 #ifdef _DEBUG
@@ -2483,10 +2460,9 @@ void CEffect_Rect::Tool_Rotation()
 
 	if (Check_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationSpeed) || Check_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationForce))
 	{
-		Tool_ToggleOption2("Use Rotation Min Limit", "##Use_RotationMinLimit", EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationMinLimit);
-		Tool_ToggleOption2("Use Rotation Max Limit", "##Use_RotationMaxLimit", EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationMaxLimit);
+		Tool_ToggleOption2("Use Rotation Limit", "##Use_RotationLimit", EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationLimit);
 
-		if (Check_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationMinLimit) || Check_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationMaxLimit))
+		if (Check_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationLimit))
 		{
 			if (ImGui::TreeNode("Rotation Limit"))
 			{
@@ -2496,17 +2472,13 @@ void CEffect_Rect::Tool_Rotation()
 				if (m_tEffectParticleDesc.bIsMinMaxSame_RotationLimit)
 					m_tEffectParticleDesc.vMaxLimitRotation = m_tEffectParticleDesc.vMinLimitRotation;
 
-				if (Check_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationMinLimit))
-				{
-					ImGui::Text("Min Limit Rotation"); ImGui::SetNextItemWidth(300.f);
-					ImGui::DragFloat3("##Min_Limit_Rotation", &m_tEffectParticleDesc.vMinLimitRotation.x, 0.01f, 0.f, 0.f, "%.5f");
-				}
 
-				if (Check_Option2(EFFECTPARTICLE_DESC::Option_SpeedRotation::Use_RotationMaxLimit))
-				{
-					ImGui::Text("Max Limit Rotation"); ImGui::SetNextItemWidth(300.f);
-					ImGui::DragFloat3("##Max_Limit_Rotation", &m_tEffectParticleDesc.vMaxLimitRotation.x, 0.01f, 0.f, 0.f, "%.5f");
-				}
+				ImGui::Text("Min Limit Rotation"); ImGui::SetNextItemWidth(300.f);
+				ImGui::DragFloat3("##Min_Limit_Rotation", &m_tEffectParticleDesc.vMinLimitRotation.x, 0.01f, 0.f, 0.f, "%.5f");
+
+				ImGui::Text("Max Limit Rotation"); ImGui::SetNextItemWidth(300.f);
+				ImGui::DragFloat3("##Max_Limit_Rotation", &m_tEffectParticleDesc.vMaxLimitRotation.x, 0.01f, 0.f, 0.f, "%.5f");
+
 
 				ImGui::TreePop();
 			}

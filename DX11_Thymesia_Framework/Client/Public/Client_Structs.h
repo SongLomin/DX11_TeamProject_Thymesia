@@ -268,8 +268,7 @@ namespace Client
 			, Use_SpeedMaxLimit    = 0b0000'1000
 			, Use_RotationSpeed    = 0b0001'0000
 			, Use_RotationForce    = 0b0010'0000
-			, Use_RotationMinLimit = 0b0100'0000
-			, Use_RotationMaxLimit = 0b1000'0000
+			, Use_RotationLimit	   = 0b0100'0000
 			, Option_SpeedRotation_END
 		};
 
@@ -296,20 +295,6 @@ namespace Client
 
 		_float2		vMinLimitScale;
 		_float2		vMaxLimitScale;
-
-		_ubyte		byOption_Scale = 0;
-		enum class Option_Scale
-		{
-			SquareScale         = 0b0000'0001
-			, RatioScale        = 0b0000'0010
-			, CustomScale       = 0b0000'0100
-			, Use_EasingScale   = 0b0000'1000
-			, Use_MaxStartScale = 0b0001'0000
-			, Use_ScaleSpeed    = 0b0010'0000
-			, Use_ScaleForce    = 0b0100'0000
-			, Use_MaxLimitScale = 0b1000'0000
-			, Option_Scale_END
-		};
 #pragma endregion
 #pragma region Color
 		_float		fDiscardRatio;

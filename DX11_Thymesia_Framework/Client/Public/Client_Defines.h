@@ -3,9 +3,9 @@
 #include "SMath.h"
 #include <filesystem>
 
- #define _JOJO_EFFECT_TOOL_
- // _BAKE_PARTICLE_ 절대 키지 마세요!
- #define _BAKE_PARTICLE_
+ //#define _JOJO_EFFECT_TOOL_
+ //// _BAKE_PARTICLE_ 절대 키지 마세요!
+ //#define _BAKE_PARTICLE_
 	
 #include "Client_Structs.h"
 #include "Client_Presets.h"
@@ -18,7 +18,7 @@
 #pragma region System
 //#define _ONLY_UI_
 //#define _BAKE_MIPMAPS_
-// #define _USE_THREAD_
+#define _USE_THREAD_
 #define _144HZ_
 #define _RENDER_FPS_
 #define _Actor_Culling_
