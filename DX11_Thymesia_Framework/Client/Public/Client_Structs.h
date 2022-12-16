@@ -241,12 +241,7 @@ namespace Client
 		// For. Gravity
 		_float3		vGravityForce;
 
-#pragma region Easing Position
-		_bool		bEasingPosition;
-#pragma endregion
-
 #pragma region Speed
-		_bool		bEasingSpeed;
 		_int		iSpeedEasingType;			// --> is position easing type when EasingPosition is true.
 		_float		fSpeedEasingTotalTime;		// --> is position easing total time when EasingPosition is true. 
 

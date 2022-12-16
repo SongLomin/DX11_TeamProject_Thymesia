@@ -25,6 +25,8 @@
 //#define _LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
+#define _SKYBOX_
+
 #define _USE_GRAVITY_
  #define _LIFEGUARD_FOR_FALL_
 
@@ -80,6 +82,8 @@
 // #define _LOAD_CAPTURED_RESOURCE_
 #define     _Actor_Culling_
 #pragma endregion // System
+
+#define _SKYBOX_
 
 #define _USE_GRAVITY_
 // #define _LIFEGUARD_FOR_FALL_
@@ -166,13 +170,9 @@
 #endif // _JOJO_EFFECT_TOOL_
 /////////////// For. JoJo Effect Tool ///////////////
 
-
-
 #define CLIENT_DECLATION_UI class CUI; class CCustomUI; class CProgressBar; class CHUD_Hover;
 #define ENGINE_DECLATION_UI class CTexture; class CShader;   
 #define ADD_STATIC_CUSTOMUI GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC)
-
-
 
 extern HWND g_hWnd;
 extern HINSTANCE g_hInst;
@@ -182,11 +182,3 @@ namespace fs = std::filesystem;
 
 #define EVENT_DRAW_EDITER 1
 #define EVENT_INIT_EDITER 0
-
-#ifdef _DEBUG
-#define _SKYBOX_N
-#endif // _DEBUG
-
-#ifdef NDEBUG
-#define _SKYBOX_
-#endif // NDEBUG

@@ -368,7 +368,7 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	CJson_Utility::Write_Float3(Out_Json["Min_Spawn_Offset_Range"], m_tEffectParticleDesc.vMinSpawnOffsetRange);
 	if (Check_Option1(EFFECTPARTICLE_DESC::ParticleOption1::Use_MinMax_SpawnOffsetRange))
 		CJson_Utility::Write_Float3(Out_Json["Max_Spawn_Offset_Range"], m_tEffectParticleDesc.vMaxSpawnOffsetRange);
-#pragma endregion
+#pragma endregion // Spawn Position
 
 	// Out_Json["Is_MoveLook"] = m_tEffectParticleDesc.bMoveLook;
 	// Out_Json["Is_Use_Gravity"] = m_tEffectParticleDesc.bUseGravity;
@@ -376,9 +376,9 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Use_Gravity))
 		CJson_Utility::Write_Float3(Out_Json["Gravity_Force"], m_tEffectParticleDesc.vGravityForce);
 
-	Out_Json["Is_Easing_Position"] = m_tEffectParticleDesc.bEasingPosition;
+	// Out_Json["Is_Easing_Position"] = m_tEffectParticleDesc.bEasingPosition;
 
-	if (m_tEffectParticleDesc.bEasingPosition)
+	if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingPosition))
 	{
 		Out_Json["Position_Easing_Type"] = m_tEffectParticleDesc.iSpeedEasingType;
 		Out_Json["Position_Easing_Total_Time"] = m_tEffectParticleDesc.fSpeedEasingTotalTime;
@@ -389,9 +389,9 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	else
 	{
 #pragma region Speed
-		Out_Json["Is_Easing_Speed"] = m_tEffectParticleDesc.bEasingSpeed;
+		// Out_Json["Is_Easing_Speed"] = m_tEffectParticleDesc.bEasingSpeed;
 
-		if (m_tEffectParticleDesc.bEasingSpeed)
+		if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingSpeed))
 		{
 			Out_Json["Speed_Easing_Type"] = m_tEffectParticleDesc.iSpeedEasingType;
 			Out_Json["Speed_Easing_Total_Time"] = m_tEffectParticleDesc.fSpeedEasingTotalTime;
@@ -785,28 +785,42 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	}
 
 #pragma endregion // Gravity
-	if (In_Json.find("Is_Easing_Position") != In_Json.end())
-		m_tEffectParticleDesc.bEasingPosition = In_Json["Is_Easing_Position"];
 
-	if (m_tEffectParticleDesc.bEasingPosition)
+#pragma region Easing Position
+#ifdef _BAKE_PARTICLE_
+	if (In_Json.find("Is_Easing_Position") != In_Json.end())
+	{
+		if (In_Json["Is_Easing_Position"])
+			TurnOn_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingPosition);
+	}
+#endif // _BAKE_PARTICLE_
+
+	if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingPosition))
 	{
 		if (In_Json.find("Position_Easing_Type") != In_Json.end())
 			m_tEffectParticleDesc.iSpeedEasingType = In_Json["Position_Easing_Type"];
 		if (In_Json.find("Position_Easing_Total_Time") != In_Json.end())
 			m_tEffectParticleDesc.fSpeedEasingTotalTime = In_Json["Position_Easing_Total_Time"];
 
+		TurnOn_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Use_Speed);
+
 		if (In_Json.find("Min_Goal_Offset_Position") != In_Json.end())
 			CJson_Utility::Load_Float3(In_Json["Min_Goal_Offset_Position"], m_tEffectParticleDesc.vMinStartSpeed);
 		if (In_Json.find("Max_Goal_Offset_Position") != In_Json.end())
 			CJson_Utility::Load_Float3(In_Json["Max_Goal_Offset_Position"], m_tEffectParticleDesc.vMaxStartSpeed);
 	}
+#pragma endregion // Easing Position
 	else
 	{
 #pragma region Speed
+#ifdef _BAKE_PARTICLE_
 		if (In_Json.find("Is_Easing_Speed") != In_Json.end())
-			m_tEffectParticleDesc.bEasingSpeed = In_Json["Is_Easing_Speed"];
-
-		if (m_tEffectParticleDesc.bEasingSpeed)
+		{
+			if (In_Json["Is_Easing_Speed"])
+				TurnOn_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingSpeed);
+		}
+#endif // _BAKE_PARTICLE_
+		if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingSpeed))
 		{
 			if (In_Json.find("Speed_Easing_Type") != In_Json.end())
 				m_tEffectParticleDesc.iSpeedEasingType = In_Json["Speed_Easing_Type"];
@@ -829,7 +843,7 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 			CJson_Utility::Load_Float3(In_Json["Min_Limit_Speed"], m_tEffectParticleDesc.vMinLimitSpeed);
 		if (In_Json.find("Max_Limit_Speed") != In_Json.end())
 			CJson_Utility::Load_Float3(In_Json["Max_Limit_Speed"], m_tEffectParticleDesc.vMaxLimitSpeed);
-#pragma endregion
+#pragma endregion // Speed
 	}
 
 #pragma region Rotation
@@ -1228,7 +1242,7 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 		m_tOriginalParticleDescs[i].vTargetRotationForce =
 			SMath::vRandom(m_tEffectParticleDesc.vMinRotationForce, m_tEffectParticleDesc.vMaxRotationForce);
 
-		if (m_tEffectParticleDesc.bEasingPosition)
+		if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingPosition))
 		{
 			m_tOriginalParticleDescs[i].vTargetSpeed = SMath::Add_Float3(m_tOriginalParticleDescs[i].vCurrentTranslation, m_tOriginalParticleDescs[i].vOffsetPosition);
 
@@ -1328,9 +1342,9 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta, _m
 	_float3 vMove;
 	ZeroMemory(&vMove, sizeof(_float3));
 
-	if (m_tEffectParticleDesc.bEasingPosition)
+	if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingPosition))
 	{
-		_float fElapsedTime = m_tParticleDescs[i].fCurrentLifeTime;
+		_float fElapsedTime(m_tParticleDescs[i].fCurrentLifeTime);
 
 		if (0.f > fElapsedTime)
 			return;
@@ -1362,7 +1376,7 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta, _m
 	}
 	else
 	{
-		if (m_tEffectParticleDesc.bEasingSpeed)
+		if (Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingSpeed))
 		{
 			_float fElapsedTime(m_tParticleDescs[i].fCurrentLifeTime);
 
@@ -1433,7 +1447,7 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta, _m
 			}
 			else
 			{
-				m_tEffectParticleDesc.bEasingSpeed ?
+				Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingSpeed) ?
 					m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, m_tParticleDescs[i].vTargetSpeed)
 					:
 					m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, vMove);
@@ -3174,19 +3188,21 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					m_strBoneName.clear();
 				}
 			}
+
 			if (ImGui::CollapsingHeader("Position"))
 			{
-				ImGui::Checkbox("Easing Position##Is_Easing_Position", &m_tEffectParticleDesc.bEasingPosition);
+				Tool_ToggleOption2("Easing Position", "##Is_Easing_Position", EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingPosition);
 				ImGui::Separator();
 				Tool_Position();
 			}
-			if (!m_tEffectParticleDesc.bEasingPosition)
+
+			if (!Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingPosition))
 			{
 				if (ImGui::CollapsingHeader("Speed"))
 				{
-					ImGui::Checkbox("Apply Easing##Is_Easing_Speed", &m_tEffectParticleDesc.bEasingSpeed);
+					Tool_ToggleOption2("Easing Speed", "##Is_Easing_Speed", EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingSpeed);
 
-					if (!m_tEffectParticleDesc.bEasingSpeed)
+					if (!Check_Option2(EFFECTPARTICLE_DESC::ParticleOption2::Is_EasingSpeed))
 						Tool_Speed();
 					else
 						Tool_Speed_Easing();
