@@ -159,8 +159,10 @@ _bool CEditGroupProp::IsPicking(const RAY& In_Ray, _float& Out_fRange)
 		return false;
 
 	_float fPickedDist;
-	_bool bPicked = false;
-	_uint iIndex  = 0;
+	_bool bPicked			= false;
+	_uint iIndex			= 0;
+	_float4	vCamPosition	= GAMEINSTANCE->Get_CamPosition();
+	_vector vCamPos			= XMLoadFloat4(&vCamPosition);
 
 	for (auto& iter : iter_prop->second)
 	{
@@ -177,7 +179,9 @@ _bool CEditGroupProp::IsPicking(const RAY& In_Ray, _float& Out_fRange)
 
 		if (SMath::Is_Picked_AbstractCube(In_Ray, Info, pTransformCom.lock()->Get_WorldMatrix(), &fPickedDist))
 		{
-			if (Out_fRange > fPickedDist)
+			_float  fLength = XMVectorGetX(XMVector3Length(vCamPos - iter.pInstance.lock()->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION)));
+			
+			if (Out_fRange > fLength)
 			{
 				Out_fRange      = fPickedDist;
 				m_iPickingIndex = iIndex;

@@ -358,8 +358,10 @@ void CEditInstanceProp::Load_FromJson(const json& In_Json)
 _bool CEditInstanceProp::IsPicking(const RAY& In_Ray, _float& Out_fRange)
 {
 	_float fPickedDist;
-	_bool bPicked = false;
-	_uint iIndex = 0;
+	_bool bPicked			= false;
+	_uint iIndex			= 0;
+	_float4	vCamPosition	= GAMEINSTANCE->Get_CamPosition();
+	_vector vCamPos			= XMLoadFloat4(&vCamPosition);
 
 	for (auto& iter : m_pPropInfos)
 	{
@@ -374,7 +376,9 @@ _bool CEditInstanceProp::IsPicking(const RAY& In_Ray, _float& Out_fRange)
 
 		if (SMath::Is_Picked_AbstractCube(In_Ray, Info, PickWorldMatrix, &fPickedDist))
 		{
-			if (Out_fRange > fPickedDist)
+			_float  fLength = XMVectorGetX(XMVector3Length(vCamPos - XMLoadFloat3(&iter.vTarnslation)));
+
+			if (Out_fRange > fLength)
 			{
 				m_PickingDesc = iter;
 				m_iPickingIndex = iIndex;
