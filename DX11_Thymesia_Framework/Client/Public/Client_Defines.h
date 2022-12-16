@@ -3,7 +3,7 @@
 #include "SMath.h"
 #include <filesystem>
 
- // #define _JOJO_EFFECT_TOOL_
+ #define _JOJO_EFFECT_TOOL_
  // _BAKE_PARTICLE_ 절대 키지 마세요!
  // #define _BAKE_PARTICLE_
 	
