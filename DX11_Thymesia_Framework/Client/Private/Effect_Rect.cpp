@@ -328,8 +328,8 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	Out_Json["Follow_Transform"] = m_tEffectParticleDesc.iFollowTransformType;
 
 #pragma region Particle Options
-	Out_Json["ParticleOption1"] = m_tEffectParticleDesc.byOption_Spawn;
-	Out_Json["ParticleOption2"] = m_tEffectParticleDesc.byOption_SpeedRotation;
+	Out_Json["Option_Spawn"] = m_tEffectParticleDesc.byOption_Spawn;
+	Out_Json["Option_SpeedRotation"] = m_tEffectParticleDesc.byOption_SpeedRotation;
 	// Out_Json["ParticleOption3"] = m_tEffectParticleDesc.byOption_Scale;
 #pragma endregion // Particle Options
 
@@ -544,15 +544,15 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 
 #pragma region Particle Options
 
-	if (In_Json.find("ParticleOption1") != In_Json.end())
-		m_tEffectParticleDesc.byOption_Spawn = In_Json["ParticleOption1"];
+	if (In_Json.find("Option_Spawn") != In_Json.end())
+		m_tEffectParticleDesc.byOption_Spawn = In_Json["Option_Spawn"];
 #ifndef _BAKE_PARTICLE_
 	//else
 	//	assert(0);
 #endif // _BAKE_PARTICLE_
 
-	if (In_Json.find("ParticleOption2") != In_Json.end())
-		m_tEffectParticleDesc.byOption_SpeedRotation = In_Json["ParticleOption2"];
+	if (In_Json.find("Option_SpeedRotation") != In_Json.end())
+		m_tEffectParticleDesc.byOption_SpeedRotation = In_Json["Option_SpeedRotation"];
 #ifndef _BAKE_PARTICLE_
 	//else
 	//	assert(0);
@@ -2043,18 +2043,18 @@ void CEffect_Rect::TurnOff_Option2(const EFFECTPARTICLE_DESC::Option_SpeedRotati
 	m_tEffectParticleDesc.byOption_SpeedRotation &= ~(_ubyte)eOption;
 }
 
-//const _bool CEffect_Rect::Check_Option3(const EFFECTPARTICLE_DESC::Option_Scale eOption) const
-//{
-//	return _bool();
-//}
-//
-//void CEffect_Rect::TurnOn_Option3(const EFFECTPARTICLE_DESC::Option_Scale eOption)
-//{
-//}
-//
-//void CEffect_Rect::TurnOff_Option3(const EFFECTPARTICLE_DESC::Option_Scale eOption)
-//{
-//}
+const _bool CEffect_Rect::Check_Option3(const EFFECTPARTICLE_DESC::Option_Scale eOption) const
+{
+	return _bool();
+}
+
+void CEffect_Rect::TurnOn_Option3(const EFFECTPARTICLE_DESC::Option_Scale eOption)
+{
+}
+
+void CEffect_Rect::TurnOff_Option3(const EFFECTPARTICLE_DESC::Option_Scale eOption)
+{
+}
 
 #ifdef _DEBUG
 void CEffect_Rect::Tool_ToggleOption1(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option_Spawn eOption)
@@ -2092,9 +2092,9 @@ void CEffect_Rect::Tool_ToggleOption2(const char* szOptionName, const char* szOp
 	ImGui::SameLine();
 	ImGui::Text(szOptionName);
 }
-//void CEffect_Rect::Tool_ToggleOption3(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option_Scale eOption)
-//{
-//}
+void CEffect_Rect::Tool_ToggleOption3(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option_Scale eOption)
+{
+}
 #endif // _DEBUG
 
 #ifdef _DEBUG
