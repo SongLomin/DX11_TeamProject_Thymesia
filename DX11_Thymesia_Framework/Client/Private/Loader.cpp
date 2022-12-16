@@ -214,7 +214,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	LightDesc.bEnable    = true;
 #endif // _BRIGHT_LIGHT_
 
+
 	GAMEINSTANCE->Add_Light(LightDesc);
+
 
 #endif // _ONLY_UI_
 

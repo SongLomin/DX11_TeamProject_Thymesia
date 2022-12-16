@@ -181,6 +181,7 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 			m_iPassIndex = 0;
 	
+
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones", pDeviceContext);
 	}
 

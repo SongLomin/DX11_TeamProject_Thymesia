@@ -425,14 +425,15 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Blur_OutLine()))
 		DEBUG_ASSERT;
 
+	if (FAILED(Bake_ViewShadow()))
+		DEBUG_ASSERT;
+
 	if (FAILED(Render_Lights()))
 		DEBUG_ASSERT;
 
 	if (FAILED(Bake_Fog()))
 		DEBUG_ASSERT;
 
-	if (FAILED(Bake_ViewShadow()))
-		DEBUG_ASSERT;
 
 	///////SSR ³Ö±â
 

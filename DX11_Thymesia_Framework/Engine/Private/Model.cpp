@@ -628,7 +628,7 @@ void CModel::Create_Materials(const char* pModelFilePath)
 
 			if (strPath.empty()) //스페큘러 인덱스 처리. 함수 따로 파서 ㅇㅇ 모델이 논애님이고
 			{
-				if (j == (_uint)aiTextureType_SPECULAR && MODEL_TYPE::NONANIM == m_pModelData->eModelType)
+				if (j == (_uint)aiTextureType_SPECULAR)
 				{
 					Create_ORM_Material(Material, i, pModelFilePath);
 				}
