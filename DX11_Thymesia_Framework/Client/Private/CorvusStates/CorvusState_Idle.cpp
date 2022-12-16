@@ -271,6 +271,13 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 				Get_OwnerPlayer()->Change_State<CCorvusState_BasicHealing>();
 				return true;
 			}
+
+			if (Check_RequirementFadderAttackState())
+			{
+				Rotation_InputToLookDir();
+				Get_OwnerPlayer()->Change_State<CCorvusState_FeatherAttack>();
+				return true;
+			}
 		}
 
 	// TODO : �ӽ� �ڵ�

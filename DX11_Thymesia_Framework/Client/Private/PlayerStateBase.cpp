@@ -209,7 +209,7 @@ _bool CPlayerStateBase::Rotation_InputToLookDir()
 		vInputDir = XMVector3Normalize(vInputDir);
 
 		_vector vMyPosition = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-		m_pTransformCom.lock()->LookAt(vMyPosition + vInputDir);
+		m_pTransformCom.lock()->LookAt2D(vMyPosition + vInputDir);
 
 		return true;
 	}
@@ -226,7 +226,7 @@ _bool CPlayerStateBase::Rotation_TargetToLookDir()
 
 	_vector MonsterPosition = pMonster.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
 
-	m_pTransformCom.lock()->LookAt(MonsterPosition);
+	m_pTransformCom.lock()->LookAt2D(MonsterPosition);
 
 	return true;
 }

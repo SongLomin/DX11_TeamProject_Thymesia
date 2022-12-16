@@ -866,29 +866,10 @@
     <ClInclude Include="..\Public\UI_Elements.h" />
     <ClInclude Include="..\Public\UI_MenuText.h" />
     <ClInclude Include="..\Public\UI_PauseMenu_PlagueWeapon.h" />
-    <ClInclude Include="..\Public\CorvusStates\Talent.h" />
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect.h" />
-    <ClInclude Include="..\Public\Talent_Effects.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Sword.h" />
     <ClInclude Include="..\Public\EditSetActor.h">
       <Filter>02. GameObject\99. Other\08. EditSetActor</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV1.h" />
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV2.h" />
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidThrustLV2.h" />
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_EnergisedWeaponLV1.h" />
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_EnergisedWeaponLV2.h" />
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Execution.h" />
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_HealingExecutionLV1.h" />
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_HealingExecutionLV2.h" />
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_JumpAttackLV1.h" />
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_jumpAttackLV2.h" />
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_JumpAttackLV3.h" />
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_NorSwordLV1.h" />
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_NorSwordLV2.h" />
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidThrustLV1.h" />
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_SharpWeaponLV1.h" />
-    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_SharpWeaponLV2.h" />
     <ClInclude Include="..\Public\Interaction_Ladder.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClInclude>
@@ -1348,6 +1329,186 @@
     <ClInclude Include="..\Public\Requirement_PlayerStatusMana.h" />
     <ClInclude Include="..\Public\Level_Test.h">
       <Filter>01. ClientLevel\05. Level_Test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_FeatherAttack.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\20.State_FeatherAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Talent_Effects.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV1.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\00.Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidSlashLV2.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\00.Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidThrustLV1.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\00.Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidThrustLV2.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\00.Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_JumpAttackLV1.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\01.JumpAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_jumpAttackLV2.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\01.JumpAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_JumpAttackLV3.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\01.JumpAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_HealingExecutionLV1.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\02.HealingExecution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_HealingExecutionLV2.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\02.HealingExecution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Execution.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\02.HealingExecution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_NorSwordLV1.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\00.Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_NorSwordLV2.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\00.Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_SharpWeaponLV1.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\03.SharpWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_SharpWeaponLV2.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\03.SharpWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_EnergisedWeaponLV1.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\04.EnergisedWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_EnergisedWeaponLV2.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\04.EnergisedWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_ParringLv1.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\05.Parrying</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_ParringLv2.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\05.Parrying</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Reckless_ParringLv1.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\05.Parrying</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Reckless_ParringLv2.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\05.Parrying</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Short_AvoidLv1.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\06.Avoid</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Short_AvoidLv2.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\06.Avoid</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Long_AvoidLv1.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\06.Avoid</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Long_AvoidLv2.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\06.Avoid</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_AvoidLv1.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\06.Avoid</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Short_ClawLv1.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\07.Claw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Short_ClawLv2.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\07.Claw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Long_ClawLv1.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\07.Claw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Long_ClawLv2.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\07.Claw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Long_ClawLv3.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\07.Claw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_PredatorLv1.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\08.Preadator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_PredatorLv2.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\08.Preadator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Feadther_FlyingLV1.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\09.Feather Flying</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Feadther_FlyingLV2.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\09.Feather Flying</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Feadther_FlyingLV3.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\09.Feather Flying</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Feadther_FlyingLV4.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\09.Feather Flying</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Abundant_FeadtherLV1.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\10.Abundant Feather</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Abundant_FeadtherLV2.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\10.Abundant Feather</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Abundant_FeadtherLV3.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\10.Abundant Feather</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Growing_FeadtherLV1.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\11.Growing Feather</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Growing_FeadtherLV2.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\11.Growing Feather</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Growing_FeadtherLV3.h">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\11.Growing Feather</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_Claw_Atk1.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\04.ClawShortAttack\00.Atk1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ClawPlunderAttack.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\05.ClawPlunderAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_Claw_Atk3.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\04.ClawShortAttack\02.Atk3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_Claw_Atk2.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\04.ClawShortAttack\01.Atk2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_LongHealing.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing\01.CorvusState_LongHealing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_ShortHealing.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing\02.CorvusState_ShortHealing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_AvoidF.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\08.CorvusState_ShortAvoid\00.ShortF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Long_AvoidF.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\07.CorvusState_LongAvoid\00.LongF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_AvoidR.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\08.CorvusState_ShortAvoid\01.ShortR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_AvoidL.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\08.CorvusState_ShortAvoid\02.ShortL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_AvoidB.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\08.CorvusState_ShortAvoid\03.ShortB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Long_AvoidL.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\07.CorvusState_LongAvoid\01.LongL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Long_AvoidB.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\07.CorvusState_LongAvoid\02.LongB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_Long_AvoidR.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\07.CorvusState_LongAvoid\03.LongR</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\UI_PauseMenu_Page_Inventory.h">
       <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\Inventory</Filter>
@@ -2278,28 +2439,10 @@
     <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\Evolve\Talent</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\Talent.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Sword.cpp" />
     <ClCompile Include="..\Private\EditSetActor.cpp">
       <Filter>02. GameObject\99. Other\08. EditSetActor</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV1.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV2.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidThrustLV2.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_EnergisedWeaponLV1.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_EnergisedWeaponLV2.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Execution.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_HealingExecutionLV1.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_HealingExecutionLV2.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_JumpAttackLV1.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_JumpAttackLV2.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_JumpAttackLV3.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_NorSwordLV1.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_NorSwordLV2.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidThrustLV1.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_SharpWeaponLV1.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_SharpWeaponLV2.cpp" />
     <ClCompile Include="..\Private\Interaction_Ladder.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClCompile>
@@ -2747,6 +2890,183 @@
     </ClCompile>
     <ClCompile Include="..\Private\Level_Test.cpp">
       <Filter>01. ClientLevel\05. Level_Test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_FeatherAttack.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\20.State_FeatherAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV1.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\00.Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidSlashLV2.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\00.Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidThrustLV1.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\00.Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidThrustLV2.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\00.Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_JumpAttackLV1.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\01.JumpAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_JumpAttackLV2.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\01.JumpAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_JumpAttackLV3.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\01.JumpAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_HealingExecutionLV1.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\02.HealingExecution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_HealingExecutionLV2.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\02.HealingExecution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Execution.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\02.HealingExecution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_NorSwordLV1.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\00.Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_NorSwordLV2.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\00.Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_SharpWeaponLV1.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\03.SharpWeapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_SharpWeaponLV2.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\03.SharpWeapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_EnergisedWeaponLV1.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\04.EnergisedWeapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_EnergisedWeaponLV2.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\04.EnergisedWeapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_ParringLv1.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\05.Parrying</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_ParringLv2.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\05.Parrying</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Reckless_ParringLv1.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\05.Parrying</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Reckless_ParringLv2.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\05.Parrying</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Long_AvoidLv1.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\06.Avoid</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Long_AvoidLv2.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\06.Avoid</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Short_AvoidLv1.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\06.Avoid</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Short_AvoidLv2.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\06.Avoid</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_AvoidLv1.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\06.Avoid</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Short_ClawLv1.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\07.Claw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Short_ClawLv2.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\07.Claw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Long_ClawLv1.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\07.Claw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Long_ClawLv2.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\07.Claw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Long_ClawLv3.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\07.Claw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_PredatorLv1.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\08.Preadator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_PredatorLv2.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\08.Preadator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Feadther_FlyingLV1.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\09.Feather Flying</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Feadther_FlyingLV2.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\09.Feather Flying</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Feadther_FlyingLV3.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\09.Feather Flying</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Feadther_FlyingLV4.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\09.Feather Flying</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Abundant_FeadtherLV1.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\10.Abundant Feather</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Abundant_FeadtherLV2.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\10.Abundant Feather</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Abundant_FeadtherLV3.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\10.Abundant Feather</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Growing_FeadtherLV1.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\11.Growing Feather</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Growing_FeadtherLV2.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\11.Growing Feather</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Growing_FeadtherLV3.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Player\Telent\11.Growing Feather</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawPlunderAttack.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\05.ClawPlunderAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Short_Claw_Atk1.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\04.ClawShortAttack\00.Atk1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Short_Claw_Atk3.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\04.ClawShortAttack\02.Atk3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Short_Claw_Atk2.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\04.ClawShortAttack\01.Atk2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_ShortHealing.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing\02.CorvusState_ShortHealing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_LongHealing.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing\01.CorvusState_LongHealing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Short_AvoidF.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\08.CorvusState_ShortAvoid\00.ShortF</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Long_AvoidF.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\07.CorvusState_LongAvoid\00.LongF</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Short_AvoidR.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\08.CorvusState_ShortAvoid\01.ShortR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Short_AvoidL.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\08.CorvusState_ShortAvoid\02.ShortL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Short_AvoidB.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\08.CorvusState_ShortAvoid\03.ShortB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Long_AvoidL.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\07.CorvusState_LongAvoid\01.LongL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Long_AvoidB.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\07.CorvusState_LongAvoid\02.LongB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_Long_AvoidR.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\07.CorvusState_LongAvoid\03.LongR</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\UI_PauseMenu_Page_Inventory.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\Inventory</Filter>
@@ -4137,6 +4457,96 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\25.Headache\02.End">
       <UniqueIdentifier>{3f8496d0-c7e7-442f-ba6f-7dce40cc4e70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent">
+      <UniqueIdentifier>{b1925acb-a8f6-4420-a9a0-d0c236df9ecc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\00.Sword">
+      <UniqueIdentifier>{e865e48a-ba05-44c7-9db1-f6ae37aa941c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\02.HealingExecution">
+      <UniqueIdentifier>{a0ec1387-6eb9-40b2-95cc-5e24e5c2536a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\01.JumpAttack">
+      <UniqueIdentifier>{72978756-20cb-49a5-996c-04d59a8ccd7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\03.SharpWeapon">
+      <UniqueIdentifier>{b909e4c5-44b8-4bb1-b55c-edd7dfdc7a1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\04.EnergisedWeapon">
+      <UniqueIdentifier>{b4ef4a75-cabc-4b3e-a1ed-a36c49c05ea1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\05.Parrying">
+      <UniqueIdentifier>{09664bf1-5982-45bd-9bb6-664e4291239a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\06.Avoid">
+      <UniqueIdentifier>{680d5a36-cb36-42f2-bc3e-898c59e91709}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\07.Claw">
+      <UniqueIdentifier>{06ff990d-9401-4546-a4cc-419d3c41650f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\09.Feather Flying">
+      <UniqueIdentifier>{76a8edc3-1663-4553-9b2e-d6ca169179fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\10.Abundant Feather">
+      <UniqueIdentifier>{b31fe60f-c430-4373-8954-5f4a02279e9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\11.Growing Feather">
+      <UniqueIdentifier>{7c93dc5f-b0fe-4bf7-bf0e-a10c6b0a5b1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Player\Telent\08.Preadator">
+      <UniqueIdentifier>{07dfef64-e603-4f77-867b-53739db3cc54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\04.ClawShortAttack">
+      <UniqueIdentifier>{7b588824-cce5-471c-9728-b3fd60930fd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\05.ClawPlunderAttack">
+      <UniqueIdentifier>{3de82a27-fa58-4204-b4bd-aa000ecdd5c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\04.ClawShortAttack\00.Atk1">
+      <UniqueIdentifier>{8225274f-4659-4a49-a003-1fe3073ac652}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\04.ClawShortAttack\01.Atk2">
+      <UniqueIdentifier>{159b19c7-1dfd-4f81-8c5c-f168ffb883b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack\04.ClawShortAttack\02.Atk3">
+      <UniqueIdentifier>{23bb401e-e073-4d2e-be2b-7d71d8294d31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing\01.CorvusState_LongHealing">
+      <UniqueIdentifier>{18baeb80-8c46-4281-9614-11c959de4d22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\13.State_Healing\02.CorvusState_ShortHealing">
+      <UniqueIdentifier>{56af648c-f1c8-4748-8880-1023ad5c97b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\08.CorvusState_ShortAvoid">
+      <UniqueIdentifier>{99648df4-f6ea-4e4e-bc77-6b0a48e5a5ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\08.CorvusState_ShortAvoid\00.ShortF">
+      <UniqueIdentifier>{7cda75ce-6c3b-4b2d-a3a7-93a54fba9a8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\08.CorvusState_ShortAvoid\01.ShortR">
+      <UniqueIdentifier>{14fffc70-8254-433f-92b1-2c37f3d0bfb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\08.CorvusState_ShortAvoid\02.ShortL">
+      <UniqueIdentifier>{1feb4052-90c6-4b27-903c-1f015d3ec39d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\08.CorvusState_ShortAvoid\03.ShortB">
+      <UniqueIdentifier>{8a3cbff6-3ae4-4003-ac4b-4e0235874e3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\07.CorvusState_LongAvoid">
+      <UniqueIdentifier>{090f8bca-6189-4c17-81a3-d261f564ec02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\07.CorvusState_LongAvoid\00.LongF">
+      <UniqueIdentifier>{257c0462-70d3-49c6-8a02-9888eae20014}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\07.CorvusState_LongAvoid\01.LongL">
+      <UniqueIdentifier>{77a0b9ac-5b84-4e0a-b7a9-ebf36e42726a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\07.CorvusState_LongAvoid\02.LongB">
+      <UniqueIdentifier>{69e4f410-73b3-4445-a93a-1f51a4c3ac44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\09.State_AVoid\07.CorvusState_LongAvoid\03.LongR">
+      <UniqueIdentifier>{520b8598-d67c-40dc-8a99-267e560a5f2a}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\01. UI\UI_Container\PauseMenu\Page\Inventory">
       <UniqueIdentifier>{3b7bbfa3-57ec-42c4-9ac2-c09752f629a6}</UniqueIdentifier>

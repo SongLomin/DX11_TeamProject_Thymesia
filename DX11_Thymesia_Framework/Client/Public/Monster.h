@@ -82,6 +82,8 @@ protected:
     virtual void OnDisable() override;
     virtual void OnDestroy() override;
 
+    virtual void CollsionContent(_float fScale = 1.8f);
+
 protected://From Moon
     virtual void    Bind_HPBar();
 
@@ -104,6 +106,7 @@ protected:
     NORMONSTERIDLETYPE   m_eNorMonIdleType =    NORMONSTERIDLETYPE::IDLEEND;
     BOSSSTARTTYPE        m_eBossStartType = BOSSSTARTTYPE::BOSSSTARTEND;
     weak_ptr<CMonsterHPBar_Base>   m_pHPBar;
+    
 
 
 private:

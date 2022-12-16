@@ -147,6 +147,181 @@ void Preset::AddGameObject::TalentSetting()
 	// 검파트 에너지가깃든 공격 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
+	//패링
+
+	//패링부모
+	weak_ptr<CTalent> pParring1Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pParring1Talent.lock()->Add_Component<CTalent_Effect_ParringLV1>();
+	pParring1Talent.lock()->Set_TalentName(TALENT_NAME::PARRING_LV1);
+
+	//패링자식1
+	weak_ptr<CTalent> pParring2Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pParring2Talent.lock()->Add_Component<CTalent_Effect_ParringLV2>();
+	pParring2Talent.lock()->Set_TalentName(TALENT_NAME::PARRING_LV2);
+	pParring2Talent.lock()->Set_Parent(pParring1Talent);
+
+	//패링자식2
+	weak_ptr<CTalent> pParring3Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pParring3Talent.lock()->Add_Component<CTalent_Effect_Reckless_ParringLV1>();
+	pParring3Talent.lock()->Set_TalentName(TALENT_NAME::RECKLESS_PARRING_LV1);
+	pParring3Talent.lock()->Set_Parent(pParring2Talent);
+	 
+	//패링자식3
+	weak_ptr<CTalent> pParring4Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pParring4Talent.lock()->Add_Component<CTalent_Effect_Reckless_ParringLV2>();
+	pParring4Talent.lock()->Set_TalentName(TALENT_NAME::RECKLESS_PARRING_LV2);
+	pParring4Talent.lock()->Set_Parent(pParring3Talent);
+	//패링
+
+
+	//회피
+
+	//회피부모
+	weak_ptr<CTalent> pAvoid1Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pAvoid1Talent.lock()->Add_Component<CTalent_Effect_AvoidLv1>();
+	pAvoid1Talent.lock()->Set_TalentName(TALENT_NAME::AVOID_LV1);
+
+	//롱회피자식1
+	weak_ptr<CTalent> pAvoidLong1Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pAvoidLong1Talent.lock()->Add_Component<CTalent_Effect_Long_AvoidLv1>();
+	pAvoidLong1Talent.lock()->Set_TalentName(TALENT_NAME::LONG_AVOID_LV1);
+	pAvoidLong1Talent.lock()->Set_Parent(pAvoid1Talent);
+
+	//롱회피자식2
+	weak_ptr<CTalent> pAvoidLong2Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pAvoidLong2Talent.lock()->Add_Component<CTalent_Effect_Long_AvoidLv2>();
+	pAvoidLong2Talent.lock()->Set_TalentName(TALENT_NAME::LONG_AVOID_LV2);
+	pAvoidLong2Talent.lock()->Set_Parent(pAvoidLong1Talent);
+
+	//숏회피자식1
+	weak_ptr<CTalent> pAvoidShort1Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pAvoidShort1Talent.lock()->Add_Component<CTalent_Effect_Short_AvoidLv1>();
+	pAvoidShort1Talent.lock()->Set_TalentName(TALENT_NAME::SHORT_AVOID_LV1);
+	pAvoidShort1Talent.lock()->Set_Parent(pAvoid1Talent);
+
+
+	//숏회피자식2
+	weak_ptr<CTalent> pAvoidShort2Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pAvoidShort2Talent.lock()->Add_Component<CTalent_Effect_Short_AvoidLv2>();
+	pAvoidShort2Talent.lock()->Set_TalentName(TALENT_NAME::SHORT_AVOID_LV2);
+	pAvoidShort2Talent.lock()->Set_Parent(pAvoidShort1Talent);
+
+	//회피
+
+	//클로우
+
+	//클로우부모
+	weak_ptr<CTalent> pClawTalent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pClawTalent.lock()->Add_Component<CTalent_Effect_Long_ClawLv1>();
+	pClawTalent.lock()->Set_TalentName(TALENT_NAME::CLAW_LV1);
+
+	//롱클로우자식1
+	weak_ptr<CTalent> pLongClaw1Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pLongClaw1Talent.lock()->Add_Component<CTalent_Effect_Long_ClawLv2>();
+	pLongClaw1Talent.lock()->Set_TalentName(TALENT_NAME::LONG_CLAW_LV1);
+	pLongClaw1Talent.lock()->Set_Parent(pClawTalent);
+
+	//롱클로우 자식2
+	weak_ptr<CTalent> pLongClaw2Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pLongClaw2Talent.lock()->Add_Component<CTalent_Effect_Long_ClawLv3>();
+	pLongClaw2Talent.lock()->Set_TalentName(TALENT_NAME::LONG_CLAW_LV2);
+	pLongClaw2Talent.lock()->Set_Parent(pLongClaw1Talent);
+	//숏클로우 자식1
+	weak_ptr<CTalent> pShortClaw1Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pShortClaw1Talent.lock()->Add_Component<CTalent_Effect_Short_ClawLv1>();
+	pShortClaw1Talent.lock()->Set_TalentName(TALENT_NAME::SHORT_CLAW_LV1);
+	pShortClaw1Talent.lock()->Set_Parent(pClawTalent);
+
+	//숏클로우 자식2
+	weak_ptr<CTalent> pShortClaw2Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pShortClaw2Talent.lock()->Add_Component<CTalent_Effect_Short_ClawLv2>();
+	pShortClaw2Talent.lock()->Set_TalentName(TALENT_NAME::SHORT_CLAW_LV2);
+	pShortClaw2Talent.lock()->Set_Parent(pShortClaw1Talent);
+
+	//클로우
+
+
+	// 포식자의발톱
+
+	//포식자의발톱부모
+	weak_ptr<CTalent> pPreadator1Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pPreadator1Talent.lock()->Add_Component<CTalent_Effect_PredatorLv1>();
+	pPreadator1Talent.lock()->Set_TalentName(TALENT_NAME::PREADAOTR_LV1);
+
+	//포식자의발톱자식
+	weak_ptr<CTalent> pPreadator2Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pPreadator2Talent.lock()->Add_Component<CTalent_Effect_PredatorLv2>();
+	pPreadator2Talent.lock()->Set_TalentName(TALENT_NAME::PREADAOTR_LV2);
+	pPreadator2Talent.lock()->Set_Parent(pPreadator1Talent);
+
+	// 포식자의발톱
+
+
+	//깃털날리기
+
+	//깃털날리기부모
+	weak_ptr<CTalent> pFeatherFlying1Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pFeatherFlying1Talent.lock()->Add_Component<CTalent_Effect_Feadther_FlyingLV1>();
+	pFeatherFlying1Talent.lock()->Set_TalentName(TALENT_NAME::FEATHER_FLYING_LV1);
+
+
+	//깃털날라기자식1
+	weak_ptr<CTalent> pFeatherFlying2Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pFeatherFlying2Talent.lock()->Add_Component<CTalent_Effect_Feadther_FlyingLV2>();
+	pFeatherFlying2Talent.lock()->Set_TalentName(TALENT_NAME::FEATHER_FLYING_LV2);
+	pFeatherFlying2Talent.lock()->Set_Parent(pFeatherFlying1Talent);
+	//깃털날리기자식2
+	weak_ptr<CTalent> pFeatherFlying3Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pFeatherFlying3Talent.lock()->Add_Component<CTalent_Effect_Feadther_FlyingLV3>();
+	pFeatherFlying3Talent.lock()->Set_TalentName(TALENT_NAME::FEATHER_FLYING_LV3);
+	pFeatherFlying3Talent.lock()->Set_Parent(pFeatherFlying2Talent);
+	//깃털날리기자식3
+	weak_ptr<CTalent> pFeatherFlying4Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pFeatherFlying4Talent.lock()->Add_Component<CTalent_Effect_Feadther_FlyingLV4>();
+	pFeatherFlying4Talent.lock()->Set_TalentName(TALENT_NAME::FEATHER_FLYING_LV4);
+	pFeatherFlying4Talent.lock()->Set_Parent(pFeatherFlying3Talent);
+	//깃털날리기
+
+
+	//풍성한깃털
+
+	//풍성한깃털부모
+	weak_ptr<CTalent> pAbundant_Feather1Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pAbundant_Feather1Talent.lock()->Add_Component<CTalent_Effect_Abundant_FlyingLV1>();
+	pAbundant_Feather1Talent.lock()->Set_TalentName(TALENT_NAME::ABUNDANT_FEATHER_LV1);
+
+	//풍성한깃털자식1
+	weak_ptr<CTalent> pAbundant_Feather2Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pAbundant_Feather2Talent.lock()->Add_Component<CTalent_Effect_Abundant_FlyingLV2>();
+	pAbundant_Feather2Talent.lock()->Set_TalentName(TALENT_NAME::ABUNDANT_FEATHER_LV2);
+	pAbundant_Feather2Talent.lock()->Set_Parent(pAbundant_Feather1Talent);
+	//풍성한깃털자식2
+	weak_ptr<CTalent> pAbundant_Feather3Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pAbundant_Feather3Talent.lock()->Add_Component<CTalent_Effect_Abundant_FlyingLV3>();
+	pAbundant_Feather3Talent.lock()->Set_TalentName(TALENT_NAME::ABUNDANT_FEATHER_LV3);
+	pAbundant_Feather3Talent.lock()->Set_Parent(pAbundant_Feather2Talent);
+
+	//풍성한깃털
+
+
+	//자라나는깃털
+
+	//자라나는깃털부모
+	weak_ptr<CTalent> pGrowing_Feather1Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pGrowing_Feather1Talent.lock()->Add_Component<CTalent_Effect_Growing_FlyingLV1>();
+	pGrowing_Feather1Talent.lock()->Set_TalentName(TALENT_NAME::GROWING_FEATHER_LV1);
+
+	//자라나는깃털자식1
+	weak_ptr<CTalent> pGrowing_Feather2Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pGrowing_Feather2Talent.lock()->Add_Component<CTalent_Effect_Growing_FlyingLV2>();
+	pGrowing_Feather2Talent.lock()->Set_TalentName(TALENT_NAME::GROWING_FEATHER_LV2);
+	pGrowing_Feather2Talent.lock()->Set_Parent(pGrowing_Feather1Talent);
+	//자라나는깃털자식2
+	weak_ptr<CTalent> pGrowing_Feather3Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
+	pGrowing_Feather3Talent.lock()->Add_Component<CTalent_Effect_Growing_FlyingLV3>();
+	pGrowing_Feather3Talent.lock()->Set_TalentName(TALENT_NAME::GROWING_FEATHER_LV3);
+	pGrowing_Feather3Talent.lock()->Set_Parent(pGrowing_Feather2Talent);
+	//자라나는깃털
 
 	//pSlash2Talent.lock()->TestTalentCheck();
 }

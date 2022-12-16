@@ -62,10 +62,19 @@ void CJokerState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	if (Get_OwnerCharacter().lock()->Get_PreState().lock() != Get_Owner().lock()->Get_Component<CJokerState_Idle>().lock())
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() != Get_Owner().lock()->Get_Component<CJokerState_Idle>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() != Get_Owner().lock()->Get_Component<CJokerState_TurnR90>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() != Get_Owner().lock()->Get_Component<CJokerState_TurnL90>().lock())
 	{
 		m_bTurnCheck = true;
+		m_bBackReset = false;
 	}
+
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CJokerState_WalkB>().lock())
+	{
+		m_bBackReset = true;
+	}
+	
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -102,25 +111,24 @@ _bool CJokerState_Idle::Check_AndChangeNextState()
 		return false;
 
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
-	_float fMToMDistance = GetStartPositionToCurrentPositionDir(); // 몬스터스타트포지션과 몬스터현재 포지션 사이의 거리
 
 
 
-	if (fPToMDistance <= 1.f)
+	if (fPToMDistance >= 0.8f && fPToMDistance <= 1.2f && !m_bBackReset)
 	{
 		if (m_bTurnCheck)
 		{
 			TurnMechanism();
 		}
 		
+	
 		Get_OwnerCharacter().lock()->Change_State<CJokerState_WalkB>(0.05f);
-
 		return true;
 
 		
 	}
 
-	if (fPToMDistance > 1.f && fPToMDistance <= 4.f)
+	if (fPToMDistance > 0.8f && fPToMDistance <= 4.f && m_bBackReset)
 	{
 		if (m_bTurnCheck)
 		{
