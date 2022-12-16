@@ -177,7 +177,7 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
     Out.vORM = 0;
-
+    Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
 
     Out.vExtractBloom = 0;
 	
@@ -218,6 +218,7 @@ PS_OUT PS_MAIN_NORMAL_MASKING(PS_IN_NORMAL In)
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
 	Out.vDiffuse.a = 1.f;
+    Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
     Out.vExtractBloom = 0;
 
 	return Out;

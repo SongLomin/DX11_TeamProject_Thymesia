@@ -89,7 +89,7 @@ HRESULT CLevel_GamePlay::Initialize()
 #pragma endregion GAMEOBJECT
 #endif	// ONLY_UI
 
-	GAMEINSTANCE->Set_FogDesc(_float4(0.24f, 0.19f, 0.07f, 1.f), 25.f);
+	GAMEINSTANCE->Set_FogDesc(_float4(0.24f, 0.19f, 0.07f, 0.5f), 25.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 
 	SetUp_UI();
