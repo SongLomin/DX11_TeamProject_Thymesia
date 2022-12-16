@@ -87,6 +87,22 @@ _bool CBatBossStateBase::Check_CrossAttackState()
 
 }
 
+_bool CBatBossStateBase::Check_CrossJumpState()
+{
+	switch (ComputeDirectionToPlayer())
+	{
+	case 1:
+		Get_OwnerCharacter().lock()->Change_State<CBatBossState_FTurnR>(0.05f);
+		break;
+	case -1:
+		Get_OwnerCharacter().lock()->Change_State<CBatBossState_FTurnL>(0.05f);
+		break;
+	}
+
+	return true;
+
+}
+
 void CBatBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
 	__super::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);

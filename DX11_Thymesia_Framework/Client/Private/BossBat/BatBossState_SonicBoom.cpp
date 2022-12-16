@@ -105,6 +105,7 @@ void CBatBossState_SonicBoom::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
+	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_AttackCount(1);
 	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Car>(0.05f);
 }
 

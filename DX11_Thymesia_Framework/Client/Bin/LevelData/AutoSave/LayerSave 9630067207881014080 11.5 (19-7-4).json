@@ -1,0 +1,1 @@
+{"GameObject":[{"Component":{"Transform":[[1.0,0.0,0.0,0.0],[0.0,1.0,2.6941299438476563e-05,0.0],[0.0,-2.6941299438476563e-05,1.0,0.0],[22.24213409423828,0.0,-2.423921585083008,1.0]]},"Hash":13883423221805443591,"MonsterDesc":{"IdleType_Boss":0,"IdleType_Monster":3,"MonsterType":20001,"SectionIndex":0},"Name":"class Client::CVarg","Setting":{"Enable":true}}]}

@@ -20,6 +20,8 @@ public:
 	void    Set_ChargeCount(_uint ChargeCount) { m_iChargeCount += ChargeCount; }
 	void    Set_AttackCount(_uint AttackCount) { m_iAttackCount += AttackCount; }
 	void    Set_HeelScream(_bool bHeelScream) { m_bHeelScream = bHeelScream; }
+	void    Set_ZeroAttackCount(_uint ZeroAttackCount) { m_iAttackCount = ZeroAttackCount; }
+	void    Set_ZeroChargeCount(_uint ZeroChargeCount) { m_iChargeCount = ZeroChargeCount; }
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;

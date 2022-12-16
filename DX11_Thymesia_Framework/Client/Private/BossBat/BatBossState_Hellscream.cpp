@@ -87,6 +87,8 @@ void CBatBossState_Hellscream::Call_AnimationEnd()
 
 	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_HeelScream(true);
 	Get_Owner().lock()->Get_Component<CBatBossState_Charge>().lock()->Set_HellScream(0);
+	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_ZeroAttackCount(0);
+	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_ZeroChargeCount(0);
 	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Idle>(0.05f);
 }
 

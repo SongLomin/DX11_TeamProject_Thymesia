@@ -86,6 +86,7 @@ void CBatBossState_Charge::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
+	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_ZeroAttackCount(0);
 	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_ChargeCount(1);
 	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Idle>(0.05f);
 }
