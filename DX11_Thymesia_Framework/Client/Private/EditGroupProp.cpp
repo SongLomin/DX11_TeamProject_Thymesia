@@ -244,9 +244,10 @@ void CEditGroupProp::OnEventMessage(_uint iArg)
 			{
 				for (auto& elem : iter_collider->second)
 					elem.pInstance.lock()->Set_Dead();
+
+				iter_collider->second.clear();
 			}
 
-			iter_collider->second.clear();
 		}
 		break;
 	}
