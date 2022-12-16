@@ -9,8 +9,7 @@ class CModel;
 END
 
 BEGIN(Client)
-class CEffect_Rect final :
-    public CEffectObject
+class CEffect_Rect final : public CEffectObject
 {
     GAMECLASS_H(CEffect_Rect)
     SHALLOW_COPY(CEffect_Rect)
@@ -61,7 +60,7 @@ private:
     virtual HRESULT Initialize(void* pArg)   override;
     virtual void Tick(_float fTimeDelta)     override;
     virtual void LateTick(_float fTimeDelta) override;
-    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext)                 override;
+    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
     virtual void SetUp_ShaderResource();
 
@@ -137,6 +136,7 @@ private: // For. Tool
     void Tool_Texture_Noise();
     void Tool_Glow();
 #endif // _DEBUG
+
 private:
     void Free();
 

@@ -993,7 +993,9 @@ void CEffect_Rect::Reset_Instance(const _uint& In_ParticleCount)
 	m_bStopParticle = false;
 	m_bStopSprite = false;
 
+	m_tParticleDescs.reserve(In_ParticleCount);
 	m_tParticleDescs = vector<PARTICLE_DESC>(In_ParticleCount, PARTICLE_DESC());
+	m_tOriginalParticleDescs.reserve(In_ParticleCount);
 	m_tOriginalParticleDescs = vector<PARTICLE_DESC>(In_ParticleCount, PARTICLE_DESC());
 
 	m_pVIBuffer.lock()->Init_Particle(In_ParticleCount);
