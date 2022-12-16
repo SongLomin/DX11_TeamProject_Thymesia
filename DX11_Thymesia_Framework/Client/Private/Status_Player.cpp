@@ -133,6 +133,11 @@ void CStatus_Player::Full_Recovery()
     Heal_Player(m_tDesc.m_fMaxHP);
 
     m_tDesc.m_fCurrentMP = m_tDesc.m_fMaxMP;
+    
+    Callback_ChangeMP(m_tDesc.m_fCurrentMP);
+    
+    
+    
     m_tDesc.m_iCurrentFeather = m_tDesc.m_iMaxFeather;
 
     m_PotionDesc[(_uint)POTIONTYPE::POTION_DEFAULT].m_iCurrentPotion =

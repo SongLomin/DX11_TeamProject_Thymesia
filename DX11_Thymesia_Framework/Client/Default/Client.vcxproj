@@ -440,9 +440,12 @@
     <ClInclude Include="..\Public\UI_EvolveMenu_Talent.h" />
     <ClInclude Include="..\Public\UI_EvolveTalent_Active.h" />
     <ClInclude Include="..\Public\UI_Interaction.h" />
+    <ClInclude Include="..\Public\UI_Inventory.h" />
+    <ClInclude Include="..\Public\UI_ItemSlot.h" />
     <ClInclude Include="..\Public\UI_LerpBar.h" />
     <ClInclude Include="..\Public\UI_MenuText.h" />
     <ClInclude Include="..\Public\UI_MonsterFocus.h" />
+    <ClInclude Include="..\Public\UI_PauseMenu_Page_Inventory.h" />
     <ClInclude Include="..\Public\UI_PauseMenu_PlagueWeapon.h" />
     <ClInclude Include="..\Public\UI_Script.h" />
     <ClInclude Include="..\Public\UI_ScriptQueue.h" />
@@ -866,6 +869,7 @@
     <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp" />
     <ClCompile Include="..\Private\UI_EvolveTalent_Active.cpp" />
     <ClCompile Include="..\Private\UI_Interaction.cpp" />
+    <ClCompile Include="..\Private\UI_ItemSlot.cpp" />
     <ClCompile Include="..\Private\UI_LerpBar.cpp" />
     <ClCompile Include="..\Private\BossMonster.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab.cpp" />
@@ -885,6 +889,7 @@
     <ClCompile Include="..\Private\Preset_PhysXControllerDesc.cpp" />
     <ClCompile Include="..\Private\PhysXColliderObject.cpp" />
     <ClCompile Include="..\Private\UI_MenuText.cpp" />
+    <ClCompile Include="..\Private\UI_PauseMenu_Page_Inventory.cpp" />
     <ClCompile Include="..\Private\UI_Script.cpp" />
     <ClCompile Include="..\Private\UI_ScriptQueue.cpp" />
     <ClCompile Include="..\Private\UI_T_Dissolve.cpp" />
@@ -1077,6 +1082,7 @@
     <ClCompile Include="..\Private\WorldUI.cpp" />
     <ClCompile Include="..\Public\TestUI.cpp" />
     <ClCompile Include="..\Skill_Base.cpp" />
+    <ClCompile Include="..\UI_Inventory.cpp" />
     <ClCompile Include="..\UI_MonsterFocus.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">

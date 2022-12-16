@@ -25,9 +25,11 @@ _float2 CUI_Utils::ConvertWorldPosToUIPos(_fvector vWorldPos, _fvector vOffset)
     return vUIPos;
 }
 
-_float CUI_Utils::UI_TimeDelta(_float fTimeDelta)
+_float CUI_Utils::UI_TimeDelta()
 {
-	return fTimeDelta * GAMEINSTANCE->Get_TimeScale((_uint)TIMESCALE_LAYER::UI);
+
+	return GAMEINSTANCE->Get_DeltaTime() * GAMEINSTANCE->Get_TimeScale((_uint)TIMESCALE_LAYER::UI);
+
 }
 
 _float4& CUI_Utils::GET_COLOR(COLOR_PALETTE eColor)
