@@ -440,7 +440,7 @@ HRESULT CLoader::Loading_ForStage3Level()
 
 HRESULT CLoader::Loading_ForEditLevel()
 {
-	// Load_AllMeshes("../Bin/Resources/Meshes/Temp/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Temp/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 
 #ifndef _JOJO_EFFECT_TOOL_
 #ifdef _MAP_TOOL_
