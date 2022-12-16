@@ -68,7 +68,21 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 
 	SET_ANIM_SPEED("Corvus_Raven_ClawLong_L01", 2.f);
 	SET_ANIM_SPEED("Corvus_Raven_ClawLong_L02", 2.f);
+	SET_ANIM_SPEED("Corvus_Raven_ClawShortV2_Fast01", 2.f);
+	SET_ANIM_SPEED("Corvus_Raven_ClawShortV2_Fast02", 2.f);
+	SET_ANIM_SPEED("Corvus_Raven_ClawShortV2_Fast03", 2.f);
+	SET_ANIM_SPEED("Corvus_Raven_ClawLong_PlunderAttack2TTT", 2.f);
 	SET_ANIM_SPEED("Corvus_SD1_Fall_Attack", 2.5f);
+
+    SET_ANIM_SPEED("Corvus_SD_AvoidShort_F", 1.75f);
+    SET_ANIM_SPEED("Corvus_SD_AvoidShort_L", 1.75f);
+    SET_ANIM_SPEED("Corvus_SD_AvoidShort_R", 1.75f);
+    SET_ANIM_SPEED("Corvus_SD_AvoidShort_B_NEW", 1.75f);
+
+    SET_ANIM_SPEED("Corvus_SD_AvoidLongB_NEW", 1.5f);
+    SET_ANIM_SPEED("Corvus_SD_AvoidLongF", 1.5f);
+    SET_ANIM_SPEED("Corvus_SD_AvoidLongL_NEW", 1.5f);
+    SET_ANIM_SPEED("Corvus_SD_AvoidLongR_NEW", 1.5f);
 
     SET_ANIM_SPEED("Corvus_SD_AvoidF", 2.25f);
     SET_ANIM_SPEED("Corvus_SD_AvoidShortMag_B", 2.25f);
@@ -113,6 +127,9 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 
 	SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 7.f);
 
+
+	SET_ANIM_SPEED("Corvus_SD_TD2Thorw2", 2.5f);
+
 #pragma region Varg
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Catch", 2.306f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_1", 1.25f);
@@ -134,6 +151,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Seq_BossFightStart", 5.f);
 
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_AvoidB", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_AvoidAttack1", 2.f);
 #pragma endregion // Varg
 
 #pragma region Joker
@@ -156,8 +174,43 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("Joker_TakeExecution_Start", 1.4f);
 #pragma endregion // Joker
 
+
+
+
 #pragma region Bat
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Seq_BossFightStart_V1", 3.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Seq_BossFightStart_V1", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_AttackL_01_1", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_AttackL_01_2a", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_AttackL_01_2b", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_AttackL_01_3a", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_AttackR_01_1", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_AttackR_01_2a", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_AttackR_01_2b", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Bite_1", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Bite_2", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Car", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Charge", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_FTurn_L", 1.5f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_FTurn_R", 1.5f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Hellscream", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_HurtXL_F", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_HurtXL_L", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_JumpSmash_Chest", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_JumpSmashForwardL", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_JumpSmashL", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_SonicBoom", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_SP01", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Storm_1", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_StunEnd", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_StunLoop", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_StunStart", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TakeExecution_End", 2.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TakeExecution_Loop", 2.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TakeExecution_Start01", 2.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TurnL90", 1.5f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TurnR90", 1.5f);
+
+ 
 
 #pragma endregion // Bat
 

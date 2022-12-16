@@ -127,6 +127,7 @@ namespace Client
 		DOOR,
 		ELEVATOR,
 		CHECKPOINT,
+		ITEM,
 
 		LAYER_END
 	};
@@ -275,29 +276,53 @@ namespace Client
 		JUMP_ATTACK_LV2 = (1 << 6),
 		JUMP_ATTACK_LV3 = (1 << 7),
 
-		EXECUTION_OF_HEALING_LV1 = (1 << 8),
-		EXECUTION_OF_HEALING_LV2 = (1 << 9),
+		SHARP_WEAPON_LV1 = (1 << 8),
+		SHARP_WEAPON_LV2 = (1 << 9),
 
-		SHARP_WEAPON_LV1 = (1 << 10),
-		SHARP_WEAPON_LV2 = (1 << 11),
+		ENERGISED_WEAPON_LV1 = (1 << 10),
+		ENERGISED_WEAPON_LV2 = (1 << 11),
 
-		ENERGISED_WEAPON_LV1 = (1 << 12),
-		ENERGISED_WEAPON_LV2 = (1 << 13),
+		EXECUTION_LV1 = (1 << 12),
+		HEALING_EXELCUTION_LV1 = (1 << 13),
+		HEALING_EXELCUTION_LV2 = (1 << 14),
 
-		//°ËÆÄÆ®
+		PARRING_LV1 = (1 << 15),
+		PARRING_LV2 = (1 << 16),
+		RECKLESS_PARRING_LV1 = (1 << 17),
+		RECKLESS_PARRING_LV2 = (1<< 18),
 
-		//Æ¨°Ü³»±â
-		//Æ¨°Ü³»±â
+		AVOID_LV1 = (1 << 19),
+		SHORT_AVOID_LV1 = (1 << 20),
+		SHORT_AVOID_LV2 = (1 << 21),
+		LONG_AVOID_LV1 = (1 << 22),
+		LONG_AVOID_LV2 = (1 << 23),
 
-		//È¸ÇÇ
-		//È¸ÇÇ
+		CLAW_LV1 = (1 << 24),
+		LONG_CLAW_LV1 = (1 << 25),
+		LONG_CLAW_LV2 = (1 << 26),
+		SHORT_CLAW_LV1 = (1 << 27),
+		SHORT_CLAW_LV2 = (1 << 28),
 
-		//¹ßÅé
-		LONG_CLAW_LV2 = (1 << 15),
-		LONG_CLAW_LV3 = (1 << 16),
-		SHORT_CLAW_LV1 = (1 << 17),
-		SHORT_CLAW_LV2 = (1 << 18),
-		//¹ßÅé
+		PREADAOTR_LV1 = (1 << 29),
+		PREADAOTR_LV2 = (1 << 30),
+
+		FEATHER_FLYING_LV1 = (1 << 31),
+		FEATHER_FLYING_LV2 = (1 << 32),
+		FEATHER_FLYING_LV3 = (1 << 33),
+		FEATHER_FLYING_LV4 = (1 << 34),
+
+
+		ABUNDANT_FEATHER_LV1 = (1 << 35),
+		ABUNDANT_FEATHER_LV2 = (1 << 36),
+		ABUNDANT_FEATHER_LV3 = (1 << 37),
+		
+		GROWING_FEATHER_LV1 = (1 << 38),
+		GROWING_FEATHER_LV2 = (1 << 39),
+		GROWING_FEATHER_LV3 = (1 << 40),
+
+
+
+
 
 
 
@@ -330,6 +355,40 @@ namespace Client
 		ENERGISEDWEAPONLV1,
 		ENERGISEDWEAPONLV2,
 
+		PARRING_LV1 ,
+		PARRING_LV2 ,
+		RECKLESS_PARRING_LV1,
+		RECKLESS_PARRING_LV2,
+
+		AVOID_LV1 ,
+		SHORT_AVOID_LV1     ,
+		SHORT_AVOID_LV2     ,
+		LONG_AVOID_LV1      ,
+		LONG_AVOID_LV2      ,
+
+		CLAW_LV1            ,
+		LONG_CLAW_LV1       ,
+		LONG_CLAW_LV2       ,
+		SHORT_CLAW_LV1      ,
+		SHORT_CLAW_LV2      ,
+
+		PREADAOTR_LV1       ,
+		PREADAOTR_LV2       ,
+
+		FEATHER_FLYING_LV1  ,
+		FEATHER_FLYING_LV2  ,
+		FEATHER_FLYING_LV3  ,
+		FEATHER_FLYING_LV4  ,
+
+
+		ABUNDANT_FEATHER_LV1,
+		ABUNDANT_FEATHER_LV2,
+		ABUNDANT_FEATHER_LV3,
+
+		GROWING_FEATHER_LV1 ,
+		GROWING_FEATHER_LV2 ,
+		GROWING_FEATHER_LV3 ,
+
 		TALENT_NAME_END
 
 
@@ -344,6 +403,7 @@ namespace Client
 		ELEVATOR = (1 << 2),
 		DOOR = (1 << 3),
 		CHECKPOINT = (1 << 4),
+		ITEM = (1 << 5),
 		FLAG_END
 	};
 

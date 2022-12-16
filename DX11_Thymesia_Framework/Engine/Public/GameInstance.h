@@ -140,6 +140,18 @@ public: /* For.Render_Manager */
 	_float4 Get_FogColor();
 	_float Get_FogRange();
 	LIFTGAMMAGAIN_DESC& Get_LiftGammaGain();
+	HRESULT Set_Contrast(const _float In_fContrast);
+	HRESULT Set_Saturation(const _float In_fSaturation);
+
+	ComPtr<ID3D11DeviceContext> Get_BeforeRenderContext();
+	void Release_BeforeRenderContext(ComPtr<ID3D11DeviceContext> pDeviceContext);
+
+#ifdef _DEBUG
+	HRESULT Set_DebugSize(const _float2 vSize);
+	HRESULT Set_OldSchoolView(const _bool bOldSchool);
+	HRESULT	Add_DebugSRT(const _tchar* In_szMRTName);
+#endif // _DEBUG
+
 
 
 
@@ -226,6 +238,17 @@ public: /* For.PhysX_Manager */
 	weak_ptr<CPhysXCollider>			Find_PhysXCollider(const _uint In_iPhysXColliderIndex);
 	weak_ptr<CPhysXController>			Find_PhysXController(const _uint In_iPhysXControllerIndex);
 	_uint			Get_PhysXFilterGroup(const _uint In_iIndex);
+
+public: /* For. Thread_Manager */
+	template <class F, class... Args>
+	std::future<typename std::result_of<F(Args...)>::type> Enqueue_Job(
+		F&& f, Args&&... args) 
+	{
+		return m_pThread_Manager->Enqueue_Job(f, args);
+	}
+
+public: /* For. RenderTarget_Manager */
+	list<const _tchar*> Get_AllSRVNames();
 
 private:
 	shared_ptr<CGraphic_Device> m_pGraphic_Device;

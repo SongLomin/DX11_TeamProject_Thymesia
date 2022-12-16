@@ -12,6 +12,7 @@ class CRenderTarget_Manager final : public CBase
 
 public:
 	ComPtr<ID3D11ShaderResourceView> Get_SRV(const _tchar* pTargetTag);
+	list<const _tchar*> Get_AllSRVNames();
 
 public:
 	HRESULT Add_RenderTarget(const _tchar* pTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT eFormat, _float4 vClearColor);
@@ -48,6 +49,7 @@ public:
 public:
 	HRESULT Ready_Debug(const _tchar* pTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY);
 	HRESULT Render_Debug(const _tchar* pMRTTag, weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect> pVIBuffer);
+	HRESULT Render_DebugSRT(const _tchar* pTargetTag, weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect> pVIBuffer);
 #endif // _DEBUG
 
 private:

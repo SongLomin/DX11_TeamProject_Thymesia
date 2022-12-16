@@ -32,6 +32,8 @@ public:
 	FDelegate<const _char*>					CallBack_EffectGroupClick;
 	FDelegate<const _char*>					CallBack_SpriteImageClick;
 
+	vector<string> Get_AllEffectGroupNames() { return m_szEffectGroupNames; }
+
 private:
 	void Load_AllEffectMeshInPath_Recursive(const filesystem::path& In_Path);	
 	void Load_Particle_Recursive(const filesystem::path& In_Path);

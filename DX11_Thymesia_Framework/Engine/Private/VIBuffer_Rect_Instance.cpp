@@ -6,6 +6,11 @@
 GAMECLASS_C(CVIBuffer_Rect_Instance)
 CLONE_C(CVIBuffer_Rect_Instance, CComponent)
 
+CVIBuffer_Rect_Instance::CVIBuffer_Rect_Instance(const CVIBuffer_Rect_Instance& rhs)
+	: CVIBuffer(rhs)
+{
+}
+
 HRESULT CVIBuffer_Rect_Instance::Initialize_Prototype()
 {
 
@@ -98,6 +103,8 @@ void CVIBuffer_Rect_Instance::Start()
 
 void CVIBuffer_Rect_Instance::Init_Particle(const _uint& In_Size)
 {
+	std::unique_lock<std::mutex> lock(m_job_q_);
+
 	if (0 == In_Size)
 		return;
 
@@ -137,6 +144,7 @@ void CVIBuffer_Rect_Instance::Init_Particle(const _uint& In_Size)
 	Safe_Delete_Array(pInstance);
 #pragma endregion
 
+	lock.unlock();
 }
 
 HRESULT CVIBuffer_Rect_Instance::Render(ID3D11DeviceContext* pDeviceContext)
@@ -167,16 +175,19 @@ HRESULT CVIBuffer_Rect_Instance::Render(ID3D11DeviceContext* pDeviceContext)
 	return S_OK;
 }
 
-void CVIBuffer_Rect_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDescs, const _bool In_UseParentMatrix)
+void CVIBuffer_Rect_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDescs, ID3D11DeviceContext* pDeviceContext, const _bool In_UseParentMatrix)
 {
+	std::unique_lock<std::mutex> lock(m_job_q_);
+
 	if (In_ParticleDescs.size() == 0 || 0 == m_iNumInstance)
 		return;
 
 	D3D11_MAPPED_SUBRESOURCE SubResource;
+	ZeroMemory(&SubResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
 	/* D3D11_MAP_WRITE_NO_OVERWRITE : SubResource구조체가 받아온 pData에 유요한 값이 담겨잇는 형태로 얻어오낟. */
 	/* D3D11_MAP_WRITE_DISCARD : SubResource구조체가 받아온 pData에 값이 초기화된 형태로 얻어오낟. */
-	DEVICECONTEXT->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+	pDeviceContext->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResource);
 
 	const PARTICLE_DESC* pParticleDesc = nullptr;
 
@@ -208,8 +219,9 @@ void CVIBuffer_Rect_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDes
 		((VTXCOLORINSTANCE*)SubResource.pData)[i].vSpriteTexUV = pParticleDesc->vSpriteUV;
 	}
 
-	DEVICECONTEXT->Unmap(m_pVBInstance.Get(), 0);
+	pDeviceContext->Unmap(m_pVBInstance.Get(), 0);
 
+	lock.unlock();
 }
 
 void CVIBuffer_Rect_Instance::Free()

@@ -89,7 +89,7 @@ HRESULT CLevel_GamePlay::Initialize()
 #pragma endregion GAMEOBJECT
 #endif	// ONLY_UI
 
-	GAMEINSTANCE->Set_FogDesc(_float4(0.24f, 0.19f, 0.07f, 1.f), 25.f);
+	GAMEINSTANCE->Set_FogDesc(_float4(0.24f, 0.19f, 0.07f, 0.5f), 25.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 
 	SetUp_UI();
@@ -115,6 +115,19 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 	_vector vPosition = m_pPlayer.lock()->Get_WorldPosition();
 
 	GAMEINSTANCE->Set_DynamicShadowLight({ -15.f +vPosition.m128_f32[0], 30.f+vPosition.m128_f32[1], -15.f + vPosition.m128_f32[2] }, { vPosition.m128_f32[0], vPosition.m128_f32[1], vPosition.m128_f32[2] });
+
+	static _float fContrast = 1.f;
+
+	if (KEY_INPUT(KEY::INSERTKEY, KEY_STATE::HOLD))
+	{
+		fContrast += 0.01f;
+	}
+	else if(KEY_INPUT(KEY::DELETEKEY, KEY_STATE::HOLD))
+	{
+		fContrast -= 0.01f;
+	}
+
+	GAMEINSTANCE->Set_Saturation(fContrast);
 
 }
 

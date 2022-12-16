@@ -54,7 +54,7 @@ void CPreviewAnimationModel::LateTick(_float fTimeDelta)
 	GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_SHADOWDEPTH, Weak_Cast<CGameObject>(m_this));
 }
 
-void CPreviewAnimationModel::Custom_Thread0(_float fTimeDelta)
+void CPreviewAnimationModel::Thread_PreTick(_float fTimeDelta)
 {
 	if (m_pCurrentModelCom.lock())
 		m_pCurrentModelCom.lock()->Update_BoneMatrices();

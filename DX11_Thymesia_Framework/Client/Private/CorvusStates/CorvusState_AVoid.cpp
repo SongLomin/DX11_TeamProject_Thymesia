@@ -140,7 +140,7 @@ _bool CCorvusState_AVoid::Check_AndChangeNextState()
 				Rotation_TargetToLookDir();
 
 			m_IsAgainAvoid = false;
-			Get_OwnerPlayer()->Change_State<CCorvusState_AVoid>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Long_AvoidF>();
 			return false;
 		}
 	}
@@ -177,10 +177,10 @@ _bool CCorvusState_AVoid::Check_AndChangeNextState()
 			return true;
 		}
 
-		if (Check_RequirementClawAttackState())
+		if (Check_RequirementClawAttackHoldState())
 		{
 			Rotation_InputToLookDir();
-			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackTab>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackHold>();
 			return true;
 		}
 	}

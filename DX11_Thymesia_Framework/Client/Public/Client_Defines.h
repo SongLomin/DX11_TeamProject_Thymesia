@@ -4,7 +4,9 @@
 #include <filesystem>
 
 // #define _JOJO_EFFECT_TOOL_
-
+//  _BAKE_PARTICLE_ 절대 키지 마세요!
+// #define _BAKE_PARTICLE_
+	
 #include "Client_Structs.h"
 #include "Client_Presets.h"
 #include "Client_Enum.h"	
@@ -21,8 +23,10 @@
 #define _RENDER_FPS_
 #define _Actor_Culling_
 //#define _INSTANCE_CULLING_t
-//#define _LOAD_CAPTURED_RESOURCE_
+// #define _LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
+
+#define _SKYBOX_
 
 #define _USE_GRAVITY_
  #define _LIFEGUARD_FOR_FALL_
@@ -33,7 +37,7 @@
 #pragma endregion // Console Outputs
 
 #pragma region Map
-// #define _BRIGHT_LIGHT_
+#define _BRIGHT_LIGHT_
 // #define _GENERATE_PROP_COLLIDER_ true
 // #define _STAGE_1_
 #define _STAGE_2_
@@ -42,7 +46,7 @@
 #pragma endregion // Map
 
 #pragma region Tool
-// #define _MAP_TOOL_
+#define _MAP_TOOL_
 // #define _EFFECT_TOOL_
 #pragma endregion // Tool
 
@@ -74,11 +78,13 @@
 #pragma region System
 #define _USE_THREAD_
 #define _144HZ_
-// #define _RENDER_FPS_
+#define _RENDER_FPS_
 //#define	_INSTANCE_CULLING_
-// #define _LOAD_CAPTURED_RESOURCE_
+#define _LOAD_CAPTURED_RESOURCE_
 #define     _Actor_Culling_
 #pragma endregion // System
+
+#define _SKYBOX_
 
 #define _USE_GRAVITY_
 // #define _LIFEGUARD_FOR_FALL_
@@ -165,13 +171,9 @@
 #endif // _JOJO_EFFECT_TOOL_
 /////////////// For. JoJo Effect Tool ///////////////
 
-
-
 #define CLIENT_DECLATION_UI class CUI; class CCustomUI; class CProgressBar; class CHUD_Hover;
 #define ENGINE_DECLATION_UI class CTexture; class CShader;   
 #define ADD_STATIC_CUSTOMUI GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC)
-
-
 
 extern HWND g_hWnd;
 extern HINSTANCE g_hInst;
@@ -181,11 +183,3 @@ namespace fs = std::filesystem;
 
 #define EVENT_DRAW_EDITER 1
 #define EVENT_INIT_EDITER 0
-
-#ifdef _DEBUG
-#define _SKYBOX_N
-#endif // _DEBUG
-
-#ifdef NDEBUG
-#define _SKYBOX_
-#endif // NDEBUG

@@ -304,9 +304,7 @@ void CCamera_Target::Look_At_Target(_float fTimeDelta)//Å¸°Ù °íÁ¤
 		return;
 
 	_vector vPlayerPos = m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-	vPlayerPos = XMVectorSetY(vPlayerPos, 0.f);
 	_vector vTargetPos = m_pTargetMonsterTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-	vTargetPos = XMVectorSetY(vTargetPos, 0.f);
 	_vector vLookDir = XMVector3Normalize(vTargetPos - vPlayerPos);
 
 	_vector vRight = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLookDir);

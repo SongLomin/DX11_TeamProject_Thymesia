@@ -53,6 +53,8 @@ HRESULT CGround::Start()
 
 	m_pPhysXColliderCom.lock()->CreatePhysXActor(ColliderDesc);
 	m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
+	m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
+
 	GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_StaticCast<CGameObject>(m_this));
 
 
@@ -80,8 +82,8 @@ HRESULT CGround::Render(ID3D11DeviceContext* pDeviceContext)
 	if (FAILED(SetUp_ShaderResource()))
 		DEBUG_ASSERT;
 	
-	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture1", 676);
-	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture2", 65);
+	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture1", 678);
+	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture2", 102);
 	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DisplacementTexture", 77);
 
 	m_pShaderCom.lock()->Set_RawValue("g_vUVNoise", &m_vNoiseUV, sizeof(_float2));

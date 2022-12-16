@@ -42,6 +42,7 @@ public:
 	virtual HRESULT	Initialize() PURE;
 	virtual void	Start() PURE;
 	virtual void	Tick(_float fTimeDelta);
+	virtual void	Background_Tick(_float fTimeDelta) {}
 	virtual HRESULT	Render(ID3D11DeviceContext* pDeviceContext) PURE;
 
 public:

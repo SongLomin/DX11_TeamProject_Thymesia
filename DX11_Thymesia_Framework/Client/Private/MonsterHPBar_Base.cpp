@@ -336,11 +336,12 @@ void CMonsterHPBar_Base::Call_Restart()
 	Set_Stun(false);
 
 	weak_ptr<CStatus_Monster> pStatus_Monster;
-	pStatus_Monster = Weak_Cast< CStatus_Monster>(m_pTarget.lock()->Get_Status());
+	pStatus_Monster = Weak_Cast<CStatus_Monster>(m_pTarget.lock()->Get_Status());
 
 
 	m_pWhite.lock()->Set_Ratio(pStatus_Monster.lock()->Get_WhiteRatio());
 	m_pGreen.lock()->Set_Ratio(pStatus_Monster.lock()->Get_GreenRatio());
+	m_pParryingBar.lock()->Set_Ratio(0.f, false);
 }
 
 void CMonsterHPBar_Base::OnEnable(void* pArg)
@@ -379,10 +380,21 @@ void CMonsterHPBar_Base::FollowTarget()
 
 	_vector vViewPosition;
 	_matrix ViewProjMatrix;
-	
+
+
 	vViewPosition = m_pTarget.lock()->Get_WorldPosition();
+	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(vViewPosition))
+	{
+		m_bRender = true;
+	}
+	else
+	{
+		m_bRender = false;
+	}
+
 
 	vViewPosition += XMVectorSet(0.f,2.f, 0.f, 1.f);
+	
 
 	ViewProjMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_VIEW) * GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_PROJ);
 		

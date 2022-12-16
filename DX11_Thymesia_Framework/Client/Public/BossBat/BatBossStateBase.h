@@ -17,7 +17,8 @@ protected:
     virtual _bool Check_RequirementAttackState();
     virtual _bool Check_RequirementDashState();
     virtual _bool Check_RequirementRunState();
-
+    virtual _bool Check_CrossAttackState();
+    virtual _bool Check_CrossJumpState();
     virtual _bool Check_RequirementPlayerInRange(const _float& In_fRange);
 
 protected:

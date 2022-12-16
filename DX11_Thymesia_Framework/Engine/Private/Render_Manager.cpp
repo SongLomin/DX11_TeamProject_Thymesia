@@ -8,6 +8,58 @@
 
 IMPLEMENT_SINGLETON(CRender_Manager)
 
+ComPtr<ID3D11DeviceContext> CRender_Manager::Get_BeforeRenderContext()
+{
+	std::unique_lock<std::mutex> lock(m_job_q_);
+
+	if (m_pBeforeRenderSleepContexts.empty())
+	{
+		Emplace_SleepContext(1);
+	}
+
+	ComPtr<ID3D11DeviceContext> pContext = m_pBeforeRenderSleepContexts.back();
+	m_pBeforeRenderSleepContexts.pop_back();
+
+	lock.unlock();
+
+	return pContext;
+	// 나중에 이펙트_렉트나 이펙트 메쉬, 맵언맵 등등 시간이 오래 걸리는 곳에 보내준다.
+	// 맵언맵이 끝나면 다시 돌려받을 것.
+	// 해당 Late_Tick은 쓰레드로 할 것.
+}
+
+void CRender_Manager::Release_BeforeRenderContext(ComPtr<ID3D11DeviceContext> pDeviceContext)
+{
+	std::unique_lock<std::mutex> lock(m_job_q_);
+
+	m_pBeforeRenderContexts.emplace_back(pDeviceContext);
+
+	lock.unlock();
+}
+
+void CRender_Manager::Execute_BeforeRenderCommandList()
+{
+	std::unique_lock<std::mutex> lock(m_job_q_);
+
+	ID3D11CommandList* pCommandList = nullptr;
+
+	for (auto& elem : m_pBeforeRenderContexts)
+	{
+		elem->FinishCommandList(false, &pCommandList);
+
+		if (pCommandList)
+		{
+			DEVICECONTEXT->ExecuteCommandList(pCommandList, true);
+			pCommandList->Release();
+			pCommandList = nullptr;
+		}
+	}
+
+	m_pBeforeRenderSleepContexts.insert(m_pBeforeRenderSleepContexts.begin(), m_pBeforeRenderContexts.begin(), m_pBeforeRenderContexts.end());
+	m_pBeforeRenderContexts.clear();
+	lock.unlock();
+}
+
 HRESULT CRender_Manager::Initialize()
 {
 
@@ -387,6 +439,8 @@ HRESULT CRender_Manager::Add_RenderGroup(RENDERGROUP eGroup, weak_ptr<CGameObjec
 
 HRESULT CRender_Manager::Draw_RenderGroup()
 {
+	
+
 	GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[DEFERRED_EFFECT].Get());	
 	GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[DEFERRED_UI].Get());
 
@@ -397,7 +451,9 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 		continue;
 	}
 
-	std::list<std::future<HRESULT>> futures;
+	Execute_BeforeRenderCommandList();
+
+	//std::list<std::future<HRESULT>> futures;
 	
 	//futures.emplace_back(GET_SINGLE(CThread_Manager)->EnqueueJob(bind(&CRender_Manager::Render_Effect, this)));
 	// futures.emplace_back(GET_SINGLE(CThread_Manager)->EnqueueJob(bind(&CRender_Manager::Render_UI, this)));
@@ -425,14 +481,15 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Blur_OutLine()))
 		DEBUG_ASSERT;
 
+	if (FAILED(Bake_ViewShadow()))
+		DEBUG_ASSERT;
+
 	if (FAILED(Render_Lights()))
 		DEBUG_ASSERT;
 
 	if (FAILED(Bake_Fog()))
 		DEBUG_ASSERT;
 
-	if (FAILED(Bake_ViewShadow()))
-		DEBUG_ASSERT;
 
 	///////SSR 넣기
 
@@ -509,6 +566,17 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 		pCommandList = nullptr;
 	}*/
 	
+	/*std::future<HRESULT> UIFuture = GET_SINGLE(CThread_Manager)->Enqueue_Job(bind(&CRender_Manager::Render_UI, this));
+	UIFuture.get();
+
+	m_pDeferredContext[DEFERRED_UI]->FinishCommandList(false, &pCommandList);
+
+	if (pCommandList)
+	{
+		DEVICECONTEXT->ExecuteCommandList(pCommandList, true);
+		pCommandList->Release();
+		pCommandList = nullptr;
+	}*/
 
 	if (FAILED(Render_UI()))
 		DEBUG_ASSERT;
@@ -582,6 +650,18 @@ HRESULT CRender_Manager::Set_FogDesc(const _float4 In_vFogColor, const _float In
 	return S_OK;
 }
 
+HRESULT CRender_Manager::Set_Contrast(const _float In_fContrast)
+{
+	m_fContrastValue = In_fContrast;
+
+	return S_OK;
+}
+HRESULT CRender_Manager::Set_Saturation(const _float In_fSaturation)
+{
+	m_fSaturation = In_fSaturation;
+
+	return S_OK;
+}
 
 
 HRESULT CRender_Manager::Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain)
@@ -752,8 +832,6 @@ HRESULT CRender_Manager::Render_NonAlphaBlend()
 
 	if (FAILED(GET_SINGLE(CRenderTarget_Manager)->End_MRT()))
 		DEBUG_ASSERT;
-
-	return S_OK;
 
 	return S_OK;
 }
@@ -1078,6 +1156,7 @@ HRESULT CRender_Manager::Render_AlphaBlend(ID3D11DeviceContext* pDeviceContext)
 
 		return E_FAIL;
 	}
+
 
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_ALPHABLEND])
 	{
@@ -1628,6 +1707,8 @@ HRESULT CRender_Manager::PostProcessing()
 	m_pPostProcessingShader->Set_RawValue("g_vGain", &m_LiftGammaGainDesc.vGain, sizeof(_float4));
 
 	m_pPostProcessingShader->Set_RawValue("g_fGrayScale", &m_fGrayScale, sizeof(_float));
+	m_pPostProcessingShader->Set_RawValue("g_fSaturation", &m_fSaturation, sizeof(_float));
+	m_pPostProcessingShader->Set_RawValue("g_fContrastValue", &m_fContrastValue, sizeof(_float)); 
 
 	_float fChromaticLerpValue = 0.f;
 	if (0.f < m_fChromaticStrengthAcc)
@@ -1805,6 +1886,14 @@ HRESULT CRender_Manager::Blur(const _float& In_PixelPitchScalar, const _tchar* I
 	return S_OK;
 }
 
+void CRender_Manager::Emplace_SleepContext(const _uint In_iIndex)
+{
+	ComPtr<ID3D11DeviceContext> pContext;
+	DEVICE->CreateDeferredContext(0, pContext.GetAddressOf());
+	GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(pContext.Get());
+	m_pBeforeRenderSleepContexts.emplace_back(pContext);
+}
+
 #ifdef _DEBUG
 HRESULT CRender_Manager::Render_Debug()
 {
@@ -1822,6 +1911,7 @@ HRESULT CRender_Manager::Render_Debug()
 
 	if (!GAMEINSTANCE->Is_Debug())
 	{
+		m_szDebugRenderMRTNames.clear();
 		return S_OK;
 	}
 
@@ -1835,30 +1925,91 @@ HRESULT CRender_Manager::Render_Debug()
 	if (FAILED(m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4))))
 		DEBUG_ASSERT;
 
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Deferred"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ShadowDepth"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ExtractEffect"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurForBloom"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurForGlow"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_CopyOriginalRender"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurEffect"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ExtractOutLine"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurOutLine"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ViewShadow"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_StaticShadowDepth"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Fog"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Distortion"), m_pShader, m_pVIBuffer);
-	GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_AntiAliasing"), m_pShader, m_pVIBuffer);
-	//GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Glow"), m_pShader, m_pVIBuffer);
-
-	/*for (auto& pComponent : m_pDebugComponents)
+	if (m_bOldSchoolView)
 	{
-		if (pComponent.lock())
-			pComponent.lock()->Render(pDeviceContext);
-	}*/
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Deferred"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_LightAcc"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ShadowDepth"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ExtractEffect"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurForBloom"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurForGlow"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_CopyOriginalRender"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurEffect"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ExtractOutLine"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_BlurOutLine"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_ViewShadow"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_StaticShadowDepth"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Fog"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_Distortion"), m_pShader, m_pVIBuffer);
+		GET_SINGLE(CRenderTarget_Manager)->Render_Debug(TEXT("MRT_AntiAliasing"), m_pShader, m_pVIBuffer);
+	}
+	else
+	{
+		for (_size_t i = 0; i < m_szDebugRenderMRTNames.size(); ++i)
+		{
+			Render_DebugSRT((_uint)i);
+		}		
+	}
+
+
+	m_szDebugRenderMRTNames.clear();
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Set_DebugSize(const _float2 vSize)
+{
+	m_vDebugSize = vSize;
 
 	return S_OK;
+}
+
+HRESULT CRender_Manager::Set_OldSchoolView(const _bool bOldSchool)
+{
+	m_bOldSchoolView = bOldSchool;
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Add_DebugSRT(const _tchar* In_szMRTName)
+{
+	m_szDebugRenderMRTNames.emplace_back(In_szMRTName);
+
+	return S_OK;
+}
+
+void CRender_Manager::Render_DebugSRT(const _uint In_iIndex)
+{
+	D3D11_VIEWPORT			ViewPortDesc;
+	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
+
+	_uint		iNumViewports = 1;
+
+	DEVICECONTEXT->RSGetViewports(&iNumViewports, &ViewPortDesc);
+
+	_matrix		WorldMatrix = XMMatrixIdentity();
+	_float fX = (m_vDebugSize.x * 0.5f);
+	_float fY = (m_vDebugSize.y * 0.5f);
+	//fY += In_iIndex * m_vDebugSize.y;
+
+	_int iH = ViewPortDesc.Height / m_vDebugSize.y;
+	_int iW = In_iIndex / iH;
+	iH = In_iIndex % iH;
+
+
+	fX += iW * m_vDebugSize.x;
+	fY += iH * m_vDebugSize.y;
+
+	WorldMatrix.r[0] = XMVectorSet(m_vDebugSize.x, 0.f, 0.f, 0.f);
+	WorldMatrix.r[1] = XMVectorSet(0.f, m_vDebugSize.y, 0.f, 0.f);
+	WorldMatrix.r[3] = XMVectorSet(fX - (ViewPortDesc.Width * 0.5f), -fY + (ViewPortDesc.Height * 0.5f), 0.f, 1.f);
+
+	WorldMatrix = XMMatrixTranspose(WorldMatrix);
+
+	if (FAILED(m_pShader->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_float4x4))))
+		DEBUG_ASSERT;
+
+	GET_SINGLE(CRenderTarget_Manager)->Render_DebugSRT(m_szDebugRenderMRTNames[In_iIndex].c_str(), m_pShader, m_pVIBuffer);
+
 }
 
 //HRESULT CRender_Manager::Add_DebugRenderGroup(weak_ptr<CComponent> pComponent)

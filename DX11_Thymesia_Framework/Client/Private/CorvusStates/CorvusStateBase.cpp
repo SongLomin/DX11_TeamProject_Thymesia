@@ -33,6 +33,17 @@ _bool CCorvusStateBase::Check_RequirementAttackState()
 	return false;
 }
 
+
+_bool CCorvusStateBase::Check_RequirementFadderAttackState()
+{
+	if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
+	{
+		return true;
+	}
+
+	return false;
+}
+
 _bool CCorvusStateBase::Check_RequirementDashState()
 {
 	if (!KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))
@@ -431,6 +442,8 @@ _bool CCorvusStateBase::Check_AndChangeLadderState(weak_ptr<CCollider> pMyCollid
 		m_pTransformCom.lock()->Set_Look2D(-vOtherWorldMatrix.r[2]);
 		Get_OwnerPlayer()->Set_LadderCheck(true);
 		Get_OwnerPlayer()->Change_State<CCorvusState_CheckPointStart>();
+		break;
+	case Client::COLLISION_LAYER::ITEM:
 		break;
 
 	default:

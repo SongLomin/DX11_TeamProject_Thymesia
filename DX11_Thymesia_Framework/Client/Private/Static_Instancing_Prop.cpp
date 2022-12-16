@@ -57,7 +57,7 @@ void CStatic_Instancing_Prop::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 }
 
-void CStatic_Instancing_Prop::Custom_Thread1(_float fTimeDelta)
+void CStatic_Instancing_Prop::Thread_PreLateTick(_float fTimeDelta)
 {
 #ifdef _INSTANCE_CULLING_
 	if (m_pDynamicColliderComs.empty())
@@ -139,7 +139,10 @@ HRESULT CStatic_Instancing_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 				}
 				else
 				{
-					m_iPassIndex = 1;
+					if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+						m_iPassIndex = 6;
+					else
+						m_iPassIndex = 1;
 				}
 			}
 		}

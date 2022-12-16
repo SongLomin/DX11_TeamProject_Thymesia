@@ -46,6 +46,8 @@ HRESULT CUI::Initialize(void* pArg)
 
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(g_iWinCX, g_iWinCY, 0.f, 1.f)));
 	m_bShaking = false;
+
+	m_bRender = true;
 	return S_OK;
 }
 
@@ -95,8 +97,10 @@ void CUI::LateTick(_float fTimeDelta)
 			listElem->LateTick(fTimeDelta);
 		}
 	}
-
-	m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Cast<CGameObject>(m_this));
+	if (m_bRender)
+	{
+		m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Cast<CGameObject>(m_this));
+	}
 
 
 	m_fShakedPos.x = m_tUIDesc.fX - (g_iWinCX * 0.5f) + m_fOffsetPosition.x;
@@ -191,7 +195,7 @@ void CUI::Set_Size(const _float& fSizeX, const _float& fSizeY)
 
 }
 
-void CUI::Set_Y(const _float& fY)
+void CUI::Set_Y(const _float fY)
 {
 	m_tUIDesc.fY = fY;
 }
@@ -302,6 +306,11 @@ _float2 CUI::Get_Point(UI_POINT eType)
 		break;
 	}
 	return vPos;
+}
+
+_float CUI::Get_Y()
+{
+	return m_tUIDesc.fY;
 }
 
 void CUI::OnEnable(void* _Arg)

@@ -30,7 +30,7 @@ private:
 
 	void Clear_EngineThreads(const THREAD_TYPE In_eThread_Type);
 
-	void WorkerThread();
+	void WorkerThread(_bool& JobDoneChecker);
 	
 	
 
@@ -45,12 +45,14 @@ private:
 	// 총 Worker 쓰레드의 개수.
 	size_t num_threads_;
 	// Worker 쓰레드를 보관하는 벡터.
-	std::vector<std::thread> worker_threads_;
+	vector<thread> worker_threads_;
 	// 할일들을 보관하는 job 큐.
-	std::queue<std::function<void()>> jobs_;
+	queue<function<void()>> jobs_;
 	// 위의 job 큐를 위한 cv 와 m.
-	std::condition_variable cv_job_q_;
-	std::mutex m_job_q_;
+	condition_variable cv_job_q_;
+	mutex m_job_q_;
+	vector<_bool*> worker_jopdones;
+
 
 	// 모든 쓰레드 종료
 	bool stop_all;
@@ -63,7 +65,7 @@ public:
 
 public:
 	template <class F, class... Args>
-	std::future<typename std::result_of<F(Args...)>::type> EnqueueJob(
+	std::future<typename std::result_of<F(Args...)>::type> Enqueue_Job(
 		F&& f, Args&&... args)
 	{
 		if (stop_all) {

@@ -44,9 +44,10 @@ HRESULT CHUD_PlagueWeapon_Main::Initialize(void* pArg)
     m_pIcon.lock()->Set_Depth(0.2f);
     m_pIcon.lock()->Set_Size(160.f, 160.f);
 
-    m_pPlagueWeapon_Ready = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &m_tUIDesc);
+    m_pPlagueWeapon_Ready = GAMEINSTANCE->Add_GameObject<CProgressBar>(LEVEL_STATIC, &m_tUIDesc);
     m_pPlagueWeapon_Ready.lock()->Set_Texture("HUD_PlagueWeapon_Frame_Ready");
     m_pPlagueWeapon_Ready.lock()->Set_Depth(0.1f);
+    m_pPlagueWeapon_Ready.lock()->Set_PassIndex(3);
     m_pPlagueWeapon_Ready.lock()->Set_AlphaColor(0.3f);
     m_pPlagueWeapon_Ready.lock()->Set_Enable(false);
     m_pPlagueWeapon_Ready.lock()->Set_RenderGroup(RENDERGROUP::RENDER_BEFOREUI);

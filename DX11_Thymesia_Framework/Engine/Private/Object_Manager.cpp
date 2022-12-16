@@ -82,7 +82,7 @@ void CObject_Manager::LateTick(_float fTimeDelta)
 		{
 			for (auto& elem_GameObject : Pair.second)
 			{
-				bThread = elem_GameObject->Is_Thread(THREAD_TYPE::LATE_TICK);
+				bThread = elem_GameObject->Is_Thread(THREAD_TYPE::LATETICK);
 
 				//게임오브젝트가 활성화 상태면 LateTick을 돌린다.
 				if (elem_GameObject->Get_Enable() && !bThread)

@@ -59,7 +59,7 @@ HRESULT CEditInstanceProp::Initialize(void* pArg)
 	ZeroMemory(&m_PickingDesc, sizeof(INSTANCE_MESH_DESC));
 	m_PickingDesc.vScale = _float3(1.f, 1.f, 1.f);
 
-	Use_Thread(THREAD_TYPE::CUSTOM_THREAD1);
+	Use_Thread(THREAD_TYPE::PRE_LATETICK);
 
 	m_pTextureGroupCom.emplace("g_DissolveTexture"    , Add_Component<CTexture>());
 	m_pTextureGroupCom.emplace("g_DissolveDiffTexture", Add_Component<CTexture>());
@@ -94,7 +94,7 @@ void CEditInstanceProp::LateTick(_float fTimeDelta)
 	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Cast<CGameObject>(m_this));
 }
 
-void CEditInstanceProp::Custom_Thread1(_float fTimeDelta)
+void CEditInstanceProp::Thread_PreLateTick(_float fTimeDelta)
 {
 #ifdef _INSTANCE_CULLING_
 	m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos));
@@ -358,8 +358,10 @@ void CEditInstanceProp::Load_FromJson(const json& In_Json)
 _bool CEditInstanceProp::IsPicking(const RAY& In_Ray, _float& Out_fRange)
 {
 	_float fPickedDist;
-	_bool bPicked = false;
-	_uint iIndex = 0;
+	_bool bPicked			= false;
+	_uint iIndex			= 0;
+	_float4	vCamPosition	= GAMEINSTANCE->Get_CamPosition();
+	_vector vCamPos			= XMLoadFloat4(&vCamPosition);
 
 	for (auto& iter : m_pPropInfos)
 	{
@@ -374,7 +376,9 @@ _bool CEditInstanceProp::IsPicking(const RAY& In_Ray, _float& Out_fRange)
 
 		if (SMath::Is_Picked_AbstractCube(In_Ray, Info, PickWorldMatrix, &fPickedDist))
 		{
-			if (Out_fRange > fPickedDist)
+			_float  fLength = XMVectorGetX(XMVector3Length(vCamPos - XMLoadFloat3(&iter.vTarnslation)));
+
+			if (Out_fRange > fLength)
 			{
 				m_PickingDesc = iter;
 				m_iPickingIndex = iIndex;

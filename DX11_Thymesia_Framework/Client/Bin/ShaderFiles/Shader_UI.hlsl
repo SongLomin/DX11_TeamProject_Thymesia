@@ -94,7 +94,7 @@ PS_OUT PS_MAIN_TEST_RATIO_WIDTH(PS_IN In)
 
 	if (In.vTexUV.x > g_Ratio)
 		discard;
-
+	Out.vColor.a *= g_fAlphaColor;
 	return Out;
 }
 
@@ -107,6 +107,7 @@ PS_OUT PS_MAIN_TEST_RATIO_HEIGHT(PS_IN In)
 	if (1.f - In.vTexUV.y > g_Ratio)
 		discard;
 
+	Out.vColor.a *= g_fAlphaColor;
 	return Out;
 }
 

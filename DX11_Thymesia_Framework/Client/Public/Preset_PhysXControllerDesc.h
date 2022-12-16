@@ -11,5 +11,6 @@ namespace Preset
 	{
 		PxCapsuleControllerDesc PlayerSetting(weak_ptr<CTransform> pTransform);
 		PxCapsuleControllerDesc CameraSetting(weak_ptr<CTransform> pTransform);
+		PxCapsuleControllerDesc BossBatSetting(weak_ptr<CTransform> pTransform);
 	}
 }

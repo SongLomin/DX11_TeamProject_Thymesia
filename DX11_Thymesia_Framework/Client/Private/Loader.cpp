@@ -214,7 +214,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	LightDesc.bEnable    = true;
 #endif // _BRIGHT_LIGHT_
 
+
 	GAMEINSTANCE->Add_Light(LightDesc);
+
 
 #endif // _ONLY_UI_
 
@@ -279,10 +281,10 @@ HRESULT CLoader::Loading_ForTestLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/GroundInfo/Mesh/ ]"));
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
 
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Distructable/Wagon03/ ]"));
+	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Destructable/Wagon03/ ]"));
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
-	Load_AllMeshes("../Bin/Resources/Meshes/Distructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
-	Load_AllMeshes("../Bin/Resources/Meshes/Distructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
+	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
+	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
 #ifdef _TEST_STATIC_PROPS_
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/ForTest_Mesh/ ]"));
@@ -303,7 +305,7 @@ HRESULT CLoader::Loading_ForTestLevel()
 
 #endif // _LOAD_CAPTURED_RESOURCE_
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
-	Load_AllMeshes("../Bin/Resources/Meshes/Distructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
+	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 	lstrcpy(m_szLoadingText, TEXT("Loading Complete for : Level Test"));
 
 #endif _ONLY_UI_
@@ -338,9 +340,9 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
-	//GAMEINSTANCE->Load_Model("DistructableTest", "../Bin/Resources/Meshes/Distructable/WagonTest2.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Distructable/Wagon03/ ]"));
-	Load_AllMeshes("../Bin/Resources/Meshes/Distructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
+	//GAMEINSTANCE->Load_Model("DestructableTest", "../Bin/Resources/Meshes/Destructable/WagonTest2.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Destructable/Wagon03/ ]"));
+	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/ForTest_Mesh/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
@@ -358,7 +360,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 #endif // _LOAD_CAPTURED_RESOURCE_
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
-	Load_AllMeshes("../Bin/Resources/Meshes/Distructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
+	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 #endif // _ONLY_UI_
 	m_isFinished = true;
 	return S_OK;
@@ -464,15 +466,15 @@ HRESULT CLoader::Loading_ForEditLevel()
 
 	_matrix TransformMatrix;
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Distructable/Wagon03/ ]"));
-	Load_AllMeshes("../Bin/Resources/Meshes/Distructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
+	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Destructable/Wagon03/ ]"));
+	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
 	this->Load_CorvusModel();
 	this->Load_BossMobModel();
 	this->Load_NormalMobModel();
 	this->Load_EliteMobModel();
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
-	Load_AllMeshes("../Bin/Resources/Meshes/Distructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
+	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 #endif // _MAP_TOOL_
 #endif // _JOJO_EFFECT_TOOL_
 
@@ -829,10 +831,10 @@ void CLoader::Load_UIResource()
 
 	//TODO : UI_Menu : ESC키를 눌러서 나오는 메뉴창
 	//UI_Menu
-	GAMEINSTANCE->Load_Textures(("PauseMenu_Background0"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/TexUI_PauseMenuBackground_00.png"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures(("PauseMenu_Background1"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/TexUI_PauseMenuBackground_01.png"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures(("PauseMenu_Background2"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/TexUI_PauseMenuBackground_02.png"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures(("PauseMenu_Background3"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/TexUI_PauseMenuBackground_03.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("PauseMenu_Background0"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/TexUI_PauseMenuBackground_00.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("PauseMenu_Background1"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/TexUI_PauseMenuBackground_01.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("PauseMenu_Background2"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/TexUI_PauseMenuBackground_02.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("PauseMenu_Background3"), TEXT("../Bin/Resources/Textures/UI/PauseMenu/TexUI_PauseMenuBackground_03.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("PageIndex_Indicator_Selected"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_PageIndexIndicator_Selected.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("PageIndex_Indicator_UnSelected"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_PageIndexIndicator_UnSelected.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("PageIndex_Indicator_Decoration"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_PageIndexIndicator_Decoration.png"), MEMORY_TYPE::MEMORY_STATIC);
@@ -1030,6 +1032,21 @@ void CLoader::Load_UIResource()
 
 	//battle
 	GAMEINSTANCE->Load_Textures(("Target_Icon"), TEXT("../Bin/Resources/Textures/UI/Target.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	//Inventory
+	GAMEINSTANCE->Load_Textures(("Inventory_BG"), TEXT("../Bin/Resources/Textures/UI/Inventory/UI_InventoryBG.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	GAMEINSTANCE->Load_Textures(("Inventory_Frame"), TEXT("../Bin/Resources/Textures/UI/Inventory/Inventory_MainFrame.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("Inventory_FrameBG"), TEXT("../Bin/Resources/Textures/UI/Inventory/Inventory_MainFrameBG.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	
+	GAMEINSTANCE->Load_Textures(("ItemSlot_Main"), TEXT("../Bin/Resources/Textures/UI/Inventory/TexUI_ItemBackground.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("ItemSlot_Frame"), TEXT("../Bin/Resources/Textures/UI/Inventory/TexUI_SquareFrame.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("ItemSlot_Hover"), TEXT("../Bin/Resources/Textures/UI/Inventory/TexUI_SquareFrame_Hover.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+
 
 
 

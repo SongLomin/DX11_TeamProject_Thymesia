@@ -10,6 +10,7 @@
 #ifdef _JOJO_EFFECT_TOOL_
 #include "JoJoParticleShaderManager.h"
 #endif // _JOJO_EFFECT_TOOL_
+
 #include <imgui_impl_dx11.h>
 #include "imgui_impl_win32.h"
 
@@ -87,10 +88,8 @@ HRESULT CMainApp::Initialize()
 	GET_SINGLE(CJoJoParticleShaderManager)->Initialize();
 #endif // _JOJO_EFFECT_TOOL_
 
-
-	//GAMEINSTANCE->Load_Textures_Generate_MipMaps(("WHYTHROWSIBAL"), TEXT("../Bin/T_C_CorvusBirdClaw01_C.dds"), MEMORY_TYPE::MEMORY_STATIC);
-	//GAMEINSTANCE->Load_TexturesGenerateMipMap(("WHYTHROWSIBAL"), TEXT("../Bin/basket_01_wire_087225143_BaseColor.png"), MEMORY_TYPE::MEMORY_STATIC);
-	//GAMEINSTANCE->Load_TexturesGenerateMipMap(("WHYTHROWSIBAL"), TEXT("../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/TX_FF10_N.png"), MEMORY_TYPE::MEMORY_STATIC);
+	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Destructable");
+	
 #ifdef _BAKE_MIPMAPS_
 	Bake_MipMaps();
 	MSG_BOX("BAKE SUCCEEDED.");
@@ -187,6 +186,11 @@ void CMainApp::Tick(float fTimeDelta)
 	if (m_pDeveloperConsole && m_bEnableConsole)
 	{
 		m_pDeveloperConsole->Tick(fTimeDelta);
+	}
+	
+	if (m_pDeveloperConsole)
+	{
+		m_pDeveloperConsole->Background_Tick(fTimeDelta);
 	}
 #endif // _DEBUG
 

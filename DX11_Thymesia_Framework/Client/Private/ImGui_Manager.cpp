@@ -117,6 +117,20 @@ HRESULT CImGui_Manager::Render(void)
 
 			}
 
+			if (EDITER_TYPE::EFFECT == m_eCurrentEditerType)
+			{
+				if (ImGui::MenuItem("Load All & Save All Effects"))
+				{
+					vector<string> AllEffects = GET_SINGLE(CWindow_EffectResourceView)->Get_AllEffectGroupNames();
+					for (auto& elem : AllEffects)
+					{
+						GET_SINGLE(CWindow_EffectHierarchyView)->Call_LoadEffectGroup(elem.c_str());
+						this->Save_EffectJson();
+					}
+				}
+			}
+			
+
 			ImGui::EndMenu();
 		}
 

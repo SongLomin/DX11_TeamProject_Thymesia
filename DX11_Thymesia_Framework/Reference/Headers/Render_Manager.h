@@ -23,6 +23,13 @@ public:
 
 
 public:
+	ComPtr<ID3D11DeviceContext> Get_BeforeRenderContext();
+	void Release_BeforeRenderContext(ComPtr<ID3D11DeviceContext> pDeviceContext);
+	
+private:
+	void Execute_BeforeRenderCommandList();
+
+public:
 	HRESULT Initialize();
 
 	HRESULT Add_RenderGroup(RENDERGROUP	eGroup, weak_ptr<CGameObject> pGameObject);
@@ -54,7 +61,9 @@ public:
 	{
 		return m_LiftGammaGainDesc;
 	}
-	
+
+	HRESULT Set_Contrast(const _float In_fContrast);
+	HRESULT Set_Saturation(const _float In_fSaturation);
 
 private:
 	HRESULT Render_Priority();
@@ -92,9 +101,23 @@ private:
 
 	HRESULT Blur(const _float& In_PixelPitchScalar, const _tchar* In_szMRT, const _tchar* In_szTarget);
 
+private:
+	void Emplace_SleepContext(const _uint In_iIndex);
+
 #ifdef _DEBUG
 public:
 	HRESULT Render_Debug();
+	HRESULT Set_DebugSize(const _float2 vSize);
+	HRESULT Set_OldSchoolView(const _bool bOldSchool);
+	HRESULT	Add_DebugSRT(const _tchar* In_szMRTName);
+
+private:
+	void Render_DebugSRT(const _uint In_iIndex);
+
+private:
+	vector<tstring> m_szDebugRenderMRTNames;
+	_float2			m_vDebugSize;
+	_bool			m_bOldSchoolView = true;
 #endif // _DEBUG
 
 #ifdef _DEBUG
@@ -152,10 +175,16 @@ private:
 	_float		m_fFogRange = 30.f;
 	
 	_float		m_fGrayScale = 1.f;
+	_float		m_fContrastValue = 1.f;
+	_float		m_fSaturation = 1.f;
 
 
 private:
 	ComPtr<ID3D11DeviceContext> m_pDeferredContext[DEFERRED_END];
+	vector<ComPtr<ID3D11DeviceContext>> m_pBeforeRenderContexts;
+	vector<ComPtr<ID3D11DeviceContext>> m_pBeforeRenderSleepContexts;
+
+	std::mutex m_job_q_;
 
 public:
 	virtual void OnDestroy() override;

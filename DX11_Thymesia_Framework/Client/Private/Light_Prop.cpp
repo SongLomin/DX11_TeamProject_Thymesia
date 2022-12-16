@@ -41,7 +41,7 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	m_tLightDesc.eActorType = LIGHTDESC::TYPE::TYPE_POINT;
 	m_tLightDesc.bEnable    = true;
 
-	m_tLightDesc.vPosition  = { 0.f, 0.f, 0.f, 1.f };
+	m_tLightDesc.vPosition  = { 0.f, 5.f, 0.f, 1.f };
 	m_tLightDesc.vDiffuse   = { 1.f, 1.f, 1.f, 0.f };
 	m_tLightDesc.vAmbient   = { 1.f, 1.f, 1.f, 0.f };
 	m_tLightDesc.vSpecular  = { 1.f, 1.f, 1.f, 1.f };

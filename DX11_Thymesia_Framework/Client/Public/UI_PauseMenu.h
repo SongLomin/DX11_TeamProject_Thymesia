@@ -36,8 +36,14 @@ private:
 
 private:
     weak_ptr<CCustomUI> m_pPauseMenuBackground;
+    weak_ptr<CCustomUI> m_pPauseMenuBackground_MainFrame;
     weak_ptr<CCustomUI> m_pPauseMenuBackground_Main;
     weak_ptr<CCustomUI> m_pPauseMenuBackground_Top;
+
+//OnlyInventory
+private:
+    weak_ptr<CCustomUI> m_pInventoryBG;
+
 
 private:
     weak_ptr<CCustomUI> m_pPageIndicator[PAUSE_MENU_END];

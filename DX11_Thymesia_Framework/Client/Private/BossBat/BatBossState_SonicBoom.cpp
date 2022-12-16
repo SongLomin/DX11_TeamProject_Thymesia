@@ -38,15 +38,16 @@ void CBatBossState_SonicBoom::Start()
 void CBatBossState_SonicBoom::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-	
-	_matrix LocalMat = XMMatrixIdentity();
-	LocalMat *= XMMatrixRotationX(XMConvertToRadians(-90.f));
-	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
 
-	if (m_fSinematic == 4.f)
+	if (m_bAttackLookAtLimit)
 	{
-		GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat, CINEMATIC_TYPE::CINEMATIC);
+		Rotation_TargetToLookDir();
 	}
+	else
+	{
+		TurnAttack(fTimeDelta);
+	}
+
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -55,8 +56,6 @@ void CBatBossState_SonicBoom::Tick(_float fTimeDelta)
 void CBatBossState_SonicBoom::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
-
-	m_pModelCom.lock()->Set_AnimationSpeed(m_fSinematic);
 
 	Check_AndChangeNextState();
 }
@@ -68,6 +67,19 @@ void CBatBossState_SonicBoom::OnStateStart(const _float& In_fAnimationBlendTime)
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CBatBossState_SonicBoom>().lock())
+	{
+		m_iSonicBoomCount -= 1;
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 219);
+	}
+	else
+	{
+		m_iSonicBoomCount = 3;
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	}
+	
+	m_bAttackLookAtLimit = true;
+	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
@@ -75,7 +87,7 @@ void CBatBossState_SonicBoom::OnStateStart(const _float& In_fAnimationBlendTime)
 	cout << "VargState: Start -> OnStateStart" << endl;
 #endif
 #endif
-	m_pModelCom.lock()->Set_AnimationSpeed(m_fSinematic);
+
 
 }	
 
@@ -83,11 +95,6 @@ void CBatBossState_SonicBoom::OnStateStart(const _float& In_fAnimationBlendTime)
 void CBatBossState_SonicBoom::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
-
-	if(m_fSinematic == 4.f)
-	GET_SINGLE(CGameManager)->End_Cinematic();
 
 }
 
@@ -98,7 +105,8 @@ void CBatBossState_SonicBoom::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Idle>(0.05f);
+	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_AttackCount(1);
+	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Car>(0.05f);
 }
 
 void CBatBossState_SonicBoom::OnDestroy()
@@ -117,17 +125,17 @@ _bool CBatBossState_SonicBoom::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
-
-	//if (fPToMDistance <= 8.f)
-	//{
-	//	m_bNextState = true;
-	//}
-	if (fPToMDistance <= 10.f)
+	
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.1f)
 	{
-		m_fSinematic = 4.f;
+		m_bAttackLookAtLimit = false;
 	}
 
+	if (m_iSonicBoomCount > 0 && m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 312)
+	{	
+		Get_OwnerCharacter().lock()->Change_State<CBatBossState_SonicBoom>(0.05f);
+		return true;
+	}
 
 
 	return false;

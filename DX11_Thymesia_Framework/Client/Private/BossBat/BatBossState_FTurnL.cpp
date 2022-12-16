@@ -39,14 +39,9 @@ void CBatBossState_FTurnL::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 	
-	_matrix LocalMat = XMMatrixIdentity();
-	LocalMat *= XMMatrixRotationX(XMConvertToRadians(-90.f));
-	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
+	_float fTurnValue = 3.14f / 1.45f;
 
-	if (m_fSinematic == 4.f)
-	{
-		GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat, CINEMATIC_TYPE::CINEMATIC);
-	}
+	m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * -1.5f);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -56,7 +51,6 @@ void CBatBossState_FTurnL::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	m_pModelCom.lock()->Set_AnimationSpeed(m_fSinematic);
 
 	Check_AndChangeNextState();
 }
@@ -75,7 +69,7 @@ void CBatBossState_FTurnL::OnStateStart(const _float& In_fAnimationBlendTime)
 	cout << "VargState: Start -> OnStateStart" << endl;
 #endif
 #endif
-	m_pModelCom.lock()->Set_AnimationSpeed(m_fSinematic);
+
 
 }	
 
@@ -83,11 +77,6 @@ void CBatBossState_FTurnL::OnStateStart(const _float& In_fAnimationBlendTime)
 void CBatBossState_FTurnL::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
-
-	if(m_fSinematic == 4.f)
-	GET_SINGLE(CGameManager)->End_Cinematic();
 
 }
 
@@ -117,15 +106,11 @@ _bool CBatBossState_FTurnL::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
-
-	//if (fPToMDistance <= 8.f)
-	//{
-	//	m_bNextState = true;
-	//}
-	if (fPToMDistance <= 10.f)
+	if (ComputeAngleWithPlayer() > 0.94f)
 	{
-		m_fSinematic = 4.f;
+		Rotation_TargetToLookDir();
+		Get_OwnerCharacter().lock()->Change_State<CBatBossState_Idle>(0.05f);
+		return true;
 	}
 
 
