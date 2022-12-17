@@ -78,15 +78,11 @@ void CCorvusState_AVoidThrust::OnStateStart(const _float& In_fAnimationBlendTime
 		cout << "NorMonState: RunStart -> OnStateStart" << endl;
 #endif
 #endif
-
-	//m_pModelCom.lock()->Set_AnimationSpeed(3.f);
 }
 
 void CCorvusState_AVoidThrust::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-	//m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 void CCorvusState_AVoidThrust::Call_AnimationEnd()

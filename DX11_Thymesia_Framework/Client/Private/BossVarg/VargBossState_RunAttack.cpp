@@ -87,8 +87,6 @@ void CVargBossState_RunAttack::OnStateStart(const _float& In_fAnimationBlendTime
 	cout << "VargState: RunAttack -> OnStateStart" << endl;
 #endif
 #endif
-
-	m_pModelCom.lock()->Set_AnimationSpeed(1.3f);
 }
 
 void CVargBossState_RunAttack::OnStateEnd()
@@ -96,9 +94,6 @@ void CVargBossState_RunAttack::OnStateEnd()
 	__super::OnStateEnd();
 
 	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(false);
-
-
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 
 	m_pPhysXControllerCom.lock()->Callback_ControllerHit -=
 		bind(&CVargBossState_RunAttack::Call_OtherControllerHit, this, placeholders::_1);

@@ -122,14 +122,14 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 
 	//SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution", 1.2f);
     
-
 	SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 7.f);
-
-
 	SET_ANIM_SPEED("Corvus_SD_TD2Thorw2", 2.5f);
 
 #pragma region Varg
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Catch", 2.306f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Fail", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Roar", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Roar_GetUp", 1.25f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_1", 1.25f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_2", 1.25f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_3", 1.25f);
@@ -150,6 +150,15 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_AvoidB", 1.25f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_AvoidAttack1", 2.f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_RaidAttack2", 2.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_RunF_Start", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_RunF_1", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_RunF", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TurnL90", 1.5f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TurnR90", 1.5f);
+
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_StunLoop", 2.f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_StunEnd", 2.f);
 #pragma endregion // Varg
 
 #pragma region Joker
@@ -171,9 +180,6 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("Joker_WheelAttackEnd", 1.25f);
     SET_ANIM_SPEED("Joker_TakeExecution_Start", 1.4f);
 #pragma endregion // Joker
-
-
-
 
 #pragma region Bat
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Seq_BossFightStart_V1", 4.f);

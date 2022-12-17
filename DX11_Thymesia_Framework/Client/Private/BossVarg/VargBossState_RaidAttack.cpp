@@ -35,7 +35,6 @@ void CVargBossState_RaidAttack::Start()
 {
 	__super::Start();
 
-
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_RaidAttack2");
 
 	m_bAttackLookAtLimit = true;
@@ -91,17 +90,13 @@ void CVargBossState_RaidAttack::OnStateStart(const _float& In_fAnimationBlendTim
 	cout << "VargState: RaidAttack -> OnStateStart" << endl;
 #endif
 #endif
-
-	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 }
 
 void CVargBossState_RaidAttack::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(false);
-
 
 	m_pPhysXControllerCom.lock()->Callback_ControllerHit -=
 		bind(&CVargBossState_RaidAttack::Call_OtherControllerHit, this, placeholders::_1);
