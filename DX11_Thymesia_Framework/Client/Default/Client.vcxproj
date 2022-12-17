@@ -471,6 +471,7 @@
     <ClInclude Include="..\Public\Talent_Effects.h" />
     <ClInclude Include="..\Public\UI_Container.h" />
     <ClInclude Include="..\Public\UI_Containers.h" />
+    <ClInclude Include="..\Public\UI_Cursor.h" />
     <ClInclude Include="..\Public\UI_DamageFont.h" />
     <ClInclude Include="..\Public\UI_Elements.h" />
     <ClInclude Include="..\Public\UI_EvolveLeftBG.h" />
@@ -490,6 +491,7 @@
     <ClInclude Include="..\Public\UI_PauseMenu_PlagueWeapon.h" />
     <ClInclude Include="..\Public\UI_Script.h" />
     <ClInclude Include="..\Public\UI_ScriptQueue.h" />
+    <ClInclude Include="..\Public\UI_Scroll.h" />
     <ClInclude Include="..\Public\UI_T_Dissolve.h" />
     <ClInclude Include="..\Public\UI_Utils.h" />
     <ClInclude Include="..\Public\VargBossStateBase.h" />
@@ -943,6 +945,7 @@
     <ClCompile Include="..\Private\TargetCurve.cpp" />
     <ClCompile Include="..\Private\UI_Button.cpp" />
     <ClCompile Include="..\Private\UI_Container.cpp" />
+    <ClCompile Include="..\Private\UI_Cursor.cpp" />
     <ClCompile Include="..\Private\UI_DamageFont.cpp" />
     <ClCompile Include="..\Private\UI_EvolveLeftBG.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu.cpp" />
@@ -975,6 +978,7 @@
     <ClCompile Include="..\Private\UI_PauseMenu_Page_Inventory.cpp" />
     <ClCompile Include="..\Private\UI_Script.cpp" />
     <ClCompile Include="..\Private\UI_ScriptQueue.cpp" />
+    <ClCompile Include="..\Private\UI_Scroll.cpp" />
     <ClCompile Include="..\Private\UI_T_Dissolve.cpp" />
     <ClCompile Include="..\Private\UI_Utils.cpp" />
     <ClCompile Include="..\Private\VargBossStateBase.cpp" />

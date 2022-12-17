@@ -21,6 +21,15 @@ public:
 
 public:
 	virtual void    Set_UIPosition(const _float fX, const _float fY, UI_ALIGN_TYPE eType = UI_ALIGN_TYPE::ALIGN_CENTER) override;
+	virtual void	Set_OriginCenterPosFromThisPos();
+
+	void			Set_ScroolOffsetY(_float fOffsetY);
+	void			Add_ScroolOffsetY(_float fOffsetY);
+	void			ResetPos();
+	
+public:
+	virtual void	OnMouseOver() override;
+	virtual void	OnMouseOut() override;
 
 private:
 	void			Create_ItemSlot();
@@ -32,6 +41,9 @@ private:
 //private아이템 바인딩 해줘야함.
 
 
+private:
+	_float					m_fScrollOffsetY = 0.f;
+	_float2					m_fOriginCenterPos = { 0.f,0.f };
 private:
 	weak_ptr<CCustomUI>		m_pMain;
 	weak_ptr<CCustomUI>		m_pFrame;

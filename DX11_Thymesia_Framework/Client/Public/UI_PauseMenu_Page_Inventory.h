@@ -24,8 +24,8 @@ public:
 private:
     void            Create_InventoryUITap();
     void            Create_ItemInformationTap();
-
-
+    virtual void    OnEnable(void* pArg);
+    virtual void    OnDisable();
 
 
 private:

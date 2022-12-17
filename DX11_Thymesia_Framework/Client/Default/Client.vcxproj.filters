@@ -1522,6 +1522,10 @@
     <ClInclude Include="..\Public\Window_RenderTarget_Dev.h">
       <Filter>97. Tool\01. DeveloperConsole\Windows\02. RenderTarget</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_Cursor.h" />
+    <ClInclude Include="..\Public\UI_Scroll.h">
+      <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\ScrollBox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3080,6 +3084,10 @@
     <ClCompile Include="..\Private\Window_RenderTarget_Dev.cpp">
       <Filter>97. Tool\01. DeveloperConsole\Windows\02. RenderTarget</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\UI_Cursor.cpp" />
+    <ClCompile Include="..\Private\UI_Scroll.cpp">
+      <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\ScrollBox</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -4559,6 +4567,12 @@
     </Filter>
     <Filter Include="97. Tool\01. DeveloperConsole\Windows\02. RenderTarget">
       <UniqueIdentifier>{41d9ddcc-bb10-4076-8bd0-ec90796ddf37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\UI_Container\Cursor">
+      <UniqueIdentifier>{88d8898b-ffcf-4214-8eb6-db6df07dd6fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\UI_Container\PauseMenu\Page\ScrollBox">
+      <UniqueIdentifier>{d96f82a8-12f3-442f-87aa-30b1b71c2a7c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

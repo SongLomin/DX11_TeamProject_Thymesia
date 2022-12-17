@@ -4,7 +4,7 @@
 #include "Client_Components.h"
 #include "Player.h"
 #include "ClientLevel.h"
-
+#include "UI_Cursor.h"
 
 IMPLEMENT_SINGLETON(CGameManager)
 
@@ -757,4 +757,14 @@ void CGameManager::OnLevelExit()
 
 void CGameManager::Free()
 {
+}
+
+void CGameManager::EnableCursor()
+{
+	m_pCursor.lock()->Set_Enable(true);
+}
+
+void CGameManager::DisableCursor()
+{
+	m_pCursor.lock()->Set_Enable(false);
 }

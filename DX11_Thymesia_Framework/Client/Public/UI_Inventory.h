@@ -7,7 +7,7 @@ BEGIN(Client)
 
 class CCustomUI;
 class CUI_ItemSlot;
-
+class CUI_Scroll;
 
 class CUI_Inventory : public CUI_Container
 {
@@ -27,11 +27,19 @@ private:
     void                    Define_Variable();
     void                    Create_InventoryUI();
     void                    Create_ItemSlot();
-    //variable
+    void                    Create_Scroll();
+    
+    
 
 private:
     void                    Update_KeyInput(_float fTimeDelta);
     void                    Update_ItemSlotOffset();
+
+
+//callBack
+private:
+    void                    Call_OnWheelMove(_float fAmount);
+
 
 private:
     int     m_iWidth;
@@ -43,14 +51,16 @@ private:
 
 
     _float                 m_fScrollOffsetY = 0;
-    _float                 m_fScroolSpeed = 30.f;
+    _float                 m_fScroolSpeed = 300.f;
 
 
 	weak_ptr<CCustomUI>		m_pFrame;
 	weak_ptr<CCustomUI>		m_pBG;
 
 private:
-    vector<weak_ptr<CUI_ItemSlot>> m_vecItemSlot;
+    vector<weak_ptr<CUI_ItemSlot>>  m_vecItemSlot;
+    weak_ptr<CUI_Scroll>            m_pScroll;
+
 
 //Free
 private:

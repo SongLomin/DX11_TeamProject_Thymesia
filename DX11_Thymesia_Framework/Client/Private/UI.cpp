@@ -195,7 +195,7 @@ void CUI::Set_Size(const _float& fSizeX, const _float& fSizeY)
 
 }
 
-void CUI::Set_Y(const _float fY)
+void CUI::Set_Y( _float fY)
 {
 	m_tUIDesc.fY = fY;
 }

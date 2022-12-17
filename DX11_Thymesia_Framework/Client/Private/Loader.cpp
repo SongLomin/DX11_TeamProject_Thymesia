@@ -1047,6 +1047,15 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("ItemSlot_Hover"), TEXT("../Bin/Resources/Textures/UI/Inventory/TexUI_SquareFrame_Hover.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 
+	GAMEINSTANCE->Load_Textures(("Cursor"), TEXT("../Bin/Resources/Textures/UI/Cursor.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	//Scroll
+	GAMEINSTANCE->Load_Textures(("Scroll_Head"), TEXT("../Bin/Resources/Textures/UI/TexUI_ScrollBarTrack_Edge.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Scroll_Tail"), TEXT("../Bin/Resources/Textures/UI/TexUI_ScrollBarTrack_EdgeBottom.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("Scroll_Border"), TEXT("../Bin/Resources/Textures/UI/TexUI_ScrollBarTrack_Middle.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Scroll_Track"), TEXT("../Bin/Resources/Textures/UI/TexUI_ScrollBarThumb_Middle.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
 
