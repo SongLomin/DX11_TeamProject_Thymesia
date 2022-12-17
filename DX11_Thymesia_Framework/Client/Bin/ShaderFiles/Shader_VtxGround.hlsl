@@ -1,4 +1,3 @@
-
 #include "Client_Shader_Defines.hpp"
 
 #define PATCH_SIZE 3
@@ -26,19 +25,19 @@ float2 g_vUVNoise;
 struct VS_IN
 {
     float3 vPosition : POSITION;
-    float3 vNormal : NORMAL;
-    float2 vTexUV : TEXCOORD0;
-    float3 vTangent : TANGENT;
+    float3 vNormal   : NORMAL;
+    float2 vTexUV    : TEXCOORD0;
+    float3 vTangent  : TANGENT;
 };
 
 struct VS_OUT
 {
     float4 vPosition : SV_POSITION;
-    float4 vNormal : NORMAL;
-    float2 vTexUV : TEXCOORD0;
+    float4 vNormal   : NORMAL;
+    float2 vTexUV    : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
-    float4 vProjPos : TEXCOORD2;
-    float3 vTangent : TANGENT;
+    float4 vProjPos  : TEXCOORD2;
+    float3 vTangent  : TANGENT;
     float3 vBinormal : BINORMAL;
 };
 
@@ -70,9 +69,9 @@ VS_OUT VS_MAIN_DEFAULT(VS_IN In)
 struct VS_OUT_HULL
 {
     float4 vPosition : SV_POSITION;
-    float4 vNormal : NORMAL;
-    float2 vTexUV : TEXCOORD0;    
-    float3 vTangent : TANGENT;
+    float4 vNormal   : NORMAL;
+    float2 vTexUV    : TEXCOORD0;    
+    float3 vTangent  : TANGENT;
 };
 
 /* ---------------------------------------------------------- */
@@ -96,15 +95,15 @@ VS_OUT_HULL VS_MAIN_HULL(VS_IN In)
 struct PatchTess
 {
     float edgeTess[3] : SV_TessFactor;
-    float insideTess : SV_InsideTessFactor;
+    float insideTess  : SV_InsideTessFactor;
 };
 
 struct HS_OUT
 {
-    float4 vPosition : SV_POSITION;
-    float4 vNormal : NORMAL;
-    float3 vTangent : TANGENT;
-    float2 vTexUV : TEXCOORD0;
+	float4 vPosition : SV_POSITION;
+	float4 vNormal   : NORMAL;
+	float3 vTangent  : TANGENT;
+	float2 vTexUV    : TEXCOORD0;
 };
 
 // Constant HS
@@ -145,11 +144,11 @@ HS_OUT HS_Main(InputPatch<VS_OUT_HULL, PATCH_SIZE> input, int vertexIdx : SV_Out
 struct DS_OUT
 {
     float4 vPosition : SV_POSITION;
-    float4 vNormal : NORMAL;
-    float2 vTexUV : TEXCOORD0;
+    float4 vNormal   : NORMAL;
+    float2 vTexUV    : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
-    float4 vProjPos : TEXCOORD2;
-    float3 vTangent : TANGENT;
+    float4 vProjPos  : TEXCOORD2;
+    float3 vTangent  : TANGENT;
     float3 vBinormal : BINORMAL;
 };
 
@@ -169,11 +168,11 @@ DS_OUT DS_Main(const OutputPatch<HS_OUT, PATCH_SIZE> input, float3 location : SV
     matrix matWVP = mul(matWV, g_ProjMatrix);
     
     output.vPosition = mul(float4(localPos + vDisplacement.xyz, 1.f), matWVP);
-    output.vTexUV = uv;
-    output.vNormal = normalize(mul(vector(normal, 0.f), g_WorldMatrix));
+    output.vTexUV    = uv;
+    output.vNormal   = normalize(mul(vector(normal, 0.f), g_WorldMatrix));
     output.vWorldPos = mul(vector(localPos, 1.f), g_WorldMatrix);
-    output.vProjPos = output.vPosition;
-    output.vTangent = normalize(mul(vector(tangent, 0.f), g_WorldMatrix)).xyz;
+    output.vProjPos  = output.vPosition;
+    output.vTangent  = normalize(mul(vector(tangent, 0.f), g_WorldMatrix)).xyz;
     output.vBinormal = normalize(cross(float3(output.vNormal.xyz), output.vTangent));
     return output;
 }
@@ -182,21 +181,21 @@ DS_OUT DS_Main(const OutputPatch<HS_OUT, PATCH_SIZE> input, float3 location : SV
 struct PS_IN
 {
     float4 vPosition : SV_POSITION;
-    float4 vNormal : NORMAL;
-    float2 vTexUV : TEXCOORD0;
+    float4 vNormal   : NORMAL;
+    float2 vTexUV    : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
-    float4 vProjPos : TEXCOORD2;
-    float3 vTangent : TANGENT;
+    float4 vProjPos  : TEXCOORD2;
+    float3 vTangent  : TANGENT;
     float3 vBinormal : BINORMAL;
 };
 
 struct PS_OUT
 {
-    vector vDiffuse : SV_TARGET0;
-    vector vNormal : SV_TARGET1;
-    vector vDepth : SV_TARGET2;
+    vector vDiffuse    : SV_TARGET0;
+    vector vNormal     : SV_TARGET1;
+    vector vDepth      : SV_TARGET2;
     vector vShaderFlag : SV_Target3;
-    vector vORM : SV_Target4;
+    vector vORM        : SV_Target4;
 };
 
 /* ---------------------------------------------------------- */
@@ -371,11 +370,11 @@ technique11 DefaultTechnique
         SetDepthStencilState(DSS_Default, 0);
         SetRasterizerState(RS_Default);
 
-        VertexShader = compile vs_5_0 VS_MAIN_DEFAULT();
-        HullShader = NULL;
-        DomainShader = NULL;
+        VertexShader   = compile vs_5_0 VS_MAIN_DEFAULT();
+        HullShader     = NULL;
+        DomainShader   = NULL;
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_DEFAULT();
+        PixelShader    = compile ps_5_0 PS_MAIN_DEFAULT();
     }
 
     pass PASS_1_Ground_Norm
@@ -384,11 +383,11 @@ technique11 DefaultTechnique
         SetDepthStencilState(DSS_Default, 0);
         SetRasterizerState(RS_Default);
 
-        VertexShader = compile vs_5_0 VS_MAIN_DEFAULT();
-        HullShader = NULL;
-        DomainShader = NULL;
+        VertexShader   = compile vs_5_0 VS_MAIN_DEFAULT();
+        HullShader     = NULL;
+        DomainShader   = NULL;
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_NORM();
+        PixelShader    = compile ps_5_0 PS_MAIN_NORM();
     }
 
     pass PASS_2_Ground_WireFrame
@@ -397,11 +396,11 @@ technique11 DefaultTechnique
         SetDepthStencilState(DSS_Default, 0);
         SetRasterizerState(RS_Wireframe);
 
-        VertexShader = compile vs_5_0 VS_MAIN_DEFAULT();
-        HullShader = NULL;
-        DomainShader = NULL;
+        VertexShader   = compile vs_5_0 VS_MAIN_DEFAULT();
+        HullShader     = NULL;
+        DomainShader   = NULL;
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_WIREFRAM();
+        PixelShader    = compile ps_5_0 PS_MAIN_WIREFRAM();
     }
 
     pass PASS_3_Ground_OnlyFilterTexture
@@ -410,11 +409,11 @@ technique11 DefaultTechnique
         SetDepthStencilState(DSS_Default, 0);
         SetRasterizerState(RS_Default);
 
-        VertexShader = compile vs_5_0 VS_MAIN_DEFAULT();
-        HullShader = NULL;
-        DomainShader = NULL;
+        VertexShader   = compile vs_5_0 VS_MAIN_DEFAULT();
+        HullShader     = NULL;
+        DomainShader   = NULL;
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_FILLTER();
+        PixelShader    = compile ps_5_0 PS_MAIN_FILLTER();
     }
     
     pass Water // 4
@@ -423,11 +422,11 @@ technique11 DefaultTechnique
         SetDepthStencilState(DSS_Default, 0);
         SetRasterizerState(RS_Default);
 
-        VertexShader = compile vs_5_0 VS_MAIN_HULL();
-        HullShader = compile hs_5_0 HS_Main();
-        DomainShader = compile ds_5_0 DS_Main();
+        VertexShader   = compile vs_5_0 VS_MAIN_HULL();
+        HullShader     = compile hs_5_0 HS_Main();
+        DomainShader   = compile ds_5_0 DS_Main();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_WATER();
+        PixelShader    = compile ps_5_0 PS_MAIN_WATER();
 
     }
 }
