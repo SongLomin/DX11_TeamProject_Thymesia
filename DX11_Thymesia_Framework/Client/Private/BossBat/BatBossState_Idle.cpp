@@ -166,7 +166,7 @@ _bool CBatBossState_Idle::Check_AndChangeNextState()
 				break;
 			}
 			return true;
-		}
+		}		
 		else
 		{
 			if (m_bTurnCheck)
@@ -174,108 +174,8 @@ _bool CBatBossState_Idle::Check_AndChangeNextState()
 				TurnMechanism();
 			}
 
-			switch (m_iChargeCount)
-			{
-			case 0:
-				switch (m_iAttackCount)
-				{
-				case 0:
-					//여기는 공격한번하면 카운트 1씩증가 
-				{
-					int iRand = rand() % 3;
-
-					switch (iRand)
-					{
-					case 0:
-						Check_CrossAttackState();
-						break;
-					case 1:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_SmarhL>(0.05f);
-						break;
-					case 2:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Bite_2>(0.05f);
-						break;
-					}
-				}
-				break;
-				case 1:
-					// 공격한번더하면 카운트 또증가
-				{
-					int iRand = rand() % 5;
-
-					switch (iRand)
-					{
-					case 0:
-						Check_CrossAttackState();
-						break;
-					case 1:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_SmarhL>(0.05f);
-						break;
-					case 2:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Bite_2>(0.05f);
-						break;
-					case 3:
-						Check_CrossJumpState();
-						break;
-					}
-				}
-				break;
-				case 2:
-					// 여기까지마지막임
-				{
-					int iRand = rand() % 4;
-
-					switch (iRand)
-					{
-					case 0:
-						Check_CrossAttackState();
-						break;
-					case 1:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_SmarhL>(0.05f);
-						break;
-					case 2:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Bite_2>(0.05f);
-						break;
-					case 3:
-						Check_CrossJumpState();
-						break;
-					}
-				}
-				break;
-				case 3:
-				{
-					int iRand = rand() % 5;
-
-					switch (iRand)
-					{
-					case 0:
-						Check_CrossAttackState();
-						break;
-					case 1:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_SmarhL>(0.05f);
-						break;
-					case 2:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Bite_2>(0.05f);
-						break;
-					case 3:
-						Check_CrossJumpState();
-						break;
-					case 4:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Sp>(0.05f);
-						break;
-					}
-				}
-					break;
-				case 4:
-				{
-					Get_OwnerCharacter().lock()->Change_State<CBatBossState_Sp>(0.05f);
-				}
-					break;
-				}
-				break;
-			}
+			Get_OwnerCharacter().lock()->Change_State<CBatBossState_WalkF>(0.05f);
 			return true;
-
 		}
 	}
 	else
@@ -417,198 +317,18 @@ _bool CBatBossState_Idle::Check_AndChangeNextState()
 
 			return true;
 
-		}
-		else
-		{
-			if (m_bTurnCheck)
-			{
-				TurnMechanism();
-			}
+		     }
+		      else
+		      {
+			       if (m_bTurnCheck)
+			       {
+				       TurnMechanism();
+			       }
 
-			switch (m_iChargeCount)
-			{
-			case 0:
-				switch (m_iAttackCount)
-				{
-				case 0:
-					//여기는 공격한번하면 카운트 1씩증가 
-				{
-					int iRand = rand() % 3;
-
-					switch (iRand)
-					{
-					case 0:
-						Check_CrossAttackState();
-						break;
-					case 1:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_SmarhL>(0.05f);
-						break;
-					case 2:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Bite_2>(0.05f);
-						break;
-					}
-				}
-				break;
-				case 1:
-					// 공격한번더하면 카운트 또증가
-				{
-					int iRand = rand() % 4;
-
-					switch (iRand)
-					{
-					case 0:
-						Check_CrossAttackState();
-						break;
-					case 1:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_SmarhL>(0.05f);
-						break;
-					case 2:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Bite_2>(0.05f);
-						break;
-					case 3:
-						Check_CrossJumpState();
-						break;
-	
-					}
-				}
-				break;
-				case 2:
-					// 여기까지마지막임
-				{
-					int iRand = rand() % 5;
-
-					switch (iRand)
-					{
-					case 0:
-						Check_CrossAttackState();
-						break;
-					case 1:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_SmarhL>(0.05f);
-						break;
-					case 2:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Bite_2>(0.05f);
-						break;
-					case 3:
-						Check_CrossJumpState();
-						break;
-					case 4:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Charge>(0.05f);
-						break;
-					}
-				}
-				break;
-				case 3:
-				{
-					int iRand = rand() % 5;
-
-					switch (iRand)
-					{
-					case 0:
-						Check_CrossAttackState();
-						break;
-					case 1:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_SmarhL>(0.05f);
-						break;
-					case 2:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Bite_2>(0.05f);
-						break;
-					case 3:
-						Check_CrossJumpState();
-						break;
-					case 4:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Charge>(0.05f);
-						break;
-					}
-				}
-				break;
-				case 4:
-				{
-					Get_OwnerCharacter().lock()->Change_State<CBatBossState_Charge>(0.05f);
-				}
-				break;
-				}
-				break;
-			case 1: //차지빔 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-				switch (m_iAttackCount)
-				{
-				case 0:
-					//여기는 공격한번하면 카운트 1씩증가 
-				{
-					   Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_Chest>(0.05f);
-					   break;
-				}
-				break;
-				case 1:
-					// 공격한번더하면 카운트 또증가
-				{
-					int iRand = rand() % 3;
-
-					switch (iRand)
-					{
-					case 0:
-						Check_CrossAttackState();
-						break;
-					case 1:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Bite_2>(0.05f);
-						break;
-					case 2:
-						Check_CrossJumpState();
-						break;
-					}
-				}
-				break;
-				case 2:
-					// 여기까지마지막임
-				{
-					int iRand = rand() % 3;
-
-					switch (iRand)
-					{
-					case 0:
-						Check_CrossAttackState();
-						break;
-					case 1:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Bite_2>(0.05f);
-						break;
-					case 2:
-						Check_CrossJumpState();
-						break;
-					}
-				}
-				break;
-				case 3:
-				{
-					int iRand = rand() % 4;
-
-					switch (iRand)
-					{
-					case 0:
-						Check_CrossAttackState();
-						break;
-					case 1:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Bite_2>(0.05f);
-						break;
-					case 2:
-						Check_CrossJumpState();
-						break;
-					case 3:
-						Get_OwnerCharacter().lock()->Change_State<CBatBossState_Charge>(0.05f);
-						break;
-					}
-				}
-					break;
-				case 4:
-				{
-					Get_OwnerCharacter().lock()->Change_State<CBatBossState_Charge>(0.05f);
-				}
-					break;
-				}
-				break;
-			}
-
-			return true;
-
-		}
+				   Get_OwnerCharacter().lock()->Change_State<CBatBossState_WalkF>(0.05f);
+				   return true;
+              }
+		
 	}
 
 

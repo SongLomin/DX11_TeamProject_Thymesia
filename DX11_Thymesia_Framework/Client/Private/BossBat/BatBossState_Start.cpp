@@ -43,11 +43,9 @@ void CBatBossState_Start::Tick(_float fTimeDelta)
 	_matrix LocalMat = XMMatrixIdentity();
 	LocalMat *= XMMatrixRotationX(XMConvertToRadians(-90.f));
 	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
-
 	
 	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat, CINEMATIC_TYPE::CINEMATIC);
 	
-
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -84,7 +82,7 @@ void CBatBossState_Start::OnStateEnd()
 	__super::OnStateEnd();
 	//m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X |  (_byte)ROOTNODE_FLAG::Z);
 
-	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+	
 	
 }
 
@@ -113,6 +111,11 @@ _bool CBatBossState_Start::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.66f)
+	{
+		m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+	}
+	
 
 
 	return false;

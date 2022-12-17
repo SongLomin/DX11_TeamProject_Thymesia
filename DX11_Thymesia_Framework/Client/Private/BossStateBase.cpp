@@ -228,21 +228,21 @@ _bool CBossStateBase::JumpLookOffsetLookAt()
 	if (ComputeAngleWithPlayer() >= 0.f)  //양수면 등지고있다 
 	{
 		
-		_matrix vResultOtherWorldMatrix;
-		_matrix vOtherWorldMatrix = pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix();
-		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, -5.f, 0.f));
+	      _vector vOtherPos = 	pCurrentPlayer.lock()->Get_WorldPosition();
+		  _vector vOtherLook = pCurrentPlayer.lock()->Get_Transform()->Get_State(CTransform::STATE_LOOK);
+		  
+		  m_pTransformCom.lock()->LookAt2D(vOtherPos + vOtherLook * -8.f);
 
-		m_pTransformCom.lock()->LookAt2D(vResultOtherWorldMatrix.r[3]);
+		
 
 
 	}
 	else //음수면 바라보고있다
 	{
-		_matrix vResultOtherWorldMatrix;
-		_matrix vOtherWorldMatrix = pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix();
-		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, 5.f, 0.f));
+		_vector vOtherPos = pCurrentPlayer.lock()->Get_WorldPosition();
+		_vector vOtherLook = pCurrentPlayer.lock()->Get_Transform()->Get_State(CTransform::STATE_LOOK);
 
-		m_pTransformCom.lock()->LookAt2D(vResultOtherWorldMatrix.r[3]);
+		m_pTransformCom.lock()->LookAt2D(vOtherPos + vOtherLook * 8.f);
 
 	}
 

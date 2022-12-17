@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossBat/BatStates.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CBatBossState_JumpSmash_ForwardL);
 CLONE_C(CBatBossState_JumpSmash_ForwardL, CComponent)
@@ -47,16 +48,7 @@ void CBatBossState_JumpSmash_ForwardL::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-	if (m_bAttackLookAtLimit)
-	{
-		TurnAttack(fTimeDelta);
-		
-	}
-	else
-	{
-		JumpLookOffsetLookAt();
-	}
-	
+
 
 	Check_AndChangeNextState();
 }
@@ -65,9 +57,13 @@ void CBatBossState_JumpSmash_ForwardL::LateTick(_float fTimeDelta)
 
 void CBatBossState_JumpSmash_ForwardL::OnStateStart(const _float& In_fAnimationBlendTime)
 {
-	__super::OnStateStart(In_fAnimationBlendTime);
+  	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_bAttackLookAtLimit = true;
+
+	m_pPhysXControllerCom.lock()->Enable_Gravity(false);
+
+	JumpLookOffsetLookAt();
 	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -86,7 +82,7 @@ void CBatBossState_JumpSmash_ForwardL::OnStateEnd()
 	__super::OnStateEnd();
 
 	
-
+	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
 }
 
 
@@ -115,10 +111,7 @@ _bool CBatBossState_JumpSmash_ForwardL::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.3f)
-	{
-		m_bAttackLookAtLimit = false;
-	}
+	
 
 	return false;
 }

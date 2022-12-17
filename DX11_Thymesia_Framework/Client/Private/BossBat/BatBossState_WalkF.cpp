@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossBat/BatStates.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CBatBossState_WalkF);
 CLONE_C(CBatBossState_WalkF, CComponent)
@@ -110,8 +111,6 @@ _bool CBatBossState_WalkF::Check_AndChangeNextState()
 		return false;
 
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
-
-
 
 	return false;
 }

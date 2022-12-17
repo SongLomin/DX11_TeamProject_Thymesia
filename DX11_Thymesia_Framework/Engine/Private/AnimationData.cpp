@@ -209,6 +209,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TakeExecution_Start01", 2.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TurnL90", 2.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TurnR90", 2.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_WalkF", 3.f);
 
 
  
