@@ -493,8 +493,6 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Bake_ViewShadow()))
 		DEBUG_ASSERT;
 
-	///////////IBL 계산/ 한 번만 돌아야 함
-
 	if (FAILED(Render_Lights()))
 		DEBUG_ASSERT;
 
@@ -902,6 +900,10 @@ HRESULT CRender_Manager::Render_Lights()
 	m_pShader->Set_RawValue("g_vCamPosition", &pPipeLine->Get_CamPosition(), sizeof(_float4));
 
 	GET_SINGLE(CLight_Manager)->Render_Lights(m_pShader, m_pVIBuffer, pDeviceContext);
+
+	/*m_pShader->Begin(12, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
+	*/////IBL돌기
 
 	if (FAILED(pRenderTargetManager->End_MRT()))
 		DEBUG_ASSERT;
