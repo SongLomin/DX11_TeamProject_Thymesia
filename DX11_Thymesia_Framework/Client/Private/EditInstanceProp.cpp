@@ -59,13 +59,18 @@ HRESULT CEditInstanceProp::Initialize(void* pArg)
 	ZeroMemory(&m_PickingDesc, sizeof(INSTANCE_MESH_DESC));
 	m_PickingDesc.vScale = _float3(1.f, 1.f, 1.f);
 
-	Use_Thread(THREAD_TYPE::PRE_LATETICK);
+	
 
 	m_pTextureGroupCom.emplace("g_DissolveTexture"    , Add_Component<CTexture>());
 	m_pTextureGroupCom.emplace("g_DissolveDiffTexture", Add_Component<CTexture>());
 
 	m_pTextureGroupCom["g_DissolveTexture"].lock()->Use_Texture("T_Fire_Tile_BW_03");
 	m_pTextureGroupCom["g_DissolveDiffTexture"].lock()->Use_Texture("Diff_Fire_Tile0");
+
+#ifdef _USE_THREAD_
+	Use_Thread(THREAD_TYPE::PRE_LATETICK);
+#endif // _USE_THREAD_
+
 
 	return S_OK;
 }
