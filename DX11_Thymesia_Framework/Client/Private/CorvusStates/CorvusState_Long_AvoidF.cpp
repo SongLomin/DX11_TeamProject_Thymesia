@@ -67,7 +67,7 @@ void CCorvusState_Long_AvoidF::OnStateStart(const _float& In_fAnimationBlendTime
 
 	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_Long_AvoidF>().lock())
 	{
-		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 5);
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 28);
 	}
 	else
 	{

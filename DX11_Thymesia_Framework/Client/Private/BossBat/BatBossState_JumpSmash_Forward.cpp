@@ -39,11 +39,6 @@ void CBatBossState_JumpSmash_ForwardL::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	if (m_bAttackLookAtLimit)
-	{
-		TurnAttack(true);
-	}
-
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -51,6 +46,17 @@ void CBatBossState_JumpSmash_ForwardL::Tick(_float fTimeDelta)
 void CBatBossState_JumpSmash_ForwardL::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	if (m_bAttackLookAtLimit)
+	{
+		TurnAttack(fTimeDelta);
+		
+	}
+	else
+	{
+		JumpLookOffsetLookAt();
+	}
+	
 
 	Check_AndChangeNextState();
 }
@@ -109,14 +115,10 @@ _bool CBatBossState_JumpSmash_ForwardL::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	
-
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.5f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.3f)
 	{
 		m_bAttackLookAtLimit = false;
 	}
-
-
 
 	return false;
 }

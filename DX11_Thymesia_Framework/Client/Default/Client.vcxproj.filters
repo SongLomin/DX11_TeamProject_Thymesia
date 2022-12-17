@@ -516,7 +516,7 @@
       <Filter>02. GameObject\01. UI\UI_Container\MonsterHPBar</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtXXL.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtL.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\16.State_HurtL</Filter>
@@ -1163,7 +1163,7 @@
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\24.Getup</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtXL.h">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL\00.State_HurtXL</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt\00.State_HurtXL</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\EasingComponent_Float.h" />
     <ClInclude Include="..\Public\HUD_Player_Memory.h" />
@@ -1263,9 +1263,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\BossBat\BatBossState_HurtXL_L.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\08.Hurt\01.HurtXL_L</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\BossBat\BatBossState_JumpSmash_Chesh.h">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\09.JumpSmash\00.Crash</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BossBat\BatBossState_JumpSmash_ForwardL.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\09.JumpSmash\01.ForwardL</Filter>
@@ -1521,6 +1518,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\Window_RenderTarget_Dev.h">
       <Filter>97. Tool\01. DeveloperConsole\Windows\02. RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_JumpSmash_Chest.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\09.JumpSmash\00.Chest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtBlown.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt\01.State_HurtBlown</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1999,7 +2002,7 @@
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState\19.Stop</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXXL.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtL.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\16.State_HurtL</Filter>
@@ -2733,7 +2736,7 @@
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\24.Getup</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXL.cpp">
-      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL\00.State_HurtXL</Filter>
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt\00.State_HurtXL</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\EasingComponent_Float.cpp" />
     <ClCompile Include="..\Private\HUD_Player_Memory.cpp" />
@@ -2836,12 +2839,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\BossBat\BatBossState_HurtXL_L.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\08.Hurt\01.HurtXL_L</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BossBat\BatBossState_JumpSmash_Chest.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\09.JumpSmash\00.Crash</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BossBat\BatBossState_JumpSmash_Forward.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\09.JumpSmash\01.ForwardL</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BossBat\BatBossState_JumpSmash_SmarhL.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\09.JumpSmash\02.SmarhL</Filter>
@@ -3079,6 +3076,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\Window_RenderTarget_Dev.cpp">
       <Filter>97. Tool\01. DeveloperConsole\Windows\02. RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_JumpSmash_Forward.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\09.JumpSmash\01.ForwardL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_JumpSmash_Chest.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\09.JumpSmash\00.Chest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtBlown.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt\01.State_HurtBlown</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3395,9 +3401,6 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\14.State_ClawAttack">
       <UniqueIdentifier>{1db70a15-64a5-4a8c-8ff3-f74f19895d58}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL">
-      <UniqueIdentifier>{5b3bf04e-ef79-4bd9-90f9-419338efde3b}</UniqueIdentifier>
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\16.State_HurtL">
       <UniqueIdentifier>{6eb29e66-5cbc-447f-ad6a-c89d2e0a3482}</UniqueIdentifier>
@@ -4278,9 +4281,6 @@
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\24.Getup">
       <UniqueIdentifier>{c9ce0292-2ece-4ee0-8f1d-d765c4728d6b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_HurtXXL\00.State_HurtXL">
-      <UniqueIdentifier>{8a8b1c43-b1ec-443b-aca0-66f05e014609}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\05. Skill">
       <UniqueIdentifier>{4afe9d2e-fd7e-4b08-801b-6647cc21d4b4}</UniqueIdentifier>
     </Filter>
@@ -4559,6 +4559,18 @@
     </Filter>
     <Filter Include="97. Tool\01. DeveloperConsole\Windows\02. RenderTarget">
       <UniqueIdentifier>{41d9ddcc-bb10-4076-8bd0-ec90796ddf37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\09.JumpSmash\00.Chest">
+      <UniqueIdentifier>{c8d8255a-23d9-4c40-83b7-86cd9661bb74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt">
+      <UniqueIdentifier>{5b3bf04e-ef79-4bd9-90f9-419338efde3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt\00.State_HurtXL">
+      <UniqueIdentifier>{8a8b1c43-b1ec-443b-aca0-66f05e014609}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt\01.State_HurtBlown">
+      <UniqueIdentifier>{52215a45-463d-4e3b-b9f3-08ec98b16b73}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

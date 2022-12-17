@@ -23,7 +23,6 @@ protected:
 
 protected:
     virtual void OnDisable() override;
-
     virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
     virtual void OnStateEnd() override;
 
@@ -35,7 +34,7 @@ private:
 
 protected:
     void Free();
-
+    virtual void OnDestroy() override;
     // CNorMonStateBase을(를) 통해 상속됨
     virtual _bool Check_AndChangeNextState() override;
 

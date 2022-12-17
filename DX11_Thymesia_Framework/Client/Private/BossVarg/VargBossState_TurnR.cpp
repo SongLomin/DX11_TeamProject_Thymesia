@@ -38,7 +38,9 @@ void CVargBossState_TurnR::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	_float fTurnValue = 1.57f / 0.85f;
 
+	m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * 1.5f);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -47,10 +49,6 @@ void CVargBossState_TurnR::Tick(_float fTimeDelta)
 void CVargBossState_TurnR::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
-
-	_float fTurnValue = 1.57f / 0.85f;
-
-	m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * 1.5f);
 
 	Check_AndChangeNextState();
 }
@@ -68,7 +66,7 @@ void CVargBossState_TurnR::OnStateStart(const _float& In_fAnimationBlendTime)
 	cout << "VargState: TurnR -> OnStateStart" << endl;
 #endif
 #endif
-	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
+	
 
 }
 
@@ -76,7 +74,7 @@ void CVargBossState_TurnR::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+	
 }
 
 

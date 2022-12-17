@@ -199,7 +199,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_JumpSmashForwardL", 4.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_JumpSmashL", 4.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_SonicBoom", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_SP01", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_SP01", 2.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Storm_1", 4.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_StunEnd", 4.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_StunLoop", 4.f);
@@ -207,8 +207,9 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TakeExecution_End", 2.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TakeExecution_Loop", 2.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TakeExecution_Start01", 2.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TurnL90", 1.5f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TurnR90", 1.5f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TurnL90", 2.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TurnR90", 2.f);
+
 
  
 

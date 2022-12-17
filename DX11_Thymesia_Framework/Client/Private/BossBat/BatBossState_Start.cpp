@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossBat/BatStates.h"
+#include "PhysXCharacterController.h"
 
 GAMECLASS_C(CBatBossState_Start);
 CLONE_C(CBatBossState_Start, CComponent)
@@ -60,11 +61,14 @@ void CBatBossState_Start::LateTick(_float fTimeDelta)
 
 
 
+
 void CBatBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	
+	//m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Y| (_byte)ROOTNODE_FLAG::Z);
+
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
@@ -75,21 +79,19 @@ void CBatBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 
 }	
 
-
 void CBatBossState_Start::OnStateEnd()
 {
 	__super::OnStateEnd();
+	//m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X |  (_byte)ROOTNODE_FLAG::Z);
 
-
+	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+	
 }
-
-
 
 void CBatBossState_Start::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
-
 
 	GET_SINGLE(CGameManager)->End_Cinematic();
 
@@ -108,9 +110,9 @@ void CBatBossState_Start::Free()
 
 _bool CBatBossState_Start::Check_AndChangeNextState()
 {
-
 	if (!Check_Requirement())
 		return false;
+
 
 
 	return false;

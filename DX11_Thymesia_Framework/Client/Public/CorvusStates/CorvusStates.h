@@ -82,6 +82,7 @@
 #include "CorvusStates/CorvusState_ClawPlunderAttack.h"
 #include "CorvusStates/CorvusState_LongHealing.h"
 #include "CorvusStates/CorvusState_ShortHealing.h"
+#include "CorvusStates/CorvusState_HurtBlown.h"
 
 
 

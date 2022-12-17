@@ -41,7 +41,7 @@ void CBatBossState_Car::Tick(_float fTimeDelta)
 
 	if (m_bAttackLookAtLimit)
 	{
-		Rotation_TargetToLookDir();
+		TurnAttack(fTimeDelta);
 	}
 	
 	
@@ -110,7 +110,7 @@ _bool CBatBossState_Car::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.1f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.3f)
 	{
 		m_bAttackLookAtLimit = false;
 	}

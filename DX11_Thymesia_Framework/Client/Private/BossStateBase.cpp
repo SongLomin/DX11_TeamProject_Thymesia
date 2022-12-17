@@ -194,13 +194,13 @@ _bool CBossStateBase::Rotation_InputToLookDir()
 		vInputDir = XMVector3Normalize(vInputDir);
 
 		_vector vMyPosition = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-		m_pTransformCom.lock()->LookAt(vMyPosition + vInputDir);
+		m_pTransformCom.lock()->LookAt2D(vMyPosition + vInputDir);
 
 		return true;
 	}
 
 	return false;
-}
+}	
 
 _bool CBossStateBase::Rotation_TargetToLookDir()
 {
@@ -216,6 +216,40 @@ _bool CBossStateBase::Rotation_TargetToLookDir()
 	return true;
 }
 
+_bool CBossStateBase::JumpLookOffsetLookAt()
+{
+	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+
+	if (!pCurrentPlayer.lock().get())
+		return false;
+
+	_vector CharacterPosition = pCurrentPlayer.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
+
+	if (ComputeAngleWithPlayer() >= 0.f)  //양수면 등지고있다 
+	{
+		
+		_matrix vResultOtherWorldMatrix;
+		_matrix vOtherWorldMatrix = pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix();
+		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, -5.f, 0.f));
+
+		m_pTransformCom.lock()->LookAt2D(vResultOtherWorldMatrix.r[3]);
+
+
+	}
+	else //음수면 바라보고있다
+	{
+		_matrix vResultOtherWorldMatrix;
+		_matrix vOtherWorldMatrix = pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix();
+		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, 5.f, 0.f));
+
+		m_pTransformCom.lock()->LookAt2D(vResultOtherWorldMatrix.r[3]);
+
+	}
+
+	return true;
+}
+
+
 _float CBossStateBase::Get_DistanceWithPlayer() const
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
@@ -225,6 +259,7 @@ _float CBossStateBase::Get_DistanceWithPlayer() const
 
 	return fDistance;
 }
+
 
 
 
@@ -329,7 +364,7 @@ void CBossStateBase::TurnMechanism()
 		_float fDistance = Get_DistanceWithPlayer();
 
 
-		if (fDistance > 3.f)
+		if (fDistance > 6.f)
 		{
 			if (ComputeAngleWithPlayer() <= 0.f) // 90일때 0 90보다크면 -값이다 90보다 작으면 +값이다
 			{
@@ -367,34 +402,39 @@ void CBossStateBase::TurnMechanism()
 			//오른쪽 왼쪾 구분해주고 	
 			if (ComputeAngleWithPlayer() <= 0.f)
 			{
-				if (ComputeDirectionToPlayer() == 1)
+				switch (ComputeDirectionToPlayer())
 				{
-					//오른쪽
+				case 1:
 					Get_OwnerCharacter().lock()->Change_State<CBatBossState_Atk_R01_2a>(0.05f);
-				}
-				else
-				{
-
+					break;
+				case -1:
 					Get_OwnerCharacter().lock()->Change_State<CBatBossState_Atk_L01_2a>(0.05f);
+					break;
+				default:
+					assert(0);
+					return;
+				}
+			}
+			else
+			{
+				switch (ComputeDirectionToPlayer())
+				{
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CBatBossState_TurnR>(0.05f);
+					break;
+				case -1:
+					Get_OwnerCharacter().lock()->Change_State<CBatBossState_TurnL>(0.05f);
+					break;
+				default:
+					assert(0);
+					return;
 				}
 			}
 
 		}
-
-
-
 	}
 		break;
-
 	}
-
-	//플레이어랑 몬스터거리구해서 5보다크면 그대로실행하고
-	//5보다 작으면 턴공격으로 
-
-	
-
-
-
 
 }
 

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ #include "stdafx.h"
 #include "BossBat/BatBossState_JumpSmash_SmarhL.h"
 #include "Model.h"
 #include "GameInstance.h"
@@ -49,7 +49,15 @@ void CBatBossState_JumpSmash_SmarhL::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
+	if (m_bAttackLookAtLimit)
+	{
+		TurnAttack(fTimeDelta);
 
+	}
+	else
+	{
+		JumpLookOffsetLookAt();
+	}
 
 	Check_AndChangeNextState();
 }
@@ -59,6 +67,8 @@ void CBatBossState_JumpSmash_SmarhL::LateTick(_float fTimeDelta)
 void CBatBossState_JumpSmash_SmarhL::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	m_bAttackLookAtLimit = true;
 
 	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
@@ -109,6 +119,10 @@ _bool CBatBossState_JumpSmash_SmarhL::Check_AndChangeNextState()
 		return false;
 
 
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.3f)
+	{
+		m_bAttackLookAtLimit = false;
+	}
 
 	return false;
 }
