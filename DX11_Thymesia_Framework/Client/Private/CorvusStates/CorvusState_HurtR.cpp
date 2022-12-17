@@ -90,10 +90,16 @@ void CCorvusState_HurtR::Call_AnimationEnd()
 
 }
 
+void CCorvusState_HurtR::OnDestroy()
+{
+	
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_HurtR::Call_AnimationEnd, this);
+}
+
+
 void CCorvusState_HurtR::Free()
 {
-	if (m_pModelCom.lock())
-		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_HurtR::Call_AnimationEnd, this);
+	
 }
 
 _bool CCorvusState_HurtR::Check_AndChangeNextState()

@@ -21,6 +21,10 @@ HRESULT CSection_Eventer::Initialize(void* pArg)
 
     m_pColliderCom = Add_Component<CCollider>();
 
+#ifdef _DEBUG
+    m_pRendererCom = Add_Component<CRenderer>();
+#endif
+
     return S_OK;
 }
 
@@ -37,10 +41,19 @@ void CSection_Eventer::Tick(_float fTimeDelta)
 void CSection_Eventer::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
+
+#ifdef _DEBUG
+    m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONLIGHT, Weak_StaticCast<CGameObject>(m_this));
+#endif
 }
 
 HRESULT CSection_Eventer::Render(ID3D11DeviceContext* pDeviceContext)
 {
+
+#ifdef _DEBUG
+    m_pColliderCom.lock()->Render_IgnoreDebugCheck();
+#endif
+
     return __super::Render(pDeviceContext);
 }
 
@@ -95,6 +108,7 @@ void CSection_Eventer::OnEventMessage(_uint iArg)
             {
                 (m_Flag & EVENT_FLAG::ACT_SECTION),
                 (m_Flag & EVENT_FLAG::ACT_MONSTER_TRIGGER),
+                (m_Flag & EVENT_FLAG::ACT_LIGHT),
 
                 (m_Flag & EVENT_FLAG::EVENT_ENTER),
                 (m_Flag & EVENT_FLAG::EVENT_STAY),
@@ -107,13 +121,16 @@ void CSection_Eventer::OnEventMessage(_uint iArg)
             if (ImGui::Checkbox("ACT_MONSTER_TRIGGER", &bCheckState[1]))
                 m_Flag ^= EVENT_FLAG::ACT_MONSTER_TRIGGER;
 
-            if (ImGui::Checkbox("EVENT_ENTER", &bCheckState[2]))
+            if (ImGui::Checkbox("ACT_LIGHT", &bCheckState[2]))
+                m_Flag ^= EVENT_FLAG::ACT_LIGHT;
+
+            if (ImGui::Checkbox("EVENT_ENTER", &bCheckState[3]))
                 m_Flag ^= EVENT_FLAG::EVENT_ENTER;
 
-            if (ImGui::Checkbox("EVENT_STAY", &bCheckState[3]))
+            if (ImGui::Checkbox("EVENT_STAY", &bCheckState[4]))
                 m_Flag ^= EVENT_FLAG::EVENT_STAY;
 
-            if (ImGui::Checkbox("EVENT_Exit", &bCheckState[4]))
+            if (ImGui::Checkbox("EVENT_Exit", &bCheckState[5]))
                 m_Flag ^= EVENT_FLAG::EVENT_EXIT;
         }
         break;
@@ -153,6 +170,12 @@ void CSection_Eventer::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_pt
         GET_SINGLE(CGameManager)->Activate_Section(m_iSectionIndex, true);
         m_pColliderCom.lock()->Set_Enable(false);
     }
+
+    if (m_Flag & EVENT_FLAG::ACT_LIGHT)
+    {
+        GET_SINGLE(CGameManager)->Activate_SectionLight(m_iSectionIndex, true);
+        m_pColliderCom.lock()->Set_Enable(false);
+    }
 }
 
 void CSection_Eventer::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
@@ -167,6 +190,12 @@ void CSection_Eventer::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr
         GET_SINGLE(CGameManager)->Activate_Section(m_iSectionIndex, true);
         m_pColliderCom.lock()->Set_Enable(false);
     }
+
+    if (m_Flag & EVENT_FLAG::ACT_LIGHT)
+    {
+        GET_SINGLE(CGameManager)->Activate_SectionLight(m_iSectionIndex, true);
+        m_pColliderCom.lock()->Set_Enable(false);
+    }
 }
 
 void CSection_Eventer::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
@@ -179,6 +208,12 @@ void CSection_Eventer::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr
     if (m_Flag & EVENT_FLAG::ACT_SECTION)
     {
         GET_SINGLE(CGameManager)->Activate_Section(m_iSectionIndex, true);
+        m_pColliderCom.lock()->Set_Enable(false);
+    }
+
+    if (m_Flag & EVENT_FLAG::ACT_LIGHT)
+    {
+        GET_SINGLE(CGameManager)->Activate_SectionLight(m_iSectionIndex, true);
         m_pColliderCom.lock()->Set_Enable(false);
     }
 }

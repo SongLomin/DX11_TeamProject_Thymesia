@@ -65,8 +65,10 @@ protected:
     _float GetStartPositionToCurrentPositionDir();
     void TurnMechanism();
     void TurnAttack(_float fTimeDelta);
+    _bool JumpLookOffsetLookAt();
     _float ComputeAngleWithPlayer();
     _int ComputeDirectionToPlayer();
+
 
 
 

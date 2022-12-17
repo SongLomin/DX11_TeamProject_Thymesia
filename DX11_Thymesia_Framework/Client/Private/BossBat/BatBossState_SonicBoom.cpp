@@ -70,7 +70,7 @@ void CBatBossState_SonicBoom::OnStateStart(const _float& In_fAnimationBlendTime)
 	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CBatBossState_SonicBoom>().lock())
 	{
 		m_iSonicBoomCount -= 1;
-		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 219);
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 229);
 	}
 	else
 	{
@@ -80,7 +80,7 @@ void CBatBossState_SonicBoom::OnStateStart(const _float& In_fAnimationBlendTime)
 	
 	m_bAttackLookAtLimit = true;
 	
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_

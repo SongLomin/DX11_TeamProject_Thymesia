@@ -116,11 +116,12 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Elevator>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Door>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Note>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CSection_Eventer>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CWater>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CVarg>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CJoker>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CUrd>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CBat>();
-	GAMEINSTANCE->Add_Prototype_GameObject<CSection_Eventer>();
 #endif
 
 #ifndef _ONLY_UI_
@@ -204,6 +205,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	LightDesc.vSpecular  = _float4(0.6f, 0.6f, 0.6f, 1.f);
 	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.bEnable    = true;
+	LightDesc.fIntensity = 1.f;
 #else
 	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4( 1.f, -1.f,  1.f, 0.f);
@@ -212,6 +214,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	LightDesc.vSpecular  = _float4(0.1f, 0.1f, 0.1f, 1.f);
 	LightDesc.vLightFlag = _float4( 1.f,  1.f,  1.f, 1.f);
 	LightDesc.bEnable    = true;
+	LightDesc.fIntensity = 1.f;
+
 #endif // _BRIGHT_LIGHT_
 
 
@@ -286,7 +290,6 @@ HRESULT CLoader::Loading_ForTestLevel()
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
-#ifdef _TEST_STATIC_PROPS_
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/ForTest_Mesh/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 
@@ -301,7 +304,6 @@ HRESULT CLoader::Loading_ForTestLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-#endif // _TEST_STATIC_PROPS_
 
 #endif // _LOAD_CAPTURED_RESOURCE_
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
@@ -1047,6 +1049,15 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("ItemSlot_Hover"), TEXT("../Bin/Resources/Textures/UI/Inventory/TexUI_SquareFrame_Hover.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 
+	GAMEINSTANCE->Load_Textures(("Cursor"), TEXT("../Bin/Resources/Textures/UI/Cursor.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	//Scroll
+	GAMEINSTANCE->Load_Textures(("Scroll_Head"), TEXT("../Bin/Resources/Textures/UI/TexUI_ScrollBarTrack_Edge.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Scroll_Tail"), TEXT("../Bin/Resources/Textures/UI/TexUI_ScrollBarTrack_EdgeBottom.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("Scroll_Border"), TEXT("../Bin/Resources/Textures/UI/TexUI_ScrollBarTrack_Middle.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Scroll_Track"), TEXT("../Bin/Resources/Textures/UI/TexUI_ScrollBarThumb_Middle.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
 

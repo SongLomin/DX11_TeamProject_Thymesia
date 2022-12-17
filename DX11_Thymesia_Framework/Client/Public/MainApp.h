@@ -34,7 +34,7 @@ private:
 	TEXTINFO m_TextInfo_FPS;
 #endif // _RENDER_FPS_
 
-	_bool	m_bClip = false;
+	_bool	m_bClip = true;
 
 	shared_ptr<CDeveloperConsole_Manager>	m_pDeveloperConsole;
 	_bool									m_bEnableConsole = false;

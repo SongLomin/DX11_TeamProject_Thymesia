@@ -4,7 +4,7 @@
 #include "Client_Components.h"
 #include "Player.h"
 #include "ClientLevel.h"
-
+#include "UI_Cursor.h"
 
 IMPLEMENT_SINGLETON(CGameManager)
 
@@ -705,8 +705,7 @@ POINT CGameManager::Get_MousePoint()
 	return tMousePt;
 }
 
-void CGameManager::Set_PlayerStatusDesc(void* pArg
-)
+void CGameManager::Set_PlayerStatusDesc(void* pArg)
 {
 	memcpy(&m_tPlayerDesc, pArg, sizeof(CStatus_Player::PLAYERDESC));
 }
@@ -728,12 +727,39 @@ void CGameManager::Registration_Section(_uint In_iSection, weak_ptr<CGameObject>
 	}
 }
 
-
 void CGameManager::Activate_Section(_uint In_iSection, _bool In_bState)
 {
 	auto iter_find = m_SectionObejects.find(In_iSection);
 
 	if (iter_find == m_SectionObejects.end())
+		return;
+
+	for (auto& elem : iter_find->second)
+		elem.lock()->OnEventMessage((In_bState) ? ((_uint)EVENT_TYPE::ON_ENTER_SECTION) : ((_uint)EVENT_TYPE::ON_EXIT_SECTION));
+}
+
+void  CGameManager::Registration_SectionLight(_uint In_iSection, weak_ptr<CLight_Prop> In_pObj)
+{
+	auto iter_find = m_SectionLights.find(In_iSection);
+
+	if (iter_find == m_SectionLights.end())
+	{
+		list<weak_ptr<CLight_Prop>> ObjList;
+		ObjList.push_back(In_pObj);
+
+		m_SectionLights[In_iSection] = ObjList;
+	}
+	else
+	{
+		iter_find->second.push_back(In_pObj);
+	}
+}
+
+void  CGameManager::Activate_SectionLight(_uint In_iSection, _bool In_bState)
+{
+	auto iter_find = m_SectionLights.find(In_iSection);
+
+	if (iter_find == m_SectionLights.end())
 		return;
 
 	for (auto& elem : iter_find->second)
@@ -752,9 +778,21 @@ void CGameManager::Activate_Section(_uint In_iSection, _bool In_bState)
 void CGameManager::OnLevelExit()
 {
 	m_SectionObejects.clear();
+	m_SectionLights.clear();
+
 	m_StoredEffects.clear();
 }
 
 void CGameManager::Free()
 {
+}
+
+void CGameManager::EnableCursor()
+{
+	m_pCursor.lock()->Set_Enable(true);
+}
+
+void CGameManager::DisableCursor()
+{
+	m_pCursor.lock()->Set_Enable(false);
 }

@@ -217,7 +217,7 @@
     <ClInclude Include="..\Public\BossBat\BatBossState_HurtXL_F.h" />
     <ClInclude Include="..\Public\BossBat\BatBossState_HurtXL_L.h" />
     <ClInclude Include="..\Public\BossBat\BatBossState_Idle.h" />
-    <ClInclude Include="..\Public\BossBat\BatBossState_JumpSmash_Chesh.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_JumpSmash_Chest.h" />
     <ClInclude Include="..\Public\BossBat\BatBossState_JumpSmash_ForwardL.h" />
     <ClInclude Include="..\Public\BossBat\BatBossState_JumpSmash_SmarhL.h" />
     <ClInclude Include="..\Public\BossBat\BatBossState_SonicBoom.h" />
@@ -281,6 +281,7 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Headache_End.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Headache_Loop.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Headache_Start.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtBlown.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtXL.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_LAttack5.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_LongHealing.h" />
@@ -471,6 +472,7 @@
     <ClInclude Include="..\Public\Talent_Effects.h" />
     <ClInclude Include="..\Public\UI_Container.h" />
     <ClInclude Include="..\Public\UI_Containers.h" />
+    <ClInclude Include="..\Public\UI_Cursor.h" />
     <ClInclude Include="..\Public\UI_DamageFont.h" />
     <ClInclude Include="..\Public\UI_Elements.h" />
     <ClInclude Include="..\Public\UI_EvolveLeftBG.h" />
@@ -490,6 +492,7 @@
     <ClInclude Include="..\Public\UI_PauseMenu_PlagueWeapon.h" />
     <ClInclude Include="..\Public\UI_Script.h" />
     <ClInclude Include="..\Public\UI_ScriptQueue.h" />
+    <ClInclude Include="..\Public\UI_Scroll.h" />
     <ClInclude Include="..\Public\UI_T_Dissolve.h" />
     <ClInclude Include="..\Public\UI_Utils.h" />
     <ClInclude Include="..\Public\VargBossStateBase.h" />
@@ -665,6 +668,7 @@
     <ClInclude Include="..\Public\VargStates.h" />
     <ClInclude Include="..\Public\UI_PlagueWeapon.h" />
     <ClInclude Include="..\Public\VargWeapon.h" />
+    <ClInclude Include="..\Public\Water.h" />
     <ClInclude Include="..\Public\Weapon.h" />
     <ClInclude Include="..\Public\Window_AnimationModelView.h" />
     <ClInclude Include="..\Public\Window_AnimationPlayerView.h" />
@@ -780,6 +784,7 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Headache_End.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Headache_Loop.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Headache_Start.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtBlown.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXL.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_LongHealing.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Long_AvoidB.cpp" />
@@ -943,6 +948,7 @@
     <ClCompile Include="..\Private\TargetCurve.cpp" />
     <ClCompile Include="..\Private\UI_Button.cpp" />
     <ClCompile Include="..\Private\UI_Container.cpp" />
+    <ClCompile Include="..\Private\UI_Cursor.cpp" />
     <ClCompile Include="..\Private\UI_DamageFont.cpp" />
     <ClCompile Include="..\Private\UI_EvolveLeftBG.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu.cpp" />
@@ -975,6 +981,7 @@
     <ClCompile Include="..\Private\UI_PauseMenu_Page_Inventory.cpp" />
     <ClCompile Include="..\Private\UI_Script.cpp" />
     <ClCompile Include="..\Private\UI_ScriptQueue.cpp" />
+    <ClCompile Include="..\Private\UI_Scroll.cpp" />
     <ClCompile Include="..\Private\UI_T_Dissolve.cpp" />
     <ClCompile Include="..\Private\UI_Utils.cpp" />
     <ClCompile Include="..\Private\VargBossStateBase.cpp" />
@@ -1141,6 +1148,7 @@
     <ClCompile Include="..\Private\UI_PauseMenu_Tap_Status.cpp" />
     <ClCompile Include="..\Private\UI_PlagueWeapon.cpp" />
     <ClCompile Include="..\Private\VargWeapon.cpp" />
+    <ClCompile Include="..\Private\Water.cpp" />
     <ClCompile Include="..\Private\Weapon.cpp" />
     <ClCompile Include="..\Private\Window_AnimationModelView.cpp" />
     <ClCompile Include="..\Private\Window_AnimationPlayerView.cpp" />

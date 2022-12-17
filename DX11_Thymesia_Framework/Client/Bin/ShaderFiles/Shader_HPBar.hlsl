@@ -270,7 +270,9 @@ technique11 DefaultTechnique
         SetDepthStencilState(DSS_Default, 0);
         SetRasterizerState(RS_Default);
 
-		VertexShader = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
@@ -282,6 +284,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_MONSTER_HPBAR();
     }
@@ -293,6 +297,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_PLAYER_HPBAR();
     }
@@ -304,6 +310,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }
@@ -315,6 +323,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_COMBO_BAR();
     }
@@ -326,6 +336,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_CURCLE_BAR();
     }
@@ -337,6 +349,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_VIRTICAL_BAR();
     }
@@ -348,6 +362,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_HORIZONTAL_BAR();
     }
@@ -359,6 +375,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_CURCLE_BLEND_BAR();
     }

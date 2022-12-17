@@ -133,6 +133,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN_TERRAIN_PHONG();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_TERRAIN_PHONG();
     }
@@ -144,6 +146,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN_TERRAIN_PHONG();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_TERRAIN_BLEND_PHONG();
     }

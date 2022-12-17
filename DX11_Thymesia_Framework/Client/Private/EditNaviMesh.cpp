@@ -20,8 +20,6 @@ HRESULT CEditNaviMesh::Initialize(void* pArg)
 
     m_pRendererCom = Add_Component<CRenderer>();
 
-	//m_vSize = _float2(0.f, 0.f);
-
     ZeroMemory(m_iPickingIndex, sizeof(_uint) * 3);
 
     m_pCellShaderCom = Add_Component<CShader>();

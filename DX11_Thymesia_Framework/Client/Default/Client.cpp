@@ -4,6 +4,7 @@
 #include "Client.h"
 #include "MainApp.h"
 #include "GameInstance.h"
+#define _CRTDBG_MAP_ALLOC
 
 #define MAX_LOADSTRING 100
 
@@ -70,6 +71,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     MSG msg;
 
+
     pMainApp = CMainApp::Create();
     if (nullptr == pMainApp.get())
         return FALSE;
@@ -106,8 +108,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 #endif // _144HZ_
             )
         {
-            pMainApp->Tick(fTimerAcc);
+            if (KEY_INPUT(KEY::ESC, KEY_STATE::TAP))
+            {
+                break;
+            }
 
+            pMainApp->Tick(fTimerAcc);
+            
             fTimerAcc = 0.f;
 
             if (FAILED(pMainApp->Render()))
@@ -121,6 +128,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     //system("pause");
     fclose(ConsoleStream);
     D3DMemoryLeakCheck();
+    //_CrtDumpMemoryLeaks();
 #endif //  _DEBUG
 
     return (int)msg.wParam;
@@ -187,9 +195,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case IDM_ABOUT:
             DialogBox(g_hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
             break;
-        case IDM_EXIT:
+        /*case IDM_EXIT:
             DestroyWindow(hWnd);
-            break;
+            break;*/
         default:
             return DefWindowProc(hWnd, message, wParam, lParam);
         }

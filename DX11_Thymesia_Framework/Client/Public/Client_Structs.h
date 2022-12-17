@@ -217,8 +217,8 @@ namespace Client
 		_float3		vMaxSpawnOffsetRange;
 #pragma endregion
 
-		_ubyte		byParticleOption1 = 0;
-		enum class ParticleOption1
+		_ubyte		byOption_Spawn = 0;
+		enum class Option_Spawn
 		{
 			Is_Attraction                     = 0b0000'0001
 			, Use_MinMax_SpawnTime            = 0b0000'0010
@@ -228,7 +228,7 @@ namespace Client
 			, Use_MinMax_SpawnOffsetDirection = 0b0010'0000
 			, Use_MinMax_SpawnOffsetRange     = 0b0100'0000
 			, Is_MoveLook                     = 0b1000'0000
-			, ParticleOption1_END
+			, Option_Spawn_END
 		};
 
 		// For. Gravity
@@ -259,8 +259,8 @@ namespace Client
 		_float3		vMaxLimitRotation;
 #pragma endregion
 
-		_ubyte		byParticleOption2 = 0;
-		enum class ParticleOption2
+		_ubyte		byOption_SpeedRotation = 0;
+		enum class Option_SpeedRotation
 		{
 			Use_Gravity            = 0b0000'0001
 			, Use_Speed            = 0b0000'0010
@@ -268,9 +268,8 @@ namespace Client
 			, Use_SpeedMaxLimit    = 0b0000'1000
 			, Use_RotationSpeed    = 0b0001'0000
 			, Use_RotationForce    = 0b0010'0000
-			, Use_RotationMinLimit = 0b0100'0000
-			, Use_RotationMaxLimit = 0b1000'0000
-			, ParticleOption2_END
+			, Use_RotationLimit	   = 0b0100'0000
+			, Option_SpeedRotation_END
 		};
 
 #pragma region Scale
@@ -283,7 +282,6 @@ namespace Client
 
 		_bool		bEasingScale;
 		_int		iScaleEasingType;
-
 		_float		fScaleEasingTotalTime;
 
 		_float2		vMinStartScale;

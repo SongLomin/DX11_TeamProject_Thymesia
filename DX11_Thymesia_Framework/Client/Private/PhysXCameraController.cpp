@@ -105,6 +105,7 @@ void CPhysXCameraController::Init_Controller(const PxCapsuleControllerDesc& In_C
 	m_pControllerDesc = In_ControllerDesc;
 	m_pControllerDesc.reportCallback = this;
 	m_pControllerDesc.behaviorCallback = this;
+	m_pControllerDesc.userData = &m_iControllerIndex;
 	m_vPrePosition = { (_float)m_pControllerDesc.position.x, (_float)m_pControllerDesc.position.y, (_float)m_pControllerDesc.position.z };
 	m_FilterData.word0 = (1 << In_CollisionLayer);
 	m_FilterData.word1 = GAMEINSTANCE->Get_PhysXFilterGroup(In_CollisionLayer);
@@ -143,6 +144,8 @@ PxControllerCollisionFlags CPhysXCameraController::Synchronize_Controller(weak_p
 	PxVec3 vMovePositionToPx = SMath::Convert_PxVec3(vMovePosition);
 
 	Bind_FilterOptions(filters);
+	//filters.mCCTFilterCallback = this;
+	//filters.mFilterCallback = this;
 
 	return m_pController->move(vMovePositionToPx, 0.f, elapsedTime, filters);
 }

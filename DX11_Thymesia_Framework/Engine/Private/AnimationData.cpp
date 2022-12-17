@@ -6,12 +6,10 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
 
     iNumChannels = In_pAiAnimation->mNumChannels;
 
-    /* ���� �ִϸ��̼��� ����ϴµ� �ɸ��� �ð�. */
     fDuration = (_float)In_pAiAnimation->mDuration;
     fTickPerSecond = (_float)In_pAiAnimation->mTicksPerSecond * In_fSpeed;
 
-
-    for (_uint i = 0; i < iNumChannels; i++)
+    for (_uint i(0); i < iNumChannels; i++)
     {
         shared_ptr<CHANNEL_DATA> pChannelData = make_shared<CHANNEL_DATA>();
         pChannelData->Make_ChannelData(In_pAiAnimation->mChannels[i]);
@@ -199,7 +197,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_JumpSmashForwardL", 4.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_JumpSmashL", 4.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_SonicBoom", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_SP01", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_SP01", 2.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Storm_1", 4.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_StunEnd", 4.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_StunLoop", 4.f);
@@ -207,10 +205,10 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TakeExecution_End", 2.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TakeExecution_Loop", 2.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TakeExecution_Start01", 2.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TurnL90", 1.5f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TurnR90", 1.5f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TurnL90", 2.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TurnR90", 2.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_WalkF", 3.f);
 
- 
 
 #pragma endregion // Bat
 
@@ -235,7 +233,6 @@ void ANIMATION_DATA::Bake_ReverseAnimation(shared_ptr<ANIMATION_DATA>& Out_Anima
 
     Out_AnimationData->iNumChannels = iNumChannels;
 
-    /* ���� �ִϸ��̼��� ����ϴµ� �ɸ��� �ð�. */
     Out_AnimationData->fDuration = fDuration;
     Out_AnimationData->fTickPerSecond = fTickPerSecond;
 

@@ -59,13 +59,18 @@ HRESULT CEditInstanceProp::Initialize(void* pArg)
 	ZeroMemory(&m_PickingDesc, sizeof(INSTANCE_MESH_DESC));
 	m_PickingDesc.vScale = _float3(1.f, 1.f, 1.f);
 
-	Use_Thread(THREAD_TYPE::PRE_LATETICK);
+	
 
 	m_pTextureGroupCom.emplace("g_DissolveTexture"    , Add_Component<CTexture>());
 	m_pTextureGroupCom.emplace("g_DissolveDiffTexture", Add_Component<CTexture>());
 
 	m_pTextureGroupCom["g_DissolveTexture"].lock()->Use_Texture("T_Fire_Tile_BW_03");
 	m_pTextureGroupCom["g_DissolveDiffTexture"].lock()->Use_Texture("Diff_Fire_Tile0");
+
+#ifdef _USE_THREAD_
+	Use_Thread(THREAD_TYPE::PRE_LATETICK);
+#endif // _USE_THREAD_
+
 
 	return S_OK;
 }
@@ -97,17 +102,16 @@ void CEditInstanceProp::LateTick(_float fTimeDelta)
 void CEditInstanceProp::Thread_PreLateTick(_float fTimeDelta)
 {
 #ifdef _INSTANCE_CULLING_
+	ID3D11DeviceContext* pDeviceContext = GAMEINSTANCE->Get_BeforeRenderContext();
 	m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos));
+	m_pInstanceModelCom.lock()->Update_VisibleInstance(pDeviceContext);
+	GAMEINSTANCE->Release_BeforeRenderContext(pDeviceContext);
 #endif
 }
 
 void CEditInstanceProp::Before_Render(_float fTimeDelta)
 {
 	__super::Before_Render(fTimeDelta);
-
-#ifdef _INSTANCE_CULLING_
-	m_pInstanceModelCom.lock()->Update_VisibleInstance();
-#endif
 }
 
 HRESULT CEditInstanceProp::Render(ID3D11DeviceContext* pDeviceContext)
@@ -218,11 +222,11 @@ HRESULT CEditInstanceProp::SetUp_ShaderResource(ID3D11DeviceContext* pDeviceCont
 
 void CEditInstanceProp::SetUp_ShaderResource_Select(ID3D11DeviceContext* pDeviceContext)
 {
-	if (m_pPropInfos.empty() || 0 > m_iPickingIndex || m_pPropInfos.size() <= m_iPickingIndex)
-		return;
-	
 	if (!m_bSubDraw)
 		return;
+
+	if (m_pPropInfos.empty() || 0 > m_iPickingIndex || m_pPropInfos.size() <= m_iPickingIndex)
+		return;	
 
 	_matrix PickWorldMatrix = XMMatrixIdentity();
 	_matrix RotationMatrix = XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_pPropInfos[m_iPickingIndex].vRotation));
@@ -380,10 +384,10 @@ _bool CEditInstanceProp::IsPicking(const RAY& In_Ray, _float& Out_fRange)
 
 			if (Out_fRange > fLength)
 			{
-				m_PickingDesc = iter;
+				m_PickingDesc   = iter;
 				m_iPickingIndex = iIndex;
-				bPicked = true;
-				Out_fRange = fPickedDist;
+				bPicked         = true;
+				Out_fRange      = fPickedDist;
 			}
 		}
 
@@ -395,6 +399,20 @@ _bool CEditInstanceProp::IsPicking(const RAY& In_Ray, _float& Out_fRange)
 
 void CEditInstanceProp::OnEventMessage(_uint iArg)
 {
+	static _float AccTime = 0.f;
+	static _int   FPSCnt = 0;
+
+	AccTime += GAMEINSTANCE->Get_DeltaTime();
+	++FPSCnt;
+
+	if (AccTime >= 1.f)
+	{
+		cout << FPSCnt << endl;
+
+		AccTime = 0.f;
+		FPSCnt = 0;
+	}
+
 	switch (iArg)
 	{
 		case (_uint)EVENT_TYPE::ON_EDITDRAW_ACCEPT:

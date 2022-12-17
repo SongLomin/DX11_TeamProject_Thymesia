@@ -2,13 +2,14 @@
 #include "GameObject.h"
 #include "GameInstance.h"
 #include "Shader.h"
+#include "Texture.h"
 #include "VIBuffer_Rect.h"
 #include "Easing_Utillity.h"
 
 
 IMPLEMENT_SINGLETON(CRender_Manager)
 
-ComPtr<ID3D11DeviceContext> CRender_Manager::Get_BeforeRenderContext()
+ID3D11DeviceContext* CRender_Manager::Get_BeforeRenderContext()
 {
 	std::unique_lock<std::mutex> lock(m_job_q_);
 
@@ -17,7 +18,7 @@ ComPtr<ID3D11DeviceContext> CRender_Manager::Get_BeforeRenderContext()
 		Emplace_SleepContext(1);
 	}
 
-	ComPtr<ID3D11DeviceContext> pContext = m_pBeforeRenderSleepContexts.back();
+	ID3D11DeviceContext* pContext = m_pBeforeRenderSleepContexts.back();
 	m_pBeforeRenderSleepContexts.pop_back();
 
 	lock.unlock();
@@ -28,7 +29,7 @@ ComPtr<ID3D11DeviceContext> CRender_Manager::Get_BeforeRenderContext()
 	// 해당 Late_Tick은 쓰레드로 할 것.
 }
 
-void CRender_Manager::Release_BeforeRenderContext(ComPtr<ID3D11DeviceContext> pDeviceContext)
+void CRender_Manager::Release_BeforeRenderContext(ID3D11DeviceContext* pDeviceContext)
 {
 	std::unique_lock<std::mutex> lock(m_job_q_);
 
@@ -51,7 +52,7 @@ void CRender_Manager::Execute_BeforeRenderCommandList()
 		{
 			DEVICECONTEXT->ExecuteCommandList(pCommandList, true);
 			pCommandList->Release();
-			pCommandList = nullptr;
+			pCommandList = nullptr; 
 		}
 	}
 
@@ -419,7 +420,15 @@ HRESULT CRender_Manager::Initialize()
 
 	m_pVIBuffer = CVIBuffer_Rect::Create();
 	
-	GAMEINSTANCE->Load_Textures("PostEffectMask", TEXT("../Bin/Resources/Textures/UI/PostEffectMask.bmp"));
+	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap%d.dds"));
+	m_pIrradianceTextureCom = CTexture::Create();
+	m_pIrradianceTextureCom->Use_Texture("IrradianceMap");
+
+	GAMEINSTANCE->Load_Textures("BRDF", TEXT("../Bin/Resources/Textures/BRDF/brdf%d.png"));
+	m_pBRDFLUTTextureCom = CTexture::Create();
+	m_pBRDFLUTTextureCom->Use_Texture("BRDF");
+
+
 
 	return S_OK;
 }
@@ -461,12 +470,11 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	//future<HRESULT> DrawUIThread = async(launch::async, bind(&CRender_Manager::Render_UI, this));
 	//future<HRESULT> DrawEffectThread = async(launch::async, bind(&CRender_Manager::Render_Effect, this));
 
-	HRESULT hr;
+	// HRESULT hr;
 	ID3D11CommandList* pCommandList = nullptr;
 
 	/*if (FAILED(Render_UI()))
 		DEBUG_ASSERT;*/
-
 
 	if (FAILED(Render_Priority()))
 		DEBUG_ASSERT;
@@ -680,6 +688,14 @@ HRESULT CRender_Manager::Set_GrayScale(const _float In_fGrayScale)
 	return S_OK;
 }
 
+HRESULT CRender_Manager::Set_Exposure(const _float In_fExposure)
+{
+	m_fExposure = In_fExposure;
+
+	return S_OK;
+}
+
+
 HRESULT CRender_Manager::Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt)
 {
 	XMStoreFloat3(&m_vShadowLightEye, In_vEye);
@@ -859,6 +875,12 @@ HRESULT CRender_Manager::Render_Lights()
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_ORMTexture", pRenderTargetManager->Get_SRV(TEXT("Target_PBR")))))
 		DEBUG_ASSERT;
 
+	if (FAILED(m_pIrradianceTextureCom->Set_ShaderResourceView(m_pShader, "g_IrradianceTexture", 0)))
+		DEBUG_ASSERT;
+
+	if (FAILED(m_pBRDFLUTTextureCom->Set_ShaderResourceView(m_pShader, "g_BRDFTexture", 0)))
+		DEBUG_ASSERT;
+
 	/* 모든 빛들은 셰이드 타겟을 꽉 채우고 지굑투영으로 그려지면 되기때문에 빛마다 다른 상태를 줄 필요가 없다. */
 	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
@@ -877,6 +899,10 @@ HRESULT CRender_Manager::Render_Lights()
 	m_pShader->Set_RawValue("g_vCamPosition", &pPipeLine->Get_CamPosition(), sizeof(_float4));
 
 	GET_SINGLE(CLight_Manager)->Render_Lights(m_pShader, m_pVIBuffer, pDeviceContext);
+
+	/*m_pShader->Begin(12, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
+	*/////IBL돌기
 
 	if (FAILED(pRenderTargetManager->End_MRT()))
 		DEBUG_ASSERT;
@@ -1888,10 +1914,13 @@ HRESULT CRender_Manager::Blur(const _float& In_PixelPitchScalar, const _tchar* I
 
 void CRender_Manager::Emplace_SleepContext(const _uint In_iIndex)
 {
-	ComPtr<ID3D11DeviceContext> pContext;
-	DEVICE->CreateDeferredContext(0, pContext.GetAddressOf());
-	GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(pContext.Get());
-	m_pBeforeRenderSleepContexts.emplace_back(pContext);
+	ID3D11DeviceContext* pContext = nullptr;
+	if (SUCCEEDED(DEVICE->CreateDeferredContext(0, &pContext)))
+	{
+		GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(pContext);
+		m_pBeforeRenderSleepContexts.emplace_back(pContext);
+	}
+	
 }
 
 #ifdef _DEBUG
@@ -2027,10 +2056,25 @@ void CRender_Manager::Render_DebugSRT(const _uint In_iIndex)
 
 void CRender_Manager::OnDestroy()
 {
+	std::unique_lock<std::mutex> lock(m_job_q_);
+
 	m_pShader->OnDestroy();
 	m_pVIBuffer->OnDestroy();
 	m_pDeferredContext[DEFERRED_UI].Reset();
 
+	for (auto& elem : m_pBeforeRenderContexts)
+	{
+		elem->Release();
+	}
+	m_pBeforeRenderContexts.clear();
+
+	for (auto& elem : m_pBeforeRenderSleepContexts)
+	{
+		elem->Release();
+	}
+	m_pBeforeRenderSleepContexts.clear();
+
+	lock.unlock();
 }
 
 void CRender_Manager::OnEngineEventMessage(const ENGINE_EVENT_TYPE In_eEngineEvent)

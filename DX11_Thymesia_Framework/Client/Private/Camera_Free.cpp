@@ -71,7 +71,7 @@ void  CCamera_Free::OnEventMessage(_uint iArg)
 	{
 		case EVENT_TYPE::ON_EDITDRAW :
 		{
-			ImGui::DragInt("Speed", &m_iCameraSpeed, 1.f);
+			ImGui::InputInt("Speed", &m_iCameraSpeed);
 		}
 		break;
 	}

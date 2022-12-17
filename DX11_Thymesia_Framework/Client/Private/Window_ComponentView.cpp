@@ -79,10 +79,10 @@ void CWindow_ComponentView::Draw_Components()
 		PICKED_GAMEOBJECT->Set_Enable(bEnable);
 	}
 
-	weak_ptr<CUI> pCastUI = Weak_Cast<CUI>(m_tPickedGameObjectDesc.pInstance);
+	/*weak_ptr<CUI> pCastUI = Weak_Cast<CUI>(m_tPickedGameObjectDesc.pInstance);
 
 	if (pCastUI.lock())
-		return;
+		return;*/
 
 	weak_ptr<CTransform> pTransformCom   = PICKED_GAMEOBJECT->Get_Component<CTransform>();
 	static _bool bSelect_ActivateHotkey  = false;
@@ -90,15 +90,15 @@ void CWindow_ComponentView::Draw_Components()
 	if (!pTransformCom.lock().get())
 		return;
 
-	if (m_tPickedGameObjectDesc.HashCode == typeid(CCamera_Free).hash_code())
+	if (typeid(CCamera_Free).hash_code() == m_tPickedGameObjectDesc.HashCode)
 	{
 		View_FreeCamera(pTransformCom);
 	}
 
-	if (typeid(CEditGroupProp).hash_code()    != m_tPickedGameObjectDesc.HashCode &&
-		typeid(CEditInstanceProp).hash_code() != m_tPickedGameObjectDesc.HashCode &&
-		typeid(CEditMapCollider).hash_code()  != m_tPickedGameObjectDesc.HashCode &&
-		typeid(CEditSetActor).hash_code()     != m_tPickedGameObjectDesc.HashCode)
+	else if (typeid(CEditGroupProp).hash_code()    != m_tPickedGameObjectDesc.HashCode &&
+		     typeid(CEditInstanceProp).hash_code() != m_tPickedGameObjectDesc.HashCode &&
+		     typeid(CEditMapCollider).hash_code()  != m_tPickedGameObjectDesc.HashCode &&
+		     typeid(CEditSetActor).hash_code()     != m_tPickedGameObjectDesc.HashCode)
 	{
 		if (bSelect_ActivateHotkey)
 			TransformComponent_PickingAction(pTransformCom);
@@ -150,7 +150,6 @@ void CWindow_ComponentView::Draw_Components()
 	}
 
 	weak_ptr<CModel> pModel = PICKED_GAMEOBJECT->Get_Component<CModel>();
-
 
 	static _char    szFindModelTag[MAX_PATH] = "";
 

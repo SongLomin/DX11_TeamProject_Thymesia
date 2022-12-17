@@ -7,6 +7,7 @@ class CGameObject;
 class CShader;
 class CVIBuffer_Rect;
 class CComponent;
+class CTexture;
 
 class CRender_Manager :
     public CBase
@@ -23,8 +24,8 @@ public:
 
 
 public:
-	ComPtr<ID3D11DeviceContext> Get_BeforeRenderContext();
-	void Release_BeforeRenderContext(ComPtr<ID3D11DeviceContext> pDeviceContext);
+	ID3D11DeviceContext* Get_BeforeRenderContext();
+	void Release_BeforeRenderContext(ID3D11DeviceContext* pDeviceContext);
 	
 private:
 	void Execute_BeforeRenderCommandList();
@@ -55,6 +56,8 @@ public:
 	HRESULT Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain);
 	HRESULT Set_GrayScale(const _float In_fGrayScale);
 
+	HRESULT Set_Exposure(const _float In_fExposure);
+
 	HRESULT	Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt);
 	HRESULT Set_DynamicShadowLight(_fvector In_vEye, _fvector In_vLookAt);
 	LIFTGAMMAGAIN_DESC& Get_LiftGammaGain()
@@ -70,6 +73,7 @@ private:
 	HRESULT Render_ShadowDepth();
 	HRESULT Render_NonAlphaBlend();
 	HRESULT Render_Lights();
+	HRESULT Render_IBL();
 	HRESULT Bake_Fog();
 	HRESULT Bake_ViewShadow();
 	HRESULT Render_Blend(); /* Diffuse * Shade 백버퍼에 그린다. */
@@ -136,6 +140,9 @@ private:
 	shared_ptr<CShader>			m_pDistortionShader;
 	shared_ptr<CShader>			m_pPostProcessingShader;
 	shared_ptr<CVIBuffer_Rect>	m_pVIBuffer;
+	shared_ptr<CTexture>		m_pIrradianceTextureCom;
+	shared_ptr<CTexture>		m_pBRDFLUTTextureCom;
+
 
 private:
 	list<weak_ptr<CGameObject>>				m_RenderObjects[(_uint)RENDERGROUP::RENDER_END];
@@ -178,11 +185,13 @@ private:
 	_float		m_fContrastValue = 1.f;
 	_float		m_fSaturation = 1.f;
 
+	_float		m_fExposure = 1.f;
+
 
 private:
 	ComPtr<ID3D11DeviceContext> m_pDeferredContext[DEFERRED_END];
-	vector<ComPtr<ID3D11DeviceContext>> m_pBeforeRenderContexts;
-	vector<ComPtr<ID3D11DeviceContext>> m_pBeforeRenderSleepContexts;
+	vector<ID3D11DeviceContext*> m_pBeforeRenderContexts;
+	vector<ID3D11DeviceContext*> m_pBeforeRenderSleepContexts;
 
 	std::mutex m_job_q_;
 

@@ -44,7 +44,7 @@ public:
     HRESULT Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eActorType);
 
     void Update(vector<INSTANCE_MESH_DESC>& In_ParticleDescs, const _bool In_bUseCulling = false);
-    void Update_VisibleInstance();
+    void Update_VisibleInstance(ID3D11DeviceContext* pDeviceContext);
 
 private:
     void Create_Materials(const char* pModelFilePath);
@@ -54,8 +54,8 @@ private:
 
 private:
     ComPtr<ID3D11Buffer>        m_pVBInstance;
-    INSTANCE_MESH_DESC*         m_pVisibleInstanceDescs[2] = { nullptr, nullptr };
-    _int                        m_iCurrentVisibleIndex = 0;
+    vector<INSTANCE_MESH_DESC>    m_pVisibleInstanceDescs;
+    //_int                        m_iCurrentVisibleIndex = 0;
     _bool                       m_bCulling = false;
     _float                      m_fMaxOffsetRange = 0.f;
 

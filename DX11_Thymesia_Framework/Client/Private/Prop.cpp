@@ -52,6 +52,20 @@ void CProp::Tick(_float fTimeDelta)
     __super::Tick(fTimeDelta);
 }
 
+void CProp::Thread_PreLateTick(_float fTimeDelta)
+{
+	_vector vCenterOffsetToVector = XMLoadFloat3(&m_vCenterOffset);
+
+	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position() + vCenterOffsetToVector, m_fCullingOffsetRange))
+	{
+		m_bRendering = true;
+	}
+	else
+	{
+		m_bRendering = false;
+	}
+}
+
 void CProp::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
@@ -67,23 +81,9 @@ void CProp::LateTick(_float fTimeDelta)
 	//	if (RENDERGROUP::RENDER_END != m_eRenderGroup)
 	//		m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Weak_StaticCast<CGameObject>(m_this));
 	//}
-
+	m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Weak_StaticCast<CGameObject>(m_this));
 #endif // !_USE_THREAD_
 
-}
-
-void CProp::Thread_PreLateTick(_float fTimeDelta)
-{
-	_vector vCenterOffsetToVector = XMLoadFloat3(&m_vCenterOffset);
-
-	if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position() + vCenterOffsetToVector, m_fCullingOffsetRange))
-	{
-		m_bRendering = true;
-	}
-	else
-	{
-		m_bRendering = false;
-	}
 }
 
 HRESULT CProp::Render(ID3D11DeviceContext* pDeviceContext)

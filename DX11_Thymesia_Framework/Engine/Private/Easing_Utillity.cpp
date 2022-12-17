@@ -517,8 +517,7 @@ _vector CEasing_Utillity::OutBack(_vector vStartPoint, _vector vTargetPoint, _fl
 	const _float c1 = 1.70158f;
 	const _float c3 = c1 + 1.f;
 
-
-	return (vTargetPoint - vStartPoint) * (1.f + c3 * pow(fPassedTime / fTotalTime - 1, 3) + c1 * pow(fPassedTime / fTotalTime - 1, 2)) + vStartPoint;
+	return (vTargetPoint - vStartPoint) * (1.f + c3 * pow(fPassedTime / fTotalTime - 1.f, 3.f) + c1 * pow(fPassedTime / fTotalTime - 1.f, 2.f)) + vStartPoint;
 }
 
 _vector CEasing_Utillity::InOutBack(_vector vStartPoint, _vector vTargetPoint, _float fPassedTime, _float fTotalTime)
@@ -529,8 +528,8 @@ _vector CEasing_Utillity::InOutBack(_vector vStartPoint, _vector vTargetPoint, _
 	_float x = fPassedTime / fTotalTime;
 
 	return x < 0.5f
-		? (vTargetPoint - vStartPoint) * ((pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2) + vStartPoint
-		: (vTargetPoint - vStartPoint) * ((pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2) + vStartPoint;
+		? (vTargetPoint - vStartPoint) * ((pow(2.f * x, 2.f) * ((c2 + 1.f) * 2.f * x - c2)) / 2.f) + vStartPoint
+		: (vTargetPoint - vStartPoint) * ((pow(2.f * x - 2.f, 2.f) * ((c2 + 1.f) * (x * 2.f - 2.f) + c2) + 2.f) / 2.f) + vStartPoint;
 	
 }
 

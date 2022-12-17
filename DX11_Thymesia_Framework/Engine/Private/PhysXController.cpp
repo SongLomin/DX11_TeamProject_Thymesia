@@ -97,11 +97,11 @@ void CPhysXController::Bind_FilterOptions(PxControllerFilters& Out_Filters)
 	Out_Filters.mFilterCallback = this;
 	//Out_Filters.mFilterData = &m_FilterData;
 
-	if (!m_EnableSimulation)
-	{
-		//cout << "Null Filter" << endl;
-		Out_Filters.mFilterFlags = PxQueryFlags(0);
-	}
+	//if (!m_EnableSimulation)
+	//{
+	//	//cout << "Null Filter" << endl;
+	//	Out_Filters.mFilterFlags = PxQueryFlags(0);
+	//}
 }
 
 
@@ -109,6 +109,7 @@ void CPhysXController::Init_Controller(const PxCapsuleControllerDesc& In_Control
 {
 	m_pControllerDesc = In_ControllerDesc;
 	m_pControllerDesc.reportCallback = this;
+	m_pControllerDesc.userData = &m_iControllerIndex;
 	m_FilterData.word0 = (1 << In_CollisionLayer);
 	m_FilterData.word1 = GET_SINGLE(CPhysX_Manager)->Get_PhysXFilterGroup(In_CollisionLayer);
 	Create_Controller();
@@ -118,6 +119,7 @@ void CPhysXController::Create_Controller()
 {
 	GET_SINGLE(CPhysX_Manager)->Create_Controller(m_pControllerDesc, &m_pController);
 	m_pController->setUserData(&m_iControllerIndex);
+	
 }
 
 void CPhysXController::Synchronize_Transform(weak_ptr<CTransform> pTransform, _fvector In_vOffset)
@@ -247,7 +249,7 @@ void CPhysXController::Reset_Gravity()
 		return;
 
 	m_fGravityAcc = 0.f;
-}
+} 
 
 void CPhysXController::Set_CurrentCameraController()
 {

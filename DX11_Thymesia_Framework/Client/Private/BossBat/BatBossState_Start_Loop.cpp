@@ -51,8 +51,6 @@ void CBatBossState_Start_Loop::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-
-
 void CBatBossState_Start_Loop::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
@@ -65,31 +63,14 @@ void CBatBossState_Start_Loop::OnStateStart(const _float& In_fAnimationBlendTime
 	cout << "VargState: Start -> OnStateStart" << endl;
 #endif
 #endif
-	
 
 }	
-
 
 void CBatBossState_Start_Loop::OnStateEnd()
 {
 	__super::OnStateEnd();
 
 }
-
-
-
-//void CBatBossState_Start_Loop::Call_AnimationEnd()
-//{
-//	if (!Get_Enable())
-//		return;
-//
-//	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Idle>(0.05f);
-//}
-//
-//void CBatBossState_Start_Loop::OnDestroy()
-//{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_Start_Loop::Call_AnimationEnd, this);
-//}
 
 void CBatBossState_Start_Loop::Free()
 {
@@ -105,13 +86,11 @@ _bool CBatBossState_Start_Loop::Check_AndChangeNextState()
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 
 	
-	if (fPToMDistance <= 28.f)
+	if (fPToMDistance <= 10.f)
 	{
 		Get_OwnerCharacter().lock()->Change_State<CBatBossState_Start>(0.05f);
 		return true;
 	}
-
-
 
 	return false;
 }

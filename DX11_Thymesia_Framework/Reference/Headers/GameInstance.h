@@ -137,14 +137,15 @@ public: /* For.Render_Manager */
 	HRESULT	Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt);
 	HRESULT	Set_DynamicShadowLight(_fvector In_vEye, _fvector In_vLookAt);
 	HRESULT Set_GrayScale(const _float In_fGrayScale);
+	HRESULT Set_Exposure(const _float In_fExposure);
 	_float4 Get_FogColor();
 	_float Get_FogRange();
 	LIFTGAMMAGAIN_DESC& Get_LiftGammaGain();
 	HRESULT Set_Contrast(const _float In_fContrast);
 	HRESULT Set_Saturation(const _float In_fSaturation);
 
-	ComPtr<ID3D11DeviceContext> Get_BeforeRenderContext();
-	void Release_BeforeRenderContext(ComPtr<ID3D11DeviceContext> pDeviceContext);
+	ID3D11DeviceContext* Get_BeforeRenderContext();
+	void Release_BeforeRenderContext(ID3D11DeviceContext* pDeviceContext);
 
 #ifdef _DEBUG
 	HRESULT Set_DebugSize(const _float2 vSize);

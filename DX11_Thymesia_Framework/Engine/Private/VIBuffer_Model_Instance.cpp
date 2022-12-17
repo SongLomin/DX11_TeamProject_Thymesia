@@ -326,7 +326,7 @@ void CVIBuffer_Model_Instance::Culling_Instance(vector<INSTANCE_MESH_DESC>& In_P
 	if (In_ParticleDescs.empty() || m_bCulling)
 		return;
 
-	_int iUpdateIndex = 1 - m_iCurrentVisibleIndex;
+	//_int iUpdateIndex = 1 - m_iCurrentVisibleIndex;
 
 	shared_ptr<CGameInstance> pGameInstance = GAMEINSTANCE;
 
@@ -334,15 +334,12 @@ void CVIBuffer_Model_Instance::Culling_Instance(vector<INSTANCE_MESH_DESC>& In_P
 
 	for (auto& elem : In_ParticleDescs)
 	{
-		if (pGameInstance->isIn_Frustum_InWorldSpace(XMVectorSetW(XMLoadFloat3(&elem.vCenter), 1.f), elem.fMaxRange * 1.2f))
+		if (pGameInstance->isIn_Frustum_InWorldSpace(XMVectorSetW(XMLoadFloat3(&elem.vCenter), 1.f), elem.fMaxRange))
 		{
-			m_pVisibleInstanceDescs[iUpdateIndex][iIndex] = elem;
-			++iIndex;
+			m_pVisibleInstanceDescs.push_back(elem);
 		}
 	}
-
-	m_iCurrentVisibleIndex = iUpdateIndex;
-	m_iVisibleCount        = iIndex;
+	m_iVisibleCount        = m_pVisibleInstanceDescs.size();
 	m_bCulling             = true;
 
 	//Update_VisibleInstance();
@@ -385,34 +382,6 @@ void CVIBuffer_Model_Instance::Update(vector<INSTANCE_MESH_DESC>& In_ParticleDes
 	if (0 == In_ParticleDescs.size() || 0 == m_iNumInstance)
 		return;
 
-	if (In_bUseCulling)
-	{
-		if (m_pVisibleInstanceDescs[0])
-		{
-			Safe_Delete_Array(m_pVisibleInstanceDescs[0]);
-			m_pVisibleInstanceDescs[0] = nullptr;
-		}
-
-		if (m_pVisibleInstanceDescs[1])
-		{
-			Safe_Delete_Array(m_pVisibleInstanceDescs[1]);
-			m_pVisibleInstanceDescs[1] = nullptr;
-		}
-
-		m_pVisibleInstanceDescs[0] = DBG_NEW INSTANCE_MESH_DESC[In_ParticleDescs.size()];
-		m_pVisibleInstanceDescs[1] = DBG_NEW INSTANCE_MESH_DESC[In_ParticleDescs.size()];
-
-		_uint iIndex = 0;
-
-		for (auto& elem : In_ParticleDescs)
-		{
-			m_pVisibleInstanceDescs[0][iIndex] = elem;
-
-			++iIndex;
-		}
-
-	}
-
 	D3D11_MAPPED_SUBRESOURCE		SubResource;
 
 	DEVICECONTEXT->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
@@ -430,42 +399,44 @@ void CVIBuffer_Model_Instance::Update(vector<INSTANCE_MESH_DESC>& In_ParticleDes
 	DEVICECONTEXT->Unmap(m_pVBInstance.Get(), 0);
 }
 
-void CVIBuffer_Model_Instance::Update_VisibleInstance()
+void CVIBuffer_Model_Instance::Update_VisibleInstance(ID3D11DeviceContext* pDeviceContext)
 {
-	if (!m_pVisibleInstanceDescs)
-		return;
-
-	if (0 == m_iVisibleCount)
-		return;
-
-	if (!m_bCulling)
+	if (0 == m_iNumInstance)
 		return;
 
 	D3D11_MAPPED_SUBRESOURCE		SubResource;
+	ZeroMemory(&SubResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
 	_matrix							WorldMatrix;
 
-	DEVICECONTEXT->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+	pDeviceContext->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResource);
 
-	for (_uint i = 0; i < m_iVisibleCount; ++i)
+	for (_int i = 0; i < m_iNumInstance; ++i)
 	{
-		WorldMatrix = m_pVisibleInstanceDescs[m_iCurrentVisibleIndex][i].Get_Matrix();
+		if (i < m_iVisibleCount)
+		{
+			WorldMatrix = m_pVisibleInstanceDescs[i].Get_Matrix();
+		}
+		else
+		{
+			WorldMatrix = XMMatrixIdentity();
+		}
 
-		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i].vRight       , WorldMatrix.r[0]);
-		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i].vUp          , WorldMatrix.r[1]);
-		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i].vLook        , WorldMatrix.r[2]);
-		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i ].vTranslation, WorldMatrix.r[3]);
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i].vRight, WorldMatrix.r[0]);
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i].vUp, WorldMatrix.r[1]);
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i].vLook, WorldMatrix.r[2]);
+		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i].vTranslation, WorldMatrix.r[3]);
 	}
 
-	DEVICECONTEXT->Unmap(m_pVBInstance.Get(), 0);
+	pDeviceContext->Unmap(m_pVBInstance.Get(), 0);
 
+	m_pVisibleInstanceDescs.clear();
 	m_bCulling = false;
 }
 
 void CVIBuffer_Model_Instance::OnDestroy()
 {
-	Safe_Delete_Array(m_pVisibleInstanceDescs[0]);
-	Safe_Delete_Array(m_pVisibleInstanceDescs[1]);
+
 }
 
 void CVIBuffer_Model_Instance::Free()
