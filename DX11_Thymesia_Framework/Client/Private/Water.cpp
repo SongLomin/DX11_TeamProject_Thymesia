@@ -39,7 +39,7 @@ HRESULT CWater::Initialize(void* pArg)
 	m_pNoiseTextureCom.lock()->Use_Texture("UVNoise");
 
 	shared_ptr<MODEL_DATA> pModelData = GAMEINSTANCE->Get_ModelFromKey("DefaultGround");
-	m_pVIBufferCom.lock()->Init_Mesh(pModelData.get()->Mesh_Datas[0]);
+	m_pVIBufferCom.lock()->Init_Mesh(pModelData.get()->Mesh_Datas[0], D3D11_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST);
 
 	return S_OK;
 }
@@ -95,8 +95,8 @@ HRESULT CWater::SetUp_ShaderResource()
 		return E_FAIL;
 
 	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture1", 678);
-	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture2", 102);
-	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DisplacementTexture", 77);
+	m_pNoiseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture2", 679);
+
 	m_pShaderCom.lock()->Set_RawValue("g_vUVNoise", &m_vNoiseUV, sizeof(_float2));
 
 	_vector vShaderFlag = { 0.f, 0.f, 0.f, 0.f };

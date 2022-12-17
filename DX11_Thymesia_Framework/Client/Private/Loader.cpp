@@ -290,7 +290,6 @@ HRESULT CLoader::Loading_ForTestLevel()
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
-#ifdef _TEST_STATIC_PROPS_
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/ForTest_Mesh/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 
@@ -305,7 +304,6 @@ HRESULT CLoader::Loading_ForTestLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-#endif // _TEST_STATIC_PROPS_
 
 #endif // _LOAD_CAPTURED_RESOURCE_
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);

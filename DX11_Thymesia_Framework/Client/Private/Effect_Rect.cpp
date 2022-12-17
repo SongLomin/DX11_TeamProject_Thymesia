@@ -125,7 +125,7 @@ HRESULT CEffect_Rect::Initialize(void* pArg)
 
 #ifdef _USE_THREAD_
 	CGameObject::Use_Thread(THREAD_TYPE::TICK);
-	// CGameObject::Use_Thread(THREAD_TYPE::PRE_LATETICK);
+	CGameObject::Use_Thread(THREAD_TYPE::PRE_LATETICK);
 #endif // _USE_THREAD_
 
 	return S_OK;
@@ -156,7 +156,7 @@ void CEffect_Rect::Thread_PreLateTick(_float fTimeDelta)
 
 	m_pVIBuffer.lock()->Update(m_tParticleDescs, pDeferredContext, ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType));
 
-	//GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
+	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
 }
 
 void CEffect_Rect::LateTick(_float fTimeDelta)
@@ -1087,9 +1087,9 @@ void CEffect_Rect::Reset_ParticleDesc(const _uint& In_iIndex)
 		return;
 #endif // _DEBUG
 
+#ifdef _DEBUG
 	try
 	{
-#ifdef _DEBUG
 		PARTICLE_DESC& tParticle = m_tParticleDescs.at(In_iIndex);
 		PARTICLE_DESC& tOriginalParticle = m_tOriginalParticleDescs.at(In_iIndex);
 #endif // _DEBUG

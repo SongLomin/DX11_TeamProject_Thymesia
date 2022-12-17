@@ -401,6 +401,8 @@ void CVIBuffer_Model_Instance::Update(vector<INSTANCE_MESH_DESC>& In_ParticleDes
 
 void CVIBuffer_Model_Instance::Update_VisibleInstance(ID3D11DeviceContext* pDeviceContext)
 {
+	if (0 == m_iNumInstance)
+		return;
 
 	D3D11_MAPPED_SUBRESOURCE		SubResource;
 	ZeroMemory(&SubResource, sizeof(D3D11_MAPPED_SUBRESOURCE));

@@ -150,7 +150,9 @@ void CLight_Prop::Load_FromJson(const json& In_Json)
 	m_tLightDesc.eActorType = (LIGHTDESC::TYPE)iLightTypeFromInt;
 	m_tLightDesc.fRange     = In_Json["Light_Range"];
 	m_iSectionIndex         = In_Json["SectionIndex"];
-	m_fDelayTime            = In_Json["DelayTime"];
+	
+	if (In_Json.find("DelayTime") != In_Json.end())
+		m_fDelayTime            = In_Json["DelayTime"];
 
 	CJson_Utility::Load_Float4(In_Json["Light_Position"] , m_tLightDesc.vPosition);
 	CJson_Utility::Load_Float4(In_Json["Light_Direction"], m_tLightDesc.vDirection);

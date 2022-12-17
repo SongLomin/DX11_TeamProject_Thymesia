@@ -112,9 +112,9 @@ PatchTess ConstantHS(InputPatch<VS_OUT_HULL, PATCH_SIZE> input, int patchID : SV
 {
     PatchTess output = (PatchTess) 0.f;
        
-    output.edgeTess[0] = 5;
-    output.edgeTess[1] = 5;
-    output.edgeTess[2] = 5;
+	output.edgeTess[0] = 10;
+	output.edgeTess[1] = 10;
+	output.edgeTess[2] = 10;
     output.insideTess = 1;
     
     return output;
@@ -159,11 +159,11 @@ DS_OUT DS_Main(const OutputPatch<HS_OUT, PATCH_SIZE> input, float3 location : SV
     DS_OUT output = (DS_OUT) 0.f;
 
     float3 localPos = input[0].vPosition * location.r + input[1].vPosition * location.g + input[2].vPosition * location.b;
-    float2 uv = input[0].vTexUV * location.r + input[1].vTexUV * location.g + input[2].vTexUV * location.b;
-    float3 normal = input[0].vNormal * location.r + input[1].vNormal * location.g + input[2].vNormal * location.b;
-    float3 tangent = input[0].vTangent * location.r + input[1].vTangent * location.g + input[2].vTangent * location.b;
+    float2 uv       = input[0].vTexUV    * location.r + input[1].vTexUV    * location.g + input[2].vTexUV    * location.b;
+    float3 normal   = input[0].vNormal   * location.r + input[1].vNormal   * location.g + input[2].vNormal   * location.b;
+    float3 tangent  = input[0].vTangent  * location.r + input[1].vTangent  * location.g + input[2].vTangent  * location.b;
     
-    vector vDisplacement = g_NoiseTexture2.SampleLevel(DefaultSampler, uv + g_vUVNoise * 0.001f, 0)*1.5f;
+    vector vDisplacement = g_NoiseTexture2.SampleLevel(DefaultSampler, uv + g_vUVNoise * 0.0005f , 0) * 0.7f;
 
     matrix matWV = mul(g_WorldMatrix, g_ViewMatrix);
     matrix matWVP = mul(matWV, g_ProjMatrix);
@@ -351,7 +351,7 @@ PS_OUT PS_MAIN_WATER(DS_OUT In)
     vPixelNorm = vPixelNorm * 2.f - 1.f;
     vPixelNorm = mul(vPixelNorm, WorldMatrix);
  
-    Out.vDiffuse = 0.1f * Out.vDiffuse + 0.9f * vector(0.4f, 0.f, 0.01f, 1.f);
+    Out.vDiffuse = 0.1f * Out.vDiffuse + 0.9f * vector(0.8f, 0.f, 0.01f, 1.f);
       
     Out.vDiffuse.a = 1.f;
     Out.vNormal = vector(vPixelNorm.xyz * 0.5f + 0.5f, 0.f);
@@ -417,7 +417,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_FILLTER();
     }
     
-    pass Water
+    pass Water // 4
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_Default, 0);
