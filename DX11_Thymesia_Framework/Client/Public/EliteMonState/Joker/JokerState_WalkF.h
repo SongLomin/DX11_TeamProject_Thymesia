@@ -34,6 +34,7 @@ protected:
 private:
 	_bool    m_bTurnCheck = false;
 	_bool    m_bBackReset = false;
+	_int     m_iPreCount = 2;
 
 private:
 

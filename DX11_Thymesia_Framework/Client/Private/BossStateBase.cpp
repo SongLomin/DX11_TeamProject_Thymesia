@@ -231,7 +231,7 @@ _bool CBossStateBase::JumpLookOffsetLookAt()
 	      _vector vOtherPos = 	pCurrentPlayer.lock()->Get_WorldPosition();
 		  _vector vOtherLook = pCurrentPlayer.lock()->Get_Transform()->Get_State(CTransform::STATE_LOOK);
 		  
-		  m_pTransformCom.lock()->LookAt2D(vOtherPos + vOtherLook * -8.f);
+		  m_pTransformCom.lock()->LookAt2D(vOtherPos + vOtherLook * -3.f);
 
 		
 
@@ -242,7 +242,7 @@ _bool CBossStateBase::JumpLookOffsetLookAt()
 		_vector vOtherPos = pCurrentPlayer.lock()->Get_WorldPosition();
 		_vector vOtherLook = pCurrentPlayer.lock()->Get_Transform()->Get_State(CTransform::STATE_LOOK);
 
-		m_pTransformCom.lock()->LookAt2D(vOtherPos + vOtherLook * 8.f);
+		m_pTransformCom.lock()->LookAt2D(vOtherPos + vOtherLook * 3.f);
 
 	}
 

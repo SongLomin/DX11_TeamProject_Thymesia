@@ -65,7 +65,9 @@ void CBatBossState_JumpSmash_SmarhL::OnStateStart(const _float& In_fAnimationBle
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+	m_pPhysXControllerCom.lock()->Enable_Gravity(false);
+
+	JumpLookOffsetLookAt();
 
 	m_bAttackLookAtLimit = true;
 
@@ -113,17 +115,9 @@ _bool CBatBossState_JumpSmash_SmarhL::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.2f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 177)
 	{
-		m_bAttackLookAtLimit = false;
-	}
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.21f)
-	{
-		m_bTurn = true;
-	}
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.99f)
-	{
-		m_bTurn = false;
+		m_pPhysXControllerCom.lock()->Enable_Gravity(true);
 	}
 
 

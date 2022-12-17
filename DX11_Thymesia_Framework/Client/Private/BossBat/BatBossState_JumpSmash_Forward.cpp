@@ -82,7 +82,7 @@ void CBatBossState_JumpSmash_ForwardL::OnStateEnd()
 	__super::OnStateEnd();
 
 	
-	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+	
 }
 
 
@@ -110,6 +110,12 @@ _bool CBatBossState_JumpSmash_ForwardL::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 177)
+	{
+		m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+	}
+	
 
 	
 
