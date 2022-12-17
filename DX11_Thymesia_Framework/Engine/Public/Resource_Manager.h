@@ -29,7 +29,6 @@ private: /* For. Captured Resources */
 public: /* For Texture */
 	HRESULT Load_Textures(const _char* _strKey, const _tchar* pTextureFilePath, MEMORY_TYPE eMemType = MEMORY_TYPE::MEMORY_STATIC);
 	HRESULT Generate_MipMap(const _tchar* pTextureFilePath, const _int In_iMipMapLevels = 8);
-	//vector*를 반환하지 않는 이유: 셰이더리소스뷰의 레퍼런스 카운트를 올리기 위해서 쓰지 않는다.
 	vector<ComPtr<ID3D11ShaderResourceView>> Get_TexturesFromKey(const _char* _Str_Key, MEMORY_TYPE _eType = MEMORY_TYPE::MEMORY_END);
 	
 

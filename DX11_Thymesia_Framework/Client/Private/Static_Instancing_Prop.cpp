@@ -60,8 +60,15 @@ void CStatic_Instancing_Prop::LateTick(_float fTimeDelta)
 void CStatic_Instancing_Prop::Thread_PreLateTick(_float fTimeDelta)
 {
 #ifdef _INSTANCE_CULLING_
+	ID3D11DeviceContext* pDeviceContext = GAMEINSTANCE->Get_BeforeRenderContext();
+
 	if (m_pDynamicColliderComs.empty())
 		m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos));
+
+	if (m_pDynamicColliderComs.empty())
+		m_pInstanceModelCom.lock()->Update_VisibleInstance(pDeviceContext);
+
+	GAMEINSTANCE->Release_BeforeRenderContext(pDeviceContext);
 #endif
 }
 
@@ -73,9 +80,11 @@ void CStatic_Instancing_Prop::Before_Render(_float fTimeDelta)
 		Synchronize_DynamicColliderComs();
 
 #ifdef _INSTANCE_CULLING_
+#ifndef _USE_THREAD_
 	// Don't Culling DynamicProps
-	if(m_pDynamicColliderComs.empty())
-		m_pInstanceModelCom.lock()->Update_VisibleInstance();
+	if (m_pDynamicColliderComs.empty())
+		m_pInstanceModelCom.lock()->Update_VisibleInstance(DEVICECONTEXT);
+#endif // _USE_THREAD_
 #endif
 }
 
@@ -214,10 +223,15 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 				
 				MESH_VTX_INFO tInfo = m_pInstanceModelCom.lock()->Get_ModelData().lock()->VertexInfo;
 
-				vOffsetRange  = XMLoadFloat3(&tInfo.vMax) - XMLoadFloat3(&tInfo.vMin);
+				_vector vMin, vMax, vCenter;
+				vMin = XMLoadFloat3(&tInfo.vMin);
+				vMax = XMLoadFloat3(&tInfo.vMax);
+				vCenter = (vMin + vMax) / 2.f;
+
+				vOffsetRange  = XMVectorAbs(XMLoadFloat3(&tInfo.vMax)) + XMVectorAbs(XMLoadFloat3(&tInfo.vMin));
 				vOffsetRange *= XMLoadFloat3(&Desc.vScale);
 				Desc.fMaxRange = XMVectorGetX(XMVector3Length(vOffsetRange));
-				Desc.vCenter = tInfo.vCenter;
+				XMStoreFloat3(&Desc.vCenter, vCenter);
 				Desc.Bake_CenterWithMatrix();
 
 				m_pPropInfos.push_back(Desc);

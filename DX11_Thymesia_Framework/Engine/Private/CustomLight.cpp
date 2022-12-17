@@ -40,7 +40,7 @@ HRESULT CCustomLight::Render(weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect>
 
 	else if(LIGHTDESC::TYPE_POINT == m_LightDesc.eActorType)
 	{
-		_bool IsInFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(XMLoadFloat4(&m_LightDesc.vPosition), m_LightDesc.fRange);
+		_bool IsInFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(XMLoadFloat4(&m_LightDesc.vPosition), m_LightDesc.fRange * 2.f);
 
 		if (!IsInFrustum)
 			return E_FAIL;

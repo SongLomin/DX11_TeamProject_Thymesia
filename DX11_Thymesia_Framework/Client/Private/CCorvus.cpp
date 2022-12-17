@@ -113,6 +113,11 @@ void CCorvus::Tick(_float fTimeDelta)
 
 }
 
+void CCorvus::Thread_PreLateTick(_float fTimeDelta)
+{
+	__super::Thread_PreLateTick(fTimeDelta);
+}
+
 void CCorvus::LateTick(_float fTimeDelta)
 {
 	fTimeDelta *= GAMEINSTANCE->Get_TimeScale((_uint)TIMESCALE_LAYER::PLAYER);
@@ -125,11 +130,7 @@ void CCorvus::Before_Render(_float fTimeDelta)
 	__super::Before_Render(fTimeDelta);
 }
 
-void CCorvus::Thread_PreLateTick(_float fTimeDelta)
-{
-	if (RENDERGROUP::RENDER_END != m_eRenderGroup)
-		m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Weak_StaticCast<CGameObject>(m_this));
-}
+
 
 HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 {
@@ -351,9 +352,7 @@ void CCorvus::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
 
-#ifndef _USE_THREAD_
-	m_pModelCom.lock()->Update_BoneMatrices();
-#endif // !_USE_THREAD_
+
 }
 
 void CCorvus::Move_RootMotion_Internal()

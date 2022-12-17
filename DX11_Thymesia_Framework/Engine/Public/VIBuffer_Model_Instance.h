@@ -44,7 +44,7 @@ public:
     HRESULT Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eActorType);
 
     void Update(vector<INSTANCE_MESH_DESC>& In_ParticleDescs, const _bool In_bUseCulling = false);
-    void Update_VisibleInstance();
+    void Update_VisibleInstance(ID3D11DeviceContext* pDeviceContext);
 
 private:
     void Create_Materials(const char* pModelFilePath);

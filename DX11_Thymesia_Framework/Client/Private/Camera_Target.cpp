@@ -123,12 +123,13 @@ void CCamera_Target::Tick(_float fTimeDelta)
 		Interpolate_Camera(fTimeDelta);
 	}
 
-	Update_PhysXCollider(fTimeDelta);
+	
 	
 }
 
 void CCamera_Target::LateTick(_float fTimeDelta)
 {
+	Update_PhysXCollider(fTimeDelta);
 
 	Bind_PipeLine();
 }

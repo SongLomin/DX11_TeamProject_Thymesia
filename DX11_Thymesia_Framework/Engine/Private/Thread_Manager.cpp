@@ -54,6 +54,7 @@ void CThread_Manager::Clear_EngineThreads(const THREAD_TYPE In_eThread_Type)
 	if (m_GameObject_Threads[(_uint)In_eThread_Type].pInstance)
 	{
 		m_GameObject_Threads[(_uint)In_eThread_Type].pInstance->Set_Enable(false);
+		m_GameObject_Threads[(_uint)In_eThread_Type].pInstance.reset();
 	}
 
 }
@@ -112,32 +113,26 @@ void CThread_Manager::Wait_JobDone(const _char* In_szConsoleText)
 void CThread_Manager::OnDestroy()
 {
 
-	for (_uint i = 0; i < (_uint)THREAD_TYPE::TYPE_END; ++i)
-	{
-		Clear_EngineThreads((THREAD_TYPE)i);
-	}
-
-	for (_uint i = 0; i < (_uint)THREAD_TYPE::TYPE_END; ++i)
-	{
-		if (m_GameObject_Threads->pInstance)
-		{
-			m_GameObject_Threads->Future.wait();
-		}
-	}
-
-	for (_uint i = 0; i < (_uint)THREAD_TYPE::TYPE_END; ++i)
-	{
-		if (m_GameObject_Threads->pInstance)
-		{
-			m_GameObject_Threads->Future.get();
-		}
-	}
+	
 
 	stop_all = true;
 	cv_job_q_.notify_all();
 
+
+
+	Wait_JobDone("Wait For Release Thread. ");
+
+
 	for (auto& t : worker_threads_) {
 		t.join();
+	}
+
+
+
+
+	for (_uint i = 0; i < (_uint)THREAD_TYPE::TYPE_END; ++i)
+	{
+		Clear_EngineThreads((THREAD_TYPE)i);
 	}
 
 	for (auto& elem : worker_jopdones)

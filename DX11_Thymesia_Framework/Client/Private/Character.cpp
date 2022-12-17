@@ -56,6 +56,34 @@ void CCharacter::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	if (m_pCurState.lock())
+		m_pCurState.lock()->Tick(fTimeDelta);
+
+	if (m_pHitColliderCom.lock())
+		m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+	
+}
+
+void CCharacter::Thread_PreLateTick(_float fTimeDelta)
+{
+	__super::Thread_PreLateTick(fTimeDelta);
+#ifdef _USE_THREAD_
+	if (m_pCurState.lock())
+		m_pCurState.lock()->LateTick(fTimeDelta);
+#endif // _USE_THREAD_
+}
+
+void CCharacter::LateTick(_float fTimeDelta)
+{
+	__super::LateTick(fTimeDelta);
+
+#ifndef _USE_THREAD_
+	if (m_pCurState.lock())
+		m_pCurState.lock()->LateTick(fTimeDelta);
+#endif // _USE_THREAD_
+
+	Move_RootMotion(fTimeDelta);
+
 #ifdef _USE_GRAVITY_
 	PxControllerFilters Filters;
 
@@ -79,22 +107,7 @@ void CCharacter::Tick(_float fTimeDelta)
 	}
 #endif
 
-	if (m_pCurState.lock())
-		m_pCurState.lock()->Tick(fTimeDelta);
-
-	Move_RootMotion(fTimeDelta);
-
-	if (m_pHitColliderCom.lock())
-		m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 	
-}
-
-void CCharacter::LateTick(_float fTimeDelta)
-{
-	__super::LateTick(fTimeDelta);
-
-	if (m_pCurState.lock())
-		m_pCurState.lock()->LateTick(fTimeDelta);
 }
 
 void CCharacter::Before_Render(_float fTimeDelta)

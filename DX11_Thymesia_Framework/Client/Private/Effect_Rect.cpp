@@ -152,15 +152,18 @@ void CEffect_Rect::Tick(_float fTimeDelta)
 
 void CEffect_Rect::Thread_PreLateTick(_float fTimeDelta)
 {
-	ComPtr<ID3D11DeviceContext> pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
+	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
 
-	m_pVIBuffer.lock()->Update(m_tParticleDescs, pDeferredContext.Get(), ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType));
+	m_pVIBuffer.lock()->Update(m_tParticleDescs, pDeferredContext, ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType));
 
 	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
 }
 
 void CEffect_Rect::LateTick(_float fTimeDelta)
 {
+#ifndef _USE_THREAD_ 
+	m_pVIBuffer.lock()->Update(m_tParticleDescs, DEVICECONTEXT, ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType));
+#endif 
 	__super::LateTick(fTimeDelta);
 
 	if (Check_DisableAllParticle())

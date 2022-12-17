@@ -87,26 +87,24 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 	m_pInput_Device->Tick();
 
 	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::PRE_TICK));
+	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 
 	GET_SINGLE(CLevel_Manager)->Tick(fTimeDelta);
 
+	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::TICK));
 	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 
 	GET_SINGLE(CObject_Manager)->Tick(fTimeDelta);
 
-	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::TICK));
-
+	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::PRE_LATETICK));
 	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 
-	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::PRE_LATETICK));
-
+	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::LATETICK));
 	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 
 	GET_SINGLE(CObject_Manager)->LateTick(fTimeDelta);
 
-	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::LATETICK));
-
-	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+	
 
 	GET_SINGLE(CThread_Manager)->Enqueue_Job(bind(&CCollision_Manager::Tick, m_pCollision_Manager));
 
@@ -365,12 +363,12 @@ HRESULT CGameInstance::Set_Saturation(const _float In_fSaturation)
 	return m_pRender_Manager->Set_Saturation(In_fSaturation);
 }
 
-ComPtr<ID3D11DeviceContext> CGameInstance::Get_BeforeRenderContext()
+ID3D11DeviceContext* CGameInstance::Get_BeforeRenderContext()
 {
 	return m_pRender_Manager->Get_BeforeRenderContext();
 }
 
-void CGameInstance::Release_BeforeRenderContext(ComPtr<ID3D11DeviceContext> pDeviceContext)
+void CGameInstance::Release_BeforeRenderContext(ID3D11DeviceContext* pDeviceContext)
 {
 	m_pRender_Manager->Release_BeforeRenderContext(pDeviceContext);
 }
@@ -429,6 +427,8 @@ HRESULT  CGameInstance::Set_FogDesc(_float4 In_vFogColor, const _float In_fFogRa
 void CGameInstance::Release_Engine()
 {
 	
+	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+
 	GET_SINGLE(CThread_Manager)->Destroy_Instance();
 	GET_SINGLE(CComponent_Manager)->Destroy_Instance();
 	GET_SINGLE(CLevel_Manager)->Destroy_Instance();

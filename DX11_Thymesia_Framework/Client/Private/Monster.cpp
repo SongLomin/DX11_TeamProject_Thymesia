@@ -46,6 +46,11 @@ HRESULT CMonster::Initialize(void* pArg)
     m_pDissolveTextureCom = Add_Component<CTexture>();
     m_pDissolveTextureCom.lock()->Use_Texture("Dissolve_1");
 
+#ifdef _USE_THREAD_
+    //Use_Thread(THREAD_TYPE::TICK);
+#endif // _USE_THREAD_
+
+
 	return S_OK;
 }
 

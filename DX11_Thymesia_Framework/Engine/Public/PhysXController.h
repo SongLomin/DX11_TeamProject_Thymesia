@@ -75,6 +75,7 @@ private:
 
 private:
 	static	_uint							m_iClonedControllerIndex;
+protected:
 	_uint									m_iControllerIndex;
 	
 

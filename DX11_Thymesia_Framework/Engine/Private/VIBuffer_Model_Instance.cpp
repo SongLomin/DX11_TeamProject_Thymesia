@@ -334,7 +334,7 @@ void CVIBuffer_Model_Instance::Culling_Instance(vector<INSTANCE_MESH_DESC>& In_P
 
 	for (auto& elem : In_ParticleDescs)
 	{
-		if (pGameInstance->isIn_Frustum_InWorldSpace(XMVectorSetW(XMLoadFloat3(&elem.vCenter), 1.f), elem.fMaxRange * 1.2f))
+		if (pGameInstance->isIn_Frustum_InWorldSpace(XMVectorSetW(XMLoadFloat3(&elem.vCenter), 1.f), elem.fMaxRange * 0.5f))
 		{
 			m_pVisibleInstanceDescs[iUpdateIndex][iIndex] = elem;
 			++iIndex;
@@ -430,7 +430,7 @@ void CVIBuffer_Model_Instance::Update(vector<INSTANCE_MESH_DESC>& In_ParticleDes
 	DEVICECONTEXT->Unmap(m_pVBInstance.Get(), 0);
 }
 
-void CVIBuffer_Model_Instance::Update_VisibleInstance()
+void CVIBuffer_Model_Instance::Update_VisibleInstance(ID3D11DeviceContext* pDeviceContext)
 {
 	if (!m_pVisibleInstanceDescs)
 		return;
@@ -445,9 +445,9 @@ void CVIBuffer_Model_Instance::Update_VisibleInstance()
 
 	_matrix							WorldMatrix;
 
-	DEVICECONTEXT->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_NO_OVERWRITE, 0, &SubResource);
+	pDeviceContext->Map(m_pVBInstance.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResource);
 
-	for (_uint i = 0; i < m_iVisibleCount; ++i)
+	for (_uint i = 0; i < m_iNumInstance; ++i)
 	{
 		WorldMatrix = m_pVisibleInstanceDescs[m_iCurrentVisibleIndex][i].Get_Matrix();
 
@@ -457,7 +457,7 @@ void CVIBuffer_Model_Instance::Update_VisibleInstance()
 		XMStoreFloat4(&((VTXMODELINSTANCE*)SubResource.pData)[i ].vTranslation, WorldMatrix.r[3]);
 	}
 
-	DEVICECONTEXT->Unmap(m_pVBInstance.Get(), 0);
+	pDeviceContext->Unmap(m_pVBInstance.Get(), 0);
 
 	m_bCulling = false;
 }

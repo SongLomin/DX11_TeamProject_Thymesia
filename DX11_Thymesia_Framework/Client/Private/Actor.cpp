@@ -55,6 +55,7 @@ void CActor::LateTick(_float fTimeDelta)
     if (GAMEINSTANCE->isIn_Frustum_InWorldSpace(m_pTransformCom.lock()->Get_Position(), 0.f))
     {
         m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Weak_StaticCast<CGameObject>(m_this));
+        m_pModelCom.lock()->Update_BoneMatrices();
     }
 
 #endif // !_USE_THREAD_

@@ -25,7 +25,7 @@ HRESULT CPhysXCollider::Initialize(void * pArg)
 
 	if (nullptr != pArg)
 	{
-		memcpy(&m_PhysXColliderDesc, pArg, sizeof(PHYSXCOLLIDERDESC));
+		m_PhysXColliderDesc = *(PHYSXCOLLIDERDESC*)pArg;
 
 		CreatePhysXActor(m_PhysXColliderDesc);
 	}

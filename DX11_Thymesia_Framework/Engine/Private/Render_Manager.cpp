@@ -8,7 +8,7 @@
 
 IMPLEMENT_SINGLETON(CRender_Manager)
 
-ComPtr<ID3D11DeviceContext> CRender_Manager::Get_BeforeRenderContext()
+ID3D11DeviceContext* CRender_Manager::Get_BeforeRenderContext()
 {
 	std::unique_lock<std::mutex> lock(m_job_q_);
 
@@ -17,7 +17,7 @@ ComPtr<ID3D11DeviceContext> CRender_Manager::Get_BeforeRenderContext()
 		Emplace_SleepContext(1);
 	}
 
-	ComPtr<ID3D11DeviceContext> pContext = m_pBeforeRenderSleepContexts.back();
+	ID3D11DeviceContext* pContext = m_pBeforeRenderSleepContexts.back();
 	m_pBeforeRenderSleepContexts.pop_back();
 
 	lock.unlock();
@@ -28,7 +28,7 @@ ComPtr<ID3D11DeviceContext> CRender_Manager::Get_BeforeRenderContext()
 	// 해당 Late_Tick은 쓰레드로 할 것.
 }
 
-void CRender_Manager::Release_BeforeRenderContext(ComPtr<ID3D11DeviceContext> pDeviceContext)
+void CRender_Manager::Release_BeforeRenderContext(ID3D11DeviceContext* pDeviceContext)
 {
 	std::unique_lock<std::mutex> lock(m_job_q_);
 
@@ -51,7 +51,7 @@ void CRender_Manager::Execute_BeforeRenderCommandList()
 		{
 			DEVICECONTEXT->ExecuteCommandList(pCommandList, true);
 			pCommandList->Release();
-			pCommandList = nullptr;
+			pCommandList = nullptr; 
 		}
 	}
 
@@ -1888,10 +1888,13 @@ HRESULT CRender_Manager::Blur(const _float& In_PixelPitchScalar, const _tchar* I
 
 void CRender_Manager::Emplace_SleepContext(const _uint In_iIndex)
 {
-	ComPtr<ID3D11DeviceContext> pContext;
-	DEVICE->CreateDeferredContext(0, pContext.GetAddressOf());
-	GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(pContext.Get());
-	m_pBeforeRenderSleepContexts.emplace_back(pContext);
+	ID3D11DeviceContext* pContext = nullptr;
+	if (SUCCEEDED(DEVICE->CreateDeferredContext(0, &pContext)))
+	{
+		GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(pContext);
+		m_pBeforeRenderSleepContexts.emplace_back(pContext);
+	}
+	
 }
 
 #ifdef _DEBUG
@@ -2027,10 +2030,25 @@ void CRender_Manager::Render_DebugSRT(const _uint In_iIndex)
 
 void CRender_Manager::OnDestroy()
 {
+	std::unique_lock<std::mutex> lock(m_job_q_);
+
 	m_pShader->OnDestroy();
 	m_pVIBuffer->OnDestroy();
 	m_pDeferredContext[DEFERRED_UI].Reset();
 
+	for (auto& elem : m_pBeforeRenderContexts)
+	{
+		elem->Release();
+	}
+	m_pBeforeRenderContexts.clear();
+
+	for (auto& elem : m_pBeforeRenderSleepContexts)
+	{
+		elem->Release();
+	}
+	m_pBeforeRenderSleepContexts.clear();
+
+	lock.unlock();
 }
 
 void CRender_Manager::OnEngineEventMessage(const ENGINE_EVENT_TYPE In_eEngineEvent)

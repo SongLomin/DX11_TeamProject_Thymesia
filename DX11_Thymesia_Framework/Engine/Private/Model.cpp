@@ -495,7 +495,6 @@ void CModel::Reset_Model()
 void CModel::Reset_DeltaBonePositions()
 {
 	m_DeltaBonePositions.clear();
-	m_DeltaBoneRotations.clear();
 }
 
 void CModel::Set_RootNode(const string& pBoneName, const _byte RootNodeFlags)

@@ -23,8 +23,8 @@ public:
 
 
 public:
-	ComPtr<ID3D11DeviceContext> Get_BeforeRenderContext();
-	void Release_BeforeRenderContext(ComPtr<ID3D11DeviceContext> pDeviceContext);
+	ID3D11DeviceContext* Get_BeforeRenderContext();
+	void Release_BeforeRenderContext(ID3D11DeviceContext* pDeviceContext);
 	
 private:
 	void Execute_BeforeRenderCommandList();
@@ -181,8 +181,8 @@ private:
 
 private:
 	ComPtr<ID3D11DeviceContext> m_pDeferredContext[DEFERRED_END];
-	vector<ComPtr<ID3D11DeviceContext>> m_pBeforeRenderContexts;
-	vector<ComPtr<ID3D11DeviceContext>> m_pBeforeRenderSleepContexts;
+	vector<ID3D11DeviceContext*> m_pBeforeRenderContexts;
+	vector<ID3D11DeviceContext*> m_pBeforeRenderSleepContexts;
 
 	std::mutex m_job_q_;
 

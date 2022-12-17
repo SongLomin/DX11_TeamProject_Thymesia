@@ -97,17 +97,16 @@ void CEditInstanceProp::LateTick(_float fTimeDelta)
 void CEditInstanceProp::Thread_PreLateTick(_float fTimeDelta)
 {
 #ifdef _INSTANCE_CULLING_
+	ID3D11DeviceContext* pDeviceContext = GAMEINSTANCE->Get_BeforeRenderContext();
 	m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos));
+	m_pInstanceModelCom.lock()->Update_VisibleInstance(pDeviceContext);
+	GAMEINSTANCE->Release_BeforeRenderContext(pDeviceContext);
 #endif
 }
 
 void CEditInstanceProp::Before_Render(_float fTimeDelta)
 {
 	__super::Before_Render(fTimeDelta);
-
-#ifdef _INSTANCE_CULLING_
-	m_pInstanceModelCom.lock()->Update_VisibleInstance();
-#endif
 }
 
 HRESULT CEditInstanceProp::Render(ID3D11DeviceContext* pDeviceContext)

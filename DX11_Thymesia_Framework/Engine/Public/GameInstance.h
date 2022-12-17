@@ -143,8 +143,8 @@ public: /* For.Render_Manager */
 	HRESULT Set_Contrast(const _float In_fContrast);
 	HRESULT Set_Saturation(const _float In_fSaturation);
 
-	ComPtr<ID3D11DeviceContext> Get_BeforeRenderContext();
-	void Release_BeforeRenderContext(ComPtr<ID3D11DeviceContext> pDeviceContext);
+	ID3D11DeviceContext* Get_BeforeRenderContext();
+	void Release_BeforeRenderContext(ID3D11DeviceContext* pDeviceContext);
 
 #ifdef _DEBUG
 	HRESULT Set_DebugSize(const _float2 vSize);

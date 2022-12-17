@@ -464,7 +464,7 @@ _bool CCorvusStateBase::Check_RequirementAttackClose(weak_ptr<CGameObject>& Out_
 
 
 
-	return false();
+	return false;
 }
 
 void CCorvusStateBase::Call_OtherControllerHit(const PxControllersHit& In_hit)
