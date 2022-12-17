@@ -39,7 +39,7 @@ void CBatBossState_FTurnR::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 	
-	_float fTurnValue = 3.14f / 1.45f;
+	_float fTurnValue = 3.14f / 1.33f;
 
 	m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * 1.5f);
 

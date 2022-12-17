@@ -327,6 +327,7 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_Short_Claw_Atk1);
 	ADD_STATE_MACRO(CCorvusState_Short_Claw_Atk2);
 	ADD_STATE_MACRO(CCorvusState_Short_Claw_Atk3);
+	ADD_STATE_MACRO(CCorvusState_HurtBlown);
 
 
 

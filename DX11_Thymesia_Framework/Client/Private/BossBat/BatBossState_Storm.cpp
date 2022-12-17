@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossBat/BatStates.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CBatBossState_Storm);
 CLONE_C(CBatBossState_Storm, CComponent)
@@ -58,7 +59,8 @@ void CBatBossState_Storm::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	
+	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
@@ -75,6 +77,7 @@ void CBatBossState_Storm::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	m_pPhysXControllerCom.lock()->Enable_Gravity(false);
 }
 
 
@@ -99,7 +102,6 @@ _bool CBatBossState_Storm::Check_AndChangeNextState()
 		Get_OwnerCharacter().lock()->Change_State<CBatBossState_SonicBoom>(0.05f);
 		return true;
 	}
-
 
 
 	return false;

@@ -32,8 +32,10 @@ void CBatBossState_Atk_R01_2b::Start()
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|BossBat_AttackR_01_2b");
 
-	
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Atk_R01_2b::Call_AnimationEnd, this);
 }
+	
+
 
 void CBatBossState_Atk_R01_2b::Tick(_float fTimeDelta)
 {

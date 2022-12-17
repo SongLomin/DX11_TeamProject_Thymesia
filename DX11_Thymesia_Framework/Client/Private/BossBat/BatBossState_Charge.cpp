@@ -38,7 +38,7 @@ void CBatBossState_Charge::Start()
 void CBatBossState_Charge::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-	
+
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -58,6 +58,8 @@ void CBatBossState_Charge::OnStateStart(const _float& In_fAnimationBlendTime)
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_iHellSceram += 1;
+
+	m_bAttackLookAtLimit = true;
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -114,8 +116,8 @@ _bool CBatBossState_Charge::Check_AndChangeNextState()
 			Get_OwnerCharacter().lock()->Change_State<CBatBossState_Hellscream>(0.05f);
 			return true;
 		}
-	}
-
+	} 
+	
 
 	return false;
 }

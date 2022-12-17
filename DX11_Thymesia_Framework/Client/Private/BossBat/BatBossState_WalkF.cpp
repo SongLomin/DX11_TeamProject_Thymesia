@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossBat/BatStates.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CBatBossState_WalkF);
 CLONE_C(CBatBossState_WalkF, CComponent)
@@ -38,25 +39,23 @@ void CBatBossState_WalkF::Start()
 void CBatBossState_WalkF::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-	
-	_matrix LocalMat = XMMatrixIdentity();
-	LocalMat *= XMMatrixRotationX(XMConvertToRadians(-90.f));
-	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
 
-	if (m_fSinematic == 4.f)
-	{
-		GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat, CINEMATIC_TYPE::CINEMATIC);
-	}
+
+	Rotation_TargetToLookDir();
+
+	m_fCurrentSpeed += m_fAccel * fTimeDelta;
+	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
+
+	PxControllerFilters Filters;
+	m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
 }
 
 
 void CBatBossState_WalkF::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
-
-	m_pModelCom.lock()->Set_AnimationSpeed(m_fSinematic);
 
 	Check_AndChangeNextState();
 }
@@ -75,7 +74,7 @@ void CBatBossState_WalkF::OnStateStart(const _float& In_fAnimationBlendTime)
 	cout << "VargState: Start -> OnStateStart" << endl;
 #endif
 #endif
-	m_pModelCom.lock()->Set_AnimationSpeed(m_fSinematic);
+	
 
 }	
 
@@ -83,12 +82,6 @@ void CBatBossState_WalkF::OnStateStart(const _float& In_fAnimationBlendTime)
 void CBatBossState_WalkF::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
-
-	if(m_fSinematic == 4.f)
-	GET_SINGLE(CGameManager)->End_Cinematic();
-
 }
 
 
@@ -118,17 +111,6 @@ _bool CBatBossState_WalkF::Check_AndChangeNextState()
 		return false;
 
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
-
-	//if (fPToMDistance <= 8.f)
-	//{
-	//	m_bNextState = true;
-	//}
-	if (fPToMDistance <= 10.f)
-	{
-		m_fSinematic = 4.f;
-	}
-
-
 
 	return false;
 }

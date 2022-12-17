@@ -20,7 +20,7 @@
 #include "BossBat/BatBossState_Hellscream.h"
 #include "BossBat/BatBossState_HurtXL_F.h"
 #include "BossBat/BatBossState_HurtXL_L.h"
-#include "BossBat/BatBossState_JumpSmash_Chesh.h"
+#include "BossBat/BatBossState_JumpSmash_Chest.h"
 #include "BossBat/BatBossState_JumpSmash_ForwardL.h"
 #include "BossBat/BatBossState_JumpSmash_SmarhL.h"
 #include "BossBat/BatBossState_SonicBoom.h"
