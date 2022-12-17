@@ -23,6 +23,7 @@ public:
     {
         ACT_SECTION         = (1 << 0),
         ACT_MONSTER_TRIGGER = (1 << 1),
+        ACT_LIGHT           = (1 << 2),
 
         EVENT_ENTER         = (1 << 10),
         EVENT_STAY          = (1 << 11),
@@ -52,6 +53,10 @@ private:
     void    SetUpColliderDesc(_float* _pColliderDesc);
 
 private:
+#ifdef _DEBUG
+    weak_ptr<CRenderer>   m_pRendererCom;
+#endif
+
     weak_ptr<CCollider>   m_pColliderCom;  
 
     _flag                 m_Flag          = 0;

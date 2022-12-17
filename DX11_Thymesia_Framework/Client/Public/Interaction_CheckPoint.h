@@ -40,6 +40,7 @@ private:
 private:
     weak_ptr<CCollider>     m_pColliderCom;
     _int                    m_iCheckIndex = 0;
+    LIGHTDESC               m_tLightDesc;
 };
 
 END

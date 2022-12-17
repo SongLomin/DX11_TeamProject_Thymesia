@@ -60,10 +60,11 @@ HRESULT CStatic_Prop::Render(ID3D11DeviceContext* pDeviceContext)
     if (FAILED(SetUp_ShaderResource()))
         return E_FAIL;
 
+    m_iPassIndex = 3;
     _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
     for (_uint i = 0; i < iNumMeshContainers; ++i)
     {
-        if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)));
+        m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 
         if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
         {
@@ -71,7 +72,7 @@ HRESULT CStatic_Prop::Render(ID3D11DeviceContext* pDeviceContext)
         }
         else
         {
-            if (m_bInvisibility || LEVEL::LEVEL_EDIT != Get_CreatedLevel())
+            if (m_bInvisibility && LEVEL::LEVEL_EDIT != Get_CreatedLevel())
             {
                 if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
                     m_iPassIndex = 6;

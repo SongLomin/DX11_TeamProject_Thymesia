@@ -395,8 +395,7 @@ void CEditGroupProp::View_CreateProp()
 
 	else if (3 == iSelect_PropType)
 	{
-		if (RenderView_SelectModelComponent())
-			return;
+		RenderView_SelectModelComponent();
 
 		if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) || !Pick_Prop(MouseRayInWorldSpace))
 			return;
@@ -460,7 +459,6 @@ void    CEditGroupProp::View_OnlyTranformEdit()
 		return;
 
 	RenderView_Transform_Edit(iter_prop->second[m_iPickingIndex].pInstance);
-	iter_prop->second[m_iPickingIndex].pInstance.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDIT_UDATE);
 }
 
 void    CEditGroupProp::View_PickProp()
@@ -785,6 +783,7 @@ void CEditGroupProp::RenderView_Transform_Edit(weak_ptr<CGameObject> In_Obj)
 	}
 
 	XMStoreFloat4x4(&m_PickingMatrix, pTransformCom.lock()->Get_WorldMatrix());
+	In_Obj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDIT_UDATE);
 }
 
 _bool CEditGroupProp::Pick_Prop(RAY& _pMouseRayInWorldSpace)

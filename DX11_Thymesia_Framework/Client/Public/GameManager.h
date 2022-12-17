@@ -27,6 +27,7 @@ class CStatus_Player;
 
 class CMonster;
 class CInteraction_CheckPoint;
+class CLight_Prop;
 
 class CGameManager :
     public CBase
@@ -185,11 +186,13 @@ public:
     void  Registration_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj);
     void  Activate_Section(_uint In_iSection, _bool In_bState);
 
+    void  Registration_SectionLight(_uint In_iSection, weak_ptr<CLight_Prop> In_pObj);
+    void  Activate_SectionLight(_uint In_iSection, _bool In_bState);
+
 public:
     FDelegate<>                 CallBack_ChangePlayer;
     FDelegate<>                 CallBack_FocusInMonster;
     FDelegate<>                 CallBack_FocusOutMonster;
-
 
 private:
     list<weak_ptr<CGameObject>> m_pLayers[(_uint)OBJECT_LAYER::LAYER_END];
@@ -206,15 +209,15 @@ private:
     typedef map<_int, KEYEVENT>                                  ANIM_MAP;
 
 private:
-    typedef map<_int, list<weak_ptr<CGameObject>>>               SECTION_OBJ;
+    typedef map<_int, list<weak_ptr<CGameObject>>> SECTION_OBJ;
+    typedef map<_int, list<weak_ptr<CLight_Prop>>> SECTION_LIGHT;
 
-    SECTION_OBJ             m_SectionObejects;
+    SECTION_OBJ                         m_SectionObejects;
+    SECTION_LIGHT                       m_SectionLights;
+    weak_ptr<CInteraction_CheckPoint>   m_pCurSavePoint;
 
 private:
     _int                                                        m_iMonsterCount   = 0;
-
-private:
-    weak_ptr<CInteraction_CheckPoint>                           m_pCurSavePoint;
 
 protected:
     void Free();

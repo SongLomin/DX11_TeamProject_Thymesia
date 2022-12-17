@@ -31,7 +31,7 @@ public:
 	_bool			Compute_MousePos(RAY _Ray, _matrix _WorldMatrix, _float3* pOut);
 	_bool			Compute_MouseRatio(RAY _Ray, _matrix _WorldMatrix, _float2* pOut);
 
-	HRESULT			Init_Mesh(shared_ptr<MESH_DATA> tMeshData);
+	HRESULT			Init_Mesh(shared_ptr<MESH_DATA> tMeshData, D3D11_PRIMITIVE_TOPOLOGY In_eToplogy = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	HRESULT			Init_Mesh(shared_ptr<MESH_DATA> tMeshData, _uint _iNumVerticesX, _uint _iNumVerticesZ, _float _fInterval);
 	HRESULT			Init_Mesh(_float4 _vInfo);
 

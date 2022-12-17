@@ -413,7 +413,7 @@ technique11 DefaultTechnique
 		PixelShader		= compile ps_5_0	PS_MAIN();
 	}
 
-	pass Pass5_WireFrame_Norm
+	pass Pass5_NonCulling_Norm
 	{
 		SetBlendState			(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState	(DSS_Default, 0);
@@ -423,6 +423,7 @@ technique11 DefaultTechnique
 		GeometryShader	= NULL;
 		PixelShader		= compile ps_5_0	PS_MAIN_NORMAL();
 	}
+
 	pass NoneCulling_Masking//6
 	{
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);

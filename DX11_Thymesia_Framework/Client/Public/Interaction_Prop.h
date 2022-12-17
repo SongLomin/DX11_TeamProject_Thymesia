@@ -41,8 +41,7 @@ protected:
 
 
 protected:
-    INTERACTIONTYPE         m_eInteractionType;
-
+    INTERACTIONTYPE             m_eInteractionType;
 
 public:
     FDelegate<>                 Callback_ActStart;
