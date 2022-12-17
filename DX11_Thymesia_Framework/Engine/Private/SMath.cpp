@@ -77,11 +77,6 @@ XMMATRIX ENGINE_DLL Engine::SMath::Get_RotationQuaternion(FXMMATRIX Mat, FXMVECT
 
 XMVECTOR ENGINE_DLL Engine::SMath::Get_Scale(FXMMATRIX Mat)
 {
-	//XMVECTOR ResultVec();
-
-	//ResultVec.m128_f32[0] = XMVectorGetX(XMVector3Length(Mat.r[0]));
-	//ResultVec.m128_f32[1] = XMVectorGetX(XMVector3Length(Mat.r[1]));
-	//ResultVec.m128_f32[2] = XMVectorGetX(XMVector3Length(Mat.r[2]));
 	return XMVectorSet(XMVectorGetX(XMVector3Length(Mat.r[0])), XMVectorGetX(XMVector3Length(Mat.r[1])), XMVectorGetX(XMVector3Length(Mat.r[2])), 0.f);
 }
 
@@ -257,11 +252,6 @@ float ENGINE_DLL Engine::SMath::Lerp(const float& fLeft, const float& fRight, fl
 	return (fLeft * (1.f - fRatio)) + (fRight * (fRatio));
 }
 
-//XMVECTOR ENGINE_DLL Engine::SMath::Lerp_BezierCurve(FXMVECTOR In_Left, FXMVECTOR In_Mid, FXMVECTOR In_Right, const _float In_fRatio)
-//{
-//	return XMVECTOR ENGINE_DLL();
-//}
-
 int ENGINE_DLL Engine::SMath::Random(const int& _iMin, const int& _iMax)
 {
 	if (_iMin >= _iMax)
@@ -350,16 +340,6 @@ XMVECTOR ENGINE_DLL Engine::SMath::vRandom(const XMVECTOR& _vMin, const XMVECTOR
 	if (0.f == XMVectorGetW(Result))
 		Result = XMVectorSetW(Result, DBL_EPSILON);
 
-	//for (_uint i(0); i < 4; i++)
-	//{
-	//	Result.m128_f32[i] = fRandom(_vMin.m128_f32[i], _vMax.m128_f32[i]);
-
-	//	if (0.f == Result.m128_f32[i])
-	//	{
-	//		Result.m128_f32[i] = DBL_EPSILON;
-	//	}
-	//}
-
 	return Result;
 }
 
@@ -369,32 +349,23 @@ void ENGINE_DLL Engine::SMath::Get_MouseRayInWorldSpace(RAY& Out_Ray, const _uin
 	GetCursorPos(&ptMouse);
 	ScreenToClient(GAMEINSTANCE->Get_WindowHandle(), &ptMouse);
 
-	/* 2. ���� �����̽� ���� ���콺 ��ǥ ���ϱ� */
 	_vector vProjPos(XMVectorSet(ptMouse.x / (In_ViewPortWidth * 0.5f) - 1.f, ptMouse.y / -(In_ViewPortHeight * 0.5f) + 1.f, 0.f, 1.f));
 
-	//vProjPos.m128_f32[0] = ptMouse.x / (In_ViewPortWidth * 0.5f) - 1.f;
-	//vProjPos.m128_f32[1] = ptMouse.y / -(In_ViewPortHeight * 0.5f) + 1.f;
-	//vProjPos.m128_f32[2] = 0.0f;
-	//vProjPos.m128_f32[3] = 1.0f;
-
-	/* 3.�佺���̽����� ���콺 ��ǥ�� ������. */
 	_matrix ProjMatrixInv(GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_PROJ));
 	ProjMatrixInv = XMMatrixInverse(nullptr, ProjMatrixInv);
 
 	_vector vViewPos(XMVector3TransformCoord(vProjPos, ProjMatrixInv));
 
-	/* 4.���콺���̿� ���콺Pos��������.  */
 	_vector vRayDir(vViewPos);
 	_vector vRayPos(XMVectorSet(0.f, 0.f, 0.f, 1.f));
 
-	/* 5.����ΰ���. */
 	_matrix	ViewMatrixInv(GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_VIEW));
 	ViewMatrixInv = XMMatrixInverse(nullptr, ViewMatrixInv);
 
 	XMStoreFloat3(&Out_Ray.vDirection, XMVector3TransformNormal(vRayDir, ViewMatrixInv));
 	XMStoreFloat4(&Out_Ray.vOrigin, XMVector3TransformCoord(vRayPos, ViewMatrixInv));
 
-	Out_Ray.fLength = 1000000.0f; //����
+	Out_Ray.fLength = 1000000.0f;
 }
 
 RAY ENGINE_DLL Engine::SMath::Get_MouseRayInWorldSpace(const _uint& In_ViewPortWidth, const _uint& In_ViewPortHeight)
@@ -404,11 +375,6 @@ RAY ENGINE_DLL Engine::SMath::Get_MouseRayInWorldSpace(const _uint& In_ViewPortW
 	ScreenToClient(GAMEINSTANCE->Get_WindowHandle(), &ptMouse);
 
 	_vector vProjPos(XMVectorSet(ptMouse.x / (In_ViewPortWidth * 0.5f) - 1.f, ptMouse.y / -(In_ViewPortHeight * 0.5f) + 1.f, 0.f, 0.f));
-
-	//vProjPos.m128_f32[0] = ptMouse.x / (In_ViewPortWidth * 0.5f) - 1.f;
-	//vProjPos.m128_f32[1] = ptMouse.y / -(In_ViewPortHeight * 0.5f) + 1.f;
-	//vProjPos.m128_f32[2] = 0.0f;
-	//vProjPos.m128_f32[3] = 0.0f;
 
 	_matrix ProjMatrixInv(GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_PROJ));
 	ProjMatrixInv = XMMatrixInverse(nullptr, ProjMatrixInv);
@@ -511,22 +477,14 @@ bool ENGINE_DLL Engine::SMath::Is_SphereToRayCollision(const XMFLOAT3& Center, c
 {
 	XMVECTOR vCenter(XMLoadFloat3(&Center));
 	XMVECTOR vRadius(XMVectorReplicatePtr(&Radius));
-	// l is the vector from the ray origin to the center of the sphere.
 	XMVECTOR l(XMVectorSubtract(vCenter, Origin));
-	// s is the projection of the l onto the ray direction.
 	XMVECTOR s(XMVector3Dot(l, Direction));
 	XMVECTOR l2(XMVector3Dot(l, l));
 	XMVECTOR r2(XMVectorMultiply(vRadius, vRadius));
-	// m2 is squared distance from the center of the sphere to the projection.
 	XMVECTOR m2(XMVectorNegativeMultiplySubtract(s, s, l2));
 	XMVECTOR NoIntersection{ 0.f, 0.f, 0.f, 0.f };
-	// If the ray origin is outside the sphere and the center of the sphere is
-	// behind the ray origin there is no intersection.
 	NoIntersection = XMVectorAndInt(XMVectorLess(s, XMVectorZero()), XMVectorGreater(l2, r2));
-	// If the squared distance from the center of the sphere to the projection
-	// is greater than the radius squared the ray will miss the sphere.
 	NoIntersection = XMVectorOrInt(NoIntersection, XMVectorGreater(m2, r2));
-	// The ray hits the sphere, compute the nearest intersection point.
 	XMVECTOR q(XMVectorSqrt(XMVectorSubtract(r2, m2)));
 	XMVECTOR t1(XMVectorSubtract(s, q));
 	XMVECTOR t2(XMVectorAdd(s, q));
@@ -534,7 +492,6 @@ bool ENGINE_DLL Engine::SMath::Is_SphereToRayCollision(const XMFLOAT3& Center, c
 	XMVECTOR t(XMVectorSelect(t1, t2, OriginInside));
 	if (XMVector4NotEqualInt(NoIntersection, XMVectorTrueInt()))
 	{
-		// Store the x-component to *pDist.
 		XMStoreFloat(&Dist, t);
 		return true;
 	}
@@ -781,5 +738,5 @@ XMVECTOR ENGINE_DLL Engine::SMath::Convert_PxExtendedVec3ToVector(const PxExtend
 
 PxVec3 ENGINE_DLL Engine::SMath::Convert_PxVec3(PxExtendedVec3 In_Vector)
 {
-	return PxVec3(In_Vector.x, In_Vector.y, In_Vector.z);
+	return PxVec3(_float(In_Vector.x), _float(In_Vector.y), _float(In_Vector.z));
 }
