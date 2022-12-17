@@ -40,6 +40,7 @@ namespace Engine
 				 
 		_float4 vPosition  = { 0.f, 0.f, 0.f, 0.f };
 		_float	fRange     = 0.f;
+		_float  fIntensity = 0.f;
 				 
 		_float4 vDiffuse   = { 0.f, 0.f, 0.f, 0.f };
 		_float4 vAmbient   = { 0.f, 0.f, 0.f, 0.f };

@@ -493,6 +493,8 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Bake_ViewShadow()))
 		DEBUG_ASSERT;
 
+	///////////IBL 계산/ 한 번만 돌아야 함
+
 	if (FAILED(Render_Lights()))
 		DEBUG_ASSERT;
 

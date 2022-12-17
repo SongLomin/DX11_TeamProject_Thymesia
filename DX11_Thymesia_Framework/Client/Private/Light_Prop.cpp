@@ -47,6 +47,7 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	m_tLightDesc.vSpecular  = { 1.f, 1.f, 1.f, 1.f };
 	m_tLightDesc.vLightFlag = { 1.f, 1.f, 1.f, 1.f };
 	m_tLightDesc.fRange     = 5.f;
+	m_tLightDesc.fIntensity = 1.f;
 
 	m_tLightDesc = GAMEINSTANCE->Add_Light(m_tLightDesc);
 	

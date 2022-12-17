@@ -350,7 +350,7 @@ PS_OUT PS_MAIN_WATER(DS_OUT In)
     vPixelNorm = vPixelNorm * 2.f - 1.f;
     vPixelNorm = mul(vPixelNorm, WorldMatrix);
  
-    Out.vDiffuse = 0.1f * Out.vDiffuse + 0.9f * vector(0.4f, 0.f, 0.05f, 1.f);
+    Out.vDiffuse = 0.1f * Out.vDiffuse + 0.9f * vector(0.4f, 0.f, 0.01f, 1.f);
       
     Out.vDiffuse.a = 1.f;
     Out.vNormal = vector(vPixelNorm.xyz * 0.5f + 0.5f, 0.f);
