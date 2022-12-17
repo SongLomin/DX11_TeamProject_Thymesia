@@ -6,12 +6,10 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
 
     iNumChannels = In_pAiAnimation->mNumChannels;
 
-    /* ���� �ִϸ��̼��� ����ϴµ� �ɸ��� �ð�. */
     fDuration = (_float)In_pAiAnimation->mDuration;
     fTickPerSecond = (_float)In_pAiAnimation->mTicksPerSecond * In_fSpeed;
 
-
-    for (_uint i = 0; i < iNumChannels; i++)
+    for (_uint i(0); i < iNumChannels; i++)
     {
         shared_ptr<CHANNEL_DATA> pChannelData = make_shared<CHANNEL_DATA>();
         pChannelData->Make_ChannelData(In_pAiAnimation->mChannels[i]);
@@ -210,8 +208,6 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TurnL90", 1.5f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TurnR90", 1.5f);
 
- 
-
 #pragma endregion // Bat
 
 #pragma region Mon_AxeMan
@@ -235,7 +231,6 @@ void ANIMATION_DATA::Bake_ReverseAnimation(shared_ptr<ANIMATION_DATA>& Out_Anima
 
     Out_AnimationData->iNumChannels = iNumChannels;
 
-    /* ���� �ִϸ��̼��� ����ϴµ� �ɸ��� �ð�. */
     Out_AnimationData->fDuration = fDuration;
     Out_AnimationData->fTickPerSecond = fTickPerSecond;
 

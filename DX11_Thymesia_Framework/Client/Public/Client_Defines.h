@@ -4,9 +4,7 @@
 #include <filesystem>
 
 // #define _JOJO_EFFECT_TOOL_
-//  _BAKE_PARTICLE_ 절대 키지 마세요!
-// #define _BAKE_PARTICLE_
-	
+                 
 #include "Client_Structs.h"
 #include "Client_Presets.h"
 #include "Client_Enum.h"	
@@ -64,6 +62,7 @@
 // #define _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
 #define _JOJO_EFFECTS_
+#undef _BAKE_PARTICLE_
 #pragma endregion // Effects
 
 #endif // _DEBUG

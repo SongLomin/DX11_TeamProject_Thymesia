@@ -461,12 +461,11 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	//future<HRESULT> DrawUIThread = async(launch::async, bind(&CRender_Manager::Render_UI, this));
 	//future<HRESULT> DrawEffectThread = async(launch::async, bind(&CRender_Manager::Render_Effect, this));
 
-	HRESULT hr;
+	// HRESULT hr;
 	ID3D11CommandList* pCommandList = nullptr;
 
 	/*if (FAILED(Render_UI()))
 		DEBUG_ASSERT;*/
-
 
 	if (FAILED(Render_Priority()))
 		DEBUG_ASSERT;

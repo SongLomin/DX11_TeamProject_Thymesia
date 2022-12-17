@@ -193,7 +193,15 @@ void CVIBuffer_Rect_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDes
 
 	for (_uint i = 0; i < m_iNumInstance; ++i)
 	{	
-		pParticleDesc = &In_ParticleDescs[i];
+		try
+		{
+			const PARTICLE_DESC& tParticleDecs = In_ParticleDescs.at(i);
+			pParticleDesc = &In_ParticleDescs[i];
+		}
+		catch (const std::exception&)
+		{
+			void(0);
+		}
 
 		if (!pParticleDesc->bEnable)
 		{

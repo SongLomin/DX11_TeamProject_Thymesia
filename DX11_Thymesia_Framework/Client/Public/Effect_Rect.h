@@ -114,17 +114,17 @@ private:
 
     const _bool Is_Sprite() const;
 
-    const _bool Check_Option1(const EFFECTPARTICLE_DESC::ParticleOption1 eOption) const;
-    void TurnOn_Option1(const EFFECTPARTICLE_DESC::ParticleOption1 eOption);
-    void TurnOff_Option1(const EFFECTPARTICLE_DESC::ParticleOption1 eOption);
+    const _bool Check_Option1(const EFFECTPARTICLE_DESC::Option_Spawn eOption) const;
+    void TurnOn_Option1(const EFFECTPARTICLE_DESC::Option_Spawn eOption);
+    void TurnOff_Option1(const EFFECTPARTICLE_DESC::Option_Spawn eOption);
 
-	const _bool Check_Option2(const EFFECTPARTICLE_DESC::ParticleOption2 eOption) const;
-	void TurnOn_Option2(const EFFECTPARTICLE_DESC::ParticleOption2 eOption);
-	void TurnOff_Option2(const EFFECTPARTICLE_DESC::ParticleOption2 eOption);
+	const _bool Check_Option2(const EFFECTPARTICLE_DESC::Option_SpeedRotation eOption) const;
+	void TurnOn_Option2(const EFFECTPARTICLE_DESC::Option_SpeedRotation eOption);
+	void TurnOff_Option2(const EFFECTPARTICLE_DESC::Option_SpeedRotation eOption);
 
 #ifdef _DEBUG
-    void Tool_ToggleOption1(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::ParticleOption1 eOption);
-    void Tool_ToggleOption2(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::ParticleOption2 eOption);
+    void Tool_ToggleOption1(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option_Spawn eOption);
+    void Tool_ToggleOption2(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option_SpeedRotation eOption);
 #endif // _DEBUG
 
 #ifdef _DEBUG
@@ -135,7 +135,6 @@ private: // For. Tool
     void Tool_Spawn_Life_Time();
     void Tool_Boner();
     void Tool_Position();
-    void Tool_Position_Easing();
     void Tool_Speed();
     void Tool_Speed_Easing();
     void Tool_Rotation();
