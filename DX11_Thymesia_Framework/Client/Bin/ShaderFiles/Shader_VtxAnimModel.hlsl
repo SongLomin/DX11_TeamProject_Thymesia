@@ -510,7 +510,9 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_Default, 0);
 		SetRasterizerState(RS_Default);
         
-		VertexShader = compile vs_5_0 VS_MAIN();
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
 		GeometryShader = NULL;
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}	
@@ -522,6 +524,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN_SHADOW();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_SHADOW();
     }
@@ -533,6 +537,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_NONE_DEFERRED_USE_AHLPABLEND();
     }
@@ -544,6 +550,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_NONE_DEFERRED_RIM_LIGHT();
     }
@@ -555,6 +563,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_NORMAL();
     }
@@ -566,6 +576,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_NORMAL_SPECULAR();
     }
@@ -577,6 +589,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE();
     }
@@ -588,6 +602,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_DISSOLVE();
     }

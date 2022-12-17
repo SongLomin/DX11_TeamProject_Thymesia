@@ -204,6 +204,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	LightDesc.vSpecular  = _float4(0.6f, 0.6f, 0.6f, 1.f);
 	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.bEnable    = true;
+	LightDesc.fIntensity = 1.f;
 #else
 	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4( 1.f, -1.f,  1.f, 0.f);
@@ -212,6 +213,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	LightDesc.vSpecular  = _float4(0.1f, 0.1f, 0.1f, 1.f);
 	LightDesc.vLightFlag = _float4( 1.f,  1.f,  1.f, 1.f);
 	LightDesc.bEnable    = true;
+	LightDesc.fIntensity = 1.f;
+
 #endif // _BRIGHT_LIGHT_
 
 

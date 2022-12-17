@@ -63,6 +63,8 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }
