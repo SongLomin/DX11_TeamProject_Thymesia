@@ -27,6 +27,8 @@ class CStatus_Player;
 
 class CMonster;
 class CInteraction_CheckPoint;
+class CUI_Cursor;
+
 
 class CGameManager :
     public CBase
@@ -180,6 +182,14 @@ public:
     _uint   m_iTestTalent = 2;
     CStatus_Player::PLAYERDESC m_tPlayerDesc;
 
+
+public:
+    void    SetCursor(weak_ptr<CUI_Cursor> pCursor) { m_pCursor = pCursor; }
+    void    EnableCursor();
+    void    DisableCursor();
+
+private:
+    weak_ptr< CUI_Cursor> m_pCursor;
 
 public:
     void  Registration_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj);

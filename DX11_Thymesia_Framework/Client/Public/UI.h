@@ -81,10 +81,12 @@ public:
 
     virtual void    Set_UIDesc(UI_DESC _tUIDesc);
     virtual void    Set_Size(const _float& fSizeX, const _float& fSizeY);
-    virtual void    Set_Y(const _float fY);
-
-    void            Set_Depth(_float _fDepth);
+    virtual void    Set_Y( _float fY);
+    virtual void    Set_AlphaColor(_float fAlphaColor) {m_fAlphaColor = fAlphaColor;}
+    virtual void            Set_Depth(_float _fDepth);
     virtual void    Set_SizeX(const _float In_fSize);
+
+    virtual void    Add_Y(_float fAmountY) { m_tUIDesc.fY += fAmountY; }
 
     void		    Set_RenderGroup(RENDERGROUP eRenderGroup) { m_eRenderGroup = eRenderGroup; }
 public: /* Shaking */
@@ -103,7 +105,7 @@ protected:
 public:
     _float2                  Get_Point(UI_POINT eType);
     _float                   Get_Y();
-
+    _float                   Get_SizeY() { return m_tUIDesc.fSizeY; }
 
 
 protected:
@@ -111,7 +113,6 @@ protected:
     virtual void             Disable_AllEventChild();
     
 public:
-    void		            Set_AlphaColor(_float fAlphaColor) { m_fAlphaColor = fAlphaColor; }
     _float		            Get_AlphaColor() { return m_fAlphaColor; }
 
     void		            Set_OffsetPosition(_float2 fOffset) { m_fOffsetPosition = fOffset; }

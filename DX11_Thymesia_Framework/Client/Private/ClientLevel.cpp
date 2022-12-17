@@ -34,7 +34,7 @@
 #include "UI_Interaction.h"
 #include "UI_Utils.h"
 #include "UI_MonsterFocus.h"
-
+#include "UI_Cursor.h"
 GAMECLASS_C(CClientLevel)
 
 HRESULT CClientLevel::Initialize()
@@ -103,6 +103,8 @@ void CClientLevel::SetUp_UI()
 {
 	weak_ptr<CGameManager>	pGameManager = GET_SINGLE(CGameManager);
 
+	pGameManager.lock()->SetCursor(GAMEINSTANCE->Add_GameObject<CUI_Cursor>(LEVEL_STATIC));
+
 	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);//¿©±â¼­ 
 	m_pPauseMenu = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu>(LEVEL_STATIC);
 
@@ -110,6 +112,7 @@ void CClientLevel::SetUp_UI()
 	GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu_Level>(LEVEL_STATIC);
 
 	Preset::AddGameObject::TalentSetting();
+
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_MPBar>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CHUD_Player_Memory>(LEVEL_STATIC));
@@ -120,6 +123,10 @@ void CClientLevel::SetUp_UI()
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::INTERACTIONUI, GAMEINSTANCE->Add_GameObject<CUI_Interaction>(LEVEL_STATIC));
 
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CUI_MonsterFocus>(LEVEL_STATIC));
+	
+
+	//GET_SINGLE(CGameManager)->DisableCursor();
+
 #ifdef _ONLY_UI_
 
 	GAMEINSTANCE->Add_GameObject<CTestUI>(LEVEL_STATIC);
@@ -160,6 +167,7 @@ void CClientLevel::Tick_Key_InputEvent()
 
 			m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
 			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_Enable_PauseMenu, this);
+
 		}
 	}
 
