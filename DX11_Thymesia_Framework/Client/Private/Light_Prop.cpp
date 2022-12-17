@@ -71,6 +71,12 @@ void CLight_Prop::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	_bool bCheckEnd = false;
+	Callback_ActUpdate(fTimeDelta, bCheckEnd);
+
+	if (bCheckEnd)
+		Callback_ActUpdate.Clear();
+
 #ifdef _LIFEGUARD_FOR_FALL_
 	_vector vPos = m_pTransformCom.lock()->Get_Position();
 	if (vPos.m128_f32[1] < -50.f)
@@ -126,6 +132,7 @@ void CLight_Prop::Write_Json(json& Out_Json)
 	Out_Json["Light_Type"]   = (_int)m_tLightDesc.eActorType;
 	Out_Json["Light_Range"]  = m_tLightDesc.fRange;
 	Out_Json["SectionIndex"] = m_iSectionIndex;
+	Out_Json["DelayTime"]    = m_fDelayTime;
 	
 	CJson_Utility::Write_Float4(Out_Json["Light_Position"] , m_tLightDesc.vPosition);
 	CJson_Utility::Write_Float4(Out_Json["Light_Direction"], m_tLightDesc.vDirection);
@@ -143,6 +150,7 @@ void CLight_Prop::Load_FromJson(const json& In_Json)
 	m_tLightDesc.eActorType = (LIGHTDESC::TYPE)iLightTypeFromInt;
 	m_tLightDesc.fRange     = In_Json["Light_Range"];
 	m_iSectionIndex         = In_Json["SectionIndex"];
+	m_fDelayTime            = In_Json["DelayTime"];
 
 	CJson_Utility::Load_Float4(In_Json["Light_Position"] , m_tLightDesc.vPosition);
 	CJson_Utility::Load_Float4(In_Json["Light_Direction"], m_tLightDesc.vDirection);
@@ -150,6 +158,12 @@ void CLight_Prop::Load_FromJson(const json& In_Json)
 	CJson_Utility::Load_Float4(In_Json["Light_Ambient"]  , m_tLightDesc.vAmbient);
 	CJson_Utility::Load_Float4(In_Json["Light_Specular"] , m_tLightDesc.vSpecular);
 	CJson_Utility::Load_Float4(In_Json["Light_Flag"]     , m_tLightDesc.vLightFlag);
+
+	if (0 != m_iSectionIndex)
+	{
+		m_tLightDesc.bEnable = false;
+		GET_SINGLE(CGameManager)->Registration_SectionLight(m_iSectionIndex, Weak_Cast<CLight_Prop>(m_this));
+	}
 
 	GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
 
@@ -163,6 +177,25 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 
 	switch ((EVENT_TYPE)iArg)
 	{
+		case EVENT_TYPE::ON_ENTER_SECTION:
+		{
+			Set_Enable(true);
+
+			m_tLightDesc.bEnable = true;
+			Callback_ActUpdate += bind(&CLight_Prop::Act_LightEvent, this, placeholders::_1, placeholders::_2);
+		}
+		break;
+
+		case EVENT_TYPE::ON_EXIT_SECTION:
+		{
+			Set_Enable(false);
+
+			m_tLightDesc.bEnable = false;
+			GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+			Callback_ActUpdate.Clear();
+		}
+		break;
+
 		case EVENT_TYPE::ON_EDITINIT:
 		{
 			XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_Position());
@@ -194,6 +227,9 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 				}
 
 				ImGui::InputInt("Section Index", &m_iSectionIndex);
+				ImGui::InputFloat("DelayTime", &m_fDelayTime);
+
+				ImGui::Separator();
 
 				switch (m_tLightDesc.eActorType)
 				{
@@ -238,6 +274,17 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 			ImGui::Separator();
 		}
 		break;
+	}
+}
+
+void CLight_Prop::Act_LightEvent(_float fTimeDelta, _bool& Out_End)
+{
+	m_fDelayTime -= fTimeDelta;
+
+	if (0.f >= m_fDelayTime)
+	{
+		m_tLightDesc = GAMEINSTANCE->Add_Light(m_tLightDesc);
+		Out_End      = true;
 	}
 }
 

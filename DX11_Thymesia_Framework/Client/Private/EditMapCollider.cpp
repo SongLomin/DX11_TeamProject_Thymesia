@@ -186,6 +186,7 @@ void CEditMapCollider::View_Picking_Collider()
 		VtxInfo.vMax = {  0.5f,  0.5f,  0.5f };
 		VtxInfo.vMin = { -0.5f, -0.5f, -0.5f };
 
+		_float fPickedDist;
 		_uint   iIndex			= 0;
 		_float  fDistance		= 99999999.f;
 		_float4	vCamPosition	= GAMEINSTANCE->Get_CamPosition();

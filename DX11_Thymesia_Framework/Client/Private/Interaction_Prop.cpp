@@ -99,7 +99,7 @@ void CInteraction_Prop::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_p
         return;
 
     Callback_ActStart += bind(&CUI_Interaction::Call_ActionStart, pUI_Interaction.lock());
-    Callback_ActEnd   += bind(&CUI_Interaction::Call_ActionEnd, pUI_Interaction.lock());
+    Callback_ActEnd   += bind(&CUI_Interaction::Call_ActionEnd  , pUI_Interaction.lock());
 
     pUI_Interaction.lock()->Call_CollisionEnter(pMyCollider, (_uint)m_eInteractionType);
 }

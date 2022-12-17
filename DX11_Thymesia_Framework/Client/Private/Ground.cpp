@@ -30,12 +30,10 @@ HRESULT CGround::Initialize(void* pArg)
 		VTXGROUND_DECLARATION::iNumElements
 	);
 
-	m_pRendererCom = Add_Component<CRenderer>();
-	m_pVIBufferCom = Add_Component<CVIBuffer_Ground>();
+	m_pRendererCom      = Add_Component<CRenderer>();
+	m_pVIBufferCom      = Add_Component<CVIBuffer_Ground>();
 	m_pPhysXColliderCom = Add_Component<CPhysXCollider>();
-	m_pNoiseTextureCom = Add_Component<CTexture>();
-	m_pNoiseTextureCom.lock()->Use_Texture("UVNoise");
-	
+
 	/*if((_uint)LEVEL_EDIT != m_CreatedLevel)
 		USE_START(CGround);*/
 
@@ -55,15 +53,12 @@ HRESULT CGround::Start()
 	m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
 	GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_StaticCast<CGameObject>(m_this));
 
-
 	return S_OK;
 }
 
 void CGround::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
-	m_vNoiseUV.x += fTimeDelta;
 }
 
 void CGround::LateTick(_float fTimeDelta)
@@ -85,7 +80,7 @@ HRESULT CGround::Render(ID3D11DeviceContext* pDeviceContext)
 
 	m_pShaderCom.lock()->Set_RawValue("g_vUVNoise", &m_vNoiseUV, sizeof(_float2));
 
-	m_pShaderCom.lock()->Begin(4, pDeviceContext);
+	m_pShaderCom.lock()->Begin(m_iShaderPath, pDeviceContext);
 	m_pVIBufferCom.lock()->Render(pDeviceContext);
 
 	return S_OK;

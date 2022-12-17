@@ -33,9 +33,7 @@ HRESULT CImGui_Manager::Initialize()
 {
 	// Setup Dear ImGui context
 	
-
-	Init_SceneEditer();
-	
+	Init_SceneEditer();	
 
 	return S_OK;
 }

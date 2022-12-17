@@ -129,7 +129,7 @@ HRESULT CStatic_Instancing_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 			if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 				m_iPassIndex = 4;
 			else
-				m_iPassIndex = 6;
+				m_iPassIndex = 5;
 		}
 		else
 		{
@@ -139,7 +139,7 @@ HRESULT CStatic_Instancing_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 			}
 			else
 			{
-				if (m_bInvisibility)
+				if (m_bInvisibility && LEVEL::LEVEL_EDIT != Get_CreatedLevel())
 				{
                 	if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
 						m_iPassIndex = 6;

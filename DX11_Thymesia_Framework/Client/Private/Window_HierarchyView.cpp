@@ -69,12 +69,6 @@ HRESULT CWindow_HierarchyView::Render(ID3D11DeviceContext* pDeviceContext)
 
 	_uint iIndex = 0;
 
-	static _float AccTime = 0.f;
-	static _int   FPSCnt = 0;
-
-	AccTime += GAMEINSTANCE->Get_DeltaTime();
-	++FPSCnt;
-
 	for (auto& elem : m_pGameObjects)
 	{
 		string szIndexedName = to_string(iIndex) + ". " + elem.TypeName.substr(string("class Client::").length());
@@ -111,15 +105,6 @@ HRESULT CWindow_HierarchyView::Render(ID3D11DeviceContext* pDeviceContext)
 		++iIndex;
 	}
 
-	if (AccTime >= 1.f)
-	{
-		cout << FPSCnt << endl;
-
-		AccTime = 0.f;
-		FPSCnt = 0;
-	}
-
-	
 	__super::End();
 
 	return S_OK;
@@ -140,7 +125,8 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 	{
 		if (typeid(CEditMapCollider).hash_code() == iter_elem->HashCode ||
 			typeid(CEditSetActor).hash_code()    == iter_elem->HashCode ||
-			typeid(CEditGroupProp).hash_code()   == iter_elem->HashCode)
+			typeid(CEditGroupProp).hash_code()   == iter_elem->HashCode ||
+			typeid(CEditLights).hash_code()      == iter_elem->HashCode)
 		{
 			++iter_elem;
 			continue;
@@ -224,6 +210,7 @@ void CWindow_HierarchyView::Write_Json_ObjectListLayer()
 
 	if (!Out_Json.empty())
 		CJson_Utility::Save_Json(string(string("../Bin/LevelData/AutoSave/AutoSave ") + szDayInfo).c_str(), Out_Json);
+
 	Out_Json.clear();
 
 }
@@ -231,9 +218,7 @@ void CWindow_HierarchyView::Write_Json_ObjectListLayer()
 void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
 {
 	if (In_Json.find("GameObject") == In_Json.end())
-	{
 		return;
-	}
 
 	for (auto& Elem_GameObject : In_Json["GameObject"])
 	{
@@ -281,7 +266,7 @@ void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
 			     typeid(CVarg).hash_code()       == TempDesc.HashCode || 
 			     typeid(CCorvus).hash_code()     == TempDesc.HashCode ||
 			     typeid(CJoker).hash_code()      == TempDesc.HashCode ||
-			     typeid(CBat).hash_code() == TempDesc.HashCode)
+			     typeid(CBat).hash_code()        == TempDesc.HashCode)
 		{
 			weak_ptr<CGameObject> pNewGameObject = GAMEINSTANCE->Add_GameObject(TempDesc.HashCode, LEVEL::LEVEL_EDIT);
 			pNewGameObject.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDITINIT);
@@ -337,7 +322,8 @@ void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
 
 		else if (typeid(CEditMapCollider).hash_code() == TempDesc.HashCode ||
 			     typeid(CEditSetActor).hash_code()    == TempDesc.HashCode ||
-			     typeid(CEditGroupProp).hash_code()   == TempDesc.HashCode)
+			     typeid(CEditGroupProp).hash_code()   == TempDesc.HashCode ||
+			     typeid(CEditLights).hash_code()      == TempDesc.HashCode)
 		{
 			continue;
 		}

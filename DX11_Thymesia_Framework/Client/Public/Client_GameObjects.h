@@ -25,6 +25,7 @@
 #include "Interaction_Door.h"
 #include "Interaction_Note.h"
 #include "Section_Eventer.h"
+#include "Water.h"
 
 #include "EditGround.h"
 #include "EditGroupProp.h"
