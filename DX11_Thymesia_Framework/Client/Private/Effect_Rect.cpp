@@ -925,23 +925,6 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 
 #pragma region Bloom & Glow
 #ifdef _BAKE_PARTICLE_
-	if (In_Json.find("Glow_Color_Speed") != In_Json.end())
-	{
-		CJson_Utility::Load_Float4(In_Json["Glow_Color_Speed"], m_tEffectParticleDesc.vGlowColorSpeed);
-		if (SMath::Is_Equal(m_tEffectParticleDesc.vGlowColorSpeed, _float4{ 0.f, 0.f, 0.f, 0.f }))
-			TurnOff_Option6(EFFECTPARTICLE_DESC::Option6::Use_GlowSpeed);
-		else
-			TurnOn_Option6(EFFECTPARTICLE_DESC::Option6::Use_GlowSpeed);
-	}
-
-	if (In_Json.find("Glow_Color_Force") != In_Json.end())
-	{
-		CJson_Utility::Load_Float4(In_Json["Glow_Color_Force"], m_tEffectParticleDesc.vGlowColorForce);
-		if (SMath::Is_Equal(m_tEffectParticleDesc.vGlowColorForce, _float4{ 0.f, 0.f, 0.f, 0.f }))
-			TurnOff_Option6(EFFECTPARTICLE_DESC::Option6::Use_GlowForce);
-		else
-			TurnOn_Option6(EFFECTPARTICLE_DESC::Option6::Use_GlowForce);
-	}
 #endif // _BAKE_PARTICLE_
 
 	if (Check_Option6(EFFECTPARTICLE_DESC::Option6::Use_Glow))
