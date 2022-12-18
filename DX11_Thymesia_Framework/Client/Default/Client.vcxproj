@@ -419,6 +419,8 @@
     <ClInclude Include="..\Public\Interaction_Elevator.h" />
     <ClInclude Include="..\Public\Interaction_Ladder.h" />
     <ClInclude Include="..\Public\Interaction_Note.h" />
+    <ClInclude Include="..\Public\Inventory.h" />
+    <ClInclude Include="..\Public\Item.h" />
     <ClInclude Include="..\Public\JoJoParticleShaderManager.h" />
     <ClInclude Include="..\Public\JokerStateBase.h" />
     <ClInclude Include="..\Public\JokerStates.h" />
@@ -450,6 +452,7 @@
     <ClInclude Include="..\Public\Player_ItemSkillCollection.h" />
     <ClInclude Include="..\Public\Preset_AddGameObject.h" />
     <ClInclude Include="..\Public\Preset_DynamicProp.h" />
+    <ClInclude Include="..\Public\Preset_ItemData.h" />
     <ClInclude Include="..\Public\Preset_UIDesc.h" />
     <ClInclude Include="..\Public\RequirementBase.h" />
     <ClInclude Include="..\Public\RequirementChecker.h" />
@@ -484,6 +487,7 @@
     <ClInclude Include="..\Public\UI_EvolveTalent_Active.h" />
     <ClInclude Include="..\Public\UI_Interaction.h" />
     <ClInclude Include="..\Public\UI_Inventory.h" />
+    <ClInclude Include="..\Public\UI_ItemInformation.h" />
     <ClInclude Include="..\Public\UI_ItemSlot.h" />
     <ClInclude Include="..\Public\UI_LerpBar.h" />
     <ClInclude Include="..\Public\UI_MenuText.h" />
@@ -918,6 +922,8 @@
     <ClCompile Include="..\Private\Interaction_Elevator.cpp" />
     <ClCompile Include="..\Private\Interaction_Ladder.cpp" />
     <ClCompile Include="..\Private\Interaction_Note.cpp" />
+    <ClCompile Include="..\Private\Inventory.cpp" />
+    <ClCompile Include="..\Private\Item.cpp" />
     <ClCompile Include="..\Private\JoJoParticleShaderManager.cpp" />
     <ClCompile Include="..\Private\JokerStateBase.cpp" />
     <ClCompile Include="..\Private\JokerWeapon.cpp" />
@@ -935,6 +941,7 @@
     <ClCompile Include="..\Private\Player_ItemSkillCollection.cpp" />
     <ClCompile Include="..\Private\Preset_DynamicProp.cpp" />
     <ClCompile Include="..\Private\Preset_AddGameObject.cpp" />
+    <ClCompile Include="..\Private\Preset_ItemData.cpp" />
     <ClCompile Include="..\Private\Preset_UIDesc.cpp" />
     <ClCompile Include="..\Private\Requirement_PlayerStatusMana.cpp" />
     <ClCompile Include="..\Private\Requirement_Time.cpp" />
@@ -1175,6 +1182,7 @@
     <ClCompile Include="..\Public\TestUI.cpp" />
     <ClCompile Include="..\Skill_Base.cpp" />
     <ClCompile Include="..\UI_Inventory.cpp" />
+    <ClCompile Include="..\UI_ItemInformation.cpp" />
     <ClCompile Include="..\UI_MonsterFocus.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">

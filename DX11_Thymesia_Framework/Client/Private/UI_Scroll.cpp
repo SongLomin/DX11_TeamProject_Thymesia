@@ -2,6 +2,8 @@
 #include "UI_Scroll.h"
 #include "UI_Utils.h"
 #include "CustomUI.h"
+#include "GameManager.h"
+
 
 GAMECLASS_C(CUI_Scroll)
 CLONE_C(CUI_Scroll, CGameObject)
@@ -36,9 +38,19 @@ void CUI_Scroll::Tick(_float fTimeDelta)
         if (CheckMoveWheelCurrentTick())
         {
             Scrolling(fTimeDelta);
+            CheckTrackOverHeadOrTail();
             CalcScrolledTrackToMaxSize();
             Callback_OnWheelMove(m_fMaxSize * m_fProgressRatio);
         }
+
+        if (Check_Drag())
+        {
+            ScrollingToDrag();
+            CheckTrackOverHeadOrTail();
+            CalcScrolledTrackToMaxSize();
+            Callback_OnWheelMove(m_fMaxSize * m_fProgressRatio);
+        }
+
     }
 
 }
@@ -84,7 +96,6 @@ void CUI_Scroll::Scrolling(_float fTimeDelta)
 
     m_pScrollTrack.lock()->Add_Y(-fAmount);
 
-    CheckTrackOverHeadOrTail();
 }
 
 void CUI_Scroll::CheckTrackOverHeadOrTail()
@@ -128,6 +139,29 @@ _bool CUI_Scroll::CheckMoveWheelCurrentTick()
     return false;
 }
 
+_bool CUI_Scroll::Check_Drag()
+{
+    /*
+        스크롤 범위 내에 있으면서,
+        스크롤을 누르고 있다면 트루 반환
+    */
+
+    if (m_eButtonState == UI_BUTTON_BUTTON_DOWN)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+void CUI_Scroll::ScrollingToDrag()
+{
+    POINT   tMousePt = GET_SINGLE(CGameManager)->Get_MousePoint();
+
+    m_pScrollTrack.lock()->Set_Y((_float)tMousePt.y - m_pScrollTrack.lock()->Get_SizeY() * 0.5f);
+
+}
+
 
 
 void CUI_Scroll::SetUp_ScrollFromLeftTop(const _float fX, const _float fY, const _float fScrollSize, const _float fStartSize, const _float fMaxSize)
@@ -168,6 +202,7 @@ void CUI_Scroll::SetUp_ScrollFromLeftTop(const _float fX, const _float fY, const
     );
 
     m_tUIDesc = m_pScrollBoder.lock()->Get_UIDESC();
+    m_tUIDesc.fSizeX = 20.f;
 }
 
 void CUI_Scroll::Set_Depth(_float fDepth)

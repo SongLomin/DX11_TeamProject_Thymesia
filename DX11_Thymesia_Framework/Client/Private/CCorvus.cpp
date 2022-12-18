@@ -11,7 +11,7 @@
 #include "PhysXController.h"
 #include "PlayerSkill_System.h"
 #include "Skill_VargSword.h"
-
+#include "Inventory.h"
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -192,7 +192,6 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 }
 
 
-
 void CCorvus::Debug_KeyInput(_float fTimeDelta)
 {
 	PxControllerFilters Filters;
@@ -209,6 +208,11 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 		static _bool bEnable;
 		bEnable = !bEnable;
 		m_pPhysXControllerCom.lock()->Set_EnableSimulation(bEnable);
+	}
+	//Item Debug
+	if (KEY_INPUT(KEY::NUM3, KEY_STATE::TAP))
+	{
+		m_pInventory.lock()->Push_Item(ITEM_NAME::BASIL);
 	}
 
 #ifdef _DEBUG

@@ -8,6 +8,7 @@ BEGIN(Client)
 class CCustomUI;
 class CUI_ItemSlot;
 class CUI_Scroll;
+class CItem;
 
 class CUI_Inventory : public CUI_Container
 {
@@ -35,10 +36,18 @@ private:
     void                    Update_KeyInput(_float fTimeDelta);
     void                    Update_ItemSlotOffset();
 
+    void                    Update_ItemSlotFromPlayerInventory();
+
+
+private:
+    virtual void            OnEnable(void* pArg) override;
+    virtual void            OnDisable() override;
 
 //callBack
 private:
     void                    Call_OnWheelMove(_float fAmount);
+    void                    Call_OnMouseOver(weak_ptr<CItem>   pItem);
+    void                    Call_OnMouseOut();
 
 
 private:

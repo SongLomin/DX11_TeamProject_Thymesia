@@ -4,6 +4,8 @@
 #include "UI_Utils.h"
 #include "GameManager.h"
 #include "EasingComponent_Alpha.h"
+#include "Preset_ItemData.h"
+#include "Item.h"
 
 
 GAMECLASS_C(CUI_ItemSlot)
@@ -35,8 +37,7 @@ void CUI_ItemSlot::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 
-	m_tTextInfo.vPosition.x = m_tUIDesc.fX;
-	m_tTextInfo.vPosition.y = m_tUIDesc.fY;
+
 
 }
 
@@ -56,7 +57,7 @@ void CUI_ItemSlot::Set_UIPosition(const _float fX, const _float fY, UI_ALIGN_TYP
 	m_pMain.lock()->Set_UIPosition(fX, fY, eType);
 	m_pFrame.lock()->Set_UIPosition(fX, fY, eType);
 	m_pHover.lock()->Set_UIPosition(fX, fY, eType);
-
+	m_pIcon.lock()->Set_UIPosition(fX, fY, eType);
 }
 
 void CUI_ItemSlot::Set_OriginCenterPosFromThisPos()
@@ -75,7 +76,6 @@ void CUI_ItemSlot::Add_ScroolOffsetY(_float fOffsetY)
 {
 	m_fScrollOffsetY += fOffsetY;
 	Set_UIPosition(m_fOriginCenterPos.x, m_fOriginCenterPos.y + m_fScrollOffsetY, CUI::ALIGN_CENTER);
-
 }
 
 void CUI_ItemSlot::ResetPos()
@@ -83,11 +83,40 @@ void CUI_ItemSlot::ResetPos()
 	Set_UIPosition(m_fOriginCenterPos.x, m_fOriginCenterPos.y, CUI::ALIGN_CENTER);
 }
 
+void CUI_ItemSlot::Bind_Item(weak_ptr<CItem> pItem)
+{
+	m_pBindedItem = pItem;
+
+	CPreset_ItemData::SetUITextureFromItemName(m_pIcon, pItem.lock()->Get_Name());
+	Update_TextInfo();
+}
+
+_bool CUI_ItemSlot::Is_Bind()
+{
+	if (m_pBindedItem.lock())
+	{
+		return true;
+	}
+	
+	return false;
+}
+
+void CUI_ItemSlot::UnBind_Item()
+{
+	m_pIcon.lock()->Set_Texture("None");
+	m_tTextInfo.szText = TEXT("");
+	m_pBindedItem = weak_ptr<CItem>();
+}
+
 void CUI_ItemSlot::OnMouseOver()
 {
 	m_pHover.lock()->Get_Component<CEasingComponent_Alpha>().lock()->Set_Lerp(0.f, 1.f, 0.2f, EASING_TYPE::QUAD_IN, 
 		CEasingComponent::ONCE, false);
 
+	if (m_pBindedItem.lock())
+	{
+		Callback_OnMouseOver(m_pBindedItem);
+	}
 }
 
 void CUI_ItemSlot::OnMouseOut()
@@ -97,6 +126,7 @@ void CUI_ItemSlot::OnMouseOut()
 	m_pHover.lock()->Get_Component<CEasingComponent_Alpha>().lock()->Set_Lerp(fAlphaColor, 0.f, 0.2f, EASING_TYPE::QUAD_OUT,
 		CEasingComponent::ONCE, false);
 
+	Callback_OnMouseOut();
 }
 
 void CUI_ItemSlot::Create_ItemSlot()
@@ -120,9 +150,15 @@ void CUI_ItemSlot::Create_ItemSlot()
 	m_pHover.lock()->Set_AlphaColor(0.f);
 	m_pHover.lock()->Add_Component<CEasingComponent_Alpha>();
 
+	m_pIcon = ADD_STATIC_CUSTOMUI;
+	m_pIcon.lock()->Set_Size(64.f, 64.f);
+	m_pIcon.lock()->Set_Depth(0.4f);
+	m_pIcon.lock()->Set_Texture("None");
+
 	Add_Child(m_pMain);
 	Add_Child(m_pFrame);
 	Add_Child(m_pHover);
+	Add_Child(m_pIcon);
 }
 
 void CUI_ItemSlot::Create_TextInfo()
@@ -131,10 +167,19 @@ void CUI_ItemSlot::Create_TextInfo()
 	m_tTextInfo.vColor = _float4(1.f, 1.f, 1.f, 1.f);
 	m_tTextInfo.vScale = _float2(1.f, 1.f);
 	m_tTextInfo.bAlways = false;
-	m_tTextInfo.szText = TEXT("1");
+	m_tTextInfo.szText = TEXT("");
 }
 
 _bool CUI_ItemSlot::Check_IsInInventoryFrame()
 {
 	return _bool();
+}
+
+void CUI_ItemSlot::Update_TextInfo()
+{
+	m_tTextInfo.szText = to_wstring(m_pBindedItem.lock()->Get_CurrentQuantity());
+
+	m_tTextInfo.vPosition.x = m_tUIDesc.fX - ((m_tTextInfo.szText.size() - 1) * 10.f);
+	m_tTextInfo.vPosition.y = m_tUIDesc.fY;
+
 }

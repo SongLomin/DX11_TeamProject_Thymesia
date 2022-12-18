@@ -1,0 +1,57 @@
+#include "stdafx.h"
+#include "Preset_ItemData.h"
+#include "Client_Defines.h"
+#include "Item.h"
+#include "GameInstance.h"
+#include "Texture.h"
+#include "Base.h"
+#include "GameObject.h"
+#include "UI.h"
+
+
+void CPreset_ItemData::CreateItemData(weak_ptr<class CItem> pItem, ITEM_NAME eItemName)
+{
+	pItem.lock()->m_eItemName = eItemName;
+	pItem.lock()->m_iCurrentQuantity = 0;
+	switch (eItemName)
+	{
+	case Client::ITEM_NAME::BASIL:
+	{
+		pItem.lock()->m_eItemType = ITEM_TYPE::INGREDIENT;
+		pItem.lock()->m_iMaxQuantity = 99;
+		break;
+	}
+	case Client::ITEM_NAME::CINNAMON:
+		pItem.lock()->m_eItemType = ITEM_TYPE::INGREDIENT;
+		pItem.lock()->m_iMaxQuantity = 99;
+
+		break;
+	case Client::ITEM_NAME::GARDEN_KEY:
+		pItem.lock()->m_eItemType = ITEM_TYPE::COMMON;
+		pItem.lock()->m_iMaxQuantity = 1;
+		break;
+	default:
+		break;
+	}
+	pItem.lock()->m_iCreatedTime = time(NULL);
+	pItem.lock()->Add_Quantity();
+}
+
+void CPreset_ItemData::SetUITextureFromItemName(weak_ptr<class CUI> Out_pUI, ITEM_NAME eItemName)
+{
+	switch (eItemName)
+	{
+	case Client::ITEM_NAME::BASIL:
+		Out_pUI.lock()->Set_Texture("Item_Icon_Basil");
+		break;
+	case Client::ITEM_NAME::CINNAMON:
+		Out_pUI.lock()->Set_Texture("Item_Icon_Cinnamon");
+		break;
+	case Client::ITEM_NAME::GARDEN_KEY:
+		Out_pUI.lock()->Set_Texture("Item_Icon_Key01");
+		break;
+	default:
+		break;
+	}
+
+}

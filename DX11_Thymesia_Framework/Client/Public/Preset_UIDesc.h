@@ -12,6 +12,9 @@ public:
 
 	static void		Set_CUI_PlayerMPBar(weak_ptr<class CPlayer_MPBar> pUI);
 
+	static void		Set_CUI_ItemInformation(weak_ptr<class CUI_ItemInformation> pUI);
+
+	static void		Set_CUI_ItemInformaiton_BindItem(weak_ptr<class CUI_ItemInformation> pUI, weak_ptr<class CItem> pItem);
 
 };
 
