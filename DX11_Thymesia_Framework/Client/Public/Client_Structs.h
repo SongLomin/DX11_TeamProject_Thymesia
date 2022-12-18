@@ -328,7 +328,6 @@ namespace Client
 			Easing_Alpha   = 0b0000'0010
 			, Use_ColorSpeed = 0b0000'0100
 			, Use_ColorForce = 0b0000'1000
-			, Use_ScaleForce = 0b0001'0000
 			, Option_Color_END
 		};
 #pragma endregion

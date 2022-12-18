@@ -455,9 +455,11 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 		CJson_Utility::Write_Float4(Out_Json["Max_Color_Speed"], m_tEffectParticleDesc.vMaxColorSpeed);
 	}
 
-	CJson_Utility::Write_Float4(Out_Json["Min_Color_Force"], m_tEffectParticleDesc.vMinColorForce);
-	CJson_Utility::Write_Float4(Out_Json["Max_Color_Force"], m_tEffectParticleDesc.vMaxColorForce);
-
+	if (Check_Option4(EFFECTPARTICLE_DESC::Option4::Use_ColorForce))
+	{
+		CJson_Utility::Write_Float4(Out_Json["Min_Color_Force"], m_tEffectParticleDesc.vMinColorForce);
+		CJson_Utility::Write_Float4(Out_Json["Max_Color_Force"], m_tEffectParticleDesc.vMaxColorForce);
+	}
 	if (Check_Option4(EFFECTPARTICLE_DESC::Option4::Easing_Alpha))
 	{
 		Out_Json["Alpha_Easing_Type"] = m_tEffectParticleDesc.iAlphaEasingType;
@@ -809,20 +811,6 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	if (In_Json.find("Max_Start_Color") != In_Json.end())
 		CJson_Utility::Load_Float4(In_Json["Max_Start_Color"], m_tEffectParticleDesc.vMaxStartColor);
 
-#ifdef _BAKE_PARTICLE_
-	if (In_Json.find("Min_Color_Speed") != In_Json.end())
-		CJson_Utility::Load_Float4(In_Json["Min_Color_Speed"], m_tEffectParticleDesc.vMinColorSpeed);
-
-	if (In_Json.find("Max_Color_Speed") != In_Json.end())
-		CJson_Utility::Load_Float4(In_Json["Max_Color_Speed"], m_tEffectParticleDesc.vMaxColorSpeed);
-
-	if (SMath::Is_Equal(m_tEffectParticleDesc.vMinColorSpeed, _float4{ 0.f, 0.f, 0.f, 0.f })
-		&& SMath::Is_Equal(m_tEffectParticleDesc.vMaxColorSpeed, _float4{ 0.f, 0.f, 0.f, 0.f }))
-		TurnOff_Option4(EFFECTPARTICLE_DESC::Option4::Use_ColorSpeed);
-	else
-		TurnOn_Option4(EFFECTPARTICLE_DESC::Option4::Use_ColorSpeed);
-#endif // _BAKE_PARTICLE_
-
 	if (Check_Option4(EFFECTPARTICLE_DESC::Option4::Use_ColorSpeed))
 	{
 		if (In_Json.find("Min_Color_Speed") != In_Json.end())
@@ -831,10 +819,27 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 			CJson_Utility::Load_Float4(In_Json["Max_Color_Speed"], m_tEffectParticleDesc.vMaxColorSpeed);
 	}
 
+#ifdef _BAKE_PARTICLE_
 	if (In_Json.find("Min_Color_Force") != In_Json.end())
 		CJson_Utility::Load_Float4(In_Json["Min_Color_Force"], m_tEffectParticleDesc.vMinColorForce);
+
 	if (In_Json.find("Max_Color_Force") != In_Json.end())
 		CJson_Utility::Load_Float4(In_Json["Max_Color_Force"], m_tEffectParticleDesc.vMaxColorForce);
+
+	if (SMath::Is_Equal(m_tEffectParticleDesc.vMinColorForce, _float4{ 0.f, 0.f, 0.f, 0.f })
+		&& SMath::Is_Equal(m_tEffectParticleDesc.vMaxColorForce, _float4{ 0.f, 0.f, 0.f, 0.f }))
+		TurnOff_Option4(EFFECTPARTICLE_DESC::Option4::Use_ColorForce);
+	else
+		TurnOn_Option4(EFFECTPARTICLE_DESC::Option4::Use_ColorForce);
+#endif // _BAKE_PARTICLE_
+
+	if (Check_Option4(EFFECTPARTICLE_DESC::Option4::Use_ColorForce))
+	{
+		if (In_Json.find("Min_Color_Force") != In_Json.end())
+			CJson_Utility::Load_Float4(In_Json["Min_Color_Force"], m_tEffectParticleDesc.vMinColorForce);
+		if (In_Json.find("Max_Color_Force") != In_Json.end())
+			CJson_Utility::Load_Float4(In_Json["Max_Color_Force"], m_tEffectParticleDesc.vMaxColorForce);
+	}
 
 	if (In_Json.find("Min_Color") != In_Json.end())
 		CJson_Utility::Load_Float4(In_Json["Min_Color"], m_tEffectParticleDesc.vMinColor);
@@ -1317,7 +1322,8 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 			tParticle = m_tOriginalParticleDescs.at(i);
 #endif // _DEBUG
 
-			m_tOriginalParticleDescs[i].vTargetColorForce = SMath::vRandom(m_tEffectParticleDesc.vMinColorForce, m_tEffectParticleDesc.vMaxColorForce);
+			if (Check_Option4(EFFECTPARTICLE_DESC::Option4::Use_ColorForce))
+				m_tOriginalParticleDescs[i].vTargetColorForce = SMath::vRandom(m_tEffectParticleDesc.vMinColorForce, m_tEffectParticleDesc.vMaxColorForce);
 
 #ifdef _DEBUG
 			tParticle = m_tOriginalParticleDescs.at(i);
@@ -1605,15 +1611,19 @@ void CEffect_Rect::Update_ParticleColor(const _uint& i, _float fTimeDelta)
 		vColor = XMLoadFloat4(&vApplyColorSpeed);
 	}
 
-	SMath::Add_Float4(&m_tParticleDescs[i].vCurrentColorForce, SMath::Mul_Float4(m_tParticleDescs[i].vTargetColorForce, fTimeDelta));
+	if (Check_Option4(EFFECTPARTICLE_DESC::Option4::Use_ColorForce))
+		SMath::Add_Float4(&m_tParticleDescs[i].vCurrentColorForce, SMath::Mul_Float4(m_tParticleDescs[i].vTargetColorForce, fTimeDelta));
 
 	_float4 float4Color;
 	ZeroMemory(&float4Color, sizeof(_float4));
 	XMStoreFloat4(&float4Color, vColor);
 
-	_float4 vApplyColorForce = SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColorForce);
-	vColor = XMLoadFloat4(&vApplyColorForce);
-	XMStoreFloat4(&float4Color, vColor);
+	if (Check_Option4(EFFECTPARTICLE_DESC::Option4::Use_ColorForce))
+	{
+		_float4 vApplyColorForce = SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColorForce);
+		vColor = XMLoadFloat4(&vApplyColorForce);
+		XMStoreFloat4(&float4Color, vColor);
+	}
 
 	_float4 vApplyColor = SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColor);
 	vColor = XMLoadFloat4(&vApplyColor);
@@ -2784,21 +2794,27 @@ void CEffect_Rect::Tool_Color()
 		}
 	}
 
-	if (ImGui::TreeNode("Color Force"))
+	Tool_ToggleOption4("Use Color Force", "##Use_ColorForce", EFFECTPARTICLE_DESC::Option4::Use_ColorForce);
+
+	if (Check_Option4(EFFECTPARTICLE_DESC::Option4::Use_ColorForce))
 	{
-		ImGui::Checkbox("Min = Max##Is_MinMaxSame_ColorForce", &m_tEffectParticleDesc.bIsMinMaxSame_ColorForce);
+		if (ImGui::TreeNode("Color Force"))
+		{
+			ImGui::Checkbox("Min = Max##Is_MinMaxSame_ColorForce", &m_tEffectParticleDesc.bIsMinMaxSame_ColorForce);
 
-		if (m_tEffectParticleDesc.bIsMinMaxSame_ColorForce)
-			m_tEffectParticleDesc.vMaxColorForce = m_tEffectParticleDesc.vMinColorForce;
+			if (m_tEffectParticleDesc.bIsMinMaxSame_ColorForce)
+				m_tEffectParticleDesc.vMaxColorForce = m_tEffectParticleDesc.vMinColorForce;
 
-		ImGui::Text("Min Color Force"); ImGui::SetNextItemWidth(300.f);
-		ImGui::DragFloat4("##Min_Color_Force", &m_tEffectParticleDesc.vMinColorForce.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+			ImGui::Text("Min Color Force"); ImGui::SetNextItemWidth(300.f);
+			ImGui::DragFloat4("##Min_Color_Force", &m_tEffectParticleDesc.vMinColorForce.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
 
-		ImGui::Text("Max Color Force"); ImGui::SetNextItemWidth(300.f);
-		ImGui::DragFloat4("##Max_Color_Force", &m_tEffectParticleDesc.vMaxColorForce.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
+			ImGui::Text("Max Color Force"); ImGui::SetNextItemWidth(300.f);
+			ImGui::DragFloat4("##Max_Color_Force", &m_tEffectParticleDesc.vMaxColorForce.x, 0.01f, 0.f, 0.f, "%.5f", ImGuiSliderFlags_AlwaysClamp | ImGuiSliderFlags_Logarithmic);
 
-		ImGui::TreePop();
+			ImGui::TreePop();
+		}
 	}
+
 	if (ImGui::TreeNode("Color Limit"))
 	{
 		ImGui::Checkbox("Min = Max##Is_MinMaxSame_ColorLimit", &m_tEffectParticleDesc.bIsMinMaxSame_ColorLimit);
