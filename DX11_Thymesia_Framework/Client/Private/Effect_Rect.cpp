@@ -445,7 +445,6 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	Out_Json["Render_Group"] = m_eRenderGroup;
 
 	Out_Json["Discard_Ratio"] = m_tEffectParticleDesc.fDiscardRatio;
-	Out_Json["Is_Easing_Alpha"] = m_tEffectParticleDesc.bEasingAlpha;
 
 	CJson_Utility::Write_Float4(Out_Json["Min_Start_Color"], m_tEffectParticleDesc.vMinStartColor);
 	CJson_Utility::Write_Float4(Out_Json["Max_Start_Color"], m_tEffectParticleDesc.vMaxStartColor);
@@ -456,7 +455,7 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	CJson_Utility::Write_Float4(Out_Json["Min_Color_Force"], m_tEffectParticleDesc.vMinColorForce);
 	CJson_Utility::Write_Float4(Out_Json["Max_Color_Force"], m_tEffectParticleDesc.vMaxColorForce);
 
-	if (m_tEffectParticleDesc.bEasingAlpha)
+	if (Check_Option4(EFFECTPARTICLE_DESC::Option4::Easing_Alpha))
 	{
 		Out_Json["Alpha_Easing_Type"] = m_tEffectParticleDesc.iAlphaEasingType;
 		Out_Json["Alpha_Easing_Total_Time"] = m_tEffectParticleDesc.fAlphaEasingTotalTime;
@@ -715,7 +714,7 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 
 	if (In_Json.find("Max_Limit_Speed") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Max_Limit_Speed"], m_tEffectParticleDesc.vMaxLimitSpeed);
-	
+
 
 #pragma region Rotation
 	if (In_Json.find("Min_Start_Rotation") != In_Json.end())
@@ -802,20 +801,15 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 
 
 #ifdef _BAKE_PARTICLE_
-	if (In_Json.find("Is_Gray_Only_Use_Red") != In_Json.end())
-	{
-		_bool IsGray = In_Json["Is_Gray_Only_Use_Red"];
-		if (IsGray)
-			TurnOn_Option4(EFFECTPARTICLE_DESC::Option4::Is_Gray);
-		else
-			TurnOff_Option4(EFFECTPARTICLE_DESC::Option4::Is_Gray);
-	}
-	
-#endif // _BAKE_PARTICLE_
-
-
 	if (In_Json.find("Is_Easing_Alpha") != In_Json.end())
-		m_tEffectParticleDesc.bEasingAlpha = In_Json["Is_Easing_Alpha"];
+	{
+		_bool bEasingAlpha = In_Json["Is_Easing_Alpha"];
+		if (bEasingAlpha)
+			TurnOn_Option4(EFFECTPARTICLE_DESC::Option4::Easing_Alpha);
+		else
+			TurnOff_Option4(EFFECTPARTICLE_DESC::Option4::Easing_Alpha);
+	}
+#endif // _BAKE_PARTICLE_
 
 	if (In_Json.find("Min_Start_Color") != In_Json.end())
 		CJson_Utility::Load_Float4(In_Json["Min_Start_Color"], m_tEffectParticleDesc.vMinStartColor);
@@ -837,7 +831,7 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	if (In_Json.find("Max_Color") != In_Json.end())
 		CJson_Utility::Load_Float4(In_Json["Max_Color"], m_tEffectParticleDesc.vMaxColor);
 
-	if (m_tEffectParticleDesc.bEasingAlpha)
+	if (Check_Option4(EFFECTPARTICLE_DESC::Option4::Easing_Alpha))
 	{
 		if (In_Json.find("Alpha_Easing_Type") != In_Json.end())
 			m_tEffectParticleDesc.iAlphaEasingType = In_Json["Alpha_Easing_Type"];
@@ -1297,33 +1291,20 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 			tParticle = m_tOriginalParticleDescs.at(i);
 #endif // _DEBUG
 
-			if (Check_Option4(EFFECTPARTICLE_DESC::Option4::Is_Gray))
-			{
-				_float fGrayColor(SMath::fRandom(m_tEffectParticleDesc.vMinStartColor.x, m_tEffectParticleDesc.vMaxStartColor.x));
-				_float fAhlpaColor(SMath::fRandom(m_tEffectParticleDesc.vMinStartColor.w, m_tEffectParticleDesc.vMaxStartColor.w));
+
 #ifdef _DEBUG
-				tParticle = m_tOriginalParticleDescs.at(i);
+			tParticle = m_tOriginalParticleDescs.at(i);
 #endif // _DEBUG
-				m_tOriginalParticleDescs[i].vCurrentColor = { fGrayColor, fGrayColor, fGrayColor, fAhlpaColor };
+			m_tOriginalParticleDescs[i].vCurrentColor = SMath::vRandom(m_tEffectParticleDesc.vMinStartColor, m_tEffectParticleDesc.vMaxStartColor);
 #ifdef _DEBUG
-				tParticle = m_tOriginalParticleDescs.at(i);
+			tParticle = m_tOriginalParticleDescs.at(i);
 #endif // _DEBUG
-			}
-			else
-			{
+			if (Check_Option4(EFFECTPARTICLE_DESC::Option4::Easing_Alpha))
+				m_tOriginalParticleDescs[i].fStartAlpha = m_tOriginalParticleDescs[i].vCurrentColor.w;
 #ifdef _DEBUG
-				tParticle = m_tOriginalParticleDescs.at(i);
+			tParticle = m_tOriginalParticleDescs.at(i);
 #endif // _DEBUG
-				m_tOriginalParticleDescs[i].vCurrentColor = SMath::vRandom(m_tEffectParticleDesc.vMinStartColor, m_tEffectParticleDesc.vMaxStartColor);
-#ifdef _DEBUG
-				tParticle = m_tOriginalParticleDescs.at(i);
-#endif // _DEBUG
-				if (m_tEffectParticleDesc.bEasingAlpha)
-					m_tOriginalParticleDescs[i].fStartAlpha = m_tOriginalParticleDescs[i].vCurrentColor.w;
-#ifdef _DEBUG
-				tParticle = m_tOriginalParticleDescs.at(i);
-#endif // _DEBUG
-			}
+
 
 #ifdef _DEBUG
 			tParticle = m_tOriginalParticleDescs.at(i);
@@ -1594,72 +1575,48 @@ void CEffect_Rect::Update_ParticleColor(const _uint& i, _float fTimeDelta)
 	_vector vColor;
 	ZeroMemory(&vColor, sizeof(_vector));
 
-	if (Check_Option4(EFFECTPARTICLE_DESC::Option4::Is_Gray))
+	_float fAlpha(0.f);
+
+	if (Check_Option4(EFFECTPARTICLE_DESC::Option4::Easing_Alpha))
 	{
-		vColor = XMVectorSetX(vColor, m_tParticleDescs[i].vTargetColorSpeed.x * fTimeDelta);
-		vColor = XMVectorSetW(vColor, m_tParticleDescs[i].vTargetColorSpeed.w * fTimeDelta);
+		_float fElapsedTime(m_tParticleDescs[i].fCurrentLifeTime);
 
-		m_tParticleDescs[i].vCurrentColorForce.x += m_tParticleDescs[i].vTargetColorForce.x * fTimeDelta;
-		m_tParticleDescs[i].vCurrentColorForce.w += m_tParticleDescs[i].vTargetColorForce.w * fTimeDelta;
+		if (0.f > fElapsedTime)
+			return;
 
-		vColor = XMVectorSetX(vColor, XMVectorGetX(vColor) + m_tParticleDescs[i].vCurrentColorForce.x);
-		vColor = XMVectorSetW(vColor, XMVectorGetW(vColor) + m_tParticleDescs[i].vCurrentColorForce.w);
-		vColor = XMVectorSetX(vColor, XMVectorGetX(vColor) + m_tParticleDescs[i].vCurrentColor.x);
-		vColor = XMVectorSetW(vColor, XMVectorGetW(vColor) + m_tParticleDescs[i].vCurrentColor.w);
-
-		vColor = XMVectorSetY(vColor, XMVectorGetX(vColor));
-		vColor = XMVectorSetZ(vColor, XMVectorGetX(vColor));
-
-		vColor = XMVectorSetX(vColor, max(m_tEffectParticleDesc.vMinColor.x, min(m_tEffectParticleDesc.vMaxColor.x, XMVectorGetX(vColor))));
-		vColor = XMVectorSetY(vColor, max(m_tEffectParticleDesc.vMinColor.y, min(m_tEffectParticleDesc.vMaxColor.y, XMVectorGetY(vColor))));
-		vColor = XMVectorSetZ(vColor, max(m_tEffectParticleDesc.vMinColor.z, min(m_tEffectParticleDesc.vMaxColor.z, XMVectorGetZ(vColor))));
-		vColor = XMVectorSetW(vColor, max(m_tEffectParticleDesc.vMinColor.w, min(m_tEffectParticleDesc.vMaxColor.w, XMVectorGetW(vColor))));
+		Apply_Easing
+		(
+			fAlpha
+			, (EASING_TYPE)m_tEffectParticleDesc.iAlphaEasingType
+			, m_tParticleDescs[i].fStartAlpha
+			, m_tEffectParticleDesc.vMinColorSpeed.w
+			, fElapsedTime
+			, m_tEffectParticleDesc.fAlphaEasingTotalTime
+		);
 	}
-	else
-	{
-		_float fAlpha(0.f);
 
-		if (m_tEffectParticleDesc.bEasingAlpha)
-		{
-			_float fElapsedTime(m_tParticleDescs[i].fCurrentLifeTime);
+	_float4 Temp = SMath::Mul_Float4(m_tParticleDescs[i].vTargetColorSpeed, fTimeDelta);
+	vColor = XMLoadFloat4(&Temp);
+	SMath::Add_Float4(&m_tParticleDescs[i].vCurrentColorForce, SMath::Mul_Float4(m_tParticleDescs[i].vTargetColorForce, fTimeDelta));
 
-			if (0.f > fElapsedTime)
-				return;
+	_float4 float4Color;
+	ZeroMemory(&float4Color, sizeof(_float4));
+	XMStoreFloat4(&float4Color, vColor);
 
-			Apply_Easing
-			(
-				fAlpha
-				, (EASING_TYPE)m_tEffectParticleDesc.iAlphaEasingType
-				, m_tParticleDescs[i].fStartAlpha
-				, m_tEffectParticleDesc.vMinColorSpeed.w
-				, fElapsedTime
-				, m_tEffectParticleDesc.fAlphaEasingTotalTime
-			);
-		}
+	_float4 Temp2 = SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColorForce);
+	vColor = XMLoadFloat4(&Temp2);
+	XMStoreFloat4(&float4Color, vColor);
 
-		_float4 Temp = SMath::Mul_Float4(m_tParticleDescs[i].vTargetColorSpeed, fTimeDelta);
-		vColor = XMLoadFloat4(&Temp);
-		SMath::Add_Float4(&m_tParticleDescs[i].vCurrentColorForce, SMath::Mul_Float4(m_tParticleDescs[i].vTargetColorForce, fTimeDelta));
+	_float4 Temp3 = SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColor);
+	vColor = XMLoadFloat4(&Temp3);
 
-		_float4 float4Color;
-		ZeroMemory(&float4Color, sizeof(_float4));
-		XMStoreFloat4(&float4Color, vColor);
+	vColor = XMVectorSetX(vColor, max(m_tEffectParticleDesc.vMinColor.x, min(m_tEffectParticleDesc.vMaxColor.x, XMVectorGetX(vColor))));
+	vColor = XMVectorSetY(vColor, max(m_tEffectParticleDesc.vMinColor.y, min(m_tEffectParticleDesc.vMaxColor.y, XMVectorGetY(vColor))));
+	vColor = XMVectorSetZ(vColor, max(m_tEffectParticleDesc.vMinColor.z, min(m_tEffectParticleDesc.vMaxColor.z, XMVectorGetZ(vColor))));
+	vColor = XMVectorSetW(vColor, max(m_tEffectParticleDesc.vMinColor.w, min(m_tEffectParticleDesc.vMaxColor.w, XMVectorGetW(vColor))));
 
-		_float4 Temp2 = SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColorForce);
-		vColor = XMLoadFloat4(&Temp2);
-		XMStoreFloat4(&float4Color, vColor);
-
-		_float4 Temp3 = SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColor);
-		vColor = XMLoadFloat4(&Temp3);
-
-		vColor = XMVectorSetX(vColor, max(m_tEffectParticleDesc.vMinColor.x, min(m_tEffectParticleDesc.vMaxColor.x, XMVectorGetX(vColor))));
-		vColor = XMVectorSetY(vColor, max(m_tEffectParticleDesc.vMinColor.y, min(m_tEffectParticleDesc.vMaxColor.y, XMVectorGetY(vColor))));
-		vColor = XMVectorSetZ(vColor, max(m_tEffectParticleDesc.vMinColor.z, min(m_tEffectParticleDesc.vMaxColor.z, XMVectorGetZ(vColor))));
-		vColor = XMVectorSetW(vColor, max(m_tEffectParticleDesc.vMinColor.w, min(m_tEffectParticleDesc.vMaxColor.w, XMVectorGetW(vColor))));
-
-		if (m_tEffectParticleDesc.bEasingAlpha)
-			vColor = XMVectorSetW(vColor, fAlpha);
-	}
+	if (Check_Option4(EFFECTPARTICLE_DESC::Option4::Easing_Alpha))
+		vColor = XMVectorSetW(vColor, fAlpha);
 
 	XMStoreFloat4(&m_tParticleDescs[i].vCurrentColor, vColor);
 }
@@ -3190,10 +3147,11 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 				ImGui::Text("Discard Ratio"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);
 				ImGui::DragFloat("##Discard_Ratio", &m_tEffectParticleDesc.fDiscardRatio, 0.01f, 0.f, 3.f);
 
-				Tool_ToggleOption4("Is Gray (Use Red Only)", "##Is_Gray", EFFECTPARTICLE_DESC::Option4::Is_Gray);
-				ImGui::Checkbox("Easing Alpha##Is_Easing_Alpha", &m_tEffectParticleDesc.bEasingAlpha);
+				Tool_ToggleOption4("Easing Alpha", "Easing_Alpha", EFFECTPARTICLE_DESC::Option4::Easing_Alpha);
+				
 				Tool_Color();
-				if (m_tEffectParticleDesc.bEasingAlpha)
+
+				if (Check_Option4(EFFECTPARTICLE_DESC::Option4::Easing_Alpha))
 					Tool_Color_EasingAlpha();
 			}
 			if (ImGui::CollapsingHeader("Textures"))

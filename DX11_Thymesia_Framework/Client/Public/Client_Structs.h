@@ -306,7 +306,6 @@ namespace Client
 #pragma region Color
 		_float		fDiscardRatio;
 
-		_bool		bEasingAlpha;
 		_int		iAlphaEasingType;
 		_float		fAlphaEasingTotalTime;
 
@@ -325,8 +324,8 @@ namespace Client
 		_ubyte		byOption4 = 0;
 		enum class Option4
 		{
-			Is_Gray          = 0b0000'0001
-			, Easing_Alpha   = 0b0000'0010
+			// Is_Gray          = 0b0000'0001
+			Easing_Alpha   = 0b0000'0010
 			, Use_ColorSpeed = 0b0000'0100
 			, Use_ColorForce = 0b0000'1000
 			, Use_ScaleForce = 0b0001'0000
