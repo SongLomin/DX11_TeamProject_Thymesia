@@ -295,6 +295,17 @@ namespace Client
 
 		_float2		vMinLimitScale;
 		_float2		vMaxLimitScale;
+
+		_ubyte		byOption_Scale = 0;
+		enum class Option_Scale
+		{
+			Square_Scale     = 0b0000'0001
+			, Ratio_Scale    = 0b0000'0010
+			, Easing_Scale   = 0b0000'0100
+			, Use_ScaleSpeed = 0b0000'1000
+			, Use_ScaleForce = 0b0001'0000
+			, Option_Scale_END
+		};
 #pragma endregion
 #pragma region Color
 		_float		fDiscardRatio;
@@ -302,7 +313,6 @@ namespace Client
 
 		_bool		bEasingAlpha;
 		_int		iAlphaEasingType;
-
 		_float		fAlphaEasingTotalTime;
 
 		_float4		vMinStartColor;
@@ -316,6 +326,17 @@ namespace Client
 
 		_float4		vMinColor;
 		_float4		vMaxColor;
+
+		_ubyte		byOption_Color = 0;
+		enum class Option_Color
+		{
+			Is_Gray          = 0b0000'0001
+			, Easing_Alpha   = 0b0000'0010
+			, Use_ColorSpeed = 0b0000'0100
+			, Use_ColorForce = 0b0000'1000
+			, Use_ScaleForce = 0b0001'0000
+			, Option_Color_END
+		};
 #pragma endregion
 #pragma region Texture
 #pragma region Diffuse
@@ -342,6 +363,18 @@ namespace Client
 		_float2		vNoiseUVForce;
 		_float2		vNoiseUVMax;
 #pragma endregion
+
+		_ubyte byOption_Texture;
+		enum class Option_Texture
+		{
+			Use_DiffuseSpeed   = 0b0000'0001
+			, Use_DiffuseForce = 0b0000'0010
+			, Use_MaskSpeed    = 0b0000'0100
+			, Use_MaskForce    = 0b0000'1000
+			, Use_NoiseSpeed   = 0b0001'0000
+			, Use_NoiseForce   = 0b0010'0000
+			, Option_Texture_END
+		};
 #pragma endregion
 #pragma region Bloom & Glow
 		_bool		bBloom;
@@ -349,6 +382,19 @@ namespace Client
 		_float4		vStartGlowColor;
 		_float4		vGlowColorSpeed;
 		_float4		vGlowColorForce;
+
+		_ubyte byOption_Glite;
+		enum class Option_Glite
+		{
+			Use_Bloom         = 0b0000'0001
+			, Use_Glow        = 0b0000'0010
+			, Use_GlowSpeed   = 0b0000'0100
+			, Use_GlowForce   = 0b0000'1000
+			, Is_Sprite       = 0b0001'0000
+			, Loop_Sprite     = 0b0010'0000
+			, Sprite_StopAtEnd= 0b0100'0000
+			, Option_Glite_END
+		};
 #pragma endregion
 #pragma region For. Sprite
 		_bool		bLoopSprite;
