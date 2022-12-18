@@ -144,9 +144,15 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_2b2", 2.f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_3b", 2.f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TurnAttack1", 2.5f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_Start_FIX", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_Start_FIX", 2.f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeParry_FIX", 2.f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_Dead", 1.5f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_End", 1.5f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_Loop", 1.5f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_NoDeadEnd", 1.5f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Seq_TutorialBossFightStart", 5.f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Seq_BossFightStart", 5.f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Seq_BossFightStart", 6.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_CatchSeq1", 2.5f);
 
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_AvoidB", 1.25f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_AvoidAttack1", 2.f);
@@ -157,8 +163,15 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TurnL90", 1.5f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TurnR90", 1.5f);
 
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_WalkB", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_WalkF", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_WalkL", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_WalkR", 1.25f);
+
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_StunLoop", 2.f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_StunEnd", 2.f);
+
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Dead", 1.25f);
 #pragma endregion // Varg
 
 #pragma region Joker
