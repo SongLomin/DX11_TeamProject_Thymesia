@@ -430,8 +430,11 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 			CJson_Utility::Write_Float2(Out_Json["Max_Scale_Speed"], m_tEffectParticleDesc.vMaxScaleSpeed);
 		}
 
-		CJson_Utility::Write_Float2(Out_Json["Min_Scale_Force"], m_tEffectParticleDesc.vMinScaleForce);
-		CJson_Utility::Write_Float2(Out_Json["Max_Scale_Force"], m_tEffectParticleDesc.vMaxScaleForce);
+		if (Check_Option3(EFFECTPARTICLE_DESC::Option3::Use_ScaleForce))
+		{
+			CJson_Utility::Write_Float2(Out_Json["Min_Scale_Force"], m_tEffectParticleDesc.vMinScaleForce);
+			CJson_Utility::Write_Float2(Out_Json["Max_Scale_Force"], m_tEffectParticleDesc.vMaxScaleForce);
+		}
 	}
 	CJson_Utility::Write_Float2(Out_Json["Min_Scale"], m_tEffectParticleDesc.vMinLimitScale);
 	CJson_Utility::Write_Float2(Out_Json["Max_Scale"], m_tEffectParticleDesc.vMaxLimitScale);
@@ -772,6 +775,22 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 		if (In_Json.find("Max_Start_Scale") != In_Json.end())
 			CJson_Utility::Load_Float2(In_Json["Max_Start_Scale"], m_tEffectParticleDesc.vMaxStartScale);
 
+#ifdef _BAKE_PARTICLE_
+		if (In_Json.find("Min_Scale_Speed") != In_Json.end())
+			CJson_Utility::Load_Float2(In_Json["Min_Scale_Speed"], m_tEffectParticleDesc.vMinScaleSpeed);
+
+		if (In_Json.find("Max_Scale_Speed") != In_Json.end())
+			CJson_Utility::Load_Float2(In_Json["Max_Scale_Speed"], m_tEffectParticleDesc.vMaxScaleSpeed);
+
+		if (SMath::Is_Equal(m_tEffectParticleDesc.vMinScaleSpeed, _float2{ 0.f, 0.f }) 
+			&& SMath::Is_Equal(m_tEffectParticleDesc.vMaxScaleSpeed, _float2{ 0.f, 0.f }))
+			TurnOff_Option3(EFFECTPARTICLE_DESC::Option3::Use_ScaleSpeed);
+		else
+			TurnOn_Option3(EFFECTPARTICLE_DESC::Option3::Use_ScaleSpeed);
+		
+#endif // _BAKE_PARTICLE_
+
+
 		if (Check_Option3(EFFECTPARTICLE_DESC::Option3::Use_ScaleSpeed))
 		{
 			if (In_Json.find("Min_Scale_Speed") != In_Json.end())
@@ -780,10 +799,13 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 				CJson_Utility::Load_Float2(In_Json["Max_Scale_Speed"], m_tEffectParticleDesc.vMaxScaleSpeed);
 		}
 
-		if (In_Json.find("Min_Scale_Force") != In_Json.end())
-			CJson_Utility::Load_Float2(In_Json["Min_Scale_Force"], m_tEffectParticleDesc.vMinScaleForce);
-		if (In_Json.find("Max_Scale_Force") != In_Json.end())
-			CJson_Utility::Load_Float2(In_Json["Max_Scale_Force"], m_tEffectParticleDesc.vMaxScaleForce);
+		if (Check_Option3(EFFECTPARTICLE_DESC::Option3::Use_ScaleForce))
+		{
+			if (In_Json.find("Min_Scale_Force") != In_Json.end())
+				CJson_Utility::Load_Float2(In_Json["Min_Scale_Force"], m_tEffectParticleDesc.vMinScaleForce);
+			if (In_Json.find("Max_Scale_Force") != In_Json.end())
+				CJson_Utility::Load_Float2(In_Json["Max_Scale_Force"], m_tEffectParticleDesc.vMaxScaleForce);
+		}
 	}
 	if (In_Json.find("Min_Scale") != In_Json.end())
 		CJson_Utility::Load_Float2(In_Json["Min_Scale"], m_tEffectParticleDesc.vMinLimitScale);
@@ -1272,7 +1294,10 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 #ifdef _DEBUG
 			tParticle = m_tOriginalParticleDescs.at(i);
 #endif // _DEBUG
-			XMStoreFloat2(&m_tOriginalParticleDescs[i].vTargetScaleForce, SMath::vRandom(XMLoadFloat2(&m_tEffectParticleDesc.vMinScaleForce), XMLoadFloat2(&m_tEffectParticleDesc.vMaxScaleForce)));
+			if (Check_Option3(EFFECTPARTICLE_DESC::Option3::Use_ScaleForce))
+				XMStoreFloat2(&m_tOriginalParticleDescs[i].vTargetScaleForce, SMath::vRandom(XMLoadFloat2(&m_tEffectParticleDesc.vMinScaleForce), XMLoadFloat2(&m_tEffectParticleDesc.vMaxScaleForce)));
+			else
+				XMStoreFloat2(&m_tOriginalParticleDescs[i].vTargetScaleForce, XMVectorSet(0.f, 0.f, 0.f, 0.f));
 
 #ifdef _DEBUG
 			tParticle = m_tOriginalParticleDescs.at(i);
@@ -1503,8 +1528,12 @@ void CEffect_Rect::Update_ParticleScale(const _uint& i, _float fTimeDelta)
 		if (Check_Option3(EFFECTPARTICLE_DESC::Option3::Use_ScaleSpeed))
 			vScale = SMath::Mul_Float2(m_tParticleDescs[i].vTargetScaleSpeed, fTimeDelta);
 
-		m_tParticleDescs[i].vCurrentScaleForce = SMath::Add_Float2(m_tParticleDescs[i].vCurrentScaleForce, SMath::Mul_Float2(m_tParticleDescs[i].vTargetScaleForce, fTimeDelta));
-		SMath::Add_Float2(&m_tParticleDescs[i].vCurrentScale, m_tParticleDescs[i].vCurrentScaleForce);
+		if (Check_Option3(EFFECTPARTICLE_DESC::Option3::Use_ScaleForce))
+		{
+			m_tParticleDescs[i].vCurrentScaleForce = SMath::Add_Float2(m_tParticleDescs[i].vCurrentScaleForce, SMath::Mul_Float2(m_tParticleDescs[i].vTargetScaleForce, fTimeDelta));
+			SMath::Add_Float2(&m_tParticleDescs[i].vCurrentScale, m_tParticleDescs[i].vCurrentScaleForce);
+		}
+
 		m_tParticleDescs[i].vCurrentScale = SMath::Add_Float2(m_tParticleDescs[i].vCurrentScale, vScale);
 	}
 
@@ -2601,27 +2630,33 @@ void CEffect_Rect::Tool_Scale()
 		}
 	}
 
-	if (ImGui::TreeNode("Scale Force"))
+	Tool_ToggleOption3("Use Scale Force", "##Use_ScaleForce", EFFECTPARTICLE_DESC::Option3::Use_ScaleForce);
+
+	if (Check_Option3(EFFECTPARTICLE_DESC::Option3::Use_ScaleForce))
 	{
-		ImGui::Checkbox("Min = Max##Is_MinMaxSame_ScaleForce", &m_tEffectParticleDesc.bIsMinMaxSame_ScaleForce);
-
-		if (m_tEffectParticleDesc.bIsMinMaxSame_ScaleForce)
-			m_tEffectParticleDesc.vMaxScaleForce = m_tEffectParticleDesc.vMinScaleForce;
-
-		ImGui::Text("Min Scale Force"); ImGui::SetNextItemWidth(300.f);
-		ImGui::DragFloat2("##Min_Scale_Force", &m_tEffectParticleDesc.vMinScaleForce.x, 0.1f, 0.f, 0.f, "%.5f");
-
-		ImGui::Text("Max Scale Force"); ImGui::SetNextItemWidth(300.f);
-		ImGui::DragFloat2("##Max_Scale_Force", &m_tEffectParticleDesc.vMaxScaleForce.x, 0.1f, 0.f, 0.f, "%.5f");
-
-		if (Check_Option3(EFFECTPARTICLE_DESC::Option3::Square_Scale))
+		if (ImGui::TreeNode("Scale Force"))
 		{
-			m_tEffectParticleDesc.vMinScaleForce.y = m_tEffectParticleDesc.vMinScaleForce.x;
-			m_tEffectParticleDesc.vMaxScaleForce.y = m_tEffectParticleDesc.vMaxScaleForce.x;
-		}
+			ImGui::Checkbox("Min = Max##Is_MinMaxSame_ScaleForce", &m_tEffectParticleDesc.bIsMinMaxSame_ScaleForce);
 
-		ImGui::TreePop();
+			if (m_tEffectParticleDesc.bIsMinMaxSame_ScaleForce)
+				m_tEffectParticleDesc.vMaxScaleForce = m_tEffectParticleDesc.vMinScaleForce;
+
+			ImGui::Text("Min Scale Force"); ImGui::SetNextItemWidth(300.f);
+			ImGui::DragFloat2("##Min_Scale_Force", &m_tEffectParticleDesc.vMinScaleForce.x, 0.1f, 0.f, 0.f, "%.5f");
+
+			ImGui::Text("Max Scale Force"); ImGui::SetNextItemWidth(300.f);
+			ImGui::DragFloat2("##Max_Scale_Force", &m_tEffectParticleDesc.vMaxScaleForce.x, 0.1f, 0.f, 0.f, "%.5f");
+
+			if (Check_Option3(EFFECTPARTICLE_DESC::Option3::Square_Scale))
+			{
+				m_tEffectParticleDesc.vMinScaleForce.y = m_tEffectParticleDesc.vMinScaleForce.x;
+				m_tEffectParticleDesc.vMaxScaleForce.y = m_tEffectParticleDesc.vMaxScaleForce.x;
+			}
+
+			ImGui::TreePop();
+		}
 	}
+
 
 	if (ImGui::TreeNode("Scale Limit"))
 	{
