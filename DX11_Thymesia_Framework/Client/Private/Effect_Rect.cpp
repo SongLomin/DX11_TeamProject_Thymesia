@@ -290,8 +290,11 @@ void CEffect_Rect::SetUp_ShaderResource()
 	m_pShaderCom.lock()->Set_RawValue("g_vNoiseUV", &m_vNoiseCurrentUV, sizeof(_float2));
 
 	// For. Sprite
-	m_pShaderCom.lock()->Set_RawValue("g_iNumFrameX", &m_tEffectParticleDesc.iNumFrameX, sizeof(_uint));
-	m_pShaderCom.lock()->Set_RawValue("g_iNumFrameY", &m_tEffectParticleDesc.iNumFrameY, sizeof(_uint));
+	if (Check_Option6(EFFECTPARTICLE_DESC::Option6::Is_Sprite))
+	{
+		m_pShaderCom.lock()->Set_RawValue("g_iNumFrameX", &m_tEffectParticleDesc.iNumFrameX, sizeof(_uint));
+		m_pShaderCom.lock()->Set_RawValue("g_iNumFrameY", &m_tEffectParticleDesc.iNumFrameY, sizeof(_uint));
+	}
 #pragma endregion
 
 #pragma region Billboard
@@ -536,7 +539,7 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 #pragma endregion
 
 #pragma region For. Sprite
-	if (Is_Sprite())
+	if (Check_Option6(EFFECTPARTICLE_DESC::Option6::Is_Sprite))
 	{
 		Out_Json["Loop_Sprite"] = m_tEffectParticleDesc.bLoopSprite;
 		Out_Json["Is_Stop_At_End_Frame"] = m_tEffectParticleDesc.bStopAtEndFrame;
@@ -924,9 +927,6 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma endregion
 
 #pragma region Bloom & Glow
-#ifdef _BAKE_PARTICLE_
-#endif // _BAKE_PARTICLE_
-
 	if (Check_Option6(EFFECTPARTICLE_DESC::Option6::Use_Glow))
 	{
 		CJson_Utility::Load_Float4(In_Json["Start_Glow_Color"], m_tEffectParticleDesc.vStartGlowColor);
@@ -940,7 +940,14 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma endregion
 
 #pragma region For. Sprite
+#ifdef _BAKE_PARTICLE_
 	if (Is_Sprite())
+		TurnOn_Option6(EFFECTPARTICLE_DESC::Option6::Is_Sprite);
+	else
+		TurnOff_Option6(EFFECTPARTICLE_DESC::Option6::Is_Sprite);
+#endif // _BAKE_PARTICLE_
+
+	if (Check_Option6(EFFECTPARTICLE_DESC::Option6::Is_Sprite))
 	{
 		if (In_Json.find("Loop_Sprite") != In_Json.end())
 			m_tEffectParticleDesc.bLoopSprite = In_Json["Loop_Sprite"];
@@ -1427,7 +1434,9 @@ void CEffect_Rect::Play_Internal(const _uint& i, _float fTimeDelta, _matrix Bone
 	Update_ParticlePosition(i, fTimeDelta, BoneMatrix);
 	Update_ParticleScale(i, fTimeDelta);
 	Update_ParticleColor(i, fTimeDelta);
-	Update_ParticleSpriteFrame(i, fTimeDelta);
+
+	if (Check_Option6(EFFECTPARTICLE_DESC::Option6::Is_Sprite))
+		Update_ParticleSpriteFrame(i, fTimeDelta);
 }
 
 void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta, _matrix BoneMatrix)
@@ -3348,8 +3357,9 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 				if (ImGui::Button("Alpha Blend##RenderGroup_AlphaBlend"))
 					m_eRenderGroup = RENDERGROUP::RENDER_ALPHABLEND;
 
+				Tool_ToggleOption6("Use Sprite", "##Is_Sprite", EFFECTPARTICLE_DESC::Option6::Is_Sprite);
 
-				if (Is_Sprite())
+				if (Check_Option6(EFFECTPARTICLE_DESC::Option6::Is_Sprite))
 					Tool_Sprite();
 
 				ImGui::Text("Discard Ratio"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);
