@@ -526,8 +526,12 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	if (Check_Option6(EFFECTPARTICLE_DESC::Option6::Use_Glow))
 	{
 		CJson_Utility::Write_Float4(Out_Json["Start_Glow_Color"], m_tEffectParticleDesc.vStartGlowColor);
-		CJson_Utility::Write_Float4(Out_Json["Glow_Color_Speed"], m_tEffectParticleDesc.vGlowColorSpeed);
-		CJson_Utility::Write_Float4(Out_Json["Glow_Color_Force"], m_tEffectParticleDesc.vGlowColorForce);
+
+		if (Check_Option6(EFFECTPARTICLE_DESC::Option6::Use_GlowSpeed))
+			CJson_Utility::Write_Float4(Out_Json["Glow_Color_Speed"], m_tEffectParticleDesc.vGlowColorSpeed);
+
+		if (Check_Option6(EFFECTPARTICLE_DESC::Option6::Use_GlowForce))
+			CJson_Utility::Write_Float4(Out_Json["Glow_Color_Force"], m_tEffectParticleDesc.vGlowColorForce);
 	}
 #pragma endregion
 
@@ -921,30 +925,34 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 
 #pragma region Bloom & Glow
 #ifdef _BAKE_PARTICLE_
-	if (In_Json.find("Is_Bloom") != In_Json.end())
+	if (In_Json.find("Glow_Color_Speed") != In_Json.end())
 	{
-		_bool bBloom = In_Json["Is_Bloom"];
-		if (bBloom)
-			TurnOn_Option6(EFFECTPARTICLE_DESC::Option6::Use_Bloom);
+		CJson_Utility::Load_Float4(In_Json["Glow_Color_Speed"], m_tEffectParticleDesc.vGlowColorSpeed);
+		if (SMath::Is_Equal(m_tEffectParticleDesc.vGlowColorSpeed, _float4{ 0.f, 0.f, 0.f, 0.f }))
+			TurnOff_Option6(EFFECTPARTICLE_DESC::Option6::Use_GlowSpeed);
 		else
-			TurnOff_Option6(EFFECTPARTICLE_DESC::Option6::Use_Bloom);
+			TurnOn_Option6(EFFECTPARTICLE_DESC::Option6::Use_GlowSpeed);
 	}
 
-	if (In_Json.find("Is_Glow") != In_Json.end())
+	if (In_Json.find("Glow_Color_Force") != In_Json.end())
 	{
-		_bool bGlow = In_Json["Is_Glow"];
-		if (bGlow)
-			TurnOn_Option6(EFFECTPARTICLE_DESC::Option6::Use_Glow);
+		CJson_Utility::Load_Float4(In_Json["Glow_Color_Force"], m_tEffectParticleDesc.vGlowColorForce);
+		if (SMath::Is_Equal(m_tEffectParticleDesc.vGlowColorForce, _float4{ 0.f, 0.f, 0.f, 0.f }))
+			TurnOff_Option6(EFFECTPARTICLE_DESC::Option6::Use_GlowForce);
 		else
-			TurnOff_Option6(EFFECTPARTICLE_DESC::Option6::Use_Glow);
+			TurnOn_Option6(EFFECTPARTICLE_DESC::Option6::Use_GlowForce);
 	}
 #endif // _BAKE_PARTICLE_
 
 	if (Check_Option6(EFFECTPARTICLE_DESC::Option6::Use_Glow))
 	{
 		CJson_Utility::Load_Float4(In_Json["Start_Glow_Color"], m_tEffectParticleDesc.vStartGlowColor);
-		CJson_Utility::Load_Float4(In_Json["Glow_Color_Speed"], m_tEffectParticleDesc.vGlowColorSpeed);
-		CJson_Utility::Load_Float4(In_Json["Glow_Color_Force"], m_tEffectParticleDesc.vGlowColorForce);
+
+		if (Check_Option6(EFFECTPARTICLE_DESC::Option6::Use_GlowSpeed))
+			CJson_Utility::Load_Float4(In_Json["Glow_Color_Speed"], m_tEffectParticleDesc.vGlowColorSpeed);
+
+		if (Check_Option6(EFFECTPARTICLE_DESC::Option6::Use_GlowForce))
+			CJson_Utility::Load_Float4(In_Json["Glow_Color_Force"], m_tEffectParticleDesc.vGlowColorForce);
 	}
 #pragma endregion
 
@@ -1720,14 +1728,20 @@ void CEffect_Rect::Update_ParticleColor(const _uint& i, _float fTimeDelta)
 
 void CEffect_Rect::Update_ParticleGlowColor(_float fTimeDelta)
 {
-	_float4 vColor = SMath::Mul_Float4(m_tEffectParticleDesc.vGlowColorSpeed, fTimeDelta);
+	_float4 vColor;
+	ZeroMemory(&vColor, sizeof(_float4));
 
-	SMath::Add_Float4(&m_vCurrentGlowColorForce, SMath::Mul_Float4(m_tEffectParticleDesc.vGlowColorForce, fTimeDelta));
+	if (Check_Option6(EFFECTPARTICLE_DESC::Option6::Use_GlowSpeed))
+		vColor = SMath::Mul_Float4(m_tEffectParticleDesc.vGlowColorSpeed, fTimeDelta);
 
-	SMath::Add_Float4(&vColor, m_vCurrentGlowColorForce);
+	if (Check_Option6(EFFECTPARTICLE_DESC::Option6::Use_GlowForce))
+	{
+		SMath::Add_Float4(&m_vCurrentGlowColorForce, SMath::Mul_Float4(m_tEffectParticleDesc.vGlowColorForce, fTimeDelta));
+		SMath::Add_Float4(&vColor, m_vCurrentGlowColorForce);
+	}
+
 	SMath::Add_Float4(&vColor, m_vCurrentGlowColor);
 
-	vColor.w = min(1.f, max(0.f, vColor.w));
 	vColor.x = min(1.f, max(0.f, vColor.x));
 	vColor.y = min(1.f, max(0.f, vColor.y));
 	vColor.z = min(1.f, max(0.f, vColor.z));
@@ -3148,11 +3162,20 @@ void CEffect_Rect::Tool_Glow()
 			ImGui::TreePop();
 		}
 
-		ImGui::Text("Glow Color Speed "); ImGui::SetNextItemWidth(150.f);
-		ImGui::DragFloat4("##Glow_Color_Speed", &m_tEffectParticleDesc.vGlowColorSpeed.x, 0.01f);
+		Tool_ToggleOption6("Use Glow Speed", "##Use_GlowSpeed", EFFECTPARTICLE_DESC::Option6::Use_GlowSpeed);
+		Tool_ToggleOption6("Use Glow Force", "##Use_GlowForce", EFFECTPARTICLE_DESC::Option6::Use_GlowForce);
 
-		ImGui::Text("Glow Color Force"); ImGui::SetNextItemWidth(150.f);
-		ImGui::DragFloat4("##Glow_Color_Force", &m_tEffectParticleDesc.vGlowColorForce.x, 0.01f);
+		if (Check_Option6(EFFECTPARTICLE_DESC::Option6::Use_GlowSpeed))
+		{
+			ImGui::Text("Glow Color Speed "); ImGui::SetNextItemWidth(150.f);
+			ImGui::DragFloat4("##Glow_Color_Speed", &m_tEffectParticleDesc.vGlowColorSpeed.x, 0.01f);
+		}
+
+		if (Check_Option6(EFFECTPARTICLE_DESC::Option6::Use_GlowForce))
+		{
+			ImGui::Text("Glow Color Force"); ImGui::SetNextItemWidth(150.f);
+			ImGui::DragFloat4("##Glow_Color_Force", &m_tEffectParticleDesc.vGlowColorForce.x, 0.01f);
+		}
 
 		ImGui::TreePop();
 	}
