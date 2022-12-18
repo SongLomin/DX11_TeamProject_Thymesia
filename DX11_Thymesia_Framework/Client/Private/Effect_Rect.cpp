@@ -494,8 +494,12 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 
 	CJson_Utility::Write_Float2(Out_Json["Mask_Start_UV"], m_tEffectParticleDesc.vMaskStartUV);
 
-	CJson_Utility::Write_Float2(Out_Json["Mask_UV_Speed"], m_tEffectParticleDesc.vMaskUVSpeed);
-	CJson_Utility::Write_Float2(Out_Json["Mask_UV_Force"], m_tEffectParticleDesc.vMaskUVForce);
+	if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_MaskSpeed))
+		CJson_Utility::Write_Float2(Out_Json["Mask_UV_Speed"], m_tEffectParticleDesc.vMaskUVSpeed);
+
+	if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_MaskForce))
+		CJson_Utility::Write_Float2(Out_Json["Mask_UV_Force"], m_tEffectParticleDesc.vMaskUVForce);
+
 	CJson_Utility::Write_Float2(Out_Json["Mask_UV_Max"], m_tEffectParticleDesc.vMaskUVMax);
 #pragma endregion
 #pragma region Noise
@@ -503,8 +507,12 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 
 	CJson_Utility::Write_Float2(Out_Json["Noise_Start_UV"], m_tEffectParticleDesc.vNoiseStartUV);
 
-	CJson_Utility::Write_Float2(Out_Json["Noise_UV_Speed"], m_tEffectParticleDesc.vNoiseUVSpeed);
-	CJson_Utility::Write_Float2(Out_Json["Noise_UV_Force"], m_tEffectParticleDesc.vNoiseUVForce);
+	if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_NoiseSpeed))
+		CJson_Utility::Write_Float2(Out_Json["Noise_UV_Speed"], m_tEffectParticleDesc.vNoiseUVSpeed);
+
+	if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_NoiseForce))
+		CJson_Utility::Write_Float2(Out_Json["Noise_UV_Force"], m_tEffectParticleDesc.vNoiseUVForce);
+
 	CJson_Utility::Write_Float2(Out_Json["Noise_UV_Max"], m_tEffectParticleDesc.vNoiseUVMax);
 #pragma endregion
 #pragma endregion
@@ -864,33 +872,36 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseSpeed))
 		CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Speed"], m_tEffectParticleDesc.vDiffuseUVSpeed);
 
-#ifdef _BAKE_PARTICLE_
-	if (In_Json.find("Diffuse_UV_Force") != In_Json.end())
-		CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Force"], m_tEffectParticleDesc.vDiffuseUVForce);
-
-	if (SMath::Is_Equal(m_tEffectParticleDesc.vDiffuseUVForce, _float2{ 0.f, 0.f }))
-		TurnOff_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseForce);
-	else
-		TurnOn_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseForce);
-#endif // _BAKE_PARTICLE_
-
 	if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseForce))
 		CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Force"], m_tEffectParticleDesc.vDiffuseUVForce);
 
 	CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Max"], m_tEffectParticleDesc.vDiffuseUVMax);
 #pragma endregion
 #pragma region Mask
+#ifdef _BAKE_PARTICLE_
+#endif // _BAKE_PARTICLE_
+
 	m_tEffectParticleDesc.iMaskIndex = In_Json["UV_Mask_Index"];
 	CJson_Utility::Load_Float2(In_Json["Mask_Start_UV"], m_tEffectParticleDesc.vMaskStartUV);
-	CJson_Utility::Load_Float2(In_Json["Mask_UV_Speed"], m_tEffectParticleDesc.vMaskUVSpeed);
-	CJson_Utility::Load_Float2(In_Json["Mask_UV_Force"], m_tEffectParticleDesc.vMaskUVForce);
+
+	if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_MaskSpeed))
+		CJson_Utility::Load_Float2(In_Json["Mask_UV_Speed"], m_tEffectParticleDesc.vMaskUVSpeed);
+
+	if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_MaskForce))
+		CJson_Utility::Load_Float2(In_Json["Mask_UV_Force"], m_tEffectParticleDesc.vMaskUVForce);
+
 	CJson_Utility::Load_Float2(In_Json["Mask_UV_Max"], m_tEffectParticleDesc.vMaskUVMax);
 #pragma endregion
 #pragma region Noise
 	m_tEffectParticleDesc.iNoiseIndex = In_Json["UV_Noise_Index"];
 	CJson_Utility::Load_Float2(In_Json["Noise_Start_UV"], m_tEffectParticleDesc.vNoiseStartUV);
-	CJson_Utility::Load_Float2(In_Json["Noise_UV_Speed"], m_tEffectParticleDesc.vNoiseUVSpeed);
-	CJson_Utility::Load_Float2(In_Json["Noise_UV_Force"], m_tEffectParticleDesc.vNoiseUVForce);
+
+	if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_NoiseSpeed))
+		CJson_Utility::Load_Float2(In_Json["Noise_UV_Speed"], m_tEffectParticleDesc.vNoiseUVSpeed);
+
+	if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_NoiseForce))
+		CJson_Utility::Load_Float2(In_Json["Noise_UV_Force"], m_tEffectParticleDesc.vNoiseUVForce);
+
 	CJson_Utility::Load_Float2(In_Json["Noise_UV_Max"], m_tEffectParticleDesc.vNoiseUVMax);
 #pragma endregion
 #pragma endregion
@@ -1564,32 +1575,54 @@ void CEffect_Rect::Update_ParticleUV(_float fTimeDelta)
 #pragma endregion
 
 #pragma region Mask
-	_vector vMaskUVSpeed = XMLoadFloat2(&m_tEffectParticleDesc.vMaskUVSpeed) * fTimeDelta;
-	m_vMaskCurrentUVForce.x += m_tEffectParticleDesc.vMaskUVForce.x * fTimeDelta;
-	m_vMaskCurrentUVForce.y += m_tEffectParticleDesc.vMaskUVForce.y * fTimeDelta;
+	_vector vMaskCurrentUV(XMVectorSet(0.f, 0.f, 0.f, 0.f));
 
-	_vector vMaskMoveUV = vMaskUVSpeed + XMLoadFloat2(&m_vMaskCurrentUVForce);
-	_vector vMaskCurrentUV = XMLoadFloat2(&m_vMaskCurrentUV);
-	vMaskCurrentUV += vMaskMoveUV;
+	if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_MaskSpeed) || Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_MaskForce))
+	{
+		_vector vMaskUVSpeed(XMVectorSet(0.f, 0.f, 0.f, 0.f));
+
+		if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_MaskSpeed))
+			vMaskUVSpeed = XMLoadFloat2(&m_tEffectParticleDesc.vMaskUVSpeed) * fTimeDelta;
+
+		if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_MaskForce))
+		{
+			m_vMaskCurrentUVForce.x += m_tEffectParticleDesc.vMaskUVForce.x * fTimeDelta;
+			m_vMaskCurrentUVForce.y += m_tEffectParticleDesc.vMaskUVForce.y * fTimeDelta;
+		}
+
+		_vector vMaskMoveUV = vMaskUVSpeed + XMLoadFloat2(&m_vMaskCurrentUVForce);
+		vMaskCurrentUV = XMLoadFloat2(&m_vMaskCurrentUV);
+		vMaskCurrentUV += vMaskMoveUV;
+	}
 
 	vMaskCurrentUV = XMVectorSetX(vMaskCurrentUV, min(m_tEffectParticleDesc.vMaskUVMax.x, XMVectorGetX(vMaskCurrentUV)));
 	vMaskCurrentUV = XMVectorSetY(vMaskCurrentUV, min(m_tEffectParticleDesc.vMaskUVMax.y, XMVectorGetY(vMaskCurrentUV)));
-
 	XMStoreFloat2(&m_vMaskCurrentUV, vMaskCurrentUV);
 #pragma endregion
 
 #pragma region Noise
-	_vector vNoiseUVSpeed = XMLoadFloat2(&m_tEffectParticleDesc.vNoiseUVSpeed) * fTimeDelta;
-	m_vNoiseCurrentUVForce.x += m_tEffectParticleDesc.vNoiseUVForce.x * fTimeDelta;
-	m_vNoiseCurrentUVForce.y += m_tEffectParticleDesc.vNoiseUVForce.y * fTimeDelta;
+	_vector vNoiseCurrentUV(XMVectorSet(0.f, 0.f, 0.f, 0.f));
 
-	_vector vNoiseMoveUV = vNoiseUVSpeed + XMLoadFloat2(&m_vNoiseCurrentUVForce);
-	_vector vNoiseCurrentUV = XMLoadFloat2(&m_vNoiseCurrentUV);
-	vNoiseCurrentUV += vNoiseMoveUV;
+	if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_NoiseSpeed) || Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_NoiseForce))
+	{
+		_vector vNoiseUVSpeed(XMVectorSet(0.f, 0.f, 0.f, 0.f));
+
+		if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_NoiseSpeed))
+			vNoiseUVSpeed = XMLoadFloat2(&m_tEffectParticleDesc.vNoiseUVSpeed) * fTimeDelta;
+
+		if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_NoiseForce))
+		{
+			m_vNoiseCurrentUVForce.x += m_tEffectParticleDesc.vNoiseUVForce.x * fTimeDelta;
+			m_vNoiseCurrentUVForce.y += m_tEffectParticleDesc.vNoiseUVForce.y * fTimeDelta;
+		}
+
+		_vector vNoiseMoveUV = vNoiseUVSpeed + XMLoadFloat2(&m_vNoiseCurrentUVForce);
+		vNoiseCurrentUV = XMLoadFloat2(&m_vNoiseCurrentUV);
+		vNoiseCurrentUV += vNoiseMoveUV;
+	}
 
 	vNoiseCurrentUV = XMVectorSetX(vNoiseCurrentUV, min(m_tEffectParticleDesc.vNoiseUVMax.x, XMVectorGetX(vNoiseCurrentUV)));
 	vNoiseCurrentUV = XMVectorSetY(vNoiseCurrentUV, min(m_tEffectParticleDesc.vNoiseUVMax.y, XMVectorGetY(vNoiseCurrentUV)));
-
 	XMStoreFloat2(&m_vNoiseCurrentUV, vNoiseCurrentUV);
 #pragma endregion
 }
@@ -2980,17 +3013,26 @@ void CEffect_Rect::Tool_Texture_Mask()
 {
 	if (ImGui::TreeNode("Mask"))
 	{
-		ImGui::Text("Index"); ImGui::SetNextItemWidth(100.f);
+		ImGui::Text("Index");  ImGui::SetNextItemWidth(100.f);
 		ImGui::InputInt("##Mask_Index", &m_tEffectParticleDesc.iMaskIndex);
 
 		ImGui::Text("Start UV"); ImGui::SetNextItemWidth(200.f);
 		ImGui::DragFloat2("##Mask_Start_UV", &m_tEffectParticleDesc.vMaskStartUV.x, 0.01f, 0.f, 0.f, "%.5f");
 
-		ImGui::Text("UV Speed"); ImGui::SetNextItemWidth(200.f);
-		ImGui::DragFloat2("##Mask_UV_Speed", &m_tEffectParticleDesc.vMaskUVSpeed.x, 0.01f, 0.f, 0.f, "%.5f");
+		Tool_ToggleOption5("Use UV Speed", "##Use_MaskSpeed", EFFECTPARTICLE_DESC::Option5::Use_MaskSpeed);
+		Tool_ToggleOption5("Use UV Force", "##Use_MaskForce", EFFECTPARTICLE_DESC::Option5::Use_MaskForce);
 
-		ImGui::Text("UV Force"); ImGui::SetNextItemWidth(200.f);
-		ImGui::DragFloat2("##Mask UV_Force", &m_tEffectParticleDesc.vMaskUVForce.x, 0.01f, 0.f, 0.f, "%.5f");
+		if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_MaskSpeed))
+		{
+			ImGui::Text("UV Speed"); ImGui::SetNextItemWidth(200.f);
+			ImGui::DragFloat2("##Mask_UV_Speed", &m_tEffectParticleDesc.vMaskUVSpeed.x, 0.01f, 0.f, 0.f, "%.5f");
+		}
+
+		if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_MaskForce))
+		{
+			ImGui::Text("UV Force"); ImGui::SetNextItemWidth(200.f);
+			ImGui::DragFloat2("##Mask UV_Force", &m_tEffectParticleDesc.vMaskUVForce.x, 0.01f, 0.f, 0.f, "%.5f");
+		}
 
 		ImGui::Text("UV Max"); ImGui::SetNextItemWidth(200.f);
 		ImGui::DragFloat2("##Mask_UV_Max", &m_tEffectParticleDesc.vMaskUVMax.x, 0.01f, 0.f, 0.f, "%.5f");
@@ -3003,17 +3045,26 @@ void CEffect_Rect::Tool_Texture_Noise()
 {
 	if (ImGui::TreeNode("Noise"))
 	{
-		ImGui::Text("Index"); ImGui::SetNextItemWidth(100.f);
+		ImGui::Text("Index");  ImGui::SetNextItemWidth(100.f);
 		ImGui::InputInt("##Noise_Index", &m_tEffectParticleDesc.iNoiseIndex);
 
 		ImGui::Text("Start UV"); ImGui::SetNextItemWidth(200.f);
 		ImGui::DragFloat2("##Noise_Start_UV", &m_tEffectParticleDesc.vNoiseStartUV.x, 0.01f, 0.f, 0.f, "%.5f");
 
-		ImGui::Text("UV Speed"); ImGui::SetNextItemWidth(200.f);
-		ImGui::DragFloat2("##Noise_UV_Speed", &m_tEffectParticleDesc.vNoiseUVSpeed.x, 0.01f, 0.f, 0.f, "%.5f");
+		Tool_ToggleOption5("Use UV Speed", "##Use_NoiseSpeed", EFFECTPARTICLE_DESC::Option5::Use_NoiseSpeed);
+		Tool_ToggleOption5("Use UV Force", "##Use_NoiseForce", EFFECTPARTICLE_DESC::Option5::Use_NoiseForce);
 
-		ImGui::Text("UV Force"); ImGui::SetNextItemWidth(200.f);
-		ImGui::DragFloat2("##Noise UV_Force", &m_tEffectParticleDesc.vNoiseUVForce.x, 0.01f, 0.f, 0.f, "%.5f");
+		if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_NoiseSpeed))
+		{
+			ImGui::Text("UV Speed"); ImGui::SetNextItemWidth(200.f);
+			ImGui::DragFloat2("##Noise_UV_Speed", &m_tEffectParticleDesc.vNoiseUVSpeed.x, 0.01f, 0.f, 0.f, "%.5f");
+		}
+
+		if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_NoiseForce))
+		{
+			ImGui::Text("UV Force"); ImGui::SetNextItemWidth(200.f);
+			ImGui::DragFloat2("##Noise UV_Force", &m_tEffectParticleDesc.vNoiseUVForce.x, 0.01f, 0.f, 0.f, "%.5f");
+		}
 
 		ImGui::Text("UV Max"); ImGui::SetNextItemWidth(200.f);
 		ImGui::DragFloat2("##Noise_UV_Max", &m_tEffectParticleDesc.vNoiseUVMax.x, 0.01f, 0.f, 0.f, "%.5f");
