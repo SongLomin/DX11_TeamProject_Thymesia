@@ -40,14 +40,6 @@
 GAMECLASS_C(CEffect_Rect)
 CLONE_C(CEffect_Rect, CGameObject)
 
-#ifdef _DEBUG
-#ifdef _JOJO_EFFECT_TOOL_
-const _int CEffect_Rect::m_iScaleType_None = 0;
-const _int CEffect_Rect::m_iScaleType_Square = 1;
-const _int CEffect_Rect::m_iScaleType_Ratio = 2;
-#endif // _JOJO_EFFECT_TOOL_
-#endif // _DEBUG
-
 const _char* CEffect_Rect::Get_EffectName() const
 {
 	return m_szEffectName.c_str();
@@ -750,17 +742,6 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 			m_tEffectParticleDesc.bRatioScale = In_Json["Is_Ratio_Scale"];
 	}
 
-#ifdef _DEBUG
-#ifdef _JOJO_EFFECT_TOOL_
-	if (m_tEffectParticleDesc.bSquareScale && !m_tEffectParticleDesc.bRatioScale)
-		m_iScaleType = m_iScaleType_Square;
-	else if (!m_tEffectParticleDesc.bSquareScale && m_tEffectParticleDesc.bRatioScale)
-		m_iScaleType = m_iScaleType_Ratio;
-	else
-		m_iScaleType = 0;
-#endif // _JOJO_EFFECT_TOOL_
-#endif // _DEBUG
-
 	if (m_tEffectParticleDesc.bRatioScale)
 	{
 		m_tEffectParticleDesc.fMinYScaleRatio = In_Json["Min_Y_Scale_Ratio"];
@@ -957,7 +938,7 @@ void CEffect_Rect::Play(_float fTimeDelta)
 					tParticle = m_tParticleDescs[i];
 #endif // _DEBUG
 					if ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType)
-						XMStoreFloat4x4(&m_tParticleDescs[i].matParentMatrix, BoneMatrix * m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
+						XMStoreFloat4x4(&m_tParticleDescs[i].ParentMatrix, BoneMatrix * m_pParentTransformCom.lock()->Get_UnScaledWorldMatrix());
 				}
 				else
 				{
@@ -3056,33 +3037,9 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 			if (ImGui::CollapsingHeader("Scale"))
 			{
-#ifdef _JOJO_EFFECT_TOOL_
-
-				ImGui::RadioButton("None##Is_None_Scale_Type", &m_iScaleType, m_iScaleType_None);
-				ImGui::SameLine();
-				ImGui::RadioButton("Square Scale##Is_Square_Scale", &m_iScaleType, m_iScaleType_Square);
-				ImGui::SameLine();
-				ImGui::RadioButton("Ratio Scale##Is_Ratio_Scale", &m_iScaleType, m_iScaleType_Ratio);
-				switch (m_iScaleType)
-				{
-				case 1:
-					m_tEffectParticleDesc.bSquareScale = true;
-					m_tEffectParticleDesc.bRatioScale = false;
-					break;
-				case 2:
-					m_tEffectParticleDesc.bSquareScale = false;
-					m_tEffectParticleDesc.bRatioScale = true;
-					break;
-				default:
-					m_tEffectParticleDesc.bSquareScale = false;
-					m_tEffectParticleDesc.bRatioScale = false;
-					break;
-				}
-#else // _JOJO_EFFECT_TOOL_
 				ImGui::Checkbox("Square Scale##Is_Square_Scale", &m_tEffectParticleDesc.bSquareScale);
 				ImGui::SameLine();
 				ImGui::Checkbox("Ratio Scale##Is_Ratio_Scale", &m_tEffectParticleDesc.bRatioScale);
-#endif // _JOJO_EFFECT_TOOL_
 
 				if (m_tEffectParticleDesc.bRatioScale)
 				{

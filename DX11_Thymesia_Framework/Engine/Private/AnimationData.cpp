@@ -120,7 +120,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 	SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_L_Down", 2.f);
 	SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_R_Down", 2.f);
 
-	//SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution", 1.2f);
+	SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution", 1.6f);
     
 	SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 7.f);
 	SET_ANIM_SPEED("Corvus_SD_TD2Thorw2", 2.5f);

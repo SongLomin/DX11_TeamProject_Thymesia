@@ -373,7 +373,7 @@ namespace Engine
 	struct PARTICLE_DESC
 	{
 		_bool			bEnable;
-		_bool			bBillboard;
+		// _bool			bBillboard;
 
 		_float          fCurrentLifeTime;
 		_float			fTargetLifeTime;
@@ -381,7 +381,7 @@ namespace Engine
 		_float			fCurrentSpawnTime;
 		_float			fTargetSpawnTime;
 
-		_float4x4		matParentMatrix;
+		_float4x4		ParentMatrix;
 		
 		// For. Attraction
 		_float3			vTargetLookAt;

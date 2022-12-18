@@ -192,20 +192,14 @@ private:
     weak_ptr<CBoneNode>                 m_pBoneNode;
     weak_ptr<CModel>                    m_pParentModel;
     std::string                         m_strBoneName   = "";
+#ifdef _DEBUG
     _int                                m_iCurrentBoneIndex = 0;
+#endif // _DEBUG
 
 #ifdef _DEBUG
     // For. Thread
     _bool                   m_bResetTrigger = false;
     weak_ptr<CTransform>    m_pPreviewModelTransform;
-
-#ifdef _JOJO_EFFECT_TOOL_
-    // For. Tool
-    _int m_iScaleType = 0;
-    static const _int m_iScaleType_None;
-    static const _int m_iScaleType_Square;
-    static const _int m_iScaleType_Ratio;
-#endif // _JOJO_EFFECT_TOOL_
 #endif // _DEBUG
 };
 
