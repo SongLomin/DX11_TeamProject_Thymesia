@@ -382,9 +382,7 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	}
 
 	CJson_Utility::Write_Float3(Out_Json["Min_Limit_Speed"], m_tEffectParticleDesc.vMinLimitSpeed);
-	if (Check_Option2(EFFECTPARTICLE_DESC::Option2::Use_SpeedMaxLimit))
-		CJson_Utility::Write_Float3(Out_Json["Max_Limit_Speed"], m_tEffectParticleDesc.vMaxLimitSpeed);
-
+	CJson_Utility::Write_Float3(Out_Json["Max_Limit_Speed"], m_tEffectParticleDesc.vMaxLimitSpeed);
 
 #pragma region Rotation
 	CJson_Utility::Write_Float3(Out_Json["Min_Start_Rotation"], m_tEffectParticleDesc.vMinStartRotation);
@@ -410,9 +408,7 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 #pragma endregion
 
 #pragma region Scale
-	Out_Json["Is_Ratio_Scale"] = m_tEffectParticleDesc.bRatioScale;
-
-	if (m_tEffectParticleDesc.bRatioScale)
+	if (Check_Option3(EFFECTPARTICLE_DESC::Option3::Ratio_Scale))
 	{
 		Out_Json["Min_Y_Scale_Ratio"] = m_tEffectParticleDesc.fMinYScaleRatio;
 		Out_Json["Max_Y_Scale_Ratio"] = m_tEffectParticleDesc.fMaxYScaleRatio;
@@ -552,7 +548,7 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #endif // NDEBUG
 
 	if (In_Json.find("ParticleOption3") != In_Json.end())
-		m_tEffectParticleDesc.byOption2 = In_Json["ParticleOption3"];
+		m_tEffectParticleDesc.byOption3 = In_Json["ParticleOption3"];
 #ifdef NDEBUG
 	else
 		DEBUG_ASSERT;
@@ -705,11 +701,10 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	if (In_Json.find("Min_Limit_Speed") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Min_Limit_Speed"], m_tEffectParticleDesc.vMinLimitSpeed);
 
-	if (Check_Option2(EFFECTPARTICLE_DESC::Option2::Use_SpeedMaxLimit))
-	{
-		if (In_Json.find("Max_Limit_Speed") != In_Json.end())
-			CJson_Utility::Load_Float3(In_Json["Max_Limit_Speed"], m_tEffectParticleDesc.vMaxLimitSpeed);
-	}
+
+	if (In_Json.find("Max_Limit_Speed") != In_Json.end())
+		CJson_Utility::Load_Float3(In_Json["Max_Limit_Speed"], m_tEffectParticleDesc.vMaxLimitSpeed);
+	
 
 #pragma region Rotation
 	if (In_Json.find("Min_Start_Rotation") != In_Json.end())
@@ -746,23 +741,17 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 
 #pragma region Scale
 #ifdef _BAKE_PARTICLE_
-	if (In_Json.find("Is_Square_Scale") != In_Json.end())
+	if (In_Json.find("Is_Ratio_Scale") != In_Json.end())
 	{
-		_bool bSquareScale = In_Json["Is_Square_Scale"];
-		if (bSquareScale)
-			TurnOn_Option3(EFFECTPARTICLE_DESC::Option3::Square_Scale);
+		_bool bRatioScale = In_Json["Is_Ratio_Scale"];
+		if (bRatioScale)
+			TurnOn_Option3(EFFECTPARTICLE_DESC::Option3::Ratio_Scale);
 		else
-			TurnOff_Option3(EFFECTPARTICLE_DESC::Option3::Square_Scale);
+			TurnOff_Option3(EFFECTPARTICLE_DESC::Option3::Ratio_Scale);
 	}
 #endif // _BAKE_PARTICLE_
 
-	if (!Check_Option3(EFFECTPARTICLE_DESC::Option3::Square_Scale))
-	{
-		if (In_Json.find("Is_Ratio_Scale") != In_Json.end())
-			m_tEffectParticleDesc.bRatioScale = In_Json["Is_Ratio_Scale"];
-	}
-
-	if (m_tEffectParticleDesc.bRatioScale)
+	if (Check_Option3(EFFECTPARTICLE_DESC::Option3::Ratio_Scale))
 	{
 		m_tEffectParticleDesc.fMinYScaleRatio = In_Json["Min_Y_Scale_Ratio"];
 		m_tEffectParticleDesc.fMaxYScaleRatio = In_Json["Max_Y_Scale_Ratio"];
@@ -1345,7 +1334,7 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 			tParticle = m_tOriginalParticleDescs.at(i);
 #endif // _DEBUG
 
-			if (m_tEffectParticleDesc.bRatioScale)
+			if (Check_Option3(EFFECTPARTICLE_DESC::Option3::Ratio_Scale))
 				m_tOriginalParticleDescs[i].fTargetYScaleRatio = SMath::fRandom(m_tEffectParticleDesc.fMinYScaleRatio, m_tEffectParticleDesc.fMaxYScaleRatio);
 
 #ifdef _DEBUG
@@ -1418,18 +1407,9 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta, _m
 
 	if (Check_Option2(EFFECTPARTICLE_DESC::Option2::Use_Speed) || Check_Option2(EFFECTPARTICLE_DESC::Option2::Use_Force))
 	{
-		if (Check_Option2(EFFECTPARTICLE_DESC::Option2::Use_SpeedMaxLimit))
-		{
-			vMove.x = max(m_tEffectParticleDesc.vMinLimitSpeed.x, min(m_tEffectParticleDesc.vMaxLimitSpeed.x, vMove.x));
-			vMove.y = max(m_tEffectParticleDesc.vMinLimitSpeed.y, min(m_tEffectParticleDesc.vMaxLimitSpeed.y, vMove.y));
-			vMove.z = max(m_tEffectParticleDesc.vMinLimitSpeed.z, min(m_tEffectParticleDesc.vMaxLimitSpeed.z, vMove.z));
-		}
-		else
-		{
-			vMove.x = max(m_tEffectParticleDesc.vMinLimitSpeed.x, vMove.x);
-			vMove.y = max(m_tEffectParticleDesc.vMinLimitSpeed.y, vMove.y);
-			vMove.z = max(m_tEffectParticleDesc.vMinLimitSpeed.z, vMove.z);
-		}
+		vMove.x = max(m_tEffectParticleDesc.vMinLimitSpeed.x, min(m_tEffectParticleDesc.vMaxLimitSpeed.x, vMove.x));
+		vMove.y = max(m_tEffectParticleDesc.vMinLimitSpeed.y, min(m_tEffectParticleDesc.vMaxLimitSpeed.y, vMove.y));
+		vMove.z = max(m_tEffectParticleDesc.vMinLimitSpeed.z, min(m_tEffectParticleDesc.vMaxLimitSpeed.z, vMove.z));
 	}
 
 	if (Check_Option1(EFFECTPARTICLE_DESC::Option1::Is_Attraction))
@@ -1526,7 +1506,7 @@ void CEffect_Rect::Update_ParticleScale(const _uint& i, _float fTimeDelta)
 
 	if (Check_Option3(EFFECTPARTICLE_DESC::Option3::Square_Scale))
 		m_tParticleDescs[i].vCurrentScale.y = m_tParticleDescs[i].vCurrentScale.x;
-	else if (m_tEffectParticleDesc.bRatioScale)
+	else if (Check_Option3(EFFECTPARTICLE_DESC::Option3::Ratio_Scale))
 		m_tParticleDescs[i].vCurrentScale.y = m_tParticleDescs[i].vCurrentScale.x * m_tParticleDescs[i].fTargetYScaleRatio;
 	else
 		m_tParticleDescs[i].vCurrentScale.y = max(m_tEffectParticleDesc.vMinLimitScale.y, min(m_tEffectParticleDesc.vMaxLimitScale.y, m_tParticleDescs[i].vCurrentScale.y));
@@ -2434,8 +2414,6 @@ void CEffect_Rect::Tool_Speed()
 	{
 		if (ImGui::TreeNode("Speed Limit"))
 		{
-			Tool_ToggleOption2("Speed Max Limit", "##Use_SpeedMaxLimit", EFFECTPARTICLE_DESC::Option2::Use_SpeedMaxLimit);
-
 			ImGui::Checkbox("Min = Max##Is_MinMaxSame_SpeedLimit", &m_tEffectParticleDesc.bIsMinMaxSame_SpeedLimit);
 
 			if (m_tEffectParticleDesc.bIsMinMaxSame_SpeedLimit)
@@ -2443,12 +2421,6 @@ void CEffect_Rect::Tool_Speed()
 
 			ImGui::Text("Min Limit Speed"); ImGui::SetNextItemWidth(300.f);
 			ImGui::DragFloat3("##Min_Limit_Speed", &m_tEffectParticleDesc.vMinLimitSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
-
-			if (Check_Option2(EFFECTPARTICLE_DESC::Option2::Use_SpeedMaxLimit))
-			{
-				ImGui::Text("Max Limit Speed"); ImGui::SetNextItemWidth(300.f);
-				ImGui::DragFloat3("##Max_Limit_Speed", &m_tEffectParticleDesc.vMaxLimitSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
-			}
 
 			ImGui::TreePop();
 		}
@@ -3091,10 +3063,9 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			if (ImGui::CollapsingHeader("Scale"))
 			{
 				Tool_ToggleOption3("Square Scale", "##Square_Scale", EFFECTPARTICLE_DESC::Option3::Square_Scale);
-				ImGui::SameLine();
-				ImGui::Checkbox("Ratio Scale##Is_Ratio_Scale", &m_tEffectParticleDesc.bRatioScale);
+				Tool_ToggleOption3("Ratio Scale", "##Ratio_Scale", EFFECTPARTICLE_DESC::Option3::Ratio_Scale);
 
-				if (m_tEffectParticleDesc.bRatioScale)
+				if (Check_Option3(EFFECTPARTICLE_DESC::Option3::Ratio_Scale))
 				{
 					if (ImGui::TreeNode("Y = X * ?"))
 					{

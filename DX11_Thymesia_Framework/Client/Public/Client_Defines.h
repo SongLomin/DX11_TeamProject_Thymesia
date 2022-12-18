@@ -1,15 +1,10 @@
 #pragma once
-#include "Engine_Defines.h"
-#include "SMath.h"
-#include <filesystem>
-
 #define _JOJO_EFFECT_TOOL_
-// #define _BAKE_PARTICLE_
+#define _BAKE_PARTICLE_
                  
 #include "Client_Structs.h"
 #include "Client_Presets.h"
-#include "Client_Enum.h"	
-#include "imgui.h"
+#include "Client_Enum.h"
 
 //////////////// DEBUG MODE DEFINES ////////////////
 #ifdef _DEBUG

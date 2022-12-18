@@ -273,8 +273,6 @@ namespace Client
 		};
 
 #pragma region Scale
-		_bool		bRatioScale;
-
 		// For. Ratio Scale
 		_float		fMinYScaleRatio;
 		_float		fMaxYScaleRatio;
