@@ -217,8 +217,8 @@ namespace Client
 		_float3		vMaxSpawnOffsetRange;
 #pragma endregion
 
-		_ubyte		byOption_Spawn = 0;
-		enum class Option_Spawn
+		_ubyte		byOption1 = 0;
+		enum class Option1
 		{
 			Is_Attraction                     = 0b0000'0001
 			, Use_MinMax_SpawnTime            = 0b0000'0010
@@ -259,8 +259,8 @@ namespace Client
 		_float3		vMaxLimitRotation;
 #pragma endregion
 
-		_ubyte		byOption_SpeedRotation = 0;
-		enum class Option_SpeedRotation
+		_ubyte		byOption2 = 0;
+		enum class Option2
 		{
 			Use_Gravity            = 0b0000'0001
 			, Use_Speed            = 0b0000'0010
@@ -273,7 +273,6 @@ namespace Client
 		};
 
 #pragma region Scale
-		_bool		bSquareScale;
 		_bool		bRatioScale;
 
 		// For. Ratio Scale
@@ -296,8 +295,8 @@ namespace Client
 		_float2		vMinLimitScale;
 		_float2		vMaxLimitScale;
 
-		_ubyte		byOption_Scale = 0;
-		enum class Option_Scale
+		_ubyte		byOption3 = 0;
+		enum class Option3
 		{
 			Square_Scale     = 0b0000'0001
 			, Ratio_Scale    = 0b0000'0010
@@ -327,8 +326,8 @@ namespace Client
 		_float4		vMinColor;
 		_float4		vMaxColor;
 
-		_ubyte		byOption_Color = 0;
-		enum class Option_Color
+		_ubyte		byOption4 = 0;
+		enum class Option4
 		{
 			Is_Gray          = 0b0000'0001
 			, Easing_Alpha   = 0b0000'0010
@@ -364,8 +363,8 @@ namespace Client
 		_float2		vNoiseUVMax;
 #pragma endregion
 
-		_ubyte byOption_Texture;
-		enum class Option_Texture
+		_ubyte byOption5;
+		enum class Option5
 		{
 			Use_DiffuseSpeed   = 0b0000'0001
 			, Use_DiffuseForce = 0b0000'0010
@@ -383,8 +382,8 @@ namespace Client
 		_float4		vGlowColorSpeed;
 		_float4		vGlowColorForce;
 
-		_ubyte byOption_Glite;
-		enum class Option_Glite
+		_ubyte byOption6;
+		enum class Option6
 		{
 			Use_Bloom         = 0b0000'0001
 			, Use_Glow        = 0b0000'0010
