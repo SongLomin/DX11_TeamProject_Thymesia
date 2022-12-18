@@ -370,8 +370,6 @@ namespace Client
 		};
 #pragma endregion
 #pragma region Bloom & Glow
-		_bool		bBloom;
-		_bool		bGlow;
 		_float4		vStartGlowColor;
 		_float4		vGlowColorSpeed;
 		_float4		vGlowColorForce;

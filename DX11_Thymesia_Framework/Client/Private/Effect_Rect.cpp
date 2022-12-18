@@ -303,8 +303,12 @@ void CEffect_Rect::SetUp_ShaderResource()
 #pragma endregion
 
 #pragma region Bloom & Glow
-	m_pShaderCom.lock()->Set_RawValue("g_bBloom", &m_tEffectParticleDesc.bBloom, sizeof(_bool));
-	m_pShaderCom.lock()->Set_RawValue("g_bGlow", &m_tEffectParticleDesc.bGlow, sizeof(_bool));
+	_bool bBloom(Check_Option6(EFFECTPARTICLE_DESC::Option6::Use_Bloom));
+	m_pShaderCom.lock()->Set_RawValue("g_bBloom", &bBloom, sizeof(_bool));
+
+	_bool bGlow(Check_Option6(EFFECTPARTICLE_DESC::Option6::Use_Glow));
+	m_pShaderCom.lock()->Set_RawValue("g_bGlow", &bGlow, sizeof(_bool));
+
 	m_pShaderCom.lock()->Set_RawValue("g_vGlowColor", &m_vCurrentGlowColor, sizeof(_float4));
 #pragma endregion
 }
@@ -326,6 +330,7 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	Out_Json["ParticleOption3"] = m_tEffectParticleDesc.byOption3;
 	Out_Json["ParticleOption4"] = m_tEffectParticleDesc.byOption4;
 	Out_Json["ParticleOption5"] = m_tEffectParticleDesc.byOption5;
+	Out_Json["ParticleOption6"] = m_tEffectParticleDesc.byOption6;
 #pragma endregion // Particle Options
 
 	if (Check_Option1(EFFECTPARTICLE_DESC::Option1::Is_Attraction))
@@ -518,10 +523,7 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 #pragma endregion
 
 #pragma region Bloom & Glow
-	Out_Json["Is_Bloom"] = m_tEffectParticleDesc.bBloom;
-	Out_Json["Is_Glow"] = m_tEffectParticleDesc.bGlow;
-
-	if (m_tEffectParticleDesc.bGlow)
+	if (Check_Option6(EFFECTPARTICLE_DESC::Option6::Use_Glow))
 	{
 		CJson_Utility::Write_Float4(Out_Json["Start_Glow_Color"], m_tEffectParticleDesc.vStartGlowColor);
 		CJson_Utility::Write_Float4(Out_Json["Glow_Color_Speed"], m_tEffectParticleDesc.vGlowColorSpeed);
@@ -579,6 +581,20 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 
 	if (In_Json.find("ParticleOption4") != In_Json.end())
 		m_tEffectParticleDesc.byOption4 = In_Json["ParticleOption4"];
+#ifdef NDEBUG
+	else
+		DEBUG_ASSERT;
+#endif // NDEBUG
+
+	if (In_Json.find("ParticleOption5") != In_Json.end())
+		m_tEffectParticleDesc.byOption5 = In_Json["ParticleOption5"];
+#ifdef NDEBUG
+	else
+		DEBUG_ASSERT;
+#endif // NDEBUG
+
+	if (In_Json.find("ParticleOption6") != In_Json.end())
+		m_tEffectParticleDesc.byOption6 = In_Json["ParticleOption6"];
 #ifdef NDEBUG
 	else
 		DEBUG_ASSERT;
@@ -878,9 +894,6 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Max"], m_tEffectParticleDesc.vDiffuseUVMax);
 #pragma endregion
 #pragma region Mask
-#ifdef _BAKE_PARTICLE_
-#endif // _BAKE_PARTICLE_
-
 	m_tEffectParticleDesc.iMaskIndex = In_Json["UV_Mask_Index"];
 	CJson_Utility::Load_Float2(In_Json["Mask_Start_UV"], m_tEffectParticleDesc.vMaskStartUV);
 
@@ -907,12 +920,27 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma endregion
 
 #pragma region Bloom & Glow
+#ifdef _BAKE_PARTICLE_
 	if (In_Json.find("Is_Bloom") != In_Json.end())
-		m_tEffectParticleDesc.bBloom = In_Json["Is_Bloom"];
-	if (In_Json.find("Is_Glow") != In_Json.end())
-		m_tEffectParticleDesc.bGlow = In_Json["Is_Glow"];
+	{
+		_bool bBloom = In_Json["Is_Bloom"];
+		if (bBloom)
+			TurnOn_Option6(EFFECTPARTICLE_DESC::Option6::Use_Bloom);
+		else
+			TurnOff_Option6(EFFECTPARTICLE_DESC::Option6::Use_Bloom);
+	}
 
-	if (m_tEffectParticleDesc.bGlow)
+	if (In_Json.find("Is_Glow") != In_Json.end())
+	{
+		_bool bGlow = In_Json["Is_Glow"];
+		if (bGlow)
+			TurnOn_Option6(EFFECTPARTICLE_DESC::Option6::Use_Glow);
+		else
+			TurnOff_Option6(EFFECTPARTICLE_DESC::Option6::Use_Glow);
+	}
+#endif // _BAKE_PARTICLE_
+
+	if (Check_Option6(EFFECTPARTICLE_DESC::Option6::Use_Glow))
 	{
 		CJson_Utility::Load_Float4(In_Json["Start_Glow_Color"], m_tEffectParticleDesc.vStartGlowColor);
 		CJson_Utility::Load_Float4(In_Json["Glow_Color_Speed"], m_tEffectParticleDesc.vGlowColorSpeed);
@@ -1066,7 +1094,9 @@ void CEffect_Rect::Play(_float fTimeDelta)
 	for (_int x(0); x < iTickCount; ++x)
 	{
 		Update_ParticleUV(fFrameTime);
-		Update_ParticleGlowColor(fFrameTime);
+
+		if (Check_Option6(EFFECTPARTICLE_DESC::Option6::Use_Glow))
+			Update_ParticleGlowColor(fFrameTime);
 	}
 }
 
@@ -2157,6 +2187,21 @@ void CEffect_Rect::TurnOff_Option5(const EFFECTPARTICLE_DESC::Option5 eOption)
 	m_tEffectParticleDesc.byOption5 &= ~(_ubyte)eOption;
 }
 
+const _bool CEffect_Rect::Check_Option6(const EFFECTPARTICLE_DESC::Option6 eOption) const
+{
+	return (m_tEffectParticleDesc.byOption6 & (_ubyte)eOption) ? true : false;
+}
+
+void CEffect_Rect::TurnOn_Option6(const EFFECTPARTICLE_DESC::Option6 eOption)
+{
+	m_tEffectParticleDesc.byOption6 |= (_ubyte)eOption;
+}
+
+void CEffect_Rect::TurnOff_Option6(const EFFECTPARTICLE_DESC::Option6 eOption)
+{
+	m_tEffectParticleDesc.byOption6 &= ~(_ubyte)eOption;
+}
+
 #ifdef _DEBUG
 void CEffect_Rect::Tool_ToggleOption1(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option1 eOption)
 {
@@ -2242,6 +2287,24 @@ void CEffect_Rect::Tool_ToggleOption5(const char* szOptionName, const char* szOp
 	{
 		if (ImGui::ColorButton(szOptionButtonName, ImVec4{ 1.f, 0.f, 0.f, 1.f }, byButtonFlags))
 			TurnOn_Option5(eOption);
+	}
+
+	ImGui::SameLine();
+	ImGui::Text(szOptionName);
+}
+
+void CEffect_Rect::Tool_ToggleOption6(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option6 eOption)
+{
+	ImGuiColorEditFlags byButtonFlags(ImGuiColorEditFlags_NoBorder | ImGuiColorEditFlags_NoTooltip | ImGuiColorEditFlags_NoDragDrop);
+	if (Check_Option6(eOption))
+	{
+		if (ImGui::ColorButton(szOptionButtonName, ImVec4{ 0.f, 1.f, 0.f, 1.f }, byButtonFlags))
+			TurnOff_Option6(eOption);
+	}
+	else
+	{
+		if (ImGui::ColorButton(szOptionButtonName, ImVec4{ 1.f, 0.f, 0.f, 1.f }, byButtonFlags))
+			TurnOn_Option6(eOption);
 	}
 
 	ImGui::SameLine();
@@ -3301,13 +3364,10 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			}
 			if (ImGui::CollapsingHeader("Bloom & Glow"))
 			{
-				ImGui::Checkbox("Bloom##Bloom", &m_tEffectParticleDesc.bBloom);
+				Tool_ToggleOption6("Use Bloom", "##Use_Bloom", EFFECTPARTICLE_DESC::Option6::Use_Bloom);
+				Tool_ToggleOption6("Use Glow", "##Use_Glow", EFFECTPARTICLE_DESC::Option6::Use_Glow);
 
-				ImGui::SameLine(); ImGui::Text(" | "); ImGui::SameLine();
-
-				ImGui::Checkbox("Glow##Glow", &m_tEffectParticleDesc.bGlow);
-
-				if (m_tEffectParticleDesc.bGlow)
+				if (Check_Option6(EFFECTPARTICLE_DESC::Option6::Use_Glow))
 					Tool_Glow();
 
 			}
