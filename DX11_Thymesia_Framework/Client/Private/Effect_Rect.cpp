@@ -484,7 +484,9 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseSpeed))
 		CJson_Utility::Write_Float2(Out_Json["Diffuse_UV_Speed"], m_tEffectParticleDesc.vDiffuseUVSpeed);
 
-	CJson_Utility::Write_Float2(Out_Json["Diffuse_UV_Force"], m_tEffectParticleDesc.vDiffuseUVForce);
+	if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseForce))
+		CJson_Utility::Write_Float2(Out_Json["Diffuse_UV_Force"], m_tEffectParticleDesc.vDiffuseUVForce);
+
 	CJson_Utility::Write_Float2(Out_Json["Diffuse_UV_Max"], m_tEffectParticleDesc.vDiffuseUVMax);
 #pragma endregion
 #pragma region Mask
@@ -859,20 +861,22 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	m_tEffectParticleDesc.iDiffuseIndex = In_Json["UV_Diffuse_Index"];
 	CJson_Utility::Load_Float2(In_Json["Diffuse_Start_UV"], m_tEffectParticleDesc.vDiffuseStartUV);
 
-#ifdef _BAKE_PARTICLE_
-	if (In_Json.find("Diffuse_UV_Speed") != In_Json.end())
-		CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Speed"], m_tEffectParticleDesc.vDiffuseUVSpeed);
-
-	if (SMath::Is_Equal(m_tEffectParticleDesc.vDiffuseUVSpeed, _float2{ 0.f, 0.f }))
-		TurnOff_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseSpeed);
-	else
-		TurnOn_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseSpeed);
-#endif // _BAKE_PARTICLE_
-
 	if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseSpeed))
 		CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Speed"], m_tEffectParticleDesc.vDiffuseUVSpeed);
 
-	CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Force"], m_tEffectParticleDesc.vDiffuseUVForce);
+#ifdef _BAKE_PARTICLE_
+	if (In_Json.find("Diffuse_UV_Force") != In_Json.end())
+		CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Force"], m_tEffectParticleDesc.vDiffuseUVForce);
+
+	if (SMath::Is_Equal(m_tEffectParticleDesc.vDiffuseUVForce, _float2{ 0.f, 0.f }))
+		TurnOff_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseForce);
+	else
+		TurnOn_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseForce);
+#endif // _BAKE_PARTICLE_
+
+	if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseForce))
+		CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Force"], m_tEffectParticleDesc.vDiffuseUVForce);
+
 	CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Max"], m_tEffectParticleDesc.vDiffuseUVMax);
 #pragma endregion
 #pragma region Mask
@@ -1534,21 +1538,28 @@ void CEffect_Rect::Update_ParticleScale(const _uint& i, _float fTimeDelta)
 void CEffect_Rect::Update_ParticleUV(_float fTimeDelta)
 {
 #pragma region Diffuse
-	_vector vDiffuseUVSpeed(XMVectorSet(0.f, 0.f, 0.f, 0.f));
+	_vector vDiffuseCurrentUV(XMVectorSet(0.f, 0.f, 0.f, 0.f));
 
-	if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseSpeed))
-		vDiffuseUVSpeed = XMLoadFloat2(&m_tEffectParticleDesc.vDiffuseUVSpeed) * fTimeDelta;
+	if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseSpeed) || Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseForce))
+	{
+		_vector vDiffuseUVSpeed(XMVectorSet(0.f, 0.f, 0.f, 0.f));
 
-	m_vDiffuseCurrentUVForce.x += m_tEffectParticleDesc.vDiffuseUVForce.x * fTimeDelta;
-	m_vDiffuseCurrentUVForce.y += m_tEffectParticleDesc.vDiffuseUVForce.y * fTimeDelta;
+		if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseSpeed))
+			vDiffuseUVSpeed = XMLoadFloat2(&m_tEffectParticleDesc.vDiffuseUVSpeed) * fTimeDelta;
 
-	_vector vDiffuseMoveUV = vDiffuseUVSpeed + XMLoadFloat2(&m_vDiffuseCurrentUVForce);
-	_vector vDiffuseCurrentUV = XMLoadFloat2(&m_vDiffuseCurrentUV);
-	vDiffuseCurrentUV += vDiffuseMoveUV;
+		if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseForce))
+		{
+			m_vDiffuseCurrentUVForce.x += m_tEffectParticleDesc.vDiffuseUVForce.x * fTimeDelta;
+			m_vDiffuseCurrentUVForce.y += m_tEffectParticleDesc.vDiffuseUVForce.y * fTimeDelta;
+		}
+
+		_vector vDiffuseMoveUV = vDiffuseUVSpeed + XMLoadFloat2(&m_vDiffuseCurrentUVForce);
+		vDiffuseCurrentUV = XMLoadFloat2(&m_vDiffuseCurrentUV);
+		vDiffuseCurrentUV += vDiffuseMoveUV;
+	}
 
 	vDiffuseCurrentUV = XMVectorSetX(vDiffuseCurrentUV, min(m_tEffectParticleDesc.vDiffuseUVMax.x, XMVectorGetX(vDiffuseCurrentUV)));
 	vDiffuseCurrentUV = XMVectorSetY(vDiffuseCurrentUV, min(m_tEffectParticleDesc.vDiffuseUVMax.y, XMVectorGetY(vDiffuseCurrentUV)));
-
 	XMStoreFloat2(&m_vDiffuseCurrentUV, vDiffuseCurrentUV);
 #pragma endregion
 
@@ -2944,6 +2955,7 @@ void CEffect_Rect::Tool_Texture_Diffuse()
 		ImGui::DragFloat2("##Diffuse_Start_UV", &m_tEffectParticleDesc.vDiffuseStartUV.x, 0.01f, 0.f, 0.f, "%.5f");
 
 		Tool_ToggleOption5("Use UV Speed", "##Use_DiffuseSpeed", EFFECTPARTICLE_DESC::Option5::Use_DiffuseSpeed);
+		Tool_ToggleOption5("Use UV Force", "##Use_DiffuseForce", EFFECTPARTICLE_DESC::Option5::Use_DiffuseForce);
 
 		if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseSpeed))
 		{
@@ -2951,8 +2963,11 @@ void CEffect_Rect::Tool_Texture_Diffuse()
 			ImGui::DragFloat2("##Diffuse_UV_Speed", &m_tEffectParticleDesc.vDiffuseUVSpeed.x, 0.01f, 0.f, 0.f, "%.5f");
 		}
 
-		ImGui::Text("UV Force"); ImGui::SetNextItemWidth(200.f);
-		ImGui::DragFloat2("##Diffuse UV_Force", &m_tEffectParticleDesc.vDiffuseUVForce.x, 0.01f, 0.f, 0.f, "%.5f");
+		if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseForce))
+		{
+			ImGui::Text("UV Force"); ImGui::SetNextItemWidth(200.f);
+			ImGui::DragFloat2("##Diffuse UV_Force", &m_tEffectParticleDesc.vDiffuseUVForce.x, 0.01f, 0.f, 0.f, "%.5f");
+		}
 
 		ImGui::Text("UV Max"); ImGui::SetNextItemWidth(200.f);
 		ImGui::DragFloat2("##Diffuse_UV_Max", &m_tEffectParticleDesc.vDiffuseUVMax.x, 0.01f, 0.f, 0.f, "%.5f");
