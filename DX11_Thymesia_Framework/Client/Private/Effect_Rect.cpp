@@ -325,6 +325,7 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	Out_Json["ParticleOption2"] = m_tEffectParticleDesc.byOption2;
 	Out_Json["ParticleOption3"] = m_tEffectParticleDesc.byOption3;
 	Out_Json["ParticleOption4"] = m_tEffectParticleDesc.byOption4;
+	Out_Json["ParticleOption5"] = m_tEffectParticleDesc.byOption5;
 #pragma endregion // Particle Options
 
 	if (Check_Option1(EFFECTPARTICLE_DESC::Option1::Is_Attraction))
@@ -480,7 +481,9 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 
 	CJson_Utility::Write_Float2(Out_Json["Diffuse_Start_UV"], m_tEffectParticleDesc.vDiffuseStartUV);
 
-	CJson_Utility::Write_Float2(Out_Json["Diffuse_UV_Speed"], m_tEffectParticleDesc.vDiffuseUVSpeed);
+	if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseSpeed))
+		CJson_Utility::Write_Float2(Out_Json["Diffuse_UV_Speed"], m_tEffectParticleDesc.vDiffuseUVSpeed);
+
 	CJson_Utility::Write_Float2(Out_Json["Diffuse_UV_Force"], m_tEffectParticleDesc.vDiffuseUVForce);
 	CJson_Utility::Write_Float2(Out_Json["Diffuse_UV_Max"], m_tEffectParticleDesc.vDiffuseUVMax);
 #pragma endregion
@@ -819,20 +822,6 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 			CJson_Utility::Load_Float4(In_Json["Max_Color_Speed"], m_tEffectParticleDesc.vMaxColorSpeed);
 	}
 
-#ifdef _BAKE_PARTICLE_
-	if (In_Json.find("Min_Color_Force") != In_Json.end())
-		CJson_Utility::Load_Float4(In_Json["Min_Color_Force"], m_tEffectParticleDesc.vMinColorForce);
-
-	if (In_Json.find("Max_Color_Force") != In_Json.end())
-		CJson_Utility::Load_Float4(In_Json["Max_Color_Force"], m_tEffectParticleDesc.vMaxColorForce);
-
-	if (SMath::Is_Equal(m_tEffectParticleDesc.vMinColorForce, _float4{ 0.f, 0.f, 0.f, 0.f })
-		&& SMath::Is_Equal(m_tEffectParticleDesc.vMaxColorForce, _float4{ 0.f, 0.f, 0.f, 0.f }))
-		TurnOff_Option4(EFFECTPARTICLE_DESC::Option4::Use_ColorForce);
-	else
-		TurnOn_Option4(EFFECTPARTICLE_DESC::Option4::Use_ColorForce);
-#endif // _BAKE_PARTICLE_
-
 	if (Check_Option4(EFFECTPARTICLE_DESC::Option4::Use_ColorForce))
 	{
 		if (In_Json.find("Min_Color_Force") != In_Json.end())
@@ -869,7 +858,20 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma region Diffuse
 	m_tEffectParticleDesc.iDiffuseIndex = In_Json["UV_Diffuse_Index"];
 	CJson_Utility::Load_Float2(In_Json["Diffuse_Start_UV"], m_tEffectParticleDesc.vDiffuseStartUV);
-	CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Speed"], m_tEffectParticleDesc.vDiffuseUVSpeed);
+
+#ifdef _BAKE_PARTICLE_
+	if (In_Json.find("Diffuse_UV_Speed") != In_Json.end())
+		CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Speed"], m_tEffectParticleDesc.vDiffuseUVSpeed);
+
+	if (SMath::Is_Equal(m_tEffectParticleDesc.vDiffuseUVSpeed, _float2{ 0.f, 0.f }))
+		TurnOff_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseSpeed);
+	else
+		TurnOn_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseSpeed);
+#endif // _BAKE_PARTICLE_
+
+	if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseSpeed))
+		CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Speed"], m_tEffectParticleDesc.vDiffuseUVSpeed);
+
 	CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Force"], m_tEffectParticleDesc.vDiffuseUVForce);
 	CJson_Utility::Load_Float2(In_Json["Diffuse_UV_Max"], m_tEffectParticleDesc.vDiffuseUVMax);
 #pragma endregion
@@ -1532,7 +1534,11 @@ void CEffect_Rect::Update_ParticleScale(const _uint& i, _float fTimeDelta)
 void CEffect_Rect::Update_ParticleUV(_float fTimeDelta)
 {
 #pragma region Diffuse
-	_vector vDiffuseUVSpeed = XMLoadFloat2(&m_tEffectParticleDesc.vDiffuseUVSpeed) * fTimeDelta;
+	_vector vDiffuseUVSpeed(XMVectorSet(0.f, 0.f, 0.f, 0.f));
+
+	if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseSpeed))
+		vDiffuseUVSpeed = XMLoadFloat2(&m_tEffectParticleDesc.vDiffuseUVSpeed) * fTimeDelta;
+
 	m_vDiffuseCurrentUVForce.x += m_tEffectParticleDesc.vDiffuseUVForce.x * fTimeDelta;
 	m_vDiffuseCurrentUVForce.y += m_tEffectParticleDesc.vDiffuseUVForce.y * fTimeDelta;
 
@@ -2092,6 +2098,21 @@ void CEffect_Rect::TurnOff_Option4(const EFFECTPARTICLE_DESC::Option4 eOption)
 	m_tEffectParticleDesc.byOption4 &= ~(_ubyte)eOption;
 }
 
+const _bool CEffect_Rect::Check_Option5(const EFFECTPARTICLE_DESC::Option5 eOption) const
+{
+	return (m_tEffectParticleDesc.byOption5 & (_ubyte)eOption) ? true : false;
+}
+
+void CEffect_Rect::TurnOn_Option5(const EFFECTPARTICLE_DESC::Option5 eOption)
+{
+	m_tEffectParticleDesc.byOption5 |= (_ubyte)eOption;
+}
+
+void CEffect_Rect::TurnOff_Option5(const EFFECTPARTICLE_DESC::Option5 eOption)
+{
+	m_tEffectParticleDesc.byOption5 &= ~(_ubyte)eOption;
+}
+
 #ifdef _DEBUG
 void CEffect_Rect::Tool_ToggleOption1(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option1 eOption)
 {
@@ -2159,6 +2180,24 @@ void CEffect_Rect::Tool_ToggleOption4(const char* szOptionName, const char* szOp
 	{
 		if (ImGui::ColorButton(szOptionButtonName, ImVec4{ 1.f, 0.f, 0.f, 1.f }, byButtonFlags))
 			TurnOn_Option4(eOption);
+	}
+
+	ImGui::SameLine();
+	ImGui::Text(szOptionName);
+}
+
+void CEffect_Rect::Tool_ToggleOption5(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option5 eOption)
+{
+	ImGuiColorEditFlags byButtonFlags(ImGuiColorEditFlags_NoBorder | ImGuiColorEditFlags_NoTooltip | ImGuiColorEditFlags_NoDragDrop);
+	if (Check_Option5(eOption))
+	{
+		if (ImGui::ColorButton(szOptionButtonName, ImVec4{ 0.f, 1.f, 0.f, 1.f }, byButtonFlags))
+			TurnOff_Option5(eOption);
+	}
+	else
+	{
+		if (ImGui::ColorButton(szOptionButtonName, ImVec4{ 1.f, 0.f, 0.f, 1.f }, byButtonFlags))
+			TurnOn_Option5(eOption);
 	}
 
 	ImGui::SameLine();
@@ -2904,8 +2943,13 @@ void CEffect_Rect::Tool_Texture_Diffuse()
 		ImGui::Text("Start UV"); ImGui::SetNextItemWidth(200.f);
 		ImGui::DragFloat2("##Diffuse_Start_UV", &m_tEffectParticleDesc.vDiffuseStartUV.x, 0.01f, 0.f, 0.f, "%.5f");
 
-		ImGui::Text("UV Speed"); ImGui::SetNextItemWidth(200.f);
-		ImGui::DragFloat2("##Diffuse_UV_Speed", &m_tEffectParticleDesc.vDiffuseUVSpeed.x, 0.01f, 0.f, 0.f, "%.5f");
+		Tool_ToggleOption5("Use UV Speed", "##Use_DiffuseSpeed", EFFECTPARTICLE_DESC::Option5::Use_DiffuseSpeed);
+
+		if (Check_Option5(EFFECTPARTICLE_DESC::Option5::Use_DiffuseSpeed))
+		{
+			ImGui::Text("UV Speed"); ImGui::SetNextItemWidth(200.f);
+			ImGui::DragFloat2("##Diffuse_UV_Speed", &m_tEffectParticleDesc.vDiffuseUVSpeed.x, 0.01f, 0.f, 0.f, "%.5f");
+		}
 
 		ImGui::Text("UV Force"); ImGui::SetNextItemWidth(200.f);
 		ImGui::DragFloat2("##Diffuse UV_Force", &m_tEffectParticleDesc.vDiffuseUVForce.x, 0.01f, 0.f, 0.f, "%.5f");
