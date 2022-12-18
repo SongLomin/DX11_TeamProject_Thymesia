@@ -414,9 +414,7 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 		Out_Json["Max_Y_Scale_Ratio"] = m_tEffectParticleDesc.fMaxYScaleRatio;
 	}
 
-	Out_Json["Is_Easing_Scale"] = m_tEffectParticleDesc.bEasingScale;
-
-	if (m_tEffectParticleDesc.bEasingScale)
+	if (Check_Option3(EFFECTPARTICLE_DESC::Option3::Easing_Scale))
 	{
 		Out_Json["Scale_Easing_Type"] = m_tEffectParticleDesc.iScaleEasingType;
 		Out_Json["Scale_Easing_Total_Time"] = m_tEffectParticleDesc.fScaleEasingTotalTime;
@@ -741,13 +739,13 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 
 #pragma region Scale
 #ifdef _BAKE_PARTICLE_
-	if (In_Json.find("Is_Ratio_Scale") != In_Json.end())
+	if (In_Json.find("Is_Easing_Scale") != In_Json.end())
 	{
-		_bool bRatioScale = In_Json["Is_Ratio_Scale"];
-		if (bRatioScale)
-			TurnOn_Option3(EFFECTPARTICLE_DESC::Option3::Ratio_Scale);
+		_bool bEasingScale = In_Json["Is_Easing_Scale"];
+		if (bEasingScale)
+			TurnOn_Option3(EFFECTPARTICLE_DESC::Option3::Easing_Scale);
 		else
-			TurnOff_Option3(EFFECTPARTICLE_DESC::Option3::Ratio_Scale);
+			TurnOff_Option3(EFFECTPARTICLE_DESC::Option3::Easing_Scale);
 	}
 #endif // _BAKE_PARTICLE_
 
@@ -757,10 +755,7 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 		m_tEffectParticleDesc.fMaxYScaleRatio = In_Json["Max_Y_Scale_Ratio"];
 	}
 
-	if (In_Json.find("Is_Easing_Scale") != In_Json.end())
-		m_tEffectParticleDesc.bEasingScale = In_Json["Is_Easing_Scale"];
-
-	if (m_tEffectParticleDesc.bEasingScale)
+	if (Check_Option3(EFFECTPARTICLE_DESC::Option3::Easing_Scale))
 	{
 		if (In_Json.find("Scale_Easing_Type") != In_Json.end())
 			m_tEffectParticleDesc.iScaleEasingType = In_Json["Scale_Easing_Type"];
@@ -1475,7 +1470,7 @@ void CEffect_Rect::Update_ParticleScale(const _uint& i, _float fTimeDelta)
 	_float2 vScale;
 	ZeroMemory(&vScale, sizeof(_float2));
 
-	if (m_tEffectParticleDesc.bEasingScale)
+	if (Check_Option3(EFFECTPARTICLE_DESC::Option3::Easing_Scale))
 	{
 		_float fElapsedTime(m_tParticleDescs[i].fCurrentLifeTime);
 
@@ -3081,10 +3076,10 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 					}
 				}
 
-				ImGui::Checkbox("Apply Easing##Is_Easing_Scale", &m_tEffectParticleDesc.bEasingScale);
+				Tool_ToggleOption3("Easing Scale", "##Easing_Scale", EFFECTPARTICLE_DESC::Option3::Easing_Scale);
 				ImGui::Separator();
 
-				if (!m_tEffectParticleDesc.bEasingScale)
+				if (!Check_Option3(EFFECTPARTICLE_DESC::Option3::Easing_Scale))
 					Tool_Scale();
 				else
 					Tool_Scale_Easing();

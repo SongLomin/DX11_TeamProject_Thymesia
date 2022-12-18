@@ -277,7 +277,6 @@ namespace Client
 		_float		fMinYScaleRatio;
 		_float		fMaxYScaleRatio;
 
-		_bool		bEasingScale;
 		_int		iScaleEasingType;
 		_float		fScaleEasingTotalTime;
 
