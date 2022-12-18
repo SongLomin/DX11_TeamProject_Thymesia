@@ -1583,7 +1583,6 @@ void CEffect_Rect::Update_ParticleColor(const _uint& i, _float fTimeDelta)
 	ZeroMemory(&vColor, sizeof(_vector));
 
 	_float fAlpha(0.f);
-
 	if (Check_Option4(EFFECTPARTICLE_DESC::Option4::Easing_Alpha))
 	{
 		_float fElapsedTime(m_tParticleDescs[i].fCurrentLifeTime);
