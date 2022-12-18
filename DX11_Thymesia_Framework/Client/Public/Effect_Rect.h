@@ -126,10 +126,15 @@ private:
 	void TurnOn_Option3(const EFFECTPARTICLE_DESC::Option3 eOption);
 	void TurnOff_Option3(const EFFECTPARTICLE_DESC::Option3 eOption);
 
+	const _bool Check_Option4(const EFFECTPARTICLE_DESC::Option4 eOption) const;
+	void TurnOn_Option4(const EFFECTPARTICLE_DESC::Option4 eOption);
+	void TurnOff_Option4(const EFFECTPARTICLE_DESC::Option4 eOption);
+
 #ifdef _DEBUG
     void Tool_ToggleOption1(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option1 eOption);
     void Tool_ToggleOption2(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option2 eOption);
     void Tool_ToggleOption3(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option3 eOption);
+    void Tool_ToggleOption4(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option4 eOption);
 #endif // _DEBUG
 
 #ifdef _DEBUG

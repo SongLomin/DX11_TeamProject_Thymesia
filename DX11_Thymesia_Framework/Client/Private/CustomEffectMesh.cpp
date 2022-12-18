@@ -537,7 +537,6 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 #elif NDEBUG
 		if (m_strBoneName.empty())
 			assert(0);
-	}
 #endif // _DEBUG
 
 #ifdef _DEBUG
@@ -549,7 +548,9 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 #endif // _DEBUG
 	}
 
+#ifdef _DEBUG
 JUMP:
+#endif // _DEBUG
 	if (In_Json.find("BillBoard") != In_Json.end())
 		m_tEffectMeshDesc.bBillBoard = In_Json["BillBoard"];
 	

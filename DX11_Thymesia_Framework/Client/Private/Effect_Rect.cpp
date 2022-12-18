@@ -324,6 +324,7 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	Out_Json["ParticleOption1"] = m_tEffectParticleDesc.byOption1;
 	Out_Json["ParticleOption2"] = m_tEffectParticleDesc.byOption2;
 	Out_Json["ParticleOption3"] = m_tEffectParticleDesc.byOption3;
+	Out_Json["ParticleOption4"] = m_tEffectParticleDesc.byOption4;
 #pragma endregion // Particle Options
 
 	if (Check_Option1(EFFECTPARTICLE_DESC::Option1::Is_Attraction))
@@ -444,7 +445,6 @@ void CEffect_Rect::Write_EffectJson(json& Out_Json)
 	Out_Json["Render_Group"] = m_eRenderGroup;
 
 	Out_Json["Discard_Ratio"] = m_tEffectParticleDesc.fDiscardRatio;
-	Out_Json["Is_Gray_Only_Use_Red"] = m_tEffectParticleDesc.IsGrayOnlyUseRed;
 	Out_Json["Is_Easing_Alpha"] = m_tEffectParticleDesc.bEasingAlpha;
 
 	CJson_Utility::Write_Float4(Out_Json["Min_Start_Color"], m_tEffectParticleDesc.vMinStartColor);
@@ -553,6 +553,13 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 
 	if (In_Json.find("ParticleOption3") != In_Json.end())
 		m_tEffectParticleDesc.byOption3 = In_Json["ParticleOption3"];
+#ifdef NDEBUG
+	else
+		DEBUG_ASSERT;
+#endif // NDEBUG
+
+	if (In_Json.find("ParticleOption4") != In_Json.end())
+		m_tEffectParticleDesc.byOption4 = In_Json["ParticleOption4"];
 #ifdef NDEBUG
 	else
 		DEBUG_ASSERT;
@@ -765,22 +772,6 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 		if (In_Json.find("Max_Start_Scale") != In_Json.end())
 			CJson_Utility::Load_Float2(In_Json["Max_Start_Scale"], m_tEffectParticleDesc.vMaxStartScale);
 
-#ifdef _BAKE_PARTICLE_
-		if (In_Json.find("Min_Scale_Force") != In_Json.end())
-			CJson_Utility::Load_Float2(In_Json["Min_Scale_Force"], m_tEffectParticleDesc.vMinScaleForce);
-
-		if (In_Json.find("Max_Scale_Force") != In_Json.end())
-			CJson_Utility::Load_Float2(In_Json["Max_Scale_Force"], m_tEffectParticleDesc.vMaxScaleForce);
-
-		if (SMath::Is_Equal(m_tEffectParticleDesc.vMinScaleForce, _float2{ 0.f, 0.f }) 
-			&& SMath::Is_Equal(m_tEffectParticleDesc.vMaxScaleForce, _float2{ 0.f, 0.f }))
-			TurnOff_Option3(EFFECTPARTICLE_DESC::Option3::Use_ScaleForce);
-		else
-			TurnOn_Option3(EFFECTPARTICLE_DESC::Option3::Use_ScaleForce);
-		
-#endif // _BAKE_PARTICLE_
-
-
 		if (Check_Option3(EFFECTPARTICLE_DESC::Option3::Use_ScaleSpeed))
 		{
 			if (In_Json.find("Min_Scale_Speed") != In_Json.end())
@@ -808,8 +799,21 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 		m_eRenderGroup = In_Json["Render_Group"];
 	if (In_Json.find("Discard_Ratio") != In_Json.end())
 		m_tEffectParticleDesc.fDiscardRatio = In_Json["Discard_Ratio"];
+
+
+#ifdef _BAKE_PARTICLE_
 	if (In_Json.find("Is_Gray_Only_Use_Red") != In_Json.end())
-		m_tEffectParticleDesc.IsGrayOnlyUseRed = In_Json["Is_Gray_Only_Use_Red"];
+	{
+		_bool IsGray = In_Json["Is_Gray_Only_Use_Red"];
+		if (IsGray)
+			TurnOn_Option4(EFFECTPARTICLE_DESC::Option4::Is_Gray);
+		else
+			TurnOff_Option4(EFFECTPARTICLE_DESC::Option4::Is_Gray);
+	}
+	
+#endif // _BAKE_PARTICLE_
+
+
 	if (In_Json.find("Is_Easing_Alpha") != In_Json.end())
 		m_tEffectParticleDesc.bEasingAlpha = In_Json["Is_Easing_Alpha"];
 
@@ -1293,7 +1297,7 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 			tParticle = m_tOriginalParticleDescs.at(i);
 #endif // _DEBUG
 
-			if (m_tEffectParticleDesc.IsGrayOnlyUseRed)
+			if (Check_Option4(EFFECTPARTICLE_DESC::Option4::Is_Gray))
 			{
 				_float fGrayColor(SMath::fRandom(m_tEffectParticleDesc.vMinStartColor.x, m_tEffectParticleDesc.vMaxStartColor.x));
 				_float fAhlpaColor(SMath::fRandom(m_tEffectParticleDesc.vMinStartColor.w, m_tEffectParticleDesc.vMaxStartColor.w));
@@ -1590,7 +1594,7 @@ void CEffect_Rect::Update_ParticleColor(const _uint& i, _float fTimeDelta)
 	_vector vColor;
 	ZeroMemory(&vColor, sizeof(_vector));
 
-	if (m_tEffectParticleDesc.IsGrayOnlyUseRed)
+	if (Check_Option4(EFFECTPARTICLE_DESC::Option4::Is_Gray))
 	{
 		vColor = XMVectorSetX(vColor, m_tParticleDescs[i].vTargetColorSpeed.x * fTimeDelta);
 		vColor = XMVectorSetW(vColor, m_tParticleDescs[i].vTargetColorSpeed.w * fTimeDelta);
@@ -2099,6 +2103,21 @@ void CEffect_Rect::TurnOff_Option3(const EFFECTPARTICLE_DESC::Option3 eOption)
 	m_tEffectParticleDesc.byOption3 &= ~(_ubyte)eOption;
 }
 
+const _bool CEffect_Rect::Check_Option4(const EFFECTPARTICLE_DESC::Option4 eOption) const
+{
+	return (m_tEffectParticleDesc.byOption4 & (_ubyte)eOption) ? true : false;
+}
+
+void CEffect_Rect::TurnOn_Option4(const EFFECTPARTICLE_DESC::Option4 eOption)
+{
+	m_tEffectParticleDesc.byOption4 |= (_ubyte)eOption;
+}
+
+void CEffect_Rect::TurnOff_Option4(const EFFECTPARTICLE_DESC::Option4 eOption)
+{
+	m_tEffectParticleDesc.byOption4 &= ~(_ubyte)eOption;
+}
+
 #ifdef _DEBUG
 void CEffect_Rect::Tool_ToggleOption1(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option1 eOption)
 {
@@ -2148,6 +2167,24 @@ void CEffect_Rect::Tool_ToggleOption3(const char* szOptionName, const char* szOp
 	{
 		if (ImGui::ColorButton(szOptionButtonName, ImVec4{ 1.f, 0.f, 0.f, 1.f }, byButtonFlags))
 			TurnOn_Option3(eOption);
+	}
+
+	ImGui::SameLine();
+	ImGui::Text(szOptionName);
+}
+
+void CEffect_Rect::Tool_ToggleOption4(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option4 eOption)
+{
+	ImGuiColorEditFlags byButtonFlags(ImGuiColorEditFlags_NoBorder | ImGuiColorEditFlags_NoTooltip | ImGuiColorEditFlags_NoDragDrop);
+	if (Check_Option4(eOption))
+	{
+		if (ImGui::ColorButton(szOptionButtonName, ImVec4{ 0.f, 1.f, 0.f, 1.f }, byButtonFlags))
+			TurnOff_Option4(eOption);
+	}
+	else
+	{
+		if (ImGui::ColorButton(szOptionButtonName, ImVec4{ 1.f, 0.f, 0.f, 1.f }, byButtonFlags))
+			TurnOn_Option4(eOption);
 	}
 
 	ImGui::SameLine();
@@ -3152,7 +3189,8 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 				ImGui::Text("Discard Ratio"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);
 				ImGui::DragFloat("##Discard_Ratio", &m_tEffectParticleDesc.fDiscardRatio, 0.01f, 0.f, 3.f);
-				ImGui::Checkbox("Is Gray Only Use Red##Is_Gray_Only_Use_Red", &m_tEffectParticleDesc.IsGrayOnlyUseRed);
+
+				Tool_ToggleOption4("Is Gray (Use Red Only)", "##Is_Gray", EFFECTPARTICLE_DESC::Option4::Is_Gray);
 				ImGui::Checkbox("Easing Alpha##Is_Easing_Alpha", &m_tEffectParticleDesc.bEasingAlpha);
 				Tool_Color();
 				if (m_tEffectParticleDesc.bEasingAlpha)

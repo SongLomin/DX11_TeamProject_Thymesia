@@ -305,7 +305,6 @@ namespace Client
 #pragma endregion
 #pragma region Color
 		_float		fDiscardRatio;
-		_bool		IsGrayOnlyUseRed;// when random colors, grayscales
 
 		_bool		bEasingAlpha;
 		_int		iAlphaEasingType;
