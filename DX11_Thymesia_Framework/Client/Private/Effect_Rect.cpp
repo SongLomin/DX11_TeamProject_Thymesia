@@ -744,16 +744,6 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #pragma endregion
 
 #pragma region Scale
-#ifdef _BAKE_PARTICLE_
-	if (In_Json.find("Is_Easing_Scale") != In_Json.end())
-	{
-		_bool bEasingScale = In_Json["Is_Easing_Scale"];
-		if (bEasingScale)
-			TurnOn_Option3(EFFECTPARTICLE_DESC::Option3::Easing_Scale);
-		else
-			TurnOff_Option3(EFFECTPARTICLE_DESC::Option3::Easing_Scale);
-	}
-#endif // _BAKE_PARTICLE_
 
 	if (Check_Option3(EFFECTPARTICLE_DESC::Option3::Ratio_Scale))
 	{
@@ -776,17 +766,17 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 			CJson_Utility::Load_Float2(In_Json["Max_Start_Scale"], m_tEffectParticleDesc.vMaxStartScale);
 
 #ifdef _BAKE_PARTICLE_
-		if (In_Json.find("Min_Scale_Speed") != In_Json.end())
-			CJson_Utility::Load_Float2(In_Json["Min_Scale_Speed"], m_tEffectParticleDesc.vMinScaleSpeed);
+		if (In_Json.find("Min_Scale_Force") != In_Json.end())
+			CJson_Utility::Load_Float2(In_Json["Min_Scale_Force"], m_tEffectParticleDesc.vMinScaleForce);
 
-		if (In_Json.find("Max_Scale_Speed") != In_Json.end())
-			CJson_Utility::Load_Float2(In_Json["Max_Scale_Speed"], m_tEffectParticleDesc.vMaxScaleSpeed);
+		if (In_Json.find("Max_Scale_Force") != In_Json.end())
+			CJson_Utility::Load_Float2(In_Json["Max_Scale_Force"], m_tEffectParticleDesc.vMaxScaleForce);
 
-		if (SMath::Is_Equal(m_tEffectParticleDesc.vMinScaleSpeed, _float2{ 0.f, 0.f }) 
-			&& SMath::Is_Equal(m_tEffectParticleDesc.vMaxScaleSpeed, _float2{ 0.f, 0.f }))
-			TurnOff_Option3(EFFECTPARTICLE_DESC::Option3::Use_ScaleSpeed);
+		if (SMath::Is_Equal(m_tEffectParticleDesc.vMinScaleForce, _float2{ 0.f, 0.f }) 
+			&& SMath::Is_Equal(m_tEffectParticleDesc.vMaxScaleForce, _float2{ 0.f, 0.f }))
+			TurnOff_Option3(EFFECTPARTICLE_DESC::Option3::Use_ScaleForce);
 		else
-			TurnOn_Option3(EFFECTPARTICLE_DESC::Option3::Use_ScaleSpeed);
+			TurnOn_Option3(EFFECTPARTICLE_DESC::Option3::Use_ScaleForce);
 		
 #endif // _BAKE_PARTICLE_
 
