@@ -24,8 +24,8 @@ void CVargBossState_Attack3b::Call_NextKeyFrame(const _uint& In_KeyIndex)
 
 	switch (In_KeyIndex)
 	{
-	case 45:
-		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.1f, 1.f, 9.f, 0.25f);
+	case 61:
+		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.4f, 1.f, 9.f, 0.5f);
 		break;
 	}
 }
@@ -39,18 +39,14 @@ HRESULT CVargBossState_Attack3b::Initialize_Prototype()
 HRESULT CVargBossState_Attack3b::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
-
+	m_vShakingOffSet = { 1.f, -1.f, 0.f };
 	return S_OK;
 }
 
 void CVargBossState_Attack3b::Start()
 {
 	__super::Start();
-
-
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_ComboAttack3_1");
-
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Attack3b::Call_AnimationEnd, this);
 }
 

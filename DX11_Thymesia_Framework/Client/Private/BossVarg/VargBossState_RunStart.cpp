@@ -21,7 +21,7 @@ void CVargBossState_RunStart::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	switch (In_KeyIndex)
 	{
 	case 47:
-		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.03f, 0.3f, 9.f, 0.25f);
+		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.1f, 0.3f, 9.f, 0.1f);
 		break;
 	}
 }
@@ -35,8 +35,7 @@ HRESULT CVargBossState_RunStart::Initialize_Prototype()
 HRESULT CVargBossState_RunStart::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
-
+	m_vShakingOffSet = { 0.f, 1.f, 0.f };
 	return S_OK;
 }
 

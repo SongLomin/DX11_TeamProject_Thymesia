@@ -22,10 +22,10 @@ void CVargBossState_Run::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	switch (In_KeyIndex)
 	{
 	case 0:
-		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.03f, 0.3f, 9.f, 0.25f);
+		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.1f, 0.3f, 9.f, 0.1f);
 		break;
 	case 10:
-		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.03f, 0.3f, 9.f, 0.25f);
+		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.1f, 0.3f, 9.f, 0.1f);
 		break;
 	}
 }
@@ -39,29 +39,22 @@ HRESULT CVargBossState_Run::Initialize_Prototype()
 HRESULT CVargBossState_Run::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
-
+	m_vShakingOffSet = { 0.f, 1.f, 0.f };
 	return S_OK;
 }
 
 void CVargBossState_Run::Start()
 {
 	__super::Start();
-
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_RunF");
-
 }
 
 void CVargBossState_Run::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
-
 	m_fCurrentSpeed += m_fAccel * fTimeDelta;
 	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
-
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
-
 	PxControllerFilters Filters;
 	m_pPhysXControllerCom.lock()->MoveWithRotation({ 0.f, 0.f, m_fCurrentSpeed * fTimeDelta }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
 }

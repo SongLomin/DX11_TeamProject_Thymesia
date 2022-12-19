@@ -25,8 +25,11 @@ void CVargBossState_AvoidAttack::Call_NextKeyFrame(const _uint& In_KeyIndex)
 
 	switch (In_KeyIndex)
 	{
-	case 45:
-		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.1f, 1.f, 9.f, 0.25f);
+	case 63:
+		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.3f, 1.f, 9.f, 0.25f);
+		break;
+	case 66:
+		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.6f, 1.f, 9.f, 0.5f);
 		break;
 	}
 }
@@ -40,8 +43,7 @@ HRESULT CVargBossState_AvoidAttack::Initialize_Prototype()
 HRESULT CVargBossState_AvoidAttack::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
-
+	m_vShakingOffSet = { 0.f, -1.f, 0.f };
 	return S_OK;
 }
 
