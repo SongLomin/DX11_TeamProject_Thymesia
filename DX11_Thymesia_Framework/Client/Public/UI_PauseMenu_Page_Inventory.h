@@ -5,6 +5,9 @@ BEGIN(Client)
 
 class CCustomUI;
 class CUI_Inventory;
+class CUI_ItemInformation;
+class CItem;
+
 
 
 class CUI_PauseMenu_Page_Inventory : public CUI_Container
@@ -26,17 +29,21 @@ private:
     void            Create_ItemInformationTap();
     virtual void    OnEnable(void* pArg);
     virtual void    OnDisable();
-
+    
 
 private:
     void            Free() {};
 //Variable
 
-
+private:
+    void            Call_OnMouseOver(weak_ptr<CItem> pItem);
+    void            Call_OnMouseOut();
 
 
 private://
-    weak_ptr<CUI_Inventory>    m_pInventory;
+    weak_ptr<CUI_Inventory>             m_pInventory;
+    weak_ptr<CUI_ItemInformation>       m_pItemInformation;
+
 
 };
 

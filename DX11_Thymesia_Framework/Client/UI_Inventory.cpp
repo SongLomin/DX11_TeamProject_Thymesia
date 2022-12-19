@@ -95,6 +95,14 @@ void CUI_Inventory::Create_ItemSlot()
             pItemSlot.lock()->Set_UIPosition(m_fItemSlotStart.x + (j * m_fOffset), m_fItemSlotStart.y + (i * m_fOffset),
                 ALIGN_CENTER);
             pItemSlot.lock()->Set_OriginCenterPosFromThisPos();
+            pItemSlot.lock()->Callback_OnMouseOver +=
+                bind(&CUI_Inventory::Call_OnMouseOver, this, placeholders::_1);
+
+            pItemSlot.lock()->Callback_OnMouseOut +=
+                bind(&CUI_Inventory::Call_OnMouseOut , this);
+
+            
+            
             Add_Child(pItemSlot);
             m_vecItemSlot.push_back(pItemSlot);
         }
@@ -190,10 +198,13 @@ void CUI_Inventory::Call_OnWheelMove(_float fAmount)
 
 void CUI_Inventory::Call_OnMouseOver(weak_ptr<CItem> pItem)
 {
+    Callback_OnMouseOver(pItem);
+
 }
 
 void CUI_Inventory::Call_OnMouseOut()
 {
+    Callback_OnMouseOut();
 }
 
 

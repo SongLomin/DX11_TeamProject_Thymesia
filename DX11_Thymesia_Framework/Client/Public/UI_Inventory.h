@@ -23,7 +23,6 @@ public:
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
 
-
 private:
     void                    Define_Variable();
     void                    Create_InventoryUI();
@@ -44,7 +43,15 @@ private:
     virtual void            OnDisable() override;
 
 //callBack
+public:
+    FDelegate<weak_ptr<CItem>> Callback_OnMouseOver;
+    FDelegate<> Callback_OnMouseOut;
+
 private:
+    
+
+
+
     void                    Call_OnWheelMove(_float fAmount);
     void                    Call_OnMouseOver(weak_ptr<CItem>   pItem);
     void                    Call_OnMouseOut();

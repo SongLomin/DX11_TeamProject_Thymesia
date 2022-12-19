@@ -36,9 +36,7 @@ void CUI_ItemSlot::Tick(_float fTimeDelta)
 	fTimeDelta = CUI_Utils::UI_TimeDelta();
 	__super::Tick(fTimeDelta);
 
-
-
-
+	m_tTextInfo.vPosition.y = m_tUIDesc.fY;
 }
 
 void CUI_ItemSlot::LateTick(_float fTimeDelta)
@@ -142,7 +140,6 @@ void CUI_ItemSlot::Create_ItemSlot()
 	m_pFrame.lock()->Set_Texture("ItemSlot_Frame");
 	m_pFrame.lock()->Set_Depth(0.6);
 
-
 	m_pHover = ADD_STATIC_CUSTOMUI;
 	m_pHover.lock()->Set_Size(213.f, 213.f);
 	m_pHover.lock()->Set_Texture("ItemSlot_Hover");
@@ -179,7 +176,7 @@ void CUI_ItemSlot::Update_TextInfo()
 {
 	m_tTextInfo.szText = to_wstring(m_pBindedItem.lock()->Get_CurrentQuantity());
 
-	m_tTextInfo.vPosition.x = m_tUIDesc.fX - ((m_tTextInfo.szText.size() - 1) * 10.f);
+	m_tTextInfo.vPosition.x = m_tUIDesc.fX - (max(0, (m_tTextInfo.szText.size() - 1) ) * 10.f);
 	m_tTextInfo.vPosition.y = m_tUIDesc.fY;
 
 }
