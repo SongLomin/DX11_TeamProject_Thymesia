@@ -676,6 +676,13 @@ HRESULT CRender_Manager::Set_Saturation(const _float In_fSaturation)
 	return S_OK;
 }
 
+HRESULT CRender_Manager::Set_IrradianceMap(const _uint In_iIrradianceMap)
+{
+	m_iIrradianceMap = In_iIrradianceMap;
+
+	return S_OK;
+}
+
 
 HRESULT CRender_Manager::Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain)
 {
@@ -1041,9 +1048,9 @@ HRESULT CRender_Manager::Render_Blend()
 	if (FAILED(m_pBRDFLUTTextureCom->Set_ShaderResourceView(m_pShader, "g_BRDFTexture", 0)))
 		DEBUG_ASSERT;
 
-	if (FAILED(m_pIrradianceTextureCom->Set_ShaderResourceView(m_pShader, "g_IrradianceTexture", 0)))
+	if (FAILED(m_pIrradianceTextureCom->Set_ShaderResourceView(m_pShader, "g_IrradianceTexture", m_iIrradianceMap)))
 		DEBUG_ASSERT;
-	if (FAILED(m_pPreFilterTextureCom->Set_ShaderResourceView(m_pShader, "g_PreFilterTexture", 0)))
+	if (FAILED(m_pPreFilterTextureCom->Set_ShaderResourceView(m_pShader, "g_PreFilterTexture", m_iIrradianceMap)))
 		DEBUG_ASSERT;
 
 

@@ -67,6 +67,7 @@ public:
 
 	HRESULT Set_Contrast(const _float In_fContrast);
 	HRESULT Set_Saturation(const _float In_fSaturation);
+	HRESULT Set_IrradianceMap(const _uint In_iIrradianceMap);
 
 private:
 	HRESULT Render_Priority();
@@ -187,6 +188,8 @@ private:
 	_float		m_fSaturation = 1.f;
 
 	_float		m_fExposure = 1.f;
+
+	_uint		m_iIrradianceMap = 0;
 
 
 private:

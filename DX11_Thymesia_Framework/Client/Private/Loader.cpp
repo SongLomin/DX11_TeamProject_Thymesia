@@ -361,7 +361,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	GAMEINSTANCE->Add_Light(LightDesc);
 
-
+	GAMEINSTANCE->Set_IrradianceMap(0);
 
 	return S_OK;
 }
