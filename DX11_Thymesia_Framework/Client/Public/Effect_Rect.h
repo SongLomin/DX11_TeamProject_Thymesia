@@ -19,7 +19,7 @@ private:
     enum class PARTICLETYPE
     {
         NONE,
-        OUTBURST,
+        NONE_NONE,
         ATTRACTION,
         BILLBOARD,
         TYPE_END
@@ -118,7 +118,6 @@ private:
 	const _bool Check_Option(const EFFECTPARTICLE_DESC::Option4 eOption) const;
 	const _bool Check_Option(const EFFECTPARTICLE_DESC::Option5 eOption) const;
 	const _bool Check_Option(const EFFECTPARTICLE_DESC::Option6 eOption) const;
-
 
 #ifdef _DEBUG
     void TurnOn_Option(const EFFECTPARTICLE_DESC::Option1 eOption);

@@ -24,8 +24,14 @@ void CVargBossState_Attack1b::Call_NextKeyFrame(const _uint& In_KeyIndex)
 
 	switch (In_KeyIndex)
 	{
+	case 61:
+		Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(true);
+		break;
 	case 68:
 		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.5f, 1.5f, 9.f, 0.5f);
+		break;
+	case 88:
+		Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(false);
 		break;
 	}
 }
@@ -72,30 +78,20 @@ void CVargBossState_Attack1b::LateTick(_float fTimeDelta)
 void CVargBossState_Attack1b::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
-
 	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CVargBossState_Attack3a>().lock())
 		m_bNextAttack = true;
 
 	m_bAttackLookAtLimit = true;  // 애니메이션시작할떄 룩엣시작
-
 	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-
 	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
 
 	for (auto& elem : pWeapons)
 		elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.12f);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-
 	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
-
-	m_pThisAnimationCom.lock()->CallBack_NextChannelKey +=
-		bind(&CVargBossState_Attack1b::Call_NextKeyFrame, this, placeholders::_1);
-
-	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(true);
-
-	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
-		bind(&CVargBossState_Attack1b::Call_OtherControllerHit, this, placeholders::_1);
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CVargBossState_Attack1b::Call_NextKeyFrame, this, placeholders::_1);
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit += bind(&CVargBossState_Attack1b::Call_OtherControllerHit, this, placeholders::_1);
 
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Attack1b -> OnStateStart" << endl;
@@ -105,16 +101,10 @@ void CVargBossState_Attack1b::OnStateStart(const _float& In_fAnimationBlendTime)
 void CVargBossState_Attack1b::OnStateEnd()
 {
 	__super::OnStateEnd();
-
 	m_bNextAttack = false;
-
 	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(false);
-
-	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -=
-		bind(&CVargBossState_Attack1b::Call_NextKeyFrame, this, placeholders::_1);
-
-	m_pPhysXControllerCom.lock()->Callback_ControllerHit -=
-		bind(&CVargBossState_Attack1b::Call_OtherControllerHit, this, placeholders::_1);
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CVargBossState_Attack1b::Call_NextKeyFrame, this, placeholders::_1);
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit -= bind(&CVargBossState_Attack1b::Call_OtherControllerHit, this, placeholders::_1);
 }
 
 

@@ -1310,12 +1310,16 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 #ifdef _DEBUG
 			tParticle = m_tOriginalParticleDescs.at(i);
 #endif // _DEBUG
+
 			m_tOriginalParticleDescs[i].vCurrentColor = SMath::vRandom(m_tEffectParticleDesc.vMinStartColor, m_tEffectParticleDesc.vMaxStartColor);
+
 #ifdef _DEBUG
 			tParticle = m_tOriginalParticleDescs.at(i);
 #endif // _DEBUG
+
 			if (Check_Option(EFFECTPARTICLE_DESC::Option4::Easing_Alpha))
 				m_tOriginalParticleDescs[i].fStartAlpha = m_tOriginalParticleDescs[i].vCurrentColor.w;
+
 #ifdef _DEBUG
 			tParticle = m_tOriginalParticleDescs.at(i);
 #endif // _DEBUG
@@ -1324,6 +1328,7 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 #ifdef _DEBUG
 			tParticle = m_tOriginalParticleDescs.at(i);
 #endif // _DEBUG
+
 			if (Check_Option(EFFECTPARTICLE_DESC::Option4::Use_ColorSpeed))
 				m_tOriginalParticleDescs[i].vTargetColorSpeed = SMath::vRandom(m_tEffectParticleDesc.vMinColorSpeed, m_tEffectParticleDesc.vMaxColorSpeed);
 
@@ -3129,21 +3134,23 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 		if (ImGui::CollapsingHeader("Effect_Particle"), ImGuiTreeNodeFlags_DefaultOpen)
 		{
 			if (ImGui::Button("Copy##Copy_Particle_Info"))
-				GET_SINGLE(CGameManager)->Store_ParticleInfo(m_tEffectParticleDesc);
+			{
+				GET_SINGLE(CGameManager)->Store_ParticleInfo(m_tEffectParticleDesc, m_strBoneName);
+			}
 
 			ImGui::SameLine();
 
 			if (ImGui::Button("Paste##Paste_Particle_Info"))
 			{
 				m_tEffectParticleDesc = GET_SINGLE(CGameManager)->Get_StoredParticleInfo();
+				m_strBoneName = GET_SINGLE(CGameManager)->Get_BoneName();
+
 				ReBake_EditParticle();
 			}
 
 			ImGui::Text("Max Instance"); ImGui::SameLine();
 			if (ImGui::DragInt("##Max_Instance", &m_tEffectParticleDesc.iMaxInstance, 1, 0, 0, "%d", ImGuiSliderFlags_AlwaysClamp))
-			{
 				ReBake_EditParticle();
-			}
 
 			ImGui::Separator();
 

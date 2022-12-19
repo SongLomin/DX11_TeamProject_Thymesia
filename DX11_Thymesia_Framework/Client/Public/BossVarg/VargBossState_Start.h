@@ -14,7 +14,8 @@ class CVargBossState_Start :
 	CLONE_H(CVargBossState_Start, CComponent)
 		SHALLOW_COPY(CVargBossState_Start)
 
-
+public:
+	void Call_NextKeyFrame(const _uint& In_KeyIndex);
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
@@ -23,22 +24,19 @@ protected:
 	virtual void Tick(_float fTimeDelta) override;
 	virtual void LateTick(_float fTimeDelta) override;
 
-protected:
 	virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
+	virtual void OnDestroy() override;
+	void Free();
+
+private:
+	void Call_AnimationEnd();
 
 private:
 	_bool    m_bNextState = false;
 	_float   m_fSinematic = 0.f;
-
-private:
-	void Call_AnimationEnd();
-protected:
-	virtual void OnDestroy() override;
-	void Free();
-
 };
 
 END

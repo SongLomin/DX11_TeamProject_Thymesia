@@ -24,10 +24,14 @@ void CVargBossState_RaidAttack::Call_NextKeyFrame(const _uint& In_KeyIndex)
 
 	switch (In_KeyIndex)
 	{
+	case 86:
+		Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(true);
+		break;
 	case 90:
 		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.4f, 1.f, 9.f, 0.1f);
 		break;
 	case 93:
+		Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(false);
 		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.6f, 1.f, 9.f, 0.7f);
 		break;
 	}
@@ -86,7 +90,6 @@ void CVargBossState_RaidAttack::OnStateStart(const _float& In_fAnimationBlendTim
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
 	m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CVargBossState_RaidAttack::Call_NextKeyFrame, this, placeholders::_1);
-	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(true);
 	m_pPhysXControllerCom.lock()->Callback_ControllerHit += bind(&CVargBossState_RaidAttack::Call_OtherControllerHit, this, placeholders::_1);
 
 #ifdef _DEBUG_COUT_
@@ -97,7 +100,6 @@ void CVargBossState_RaidAttack::OnStateStart(const _float& In_fAnimationBlendTim
 void CVargBossState_RaidAttack::OnStateEnd()
 {
 	__super::OnStateEnd();
-	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(false);
 	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CVargBossState_RaidAttack::Call_NextKeyFrame, this, placeholders::_1);
 	m_pPhysXControllerCom.lock()->Callback_ControllerHit -= bind(&CVargBossState_RaidAttack::Call_OtherControllerHit, this, placeholders::_1);
 }

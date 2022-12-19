@@ -40,7 +40,7 @@ struct PS_IN
 
 struct PS_OUT
 {	
-	vector		vColor : SV_TARGET0;	
+	vector vColor : SV_TARGET0;	
 };
 
 PS_OUT PS_MAIN(PS_IN In)
@@ -57,11 +57,23 @@ PS_OUT PS_MAIN(PS_IN In)
 	return Out;
 }
 
+PS_OUT PS_VARG(PS_IN In)
+{
+	PS_OUT Out = (PS_OUT)0;
 
+	vector vDistortion = g_DistortionTexture.Sample(DefaultSampler, In.vTexUV);
+
+	if (0.01f < vDistortion.r)
+		Out.vColor = g_OriginTexture.Sample(ClampSampler, In.vTexUV + (vDistortion.r * 0.01f));
+	else
+		Out.vColor = g_OriginTexture.Sample(ClampSampler, In.vTexUV);
+
+	return Out;
+}
 
 technique11 DefaultTechnique
 {
-	pass Distortion //0
+	pass Distortion // 0
 	{
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
@@ -74,4 +86,16 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
 
+	pass Distortion_Varg // 1
+	{
+		SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		HullShader = NULL;
+		DomainShader = NULL;
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_VARG();
+	}
 }

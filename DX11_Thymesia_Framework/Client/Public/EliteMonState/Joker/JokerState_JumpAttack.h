@@ -15,9 +15,9 @@ class CJokerState_JumpAttack :
 		SHALLOW_COPY(CJokerState_JumpAttack)
 
 public:
+	void Call_NextKeyFrame(const _uint& In_KeyIndex);
 	void Set_TurnCheck(_bool TurnCheck) { m_bTurnCheck = TurnCheck; }
 	void Set_BackReset(_bool BackReset) { m_bBackReset = BackReset; }
-
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
