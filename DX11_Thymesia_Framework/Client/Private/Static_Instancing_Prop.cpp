@@ -11,6 +11,12 @@
 #include "GameManager.h"
 #include "Texture.h"
 
+#ifdef _DEBUG
+#include "Window_Optimization_Dev.h"
+#endif // _DEBUG
+
+
+
 GAMECLASS_C(CStatic_Instancing_Prop);
 CLONE_C(CStatic_Instancing_Prop, CGameObject);
 
@@ -62,8 +68,14 @@ void CStatic_Instancing_Prop::Thread_PreLateTick(_float fTimeDelta)
 #ifdef _INSTANCE_CULLING_
 	ID3D11DeviceContext* pDeviceContext = GAMEINSTANCE->Get_BeforeRenderContext();
 
+#ifdef _DEBUG
 	if (m_pDynamicColliderComs.empty())
-		m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos));
+		m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos), GET_SINGLE(CWindow_Optimization_Dev)->Get_InstancingCullingRatio());
+#else
+	if (m_pDynamicColliderComs.empty())
+		m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos), 1.f);
+#endif // _DEBUG
+	
 
 	if (m_pDynamicColliderComs.empty())
 		m_pInstanceModelCom.lock()->Update_VisibleInstance(pDeviceContext);

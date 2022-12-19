@@ -1532,6 +1532,12 @@
     <ClInclude Include="..\Public\UI_Scroll.h">
       <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\ScrollBox</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Window_Optimization_Dev.h">
+      <Filter>97. Tool\01. DeveloperConsole\Windows\03. Optimization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Window_GameSystem_Dev.h">
+      <Filter>97. Tool\01. DeveloperConsole\Windows\04. GameSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3100,6 +3106,12 @@
     <ClCompile Include="..\Private\UI_Scroll.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\ScrollBox</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Window_Optimization_Dev.cpp">
+      <Filter>97. Tool\01. DeveloperConsole\Windows\03. Optimization</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Window_GameSystem_Dev.cpp">
+      <Filter>97. Tool\01. DeveloperConsole\Windows\04. GameSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -4594,6 +4606,12 @@
     </Filter>
     <Filter Include="02. GameObject\01. UI\UI_Container\PauseMenu\Page\ScrollBox">
       <UniqueIdentifier>{d96f82a8-12f3-442f-87aa-30b1b71c2a7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\01. DeveloperConsole\Windows\03. Optimization">
+      <UniqueIdentifier>{04147e0d-363e-4bc5-a9e2-c7c38bb216ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\01. DeveloperConsole\Windows\04. GameSystem">
+      <UniqueIdentifier>{c8774af5-15bb-4663-9f56-29595e349278}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

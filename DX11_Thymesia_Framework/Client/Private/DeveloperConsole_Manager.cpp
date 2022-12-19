@@ -9,6 +9,8 @@
 #include "Window_Shader_Dev.h"
 #include "Window_Level_Dev.h"
 #include "Window_RenderTarget_Dev.h"
+#include "Window_Optimization_Dev.h"
+#include "Window_GameSystem_Dev.h"
 
 IMPLEMENT_SINGLETON(CDeveloperConsole_Manager)
 
@@ -77,6 +79,8 @@ void CDeveloperConsole_Manager::Init_Windows()
 	m_arrWindows.emplace_back(CWindow_Shader_Dev::Create_Instance());
 	m_arrWindows.emplace_back(CWindow_Level_Dev::Create_Instance());
 	m_arrWindows.emplace_back(CWindow_RenderTarget_Dev::Create_Instance());
+	m_arrWindows.emplace_back(CWindow_Optimization_Dev::Create_Instance());
+	m_arrWindows.emplace_back(CWindow_GameSystem_Dev::Create_Instance());
 
 	for (auto& elem : m_arrWindows)
 	{
@@ -100,6 +104,8 @@ void CDeveloperConsole_Manager::Release_Windows()
 	CWindow_Shader_Dev::Destroy_Instance();
 	CWindow_Level_Dev::Destroy_Instance();
 	CWindow_RenderTarget_Dev::Destroy_Instance();
+	CWindow_Optimization_Dev::Destroy_Instance();
+	CWindow_GameSystem_Dev::Destroy_Instance();
 }
 
 void CDeveloperConsole_Manager::OnEnableConsole(const _bool In_bEnable)

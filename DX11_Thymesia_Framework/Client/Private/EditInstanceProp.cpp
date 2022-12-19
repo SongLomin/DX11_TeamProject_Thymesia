@@ -16,6 +16,7 @@
 
 #include "Window_PrototypeView.h"
 #include "Window_HierarchyView.h"
+#include "Window_Optimization_Dev.h"
 #include "ImGui_Window.h"
 
 _bool CEditInstanceProp::m_bDetailPicking	= true;
@@ -103,7 +104,13 @@ void CEditInstanceProp::Thread_PreLateTick(_float fTimeDelta)
 {
 #ifdef _INSTANCE_CULLING_
 	ID3D11DeviceContext* pDeviceContext = GAMEINSTANCE->Get_BeforeRenderContext();
-	m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos));
+
+#ifdef _DEBUG
+	m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos), GET_SINGLE(CWindow_Optimization_Dev)->Get_InstancingCullingRatio());
+#else
+	m_pInstanceModelCom.lock()->Culling_Instance(std::ref(m_pPropInfos), 1.f);
+#endif // _DEBUG
+
 	m_pInstanceModelCom.lock()->Update_VisibleInstance(pDeviceContext);
 	GAMEINSTANCE->Release_BeforeRenderContext(pDeviceContext);
 #endif

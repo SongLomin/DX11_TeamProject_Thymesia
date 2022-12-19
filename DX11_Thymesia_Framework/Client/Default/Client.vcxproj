@@ -676,8 +676,10 @@
     <ClInclude Include="..\Public\Window_EffectEditerView.h" />
     <ClInclude Include="..\Public\Window_EffectHierarchyView.h" />
     <ClInclude Include="..\Public\Window_EffectResourceView.h" />
+    <ClInclude Include="..\Public\Window_GameSystem_Dev.h" />
     <ClInclude Include="..\Public\Window_HierarchyView.h" />
     <ClInclude Include="..\Public\Window_Level_Dev.h" />
+    <ClInclude Include="..\Public\Window_Optimization_Dev.h" />
     <ClInclude Include="..\Public\Window_PrototypeView.h" />
     <ClInclude Include="..\Public\Window_RenderTarget_Dev.h" />
     <ClInclude Include="..\Public\Window_Shader_Dev.h" />
@@ -1156,8 +1158,10 @@
     <ClCompile Include="..\Private\Window_EffectEditerView.cpp" />
     <ClCompile Include="..\Private\Window_EffectHierarchyView.cpp" />
     <ClCompile Include="..\Private\Window_EffectResourceView.cpp" />
+    <ClCompile Include="..\Private\Window_GameSystem_Dev.cpp" />
     <ClCompile Include="..\Private\Window_HierarchyView.cpp" />
     <ClCompile Include="..\Private\Window_Level_Dev.cpp" />
+    <ClCompile Include="..\Private\Window_Optimization_Dev.cpp" />
     <ClCompile Include="..\Private\Window_PrototypeView.cpp" />
     <ClCompile Include="..\Private\Window_RenderTarget_Dev.cpp" />
     <ClCompile Include="..\Private\Window_Shader_Dev.cpp" />

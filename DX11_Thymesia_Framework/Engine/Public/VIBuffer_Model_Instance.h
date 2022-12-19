@@ -35,7 +35,7 @@ public:
     string Get_ModelKey() const { return m_szModelKey; }
     weak_ptr<MODEL_DATA> Get_ModelData() const {return m_pModelData; }
 
-    void Culling_Instance(vector<INSTANCE_MESH_DESC>& In_ParticleDescs);
+    void Culling_Instance(vector<INSTANCE_MESH_DESC>& In_ParticleDescs, const _float In_fRatio);
 
 public:
     void Init_Model(const char* In_szModelName);
