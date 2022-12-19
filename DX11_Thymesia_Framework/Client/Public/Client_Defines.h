@@ -14,8 +14,8 @@
 #define _USE_THREAD_
 #define _144HZ_
 #define _RENDER_FPS_
-// #define _Actor_Culling_
-// #define _INSTANCE_CULLING_
+#define _Actor_Culling_
+#define _INSTANCE_CULLING_
 // #define _LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
@@ -35,12 +35,12 @@
 // #define _GENERATE_PROP_COLLIDER_ true
 // #define _STAGE_1_
 #define _STAGE_2_
-// #define _TEST_STATIC_PROPS_
-// #define _TEST_DYNAMIC_PROPS_
+#define _TEST_STATIC_PROPS_
+#define _TEST_DYNAMIC_PROPS_
 #pragma endregion // Map
 
 #pragma region Tool
-// #define _MAP_TOOL_
+ #define _MAP_TOOL_
 // #define _EFFECT_TOOL_
 #pragma endregion // Tool
 
@@ -50,8 +50,8 @@
 #pragma endregion // Boss Mobs
 
 #pragma region Normal Mobs
-// #define _STAGE_1_MONSTER_
-// #define _STAGE_2_MONSTER_
+ #define _STAGE_1_MONSTER_
+ #define _STAGE_2_MONSTER_
 #pragma endregion // Normal Mobs
 
 #pragma region Effects

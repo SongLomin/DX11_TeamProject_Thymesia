@@ -1,15 +1,12 @@
 #pragma once
-#include "C:\Users\de\Documents\GitHub\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Reference\Headers\Base.h"
+#include "Base.h"
 #include "Client_Defines.h"
 
 BEGIN(Engine)
-
 class CTexture;
-
 END
 
 BEGIN(Client)
-
 class CItem : public CBase
 {
 	friend class CPreset_ItemData;
@@ -46,6 +43,4 @@ private:
 	void		Free() {};
 
 };
-
 END
-
