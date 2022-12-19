@@ -1,12 +1,8 @@
 #pragma once
-
-/* 다음레벨에 필요한 자원을 로드하낟. */
-
 #include "Client_Defines.h"
 #include "Base.h"
 
 BEGIN(Client)
-
 class CLoader final : public CBase
 {
 public:
@@ -72,9 +68,6 @@ private:
 	_bool					m_isFinished = false;
 	_tchar					m_szLoadingText[MAX_PATH] = TEXT("");
 
-public:
-
-	
 public:
 	static shared_ptr<CLoader> Create(LEVEL eNextLevel);
 	void Free();
