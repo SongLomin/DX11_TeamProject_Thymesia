@@ -360,31 +360,31 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	m_isFinished = true;
 
 	// TODO : Turn off temporarily for Light_Prop
-	LIGHTDESC LightDesc;
-	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
-
-#ifdef _BRIGHT_LIGHT_
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
-	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
-	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 1.f;
-#else
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
-	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
-	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 1.f;
-
-#endif // _BRIGHT_LIGHT_
-
-	GAMEINSTANCE->Add_Light(LightDesc);
+//	LIGHTDESC LightDesc;
+//	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
+//
+//#ifdef _BRIGHT_LIGHT_
+//	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+//	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+//	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+//	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
+//	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
+//	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+//	LightDesc.bEnable = true;
+//	LightDesc.fIntensity = 1.f;
+//#else
+//	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+//	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+//	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
+//	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
+//	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
+//	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+//	LightDesc.bEnable = true;
+//	LightDesc.fIntensity = 1.f;
+//
+//#endif // _BRIGHT_LIGHT_
+//
+//	GAMEINSTANCE->Add_Light(LightDesc);
 
 	return S_OK;
 }
