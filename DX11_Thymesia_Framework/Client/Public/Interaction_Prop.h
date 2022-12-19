@@ -14,7 +14,8 @@ public:
     {
         INTERACTION_DOOR,
         INTERACTION_LADDER,
-        INTERACTION_ELEVATOR
+        INTERACTION_ELEVATOR,
+        INTERACTION_ITEM
     }INTERACTIONTYPE;
 
 public:
@@ -47,7 +48,6 @@ public:
     FDelegate<>                 Callback_ActStart;
     FDelegate<>                 Callback_ActEnd;
     FDelegate<_float, _bool&>   Callback_ActUpdate;
-
 
 protected:
     void Free();

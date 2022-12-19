@@ -1106,8 +1106,8 @@
     <ClInclude Include="..\Public\JokerStateBase.h">
       <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\00.JokerState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\EditLights.h">
-      <Filter>02. GameObject\99. Other\09. EditLights</Filter>
+    <ClInclude Include="..\Public\EditEventContoller.h">
+      <Filter>02. GameObject\99. Other\09. EditEventContoller</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Actor.h">
       <Filter>02. GameObject\03. Actor</Filter>
@@ -1531,6 +1531,9 @@
     <ClInclude Include="..\Public\UI_Cursor.h" />
     <ClInclude Include="..\Public\UI_Scroll.h">
       <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\ScrollBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_Item.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2689,8 +2692,8 @@
     <ClCompile Include="..\Private\JokerStateBase.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\00.JokerState</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\EditLights.cpp">
-      <Filter>02. GameObject\99. Other\09. EditLights</Filter>
+    <ClCompile Include="..\Private\EditEventContoller.cpp">
+      <Filter>02. GameObject\99. Other\09. EditEventContoller</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Actor.cpp">
       <Filter>02. GameObject\03. Actor</Filter>
@@ -3099,6 +3102,9 @@
     <ClCompile Include="..\Private\UI_Cursor.cpp" />
     <ClCompile Include="..\Private\UI_Scroll.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\ScrollBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Interaction_Item.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3899,12 +3905,6 @@
     <Filter Include="07. Requirement\03. Requirement_State">
       <UniqueIdentifier>{2aae9c0e-209d-4609-8b52-3ac57181093f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\03.Actor">
-      <UniqueIdentifier>{0db45e45-0d0e-46c2-bc1e-fc8bdb676af6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. GameObject\03.Actor\00.Joker">
-      <UniqueIdentifier>{19627968-7699-4f4f-934c-858f9cfa3641}</UniqueIdentifier>
-    </Filter>
     <Filter Include="96. Managers_Client">
       <UniqueIdentifier>{754a09b8-9237-4e34-871e-e6aeaa3022d6}</UniqueIdentifier>
     </Filter>
@@ -4256,9 +4256,6 @@
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\01.Joker_Execution">
       <UniqueIdentifier>{2818273c-8bb0-43db-9fa1-71d80b1fd2cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. GameObject\99. Other\09. EditLights">
-      <UniqueIdentifier>{a7f64318-a0bc-44e2-a110-f4df374554f2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02. GameObject\03. Actor">
       <UniqueIdentifier>{0db45e45-0d0e-46c2-bc1e-fc8bdb676af6}</UniqueIdentifier>
     </Filter>
@@ -4594,6 +4591,15 @@
     </Filter>
     <Filter Include="02. GameObject\01. UI\UI_Container\PauseMenu\Page\ScrollBox">
       <UniqueIdentifier>{d96f82a8-12f3-442f-87aa-30b1b71c2a7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\99. Other\09. EditEventContoller">
+      <UniqueIdentifier>{a7f64318-a0bc-44e2-a110-f4df374554f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\16. Item">
+      <UniqueIdentifier>{c35004a8-155c-46e0-86ab-a6a8341bb693}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Item">
+      <UniqueIdentifier>{4d8515e1-b5ec-4f6a-b607-cc29cfb4c557}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,105 @@
+#include "stdafx.h"
+#include "Interaction_Item.h"
+
+#include "Model.h"
+#include "Shader.h"
+#include "Renderer.h"
+#include "Transform.h"
+#include "Texture.h"
+#include "Collider.h"
+#include "UI_Landing.h"
+
+#include "GameInstance.h"
+#include "ClientLevel.h"
+#include "GameManager.h"
+
+GAMECLASS_C(CInteraction_Item);
+CLONE_C(CInteraction_Item, CGameObject);
+
+HRESULT CInteraction_Item::Initialize_Prototype()
+{
+    return S_OK;
+}
+
+HRESULT CInteraction_Item::Initialize(void* pArg)
+{
+    __super::Initialize(pArg);
+
+    m_pColliderCom = Add_Component<CCollider>();
+
+    m_pShaderCom.lock()->Set_ShaderInfo
+    (
+        TEXT("Shader_VtxModel"),
+        VTXMODEL_DECLARATION::Element,
+        VTXMODEL_DECLARATION::iNumElements
+    );
+
+    _float fDefaultDesc[4] = { 1.f, 0.f, 0.f, 0.f };
+    SetUpColliderDesc(fDefaultDesc);
+
+    m_eInteractionType = INTERACTIONTYPE::INTERACTION_ITEM;
+
+    return S_OK;
+}
+
+HRESULT CInteraction_Item::Start()
+{
+    m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+
+    return __super::Start();
+}
+
+void CInteraction_Item::Tick(_float fTimeDelta)
+{
+    __super::Tick(fTimeDelta);
+}
+
+void CInteraction_Item::LateTick(_float fTimeDelta)
+{
+    __super::LateTick(fTimeDelta);
+}
+
+HRESULT CInteraction_Item::Render(ID3D11DeviceContext* pDeviceContext)
+{
+    return __super::Render(pDeviceContext);
+}
+void CInteraction_Item::OnEventMessage(_uint iArg)
+{
+    switch ((EVENT_TYPE)iArg)
+    {
+        case EVENT_TYPE::ON_EDIT_UDATE:
+        {
+            m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+        }
+        break;
+    }
+}
+
+
+void CInteraction_Item::Write_Json(json& Out_Json)
+{
+    __super::Write_Json(Out_Json);
+}
+
+void CInteraction_Item::Load_FromJson(const json& In_Json)
+{
+    __super::Load_FromJson(In_Json);
+}
+
+void CInteraction_Item::Act_Interaction()
+{
+
+}
+
+void CInteraction_Item::SetUpColliderDesc(_float* _pColliderDesc)
+{
+    COLLIDERDESC ColliderDesc;
+    ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
+
+    ColliderDesc.iLayer       = (_uint)COLLISION_LAYER::TRIGGER;
+    ColliderDesc.vScale       = _float3(_pColliderDesc[0], 0.f, 0.f);
+    ColliderDesc.vTranslation = _float3(_pColliderDesc[1], _pColliderDesc[2], _pColliderDesc[3]);
+
+    m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
+    m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+}

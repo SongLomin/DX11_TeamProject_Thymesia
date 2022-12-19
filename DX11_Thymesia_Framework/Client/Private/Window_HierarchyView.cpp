@@ -126,7 +126,7 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 		if (typeid(CEditMapCollider).hash_code() == iter_elem->HashCode ||
 			typeid(CEditSetActor).hash_code()    == iter_elem->HashCode ||
 			typeid(CEditGroupProp).hash_code()   == iter_elem->HashCode ||
-			typeid(CEditLights).hash_code()      == iter_elem->HashCode)
+			typeid(CEditEventContoller).hash_code()      == iter_elem->HashCode)
 		{
 			++iter_elem;
 			continue;
@@ -323,7 +323,7 @@ void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
 		else if (typeid(CEditMapCollider).hash_code() == TempDesc.HashCode ||
 			     typeid(CEditSetActor).hash_code()    == TempDesc.HashCode ||
 			     typeid(CEditGroupProp).hash_code()   == TempDesc.HashCode ||
-			     typeid(CEditLights).hash_code()      == TempDesc.HashCode)
+			     typeid(CEditEventContoller).hash_code()      == TempDesc.HashCode)
 		{
 			continue;
 		}
