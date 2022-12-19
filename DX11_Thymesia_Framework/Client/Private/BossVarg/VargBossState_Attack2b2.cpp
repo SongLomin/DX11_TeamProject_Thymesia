@@ -26,7 +26,7 @@ void CVargBossState_Attack2b2::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	{
 	case 0:
 		m_vShakingOffSet = { 0.f, 1.f, 0.f };
-		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.1f, 1.f, 9.f, 0.99f);
+		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.05f, 1.f, 9.f, 0.99f);
 		break;
 	case 58:
 		m_vShakingOffSet = { 1.f, 1.f, 0.f };

@@ -2555,6 +2555,9 @@ void CEffect_Rect::Tool_Speed()
 			ImGui::Text("Min Limit Speed"); ImGui::SetNextItemWidth(300.f);
 			ImGui::DragFloat3("##Min_Limit_Speed", &m_tEffectParticleDesc.vMinLimitSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
 
+			ImGui::Text("Max Limit Speed"); ImGui::SetNextItemWidth(300.f);
+			ImGui::DragFloat3("##Max_Limit_Speed", &m_tEffectParticleDesc.vMaxLimitSpeed.x, 0.1f, 0.f, 0.f, "%.5f");
+
 			ImGui::TreePop();
 		}
 	}
