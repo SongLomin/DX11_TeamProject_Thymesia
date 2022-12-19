@@ -8,7 +8,6 @@
 #include "Player.h"
 #include "JokerStates.h"
 
-
 GAMECLASS_C(CEliteStateBase);
 
 HRESULT CEliteStateBase::Initialize_Prototype()
@@ -19,19 +18,15 @@ HRESULT CEliteStateBase::Initialize_Prototype()
 HRESULT CEliteStateBase::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
 	m_iTimeScaleLayer = (_uint)TIMESCALE_LAYER::MONSTER;
 	m_pOwnerFromMonster = Weak_Cast<CMonster>(m_pOwner);
 	Set_Enable(false);
-
 	return S_OK;
 }
 
 void CEliteStateBase::Start()
 {
-
 	__super::Start();
-
 	m_pTransformCom = Get_Owner().lock()->Get_Component<CTransform>();
 }
 
@@ -47,20 +42,14 @@ void CEliteStateBase::LateTick(_float fTimeDelta)
 
 _bool CEliteStateBase::Check_RequirementCoolDown(weak_ptr<CEliteStateBase> pTargetState, const _float& In_fCoolTime)
 {
-	_float fCheckStateTimeAcc = pTargetState.lock()->Get_StateTimeAcc();
-	_float fOwnerTimeAcc = Get_OwnerMonster()->Get_TimeAcc();
+	_float fCheckStateTimeAcc(pTargetState.lock()->Get_StateTimeAcc());
+	_float fOwnerTimeAcc(Get_OwnerMonster()->Get_TimeAcc());
 
-	// 현재 객체의 누적 시간과 상태에 적어놓은 상태 진입 시간 + 쿨타임 비교
 	if (fOwnerTimeAcc > fCheckStateTimeAcc + In_fCoolTime)
-	{
 		return true;
-	}
-	// 객체는 메모리 풀을 사용하기 때문에 객체의 누적 시간은 재활용될때마다 0으로 초기화되지만
-	// 상태는 그렇지 않다. 따라서 뺀 값이 -라면 새로운 객체이므로 쿨타임을 다시 잰다.
+
 	else if (fOwnerTimeAcc - fCheckStateTimeAcc < -DBL_EPSILON)
-	{
 		return true;
-	}
 
 	return false;
 }
@@ -70,13 +59,11 @@ void CEliteStateBase::Init_Desc(void* In_pDesc)
 	CMonster::STATE_LINK_MONSTER_DESC StateLinkDesc;
 	ZeroMemory(&StateLinkDesc, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
 	memcpy(&StateLinkDesc, In_pDesc, sizeof(CMonster::STATE_LINK_MONSTER_DESC));
-
 	m_eMonType = StateLinkDesc.eMonType;
 	m_eNorMonIdleType = StateLinkDesc.eNorMonIdleType;
 	m_fStartPosition = StateLinkDesc.m_fStartPositon;
 	m_eBossStartType = StateLinkDesc.eBossStartType;
 }
-
 
 shared_ptr<CMonster> CEliteStateBase::Get_OwnerMonster() const noexcept
 {
@@ -85,8 +72,6 @@ shared_ptr<CMonster> CEliteStateBase::Get_OwnerMonster() const noexcept
 
 _bool CEliteStateBase::Check_Requirement()
 {
-
-
 	return __super::Check_Requirement();
 }
 
@@ -97,106 +82,80 @@ void CEliteStateBase::Turn_ToThePlayer(_float fTimeDelta)
 	if (!pCurrentPlayer.lock())
 		return;
 
-	_vector vCurPlayerPos = pCurrentPlayer.lock()->Get_WorldPosition();
-	_vector vMyPos = Get_OwnerCharacter().lock()->Get_WorldPosition();
-	_vector vLookAt = vCurPlayerPos - vMyPos;
-	vLookAt.m128_f32[1] = 0.f;
-	vLookAt = XMVector3Normalize(vLookAt);
+	_vector vCurPlayerPos(pCurrentPlayer.lock()->Get_WorldPosition());
+	_vector vMyPos(Get_OwnerCharacter().lock()->Get_WorldPosition());
+	_vector vLookAt(vCurPlayerPos - vMyPos);
+	vLookAt = XMVector3Normalize(XMVectorSetY(vLookAt, 0.f));
 	XMStoreFloat3(&m_vLookAtDir, vLookAt);
 
-
-	//갱신되거나 기존 회전 값이 있는 경우
-	if (XMVector3Length(XMLoadFloat3(&m_vLookAtDir)).m128_f32[0] > DBL_EPSILON)
+	if (XMVectorGetX(XMVector3Length(XMLoadFloat3(&m_vLookAtDir))) > DBL_EPSILON)
 	{
 		m_fCurrentRotateTime += fTimeDelta * 0.3f;
-		_vector AILook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+		_vector AILook(m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK));
 		AILook = XMVector3Normalize(AILook);
 
-		//m_vLookAtDir 
-		_vector LookAtCross = XMVectorSet(-m_vLookAtDir.z, 0.f, m_vLookAtDir.x, 0.f);
-		const _vector LookAtDir = XMLoadFloat3(&m_vLookAtDir);
+		_vector LookAtCross(XMVectorSet(-m_vLookAtDir.z, 0.f, m_vLookAtDir.x, 0.f));
+		const _vector LookAtDir(XMLoadFloat3(&m_vLookAtDir));
 
-
-		if (XMVector3Dot(LookAtDir, AILook).m128_f32[0] > 0.99f)
+		if (0.99f < XMVectorGetX(XMVector3Dot(LookAtDir, AILook)))
 		{
-			_vector LookPos = m_pTransformCom.lock()->Get_State(CTransform::STATE::STATE_TRANSLATION) + LookAtDir;
+			_vector LookPos(m_pTransformCom.lock()->Get_State(CTransform::STATE::STATE_TRANSLATION) + LookAtDir);
 			m_pTransformCom.lock()->LookAt(LookPos);
 
 			m_vLookAtDir = _float3(0.f, 0.f, 0.f);
 			m_fCurrentRotateTime = 0.f;
-
 			return;
 		}
 
-		_float fDirResult = XMVector3Dot(LookAtCross, AILook).m128_f32[0];
+		_float fDirResult(XMVectorGetX(XMVector3Dot(LookAtCross, AILook)));
 
 		if (fDirResult > 0.f)
-		{
-
 			m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), sqrtf(fTimeDelta * 0.08f));
-		}
-
 		else
-		{
 			m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -sqrtf(fTimeDelta * 0.08f));
-		}
 	}
 }
 
 _vector CEliteStateBase::Get_InputToLookDir()
 {
-	/*if (m_bEdit)
-		return XMVectorSet(0.f, 0.f, 0.f, 0.f);*/
-
 	_matrix CurrentCamWorldMatrix;
-
 	CurrentCamWorldMatrix = GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD);
 	CurrentCamWorldMatrix = SMath::Get_MatrixNormalize(CurrentCamWorldMatrix);
 
-	_vector vLookDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+	_vector vLookDir(XMVectorSet(0.f, 0.f, 0.f, 0.f));
 
 	if (KEY_INPUT(KEY::W, KEY_STATE::HOLD))
-	{
 		vLookDir += CurrentCamWorldMatrix.r[2];
-	}
 
 	if (KEY_INPUT(KEY::A, KEY_STATE::HOLD))
-	{
 		vLookDir += -CurrentCamWorldMatrix.r[0];
-	}
 
 	if (KEY_INPUT(KEY::S, KEY_STATE::HOLD))
-	{
 		vLookDir += -CurrentCamWorldMatrix.r[2];
-	}
 
 	if (KEY_INPUT(KEY::D, KEY_STATE::HOLD))
-	{
 		vLookDir += CurrentCamWorldMatrix.r[0];
-	}
 
 	return vLookDir;
 }
 
 void CEliteStateBase::StartPositonLookAt(_float fTimeDelta)
 {
-	_vector vStartPosition = XMLoadFloat4(&m_fStartPosition);
-
+	_vector vStartPosition(XMLoadFloat4(&m_fStartPosition));
 	m_pTransformCom.lock()->LookAt2D(vStartPosition);
 }
 
 _bool CEliteStateBase::Rotation_InputToLookDir()
 {
-	_vector vInputDir = Get_InputToLookDir();
+	_vector vInputDir(Get_InputToLookDir());
 
-	if (XMVector3Length(vInputDir).m128_f32[0] > DBL_EPSILON)
+	if (XMVectorGetX(XMVector3Length(vInputDir)) > DBL_EPSILON)
 	{
-		vInputDir.m128_f32[1] = 0.f;
+		vInputDir = XMVectorSetY(vInputDir, 0.f);
 		vInputDir = XMVector3Normalize(vInputDir);
 
-		_vector vMyPosition = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+		_vector vMyPosition(m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION));
 		m_pTransformCom.lock()->LookAt(vMyPosition + vInputDir);
-
 		return true;
 	}
 
@@ -210,48 +169,43 @@ _bool CEliteStateBase::Rotation_TargetToLookDir()
 	if (!pCurrentPlayer.lock().get())
 		return false;
 
-	_vector CharacterPosition = pCurrentPlayer.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
-
+	_vector CharacterPosition(pCurrentPlayer.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION));
 	m_pTransformCom.lock()->LookAt2D(CharacterPosition);
-
 	return true;
 }
 
 _float CEliteStateBase::Get_DistanceWithPlayer() const
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
-	_vector vPlayerPosition = pCurrentPlayer.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
-	_vector vMyPosition = m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
-	_float fDistance = XMVector3Length(vPlayerPosition - vMyPosition).m128_f32[0];
-
+	_vector vPlayerPosition(pCurrentPlayer.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION));
+	_vector vMyPosition(m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION));
+	_float fDistance(XMVectorGetX(XMVector3Length(vPlayerPosition - vMyPosition)));
 	return fDistance;
 }
 
-
-
 _vector CEliteStateBase::Get_CurMonToStartMonDir()
 {
-	_vector vCurrenPosition = m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
+	_vector vCurrenPosition(m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION));
 	vCurrenPosition = XMVectorSetY(vCurrenPosition, 0.f);
-	_vector vStartPosition = XMLoadFloat4(&m_fStartPosition);
-	vStartPosition = XMVectorSetY(vStartPosition, 0.f);
-	_vector vLookDir = XMVector4Normalize(vStartPosition - vCurrenPosition);
 
+	_vector vStartPosition(XMLoadFloat4(&m_fStartPosition));
+	vStartPosition = XMVectorSetY(vStartPosition, 0.f);
+
+	_vector vLookDir(XMVector4Normalize(vStartPosition - vCurrenPosition));
 	return vLookDir;
 }
 
 _float CEliteStateBase::GetStartPositionToCurrentPositionDir()
 {
-	_vector vCurrenPosition = m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
+	_vector vCurrenPosition(m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION));
 	vCurrenPosition = XMVectorSetY(vCurrenPosition, 0.f);
-	_vector vStartPosition = XMLoadFloat4(&m_fStartPosition);
-	vStartPosition = XMVectorSetY(vStartPosition, 0.f);
-	_float fDistance = XMVectorGetX(XMVector3Length(vCurrenPosition - vStartPosition));
 
+	_vector vStartPosition(XMLoadFloat4(&m_fStartPosition));
+	vStartPosition = XMVectorSetY(vStartPosition, 0.f);
+
+	_float fDistance(XMVectorGetX(XMVector3Length(vCurrenPosition - vStartPosition)));
 	return fDistance;
 }
-
-
 
 void CEliteStateBase::TurnMechanism()
 {
@@ -260,13 +214,9 @@ void CEliteStateBase::TurnMechanism()
 	if (!pCurrentPlayer.lock())
 		return;
 
-	//플레이어랑 몬스터거리구해서 5보다크면 그대로실행하고
-	//5보다 작으면 턴공격으로 
+	_float fDistance(Get_DistanceWithPlayer());
 
-	_float fDistance = Get_DistanceWithPlayer();
-
-
-	if (fDistance > 3.f)
+	if (3.f < fDistance)
 	{
 		if (ComputeAngleWithPlayer() <= 0.f) // 90일때 0 90보다크면 -값이다 90보다 작으면 +값이다
 		{
@@ -283,7 +233,6 @@ void CEliteStateBase::TurnMechanism()
 				return;
 			}
 		}
-
 		else
 		{
 			Rotation_TargetToLookDir();
@@ -292,106 +241,75 @@ void CEliteStateBase::TurnMechanism()
 		}
 	}
 	else
-	{
-		//오른쪽 왼쪾 구분해주고 	
+	{	
 		if (ComputeAngleWithPlayer() <= 0.f)
 		{
 			if (ComputeDirectionToPlayer() == 1)
-			{
-				//오른쪽
 				Get_OwnerCharacter().lock()->Change_State<CJokerState_TurnAtkR>(0.05f);
-			}
 			else
-			{
-
 				Get_OwnerCharacter().lock()->Change_State<CJokerState_TurnAtkL>(0.05f);
-			}
 		}
-
 	}
-
-
-
-
-
 }
 
 void CEliteStateBase::TurnAttack(_float fTimeDelta)
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
-
-	_vector vCurPlayerPos = pCurrentPlayer.lock()->Get_WorldPosition();
-	_vector vMyPos = Get_OwnerCharacter().lock()->Get_WorldPosition();
-	_vector vMonsterToPlayerDirectionVector = XMVector3Normalize(vCurPlayerPos - vMyPos);
-	_vector vMyLookVector = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
-
-	_float fCross = XMVectorGetY(XMVector3Cross(vMyLookVector, vMonsterToPlayerDirectionVector));
-
-	if (fCross >= 0.f) // 양수 오른쪽
-	{
+	_vector vCurPlayerPos(pCurrentPlayer.lock()->Get_WorldPosition());
+	_vector vMyPos(Get_OwnerCharacter().lock()->Get_WorldPosition());
+	_vector vMonsterToPlayerDirectionVector(XMVector3Normalize(vCurPlayerPos - vMyPos));
+	_vector vMyLookVector(m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK));
+	_float fCross(XMVectorGetY(XMVector3Cross(vMyLookVector, vMonsterToPlayerDirectionVector)));
+	if (fCross >= 0.f)
 		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), sqrtf(fTimeDelta * 0.08f));
-	}
-	else // 음수 왼쪽
-	{
+	else
 		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), -sqrtf(fTimeDelta * 0.08f));
-	}
 }
-
 
 _float CEliteStateBase::ComputeAngleWithPlayer()
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
+	_vector vCurPlayerPos(pCurrentPlayer.lock()->Get_WorldPosition());
+	vCurPlayerPos = XMVectorSetY(vCurPlayerPos, 0.f);
 
-	_vector vCurPlayerPos = pCurrentPlayer.lock()->Get_WorldPosition();
-	vCurPlayerPos.m128_f32[1] = 0.f;
-	_vector vMyPos = Get_OwnerCharacter().lock()->Get_WorldPosition();
-	vMyPos.m128_f32[1] = 0.f;
-	_vector vMonsterToPlayerDirectionVector = XMVector3Normalize(vCurPlayerPos - vMyPos);
-	_vector vMyLookVector = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
-	vMyLookVector.m128_f32[1] = 0.f;
-	vMyLookVector = XMVector3Normalize(vMyLookVector);
+	_vector vMyPos(Get_OwnerCharacter().lock()->Get_WorldPosition());
+	vMyPos = XMVectorSetY(vMyPos, 0.f);
 
-	_float fCos = XMVectorGetY((XMVector3Dot(vMonsterToPlayerDirectionVector, vMyLookVector)));
+	_vector vMonsterToPlayerDirectionVector(XMVector3Normalize(vCurPlayerPos - vMyPos));
+	_vector vMyLookVector(m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK));
+
+	vMyLookVector = XMVector3Normalize(XMVectorSetY(vMyLookVector, 0.f));
+
+	_float fCos(XMVectorGetY((XMVector3Dot(vMonsterToPlayerDirectionVector, vMyLookVector))));
 
 #ifdef _DEBUG_COUT_
 	cout << "ComputeAngleWithPlayer: " << fCos << endl;
-#endif
+#endif // _DEBUG_COUT_
 
 	return fCos;
-
 }
 
 _int CEliteStateBase::ComputeDirectionToPlayer()
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
+	_vector vCurPlayerPos(pCurrentPlayer.lock()->Get_WorldPosition());
+	_vector vMyPos(Get_OwnerCharacter().lock()->Get_WorldPosition());
+	_vector vMonsterToPlayerDirectionVector(XMVector3Normalize(vCurPlayerPos - vMyPos));
+	_vector vMyLookVector(m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK));
 
-	_vector vCurPlayerPos = pCurrentPlayer.lock()->Get_WorldPosition();
-	_vector vMyPos = Get_OwnerCharacter().lock()->Get_WorldPosition();
-	_vector vMonsterToPlayerDirectionVector = XMVector3Normalize(vCurPlayerPos - vMyPos);
-	_vector vMyLookVector = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+	_float fCross(XMVectorGetY(XMVector3Cross(vMyLookVector, vMonsterToPlayerDirectionVector)));
 
-	_float fCross = XMVectorGetY(XMVector3Cross(vMyLookVector, vMonsterToPlayerDirectionVector));
-
-	if (fCross >= 0.f) // 양수 오른쪽
-	{
-		// 오른쪽가는턴라이트싱행<1리턴>
+	if (fCross >= 0.f)
 		return 1;
-	}
 	else // 음수 왼쪽
-	{
-		//왼쪽으로가는턴래프트실행 <-1리턴>
 		return -1;
-	}
 }
-
-
 
 void CEliteStateBase::OnDestroy()
 {
-
 	__super::OnDestroy();
 }
 
@@ -410,9 +328,7 @@ void CEliteStateBase::OnStateStart(const _float& In_fAnimationBlendTime)
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	if (!m_pModelCom.lock())
-	{
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	}
 
 	m_fStateTimeAcc = Get_OwnerMonster()->Get_TimeAcc();
 }
@@ -422,9 +338,7 @@ void CEliteStateBase::OnStateEnd()
 	__super::OnStateEnd();
 
 	if (!m_pModelCom.lock())
-	{
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	}
 }
 
 void CEliteStateBase::Free()

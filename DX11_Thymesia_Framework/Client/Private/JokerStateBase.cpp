@@ -22,6 +22,7 @@ GAMECLASS_C(CJokerStateBase)
 
 HRESULT CJokerStateBase::Initialize(void* pArg)
 {
+	__super::Initialize(pArg);
 	m_vShakingOffSet = { 0.f, 1.f, 0.f };
 	return S_OK;
 }
