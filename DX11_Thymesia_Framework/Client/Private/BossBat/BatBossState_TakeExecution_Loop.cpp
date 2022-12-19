@@ -30,7 +30,7 @@ void CBatBossState_TakeExecution_Loop::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|BossBat_TakeExecution_Loop");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|TAKELOOP");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_TakeExecution_Loop::Call_AnimationEnd, this);
 }

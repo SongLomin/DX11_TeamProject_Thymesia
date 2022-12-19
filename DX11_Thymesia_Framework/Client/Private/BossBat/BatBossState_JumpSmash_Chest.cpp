@@ -31,7 +31,7 @@ void CBatBossState_JumpSmash_Chest::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|BossBat_JumpSmash_Chest");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|JUMPCHSET");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_JumpSmash_Chest::Call_AnimationEnd, this);
 }

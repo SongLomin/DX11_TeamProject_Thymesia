@@ -34,7 +34,7 @@ protected:
 private:
 	_bool    m_bTurnCheck = false;
 	_bool    m_bBackReset = false;
-
+	_int     m_iPreCount = 4;
 private:
 
 	_float m_fMaxSpeed = 3.f;

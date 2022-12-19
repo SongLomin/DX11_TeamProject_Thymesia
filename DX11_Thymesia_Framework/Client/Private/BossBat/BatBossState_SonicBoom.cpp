@@ -30,7 +30,7 @@ void CBatBossState_SonicBoom::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|BossBat_SonicBoom");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|SONICNBOOM");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_SonicBoom::Call_AnimationEnd, this);
 }

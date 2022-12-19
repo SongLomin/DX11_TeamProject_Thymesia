@@ -107,6 +107,21 @@ _bool CJokerState_WalkR::Check_AndChangeNextState()
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
 		int iRand = rand() % 3;
+
+		while (true)
+		{
+			if (iRand == m_iPreCount)
+			{
+				iRand = rand() % 3;
+				continue;
+			}
+			else
+			{
+				break;
+			}
+
+
+		}
 		switch (iRand)
 		{
 		case 0:

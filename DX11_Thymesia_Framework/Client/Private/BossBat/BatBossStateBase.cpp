@@ -15,6 +15,10 @@
 
 GAMECLASS_C(CBatBossStateBase)
 
+
+
+
+
 _bool CBatBossStateBase::Check_RequirementAttackState()
 {
 	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
