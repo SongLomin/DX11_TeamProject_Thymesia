@@ -49,7 +49,7 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	m_tLightDesc.fRange     = 5.f;
 	m_tLightDesc.fIntensity = 1.f;
 
-	m_tLightDesc = GAMEINSTANCE->Add_Light(m_tLightDesc);
+	//m_tLightDesc = GAMEINSTANCE->Add_Light(m_tLightDesc);
 	
 	m_pPhysXColliderCom = Add_Component<CPhysXCollider>();
 	m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
@@ -167,7 +167,7 @@ void CLight_Prop::Load_FromJson(const json& In_Json)
 		GET_SINGLE(CGameManager)->Registration_SectionLight(m_iSectionIndex, Weak_Cast<CLight_Prop>(m_this));
 	}
 
-	GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+	//GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
 
 	if (LEVEL::LEVEL_EDIT == m_CreatedLevel)
 		Set_Enable(true);
