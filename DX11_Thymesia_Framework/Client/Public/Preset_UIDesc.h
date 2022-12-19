@@ -16,6 +16,9 @@ public:
 
 	static void		Set_CUI_ItemInformaiton_BindItem(weak_ptr<class CUI_ItemInformation> pUI, weak_ptr<class CItem> pItem);
 
+	static void		Set_CUI_ItemPopup_Ready_Popup(weak_ptr<class CUI> pUI, ITEM_NAME eItemName);
+
+
 };
 
 END

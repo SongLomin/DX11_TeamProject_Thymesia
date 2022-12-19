@@ -1538,6 +1538,8 @@
     </ClInclude>
     <ClInclude Include="..\Public\Inventory.h" />
     <ClInclude Include="..\Public\UI_ItemInformation.h" />
+    <ClInclude Include="..\Public\UI_ItemPopup.h" />
+    <ClInclude Include="..\Public\ItemPopup_Queue.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3112,6 +3114,8 @@
     </ClCompile>
     <ClCompile Include="..\Private\Inventory.cpp" />
     <ClCompile Include="..\UI_ItemInformation.cpp" />
+    <ClCompile Include="..\Private\UI_ItemPopup.cpp" />
+    <ClCompile Include="..\Private\ItemPopup_Queue.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -4618,6 +4622,12 @@
     </Filter>
     <Filter Include="02. GameObject\01. UI\UI_Container\PauseMenu\Page\Inventory\Tap\SlotInformation">
       <UniqueIdentifier>{9edfd9e2-44c7-48e8-8ecf-8d7b04cfa76a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ItemRootingAlarm">
+      <UniqueIdentifier>{7fac4074-adc3-439f-87df-64fe2093ce31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\07. Timer">
+      <UniqueIdentifier>{7b42f1f9-755b-4ccb-b898-f23ad7a1b07c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

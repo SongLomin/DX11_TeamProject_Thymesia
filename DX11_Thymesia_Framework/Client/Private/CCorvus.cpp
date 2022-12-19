@@ -214,7 +214,14 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	{
 		m_pInventory.lock()->Push_Item(ITEM_NAME::BASIL);
 	}
-
+	if (KEY_INPUT(KEY::NUM4, KEY_STATE::TAP))
+	{
+		m_pInventory.lock()->Push_Item(ITEM_NAME::THYME);
+	}
+	if (KEY_INPUT(KEY::NUM5, KEY_STATE::TAP))
+	{
+		m_pInventory.lock()->Push_Item(ITEM_NAME::GARDEN_KEY);
+	}
 #ifdef _DEBUG
 	if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
 	{

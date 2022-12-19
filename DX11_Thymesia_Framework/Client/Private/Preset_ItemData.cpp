@@ -21,6 +21,12 @@ void CPreset_ItemData::CreateItemData(weak_ptr<class CItem> pItem, ITEM_NAME eIt
 		pItem.lock()->m_iMaxQuantity = 99;
 		break;
 	}
+	case Client::ITEM_NAME::THYME:
+	{
+		pItem.lock()->m_eItemType = ITEM_TYPE::INGREDIENT;
+		pItem.lock()->m_iMaxQuantity = 99;
+		break;
+	}
 	case Client::ITEM_NAME::CINNAMON:
 		pItem.lock()->m_eItemType = ITEM_TYPE::INGREDIENT;
 		pItem.lock()->m_iMaxQuantity = 99;
@@ -43,6 +49,9 @@ void CPreset_ItemData::SetUITextureFromItemName(weak_ptr<class CUI> Out_pUI, ITE
 	{
 	case Client::ITEM_NAME::BASIL:
 		Out_pUI.lock()->Set_Texture("Item_Icon_Basil");
+		break;
+	case Client::ITEM_NAME::THYME:
+		Out_pUI.lock()->Set_Texture("Item_Icon_Thyme");
 		break;
 	case Client::ITEM_NAME::CINNAMON:
 		Out_pUI.lock()->Set_Texture("Item_Icon_Cinnamon");

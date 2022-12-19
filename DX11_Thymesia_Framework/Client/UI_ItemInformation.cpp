@@ -50,6 +50,8 @@ void CUI_ItemInformation::Tick(_float fTimeDelta)
 
 	__super::Tick(fTimeDelta);
 
+	Update_Quantity();
+
 }
 
 void CUI_ItemInformation::LateTick(_float fTimeDelta)
@@ -57,16 +59,36 @@ void CUI_ItemInformation::LateTick(_float fTimeDelta)
 	fTimeDelta = CUI_Utils::UI_TimeDelta();
 
 	__super::LateTick(fTimeDelta);
+
+	if (m_pBindedItem.lock())
+	{
+		GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::PRETENDARD, m_tTextInfoQuantity);
+	}
+
+}
+
+void CUI_ItemInformation::Update_Quantity()
+{
+	if (m_pBindedItem.lock())
+	{
+		m_tTextInfoQuantity.szText = to_wstring(m_pBindedItem.lock()->Get_CurrentQuantity());
+		m_tTextInfoQuantity.szText += '/';
+		m_tTextInfoQuantity.szText += to_wstring(m_pBindedItem.lock()->Get_MaxQuantity());
+	}
 }
 
 
 void CUI_ItemInformation::Bind_Item(weak_ptr<CItem> pItem)
 {
+	m_pBindedItem = pItem;
+
 	CPreset_UIDesc::Set_CUI_ItemInformaiton_BindItem(Weak_StaticCast<CUI_ItemInformation>(m_this), pItem);
 }
 
 void CUI_ItemInformation::UnBind_Item()
 {
+	m_pBindedItem = weak_ptr<CItem>();
+
 	for (auto& elem : m_vecChildUI)
 	{
 		elem.lock()->Set_Texture("None");

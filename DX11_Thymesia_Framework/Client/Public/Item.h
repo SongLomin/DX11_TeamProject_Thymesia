@@ -30,7 +30,6 @@ public:
 	void			Add_Quantity();
 	void			Minus_Quantity();
 
-
 //varriable
 private:
 	ITEM_NAME		m_eItemName;
@@ -42,7 +41,7 @@ private:
 
 public:
 	static shared_ptr<CItem>	Create(ITEM_NAME eItemName);
-
+	
 private:
 	void		Free() {};
 

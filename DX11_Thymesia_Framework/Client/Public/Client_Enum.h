@@ -436,10 +436,10 @@ namespace Client
 		SKILL_END
 	};
 
-
 	enum class ITEM_NAME
 	{
 		BASIL,
+		THYME,
 		CINNAMON,
 		GARDEN_KEY
 	};

@@ -20,6 +20,9 @@ public:
     virtual void Tick(_float fTimeDelta)        override;
     virtual void LateTick(_float fTimeDelta)    override;
 
+private:
+    void        Update_Quantity();
+
 
 public:
     void                            Bind_Item(weak_ptr<CItem> pItem);
@@ -30,6 +33,9 @@ private:
 
     //Variable
 private:
+    weak_ptr<CItem>                 m_pBindedItem;
+
+private:
     weak_ptr<CCustomUI>              m_pItemTitle;
     weak_ptr<CCustomUI>              m_pItemInformation;
     weak_ptr<CCustomUI>              m_pItemType;
@@ -39,7 +45,8 @@ private:
     weak_ptr<CCustomUI>              m_pItemTitleDecoration;
     weak_ptr<CCustomUI>              m_pItemQuantityDecoration;
     weak_ptr<CCustomUI>              m_pItemTypeDecoration;
-
+    
+    TEXTINFO                         m_tTextInfoQuantity;
 
     
 private:

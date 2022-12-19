@@ -21,7 +21,7 @@ public:
 	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext);
 
 public:
-	void			SetUp_Component();
+	virtual void	SetUp_Component();
 
 public:
 	void		Set_PassIndex(_uint _iPassIndex);

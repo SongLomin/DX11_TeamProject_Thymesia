@@ -39,6 +39,11 @@ _bool CRequirementChecker::Check_Requirments()
 	return bResult;
 }
 
+void CRequirementChecker::Clear_Requirements()
+{
+	m_pRequirements.clear();
+}
+
 void CRequirementChecker::Update_Vaild()
 {
 	for (auto iter = m_pRequirements.begin(); iter != m_pRequirements.end();)

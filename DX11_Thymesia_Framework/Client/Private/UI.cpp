@@ -200,6 +200,11 @@ void CUI::Set_Y( _float fY)
 	m_tUIDesc.fY = fY;
 }
 
+void CUI::Set_X(_float fX)
+{
+	m_tUIDesc.fX = fX;
+}
+
 void CUI::Set_Depth(_float _fDepth)
 {
 	m_tUIDesc.fDepth = _fDepth;

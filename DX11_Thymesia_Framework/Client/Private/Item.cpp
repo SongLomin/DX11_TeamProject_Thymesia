@@ -36,8 +36,7 @@ void CItem::Minus_Quantity()
 }
 
 shared_ptr<CItem> CItem::Create(ITEM_NAME eItemName)
-{
-    
+{   
     shared_ptr<CItem>   pItem = make_shared<CItem>();
 
     pItem->Set_ThisInstance(pItem);

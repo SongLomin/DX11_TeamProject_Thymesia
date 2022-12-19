@@ -421,6 +421,7 @@
     <ClInclude Include="..\Public\Interaction_Note.h" />
     <ClInclude Include="..\Public\Inventory.h" />
     <ClInclude Include="..\Public\Item.h" />
+    <ClInclude Include="..\Public\ItemPopup_Queue.h" />
     <ClInclude Include="..\Public\JoJoParticleShaderManager.h" />
     <ClInclude Include="..\Public\JokerStateBase.h" />
     <ClInclude Include="..\Public\JokerStates.h" />
@@ -488,6 +489,7 @@
     <ClInclude Include="..\Public\UI_Interaction.h" />
     <ClInclude Include="..\Public\UI_Inventory.h" />
     <ClInclude Include="..\Public\UI_ItemInformation.h" />
+    <ClInclude Include="..\Public\UI_ItemPopup.h" />
     <ClInclude Include="..\Public\UI_ItemSlot.h" />
     <ClInclude Include="..\Public\UI_LerpBar.h" />
     <ClInclude Include="..\Public\UI_MenuText.h" />
@@ -924,6 +926,7 @@
     <ClCompile Include="..\Private\Interaction_Note.cpp" />
     <ClCompile Include="..\Private\Inventory.cpp" />
     <ClCompile Include="..\Private\Item.cpp" />
+    <ClCompile Include="..\Private\ItemPopup_Queue.cpp" />
     <ClCompile Include="..\Private\JoJoParticleShaderManager.cpp" />
     <ClCompile Include="..\Private\JokerStateBase.cpp" />
     <ClCompile Include="..\Private\JokerWeapon.cpp" />
@@ -965,6 +968,7 @@
     <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp" />
     <ClCompile Include="..\Private\UI_EvolveTalent_Active.cpp" />
     <ClCompile Include="..\Private\UI_Interaction.cpp" />
+    <ClCompile Include="..\Private\UI_ItemPopup.cpp" />
     <ClCompile Include="..\Private\UI_ItemSlot.cpp" />
     <ClCompile Include="..\Private\UI_LerpBar.cpp" />
     <ClCompile Include="..\Private\BossMonster.cpp" />
