@@ -18,6 +18,7 @@ public:
 	virtual void OnEventMessage(weak_ptr<CBase> pArg)override;
 
 protected:
+    virtual HRESULT Initialize(void* pArg) override;
     virtual _bool Check_RequirementAttackState();
     virtual _bool Check_RequirementDashState();
     virtual _bool Check_RequirementRunState();

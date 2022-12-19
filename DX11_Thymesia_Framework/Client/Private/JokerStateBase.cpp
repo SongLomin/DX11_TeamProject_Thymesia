@@ -20,6 +20,12 @@
 
 GAMECLASS_C(CJokerStateBase)
 
+HRESULT CJokerStateBase::Initialize(void* pArg)
+{
+	m_vShakingOffSet = { 0.f, 1.f, 0.f };
+	return S_OK;
+}
+
 _bool CJokerStateBase::Check_RequirementAttackState()
 {
 	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
