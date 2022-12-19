@@ -548,9 +548,6 @@
     <ClInclude Include="..\Public\WorldUI.h">
       <Filter>02. GameObject\06. WorldUI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\AIStateBase.h">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorState</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\BossStateBase.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState</Filter>
     </ClInclude>
@@ -1532,6 +1529,9 @@
     <ClInclude Include="..\Public\UI_Scroll.h">
       <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\ScrollBox</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\AIStateBase.h">
+      <Filter>05. Component\03. State\01. AIStateBase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2040,9 +2040,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_LAttack5.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack\State_Attack5</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\AIStateBase.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BossStateBase.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState</Filter>
@@ -3099,6 +3096,9 @@
     <ClCompile Include="..\Private\UI_Cursor.cpp" />
     <ClCompile Include="..\Private\UI_Scroll.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\ScrollBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AIStateBase.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

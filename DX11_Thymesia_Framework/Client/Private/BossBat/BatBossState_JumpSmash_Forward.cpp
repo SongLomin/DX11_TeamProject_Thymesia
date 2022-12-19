@@ -31,7 +31,7 @@ void CBatBossState_JumpSmash_ForwardL::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|BossBat_JumpSmashForwardL");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|JUMPFORWARD");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_JumpSmash_ForwardL::Call_AnimationEnd, this);
 }
@@ -82,7 +82,7 @@ void CBatBossState_JumpSmash_ForwardL::OnStateEnd()
 	__super::OnStateEnd();
 
 	
-	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+	
 }
 
 
@@ -110,6 +110,12 @@ _bool CBatBossState_JumpSmash_ForwardL::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 177)
+	{
+		m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+	}
+	
 
 	
 

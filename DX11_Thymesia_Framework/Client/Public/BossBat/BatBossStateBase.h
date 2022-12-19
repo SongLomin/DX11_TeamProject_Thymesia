@@ -31,6 +31,10 @@ protected:
     virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
 
+protected:
+    _bool                m_bRootStop = true;
+    _bool                m_bOne = true; // 0이면 정상 1이면 스탑
+    _bool                m_bTurnAttack = false;
 public:
     virtual void OnEventMessage(_uint iArg) override;
     void Free();

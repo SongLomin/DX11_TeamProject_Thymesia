@@ -30,7 +30,7 @@ void CBatBossState_JumpSmash_SmarhL::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|BossBat_JumpSmashL");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|JUMPSMESH");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_JumpSmash_SmarhL::Call_AnimationEnd, this);
 }
@@ -49,13 +49,9 @@ void CBatBossState_JumpSmash_SmarhL::LateTick(_float fTimeDelta)
 
 	if (m_bAttackLookAtLimit)
 	{
-		TurnAttack(fTimeDelta);
-
+		TurnAttack(fTimeDelta * 0.5f);
 	}
-	if(m_bTurn)
-	{
-		JumpLookOffsetLookAt();
-	}
+	
 
 	Check_AndChangeNextState();
 }
@@ -65,7 +61,9 @@ void CBatBossState_JumpSmash_SmarhL::OnStateStart(const _float& In_fAnimationBle
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+	m_pPhysXControllerCom.lock()->Enable_Gravity(false);
+
+	//JumpLookOffsetLookAt();
 
 	m_bAttackLookAtLimit = true;
 
@@ -113,20 +111,11 @@ _bool CBatBossState_JumpSmash_SmarhL::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.2f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 100)
 	{
 		m_bAttackLookAtLimit = false;
 	}
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.21f)
-	{
-		m_bTurn = true;
-	}
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.99f)
-	{
-		m_bTurn = false;
-	}
-
-
+	
 
 
 	return false;

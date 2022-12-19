@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "VargBossStateBase.h"
 #include "EliteMonState/Joker/JokerState_WalkL.h"
 #include "Model.h"
 #include "GameInstance.h"
@@ -10,6 +9,7 @@
 #include "Character.h"
 #include "JokerStates.h"
 #include "PhysXController.h"
+
 
 
 
@@ -107,6 +107,21 @@ _bool CJokerState_WalkL::Check_AndChangeNextState()
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
 		int iRand = rand() % 3;
+
+		while (true)
+		{
+			if (iRand == m_iPreCount)
+			{
+				iRand = rand() % 3;
+				continue;
+			}
+			else
+			{
+				break;
+			}
+
+
+		}
 		switch (iRand)
 		{
 		case 0:

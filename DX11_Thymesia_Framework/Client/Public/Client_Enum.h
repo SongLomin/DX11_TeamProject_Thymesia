@@ -127,6 +127,7 @@ namespace Client
 		DOOR,
 		ELEVATOR,
 		CHECKPOINT,
+		PLAYER_BATCOL,
 		ITEM,
 
 		LAYER_END

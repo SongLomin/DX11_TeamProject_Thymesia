@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossBat/BatStates.h"
+#include "PhysXCharacterController.h"
 
 GAMECLASS_C(CBatBossState_Start_Loop);
 CLONE_C(CBatBossState_Start_Loop, CComponent)
@@ -30,7 +31,7 @@ void CBatBossState_Start_Loop::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|BossBat_Seq_BossFightStart_Loop");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|STRATLOOP");
 
 	//m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Start_Loop::Call_AnimationEnd, this);
 }
@@ -38,6 +39,12 @@ void CBatBossState_Start_Loop::Start()
 void CBatBossState_Start_Loop::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+
+	PxControllerFilters Filters = Filters;
+	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 	
 	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
@@ -86,7 +93,7 @@ _bool CBatBossState_Start_Loop::Check_AndChangeNextState()
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 
 	
-	if (fPToMDistance <= 10.f)
+	if (fPToMDistance <= 30.f)
 	{
 		Get_OwnerCharacter().lock()->Change_State<CBatBossState_Start>(0.05f);
 		return true;

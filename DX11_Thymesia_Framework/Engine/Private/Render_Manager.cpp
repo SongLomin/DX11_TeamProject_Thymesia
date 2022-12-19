@@ -594,8 +594,8 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 
 #ifdef _DEBUG
 
-	if (FAILED(Render_Debug()))
-		DEBUG_ASSERT;
+	//if (FAILED(Render_Debug()))
+	//	DEBUG_ASSERT;
 #endif 
 
 	return S_OK;

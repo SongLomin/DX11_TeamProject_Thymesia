@@ -45,12 +45,12 @@ private:
 	_bool    m_bCheckCharge = false;
 	_bool    m_bTurnCheck = false;
 	_bool    m_bHeelScream = false;
-	
+	_bool    m_bFirstFoot = true;
 
 private:
-//	void Call_AnimationEnd();
+	void Call_AnimationEnd();
 protected:
-	//virtual void OnDestroy() override;
+	virtual void OnDestroy() override;
 	void Free();
 
 };

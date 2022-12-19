@@ -8,6 +8,8 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossBat/BatStates.h"
+#include "MobWeapon.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CBatBossState_Atk_R01_2b);
 CLONE_C(CBatBossState_Atk_R01_2b, CComponent)
@@ -30,7 +32,7 @@ void CBatBossState_Atk_R01_2b::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|BossBat_AttackR_01_2b");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|R_01_2b");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Atk_R01_2b::Call_AnimationEnd, this);
 }
@@ -41,9 +43,22 @@ void CBatBossState_Atk_R01_2b::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 	
-	if (m_bAttackLookAtLimit)
+
+	if (m_bRootStop)
 	{
-		TurnAttack(fTimeDelta);
+		_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+
+		PxControllerFilters Filters = Filters;
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+	}
+
+
+	if (m_bTurnAttack)
+	{
+		_float fTurnValue = 0.2f / 1.66f;
+
+		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * 2.f);
 	}
 	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
@@ -65,6 +80,19 @@ void CBatBossState_Atk_R01_2b::OnStateStart(const _float& In_fAnimationBlendTime
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 	m_bAttackLookAtLimit = true;
+
+	m_bRootStop = true;
+
+	m_bOne = true;
+
+	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+
+	for (auto& elem : pWeapons)
+	{
+		elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.65f);
+	}
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -111,9 +139,23 @@ _bool CBatBossState_Atk_R01_2b::Check_AndChangeNextState()
 		return false;
 
 	
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.5f)
+	_float fPToMDistance = Get_DistanceWithPlayer();
+
+	if (fPToMDistance <= 7.f && m_bOne)
 	{
-		m_bAttackLookAtLimit = false;
+		m_bRootStop = false;
+		m_bOne = false;
+	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 90)
+	{
+		m_bTurnAttack = true;
+	}
+
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 190)
+	{
+		m_bTurnAttack = false;
 	}
 
 

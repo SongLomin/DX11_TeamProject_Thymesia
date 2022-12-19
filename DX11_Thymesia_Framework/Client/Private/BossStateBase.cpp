@@ -37,6 +37,7 @@ void CBossStateBase::Start()
 void CBossStateBase::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
 }
 
 void CBossStateBase::LateTick(_float fTimeDelta)

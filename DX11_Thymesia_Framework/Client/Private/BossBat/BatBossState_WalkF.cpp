@@ -31,7 +31,7 @@ void CBatBossState_WalkF::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|BossBat_WalkF");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|WARKF");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_WalkF::Call_AnimationEnd, this);
 }

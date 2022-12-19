@@ -8,6 +8,8 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossBat/BatStates.h"
+#include "MobWeapon.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CBatBossState_Bite_1);
 CLONE_C(CBatBossState_Bite_1, CComponent)
@@ -30,7 +32,7 @@ void CBatBossState_Bite_1::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|BossBat_Bite_1");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|BITE1");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Bite_1::Call_AnimationEnd, this);
 }
@@ -38,6 +40,20 @@ void CBatBossState_Bite_1::Start()
 void CBatBossState_Bite_1::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	if (m_bRootStop)
+	{
+		_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+
+		PxControllerFilters Filters = Filters;
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+	}
+
+	if (m_bAttackLookAtLimit)
+	{
+		TurnAttack(fTimeDelta);
+	}
 	
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
@@ -56,6 +72,23 @@ void CBatBossState_Bite_1::LateTick(_float fTimeDelta)
 void CBatBossState_Bite_1::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	m_bAttackLookAtLimit = true;
+
+	m_bRootStop = true;
+
+	m_bOne = true;
+
+	m_pPhysXControllerCom.lock()->Enable_Gravity(false);
+
+	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+
+	for (auto& elem : pWeapons)
+	{
+		elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.3f);
+	}
 
 	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
@@ -101,6 +134,27 @@ _bool CBatBossState_Bite_1::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+
+	_float fPToMDistance = Get_DistanceWithPlayer();
+
+	if (fPToMDistance <= 7.f && m_bOne)
+	{
+		m_bRootStop = false;
+		m_bOne = false;
+	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 165)
+	{
+		m_bAttackLookAtLimit = false;
+	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 242)
+	{
+		Get_OwnerCharacter().lock()->Change_State<CBatBossState_Bite_2>(0.05f);
+		return true;
+	}
+
+
 
 
 	return false;

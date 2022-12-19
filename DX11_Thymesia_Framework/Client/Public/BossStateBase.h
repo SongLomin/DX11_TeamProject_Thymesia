@@ -52,6 +52,8 @@ protected:
     weak_ptr<CTransform> m_pTransformCom;  // 몬스터 트랜스폼받아오고저장할려고만듬
     _float4              m_fStartPosition;
 
+
+
     //TODO 보스로 빼요
     BOSSSTARTTYPE        m_eBossStartType = BOSSSTARTTYPE::BOSSSTARTEND;
 

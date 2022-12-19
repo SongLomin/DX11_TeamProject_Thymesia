@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossBat/BatStates.h"
+#include "MobWeapon.h"
 
 GAMECLASS_C(CBatBossState_Atk_L01_3a);
 CLONE_C(CBatBossState_Atk_L01_3a, CComponent)
@@ -30,7 +31,7 @@ void CBatBossState_Atk_L01_3a::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|BossBat_AttackL_01_3a");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|R_01_1");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Atk_L01_3a::Call_AnimationEnd, this);
 }
@@ -55,6 +56,15 @@ void CBatBossState_Atk_L01_3a::LateTick(_float fTimeDelta)
 void CBatBossState_Atk_L01_3a::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+
+	for (auto& elem : pWeapons)
+	{
+		elem.lock()->Set_WeaponDesc(HIT_TYPE::NORMAL_HIT, 1.7f);
+	}
 
 	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);

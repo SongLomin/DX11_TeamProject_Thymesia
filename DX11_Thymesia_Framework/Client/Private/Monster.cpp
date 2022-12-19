@@ -11,6 +11,7 @@
 #include "MonsterHPBar_Base.h"
 #include "Status_Monster.h"
 #include "Status_Player.h"
+#include "Collider.h"
 
 GAMECLASS_C(CMonster);
 CLONE_C(CMonster, CGameObject);
@@ -188,6 +189,8 @@ void CMonster::Release_Monster()
     GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status().lock()->Add_Memory(tMonsterDesc.m_iDropMemory);
 
 }
+
+
 
 void CMonster::Enable_Weapons(const _bool In_bEnable)
 {
