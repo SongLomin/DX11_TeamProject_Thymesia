@@ -205,7 +205,7 @@ void CUI_PauseMenu::Create_Background()
 
 
 	m_pInventoryBG = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
-	m_pInventoryBG.lock()->Set_Depth(0.4f);
+	m_pInventoryBG.lock()->Set_Depth(0.9f);
 	m_pInventoryBG.lock()->Set_Texture("Inventory_BG");
 	m_pInventoryBG.lock()->Set_UIPosition(0, 0, 1600.f, 900.f, CUI::ALIGN_LEFTTOP);
 	m_pInventoryBG.lock()->Set_RenderGroup(RENDERGROUP::RENDER_AFTER_UI);

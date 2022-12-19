@@ -436,4 +436,23 @@ namespace Client
 		SKILL_END
 	};
 
+	enum class ITEM_NAME
+	{
+		BASIL,
+		THYME,
+		CINNAMON,
+		GARDEN_KEY
+	};
+
+	enum class ITEM_TYPE
+	{
+		INGREDIENT,
+		CONSUMPOTION_ITEM,
+		SKILLPIECE,
+		COMMON
+	};
+
+
+
+
 }

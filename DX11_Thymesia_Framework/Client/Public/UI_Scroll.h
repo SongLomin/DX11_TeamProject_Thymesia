@@ -43,6 +43,13 @@ private:
     void                CheckTrackOverHeadOrTail();
     void                CalcScrolledTrackToMaxSize();
     _bool                CheckMoveWheelCurrentTick();
+
+
+private://Scroll Drag   
+    _bool                Check_Drag();
+    void                ScrollingToDrag();
+
+
 private:
     _float              m_fScreenAmount;
 

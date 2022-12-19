@@ -5,7 +5,10 @@
 #include "CustomUI.h"
 #include "UI_ItemSlot.h"
 #include "UI_Scroll.h"
-
+#include "Inventory.h"
+#include "Player.h"
+#include "GameManager.h"
+#include "Item.h"
 
 GAMECLASS_C(CUI_Inventory)
 CLONE_C(CUI_Inventory, CGameObject)
@@ -92,6 +95,14 @@ void CUI_Inventory::Create_ItemSlot()
             pItemSlot.lock()->Set_UIPosition(m_fItemSlotStart.x + (j * m_fOffset), m_fItemSlotStart.y + (i * m_fOffset),
                 ALIGN_CENTER);
             pItemSlot.lock()->Set_OriginCenterPosFromThisPos();
+            pItemSlot.lock()->Callback_OnMouseOver +=
+                bind(&CUI_Inventory::Call_OnMouseOver, this, placeholders::_1);
+
+            pItemSlot.lock()->Callback_OnMouseOut +=
+                bind(&CUI_Inventory::Call_OnMouseOut , this);
+
+            
+            
             Add_Child(pItemSlot);
             m_vecItemSlot.push_back(pItemSlot);
         }
@@ -142,12 +153,58 @@ void CUI_Inventory::Update_ItemSlotOffset()
     }
 }
 
+void CUI_Inventory::Update_ItemSlotFromPlayerInventory()
+{
+    weak_ptr<CUI_ItemSlot> pSlot;
+
+    map<ITEM_NAME, shared_ptr<CItem>> pMapItem = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()
+        ->Get_Component<CInventory>().lock()->Get_Inventory();
+
+    _uint       iIndex = 0;
+
+    for(auto& pair : pMapItem)
+    {
+        m_vecItemSlot[iIndex++].lock()->Bind_Item(pair.second);
+    }
+}
+
+void CUI_Inventory::OnEnable(void* pArg)
+{
+    __super::OnEnable(pArg);
+
+    if (GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock())
+    {
+        Update_ItemSlotFromPlayerInventory();
+    }
+}
+
+void CUI_Inventory::OnDisable()
+{
+    __super::OnDisable();
+
+    for (auto& elem : m_vecItemSlot)
+    {
+        elem.lock()->UnBind_Item();
+    }
+}
+
 void CUI_Inventory::Call_OnWheelMove(_float fAmount)
 {
     for (auto& elem : m_vecItemSlot)
     {
         elem.lock()->Set_ScroolOffsetY(-fAmount);
     }
+}
+
+void CUI_Inventory::Call_OnMouseOver(weak_ptr<CItem> pItem)
+{
+    Callback_OnMouseOver(pItem);
+
+}
+
+void CUI_Inventory::Call_OnMouseOut()
+{
+    Callback_OnMouseOut();
 }
 
 

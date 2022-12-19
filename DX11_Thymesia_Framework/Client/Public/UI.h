@@ -82,6 +82,8 @@ public:
     virtual void    Set_UIDesc(UI_DESC _tUIDesc);
     virtual void    Set_Size(const _float& fSizeX, const _float& fSizeY);
     virtual void    Set_Y( _float fY);
+    virtual void    Set_X(_float fX);
+
     virtual void    Set_AlphaColor(_float fAlphaColor) {m_fAlphaColor = fAlphaColor;}
     virtual void            Set_Depth(_float _fDepth);
     virtual void    Set_SizeX(const _float In_fSize);

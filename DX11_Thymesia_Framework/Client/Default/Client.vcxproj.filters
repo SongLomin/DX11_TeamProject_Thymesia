@@ -1008,7 +1008,7 @@
     </ClInclude>
     <ClInclude Include="..\Public\UI_MonsterFocus.h" />
     <ClInclude Include="..\Public\Preset_UIDesc.h">
-      <Filter>06. DataPreset\05.Preset_UIDesc</Filter>
+      <Filter>06. DataPreset\05. Preset_UIDesc</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\EliteMonState\Joker\JokerState_ComboA1.h">
       <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\00.JokerState\01.ComboA1</Filter>
@@ -1532,6 +1532,14 @@
     <ClInclude Include="..\Public\UI_Scroll.h">
       <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\ScrollBox</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Item.h" />
+    <ClInclude Include="..\Public\Preset_ItemData.h">
+      <Filter>06. DataPreset\06.Preset_ItemData</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Inventory.h" />
+    <ClInclude Include="..\Public\UI_ItemInformation.h" />
+    <ClInclude Include="..\Public\UI_ItemPopup.h" />
+    <ClInclude Include="..\Public\ItemPopup_Queue.h" />
     <ClInclude Include="..\Public\Window_Optimization_Dev.h">
       <Filter>97. Tool\01. DeveloperConsole\Windows\03. Optimization</Filter>
     </ClInclude>
@@ -2597,7 +2605,7 @@
     </ClCompile>
     <ClCompile Include="..\UI_MonsterFocus.cpp" />
     <ClCompile Include="..\Private\Preset_UIDesc.cpp">
-      <Filter>06. DataPreset\05.Preset_UIDesc</Filter>
+      <Filter>06. DataPreset\05. Preset_UIDesc</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\EliteMonState\Joker\JokerState_ComboA1.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\02.EliteState\00.JokerState\01.ComboA1</Filter>
@@ -3106,6 +3114,14 @@
     <ClCompile Include="..\Private\UI_Scroll.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\ScrollBox</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Item.cpp" />
+    <ClCompile Include="..\Private\Preset_ItemData.cpp">
+      <Filter>06. DataPreset\06.Preset_ItemData</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Inventory.cpp" />
+    <ClCompile Include="..\UI_ItemInformation.cpp" />
+    <ClCompile Include="..\Private\UI_ItemPopup.cpp" />
+    <ClCompile Include="..\Private\ItemPopup_Queue.cpp" />
     <ClCompile Include="..\Private\Window_Optimization_Dev.cpp">
       <Filter>97. Tool\01. DeveloperConsole\Windows\03. Optimization</Filter>
     </ClCompile>
@@ -3932,9 +3948,6 @@
     <Filter Include="97. Tool\01. DeveloperConsole\Windows\00. Shader">
       <UniqueIdentifier>{ef717d74-ad6f-4372-bf3e-0033a2dec2ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="06. DataPreset\05.Preset_UIDesc">
-      <UniqueIdentifier>{71809176-0df8-42ac-bee8-0ce093e9a2b7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState">
       <UniqueIdentifier>{72511287-1c1d-4c1d-bdbc-63edbc96d309}</UniqueIdentifier>
     </Filter>
@@ -4606,6 +4619,27 @@
     </Filter>
     <Filter Include="02. GameObject\01. UI\UI_Container\PauseMenu\Page\ScrollBox">
       <UniqueIdentifier>{d96f82a8-12f3-442f-87aa-30b1b71c2a7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Item">
+      <UniqueIdentifier>{cf238baa-3527-4cac-956b-ee5e012a4a1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. DataPreset\05. Preset_UIDesc">
+      <UniqueIdentifier>{71809176-0df8-42ac-bee8-0ce093e9a2b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. DataPreset\06.Preset_ItemData">
+      <UniqueIdentifier>{26aa9d3c-8930-48c4-95d3-f68c4ebb7b70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\06. Inventory">
+      <UniqueIdentifier>{cdf660ae-93ea-4db2-b731-7a720246b9ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\UI_Container\PauseMenu\Page\Inventory\Tap\SlotInformation">
+      <UniqueIdentifier>{9edfd9e2-44c7-48e8-8ecf-8d7b04cfa76a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ItemRootingAlarm">
+      <UniqueIdentifier>{7fac4074-adc3-439f-87df-64fe2093ce31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\07. Timer">
+      <UniqueIdentifier>{7b42f1f9-755b-4ccb-b898-f23ad7a1b07c}</UniqueIdentifier>
     </Filter>
     <Filter Include="97. Tool\01. DeveloperConsole\Windows\03. Optimization">
       <UniqueIdentifier>{04147e0d-363e-4bc5-a9e2-c7c38bb216ec}</UniqueIdentifier>

@@ -29,7 +29,7 @@ class CMonster;
 class CInteraction_CheckPoint;
 class CUI_Cursor;
 class CLight_Prop;
-
+class CItemPopup_Queue;
 
 class CGameManager :
     public CBase
@@ -200,8 +200,15 @@ public:
     void    EnableCursor();
     void    DisableCursor();
 
+
+public:
+    void   CreatePopupQueue();
+    void   Add_Popup(ITEM_NAME eItemName);
 private:
     weak_ptr< CUI_Cursor> m_pCursor;
+
+    shared_ptr<CItemPopup_Queue> m_pItemPopupQueue;
+
 
 public:
     void  Registration_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj);

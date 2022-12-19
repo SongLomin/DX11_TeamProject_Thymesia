@@ -11,7 +11,7 @@
 #include "PhysXController.h"
 #include "Client_Presets.h"
 #include "CorvusStates/Talent_Effect.h"
-
+#include "Inventory.h"
 
 GAMECLASS_C(CPlayer);
 CLONE_C(CPlayer, CGameObject);
@@ -52,12 +52,11 @@ HRESULT CPlayer::Initialize(void* pArg)
     GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::PLAYER, m_thisToPlayer);
     m_eAttackCollisionLayer = COLLISION_LAYER::PLAYER_ATTACK;
 
-    
     m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom),
         (_uint)PHYSX_COLLISION_LAYER::PLAYER);
-    //m_pPhysXControllerCom.lock()->Get_Controller()->setPosition();
+    //m_pPhysXControllerCom.lock()->Get_Controller()->setPosition
 
-    
+    m_pInventory = Add_Component<CInventory>();
 
     return S_OK;
 }
@@ -75,8 +74,6 @@ void CPlayer::Tick(_float fTimeDelta)
     __super::Tick(fTimeDelta);
     //if (m_bIsFocused)
     //    Look_At_Mosnter();
-
-    
 
 }
 

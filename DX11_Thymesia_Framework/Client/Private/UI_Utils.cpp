@@ -60,3 +60,8 @@ _float4& CUI_Utils::GET_COLOR(COLOR_PALETTE eColor)
 	}
 	return fColor;
 }
+
+weak_ptr<CUI> CUI_Utils::Get_BaseToUI(weak_ptr<CBase> pBase)
+{
+	return Weak_StaticCast<CUI>(pBase);
+}

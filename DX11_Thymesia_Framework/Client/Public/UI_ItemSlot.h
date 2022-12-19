@@ -5,6 +5,7 @@
 BEGIN(Client)
 
 class CustomUI;
+class CItem;
 
 class CUI_ItemSlot : public CUI_Button_Base
 {
@@ -27,9 +28,19 @@ public:
 	void			Add_ScroolOffsetY(_float fOffsetY);
 	void			ResetPos();
 	
+	void			Bind_Item(weak_ptr<CItem> pItem);
+	_bool			Is_Bind();
+	void			UnBind_Item();
 public:
 	virtual void	OnMouseOver() override;
 	virtual void	OnMouseOut() override;
+
+
+
+public:
+	FDelegate<weak_ptr<CItem>>	Callback_OnMouseOver;
+	FDelegate<>	Callback_OnMouseOut;
+
 
 private:
 	void			Create_ItemSlot();
@@ -37,7 +48,7 @@ private:
 
 private:
 	_bool			Check_IsInInventoryFrame();
-
+	void			Update_TextInfo();
 //private아이템 바인딩 해줘야함.
 
 
@@ -48,6 +59,11 @@ private:
 	weak_ptr<CCustomUI>		m_pMain;
 	weak_ptr<CCustomUI>		m_pFrame;
 	weak_ptr<CCustomUI>		m_pHover;
+
+	weak_ptr<CCustomUI>		m_pIcon;
+	weak_ptr<CItem>			m_pBindedItem;
+
+
 	TEXTINFO				m_tTextInfo;
 
 };
