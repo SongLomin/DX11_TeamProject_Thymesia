@@ -44,7 +44,7 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	m_tLightDesc.fRange     = 5.f;
 	m_tLightDesc.fIntensity = 1.f;
 
-	m_tLightDesc = GAMEINSTANCE->Add_Light(m_tLightDesc);
+	//m_tLightDesc = GAMEINSTANCE->Add_Light(m_tLightDesc);
 
 	// m_pModelCom.lock()->Init_Model("Torch", "", (_uint)TIMESCALE_LAYER::NONE);
 	// GET_SINGLE(CGameManager)->Use_EffectGroup("TorchFire", m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
@@ -172,7 +172,7 @@ void CLight_Prop::Load_FromJson(const json& In_Json)
 			GET_SINGLE(CGameManager)->Use_EffectGroup(m_szEffectTag, m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
 	}
 
-	GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+	//GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
 
 	if (LEVEL::LEVEL_EDIT == m_CreatedLevel)
 		Set_Enable(true);
