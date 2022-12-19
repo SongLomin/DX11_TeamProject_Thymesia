@@ -388,11 +388,9 @@ namespace Client
 		};
 #pragma endregion
 #pragma region For. Sprite
-		_bool		bLoopSprite;
 		_int		iNumFrameX;
 		_int		iNumFrameY;
 		_float		fSpriteSpeed;
-		_bool		bStopAtEndFrame;
 #pragma endregion
 	};
 

@@ -1,6 +1,5 @@
 #pragma once
-#define _JOJO_EFFECT_TOOL_
-#define _BAKE_PARTICLE_
+//#define _JOJO_EFFECT_TOOL_
                  
 #include "Client_Structs.h"
 #include "Client_Presets.h"
