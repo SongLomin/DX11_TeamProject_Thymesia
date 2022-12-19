@@ -17,6 +17,19 @@
 GAMECLASS_C(CVargBossState_Attack3a);
 CLONE_C(CVargBossState_Attack3a, CComponent)
 
+void CVargBossState_Attack3a::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
+	if (!Get_Enable())
+		return;
+
+	switch (In_KeyIndex)
+	{
+	case 32:
+		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.3f, 1.f, 9.f, 0.25f);
+		break;
+	}
+}
+
 HRESULT CVargBossState_Attack3a::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
@@ -26,8 +39,7 @@ HRESULT CVargBossState_Attack3a::Initialize_Prototype()
 HRESULT CVargBossState_Attack3a::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
-
+	m_vShakingOffSet = { 0.f, 0.f, 1.f };
 	return S_OK;
 }
 
@@ -37,8 +49,6 @@ void CVargBossState_Attack3a::Start()
 
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_ComboAttack1_3");
-
-
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Attack3a::Call_AnimationEnd, this);
 }
 
@@ -80,15 +90,17 @@ void CVargBossState_Attack3a::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CVargBossState_Attack3a::Call_NextKeyFrame, this, placeholders::_1);
+
 	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(true);
 
 	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
 		bind(&CVargBossState_Attack3a::Call_OtherControllerHit, this, placeholders::_1);
 
-#ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Attack3a -> OnStateStart" << endl;
-#endif
 #endif
 
 
@@ -99,6 +111,8 @@ void CVargBossState_Attack3a::OnStateEnd()
 	__super::OnStateEnd();
 
 	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(false);
+
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CVargBossState_Attack3a::Call_NextKeyFrame, this, placeholders::_1);
 
 	m_pPhysXControllerCom.lock()->Callback_ControllerHit -=
 		bind(&CVargBossState_Attack3a::Call_OtherControllerHit, this, placeholders::_1);

@@ -17,6 +17,19 @@
 GAMECLASS_C(CVargBossState_Attack3b);
 CLONE_C(CVargBossState_Attack3b, CComponent)
 
+void CVargBossState_Attack3b::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
+	if (!Get_Enable())
+		return;
+
+	switch (In_KeyIndex)
+	{
+	case 45:
+		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.1f, 1.f, 9.f, 0.25f);
+		break;
+	}
+}
+
 HRESULT CVargBossState_Attack3b::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
@@ -78,6 +91,11 @@ void CVargBossState_Attack3b::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_bAttackLookAtLimit = true;  // 애니메이션시작할떄 룩엣시작
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CVargBossState_Attack3b::Call_NextKeyFrame, this, placeholders::_1);
+
 	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(true);
 
 	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
@@ -95,6 +113,8 @@ void CVargBossState_Attack3b::OnStateEnd()
 {
 	__super::OnStateEnd();
 	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(false);
+
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CVargBossState_Attack3b::Call_NextKeyFrame, this, placeholders::_1);
 
 	m_pPhysXControllerCom.lock()->Callback_ControllerHit -=
 		bind(&CVargBossState_Attack3b::Call_OtherControllerHit, this, placeholders::_1);

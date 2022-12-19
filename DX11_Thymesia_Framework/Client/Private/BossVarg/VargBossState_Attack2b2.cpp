@@ -17,6 +17,24 @@
 GAMECLASS_C(CVargBossState_Attack2b2);
 CLONE_C(CVargBossState_Attack2b2, CComponent)
 
+void CVargBossState_Attack2b2::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
+	if (!Get_Enable())
+		return;
+
+	switch (In_KeyIndex)
+	{
+	case 0:
+		m_vShakingOffSet = {};
+		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.03f, 1.f, 9.f, 0.25f);
+		break;
+	case 36:
+		m_vShakingOffSet = {};
+		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.1f, 1.f, 9.f, 0.25f);
+		break;
+	}
+}
+
 HRESULT CVargBossState_Attack2b2::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
@@ -79,18 +97,18 @@ void CVargBossState_Attack2b2::OnStateStart(const _float& In_fAnimationBlendTime
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CVargBossState_Attack2b2::Call_NextKeyFrame, this, placeholders::_1);
+
 	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(true);
 
 	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
 		bind(&CVargBossState_Attack2b2::Call_OtherControllerHit, this, placeholders::_1);
 
-#ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Attack2b2 -> OnStateStart" << endl;
-#endif
-#endif
-
-	
+#endif // _DEBUG_COUT_
 }
 
 void CVargBossState_Attack2b2::OnStateEnd()
@@ -98,6 +116,8 @@ void CVargBossState_Attack2b2::OnStateEnd()
 	__super::OnStateEnd();
 
 	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(false);
+
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CVargBossState_Attack2b2::Call_NextKeyFrame, this, placeholders::_1);
 
 	m_pPhysXControllerCom.lock()->Callback_ControllerHit -=
 		bind(&CVargBossState_Attack2b2::Call_OtherControllerHit, this, placeholders::_1);

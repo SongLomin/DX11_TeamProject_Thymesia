@@ -2068,6 +2068,32 @@ const _bool CEffect_Rect::Check_Option(const EFFECTPARTICLE_DESC::Option1 eOptio
 	return (m_tEffectParticleDesc.byOption1 & (_ubyte)eOption) ? true : false;
 }
 
+const _bool CEffect_Rect::Check_Option(const EFFECTPARTICLE_DESC::Option2 eOption) const
+{
+	return (m_tEffectParticleDesc.byOption2 & (_ubyte)eOption) ? true : false;
+}
+
+const _bool CEffect_Rect::Check_Option(const EFFECTPARTICLE_DESC::Option3 eOption) const
+{
+	return (m_tEffectParticleDesc.byOption3 & (_ubyte)eOption) ? true : false;
+}
+
+const _bool CEffect_Rect::Check_Option(const EFFECTPARTICLE_DESC::Option4 eOption) const
+{
+	return (m_tEffectParticleDesc.byOption4 & (_ubyte)eOption) ? true : false;
+}
+
+const _bool CEffect_Rect::Check_Option(const EFFECTPARTICLE_DESC::Option5 eOption) const
+{
+	return (m_tEffectParticleDesc.byOption5 & (_ubyte)eOption) ? true : false;
+}
+
+const _bool CEffect_Rect::Check_Option(const EFFECTPARTICLE_DESC::Option6 eOption) const
+{
+	return (m_tEffectParticleDesc.byOption6 & (_ubyte)eOption) ? true : false;
+}
+
+#ifdef _DEBUG
 void CEffect_Rect::TurnOn_Option(const EFFECTPARTICLE_DESC::Option1 eOption)
 {
 	m_tEffectParticleDesc.byOption1 |= (_ubyte)eOption;
@@ -2076,11 +2102,6 @@ void CEffect_Rect::TurnOn_Option(const EFFECTPARTICLE_DESC::Option1 eOption)
 void CEffect_Rect::TurnOff_Option(const EFFECTPARTICLE_DESC::Option1 eOption)
 {
 	m_tEffectParticleDesc.byOption1 &= ~(_ubyte)eOption;
-}
-
-const _bool CEffect_Rect::Check_Option(const EFFECTPARTICLE_DESC::Option2 eOption) const
-{
-	return (m_tEffectParticleDesc.byOption2 & (_ubyte)eOption) ? true : false;
 }
 
 void CEffect_Rect::TurnOn_Option(const EFFECTPARTICLE_DESC::Option2 eOption)
@@ -2093,11 +2114,6 @@ void CEffect_Rect::TurnOff_Option(const EFFECTPARTICLE_DESC::Option2 eOption)
 	m_tEffectParticleDesc.byOption2 &= ~(_ubyte)eOption;
 }
 
-const _bool CEffect_Rect::Check_Option(const EFFECTPARTICLE_DESC::Option3 eOption) const
-{
-	return (m_tEffectParticleDesc.byOption3 & (_ubyte)eOption) ? true : false;
-}
-
 void CEffect_Rect::TurnOn_Option(const EFFECTPARTICLE_DESC::Option3 eOption)
 {
 	m_tEffectParticleDesc.byOption3 |= (_ubyte)eOption;
@@ -2106,11 +2122,6 @@ void CEffect_Rect::TurnOn_Option(const EFFECTPARTICLE_DESC::Option3 eOption)
 void CEffect_Rect::TurnOff_Option(const EFFECTPARTICLE_DESC::Option3 eOption)
 {
 	m_tEffectParticleDesc.byOption3 &= ~(_ubyte)eOption;
-}
-
-const _bool CEffect_Rect::Check_Option(const EFFECTPARTICLE_DESC::Option4 eOption) const
-{
-	return (m_tEffectParticleDesc.byOption4 & (_ubyte)eOption) ? true : false;
 }
 
 void CEffect_Rect::TurnOn_Option(const EFFECTPARTICLE_DESC::Option4 eOption)
@@ -2123,11 +2134,6 @@ void CEffect_Rect::TurnOff_Option(const EFFECTPARTICLE_DESC::Option4 eOption)
 	m_tEffectParticleDesc.byOption4 &= ~(_ubyte)eOption;
 }
 
-const _bool CEffect_Rect::Check_Option(const EFFECTPARTICLE_DESC::Option5 eOption) const
-{
-	return (m_tEffectParticleDesc.byOption5 & (_ubyte)eOption) ? true : false;
-}
-
 void CEffect_Rect::TurnOn_Option(const EFFECTPARTICLE_DESC::Option5 eOption)
 {
 	m_tEffectParticleDesc.byOption5 |= (_ubyte)eOption;
@@ -2136,11 +2142,6 @@ void CEffect_Rect::TurnOn_Option(const EFFECTPARTICLE_DESC::Option5 eOption)
 void CEffect_Rect::TurnOff_Option(const EFFECTPARTICLE_DESC::Option5 eOption)
 {
 	m_tEffectParticleDesc.byOption5 &= ~(_ubyte)eOption;
-}
-
-const _bool CEffect_Rect::Check_Option(const EFFECTPARTICLE_DESC::Option6 eOption) const
-{
-	return (m_tEffectParticleDesc.byOption6 & (_ubyte)eOption) ? true : false;
 }
 
 void CEffect_Rect::TurnOn_Option(const EFFECTPARTICLE_DESC::Option6 eOption)
@@ -2153,7 +2154,6 @@ void CEffect_Rect::TurnOff_Option(const EFFECTPARTICLE_DESC::Option6 eOption)
 	m_tEffectParticleDesc.byOption6 &= ~(_ubyte)eOption;
 }
 
-#ifdef _DEBUG
 void CEffect_Rect::Tool_ToggleOption(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option1 eOption)
 {
 	ImGuiColorEditFlags byButtonFlags(ImGuiColorEditFlags_NoBorder | ImGuiColorEditFlags_NoTooltip | ImGuiColorEditFlags_NoDragDrop);

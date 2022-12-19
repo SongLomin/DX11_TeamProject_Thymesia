@@ -23,9 +23,7 @@ GAMECLASS_C(CVargBossStateBase)
 _bool CVargBossStateBase::Check_RequirementAttackState()
 {
 	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
-	{
 		return true;
-	}
 
 	return false;
 }
@@ -33,9 +31,9 @@ _bool CVargBossStateBase::Check_RequirementAttackState()
 _bool CVargBossStateBase::Check_RequirementDashState()
 {
 	if (KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))
-	{
 		return true;
-	}
+
+	
 	return false;
 }
 
@@ -45,9 +43,8 @@ _bool CVargBossStateBase::Check_RequirementRunState()
 		|| KEY_INPUT(KEY::A, KEY_STATE::HOLD)
 		|| KEY_INPUT(KEY::S, KEY_STATE::HOLD)
 		|| KEY_INPUT(KEY::D, KEY_STATE::HOLD))
-	{
 		return true;
-	}
+	
 
 	return false;
 }
@@ -70,22 +67,12 @@ _uint CVargBossStateBase::Check_RequirementDotState()
 
 	_float fCos = XMVectorGetX(XMVector3Dot(vOtherColliderToPlayerClollider, vMyLookVecTor));
 
-
 	if (fCos >= 0.173f && fCos <= 1)
-	{
 		return (_uint)DOT_RESULT::LEFT;
-	}
 	else if (fCos >= -0.173f && fCos <= 0.173)
-	{
 		return (_uint)DOT_RESULT::MID;
-	}
 	else
-	{
 		return (_uint)DOT_RESULT::RIGHT;
-	}
-	
-	
-	
 }
 
 _bool CVargBossStateBase::Check_RequirementPlayerInRange(const _float& In_fRange)
@@ -111,7 +98,6 @@ void CVargBossStateBase::Play_OnHitEffect()
 	GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 
 	GET_SINGLE(CGameManager)->Use_EffectGroup("Hit_Monster2", m_pTransformCom);
-
 }
 
 void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
@@ -127,12 +113,8 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 			
 		weak_ptr<CStatus_Boss> pStatus = m_pOwner.lock()->Get_Component<CStatus_Boss>();
 		
-	
-		
 		weak_ptr<CCharacter> pOtherCharacter = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner()).lock()->Get_ParentObject();
 		
-		
-
 		if (!pAttackArea.lock())
 			return;
 
@@ -228,24 +210,13 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 				Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_Start>(0.05f);
 				
 			}
-			
-			
 		}
-
-		
-		
 		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.1f + fShakingRatio, 1.f, 9.f, 0.5f);//일반 공격
 		GAMEINSTANCE->Set_MotionBlur(0.05f);
-
-		
-
 		//현재상태가 스턴스타트나 스턴루프인경우에 
 		//다시 검사를해준다 플레이어의 공격이 들어오면 바그처형으로 갑니다 
 		// 바그처형으로가고 바그처형으로 갈떄 그 애니메이션한태 값하나던져주면 해결ㅇ완료 
-
-
 	}
-
 }
 
 void CVargBossStateBase::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
@@ -277,4 +248,16 @@ void CVargBossStateBase::OnEventMessage(weak_ptr<CBase> pArg)
 
 void CVargBossStateBase::Free()
 {
+}
+
+void CVargBossStateBase::OnStateStart(const _float& In_fAnimationBlendTime)
+{
+	__super::OnStateStart(In_fAnimationBlendTime);
+}
+
+void CVargBossStateBase::OnStateEnd()
+{
+	__super::OnStateEnd();
+
+	m_bShakingCamera = false;
 }

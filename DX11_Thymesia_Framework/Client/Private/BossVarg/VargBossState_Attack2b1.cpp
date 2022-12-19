@@ -17,6 +17,28 @@
 GAMECLASS_C(CVargBossState_Attack2b1);
 CLONE_C(CVargBossState_Attack2b1, CComponent)
 
+void CVargBossState_Attack2b1::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
+	if (!Get_Enable())
+		return;
+
+	switch (In_KeyIndex)
+	{
+	case 0:
+		m_vShakingOffSet = {};
+		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.03f, 1.f, 9.f, 0.25f);
+		break;
+	case 40:
+		m_vShakingOffSet = {};
+		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.03f, 1.f, 9.f, 0.25f);
+		break;
+	case 56:
+		m_vShakingOffSet = {};
+		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.1f, 1.f, 9.f, 0.25f);
+		break;
+	}
+}
+
 HRESULT CVargBossState_Attack2b1::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
@@ -26,8 +48,6 @@ HRESULT CVargBossState_Attack2b1::Initialize_Prototype()
 HRESULT CVargBossState_Attack2b1::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
-
 	return S_OK;
 }
 
@@ -70,27 +90,24 @@ void CVargBossState_Attack2b1::OnStateStart(const _float& In_fAnimationBlendTime
 	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
 
 	for (auto& elem : pWeapons)
-	{
 		elem.lock()->Set_WeaponDesc(HIT_TYPE::DOWN_HIT, 1.3f);
-	}
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CVargBossState_Attack2b1::Call_NextKeyFrame, this, placeholders::_1);
 
 	m_bAttackLookAtLimit = true;  // 애니메이션시작할떄 룩엣시작
 
 	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(true);
 
 
-	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
-		bind(&CVargBossState_Attack2b1::Call_OtherControllerHit, this, placeholders::_1);
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit += bind(&CVargBossState_Attack2b1::Call_OtherControllerHit, this, placeholders::_1);
 
-#ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Attack2b1 -> OnStateStart" << endl;
-#endif
-#endif
-
-	
+#endif // _DEBUG_COUT_
 }
 
 void CVargBossState_Attack2b1::OnStateEnd()
@@ -99,8 +116,9 @@ void CVargBossState_Attack2b1::OnStateEnd()
 
 	Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(false);
 
-	m_pPhysXControllerCom.lock()->Callback_ControllerHit -=
-		bind(&CVargBossState_Attack2b1::Call_OtherControllerHit, this, placeholders::_1);
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CVargBossState_Attack2b1::Call_NextKeyFrame, this, placeholders::_1);
+
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit -= bind(&CVargBossState_Attack2b1::Call_OtherControllerHit, this, placeholders::_1);
 }
 
 
@@ -109,7 +127,6 @@ void CVargBossState_Attack2b1::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
-
 
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Idle>(0.05f);
 }
@@ -131,15 +148,10 @@ _bool CVargBossState_Attack2b1::Check_AndChangeNextState()
 		return false;
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.3f)
-	{
 		m_bAttackLookAtLimit = false;
-	}
 
 	if (ComputeAngleWithPlayer() > 0.99f && m_bAttackLookAtLimit)
-	{
 		Rotation_TargetToLookDir();
-	}
-
 
 	return false;
 }

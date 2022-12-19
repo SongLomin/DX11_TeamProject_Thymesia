@@ -13,6 +13,19 @@
 GAMECLASS_C(CVargBossState_RunStart);
 CLONE_C(CVargBossState_RunStart, CComponent)
 
+void CVargBossState_RunStart::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
+	if (!Get_Enable())
+		return;
+
+	switch (In_KeyIndex)
+	{
+	case 47:
+		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.03f, 0.3f, 9.f, 0.25f);
+		break;
+	}
+}
+
 HRESULT CVargBossState_RunStart::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
@@ -63,6 +76,10 @@ void CVargBossState_RunStart::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CVargBossState_RunStart::Call_NextKeyFrame, this, placeholders::_1);
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: RunStart -> OnStateStart" << endl;
@@ -73,6 +90,8 @@ void CVargBossState_RunStart::OnStateStart(const _float& In_fAnimationBlendTime)
 void CVargBossState_RunStart::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CVargBossState_RunStart::Call_NextKeyFrame, this, placeholders::_1);
 }
 
 
