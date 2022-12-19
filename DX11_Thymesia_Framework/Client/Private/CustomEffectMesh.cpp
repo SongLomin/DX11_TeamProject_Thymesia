@@ -528,22 +528,29 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 		if (In_Json.find("Bone_Name") != In_Json.end())
 			m_strBoneName = In_Json["Bone_Name"];
 
-		try
+#ifdef _DEBUG
+		if (m_strBoneName.empty())
 		{
-			if (m_strBoneName.empty())
-				throw;
-
-			if ((_uint)LEVEL_EDIT == m_CreatedLevel)
-			{
-				m_pParentTransformCom = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Component<CTransform>().lock();
-				m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
-			}
+			MSG_BOX("! Bone Name Empty !");
+			goto JUMP;
 		}
-		catch (const std::exception&)
-		{
+#elif NDEBUG
+		if (m_strBoneName.empty())
 			assert(0);
+#endif // _DEBUG
+
+#ifdef _DEBUG
+		if ((_uint)LEVEL_EDIT == m_CreatedLevel)
+		{
+			m_pParentTransformCom = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Component<CTransform>().lock();
+			m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
 		}
+#endif // _DEBUG
 	}
+
+#ifdef _DEBUG
+JUMP:
+#endif // _DEBUG
 	if (In_Json.find("BillBoard") != In_Json.end())
 		m_tEffectMeshDesc.bBillBoard = In_Json["BillBoard"];
 	

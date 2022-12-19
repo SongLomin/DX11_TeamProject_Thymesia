@@ -178,7 +178,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 #endif // _LOAD_CAPTURED_RESOURCE_
 
-#endif
+#endif // _ONLY_UI_
 
 #ifdef _ONLY_UI_
 	Load_UIResource();
@@ -279,17 +279,12 @@ HRESULT CLoader::Loading_ForTestLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading EditGround All Mesh Infos..."));
 	CEditGround::Load_AllMeshInfo();
 
-	lstrcpy(m_szLoadingText, TEXT("Loading all Effect Meshes..."));
-	Load_AllEffectMesh();
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/GroundInfo/Mesh/ ]"));
-	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
-
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Destructable/Wagon03/ ]"));
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
+#ifdef _MAP_DATA_
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/ForTest_Mesh/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 
@@ -304,6 +299,10 @@ HRESULT CLoader::Loading_ForTestLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+
+	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/GroundInfo/Mesh/ ]"));
+	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
+#endif // _MAP_DATA_
 
 #endif // _LOAD_CAPTURED_RESOURCE_
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
@@ -333,16 +332,10 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading all EditGround Mesh Info..."));
 	CEditGround::Load_AllMeshInfo();
 
-
-	lstrcpy(m_szLoadingText, TEXT("Loading all Effect Meshes..."));
-	Load_AllEffectMesh();
-
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/ ]"));
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
 
-	
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
-	//GAMEINSTANCE->Load_Model("DestructableTest", "../Bin/Resources/Meshes/Destructable/WagonTest2.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Destructable/Wagon03/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
@@ -360,6 +353,8 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+
+
 #endif // _LOAD_CAPTURED_RESOURCE_
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
@@ -399,7 +394,10 @@ HRESULT CLoader::Loading_ForStage2Level()
 	lstrcpy(m_szLoadingText, TEXT("Loading Skybox Texture..."));
 
 #ifndef _ONLY_UI_
+#ifdef _SKYBOX_
+	lstrcpy(m_szLoadingText, TEXT("Loading Skybox Texture..."));
 	GAMEINSTANCE->Load_Textures("Sky", TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
+#endif // _SKYBOX_
 #endif
 	m_isFinished = true;
 	return S_OK;
@@ -414,6 +412,7 @@ HRESULT CLoader::Loading_ForStage3Level()
 	//#else // _LOAD_CAPTURED_RESOURCE_
 
 #ifndef _ONLY_UI_
+#ifdef _MAP_DATA_
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/ForTest_Mesh/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 
@@ -428,15 +427,18 @@ HRESULT CLoader::Loading_ForStage3Level()
 
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+#endif // _MAP_DATA_
 
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/GroundInfo/Mesh/ ]"));
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
 #endif // _LOAD_CAPTURED_RESOURCE_
 
-	lstrcpy(m_szLoadingText, TEXT("Loading Skybox Texture..."));
 
 #ifndef _ONLY_UI_
+#ifdef _SKYBOX_
+	lstrcpy(m_szLoadingText, TEXT("Loading Skybox Texture..."));
 	GAMEINSTANCE->Load_Textures("Sky", TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
+#endif // _SKYBOX_
 #endif
 	m_isFinished = true;
 	return S_OK;
@@ -1178,7 +1180,6 @@ void CLoader::Load_BossMobModel()
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Boss_Bat", "../Bin/Resources/Meshes/Boss/Bat/Bat.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
-
 
 	//Masking
 	GAMEINSTANCE->Load_Textures(("Mask"), TEXT("../Bin/Resources/Textures/Mask/193.png"), MEMORY_TYPE::MEMORY_STATIC);

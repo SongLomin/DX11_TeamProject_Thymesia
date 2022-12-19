@@ -58,7 +58,7 @@ protected:
 protected:
     _bool                m_bAttackLookAtLimit = false; // °ø°ÝÇÒ‹š·è¿§ÇÏ´Ù°¡ ÂïÀ»‹šÂë Ç®¶ó°í
     _bool                m_bAtkPermitAndNoHurt = false;
-
+    weak_ptr<CAnimation> m_pThisAnimationCom;
 
 protected:
     _vector Get_CurMonToStartMonDir();

@@ -15,9 +15,9 @@ class CJokerState_RunAttackStart :
 		SHALLOW_COPY(CJokerState_RunAttackStart)
 
 public:
+	void Call_NextKeyFrame(const _uint& In_KeyIndex);
 	void Set_TurnCheck(_bool TurnCheck) { m_bTurnCheck = TurnCheck; }
 	void Set_BackReset(_bool BackReset) { m_bBackReset = BackReset; }
-
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
@@ -31,16 +31,15 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
-private:
-	_bool    m_bTurnCheck = false;
-	_bool    m_bBackReset = false;
-
-private:
-	void Call_AnimationEnd();
-protected:
 	virtual void OnDestroy() override;
 	void Free();
 
+private:
+	void Call_AnimationEnd();
+
+private:
+	_bool    m_bTurnCheck = false;
+	_bool    m_bBackReset = false;
 };
 
 END

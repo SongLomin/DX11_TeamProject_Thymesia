@@ -78,15 +78,11 @@ void CCorvusState_AVoidSalsh::OnStateStart(const _float& In_fAnimationBlendTime)
 		cout << "NorMonState: RunStart -> OnStateStart" << endl;
 #endif
 #endif
-
-	//m_pModelCom.lock()->Set_AnimationSpeed(3.f);
 }
 
 void CCorvusState_AVoidSalsh::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-	//m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 void CCorvusState_AVoidSalsh::Call_AnimationEnd()

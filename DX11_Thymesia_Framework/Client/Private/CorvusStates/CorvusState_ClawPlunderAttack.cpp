@@ -149,46 +149,8 @@ void CCorvusState_ClawPlunderAttack::Call_NextAnimationKey(const _uint& In_iKeyI
 	if (!Get_Enable())
 		return;
 
-	//switch (In_iKeyIndex)
-	//{
-	//case 0:
-	//	m_fDissolveTimeArm = 0.7f;
-	//	m_fDissolveTimeClaw = 0.7f;
-	//	m_bDissolve = true;
-	//	m_bDissolveAppear = true;
-	//	m_fDissolveAmountArm = 1.f;
-	//	m_fDissolveAmountClaw = 1.f;
-	//	break;
-	//
-	//case 30:
-	//	GET_SINGLE(CGameManager)->Activate_Zoom(-0.5f,0.4f, EASING_TYPE::SINE_OUT);
-	//	_float3 vPosition;
-	//	XMStoreFloat3(&vPosition, m_pOwner.lock()->Get_Transform()->Get_Position() + XMVectorSet(0.f, 1.3f, 0.f, 0.f));
-	//	GAMEINSTANCE->Set_RadialBlur(0.2f, vPosition);
-	//	break;
-	//
-	//case 70:
-	//	GET_SINGLE(CGameManager)->Deactivate_Zoom(1.f, EASING_TYPE::SINE_OUT);
-	//	break;
-	//case 100:
-	//	m_fDissolveTimeArm = 0.7f;
-	//	m_fDissolveTimeClaw = 0.7f;
-	//	m_bDissolve = true;
-	//	m_bDissolveAppear = false;
-	//	m_fDissolveAmountArm = 0.f;
-	//	m_fDissolveAmountClaw = 0.f;
-	//	break;
-	//}
 }
 
-//void CCorvusState_ClawPlunderAttack::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
-//{
-//
-//
-//	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
-//	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-//	m_pModelCom.lock()->Set_AnimationSpeed(2.5f);
-//}
 
 void CCorvusState_ClawPlunderAttack::Attack()
 {

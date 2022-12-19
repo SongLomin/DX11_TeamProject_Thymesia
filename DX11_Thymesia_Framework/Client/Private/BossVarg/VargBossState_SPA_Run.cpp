@@ -71,15 +71,11 @@ void CVargBossState_SPA_Run::OnStateStart(const _float& In_fAnimationBlendTime)
 	cout << "VargState: SPA_Run -> OnStateStart" << endl;
 #endif
 #endif
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 void CVargBossState_SPA_Run::OnStateEnd()
 {
 	__super::OnStateEnd();
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
-
-
 }
 
 void CVargBossState_SPA_Run::Call_AnimationEnd()

@@ -217,8 +217,8 @@ namespace Client
 		_float3		vMaxSpawnOffsetRange;
 #pragma endregion
 
-		_ubyte		byOption_Spawn = 0;
-		enum class Option_Spawn
+		_ubyte		byOption1 = 0;
+		enum class Option1
 		{
 			Is_Attraction                     = 0b0000'0001
 			, Use_MinMax_SpawnTime            = 0b0000'0010
@@ -259,8 +259,8 @@ namespace Client
 		_float3		vMaxLimitRotation;
 #pragma endregion
 
-		_ubyte		byOption_SpeedRotation = 0;
-		enum class Option_SpeedRotation
+		_ubyte		byOption2 = 0;
+		enum class Option2
 		{
 			Use_Gravity            = 0b0000'0001
 			, Use_Speed            = 0b0000'0010
@@ -273,14 +273,10 @@ namespace Client
 		};
 
 #pragma region Scale
-		_bool		bSquareScale;
-		_bool		bRatioScale;
-
 		// For. Ratio Scale
 		_float		fMinYScaleRatio;
 		_float		fMaxYScaleRatio;
 
-		_bool		bEasingScale;
 		_int		iScaleEasingType;
 		_float		fScaleEasingTotalTime;
 
@@ -295,14 +291,22 @@ namespace Client
 
 		_float2		vMinLimitScale;
 		_float2		vMaxLimitScale;
+
+		_ubyte		byOption3 = 0;
+		enum class Option3
+		{
+			Square_Scale     = 0b0000'0001
+			, Ratio_Scale    = 0b0000'0010
+			, Easing_Scale   = 0b0000'0100
+			, Use_ScaleSpeed = 0b0000'1000
+			, Use_ScaleForce = 0b0001'0000
+			, Option_Scale_END
+		};
 #pragma endregion
 #pragma region Color
 		_float		fDiscardRatio;
-		_bool		IsGrayOnlyUseRed;// when random colors, grayscales
 
-		_bool		bEasingAlpha;
 		_int		iAlphaEasingType;
-
 		_float		fAlphaEasingTotalTime;
 
 		_float4		vMinStartColor;
@@ -316,6 +320,16 @@ namespace Client
 
 		_float4		vMinColor;
 		_float4		vMaxColor;
+
+		_ubyte		byOption4 = 0;
+		enum class Option4
+		{
+			// Is_Gray          = 0b0000'0001
+			Easing_Alpha   = 0b0000'0010
+			, Use_ColorSpeed = 0b0000'0100
+			, Use_ColorForce = 0b0000'1000
+			, Option_Color_END
+		};
 #pragma endregion
 #pragma region Texture
 #pragma region Diffuse
@@ -342,20 +356,41 @@ namespace Client
 		_float2		vNoiseUVForce;
 		_float2		vNoiseUVMax;
 #pragma endregion
+
+		_ubyte byOption5;
+		enum class Option5
+		{
+			Use_DiffuseSpeed   = 0b0000'0001
+			, Use_DiffuseForce = 0b0000'0010
+			, Use_MaskSpeed    = 0b0000'0100
+			, Use_MaskForce    = 0b0000'1000
+			, Use_NoiseSpeed   = 0b0001'0000
+			, Use_NoiseForce   = 0b0010'0000
+			, Option_Texture_END
+		};
 #pragma endregion
 #pragma region Bloom & Glow
-		_bool		bBloom;
-		_bool		bGlow;
 		_float4		vStartGlowColor;
 		_float4		vGlowColorSpeed;
 		_float4		vGlowColorForce;
+
+		_ubyte byOption6;
+		enum class Option6
+		{
+			Use_Bloom         = 0b0000'0001
+			, Use_Glow        = 0b0000'0010
+			, Use_GlowSpeed   = 0b0000'0100
+			, Use_GlowForce   = 0b0000'1000
+			, Is_Sprite       = 0b0001'0000
+			, Loop_Sprite     = 0b0010'0000
+			, Sprite_StopAtEnd= 0b0100'0000
+			, Option_Glite_END
+		};
 #pragma endregion
 #pragma region For. Sprite
-		_bool		bLoopSprite;
 		_int		iNumFrameX;
 		_int		iNumFrameY;
 		_float		fSpriteSpeed;
-		_bool		bStopAtEndFrame;
 #pragma endregion
 	};
 

@@ -13,6 +13,22 @@
 GAMECLASS_C(CVargBossState_Start);
 CLONE_C(CVargBossState_Start, CComponent)
 
+void CVargBossState_Start::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
+	if (!Get_Enable())
+		return;
+
+	switch (In_KeyIndex)
+	{
+	case 1090:
+		Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(true);
+		break;
+	case 1251:
+		Weak_Cast<CVarg>(m_pOwner).lock()->Set_TrailEnable(false);
+		break;
+	}
+}
+
 HRESULT CVargBossState_Start::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
@@ -22,8 +38,6 @@ HRESULT CVargBossState_Start::Initialize_Prototype()
 HRESULT CVargBossState_Start::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
-
 	return S_OK;
 }
 
@@ -41,7 +55,6 @@ void CVargBossState_Start::Start()
 		break;
 	}
 
-
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CVargBossState_Start::Call_AnimationEnd, this);
 }
 
@@ -52,71 +65,48 @@ void CVargBossState_Start::Tick(_float fTimeDelta)
 	_matrix LocalMat = XMMatrixIdentity();
 	LocalMat *= XMMatrixRotationX(XMConvertToRadians(-90.f));
 	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
-
-	
 	GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera", LocalMat, CINEMATIC_TYPE::CINEMATIC);
-	
-
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
-
 
 void CVargBossState_Start::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
-
 	Check_AndChangeNextState();
 }
-
-
 
 void CVargBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
-
 	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::PLAYERHUD);
 	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
-
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-#ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Start -> OnStateStart" << endl;
-#endif
-#endif
-
-
+#endif // _DEBUG_COUT_
 }
-
 
 void CVargBossState_Start::OnStateEnd()
 {
 	__super::OnStateEnd();
-
 	GET_SINGLE(CGameManager)->End_Cinematic();
-
 }
-
-
 
 void CVargBossState_Start::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
+
 	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);
-	
 	weak_ptr<CCharacter> pCharacter = Weak_StaticCast<CCharacter>(m_pOwner);
 
 	if (pCharacter.lock()->Is_Edit())
-	{
 		return;
-	}
 
 	weak_ptr<CUI_ScriptQueue> pScriptQeuue = GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL_STATIC).front();
 	pScriptQeuue.lock()->Call_SetScript_Tutorial_Varg();
-
 	Weak_StaticCast<CBossMonster>(m_pOwner).lock()->Get_HPBar().lock()->Set_Enable(true);
-
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkF>(0.05f);
 }
  
@@ -127,23 +117,18 @@ void CVargBossState_Start::OnDestroy()
 
 void CVargBossState_Start::Free()
 {
-
 }
 
 _bool CVargBossState_Start::Check_AndChangeNextState()
 {
-
 	if (!Check_Requirement())
 		return false;
-
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 925)
 	{
 		weak_ptr<CUI_ScriptQueue> pScriptQeuue = GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL_STATIC).front();
 		pScriptQeuue.lock()->Call_SetScript_Tutorial_Varg_Appear();
 	}
-
-
 
 	return false;
 }

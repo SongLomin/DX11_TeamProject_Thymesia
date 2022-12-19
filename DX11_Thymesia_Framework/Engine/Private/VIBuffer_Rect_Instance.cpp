@@ -213,7 +213,7 @@ void CVIBuffer_Rect_Instance::Update(const vector<PARTICLE_DESC>& In_ParticleDes
 		_matrix WorldMatrix = SMath::Bake_WorldMatrix(vCurrentScale, pParticleDesc->vCurrentRotation, pParticleDesc->vCurrentTranslation);
 
 		if (In_UseParentMatrix)
-			WorldMatrix *= XMLoadFloat4x4(&pParticleDesc->matParentMatrix);
+			WorldMatrix *= XMLoadFloat4x4(&pParticleDesc->ParentMatrix);
 
 		XMStoreFloat4(&((VTXCOLORINSTANCE*)SubResource.pData)[i].vRight, WorldMatrix.r[0]);
 		XMStoreFloat4(&((VTXCOLORINSTANCE*)SubResource.pData)[i].vUp   , WorldMatrix.r[1]);
