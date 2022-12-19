@@ -40,7 +40,7 @@ private:
     weak_ptr<CPhysXCollider> m_pPhysXTriggerColliderCom;
 
 	LIGHTDESC   m_tLightDesc;
-    _int        m_iSectionIndex  = 0;
+    _int        m_iSectionIndex  = -1;
 	_float      m_fMinLightRange = 0.f;
 	_float      m_fMaxLightRange = 0.f;
     _float3     m_vOffset        = { 0.f, 0.f, 0.f };

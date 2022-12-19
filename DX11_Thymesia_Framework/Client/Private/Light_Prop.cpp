@@ -134,6 +134,7 @@ void CLight_Prop::Write_Json(json& Out_Json)
 	Out_Json["SectionIndex"] = m_iSectionIndex;
 	Out_Json["DelayTime"]    = m_fDelayTime;
 	
+	Out_Json["Light_Position"] = m_tLightDesc.fIntensity;
 	CJson_Utility::Write_Float4(Out_Json["Light_Position"] , m_tLightDesc.vPosition);
 	CJson_Utility::Write_Float4(Out_Json["Light_Direction"], m_tLightDesc.vDirection);
 	CJson_Utility::Write_Float4(Out_Json["Light_Diffuse"]  , m_tLightDesc.vDiffuse);
@@ -161,7 +162,7 @@ void CLight_Prop::Load_FromJson(const json& In_Json)
 	CJson_Utility::Load_Float4(In_Json["Light_Specular"] , m_tLightDesc.vSpecular);
 	CJson_Utility::Load_Float4(In_Json["Light_Flag"]     , m_tLightDesc.vLightFlag);
 
-	if (0 != m_iSectionIndex)
+	if (0 <= m_iSectionIndex)
 	{
 		m_tLightDesc.bEnable = false;
 		GET_SINGLE(CGameManager)->Registration_SectionLight(m_iSectionIndex, Weak_Cast<CLight_Prop>(m_this));
@@ -242,6 +243,7 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 						bChangeData |= ImGui::DragFloat4("Light_Ambient"  , &m_tLightDesc.vAmbient.x  , 0.01f);
 						bChangeData |= ImGui::DragFloat4("Light_Specular" , &m_tLightDesc.vSpecular.x , 0.01f);
 						bChangeData |= ImGui::DragFloat4("Light_Flag"     , &m_tLightDesc.vLightFlag.x, 0.01f);
+						bChangeData |= ImGui::DragFloat ("Light_Intensity", &m_tLightDesc.fIntensity  , 0.01f);
 					}
 					break;
 
@@ -249,12 +251,13 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 					{
 						bChangeData |= ImGui::DragFloat3("Offset", &m_vOffset.x, 0.01f);
 
-						ImGui::DragFloat4("Light_Position", &m_tLightDesc.vPosition.x , 0.01f);
-						ImGui::DragFloat4("Light_Diffuse" , &m_tLightDesc.vDiffuse.x  , 0.01f);
-						ImGui::DragFloat4("Light_Ambient" , &m_tLightDesc.vAmbient.x  , 0.01f);
-						ImGui::DragFloat4("Light_Specular", &m_tLightDesc.vSpecular.x , 0.01f);
-						ImGui::DragFloat("Light_Range"    , &m_tLightDesc.fRange      , 0.01f);
-						ImGui::DragFloat4("Light_Flag"    , &m_tLightDesc.vLightFlag.x, 0.01f);
+						ImGui::DragFloat4("Light_Position" , &m_tLightDesc.vPosition.x , 0.01f);
+						ImGui::DragFloat4("Light_Diffuse"  , &m_tLightDesc.vDiffuse.x  , 0.01f);
+						ImGui::DragFloat4("Light_Ambient"  , &m_tLightDesc.vAmbient.x  , 0.01f);
+						ImGui::DragFloat4("Light_Specular" , &m_tLightDesc.vSpecular.x , 0.01f);
+						ImGui::DragFloat ("Light_Range"    , &m_tLightDesc.fRange      , 0.01f);
+						ImGui::DragFloat4("Light_Flag"     , &m_tLightDesc.vLightFlag.x, 0.01f);
+						ImGui::DragFloat ("Light_Intensity", &m_tLightDesc.fIntensity  , 0.01f);
 					}
 					break;
 			
@@ -265,8 +268,9 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 						ImGui::DragFloat4("Light_Diffuse"  , &m_tLightDesc.vDiffuse.x  , 0.01f);
 						ImGui::DragFloat4("Light_Ambient"  , &m_tLightDesc.vAmbient.x  , 0.01f);
 						ImGui::DragFloat4("Light_Specular" , &m_tLightDesc.vSpecular.x , 0.01f);
-						ImGui::DragFloat("Light_Range"     , &m_tLightDesc.fRange      , 0.01f);
+						ImGui::DragFloat ("Light_Range"    , &m_tLightDesc.fRange      , 0.01f);
 						ImGui::DragFloat4("Light_Flag"     , &m_tLightDesc.vLightFlag.x, 0.01f);
+						ImGui::DragFloat ("Light_Intensity", &m_tLightDesc.fIntensity, 0.01f);
 					}
 					break;
 				}
