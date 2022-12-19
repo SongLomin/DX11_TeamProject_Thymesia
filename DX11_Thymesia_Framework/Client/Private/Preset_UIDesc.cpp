@@ -13,7 +13,7 @@
 #include "UI_ItemInformation.h"
 #include "Item.h"
 #include "Preset_ItemData.h"
-
+#include "UI_InventoryConfirmWindowButton.h"
 
 void CPreset_UIDesc::Set_CUI_MonsterFocus(weak_ptr<class CUI_MonsterFocus> pUI)
 {
@@ -293,6 +293,10 @@ void CPreset_UIDesc::Set_CUI_ItemInformaiton_BindItem(weak_ptr<class CUI_ItemInf
         pUI.lock()->m_pItemTitle.lock()->Set_Texture("Item_GardenKey_Title");
         pUI.lock()->m_pItemInformation.lock()->Set_Texture("Item_GardenKey_Information");
         break;
+    case Client::ITEM_NAME::MEMORY01:
+        pUI.lock()->m_pItemTitle.lock()->Set_Texture("Item_Memory01_Title");
+        pUI.lock()->m_pItemInformation.lock()->Set_Texture("Item_Memory01_Information");
+        break;
     default:
         break;
     }
@@ -305,8 +309,8 @@ void CPreset_UIDesc::Set_CUI_ItemInformaiton_BindItem(weak_ptr<class CUI_ItemInf
     case Client::ITEM_TYPE::INGREDIENT:
         pUI.lock()->m_pItemType.lock()->Set_Texture("Item_Type_Ingredient");
         break;
-    case Client::ITEM_TYPE::CONSUMPOTION_ITEM:
-        pUI.lock()->m_pItemType.lock()->Set_Texture("Item_Type_Consumpotion_Item");
+    case Client::ITEM_TYPE::CONSUMPTION:
+        pUI.lock()->m_pItemType.lock()->Set_Texture("Item_Type_Consumption");
         break;
     case Client::ITEM_TYPE::SKILLPIECE:
         pUI.lock()->m_pItemType.lock()->Set_Texture("Item_Type_SkillPiece");
@@ -333,6 +337,9 @@ void CPreset_UIDesc::Set_CUI_ItemPopup_Ready_Popup(weak_ptr<class CUI> pUI, ITEM
         break;
     case Client::ITEM_NAME::GARDEN_KEY:
         pUI.lock()->Set_Texture("Popup_Item_GardenKey");
+        break;
+    case Client::ITEM_NAME::MEMORY01:
+        pUI.lock()->Set_Texture("Popup_Item_Memory01");
         break;
     default:
         break;

@@ -24,6 +24,10 @@ void CUI_Button_Base::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
+	if (m_eButtonLevel != GET_SINGLE(CGameManager)->Get_ButtonLevel())
+	{
+		return;
+	}
 	POINT	pt = GET_SINGLE(CGameManager)->Get_MousePoint();
 	
 	Update_MouseOver();
@@ -40,6 +44,11 @@ void CUI_Button_Base::LateTick(_float fTimeDelta)
     
     __super::LateTick(fTimeDelta);
 	
+}
+
+void CUI_Button_Base::Set_ButtonLevel(BUTTON_LEVEL eButtonLevel)
+{
+	m_eButtonLevel = eButtonLevel;
 }
 
 void CUI_Button_Base::Update_MouseOver()

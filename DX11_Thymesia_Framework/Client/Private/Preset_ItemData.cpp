@@ -30,12 +30,16 @@ void CPreset_ItemData::CreateItemData(weak_ptr<class CItem> pItem, ITEM_NAME eIt
 	case Client::ITEM_NAME::CINNAMON:
 		pItem.lock()->m_eItemType = ITEM_TYPE::INGREDIENT;
 		pItem.lock()->m_iMaxQuantity = 99;
-
 		break;
 	case Client::ITEM_NAME::GARDEN_KEY:
 		pItem.lock()->m_eItemType = ITEM_TYPE::COMMON;
 		pItem.lock()->m_iMaxQuantity = 1;
 		break;
+	case Client::ITEM_NAME::MEMORY01:
+		pItem.lock()->m_eItemType = ITEM_TYPE::CONSUMPTION;
+		pItem.lock()->m_iMaxQuantity = 99;
+		break;
+	
 	default:
 		break;
 	}
@@ -58,6 +62,9 @@ void CPreset_ItemData::SetUITextureFromItemName(weak_ptr<class CUI> Out_pUI, ITE
 		break;
 	case Client::ITEM_NAME::GARDEN_KEY:
 		Out_pUI.lock()->Set_Texture("Item_Icon_Key01");
+		break;
+	case Client::ITEM_NAME::MEMORY01:
+		Out_pUI.lock()->Set_Texture("Item_Icon_Memory01");
 		break;
 	default:
 		break;

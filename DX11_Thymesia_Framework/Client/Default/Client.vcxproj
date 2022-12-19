@@ -489,6 +489,8 @@
     <ClInclude Include="..\Public\UI_EvolveTalent_Active.h" />
     <ClInclude Include="..\Public\UI_Interaction.h" />
     <ClInclude Include="..\Public\UI_Inventory.h" />
+    <ClInclude Include="..\Public\UI_InventoryConfirmWindow.h" />
+    <ClInclude Include="..\Public\UI_InventoryConfirmWindowButton.h" />
     <ClInclude Include="..\Public\UI_ItemInformation.h" />
     <ClInclude Include="..\Public\UI_ItemPopup.h" />
     <ClInclude Include="..\Public\UI_ItemSlot.h" />
@@ -975,6 +977,7 @@
     <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp" />
     <ClCompile Include="..\Private\UI_EvolveTalent_Active.cpp" />
     <ClCompile Include="..\Private\UI_Interaction.cpp" />
+    <ClCompile Include="..\Private\UI_InventoryConfirmWindowButton.cpp" />
     <ClCompile Include="..\Private\UI_ItemPopup.cpp" />
     <ClCompile Include="..\Private\UI_ItemSlot.cpp" />
     <ClCompile Include="..\Private\UI_LerpBar.cpp" />
@@ -1195,6 +1198,7 @@
     <ClCompile Include="..\Public\TestUI.cpp" />
     <ClCompile Include="..\Skill_Base.cpp" />
     <ClCompile Include="..\UI_Inventory.cpp" />
+    <ClCompile Include="..\UI_InventoryConfirmWindow.cpp" />
     <ClCompile Include="..\UI_ItemInformation.cpp" />
     <ClCompile Include="..\UI_MonsterFocus.cpp" />
     <ClCompile Include="Client.cpp" />

@@ -26,6 +26,8 @@ HRESULT CUI_PauseMenu_Tap_Status::Initialize(void* pArg)
 {
     __super::Initialize(pArg);
 
+    m_eRenderGroup = RENDERGROUP::RENDER_AFTER_UI;
+
     m_tUIDesc.fSizeX = 389.f;
     m_tUIDesc.fSizeY = 658.f;
     m_tUIDesc.fX = 239.f;
@@ -35,9 +37,7 @@ HRESULT CUI_PauseMenu_Tap_Status::Initialize(void* pArg)
     m_pStatusBG = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &m_tUIDesc);
     m_pStatusBG.lock()->Set_Texture("Tap_Status_BG");
 
-    m_vecChildUI.push_back(m_pStatusBG);
-
-
+    Add_Child(m_pStatusBG);
 
 
     return S_OK;

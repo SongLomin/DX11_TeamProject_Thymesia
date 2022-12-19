@@ -23,9 +23,9 @@ HRESULT CUI_PauseMenu_Tap_PlagueWeapon::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
+	m_eRenderGroup = RENDERGROUP::RENDER_AFTER_UI;
 
 	UI_DESC MainDesc;
-
 
 	MainDesc.fDepth = 0.4f;
 	MainDesc.fSizeX = 114.f;
@@ -58,7 +58,6 @@ HRESULT CUI_PauseMenu_Tap_PlagueWeapon::Initialize(void* pArg)
 	m_PlagueWeaponSteal_Decoration = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &MainDesc);
 	m_PlagueWeaponSteal_Decoration.lock()->Set_Texture("HUD_PlagueWeapon_Frame_Steal_Decoration");
 	
-
 	m_PlagueWeaponText.bAlways = false;
 	m_PlagueWeaponText.bCenterAlign = true;
 	m_PlagueWeaponText.fRotation = 0.f;
@@ -66,11 +65,13 @@ HRESULT CUI_PauseMenu_Tap_PlagueWeapon::Initialize(void* pArg)
 	m_PlagueWeaponText.vColor = _float4(1.f, 1.f, 1.f, 1.f);
 	m_PlagueWeaponText.vPosition = _float2(800.f, 174.f);
 	m_PlagueWeaponText.vScale = _float2(1.3f, 1.3f);
+	m_PlagueWeaponText.eRenderGroup = RENDERGROUP::RENDER_AFTER_UI;
 
-	m_vecChildUI.push_back(m_PlagueWeaponMain);
-	m_vecChildUI.push_back(m_PlagueWeaponSub);
-	m_vecChildUI.push_back(m_PlagueWeaponSteal);
-	m_vecChildUI.push_back(m_PlagueWeaponSteal_Decoration);
+
+	Add_Child(m_PlagueWeaponMain);
+	Add_Child(m_PlagueWeaponSub);
+	Add_Child(m_PlagueWeaponSteal);
+	Add_Child(m_PlagueWeaponSteal_Decoration);
 
 	return S_OK;
 }

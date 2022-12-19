@@ -19,6 +19,9 @@ public:
 	virtual void Tick(_float fTimeDelta);
 	virtual void LateTick(_float fTimeDelta);
 
+	virtual void			Set_ButtonLevel(BUTTON_LEVEL eButtonLevel);
+	virtual BUTTON_LEVEL	Get_ButtonLevel() { return m_eButtonLevel; }
+
 public:
 	_bool		Get_Togle() { return m_bClickToggle; }
 	UI_BUTTON_STATE	Get_ButtonState() { return m_eButtonState; }
@@ -55,6 +58,7 @@ protected:
 protected:
 	UI_BUTTON_STATE m_eButtonState;
 	_bool		m_bClickToggle;
+	BUTTON_LEVEL	 m_eButtonLevel = BUTTON_LEVEL::LEVEL1;
 };
 
 END

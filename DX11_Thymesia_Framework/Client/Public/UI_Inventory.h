@@ -28,7 +28,7 @@ private:
     void                    Create_InventoryUI();
     void                    Create_ItemSlot();
     void                    Create_Scroll();
-    
+    void                    Create_TextInfo();
     
 
 private:
@@ -36,6 +36,7 @@ private:
     void                    Update_ItemSlotOffset();
 
     void                    Update_ItemSlotFromPlayerInventory();
+    void                    Update_TextInfoToInventorySize(_uint iCurrentInventorySize);
 
 
 private:
@@ -49,9 +50,6 @@ public:
 
 private:
     
-
-
-
     void                    Call_OnWheelMove(_float fAmount);
     void                    Call_OnMouseOver(weak_ptr<CItem>   pItem);
     void                    Call_OnMouseOut();
@@ -77,6 +75,8 @@ private:
     vector<weak_ptr<CUI_ItemSlot>>  m_vecItemSlot;
     weak_ptr<CUI_Scroll>            m_pScroll;
 
+    TEXTINFO                        m_tTextInfoQuantity;
+    _float                          m_fFontSize;
 
 //Free
 private:

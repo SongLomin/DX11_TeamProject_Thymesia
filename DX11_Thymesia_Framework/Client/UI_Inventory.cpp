@@ -25,6 +25,7 @@ HRESULT CUI_Inventory::Initialize(void* pArg)
     Create_InventoryUI();
     Create_ItemSlot();
     Create_Scroll();
+    Create_TextInfo();
     return S_OK;
 }
 
@@ -51,6 +52,7 @@ void CUI_Inventory::LateTick(_float fTimeDelta)
 
     __super::LateTick(fTimeDelta);
 
+    GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::PRETENDARD, m_tTextInfoQuantity);
 }
 
 void CUI_Inventory::Define_Variable()
@@ -124,6 +126,23 @@ void CUI_Inventory::Create_Scroll()
 
 }
 
+void CUI_Inventory::Create_TextInfo()
+{
+    m_fFontSize = 17.f;
+    _float fOriginalFontSize = 23.f;
+
+    _float  fFontRatio = m_fFontSize / fOriginalFontSize;
+
+    m_tTextInfoQuantity.bAlways = false;
+    m_tTextInfoQuantity.vScale = _float2(fFontRatio, fFontRatio);
+    m_tTextInfoQuantity.bCenterAlign = true;
+    m_tTextInfoQuantity.fRotation = 0.f;
+    m_tTextInfoQuantity.vColor = _float4(0.8f, 0.8f, 0.8f, 0.8f);
+    m_tTextInfoQuantity.vPosition = _float2(653.f, 710.f);
+    m_tTextInfoQuantity.szText = TEXT("");
+    m_tTextInfoQuantity.eRenderGroup = RENDERGROUP::RENDER_AFTER_UI;
+}
+
 void CUI_Inventory::Update_KeyInput(_float fTimeDelta)
 {
     if (KEY_INPUT(KEY::UP, KEY_STATE::HOLD))
@@ -166,6 +185,15 @@ void CUI_Inventory::Update_ItemSlotFromPlayerInventory()
     {
         m_vecItemSlot[iIndex++].lock()->Bind_Item(pair.second);
     }
+
+    Update_TextInfoToInventorySize(pMapItem.size());
+}
+
+void CUI_Inventory::Update_TextInfoToInventorySize(_uint iCurrentInventorySize)
+{
+    m_tTextInfoQuantity.szText = to_wstring(iCurrentInventorySize);
+    m_tTextInfoQuantity.szText += TEXT("/");
+    m_tTextInfoQuantity.szText += TEXT("100");
 }
 
 void CUI_Inventory::OnEnable(void* pArg)
