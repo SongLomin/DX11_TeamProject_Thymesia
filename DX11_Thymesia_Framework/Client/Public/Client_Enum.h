@@ -127,6 +127,7 @@ namespace Client
 		DOOR,
 		ELEVATOR,
 		CHECKPOINT,
+		PLAYER_BATCOL,
 		ITEM,
 
 		LAYER_END
@@ -435,5 +436,24 @@ namespace Client
 		SKILL_VARGSWORD,
 		SKILL_END
 	};
+
+	enum class ITEM_NAME
+	{
+		BASIL,
+		THYME,
+		CINNAMON,
+		GARDEN_KEY
+	};
+
+	enum class ITEM_TYPE
+	{
+		INGREDIENT,
+		CONSUMPOTION_ITEM,
+		SKILLPIECE,
+		COMMON
+	};
+
+
+
 
 }

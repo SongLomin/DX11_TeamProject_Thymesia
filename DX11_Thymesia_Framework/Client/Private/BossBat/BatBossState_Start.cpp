@@ -31,7 +31,7 @@ void CBatBossState_Start::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|BossBat_Seq_BossFightStart_V1");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|START");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Start::Call_AnimationEnd, this);
 }
@@ -39,6 +39,12 @@ void CBatBossState_Start::Start()
 void CBatBossState_Start::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+
+	PxControllerFilters Filters = Filters;
+	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 	
 	_matrix LocalMat = XMMatrixIdentity();
 	LocalMat *= XMMatrixRotationX(XMConvertToRadians(-90.f));
@@ -111,12 +117,12 @@ _bool CBatBossState_Start::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.66f)
+	
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.999f)
 	{
 		m_pPhysXControllerCom.lock()->Enable_Gravity(true);
 	}
 	
-
 
 	return false;
 }

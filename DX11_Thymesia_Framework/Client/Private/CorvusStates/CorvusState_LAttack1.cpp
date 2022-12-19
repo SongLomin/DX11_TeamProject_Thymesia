@@ -75,7 +75,6 @@ void CCorvusState_LAttack1::Call_AnimationEnd()
 		return;
 	
 	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
-	
 }
 
 void CCorvusState_LAttack1::Play_AttackWithIndex(const _tchar& In_iAttackIndex)

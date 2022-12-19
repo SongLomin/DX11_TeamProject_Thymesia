@@ -5,6 +5,8 @@
 #include "Player.h"
 #include "ClientLevel.h"
 #include "UI_Cursor.h"
+#include "ItemPopup_Queue.h"
+
 
 IMPLEMENT_SINGLETON(CGameManager)
 
@@ -753,6 +755,16 @@ void  CGameManager::Registration_SectionLight(_uint In_iSection, weak_ptr<CLight
 	{
 		iter_find->second.push_back(In_pObj);
 	}
+}
+
+void CGameManager::CreatePopupQueue()
+{
+	m_pItemPopupQueue = CItemPopup_Queue::Create();
+}
+
+void CGameManager::Add_Popup(ITEM_NAME eItemName)
+{
+	m_pItemPopupQueue->AddPopup(eItemName);
 }
 
 void  CGameManager::Activate_SectionLight(_uint In_iSection, _bool In_bState)

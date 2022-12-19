@@ -10,6 +10,7 @@
 #include "PhysXCollider.h"
 
 #include "GameInstance.h"
+#include "GameManager.h"
 
 GAMECLASS_C(CInteraction_Door);
 CLONE_C(CInteraction_Door, CGameObject);
@@ -87,6 +88,23 @@ void CInteraction_Door::OnEventMessage(_uint iArg)
             ImGui::DragFloat("Rotation Speed ", &m_fRotationtSpeed);
             ImGui::DragFloat("Rotation Radian", &m_fRotationtRadian);
 
+            _bool bOpction[] =
+            {
+                (m_ActionFlag & ACTION_FLAG::ROTATION),
+                (m_ActionFlag & ACTION_FLAG::KEY)
+            };
+
+            if (ImGui::Checkbox("ROTATION", &bOpction[0]))
+                m_ActionFlag ^= ACTION_FLAG::ROTATION;
+
+            if (ImGui::Checkbox("KEY", &bOpction[1]))
+                m_ActionFlag ^= ACTION_FLAG::KEY;
+
+            if (bOpction[1])
+                ImGui::InputInt("KeyID", &m_iKeyID);
+            else
+                m_iKeyID = 0;
+
             COLLIDERDESC ColliderDesc;
             ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
 
@@ -113,6 +131,7 @@ void CInteraction_Door::Write_Json(json& Out_Json)
 
     Out_Json["RotationtRadian"]   = m_fRotationtRadian;
     Out_Json["RotationSpeed"]     = m_fRotationtSpeed;
+    Out_Json["KeyID"]             = m_iKeyID;
 
     if (m_pColliderCom.lock())
     {
@@ -142,6 +161,9 @@ void CInteraction_Door::Load_FromJson(const json& In_Json)
 
     if (In_Json.end() != In_Json.find("RotationSpeed"))
         m_fRotationtSpeed = In_Json["RotationSpeed"];
+
+    if (In_Json.end() != In_Json.find("KeyID"))
+        m_iKeyID = In_Json["KeyID"];
 
     if (In_Json.end() != In_Json.find("ColliderDesc"))
     {
@@ -208,13 +230,24 @@ void CInteraction_Door::Act_CloseDoor(_float fTimeDelta, _bool& Out_IsEnd)
 
 void CInteraction_Door::Act_Interaction()
 {
+    if (m_ActionFlag & ACTION_FLAG::KEY)
+    {
+        if (0 == m_iKeyID)
+            MSG_BOX("Err KeyID : KeyID Value is 0");
+
+        // 나중에 인벤토리 컴포넌트 찾아서 검색하기
+        GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+    }
+
     if (m_ActionFlag & ACTION_FLAG::ROTATION)
     {
         Callback_ActUpdate += bind(&CInteraction_Door::Act_OpenDoor, this, placeholders::_1, placeholders::_2);
         m_pPhysXColliderCom.lock()->Set_Enable(false);
     }
     else
+    {
         Callback_ActUpdate += bind(&CInteraction_Door::Act_CloseDoor, this, placeholders::_1, placeholders::_2);
+    }
 }
 
 void CInteraction_Door::SetUpColliderDesc(_float* _pColliderDesc)

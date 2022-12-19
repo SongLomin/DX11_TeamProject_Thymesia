@@ -199,7 +199,7 @@ void CCorvusState_ClawAttackAway::OnStateEnd()
 	__super::OnStateEnd();
 	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Corvus_ClawChargeAtk_FollowParticle", m_iEffectIndex);
 	//Disable_Weapons();
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+
 	m_IsNextAttack = false;
 	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CCorvusState_ClawAttackAway::Call_NextKeyFrame, this, placeholders::_1);
 

@@ -83,7 +83,7 @@
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
+    <LinkIncremental>true</LinkIncremental>
     <OutDir>..\Bin\release\</OutDir>
     <MultiProcFXC>true</MultiProcFXC>
   </PropertyGroup>
@@ -118,7 +118,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../Reference/Librarys/</AdditionalLibraryDirectories>
       <AdditionalDependencies>Engine.lib;imguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -173,7 +173,7 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../Reference/Librarys/</AdditionalLibraryDirectories>
       <AdditionalDependencies>Engine.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -376,7 +376,7 @@
     <ClInclude Include="..\Public\EasingComponent_Alpha.h" />
     <ClInclude Include="..\Public\EasingComponent_Float.h" />
     <ClInclude Include="..\Public\EasingComponent_Transform.h" />
-    <ClInclude Include="..\Public\EditLights.h" />
+    <ClInclude Include="..\Public\EditEventContoller.h" />
     <ClInclude Include="..\Public\EditMapCollider.h" />
     <ClInclude Include="..\Public\EditSetActor.h" />
     <ClInclude Include="..\Public\EliteMonState\EliteStateBase.h" />
@@ -417,8 +417,12 @@
     <ClInclude Include="..\Public\Interaction_Door.h" />
     <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h" />
     <ClInclude Include="..\Public\Interaction_Elevator.h" />
+    <ClInclude Include="..\Public\Interaction_Item.h" />
     <ClInclude Include="..\Public\Interaction_Ladder.h" />
     <ClInclude Include="..\Public\Interaction_Note.h" />
+    <ClInclude Include="..\Public\Inventory.h" />
+    <ClInclude Include="..\Public\Item.h" />
+    <ClInclude Include="..\Public\ItemPopup_Queue.h" />
     <ClInclude Include="..\Public\JoJoParticleShaderManager.h" />
     <ClInclude Include="..\Public\JokerStateBase.h" />
     <ClInclude Include="..\Public\JokerStates.h" />
@@ -450,6 +454,7 @@
     <ClInclude Include="..\Public\Player_ItemSkillCollection.h" />
     <ClInclude Include="..\Public\Preset_AddGameObject.h" />
     <ClInclude Include="..\Public\Preset_DynamicProp.h" />
+    <ClInclude Include="..\Public\Preset_ItemData.h" />
     <ClInclude Include="..\Public\Preset_UIDesc.h" />
     <ClInclude Include="..\Public\RequirementBase.h" />
     <ClInclude Include="..\Public\RequirementChecker.h" />
@@ -484,6 +489,8 @@
     <ClInclude Include="..\Public\UI_EvolveTalent_Active.h" />
     <ClInclude Include="..\Public\UI_Interaction.h" />
     <ClInclude Include="..\Public\UI_Inventory.h" />
+    <ClInclude Include="..\Public\UI_ItemInformation.h" />
+    <ClInclude Include="..\Public\UI_ItemPopup.h" />
     <ClInclude Include="..\Public\UI_ItemSlot.h" />
     <ClInclude Include="..\Public\UI_LerpBar.h" />
     <ClInclude Include="..\Public\UI_MenuText.h" />
@@ -676,8 +683,10 @@
     <ClInclude Include="..\Public\Window_EffectEditerView.h" />
     <ClInclude Include="..\Public\Window_EffectHierarchyView.h" />
     <ClInclude Include="..\Public\Window_EffectResourceView.h" />
+    <ClInclude Include="..\Public\Window_GameSystem_Dev.h" />
     <ClInclude Include="..\Public\Window_HierarchyView.h" />
     <ClInclude Include="..\Public\Window_Level_Dev.h" />
+    <ClInclude Include="..\Public\Window_Optimization_Dev.h" />
     <ClInclude Include="..\Public\Window_PrototypeView.h" />
     <ClInclude Include="..\Public\Window_RenderTarget_Dev.h" />
     <ClInclude Include="..\Public\Window_Shader_Dev.h" />
@@ -695,7 +704,10 @@
     <ClInclude Include="..\Public\WorldUI.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="stdafx.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="targetver.h" />
     <ClInclude Include="UI_Elements.h" />
   </ItemGroup>
@@ -875,7 +887,7 @@
     <ClCompile Include="..\Private\EasingComponent_Alpha.cpp" />
     <ClCompile Include="..\Private\EasingComponent_Float.cpp" />
     <ClCompile Include="..\Private\EasingComponent_Transform.cpp" />
-    <ClCompile Include="..\Private\EditLights.cpp" />
+    <ClCompile Include="..\Private\EditEventContoller.cpp" />
     <ClCompile Include="..\Private\EditMapCollider.cpp" />
     <ClCompile Include="..\Private\EditSetActor.cpp" />
     <ClCompile Include="..\Private\EliteMonState\Joker\EliteStateBase.cpp" />
@@ -916,8 +928,12 @@
     <ClCompile Include="..\Private\Interaction_Door.cpp" />
     <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\Interaction_Elevator.cpp" />
+    <ClCompile Include="..\Private\Interaction_Item.cpp" />
     <ClCompile Include="..\Private\Interaction_Ladder.cpp" />
     <ClCompile Include="..\Private\Interaction_Note.cpp" />
+    <ClCompile Include="..\Private\Inventory.cpp" />
+    <ClCompile Include="..\Private\Item.cpp" />
+    <ClCompile Include="..\Private\ItemPopup_Queue.cpp" />
     <ClCompile Include="..\Private\JoJoParticleShaderManager.cpp" />
     <ClCompile Include="..\Private\JokerStateBase.cpp" />
     <ClCompile Include="..\Private\JokerWeapon.cpp" />
@@ -935,6 +951,7 @@
     <ClCompile Include="..\Private\Player_ItemSkillCollection.cpp" />
     <ClCompile Include="..\Private\Preset_DynamicProp.cpp" />
     <ClCompile Include="..\Private\Preset_AddGameObject.cpp" />
+    <ClCompile Include="..\Private\Preset_ItemData.cpp" />
     <ClCompile Include="..\Private\Preset_UIDesc.cpp" />
     <ClCompile Include="..\Private\Requirement_PlayerStatusMana.cpp" />
     <ClCompile Include="..\Private\Requirement_Time.cpp" />
@@ -958,6 +975,7 @@
     <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp" />
     <ClCompile Include="..\Private\UI_EvolveTalent_Active.cpp" />
     <ClCompile Include="..\Private\UI_Interaction.cpp" />
+    <ClCompile Include="..\Private\UI_ItemPopup.cpp" />
     <ClCompile Include="..\Private\UI_ItemSlot.cpp" />
     <ClCompile Include="..\Private\UI_LerpBar.cpp" />
     <ClCompile Include="..\Private\BossMonster.cpp" />
@@ -1156,8 +1174,10 @@
     <ClCompile Include="..\Private\Window_EffectEditerView.cpp" />
     <ClCompile Include="..\Private\Window_EffectHierarchyView.cpp" />
     <ClCompile Include="..\Private\Window_EffectResourceView.cpp" />
+    <ClCompile Include="..\Private\Window_GameSystem_Dev.cpp" />
     <ClCompile Include="..\Private\Window_HierarchyView.cpp" />
     <ClCompile Include="..\Private\Window_Level_Dev.cpp" />
+    <ClCompile Include="..\Private\Window_Optimization_Dev.cpp" />
     <ClCompile Include="..\Private\Window_PrototypeView.cpp" />
     <ClCompile Include="..\Private\Window_RenderTarget_Dev.cpp" />
     <ClCompile Include="..\Private\Window_Shader_Dev.cpp" />
@@ -1175,6 +1195,7 @@
     <ClCompile Include="..\Public\TestUI.cpp" />
     <ClCompile Include="..\Skill_Base.cpp" />
     <ClCompile Include="..\UI_Inventory.cpp" />
+    <ClCompile Include="..\UI_ItemInformation.cpp" />
     <ClCompile Include="..\UI_MonsterFocus.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -1182,6 +1203,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Terrain.cpp" />
   </ItemGroup>

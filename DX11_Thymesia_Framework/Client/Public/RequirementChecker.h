@@ -21,10 +21,10 @@ protected:
 public:
     void    Add_Requirement(shared_ptr<CRequirementBase> pRequirment);
     _bool   Check_Requirments();
-
+    void    Clear_Requirements();
 private:
     void    Update_Vaild();
-
+    
 private:
     list<shared_ptr<CRequirementBase>> m_pRequirements;
 

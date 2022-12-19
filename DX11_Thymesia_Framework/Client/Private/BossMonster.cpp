@@ -14,6 +14,7 @@
 #include "Status_Monster.h"
 #include "Status_Boss.h"
 #include "MonsterHPBar_Boss.h"
+#include "Collider.h"
 
 
 GAMECLASS_C(CBossMonster);
@@ -80,6 +81,8 @@ void CBossMonster::Tick(_float fTimeDelta)
 
     __super::Tick(fTimeDelta);
 }
+
+
 
 
 void CBossMonster::LateTick(_float fTimeDelta)

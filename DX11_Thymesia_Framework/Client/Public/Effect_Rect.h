@@ -19,7 +19,7 @@ private:
     enum class PARTICLETYPE
     {
         NONE,
-        OUTBURST,
+        NONE_NONE,
         ATTRACTION,
         BILLBOARD,
         TYPE_END
@@ -112,19 +112,34 @@ private:
         , _float fTotalTime
     );
 
-    const _bool Is_Sprite() const;
-
-    const _bool Check_Option1(const EFFECTPARTICLE_DESC::Option_Spawn eOption) const;
-    void TurnOn_Option1(const EFFECTPARTICLE_DESC::Option_Spawn eOption);
-    void TurnOff_Option1(const EFFECTPARTICLE_DESC::Option_Spawn eOption);
-
-	const _bool Check_Option2(const EFFECTPARTICLE_DESC::Option_SpeedRotation eOption) const;
-	void TurnOn_Option2(const EFFECTPARTICLE_DESC::Option_SpeedRotation eOption);
-	void TurnOff_Option2(const EFFECTPARTICLE_DESC::Option_SpeedRotation eOption);
+    const _bool Check_Option(const EFFECTPARTICLE_DESC::Option1 eOption) const;
+	const _bool Check_Option(const EFFECTPARTICLE_DESC::Option2 eOption) const;
+	const _bool Check_Option(const EFFECTPARTICLE_DESC::Option3 eOption) const;
+	const _bool Check_Option(const EFFECTPARTICLE_DESC::Option4 eOption) const;
+	const _bool Check_Option(const EFFECTPARTICLE_DESC::Option5 eOption) const;
+	const _bool Check_Option(const EFFECTPARTICLE_DESC::Option6 eOption) const;
 
 #ifdef _DEBUG
-    void Tool_ToggleOption1(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option_Spawn eOption);
-    void Tool_ToggleOption2(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option_SpeedRotation eOption);
+    void TurnOn_Option(const EFFECTPARTICLE_DESC::Option1 eOption);
+	void TurnOn_Option(const EFFECTPARTICLE_DESC::Option2 eOption);
+	void TurnOn_Option(const EFFECTPARTICLE_DESC::Option3 eOption);
+	void TurnOn_Option(const EFFECTPARTICLE_DESC::Option4 eOption);
+	void TurnOn_Option(const EFFECTPARTICLE_DESC::Option5 eOption);
+	void TurnOn_Option(const EFFECTPARTICLE_DESC::Option6 eOption);
+
+    void TurnOff_Option(const EFFECTPARTICLE_DESC::Option1 eOption);
+	void TurnOff_Option(const EFFECTPARTICLE_DESC::Option2 eOption);
+	void TurnOff_Option(const EFFECTPARTICLE_DESC::Option3 eOption);
+	void TurnOff_Option(const EFFECTPARTICLE_DESC::Option4 eOption);
+	void TurnOff_Option(const EFFECTPARTICLE_DESC::Option5 eOption);
+	void TurnOff_Option(const EFFECTPARTICLE_DESC::Option6 eOption);
+
+    void Tool_ToggleOption(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option1 eOption);
+    void Tool_ToggleOption(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option2 eOption);
+    void Tool_ToggleOption(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option3 eOption);
+    void Tool_ToggleOption(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option4 eOption);
+    void Tool_ToggleOption(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option5 eOption);
+    void Tool_ToggleOption(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option6 eOption);
 #endif // _DEBUG
 
 #ifdef _DEBUG
@@ -192,20 +207,14 @@ private:
     weak_ptr<CBoneNode>                 m_pBoneNode;
     weak_ptr<CModel>                    m_pParentModel;
     std::string                         m_strBoneName   = "";
+#ifdef _DEBUG
     _int                                m_iCurrentBoneIndex = 0;
+#endif // _DEBUG
 
 #ifdef _DEBUG
     // For. Thread
     _bool                   m_bResetTrigger = false;
     weak_ptr<CTransform>    m_pPreviewModelTransform;
-
-#ifdef _JOJO_EFFECT_TOOL_
-    // For. Tool
-    _int m_iScaleType = 0;
-    static const _int m_iScaleType_None;
-    static const _int m_iScaleType_Square;
-    static const _int m_iScaleType_Ratio;
-#endif // _JOJO_EFFECT_TOOL_
 #endif // _DEBUG
 };
 

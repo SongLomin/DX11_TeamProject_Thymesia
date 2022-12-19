@@ -70,15 +70,11 @@ void CVargBossState_TurnL::OnStateStart(const _float& In_fAnimationBlendTime)
 	cout << "VargState: TurnL -> OnStateStart" << endl;
 #endif
 #endif
-
-	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 }
 
 void CVargBossState_TurnL::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 

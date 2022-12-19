@@ -14,7 +14,8 @@ class CVargBossState_RunAttack :
 	CLONE_H(CVargBossState_RunAttack, CComponent)
 		SHALLOW_COPY(CVargBossState_RunAttack)
 
-
+public:
+	void Call_NextKeyFrame(const _uint& In_KeyIndex);
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
@@ -28,14 +29,11 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
-
-
-private:
-	void Call_AnimationEnd();
-protected:
 	virtual void OnDestroy() override;
 	void Free();
 
+private:
+	void Call_AnimationEnd();
 };
 
 END

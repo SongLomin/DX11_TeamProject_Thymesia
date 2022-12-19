@@ -61,7 +61,6 @@ _float3 CStateBase::Get_ShakingOffset()
 {
 	_vector vWorldPos = XMVector3TransformNormal(XMLoadFloat3(&m_vShakingOffSet), m_pOwner.lock()->Get_Transform()->Get_WorldMatrix());
 	XMStoreFloat3(&m_vShakingOffSet, vWorldPos);
-
 	return m_vShakingOffSet;
 }
 

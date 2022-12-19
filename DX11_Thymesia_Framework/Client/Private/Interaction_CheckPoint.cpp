@@ -46,17 +46,17 @@ HRESULT CInteraction_CheckPoint::Start()
 
     if (LEVEL::LEVEL_EDIT == m_CreatedLevel)
         m_pColliderCom.lock()->Set_Enable(false);
-   
 
     ZeroMemory(&m_tLightDesc, sizeof(LIGHTDESC));
 	m_tLightDesc.eActorType = LIGHTDESC::TYPE::TYPE_POINT;
 	m_tLightDesc.bEnable    = true;
 
-    XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION) + XMVectorSet(0.f, 1.f, 0.f, 0.f));
-	m_tLightDesc.vDiffuse   = { 0.f, 1.f, 0.486f, 1.f };
+    XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION) + XMVectorSet(0.f, 0.5f, 0.f, 0.f));
+	m_tLightDesc.vDiffuse   = { 0.f, 1.f, 0.486f, 0.3f };
 	m_tLightDesc.vAmbient   = { 1.f, 1.f,    1.f, 0.f };
-	m_tLightDesc.vSpecular  = { 0.f, 1.f, 0.486f, 1.f };
+	m_tLightDesc.vSpecular  = { 0.f, 1.f, 0.486f, 0.6f };
 	m_tLightDesc.vLightFlag = { 1.f, 1.f,    1.f, 1.f };
+    m_tLightDesc.fIntensity = 0.8f;
 	m_tLightDesc.fRange     = 1.5f;
 
 	m_tLightDesc = GAMEINSTANCE->Add_Light(m_tLightDesc);

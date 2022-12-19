@@ -111,7 +111,6 @@ void CVargBossState_SPA_Roar_Getup::Call_NextKeyFrame(const _uint& In_KeyIndex)
 	case 62:
 		m_bShakingCamera = true;
 		break;
-
 	case 97:
 		m_bShakingCamera = false;
 		break;

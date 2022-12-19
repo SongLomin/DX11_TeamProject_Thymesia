@@ -67,7 +67,6 @@ private:
 
 protected:
     weak_ptr<CPhysXCollider> m_pPhysXColliderCom;
-
 protected:
     weak_ptr<CStateBase> m_pStandState;
 

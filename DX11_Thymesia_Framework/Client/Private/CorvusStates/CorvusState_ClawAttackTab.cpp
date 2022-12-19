@@ -181,15 +181,6 @@ void CCorvusState_ClawAttackTab::Call_NextAnimationKey(const _uint& In_iKeyIndex
 	}
 }
 
-//void CCorvusState_ClawAttackTab::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
-//{
-//
-//
-//	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
-//	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-//	m_pModelCom.lock()->Set_AnimationSpeed(2.5f);
-//}
-
 void CCorvusState_ClawAttackTab::Attack()
 {
 

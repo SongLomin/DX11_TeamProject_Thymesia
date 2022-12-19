@@ -73,6 +73,7 @@ public:
 	PxRigidDynamic* Create_DynamicActor(const PxTransform& t);
 	PxRigidStatic* Create_StaticActor(const PxTransform& t, const PxGeometry& geometry, PxMaterial* pMaterial = nullptr);
 	PxRigidStatic* Create_StaticActor(const PxTransform& t);
+	PxRevoluteJoint* Create_Joint();
 
 	void			Add_DynamicActorAtCurrentScene(PxRigidDynamic& DynamicActor);
 	void			Add_StaticActorAtCurrentScene(PxRigidStatic& StaticActor);
@@ -106,7 +107,6 @@ private:
 
 	// MeshCooking을 하기 위해 생성
 	PxCooking* m_pCooking = nullptr;
-
 
 	// Scene
 	//_uint					m_iNumScenes = 0;

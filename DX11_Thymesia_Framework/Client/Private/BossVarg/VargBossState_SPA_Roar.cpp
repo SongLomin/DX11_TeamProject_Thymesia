@@ -121,9 +121,6 @@ void CVargBossState_SPA_Roar::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		m_bShakingCamera = false;
 		break;
 	}
-
-
-
 }
 
 void CVargBossState_SPA_Roar::OnDestroy()

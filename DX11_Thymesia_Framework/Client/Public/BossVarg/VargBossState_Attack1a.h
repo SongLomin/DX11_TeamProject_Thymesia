@@ -12,9 +12,10 @@ class CVargBossState_Attack1a :
 {
 	GAMECLASS_H(CVargBossState_Attack1a);
 	CLONE_H(CVargBossState_Attack1a, CComponent)
-		SHALLOW_COPY(CVargBossState_Attack1a)
+	SHALLOW_COPY(CVargBossState_Attack1a)
 
-
+public:
+	void Call_NextKeyFrame(const _uint& In_KeyIndex);
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
@@ -28,14 +29,11 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
-
-
-private:
-	void Call_AnimationEnd();
-protected:
 	virtual void OnDestroy() override;
 	void Free();
 
+private:
+	void Call_AnimationEnd();
 };
 
 END

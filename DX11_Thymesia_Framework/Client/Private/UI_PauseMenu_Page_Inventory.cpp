@@ -4,6 +4,7 @@
 #include "CustomUI.h"
 #include "UI_Inventory.h"
 #include "GameManager.h"
+#include "UI_ItemInformation.h"
 
 GAMECLASS_C(CUI_PauseMenu_Page_Inventory)
 CLONE_C(CUI_PauseMenu_Page_Inventory, CGameObject)
@@ -47,6 +48,14 @@ void CUI_PauseMenu_Page_Inventory::Create_InventoryUITap()
 {
 	m_pInventory = GAMEINSTANCE->Add_GameObject<CUI_Inventory>(LEVEL_STATIC);
 
+
+	m_pInventory.lock()->Callback_OnMouseOver +=
+		bind(&CUI_PauseMenu_Page_Inventory::Call_OnMouseOver, this, placeholders::_1);
+
+	m_pInventory.lock()->Callback_OnMouseOut +=
+		bind(&CUI_PauseMenu_Page_Inventory::Call_OnMouseOut, this);
+
+
 	Add_Child(m_pInventory);
 	m_pInventory.lock()->Set_RenderGroup(RENDERGROUP::RENDER_UI);
 	
@@ -54,6 +63,8 @@ void CUI_PauseMenu_Page_Inventory::Create_InventoryUITap()
 
 void CUI_PauseMenu_Page_Inventory::Create_ItemInformationTap()
 {
+	m_pItemInformation = GAMEINSTANCE->Add_GameObject<CUI_ItemInformation>(LEVEL_STATIC);
+	Add_Child(m_pItemInformation);
 
 }
 
@@ -69,4 +80,14 @@ void CUI_PauseMenu_Page_Inventory::OnDisable()
 	__super::OnDisable();
 
 	GET_SINGLE(CGameManager)->DisableCursor();
+}
+
+void CUI_PauseMenu_Page_Inventory::Call_OnMouseOver(weak_ptr<CItem> pItem)
+{
+	m_pItemInformation.lock()->Bind_Item(pItem);
+}
+
+void CUI_PauseMenu_Page_Inventory::Call_OnMouseOut()
+{
+	m_pItemInformation.lock()->UnBind_Item();
 }

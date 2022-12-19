@@ -21,7 +21,7 @@ private:
     enum ACTION_FLAG
     {
         ROTATION = ( 1 << 0 ), // 1
-        UP       = ( 1 << 1 ), // 2
+        KEY      = ( 1 << 1 )  // 2
     };
 
 public:
@@ -57,6 +57,8 @@ private:
     _float                      m_fRotationtSpeed   = 1.f;
     _float                      m_fAddRadian        = 0.f;
     _float                      m_fFirstRadian      = 0.f;
+    _int                        m_iKeyID            = 0;
+
 };
 
 END

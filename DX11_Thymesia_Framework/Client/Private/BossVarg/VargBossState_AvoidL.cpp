@@ -68,15 +68,11 @@ void CVargBossState_AvoidL::OnStateStart(const _float& In_fAnimationBlendTime)
 	cout << "VargState: AvoidL -> OnStateStart" << endl;
 #endif
 #endif
-
-	m_pModelCom.lock()->Set_AnimationSpeed(1.5f);
 }
 
 void CVargBossState_AvoidL::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 

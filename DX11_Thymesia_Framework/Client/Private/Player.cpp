@@ -11,7 +11,7 @@
 #include "PhysXController.h"
 #include "Client_Presets.h"
 #include "CorvusStates/Talent_Effect.h"
-
+#include "Inventory.h"
 
 GAMECLASS_C(CPlayer);
 CLONE_C(CPlayer, CGameObject);
@@ -31,7 +31,9 @@ HRESULT CPlayer::Initialize(void* pArg)
 
     m_pTransformCom.lock()->Add_Position(XMVectorSet(20.f, 5.f, 20.f, 0.f));
 
+
     m_pHitColliderCom = Add_Component<CCollider>();
+
 
     COLLIDERDESC			ColliderDesc;
     ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
@@ -43,6 +45,9 @@ HRESULT CPlayer::Initialize(void* pArg)
 
     m_pHitColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
 
+
+  
+
     m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
 
     //Preset::PhysXColliderDesc::PlayerBodyTriggerSetting(tPhysxColliderDesc, m_pTransformCom);
@@ -52,12 +57,11 @@ HRESULT CPlayer::Initialize(void* pArg)
     GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::PLAYER, m_thisToPlayer);
     m_eAttackCollisionLayer = COLLISION_LAYER::PLAYER_ATTACK;
 
-    
     m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom),
         (_uint)PHYSX_COLLISION_LAYER::PLAYER);
-    //m_pPhysXControllerCom.lock()->Get_Controller()->setPosition();
+    //m_pPhysXControllerCom.lock()->Get_Controller()->setPosition
 
-    
+    m_pInventory = Add_Component<CInventory>();
 
     return S_OK;
 }
@@ -75,8 +79,6 @@ void CPlayer::Tick(_float fTimeDelta)
     __super::Tick(fTimeDelta);
     //if (m_bIsFocused)
     //    Look_At_Mosnter();
-
-    
 
 }
 
@@ -239,6 +241,7 @@ void CPlayer::OnEnable(void* pArg)
 
     if (m_pHitColliderCom.lock())
         m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+
 }
 
 void CPlayer::OnDisable()
@@ -246,6 +249,7 @@ void CPlayer::OnDisable()
     __super::OnDisable();
 
     m_pHitColliderCom.lock()->Set_Enable(false);
+
     Set_TargetMonster(weak_ptr<CMonster>());
 }
 

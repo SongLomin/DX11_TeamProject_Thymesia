@@ -1,14 +1,9 @@
 #pragma once
-#include "Engine_Defines.h"
-#include "SMath.h"
-#include <filesystem>
-
 // #define _JOJO_EFFECT_TOOL_
                  
 #include "Client_Structs.h"
 #include "Client_Presets.h"
-#include "Client_Enum.h"	
-#include "imgui.h"
+#include "Client_Enum.h"
 
 //////////////// DEBUG MODE DEFINES ////////////////
 #ifdef _DEBUG
@@ -24,10 +19,10 @@
 // #define _LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
-#define _SKYBOX_
+// #define _SKYBOX_
 
 #define _USE_GRAVITY_
- #define _LIFEGUARD_FOR_FALL_
+#define _LIFEGUARD_FOR_FALL_
 
 #pragma region Console Outputs
 #define _DEBUG_COUT_
@@ -35,6 +30,7 @@
 #pragma endregion // Console Outputs
 
 #pragma region Map
+#define _MAP_DATA_
 // #define _BRIGHT_LIGHT_
 // #define _GENERATE_PROP_COLLIDER_ true
 // #define _STAGE_1_
@@ -44,7 +40,7 @@
 #pragma endregion // Map
 
 #pragma region Tool
-#define _MAP_TOOL_
+ #define _MAP_TOOL_
 // #define _EFFECT_TOOL_
 #pragma endregion // Tool
 
@@ -54,15 +50,13 @@
 #pragma endregion // Boss Mobs
 
 #pragma region Normal Mobs
-#define _STAGE_1_MONSTER_
-// #define _STAGE_2_MONSTER_
+ #define _STAGE_1_MONSTER_
+ #define _STAGE_2_MONSTER_
 #pragma endregion // Normal Mobs
 
 #pragma region Effects
 // #define _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
-#define _JOJO_EFFECTS_
-#undef _BAKE_PARTICLE_
 #pragma endregion // Effects
 
 #endif // _DEBUG
@@ -76,7 +70,7 @@
 
 #pragma region System
 #define _USE_THREAD_
-// #define _144HZ_
+#define _144HZ_
 #define _RENDER_FPS_
 #define _Actor_Culling_
 #define _INSTANCE_CULLING_

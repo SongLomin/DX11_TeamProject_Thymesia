@@ -35,6 +35,9 @@
 #include "UI_Utils.h"
 #include "UI_MonsterFocus.h"
 #include "UI_Cursor.h"
+#include "UI_ItemPopup.h"
+
+
 GAMECLASS_C(CClientLevel)
 
 HRESULT CClientLevel::Initialize()
@@ -124,6 +127,10 @@ void CClientLevel::SetUp_UI()
 
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CUI_MonsterFocus>(LEVEL_STATIC));
 	
+	GAMEINSTANCE->Add_GameObject<CUI_ItemPopup>(LEVEL_STATIC);
+
+	GET_SINGLE(CGameManager)->CreatePopupQueue();
+
 
 	//GET_SINGLE(CGameManager)->DisableCursor();
 

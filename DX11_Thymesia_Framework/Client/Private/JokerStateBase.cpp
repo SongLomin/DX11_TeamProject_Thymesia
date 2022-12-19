@@ -20,12 +20,17 @@
 
 GAMECLASS_C(CJokerStateBase)
 
+HRESULT CJokerStateBase::Initialize(void* pArg)
+{
+	__super::Initialize(pArg);
+	m_vShakingOffSet = { 0.f, 1.f, 0.f };
+	return S_OK;
+}
+
 _bool CJokerStateBase::Check_RequirementAttackState()
 {
 	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
-	{
 		return true;
-	}
 
 	return false;
 }
@@ -33,9 +38,8 @@ _bool CJokerStateBase::Check_RequirementAttackState()
 _bool CJokerStateBase::Check_RequirementDashState()
 {
 	if (KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))
-	{
 		return true;
-	}
+
 	return false;
 }
 
@@ -70,22 +74,12 @@ _uint CJokerStateBase::Check_RequirementDotState()
 
 	_float fCos = XMVectorGetX(XMVector3Dot(vOtherColliderToPlayerClollider, vMyLookVecTor));
 
-
 	if (fCos >= 0.173f && fCos <= 1)
-	{
 		return (_uint)DOT_RESULT::LEFT;
-	}
 	else if (fCos >= -0.173f && fCos <= 0.173)
-	{
 		return (_uint)DOT_RESULT::MID;
-	}
 	else
-	{
 		return (_uint)DOT_RESULT::RIGHT;
-	}
-	
-	
-	
 }
 
 _bool CJokerStateBase::Check_RequirementPlayerInRange(const _float& In_fRange)
@@ -94,7 +88,6 @@ _bool CJokerStateBase::Check_RequirementPlayerInRange(const _float& In_fRange)
 	_vector vPlayerPosition = pCurrentPlayer.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
 	_vector vMyPosition = m_pOwner.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
 	_float fDistance = XMVector3Length(vPlayerPosition - vMyPosition).m128_f32[0];
-
 	return In_fRange >= fDistance;
 }
 
@@ -102,37 +95,26 @@ void CJokerStateBase::Play_OnHitEffect()
 {
 	/*_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
 	vLook *= -1.f;
-
 	_matrix ReverseLookMatrix = SMath::Bake_MatrixNormalizeUseLookVector(vLook);
 	ReverseLookMatrix.r[3] = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-
 	GET_SINGLE(CGameManager)->Use_EffectGroup("Hit_Monster1", ReverseLookMatrix);*/
-
 	GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
-
 	GET_SINGLE(CGameManager)->Use_EffectGroup("Hit_Monster2", m_pTransformCom);
-
 }
 
 void CJokerStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
 	__super::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
-
 	if (pOtherCollider.lock()->Get_CollisionLayer() == (_uint)COLLISION_LAYER::PLAYER_ATTACK)
 	{
 		_vector vMyPosition = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
 
-		//�¾����� �÷��̾ �ٶ󺸴� �ü� ó��
 		weak_ptr<CAttackArea> pAttackArea = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner());
 			
 		weak_ptr<CStatus_Monster> pStatus = m_pOwner.lock()->Get_Component<CStatus_Monster>();
 		
-	
-		
 		weak_ptr<CCharacter> pOtherCharacter = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner()).lock()->Get_ParentObject();
 		
-		
-
 		if (!pAttackArea.lock())
 			return;
 
@@ -149,13 +131,10 @@ void CJokerStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider>
 
 		ATTACK_OPTION eAttackOption = pAttackArea.lock()->Get_OptionType();
 
-
 		CStatus_Player::PLAYERDESC tPlayerDesc;
-		_matrix                    vResultOtherWorldMatrix;
+		_matrix vResultOtherWorldMatrix;
 
-		pAttackArea.lock()->Get_ParentObject().lock()->Get_ComponentByType<CStatus>().lock()
-			->Get_Desc(&tPlayerDesc);
-		
+		pAttackArea.lock()->Get_ParentObject().lock()->Get_ComponentByType<CStatus>().lock()->Get_Desc(&tPlayerDesc);
 
 		Play_OnHitEffect();
 
@@ -183,72 +162,47 @@ void CJokerStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider>
 		_vector vShakingOffsetToVector = XMLoadFloat3(&vShakingOffset);
 		_float fShakingRatio = 0.01f * iRand;
 
-		
-
-		//�̰Ŵ��ѹ���ȣ��ǰ� �ؾ��� 
-		//������°� ���Ͻ�ŸƮ�� �������ƴѰ��
-		//Ȥ�ø����� ����ó������ 
 		if (Get_OwnerCharacter().lock()->Get_CurState().lock() != Get_Owner().lock()->Get_Component<CJokerState_Stun_Start>().lock() &&
 			Get_OwnerCharacter().lock()->Get_CurState().lock() != Get_Owner().lock()->Get_Component<CJokerState_Stun_Loop>().lock())
 		{
 			if (pStatus.lock()->Get_Desc().m_fCurrentHP_Green <= 0.f)
-			{
 				Get_OwnerCharacter().lock()->Change_State<CJokerState_Stun_Start>(0.05f);
-				
-			}
 		}
 		else
 		{
-			
-				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_JOKEREXECUTION);
-				_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
-				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, -0.4f, 0.f));
-				pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
-					vResultOtherWorldMatrix.r[3],
-					GAMEINSTANCE->Get_DeltaTime(),
-					Filters);
-				pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
-				Get_OwnerCharacter().lock()->Change_State<CJokerState_TakeExecution_Start>(0.05f);
-				
+			pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_JOKEREXECUTION);
+			_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
+			vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, -0.4f, 0.f));
+			pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
+				vResultOtherWorldMatrix.r[3],
+				GAMEINSTANCE->Get_DeltaTime(),
+				Filters);
+			pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
+			Get_OwnerCharacter().lock()->Change_State<CJokerState_TakeExecution_Start>(0.05f);
 		}
 
-		
-		
 		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.1f + fShakingRatio, 1.f, 9.f, 0.5f);//�Ϲ� ����
 		GAMEINSTANCE->Set_MotionBlur(0.05f);
-
-		
-
-		//������°� ���Ͻ�ŸƮ�� ���Ϸ����ΰ�쿡 
-		//�ٽ� �˻縦���ش� �÷��̾��� ������ ������ �ٱ�ó������ ���ϴ� 
-		// �ٱ�ó�����ΰ��� �ٱ�ó������ ���� �� �ִϸ��̼����� ���ϳ������ָ� �ذᤷ�Ϸ� 
-
-
 	}
-
 }
 
 void CJokerStateBase::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 	__super::OnCollisionEnter(pMyCollider, pOtherCollider);
-
 }
 
 void CJokerStateBase::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 	__super::OnCollisionStay(pMyCollider, pOtherCollider);
-
 }
 
 void CJokerStateBase::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 	__super::OnCollisionExit(pMyCollider, pOtherCollider);
-
 }
 
 void CJokerStateBase::OnEventMessage(_uint iArg)
 {
-	
 }
 
 void CJokerStateBase::OnEventMessage(weak_ptr<CBase> pArg)

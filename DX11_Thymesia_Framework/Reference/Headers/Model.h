@@ -62,7 +62,7 @@ public:
 		return m_Animations[m_iCurrentAnimationIndex];
 	}
 
-	_float4x4 Get_TransformationMatrix() const;
+	 _float4x4 Get_TransformationMatrix() const;
 
 	weak_ptr<CAnimation> Get_AnimationFromIndex(const _uint& In_iIndex) const;
 

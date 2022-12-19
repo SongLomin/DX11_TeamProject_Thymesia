@@ -29,7 +29,7 @@ class CMonster;
 class CInteraction_CheckPoint;
 class CUI_Cursor;
 class CLight_Prop;
-
+class CItemPopup_Queue;
 
 class CGameManager :
     public CBase
@@ -69,20 +69,29 @@ public: // For. ON / OFF Eye Effect
     }
 
 private:
-    std::unordered_map<const char*, _uint> m_StoredEffects;
-
+	std::unordered_map<const char*, _uint> m_StoredEffects;
+#ifdef _DEBUG
 public: // For. Cloning Particle
-    void Store_ParticleInfo(EFFECTPARTICLE_DESC tParticleDesc)
+    void Store_ParticleInfo(EFFECTPARTICLE_DESC tParticleDesc, std::string strBoneName)
     {
         m_tParticleDesc = tParticleDesc;
+        if (!strBoneName.empty())
+            m_strBoneName = strBoneName;
     }
+
     const EFFECTPARTICLE_DESC Get_StoredParticleInfo()
     {
         return m_tParticleDesc;
     }
 
+    const std::string Get_BoneName()
+    {
+        return m_strBoneName;
+    }
+
 private:
     EFFECTPARTICLE_DESC m_tParticleDesc;
+    std::string m_strBoneName;
 
 public: // For. Cloning Effect Mesh
     void Store_EffectMeshInfo(EFFECTMESH_DESC tEffectMeshDesc)
@@ -96,7 +105,9 @@ public: // For. Cloning Effect Mesh
 
 private:
     EFFECTMESH_DESC m_tEffectMeshDesc;
+
 #pragma endregion // Created By. Á¶¼º¿ì
+#endif // _DEBUG
 
 public:
     void Set_TargetCamera(weak_ptr<CCamera_Target> In_TargetCamera);
@@ -189,8 +200,15 @@ public:
     void    EnableCursor();
     void    DisableCursor();
 
+
+public:
+    void   CreatePopupQueue();
+    void   Add_Popup(ITEM_NAME eItemName);
 private:
     weak_ptr< CUI_Cursor> m_pCursor;
+
+    shared_ptr<CItemPopup_Queue> m_pItemPopupQueue;
+
 
 public:
     void  Registration_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj);
@@ -227,7 +245,7 @@ private:
     weak_ptr<CInteraction_CheckPoint>   m_pCurSavePoint;
 
 private:
-    _int                                                        m_iMonsterCount   = 0;
+    _int                                m_iMonsterCount   = 0;
 
 protected:
     void Free();

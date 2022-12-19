@@ -31,10 +31,6 @@ protected:
 	virtual _bool Check_AndChangeNextState() override;
 
 private:
-	weak_ptr<CAnimation> m_pThisAnimationCom;
-	_bool	m_bShakingCamera = false;
-
-private:
 	void Call_AnimationEnd();
 protected:
 	virtual void OnDestroy() override;

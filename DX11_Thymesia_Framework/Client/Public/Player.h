@@ -15,6 +15,8 @@ class CCorvus_DefaultSaber;
 class CCorvus_DefaultDagger;
 class CWeapon;
 class CTalent_Effect;
+class CInventory;
+
 
 class CPlayer :
     public CCharacter
@@ -108,6 +110,10 @@ protected:
     weak_ptr<CTransform> m_pMonsterTransform;
     _bool               m_bIsFocused = false;
 
+
+    //Created by Moon
+protected:
+    weak_ptr<CInventory>    m_pInventory;
 
 private:
     _float              m_fNearSearchDelay = 0.f; 

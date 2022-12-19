@@ -321,7 +321,7 @@ HRESULT CVIBuffer_Model_Instance::Render_Mesh(_uint iMeshContainerIndex, ID3D11D
 	return S_OK;
 }
 
-void CVIBuffer_Model_Instance::Culling_Instance(vector<INSTANCE_MESH_DESC>& In_ParticleDescs)
+void CVIBuffer_Model_Instance::Culling_Instance(vector<INSTANCE_MESH_DESC>& In_ParticleDescs, const _float In_fRatio)
 {
 	if (In_ParticleDescs.empty() || m_bCulling)
 		return;
@@ -334,11 +334,12 @@ void CVIBuffer_Model_Instance::Culling_Instance(vector<INSTANCE_MESH_DESC>& In_P
 
 	for (auto& elem : In_ParticleDescs)
 	{
-		if (pGameInstance->isIn_Frustum_InWorldSpace(XMVectorSetW(XMLoadFloat3(&elem.vCenter), 1.f), elem.fMaxRange))
+		if (pGameInstance->isIn_Frustum_InWorldSpace(XMVectorSetW(XMLoadFloat3(&elem.vCenter), 1.f), elem.fMaxRange * In_fRatio))
 		{
 			m_pVisibleInstanceDescs.push_back(elem);
 		}
 	}
+
 	m_iVisibleCount        = m_pVisibleInstanceDescs.size();
 	m_bCulling             = true;
 

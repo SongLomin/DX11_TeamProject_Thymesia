@@ -62,18 +62,26 @@ void CJokerState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	if (Get_OwnerCharacter().lock()->Get_PreState().lock() != Get_Owner().lock()->Get_Component<CJokerState_Idle>().lock() ||
-		Get_OwnerCharacter().lock()->Get_PreState().lock() != Get_Owner().lock()->Get_Component<CJokerState_TurnR90>().lock() ||
-		Get_OwnerCharacter().lock()->Get_PreState().lock() != Get_Owner().lock()->Get_Component<CJokerState_TurnL90>().lock())
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CJokerState_ComboA2>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CJokerState_RunAtkEnd>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CJokerState_JumpAttack>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CJokerState_ShockAttack>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CJokerState_StrongAttack>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CJokerState_WheelAtkEnd>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CJokerState_TurnAtkL>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CJokerState_TurnAtkR>().lock())
 	{
-		m_bTurnCheck = true;
 		m_bBackReset = false;
+		m_bTurnCheck = true;
+		
 	}
 
 	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CJokerState_WalkB>().lock())
 	{
 		m_bBackReset = true;
 	}
+	
+
 	
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
@@ -114,7 +122,7 @@ _bool CJokerState_Idle::Check_AndChangeNextState()
 
 
 
-	if (fPToMDistance >= 0.8f && fPToMDistance <= 1.2f && !m_bBackReset)
+	if (fPToMDistance <= 0.9f && !m_bBackReset)
 	{
 		if (m_bTurnCheck)
 		{
@@ -127,8 +135,7 @@ _bool CJokerState_Idle::Check_AndChangeNextState()
 
 		
 	}
-
-	if (fPToMDistance > 0.8f && fPToMDistance <= 4.f && m_bBackReset)
+	else if (fPToMDistance < 4.f )
 	{
 		if (m_bTurnCheck)
 		{

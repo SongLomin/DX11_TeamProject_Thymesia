@@ -120,16 +120,16 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 	SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_L_Down", 2.f);
 	SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_R_Down", 2.f);
 
-	//SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution", 1.2f);
+	SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution", 1.6f);
     
-
 	SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 7.f);
-
-
 	SET_ANIM_SPEED("Corvus_SD_TD2Thorw2", 2.5f);
 
 #pragma region Varg
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Catch", 2.306f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Fail", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Roar", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Roar_GetUp", 1.25f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_1", 1.25f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_2", 1.25f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_3", 1.25f);
@@ -144,12 +144,34 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_2b2", 2.f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_3b", 2.f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TurnAttack1", 2.5f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_Start_FIX", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_Start_FIX", 2.f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeParry_FIX", 2.f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_Dead", 1.5f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_End", 1.5f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_Loop", 1.5f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TakeExecution_NoDeadEnd", 1.5f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Seq_TutorialBossFightStart", 5.f);
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Seq_BossFightStart", 5.f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Seq_BossFightStart", 6.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_CatchSeq1", 2.5f);
 
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_AvoidB", 1.25f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_AvoidAttack1", 2.f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_RaidAttack2", 2.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_RunF_Start", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_RunF_1", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_RunF", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TurnL90", 1.5f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_TurnR90", 1.5f);
+
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_WalkB", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_WalkF", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_WalkL", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_WalkR", 1.25f);
+
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_StunLoop", 2.f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_StunEnd", 2.f);
+
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Dead", 1.25f);
 #pragma endregion // Varg
 
 #pragma region Joker
@@ -172,42 +194,39 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("Joker_TakeExecution_Start", 1.4f);
 #pragma endregion // Joker
 
-
-
-
 #pragma region Bat
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Seq_BossFightStart_V1", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_AttackL_01_1", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_AttackL_01_2a", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_AttackL_01_2b", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_AttackL_01_3a", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_AttackR_01_1", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_AttackR_01_2a", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_AttackR_01_2b", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Bite_1", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Bite_2", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Car", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Charge", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_FTurn_L", 1.5f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_FTurn_R", 1.5f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Hellscream", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_HurtXL_F", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_HurtXL_L", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_JumpSmash_Chest", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_JumpSmashForwardL", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_JumpSmashL", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_SonicBoom", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_SP01", 2.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_Storm_1", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_StunEnd", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_StunLoop", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_StunStart", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TakeExecution_End", 2.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TakeExecution_Loop", 2.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TakeExecution_Start01", 2.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TurnL90", 2.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_TurnR90", 2.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BossBat_WalkF", 3.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|START", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|L_01_11", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|L_01_2a", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|L_2b", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|R_01_1", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|R_01_11", 2.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|R_01_2a", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|R_01_2b", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BITE1", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BTIE2", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|CAR", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|CHARGE", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|FTURNL", 1.5f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|FTURNR", 1.5f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|HELLSCREAM", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|HURTXLF", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|HURTXLL", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|JUMPCHEST", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|JUMPFORWARD", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|JUMPSMESH", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|SONICBOOM", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|SP", 2.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|STORM", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|STUNEND", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|STUNLOOP", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|STUNSTART", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|TAKEEND", 2.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|TAKELOOP", 2.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|TAKESTART", 2.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|TURNL90", 2.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|TURNR90", 2.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|WALKF", 3.f);
 
 
 #pragma endregion // Bat

@@ -73,7 +73,6 @@ private:
 	HRESULT Render_ShadowDepth();
 	HRESULT Render_NonAlphaBlend();
 	HRESULT Render_Lights();
-	HRESULT Render_IBL();
 	HRESULT Bake_Fog();
 	HRESULT Bake_ViewShadow();
 	HRESULT Render_Blend(); /* Diffuse * Shade 백버퍼에 그린다. */
@@ -140,7 +139,9 @@ private:
 	shared_ptr<CShader>			m_pDistortionShader;
 	shared_ptr<CShader>			m_pPostProcessingShader;
 	shared_ptr<CVIBuffer_Rect>	m_pVIBuffer;
+
 	shared_ptr<CTexture>		m_pIrradianceTextureCom;
+	shared_ptr<CTexture>		m_pPreFilterTextureCom;
 	shared_ptr<CTexture>		m_pBRDFLUTTextureCom;
 
 

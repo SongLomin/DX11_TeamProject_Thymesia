@@ -16,6 +16,19 @@
 GAMECLASS_C(CJokerState_StrongAttack);
 CLONE_C(CJokerState_StrongAttack, CComponent)
 
+void CJokerState_StrongAttack::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
+	if (!Get_Enable())
+		return;
+
+	switch (In_KeyIndex)
+	{
+	case 59:
+		GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.6f, 1.f, 9.f, 0.7f);
+		break;
+	}
+}
+
 HRESULT CJokerState_StrongAttack::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
@@ -25,27 +38,19 @@ HRESULT CJokerState_StrongAttack::Initialize_Prototype()
 HRESULT CJokerState_StrongAttack::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
-
 	return S_OK;
 }
 
 void CJokerState_StrongAttack::Start()
 {
 	__super::Start();
-
-	//턴이나 턴어택에서 아이들로 들어오면 워크로 들어오기 
-
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Joker_StrongAttack");
-
-
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CJokerState_StrongAttack::Call_AnimationEnd, this);
 }
 
 void CJokerState_StrongAttack::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -53,7 +58,6 @@ void CJokerState_StrongAttack::Tick(_float fTimeDelta)
 void CJokerState_StrongAttack::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
-
 	if (m_bAttackLookAtLimit)
 		TurnAttack(fTimeDelta);
 
@@ -65,31 +69,25 @@ void CJokerState_StrongAttack::LateTick(_float fTimeDelta)
 void CJokerState_StrongAttack::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
-
 	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
-
 	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
-
 	pWeapons.front().lock()->Set_WeaponDesc(HIT_TYPE::DOWN_HIT, 1.52f);
-
 	m_bAttackLookAtLimit = true;
-
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey +=
+		bind(&CJokerState_StrongAttack::Call_NextKeyFrame, this, placeholders::_1);
 
-#ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Idle -> OnStateStart" << endl;
-#endif
-#endif
-
-
+#endif // _DEBUG_COUT_
 }
 
 void CJokerState_StrongAttack::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -=
+		bind(&CJokerState_StrongAttack::Call_NextKeyFrame, this, placeholders::_1);
 }
 
 void CJokerState_StrongAttack::Call_AnimationEnd()
@@ -107,25 +105,18 @@ void CJokerState_StrongAttack::OnDestroy()
 
 void CJokerState_StrongAttack::Free()
 {
-
 }
 
 _bool CJokerState_StrongAttack::Check_AndChangeNextState()
 {
-
 	if (!Check_Requirement())
 		return false;
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.3f)
-	{
 		m_bAttackLookAtLimit = false;
-	}
 
 	if (ComputeAngleWithPlayer() > 0.99f && m_bAttackLookAtLimit)
-	{
 		Rotation_TargetToLookDir();
-	}
-
 
 	return false;
 }

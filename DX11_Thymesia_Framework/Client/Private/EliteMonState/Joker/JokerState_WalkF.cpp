@@ -124,6 +124,21 @@ _bool CJokerState_WalkF::Check_AndChangeNextState()
 	{
 		int iRand = rand() % 2;
 
+		while (true)
+		{
+			if (iRand == m_iPreCount)
+			{
+				iRand = rand() % 2;
+				continue;
+			}
+			else
+			{
+				break;
+			}
+
+
+		}
+
 		switch (iRand)
 		{
 		case 1:

@@ -52,12 +52,16 @@ private:
     HRESULT SetUp_ShaderResource(ID3D11DeviceContext* pDeviceContext);
     void    SetUp_ShaderResource_Select(ID3D11DeviceContext* pDeviceContext);
 
+    void    Update_Instance(INSTANCE_MESH_DESC& In_tDesc);
+    void    Update_Instance(_uint In_Index);
+
     void Load_ResourceList(vector<string>& In_List, const filesystem::path& In_Path, string _szCutName = "");
 public:
     virtual void Write_Json(json& Out_Json) override;
     virtual void Load_FromJson(const json& In_Json) override;
-    virtual _bool IsPicking(const RAY& In_Ray, _float& Out_fRange) override;
 
+    virtual _bool IsPicking(const RAY& In_Ray, _float& Out_fRange) override;
+    
 private:                                                                                                                                                                                                                
     typedef vector<string>                  RESOURCE_LIST;
     typedef vector<INSTANCE_MESH_DESC>      PROP_INFO;
@@ -91,6 +95,7 @@ private:
     _bool               m_bDissolve           = false;
     _float              m_fDissolveRatio      = 0.f;
     _float              m_fDissolveSpeed      = 0.f;
+    _int                m_iSectionIndex       = -1;
 
     vector<_uint>       m_MultPickingIndex;
 
