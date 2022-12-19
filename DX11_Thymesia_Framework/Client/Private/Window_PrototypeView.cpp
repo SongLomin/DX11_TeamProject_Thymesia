@@ -151,7 +151,7 @@ void CWindow_PrototypeView::Add_Prototypes()
     ADD_PROTOTYPE(PROTOTYPE_EDIT, CEditInstanceProp);
     ADD_PROTOTYPE(PROTOTYPE_EDIT, CEditMapCollider);
     ADD_PROTOTYPE(PROTOTYPE_EDIT, CEditSetActor);
-    ADD_PROTOTYPE(PROTOTYPE_EDIT, CEditLights);
+    ADD_PROTOTYPE(PROTOTYPE_EDIT, CEditEventContoller);
 
     ADD_PROTOTYPE(PROTOTYPE_UI, CFadeMask);
 

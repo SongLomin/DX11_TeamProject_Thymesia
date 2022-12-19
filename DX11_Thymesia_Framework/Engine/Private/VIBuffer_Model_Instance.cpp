@@ -339,6 +339,7 @@ void CVIBuffer_Model_Instance::Culling_Instance(vector<INSTANCE_MESH_DESC>& In_P
 			m_pVisibleInstanceDescs.push_back(elem);
 		}
 	}
+
 	m_iVisibleCount        = m_pVisibleInstanceDescs.size();
 	m_bCulling             = true;
 

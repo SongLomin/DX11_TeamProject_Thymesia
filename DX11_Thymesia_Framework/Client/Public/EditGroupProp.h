@@ -28,7 +28,6 @@ public:
     virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
 public:
-    virtual _bool IsPicking(const RAY& In_Ray, _float& Out_fRange) override;
     virtual void  OnEventMessage(_uint iArg) override;
 
 private:
@@ -59,6 +58,7 @@ private:
     _int                m_iPickingIndex       = 0;
     _uint               m_iOption             = 0;
     _float4x4           m_PickingMatrix;
+    MESH_VTX_INFO	    m_tPickingVtxInfo;
 
     string              m_szSelectModelName   = "";
     _bool               m_bChangModel         = false;

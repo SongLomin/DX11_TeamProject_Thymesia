@@ -32,7 +32,7 @@
 #include "EditInstanceProp.h"
 #include "EditMapCollider.h"
 #include "EditSetActor.h"
-#include "EditLights.h"
+#include "EditEventContoller.h"
 
 #include "CCorvus.h"
 #include "PreViewAnimationModel.h"

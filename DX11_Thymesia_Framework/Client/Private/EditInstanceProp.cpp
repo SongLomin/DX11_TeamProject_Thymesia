@@ -18,6 +18,7 @@
 #include "Window_HierarchyView.h"
 #include "Window_Optimization_Dev.h"
 #include "ImGui_Window.h"
+#include "GameManager.h"
 
 _bool CEditInstanceProp::m_bDetailPicking	= true;
 _uint CEditInstanceProp::m_iOption			= 0;
@@ -60,8 +61,6 @@ HRESULT CEditInstanceProp::Initialize(void* pArg)
 	ZeroMemory(&m_PickingDesc, sizeof(INSTANCE_MESH_DESC));
 	m_PickingDesc.vScale = _float3(1.f, 1.f, 1.f);
 
-	
-
 	m_pTextureGroupCom.emplace("g_DissolveTexture"    , Add_Component<CTexture>());
 	m_pTextureGroupCom.emplace("g_DissolveDiffTexture", Add_Component<CTexture>());
 
@@ -89,8 +88,6 @@ void CEditInstanceProp::Tick(_float fTimeDelta)
 
 	if (m_bDissolve)
 		m_fDissolveRatio += fTimeDelta * m_fDissolveSpeed;
-
-	//m_pInstanceModelCom.lock()->Update(m_pPropInfos, true);
 }
 
 void CEditInstanceProp::LateTick(_float fTimeDelta)
@@ -112,6 +109,7 @@ void CEditInstanceProp::Thread_PreLateTick(_float fTimeDelta)
 #endif // _DEBUG
 
 	m_pInstanceModelCom.lock()->Update_VisibleInstance(pDeviceContext);
+
 	GAMEINSTANCE->Release_BeforeRenderContext(pDeviceContext);
 #endif
 }
@@ -263,6 +261,49 @@ void CEditInstanceProp::SetUp_ShaderResource_Select(ID3D11DeviceContext* pDevice
 	m_pSelect_VIBufferCom.lock()->Render(pDeviceContext);
 }
 
+void CEditInstanceProp::Update_Instance(INSTANCE_MESH_DESC& In_tDesc)
+{
+	_vector vPosition;
+	_vector vOffsetRange;
+
+	MESH_VTX_INFO tInfo = m_pInstanceModelCom.lock()->Get_ModelData().lock()->VertexInfo;
+
+	_vector vMin, vMax, vCenter;
+	vMin    = XMLoadFloat3(&tInfo.vMin);
+	vMax    = XMLoadFloat3(&tInfo.vMax);
+	vCenter = (vMin + vMax) / 2.f;
+
+	vOffsetRange       = XMVectorAbs(XMLoadFloat3(&tInfo.vMax)) + XMVectorAbs(XMLoadFloat3(&tInfo.vMin));
+	vOffsetRange      *= XMLoadFloat3(&In_tDesc.vScale);
+	In_tDesc.fMaxRange = XMVectorGetX(XMVector3Length(vOffsetRange));
+	XMStoreFloat3(&In_tDesc.vCenter, vCenter);
+	In_tDesc.Bake_CenterWithMatrix();
+
+	m_pPropInfos.push_back(In_tDesc);
+}
+
+void CEditInstanceProp::Update_Instance(_uint In_Index)
+{
+	_vector vPosition;
+	_vector vOffsetRange;
+
+	MESH_VTX_INFO      tInfo = m_pInstanceModelCom.lock()->Get_ModelData().lock()->VertexInfo;
+	INSTANCE_MESH_DESC tDesc = m_pPropInfos[In_Index];
+
+	_vector vMin, vMax, vCenter;
+	vMin    = XMLoadFloat3(&tInfo.vMin);
+	vMax    = XMLoadFloat3(&tInfo.vMax);
+	vCenter = (vMin + vMax) / 2.f;
+
+	vOffsetRange       = XMVectorAbs(XMLoadFloat3(&tInfo.vMax)) + XMVectorAbs(XMLoadFloat3(&tInfo.vMin));
+	vOffsetRange      *= XMLoadFloat3(&tDesc.vScale);
+	tDesc.fMaxRange = XMVectorGetX(XMVector3Length(vOffsetRange));
+	XMStoreFloat3(&tDesc.vCenter, vCenter);
+	tDesc.Bake_CenterWithMatrix();
+
+	m_pPropInfos[In_Index] = tDesc;
+}
+
 void CEditInstanceProp::Write_Json(json& Out_Json)
 {
 	if ("" == m_szSelectModelName)
@@ -292,6 +333,7 @@ void CEditInstanceProp::Write_Json(json& Out_Json)
 	Out_Json.emplace("NonCulling"   , m_bNonCulling);
 	Out_Json.emplace("Dissolve"     , m_fDissolveSpeed);
 	Out_Json.emplace("Collider_Type", m_iColliderType);
+	Out_Json.emplace("SectionIndex" , m_iSectionIndex);
 
 	Out_Json["Hash"] = typeid(CStatic_Instancing_Prop).hash_code();
 	Out_Json["Name"] = typeid(CStatic_Instancing_Prop).name();
@@ -299,67 +341,45 @@ void CEditInstanceProp::Write_Json(json& Out_Json)
 
 void CEditInstanceProp::Load_FromJson(const json& In_Json)
 {
-	for (auto& iter : In_Json.items())
+	m_bNonCulling    = In_Json["NonCulling"];
+	m_bInvisibility  = In_Json["Invisibility"];
+	m_iColliderType  = In_Json["Collider_Type"];
+	m_fDissolveSpeed = In_Json["Dissolve"];
+
+	if (In_Json.end() != In_Json.find("SectionIndex"))
 	{
-		string szKey = iter.key();
+		m_iSectionIndex = In_Json["SectionIndex"];
 
-		if ("NonCulling" == szKey)
-			m_bNonCulling = In_Json["NonCulling"];
+		GET_SINGLE(CGameManager)->Registration_Section(m_iSectionIndex, Weak_Cast<CGameObject>(m_this));
+	}
 
-		else if ("Invisibility" == szKey)
-			m_bInvisibility = In_Json["Invisibility"];
+	string szModelTag = In_Json["ModelCom"];
 
-		else if ("ModelCom" == szKey)
-		{
-			m_szSelectModelName = iter.value();
-			m_pInstanceModelCom.lock()->Init_Model(m_szSelectModelName.c_str());
-		}
+	if ("" != szModelTag)
+	{
+		m_pInstanceModelCom.lock()->Init_Model(szModelTag.c_str());
+		m_szSelectModelName = szModelTag;
+	}
 
-		else if ("PropDesc" == szKey)
-		{
-			json Desc = iter.value();
+	_vector vPosition;
+	_vector vOffsetRange;
 
-			_vector vPosition;
-			_vector vOffsetRange;
+	for (auto& iter_item : In_Json["PropDesc"].items())
+	{
+		_float4x4 PropMatrix;
 
-			for (auto& iter_item : Desc.items())
-			{
-				_float4x4 PropMatrix;
+		CJson_Utility::Load_JsonFloat4x4(iter_item.value(), PropMatrix);
 
-				CJson_Utility::Load_JsonFloat4x4(iter_item.value(), PropMatrix);
+		INSTANCE_MESH_DESC	Desc;
+		ZeroMemory(&Desc, sizeof(INSTANCE_MESH_DESC));
 
-				INSTANCE_MESH_DESC	Desc;
-				ZeroMemory(&Desc, sizeof(INSTANCE_MESH_DESC));
+		memcpy(&Desc.vRotation   , &PropMatrix.m[0][0], sizeof(_float3));
+		memcpy(&Desc.vScale      , &PropMatrix.m[1][0], sizeof(_float3));
+		memcpy(&Desc.vTarnslation, &PropMatrix.m[2][0], sizeof(_float3));
 
-				memcpy(&Desc.vRotation   , &PropMatrix.m[0][0], sizeof(_float3));
-				memcpy(&Desc.vScale      , &PropMatrix.m[1][0], sizeof(_float3));
-				memcpy(&Desc.vTarnslation, &PropMatrix.m[2][0], sizeof(_float3));
-
-				vPosition = XMLoadFloat3(&Desc.vTarnslation);
-				vPosition = XMVectorSetW(vPosition, 1.f);
+		vPosition = XMVectorSetW(XMLoadFloat3(&Desc.vTarnslation), 1.f);
 				
-				MESH_VTX_INFO tInfo = m_pInstanceModelCom.lock()->Get_ModelData().lock()->VertexInfo;
-				                          
-				vOffsetRange = XMLoadFloat3(&tInfo.vMax) - XMLoadFloat3(&tInfo.vMin);
-				vOffsetRange *= XMLoadFloat3(&Desc.vScale);
-				Desc.fMaxRange = XMVectorGetX(XMVector3Length(vOffsetRange));
-				Desc.vCenter = tInfo.vCenter;       
-				Desc.Bake_CenterWithMatrix();
-
-				m_pPropInfos.push_back(Desc);
-			}
-		}
-
-		else if ("Collider_Type" == szKey)
-		{
-			m_iColliderType = In_Json["Collider_Type"];
-		}
-
-		else if ("Dissolve" == szKey)
-		{
-			m_fDissolveSpeed = In_Json["Dissolve"];
-			m_bDissolve      = true;
-		}
+		Update_Instance(Desc);
 	}
 
 	m_pInstanceModelCom.lock()->Init_Instance((_uint)m_pPropInfos.size());
@@ -406,35 +426,35 @@ _bool CEditInstanceProp::IsPicking(const RAY& In_Ray, _float& Out_fRange)
 
 void CEditInstanceProp::OnEventMessage(_uint iArg)
 {
-	static _float AccTime = 0.f;
-	static _int   FPSCnt = 0;
-
-	AccTime += GAMEINSTANCE->Get_DeltaTime();
-	++FPSCnt;
-
-	if (AccTime >= 1.f)
+	switch ((EVENT_TYPE)iArg)
 	{
-		cout << FPSCnt << endl;
-
-		AccTime = 0.f;
-		FPSCnt = 0;
-	}
-
-	switch (iArg)
-	{
-		case (_uint)EVENT_TYPE::ON_EDITDRAW_ACCEPT:
+		case EVENT_TYPE::ON_EDITDRAW_ACCEPT:
 		{
 			m_bSubDraw = true;
 		}
 		break;
 
-		case (_uint)EVENT_TYPE::ON_EDITDRAW_NONE:
+		case EVENT_TYPE::ON_EDITDRAW_NONE:
 		{
 			m_bSubDraw = false;
 		}
 		break;
 
-		case (_uint)EVENT_TYPE::ON_EDITDRAW:
+		case EVENT_TYPE::ON_ENTER_SECTION:
+		{
+			m_bDissolve      = true;
+			m_fDissolveRatio = 0.f;
+		}
+		break;
+
+		case EVENT_TYPE::ON_EXIT_SECTION:
+		{
+			m_bDissolve      = false;
+			m_fDissolveRatio = 0.f;
+		}
+		break;
+
+		case EVENT_TYPE::ON_EDITDRAW:
 		{
 			if (!m_bSubDraw)
 				return;
@@ -475,13 +495,13 @@ void CEditInstanceProp::OnEventMessage(_uint iArg)
 		}
 		break;
 
-		case (_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO:
+		case EVENT_TYPE::ON_EDIT_PHYSXINFO:
 		{
 			m_bViewPhysXInfo = true;
 		}
 		break;
 
-		case (_uint)EVENT_TYPE::ON_EDIT_PHYSXINFO_N:
+		case EVENT_TYPE::ON_EDIT_PHYSXINFO_N:
 		{
 			m_bViewPhysXInfo = false;
 		}
@@ -532,14 +552,8 @@ void CEditInstanceProp::View_SelectModelComponent()
 	ImGui::Checkbox("No CCW", &m_bNonCulling);
 	ImGui::Checkbox("Invisibility", &m_bInvisibility);
 
-	ImGui::DragFloat("##DissolveSpeed", &m_fDissolveSpeed, 1.f);
-	ImGui::SameLine();
-
-	ImGui::Checkbox("Dissolve", &m_bDissolve);
-	ImGui::SameLine();
-
-	if (ImGui::Button("Reset"))
-		m_fDissolveRatio = 0.f;
+	ImGui::DragFloat("DissolveSpeed", &m_fDissolveSpeed, 1.f);
+	ImGui::InputInt("SectionIndex", &m_iSectionIndex);
 
 	ImGui::Text("");
 	ImGui::Text("");
@@ -587,7 +601,7 @@ void CEditInstanceProp::View_Picking_Prop()
 		vOutPos.y = m_PickingDesc.vTarnslation.y;
 		memcpy(&m_PickingDesc.vTarnslation, &vOutPos, sizeof(_float3));
 
-		m_pPropInfos.push_back(m_PickingDesc);
+		Update_Instance(m_PickingDesc);
 		m_pInstanceModelCom.lock()->Init_Instance((_uint)m_pPropInfos.size());
 		m_iPickingIndex = (_uint)m_pPropInfos.size() - 1;
 	}
@@ -683,7 +697,7 @@ void CEditInstanceProp::View_Picking_List()
 	{
 		if ("" != m_szSelectModelName)
 		{
-			m_pPropInfos.push_back(m_PickingDesc);
+			Update_Instance(m_PickingDesc);
 			m_pInstanceModelCom.lock()->Init_Instance((_uint)m_pPropInfos.size());
 			m_iPickingIndex = (_uint)m_pPropInfos.size() - 1;
 		}
@@ -801,75 +815,7 @@ void CEditInstanceProp::View_Picking_Option()
 				}
 				break;
 			}
-		}
-
-		else if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
-		{
-			switch (m_iOption)
-			{
-				case 0:
-				{
-					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
-						m_pPropInfos[m_iPickingIndex].vScale.x -= 0.1f;
-					else
-						m_pPropInfos[m_iPickingIndex].vScale.x += 0.1f;
-				}
-				break;
-
-				case 1:
-				{
-					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
-						m_pPropInfos[m_iPickingIndex].vScale.y -= 0.1f;
-					else
-						m_pPropInfos[m_iPickingIndex].vScale.y += 0.1f;
-				}
-				break;
-
-				case 2:
-				{
-					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
-						m_pPropInfos[m_iPickingIndex].vScale.z -= 0.1f;
-					else
-						m_pPropInfos[m_iPickingIndex].vScale.z += 0.1f;
-				}
-				break;
-
-			}
-		}
-
-		else if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
-		{
-			switch (m_iOption)
-			{
-				case 0:
-				{
-					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
-						m_pPropInfos[m_iPickingIndex].vScale.x -= 0.1f;
-					else
-						m_pPropInfos[m_iPickingIndex].vScale.x += 0.1f;
-				}
-				break;
-
-				case 1:
-				{
-					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
-						m_pPropInfos[m_iPickingIndex].vScale.y -= 0.1f;
-					else
-						m_pPropInfos[m_iPickingIndex].vScale.y += 0.1f;
-				}
-				break;
-
-				case 2:
-				{
-					if (KEY_INPUT(KEY::SPACE, KEY_STATE::HOLD))
-						m_pPropInfos[m_iPickingIndex].vScale.z -= 0.1f;
-					else
-						m_pPropInfos[m_iPickingIndex].vScale.z += 0.1f;
-				}
-				break;
-
-			}
-		}
+		}		
 	}
 
 	else if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) && KEY_INPUT(KEY::R, KEY_STATE::TAP))
@@ -893,6 +839,8 @@ void CEditInstanceProp::View_Picking_Option()
 					m_pPropInfos[m_iPickingIndex].vScale.x -= 0.1f;
 				else if (KEY_INPUT(KEY::RIGHT, KEY_STATE::TAP))
 					m_pPropInfos[m_iPickingIndex].vScale.x += 0.1f;
+
+				Update_Instance(m_iPickingIndex);
 			}
 			break;
 
@@ -902,6 +850,8 @@ void CEditInstanceProp::View_Picking_Option()
 					m_pPropInfos[m_iPickingIndex].vScale.y -= 0.1f;
 				else if (KEY_INPUT(KEY::RIGHT, KEY_STATE::TAP))
 					m_pPropInfos[m_iPickingIndex].vScale.y += 0.1f;
+
+				Update_Instance(m_iPickingIndex);
 			}
 			break;
 
@@ -911,6 +861,8 @@ void CEditInstanceProp::View_Picking_Option()
 					m_pPropInfos[m_iPickingIndex].vScale.z -= 0.1f;
 				else if (KEY_INPUT(KEY::RIGHT, KEY_STATE::TAP))
 					m_pPropInfos[m_iPickingIndex].vScale.z += 0.1f;
+
+				Update_Instance(m_iPickingIndex);
 			}
 			break;
 		}
@@ -930,7 +882,8 @@ void CEditInstanceProp::View_Picking_Option()
 
 		else if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
 		{
-			m_pPropInfos[m_iPickingIndex].vScale = _float3(0.f, 0.f, 0.f);
+			m_pPropInfos[m_iPickingIndex].vScale = _float3(1.f, 1.f, 1.f);
+			Update_Instance(m_iPickingIndex);
 		}
 	}
 }

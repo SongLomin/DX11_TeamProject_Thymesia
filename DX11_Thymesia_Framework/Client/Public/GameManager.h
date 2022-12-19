@@ -245,7 +245,7 @@ private:
     weak_ptr<CInteraction_CheckPoint>   m_pCurSavePoint;
 
 private:
-    _int                                                        m_iMonsterCount   = 0;
+    _int                                m_iMonsterCount   = 0;
 
 protected:
     void Free();

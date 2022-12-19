@@ -26,6 +26,9 @@ public:
     virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
 public:
+    const LIGHTDESC& Get_LightDesc() { return m_tLightDesc; }
+
+public:
     virtual void Write_Json(json& Out_Json) override;
     virtual void Load_FromJson(const json& In_Json) override;
 
@@ -34,20 +37,17 @@ public:
 private:
     void Act_LightEvent(_float fTimeDelta, _bool& Out_End);
 
-
 private:
-    weak_ptr<CPhysXCollider> m_pPhysXColliderCom;
-    weak_ptr<CPhysXCollider> m_pPhysXTriggerColliderCom;
-
 	LIGHTDESC   m_tLightDesc;
-    _int        m_iSectionIndex  = 0;
+    _int        m_iSectionIndex  = -1;
 	_float      m_fMinLightRange = 0.f;
 	_float      m_fMaxLightRange = 0.f;
     _float3     m_vOffset        = { 0.f, 0.f, 0.f };
     _float      m_fDelayTime     = 0.f;
-
+    _float      m_fAccTime       = 0.f;
+    string      m_szEffectTag    = "";
+ 
     FDelegate<_float, _bool&>   Callback_ActUpdate;
-
 
 private:
     virtual void OnDestroy() override;

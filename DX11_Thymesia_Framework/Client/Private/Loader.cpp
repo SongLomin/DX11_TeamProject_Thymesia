@@ -139,8 +139,6 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("Background"), TEXT("../Bin/Resources/Textures/Background/BgFightLoading%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("ButtonDefault"), TEXT("../Bin/Resources/Textures/UI/ButtonDefault.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("UI_White"), TEXT("../Bin/Resources/Textures/UI/UI_White.png"), MEMORY_TYPE::MEMORY_STATIC);
-	//GAMEINSTANCE->Load_TexturesGenerateMipMap(("WHYTHROWSIBAL"), TEXT("../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/T_P_Ladder02_C.png"), MEMORY_TYPE::MEMORY_STATIC);
-	//GAMEINSTANCE->Load_TexturesGenerateMipMap(("WHYTHROWSIBAL"), TEXT("../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/TX_FF10_N.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures("Grass", TEXT("../Bin/Resources/Textures/Terrain/Grass_%d.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures("TestTile", TEXT("../Bin/Resources/Textures/TestTexture/DefaultGrid.dds"), MEMORY_TYPE::MEMORY_STATIC);
 

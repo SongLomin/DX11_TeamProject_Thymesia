@@ -29,6 +29,7 @@ public:
 
 public:
     virtual void Load_FromJson(const json& In_Json) override;
+    virtual void OnEventMessage(_uint iArg) override;
 
 private:
     void Bake_PhysXColliderCom();
@@ -36,18 +37,22 @@ private:
     void Synchronize_DynamicColliderComs();
 
 private:
-    typedef vector<INSTANCE_MESH_DESC>    PROP_INFO;
+    typedef vector<INSTANCE_MESH_DESC>      PROP_INFO;
+    typedef map<string, weak_ptr<CTexture>> TEXTURE_GROUP;
 
     weak_ptr<CTexture>                  m_pMaskingTextureCom;
     weak_ptr<CVIBuffer_Model_Instance>  m_pInstanceModelCom;
     weak_ptr<CPhysXCollider>            m_pPhysXColliderCom;
     PROP_INFO                           m_pPropInfos;
     vector<weak_ptr<CPhysXCollider>>    m_pDynamicColliderComs;
+    TEXTURE_GROUP                       m_pTextureGroupCom;
 
     _int                                m_iColliderType  = 0;
     _bool                               m_bNonCulling    = false;
     _bool                               m_bDissolve      = false;
     _float                              m_fDissolveSpeed = 1.f;
+    _float                              m_fDissolveRatio = 0.f;
+    _int                                m_iSectionIndex  = -1;
 
 public:
     void Free();

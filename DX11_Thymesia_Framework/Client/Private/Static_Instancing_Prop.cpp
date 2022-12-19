@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Static_Instancing_Prop.h"
+
 #include "Model.h"
 #include "VIBuffer_Model_Instance.h"
 #include "Shader.h"
@@ -7,9 +8,10 @@
 #include "Transform.h"
 #include "PhysXCollider.h"
 #include "Client_Presets.h"
+#include "Texture.h"
+
 #include "ImGui_Manager.h"
 #include "GameManager.h"
-#include "Texture.h"
 
 #ifdef _DEBUG
 #include "Window_Optimization_Dev.h"
@@ -56,11 +58,14 @@ HRESULT CStatic_Instancing_Prop::Start()
 void CStatic_Instancing_Prop::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
+
+	if (m_bDissolve)
+		m_fDissolveRatio += fTimeDelta * m_fDissolveSpeed;
 }
 
 void CStatic_Instancing_Prop::LateTick(_float fTimeDelta)
 {
-    __super::LateTick(fTimeDelta);
+	__super::LateTick(fTimeDelta);
 }
 
 void CStatic_Instancing_Prop::Thread_PreLateTick(_float fTimeDelta)
@@ -129,6 +134,22 @@ HRESULT CStatic_Instancing_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 	_vector vShaderFlag = { 0.f, 0.f, 0.f, 0.f };
 	m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector));
 
+	if (m_bDissolve)
+	{
+		for (auto& elem : m_pTextureGroupCom)
+		{
+			if (FAILED(elem.second.lock()->Set_ShaderResourceView
+			(
+				m_pShaderCom,
+				elem.first.c_str(),
+				0
+			)))
+				return E_FAIL;
+		}
+
+		m_pShaderCom.lock()->Set_RawValue("g_fDissolveRatio", &m_fDissolveRatio, sizeof(_float));
+	}
+
 	_uint iNumMeshContainers = m_pInstanceModelCom.lock()->Get_NumMeshContainers();
 
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
@@ -136,34 +157,41 @@ HRESULT CStatic_Instancing_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 		if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
 
-		if (m_bNonCulling)
+		if (m_bDissolve)
 		{
-			if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-				m_iPassIndex = 4;
-			else
-				m_iPassIndex = 5;
+			m_iPassIndex = 9;
 		}
 		else
 		{
-			if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+			if (m_bNonCulling)
 			{
-				m_iPassIndex = 0;
+				if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+					m_iPassIndex = 4;
+				else
+					m_iPassIndex = 5;
 			}
 			else
 			{
-				if (m_bInvisibility && LEVEL::LEVEL_EDIT != Get_CreatedLevel())
+				if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 				{
-                	if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-						m_iPassIndex = 6;
-					else
-						m_iPassIndex = 7;
+					m_iPassIndex = 0;
 				}
 				else
 				{
-					if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-						m_iPassIndex = 6;
+					if (m_bInvisibility && LEVEL::LEVEL_EDIT != Get_CreatedLevel())
+					{
+						if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+							m_iPassIndex = 6;
+						else
+							m_iPassIndex = 7;
+					}
 					else
-						m_iPassIndex = 1;
+					{
+						if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+							m_iPassIndex = 6;
+						else
+							m_iPassIndex = 1;
+					}
 				}
 			}
 		}
@@ -194,74 +222,65 @@ HRESULT CStatic_Instancing_Prop::Render_ShadowDepth(_fmatrix In_LightViewMatrix,
 
 void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 {
-	for (auto& iter : In_Json.items())
+	m_bNonCulling    = In_Json["NonCulling"];
+	m_bInvisibility  = In_Json["Invisibility"];
+	m_iColliderType  = In_Json["Collider_Type"];
+	m_fDissolveSpeed = In_Json["Dissolve"];
+
+	if (In_Json.end() != In_Json.find("SectionIndex"))
 	{
-		string szKey = iter.key();
+		m_iSectionIndex = In_Json["SectionIndex"];
 
-		if ("NonCulling" == szKey)
-			m_bNonCulling = In_Json["NonCulling"];
-
-		else if ("Invisibility" == szKey)
-			m_bInvisibility = In_Json["Invisibility"];
-
-		else if ("ModelCom" == szKey)
-		{
-			string szModelTag = iter.value();
-			m_pInstanceModelCom.lock()->Init_Model(szModelTag.c_str());
-		}
-
-		else if ("PropDesc" == szKey)
-		{
-			json Desc = iter.value();
-
-			_vector vPosition;
-			_vector vOffsetRange;
-
-			for (auto& iter_item : Desc.items())
-			{
-				_float4x4 PropMatrix;
-
-				CJson_Utility::Load_JsonFloat4x4(iter_item.value(), PropMatrix);
-
-				INSTANCE_MESH_DESC	Desc;
-				ZeroMemory(&Desc, sizeof(INSTANCE_MESH_DESC));
-
-				memcpy(&Desc.vRotation   , &PropMatrix.m[0][0], sizeof(_float3));
-				memcpy(&Desc.vScale      , &PropMatrix.m[1][0], sizeof(_float3));
-				memcpy(&Desc.vTarnslation, &PropMatrix.m[2][0], sizeof(_float3));
-
-				vPosition = XMLoadFloat3(&Desc.vTarnslation);
-				vPosition = XMVectorSetW(vPosition, 1.f);
-				
-				MESH_VTX_INFO tInfo = m_pInstanceModelCom.lock()->Get_ModelData().lock()->VertexInfo;
-
-				_vector vMin, vMax, vCenter;
-				vMin = XMLoadFloat3(&tInfo.vMin);
-				vMax = XMLoadFloat3(&tInfo.vMax);
-				vCenter = (vMin + vMax) / 2.f;
-
-				vOffsetRange  = XMVectorAbs(XMLoadFloat3(&tInfo.vMax)) + XMVectorAbs(XMLoadFloat3(&tInfo.vMin));
-				vOffsetRange *= XMLoadFloat3(&Desc.vScale);
-				Desc.fMaxRange = XMVectorGetX(XMVector3Length(vOffsetRange));
-				XMStoreFloat3(&Desc.vCenter, vCenter);
-				Desc.Bake_CenterWithMatrix();
-
-				m_pPropInfos.push_back(Desc);
-			}
-		}
-
-		else if ("Collider_Type" == szKey)
-		{
-			m_iColliderType = iter.value();
-		}
-
-		else if ("Dissolve" == szKey)
-		{
-			m_fDissolveSpeed = In_Json["Dissolve"];
-			m_bDissolve      = true;
-		}
+		GET_SINGLE(CGameManager)->Registration_Section(m_iSectionIndex, Weak_Cast<CGameObject>(m_this));
 	}
 
+	if (0.f > m_fDissolveSpeed)
+	{
+		m_pTextureGroupCom.emplace("g_DissolveTexture"    , Add_Component<CTexture>());
+		m_pTextureGroupCom.emplace("g_DissolveDiffTexture", Add_Component<CTexture>());
+
+		m_pTextureGroupCom["g_DissolveTexture"].lock()->Use_Texture("T_Fire_Tile_BW_03");
+		m_pTextureGroupCom["g_DissolveDiffTexture"].lock()->Use_Texture("Diff_Fire_Tile0");
+	}
+
+	string szModelTag = In_Json["ModelCom"];
+
+	if ("" != szModelTag)
+		m_pInstanceModelCom.lock()->Init_Model(szModelTag.c_str());
+
+	_vector vPosition;
+	_vector vOffsetRange;
+
+	for (auto& iter_item : In_Json["PropDesc"].items())
+	{
+		_float4x4 PropMatrix;
+
+		CJson_Utility::Load_JsonFloat4x4(iter_item.value(), PropMatrix);
+
+		INSTANCE_MESH_DESC	Desc;
+		ZeroMemory(&Desc, sizeof(INSTANCE_MESH_DESC));
+
+		memcpy(&Desc.vRotation   , &PropMatrix.m[0][0], sizeof(_float3));
+		memcpy(&Desc.vScale      , &PropMatrix.m[1][0], sizeof(_float3));
+		memcpy(&Desc.vTarnslation, &PropMatrix.m[2][0], sizeof(_float3));
+
+		vPosition = XMVectorSetW(XMLoadFloat3(&Desc.vTarnslation), 1.f);
+				
+		MESH_VTX_INFO tInfo = m_pInstanceModelCom.lock()->Get_ModelData().lock()->VertexInfo;
+
+		_vector vMin, vMax, vCenter;
+		vMin    = XMLoadFloat3(&tInfo.vMin);
+		vMax    = XMLoadFloat3(&tInfo.vMax);
+		vCenter = (vMin + vMax) / 2.f;
+
+		vOffsetRange   = XMVectorAbs(XMLoadFloat3(&tInfo.vMax)) + XMVectorAbs(XMLoadFloat3(&tInfo.vMin));
+		vOffsetRange  *= XMLoadFloat3(&Desc.vScale);
+		Desc.fMaxRange = XMVectorGetX(XMVector3Length(vOffsetRange));
+		XMStoreFloat3(&Desc.vCenter, vCenter);
+		Desc.Bake_CenterWithMatrix();
+
+		m_pPropInfos.push_back(Desc);
+	}
 
 	m_pInstanceModelCom.lock()->Init_Instance((_uint)m_pPropInfos.size());
 	m_pInstanceModelCom.lock()->Update(m_pPropInfos, true);
@@ -280,33 +299,53 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 	
 }
 
+void CStatic_Instancing_Prop::OnEventMessage(_uint iArg)
+{
+	switch ((EVENT_TYPE)iArg)
+	{
+		case EVENT_TYPE::ON_ENTER_SECTION:
+		{
+			m_bDissolve      = true;
+			m_fDissolveRatio = 0.f;
+		}
+		break;
+
+		case EVENT_TYPE::ON_EXIT_SECTION:
+		{
+			m_bDissolve      = false;
+			m_fDissolveRatio = 0.f;
+		}
+		break;
+	}
+}
+
 void CStatic_Instancing_Prop::Bake_PhysXColliderCom()
 {
 	_bool bConvex = m_iColliderType == 2;
 
 	switch (m_iColliderType)
 	{
-	case 0:
-		DEBUG_ASSERT;
+		case 0:
+			DEBUG_ASSERT;
 		break;
 
 		// Mesh, ConvexMesh
-	case 1:
-	case 2:
-	{
-		m_pPhysXColliderCom.lock()->Init_ModelInstanceCollider(m_pInstanceModelCom.lock()->Get_ModelData(), m_pPropInfos, m_iColliderType);
-		PhysXColliderDesc tDesc;
-		Preset::PhysXColliderDesc::StaticInstancingPropSetting(tDesc, m_pTransformCom);
-		m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
-		m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
-	}
+		case 1:
+		case 2:
+		{
+			m_pPhysXColliderCom.lock()->Init_ModelInstanceCollider(m_pInstanceModelCom.lock()->Get_ModelData(), m_pPropInfos, m_iColliderType);
+			PhysXColliderDesc tDesc;
+			Preset::PhysXColliderDesc::StaticInstancingPropSetting(tDesc, m_pTransformCom);
+			m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
+			m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
+		}
 		break;
 
 		// Dynamic Instancing ColliderComs;
-	case 3:
-	{
-		Bake_DynamicColliderComs();
-	}
+		case 3:
+		{
+			Bake_DynamicColliderComs();
+		}
 		break;
 
 	default:
@@ -336,7 +375,6 @@ void CStatic_Instancing_Prop::Synchronize_DynamicColliderComs()
 {
 	_matrix WorldMatrix;
 
-
 	for (_size_t i = 0; i < m_pPropInfos.size(); ++i)
 	{
 		WorldMatrix = m_pDynamicColliderComs[i].lock()->Get_WorldMatrix();
@@ -347,8 +385,6 @@ void CStatic_Instancing_Prop::Synchronize_DynamicColliderComs()
 
 	m_pInstanceModelCom.lock()->Update(m_pPropInfos, false);
 }
-
-
 
 void CStatic_Instancing_Prop::Free()
 {

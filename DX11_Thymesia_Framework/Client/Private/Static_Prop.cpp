@@ -37,7 +37,14 @@ HRESULT CStatic_Prop::Initialize(void* pArg)
 
 HRESULT CStatic_Prop::Start()
 {
-    return  __super::Start();
+    __super::Start();
+
+    MESH_VTX_INFO tInfo = m_pModelCom.lock()->Get_ModelData().lock()->VertexInfo;
+
+    XMStoreFloat3(&m_vCenterOffset, (XMLoadFloat3(&tInfo.vMin) + XMLoadFloat3(&tInfo.vMax)) / 2.f);
+    m_fCullingOffsetRange = XMVectorGetX(XMVector3Length(XMVectorAbs(XMLoadFloat3(&tInfo.vMax)) + XMVectorAbs(XMLoadFloat3(&tInfo.vMin))));
+
+    return S_OK;
 }
 
 void CStatic_Prop::Tick(_float fTimeDelta)
