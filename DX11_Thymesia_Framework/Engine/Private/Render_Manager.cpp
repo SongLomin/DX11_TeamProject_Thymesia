@@ -599,8 +599,8 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 
 #ifdef _DEBUG
 
-	//if (FAILED(Render_Debug()))
-	//	DEBUG_ASSERT;
+	if (FAILED(Render_Debug()))
+		DEBUG_ASSERT;
 #endif 
 
 	return S_OK;
@@ -1037,12 +1037,12 @@ HRESULT CRender_Manager::Render_Blend()
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_ORMTexture", pRenderTargetManager->Get_SRV(TEXT("Target_PBR")))))
 		DEBUG_ASSERT;
 
-	if (FAILED(m_pIrradianceTextureCom->Set_ShaderResourceView(m_pShader, "g_IrradianceTexture", 0)))
-		DEBUG_ASSERT;
 
 	if (FAILED(m_pBRDFLUTTextureCom->Set_ShaderResourceView(m_pShader, "g_BRDFTexture", 0)))
 		DEBUG_ASSERT;
 
+	if (FAILED(m_pIrradianceTextureCom->Set_ShaderResourceView(m_pShader, "g_IrradianceTexture", 0)))
+		DEBUG_ASSERT;
 	if (FAILED(m_pPreFilterTextureCom->Set_ShaderResourceView(m_pShader, "g_PreFilterTexture", 0)))
 		DEBUG_ASSERT;
 
@@ -1065,6 +1065,9 @@ HRESULT CRender_Manager::Render_Blend()
 	m_pShader->Set_RawValue("g_ViewMatrixInv", &ViewMatrixInv, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_vCamPosition", &pPipeLine->Get_CamPosition(), sizeof(_float4));
+	
+	m_pShader->Set_RawValue("g_fExposure", &m_fExposure, sizeof(_float));
+
 
 	m_pShader->Begin(3, pDeviceContext);
 

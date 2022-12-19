@@ -55,7 +55,7 @@ texture2D g_OriginalEffectTexture;
 // For Motion Blur
 float g_fBlurWidth;
 
-float g_fExposure = 1.f;;
+float g_fExposure;
 
 float g_fFar = 300;
 
@@ -192,6 +192,8 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
     //vector vLightFlagDesc = g_LightFlagTexture.Sample(DefaultSampler, In.vTexUV);
     vector vORMDesc     = g_ORMTexture.Sample(DefaultSampler, In.vTexUV);
    
+    vDiffuseColor = pow(vDiffuseColor, 2.2f);
+    vDiffuseColor.a = 1.f;
 
 	//결과가 0이라면 일치하는 라이트 플래그가 없다. 그리지 않는다.
    // vLightFlagDesc *= g_vLightFlag;
@@ -205,6 +207,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
     //    discard;
 
 	vector vNormal = vector(vNormalDesc.xyz * 2.f - 1.f, 0.f);
+    vNormal = normalize(vNormal);
     float fViewZ = vDepthDesc.y * 300.f;
     /* 0 -> -1, 1 -> 1*/
     vector vWorldPos;
@@ -227,7 +230,6 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 
     vector vLook = normalize(g_vCamPosition- vWorldPos);
     
-    float fIntensity = 1.f;
  
     vLook.a = 0.f;
     float fOcclusion = vORMDesc.x;
@@ -348,90 +350,92 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 	vector	vLightDir = vWorldPos - g_vLightPos;
     float fDistance =  length(vLightDir); 
     
-    if (g_fRange< fDistance)
-        discard;
-    
+    //if (g_fRange < fDistance)
+    //{
+    //    discard;
+
+    //}
     //float fDenom = fDistance / g_fRange;
     //float fDist = fDistance / (1.f - fDenom * fDenom);
     //float fintensity = 1.f;
    
     //float fAtt = fintensity / (fDenom * fDenom + 1.f);
-    float fIntensity = 5.f;
-    float fAtt = 0.5f * cos(fDistance / g_fRange * 3.14159265f) + 0.5f;
-    fAtt *= g_fLightIntensity * fIntensity;
-    vector vLook = normalize(g_vCamPosition - vWorldPos);
+       // float fAtt = 0.5f * cos(fDistance / g_fRange * 3.14159265f) + 0.5f;
+    float fAtt = max(0.0001f, 1 / (fDistance * fDistance));
+        fAtt *= g_fLightIntensity;
+        vector vLook = normalize(g_vCamPosition - vWorldPos);
     
-    float fRoughness = vORMDesc.y;
-    float fMetalness = vORMDesc.z;
-    float fOcclusion = vORMDesc.x;
+        float fRoughness = vORMDesc.y;
+        float fMetalness = vORMDesc.z;
+        float fOcclusion = vORMDesc.x;
 
-    if (fRoughness > 0.f || fMetalness > 0.f || fOcclusion > 0.f)
-    {
-        fRoughness = max(fRoughness,0.001f);
-        fMetalness = max(fMetalness, 0.001f);
-        fOcclusion = max(fOcclusion, 0.001f);
+        if (fRoughness > 0.f || fMetalness > 0.f || fOcclusion > 0.f)
+        {
+            fRoughness = max(fRoughness, 0.001f);
+            fMetalness = max(fMetalness, 0.001f);
+            fOcclusion = max(fOcclusion, 0.001f);
         
-        vector vHalfVec = normalize(vLook + normalize(vLightDir) * -1.f);
+            vector vHalfVec = normalize(vLook + normalize(vLightDir) * -1.f);
 
-        float NdotL = max(dot(vNormal, normalize(vLightDir) * -1.f), 0.0);
-        float NdotH = max(dot(vNormal, vHalfVec), 0.0);
-        float NdotV = max(dot(vNormal, vLook), 0.0);
-        float HdotV = max(dot(vHalfVec, vLook), 0.0);
+            float NdotL = max(dot(vNormal, normalize(vLightDir) * -1.f), 0.0);
+            float NdotH = max(dot(vNormal, vHalfVec), 0.0);
+            float NdotV = max(dot(vNormal, vLook), 0.0);
+            float HdotV = max(dot(vHalfVec, vLook), 0.0);
         
-        float3 vMetalic = lerp(float3(0.04f, 0.04f, 0.04f), vDiffuseColor.xyz, fMetalness);
+            float3 vMetalic = lerp(float3(0.04f, 0.04f, 0.04f), vDiffuseColor.xyz, fMetalness);
 
-        float NDF = trowbridgeReitzNDF(NdotH, fRoughness);
-        float3 F = fresnel(vMetalic, HdotV, fRoughness);
-        float G = schlickBeckmannGAF(NdotV, fRoughness) * schlickBeckmannGAF(NdotL, fRoughness);
+            float NDF = trowbridgeReitzNDF(NdotH, fRoughness);
+            float3 F = fresnel(vMetalic, HdotV, fRoughness);
+            float G = schlickBeckmannGAF(NdotV, fRoughness) * schlickBeckmannGAF(NdotL, fRoughness);
 
-        vector kS = vector(F, 0.f);
-        vector kD = vector(1.f, 1.f, 1.f, 0.f) - kS;
-        kD *= 1.f - fMetalness;
+            vector kS = vector(F, 0.f);
+            vector kD = vector(1.f, 1.f, 1.f, 0.f) - kS;
+            kD *= 1.f - fMetalness;
 
-        vector vNumerator = kS * NDF * G;
-        float fDenominator = 4.f * NdotV * NdotL;
-        vector vSpecular = vNumerator / max(fDenominator, 0.001f);
+            vector vNumerator = kS * NDF * G;
+            float fDenominator = 4.f * NdotV * NdotL;
+            vector vSpecular = vNumerator / max(fDenominator, 0.001f);
 
-        vector vSpecularAcc = vSpecular * NdotL * g_vLightDiffuse * fAtt /** fOcclusion*/;
-        vector vAmbientColor = kD * vDiffuseColor / 3.141592265359  * fOcclusion * NdotL * g_vLightDiffuse * fAtt; 
+            vector vSpecularAcc = vSpecular * NdotL * g_vLightDiffuse * fAtt /** fOcclusion*/;
+            vector vAmbientColor = kD * vDiffuseColor / 3.141592265359 * fOcclusion * NdotL * g_vLightDiffuse * fAtt;
 
         //shade
-        vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * vDiffuseColor));
-        vResult *= fOcclusion;
+            vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * vDiffuseColor));
+            vResult *= fOcclusion;
 
-        Out.vSpecular = vSpecularAcc;
-        Out.vSpecular.a = 0.f;
+            Out.vSpecular = vSpecularAcc;
+            Out.vSpecular.a = 0.f;
 
-        Out.vShade = vResult;
-        Out.vShade.a = 1.f;
+            Out.vShade = vResult;
+            Out.vShade.a = 1.f;
 
-        Out.vAmbient = vAmbientColor;
-        Out.vAmbient.a = 1.f;
+            Out.vAmbient = vAmbientColor;
+            Out.vAmbient.a = 1.f;
           
-    }
-    else
-    {
+        }
+        else
+        {
         //Out.vShade = vShadeDesc;
-        vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * g_vMtrlAmbient)) * fAtt;
+            vector vResult = g_vLightDiffuse * saturate(saturate(dot(normalize(vLightDir) * -1.f, vNormal)) + (g_vLightAmbient * g_vMtrlAmbient)) * fAtt;
 
-        if (vResult.r < 0.05f && vResult.g < 0.05f && vResult.b < 0.05f)
-            discard;
+            if (vResult.r < 0.05f && vResult.g < 0.05f && vResult.b < 0.05f)
+                discard;
 
-        Out.vShade = vResult ;
-        Out.vShade.a = 1.f;
+            Out.vShade = vResult * fAtt;
+            Out.vShade.a = 1.f;
 
-        vector vReflect = reflect(normalize(vLightDir), vNormal);
+            vector vReflect = reflect(normalize(vLightDir), vNormal);
    
-        Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f) * fAtt ;
-        Out.vSpecular.a = 0.f;
-        Out.vAmbient = vector(0.f, 0.f, 0.f, 0.f);
+            Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f) * fAtt;
+            Out.vSpecular.a = 0.f;
+            Out.vAmbient = vector(0.f, 0.f, 0.f, 0.f);
+        }
+    
+        //Out.vAmbient = pow(Out.vAmbient, 2.2f);
+        //Out.vSpecular = pow(Out.vSpecular, 2.2f);
+    
+        return Out;
     }
-    
-    //Out.vAmbient = pow(Out.vAmbient, 2.2f);
-    //Out.vSpecular = pow(Out.vSpecular, 2.2f);
-    
-	return Out;
-}
 
 PS_OUT_LIGHT PS_MAIN_LIGHT_HALF_POINT(PS_IN In)
 {
@@ -533,43 +537,35 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
     if (vAmbientDesc.a > 0.f)
     {
         vector vNormal = vector(vNormalDesc.xyz * 2.f - 1.f, 0.f);
-        
-        vector vLightDir = vWorldPos - g_vLightPos;
-        float fDistance = length(vLightDir);
-    
+        vNormal = normalize(vNormal);
         vector vLook = normalize(g_vCamPosition - vWorldPos);
     
         float NdotV = max(dot(vNormal, vLook), 0.0);
     
-        float fRoughness =vORMDesc.y;
-        float fMetalness =vORMDesc.z;
-        float fOcclusion =vORMDesc.x;
-    
-        float3 vMetalic = lerp(vDiffuse.xyz*0.04f, vDiffuse.xyz, fMetalness);
-        float3 F = fresnelSchlickRoughness(NdotV, vMetalic, fRoughness);
-      //irradiance
-        //vector kS = vector(F, 0.f);
-        //vector kD = vector(1.f, 1.f, 1.f, 0.f) - kS;
-        //kD *= 1.f - fMetalness;
-        
-        vector kD = vector(lerp(1.0 - F, 0.0, fMetalness), 0.f);
+        float fRoughness = max(0.01f, vORMDesc.y);
+        float fMetalness = max(0.01f, vORMDesc.z);
+        float fOcclusion = max(0.01f, vORMDesc.x);
      
-        vector vIrradiance = g_IrradianceTexture.Sample(ClampSampler, vNormal);
-        vector vIrradianceDiffuse = vIrradiance * vDiffuse * kD;
-          
-        vector vReflect = reflect(-normalize(vLook), vNormal);
+        vector vReflect = normalize(reflect(-normalize(vLook), vNormal));
         
-        float3 prefilteredColor = g_PreFilterTexture.SampleLevel(ClampSampler, vReflect.xyz, (fRoughness * 10.f)).rgb;
-        float2 envBRDF = g_BRDFTexture.Sample(ClampSampler, float2(NdotV, fRoughness)).rg;
-        vector specular = vector(prefilteredColor * (F * envBRDF.x + envBRDF.y), 0.f) * fOcclusion * (1.f - fRoughness);
+        float4 brdfTerm = g_BRDFTexture.Sample(ClampSampler, float2(NdotV, 1.0 - fRoughness));
+        float3 metalSpecularIBL = g_PreFilterTexture.SampleLevel(ClampSampler, vReflect.xyz, (fRoughness * 10.f)).rgb;
+
+        float3 dielectricColor = float3(0.04, 0.04, 0.04);
+        float3 diffColor = vDiffuse.rgb * (1.0 - fMetalness);
+        float3 specColor = lerp(dielectricColor.rgb, vDiffuse.rgb, fMetalness);
+   
+        vector diffuseIBL = g_IrradianceTexture.Sample(ClampSampler, vNormal) / 3.14159;
+        diffuseIBL.rgb = lerp(diffuseIBL.rgb * 0.3f, diffuseIBL.rgb, fOcclusion);
+    
+        float3 albedoByDiffuse = diffColor.rgb * diffuseIBL.rgb;
+
+        float4 litColor;
+        litColor.rgb = (albedoByDiffuse.rgb + (metalSpecularIBL * (specColor * brdfTerm.x + (brdfTerm.y)))) * fOcclusion;
  
-        specular = pow(specular, 2.2f);
-        vIrradianceDiffuse = pow(vIrradianceDiffuse, 2.2f);
-        
-        specular.a = 0.f;
-        vIrradianceDiffuse.a = 0.f;
-        
-        Out.vColor = vAmbientDesc + vSpecular /* * (1 - bIsInShadow)*/ + vIrradianceDiffuse + specular;
+        litColor = pow(litColor, 2.2f);
+      
+        Out.vColor = vAmbientDesc + vSpecular /* * (1 - bIsInShadow)*/ + litColor;
         Out.vColor.rgb *= vViewShadow.rgb;
      
         Out.vColor.a = 1.f;
@@ -850,6 +846,7 @@ BlendState BS_AlphaBlending
 {
 	BlendEnable[0] = true;
 	BlendEnable[1] = true;
+    BlendEnable[2] = true;
 
 	SrcBlend  = one;
 	DestBlend = one;

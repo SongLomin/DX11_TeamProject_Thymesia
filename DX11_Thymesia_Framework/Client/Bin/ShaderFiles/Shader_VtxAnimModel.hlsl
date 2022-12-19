@@ -495,7 +495,7 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_NORMAL In)
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
 
-    Out.vORM = 0; //g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
+    Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
 
 
     return Out;
