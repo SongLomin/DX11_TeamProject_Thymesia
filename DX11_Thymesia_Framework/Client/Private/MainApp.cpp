@@ -80,8 +80,6 @@ HRESULT CMainApp::Initialize()
 	GAMEINSTANCE->Check_PhysXFilterGroup((_uint)PHYSX_COLLISION_LAYER::DYNAMIC_PROP, (_uint)PHYSX_COLLISION_LAYER::GROUND);
 	GAMEINSTANCE->Check_PhysXFilterGroup((_uint)PHYSX_COLLISION_LAYER::DYNAMIC_PROP, (_uint)PHYSX_COLLISION_LAYER::STATIC_PROP);
 
-
-
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxColor"), TEXT("../Bin/ShaderFiles/Shader_VtxColor.hlsl"));
 	GAMEINSTANCE->Add_SingleGameObject<CFadeMask>(LEVEL_STATIC);
 
@@ -125,19 +123,15 @@ HRESULT CMainApp::Initialize()
 	ImGui_ImplWin32_Init(g_hWnd);
 	ImGui_ImplDX11_Init(DEVICE, DEVICECONTEXT);
 
-
 #ifdef _DEBUG
 	m_pDeveloperConsole = CDeveloperConsole_Manager::Create_Instance();
 	m_pDeveloperConsole->Initialize();
 #endif // _DEBUG
 
-
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter%d.dds"));
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
-
-
 	return S_OK;
 }
 
@@ -170,6 +164,7 @@ void CMainApp::Tick(float fTimeDelta)
 		}
 	}
 
+#ifdef _DEBUG
 	if (KEY_INPUT(KEY::GRAVE, KEY_STATE::TAP))
 	{
 		m_bEnableConsole = !m_bEnableConsole;
@@ -183,6 +178,7 @@ void CMainApp::Tick(float fTimeDelta)
 			pTargetCamera.lock()->Set_StopCamera(m_bEnableConsole);
 		}
 	}
+#endif // _DEBUG
 
 	if (nullptr == GAMEINSTANCE)
 		return;

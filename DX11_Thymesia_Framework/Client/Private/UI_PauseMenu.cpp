@@ -111,6 +111,11 @@ void CUI_PauseMenu::OnEnable(void* _Arg)
 
 	m_bOpenThisFrame = true;
 
+	m_pPauseMenuBackground.lock()->Set_AlphaColor(1.f);
+	m_pPauseMenuBackground_MainFrame.lock()->Set_AlphaColor(1.f);
+	m_pPauseMenuBackground_Main.lock()->Set_AlphaColor(1.f);
+	m_pPauseMenuBackground_Top.lock()->Set_AlphaColor(1.f);
+
 	OnPaging();
 }
 
