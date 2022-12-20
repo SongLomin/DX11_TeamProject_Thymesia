@@ -81,6 +81,29 @@ HRESULT CCorvus::Initialize(void* pArg)
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
 #endif // _CORVUS_EFFECT_
+	LIGHTDESC LightDesc;
+
+	LightDesc.eActorType = LIGHTDESC::TYPE_SPOTLIGHT;
+	LightDesc.vDiffuse = { 1.f,0.95f,0.8f,1.f };
+	LightDesc.vSpecular = { 1.f,0.95f,0.8f,1.f };
+	LightDesc.vAmbient = { 1.f,0.95f,0.8f,1.f };
+	LightDesc.fIntensity = 0.4f;
+	LightDesc.fRange =5.f;
+	LightDesc.fCutOff = cosf(XMConvertToRadians(40.f));
+	LightDesc.fOuterCutOff = cosf(XMConvertToRadians(60.f));
+	_vector vPlayerPos = m_pTransformCom.lock()->Get_Position();
+	_vector vPlayerLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+
+	_vector vLightPos = vPlayerPos + XMVectorSet(0.f, 1.5f, 0.f, 0.f) - vPlayerLook * 0.5f;
+	_vector vLightLook = XMVector3Normalize(vPlayerPos - vLightPos + vPlayerLook*0.5f);
+
+	XMStoreFloat4(&LightDesc.vPosition, vLightPos);
+	XMStoreFloat4(&LightDesc.vDirection, vLightLook);
+
+	LightDesc.bEnable = true;
+
+	m_LightDesc = GAMEINSTANCE->Add_Light(LightDesc);
+
 	return S_OK;
 }
 
@@ -110,6 +133,17 @@ void CCorvus::Tick(_float fTimeDelta)
 	// TODO : get rid of this
 	m_pSkillSystem.lock()->Tick(fTimeDelta);
 	m_pStatus.lock()->Tick(fTimeDelta);
+
+	_vector vPlayerPos = m_pTransformCom.lock()->Get_Position();
+	_vector vPlayerLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+
+	_vector vLightPos = vPlayerPos + XMVectorSet(0.f, 1.5f, 0.f, 0.f) - vPlayerLook * 0.5f;
+	_vector vLightLook = XMVector3Normalize(vPlayerPos - vLightPos + vPlayerLook * 0.5f);
+
+	XMStoreFloat4(&m_LightDesc.vPosition,vLightPos);
+	XMStoreFloat4(&m_LightDesc.vDirection, vLightLook);
+
+	GAMEINSTANCE->Set_LightDesc(m_LightDesc);
 
 	this->Debug_KeyInput(fTimeDelta);
 

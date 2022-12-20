@@ -130,7 +130,10 @@ HRESULT CBat::Render(ID3D11DeviceContext* pDeviceContext)
 		}
 		else
 		{
-			iPassIndex = 4;
+			if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+				iPassIndex = 4;
+			else
+				iPassIndex = 5;
 		}
 
 		//m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);

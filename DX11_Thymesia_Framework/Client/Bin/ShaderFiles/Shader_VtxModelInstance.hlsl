@@ -162,7 +162,7 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 
 	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     clip(Out.vDiffuse.a - 0.1f);
-	
+    Out.vDiffuse.a = 1.f;
 	/* 0 ~ 1 */
 	float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
 
@@ -176,7 +176,7 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 	Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
 	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
-    Out.vORM = 0;
+
     Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
 
     Out.vExtractBloom = 0;
@@ -294,7 +294,7 @@ PS_OUT PS_MAIN_NORMAL_PBR(PS_IN_NORMAL In)
 
 	Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     clip(Out.vDiffuse.a - 0.1f);
-
+    Out.vDiffuse.a = 1.f;
 	/* 0 ~ 1 */
 	float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
 
@@ -311,7 +311,7 @@ PS_OUT PS_MAIN_NORMAL_PBR(PS_IN_NORMAL In)
     Out.vShaderFlag = g_vShaderFlag;
 
 	Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
-	// Out.vORM = g_ORMTexture.Sample(DefaultSampler, In.vTexUV);
+
 	
     Out.vExtractBloom = 0;
 
@@ -337,7 +337,8 @@ PS_OUT PS_MAIN_Dissove(PS_IN_NORMAL In)
     Out.vDiffuse = (1.f - fStepValue) * vTexDiff + fStepValue * g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV);
 	
     clip(Out.vDiffuse.a - 0.1f);
-
+    Out.vDiffuse.a = 1.f;
+	
 	float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
 	vPixelNormal = vPixelNormal * 2.f - 1.f;
 

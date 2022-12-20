@@ -264,7 +264,7 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 					}
 					break;
 			
-					case LIGHTDESC::TYPE_HALFPOINT:
+					case LIGHTDESC::TYPE_SPOTLIGHT:
 					{
 						ImGui::DragFloat4("Light_Position" , &m_tLightDesc.vPosition.x , 0.01f);
 						ImGui::DragFloat4("Light_Direction", &m_tLightDesc.vDirection.x, 0.01f);
@@ -274,6 +274,8 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 						ImGui::DragFloat ("Light_Range"    , &m_tLightDesc.fRange      , 0.01f);
 						ImGui::DragFloat4("Light_Flag"     , &m_tLightDesc.vLightFlag.x, 0.01f);
 						ImGui::DragFloat ("Light_Intensity", &m_tLightDesc.fIntensity  , 0.01f);
+						ImGui::DragFloat("Light_CutOff", &m_tLightDesc.fCutOff, 0.01f);
+						ImGui::DragFloat("Light_OuterCutoff", &m_tLightDesc.fOuterCutOff, 0.01f);
 					}
 					break;
 				}
