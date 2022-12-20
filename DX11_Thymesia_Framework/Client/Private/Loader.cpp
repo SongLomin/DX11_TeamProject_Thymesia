@@ -223,6 +223,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("DamageFont_Normal"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Normal/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("DamageFont_Parry"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Parry/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 
+
+
 	m_isFinished = true;
 
 	return S_OK;
@@ -361,7 +363,8 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	GAMEINSTANCE->Add_Light(LightDesc);
 
-	GAMEINSTANCE->Set_IrradianceMap(0);
+	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"),MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
 
 	return S_OK;
 }
@@ -429,6 +432,10 @@ HRESULT CLoader::Loading_ForStage2Level()
 #endif // _BRIGHT_LIGHT_
 
 	GAMEINSTANCE->Add_Light(LightDesc);
+
+	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
+
 
 	m_isFinished = true;
 	return S_OK;
@@ -499,6 +506,10 @@ HRESULT CLoader::Loading_ForStage3Level()
 #endif // _BRIGHT_LIGHT_
 
 	GAMEINSTANCE->Add_Light(LightDesc);
+
+	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
+
 
 	return S_OK;
 }

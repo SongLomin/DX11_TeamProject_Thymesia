@@ -420,9 +420,8 @@ HRESULT CRender_Manager::Initialize()
 
 	m_pVIBuffer = CVIBuffer_Rect::Create();
 	
-	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap%d.dds"));
 	m_pIrradianceTextureCom = CTexture::Create();
-	m_pIrradianceTextureCom->Use_Texture("IrradianceMap");
+	//m_pIrradianceTextureCom->Use_Texture("IrradianceMap");
 
 	GAMEINSTANCE->Load_Textures("BRDF", TEXT("../Bin/Resources/Textures/BRDF/brdf%d.dds"));
 	m_pBRDFLUTTextureCom = CTexture::Create();
@@ -431,7 +430,7 @@ HRESULT CRender_Manager::Initialize()
 
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter%d.dds"));
 	m_pPreFilterTextureCom = CTexture::Create();
-	m_pPreFilterTextureCom->Use_Texture("PreFilter");
+	//m_pPreFilterTextureCom->Use_Texture("PreFilter");
 
 
 
@@ -676,12 +675,20 @@ HRESULT CRender_Manager::Set_Saturation(const _float In_fSaturation)
 	return S_OK;
 }
 
-HRESULT CRender_Manager::Set_IrradianceMap(const _uint In_iIrradianceMap)
+HRESULT CRender_Manager::Set_IrradianceMap(const _char* In_szIrradianceMap)
 {
-	m_iIrradianceMap = In_iIrradianceMap;
+	m_pIrradianceTextureCom->Use_Texture(In_szIrradianceMap);
 
 	return S_OK;
 }
+
+HRESULT CRender_Manager::Set_PreFilteredMap(const _char* In_szPreFilteredMap)
+{
+	m_pPreFilterTextureCom->Use_Texture(In_szPreFilteredMap);
+
+	return S_OK;
+}
+
 
 
 HRESULT CRender_Manager::Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain)
@@ -1048,9 +1055,9 @@ HRESULT CRender_Manager::Render_Blend()
 	if (FAILED(m_pBRDFLUTTextureCom->Set_ShaderResourceView(m_pShader, "g_BRDFTexture", 0)))
 		DEBUG_ASSERT;
 
-	if (FAILED(m_pIrradianceTextureCom->Set_ShaderResourceView(m_pShader, "g_IrradianceTexture", m_iIrradianceMap)))
+	if (FAILED(m_pIrradianceTextureCom->Set_ShaderResourceView(m_pShader, "g_IrradianceTexture")))
 		DEBUG_ASSERT;
-	if (FAILED(m_pPreFilterTextureCom->Set_ShaderResourceView(m_pShader, "g_PreFilterTexture", m_iIrradianceMap)))
+	if (FAILED(m_pPreFilterTextureCom->Set_ShaderResourceView(m_pShader, "g_PreFilterTexture")))
 		DEBUG_ASSERT;
 
 

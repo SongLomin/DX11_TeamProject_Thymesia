@@ -369,11 +369,15 @@ HRESULT CGameInstance::Set_Saturation(const _float In_fSaturation)
 	return m_pRender_Manager->Set_Saturation(In_fSaturation);
 }
 
-HRESULT CGameInstance::Set_IrradianceMap(const _uint In_iIrradianceMap)
+HRESULT CGameInstance::Set_IrradianceMap(const _char* In_szIrradianceMap)
 {
-	return m_pRender_Manager->Set_IrradianceMap(In_iIrradianceMap);
+	return m_pRender_Manager->Set_IrradianceMap(In_szIrradianceMap);
 }
 
+HRESULT CGameInstance::Set_PreFilteredMap(const _char* In_szPreFiltered)
+{
+	return m_pRender_Manager->Set_PreFilteredMap(In_szPreFiltered);
+}
 
 ID3D11DeviceContext* CGameInstance::Get_BeforeRenderContext()
 {
