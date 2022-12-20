@@ -42,6 +42,7 @@ private:
     _bool    RenderView_SelectModelComponent();
     void     RenderView_Transform_Info(weak_ptr<CGameObject> In_Obj);
     void     RenderView_Transform_Edit(weak_ptr<CGameObject> In_Obj);
+    void     Update_VtxInfo(weak_ptr<CGameObject> In_pObj, _hashcode In_HashCode);
 
 private:
     HRESULT SetUp_ShaderResource();
