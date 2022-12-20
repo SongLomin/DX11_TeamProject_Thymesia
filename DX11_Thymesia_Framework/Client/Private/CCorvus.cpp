@@ -375,6 +375,10 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_Short_Claw_Atk2);
 	ADD_STATE_MACRO(CCorvusState_Short_Claw_Atk3);
 	ADD_STATE_MACRO(CCorvusState_HurtBlown);
+	ADD_STATE_MACRO(CCorvusState_Bat_Execution);
+	ADD_STATE_MACRO(CCorvusState_HurtFallDown);
+	ADD_STATE_MACRO(CCorvusState_HurtFallDownEnd);
+	ADD_STATE_MACRO(CCorvusState_KnockBack);
 
 
 
@@ -383,6 +387,7 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_CheckPointEnd);
 	ADD_STATE_MACRO(CCorvusState_CheckPointLoop);
 	ADD_STATE_MACRO(CCorvusState_Joker_Execution);
+	ADD_STATE_MACRO(CCorvusState_Execution_Start);
 
 #undef ADD_STATE_MACRO
 }
@@ -514,6 +519,13 @@ void CCorvus::OnEventMessage(_uint iArg)
 	{
 		Change_State<CCorvusState_Die>();
 	}
+
+	if ((_uint)EVENT_TYPE::ON_BATEXECUTION == iArg)
+	{
+		Change_State<CCorvusState_Execution_Start>();
+	}
+	
+	
 }
 
 void CCorvus::Free()

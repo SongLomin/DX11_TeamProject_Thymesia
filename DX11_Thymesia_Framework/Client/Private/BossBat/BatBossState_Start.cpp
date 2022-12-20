@@ -118,11 +118,6 @@ _bool CBatBossState_Start::Check_AndChangeNextState()
 		return false;
 
 	
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.999f)
-	{
-		m_pPhysXControllerCom.lock()->Enable_Gravity(true);
-	}
-	
 
 	return false;
 }

@@ -87,6 +87,7 @@ void CBatBossState_Charge::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
+	
 
 	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_ZeroAttackCount(0);
 	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_ChargeCount(1);
@@ -108,6 +109,11 @@ _bool CBatBossState_Charge::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+
+	if (m_iHellSceram == 1)
+	{
+		Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_ChestCheck(true);
+	}
 
 	if (m_iHellSceram == 2)
 	{

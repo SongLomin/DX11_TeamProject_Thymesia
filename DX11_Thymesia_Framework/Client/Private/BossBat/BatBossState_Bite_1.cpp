@@ -79,7 +79,7 @@ void CBatBossState_Bite_1::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_bOne = true;
 
-	m_pPhysXControllerCom.lock()->Enable_Gravity(false);
+	//m_pPhysXControllerCom.lock()->Enable_Gravity(false);
 
 	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 
@@ -143,8 +143,10 @@ _bool CBatBossState_Bite_1::Check_AndChangeNextState()
 		m_bOne = false;
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 165)
+	
+	if (ComputeAngleWithPlayer() > 0.98f)
 	{
+		Rotation_TargetToLookDir();
 		m_bAttackLookAtLimit = false;
 	}
 
