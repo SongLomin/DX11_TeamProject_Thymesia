@@ -5,6 +5,7 @@
 #include "GameManager.h"
 #include "Window_AnimationModelView.h"
 #include "PreViewAnimationModel.h"
+#include "PreView_Prop.h"
 
 GAMECLASS_C(CEffectGroup)
 CLONE_C(CEffectGroup, CGameObject)
@@ -225,18 +226,21 @@ void CEffectGroup::Play(_float fTimeDelta)
         elem.lock()->Play(fTimeDelta);
 }
 
+#ifdef _DEBUG
 void CEffectGroup::Reset_Effects()
 {
-    weak_ptr<CTransform> pPreviewModelTransform(GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Transform());
+	weak_ptr<CTransform> pPreviewModelTransform = GET_SINGLE(CWindow_AnimationModelView)->Get_PreviewAnimModel().lock()->Get_Transform();
 
-    for (auto& elem : m_pEffectMeshs)
-        elem.lock()->Reset_Effect(pPreviewModelTransform);
+    if (!pPreviewModelTransform.lock())
+        pPreviewModelTransform = GET_SINGLE(CWindow_AnimationModelView)->Get_PreviewPropModel().lock()->Get_Transform();
 
-#ifdef _DEBUG
+	for (auto& elem : m_pEffectMeshs)
+		elem.lock()->Reset_Effect(pPreviewModelTransform);
+
     for (auto& elem : m_pEffectParticles)
-        elem.lock()->Trigger_Reset(pPreviewModelTransform);
-#endif // _DEBUG
+        elem.lock()->Reset_Effect(pPreviewModelTransform);
 }
+#endif // _DEBUG
 
 void CEffectGroup::Reset_Effects(weak_ptr<CTransform> pParentTransformCom)
 {

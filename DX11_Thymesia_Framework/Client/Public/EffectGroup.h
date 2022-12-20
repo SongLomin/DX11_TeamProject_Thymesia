@@ -54,7 +54,9 @@ public:
 
     void Sync_Animation();
     void Play(_float fTimeDelta);
+#ifdef _DEBUG
     void Reset_Effects();
+#endif // _DEBUG
     void Reset_Effects(weak_ptr<CTransform> pParentTransformCom);
 
     _bool Use_EffectGroup(weak_ptr<CTransform> pParentTransformCom, const _uint& In_iTimeScaleLayer = -1);

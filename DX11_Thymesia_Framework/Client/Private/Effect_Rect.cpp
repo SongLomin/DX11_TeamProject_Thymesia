@@ -108,12 +108,12 @@ void CEffect_Rect::Tick(_float fTimeDelta)
 	CGameObject::CallBack_Tick(fTimeDelta);
 
 #ifdef _DEBUG
-	if (m_bResetTrigger && m_pParentTransformCom.lock())
-	{
-		ReBake_EditParticle();
-		Reset_Effect(m_pParentTransformCom.lock());
-		m_bResetTrigger = false;
-	}
+	//if (m_bResetTrigger && m_pParentTransformCom.lock())
+	//{
+	//	ReBake_EditParticle();
+	//	Reset_Effect(m_pParentTransformCom.lock());
+	//	m_bResetTrigger = false;
+	//}
 #endif // _DEBUG
 
 	if (m_pVIBuffer.lock()->Get_InstanceCount() != m_tEffectParticleDesc.iMaxInstance)
@@ -650,8 +650,8 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #ifdef _DEBUG
 		if ((_uint)LEVEL_EDIT == m_CreatedLevel)
 		{
-			m_pParentTransformCom = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Component<CTransform>().lock();
-			m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
+			m_pParentTransformCom = GET_SINGLE(CWindow_AnimationModelView)->Get_PreviewAnimModel().lock()->Get_Component<CTransform>().lock();
+			m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreviewAnimModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
 		}
 #endif // _DEBUG
 	}
@@ -2374,7 +2374,7 @@ void CEffect_Rect::Tool_Spawn_Life_Time()
 
 void CEffect_Rect::Tool_Boner()
 {
-	weak_ptr<CPreviewAnimationModel> pPreviewModel(GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel());
+	weak_ptr<CPreviewAnimationModel> pPreviewModel(GET_SINGLE(CWindow_AnimationModelView)->Get_PreviewAnimModel());
 
 	if (ImGui::Button("Refresh##Get_Bone_List"))
 	{
@@ -3355,6 +3355,6 @@ void CEffect_Rect::OnChangeAnimationKey(const _uint& In_Key)
 	if (m_tEffectParticleDesc.iSyncAnimationKey != (_int)In_Key)
 		return;
 
-	weak_ptr<CTransform> pPreviewModelTransform = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Transform();
+	weak_ptr<CTransform> pPreviewModelTransform = GET_SINGLE(CWindow_AnimationModelView)->Get_PreviewAnimModel().lock()->Get_Transform();
 	Reset_Effect(pPreviewModelTransform);
 }
