@@ -38,7 +38,7 @@ void CWindow_AnimationPlayerView::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
-    
+
 
     if (!m_bStop)
     {
@@ -219,7 +219,7 @@ HRESULT CWindow_AnimationPlayerView::Load_KeyEvent()
                 szText += "true";
             else
                 szText += "false";
-            
+
             szText += ")";
             m_KeyEventEffectGroupNames[(_int)i].emplace_back(szText);
         }
@@ -340,7 +340,7 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
     ImGui::SetNextItemWidth(250.f);
     if (ImGui::InputText("File Name", pFileNameBuffer, MAX_PATH))
         m_strKeyEventFileName = pFileNameBuffer;
-    
+
 
     if (ImGui::Button("Save Custom"))
     {
@@ -348,7 +348,7 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
         {
             m_KeyEventJson.clear();
         }
-		
+
 		Save_KeyEvent();
     }
 
@@ -370,7 +370,7 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
 
     if (ImGui::Button("Disable_Weapon"))
     {
-        Add_EnableWeaponEvent(false); 
+        Add_EnableWeaponEvent(false);
         Save_KeyEvent();
         Load_KeyEvent();
     }
@@ -411,7 +411,7 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
             {
                 if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
                 {
-                    
+
                 }
             }
         }
@@ -422,7 +422,7 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
     ImGui::Text(m_pPreViewModel.lock()->Get_CurrentModel().lock()->Get_ModelKey());
 
     ImGui::SameLine();
-    
+
     if (ImGui::Button("Clear Effect Back"))
     {
         ClearBack_KeyEvent();
@@ -480,7 +480,7 @@ void CWindow_AnimationPlayerView::Draw_AnimationList()
         else
         {
 			pCurrentModel.lock()->Set_RootNode("root", byFlag);
-		}     
+		}
     }
 
     ImGui::SameLine();

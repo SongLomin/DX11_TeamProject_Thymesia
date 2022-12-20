@@ -133,9 +133,9 @@ void CEffect_Rect::Thread_PreLateTick(_float fTimeDelta)
 
 void CEffect_Rect::LateTick(_float fTimeDelta)
 {
-#ifndef _USE_THREAD_ 
+#ifndef _USE_THREAD_
 	m_pVIBuffer.lock()->Update(m_tParticleDescs, DEVICECONTEXT, ((_int)TRANSFORMTYPE::JUSTSPAWN == m_tEffectParticleDesc.iFollowTransformType));
-#endif 
+#endif
 	__super::LateTick(fTimeDelta);
 
 	if (Check_DisableAllParticle())
@@ -3538,7 +3538,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 				ImGui::DragFloat("##Discard_Ratio", &m_tEffectParticleDesc.fDiscardRatio, 0.01f, 0.f, 3.f);
 
 				Tool_ToggleOption("Easing Alpha", "Easing_Alpha", EFFECTPARTICLE_DESC::Option4::Easing_Alpha);
-				
+
 				Tool_Color();
 
 				if (Check_Option(EFFECTPARTICLE_DESC::Option4::Easing_Alpha))
