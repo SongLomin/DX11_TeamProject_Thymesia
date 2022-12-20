@@ -45,22 +45,6 @@ void CCorvusState_Short_Claw_Atk2::Tick(_float fTimeDelta)
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 
-	if (KEY_INPUT(KEY::N, KEY_STATE::TAP))
-	{
-		if (m_fDebugAnimationSpeed < 0.5f)
-		{
-			m_fDebugAnimationSpeed = 1.f;
-		}
-
-		else
-		{
-			m_fDebugAnimationSpeed = 0.1f;
-		}
-	}
-
-
-
-
 
 	Attack();
 }
@@ -90,15 +74,6 @@ void CCorvusState_Short_Claw_Atk2::Call_NextAnimationKey(const _uint& In_iKeyInd
 
 
 }
-
-//void CCorvusState_Short_Claw_Atk2::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
-//{
-//
-//
-//	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
-//	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-//	m_pModelCom.lock()->Set_AnimationSpeed(2.5f);
-//}
 
 void CCorvusState_Short_Claw_Atk2::Attack()
 {

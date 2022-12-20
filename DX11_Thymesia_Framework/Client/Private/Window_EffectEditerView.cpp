@@ -128,7 +128,7 @@ void CWindow_EffectEditerView::Call_SyncAnimation()
 
 void CWindow_EffectEditerView::Call_UpdatePreViewModel()
 {
-    m_pPreViewModel = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel();
+    m_pPreViewModel = GET_SINGLE(CWindow_AnimationModelView)->Get_PreviewAnimModel();
 
     m_pPreViewModel.lock()->Get_CurrentModel().lock()->CallBack_AnimationEnd -=
         bind(&CWindow_EffectEditerView::Call_SyncAnimation, this);

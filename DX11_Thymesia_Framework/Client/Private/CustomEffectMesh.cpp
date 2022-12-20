@@ -239,7 +239,7 @@ void CCustomEffectMesh::Sync_Animation()
 	if (!m_tEffectMeshDesc.bSyncAnimation)
 		return;
 
-	weak_ptr<CTransform> pPreviewModelTransform(GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Transform());
+	weak_ptr<CTransform> pPreviewModelTransform(GET_SINGLE(CWindow_AnimationModelView)->Get_PreviewAnimModel().lock()->Get_Transform());
 
 	Reset_Effect(pPreviewModelTransform);
 }
@@ -542,8 +542,8 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 #ifdef _DEBUG
 		if ((_uint)LEVEL_EDIT == m_CreatedLevel)
 		{
-			m_pParentTransformCom = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Component<CTransform>().lock();
-			m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
+			m_pParentTransformCom = GET_SINGLE(CWindow_AnimationModelView)->Get_PreviewAnimModel().lock()->Get_Component<CTransform>().lock();
+			m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreviewAnimModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
 		}
 #endif // _DEBUG
 	}
@@ -885,7 +885,7 @@ void CCustomEffectMesh::Tool_Boner()
 
 	if (m_tEffectMeshDesc.bBoner)
 	{
-		weak_ptr<CPreviewAnimationModel> pPreviewModel = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel();
+		weak_ptr<CPreviewAnimationModel> pPreviewModel = GET_SINGLE(CWindow_AnimationModelView)->Get_PreviewAnimModel();
 
 		if (!pPreviewModel.lock())
 		{
@@ -1750,7 +1750,7 @@ void CCustomEffectMesh::OnChangeAnimationKey(const _uint& In_Key)
 	if (m_tEffectMeshDesc.iSyncAnimationKey != (_int)In_Key)
 		return;
 
-	weak_ptr<CTransform> pPreviewModelTransform(GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Transform());
+	weak_ptr<CTransform> pPreviewModelTransform(GET_SINGLE(CWindow_AnimationModelView)->Get_PreviewAnimModel().lock()->Get_Transform());
 
 	Reset_Effect(pPreviewModelTransform);
 }

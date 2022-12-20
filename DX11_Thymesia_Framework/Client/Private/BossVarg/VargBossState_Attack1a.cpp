@@ -86,8 +86,10 @@ void CVargBossState_Attack1a::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
-	m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CVargBossState_Attack1a::Call_NextKeyFrame, this, placeholders::_1);
-	m_pPhysXControllerCom.lock()->Callback_ControllerHit += bind(&CVargBossState_Attack1a::Call_OtherControllerHit, this, placeholders::_1);
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey +=
+		bind(&CVargBossState_Attack1a::Call_NextKeyFrame, this, placeholders::_1);
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
+		bind(&CVargBossState_Attack1a::Call_OtherControllerHit, this, placeholders::_1);
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Attack1a -> OnStateStart" << endl;
 #endif // _DEBUG_COUT_
@@ -96,8 +98,10 @@ void CVargBossState_Attack1a::OnStateStart(const _float& In_fAnimationBlendTime)
 void CVargBossState_Attack1a::OnStateEnd()
 {
 	__super::OnStateEnd();
-	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CVargBossState_Attack1a::Call_NextKeyFrame, this, placeholders::_1);
-	m_pPhysXControllerCom.lock()->Callback_ControllerHit -= bind(&CVargBossState_Attack1a::Call_OtherControllerHit, this, placeholders::_1);
+	m_pThisAnimationCom.lock()->CallBack_NextChannelKey -=
+		bind(&CVargBossState_Attack1a::Call_NextKeyFrame, this, placeholders::_1);
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit -=
+		bind(&CVargBossState_Attack1a::Call_OtherControllerHit, this, placeholders::_1);
 }
 
 

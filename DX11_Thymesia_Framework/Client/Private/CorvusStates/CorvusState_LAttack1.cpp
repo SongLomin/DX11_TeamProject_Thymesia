@@ -44,19 +44,6 @@ void CCorvusState_LAttack1::Tick(_float fTimeDelta)
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 
-	if (KEY_INPUT(KEY::N, KEY_STATE::TAP))
-	{
-		if (m_fDebugAnimationSpeed < 0.5f)
-		{
-			m_fDebugAnimationSpeed = 1.f;
-		}
-
-		else
-		{
-			m_fDebugAnimationSpeed = 0.1f;
-		}
-	}
-
 	Attack();
 }
 
@@ -79,7 +66,7 @@ void CCorvusState_LAttack1::Call_AnimationEnd()
 
 void CCorvusState_LAttack1::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 {
-	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
+	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 }
 

@@ -7,8 +7,7 @@ END
 
 BEGIN(Client)
 class CPreviewAnimationModel;
-class CPreView_Prop;
-
+class CPreview_Prop;
 class CWindow_AnimationModelView final
 	: public CImGui_Window
 {
@@ -23,7 +22,8 @@ public:
 
 
 public:
-	weak_ptr<CPreviewAnimationModel> Get_PreViewModel();
+	weak_ptr<CPreviewAnimationModel> Get_PreviewAnimModel();
+	weak_ptr< CPreview_Prop> Get_PreviewPropModel();
 	ATTACKAREA_DESC Get_DebugWeaponDesc() const { return m_tWeaponDesc; }
 	const std::vector<std::string> Get_AllBoneNames() const { return m_AllBoneNames; };
 
@@ -35,9 +35,9 @@ private:
 	void Update_PreViewModel();
 
 private:
-	weak_ptr<CPreviewAnimationModel>	m_pPreViewModel;
+	weak_ptr<CPreviewAnimationModel>	m_pPreviewModel;
 	// TODO : comment because explode
-	weak_ptr<CPreView_Prop>				m_pPreViewNoAnimModel;
+	weak_ptr<CPreview_Prop>				m_pPreviewNoAnimModel;
 	vector<string>	                    m_AllModelKeys;
 	vector<string>	                    m_AllNoAnimModelKeys;
 	_int			                    m_CurrentModelIndex = 0;

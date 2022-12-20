@@ -78,8 +78,6 @@ void CCorvusState_Long_AvoidL::OnStateStart(const _float& In_fAnimationBlendTime
 		cout << "NorMonState: RunStart -> OnStateStart" << endl;
 #endif
 #endif
-
-	//m_pModelCom.lock()->Set_AnimationSpeed(3.f);
 }
 
 void CCorvusState_Long_AvoidL::OnStateEnd()
@@ -100,7 +98,7 @@ void CCorvusState_Long_AvoidL::Call_AnimationEnd()
 
 void CCorvusState_Long_AvoidL::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 {
-	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
+	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 }
 

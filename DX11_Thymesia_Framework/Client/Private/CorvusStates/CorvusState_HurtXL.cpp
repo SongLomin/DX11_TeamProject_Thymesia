@@ -72,15 +72,11 @@ void CCorvusState_HurtXL::OnStateStart(const _float& In_fAnimationBlendTime)
 	cout << "NorMonState: RunStart -> OnStateStart" << endl;
 #endif
 #endif
-	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
-
 }
 
 void CCorvusState_HurtXL::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 void CCorvusState_HurtXL::Call_AnimationEnd()

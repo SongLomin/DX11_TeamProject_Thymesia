@@ -86,14 +86,12 @@ void CCorvusState_ParryDeflectLeftup::OnStateStart(const _float& In_fAnimationBl
 
 	// GET_SINGLE(CGameManager)->Use_EffectGroup("ParryDeflect_LUp_Sparkle", m_pTransformCom, (_uint)TIMESCALE_LAYER::PLAYER);
 
-	//m_pModelCom.lock()->Set_AnimationSpeed(3.f);
+	
 }
 
 void CCorvusState_ParryDeflectLeftup::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-	//m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 void CCorvusState_ParryDeflectLeftup::Call_AnimationEnd()
@@ -107,7 +105,7 @@ void CCorvusState_ParryDeflectLeftup::Call_AnimationEnd()
 
 void CCorvusState_ParryDeflectLeftup::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 {
-	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
+	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 }
 
