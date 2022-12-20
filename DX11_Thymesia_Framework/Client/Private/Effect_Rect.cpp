@@ -2578,21 +2578,37 @@ void CEffect_Rect::Tool_Boner()
 		ImGui::Text("No Bones!");
 	else
 	{
-		if (ImGui::BeginListBox("Bone List - Particle"))
+		static ImGuiTextFilter filter;
+		ImGui::Text("Search"); ImGui::SameLine();
+		filter.Draw("##Bone_Search_Bar", 340.f);
+		ImGui::BeginChild("##Bone_List_Particle");
+		for (_int n(0); n < m_AllBoneNames.size(); n++)
 		{
-			for (_int n(0); n < m_AllBoneNames.size(); n++)
+			auto paintkit = m_AllBoneNames.at(n);
+			if (filter.PassFilter(paintkit.c_str()))
 			{
-				const _bool is_selected = (m_iCurrentBoneIndex == n);
-				if (ImGui::Selectable(m_AllBoneNames[n].c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
-				{
-					m_strBoneName = m_AllBoneNames[n];
-				}
+				std::string label = paintkit + "##" + std::to_string(n);
 
-				if (is_selected)
-					ImGui::SetItemDefaultFocus();
+				if (ImGui::Selectable(label.c_str()))
+					m_strBoneName = m_AllBoneNames[n];
 			}
-			ImGui::EndListBox();
 		}
+		ImGui::EndChild();
+		//if (ImGui::BeginListBox("Bone List - Particle"))
+		//{
+		//	for (_int n(0); n < m_AllBoneNames.size(); n++)
+		//	{
+		//		const _bool is_selected = (m_iCurrentBoneIndex == n);
+		//		if (ImGui::Selectable(m_AllBoneNames[n].c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
+		//		{
+		//			m_strBoneName = m_AllBoneNames[n];
+		//		}
+
+		//		if (is_selected)
+		//			ImGui::SetItemDefaultFocus();
+		//	}
+		//	ImGui::EndListBox();
+		//}
 	}
 
 	if (ImGui::Button("Bind##Bind_To_Bone"))
@@ -3333,11 +3349,29 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 
 			if (ImGui::Button("Paste##Paste_Particle_Info"))
 			{
-				m_tEffectParticleDesc = GET_SINGLE(CGameManager)->Get_StoredParticleInfo();
-				m_strBoneName = GET_SINGLE(CGameManager)->Get_BoneName();
+				if (0 < m_tEffectParticleDesc.iMaxInstance)
+				{
+					m_tEffectParticleDesc = GET_SINGLE(CGameManager)->Get_StoredParticleInfo();
+					m_strBoneName = GET_SINGLE(CGameManager)->Get_BoneName();
 
-				ReBake_EditParticle();
+					ReBake_EditParticle();
+				}
 			}
+
+			if (KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD))
+			{
+				if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
+				{
+					if (0 < m_tEffectParticleDesc.iMaxInstance)
+					{
+						m_tEffectParticleDesc = GET_SINGLE(CGameManager)->Get_StoredParticleInfo();
+						m_strBoneName = GET_SINGLE(CGameManager)->Get_BoneName();
+
+						ReBake_EditParticle();
+					}
+				}
+			}
+
 
 			ImGui::Text("Max Instance"); ImGui::SameLine();
 			if (ImGui::DragInt("##Max_Instance", &m_tEffectParticleDesc.iMaxInstance, 1, 0, 0, "%d", ImGuiSliderFlags_AlwaysClamp))

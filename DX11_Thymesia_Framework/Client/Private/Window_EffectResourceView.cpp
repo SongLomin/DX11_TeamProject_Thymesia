@@ -12,7 +12,7 @@ HRESULT CWindow_EffectResourceView::Initialize()
     // window_flags |= ImGuiWindowFlags_NoMove;
 
     m_bEnable = true;
-    SetUp_ImGuiDESC("EffectResource_View", ImVec2(150.f, 500.f), window_flags);
+    SetUp_ImGuiDESC("Resource##Effect_Resource_View", ImVec2(150.f, 500.f), window_flags);
 
     Load_Resources();
 
@@ -40,11 +40,22 @@ HRESULT CWindow_EffectResourceView::Render(ID3D11DeviceContext* pDeviceContext)
     {
         if (ImGui::BeginTabItem("Mesh"))
         {
-            for (auto& elem : m_szAnimEffectMeshNames)
+			static ImGuiTextFilter EffectMeshFilter;
+			ImGui::Text("Search"); ImGui::SameLine();
+			EffectMeshFilter.Draw("##EffectMeshSearchFilter", 340.f);
+
+            for (int i(0); i < m_szAnimEffectMeshNames.size(); ++i)
             {
-                if (ImGui::Selectable(elem.c_str()))
+                auto MeshKit = m_szAnimEffectMeshNames.at(i);
+
+                if (EffectMeshFilter.PassFilter(MeshKit.c_str()))
                 {
-                    CallBack_MeshClick(elem.c_str());
+                    std::string label = MeshKit + "##" + std::to_string(i);
+
+					if (ImGui::Selectable(label.c_str()))
+					{
+						CallBack_MeshClick(MeshKit.c_str());
+					}
                 }
             }
 
@@ -52,13 +63,32 @@ HRESULT CWindow_EffectResourceView::Render(ID3D11DeviceContext* pDeviceContext)
         }
         if (ImGui::BeginTabItem("Particle"))
         {
-            for (auto& elem : m_szParticleMeshNames)
-            {
-                if (ImGui::Selectable(elem.first.c_str()))
-                {
-                    CallBack_ParticleClick(elem.first.c_str(), elem.second.c_str());
-                }
-            }
+			static ImGuiTextFilter ParticleFilter;
+			ImGui::Text("Search"); ImGui::SameLine();
+            ParticleFilter.Draw("##ParticleSearchFilter", 340.f);
+
+			for (int i(0); i < m_szParticleMeshNames.size(); ++i)
+			{
+				auto ParticleKit = m_szParticleMeshNames.at(i);
+
+				if (ParticleFilter.PassFilter(ParticleKit.first.c_str()))
+				{
+					std::string label = ParticleKit.first + "##" + std::to_string(i);
+
+					if (ImGui::Selectable(label.c_str()))
+					{
+                        CallBack_ParticleClick(ParticleKit.first.c_str(), ParticleKit.second.c_str());
+					}
+				}
+			}
+
+            //for (auto& elem : m_szParticleMeshNames)
+            //{
+            //    if (ImGui::Selectable(elem.first.c_str()))
+            //    {
+            //        CallBack_ParticleClick(elem.first.c_str(), elem.second.c_str());
+            //    }
+            //}
 
 
             ImGui::EndTabItem();
@@ -66,13 +96,32 @@ HRESULT CWindow_EffectResourceView::Render(ID3D11DeviceContext* pDeviceContext)
 
         if (ImGui::BeginTabItem("Effect_Group"))
         {
-            for (auto& elem : m_szEffectGroupNames)
-            {
-                if (ImGui::Selectable(elem.c_str()))
-                {
-                    CallBack_EffectGroupClick(elem.c_str());
-                }
-            }
+			static ImGuiTextFilter EffectGroupFilter;
+			ImGui::Text("Search"); ImGui::SameLine();
+            EffectGroupFilter.Draw("##EffectGroupSearchFilter", 340.f);
+
+			for (int i(0); i < m_szEffectGroupNames.size(); ++i)
+			{
+				auto EffectGroupKit = m_szEffectGroupNames.at(i);
+
+				if (EffectGroupFilter.PassFilter(EffectGroupKit.c_str()))
+				{
+					std::string label = EffectGroupKit + "##" + std::to_string(i);
+
+					if (ImGui::Selectable(label.c_str()))
+					{
+                        CallBack_EffectGroupClick(EffectGroupKit.c_str());
+					}
+				}
+			}
+
+            //for (auto& elem : m_szEffectGroupNames)
+            //{
+            //    if (ImGui::Selectable(elem.c_str()))
+            //    {
+            //        CallBack_EffectGroupClick(elem.c_str());
+            //    }
+            //}
 
             ImGui::EndTabItem();
         }
