@@ -92,7 +92,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	GAMEINSTANCE->Set_FogDesc(_float4(0.2f, 0.15f, 0.03f, 0.5f), 20.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 	GAMEINSTANCE->Set_Contrast(1.07f);
-	GAMEINSTANCE->Set_Saturation(2.f);
+	GAMEINSTANCE->Set_Saturation(1.7f);
 	SetUp_UI();
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
