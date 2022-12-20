@@ -40,6 +40,11 @@ void CBatBossState_Hellscream::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 	
 
+	if (m_bAttackLookAtLimit)
+	{
+		TurnAttack(fTimeDelta);
+	}
+	
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -59,7 +64,8 @@ void CBatBossState_Hellscream::OnStateStart(const _float& In_fAnimationBlendTime
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	
+	m_bAttackLookAtLimit = true;
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
@@ -107,6 +113,14 @@ _bool CBatBossState_Hellscream::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+
+	if (ComputeAngleWithPlayer() > 0.97f)
+	{
+		Rotation_TargetToLookDir();
+		m_bAttackLookAtLimit = false;
+	}
+
+	
 
 	return false;
 }

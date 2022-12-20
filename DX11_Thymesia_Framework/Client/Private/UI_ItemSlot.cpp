@@ -176,7 +176,7 @@ void CUI_ItemSlot::Update_TextInfo()
 {
 	m_tTextInfo.szText = to_wstring(m_pBindedItem.lock()->Get_CurrentQuantity());
 
-	m_tTextInfo.vPosition.x = m_tUIDesc.fX - (max(0, (m_tTextInfo.szText.size() - 1) ) * 10.f);
+	m_tTextInfo.vPosition.x = m_tUIDesc.fX - (max((unsigned long long)0, (m_tTextInfo.szText.size() - 1) ) * 10.f);
 	m_tTextInfo.vPosition.y = m_tUIDesc.fY;
 
 }

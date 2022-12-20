@@ -16,6 +16,7 @@ class CBatBossState_Idle :
 
 
 public:
+	void    Set_ChestCheck(_bool ChestCheck) { m_bChestCheck =  ChestCheck; }
 	void    Set_TurnCheck(_bool TurnCheck) { m_bTurnCheck = TurnCheck; }
 	void    Set_ChargeCount(_uint ChargeCount) { m_iChargeCount += ChargeCount; }
 	void    Set_AttackCount(_uint AttackCount) { m_iAttackCount += AttackCount; }
@@ -42,10 +43,10 @@ private:
 	//내가어택읆쳐번했는지 
 	_uint    m_iChargeCount = 0;
 	_uint    m_iAttackCount = 0;
-	_bool    m_bCheckCharge = false;
 	_bool    m_bTurnCheck = false;
 	_bool    m_bHeelScream = false;
-	_bool    m_bFirstFoot = true;
+	_bool    m_bChestCheck = false;
+
 
 private:
 	void Call_AnimationEnd();

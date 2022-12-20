@@ -111,6 +111,9 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("Corvus_SD_ParryDeflect_LUp", 2.f);
     SET_ANIM_SPEED("Corvus_SD_HurtXLF", 2.f);
     SET_ANIM_SPEED("Corvus_SD_HurtXXLF", 2.f);
+    SET_ANIM_SPEED("Corvus_SD_HurtKnockDown", 2.f);
+    SET_ANIM_SPEED("Corvus_SD_HurtFallDown_End", 2.f);
+    SET_ANIM_SPEED("Corvus_SD_HurtFallDown", 2.f);
 
 	SET_ANIM_SPEED("Corvus_SD_ParryDeflect_R", 2.f);
 	SET_ANIM_SPEED("Corvus_SD_ParryDeflect_RUp", 2.f);
@@ -121,6 +124,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 	SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_R_Down", 2.f);
 
 	SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution", 1.6f);
+	SET_ANIM_SPEED("Corvus_VSBossBat_Execution01", 1.4f);
     
 	SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 7.f);
 	SET_ANIM_SPEED("Corvus_SD_TD2Thorw2", 2.5f);
@@ -207,23 +211,23 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|BTIE2", 4.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|CAR", 4.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|CHARGE", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|FTURNL", 1.5f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|FTURNR", 1.5f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|FTURNL", 1.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|FTURNR", 4.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|HELLSCREAM", 4.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|HURTXLF", 4.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|HURTXLL", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|JUMPCHEST", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|JUMPCHSET", 2.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|JUMPFORWARD", 4.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|JUMPSMESH", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|SONICBOOM", 4.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|SONICNBOOM", 4.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|SP", 2.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|STORM", 4.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|STUNEND", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|STUNLOOP", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|STUNSTART", 4.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|TAKEEND", 2.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|TAKELOOP", 2.f);
-    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|TAKESTART", 2.f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|STUNLOOP", 1.3f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|STUNSTART", 1.3f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|TAKEEND", 1.2f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|TAKELOOP", 1.2f);
+    SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|TAKESTART", 1.46f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|TURNL90", 2.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|TURNR90", 2.f);
     SET_ANIM_SPEED("SK_C_BossBat_NEW_V1.ao|WALKF", 3.f);

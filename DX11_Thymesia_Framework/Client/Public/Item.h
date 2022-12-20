@@ -22,7 +22,7 @@ public:
 	ITEM_TYPE		Get_Type() { return m_eItemType; }
 	_int			Get_CurrentQuantity() { return m_iCurrentQuantity; }
 	_int			Get_MaxQuantity() { return m_iMaxQuantity; }
-
+	time_t			Get_CreatedTime() { return m_iCreatedTime; }
 public:
 	void			Add_Quantity();
 	void			Minus_Quantity();

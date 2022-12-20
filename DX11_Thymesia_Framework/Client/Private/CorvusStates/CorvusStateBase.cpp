@@ -536,6 +536,12 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 		case Client::ATTACK_OPTION::PLAGUE:
 			Get_OwnerPlayer()->Change_State<CCorvusState_Headache_Start>();
 			break;
+		case Client::ATTACK_OPTION::KNOCKBACK:
+			Get_OwnerPlayer()->Change_State<CCorvusState_KnockBack>();
+			break;
+		case Client::ATTACK_OPTION::FALLDOWN:
+			Get_OwnerPlayer()->Change_State<CCorvusState_HurtFallDown> ();
+			break;
 		default:
 			pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
 			Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);

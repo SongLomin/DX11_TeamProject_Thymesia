@@ -25,14 +25,16 @@ HRESULT CUI_PauseMenu_Page_Status::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
+	m_eRenderGroup = RENDERGROUP::RENDER_AFTER_UI;
+
 
 	m_pStatusTap = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu_Tap_Status>(LEVEL_STATIC);
 	m_pPlagueWeaponTap = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu_Tap_PlagueWeapon>(LEVEL_STATIC);
 	m_pPotionTap = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu_Tap_Potion>(LEVEL_STATIC);
 
-	m_vecChildUI.push_back(m_pStatusTap);
-	m_vecChildUI.push_back(m_pPlagueWeaponTap);
-	m_vecChildUI.push_back(m_pPotionTap);
+	Add_Child(m_pStatusTap);
+	Add_Child(m_pPlagueWeaponTap);
+	Add_Child(m_pPotionTap);
 
 	return S_OK;
 }

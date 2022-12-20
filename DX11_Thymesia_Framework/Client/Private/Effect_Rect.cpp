@@ -108,12 +108,12 @@ void CEffect_Rect::Tick(_float fTimeDelta)
 	CGameObject::CallBack_Tick(fTimeDelta);
 
 #ifdef _DEBUG
-	if (m_bResetTrigger && m_pParentTransformCom.lock())
-	{
-		ReBake_EditParticle();
-		Reset_Effect(m_pParentTransformCom.lock());
-		m_bResetTrigger = false;
-	}
+	//if (m_bResetTrigger && m_pParentTransformCom.lock())
+	//{
+	//	ReBake_EditParticle();
+	//	Reset_Effect(m_pParentTransformCom.lock());
+	//	m_bResetTrigger = false;
+	//}
 #endif // _DEBUG
 
 	if (m_pVIBuffer.lock()->Get_InstanceCount() != m_tEffectParticleDesc.iMaxInstance)
@@ -650,8 +650,8 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 #ifdef _DEBUG
 		if ((_uint)LEVEL_EDIT == m_CreatedLevel)
 		{
-			m_pParentTransformCom = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Component<CTransform>().lock();
-			m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
+			m_pParentTransformCom = GET_SINGLE(CWindow_AnimationModelView)->Get_PreviewAnimModel().lock()->Get_Component<CTransform>().lock();
+			m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreviewAnimModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
 		}
 #endif // _DEBUG
 	}
@@ -1420,54 +1420,127 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta, _m
 #endif // _DEBUG
 	}
 
-	_float3 vMove;
-	ZeroMemory(&vMove, sizeof(_float3));
-
-	if (Check_Option(EFFECTPARTICLE_DESC::Option2::Use_Speed))
-		vMove = SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeed, fTimeDelta);
-
-	if (Check_Option(EFFECTPARTICLE_DESC::Option2::Use_Force))
+#ifdef _DEBUG
+	try
 	{
-		m_tParticleDescs[i].vCurrentSpeedForce = SMath::Add_Float3(m_tParticleDescs[i].vCurrentSpeedForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeedForce, fTimeDelta));
-		vMove = SMath::Add_Float3(vMove, m_tParticleDescs[i].vCurrentSpeedForce);
-	}
+#endif // _DEBUG
+		_float3 vMove;
+		ZeroMemory(&vMove, sizeof(_float3));
 
-	if (Check_Option(EFFECTPARTICLE_DESC::Option2::Use_Speed) || Check_Option(EFFECTPARTICLE_DESC::Option2::Use_Force))
-	{
-		vMove.x = max(m_tEffectParticleDesc.vMinLimitSpeed.x, min(m_tEffectParticleDesc.vMaxLimitSpeed.x, vMove.x));
-		vMove.y = max(m_tEffectParticleDesc.vMinLimitSpeed.y, min(m_tEffectParticleDesc.vMaxLimitSpeed.y, vMove.y));
-		vMove.z = max(m_tEffectParticleDesc.vMinLimitSpeed.z, min(m_tEffectParticleDesc.vMaxLimitSpeed.z, vMove.z));
-	}
+#ifdef _DEBUG
+		PARTICLE_DESC tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
 
-	if (Check_Option(EFFECTPARTICLE_DESC::Option1::Is_Attraction))
-		m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, SMath::Mul_Float3(m_tParticleDescs[i].vTargetLookAt, vMove.z));
-	else
-	{
-		if (Check_Option(EFFECTPARTICLE_DESC::Option1::Is_MoveLook))
+		if (Check_Option(EFFECTPARTICLE_DESC::Option2::Use_Speed))
+			vMove = SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeed, fTimeDelta);
+
+#ifdef _DEBUG
+		tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+
+		if (Check_Option(EFFECTPARTICLE_DESC::Option2::Use_Force))
 		{
-			_vector vMovePosition(XMLoadFloat3(&vMove));
-			_vector vRotatedPosition(XMVector3TransformCoord(vMovePosition, XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_tParticleDescs[i].vCurrentRotation))));
-			_vector vCurrentPosition(XMLoadFloat3(&m_tParticleDescs[i].vCurrentTranslation));
-			vCurrentPosition += vRotatedPosition;
-			XMStoreFloat3(&m_tParticleDescs[i].vCurrentTranslation, vCurrentPosition);
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+			m_tParticleDescs[i].vCurrentSpeedForce = SMath::Add_Float3(m_tParticleDescs[i].vCurrentSpeedForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetSpeedForce, fTimeDelta));
+#ifdef _DEBUG
+		tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+			vMove = SMath::Add_Float3(vMove, m_tParticleDescs[i].vCurrentSpeedForce);
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+		}
+
+		if (Check_Option(EFFECTPARTICLE_DESC::Option2::Use_Speed) || Check_Option(EFFECTPARTICLE_DESC::Option2::Use_Force))
+		{
+			vMove.x = max(m_tEffectParticleDesc.vMinLimitSpeed.x, min(m_tEffectParticleDesc.vMaxLimitSpeed.x, vMove.x));
+			vMove.y = max(m_tEffectParticleDesc.vMinLimitSpeed.y, min(m_tEffectParticleDesc.vMaxLimitSpeed.y, vMove.y));
+			vMove.z = max(m_tEffectParticleDesc.vMinLimitSpeed.z, min(m_tEffectParticleDesc.vMaxLimitSpeed.z, vMove.z));
+		}
+
+		if (Check_Option(EFFECTPARTICLE_DESC::Option1::Is_Attraction))
+		{
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+			m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, SMath::Mul_Float3(m_tParticleDescs[i].vTargetLookAt, vMove.z));
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
 		}
 		else
-			m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, vMove);
-	}
+		{
+			if (Check_Option(EFFECTPARTICLE_DESC::Option1::Is_MoveLook))
+			{
+				_vector vMovePosition(XMLoadFloat3(&vMove));
+#ifdef _DEBUG
+				tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+				_vector vRotatedPosition(XMVector3TransformCoord(vMovePosition, XMMatrixRotationRollPitchYawFromVector(XMLoadFloat3(&m_tParticleDescs[i].vCurrentRotation))));
+#ifdef _DEBUG
+				tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+				_vector vCurrentPosition(XMLoadFloat3(&m_tParticleDescs[i].vCurrentTranslation));
+#ifdef _DEBUG
+				tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+				vCurrentPosition += vRotatedPosition;
+				XMStoreFloat3(&m_tParticleDescs[i].vCurrentTranslation, vCurrentPosition);
+#ifdef _DEBUG
+				tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+			}
+			else
+			{
+#ifdef _DEBUG
+				tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+				m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, vMove);
+#ifdef _DEBUG
+				tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+			}
+		}
 
-	if (Check_Option(EFFECTPARTICLE_DESC::Option2::Use_Gravity))
+		if (Check_Option(EFFECTPARTICLE_DESC::Option2::Use_Gravity))
+		{
+			_vector vDeltaGravity(XMVectorSet(0.f, 0.f, 0.f, 0.f));
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+			vDeltaGravity = XMVectorSetX(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.x * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+			vDeltaGravity = XMVectorSetY(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.y * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+			vDeltaGravity = XMVectorSetZ(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.z * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+
+			_float3 f3DeltaGravity;
+			XMStoreFloat3(&f3DeltaGravity, vDeltaGravity);
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+			m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, f3DeltaGravity);
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+		}
+#ifdef _DEBUG
+	}
+	catch (const std::exception&)
 	{
-		_vector vDeltaGravity(XMVectorSet(0.f, 0.f, 0.f, 0.f));
-
-		vDeltaGravity = XMVectorSetX(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.x * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
-		vDeltaGravity = XMVectorSetY(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.y * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
-		vDeltaGravity = XMVectorSetZ(vDeltaGravity, m_tEffectParticleDesc.vGravityForce.z * fTimeDelta * (m_tParticleDescs[i].fCurrentLifeTime * 2.f + fTimeDelta));
-
-		_float3 f3DeltaGravity;
-		XMStoreFloat3(&f3DeltaGravity, vDeltaGravity);
-
-		m_tParticleDescs[i].vCurrentTranslation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentTranslation, f3DeltaGravity);
+		MSG_BOX("CATCH!");
+		return;
 	}
+#endif // _DEBUG
 }
 
 void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
@@ -1475,26 +1548,55 @@ void CEffect_Rect::Update_ParticleRotation(const _uint& i, _float fTimeDelta)
 	_float3 vRotation;
 	ZeroMemory(&vRotation, sizeof(_float3));
 
-	if (Check_Option(EFFECTPARTICLE_DESC::Option2::Use_RotationSpeed) || Check_Option(EFFECTPARTICLE_DESC::Option2::Use_RotationForce))
+#ifdef _DEBUG
+	try
 	{
-		if (Check_Option(EFFECTPARTICLE_DESC::Option2::Use_RotationSpeed))
-			vRotation = SMath::Mul_Float3(m_tParticleDescs[i].vTargetRotationSpeed, fTimeDelta);
-
-		if (Check_Option(EFFECTPARTICLE_DESC::Option2::Use_RotationForce))
+		PARTICLE_DESC tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+		if (Check_Option(EFFECTPARTICLE_DESC::Option2::Use_RotationSpeed) || Check_Option(EFFECTPARTICLE_DESC::Option2::Use_RotationForce))
 		{
-			m_tParticleDescs[i].vCurrentRotationForce = SMath::Add_Float3(m_tParticleDescs[i].vCurrentRotationForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetRotationForce, fTimeDelta));
-			vRotation = SMath::Add_Float3(vRotation, m_tParticleDescs[i].vCurrentRotationForce);
-		}
+			if (Check_Option(EFFECTPARTICLE_DESC::Option2::Use_RotationSpeed))
+				vRotation = SMath::Mul_Float3(m_tParticleDescs[i].vTargetRotationSpeed, fTimeDelta);
 
-		if (Check_Option(EFFECTPARTICLE_DESC::Option2::Use_RotationLimit))
-		{
-			vRotation.x = max(m_tEffectParticleDesc.vMinLimitRotation.x, min(m_tEffectParticleDesc.vMaxLimitRotation.x, vRotation.x));
-			vRotation.y = max(m_tEffectParticleDesc.vMinLimitRotation.y, min(m_tEffectParticleDesc.vMaxLimitRotation.y, vRotation.y));
-			vRotation.z = max(m_tEffectParticleDesc.vMinLimitRotation.z, min(m_tEffectParticleDesc.vMaxLimitRotation.z, vRotation.z));
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+
+			if (Check_Option(EFFECTPARTICLE_DESC::Option2::Use_RotationForce))
+			{
+#ifdef _DEBUG
+				tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+				m_tParticleDescs[i].vCurrentRotationForce = SMath::Add_Float3(m_tParticleDescs[i].vCurrentRotationForce, SMath::Mul_Float3(m_tParticleDescs[i].vTargetRotationForce, fTimeDelta));
+#ifdef _DEBUG
+				tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+				vRotation = SMath::Add_Float3(vRotation, m_tParticleDescs[i].vCurrentRotationForce);
+#ifdef _DEBUG
+				tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+			}
+
+			if (Check_Option(EFFECTPARTICLE_DESC::Option2::Use_RotationLimit))
+			{
+				vRotation.x = max(m_tEffectParticleDesc.vMinLimitRotation.x, min(m_tEffectParticleDesc.vMaxLimitRotation.x, vRotation.x));
+				vRotation.y = max(m_tEffectParticleDesc.vMinLimitRotation.y, min(m_tEffectParticleDesc.vMaxLimitRotation.y, vRotation.y));
+				vRotation.z = max(m_tEffectParticleDesc.vMinLimitRotation.z, min(m_tEffectParticleDesc.vMaxLimitRotation.z, vRotation.z));
+			}
 		}
+#ifdef _DEBUG
+		tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+		m_tParticleDescs[i].vCurrentRotation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentRotation, vRotation);
+#ifdef _DEBUG
+		tParticle = m_tParticleDescs.at(i);
 	}
-
-	m_tParticleDescs[i].vCurrentRotation = SMath::Add_Float3(m_tParticleDescs[i].vCurrentRotation, vRotation);
+	catch (const std::exception&)
+	{
+		MSG_BOX("CATCH!");
+		return;
+	}
+#endif // _DEBUG
 }
 
 void CEffect_Rect::Update_ParticleScale(const _uint& i, _float fTimeDelta)
@@ -1502,47 +1604,85 @@ void CEffect_Rect::Update_ParticleScale(const _uint& i, _float fTimeDelta)
 	_float2 vScale;
 	ZeroMemory(&vScale, sizeof(_float2));
 
-	if (Check_Option(EFFECTPARTICLE_DESC::Option3::Easing_Scale))
+#ifdef _DEBUG
+	try
 	{
-		_float fElapsedTime(m_tParticleDescs[i].fCurrentLifeTime);
-
-		if (0.f > fElapsedTime)
-			return;
-
-		Apply_Easing
-		(
-			vScale
-			, (EASING_TYPE)m_tEffectParticleDesc.iScaleEasingType
-			, XMLoadFloat2(&m_tEffectParticleDesc.vMinLimitScale)
-			, XMLoadFloat2(&m_tEffectParticleDesc.vMaxLimitScale)
-			, fElapsedTime
-			, m_tEffectParticleDesc.fScaleEasingTotalTime
-		);
-
-		m_tParticleDescs[i].vCurrentScale = vScale;
-	}
-	else
-	{
-		if (Check_Option(EFFECTPARTICLE_DESC::Option3::Use_ScaleSpeed))
-			vScale = SMath::Mul_Float2(m_tParticleDescs[i].vTargetScaleSpeed, fTimeDelta);
-
-		if (Check_Option(EFFECTPARTICLE_DESC::Option3::Use_ScaleForce))
+		PARTICLE_DESC tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+		if (Check_Option(EFFECTPARTICLE_DESC::Option3::Easing_Scale))
 		{
-			m_tParticleDescs[i].vCurrentScaleForce = SMath::Add_Float2(m_tParticleDescs[i].vCurrentScaleForce, SMath::Mul_Float2(m_tParticleDescs[i].vTargetScaleForce, fTimeDelta));
-			SMath::Add_Float2(&m_tParticleDescs[i].vCurrentScale, m_tParticleDescs[i].vCurrentScaleForce);
+			_float fElapsedTime(m_tParticleDescs[i].fCurrentLifeTime);
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+			if (0.f > fElapsedTime)
+				return;
+
+			Apply_Easing
+			(
+				vScale
+				, (EASING_TYPE)m_tEffectParticleDesc.iScaleEasingType
+				, XMLoadFloat2(&m_tEffectParticleDesc.vMinLimitScale)
+				, XMLoadFloat2(&m_tEffectParticleDesc.vMaxLimitScale)
+				, fElapsedTime
+				, m_tEffectParticleDesc.fScaleEasingTotalTime
+			);
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+			m_tParticleDescs[i].vCurrentScale = vScale;
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+		}
+		else
+		{
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+			if (Check_Option(EFFECTPARTICLE_DESC::Option3::Use_ScaleSpeed))
+				vScale = SMath::Mul_Float2(m_tParticleDescs[i].vTargetScaleSpeed, fTimeDelta);
+
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+			if (Check_Option(EFFECTPARTICLE_DESC::Option3::Use_ScaleForce))
+			{
+				m_tParticleDescs[i].vCurrentScaleForce = SMath::Add_Float2(m_tParticleDescs[i].vCurrentScaleForce, SMath::Mul_Float2(m_tParticleDescs[i].vTargetScaleForce, fTimeDelta));
+#ifdef _DEBUG
+				tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+				SMath::Add_Float2(&m_tParticleDescs[i].vCurrentScale, m_tParticleDescs[i].vCurrentScaleForce);
+			}
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+			m_tParticleDescs[i].vCurrentScale = SMath::Add_Float2(m_tParticleDescs[i].vCurrentScale, vScale);
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
 		}
 
-		m_tParticleDescs[i].vCurrentScale = SMath::Add_Float2(m_tParticleDescs[i].vCurrentScale, vScale);
+		m_tParticleDescs[i].vCurrentScale.x = max(m_tEffectParticleDesc.vMinLimitScale.x, min(m_tEffectParticleDesc.vMaxLimitScale.x, m_tParticleDescs[i].vCurrentScale.x));
+#ifdef _DEBUG
+		tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+		if (Check_Option(EFFECTPARTICLE_DESC::Option3::Square_Scale))
+			m_tParticleDescs[i].vCurrentScale.y = m_tParticleDescs[i].vCurrentScale.x;
+		else if (Check_Option(EFFECTPARTICLE_DESC::Option3::Ratio_Scale))
+			m_tParticleDescs[i].vCurrentScale.y = m_tParticleDescs[i].vCurrentScale.x * m_tParticleDescs[i].fTargetYScaleRatio;
+		else
+			m_tParticleDescs[i].vCurrentScale.y = max(m_tEffectParticleDesc.vMinLimitScale.y, min(m_tEffectParticleDesc.vMaxLimitScale.y, m_tParticleDescs[i].vCurrentScale.y));
+
+#ifdef _DEBUG
+		tParticle = m_tParticleDescs.at(i);
 	}
-
-	m_tParticleDescs[i].vCurrentScale.x = max(m_tEffectParticleDesc.vMinLimitScale.x, min(m_tEffectParticleDesc.vMaxLimitScale.x, m_tParticleDescs[i].vCurrentScale.x));
-
-	if (Check_Option(EFFECTPARTICLE_DESC::Option3::Square_Scale))
-		m_tParticleDescs[i].vCurrentScale.y = m_tParticleDescs[i].vCurrentScale.x;
-	else if (Check_Option(EFFECTPARTICLE_DESC::Option3::Ratio_Scale))
-		m_tParticleDescs[i].vCurrentScale.y = m_tParticleDescs[i].vCurrentScale.x * m_tParticleDescs[i].fTargetYScaleRatio;
-	else
-		m_tParticleDescs[i].vCurrentScale.y = max(m_tEffectParticleDesc.vMinLimitScale.y, min(m_tEffectParticleDesc.vMaxLimitScale.y, m_tParticleDescs[i].vCurrentScale.y));
+	catch (const std::exception&)
+	{
+		MSG_BOX("CATCH!");
+		return;
+	}
+#endif // _DEBUG
 }
 
 void CEffect_Rect::Update_ParticleUV(_float fTimeDelta)
@@ -1631,60 +1771,111 @@ void CEffect_Rect::Update_ParticleColor(const _uint& i, _float fTimeDelta)
 	_vector vColor;
 	ZeroMemory(&vColor, sizeof(_vector));
 
-	_float fAlpha(0.f);
-	if (Check_Option(EFFECTPARTICLE_DESC::Option4::Easing_Alpha))
+#ifdef _DEBUG
+	try
 	{
-		_float fElapsedTime(m_tParticleDescs[i].fCurrentLifeTime);
+		PARTICLE_DESC tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
 
-		if (0.f > fElapsedTime)
-			return;
+		_float fAlpha(0.f);
+		if (Check_Option(EFFECTPARTICLE_DESC::Option4::Easing_Alpha))
+		{
+			_float fElapsedTime(m_tParticleDescs[i].fCurrentLifeTime);
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+			if (0.f > fElapsedTime)
+				return;
 
-		Apply_Easing
-		(
-			fAlpha
-			, (EASING_TYPE)m_tEffectParticleDesc.iAlphaEasingType
-			, m_tParticleDescs[i].fStartAlpha
-			, m_tEffectParticleDesc.vMinColorSpeed.w
-			, fElapsedTime
-			, m_tEffectParticleDesc.fAlphaEasingTotalTime
-		);
-	}
+			Apply_Easing
+			(
+				fAlpha
+				, (EASING_TYPE)m_tEffectParticleDesc.iAlphaEasingType
+				, m_tParticleDescs[i].fStartAlpha
+				, m_tEffectParticleDesc.vMinColorSpeed.w
+				, fElapsedTime
+				, m_tEffectParticleDesc.fAlphaEasingTotalTime
+			);
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+		}
 
-	_float4 vApplyColorSpeed;
-	ZeroMemory(&vApplyColorSpeed, sizeof(_float4));
+		_float4 vApplyColorSpeed;
+		ZeroMemory(&vApplyColorSpeed, sizeof(_float4));
 
-	if (Check_Option(EFFECTPARTICLE_DESC::Option4::Use_ColorSpeed))
-	{
-		vApplyColorSpeed = SMath::Mul_Float4(m_tParticleDescs[i].vTargetColorSpeed, fTimeDelta);
-		vColor = XMLoadFloat4(&vApplyColorSpeed);
-	}
+		if (Check_Option(EFFECTPARTICLE_DESC::Option4::Use_ColorSpeed))
+		{
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+			vApplyColorSpeed = SMath::Mul_Float4(m_tParticleDescs[i].vTargetColorSpeed, fTimeDelta);
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+			vColor = XMLoadFloat4(&vApplyColorSpeed);
+		}
 
-	if (Check_Option(EFFECTPARTICLE_DESC::Option4::Use_ColorForce))
-		SMath::Add_Float4(&m_tParticleDescs[i].vCurrentColorForce, SMath::Mul_Float4(m_tParticleDescs[i].vTargetColorForce, fTimeDelta));
+		if (Check_Option(EFFECTPARTICLE_DESC::Option4::Use_ColorForce))
+		{
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+			SMath::Add_Float4(&m_tParticleDescs[i].vCurrentColorForce, SMath::Mul_Float4(m_tParticleDescs[i].vTargetColorForce, fTimeDelta));
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+		}
 
-	_float4 float4Color;
-	ZeroMemory(&float4Color, sizeof(_float4));
-	XMStoreFloat4(&float4Color, vColor);
-
-	if (Check_Option(EFFECTPARTICLE_DESC::Option4::Use_ColorForce))
-	{
-		_float4 vApplyColorForce = SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColorForce);
-		vColor = XMLoadFloat4(&vApplyColorForce);
+		_float4 float4Color;
+		ZeroMemory(&float4Color, sizeof(_float4));
 		XMStoreFloat4(&float4Color, vColor);
+
+		if (Check_Option(EFFECTPARTICLE_DESC::Option4::Use_ColorForce))
+		{
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+			_float4 vApplyColorForce = SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColorForce);
+#ifdef _DEBUG
+			tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+			vColor = XMLoadFloat4(&vApplyColorForce);
+			XMStoreFloat4(&float4Color, vColor);
+		}
+
+#ifdef _DEBUG
+		tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+		_float4 vApplyColor = SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColor);
+#ifdef _DEBUG
+		tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+		vColor = XMLoadFloat4(&vApplyColor);
+
+		vColor = XMVectorSetX(vColor, max(m_tEffectParticleDesc.vMinColor.x, min(m_tEffectParticleDesc.vMaxColor.x, XMVectorGetX(vColor))));
+		vColor = XMVectorSetY(vColor, max(m_tEffectParticleDesc.vMinColor.y, min(m_tEffectParticleDesc.vMaxColor.y, XMVectorGetY(vColor))));
+		vColor = XMVectorSetZ(vColor, max(m_tEffectParticleDesc.vMinColor.z, min(m_tEffectParticleDesc.vMaxColor.z, XMVectorGetZ(vColor))));
+		vColor = XMVectorSetW(vColor, max(m_tEffectParticleDesc.vMinColor.w, min(m_tEffectParticleDesc.vMaxColor.w, XMVectorGetW(vColor))));
+
+		if (Check_Option(EFFECTPARTICLE_DESC::Option4::Easing_Alpha))
+			vColor = XMVectorSetW(vColor, fAlpha);
+
+#ifdef _DEBUG
+		tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+		XMStoreFloat4(&m_tParticleDescs[i].vCurrentColor, vColor);
+#ifdef _DEBUG
+		tParticle = m_tParticleDescs.at(i);
+#endif // _DEBUG
+#ifdef _DEBUG
 	}
-
-	_float4 vApplyColor = SMath::Add_Float4(float4Color, m_tParticleDescs[i].vCurrentColor);
-	vColor = XMLoadFloat4(&vApplyColor);
-
-	vColor = XMVectorSetX(vColor, max(m_tEffectParticleDesc.vMinColor.x, min(m_tEffectParticleDesc.vMaxColor.x, XMVectorGetX(vColor))));
-	vColor = XMVectorSetY(vColor, max(m_tEffectParticleDesc.vMinColor.y, min(m_tEffectParticleDesc.vMaxColor.y, XMVectorGetY(vColor))));
-	vColor = XMVectorSetZ(vColor, max(m_tEffectParticleDesc.vMinColor.z, min(m_tEffectParticleDesc.vMaxColor.z, XMVectorGetZ(vColor))));
-	vColor = XMVectorSetW(vColor, max(m_tEffectParticleDesc.vMinColor.w, min(m_tEffectParticleDesc.vMaxColor.w, XMVectorGetW(vColor))));
-
-	if (Check_Option(EFFECTPARTICLE_DESC::Option4::Easing_Alpha))
-		vColor = XMVectorSetW(vColor, fAlpha);
-
-	XMStoreFloat4(&m_tParticleDescs[i].vCurrentColor, vColor);
+	catch (const std::exception&)
+	{
+		MSG_BOX("CATCH!");
+		return;
+	}
+#endif // _DEBUG
 }
 
 void CEffect_Rect::Update_ParticleGlowColor(_float fTimeDelta)
@@ -2374,7 +2565,7 @@ void CEffect_Rect::Tool_Spawn_Life_Time()
 
 void CEffect_Rect::Tool_Boner()
 {
-	weak_ptr<CPreviewAnimationModel> pPreviewModel(GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel());
+	weak_ptr<CPreviewAnimationModel> pPreviewModel(GET_SINGLE(CWindow_AnimationModelView)->Get_PreviewAnimModel());
 
 	if (ImGui::Button("Refresh##Get_Bone_List"))
 	{
@@ -3355,6 +3546,6 @@ void CEffect_Rect::OnChangeAnimationKey(const _uint& In_Key)
 	if (m_tEffectParticleDesc.iSyncAnimationKey != (_int)In_Key)
 		return;
 
-	weak_ptr<CTransform> pPreviewModelTransform = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel().lock()->Get_Transform();
+	weak_ptr<CTransform> pPreviewModelTransform = GET_SINGLE(CWindow_AnimationModelView)->Get_PreviewAnimModel().lock()->Get_Transform();
 	Reset_Effect(pPreviewModelTransform);
 }

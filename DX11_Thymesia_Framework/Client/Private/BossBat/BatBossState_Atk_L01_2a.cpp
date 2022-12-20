@@ -55,10 +55,13 @@ void CBatBossState_Atk_L01_2a::Tick(_float fTimeDelta)
 	{
 		_float fTurnValue = 1.77f / 2.4;
 
-		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * -2.f);
+		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * -fTurnValue);
 	}
 	
-	
+	if (m_bAttackLookAtLimit)
+	{
+		TurnAttack(fTimeDelta);
+	}
 	
 	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
@@ -83,6 +86,8 @@ void CBatBossState_Atk_L01_2a::OnStateStart(const _float& In_fAnimationBlendTime
 	m_bOne = true;
 
 	m_bTurnTuning = false;
+	
+	m_bAttackLookAtLimit = true;
 
 	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 
@@ -120,7 +125,7 @@ void CBatBossState_Atk_L01_2a::Call_AnimationEnd()
 		return;
 
 
-
+	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_AttackCount(1);
 	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Idle>(0.05f);
 }
 
@@ -147,6 +152,12 @@ _bool CBatBossState_Atk_L01_2a::Check_AndChangeNextState()
 	{
 		m_bRootStop = false;
 		m_bOne = false;
+	}
+
+	if (ComputeAngleWithPlayer() > 0.98f)
+	{
+		Rotation_TargetToLookDir();
+		m_bAttackLookAtLimit = false;
 	}
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 144)

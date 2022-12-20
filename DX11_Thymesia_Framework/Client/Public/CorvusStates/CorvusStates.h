@@ -83,6 +83,9 @@
 #include "CorvusStates/CorvusState_LongHealing.h"
 #include "CorvusStates/CorvusState_ShortHealing.h"
 #include "CorvusStates/CorvusState_HurtBlown.h"
+#include "CorvusStates/CorvusState_KnockBack.h"
+#include "CorvusStates/CorvusState_HurtFallDown.h"
+#include "CorvusStates/CorvusState_HurtFallDownEnd.h"
 
 
 
@@ -116,6 +119,8 @@
 #include "CorvusStates/StateExecution/CorvusState_NorMob_Execution.h"
 #include "CorvusStates/StateExecution/CorvusState_RaidAttack1Hurt.h"
 #include "CorvusStates/StateExecution/CorvusState_Joker_Execution.h"
+#include "CorvusStates/StateExecution/CorvusState_Bat_Execution.h"
+#include "CorvusStates/StateExecution/CorvusState_Execution_Start.h"
 //플레이어 처형 스테이트
 // 
 // 

@@ -251,6 +251,24 @@
     <ClInclude Include="..\Public\DeferredCommand_Thread.h">
       <Filter>98. Managers\15. ThreadManager\00. Thread\01. DeferredCommand_Thread</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\NvCloth_Manager.h">
+      <Filter>98. Managers\16. NvClothManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CustomContextManagerCallback.h">
+      <Filter>98. Managers\16. NvClothManager\00. DxContextManagerCallback</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CustomPxAllocatorCallback.h">
+      <Filter>98. Managers\16. NvClothManager\01. PxAllocatorCallback</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CustomPxErrorCallback.h">
+      <Filter>98. Managers\16. NvClothManager\02. PxErrorCallback</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CustomPxAssertHandler.h">
+      <Filter>98. Managers\16. NvClothManager\03. PxAssertHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CustomPxProfilerCallback.h">
+      <Filter>98. Managers\16. NvClothManager\04. PxProfilerCallback</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -483,6 +501,24 @@
     </ClCompile>
     <ClCompile Include="..\Private\DeferredCommand_Thread.cpp">
       <Filter>98. Managers\15. ThreadManager\00. Thread\01. DeferredCommand_Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NvCloth_Manager.cpp">
+      <Filter>98. Managers\16. NvClothManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CustomContextManagerCallback.cpp">
+      <Filter>98. Managers\16. NvClothManager\00. DxContextManagerCallback</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CustomPxAllocatorCallback.cpp">
+      <Filter>98. Managers\16. NvClothManager\01. PxAllocatorCallback</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CustomPxErrorCallback.cpp">
+      <Filter>98. Managers\16. NvClothManager\02. PxErrorCallback</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CustomPxAssertHandler.cpp">
+      <Filter>98. Managers\16. NvClothManager\03. PxAssertHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CustomPxProfilerCallback.cpp">
+      <Filter>98. Managers\16. NvClothManager\04. PxProfilerCallback</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -737,6 +773,24 @@
     </Filter>
     <Filter Include="98. Managers\15. ThreadManager\00. Thread\02. Thread_Pool">
       <UniqueIdentifier>{306f5578-8517-48e6-94f3-b1a92bc16cd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Managers\16. NvClothManager">
+      <UniqueIdentifier>{848d31a4-f190-4d65-abb1-0ac9bbb97bf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Managers\16. NvClothManager\00. DxContextManagerCallback">
+      <UniqueIdentifier>{b5a6521f-53e5-4dae-9b95-354e3669cfc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Managers\16. NvClothManager\01. PxAllocatorCallback">
+      <UniqueIdentifier>{0aa2fe3c-d046-49d1-98af-4b5f642837c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Managers\16. NvClothManager\02. PxErrorCallback">
+      <UniqueIdentifier>{2a7fb51b-ca6e-4b95-a5bd-66ee7b334f8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Managers\16. NvClothManager\03. PxAssertHandler">
+      <UniqueIdentifier>{fc5ffdf5-1cde-438f-bd39-5324d03e48fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98. Managers\16. NvClothManager\04. PxProfilerCallback">
+      <UniqueIdentifier>{9668dc5b-514a-4671-b418-b740f36b9713}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -432,7 +432,7 @@
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\31.Execution_SitLoop</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BossVarg\VargBossState_Exe_Start.h">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\32.Execution_Start</Filter>
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\33.Execution_End\32.Execution_Start</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\BossVarg\VargBossState_Hurt.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\15.Hurt</Filter>
@@ -1549,6 +1549,26 @@
     <ClInclude Include="..\Public\Window_GameSystem_Dev.h">
       <Filter>97. Tool\01. DeveloperConsole\Windows\04. GameSystem</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_InventoryConfirmWindow.h" />
+    <ClInclude Include="..\Public\UI_InventoryConfirmWindowButton.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_SonicBullet.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\10.SonicBoom\00.SonicBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Bat_Execution.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\02.Bat_Execution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Execution_Start.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\03.ExecutionStart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_KnockBack.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt\02.State_KnockBack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtFallDown.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt\03.State_HurtFallDown</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtFallDownEnd.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt\03.State_HurtFallDown</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1943,7 +1963,7 @@
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\31.Execution_SitLoop</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BossVarg\VargBossState_Exe_Start.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\32.Execution_Start</Filter>
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\33.Execution_End\32.Execution_Start</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BossVarg\VargBossState_Hurt.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\15.Hurt</Filter>
@@ -2121,9 +2141,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_LAttack5.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack\State_Attack5</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\AIStateBase.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BossStateBase.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState</Filter>
@@ -3089,9 +3106,6 @@
     <ClCompile Include="..\Private\UI_PauseMenu_Page_Inventory.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\Inventory</Filter>
     </ClCompile>
-    <ClCompile Include="..\UI_Inventory.cpp">
-      <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\Inventory\Tap</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\UI_ItemSlot.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\Inventory\Tap\Slot</Filter>
     </ClCompile>
@@ -3134,6 +3148,32 @@
     <ClCompile Include="..\Private\Window_GameSystem_Dev.cpp">
       <Filter>97. Tool\01. DeveloperConsole\Windows\04. GameSystem</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\AIStateBase.cpp" />
+    <ClCompile Include="..\UI_InventoryConfirmWindow.cpp" />
+    <ClCompile Include="..\Private\UI_InventoryConfirmWindowButton.cpp" />
+    <ClCompile Include="..\Private\UI_Inventory.cpp">
+      <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\Inventory\Tap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AIStateBase.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_SonicBullet.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\10.SonicBoom\00.SonicBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Bat_Execution.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\02.Bat_Execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Execution_Start.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\03.ExecutionStart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtFallDown.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt\03.State_HurtFallDown</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtFallDownEnd.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt\03.State_HurtFallDown</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_KnockBack.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt\02.State_KnockBack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AIStateBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -4227,9 +4267,6 @@
     <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\31.Execution_SitLoop">
       <UniqueIdentifier>{4cdedb45-e992-44e6-a207-cee4288e7d31}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\32.Execution_Start">
-      <UniqueIdentifier>{c292f2b3-db77-4a59-ae9e-49cd66187599}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\33.Execution_End">
       <UniqueIdentifier>{f8ca6d99-c246-4285-b266-c54d274ee7e0}</UniqueIdentifier>
     </Filter>
@@ -4652,6 +4689,27 @@
     </Filter>
     <Filter Include="97. Tool\01. DeveloperConsole\Windows\04. GameSystem">
       <UniqueIdentifier>{c8774af5-15bb-4663-9f56-29595e349278}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\10.SonicBoom\00.SonicBullet">
+      <UniqueIdentifier>{2b202cfc-33a3-4dcf-b3de-cf52d3bf898b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\33.Execution_End\32.Execution_Start">
+      <UniqueIdentifier>{c292f2b3-db77-4a59-ae9e-49cd66187599}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\02.Varg_Execution">
+      <UniqueIdentifier>{f281d21c-f9f5-435a-b20b-56fb1bf76861}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\02.Bat_Execution">
+      <UniqueIdentifier>{976b025c-27f6-4f9b-b7b7-4b29de9acffa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\03.ExecutionStart">
+      <UniqueIdentifier>{92d7128e-b48b-4ef7-9074-b627bd1b757f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt\02.State_KnockBack">
+      <UniqueIdentifier>{d83c3927-9bd3-44ff-915c-0641fda67463}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt\03.State_HurtFallDown">
+      <UniqueIdentifier>{f868b891-9036-4f60-9256-c213eea441e4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

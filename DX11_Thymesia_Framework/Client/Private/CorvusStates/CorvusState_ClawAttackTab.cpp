@@ -45,18 +45,6 @@ void CCorvusState_ClawAttackTab::Tick(_float fTimeDelta)
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 
-	if (KEY_INPUT(KEY::N, KEY_STATE::TAP))
-	{
-		if (m_fDebugAnimationSpeed < 0.5f)
-		{
-			m_fDebugAnimationSpeed = 1.f;
-		}
-
-		else
-		{
-			m_fDebugAnimationSpeed = 0.1f;
-		}
-	}
 
 	DISSOLVE_DESC	ArmDissolveDesc;
 	ZeroMemory(&ArmDissolveDesc, sizeof(DISSOLVE_DESC));
@@ -160,7 +148,7 @@ void CCorvusState_ClawAttackTab::Call_NextAnimationKey(const _uint& In_iKeyIndex
 		m_fDissolveAmountClaw = 1.f;
 		break;
 
-	case 30:
+	case 45:
 		GET_SINGLE(CGameManager)->Activate_Zoom(-0.5f,0.4f, EASING_TYPE::SINE_OUT);
 		_float3 vPosition;
 		XMStoreFloat3(&vPosition, m_pOwner.lock()->Get_Transform()->Get_Position() + XMVectorSet(0.f, 1.3f, 0.f, 0.f));
@@ -244,7 +232,6 @@ void CCorvusState_ClawAttackTab::OnStateEnd()
 	__super::OnStateEnd();
 
 	//Disable_Weapons();
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 	m_IsNextAttack = false;
 	m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -= 
 		bind(&CCorvusState_ClawAttackTab::Call_NextAnimationKey, this, placeholders::_1);

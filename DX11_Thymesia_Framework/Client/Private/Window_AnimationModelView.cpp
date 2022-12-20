@@ -7,9 +7,20 @@
 
 IMPLEMENT_SINGLETON(CWindow_AnimationModelView)
 
-weak_ptr<CPreviewAnimationModel> CWindow_AnimationModelView::Get_PreViewModel()
+weak_ptr<CPreviewAnimationModel> CWindow_AnimationModelView::Get_PreviewAnimModel()
 {
-    return m_pPreViewModel;
+    if (m_pPreviewModel.lock())
+        return m_pPreviewModel;
+    else
+        return weak_ptr<CPreviewAnimationModel>();
+}
+
+weak_ptr<CPreview_Prop> CWindow_AnimationModelView::Get_PreviewPropModel()
+{
+    if (m_pPreviewNoAnimModel.lock())
+        return m_pPreviewNoAnimModel;
+    else
+        return weak_ptr<CPreview_Prop>();
 }
 
 HRESULT CWindow_AnimationModelView::Initialize()
@@ -71,79 +82,79 @@ HRESULT CWindow_AnimationModelView::Render(ID3D11DeviceContext* pDeviceContext)
             if (ImGui::Button("Load"))
             {
                 
-                m_pPreViewModel.lock()->Init_EditPreViewAnimationModel(m_AllModelKeys[m_CurrentModelIndex]);
+                m_pPreviewModel.lock()->Init_EditPreviewAnimationModel(m_AllModelKeys[m_CurrentModelIndex]);
                 Update_PreViewModel();
             }
 
-            //if (ImGui::CollapsingHeader("Load NoAnimModel"), ImGuiTreeNodeFlags_DefaultOpen)
-            //{
-            //    //ImGui::Text("Input Model Key");
-            //    //ImGui::InputText("##ModelKey", m_szModelKey, MAX_PATH);
+            if (ImGui::CollapsingHeader("Load NoAnimModel"), ImGuiTreeNodeFlags_DefaultOpen)
+            {
+                //ImGui::Text("Input Model Key");
+                //ImGui::InputText("##ModelKey", m_szModelKey, MAX_PATH);
 
-            //    ImGui::Text(" NoAnimModel List");
-            //    if (ImGui::BeginListBox("## NoAnimModel List", ImVec2(-FLT_MIN, 15 * ImGui::GetTextLineHeightWithSpacing())))
-            //    {
+                ImGui::Text(" NoAnimModel List");
+                if (ImGui::BeginListBox("## NoAnimModel List", ImVec2(-FLT_MIN, 15 * ImGui::GetTextLineHeightWithSpacing())))
+                {
 
-            //        for (int i = 0; i < m_AllNoAnimModelKeys.size(); i++)
-            //        {
-            //            const bool is_selected = (m_CurrentNoAnimModelIndex == i);
-            //            if (ImGui::Selectable(m_AllNoAnimModelKeys[i].c_str(), is_selected))
-            //                m_CurrentNoAnimModelIndex = i;
+                    for (int i = 0; i < m_AllNoAnimModelKeys.size(); i++)
+                    {
+                        const bool is_selected = (m_CurrentNoAnimModelIndex == i);
+                        if (ImGui::Selectable(m_AllNoAnimModelKeys[i].c_str(), is_selected))
+                            m_CurrentNoAnimModelIndex = i;
 
-            //            // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-            //            if (is_selected)
-            //                ImGui::SetItemDefaultFocus();
-            //        }
-            //        ImGui::EndListBox();
-            //    }
+                        // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+                        if (is_selected)
+                            ImGui::SetItemDefaultFocus();
+                    }
+                    ImGui::EndListBox();
+                }
 
-            //    if (ImGui::Button("Load_NonAnim"))
-            //    {
-            //        // TODO : comment because explode
-            //        m_pPreViewNoAnimModel.lock()->Get_Component<CModel>().lock()->
-            //            Get_Owner().lock()->
-            //                Get_Component<CModel>().lock()->Init_Model(m_AllNoAnimModelKeys[m_CurrentModelIndex].c_str());
-            //       
-            //    }
-            //}
+                if (ImGui::Button("Load_NonAnim"))
+                {
+                    // TODO : comment because explode
+                    m_pPreviewNoAnimModel.lock()->Get_Component<CModel>().lock()->
+                        Get_Owner().lock()->
+                            Get_Component<CModel>().lock()->Init_Model(m_AllNoAnimModelKeys[m_CurrentNoAnimModelIndex].c_str());
+                   
+                }
+            }
 
 
-            //if (m_pPreViewModel.lock())
-            //{
-            //    if (ImGui::CollapsingHeader("Bone Collider"), ImGuiTreeNodeFlags_DefaultOpen)
-            //    {
+            if (m_pPreviewModel.lock())
+            {
+                if (ImGui::CollapsingHeader("Bone Collider"), ImGuiTreeNodeFlags_DefaultOpen)
+                {
 
-            //        ImGui::Text("Bone List");
-            //        if (ImGui::BeginListBox("##Bone List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
-            //        {
+                    ImGui::Text("Bone List");
+                    if (ImGui::BeginListBox("##Bone List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
+                    {
 
-            //            for (int i = 0; i < m_AllBoneNames.size(); i++)
-            //            {
-            //                const bool is_selected = (m_CurrentBoneIndex == i);
-            //                if (ImGui::Selectable(m_AllBoneNames[i].c_str(), is_selected))
-            //                    m_CurrentBoneIndex = i;
+                        for (int i = 0; i < m_AllBoneNames.size(); i++)
+                        {
+                            const bool is_selected = (m_CurrentBoneIndex == i);
+                            if (ImGui::Selectable(m_AllBoneNames[i].c_str(), is_selected))
+                                m_CurrentBoneIndex = i;
 
-            //                // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-            //                if (is_selected)
-            //                    ImGui::SetItemDefaultFocus();
-            //            }
-            //            ImGui::EndListBox();
-            //        }
+                            // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+                            if (is_selected)
+                                ImGui::SetItemDefaultFocus();
+                        }
+                        ImGui::EndListBox();
+                    }
 
-            //        if (ImGui::Button("Create"))
-            //        {
-            //            m_pPreViewModel.lock()->Clear_DebugWeapon();
-            //            m_pPreViewModel.lock()->Add_DebugWeapon(m_AllBoneNames[m_CurrentBoneIndex]);
-            //        }
+                    if (ImGui::Button("Create"))
+                    {
+                        m_pPreviewModel.lock()->Clear_DebugWeapon();
+                        m_pPreviewModel.lock()->Add_DebugWeapon(m_AllBoneNames[m_CurrentBoneIndex]);
+                    }
 
-            //        ImGui::SameLine();
+                    ImGui::SameLine();
 
-            //        /*if (ImGui::Button("Clear"))
-            //        {
-            //            m_pPreViewModel.lock()->Clear_DebugWeapon();
-            //        }*/
-            //    }
-            //}
+                    /*if (ImGui::Button("Clear"))
+                    {
+                        m_pPreViewModel.lock()->Clear_DebugWeapon();
+                    }*/
+                }
+            }
             
         }
 
@@ -157,29 +168,29 @@ HRESULT CWindow_AnimationModelView::Render(ID3D11DeviceContext* pDeviceContext)
 
 void CWindow_AnimationModelView::Load_PreViewModels()
 {
-    m_pPreViewModel = GAMEINSTANCE->Add_GameObject<CPreviewAnimationModel>(LEVEL_EDIT);
+    m_pPreviewModel = GAMEINSTANCE->Add_GameObject<CPreviewAnimationModel>(LEVEL_EDIT);
     m_AllModelKeys = GAMEINSTANCE->Get_AllAnimModelKeys();
 
     // TODO : comment because explode
-    m_pPreViewNoAnimModel = GAMEINSTANCE->Add_GameObject<CPreView_Prop>(LEVEL_EDIT);
+    m_pPreviewNoAnimModel = GAMEINSTANCE->Add_GameObject<CPreview_Prop>(LEVEL_EDIT);
     m_AllNoAnimModelKeys = GAMEINSTANCE->Get_AllNoneAnimModelKeys();
 }
 
 void CWindow_AnimationModelView::Update_PreViewModel()
 {
     CallBack_UpdatePreViewModel();
-    m_AllBoneNames = m_pPreViewModel.lock()->Get_CurrentModel().lock()->Get_AllBoneNames();
+    m_AllBoneNames = m_pPreviewModel.lock()->Get_CurrentModel().lock()->Get_AllBoneNames();
     m_CurrentBoneIndex = 0;
 }
 
 
 void CWindow_AnimationModelView::Free()
 {
-    if(m_pPreViewModel.lock())
-        m_pPreViewModel.lock()->Set_Dead();
+    if(m_pPreviewModel.lock())
+        m_pPreviewModel.lock()->Set_Dead();
 
     // TODO : comment because explode
-    if (m_pPreViewNoAnimModel.lock())
-        m_pPreViewNoAnimModel.lock()->Set_Dead();
+    if (m_pPreviewNoAnimModel.lock())
+        m_pPreviewNoAnimModel.lock()->Set_Dead();
 
 }

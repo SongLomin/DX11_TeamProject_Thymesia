@@ -26,7 +26,7 @@ HRESULT CWindow_AnimationPlayerView::Initialize()
 
 void CWindow_AnimationPlayerView::Start()
 {
-    m_pPreViewModel = GET_SINGLE(CWindow_AnimationModelView)->Get_PreViewModel();
+    m_pPreViewModel = GET_SINGLE(CWindow_AnimationModelView)->Get_PreviewAnimModel();
 
 
     GET_SINGLE(CWindow_AnimationModelView)->CallBack_UpdatePreViewModel +=

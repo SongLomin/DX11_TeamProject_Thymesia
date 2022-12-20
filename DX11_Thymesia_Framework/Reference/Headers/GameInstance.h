@@ -19,6 +19,7 @@
 #include "SoundManager.h"
 #include "PhysX_Manager.h"
 #include "Thread_Manager.h"
+#include "NvCloth_Manager.h"
 
 /* 1. 게임내에 필요한 객체(매니져등)들을 모아서 보관한다. */
 /* 2. 클라이언트 개발자가 접근하기좋은 루트를 제공해준다. 나. */
@@ -143,6 +144,8 @@ public: /* For.Render_Manager */
 	LIFTGAMMAGAIN_DESC& Get_LiftGammaGain();
 	HRESULT Set_Contrast(const _float In_fContrast);
 	HRESULT Set_Saturation(const _float In_fSaturation);
+	HRESULT Set_IrradianceMap(const _char* In_szIrradianceMap);
+	HRESULT Set_PreFilteredMap(const _char* In_szPreFiltered);
 
 	ID3D11DeviceContext* Get_BeforeRenderContext();
 	void Release_BeforeRenderContext(ID3D11DeviceContext* pDeviceContext);
@@ -251,6 +254,8 @@ public: /* For. Thread_Manager */
 public: /* For. RenderTarget_Manager */
 	list<const _tchar*> Get_AllSRVNames();
 
+public: /* For. NvCloth_Manager */
+
 private:
 	shared_ptr<CGraphic_Device> m_pGraphic_Device;
 	shared_ptr<CInput_Device> m_pInput_Device;
@@ -270,6 +275,7 @@ private:
 	shared_ptr<CSound_Manager> m_pSound_Manager;
 	shared_ptr<CPhysX_Manager> m_pPhysX_Manager;
 	shared_ptr<CThread_Manager> m_pThread_Manager;
+	shared_ptr<CNvCloth_Manager> m_pNvCloth_Manager;
 
 
 

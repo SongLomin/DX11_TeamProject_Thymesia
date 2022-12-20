@@ -7,7 +7,6 @@ struct MODEL_DATA;
 class CMeshContainer;
 class CShader;
 
-
 class ENGINE_DLL CVIBuffer_Model_Instance :
     public CVIBuffer
 {

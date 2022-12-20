@@ -110,7 +110,7 @@ void CCorvusState_AVoid::Call_AnimationEnd()
 
 void CCorvusState_AVoid::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 {
-	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
+	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 }
 

@@ -40,19 +40,6 @@ void CCorvusState_SprintAttack::Tick(_float fTimeDelta)
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 
-	if (KEY_INPUT(KEY::N, KEY_STATE::TAP))
-	{
-		if (m_fDebugAnimationSpeed < 0.5f)
-		{
-			m_fDebugAnimationSpeed = 1.f;
-		}
-
-		else
-		{
-			m_fDebugAnimationSpeed = 0.1f;
-		}
-	}
-
 	Attack();
 }
 
@@ -105,10 +92,8 @@ void CCorvusState_SprintAttack::OnStateStart(const _float& In_fAnimationBlendTim
 
 	if (!m_pModelCom.lock().get())
 	{
-
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	}
-	m_pModelCom.lock()->Set_AnimationSpeed(2.f);
 
 	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
 		bind(&CCorvusState_SprintAttack::Call_OtherControllerHit, this, placeholders::_1);
@@ -128,7 +113,6 @@ void CCorvusState_SprintAttack::OnStateEnd()
 
 	//Disable_Weapons();
 	m_IsNextAttack = false;
-	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 
 	m_pPhysXControllerCom.lock()->Callback_ControllerHit +=
 		bind(&CCorvusState_SprintAttack::Call_OtherControllerHit, this, placeholders::_1);

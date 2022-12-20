@@ -9,7 +9,8 @@
 #include "Animation.h"
 #include "Character.h"
 #include "JokerStates.h"
-
+#include "GameManager.h"
+#include "Inventory.h"
 
 
 
@@ -63,7 +64,6 @@ void CJokerState_Execution_End::OnStateStart(const _float& In_fAnimationBlendTim
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 

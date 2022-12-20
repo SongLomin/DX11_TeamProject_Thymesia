@@ -105,7 +105,7 @@ _bool CBatBossState_TurnL::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (ComputeAngleWithPlayer() > 0.94f)
+	if (ComputeAngleWithPlayer() > 0.97f)
 	{
 		Rotation_TargetToLookDir();
 		Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_TurnCheck(false);

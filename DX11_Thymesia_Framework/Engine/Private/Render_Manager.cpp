@@ -420,9 +420,8 @@ HRESULT CRender_Manager::Initialize()
 
 	m_pVIBuffer = CVIBuffer_Rect::Create();
 	
-	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap%d.dds"));
 	m_pIrradianceTextureCom = CTexture::Create();
-	m_pIrradianceTextureCom->Use_Texture("IrradianceMap");
+	//m_pIrradianceTextureCom->Use_Texture("IrradianceMap");
 
 	GAMEINSTANCE->Load_Textures("BRDF", TEXT("../Bin/Resources/Textures/BRDF/brdf%d.dds"));
 	m_pBRDFLUTTextureCom = CTexture::Create();
@@ -431,9 +430,9 @@ HRESULT CRender_Manager::Initialize()
 
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter%d.dds"));
 	m_pPreFilterTextureCom = CTexture::Create();
-	m_pPreFilterTextureCom->Use_Texture("PreFilter");
+	//m_pPreFilterTextureCom->Use_Texture("PreFilter");
 
-
+	Emplace_SleepContext(100);
 
 	return S_OK;
 }
@@ -455,8 +454,8 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 {
 	
 
-	GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[DEFERRED_EFFECT].Get());	
-	GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[DEFERRED_UI].Get());
+	//GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[DEFERRED_EFFECT].Get());	
+	//GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[DEFERRED_UI].Get());
 
 
 	while (!GET_SINGLE(CThread_Manager)->Check_JobDone())
@@ -599,8 +598,8 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 
 #ifdef _DEBUG
 
-	//if (FAILED(Render_Debug()))
-	//	DEBUG_ASSERT;
+	if (FAILED(Render_Debug()))
+		DEBUG_ASSERT;
 #endif 
 
 	return S_OK;
@@ -675,6 +674,21 @@ HRESULT CRender_Manager::Set_Saturation(const _float In_fSaturation)
 
 	return S_OK;
 }
+
+HRESULT CRender_Manager::Set_IrradianceMap(const _char* In_szIrradianceMap)
+{
+	m_pIrradianceTextureCom->Use_Texture(In_szIrradianceMap);
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Set_PreFilteredMap(const _char* In_szPreFilteredMap)
+{
+	m_pPreFilterTextureCom->Use_Texture(In_szPreFilteredMap);
+
+	return S_OK;
+}
+
 
 
 HRESULT CRender_Manager::Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain)
@@ -1037,13 +1051,13 @@ HRESULT CRender_Manager::Render_Blend()
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_ORMTexture", pRenderTargetManager->Get_SRV(TEXT("Target_PBR")))))
 		DEBUG_ASSERT;
 
-	if (FAILED(m_pIrradianceTextureCom->Set_ShaderResourceView(m_pShader, "g_IrradianceTexture", 0)))
-		DEBUG_ASSERT;
 
 	if (FAILED(m_pBRDFLUTTextureCom->Set_ShaderResourceView(m_pShader, "g_BRDFTexture", 0)))
 		DEBUG_ASSERT;
 
-	if (FAILED(m_pPreFilterTextureCom->Set_ShaderResourceView(m_pShader, "g_PreFilterTexture", 0)))
+	if (FAILED(m_pIrradianceTextureCom->Set_ShaderResourceView(m_pShader, "g_IrradianceTexture")))
+		DEBUG_ASSERT;
+	if (FAILED(m_pPreFilterTextureCom->Set_ShaderResourceView(m_pShader, "g_PreFilterTexture")))
 		DEBUG_ASSERT;
 
 
@@ -1065,6 +1079,9 @@ HRESULT CRender_Manager::Render_Blend()
 	m_pShader->Set_RawValue("g_ViewMatrixInv", &ViewMatrixInv, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_vCamPosition", &pPipeLine->Get_CamPosition(), sizeof(_float4));
+	
+	m_pShader->Set_RawValue("g_fExposure", &m_fExposure, sizeof(_float));
+
 
 	m_pShader->Begin(3, pDeviceContext);
 

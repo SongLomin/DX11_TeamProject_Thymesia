@@ -45,7 +45,7 @@ public:
 	
 
 	_vector Get_DeltaBonePosition(const char* In_szBoneName, const _bool In_bUseOffset = false , _fmatrix In_OffsetMatrix = XMMatrixIdentity());
-	_vector Get_DeltaBonePitchYawRoll(const char* In_szBoneName);
+	//_vector Get_DeltaBonePitchYawRoll(const char* In_szBoneName);
 
 	_uint Get_CurrentAnimationKeyIndex() const;
 	_uint Get_CurrentAnimationIndex() const;
@@ -68,33 +68,20 @@ public:
 
 	_bool IsModelPicking(const RAY& In_Ray, _float& Out_fRange);
 
-public:
+	weak_ptr<CBoneNode> Find_BoneNode(const string& pBoneName);
+	void Set_RootNode(const string& pBoneName, const _byte RootNodeFlags);
+
+private: /* CGameObject Based */
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
 	virtual void Start() override;
 
-	HRESULT Play_Animation(_float fTimeDelta);
-	HRESULT Render_Mesh(_uint iMeshContainerIndex, ID3D11DeviceContext* pDeviceContext);
-	HRESULT Update_BoneMatrices();
-	HRESULT Render_AnimModel(_uint iMeshContainerIndex, weak_ptr<CShader> pShader, _uint iPassIndex, const char* pConstantBoneName, ID3D11DeviceContext* pDeviceContext);
-	virtual void OnDestroy() override;
-	
-public:
+public: /* Init */
 	void Init_Model(const char* sModelKey, const string& szTexturePath = "", _uint iTimeScaleLayer = 0);
-	void Add_ReverseAnimation(const _uint In_iAnimationIndex, _uint iTimeScaleLayer);
-	HRESULT Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eActorType);
-	weak_ptr<CBoneNode> Find_BoneNode(const string& pBoneName);
-	void Reset_DeltaBonePositions();
-	void Set_RootNode(const string& pBoneName, const _byte RootNodeFlags);
-	
-public:
-	virtual void Write_Json(json& Out_Json) override;
-	virtual void Load_FromJson(const json& In_Json) override;
 
 private:
 	void Init_Model_Internal(const char* sModelKey, const string& szTexturePath = "", _uint iTimeScaleLayer = 0);
 	void Reset_Model();
-	
 
 private:
 	void Create_MeshContainers();
@@ -102,7 +89,20 @@ private:
 	void Create_ORM_Material(MODEL_MATERIAL& Out_Material, const _uint In_iMaterialIndex, const _char* pModelFilePath);
 	void Create_BoneNodes(shared_ptr<NODE_DATA> pNodeData, weak_ptr<CBoneNode> pParent, _uint iDepth);
 	void Create_Animations(_uint iTimeScaleLayer);
+
+public: /* Loopable functions */
+	HRESULT Play_Animation(_float fTimeDelta);
+	HRESULT Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eActorType);
+	HRESULT Render_Mesh(_uint iMeshContainerIndex, ID3D11DeviceContext* pDeviceContext);
+	HRESULT Update_BoneMatrices();
+	HRESULT Render_AnimModel(_uint iMeshContainerIndex, weak_ptr<CShader> pShader, _uint iPassIndex, const char* pConstantBoneName, ID3D11DeviceContext* pDeviceContext);
 	
+public:
+	void Set_NvClothMeshWithIndex(const _uint In_iIndex);
+
+public: 
+	void Add_ReverseAnimation(const _uint In_iAnimationIndex, _uint iTimeScaleLayer);
+	void Reset_DeltaBonePositions();
 
 protected:
 	shared_ptr<MODEL_DATA>					m_pModelData;
@@ -131,12 +131,16 @@ private:
 
 private:
 	unordered_map<size_t, _float4>			m_DeltaBonePositions;
-	unordered_map<size_t, _float3>			m_DeltaBoneRotations;
 
 public:
 	FDelegate<>								CallBack_AnimationEnd;
 
-public:
+private:
+	virtual void Write_Json(json& Out_Json) override;
+	virtual void Load_FromJson(const json& In_Json) override;
+
+private:
+	virtual void OnDestroy() override;
 	void Free();
 };
 

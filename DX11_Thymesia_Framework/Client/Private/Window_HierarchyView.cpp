@@ -7,6 +7,8 @@
 #include "VIBuffer_Model_Instance.h"
 #include "Transform.h"
 
+#include "GameManager.h"
+
 IMPLEMENT_SINGLETON(CWindow_HierarchyView)
 
 HRESULT CWindow_HierarchyView::Initialize()
@@ -442,6 +444,8 @@ void CWindow_HierarchyView::OnLevelLoad()
 
 		elem_item.second.clear();
 	}
+
+	GET_SINGLE(CGameManager)->OnLevelExit();
 
 	m_pGameObjects.clear();
 	m_pObjGroup.clear();

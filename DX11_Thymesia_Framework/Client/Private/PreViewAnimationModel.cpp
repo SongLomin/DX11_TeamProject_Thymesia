@@ -121,7 +121,7 @@ void CPreviewAnimationModel::SetUp_ShaderResource()
 #endif // !_USE_THREAD_
 }
 
-void CPreviewAnimationModel::Init_EditPreViewAnimationModel(const string& In_szModelKey)
+void CPreviewAnimationModel::Init_EditPreviewAnimationModel(const string& In_szModelKey)
 {
 	m_pModelCom.lock()->Init_Model(In_szModelKey.c_str(),"", (_uint)TIMESCALE_LAYER::EDITER);
 	m_pCurrentModelCom = m_pModelCom;

@@ -32,7 +32,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-#ifndef _ONLY_UI_
+#ifndef _ONLY_UI_ 
 	CCamera::CAMERADESC CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
 	CameraDesc.vEye = _float4(0.0f, 2.5f, -2.5f, 1.f);
@@ -48,37 +48,8 @@ HRESULT CLevel_GamePlay::Initialize()
 
 
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
-#pragma region GAMEOBJECT
-
-#ifdef _STAGE_1_
-/*future<void> ThreadResult2 = async(launch::async,
-	bind(&CLevel_GamePlay::Load_FromJson, this,
-		placeholders::_1, placeholders::_2),
-	m_szDefaultJsonPath + "Stage2.json",
-	LEVEL::LEVEL_GAMEPLAY);*/
-
-	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_GAMEPLAY);
-#endif // _STAGE_1_
-
-#ifdef _STAGE_2_
-	/*future<void> ThreadResult2 = async(launch::async,
-		bind(&CLevel_GamePlay::Load_FromJson, this,
-			placeholders::_1, placeholders::_2),
-		m_szDefaultJsonPath + "Stage2.json",
-		LEVEL::LEVEL_GAMEPLAY);*/
 
 	Load_FromJson(m_szDefaultJsonPath + "Stage2.json", LEVEL::LEVEL_GAMEPLAY);
-#endif // _STAGE_2_
-
-#ifdef _STAGE_2_2_
-	/*future<void> ThreadResult2 = async(launch::async,
-		bind(&CLevel_GamePlay::Load_FromJson, this,
-			placeholders::_1, placeholders::_2),
-		m_szDefaultJsonPath + "Stage2.json",
-		LEVEL::LEVEL_GAMEPLAY);*/
-
-	Load_FromJson(m_szDefaultJsonPath + "Stage2-2.json", LEVEL::LEVEL_GAMEPLAY);
-#endif // _STAGE_2_2_
 
 	CMonster::STATE_LINK_MONSTER_DESC MONSTER;
 	
@@ -86,12 +57,12 @@ HRESULT CLevel_GamePlay::Initialize()
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_GAMEPLAY);
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
 	
-#pragma endregion GAMEOBJECT
 #endif	// ONLY_UI
 
-	GAMEINSTANCE->Set_FogDesc(_float4(0.24f, 0.19f, 0.07f, 0.5f), 25.f);
+	GAMEINSTANCE->Set_FogDesc(_float4(0.2f, 0.15f, 0.03f, 0.5f), 20.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
-
+	GAMEINSTANCE->Set_Contrast(1.07f);
+	GAMEINSTANCE->Set_Saturation(1.7f);
 	SetUp_UI();
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
@@ -116,18 +87,18 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 
 	GAMEINSTANCE->Set_DynamicShadowLight({ -15.f +vPosition.m128_f32[0], 30.f+vPosition.m128_f32[1], -15.f + vPosition.m128_f32[2] }, { vPosition.m128_f32[0], vPosition.m128_f32[1], vPosition.m128_f32[2] });
 
-	static _float fContrast = 1.f;
+	//static _float Contrast = 1.f;
 
-	if (KEY_INPUT(KEY::INSERTKEY, KEY_STATE::HOLD))
-	{
-		fContrast += 0.01f;
-	}
-	else if(KEY_INPUT(KEY::DELETEKEY, KEY_STATE::HOLD))
-	{
-		fContrast -= 0.01f;
-	}
+	//if (KEY_INPUT(KEY::INSERTKEY, KEY_STATE::HOLD))
+	//{
+	//	Contrast += 0.01f;
+	//}
+	//else if(KEY_INPUT(KEY::DELETEKEY, KEY_STATE::HOLD))
+	//{
+	//	Contrast -= 0.01f;
+	//}
 
-	GAMEINSTANCE->Set_Saturation(fContrast);
+	//GAMEINSTANCE->Set_Contrast(Contrast);
 
 }
 

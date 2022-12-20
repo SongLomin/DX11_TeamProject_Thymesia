@@ -36,4 +36,5 @@
 #include "BossBat/BatBossState_TurnL.h"
 #include "BossBat/BatBossState_TurnR.h"
 #include "BossBat/BatBossState_WalkF.h"
+#include "BossBat/BatBossState_SonicBullet.h"
 

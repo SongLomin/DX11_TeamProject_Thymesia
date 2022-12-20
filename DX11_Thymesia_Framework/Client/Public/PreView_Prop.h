@@ -4,11 +4,11 @@
 
 BEGIN(Client)
 
-class CPreView_Prop final :
+class CPreview_Prop final :
     public CProp
 {
-    GAMECLASS_H(CPreView_Prop);
-    CLONE_H(CPreView_Prop, CGameObject);
+    GAMECLASS_H(CPreview_Prop);
+    CLONE_H(CPreview_Prop, CGameObject);
 
 public:
     virtual HRESULT Initialize_Prototype() override;

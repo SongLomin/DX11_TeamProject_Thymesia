@@ -28,7 +28,7 @@ protected:
     virtual void SetUp_ShaderResource() override;
 
 public:
-    void Init_EditPreViewAnimationModel(const string& In_szModelKey);
+    void Init_EditPreviewAnimationModel(const string& In_szModelKey);
     void Change_AnimationFromIndex(const _uint& In_iAnimIndex);
     void Play_Animation(_float fTimeDelta);
     void Add_DebugWeapon(const string& In_szBoneName);

@@ -38,6 +38,15 @@ void CBatBossState_JumpSmash_SmarhL::Start()
 void CBatBossState_JumpSmash_SmarhL::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	if (m_bRootStop)
+	{
+		_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+
+		PxControllerFilters Filters = Filters;
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+	}
 	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -49,7 +58,7 @@ void CBatBossState_JumpSmash_SmarhL::LateTick(_float fTimeDelta)
 
 	if (m_bAttackLookAtLimit)
 	{
-		TurnAttack(fTimeDelta * 0.5f);
+		TurnAttack(fTimeDelta);
 	}
 	
 
@@ -61,9 +70,11 @@ void CBatBossState_JumpSmash_SmarhL::OnStateStart(const _float& In_fAnimationBle
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pPhysXControllerCom.lock()->Enable_Gravity(false);
+	m_bAttackLookAtLimit = true;
 
-	//JumpLookOffsetLookAt();
+	m_bRootStop = true;
+
+	m_bOne = true;
 
 	m_bAttackLookAtLimit = true;
 
@@ -82,9 +93,6 @@ void CBatBossState_JumpSmash_SmarhL::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	m_pPhysXControllerCom.lock()->Enable_Gravity(false);
-
-
 }
 
 
@@ -93,6 +101,7 @@ void CBatBossState_JumpSmash_SmarhL::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
+	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_AttackCount(1);
 	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Idle>(0.05f);
 }
 
@@ -111,10 +120,31 @@ _bool CBatBossState_JumpSmash_SmarhL::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 100)
+	_float fPToMDistance = Get_DistanceWithPlayer();
+
+	if (fPToMDistance <= 7.f && m_bOne)
 	{
+		m_bRootStop = false;
+		m_bOne = false;
+	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 50)
+	{
+		m_pPhysXControllerCom.lock()->Enable_Gravity(false);
+	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 188)
+	{
+		m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+	}
+
+
+	if (ComputeAngleWithPlayer() > 0.98f)
+	{
+		Rotation_TargetToLookDir();
 		m_bAttackLookAtLimit = false;
 	}
+
 	
 
 

@@ -32,8 +32,8 @@ public:
     virtual void OnEventMessage(_uint iArg) override;
      void Free();
 
-private:
-
+protected:
+    weak_ptr<CAnimation> m_pThisAnimationCom;
 };
 
 END

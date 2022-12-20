@@ -84,22 +84,19 @@ void CNorMonState_GroggyStart::OnStateStart(const _float& In_fAnimationBlendTime
 
 	_float3 vPosition;
 	XMStoreFloat3(&vPosition, m_pOwner.lock()->Get_Transform()->Get_Position() + XMVectorSet(0.f, 1.f, 0.f, 0.f));
-	GAMEINSTANCE->Set_RadialBlur(0.2f, vPosition);
+	GAMEINSTANCE->Set_RadialBlur(0.3f, vPosition);
 	GAMEINSTANCE->Set_Chromatic(0.1f);
+	m_vShakingOffSet = { 0.f, 1.f, 0.f };
+	GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.3f, 1.f, 9.f, 0.25f);
 
-#ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "NorMonState: Stop -> StopStop" << endl;
 #endif
-#endif
-
 }
 
 void CNorMonState_GroggyStart::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-
 }
 
 

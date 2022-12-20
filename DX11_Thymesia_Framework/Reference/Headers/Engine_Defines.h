@@ -45,7 +45,19 @@ using namespace DirectX;
 using namespace physx;
 #pragma endregion
 
-
+#include <NvCloth/Factory.h>
+#include <NvCloth/Cloth.h>
+#include <NvCloth/Callbacks.h>
+#include <NvCloth/DxContextManagerCallback.h>
+#include <NvCloth/Fabric.h>
+#include <NvCloth/Solver.h>
+#include <NvCloth/Allocator.h>
+#include <NvCloth/Callbacks.h>
+#include <NvClothExt/ClothFabricCooker.h>
+#include <NvClothExt/ClothMeshDesc.h>
+#include <NvClothExt/ClothMeshQuadifier.h>
+#include <NvClothExt/ClothTetherCooker.h>
+using namespace nv::cloth;
 
 #include <process.h>
 #include <iostream>

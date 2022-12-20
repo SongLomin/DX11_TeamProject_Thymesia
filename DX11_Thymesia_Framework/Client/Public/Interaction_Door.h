@@ -20,8 +20,11 @@ class CInteraction_Door final :
 private:
     enum ACTION_FLAG
     {
-        ROTATION = ( 1 << 0 ), // 1
-        KEY      = ( 1 << 1 )  // 2
+        ROTATION  = ( 1 << 0 ),   // 1
+
+        KEY       = ( 1 << 1 ),   // 2
+        AUTO      = ( 1 << 2 ),   // 4
+        OPEN_DIR  = ( 1 << 3 ),   // 8
     };
 
 public:
@@ -36,6 +39,9 @@ private:
     void Act_OpenDoor(_float fTimeDelta, _bool& Out_IsEnd);
     void Act_CloseDoor(_float fTimeDelta, _bool& Out_IsEnd);
 
+    void Requirement_Key(_bool& Out_bRequirement);
+    void Requirement_Dir(_bool& Out_bRequirement);
+
 public:
     virtual void Act_Interaction() override;
 
@@ -46,10 +52,11 @@ public:
     virtual void Load_FromJson(const json& In_Json) override;
 
 private:
-    void    SetUpColliderDesc(_float* _pColliderDesc);
+    void    SetUpColliderDesc(weak_ptr<CCollider> In_pColldierCom, _float* _pColliderDesc);
 
 private:
     weak_ptr<CCollider>         m_pColliderCom;
+    weak_ptr<CCollider>         m_pDirColliderCom;
     weak_ptr<CPhysXCollider>    m_pPhysXColliderCom;
          
     _flag                       m_ActionFlag        = ACTION_FLAG::ROTATION;
@@ -57,7 +64,10 @@ private:
     _float                      m_fRotationtSpeed   = 1.f;
     _float                      m_fAddRadian        = 0.f;
     _float                      m_fFirstRadian      = 0.f;
-    _int                        m_iKeyID            = 0;
+    ITEM_NAME                   m_iKeyID            = ITEM_NAME::ITEM_NAME_END;
+    _int                        m_iSectionIndex     = -1;
+
+    FDelegate<_bool&>           m_CallBack_Requirement;
 
 };
 

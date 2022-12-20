@@ -14,7 +14,8 @@ class CBatBossState_Storm :
 	CLONE_H(CBatBossState_Storm, CComponent)
 		SHALLOW_COPY(CBatBossState_Storm)
 
-
+public:
+	void   Set_SpecialAtk(_bool SpecialAtk) { m_bSpecialAtk = SpecialAtk; }
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
@@ -28,6 +29,8 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
+private:
+	_bool        m_bSpecialAtk = false;
 protected:
 	void Free();
 

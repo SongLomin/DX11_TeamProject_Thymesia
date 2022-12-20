@@ -67,6 +67,8 @@ public:
 
 	HRESULT Set_Contrast(const _float In_fContrast);
 	HRESULT Set_Saturation(const _float In_fSaturation);
+	HRESULT Set_IrradianceMap(const _char* In_szIrradianceMap);
+	HRESULT Set_PreFilteredMap(const _char* In_szPreFiltered);
 
 private:
 	HRESULT Render_Priority();

@@ -15,6 +15,8 @@ class CBatBossState_TakeExecution_Start :
 		SHALLOW_COPY(CBatBossState_TakeExecution_Start)
 
 
+public:
+	void  Set_DieType(_bool DieType) { m_bDieType = DieType; } 
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
@@ -30,8 +32,7 @@ protected:
 
 
 private:
-	_bool    m_bNextState = false;
-	_float   m_fSinematic = 0.f;
+	_bool   m_bDieType = false;
 
 private:
 	void Call_AnimationEnd();

@@ -35,7 +35,16 @@ void CEasingComponent::Stop()
 {
     m_fLerpTick = 0.f;
     m_bLerp = false;
-    m_vLerped = m_vTarget;
+    m_vLerped = m_vStart;
+
+    if (Callback_LerpEnd.size() > 1)
+    {
+        Callback_LerpEnd.Clear();
+    }
+    if (Callback_LerpStart.size() > 1)
+    {
+        Callback_LerpStart.Clear();
+    }
 }
 
 void CEasingComponent::Set_Lerp(_float4 vStart, _float4 vTarget, _float fTime, EASING_TYPE eEasingType, PLAY_TYPE ePlayType, _bool bCustomUse)

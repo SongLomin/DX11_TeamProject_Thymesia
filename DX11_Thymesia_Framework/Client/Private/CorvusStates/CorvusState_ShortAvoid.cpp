@@ -79,14 +79,14 @@ void CCorvusState_ShortAvoid::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif
 #endif
 
-	//m_pModelCom.lock()->Set_AnimationSpeed(3.f);
+	
 }
 
 void CCorvusState_ShortAvoid::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	//m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+	
 }
 
 void CCorvusState_ShortAvoid::Call_AnimationEnd()
@@ -100,7 +100,7 @@ void CCorvusState_ShortAvoid::Call_AnimationEnd()
 
 void CCorvusState_ShortAvoid::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 {
-	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
+	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 }
 

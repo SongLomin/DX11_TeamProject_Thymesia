@@ -50,6 +50,9 @@ void CEditSetActor::Tick(_float fTimeDelta)
 
 void CEditSetActor::LateTick(_float fTimeDelta)
 {
+	if (!m_bSubDraw)
+		return;
+
 	__super::LateTick(fTimeDelta);
 
 	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONALPHABLEND, Cast<CGameObject>(m_this));
@@ -589,9 +592,6 @@ void    CEditSetActor::View_Picking_MessageEdit()
 
 void CEditSetActor::SetUp_ShaderResource_Select(ID3D11DeviceContext* pDeviceContext)
 {
-	if (!m_bSubDraw)
-		return;
-
 	auto iter_collider = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditSetActor).hash_code());
 
 	if (iter_collider == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())

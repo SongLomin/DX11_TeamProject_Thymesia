@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossBat/BatStates.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CBatBossState_SonicBoom);
 CLONE_C(CBatBossState_SonicBoom, CComponent)
@@ -38,6 +39,12 @@ void CBatBossState_SonicBoom::Start()
 void CBatBossState_SonicBoom::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+
+	PxControllerFilters Filters = Filters;
+	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 
 	if (m_bAttackLookAtLimit)
 	{
@@ -106,7 +113,7 @@ void CBatBossState_SonicBoom::Call_AnimationEnd()
 		return;
 
 	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_AttackCount(1);
-	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Car>(0.05f);
+	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Idle>(0.05f);
 }
 
 void CBatBossState_SonicBoom::OnDestroy()

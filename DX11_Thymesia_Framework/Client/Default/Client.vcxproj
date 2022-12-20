@@ -221,6 +221,7 @@
     <ClInclude Include="..\Public\BossBat\BatBossState_JumpSmash_ForwardL.h" />
     <ClInclude Include="..\Public\BossBat\BatBossState_JumpSmash_SmarhL.h" />
     <ClInclude Include="..\Public\BossBat\BatBossState_SonicBoom.h" />
+    <ClInclude Include="..\Public\BossBat\BatBossState_SonicBullet.h" />
     <ClInclude Include="..\Public\BossBat\BatBossState_Sp.h" />
     <ClInclude Include="..\Public\BossBat\BatBossState_Start.h" />
     <ClInclude Include="..\Public\BossBat\BatBossState_Start_Loop.h" />
@@ -282,7 +283,10 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Headache_Loop.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Headache_Start.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtBlown.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtFallDown.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtFallDownEnd.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtXL.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_KnockBack.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_LAttack5.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_LongHealing.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Long_AvoidB.h" />
@@ -317,6 +321,8 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_Claw_Atk1.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_Claw_Atk2.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_Claw_Atk3.h" />
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Bat_Execution.h" />
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Execution_Start.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Joker_Execution.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_RaidAttack1Hurt.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent.h" />
@@ -489,6 +495,8 @@
     <ClInclude Include="..\Public\UI_EvolveTalent_Active.h" />
     <ClInclude Include="..\Public\UI_Interaction.h" />
     <ClInclude Include="..\Public\UI_Inventory.h" />
+    <ClInclude Include="..\Public\UI_InventoryConfirmWindow.h" />
+    <ClInclude Include="..\Public\UI_InventoryConfirmWindowButton.h" />
     <ClInclude Include="..\Public\UI_ItemInformation.h" />
     <ClInclude Include="..\Public\UI_ItemPopup.h" />
     <ClInclude Include="..\Public\UI_ItemSlot.h" />
@@ -739,6 +747,7 @@
     <ClCompile Include="..\Private\BossBat\BatBossState_JumpSmash_Forward.cpp" />
     <ClCompile Include="..\Private\BossBat\BatBossState_JumpSmash_SmarhL.cpp" />
     <ClCompile Include="..\Private\BossBat\BatBossState_SonicBoom.cpp" />
+    <ClCompile Include="..\Private\BossBat\BatBossState_SonicBullet.cpp" />
     <ClCompile Include="..\Private\BossBat\BatBossState_Sp.cpp" />
     <ClCompile Include="..\Private\BossBat\BatBossState_Start.cpp" />
     <ClCompile Include="..\Private\BossBat\BatBossState_Start_Loop.cpp" />
@@ -797,7 +806,10 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Headache_Loop.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Headache_Start.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtBlown.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtFallDown.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtFallDownEnd.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_HurtXL.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_KnockBack.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_LongHealing.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Long_AvoidB.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_Long_AvoidF.cpp" />
@@ -877,6 +889,8 @@
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Short_ClawLv1.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Short_ClawLv2.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Sword.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Bat_Execution.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Execution_Start.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Joker_Execution.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_RaidAttack1Hurt.cpp" />
     <ClCompile Include="..\Private\CustomFont.cpp" />
@@ -975,6 +989,8 @@
     <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp" />
     <ClCompile Include="..\Private\UI_EvolveTalent_Active.cpp" />
     <ClCompile Include="..\Private\UI_Interaction.cpp" />
+    <ClCompile Include="..\Private\UI_Inventory.cpp" />
+    <ClCompile Include="..\Private\UI_InventoryConfirmWindowButton.cpp" />
     <ClCompile Include="..\Private\UI_ItemPopup.cpp" />
     <ClCompile Include="..\Private\UI_ItemSlot.cpp" />
     <ClCompile Include="..\Private\UI_LerpBar.cpp" />
@@ -1194,7 +1210,7 @@
     <ClCompile Include="..\Private\WorldUI.cpp" />
     <ClCompile Include="..\Public\TestUI.cpp" />
     <ClCompile Include="..\Skill_Base.cpp" />
-    <ClCompile Include="..\UI_Inventory.cpp" />
+    <ClCompile Include="..\UI_InventoryConfirmWindow.cpp" />
     <ClCompile Include="..\UI_ItemInformation.cpp" />
     <ClCompile Include="..\UI_MonsterFocus.cpp" />
     <ClCompile Include="Client.cpp" />

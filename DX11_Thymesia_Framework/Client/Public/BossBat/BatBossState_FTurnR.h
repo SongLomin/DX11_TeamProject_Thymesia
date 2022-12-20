@@ -28,6 +28,9 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
+private:
+	_bool m_bTurnCheck = false;
+	_int  m_iCheck = 0;
 
 private:
 	void Call_AnimationEnd();
