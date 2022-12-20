@@ -2122,9 +2122,6 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_LAttack5.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack\State_Attack5</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\AIStateBase.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\BossStateBase.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState</Filter>
     </ClCompile>
@@ -3134,6 +3131,7 @@
     <ClCompile Include="..\Private\Window_GameSystem_Dev.cpp">
       <Filter>97. Tool\01. DeveloperConsole\Windows\04. GameSystem</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\AIStateBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

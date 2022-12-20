@@ -61,6 +61,7 @@ public:
 	HRESULT Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CModel> pModel = weak_ptr<CModel>());
 	void SetUp_BoneMatices(_fmatrix TransformationMatrix);
 	HRESULT Bind_BoneMatices(weak_ptr<CShader> pShader, const char* pConstantBoneName);
+	void Set_NvCloth();
 
 private:
 	HRESULT Ready_VertexBuffer_NonAnim(shared_ptr<MESH_DATA> tMeshData);
@@ -81,6 +82,11 @@ private:
 
 
 	vector<weak_ptr<CBoneNode>>			m_pBoneNodes;
+
+private: /* For. NvCloth */
+	Fabric*								m_pFabric{};
+	Cloth*								m_pCloth{};
+	
 
 public:
 	void Free();

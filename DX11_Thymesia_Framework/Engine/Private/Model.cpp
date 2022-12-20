@@ -159,53 +159,53 @@ _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName, const _bool In_
 	return vCurrentBonePosition;
 }
 
-_vector CModel::Get_DeltaBonePitchYawRoll(const char* In_szBoneName)
-{
-	if (m_isBlend)
-	{
-		return XMVectorSet(0.f, 0.f, 0.f, 1.f);
-	}
-
-	_float3 vCurrentBonePitchYawRollFromFloat3;
-	_vector vCurrentBonePitchYawRoll;
-	_vector vPreBonePitchYawRoll;
-
-	weak_ptr<CBoneNode> CurrentBoneNode = Find_BoneNode(In_szBoneName);
-
-	if (!CurrentBoneNode.lock().get())
-		assert(false);
-
-	string szBoneNameToString = In_szBoneName;
-	size_t HashKey = hash<string>()(szBoneNameToString);
-
-	unordered_map<size_t, _float3>::iterator iter = m_DeltaBoneRotations.find(HashKey);
-
-	if (m_DeltaBoneRotations.end() == iter)
-	{
-
-		_float3 StartPitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(CurrentBoneNode.lock()->Get_TransformationMatrix()));
-
-		m_DeltaBoneRotations.emplace(HashKey, StartPitchYawRoll);
-
-		return XMVectorSet(0.f, 0.f, 0.f, 1.f);
-	}
-
-	vPreBonePitchYawRoll = XMLoadFloat3(&(*iter).second);
-	vCurrentBonePitchYawRollFromFloat3 = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(CurrentBoneNode.lock()->Get_TransformationMatrix()));
-	vCurrentBonePitchYawRoll = XMLoadFloat3(&vCurrentBonePitchYawRollFromFloat3);
-
-	vCurrentBonePitchYawRoll -= vPreBonePitchYawRoll;
-
-	(*iter).second = vCurrentBonePitchYawRollFromFloat3;
-
-	// XZ축 회전 소거
-	vCurrentBonePitchYawRoll.m128_f32[0] = 0.f;
-	vCurrentBonePitchYawRoll.m128_f32[2] = 0.f;
-
-	//vCurrentBonePosition = XMVector3TransformCoord(vCurrentBonePosition, XMLoadFloat4x4(&m_pModelData->TransformMatrix));
-
-	return vCurrentBonePitchYawRoll;
-}
+//_vector CModel::Get_DeltaBonePitchYawRoll(const char* In_szBoneName)
+//{
+//	if (m_isBlend)
+//	{
+//		return XMVectorSet(0.f, 0.f, 0.f, 1.f);
+//	}
+//
+//	_float3 vCurrentBonePitchYawRollFromFloat3;
+//	_vector vCurrentBonePitchYawRoll;
+//	_vector vPreBonePitchYawRoll;
+//
+//	weak_ptr<CBoneNode> CurrentBoneNode = Find_BoneNode(In_szBoneName);
+//
+//	if (!CurrentBoneNode.lock().get())
+//		assert(false);
+//
+//	string szBoneNameToString = In_szBoneName;
+//	size_t HashKey = hash<string>()(szBoneNameToString);
+//
+//	unordered_map<size_t, _float3>::iterator iter = m_DeltaBoneRotations.find(HashKey);
+//
+//	if (m_DeltaBoneRotations.end() == iter)
+//	{
+//
+//		_float3 StartPitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(CurrentBoneNode.lock()->Get_TransformationMatrix()));
+//
+//		m_DeltaBoneRotations.emplace(HashKey, StartPitchYawRoll);
+//
+//		return XMVectorSet(0.f, 0.f, 0.f, 1.f);
+//	}
+//
+//	vPreBonePitchYawRoll = XMLoadFloat3(&(*iter).second);
+//	vCurrentBonePitchYawRollFromFloat3 = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(CurrentBoneNode.lock()->Get_TransformationMatrix()));
+//	vCurrentBonePitchYawRoll = XMLoadFloat3(&vCurrentBonePitchYawRollFromFloat3);
+//
+//	vCurrentBonePitchYawRoll -= vPreBonePitchYawRoll;
+//
+//	(*iter).second = vCurrentBonePitchYawRollFromFloat3;
+//
+//	// XZ축 회전 소거
+//	vCurrentBonePitchYawRoll.m128_f32[0] = 0.f;
+//	vCurrentBonePitchYawRoll.m128_f32[2] = 0.f;
+//
+//	//vCurrentBonePosition = XMVector3TransformCoord(vCurrentBonePosition, XMLoadFloat4x4(&m_pModelData->TransformMatrix));
+//
+//	return vCurrentBonePitchYawRoll;
+//}
 
 _uint CModel::Get_CurrentAnimationKeyIndex() const
 {
@@ -403,6 +403,11 @@ HRESULT CModel::Render_AnimModel(_uint iMeshContainerIndex, weak_ptr<CShader> pS
 
 
 	return S_OK;
+}
+
+void CModel::Set_NvClothMeshWithIndex(const _uint In_iIndex)
+{
+	m_MeshContainers[In_iIndex].lock()->Set_NvCloth();
 }
 
 void CModel::Init_Model(const char* sModelKey, const string& szTexturePath, _uint iTimeScaleLayer)

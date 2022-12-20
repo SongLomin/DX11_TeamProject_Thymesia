@@ -28,6 +28,7 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uin
 	m_pSound_Manager = CSound_Manager::Create_Instance();
 	m_pPhysX_Manager = CPhysX_Manager::Create_Instance();
 	m_pThread_Manager = CThread_Manager::Create_Instance();
+	m_pNvCloth_Manager = CNvCloth_Manager::Create_Instance();
 
 	m_GraphicDesc = GraphicDesc;
 	m_WindowHandle = GraphicDesc.hWnd;
@@ -73,6 +74,8 @@ HRESULT CGameInstance::Initialize_Engine(HINSTANCE hInst, _uint iNumLevels, _uin
 	m_pPhysX_Manager->Initialize(iNumCollsionLayer);
 	m_pThread_Manager->Initialize(8);
 
+	m_pNvCloth_Manager->Initialize();
+
 	return S_OK;	
 }
 
@@ -104,10 +107,8 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 
 	GET_SINGLE(CObject_Manager)->LateTick(fTimeDelta);
 
-	
-
 	GET_SINGLE(CThread_Manager)->Enqueue_Job(bind(&CCollision_Manager::Tick, m_pCollision_Manager));
-
+	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 	//m_pTimer_Manager->Tick();
 
 	m_pPipeLine->Tick();
@@ -120,6 +121,9 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 	}
 
 	m_pPhysX_Manager->Tick(fTimeDelta);
+
+	m_pNvCloth_Manager->Tick(fTimeDelta);
+	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 
 	++m_iLoopIndex;
 
@@ -453,6 +457,7 @@ void CGameInstance::Release_Engine()
 	GET_SINGLE(CSound_Manager)->Destroy_Instance();
 	GET_SINGLE(CObject_Manager)->Destroy_Instance();
 	GET_SINGLE(CPhysX_Manager)->Destroy_Instance();
+	GET_SINGLE(CNvCloth_Manager)->Destroy_Instance();
 	GET_SINGLE(CGameInstance)->Destroy_Instance();
 }
 
@@ -769,6 +774,7 @@ void CGameInstance::Free()
 
 	m_pPhysX_Manager.reset();
 	m_pThread_Manager.reset();
+	m_pNvCloth_Manager.reset();
 }
 
 

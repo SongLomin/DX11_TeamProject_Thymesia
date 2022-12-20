@@ -14,7 +14,7 @@ void CItemPopup_Queue::AddPopup(ITEM_NAME eItemName)
 
 void CItemPopup_Queue::Call_EndFadeOut(weak_ptr<CUI_ItemPopup> pItemPopup)
 {
-	for (auto& iter = m_pItemPopupList.begin(); iter != m_pItemPopupList.end();)
+	for (auto iter = m_pItemPopupList.begin(); iter != m_pItemPopupList.end();)
 	{
 		if (iter->lock() == pItemPopup.lock())
 		{

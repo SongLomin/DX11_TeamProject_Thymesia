@@ -61,7 +61,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 
 	
-
+	
 	
 
 
@@ -95,6 +95,8 @@ HRESULT CCorvus::Start()
 		m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
 	
 	Test_BindSkill();
+
+	//m_pModelCom.lock()->Set_NvClothMeshWithIndex(0);
 
 	return S_OK;
 }
