@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossBat/BatStates.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CBatBossState_Sp);
 CLONE_C(CBatBossState_Sp, CComponent)
@@ -38,7 +39,17 @@ void CBatBossState_Sp::Start()
 void CBatBossState_Sp::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+
+	PxControllerFilters Filters = Filters;
+	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 	
+	if (m_bAttackLookAtLimit)
+	{
+		TurnAttack(fTimeDelta);
+	}
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -57,7 +68,8 @@ void CBatBossState_Sp::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	
+	m_bAttackLookAtLimit = true;
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG
@@ -105,6 +117,13 @@ _bool CBatBossState_Sp::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
+
+
+	if (ComputeAngleWithPlayer() > 0.97f)
+	{
+		Rotation_TargetToLookDir();
+		m_bAttackLookAtLimit = false;
+	}
 
 	return false;
 }

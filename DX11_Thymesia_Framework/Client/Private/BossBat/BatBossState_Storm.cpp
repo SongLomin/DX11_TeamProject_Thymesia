@@ -40,7 +40,18 @@ void CBatBossState_Storm::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	TurnAttack(fTimeDelta);
+	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+
+	PxControllerFilters Filters = Filters;
+	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+
+
+	if (m_bAttackLookAtLimit)
+	{
+		TurnAttack(fTimeDelta);
+	}
+	
 	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -59,7 +70,9 @@ void CBatBossState_Storm::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+	m_bAttackLookAtLimit = true;
+
+	m_pPhysXControllerCom.lock()->Enable_Gravity(false);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -77,7 +90,6 @@ void CBatBossState_Storm::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	m_pPhysXControllerCom.lock()->Enable_Gravity(false);
 }
 
 
@@ -97,10 +109,25 @@ _bool CBatBossState_Storm::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	if (ComputeAngleWithPlayer() > 0.97f)
+	{
+		Rotation_TargetToLookDir();
+		m_bAttackLookAtLimit = false;
+	}
+
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.99f)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CBatBossState_SonicBoom>(0.05f);
-		return true;
+		if (m_bSpecialAtk)
+		{
+			Get_OwnerCharacter().lock()->Change_State<CBatBossState_SonicBoom>(0.05f);
+			return true;
+		}
+		else
+		{
+			Get_OwnerCharacter().lock()->Change_State<CBatBossState_SonicBullet>(0.05f);
+			return true;
+		}		
+		
 	}
 
 

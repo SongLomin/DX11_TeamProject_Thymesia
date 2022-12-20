@@ -39,6 +39,15 @@ void CBatBossState_JumpSmash_Chest::Start()
 void CBatBossState_JumpSmash_Chest::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	if (m_bRootStop)
+	{
+		_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+
+		PxControllerFilters Filters = Filters;
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+	}
 	
 	
 
@@ -54,12 +63,8 @@ void CBatBossState_JumpSmash_Chest::LateTick(_float fTimeDelta)
 	if (m_bAttackLookAtLimit)
 	{
 		TurnAttack(fTimeDelta);
+	}
 
-	}
-	if (m_bTurn)
-	{
-		JumpLookOffsetLookAt();
-	}
 
 
 	Check_AndChangeNextState();
@@ -71,9 +76,15 @@ void CBatBossState_JumpSmash_Chest::OnStateStart(const _float& In_fAnimationBlen
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
-
 	m_bAttackLookAtLimit = true;
+
+	m_bRootStop = true;
+
+	m_bOne = true;
+
+	m_pPhysXControllerCom.lock()->Enable_Gravity(false);
+
+	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_ChestCheck(false);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -91,7 +102,7 @@ void CBatBossState_JumpSmash_Chest::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	m_pPhysXControllerCom.lock()->Enable_Gravity(false);
+	
 
 }
 
@@ -102,6 +113,8 @@ void CBatBossState_JumpSmash_Chest::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
+	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_ZeroAttackCount(0);
+	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_ZeroChargeCount(0);
 	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Idle>(0.05f);
 }
 
@@ -121,18 +134,21 @@ _bool CBatBossState_JumpSmash_Chest::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.2f)
+	_float fPToMDistance = Get_DistanceWithPlayer();
+
+	if (fPToMDistance <= 7.f && m_bOne)
 	{
+		m_bRootStop = false;
+		m_bOne = false;
+	}
+
+
+	if (ComputeAngleWithPlayer() > 0.98f)
+	{
+		Rotation_TargetToLookDir();
 		m_bAttackLookAtLimit = false;
 	}
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.21f)
-	{
-		m_bTurn = true;
-	}
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.99f)
-	{
-		m_bTurn = false;
-	}
+
 
 	return false;
 }

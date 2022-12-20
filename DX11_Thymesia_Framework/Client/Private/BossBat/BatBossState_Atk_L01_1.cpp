@@ -59,7 +59,7 @@ void CBatBossState_Atk_L01_1::Tick(_float fTimeDelta)
 	{
 		_float fTurnValue = 0.2f / 0.33f;
 	
-		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * 2.f);
+		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue);
 	}
 	
 	
@@ -86,7 +86,7 @@ void CBatBossState_Atk_L01_1::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_bOne = true;
 
-	m_pPhysXControllerCom.lock()->Enable_Gravity(false);
+	//m_pPhysXControllerCom.lock()->Enable_Gravity(false);
 
 	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 
@@ -140,8 +140,15 @@ _bool CBatBossState_Atk_L01_1::Check_AndChangeNextState()
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 180)
 	{
 		m_bTurnAttack = true;
+	}
+
+	if (ComputeAngleWithPlayer() > 0.98f)
+	{
+		Rotation_TargetToLookDir();
 		m_bAttackLookAtLimit = false;
 	}
+		
+
 
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 200)
@@ -152,13 +159,13 @@ _bool CBatBossState_Atk_L01_1::Check_AndChangeNextState()
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 220)
 	{
-		int iRand = rand() % 1;
+		int iRand = rand() % 2;
 
 		switch (iRand)
 		{
 		case 0:
 		{
-			Get_OwnerCharacter().lock()->Change_State<CBatBossState_Atk_L01_2a>(0.05f);
+			Get_OwnerCharacter().lock()->Change_State<CBatBossState_Atk_L01_2b>(0.05f);
 			return true;
 		}
 			break;

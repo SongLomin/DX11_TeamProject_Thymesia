@@ -52,7 +52,7 @@ void CVargBossState_TurnL::LateTick(_float fTimeDelta)
 
 	_float fTurnValue = 1.57f / 0.85f;
 
-	m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * -1.5f);
+	m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * -2.5f);
 
 	Check_AndChangeNextState();
 }

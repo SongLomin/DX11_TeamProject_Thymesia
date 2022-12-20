@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossBat/BatStates.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CBatBossState_FTurnL);
 CLONE_C(CBatBossState_FTurnL, CComponent)
@@ -38,10 +39,21 @@ void CBatBossState_FTurnL::Start()
 void CBatBossState_FTurnL::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-	
-	_float fTurnValue = 3.14f / 1.33f;
 
-	m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * -1.5f);
+	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+
+	PxControllerFilters Filters = Filters;
+	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+	
+	if (m_bTurnCheck)
+	{
+		_float fTurnValue = 2.f / 0.25f;
+	
+		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * -fTurnValue);
+		
+	};
+	
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -61,6 +73,7 @@ void CBatBossState_FTurnL::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	m_pPhysXControllerCom.lock()->Enable_Gravity(false);
 	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -95,6 +108,8 @@ void CBatBossState_FTurnL::OnDestroy()
 	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_FTurnL::Call_AnimationEnd, this);
 }
 
+
+
 void CBatBossState_FTurnL::Free()
 {
 
@@ -106,13 +121,17 @@ _bool CBatBossState_FTurnL::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (ComputeAngleWithPlayer() > 0.94f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 20)
 	{
-		Rotation_TargetToLookDir();
-		Get_OwnerCharacter().lock()->Change_State<CBatBossState_Idle>(0.05f);
-		return true;
+		m_bTurnCheck = true;
 	}
 
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 35)
+	{
+		m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+		m_bTurnCheck = false;
+	}
 
 
 	return false;

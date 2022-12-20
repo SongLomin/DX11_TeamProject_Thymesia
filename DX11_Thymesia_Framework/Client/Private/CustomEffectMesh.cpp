@@ -1326,7 +1326,7 @@ void CCustomEffectMesh::Tool_Collider()
 		}
 		if (ImGui::TreeNode("Option Type"))
 		{
-			const char* Option_items[] = { "None", "Normal", "Plague", "Special_Attack","Parry" };
+			const char* Option_items[] = { "None", "Normal", "Plague", "Special_Attack","Parry","KnockBack","FallDown"};
 
 			if (ImGui::BeginListBox("Option Type"))
 			{

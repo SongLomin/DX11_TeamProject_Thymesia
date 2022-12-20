@@ -40,6 +40,16 @@ void CBatBossState_JumpSmash_ForwardL::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	if (m_bRootStop)
+	{
+		_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+
+		PxControllerFilters Filters = Filters;
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+	}
+
+
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -48,7 +58,10 @@ void CBatBossState_JumpSmash_ForwardL::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
-
+	if (m_bAttackLookAtLimit)
+	{
+		TurnAttack(fTimeDelta);
+	}
 
 	Check_AndChangeNextState();
 }
@@ -61,9 +74,10 @@ void CBatBossState_JumpSmash_ForwardL::OnStateStart(const _float& In_fAnimationB
 
 	m_bAttackLookAtLimit = true;
 
-	m_pPhysXControllerCom.lock()->Enable_Gravity(false);
+	m_bRootStop = true;
 
-	JumpLookOffsetLookAt();
+	m_bOne = true;
+
 	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -82,15 +96,14 @@ void CBatBossState_JumpSmash_ForwardL::OnStateEnd()
 	__super::OnStateEnd();
 
 	
-	
 }
-
 
 
 void CBatBossState_JumpSmash_ForwardL::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
+
 	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_AttackCount(1);
 	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Idle>(0.05f);
 }
@@ -111,11 +124,31 @@ _bool CBatBossState_JumpSmash_ForwardL::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 177)
+	_float fPToMDistance = Get_DistanceWithPlayer();
+
+	if (fPToMDistance <= 7.f && m_bOne)
+	{
+		m_bRootStop = false;
+		m_bOne = false;
+	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 50)
+	{
+		m_pPhysXControllerCom.lock()->Enable_Gravity(false);
+	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 188)
 	{
 		m_pPhysXControllerCom.lock()->Enable_Gravity(true);
 	}
-	
+
+
+	if (ComputeAngleWithPlayer() > 0.98f)
+	{
+		Rotation_TargetToLookDir();
+		m_bAttackLookAtLimit = false;
+	}
+
 
 	
 
