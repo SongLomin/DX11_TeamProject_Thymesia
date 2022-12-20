@@ -2602,21 +2602,6 @@ void CEffect_Rect::Tool_Boner()
 			}
 		}
 		ImGui::EndChild();
-		//if (ImGui::BeginListBox("Bone List - Particle"))
-		//{
-		//	for (_int n(0); n < m_AllBoneNames.size(); n++)
-		//	{
-		//		const _bool is_selected = (m_iCurrentBoneIndex == n);
-		//		if (ImGui::Selectable(m_AllBoneNames[n].c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
-		//		{
-		//			m_strBoneName = m_AllBoneNames[n];
-		//		}
-
-		//		if (is_selected)
-		//			ImGui::SetItemDefaultFocus();
-		//	}
-		//	ImGui::EndListBox();
-		//}
 	}
 
 	if (ImGui::Button("Bind##Bind_To_Bone"))

@@ -144,17 +144,6 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading UI Resources..."));
 	Load_UIResource();
 
-	lstrcpy(m_szLoadingText, TEXT("Loading Diffuse Textures..."));
-	Load_AllDiffuseTexture();
-	lstrcpy(m_szLoadingText, TEXT("Loading Mask Textures..."));
-	Load_AllMaskMap();
-	lstrcpy(m_szLoadingText, TEXT("Loading Noise Textures..."));
-	Load_AllNoiseTexture();
-	lstrcpy(m_szLoadingText, TEXT("Loading Particle Textures..."));
-	Load_AllParticleTexture();
-	lstrcpy(m_szLoadingText, TEXT("Loading Effect Meshes..."));
-	Load_AllEffectMesh();
-
 #ifndef _JOJO_EFFECT_TOOL_
 	lstrcpy(m_szLoadingText, TEXT("Loading Prop Textures..."));
 	Load_AllTexture("../Bin/Resources/Textures/Prop/", MEMORY_TYPE::MEMORY_STATIC);
@@ -163,15 +152,6 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Filters..."));
 	Load_AllTexture("../Bin/GroundInfo/Filter/", MEMORY_TYPE::MEMORY_STATIC);
 #endif // _JOJO_EFFECT_TOOL_
-
-	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));
-	this->Load_CorvusModel();
-	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
-	this->Load_BossMobModel();
-	lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
-	this->Load_EliteMobModel();
-	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
-	this->Load_NormalMobModel();
 
 #endif // _LOAD_CAPTURED_RESOURCE_
 
@@ -241,6 +221,27 @@ HRESULT CLoader::Loading_ForLobby()
 
 HRESULT CLoader::Loading_ForTestLevel()
 {
+
+	lstrcpy(m_szLoadingText, TEXT("Loading Diffuse Textures..."));
+	Load_AllDiffuseTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Mask Textures..."));
+	Load_AllMaskMap();
+	lstrcpy(m_szLoadingText, TEXT("Loading Noise Textures..."));
+	Load_AllNoiseTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Particle Textures..."));
+	Load_AllParticleTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Effect Meshes..."));
+	Load_AllEffectMesh();
+
+	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));
+	this->Load_CorvusModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
+	this->Load_BossMobModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
+	this->Load_EliteMobModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
+	this->Load_NormalMobModel();
+
 #ifndef _ONLY_UI_
 	lstrcpy(m_szLoadingText, TEXT("Loading Skybox Texture..."));
 
@@ -311,8 +312,16 @@ HRESULT CLoader::Loading_ForTestLevel()
 
 HRESULT CLoader::Loading_ForGamePlayLevel()
 {
-	lstrcpy(m_szLoadingText, TEXT("Loading Effect Group..."));
-	//Loading_ForEffectGroup("../Bin/EffectData/");
+	lstrcpy(m_szLoadingText, TEXT("Loading Diffuse Textures..."));
+	Load_AllDiffuseTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Mask Textures..."));
+	Load_AllMaskMap();
+	lstrcpy(m_szLoadingText, TEXT("Loading Noise Textures..."));
+	Load_AllNoiseTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Particle Textures..."));
+	Load_AllParticleTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Effect Meshes..."));
+	Load_AllEffectMesh();
 	
 	_matrix TransformMatrix;
 
@@ -324,6 +333,15 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading Captured Resources from : [ ../Bin/LevelData/CapturedResource/GamePlay.json ]"));
 	GAMEINSTANCE->Load_ResourcesFromJson("../Bin/LevelData/CapturedResource/GamePlay.json");
 #else
+	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));
+	this->Load_CorvusModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
+	this->Load_BossMobModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
+	this->Load_EliteMobModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
+	this->Load_NormalMobModel();
+
 	lstrcpy(m_szLoadingText, TEXT("Loading all EditGround Mesh Info..."));
 	CEditGround::Load_AllMeshInfo();
 
@@ -544,6 +562,27 @@ HRESULT CLoader::Loading_ForEditLevel()
 {
 	// Load_AllMeshes("../Bin/Resources/Meshes/Temp/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 
+	lstrcpy(m_szLoadingText, TEXT("Loading Diffuse Textures..."));
+	Load_AllDiffuseTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Mask Textures..."));
+	Load_AllMaskMap();
+	lstrcpy(m_szLoadingText, TEXT("Loading Noise Textures..."));
+	Load_AllNoiseTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Particle Textures..."));
+	Load_AllParticleTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Effect Meshes..."));
+
+	Load_AllEffectMesh();
+
+	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));
+	this->Load_CorvusModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
+	this->Load_BossMobModel();
+	//lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
+	//this->Load_EliteMobModel();
+	//lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
+	//this->Load_NormalMobModel();
+
 #ifndef _JOJO_EFFECT_TOOL_
 #ifdef _MAP_TOOL_
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/ForTest_Mesh/ ]"));
@@ -577,9 +616,6 @@ HRESULT CLoader::Loading_ForEditLevel()
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 #endif // _MAP_TOOL_
 #endif // _JOJO_EFFECT_TOOL_
-
-#ifdef _EFFECT_TOOL_
-#endif // _EFFECT_TOOL_
 
 	// TODO : Turn off temporarily for Light_Prop
 	LIGHTDESC LightDesc;

@@ -74,11 +74,6 @@ HRESULT CWindow_AnimationPlayerView::Render(ID3D11DeviceContext* pDeviceContext)
             ImGui::EndTabItem();
         }
 
-        
-
-
-        
-        
         ImGui::EndTabBar();
     }
 
@@ -495,12 +490,12 @@ void CWindow_AnimationPlayerView::Draw_AnimationList()
 
     if (ImGui::CollapsingHeader("Select Animation"))
     {
+		static ImGuiTextFilter AnimationFilter;
+		ImGui::Text("Search"); ImGui::SameLine();
+		AnimationFilter.Draw("##AnimationSearchFilter", 340.f);
+
         if (ImGui::BeginListBox("##Animation List", ImVec2(-FLT_MIN, 10 * ImGui::GetTextLineHeightWithSpacing())))
         {
-			static ImGuiTextFilter AnimationFilter;
-			ImGui::Text("Search"); ImGui::SameLine();
-            AnimationFilter.Draw("##AnimationSearchFilter", 340.f);
-
             for (int i = 0; i < m_AllAnimationKeys.size(); i++)
             {
                 auto AnimationKit = m_AllAnimationKeys.at(i);
@@ -521,18 +516,6 @@ void CWindow_AnimationPlayerView::Draw_AnimationList()
 						}
 					}
                 }
-
-                //const bool is_selected = (m_CurrentAnimationIndex == i);
-                //if (ImGui::Selectable(m_AllAnimationKeys[i].c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
-                //{
-                //    m_CurrentAnimationIndex = i;
-
-                //    if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-                //    {
-                //        m_pPreViewModel.lock()->Change_AnimationFromIndex(m_CurrentAnimationIndex);
-                //        Call_UpdatePreViewModel();
-                //    }
-                //}
 
                 // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
                 if (is_selected)
