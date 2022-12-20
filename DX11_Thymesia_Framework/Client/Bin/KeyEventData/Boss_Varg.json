@@ -1468,6 +1468,11 @@
     ],
     [
       null,
+      {
+        "EffectName": [
+          "Varg_SPAtk1_Run_BodyParticle"
+        ]
+      },
       null,
       null,
       null,
@@ -1563,6 +1568,11 @@
       null,
       null,
       null,
+      {
+        "EffectName": [
+          "Varg_SPAtk1_Run_BodyParticle"
+        ]
+      },
       null,
       null,
       null,
@@ -1633,9 +1643,11 @@
       null,
       null,
       null,
-      null,
-      null,
-      null,
+      {
+        "EffectName": [
+          "Varg_SPAtk1_Catch_PreBodyParticle"
+        ]
+      },
       null,
       null,
       null,
@@ -1863,20 +1875,7 @@
       null,
       {
         "EffectName": [
-          "Varg_SPAtk1_Run_L_Hand",
-          "Varg_SPAtk1_Run_R_Hand",
-          "Varg_SPAtk1_Run_L_Calf",
-          "Varg_SPAtk1_Run_L_Clavicle",
-          "Varg_SPAtk1_Run_L_Foot",
-          "Varg_SPAtk1_Run_L_Forearm",
-          "Varg_SPAtk1_Run_L_Thigh",
-          "Varg_SPAtk1_Run_L_UpperArm",
-          "Varg_SPAtk1_Run_R_Calf",
-          "Varg_SPAtk1_Run_R_Clavicle",
-          "Varg_SPAtk1_Run_R_Foot",
-          "Varg_SPAtk1_Run_R_Forearm",
-          "Varg_SPAtk1_Run_R_Thigh",
-          "Varg_SPAtk1_Run_R_UpperArm"
+          "Varg_SPAtk1_Run_BodyParticle"
         ]
       },
       null,
