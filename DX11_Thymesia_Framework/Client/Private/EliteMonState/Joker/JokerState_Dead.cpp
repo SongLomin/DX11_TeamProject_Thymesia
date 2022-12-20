@@ -10,7 +10,7 @@
 #include "Character.h"
 #include "JokerStates.h"
 #include "MonsterHPBar_Elite.h"
-
+#include "Inventory.h"
 
 GAMECLASS_C(CJokerState_Dead);
 CLONE_C(CJokerState_Dead, CComponent)
@@ -70,12 +70,17 @@ void CJokerState_Dead::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif // _DEBUG
 #endif // _DEBUG_COUT_
 
+	
+
 	Weak_StaticCast<CMonster>(m_pOwner).lock()->Get_HPBar().lock()->Set_Enable(false);
 }
 
 void CJokerState_Dead::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	
+
 	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Joker_Passive", GET_SINGLE(CGameManager)->Get_EffectIndex("Joker_Passive"));
 }
 

@@ -445,21 +445,25 @@ namespace Client
 		BASIL,
 		THYME,
 		CINNAMON,
-
 		GARDEN_KEY,
-
+		MEMORY01,
 		ITEM_NAME_END
 	};
 
 	enum class ITEM_TYPE
 	{
 		INGREDIENT,
-		CONSUMPOTION_ITEM,
+		CONSUMPTION,
 		SKILLPIECE,
 		COMMON
 	};
 
-
-
-
+	enum class BUTTON_LEVEL
+	{
+		LEVEL1,
+		LEVEL2,
+		LEVEL3,
+		LEVEL4,
+		LEVEL5
+	};
 }

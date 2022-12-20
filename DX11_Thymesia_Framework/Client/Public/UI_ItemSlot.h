@@ -28,6 +28,8 @@ public:
 	void			Add_ScroolOffsetY(_float fOffsetY);
 	void			ResetPos();
 	
+	weak_ptr<CItem>	Get_BindItem() { return m_pBindedItem; }
+
 	void			Bind_Item(weak_ptr<CItem> pItem);
 	_bool			Is_Bind();
 	void			UnBind_Item();

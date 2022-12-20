@@ -200,14 +200,18 @@ public:
     void    EnableCursor();
     void    DisableCursor();
 
+public:
+    BUTTON_LEVEL        Get_ButtonLevel() { return m_eButtonLevel; }
+    void                Set_ButtonLevel(BUTTON_LEVEL eButtonLevel) { m_eButtonLevel = eButtonLevel; }
+
 
 public:
     void   CreatePopupQueue();
     void   Add_Popup(ITEM_NAME eItemName);
 private:
     weak_ptr< CUI_Cursor> m_pCursor;
-
     shared_ptr<CItemPopup_Queue> m_pItemPopupQueue;
+    BUTTON_LEVEL  m_eButtonLevel = BUTTON_LEVEL::LEVEL1;
 
 
 public:

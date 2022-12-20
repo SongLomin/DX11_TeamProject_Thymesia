@@ -1,5 +1,5 @@
 #pragma once
-#include "UI.h"
+#include "CustomUI.h"
 
 /*
 UI들을 보관하는 기능만 하는 UI.
@@ -7,7 +7,7 @@ UI들을 보관하는 기능만 하는 UI.
 */
 BEGIN(Client)
 
-class CUI_Container abstract : public CUI
+class CUI_Container abstract : public CCustomUI
 {
 public:
     virtual HRESULT Initialize_Prototype() override;

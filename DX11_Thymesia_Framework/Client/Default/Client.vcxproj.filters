@@ -1549,6 +1549,8 @@
     <ClInclude Include="..\Public\Window_GameSystem_Dev.h">
       <Filter>97. Tool\01. DeveloperConsole\Windows\04. GameSystem</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_InventoryConfirmWindow.h" />
+    <ClInclude Include="..\Public\UI_InventoryConfirmWindowButton.h" />
     <ClInclude Include="..\Public\BossBat\BatBossState_SonicBullet.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\10.SonicBoom\00.SonicBullet</Filter>
     </ClInclude>
@@ -3104,9 +3106,6 @@
     <ClCompile Include="..\Private\UI_PauseMenu_Page_Inventory.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\Inventory</Filter>
     </ClCompile>
-    <ClCompile Include="..\UI_Inventory.cpp">
-      <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\Inventory\Tap</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\UI_ItemSlot.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\Inventory\Tap\Slot</Filter>
     </ClCompile>
@@ -3148,6 +3147,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\Window_GameSystem_Dev.cpp">
       <Filter>97. Tool\01. DeveloperConsole\Windows\04. GameSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AIStateBase.cpp" />
+    <ClCompile Include="..\UI_InventoryConfirmWindow.cpp" />
+    <ClCompile Include="..\Private\UI_InventoryConfirmWindowButton.cpp" />
+    <ClCompile Include="..\Private\UI_Inventory.cpp">
+      <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\Inventory\Tap</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\BossBat\BatBossState_SonicBullet.cpp">

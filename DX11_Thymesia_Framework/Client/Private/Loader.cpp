@@ -1138,6 +1138,15 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("ItemSlot_Frame"), TEXT("../Bin/Resources/Textures/UI/Inventory/TexUI_SquareFrame.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("ItemSlot_Hover"), TEXT("../Bin/Resources/Textures/UI/Inventory/TexUI_SquareFrame_Hover.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
+	GAMEINSTANCE->Load_Textures(("Inventory_SortKey"), TEXT("../Bin/Resources/Textures/UI/Inventory/SortKey.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("Inventory_SortByDate"), TEXT("../Bin/Resources/Textures/UI/Inventory/Sort_RootingDate.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Inventory_SortByQuantity"), TEXT("../Bin/Resources/Textures/UI/Inventory/Sort_Quantity.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Inventory_SortByType"), TEXT("../Bin/Resources/Textures/UI/Inventory/Sort_Type.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+
+
 
 	GAMEINSTANCE->Load_Textures(("Cursor"), TEXT("../Bin/Resources/Textures/UI/Cursor.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
@@ -1157,12 +1166,13 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Item_Icon_BlackPepper"), TEXT("../Bin/Resources/Textures/UI/Icons/Items/Ingredients/TexUI_IngredientIcon_BlackPepper.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Item_Icon_Thyme"), TEXT("../Bin/Resources/Textures/UI/Icons/Items/Ingredients/TexUI_IngredientIcon_Thyme.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Item_Icon_Key01"), TEXT("../Bin/Resources/Textures/UI/Icons/Items/Puzzle/TexUI_PuzzleIcon_Key01.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Item_Icon_Memory01"), TEXT("../Bin/Resources/Textures/UI/Icons/Items/Useable/TexUI_MemoryCollectionIcon_01.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 
 
 	GAMEINSTANCE->Load_Textures(("Item_Type_Ingredient"), TEXT("../Bin/Resources/Textures/UI/ItemData/Type_Ingredient.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Item_Type_Common"), TEXT("../Bin/Resources/Textures/UI/ItemData/Type_Common.png"), MEMORY_TYPE::MEMORY_STATIC);
-
+	GAMEINSTANCE->Load_Textures(("Item_Type_Consumption"), TEXT("../Bin/Resources/Textures/UI/ItemData/Type_Consumption.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	GAMEINSTANCE->Load_Textures(("Item_Quantity"), TEXT("../Bin/Resources/Textures/UI/ItemData/Quantity.png"), MEMORY_TYPE::MEMORY_STATIC);
 
@@ -1181,12 +1191,17 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Item_GardenKey_Information"), TEXT("../Bin/Resources/Textures/UI/ItemData/GardenKey/Information.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
+	//Memory01
+	GAMEINSTANCE->Load_Textures(("Item_Memory01_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/Memory01/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Item_Memory01_Information"), TEXT("../Bin/Resources/Textures/UI/ItemData/Memory01/Information.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
 
 	//Popup
 	GAMEINSTANCE->Load_Textures(("Popup_Item_Basil"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_Basil.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Popup_Item_Thyme"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_Thyme.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Popup_Item_GardenKey"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_GardenKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
-
+	GAMEINSTANCE->Load_Textures(("Popup_Item_Memory01"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_Memory01.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 #endif // _JOJO_EFFECT_TOOL_
 }

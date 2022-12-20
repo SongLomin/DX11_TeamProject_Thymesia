@@ -18,7 +18,6 @@ public:
 
 	static void		Set_CUI_ItemPopup_Ready_Popup(weak_ptr<class CUI> pUI, ITEM_NAME eItemName);
 
-
 };
 
 END

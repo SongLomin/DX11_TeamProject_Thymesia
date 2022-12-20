@@ -126,8 +126,6 @@ void CClientLevel::SetUp_UI()
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::INTERACTIONUI, GAMEINSTANCE->Add_GameObject<CUI_Interaction>(LEVEL_STATIC));
 
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CUI_MonsterFocus>(LEVEL_STATIC));
-	
-	GAMEINSTANCE->Add_GameObject<CUI_ItemPopup>(LEVEL_STATIC);
 
 	GET_SINGLE(CGameManager)->CreatePopupQueue();
 

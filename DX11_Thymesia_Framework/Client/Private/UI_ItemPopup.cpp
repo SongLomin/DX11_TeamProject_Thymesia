@@ -65,11 +65,20 @@ void CUI_ItemPopup::LateTick(_float fTimeDelta)
 
 }
 
+void CUI_ItemPopup::Reset()
+{
+    m_pEasingFloat.lock()->Stop();
+    m_pEasingAlpha.lock()->Stop();
+    m_pEasingAlarm.lock()->Stop();
+}
+
 void CUI_ItemPopup::Ready_Popup(ITEM_NAME eItemName, _float fLifeTime)
 {
     m_fLifeTime = fLifeTime;
 
     CPreset_UIDesc::Set_CUI_ItemPopup_Ready_Popup(Weak_StaticCast<CUI>(m_this), eItemName);
+    Set_Enable(true);
+    Set_UIPosition(8000.f, 209.f, 552.f, 98.f, CUI::ALIGN_LEFTTOP);
 }
 
 void CUI_ItemPopup::Start_Popup()
@@ -104,7 +113,6 @@ void CUI_ItemPopup::Call_EndFadeIn()
 
 void CUI_ItemPopup::Call_StartFadeOut()
 {
-     
     m_pEasingFloat.lock()->Set_Lerp(1561.f, 1634.f, 0.3f, EASING_TYPE::QUAD_OUT, CEasingComponent::ONCE);
     m_pEasingAlpha.lock()->Set_Lerp(1.f, 0.f, 0.3f, EASING_TYPE::QUAD_OUT, CEasingComponent::ONCE, false);
 

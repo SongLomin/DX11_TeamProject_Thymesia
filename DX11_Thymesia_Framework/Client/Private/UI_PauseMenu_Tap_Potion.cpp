@@ -27,6 +27,8 @@ HRESULT CUI_PauseMenu_Tap_Potion::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
+	m_eRenderGroup = RENDERGROUP::RENDER_AFTER_UI;
+
 	UI_DESC MainDesc;
 
 
@@ -62,10 +64,10 @@ HRESULT CUI_PauseMenu_Tap_Potion::Initialize(void* pArg)
 		m_pDecoration[i] = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &tDecorationDesc);
 		m_pDecoration[i].lock()->Set_Texture("Font_Diamond");
 
-		m_vecChildUI.push_back(m_pDecoration[i]);
+		Add_Child(m_pDecoration[i]);
 	}
-	m_vecChildUI.push_back(m_pFrame);
-	m_vecChildUI.push_back(m_pIcon);
+	Add_Child(m_pFrame);
+	Add_Child(m_pIcon);
 
 
 
@@ -80,7 +82,7 @@ HRESULT CUI_PauseMenu_Tap_Potion::Initialize(void* pArg)
 	m_PotionTapInfo.vColor = _float4(1.f, 1.f, 1.f, 1.f);
 	m_PotionTapInfo.vPosition = _float2(1289.f, 174.f);
 	m_PotionTapInfo.vScale = _float2(1.3f, 1.3f);
-
+	m_PotionTapInfo.eRenderGroup = RENDERGROUP::RENDER_AFTER_UI;
 
 	return S_OK;
 }

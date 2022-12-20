@@ -23,6 +23,7 @@ public:
     virtual void LateTick(_float fTimeDelta) override;
 
 public:
+    void    Reset();
     void    Ready_Popup(ITEM_NAME eItemName, _float fLifeTime = 2.f);
     void    Start_Popup();
 
