@@ -1160,6 +1160,15 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("ItemSlot_Frame"), TEXT("../Bin/Resources/Textures/UI/Inventory/TexUI_SquareFrame.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("ItemSlot_Hover"), TEXT("../Bin/Resources/Textures/UI/Inventory/TexUI_SquareFrame_Hover.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
+	GAMEINSTANCE->Load_Textures(("Inventory_SortKey"), TEXT("../Bin/Resources/Textures/UI/Inventory/SortKey.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("Inventory_SortByDate"), TEXT("../Bin/Resources/Textures/UI/Inventory/Sort_RootingDate.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Inventory_SortByQuantity"), TEXT("../Bin/Resources/Textures/UI/Inventory/Sort_Quantity.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Inventory_SortByType"), TEXT("../Bin/Resources/Textures/UI/Inventory/Sort_Type.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+
+
 
 	GAMEINSTANCE->Load_Textures(("Cursor"), TEXT("../Bin/Resources/Textures/UI/Cursor.dds"), MEMORY_TYPE::MEMORY_STATIC);
 

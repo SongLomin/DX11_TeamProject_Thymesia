@@ -62,7 +62,11 @@ void CUI_MonsterFocus::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 
     //틱에서 하면 순서에 의해 전프레임 위치를 받아올 수 있음
-    FollowTargetBone();
+
+    if (m_pBoneNode.lock())
+    {
+        FollowTargetBone();
+    }
 
 }
 

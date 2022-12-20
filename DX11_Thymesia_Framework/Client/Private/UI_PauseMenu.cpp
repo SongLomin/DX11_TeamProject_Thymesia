@@ -184,7 +184,7 @@ void CUI_PauseMenu::Create_Background()
 	m_pPauseMenuBackground.lock()->Set_Depth(1.f);
 	m_pPauseMenuBackground.lock()->Set_Texture("PauseMenu_Background0");
 	m_pPauseMenuBackground.lock()->Set_UIPosition(0, 0, 1600.f, 900.f, CUI::ALIGN_LEFTTOP);
-
+	
 
 	m_pPauseMenuBackground_MainFrame = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
 	m_pPauseMenuBackground_MainFrame.lock()->Set_Depth(0.9f);
@@ -208,13 +208,19 @@ void CUI_PauseMenu::Create_Background()
 	m_pInventoryBG.lock()->Set_Depth(0.9f);
 	m_pInventoryBG.lock()->Set_Texture("Inventory_BG");
 	m_pInventoryBG.lock()->Set_UIPosition(0, 0, 1600.f, 900.f, CUI::ALIGN_LEFTTOP);
-	m_pInventoryBG.lock()->Set_RenderGroup(RENDERGROUP::RENDER_AFTER_UI);
-	
 
 	Add_Child(m_pPauseMenuBackground);
 	Add_Child(m_pPauseMenuBackground_MainFrame);
 	Add_Child(m_pPauseMenuBackground_Main);
 	Add_Child(m_pPauseMenuBackground_Top);
+
+	m_pInventoryBG.lock()->Set_RenderGroup(RENDERGROUP::RENDER_AFTER_UI);
+	m_pPauseMenuBackground_Top.lock()->Set_RenderGroup(RENDERGROUP::RENDER_AFTER_UI);
+	m_pPauseMenuBackground_Main.lock()->Set_RenderGroup(RENDERGROUP::RENDER_AFTER_UI);
+	m_pPauseMenuBackground_MainFrame.lock()->Set_RenderGroup(RENDERGROUP::RENDER_AFTER_UI);
+	m_pPauseMenuBackground.lock()->Set_RenderGroup(RENDERGROUP::RENDER_AFTER_UI);
+
+
 }
 
 void CUI_PauseMenu::Create_Pages()

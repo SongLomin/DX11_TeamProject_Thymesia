@@ -10,7 +10,7 @@
 #include "Character.h"
 #include "JokerStates.h"
 #include "GameManager.h"
-
+#include "Inventory.h"
 
 
 GAMECLASS_C(CJokerState_Execution_Loop);
@@ -55,8 +55,6 @@ void CJokerState_Execution_Loop::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-
-
 void CJokerState_Execution_Loop::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
@@ -66,6 +64,11 @@ void CJokerState_Execution_Loop::OnStateStart(const _float& In_fAnimationBlendTi
 		GET_SINGLE(CGameManager)->Release_Focus();
 
 	Get_OwnerMonster()->Release_Monster();
+
+	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()->Push_Item(ITEM_NAME::GARDEN_KEY);
+	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()->Push_Item(ITEM_NAME::MEMORY01);
+	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()->Push_Item(ITEM_NAME::MEMORY01);
+	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()->Push_Item(ITEM_NAME::MEMORY01);
 
 	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);

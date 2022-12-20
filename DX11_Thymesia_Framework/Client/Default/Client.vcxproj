@@ -977,6 +977,7 @@
     <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp" />
     <ClCompile Include="..\Private\UI_EvolveTalent_Active.cpp" />
     <ClCompile Include="..\Private\UI_Interaction.cpp" />
+    <ClCompile Include="..\Private\UI_Inventory.cpp" />
     <ClCompile Include="..\Private\UI_InventoryConfirmWindowButton.cpp" />
     <ClCompile Include="..\Private\UI_ItemPopup.cpp" />
     <ClCompile Include="..\Private\UI_ItemSlot.cpp" />
@@ -1197,7 +1198,6 @@
     <ClCompile Include="..\Private\WorldUI.cpp" />
     <ClCompile Include="..\Public\TestUI.cpp" />
     <ClCompile Include="..\Skill_Base.cpp" />
-    <ClCompile Include="..\UI_Inventory.cpp" />
     <ClCompile Include="..\UI_InventoryConfirmWindow.cpp" />
     <ClCompile Include="..\UI_ItemInformation.cpp" />
     <ClCompile Include="..\UI_MonsterFocus.cpp" />

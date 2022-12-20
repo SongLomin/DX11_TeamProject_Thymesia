@@ -13,6 +13,10 @@
 #include "MobWeapon.h"
 #include "Status_Monster.h"
 #include "Status_Player.h"
+#include "Item.h"
+#include "Inventory.h"
+#include "Player.h"
+
 GAMECLASS_C(CNorMonState_Die);
 CLONE_C(CNorMonState_Die, CComponent)
 
@@ -127,6 +131,11 @@ void CNorMonState_Die::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	Get_OwnerMonster()->Release_Monster();
 	
+	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
+		->Push_Item(ITEM_NAME::BASIL);
+
+	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
+		->Push_Item(ITEM_NAME::MEMORY01);
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
@@ -154,6 +163,10 @@ void CNorMonState_Die::Call_AnimationEnd()
 		return;
 
 	m_bAnimEnd = true;
+
+
+
+
 	//Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
 }
 

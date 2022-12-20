@@ -26,6 +26,7 @@ HRESULT CUI_Inventory::Initialize(void* pArg)
     Create_ItemSlot();
     Create_Scroll();
     Create_TextInfo();
+    Create_SortImage();
     return S_OK;
 }
 
@@ -42,7 +43,7 @@ void CUI_Inventory::Tick(_float fTimeDelta)
 
     __super::Tick(fTimeDelta);
 
-   // Update_KeyInput(fTimeDelta);
+    Update_KeyInput(fTimeDelta);
 
 }
 
@@ -63,6 +64,10 @@ void CUI_Inventory::Define_Variable()
     m_fOffset = 97.f;
     m_fItemSlotStart.x = 187.f;
     m_fItemSlotStart.y = 208.f;
+
+
+    m_eSortType = INVENTORY_SORTTYPE::SORT_BY_DATE;
+
 }
 
 void CUI_Inventory::Create_InventoryUI()
@@ -143,23 +148,53 @@ void CUI_Inventory::Create_TextInfo()
     m_tTextInfoQuantity.eRenderGroup = RENDERGROUP::RENDER_AFTER_UI;
 }
 
+void CUI_Inventory::Create_SortImage()
+{
+    m_pSortKeyImage = ADD_STATIC_CUSTOMUI;
+    m_pSortKeyImage.lock()->Set_UIPosition
+    (
+        97.f,
+        752.f,
+        60.f,
+        60.f,
+        CUI::ALIGN_LEFTTOP
+    );
+    m_pSortKeyImage.lock()->Set_Texture("Inventory_SortKey");
+    m_pSortKeyImage.lock()->Set_Depth(0.2f);
+    
+    Add_Child(m_pSortKeyImage);
+    m_pSortKeyImage.lock()->Set_RenderGroup(RENDERGROUP::RENDER_AFTER_UI);
+
+    m_pSortByImage = ADD_STATIC_CUSTOMUI;
+    m_pSortByImage.lock()->Set_Texture("Inventory_SortByDate");
+    m_pSortByImage.lock()->Set_UIPosition
+    (
+        157.f,
+        768.f,
+        156.f,
+        28.f,
+        CUI::ALIGN_LEFTTOP
+    );
+    m_pSortByImage.lock()->Set_Depth(0.2f);
+    Add_Child(m_pSortByImage);
+    m_pSortByImage.lock()->Set_RenderGroup(RENDERGROUP::RENDER_AFTER_UI);
+
+}
+
 void CUI_Inventory::Update_KeyInput(_float fTimeDelta)
 {
-    if (KEY_INPUT(KEY::UP, KEY_STATE::HOLD))
+    if (KEY_INPUT(KEY::R, KEY_STATE::TAP))
     {
-        m_fScrollOffsetY += m_fScroolSpeed * fTimeDelta;
-        Update_ItemSlotOffset();
-    }
+        Sort_ItemList(m_eSortType);
 
-    if (KEY_INPUT(KEY::DOWN, KEY_STATE::HOLD))
-    {
-        m_fScrollOffsetY -= m_fScroolSpeed * fTimeDelta;
-        Update_ItemSlotOffset();
-    }
+        //타입 한간 밀기
+        _uint iSortTypeIndex = (_uint)m_eSortType;
+        iSortTypeIndex++;
 
-    if (KEY_INPUT(KEY::ENTER, KEY_STATE::TAP))
-    {
-        int mcdonalds = 10;
+        if (iSortTypeIndex > (_uint)INVENTORY_SORTTYPE::SORT_BY_QUANTITY)
+            iSortTypeIndex = 0;
+        m_eSortType = (INVENTORY_SORTTYPE)iSortTypeIndex;
+        Update_SortImages(m_eSortType);
     }
 }
 
@@ -185,8 +220,29 @@ void CUI_Inventory::Update_ItemSlotFromPlayerInventory()
     {
         m_vecItemSlot[iIndex++].lock()->Bind_Item(pair.second);
     }
-
+    if (pMapItem.size() > 0)
+    {
+        Sort_ItemList(m_eSortType);
+    }
     Update_TextInfoToInventorySize(pMapItem.size());
+}
+
+void CUI_Inventory::Update_SortImages(INVENTORY_SORTTYPE eCurrentSortType)
+{
+    switch (eCurrentSortType)
+    {
+    case Client::CUI_Inventory::INVENTORY_SORTTYPE::SORT_BY_DATE:
+        m_pSortByImage.lock()->Set_Texture("Inventory_SortByDate");
+        break;
+    case Client::CUI_Inventory::INVENTORY_SORTTYPE::SORT_BY_TYPE:
+        m_pSortByImage.lock()->Set_Texture("Inventory_SortByType");
+        break;
+    case Client::CUI_Inventory::INVENTORY_SORTTYPE::SORT_BY_QUANTITY:
+        m_pSortByImage.lock()->Set_Texture("Inventory_SortByQuantity");
+        break;
+    default:
+        break;
+    }
 }
 
 void CUI_Inventory::Update_TextInfoToInventorySize(_uint iCurrentInventorySize)
@@ -195,6 +251,81 @@ void CUI_Inventory::Update_TextInfoToInventorySize(_uint iCurrentInventorySize)
     m_tTextInfoQuantity.szText += TEXT("/");
     m_tTextInfoQuantity.szText += TEXT("100");
 }
+
+void CUI_Inventory::Sort_ItemList(INVENTORY_SORTTYPE eSortType)
+{
+    vector<weak_ptr<CUI_ItemSlot>> pVecItem;
+
+    for(auto& elem : m_vecItemSlot)
+    {
+        if (!elem.lock()->Get_BindItem().lock())
+        {
+            continue;
+        }
+        pVecItem.push_back(elem);
+    }
+    if (pVecItem.size() < 2)
+        return;
+
+    sort(pVecItem.begin(), pVecItem.end(),
+        [&](weak_ptr<CUI_ItemSlot> pFirst, weak_ptr<CUI_ItemSlot> pSecond)
+        {
+            if (pFirst.lock()->Get_BindItem().lock() == false ||
+            pSecond.lock()->Get_BindItem().lock() == false)
+            {
+                return false;
+            }
+            switch (m_eSortType)
+            {
+            case Client::CUI_Inventory::INVENTORY_SORTTYPE::SORT_BY_DATE:
+            {
+                if (pFirst.lock()->Get_BindItem().lock()->Get_CreatedTime() <
+                    pSecond.lock()->Get_BindItem().lock()->Get_CreatedTime())
+                {
+                    weak_ptr<CItem> pItem = pFirst.lock()->Get_BindItem();
+                    pFirst.lock()->UnBind_Item();
+                    pFirst.lock()->Bind_Item(pSecond.lock()->Get_BindItem());
+                    
+                    pSecond.lock()->UnBind_Item();
+                    pSecond.lock()->Bind_Item(pItem);
+                    return false;
+                }
+            }
+                break;
+            case Client::CUI_Inventory::INVENTORY_SORTTYPE::SORT_BY_TYPE:
+                if (pFirst.lock()->Get_BindItem().lock()->Get_Type() <
+                    pSecond.lock()->Get_BindItem().lock()->Get_Type())
+                {
+                    weak_ptr<CItem> pItem = pFirst.lock()->Get_BindItem();
+                    pFirst.lock()->UnBind_Item();
+                    pFirst.lock()->Bind_Item(pSecond.lock()->Get_BindItem());
+                    
+                    pSecond.lock()->UnBind_Item();
+                    pSecond.lock()->Bind_Item(pItem);
+                    return false;
+
+                }
+                break;
+            case Client::CUI_Inventory::INVENTORY_SORTTYPE::SORT_BY_QUANTITY:
+                if (pFirst.lock()->Get_BindItem().lock()->Get_CurrentQuantity() >
+                    pSecond.lock()->Get_BindItem().lock()->Get_CurrentQuantity())
+                {
+                    weak_ptr<CItem> pItem = pFirst.lock()->Get_BindItem();
+                    pFirst.lock()->UnBind_Item();
+                    pFirst.lock()->Bind_Item(pSecond.lock()->Get_BindItem());
+                  
+                    pSecond.lock()->UnBind_Item();
+                    pSecond.lock()->Bind_Item(pItem);
+                    return false;
+                }
+                break;
+            default:
+                break;
+            }
+            return false;//슬롯 자체는 스왑 X
+        });
+}
+
 
 void CUI_Inventory::OnEnable(void* pArg)
 {

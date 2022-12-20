@@ -12,6 +12,12 @@ class CItem;
 
 class CUI_Inventory : public CUI_Container
 {
+    enum class INVENTORY_SORTTYPE
+    {
+        SORT_BY_TYPE,
+        SORT_BY_DATE,
+        SORT_BY_QUANTITY
+    };
 
 public:
     GAMECLASS_H(CUI_Inventory)
@@ -29,15 +35,18 @@ private:
     void                    Create_ItemSlot();
     void                    Create_Scroll();
     void                    Create_TextInfo();
-    
+    void                    Create_SortImage();
 
 private:
     void                    Update_KeyInput(_float fTimeDelta);
     void                    Update_ItemSlotOffset();
 
     void                    Update_ItemSlotFromPlayerInventory();
+    void                    Update_SortImages(INVENTORY_SORTTYPE eCurrentSortType);
     void                    Update_TextInfoToInventorySize(_uint iCurrentInventorySize);
 
+
+    void                    Sort_ItemList(INVENTORY_SORTTYPE eSortType);
 
 private:
     virtual void            OnEnable(void* pArg) override;
@@ -74,6 +83,11 @@ private:
 private:
     vector<weak_ptr<CUI_ItemSlot>>  m_vecItemSlot;
     weak_ptr<CUI_Scroll>            m_pScroll;
+
+    INVENTORY_SORTTYPE              m_eSortType;
+    weak_ptr<CCustomUI>              m_pSortKeyImage;
+    weak_ptr<CCustomUI>              m_pSortByImage;
+
 
     TEXTINFO                        m_tTextInfoQuantity;
     _float                          m_fFontSize;
