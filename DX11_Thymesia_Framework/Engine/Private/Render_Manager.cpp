@@ -433,7 +433,7 @@ HRESULT CRender_Manager::Initialize()
 	m_pPreFilterTextureCom = CTexture::Create();
 	m_pPreFilterTextureCom->Use_Texture("PreFilter");
 
-
+	Emplace_SleepContext(100);
 
 	return S_OK;
 }
@@ -455,8 +455,8 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 {
 	
 
-	GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[DEFERRED_EFFECT].Get());	
-	GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[DEFERRED_UI].Get());
+	//GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[DEFERRED_EFFECT].Get());	
+	//GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[DEFERRED_UI].Get());
 
 
 	while (!GET_SINGLE(CThread_Manager)->Check_JobDone())

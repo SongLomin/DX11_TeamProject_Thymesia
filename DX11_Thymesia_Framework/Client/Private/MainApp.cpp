@@ -139,6 +139,12 @@ HRESULT CMainApp::Initialize()
 
 void CMainApp::Tick(float fTimeDelta)
 {
+	if (KEY_INPUT(KEY::K, KEY_STATE::TAP))
+		GET_SINGLE(CGameManager)->Activate_Section(100, true);
+
+	if (KEY_INPUT(KEY::J, KEY_STATE::TAP))
+		GET_SINGLE(CGameManager)->Activate_Section(100, false);
+
 	if (GetFocus())
 	{
 		if (KEY_INPUT(KEY::TAB, KEY_STATE::TAP))

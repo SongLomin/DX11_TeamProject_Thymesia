@@ -8,9 +8,12 @@
 #include "Collider.h"
 #include "Model.h"
 #include "PhysXCollider.h"
+#include "Inventory.h"
 
 #include "GameInstance.h"
 #include "GameManager.h"
+#include "imgui.h"
+#include "SMath.h"
 
 GAMECLASS_C(CInteraction_Door);
 CLONE_C(CInteraction_Door, CGameObject);
@@ -42,7 +45,9 @@ HRESULT CInteraction_Door::Initialize(void* pArg)
 
 HRESULT CInteraction_Door::Start()
 {
-    return __super::Start();
+    __super::Start();
+
+    return S_OK;
 }
 
 void CInteraction_Door::Tick(_float fTimeDelta)
@@ -66,23 +71,54 @@ void CInteraction_Door::OnEventMessage(_uint iArg)
 {
     switch ((EVENT_TYPE)iArg)
     {
+        case EVENT_TYPE::ON_ENTER_SECTION:
+        {
+            if (!Callback_ActUpdate.empty())
+                return;
+
+            if (!(m_ActionFlag & ACTION_FLAG::AUTO) || !(m_ActionFlag & ACTION_FLAG::ROTATION))
+                return;
+
+            // Open
+            Callback_ActUpdate += bind(&CInteraction_Door::Act_OpenDoor, this, placeholders::_1, placeholders::_2);
+            m_pPhysXColliderCom.lock()->Set_Enable(false);
+        }
+        break;
+
+        case EVENT_TYPE::ON_EXIT_SECTION:
+        {
+            if (!Callback_ActUpdate.empty())
+                return;
+
+            if (!(m_ActionFlag & ACTION_FLAG::AUTO) || (m_ActionFlag & ACTION_FLAG::ROTATION))
+                return;
+
+            // Close
+            Callback_ActUpdate += bind(&CInteraction_Door::Act_CloseDoor, this, placeholders::_1, placeholders::_2);
+        }
+        break;
+
         case EVENT_TYPE::ON_EDITINIT:
         {
             _float fDefaultDesc[4] = { 3.f, 0.f, 1.5f, 0.f };
-            SetUpColliderDesc(fDefaultDesc);
+            SetUpColliderDesc(m_pColliderCom   , fDefaultDesc);
+
+            m_pDirColliderCom = Add_Component<CCollider>();
+            fDefaultDesc[0] = 1.f;
+            fDefaultDesc[3] = 1.f;
+            SetUpColliderDesc(m_pDirColliderCom, fDefaultDesc);
         }
         break;
 
         case EVENT_TYPE::ON_EDIT_UDATE:
         {
             m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+            m_pDirColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
         }
         break;
 
         case EVENT_TYPE::ON_EDITDRAW:
         {
-            m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
-
             SetUp_Invisibility();
 
             ImGui::DragFloat("Rotation Speed ", &m_fRotationtSpeed);
@@ -91,19 +127,87 @@ void CInteraction_Door::OnEventMessage(_uint iArg)
             _bool bOpction[] =
             {
                 (m_ActionFlag & ACTION_FLAG::ROTATION),
-                (m_ActionFlag & ACTION_FLAG::KEY)
+                (m_ActionFlag & ACTION_FLAG::KEY),
+                (m_ActionFlag & ACTION_FLAG::AUTO),
+                (m_ActionFlag & ACTION_FLAG::OPEN_DIR),
             };
 
             if (ImGui::Checkbox("ROTATION", &bOpction[0]))
                 m_ActionFlag ^= ACTION_FLAG::ROTATION;
 
             if (ImGui::Checkbox("KEY", &bOpction[1]))
+            {
                 m_ActionFlag ^= ACTION_FLAG::KEY;
 
+                if (bOpction[2]) m_ActionFlag ^= ACTION_FLAG::AUTO;
+                if (bOpction[3]) m_ActionFlag ^= ACTION_FLAG::OPEN_DIR;
+            }
+
+            if (ImGui::Checkbox("AUTO", &bOpction[2]))
+            {
+                m_ActionFlag ^= ACTION_FLAG::AUTO;
+
+                if (bOpction[1]) m_ActionFlag ^= ACTION_FLAG::KEY;
+                if (bOpction[3]) m_ActionFlag ^= ACTION_FLAG::OPEN_DIR;
+            }
+
+            if (ImGui::Checkbox("OPEN_DIR", &bOpction[3]))
+            {
+                m_ActionFlag ^= ACTION_FLAG::OPEN_DIR;
+
+                m_pDirColliderCom.lock()->Set_Enable(m_ActionFlag & ACTION_FLAG::OPEN_DIR);
+
+                if (bOpction[1]) m_ActionFlag ^= ACTION_FLAG::KEY;
+                if (bOpction[2]) m_ActionFlag ^= ACTION_FLAG::AUTO;
+            }
+
+            static const char* szKeyTag =
+            {
+                "GARDEN_KEY"
+            };
+
+            static _int iSelect_KeyID = 0;
+
             if (bOpction[1])
-                ImGui::InputInt("KeyID", &m_iKeyID);
+            {
+                ImGui::Combo("Key ID", &iSelect_KeyID, szKeyTag, IM_ARRAYSIZE(szKeyTag));
+                m_iKeyID = (ITEM_NAME)((_uint)ITEM_NAME::GARDEN_KEY + iSelect_KeyID);
+            }
             else
-                m_iKeyID = 0;
+            {
+                m_iKeyID      = ITEM_NAME::ITEM_NAME_END;
+                iSelect_KeyID = 0;
+            }
+
+            if (bOpction[2])
+            {
+                ImGui::InputInt("Section Index", &m_iSectionIndex);
+            }
+            else
+            {
+                m_iSectionIndex = -1;
+            }
+
+            if (bOpction[3])
+            {
+                COLLIDERDESC ColliderDesc;
+                ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
+
+                ColliderDesc = m_pDirColliderCom.lock()->Get_ColliderDesc();
+
+                _bool bChage = false;
+
+                bChage |= ImGui::DragFloat3("Dir Coll Transform", &ColliderDesc.vTranslation.x);
+                bChage |= ImGui::DragFloat("Dir Coll Size", &ColliderDesc.vScale.x);
+
+                if (bChage)
+                {
+                    m_pDirColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
+                    m_pDirColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+                }
+
+                ImGui::Separator();
+            }
 
             COLLIDERDESC ColliderDesc;
             ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
@@ -118,7 +222,6 @@ void CInteraction_Door::OnEventMessage(_uint iArg)
             if (bChage)
             {
                 m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
-                m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
             }
         }
         break;
@@ -129,9 +232,11 @@ void CInteraction_Door::Write_Json(json& Out_Json)
 {
     __super::Write_Json(Out_Json);
 
+    Out_Json["ActionFlag"]        = m_ActionFlag;
     Out_Json["RotationtRadian"]   = m_fRotationtRadian;
     Out_Json["RotationSpeed"]     = m_fRotationtSpeed;
     Out_Json["KeyID"]             = m_iKeyID;
+    Out_Json["SectionIndex"]      = m_iSectionIndex;
 
     if (m_pColliderCom.lock())
     {
@@ -150,20 +255,54 @@ void CInteraction_Door::Write_Json(json& Out_Json)
 
         Out_Json["ColliderDesc"] = ColliderInfo;
     }
+
+    if (m_pDirColliderCom.lock() && m_ActionFlag & ACTION_FLAG::OPEN_DIR)
+    {
+        COLLIDERDESC ColliderDesc;
+        ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
+
+        ColliderDesc = m_pDirColliderCom.lock()->Get_ColliderDesc();
+
+        _float ColliderInfo[4] =
+        {
+            ColliderDesc.vScale.x,
+            ColliderDesc.vTranslation.x,
+            ColliderDesc.vTranslation.y,
+            ColliderDesc.vTranslation.z
+        };
+
+        Out_Json["DirColliderDesc"] = ColliderInfo;
+    }
 }
 
 void CInteraction_Door::Load_FromJson(const json& In_Json)
 {
     __super::Load_FromJson(In_Json);
 
-    if (In_Json.end() != In_Json.find("RotationtRadian"))
-        m_fRotationtRadian = In_Json["RotationtRadian"];
+    m_fRotationtRadian = In_Json["RotationtRadian"];
+    m_fRotationtSpeed  = In_Json["RotationSpeed"];
 
-    if (In_Json.end() != In_Json.find("RotationSpeed"))
-        m_fRotationtSpeed = In_Json["RotationSpeed"];
+    if (In_Json.end() != In_Json.find("ActionFlag"))
+    {
+        m_ActionFlag = In_Json["ActionFlag"];
+
+        if (m_ActionFlag & ACTION_FLAG::KEY)
+            m_CallBack_Requirement += bind(&CInteraction_Door::Requirement_Key, this, placeholders::_1);
+
+        else if (m_ActionFlag & ACTION_FLAG::OPEN_DIR)
+            m_CallBack_Requirement += bind(&CInteraction_Door::Requirement_Dir, this, placeholders::_1);
+    }
 
     if (In_Json.end() != In_Json.find("KeyID"))
         m_iKeyID = In_Json["KeyID"];
+
+    if (In_Json.end() != In_Json.find("SectionIndex"))
+    {
+        m_iSectionIndex = In_Json["SectionIndex"];
+
+        if (0 <= m_iSectionIndex)
+            GET_SINGLE(CGameManager)->Registration_Section(m_iSectionIndex, Weak_Cast<CGameObject>(m_this));
+    }
 
     if (In_Json.end() != In_Json.find("ColliderDesc"))
     {
@@ -172,12 +311,24 @@ void CInteraction_Door::Load_FromJson(const json& In_Json)
         for (_uint i = 0; i < 4; ++i)
             fColliderDesc[i] = In_Json["ColliderDesc"][i];
 
-        SetUpColliderDesc(fColliderDesc);
+        SetUpColliderDesc(m_pColliderCom, fColliderDesc);
     }
     else
     {
         _float fDefaultDesc[4] = { 3.f, 0.f, 1.5f, 0.f };
-        SetUpColliderDesc(fDefaultDesc);
+        SetUpColliderDesc(m_pColliderCom, fDefaultDesc);
+    }
+
+    if ((In_Json.end() != In_Json.find("DirColliderDesc")) && (m_ActionFlag & ACTION_FLAG::OPEN_DIR))
+    {
+        m_pDirColliderCom = Add_Component<CCollider>();
+        
+        _float fColliderDesc[4];
+
+        for (_uint i = 0; i < 4; ++i)
+            fColliderDesc[i] = In_Json["ColliderDesc"][i];
+
+        SetUpColliderDesc(m_pDirColliderCom, fColliderDesc);
     }
 
     m_fFirstRadian = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(m_pTransformCom.lock()->Get_WorldMatrix())).y;
@@ -230,13 +381,13 @@ void CInteraction_Door::Act_CloseDoor(_float fTimeDelta, _bool& Out_IsEnd)
 
 void CInteraction_Door::Act_Interaction()
 {
-    if (m_ActionFlag & ACTION_FLAG::KEY)
+    if (!m_CallBack_Requirement.empty())
     {
-        if (0 == m_iKeyID)
-            MSG_BOX("Err KeyID : KeyID Value is 0");
+        _bool bRequirement = false;
+        m_CallBack_Requirement(bRequirement);
 
-        // 나중에 인벤토리 컴포넌트 찾아서 검색하기
-        GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+        if (!bRequirement)
+            return;
     }
 
     if (m_ActionFlag & ACTION_FLAG::ROTATION)
@@ -250,7 +401,37 @@ void CInteraction_Door::Act_Interaction()
     }
 }
 
-void CInteraction_Door::SetUpColliderDesc(_float* _pColliderDesc)
+void CInteraction_Door::Requirement_Key(_bool& Out_bRequirement)
+{
+    if (ITEM_NAME::ITEM_NAME_END == m_iKeyID)
+        MSG_BOX("Err KeyID : KeyID Value is [ITEM_NAME::ITEM_NAME_END]");
+
+    // 나중에 인벤토리 컴포넌트 찾아서 검색하기
+    weak_ptr<CInventory> pInventory = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock();
+}
+
+void CInteraction_Door::Requirement_Dir(_bool& Out_bRequirement)
+{
+    weak_ptr<CGameObject> pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+
+    if (!pPlayer.lock())
+        return;
+
+    /*_vector vTargetDir = pPlayer.lock()->Get_Transform().get()->Get_State(CTransform::STATE_TRANSLATION) - m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+    _vector vDoorLook  = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+
+    _float fDir = XMVectorGetX(XMVector3Dot(vDoorLook, vTargetDir));
+
+    cout << endl << " Door : "  << XMConvertToDegrees(fDir) << endl;
+    Out_bRequirement = true;
+
+    if (m_ActionFlag & ACTION_FLAG::OPEN_DIR)
+    {
+        Out_bRequirement = (0.f < fDir);
+    }*/
+}
+
+void CInteraction_Door::SetUpColliderDesc(weak_ptr<CCollider> In_pColldierCom, _float* _pColliderDesc)
 {
     COLLIDERDESC ColliderDesc;
     ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
@@ -259,6 +440,6 @@ void CInteraction_Door::SetUpColliderDesc(_float* _pColliderDesc)
     ColliderDesc.vScale       = _float3(_pColliderDesc[0], 0.f, 0.f);
     ColliderDesc.vTranslation = _float3(_pColliderDesc[1], _pColliderDesc[2], _pColliderDesc[3]);
 
-    m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
-    m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+    In_pColldierCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
+    In_pColldierCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 }

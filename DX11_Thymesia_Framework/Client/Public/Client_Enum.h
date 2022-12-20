@@ -442,7 +442,10 @@ namespace Client
 		BASIL,
 		THYME,
 		CINNAMON,
-		GARDEN_KEY
+
+		GARDEN_KEY,
+
+		ITEM_NAME_END
 	};
 
 	enum class ITEM_TYPE

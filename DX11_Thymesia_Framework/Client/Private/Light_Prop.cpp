@@ -24,7 +24,6 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
-
 	m_pShaderCom.lock()->Set_ShaderInfo
 	(
 		TEXT("Shader_VtxModel"),
@@ -32,7 +31,6 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 		VTXMODEL_DECLARATION::iNumElements
 	);
 
-	ZeroMemory(&m_tLightDesc, sizeof(LIGHTDESC));
 	m_tLightDesc.eActorType = LIGHTDESC::TYPE::TYPE_POINT;
 	m_tLightDesc.bEnable    = true;
 
@@ -44,8 +42,6 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	m_tLightDesc.fRange     = 5.f;
 	m_tLightDesc.fIntensity = 1.f;
 
-	//m_tLightDesc = GAMEINSTANCE->Add_Light(m_tLightDesc);
-
 	// m_pModelCom.lock()->Init_Model("Torch", "", (_uint)TIMESCALE_LAYER::NONE);
 	// GET_SINGLE(CGameManager)->Use_EffectGroup("TorchFire", m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
 
@@ -56,6 +52,11 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 
 HRESULT CLight_Prop::Start()
 {
+	m_tLightDesc = GAMEINSTANCE->Add_Light(m_tLightDesc);
+
+	m_fTargetIntensity = m_tLightDesc.fIntensity;
+	m_fTargetRange     = m_tLightDesc.fRange;
+
 	return S_OK;
 }
 
@@ -68,16 +69,6 @@ void CLight_Prop::Tick(_float fTimeDelta)
 
 	if (bCheckEnd)
 		Callback_ActUpdate.Clear();
-
-#ifdef _LIFEGUARD_FOR_FALL_
-	_vector vPos = m_pTransformCom.lock()->Get_Position();
-	if (vPos.m128_f32[1] < -50.f)
-	{
-		vPos.m128_f32[1] = 50.f;
-		m_pTransformCom.lock()->Set_Position(vPos);
-	}
-#endif
-
 }
 
 void CLight_Prop::LateTick(_float fTimeDelta)
@@ -123,15 +114,18 @@ void CLight_Prop::Write_Json(json& Out_Json)
 {
 	__super::Write_Json(Out_Json);
 
-	Out_Json["Light_Type"]   = (_int)m_tLightDesc.eActorType;
-	Out_Json["Light_Range"]  = m_tLightDesc.fRange;
-	Out_Json["SectionIndex"] = m_iSectionIndex;
-	Out_Json["DelayTime"]    = m_fDelayTime;
+	Out_Json["Light_Type"]    = (_int)m_tLightDesc.eActorType;
+	Out_Json["Light_Range"]   = m_tLightDesc.fRange;
+	Out_Json["SectionIndex"]  = m_iSectionIndex;
+	Out_Json["DelayTime"]     = m_fDelayTime;
+	Out_Json["IntensityTime"] = m_fIntensityTime;
 
 	if ("" != m_szEffectTag)
 		Out_Json["EffectTag"] = m_szEffectTag;
 	
-	Out_Json["Light_Intensity"] = m_tLightDesc.fIntensity;
+	Out_Json["Light_Intensity"] = m_fTargetIntensity;
+	Out_Json["Light_Range"]     = m_fTargetRange;
+	CJson_Utility::Write_Float3(Out_Json["Offset"]         , m_vOffset);
 	CJson_Utility::Write_Float4(Out_Json["Light_Position"] , m_tLightDesc.vPosition);
 	CJson_Utility::Write_Float4(Out_Json["Light_Direction"], m_tLightDesc.vDirection);
 	CJson_Utility::Write_Float4(Out_Json["Light_Diffuse"]  , m_tLightDesc.vDiffuse);
@@ -151,8 +145,20 @@ void CLight_Prop::Load_FromJson(const json& In_Json)
 	m_iSectionIndex         = In_Json["SectionIndex"];
 	m_fDelayTime            = In_Json["DelayTime"];
 
+	if (In_Json.end() != In_Json.find("IntensityTime"))
+		m_fIntensityTime = In_Json["IntensityTime"];
+
 	if (In_Json.end() != In_Json.find("EffectTag"))
 		m_szEffectTag = In_Json["EffectTag"];
+
+	if (In_Json.end() != In_Json.find("Offset"))
+		CJson_Utility::Load_Float3(In_Json["Offset"], m_vOffset);
+
+	if (In_Json.end() != In_Json.find("Light_Intensity"))
+		m_fTargetIntensity = In_Json["Light_Intensity"];
+
+	if (In_Json.end() != In_Json.find("Light_Range"))
+		m_fTargetIntensity = In_Json["Light_Range"];
 
 	CJson_Utility::Load_Float4(In_Json["Light_Position"] , m_tLightDesc.vPosition);
 	CJson_Utility::Load_Float4(In_Json["Light_Direction"], m_tLightDesc.vDirection);
@@ -171,11 +177,6 @@ void CLight_Prop::Load_FromJson(const json& In_Json)
 		if ("" != m_szEffectTag)
 			GET_SINGLE(CGameManager)->Use_EffectGroup(m_szEffectTag, m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
 	}
-
-	//GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
-
-	if (LEVEL::LEVEL_EDIT == m_CreatedLevel)
-		Set_Enable(true);
 }
 
 void CLight_Prop::OnEventMessage(_uint iArg)
@@ -195,17 +196,16 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 			if ("" != m_szEffectTag && 0 <= m_iSectionIndex)
 				GET_SINGLE(CGameManager)->Use_EffectGroup(m_szEffectTag, m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
 
-			m_tLightDesc.bEnable = true;
-			Callback_ActUpdate += bind(&CLight_Prop::Act_LightEvent, this, placeholders::_1, placeholders::_2);
+			Callback_ActUpdate += bind(&CLight_Prop::Act_LightTurnOnEvent, this, placeholders::_1, placeholders::_2);
 		}
 		break;
 
 		case EVENT_TYPE::ON_EXIT_SECTION:
 		{
-			m_tLightDesc.bEnable = false;
-			GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+			if (!Callback_ActUpdate.empty())
+				return;
 
-			Callback_ActUpdate.Clear();
+			Callback_ActUpdate += bind(&CLight_Prop::Act_LightTurnOffEvent, this, placeholders::_1, placeholders::_2);
 		}
 		break;
 
@@ -218,22 +218,21 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 
 		case EVENT_TYPE::ON_EDITDRAW:
 		{
-			static _float3 OffsetPos = { 0.f, 0.f, 0.f };
-
 			if (ImGui::CollapsingHeader("Light_Prop GameObject"))
 			{
 				const char* LightTypeItems[]  = { "Direction", "Point", "HalfPoint" };
 				_int        iSelect_LightType = (_int)m_tLightDesc.eActorType;
-				_bool       bChangeData       = false;
 
 				if (ImGui::Combo("Light Type", &iSelect_LightType, LightTypeItems, IM_ARRAYSIZE(LightTypeItems)))
 				{
 					m_tLightDesc.eActorType = (LIGHTDESC::TYPE)iSelect_LightType;
-					bChangeData = true;
+					GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
 				}
+
 
 				ImGui::InputInt("Section Index", &m_iSectionIndex);
 				ImGui::InputFloat("DelayTime", &m_fDelayTime);
+				ImGui::InputFloat("Intensity Time", &m_fIntensityTime);
 
 				ImGui::Separator();
 
@@ -245,22 +244,29 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 						ImGui::DragFloat4("Light_Diffuse"  , &m_tLightDesc.vDiffuse.x  , 0.01f);
 						ImGui::DragFloat4("Light_Ambient"  , &m_tLightDesc.vAmbient.x  , 0.01f);
 						ImGui::DragFloat4("Light_Specular" , &m_tLightDesc.vSpecular.x , 0.01f);
-						ImGui::DragFloat4("Light_Flag"     , &m_tLightDesc.vLightFlag.x, 0.01f);
 						ImGui::DragFloat ("Light_Intensity", &m_tLightDesc.fIntensity  , 0.01f);
 					}
 					break;
 
 					case LIGHTDESC::TYPE_POINT:
 					{
-						ImGui::DragFloat3("Offset", &OffsetPos.x, 0.01f);
+						_bool       bChangeData = false;
+
+						ImGui::DragFloat3("Offset", &m_vOffset.x, 0.01f);
 
 						ImGui::DragFloat4("Light_Position" , &m_tLightDesc.vPosition.x , 0.01f);
 						ImGui::DragFloat4("Light_Diffuse"  , &m_tLightDesc.vDiffuse.x  , 0.01f);
 						ImGui::DragFloat4("Light_Ambient"  , &m_tLightDesc.vAmbient.x  , 0.01f);
 						ImGui::DragFloat4("Light_Specular" , &m_tLightDesc.vSpecular.x , 0.01f);
-						ImGui::DragFloat ("Light_Range"    , &m_tLightDesc.fRange      , 0.01f);
-						ImGui::DragFloat4("Light_Flag"     , &m_tLightDesc.vLightFlag.x, 0.01f);
-						ImGui::DragFloat ("Light_Intensity", &m_tLightDesc.fIntensity  , 0.01f);
+
+						bChangeData |= ImGui::DragFloat ("Light_Range"    , &m_tLightDesc.fRange      , 0.01f);
+						bChangeData |= ImGui::DragFloat ("Light_Intensity", &m_tLightDesc.fIntensity  , 0.01f);
+
+						if (bChangeData)
+						{
+							m_fTargetIntensity = m_tLightDesc.fIntensity;
+							m_fTargetRange     = m_tLightDesc.fRange;
+						}
 					}
 					break;
 			
@@ -272,7 +278,6 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 						ImGui::DragFloat4("Light_Ambient"  , &m_tLightDesc.vAmbient.x  , 0.01f);
 						ImGui::DragFloat4("Light_Specular" , &m_tLightDesc.vSpecular.x , 0.01f);
 						ImGui::DragFloat ("Light_Range"    , &m_tLightDesc.fRange      , 0.01f);
-						ImGui::DragFloat4("Light_Flag"     , &m_tLightDesc.vLightFlag.x, 0.01f);
 						ImGui::DragFloat ("Light_Intensity", &m_tLightDesc.fIntensity  , 0.01f);
 						ImGui::DragFloat("Light_CutOff", &m_tLightDesc.fCutOff, 0.01f);
 						ImGui::DragFloat("Light_OuterCutoff", &m_tLightDesc.fOuterCutOff, 0.01f);
@@ -288,16 +293,55 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 	}
 }
 
-void CLight_Prop::Act_LightEvent(_float fTimeDelta, _bool& Out_End)
+void CLight_Prop::Act_LightTurnOnEvent(_float fTimeDelta, _bool& Out_End)
 {
 	m_fAccTime += fTimeDelta;
 
-	if (m_fDelayTime <= m_fAccTime)
+	if (m_tLightDesc.bEnable)
 	{
-		m_tLightDesc = GAMEINSTANCE->Add_Light(m_tLightDesc);
-		Out_End      = true;
-		m_fAccTime   = 0.f;
+		m_tLightDesc.fIntensity = (0.f < m_fIntensityTime) ? ((m_fAccTime / m_fIntensityTime) * m_fTargetIntensity) : (m_fTargetIntensity);
+		m_tLightDesc.fRange     = (0.f < m_fIntensityTime) ? ((m_fAccTime / m_fIntensityTime) * m_fTargetRange)     : (m_fTargetRange);
+
+		if (m_fIntensityTime <= m_fAccTime)
+		{
+			m_fAccTime              = 0.f;
+			m_tLightDesc.fIntensity = m_fTargetIntensity;
+			m_tLightDesc.fRange     = m_fTargetRange;
+			Out_End                 = true;
+		}
+
+		GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
 	}
+
+	else if (m_fDelayTime <= m_fAccTime)
+	{
+		m_fAccTime              = 0.f;
+		m_tLightDesc.fRange     = 0.f;
+		m_tLightDesc.fIntensity = 0.f;
+		m_tLightDesc.bEnable    = true;
+
+		GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+	}
+}
+
+void CLight_Prop::Act_LightTurnOffEvent(_float fTimeDelta, _bool& Out_End)
+{
+	m_fAccTime += fTimeDelta;
+
+	m_tLightDesc.fIntensity = (0.f < m_fIntensityTime) ? (fabs(1.f - (m_fAccTime / m_fIntensityTime)) * m_fTargetIntensity) : (0.f);
+	m_tLightDesc.fRange     = (0.f < m_fIntensityTime) ? (fabs(1.f - (m_fAccTime / m_fIntensityTime)) * m_fTargetRange)     : (0.f);
+
+	if (m_fIntensityTime <= m_fAccTime)
+	{
+		m_fAccTime              = 0.f;
+		m_tLightDesc.fIntensity = 0.f;
+		m_tLightDesc.fRange     = 0.f;
+		m_tLightDesc.bEnable    = false;
+
+		Out_End = true;
+	}
+
+	GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
 }
 
 void CLight_Prop::OnDestroy()

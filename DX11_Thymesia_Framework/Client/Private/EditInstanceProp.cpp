@@ -349,7 +349,6 @@ void CEditInstanceProp::Load_FromJson(const json& In_Json)
 	if (In_Json.end() != In_Json.find("SectionIndex"))
 	{
 		m_iSectionIndex = In_Json["SectionIndex"];
-
 		GET_SINGLE(CGameManager)->Registration_Section(m_iSectionIndex, Weak_Cast<CGameObject>(m_this));
 	}
 

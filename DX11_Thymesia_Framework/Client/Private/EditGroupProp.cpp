@@ -56,6 +56,9 @@ void CEditGroupProp::Tick(_float fTimeDelta)
 
 void CEditGroupProp::LateTick(_float fTimeDelta)
 {
+	if (!m_bSubDraw)
+		return;
+
 	m_pRendererCom.lock()->Add_RenderGroup(RENDERGROUP::RENDER_NONLIGHT, Cast<CGameObject>(m_this));
 }
 
@@ -109,7 +112,6 @@ HRESULT CEditGroupProp::SetUp_ShaderResource()
 		return E_FAIL;
 
 	weak_ptr<CTransform>	pTransform = iter_prop->second[m_iPickingIndex].pInstance.lock()->Get_Component<CTransform>();
-	weak_ptr<CModel>		pModel     = iter_prop->second[m_iPickingIndex].pInstance.lock()->Get_Component<CModel>();
 
 	m_pVIBufferCom.lock()->Update
 	(
@@ -563,6 +565,7 @@ void CEditGroupProp::View_EditProp()
 	ImGui::Text(string(string(" Size  : ") + to_string((_uint)iter_prop->second.size())).c_str());
 	ImGui::Text(string(string(" Index : ") + to_string(m_iPickingIndex)).c_str());
 
+
 	if (ImGui::TreeNode("[ Show List ]"))
 	{
 		if (ImGui::BeginListBox("##Prop Info List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
@@ -576,6 +579,7 @@ void CEditGroupProp::View_EditProp()
 				if (ImGui::Selectable(szTag.c_str(), is_selected))
 				{
 					m_iPickingIndex = i;
+					Update_VtxInfo(iter_prop->second[i].pInstance, iter_prop->second[i].HashCode);
 				}
 
 				if (is_selected)
@@ -746,6 +750,34 @@ void CEditGroupProp::RenderView_Transform_Edit(weak_ptr<CGameObject> In_Obj)
 
 	XMStoreFloat4x4(&m_PickingMatrix, pTransformCom.lock()->Get_WorldMatrix());
 	In_Obj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_EDIT_UDATE);
+}
+
+void CEditGroupProp::Update_VtxInfo(weak_ptr<CGameObject> In_pObj, _hashcode In_HashCode)
+{
+	weak_ptr<CTransform> pTransform = In_pObj.lock()->Get_Component<CTransform>();
+	weak_ptr<CModel>     pModel     = In_pObj.lock()->Get_Component<CModel>();
+	weak_ptr<CCollider>  pCollider  = In_pObj.lock()->Get_Component<CCollider>();
+
+	if (pModel.lock() && pModel.lock()->Get_ModelData().lock())
+	{
+		m_tPickingVtxInfo = pModel.lock()->Get_MeshVertexInfo();
+	}
+
+	else if (pCollider.lock())
+	{
+		COLLIDERDESC CollDesc = In_pObj.lock()->Get_Component<CCollider>().lock()->Get_ColliderDesc();
+
+		m_tPickingVtxInfo.vMin = { CollDesc.vScale.x * -0.5f, CollDesc.vScale.x * -0.5f, CollDesc.vScale.x * -0.5f };
+		m_tPickingVtxInfo.vMax = { CollDesc.vScale.x *  0.5f, CollDesc.vScale.x *  0.5f, CollDesc.vScale.x *  0.5f };
+	}
+
+	else if (typeid(CLight_Prop).hash_code() == In_HashCode)
+	{
+		LIGHTDESC  tLightDesc = Weak_Cast<CLight_Prop>(In_pObj).lock()->Get_LightDesc();
+
+		m_tPickingVtxInfo.vMin = { tLightDesc.fRange * -0.5f, tLightDesc.fRange * -0.5f, tLightDesc.fRange * -0.5f };
+		m_tPickingVtxInfo.vMax = { tLightDesc.fRange *  0.5f, tLightDesc.fRange *  0.5f, tLightDesc.fRange *  0.5f };
+	}
 }
 
 _bool CEditGroupProp::Pick_Prop(RAY& _pMouseRayInWorldSpace)
