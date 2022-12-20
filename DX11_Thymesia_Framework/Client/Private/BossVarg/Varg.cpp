@@ -111,9 +111,9 @@ HRESULT CVarg::Start()
 	m_pTrailBoneNode = m_pModelCom.lock()->Find_BoneNode("Bip001-Head");
 
 	CBase::Set_Enable(true);
-	
+
 	Change_State<CVargBossState_IdleGeneral>();
-	
+
 
 	// weak_ptr<CBoneNode> pTargetBoneNode = m_pModelCom.lock()->Find_BoneNode();
 	// m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
@@ -300,7 +300,7 @@ void CVarg::OnEventMessage(_uint iArg)
 	{
 		Change_State<CVargBossState_Stun_Start>();
 	}
-	
+
 	if ((_uint)EVENT_TYPE::ON_ENTER_SECTION == iArg)
 	{
 		Set_Enable(true);
