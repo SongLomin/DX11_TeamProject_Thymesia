@@ -34,7 +34,7 @@ private:
 	void Add_EnableWeaponEvent(const _bool In_bEnable);
 	
 	void Save_KeyEvent();
-	void Load_KeyEvent();
+	HRESULT Load_KeyEvent();
 	void Clear_KeyEvent();
 	void ClearBack_KeyEvent();
 	void ClearAll_KeyEvent();

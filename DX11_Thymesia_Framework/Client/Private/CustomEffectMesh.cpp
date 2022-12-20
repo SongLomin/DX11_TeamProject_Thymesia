@@ -1148,6 +1148,8 @@ void CCustomEffectMesh::Tool_Dissolve()
 
 		ImGui::Text("Dissolve Direction");
 		ImGui::DragFloat3("##Dissolve_Direction", &m_tEffectMeshDesc.vDissolveDirection.x, 0.1f);
+		
+		ImGui::TreePop();
 	}
 }
 

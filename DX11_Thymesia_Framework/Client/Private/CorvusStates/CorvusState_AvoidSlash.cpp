@@ -56,9 +56,8 @@ void CCorvusState_AVoidSalsh::LateTick(_float fTimeDelta)
 void CCorvusState_AVoidSalsh::Check_InputAgainAvoid()
 {
 	if (!KEY_INPUT(KEY::SPACE, KEY_STATE::TAP))
-	{
 		return;
-	}
+
 	m_IsAgainAvoid = true;
 }
 
