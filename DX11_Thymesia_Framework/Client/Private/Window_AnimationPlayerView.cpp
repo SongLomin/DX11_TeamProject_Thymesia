@@ -493,24 +493,46 @@ void CWindow_AnimationPlayerView::Draw_AnimationList()
     ImGui::DragFloat("Animation Speed", &m_fSpeed, 0.01f, 0.f, 2.f);
     GAMEINSTANCE->Set_TimeScale((_uint)TIMESCALE_LAYER::EDITER, m_fSpeed);
 
-    if (ImGui::CollapsingHeader("Select Animation"), ImGuiTreeNodeFlags_DefaultOpen)
+    if (ImGui::CollapsingHeader("Select Animation"))
     {
         if (ImGui::BeginListBox("##Animation List", ImVec2(-FLT_MIN, 10 * ImGui::GetTextLineHeightWithSpacing())))
         {
+			static ImGuiTextFilter AnimationFilter;
+			ImGui::Text("Search"); ImGui::SameLine();
+            AnimationFilter.Draw("##AnimationSearchFilter", 340.f);
 
             for (int i = 0; i < m_AllAnimationKeys.size(); i++)
             {
+                auto AnimationKit = m_AllAnimationKeys.at(i);
                 const bool is_selected = (m_CurrentAnimationIndex == i);
-                if (ImGui::Selectable(m_AllAnimationKeys[i].c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
-                {
-                    m_CurrentAnimationIndex = i;
 
-                    if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-                    {
-                        m_pPreViewModel.lock()->Change_AnimationFromIndex(m_CurrentAnimationIndex);
-                        Call_UpdatePreViewModel();
-                    }
+                if (AnimationFilter.PassFilter(AnimationKit.c_str()))
+                {
+                    std::string label = AnimationKit + "##" + std::to_string(i);
+
+					if (ImGui::Selectable(m_AllAnimationKeys[i].c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
+					{
+						m_CurrentAnimationIndex = i;
+
+						if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+						{
+							m_pPreViewModel.lock()->Change_AnimationFromIndex(m_CurrentAnimationIndex);
+							Call_UpdatePreViewModel();
+						}
+					}
                 }
+
+                //const bool is_selected = (m_CurrentAnimationIndex == i);
+                //if (ImGui::Selectable(m_AllAnimationKeys[i].c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
+                //{
+                //    m_CurrentAnimationIndex = i;
+
+                //    if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+                //    {
+                //        m_pPreViewModel.lock()->Change_AnimationFromIndex(m_CurrentAnimationIndex);
+                //        Call_UpdatePreViewModel();
+                //    }
+                //}
 
                 // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
                 if (is_selected)

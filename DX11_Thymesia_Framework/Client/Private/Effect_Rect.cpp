@@ -2580,17 +2580,25 @@ void CEffect_Rect::Tool_Boner()
 	{
 		static ImGuiTextFilter filter;
 		ImGui::Text("Search"); ImGui::SameLine();
-		filter.Draw("##Bone_Search_Bar", 340.f);
-		ImGui::BeginChild("##Bone_List_Particle");
+		filter.Draw("##Bone_Search_Bar", 250.f);
+		ImGui::BeginChild("##Bone_List_Particle", ImVec2(250.f, 150.f));
 		for (_int n(0); n < m_AllBoneNames.size(); n++)
 		{
 			auto paintkit = m_AllBoneNames.at(n);
+			const _bool is_selected = (m_iCurrentBoneIndex == n);
 			if (filter.PassFilter(paintkit.c_str()))
 			{
 				std::string label = paintkit + "##" + std::to_string(n);
 
-				if (ImGui::Selectable(label.c_str()))
-					m_strBoneName = m_AllBoneNames[n];
+				if (ImGui::Selectable(label.c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
+				{
+					m_iCurrentBoneIndex = n;
+
+					if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+					{
+						m_strBoneName = m_AllBoneNames[m_iCurrentBoneIndex];
+					}
+				}
 			}
 		}
 		ImGui::EndChild();
