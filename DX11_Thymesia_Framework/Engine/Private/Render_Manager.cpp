@@ -428,7 +428,7 @@ HRESULT CRender_Manager::Initialize()
 	m_pBRDFLUTTextureCom->Use_Texture("BRDF");
 
 
-	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter%d.dds"));
+	// GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter%d.dds"));
 	m_pPreFilterTextureCom = CTexture::Create();
 	//m_pPreFilterTextureCom->Use_Texture("PreFilter");
 

@@ -380,7 +380,8 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"),MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
-
+	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter%d.dds"));
+	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 	return S_OK;
 }
 
