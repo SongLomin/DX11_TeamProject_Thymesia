@@ -48,12 +48,12 @@ private:
 public:
     void       Test_BindSkill();
 
+private:
+    LIGHTDESC   m_LightDesc;
+
 
 private://Moon SkillSytem RequireMent;
     virtual void SetUp_Requirement();
-
-private:
-    void Look_At_Mosnter();
 
     //TODO¿”Ω√
 private:

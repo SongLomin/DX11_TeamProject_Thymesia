@@ -55,7 +55,7 @@ HRESULT CCustomLight::Render(weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect>
 			DEBUG_ASSERT;
 	}
 
-	else if (LIGHTDESC::TYPE_HALFPOINT == m_LightDesc.eActorType)
+	else if (LIGHTDESC::TYPE_SPOTLIGHT == m_LightDesc.eActorType)
 	{
 		//_bool IsInFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(XMLoadFloat4(&m_LightDesc.vPosition), m_LightDesc.fRange);
 
@@ -72,6 +72,12 @@ HRESULT CCustomLight::Render(weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect>
 
 		if (FAILED(pShader.lock()->Set_RawValue("g_fRange", &m_LightDesc.fRange, sizeof(_float))))
 			DEBUG_ASSERT;
+
+		if (FAILED(pShader.lock()->Set_RawValue("g_fCutOff", &m_LightDesc.fCutOff, sizeof(_float))))
+			DEBUG_ASSERT;
+		if (FAILED(pShader.lock()->Set_RawValue("g_fOuterCutOff", &m_LightDesc.fOuterCutOff, sizeof(_float))))
+			DEBUG_ASSERT;
+
 	}
 
 	if (FAILED(pShader.lock()->Set_RawValue("g_vLightDiffuse", &m_LightDesc.vDiffuse, sizeof(_float4))))
@@ -86,9 +92,6 @@ HRESULT CCustomLight::Render(weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect>
 	if (FAILED(pShader.lock()->Set_RawValue("g_fLightIntensity", &m_LightDesc.fIntensity, sizeof(_float))))
 		DEBUG_ASSERT;
 
-	
-	/*if (FAILED(pShader.lock()->Set_RawValue("g_vShaderFlag", &m_LightDesc.vLightFlag, sizeof(_float4))))
-		DEBUG_ASSERT;*/
 
 	pShader.lock()->Begin(iPassIndex, pDeviceContext);
 
