@@ -85,14 +85,14 @@ void CCorvusState_ParryDeflectRight::OnStateStart(const _float& In_fAnimationBle
 #endif
 #endif
 
-	//m_pModelCom.lock()->Set_AnimationSpeed(3.f);
+	
 }
 
 void CCorvusState_ParryDeflectRight::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	//m_pModelCom.lock()->Set_AnimationSpeed(1.f);
+	
 }
 
 void CCorvusState_ParryDeflectRight::Call_AnimationEnd()
@@ -106,7 +106,7 @@ void CCorvusState_ParryDeflectRight::Call_AnimationEnd()
 
 void CCorvusState_ParryDeflectRight::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 {
-	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
+	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 }
 

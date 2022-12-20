@@ -238,7 +238,10 @@ void CEffectGroup::Reset_Effects()
 		elem.lock()->Reset_Effect(pPreviewModelTransform);
 
     for (auto& elem : m_pEffectParticles)
+    {
+        elem.lock()->ReBake_EditParticle();
         elem.lock()->Reset_Effect(pPreviewModelTransform);
+    }
 }
 #endif // _DEBUG
 

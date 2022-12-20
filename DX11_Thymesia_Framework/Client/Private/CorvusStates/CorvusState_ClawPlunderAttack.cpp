@@ -45,19 +45,6 @@ void CCorvusState_ClawPlunderAttack::Tick(_float fTimeDelta)
 
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 
-	if (KEY_INPUT(KEY::N, KEY_STATE::TAP))
-	{
-		if (m_fDebugAnimationSpeed < 0.5f)
-		{
-			m_fDebugAnimationSpeed = 1.f;
-		}
-
-		else
-		{
-			m_fDebugAnimationSpeed = 0.1f;
-		}
-	}
-
 	//DISSOLVE_DESC	ArmDissolveDesc;
 	//ZeroMemory(&ArmDissolveDesc, sizeof(DISSOLVE_DESC));
 	//DISSOLVE_DESC	ClawDissolveDesc;
@@ -215,7 +202,6 @@ void CCorvusState_ClawPlunderAttack::OnStateEnd()
 	__super::OnStateEnd();
 
 	//Disable_Weapons();
-	//m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 	//m_IsNextAttack = false;
 	//m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey -= 
 	//	bind(&CCorvusState_ClawPlunderAttack::Call_NextAnimationKey, this, placeholders::_1);

@@ -35,11 +35,11 @@ HRESULT CCamera_Target::Initialize(void* pArg)
 
 	GET_SINGLE(CGameManager)->Use_EffectGroup("Tutorial_Dust", m_pTransformCom);
 
-	 m_pPhysXCameraControllerCom = Add_Component<CPhysXCameraController>();
-	 m_pPhysXCameraControllerCom.lock()->Set_CurrentCameraController();
-	 m_pPhysXCameraControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::CameraSetting(m_pTransformCom),
-															(_uint)PHYSX_COLLISION_LAYER::CAMERA);
-	
+	m_pPhysXCameraControllerCom = Add_Component<CPhysXCameraController>();
+	m_pPhysXCameraControllerCom.lock()->Set_CurrentCameraController();
+	m_pPhysXCameraControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::CameraSetting(m_pTransformCom),
+		(_uint)PHYSX_COLLISION_LAYER::CAMERA);
+
 	return S_OK;
 }
 
@@ -56,7 +56,7 @@ HRESULT CCamera_Target::Start()
 	m_pCurrentPlayerTransformCom = m_pCurrentPlayer.lock()->Get_Component<CTransform>();
 	XMStoreFloat4(&m_vPlayerFollowLerpPosition, m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION));
 
-	
+
 	return S_OK;
 }
 
@@ -76,8 +76,8 @@ void CCamera_Target::Tick(_float fTimeDelta)
 	}
 
 
-	if(m_bCinematic)
-	{ 
+	if (m_bCinematic)
+	{
 		Update_Bone();
 	}
 	else
@@ -91,7 +91,7 @@ void CCamera_Target::Tick(_float fTimeDelta)
 				//GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 1.f, 0.f), 0.5f,0.1f);
 				//TODO: 과격한 타격 쉐이킹
 				// GET_SINGLE(CGameManager)->Add_Shaking(XMVectorSet(0.f, 1.f, 1.f, 0.f), 0.5f,0.6f);
-				 
+
 				//GET_SINGLE(CGameManager)->Activate_Zoom(-1.f);
 			}
 			else
@@ -106,17 +106,25 @@ void CCamera_Target::Tick(_float fTimeDelta)
 		if (m_bIsFocused)
 		{
 			if (!m_pTargetMonster.lock() || m_pTargetMonster.lock()->Get_Dead())
+			{
 				return;
-			
+			}
+
 			Look_At_Target(fTimeDelta);
 		}
 		else
+		{
 			Free_MouseMove(fTimeDelta);
+		}
+
 
 		Calculate_ShakingOffSet(fTimeDelta);
 		Calculate_ZoomOffSet(fTimeDelta);
 		Interpolate_Camera(fTimeDelta);
 	}
+
+
+
 }
 
 void CCamera_Target::LateTick(_float fTimeDelta)
@@ -195,7 +203,7 @@ void CCamera_Target::End_Cinematic()
 
 		m_pCameraBoneNode = weak_ptr<CBoneNode>();
 		m_pCameraBoneParentTransform = weak_ptr<CTransform>();
-	
+
 	}
 	else if (m_eCinematicType == CINEMATIC_TYPE::CINEMATIC)
 	{
@@ -234,11 +242,11 @@ void CCamera_Target::Deactivate_Zoom(_float fZoomTime, EASING_TYPE eZoomLerpFunc
 	m_fZoomTimeAcc = 0.f;
 }
 
-void CCamera_Target::Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime,_float fFrequency, _float fDecreaseRatio)
+void CCamera_Target::Add_Shaking(_vector vShakingDir, _float fRatio, _float fShakingTime, _float fFrequency, _float fDecreaseRatio)
 {
-	if (0.5f < XMVectorGetZ(vShakingDir))
+	if (0.5f < vShakingDir.m128_f32[3])
 		m_bRandomShaking = true;
-	else if (m_pTransformCom.lock())
+	else
 	{
 		vShakingDir = XMVector3TransformNormal(vShakingDir, m_pTransformCom.lock()->Get_WorldMatrix());
 		vShakingDir = XMVector3Normalize(vShakingDir);
@@ -255,6 +263,8 @@ void CCamera_Target::Add_Shaking(_vector vShakingDir, _float fRatio, _float fSha
 	m_fShakingTimeAcc = 0.f;
 	m_fShakingQuarterFrequency = 0.f;
 	m_fShakingDecreaseTime = 0.f;
+
+
 }
 
 
@@ -264,9 +274,13 @@ HRESULT CCamera_Target::Bind_PipeLine()
 	if (!m_bCinematic)
 	{
 		if (m_bCollision)
+		{
 			WorldMatrix = XMLoadFloat4x4(&m_CollisionMatrix);
+		}
 		else
+		{
 			WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
+		}
 
 		GAMEINSTANCE->Set_Transform(CPipeLine::D3DTS_WORLD, m_pTransformCom.lock()->Get_WorldMatrix());
 	}
@@ -300,10 +314,10 @@ void CCamera_Target::Look_At_Target(_float fTimeDelta)//타겟 고정
 	_matrix vLookTargetMatrix;
 
 	_matrix RotationMatrix = XMMatrixRotationAxis(vRight, XMConvertToRadians(30.f));
-	
-	vLookTargetMatrix.r[0] = XMVector3TransformNormal(vRight,RotationMatrix);
-	vLookTargetMatrix.r[1] = XMVector3TransformNormal(vUp,RotationMatrix);
-	vLookTargetMatrix.r[2] = XMVector3TransformNormal(vLookDir,RotationMatrix);
+
+	vLookTargetMatrix.r[0] = XMVector3TransformNormal(vRight, RotationMatrix);
+	vLookTargetMatrix.r[1] = XMVector3TransformNormal(vUp, RotationMatrix);
+	vLookTargetMatrix.r[2] = XMVector3TransformNormal(vLookDir, RotationMatrix);
 	vLookTargetMatrix.r[3] = vPlayerPos;
 
 	_vector vLookTargetQuaternion = XMQuaternionRotationMatrix(vLookTargetMatrix);
@@ -318,26 +332,29 @@ void CCamera_Target::Look_At_Target(_float fTimeDelta)//타겟 고정
 
 void CCamera_Target::Free_MouseMove(_float fTimeDelta)//마우스 움직임
 {
-	
+
 	_long		MouseMove = 0;
 
 	if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_X))
+	{
 		m_iMouseMovementX += MouseMove;
+	}
 
 	if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
+	{
 		m_iMouseMovementY += MouseMove;
+	}
 
 	_matrix RotationMatrix = XMMatrixRotationAxis(m_pTransformCom.lock()->Get_State(CTransform::STATE_RIGHT), fTimeDelta * m_iMouseMovementY * 0.2f * 0.1f);
 	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
 	vLook = XMVector3TransformNormal(vLook, RotationMatrix);
 
-	_vector vPlayerUp= m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_UP);
+	_vector vPlayerUp = m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_UP);
 	_float fDotValue = XMVector3Dot(vLook, vPlayerUp).m128_f32[0];
-	if (0.9f > fDotValue && -0.99f < fDotValue )
+	if (0.9f > fDotValue && -0.99f < fDotValue)
 	{
 		if (fabs(m_iMouseMovementY) > DBL_EPSILON)
 			m_pTransformCom.lock()->Turn(m_pTransformCom.lock()->Get_State(CTransform::STATE_RIGHT), fTimeDelta * m_iMouseMovementY * 0.2f * 0.1f);
-
 		m_iMouseMovementY = _long(m_iMouseMovementY * 0.8f);
 	}
 	else
@@ -361,17 +378,21 @@ void CCamera_Target::Calculate_ZoomOffSet(_float fTimeDelta)
 
 	if (m_fZoomTime >= m_fZoomTimeAcc)
 	{
+
 		_vector vStartPoint = XMVectorSet(m_fZoomStartOffSet, 0.f, 0.f, 0.f);
 		_vector vEndPoint = XMVectorSet(m_fZoomEndOffSet, 0.f, 0.f, 0.f);
 
-		m_fZoom = CEasing_Utillity::LerpToType(vStartPoint, vEndPoint, m_fZoomTimeAcc, m_fZoomTime,m_eZoomLerpFunc).m128_f32[0];
+		m_fZoom = CEasing_Utillity::LerpToType(vStartPoint, vEndPoint, m_fZoomTimeAcc, m_fZoomTime, m_eZoomLerpFunc).m128_f32[0];
 	}
+
 }
 
 void CCamera_Target::Calculate_ShakingOffSet(_float fTimeDelta)
 {
+
 	m_fShakingTimeAcc += fTimeDelta;
 	m_fShakingTime -= fTimeDelta;
+
 
 	if (m_fShakingTime > DBL_EPSILON)
 	{
@@ -409,8 +430,11 @@ void CCamera_Target::Calculate_ShakingOffSet(_float fTimeDelta)
 			XMStoreFloat3(&m_vShaking, CEasing_Utillity::CircOut(vStartPoint, vEndPoint, m_fShakingDecreaseTime, 1.5f));
 			//XMStoreFloat3(&m_vShaking, XMVectorLerp(XMLoadFloat3(&m_vShaking), XMVectorSet(0.f, 0.f, 0.f, 0.f), fTimeDelta*fTimeDelta));
 		}
+
 		m_bRandomShaking = false;
 	}
+
+
 }
 
 
@@ -425,12 +449,16 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 	if (fTimeDelta < fDistance)
 	{
 		_vector  vPlayerFollowLerpPostiion = XMLoadFloat4(&m_vPlayerFollowLerpPosition);
+
 		m_fSpeed += m_fAccel * fTimeDelta;
+
+
 
 		if (5.f + fDistance < m_fSpeed)
 			m_fSpeed = 5.f + fDistance;
 
 		//플레이어와 카메라 사이 거리에 따라서 거리 이동 보간 비율을 크게 주기
+
 		vPlayerFollowLerpPostiion = XMVectorLerp(vPlayerFollowLerpPostiion, vPrePlayerPos, m_fSpeed * fTimeDelta);
 		XMStoreFloat4(&m_vPlayerFollowLerpPosition, vPlayerFollowLerpPostiion);
 	}
@@ -439,14 +467,14 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 		m_fSpeed = 0.f;
 
 		_vector vPlayerFollowLerpPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition);
-		vPlayerFollowLerpPos = XMVectorSetZ(vPlayerFollowLerpPos, 1.f);
+		vPlayerFollowLerpPos.m128_f32[3] = 1.f;
 
 		vPlayerFollowLerpPos = XMVectorLerp(vPlayerFollowLerpPos, vPrePlayerPos, 2.f * fTimeDelta);
 		XMStoreFloat4(&m_vPlayerFollowLerpPosition, vPlayerFollowLerpPos);
 	}
 
 	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
-	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * ( - 2.5f + m_fZoom) + XMVectorSet(0.f, 1.1f, 0.f, 0.f) + XMLoadFloat3(&m_vShaking);
+	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * (-4.5f + m_fZoom) + XMVectorSet(0.f, 1.1f, 0.f, 0.f) + XMLoadFloat3(&m_vShaking);
 	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
 
 	_float3 vPitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(m_pTransformCom.lock()->Get_WorldMatrix()));
@@ -457,7 +485,7 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 
 void CCamera_Target::Update_Bone()
 {
-	_matrix ParentMatrix = m_pCameraBoneNode.lock()->Get_CombinedMatrix()
+	_matrix		ParentMatrix = m_pCameraBoneNode.lock()->Get_CombinedMatrix()
 		* XMLoadFloat4x4(&m_TransformationMatrix);
 
 	ParentMatrix.r[0] = XMVector3Normalize(ParentMatrix.r[0]);
@@ -467,6 +495,7 @@ void CCamera_Target::Update_Bone()
 	_matrix TotalMatrix = XMLoadFloat4x4(&m_CinematicOffSetMatrix) * ParentMatrix * m_pCameraBoneParentTransform.lock()->Get_WorldMatrix();
 
 	XMStoreFloat4x4(&m_CinemaWorldMatrix, TotalMatrix);
+
 }
 
 void CCamera_Target::Update_PhysXCollider(_float fTimeDelta)

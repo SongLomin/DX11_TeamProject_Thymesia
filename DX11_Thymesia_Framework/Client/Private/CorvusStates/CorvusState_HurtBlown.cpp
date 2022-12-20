@@ -72,8 +72,6 @@ void CCorvusState_HurtBlown::OnStateStart(const _float& In_fAnimationBlendTime)
 	cout << "NorMonState: RunStart -> OnStateStart" << endl;
 #endif
 #endif
-	m_pModelCom.lock()->Set_AnimationSpeed(2.5f);
-
 }
 
 void CCorvusState_HurtBlown::OnStateEnd()

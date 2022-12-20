@@ -37,7 +37,7 @@ public:
 
 private:
     _uint m_iDustEffectIndex;
-    _float m_fDebugAnimationSpeed = 1.f;
+    
     _bool m_bParry1ORParry2 = false;
 
 

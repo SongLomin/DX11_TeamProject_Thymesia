@@ -40,13 +40,7 @@ void CCorvusState_ClawAttackAway::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
-	if (KEY_INPUT(KEY::N, KEY_STATE::TAP))
-	{
-		if (m_fDebugAnimationSpeed < 0.5f)
-			m_fDebugAnimationSpeed = 1.f;
-		else
-			m_fDebugAnimationSpeed = 0.1f;
-	}
+
 
 	DISSOLVE_DESC	ArmDissolveDesc;
 	ZeroMemory(&ArmDissolveDesc, sizeof(DISSOLVE_DESC));
@@ -109,9 +103,7 @@ void CCorvusState_ClawAttackAway::Call_AnimationEnd()
 
 void CCorvusState_ClawAttackAway::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 {
-	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-	m_pModelCom.lock()->Set_AnimationSpeed(2.5f);
 }
 
 void CCorvusState_ClawAttackAway::Attack()

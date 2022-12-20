@@ -79,7 +79,7 @@ void CCorvusState_Short_AvoidB::OnStateStart(const _float& In_fAnimationBlendTim
 #endif
 #endif
 
-	//m_pModelCom.lock()->Set_AnimationSpeed(3.f);
+	
 }
 
 void CCorvusState_Short_AvoidB::OnStateEnd()
@@ -100,7 +100,7 @@ void CCorvusState_Short_AvoidB::Call_AnimationEnd()
 
 void CCorvusState_Short_AvoidB::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 {
-	m_pModelCom.lock()->Set_AnimationSpeed(m_fDebugAnimationSpeed);
+	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 }
 

@@ -31,9 +31,12 @@ void CWindow_GameSystem_Dev::Background_Tick(_float fTimeDelta)
 
 #ifdef _DEBUG
 
-	if (KEY_INPUT(KEY::M, KEY_STATE::TAP))
+	if (KEY_INPUT(KEY::CTRL, KEY_STATE::TAP))
 	{
-		Apply_CameraShaking();
+		if (KEY_INPUT(KEY::M, KEY_STATE::TAP))
+		{
+			Apply_CameraShaking();
+		}
 	}
 
 #endif // _DEBUG

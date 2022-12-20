@@ -34,7 +34,7 @@ public:
 private:
     _bool m_IsNextAttack = false;
 
-    _float m_fDebugAnimationSpeed = 1.f;
+    
 
     _int m_iEndAttackEffectIndex = -1;
 

@@ -12,7 +12,7 @@ class CNorMonState_GroggyStart :
 {
 	GAMECLASS_H(CNorMonState_GroggyStart);
 	CLONE_H(CNorMonState_GroggyStart, CComponent)
-		SHALLOW_COPY(CNorMonState_GroggyStart)
+	SHALLOW_COPY(CNorMonState_GroggyStart)
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
