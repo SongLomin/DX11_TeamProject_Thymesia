@@ -1201,7 +1201,7 @@ void CLoader::Load_CorvusModel()
 	GAMEINSTANCE->Load_Model("CorvusDefaultSaber", "../Bin/Resources/Meshes/Corvus/Weapon/Corvus_DefaultSaber/Corvus_DefaultSaber.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(-90.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model("CorvusDefaultDagger", "../Bin/Resources/Meshes/Corvus/Weapon/Corvus_DefaultDagger/Corvus_DefaultDagger.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Model("CorvusDefaultDagger", "../Bin/Resources/Meshes/Corvus/Weapon/Corvus_DefaultDagger/Corvus_DefaultDagger2.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 }
 
 void CLoader::Load_NormalMobModel()
@@ -1221,7 +1221,7 @@ void CLoader::Load_NormalMobModel()
 	GAMEINSTANCE->Load_Model("Mon_Gardner", "../Bin/Resources/Meshes/NorMonster/Gardner/Gardner.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model("Mon_Weapon_Axe", "../Bin/Resources/Meshes/NorMonster/Weapon/Axe/Axe.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Model("Mon_Weapon_Axe", "../Bin/Resources/Meshes/NorMonster/Weapon/Axe/Axe2.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Mon_Weapon_Knife", "../Bin/Resources/Meshes/NorMonster/Weapon/Knife/Knife.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);

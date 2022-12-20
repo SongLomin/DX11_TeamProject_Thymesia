@@ -362,11 +362,10 @@ PS_OUT PS_MAIN_DISSOLVE(PS_IN_NORMAL In)
     float fStepValue2 = IsIn_Range(0.05f, 0.065f, diff);
     float fStepValue3 = IsIn_Range(0.065f, 0.08f, diff);
     
-    
-    Out.vDiffuse = IsIn_Range(0.f, 0.03f, diff) * vector(0.3f, 0.0f, 0.f, 1.f) +
-                   fStepValue1 * vector(0.9f, 0.1f, 0.f, 1.f) +
-                   fStepValue2 * vector(1.f, 0.9f, 0.4f, 1.f) +
-                   fStepValue3 * vector(1.f, 0.95f, 0.9f, 1.f) +
+    Out.vDiffuse = IsIn_Range(0.f, 0.03f, diff) * vector(1.f, 0.95f, 0.9f, 1.f) +
+                   fStepValue1 * vector(1.f, 0.9f, 0.4f, 1.f) +
+                   fStepValue2 * vector(0.9f, 0.1f, 0.f, 1.f) +
+                   fStepValue3 * vector(0.3f, 0.0f, 0.f, 1.f) +
                    IsIn_Range(0.08f, 1.f, diff) * g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     
     Out.vShaderFlag = saturate(fStepValue1 + fStepValue2 + fStepValue3) * vector(0.f, 0.f, 1.f, 0.f);
