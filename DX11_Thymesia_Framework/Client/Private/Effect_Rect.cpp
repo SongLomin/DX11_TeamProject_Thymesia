@@ -1771,9 +1771,9 @@ void CEffect_Rect::Update_ParticleColor(const _uint& i, _float fTimeDelta)
 	_vector vColor;
 	ZeroMemory(&vColor, sizeof(_vector));
 
+#ifdef _DEBUG
 	try
 	{
-#ifdef _DEBUG
 		PARTICLE_DESC tParticle = m_tParticleDescs.at(i);
 #endif // _DEBUG
 

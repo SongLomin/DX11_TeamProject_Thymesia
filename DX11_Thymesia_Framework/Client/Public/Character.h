@@ -127,7 +127,7 @@ public: /* For Template Function */
         }
 
         m_pPreState = m_pCurState;
-        m_pCurState = pNextState;
+        m_pCurState = pNextState;   
 
         m_pCurState.lock()->OnStateStart(In_fAnimationBlendTime);
 

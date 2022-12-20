@@ -41,6 +41,7 @@ void CWindow_EffectEditerView::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
     
+#ifdef _DEBUG
     if (KEY_INPUT(KEY::F5, KEY_STATE::TAP))
     {
         if (m_pCurrentEffectGroup.lock())
@@ -58,6 +59,7 @@ void CWindow_EffectEditerView::Tick(_float fTimeDelta)
             GET_SINGLE(CImGui_Manager)->Save_EffectJson();
         }
     }
+#endif // _DEBUG
 }
 
 HRESULT CWindow_EffectEditerView::Render(ID3D11DeviceContext* pDeviceContext)
@@ -157,10 +159,12 @@ void CWindow_EffectEditerView::Update_MeshInfo()
 
     ImGui::SameLine();
 
+#ifdef _DEBUG
     if (ImGui::Button("Reset"))
     {
         m_pCurrentEffectGroup.lock()->Reset_Effects();
     }
+#endif // _DEBUG
 
     _char szName[64];
     strcpy_s(szName, m_pCurrentEffectGroup.lock()->Get_EffectGroupName());
@@ -195,10 +199,12 @@ void CWindow_EffectEditerView::Update_ParticleInfo()
 
     ImGui::SameLine();
 
+#ifdef _DEBUG
     if (ImGui::Button("Play"))
     {
         m_pCurrentEffectGroup.lock()->Reset_Effects();
     }
+#endif // _DEBUG
 
     ImGui::SameLine();
 

@@ -48,37 +48,8 @@ HRESULT CLevel_GamePlay::Initialize()
 
 
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
-#pragma region GAMEOBJECT
-
-#ifdef _STAGE_1_
-/*future<void> ThreadResult2 = async(launch::async,
-	bind(&CLevel_GamePlay::Load_FromJson, this,
-		placeholders::_1, placeholders::_2),
-	m_szDefaultJsonPath + "Stage2.json",
-	LEVEL::LEVEL_GAMEPLAY);*/
-
-	Load_FromJson(m_szDefaultJsonPath + "Stage1.json", LEVEL::LEVEL_GAMEPLAY);
-#endif // _STAGE_1_
-
-#ifdef _STAGE_2_
-	/*future<void> ThreadResult2 = async(launch::async,
-		bind(&CLevel_GamePlay::Load_FromJson, this,
-			placeholders::_1, placeholders::_2),
-		m_szDefaultJsonPath + "Stage2.json",
-		LEVEL::LEVEL_GAMEPLAY);*/
 
 	Load_FromJson(m_szDefaultJsonPath + "Stage2.json", LEVEL::LEVEL_GAMEPLAY);
-#endif // _STAGE_2_
-
-#ifdef _STAGE_2_2_
-	/*future<void> ThreadResult2 = async(launch::async,
-		bind(&CLevel_GamePlay::Load_FromJson, this,
-			placeholders::_1, placeholders::_2),
-		m_szDefaultJsonPath + "Stage2.json",
-		LEVEL::LEVEL_GAMEPLAY);*/
-
-	Load_FromJson(m_szDefaultJsonPath + "Stage2-2.json", LEVEL::LEVEL_GAMEPLAY);
-#endif // _STAGE_2_2_
 
 	CMonster::STATE_LINK_MONSTER_DESC MONSTER;
 	
@@ -86,7 +57,6 @@ HRESULT CLevel_GamePlay::Initialize()
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_GAMEPLAY);
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
 	
-#pragma endregion GAMEOBJECT
 #endif	// ONLY_UI
 
 	GAMEINSTANCE->Set_FogDesc(_float4(0.2f, 0.15f, 0.03f, 0.5f), 20.f);

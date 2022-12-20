@@ -237,7 +237,6 @@ HRESULT CLoader::Loading_ForLobby()
 
 HRESULT CLoader::Loading_ForTestLevel()
 {
-
 #ifndef _ONLY_UI_
 	lstrcpy(m_szLoadingText, TEXT("Loading Skybox Texture..."));
 
@@ -279,9 +278,24 @@ HRESULT CLoader::Loading_ForTestLevel()
 #endif // _LOAD_CAPTURED_RESOURCE_
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
-	lstrcpy(m_szLoadingText, TEXT("Loading Complete for : Level Test"
-	));
-                              
+	
+                    
+	// TODO : Turn off temporarily for Light_Prop
+	LIGHTDESC LightDesc;
+	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
+
+	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
+	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
+	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.bEnable = true;
+	LightDesc.fIntensity = 1.f;
+
+	GAMEINSTANCE->Add_Light(LightDesc);
+
+	lstrcpy(m_szLoadingText, TEXT("Loading Complete for : Level Test"));
 
 #endif _ONLY_UI_
 	m_isFinished = true;

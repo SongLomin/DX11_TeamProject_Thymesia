@@ -119,7 +119,9 @@ HRESULT CCorvus::Start()
 	
 	Test_BindSkill();
 
-	//m_pModelCom.lock()->Set_NvClothMeshWithIndex(0);
+#ifdef _CLOTH_
+	// m_pModelCom.lock()->Set_NvClothMeshWithIndex(0);
+#endif // _CLOTH_
 
 	return S_OK;
 }
