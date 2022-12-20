@@ -161,14 +161,16 @@ void CWindow_AnimationPlayerView::Save_KeyEvent()
     weak_ptr<CModel> pCurrentModel = m_pPreViewModel.lock()->Get_CurrentModel();
 
     string szPath = "../Bin/KeyEventData/";
-    szPath += pCurrentModel.lock()->Get_ModelKey();
+
+    if (0 < m_strKeyEventFileName.size())
+        szPath += m_strKeyEventFileName;
+    else
+        szPath += pCurrentModel.lock()->Get_ModelKey();
+
     szPath += ".json";
 
     if (FAILED(CJson_Utility::Save_Json(szPath.c_str(), m_KeyEventJson)))
-    {
         return;
-    }
-
 }
 
 void CWindow_AnimationPlayerView::Load_KeyEvent()
@@ -331,6 +333,12 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
     ImGui::SameLine();
     ImGui::Text(to_string(iMaxKeyIndex).c_str());
 
+    _char pFileNameBuffer[MAX_PATH];
+    strcpy_s(pFileNameBuffer, m_strKeyEventFileName.c_str());
+    ImGui::SetNextItemWidth(500.f);
+    if (ImGui::InputText("File Name", pFileNameBuffer, MAX_PATH))
+        m_strKeyEventFileName = pFileNameBuffer;
+    
     if (ImGui::Button("Add_Effect"))
     {
         Add_EffectKeyEvent();
@@ -338,14 +346,14 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
         Load_KeyEvent();
     }
 
-    ImGui::SameLine();
-
     if (ImGui::Button("Enable_Weapon"))
     {
         Add_EnableWeaponEvent(true);
         Save_KeyEvent();
         Load_KeyEvent();
     }
+
+	ImGui::SameLine();
 
     if (ImGui::Button("Disable_Weapon"))
     {

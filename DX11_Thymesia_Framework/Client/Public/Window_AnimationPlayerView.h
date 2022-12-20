@@ -61,6 +61,8 @@ private:
 	vector<string>	m_AllAnimationKeys;
 	_int			m_CurrentAnimationIndex = 0;
 
+	string m_strKeyEventFileName = "";
+
 private:
 	json m_KeyEventJson;
 	map<_int, list<string>>	m_KeyEventEffectGroupNames;

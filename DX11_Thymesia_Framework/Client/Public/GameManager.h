@@ -139,6 +139,7 @@ public:
     // 키 이벤트가 있는 애니메이션에게만 함수를 바인드합니다. 
     // 다음 애니메이션 키 이벤트가 들어오면 Bind_Function을 호출합니다. 
     void Bind_KeyEvent(const string& In_szModelName, weak_ptr<CModel> ModelCom, function<void(const _uint&)> Bind_Function);
+    void Unbind_KeyEvent(const string& In_szModelName, weak_ptr<CModel> ModelCom, function<void(const _uint&)> Bind_Function);
 
     // 해당 키에 이벤트가 있는지 확인 후 있다면 이벤트를 호출합니다.
     void Active_KeyEvent(const weak_ptr<CModel> In_ModelCom, const weak_ptr<CTransform> In_TransformCom, const _uint& In_iKeyIndex, const _uint& In_iTimeScaleLayer = -1);

@@ -489,6 +489,25 @@ void CGameManager::Bind_KeyEvent(const string& In_szModelName, weak_ptr<CModel> 
 	}
 }
 
+void CGameManager::Unbind_KeyEvent(const string& In_szModelName, weak_ptr<CModel> ModelCom, function<void(const _uint&)> Bind_Function)
+{
+	_hashcode ModelNameToHash = hash<string>()(In_szModelName);
+
+	auto Model_iter = m_KeyEvents.find(ModelNameToHash);
+
+	if (m_KeyEvents.end() == Model_iter)
+	{
+		return;
+	}
+
+	for (auto& KeyAnimation : Model_iter->second)
+	{
+		ModelCom.lock()->Get_AnimationFromIndex(KeyAnimation.first).lock()->CallBack_NextChannelKey -= Bind_Function;
+	}
+}
+
+
+
 void CGameManager::Active_KeyEvent(const weak_ptr<CModel> In_ModelCom, const weak_ptr<CTransform> In_TransformCom, 
 	const _uint& In_iKeyIndex, const _uint& In_iTimeScaleLayer)
 {

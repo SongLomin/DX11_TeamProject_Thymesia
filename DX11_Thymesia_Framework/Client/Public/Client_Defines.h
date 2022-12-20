@@ -1,5 +1,5 @@
 #pragma once
-// #define _JOJO_EFFECT_TOOL_
+#define _JOJO_EFFECT_TOOL_
                  
 #include "Client_Structs.h"
 #include "Client_Presets.h"
@@ -59,6 +59,7 @@
 #pragma region Effects
 // #define _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
+#define _VARG_EFFECT_
 #pragma endregion // Effects
 
 #endif // _DEBUG

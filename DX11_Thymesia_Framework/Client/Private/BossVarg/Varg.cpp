@@ -95,11 +95,11 @@ HRESULT CVarg::Initialize(void* pArg)
 	// m_pTrailEffect.lock()->();
 
 	m_pTrailEffect.lock()->Set_Enable(false);
+#ifdef _VARG_EFFECT_
 	GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
+#endif // _VARG_EFFECT_
 
 	m_fCullingRange = 999.f;
-
-
 	return S_OK;
 }
 

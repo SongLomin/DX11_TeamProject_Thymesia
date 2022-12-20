@@ -81,8 +81,6 @@ HRESULT CLoader::Initialize(LEVEL eNextLevel)
 
 	//std::future<void> a = std::async(std::launch::async, LoadingMain, this);
 
-	
-
 	InitializeCriticalSection(&m_CriticalSection);
 
 	m_hThread = (HANDLE)_beginthreadex(nullptr, 0, LoadingMain, this, 0, nullptr);
@@ -587,7 +585,6 @@ HRESULT CLoader::Loading_ForEditLevel()
 	LIGHTDESC LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
-#ifdef _BRIGHT_LIGHT_
 	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
 	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
@@ -596,17 +593,6 @@ HRESULT CLoader::Loading_ForEditLevel()
 	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.bEnable = true;
 	LightDesc.fIntensity = 1.f;
-#else
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
-	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
-	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 0.2f;
-
-#endif // _BRIGHT_LIGHT_
 
 	GAMEINSTANCE->Add_Light(LightDesc);
 
