@@ -144,7 +144,8 @@ public: /* For.Render_Manager */
 	LIFTGAMMAGAIN_DESC& Get_LiftGammaGain();
 	HRESULT Set_Contrast(const _float In_fContrast);
 	HRESULT Set_Saturation(const _float In_fSaturation);
-	HRESULT Set_IrradianceMap(const _uint In_iIrradianceMap);
+	HRESULT Set_IrradianceMap(const _char* In_szIrradianceMap);
+	HRESULT Set_PreFilteredMap(const _char* In_szPreFiltered);
 
 	ID3D11DeviceContext* Get_BeforeRenderContext();
 	void Release_BeforeRenderContext(ID3D11DeviceContext* pDeviceContext);
