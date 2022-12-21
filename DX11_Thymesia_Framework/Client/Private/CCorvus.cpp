@@ -265,13 +265,13 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 		m_pInventory.lock()->Push_Item(ITEM_NAME::MEMORY01);
 	}
 #ifdef _DEBUG
-	if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
-	{
-		++m_iContainerIndex;
-		if (m_iContainerIndex >= m_iNumMeshContainers)\
-			m_iContainerIndex = 0;
-		cout << "m_iContainerIndex : " << m_iContainerIndex << endl;
-	}
+	//if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
+	//{
+	//	++m_iContainerIndex;
+	//	if (m_iContainerIndex >= m_iNumMeshContainers)
+	//		m_iContainerIndex = 0;
+	//	cout << "m_iContainerIndex : " << m_iContainerIndex << endl;
+	//}
 #endif // _DEBUG
 }
 

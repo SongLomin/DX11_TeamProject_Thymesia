@@ -423,7 +423,6 @@ PS_OUT PS_MAIN_NORMAL_DISSOLVE(PS_IN In)
 		Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 	}
 
-	// Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
 
 	vector vNoise = (vector) 0;
 	if (g_bNoiseWrap)
@@ -457,36 +456,31 @@ PS_OUT PS_MAIN_NORMAL_DISSOLVE(PS_IN In)
 	return Out;
 }
 
+float IsIn_Range(float fMin, float fMax, float fValue)
+{
+    return (fMin <= fValue) && (fMax >= fValue);
+}
+
+
 PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_DIRECTIONAL_DISSOLVE In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
 	//directional dissolve
-	float3 vPixelDir = In.vLocalPos.xyz;
-	vPixelDir = normalize(vPixelDir);
-	float3 vDissolveDir = normalize(g_vDissolveDir);
-
-	float fDotValue = dot(vPixelDir.xyz, vDissolveDir);
-	fDotValue = fDotValue * 0.5f + 0.5f;
-
-	if (fDotValue > g_fDissolveAmount)
-	{
-		Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-	}
-	else if (fDotValue + g_fDissolveGradiationDistance > g_fDissolveAmount)
-	{
-		float DissolveDesc = g_DissolveTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.w + g_vUVDiff).r;
-
-		clip(DissolveDesc - g_fDissolveAmount);
-
-		Out.vColor = vector(0.f, 0.9f, 0.5f, 1.f) /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
-		//float fLerpRatio = (DissolveDesc - g_fDissolveAmount) / g_fDissolveGradiationDistance;
-		//Out.vColor = vector(lerp(g_vDissolveGradiationStartColor, g_vDissolveGradiationGoalColor, fLerpRatio), 1.f);
-	}
-	else
-	{
-		discard;
-	}
+    float3 vPixelDir = In.vLocalPos.xyz - g_vDissolveStartPos;
+    vPixelDir = normalize(vPixelDir);
+    float3 vDissolveDir = normalize(g_vDissolveDir);
+    
+    float fDotValue = dot(vPixelDir.xyz, vDissolveDir);
+    fDotValue = fDotValue * 0.5f + 0.5f;
+    
+    clip(fDotValue - g_fDissolveAmount);
+    
+    float fDiff = fDotValue - g_fDissolveAmount;
+    float fStepValue = IsIn_Range(0.f, g_fDissolveGradiationDistance, fDiff);
+    
+    Out.vColor = fStepValue * vector(g_vDissolveGradiationStartColor, 1.f) +
+                    IsIn_Range(0.015f, 1.f, fDiff) * g_vColor;
 
 	vector vNoise = (vector) 0;
 	if (g_bNoiseWrap)
@@ -504,7 +498,6 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_DIRECTIONAL_DISSOLVE In)
 	if (g_bDynamicNoiseOption)
 		vNoise.rgb = vNoise.rgb * 2 - 1;
 
-	Out.vColor *= g_vColor;
 	Out.vColor.rgb *= vNoise.rgb;
 	Out.vColor.a *= vMask.r;
 
@@ -533,14 +526,10 @@ PS_OUT PS_MAIN_NORMAL_DISSOLVE_SOFT(PS_IN_SOFT In)
 
 	if (g_fDissolveAmount + g_fDissolveGradiationDistance >= DissolveDesc)
 	{
-		float fLerpRatio = (DissolveDesc - g_fDissolveAmount) / g_fDissolveGradiationDistance;
+        float fLerpRatio = clamp((DissolveDesc - g_fDissolveAmount) / g_fDissolveGradiationDistance,0.f,1.f);
 		Out.vColor = vector(lerp(g_vDissolveGradiationStartColor, g_vDissolveGradiationGoalColor, fLerpRatio), 1.f);
 	}
-	else
-	{
-		Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-	}
-
+	
 	vector vNoise = (vector) 0;
 	if (g_bNoiseWrap)
 		vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
@@ -590,32 +579,21 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE_SOFT(PS_IN_SOFT_DIRECTIONAL_DISSOLVE 
 	PS_OUT Out = (PS_OUT)0;
 
 	//directional dissolve
-	float3 vPixelDir = In.vLocalPos.xyz;
-	vPixelDir = normalize(vPixelDir);
-	float3 vDissolveDir = normalize(g_vDissolveDir);
-
-
-	float fDotValue = dot(vPixelDir.xyz, vDissolveDir);
-	fDotValue = fDotValue * 0.5f + 0.5f;
-
-	if (fDotValue > g_fDissolveAmount)
-	{
-		Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-	}
-	else if (fDotValue + g_fDissolveGradiationDistance > g_fDissolveAmount)
-	{
-		float DissolveDesc = g_DissolveTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.w + g_vUVDiff).r;
-
-		clip(DissolveDesc - g_fDissolveAmount);
-
-		float fLerpRatio = (DissolveDesc - g_fDissolveAmount) / g_fDissolveGradiationDistance;
-		Out.vColor = vector(lerp(g_vDissolveGradiationStartColor, g_vDissolveGradiationGoalColor, fLerpRatio), 1.f);
-	}
-	else
-	{
-		discard;
-	}
-
+    float3 vPixelDir = In.vLocalPos.xyz - g_vDissolveStartPos;
+    vPixelDir = normalize(vPixelDir);
+    float3 vDissolveDir = normalize(g_vDissolveDir);
+    
+    float fDotValue = dot(vPixelDir.xyz, vDissolveDir);
+    fDotValue = fDotValue * 0.5f + 0.5f;
+    
+    clip(fDotValue - g_fDissolveAmount);
+	
+    float fDiff = fDotValue - g_fDissolveAmount;
+    float fStepValue = IsIn_Range(0.f, g_fDissolveGradiationDistance, fDiff);
+    
+    Out.vColor = fStepValue * vector(g_vDissolveGradiationStartColor, 1.f) +
+                    IsIn_Range(0.015f, 1.f, fDiff) * g_vColor;
+	
 	vector vNoise = (vector) 0;
 	if (g_bNoiseWrap)
 		vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
@@ -632,7 +610,6 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE_SOFT(PS_IN_SOFT_DIRECTIONAL_DISSOLVE 
 	if (g_bDynamicNoiseOption)
 		vNoise.rgb = vNoise.rgb * 2 - 1;
 
-	Out.vColor *= g_vColor;
 	Out.vColor.rgb *= vNoise.rgb;
 	Out.vColor.a *= vMask.r;
 

@@ -34,7 +34,7 @@ public:
 
 public:
 	void Change_Target();
-	void Focus_Monster(weak_ptr<CGameObject> _pMonster);
+	void Focus_Monster(weak_ptr<CMonster> _pMonster);
 	void Release_Focus();
 
 	void Start_Cinematic(weak_ptr<CModel> _pModel,const _char* pBoneName, _fmatrix OffSetMatrix, CINEMATIC_TYPE eType);
@@ -85,6 +85,8 @@ private:
 
 	weak_ptr<CGameObject>		m_pTargetMonster;
 	weak_ptr<CTransform>	m_pTargetMonsterTransformCom;
+	weak_ptr<CModel>            m_pTargetMonsterModelCom;
+	weak_ptr<CBoneNode>         m_pTargetMonsterBoneNodeCom;
 
 	_bool					m_bIsFocused = false;
 	_bool					m_bFirst = true;
