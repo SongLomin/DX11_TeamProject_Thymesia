@@ -63,7 +63,9 @@ void CVargBossState_Exe_NoDeadEnd::OnStateStart(const _float& In_fAnimationBlend
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	GET_SINGLE(CGameManager)->Set_AnimaionChange(false);
+
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,5);
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
@@ -77,7 +79,7 @@ void CVargBossState_Exe_NoDeadEnd::OnStateStart(const _float& In_fAnimationBlend
 void CVargBossState_Exe_NoDeadEnd::OnStateEnd()
 {
 	__super::OnStateEnd();
-
+	
 
 }
 
@@ -110,6 +112,15 @@ _bool CVargBossState_Exe_NoDeadEnd::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 40)
+	{
+		if (m_bDeadChoice)
+		{
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_Start>(0.05f);
+			return true;
+		}
+	}
+	
 
 
 	return false;

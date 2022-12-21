@@ -58,7 +58,7 @@ void CVarg_Execution::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex , 6);
 	
 	//Varg_Execution camera LocalOffset.
 	_matrix LocalMat = XMMatrixIdentity();

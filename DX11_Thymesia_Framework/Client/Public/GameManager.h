@@ -221,7 +221,10 @@ public:
     void  Registration_SectionLight(_uint In_iSection, weak_ptr<CLight_Prop> In_pObj);
     void  Activate_SectionLight(_uint In_iSection, _bool In_bState);
 
-public:
+    public:
+        void  Set_AnimaionChange(_bool bAnimaionChange) { m_bAnimaionChange = bAnimaionChange; }
+        _bool Get_AnimaionChange() { return m_bAnimaionChange; }
+ public:
     FDelegate<>                 CallBack_ChangePlayer;
     FDelegate<>                 CallBack_FocusInMonster;
     FDelegate<>                 CallBack_FocusOutMonster;
@@ -250,6 +253,7 @@ private:
 
 private:
     _int                                m_iMonsterCount   = 0;
+    _bool                               m_bAnimaionChange = false;
 
 protected:
     void Free();

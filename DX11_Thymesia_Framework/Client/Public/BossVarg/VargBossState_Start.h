@@ -16,7 +16,9 @@ class CVargBossState_Start :
 
 public:
 	void Call_NextKeyFrame(const _uint& In_KeyIndex);
-
+	_matrix Get_PlayerTransform() {
+		return XMLoadFloat4x4(&m_vPlyerMatrix);
+	}
 protected:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
@@ -35,8 +37,9 @@ private:
 	void Call_AnimationEnd();
 
 private:
-	_bool    m_bNextState = false;
-	_float   m_fSinematic = 0.f;
+	_bool      m_bNextState = false;
+	_float     m_fSinematic = 0.f;
+	_float4x4  m_vPlyerMatrix;
 };
 
 END
