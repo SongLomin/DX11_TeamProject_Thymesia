@@ -395,6 +395,8 @@ void CCustomEffectMesh::Write_EffectJson(json& Out_Json)
 
 	CJson_Utility::Write_Float3(Out_Json["Start_Position"], m_tEffectMeshDesc.vStartPosition);
 
+
+	Out_Json["Move_By_Mesh"] = m_tEffectMeshDesc.bMoveByMesh;
 	CJson_Utility::Write_Float3(Out_Json["Speed"],          m_tEffectMeshDesc.vSpeed);
 	CJson_Utility::Write_Float3(Out_Json["Force"],          m_tEffectMeshDesc.vForce);
 	CJson_Utility::Write_Float3(Out_Json["Min_Speed"],      m_tEffectMeshDesc.vMinSpeed);
@@ -557,6 +559,9 @@ JUMP:
 
 	if (In_Json.find("Start_Position") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Start_Position"], m_tEffectMeshDesc.vStartPosition);
+
+	if (In_Json.find("Move_By_Mesh") != In_Json.end())
+		m_tEffectMeshDesc.bMoveByMesh = In_Json["Move_By_Mesh"];
 
 	if (In_Json.find("Speed") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Speed"], m_tEffectMeshDesc.vSpeed);
@@ -1382,38 +1387,26 @@ void CCustomEffectMesh::Play_Internal(_float fFrameTime)
 
 void CCustomEffectMesh::Update_Position(_float fFrameTime)
 {
+	m_vCurrentSpeed = SMath::Mul_Float3(m_tEffectMeshDesc.vSpeed, fFrameTime);
+	m_vCurrentForce = SMath::Add_Float3(m_vCurrentForce, SMath::Mul_Float3(m_tEffectMeshDesc.vForce, fFrameTime));
+
+	_vector vMovePosition(XMLoadFloat3(&m_vCurrentSpeed) + XMLoadFloat3(&m_vCurrentForce));
+	_vector vAbsolutePosition(vMovePosition / fFrameTime);
+
+	vAbsolutePosition = XMVectorSetX(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.x, min(m_tEffectMeshDesc.vMaxSpeed.x, XMVectorGetX(vAbsolutePosition))));
+	vAbsolutePosition = XMVectorSetY(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.y, min(m_tEffectMeshDesc.vMaxSpeed.y, XMVectorGetY(vAbsolutePosition))));
+	vAbsolutePosition = XMVectorSetZ(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.z, min(m_tEffectMeshDesc.vMaxSpeed.z, XMVectorGetZ(vAbsolutePosition))));
+
+	vMovePosition = vAbsolutePosition * fFrameTime;
+
 	if (m_tEffectMeshDesc.bMoveByMesh)
 	{
-		m_vCurrentSpeed = SMath::Mul_Float3(m_tEffectMeshDesc.vSpeed, fFrameTime);
-		m_vCurrentForce = SMath::Add_Float3(m_vCurrentForce, SMath::Mul_Float3(m_tEffectMeshDesc.vForce, fFrameTime));
-
-		_vector vMovePosition(XMLoadFloat3(&m_vCurrentSpeed) + XMLoadFloat3(&m_vCurrentForce));
-		_vector vAbsolutePosition(vMovePosition / fFrameTime);
-
-		vAbsolutePosition = XMVectorSetX(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.x, min(m_tEffectMeshDesc.vMaxSpeed.x, XMVectorGetX(vAbsolutePosition))));
-		vAbsolutePosition = XMVectorSetY(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.y, min(m_tEffectMeshDesc.vMaxSpeed.y, XMVectorGetY(vAbsolutePosition))));
-		vAbsolutePosition = XMVectorSetZ(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.z, min(m_tEffectMeshDesc.vMaxSpeed.z, XMVectorGetZ(vAbsolutePosition))));
-
-		vMovePosition = vAbsolutePosition * fFrameTime;
-
 		m_pTransformCom.lock()->Go_Straight(fFrameTime * XMVectorGetZ(vMovePosition));
 		m_pTransformCom.lock()->Go_Right(fFrameTime * XMVectorGetX(vMovePosition));
 		m_pTransformCom.lock()->Go_Up(fFrameTime * XMVectorGetY(vMovePosition));
 	}
 	else
 	{
-		m_vCurrentSpeed = SMath::Mul_Float3(m_tEffectMeshDesc.vSpeed, fFrameTime);
-		m_vCurrentForce = SMath::Add_Float3(m_vCurrentForce, SMath::Mul_Float3(m_tEffectMeshDesc.vForce, fFrameTime));
-
-		_vector vMovePosition(XMLoadFloat3(&m_vCurrentSpeed) + XMLoadFloat3(&m_vCurrentForce));
-		_vector vAbsolutePosition(vMovePosition / fFrameTime);
-
-		vAbsolutePosition = XMVectorSetX(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.x, min(m_tEffectMeshDesc.vMaxSpeed.x, XMVectorGetX(vAbsolutePosition))));
-		vAbsolutePosition = XMVectorSetY(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.y, min(m_tEffectMeshDesc.vMaxSpeed.y, XMVectorGetY(vAbsolutePosition))));
-		vAbsolutePosition = XMVectorSetZ(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.z, min(m_tEffectMeshDesc.vMaxSpeed.z, XMVectorGetZ(vAbsolutePosition))));
-
-		vMovePosition = vAbsolutePosition * fFrameTime;
-
 		m_pTransformCom.lock()->Add_Position(vMovePosition);
 	}
 }

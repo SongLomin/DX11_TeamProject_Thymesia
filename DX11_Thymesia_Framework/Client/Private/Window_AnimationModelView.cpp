@@ -174,7 +174,6 @@ HRESULT CWindow_AnimationModelView::Render(ID3D11DeviceContext* pDeviceContext)
     }
 
     __super::End();
-
     return S_OK;
 }
 
