@@ -58,14 +58,21 @@ public:
 	virtual void	Start() override;
 
 public:
-	HRESULT Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CModel> pModel = weak_ptr<CModel>());
+	HRESULT Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CModel> pModel = weak_ptr<CModel>(), const _bool In_bNvCloth = false);
 	void SetUp_BoneMatices(_fmatrix TransformationMatrix);
 	HRESULT Bind_BoneMatices(weak_ptr<CShader> pShader, const char* pConstantBoneName);
 	void Set_NvCloth();
 
+public: /* For. NvCloth */
+	void Update_NvClothVertices(ID3D11DeviceContext* pDeviceContext);
+
 private:
-	HRESULT Ready_VertexBuffer_NonAnim(shared_ptr<MESH_DATA> tMeshData);
-	HRESULT Ready_VertexBuffer_Anim(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CModel> pModel);
+	void Update_NvClothVertices_NonAnim(ID3D11DeviceContext* pDeviceContext);
+	void Update_NvClothVertices_Anim(ID3D11DeviceContext* pDeviceContext);
+
+private:
+	HRESULT Ready_VertexBuffer_NonAnim(shared_ptr<MESH_DATA> tMeshData, const _bool In_bNvCloth);
+	HRESULT Ready_VertexBuffer_Anim(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CModel> pModel, const _bool In_bNvCloth);
 	
 
 private:
@@ -89,6 +96,7 @@ private: /* For. NvCloth */
 	PhaseConfig*						m_pPhases{};
 	PxVec3*								m_pVertices{};
 	FACEINDICES32*						m_pIndices{};
+	vector<PxVec4>						m_pParticles;
 
 public:
 	void Free();

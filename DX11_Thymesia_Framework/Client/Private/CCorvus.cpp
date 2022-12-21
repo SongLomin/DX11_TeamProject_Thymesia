@@ -39,6 +39,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 	//m_pStatus.lock()->Load_FromJson(m_szClientComponentPath + "Corvus/SaveData.json");
 
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
+	//m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER, (_flag)NVCLOTH_INDEX::_2);
 
 
 
@@ -104,8 +105,6 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_LightDesc = GAMEINSTANCE->Add_Light(LightDesc);
 
-	m_pModelCom.lock()->Set_NvClothMeshWithIndex(2);
-
 	return S_OK;
 }
 
@@ -168,7 +167,9 @@ void CCorvus::LateTick(_float fTimeDelta)
 void CCorvus::Before_Render(_float fTimeDelta)
 {
 	__super::Before_Render(fTimeDelta);
-}
+
+	m_pModelCom.lock()->Update_NvCloth();
+}	
 
 
 

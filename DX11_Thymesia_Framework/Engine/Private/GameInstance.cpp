@@ -83,9 +83,6 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 {
 	m_fDeltaTime = fTimeDelta;
 
-	m_pNvCloth_Manager->Tick(fTimeDelta);
-
-
 	GET_SINGLE(CInput_Device)->SetUp_DeviceState();
 	m_pInput_Device->Tick();
 
@@ -111,6 +108,9 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 	//m_pTimer_Manager->Tick();
 
+
+	m_pNvCloth_Manager->Tick(fTimeDelta);
+
 	m_pPipeLine->Tick();
 
 	m_pFrustum->Update();
@@ -131,13 +131,11 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 HRESULT CGameInstance::Render_Engine()
 {
 	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::PRE_BEFORERENDER));
-
 	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 
 	m_pObject_Manager->Before_Render(m_fDeltaTime);
 
 	GET_SINGLE(CThread_Manager)->Bind_GameObjectWorks((1 << (_flag)THREAD_TYPE::PRE_RENDER));
-
 	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 
 	GET_SINGLE(CLevel_Manager)->Render(DEVICECONTEXT);

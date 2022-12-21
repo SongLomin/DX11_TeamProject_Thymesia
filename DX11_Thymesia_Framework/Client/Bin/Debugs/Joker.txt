@@ -153,3 +153,6 @@ camera
 SK_C_Joker_$AssimpFbx$_PreRotation
 SK_C_Joker_$AssimpFbx$_Scaling
 SK_C_Joker
+0[SK_C_Joker]. 87888
+1[SK_C_Joker]. 16260
+2[SK_C_Joker]. 7068

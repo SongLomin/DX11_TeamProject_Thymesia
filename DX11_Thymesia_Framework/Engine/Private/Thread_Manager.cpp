@@ -108,6 +108,18 @@ void CThread_Manager::Wait_JobDone(const _char* In_szConsoleText)
 		continue;
 	}
 
+	while (!Check_JobDone())
+	{
+#ifdef _DEBUG
+		if (In_szConsoleText)
+		{
+			cout << In_szConsoleText << endl;
+		}
+#endif // _DEBUG
+
+		continue;
+	}
+
 }
 
 void CThread_Manager::OnDestroy()

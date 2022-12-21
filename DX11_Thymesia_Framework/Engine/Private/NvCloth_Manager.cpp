@@ -25,8 +25,8 @@ HRESULT CNvCloth_Manager::Initialize()
 
 	InitializeNvCloth(m_pAllocatorCallback, m_pErrorCallback, m_pAssertHander, nullptr);
 
-	//m_pFactory = NvClothCreateFactoryCPU();
-	m_pFactory = NvClothCreateFactoryDX11(m_pGraphicsContextManager);
+	m_pFactory = NvClothCreateFactoryCPU();
+	//m_pFactory = NvClothCreateFactoryDX11(m_pGraphicsContextManager);
 	//We need to release all DX objects after destroying the factory.
 	
 	m_pSolver = m_pFactory->createSolver();
@@ -49,9 +49,9 @@ void CNvCloth_Manager::Tick(_float fTimeDelta)
 	{
 		//pThread_Manager->Enqueue_Job(bind(&Solver::simulateChunk, m_pSolver, i));
 		m_pSolver->simulateChunk(i);
-	}
+	} 
 
-	//pThread_Manager->Wait_JobDone();
+	pThread_Manager->Wait_JobDone();
 
 	m_pSolver->endSimulation();
 

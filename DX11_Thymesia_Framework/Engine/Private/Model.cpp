@@ -371,6 +371,20 @@ HRESULT CModel::Update_BoneMatrices()
 	return S_OK;
 }
 
+HRESULT CModel::Update_NvCloth()
+{
+	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
+
+	for (auto& elem : m_MeshContainers)
+	{
+		elem.lock()->Update_NvClothVertices(pDeferredContext);
+	}
+
+	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
+
+	return S_OK;
+}
+
 HRESULT CModel::Render_AnimModel(_uint iMeshContainerIndex, weak_ptr<CShader> pShader, _uint iPassIndex, const char* pConstantBoneName, ID3D11DeviceContext* pDeviceContext)
 {
 	if (!Get_Enable())
@@ -405,14 +419,14 @@ HRESULT CModel::Render_AnimModel(_uint iMeshContainerIndex, weak_ptr<CShader> pS
 	return S_OK;
 }
 
-void CModel::Set_NvClothMeshWithIndex(const _uint In_iIndex)
-{
-	m_MeshContainers[In_iIndex].lock()->Set_NvCloth();
-}
+//void CModel::Set_NvClothMeshWithIndex(const _uint In_iIndex)
+//{
+//	m_MeshContainers[In_iIndex].lock()->Set_NvCloth();
+//}
 
-void CModel::Init_Model(const char* sModelKey, const string& szTexturePath, _uint iTimeScaleLayer)
+void CModel::Init_Model(const char* sModelKey, const string& szTexturePath, _uint iTimeScaleLayer, const _flag In_NvClothFlag)
 {
-	Init_Model_Internal(sModelKey, szTexturePath, iTimeScaleLayer);
+	Init_Model_Internal(sModelKey, szTexturePath, iTimeScaleLayer, In_NvClothFlag);
 	
 	//future<void> futureInitModel = async(launch::async, &CModel::Init_Model_Internal, this, sModelKey, szTexturePath);
 
@@ -424,7 +438,7 @@ void CModel::Init_Model(const char* sModelKey, const string& szTexturePath, _uin
 }
 
 
-void CModel::Init_Model_Internal(const char* sModelKey, const string& szTexturePath, _uint iTimeScaleLayer)
+void CModel::Init_Model_Internal(const char* sModelKey, const string& szTexturePath, _uint iTimeScaleLayer, const _flag In_NvClothFlag)
 {
 	//재사용할거라서 Reset은 필요하지 않음.
 	//Reset_Model();
@@ -454,7 +468,7 @@ void CModel::Init_Model_Internal(const char* sModelKey, const string& szTextureP
 		{
 			return pSour.lock()->Get_Depth() < pDest.lock()->Get_Depth();
 		});
-	Create_MeshContainers();
+	Create_MeshContainers(In_NvClothFlag);
 	Create_Animations(iTimeScaleLayer);
 
 }
@@ -595,14 +609,17 @@ weak_ptr<CBoneNode> CModel::Find_BoneNode(const string& pBoneName)
 	return *iter;
 }
 
-void CModel::Create_MeshContainers()
+void CModel::Create_MeshContainers(const _flag In_NvClothFlag)
 {
 	m_iNumMeshContainers = m_pModelData->iNumMeshs;
 
+	_bool bNvCloth;
 	for (_uint i = 0; i < m_iNumMeshContainers; ++i)
 	{
+		bNvCloth = In_NvClothFlag & (1 << i);
+
 		weak_ptr<CMeshContainer> pMeshContainer = m_pOwner.lock()->Add_Component<CMeshContainer>();
-		pMeshContainer.lock()->Init_Mesh(m_pModelData->Mesh_Datas[i], Cast<CModel>(m_this));
+		pMeshContainer.lock()->Init_Mesh(m_pModelData->Mesh_Datas[i], Cast<CModel>(m_this), bNvCloth);
 		m_MeshContainers.push_back(pMeshContainer);
 	}
 }

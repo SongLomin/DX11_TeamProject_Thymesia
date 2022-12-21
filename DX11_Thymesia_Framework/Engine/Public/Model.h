@@ -77,14 +77,14 @@ private: /* CGameObject Based */
 	virtual void Start() override;
 
 public: /* Init */
-	void Init_Model(const char* sModelKey, const string& szTexturePath = "", _uint iTimeScaleLayer = 0);
+	void Init_Model(const char* sModelKey, const string& szTexturePath = "", _uint iTimeScaleLayer = 0, const _flag In_NvClothFlag = 0);
 
 private:
-	void Init_Model_Internal(const char* sModelKey, const string& szTexturePath = "", _uint iTimeScaleLayer = 0);
+	void Init_Model_Internal(const char* sModelKey, const string& szTexturePath = "", _uint iTimeScaleLayer = 0, const _flag In_NvClothFlag = 0);
 	void Reset_Model();
 
 private:
-	void Create_MeshContainers();
+	void Create_MeshContainers(const _flag In_NvClothFlag);
 	void Create_Materials(const char* pModelFilePath);
 	void Create_ORM_Material(MODEL_MATERIAL& Out_Material, const _uint In_iMaterialIndex, const _char* pModelFilePath);
 	void Create_BoneNodes(shared_ptr<NODE_DATA> pNodeData, weak_ptr<CBoneNode> pParent, _uint iDepth);
@@ -95,10 +95,11 @@ public: /* Loopable functions */
 	HRESULT Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eActorType);
 	HRESULT Render_Mesh(_uint iMeshContainerIndex, ID3D11DeviceContext* pDeviceContext);
 	HRESULT Update_BoneMatrices();
+	HRESULT Update_NvCloth();
 	HRESULT Render_AnimModel(_uint iMeshContainerIndex, weak_ptr<CShader> pShader, _uint iPassIndex, const char* pConstantBoneName, ID3D11DeviceContext* pDeviceContext);
 	
 public:
-	void Set_NvClothMeshWithIndex(const _uint In_iIndex);
+	//void Set_NvClothMeshWithIndex(const _uint In_iIndex);
 
 public: 
 	void Add_ReverseAnimation(const _uint In_iAnimationIndex, _uint iTimeScaleLayer);
