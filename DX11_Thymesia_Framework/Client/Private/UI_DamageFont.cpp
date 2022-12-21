@@ -2,7 +2,7 @@
 #include "UI_DamageFont.h"
 #include "CustomUI.h"
 #include "EasingComponent_Transform.h"
-
+#include "UI_DamageFontPiece.h"
 
 GAMECLASS_C(CUI_DamageFont)
 CLONE_C(CUI_DamageFont, CGameObject)
@@ -62,7 +62,7 @@ void CUI_DamageFont::SetUp_DamageFont(_uint iDmg, _float2 vPos, ATTACK_OPTION eA
 	string	strDamage = to_string(iDmg);
 	string strDamageFontKey;
 	int		strSize = strDamage.size();
-	weak_ptr<CCustomUI> pDamageFont;
+	weak_ptr<CUI_DamageFontPiece> pDamageFont;
 	for (int i = 0; i < (int)strDamage.size(); i++)
 	{
 		strDamageFontKey = "DamageFont_";
@@ -97,11 +97,11 @@ void CUI_DamageFont::SetUp_DamageFont(_uint iDmg, _float2 vPos, ATTACK_OPTION eA
 		//setting Offset;
 		_float fOffset = m_fOffsetX * (i - (strSize / 2));
 
-
-		//pDamageFont = GAMEINSTANCE->Get_GameObject_UseMemoryPool<CCustomUI>(LEVEL_STATIC);
-		//if (!pDamageFont.lock())
-		pDamageFont = ADD_STATIC_CUSTOMUI;
-		
+		pDamageFont = GAMEINSTANCE->Get_GameObject_UseMemoryPool<CUI_DamageFontPiece>(LEVEL_STATIC);
+		if (!pDamageFont.lock())
+		{
+			pDamageFont = GAMEINSTANCE->Add_GameObject<CUI_DamageFontPiece>(LEVEL_STATIC);
+		}
 		pDamageFont.lock()->Set_AlphaColor(1.f);
 		pDamageFont.lock()->Set_UIPosition
 		(
@@ -112,9 +112,7 @@ void CUI_DamageFont::SetUp_DamageFont(_uint iDmg, _float2 vPos, ATTACK_OPTION eA
 		);
 		pDamageFont.lock()->Set_Texture(strDamageFontKey.c_str());
 		pDamageFont.lock()->Set_DeffuseIndex((_uint)(strDamage[i] - '0'));
-
 		pDamageFont.lock()->Set_RenderGroup(RENDERGROUP::RENDER_BEFOREUI);
-
 		m_vecChildUI.push_back(pDamageFont);
 	}
 	//CallBack_ShakingEnd += bind(&CUI_DamageFont::Call_Shaking_End, this);

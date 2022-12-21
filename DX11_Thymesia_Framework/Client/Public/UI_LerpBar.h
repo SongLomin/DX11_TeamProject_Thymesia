@@ -2,6 +2,8 @@
 #include "CustomUI.h"
 class CUI_LerpBar abstract : public CCustomUI
 {
+
+
 public:
 	virtual HRESULT Initialize_Prototype();
 	virtual HRESULT Initialize(void* pArg);

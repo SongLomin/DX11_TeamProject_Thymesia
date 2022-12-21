@@ -27,6 +27,8 @@ HRESULT CUI_Inventory::Initialize(void* pArg)
     Create_Scroll();
     Create_TextInfo();
     Create_SortImage();
+    Set_Enable(false);
+
     return S_OK;
 }
 
@@ -160,7 +162,7 @@ void CUI_Inventory::Create_SortImage()
         CUI::ALIGN_LEFTTOP
     );
     m_pSortKeyImage.lock()->Set_Texture("Inventory_SortKey");
-    m_pSortKeyImage.lock()->Set_Depth(0.2f);
+    m_pSortKeyImage.lock()->Set_Depth(0.4f);
     
     Add_Child(m_pSortKeyImage);
     m_pSortKeyImage.lock()->Set_RenderGroup(RENDERGROUP::RENDER_AFTER_UI);
@@ -175,7 +177,7 @@ void CUI_Inventory::Create_SortImage()
         28.f,
         CUI::ALIGN_LEFTTOP
     );
-    m_pSortByImage.lock()->Set_Depth(0.2f);
+    m_pSortByImage.lock()->Set_Depth(0.4f);
     Add_Child(m_pSortByImage);
     m_pSortByImage.lock()->Set_RenderGroup(RENDERGROUP::RENDER_AFTER_UI);
 

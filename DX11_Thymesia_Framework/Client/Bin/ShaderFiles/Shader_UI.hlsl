@@ -419,7 +419,9 @@ PS_OUT PS_COLORTOALPHADIFFUSE(PS_IN In)
  
     Out.vColor.a = Out.vColor.r;
 	
-    Out.vColor *= g_fAlphaColor;
+    //Out.vColor *= g_fAlphaColor;
+
+	Out.vColor.a *= g_fAlphaColor;
 
 	if (Out.vColor.a < 0.3)
     {
@@ -432,6 +434,24 @@ PS_OUT PS_COLORTOALPHADIFFUSE(PS_IN In)
 	
     return Out;
 }
+
+PS_OUT PS_MASK(PS_IN In)
+{
+	PS_OUT Out = (PS_OUT)0;
+
+	Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+	float4	vMaskColor = g_MaskTexture.Sample(DefaultSampler, In.vTexUV);
+
+	Out.vColor.rgb *= vMaskColor.r;
+	
+	Out.vColor.a = vMaskColor.a;
+	
+	Out.vColor.a *= g_fAlphaColor;
+	
+	return Out;
+}
+
 
 technique11 DefaultTechnique
 {
@@ -612,4 +632,16 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_COLORTOALPHADIFFUSE();
     }
+	pass UI_Mask//14
+	{
+		SetBlendState(BS_AlphaBlend, vector(1.f, 1.f, 1.f, 1.f), 0xffffffff);
+		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+		SetRasterizerState(RS_Default);
+
+		VertexShader = compile vs_5_0 VS_MAIN();
+		HullShader = NULL;
+		DomainShader = NULL;
+		GeometryShader = NULL;
+		PixelShader = compile ps_5_0 PS_MASK();
+	}
 }

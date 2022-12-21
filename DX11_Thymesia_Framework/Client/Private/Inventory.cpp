@@ -21,7 +21,6 @@ HRESULT CInventory::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 	
-
 	return S_OK;
 }
 

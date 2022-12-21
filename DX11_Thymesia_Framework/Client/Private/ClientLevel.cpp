@@ -36,6 +36,8 @@
 #include "UI_MonsterFocus.h"
 #include "UI_Cursor.h"
 #include "UI_ItemPopup.h"
+#include "UI_BloodOverlay.h"
+
 
 
 GAMECLASS_C(CClientLevel)
@@ -120,12 +122,13 @@ void CClientLevel::SetUp_UI()
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_MPBar>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CHUD_Player_Memory>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_PotionUI>(LEVEL_STATIC));
-	//                                                                                                                                                            pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CUI_ScriptQueue>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_PotionUI>(LEVEL_STATIC));                                                                                                  pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::EVENT_UI, GAMEINSTANCE->Add_GameObject<CUI_ScriptQueue>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::INTERACTIONUI, GAMEINSTANCE->Add_GameObject<CUI_Interaction>(LEVEL_STATIC));
 
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CUI_MonsterFocus>(LEVEL_STATIC));
+
+	GAMEINSTANCE->Add_GameObject<CUI_BloodOverlay>(LEVEL_STATIC);
 
 	GET_SINGLE(CGameManager)->CreatePopupQueue();
 
