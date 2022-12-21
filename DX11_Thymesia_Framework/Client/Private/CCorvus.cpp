@@ -30,12 +30,12 @@ HRESULT CCorvus::Initialize(void* pArg)
 	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_VtxAnimModel"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements);
 
 	m_pStatus = CGameObject::Add_Component<CStatus_Player>();
-	
+
 	CStatus_Player::PLAYERDESC& pStatus_PlayerDesc = GET_SINGLE(CGameManager)->Get_PlayerStatusDesc();
-	
+
 	m_pStatus.lock()->Set_Desc(&pStatus_PlayerDesc);
-	
-	
+
+
 	//m_pStatus.lock()->Load_FromJson(m_szClientComponentPath + "Corvus/SaveData.json");
 
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
@@ -60,15 +60,15 @@ HRESULT CCorvus::Initialize(void* pArg)
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
 
-	
-	
-	
+
+
+
 
 
 
 #ifdef _CORVUS_EFFECT_
 	// Key Frame Effect ON
-	GET_SINGLE(CGameManager)->Bind_KeyEvent("Corvus", m_pModelCom, bind(&CCorvus::Call_NextAnimationKey, this, placeholders::_1));
+	Bind_KeyEvent("Corvus");
 
 	// TODO : need to disable at Destroy/Disable
 	// Passive Effect ON
@@ -116,7 +116,7 @@ HRESULT CCorvus::Start()
 
 	if (m_pCamera.lock())
 		m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
-	
+
 	Test_BindSkill();
 
 #ifdef _CLOTH_
@@ -197,7 +197,7 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 			m_pShaderCom.lock()->Set_RawValue("g_vDissolveDir", &iter->second.vDirection, sizeof(_float3));
 			m_pShaderCom.lock()->Set_RawValue("g_vDissolveStartPos", &iter->second.vStartPos, sizeof(_float3));
 			m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &iter->second.fAmount, sizeof(_float));
-	
+
 			_float4 vShaderFlag = { 0.f,0.f,1.f,0.f };
 
 			m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_float4));
@@ -206,7 +206,7 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 		}
 		else
 		{
-			
+
 			_float4 vShaderFlag = { 0.f,0.f,0.f,0.f };
 
 			m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_float4));
@@ -219,7 +219,7 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 			m_iPassIndex = 0;
-	
+
 
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones", pDeviceContext);
 	}
@@ -530,8 +530,8 @@ void CCorvus::OnEventMessage(_uint iArg)
 	{
 		Change_State<CCorvusState_Execution_Start>();
 	}
-	
-	
+
+
 }
 
 void CCorvus::Free()

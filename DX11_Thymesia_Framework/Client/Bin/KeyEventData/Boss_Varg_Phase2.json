@@ -397,7 +397,7 @@
       null,
       {
         "EffectName": [
-          "Varg_ComboAtk2_1_GroundSweep_Pre"
+          "Varg_ComboAtk2_1_GroundSweep_Pre_Phase2"
         ]
       },
       null,
@@ -432,7 +432,7 @@
       null,
       {
         "EffectName": [
-          "Varg_ComboAtk2_1_GroundSweep"
+          "Varg_ComboAtk2_1_GroundSweep_Phase2"
         ],
         "Enable_Weapon": true
       },
@@ -515,7 +515,7 @@
       null,
       {
         "EffectName": [
-          "Varg_ComboAtk2_2_GroundHit"
+          "Varg_ComboAtk2_2_GroundHit_Phase2"
         ]
       },
       null,

@@ -107,7 +107,7 @@ void CStatus_Monster::Init_Status(const void* pArg)
 		//TODO 공격력몰름 임시
 		m_tMonsterDesc.m_fAtk = 50.f;
 		m_tMonsterDesc.m_fMaxHP_white = 2500.f;
-		m_tMonsterDesc.m_fMaxParryingGauge = 1000.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 200.f;
 		m_tMonsterDesc.m_iLifeCount = 2;
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
 		m_tMonsterDesc.m_szModelKey = "Boss_Varg";

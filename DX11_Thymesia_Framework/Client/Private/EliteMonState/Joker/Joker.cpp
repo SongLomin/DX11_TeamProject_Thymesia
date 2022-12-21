@@ -69,11 +69,7 @@ HRESULT CJoker::Initialize(void* pArg)
 	Add_Component<CJokerState_WheelAtkStart>();
 	Add_Component<CJokerState_RunAttackStart>();
 
-	GET_SINGLE(CGameManager)->Bind_KeyEvent("Elite_Joker", m_pModelCom, bind(&CJoker::Call_NextAnimationKey, this, placeholders::_1));
-
 	m_fCullingRange = 999.f;
-
-
 	return S_OK;
 }
 
@@ -82,12 +78,12 @@ HRESULT CJoker::Start()
 	__super::Start();
 
 	CBase::Set_Enable(true);
-	
+
 	Change_State<CJokerState_Sp_Open>();
 	Bind_HPBar();
 	// weak_ptr<CBoneNode> pTargetBoneNode = m_pModelCom.lock()->Find_BoneNode();
 	// m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
-	
+
 
 	return S_OK;
 }
@@ -188,9 +184,10 @@ void CJoker::Init_Desc()
 	INIT_STATE(CJokerState_WheelAtkLoop);
 	INIT_STATE(CJokerState_WheelAtkStart);
 	INIT_STATE(CJokerState_RunAttackStart);
-	
+
 	m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(-90.f));
-	GET_SINGLE(CGameManager)->Bind_KeyEvent("Elite_Joker", m_pModelCom, bind(&CJoker::Call_NextAnimationKey, this, placeholders::_1));
+
+	Bind_KeyEvent("Elite_Joker");
 
 	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom),
 		(_uint)PHYSX_COLLISION_LAYER::MONSTER);
@@ -229,7 +226,7 @@ void CJoker::OnEventMessage(_uint iArg)
 	{
 		Change_State<CJokerState_Stun_Start>();
 	}
-	
+
 }
 
 void CJoker::OnEnable(void* _Arg)

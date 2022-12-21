@@ -160,7 +160,7 @@ list<weak_ptr<CGameObject>> CGameManager::Get_Layer(const OBJECT_LAYER& In_Layer
 list<weak_ptr<CGameObject>> CGameManager::Get_LayerSelectEnable(const OBJECT_LAYER& In_Layer)
 {
 	list<weak_ptr<CGameObject>> SelectedLayer;
-	
+
 	for (auto& elem_GameObject : m_pLayers[(_uint)In_Layer])
 	{
 		if (elem_GameObject.lock()->Get_Enable())
@@ -175,7 +175,7 @@ list<weak_ptr<CGameObject>> CGameManager::Get_LayerSelectEnable(const OBJECT_LAY
 void CGameManager::Set_CurrentPlayer(weak_ptr<CPlayer> In_pPlayer)
 {
 	m_pCurrentPlayer = In_pPlayer;
-	
+
 	if (m_pTargetCamera.lock().get())
 	{
 		m_pTargetCamera.lock()->Change_Target();
@@ -188,7 +188,7 @@ weak_ptr<CStatus_Player> CGameManager::Get_CurrentPlayer_Status()
 {
 	weak_ptr<CPlayer> pPlayer;
 
-	pPlayer = Get_CurrentPlayer();	
+	pPlayer = Get_CurrentPlayer();
 
 	return	 pPlayer.lock()->Get_Component<CStatus_Player>();
 }
@@ -220,7 +220,7 @@ void CGameManager::Add_Shaking(_vector vShakingDir, _float fRatio, _float fShaki
 		DEBUG_ASSERT;
 
 	m_pTargetCamera.lock()->Add_Shaking(vShakingDir, fRatio, fShakingTime, fFrequency, fDecreaseRatio);
-	
+
 }
 
 void CGameManager::Focus_Monster()
@@ -233,7 +233,7 @@ void CGameManager::Focus_Monster()
 
 	m_pTargetCamera.lock()->Focus_Monster(m_pTargetMonster);
 	m_pCurrentPlayer.lock()->Focus_Monster(m_pTargetMonster);
-	
+
 	CallBack_FocusInMonster();
 }
 
@@ -305,7 +305,7 @@ _uint CGameManager::Use_EffectGroupFromHash(const _hashcode& In_EffectGroupNameF
 _uint CGameManager::Use_EffectGroup(const string& In_szEffectGroupName, weak_ptr<CTransform> pParentTransformCom, const _uint& In_iTimeScaleLayer)
 {
 	_hashcode hashcode = hash<string>()(In_szEffectGroupName);
-	
+
 	#ifdef _DEBUG_COUT_
 		cout << "Use EffectGroup: " << In_szEffectGroupName << endl;
 #endif
@@ -431,7 +431,7 @@ void CGameManager::Load_AllKeyEventFromJson()
 				continue;
 			}
 
-			
+
 			m_KeyEvents[szFileNameToHash].emplace(i, KEYEVENT());
 
 			// 애니메이션 키 인덱스 리스트
@@ -508,23 +508,24 @@ void CGameManager::Unbind_KeyEvent(const string& In_szModelName, weak_ptr<CModel
 
 
 
-void CGameManager::Active_KeyEvent(const weak_ptr<CModel> In_ModelCom, const weak_ptr<CTransform> In_TransformCom, 
+void CGameManager::Active_KeyEvent(const string& In_szKeyEventName, const weak_ptr<CModel> In_ModelCom, const weak_ptr<CTransform> In_TransformCom,
 	const _uint& In_iKeyIndex, const _uint& In_iTimeScaleLayer)
 {
-	string szModelName = In_ModelCom.lock()->Get_ModelKey();
+	// string szModelName = In_ModelCom.lock()->Get_ModelKey();
 
-	_hashcode szModelNameToHash = hash<string>()(szModelName);
 
-	auto Model_iter = m_KeyEvents.find(szModelNameToHash);
+	_hashcode szModelNameToHash = hash<string>()(In_szKeyEventName);
 
-	if (m_KeyEvents.end() == Model_iter)
+	auto KeyEvent_Iter = m_KeyEvents.find(szModelNameToHash);
+
+	if (m_KeyEvents.end() == KeyEvent_Iter)
 	{
 		return;
 	}
 
-	auto Anim_iter = Model_iter->second.find(In_ModelCom.lock()->Get_CurrentAnimationIndex());
+	auto Anim_iter = KeyEvent_Iter->second.find(In_ModelCom.lock()->Get_CurrentAnimationIndex());
 
-	if (Model_iter->second.end() == Anim_iter)
+	if (KeyEvent_Iter->second.end() == Anim_iter)
 	{
 		// 등록된 애니메이션 컴포넌트에서 호출하기 때문에 해당 번호 json이 비어있으면 문제가 있는 것.
 		DEBUG_ASSERT;
@@ -621,7 +622,7 @@ void CGameManager::Start_BattleStop()
 
 void CGameManager::Start_BattleEnd()
 {
-	
+
 
 	weak_ptr<CFadeMask> pFadeMask = Weak_Cast<CFadeMask>(Get_Layer(OBJECT_LAYER::FADEMASK).front());
 

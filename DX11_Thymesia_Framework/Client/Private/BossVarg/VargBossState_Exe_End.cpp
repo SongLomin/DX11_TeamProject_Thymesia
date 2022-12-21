@@ -35,7 +35,7 @@ void CVargBossState_Exe_End::Start()
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Varg.ao|Varg_TakeExecution_Loop");
 
 
-	
+
 }
 
 void CVargBossState_Exe_End::Tick(_float fTimeDelta)
@@ -73,7 +73,7 @@ void CVargBossState_Exe_End::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	if (Check_RequirementIsTargeted())
 		GET_SINGLE(CGameManager)->Release_Focus();
-	
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Exe_End -> OnStateStart" << endl;

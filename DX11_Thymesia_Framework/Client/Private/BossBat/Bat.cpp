@@ -73,9 +73,6 @@ HRESULT CBat::Initialize(void* pArg)
 	Add_Component<CBatBossState_WalkF>();
 	Add_Component<CBatBossState_SonicBullet>();
 
-
-	GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Bat", m_pModelCom, bind(&CBat::Call_NextAnimationKey, this, placeholders::_1));
-
 	m_fCullingRange = 999.f;
 
 	USE_START(CBat);
@@ -185,13 +182,13 @@ void CBat::Init_Desc()
 	m_pWeapons.back().lock()->Init_Model("Boss_BatWeapon", TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "mouth");
 	m_pWeapons.back().lock()->Add_Collider({ 1.3f,0.0f,0.f,1.0f }, 2.5f, COLLISION_LAYER::MONSTER_ATTACK);
-	
-	
+
+
 	//TODO 여기서하는 이유는 몬스터가 배치되고 원점에서 우리가 피킹한위치만큼더해지고 난뒤에 그월드포지션값저장하기위해서 여기서함
 
 	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Y |(_byte)ROOTNODE_FLAG::Z);
-	
-	
+
+
 
 	//GET_SINGLE(CGameManager)->Bind_KeyEvent("Monster1", m_pModelCom, bind(&CBat::Call_NextAnimationKey, this, placeholders::_1));
 	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::BossBatSetting(m_pTransformCom),
@@ -234,10 +231,7 @@ void CBat::Init_Desc()
 	INIT_STATE(CBatBossState_WalkF);
 	INIT_STATE(CBatBossState_SonicBullet);
 
-
-	GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Bat", m_pModelCom, bind(&CBat::Call_NextAnimationKey, this, placeholders::_1));
-
-	
+	Bind_KeyEvent("Boss_Bat");
 }
 
 //void CBat::Move_RootMotion_Internal()
@@ -251,7 +245,7 @@ void CBat::Init_Desc()
 
 void CBat::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-	__super::OnCollisionEnter(pMyCollider, pOtherCollider); 
+	__super::OnCollisionEnter(pMyCollider, pOtherCollider);
 }
 
 void CBat::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)

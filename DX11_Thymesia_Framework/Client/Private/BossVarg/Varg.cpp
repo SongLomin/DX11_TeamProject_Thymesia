@@ -92,14 +92,11 @@ HRESULT CVarg::Initialize(void* pArg)
 	if (!m_pTrailEffect.lock())
 		assert(0);
 
-	// m_pTrailEffect.lock()->();
-
 	m_pTrailEffect.lock()->Set_Enable(false);
-#ifdef _VARG_EFFECT_
-	GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
-#endif // _VARG_EFFECT_
 
+#ifdef _DEBUG
 	m_fCullingRange = 999.f;
+#endif // _DEBUG
 	return S_OK;
 }
 
@@ -182,6 +179,7 @@ void CVarg::Set_EyeTrailEnable(_bool In_bEnable)
 }
 
 
+
 void CVarg::Init_Desc()
 {
 	__super::Init_Desc();
@@ -251,9 +249,13 @@ void CVarg::Init_Desc()
 	INIT_STATE(CVargBossState_Attack2b2);
 	INIT_STATE(CVargBossState_IdleGeneral);
 
-	GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
+#ifdef _VARG_EFFECT_
+	Bind_KeyEvent("Boss_Varg");
+#endif // _VARG_EFFECT_
+	// GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
 
-	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom),
+	m_pPhysXControllerCom.lock()->Init_Controller(
+		Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom),
 		(_uint)PHYSX_COLLISION_LAYER::MONSTER);
 }
 

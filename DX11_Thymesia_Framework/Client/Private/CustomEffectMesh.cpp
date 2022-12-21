@@ -214,6 +214,7 @@ void CCustomEffectMesh::SetUp_ShaderResource_Dissolve()
 		if (FAILED(m_pDissolveTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DissolveTexture", m_tEffectMeshDesc.iDissolveTextureIndex)))
 			throw 0;
 
+		m_pShaderCom.lock()->Set_RawValue("g_vDissolveStartPos", &m_tEffectMeshDesc.vDissolveStartPosition, sizeof(_float3));
 		m_pShaderCom.lock()->Set_RawValue("g_vDissolveDir", &m_tEffectMeshDesc.vDissolveDirection, sizeof(_float3));
 
 		m_pShaderCom.lock()->Set_RawValue("g_vDissolveGradiationStartColor", &m_tEffectMeshDesc.vDissolveGradiationStartColor, sizeof(_float3));

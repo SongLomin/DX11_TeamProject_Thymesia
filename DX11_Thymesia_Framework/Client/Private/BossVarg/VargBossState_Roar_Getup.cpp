@@ -68,12 +68,8 @@ void CVargBossState_SPA_Roar_Getup::OnStateStart(const _float& In_fAnimationBlen
 	__super::OnStateStart(In_fAnimationBlendTime);
 
 #ifdef _VARG_EFFECT_
-	// TODO : 바그 키프레임 이펙트 바꾸는 거 작동 안함 & 누수 남
-	//GET_SINGLE(CGameManager)->Unbind_KeyEvent("Boss_Varg", m_pModelCom,
-	//	bind(&CVarg::Call_NextAnimationKey, Weak_Cast<CVarg>(m_pOwner).lock(), placeholders::_1));
-
-	//GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg_Phase2", m_pModelCom,
-	//	bind(&CVarg::Call_NextAnimationKey, Weak_Cast<CVarg>(m_pOwner).lock(), placeholders::_1));
+	Weak_Cast<CVarg>(m_pOwner).lock()->Unbind_KeyEvent("Boss_Varg");
+	Weak_Cast<CVarg>(m_pOwner).lock()->Bind_KeyEvent("Boss_Varg_Phase2");
 #endif // _VARG_EFFECT_
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
