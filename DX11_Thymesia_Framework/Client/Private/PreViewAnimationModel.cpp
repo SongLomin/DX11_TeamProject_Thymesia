@@ -45,6 +45,14 @@ HRESULT CPreviewAnimationModel::Initialize(void* pArg)
 void CPreviewAnimationModel::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+#ifdef _DEBUG
+	/*if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
+	{
+		++m_iContainerIndex;
+		cout << "m_iContainerIndex : " << m_iContainerIndex << endl;
+	}*/
+#endif // _DEBUG
 }
 
 void CPreviewAnimationModel::LateTick(_float fTimeDelta)
@@ -66,10 +74,20 @@ HRESULT CPreviewAnimationModel::Render(ID3D11DeviceContext* pDeviceContext)
 
 	if (!m_pCurrentModelCom.lock())
 		return E_FAIL;
-
 	_uint iNumMeshContainers(m_pCurrentModelCom.lock()->Get_NumMeshContainers());
+
+#ifdef _DEBUG
+	if (m_iContainerIndex >= iNumMeshContainers)
+		m_iContainerIndex = 0;
+#endif //_DEBUG
+
 	for (_uint i(0); i < iNumMeshContainers; ++i)
 	{
+#ifdef _DEBUG
+		if (i == m_iContainerIndex)
+			continue;
+#endif // _DEBUG
+
 		if (FAILED(m_pCurrentModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
 		/*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))

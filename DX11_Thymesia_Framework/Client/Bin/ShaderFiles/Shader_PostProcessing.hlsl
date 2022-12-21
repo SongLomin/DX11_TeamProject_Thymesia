@@ -8,6 +8,9 @@ matrix  g_PreCamViewMatrix, g_CamProjMatrix;//proj는 변하지 않는다고 가정
 
 vector		g_vCamPosition;
 
+float g_PixelWidth;
+float g_PixelHeight;
+
 vector		g_vLinearVelocity;
 vector		g_vAngularVelocity;
 
@@ -249,6 +252,7 @@ PS_OUT PS_MAIN_RADIALBLUR(PS_IN In)
     return Out;
 }
 
+
 DepthStencilState DSS_None_ZTestWrite_True_StencilTest
 {
     DepthEnable = false;
@@ -327,6 +331,4 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_RADIALBLUR();
     }
-
-
 }

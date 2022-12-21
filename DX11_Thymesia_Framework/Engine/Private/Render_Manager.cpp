@@ -1761,6 +1761,11 @@ HRESULT CRender_Manager::PostProcessing()
 	m_pPostProcessingShader->Set_RawValue("g_fSaturation", &m_fSaturation, sizeof(_float));
 	m_pPostProcessingShader->Set_RawValue("g_fContrastValue", &m_fContrastValue, sizeof(_float)); 
 
+	/*_float fPixelWidth = 1 / 1600.f;
+	_float fPixelHeight = 1 / 900.f;
+	m_pPostProcessingShader->Set_RawValue("g_PixelWidth", &fPixelWidth, sizeof(_float));
+	m_pPostProcessingShader->Set_RawValue("g_PixelHeight", &fPixelHeight, sizeof(_float));*/
+
 	_float fChromaticLerpValue = 0.f;
 	if (0.f < m_fChromaticStrengthAcc)
 	{
@@ -1769,7 +1774,7 @@ HRESULT CRender_Manager::PostProcessing()
 		fChromaticLerpValue = vLerp.m128_f32[0];
 	}
 
-	_float fRadialLerpValue = 0.f;
+	//_float fRadialLerpValue = 0.f;
 	//if (0.f < m_fRadialBlurStrengthAcc)
 	//{
 	//	_vector vLerp = XMVectorSet(m_fRadialBlurStrength, 0.f, 0.f, 0.f);
@@ -1778,7 +1783,7 @@ HRESULT CRender_Manager::PostProcessing()
 	//}
 
 
-	_float fMotionLerpValue = 0.f;
+	//_float fMotionLerpValue = 0.f;
 	//if (0.f < m_fMotionBlurStrengthAcc)
 	//{
 	//	_vector vLerp = XMVectorSet(m_fMotionBlurStrength, 0.f, 0.f, 0.f);
@@ -1786,7 +1791,7 @@ HRESULT CRender_Manager::PostProcessing()
 	//	fMotionLerpValue = vLerp.m128_f32[0];
 	//}
 
-	fMotionLerpValue *= 0.01f;
+	//fMotionLerpValue *= 0.01f;
 
 
 	m_pPostProcessingShader->Set_RawValue("g_fChromaticStrength", &fChromaticLerpValue, sizeof(_float));//chromatic Àü¿ë

@@ -370,30 +370,6 @@ PS_OUT PS_MAIN_DISSOLVE(PS_IN_NORMAL In)
     
     Out.vShaderFlag = saturate(fStepValue1 + fStepValue2 + fStepValue3) * vector(0.f, 0.f, 1.f, 0.f);
     Out.vExtractBloom = saturate(fStepValue1 + fStepValue2 + fStepValue3) * Out.vDiffuse;
-
-    
-    //if (g_fDissolveAmount + 0.03f >= DissolveDesc)
-    //{
-    //    Out.vDiffuse = vector(0.3f, 0.0f, 0.f, 1.f);
-    //}
-    //else if (g_fDissolveAmount + 0.05f >= DissolveDesc)
-    //{
-    //    Out.vDiffuse = vector(0.9f, 0.1f, 0.f, 1.f);
-    //    Out.vExtractBloom = Out.vDiffuse;
-    //    Out.vShaderFlag = vector(0.f, 0.f, 1.f, 0.f);
-    //}
-    //else if (g_fDissolveAmount + 0.065f >= DissolveDesc)
-    //{
-    //    Out.vDiffuse = vector(1.f, 0.9f, 0.4f, 1.f);
-    //    Out.vExtractBloom = Out.vDiffuse;
-    //    Out.vShaderFlag = vector(0.f, 0.f, 1.f, 0.f);
-    //}
-    //else if (g_fDissolveAmount + 0.08f >= DissolveDesc)
-    //{
-    //    Out.vDiffuse = vector(1.f, 0.95f, 0.9f, 1.f);
-    //    Out.vExtractBloom = Out.vDiffuse;
-    //    Out.vShaderFlag = vector(0.f, 0.f, 1.f, 0.f);
-    //}
     
     clip(Out.vDiffuse.a - 0.1f);
 
@@ -464,20 +440,6 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_NORMAL In)
                     IsIn_Range(0.015f, 1.f, fDiff) * g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     
     Out.vExtractBloom = fStepValue * Out.vDiffuse;
-    
-    //if (0.015f + g_fDissolveAmount > fDotValue)
-    //{
-    //    float DissolveDesc = g_DissolveTexture.Sample(DefaultSampler, In.vTexUV*2.f).r;
-    
-    //    //clip(DissolveDesc - fDotValue);
-    //    //Out.vDiffuse = vector(0.4659f, 1.f, 0.98f, 1.f)  /*g_DissolveDiffTexture.Sample(DefaultSampler, In.vTexUV)*/;
-    //    Out.vDiffuse = vector(0.f, 1.f, 0.408f, 1.f);
-    //    Out.vExtractBloom = Out.vDiffuse;
-    //}
-    //else
-    //{
-    //    Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-    //}
     
     clip(Out.vDiffuse.a - 0.1f);
     
@@ -605,5 +567,18 @@ technique11 DefaultTechnique
         DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_DISSOLVE();
+    }
+
+    pass Default_Normal_Specular_NonCulling //8
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_NonCulling );
+
+        VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
+        HullShader = NULL;
+        DomainShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_NORMAL_SPECULAR();
     }
 }

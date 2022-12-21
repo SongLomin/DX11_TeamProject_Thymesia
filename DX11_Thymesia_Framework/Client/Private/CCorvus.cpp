@@ -209,14 +209,19 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 		}
 		else
 		{
-			
+
 			_float4 vShaderFlag = { 0.f,0.f,0.f,0.f };
 
 			m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_float4));
 			if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
 				m_iPassIndex = 4;
 			else
-				m_iPassIndex = 5;
+			{
+				if (i == 2)
+					m_iPassIndex = 8;
+				else
+					m_iPassIndex = 5;
+			}
 		}
 		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 
@@ -268,13 +273,13 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 		m_pInventory.lock()->Push_Item(ITEM_NAME::MEMORY01);
 	}
 #ifdef _DEBUG
-	if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
-	{
-		++m_iContainerIndex;
-		if (m_iContainerIndex >= m_iNumMeshContainers)\
-			m_iContainerIndex = 0;
-		cout << "m_iContainerIndex : " << m_iContainerIndex << endl;
-	}
+	//if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
+	//{
+	//	++m_iContainerIndex;
+	//	if (m_iContainerIndex >= m_iNumMeshContainers)
+	//		m_iContainerIndex = 0;
+	//	cout << "m_iContainerIndex : " << m_iContainerIndex << endl;
+	//}
 #endif // _DEBUG
 }
 

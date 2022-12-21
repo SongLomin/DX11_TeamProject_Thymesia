@@ -18,6 +18,10 @@ public:
     virtual void LateTick(_float fTimeDelta) override;
     virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
+private:
+    _uint m_iContainerIndex=0;
+
+
 public:
     void Free();
 };

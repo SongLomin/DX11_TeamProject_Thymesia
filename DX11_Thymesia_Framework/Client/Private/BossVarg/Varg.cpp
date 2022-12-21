@@ -127,6 +127,8 @@ void CVarg::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	m_pTrailEffect.lock()->Update(fTimeDelta, m_pTransformCom, m_pTrailBoneNode, m_pModelCom.lock()->Get_ModelData());
+
+
 }
 
 void CVarg::LateTick(_float fTimeDelta)
@@ -144,6 +146,7 @@ HRESULT CVarg::Render(ID3D11DeviceContext* pDeviceContext)
 
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
+
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
 
@@ -156,6 +159,9 @@ HRESULT CVarg::Render(ID3D11DeviceContext* pDeviceContext)
 			iPassIndex = 4;
 		}
 
+		if (3 == i)
+			iPassIndex = 8;
+			
 		//m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
 
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, iPassIndex, "g_Bones", pDeviceContext);
