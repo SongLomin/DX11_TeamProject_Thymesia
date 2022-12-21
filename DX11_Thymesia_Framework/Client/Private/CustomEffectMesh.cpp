@@ -899,7 +899,7 @@ void CCustomEffectMesh::Tool_Boner()
 			return;
 		}
 
-		if (ImGui::Button("Get Bone List"))
+		if (ImGui::Button("Refresh##Get Bone List"))
 		{
 			m_pParentModel = pPreviewModel.lock()->Get_CurrentModel();
 			m_pParentTransformCom = pPreviewModel.lock()->Get_Transform();
@@ -908,16 +908,31 @@ void CCustomEffectMesh::Tool_Boner()
 
 		if (m_pParentModel.lock() && m_pParentTransformCom.lock())
 		{
+			static ImGuiTextFilter BoneFilter;
+			ImGui::Text("Search"); ImGui::SameLine();
+			BoneFilter.Draw("##Bone_Search_Bar", 250.f);
+
 			if (ImGui::BeginListBox("Bone List - Mesh Effect"))
 			{
 				for (_int n(0); n < m_AllBoneNames.size(); n++)
 				{
+					auto BoneKit = m_AllBoneNames.at(n);
 					const _bool is_selected = (m_iCurrentBoneIndex == n);
-					if (ImGui::Selectable(m_AllBoneNames[n].c_str(), is_selected))
-						m_strBoneName = m_AllBoneNames[n];
 
-					if (is_selected)
-						ImGui::SetItemDefaultFocus();
+					if (BoneFilter.PassFilter(BoneKit.c_str()))
+					{
+						std::string label = BoneKit + "##" + std::to_string(n);
+
+						if (ImGui::Selectable(label.c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
+						{
+							m_iCurrentBoneIndex = n;
+
+							if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+							{
+								m_strBoneName = m_AllBoneNames[m_iCurrentBoneIndex];
+							}
+						}
+					}
 				}
 
 				ImGui::EndListBox();
@@ -1085,6 +1100,11 @@ void CCustomEffectMesh::Tool_Shaders()
 		{
 			ImGui::Text("Start Glow Color");
 			ImGui::DragFloat4("##Start_Glow_Color", &m_tEffectMeshDesc.vStartGlowColor.x, 0.01f);
+			if (ImGui::TreeNode("Start Glow Color Picker"))
+			{
+				ImGui::ColorPicker4("##Start_Glow_Color", &m_tEffectMeshDesc.vStartGlowColor.x, ImGuiColorEditFlags_AlphaPreviewHalf | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_InputRGB);
+				ImGui::TreePop();
+			}
 
 			ImGui::Text("Glow Color Speed ");
 			ImGui::DragFloat4("##Glow_Color_Speed", &m_tEffectMeshDesc.vGlowColorSpeed.x, 0.01f);
@@ -1169,6 +1189,11 @@ void CCustomEffectMesh::Tool_Colors()
 
 	ImGui::Text("Start Color");
 	ImGui::DragFloat4("##Start Color", &m_tEffectMeshDesc.vStartColor.x, 0.01f, 0.f, 1.f, "%.5f");
+	if (ImGui::TreeNode("Start Color Picker"))
+	{
+		ImGui::ColorPicker4("##Start Color", &m_tEffectMeshDesc.vStartColor.x, ImGuiColorEditFlags_AlphaPreviewHalf | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_InputRGB);
+		ImGui::TreePop();
+	}
 
 	ImGui::Text("Color Speed");
 	ImGui::DragFloat4("##Color Speed", &m_tEffectMeshDesc.vColorSpeed.x, 0.01f, -1.f, 1.f, "%.5f");

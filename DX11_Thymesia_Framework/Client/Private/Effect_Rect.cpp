@@ -2204,17 +2204,17 @@ void CEffect_Rect::Tool_Boner()
 		ImGui::Text("No Bones!");
 	else
 	{
-		static ImGuiTextFilter ParticleFilter;
+		static ImGuiTextFilter BoneFilter;
 		ImGui::Text("Search"); ImGui::SameLine();
-		ParticleFilter.Draw("##Bone_Search_Bar", 250.f);
+		BoneFilter.Draw("##Bone_Search_Bar", 250.f);
 		ImGui::BeginChild("##Bone_List_Particle", ImVec2(250.f, 150.f));
 		for (_int n(0); n < m_AllBoneNames.size(); n++)
 		{
-			auto paintkit = m_AllBoneNames.at(n);
+			auto BoneKit = m_AllBoneNames.at(n);
 			const _bool is_selected = (m_iCurrentBoneIndex == n);
-			if (ParticleFilter.PassFilter(paintkit.c_str()))
+			if (BoneFilter.PassFilter(BoneKit.c_str()))
 			{
-				std::string label = paintkit + "##" + std::to_string(n);
+				std::string label = BoneKit + "##" + std::to_string(n);
 
 				if (ImGui::Selectable(label.c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
 				{

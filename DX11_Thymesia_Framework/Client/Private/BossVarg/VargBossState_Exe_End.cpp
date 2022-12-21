@@ -69,7 +69,7 @@ void CVargBossState_Exe_End::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	Weak_Cast<CVarg>(m_pOwner).lock()->Set_EyeTrailEnable(false);
-	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Varg_Eye", GET_SINGLE(CGameManager)->Get_EffectIndex("Varg_Eye"));
+	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Varg_Eye", GET_SINGLE(CGameManager)->Get_StoredEffectIndex("Varg_Eye"));
 
 	if (Check_RequirementIsTargeted())
 		GET_SINGLE(CGameManager)->Release_Focus();
