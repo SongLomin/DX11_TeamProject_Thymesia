@@ -13,6 +13,8 @@ HRESULT CLevel_Edit::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
+	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
+
 	m_pImGui_Manager = CImGui_Manager::Create_Instance();
 	m_pImGui_Manager->Initialize();
 #ifdef _SKYBOX_

@@ -216,10 +216,10 @@ private:
 
 public:
     void  Registration_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj);
-    void  Activate_Section(_uint In_iSection, _bool In_bState);
+    void  Activate_Section(_uint In_iSection, EVENT_TYPE In_eEventType);
 
     void  Registration_SectionLight(_uint In_iSection, weak_ptr<CLight_Prop> In_pObj);
-    void  Activate_SectionLight(_uint In_iSection, _bool In_bState);
+    void  Activate_SectionLight(_uint In_iSection, EVENT_TYPE In_eEventType);
 
 public:
     FDelegate<>                 CallBack_ChangePlayer;

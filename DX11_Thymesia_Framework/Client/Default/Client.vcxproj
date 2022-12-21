@@ -425,6 +425,7 @@
     <ClInclude Include="..\Public\Interaction_Elevator.h" />
     <ClInclude Include="..\Public\Interaction_Item.h" />
     <ClInclude Include="..\Public\Interaction_Ladder.h" />
+    <ClInclude Include="..\Public\Interaction_NextPoint.h" />
     <ClInclude Include="..\Public\Interaction_Note.h" />
     <ClInclude Include="..\Public\Inventory.h" />
     <ClInclude Include="..\Public\Item.h" />
@@ -944,6 +945,7 @@
     <ClCompile Include="..\Private\Interaction_Elevator.cpp" />
     <ClCompile Include="..\Private\Interaction_Item.cpp" />
     <ClCompile Include="..\Private\Interaction_Ladder.cpp" />
+    <ClCompile Include="..\Private\Interaction_NextPoint.cpp" />
     <ClCompile Include="..\Private\Interaction_Note.cpp" />
     <ClCompile Include="..\Private\Inventory.cpp" />
     <ClCompile Include="..\Private\Item.cpp" />

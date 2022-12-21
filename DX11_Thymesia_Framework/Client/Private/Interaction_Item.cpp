@@ -7,7 +7,7 @@
 #include "Transform.h"
 #include "Texture.h"
 #include "Collider.h"
-#include "UI_Landing.h"
+#include "Inventory.h"
 
 #include "GameInstance.h"
 #include "ClientLevel.h"
@@ -63,6 +63,7 @@ HRESULT CInteraction_Item::Render(ID3D11DeviceContext* pDeviceContext)
 {
     return __super::Render(pDeviceContext);
 }
+
 void CInteraction_Item::OnEventMessage(_uint iArg)
 {
     switch ((EVENT_TYPE)iArg)
@@ -72,6 +73,29 @@ void CInteraction_Item::OnEventMessage(_uint iArg)
             m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
         }
         break;
+
+        case EVENT_TYPE::ON_EDITDRAW:
+        {
+            static char* szItemList[] = 
+            {
+                "BASIL",
+                "THYME",
+                "CINNAMON",
+
+                "GARDEN_KEY",
+                "VARG_KEY",
+
+                "MEMORY01",
+
+                "ITEM_NAME_END"
+            };
+
+            static _int iSelect_item = (_int)m_eItem;
+
+            if (ImGui::Combo("Item", &iSelect_item, szItemList, IM_ARRAYSIZE(szItemList)))
+                m_eItem = (ITEM_NAME)iSelect_item;
+        }
+        break;
     }
 }
 
@@ -79,16 +103,28 @@ void CInteraction_Item::OnEventMessage(_uint iArg)
 void CInteraction_Item::Write_Json(json& Out_Json)
 {
     __super::Write_Json(Out_Json);
+
+    Out_Json["Item_Name"] = (_int)m_eItem;
 }
 
 void CInteraction_Item::Load_FromJson(const json& In_Json)
 {
     __super::Load_FromJson(In_Json);
+
+    _int iItemName = In_Json["Item_Name"];
+
+    m_eItem = (ITEM_NAME)iItemName;
 }
 
 void CInteraction_Item::Act_Interaction()
 {
+    weak_ptr<CGameObject> pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
+    if (!pPlayer.lock())
+        return;
+
+    pPlayer.lock()->Get_Component<CInventory>().lock()->Push_Item(m_eItem);
+    m_pColliderCom.lock()->Set_Enable(true);
 }
 
 void CInteraction_Item::SetUpColliderDesc(_float* _pColliderDesc)

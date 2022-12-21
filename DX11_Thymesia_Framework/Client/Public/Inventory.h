@@ -32,8 +32,6 @@ public:
 private:
 	map<ITEM_NAME, shared_ptr<CItem>>	m_mapInventory;
 
-	// CClientComponent을(를) 통해 상속됨
-
 };
 
 

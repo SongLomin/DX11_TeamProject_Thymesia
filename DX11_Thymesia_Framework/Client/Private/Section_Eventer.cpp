@@ -104,34 +104,38 @@ void CSection_Eventer::OnEventMessage(_uint iArg)
 
             ImGui::InputInt("Section", &m_iSectionIndex);
 
-            _bool bCheckState[] =
+            _bool bCheckState_Event[] =
             {
-                (m_Flag & EVENT_FLAG::ACT_SECTION),
-                (m_Flag & EVENT_FLAG::ACT_MONSTER_TRIGGER),
-                (m_Flag & EVENT_FLAG::ACT_LIGHT),
-
-                (m_Flag & EVENT_FLAG::EVENT_ENTER),
-                (m_Flag & EVENT_FLAG::EVENT_STAY),
-                (m_Flag & EVENT_FLAG::EVENT_EXIT)
+                (m_EventFlag & EVENT_FLAG::EVENT_ENTER),
+                (m_EventFlag & EVENT_FLAG::EVENT_STAY),
+                (m_EventFlag & EVENT_FLAG::EVENT_EXIT)
             };
 
-            if (ImGui::Checkbox("ACT_SECTION", &bCheckState[0]))
-                m_Flag ^= EVENT_FLAG::ACT_SECTION;
+            _bool bCheckState_Act[] =
+            {
+                (m_ActFlag & ACT_FLAG::ACT_SECTION),
+                (m_ActFlag & ACT_FLAG::ACT_MONSTER_TRIGGER),
+                (m_ActFlag & ACT_FLAG::ACT_LIGHT),
+            };
 
-            if (ImGui::Checkbox("ACT_MONSTER_TRIGGER", &bCheckState[1]))
-                m_Flag ^= EVENT_FLAG::ACT_MONSTER_TRIGGER;
+            if (ImGui::Checkbox("EVENT_ENTER", &bCheckState_Event[0]))
+                m_EventFlag ^= EVENT_FLAG::EVENT_ENTER;
 
-            if (ImGui::Checkbox("ACT_LIGHT", &bCheckState[2]))
-                m_Flag ^= EVENT_FLAG::ACT_LIGHT;
+            if (ImGui::Checkbox("EVENT_STAY", &bCheckState_Event[1]))
+                m_EventFlag ^= EVENT_FLAG::EVENT_STAY;
 
-            if (ImGui::Checkbox("EVENT_ENTER", &bCheckState[3]))
-                m_Flag ^= EVENT_FLAG::EVENT_ENTER;
+            if (ImGui::Checkbox("EVENT_Exit", &bCheckState_Event[2]))
+                m_EventFlag ^= EVENT_FLAG::EVENT_EXIT;
 
-            if (ImGui::Checkbox("EVENT_STAY", &bCheckState[4]))
-                m_Flag ^= EVENT_FLAG::EVENT_STAY;
 
-            if (ImGui::Checkbox("EVENT_Exit", &bCheckState[5]))
-                m_Flag ^= EVENT_FLAG::EVENT_EXIT;
+            if (ImGui::Checkbox("ACT_SECTION", &bCheckState_Act[0]))
+                m_ActFlag ^= ACT_FLAG::ACT_SECTION;
+
+            if (ImGui::Checkbox("ACT_MONSTER_TRIGGER", &bCheckState_Act[1]))
+                m_ActFlag ^= ACT_FLAG::ACT_MONSTER_TRIGGER;
+
+            if (ImGui::Checkbox("ACT_LIGHT", &bCheckState_Act[2]))
+                m_ActFlag ^= ACT_FLAG::ACT_LIGHT;
         }
         break;
     }
@@ -141,7 +145,17 @@ void CSection_Eventer::Write_Json(json& Out_Json)
 {
     __super::Write_Json(Out_Json);
 
-    Out_Json["Flag"]         = m_Flag;
+    /*if (m_Flag & EVENT_FLAG::ACT_SECTION)         m_ActFlag ^= ACT_FLAG::F_ACT_SECTION;
+    if (m_Flag & EVENT_FLAG::ACT_MONSTER_TRIGGER) m_ActFlag ^= ACT_FLAG::F_ACT_MONSTER_TRIGGER;
+    if (m_Flag & EVENT_FLAG::ACT_LIGHT)           m_ActFlag ^= ACT_FLAG::F_ACT_LIGHT;
+
+    if (m_Flag & EVENT_FLAG::EVENT_ENTER)         m_EventFlag ^= EVENT_FLAG2::F_EVENT_ENTER;
+    if (m_Flag & EVENT_FLAG::EVENT_STAY)          m_EventFlag ^= EVENT_FLAG2::F_EVENT_STAY;
+    if (m_Flag & EVENT_FLAG::EVENT_EXIT)          m_EventFlag ^= EVENT_FLAG2::F_EVENT_EXIT;*/
+
+
+    Out_Json["EventFlag"]    = m_EventFlag;
+    Out_Json["ActFlag"]      = m_ActFlag;
     Out_Json["ColliderSize"] = m_pColliderCom.lock()->Get_ColliderDesc().vScale.x;
     Out_Json["SectionIndex"] = m_iSectionIndex;
 }
@@ -150,7 +164,8 @@ void CSection_Eventer::Load_FromJson(const json& In_Json)
 {
     __super::Load_FromJson(In_Json);
 
-    m_Flag          = In_Json["Flag"];
+    m_EventFlag     = In_Json["EventFlag"];
+    m_ActFlag       = In_Json["ActFlag"];
     m_iSectionIndex = In_Json["SectionIndex"];
 
     _float fColliderSize   = In_Json["ColliderSize"];
@@ -160,60 +175,60 @@ void CSection_Eventer::Load_FromJson(const json& In_Json)
 
 void CSection_Eventer::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    if (!(m_Flag & EVENT_FLAG::EVENT_ENTER) || LEVEL::LEVEL_EDIT == m_CreatedLevel)
+    if (!(m_EventFlag & EVENT_FLAG::EVENT_ENTER) || LEVEL::LEVEL_EDIT == m_CreatedLevel)
         return;
 
     __super::OnCollisionEnter(pMyCollider, pOtherCollider);
 
-    if (m_Flag & EVENT_FLAG::ACT_SECTION)
+    if (m_ActFlag & ACT_FLAG::ACT_SECTION)
     {
-        GET_SINGLE(CGameManager)->Activate_Section(m_iSectionIndex, true);
+        GET_SINGLE(CGameManager)->Activate_Section(m_iSectionIndex, EVENT_TYPE::ON_ENTER_SECTION);
         m_pColliderCom.lock()->Set_Enable(false);
     }
 
-    if (m_Flag & EVENT_FLAG::ACT_LIGHT)
+    if (m_ActFlag & ACT_FLAG::ACT_LIGHT)
     {
-        GET_SINGLE(CGameManager)->Activate_SectionLight(m_iSectionIndex, true);
+        GET_SINGLE(CGameManager)->Activate_SectionLight(m_iSectionIndex, EVENT_TYPE::ON_ENTER_SECTION);
         m_pColliderCom.lock()->Set_Enable(false);
     }
 }
 
 void CSection_Eventer::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    if (!(m_Flag & EVENT_FLAG::EVENT_STAY) || LEVEL::LEVEL_EDIT == m_CreatedLevel)
+    if (!(m_EventFlag & EVENT_FLAG::EVENT_STAY) || LEVEL::LEVEL_EDIT == m_CreatedLevel)
         return;
 
     __super::OnCollisionStay(pMyCollider, pOtherCollider);
 
-    if (m_Flag & EVENT_FLAG::ACT_SECTION)
+    if (m_ActFlag & ACT_FLAG::ACT_SECTION)
     {
-        GET_SINGLE(CGameManager)->Activate_Section(m_iSectionIndex, true);
+        GET_SINGLE(CGameManager)->Activate_Section(m_iSectionIndex, EVENT_TYPE::ON_ENTER_SECTION);
         m_pColliderCom.lock()->Set_Enable(false);
     }
 
-    if (m_Flag & EVENT_FLAG::ACT_LIGHT)
+    if (m_ActFlag & ACT_FLAG::ACT_LIGHT)
     {
-        GET_SINGLE(CGameManager)->Activate_SectionLight(m_iSectionIndex, true);
+        GET_SINGLE(CGameManager)->Activate_SectionLight(m_iSectionIndex, EVENT_TYPE::ON_ENTER_SECTION);
         m_pColliderCom.lock()->Set_Enable(false);
     }
 }
 
 void CSection_Eventer::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-    if (!(m_Flag & EVENT_FLAG::EVENT_EXIT) || LEVEL::LEVEL_EDIT == m_CreatedLevel)
+    if (!(m_EventFlag & EVENT_FLAG::EVENT_EXIT) || LEVEL::LEVEL_EDIT == m_CreatedLevel)
         return;
 
     __super::OnCollisionExit(pMyCollider, pOtherCollider);
 
-    if (m_Flag & EVENT_FLAG::ACT_SECTION)
+    if (m_ActFlag & ACT_FLAG::ACT_SECTION)
     {
-        GET_SINGLE(CGameManager)->Activate_Section(m_iSectionIndex, true);
+        GET_SINGLE(CGameManager)->Activate_Section(m_iSectionIndex, EVENT_TYPE::ON_ENTER_SECTION);
         m_pColliderCom.lock()->Set_Enable(false);
     }
 
-    if (m_Flag & EVENT_FLAG::ACT_LIGHT)
+    if (m_ActFlag & ACT_FLAG::ACT_LIGHT)
     {
-        GET_SINGLE(CGameManager)->Activate_SectionLight(m_iSectionIndex, true);
+        GET_SINGLE(CGameManager)->Activate_SectionLight(m_iSectionIndex, EVENT_TYPE::ON_ENTER_SECTION);
         m_pColliderCom.lock()->Set_Enable(false);
     }
 }

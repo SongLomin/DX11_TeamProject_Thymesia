@@ -84,7 +84,8 @@ void CInteraction_CheckPoint::OnEventMessage(_uint iArg)
     {
         case EVENT_TYPE::ON_EDITINIT:
         {
-            SetUpColliderDesc();
+            if (!m_pColliderCom.lock())
+                SetUpColliderDesc();
         }
         break;
 

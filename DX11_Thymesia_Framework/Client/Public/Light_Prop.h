@@ -47,8 +47,10 @@ private:
     _float      m_fDelayTime       = 0.f;
     _float      m_fIntensityTime   = 1.f;
     _float      m_fAccTime         = 0.f;
+
     string      m_szEffectTag      = "";
- 
+    _int        m_iEffectIndex     = -1;
+
     _float      m_fTargetIntensity = 0.f;
     _float      m_fTargetRange     = 0.f;
 
