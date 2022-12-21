@@ -83,7 +83,7 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 {
 	m_fDeltaTime = fTimeDelta;
 
-	
+	m_pNvCloth_Manager->Tick(fTimeDelta);
 
 
 	GET_SINGLE(CInput_Device)->SetUp_DeviceState();
@@ -121,8 +121,6 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 	}
 
 	m_pPhysX_Manager->Tick(fTimeDelta);
-
-	m_pNvCloth_Manager->Tick(fTimeDelta);
 	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 
 	++m_iLoopIndex;

@@ -57,6 +57,7 @@ using namespace physx;
 #include <NvClothExt/ClothMeshDesc.h>
 #include <NvClothExt/ClothMeshQuadifier.h>
 #include <NvClothExt/ClothTetherCooker.h>
+
 using namespace nv::cloth;
 
 #include <process.h>

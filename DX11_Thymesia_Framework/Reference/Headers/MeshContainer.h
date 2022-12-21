@@ -86,7 +86,9 @@ private:
 private: /* For. NvCloth */
 	Fabric*								m_pFabric{};
 	Cloth*								m_pCloth{};
-	
+	PhaseConfig*						m_pPhases{};
+	PxVec3*								m_pVertices{};
+	FACEINDICES32*						m_pIndices{};
 
 public:
 	void Free();

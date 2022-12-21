@@ -23,7 +23,7 @@ public:
 	void	Tick(_float fTimeDelta);
 
 private:
-	DxContextManagerCallback* m_pGraphicsContextManager{};
+	CCustomContextManagerCallback* m_pGraphicsContextManager{};
 	CCustomPxAllocatorCallback* m_pAllocatorCallback{};
 	CCustomPxErrorCallback* m_pErrorCallback{};
 	CCustomPxAssertHandler* m_pAssertHander{};

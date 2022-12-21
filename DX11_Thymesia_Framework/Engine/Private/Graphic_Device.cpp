@@ -9,11 +9,14 @@ HRESULT CGraphic_Device::Ready_Graphic_Device(HWND hWnd, GRAPHICDESC::WINMODE Wi
 #ifdef _DEBUG
 	iFlag = D3D11_CREATE_DEVICE_DEBUG;
 #endif
+	D3D_FEATURE_LEVEL featureLevels[] = { D3D_FEATURE_LEVEL_11_0 };
 	D3D_FEATURE_LEVEL			FeatureLV;
 
 	/* 그래픽 장치를 초기화한다. */
-	if (FAILED(D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, iFlag, nullptr, 0, D3D11_SDK_VERSION, &m_pDevice, &FeatureLV, &m_pDeviceContext)))
+	if (FAILED(D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, 0, iFlag, featureLevels, 1, D3D11_SDK_VERSION, &m_pDevice, &FeatureLV, &m_pDeviceContext)))
 		return E_FAIL;
+
+	assert(D3D_FEATURE_LEVEL_11_0 == FeatureLV);
 
 	if (FAILED(Ready_SwapChain(hWnd, WinMode, iWinCX, iWinCY)))
 		return E_FAIL;

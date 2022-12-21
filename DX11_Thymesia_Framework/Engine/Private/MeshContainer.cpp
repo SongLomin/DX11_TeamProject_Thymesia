@@ -306,32 +306,36 @@ void CMeshContainer::Set_NvCloth()
 {
 	PxU32 iNumVertices;
 	PxU32 iNumFaces;
-	PxVec3* pVertices;
-	FACEINDICES32* pIndices;
+
 
 	nv::cloth::ClothMeshDesc meshDesc;
 
 	iNumVertices = m_pMeshData.lock()->iNumVertices;
 	iNumFaces = m_pMeshData.lock()->iNumFaces;
-	pVertices = DBG_NEW PxVec3[iNumVertices];
-	pIndices = DBG_NEW FACEINDICES32[iNumFaces];
+	m_pVertices = DBG_NEW PxVec3[iNumVertices];
+	m_pIndices = DBG_NEW FACEINDICES32[iNumFaces];
 
-	SMath::Convert_PxVec3FromMeshDataWithTransformMatrix(pVertices, m_pMeshData, XMMatrixIdentity());
+	SMath::Convert_PxVec3FromMeshDataWithTransformMatrix(m_pVertices, m_pMeshData, XMMatrixIdentity());
 
 	//Fill meshDesc with data
 	meshDesc.setToDefault();
+	//meshDesc.flags &= ~MeshFlag::e16_BIT_INDICES;
+
 	meshDesc.points.count = iNumVertices;
 	meshDesc.points.stride = sizeof(PxVec3);
-	meshDesc.points.data = pVertices;
+	meshDesc.points.data = m_pVertices;
 
 	for (PxU32 i = 0; i < iNumFaces; ++i)
 	{
-		memcpy(&pIndices[i], &m_pMeshData.lock()->pIndices[i], sizeof(FACEINDICES32));
+		memcpy(&m_pIndices[i], &m_pMeshData.lock()->pIndices[i], sizeof(FACEINDICES32));
 	}
-
+	
+	_int iSizePxU32 = 3 * sizeof(PxU32);
+	_int iSizeFACEINDICES32 = sizeof(FACEINDICES32);
+	
 	meshDesc.triangles.count = iNumFaces;
 	meshDesc.triangles.stride = 3 * sizeof(PxU32);
-	meshDesc.triangles.data = pIndices;
+	meshDesc.triangles.data = m_pIndices;
 	//etc. for quads, triangles and invMasses
 
 	PxVec3 gravity(0.0f, -9.8f, 0.0f);
@@ -339,19 +343,18 @@ void CMeshContainer::Set_NvCloth()
 
 	m_pFabric = NvClothCookFabricFromMesh(GET_SINGLE(CNvCloth_Manager)->Get_Factory(), meshDesc, gravity, &phaseTypeInfo, false);
 
-	Safe_Delete_Array(pVertices);
-	Safe_Delete_Array(pIndices);
-
-
-
+	
 
 	vector<PxVec4> particlesCopy;
 	particlesCopy.resize(m_pFabric->getNumParticles());
 
-	for (_int i = 0; i < particlesCopy.size(); ++i)
+	physx::PxMat44 transform = PxTransform(PxVec3(-2.f, 13.f, 0.f), PxQuat(PxPi / 6.f, PxVec3(1.f, 0.f, 0.f)));
+	physx::PxVec3 center = transform.transform(physx::PxVec3(0.0f, 0.0f, 0.0f));
+
+	for (_int i = 0; i < iNumVertices; ++i)
 	{
-		particlesCopy[i].setZero();
-		particlesCopy[i].w = 1.f / 5.f;
+		particlesCopy[i] = physx::PxVec4((m_pVertices[i] - center) * 0.85f + center, 1.f / 5.f);
+		//particlesCopy[i].w = 1.f / 5.f;
 	}
 
 	//  and can be to 0 to lock the particle / make it static.
@@ -360,10 +363,10 @@ void CMeshContainer::Set_NvCloth()
 	m_pCloth->setDamping(physx::PxVec3(0.1f, 0.1f, 0.1f));
 	m_pCloth->setSelfCollisionDistance(0.07f);
 
-	PhaseConfig* phases = DBG_NEW nv::cloth::PhaseConfig[m_pFabric->getNumPhases()];
+	m_pPhases = DBG_NEW nv::cloth::PhaseConfig[m_pFabric->getNumPhases()];
 	for (int i = 0; i < m_pFabric->getNumPhases(); i++)
 	{
-		phases[i].mPhaseIndex = i; // Set index to the corresponding set (constraint group)
+		m_pPhases[i].mPhaseIndex = i; // Set index to the corresponding set (constraint group)
 
 		//Give phases different configs depending on type
 		switch (phaseTypeInfo[i])
@@ -382,14 +385,14 @@ void CMeshContainer::Set_NvCloth()
 		}
 
 		//For this example we give very phase the same config
-		phases[i].mStiffness = 1.0f;
-		phases[i].mStiffnessMultiplier = 1.0f;
-		phases[i].mCompressionLimit = 1.0f;
-		phases[i].mStretchLimit = 1.0f;
+		m_pPhases[i].mStiffness = 1.0f;
+		m_pPhases[i].mStiffnessMultiplier = 1.0f;
+		m_pPhases[i].mCompressionLimit = 1.0f;
+		m_pPhases[i].mStretchLimit = 1.0f;
 	}
-	m_pCloth->setPhaseConfig(nv::cloth::Range<nv::cloth::PhaseConfig>(phases, phases + m_pFabric->getNumPhases()));
+	m_pCloth->setPhaseConfig(nv::cloth::Range<nv::cloth::PhaseConfig>(m_pPhases, m_pPhases + m_pFabric->getNumPhases()));
 	
-	Safe_Delete_Array(phases);
+	
 
 	GET_SINGLE(CNvCloth_Manager)->Get_Solver()->addCloth(m_pCloth);
 
@@ -405,4 +408,14 @@ void CMeshContainer::Free()
 
 	if (m_pCloth)
 		Safe_Delete(m_pCloth);
+
+	if(m_pPhases)
+		Safe_Delete_Array(m_pPhases);
+
+
+	if(m_pVertices)
+		Safe_Delete_Array(m_pVertices);
+
+	if(m_pIndices)
+		Safe_Delete_Array(m_pIndices);
 }

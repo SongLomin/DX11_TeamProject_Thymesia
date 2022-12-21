@@ -104,6 +104,8 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_LightDesc = GAMEINSTANCE->Add_Light(LightDesc);
 
+	m_pModelCom.lock()->Set_NvClothMeshWithIndex(2);
+
 	return S_OK;
 }
 
@@ -122,7 +124,7 @@ HRESULT CCorvus::Start()
 #ifdef _CLOTH_
 	// m_pModelCom.lock()->Set_NvClothMeshWithIndex(0);
 #endif // _CLOTH_
-
+	
 	return S_OK;
 }
 
