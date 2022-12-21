@@ -23,7 +23,7 @@ public:
     virtual HRESULT Start() override;
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
-    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override; 
+    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
 public:
     virtual void Act_Interaction() override;
@@ -37,10 +37,13 @@ public:
 private:
     void    SetUpColliderDesc();
 
+    void Free();
+
 private:
     weak_ptr<CCollider>     m_pColliderCom;
     _int                    m_iCheckIndex = 0;
     LIGHTDESC               m_tLightDesc;
+    _uint                   m_iEffectIndex = 0;
 };
 
 END

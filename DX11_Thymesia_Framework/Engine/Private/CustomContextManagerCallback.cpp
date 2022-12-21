@@ -23,7 +23,7 @@ ID3D11Device* CCustomContextManagerCallback::getDevice() const
 
 ID3D11DeviceContext* CCustomContextManagerCallback::getContext() const
 {
-	return DEVICECONTEXT;
+	return mContext;
 }
 
 bool CCustomContextManagerCallback::synchronizeResources() const

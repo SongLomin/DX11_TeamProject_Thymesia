@@ -122,7 +122,6 @@ void CUrd::Init_Desc()
 
 	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
 
-	//GET_SINGLE(CGameManager)->Bind_KeyEvent("Monster1", m_pModelCom, bind(&CUrd::Call_NextAnimationKey, this, placeholders::_1));
 	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom),
 		(_uint)PHYSX_COLLISION_LAYER::MONSTER);
 

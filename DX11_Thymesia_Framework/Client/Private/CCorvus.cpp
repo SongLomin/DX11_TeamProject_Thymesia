@@ -12,6 +12,8 @@
 #include "PlayerSkill_System.h"
 #include "Skill_VargSword.h"
 #include "Inventory.h"
+#include "UI_BloodOverlay.h"
+
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -30,15 +32,16 @@ HRESULT CCorvus::Initialize(void* pArg)
 	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_VtxAnimModel"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements);
 
 	m_pStatus = CGameObject::Add_Component<CStatus_Player>();
-	
+
 	CStatus_Player::PLAYERDESC& pStatus_PlayerDesc = GET_SINGLE(CGameManager)->Get_PlayerStatusDesc();
-	
+
 	m_pStatus.lock()->Set_Desc(&pStatus_PlayerDesc);
-	
-	
+
+
 	//m_pStatus.lock()->Load_FromJson(m_szClientComponentPath + "Corvus/SaveData.json");
 
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
+	//m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER, (_flag)NVCLOTH_INDEX::_2);
 
 
 
@@ -60,15 +63,15 @@ HRESULT CCorvus::Initialize(void* pArg)
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
 
-	
-	
-	
+
+
+
 
 
 
 #ifdef _CORVUS_EFFECT_
 	// Key Frame Effect ON
-	GET_SINGLE(CGameManager)->Bind_KeyEvent("Corvus", m_pModelCom, bind(&CCorvus::Call_NextAnimationKey, this, placeholders::_1));
+	Bind_KeyEvent("Corvus");
 
 	// TODO : need to disable at Destroy/Disable
 	// Passive Effect ON
@@ -116,13 +119,13 @@ HRESULT CCorvus::Start()
 
 	if (m_pCamera.lock())
 		m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
-	
+
 	Test_BindSkill();
 
 #ifdef _CLOTH_
 	// m_pModelCom.lock()->Set_NvClothMeshWithIndex(0);
 #endif // _CLOTH_
-
+	
 	return S_OK;
 }
 
@@ -166,7 +169,9 @@ void CCorvus::LateTick(_float fTimeDelta)
 void CCorvus::Before_Render(_float fTimeDelta)
 {
 	__super::Before_Render(fTimeDelta);
-}
+
+	m_pModelCom.lock()->Update_NvCloth();
+}	
 
 
 
@@ -197,7 +202,7 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 			m_pShaderCom.lock()->Set_RawValue("g_vDissolveDir", &iter->second.vDirection, sizeof(_float3));
 			m_pShaderCom.lock()->Set_RawValue("g_vDissolveStartPos", &iter->second.vStartPos, sizeof(_float3));
 			m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &iter->second.fAmount, sizeof(_float));
-	
+
 			_float4 vShaderFlag = { 0.f,0.f,1.f,0.f };
 
 			m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_float4));
@@ -206,20 +211,25 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 		}
 		else
 		{
-			
+
 			_float4 vShaderFlag = { 0.f,0.f,0.f,0.f };
 
 			m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_float4));
 			if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
 				m_iPassIndex = 4;
 			else
-				m_iPassIndex = 5;
+			{
+				if (i == 2)
+					m_iPassIndex = 8;
+				else
+					m_iPassIndex = 5;
+			}
 		}
 		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 			m_iPassIndex = 0;
-	
+
 
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones", pDeviceContext);
 	}
@@ -264,14 +274,22 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	{
 		m_pInventory.lock()->Push_Item(ITEM_NAME::MEMORY01);
 	}
-#ifdef _DEBUG
-	if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
+	/*
+	if (KEY_INPUT(KEY::T, KEY_STATE::TAP))
 	{
-		++m_iContainerIndex;
-		if (m_iContainerIndex >= m_iNumMeshContainers)\
-			m_iContainerIndex = 0;
-		cout << "m_iContainerIndex : " << m_iContainerIndex << endl;
+		GAMEINSTANCE->Get_GameObjects<CUI_BloodOverlay>(LEVEL_STATIC).front().lock()->
+			Call_Overlay(1.f);
 	}
+	*/
+
+#ifdef _DEBUG
+	//if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
+	//{
+	//	++m_iContainerIndex;
+	//	if (m_iContainerIndex >= m_iNumMeshContainers)
+	//		m_iContainerIndex = 0;
+	//	cout << "m_iContainerIndex : " << m_iContainerIndex << endl;
+	//}
 #endif // _DEBUG
 }
 
@@ -394,6 +412,8 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_CheckPointLoop);
 	ADD_STATE_MACRO(CCorvusState_Joker_Execution);
 	ADD_STATE_MACRO(CCorvusState_Execution_Start);
+	ADD_STATE_MACRO(CCorvusState_Varg_Execution);
+	ADD_STATE_MACRO(CCorvusState_Execution_R_R);
 
 #undef ADD_STATE_MACRO
 }
@@ -508,7 +528,7 @@ void CCorvus::OnEventMessage(_uint iArg)
 
 	if ((_uint)EVENT_TYPE::ON_VARGEXECUTION == iArg)
 	{
-		Change_State<CVarg_Execution>();
+		Change_State<CCorvusState_Execution_R_R>();
 	}
 
 	if ((_uint)EVENT_TYPE::ON_SITUP == iArg)
@@ -530,8 +550,8 @@ void CCorvus::OnEventMessage(_uint iArg)
 	{
 		Change_State<CCorvusState_Execution_Start>();
 	}
-	
-	
+
+
 }
 
 void CCorvus::Free()

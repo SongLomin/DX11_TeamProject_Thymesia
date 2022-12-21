@@ -98,6 +98,8 @@ void CInteraction_Prop::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_p
     if (!pUI_Interaction.lock())
         return;
 
+    m_CollisionIndex.push_back(pMyCollider.lock()->Get_ColliderIndex());
+
     Callback_ActStart += bind(&CUI_Interaction::Call_ActionStart, pUI_Interaction.lock());
     Callback_ActEnd   += bind(&CUI_Interaction::Call_ActionEnd  , pUI_Interaction.lock());
 
@@ -108,6 +110,16 @@ void CInteraction_Prop::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_pt
 {
     if (Callback_ActUpdate.empty() && KEY_INPUT(KEY::E, KEY_STATE::TAP))
     {
+        if (!CallBack_Requirement.empty())
+        {
+            _bool bCheckState = true;
+
+            CallBack_Requirement(bCheckState);
+
+            if (!bCheckState)
+                return;
+        }
+
         Callback_ActStart();
 
         Act_Interaction();
@@ -124,6 +136,16 @@ void CInteraction_Prop::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_pt
         return;
 
     pUI_Interaction.lock()->Call_CollisionExit();
+
+    _uint iCheckIndex = pMyCollider.lock()->Get_ColliderIndex();
+
+    auto iter_find = find_if(m_CollisionIndex.begin(), m_CollisionIndex.end(), [&](_uint _iIndex)->_bool 
+    {
+        return (iCheckIndex == _iIndex);
+    });
+
+    if (m_CollisionIndex.end() != iter_find)
+        m_CollisionIndex.erase(iter_find);
 }
 
 void CInteraction_Prop::Act_Interaction()

@@ -59,6 +59,7 @@ private://Moon SkillSytem RequireMent;
 private:
     weak_ptr<CTalent_Sword>  m_pSword;
     _uint                    m_iContainerIndex = 0;
+    
     weak_ptr<CPlayerSkill_System> m_pSkillSystem;
 private:
     weak_ptr<CCamera_Target> m_pCamera;

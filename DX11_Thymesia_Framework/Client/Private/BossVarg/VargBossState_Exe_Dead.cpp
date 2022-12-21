@@ -81,8 +81,6 @@ void CVargBossState_Exe_Dead::OnStateStart(const _float& In_fAnimationBlendTime)
 void CVargBossState_Exe_Dead::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-
 }
 
 
@@ -94,6 +92,7 @@ void CVargBossState_Exe_Dead::Call_AnimationEnd()
 
 
 	GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front().lock()->Call_Landing(CUI_Landing::LANDING_KILL_BOSS);
+	GET_SINGLE(CGameManager)->Activate_Section(100, EVENT_TYPE::ON_UNLOCK_SECTION);
 
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_End>(0.05f);
 }
@@ -114,7 +113,7 @@ _bool CVargBossState_Exe_Dead::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	
+
 
 	return false;
 }

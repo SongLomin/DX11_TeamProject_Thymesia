@@ -92,14 +92,11 @@ HRESULT CVarg::Initialize(void* pArg)
 	if (!m_pTrailEffect.lock())
 		assert(0);
 
-	// m_pTrailEffect.lock()->();
-
 	m_pTrailEffect.lock()->Set_Enable(false);
-	GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
 
+#ifdef _DEBUG
 	m_fCullingRange = 999.f;
-
-
+#endif // _DEBUG
 	return S_OK;
 }
 
@@ -111,9 +108,9 @@ HRESULT CVarg::Start()
 	m_pTrailBoneNode = m_pModelCom.lock()->Find_BoneNode("Bip001-Head");
 
 	CBase::Set_Enable(true);
-	
+
 	Change_State<CVargBossState_IdleGeneral>();
-	
+
 
 	// weak_ptr<CBoneNode> pTargetBoneNode = m_pModelCom.lock()->Find_BoneNode();
 	// m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
@@ -127,6 +124,8 @@ void CVarg::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	m_pTrailEffect.lock()->Update(fTimeDelta, m_pTransformCom, m_pTrailBoneNode, m_pModelCom.lock()->Get_ModelData());
+
+
 }
 
 void CVarg::LateTick(_float fTimeDelta)
@@ -144,6 +143,7 @@ HRESULT CVarg::Render(ID3D11DeviceContext* pDeviceContext)
 
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
+
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
 
@@ -155,6 +155,9 @@ HRESULT CVarg::Render(ID3D11DeviceContext* pDeviceContext)
 		{
 			iPassIndex = 4;
 		}
+
+		if (3 == i)
+			iPassIndex = 8;
 
 		//m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
 
@@ -182,6 +185,7 @@ void CVarg::Set_EyeTrailEnable(_bool In_bEnable)
 }
 
 
+
 void CVarg::Init_Desc()
 {
 	__super::Init_Desc();
@@ -191,18 +195,18 @@ void CVarg::Init_Desc()
 	m_pWeapons.back().lock()->Init_Model("Boss_VargWeapon", TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
 
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.9f,-2.4f,1.0f }, 0.6f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.9f,-2.4f,1.0f }, 0.6f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.8f,-2.2f,1.0f }, 0.6f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.7f,-2.0f,1.0f }, 0.6f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.6f,-1.8f,1.0f }, 0.6f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.5f,-1.6f,1.0f }, 0.6f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.4f,-1.4f,1.0f }, 1.5f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.3f,-1.2f,1.0f }, 0.6f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.2f,-1.f,1.0f },  0.6f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.1f,-0.8f,1.0f }, 0.6f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.0f,-0.6f,1.0f }, 0.6f, COLLISION_LAYER::MONSTER_ATTACK);
-	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.0f,-0.4f,1.0f }, 1.5f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.9f,-2.4f,1.0f }, 0.8f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.9f,-2.4f,1.0f }, 0.8f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.8f,-2.2f,1.0f }, 0.8f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.7f,-2.0f,1.0f }, 0.8f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.6f,-1.8f,1.0f }, 0.8f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.5f,-1.6f,1.0f }, 0.8f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.4f,-1.4f,1.0f }, 1.8f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.3f,-1.2f,1.0f }, 0.8f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.2f,-1.f,1.0f },  0.8f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.1f,-0.8f,1.0f }, 0.8f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.0f,-0.6f,1.0f }, 0.8f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.0f,-0.4f,1.0f }, 1.8f, COLLISION_LAYER::MONSTER_ATTACK);
 
 	m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(-135.0f));
 	//TODO 여기서하는 이유는 몬스터가 배치되고 원점에서 우리가 피킹한위치만큼더해지고 난뒤에 그월드포지션값저장하기위해서 여기서함
@@ -251,9 +255,12 @@ void CVarg::Init_Desc()
 	INIT_STATE(CVargBossState_Attack2b2);
 	INIT_STATE(CVargBossState_IdleGeneral);
 
-	GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
+#ifdef _VARG_EFFECT_
+	Bind_KeyEvent("Boss_Varg");
+#endif // _VARG_EFFECT_
 
-	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom),
+	m_pPhysXControllerCom.lock()->Init_Controller(
+		Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom),
 		(_uint)PHYSX_COLLISION_LAYER::MONSTER);
 }
 
@@ -293,14 +300,14 @@ void CVarg::OnEventMessage(_uint iArg)
 
 	if ((_uint)EVENT_TYPE::ON_VARGEXECUTION == iArg)
 	{
-		Change_State<CVargBossState_Exe_Start>();
+		Change_State<CVargBossState_Exe_NoDeadEnd>();
 	}
 
 	if ((_uint)EVENT_TYPE::ON_GROGGY == iArg)
 	{
 		Change_State<CVargBossState_Stun_Start>();
 	}
-	
+
 	if ((_uint)EVENT_TYPE::ON_ENTER_SECTION == iArg)
 	{
 		Set_Enable(true);

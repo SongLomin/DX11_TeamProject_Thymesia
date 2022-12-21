@@ -60,15 +60,17 @@ void CVargBossState_SPA_Roar_Getup::Tick(_float fTimeDelta)
 void CVargBossState_SPA_Roar_Getup::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
-
-
-
 	Check_AndChangeNextState();
 }
 
 void CVargBossState_SPA_Roar_Getup::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+#ifdef _VARG_EFFECT_
+	Weak_Cast<CVarg>(m_pOwner).lock()->Unbind_KeyEvent("Boss_Varg");
+	Weak_Cast<CVarg>(m_pOwner).lock()->Bind_KeyEvent("Boss_Varg_Phase2");
+#endif // _VARG_EFFECT_
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -77,14 +79,9 @@ void CVargBossState_SPA_Roar_Getup::OnStateStart(const _float& In_fAnimationBlen
 	m_pThisAnimationCom.lock()->CallBack_NextChannelKey +=
 		bind(&CVargBossState_SPA_Roar_Getup::Call_NextKeyFrame, this, placeholders::_1);
 
-
-#ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: SPA_Getup -> OnStateStart" << endl;
 #endif
-#endif
-
-
 }
 
 void CVargBossState_SPA_Roar_Getup::OnStateEnd()

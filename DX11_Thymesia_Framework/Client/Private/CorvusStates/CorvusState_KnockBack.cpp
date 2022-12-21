@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
 #include "GameManager.h"
+#include "PhysXController.h"
 
 
 GAMECLASS_C(CCorvusState_KnockBack);

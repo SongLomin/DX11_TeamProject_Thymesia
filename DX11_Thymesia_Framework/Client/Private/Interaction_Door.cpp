@@ -9,6 +9,8 @@
 #include "Model.h"
 #include "PhysXCollider.h"
 #include "Inventory.h"
+#include "Item.h"
+
 
 #include "GameInstance.h"
 #include "GameManager.h"
@@ -98,15 +100,40 @@ void CInteraction_Door::OnEventMessage(_uint iArg)
         }
         break;
 
+        case EVENT_TYPE::ON_LOCK_SECTION:
+        {
+            if (!(m_ActionFlag & ACTION_FLAG::LOCK))
+                return;
+
+            m_pColliderCom.lock()->Set_Enable(false);
+        }
+        break;
+
+        case EVENT_TYPE::ON_UNLOCK_SECTION:
+        {
+            if (!(m_ActionFlag & ACTION_FLAG::LOCK))
+                return;
+
+            m_pColliderCom.lock()->Set_Enable(true);
+        }
+        break;
+
         case EVENT_TYPE::ON_EDITINIT:
         {
-            _float fDefaultDesc[4] = { 3.f, 0.f, 1.5f, 0.f };
-            SetUpColliderDesc(m_pColliderCom   , fDefaultDesc);
+            if (0.f == m_pColliderCom.lock()->Get_ColliderDesc().vScale.x)
+            {
+                _float fDefaultDesc[4] = { 3.f, 0.f, 1.5f, 0.f };
+                SetUpColliderDesc(m_pColliderCom, fDefaultDesc, COLLISION_LAYER::TRIGGER);
+            }
 
-            m_pDirColliderCom = Add_Component<CCollider>();
-            fDefaultDesc[0] = 1.f;
-            fDefaultDesc[3] = 1.f;
-            SetUpColliderDesc(m_pDirColliderCom, fDefaultDesc);
+            if (!m_pDirColliderCom.lock())
+            {
+                m_pDirColliderCom = Add_Component<CCollider>();
+
+                _float fDefaultDesc[4] = { 1.f, 0.f, 1.5f, 1.f };
+                SetUpColliderDesc(m_pDirColliderCom, fDefaultDesc, COLLISION_LAYER::CHECK_DIR);
+                m_pDirColliderCom.lock()->Set_Enable(false);
+            }
         }
         break;
 
@@ -130,6 +157,7 @@ void CInteraction_Door::OnEventMessage(_uint iArg)
                 (m_ActionFlag & ACTION_FLAG::KEY),
                 (m_ActionFlag & ACTION_FLAG::AUTO),
                 (m_ActionFlag & ACTION_FLAG::OPEN_DIR),
+                (m_ActionFlag & ACTION_FLAG::LOCK),
             };
 
             if (ImGui::Checkbox("ROTATION", &bOpction[0]))
@@ -161,9 +189,15 @@ void CInteraction_Door::OnEventMessage(_uint iArg)
                 if (bOpction[2]) m_ActionFlag ^= ACTION_FLAG::AUTO;
             }
 
-            static const char* szKeyTag =
+            if (ImGui::Checkbox("LOCK", &bOpction[4]))
             {
-                "GARDEN_KEY"
+                m_ActionFlag ^= ACTION_FLAG::LOCK;
+            }
+
+            static const char* szKeyTag[] =
+            {
+                "GARDEN_KEY",
+                "VARG_KEY"
             };
 
             static _int iSelect_KeyID = 0;
@@ -203,7 +237,6 @@ void CInteraction_Door::OnEventMessage(_uint iArg)
                 if (bChage)
                 {
                     m_pDirColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
-                    m_pDirColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
                 }
 
                 ImGui::Separator();
@@ -287,10 +320,16 @@ void CInteraction_Door::Load_FromJson(const json& In_Json)
         m_ActionFlag = In_Json["ActionFlag"];
 
         if (m_ActionFlag & ACTION_FLAG::KEY)
-            m_CallBack_Requirement += bind(&CInteraction_Door::Requirement_Key, this, placeholders::_1);
+        {
+            CallBack_Requirement += bind(&CInteraction_Door::Requirement_Key, this, placeholders::_1);
+            //Callback_ActFail 바인드하기
+        }
 
         else if (m_ActionFlag & ACTION_FLAG::OPEN_DIR)
-            m_CallBack_Requirement += bind(&CInteraction_Door::Requirement_Dir, this, placeholders::_1);
+        {
+            CallBack_Requirement += bind(&CInteraction_Door::Requirement_Dir, this, placeholders::_1);
+            //Callback_ActFail 바인드하기
+        }
     }
 
     if (In_Json.end() != In_Json.find("KeyID"))
@@ -311,12 +350,12 @@ void CInteraction_Door::Load_FromJson(const json& In_Json)
         for (_uint i = 0; i < 4; ++i)
             fColliderDesc[i] = In_Json["ColliderDesc"][i];
 
-        SetUpColliderDesc(m_pColliderCom, fColliderDesc);
+        SetUpColliderDesc(m_pColliderCom, fColliderDesc, COLLISION_LAYER::TRIGGER);
     }
     else
     {
         _float fDefaultDesc[4] = { 3.f, 0.f, 1.5f, 0.f };
-        SetUpColliderDesc(m_pColliderCom, fDefaultDesc);
+        SetUpColliderDesc(m_pColliderCom, fDefaultDesc, COLLISION_LAYER::TRIGGER);
     }
 
     if ((In_Json.end() != In_Json.find("DirColliderDesc")) && (m_ActionFlag & ACTION_FLAG::OPEN_DIR))
@@ -326,9 +365,9 @@ void CInteraction_Door::Load_FromJson(const json& In_Json)
         _float fColliderDesc[4];
 
         for (_uint i = 0; i < 4; ++i)
-            fColliderDesc[i] = In_Json["ColliderDesc"][i];
+            fColliderDesc[i] = In_Json["DirColliderDesc"][i];
 
-        SetUpColliderDesc(m_pDirColliderCom, fColliderDesc);
+        SetUpColliderDesc(m_pDirColliderCom, fColliderDesc, COLLISION_LAYER::CHECK_DIR);
     }
 
     m_fFirstRadian = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(m_pTransformCom.lock()->Get_WorldMatrix())).y;
@@ -381,15 +420,6 @@ void CInteraction_Door::Act_CloseDoor(_float fTimeDelta, _bool& Out_IsEnd)
 
 void CInteraction_Door::Act_Interaction()
 {
-    if (!m_CallBack_Requirement.empty())
-    {
-        _bool bRequirement = false;
-        m_CallBack_Requirement(bRequirement);
-
-        if (!bRequirement)
-            return;
-    }
-
     if (m_ActionFlag & ACTION_FLAG::ROTATION)
     {
         Callback_ActUpdate += bind(&CInteraction_Door::Act_OpenDoor, this, placeholders::_1, placeholders::_2);
@@ -404,10 +434,23 @@ void CInteraction_Door::Act_Interaction()
 void CInteraction_Door::Requirement_Key(_bool& Out_bRequirement)
 {
     if (ITEM_NAME::ITEM_NAME_END == m_iKeyID)
+    {
+#ifdef _DEBUG
         MSG_BOX("Err KeyID : KeyID Value is [ITEM_NAME::ITEM_NAME_END]");
+#endif
 
+        Out_bRequirement = false;
+        return;
+    }
+    
     // 나중에 인벤토리 컴포넌트 찾아서 검색하기
     weak_ptr<CInventory> pInventory = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock();
+    weak_ptr<CItem> pItem = pInventory.lock()->Find_Item(m_iKeyID);
+
+    Out_bRequirement = (nullptr != pItem.lock());
+
+    if (!Out_bRequirement)
+        Callback_ActFail();
 }
 
 void CInteraction_Door::Requirement_Dir(_bool& Out_bRequirement)
@@ -417,27 +460,26 @@ void CInteraction_Door::Requirement_Dir(_bool& Out_bRequirement)
     if (!pPlayer.lock())
         return;
 
-    /*_vector vTargetDir = pPlayer.lock()->Get_Transform().get()->Get_State(CTransform::STATE_TRANSLATION) - m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-    _vector vDoorLook  = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+    _uint iCheckIndex = m_pDirColliderCom.lock()->Get_ColliderIndex();
 
-    _float fDir = XMVectorGetX(XMVector3Dot(vDoorLook, vTargetDir));
-
-    cout << endl << " Door : "  << XMConvertToDegrees(fDir) << endl;
-    Out_bRequirement = true;
-
-    if (m_ActionFlag & ACTION_FLAG::OPEN_DIR)
+    auto iter_find = find_if(m_CollisionIndex.begin(), m_CollisionIndex.end(), [&](_uint _iIndex)->_bool
     {
-        Out_bRequirement = (0.f < fDir);
-    }*/
+        return (iCheckIndex == _iIndex);
+    });
+
+    Out_bRequirement = (m_CollisionIndex.end() != iter_find);
+
+    if (!Out_bRequirement)
+        Callback_ActFail();
 }
 
-void CInteraction_Door::SetUpColliderDesc(weak_ptr<CCollider> In_pColldierCom, _float* _pColliderDesc)
+void CInteraction_Door::SetUpColliderDesc(weak_ptr<CCollider> In_pColldierCom, _float* _pColliderDesc, COLLISION_LAYER _eCollLayer)
 {
     COLLIDERDESC ColliderDesc;
     ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
 
-    ColliderDesc.iLayer       = (_uint)COLLISION_LAYER::TRIGGER;
-    ColliderDesc.vScale       = _float3(_pColliderDesc[0], 0.f, 0.f);
+    ColliderDesc.iLayer       = (_uint)_eCollLayer; // COLLISION_LAYER::TRIGGER;
+    ColliderDesc.vScale       = _float3(_pColliderDesc[0], 0.f, 0.f); 
     ColliderDesc.vTranslation = _float3(_pColliderDesc[1], _pColliderDesc[2], _pColliderDesc[3]);
 
     In_pColldierCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);

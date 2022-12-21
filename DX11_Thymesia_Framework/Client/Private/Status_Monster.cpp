@@ -77,12 +77,9 @@ void CStatus_Monster::Init_Status(const void* pArg)
 	switch (eMonsterType)
 	{
 	case Client::MONSTERTYPE::AXEMAN:
-		// TODO : JoJo Test : for hit effect
 		m_tMonsterDesc.m_fAtk              = 30.f;
-		// TODO : JoJo Test : for hit effect
 		m_tMonsterDesc.m_fMaxHP_white      = 150.f;
-		// TODO : JoJo Test : for parry effect
-		m_tMonsterDesc.m_fMaxParryingGauge = 200.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 100.f;
 		m_tMonsterDesc.m_iLifeCount        = 1;
 		m_tMonsterDesc.m_iMaxParryCount    = 10000;
 		m_tMonsterDesc.m_szModelKey        = "Mon_AxeMan";
@@ -90,7 +87,7 @@ void CStatus_Monster::Init_Status(const void* pArg)
 	case Client::MONSTERTYPE::KNIFEWOMAN:
 		m_tMonsterDesc.m_fAtk              = 45.f;
 		m_tMonsterDesc.m_fMaxHP_white      = 125.f;
-		m_tMonsterDesc.m_fMaxParryingGauge = 300.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 100.f;
 		m_tMonsterDesc.m_iLifeCount        = 1;
 		m_tMonsterDesc.m_iMaxParryCount    = 10000;
 		m_tMonsterDesc.m_szModelKey        = "Mon_KnifeWoman";
@@ -98,19 +95,19 @@ void CStatus_Monster::Init_Status(const void* pArg)
 	case Client::MONSTERTYPE::SKULL:
 		break;
 	case Client::MONSTERTYPE::GARDENER:
-		//TODO 공격력몰름 임시 
+		//TODO 공격력몰름 임시
 		m_tMonsterDesc.m_fAtk              = 30.f;
 		m_tMonsterDesc.m_fMaxHP_white      = 175.f;
-		m_tMonsterDesc.m_fMaxParryingGauge = 400.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 100.f;
 		m_tMonsterDesc.m_iLifeCount        = 1;
 		m_tMonsterDesc.m_iMaxParryCount    = 10000;
 		m_tMonsterDesc.m_szModelKey        = "Mon_Gardner";
 		break;
 	case Client::MONSTERTYPE::VARG:
-		//TODO 공격력몰름 임시 
+		//TODO 공격력몰름 임시
 		m_tMonsterDesc.m_fAtk = 50.f;
 		m_tMonsterDesc.m_fMaxHP_white = 2500.f;
-		m_tMonsterDesc.m_fMaxParryingGauge = 1000.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 100.f;
 		m_tMonsterDesc.m_iLifeCount = 2;
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
 		m_tMonsterDesc.m_szModelKey = "Boss_Varg";
@@ -126,7 +123,7 @@ void CStatus_Monster::Init_Status(const void* pArg)
 	case Client::MONSTERTYPE::SHIELDAXEMAN:
 		m_tMonsterDesc.m_fAtk = 40.f;
 		m_tMonsterDesc.m_fMaxHP_white = 300.f;
-		m_tMonsterDesc.m_fMaxParryingGauge = 600.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 200.f;
 		m_tMonsterDesc.m_iLifeCount = 1;
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
 		m_tMonsterDesc.m_szModelKey = "Mon_AxeMan";
@@ -134,7 +131,7 @@ void CStatus_Monster::Init_Status(const void* pArg)
 	case Client::MONSTERTYPE::JOKER:
 		m_tMonsterDesc.m_fAtk = 40.f;
 		m_tMonsterDesc.m_fMaxHP_white = 500.f;
-		m_tMonsterDesc.m_fMaxParryingGauge = 800.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 500.f;
 		m_tMonsterDesc.m_iLifeCount = 1;
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
 		m_tMonsterDesc.m_szModelKey = "Elite_Joker";
@@ -142,7 +139,7 @@ void CStatus_Monster::Init_Status(const void* pArg)
 	case Client::MONSTERTYPE::BAT:
 		m_tMonsterDesc.m_fAtk = 40.f;
 		m_tMonsterDesc.m_fMaxHP_white = 100.f;
-		m_tMonsterDesc.m_fMaxParryingGauge = 800.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 1000.f;
 		m_tMonsterDesc.m_iLifeCount = 2;
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
 		m_tMonsterDesc.m_szModelKey = "Boss_Bat";
@@ -221,7 +218,7 @@ void CStatus_Monster::Decrease_Green_HP(const _float In_fDamage)
 	_float fParryGaugeRatio = m_tMonsterDesc.m_fCurrentParryingGauge / m_tMonsterDesc.m_fMaxParryingGauge;
 	Set_ParryRecoveryTime(fParryGaugeRatio);
 
-	
+
 	CallBack_Damged_Green(m_tMonsterDesc.m_fCurrentHP_Green/
 		m_tMonsterDesc.m_fMaxHP_Green);
 }
@@ -247,7 +244,7 @@ void CStatus_Monster::Add_ParryGauge(const _float In_fDamage)
 		CallBack_Damged_Green(0.f);
 	}
 
-	
+
 }
 
 _bool CStatus_Monster::Is_Groggy() const
@@ -286,7 +283,7 @@ void CStatus_Monster::Update_HitedTime(_float fTimeDelta)
 		m_tMonsterDesc.m_fCurrentHP_white = min
 		(
 			m_tMonsterDesc.m_fCurrentHP_white += ((m_tMonsterDesc.m_fMaxHP_white *
-			m_tMonsterDesc.m_fRecoveryAmountPercentageFromSecond) * 
+			m_tMonsterDesc.m_fRecoveryAmountPercentageFromSecond) *
 			m_tMonsterDesc.m_fRecoveryMag) * fTimeDelta,
 			m_tMonsterDesc.m_fCurrentHP_Green) ;
 
@@ -295,10 +292,10 @@ void CStatus_Monster::Update_HitedTime(_float fTimeDelta)
 	else if (m_tMonsterDesc.m_fHitedTime >= m_tMonsterDesc.m_fRecoveryAlramTime)//5
 	{
 		//체력 회복 알람
-		if (m_tMonsterDesc.m_fCurrentHP_Green > 0.f && 
+		if (m_tMonsterDesc.m_fCurrentHP_Green > 0.f &&
 			(m_tMonsterDesc.m_fCurrentHP_white < m_tMonsterDesc.m_fCurrentHP_Green))
 			CallBack_RecoeoryAlram();
-		
+
 		return;
 	}
 }
@@ -311,7 +308,7 @@ void CStatus_Monster::Update_ParryRecoveryTime(_float fTimeDelta)
 	if (m_tMonsterDesc.m_fCurrentParryingGauge <= 0.f)
 		return;
 	m_tMonsterDesc.m_fParryGaugeRecoveryTime -= fTimeDelta;
-	
+
 	//패리 게이지가 남아있다? 아직 회복까지 남은 시간이 있다.
 	if (m_tMonsterDesc.m_fParryGaugeRecoveryTime > 0.f)
 		return;

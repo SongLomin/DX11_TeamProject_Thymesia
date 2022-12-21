@@ -9,6 +9,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
+#include "UI_BloodOverlay.h"
 
 GAMECLASS_C(CVargBossState_SPA_Catch);
 CLONE_C(CVargBossState_SPA_Catch, CComponent)
@@ -54,6 +55,13 @@ void CVargBossState_SPA_Catch::Tick(_float fTimeDelta)
 	Rotation_TargetToLookDir();
 	Get_Owner().lock()->Get_Component<CVargBossState_SPA_Run>().lock()->Set_Count(0);
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 225)
+	{
+		GAMEINSTANCE->Get_GameObjects<CUI_BloodOverlay>(LEVEL_STATIC).front().lock()->
+			Call_Overlay(1.f);
+	}
+
 }
 
 void CVargBossState_SPA_Catch::LateTick(_float fTimeDelta)

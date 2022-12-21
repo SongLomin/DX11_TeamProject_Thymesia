@@ -73,6 +73,8 @@ void CCorvusState_PS_VargSword::OnStateStart(const _float& In_fAnimationBlendTim
 
 	m_pPhysXControllerCom.lock()->Callback_ControllerHit += bind(&CCorvusState_PS_VargSword::Call_OtherControllerHit, this, placeholders::_1);
 
+
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "NorMonState: RunStart -> OnStateStart" << endl;
@@ -103,6 +105,11 @@ void CCorvusState_PS_VargSword::Call_NextKeyFrame(const _uint& In_KeyIndex)
 {
 	switch (In_KeyIndex)
 	{
+	case 1:
+	{
+		GET_SINGLE(CGameManager)->Store_EffectIndex("Corvus_PW_EyeGlow", GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_PW_EyeGlow", m_pTransformCom, _uint(TIMESCALE_LAYER::PLAYER)));
+	}
+	return;
 	case 41:
 	{
 		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
@@ -121,6 +128,11 @@ void CCorvusState_PS_VargSword::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		GAMEINSTANCE->Set_MotionBlur(0.3f);
 	}
 		return;
+	case 178:
+	{
+		GET_SINGLE(CGameManager)->UnUse_EffectGroup("Corvus_PW_EyeGlow", GET_SINGLE(CGameManager)->Get_StoredEffectIndex("Corvus_PW_EyeGlow"));
+	}
+	return;
 	}
 }
 

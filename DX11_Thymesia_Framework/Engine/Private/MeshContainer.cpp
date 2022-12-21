@@ -106,7 +106,7 @@ void CMeshContainer::Start()
 {
 }
 
-HRESULT CMeshContainer::Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CModel> pModel)
+HRESULT CMeshContainer::Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CModel> pModel, const _bool In_bNvCloth)
 {
 	m_pMeshData = tMeshData;
 	m_szName    = tMeshData->szName;
@@ -118,9 +118,9 @@ HRESULT CMeshContainer::Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CMod
 	HRESULT		hr = 0;
 
 	if (MODEL_TYPE::NONANIM == tMeshData->eModelType)
-		hr = Ready_VertexBuffer_NonAnim(tMeshData);
+		hr = Ready_VertexBuffer_NonAnim(tMeshData, In_bNvCloth);
 	else
-		hr = Ready_VertexBuffer_Anim(tMeshData, pModel);
+		hr = Ready_VertexBuffer_Anim(tMeshData, pModel, In_bNvCloth);
 
 	if (FAILED(hr))
 		DEBUG_ASSERT;
@@ -161,10 +161,15 @@ HRESULT CMeshContainer::Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CMod
 
 	//Safe_Delete_Array(pIndices);
 
+	if (In_bNvCloth)
+	{
+		Set_NvCloth();
+	}
+
 	return S_OK;
 }
 
-HRESULT CMeshContainer::Ready_VertexBuffer_NonAnim(shared_ptr<MESH_DATA> tMeshData)
+HRESULT CMeshContainer::Ready_VertexBuffer_NonAnim(shared_ptr<MESH_DATA> tMeshData, const _bool In_bNvCloth)
 {
 	m_iStride = sizeof(VTXMODEL);
 	m_iNumVertices = tMeshData->iNumVertices;
@@ -173,10 +178,19 @@ HRESULT CMeshContainer::Ready_VertexBuffer_NonAnim(shared_ptr<MESH_DATA> tMeshDa
 
 	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
 	m_BufferDesc.ByteWidth = m_iStride * m_iNumVertices;
-	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+
+	if (In_bNvCloth)
+	{
+		m_BufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+		m_BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	}
+	else
+	{
+		m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+		m_BufferDesc.CPUAccessFlags = 0;
+	}
 	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	m_BufferDesc.StructureByteStride = m_iStride;
-	m_BufferDesc.CPUAccessFlags = 0;
 	m_BufferDesc.MiscFlags = 0;
 
 
@@ -192,7 +206,7 @@ HRESULT CMeshContainer::Ready_VertexBuffer_NonAnim(shared_ptr<MESH_DATA> tMeshDa
 	return S_OK;
 }
 
-HRESULT CMeshContainer::Ready_VertexBuffer_Anim(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CModel> pModel)
+HRESULT CMeshContainer::Ready_VertexBuffer_Anim(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CModel> pModel, const _bool In_bNvCloth)
 {
 	m_iStride = sizeof(VTXANIM);
 	m_iNumVertices = tMeshData->iNumVertices;
@@ -200,10 +214,19 @@ HRESULT CMeshContainer::Ready_VertexBuffer_Anim(shared_ptr<MESH_DATA> tMeshData,
 
 	ZeroMemory(&m_BufferDesc, sizeof(D3D11_BUFFER_DESC));
 	m_BufferDesc.ByteWidth = m_iStride * m_iNumVertices;
-	m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	
+	if (In_bNvCloth)
+	{
+		m_BufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+		m_BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	}
+	else
+	{
+		m_BufferDesc.Usage = D3D11_USAGE_DEFAULT;
+		m_BufferDesc.CPUAccessFlags = 0;
+	}
 	m_BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	m_BufferDesc.StructureByteStride = m_iStride;
-	m_BufferDesc.CPUAccessFlags = 0;
 	m_BufferDesc.MiscFlags = 0;
 
 	/*VTXANIM* pVertices = new VTXANIM[m_iNumVertices];
@@ -306,32 +329,33 @@ void CMeshContainer::Set_NvCloth()
 {
 	PxU32 iNumVertices;
 	PxU32 iNumFaces;
-	PxVec3* pVertices;
-	FACEINDICES32* pIndices;
+
 
 	nv::cloth::ClothMeshDesc meshDesc;
 
 	iNumVertices = m_pMeshData.lock()->iNumVertices;
 	iNumFaces = m_pMeshData.lock()->iNumFaces;
-	pVertices = DBG_NEW PxVec3[iNumVertices];
-	pIndices = DBG_NEW FACEINDICES32[iNumFaces];
+	m_pVertices = DBG_NEW PxVec3[iNumVertices];
+	m_pIndices = DBG_NEW FACEINDICES32[iNumFaces];
 
-	SMath::Convert_PxVec3FromMeshDataWithTransformMatrix(pVertices, m_pMeshData, XMMatrixIdentity());
+	SMath::Convert_PxVec3FromMeshDataWithTransformMatrix(m_pVertices, m_pMeshData, XMMatrixIdentity());
 
 	//Fill meshDesc with data
 	meshDesc.setToDefault();
+	//meshDesc.flags &= ~MeshFlag::e16_BIT_INDICES;
+
 	meshDesc.points.count = iNumVertices;
 	meshDesc.points.stride = sizeof(PxVec3);
-	meshDesc.points.data = pVertices;
+	meshDesc.points.data = m_pVertices;
 
 	for (PxU32 i = 0; i < iNumFaces; ++i)
 	{
-		memcpy(&pIndices[i], &m_pMeshData.lock()->pIndices[i], sizeof(FACEINDICES32));
+		memcpy(&m_pIndices[i], &m_pMeshData.lock()->pIndices[i], sizeof(FACEINDICES32));
 	}
-
+	
 	meshDesc.triangles.count = iNumFaces;
 	meshDesc.triangles.stride = 3 * sizeof(PxU32);
-	meshDesc.triangles.data = pIndices;
+	meshDesc.triangles.data = m_pIndices;
 	//etc. for quads, triangles and invMasses
 
 	PxVec3 gravity(0.0f, -9.8f, 0.0f);
@@ -339,31 +363,40 @@ void CMeshContainer::Set_NvCloth()
 
 	m_pFabric = NvClothCookFabricFromMesh(GET_SINGLE(CNvCloth_Manager)->Get_Factory(), meshDesc, gravity, &phaseTypeInfo, false);
 
-	Safe_Delete_Array(pVertices);
-	Safe_Delete_Array(pIndices);
+	
 
+	
+	m_pParticles.resize(m_pFabric->getNumParticles());
 
+	physx::PxMat44 transform = PxTransform(PxVec3(-2.f, 13.f, 0.f), PxQuat(PxPi / 6.f, PxVec3(1.f, 0.f, 0.f)));
+	physx::PxVec3 center = transform.transform(physx::PxVec3(0.0f, 0.0f, 0.0f));
 
-
-	vector<PxVec4> particlesCopy;
-	particlesCopy.resize(m_pFabric->getNumParticles());
-
-	for (_int i = 0; i < particlesCopy.size(); ++i)
+	for (_int i = 0; i < iNumVertices; ++i)
 	{
-		particlesCopy[i].setZero();
-		particlesCopy[i].w = 1.f / 5.f;
+		// 터짐
+		//m_pParticles[i].setZero();
+		
+		// 망토가 이상한 위치에 있음.
+		//m_pParticles[i] = physx::PxVec4((m_pVertices[i] - center) * 0.85f + center, 1.f / 5.f);
+
+		// 정점 위치에서 시작하면 어떻게 되지?
+		// 똑같다.
+		m_pParticles[i] = physx::PxVec4(m_pVertices[i], 0.f);
+
+		//m_pParticles[i].w = 0.f;
+		//particlesCopy[i].w = 1.f / 5.f;
 	}
 
 	//  and can be to 0 to lock the particle / make it static.
-	m_pCloth = GET_SINGLE(CNvCloth_Manager)->Get_Factory()->createCloth(nv::cloth::Range<physx::PxVec4>(&particlesCopy[0], &particlesCopy[0] + particlesCopy.size()), *m_pFabric);
+	m_pCloth = GET_SINGLE(CNvCloth_Manager)->Get_Factory()->createCloth(nv::cloth::Range<physx::PxVec4>(&m_pParticles[0], &m_pParticles[0] + m_pParticles.size()), *m_pFabric);
 	m_pCloth->setGravity(PxVec3(0.f, 9.81f, 0.f));
-	m_pCloth->setDamping(physx::PxVec3(0.1f, 0.1f, 0.1f));
-	m_pCloth->setSelfCollisionDistance(0.07f);
+	//m_pCloth->setDamping(physx::PxVec3(0.1f, 0.1f, 0.1f));
+	//m_pCloth->setSelfCollisionDistance(0.07f);
 
-	PhaseConfig* phases = DBG_NEW nv::cloth::PhaseConfig[m_pFabric->getNumPhases()];
+	m_pPhases = DBG_NEW nv::cloth::PhaseConfig[m_pFabric->getNumPhases()];
 	for (int i = 0; i < m_pFabric->getNumPhases(); i++)
 	{
-		phases[i].mPhaseIndex = i; // Set index to the corresponding set (constraint group)
+		m_pPhases[i].mPhaseIndex = i; // Set index to the corresponding set (constraint group)
 
 		//Give phases different configs depending on type
 		switch (phaseTypeInfo[i])
@@ -382,17 +415,83 @@ void CMeshContainer::Set_NvCloth()
 		}
 
 		//For this example we give very phase the same config
-		phases[i].mStiffness = 1.0f;
-		phases[i].mStiffnessMultiplier = 1.0f;
-		phases[i].mCompressionLimit = 1.0f;
-		phases[i].mStretchLimit = 1.0f;
+		m_pPhases[i].mStiffness = 1.0f;
+		m_pPhases[i].mStiffnessMultiplier = 1.0f;
+		m_pPhases[i].mCompressionLimit = 1.0f;
+		m_pPhases[i].mStretchLimit = 1.0f;
 	}
-	m_pCloth->setPhaseConfig(nv::cloth::Range<nv::cloth::PhaseConfig>(phases, phases + m_pFabric->getNumPhases()));
+	m_pCloth->setPhaseConfig(nv::cloth::Range<nv::cloth::PhaseConfig>(m_pPhases, m_pPhases + m_pFabric->getNumPhases()));
 	
-	Safe_Delete_Array(phases);
+	
 
 	GET_SINGLE(CNvCloth_Manager)->Get_Solver()->addCloth(m_pCloth);
 
+}
+
+void CMeshContainer::Update_NvClothVertices(ID3D11DeviceContext* pDeviceContext)
+{
+	if (!m_pCloth)
+		return;
+
+	if (MODEL_TYPE::ANIM == m_pMeshData.lock()->eModelType)
+	{
+		Update_NvClothVertices_Anim(pDeviceContext);
+	}
+	else
+	{
+		Update_NvClothVertices_NonAnim(pDeviceContext);
+	}
+
+}
+
+void CMeshContainer::Update_NvClothVertices_NonAnim(ID3D11DeviceContext* pDeviceContext)
+{
+	D3D11_MAPPED_SUBRESOURCE		SubResource;
+	ZeroMemory(&SubResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+
+	MappedRange<PxVec4> particle = m_pCloth->getCurrentParticles();
+
+	pDeviceContext->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResource);
+
+	for (_int i = 0; i < m_iNumVertices; ++i)
+	{
+		XMStoreFloat3(&((VTXMODEL*)SubResource.pData)[i].vPosition, SMath::Convert_Vector(particle[i].getXYZ()));
+	}
+
+	pDeviceContext->Unmap(m_pVB.Get(), 0);
+}
+
+void CMeshContainer::Update_NvClothVertices_Anim(ID3D11DeviceContext* pDeviceContext)
+{
+	D3D11_MAPPED_SUBRESOURCE		SubResource;
+
+	ZeroMemory(&SubResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+
+	MappedRange<PxVec4> particle = m_pCloth->getCurrentParticles();
+	MappedRange<PxVec4> preparticle = m_pCloth->getPreviousParticles();
+	//m_pCloth->get
+
+	pDeviceContext->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResource);
+
+	_vector vPos;
+
+	//Print_Vector(SMath::Convert_Vector(particle[0]));
+
+	for (_int i = 0; i < m_iNumVertices; ++i)
+	{
+		/*m_pParticles[i].x += particle[i].x - preparticle[i].x;
+		m_pParticles[i].y += particle[i].y - preparticle[i].y;
+		m_pParticles[i].z += particle[i].z - preparticle[i].z;
+
+		vPos = XMLoadFloat3(&m_pMeshData.lock()->pAnimVertices[i].vPosition);
+		vPos += SMath::Convert_Vector(m_pParticles[i]);
+
+		XMStoreFloat3(&((VTXANIM*)SubResource.pData)[i].vPosition, vPos);*/
+
+		XMStoreFloat3(&((VTXANIM*)SubResource.pData)[i].vPosition, SMath::Convert_Vector(particle[i].getXYZ()));
+	}
+
+	pDeviceContext->Unmap(m_pVB.Get(), 0);
 }
 
 void CMeshContainer::Free()
@@ -405,4 +504,14 @@ void CMeshContainer::Free()
 
 	if (m_pCloth)
 		Safe_Delete(m_pCloth);
+
+	if(m_pPhases)
+		Safe_Delete_Array(m_pPhases);
+
+
+	if(m_pVertices)
+		Safe_Delete_Array(m_pVertices);
+
+	if(m_pIndices)
+		Safe_Delete_Array(m_pIndices);
 }

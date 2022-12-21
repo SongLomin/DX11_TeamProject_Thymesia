@@ -66,6 +66,7 @@ HRESULT MODEL_DATA::Make_ModelData(const char* szFilePath, const MODEL_TYPE& In_
 
         Debug_AnimationLog(fout);
         RootNode->Debug_NodeLog(fout);
+        Debug_MeshLog(fout);
 
         fout.close();
     }
@@ -224,6 +225,14 @@ void MODEL_DATA::Debug_NonAnimLog(ofstream& os)
 
     os << szModelFileName << ", Min Length:  " << fMin << endl;
     os << szModelFileName << ", Max Length:  " << fMax << endl;
+}
+
+void MODEL_DATA::Debug_MeshLog(ofstream& os)
+{
+    for (size_t i = 0; i < Mesh_Datas.size(); i++)
+    {
+        os << i << "[" << Mesh_Datas[i]->szName << "]. " << Mesh_Datas[i]->iNumVertices << endl;
+    }
 }
 
 void MODEL_DATA::Compute_Center(MESH_VTX_INFO& _tVertexInfo)

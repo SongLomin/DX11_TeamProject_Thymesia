@@ -66,6 +66,10 @@ HRESULT CWindow_EffectHierarchyView::Render(ID3D11DeviceContext* pDeviceContext)
 
         else if (ImGui::BeginTabItem(m_pEffectGroup.lock()->Get_EffectGroupName()))
         {
+            //static ImGuiFilter filter;
+            //ImGui::Text("Search : ");
+            //filter.Draw("##EffectGroupSearchBar", 340.f);
+            //ImGui::BeginChild("##Effect");
             for (int i = 0; i < m_szEffectMeshNames.size(); ++i)
             {
                 const bool is_selected = (m_iCurrentEffectIndex == i);

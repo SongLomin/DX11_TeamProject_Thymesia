@@ -116,8 +116,8 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		if(m_bLockOn)
 		{
 			if (KEY_INPUT(KEY::W, KEY_STATE::HOLD))
-			{		
-			   Get_OwnerPlayer()->Change_State<CCorvusState_Run>();			
+			{
+			   Get_OwnerPlayer()->Change_State<CCorvusState_Run>();
 			   return true;
 			}
 
@@ -127,16 +127,16 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 				Get_OwnerPlayer()->Change_State<CCorvusState_AVoidB>();
 				return true;
 			}
-			
+
 			else  if (KEY_INPUT(KEY::S, KEY_STATE::HOLD))
-			{			
+			{
 				Get_OwnerPlayer()->Change_State<CCorvusState_RunB>();
 				return true;
-			}	
+			}
 
 			else  if (KEY_INPUT(KEY::A, KEY_STATE::HOLD))
 			{
-				Get_OwnerPlayer()->Change_State<CCorvusState_RunL>();	
+				Get_OwnerPlayer()->Change_State<CCorvusState_RunL>();
 				return true;
 			}
 
@@ -170,7 +170,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 
 			else if (Check_RequirementClawAttackHoldState())
 			{
-				
+
 				Get_OwnerPlayer()->Change_State<CCorvusState_ClawAttackHold>();
 				return true;
 			}
@@ -181,7 +181,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 				Get_OwnerPlayer()->Change_State<CCorvusState_BasicHealing>();
 				return true;
 			}
-			
+
 		}
 		else
 		{
@@ -280,7 +280,6 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 			}
 		}
 
-	// TODO : �ӽ� �ڵ�
 	if (KEY_INPUT(KEY::O, KEY_STATE::TAP))
 	{
 		Rotation_InputToLookDir();
@@ -295,7 +294,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Axe>();
 			break;
 		case 2:
-			Get_OwnerPlayer()->Change_State<CCorvusState_Execution_Start>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Execution_R_R>();
 			break;
 		case 3:
 			Get_OwnerPlayer()->Change_State<CCorvusState_NorMob_Execution>();
@@ -312,11 +311,13 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		case 7:
 			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Knife>();
 			break;
+		case 8:
+			Get_OwnerPlayer()->Change_State<CCorvusState_Execution_Start>();
+			break;
 		}
 		return true;
 	}
 
-	// TODO : �ӽ� �ڵ�
 	if (KEY_INPUT(KEY::NUM9, KEY_STATE::TAP))
 	{
 		if (6 == m_iSkillType)
@@ -324,7 +325,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		else
 			m_iSkillType++;
 	}
-	// TODO : �ӽ� �ڵ�
+
 	if (KEY_INPUT(KEY::NUM8, KEY_STATE::TAP))
 	{
 		if (0 == m_iSkillType)

@@ -63,15 +63,13 @@ void CVargBossState_Exe_NoDeadEnd::OnStateStart(const _float& In_fAnimationBlend
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	GET_SINGLE(CGameManager)->Set_AnimaionChange(false);
 
-#ifdef _DEBUG
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,5);
+
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Exe_SitDown -> OnStateStart" << endl;
 #endif
-#endif
-
-
 }
 
 void CVargBossState_Exe_NoDeadEnd::OnStateEnd()
@@ -88,9 +86,9 @@ void CVargBossState_Exe_NoDeadEnd::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	
+
 	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);
-	
+
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Roar_Getup>(0.05f);
 }
 
@@ -110,7 +108,14 @@ _bool CVargBossState_Exe_NoDeadEnd::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 40)
+	{
+		if (m_bDeadChoice)
+		{
+			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_Start>(0.05f);
+			return true;
+		}
+	}
 
 	return false;
 }

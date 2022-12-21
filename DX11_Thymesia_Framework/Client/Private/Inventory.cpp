@@ -21,7 +21,6 @@ HRESULT CInventory::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 	
-
 	return S_OK;
 }
 
@@ -103,6 +102,14 @@ _uint CInventory::Get_Size()
 
 weak_ptr<CItem> CInventory::Find_Item(ITEM_NAME eItemName)
 {
-	return m_mapInventory.find(eItemName)->second;
+	map<ITEM_NAME, shared_ptr<CItem>>::iterator iter;
+	weak_ptr<CItem> pItem;
+
+	iter = m_mapInventory.find(eItemName);
+
+	if (iter != m_mapInventory.end())
+		pItem = iter->second;
+
+	return pItem;
 }
 

@@ -42,6 +42,8 @@ private:
     unordered_map<string, weak_ptr<CModel>> m_pModelComs;
     weak_ptr<CModel>                        m_pCurrentModelCom;
 
+    _int   m_iContainerIndex = 0;
+
 private:
     list<weak_ptr<CWeapon>>                 m_pDebugWeapons;
     list<weak_ptr<CWeapon>>                 m_pModelWeapons;

@@ -62,7 +62,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
    SET_ANIM_SPEED("Corvus_SD1_ParryL_NEW", 4.f);
    SET_ANIM_SPEED("Corvus_SD1_ParryR_NEW", 4.f);
    SET_ANIM_SPEED("Corvus_VSVarg_TakeSPAttack", 1.853f);
- 
+
 
 	SET_ANIM_SPEED("Corvus_Raven_ClawLong_L01", 2.f);
 	SET_ANIM_SPEED("Corvus_Raven_ClawLong_L02", 2.f);
@@ -89,11 +89,13 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("Corvus_SD_AvoidShortMag_R", 2.25f);
     SET_ANIM_SPEED("Corvus_SD1_Sprint", 2.f);
     SET_ANIM_SPEED("Corvus_SD1_Sprint_Start", 2.f);
+    SET_ANIM_SPEED("Corvus_SD_SprintAttack_1", 2.5f);
     SET_ANIM_SPEED("Corvus_Raven_ClawCommonV2_ChargeStart", 1.25f);
     SET_ANIM_SPEED("Corvus_Raven_ClawCommon_ChargeLoop", 1.5f);
     SET_ANIM_SPEED("Corvus_Raven_ClawLong_ChargeFull", 2.f);
     SET_ANIM_SPEED("Corvus_SD_TD2Thorw2", 1.75f);
-    SET_ANIM_SPEED("Corvus_PW_Axe", 3.f);
+    SET_ANIM_SPEED("Corvus_PW_Axe", 2.f);
+    SET_ANIM_SPEED("Corvus_PW_Axe_B_V1", 2.f);
     SET_ANIM_SPEED("Corvus_PW_Knife_A_V1", 2.75f);
 
     SET_ANIM_SPEED("Corvus_PW_VargSword_B", 1.75f);
@@ -125,9 +127,10 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 
 	SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution", 1.6f);
 	SET_ANIM_SPEED("Corvus_VSBossBat_Execution01", 1.4f);
-    
+
 	SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 7.f);
 	SET_ANIM_SPEED("Corvus_SD_TD2Thorw2", 2.5f);
+	SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution_Blending", 1.1f);
 
 #pragma region Varg
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Catch", 2.306f);

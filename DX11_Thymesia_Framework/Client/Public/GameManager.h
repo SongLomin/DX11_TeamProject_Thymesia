@@ -63,7 +63,7 @@ public: // For. ON / OFF Eye Effect
     {
         m_StoredEffects.emplace(szEffectName, iEffectIndex);
     }
-    const _uint Get_EffectIndex(const char* szEffectName)
+    const _uint Get_StoredEffectIndex(const char* szEffectName)
     {
         return m_StoredEffects[szEffectName];
     }
@@ -136,12 +136,13 @@ private:
 
 public:
     void Load_AllKeyEventFromJson();
-    // 키 이벤트가 있는 애니메이션에게만 함수를 바인드합니다. 
-    // 다음 애니메이션 키 이벤트가 들어오면 Bind_Function을 호출합니다. 
+    // 키 이벤트가 있는 애니메이션에게만 함수를 바인드합니다.
+    // 다음 애니메이션 키 이벤트가 들어오면 Bind_Function을 호출합니다.
     void Bind_KeyEvent(const string& In_szModelName, weak_ptr<CModel> ModelCom, function<void(const _uint&)> Bind_Function);
+    void Unbind_KeyEvent(const string& In_szModelName, weak_ptr<CModel> ModelCom, function<void(const _uint&)> Bind_Function);
 
     // 해당 키에 이벤트가 있는지 확인 후 있다면 이벤트를 호출합니다.
-    void Active_KeyEvent(const weak_ptr<CModel> In_ModelCom, const weak_ptr<CTransform> In_TransformCom, const _uint& In_iKeyIndex, const _uint& In_iTimeScaleLayer = -1);
+    void Active_KeyEvent(const string& In_szKeyEventName, const weak_ptr<CModel> In_ModelCom, const weak_ptr<CTransform> In_TransformCom, const _uint& In_iKeyIndex, const _uint& In_iTimeScaleLayer = -1);
     void Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName,_matrix& OffSetMatrix, CINEMATIC_TYPE iCinematicType);
     void End_Cinematic();
 
@@ -176,7 +177,7 @@ public:
 
     /*
     문광현 임펠다운 함수모음.
-    
+
     무공비급 함수란?
     낙후된 컴퓨터 환경 및 빡빡한 일정마감을 완수하기 위해
     인륜을 져버린 사악한 함수 및 변수들을 모아놓은 공간.
@@ -216,12 +217,15 @@ private:
 
 public:
     void  Registration_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj);
-    void  Activate_Section(_uint In_iSection, _bool In_bState);
+    void  Activate_Section(_uint In_iSection, EVENT_TYPE In_eEventType);
 
     void  Registration_SectionLight(_uint In_iSection, weak_ptr<CLight_Prop> In_pObj);
-    void  Activate_SectionLight(_uint In_iSection, _bool In_bState);
+    void  Activate_SectionLight(_uint In_iSection, EVENT_TYPE In_eEventType);
 
-public:
+    public:
+        void  Set_AnimaionChange(_bool bAnimaionChange) { m_bAnimaionChange = bAnimaionChange; }
+        _bool Get_AnimaionChange() { return m_bAnimaionChange; }
+ public:
     FDelegate<>                 CallBack_ChangePlayer;
     FDelegate<>                 CallBack_FocusInMonster;
     FDelegate<>                 CallBack_FocusOutMonster;
@@ -250,6 +254,7 @@ private:
 
 private:
     _int                                m_iMonsterCount   = 0;
+    _bool                               m_bAnimaionChange = false;
 
 protected:
     void Free();

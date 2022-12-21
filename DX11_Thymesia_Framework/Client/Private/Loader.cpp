@@ -19,7 +19,7 @@
 CLoader::CLoader()
 	//: m_pDevice(pDevice), m_pContext(pContext) ID3D11Device* pDevice, ID3D11DeviceContext* pContext
 {
-	
+
 }
 
 CLoader::~CLoader()
@@ -64,7 +64,7 @@ unsigned int APIENTRY LoadingMain(void* pArg)
 	case LEVEL_TEST:
 		hr = pLoader->Loading_ForTestLevel();
 		break;
-	}	
+	}
 
 	if (FAILED(hr))
 		MSG_BOX("Failed to Loading");
@@ -80,8 +80,6 @@ HRESULT CLoader::Initialize(LEVEL eNextLevel)
 	m_eNextLevel = eNextLevel;
 
 	//std::future<void> a = std::async(std::launch::async, LoadingMain, this);
-
-	
 
 	InitializeCriticalSection(&m_CriticalSection);
 
@@ -114,9 +112,11 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CPhysXColliderObject>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Ladder>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_CheckPoint>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_NextPoint>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Elevator>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Door>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Note>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Item>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CSection_Eventer>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CWater>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CVarg>();
@@ -126,7 +126,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 #endif
 
 #ifndef _ONLY_UI_
-	
+
 #ifdef _LOAD_CAPTURED_RESOURCE_
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Captured Resources..."));
@@ -135,6 +135,19 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	Load_UIResource();
 
 #else // _LOAD_CAPTURED_RESOURCE_
+
+	lstrcpy(m_szLoadingText, TEXT("Loading Diffuse Textures..."));
+	Load_AllDiffuseTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Mask Textures..."));
+	Load_AllMaskMap();
+	lstrcpy(m_szLoadingText, TEXT("Loading Noise Textures..."));
+	Load_AllNoiseTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Particle Textures..."));
+	Load_AllParticleTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Effect Meshes..."));
+
+	Load_AllEffectMesh();
+
 	lstrcpy(m_szLoadingText, TEXT("Loading Default Resources..."));
 	GAMEINSTANCE->Load_Textures(("Default"), TEXT("../Bin/Resources/Textures/Default%d.jpg"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Load_Textures(("Background"), TEXT("../Bin/Resources/Textures/Background/BgFightLoading%d.png"), MEMORY_TYPE::MEMORY_STATIC);
@@ -146,34 +159,14 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading UI Resources..."));
 	Load_UIResource();
 
-	lstrcpy(m_szLoadingText, TEXT("Loading Diffuse Textures..."));
-	Load_AllDiffuseTexture();
-	lstrcpy(m_szLoadingText, TEXT("Loading Mask Textures..."));
-	Load_AllMaskMap();
-	lstrcpy(m_szLoadingText, TEXT("Loading Noise Textures..."));
-	Load_AllNoiseTexture();
-	lstrcpy(m_szLoadingText, TEXT("Loading Particle Textures..."));
-	Load_AllParticleTexture();
-	lstrcpy(m_szLoadingText, TEXT("Loading Effect Meshes..."));
-	Load_AllEffectMesh();
-
-#ifndef _JOJO_EFFECT_TOOL_
+#ifndef _EFFECT_TOOL_
 	lstrcpy(m_szLoadingText, TEXT("Loading Prop Textures..."));
 	Load_AllTexture("../Bin/Resources/Textures/Prop/", MEMORY_TYPE::MEMORY_STATIC);
 	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Textures..."));
 	Load_AllTexture("../Bin/GroundInfo/Texture/", MEMORY_TYPE::MEMORY_STATIC);
 	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Filters..."));
 	Load_AllTexture("../Bin/GroundInfo/Filter/", MEMORY_TYPE::MEMORY_STATIC);
-#endif // _JOJO_EFFECT_TOOL_
-
-	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));
-	this->Load_CorvusModel();
-	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
-	this->Load_BossMobModel();
-	lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
-	this->Load_EliteMobModel();
-	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
-	this->Load_NormalMobModel();
+#endif // _EFFECT_TOOL_
 
 #endif // _LOAD_CAPTURED_RESOURCE_
 
@@ -187,8 +180,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("DamageFont_Normal"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Normal/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("DamageFont_Parry"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Parry/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
-	
-	
+
+
 #ifndef _ONLY_UI_
 
 
@@ -216,14 +209,18 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading All Key Event from Json...."));
 	GET_SINGLE(CGameManager)->Load_AllKeyEventFromJson();
 
-	
+
 #endif // _ONLY_UI_
-	lstrcpy(m_szLoadingText, TEXT("Loading Complete"));	
+	lstrcpy(m_szLoadingText, TEXT("Loading Complete"));
 
 	GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("DamageFont_Normal"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Normal/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("DamageFont_Parry"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Parry/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 
+	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
+	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter%d.dds"));
+	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
 
 	m_isFinished = true;
@@ -239,6 +236,27 @@ HRESULT CLoader::Loading_ForLobby()
 
 HRESULT CLoader::Loading_ForTestLevel()
 {
+
+	lstrcpy(m_szLoadingText, TEXT("Loading Diffuse Textures..."));
+	Load_AllDiffuseTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Mask Textures..."));
+	Load_AllMaskMap();
+	lstrcpy(m_szLoadingText, TEXT("Loading Noise Textures..."));
+	Load_AllNoiseTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Particle Textures..."));
+	Load_AllParticleTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Effect Meshes..."));
+	Load_AllEffectMesh();
+
+	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));
+	this->Load_CorvusModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
+	this->Load_BossMobModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
+	this->Load_EliteMobModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
+	this->Load_NormalMobModel();
+
 #ifndef _ONLY_UI_
 	lstrcpy(m_szLoadingText, TEXT("Loading Skybox Texture..."));
 
@@ -257,7 +275,6 @@ HRESULT CLoader::Loading_ForTestLevel()
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
-#ifdef _MAP_DATA_
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/ForTest_Mesh/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 
@@ -275,22 +292,19 @@ HRESULT CLoader::Loading_ForTestLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/GroundInfo/Mesh/ ]"));
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
-#endif // _MAP_DATA_
 
 #endif // _LOAD_CAPTURED_RESOURCE_
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
-	
-                    
-	// TODO : Turn off temporarily for Light_Prop
+
 	LIGHTDESC LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
 	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
-	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
+	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
+	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
+	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
 	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.bEnable = true;
 	LightDesc.fIntensity = 1.f;
@@ -299,6 +313,11 @@ HRESULT CLoader::Loading_ForTestLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Complete for : Level Test"));
 
+	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
+	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter%d.dds"));
+	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
+
 #endif _ONLY_UI_
 	m_isFinished = true;
 	return S_OK;
@@ -306,9 +325,17 @@ HRESULT CLoader::Loading_ForTestLevel()
 
 HRESULT CLoader::Loading_ForGamePlayLevel()
 {
-	lstrcpy(m_szLoadingText, TEXT("Loading Effect Group..."));
-	//Loading_ForEffectGroup("../Bin/EffectData/");
-	
+	lstrcpy(m_szLoadingText, TEXT("Loading Diffuse Textures..."));
+	Load_AllDiffuseTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Mask Textures..."));
+	Load_AllMaskMap();
+	lstrcpy(m_szLoadingText, TEXT("Loading Noise Textures..."));
+	Load_AllNoiseTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Particle Textures..."));
+	Load_AllParticleTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Effect Meshes..."));
+	Load_AllEffectMesh();
+
 	_matrix TransformMatrix;
 
 #ifndef _ONLY_UI_
@@ -319,6 +346,15 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading Captured Resources from : [ ../Bin/LevelData/CapturedResource/GamePlay.json ]"));
 	GAMEINSTANCE->Load_ResourcesFromJson("../Bin/LevelData/CapturedResource/GamePlay.json");
 #else
+	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));
+	this->Load_CorvusModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
+	this->Load_BossMobModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
+	this->Load_EliteMobModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
+	this->Load_NormalMobModel();
+
 	lstrcpy(m_szLoadingText, TEXT("Loading all EditGround Mesh Info..."));
 	CEditGround::Load_AllMeshInfo();
 
@@ -378,9 +414,15 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	GAMEINSTANCE->Add_Light(LightDesc);
 
+	GAMEINSTANCE->Set_FogDesc(_float4(0.2f, 0.15f, 0.03f, 0.5f), 20.f);
+	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
+	GAMEINSTANCE->Set_Contrast(1.07f);
+	GAMEINSTANCE->Set_Saturation(1.7f);
+	GAMEINSTANCE->Set_Exposure(2.f);
+
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"),MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
-	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter%d.dds"));
+	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 	return S_OK;
 }
@@ -443,14 +485,22 @@ HRESULT CLoader::Loading_ForStage2Level()
 	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
 	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 1.f;
+	LightDesc.fIntensity = 0.2f;
 
 #endif // _BRIGHT_LIGHT_
 
 	GAMEINSTANCE->Add_Light(LightDesc);
 
+	GAMEINSTANCE->Set_FogDesc(_float4(1.f, 1.f, 1.f, 0.65f), 70.f);
+	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
+	GAMEINSTANCE->Set_Contrast(1.f);
+	GAMEINSTANCE->Set_Saturation(1.f);
+	GAMEINSTANCE->Set_Exposure(1.f);
+
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
+	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
 
 	m_isFinished = true;
@@ -466,7 +516,6 @@ HRESULT CLoader::Loading_ForStage3Level()
 	//#else // _LOAD_CAPTURED_RESOURCE_
 
 #ifndef _ONLY_UI_
-#ifdef _MAP_DATA_
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/ForTest_Mesh/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 
@@ -481,7 +530,6 @@ HRESULT CLoader::Loading_ForStage3Level()
 
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-#endif // _MAP_DATA_
 
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/GroundInfo/Mesh/ ]"));
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
@@ -517,14 +565,22 @@ HRESULT CLoader::Loading_ForStage3Level()
 	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
 	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 1.f;
+	LightDesc.fIntensity = 0.2f;
 
 #endif // _BRIGHT_LIGHT_
 
-	GAMEINSTANCE->Add_Light(LightDesc);
+	//GAMEINSTANCE->Add_Light(LightDesc);
 
+	GAMEINSTANCE->Set_FogDesc(_float4(1.f, 1.f, 1.f, 1.f), 1000.f);
+	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
+	GAMEINSTANCE->Set_Contrast(1.f);
+	GAMEINSTANCE->Set_Saturation(1.f);
+	GAMEINSTANCE->Set_Exposure(1.f);
+	
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
+	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
 
 	return S_OK;
@@ -534,7 +590,27 @@ HRESULT CLoader::Loading_ForEditLevel()
 {
 	// Load_AllMeshes("../Bin/Resources/Meshes/Temp/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 
-#ifndef _JOJO_EFFECT_TOOL_
+	lstrcpy(m_szLoadingText, TEXT("Loading Diffuse Textures..."));
+	Load_AllDiffuseTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Mask Textures..."));
+	Load_AllMaskMap();
+	lstrcpy(m_szLoadingText, TEXT("Loading Noise Textures..."));
+	Load_AllNoiseTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Particle Textures..."));
+	Load_AllParticleTexture();
+	lstrcpy(m_szLoadingText, TEXT("Loading Effect Meshes..."));
+
+	Load_AllEffectMesh();
+
+	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));
+	this->Load_CorvusModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
+	this->Load_BossMobModel();
+	//lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
+	//this->Load_EliteMobModel();
+	//lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
+	//this->Load_NormalMobModel();
+
 #ifdef _MAP_TOOL_
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/ForTest_Mesh/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
@@ -566,16 +642,11 @@ HRESULT CLoader::Loading_ForEditLevel()
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 #endif // _MAP_TOOL_
-#endif // _JOJO_EFFECT_TOOL_
-
-#ifdef _EFFECT_TOOL_
-#endif // _EFFECT_TOOL_
 
 	// TODO : Turn off temporarily for Light_Prop
 	LIGHTDESC LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
-#ifdef _BRIGHT_LIGHT_
 	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
 	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
@@ -584,19 +655,13 @@ HRESULT CLoader::Loading_ForEditLevel()
 	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.bEnable = true;
 	LightDesc.fIntensity = 1.f;
-#else
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
-	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
-	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 1.f;
-
-#endif // _BRIGHT_LIGHT_
 
 	GAMEINSTANCE->Add_Light(LightDesc);
+
+	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
+	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter%d.dds"));
+	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
 	m_isFinished = true;
 	return S_OK;
@@ -738,7 +803,7 @@ void CLoader::Load_AllMeshes(const filesystem::path& In_Path, MODEL_TYPE In_eMod
 	string szExtension;
 	fs::directory_iterator itr(In_Path);
 
-	while (itr != fs::end(itr)) 
+	while (itr != fs::end(itr))
 	{
 		const fs::directory_entry& entry = *itr;
 
@@ -819,7 +884,7 @@ void CLoader::Create_GameObjectFromJson(const string& In_szJsonPath, const LEVEL
 void CLoader::Load_UIResource()
 {
 #pragma region 1ÆÀ
-#ifndef _JOJO_EFFECT_TOOL_
+#ifndef _EFFECT_TOOL_
 	GAMEINSTANCE->Load_Textures(("Loading_SafeHouse"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_Lobby_01.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Loading_SeaOfTrees"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_Circus_01.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Loading_RoyalGarden"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/TexUI_LoadingScreen_Circus_01.dds"), MEMORY_TYPE::MEMORY_STATIC);
@@ -833,11 +898,11 @@ void CLoader::Load_UIResource()
 
 	GAMEINSTANCE->Load_Textures(("Loading_Font_Fortress_Title"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/Fortress_Name.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Loading_Font_Fortress_Desc"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/Fortress_Desc.png"), MEMORY_TYPE::MEMORY_STATIC);
-#endif // _JOJO_EFFECT_TOOL_
+#endif // _EFFECT_TOOL_
 
 	GAMEINSTANCE->Load_Textures(("Loading_Font_RoyalGarden_Title"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/RoyalGarden_Name.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Loading_Font_RoyalGarden_Desc"), TEXT("../Bin/Resources/Textures/UI/LoadingScreen/LoadingFont/RoyalGarden_Desc.png"), MEMORY_TYPE::MEMORY_STATIC);
-	
+
 	//MainMenu(LogoLevel)
 	GAMEINSTANCE->Load_Textures(("MainMenu_Background"), TEXT("../Bin/Resources/Textures/UI/MainMenuBackrgound.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("GameLogo"), TEXT("../Bin/Resources/Textures/UI/GameLogo2.dds"), MEMORY_TYPE::MEMORY_STATIC);
@@ -854,7 +919,7 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("MainMenu_SelectableButton_Tool"), TEXT("../Bin/Resources/Textures/UI/UI_Tool.png"), MEMORY_TYPE::MEMORY_DYNAMIC);
 
 #pragma endregion 1ÆÀ
-#ifndef _JOJO_EFFECT_TOOL_
+#ifndef _EFFECT_TOOL_
 	//Player HPBar Texture
 	GAMEINSTANCE->Load_Textures(("Player_HPBar_Border_Left"), TEXT("../Bin/Resources/Textures/UI/HUD/PlayerHPBar/TexUI_HPBar_1Border_Left.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Player_HPBar_Border_Right"), TEXT("../Bin/Resources/Textures/UI/HUD/PlayerHPBar/TexUI_HPBar_1Border_Right.png"), MEMORY_TYPE::MEMORY_STATIC);
@@ -1092,10 +1157,10 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_PW_Frame_Hover"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Hover.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_PW_Active"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Active.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_PW_Active_Hover"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_ActiveHover.png"), MEMORY_TYPE::MEMORY_STATIC);
-	
+
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_PW_None"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_None.png"), MEMORY_TYPE::MEMORY_STATIC);
 
-	
+
 	//PlagueSkillIcon
 
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Basic"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/TexUI_TalentIcon_LAtk_Basic.dds"), MEMORY_TYPE::MEMORY_STATIC);
@@ -1115,7 +1180,7 @@ void CLoader::Load_UIResource()
 
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Slash1_Title"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/LAtk_Slash1_Title.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Slash1_Information"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/LAtk_Slash1_Information.png"), MEMORY_TYPE::MEMORY_STATIC);
-	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+
 
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Stab0_Title"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/LAtk_Stab0_Title.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Stab0_Information"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/LAtk_Stab0_Information.png"), MEMORY_TYPE::MEMORY_STATIC);
@@ -1159,7 +1224,7 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Inventory_Frame"), TEXT("../Bin/Resources/Textures/UI/Inventory/Inventory_MainFrame.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 	GAMEINSTANCE->Load_Textures(("Inventory_FrameBG"), TEXT("../Bin/Resources/Textures/UI/Inventory/Inventory_MainFrameBG.dds"), MEMORY_TYPE::MEMORY_STATIC);
-	
+
 	GAMEINSTANCE->Load_Textures(("ItemSlot_Main"), TEXT("../Bin/Resources/Textures/UI/Inventory/TexUI_ItemBackground.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("ItemSlot_Frame"), TEXT("../Bin/Resources/Textures/UI/Inventory/TexUI_SquareFrame.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("ItemSlot_Hover"), TEXT("../Bin/Resources/Textures/UI/Inventory/TexUI_SquareFrame_Hover.dds"), MEMORY_TYPE::MEMORY_STATIC);
@@ -1228,6 +1293,11 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Popup_Item_Thyme"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_Thyme.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Popup_Item_GardenKey"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_GardenKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Popup_Item_Memory01"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_Memory01.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+	//BloodOverlay
+	GAMEINSTANCE->Load_Textures(("BloodOverlay_Mask"), TEXT("../Bin/Resources/Textures/UI/BloodOverlay/Mask.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("BloodOverlay"), TEXT("../Bin/Resources/Textures/UI/BloodOverlay/Texture.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
 
 #endif // _JOJO_EFFECT_TOOL_
 }
@@ -1307,7 +1377,7 @@ void CLoader::Load_NormalMobModel()
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(0.f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixRotationZ(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Mon_Mutation7", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation7.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
-	
+
 }
 
 void CLoader::Load_RareMobModel()
@@ -1346,7 +1416,7 @@ void CLoader::Load_BossMobModel()
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Boss_Bat", "../Bin/Resources/Meshes/Boss/Bat/Bat.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
-	
+
 	TransformMatrix = XMMatrixRotationZ(XMConvertToRadians(-90.0f)) * XMMatrixRotationX(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
 	GAMEINSTANCE->Load_Model("Boss_BatWeapon", "../Bin/Resources/Meshes/Boss/Bat/Weapon/BushBottom.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 

@@ -89,6 +89,14 @@ _bool CVargBossState_Stun_Loop::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+
+	if (GET_SINGLE(CGameManager)->Get_AnimaionChange())
+	{
+		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_NoDeadEnd>(0.05f);
+		return true;
+	}
+
+
 	return false;
 }
 

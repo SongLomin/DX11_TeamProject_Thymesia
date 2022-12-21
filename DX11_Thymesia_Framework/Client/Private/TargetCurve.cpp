@@ -70,7 +70,7 @@ void CTargetCurve::Tick(_float fTimeDelta)
 	_matrix MonsterWorldMatrix = BoneMatrix * m_pTargetTransformCom.lock()->Get_UnScaledWorldMatrix();
 
 	_matrix CurvePoints;
-	
+
 	CurvePoints.r[0] = m_pParentTransformCom.lock()->Get_Position();
 	CurvePoints.r[0].m128_f32[1] += 1.2f;
 	CurvePoints.r[3] = MonsterWorldMatrix.r[3];
@@ -87,7 +87,7 @@ void CTargetCurve::Tick(_float fTimeDelta)
 
 	vDir = XMVector3TransformNormal(vLook, XMMatrixRotationAxis(vRight, XMConvertToRadians(75.0f)));
 	vDir = XMVector3TransformNormal(vDir, XMMatrixRotationAxis(vLook, XMConvertToRadians(35.0f)));
-	
+
 	CurvePoints.r[2] = CurvePoints.r[3] - vDir;
 
 	XMStoreFloat4x4(&m_CurvePoints, CurvePoints);
@@ -149,11 +149,11 @@ void CTargetCurve::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vUVMask", &m_vMaskUV, sizeof(_float2))))
 		DEBUG_ASSERT;
 
-	_float fWrapWeight = 1.f;
+	_float fWrapWeight = 2.f;
 
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("fWrapWeight", &fWrapWeight, sizeof(_float))))
 		DEBUG_ASSERT;
-	if (FAILED(m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 693)))
+	if (FAILED(m_pTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 609)))
 		DEBUG_ASSERT;
 }
 

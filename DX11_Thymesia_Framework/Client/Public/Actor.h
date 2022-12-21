@@ -32,10 +32,12 @@ public:
     virtual void Thread_PreTick(_float fTimeDelta) override;
     virtual void Thread_PreLateTick(_float fTimeDelta) override;
     virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
-    
+
 public:
     _vector Get_WorldPosition();
- 
+
+    void Bind_KeyEvent(const char* szKeyEventName);
+    void Unbind_KeyEvent(const char* szKeyEventName);
 
 public:
     void Call_NextAnimationKey(const _uint& In_iKeyIndex);
@@ -62,6 +64,9 @@ protected:
     _bool       m_bRendering = true;
 
     _float      m_fCullingRange = 5.f;
+
+private:
+    string m_strKeyEventName;
 
 public:
     // 전투가 끝나면 호출됩니다. 주로 승리 연출

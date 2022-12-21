@@ -15,7 +15,7 @@ public:
 	virtual ID3D11DeviceContext* getContext() const override;
 	virtual bool synchronizeResources() const override;
 
-private:
+public:
 	std::recursive_mutex mMutex;
 	ID3D11Device* mDevice;
 	ID3D11DeviceContext* mContext;

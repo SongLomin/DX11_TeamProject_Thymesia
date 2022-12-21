@@ -37,9 +37,7 @@ _bool CCorvusStateBase::Check_RequirementAttackState()
 _bool CCorvusStateBase::Check_RequirementFadderAttackState()
 {
 	if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
-	{
 		return true;
-	}
 
 	return false;
 }
@@ -127,11 +125,8 @@ _bool CCorvusStateBase::Check_RequirementParryState()
 
 _bool CCorvusStateBase::Check_RequirementUltimateState()
 {
-
 	if (KEY_INPUT(KEY::V, KEY_STATE::HOLD))
-	{
 		return true;
-	}
 
 	return false;
 }
@@ -411,7 +406,6 @@ _bool CCorvusStateBase::Check_AndChangeLadderState(weak_ptr<CCollider> pMyCollid
 			_float fHeightOffset = Weak_Cast<CInteraction_Ladder>(pOtherCollider.lock()->Get_Owner()).lock()->Get_UpLadderHeight();
 
 			vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, fHeightOffset -0.12f, 0.485f, 0.f));
-
 			m_pPhysXControllerCom.lock()->Set_Position(
 				vResultOtherWorldMatrix.r[3],
 				GAMEINSTANCE->Get_DeltaTime(),

@@ -61,7 +61,7 @@ void CActor::LateTick(_float fTimeDelta)
 #endif // !_USE_THREAD_
 
 
-   
+
 
     //m_pRendererCom.lock()->Add_RenderGroup(m_eRenderGroup, Cast<CGameObject>(m_this));
 }
@@ -111,12 +111,25 @@ _vector CActor::Get_WorldPosition()
     return m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
 }
 
+void CActor::Bind_KeyEvent(const char* szKeyEventName)
+{
+    m_strKeyEventName = szKeyEventName;
+	GET_SINGLE(CGameManager)->Bind_KeyEvent(szKeyEventName, m_pModelCom, bind(&CActor::Call_NextAnimationKey, this, placeholders::_1));
+}
 
+void CActor::Unbind_KeyEvent(const char* szKeyEventName)
+{
+	GET_SINGLE(CGameManager)->Unbind_KeyEvent(szKeyEventName, m_pModelCom, bind(&CActor::Call_NextAnimationKey, this, placeholders::_1));
+    m_strKeyEventName.clear();
+}
 
 void CActor::Call_NextAnimationKey(const _uint& In_iKeyIndex)
 {
-    GET_SINGLE(CGameManager)->Active_KeyEvent(m_pModelCom, m_pTransformCom, In_iKeyIndex);
+    // Unbind_KeyEvent가 제대로 작동 하지 않을 시
+    if (m_strKeyEventName.empty())
+        DEBUG_ASSERT;
 
+    GET_SINGLE(CGameManager)->Active_KeyEvent(m_strKeyEventName, m_pModelCom, m_pTransformCom, In_iKeyIndex);
 }
 
 weak_ptr<CRequirementChecker> CActor::Get_Requirement(const string& In_szCheckerKey)
@@ -152,7 +165,7 @@ void CActor::OnDisable()
     {
         GET_SINGLE(CGameManager)->UnUse_EffectGroup(elem.first, elem.second);
     }
-    
+
     m_EffectIndexList.clear();
 }
 

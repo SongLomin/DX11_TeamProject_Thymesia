@@ -116,7 +116,7 @@ void CNorMonState_Idle::Start()
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Idle");
 	}
 
-	
+
 }
 
 void CNorMonState_Idle::Tick(_float fTimeDelta)
@@ -125,10 +125,6 @@ void CNorMonState_Idle::Tick(_float fTimeDelta)
 
 	//Turn_Transform(fTimeDelta);
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
-
-	
-
-
 }
 
 void CNorMonState_Idle::LateTick(_float fTimeDelta)
@@ -199,8 +195,8 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 		m_iIdleType = 3;
 	}
 
-	// 1. 아이들상태부터 검사  근데이떄가 거리가 가까워졌을대임 
-	// 첫번째로아이들들어오면 무조건 이친구가 들어오게함 
+	// 1. 아이들상태부터 검사  근데이떄가 거리가 가까워졌을대임
+	// 첫번째로아이들들어오면 무조건 이친구가 들어오게함
 	if (fPToMDistance <= 3.f && m_iIdleType == 0  )
 	{
 
@@ -275,8 +271,8 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 
 	// 2.재내들 끊나면 다시아이들로옴 어떤상태는 무조건 NORIDLE상태임
 	// 아이들타입으로 들어왔고 이때 턴검사한번 더해야함 90보다 작은상태이거나
-	// 90보다큰상태일떄 검사를해야하기에 아직 기본아이들도 룩앳이아님 
-	// 기본아이들이면 각도를계산해 
+	// 90보다큰상태일떄 검사를해야하기에 아직 기본아이들도 룩앳이아님
+	// 기본아이들이면 각도를계산해
 	if (m_bCloseToRun && m_iIdleType == 1)
 	{
 
@@ -432,7 +428,7 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 		return true;
 	}
 
-	// 
+	//
 	if (m_bCloseToRun && m_iIdleType == 2 && m_bClosePlayerCheck)
 	{
 		Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
@@ -511,7 +507,7 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 
 
 
-	
+
 
 	return false;
 }

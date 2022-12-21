@@ -10,6 +10,8 @@
 #include "Character.h"
 #include "VargStates.h"
 
+#include "GameManager.h"
+
 GAMECLASS_C(CVargBossState_IdleGeneral);
 CLONE_C(CVargBossState_IdleGeneral, CComponent)
 
@@ -41,8 +43,23 @@ void CVargBossState_IdleGeneral::Tick(_float fTimeDelta)
 void CVargBossState_IdleGeneral::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
 	CBossStateBase::Rotation_TargetToLookDir();
-	this->Check_AndChangeNextState();
+
+	if (CallBack_EventTrigger.empty())
+	{
+		Check_AndChangeNextState();
+	}
+	else
+	{
+		_bool bEnd = false;
+
+		CallBack_EventTrigger(fTimeDelta, bEnd);
+
+		if (bEnd)
+			CallBack_EventTrigger.Clear();
+	}
+
 }
 
 
@@ -67,7 +84,18 @@ void CVargBossState_IdleGeneral::OnStateEnd()
 	
 }
 
+void CVargBossState_IdleGeneral::EventTrigger(_float fTimeDelta, _bool& Out_bEnd)
+{
+	m_fAccTime += fTimeDelta;
 
+	if (6.f <= m_fAccTime)
+	{
+		CStateBase::Get_OwnerCharacter().lock()->Change_State<CVargBossState_Start>(0.05f);
+		
+		m_fAccTime = 0.f;
+		Out_bEnd   = true;
+	}
+}
 
 void CVargBossState_IdleGeneral::Free()
 {
@@ -80,9 +108,15 @@ _bool CVargBossState_IdleGeneral::Check_AndChangeNextState()
 
 	_float fPToMDistance(CBossStateBase::Get_DistanceWithPlayer()); // 플레이어와 몬스터 거리
 
-	if (fPToMDistance <= 22.f)
+	if (fPToMDistance <= 18.f)
 	{
-		CStateBase::Get_OwnerCharacter().lock()->Change_State<CVargBossState_Start>(0.05f);
+		//CStateBase::Get_OwnerCharacter().lock()->Change_State<CVargBossState_Start>(0.05f);
+		GET_SINGLE(CGameManager)->Activate_Section(100, EVENT_TYPE::ON_EXIT_SECTION);
+		GET_SINGLE(CGameManager)->Activate_Section(100, EVENT_TYPE::ON_LOCK_SECTION);
+		GET_SINGLE(CGameManager)->Activate_SectionLight(0, EVENT_TYPE::ON_ENTER_SECTION);
+
+		CallBack_EventTrigger += bind(&CVargBossState_IdleGeneral::EventTrigger, this, placeholders::_1, placeholders::_2);
+
 		return true;
 	}
 

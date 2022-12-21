@@ -130,7 +130,7 @@ void CCamera_Target::Tick(_float fTimeDelta)
 void CCamera_Target::LateTick(_float fTimeDelta)
 {
 	Update_PhysXCollider(fTimeDelta);
-
+	
 	Bind_PipeLine();
 }
 
@@ -144,14 +144,26 @@ void CCamera_Target::Change_Target()
 	/*추후에 시간 나면 타겟 바꾸는 기능 추가*/
 }
 
-void CCamera_Target::Focus_Monster(weak_ptr<CGameObject> _pMonster)
+void CCamera_Target::Focus_Monster(weak_ptr<CMonster> _pMonster)
 {
 	if (!_pMonster.lock())
 		return;
 
 	m_bIsFocused = true;
 	m_pTargetMonster = _pMonster;
-	m_pTargetMonsterTransformCom = _pMonster.lock()->Get_Component<CTransform>();
+	m_pTargetMonsterTransformCom = _pMonster.lock()->Get_Transform();
+
+	m_pTargetMonsterModelCom = _pMonster.lock()->Get_Model();
+
+	m_pTargetMonsterBoneNodeCom = m_pTargetMonsterModelCom.lock()->Find_BoneNode("Spine01");
+	if (!m_pTargetMonsterBoneNodeCom.lock())
+	{
+		m_pTargetMonsterBoneNodeCom = m_pTargetMonsterModelCom.lock()->Find_BoneNode("Bip001-Spine1");
+	}
+	if (!m_pTargetMonsterBoneNodeCom.lock())
+	{
+		m_pTargetMonsterBoneNodeCom = m_pTargetMonsterModelCom.lock()->Find_BoneNode("spine_01");
+	}
 
 }
 
@@ -160,6 +172,8 @@ void CCamera_Target::Release_Focus()
 	m_bIsFocused = false;
 	m_pTargetMonster = weak_ptr<CGameObject>();
 	m_pTargetMonsterTransformCom = weak_ptr<CTransform>();
+	m_pTargetMonsterModelCom = weak_ptr<CModel>();
+	m_pTargetMonsterBoneNodeCom = weak_ptr<CBoneNode>();
 
 }
 
@@ -198,7 +212,7 @@ void CCamera_Target::End_Cinematic()
 		m_pTransformCom.lock()->Set_WorldMatrix(TotalMatrix);
 		_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
 		_vector vCurPlayerPos = m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-		XMStoreFloat4(&m_vPlayerFollowLerpPosition, TotalMatrix.r[3] + vLook * 4.5f - XMVectorSet(0.f, 1.1f, 0.f, 0.f));
+		XMStoreFloat4(&m_vPlayerFollowLerpPosition, TotalMatrix.r[3] + vLook * 3.25f - XMVectorSet(0.f, 1.1f, 0.f, 0.f));
 		XMStoreFloat4(&m_vPrePlayerPos, vCurPlayerPos);
 
 		m_pCameraBoneNode = weak_ptr<CBoneNode>();
@@ -214,7 +228,7 @@ void CCamera_Target::End_Cinematic()
 		PlayerMatrix.r[2] = XMVector3Normalize(PlayerMatrix.r[2]);
 
 		_vector vLook = PlayerMatrix.r[2];
-		PlayerMatrix.r[3] = PlayerMatrix.r[3] + vLook * -4.5f + XMVectorSet(0.f, 1.1f, 0.f, 0.f);
+		PlayerMatrix.r[3] = PlayerMatrix.r[3] + vLook * -3.5f + XMVectorSet(0.f, 1.1f, 0.f, 0.f);
 		m_pTransformCom.lock()->Set_WorldMatrix(PlayerMatrix);
 
 		/*그냥 대충 페이드아웃*/
@@ -300,12 +314,25 @@ HRESULT CCamera_Target::Bind_PipeLine()
 
 void CCamera_Target::Look_At_Target(_float fTimeDelta)//타겟 고정
 {
-	_float fLerpRatio(2.f * fTimeDelta);
+	_float fLerpRatio(5.f * fTimeDelta);
 	if (1.f < fLerpRatio)
-		return;
+		fLerpRatio = 1.f;
 
-	_vector vPlayerPos = m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-	_vector vTargetPos = m_pTargetMonsterTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+	_float4x4 matTargetModelTransformationMatrix = m_pTargetMonsterModelCom.lock()->Get_TransformationMatrix();
+	_matrix  matTargetMonsterWorld = XMLoadFloat4x4(&matTargetModelTransformationMatrix);
+	_matrix  matTargetCombined = m_pTargetMonsterBoneNodeCom.lock()->Get_CombinedMatrix();
+
+
+	_matrix BoneMatrix = matTargetCombined * matTargetMonsterWorld;
+
+	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
+	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
+	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
+
+	_matrix MonsterWorldMatrix = BoneMatrix * m_pTargetMonsterTransformCom.lock()->Get_UnScaledWorldMatrix();
+
+	_vector vPlayerPos = m_pCurrentPlayerTransformCom.lock()->Get_Position() + XMVectorSet(0.f,1.f,0.f,0.f);
+	_vector vTargetPos = MonsterWorldMatrix.r[3];
 	_vector vLookDir = XMVector3Normalize(vTargetPos - vPlayerPos);
 
 	_vector vRight = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vLookDir);
@@ -323,8 +350,6 @@ void CCamera_Target::Look_At_Target(_float fTimeDelta)//타겟 고정
 	_vector vLookTargetQuaternion = XMQuaternionRotationMatrix(vLookTargetMatrix);
 	_vector vCurCameraQuaternion = XMQuaternionRotationMatrix(m_pTransformCom.lock()->Get_WorldMatrix());
 
-	//m_fRotationLerpRatio를 위 처럼 일정 비율 증가하게 해야함 조건은 각도가 일정 크기 이상으로 되었을 때
-	//ratio를 증가 시키고 아닐 때 0으로 만들어 놓음 <- 조건을 찾아야함
 	_vector vLerpQuaternion = XMQuaternionSlerp(vCurCameraQuaternion, vLookTargetQuaternion, fLerpRatio);
 
 	m_pTransformCom.lock()->Rotation_Quaternion(vLerpQuaternion);
@@ -474,7 +499,7 @@ void CCamera_Target::Interpolate_Camera(_float fTimeDelta)//항상 적용
 	}
 
 	_vector vLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
-	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * (-4.5f + m_fZoom) + XMVectorSet(0.f, 1.1f, 0.f, 0.f) + XMLoadFloat3(&m_vShaking);
+	_vector vPos = XMLoadFloat4(&m_vPlayerFollowLerpPosition) + vLook * (-3.25f + m_fZoom) + XMVectorSet(0.f, 1.1f, 0.f, 0.f) + XMLoadFloat3(&m_vShaking);
 	m_pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
 
 	_float3 vPitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(m_pTransformCom.lock()->Get_WorldMatrix()));

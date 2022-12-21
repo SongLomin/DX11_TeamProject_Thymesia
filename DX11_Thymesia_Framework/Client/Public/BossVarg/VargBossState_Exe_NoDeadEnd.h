@@ -28,8 +28,11 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
+public:
+	void Set_DeadChoice(_bool DeadChoice) { m_bDeadChoice = DeadChoice; }
 
-
+private:
+	_bool  m_bDeadChoice = false;
 private:
 	void Call_AnimationEnd();
 protected:

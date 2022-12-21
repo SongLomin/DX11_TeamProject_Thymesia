@@ -73,8 +73,6 @@ void CVargBossState_Attack1a::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-
-
 void CVargBossState_Attack1a::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);

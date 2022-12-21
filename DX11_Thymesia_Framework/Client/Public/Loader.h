@@ -30,7 +30,7 @@ public:
 	HRESULT Initialize(LEVEL eNextLevel);
 	HRESULT Loading_ForLogoLevel();
 	HRESULT Loading_ForLobby();
-	HRESULT Loading_ForGamePlayLevel();	
+	HRESULT Loading_ForGamePlayLevel();
 	HRESULT Loading_ForStage2Level();
 	HRESULT Loading_ForStage3Level();
 	HRESULT Loading_ForEditLevel();
@@ -49,7 +49,7 @@ private:
 
 	void	Load_AllMeshes(const filesystem::path& In_Path, MODEL_TYPE In_eModelType, const MEMORY_TYPE& In_eMemoryType, _matrix TransformationMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f), const char* In_extansion = ".bin");
 	void	Load_AllTexture(const filesystem::path& In_Path, const MEMORY_TYPE& In_eMemoryType);
-	
+
 	void	Create_GameObjectFromJson(const string& In_szJsonPath, const LEVEL& In_eLevel);
 
 	void	Load_UIResource();

@@ -39,6 +39,14 @@ HRESULT CPreview_Prop::Start()
 void CPreview_Prop::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
+
+#ifdef _DEBUG
+	//if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
+	//{
+	//	++m_iContainerIndex;
+	//	cout << "m_iContainerIndex : " << m_iContainerIndex << endl;
+	//}
+#endif // _DEBUG
 }
 
 void CPreview_Prop::LateTick(_float fTimeDelta)
@@ -54,8 +62,18 @@ HRESULT CPreview_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 
 	m_iPassIndex = 3;
 	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
+
+#ifdef _DEBUG
+	if (m_iContainerIndex >= iNumMeshContainers)
+		m_iContainerIndex = 0;
+#endif //_DEBUG
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
+#ifdef _DEBUG
+		if (i == m_iContainerIndex)
+			continue;
+#endif
+
 		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))

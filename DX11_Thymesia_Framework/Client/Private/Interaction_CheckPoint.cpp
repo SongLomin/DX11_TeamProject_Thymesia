@@ -36,7 +36,6 @@ HRESULT CInteraction_CheckPoint::Initialize(void* pArg)
     );
 
     m_pModelCom.lock()->Init_Model("P_ArchiveChair01", "");
-
     return S_OK;
 }
 
@@ -61,6 +60,8 @@ HRESULT CInteraction_CheckPoint::Start()
 
 	m_tLightDesc = GAMEINSTANCE->Add_Light(m_tLightDesc);
 
+    m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("CheckPointChair_Loop", m_pTransformCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
+
     return S_OK;
 }
 
@@ -84,7 +85,8 @@ void CInteraction_CheckPoint::OnEventMessage(_uint iArg)
     {
         case EVENT_TYPE::ON_EDITINIT:
         {
-            SetUpColliderDesc();
+            if (!m_pColliderCom.lock())
+                SetUpColliderDesc();
         }
         break;
 
@@ -166,4 +168,9 @@ void CInteraction_CheckPoint::SetUpColliderDesc()
 
     m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
     m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+}
+
+void CInteraction_CheckPoint::Free()
+{
+    GET_SINGLE(CGameManager)->UnUse_EffectGroup("CheckPointChair_Loop", m_iEffectIndex);
 }

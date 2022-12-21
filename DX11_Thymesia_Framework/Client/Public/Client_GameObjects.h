@@ -21,9 +21,11 @@
 #include "Interaction_Ladder.h"
 #include "Interaction_Dynamic_Prop.h"
 #include "Interaction_CheckPoint.h"
+#include "Interaction_NextPoint.h"
 #include "Interaction_Elevator.h"
 #include "Interaction_Door.h"
 #include "Interaction_Note.h"
+#include "Interaction_Item.h"
 #include "Section_Eventer.h"
 #include "Water.h"
 

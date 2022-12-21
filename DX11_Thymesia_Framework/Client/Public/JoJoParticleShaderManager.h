@@ -1,7 +1,7 @@
 #pragma once
 #include "Base.h"
 #include "Client_Defines.h"
-#ifdef _JOJO_EFFECT_TOOL_
+#ifdef _EFFECT_TOOL_
 BEGIN(Client)
 class CJoJoParticleShaderManager :
     public CBase
@@ -19,4 +19,4 @@ public:
     std::vector<JJ_PARTICLE_SHADER_INFO> m_ParticleShaderInfos;
 };
 END
-#endif // _JOJO_EFFECT_TOOL_
+#endif // _EFFECT_TOOL_

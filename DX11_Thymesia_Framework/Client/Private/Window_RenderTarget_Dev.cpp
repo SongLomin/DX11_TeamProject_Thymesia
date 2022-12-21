@@ -151,10 +151,12 @@ void CWindow_RenderTarget_Dev::Load_FromJson(const json& In_Json)
 	m_RenderTargetSize[1] = In_Json["SizeY"];
 	m_bOldSchool = In_Json["IsOldSchoolView"];
 
-
-	for (auto& elem : In_Json["RenderTargetIndexs"])
+	if (In_Json.find("RenderTargetIndexs") != In_Json.end())
 	{
-		m_iRenderTargetIndexs.push_back(elem);
+		for (auto& elem : In_Json["RenderTargetIndexs"])
+		{
+			m_iRenderTargetIndexs.push_back(elem);
+		}
 	}
 
 	_float2 vSize((_float)m_RenderTargetSize[0], (_float)m_RenderTargetSize[1]);

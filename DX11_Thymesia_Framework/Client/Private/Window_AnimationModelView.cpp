@@ -81,7 +81,7 @@ HRESULT CWindow_AnimationModelView::Render(ID3D11DeviceContext* pDeviceContext)
 
             if (ImGui::Button("Load"))
             {
-                
+
                 m_pPreviewModel.lock()->Init_EditPreviewAnimationModel(m_AllModelKeys[m_CurrentModelIndex]);
                 Update_PreViewModel();
             }
@@ -92,15 +92,27 @@ HRESULT CWindow_AnimationModelView::Render(ID3D11DeviceContext* pDeviceContext)
                 //ImGui::InputText("##ModelKey", m_szModelKey, MAX_PATH);
 
                 ImGui::Text(" NoAnimModel List");
+
+				static ImGuiTextFilter ModelFilter;
+				ImGui::Text("Search"); ImGui::SameLine();
+                ModelFilter.Draw("##NoAnimModelSearchBar", 250.f);
+
                 if (ImGui::BeginListBox("## NoAnimModel List", ImVec2(-FLT_MIN, 15 * ImGui::GetTextLineHeightWithSpacing())))
                 {
-
                     for (int i = 0; i < m_AllNoAnimModelKeys.size(); i++)
                     {
+                        auto ModelKit = m_AllNoAnimModelKeys.at(i);
                         const bool is_selected = (m_CurrentNoAnimModelIndex == i);
-                        if (ImGui::Selectable(m_AllNoAnimModelKeys[i].c_str(), is_selected))
-                            m_CurrentNoAnimModelIndex = i;
 
+                        if (ModelFilter.PassFilter(ModelKit.c_str()))
+                        {
+                            std::string label = ModelKit + "##" + std::to_string(i);
+
+                            if (ImGui::Selectable(label.c_str(), is_selected))
+                            {
+								m_CurrentNoAnimModelIndex = i;
+                            }
+                        }
                         // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
                         if (is_selected)
                             ImGui::SetItemDefaultFocus();
@@ -114,7 +126,7 @@ HRESULT CWindow_AnimationModelView::Render(ID3D11DeviceContext* pDeviceContext)
                     m_pPreviewNoAnimModel.lock()->Get_Component<CModel>().lock()->
                         Get_Owner().lock()->
                             Get_Component<CModel>().lock()->Init_Model(m_AllNoAnimModelKeys[m_CurrentNoAnimModelIndex].c_str());
-                   
+
                 }
             }
 
@@ -155,14 +167,13 @@ HRESULT CWindow_AnimationModelView::Render(ID3D11DeviceContext* pDeviceContext)
                     }*/
                 }
             }
-            
+
         }
 
         ImGui::EndTabBar();
     }
 
     __super::End();
-
     return S_OK;
 }
 
@@ -186,7 +197,7 @@ void CWindow_AnimationModelView::Update_PreViewModel()
 
 void CWindow_AnimationModelView::Free()
 {
-    if(m_pPreviewModel.lock())
+    if (m_pPreviewModel.lock())
         m_pPreviewModel.lock()->Set_Dead();
 
     // TODO : comment because explode

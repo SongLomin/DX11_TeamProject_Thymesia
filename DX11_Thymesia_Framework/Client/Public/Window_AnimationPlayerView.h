@@ -34,7 +34,7 @@ private:
 	void Add_EnableWeaponEvent(const _bool In_bEnable);
 	
 	void Save_KeyEvent();
-	void Load_KeyEvent();
+	HRESULT Load_KeyEvent();
 	void Clear_KeyEvent();
 	void ClearBack_KeyEvent();
 	void ClearAll_KeyEvent();
@@ -60,6 +60,8 @@ private:
 
 	vector<string>	m_AllAnimationKeys;
 	_int			m_CurrentAnimationIndex = 0;
+
+	string m_strKeyEventFileName = "";
 
 private:
 	json m_KeyEventJson;
