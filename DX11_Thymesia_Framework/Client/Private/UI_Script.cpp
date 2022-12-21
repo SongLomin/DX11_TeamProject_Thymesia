@@ -12,10 +12,13 @@ HRESULT CUI_Script::Initialize(void* pArg)
     __super::Initialize(pArg);
 
     m_pEasingAlphaCom = Add_Component<CEasingComponent_Alpha>();
- 
+    
+    m_eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
     m_fLifeTime = 0.f;
     m_fLifeTick = 0.f;
     m_bLerp = true;
+
+
     Set_Enable(false);
 
 

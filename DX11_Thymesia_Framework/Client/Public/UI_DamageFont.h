@@ -5,6 +5,7 @@ BEGIN(Client)
 
 class CCustomUI;
 class CEasingComponent_Transform;
+class CUI_DamageFontPiece;
 
 class CUI_DamageFont : public CUI_Container
 {

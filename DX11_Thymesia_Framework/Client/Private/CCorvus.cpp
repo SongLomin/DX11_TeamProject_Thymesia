@@ -12,6 +12,8 @@
 #include "PlayerSkill_System.h"
 #include "Skill_VargSword.h"
 #include "Inventory.h"
+#include "UI_BloodOverlay.h"
+
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -264,6 +266,14 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	{
 		m_pInventory.lock()->Push_Item(ITEM_NAME::MEMORY01);
 	}
+	/*
+	if (KEY_INPUT(KEY::T, KEY_STATE::TAP))
+	{
+		GAMEINSTANCE->Get_GameObjects<CUI_BloodOverlay>(LEVEL_STATIC).front().lock()->
+			Call_Overlay(1.f);
+	}
+	*/
+
 #ifdef _DEBUG
 	if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
 	{

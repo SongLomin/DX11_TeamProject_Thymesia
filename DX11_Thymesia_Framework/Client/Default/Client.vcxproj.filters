@@ -1569,6 +1569,9 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtFallDownEnd.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt\03.State_HurtFallDown</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_DamageFontPiece.h" />
+    <ClInclude Include="..\Public\UI_BloodOverlay.h" />
+    <ClInclude Include="..\Public\UI_AppearEvent_Varg.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2207,9 +2210,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_LAttack5.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack\State_Attack5</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\AIStateBase.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BossStateBase.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState</Filter>
@@ -3174,6 +3174,10 @@
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt\02.State_KnockBack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\AIStateBase.cpp" />
+    <ClCompile Include="..\Private\AIStateBase.cpp" />
+    <ClCompile Include="..\Private\UI_DamageFontPiece.cpp" />
+    <ClCompile Include="..\Private\UI_BloodOverlay.cpp" />
+    <ClCompile Include="..\Private\UI_AppearEvent_Varg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -4710,6 +4714,9 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt\03.State_HurtFallDown">
       <UniqueIdentifier>{f868b891-9036-4f60-9256-c213eea441e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AppearEvent">
+      <UniqueIdentifier>{d3a11a7c-0354-46b5-b914-4587764414bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
