@@ -142,18 +142,14 @@ PS_OUT PS_MAIN(PS_IN In)
 {
 	PS_OUT		Out = (PS_OUT)0;
 
-	
-	//if (Out.vColor.a < 0.1f)
-	//	discard;
-
     Out.vColor = 1.f;
-//    Out.vColor.a = 0.3f;
-	
-    Out.vColor.a *= g_MaskTexture.Sample(DefaultSampler, In.vTexUV - g_vUVMask * fWrapWeight).r;
-	
-	if(0.3f > Out.vColor.a)
-        discard;
-	
+
+    half2 vTexUV = In.vTexUV;
+    vTexUV.x *= fWrapWeight;
+  
+    Out.vColor.a *= g_MaskTexture.Sample(DefaultSampler, vTexUV - g_vUVMask).r;
+    Out.vColor.a *= Out.vColor.a;
+
 	return Out;	
 }
 

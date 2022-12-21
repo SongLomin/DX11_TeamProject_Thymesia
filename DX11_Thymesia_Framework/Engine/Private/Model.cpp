@@ -683,7 +683,7 @@ void CModel::Create_ORM_Material(MODEL_MATERIAL& Out_Material, const _uint In_iM
 
 	string		strPath;
 
-	strPath = m_pModelData->Material_Datas[In_iMaterialIndex]->szTextureName[(_uint)aiTextureType_NORMALS];
+	strPath = m_pModelData->Material_Datas[In_iMaterialIndex]->szTextureName[(_uint)aiTextureType_DIFFUSE];
 
 
 	char			szFileName[MAX_PATH] = "";
