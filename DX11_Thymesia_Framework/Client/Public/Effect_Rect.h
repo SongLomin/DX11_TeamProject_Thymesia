@@ -48,7 +48,7 @@ public:
     void OnChangeAnimationKey(const _uint& In_Key);
 
 #ifdef _DEBUG
-    const void Trigger_Reset(weak_ptr<CTransform> pPreviewModelTransform) 
+    const void Trigger_Reset(weak_ptr<CTransform> pPreviewModelTransform)
     {
         m_pParentTransformCom = pPreviewModelTransform;
         m_bResetTrigger = true;
@@ -144,9 +144,9 @@ private:
 
 #ifdef _DEBUG
 private: // For. Tool
-#ifdef _JOJO_EFFECT_TOOL_
+#ifdef _EFFECT_TOOL_
     void Show_ShaderPasses();
-#endif // _JOJO_EFFECT_TOOL_
+#endif // _EFFECT_TOOL_
     void Tool_Spawn_Life_Time();
     void Tool_Boner();
     void Tool_Position();

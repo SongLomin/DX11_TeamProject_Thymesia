@@ -70,7 +70,7 @@ void CTargetCurve::Tick(_float fTimeDelta)
 	_matrix MonsterWorldMatrix = BoneMatrix * m_pTargetTransformCom.lock()->Get_UnScaledWorldMatrix();
 
 	_matrix CurvePoints;
-	
+
 	CurvePoints.r[0] = m_pParentTransformCom.lock()->Get_Position();
 	CurvePoints.r[0].m128_f32[1] += 1.2f;
 	CurvePoints.r[3] = MonsterWorldMatrix.r[3];
@@ -87,7 +87,7 @@ void CTargetCurve::Tick(_float fTimeDelta)
 
 	vDir = XMVector3TransformNormal(vLook, XMMatrixRotationAxis(vRight, XMConvertToRadians(75.0f)));
 	vDir = XMVector3TransformNormal(vDir, XMMatrixRotationAxis(vLook, XMConvertToRadians(35.0f)));
-	
+
 	CurvePoints.r[2] = CurvePoints.r[3] - vDir;
 
 	XMStoreFloat4x4(&m_CurvePoints, CurvePoints);

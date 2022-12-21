@@ -35,7 +35,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	m_pShaderCom.lock()->Set_ShaderInfo(
 		TEXT("Shader_VtxAnimModel"),
 		VTXANIM_DECLARATION::Element,
-		VTXANIM_DECLARATION::iNumElements);	
+		VTXANIM_DECLARATION::iNumElements);
 
 	m_pStandState = Add_Component<CNorMonState_Idle>();
 	Add_Component<CNorMonState_Stop>();
@@ -65,7 +65,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	Add_Component<CNorMonState_GroggyEnd>();
 	Add_Component<CNorMonState_Die>();
 	Add_Component<CNorMonState_Parry>();
-	
+
 	return S_OK;
 }
 
@@ -162,7 +162,7 @@ void CNorMonster::Init_Desc()
 		m_pWeapons.front().lock()->Add_Collider({ 0.81f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Shield", TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_l");
-		
+
 		break;
 	case MONSTERTYPE::BALLOON:
 		m_pModelCom.lock()->Init_Model("Balloon", "", (_uint)TIMESCALE_LAYER::MONSTER);
@@ -260,7 +260,7 @@ HRESULT CNorMonster::Render(ID3D11DeviceContext* pDeviceContext)
 	{
 		if (i == 2 || i == 3)
 			continue;
-	
+
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
 
@@ -337,7 +337,7 @@ void CNorMonster::Move_RootMotion_Internal()
 
 void CNorMonster::Respawn_Monster(_fvector In_vPosition)
 {
-	
+
 }
 
 void Init_MonsterDesc(void* In_Arg)

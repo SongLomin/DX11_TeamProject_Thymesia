@@ -113,7 +113,7 @@ _bool CVargBossState_Exe_Dead::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	
+
 
 	return false;
 }

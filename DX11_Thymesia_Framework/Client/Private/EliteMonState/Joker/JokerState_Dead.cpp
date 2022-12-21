@@ -81,7 +81,7 @@ void CJokerState_Dead::OnStateEnd()
 
 	
 
-	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Joker_Passive", GET_SINGLE(CGameManager)->Get_EffectIndex("Joker_Passive"));
+	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Joker_Passive", GET_SINGLE(CGameManager)->Get_StoredEffectIndex("Joker_Passive"));
 }
 
 void CJokerState_Dead::Call_AnimationEnd()

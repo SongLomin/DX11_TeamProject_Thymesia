@@ -72,10 +72,10 @@ private:
 
 #ifdef _DEBUG
     void Clone_EffectMesh();
-#ifdef _JOJO_EFFECT_TOOL_
+#ifdef _EFFECT_TOOL_
     void Key_Input_ControlMesh(_float fTimeDelta);
     void Apply_ImGui_Controls_to_Mesh();
-#endif // _JOJO_EFFECT_TOOL_
+#endif // _EFFECT_TOOL_
     void Tool_Control();
     void Tool_Spawn_Life_Time();
     void Tool_AnimationSync();

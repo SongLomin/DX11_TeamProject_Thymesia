@@ -38,7 +38,7 @@ void CWindow_AnimationPlayerView::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
-    
+
 
     if (!m_bStop)
     {
@@ -74,11 +74,6 @@ HRESULT CWindow_AnimationPlayerView::Render(ID3D11DeviceContext* pDeviceContext)
             ImGui::EndTabItem();
         }
 
-        
-
-
-        
-        
         ImGui::EndTabBar();
     }
 
@@ -161,26 +156,33 @@ void CWindow_AnimationPlayerView::Save_KeyEvent()
     weak_ptr<CModel> pCurrentModel = m_pPreViewModel.lock()->Get_CurrentModel();
 
     string szPath = "../Bin/KeyEventData/";
-    szPath += pCurrentModel.lock()->Get_ModelKey();
+
+    if (0 < m_strKeyEventFileName.size())
+        szPath += m_strKeyEventFileName;
+    else
+        szPath += pCurrentModel.lock()->Get_ModelKey();
+
     szPath += ".json";
 
     if (FAILED(CJson_Utility::Save_Json(szPath.c_str(), m_KeyEventJson)))
-    {
         return;
-    }
-
 }
 
-void CWindow_AnimationPlayerView::Load_KeyEvent()
+HRESULT CWindow_AnimationPlayerView::Load_KeyEvent()
 {
     weak_ptr<CModel> pCurrentModel = m_pPreViewModel.lock()->Get_CurrentModel();
 
     string szPath = "../Bin/KeyEventData/";
-    szPath += pCurrentModel.lock()->Get_ModelKey();
+
+    if (0 < m_strKeyEventFileName.size())
+        szPath += m_strKeyEventFileName;
+    else
+        szPath += pCurrentModel.lock()->Get_ModelKey();
+
     szPath += ".json";
 
     if (FAILED(CJson_Utility::Load_Json(szPath.c_str(), m_KeyEventJson)))
-        return;
+        return E_FAIL;
 
     m_KeyEventEffectGroupNames.clear();
     m_pPreViewModel.lock()->Clear_DebugWeapon();
@@ -200,7 +202,7 @@ void CWindow_AnimationPlayerView::Load_KeyEvent()
     json& KeyJson = m_KeyEventJson["AnimationIndex"][pCurrentModel.lock()->Get_CurrentAnimationIndex()];
 
     if (KeyJson.empty())
-        return;
+        return E_FAIL;
 
     for (_size_t i = 0; i < KeyJson.size(); ++i)
     {
@@ -217,7 +219,7 @@ void CWindow_AnimationPlayerView::Load_KeyEvent()
                 szText += "true";
             else
                 szText += "false";
-            
+
             szText += ")";
             m_KeyEventEffectGroupNames[(_int)i].emplace_back(szText);
         }
@@ -228,6 +230,8 @@ void CWindow_AnimationPlayerView::Load_KeyEvent()
                 m_KeyEventEffectGroupNames[(_int)i].emplace_back(KeyJson[i]["EffectName"][j]);
         }
     }
+
+    return S_OK;
 }
 
 void CWindow_AnimationPlayerView::Clear_KeyEvent()
@@ -331,14 +335,29 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
     ImGui::SameLine();
     ImGui::Text(to_string(iMaxKeyIndex).c_str());
 
+    _char pFileNameBuffer[MAX_PATH];
+    strcpy_s(pFileNameBuffer, m_strKeyEventFileName.c_str());
+    ImGui::SetNextItemWidth(250.f);
+    if (ImGui::InputText("File Name", pFileNameBuffer, MAX_PATH))
+        m_strKeyEventFileName = pFileNameBuffer;
+
+
+    if (ImGui::Button("Save Custom"))
+    {
+        if (FAILED(Load_KeyEvent()))
+        {
+            m_KeyEventJson.clear();
+        }
+
+		Save_KeyEvent();
+    }
+
     if (ImGui::Button("Add_Effect"))
     {
         Add_EffectKeyEvent();
         Save_KeyEvent();
         Load_KeyEvent();
     }
-
-    ImGui::SameLine();
 
     if (ImGui::Button("Enable_Weapon"))
     {
@@ -347,9 +366,11 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
         Load_KeyEvent();
     }
 
+	ImGui::SameLine();
+
     if (ImGui::Button("Disable_Weapon"))
     {
-        Add_EnableWeaponEvent(false); 
+        Add_EnableWeaponEvent(false);
         Save_KeyEvent();
         Load_KeyEvent();
     }
@@ -390,7 +411,7 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
             {
                 if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
                 {
-                    
+
                 }
             }
         }
@@ -401,7 +422,7 @@ void CWindow_AnimationPlayerView::Draw_KeyEventEditer()
     ImGui::Text(m_pPreViewModel.lock()->Get_CurrentModel().lock()->Get_ModelKey());
 
     ImGui::SameLine();
-    
+
     if (ImGui::Button("Clear Effect Back"))
     {
         ClearBack_KeyEvent();
@@ -459,7 +480,7 @@ void CWindow_AnimationPlayerView::Draw_AnimationList()
         else
         {
 			pCurrentModel.lock()->Set_RootNode("root", byFlag);
-		}     
+		}
     }
 
     ImGui::SameLine();
@@ -467,23 +488,33 @@ void CWindow_AnimationPlayerView::Draw_AnimationList()
     ImGui::DragFloat("Animation Speed", &m_fSpeed, 0.01f, 0.f, 2.f);
     GAMEINSTANCE->Set_TimeScale((_uint)TIMESCALE_LAYER::EDITER, m_fSpeed);
 
-    if (ImGui::CollapsingHeader("Select Animation"), ImGuiTreeNodeFlags_DefaultOpen)
+    if (ImGui::CollapsingHeader("Select Animation"))
     {
+		static ImGuiTextFilter AnimationFilter;
+		ImGui::Text("Search"); ImGui::SameLine();
+		AnimationFilter.Draw("##AnimationSearchFilter", 340.f);
+
         if (ImGui::BeginListBox("##Animation List", ImVec2(-FLT_MIN, 10 * ImGui::GetTextLineHeightWithSpacing())))
         {
-
             for (int i = 0; i < m_AllAnimationKeys.size(); i++)
             {
+                auto AnimationKit = m_AllAnimationKeys.at(i);
                 const bool is_selected = (m_CurrentAnimationIndex == i);
-                if (ImGui::Selectable(m_AllAnimationKeys[i].c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
-                {
-                    m_CurrentAnimationIndex = i;
 
-                    if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-                    {
-                        m_pPreViewModel.lock()->Change_AnimationFromIndex(m_CurrentAnimationIndex);
-                        Call_UpdatePreViewModel();
-                    }
+                if (AnimationFilter.PassFilter(AnimationKit.c_str()))
+                {
+                    std::string label = AnimationKit + "##" + std::to_string(i);
+
+					if (ImGui::Selectable(m_AllAnimationKeys[i].c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
+					{
+						m_CurrentAnimationIndex = i;
+
+						if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+						{
+							m_pPreViewModel.lock()->Change_AnimationFromIndex(m_CurrentAnimationIndex);
+							Call_UpdatePreViewModel();
+						}
+					}
                 }
 
                 // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)

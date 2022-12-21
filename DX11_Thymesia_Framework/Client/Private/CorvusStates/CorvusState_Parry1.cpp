@@ -71,7 +71,7 @@ void CCorvusState_Parry1::Call_AnimationEnd()
 void CCorvusState_Parry1::Play_AttackWithIndex(const _tchar& In_iAttackIndex)
 {
 
-	
+
 
 #ifdef _DEBUG_COUT_
 	// cout << "AttackIndex: " << m_iAttackIndex << endl;
@@ -140,7 +140,7 @@ void CCorvusState_Parry1::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_bParryed = false;
 
-	
+
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
@@ -225,7 +225,7 @@ void CCorvusState_Parry1::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
 
 		vHitPos.x += fRandom(mt);
 		vHitPos.y += fRandom(mt);
-		
+
 		if (m_eParryType == PARRY_TYPE::PERFECT)
 		{
 			pDamageFont.lock()->SetUp_DamageFont(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f,
@@ -246,11 +246,11 @@ void CCorvusState_Parry1::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
 			{
 			case Client::PARRY_SUCCESS::LEFT:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
-				
+
 				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 				pStatus.lock()->Heal_Player(30.f);
 				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectLeft>();
-				
+
 				break;
 			case Client::PARRY_SUCCESS::LEFTUP:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
@@ -262,7 +262,7 @@ void CCorvusState_Parry1::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
 				GET_SINGLE(CGameManager)->Use_EffectGroup("BasicHitParticle", m_pTransformCom, (_uint)TIMESCALE_LAYER::MONSTER);
 				pStatus.lock()->Heal_Player(30.f);
-				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRight>();				
+				Get_OwnerPlayer()->Change_State<CCorvusState_ParryDeflectRight>();
 				break;
 			case Client::PARRY_SUCCESS::RIGHTUP:
 				pMonsterStatusCom.lock()->Add_ParryGauge(pStatus.lock()->Get_Desc().m_fParryingAtk * 2.f);
@@ -274,7 +274,7 @@ void CCorvusState_Parry1::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColli
 				pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
 				break;
 			}
-			
+
 			vShakingOffsetToVector = XMLoadFloat3(&m_vShakingOffSet);
 
 			GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.2f, 0.7f, 9.f, 0.5f);
@@ -406,7 +406,7 @@ _bool CCorvusState_Parry1::Check_AndChangeNextState()
 				Get_OwnerPlayer()->Change_State<CCorvusState_LAttack1>();
 
 			}
-			
+
 			return true;
 		}
 

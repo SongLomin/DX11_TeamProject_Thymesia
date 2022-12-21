@@ -1,6 +1,6 @@
 #pragma once
-// #define _JOJO_EFFECT_TOOL_
-                 
+// #define _EFFECT_TOOL_
+
 #include "Client_Structs.h"
 #include "Client_Presets.h"
 #include "Client_Enum.h"
@@ -42,7 +42,7 @@
 #pragma endregion // Map
 
 #pragma region Tool
- #define _MAP_TOOL_
+#define _MAP_TOOL_
 // #define _EFFECT_TOOL_
 #pragma endregion // Tool
 
@@ -59,6 +59,7 @@
 #pragma region Effects
 // #define _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
+#define _VARG_EFFECT_
 #pragma endregion // Effects
 
 #endif // _DEBUG
@@ -67,9 +68,7 @@
 //////////////// RELEASE MODE DEFINES ////////////////
 #ifdef NDEBUG
 
-#define _MAP_DATA_ // 확인 후 삭제
-
-#undef _JOJO_EFFECT_TOOL_
+#undef _EFFECT_TOOL_
 #undef _ONLY_UI_
 
 #pragma region System
@@ -113,7 +112,7 @@
 //////////////// RELEASE MODE DEFINES ////////////////
 
 /////////////// For. JoJo Effect Tool ///////////////
-#ifdef _JOJO_EFFECT_TOOL_
+#ifdef _EFFECT_TOOL_
 
 #pragma region System
 // #define _ONLY_UI_
@@ -143,7 +142,6 @@
 
 #pragma region Tool
 #undef _MAP_TOOL_
-#define _EFFECT_TOOL_
 #pragma endregion // Tool
 
 #pragma region Boss Mobs
@@ -164,11 +162,11 @@
 // #define _BAKE_EFFECTMESH_FBX_
 #pragma endregion // Effects
 
-#endif // _JOJO_EFFECT_TOOL_
+#endif // _EFFECT_TOOL_
 /////////////// For. JoJo Effect Tool ///////////////
 
 #define CLIENT_DECLATION_UI class CUI; class CCustomUI; class CProgressBar; class CHUD_Hover;
-#define ENGINE_DECLATION_UI class CTexture; class CShader;   
+#define ENGINE_DECLATION_UI class CTexture; class CShader;
 #define ADD_STATIC_CUSTOMUI GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC)
 
 extern HWND g_hWnd;

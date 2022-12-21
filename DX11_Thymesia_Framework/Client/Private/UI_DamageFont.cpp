@@ -98,9 +98,9 @@ void CUI_DamageFont::SetUp_DamageFont(_uint iDmg, _float2 vPos, ATTACK_OPTION eA
 		_float fOffset = m_fOffsetX * (i - (strSize / 2));
 
 
-		pDamageFont = GAMEINSTANCE->Get_GameObject_UseMemoryPool<CCustomUI>(LEVEL_STATIC);
-		if (!pDamageFont.lock())
-			pDamageFont = ADD_STATIC_CUSTOMUI;
+		//pDamageFont = GAMEINSTANCE->Get_GameObject_UseMemoryPool<CCustomUI>(LEVEL_STATIC);
+		//if (!pDamageFont.lock())
+		pDamageFont = ADD_STATIC_CUSTOMUI;
 		
 		pDamageFont.lock()->Set_AlphaColor(1.f);
 		pDamageFont.lock()->Set_UIPosition
@@ -112,6 +112,9 @@ void CUI_DamageFont::SetUp_DamageFont(_uint iDmg, _float2 vPos, ATTACK_OPTION eA
 		);
 		pDamageFont.lock()->Set_Texture(strDamageFontKey.c_str());
 		pDamageFont.lock()->Set_DeffuseIndex((_uint)(strDamage[i] - '0'));
+
+		pDamageFont.lock()->Set_RenderGroup(RENDERGROUP::RENDER_BEFOREUI);
+
 		m_vecChildUI.push_back(pDamageFont);
 	}
 	//CallBack_ShakingEnd += bind(&CUI_DamageFont::Call_Shaking_End, this);

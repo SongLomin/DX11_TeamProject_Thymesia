@@ -65,6 +65,7 @@ public:
 	HRESULT Set_ShaderResource(weak_ptr<class CShader> pShader, const char* pConstantName);
 
 public:
+	HRESULT Go_Direction(_fvector vDirection, _float fTimeDelta);
 	HRESULT Go_Straight(_float fTimeDelta, weak_ptr<CNavigation> pNaviCom = weak_ptr<CNavigation>());
 	HRESULT Go_Backward(_float fTimeDelta);
 	HRESULT Go_Left(_float fTimeDelta);

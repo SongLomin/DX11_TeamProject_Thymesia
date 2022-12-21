@@ -93,8 +93,8 @@ HRESULT CWindow_AnimationModelView::Render(ID3D11DeviceContext* pDeviceContext)
 
                 ImGui::Text(" NoAnimModel List");
 
-                static ImGuiTextFilter ModelFilter;
-                ImGui::Text("Search"); ImGui::SameLine();
+				static ImGuiTextFilter ModelFilter;
+				ImGui::Text("Search"); ImGui::SameLine();
                 ModelFilter.Draw("##NoAnimModelSearchBar", 250.f);
 
                 if (ImGui::BeginListBox("## NoAnimModel List", ImVec2(-FLT_MIN, 15 * ImGui::GetTextLineHeightWithSpacing())))
@@ -110,7 +110,7 @@ HRESULT CWindow_AnimationModelView::Render(ID3D11DeviceContext* pDeviceContext)
 
                             if (ImGui::Selectable(label.c_str(), is_selected))
                             {
-                                m_CurrentNoAnimModelIndex = i;
+								m_CurrentNoAnimModelIndex = i;
                             }
                         }
                         // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
@@ -125,7 +125,7 @@ HRESULT CWindow_AnimationModelView::Render(ID3D11DeviceContext* pDeviceContext)
                     // TODO : comment because explode
                     m_pPreviewNoAnimModel.lock()->Get_Component<CModel>().lock()->
                         Get_Owner().lock()->
-                        Get_Component<CModel>().lock()->Init_Model(m_AllNoAnimModelKeys[m_CurrentNoAnimModelIndex].c_str());
+                            Get_Component<CModel>().lock()->Init_Model(m_AllNoAnimModelKeys[m_CurrentNoAnimModelIndex].c_str());
 
                 }
             }
@@ -174,7 +174,6 @@ HRESULT CWindow_AnimationModelView::Render(ID3D11DeviceContext* pDeviceContext)
     }
 
     __super::End();
-
     return S_OK;
 }
 

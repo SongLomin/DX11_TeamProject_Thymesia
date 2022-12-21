@@ -305,17 +305,17 @@ PS_OUT PS_DEFAULT(PS_IN In)
 	else
 		Out.vColor = g_DiffuseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.x + g_vUVDiff);
 
-	vector vNoise  = (vector) 0;
+	vector vNoise = (vector) 0;
 	if (g_bNoiseWrap)
-		vNoise     = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
+		vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
 	else
-		vNoise     = g_NoiseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
+		vNoise = g_NoiseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
 
-	vector vMask   = (vector) 0;
+	vector vMask = (vector) 0;
 	if (g_bMaskWrap)
-		vMask      = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
+		vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
 	else
-		vMask      = g_MaskTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
+		vMask = g_MaskTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
 
 	// (0, +1) => (-1, +1)
 	if (g_bDynamicNoiseOption)
@@ -372,17 +372,17 @@ PS_OUT PS_EXTRACTBRIGHT(PS_IN In)
 	else
 		Out.vColor = g_DiffuseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.x + g_vUVDiff);
 
-	vector vNoise  = (vector) 0;
+	vector vNoise = (vector) 0;
 	if (g_bNoiseWrap)
-		vNoise     = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
+		vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
 	else
-		vNoise     = g_NoiseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
+		vNoise = g_NoiseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
 
-	vector vMask   = (vector) 0;
+	vector vMask = (vector) 0;
 	if (g_bMaskWrap)
-		vMask      = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
+		vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
 	else
-		vMask      = g_MaskTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
+		vMask = g_MaskTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
 
 	// (0, +1) => (-1, +1)
 	if (g_bDynamicNoiseOption)
@@ -467,20 +467,20 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_DIRECTIONAL_DISSOLVE In)
 	PS_OUT Out = (PS_OUT)0;
 
 	//directional dissolve
-    float3 vPixelDir = In.vLocalPos.xyz - g_vDissolveStartPos;
-    vPixelDir = normalize(vPixelDir);
-    float3 vDissolveDir = normalize(g_vDissolveDir);
-    
-    float fDotValue = dot(vPixelDir.xyz, vDissolveDir);
-    fDotValue = fDotValue * 0.5f + 0.5f;
-    
-    clip(fDotValue - g_fDissolveAmount);
-    
-    float fDiff = fDotValue - g_fDissolveAmount;
-    float fStepValue = IsIn_Range(0.f, g_fDissolveGradiationDistance, fDiff);
-    
-    Out.vColor = fStepValue * vector(g_vDissolveGradiationStartColor, 1.f) +
-                    IsIn_Range(0.015f, 1.f, fDiff) * g_vColor;
+	float3 vPixelDir = In.vLocalPos.xyz - g_vDissolveStartPos;
+	vPixelDir = normalize(vPixelDir);
+	float3 vDissolveDir = normalize(g_vDissolveDir);
+
+	float fDotValue = dot(vPixelDir.xyz, vDissolveDir);
+	fDotValue = fDotValue * 0.5f + 0.5f;
+
+	clip(fDotValue - g_fDissolveAmount);
+
+	float fDiff = fDotValue - g_fDissolveAmount;
+	float fStepValue = IsIn_Range(0.f, g_fDissolveGradiationDistance, fDiff);
+
+	Out.vColor = fStepValue * vector(g_vDissolveGradiationStartColor, 1.f) +
+		IsIn_Range(0.015f, 1.f, fDiff) * g_vColor;
 
 	vector vNoise = (vector) 0;
 	if (g_bNoiseWrap)
@@ -526,10 +526,10 @@ PS_OUT PS_MAIN_NORMAL_DISSOLVE_SOFT(PS_IN_SOFT In)
 
 	if (g_fDissolveAmount + g_fDissolveGradiationDistance >= DissolveDesc)
 	{
-        float fLerpRatio = clamp((DissolveDesc - g_fDissolveAmount) / g_fDissolveGradiationDistance,0.f,1.f);
+		float fLerpRatio = clamp((DissolveDesc - g_fDissolveAmount) / g_fDissolveGradiationDistance, 0.f, 1.f);
 		Out.vColor = vector(lerp(g_vDissolveGradiationStartColor, g_vDissolveGradiationGoalColor, fLerpRatio), 1.f);
 	}
-	
+
 	vector vNoise = (vector) 0;
 	if (g_bNoiseWrap)
 		vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
@@ -546,9 +546,9 @@ PS_OUT PS_MAIN_NORMAL_DISSOLVE_SOFT(PS_IN_SOFT In)
 	if (g_bDynamicNoiseOption)
 		vNoise.rgb = vNoise.rgb * 2 - 1;
 
-	Out.vColor     *= g_vColor;
+	Out.vColor *= g_vColor;
 	Out.vColor.rgb *= vNoise.rgb;
-	Out.vColor.a   *= vMask.r;
+	Out.vColor.a *= vMask.r;
 
 	if (g_fDiscardRatio > Out.vColor.a)
 		discard;
@@ -579,21 +579,21 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE_SOFT(PS_IN_SOFT_DIRECTIONAL_DISSOLVE 
 	PS_OUT Out = (PS_OUT)0;
 
 	//directional dissolve
-    float3 vPixelDir = In.vLocalPos.xyz - g_vDissolveStartPos;
-    vPixelDir = normalize(vPixelDir);
-    float3 vDissolveDir = normalize(g_vDissolveDir);
-    
-    float fDotValue = dot(vPixelDir.xyz, vDissolveDir);
-    fDotValue = fDotValue * 0.5f + 0.5f;
-    
-    clip(fDotValue - g_fDissolveAmount);
-	
-    float fDiff = fDotValue - g_fDissolveAmount;
-    float fStepValue = IsIn_Range(0.f, g_fDissolveGradiationDistance, fDiff);
-    
-    Out.vColor = fStepValue * vector(g_vDissolveGradiationStartColor, 1.f) +
-                    IsIn_Range(0.015f, 1.f, fDiff) * g_vColor;
-	
+	float3 vPixelDir = In.vLocalPos.xyz - g_vDissolveStartPos;
+	vPixelDir = normalize(vPixelDir);
+	float3 vDissolveDir = normalize(g_vDissolveDir);
+
+	float fDotValue = dot(vPixelDir.xyz, vDissolveDir);
+	fDotValue = fDotValue * 0.5f + 0.5f;
+
+	clip(fDotValue - g_fDissolveAmount);
+
+	float fDiff = fDotValue - g_fDissolveAmount;
+	float fStepValue = IsIn_Range(0.f, g_fDissolveGradiationDistance, fDiff);
+
+	Out.vColor = fStepValue * vector(g_vDissolveGradiationStartColor, 1.f) +
+		IsIn_Range(0.015f, 1.f, fDiff) * g_vColor;
+
 	vector vNoise = (vector) 0;
 	if (g_bNoiseWrap)
 		vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
@@ -647,11 +647,11 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
-        VertexShader = compile vs_5_0 VS_MAIN();
-        HullShader = NULL;
-        DomainShader = NULL;
+		VertexShader = compile vs_5_0 VS_MAIN();
+		HullShader = NULL;
+		DomainShader = NULL;
 		GeometryShader = NULL;
-		PixelShader    = compile ps_5_0 PS_DEFAULT();
+		PixelShader = compile ps_5_0 PS_DEFAULT();
 	}
 
 	pass Distortion // 1
@@ -660,11 +660,11 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
-        VertexShader = compile vs_5_0 VS_MAIN();
-        HullShader = NULL;
-        DomainShader = NULL;
+		VertexShader = compile vs_5_0 VS_MAIN();
+		HullShader = NULL;
+		DomainShader = NULL;
 		GeometryShader = NULL;
-		PixelShader    = compile ps_5_0 PS_DISTORTION();
+		PixelShader = compile ps_5_0 PS_DISTORTION();
 	}
 
 	pass SoftEffect // 2
@@ -673,11 +673,11 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_Default, 0);
 		SetRasterizerState(RS_NonCulling);
 
-        VertexShader = compile vs_5_0 VS_MAIN_SOFT();
-        HullShader = NULL;
-        DomainShader = NULL;
+		VertexShader = compile vs_5_0 VS_MAIN_SOFT();
+		HullShader = NULL;
+		DomainShader = NULL;
 		GeometryShader = NULL;
-		PixelShader    = compile ps_5_0 PS_MAIN_SOFT();
+		PixelShader = compile ps_5_0 PS_MAIN_SOFT();
 	}
 
 	pass ExtractBright//3
@@ -686,11 +686,11 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_Default, 0);
 		SetRasterizerState(RS_NonCulling);
 
-        VertexShader = compile vs_5_0 VS_MAIN();
-        HullShader = NULL;
-        DomainShader = NULL;
+		VertexShader = compile vs_5_0 VS_MAIN();
+		HullShader = NULL;
+		DomainShader = NULL;
 		GeometryShader = NULL;
-		PixelShader    = compile ps_5_0 PS_EXTRACTBRIGHT();
+		PixelShader = compile ps_5_0 PS_EXTRACTBRIGHT();
 	}
 
 	pass Dissolve//4
@@ -699,11 +699,11 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
-        VertexShader = compile vs_5_0 VS_MAIN();
-        HullShader = NULL;
-        DomainShader = NULL;
+		VertexShader = compile vs_5_0 VS_MAIN();
+		HullShader = NULL;
+		DomainShader = NULL;
 		GeometryShader = NULL;
-		PixelShader    = compile ps_5_0 PS_MAIN_NORMAL_DISSOLVE();
+		PixelShader = compile ps_5_0 PS_MAIN_NORMAL_DISSOLVE();
 	}
 
 
@@ -713,11 +713,11 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
-        VertexShader = compile vs_5_0 VS_MAIN_DIRECTIONAL_DISSOLVE();
-        HullShader = NULL;
-        DomainShader = NULL;
+		VertexShader = compile vs_5_0 VS_MAIN_DIRECTIONAL_DISSOLVE();
+		HullShader = NULL;
+		DomainShader = NULL;
 		GeometryShader = NULL;
-		PixelShader    = compile ps_5_0 PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE();
+		PixelShader = compile ps_5_0 PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE();
 	}
 
 	pass Dissolve_Soft //6
@@ -726,11 +726,11 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
-        VertexShader = compile vs_5_0 VS_MAIN_SOFT();
-        HullShader = NULL;
-        DomainShader = NULL;
+		VertexShader = compile vs_5_0 VS_MAIN_SOFT();
+		HullShader = NULL;
+		DomainShader = NULL;
 		GeometryShader = NULL;
-		PixelShader    = compile ps_5_0 PS_MAIN_NORMAL_DISSOLVE_SOFT();
+		PixelShader = compile ps_5_0 PS_MAIN_NORMAL_DISSOLVE_SOFT();
 	}
 
 
@@ -740,11 +740,11 @@ technique11 DefaultTechnique
 		SetDepthStencilState(DSS_ZTest_And_No_Write, 0);
 		SetRasterizerState(RS_NonCulling);
 
-        VertexShader = compile vs_5_0 VS_MAIN_SOFT_DIRECTIONAL_DISSOLVE();
-        HullShader = NULL;
-        DomainShader = NULL;
+		VertexShader = compile vs_5_0 VS_MAIN_SOFT_DIRECTIONAL_DISSOLVE();
+		HullShader = NULL;
+		DomainShader = NULL;
 		GeometryShader = NULL;
-		PixelShader    = compile ps_5_0 PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE_SOFT();
+		PixelShader = compile ps_5_0 PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE_SOFT();
 	}
 }
 // Shader Passes //

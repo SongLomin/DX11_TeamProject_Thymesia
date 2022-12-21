@@ -65,20 +65,14 @@ void CVargBossState_Exe_NoDeadEnd::OnStateStart(const _float& In_fAnimationBlend
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-#ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Exe_SitDown -> OnStateStart" << endl;
 #endif
-#endif
-
-
 }
 
 void CVargBossState_Exe_NoDeadEnd::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-
 }
 
 

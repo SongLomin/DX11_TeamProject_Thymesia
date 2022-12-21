@@ -78,10 +78,10 @@ void CCustomEffectMesh::Tick(_float fTimeDelta)
 
 	Play(fTimeDelta * GAMEINSTANCE->Get_TimeScale(m_iTimeScaleLayerIndex));
 #ifdef _DEBUG
-#ifdef _JOJO_EFFECT_TOOL_
+#ifdef _EFFECT_TOOL_
 	Key_Input_ControlMesh(fTimeDelta);
 	Apply_ImGui_Controls_to_Mesh();
-#endif // _JOJO_EFFECT_TOOL_
+#endif // _EFFECT_TOOL_
 #endif // _DEBUG
 }
 
@@ -178,7 +178,7 @@ void CCustomEffectMesh::SetUp_ShaderResource()
 	m_pShaderCom.lock()->Set_RawValue("g_vCamDirection", &vCamDir, sizeof(_vector));
 #pragma endregion // World, View, Proj, Camera
 	m_pShaderCom.lock()->Set_RawValue("g_bBillboard",          &m_tEffectMeshDesc.bBillBoard,          sizeof(_bool));
-	
+
 	m_pColorDiffuseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", m_tEffectMeshDesc.iDiffuseTextureIndex);
 	m_pMaskTextureCom.lock()->        Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", m_tEffectMeshDesc.iMaskTextureIndex);
 	m_pNoiseTextureCom.lock()->       Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture", m_tEffectMeshDesc.iNoiseTextureIndex);
@@ -214,6 +214,7 @@ void CCustomEffectMesh::SetUp_ShaderResource_Dissolve()
 		if (FAILED(m_pDissolveTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DissolveTexture", m_tEffectMeshDesc.iDissolveTextureIndex)))
 			throw 0;
 
+		m_pShaderCom.lock()->Set_RawValue("g_vDissolveStartPos", &m_tEffectMeshDesc.vDissolveStartPosition, sizeof(_float3));
 		m_pShaderCom.lock()->Set_RawValue("g_vDissolveDir", &m_tEffectMeshDesc.vDissolveDirection, sizeof(_float3));
 
 		m_pShaderCom.lock()->Set_RawValue("g_vDissolveGradiationStartColor", &m_tEffectMeshDesc.vDissolveGradiationStartColor, sizeof(_float3));
@@ -300,7 +301,7 @@ void CCustomEffectMesh::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 		}
 		catch (const std::exception&)
 		{
-			// TODO : do nothing
+			//do nothing
 			void(0);
 		}
 	}
@@ -394,6 +395,8 @@ void CCustomEffectMesh::Write_EffectJson(json& Out_Json)
 
 	CJson_Utility::Write_Float3(Out_Json["Start_Position"], m_tEffectMeshDesc.vStartPosition);
 
+
+	Out_Json["Move_By_Mesh"] = m_tEffectMeshDesc.bMoveByMesh;
 	CJson_Utility::Write_Float3(Out_Json["Speed"],          m_tEffectMeshDesc.vSpeed);
 	CJson_Utility::Write_Float3(Out_Json["Force"],          m_tEffectMeshDesc.vForce);
 	CJson_Utility::Write_Float3(Out_Json["Min_Speed"],      m_tEffectMeshDesc.vMinSpeed);
@@ -553,9 +556,12 @@ JUMP:
 #endif // _DEBUG
 	if (In_Json.find("BillBoard") != In_Json.end())
 		m_tEffectMeshDesc.bBillBoard = In_Json["BillBoard"];
-	
+
 	if (In_Json.find("Start_Position") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Start_Position"], m_tEffectMeshDesc.vStartPosition);
+
+	if (In_Json.find("Move_By_Mesh") != In_Json.end())
+		m_tEffectMeshDesc.bMoveByMesh = In_Json["Move_By_Mesh"];
 
 	if (In_Json.find("Speed") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Speed"], m_tEffectMeshDesc.vSpeed);
@@ -571,25 +577,25 @@ JUMP:
 
 	if (In_Json.find("Start_Rotation") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Start_Rotation"], m_tEffectMeshDesc.vStartRotation);
-	
+
 	if (In_Json.find("Rotation_Speed") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Rotation_Speed"], m_tEffectMeshDesc.vRotationSpeed);
-	
+
 	if (In_Json.find("Rotation_Force") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Rotation_Force"], m_tEffectMeshDesc.vRotationForce);
-	
+
 	if (In_Json.find("Max_Rotation") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Max_Rotation"], m_tEffectMeshDesc.vMaxRotation);
 
 	if (In_Json.find("Start_Scale") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Start_Scale"], m_tEffectMeshDesc.vStartScale);
-	
+
 	if (In_Json.find("Scale_Speed") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Scale_Speed"], m_tEffectMeshDesc.vScaleSpeed);
-	
+
 	if (In_Json.find("Scale_Force") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Scale_Force"], m_tEffectMeshDesc.vScaleForce);
-	
+
 	if (In_Json.find("Min_Scale") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Min_Scale"], m_tEffectMeshDesc.vMinScale);
 
@@ -747,7 +753,7 @@ JUMP:
 }
 
 #ifdef _DEBUG
-#ifdef _JOJO_EFFECT_TOOL_
+#ifdef _EFFECT_TOOL_
 void CCustomEffectMesh::Key_Input_ControlMesh(_float fTimeDelta)
 {
 	if (m_tEffectMeshDesc.bOnFocus)
@@ -814,7 +820,7 @@ void CCustomEffectMesh::Apply_ImGui_Controls_to_Mesh()
 		XMStoreFloat3(&m_vCurrentRotation, XMLoadFloat3(&m_tEffectMeshDesc.vStartRotation));
 	}
 }
-#endif // _JOJO_EFFECT_TOOL_
+#endif // _EFFECT_TOOL_
 
 void CCustomEffectMesh::Tool_Control()
 {
@@ -893,7 +899,7 @@ void CCustomEffectMesh::Tool_Boner()
 			return;
 		}
 
-		if (ImGui::Button("Get Bone List"))
+		if (ImGui::Button("Refresh##Get Bone List"))
 		{
 			m_pParentModel = pPreviewModel.lock()->Get_CurrentModel();
 			m_pParentTransformCom = pPreviewModel.lock()->Get_Transform();
@@ -902,16 +908,31 @@ void CCustomEffectMesh::Tool_Boner()
 
 		if (m_pParentModel.lock() && m_pParentTransformCom.lock())
 		{
+			static ImGuiTextFilter BoneFilter;
+			ImGui::Text("Search"); ImGui::SameLine();
+			BoneFilter.Draw("##Bone_Search_Bar", 250.f);
+
 			if (ImGui::BeginListBox("Bone List - Mesh Effect"))
 			{
 				for (_int n(0); n < m_AllBoneNames.size(); n++)
 				{
+					auto BoneKit = m_AllBoneNames.at(n);
 					const _bool is_selected = (m_iCurrentBoneIndex == n);
-					if (ImGui::Selectable(m_AllBoneNames[n].c_str(), is_selected))
-						m_strBoneName = m_AllBoneNames[n];
 
-					if (is_selected)
-						ImGui::SetItemDefaultFocus();
+					if (BoneFilter.PassFilter(BoneKit.c_str()))
+					{
+						std::string label = BoneKit + "##" + std::to_string(n);
+
+						if (ImGui::Selectable(label.c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
+						{
+							m_iCurrentBoneIndex = n;
+
+							if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+							{
+								m_strBoneName = m_AllBoneNames[m_iCurrentBoneIndex];
+							}
+						}
+					}
 				}
 
 				ImGui::EndListBox();
@@ -948,6 +969,8 @@ void CCustomEffectMesh::Tool_Position()
 
 void CCustomEffectMesh::Tool_Speed()
 {
+	ImGui::Checkbox("Move By Mesh##Move_By_Mesh", &m_tEffectMeshDesc.bMoveByMesh);
+
 	ImGui::Text("Speed");
 	ImGui::DragFloat3("##Speed", &m_tEffectMeshDesc.vSpeed.x, 0.1f);
 
@@ -1060,7 +1083,7 @@ void CCustomEffectMesh::Tool_Shaders()
 
 		ImGui::TreePop();
 	}
-	
+
 	ImGui::Text("[0]Default"); ImGui::SameLine(); ImGui::Text(" | "); ImGui::SameLine();
 	ImGui::Text("[1]Distortion");
 	ImGui::Text("[2]Soft");
@@ -1077,6 +1100,11 @@ void CCustomEffectMesh::Tool_Shaders()
 		{
 			ImGui::Text("Start Glow Color");
 			ImGui::DragFloat4("##Start_Glow_Color", &m_tEffectMeshDesc.vStartGlowColor.x, 0.01f);
+			if (ImGui::TreeNode("Start Glow Color Picker"))
+			{
+				ImGui::ColorPicker4("##Start_Glow_Color", &m_tEffectMeshDesc.vStartGlowColor.x, ImGuiColorEditFlags_AlphaPreviewHalf | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_InputRGB);
+				ImGui::TreePop();
+			}
 
 			ImGui::Text("Glow Color Speed ");
 			ImGui::DragFloat4("##Glow_Color_Speed", &m_tEffectMeshDesc.vGlowColorSpeed.x, 0.01f);
@@ -1148,6 +1176,8 @@ void CCustomEffectMesh::Tool_Dissolve()
 
 		ImGui::Text("Dissolve Direction");
 		ImGui::DragFloat3("##Dissolve_Direction", &m_tEffectMeshDesc.vDissolveDirection.x, 0.1f);
+
+		ImGui::TreePop();
 	}
 }
 
@@ -1159,6 +1189,11 @@ void CCustomEffectMesh::Tool_Colors()
 
 	ImGui::Text("Start Color");
 	ImGui::DragFloat4("##Start Color", &m_tEffectMeshDesc.vStartColor.x, 0.01f, 0.f, 1.f, "%.5f");
+	if (ImGui::TreeNode("Start Color Picker"))
+	{
+		ImGui::ColorPicker4("##Start Color", &m_tEffectMeshDesc.vStartColor.x, ImGuiColorEditFlags_AlphaPreviewHalf | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_InputRGB);
+		ImGui::TreePop();
+	}
 
 	ImGui::Text("Color Speed");
 	ImGui::DragFloat4("##Color Speed", &m_tEffectMeshDesc.vColorSpeed.x, 0.01f, -1.f, 1.f, "%.5f");
@@ -1389,7 +1424,16 @@ void CCustomEffectMesh::Update_Position(_float fFrameTime)
 
 	vMovePosition = vAbsolutePosition * fFrameTime;
 
-	m_pTransformCom.lock()->Add_Position(vMovePosition);
+	if (m_tEffectMeshDesc.bMoveByMesh)
+	{
+		m_pTransformCom.lock()->Go_Straight(fFrameTime * XMVectorGetZ(vMovePosition));
+		m_pTransformCom.lock()->Go_Right(fFrameTime * XMVectorGetX(vMovePosition));
+		m_pTransformCom.lock()->Go_Up(fFrameTime * XMVectorGetY(vMovePosition));
+	}
+	else
+	{
+		m_pTransformCom.lock()->Add_Position(vMovePosition);
+	}
 }
 
 void CCustomEffectMesh::Update_Rotation(_float fFrameTime)
