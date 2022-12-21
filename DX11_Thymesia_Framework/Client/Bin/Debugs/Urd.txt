@@ -232,3 +232,13 @@ ik_weapon_r_end
 ik_weapon_l
 ik_weapon_l_end
 SK_C_Urd.mo
+0[SK_C_Urd.md]. 15114
+1[SK_C_Urd.md]. 4626
+2[SK_C_Urd.md]. 48435
+3[SK_C_Urd.md]. 4344
+4[SK_C_Urd.md]. 56733
+5[SK_C_Urd.md]. 14022
+6[SK_C_Urd.md]. 9492
+7[SK_C_Urd.md]. 2880
+8[SK_C_Urd.md]. 2880
+9[SK_C_Urd.md]. 4176

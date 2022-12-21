@@ -64,7 +64,7 @@ void CAnimation::Update_TransformationMatrices(_float fTimeDelta)
 	if (m_fTimeAcc >= m_fDuration)
 	{
 		//m_isFinished = true;
-		
+
 		for (_uint i(0); i < m_pAnimData.lock()->iNumChannels; ++i)
 		{
 			//m_Channels[i].lock()->Update_TransformationMatrices(m_fTimeAcc);
@@ -92,7 +92,7 @@ void CAnimation::Update_TransformationMatrices(_float fTimeDelta)
 		{
 			cout << "Skip Key: " << iCurrentKey - (m_iPreChannelKey + 1) << endl;
 		}*/
-		
+
 		//CallBack_NextChannelKey(iCurrentKey);
 		m_iPreChannelKey = iCurrentKey;
 	}
@@ -102,7 +102,7 @@ void CAnimation::Blend_Animation(_float fMaxBlendTime, _float fRatio)
 {
 	m_fAnimRatio = 0.f;
 	//m_fTimeAcc = fMaxBlendTime;
-	
+
 	for (_uint i(0); i < m_pAnimData.lock()->iNumChannels; ++i)
 		m_Channels[i].lock()->Blend_PreTransformationMatrices(fMaxBlendTime, fRatio);
 

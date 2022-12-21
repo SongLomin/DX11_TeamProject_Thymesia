@@ -125,10 +125,6 @@ void CNorMonState_Idle::Tick(_float fTimeDelta)
 
 	//Turn_Transform(fTimeDelta);
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
-
-
-
-
 }
 
 void CNorMonState_Idle::LateTick(_float fTimeDelta)

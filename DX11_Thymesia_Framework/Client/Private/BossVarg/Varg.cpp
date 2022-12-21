@@ -158,7 +158,7 @@ HRESULT CVarg::Render(ID3D11DeviceContext* pDeviceContext)
 
 		if (3 == i)
 			iPassIndex = 8;
-			
+
 		//m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
 
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, iPassIndex, "g_Bones", pDeviceContext);
@@ -258,7 +258,6 @@ void CVarg::Init_Desc()
 #ifdef _VARG_EFFECT_
 	Bind_KeyEvent("Boss_Varg");
 #endif // _VARG_EFFECT_
-	// GET_SINGLE(CGameManager)->Bind_KeyEvent("Boss_Varg", m_pModelCom, bind(&CVarg::Call_NextAnimationKey, this, placeholders::_1));
 
 	m_pPhysXControllerCom.lock()->Init_Controller(
 		Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom),

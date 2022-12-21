@@ -37,10 +37,13 @@ public:
 private:
     void    SetUpColliderDesc();
 
+    void Free();
+
 private:
     weak_ptr<CCollider>     m_pColliderCom;
     _int                    m_iCheckIndex = 0;
     LIGHTDESC               m_tLightDesc;
+    _uint                   m_iEffectIndex = 0;
 };
 
 END

@@ -67,7 +67,6 @@ void CVargBossState_Exe_NoDeadEnd::OnStateStart(const _float& In_fAnimationBlend
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,5);
 
-#ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Exe_SitDown -> OnStateStart" << endl;
 #endif
@@ -76,7 +75,7 @@ void CVargBossState_Exe_NoDeadEnd::OnStateStart(const _float& In_fAnimationBlend
 void CVargBossState_Exe_NoDeadEnd::OnStateEnd()
 {
 	__super::OnStateEnd();
-	
+
 
 }
 
@@ -87,9 +86,9 @@ void CVargBossState_Exe_NoDeadEnd::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	
+
 	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);
-	
+
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Roar_Getup>(0.05f);
 }
 
@@ -117,8 +116,6 @@ _bool CVargBossState_Exe_NoDeadEnd::Check_AndChangeNextState()
 			return true;
 		}
 	}
-	
-
 
 	return false;
 }
