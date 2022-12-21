@@ -37,6 +37,7 @@ HRESULT CInteraction_CheckPoint::Initialize(void* pArg)
 
     m_pModelCom.lock()->Init_Model("P_ArchiveChair01", "");
 
+    GET_SINGLE(CGameManager)->Use_EffectGroup("CheckPointChair_Loop", m_pTransformCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
     return S_OK;
 }
 

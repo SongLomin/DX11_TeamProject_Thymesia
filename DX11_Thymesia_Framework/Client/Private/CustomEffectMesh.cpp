@@ -78,10 +78,10 @@ void CCustomEffectMesh::Tick(_float fTimeDelta)
 
 	Play(fTimeDelta * GAMEINSTANCE->Get_TimeScale(m_iTimeScaleLayerIndex));
 #ifdef _DEBUG
-#ifdef _JOJO_EFFECT_TOOL_
+#ifdef _EFFECT_TOOL_
 	Key_Input_ControlMesh(fTimeDelta);
 	Apply_ImGui_Controls_to_Mesh();
-#endif // _JOJO_EFFECT_TOOL_
+#endif // _EFFECT_TOOL_
 #endif // _DEBUG
 }
 
@@ -178,7 +178,7 @@ void CCustomEffectMesh::SetUp_ShaderResource()
 	m_pShaderCom.lock()->Set_RawValue("g_vCamDirection", &vCamDir, sizeof(_vector));
 #pragma endregion // World, View, Proj, Camera
 	m_pShaderCom.lock()->Set_RawValue("g_bBillboard",          &m_tEffectMeshDesc.bBillBoard,          sizeof(_bool));
-	
+
 	m_pColorDiffuseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", m_tEffectMeshDesc.iDiffuseTextureIndex);
 	m_pMaskTextureCom.lock()->        Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", m_tEffectMeshDesc.iMaskTextureIndex);
 	m_pNoiseTextureCom.lock()->       Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture", m_tEffectMeshDesc.iNoiseTextureIndex);
@@ -300,7 +300,7 @@ void CCustomEffectMesh::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 		}
 		catch (const std::exception&)
 		{
-			// TODO : do nothing
+			//do nothing
 			void(0);
 		}
 	}
@@ -553,7 +553,7 @@ JUMP:
 #endif // _DEBUG
 	if (In_Json.find("BillBoard") != In_Json.end())
 		m_tEffectMeshDesc.bBillBoard = In_Json["BillBoard"];
-	
+
 	if (In_Json.find("Start_Position") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Start_Position"], m_tEffectMeshDesc.vStartPosition);
 
@@ -571,25 +571,25 @@ JUMP:
 
 	if (In_Json.find("Start_Rotation") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Start_Rotation"], m_tEffectMeshDesc.vStartRotation);
-	
+
 	if (In_Json.find("Rotation_Speed") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Rotation_Speed"], m_tEffectMeshDesc.vRotationSpeed);
-	
+
 	if (In_Json.find("Rotation_Force") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Rotation_Force"], m_tEffectMeshDesc.vRotationForce);
-	
+
 	if (In_Json.find("Max_Rotation") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Max_Rotation"], m_tEffectMeshDesc.vMaxRotation);
 
 	if (In_Json.find("Start_Scale") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Start_Scale"], m_tEffectMeshDesc.vStartScale);
-	
+
 	if (In_Json.find("Scale_Speed") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Scale_Speed"], m_tEffectMeshDesc.vScaleSpeed);
-	
+
 	if (In_Json.find("Scale_Force") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Scale_Force"], m_tEffectMeshDesc.vScaleForce);
-	
+
 	if (In_Json.find("Min_Scale") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Min_Scale"], m_tEffectMeshDesc.vMinScale);
 
@@ -747,7 +747,7 @@ JUMP:
 }
 
 #ifdef _DEBUG
-#ifdef _JOJO_EFFECT_TOOL_
+#ifdef _EFFECT_TOOL_
 void CCustomEffectMesh::Key_Input_ControlMesh(_float fTimeDelta)
 {
 	if (m_tEffectMeshDesc.bOnFocus)
@@ -814,7 +814,7 @@ void CCustomEffectMesh::Apply_ImGui_Controls_to_Mesh()
 		XMStoreFloat3(&m_vCurrentRotation, XMLoadFloat3(&m_tEffectMeshDesc.vStartRotation));
 	}
 }
-#endif // _JOJO_EFFECT_TOOL_
+#endif // _EFFECT_TOOL_
 
 void CCustomEffectMesh::Tool_Control()
 {
@@ -1060,7 +1060,7 @@ void CCustomEffectMesh::Tool_Shaders()
 
 		ImGui::TreePop();
 	}
-	
+
 	ImGui::Text("[0]Default"); ImGui::SameLine(); ImGui::Text(" | "); ImGui::SameLine();
 	ImGui::Text("[1]Distortion");
 	ImGui::Text("[2]Soft");
@@ -1148,7 +1148,7 @@ void CCustomEffectMesh::Tool_Dissolve()
 
 		ImGui::Text("Dissolve Direction");
 		ImGui::DragFloat3("##Dissolve_Direction", &m_tEffectMeshDesc.vDissolveDirection.x, 0.1f);
-		
+
 		ImGui::TreePop();
 	}
 }

@@ -1,5 +1,5 @@
 #pragma once
-// #define _JOJO_EFFECT_TOOL_
+// #define _EFFECT_TOOL_
 
 #include "Client_Structs.h"
 #include "Client_Presets.h"
@@ -42,7 +42,7 @@
 #pragma endregion // Map
 
 #pragma region Tool
- #define _MAP_TOOL_
+#define _MAP_TOOL_
 // #define _EFFECT_TOOL_
 #pragma endregion // Tool
 
@@ -68,7 +68,7 @@
 //////////////// RELEASE MODE DEFINES ////////////////
 #ifdef NDEBUG
 
-#undef _JOJO_EFFECT_TOOL_
+#undef _EFFECT_TOOL_
 #undef _ONLY_UI_
 
 #pragma region System
@@ -112,7 +112,7 @@
 //////////////// RELEASE MODE DEFINES ////////////////
 
 /////////////// For. JoJo Effect Tool ///////////////
-#ifdef _JOJO_EFFECT_TOOL_
+#ifdef _EFFECT_TOOL_
 
 #pragma region System
 // #define _ONLY_UI_
@@ -141,7 +141,7 @@
 #pragma endregion // Map
 
 #pragma region Tool
-#undef _MAP_TOOL_
+// #undef _MAP_TOOL_
 #define _EFFECT_TOOL_
 #pragma endregion // Tool
 
@@ -163,7 +163,7 @@
 // #define _BAKE_EFFECTMESH_FBX_
 #pragma endregion // Effects
 
-#endif // _JOJO_EFFECT_TOOL_
+#endif // _EFFECT_TOOL_
 /////////////// For. JoJo Effect Tool ///////////////
 
 #define CLIENT_DECLATION_UI class CUI; class CCustomUI; class CProgressBar; class CHUD_Hover;

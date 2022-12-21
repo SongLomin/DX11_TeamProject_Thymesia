@@ -7,9 +7,9 @@
 #include "DeveloperConsole_Manager.h"
 #include "Camera_Target.h"
 
-#ifdef _JOJO_EFFECT_TOOL_
+#ifdef _EFFECT_TOOL_
 #include "JoJoParticleShaderManager.h"
-#endif // _JOJO_EFFECT_TOOL_
+#endif // _EFFECT_TOOL_
 
 #include <imgui_impl_dx11.h>
 #include "imgui_impl_win32.h"
@@ -46,9 +46,9 @@ HRESULT CMainApp::Initialize()
 
 	CGameInstance::Create_Instance();
 	CGameManager::Create_Instance();
-#ifdef _JOJO_EFFECT_TOOL_
+#ifdef _EFFECT_TOOL_
 	CJoJoParticleShaderManager::Create_Instance();
-#endif // #ifdef _JOJO_EFFECT_TOOL_
+#endif // #ifdef _EFFECT_TOOL_
 
 	if (FAILED(GAMEINSTANCE->Initialize_Engine(g_hInst, LEVEL_END, (_uint)TIMESCALE_LAYER::LAYER_END, (_uint)COLLISION_LAYER::LAYER_END, GraphicDesc)))
 		return E_FAIL;	
@@ -83,9 +83,9 @@ HRESULT CMainApp::Initialize()
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxColor"), TEXT("../Bin/ShaderFiles/Shader_VtxColor.hlsl"));
 	GAMEINSTANCE->Add_SingleGameObject<CFadeMask>(LEVEL_STATIC);
 
-#ifdef _JOJO_EFFECT_TOOL_
+#ifdef _EFFECT_TOOL_
 	GET_SINGLE(CJoJoParticleShaderManager)->Initialize();
-#endif // _JOJO_EFFECT_TOOL_
+#endif // _EFFECT_TOOL_
 
 	//Bake_MipMaps_Recursive("..\\Bin\\Resources\\Meshes\\Destructable");
 	
@@ -346,7 +346,7 @@ void CMainApp::Free()
 #endif // _DEBUG
 
 
-#ifdef _JOJO_EFFECT_TOOL_
+#ifdef _EFFECT_TOOL_
 	CJoJoParticleShaderManager::Destroy_Instance();
-#endif // _JOJO_EFFECT_TOOL_
+#endif // _EFFECT_TOOL_
 }

@@ -434,11 +434,11 @@ namespace Client
 		_float		fTime;
 		INTERPOLATION eInterpolationType;
 		_float3		vOffset;
-		
+
 	};
 
 	// For. JoJo Particle Tool [Shader]
-#ifdef _JOJO_EFFECT_TOOL_
+#ifdef _EFFECT_TOOL_
 	typedef struct tagJoJoParticleShaderInfo
 	{
 		enum class PARTICLE_RECT_TYPE		{ DEFAULT, SPRITE, TYPE_END };
@@ -450,5 +450,5 @@ namespace Client
 		_bool bSoftRendering;
 		_bool bSpecialRendering;
 	}JJ_PARTICLE_SHADER_INFO;
-#endif // _JOJO_EFFECT_TOOL_
+#endif // _EFFECT_TOOL_
 }

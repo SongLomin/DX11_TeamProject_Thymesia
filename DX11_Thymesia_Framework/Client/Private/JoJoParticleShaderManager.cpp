@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "JoJoParticleShaderManager.h"
-#ifdef _JOJO_EFFECT_TOOL_
+#ifdef _EFFECT_TOOL_
 IMPLEMENT_SINGLETON(CJoJoParticleShaderManager)
 
 void CJoJoParticleShaderManager::Initialize()
@@ -43,4 +43,4 @@ void CJoJoParticleShaderManager::Free()
 	m_ParticleShaderInfos.clear();
 }
 
-#endif // _JOJO_EFFECT_TOOL_
+#endif // _EFFECT_TOOL_

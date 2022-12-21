@@ -667,12 +667,6 @@ void CGameManager::Stop_BattleEnd()
 
 _bool CGameManager::Check_StageEnd()
 {
-	// TODO : wtf
-	//if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
-	//{
-	//	return true;
-	//}
-
 	return false;
 }
 

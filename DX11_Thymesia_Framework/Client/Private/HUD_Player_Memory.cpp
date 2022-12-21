@@ -65,9 +65,6 @@ void CHUD_Player_Memory::Tick(_float fTimeDelta)
     fTimeDelta = CUI_Utils::UI_TimeDelta();
 
     __super::Tick(fTimeDelta);
-
-//TODO: UI: �÷��̾� ��ȭ �׽�Ʈ �ڵ�
-
 }
 
 void CHUD_Player_Memory::LateTick(_float fTimeDelta)
