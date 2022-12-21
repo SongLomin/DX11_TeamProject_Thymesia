@@ -726,6 +726,11 @@ PxVec3 ENGINE_DLL Engine::SMath::Convert_PxVec3(FXMVECTOR In_Vector)
 	return PxVec3(XMVectorGetX(In_Vector), XMVectorGetY(In_Vector), XMVectorGetZ(In_Vector));
 }
 
+PxVec3 ENGINE_DLL Engine::SMath::Convert_PxVec3(const XMFLOAT3& In_Float3)
+{
+	return PxVec3(In_Float3.x, In_Float3.y, In_Float3.z);
+}
+
 XMVECTOR ENGINE_DLL Engine::SMath::Convert_Vector(const PxVec3& In_PxVec3)
 {
 	return XMVectorSet(_float(In_PxVec3.x), _float(In_PxVec3.y), _float(In_PxVec3.z), 0.f);

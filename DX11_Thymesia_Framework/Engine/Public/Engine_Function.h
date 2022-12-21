@@ -96,6 +96,7 @@ inline void Print_Float3(XMFLOAT3 In_Float3)
 	Print_Vector(XMLoadFloat3(&In_Float3));
 }
 
+
 #else
 #define DXUT_SetDebugName( pObj, pstrName )
 #define Print_Vector(Do_Nothing)

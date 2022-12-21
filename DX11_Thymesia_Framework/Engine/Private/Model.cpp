@@ -382,16 +382,12 @@ HRESULT CModel::Update_BoneMatrices()
 	return S_OK;
 }
 
-HRESULT CModel::Update_NvCloth()
+HRESULT CModel::Update_NvCloth(ID3D11DeviceContext* pDeferredContext)
 {
-	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
-
 	for (auto& elem : m_MeshContainers)
 	{
 		elem.lock()->Update_NvClothVertices(pDeferredContext);
 	}
-
-	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
 
 	return S_OK;
 }

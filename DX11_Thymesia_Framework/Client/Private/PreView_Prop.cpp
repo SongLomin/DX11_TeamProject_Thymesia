@@ -41,17 +41,21 @@ void CPreview_Prop::Tick(_float fTimeDelta)
     __super::Tick(fTimeDelta);
 
 #ifdef _DEBUG
-	//if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
-	//{
-	//	++m_iContainerIndex;
-	//	cout << "m_iContainerIndex : " << m_iContainerIndex << endl;
-	//}
+	/*if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
+	{
+		++m_iContainerIndex;
+		cout << "m_iContainerIndex : " << m_iContainerIndex << endl;
+	}*/
 #endif // _DEBUG
 }
 
 void CPreview_Prop::LateTick(_float fTimeDelta)
 {
     __super::LateTick(fTimeDelta);
+
+	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
+	m_pModelCom.lock()->Update_NvCloth(pDeferredContext);
+	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
 }
 
 HRESULT CPreview_Prop::Render(ID3D11DeviceContext* pDeviceContext)
@@ -70,8 +74,8 @@ HRESULT CPreview_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
 #ifdef _DEBUG
-		if (i == m_iContainerIndex)
-			continue;
+		/*if (i == m_iContainerIndex)
+			continue;*/
 #endif
 
 		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);

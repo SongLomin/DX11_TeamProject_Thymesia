@@ -70,6 +70,7 @@ namespace Engine
 		PxExtendedVec3	ENGINE_DLL Convert_PxExtendedVec3(FXMVECTOR In_Vector);
 		PxExtendedVec3	ENGINE_DLL Convert_PxExtendedVec3(PxVec3 In_Vector);
 		PxVec3			ENGINE_DLL Convert_PxVec3(FXMVECTOR In_Vector);
+		PxVec3			ENGINE_DLL Convert_PxVec3(const XMFLOAT3& In_Float3);
 		PxVec3			ENGINE_DLL Convert_PxVec3(PxExtendedVec3 In_Vector);
 		XMVECTOR		ENGINE_DLL Convert_Vector(const PxVec3& In_PxVec3);
 		XMVECTOR		ENGINE_DLL Convert_Vector(const PxVec4& In_PxVec4);

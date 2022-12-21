@@ -95,7 +95,7 @@ public: /* Loopable functions */
 	HRESULT Bind_SRV(weak_ptr<CShader> pShader, const char* pConstantName, _uint iMeshContainerIndex, aiTextureType eActorType);
 	HRESULT Render_Mesh(_uint iMeshContainerIndex, ID3D11DeviceContext* pDeviceContext);
 	HRESULT Update_BoneMatrices();
-	HRESULT Update_NvCloth();
+	HRESULT Update_NvCloth(ID3D11DeviceContext* pDeferredContext);
 	HRESULT Render_AnimModel(_uint iMeshContainerIndex, weak_ptr<CShader> pShader, _uint iPassIndex, const char* pConstantBoneName, ID3D11DeviceContext* pDeviceContext);
 	
 public:

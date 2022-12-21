@@ -1945,12 +1945,15 @@ HRESULT CRender_Manager::Blur(const _float& In_PixelPitchScalar, const _tchar* I
 void CRender_Manager::Emplace_SleepContext(const _uint In_iIndex)
 {
 	ID3D11DeviceContext* pContext = nullptr;
-	if (SUCCEEDED(DEVICE->CreateDeferredContext(0, &pContext)))
+
+	for (_int i = 0; i < In_iIndex; ++i)
 	{
-		GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(pContext);
-		m_pBeforeRenderSleepContexts.emplace_back(pContext);
+		if (SUCCEEDED(DEVICE->CreateDeferredContext(0, &pContext)))
+		{
+			GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(pContext);
+			m_pBeforeRenderSleepContexts.emplace_back(pContext);
+		}
 	}
-	
 }
 
 #ifdef _DEBUG

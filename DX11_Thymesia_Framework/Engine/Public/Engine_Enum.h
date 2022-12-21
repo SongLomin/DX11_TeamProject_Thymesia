@@ -152,7 +152,7 @@ enum class ENGINE_EVENT_TYPE
 	TYPE_END
 };
 
-enum class NVCLOTH_INDEX
+enum class FLAG_INDEX
 {
 	_0 = ( 1 << 0),
 	_1 = ( 1 << 1),

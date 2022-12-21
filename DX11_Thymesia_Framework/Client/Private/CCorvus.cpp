@@ -40,8 +40,8 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	//m_pStatus.lock()->Load_FromJson(m_szClientComponentPath + "Corvus/SaveData.json");
 
-	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
-	//m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER, (_flag)NVCLOTH_INDEX::_2);
+	//m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
+	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER, (_flag)FLAG_INDEX::_2);
 
 
 
@@ -107,6 +107,12 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_LightDesc = GAMEINSTANCE->Add_Light(LightDesc);
 
+#ifdef _USE_THREAD_
+	Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
+#endif // _USE_THREAD_
+	
+
+
 	return S_OK;
 }
 
@@ -166,11 +172,24 @@ void CCorvus::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 }
 
+void CCorvus::Thread_PreBeforeRender(_float fTimeDelta)
+{
+	__super::Thread_PreBeforeRender(fTimeDelta);
+
+	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
+	m_pModelCom.lock()->Update_NvCloth(pDeferredContext);
+	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
+
+}
+
+
 void CCorvus::Before_Render(_float fTimeDelta)
 {
 	__super::Before_Render(fTimeDelta);
 
-	m_pModelCom.lock()->Update_NvCloth();
+
+	
+	//GAMEINSTANCE->Enqueue_Job(bind(&CModel::Update_NvCloth, m_pModelCom.lock(), pDeferredContext));
 }	
 
 

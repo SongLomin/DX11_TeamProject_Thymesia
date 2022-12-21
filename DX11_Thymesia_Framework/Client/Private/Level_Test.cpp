@@ -14,6 +14,7 @@
 #include "MonsterHPBar_Boss.h"
 #include "UI_EvolveMenu.h"
 #include "Client_Presets.h"
+#include "Model.h"
 
 
 CLevel_Test::CLevel_Test()
@@ -67,6 +68,9 @@ HRESULT CLevel_Test::Initialize()
 
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_TEST);
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_TEST);
+	GAMEINSTANCE->Add_GameObject<CPreview_Prop>(LEVEL_TEST).lock()
+		->Get_Component<CModel>().lock()->Init_Model("Boss_VargWeapon", "", (_uint)TIMESCALE_LAYER::PLAYER, _flag(FLAG_INDEX::_1));
+
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
 
 
