@@ -25,6 +25,7 @@ public:
 	HRESULT Begin_MRTWithNoneClear(const _tchar* pMRTTag);
 
 	HRESULT Begin_MRTWithNoneClearWithIndex(const _tchar* pMRTTag, const _uint In_iIndex);
+	HRESULT Begin_MRTWithNoneClearWithFlagIndex(const _tchar* pMRTTag, const _flag In_IndexFlag);
 	HRESULT Begin_MRTWithDeferredContextNoneClearIndex(const _tchar* pMRTTag, const _uint In_iIndex, ID3D11DeviceContext* pDeviceContext);
 	// 해당 인덱스 SRT만 클리어합니다.
 	HRESULT Begin_MRTWithClearWithIndex(const _tchar* pMRTTag, const _uint In_iIndex);

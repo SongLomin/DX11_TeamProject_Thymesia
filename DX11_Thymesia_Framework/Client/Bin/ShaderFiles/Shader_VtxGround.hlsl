@@ -111,9 +111,9 @@ PatchTess ConstantHS(InputPatch<VS_OUT_HULL, PATCH_SIZE> input, int patchID : SV
 {
     PatchTess output = (PatchTess) 0.f;
        
-	output.edgeTess[0] = 10;
-	output.edgeTess[1] = 10;
-	output.edgeTess[2] = 10;
+	output.edgeTess[0] = 15;
+	output.edgeTess[1] = 15;
+	output.edgeTess[2] = 15;
     output.insideTess = 1;
     
     return output;
@@ -162,8 +162,8 @@ DS_OUT DS_Main(const OutputPatch<HS_OUT, PATCH_SIZE> input, float3 location : SV
     float3 normal   = input[0].vNormal   * location.r + input[1].vNormal   * location.g + input[2].vNormal   * location.b;
     float3 tangent  = input[0].vTangent  * location.r + input[1].vTangent  * location.g + input[2].vTangent  * location.b;
     
-    vector vDisplacement = g_NoiseTexture2.SampleLevel(DefaultSampler, uv + g_vUVNoise * 0.0005f , 0) * 0.7f;
-
+    vector vDisplacement = ( /*1.f - */g_DisplacementTexture.SampleLevel(DefaultSampler, uv + g_vUVNoise * 0.005f, 0)) * 0.15f;
+  
     matrix matWV = mul(g_WorldMatrix, g_ViewMatrix);
     matrix matWVP = mul(matWV, g_ProjMatrix);
     
@@ -341,9 +341,9 @@ PS_OUT PS_MAIN_WATER(DS_OUT In)
     vector vFilterDiffuse = g_FilterTexture.Sample(DefaultSampler, In.vTexUV);
  
       //물쉐이더 테스트 용
-    float3 vPixelNorm = g_NoiseTexture1.Sample(DefaultSampler, In.vTexUV * 50.f + g_vUVNoise * 0.1f) * 2.f - 1.f;
-    vPixelNorm += g_NoiseTexture2.Sample(DefaultSampler, In.vTexUV * 10.f + g_vUVNoise * 0.01f) * 2.f - 1.f;
-    
+    float3 vPixelNorm = g_NoiseTexture1.Sample(DefaultSampler, In.vTexUV*10.f + g_vUVNoise * 0.005f) * 2.f - 1.f;
+   // vPixelNorm += g_NoiseTexture2.Sample(DefaultSampler, In.vTexUV * 30.f + g_vUVNoise * 0.1f) * 2.f - 1.f;
+      
     vPixelNorm = float3(vPixelNorm.rg, lerp(1, vPixelNorm.b, 1.f));
     
     float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));
