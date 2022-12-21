@@ -45,7 +45,8 @@ private:
     weak_ptr<CCollider>     m_pColliderCom;
     weak_ptr<CTexture>      m_pTextureCom;
 
-    _int m_iTexPass = 366;
+    _int                    m_iTexPass = 882;
+    _float2                 m_vAddSpeed = { -0.5f, 0.5f };
 
     LEVEL                   m_eNextLevel = LEVEL::LEVEL_END;
     _float2                 m_vAddUVPos     = { 0.f, 0.f };

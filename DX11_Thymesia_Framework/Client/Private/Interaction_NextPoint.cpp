@@ -76,8 +76,8 @@ void CInteraction_NextPoint::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
-    m_vAddUVPos.x += fTimeDelta;
-    //m_vAddUVPos.y += fTimeDelta;
+    m_vAddUVPos.x += fTimeDelta * m_vAddSpeed.x;
+    m_vAddUVPos.y += fTimeDelta * m_vAddSpeed.y;
 }
 
 void CInteraction_NextPoint::LateTick(_float fTimeDelta)
@@ -138,6 +138,7 @@ void CInteraction_NextPoint::OnEventMessage(_uint iArg)
                 m_eNextLevel = (LEVEL)iSelect_Level;
 
             ImGui::InputInt("Tex", &m_iTexPass);
+            ImGui::InputFloat2("Speed", &m_vAddSpeed.x);
         }
         break;
     }
