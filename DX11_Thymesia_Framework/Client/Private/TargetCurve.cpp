@@ -149,7 +149,7 @@ void CTargetCurve::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vUVMask", &m_vMaskUV, sizeof(_float2))))
 		DEBUG_ASSERT;
 
-	_float fWrapWeight = 4.f;
+	_float fWrapWeight = 2.f;
 
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("fWrapWeight", &fWrapWeight, sizeof(_float))))
 		DEBUG_ASSERT;
