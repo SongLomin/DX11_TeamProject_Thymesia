@@ -64,6 +64,16 @@ HRESULT CTransform::Set_ShaderResource(weak_ptr<CShader> pShader, const char* pC
     return S_OK;
 }
 
+HRESULT CTransform::Go_Direction(_fvector vDirection, _float fTimeDelta)
+{
+	_vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
+
+	vPosition -= XMVector3Normalize(vDirection) /* 회전 속도: XMConvertToRadians(90.0f) */ * fTimeDelta;
+
+	Set_State(CTransform::STATE_TRANSLATION, vPosition);
+	return S_OK;
+}
+
 HRESULT CTransform::Go_Straight(_float fTimeDelta, weak_ptr<CNavigation> pNaviCom)
 {
     _vector		vPosition = Get_State(CTransform::STATE_TRANSLATION);
@@ -365,7 +375,7 @@ void CTransform::Rotation_PitchYawRoll(_float3 vRadian)
     _matrix matPitchYawRoll = XMMatrixRotationRollPitchYaw(vRadian.x, vRadian.y, vRadian.z);
     _vector vPosition = Get_Position();
     _matrix WorldMatrix = SMath::Get_ScaleMatrix(XMLoadFloat4x4(&m_WorldMatrix)) * matPitchYawRoll;
-  
+
     WorldMatrix.r[3] = vPosition;
     XMStoreFloat4x4(&m_WorldMatrix, WorldMatrix);
 }

@@ -949,6 +949,8 @@ void CCustomEffectMesh::Tool_Position()
 
 void CCustomEffectMesh::Tool_Speed()
 {
+	ImGui::Checkbox("Move By Mesh##Move_By_Mesh", &m_tEffectMeshDesc.bMoveByMesh);
+
 	ImGui::Text("Speed");
 	ImGui::DragFloat3("##Speed", &m_tEffectMeshDesc.vSpeed.x, 0.1f);
 
@@ -1380,19 +1382,40 @@ void CCustomEffectMesh::Play_Internal(_float fFrameTime)
 
 void CCustomEffectMesh::Update_Position(_float fFrameTime)
 {
-	m_vCurrentSpeed = SMath::Mul_Float3(m_tEffectMeshDesc.vSpeed, fFrameTime);
-	m_vCurrentForce = SMath::Add_Float3(m_vCurrentForce, SMath::Mul_Float3(m_tEffectMeshDesc.vForce, fFrameTime));
+	if (m_tEffectMeshDesc.bMoveByMesh)
+	{
+		m_vCurrentSpeed = SMath::Mul_Float3(m_tEffectMeshDesc.vSpeed, fFrameTime);
+		m_vCurrentForce = SMath::Add_Float3(m_vCurrentForce, SMath::Mul_Float3(m_tEffectMeshDesc.vForce, fFrameTime));
 
-	_vector vMovePosition(XMLoadFloat3(&m_vCurrentSpeed) + XMLoadFloat3(&m_vCurrentForce));
-	_vector vAbsolutePosition(vMovePosition / fFrameTime);
+		_vector vMovePosition(XMLoadFloat3(&m_vCurrentSpeed) + XMLoadFloat3(&m_vCurrentForce));
+		_vector vAbsolutePosition(vMovePosition / fFrameTime);
 
-	vAbsolutePosition = XMVectorSetX(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.x, min(m_tEffectMeshDesc.vMaxSpeed.x, XMVectorGetX(vAbsolutePosition))));
-	vAbsolutePosition = XMVectorSetY(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.y, min(m_tEffectMeshDesc.vMaxSpeed.y, XMVectorGetY(vAbsolutePosition))));
-	vAbsolutePosition = XMVectorSetZ(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.z, min(m_tEffectMeshDesc.vMaxSpeed.z, XMVectorGetZ(vAbsolutePosition))));
+		vAbsolutePosition = XMVectorSetX(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.x, min(m_tEffectMeshDesc.vMaxSpeed.x, XMVectorGetX(vAbsolutePosition))));
+		vAbsolutePosition = XMVectorSetY(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.y, min(m_tEffectMeshDesc.vMaxSpeed.y, XMVectorGetY(vAbsolutePosition))));
+		vAbsolutePosition = XMVectorSetZ(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.z, min(m_tEffectMeshDesc.vMaxSpeed.z, XMVectorGetZ(vAbsolutePosition))));
 
-	vMovePosition = vAbsolutePosition * fFrameTime;
+		vMovePosition = vAbsolutePosition * fFrameTime;
 
-	m_pTransformCom.lock()->Add_Position(vMovePosition);
+		m_pTransformCom.lock()->Go_Straight(fFrameTime * XMVectorGetZ(vMovePosition));
+		m_pTransformCom.lock()->Go_Right(fFrameTime * XMVectorGetX(vMovePosition));
+		m_pTransformCom.lock()->Go_Up(fFrameTime * XMVectorGetY(vMovePosition));
+	}
+	else
+	{
+		m_vCurrentSpeed = SMath::Mul_Float3(m_tEffectMeshDesc.vSpeed, fFrameTime);
+		m_vCurrentForce = SMath::Add_Float3(m_vCurrentForce, SMath::Mul_Float3(m_tEffectMeshDesc.vForce, fFrameTime));
+
+		_vector vMovePosition(XMLoadFloat3(&m_vCurrentSpeed) + XMLoadFloat3(&m_vCurrentForce));
+		_vector vAbsolutePosition(vMovePosition / fFrameTime);
+
+		vAbsolutePosition = XMVectorSetX(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.x, min(m_tEffectMeshDesc.vMaxSpeed.x, XMVectorGetX(vAbsolutePosition))));
+		vAbsolutePosition = XMVectorSetY(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.y, min(m_tEffectMeshDesc.vMaxSpeed.y, XMVectorGetY(vAbsolutePosition))));
+		vAbsolutePosition = XMVectorSetZ(vAbsolutePosition, max(m_tEffectMeshDesc.vMinSpeed.z, min(m_tEffectMeshDesc.vMaxSpeed.z, XMVectorGetZ(vAbsolutePosition))));
+
+		vMovePosition = vAbsolutePosition * fFrameTime;
+
+		m_pTransformCom.lock()->Add_Position(vMovePosition);
+	}
 }
 
 void CCustomEffectMesh::Update_Rotation(_float fFrameTime)

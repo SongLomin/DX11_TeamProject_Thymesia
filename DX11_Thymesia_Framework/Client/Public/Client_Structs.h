@@ -38,6 +38,8 @@ namespace Client
 
 
 #pragma region Speed
+		_bool		bMoveByMesh = false;
+
 		_float3		vSpeed;
 		_float3		vForce;
 		_float3		vMinSpeed;

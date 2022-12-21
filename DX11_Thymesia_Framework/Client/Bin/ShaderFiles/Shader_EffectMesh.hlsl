@@ -482,27 +482,27 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_DIRECTIONAL_DISSOLVE In)
 	Out.vColor = fStepValue * vector(g_vDissolveGradiationStartColor, 1.f) +
 		IsIn_Range(0.015f, 1.f, fDiff) * g_vColor;
 
-	//vector vNoise = (vector) 0;
-	//if (g_bNoiseWrap)
-	//	vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
-	//else
-	//	vNoise = g_NoiseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
+	vector vNoise = (vector) 0;
+	if (g_bNoiseWrap)
+		vNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
+	else
+		vNoise = g_NoiseTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.y + g_vUVNoise);
 
-	//vector vMask = (vector) 0;
-	//if (g_bMaskWrap)
-	//	vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
-	//else
-	//	vMask = g_MaskTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
+	vector vMask = (vector) 0;
+	if (g_bMaskWrap)
+		vMask = g_MaskTexture.Sample(DefaultSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
+	else
+		vMask = g_MaskTexture.Sample(ClampSampler, In.vTexUV * g_vWrapWeight.z + g_vUVMask);
 
-	//// (0, +1) => (-1, +1)
-	//if (g_bDynamicNoiseOption)
-	//	vNoise.rgb = vNoise.rgb * 2 - 1;
+	// (0, +1) => (-1, +1)
+	if (g_bDynamicNoiseOption)
+		vNoise.rgb = vNoise.rgb * 2 - 1;
 
-	//Out.vColor.rgb *= vNoise.rgb;
-	//Out.vColor.a *= vMask.r;
+	Out.vColor.rgb *= vNoise.rgb;
+	Out.vColor.a *= vMask.r;
 
-	//if (g_fDiscardRatio > Out.vColor.a)
-	//	discard;
+	if (g_fDiscardRatio > Out.vColor.a)
+		discard;
 
 	if (g_bBloom)
 		Out.vExtractBloom = Out.vColor;
