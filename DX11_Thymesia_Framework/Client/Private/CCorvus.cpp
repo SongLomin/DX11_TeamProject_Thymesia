@@ -412,6 +412,8 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_CheckPointLoop);
 	ADD_STATE_MACRO(CCorvusState_Joker_Execution);
 	ADD_STATE_MACRO(CCorvusState_Execution_Start);
+	ADD_STATE_MACRO(CCorvusState_Varg_Execution);
+	ADD_STATE_MACRO(CCorvusState_Execution_R_R);
 
 #undef ADD_STATE_MACRO
 }
@@ -526,7 +528,7 @@ void CCorvus::OnEventMessage(_uint iArg)
 
 	if ((_uint)EVENT_TYPE::ON_VARGEXECUTION == iArg)
 	{
-		Change_State<CVarg_Execution>();
+		Change_State<CCorvusState_Execution_R_R>();
 	}
 
 	if ((_uint)EVENT_TYPE::ON_SITUP == iArg)

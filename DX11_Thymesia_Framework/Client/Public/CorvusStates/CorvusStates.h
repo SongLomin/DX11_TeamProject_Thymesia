@@ -121,6 +121,8 @@
 #include "CorvusStates/StateExecution/CorvusState_Joker_Execution.h"
 #include "CorvusStates/StateExecution/CorvusState_Bat_Execution.h"
 #include "CorvusStates/StateExecution/CorvusState_Execution_Start.h"
+#include "CorvusStates/StateExecution/CorvusState_Varg_Execution.h"
+#include "CorvusStates/StateExecution/CorvusState_Execution_R_R.h"
 //플레이어 처형 스테이트
 // 
 // 

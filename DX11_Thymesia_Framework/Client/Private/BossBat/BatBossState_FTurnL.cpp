@@ -48,9 +48,9 @@ void CBatBossState_FTurnL::Tick(_float fTimeDelta)
 	
 	if (m_bTurnCheck)
 	{
-		_float fTurnValue = 2.f / 0.25f;
+		_float fTurnValue = 3.14f / 0.625f;
 	
-		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * -fTurnValue);
+		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * -0.5f);
 		
 	};
 	
@@ -73,7 +73,11 @@ void CBatBossState_FTurnL::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pPhysXControllerCom.lock()->Enable_Gravity(false);
+	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+
+	m_bTurnCheck = true;
+
+	Rotation_TargetToLookDir();
 	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
@@ -121,17 +125,19 @@ _bool CBatBossState_FTurnL::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 20)
+	
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 37)
 	{
-		m_bTurnCheck = true;
+
+		if (ComputeAngleWithPlayer() > 0.97f && m_bTurnCheck)
+		{
+			Rotation_TargetToLookDir();
+			m_bTurnCheck = false;
+
+		}
 	}
 
-
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 35)
-	{
-		m_pPhysXControllerCom.lock()->Enable_Gravity(true);
-		m_bTurnCheck = false;
-	}
 
 
 	return false;

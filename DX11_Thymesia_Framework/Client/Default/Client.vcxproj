@@ -322,9 +322,11 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_Claw_Atk2.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_Short_Claw_Atk3.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Bat_Execution.h" />
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Execution_R_R.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Execution_Start.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Joker_Execution.h" />
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_RaidAttack1Hurt.h" />
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Varg_Execution.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Abundant_FeadtherLV1.h" />
@@ -894,9 +896,11 @@
     <ClCompile Include="..\Private\CorvusStates\Talent_Effect_Short_ClawLv2.cpp" />
     <ClCompile Include="..\Private\CorvusStates\Talent_Sword.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Bat_Execution.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Execution_R_R.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Execution_Start.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Joker_Execution.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_RaidAttack1Hurt.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Varg_Execution.cpp" />
     <ClCompile Include="..\Private\CustomFont.cpp" />
     <ClCompile Include="..\Private\CUtils_EasingTransform.cpp" />
     <ClCompile Include="..\Private\DeveloperConsole_Manager.cpp" />

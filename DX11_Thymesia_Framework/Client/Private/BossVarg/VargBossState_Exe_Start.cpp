@@ -10,6 +10,7 @@
 #include "Character.h"
 #include "VargStates.h"
 #include "Status_Boss.h"
+#include "PhysXCharacterController.h"
 
 GAMECLASS_C(CVargBossState_Exe_Start);
 CLONE_C(CVargBossState_Exe_Start, CComponent)
@@ -68,6 +69,8 @@ void CVargBossState_Exe_Start::OnStateStart(const _float& In_fAnimationBlendTime
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	Get_Owner().lock()->Get_Component<CVargBossState_Exe_NoDeadEnd>().lock()->Set_DeadChoice(false);
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::PLAYERHUD);
@@ -120,12 +123,12 @@ _bool CVargBossState_Exe_Start::Check_AndChangeNextState()
 	//여서조건을줘봐요 어떻게 ? 라이프가 2보다클떄 즉목숨이하나잇으면 여기로들어오고 안들어오면 ㅇㅇ
 	
 
-
 	if (m_bDieType)
 	{
 		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 154)
 		{
 			m_pOwner.lock()->Get_Component<CStatus_Boss>().lock()->Set_NextPhase();
+			Get_Owner().lock()->Get_Component<CVargBossState_Exe_NoDeadEnd>().lock()->Set_DeadChoice(false);
 			Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_NoDeadEnd>(0.05f);
 			return true;
 		}

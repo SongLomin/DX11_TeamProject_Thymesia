@@ -1569,6 +1569,12 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtFallDownEnd.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt\03.State_HurtFallDown</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Varg_Execution.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\04.Varg_ExecutionStart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Execution_R_R.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\03.ExecutionStart\00.Execution_R_R</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\UI_DamageFontPiece.h" />
     <ClInclude Include="..\Public\UI_BloodOverlay.h" />
     <ClInclude Include="..\Public\UI_AppearEvent_Varg.h" />
@@ -3178,6 +3184,13 @@
     </ClCompile>
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Varg_Execution.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\04.Varg_ExecutionStart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Execution_R_R.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\03.ExecutionStart\00.Execution_R_R</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\UI_DamageFontPiece.cpp" />
     <ClCompile Include="..\Private\UI_BloodOverlay.cpp" />
     <ClCompile Include="..\Private\UI_AppearEvent_Varg.cpp" />
@@ -4721,6 +4734,12 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt\03.State_HurtFallDown">
       <UniqueIdentifier>{f868b891-9036-4f60-9256-c213eea441e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\04.Varg_ExecutionStart">
+      <UniqueIdentifier>{d1d0d9a4-2ec3-4160-832e-d7bb007f96c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\03.ExecutionStart\00.Execution_R_R">
+      <UniqueIdentifier>{18ff6167-aaf0-4886-bd70-9b172f40d919}</UniqueIdentifier>
     </Filter>
     <Filter Include="AppearEvent">
       <UniqueIdentifier>{d3a11a7c-0354-46b5-b914-4587764414bf}</UniqueIdentifier>

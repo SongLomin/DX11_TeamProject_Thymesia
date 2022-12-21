@@ -186,9 +186,9 @@ void CBat::Init_Desc()
 
 	//TODO 여기서하는 이유는 몬스터가 배치되고 원점에서 우리가 피킹한위치만큼더해지고 난뒤에 그월드포지션값저장하기위해서 여기서함
 
-	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Y |(_byte)ROOTNODE_FLAG::Z);
-
-
+	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X |(_byte)ROOTNODE_FLAG::Z);
+	
+	
 
 	//GET_SINGLE(CGameManager)->Bind_KeyEvent("Monster1", m_pModelCom, bind(&CBat::Call_NextAnimationKey, this, placeholders::_1));
 	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::BossBatSetting(m_pTransformCom),
