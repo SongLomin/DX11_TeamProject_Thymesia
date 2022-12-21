@@ -42,9 +42,6 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	m_tLightDesc.fRange     = 5.f;
 	m_tLightDesc.fIntensity = 1.f;
 
-	// m_pModelCom.lock()->Init_Model("Torch", "", (_uint)TIMESCALE_LAYER::NONE);
-	// GET_SINGLE(CGameManager)->Use_EffectGroup("TorchFire", m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
-
 	m_eRenderGroup = RENDERGROUP::RENDER_NONALPHABLEND;
 
 	return S_OK;
@@ -172,11 +169,6 @@ void CLight_Prop::Load_FromJson(const json& In_Json)
 		m_tLightDesc.bEnable = false;
 		GET_SINGLE(CGameManager)->Registration_SectionLight(m_iSectionIndex, Weak_Cast<CLight_Prop>(m_this));
 	}
-	else
-	{
-		if ("" != m_szEffectTag)
-			GET_SINGLE(CGameManager)->Use_EffectGroup(m_szEffectTag, m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
-	}
 }
 
 void CLight_Prop::OnEventMessage(_uint iArg)
@@ -192,9 +184,6 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 		{
 			if (!Callback_ActUpdate.empty())
 				return;
-
-			if ("" != m_szEffectTag && 0 <= m_iSectionIndex)
-				GET_SINGLE(CGameManager)->Use_EffectGroup(m_szEffectTag, m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
 
 			Callback_ActUpdate += bind(&CLight_Prop::Act_LightTurnOnEvent, this, placeholders::_1, placeholders::_2);
 		}
@@ -229,6 +218,11 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 					GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
 				}
 
+				_char szEffectTag[MAX_PATH] = "";
+				strcpy_s(szEffectTag, m_szEffectTag.c_str());
+
+				if (ImGui::InputText("Effect", szEffectTag, MAX_PATH))
+					m_szEffectTag = szEffectTag;
 
 				ImGui::InputInt("Section Index", &m_iSectionIndex);
 				ImGui::InputFloat("DelayTime", &m_fDelayTime);
@@ -321,6 +315,11 @@ void CLight_Prop::Act_LightTurnOnEvent(_float fTimeDelta, _bool& Out_End)
 		m_tLightDesc.bEnable    = true;
 
 		GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+
+		if ((!m_szEffectTag.empty()) && (0 <= m_iSectionIndex))
+			m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup(m_szEffectTag, m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
+
+		int a = 0;
 	}
 }
 
@@ -337,6 +336,9 @@ void CLight_Prop::Act_LightTurnOffEvent(_float fTimeDelta, _bool& Out_End)
 		m_tLightDesc.fIntensity = 0.f;
 		m_tLightDesc.fRange     = 0.f;
 		m_tLightDesc.bEnable    = false;
+
+		if ((!m_szEffectTag.empty()) && (0 <= m_iEffectIndex) && (0 <= m_iSectionIndex))
+			GET_SINGLE(CGameManager)->UnUse_EffectGroup(m_szEffectTag, m_iEffectIndex);
 
 		Out_End = true;
 	}

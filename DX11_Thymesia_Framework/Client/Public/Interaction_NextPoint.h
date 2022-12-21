@@ -1,18 +1,21 @@
 #pragma once
 #include "Interaction_Prop.h"
 #include "Client_Defines.h"
+#include "ClientLevel.h"
+
 
 BEGIN(Engine)
 class CCollider;
+class CTexture;
 END
 
 BEGIN(Client)
 
-class CInteraction_Elevator final :
+class CInteraction_NextPoint final :
     public CInteraction_Prop
 {
-    GAMECLASS_H(CInteraction_Elevator);
-    CLONE_H(CInteraction_Elevator, CGameObject);
+    GAMECLASS_H(CInteraction_NextPoint);
+    CLONE_H(CInteraction_NextPoint, CGameObject);
 
 public:
     virtual HRESULT Initialize_Prototype() override;
@@ -32,13 +35,21 @@ public:
     virtual void Load_FromJson(const json& In_Json) override;
 
 private:
+    virtual HRESULT SetUp_ShaderResource(ID3D11DeviceContext* pDeviceContext);
+
+private:
     void    SetUpColliderDesc();
+
 
 private:
     weak_ptr<CCollider>     m_pColliderCom;
+    weak_ptr<CTexture>      m_pTextureCom;
 
-    LEVEL                   m_eNextLevel    = LEVEL::LEVEL_END;
-    _float                  m_fColliderPosY = 1.5f;
+    _int m_iTexPass = 366;
+
+    LEVEL                   m_eNextLevel = LEVEL::LEVEL_END;
+    _float2                 m_vAddUVPos     = { 0.f, 0.f };
+    LIGHTDESC               m_tLightDesc;
 };
 
 END

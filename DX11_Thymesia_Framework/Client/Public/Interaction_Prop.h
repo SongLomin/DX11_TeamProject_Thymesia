@@ -15,7 +15,8 @@ public:
         INTERACTION_DOOR,
         INTERACTION_LADDER,
         INTERACTION_ELEVATOR,
-        INTERACTION_ITEM
+        INTERACTION_ITEM,
+        INTERACTION_NEXTPOINT
     }INTERACTIONTYPE;
 
 public:
@@ -44,9 +45,13 @@ protected:
 protected:
     INTERACTIONTYPE             m_eInteractionType;
 
+    FDelegate<_bool&>           CallBack_Requirement;
+    list<_uint>                 m_CollisionIndex;
+
 public:
     FDelegate<>                 Callback_ActStart;
     FDelegate<>                 Callback_ActEnd;
+    FDelegate<>                 Callback_ActFail;
     FDelegate<_float, _bool&>   Callback_ActUpdate;
 
 protected:

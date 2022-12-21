@@ -6,6 +6,7 @@ float4 g_vShaderFlag;
 texture2D	g_DiffuseTexture;
 texture2D   g_NormalTexture;
 texture2D   g_MaskTexture;
+texture2D   g_NoiseTexture;
 texture2D   g_SpecularTexture;
 texture2D   g_ORMTexture;
 
@@ -19,6 +20,7 @@ float       g_fMaskingScalar;
 float g_fFar = 300.f;
 
 float g_fUVScale;
+float2 g_vAddUVPos;
 
 float g_fColorScale;
 
@@ -400,6 +402,42 @@ PS_OUT PS_MAIN_NORMAL_MASKING_SCALAR_PBR(PS_IN_NORMAL In)
     return Out;
 }
 
+PS_OUT PS_MAIN_NORMAL_MOVE_UV(PS_IN_NORMAL In)
+{
+    PS_OUT Out = (PS_OUT)0;
+
+    Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+
+    vector vTexNoise = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV + g_vAddUVPos);
+
+    if (0.1f >= vTexNoise.r)
+        discard;
+
+    Out.vDiffuse *= vTexNoise;
+    Out.vDiffuse.a = vTexNoise.r;
+
+    clip(Out.vDiffuse.a - 0.1f);
+    /* 0 ~ 1 */
+    float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
+
+    /* -1 ~ 1 */
+    vPixelNormal = vPixelNormal * 2.f - 1.f;
+
+    float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, In.vNormal);
+
+    vPixelNormal = mul(vPixelNormal, WorldMatrix);
+
+    Out.vNormal     = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
+    Out.vDepth      = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vShaderFlag = g_vShaderFlag;
+    Out.vORM        = 0;
+
+    Out.vDiffuse.a = 1.f;
+
+    Out.vExtractBloom = 0;
+
+    return Out;
+}
 
 technique11 DefaultTechnique
 {
@@ -532,5 +570,18 @@ technique11 DefaultTechnique
         DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_NORMAL_MASKING_SCALAR_PBR();
+    }
+
+    pass Pass10_MoveUV
+    {
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_Default, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader   = compile vs_5_0 VS_MAIN_NORMAL();
+        HullShader     = NULL;
+        DomainShader   = NULL;
+        GeometryShader = NULL;
+        PixelShader    = compile ps_5_0 PS_MAIN_NORMAL_MOVE_UV();
     }
 }

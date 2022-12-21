@@ -23,7 +23,8 @@ CLONE_C(CEditEventContoller, CGameObject)
 static const char* szEventType[] =
 {
 	"ON_ENTER_SECTION",
-	"ON_EXIT_SECTION"
+	"ON_EXIT_SECTION",
+	"ON_LOCK_SECTION"
 };
 
 HRESULT CEditEventContoller::Initialize_Prototype()
@@ -131,7 +132,7 @@ void CEditEventContoller::View_SettingFrog()
 
 	if (bChange)
 		GAMEINSTANCE->Set_FogDesc(vFogColor, fFogRange);
-}
+} 
 
 void CEditEventContoller::View_SelectEventLightType()
 {
@@ -140,7 +141,7 @@ void CEditEventContoller::View_SelectEventLightType()
 
 	if (ImGui::Button("Act"))
 	{
-		GET_SINGLE(CGameManager)->Activate_SectionLight(iSelectSection, (0 == iSelectEventType));
+		GET_SINGLE(CGameManager)->Activate_SectionLight(iSelectSection, (EVENT_TYPE)((_uint)EVENT_TYPE::ON_ENTER_SECTION + iSelectEventType));
 	}
 }
 
@@ -151,7 +152,7 @@ void CEditEventContoller::View_SelectEventSectionType()
 
 	if (ImGui::Button("Act"))
 	{
-		GET_SINGLE(CGameManager)->Activate_Section(iSelectSection, (0 == iSelectEventType));
+		GET_SINGLE(CGameManager)->Activate_Section(iSelectSection, (EVENT_TYPE)((_uint)EVENT_TYPE::ON_ENTER_SECTION + iSelectEventType));
 	}
 }
 

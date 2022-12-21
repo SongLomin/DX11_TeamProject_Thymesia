@@ -20,11 +20,12 @@ class CInteraction_Door final :
 private:
     enum ACTION_FLAG
     {
-        ROTATION  = ( 1 << 0 ),   // 1
+        ROTATION  = (1 << 0),   // 1
 
-        KEY       = ( 1 << 1 ),   // 2
-        AUTO      = ( 1 << 2 ),   // 4
-        OPEN_DIR  = ( 1 << 3 ),   // 8
+        KEY       = (1 << 1),   // 2
+        AUTO      = (1 << 2),   // 4
+        OPEN_DIR  = (1 << 3),   // 8
+        LOCK      = (1 << 4)    // 16
     };
 
 public:
@@ -52,7 +53,7 @@ public:
     virtual void Load_FromJson(const json& In_Json) override;
 
 private:
-    void    SetUpColliderDesc(weak_ptr<CCollider> In_pColldierCom, _float* _pColliderDesc);
+    void    SetUpColliderDesc(weak_ptr<CCollider> In_pColldierCom, _float* _pColliderDesc, COLLISION_LAYER _eCollLayer);
 
 private:
     weak_ptr<CCollider>         m_pColliderCom;
@@ -66,9 +67,6 @@ private:
     _float                      m_fFirstRadian      = 0.f;
     ITEM_NAME                   m_iKeyID            = ITEM_NAME::ITEM_NAME_END;
     _int                        m_iSectionIndex     = -1;
-
-    FDelegate<_bool&>           m_CallBack_Requirement;
-
 };
 
 END

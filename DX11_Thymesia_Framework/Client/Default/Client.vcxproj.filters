@@ -1569,6 +1569,9 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_HurtFallDownEnd.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt\03.State_HurtFallDown</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Interaction_NextPoint.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2207,9 +2210,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_LAttack5.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack\State_Attack5</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\AIStateBase.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\00.NorState</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\BossStateBase.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorMonsterStateBase\03.BossState</Filter>
@@ -3174,6 +3174,10 @@
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\15.State_Hurt\02.State_KnockBack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\AIStateBase.cpp" />
+    <ClCompile Include="..\Private\AIStateBase.cpp" />
+    <ClCompile Include="..\Private\Interaction_NextPoint.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

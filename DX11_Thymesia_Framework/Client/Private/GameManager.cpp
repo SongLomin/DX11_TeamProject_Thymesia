@@ -729,7 +729,7 @@ void CGameManager::Registration_Section(_uint In_iSection, weak_ptr<CGameObject>
 	}
 }
 
-void CGameManager::Activate_Section(_uint In_iSection, _bool In_bState)
+void CGameManager::Activate_Section(_uint In_iSection, EVENT_TYPE In_eEventType)
 {
 	auto iter_find = m_SectionObejects.find(In_iSection);
 
@@ -737,7 +737,7 @@ void CGameManager::Activate_Section(_uint In_iSection, _bool In_bState)
 		return;
 
 	for (auto& elem : iter_find->second)
-		elem.lock()->OnEventMessage((In_bState) ? ((_uint)EVENT_TYPE::ON_ENTER_SECTION) : ((_uint)EVENT_TYPE::ON_EXIT_SECTION));
+		elem.lock()->OnEventMessage((_uint)In_eEventType);
 }
 
 void  CGameManager::Registration_SectionLight(_uint In_iSection, weak_ptr<CLight_Prop> In_pObj)
@@ -767,7 +767,7 @@ void CGameManager::Add_Popup(ITEM_NAME eItemName)
 	m_pItemPopupQueue->AddPopup(eItemName);
 }
 
-void  CGameManager::Activate_SectionLight(_uint In_iSection, _bool In_bState)
+void  CGameManager::Activate_SectionLight(_uint In_iSection, EVENT_TYPE In_eEventType)
 {
 	auto iter_find = m_SectionLights.find(In_iSection);
 
@@ -775,7 +775,7 @@ void  CGameManager::Activate_SectionLight(_uint In_iSection, _bool In_bState)
 		return;
 
 	for (auto& elem : iter_find->second)
-		elem.lock()->OnEventMessage((In_bState) ? ((_uint)EVENT_TYPE::ON_ENTER_SECTION) : ((_uint)EVENT_TYPE::ON_EXIT_SECTION));
+		elem.lock()->OnEventMessage((_uint)In_eEventType);
 }
 
 //void CGameManager::Set_TargetForTargetCamera(weak_ptr<CGameObject> In_TargetGameObject)

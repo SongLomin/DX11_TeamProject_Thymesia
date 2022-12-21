@@ -114,9 +114,11 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CPhysXColliderObject>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Ladder>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_CheckPoint>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_NextPoint>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Elevator>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Door>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Note>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Item>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CSection_Eventer>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CWater>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CVarg>();
@@ -288,9 +290,9 @@ HRESULT CLoader::Loading_ForTestLevel()
 
 	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
-	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
+	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
+	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
+	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
 	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.bEnable = true;
 	LightDesc.fIntensity = 1.f;
@@ -521,7 +523,7 @@ HRESULT CLoader::Loading_ForStage3Level()
 
 #endif // _BRIGHT_LIGHT_
 
-	GAMEINSTANCE->Add_Light(LightDesc);
+	//GAMEINSTANCE->Add_Light(LightDesc);
 
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");

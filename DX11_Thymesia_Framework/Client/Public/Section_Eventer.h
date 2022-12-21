@@ -19,15 +19,18 @@ class CSection_Eventer final :
     CLONE_H(CSection_Eventer, CGameObject);
 
 public:
-    enum EVENT_FLAG 
+    enum EVENT_FLAG
+    {
+        EVENT_ENTER         = (1 << 0),
+        EVENT_STAY          = (1 << 1),
+        EVENT_EXIT          = (1 << 2)
+    };
+
+    enum ACT_FLAG
     {
         ACT_SECTION         = (1 << 0),
         ACT_MONSTER_TRIGGER = (1 << 1),
         ACT_LIGHT           = (1 << 2),
-
-        EVENT_ENTER         = (1 << 10),
-        EVENT_STAY          = (1 << 11),
-        EVENT_EXIT          = (1 << 12)
     };
 
 public:
@@ -59,7 +62,8 @@ private:
 
     weak_ptr<CCollider>   m_pColliderCom;  
 
-    _flag                 m_Flag          = 0;
+    _flag                 m_EventFlag     = 0;
+    _flag                 m_ActFlag       = 0;
     _int                  m_iSectionIndex = 0;
     _float4               m_vColor        = { 1.f, 0.f, 0.f, 1.f };
 };

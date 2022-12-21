@@ -67,6 +67,8 @@
 //////////////// RELEASE MODE DEFINES ////////////////
 #ifdef NDEBUG
 
+#define _MAP_DATA_ // 확인 후 삭제
+
 #undef _JOJO_EFFECT_TOOL_
 #undef _ONLY_UI_
 
