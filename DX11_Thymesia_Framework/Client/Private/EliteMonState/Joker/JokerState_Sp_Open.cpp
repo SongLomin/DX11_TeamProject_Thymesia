@@ -64,7 +64,6 @@ void CJokerState_Sp_Open::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
-	GET_SINGLE(CGameManager)->Store_EffectIndex("Joker_Passive", GET_SINGLE(CGameManager)->Use_EffectGroup("Joker_Passive", m_pTransformCom, _uint(TIMESCALE_LAYER::MONSTER)));
 
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Idle -> OnStateStart" << endl;
@@ -74,6 +73,7 @@ void CJokerState_Sp_Open::OnStateStart(const _float& In_fAnimationBlendTime)
 void CJokerState_Sp_Open::OnStateEnd()
 {
 	__super::OnStateEnd();
+	GET_SINGLE(CGameManager)->Store_EffectIndex("Joker_Passive", GET_SINGLE(CGameManager)->Use_EffectGroup("Joker_Passive", m_pTransformCom, _uint(TIMESCALE_LAYER::MONSTER)));
 }
 
 void CJokerState_Sp_Open::Call_AnimationEnd()
