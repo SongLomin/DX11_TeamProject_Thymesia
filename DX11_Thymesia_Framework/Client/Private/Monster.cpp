@@ -270,6 +270,12 @@ void CMonster::OnEventMessage(_uint iArg)
     {
         ImGui::InputInt("SectionIndex", (_int*)(&m_tLinkStateDesc.iSectionIndex));
     }
+
+    if ((_uint)EVENT_TYPE::ON_ENTER_SECTION == iArg)
+    {
+        Set_Enable(true);
+    }
+
 }
 
 void CMonster::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)

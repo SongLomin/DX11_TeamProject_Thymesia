@@ -449,6 +449,11 @@ void CMonsterHPBar_Base::Bind_EventFunction(weak_ptr<CStatus_Monster> pStatus_Mo
 	(
 		&CMonsterHPBar_Base::Call_Restart, this
 	);
+	pStatus_Monster.lock()->Callback_Full_Recovery += bind
+	(
+		&CMonsterHPBar_Base::Call_Full_Recovery, this
+	);
+
 }
 void	CMonsterHPBar_Base::Reset_UI()
 {

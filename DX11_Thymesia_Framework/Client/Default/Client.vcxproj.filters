@@ -1578,6 +1578,9 @@
     <ClInclude Include="..\Public\UIManager.h" />
     <ClInclude Include="..\Public\UI_ShuffleIcon.h" />
     <ClInclude Include="..\Public\UI_AppearEventVarg.h" />
+    <ClInclude Include="..\Public\Interaction_CheckPoint.h" />
+    <ClInclude Include="..\Public\Interaction_DeadSpot.h" />
+    <ClInclude Include="..\Public\Skill_base.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">

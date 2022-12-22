@@ -25,7 +25,7 @@ public:
 protected:
 	virtual void			Bind_EventFunction(weak_ptr<CStatus_Monster> pStatus_Monster) override;
 	virtual void			Create_Decoration(weak_ptr<CStatus_Monster> pStatus_Monster);
-
+	virtual void			Call_Full_Recovery() override;
 
 public:
 	virtual void	Set_Stun(bool _bStun);

@@ -368,11 +368,6 @@ void CNorMonster::OnEventMessage(_uint iArg)
 		Change_State<CNorMonState_GroggyStart>();
 	}
 
-	if ((_uint)EVENT_TYPE::ON_ENTER_SECTION == iArg)
-	{
-		Set_Enable(true);
-	}
-
 	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
 	{
 		PxControllerFilters Filters;
@@ -380,6 +375,7 @@ void CNorMonster::OnEventMessage(_uint iArg)
 
 		Change_State<CNorMonState_Idle>();
 		Set_Enable(false);
+		m_pStatus.lock()->Full_Recovery();
 	}
 }
 

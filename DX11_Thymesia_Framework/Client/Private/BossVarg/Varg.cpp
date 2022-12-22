@@ -322,6 +322,9 @@ void CVarg::OnEventMessage(_uint iArg)
 
 		Change_State<CVargBossState_IdleGeneral>();
 		Set_Enable(false);
+		
+		m_pStatus.lock()->Full_Recovery();
+
 	}
 }
 

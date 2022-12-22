@@ -63,7 +63,6 @@ void CUI_ScriptQueue::Call_SetScript_Tutorial_Varg()
     m_ScriptDescQueue.push(tScriptDesc);
 
 
-    CUI_Script::SCRIPTDESC tScriptDesc;
 
     tScriptDesc.fLifeTime = 2.f;
     tScriptDesc.fPos = _float2(g_iWinCX / 2.f, 850.f);
