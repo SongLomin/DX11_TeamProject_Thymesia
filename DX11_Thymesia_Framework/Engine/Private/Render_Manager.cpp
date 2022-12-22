@@ -504,7 +504,7 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Bake_Fog()))
 		DEBUG_ASSERT;
 
-	
+
 
 	if (FAILED(Render_Blend()))
 		DEBUG_ASSERT;
@@ -557,9 +557,8 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Blend_Bloom()))
 		DEBUG_ASSERT;
 
-
-	/*if (FAILED(PostProcessing()))
-		DEBUG_ASSERT;*/
+	if (FAILED(PostProcessing()))
+		DEBUG_ASSERT;
 
 	if (FAILED(AntiAliasing()))
 		DEBUG_ASSERT;
@@ -1737,7 +1736,7 @@ HRESULT CRender_Manager::Render_SSR()
 
 	m_pShader->Set_RawValue("g_CamViewMatrix", &ViewTranspose, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_CamProjMatrix", &ProjTranspose, sizeof(_float4x4));
-	
+
 	m_pShader->Set_ShaderResourceView("g_DepthTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Depth")));
 	m_pShader->Set_ShaderResourceView("g_NormalTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Normal")));
 	m_pShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")));
