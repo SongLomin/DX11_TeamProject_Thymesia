@@ -22,7 +22,7 @@ HRESULT CCorvusState_SprintAttack::Initialize_Prototype()
 HRESULT CCorvusState_SprintAttack::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-	
+
 
 	return S_OK;
 }
@@ -78,7 +78,7 @@ void CCorvusState_SprintAttack::Check_InputNextAttack()
 	}
 
 	m_IsNextAttack = true;
-	
+
 
 }
 
@@ -215,7 +215,7 @@ _bool CCorvusState_SprintAttack::Check_AndChangeNextState()
 		}
 
 	}
-	
+
 
 
 
@@ -229,7 +229,7 @@ _bool CCorvusState_SprintAttack::Check_RequirementNextAttackState()
 
 
 
-	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameFirst, iTargetKeyFrameSecond) 
+	if (m_pModelCom.lock()->Is_CurrentAnimationKeyInRange(iTargetKeyFrameFirst, iTargetKeyFrameSecond)
 && m_IsNextAttack)
 	{
 		return true;

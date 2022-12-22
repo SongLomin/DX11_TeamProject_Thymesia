@@ -1,5 +1,6 @@
 #pragma once
-// #define _EFFECT_TOOL_
+#define _EFFECT_TOOL_
+
 
 #include "Client_Structs.h"
 #include "Client_Presets.h"

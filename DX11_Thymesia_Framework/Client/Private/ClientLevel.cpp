@@ -59,19 +59,18 @@ void CClientLevel::Load_FromJson(const string& In_szJsonPath, const LEVEL& In_eL
 	{
 		//DEBUG_ASSERT;
 	}
-		
-	
+
 	for (auto& Elem_GameObjects : LoadedJson["GameObject"])
 	{
 		weak_ptr<CGameObject> pGameObjectInstance = GAMEINSTANCE->Add_GameObject(Elem_GameObjects["Hash"], (_uint)In_eLevel);
 
-		//객체가 생성되지 않음. Loader에서 프로토타입이 생성됐는지 확인 필요함.
-#ifdef _DEBUG
+		// TODO : 객체가 생성되지 않음. Loader에서 프로토타입이 생성됐는지 확인 필요함.
+
 #ifdef _DEBUG_COUT_
 		if (!pGameObjectInstance.lock().get())
 			cout << "객체가 생성되지 않음. 프로토타입 확인" << (string)Elem_GameObjects["Name"] << endl;
-#endif
-#endif // _DEBUG
+#endif// _DEBUG_COUT_
+
 		if (pGameObjectInstance.lock().get())
 		{
 			pGameObjectInstance.lock()->Set_Enable(Elem_GameObjects["Setting"]["Enable"]);
@@ -110,7 +109,7 @@ void CClientLevel::SetUp_UI()
 
 	pGameManager.lock()->SetCursor(GAMEINSTANCE->Add_GameObject<CUI_Cursor>(LEVEL_STATIC));
 
-	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);//여기서 
+	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);//여기서
 	m_pPauseMenu = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu>(LEVEL_STATIC);
 
 	m_pEvolveMenu = GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu>(LEVEL_STATIC);
@@ -139,7 +138,7 @@ void CClientLevel::SetUp_UI()
 #ifdef _ONLY_UI_
 
 	GAMEINSTANCE->Add_GameObject<CTestUI>(LEVEL_STATIC);
-	
+
 #endif
 
 
@@ -158,7 +157,7 @@ void CClientLevel::SetUp_UI()
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Elite>(LEVEL_STATIC, &tDesc));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Boss>(LEVEL_STATIC, &tDesc));
 	*/
-	
+
 }
 
 void CClientLevel::Tick_Key_InputEvent()
@@ -226,13 +225,11 @@ void CClientLevel::Tick_Key_InputEvent()
 		}
 	}
 #endif // _ONLY_UI_
-
 }
 
 void CClientLevel::Change_NextLevel(void* pArg)
 {
 	m_bChangeNextLevel = true;
-
 }
 
 void CClientLevel::Call_FadeOutToLevelChange()

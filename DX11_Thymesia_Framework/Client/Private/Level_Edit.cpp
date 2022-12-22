@@ -13,6 +13,7 @@ HRESULT CLevel_Edit::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
+	SetWindowText(g_hWnd, TEXT("Loading All Effect Group..."));
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
 
 	m_pImGui_Manager = CImGui_Manager::Create_Instance();
@@ -32,9 +33,6 @@ HRESULT CLevel_Edit::Initialize()
 
 	GAMEINSTANCE->Set_FogDesc(_float4(0.f, 0.f, 1.f, 1.f), 500.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
-
-	/*GAMEINSTANCE->Set_FogDesc(_float4(0.35f, 0.005f, 0.005f, 0.8f), 30.f);
-	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));*/
 
 	return S_OK;
 }

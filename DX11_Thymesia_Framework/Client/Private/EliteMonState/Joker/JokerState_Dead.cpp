@@ -33,7 +33,7 @@ void CJokerState_Dead::Start()
 {
 	__super::Start();
 
-	//턴이나 턴어택에서 아이들로 들어오면 워크로 들어오기 
+	//턴이나 턴어택에서 아이들로 들어오면 워크로 들어오기
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Joker_Dead");
 
@@ -64,13 +64,11 @@ void CJokerState_Dead::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-#ifdef _DEBUG
+	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Joker_Passive", GET_SINGLE(CGameManager)->Get_StoredEffectIndex("Joker_Passive"));
+
 #ifdef _DEBUG_COUT_
 	cout << "JokerState: Idle -> OnStateStart" << endl;
 #endif // _DEBUG
-#endif // _DEBUG_COUT_
-
-	
 
 	Weak_StaticCast<CMonster>(m_pOwner).lock()->Get_HPBar().lock()->Set_Enable(false);
 }
@@ -78,10 +76,6 @@ void CJokerState_Dead::OnStateStart(const _float& In_fAnimationBlendTime)
 void CJokerState_Dead::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-	
-
-	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Joker_Passive", GET_SINGLE(CGameManager)->Get_StoredEffectIndex("Joker_Passive"));
 }
 
 void CJokerState_Dead::Call_AnimationEnd()

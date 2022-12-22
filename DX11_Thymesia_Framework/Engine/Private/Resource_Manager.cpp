@@ -136,7 +136,7 @@ HRESULT CResource_Manager::Load_Textures(const _char* _strKey, const _tchar* pTe
 //		if (FAILED(Casting_hr)) {
 //			DEBUG_ASSERT;
 //		}
-//		
+//
 //		// 밉맵 생성
 //		ComPtr<ID3D11Texture2D> tex;
 //		D3D11_TEXTURE2D_DESC texDesc;
@@ -210,7 +210,7 @@ HRESULT CResource_Manager::Load_Textures(const _char* _strKey, const _tchar* pTe
 //			}
 //		}
 //
-//		
+//
 //		bCreated = true;
 //	}
 //
@@ -236,7 +236,7 @@ HRESULT CResource_Manager::Generate_MipMap(const _tchar* pTextureFilePath, const
 	_bool bCreated = false;
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC DataDesc;
-	
+
 
 	//hr = CoInitializeEx(nullptr, COINITBASE_MULTITHREADED);
 
@@ -272,7 +272,7 @@ HRESULT CResource_Manager::Generate_MipMap(const _tchar* pTextureFilePath, const
 			ScratchImage image;
 			ScratchImage mipChain;
 			hr = LoadFromWICFile(pTextureFilePath, WIC_FLAGS_NONE, nullptr, image);
-			
+
 			hr = GenerateMipMaps(image.GetImages(), image.GetImageCount(), image.GetMetadata(), TEX_FILTER_DEFAULT, 0, mipChain);
 
 			if (FAILED(hr))
@@ -283,7 +283,7 @@ HRESULT CResource_Manager::Generate_MipMap(const _tchar* pTextureFilePath, const
 			szNewDDSPath = szTextureFilePath;
 			szNewDDSPath = szNewDDSPath.substr(0, szNewDDSPath.size() - 4);
 			szNewDDSPath += TEXT(".dds");
-			
+
 			hr = SaveToDDSFile(mipChain.GetImages(), mipChain.GetImageCount(), mipChain.GetMetadata(),
 				DDS_FLAGS_NONE, szNewDDSPath.c_str());
 
@@ -390,7 +390,7 @@ HRESULT CResource_Manager::Generate_MipMap(const _tchar* pTextureFilePath, const
 			//}
 
 			// copy image data into mipmap texture_______________________________________________________________
-			
+
 
 			////ID3D11Texture2D* image = TextureMgr::Instance()->GetTexture("grass.jpg"); // it is just my custom function that read texture from file and return resource of it.
 			//pResource;
@@ -470,7 +470,7 @@ vector<ComPtr<ID3D11ShaderResourceView>> CResource_Manager::Get_TexturesFromKey(
 			m_UsingResourceJson[(_int)MEMORY_TYPE::MEMORY_STATIC]["Textures"][_Str_Key]["MipMapLevels"] = m_TextureFilePaths[(_uint)MEMORY_TYPE::MEMORY_STATIC][_Str_Key].MipMapLevels;
 			return (*iter).second;
 		}
-		
+
 		iter = m_SRVs[(_uint)MEMORY_TYPE::MEMORY_DYNAMIC].find(KeyToHash);
 		//iter = find_if(m_SRVs[(_uint)MEMORY_TYPE::MEMORY_DYNAMIC].begin(), m_SRVs[(_uint)MEMORY_TYPE::MEMORY_DYNAMIC].end(), CTag_Finder_c_str(_Str_Key));
 
@@ -560,7 +560,7 @@ void CResource_Manager::Load_ResourcesFromJson(const char* In_szFilePath)
 		Load_TextureResourcesFromJson(In_Json[i]["Textures"], (MEMORY_TYPE)i);*/
 
 		Threads.push_back(async(launch::async,
-			bind(&CResource_Manager::Load_ModelResourcesFromJson, this, placeholders::_1, placeholders::_2), 
+			bind(&CResource_Manager::Load_ModelResourcesFromJson, this, placeholders::_1, placeholders::_2),
 			In_Json[i]["Model"], (MEMORY_TYPE)i));
 
 		Threads.push_back(async(launch::async,
@@ -619,7 +619,7 @@ void CResource_Manager::Load_TextureResourcesFromJson(json& In_TextureJson, cons
 
 HRESULT CResource_Manager::Load_Model(const _char* sKey, const _char* sModelFilePath, MODEL_TYPE eModelType, _fmatrix In_TransformMatrix, MEMORY_TYPE eMemType, _bool bAnimZero)
 {
-	
+
 
 	shared_ptr<MODEL_DATA> TempModel = make_shared<MODEL_DATA>();
 
@@ -630,7 +630,7 @@ HRESULT CResource_Manager::Load_Model(const _char* sKey, const _char* sModelFile
 	//기존에 이미 같은 키로 등록된 모델이 있음.
 	if (m_pScenes[(_uint)eMemType].end() != iter)
 		return E_FAIL;
-	
+
 	if (FAILED(TempModel->Make_ModelData(szFullPath, eModelType, In_TransformMatrix, bAnimZero)))
 	{
 		return E_FAIL;
@@ -671,7 +671,7 @@ HRESULT CResource_Manager::Load_Model(const _char* sKey, const _char* sModelFile
 //
 //			_splitpath_s(strPath.c_str(), nullptr, 0, nullptr, 0, szFileName, MAX_PATH, szExt, MAX_PATH);
 //
-//			
+//
 //
 //			strcpy_s(szFullPath, szDir);
 //			strcat_s(szFullPath, szFileName);
@@ -802,7 +802,7 @@ HRESULT CResource_Manager::Load_Shader(const _tchar* sKey, const _tchar* sShader
 		m_ShaderFilePaths[KeyToHashcode].iFileSize = filesystem::file_size(filesystem::path(sShaderFilePath));
 	}
 
-	
+
 
 #endif // _DEBUG
 
@@ -826,7 +826,7 @@ HRESULT CResource_Manager::Load_Shader_Internal(const _tchar* sKey, const _tchar
 
 	//ComPtr<ID3DX11Effect> pEffect;
 
-	
+
 #ifdef _DEBUG
 	iHLSLFlag = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION | D3DCOMPILE_OPTIMIZATION_LEVEL1;
 	HRESULT hr = D3DX11CompileEffectFromFile(sShaderFilePath, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, iHLSLFlag, 0, DEVICE, pNewEffect.GetAddressOf(), ppError);
@@ -835,7 +835,7 @@ HRESULT CResource_Manager::Load_Shader_Internal(const _tchar* sKey, const _tchar
 	iHLSLFlag = D3DCOMPILE_OPTIMIZATION_LEVEL1;
 	HRESULT hr = D3DX11CompileEffectFromFile(sShaderFilePath, nullptr, D3D_COMPILE_STANDARD_FILE_INCLUDE, iHLSLFlag, 0, DEVICE, pNewEffect.GetAddressOf(), /*&pError*/nullptr);
 #endif
-	
+
 	if (SUCCEEDED(hr))
 	{
 		_hashcode KeyToHashcode = hash<tstring>()(sKey);
@@ -896,7 +896,7 @@ void CResource_Manager::Update_ChangedShaderFile(list<pair<_bool, string>>& Out_
 
 			pError = nullptr;
 			hr = Load_Shader_Internal(ShaderFile.second.szKey.c_str(), ShaderFile.second.szFilePath.c_str(), &pError);
-			
+
 			if (SUCCEEDED(hr))
 			{
 				pPreShader.Reset();
