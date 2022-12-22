@@ -612,13 +612,13 @@ HRESULT CGameManager::Respawn_LastCheckPoint(_float4* Out_RespawnPos)
 			elem_obj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_RESET_OBJ);
 	}
 
-	auto iter_find = m_SectionObejects.find(m_iPreEventSection);
+	/*auto iter_find = m_SectionObejects.find(m_iPreEventSection);
 
 	if (iter_find != m_SectionObejects.end())
 	{
 		for (auto& elem_obj : iter_find->second)
 			elem_obj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_ENTER_SECTION);
-	}
+	}*/
 
 	_vector vPlayerDeadSpotPos = m_pCurrentPlayer.lock()->Get_Transform().get()->Get_State(CTransform::STATE_TRANSLATION);
 	_uint   iDropMemory        = m_pCurrentPlayer.lock()->Get_Component<CStatus_Player>().lock()->Get_Desc().m_iMemory;

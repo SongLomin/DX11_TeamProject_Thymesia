@@ -118,7 +118,10 @@ void CInteraction_Door::OnEventMessage(_uint iArg)
             if (!(m_ActionFlag & ACTION_FLAG::ROTATION))
                 m_ActionFlag ^= ACTION_FLAG::ROTATION;
 
+            PxControllerFilters Filters;
+
             m_pColliderCom.lock()->Set_Enable(true);
+            //m_pPhysXColliderCom.lock()->Set_Position(m_pTransformCom.lock()->Get_Position(), 0.f, Filters);
             m_pPhysXColliderCom.lock()->Set_Enable(true);
 
             Callback_ActUpdate.Clear();

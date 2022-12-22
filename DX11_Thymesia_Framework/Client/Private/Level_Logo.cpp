@@ -41,6 +41,9 @@ HRESULT CLevel_Logo::Initialize()
 
 	GAMEINSTANCE->Add_SingleGameObject<CTargetCurve>(LEVEL_STATIC);
 
+	GAMEINSTANCE->Load_Model("P_DropTombstone01", "../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/P_DropTombstone01.bin", MODEL_TYPE::NONANIM, XMMatrixIdentity());
+	GAMEINSTANCE->Add_SingleGameObject<CInteraction_DeadSpot>(LEVEL::LEVEL_STATIC);
+
 	return S_OK;
 }
 
