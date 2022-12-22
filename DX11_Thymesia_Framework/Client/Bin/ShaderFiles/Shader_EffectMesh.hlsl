@@ -22,6 +22,7 @@ float  g_fDissolveGradiationDistance;
 // For. Directional Dissolve
 float3 g_vDissolveStartPos;
 float3 g_vDissolveDir;
+float4 g_vShaderFlag;
 
 /**
 * Wrap Weight for Textures
@@ -235,8 +236,8 @@ struct PS_OUT
 	vector vColor        : SV_TARGET0;
 	vector vExtractBloom : SV_Target1;
 	vector vExtractGlow  : SV_Target2;
+	vector vShaderFlag   : SV_TARGET3;
 };
-
 
 struct PS_OUT_DISTORTION
 {
@@ -293,6 +294,8 @@ PS_OUT PS_MAIN_SOFT(PS_IN_SOFT In)
 	if (g_bGlow)
 		Out.vExtractGlow = g_vGlowColor;
 
+	Out.vShaderFlag = vector(0.f, 0.f, 0.f, 0.f);
+
 	return Out;
 }
 
@@ -333,6 +336,8 @@ PS_OUT PS_DEFAULT(PS_IN In)
 
 	if (g_bGlow)
 		Out.vExtractGlow = g_vGlowColor;
+
+	Out.vShaderFlag = vector(0.f, 0.f, 0.f, 0.f);
 
 	return Out;
 }
@@ -401,6 +406,8 @@ PS_OUT PS_EXTRACTBRIGHT(PS_IN In)
 	}
 
 
+	Out.vShaderFlag = vector(0.f, 0.f, 0.f, 0.f);
+
 	return Out;
 }
 
@@ -417,6 +424,7 @@ PS_OUT PS_MAIN_NORMAL_DISSOLVE(PS_IN In)
 	{
 		float fLerpRatio = (DissolveDesc - g_fDissolveAmount) / g_fDissolveGradiationDistance;
 		Out.vColor = vector(lerp(g_vDissolveGradiationStartColor, g_vDissolveGradiationGoalColor, fLerpRatio), 1.f);
+		Out.vShaderFlag = vector(0.f, 0.f, 1.f, 0.f);
 	}
 	else
 	{
@@ -480,7 +488,9 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_DIRECTIONAL_DISSOLVE In)
 	float fStepValue = IsIn_Range(0.f, g_fDissolveGradiationDistance, fDiff);
 
 	Out.vColor = fStepValue * vector(g_vDissolveGradiationStartColor, 1.f) +
-		IsIn_Range(0.015f, 1.f, fDiff) * g_vColor;
+		IsIn_Range(g_fDissolveGradiationDistance, 1.f, fDiff) * g_vColor;
+
+	Out.vShaderFlag = fStepValue* vector(0.f, 0.f, 1.f, 0.f);
 
 	vector vNoise = (vector) 0;
 	if (g_bNoiseWrap)
@@ -528,6 +538,7 @@ PS_OUT PS_MAIN_NORMAL_DISSOLVE_SOFT(PS_IN_SOFT In)
 	{
 		float fLerpRatio = clamp((DissolveDesc - g_fDissolveAmount) / g_fDissolveGradiationDistance, 0.f, 1.f);
 		Out.vColor = vector(lerp(g_vDissolveGradiationStartColor, g_vDissolveGradiationGoalColor, fLerpRatio), 1.f);
+		Out.vShaderFlag = vector(0.f, 0.f, 1.f, 0.f);
 	}
 
 	vector vNoise = (vector) 0;
@@ -592,7 +603,9 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE_SOFT(PS_IN_SOFT_DIRECTIONAL_DISSOLVE 
 	float fStepValue = IsIn_Range(0.f, g_fDissolveGradiationDistance, fDiff);
 
 	Out.vColor = fStepValue * vector(g_vDissolveGradiationStartColor, 1.f) +
-		IsIn_Range(0.015f, 1.f, fDiff) * g_vColor;
+		IsIn_Range(g_fDissolveGradiationDistance, 1.f, fDiff) * g_vColor;
+
+	Out.vShaderFlag = fStepValue* vector(0.f, 0.f, 1.f, 0.f);
 
 	vector vNoise = (vector) 0;
 	if (g_bNoiseWrap)

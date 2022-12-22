@@ -52,7 +52,7 @@ void CRender_Manager::Execute_BeforeRenderCommandList()
 		{
 			DEVICECONTEXT->ExecuteCommandList(pCommandList, true);
 			pCommandList->Release();
-			pCommandList = nullptr; 
+			pCommandList = nullptr;
 		}
 	}
 
@@ -78,7 +78,7 @@ HRESULT CRender_Manager::Initialize()
 		DEVICE->CreateDeferredContext(0, m_pDeferredContext[i].GetAddressOf());
 		GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[i].Get());
 	}
-	
+
 	GET_SINGLE(CFont_Manager)->Init_DeviceContext(m_pDeferredContext[DEFERRED_UI]);
 
 	//D3D11_QUERY_DESC queryDesc;
@@ -88,7 +88,7 @@ HRESULT CRender_Manager::Initialize()
 
 	//m_pDeferredContext->Begin();
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
-		
+
 	/*For. Target_AntiAliasing*/
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_AntiAliasing"),
 		(_uint)ViewPortDesc.Width*2.f, (_uint)ViewPortDesc.Height*2.f, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 128.f / 255.f, 1.f, 1.f))))
@@ -98,22 +98,22 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 
 	/* For.Target_Diffuse */
-	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Diffuse"), 
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Diffuse"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(1.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
 	/* For.Target_Normal*/
-	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Normal"), 
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Normal"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 1.f, 0.f, 1.f))))
 		DEBUG_ASSERT;
 
 	/* For.Target_Depth */
-	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Depth"), 
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Depth"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(1.f, 1.f,  0.f, 1.f))))
 		DEBUG_ASSERT;
 
 	/* For.Target_Shade */
-	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Shade"), 
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Shade"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 1.f))))
 		DEBUG_ASSERT;
 	/* For.Target_PBR */
@@ -126,7 +126,7 @@ HRESULT CRender_Manager::Initialize()
 	//	DEBUG_ASSERT;
 
 	/* For.Target_Specular */
-	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Specular"), 
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Specular"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
@@ -136,12 +136,12 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 
 	/* For.Target_ShaderFlag */
-	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_ShaderFlag"), 
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_ShaderFlag"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
 	/* For.Target_ShadowDepth */
-	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_ShadowDepth"), 
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_ShadowDepth"),
 		(_uint)ViewPortDesc.Width * 5, (_uint)ViewPortDesc.Height * 5, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
 		DEBUG_ASSERT;
 
@@ -155,15 +155,15 @@ HRESULT CRender_Manager::Initialize()
 	pRenderTargetManager->Bake_StaticShadowDepthStencilView((_uint)ViewPortDesc.Width * 5, (_uint)ViewPortDesc.Height * 5);
 
 
-	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_ExtractBloom"), 
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_ExtractBloom"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
-	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_ExtractGlow"), 
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_ExtractGlow"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
-	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_OriginalEffect"), 
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_OriginalEffect"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
@@ -175,11 +175,11 @@ HRESULT CRender_Manager::Initialize()
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
-	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_BlurForBloom"), 
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_BlurForBloom"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
-	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_BlurForGlow"), 
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_BlurForGlow"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
@@ -245,12 +245,14 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 
 
- 
+
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_ExtractEffect"), TEXT("Target_OriginalEffect"))))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_ExtractEffect"), TEXT("Target_ExtractBloom"))))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_ExtractEffect"), TEXT("Target_ExtractGlow"))))
+		DEBUG_ASSERT;
+	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_ExtractEffect"), TEXT("Target_ShaderFlag"))))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_BlurXForGlow"), TEXT("Target_BlurXForGlow"))))
 		DEBUG_ASSERT;
@@ -317,7 +319,7 @@ HRESULT CRender_Manager::Initialize()
 	_float fSize = 150.f;
 	_float fHalf = fSize * 0.5f;
 
-#ifdef _DEBUG	
+#ifdef _DEBUG
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Diffuse"), fHalf, fHalf, fSize, fSize)))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Normal"), fHalf, fHalf + fSize, fSize, fSize)))
@@ -375,7 +377,7 @@ HRESULT CRender_Manager::Initialize()
 	/*if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_BlurShadow"), ViewPortDesc.Width - 300, 700, 200, 200)))
 		DEBUG_ASSERT;*/
 
-	
+
 	//if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Glow"), ViewPortDesc.Width - 300, 700, 200, 200)))
 	//	DEBUG_ASSERT;
 
@@ -408,7 +410,7 @@ HRESULT CRender_Manager::Initialize()
 	m_pOutLineShader = CShader::Create();
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_OutLine"), TEXT("../Bin/Shaderfiles/Shader_OutLine.hlsl"));
 	m_pOutLineShader->Set_ShaderInfo(TEXT("Shader_OutLine"), VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements);
-	
+
 	m_pDistortionShader = CShader::Create();
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_Distortion"), TEXT("../Bin/Shaderfiles/Shader_DistortionBlend.hlsl"));
 	m_pDistortionShader->Set_ShaderInfo(TEXT("Shader_Distortion"), VTXTEX_DECLARATION::Element, VTXTEX_DECLARATION::iNumElements);
@@ -419,7 +421,7 @@ HRESULT CRender_Manager::Initialize()
 
 
 	m_pVIBuffer = CVIBuffer_Rect::Create();
-	
+
 	m_pIrradianceTextureCom = CTexture::Create();
 	//m_pIrradianceTextureCom->Use_Texture("IrradianceMap");
 
@@ -452,9 +454,9 @@ HRESULT CRender_Manager::Add_RenderGroup(RENDERGROUP eGroup, weak_ptr<CGameObjec
 
 HRESULT CRender_Manager::Draw_RenderGroup()
 {
-	
 
-	//GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[DEFERRED_EFFECT].Get());	
+
+	//GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[DEFERRED_EFFECT].Get());
 	//GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(m_pDeferredContext[DEFERRED_UI].Get());
 
 
@@ -467,7 +469,7 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	Execute_BeforeRenderCommandList();
 
 	//std::list<std::future<HRESULT>> futures;
-	
+
 	//futures.emplace_back(GET_SINGLE(CThread_Manager)->EnqueueJob(bind(&CRender_Manager::Render_Effect, this)));
 	// futures.emplace_back(GET_SINGLE(CThread_Manager)->EnqueueJob(bind(&CRender_Manager::Render_UI, this)));
 
@@ -515,13 +517,13 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 
 	if (FAILED(Render_NonLight()))
 		DEBUG_ASSERT;
-	
-	
+
+
 	Render_Effect();
-	
+
 	//hr = DrawEffectThread.get();
 
-	
+
 
 	/*m_pDeferredContext[DEFERRED_EFFECT]->FinishCommandList(false, &pCommandList);
 
@@ -537,7 +539,7 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 		if (FAILED(Blend_Distortion()))
 			DEBUG_ASSERT;
 	}
-	
+
 	if (FAILED(Render_Font()))
 		DEBUG_ASSERT;
 
@@ -561,14 +563,14 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 		DEBUG_ASSERT;
 
 
-	
+
 	/*hr = futures.front().get();
 	while (!GET_SINGLE(CThread_Manager)->Check_JobDone())
 	{
 		cout << "Wait For Context Jobs." << endl;
 		continue;
 	}*/
-	
+
 	/*m_pDeferredContext[DEFERRED_UI]->FinishCommandList(false, &pCommandList);
 
 	if (pCommandList)
@@ -577,7 +579,7 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 		pCommandList->Release();
 		pCommandList = nullptr;
 	}*/
-	
+
 	/*std::future<HRESULT> UIFuture = GET_SINGLE(CThread_Manager)->Enqueue_Job(bind(&CRender_Manager::Render_UI, this));
 	UIFuture.get();
 
@@ -600,7 +602,7 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 
 	if (FAILED(Render_Debug()))
 		DEBUG_ASSERT;
-#endif 
+#endif
 
 	return S_OK;
   }
@@ -763,7 +765,7 @@ HRESULT CRender_Manager::Render_ShadowDepth()
 	if (FAILED(GET_SINGLE(CRenderTarget_Manager)->Begin_ShadowMRT(TEXT("MRT_ShadowDepth"))))
 		DEBUG_ASSERT;
 
-	
+
 	D3D11_VIEWPORT			ViewPortDesc;
 	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
 
@@ -843,7 +845,7 @@ HRESULT CRender_Manager::Render_ShadowDepth()
 		if (FAILED(GET_SINGLE(CRenderTarget_Manager)->End_StaticShadowMRT()))
 			DEBUG_ASSERT;
 	}
-	
+
 
 	return S_OK;
 }
@@ -1079,7 +1081,7 @@ HRESULT CRender_Manager::Render_Blend()
 	m_pShader->Set_RawValue("g_ViewMatrixInv", &ViewMatrixInv, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_vCamPosition", &pPipeLine->Get_CamPosition(), sizeof(_float4));
-	
+
 	m_pShader->Set_RawValue("g_fExposure", &m_fExposure, sizeof(_float));
 
 
@@ -1150,9 +1152,9 @@ HRESULT CRender_Manager::Render_NonAlphaEffect(ID3D11DeviceContext* pDeviceConte
 
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
-	
 
-	pRenderTargetManager->Begin_MRTWithNoneClearWithIndex(TEXT("MRT_ExtractEffect"), 1);
+
+	pRenderTargetManager->Begin_MRTWithNoneClearWithFlagIndex(TEXT("MRT_ExtractEffect"), _flag(FLAG_INDEX::_1) | _flag(FLAG_INDEX::_3));
 
 	if (m_RenderObjects[(_uint)RENDERGROUP::RENDER_NONALPHA_EFFECT].empty())
 	{
@@ -1199,7 +1201,7 @@ HRESULT CRender_Manager::Render_AlphaBlend(ID3D11DeviceContext* pDeviceContext)
 
 
 
-	pRenderTargetManager->Begin_MRTWithNoneClearWithIndex(TEXT("MRT_ExtractEffect"), 1);
+	pRenderTargetManager->Begin_MRTWithNoneClearWithFlagIndex(TEXT("MRT_ExtractEffect"), _flag(FLAG_INDEX::_1) | _flag(FLAG_INDEX::_3));
 
 	if (m_RenderObjects[(_uint)RENDERGROUP::RENDER_ALPHABLEND].empty())
 	{
@@ -1450,7 +1452,7 @@ HRESULT CRender_Manager::Extract_Distortion()
 	if (FAILED(pRenderTargetManager->Begin_MRT(TEXT("MRT_Distortion"))))
 		DEBUG_ASSERT;
 
-		
+
 	for (auto& pGameObject : m_RenderObjects[(_uint)RENDERGROUP::RENDER_DISTORTION])
 	{
 		if (pGameObject.lock())
@@ -1702,7 +1704,7 @@ HRESULT CRender_Manager::Blend_Bloom()
 	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 
 	m_pShader->Set_ShaderResourceView("g_ShaderFlagTexture", pRenderTargetManager->Get_SRV(TEXT("Target_ShaderFlag")));
-		
+
 	m_pShader->Set_ShaderResourceView("g_ExtractBloomTexture", pRenderTargetManager->Get_SRV(TEXT("Target_ExtractBloom")));
 	m_pShader->Set_ShaderResourceView("g_XBlurTexture", pRenderTargetManager->Get_SRV(TEXT("Target_BlurForBloom")));
 	m_pShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")));
@@ -1733,7 +1735,7 @@ HRESULT CRender_Manager::PostProcessing()
 	m_pPostProcessingShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 	m_pPostProcessingShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
 	m_pPostProcessingShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
-	
+
 	shared_ptr<CPipeLine> pPipeLine = GET_SINGLE(CPipeLine);
 
 	_float4x4		ViewMatrixInv, ProjMatrixInv,ViewMatrix,ProjMatrix;
@@ -1759,7 +1761,7 @@ HRESULT CRender_Manager::PostProcessing()
 
 	m_pPostProcessingShader->Set_RawValue("g_fGrayScale", &m_fGrayScale, sizeof(_float));
 	m_pPostProcessingShader->Set_RawValue("g_fSaturation", &m_fSaturation, sizeof(_float));
-	m_pPostProcessingShader->Set_RawValue("g_fContrastValue", &m_fContrastValue, sizeof(_float)); 
+	m_pPostProcessingShader->Set_RawValue("g_fContrastValue", &m_fContrastValue, sizeof(_float));
 
 	/*_float fPixelWidth = 1 / 1600.f;
 	_float fPixelHeight = 1 / 900.f;
@@ -1950,7 +1952,7 @@ void CRender_Manager::Emplace_SleepContext(const _uint In_iIndex)
 		GET_SINGLE(CGraphic_Device)->SyncronizeDeferredContext(pContext);
 		m_pBeforeRenderSleepContexts.emplace_back(pContext);
 	}
-	
+
 }
 
 #ifdef _DEBUG
@@ -2007,7 +2009,7 @@ HRESULT CRender_Manager::Render_Debug()
 		for (_size_t i = 0; i < m_szDebugRenderMRTNames.size(); ++i)
 		{
 			Render_DebugSRT((_uint)i);
-		}		
+		}
 	}
 
 
