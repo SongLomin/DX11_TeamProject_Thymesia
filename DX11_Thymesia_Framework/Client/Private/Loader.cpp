@@ -176,20 +176,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	Load_UIResource();
 #endif
 
-	//DamageFont
-	GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures(("DamageFont_Normal"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Normal/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures(("DamageFont_Parry"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Parry/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
-
-
-#ifndef _ONLY_UI_
-
-
-
-
-#endif // _ONLY_UI_
-
-	lstrcpy(m_szLoadingText, TEXT("Creating Shaders..."));
+	lstrcpy(m_szLoadingText, TEXT("Loading Shaders..."));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_UI"), TEXT("../Bin/ShaderFiles/Shader_UI.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxAnimModel"), TEXT("../Bin/ShaderFiles/Shader_VtxAnimModel.hlsl"));
 
@@ -208,23 +195,23 @@ HRESULT CLoader::Loading_ForLogoLevel()
 #ifndef _ONLY_UI_
 	lstrcpy(m_szLoadingText, TEXT("Loading All Key Event from Json...."));
 	GET_SINGLE(CGameManager)->Load_AllKeyEventFromJson();
-
-
 #endif // _ONLY_UI_
-	lstrcpy(m_szLoadingText, TEXT("Loading Complete"));
 
+	lstrcpy(m_szLoadingText, TEXT("Loading Damage Fonts..."));
 	GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("DamageFont_Normal"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Normal/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("DamageFont_Parry"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Parry/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
 
+	lstrcpy(m_szLoadingText, TEXT("Loading Irradiance Map..."));
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
-	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter%d.dds"));
+
+	lstrcpy(m_szLoadingText, TEXT("Loading PreFilter..."));
+	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
-
+	lstrcpy(m_szLoadingText, TEXT("Logo : Loading Complete"));
 	m_isFinished = true;
-
 	return S_OK;
 }
 
@@ -295,6 +282,7 @@ HRESULT CLoader::Loading_ForTestLevel()
 
 #endif // _LOAD_CAPTURED_RESOURCE_
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
+	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Destructable/Fence_16a/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
 	LIGHTDESC LightDesc;
@@ -309,14 +297,18 @@ HRESULT CLoader::Loading_ForTestLevel()
 	LightDesc.bEnable = true;
 	LightDesc.fIntensity = 1.f;
 
+	lstrcpy(m_szLoadingText, TEXT("Loading Light..."));
 	GAMEINSTANCE->Add_Light(LightDesc);
 
-	lstrcpy(m_szLoadingText, TEXT("Loading Complete for : Level Test"));
-
+	lstrcpy(m_szLoadingText, TEXT("Loading Irradiance Map..."));
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
-	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter%d.dds"));
+
+	lstrcpy(m_szLoadingText, TEXT("Loading PreFilter..."));
+	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
+
+	lstrcpy(m_szLoadingText, TEXT("Test : Loading Complete"));
 
 #endif _ONLY_UI_
 	m_isFinished = true;
@@ -383,6 +375,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 #endif // _LOAD_CAPTURED_RESOURCE_
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
+	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Destructable/Fence_16a/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 #endif // _ONLY_UI_
 	m_isFinished = true;
@@ -412,18 +405,25 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 #endif // _BRIGHT_LIGHT_
 
+	lstrcpy(m_szLoadingText, TEXT("Loading Light..."));
 	GAMEINSTANCE->Add_Light(LightDesc);
 
+	lstrcpy(m_szLoadingText, TEXT("Loading Environmental Shader Effects..."));
 	GAMEINSTANCE->Set_FogDesc(_float4(0.2f, 0.15f, 0.03f, 0.5f), 20.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 	GAMEINSTANCE->Set_Contrast(1.07f);
 	GAMEINSTANCE->Set_Saturation(1.7f);
 	GAMEINSTANCE->Set_Exposure(2.f);
 
+	lstrcpy(m_szLoadingText, TEXT("Loading Irradiance Map..."));
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"),MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
+
+	lstrcpy(m_szLoadingText, TEXT("Loading PreFilter..."));
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
+
+	lstrcpy(m_szLoadingText, TEXT("GamePlay : Loading Complete"));
 	return S_OK;
 }
 
@@ -599,7 +599,6 @@ HRESULT CLoader::Loading_ForEditLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading Particle Textures..."));
 	Load_AllParticleTexture();
 	lstrcpy(m_szLoadingText, TEXT("Loading Effect Meshes..."));
-
 	Load_AllEffectMesh();
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));

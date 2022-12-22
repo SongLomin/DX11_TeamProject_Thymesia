@@ -32,7 +32,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-#ifndef _ONLY_UI_ 
+#ifndef _ONLY_UI_
+	SetWindowText(g_hWnd, TEXT("Setting Camera..."));
+
 	CCamera::CAMERADESC CameraDesc;
 	ZeroMemory(&CameraDesc, sizeof(CCamera::CAMERADESC));
 	CameraDesc.vEye = _float4(0.0f, 2.5f, -2.5f, 1.f);
@@ -45,32 +47,32 @@ HRESULT CLevel_GamePlay::Initialize()
 	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_GAMEPLAY, &CameraDesc);
 	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
 
-
-
+	SetWindowText(g_hWnd, TEXT("Loading All Effect Group..."));
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);
 
+	SetWindowText(g_hWnd, TEXT("Loading From Json : [ Stage2.json ]"));
 	Load_FromJson(m_szDefaultJsonPath + "Stage2.json", LEVEL::LEVEL_GAMEPLAY);
 
-	CMonster::STATE_LINK_MONSTER_DESC MONSTER;
-	
+	SetWindowText(g_hWnd, TEXT("Adding Light Prop & Skybox..."));
 	GAMEINSTANCE->Add_GameObject<CLight_Prop>(LEVEL_GAMEPLAY);
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_GAMEPLAY);
 	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
-	
+
 #endif	// ONLY_UI
 
 
+	SetWindowText(g_hWnd, TEXT("Setting up UI..."));
 	SetUp_UI();
 	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
+	SetWindowText(g_hWnd, TEXT("Setting Player..."));
 	m_pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
-
 	return S_OK;
 }
 
 void CLevel_GamePlay::Tick(_float fTimeDelta)
 {
-	__super::Tick(fTimeDelta);		
+	__super::Tick(fTimeDelta);
 
 	Tick_Key_InputEvent();
 
@@ -82,21 +84,13 @@ void CLevel_GamePlay::Tick(_float fTimeDelta)
 #endif // _LOAD_CAPTURED_RESOURCE_
 	_vector vPosition = m_pPlayer.lock()->Get_WorldPosition();
 
-	GAMEINSTANCE->Set_DynamicShadowLight({ -15.f +vPosition.m128_f32[0], 30.f+vPosition.m128_f32[1], -15.f + vPosition.m128_f32[2] }, { vPosition.m128_f32[0], vPosition.m128_f32[1], vPosition.m128_f32[2] });
-
-	//static _float Contrast = 1.f;
-
-	//if (KEY_INPUT(KEY::INSERTKEY, KEY_STATE::HOLD))
-	//{
-	//	Contrast += 0.01f;
-	//}
-	//else if(KEY_INPUT(KEY::DELETEKEY, KEY_STATE::HOLD))
-	//{
-	//	Contrast -= 0.01f;
-	//}
-
-	//GAMEINSTANCE->Set_Contrast(Contrast);
-
+	GAMEINSTANCE->Set_DynamicShadowLight(
+		{ -15.f + XMVectorGetX(vPosition)
+		, 30.f + XMVectorGetY(vPosition)
+		, -15.f + XMVectorGetZ(vPosition) }
+	, { XMVectorGetX(vPosition)
+		, XMVectorGetY(vPosition)
+		, XMVectorGetZ(vPosition) });
 }
 
 HRESULT CLevel_GamePlay::Render(ID3D11DeviceContext* pDeviceContext)
@@ -106,7 +100,6 @@ HRESULT CLevel_GamePlay::Render(ID3D11DeviceContext* pDeviceContext)
 
 
 	SetWindowText(g_hWnd, TEXT("Thymesia : GAMEPLAY"));
-
 	return S_OK;
 }
 
