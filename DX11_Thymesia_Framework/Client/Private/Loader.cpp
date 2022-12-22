@@ -608,8 +608,8 @@ HRESULT CLoader::Loading_ForEditLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));
 	this->Load_CorvusModel();
-	/*lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
-	this->Load_BossMobModel();*/
+	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
+	this->Load_BossMobModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
 	this->Load_EliteMobModel();
 	//lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
