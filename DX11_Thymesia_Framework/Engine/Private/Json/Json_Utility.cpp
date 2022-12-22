@@ -61,7 +61,7 @@ void CJson_Utility::Write_Float3(json& Out_Json, const _float3& In_Float3)
 	{
 		Out_Json.emplace();
 	}
-	
+
 	_vector vInValue = XMLoadFloat3(&In_Float3);
 
 	Out_Json = vInValue.m128_f32;
@@ -87,7 +87,7 @@ void CJson_Utility::Load_Float2(const json& In_Json, _float2& Out_Float2)
 
 	Out_Float2.x = In_Json[0];
 	Out_Float2.y = In_Json[1];
-	
+
 }
 
 void CJson_Utility::Load_Float3(const json& In_Json, _float3& Out_Float3)

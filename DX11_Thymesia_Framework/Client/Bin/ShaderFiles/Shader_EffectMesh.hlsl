@@ -429,6 +429,7 @@ PS_OUT PS_MAIN_NORMAL_DISSOLVE(PS_IN In)
 	else
 	{
 		Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+		Out.vColor *= g_vColor;
 	}
 
 
@@ -448,7 +449,6 @@ PS_OUT PS_MAIN_NORMAL_DISSOLVE(PS_IN In)
 	if (g_bDynamicNoiseOption)
 		vNoise.rgb = vNoise.rgb * 2 - 1;
 
-	Out.vColor *= g_vColor;
 	Out.vColor.rgb *= vNoise.rgb;
 	Out.vColor.a *= vMask.r;
 
@@ -540,6 +540,11 @@ PS_OUT PS_MAIN_NORMAL_DISSOLVE_SOFT(PS_IN_SOFT In)
 		Out.vColor = vector(lerp(g_vDissolveGradiationStartColor, g_vDissolveGradiationGoalColor, fLerpRatio), 1.f);
 		Out.vShaderFlag = vector(0.f, 0.f, 1.f, 0.f);
 	}
+	else
+	{
+		Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+		Out.vColor *= g_vColor;
+	}
 
 	vector vNoise = (vector) 0;
 	if (g_bNoiseWrap)
@@ -557,7 +562,6 @@ PS_OUT PS_MAIN_NORMAL_DISSOLVE_SOFT(PS_IN_SOFT In)
 	if (g_bDynamicNoiseOption)
 		vNoise.rgb = vNoise.rgb * 2 - 1;
 
-	Out.vColor *= g_vColor;
 	Out.vColor.rgb *= vNoise.rgb;
 	Out.vColor.a *= vMask.r;
 

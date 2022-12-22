@@ -1563,11 +1563,7 @@ void CCustomEffectMesh::Update_Dissolve(_float fFrameTime)
 	if (m_tEffectMeshDesc.fDissolveDisappearTime <= m_fCurrentLifeTime)
 		m_fDissolveAmountAcc = min(1.f, m_fDissolveAmountAcc + fFrameTime * m_tEffectMeshDesc.fDissolveAppearSpeed);
 	else
-		m_fDissolveAmountAcc = max(0.f, m_fDissolveAmountAcc - fFrameTime * m_tEffectMeshDesc.fDissolveAppearSpeed);
-
-#ifdef _DEBUG_COUT_JOJO
-	cout << "Dissolve Amount Acc : " << m_fDissolveAmountAcc << endl;
-#endif // _DEBUG_COUT_JOJO
+		m_fDissolveAmountAcc = max(0.f, m_fDissolveAmountAcc - fFrameTime * m_tEffectMeshDesc.fDissolveDisappearSpeed);
 }
 
 void CCustomEffectMesh::Apply_Easing
