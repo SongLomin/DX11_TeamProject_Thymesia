@@ -9,6 +9,8 @@
 #include "Player.h"
 #include "GameManager.h"
 #include "Item.h"
+#include "InventorySorter.h"
+
 
 GAMECLASS_C(CUI_Inventory)
 CLONE_C(CUI_Inventory, CGameObject)
@@ -28,6 +30,8 @@ HRESULT CUI_Inventory::Initialize(void* pArg)
     Create_TextInfo();
     Create_SortImage();
     Set_Enable(false);
+
+    m_pInventorySorter = CInventorySorter::Create();
 
     return S_OK;
 }
@@ -63,12 +67,11 @@ void CUI_Inventory::Define_Variable()
     m_iWidth = 5;
     m_iHeight = 20;
 
-    m_fOffset = 97.f;
+    m_fSlotOffset = 97.f;
     m_fItemSlotStart.x = 187.f;
     m_fItemSlotStart.y = 208.f;
 
-
-    m_eSortType = INVENTORY_SORTTYPE::SORT_BY_DATE;
+    m_eSortType = INVENTORY_SORTTYPE::SORT_BY_TYPE;
 
 }
 
@@ -88,7 +91,6 @@ void CUI_Inventory::Create_InventoryUI()
 
     Add_Child(m_pFrame);
     Add_Child(m_pBG);
-
 }
 
 void CUI_Inventory::Create_ItemSlot()
@@ -101,17 +103,13 @@ void CUI_Inventory::Create_ItemSlot()
         {
             pItemSlot = GAMEINSTANCE->Add_GameObject<CUI_ItemSlot>(LEVEL_STATIC);
            
-            pItemSlot.lock()->Set_UIPosition(m_fItemSlotStart.x + (j * m_fOffset), m_fItemSlotStart.y + (i * m_fOffset),
-                ALIGN_CENTER);
+            Set_ItemSlotPosFromWidthHeightIndex(pItemSlot, j,i);
             pItemSlot.lock()->Set_OriginCenterPosFromThisPos();
             pItemSlot.lock()->Callback_OnMouseOver +=
                 bind(&CUI_Inventory::Call_OnMouseOver, this, placeholders::_1);
 
             pItemSlot.lock()->Callback_OnMouseOut +=
                 bind(&CUI_Inventory::Call_OnMouseOut , this);
-
-            
-            
             Add_Child(pItemSlot);
             m_vecItemSlot.push_back(pItemSlot);
         }
@@ -168,7 +166,7 @@ void CUI_Inventory::Create_SortImage()
     m_pSortKeyImage.lock()->Set_RenderGroup(RENDERGROUP::RENDER_AFTER_UI);
 
     m_pSortByImage = ADD_STATIC_CUSTOMUI;
-    m_pSortByImage.lock()->Set_Texture("Inventory_SortByDate");
+    m_pSortByImage.lock()->Set_Texture("Inventory_SortByType");
     m_pSortByImage.lock()->Set_UIPosition
     (
         157.f,
@@ -183,19 +181,93 @@ void CUI_Inventory::Create_SortImage()
 
 }
 
+void CUI_Inventory::Set_ItemSlotPosFromWidthHeightIndex(weak_ptr<CUI_ItemSlot> pItemSlot, _uint iWidthIndex, _uint iHeightIndex)
+{
+    pItemSlot.lock()->Set_UIPosition(m_fItemSlotStart.x + ((_float)iWidthIndex * m_fSlotOffset), m_fItemSlotStart.y + ((_float)iHeightIndex * m_fSlotOffset),
+        ALIGN_CENTER);
+}
+
+void CUI_Inventory::Start_AnimationSorting()
+{
+    vector<weak_ptr<CUI_ItemSlot>> pVecItem;
+
+    for (auto& elem : m_vecItemSlot)
+    {
+        if (!elem.lock()->Get_BindItem().lock())
+        {
+            continue;
+        }
+        pVecItem.push_back(elem);
+    }
+    if (pVecItem.size() < 2)//2개보다 작다.->섞을게 없다.
+        return;
+
+   // Start_AnimationPreSorting(pVecItem, m_eSortType);
+
+    m_pInventorySorter->Sorting_Start(pVecItem, m_fSlotOffset, (_uint)m_eSortType);
+}
+
+void CUI_Inventory::Start_AnimationPreSorting(vector<weak_ptr<CUI_ItemSlot>>& vecItemSlot, INVENTORY_SORTTYPE eSortType)
+{
+    sort(vecItemSlot.begin(), vecItemSlot.end(),
+        [&](weak_ptr<CUI_ItemSlot> pFirst, weak_ptr<CUI_ItemSlot> pSecond)
+        {
+            if (pFirst.lock()->Get_BindItem().lock() == false ||
+            pSecond.lock()->Get_BindItem().lock() == false)
+            {
+                return false;
+            }
+    switch (m_eSortType)
+    {
+    case Client::CUI_Inventory::INVENTORY_SORTTYPE::SORT_BY_DATE:
+    {
+        if (pFirst.lock()->Get_BindItem().lock()->Get_CreatedTime() <
+            pSecond.lock()->Get_BindItem().lock()->Get_CreatedTime())
+        {
+            return true;
+        }
+    }
+    break;
+    case Client::CUI_Inventory::INVENTORY_SORTTYPE::SORT_BY_TYPE:
+        if (pFirst.lock()->Get_BindItem().lock()->Get_Type() <
+            pSecond.lock()->Get_BindItem().lock()->Get_Type())
+        {
+          
+            return true;
+
+        }
+        break;
+    case Client::CUI_Inventory::INVENTORY_SORTTYPE::SORT_BY_QUANTITY:
+        if (pFirst.lock()->Get_BindItem().lock()->Get_CurrentQuantity() >
+            pSecond.lock()->Get_BindItem().lock()->Get_CurrentQuantity())
+        {
+            
+            return true;
+        }
+        break;
+    default:
+        break;
+    }
+    return false;
+        });
+}
+
+
 void CUI_Inventory::Update_KeyInput(_float fTimeDelta)
 {
     if (KEY_INPUT(KEY::R, KEY_STATE::TAP))
     {
-        Sort_ItemList(m_eSortType);
-
-        //타입 한간 밀기
+        m_pScroll.lock()->Reset_Scroll();
+        //타입 한칸 밀기
         _uint iSortTypeIndex = (_uint)m_eSortType;
         iSortTypeIndex++;
 
         if (iSortTypeIndex > (_uint)INVENTORY_SORTTYPE::SORT_BY_QUANTITY)
             iSortTypeIndex = 0;
         m_eSortType = (INVENTORY_SORTTYPE)iSortTypeIndex;
+
+        Start_AnimationSorting();
+
         Update_SortImages(m_eSortType);
     }
 }
@@ -204,7 +276,7 @@ void CUI_Inventory::Update_ItemSlotOffset()
 {
     for (auto& elem : m_vecItemSlot)
     {
-        elem.lock()->Set_ScroolOffsetY(m_pScroll.lock()->Get_CurrentProgressiveOffset());
+        elem.lock()->Set_ScrollOffsetY(m_pScroll.lock()->Get_CurrentProgressiveOffset());
         //elem.lock()->Set_ScroolOffsetY(m_fScrollOffsetY);
     }
 }
@@ -266,7 +338,7 @@ void CUI_Inventory::Sort_ItemList(INVENTORY_SORTTYPE eSortType)
         }
         pVecItem.push_back(elem);
     }
-    if (pVecItem.size() < 2)
+    if (pVecItem.size() < 2)//2개보다 작다.->섞을게 없다.
         return;
 
     sort(pVecItem.begin(), pVecItem.end(),
@@ -328,6 +400,14 @@ void CUI_Inventory::Sort_ItemList(INVENTORY_SORTTYPE eSortType)
         });
 }
 
+void CUI_Inventory::Start_Shuffle()
+{
+}
+
+void CUI_Inventory::End_Shuffle()
+{
+}
+
 
 void CUI_Inventory::OnEnable(void* pArg)
 {
@@ -353,7 +433,7 @@ void CUI_Inventory::Call_OnWheelMove(_float fAmount)
 {
     for (auto& elem : m_vecItemSlot)
     {
-        elem.lock()->Set_ScroolOffsetY(-fAmount);
+        elem.lock()->Set_ScrollOffsetY(-fAmount);
     }
 }
 

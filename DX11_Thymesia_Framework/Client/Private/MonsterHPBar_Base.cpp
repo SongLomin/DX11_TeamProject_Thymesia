@@ -20,7 +20,6 @@ HRESULT CMonsterHPBar_Base::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 
-
 	return S_OK;
 }
 
@@ -228,8 +227,6 @@ void CMonsterHPBar_Base::Green_Damaged(_float _fDmgRatio)
 	{
 		Set_Stun(true);
 	}
-
-
 }
 
 void CMonsterHPBar_Base::Set_RecoveryAlram(_bool _bRecovery)
@@ -259,9 +256,8 @@ void CMonsterHPBar_Base::Set_RecoveryAlram(_bool _bRecovery)
 
 void CMonsterHPBar_Base::Reset()
 {
-	Initialize(nullptr);
+	Reset_UI();
 	Set_Enable(false);
-
 	m_pTrack.lock()->Set_Enable(false);
 	m_pGreenTrack.lock()->Set_Enable(false);
 	if (m_pStunned.lock())
@@ -342,6 +338,11 @@ void CMonsterHPBar_Base::Call_Restart()
 	m_pWhite.lock()->Set_Ratio(pStatus_Monster.lock()->Get_WhiteRatio());
 	m_pGreen.lock()->Set_Ratio(pStatus_Monster.lock()->Get_GreenRatio());
 	m_pParryingBar.lock()->Set_Ratio(0.f, false);
+}
+
+void CMonsterHPBar_Base::Call_Full_Recovery()
+{
+	Reset();
 }
 
 void CMonsterHPBar_Base::OnEnable(void* pArg)

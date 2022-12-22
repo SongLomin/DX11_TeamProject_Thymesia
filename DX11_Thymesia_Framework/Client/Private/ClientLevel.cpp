@@ -37,7 +37,7 @@
 #include "UI_Cursor.h"
 #include "UI_ItemPopup.h"
 #include "UI_BloodOverlay.h"
-
+#include "UI_AppearEventVarg.h"
 
 
 GAMECLASS_C(CClientLevel)
@@ -127,6 +127,7 @@ void CClientLevel::SetUp_UI()
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::INTERACTIONUI, GAMEINSTANCE->Add_GameObject<CUI_Interaction>(LEVEL_STATIC));
 
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CUI_MonsterFocus>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::EVENT_UI, GAMEINSTANCE->Add_GameObject<CUI_AppearEventVarg>(LEVEL_STATIC));
 
 	GAMEINSTANCE->Add_GameObject<CUI_BloodOverlay>(LEVEL_STATIC);
 

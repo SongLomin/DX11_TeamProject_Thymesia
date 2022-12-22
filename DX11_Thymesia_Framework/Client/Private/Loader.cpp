@@ -1298,6 +1298,13 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("BloodOverlay_Mask"), TEXT("../Bin/Resources/Textures/UI/BloodOverlay/Mask.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("BloodOverlay"), TEXT("../Bin/Resources/Textures/UI/BloodOverlay/Texture.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
+	//VargAppear
+	GAMEINSTANCE->Load_Textures(("Varg_Appear_SliceTop"), TEXT("../Bin/Resources/Textures/UI/AppearEvent/Varg/Slice_Top.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Varg_Appear_SliceBottom"), TEXT("../Bin/Resources/Textures/UI/AppearEvent/Varg/Slice_Bottom.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("Varg_Appear_SliceTop_BG"), TEXT("../Bin/Resources/Textures/UI/AppearEvent/Varg/Slice_Top_BG.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Varg_Appear_SliceBottom_BG"), TEXT("../Bin/Resources/Textures/UI/AppearEvent/Varg/Slice_Bottom_BG.png"), MEMORY_TYPE::MEMORY_STATIC);
+
 
 #endif // _JOJO_EFFECT_TOOL_
 }

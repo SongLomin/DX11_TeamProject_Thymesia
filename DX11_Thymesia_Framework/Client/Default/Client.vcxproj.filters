@@ -1577,10 +1577,13 @@
     </ClInclude>
     <ClInclude Include="..\Public\UI_DamageFontPiece.h" />
     <ClInclude Include="..\Public\UI_BloodOverlay.h" />
-    <ClInclude Include="..\Public\UI_AppearEvent_Varg.h" />
     <ClInclude Include="..\Public\Interaction_NextPoint.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\InventorySorter.h" />
+    <ClInclude Include="..\Public\UIManager.h" />
+    <ClInclude Include="..\Public\UI_ShuffleIcon.h" />
+    <ClInclude Include="..\Public\UI_AppearEventVarg.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2629,7 +2632,6 @@
     <ClCompile Include="..\Private\Window_Shader_Dev.cpp">
       <Filter>97. Tool\01. DeveloperConsole\Windows\00. Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\UI_MonsterFocus.cpp" />
     <ClCompile Include="..\Private\Preset_UIDesc.cpp">
       <Filter>06. DataPreset\05. Preset_UIDesc</Filter>
     </ClCompile>
@@ -2807,9 +2809,6 @@
       <Filter>05. Component\05. Skill\System</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ClientComponent_Utils.cpp" />
-    <ClCompile Include="..\Skill_Base.cpp">
-      <Filter>05. Component\05. Skill\Base</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Skill_VargSword.cpp" />
     <ClCompile Include="..\Private\Requirement_Time.cpp">
       <Filter>07. Requirement\00. Requirement_Time</Filter>
@@ -3148,7 +3147,6 @@
       <Filter>06. DataPreset\06.Preset_ItemData</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Inventory.cpp" />
-    <ClCompile Include="..\UI_ItemInformation.cpp" />
     <ClCompile Include="..\Private\UI_ItemPopup.cpp" />
     <ClCompile Include="..\Private\ItemPopup_Queue.cpp" />
     <ClCompile Include="..\Private\Window_Optimization_Dev.cpp">
@@ -3158,7 +3156,6 @@
       <Filter>97. Tool\01. DeveloperConsole\Windows\04. GameSystem</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\AIStateBase.cpp" />
-    <ClCompile Include="..\UI_InventoryConfirmWindow.cpp" />
     <ClCompile Include="..\Private\UI_InventoryConfirmWindowButton.cpp" />
     <ClCompile Include="..\Private\UI_Inventory.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\Inventory\Tap</Filter>
@@ -3193,11 +3190,20 @@
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\UI_DamageFontPiece.cpp" />
     <ClCompile Include="..\Private\UI_BloodOverlay.cpp" />
-    <ClCompile Include="..\Private\UI_AppearEvent_Varg.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Interaction_NextPoint.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\InventorySorter.cpp" />
+    <ClCompile Include="..\Private\UIManager.cpp" />
+    <ClCompile Include="..\Private\UI_ShuffleIcon.cpp" />
+    <ClCompile Include="..\Private\Skill_Base.cpp">
+      <Filter>05. Component\05. Skill\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_InventoryConfirmWindow.cpp" />
+    <ClCompile Include="..\Private\UI_ItemInformation.cpp" />
+    <ClCompile Include="..\Private\UI_MonsterFocus.cpp" />
+    <ClCompile Include="..\Private\UI_AppearEventVarg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -4743,6 +4749,9 @@
     </Filter>
     <Filter Include="AppearEvent">
       <UniqueIdentifier>{d3a11a7c-0354-46b5-b914-4587764414bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. Managers_Client\01. UIManager">
+      <UniqueIdentifier>{084c0c25-d42b-4b10-8f4e-30f61fc9effd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

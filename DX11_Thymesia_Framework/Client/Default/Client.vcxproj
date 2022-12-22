@@ -430,6 +430,7 @@
     <ClInclude Include="..\Public\Interaction_NextPoint.h" />
     <ClInclude Include="..\Public\Interaction_Note.h" />
     <ClInclude Include="..\Public\Inventory.h" />
+    <ClInclude Include="..\Public\InventorySorter.h" />
     <ClInclude Include="..\Public\Item.h" />
     <ClInclude Include="..\Public\ItemPopup_Queue.h" />
     <ClInclude Include="..\Public\JoJoParticleShaderManager.h" />
@@ -482,7 +483,8 @@
     <ClInclude Include="..\Public\Preset_PhysXControllerDesc.h" />
     <ClInclude Include="..\Public\TargetCurve.h" />
     <ClInclude Include="..\Public\TestUI.h" />
-    <ClInclude Include="..\Public\UI_AppearEvent_Varg.h" />
+    <ClInclude Include="..\Public\UIManager.h" />
+    <ClInclude Include="..\Public\UI_AppearEventVarg.h" />
     <ClInclude Include="..\Public\UI_BloodOverlay.h" />
     <ClInclude Include="..\Public\UI_Button.h" />
     <ClInclude Include="..\Public\Talent_Effects.h" />
@@ -514,6 +516,7 @@
     <ClInclude Include="..\Public\UI_Script.h" />
     <ClInclude Include="..\Public\UI_ScriptQueue.h" />
     <ClInclude Include="..\Public\UI_Scroll.h" />
+    <ClInclude Include="..\Public\UI_ShuffleIcon.h" />
     <ClInclude Include="..\Public\UI_T_Dissolve.h" />
     <ClInclude Include="..\Public\UI_Utils.h" />
     <ClInclude Include="..\Public\VargBossStateBase.h" />
@@ -955,6 +958,7 @@
     <ClCompile Include="..\Private\Interaction_NextPoint.cpp" />
     <ClCompile Include="..\Private\Interaction_Note.cpp" />
     <ClCompile Include="..\Private\Inventory.cpp" />
+    <ClCompile Include="..\Private\InventorySorter.cpp" />
     <ClCompile Include="..\Private\Item.cpp" />
     <ClCompile Include="..\Private\ItemPopup_Queue.cpp" />
     <ClCompile Include="..\Private\JoJoParticleShaderManager.cpp" />
@@ -983,10 +987,12 @@
     <ClCompile Include="..\Private\RequirementChecker.cpp" />
     <ClCompile Include="..\Private\Requirement_Once.cpp" />
     <ClCompile Include="..\Private\Requirement_State.cpp" />
+    <ClCompile Include="..\Private\Skill_Base.cpp" />
     <ClCompile Include="..\Private\Skill_VargSword.cpp" />
     <ClCompile Include="..\Private\Status_Boss.cpp" />
     <ClCompile Include="..\Private\TargetCurve.cpp" />
-    <ClCompile Include="..\Private\UI_AppearEvent_Varg.cpp" />
+    <ClCompile Include="..\Private\UIManager.cpp" />
+    <ClCompile Include="..\Private\UI_AppearEventVarg.cpp" />
     <ClCompile Include="..\Private\UI_BloodOverlay.cpp" />
     <ClCompile Include="..\Private\UI_Button.cpp" />
     <ClCompile Include="..\Private\UI_Container.cpp" />
@@ -1002,7 +1008,9 @@
     <ClCompile Include="..\Private\UI_EvolveTalent_Active.cpp" />
     <ClCompile Include="..\Private\UI_Interaction.cpp" />
     <ClCompile Include="..\Private\UI_Inventory.cpp" />
+    <ClCompile Include="..\Private\UI_InventoryConfirmWindow.cpp" />
     <ClCompile Include="..\Private\UI_InventoryConfirmWindowButton.cpp" />
+    <ClCompile Include="..\Private\UI_ItemInformation.cpp" />
     <ClCompile Include="..\Private\UI_ItemPopup.cpp" />
     <ClCompile Include="..\Private\UI_ItemSlot.cpp" />
     <ClCompile Include="..\Private\UI_LerpBar.cpp" />
@@ -1024,10 +1032,12 @@
     <ClCompile Include="..\Private\Preset_PhysXControllerDesc.cpp" />
     <ClCompile Include="..\Private\PhysXColliderObject.cpp" />
     <ClCompile Include="..\Private\UI_MenuText.cpp" />
+    <ClCompile Include="..\Private\UI_MonsterFocus.cpp" />
     <ClCompile Include="..\Private\UI_PauseMenu_Page_Inventory.cpp" />
     <ClCompile Include="..\Private\UI_Script.cpp" />
     <ClCompile Include="..\Private\UI_ScriptQueue.cpp" />
     <ClCompile Include="..\Private\UI_Scroll.cpp" />
+    <ClCompile Include="..\Private\UI_ShuffleIcon.cpp" />
     <ClCompile Include="..\Private\UI_T_Dissolve.cpp" />
     <ClCompile Include="..\Private\UI_Utils.cpp" />
     <ClCompile Include="..\Private\VargBossStateBase.cpp" />
@@ -1221,10 +1231,6 @@
     <ClCompile Include="..\Private\UI.cpp" />
     <ClCompile Include="..\Private\WorldUI.cpp" />
     <ClCompile Include="..\Public\TestUI.cpp" />
-    <ClCompile Include="..\Skill_Base.cpp" />
-    <ClCompile Include="..\UI_InventoryConfirmWindow.cpp" />
-    <ClCompile Include="..\UI_ItemInformation.cpp" />
-    <ClCompile Include="..\UI_MonsterFocus.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -232,6 +232,7 @@ void  CMonster::Load_FromJson(const json& In_Json)
 
     GET_SINGLE(CGameManager)->Registration_Section(m_tLinkStateDesc.iSectionIndex, Weak_Cast<CGameObject>(m_this));
 
+
     Init_Desc();
 }
 

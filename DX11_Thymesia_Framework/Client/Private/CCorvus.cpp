@@ -13,7 +13,9 @@
 #include "Skill_VargSword.h"
 #include "Inventory.h"
 #include "UI_BloodOverlay.h"
-
+#include "UI_PauseMenu.h"
+#include "UIManager.h"
+#include "UI_AppearEventVarg.h"
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -245,6 +247,10 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	PxControllerFilters Filters;
 
 	// TODO : test jump key R
+	
+	if (GET_SINGLE(CUIManager)->Is_OpenedMenu())
+		return;
+
 	if (KEY_INPUT(KEY::R, KEY_STATE::HOLD))
 		m_pPhysXControllerCom.lock()->Move(_vector{ 0.f, 500.f * fTimeDelta, 0.f }, 0.f, fTimeDelta, Filters);
 
@@ -273,6 +279,10 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	if (KEY_INPUT(KEY::NUM6, KEY_STATE::TAP))
 	{
 		m_pInventory.lock()->Push_Item(ITEM_NAME::MEMORY01);
+	}
+	if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
+	{
+		GAMEINSTANCE->Get_GameObjects<CUI_AppearEventVarg>(LEVEL_STATIC).front().lock()->Start_Event();
 	}
 	/*
 	if (KEY_INPUT(KEY::T, KEY_STATE::TAP))

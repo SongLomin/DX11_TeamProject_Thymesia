@@ -178,21 +178,21 @@ public:
     /*
     문광현 임펠다운 함수모음.
 
-    무공비급 함수란?
+    임펠다운 함수란?
     낙후된 컴퓨터 환경 및 빡빡한 일정마감을 완수하기 위해
     인륜을 져버린 사악한 함수 및 변수들을 모아놓은 공간.
     나중에 무조건 사형(없앤다)시키겠음.
     */
 public:// For UI;
     POINT   Get_MousePoint();
+   
+    
     void    Set_PlayerStatusDesc(void* pArg);
     CStatus_Player::PLAYERDESC&   Get_PlayerStatusDesc()
     {
         return m_tPlayerDesc;
     }
-
-public:
-    _uint   m_iTestTalent = 2;
+private:
     CStatus_Player::PLAYERDESC m_tPlayerDesc;
 
 

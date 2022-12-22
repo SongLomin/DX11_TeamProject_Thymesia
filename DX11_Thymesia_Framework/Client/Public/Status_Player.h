@@ -96,7 +96,7 @@ public:
     virtual void    Add_Damage(const _float& In_fDamage);
     void            Add_Memory(_uint    iRootedMemory);
     void            Consumed_Mana(_float fRequireMana);
-    virtual void   Full_Recovery();
+    virtual void   Full_Recovery() override;
 
 
     PLAYERDESC Get_PlayerDesc() { return m_tDesc; }

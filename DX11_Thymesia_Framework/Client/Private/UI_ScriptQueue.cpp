@@ -52,6 +52,17 @@ void CUI_ScriptQueue::LateTick(_float fTimeDelta)
 
 void CUI_ScriptQueue::Call_SetScript_Tutorial_Varg()
 {
+
+    CUI_Script::SCRIPTDESC tScriptDesc;
+
+    tScriptDesc.fLifeTime = 3.f;
+    tScriptDesc.fPos = _float2(g_iWinCX / 2.f, g_iWinCY / 2.f);
+    tScriptDesc.fSize = _float2(g_iWinCX, g_iWinCY);
+    tScriptDesc.strScriptKey = "Script_Varg_Tutorial_Appear";
+    tScriptDesc.bLerp = true;
+    m_ScriptDescQueue.push(tScriptDesc);
+
+
     CUI_Script::SCRIPTDESC tScriptDesc;
 
     tScriptDesc.fLifeTime = 2.f;
