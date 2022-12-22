@@ -39,6 +39,11 @@ void CNvCloth_Manager::Tick(_float fTimeDelta)
 	if (m_pSolver->getSimulationChunkCount() <= 0)
 		return;
 
+	if (fTimeDelta > 0.2f)
+	{
+		return;
+	}
+
 	shared_ptr<CThread_Manager> pThread_Manager = GET_SINGLE(CThread_Manager);
 
 	m_pGraphicsContextManager->mDevice = DEVICE;

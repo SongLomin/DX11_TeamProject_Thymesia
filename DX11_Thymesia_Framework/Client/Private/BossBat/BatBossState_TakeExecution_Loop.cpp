@@ -9,6 +9,8 @@
 #include "Character.h"
 #include "BossBat/BatStates.h"
 
+#include "GameManager.h"
+
 GAMECLASS_C(CBatBossState_TakeExecution_Loop);
 CLONE_C(CBatBossState_TakeExecution_Loop, CComponent)
 
@@ -30,7 +32,7 @@ void CBatBossState_TakeExecution_Loop::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|TAKELOOP");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_TakeExecution_Loop");
 
 }
 
@@ -61,16 +63,18 @@ void CBatBossState_TakeExecution_Loop::OnStateStart(const _float& In_fAnimationB
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "VargState: Start -> OnStateStart" << endl;
+	cout << "BatState: Start -> OnStateStart" << endl;
 #endif
 #endif
 
+	GET_SINGLE(CGameManager)->Activate_Section(1000, EVENT_TYPE::ON_ENTER_SECTION);
 }	
 
 
 void CBatBossState_TakeExecution_Loop::OnStateEnd()
 {
 	__super::OnStateEnd();
+
 
 }
 

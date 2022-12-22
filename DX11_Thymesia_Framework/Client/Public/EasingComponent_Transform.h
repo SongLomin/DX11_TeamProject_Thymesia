@@ -18,7 +18,7 @@ public:
  
 public:
     virtual void	Set_Lerp(_float2	vStart, _float2	vTarget, _float fTime,
-        EASING_TYPE eEasingType, PLAY_TYPE ePlayType, _bool bCustomUse);
+        EASING_TYPE eEasingType, PLAY_TYPE ePlayType, _bool bCustomUse, _bool bLerpUseOffset = true);
     
     _float2         Get_Lerp() 
     {
@@ -26,6 +26,8 @@ public:
     
         return     Out_fLerp;
     }; 
+private:
+    _bool           m_bLerpUseOffset;
 };
 
 

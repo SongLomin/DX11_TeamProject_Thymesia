@@ -66,6 +66,7 @@ HRESULT CInteraction_Item::Render(ID3D11DeviceContext* pDeviceContext)
 
 void CInteraction_Item::OnEventMessage(_uint iArg)
 {
+#ifdef _DEBUG
     switch ((EVENT_TYPE)iArg)
     {
         case EVENT_TYPE::ON_EDIT_UDATE:
@@ -76,7 +77,7 @@ void CInteraction_Item::OnEventMessage(_uint iArg)
 
         case EVENT_TYPE::ON_EDITDRAW:
         {
-            static char* szItemList[] = 
+            static const char* szItemList[] = 
             {
                 "BASIL",
                 "THYME",
@@ -97,6 +98,7 @@ void CInteraction_Item::OnEventMessage(_uint iArg)
         }
         break;
     }
+#endif // _DEBUG
 }
 
 
@@ -138,4 +140,8 @@ void CInteraction_Item::SetUpColliderDesc(_float* _pColliderDesc)
 
     m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
     m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+}
+
+void CInteraction_Item::Free()
+{
 }

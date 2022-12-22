@@ -217,7 +217,8 @@ void CEditGroupProp::View_CreateProp()
 		"CheckPoint",
 		"Elevator",
 		"Ladder",
-		"Note"
+		"Note",
+		"NextPoint"
 	};
 
 	static _int iSelect_PropType = 0;
@@ -299,6 +300,17 @@ void CEditGroupProp::View_CreateProp()
 				tObjDesc.TypeName  = typeid(CInteraction_Note).name();
 
 				tObjDesc.pInstance.lock()->Get_Component<CModel>().lock()->Init_Model(m_szSelectModelName.c_str());
+			}
+			break;
+
+			case 5:
+			{
+				if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) || !Pick_Prop(MouseRayInWorldSpace))
+					return;
+
+				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_NextPoint>(LEVEL::LEVEL_EDIT);
+				tObjDesc.HashCode  = typeid(CInteraction_NextPoint).hash_code();
+				tObjDesc.TypeName  = typeid(CInteraction_NextPoint).name();
 			}
 			break;
 		}

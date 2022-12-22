@@ -31,7 +31,7 @@ void CBatBossState_FTurnL::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|FTURNL");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_FTurn_L");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_FTurnL::Call_AnimationEnd, this);
 }
@@ -41,14 +41,14 @@ void CBatBossState_FTurnL::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
 
 	PxControllerFilters Filters = Filters;
-	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+	m_pPhysXControllerCom.lock()->MoveWithRotation(-vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 	
 	if (m_bTurnCheck)
 	{
-		_float fTurnValue = 3.14f / 0.625f;
+		_float fTurnValue = 3.14f / 0.2f;
 	
 		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * -0.5f);
 		
@@ -73,9 +73,9 @@ void CBatBossState_FTurnL::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+	//m_pPhysXControllerCom.lock()->Enable_Gravity(true);
 
-	m_bTurnCheck = true;
+	m_bTurnCheck = false;
 
 	Rotation_TargetToLookDir();
 	
@@ -125,9 +125,17 @@ _bool CBatBossState_FTurnL::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+
+
+
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 12)
+	{
+		m_bTurnCheck = true;
+	}
 	
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 37)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 22)
 	{
 
 		if (ComputeAngleWithPlayer() > 0.97f && m_bTurnCheck)
@@ -138,6 +146,8 @@ _bool CBatBossState_FTurnL::Check_AndChangeNextState()
 		}
 	}
 
+	//12프레임부터 돌기시작
+	//29프레임에서돌기끝
 
 
 	return false;

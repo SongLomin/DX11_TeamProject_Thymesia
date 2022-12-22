@@ -17,6 +17,7 @@
 #include "Static_Instancing_Prop.h"
 #include "Light_Prop.h"
 #include "Dynamic_Prop.h"
+#include "PreView_Prop.h"
 #include "PhysXColliderObject.h"
 #include "Interaction_Ladder.h"
 #include "Interaction_Dynamic_Prop.h"
@@ -26,6 +27,7 @@
 #include "Interaction_Door.h"
 #include "Interaction_Note.h"
 #include "Interaction_Item.h"
+#include "Interaction_DeadSpot.h"
 #include "Section_Eventer.h"
 #include "Water.h"
 

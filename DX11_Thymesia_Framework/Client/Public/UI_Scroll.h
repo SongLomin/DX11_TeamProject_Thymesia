@@ -20,7 +20,7 @@ public:
 
 
 public:
-
+    void                Reset_Scroll();
     void                SetUp_ScrollFromLeftTop(const _float fX, const _float fY, const _float fScrollSize,
         const _float fStartSize, const _float fMaxSize);
 

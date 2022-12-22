@@ -30,6 +30,8 @@ class CInteraction_CheckPoint;
 class CUI_Cursor;
 class CLight_Prop;
 class CItemPopup_Queue;
+class CInteraction_DeadSpot;
+class CSection_Eventer;
 
 class CGameManager :
     public CBase
@@ -178,21 +180,21 @@ public:
     /*
     문광현 임펠다운 함수모음.
 
-    무공비급 함수란?
+    임펠다운 함수란?
     낙후된 컴퓨터 환경 및 빡빡한 일정마감을 완수하기 위해
     인륜을 져버린 사악한 함수 및 변수들을 모아놓은 공간.
     나중에 무조건 사형(없앤다)시키겠음.
     */
 public:// For UI;
     POINT   Get_MousePoint();
+   
+    
     void    Set_PlayerStatusDesc(void* pArg);
     CStatus_Player::PLAYERDESC&   Get_PlayerStatusDesc()
     {
         return m_tPlayerDesc;
     }
-
-public:
-    _uint   m_iTestTalent = 2;
+private:
     CStatus_Player::PLAYERDESC m_tPlayerDesc;
 
 
@@ -205,10 +207,10 @@ public:
     BUTTON_LEVEL        Get_ButtonLevel() { return m_eButtonLevel; }
     void                Set_ButtonLevel(BUTTON_LEVEL eButtonLevel) { m_eButtonLevel = eButtonLevel; }
 
-
 public:
     void   CreatePopupQueue();
     void   Add_Popup(ITEM_NAME eItemName);
+
 private:
     weak_ptr< CUI_Cursor> m_pCursor;
     shared_ptr<CItemPopup_Queue> m_pItemPopupQueue;
@@ -216,15 +218,15 @@ private:
 
 
 public:
+    void  Registration_SectionEvent(_uint In_iSection, weak_ptr<CSection_Eventer> In_pSectionEvent);
+
     void  Registration_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj);
     void  Activate_Section(_uint In_iSection, EVENT_TYPE In_eEventType);
 
     void  Registration_SectionLight(_uint In_iSection, weak_ptr<CLight_Prop> In_pObj);
     void  Activate_SectionLight(_uint In_iSection, EVENT_TYPE In_eEventType);
 
-    public:
-        void  Set_AnimaionChange(_bool bAnimaionChange) { m_bAnimaionChange = bAnimaionChange; }
-        _bool Get_AnimaionChange() { return m_bAnimaionChange; }
+
  public:
     FDelegate<>                 CallBack_ChangePlayer;
     FDelegate<>                 CallBack_FocusInMonster;
@@ -245,16 +247,19 @@ private:
     typedef map<_int, KEYEVENT>                                  ANIM_MAP;
 
 private:
-    typedef map<_int, list<weak_ptr<CGameObject>>> SECTION_OBJ;
-    typedef map<_int, list<weak_ptr<CLight_Prop>>> SECTION_LIGHT;
+    typedef map<_int, list<weak_ptr<CSection_Eventer>>>    SECTION_EVENTER;
+    typedef map<_int, list<weak_ptr<CGameObject>>>         SECTION_OBJ;
+    typedef map<_int, list<weak_ptr<CLight_Prop>>>         SECTION_LIGHT;
 
+    SECTION_EVENTER                     m_SectionEventers;
     SECTION_OBJ                         m_SectionObejects;
     SECTION_LIGHT                       m_SectionLights;
     weak_ptr<CInteraction_CheckPoint>   m_pCurSavePoint;
+    weak_ptr<CInteraction_DeadSpot>     m_pDeadSpot;
+    _uint                               m_iPreEventSection;
 
 private:
     _int                                m_iMonsterCount   = 0;
-    _bool                               m_bAnimaionChange = false;
 
 protected:
     void Free();

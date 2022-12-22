@@ -111,6 +111,18 @@ void	CMonsterHPBar_Boss::Create_Decoration(weak_ptr<CStatus_Monster> pStatus_Mon
 	}
 }
 
+void CMonsterHPBar_Boss::Call_Full_Recovery()
+{
+	for (auto& elem : m_listLifeDecoration)
+	{
+		elem.lock()->Set_Enable(false);
+	}
+	m_listLifeDecoration.clear();
+	Create_Decoration(Weak_StaticCast<CStatus_Monster>(m_pTarget.lock()->Get_Status()));
+
+	__super::Call_Full_Recovery();
+}
+
 
 void CMonsterHPBar_Boss::Set_Stun(bool _bStun)
 {

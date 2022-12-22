@@ -15,7 +15,7 @@ CLONE_C(CModel, CComponent)
 
 CModel::CModel(const CModel& rhs)
 {
-	*this = rhs;
+	this->m_pOwner = rhs.m_pOwner;
 }
 
 weak_ptr<MODEL_DATA> CModel::Get_ModelData() const
@@ -81,6 +81,10 @@ void CModel::Set_CurrentAnimationKey(_uint iKeyIndex)
 
 _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName, const _bool In_bUseOffset, _fmatrix In_OffsetMatrix)
 {
+	std::unique_lock<std::mutex> lock(m_job_q_);
+
+
+
 	if (m_isBlend)
 	{
 		return XMVectorSet(0.f, 0.f, 0.f, 1.f);
@@ -103,6 +107,9 @@ _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName, const _bool In_
 
 		XMStoreFloat4(&CurrentPosition, CurrentBoneNode.lock()->Get_TransformationMatrix().r[3]);
 		m_DeltaBonePositions.emplace(HashKey, CurrentPosition);
+
+		lock.unlock();
+
 		return XMVectorSet(0.f, 0.f, 0.f, 1.f);
 	}
 
@@ -116,6 +123,8 @@ _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName, const _bool In_
 
 		XMStoreFloat4(&CurrentPosition, CurrentBoneNode.lock()->Get_TransformationMatrix().r[3]);
 		m_DeltaBonePositions.emplace(HashKey, CurrentPosition);
+
+		lock.unlock();
 
 		return XMVectorSet(0.f, 0.f, 0.f, 1.f);
 	}
@@ -166,6 +175,8 @@ _vector CModel::Get_DeltaBonePosition(const char* In_szBoneName, const _bool In_
 	}
 
 	//Print_Vector(vCurrentBonePosition);
+
+	lock.unlock();
 
 	return vCurrentBonePosition;
 }
@@ -382,16 +393,12 @@ HRESULT CModel::Update_BoneMatrices()
 	return S_OK;
 }
 
-HRESULT CModel::Update_NvCloth()
+HRESULT CModel::Update_NvCloth(ID3D11DeviceContext* pDeferredContext, _fmatrix In_WorldMatrix)
 {
-	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
-
 	for (auto& elem : m_MeshContainers)
 	{
-		elem.lock()->Update_NvClothVertices(pDeferredContext);
+		elem.lock()->Update_NvClothVertices(pDeferredContext, In_WorldMatrix);
 	}
-
-	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
 
 	return S_OK;
 }
@@ -524,7 +531,11 @@ void CModel::Reset_Model()
 
 void CModel::Reset_DeltaBonePositions()
 {
+	std::unique_lock<std::mutex> lock(m_job_q_);
+
 	m_DeltaBonePositions.clear();
+
+	lock.unlock();
 }
 
 void CModel::Set_RootNode(const string& pBoneName, const _byte RootNodeFlags)

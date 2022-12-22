@@ -23,6 +23,7 @@ public:
     virtual void    Add_Damage(const _float In_fDamage, ATTACK_OPTION eAttackOption);
     virtual void    Get_Desc(void* Out_pDesc);
     virtual void    Set_Desc(void* In_Desc);
+    virtual void    Full_Recovery();
 protected:
     virtual void    Decrease_HP(_float& InOut_fCurrentHP, const _float In_fDamage);
     virtual void    Increase_HP(_float& InOut_fCurrentHP,const _float In_fMaxHP, const _float In_fAmount);

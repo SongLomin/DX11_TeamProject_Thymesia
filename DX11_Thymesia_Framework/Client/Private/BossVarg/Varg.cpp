@@ -192,7 +192,6 @@ void CVarg::Init_Desc()
 
 	m_pModelCom.lock()->Init_Model("Boss_Varg", "", (_uint)TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CVargWeapon>(m_CreatedLevel));
-	m_pWeapons.back().lock()->Init_Model("Boss_VargWeapon", TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
 
 	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.9f,-2.4f,1.0f }, 0.8f, COLLISION_LAYER::MONSTER_ATTACK);
@@ -311,6 +310,25 @@ void CVarg::OnEventMessage(_uint iArg)
 	if ((_uint)EVENT_TYPE::ON_ENTER_SECTION == iArg)
 	{
 		Set_Enable(true);
+	}
+
+	if ((_uint)EVENT_TYPE::ON_BOSS_EXECUTIONSTART == iArg)
+	{
+		m_bBossExecutionStartOnOff = true;
+	}
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		PxControllerFilters Filters;
+		m_pPhysXControllerCom.lock()->Set_Position(XMLoadFloat4(&m_tLinkStateDesc.m_fStartPositon), 0.f, Filters);
+
+		// TODO : UI 리셋되게 하기
+
+		Change_State<CVargBossState_IdleGeneral>();
+		Set_Enable(false);
+		
+		m_pStatus.lock()->Full_Recovery();
+
 	}
 }
 

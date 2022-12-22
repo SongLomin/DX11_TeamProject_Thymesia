@@ -13,7 +13,9 @@
 #include "Skill_VargSword.h"
 #include "Inventory.h"
 #include "UI_BloodOverlay.h"
-
+#include "UI_PauseMenu.h"
+#include "UIManager.h"
+#include "UI_AppearEventVarg.h"
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -41,7 +43,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 	//m_pStatus.lock()->Load_FromJson(m_szClientComponentPath + "Corvus/SaveData.json");
 
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
-	//m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER, (_flag)NVCLOTH_INDEX::_2);
+	//m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER, (_flag)FLAG_INDEX::_2);
 
 
 
@@ -107,6 +109,12 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_LightDesc = GAMEINSTANCE->Add_Light(LightDesc);
 
+#ifdef _USE_THREAD_
+	Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
+#endif // _USE_THREAD_
+	
+
+
 	return S_OK;
 }
 
@@ -166,11 +174,24 @@ void CCorvus::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 }
 
+void CCorvus::Thread_PreBeforeRender(_float fTimeDelta)
+{
+	__super::Thread_PreBeforeRender(fTimeDelta);
+
+	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
+	m_pModelCom.lock()->Update_NvCloth(pDeferredContext, m_pTransformCom.lock()->Get_WorldMatrix());
+	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
+
+}
+
+
 void CCorvus::Before_Render(_float fTimeDelta)
 {
 	__super::Before_Render(fTimeDelta);
 
-	m_pModelCom.lock()->Update_NvCloth();
+
+	
+	//GAMEINSTANCE->Enqueue_Job(bind(&CModel::Update_NvCloth, m_pModelCom.lock(), pDeferredContext));
 }	
 
 
@@ -245,6 +266,10 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	PxControllerFilters Filters;
 
 	// TODO : test jump key R
+	
+	if (GET_SINGLE(CUIManager)->Is_OpenedMenu())
+		return;
+
 	if (KEY_INPUT(KEY::R, KEY_STATE::HOLD))
 		m_pPhysXControllerCom.lock()->Move(_vector{ 0.f, 500.f * fTimeDelta, 0.f }, 0.f, fTimeDelta, Filters);
 
@@ -273,6 +298,10 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	if (KEY_INPUT(KEY::NUM6, KEY_STATE::TAP))
 	{
 		m_pInventory.lock()->Push_Item(ITEM_NAME::MEMORY01);
+	}
+	if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
+	{
+		GAMEINSTANCE->Get_GameObjects<CUI_AppearEventVarg>(LEVEL_STATIC).front().lock()->Start_Event();
 	}
 	/*
 	if (KEY_INPUT(KEY::T, KEY_STATE::TAP))
@@ -510,7 +539,7 @@ void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 void CCorvus::OnBattleEnd()
 {
 }
-
+ 
 void CCorvus::OnEnable(void* pArg)
 {
 	__super::OnEnable(pArg);
@@ -551,6 +580,10 @@ void CCorvus::OnEventMessage(_uint iArg)
 		Change_State<CCorvusState_Execution_Start>();
 	}
 
+	if (EVENT_TYPE::ON_RESET_OBJ == (EVENT_TYPE)iArg)
+	{
+
+	}
 
 }
 

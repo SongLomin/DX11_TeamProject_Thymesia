@@ -11,6 +11,8 @@
 #include "UI_PauseMenu_Page_Status.h"
 #include "FadeMask.h"
 #include "UI_PauseMenu_Page_Inventory.h"
+#include "UIManager.h"
+
 
 GAMECLASS_C(CUI_PauseMenu)
 CLONE_C(CUI_PauseMenu, CGameObject)
@@ -110,6 +112,8 @@ void CUI_PauseMenu::OnEnable(void* _Arg)
 	__super::OnEnable(_Arg);
 
 	m_bOpenThisFrame = true;
+	GET_SINGLE(CUIManager)->Set_OpenedMenu(true);
+
 
 	m_pPauseMenuBackground.lock()->Set_AlphaColor(1.f);
 	m_pPauseMenuBackground_MainFrame.lock()->Set_AlphaColor(1.f);
@@ -123,6 +127,7 @@ void CUI_PauseMenu::OnDisable()
 {
 	__super::OnDisable();
 
+	GET_SINGLE(CUIManager)->Set_OpenedMenu(false);
 	m_pInventoryBG.lock()->Set_Enable(false);
 
 
@@ -204,7 +209,7 @@ void CUI_PauseMenu::Create_Background()
 
 
 	m_pPauseMenuBackground_Top = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
-	m_pPauseMenuBackground_Top.lock()->Set_Depth(0.3f);
+	m_pPauseMenuBackground_Top.lock()->Set_Depth(0.7f);
 	m_pPauseMenuBackground_Top.lock()->Set_Texture("PauseMenu_Background3");
 	m_pPauseMenuBackground_Top.lock()->Set_UIPosition(0, 0, 1600.f, 900.f, CUI::ALIGN_LEFTTOP);
 

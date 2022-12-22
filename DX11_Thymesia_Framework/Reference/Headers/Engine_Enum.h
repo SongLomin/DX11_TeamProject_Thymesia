@@ -152,7 +152,7 @@ enum class ENGINE_EVENT_TYPE
 	TYPE_END
 };
 
-enum class NVCLOTH_INDEX
+enum class FLAG_INDEX
 {
 	_0 = ( 1 << 0),
 	_1 = ( 1 << 1),
@@ -176,4 +176,11 @@ enum class NVCLOTH_INDEX
 	_19 = ( 1 << 19),
 	_20 = ( 1 << 20),
 	_21 = ( 1 << 21)
+};
+
+enum class SELECTION_TYPE
+{
+	FORWARD,
+	REVERSE,
+	TYPE_END
 };

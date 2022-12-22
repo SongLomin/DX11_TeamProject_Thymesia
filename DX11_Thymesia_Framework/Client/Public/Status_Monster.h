@@ -47,7 +47,7 @@ public:
 	FDelegate<>			CallBack_RecoeoryAlram;
 	FDelegate<>			CallBack_ReStart;
 	FDelegate<_float, _bool> CallBack_UpdateParryGauge;
-
+	FDelegate<>				Callback_Full_Recovery;
 	
 	FDelegate<>				Callback_NextPhase;
 
@@ -67,7 +67,7 @@ public:
 	virtual _bool   Is_Dead();
 	virtual void    Init_Status(const void* pArg);
 	virtual void    Add_Damage(const _float In_fDamage, ATTACK_OPTION eAttackOption) override;
-
+	virtual void    Full_Recovery() override;
 	virtual _float	Get_WhiteRatio() {
 		return m_tMonsterDesc.m_fCurrentHP_white / m_tMonsterDesc.m_fMaxHP_white
 			;
@@ -94,8 +94,15 @@ protected:
 	virtual void	Update_HitedTime(_float fTimeDelta);
 	void			Update_ParryRecoveryTime(_float fTimeDelta);
 
+	void			Init_StatusFromMonsterType(MONSTERTYPE eMonsterType);
+
+
 protected:
+	MONSTERTYPE		m_eMonsterType;
 	MONSTERDESC     m_tMonsterDesc;
+
+
+
 
 private:
 	void			Free();

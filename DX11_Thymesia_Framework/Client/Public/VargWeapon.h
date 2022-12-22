@@ -25,6 +25,7 @@ public:// CGameObject을(를) 통해 상속됨
     virtual HRESULT Start() override;
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
+    virtual void Thread_PreBeforeRender(_float fTimeDelta) override;
     virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
 public:

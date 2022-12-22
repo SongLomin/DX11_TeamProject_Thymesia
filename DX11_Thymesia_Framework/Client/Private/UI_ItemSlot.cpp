@@ -6,7 +6,7 @@
 #include "EasingComponent_Alpha.h"
 #include "Preset_ItemData.h"
 #include "Item.h"
-
+#include "EasingComponent_Transform.h"
 
 GAMECLASS_C(CUI_ItemSlot)
 CLONE_C(CUI_ItemSlot, CGameObject)
@@ -21,6 +21,9 @@ HRESULT CUI_ItemSlot::Initialize(void* pArg)
 
 	Create_ItemSlot();
 	Create_TextInfo();
+	SetUp_Component();
+
+
 	return S_OK;
 }
 
@@ -37,6 +40,13 @@ void CUI_ItemSlot::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	m_tTextInfo.vPosition.y = m_tUIDesc.fY;
+
+	if (m_pEasingTransform.lock()->Is_Lerping())
+	{
+		_float2	LerpedPos = m_pEasingTransform.lock()->Get_Lerp();
+		
+		Set_UIPosition(LerpedPos.x, LerpedPos.y);
+	}
 }
 
 void CUI_ItemSlot::LateTick(_float fTimeDelta)
@@ -64,13 +74,13 @@ void CUI_ItemSlot::Set_OriginCenterPosFromThisPos()
 	m_fOriginCenterPos.y = m_tUIDesc.fY;
 }
 
-void CUI_ItemSlot::Set_ScroolOffsetY(_float fOffsetY)
+void CUI_ItemSlot::Set_ScrollOffsetY(_float fOffsetY)
 {
 	m_fScrollOffsetY = fOffsetY;
 	Set_UIPosition(m_fOriginCenterPos.x, m_fOriginCenterPos.y + m_fScrollOffsetY, CUI::ALIGN_CENTER);
 }
 
-void CUI_ItemSlot::Add_ScroolOffsetY(_float fOffsetY)
+void CUI_ItemSlot::Add_ScrollOffsetY(_float fOffsetY)
 {
 	m_fScrollOffsetY += fOffsetY;
 	Set_UIPosition(m_fOriginCenterPos.x, m_fOriginCenterPos.y + m_fScrollOffsetY, CUI::ALIGN_CENTER);
@@ -106,6 +116,18 @@ void CUI_ItemSlot::UnBind_Item()
 	m_pBindedItem = weak_ptr<CItem>();
 }
 
+void CUI_ItemSlot::Set_RenderGroup(RENDERGROUP eRenderGroup)
+{
+	__super::Set_RenderGroup(eRenderGroup);
+
+
+	for (auto& elem : m_vecChildUI)
+	{
+		elem.lock()->Set_RenderGroup(eRenderGroup);
+	}
+	m_tTextInfo.eRenderGroup = m_eRenderGroup;
+}
+
 void CUI_ItemSlot::OnMouseOver()
 {
 	m_pHover.lock()->Get_Component<CEasingComponent_Alpha>().lock()->Set_Lerp(0.f, 1.f, 0.2f, EASING_TYPE::QUAD_IN, 
@@ -127,30 +149,45 @@ void CUI_ItemSlot::OnMouseOut()
 	Callback_OnMouseOut();
 }
 
+void CUI_ItemSlot::Lerp_Transform(_float2 vTargetPos, _float fLerpTime)
+{
+	_float2 vMyPos;
+
+	vMyPos.x = m_tUIDesc.fX;
+	vMyPos.y = m_tUIDesc.fY;
+
+	m_pEasingTransform.lock()->Set_Lerp(vMyPos, vTargetPos, fLerpTime, EASING_TYPE::QUAD_IN,
+		CEasingComponent::ONCE, true);
+
+
+}
+
 void CUI_ItemSlot::Create_ItemSlot()
 {
+	m_pIcon = ADD_STATIC_CUSTOMUI;
+	m_pIcon.lock()->Set_Size(64.f, 64.f);
+	m_pIcon.lock()->Set_Depth(0.30f);
+	m_pIcon.lock()->Set_Texture("None");
+
 	m_pMain = ADD_STATIC_CUSTOMUI;
 	m_pMain.lock()->Set_Size(66.f, 66.f);
 	m_pMain.lock()->Set_Texture("ItemSlot_Main");
-	m_pMain.lock()->Set_Depth(0.5);
+	m_pMain.lock()->Set_Depth(0.31);
 
 
 	m_pFrame = ADD_STATIC_CUSTOMUI;
 	m_pFrame.lock()->Set_Size(70.f, 70.f);
 	m_pFrame.lock()->Set_Texture("ItemSlot_Frame");
-	m_pFrame.lock()->Set_Depth(0.6);
+	m_pFrame.lock()->Set_Depth(0.32);
 
 	m_pHover = ADD_STATIC_CUSTOMUI;
 	m_pHover.lock()->Set_Size(213.f, 213.f);
 	m_pHover.lock()->Set_Texture("ItemSlot_Hover");
-	m_pHover.lock()->Set_Depth(0.7);
+	m_pHover.lock()->Set_Depth(0.33);
 	m_pHover.lock()->Set_AlphaColor(0.f);
 	m_pHover.lock()->Add_Component<CEasingComponent_Alpha>();
 
-	m_pIcon = ADD_STATIC_CUSTOMUI;
-	m_pIcon.lock()->Set_Size(64.f, 64.f);
-	m_pIcon.lock()->Set_Depth(0.4f);
-	m_pIcon.lock()->Set_Texture("None");
+
 
 	Add_Child(m_pMain);
 	Add_Child(m_pFrame);
@@ -179,4 +216,9 @@ void CUI_ItemSlot::Update_TextInfo()
 	m_tTextInfo.vPosition.x = m_tUIDesc.fX - (max((unsigned long long)0, (m_tTextInfo.szText.size() - 1) ) * 10.f);
 	m_tTextInfo.vPosition.y = m_tUIDesc.fY;
 
+}
+
+void CUI_ItemSlot::SetUp_Component()
+{
+	m_pEasingTransform = Add_Component<CEasingComponent_Transform>();
 }

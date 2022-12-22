@@ -13,7 +13,6 @@
 #include "ClientLevel.h"
 #include "GameManager.h"
 
-
 GAMECLASS_C(CInteraction_NextPoint);
 CLONE_C(CInteraction_NextPoint, CGameObject);
 
@@ -50,11 +49,6 @@ HRESULT CInteraction_NextPoint::Start()
 {
     __super::Start();
 
-    if (LEVEL::LEVEL_EDIT == m_CreatedLevel)
-    {
-        m_pColliderCom.lock()->Set_Enable(false);
-    }
-
     ZeroMemory(&m_tLightDesc, sizeof(LIGHTDESC));
 	m_tLightDesc.eActorType = LIGHTDESC::TYPE::TYPE_POINT;
 	m_tLightDesc.bEnable    = true;
@@ -66,8 +60,14 @@ HRESULT CInteraction_NextPoint::Start()
 	m_tLightDesc.vLightFlag = { 1.f, 1.f,    1.f, 1.f };
     m_tLightDesc.fIntensity = 1.f;
 	m_tLightDesc.fRange     = 1.5f;
+    m_tLightDesc.bEnable     = (LEVEL::LEVEL_EDIT == m_CreatedLevel);
 
 	m_tLightDesc = GAMEINSTANCE->Add_Light(m_tLightDesc);
+
+    Set_Enable((LEVEL::LEVEL_EDIT == m_CreatedLevel));   
+    m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+    m_pColliderCom.lock()->Set_Enable((LEVEL::LEVEL_EDIT == m_CreatedLevel));
+
 
     return S_OK;
 }
@@ -76,8 +76,8 @@ void CInteraction_NextPoint::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
-    m_vAddUVPos.x += fTimeDelta;
-    //m_vAddUVPos.y += fTimeDelta;
+    m_vAddUVPos.x += fTimeDelta * m_vAddSpeed.x;
+    m_vAddUVPos.y += fTimeDelta * m_vAddSpeed.y;
 }
 
 void CInteraction_NextPoint::LateTick(_float fTimeDelta)
@@ -109,6 +109,26 @@ void CInteraction_NextPoint::OnEventMessage(_uint iArg)
 {
     switch ((EVENT_TYPE)iArg)
     {
+        case EVENT_TYPE::ON_ENTER_SECTION:
+        {
+            Set_Enable(true);
+            m_pColliderCom.lock()->Set_Enable(true);
+
+            m_tLightDesc.bEnable = true;
+            GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+        }
+        break;
+
+        case EVENT_TYPE::ON_EXIT_SECTION:
+        {
+            Set_Enable(false);
+            m_pColliderCom.lock()->Set_Enable(false);
+
+            m_tLightDesc.bEnable = false;
+            GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+        }
+        break;
+
         case EVENT_TYPE::ON_EDIT_UDATE:
         {
             m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
@@ -137,7 +157,12 @@ void CInteraction_NextPoint::OnEventMessage(_uint iArg)
             if (ImGui::Combo("Level", &iSelect_Level, item_LevelTag, IM_ARRAYSIZE(item_LevelTag)))
                 m_eNextLevel = (LEVEL)iSelect_Level;
 
+            ImGui::InputInt("SectionIndex", &m_iSectionIndex);
+
+            ImGui::Separator();
+
             ImGui::InputInt("Tex", &m_iTexPass);
+            ImGui::InputFloat2("Speed", &m_vAddSpeed.x);
         }
         break;
     }
@@ -147,7 +172,8 @@ void CInteraction_NextPoint::Write_Json(json& Out_Json)
 {
     __super::Write_Json(Out_Json);
 
-    Out_Json["NextLevel"] = (_int)m_eNextLevel;
+    Out_Json["NextLevel"]    = (_int)m_eNextLevel;
+    Out_Json["SectionIndex"] = m_iSectionIndex;
 
     auto iter = Out_Json["Component"].find("Model");
     Out_Json["Component"].erase(iter);
@@ -159,7 +185,14 @@ void CInteraction_NextPoint::Load_FromJson(const json& In_Json)
 
     _int iLevel = In_Json["NextLevel"];
 
-    m_eNextLevel = (LEVEL)iLevel;
+    m_eNextLevel    = (LEVEL)iLevel;
+    m_iSectionIndex = In_Json["SectionIndex"];
+
+    if (0 <= m_iSectionIndex)
+    {
+        m_tLightDesc.bEnable = false;
+        GET_SINGLE(CGameManager)->Registration_Section(m_iSectionIndex, Weak_Cast<CGameObject>(m_this));
+    }
 }
 
 void CInteraction_NextPoint::Act_Interaction()
@@ -186,8 +219,17 @@ void CInteraction_NextPoint::SetUpColliderDesc()
 
     ColliderDesc.iLayer       = (_uint)COLLISION_LAYER::TRIGGER;
     ColliderDesc.vScale       = _float3(3.f, 0.f, 0.f);
-    ColliderDesc.vTranslation = _float3(0.f, 1.f, 0.f);
+    ColliderDesc.vTranslation = _float3(0.f, 1.5f, 0.f);
 
     m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
     m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+}
+
+void CInteraction_NextPoint::OnDestroy()
+{
+    GAMEINSTANCE->Remove_Light(m_tLightDesc.Get_LightIndex());
+}
+
+void CInteraction_NextPoint::Free()
+{
 }

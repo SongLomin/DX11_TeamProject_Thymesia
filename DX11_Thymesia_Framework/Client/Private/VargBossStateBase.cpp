@@ -115,6 +115,8 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 		
 		weak_ptr<CCharacter> pOtherCharacter = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner()).lock()->Get_ParentObject();
 		
+		weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+
 		if (!pAttackArea.lock())
 			return;
 
@@ -185,53 +187,33 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 			if (pStatus.lock()->Get_Desc().m_iLifeCount == 2)
 			{
 				pStatus.lock()->Minus_LifePoint(1);
-				m_pPhysXControllerCom.lock()->Set_Position(
-					XMVectorSet(41.5f,0.09f,40.05f ,1.f),
-					GAMEINSTANCE->Get_DeltaTime(),
-					Filters);
-				Get_OwnerCharacter().lock()->Get_Transform()->Set_Look2D(-vDoorOpenPlayerMatrix.r[2]);
-				//스턴스타트또는스턴루프에서 플레이어가 저함수 
 				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGEXECUTION);
 
-				_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
-				vOtherWorldMatrix.r[3] = XMVectorSet(41.5f, 0.09f, 40.05f, 1.f);
-				_matrix                    vResultOtherWorldMatrix;
-				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, 1.25f, 0.f));
+
+				_matrix vOtherWorldMatrix = pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix();
+				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, -1.4f, 0.f));
 				pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
 					vResultOtherWorldMatrix.r[3],
 					GAMEINSTANCE->Get_DeltaTime(),
 					Filters);
-				pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
+
+
 				Get_Owner().lock()->Get_Component<CVargBossState_Exe_Start>().lock()->Set_DieType(true);
 				Get_Owner().lock()->Get_Component<CVargBossState_Exe_NoDeadEnd>().lock()->Set_DeadChoice(true);
-				//_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
-				//vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, 2.2f, 0.f));
-				//pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
-				//	vResultOtherWorldMatrix.r[3],
-				//	GAMEINSTANCE->Get_DeltaTime(),
-				//	Filters);
-				//pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
-				//Get_Owner().lock()->Get_Component<CVargBossState_Exe_Start>().lock()->Set_DieType(true);				
-				//Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_Start>(0.05f);
 				
 			}
 			else
 			{
-				m_pPhysXControllerCom.lock()->Set_Position(
-					XMVectorSet(41.5f, 0.09f, 40.05f, 1.f),
-					GAMEINSTANCE->Get_DeltaTime(),
-					Filters);
-				Get_OwnerCharacter().lock()->Get_Transform()->Set_Look2D(-vDoorOpenPlayerMatrix.r[2]);
 				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGEXECUTION);
-				_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
-				vOtherWorldMatrix.r[3] = XMVectorSet(41.5f, 0.09f, 40.05f, 1.f);
-				_matrix                    vResultOtherWorldMatrix;
-				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, 1.25f, 0.f));
+
+
+				_matrix vOtherWorldMatrix = pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix();
+				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, -1.4f, 0.f));
 				pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
 					vResultOtherWorldMatrix.r[3],
 					GAMEINSTANCE->Get_DeltaTime(),
 					Filters);
-				pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
+
 				Get_Owner().lock()->Get_Component<CVargBossState_Exe_NoDeadEnd>().lock()->Set_DeadChoice(true);
 				Get_Owner().lock()->Get_Component<CVargBossState_Exe_Start>().lock()->Set_DieType(false);
 				

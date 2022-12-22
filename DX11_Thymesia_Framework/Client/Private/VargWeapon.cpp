@@ -21,12 +21,21 @@ HRESULT CVargWeapon::Initialize(void* pArg)
 	TRAIL_DESC TrailDesc;
 	ZeroMemory(&TrailDesc, sizeof(TRAIL_DESC));
 
+
+	m_pModelCom.lock()->Init_Model("Boss_VargWeapon", "", (_uint)TIMESCALE_LAYER::MONSTER, (_flag)FLAG_INDEX::_1);
+	m_iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
+
 	TrailDesc.iMaxCnt = 100;
 	TrailDesc.vPos_0 = _float3(0.f, 0.f, 0.f);
 	TrailDesc.vPos_1 = _float3(0.f, 3.f, 0.f);
 	m_pTrailDistortion = GAMEINSTANCE->Add_GameObject<CEffect_Trail_Distortion>(LEVEL_GAMEPLAY, &TrailDesc);
 	m_pTrailDiffuse = GAMEINSTANCE->Add_GameObject<CEffect_Trail>(LEVEL_GAMEPLAY, &TrailDesc);
 	
+#ifdef _USE_THREAD_
+	Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
+#endif // _USE_THREAD_
+
+
 	return S_OK;
 }
 
@@ -57,6 +66,16 @@ void CVargWeapon::Tick(_float fTimeDelta)
 void CVargWeapon::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+}
+
+void CVargWeapon::Thread_PreBeforeRender(_float fTimeDelta)
+{
+	__super::Thread_PreBeforeRender(fTimeDelta);
+
+
+	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
+	m_pModelCom.lock()->Update_NvCloth(pDeferredContext, m_pTransformCom.lock()->Get_WorldMatrix());
+	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
 }
 
 

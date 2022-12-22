@@ -92,7 +92,7 @@ HRESULT MODEL_DATA::Make_ModelData(const char* szFilePath, const MODEL_TYPE& In_
 
 MODEL_DATA::~MODEL_DATA()
 {
-    
+
 }
 
 void MODEL_DATA::Bake_Binary()
@@ -109,7 +109,7 @@ void MODEL_DATA::Bake_Binary()
     szBinFilePath += ".bin";
 
     ofstream os(szBinFilePath, ios::binary);
-    
+
 #ifdef _DEBUG
     //파일 생성 실패.
     assert(os.is_open());
@@ -138,7 +138,7 @@ void MODEL_DATA::Bake_Binary()
     {
         Animation_Datas[i]->Bake_Binary(os);
     }
-    
+
     os.close();
 }
 
@@ -168,7 +168,7 @@ void MODEL_DATA::Load_FromBinary()
     read_typed_data(is, iNumAnimations);
     read_typed_data(is, eModelType);
     read_typed_data(is, VertexInfo);
-    
+
     RootNode = make_shared<NODE_DATA>();
     RootNode->Load_FromBinary(is);
 
@@ -273,7 +273,7 @@ HRESULT MODEL_DATA::Load_FromAssimp(const _bool In_bAnimZero)
 
     RootNode = make_shared<NODE_DATA>();
     RootNode->Make_NodeData(pAiSceneModel->mRootNode);
-    
+
     iNumMaterials = pAiSceneModel->mNumMaterials;
 
     Material_Datas.reserve(iNumMaterials);
@@ -318,7 +318,7 @@ HRESULT MODEL_DATA::Load_FromAssimp(const _bool In_bAnimZero)
         shared_ptr<ANIMATION_DATA> AnimationData = make_shared<ANIMATION_DATA>();
         Animation_Datas.push_back(AnimationData);
 
-        
+
         Animation_Datas.back()->Make_AnimationData(pAiSceneModel->mAnimations[i]);
     }
 
@@ -328,7 +328,7 @@ HRESULT MODEL_DATA::Load_FromAssimp(const _bool In_bAnimZero)
     }
 
     Bake_Binary();
-    
+
     return S_OK;
 }
 

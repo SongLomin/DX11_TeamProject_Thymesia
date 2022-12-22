@@ -6,6 +6,7 @@
 #include "FadeMask.h"
 #include "DeveloperConsole_Manager.h"
 #include "Camera_Target.h"
+#include "UIManager.h"
 
 #ifdef _EFFECT_TOOL_
 #include "JoJoParticleShaderManager.h"
@@ -46,6 +47,8 @@ HRESULT CMainApp::Initialize()
 
 	CGameInstance::Create_Instance();
 	CGameManager::Create_Instance();
+	CUIManager::Create_Instance();
+
 #ifdef _EFFECT_TOOL_
 	CJoJoParticleShaderManager::Create_Instance();
 #endif // #ifdef _EFFECT_TOOL_

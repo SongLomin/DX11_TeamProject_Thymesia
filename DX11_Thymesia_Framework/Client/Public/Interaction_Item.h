@@ -45,6 +45,9 @@ private:
 private:
     weak_ptr<CCollider>     m_pColliderCom;
     ITEM_NAME               m_eItem = ITEM_NAME::ITEM_NAME_END;
+
+private:
+    void Free();
 };
 
 END

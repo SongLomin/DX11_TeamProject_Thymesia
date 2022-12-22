@@ -61,7 +61,6 @@ void CVargBossState_SPA_Catch::Tick(_float fTimeDelta)
 		GAMEINSTANCE->Get_GameObjects<CUI_BloodOverlay>(LEVEL_STATIC).front().lock()->
 			Call_Overlay(1.f);
 	}
-
 }
 
 void CVargBossState_SPA_Catch::LateTick(_float fTimeDelta)

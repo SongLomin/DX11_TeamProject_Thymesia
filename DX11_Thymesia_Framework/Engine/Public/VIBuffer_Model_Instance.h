@@ -51,7 +51,7 @@ private:
     void Create_MeshContainers();
     void Reset_Model();
 
-private:
+private: 
     ComPtr<ID3D11Buffer>        m_pVBInstance;
     vector<INSTANCE_MESH_DESC>    m_pVisibleInstanceDescs;
     //_int                        m_iCurrentVisibleIndex = 0;

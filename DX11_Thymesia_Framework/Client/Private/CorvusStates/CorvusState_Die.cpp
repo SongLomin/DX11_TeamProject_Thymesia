@@ -87,7 +87,7 @@ void CCorvusState_Die::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	
-
+	GET_SINGLE(CGameManager)->Release_Focus();
 
 	weak_ptr<CUI_Landing> pLanding = GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front();
 

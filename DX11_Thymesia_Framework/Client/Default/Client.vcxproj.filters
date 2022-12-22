@@ -824,9 +824,6 @@
     <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Interaction_CheckPoint.h">
-      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Interaction_Elevator.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClInclude>
@@ -1313,9 +1310,6 @@
       <Filter>05. Component\05. Skill\System</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ClientComponent_Utils.h" />
-    <ClInclude Include="..\Public\Skill_Base.h">
-      <Filter>05. Component\05. Skill\Base</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Skill_VargSword.h" />
     <ClInclude Include="..\Public\Requirement_Time.h">
       <Filter>07. Requirement\00. Requirement_Time</Filter>
@@ -1537,7 +1531,7 @@
     </ClInclude>
     <ClInclude Include="..\Public\Item.h" />
     <ClInclude Include="..\Public\Preset_ItemData.h">
-      <Filter>06. DataPreset\06.Preset_ItemData</Filter>
+      <Filter>06. DataPreset\06. Preset_ItemData</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Inventory.h" />
     <ClInclude Include="..\Public\UI_ItemInformation.h" />
@@ -1577,9 +1571,18 @@
     </ClInclude>
     <ClInclude Include="..\Public\UI_DamageFontPiece.h" />
     <ClInclude Include="..\Public\UI_BloodOverlay.h" />
-    <ClInclude Include="..\Public\UI_AppearEvent_Varg.h" />
     <ClInclude Include="..\Public\Interaction_NextPoint.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\InventorySorter.h" />
+    <ClInclude Include="..\Public\UIManager.h" />
+    <ClInclude Include="..\Public\UI_ShuffleIcon.h" />
+    <ClInclude Include="..\Public\UI_AppearEventVarg.h" />
+    <ClInclude Include="..\Public\Interaction_CheckPoint.h" />
+    <ClInclude Include="..\Public\Interaction_DeadSpot.h" />
+    <ClInclude Include="..\Public\Skill_base.h" />
+    <ClInclude Include="..\Public\Preset_NvClothMesh.h">
+      <Filter>06. DataPreset\07. Preset_NvClothMesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2449,9 +2452,6 @@
     <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Interaction_CheckPoint.cpp">
-      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Interaction_Elevator.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClCompile>
@@ -2629,7 +2629,6 @@
     <ClCompile Include="..\Private\Window_Shader_Dev.cpp">
       <Filter>97. Tool\01. DeveloperConsole\Windows\00. Shader</Filter>
     </ClCompile>
-    <ClCompile Include="..\UI_MonsterFocus.cpp" />
     <ClCompile Include="..\Private\Preset_UIDesc.cpp">
       <Filter>06. DataPreset\05. Preset_UIDesc</Filter>
     </ClCompile>
@@ -2807,9 +2806,6 @@
       <Filter>05. Component\05. Skill\System</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ClientComponent_Utils.cpp" />
-    <ClCompile Include="..\Skill_Base.cpp">
-      <Filter>05. Component\05. Skill\Base</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Skill_VargSword.cpp" />
     <ClCompile Include="..\Private\Requirement_Time.cpp">
       <Filter>07. Requirement\00. Requirement_Time</Filter>
@@ -3145,10 +3141,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\Item.cpp" />
     <ClCompile Include="..\Private\Preset_ItemData.cpp">
-      <Filter>06. DataPreset\06.Preset_ItemData</Filter>
+      <Filter>06. DataPreset\06. Preset_ItemData</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Inventory.cpp" />
-    <ClCompile Include="..\UI_ItemInformation.cpp" />
     <ClCompile Include="..\Private\UI_ItemPopup.cpp" />
     <ClCompile Include="..\Private\ItemPopup_Queue.cpp" />
     <ClCompile Include="..\Private\Window_Optimization_Dev.cpp">
@@ -3158,7 +3153,6 @@
       <Filter>97. Tool\01. DeveloperConsole\Windows\04. GameSystem</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\AIStateBase.cpp" />
-    <ClCompile Include="..\UI_InventoryConfirmWindow.cpp" />
     <ClCompile Include="..\Private\UI_InventoryConfirmWindowButton.cpp" />
     <ClCompile Include="..\Private\UI_Inventory.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\Inventory\Tap</Filter>
@@ -3193,10 +3187,29 @@
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\UI_DamageFontPiece.cpp" />
     <ClCompile Include="..\Private\UI_BloodOverlay.cpp" />
-    <ClCompile Include="..\Private\UI_AppearEvent_Varg.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
+    <ClCompile Include="..\Private\Skill_Base.cpp" />
+    <ClCompile Include="..\Private\Interaction_CheckPoint.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\Interaction_NextPoint.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\InventorySorter.cpp" />
+    <ClCompile Include="..\Private\UIManager.cpp" />
+    <ClCompile Include="..\Private\UI_ShuffleIcon.cpp" />
+    <ClCompile Include="..\Private\Skill_Base.cpp">
+      <Filter>05. Component\05. Skill\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_InventoryConfirmWindow.cpp" />
+    <ClCompile Include="..\Private\UI_ItemInformation.cpp" />
+    <ClCompile Include="..\Private\UI_MonsterFocus.cpp" />
+    <ClCompile Include="..\Private\UI_AppearEventVarg.cpp" />
+    <ClCompile Include="..\Private\Interaction_DeadSpot.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Item</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Preset_NvClothMesh.cpp">
+      <Filter>06. DataPreset\07. Preset_NvClothMesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -4693,9 +4706,6 @@
     <Filter Include="06. DataPreset\05. Preset_UIDesc">
       <UniqueIdentifier>{71809176-0df8-42ac-bee8-0ce093e9a2b7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="06. DataPreset\06.Preset_ItemData">
-      <UniqueIdentifier>{26aa9d3c-8930-48c4-95d3-f68c4ebb7b70}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\06. Inventory">
       <UniqueIdentifier>{cdf660ae-93ea-4db2-b731-7a720246b9ad}</UniqueIdentifier>
     </Filter>
@@ -4743,6 +4753,15 @@
     </Filter>
     <Filter Include="AppearEvent">
       <UniqueIdentifier>{d3a11a7c-0354-46b5-b914-4587764414bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96. Managers_Client\01. UIManager">
+      <UniqueIdentifier>{084c0c25-d42b-4b10-8f4e-30f61fc9effd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. DataPreset\06. Preset_ItemData">
+      <UniqueIdentifier>{26aa9d3c-8930-48c4-95d3-f68c4ebb7b70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. DataPreset\07. Preset_NvClothMesh">
+      <UniqueIdentifier>{5d34804a-c93d-4e31-ba18-1ff1280567ec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

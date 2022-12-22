@@ -1,9 +1,11 @@
 #pragma once
 // #define _EFFECT_TOOL_
 
+
 #include "Client_Structs.h"
 #include "Client_Presets.h"
 #include "Client_Enum.h"
+#include "NvCloth_Structs.h"
 
 //////////////// DEBUG MODE DEFINES ////////////////
 #ifdef _DEBUG
@@ -16,7 +18,7 @@
 #define _RENDER_FPS_
 #define _Actor_Culling_
 #define _INSTANCE_CULLING_
-// #define _LOAD_CAPTURED_RESOURCE_
+//#define _LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
 // #define _CLOTH_
@@ -106,6 +108,7 @@
 // #define _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
 #define _JOJO_EFFECTS_
+#define _VARG_EFFECT_
 #pragma endregion // Effects
 
 #endif // NDEBUG

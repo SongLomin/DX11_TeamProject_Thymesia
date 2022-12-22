@@ -112,7 +112,6 @@ void CGameManager::Register_Layer(const OBJECT_LAYER& In_Layer, weak_ptr<CGameOb
 
 void CGameManager::Remove_Layer(const OBJECT_LAYER& In_Layer, weak_ptr<CGameObject> In_GameObject)
 {
-
 	for (auto iter = m_pLayers[(_uint)In_Layer].begin(); iter != m_pLayers[(_uint)In_Layer].end();)
 	{
 		if ((*iter).lock()->Get_GameObjectIndex() == In_GameObject.lock()->Get_GameObjectIndex())
@@ -595,6 +594,48 @@ HRESULT CGameManager::Respawn_LastCheckPoint(_float4* Out_RespawnPos)
 
 	XMStoreFloat4(Out_RespawnPos, m_pCurSavePoint.lock()->Get_Transform()->Get_State(CTransform::STATE_TRANSLATION));
 
+	for (auto& elem : m_SectionObejects)
+	{
+		for (auto& elem_obj : elem.second)
+			elem_obj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_RESET_OBJ);
+	}
+
+	for (auto& elem : m_SectionLights)
+	{
+		for (auto& elem_obj : elem.second)
+			elem_obj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_RESET_OBJ);
+	}
+
+	for (auto& elem : m_SectionEventers)
+	{
+		for (auto& elem_obj : elem.second)
+			elem_obj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_RESET_OBJ);
+	}
+
+	auto iter_find = m_SectionObejects.find(m_iPreEventSection);
+
+	if (iter_find != m_SectionObejects.end())
+	{
+		for (auto& elem_obj : iter_find->second)
+			elem_obj.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_ENTER_SECTION);
+	}
+
+	_vector vPlayerDeadSpotPos = m_pCurrentPlayer.lock()->Get_Transform().get()->Get_State(CTransform::STATE_TRANSLATION);
+	_uint   iDropMemory        = m_pCurrentPlayer.lock()->Get_Component<CStatus_Player>().lock()->Get_Desc().m_iMemory;
+
+	m_pCurrentPlayer.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_RESET_OBJ);
+
+	// TODO : 나중에 status 컴포넌트에 Full_Recovery 가상화되면 해당 클래스에서 하기
+	// Begine
+	m_pCurrentPlayer.lock()->Get_Component<CStatus_Player>().lock()->Full_Recovery();
+	m_pCurrentPlayer.lock()->Get_Component<CStatus_Player>().lock()->Set_Memory(0);
+	// End
+
+	if (!m_pDeadSpot.lock())
+		m_pDeadSpot = GAMEINSTANCE->Get_GameObjects<CInteraction_DeadSpot>(LEVEL::LEVEL_STATIC).front();
+
+	m_pDeadSpot.lock()->Init_DeadSpot(vPlayerDeadSpotPos, iDropMemory);
+
 	return S_OK;
 }
 
@@ -726,6 +767,24 @@ void CGameManager::Set_PlayerStatusDesc(void* pArg)
 	memcpy(&m_tPlayerDesc, pArg, sizeof(CStatus_Player::PLAYERDESC));
 }
 
+void  CGameManager::Registration_SectionEvent(_uint In_iSection, weak_ptr<CSection_Eventer> In_pSectionEvent)
+{
+	auto iter_find = m_SectionEventers.find(In_iSection);
+
+	if (iter_find == m_SectionEventers.end())
+	{
+		list<weak_ptr<CSection_Eventer>> ObjList;
+		ObjList.push_back(In_pSectionEvent);
+
+		m_SectionEventers[In_iSection] = ObjList;
+	}
+	else
+	{
+		iter_find->second.push_back(In_pSectionEvent);
+	}
+
+}
+
 void CGameManager::Registration_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj)
 {
 	auto iter_find = m_SectionObejects.find(In_iSection);
@@ -749,6 +808,8 @@ void CGameManager::Activate_Section(_uint In_iSection, EVENT_TYPE In_eEventType)
 
 	if (iter_find == m_SectionObejects.end())
 		return;
+
+	m_iPreEventSection = In_iSection;
 
 	for (auto& elem : iter_find->second)
 		elem.lock()->OnEventMessage((_uint)In_eEventType);
@@ -805,6 +866,7 @@ void CGameManager::OnLevelExit()
 {
 	m_SectionObejects.clear();
 	m_SectionLights.clear();
+	m_SectionEventers.clear();
 
 	m_StoredEffects.clear();
 }

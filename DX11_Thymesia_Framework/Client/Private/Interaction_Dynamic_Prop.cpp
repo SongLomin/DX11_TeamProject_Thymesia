@@ -42,3 +42,7 @@ HRESULT CInteraction_Dynamic_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 
     return S_OK;
 }
+
+void CInteraction_Dynamic_Prop::Free()
+{
+}

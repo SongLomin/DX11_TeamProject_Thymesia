@@ -64,16 +64,21 @@ public:
 	void Set_NvCloth();
 
 public: /* For. NvCloth */
-	void Update_NvClothVertices(ID3D11DeviceContext* pDeviceContext);
+	void Update_NvClothVertices(ID3D11DeviceContext* pDeviceContext, _fmatrix In_WorldMatrix);
 
 private:
 	void Update_NvClothVertices_NonAnim(ID3D11DeviceContext* pDeviceContext);
 	void Update_NvClothVertices_Anim(ID3D11DeviceContext* pDeviceContext);
 
 private:
-	HRESULT Ready_VertexBuffer_NonAnim(shared_ptr<MESH_DATA> tMeshData, const _bool In_bNvCloth);
-	HRESULT Ready_VertexBuffer_Anim(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CModel> pModel, const _bool In_bNvCloth);
+	HRESULT Ready_VertexBuffer_NonAnim(shared_ptr<MESH_DATA> tMeshData);
+	HRESULT Ready_VertexBuffer_NonAnim_NvCloth(shared_ptr<MESH_DATA> tMeshData);
+	HRESULT Ready_VertexBuffer_Anim(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CModel> pModel);
+	HRESULT Ready_VertexBuffer_Anim_NvCloth(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CModel> pModel);
 	
+	HRESULT Ready_IndexBuffer(shared_ptr<MESH_DATA> tMeshData);
+	HRESULT Ready_IndexBuffer_NonAnim_NvCloth(shared_ptr<MESH_DATA> tMeshData);
+	HRESULT Ready_IndexBuffer_Anim_NvCloth(shared_ptr<MESH_DATA> tMeshData);
 
 private:
 	string								m_szName;
@@ -90,12 +95,20 @@ private:
 
 	vector<weak_ptr<CBoneNode>>			m_pBoneNodes;
 
+	_float4x4							m_ModelTransform;
+	_bool								m_bSimulation = false;
+
+
 private: /* For. NvCloth */
 	Fabric*								m_pFabric{};
 	Cloth*								m_pCloth{};
 	PhaseConfig*						m_pPhases{};
-	PxVec3*								m_pVertices{};
-	FACEINDICES32*						m_pIndices{};
+	//PxVec3*								m_pVertices{};
+	vector<_float3>						m_pPosVertices;
+	vector<VTXMODEL>					m_pModelVertices;
+	vector<VTXANIM>						m_pAnimVertices;
+	vector<FACEINDICES32>				m_pIndices;
+	vector<_float>						m_pInvMasses;
 	vector<PxVec4>						m_pParticles;
 
 public:

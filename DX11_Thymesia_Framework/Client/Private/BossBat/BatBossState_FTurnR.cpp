@@ -31,7 +31,7 @@ void CBatBossState_FTurnR::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|FTURNR");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_FTurn_R");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_FTurnR::Call_AnimationEnd, this);
 }
@@ -41,15 +41,15 @@ void CBatBossState_FTurnR::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);
 
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
 
 	PxControllerFilters Filters = Filters;
-	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+	m_pPhysXControllerCom.lock()->MoveWithRotation(-vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 
 
 	if (m_bTurnCheck)
 	{
-		_float fTurnValue = 3.14f / 2.5f;
+		_float fTurnValue = 3.14f / 0.866f;
 
 		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * 2.f);
 	}
@@ -74,9 +74,9 @@ void CBatBossState_FTurnR::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+	//m_pPhysXControllerCom.lock()->Enable_Gravity(true);
 
-	m_bTurnCheck = true;
+	m_bTurnCheck = false;
 
 	Rotation_TargetToLookDir();
 
@@ -127,9 +127,15 @@ _bool CBatBossState_FTurnR::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 150)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 48)
 	{
-		
+		m_bTurnCheck = true;
+	}
+
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 116)
+	{
+
 		if (ComputeAngleWithPlayer() > 0.97f && m_bTurnCheck)
 		{
 			Rotation_TargetToLookDir();

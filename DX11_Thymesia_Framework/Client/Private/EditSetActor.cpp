@@ -380,7 +380,7 @@ void CEditSetActor::View_Picking_List()
 			{
 				const bool is_selected = (m_iPickingIndex == i);
 
-				string szTag = "( " + to_string(i) + " ) " + string("  Coliider");
+				string szTag = "( " + to_string(i) + " ) " + iter_collider->second[i].TypeName;
 
 				if (ImGui::Selectable(szTag.c_str(), is_selected))
 				{

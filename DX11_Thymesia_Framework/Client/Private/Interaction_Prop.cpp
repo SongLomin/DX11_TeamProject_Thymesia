@@ -173,4 +173,5 @@ HRESULT CInteraction_Prop::SetUp_ShaderResource(ID3D11DeviceContext* pDeviceCont
 
 void CInteraction_Prop::Free()
 {
+    __super::Free();
 }

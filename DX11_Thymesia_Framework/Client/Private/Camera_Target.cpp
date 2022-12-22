@@ -525,6 +525,9 @@ void CCamera_Target::Update_Bone()
 
 void CCamera_Target::Update_PhysXCollider(_float fTimeDelta)
 {
+	if (!m_pCurrentPlayerTransformCom.lock())
+		return;
+
 	PxControllerFilters Filters;
 
 	m_pPhysXCameraControllerCom.lock()->Update_Ray(m_pCurrentPlayerTransformCom);

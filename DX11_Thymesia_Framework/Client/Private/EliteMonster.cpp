@@ -48,6 +48,8 @@ HRESULT CEliteMonster::Start()
     __super::Start();
 
     Bind_HPBar();
+
+
     //
 // m_pHPBar = GAMEINSTANCE->Add_GameObject<CMonsterHPBar_Boss>(LEVEL_STATIC);
 // m_pHPBar.lock()->Set_Owner(Weak_Cast<CMonster>(m_this));
