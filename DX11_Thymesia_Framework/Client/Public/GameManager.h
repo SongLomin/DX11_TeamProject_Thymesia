@@ -259,6 +259,7 @@ private:
     SECTION_LIGHT                       m_SectionLights;
     weak_ptr<CInteraction_CheckPoint>   m_pCurSavePoint;
     weak_ptr<CInteraction_DeadSpot>     m_pDeadSpot;
+    _uint                               m_iPreEventSection;
 
 private:
     _int                                m_iMonsterCount   = 0;

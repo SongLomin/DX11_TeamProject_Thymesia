@@ -77,7 +77,7 @@ void CInteraction_Item::OnEventMessage(_uint iArg)
 
         case EVENT_TYPE::ON_EDITDRAW:
         {
-			static const char* szItemList[] =
+            static const char* szItemList[] = 
             {
                 "BASIL",
                 "THYME",
