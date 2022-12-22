@@ -90,7 +90,7 @@ _bool CVargBossState_Stun_Loop::Check_AndChangeNextState()
 		return false;
 
 
-	if (GET_SINGLE(CGameManager)->Get_AnimaionChange())
+	if (Get_OwnerMonster()->Get_BossExecutionStartOnOff())
 	{
 		Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_NoDeadEnd>(0.05f);
 		return true;

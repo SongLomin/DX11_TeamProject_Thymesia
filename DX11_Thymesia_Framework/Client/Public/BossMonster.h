@@ -49,7 +49,7 @@ public:
 
 protected:
     virtual void Bind_HPBar();
-
+    virtual void Release_Monster();
 protected:
     virtual void SetUp_ShaderResource() override;
 

@@ -217,6 +217,20 @@ _bool CBossStateBase::Rotation_TargetToLookDir()
 	return true;
 }
 
+_bool CBossStateBase::Rotation_TargetToLookRevirseDir()
+{
+	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+
+	if (!pCurrentPlayer.lock().get())
+		return false;
+
+	_vector CharacterPosition = pCurrentPlayer.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
+
+	m_pTransformCom.lock()->LookAt2D(-CharacterPosition);
+
+	return true;
+}
+
 _bool CBossStateBase::JumpLookOffsetLookAt()
 {
 	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();

@@ -121,13 +121,18 @@ _bool CCorvusState_Execution_R_R::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex()== 27)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 27)
 	{
 		Get_OwnerPlayer()->Change_State<CCorvusState_Varg_Execution>();
-		GET_SINGLE(CGameManager)->Set_AnimaionChange(true);
+
+		list<weak_ptr <CGameObject>> pBossMonsters = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::BOSSMONSTER);
+
+		for (auto& elem : pBossMonsters)
+		{
+			elem.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_BOSS_EXECUTIONSTART);
+		}
 		return true;
 	}
-
 
 	return false;
 }

@@ -31,7 +31,7 @@ void CBatBossState_Idle::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|IDLE");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_Idle");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Idle::Call_AnimationEnd, this);
 }
@@ -121,7 +121,7 @@ _bool CBatBossState_Idle::Check_AndChangeNextState()
 
 	_float fPToMDistance = Get_DistanceWithPlayer();
 
-	if(fPToMDistance <= 10.f)
+	if(fPToMDistance <= 15.f)
 	Get_OwnerCharacter().lock()->Change_State<CBatBossState_FTurnL>(0.05f);
 
 

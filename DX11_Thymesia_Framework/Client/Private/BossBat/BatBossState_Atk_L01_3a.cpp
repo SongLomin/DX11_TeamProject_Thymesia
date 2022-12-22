@@ -31,7 +31,7 @@ void CBatBossState_Atk_L01_3a::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|R_01_1");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_AttackL_01_3a");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Atk_L01_3a::Call_AnimationEnd, this);
 }
