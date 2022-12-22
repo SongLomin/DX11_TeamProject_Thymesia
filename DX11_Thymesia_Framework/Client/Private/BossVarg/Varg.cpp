@@ -311,6 +311,20 @@ void CVarg::OnEventMessage(_uint iArg)
 	{
 		Set_Enable(true);
 	}
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		PxControllerFilters Filters;
+		m_pPhysXControllerCom.lock()->Set_Position(XMLoadFloat4(&m_tLinkStateDesc.m_fStartPositon), 0.f, Filters);
+
+		// TODO : UI 리셋되게 하기
+
+		Change_State<CVargBossState_IdleGeneral>();
+		Set_Enable(false);
+		
+		m_pStatus.lock()->Full_Recovery();
+
+	}
 }
 
 void CVarg::OnEnable(void* _Arg)

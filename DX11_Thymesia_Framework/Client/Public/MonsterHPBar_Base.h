@@ -45,7 +45,7 @@ public:
 	void			Call_Disable();
 	void			Call_Stun();
 	void			Call_Restart();
-
+	virtual void	Call_Full_Recovery();
 public:
 	virtual void OnEnable(void* pArg) override;
 	virtual void OnDisable() override;

@@ -39,6 +39,9 @@ private:
 
 private:
     weak_ptr<CCollider>     m_pColliderCom;
+
+private:
+    void Free();
 };
 
 END

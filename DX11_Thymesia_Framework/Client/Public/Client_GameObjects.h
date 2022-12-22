@@ -27,6 +27,7 @@
 #include "Interaction_Door.h"
 #include "Interaction_Note.h"
 #include "Interaction_Item.h"
+#include "Interaction_DeadSpot.h"
 #include "Section_Eventer.h"
 #include "Water.h"
 

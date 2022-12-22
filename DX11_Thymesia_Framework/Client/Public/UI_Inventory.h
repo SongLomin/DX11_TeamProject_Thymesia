@@ -9,9 +9,13 @@ class CCustomUI;
 class CUI_ItemSlot;
 class CUI_Scroll;
 class CItem;
+class CInventorySorter;
+
+
 
 class CUI_Inventory : public CUI_Container
 {
+public:
     enum class INVENTORY_SORTTYPE
     {
         SORT_BY_TYPE,
@@ -29,6 +33,7 @@ public:
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
 
+
 private:
     void                    Define_Variable();
     void                    Create_InventoryUI();
@@ -38,6 +43,13 @@ private:
     void                    Create_SortImage();
 
 private:
+    void                    Set_ItemSlotPosFromWidthHeightIndex(weak_ptr<CUI_ItemSlot> pItemSlot, _uint iWidthIndex, _uint iHeightIndex);
+
+
+    void                    Start_AnimationSorting();
+    void                    Start_AnimationPreSorting(vector<weak_ptr<CUI_ItemSlot>>& vecItemSlot, INVENTORY_SORTTYPE eSortType);
+
+
     void                    Update_KeyInput(_float fTimeDelta);
     void                    Update_ItemSlotOffset();
 
@@ -45,8 +57,12 @@ private:
     void                    Update_SortImages(INVENTORY_SORTTYPE eCurrentSortType);
     void                    Update_TextInfoToInventorySize(_uint iCurrentInventorySize);
 
-
     void                    Sort_ItemList(INVENTORY_SORTTYPE eSortType);
+
+private:
+    void                    Start_Shuffle();               
+    void                    End_Shuffle();
+
 
 private:
     virtual void            OnEnable(void* pArg) override;
@@ -58,7 +74,6 @@ public:
     FDelegate<> Callback_OnMouseOut;
 
 private:
-    
     void                    Call_OnWheelMove(_float fAmount);
     void                    Call_OnMouseOver(weak_ptr<CItem>   pItem);
     void                    Call_OnMouseOut();
@@ -69,9 +84,9 @@ private:
     int     m_iHeight;
 
 private:
-    _float2                 m_fItemSlotStart;//Start to LeftTop
-    _float                  m_fOffset;
-
+    _float2                 m_fItemSlotStart;
+    _float                  m_fSlotOffset;
+   
 
     _float                 m_fScrollOffsetY = 0;
     _float                 m_fScroolSpeed = 300.f;
@@ -92,6 +107,10 @@ private:
     TEXTINFO                        m_tTextInfoQuantity;
     _float                          m_fFontSize;
 
+    shared_ptr<CInventorySorter>    m_pInventorySorter;
+
+private:
+    _bool                            m_IsAnimating = false;
 //Free
 private:
 	void		Free() {};

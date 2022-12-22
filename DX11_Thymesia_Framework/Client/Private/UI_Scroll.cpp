@@ -162,7 +162,14 @@ void CUI_Scroll::ScrollingToDrag()
 
 }
 
-
+void CUI_Scroll::Reset_Scroll()
+{
+    _float m_pHeadBottom = m_pDecorationHead.lock()->Get_Point(UI_POINT::BOTTOM).y;
+    m_pScrollTrack.lock()->Set_Y(m_pHeadBottom + (m_pScrollTrack.lock()->Get_UIDESC().fSizeY * 0.5f));
+    CheckTrackOverHeadOrTail();
+    CalcScrolledTrackToMaxSize();
+    Callback_OnWheelMove(m_fMaxSize * m_fProgressRatio);
+}
 
 void CUI_Scroll::SetUp_ScrollFromLeftTop(const _float fX, const _float fY, const _float fScrollSize, const _float fStartSize, const _float fMaxSize)
 {

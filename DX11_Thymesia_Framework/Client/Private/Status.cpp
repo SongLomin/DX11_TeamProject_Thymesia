@@ -59,6 +59,10 @@ void CStatus::Set_Desc(void* In_Desc)
 {
 }
 
+void CStatus::Full_Recovery()
+{
+}
+
 
 void CStatus::Free()
 {

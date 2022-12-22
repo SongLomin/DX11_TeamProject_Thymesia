@@ -114,6 +114,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_CheckPoint>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_NextPoint>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Elevator>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_DeadSpot>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Door>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Note>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Item>();
@@ -222,6 +223,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter%d.dds"));
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
+	//D:\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Bin\Resources\Meshes\Map_Lv1_Circus\Binary
+	GAMEINSTANCE->Load_Model("P_DropTombstone01", "../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/P_DropTombstone01.bin", MODEL_TYPE::NONANIM, XMMatrixIdentity());
+	GAMEINSTANCE->Add_SingleGameObject<CInteraction_DeadSpot>(LEVEL::LEVEL_STATIC);
 
 	m_isFinished = true;
 
@@ -1297,6 +1301,13 @@ void CLoader::Load_UIResource()
 	//BloodOverlay
 	GAMEINSTANCE->Load_Textures(("BloodOverlay_Mask"), TEXT("../Bin/Resources/Textures/UI/BloodOverlay/Mask.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("BloodOverlay"), TEXT("../Bin/Resources/Textures/UI/BloodOverlay/Texture.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+	//VargAppear
+	GAMEINSTANCE->Load_Textures(("Varg_Appear_SliceTop"), TEXT("../Bin/Resources/Textures/UI/AppearEvent/Varg/Slice_Top.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Varg_Appear_SliceBottom"), TEXT("../Bin/Resources/Textures/UI/AppearEvent/Varg/Slice_Bottom.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("Varg_Appear_SliceTop_BG"), TEXT("../Bin/Resources/Textures/UI/AppearEvent/Varg/Slice_Top_BG.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Varg_Appear_SliceBottom_BG"), TEXT("../Bin/Resources/Textures/UI/AppearEvent/Varg/Slice_Bottom_BG.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
 #endif // _JOJO_EFFECT_TOOL_

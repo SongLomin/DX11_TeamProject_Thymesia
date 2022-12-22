@@ -19,7 +19,7 @@ public:
     virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override; 
 
 private:
-
+    void Free();
 };
 
 END

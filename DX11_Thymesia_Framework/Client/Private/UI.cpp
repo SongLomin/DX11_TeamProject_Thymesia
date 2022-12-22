@@ -318,6 +318,16 @@ _float CUI::Get_Y()
 	return m_tUIDesc.fY;
 }
 
+_float2 CUI::GetPos()
+{
+	_float2 fPos;
+
+	fPos.x = m_tUIDesc.fX;
+	fPos.y = m_tUIDesc.fY;
+
+	return fPos;
+}
+
 void CUI::OnEnable(void* _Arg)
 {
 	__super::OnEnable(_Arg);

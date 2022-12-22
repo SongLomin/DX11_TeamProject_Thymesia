@@ -42,6 +42,9 @@ public:
     virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
 public:
+    _int  Get_SectionIndex() { return m_iSectionIndex; }
+
+public:
     virtual void OnEventMessage(_uint iArg) override;
 
     virtual void Write_Json(json& Out_Json) override;

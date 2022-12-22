@@ -368,9 +368,14 @@ void CNorMonster::OnEventMessage(_uint iArg)
 		Change_State<CNorMonState_GroggyStart>();
 	}
 
-	if ((_uint)EVENT_TYPE::ON_ENTER_SECTION == iArg)
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
 	{
-		Set_Enable(true);
+		PxControllerFilters Filters;
+		m_pPhysXControllerCom.lock()->Set_Position(XMLoadFloat4(&m_tLinkStateDesc.m_fStartPositon), 0.f, Filters);
+
+		Change_State<CNorMonState_Idle>();
+		Set_Enable(false);
+		m_pStatus.lock()->Full_Recovery();
 	}
 }
 

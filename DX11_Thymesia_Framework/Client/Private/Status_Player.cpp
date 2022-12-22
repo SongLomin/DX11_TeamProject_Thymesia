@@ -120,6 +120,13 @@ void CStatus_Player::Add_Memory(_uint iRootedMemory)
     Callback_RootingMemory(m_tDesc.m_iMemory);
 }
 
+void CStatus_Player::Set_Memory(_uint iMemory)
+{
+    m_tDesc.m_iMemory = iMemory;
+
+    Callback_RootingMemory(m_tDesc.m_iMemory);
+}
+
 void CStatus_Player::Consumed_Mana(_float fRequireMana)
 {
     m_tDesc.m_fCurrentMP -= fRequireMana;

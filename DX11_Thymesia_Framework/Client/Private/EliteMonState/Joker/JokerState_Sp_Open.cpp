@@ -66,6 +66,9 @@ void CJokerState_Sp_Open::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	GET_SINGLE(CGameManager)->Store_EffectIndex("Joker_Passive", GET_SINGLE(CGameManager)->Use_EffectGroup("Joker_Passive", m_pTransformCom, _uint(TIMESCALE_LAYER::MONSTER)));
 
+
+	m_bCloseStart = false;
+
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Idle -> OnStateStart" << endl;
 #endif // _DEBUG_COUT_
@@ -105,7 +108,7 @@ _bool CJokerState_Sp_Open::Check_AndChangeNextState()
 
 	_float fPToMDistance = Get_DistanceWithPlayer();
 
-	if (fPToMDistance <= 15.f)
+	if (fPToMDistance <= 10.f)
 		m_bCloseStart = true;
 
 	return false;

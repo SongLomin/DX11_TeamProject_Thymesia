@@ -413,8 +413,8 @@ PS_OUT PS_MAIN_NORMAL_MOVE_UV(PS_IN_NORMAL In)
     if (0.1f >= vTexNoise.r)
         discard;
 
-    Out.vDiffuse *= vTexNoise;
-    Out.vDiffuse.a = vTexNoise.r;
+    Out.vDiffuse   *= vTexNoise;
+    Out.vDiffuse.a  = 1.f;
 
     clip(Out.vDiffuse.a - 0.1f);
     /* 0 ~ 1 */
@@ -427,12 +427,10 @@ PS_OUT PS_MAIN_NORMAL_MOVE_UV(PS_IN_NORMAL In)
 
     vPixelNormal = mul(vPixelNormal, WorldMatrix);
 
-    Out.vNormal     = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
-    Out.vDepth      = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
-    Out.vShaderFlag = g_vShaderFlag;
-    Out.vORM        = 0;
-
-    Out.vDiffuse.a = 1.f;
+    Out.vNormal       = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
+    Out.vDepth        = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vShaderFlag   = g_vShaderFlag;
+    Out.vORM          = 0;
 
     Out.vExtractBloom = 0;
 

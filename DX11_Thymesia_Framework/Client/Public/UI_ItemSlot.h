@@ -6,6 +6,8 @@ BEGIN(Client)
 
 class CustomUI;
 class CItem;
+class CEasingComponent_Transform;
+
 
 class CUI_ItemSlot : public CUI_Button_Base
 {
@@ -24,8 +26,8 @@ public:
 	virtual void    Set_UIPosition(const _float fX, const _float fY, UI_ALIGN_TYPE eType = UI_ALIGN_TYPE::ALIGN_CENTER) override;
 	virtual void	Set_OriginCenterPosFromThisPos();
 
-	void			Set_ScroolOffsetY(_float fOffsetY);
-	void			Add_ScroolOffsetY(_float fOffsetY);
+	void			Set_ScrollOffsetY(_float fOffsetY);
+	void			Add_ScrollOffsetY(_float fOffsetY);
 	void			ResetPos();
 	
 	weak_ptr<CItem>	Get_BindItem() { return m_pBindedItem; }
@@ -33,16 +35,21 @@ public:
 	void			Bind_Item(weak_ptr<CItem> pItem);
 	_bool			Is_Bind();
 	void			UnBind_Item();
+
+
+	virtual void	Set_RenderGroup(RENDERGROUP eRenderGroup) override;
+
 public:
 	virtual void	OnMouseOver() override;
 	virtual void	OnMouseOut() override;
 
+public:
+	virtual void	Lerp_Transform(_float2	vTargetPos, _float fLerpTime);
 
 
 public:
 	FDelegate<weak_ptr<CItem>>	Callback_OnMouseOver;
 	FDelegate<>	Callback_OnMouseOut;
-
 
 private:
 	void			Create_ItemSlot();
@@ -51,12 +58,17 @@ private:
 private:
 	_bool			Check_IsInInventoryFrame();
 	void			Update_TextInfo();
+	virtual void	SetUp_Component() override;
 //private아이템 바인딩 해줘야함.
 
 
 private:
 	_float					m_fScrollOffsetY = 0.f;
 	_float2					m_fOriginCenterPos = { 0.f,0.f };
+
+private:
+	weak_ptr<CEasingComponent_Transform>	m_pEasingTransform;
+
 private:
 	weak_ptr<CCustomUI>		m_pMain;
 	weak_ptr<CCustomUI>		m_pFrame;

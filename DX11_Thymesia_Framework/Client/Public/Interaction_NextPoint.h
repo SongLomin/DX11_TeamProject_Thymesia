@@ -40,16 +40,21 @@ private:
 private:
     void    SetUpColliderDesc();
 
-
 private:
     weak_ptr<CCollider>     m_pColliderCom;
     weak_ptr<CTexture>      m_pTextureCom;
+    
+    _int                    m_iTexPass      = 882;
+    _float2                 m_vAddSpeed     = { -0.5f, 0.5f };
 
-    _int m_iTexPass = 366;
-
-    LEVEL                   m_eNextLevel = LEVEL::LEVEL_END;
+    LEVEL                   m_eNextLevel    = LEVEL::LEVEL_END;
+    _int                    m_iSectionIndex = 1000;
     _float2                 m_vAddUVPos     = { 0.f, 0.f };
     LIGHTDESC               m_tLightDesc;
+
+private:
+    virtual void OnDestroy() override;
+    void Free();
 };
 
 END

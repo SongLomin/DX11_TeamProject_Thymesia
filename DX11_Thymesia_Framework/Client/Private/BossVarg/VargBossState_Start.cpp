@@ -114,7 +114,7 @@ void CVargBossState_Start::Call_AnimationEnd()
 	weak_ptr<CUI_ScriptQueue> pScriptQeuue = GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL_STATIC).front();
 	pScriptQeuue.lock()->Call_SetScript_Tutorial_Varg();
 	Weak_StaticCast<CBossMonster>(m_pOwner).lock()->Get_HPBar().lock()->Set_Enable(true);
-	Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkF>(0.05f);
+	Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkF>(1.f);
 }
  
 void CVargBossState_Start::OnDestroy()
@@ -131,10 +131,10 @@ _bool CVargBossState_Start::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 925)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 1210)
 	{
 		weak_ptr<CUI_ScriptQueue> pScriptQeuue = GAMEINSTANCE->Get_GameObjects<CUI_ScriptQueue>(LEVEL_STATIC).front();
-		pScriptQeuue.lock()->Call_SetScript_Tutorial_Varg_Appear();
+		//pScriptQeuue.lock()->Call_SetScript_Tutorial_Varg_Appear();
 	}
 
 	return false;

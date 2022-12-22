@@ -49,6 +49,8 @@ HRESULT CInteraction_Door::Start()
 {
     __super::Start();
 
+    XMStoreFloat4x4(&m_FirstMatrix, m_pTransformCom.lock()->Get_WorldMatrix());
+
     return S_OK;
 }
 
@@ -106,6 +108,20 @@ void CInteraction_Door::OnEventMessage(_uint iArg)
                 return;
 
             m_pColliderCom.lock()->Set_Enable(false);
+        }
+        break;
+
+        case EVENT_TYPE::ON_RESET_OBJ:
+        {
+            m_pTransformCom.lock()->Set_WorldMatrix(XMLoadFloat4x4(&m_FirstMatrix));
+
+            if (!(m_ActionFlag & ACTION_FLAG::ROTATION))
+                m_ActionFlag ^= ACTION_FLAG::ROTATION;
+
+            m_pColliderCom.lock()->Set_Enable(true);
+            m_pPhysXColliderCom.lock()->Set_Enable(true);
+
+            Callback_ActUpdate.Clear();
         }
         break;
 
@@ -484,4 +500,8 @@ void CInteraction_Door::SetUpColliderDesc(weak_ptr<CCollider> In_pColldierCom, _
 
     In_pColldierCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
     In_pColldierCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+}
+
+void CInteraction_Door::Free()
+{
 }

@@ -20,6 +20,9 @@
 #include "Camera_Target.h"
 #include "RequirementChecker.h"
 #include "Status_Player.h"
+#include "UIManager.h"
+
+
 
 GAMECLASS_C(CCorvusStateBase)
 
@@ -135,7 +138,10 @@ _bool CCorvusStateBase::Check_RequirementHealingState()
 {
 	if (KEY_INPUT(KEY::Q, KEY_STATE::TAP))
 	{
-
+		if (GET_SINGLE(CUIManager)->Is_OpenedMenu())
+		{
+			return false;//메인 메뉴류가 열려있다면
+		}
 		weak_ptr<CStatus_Player> pStatus = GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status();
 		if (pStatus.lock()->Get_UseableCurrentPotion())
 		{

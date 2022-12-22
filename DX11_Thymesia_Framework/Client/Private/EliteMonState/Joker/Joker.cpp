@@ -77,9 +77,10 @@ HRESULT CJoker::Start()
 {
 	__super::Start();
 
-	CBase::Set_Enable(true);
-
+	//CBase::Set_Enable(true);
+	
 	Change_State<CJokerState_Sp_Open>();
+	
 	Bind_HPBar();
 	// weak_ptr<CBoneNode> pTargetBoneNode = m_pModelCom.lock()->Find_BoneNode();
 	// m_pTrailEffect.lock()->Set_OwnerDesc(m_pTransformCom, m_pTargetBoneNode, m_pModelCom.lock()->Get_ModelData());
@@ -222,9 +223,24 @@ void CJoker::OnEventMessage(_uint iArg)
 {
 	__super::OnEventMessage(iArg);
 
+
+	if ((_uint)EVENT_TYPE::ON_ENTER_SECTION == iArg)
+	{
+		Set_Enable(true);
+	}
 	if ((_uint)EVENT_TYPE::ON_GROGGY == iArg)
 	{
 		Change_State<CJokerState_Stun_Start>();
+	}
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		PxControllerFilters Filters;
+		m_pPhysXControllerCom.lock()->Set_Position(XMLoadFloat4(&m_tLinkStateDesc.m_fStartPositon), 0.f, Filters);
+
+		Change_State<CJokerState_Sp_Open>();
+		Set_Enable(false);
+		m_pStatus.lock()->Full_Recovery();
 	}
 
 }
