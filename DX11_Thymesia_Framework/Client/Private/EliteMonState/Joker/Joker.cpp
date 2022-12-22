@@ -227,6 +227,14 @@ void CJoker::OnEventMessage(_uint iArg)
 		Change_State<CJokerState_Stun_Start>();
 	}
 
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		PxControllerFilters Filters;
+		m_pPhysXControllerCom.lock()->Set_Position(XMLoadFloat4(&m_tLinkStateDesc.m_fStartPositon), 0.f, Filters);
+
+		Change_State<CJokerState_Idle>();
+		Set_Enable(false);
+	}
 }
 
 void CJoker::OnEnable(void* _Arg)
