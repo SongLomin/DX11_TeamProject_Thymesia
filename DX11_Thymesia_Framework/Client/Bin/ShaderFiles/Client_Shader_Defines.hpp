@@ -73,6 +73,22 @@ DepthStencilState	DSS_Default
 	DepthFunc = less_equal;
 };
 
+DepthStencilState DSS_DepthStencilEnable
+{
+	DepthEnable = true;
+	DepthWriteMask = all;
+	DepthFunc = less_equal;
+
+	StencilEnable = true;
+	StencilReadMask = 0xff;
+	StencilWriteMask = 0xff;
+
+	FrontFaceStencilFunc = always;
+	FrontFaceStencilPass = replace;
+	FrontFaceStencilFail = keep;
+};
+
+
 DepthStencilState	DSS_None_ZTest_And_Write
 {
 	DepthEnable = false;

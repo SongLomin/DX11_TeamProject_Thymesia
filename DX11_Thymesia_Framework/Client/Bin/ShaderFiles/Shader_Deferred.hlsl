@@ -1,5 +1,7 @@
 
 matrix g_WorldMatrix    , g_ViewMatrix, g_ProjMatrix;
+matrix g_CamProjMatrix, g_CamViewMatrix;
+
 matrix g_ProjMatrixInv  , g_ViewMatrixInv;
 matrix g_LightViewMatrix, g_LightProjMatrix;
 matrix g_DynamicLightViewMatrix, g_DynamicLightProjMatrix;
@@ -878,6 +880,68 @@ PS_OUT_FOG PS_MAIN_FOG(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_MAIN_SSR(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    vector vNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
+    vNormal = normalize(vector(vNormal.xyz * 2.f - 1.f, 0.f));
+   
+    vector vDepth = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
+    
+    float fViewZ = vDepth.y * g_fFar;
+    
+    vector vWorldPos;
+
+    vWorldPos.x = In.vTexUV.x * 2.f - 1.f;
+    vWorldPos.y = In.vTexUV.y * -2.f + 1.f;
+    vWorldPos.z = vDepth.x;
+    vWorldPos.w = 1.0f;
+
+    vWorldPos *= fViewZ;
+
+    vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
+
+    vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
+    
+    vector vViewDir = normalize(vWorldPos - g_vCamPosition);
+    
+    vector vRayOrigin = vWorldPos;
+    vector vRayDir = normalize(reflect(vViewDir, vNormal));
+    float fStep = 0.01f;
+    
+    matrix matVP = mul(g_CamViewMatrix, g_CamProjMatrix);
+    
+    float fPixelDepth = 0.f;
+    int iStepDiatance = 0;
+    float2 vRayPixelPos = (float2) 0;
+  
+    for (iStepDiatance = 0; iStepDiatance < 50; ++iStepDiatance)
+    {
+        vector vDirStep = vRayDir * fStep * iStepDiatance;
+        vector vRayWorldPos = vRayOrigin + vDirStep;
+        
+        vector vRayProjPos = mul(vRayWorldPos, matVP);
+        vRayProjPos /= vRayProjPos.w;
+      
+        vRayPixelPos = float2(vRayProjPos.x * 0.5f + 0.5f, vRayProjPos.y * -0.5f + 0.5f);
+        
+        clip(vRayPixelPos);
+        clip(1.f - vRayPixelPos);
+        
+        fPixelDepth = g_DepthTexture.Sample(DefaultSampler, vRayPixelPos).x;
+      
+        if (vRayProjPos.z > fPixelDepth)
+            break;
+    }
+    clip(49.5f - iStepDiatance);
+    
+    Out.vColor = g_OriginalRenderTexture.Sample(DefaultSampler, vRayPixelPos);
+    //Out.vColor = float4(vRayPixelPos, 0.f, 1.f);
+  
+    return Out;
+}
+
 BlendState BS_Default
 {
 	BlendEnable[0] = false;
@@ -921,6 +985,20 @@ DepthStencilState DSS_ZEnable_ZWriteEnable_false
 {
 	DepthEnable = false;
 	DepthWriteMask = zero;
+};
+
+DepthStencilState DSS_DepthFalse_StencilEnable
+{
+    DepthEnable = false;
+    DepthWriteMask = zero;
+
+    StencilEnable = true;
+    StencilReadMask = 0xff;
+    StencilWriteMask = 0xff;
+
+    FrontFaceStencilFunc = equal;
+    FrontFaceStencilPass = keep;
+    FrontFaceStencilFail = keep;
 };
 
 technique11 DefaultTechnique
@@ -1067,6 +1145,18 @@ technique11 DefaultTechnique
         DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader    = compile ps_5_0 PS_MAIN_FOG();
+    }
+
+    pass SSR//12
+    {
+        SetBlendState(BS_ForwardAlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_DepthFalse_StencilEnable, 2);
+        SetRasterizerState(RS_Default);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_SSR();
     }
 
 }

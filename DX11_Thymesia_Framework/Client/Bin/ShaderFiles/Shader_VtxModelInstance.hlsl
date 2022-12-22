@@ -362,7 +362,7 @@ technique11 DefaultTechnique
 	pass Default
 	{
 		SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
 		SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
@@ -375,7 +375,7 @@ technique11 DefaultTechnique
 	pass NormalMapping
 	{
 		SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
@@ -401,7 +401,7 @@ technique11 DefaultTechnique
     pass Just_Red
     {
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN();
@@ -414,7 +414,7 @@ technique11 DefaultTechnique
 	pass Pass4_NonCulling
 	{
 		SetBlendState			(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState	(DSS_Default, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
 		SetRasterizerState		(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_MAIN();
@@ -427,7 +427,7 @@ technique11 DefaultTechnique
 	pass Pass5_NonCulling_Norm
 	{
 		SetBlendState			(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState	(DSS_Default, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
 		SetRasterizerState		(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
@@ -440,7 +440,7 @@ technique11 DefaultTechnique
 	pass NoneCulling_Masking//6
 	{
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
         SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
@@ -453,7 +453,7 @@ technique11 DefaultTechnique
     pass Culling_Masking //7
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
@@ -466,7 +466,7 @@ technique11 DefaultTechnique
 	pass Default_Normal_PBR//8
 	{
 		SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-		SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
 		SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
@@ -479,7 +479,7 @@ technique11 DefaultTechnique
     pass Pass9_Dissolve //9
     {
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
         SetRasterizerState(RS_NonCulling);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();

@@ -502,13 +502,15 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Bake_Fog()))
 		DEBUG_ASSERT;
 
-
-	///////SSR 넣기
+	
 
 	if (FAILED(Render_Blend()))
 		DEBUG_ASSERT;
-	//////여기다가 화면 블룸
+	///////SSR 넣기
+	//if (FAILED(Render_SSR()))
+	//	DEBUG_ASSERT;
 
+	//////여기다가 화면 블룸
 	if (FAILED(Blend_OutLine()))
 		DEBUG_ASSERT;
 
@@ -1711,6 +1713,45 @@ HRESULT CRender_Manager::Blend_Bloom()
 	m_pShader->Begin(5, pDeviceContext);
 	m_pVIBuffer->Render(pDeviceContext);
 
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Render_SSR()
+{
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
+	Bake_OriginalRenderTexture();
+
+	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
+	shared_ptr<CPipeLine> pPipeLine = GET_SINGLE(CPipeLine);
+
+	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+
+	_float4x4 ViewTranspose = *pPipeLine->Get_Transform_TP(CPipeLine::D3DTS_VIEW);
+	_float4x4 ProjTranspose = *pPipeLine->Get_Transform_TP(CPipeLine::D3DTS_PROJ);
+
+	m_pShader->Set_RawValue("g_CamViewMatrix", &ViewTranspose, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_CamProjMatrix", &ProjTranspose, sizeof(_float4x4));
+	
+	m_pShader->Set_ShaderResourceView("g_DepthTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Depth")));
+	m_pShader->Set_ShaderResourceView("g_NormalTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Normal")));
+	m_pShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")));
+
+	_float4x4		ViewMatrixInv, ProjMatrixInv;
+
+	XMStoreFloat4x4(&ViewMatrixInv, XMMatrixTranspose(XMMatrixInverse(nullptr, pPipeLine->Get_Transform(CPipeLine::D3DTS_VIEW))));
+	XMStoreFloat4x4(&ProjMatrixInv, XMMatrixTranspose(XMMatrixInverse(nullptr, pPipeLine->Get_Transform(CPipeLine::D3DTS_PROJ))));
+
+	m_pShader->Set_RawValue("g_ViewMatrixInv", &ViewMatrixInv, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
+
+	m_pShader->Set_RawValue("g_vCamPosition", &pPipeLine->Get_CamPosition(), sizeof(_float4));
+
+	m_pShader->Begin(12, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
 	return S_OK;
 }

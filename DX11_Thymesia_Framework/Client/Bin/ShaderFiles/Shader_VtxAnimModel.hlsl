@@ -520,7 +520,7 @@ technique11 DefaultTechnique
     pass Default_Normal //4
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
@@ -533,7 +533,7 @@ technique11 DefaultTechnique
     pass Default_Normal_Specular //5
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
@@ -546,7 +546,7 @@ technique11 DefaultTechnique
     pass Directional_Dissolve //6
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
@@ -559,7 +559,7 @@ technique11 DefaultTechnique
     pass Normal_Dissolve//7
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
         SetRasterizerState(RS_Default);
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
@@ -572,7 +572,7 @@ technique11 DefaultTechnique
     pass Default_Normal_Specular_NonCulling //8
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
         SetRasterizerState(RS_NonCulling );
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();

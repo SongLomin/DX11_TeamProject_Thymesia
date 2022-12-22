@@ -163,7 +163,7 @@ DS_OUT DS_Main(const OutputPatch<HS_OUT, PATCH_SIZE> input, float3 location : SV
     float3 tangent  = input[0].vTangent  * location.r + input[1].vTangent  * location.g + input[2].vTangent  * location.b;
     
     vector vDisplacement = ( /*1.f - */g_DisplacementTexture.SampleLevel(DefaultSampler, uv + g_vUVNoise * 0.005f, 0)) * 0.15f;
-  
+    
     matrix matWV = mul(g_WorldMatrix, g_ViewMatrix);
     matrix matWVP = mul(matWV, g_ProjMatrix);
     
@@ -362,6 +362,7 @@ PS_OUT PS_MAIN_WATER(DS_OUT In)
 
 /* ---------------------------------------------------------- */
 
+
 technique11 DefaultTechnique
 {
     pass PASS_0_Ground_Default
@@ -419,7 +420,7 @@ technique11 DefaultTechnique
     pass Water // 4
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_DepthStencilEnable, 2);
         SetRasterizerState(RS_Default);
 
         VertexShader   = compile vs_5_0 VS_MAIN_HULL();
