@@ -554,8 +554,8 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 		DEBUG_ASSERT;
 
 
-	if (FAILED(PostProcessing()))
-		DEBUG_ASSERT;
+	/*if (FAILED(PostProcessing()))
+		DEBUG_ASSERT;*/
 
 	if (FAILED(AntiAliasing()))
 		DEBUG_ASSERT;

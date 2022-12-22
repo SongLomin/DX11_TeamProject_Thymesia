@@ -175,11 +175,6 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 {
 	switch ((EVENT_TYPE)iArg)
 	{
-		case EVENT_TYPE::ON_EDITINIT:
-		{
-		}
-		break;
-
 		case EVENT_TYPE::ON_ENTER_SECTION:
 		{
 			if (!Callback_ActUpdate.empty())
@@ -195,6 +190,17 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 				return;
 
 			Callback_ActUpdate += bind(&CLight_Prop::Act_LightTurnOffEvent, this, placeholders::_1, placeholders::_2);
+		}
+		break;
+
+		case EVENT_TYPE::ON_RESET_OBJ:
+		{
+			m_tLightDesc.bEnable = false;
+
+			GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+
+			if ((!m_szEffectTag.empty()) && (0 <= m_iEffectIndex))
+				GET_SINGLE(CGameManager)->UnUse_EffectGroup(m_szEffectTag, m_iEffectIndex);
 		}
 		break;
 
@@ -316,10 +322,8 @@ void CLight_Prop::Act_LightTurnOnEvent(_float fTimeDelta, _bool& Out_End)
 
 		GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
 
-		if ((!m_szEffectTag.empty()) && (0 <= m_iSectionIndex))
+		if (!m_szEffectTag.empty())
 			m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup(m_szEffectTag, m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
-
-		int a = 0;
 	}
 }
 
@@ -337,7 +341,7 @@ void CLight_Prop::Act_LightTurnOffEvent(_float fTimeDelta, _bool& Out_End)
 		m_tLightDesc.fRange     = 0.f;
 		m_tLightDesc.bEnable    = false;
 
-		if ((!m_szEffectTag.empty()) && (0 <= m_iEffectIndex) && (0 <= m_iSectionIndex))
+		if ((!m_szEffectTag.empty()) && (0 <= m_iEffectIndex))
 			GET_SINGLE(CGameManager)->UnUse_EffectGroup(m_szEffectTag, m_iEffectIndex);
 
 		Out_End = true;

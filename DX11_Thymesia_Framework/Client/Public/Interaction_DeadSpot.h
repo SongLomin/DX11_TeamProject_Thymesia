@@ -4,15 +4,16 @@
 
 BEGIN(Engine)
 class CCollider;
+class CTexture;
 END
 
 BEGIN(Client)
 
-class CInteraction_Elevator final :
+class CInteraction_DeadSpot final :
     public CInteraction_Prop
 {
-    GAMECLASS_H(CInteraction_Elevator);
-    CLONE_H(CInteraction_Elevator, CGameObject);
+    GAMECLASS_H(CInteraction_DeadSpot);
+    CLONE_H(CInteraction_DeadSpot, CGameObject);
 
 public:
     virtual HRESULT Initialize_Prototype() override;
@@ -23,24 +24,24 @@ public:
     virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override; 
 
 public:
-    virtual void Act_Interaction() override;
+    void Init_DeadSpot(_vector In_vPos, _uint In_iMemory);
 
 public:
+    virtual void Act_Interaction() override;
     virtual void OnEventMessage(_uint iArg) override;
-
-    virtual void Write_Json(json& Out_Json) override;
-    virtual void Load_FromJson(const json& In_Json) override;
 
 private:
     void    SetUpColliderDesc();
 
 private:
     weak_ptr<CCollider>     m_pColliderCom;
+    weak_ptr<CTexture>      m_pTextureCom;
 
-    LEVEL                   m_eNextLevel    = LEVEL::LEVEL_END;
-    _float                  m_fColliderPosY = 1.5f;
+    _uint                   m_iMemory     = 0;
+    LIGHTDESC               m_tLightDesc;
 
 private:
+    virtual void OnDestroy() override;
     void Free();
 };
 

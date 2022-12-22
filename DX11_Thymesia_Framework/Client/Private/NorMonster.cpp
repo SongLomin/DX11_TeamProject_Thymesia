@@ -372,6 +372,15 @@ void CNorMonster::OnEventMessage(_uint iArg)
 	{
 		Set_Enable(true);
 	}
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		PxControllerFilters Filters;
+		m_pPhysXControllerCom.lock()->Set_Position(XMLoadFloat4(&m_tLinkStateDesc.m_fStartPositon), 0.f, Filters);
+
+		Change_State<CNorMonState_Idle>();
+		Set_Enable(false);
+	}
 }
 
 void CNorMonster::OnEnable(void* _Arg)

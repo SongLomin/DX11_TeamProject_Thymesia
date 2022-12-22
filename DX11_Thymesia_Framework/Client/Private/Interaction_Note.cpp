@@ -156,3 +156,7 @@ void CInteraction_Note::SetUpColliderDesc(_float* _pColliderDesc)
     m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
     m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 }
+
+void CInteraction_Note::Free()
+{
+}

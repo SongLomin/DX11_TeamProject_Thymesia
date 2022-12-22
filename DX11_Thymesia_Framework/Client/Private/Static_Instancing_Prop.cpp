@@ -39,12 +39,13 @@ HRESULT CStatic_Instancing_Prop::Initialize(void* pArg)
     );
 
 	m_pMaskingTextureCom = Add_Component<CTexture>();
+	m_pInstanceModelCom  = Add_Component<CVIBuffer_Model_Instance>();
+	m_pPhysXColliderCom  = Add_Component<CPhysXCollider>();
+
 	m_pMaskingTextureCom.lock()->Use_Texture("UVMask");
 
 	GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_StaticCast<CGameObject>(m_this));
 
-	m_pInstanceModelCom = Add_Component<CVIBuffer_Model_Instance>();
-	m_pPhysXColliderCom = Add_Component<CPhysXCollider>();
     return S_OK;
 }
 
@@ -231,7 +232,8 @@ void CStatic_Instancing_Prop::Load_FromJson(const json& In_Json)
 	{
 		m_iSectionIndex = In_Json["SectionIndex"];
 
-		GET_SINGLE(CGameManager)->Registration_Section(m_iSectionIndex, Weak_Cast<CGameObject>(m_this));
+		if (0 <= m_iSectionIndex)
+			GET_SINGLE(CGameManager)->Registration_Section(m_iSectionIndex, Weak_Cast<CGameObject>(m_this));
 	}
 
 	if (0.f > m_fDissolveSpeed)

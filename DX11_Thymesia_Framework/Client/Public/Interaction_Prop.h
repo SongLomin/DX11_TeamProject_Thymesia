@@ -16,7 +16,8 @@ public:
         INTERACTION_LADDER,
         INTERACTION_ELEVATOR,
         INTERACTION_ITEM,
-        INTERACTION_NEXTPOINT
+        INTERACTION_NEXTPOINT,
+        INTERACTION_DEADSPOT
     }INTERACTIONTYPE;
 
 public:
@@ -54,7 +55,7 @@ public:
     FDelegate<>                 Callback_ActFail;
     FDelegate<_float, _bool&>   Callback_ActUpdate;
 
-protected:
+private:
     void Free();
 };
 

@@ -30,6 +30,8 @@ class CInteraction_CheckPoint;
 class CUI_Cursor;
 class CLight_Prop;
 class CItemPopup_Queue;
+class CInteraction_DeadSpot;
+class CSection_Eventer;
 
 class CGameManager :
     public CBase
@@ -205,10 +207,10 @@ public:
     BUTTON_LEVEL        Get_ButtonLevel() { return m_eButtonLevel; }
     void                Set_ButtonLevel(BUTTON_LEVEL eButtonLevel) { m_eButtonLevel = eButtonLevel; }
 
-
 public:
     void   CreatePopupQueue();
     void   Add_Popup(ITEM_NAME eItemName);
+
 private:
     weak_ptr< CUI_Cursor> m_pCursor;
     shared_ptr<CItemPopup_Queue> m_pItemPopupQueue;
@@ -216,15 +218,18 @@ private:
 
 
 public:
+    void  Registration_SectionEvent(_uint In_iSection, weak_ptr<CSection_Eventer> In_pSectionEvent);
+
     void  Registration_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj);
     void  Activate_Section(_uint In_iSection, EVENT_TYPE In_eEventType);
 
     void  Registration_SectionLight(_uint In_iSection, weak_ptr<CLight_Prop> In_pObj);
     void  Activate_SectionLight(_uint In_iSection, EVENT_TYPE In_eEventType);
 
-    public:
-        void  Set_AnimaionChange(_bool bAnimaionChange) { m_bAnimaionChange = bAnimaionChange; }
-        _bool Get_AnimaionChange() { return m_bAnimaionChange; }
+public:
+    void  Set_AnimaionChange(_bool bAnimaionChange) { m_bAnimaionChange = bAnimaionChange; }
+    _bool Get_AnimaionChange() { return m_bAnimaionChange; }
+
  public:
     FDelegate<>                 CallBack_ChangePlayer;
     FDelegate<>                 CallBack_FocusInMonster;
@@ -245,12 +250,15 @@ private:
     typedef map<_int, KEYEVENT>                                  ANIM_MAP;
 
 private:
-    typedef map<_int, list<weak_ptr<CGameObject>>> SECTION_OBJ;
-    typedef map<_int, list<weak_ptr<CLight_Prop>>> SECTION_LIGHT;
+    typedef map<_int, list<weak_ptr<CSection_Eventer>>>    SECTION_EVENTER;
+    typedef map<_int, list<weak_ptr<CGameObject>>>         SECTION_OBJ;
+    typedef map<_int, list<weak_ptr<CLight_Prop>>>         SECTION_LIGHT;
 
+    SECTION_EVENTER                     m_SectionEventers;
     SECTION_OBJ                         m_SectionObejects;
     SECTION_LIGHT                       m_SectionLights;
     weak_ptr<CInteraction_CheckPoint>   m_pCurSavePoint;
+    weak_ptr<CInteraction_DeadSpot>     m_pDeadSpot;
 
 private:
     _int                                m_iMonsterCount   = 0;

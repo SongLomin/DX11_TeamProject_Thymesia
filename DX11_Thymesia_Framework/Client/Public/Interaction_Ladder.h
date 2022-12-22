@@ -61,10 +61,12 @@ private:
     weak_ptr<CShader>                   m_pInstanceShaderCom;
     weak_ptr<CTexture>                  m_pMaskingTextureCom;
 
-    _float                              m_fOffset   = 0.4f;
-    _int                                m_iMidSize  = 4.5;
-
+    _float                              m_fOffset         = 0.4f;
+    _int                                m_iMidSize        = 4.5;
     _float                              m_fUpLadderHeight = 0.f;
+
+private:
+    void Free();
 };
 
 END

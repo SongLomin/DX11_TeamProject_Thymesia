@@ -561,6 +561,10 @@ void CCorvus::OnEventMessage(_uint iArg)
 		Change_State<CCorvusState_Execution_Start>();
 	}
 
+	if (EVENT_TYPE::ON_RESET_OBJ == (EVENT_TYPE)iArg)
+	{
+
+	}
 
 }
 
