@@ -42,8 +42,6 @@ HRESULT CMonster::Initialize(void* pArg)
 
     m_eAttackCollisionLayer = COLLISION_LAYER::MONSTER_ATTACK;
 
-    //GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::MONSTER, Weak_Cast<CGameObject>(m_this));
-
     m_pDissolveTextureCom = Add_Component<CTexture>();
     m_pDissolveTextureCom.lock()->Use_Texture("Dissolve_1");
 
@@ -58,6 +56,8 @@ HRESULT CMonster::Initialize(void* pArg)
 HRESULT CMonster::Start()
 {
     __super::Start();
+
+    GET_SINGLE(CGameManager)->Registration_Section(m_tLinkStateDesc.iSectionIndex, Weak_Cast<CGameObject>(m_this));
 
     return S_OK;
 }
@@ -229,8 +229,6 @@ void  CMonster::Load_FromJson(const json& In_Json)
         m_tLinkStateDesc.iSectionIndex = In_Json["MonsterDesc"]["SectionIndex"];
 
     XMStoreFloat4(&m_tLinkStateDesc.m_fStartPositon, m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION));
-
-    GET_SINGLE(CGameManager)->Registration_Section(m_tLinkStateDesc.iSectionIndex, Weak_Cast<CGameObject>(m_this));
 
     Init_Desc();
 }
