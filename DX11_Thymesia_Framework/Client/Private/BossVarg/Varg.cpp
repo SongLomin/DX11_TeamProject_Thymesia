@@ -192,7 +192,6 @@ void CVarg::Init_Desc()
 
 	m_pModelCom.lock()->Init_Model("Boss_Varg", "", (_uint)TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CVargWeapon>(m_CreatedLevel));
-	m_pWeapons.back().lock()->Init_Model("Boss_VargWeapon", TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
 
 	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.9f,-2.4f,1.0f }, 0.8f, COLLISION_LAYER::MONSTER_ATTACK);

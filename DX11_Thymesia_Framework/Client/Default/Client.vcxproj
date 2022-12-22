@@ -464,6 +464,7 @@
     <ClInclude Include="..\Public\Preset_AddGameObject.h" />
     <ClInclude Include="..\Public\Preset_DynamicProp.h" />
     <ClInclude Include="..\Public\Preset_ItemData.h" />
+    <ClInclude Include="..\Public\Preset_NvClothMesh.h" />
     <ClInclude Include="..\Public\Preset_UIDesc.h" />
     <ClInclude Include="..\Public\RequirementBase.h" />
     <ClInclude Include="..\Public\RequirementChecker.h" />
@@ -975,6 +976,7 @@
     <ClCompile Include="..\Private\Preset_DynamicProp.cpp" />
     <ClCompile Include="..\Private\Preset_AddGameObject.cpp" />
     <ClCompile Include="..\Private\Preset_ItemData.cpp" />
+    <ClCompile Include="..\Private\Preset_NvClothMesh.cpp" />
     <ClCompile Include="..\Private\Preset_UIDesc.cpp" />
     <ClCompile Include="..\Private\Requirement_PlayerStatusMana.cpp" />
     <ClCompile Include="..\Private\Requirement_Time.cpp" />

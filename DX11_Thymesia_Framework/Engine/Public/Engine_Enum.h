@@ -177,3 +177,10 @@ enum class FLAG_INDEX
 	_20 = ( 1 << 20),
 	_21 = ( 1 << 21)
 };
+
+enum class SELECTION_TYPE
+{
+	FORWARD,
+	REVERSE,
+	TYPE_END
+};

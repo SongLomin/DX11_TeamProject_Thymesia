@@ -54,7 +54,7 @@ void CPreview_Prop::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 
 	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
-	m_pModelCom.lock()->Update_NvCloth(pDeferredContext);
+	m_pModelCom.lock()->Update_NvCloth(pDeferredContext, m_pTransformCom.lock()->Get_WorldMatrix());
 	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
 }
 

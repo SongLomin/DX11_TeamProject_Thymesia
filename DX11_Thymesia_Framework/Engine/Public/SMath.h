@@ -75,6 +75,7 @@ namespace Engine
 		XMVECTOR		ENGINE_DLL Convert_Vector(const PxVec3& In_PxVec3);
 		XMVECTOR		ENGINE_DLL Convert_Vector(const PxVec4& In_PxVec4);
 		XMVECTOR		ENGINE_DLL Convert_PxExtendedVec3ToVector(const PxExtendedVec3& In_PxVec3);
+		PxQuat			ENGINE_DLL Convert_PxQuat(FXMVECTOR In_Vector);
 
 
 		_bool			ENGINE_DLL Is_Picked_AbstractTerrain(const RAY& _Ray, _float4* _pOutPos);

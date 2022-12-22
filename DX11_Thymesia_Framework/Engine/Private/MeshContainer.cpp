@@ -649,7 +649,7 @@ void CMeshContainer::Set_NvCloth()
 	
 	m_pInvMasses = vector<_float>(m_iNumVertices, 0.5f);
 
-	for (_int i = 0; i < m_iNumVertices / 10; ++i)
+	for (_int i = 0; i < (_int)(m_iNumVertices / 10); ++i)
 	{
 		m_pInvMasses[i] = 0.f;
 	}
@@ -760,10 +760,16 @@ void CMeshContainer::Set_NvCloth()
 
 }
 
-void CMeshContainer::Update_NvClothVertices(ID3D11DeviceContext* pDeviceContext)
+void CMeshContainer::Update_NvClothVertices(ID3D11DeviceContext* pDeviceContext, _fmatrix In_WorldMatrix)
 {
 	if (!m_pCloth)
 		return;
+
+	_vector vPos = In_WorldMatrix.r[3];
+	_vector vQuaternion = XMQuaternionRotationMatrix(SMath::Get_RotationMatrix(In_WorldMatrix));
+
+	m_pCloth->setTranslation(SMath::Convert_PxVec3(vPos));
+	m_pCloth->setRotation(SMath::Convert_PxQuat(vQuaternion));
 
 	if (MODEL_TYPE::ANIM == m_pMeshData.lock()->eModelType)
 	{

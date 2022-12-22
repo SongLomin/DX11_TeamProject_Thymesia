@@ -382,11 +382,11 @@ HRESULT CModel::Update_BoneMatrices()
 	return S_OK;
 }
 
-HRESULT CModel::Update_NvCloth(ID3D11DeviceContext* pDeferredContext)
+HRESULT CModel::Update_NvCloth(ID3D11DeviceContext* pDeferredContext, _fmatrix In_WorldMatrix)
 {
 	for (auto& elem : m_MeshContainers)
 	{
-		elem.lock()->Update_NvClothVertices(pDeferredContext);
+		elem.lock()->Update_NvClothVertices(pDeferredContext, In_WorldMatrix);
 	}
 
 	return S_OK;

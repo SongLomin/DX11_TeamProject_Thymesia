@@ -746,6 +746,11 @@ XMVECTOR ENGINE_DLL Engine::SMath::Convert_PxExtendedVec3ToVector(const PxExtend
 	return XMVectorSet(_float(In_PxVec3.x), _float(In_PxVec3.y), _float(In_PxVec3.z), 0.f);
 }
 
+PxQuat ENGINE_DLL Engine::SMath::Convert_PxQuat(FXMVECTOR In_Vector)
+{
+	return PxQuat(In_Vector.m128_f32[0], In_Vector.m128_f32[1], In_Vector.m128_f32[2], In_Vector.m128_f32[3]);
+}
+
 PxVec3 ENGINE_DLL Engine::SMath::Convert_PxVec3(PxExtendedVec3 In_Vector)
 {
 	return PxVec3(_float(In_Vector.x), _float(In_Vector.y), _float(In_Vector.z));

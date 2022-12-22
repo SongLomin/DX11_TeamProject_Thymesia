@@ -40,8 +40,8 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	//m_pStatus.lock()->Load_FromJson(m_szClientComponentPath + "Corvus/SaveData.json");
 
-	//m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
-	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER, (_flag)FLAG_INDEX::_2);
+	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
+	//m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER, (_flag)FLAG_INDEX::_2);
 
 
 
@@ -177,7 +177,7 @@ void CCorvus::Thread_PreBeforeRender(_float fTimeDelta)
 	__super::Thread_PreBeforeRender(fTimeDelta);
 
 	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
-	m_pModelCom.lock()->Update_NvCloth(pDeferredContext);
+	m_pModelCom.lock()->Update_NvCloth(pDeferredContext, m_pTransformCom.lock()->Get_WorldMatrix());
 	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
 
 }
