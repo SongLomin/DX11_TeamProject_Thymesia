@@ -490,10 +490,5 @@ namespace Engine
 		_float4 vGamma;
 		_float4 vGain;
 	};
-
-	/*struct NVCLOTH_DESC
-	{
-		SELECTION_TYPE eAng
-	};*/
 	
 }

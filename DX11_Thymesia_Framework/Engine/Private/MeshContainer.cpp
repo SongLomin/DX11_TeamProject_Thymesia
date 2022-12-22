@@ -115,7 +115,16 @@ HRESULT CMeshContainer::Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CMod
 #pragma region VERTEXBUFFER
 
 	m_iMaterialIndex = tMeshData->iMaterialIndex;
-	m_ModelTransform = pModel.lock()->Get_ModelData().lock()->TransformMatrix;
+
+	if (pModel.lock())
+	{
+		m_ModelTransform = pModel.lock()->Get_ModelData().lock()->TransformMatrix;
+	}
+	else
+	{
+		XMStoreFloat4x4(&m_ModelTransform, XMMatrixIdentity());
+	}
+	
 
 	HRESULT		hr = 0;
 
@@ -752,8 +761,8 @@ void CMeshContainer::Set_NvCloth()
 		m_pPhases[i].mStretchLimit = 1.0f;
 	}
 	m_pCloth->setPhaseConfig(nv::cloth::Range<nv::cloth::PhaseConfig>(m_pPhases, m_pPhases + m_pFabric->getNumPhases()));
-	//m_pCloth->setDragCoefficient(0.1f);
-	//m_pCloth->setLiftCoefficient(0.2f);
+	m_pCloth->setDragCoefficient(0.1f);
+	m_pCloth->setLiftCoefficient(0.2f);
 	
 
 	GET_SINGLE(CNvCloth_Manager)->Get_Solver()->addCloth(m_pCloth);

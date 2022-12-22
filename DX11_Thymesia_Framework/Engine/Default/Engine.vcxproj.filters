@@ -269,6 +269,9 @@
     <ClInclude Include="..\Public\CustomPxProfilerCallback.h">
       <Filter>98. Managers\16. NvClothManager\04. PxProfilerCallback</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\NvCloth_Structs.h">
+      <Filter>03. Struct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\Base.cpp">
@@ -791,6 +794,9 @@
     </Filter>
     <Filter Include="98. Managers\16. NvClothManager\04. PxProfilerCallback">
       <UniqueIdentifier>{9668dc5b-514a-4671-b418-b740f36b9713}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Struct">
+      <UniqueIdentifier>{e15a183b-41ec-4f75-a296-aeff1ae313a9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
