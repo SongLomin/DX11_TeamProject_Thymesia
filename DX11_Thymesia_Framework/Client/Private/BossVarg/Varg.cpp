@@ -312,6 +312,11 @@ void CVarg::OnEventMessage(_uint iArg)
 	{
 		Set_Enable(true);
 	}
+
+	if ((_uint)EVENT_TYPE::ON_BOSS_EXECUTIONSTART == iArg)
+	{
+		m_bBossExecutionStartOnOff = true;
+	}
 }
 
 void CVarg::OnEnable(void* _Arg)

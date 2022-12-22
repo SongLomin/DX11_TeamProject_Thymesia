@@ -510,7 +510,7 @@ void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 void CCorvus::OnBattleEnd()
 {
 }
-
+ 
 void CCorvus::OnEnable(void* pArg)
 {
 	__super::OnEnable(pArg);

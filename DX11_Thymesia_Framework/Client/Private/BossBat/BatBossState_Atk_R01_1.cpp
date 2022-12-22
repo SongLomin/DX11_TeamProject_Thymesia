@@ -32,7 +32,7 @@ void CBatBossState_Atk_R01_1::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|R_01_11");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_AttackR_01_1");
 
 	
 }
@@ -44,7 +44,7 @@ void CBatBossState_Atk_R01_1::Tick(_float fTimeDelta)
 	if (m_bRootStop)
 	{
 		_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
 
 		PxControllerFilters Filters = Filters;
 		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);

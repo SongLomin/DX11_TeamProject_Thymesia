@@ -31,7 +31,7 @@ void CBatBossState_Stun_Start::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_BossBat_NEW_V1.ao|STUNSTART");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_StunStart");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Stun_Start::Call_AnimationEnd, this);
 }

@@ -1,68 +1,65 @@
-0. SK_C_Urd.ao|Urd_Attack01
-1. SK_C_Urd.ao|Urd_Attack01LV2
-2. SK_C_Urd.ao|Urd_Attack02
-3. SK_C_Urd.ao|Urd_Attack02LV2C0
-4. SK_C_Urd.ao|Urd_Attack02LV2C1
-5. SK_C_Urd.ao|Urd_Attack03_DashSting_L
-6. SK_C_Urd.ao|Urd_Attack04_DashSting_R
-7. SK_C_Urd.ao|Urd_Attack05
-8. SK_C_Urd.ao|Urd_Attack06
-9. SK_C_Urd.ao|Urd_Attack07
-10. SK_C_Urd.ao|Urd_Dead
-11. SK_C_Urd.ao|Urd_Equip_L
-12. SK_C_Urd.ao|Urd_Equip_R
-13. SK_C_Urd.ao|Urd_FightStart
-14. SK_C_Urd.ao|Urd_HurtCounter
-15. SK_C_Urd.ao|Urd_HurtM_FL
-16. SK_C_Urd.ao|Urd_HurtM_FR
-17. SK_C_Urd.ao|Urd_HurtS_FL
-18. SK_C_Urd.ao|Urd_HurtS_FR
-19. SK_C_Urd.ao|Urd_Idle
-20. SK_C_Urd.ao|Urd_Parry_L
-21. SK_C_Urd.ao|Urd_Parry_R
-22. SK_C_Urd.ao|Urd_Parry_RQuick
-23. SK_C_Urd.ao|Urd_Run
-24. SK_C_Urd.ao|Urd_Seq_BossFightStart_1
-25. SK_C_Urd.ao|Urd_Seq_TutorialBossFightStart
-26. SK_C_Urd.ao|Urd_Skill01
-27. SK_C_Urd.ao|Urd_Skill02_1
-28. SK_C_Urd.ao|Urd_Skill03_L
-29. SK_C_Urd.ao|Urd_Skill03_R
-30. SK_C_Urd.ao|Urd_SPSkill01
-31. SK_C_Urd.ao|Urd_StepB
-32. SK_C_Urd.ao|Urd_StepFL
-33. SK_C_Urd.ao|Urd_StepFL45
-34. SK_C_Urd.ao|Urd_StepFR
-35. SK_C_Urd.ao|Urd_StepFR45
-36. SK_C_Urd.ao|Urd_StepL
-37. SK_C_Urd.ao|Urd_StepR
-38. SK_C_Urd.ao|Urd_StunEnd
-39. SK_C_Urd.ao|Urd_StunLoop
-40. SK_C_Urd.ao|Urd_StunStart
-41. SK_C_Urd.ao|Urd_VS_TakeExecution
-42. SK_C_Urd.ao|Urd_WalkB
-43. SK_C_Urd.ao|Urd_WalkBL
-44. SK_C_Urd.ao|Urd_WalkBR
-45. SK_C_Urd.ao|Urd_WalkF
-46. SK_C_Urd.ao|Urd_WalkFL
-47. SK_C_Urd.ao|Urd_WalkFR
-48. SK_C_Urd.ao|Urd_WalkL
-49. SK_C_Urd.ao|Urd_WalkR
+0. Urd_Attack01
+1. Urd_Attack01LV2
+2. Urd_Attack02
+3. Urd_Attack02LV2C0
+4. Urd_Attack02LV2C1
+5. Urd_Attack03_DashSting_L
+6. Urd_Attack04_DashSting_R
+7. Urd_Attack05
+8. Urd_Attack06
+9. Urd_Attack07
+10. Urd_Dead
+11. Urd_Equip_L
+12. Urd_Equip_R
+13. Urd_FightStart
+14. Urd_HurtCounter
+15. Urd_HurtM_FL
+16. Urd_HurtM_FR
+17. Urd_HurtS_FL
+18. Urd_HurtS_FR
+19. Urd_Idle
+20. Urd_Parry_L
+21. Urd_Parry_R
+22. Urd_Parry_RQuick
+23. Urd_Run
+24. Urd_Seq_BossFightStart_1
+25. Urd_Seq_TutorialBossFightStart
+26. Urd_Skill01
+27. Urd_Skill02_1
+28. Urd_Skill03_L
+29. Urd_Skill03_R
+30. Urd_SPSkill01
+31. Urd_StepB
+32. Urd_StepFL
+33. Urd_StepFL45
+34. Urd_StepFR
+35. Urd_StepFR45
+36. Urd_StepL
+37. Urd_StepR
+38. Urd_StunEnd
+39. Urd_StunLoop
+40. Urd_StunStart
+41. Urd_VS_TakeExecution
+42. Urd_WalkB
+43. Urd_WalkBL
+44. Urd_WalkBR
+45. Urd_WalkF
+46. Urd_WalkFL
+47. Urd_WalkFR
+48. Urd_WalkL
+49. Urd_WalkR
 RootNode
-SK_C_Urd.ao
+root_$AssimpFbx$_Translation
+root_$AssimpFbx$_PreRotation
+root_$AssimpFbx$_Rotation
+root_$AssimpFbx$_Scaling
 root
 ik_foot_r
-ik_foot_r_end
 ik_hand_l
-ik_hand_l_end
 ik_hand_r
-ik_hand_r_end
 camera
-camera_end
 AnimTargetPoint
-AnimTargetPoint_end
 ik_foot_l
-ik_foot_l_end
 pelvis
 Bip001-Pelvis
 spine_01
@@ -72,42 +69,34 @@ neck_01
 clavicle_l
 upperarm_l
 Bone_UrdPauldronsL
-Bone_UrdPauldronsL_end
 Bone_Cloak01
 Bone_Cloak02
 Bone_Cloak03_End
-Bone_Cloak03_End_end
 lowerarm_l
 hand_l
 thumb_01_l
 thumb_02_l
 thumb_03_l
 Bip001-L-Finger0Nub
-Bip001-L-Finger0Nub_end
 index_01_l
 index_02_l
 index_03_l
 Bip001-L-Finger1Nub
-Bip001-L-Finger1Nub_end
 middle_01_l
 middle_02_l
 middle_03_l
 Bip001-L-Finger2Nub
-Bip001-L-Finger2Nub_end
 ring_01_l
 ring_02_l
 ring_03_l
 Bip001-L-Finger3Nub
-Bip001-L-Finger3Nub_end
 pinky_01_l
 pinky_02_l
 pinky_03_l
 Bip001-L-Finger4Nub
-Bip001-L-Finger4Nub_end
 weapon_l
 weapon_l_pivot
 weapon_l_end
-weapon_l_end_end
 clavicle_r
 upperarm_r
 lowerarm_r
@@ -116,129 +105,106 @@ thumb_01_r
 thumb_02_r
 thumb_03_r
 Bip001-R-Finger0Nub
-Bip001-R-Finger0Nub_end
 index_01_r
 index_02_r
 index_03_r
 Bip001-R-Finger1Nub
-Bip001-R-Finger1Nub_end
 middle_01_r
 middle_02_r
 middle_03_r
 Bip001-R-Finger2Nub
-Bip001-R-Finger2Nub_end
 ring_01_r
 ring_02_r
 ring_03_r
 Bip001-R-Finger3Nub
-Bip001-R-Finger3Nub_end
 pinky_01_r
 pinky_02_r
 pinky_03_r
 Bip001-R-Finger4Nub
-Bip001-R-Finger4Nub_end
 weapon_r
 weapon_r_pivot
 weapon_r_end
-weapon_r_end_end
 Bone_Cloak12
 Bone_Cloak13
 Bone_Cloak14_End
-Bone_Cloak14_End_end
 Bone_UrdPauldronsR
-Bone_UrdPauldronsR_end
 Head
 Bone_Hair01
 Bone_Hair02
 Bone_Hair03_End
-Bone_Hair03_End_end
 Bone_Hair04
 Bone_Hair05
 Bone_Hair06
 Bone_Hair07_End
-Bone_Hair07_End_end
 Bone_Hair08
 Bone_Hair09
 Bone_Hair10
 Bone_Hair11_End
-Bone_Hair11_End_end
 Bone_Hair12
 Bone_Hair13
 Bone_Hair14
 Bone_Hair15_End
-Bone_Hair15_End_end
 Bone_Hair16
 Bone_Hair17
 Bone_Hair18
 Bone_Hair19_End
-Bone_Hair19_End_end
 Bone_Hair20
 Bone_Hair21
 Bone_Hair22
 Bone_Hair23_End
-Bone_Hair23_End_end
 Bone_Hair24
 Bone_Hair25
 Bone_Hair26_End
-Bone_Hair26_End_end
 Bone_Cloak08
 Bone_Cloak09
 Bone_Cloak10
 Bone_Cloak11_End
-Bone_Cloak11_End_end
 Bone_Cloak04
 Bone_Cloak05
 Bone_Cloak06
 Bone_Cloak07_End
-Bone_Cloak07_End_end
 Bone_Collar02
-Bone_Collar02_end
 Bone_Collar03
-Bone_Collar03_end
 Bone_Collar01
-Bone_Collar01_end
 Bone_Hen06
 Bone_Hen07
 Bone_Hen08
 Bone_Hen09
 Bone_Hen10_End
-Bone_Hen10_End_end
 SK_W_UrdSword01_Point
-SK_W_UrdSword01_Point_end
 SK_W_UrdSword02_Point
-SK_W_UrdSword02_Point_end
 Bone_Hen01
 Bone_Hen02
 Bone_Hen03
 Bone_Hen04
 Bone_Hen05_End
-Bone_Hen05_End_end
 SK_W_UrdSword03_Point
-SK_W_UrdSword03_Point_end
 SK_W_UrdSword04_Point
-SK_W_UrdSword04_Point_end
 thigh_l
 calf_l
 foot_l
 ball_l
-ball_l_end
 thigh_r
 calf_r
 foot_r
 ball_r
-ball_r_end
 ik_weapon_r
-ik_weapon_r_end
 ik_weapon_l
-ik_weapon_l_end
-SK_C_Urd.mo
-0[SK_C_Urd.md]. 15114
-1[SK_C_Urd.md]. 4626
-2[SK_C_Urd.md]. 48435
-3[SK_C_Urd.md]. 4344
-4[SK_C_Urd.md]. 56733
-5[SK_C_Urd.md]. 14022
-6[SK_C_Urd.md]. 9492
-7[SK_C_Urd.md]. 2880
-8[SK_C_Urd.md]. 2880
-9[SK_C_Urd.md]. 4176
+SK_C_Urd_$AssimpFbx$_PreRotation
+SK_C_Urd
+0[SK_C_Urd]. 6222
+1[SK_C_Urd]. 4626
+2[SK_C_Urd]. 48435
+3[SK_C_Urd]. 1656
+4[SK_C_Urd]. 56733
+5[SK_C_Urd]. 14022
+6[SK_C_Urd]. 9492
+7[SK_C_Urd]. 2880
+8[SK_C_Urd]. 2880
+9[SK_C_Urd]. 1392
+10[SK_C_Urd]. 2784
+11[SK_C_Urd]. 1053
+12[SK_C_Urd]. 1704
+13[SK_C_Urd]. 7188
+14[SK_C_Urd]. 1095
+15[SK_C_Urd]. 540

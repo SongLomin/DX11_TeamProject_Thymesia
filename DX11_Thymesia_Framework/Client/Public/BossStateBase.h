@@ -39,6 +39,7 @@ protected:
     void            StartPositonLookAt(_float fTimeDelta);
     _bool           Rotation_InputToLookDir();
     _bool           Rotation_TargetToLookDir();
+    _bool           Rotation_TargetToLookRevirseDir();
     _float          Get_DistanceWithPlayer() const;
 
 

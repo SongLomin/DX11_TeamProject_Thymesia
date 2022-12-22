@@ -59,6 +59,7 @@ namespace Client
 		ON_CONSOLE_ENABLE,
 		ON_CONSOLE_DISABLE,
 		ON_DIE,
+		ON_BOSS_EXECUTIONSTART,
 		EVENT_END
 	};
 
@@ -104,6 +105,7 @@ namespace Client
 		INTERACTIONUI,
 		PLAYERHUD,
 		SWAPUI,
+		BOSSMONSTER,
 		LAYER_END
 	};
 

@@ -70,6 +70,12 @@ void CBossMonster::Bind_HPBar()
     GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, m_pHPBar);
 }
 
+void CBossMonster::Release_Monster()
+{
+    __super::Release_Monster();
+     GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::BOSSMONSTER, m_thisToGameObject);
+}
+
 
 weak_ptr<CMonsterHPBar_Boss>  CBossMonster::Get_HPBar()
 {
@@ -143,6 +149,8 @@ void CBossMonster::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCo
 void CBossMonster::OnEnable(void* _Arg)
 {
     __super::OnEnable(_Arg);
+
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BOSSMONSTER, Weak_Cast<CGameObject>(m_this));
 
 }
 

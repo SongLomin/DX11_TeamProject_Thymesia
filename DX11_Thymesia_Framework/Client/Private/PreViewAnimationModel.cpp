@@ -84,8 +84,8 @@ HRESULT CPreviewAnimationModel::Render(ID3D11DeviceContext* pDeviceContext)
 	for (_uint i(0); i < iNumMeshContainers; ++i)
 	{
 #ifdef _DEBUG
-		if (i == m_iContainerIndex)
-			continue;
+		//if (i == m_iContainerIndex)
+		//	continue;
 #endif // _DEBUG
 
 		if (FAILED(m_pCurrentModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
