@@ -95,6 +95,7 @@ public:
     virtual void    Init_Status(const void* pArg);
     virtual void    Add_Damage(const _float& In_fDamage);
     void            Add_Memory(_uint    iRootedMemory);
+    void            Set_Memory(_uint      iMemory);
     void            Consumed_Mana(_float fRequireMana);
     virtual void   Full_Recovery();
 

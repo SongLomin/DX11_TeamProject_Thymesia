@@ -380,3 +380,7 @@ void CInteraction_Ladder::SetUpColliderDesc()
     for (_uint i = 0; i < LADDER_COL_TYPE::TYPE_END; ++i)
         m_pColliderCom[i].lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 }
+
+void CInteraction_Ladder::Free()
+{
+}

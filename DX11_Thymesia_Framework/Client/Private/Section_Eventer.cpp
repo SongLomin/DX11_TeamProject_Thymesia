@@ -30,6 +30,9 @@ HRESULT CSection_Eventer::Initialize(void* pArg)
 
 HRESULT CSection_Eventer::Start()
 {
+    if (0 <= m_iSectionIndex)
+        GET_SINGLE(CGameManager)->Registration_SectionEvent(m_iSectionIndex, Weak_Cast<CSection_Eventer>(m_this));
+
     return __super::Start();
 }
 
@@ -61,6 +64,12 @@ void CSection_Eventer::OnEventMessage(_uint iArg)
 {
     switch ((EVENT_TYPE)iArg)
     {
+        case EVENT_TYPE::ON_RESET_OBJ:
+        {
+            m_pColliderCom.lock()->Set_Enable(true);
+        }
+        break;
+
         case EVENT_TYPE::ON_EDITINIT:
         {
             _float fDefaultDesc[4] = { 6.f, 0.f, 0.f, 0.f };
@@ -144,15 +153,6 @@ void CSection_Eventer::OnEventMessage(_uint iArg)
 void CSection_Eventer::Write_Json(json& Out_Json)
 {
     __super::Write_Json(Out_Json);
-
-    /*if (m_Flag & EVENT_FLAG::ACT_SECTION)         m_ActFlag ^= ACT_FLAG::F_ACT_SECTION;
-    if (m_Flag & EVENT_FLAG::ACT_MONSTER_TRIGGER) m_ActFlag ^= ACT_FLAG::F_ACT_MONSTER_TRIGGER;
-    if (m_Flag & EVENT_FLAG::ACT_LIGHT)           m_ActFlag ^= ACT_FLAG::F_ACT_LIGHT;
-
-    if (m_Flag & EVENT_FLAG::EVENT_ENTER)         m_EventFlag ^= EVENT_FLAG2::F_EVENT_ENTER;
-    if (m_Flag & EVENT_FLAG::EVENT_STAY)          m_EventFlag ^= EVENT_FLAG2::F_EVENT_STAY;
-    if (m_Flag & EVENT_FLAG::EVENT_EXIT)          m_EventFlag ^= EVENT_FLAG2::F_EVENT_EXIT;*/
-
 
     Out_Json["EventFlag"]    = m_EventFlag;
     Out_Json["ActFlag"]      = m_ActFlag;

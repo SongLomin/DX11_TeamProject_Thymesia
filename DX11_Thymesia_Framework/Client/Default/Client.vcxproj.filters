@@ -824,9 +824,6 @@
     <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Interaction_CheckPoint.h">
-      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Interaction_Elevator.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClInclude>
@@ -1313,9 +1310,6 @@
       <Filter>05. Component\05. Skill\System</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ClientComponent_Utils.h" />
-    <ClInclude Include="..\Public\Skill_Base.h">
-      <Filter>05. Component\05. Skill\Base</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Skill_VargSword.h" />
     <ClInclude Include="..\Public\Requirement_Time.h">
       <Filter>07. Requirement\00. Requirement_Time</Filter>
@@ -1578,8 +1572,15 @@
     <ClInclude Include="..\Public\UI_DamageFontPiece.h" />
     <ClInclude Include="..\Public\UI_BloodOverlay.h" />
     <ClInclude Include="..\Public\UI_AppearEvent_Varg.h" />
+    <ClInclude Include="..\Public\Skill_base.h" />
+    <ClInclude Include="..\Public\Interaction_CheckPoint.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Interaction_NextPoint.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_DeadSpot.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2449,9 +2450,6 @@
     <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Interaction_CheckPoint.cpp">
-      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Interaction_Elevator.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClCompile>
@@ -2807,9 +2805,6 @@
       <Filter>05. Component\05. Skill\System</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ClientComponent_Utils.cpp" />
-    <ClCompile Include="..\Skill_Base.cpp">
-      <Filter>05. Component\05. Skill\Base</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Skill_VargSword.cpp" />
     <ClCompile Include="..\Private\Requirement_Time.cpp">
       <Filter>07. Requirement\00. Requirement_Time</Filter>
@@ -3195,8 +3190,15 @@
     <ClCompile Include="..\Private\UI_BloodOverlay.cpp" />
     <ClCompile Include="..\Private\UI_AppearEvent_Varg.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
+    <ClCompile Include="..\Private\Skill_Base.cpp" />
+    <ClCompile Include="..\Private\Interaction_CheckPoint.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\Interaction_NextPoint.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Interaction_DeadSpot.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -80,6 +80,29 @@ HRESULT CLevel_Stage2::Render(ID3D11DeviceContext* pDeviceContext)
 	return S_OK;
 }
 
+void CLevel_Stage2::ExitLevel(LEVEL eLevel)
+{
+	switch (eLevel)
+	{
+		case  LEVEL::LEVEL_STAGE3:
+		{
+			m_eNextLevel = eLevel;
+
+			FaderDesc tFaderDesc;
+			tFaderDesc.eFaderType	= FADER_TYPE::FADER_OUT;
+			tFaderDesc.eLinearType	= LINEAR_TYPE::LNIEAR;
+			tFaderDesc.fFadeMaxTime = 1.f;
+			tFaderDesc.fDelayTime	= 0.5f;
+			tFaderDesc.vFadeColor	= _float4(0.f, 0.f, 0.f, 1.f);
+
+			m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
+			m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToLevelChange, this);
+		}
+		break;
+	}
+}
+
 shared_ptr<CLevel_Stage2> CLevel_Stage2::Create()
 {
 	shared_ptr<CLevel_Stage2>		pInstance = make_shared<CLevel_Stage2>();

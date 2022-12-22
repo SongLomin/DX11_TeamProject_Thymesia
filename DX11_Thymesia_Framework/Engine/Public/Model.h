@@ -137,6 +137,9 @@ public:
 	FDelegate<>								CallBack_AnimationEnd;
 
 private:
+	mutex m_job_q_;
+
+private:
 	virtual void Write_Json(json& Out_Json) override;
 	virtual void Load_FromJson(const json& In_Json) override;
 

@@ -67,6 +67,11 @@ private:
     _float                      m_fFirstRadian      = 0.f;
     ITEM_NAME                   m_iKeyID            = ITEM_NAME::ITEM_NAME_END;
     _int                        m_iSectionIndex     = -1;
+
+    _float4x4                   m_FirstMatrix;
+
+private:
+    void Free();
 };
 
 END

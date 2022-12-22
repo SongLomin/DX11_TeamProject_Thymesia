@@ -422,6 +422,7 @@
     <ClInclude Include="..\Public\EliteMonState\Joker\JokerState_WheelAtkStart.h" />
     <ClInclude Include="..\Public\EliteMonster.h" />
     <ClInclude Include="..\Public\Interaction_CheckPoint.h" />
+    <ClInclude Include="..\Public\Interaction_DeadSpot.h" />
     <ClInclude Include="..\Public\Interaction_Door.h" />
     <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h" />
     <ClInclude Include="..\Public\Interaction_Elevator.h" />
@@ -472,7 +473,7 @@
     <ClInclude Include="..\Public\Requirement_State.h" />
     <ClInclude Include="..\Public\Requirement_Time.h" />
     <ClInclude Include="..\Public\Section_Eventer.h" />
-    <ClInclude Include="..\Public\Skill_Base.h" />
+    <ClInclude Include="..\Public\Skill_base.h" />
     <ClInclude Include="..\Public\Skill_VargSword.h" />
     <ClInclude Include="..\Public\State_Monster.h" />
     <ClInclude Include="..\Public\State_Player.h" />
@@ -947,6 +948,7 @@
     <ClCompile Include="..\Private\EliteMonState\Joker\JokerState_WheelAtkStart.cpp" />
     <ClCompile Include="..\Private\EliteMonster.cpp" />
     <ClCompile Include="..\Private\Interaction_CheckPoint.cpp" />
+    <ClCompile Include="..\Private\Interaction_DeadSpot.cpp" />
     <ClCompile Include="..\Private\Interaction_Door.cpp" />
     <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\Interaction_Elevator.cpp" />
@@ -983,6 +985,7 @@
     <ClCompile Include="..\Private\RequirementChecker.cpp" />
     <ClCompile Include="..\Private\Requirement_Once.cpp" />
     <ClCompile Include="..\Private\Requirement_State.cpp" />
+    <ClCompile Include="..\Private\Skill_Base.cpp" />
     <ClCompile Include="..\Private\Skill_VargSword.cpp" />
     <ClCompile Include="..\Private\Status_Boss.cpp" />
     <ClCompile Include="..\Private\TargetCurve.cpp" />
@@ -1221,7 +1224,6 @@
     <ClCompile Include="..\Private\UI.cpp" />
     <ClCompile Include="..\Private\WorldUI.cpp" />
     <ClCompile Include="..\Public\TestUI.cpp" />
-    <ClCompile Include="..\Skill_Base.cpp" />
     <ClCompile Include="..\UI_InventoryConfirmWindow.cpp" />
     <ClCompile Include="..\UI_ItemInformation.cpp" />
     <ClCompile Include="..\UI_MonsterFocus.cpp" />

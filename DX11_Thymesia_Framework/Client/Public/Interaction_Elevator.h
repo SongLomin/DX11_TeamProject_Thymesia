@@ -39,6 +39,9 @@ private:
 
     LEVEL                   m_eNextLevel    = LEVEL::LEVEL_END;
     _float                  m_fColliderPosY = 1.5f;
+
+private:
+    void Free();
 };
 
 END

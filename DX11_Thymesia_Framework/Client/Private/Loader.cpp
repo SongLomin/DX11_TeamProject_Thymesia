@@ -114,6 +114,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_CheckPoint>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_NextPoint>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Elevator>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_DeadSpot>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Door>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Note>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Item>();
@@ -222,6 +223,9 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter%d.dds"));
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
+	//D:\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Bin\Resources\Meshes\Map_Lv1_Circus\Binary
+	GAMEINSTANCE->Load_Model("P_DropTombstone01", "../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/P_DropTombstone01.bin", MODEL_TYPE::NONANIM, XMMatrixIdentity());
+	GAMEINSTANCE->Add_SingleGameObject<CInteraction_DeadSpot>(LEVEL::LEVEL_STATIC);
 
 	m_isFinished = true;
 

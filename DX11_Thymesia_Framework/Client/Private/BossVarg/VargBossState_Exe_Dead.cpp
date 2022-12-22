@@ -92,9 +92,10 @@ void CVargBossState_Exe_Dead::Call_AnimationEnd()
 
 
 	GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front().lock()->Call_Landing(CUI_Landing::LANDING_KILL_BOSS);
-	GET_SINGLE(CGameManager)->Activate_Section(100, EVENT_TYPE::ON_UNLOCK_SECTION);
-
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_End>(0.05f);
+
+	GET_SINGLE(CGameManager)->Activate_Section(100, EVENT_TYPE::ON_UNLOCK_SECTION);
+	GET_SINGLE(CGameManager)->Activate_SectionLight(1, EVENT_TYPE::ON_EXIT_SECTION);
 }
 
 void CVargBossState_Exe_Dead::OnDestroy()

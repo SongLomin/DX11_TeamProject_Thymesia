@@ -17,6 +17,9 @@ public:
 	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext);
 
 public:
+	virtual void ExitLevel(LEVEL eLevel);
+
+public:
 	static shared_ptr<CLevel_Stage2> Create();
 	void Free();
 };

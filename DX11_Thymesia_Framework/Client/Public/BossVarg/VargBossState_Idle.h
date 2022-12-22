@@ -19,7 +19,6 @@ public:
 	void Set_BackReset(_bool BackReset) { m_bBackReset = BackReset; }
 	void Set_BackCount(_uint BackCount) { m_iBackCount = BackCount; }
 
-
 protected:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
