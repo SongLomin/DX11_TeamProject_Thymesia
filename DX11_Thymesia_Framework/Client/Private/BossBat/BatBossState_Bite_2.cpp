@@ -90,7 +90,7 @@ void CBatBossState_Bite_2::OnStateStart(const _float& In_fAnimationBlendTime)
 	
 	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CBatBossState_Bite_1>().lock())
 	{
-		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 90);
+		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex, 88);
 	}
 	else
 	{
@@ -143,14 +143,14 @@ _bool CBatBossState_Bite_2::Check_AndChangeNextState()
 
 	_float fPToMDistance = Get_DistanceWithPlayer();
 
-	if (fPToMDistance <= 7.f && m_bOne)
+	if (fPToMDistance <= 7.5f && m_bOne)
 	{
 		m_bRootStop = false;
 		m_bOne = false;
 	}
 
 
-	if (ComputeAngleWithPlayer() > 0.98f)
+	if (ComputeAngleWithPlayer() > 0.98f && m_bAttackLookAtLimit)
 	{
 		Rotation_TargetToLookDir();
 		m_bAttackLookAtLimit = false;

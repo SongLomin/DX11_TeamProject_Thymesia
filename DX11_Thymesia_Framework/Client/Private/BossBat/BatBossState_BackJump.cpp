@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "BossBat/BatBossState_Storm.h"
+#include "BossBat/BatBossState_BackJump.h"
 #include "Model.h"
 #include "GameInstance.h"
 #include "GameObject.h"
@@ -10,16 +10,16 @@
 #include "BossBat/BatStates.h"
 #include "PhysXController.h"
 
-GAMECLASS_C(CBatBossState_Storm);
-CLONE_C(CBatBossState_Storm, CComponent)
+GAMECLASS_C(CBatBossState_BackJump);
+CLONE_C(CBatBossState_BackJump, CComponent)
 
-HRESULT CBatBossState_Storm::Initialize_Prototype()
+HRESULT CBatBossState_BackJump::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 	return S_OK;
 }
 
-HRESULT CBatBossState_Storm::Initialize(void* pArg)
+HRESULT CBatBossState_BackJump::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
@@ -27,16 +27,18 @@ HRESULT CBatBossState_Storm::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CBatBossState_Storm::Start()
+void CBatBossState_BackJump::Start()
 {
 	__super::Start();
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_Storm_1");
 
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_BackJump::Call_AnimationEnd, this);
+
 	
 }
 
-void CBatBossState_Storm::Tick(_float fTimeDelta)
+void CBatBossState_BackJump::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
@@ -57,7 +59,7 @@ void CBatBossState_Storm::Tick(_float fTimeDelta)
 }
 
 
-void CBatBossState_Storm::LateTick(_float fTimeDelta)
+void CBatBossState_BackJump::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
@@ -66,9 +68,14 @@ void CBatBossState_Storm::LateTick(_float fTimeDelta)
 
 
 
-void CBatBossState_Storm::OnStateStart(const _float& In_fAnimationBlendTime)
+void CBatBossState_BackJump::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CBatBossState_HellIdle>().lock())
+	{
+		m_bSpecialAtk = true;
+	}
 
 	m_bAttackLookAtLimit = true;
 
@@ -86,7 +93,36 @@ void CBatBossState_Storm::OnStateStart(const _float& In_fAnimationBlendTime)
 }	
 
 
-void CBatBossState_Storm::OnStateEnd()
+void CBatBossState_BackJump::Call_AnimationEnd()
+{
+	if (!Get_Enable())
+		return;
+
+	if (m_bSpecialAtk)
+	{
+		Get_OwnerCharacter().lock()->Change_State<CBatBossState_Sp>(0.05f);
+	}
+	else
+	{
+		int iRand = rand() % 2;
+
+		switch (iRand)
+		{
+		case 0:
+			Get_OwnerCharacter().lock()->Change_State<CBatBossState_Idle>(0.05f);
+			break;
+		case 1:
+			Get_OwnerCharacter().lock()->Change_State<CBatBossState_Charge>(0.05f);
+			break;
+		}
+		
+	}
+
+
+}
+
+
+void CBatBossState_BackJump::OnStateEnd()
 {
 	__super::OnStateEnd();
 
@@ -94,17 +130,21 @@ void CBatBossState_Storm::OnStateEnd()
 }
 
 
+void CBatBossState_BackJump::OnDestroy()
+{
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_BackJump::Call_AnimationEnd, this);
+}
 
 
 
 
 
-void CBatBossState_Storm::Free()
+void CBatBossState_BackJump::Free()
 {
 
 }
 
-_bool CBatBossState_Storm::Check_AndChangeNextState()
+_bool CBatBossState_BackJump::Check_AndChangeNextState()
 {
 
 	if (!Check_Requirement())
@@ -116,22 +156,7 @@ _bool CBatBossState_Storm::Check_AndChangeNextState()
 		m_bAttackLookAtLimit = false;
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.99f)
-	{
-		if (m_bSpecialAtk)
-		{
-			Get_OwnerCharacter().lock()->Change_State<CBatBossState_SonicBoom>(0.05f);
-			return true;
-		}
-		else
-		{
-			Get_OwnerCharacter().lock()->Change_State<CBatBossState_SonicBullet>(0.05f);
-			return true;
-		}		
-		
-	}
-
-
+	
 	return false;
 }
 

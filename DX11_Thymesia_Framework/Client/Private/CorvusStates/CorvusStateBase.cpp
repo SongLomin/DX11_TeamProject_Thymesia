@@ -387,6 +387,8 @@ _int CCorvusStateBase::Check_AndChangeSuccessParrying(weak_ptr<CCollider> pMyCol
 	return (_uint)PARRY_SUCCESS::FAIL;
 }
 
+
+
 _bool CCorvusStateBase::Check_AndChangeLadderState(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 	if (!KEY_INPUT(KEY::E, KEY_STATE::TAP))
@@ -537,10 +539,8 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 			Get_OwnerPlayer()->Change_State<CCorvusState_Headache_Start>();
 			break;
 		case Client::ATTACK_OPTION::KNOCKBACK:
+			pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
 			Get_OwnerPlayer()->Change_State<CCorvusState_KnockBack>();
-			break;
-		case Client::ATTACK_OPTION::FALLDOWN:
-			Get_OwnerPlayer()->Change_State<CCorvusState_HurtFallDown> ();
 			break;
 		default:
 			pStatus.lock()->Add_Damage(In_fDamage * pMonsterStatusCom.lock()->Get_Desc().m_fAtk);
@@ -569,6 +569,8 @@ void CCorvusStateBase::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr
 	__super::OnCollisionStay(pMyCollider, pOtherCollider);
 
 	Check_AndChangeLadderState(pMyCollider, pOtherCollider);
+
+	
 }
 
 void CCorvusStateBase::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)

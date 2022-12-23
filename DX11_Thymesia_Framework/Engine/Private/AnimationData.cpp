@@ -113,12 +113,13 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("Corvus_SD_ParryDeflect_LUp", 2.f);
     SET_ANIM_SPEED("Corvus_SD_HurtXLF", 2.f);
     SET_ANIM_SPEED("Corvus_SD_HurtXXLF", 2.f);
-    SET_ANIM_SPEED("Corvus_SD_HurtKnockDown", 2.f);
+    SET_ANIM_SPEED("Corvus_SD_HurtKnockDown", 1.5f);
     SET_ANIM_SPEED("Corvus_SD_HurtFallDown_End", 2.f);
     SET_ANIM_SPEED("Corvus_SD_HurtFallDown", 2.f);
 
 	SET_ANIM_SPEED("Corvus_SD_ParryDeflect_R", 2.f);
 	SET_ANIM_SPEED("Corvus_SD_ParryDeflect_RUp", 2.f);
+	SET_ANIM_SPEED("Corvus_SD_Defense_Hurt_Large", 2.f);
 
 	SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_L_UP", 2.f);
 	SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_R_UP", 2.f);
@@ -126,7 +127,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 	SET_ANIM_SPEED("Corvus_SD_Ladder_Climb_R_Down", 2.f);
 
 	SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution", 1.6f);
-	SET_ANIM_SPEED("Corvus_VSBossBat_Execution01", 1.4f);
+	SET_ANIM_SPEED("Corvus_VSBossBat_Execution01", 2.24f);
 
 	SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 7.f);
 	SET_ANIM_SPEED("Corvus_SD_TD2Thorw2", 2.5f);
@@ -230,10 +231,10 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("BossBat_StunStart", 1.3f);
     SET_ANIM_SPEED("BossBat_TakeExecution_End", 1.2f);
     SET_ANIM_SPEED("BossBat_TakeExecution_Loop", 1.2f);
-    SET_ANIM_SPEED("BossBat_TakeExecution_Start01", 1.46f);
+    SET_ANIM_SPEED("BossBat_TakeExecution_Start01", 1.92f);
     SET_ANIM_SPEED("BossBat_TurnL90", 2.f);
     SET_ANIM_SPEED("BossBat_TurnR90", 2.f);
-    SET_ANIM_SPEED("BossBat_WalkF", 2.f);
+    SET_ANIM_SPEED("BossBat_WalkF", 4.f);
 
 
 #pragma endregion // Bat

@@ -1,5 +1,5 @@
 #pragma once
-#include "BossBat/BatBossState_IdleStates.h"
+#include "BossBat/BatBossStateBase.h"
 
 BEGIN(Engine)
 class CModel;
@@ -7,12 +7,15 @@ END
 
 BEGIN(Client)
 
-class CBatBossState_Idle :
-	public CBatBossState_IdleStates
+class CBatBossState_BackJump :
+	public CBatBossStateBase
 {
-	GAMECLASS_H(CBatBossState_Idle);
-	CLONE_H(CBatBossState_Idle, CComponent)
-		SHALLOW_COPY(CBatBossState_Idle)
+	GAMECLASS_H(CBatBossState_BackJump);
+	CLONE_H(CBatBossState_BackJump, CComponent)
+		SHALLOW_COPY(CBatBossState_BackJump)
+
+public:
+	void   Set_SpecialAtk(_bool SpecialAtk) { m_bSpecialAtk = SpecialAtk; }
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
@@ -26,8 +29,11 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
+
 private:
 	void Call_AnimationEnd();
+private:
+	_bool        m_bSpecialAtk = false;
 protected:
 	virtual void OnDestroy() override;
 	void Free();

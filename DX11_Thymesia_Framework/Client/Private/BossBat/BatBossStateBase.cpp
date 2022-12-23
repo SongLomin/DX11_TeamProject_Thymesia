@@ -109,6 +109,86 @@ _bool CBatBossStateBase::Check_CrossJumpState()
 
 }
 
+_int CBatBossStateBase::Check_DotAttackState()
+{
+	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+
+	CORSS_RESULT CorssResult = CORSS_RESULT::CORSS_END;
+
+
+	BATATTACK_DOTRESULT DotResult = BATATTACK_DOTRESULT::BATATTACK_DOTRESULT_END;
+
+	_vector vCorssPotision = pCurrentPlayer.lock()->Get_Transform()->Get_Position();
+	vCorssPotision.m128_f32[1] = 0.f;
+	_vector vOtherDoCorssPositon = m_pOwner.lock()->Get_Transform()->Get_Position();
+	vOtherDoCorssPositon.m128_f32[1] = 0.f;
+	_vector vPlayerColToMonsterColDireciton = XMVector3Normalize(vOtherDoCorssPositon - vCorssPotision);
+
+	_vector vMyColiderLook = m_pOwner.lock()->Get_Transform()->Get_State(CTransform::STATE_LOOK);
+	vMyColiderLook = XMVector3Normalize(vMyColiderLook);
+
+	_vector fCross = XMVector3Cross(vMyColiderLook, vPlayerColToMonsterColDireciton);
+	_float  fYCross = XMVectorGetZ(XMVector3Cross(vMyColiderLook, fCross));
+	//_float fDir = XMVector3Dot(fCross, XMVectorSet(0.f, 1.f, 0.f, 0.f)).m128_f32[0];
+
+	if (fYCross > 0.f) //양수 오른쪽
+	{
+		CorssResult = CORSS_RESULT::RIGHT;
+	}
+	else // 음수
+	{
+		CorssResult = CORSS_RESULT::LEFT;
+	}
+
+
+	_vector vMyDotPositon = pCurrentPlayer.lock()->Get_Transform()->Get_Position();
+	vMyDotPositon.m128_f32[1] = 0.f;
+	_vector vOtherDotPositon = m_pOwner.lock()->Get_Transform()->Get_Position();
+	vOtherDotPositon.m128_f32[1] = 0.f;
+
+	_vector vOtherColliderToPlayerClollider = XMVector3Normalize(vMyDotPositon - vOtherDotPositon);
+
+	_vector vMyLookVecTor = m_pOwner.lock()->Get_Transform()->Get_State(CTransform::STATE_LOOK);
+	vMyLookVecTor.m128_f32[1] = 0;
+	vMyLookVecTor = XMVector3Normalize(vMyLookVecTor);
+
+	_float fCos = XMVectorGetX(XMVector3Dot(vOtherColliderToPlayerClollider, vMyLookVecTor));
+
+
+	//왼쪽오른쪽구분을먼저하고
+	//그리고 가운데랑왼쪽 둘이구분해야도미 시발 
+
+	//왼쪽
+
+	if (CorssResult == CORSS_RESULT::LEFT)
+	{
+		if (fCos  < 0.93969262f)
+		{
+			return (_uint)BATATTACK_DOTRESULT::LEFT;
+		}
+		else
+		{
+			return (_uint)BATATTACK_DOTRESULT::MID;
+		}
+	}
+	else if (CorssResult == CORSS_RESULT::RIGHT)
+	{
+		if (fCos < 0.93969262f)
+		{
+			return (_uint)BATATTACK_DOTRESULT::RIGHT;
+		}
+		else
+		{
+			return (_uint)BATATTACK_DOTRESULT::MID;
+		}
+	}
+	
+
+		
+}
+
+
+
 void CBatBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
 {
 	__super::OnHit(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
@@ -208,7 +288,7 @@ void CBatBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 				pStatus.lock()->Minus_LifePoint(1);
 				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_BATEXECUTION);
 				_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
-				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(-1.6f, 0.f, 11.f, 0.f));
+				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(-1.3f, 0.f, 11.3f, 0.f));
 				pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
 					vResultOtherWorldMatrix.r[3],
 					GAMEINSTANCE->Get_DeltaTime(),
@@ -222,7 +302,7 @@ void CBatBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 			{
 				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_BATEXECUTION);
 				_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
-				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(-1.6f, 0.f, 11.f, 0.f));
+				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(-1.3f, 0.f, 11.3f, 0.f));
 				pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
 					vResultOtherWorldMatrix.r[3],
 					GAMEINSTANCE->Get_DeltaTime(),

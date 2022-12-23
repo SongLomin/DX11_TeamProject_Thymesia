@@ -250,6 +250,8 @@ _bool CCorvusState_ClawAttackAway::Check_AndChangeNextState()
 	if (!CPlayerStateBase::Check_Requirement())
 		return false;
 
+	
+
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 	{
 		if (Check_RequirementAVoidState())

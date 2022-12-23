@@ -144,13 +144,13 @@ _bool CBatBossState_Bite_1::Check_AndChangeNextState()
 	}
 
 	
-	if (ComputeAngleWithPlayer() > 0.98f)
+	if (ComputeAngleWithPlayer() > 0.98f && m_bAttackLookAtLimit)
 	{
 		Rotation_TargetToLookDir();
 		m_bAttackLookAtLimit = false;
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 242)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 242)
 	{
 		Get_OwnerCharacter().lock()->Change_State<CBatBossState_Bite_2>(0.05f);
 		return true;

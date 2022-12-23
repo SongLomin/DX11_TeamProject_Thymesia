@@ -37,4 +37,8 @@
 #include "BossBat/BatBossState_TurnR.h"
 #include "BossBat/BatBossState_WalkF.h"
 #include "BossBat/BatBossState_SonicBullet.h"
-
+#include "BossBat/BatBossState_AttackIdle.h"
+#include "BossBat/BatBossState_ChargeIdle.h"
+#include "BossBat/BatBossState_IdleStates.h"
+#include "BossBat/BatBossState_HellIdle.h"
+#include "BossBat/BatBossState_BackJump.h"

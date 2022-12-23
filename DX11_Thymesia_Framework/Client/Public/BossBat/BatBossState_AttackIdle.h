@@ -7,12 +7,13 @@ END
 
 BEGIN(Client)
 
-class CBatBossState_Idle :
+class CBatBossState_AttackIdle :
 	public CBatBossState_IdleStates
 {
-	GAMECLASS_H(CBatBossState_Idle);
-	CLONE_H(CBatBossState_Idle, CComponent)
-		SHALLOW_COPY(CBatBossState_Idle)
+	GAMECLASS_H(CBatBossState_AttackIdle);
+	CLONE_H(CBatBossState_AttackIdle, CComponent)
+		SHALLOW_COPY(CBatBossState_AttackIdle)
+
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
@@ -25,6 +26,7 @@ protected:
 	virtual void OnStateStart(const _float& In_fAnimationBlendTime) override;
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
+
 
 private:
 	void Call_AnimationEnd();

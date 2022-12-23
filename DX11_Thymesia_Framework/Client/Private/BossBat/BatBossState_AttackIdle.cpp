@@ -10,16 +10,16 @@
 #include "BossBat/BatStates.h"
 #include "PhysXController.h"
 
-GAMECLASS_C(CBatBossState_Idle);
-CLONE_C(CBatBossState_Idle, CComponent)
+GAMECLASS_C(CBatBossState_AttackIdle);
+CLONE_C(CBatBossState_AttackIdle, CComponent)
 
-HRESULT CBatBossState_Idle::Initialize_Prototype()
+HRESULT CBatBossState_AttackIdle::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 	return S_OK;
 }
 
-HRESULT CBatBossState_Idle::Initialize(void* pArg)
+HRESULT CBatBossState_AttackIdle::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
@@ -27,16 +27,16 @@ HRESULT CBatBossState_Idle::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CBatBossState_Idle::Start()
+void CBatBossState_AttackIdle::Start()
 {
 	__super::Start();
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_Idle");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Idle::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_AttackIdle::Call_AnimationEnd, this);
 }
 
-void CBatBossState_Idle::Tick(_float fTimeDelta)
+void CBatBossState_AttackIdle::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
@@ -44,7 +44,8 @@ void CBatBossState_Idle::Tick(_float fTimeDelta)
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
-void CBatBossState_Idle::LateTick(_float fTimeDelta)
+
+void CBatBossState_AttackIdle::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
@@ -53,7 +54,9 @@ void CBatBossState_Idle::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-void CBatBossState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
+
+
+void CBatBossState_AttackIdle::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
@@ -72,6 +75,8 @@ void CBatBossState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 		m_bTurnCheck = true;
 	}
 
+
+
 	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
@@ -81,28 +86,29 @@ void CBatBossState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif
 }
 
-void CBatBossState_Idle::OnStateEnd()
+void CBatBossState_AttackIdle::OnStateEnd()
 {
 	__super::OnStateEnd();
 
 }
 
-void CBatBossState_Idle::Free()
+
+void CBatBossState_AttackIdle::Free()
 {
 
 }
 
-void CBatBossState_Idle::Call_AnimationEnd()
+void CBatBossState_AttackIdle::Call_AnimationEnd()
 {
 
 }
 
-void CBatBossState_Idle::OnDestroy()
+void CBatBossState_AttackIdle::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_Idle::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_AttackIdle::Call_AnimationEnd, this);
 }
 
-_bool CBatBossState_Idle::Check_AndChangeNextState()
+_bool CBatBossState_AttackIdle::Check_AndChangeNextState()
 {
 
 	if (!Check_Requirement())
@@ -112,23 +118,66 @@ _bool CBatBossState_Idle::Check_AndChangeNextState()
 
 	_float fPToMDistance = Get_DistanceWithPlayer();
 
-	if (m_bHeelScream) //Çï¸ðµåÀÏ¶§
+	if (fPToMDistance <= 11.f)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CBatBossState_HellIdle>(0.05f);
-		return true;
-	}
-	else //Çï¸ðµå¾Æ´Ò‹š
-	{
-		if (m_bChestCheck)
+		if (m_iAttackCount  >  2)
 		{
-			Get_OwnerCharacter().lock()->Change_State<CBatBossState_ChargeIdle>(0.05f);
+			Get_OwnerCharacter().lock()->Change_State<CBatBossState_BackJump>(0.05f);
+			m_iAttackCount = 0;
+			return true;
 		}
 		else
 		{
-			Get_OwnerCharacter().lock()->Change_State<CBatBossState_AttackIdle>(0.05f);
+			int iRand = rand() % 3;
+
+			switch (iRand)
+			{
+			case 0:
+				Check_CrossAttackState();
+				break;
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CBatBossState_Bite_1>(0.05f);
+				break;
+			case 2:
+				Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_SmarhL>(0.05f);
+				break;
+			}
+		}
+
+		
+		return true;
+	}
+	else if (fPToMDistance > 11.f && fPToMDistance <= 16.f)
+	{
+		int iRand = rand() % 2;
+
+		switch (iRand)
+		{
+		case 0:
+			Get_OwnerCharacter().lock()->Change_State<CBatBossState_Storm>(0.05f);
+			break;
+		case 1:
+			Get_OwnerCharacter().lock()->Change_State<CBatBossState_BackJump>(0.05f);
+			break;
 		}
 		return true;
 	}
+	else
+	{
+		int iRand = rand() % 2;
+
+		switch (iRand)
+		{
+		case 0:
+			Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_ForwardL>(0.05f);
+			break;
+		case 1:
+			Get_OwnerCharacter().lock()->Change_State<CBatBossState_Car>(0.05f);
+			break;
+		}
+		return true;
+	}
+
 
 	return false;
 }

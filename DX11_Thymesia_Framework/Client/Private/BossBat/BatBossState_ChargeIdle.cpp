@@ -10,16 +10,16 @@
 #include "BossBat/BatStates.h"
 #include "PhysXController.h"
 
-GAMECLASS_C(CBatBossState_Idle);
-CLONE_C(CBatBossState_Idle, CComponent)
+GAMECLASS_C(CBatBossState_ChargeIdle);
+CLONE_C(CBatBossState_ChargeIdle, CComponent)
 
-HRESULT CBatBossState_Idle::Initialize_Prototype()
+HRESULT CBatBossState_ChargeIdle::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
 	return S_OK;
 }
 
-HRESULT CBatBossState_Idle::Initialize(void* pArg)
+HRESULT CBatBossState_ChargeIdle::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
@@ -27,16 +27,16 @@ HRESULT CBatBossState_Idle::Initialize(void* pArg)
 	return S_OK;
 }
 
-void CBatBossState_Idle::Start()
+void CBatBossState_ChargeIdle::Start()
 {
 	__super::Start();
 
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("BossBat_Idle");
 
-	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_Idle::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CBatBossState_ChargeIdle::Call_AnimationEnd, this);
 }
 
-void CBatBossState_Idle::Tick(_float fTimeDelta)
+void CBatBossState_ChargeIdle::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
@@ -44,7 +44,8 @@ void CBatBossState_Idle::Tick(_float fTimeDelta)
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
-void CBatBossState_Idle::LateTick(_float fTimeDelta)
+
+void CBatBossState_ChargeIdle::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
 
@@ -53,7 +54,9 @@ void CBatBossState_Idle::LateTick(_float fTimeDelta)
 	Check_AndChangeNextState();
 }
 
-void CBatBossState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
+
+
+void CBatBossState_ChargeIdle::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
@@ -72,6 +75,8 @@ void CBatBossState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 		m_bTurnCheck = true;
 	}
 
+
+
 	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
@@ -81,54 +86,53 @@ void CBatBossState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 #endif
 }
 
-void CBatBossState_Idle::OnStateEnd()
+void CBatBossState_ChargeIdle::OnStateEnd()
 {
 	__super::OnStateEnd();
 
 }
 
-void CBatBossState_Idle::Free()
+
+void CBatBossState_ChargeIdle::Free()
 {
 
 }
 
-void CBatBossState_Idle::Call_AnimationEnd()
+void CBatBossState_ChargeIdle::Call_AnimationEnd()
 {
 
 }
 
-void CBatBossState_Idle::OnDestroy()
+void CBatBossState_ChargeIdle::OnDestroy()
 {
-	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_Idle::Call_AnimationEnd, this);
+	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CBatBossState_ChargeIdle::Call_AnimationEnd, this);
 }
 
-_bool CBatBossState_Idle::Check_AndChangeNextState()
+_bool CBatBossState_ChargeIdle::Check_AndChangeNextState()
 {
 
 	if (!Check_Requirement())
 		return false;
 
-	//6.5기준이로잡으면될듯
+
 
 	_float fPToMDistance = Get_DistanceWithPlayer();
 
-	if (m_bHeelScream) //헬모드일때
+
+	if (m_iChargeCount == 1)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CBatBossState_HellIdle>(0.05f);
+		Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_Chest>(0.05f);
 		return true;
 	}
-	else //헬모드아닐떄
+	if(fPToMDistance > 20.f && m_iChargeCount == 0)
 	{
-		if (m_bChestCheck)
-		{
-			Get_OwnerCharacter().lock()->Change_State<CBatBossState_ChargeIdle>(0.05f);
-		}
-		else
-		{
-			Get_OwnerCharacter().lock()->Change_State<CBatBossState_AttackIdle>(0.05f);
-		}
+		Get_OwnerCharacter().lock()->Change_State<CBatBossState_WalkF>(0.05f);
+		m_iChargeCount = 1;
 		return true;
 	}
+	
+
+
 
 	return false;
 }

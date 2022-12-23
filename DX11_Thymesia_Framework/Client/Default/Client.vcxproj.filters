@@ -314,7 +314,7 @@
       <Filter>05. Component\03. State\01. AIStateBase\00.NorState\03.Run</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\NorMonState\NorMonState_TurnL90.h">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\04.TurnL90</Filter>
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\06.LitghAttack1\04.TurnL90</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\NorMonState\NorMonState_TurnR90.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorState\05.TurnR90</Filter>
@@ -1198,9 +1198,6 @@
     <ClInclude Include="..\Public\BossBat\BatStates.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\BossBat\BatBossState_Idle.h">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\BossBat\BatBossState_Start.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\00.Start</Filter>
     </ClInclude>
@@ -1584,6 +1581,27 @@
     <ClInclude Include="..\Public\Preset_NvClothMesh.h">
       <Filter>06. DataPreset\07. Preset_NvClothMesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_BackJump.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\12.Storm\00.BackJump</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_VargSwordStart.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\02.PS_VargSword\00.VargSwordStart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_Idle.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle\00.Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_ChargeIdle.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle\02.ChargeIdle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_IdleStates.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_AttackIdle.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle\01.AttackIdle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossBat\BatBossState_HellIdle.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle\03.HellIdle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1875,7 +1893,7 @@
       <Filter>05. Component\03. State\01. AIStateBase\00.NorState\03.Run</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\NorMonState\NorMonState_TurnL90.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\04.TurnL90</Filter>
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\06.LitghAttack1\04.TurnL90</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\NorMonState\NorMonState_TurnR90.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorState\05.TurnR90</Filter>
@@ -2820,9 +2838,6 @@
     <ClCompile Include="..\Private\BossBat\Bat.cpp">
       <Filter>02. GameObject\03. Actor\Character\Boss\02.Bat</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\BossBat\BatBossState_Idle.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\BossBat\BatBossState_Start.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\00.Start</Filter>
     </ClCompile>
@@ -3210,6 +3225,27 @@
     </ClCompile>
     <ClCompile Include="..\Private\Preset_NvClothMesh.cpp">
       <Filter>06. DataPreset\07. Preset_NvClothMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_BackJump.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\12.Storm\00.BackJump</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_VargSwordStart.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\02.PS_VargSword\00.VargSwordStart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_Idle.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle\00.Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_AttackIdle.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle\01.AttackIdle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_ChargeIdle.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle\02.ChargeIdle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_IdleStates.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossBat\BatBossState_HellIdle.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle\03.HellIdle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -4037,9 +4073,6 @@
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\03.Run">
       <UniqueIdentifier>{bbf9fd30-8280-49b5-b9db-4d8be80b07a5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\04.TurnL90">
-      <UniqueIdentifier>{02be8622-50d7-4460-8f70-a69504affb03}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\05.TurnR90">
       <UniqueIdentifier>{cb1e378f-d295-4603-96ae-ff08e5ef31fb}</UniqueIdentifier>
     </Filter>
@@ -4762,6 +4795,27 @@
     </Filter>
     <Filter Include="06. DataPreset\07. Preset_NvClothMesh">
       <UniqueIdentifier>{5d34804a-c93d-4e31-ba18-1ff1280567ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\12.Storm\00.BackJump">
+      <UniqueIdentifier>{5f43e865-0484-4fd6-83f8-17dd6df66616}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\02.PS_VargSword\00.VargSwordStart">
+      <UniqueIdentifier>{59e863d4-926f-45c7-bdc0-70ee2f0c3f30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle\00.Idle">
+      <UniqueIdentifier>{2a81ea64-5167-46fa-81c1-fd08acf9d6d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle\01.AttackIdle">
+      <UniqueIdentifier>{172a5169-b481-4eb7-856f-04efd106d67a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle\02.ChargeIdle">
+      <UniqueIdentifier>{96930a01-1631-4c50-b53d-6cd936e9bc5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle\03.HellIdle">
+      <UniqueIdentifier>{7ebce04c-c7c7-478f-b6d1-98c97fd0127b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\06.LitghAttack1\04.TurnL90">
+      <UniqueIdentifier>{02be8622-50d7-4460-8f70-a69504affb03}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

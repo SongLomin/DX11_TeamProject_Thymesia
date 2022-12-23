@@ -16,6 +16,7 @@
 #include "UI_PauseMenu.h"
 #include "UIManager.h"
 #include "UI_AppearEventVarg.h"
+#include "Monster.h"
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -432,6 +433,7 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_HurtFallDown);
 	ADD_STATE_MACRO(CCorvusState_HurtFallDownEnd);
 	ADD_STATE_MACRO(CCorvusState_KnockBack);
+	ADD_STATE_MACRO(CCorvusState_PS_VargSwordStart);
 
 
 
@@ -475,6 +477,10 @@ void CCorvus::Move_RootMotion_Internal()
 
 void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
+
+	__super::OnCollisionEnter(pMyCollider, pOtherCollider);
+
+
 	switch ((COLLISION_LAYER)pOtherCollider.lock()->Get_CollisionLayer())
 	{
 	case Client::COLLISION_LAYER::LADDER_UP:
@@ -499,7 +505,8 @@ void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 		break;
 	}
 
-	__super::OnCollisionEnter(pMyCollider,pOtherCollider);
+
+	
 }
 
 void CCorvus::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
@@ -534,6 +541,9 @@ void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::ITEM;
 		break;
 	}
+
+	
+	
 }
 
 void CCorvus::OnBattleEnd()
@@ -580,9 +590,9 @@ void CCorvus::OnEventMessage(_uint iArg)
 		Change_State<CCorvusState_Execution_Start>();
 	}
 
-	if (EVENT_TYPE::ON_RESET_OBJ == (EVENT_TYPE)iArg)
+	if (EVENT_TYPE::ON_STEALCORVUS == (EVENT_TYPE)iArg)
 	{
-
+		Change_State<CCorvusState_ClawPlunderAttack>();
 	}
 
 }

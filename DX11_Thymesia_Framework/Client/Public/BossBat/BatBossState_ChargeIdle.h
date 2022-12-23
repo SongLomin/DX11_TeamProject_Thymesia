@@ -7,12 +7,12 @@ END
 
 BEGIN(Client)
 
-class CBatBossState_Idle :
+class CBatBossState_ChargeIdle :
 	public CBatBossState_IdleStates
 {
-	GAMECLASS_H(CBatBossState_Idle);
-	CLONE_H(CBatBossState_Idle, CComponent)
-		SHALLOW_COPY(CBatBossState_Idle)
+	GAMECLASS_H(CBatBossState_ChargeIdle);
+	CLONE_H(CBatBossState_ChargeIdle, CComponent)
+		SHALLOW_COPY(CBatBossState_ChargeIdle)
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
