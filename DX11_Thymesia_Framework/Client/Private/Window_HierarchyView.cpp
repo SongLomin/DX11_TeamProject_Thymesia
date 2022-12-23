@@ -125,10 +125,10 @@ void CWindow_HierarchyView::Write_Json(json& Out_Json)
 
 	while (iter_elem != m_pGameObjects.end())
 	{
-		if (typeid(CEditMapCollider).hash_code() == iter_elem->HashCode ||
-			typeid(CEditSetActor).hash_code()    == iter_elem->HashCode ||
-			typeid(CEditGroupProp).hash_code()   == iter_elem->HashCode ||
-			typeid(CEditEventContoller).hash_code()      == iter_elem->HashCode)
+		if (typeid(CEditMapCollider).hash_code()     == iter_elem->HashCode ||
+			typeid(CEditSetActor).hash_code()        == iter_elem->HashCode ||
+			typeid(CEditGroupProp).hash_code()       == iter_elem->HashCode ||
+			typeid(CEditEventContoller).hash_code()  == iter_elem->HashCode)
 		{
 			++iter_elem;
 			continue;
@@ -296,7 +296,9 @@ void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
 			     typeid(CDynamic_Prop).hash_code()           == TempDesc.HashCode ||
 				 typeid(CLight_Prop).hash_code()             == TempDesc.HashCode ||
 				 typeid(CInteraction_Door).hash_code()       == TempDesc.HashCode ||
+			     typeid(CInteraction_CastleGate).hash_code() == TempDesc.HashCode ||
 				 typeid(CInteraction_CheckPoint).hash_code() == TempDesc.HashCode ||
+			     typeid(CInteraction_NextPoint).hash_code()  == TempDesc.HashCode ||
 				 typeid(CInteraction_Elevator).hash_code()   == TempDesc.HashCode ||
 				 typeid(CInteraction_Ladder).hash_code()     == TempDesc.HashCode ||
 			     typeid(CSection_Eventer).hash_code()        == TempDesc.HashCode)

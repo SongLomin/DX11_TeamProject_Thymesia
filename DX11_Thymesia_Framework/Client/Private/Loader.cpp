@@ -116,6 +116,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Elevator>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_DeadSpot>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Door>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_CastleGate>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Note>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Item>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CSection_Eventer>();
