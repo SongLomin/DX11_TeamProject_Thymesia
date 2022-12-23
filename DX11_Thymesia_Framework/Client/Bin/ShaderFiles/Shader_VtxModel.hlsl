@@ -341,6 +341,7 @@ PS_OUT PS_MAIN_NORMAL_PBR(PS_IN_NORMAL In)
 
     Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     clip(Out.vDiffuse.a - 0.1f);
+    Out.vDiffuse.a = 1.f;
     
     /* 0 ~ 1 */
     float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
