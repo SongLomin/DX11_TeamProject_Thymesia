@@ -347,7 +347,6 @@ PS_OUT PS_MAIN_WATER(DS_OUT In)
     vPixelNorm = float3(vPixelNorm.rg, lerp(1, vPixelNorm.b, 1.f));
     
     float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));
-    vPixelNorm = vPixelNorm * 2.f - 1.f;
     vPixelNorm = mul(vPixelNorm, WorldMatrix);
  
     Out.vDiffuse = 0.1f * Out.vDiffuse + 0.9f * vector(0.8f, 0.f, 0.01f, 1.f);
