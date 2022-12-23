@@ -929,14 +929,13 @@ void CEffect_Rect::Play(_float fTimeDelta)
 		return;
 	}
 
-	_float	fFrameTime(HZ_144);
 	_int	iTickCount(0);
 	m_fPreFrame += fTimeDelta;
 
-	while (fFrameTime <= m_fPreFrame)
+	while (HZ_144 <= m_fPreFrame)
 	{
 		++iTickCount;
-		m_fPreFrame -= fFrameTime;
+		m_fPreFrame -= HZ_144;
 	}
 
 	_matrix BoneMatrix(XMMatrixIdentity());
@@ -986,22 +985,23 @@ void CEffect_Rect::Play(_float fTimeDelta)
 
 				continue;
 			}
+
 			m_tParticleDescs[i].fCurrentLifeTime += fTimeDelta;
 		}
 
 
 		for (_int x(0); x < iTickCount; ++x)
 		{
-			Play_Internal(i, fFrameTime, BoneMatrix);
+			Play_Internal(i, HZ_144, BoneMatrix);
 		}
 	}
 
 	for (_int x(0); x < iTickCount; ++x)
 	{
-		Update_ParticleUV(fFrameTime);
+		Update_ParticleUV(HZ_144);
 
 		if (Check_Option(EFFECTPARTICLE_DESC::Option6::Use_Glow))
-			Update_ParticleGlowColor(fFrameTime);
+			Update_ParticleGlowColor(HZ_144);
 	}
 }
 
@@ -1165,8 +1165,6 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 
 		if (Check_Option(EFFECTPARTICLE_DESC::Option3::Ratio_Scale))
 			m_tOriginalParticleDescs[i].fTargetYScaleRatio = SMath::fRandom(m_tEffectParticleDesc.fMinYScaleRatio, m_tEffectParticleDesc.fMaxYScaleRatio);
-
-
 	}
 }
 

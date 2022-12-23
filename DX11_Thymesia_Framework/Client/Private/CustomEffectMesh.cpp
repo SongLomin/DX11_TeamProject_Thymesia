@@ -40,10 +40,10 @@ HRESULT CCustomEffectMesh::Initialize(void* pArg)
 
 	m_pShaderCom.lock()->Set_ShaderInfo(TEXT("Shader_EffectMesh"), VTXANIM_DECLARATION::Element, VTXANIM_DECLARATION::iNumElements);
 
-	m_pColorDiffuseTextureCom = CGameObject::Add_Component<CTexture>();
-	m_pNoiseTextureCom        = CGameObject::Add_Component<CTexture>();
-	m_pMaskTextureCom         = CGameObject::Add_Component<CTexture>();
-	m_pDissolveTextureCom     = CGameObject::Add_Component<CTexture>();
+	m_pColorDiffuseTextureCom = Add_Component<CTexture>();
+	m_pNoiseTextureCom        = Add_Component<CTexture>();
+	m_pMaskTextureCom         = Add_Component<CTexture>();
+	m_pDissolveTextureCom     = Add_Component<CTexture>();
 
 	m_pColorDiffuseTextureCom.lock()->Use_Texture("UVColorDiffuse");
 	m_pNoiseTextureCom.lock()->Use_Texture("UVNoise");
@@ -52,13 +52,13 @@ HRESULT CCustomEffectMesh::Initialize(void* pArg)
 	// TODO : Change to Dissolve...
 	m_pDissolveTextureCom.lock()->Use_Texture("UVNoise");
 
-	CBase::Set_Enable(false);
+	Set_Enable(false);
 
 	XMStoreFloat4x4(&m_ParentMatrix, XMMatrixIdentity());
 	ZeroMemory(&m_tEffectMeshDesc, sizeof(m_tEffectMeshDesc));
 
 #ifdef _USE_THREAD_
-	CGameObject::Use_Thread(THREAD_TYPE::TICK);
+	Use_Thread(THREAD_TYPE::TICK);
 #endif
 	return S_OK;
 }
@@ -71,7 +71,7 @@ HRESULT CCustomEffectMesh::Start()
 
 void CCustomEffectMesh::Tick(_float fTimeDelta)
 {
-	if (!CBase::Get_Enable())
+	if (!Get_Enable())
 		return;
 
 	__super::Tick(fTimeDelta);
@@ -87,7 +87,7 @@ void CCustomEffectMesh::Tick(_float fTimeDelta)
 
 void CCustomEffectMesh::LateTick(_float fTimeDelta)
 {
-	if (!CBase::Get_Enable())
+	if (!Get_Enable())
 		return;
 
 	if (m_fCurrentInitTime > 0.f)
@@ -106,16 +106,18 @@ void CCustomEffectMesh::LateTick(_float fTimeDelta)
 
 HRESULT CCustomEffectMesh::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	if (!CBase::Get_Enable())
+	if (!Get_Enable())
+	{
 		return E_FAIL;
+	}
+
+	SetUp_ShaderResource();
 
 	if (m_tEffectMeshDesc.bApplyDissolve)
 	{
-		SetUp_ShaderResource();
 		SetUp_ShaderResource_Dissolve();
-		CGameObject::CallBack_Render();
+		CallBack_Render();
 
-		_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 		_uint iShaderPassIndex(0);
 
 		if (m_tEffectMeshDesc.fDissolveDisappearTime <= m_fCurrentLifeTime)
@@ -123,7 +125,7 @@ HRESULT CCustomEffectMesh::Render(ID3D11DeviceContext* pDeviceContext)
 		else
 			iShaderPassIndex = m_tEffectMeshDesc.iDissolveAppearShaderPassIndex;
 
-		for (_uint i(0); i < iNumMeshContainers; ++i)
+		for (_uint i(0); i < m_iNumMeshContainers; ++i)
 		{
 			m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 			m_pShaderCom.lock()->Begin(iShaderPassIndex, pDeviceContext);
@@ -132,11 +134,9 @@ HRESULT CCustomEffectMesh::Render(ID3D11DeviceContext* pDeviceContext)
 	}
 	else
 	{
-		SetUp_ShaderResource();
-		CGameObject::CallBack_Render();
+		CallBack_Render();
 
-		_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
-		for (_uint i(0); i < iNumMeshContainers; ++i)
+		for (_uint i(0); i < m_iNumMeshContainers; ++i)
 		{
 			m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 			m_pShaderCom.lock()->Begin(m_tEffectMeshDesc.iShaderPassIndex, pDeviceContext);
@@ -177,8 +177,7 @@ void CCustomEffectMesh::SetUp_ShaderResource()
 	_vector vCamDir(GAMEINSTANCE->Get_Transform(CPipeLine::D3DTS_WORLD).r[2]);
 	m_pShaderCom.lock()->Set_RawValue("g_vCamDirection", &vCamDir, sizeof(_vector));
 #pragma endregion // World, View, Proj, Camera
-	m_pShaderCom.lock()->Set_RawValue("g_bBillboard",          &m_tEffectMeshDesc.bBillBoard,          sizeof(_bool));
-
+	
 	m_pColorDiffuseTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_DiffuseTexture", m_tEffectMeshDesc.iDiffuseTextureIndex);
 	m_pMaskTextureCom.lock()->        Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", m_tEffectMeshDesc.iMaskTextureIndex);
 	m_pNoiseTextureCom.lock()->       Set_ShaderResourceView(m_pShaderCom, "g_NoiseTexture", m_tEffectMeshDesc.iNoiseTextureIndex);
@@ -257,31 +256,32 @@ void CCustomEffectMesh::Play(_float fTimeDelta)
 
 	if (m_fCurrentLifeTime >= m_tEffectMeshDesc.fLifeTime)
 	{
-		CBase::Set_Enable(false);
+		Set_Enable(false);
 		m_bFinish = true;
 		return;
 	}
 
-	_float	fFrameTime(HZ_144);
 	_int	iTickCount(0);
 
-	m_fPreFrame += fFrameTime;
-	while (m_fPreFrame >= fFrameTime)
+	m_fPreFrame += HZ_144;
+	while (m_fPreFrame >= HZ_144)
 	{
 		++iTickCount;
-		m_fPreFrame -= fFrameTime;
+		m_fPreFrame -= HZ_144;
 	}
 
 	for (_int i(0); i < iTickCount; ++i)
-		Play_Internal(fFrameTime);
+		Play_Internal(HZ_144);
 
 	m_fCurrentLifeTime += fTimeDelta;
 }
 
 void CCustomEffectMesh::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 {
-	CBase::Set_Enable(true);
+	Set_Enable(true);
 	m_bFinish = false;
+
+	m_iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 
 	if (!pParentTransform.lock())
 		assert(0);
@@ -383,7 +383,6 @@ void CCustomEffectMesh::Write_EffectJson(json& Out_Json)
 	Out_Json["Sync_AnimationKey"] = m_tEffectMeshDesc.iSyncAnimationKey;
 
 	Out_Json["Follow_Transform"]  = m_tEffectMeshDesc.bFollowTransform;
-	Out_Json["BillBoard"]         = m_tEffectMeshDesc.bBillBoard;
 
 	Out_Json["Is_Boner"]          = m_tEffectMeshDesc.bBoner;
 
@@ -554,9 +553,6 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 #ifdef _DEBUG
 JUMP:
 #endif // _DEBUG
-	if (In_Json.find("BillBoard") != In_Json.end())
-		m_tEffectMeshDesc.bBillBoard = In_Json["BillBoard"];
-
 	if (In_Json.find("Start_Position") != In_Json.end())
 		CJson_Utility::Load_Float3(In_Json["Start_Position"], m_tEffectMeshDesc.vStartPosition);
 
@@ -750,6 +746,7 @@ JUMP:
 		m_tEffectMeshDesc.iOptionType = In_Json["Option_Type"];
 
 	m_pModelCom.lock()->Init_Model(m_szEffectName.c_str());
+	m_iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 }
 
 #ifdef _DEBUG
@@ -1706,10 +1703,6 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 			ImGui::Text("Follow Transform");
 			ImGui::SameLine();
 			ImGui::Checkbox("##Follow_Transform", &m_tEffectMeshDesc.bFollowTransform);
-
-			ImGui::Text("BillBoard");
-			ImGui::SameLine();
-			ImGui::Checkbox("##BillBoard", &m_tEffectMeshDesc.bBillBoard);
 
 			if (ImGui::CollapsingHeader("Animation Sync"))
 				Tool_AnimationSync();

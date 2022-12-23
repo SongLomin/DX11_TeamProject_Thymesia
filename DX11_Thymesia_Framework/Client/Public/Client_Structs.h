@@ -30,7 +30,6 @@ namespace Client
 #pragma endregion
 
 		_bool		bFollowTransform;
-		_bool		bBillBoard;
 
 		_bool		bBoner;
 
