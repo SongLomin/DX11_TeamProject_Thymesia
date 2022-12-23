@@ -32,7 +32,7 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
             //XMStoreFloat3(&pAnimVertices[i].vPosition, XMVector3TransformCoord(XMLoadFloat3(&pAnimVertices[i].vPosition), In_TransformMatrix));
 
             memcpy(&pFBXAnimVertices[i].vNormal, &In_pAiMesh->mNormals[i], sizeof(_float3));
-            //XMStoreFloat3(&pAnimVertices[i].vNormal, XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&pAnimVertices[i].vNormal), In_TransformMatrix)));
+            XMStoreFloat3(&pFBXAnimVertices[i].vNormal, XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&pFBXAnimVertices[i].vNormal), In_TransformMatrix)));
 
             memcpy(&pFBXAnimVertices[i].vTexUV, &In_pAiMesh->mTextureCoords[0][i], sizeof(_float2));
             memcpy(&pFBXAnimVertices[i].vTangent, &In_pAiMesh->mTangents[i], sizeof(_float3));

@@ -1,7 +1,7 @@
 #include "ModelData.h"
 
 
-const static _bool g_bUseAssimp = true;
+const static _bool g_bUseAssimp = false;
 
 HRESULT MODEL_DATA::Make_ModelData(const char* szFilePath, const MODEL_TYPE& In_eModelType, _fmatrix In_TransformMatrix, _bool bAnimZero)
 {
