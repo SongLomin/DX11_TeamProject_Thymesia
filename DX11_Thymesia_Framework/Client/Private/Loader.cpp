@@ -211,6 +211,18 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
+	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Else/Binary/ ]"));
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+
+	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/ ]"));
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+
+	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/ ]"));
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv2_Fortress/Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+
+	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/ ]"));
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+
 	lstrcpy(m_szLoadingText, TEXT("Logo : Loading Complete"));
 	//D:\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Bin\Resources\Meshes\Map_Lv1_Circus\Binary
 	GAMEINSTANCE->Load_Model("P_DropTombstone01", "../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/P_DropTombstone01.bin", MODEL_TYPE::NONANIM, XMMatrixIdentity());
@@ -770,15 +782,6 @@ void CLoader::Load_AllEffectMeshInPath_Recursive(const filesystem::path& In_Path
 		szFileName = entry.path().filename().string().c_str();
 		szFileName = szFileName.substr(0, szFileName.size() - 4);
 
-#ifndef _BAKE_EFFECTMESH_FBX_
-		if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
-		{
-			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
-		}
-#endif // _BAKE_EFFECTMESH_FBX_
-
-#ifdef _DEBUG
-#ifdef _BAKE_EFFECTMESH_FBX_
 		if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0)
 		{
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
@@ -788,8 +791,6 @@ void CLoader::Load_AllEffectMeshInPath_Recursive(const filesystem::path& In_Path
 		{
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f));
 		}
-#endif // _BAKE_EFFECTMESH_FBX_
-#endif // _DEBUG
 		itr++;
 	}
 }

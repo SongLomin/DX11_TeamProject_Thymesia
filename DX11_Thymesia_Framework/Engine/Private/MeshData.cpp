@@ -9,6 +9,10 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
     iNumBones = In_pAiMesh->mNumBones;
     iMaterialIndex = In_pAiMesh->mMaterialIndex;
 
+
+    shared_ptr<VTXANIM[]> pFBXAnimVertices;
+    shared_ptr<VTXMODEL[]> pFBXNonAnimVertices;
+
     // 애니메이션
     if (MODEL_TYPE::ANIM == In_eModelType)
     {
@@ -19,21 +23,22 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
             Bone_Datas.push_back(pBoneData);
         }      
 
-        pAnimVertices = shared_ptr<VTXANIM[]>(new VTXANIM[iNumVertices]);
+        // FBX에서 가져온 중복된 버텍스 리스트.
+        pFBXAnimVertices = shared_ptr<VTXANIM[]>(DBG_NEW VTXANIM[iNumVertices]);
 
         for (_uint i(0); i < iNumVertices; ++i)
         {
-            memcpy(&pAnimVertices[i].vPosition, &In_pAiMesh->mVertices[i], sizeof(_float3));
+            memcpy(&pFBXAnimVertices[i].vPosition, &In_pAiMesh->mVertices[i], sizeof(_float3));
             //XMStoreFloat3(&pAnimVertices[i].vPosition, XMVector3TransformCoord(XMLoadFloat3(&pAnimVertices[i].vPosition), In_TransformMatrix));
 
-            memcpy(&pAnimVertices[i].vNormal, &In_pAiMesh->mNormals[i], sizeof(_float3));
-            XMStoreFloat3(&pAnimVertices[i].vNormal, XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&pAnimVertices[i].vNormal), In_TransformMatrix)));
+            memcpy(&pFBXAnimVertices[i].vNormal, &In_pAiMesh->mNormals[i], sizeof(_float3));
+            //XMStoreFloat3(&pAnimVertices[i].vNormal, XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&pAnimVertices[i].vNormal), In_TransformMatrix)));
 
-            memcpy(&pAnimVertices[i].vTexUV, &In_pAiMesh->mTextureCoords[0][i], sizeof(_float2));
-            memcpy(&pAnimVertices[i].vTangent, &In_pAiMesh->mTangents[i], sizeof(_float3));
+            memcpy(&pFBXAnimVertices[i].vTexUV, &In_pAiMesh->mTextureCoords[0][i], sizeof(_float2));
+            memcpy(&pFBXAnimVertices[i].vTangent, &In_pAiMesh->mTangents[i], sizeof(_float3));
 
-            Check_Position(In_pVertexInfo->vMax, pAnimVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft < _fRight; });
-            Check_Position(In_pVertexInfo->vMin, pAnimVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft > _fRight; });
+            Check_Position(In_pVertexInfo->vMax, pFBXAnimVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft < _fRight; });
+            Check_Position(In_pVertexInfo->vMin, pFBXAnimVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft > _fRight; });
         }
 
         for (_uint i(0); i < iNumBones; ++i)
@@ -46,67 +51,128 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
                 /* pAIBone->mWeights[j].mVertexId : 그 중에 j번째 정점의 인덱스는 뭐였는지?  */
                 /* pAIBone->mWeights[j].mWeight : j번째 정점에게 적용해야할 가중치. */
 
-                if (0 == pAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendWeight.x)
+                if (0 == pFBXAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendWeight.x)
                 {
-                    pAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendIndex.x = i;
-                    pAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendWeight.x = pAIBone->mWeights[j].mWeight;
+                    pFBXAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendIndex.x = i;
+                    pFBXAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendWeight.x = pAIBone->mWeights[j].mWeight;
                 }
 
-                else if (0 == pAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendWeight.y)
+                else if (0 == pFBXAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendWeight.y)
                 {
-                    pAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendIndex.y = i;
-                    pAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendWeight.y = pAIBone->mWeights[j].mWeight;
+                    pFBXAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendIndex.y = i;
+                    pFBXAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendWeight.y = pAIBone->mWeights[j].mWeight;
                 }
 
-                else if (0 == pAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendWeight.z)
+                else if (0 == pFBXAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendWeight.z)
                 {
-                    pAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendIndex.z = i;
-                    pAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendWeight.z = pAIBone->mWeights[j].mWeight;
+                    pFBXAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendIndex.z = i;
+                    pFBXAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendWeight.z = pAIBone->mWeights[j].mWeight;
                 }
 
                 else
                 {
-                    pAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendIndex.w = i;
-                    pAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendWeight.w = pAIBone->mWeights[j].mWeight;
+                    pFBXAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendIndex.w = i;
+                    pFBXAnimVertices[pAIBone->mWeights[j].mVertexId].vBlendWeight.w = pAIBone->mWeights[j].mWeight;
                 }
             }
         }
 
+        
+        vector<VTXANIM> pCompressedVTXs;
+        
+        // 중복된 정점을 제거해서 압축한다.
+        for (_int i = 1; i < iNumVertices; ++i)
+        {
+            _vector vVertice = XMLoadFloat3(&pFBXAnimVertices[i].vPosition);
+            _bool bFlag = false;
+            for (_int j = 0; j < pCompressedVTXs.size(); ++j)
+            {
+                _vector vTemp = XMLoadFloat3(&pCompressedVTXs[j].vPosition);
+
+                _float fLength = XMVector3Length(vTemp - vVertice).m128_f32[0];
+                if (fLength <= DBL_EPSILON)
+                {
+                    bFlag = true;
+                    break;
+                }
+            }
+
+            if (!bFlag)
+            {
+                pCompressedVTXs.push_back(pFBXAnimVertices[i]);
+            }
+        }
+
+        iNumVertices = pCompressedVTXs.size();
+        pAnimVertices = shared_ptr<VTXANIM[]>(DBG_NEW VTXANIM[pCompressedVTXs.size()]);
+        memcpy(&pAnimVertices[0], &pCompressedVTXs[0], sizeof(VTXANIM) * pCompressedVTXs.size());
     }
 
     // 애니메이션이 아님
     else if (MODEL_TYPE::NONANIM == In_eModelType)
     {
-        pVertices = shared_ptr<VTXMODEL[]>(new VTXMODEL[iNumVertices]);
-        pPosVertices = shared_ptr<VTXPOS[]>(new VTXPOS[iNumVertices]);
+        // FBX에서 가져온 중복된 버텍스 리스트.
+        pFBXNonAnimVertices = shared_ptr<VTXMODEL[]>(DBG_NEW VTXMODEL[iNumVertices]);
+
+        //pVertices = shared_ptr<VTXMODEL[]>(DBG_NEW VTXMODEL[iNumVertices]);
+        //pPosVertices = shared_ptr<VTXPOS[]>(DBG_NEW VTXPOS[iNumVertices]);
 
         for (_uint i(0); i < iNumVertices; ++i)
         {
-            memcpy(&pVertices[i].vPosition, &In_pAiMesh->mVertices[i], sizeof(_float3));
-            XMStoreFloat3(&pVertices[i].vPosition, XMVector3TransformCoord(XMLoadFloat3(&pVertices[i].vPosition), In_TransformMatrix));
-            memcpy(&pPosVertices[i].vPosition, &pVertices[i].vPosition, sizeof(_float3));
+            memcpy(&pFBXNonAnimVertices[i].vPosition, &In_pAiMesh->mVertices[i], sizeof(_float3));
+            XMStoreFloat3(&pFBXNonAnimVertices[i].vPosition, XMVector3TransformCoord(XMLoadFloat3(&pFBXNonAnimVertices[i].vPosition), In_TransformMatrix));
+            //memcpy(&pPosVertices[i].vPosition, &pVertices[i].vPosition, sizeof(_float3));
 
-            memcpy(&pVertices[i].vNormal, &In_pAiMesh->mNormals[i], sizeof(_float3));
-            XMStoreFloat3(&pVertices[i].vNormal, XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&pVertices[i].vNormal), In_TransformMatrix)));
+            memcpy(&pFBXNonAnimVertices[i].vNormal, &In_pAiMesh->mNormals[i], sizeof(_float3));
+            XMStoreFloat3(&pFBXNonAnimVertices[i].vNormal, XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&pFBXNonAnimVertices[i].vNormal), In_TransformMatrix)));
             
             if (In_pAiMesh->mTextureCoords[0])
-                memcpy(&pVertices[i].vTexUV, &In_pAiMesh->mTextureCoords[0][i], sizeof(_float2));
+                memcpy(&pFBXNonAnimVertices[i].vTexUV, &In_pAiMesh->mTextureCoords[0][i], sizeof(_float2));
             else
-                pVertices[i].vTexUV = { 0.f, 0.f };
+                pFBXNonAnimVertices[i].vTexUV = { 0.f, 0.f };
 
             if (In_pAiMesh->mTangents)
-                memcpy(&pVertices[i].vTangent, &In_pAiMesh->mTangents[i], sizeof(_float3));
+                memcpy(&pFBXNonAnimVertices[i].vTangent, &In_pAiMesh->mTangents[i], sizeof(_float3));
             else
-                pVertices[i].vTangent = { 0.f, 0.f, 0.f };
+                pFBXNonAnimVertices[i].vTangent = { 0.f, 0.f, 0.f };
 
-            Check_Position(In_pVertexInfo->vMax, pVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft < _fRight; });
-            Check_Position(In_pVertexInfo->vMin, pVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft > _fRight; });
+            Check_Position(In_pVertexInfo->vMax, pFBXNonAnimVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft < _fRight; });
+            Check_Position(In_pVertexInfo->vMin, pFBXNonAnimVertices[i].vPosition, [](_float _fLeft, _float _fRight)->_bool { return _fLeft > _fRight; });
         }
+
+        vector<VTXMODEL> pCompressedVTXs;
+
+        // 중복된 정점을 제거해서 압축한다.
+        for (_int i = 1; i < iNumVertices; ++i)
+        {
+            _vector vVertice = XMLoadFloat3(&pFBXNonAnimVertices[i].vPosition);
+            _bool bFlag = false;
+            for (_int j = 0; j < pCompressedVTXs.size(); ++j)
+            {
+                _vector vTemp = XMLoadFloat3(&pCompressedVTXs[j].vPosition);
+
+                _float fLength = XMVector3Length(vTemp - vVertice).m128_f32[0];
+                if (fLength <= DBL_EPSILON)
+                {
+                    bFlag = true;
+                    break;
+                }
+            }
+
+            if (!bFlag)
+            {
+                pCompressedVTXs.push_back(pFBXNonAnimVertices[i]);
+            }
+        }
+
+        iNumVertices = pCompressedVTXs.size();
+        pVertices = shared_ptr<VTXMODEL[]>(DBG_NEW VTXMODEL[pCompressedVTXs.size()]);
+        memcpy(&pVertices[0], &pCompressedVTXs[0], sizeof(VTXMODEL) * pCompressedVTXs.size());
     }
 
     else if (MODEL_TYPE::NAVI == In_eModelType)
     {
-        pPosVertices = shared_ptr<VTXPOS[]>(new VTXPOS[iNumVertices]);
+        pPosVertices = shared_ptr<VTXPOS[]>(DBG_NEW VTXPOS[iNumVertices]);
 
         for (_uint i(0); i < iNumVertices; ++i)
         {
@@ -121,13 +187,129 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
         DEBUG_ASSERT;
     }
 
-    pIndices = shared_ptr<FACEINDICES32[]>(new FACEINDICES32[iNumFaces]);
+    //shared_ptr<FACEINDICES32[]> pFBXIndices = shared_ptr<FACEINDICES32[]>(DBG_NEW FACEINDICES32[iNumFaces]);
+    pIndices = shared_ptr<FACEINDICES32[]>(DBG_NEW FACEINDICES32[iNumFaces]);
 
     for (_uint i(0); i < iNumFaces; ++i)
     {
         pIndices[i]._1 = In_pAiMesh->mFaces[i].mIndices[0];
         pIndices[i]._2 = In_pAiMesh->mFaces[i].mIndices[1];
         pIndices[i]._3 = In_pAiMesh->mFaces[i].mIndices[2];
+    }
+
+    if (MODEL_TYPE::ANIM == In_eModelType)
+    {
+        for (_int i = 0; i < iNumFaces; ++i)
+        {
+            _vector vVertice = XMLoadFloat3(&pFBXAnimVertices[pIndices[i]._1].vPosition);
+
+            for (_int j = 0; j < iNumVertices; ++j)
+            {
+                _vector vTemp = XMLoadFloat3(&pAnimVertices[j].vPosition);
+
+                _float fLength = XMVector3Length(vTemp - vVertice).m128_f32[0];
+                if (DBL_EPSILON > fLength)
+                {
+
+                    // Do. Somthing
+
+                    pIndices[i]._1 = j;
+                    break;
+                }
+            }
+
+            vVertice = XMLoadFloat3(&pFBXAnimVertices[pIndices[i]._2].vPosition);
+
+            for (_int j = 0; j < iNumVertices; ++j)
+            {
+                _vector vTemp = XMLoadFloat3(&pAnimVertices[j].vPosition);
+
+                _float fLength = XMVector3Length(vTemp - vVertice).m128_f32[0];
+                if (DBL_EPSILON > fLength)
+                {
+
+                    // Do. Somthing
+
+                    pIndices[i]._2 = j;
+                    break;
+                }
+            }
+
+            vVertice = XMLoadFloat3(&pFBXAnimVertices[pIndices[i]._3].vPosition);
+
+            for (_int j = 0; j < iNumVertices; ++j)
+            {
+                _vector vTemp = XMLoadFloat3(&pAnimVertices[j].vPosition);
+
+                _float fLength = XMVector3Length(vTemp - vVertice).m128_f32[0];
+                if (DBL_EPSILON > fLength)
+                {
+
+                    // Do. Somthing
+
+                    pIndices[i]._3 = j;
+                    break;
+                }
+            }
+
+        }
+    }
+    else if (MODEL_TYPE::NONANIM == In_eModelType)
+    {
+        for (_int i = 0; i < iNumFaces; ++i)
+        {
+            _vector vVertice = XMLoadFloat3(&pFBXNonAnimVertices[pIndices[i]._1].vPosition);
+
+            for (_int j = 0; j < iNumVertices; ++j)
+            {
+                _vector vTemp = XMLoadFloat3(&pVertices[j].vPosition);
+
+                _float fLength = XMVector3Length(vTemp - vVertice).m128_f32[0];
+                if (DBL_EPSILON > fLength)
+                {
+
+                    // Do. Somthing
+
+                    pIndices[i]._1 = j;
+                    break;
+                }
+            }
+
+            vVertice = XMLoadFloat3(&pFBXNonAnimVertices[pIndices[i]._2].vPosition);
+
+            for (_int j = 0; j < iNumVertices; ++j)
+            {
+                _vector vTemp = XMLoadFloat3(&pVertices[j].vPosition);
+
+                _float fLength = XMVector3Length(vTemp - vVertice).m128_f32[0];
+                if (DBL_EPSILON > fLength)
+                {
+
+                    // Do. Somthing
+
+                    pIndices[i]._2 = j;
+                    break;
+                }
+            }
+
+            vVertice = XMLoadFloat3(&pFBXNonAnimVertices[pIndices[i]._3].vPosition);
+
+            for (_int j = 0; j < iNumVertices; ++j)
+            {
+                _vector vTemp = XMLoadFloat3(&pVertices[j].vPosition);
+
+                _float fLength = XMVector3Length(vTemp - vVertice).m128_f32[0];
+                if (DBL_EPSILON > fLength)
+                {
+
+                    // Do. Somthing
+
+                    pIndices[i]._3 = j;
+                    break;
+                }
+            }
+
+        }
     }
 
     return S_OK;
@@ -198,7 +380,7 @@ void MESH_DATA::Load_FromBinary(ifstream& is)
             Bone_Datas.push_back(pBoneData);
         }
 
-        pAnimVertices = shared_ptr<VTXANIM[]>(new VTXANIM[iNumVertices]);
+        pAnimVertices = shared_ptr<VTXANIM[]>(DBG_NEW VTXANIM[iNumVertices]);
 
         for (_uint i(0); i < iNumVertices; ++i)
         {
@@ -209,8 +391,8 @@ void MESH_DATA::Load_FromBinary(ifstream& is)
 
     else if (MODEL_TYPE::NONANIM == eModelType)
     {
-        pVertices = shared_ptr<VTXMODEL[]>(new VTXMODEL[iNumVertices]);
-        pPosVertices = shared_ptr<VTXPOS[]>(new VTXPOS[iNumVertices]);
+        pVertices = shared_ptr<VTXMODEL[]>(DBG_NEW VTXMODEL[iNumVertices]);
+        pPosVertices = shared_ptr<VTXPOS[]>(DBG_NEW VTXPOS[iNumVertices]);
 
         for (_uint i(0); i < iNumVertices; ++i)
         {
@@ -221,7 +403,7 @@ void MESH_DATA::Load_FromBinary(ifstream& is)
 
     else if (MODEL_TYPE::NAVI == eModelType)
     {
-        pPosVertices = shared_ptr<VTXPOS[]>(new VTXPOS[iNumVertices]);
+        pPosVertices = shared_ptr<VTXPOS[]>(DBG_NEW VTXPOS[iNumVertices]);
 
         for (_uint i(0); i < iNumVertices; ++i)
         {
@@ -231,7 +413,7 @@ void MESH_DATA::Load_FromBinary(ifstream& is)
 
     else if (MODEL_TYPE::GROUND == eModelType)
     {
-        pGroundVertices = shared_ptr<VTXGROUND[]>(new VTXGROUND[iNumVertices]);
+        pGroundVertices = shared_ptr<VTXGROUND[]>(DBG_NEW VTXGROUND[iNumVertices]);
 
         for (_uint i(0); i < iNumVertices; ++i)
         {
@@ -239,7 +421,7 @@ void MESH_DATA::Load_FromBinary(ifstream& is)
         }
     }
 
-    pIndices = shared_ptr<FACEINDICES32[]>(new FACEINDICES32[iNumFaces]);
+    pIndices = shared_ptr<FACEINDICES32[]>(DBG_NEW FACEINDICES32[iNumFaces]);
 
     for (_uint i(0); i < iNumFaces; ++i)
     {
