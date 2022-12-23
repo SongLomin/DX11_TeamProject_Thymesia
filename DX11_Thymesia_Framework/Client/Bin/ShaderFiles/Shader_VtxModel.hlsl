@@ -570,7 +570,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_NORMAL_MASKING_SCALAR_PBR();
     }
 
-    pass Pass10_MoveUV
+    pass Pass10_MoveUV //10
     {
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_Default, 0);
@@ -581,5 +581,18 @@ technique11 DefaultTechnique
         DomainShader   = NULL;
         GeometryShader = NULL;
         PixelShader    = compile ps_5_0 PS_MAIN_NORMAL_MOVE_UV();
+    }
+
+    pass DefaultNonCulling //11
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
+        SetRasterizerState(RS_NonCulling);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN();
     }
 }

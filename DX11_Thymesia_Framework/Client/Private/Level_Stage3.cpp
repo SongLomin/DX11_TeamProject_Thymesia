@@ -62,6 +62,10 @@ void CLevel_Stage3::Tick(_float fTimeDelta)
 	__super::Tick(fTimeDelta);		
 
 	Tick_Key_InputEvent();
+	if (KEY_INPUT(KEY::HOME, KEY_STATE::TAP))
+	{
+		GAMEINSTANCE->Write_JsonUsingResource("../Bin/LevelData/CapturedResource/Stage3.json");
+	}
 }
 
 HRESULT CLevel_Stage3::Render(ID3D11DeviceContext* pDeviceContext)

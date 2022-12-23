@@ -107,7 +107,7 @@ void CMeshContainer::Start()
 {
 }
 
-HRESULT CMeshContainer::Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CModel> pModel, const _bool In_bNvCloth)
+HRESULT CMeshContainer::Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CModel> pModel, const void* In_pNvClothMeshDesc)
 {
 	m_pMeshData = tMeshData;
 	m_szName    = tMeshData->szName;
@@ -130,7 +130,7 @@ HRESULT CMeshContainer::Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CMod
 
 	if (MODEL_TYPE::NONANIM == tMeshData->eModelType)
 	{
-		if (In_bNvCloth)
+		if (In_pNvClothMeshDesc)
 		{
 			hr = Ready_VertexBuffer_NonAnim_NvCloth(tMeshData);
 		}
@@ -142,7 +142,7 @@ HRESULT CMeshContainer::Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CMod
 		
 	else
 	{
-		if (In_bNvCloth)
+		if (In_pNvClothMeshDesc)
 		{
 			hr = Ready_VertexBuffer_Anim_NvCloth(tMeshData, pModel);
 		}
@@ -159,7 +159,7 @@ HRESULT CMeshContainer::Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CMod
 
 #pragma region INDEXBUFFER
 	
-	if (In_bNvCloth)
+	if (In_pNvClothMeshDesc)
 	{
 		m_pIndices.resize(tMeshData->iNumFaces);
 
@@ -188,9 +188,9 @@ HRESULT CMeshContainer::Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CMod
 		DEBUG_ASSERT;
 
 
-	if (In_bNvCloth)
+	if (In_pNvClothMeshDesc)
 	{
-		Set_NvCloth();
+		Set_NvCloth(In_pNvClothMeshDesc);
 	}
 
 	return S_OK;
@@ -649,24 +649,49 @@ HRESULT CMeshContainer::Bind_BoneMatices(weak_ptr<CShader> pShader, const char* 
 	return hr;
 }
 
-void CMeshContainer::Set_NvCloth()
+void CMeshContainer::Set_NvCloth(const void* In_pNvClothMeshDesc)
 {
 	
+	const CModel::NVCLOTH_MESH_DESC* pCustomDesc = (const CModel::NVCLOTH_MESH_DESC*)In_pNvClothMeshDesc;
+	
+	
+	switch (pCustomDesc->eSimpleAttachType)
+	{
+	case SELECTION_TYPE::FORWARD:
+	{
+		m_pInvMasses = vector<_float>(m_iNumVertices, 0.5f);
+
+		_int iAttachCount = (_int)(m_iNumVertices * pCustomDesc->fSimpleAttachRatio);
+
+		for (_int i = 0; i < iAttachCount; ++i)
+		{
+			m_pInvMasses[i] = 0.f;
+		}
+	}
+		break;
+
+	case SELECTION_TYPE::REVERSE:
+	{
+		m_pInvMasses = vector<_float>(m_iNumVertices, 0.5f);
+
+		_int iAttachCount = (_int)(m_iNumVertices * pCustomDesc->fSimpleAttachRatio);
+
+		for (_int i = 0; i < iAttachCount; ++i)
+		{
+			m_pInvMasses[(m_iNumVertices - 1) - i] = 0.f;
+		}
+	}
+		break;
+
+	default:
+	{
+		m_pInvMasses = pCustomDesc->InvMesses;
+	}
+		break;
+	}
+
 
 	nv::cloth::ClothMeshDesc meshDesc;	
-
-	
-	m_pInvMasses = vector<_float>(m_iNumVertices, 0.5f);
-
-	for (_int i = 0; i < (_int)(m_iNumVertices / 10); ++i)
-	{
-		m_pInvMasses[i] = 0.f;
-	}
-	
-
-
-	
-
 	//Fill meshDesc with data
 	meshDesc.setToDefault();
 	//meshDesc.flags &= ~MeshFlag::e16_BIT_INDICES;
@@ -729,7 +754,7 @@ void CMeshContainer::Set_NvCloth()
 	//_vector vGravity = XMVectorSet(0.f, -9.81f, 0.f, 0.f);
 	//XMVector3TransformCoord(vGravity, XMLoadFloat4x4(&m_ModelTransform));
 	
-	m_pCloth->setGravity(gravity);
+	m_pCloth->setGravity(SMath::Convert_PxVec3(pCustomDesc->vGravity));
 	//m_pCloth->setDamping(physx::PxVec3(0.1f, 0.1f, 0.1f));
 	//m_pCloth->setSelfCollisionDistance(0.07f);
 
@@ -761,9 +786,15 @@ void CMeshContainer::Set_NvCloth()
 		m_pPhases[i].mStretchLimit = 1.0f;
 	}
 	m_pCloth->setPhaseConfig(nv::cloth::Range<nv::cloth::PhaseConfig>(m_pPhases, m_pPhases + m_pFabric->getNumPhases()));
-	m_pCloth->setDragCoefficient(0.1f);
-	m_pCloth->setLiftCoefficient(0.2f);
-	
+
+	if (pCustomDesc->fDragCoefficient > DBL_EPSILON)
+	{
+		m_pCloth->setDragCoefficient(pCustomDesc->fDragCoefficient);
+	}
+	if (pCustomDesc->fLiftCoefficient > DBL_EPSILON)
+	{
+		m_pCloth->setLiftCoefficient(pCustomDesc->fLiftCoefficient);
+	}
 
 	GET_SINGLE(CNvCloth_Manager)->Get_Solver()->addCloth(m_pCloth);
 

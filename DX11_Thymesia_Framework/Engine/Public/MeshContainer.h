@@ -58,10 +58,10 @@ public:
 	virtual void	Start() override;
 
 public:
-	HRESULT Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CModel> pModel = weak_ptr<CModel>(), const _bool In_bNvCloth = false);
+	HRESULT Init_Mesh(shared_ptr<MESH_DATA> tMeshData, weak_ptr<CModel> pModel = weak_ptr<CModel>(), const void* In_pNvClothMeshDesc = nullptr);
 	void SetUp_BoneMatices(_fmatrix TransformationMatrix);
 	HRESULT Bind_BoneMatices(weak_ptr<CShader> pShader, const char* pConstantBoneName);
-	void Set_NvCloth();
+	void Set_NvCloth(const void* In_pNvClothMeshDesc);
 
 public: /* For. NvCloth */
 	void Update_NvClothVertices(ID3D11DeviceContext* pDeviceContext, _fmatrix In_WorldMatrix);

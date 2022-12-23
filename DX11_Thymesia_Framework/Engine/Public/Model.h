@@ -21,6 +21,24 @@ public:
 		weak_ptr<CTexture> pTextures[AI_TEXTURE_TYPE_MAX];
 	}MODEL_MATERIAL;
 
+	typedef struct tag_NvCloth_Mesh_desc
+	{
+		SELECTION_TYPE	eSimpleAttachType = SELECTION_TYPE::TYPE_END;
+		_float			fSimpleAttachRatio = 0.f;
+
+		// It is not used when using Simple Attach.
+		vector<_float>	InvMesses;
+
+		_float3			vGravity = _float3(0.f, 9.81f, 0.f);
+		_float			fDragCoefficient = 0.f;
+		_float			fLiftCoefficient = 0.f;
+	}NVCLOTH_MESH_DESC;
+
+	typedef struct tag_NvCloth_Model_desc
+	{
+		map<_uint, tag_NvCloth_Mesh_desc> NvClothMeshDescs;
+	}NVCLOTH_MODEL_DESC;
+
 
 public:
 	CModel(const CModel& rhs);
@@ -77,14 +95,14 @@ private: /* CGameObject Based */
 	virtual void Start() override;
 
 public: /* Init */
-	void Init_Model(const char* sModelKey, const string& szTexturePath = "", _uint iTimeScaleLayer = 0, const _flag In_NvClothFlag = 0);
+	void Init_Model(const char* sModelKey, const string& szTexturePath = "", _uint iTimeScaleLayer = 0, const NVCLOTH_MODEL_DESC* In_pNvClothModelDesc = nullptr);
 
 private:
-	void Init_Model_Internal(const char* sModelKey, const string& szTexturePath = "", _uint iTimeScaleLayer = 0, const _flag In_NvClothFlag = 0);
+	void Init_Model_Internal(const char* sModelKey, const string& szTexturePath = "", _uint iTimeScaleLayer = 0, const NVCLOTH_MODEL_DESC* In_pNvClothModelDesc = nullptr);
 	void Reset_Model();
 
 private:
-	void Create_MeshContainers(const _flag In_NvClothFlag);
+	void Create_MeshContainers(const NVCLOTH_MODEL_DESC* In_pNvClothMeshDesc = nullptr);
 	void Create_Materials(const char* pModelFilePath);
 	void Create_ORM_Material(MODEL_MATERIAL& Out_Material, const _uint In_iMaterialIndex, const _char* pModelFilePath);
 	void Create_BoneNodes(shared_ptr<NODE_DATA> pNodeData, weak_ptr<CBoneNode> pParent, _uint iDepth);

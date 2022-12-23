@@ -5,7 +5,6 @@
 #include "Client_Structs.h"
 #include "Client_Presets.h"
 #include "Client_Enum.h"
-#include "NvCloth_Structs.h"
 
 //////////////// DEBUG MODE DEFINES ////////////////
 #ifdef _DEBUG
@@ -18,7 +17,7 @@
 #define _RENDER_FPS_
 #define _Actor_Culling_
 #define _INSTANCE_CULLING_
-//#define _LOAD_CAPTURED_RESOURCE_
+#define _LOAD_CAPTURED_RESOURCE_
 #pragma endregion // System
 
 // #define _CLOTH_
