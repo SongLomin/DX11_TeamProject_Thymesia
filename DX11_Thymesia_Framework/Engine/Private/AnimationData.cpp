@@ -56,7 +56,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 
     // TODO : change animation speed here
 #pragma region Corvus
-   SET_ANIM_SPEED("Corvus_SD_LAttack1", 2.5f);
+  /* SET_ANIM_SPEED("Corvus_SD_LAttack1", 2.5f);
    SET_ANIM_SPEED("Corvus_SD_LAttack2", 2.5f);
    SET_ANIM_SPEED("Corvus_SD_LAttack3_New", 2.5f);
    SET_ANIM_SPEED("Corvus_SD1_ParryL_NEW", 4.f);
@@ -130,10 +130,10 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 
 	SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 7.f);
 	SET_ANIM_SPEED("Corvus_SD_TD2Thorw2", 2.5f);
-	SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution_Blending", 1.1f);
+	SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution_Blending", 1.1f);*/
 
 #pragma region Varg
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Catch", 2.306f);
+  /*  SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Catch", 2.306f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Fail", 1.25f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Roar", 1.25f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Roar_GetUp", 1.25f);
@@ -178,7 +178,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_StunLoop", 2.f);
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_StunEnd", 2.f);
 
-    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Dead", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Dead", 1.25f);*/
 #pragma endregion // Varg
 
 #pragma region Joker
@@ -202,7 +202,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 #pragma endregion // Joker
 
 #pragma region Bat
-    SET_ANIM_SPEED("BossBat_Seq_BossFightStart_V1", 4.f);
+    /*SET_ANIM_SPEED("BossBat_Seq_BossFightStart_V1", 4.f);
     SET_ANIM_SPEED("BossBat_AttackL_01_1", 4.f);
     SET_ANIM_SPEED("BossBat_AttackL_01_2a", 4.f);
     SET_ANIM_SPEED("BossBat_AttackL_01_2b", 4.f);
@@ -233,13 +233,13 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("BossBat_TakeExecution_Start01", 1.46f);
     SET_ANIM_SPEED("BossBat_TurnL90", 2.f);
     SET_ANIM_SPEED("BossBat_TurnR90", 2.f);
-    SET_ANIM_SPEED("BossBat_WalkF", 2.f);
+    SET_ANIM_SPEED("BossBat_WalkF", 2.f);*/
 
 
 #pragma endregion // Bat
 
 #pragma region Mon_AxeMan
-    SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtStunStart|BaseLaye", 2.f);
+    // SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtStunStart|BaseLaye", 2.f);
 #pragma endregion // Mon_AxeMan
 
 #undef SET_ANIM_SPEED
