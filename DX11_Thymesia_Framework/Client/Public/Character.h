@@ -77,6 +77,9 @@ protected:
 
     string                  m_szClientComponentPath = "../Bin/ClientComponentData/";
 
+    _float m_fRimLightPower = 0.f;
+    _float3 m_vRimLightColor = { 0.f,0.f,0.f };
+
 private:
     _bool m_isEdit = false;
     _bool     m_bSuperArmor = false;

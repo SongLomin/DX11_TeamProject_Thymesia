@@ -936,7 +936,7 @@ PS_OUT PS_MAIN_SSR(PS_IN In)
     
     clip(49.5f - iStepDistance);
 
-    Out.vColor = g_OriginalRenderTexture.Sample(DefaultSampler, vRayPixelPos) * (1.f - iStepDistance / 60.f);
+    Out.vColor = g_OriginalRenderTexture.Sample(DefaultSampler, vRayPixelPos) * 0.5f*(1.f - iStepDistance / 60.f);
    
     return Out;
 }
@@ -972,12 +972,14 @@ PS_OUT PS_MAIN_RIMLIGHT(PS_IN In)
     
     vector vView = normalize(g_vCamPosition - vWorldPos);
     half fRim = 1.f - abs(dot(vNormal, vView));
-
+    
     vector vRimColor = g_RimLightTexture.Sample(DefaultSampler, In.vTexUV);
-    vRimColor.xyz = lerp(vRimColor.xyz, float3(1.f,1.f,1.f), fRim * fRim);
+    vRimColor.xyz = lerp(vRimColor.xyz*0.03f, vRimColor.xyz, fRim*fRim);
+    
+    
     half fRimPower = vRimColor.a;
       
-    Out.vColor = vector(vRimColor.xyz, 1.f) * pow(fRim, fRimPower) * fRimPower;
+    Out.vColor = vector(vRimColor.xyz, 1.f) * fRim * fRimPower;
     
     return Out;
 }

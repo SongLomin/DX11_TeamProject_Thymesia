@@ -130,6 +130,7 @@ HRESULT CCorvus::Start()
 
 	Test_BindSkill();
 
+	m_vRimLightColor = { 1.f,0.f,0.f };
 #ifdef _CLOTH_
 	// m_pModelCom.lock()->Set_NvClothMeshWithIndex(0);
 #endif // _CLOTH_
@@ -157,6 +158,13 @@ void CCorvus::Tick(_float fTimeDelta)
 	XMStoreFloat4(&m_LightDesc.vDirection, vLightLook);
 
 	GAMEINSTANCE->Set_LightDesc(m_LightDesc);
+
+	if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
+	{
+		m_fRimLightPower = 1.f;
+	}
+
+	m_fRimLightPower = max(0.f, m_fRimLightPower - fTimeDelta);
 
 	this->Debug_KeyInput(fTimeDelta);
 
@@ -224,7 +232,7 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 			m_pShaderCom.lock()->Set_RawValue("g_vDissolveStartPos", &iter->second.vStartPos, sizeof(_float3));
 			m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &iter->second.fAmount, sizeof(_float));
 
-			_float4 vShaderFlag = { 0.f,0.f,1.f,0.f };
+			_float4 vShaderFlag = { 0.f,0.f,1.f,1.f };
 
 			m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_float4));
 
@@ -233,7 +241,7 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 		else
 		{
 
-			_float4 vShaderFlag = { 0.f,0.f,0.f,0.f };
+			_float4 vShaderFlag = { 0.f,0.f,0.f,1.f };
 
 			m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_float4));
 			if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))

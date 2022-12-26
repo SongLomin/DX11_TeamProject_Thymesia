@@ -1718,6 +1718,19 @@ HRESULT CRender_Manager::Blend_Bloom()
 	return S_OK;
 }
 
+HRESULT CRender_Manager::Render_RimLight()
+{
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
+	m_pShader->Set_ShaderResourceView("g_RimLightTexture", pRenderTargetManager->Get_SRV(TEXT("Target_RimLight")));
+	m_pShader->Set_ShaderResourceView("g_ShaderFlagTexture", pRenderTargetManager->Get_SRV(TEXT("Target_ShaderFlag")));
+
+	m_pShader->Begin(13, DEVICECONTEXT);
+	m_pVIBuffer->Render(pDeviceContext);
+
+	return S_OK;
+}
+
 HRESULT CRender_Manager::Render_SSR()
 {
 	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
@@ -1757,18 +1770,6 @@ HRESULT CRender_Manager::Render_SSR()
 	return S_OK;
 }
 
-HRESULT CRender_Manager::Render_RimLight()
-{
-	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
-	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
-	m_pShader->Set_ShaderResourceView("g_RimLightTexture", pRenderTargetManager->Get_SRV(TEXT("Target_RimLight")));
-	m_pShader->Set_ShaderResourceView("g_ShaderFlagTexture", pRenderTargetManager->Get_SRV(TEXT("Target_ShaderFlag")));
-
-	m_pShader->Begin(13, DEVICECONTEXT);
-	m_pVIBuffer->Render(pDeviceContext);
-
-	return S_OK;
-}
 
 
 HRESULT CRender_Manager::PostProcessing()
