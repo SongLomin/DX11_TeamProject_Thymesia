@@ -639,10 +639,6 @@ HRESULT CLoader::Loading_ForEditLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Destructable/Wagon03/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
-	this->Load_CorvusModel();
-	this->Load_BossMobModel();
-	this->Load_NormalMobModel();
-	this->Load_EliteMobModel();
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 #endif // _MAP_TOOL_
@@ -1385,8 +1381,6 @@ void CLoader::Load_NormalMobModel()
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(0.f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixRotationZ(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Mon_Mutation7", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation7.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
-
-
 }
 
 void CLoader::Load_RareMobModel()
