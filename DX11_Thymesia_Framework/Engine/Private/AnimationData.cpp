@@ -9,6 +9,50 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
     fDuration = (_float)In_pAiAnimation->mDuration;
     fTickPerSecond = (_float)In_pAiAnimation->mTicksPerSecond * In_fSpeed;
 
+    // TODO : !!! DO NOT ERASE !!!
+// Temporary Macro for changing animation speed.
+// undefined after use.
+#define SET_ANIM_SPEED(AnimationName, WantedSpeed)\
+    if (!strcmp(szName.c_str(), AnimationName))\
+    {\
+        fTickPerSecond *= WantedSpeed;\
+    }
+
+	/*SET_ANIM_SPEED("BossBat_Seq_BossFightStart_V1", 4.f);
+	SET_ANIM_SPEED("BossBat_AttackL_01_1", 4.f);
+	SET_ANIM_SPEED("BossBat_AttackL_01_2a", 4.f);
+	SET_ANIM_SPEED("BossBat_AttackL_01_2b", 4.f);
+	SET_ANIM_SPEED("BossBat_AttackL_01_3a", 4.f);
+	SET_ANIM_SPEED("BossBat_AttackR_01_1", 2.f);
+	SET_ANIM_SPEED("BossBat_AttackR_01_2a", 4.f);
+	SET_ANIM_SPEED("BossBat_AttackR_01_2b", 4.f);
+	SET_ANIM_SPEED("BossBat_Bite_1", 4.f);
+	SET_ANIM_SPEED("BossBat_Bite_2", 4.f);
+	SET_ANIM_SPEED("BossBat_Car", 4.f);
+	SET_ANIM_SPEED("BossBat_Charge", 4.f);
+	SET_ANIM_SPEED("BossBat_FTurn_L", 1.f);
+	SET_ANIM_SPEED("BossBat_FTurn_R", 4.f);
+	SET_ANIM_SPEED("BossBat_Hellscream", 4.f);
+	SET_ANIM_SPEED("BossBat_HurtXL_F", 4.f);
+	SET_ANIM_SPEED("BossBat_HurtXL_L", 4.f);
+	SET_ANIM_SPEED("BossBat_JumpSmash_Chest", 2.f);
+	SET_ANIM_SPEED("BossBat_JumpSmashForwardL", 4.f);
+	SET_ANIM_SPEED("BossBat_JumpSmashL", 4.f);
+	SET_ANIM_SPEED("BossBat_SonicBoom", 4.f);
+	SET_ANIM_SPEED("BossBat_SP01", 2.f);
+	SET_ANIM_SPEED("BossBat_Storm_1", 4.f);
+	SET_ANIM_SPEED("BossBat_StunEnd", 4.f);
+	SET_ANIM_SPEED("BossBat_StunLoop", 1.3f);
+	SET_ANIM_SPEED("BossBat_StunStart", 1.3f);
+	SET_ANIM_SPEED("BossBat_TakeExecution_End", 1.2f);
+	SET_ANIM_SPEED("BossBat_TakeExecution_Loop", 1.2f);
+	SET_ANIM_SPEED("BossBat_TakeExecution_Start01", 1.46f);
+	SET_ANIM_SPEED("BossBat_TurnL90", 2.f);
+	SET_ANIM_SPEED("BossBat_TurnR90", 2.f);
+	SET_ANIM_SPEED("BossBat_WalkF", 2.f);*/
+
+#undef SET_ANIM_SPEED
+
     for (_uint i(0); i < iNumChannels; i++)
     {
         shared_ptr<CHANNEL_DATA> pChannelData = make_shared<CHANNEL_DATA>();
@@ -201,42 +245,6 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("Joker_TakeExecution_Start", 1.4f);
 #pragma endregion // Joker
 
-#pragma region Bat
-    /*SET_ANIM_SPEED("BossBat_Seq_BossFightStart_V1", 4.f);
-    SET_ANIM_SPEED("BossBat_AttackL_01_1", 4.f);
-    SET_ANIM_SPEED("BossBat_AttackL_01_2a", 4.f);
-    SET_ANIM_SPEED("BossBat_AttackL_01_2b", 4.f);
-    SET_ANIM_SPEED("BossBat_AttackL_01_3a", 4.f);
-    SET_ANIM_SPEED("BossBat_AttackR_01_1", 2.f);
-    SET_ANIM_SPEED("BossBat_AttackR_01_2a", 4.f);
-    SET_ANIM_SPEED("BossBat_AttackR_01_2b", 4.f);
-    SET_ANIM_SPEED("BossBat_Bite_1", 4.f);
-    SET_ANIM_SPEED("BossBat_Bite_2", 4.f);
-    SET_ANIM_SPEED("BossBat_Car", 4.f);
-    SET_ANIM_SPEED("BossBat_Charge", 4.f);
-    SET_ANIM_SPEED("BossBat_FTurn_L", 1.f);
-    SET_ANIM_SPEED("BossBat_FTurn_R", 4.f);
-    SET_ANIM_SPEED("BossBat_Hellscream", 4.f);
-    SET_ANIM_SPEED("BossBat_HurtXL_F", 4.f);
-    SET_ANIM_SPEED("BossBat_HurtXL_L", 4.f);
-    SET_ANIM_SPEED("BossBat_JumpSmash_Chest", 2.f);
-    SET_ANIM_SPEED("BossBat_JumpSmashForwardL", 4.f);
-    SET_ANIM_SPEED("BossBat_JumpSmashL", 4.f);
-    SET_ANIM_SPEED("BossBat_SonicBoom", 4.f);
-    SET_ANIM_SPEED("BossBat_SP01", 2.f);
-    SET_ANIM_SPEED("BossBat_Storm_1", 4.f);
-    SET_ANIM_SPEED("BossBat_StunEnd", 4.f);
-    SET_ANIM_SPEED("BossBat_StunLoop", 1.3f);
-    SET_ANIM_SPEED("BossBat_StunStart", 1.3f);
-    SET_ANIM_SPEED("BossBat_TakeExecution_End", 1.2f);
-    SET_ANIM_SPEED("BossBat_TakeExecution_Loop", 1.2f);
-    SET_ANIM_SPEED("BossBat_TakeExecution_Start01", 1.46f);
-    SET_ANIM_SPEED("BossBat_TurnL90", 2.f);
-    SET_ANIM_SPEED("BossBat_TurnR90", 2.f);
-    SET_ANIM_SPEED("BossBat_WalkF", 2.f);*/
-
-
-#pragma endregion // Bat
 
 #pragma region Mon_AxeMan
     // SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtStunStart|BaseLaye", 2.f);

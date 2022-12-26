@@ -385,6 +385,7 @@ namespace Client
 			, Is_Sprite       = 0b0001'0000
 			, Loop_Sprite     = 0b0010'0000
 			, Sprite_StopAtEnd= 0b0100'0000
+			, Sprite_UseMask = 0b1000'0000
 			, Option_Glite_END
 		};
 #pragma endregion
