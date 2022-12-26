@@ -375,9 +375,9 @@ void CInteraction_Door::Load_FromJson(const json& In_Json)
     if ("" == string(m_pModelCom.lock()->Get_ModelKey()))
         m_pModelCom.lock()->Init_Model("Door01_05", "");
 
-    m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
+    m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), false);
     PhysXColliderDesc tDesc;
-    Preset::PhysXColliderDesc::ConvexStaticPropSetting(tDesc, m_pTransformCom);
+    Preset::PhysXColliderDesc::StaticPropSetting(tDesc, m_pTransformCom);
     m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
     m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
 }

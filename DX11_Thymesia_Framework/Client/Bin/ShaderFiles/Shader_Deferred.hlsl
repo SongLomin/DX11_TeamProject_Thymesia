@@ -938,8 +938,8 @@ PS_OUT PS_MAIN_SSR(PS_IN In)
         
         fPixelDepth = vPixelDepth.x;
         fPixelDepth *= vPixelDepth.y * g_fFar;
-  
-        if (vRayProjPos.z > fPixelDepth)
+    
+        if (vRayProjPos.z - fPixelDepth > 0.f )
             break;
     }
     
