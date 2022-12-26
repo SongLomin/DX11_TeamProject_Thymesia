@@ -71,6 +71,7 @@ private:
     _float4x4                   m_FirstMatrix;
 
 private:
+    virtual void OnDestroy() override;
     void Free();
 };
 

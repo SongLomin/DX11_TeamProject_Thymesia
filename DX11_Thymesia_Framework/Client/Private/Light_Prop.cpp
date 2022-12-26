@@ -51,6 +51,9 @@ HRESULT CLight_Prop::Start()
 {
 	m_tLightDesc = GAMEINSTANCE->Add_Light(m_tLightDesc);
 
+	if (-1 == m_iSectionIndex && "" != m_szEffectTag)
+		m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup(m_szEffectTag, m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
+
 	m_fTargetIntensity = m_tLightDesc.fIntensity;
 	m_fTargetRange     = m_tLightDesc.fRange;
 
@@ -116,6 +119,7 @@ void CLight_Prop::Write_Json(json& Out_Json)
 	Out_Json["SectionIndex"]  = m_iSectionIndex;
 	Out_Json["DelayTime"]     = m_fDelayTime;
 	Out_Json["IntensityTime"] = m_fIntensityTime;
+	Out_Json["DisableTime"]   = m_fDisableTime;
 
 	if ("" != m_szEffectTag)
 		Out_Json["EffectTag"] = m_szEffectTag;
@@ -156,6 +160,9 @@ void CLight_Prop::Load_FromJson(const json& In_Json)
 
 	if (In_Json.end() != In_Json.find("Light_Range"))
 		m_fTargetIntensity = In_Json["Light_Range"];
+
+	if (In_Json.end() != In_Json.find("DisableTime"))
+		m_fDisableTime = In_Json["DisableTime"];
 
 	CJson_Utility::Load_Float4(In_Json["Light_Position"] , m_tLightDesc.vPosition);
 	CJson_Utility::Load_Float4(In_Json["Light_Direction"], m_tLightDesc.vDirection);
@@ -233,6 +240,7 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 				ImGui::InputInt("Section Index", &m_iSectionIndex);
 				ImGui::InputFloat("DelayTime", &m_fDelayTime);
 				ImGui::InputFloat("Intensity Time", &m_fIntensityTime);
+				ImGui::InputFloat("Disable Time", &m_fDisableTime);
 
 				ImGui::Separator();
 
@@ -331,10 +339,10 @@ void CLight_Prop::Act_LightTurnOffEvent(_float fTimeDelta, _bool& Out_End)
 {
 	m_fAccTime += fTimeDelta;
 
-	m_tLightDesc.fIntensity = (0.f < m_fIntensityTime) ? (fabs(1.f - (m_fAccTime / m_fIntensityTime)) * m_fTargetIntensity) : (0.f);
-	m_tLightDesc.fRange     = (0.f < m_fIntensityTime) ? (fabs(1.f - (m_fAccTime / m_fIntensityTime)) * m_fTargetRange)     : (0.f);
+	m_tLightDesc.fIntensity = (0.f < m_fDisableTime) ? (fabs(1.f - (m_fAccTime / m_fDisableTime)) * m_fTargetIntensity) : (0.f);
+	m_tLightDesc.fRange     = (0.f < m_fDisableTime) ? (fabs(1.f - (m_fAccTime / m_fDisableTime)) * m_fTargetRange)     : (0.f);
 
-	if (m_fIntensityTime <= m_fAccTime)
+	if (m_fDisableTime <= m_fAccTime)
 	{
 		m_fAccTime              = 0.f;
 		m_tLightDesc.fIntensity = 0.f;
@@ -352,7 +360,11 @@ void CLight_Prop::Act_LightTurnOffEvent(_float fTimeDelta, _bool& Out_End)
 
 void CLight_Prop::OnDestroy()
 {
+	__super::OnDestroy();
+
 	GAMEINSTANCE->Remove_Light(m_tLightDesc.Get_LightIndex());
+	GET_SINGLE(CGameManager)->UnUse_EffectGroup(m_szEffectTag, m_iEffectIndex);
+	GET_SINGLE(CGameManager)->Remove_SectionLight(m_iSectionIndex, Weak_Cast<CGameObject>(m_this));
 }
 
 void CLight_Prop::Free()

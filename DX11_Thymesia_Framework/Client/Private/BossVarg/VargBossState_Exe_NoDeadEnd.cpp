@@ -115,6 +115,8 @@ void CVargBossState_Exe_NoDeadEnd::Call_AnimationEnd()
 	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);
 
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Roar_Getup>(0.05f);
+	GET_SINGLE(CGameManager)->Activate_SectionLight(0, EVENT_TYPE::ON_EXIT_SECTION);
+	GET_SINGLE(CGameManager)->Activate_SectionLight(1, EVENT_TYPE::ON_ENTER_SECTION);
 }
 
 void CVargBossState_Exe_NoDeadEnd::OnDestroy()

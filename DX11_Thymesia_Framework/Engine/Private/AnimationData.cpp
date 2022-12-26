@@ -56,7 +56,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 
     // TODO : change animation speed here
 #pragma region Corvus
-   SET_ANIM_SPEED("Corvus_SD_LAttack1", 2.5f);
+   /*SET_ANIM_SPEED("Corvus_SD_LAttack1", 2.5f);
    SET_ANIM_SPEED("Corvus_SD_LAttack2", 2.5f);
    SET_ANIM_SPEED("Corvus_SD_LAttack3_New", 2.5f);
    SET_ANIM_SPEED("Corvus_SD1_ParryL_NEW", 4.f);
@@ -130,7 +130,7 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 
 	SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 7.f);
 	SET_ANIM_SPEED("Corvus_SD_TD2Thorw2", 2.5f);
-	SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution_Blending", 1.1f);
+	SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution_Blending", 1.1f);*/
 
 #pragma region Varg
     SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Catch", 2.306f);

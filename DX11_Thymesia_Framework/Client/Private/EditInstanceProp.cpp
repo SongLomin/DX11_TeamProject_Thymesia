@@ -723,9 +723,9 @@ void CEditInstanceProp::View_Picking_Option()
 {
 	if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
 		m_iOption = 0;
-	if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
+	else if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
 		m_iOption = 1;
-	if (KEY_INPUT(KEY::NUM3, KEY_STATE::TAP))
+	else if (KEY_INPUT(KEY::NUM3, KEY_STATE::TAP))
 		m_iOption = 2;
 
 	static const char* szOptionTag[] =
@@ -781,38 +781,15 @@ void CEditInstanceProp::View_Picking_Option()
 
 		else if (KEY_INPUT(KEY::C, KEY_STATE::HOLD))
 		{
-			switch (m_iOption)
+			_long		MouseMove = 0;
+			if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
 			{
-				case 0:
+				switch (m_iOption)
 				{
-					_long		MouseMove = 0;
-					if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
-					{
-						m_pPropInfos[m_iPickingIndex].vTarnslation.x -= 0.01f * MouseMove;
-					}
-
+					case 0 : m_pPropInfos[m_iPickingIndex].vTarnslation.x -= 0.01f * MouseMove; break;
+					case 1 : m_pPropInfos[m_iPickingIndex].vTarnslation.y -= 0.01f * MouseMove; break;
+					case 2 : m_pPropInfos[m_iPickingIndex].vTarnslation.z -= 0.01f * MouseMove; break;
 				}
-				break;
-
-				case 1:
-				{
-					_long		MouseMove = 0;
-					if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
-					{
-						m_pPropInfos[m_iPickingIndex].vTarnslation.y -= 0.01f * MouseMove;
-					}
-				}
-				break;
-
-				case 2:
-				{
-					_long		MouseMove = 0;
-					if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
-					{
-						m_pPropInfos[m_iPickingIndex].vTarnslation.z -= 0.01f * MouseMove;
-					}
-				}
-				break;
 			}
 		}		
 	}

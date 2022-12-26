@@ -31,6 +31,8 @@ private:
 
     void Requirement_Key(_bool& Out_bRequirement);
 
+    void Update_PhysX();
+
 private:
     HRESULT SetUp_ShaderResource_Default(ID3D11DeviceContext* pDeviceContext);
     HRESULT DrawShader_Body(ID3D11DeviceContext* pDeviceContext);
@@ -59,12 +61,15 @@ private:
          
     _float3                     m_vOffset             = { 0.f, 0.f, 0.f };
     _float                      m_fDoorOffset         = -4.8f;
+    _float3                     m_fDoorSize           = { 1.f, 1.f, 1.f };
+    ITEM_NAME                   m_iKeyID              = ITEM_NAME::ITEM_NAME_END;
                                                       
     _bool                       m_bActionFlag         = true;
     _float                      m_fGearRotationRadian = 0.f;
     _float                      m_fDoorRotationRadian = 0.f;
-    
-    ITEM_NAME                   m_iKeyID              = ITEM_NAME::ITEM_NAME_END;
+    FDelegate<>                 Callback_UpdateComponent;
+    _float4x4                   m_RightDoorMatrix;
+    _float4x4                   m_LeftDoorMatrix;
                                                       
 private:
     void Free();

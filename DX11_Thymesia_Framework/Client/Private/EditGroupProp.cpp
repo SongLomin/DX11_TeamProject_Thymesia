@@ -19,6 +19,16 @@
 GAMECLASS_C(CEditGroupProp)
 CLONE_C(CEditGroupProp, CGameObject)
 
+static const char* items_FindType[] =
+{
+	"( none )",
+	"Interaction_Prop",
+	"Static_Prop",
+	"Dynamic_Prop",
+	"Light_Prop",
+	"Section_Eventer",
+};
+
 HRESULT CEditGroupProp::Initialize_Prototype()
 {
 	return S_OK;
@@ -565,9 +575,12 @@ _bool CEditGroupProp::RenderView_SelectModelComponent()
 	}
 
 	if (m_bChangModel = ImGui::Button("Chage Model", ImVec2(100.f, 25.f)))
-	{
 		m_szSelectModelName = m_ModelList[iSelect_NonAnimModel];	
-	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Reset Model", ImVec2(100.f, 25.f)))
+		m_szSelectModelName = "";
 
 	ImGui::Text("");
 	ImGui::Text("");
@@ -589,6 +602,7 @@ void CEditGroupProp::View_EditProp()
 	ImGui::Text(string(string(" Size  : ") + to_string((_uint)iter_prop->second.size())).c_str());
 	ImGui::Text(string(string(" Index : ") + to_string(m_iPickingIndex)).c_str());
 
+	ImGui::Combo("Opt", &m_iSelect_Find, items_FindType, IM_ARRAYSIZE(items_FindType));
 
 	if (ImGui::TreeNode("[ Show List ]"))
 	{
@@ -599,6 +613,12 @@ void CEditGroupProp::View_EditProp()
 				const bool is_selected = (m_iPickingIndex == i);
 
 				string szTag = "( " + to_string(i) + " )  " + iter_prop->second[i].TypeName;
+
+				if (0 != m_iSelect_Find)
+				{
+					if (string::npos == iter_prop->second[i].TypeName.find(items_FindType[m_iSelect_Find]))
+						continue;
+				}
 
 				if (ImGui::Selectable(szTag.c_str(), is_selected))
 				{
@@ -691,6 +711,15 @@ void CEditGroupProp::RenderView_Transform_Edit(weak_ptr<CGameObject> In_Obj)
 {
 	weak_ptr<CTransform> pTransformCom = In_Obj.lock()->Get_Transform();
 
+	static _uint m_iOption = 0;
+
+	if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
+		m_iOption = 0;
+	else if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
+		m_iOption = 1;
+	else if (KEY_INPUT(KEY::NUM3, KEY_STATE::TAP))
+		m_iOption = 2;
+
 	if (KEY_INPUT(KEY::LBUTTON, KEY_STATE::HOLD))
 	{
 		if (KEY_INPUT(KEY::Z, KEY_STATE::HOLD))
@@ -718,7 +747,12 @@ void CEditGroupProp::RenderView_Transform_Edit(weak_ptr<CGameObject> In_Obj)
 				_matrix matWorld      = pTransformCom.lock()->Get_WorldMatrix();
 				_float3 vPitchYawRoll = SMath::Extract_PitchYawRollFromRotationMatrix(SMath::Get_RotationMatrix(matWorld));
 
-				vPitchYawRoll.y += 0.01f * MouseMove;
+				switch (m_iOption)
+				{
+					case 0 : vPitchYawRoll.x += 0.01f * MouseMove; break;
+					case 1 : vPitchYawRoll.y += 0.01f * MouseMove; break;
+					case 2 : vPitchYawRoll.z += 0.01f * MouseMove; break;
+				}
 
 				pTransformCom.lock()->Rotation_PitchYawRoll(vPitchYawRoll);
 			}
@@ -730,7 +764,13 @@ void CEditGroupProp::RenderView_Transform_Edit(weak_ptr<CGameObject> In_Obj)
 			if (MouseMove = GAMEINSTANCE->Get_DIMouseMoveState(MMS_Y))
 			{
 				_vector vPos = pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
-				vPos = XMVectorSetY(vPos, XMVectorGetY(vPos) + MouseMove * -0.01f);
+
+				switch (m_iOption)
+				{
+					case 0 : vPos = XMVectorSetX(vPos, XMVectorGetX(vPos) + MouseMove * -0.01f); break;
+					case 1 : vPos = XMVectorSetY(vPos, XMVectorGetY(vPos) + MouseMove * -0.01f); break;
+					case 2 : vPos = XMVectorSetZ(vPos, XMVectorGetZ(vPos) + MouseMove * -0.01f); break;
+				}
 
 				pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
 			}

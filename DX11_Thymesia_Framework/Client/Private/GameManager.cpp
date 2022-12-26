@@ -815,8 +815,36 @@ void CGameManager::Activate_Section(_uint In_iSection, EVENT_TYPE In_eEventType)
 		elem.lock()->OnEventMessage((_uint)In_eEventType);
 }
 
+void CGameManager::Remove_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj)
+{
+	if (0 > In_iSection)
+		return;
+
+	auto iter_find = m_SectionObejects.find(In_iSection);
+
+	if (iter_find == m_SectionObejects.end())
+		return;
+
+	auto iter = iter_find->second.begin();
+
+	while (iter != iter_find->second.end())
+	{
+		if (iter->lock()->Get_GameObjectIndex() == In_pObj.lock()->Get_GameObjectIndex())
+		{
+			iter_find->second.erase(iter);
+
+			break;
+		}
+
+		iter++;
+	}
+}
+
 void  CGameManager::Registration_SectionLight(_uint In_iSection, weak_ptr<CLight_Prop> In_pObj)
 {
+	if (0 > In_iSection)
+		return;
+
 	auto iter_find = m_SectionLights.find(In_iSection);
 
 	if (iter_find == m_SectionLights.end())
@@ -844,6 +872,9 @@ void CGameManager::Add_Popup(ITEM_NAME eItemName)
 
 void  CGameManager::Activate_SectionLight(_uint In_iSection, EVENT_TYPE In_eEventType)
 {
+	if (0 > In_iSection)
+		return;
+
 	auto iter_find = m_SectionLights.find(In_iSection);
 
 	if (iter_find == m_SectionLights.end())
@@ -851,6 +882,31 @@ void  CGameManager::Activate_SectionLight(_uint In_iSection, EVENT_TYPE In_eEven
 
 	for (auto& elem : iter_find->second)
 		elem.lock()->OnEventMessage((_uint)In_eEventType);
+}
+
+void CGameManager::Remove_SectionLight(_uint In_iSection, weak_ptr<CGameObject> In_pObj)
+{
+	if (0 > In_iSection)
+		return;
+
+	auto iter_find = m_SectionLights.find(In_iSection);
+
+	if (iter_find == m_SectionLights.end())
+		return;
+
+	auto iter = iter_find->second.begin();
+
+	while (iter != iter_find->second.end())
+	{
+		if (iter->lock()->Get_GameObjectIndex() == In_pObj.lock()->Get_GameObjectIndex())
+		{
+			iter_find->second.erase(iter);
+
+			break;
+		}
+
+		iter++;
+	}
 }
 
 //void CGameManager::Set_TargetForTargetCamera(weak_ptr<CGameObject> In_TargetGameObject)

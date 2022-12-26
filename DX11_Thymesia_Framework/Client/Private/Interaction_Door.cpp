@@ -394,9 +394,9 @@ void CInteraction_Door::Load_FromJson(const json& In_Json)
     if ("" == string(m_pModelCom.lock()->Get_ModelKey()))
         m_pModelCom.lock()->Init_Model("Door01_05", "");
 
-    m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
+    m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), false);
     PhysXColliderDesc tDesc;
-    Preset::PhysXColliderDesc::ConvexStaticPropSetting(tDesc, m_pTransformCom);
+    Preset::PhysXColliderDesc::StaticPropSetting(tDesc, m_pTransformCom);
     m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
     m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
 }
@@ -503,6 +503,13 @@ void CInteraction_Door::SetUpColliderDesc(weak_ptr<CCollider> In_pColldierCom, _
 
     In_pColldierCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
     In_pColldierCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+}
+
+void CInteraction_Door::OnDestroy()
+{
+    __super::OnDestroy();
+
+    GET_SINGLE(CGameManager)->Remove_SectionLight(m_iSectionIndex, Weak_Cast<CGameObject>(m_this));
 }
 
 void CInteraction_Door::Free()

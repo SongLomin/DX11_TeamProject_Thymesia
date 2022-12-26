@@ -53,6 +53,7 @@ private:
 
     _float      m_fTargetIntensity = 0.f;
     _float      m_fTargetRange     = 0.f;
+    _float      m_fDisableTime     = 0.5f;
 
     FDelegate<_float, _bool&>   Callback_ActUpdate;
 
