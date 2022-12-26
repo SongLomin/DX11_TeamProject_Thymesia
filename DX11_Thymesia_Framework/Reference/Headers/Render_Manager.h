@@ -96,6 +96,7 @@ private:
 	HRESULT ReBlur_ExtractBloom();
 	HRESULT Blend_Bloom();
 	HRESULT Render_SSR();
+	HRESULT Render_RimLight();
 
 	HRESULT PostProcessing();
 	HRESULT AntiAliasing();

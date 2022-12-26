@@ -19,8 +19,7 @@ float g_fDissolveAmount;
 float4 g_vDiffuse;
 
 bool g_bBloom;
-bool g_bGlow;
-float4 g_vGlowColor;
+float4 g_vRimLightColor;
 
 float4  g_vCamDir;
 float   g_fAhlpa;
@@ -103,6 +102,7 @@ struct PS_OUT
     vector vShaderFlag : SV_Target3;
     vector vORM : SV_Target4;
     vector vExtractBloom : SV_Target5;
+    vector vRimLight : SV_Target6;
 };
 
 PS_OUT PS_MAIN(PS_IN In)
@@ -125,8 +125,9 @@ PS_OUT PS_MAIN(PS_IN In)
 
     Out.vDiffuse.a = 1.f;
 
-
     Out.vExtractBloom = 0;
+    
+    Out.vRimLight = g_vShaderFlag.a * g_vRimLightColor;
 
 	return Out;
 }
@@ -335,6 +336,8 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 
     Out.vDiffuse.a = 1.f;
     Out.vExtractBloom = 0;
+    
+    Out.vRimLight = g_vShaderFlag.a * g_vRimLightColor;
 
     return Out;
 }
@@ -386,6 +389,7 @@ PS_OUT PS_MAIN_DISSOLVE(PS_IN_NORMAL In)
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
 
     Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
+    Out.vRimLight = g_vShaderFlag.a * g_vRimLightColor;
 
     return Out;
 }
@@ -415,7 +419,8 @@ PS_OUT PS_MAIN_NORMAL_SPECULAR(PS_IN_NORMAL In)
     Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
 
     Out.vExtractBloom = 0;
-
+    Out.vRimLight = g_vShaderFlag.a * g_vRimLightColor;
+    
     return Out;
 }
 
@@ -451,14 +456,16 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_NORMAL In)
     float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));
 
     vPixelNormal = mul(vPixelNormal, WorldMatrix);
-
+        
     Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
-
+    Out.vShaderFlag.a = 1.f;
+    
     Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
-
-
+    //Out.vRimLight = g_vShaderFlag.a * g_vRimLightColor;
+    Out.vRimLight = Out.vShaderFlag.a * vector(0.f, 1.f, 0.408f, 1.f);
+    
     return Out;
 }
 

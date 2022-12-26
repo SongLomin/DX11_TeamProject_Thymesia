@@ -112,18 +112,15 @@ HRESULT CRender_Manager::Initialize()
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(1.f, 1.f,  0.f, 1.f))))
 		DEBUG_ASSERT;
 
-	/* For.Target_Shade */
-	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Shade"),
-		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 1.f))))
+	/* For.Target_RimLight */
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_RimLight"),
+		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
+
 	/* For.Target_PBR */
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_PBR"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
-	///* For.Target_Emissive*/
-	//if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Emissive"),
-	//	(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
-	//	DEBUG_ASSERT;
 
 	/* For.Target_Specular */
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Specular"),
@@ -242,9 +239,11 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_PBR"))))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_ExtractBloom"))))
+		DEBUG_ASSERT; 
+	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_RimLight"))))
 		DEBUG_ASSERT;
 
-
+	
 
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_ExtractEffect"), TEXT("Target_OriginalEffect"))))
 		DEBUG_ASSERT;
@@ -293,8 +292,8 @@ HRESULT CRender_Manager::Initialize()
 
 	/* For.MRT_LightAcc */
 	/* 조명연산한 결과를 저장해놓기위한 타겟 (Shade + Specular) */
-	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Shade"))))
-		DEBUG_ASSERT;
+	//if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Shade"))))
+	//	DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Specular"))))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Ambient"))))
@@ -334,7 +333,7 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 
 
-	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Shade"), fHalf + fSize, fHalf, fSize, fSize)))
+	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_RimLight"), fHalf + fSize, fHalf, fSize, fSize)))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Specular"), fHalf + fSize, fHalf + fSize, fSize, fSize)))
 		DEBUG_ASSERT;
@@ -504,11 +503,12 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Bake_Fog()))
 		DEBUG_ASSERT;
 
-	
-
 	if (FAILED(Render_Blend()))
 		DEBUG_ASSERT;
-	///////SSR 넣기
+
+	if (FAILED(Render_RimLight()))
+		DEBUG_ASSERT;
+
 	if (FAILED(Render_SSR()))
 		DEBUG_ASSERT;
 
@@ -1028,8 +1028,8 @@ HRESULT CRender_Manager::Render_Blend()
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_DiffuseTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Diffuse")))))
 		DEBUG_ASSERT;
 
-	if (FAILED(m_pShader->Set_ShaderResourceView("g_ShadeTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Shade")))))
-		DEBUG_ASSERT;
+	//if (FAILED(m_pShader->Set_ShaderResourceView("g_ShadeTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Shade")))))
+	//	DEBUG_ASSERT;
 
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_SpecularTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Specular")))))
 		DEBUG_ASSERT;
@@ -1757,44 +1757,19 @@ HRESULT CRender_Manager::Render_SSR()
 	return S_OK;
 }
 
-HRESULT CRender_Manager::Render_SSR()
+HRESULT CRender_Manager::Render_RimLight()
 {
 	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
-
-	Bake_OriginalRenderTexture();
-
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
-	shared_ptr<CPipeLine> pPipeLine = GET_SINGLE(CPipeLine);
+	m_pShader->Set_ShaderResourceView("g_RimLightTexture", pRenderTargetManager->Get_SRV(TEXT("Target_RimLight")));
+	m_pShader->Set_ShaderResourceView("g_ShaderFlagTexture", pRenderTargetManager->Get_SRV(TEXT("Target_ShaderFlag")));
 
-	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
-	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
-	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
-
-	_float4x4 ViewTranspose = *pPipeLine->Get_Transform_TP(CPipeLine::D3DTS_VIEW);
-	_float4x4 ProjTranspose = *pPipeLine->Get_Transform_TP(CPipeLine::D3DTS_PROJ);
-
-	m_pShader->Set_RawValue("g_CamViewMatrix", &ViewTranspose, sizeof(_float4x4));
-	m_pShader->Set_RawValue("g_CamProjMatrix", &ProjTranspose, sizeof(_float4x4));
-
-	m_pShader->Set_ShaderResourceView("g_DepthTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Depth")));
-	m_pShader->Set_ShaderResourceView("g_NormalTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Normal")));
-	m_pShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")));
-
-	_float4x4		ViewMatrixInv, ProjMatrixInv;
-
-	XMStoreFloat4x4(&ViewMatrixInv, XMMatrixTranspose(XMMatrixInverse(nullptr, pPipeLine->Get_Transform(CPipeLine::D3DTS_VIEW))));
-	XMStoreFloat4x4(&ProjMatrixInv, XMMatrixTranspose(XMMatrixInverse(nullptr, pPipeLine->Get_Transform(CPipeLine::D3DTS_PROJ))));
-
-	m_pShader->Set_RawValue("g_ViewMatrixInv", &ViewMatrixInv, sizeof(_float4x4));
-	m_pShader->Set_RawValue("g_ProjMatrixInv", &ProjMatrixInv, sizeof(_float4x4));
-
-	m_pShader->Set_RawValue("g_vCamPosition", &pPipeLine->Get_CamPosition(), sizeof(_float4));
-
-	m_pShader->Begin(12, pDeviceContext);
+	m_pShader->Begin(13, DEVICECONTEXT);
 	m_pVIBuffer->Render(pDeviceContext);
 
 	return S_OK;
 }
+
 
 HRESULT CRender_Manager::PostProcessing()
 {
