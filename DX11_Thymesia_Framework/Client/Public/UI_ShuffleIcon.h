@@ -24,13 +24,20 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 
 	void			Bind_Item(weak_ptr<CItem> pItem);
+	weak_ptr<CItem>	Get_BindItem() { return m_pBindItem; }
 	void			Unbind_Item();
 
 
-	void			Bind_Target(weak_ptr<CUI_ItemSlot> pItemSlot);
+	void							Bind_Target(weak_ptr<CUI_ItemSlot> pItemSlot);
+	weak_ptr<CUI_ItemSlot> 			Get_Target() { return m_pTargetItemSlot; }
+
 	void			Pull_Lerp();
 	void			Start_Lerp(_float fLerpTime);
 
+
+
+	void			Start_SwapLerp(_float2 TargetPos, _float fLerpTime);
+	
 private:
 	void			Call_TransformLerpEnd();
 

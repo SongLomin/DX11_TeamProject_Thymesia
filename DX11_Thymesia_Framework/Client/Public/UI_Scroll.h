@@ -25,7 +25,7 @@ public:
         const _float fStartSize, const _float fMaxSize);
 
     virtual void        Set_Depth(_float fDepth) override;
-    _float              Get_OffsetYFromRatio() { m_fMaxSize * m_fProgressRatio; }
+    _float              Get_OffsetYFromRatio() {return (m_fMaxSize * m_fProgressRatio); }
 
     _float              Get_CurrentProgressiveOffset() { return m_fMaxSize* m_fProgressRatio; }
 

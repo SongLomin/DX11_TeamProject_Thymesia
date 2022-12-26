@@ -1584,6 +1584,7 @@
     <ClInclude Include="..\Public\Preset_NvClothMesh.h">
       <Filter>06. DataPreset\07. Preset_NvClothMesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\EasingComponent_Bezier.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3211,6 +3212,7 @@
     <ClCompile Include="..\Private\Preset_NvClothMesh.cpp">
       <Filter>06. DataPreset\07. Preset_NvClothMesh</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\EasingComponent_Bezier.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

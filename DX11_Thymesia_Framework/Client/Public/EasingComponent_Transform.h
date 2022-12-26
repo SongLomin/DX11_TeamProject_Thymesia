@@ -9,7 +9,6 @@ class CEasingComponent_Transform final : public CEasingComponent
     CLONE_H(CEasingComponent_Transform, CComponent)
 
 public:
-
     virtual void Start() override;
 
 	virtual void Tick(_float fTimeDelta) override;

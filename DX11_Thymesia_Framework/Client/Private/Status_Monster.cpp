@@ -237,7 +237,7 @@ void CStatus_Monster::Update_ParryRecoveryTime(_float fTimeDelta)
 		return;
 
 	//초당 최대 패링게이지의 2할만큼 빠짐.
-	m_tMonsterDesc.m_fCurrentParryingGauge -= (m_tMonsterDesc.m_fMaxParryingGauge * 0.2) * fTimeDelta;
+	m_tMonsterDesc.m_fCurrentParryingGauge -= (m_tMonsterDesc.m_fMaxParryingGauge * 0.2f) * fTimeDelta;
 	if (m_tMonsterDesc.m_fCurrentParryingGauge <= 0.f)
 		m_tMonsterDesc.m_fCurrentParryingGauge = 0.f;
 
@@ -327,7 +327,7 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 	m_tMonsterDesc.m_fRecoveryAlramTime = 5.f;
 	m_tMonsterDesc.m_fRecoveryTime = 7.f;
 	m_tMonsterDesc.m_fHpBarDisableTime = 15.f;
-	m_tMonsterDesc.m_iCueentParryCount = 0.f;
+	m_tMonsterDesc.m_iCueentParryCount = 0;
 	m_tMonsterDesc.m_fCurrentParryingGauge = 0.f;
 	m_tMonsterDesc.m_fRecoveryAmountPercentageFromSecond = 0.3f;
 	m_tMonsterDesc.m_fRecoveryMag = 1.f;

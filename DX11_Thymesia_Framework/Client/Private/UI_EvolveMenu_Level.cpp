@@ -40,7 +40,7 @@ HRESULT CUI_EvolveMenu_Level::Initialize(void* pArg)
         m_tOriginStatus.m_fCurrentMP = 150.f;
         m_tOriginStatus.m_fNormalAtk = 25.f;
         m_tOriginStatus.m_fPlagueAtk = 200.f;
-        m_tOriginStatus.m_iWound = 75.f;
+        m_tOriginStatus.m_iWound = 75;
         m_tOriginStatus.m_iMemory = 5000;
         m_tOriginStatus.m_fParryingAtk = 25.f;
         m_tOriginStatus.m_iStr = 1;
@@ -1045,7 +1045,7 @@ void CUI_EvolveMenu_Level::OpenReconfirmWindow()
     m_bOpenReconfirmWindowThisFrame = true;
 
     m_iReconfirmWindowIndex = 0;
-    m_pEasingAlphaCom.lock()->Set_Lerp(0.f, 1.f, 0.3, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE, true);
+    m_pEasingAlphaCom.lock()->Set_Lerp(0.f, 1.f, 0.3f, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE, true);
     Enable_AllEventChild();
     TickReconfirmWindow();
 }
@@ -1086,10 +1086,6 @@ void CUI_EvolveMenu_Level::TickReconfirmWindow()
             if (m_iReconfirmWindowIndex == (_uint)LEVEL_RECONFIRM_TYPE::YES)
             {
                 m_tOriginStatus = m_tChangeStatus;
-#ifndef _ONLY_UI_
-                GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Status().lock()->Set_Desc(&m_tChangeStatus);
-                GET_SINGLE(CGameManager)->Set_PlayerStatusDesc(&m_tChangeStatus);
-#endif // _ONLY_UI_ 
             }
             m_iReconfirmWindowIndex = 0;
             m_bOpenableReconfirmWindow = true;

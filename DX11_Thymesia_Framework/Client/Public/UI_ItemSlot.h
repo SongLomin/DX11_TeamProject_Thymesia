@@ -38,14 +38,14 @@ public:
 
 
 	virtual void	Set_RenderGroup(RENDERGROUP eRenderGroup) override;
-
+	void			Update_TextInfo();
 public:
 	virtual void	OnMouseOver() override;
 	virtual void	OnMouseOut() override;
 
 public:
 	virtual void	Lerp_Transform(_float2	vTargetPos, _float fLerpTime);
-
+	virtual void	Set_RenderIcon(_bool bRenderIcon) { m_bRenderIcon = bRenderIcon; }
 
 public:
 	FDelegate<weak_ptr<CItem>>	Callback_OnMouseOver;
@@ -57,7 +57,7 @@ private:
 
 private:
 	_bool			Check_IsInInventoryFrame();
-	void			Update_TextInfo();
+
 	virtual void	SetUp_Component() override;
 //private아이템 바인딩 해줘야함.
 
@@ -76,7 +76,7 @@ private:
 
 	weak_ptr<CCustomUI>		m_pIcon;
 	weak_ptr<CItem>			m_pBindedItem;
-
+	_bool					m_bRenderIcon = true;
 
 	TEXTINFO				m_tTextInfo;
 

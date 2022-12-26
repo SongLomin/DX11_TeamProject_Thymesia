@@ -19,8 +19,10 @@ public:
     enum class INVENTORY_SORTTYPE
     {
         SORT_BY_TYPE,
+        SORT_BY_QUANTITY,
         SORT_BY_DATE,
-        SORT_BY_QUANTITY
+        SORT_BY_END
+      
     };
 
 public:
@@ -58,6 +60,8 @@ private:
     void                    Update_TextInfoToInventorySize(_uint iCurrentInventorySize);
 
     void                    Sort_ItemList(INVENTORY_SORTTYPE eSortType);
+
+    void                    ResetPositionFromVectorIndex();
 
 private:
     void                    Start_Shuffle();               

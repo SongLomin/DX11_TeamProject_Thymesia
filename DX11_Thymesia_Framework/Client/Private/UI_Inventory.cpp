@@ -203,8 +203,13 @@ void CUI_Inventory::Start_AnimationSorting()
         return;
 
    // Start_AnimationPreSorting(pVecItem, m_eSortType);
-
-    m_pInventorySorter->Sorting_Start(pVecItem, m_fSlotOffset, (_uint)m_eSortType);
+   pVecItem =  m_pInventorySorter->Sorting_Start(pVecItem, m_fSlotOffset, (_uint)m_eSortType, 
+        CInventorySorter::SORTING_ANIMATION_TYPE::SORTING_ANIMATION_QUICK_FLOW);
+    for (_uint i = 0; i < pVecItem.size(); i++)
+    {
+        m_vecItemSlot[i] = pVecItem[i];
+    }
+    ResetPositionFromVectorIndex();
 }
 
 void CUI_Inventory::Start_AnimationPreSorting(vector<weak_ptr<CUI_ItemSlot>>& vecItemSlot, INVENTORY_SORTTYPE eSortType)
@@ -238,7 +243,7 @@ void CUI_Inventory::Start_AnimationPreSorting(vector<weak_ptr<CUI_ItemSlot>>& ve
         }
         break;
     case Client::CUI_Inventory::INVENTORY_SORTTYPE::SORT_BY_QUANTITY:
-        if (pFirst.lock()->Get_BindItem().lock()->Get_CurrentQuantity() >
+        if (pFirst.lock()->Get_BindItem().lock()->Get_CurrentQuantity() <
             pSecond.lock()->Get_BindItem().lock()->Get_CurrentQuantity())
         {
             
@@ -258,11 +263,11 @@ void CUI_Inventory::Update_KeyInput(_float fTimeDelta)
     if (KEY_INPUT(KEY::R, KEY_STATE::TAP))
     {
         m_pScroll.lock()->Reset_Scroll();
-        //타입 한칸 밀기
+
         _uint iSortTypeIndex = (_uint)m_eSortType;
         iSortTypeIndex++;
 
-        if (iSortTypeIndex > (_uint)INVENTORY_SORTTYPE::SORT_BY_QUANTITY)
+        if (iSortTypeIndex == (_uint)INVENTORY_SORTTYPE::SORT_BY_END)
             iSortTypeIndex = 0;
         m_eSortType = (INVENTORY_SORTTYPE)iSortTypeIndex;
 
@@ -296,7 +301,7 @@ void CUI_Inventory::Update_ItemSlotFromPlayerInventory()
     }
     if (pMapItem.size() > 0)
     {
-        Sort_ItemList(m_eSortType);
+        //Sort_ItemList(m_eSortType);
     }
     Update_TextInfoToInventorySize(pMapItem.size());
 }
@@ -398,6 +403,27 @@ void CUI_Inventory::Sort_ItemList(INVENTORY_SORTTYPE eSortType)
             }
             return false;//슬롯 자체는 스왑 X
         });
+}
+
+void CUI_Inventory::ResetPositionFromVectorIndex()
+{
+    weak_ptr<CUI_ItemSlot>  pItemSlot;
+
+    for (int i = 0; i < m_iHeight; i++)
+    {
+        for (int j = 0; j < m_iWidth; j++)
+        {
+            pItemSlot = m_vecItemSlot[i * m_iWidth + j];
+
+            if(pItemSlot.lock()->Is_Bind() == false)
+            {
+                continue;
+            }
+            Set_ItemSlotPosFromWidthHeightIndex(pItemSlot, j, i);
+            pItemSlot.lock()->Set_OriginCenterPosFromThisPos();
+            pItemSlot.lock()->Update_TextInfo();
+        }
+    }
 }
 
 void CUI_Inventory::Start_Shuffle()

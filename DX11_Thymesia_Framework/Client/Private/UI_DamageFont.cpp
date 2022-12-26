@@ -61,7 +61,7 @@ void CUI_DamageFont::SetUp_DamageFont(_uint iDmg, _float2 vPos, ATTACK_OPTION eA
 
 	string	strDamage = to_string(iDmg);
 	string strDamageFontKey;
-	int		strSize = strDamage.size();
+	int		strSize = (_int)strDamage.size();
 	weak_ptr<CUI_DamageFontPiece> pDamageFont;
 	for (int i = 0; i < (int)strDamage.size(); i++)
 	{

@@ -47,6 +47,7 @@ void CUI_ItemSlot::Tick(_float fTimeDelta)
 		
 		Set_UIPosition(LerpedPos.x, LerpedPos.y);
 	}
+	m_pIcon.lock()->Set_Render(m_bRenderIcon);
 }
 
 void CUI_ItemSlot::LateTick(_float fTimeDelta)
@@ -54,6 +55,9 @@ void CUI_ItemSlot::LateTick(_float fTimeDelta)
 	fTimeDelta = CUI_Utils::UI_TimeDelta();
 	__super::LateTick(fTimeDelta);
 
+	if (m_bRenderIcon == false)
+		return;
+	
 	GAMEINSTANCE->Add_Text((_uint)FONT_INDEX::PRETENDARD, m_tTextInfo);
 
 }
@@ -172,18 +176,18 @@ void CUI_ItemSlot::Create_ItemSlot()
 	m_pMain = ADD_STATIC_CUSTOMUI;
 	m_pMain.lock()->Set_Size(66.f, 66.f);
 	m_pMain.lock()->Set_Texture("ItemSlot_Main");
-	m_pMain.lock()->Set_Depth(0.31);
+	m_pMain.lock()->Set_Depth(0.31f);
 
 
 	m_pFrame = ADD_STATIC_CUSTOMUI;
 	m_pFrame.lock()->Set_Size(70.f, 70.f);
 	m_pFrame.lock()->Set_Texture("ItemSlot_Frame");
-	m_pFrame.lock()->Set_Depth(0.32);
+	m_pFrame.lock()->Set_Depth(0.32f);
 
 	m_pHover = ADD_STATIC_CUSTOMUI;
 	m_pHover.lock()->Set_Size(213.f, 213.f);
 	m_pHover.lock()->Set_Texture("ItemSlot_Hover");
-	m_pHover.lock()->Set_Depth(0.33);
+	m_pHover.lock()->Set_Depth(0.33f);
 	m_pHover.lock()->Set_AlphaColor(0.f);
 	m_pHover.lock()->Add_Component<CEasingComponent_Alpha>();
 

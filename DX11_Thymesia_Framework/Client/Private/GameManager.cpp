@@ -762,10 +762,6 @@ POINT CGameManager::Get_MousePoint()
 	return tMousePt;
 }
 
-void CGameManager::Set_PlayerStatusDesc(void* pArg)
-{
-	memcpy(&m_tPlayerDesc, pArg, sizeof(CStatus_Player::PLAYERDESC));
-}
 
 void  CGameManager::Registration_SectionEvent(_uint In_iSection, weak_ptr<CSection_Eventer> In_pSectionEvent)
 {
