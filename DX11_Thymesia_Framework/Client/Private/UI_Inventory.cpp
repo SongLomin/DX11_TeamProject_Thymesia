@@ -11,6 +11,8 @@
 #include "Item.h"
 #include "InventorySorter.h"
 #include "UIManager.h"
+#include "InventorySorter.h"
+
 
 GAMECLASS_C(CUI_Inventory)
 CLONE_C(CUI_Inventory, CGameObject)
@@ -187,7 +189,7 @@ void CUI_Inventory::Set_ItemSlotPosFromWidthHeightIndex(weak_ptr<CUI_ItemSlot> p
         ALIGN_CENTER);
 }
 
-void CUI_Inventory::Start_AnimationSorting()
+void CUI_Inventory::Start_AnimationSorting(_uint eSortingAnimType)
 {
     vector<weak_ptr<CUI_ItemSlot>> pVecItem;
 
@@ -204,7 +206,7 @@ void CUI_Inventory::Start_AnimationSorting()
 
    // Start_AnimationPreSorting(pVecItem, m_eSortType);
    pVecItem =  m_pInventorySorter->Sorting_Start(pVecItem, m_fSlotOffset, (_uint)m_eSortType, 
-        CInventorySorter::SORTING_ANIMATION_TYPE::SORTING_ANIMATION_QUICK_FLOW);
+       (CInventorySorter::SORTING_ANIMATION_TYPE)eSortingAnimType);
     for (_uint i = 0; i < pVecItem.size(); i++)
     {
         m_vecItemSlot[i] = pVecItem[i];
@@ -265,12 +267,9 @@ void CUI_Inventory::Update_KeyInput(_float fTimeDelta)
         if (GET_SINGLE(CUIManager)->Is_Animation())
             return;
 
-
-
         GET_SINGLE(CUIManager)->Set_UIAnimation(true);
 
         m_pScroll.lock()->Reset_Scroll();
-
         _uint iSortTypeIndex = (_uint)m_eSortType;
         iSortTypeIndex++;
 
@@ -278,7 +277,7 @@ void CUI_Inventory::Update_KeyInput(_float fTimeDelta)
             iSortTypeIndex = 0;
         m_eSortType = (INVENTORY_SORTTYPE)iSortTypeIndex;
 
-        Start_AnimationSorting();
+        Start_AnimationSorting((_uint)CInventorySorter::SORTING_ANIMATION_TYPE::SORTING_ANIMATION_QUICK_FLOW_BEZIER);
 
         Update_SortImages(m_eSortType);
     }
@@ -449,6 +448,10 @@ void CUI_Inventory::OnEnable(void* pArg)
     if (GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock())
     {
         Update_ItemSlotFromPlayerInventory();
+
+        m_pScroll.lock()->Reset_Scroll();
+        Start_AnimationSorting((_uint)CInventorySorter::SORTING_ANIMATION_TYPE::SORTING_ANIMATION_QUICK);
+
     }
 }
 

@@ -41,7 +41,11 @@ vector<weak_ptr<CUI_ItemSlot>> CInventorySorter::Sorting_Start(vector<weak_ptr<C
         Start_Sort_TypeMobile(iSortType);
         Start_Animation_TypeMobile();
         break;
-    case Client::CInventorySorter::SORTING_ANIMATION_TYPE::SORTING_ANIMATION_QUICK_FLOW:
+    case Client::CInventorySorter::SORTING_ANIMATION_TYPE::SORTING_ANIMATION_QUICK:
+        MyQuickSort(m_vecItemSlot, 0, m_vecItemSlot.size() - 1);
+        m_SortFlowList.clear();
+        break;
+    case Client::CInventorySorter::SORTING_ANIMATION_TYPE::SORTING_ANIMATION_QUICK_FLOW_BEZIER:
         Make_ShuffleIcon();
         MyQuickSort(m_vecItemSlot, 0, m_vecItemSlot.size() - 1);
         for (auto& elem : m_vecItemSlot)
@@ -49,9 +53,6 @@ vector<weak_ptr<CUI_ItemSlot>> CInventorySorter::Sorting_Start(vector<weak_ptr<C
             elem.lock()->Set_RenderIcon(false);
         }
         Start_Animation_TypeFlow();
-        break;
-    case Client::CInventorySorter::SORTING_ANIMATION_TYPE::SORTING_ANIMATION_QUICK_FLOW_BEZIER:
-        MyQuickSort(m_vecItemSlot, 0, m_vecItemSlot.size() - 1);
         break;
     default:
         break;

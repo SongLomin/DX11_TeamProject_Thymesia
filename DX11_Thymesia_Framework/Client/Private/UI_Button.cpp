@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "UI_Button.h"
 #include "GameManager.h"
-
+#include "UIManager.h"
 
 HRESULT CUI_Button_Base::Initialize(void* pArg)
 {
@@ -24,11 +24,11 @@ void CUI_Button_Base::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
-	if (m_eButtonLevel != GET_SINGLE(CGameManager)->Get_ButtonLevel())
+	if (m_eButtonLevel != GET_SINGLE(CUIManager)->Get_ButtonLevel())
 	{
 		return;
 	}
-	POINT	pt = GET_SINGLE(CGameManager)->Get_MousePoint();
+	POINT	pt = GET_SINGLE(CUIManager)->Get_MousePoint();
 	
 	Update_MouseOver();
 

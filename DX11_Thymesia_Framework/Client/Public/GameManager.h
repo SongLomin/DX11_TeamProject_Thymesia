@@ -180,27 +180,6 @@ public:
     /*
         사형수 전원 집행완료
     */
-public:// For UI;
-    POINT   Get_MousePoint();
-
-public:
-    void    SetCursor(weak_ptr<CUI_Cursor> pCursor) { m_pCursor = pCursor; }
-    void    EnableCursor();
-    void    DisableCursor();
-
-public:
-    BUTTON_LEVEL        Get_ButtonLevel() { return m_eButtonLevel; }
-    void                Set_ButtonLevel(BUTTON_LEVEL eButtonLevel) { m_eButtonLevel = eButtonLevel; }
-
-public:
-    void   CreatePopupQueue();
-    void   Add_Popup(ITEM_NAME eItemName);
-
-private:
-    weak_ptr< CUI_Cursor> m_pCursor;
-    shared_ptr<CItemPopup_Queue> m_pItemPopupQueue;
-    BUTTON_LEVEL  m_eButtonLevel = BUTTON_LEVEL::LEVEL1;
-
 
 public:
     void  Registration_SectionEvent(_uint In_iSection, weak_ptr<CSection_Eventer> In_pSectionEvent);

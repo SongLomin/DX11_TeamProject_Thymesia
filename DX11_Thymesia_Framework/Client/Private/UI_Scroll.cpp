@@ -3,7 +3,7 @@
 #include "UI_Utils.h"
 #include "CustomUI.h"
 #include "GameManager.h"
-
+#include "UIManager.h"
 
 GAMECLASS_C(CUI_Scroll)
 CLONE_C(CUI_Scroll, CGameObject)
@@ -156,7 +156,7 @@ _bool CUI_Scroll::Check_Drag()
 
 void CUI_Scroll::ScrollingToDrag()
 {
-    POINT   tMousePt = GET_SINGLE(CGameManager)->Get_MousePoint();
+    POINT   tMousePt = GET_SINGLE(CUIManager)->Get_MousePoint();
 
     m_pScrollTrack.lock()->Set_Y((_float)tMousePt.y - m_pScrollTrack.lock()->Get_SizeY() * 0.5f);
 

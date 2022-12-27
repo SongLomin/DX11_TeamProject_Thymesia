@@ -108,7 +108,11 @@ void CClientLevel::SetUp_UI()
 {
 	weak_ptr<CGameManager>	pGameManager = GET_SINGLE(CGameManager);
 
-	pGameManager.lock()->SetCursor(GAMEINSTANCE->Add_GameObject<CUI_Cursor>(LEVEL_STATIC));
+	weak_ptr<CUIManager>	pUIManager = GET_SINGLE(CUIManager);
+
+
+
+	pUIManager.lock()->SetCursor(GAMEINSTANCE->Add_GameObject<CUI_Cursor>(LEVEL_STATIC));
 
 	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);//¿©±â¼­
 	m_pPauseMenu = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu>(LEVEL_STATIC);
@@ -131,7 +135,7 @@ void CClientLevel::SetUp_UI()
 
 	GAMEINSTANCE->Add_GameObject<CUI_BloodOverlay>(LEVEL_STATIC);
 
-	GET_SINGLE(CGameManager)->CreatePopupQueue();
+	pUIManager.lock()->CreateItemPopupQueue();
 
 
 	//GET_SINGLE(CGameManager)->DisableCursor();
