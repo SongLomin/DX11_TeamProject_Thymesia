@@ -25,7 +25,7 @@ HRESULT CNorMonState_Walk_BR::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-
+	
 	return S_OK;
 }
 

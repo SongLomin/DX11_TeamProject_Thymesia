@@ -239,6 +239,60 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
 
 #pragma endregion // Bat
 
+#pragma region Urd
+
+     SET_ANIM_SPEED("Armature|Armature|Urd_Attack01LV2|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Attack01|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Attack02LV2C0|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Attack02LV2C1|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Attack02|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Attack03_DashSting_L|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Attack04_DashSting_R|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Attack05|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Attack06|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Attack07|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Dead|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Equip_L|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Equip_R|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_FightStart|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_HurtCounter|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_HurtM_FL|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_HurtM_FR|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_HurtS_FL|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_HurtS_FR|BaseLayerL", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Idle|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Parry_L|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Parry_RQuick|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Parry_R|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Run|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Seq_BossFightStart_1|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Seq_TutorialBossFightStart|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Skill01|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Skill02_1|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Skill03_L|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_Skill03_R|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_SPSkill01|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_StepB|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_StepFL45|BaseLayer", 2.f);;
+     SET_ANIM_SPEED("Armature|Armature|Urd_StepFL|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_StepFR45|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_StepFR|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_StepL|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_StepR|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_StunEnd|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_StunLoop|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_StunStart|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_VS_TakeExecution|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_WalkBL|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_WalkBR|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_WalkB|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_WalkFL|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_WalkFR|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_WalkF|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_WalkL|BaseLayer", 2.f);
+     SET_ANIM_SPEED("Armature|Armature|Urd_WalkR|BaseLayer", 2.f);
+#pragma endregion // Urd
+
 #pragma region Mon_AxeMan
     SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtStunStart|BaseLaye", 2.f);
 #pragma endregion // Mon_AxeMan

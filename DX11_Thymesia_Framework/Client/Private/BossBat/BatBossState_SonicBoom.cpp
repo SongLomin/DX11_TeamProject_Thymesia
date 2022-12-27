@@ -48,11 +48,12 @@ void CBatBossState_SonicBoom::Tick(_float fTimeDelta)
 
 	if (m_bAttackLookAtLimit)
 	{
-		Rotation_TargetToLookDir();
-	}
-	else
-	{
 		TurnAttack(fTimeDelta);
+	}
+
+	if (m_iSonicBoomCount > 0)
+	{
+		TurnAttack(fTimeDelta * 0.3f);
 	}
 
 
@@ -81,11 +82,12 @@ void CBatBossState_SonicBoom::OnStateStart(const _float& In_fAnimationBlendTime)
 	}
 	else
 	{
+		m_bAttackLookAtLimit = true;
 		m_iSonicBoomCount = 3;
 		m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	}
 	
-	m_bAttackLookAtLimit = true;
+
 	
 
 
@@ -132,10 +134,12 @@ _bool CBatBossState_SonicBoom::Check_AndChangeNextState()
 		return false;
 
 	
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.1f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() >= 0.3f && m_bAttackLookAtLimit)
 	{
 		m_bAttackLookAtLimit = false;
 	}
+
+
 
 	if (m_iSonicBoomCount > 0 && m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 312)
 	{	

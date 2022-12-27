@@ -37,7 +37,8 @@ private:
 
 	//TODO 가라에요 ㅎ
 	_bool  m_bPlayerToClose = false;
-
+private:
+	virtual void OnEventMessage(_uint iArg) override;
 
 protected:
 	void Free();

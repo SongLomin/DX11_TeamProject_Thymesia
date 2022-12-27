@@ -118,7 +118,7 @@ _bool CBatBossState_HellIdle::Check_AndChangeNextState()
 
 	_float fPToMDistance = Get_DistanceWithPlayer();
 
-	if (fPToMDistance <= 11.f)
+	if (fPToMDistance <= 12.f)
 	{
 		int iRand = rand() % 3;
 
@@ -136,7 +136,7 @@ _bool CBatBossState_HellIdle::Check_AndChangeNextState()
 		}
 		return true;
 	}
-	else if (fPToMDistance > 11.f && fPToMDistance <= 16.f)
+	else if (fPToMDistance > 12.f && fPToMDistance <= 16.f)
 	{
 		int iRand = rand() % 2;
 

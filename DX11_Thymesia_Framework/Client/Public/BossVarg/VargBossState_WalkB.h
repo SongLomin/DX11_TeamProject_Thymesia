@@ -36,6 +36,7 @@ private:
 
 private:
 	void Call_AnimationEnd();
+
 protected:
 	virtual void OnDestroy() override;
 	void Free();

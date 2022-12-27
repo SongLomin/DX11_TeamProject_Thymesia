@@ -438,6 +438,7 @@ void CCorvus::Ready_States()
 
 
 
+
 	ADD_STATE_MACRO(CCorvusState_CheckPointStart);
 	ADD_STATE_MACRO(CCorvusState_CheckPointEnd);
 	ADD_STATE_MACRO(CCorvusState_CheckPointLoop);
@@ -445,6 +446,7 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_Execution_Start);
 	ADD_STATE_MACRO(CCorvusState_Varg_Execution);
 	ADD_STATE_MACRO(CCorvusState_Execution_R_R);
+	ADD_STATE_MACRO(CCorvusState_Urd_Execution);
 
 #undef ADD_STATE_MACRO
 }

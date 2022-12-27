@@ -40,7 +40,7 @@ private:
 	_bool      m_bOneCheck = false;
 
 private:
-	//void Call_AnimationEnd();
+	virtual void OnEventMessage(_uint iArg) override;
 protected:
 	//virtual void OnDestroy() override;
 	void Free();

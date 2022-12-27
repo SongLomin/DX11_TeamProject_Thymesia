@@ -101,6 +101,8 @@ void CVargBossState_WalkB::Call_AnimationEnd()
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_AvoidB>(0.05f);
 }
 
+
+
 void CVargBossState_WalkB::OnDestroy()
 {
 	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_WalkB::Call_AnimationEnd, this);

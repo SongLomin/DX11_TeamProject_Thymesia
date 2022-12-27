@@ -660,9 +660,6 @@
     <ClInclude Include="..\Public\BossUrd\UrdBossState_Start.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\00.Start</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\BossUrd\UrdBossState_Idle.h">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Status_Boss.h">
       <Filter>05. Component\04. Status\02. Status_Boss</Filter>
     </ClInclude>
@@ -1602,6 +1599,177 @@
     <ClInclude Include="..\Public\BossBat\BatBossState_HellIdle.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle\03.HellIdle</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UrdWeapon.h">
+      <Filter>02. GameObject\03. Actor\Character\Boss\01.Urd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Equip_L.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\00.Start\00.Equip_L</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Equip_R.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\00.Start\01.Equip_R</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_FightStart.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\00.Start\02.FightStart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Attack01.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\00.Attack01</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Attack01LV2.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\01.Attack01LV2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Attack02.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\02.Attack02</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Attack02LV2C0.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\03.Attack02LV2C0</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Attack02LV2C1.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\04.Attack02LV2C1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Attack03_DashSting_L.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\05.Attack03_DashSting_L</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Attack03_DashSting_R.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\06.Attack03_DashSting_R</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Attack05.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\07.Attack05</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Attack06.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\08.Attack06</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Attack07.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\09.Attack07</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_TurnL.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\03.Turn\01.TurnL90</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_TurnR.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\03.Turn\00.TurnR90</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_HurtM_FL.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\04.Hurt\01.HurtM_FL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_HurtM_FR.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\04.Hurt\02.HurtM_FR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_HurtS_FL.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\04.Hurt\03.HurtS_FL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_HurtS_FR.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\04.Hurt\04.HurtS_FR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Parry_L.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\06.Parry\00.Parry_L</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Parry_R.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\06.Parry\01.Parry_R</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Parry_RQuick.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\06.Parry\02.Parry_RQuick</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Skill01.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\00.Skill01</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Skill02_1.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\01.Skill02_1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Skill03_L.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\02.Skill03_L</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Skill03_R.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\03.Skill03_R</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_SPSkill01.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\04.SPSkill01</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_StepB.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step\00.StepB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_StepFL.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step\01.StepFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_StepFL45.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step\02.StepFL45</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_StepFR.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step\03.StepFR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_StepFR45.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step\04.StepFR45</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_StepL.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step\05.StepL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_StepR.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step\06.StepR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_StunStart.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\09.Stun\00.StunStart</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_StunLoop.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\09.Stun\01.StunLoop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_StunEnd.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\09.Stun\02.StunEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Run.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\05.Run</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_VS_TakeExecution.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\10.TakeExecution</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_WalkB.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\00.WalkB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_WalkBL.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\01.WalkBL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_WalkBR.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\02.WalkBR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_WalkF.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\05.WalkF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_WalkFL.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\06.WalkFL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_WalkFR.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\07.WalkFR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_WalkL.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\03.WalkL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_WalkR.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\04.WalkR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Dead.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\12.Dead</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_HurtCounter.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\04.Hurt\00.HurtCounter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Idle.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle\00.Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_IdleStates.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Attack_Idle.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle\01.Attack_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Step_Idle.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle\02.Step_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Skill_Idle.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle\03.SKill_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\UrdBossState_Walk_Idle.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle\04.Walk_Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_Urd_Execution.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\05.Urd_Execution</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1629,9 +1797,6 @@
       <Filter>02. GameObject\02. Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\ImGui_Window.cpp">
-      <Filter>97. Tool\00. IMGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\ImGui_Manager.cpp">
       <Filter>97. Tool\00. IMGUI</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Level_Edit.cpp">
@@ -2304,9 +2469,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\BossUrd\UrdBossState_Start.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\00.Start</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BossUrd\UrdBossState_Idle.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Status_Boss.cpp">
       <Filter>05. Component\04. Status\02. Status_Boss</Filter>
@@ -3246,6 +3408,180 @@
     </ClCompile>
     <ClCompile Include="..\Private\BossBat\BatBossState_HellIdle.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle\03.HellIdle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGui_Manager.cpp">
+      <Filter>97. Tool\00. IMGUI\Windows\02. Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UrdWeapon.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Boss\01.Urd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Attack01.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\00.Attack01</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_WalkB.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\00.WalkB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_WalkR.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\04.WalkR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_WalkL.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\03.WalkL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_WalkFR.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\07.WalkFR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_WalkFL.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\06.WalkFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_WalkF.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\05.WalkF</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_WalkBR.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\02.WalkBR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_WalkBL.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\01.WalkBL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_StepB.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step\00.StepB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_StepR.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step\06.StepR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_StepL.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step\05.StepL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_StepFR45.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step\04.StepFR45</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_StepFR.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step\03.StepFR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_StepFL45.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step\02.StepFL45</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_StepFL.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step\01.StepFL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Skill01.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\00.Skill01</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_SPSkill01.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\04.SPSkill01</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Skill03_R.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\03.Skill03_R</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Skill03_L.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\02.Skill03_L</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Skill02_1.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\01.Skill02_1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_HurtM_FL.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\04.Hurt\01.HurtM_FL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_HurtS_FL.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\04.Hurt\03.HurtS_FL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_HurtM_FR.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\04.Hurt\02.HurtM_FR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_HurtCounter.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\04.Hurt\00.HurtCounter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_HurtS_FR.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\04.Hurt\04.HurtS_FR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Attack01LV2.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\01.Attack01LV2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Attack07.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\09.Attack07</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Attack06.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\08.Attack06</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Attack05.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\07.Attack05</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Attack03_DashSting_R.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\06.Attack03_DashSting_R</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Attack03_DashSting_L.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\05.Attack03_DashSting_L</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Attack02LV2C1.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\04.Attack02LV2C1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Attack02.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\02.Attack02</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Attack02LV2C0.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\03.Attack02LV2C0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_TurnR.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\03.Turn\00.TurnR90</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_TurnL.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\03.Turn\01.TurnL90</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Parry_L.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\06.Parry\00.Parry_L</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Parry_R.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\06.Parry\01.Parry_R</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Parry_RQuick.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\06.Parry\02.Parry_RQuick</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_StunStart.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\09.Stun\00.StunStart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_StunLoop.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\09.Stun\01.StunLoop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_StunEnd.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\09.Stun\02.StunEnd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Dead.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\12.Dead</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_VS_TakeExecution.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\10.TakeExecution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Equip_L.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\00.Start\00.Equip_L</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Equip_R.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\00.Start\01.Equip_R</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_FightStart.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\00.Start\02.FightStart</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Run.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\05.Run</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Idle.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle\00.Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_IdleStates.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Attack_Idle.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle\01.Attack_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Step_Idle.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle\02.Step_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Skill_Idle.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle\03.SKill_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\UrdBossState_Walk_Idle.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle\04.Walk_Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Urd_Execution.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\05.Urd_Execution</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -4379,9 +4715,6 @@
     <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\00.Start">
       <UniqueIdentifier>{6b09e96a-ebd5-4d3d-a017-3d9d160b8c42}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle">
-      <UniqueIdentifier>{d4020cdb-cd3a-4888-96a8-4ab6f434e72b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\36.IdleGeneral">
       <UniqueIdentifier>{64b1ed35-ec2a-412f-b468-980b4602596b}</UniqueIdentifier>
     </Filter>
@@ -4816,6 +5149,198 @@
     </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\06.LitghAttack1\04.TurnL90">
       <UniqueIdentifier>{02be8622-50d7-4460-8f70-a69504affb03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle">
+      <UniqueIdentifier>{d4020cdb-cd3a-4888-96a8-4ab6f434e72b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack">
+      <UniqueIdentifier>{076ce486-1456-4f20-88d5-31a6b4e11715}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\00.Attack01">
+      <UniqueIdentifier>{650a1c4e-7b49-49d7-9b16-0864aad0bcd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\01.Attack01LV2">
+      <UniqueIdentifier>{772f4448-cc9d-46cc-966c-f0f54a048573}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\02.Attack02">
+      <UniqueIdentifier>{5388ae1d-0bcd-46fd-88a4-e00e8ed32b4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\03.Attack02LV2C0">
+      <UniqueIdentifier>{77f5f3d5-dacc-4a5b-a32c-663caf9825eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\04.Attack02LV2C1">
+      <UniqueIdentifier>{88623026-d2e3-4472-bd65-d60cec80a79b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\05.Attack03_DashSting_L">
+      <UniqueIdentifier>{1c62cb1d-f0eb-41d5-9b51-ffc29077e257}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\06.Attack03_DashSting_R">
+      <UniqueIdentifier>{b3a7d4b4-cf07-40a7-b944-c6face8f392e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\07.Attack05">
+      <UniqueIdentifier>{a174bffd-dfab-4e65-8919-29a2f412a37f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\08.Attack06">
+      <UniqueIdentifier>{299c3cdb-32f9-4f34-9f47-55bedf66b811}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\09.Attack07">
+      <UniqueIdentifier>{57ba3ac7-df85-4159-b6d1-6fcf9a2683de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\03.Turn">
+      <UniqueIdentifier>{c2fc9dbf-cca5-4ed1-87fb-aae2420d3346}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\03.Turn\00.TurnR90">
+      <UniqueIdentifier>{23e92b01-afe2-4493-94a5-653640723021}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\03.Turn\01.TurnL90">
+      <UniqueIdentifier>{79f3720f-b77b-45a6-b38d-a99eac7b6b8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\04.Hurt">
+      <UniqueIdentifier>{70055650-6879-41e3-929a-89d6328bdf60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\04.Hurt\00.HurtCounter">
+      <UniqueIdentifier>{bea4399b-976b-45bf-8d3f-83d57c36d4e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\04.Hurt\01.HurtM_FL">
+      <UniqueIdentifier>{ac01bb8e-45f4-4fdc-a8f2-a572ee838952}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\04.Hurt\03.HurtS_FL">
+      <UniqueIdentifier>{d1a94b99-2fce-4344-9985-088ed0613c17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\04.Hurt\04.HurtS_FR">
+      <UniqueIdentifier>{fe4cddef-667a-4264-a6a8-ac8822c959b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\05.Run">
+      <UniqueIdentifier>{4cdd45d9-8dfd-464b-ae7e-6dd7537200fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\06.Parry">
+      <UniqueIdentifier>{3e3bceb7-f7d4-4b5e-986b-7de21a0bf361}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\06.Parry\00.Parry_L">
+      <UniqueIdentifier>{bfad4d99-84de-4c11-bc64-c0db805538b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\06.Parry\01.Parry_R">
+      <UniqueIdentifier>{629a6c99-6ebd-4f3e-a630-ea947e38fe82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\06.Parry\02.Parry_RQuick">
+      <UniqueIdentifier>{bf3a08d7-2bd9-4014-88e1-c3e475611c32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\00.Start\00.Equip_L">
+      <UniqueIdentifier>{d839ec26-223b-4bdc-99e0-47f0aecf686a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\00.Start\01.Equip_R">
+      <UniqueIdentifier>{ff278f50-3475-4134-8408-ebe6e1ec71a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\00.Start\02.FightStart">
+      <UniqueIdentifier>{0954ef88-9022-4688-b0c2-ea4864b8c328}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill">
+      <UniqueIdentifier>{8360d8b7-3aab-4118-8eba-da0dd5f006b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\00.Skill01">
+      <UniqueIdentifier>{0c9b3fe6-9d3a-4675-8571-a092ca5baffd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\01.Skill02_1">
+      <UniqueIdentifier>{7031e5c8-5cbe-4458-bb9a-5332e80335e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\02.Skill03_L">
+      <UniqueIdentifier>{b244c76d-0dc0-4151-8147-a4e45fcefba9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\03.Skill03_R">
+      <UniqueIdentifier>{07fd0c93-c57f-4dc9-9896-f6519994e174}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\07.Skill\04.SPSkill01">
+      <UniqueIdentifier>{c8de3d4e-7d3f-448a-a6cd-d4f98571e7e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step">
+      <UniqueIdentifier>{4dfc3bfa-10f4-4457-8a64-9dee74ba9caa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step\00.StepB">
+      <UniqueIdentifier>{ba31cd41-9fb2-4d00-a915-7b7adfb438df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step\01.StepFL">
+      <UniqueIdentifier>{ec1473d2-bef3-4cdf-9fd9-62cc48f0016d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step\02.StepFL45">
+      <UniqueIdentifier>{1d789e7e-f2ee-48be-ab2a-c3564f9ebe27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step\03.StepFR">
+      <UniqueIdentifier>{37ae168c-069e-4ba0-a236-fcae8d9171f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step\04.StepFR45">
+      <UniqueIdentifier>{78335dc3-e807-4a1f-9e78-f740ba2dc93a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step\05.StepL">
+      <UniqueIdentifier>{3aed06c3-cd99-493a-aaa9-59eef6932824}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\08.Step\06.StepR">
+      <UniqueIdentifier>{99f5eeec-e8d9-4a71-bccb-9f7b7a097c72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\09.Stun">
+      <UniqueIdentifier>{2c683f6a-ad64-4f7c-918f-ed1cac215cf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\09.Stun\02.StunEnd">
+      <UniqueIdentifier>{fa486d13-fd06-4b49-a960-d139253a3c36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\09.Stun\01.StunLoop">
+      <UniqueIdentifier>{670d5e56-33f3-4796-8ab3-306d280e6095}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\09.Stun\00.StunStart">
+      <UniqueIdentifier>{2339bdee-a81b-405a-b0f9-f3a4f80c35c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\10.TakeExecution">
+      <UniqueIdentifier>{78144375-8bcb-4398-89cb-260cc7d0e7b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk">
+      <UniqueIdentifier>{c7cdc1a0-cce0-4e76-8072-3a873d64b638}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\00.WalkB">
+      <UniqueIdentifier>{7397f4b0-9551-420f-846c-0029d031e736}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\01.WalkBL">
+      <UniqueIdentifier>{7908cff2-f9c0-4b1e-ad4a-4ce44f3013ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\02.WalkBR">
+      <UniqueIdentifier>{9d41822b-c830-4885-b573-b094fda9e84b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\03.WalkL">
+      <UniqueIdentifier>{dca750ed-66d7-4e87-aa9b-be9589d14b47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\04.WalkR">
+      <UniqueIdentifier>{c33b658c-80ce-4efc-9d7e-220a03f1cc22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\05.WalkF">
+      <UniqueIdentifier>{9b96e2fc-b347-4c52-9afa-e48d8884e1e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\06.WalkFL">
+      <UniqueIdentifier>{9282c58f-7963-489c-9f35-76caa28e3e21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\11.Walk\07.WalkFR">
+      <UniqueIdentifier>{2d823def-080d-4b9c-9675-617428662220}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\12.Dead">
+      <UniqueIdentifier>{9985bcb8-7c4f-4c2b-94d3-da86c4b5bf56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\04.Hurt\02.HurtM_FR">
+      <UniqueIdentifier>{a8d71188-a043-4ce7-b29a-acc4657e22d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle\00.Idle">
+      <UniqueIdentifier>{57608bdf-1458-43b4-9fef-386b5a4a7d28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle\01.Attack_Idle">
+      <UniqueIdentifier>{59523bd4-9950-4e55-98d2-83b5801d90f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle\02.Step_Idle">
+      <UniqueIdentifier>{0d0668e3-cb43-4a4f-9b3d-630aa6366bbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle\03.SKill_Idle">
+      <UniqueIdentifier>{af3c5b45-5372-421b-9da6-3ef3c89148f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle\04.Walk_Idle">
+      <UniqueIdentifier>{5a21a5fa-3bdd-4d67-bf3f-fdc39bdc2136}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\05.Urd_Execution">
+      <UniqueIdentifier>{ceb0eb91-21dc-437d-875c-50f80249b7dd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

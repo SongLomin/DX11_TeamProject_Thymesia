@@ -108,10 +108,6 @@ _bool CBatBossState_Idle::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	//6.5기준이로잡으면될듯
-
-	_float fPToMDistance = Get_DistanceWithPlayer();
-
 	if (m_bHeelScream) //헬모드일때
 	{
 		Get_OwnerCharacter().lock()->Change_State<CBatBossState_HellIdle>(0.05f);

@@ -118,7 +118,7 @@ _bool CBatBossState_AttackIdle::Check_AndChangeNextState()
 
 	_float fPToMDistance = Get_DistanceWithPlayer();
 
-	if (fPToMDistance <= 11.f)
+	if (fPToMDistance <= 12.f)
 	{
 		if (m_iAttackCount  >  2)
 		{
@@ -128,7 +128,7 @@ _bool CBatBossState_AttackIdle::Check_AndChangeNextState()
 		}
 		else
 		{
-			int iRand = rand() % 3;
+			int iRand = rand() % 4;
 
 			switch (iRand)
 			{
@@ -141,13 +141,16 @@ _bool CBatBossState_AttackIdle::Check_AndChangeNextState()
 			case 2:
 				Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_SmarhL>(0.05f);
 				break;
+			case 3:
+				Check_CrossAttackState();
+				break;
 			}
 		}
 
 		
 		return true;
 	}
-	else if (fPToMDistance > 11.f && fPToMDistance <= 16.f)
+	else if (fPToMDistance > 12.f && fPToMDistance <= 16.f)
 	{
 		int iRand = rand() % 2;
 

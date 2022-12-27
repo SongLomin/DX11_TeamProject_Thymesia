@@ -140,7 +140,7 @@ _bool CNorMonState_HurtL::Check_AndChangeNextState()
 		return false;
 
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
 	{
 		if (m_iParryCount >= 10)
 		{

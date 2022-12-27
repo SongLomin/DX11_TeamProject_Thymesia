@@ -113,6 +113,17 @@ void CNorMonState_Walk_F::OnStateEnd()
 
 
 
+void CNorMonState_Walk_F::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		m_bWalkCheck = false;
+		m_iGardnerAtkIndex = 0;
+	}
+}
+
 void CNorMonState_Walk_F::Call_AnimationEnd()
 {
 	if (!Get_Enable())

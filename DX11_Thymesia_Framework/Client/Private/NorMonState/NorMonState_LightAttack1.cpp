@@ -78,7 +78,7 @@ void CNorMonState_LightAttack1::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 	//TODO ¾ß¸Å
-	yame = true;
+
 	Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
 }
 

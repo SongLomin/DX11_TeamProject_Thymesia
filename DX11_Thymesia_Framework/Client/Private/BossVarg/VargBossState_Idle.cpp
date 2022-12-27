@@ -118,6 +118,18 @@ void CVargBossState_Idle::OnStateEnd()
 
 }
 
+void CVargBossState_Idle::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		m_bTurnCheck = false;
+		m_bBackReset = false;
+		m_iBackCount = 0;
+	}
+}
+
 void CVargBossState_Idle::Free()
 {
 

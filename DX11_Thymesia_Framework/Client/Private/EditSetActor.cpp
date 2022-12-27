@@ -168,7 +168,8 @@ void CEditSetActor::View_CreateActor()
 	static const char* ActorList_Boss[] =
 	{
 		"Varg",
-		"Bat"
+		"Bat" ,
+		"Urd"
 	};
 
 	static const char* MonsterActionList[] =
@@ -293,6 +294,11 @@ void CEditSetActor::View_CreateActor()
 		{
 			pObj = Weak_StaticCast<CMonster>(GAMEINSTANCE->Add_GameObject<CBat>(LEVEL::LEVEL_EDIT));
 			Add_ActorToTool(typeid(CBat).hash_code(), typeid(CBat).name(), pObj);
+		}
+		else if (MONSTERTYPE::URD == tMonsterDesc.eMonType)
+		{
+			pObj = Weak_StaticCast<CMonster>(GAMEINSTANCE->Add_GameObject<CUrd>(LEVEL::LEVEL_EDIT));
+			Add_ActorToTool(typeid(CUrd).hash_code(), typeid(CUrd).name(), pObj);
 		}
 
 		if (!pObj.lock())

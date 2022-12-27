@@ -1,0 +1,251 @@
+0. Armature|Armature|Take 001|BaseLayer
+1. Armature|Armature|Urd_Attack01LV2|BaseLayer
+2. Armature|Armature|Urd_Attack01|BaseLayer
+3. Armature|Armature|Urd_Attack02LV2C0|BaseLayer
+4. Armature|Armature|Urd_Attack02LV2C1|BaseLayer
+5. Armature|Armature|Urd_Attack02|BaseLayer
+6. Armature|Armature|Urd_Attack03_DashSting_L|BaseLayer
+7. Armature|Armature|Urd_Attack04_DashSting_R|BaseLayer
+8. Armature|Armature|Urd_Attack05|BaseLayer
+9. Armature|Armature|Urd_Attack06|BaseLayer
+10. Armature|Armature|Urd_Attack07|BaseLayer
+11. Armature|Armature|Urd_Dead|BaseLayer
+12. Armature|Armature|Urd_Equip_L|BaseLayer
+13. Armature|Armature|Urd_Equip_R|BaseLayer
+14. Armature|Armature|Urd_FightStart|BaseLayer
+15. Armature|Armature|Urd_HurtCounter|BaseLayer
+16. Armature|Armature|Urd_HurtM_FL|BaseLayer
+17. Armature|Armature|Urd_HurtM_FR|BaseLayer
+18. Armature|Armature|Urd_HurtS_FL|BaseLayer
+19. Armature|Armature|Urd_HurtS_FR|BaseLayer
+20. Armature|Armature|Urd_Idle|BaseLayer
+21. Armature|Armature|Urd_Parry_L|BaseLayer
+22. Armature|Armature|Urd_Parry_RQuick|BaseLayer
+23. Armature|Armature|Urd_Parry_R|BaseLayer
+24. Armature|Armature|Urd_Run|BaseLayer
+25. Armature|Armature|Urd_Seq_BossFightStart_1|BaseLayer
+26. Armature|Armature|Urd_Seq_TutorialBossFightStart|BaseLayer
+27. Armature|Armature|Urd_Skill01|BaseLayer
+28. Armature|Armature|Urd_Skill02_1|BaseLayer
+29. Armature|Armature|Urd_Skill03_L|BaseLayer
+30. Armature|Armature|Urd_Skill03_R|BaseLayer
+31. Armature|Armature|Urd_SPSkill01|BaseLayer
+32. Armature|Armature|Urd_StepB|BaseLayer
+33. Armature|Armature|Urd_StepFL45|BaseLayer
+34. Armature|Armature|Urd_StepFL|BaseLayer
+35. Armature|Armature|Urd_StepFR45|BaseLayer
+36. Armature|Armature|Urd_StepFR|BaseLayer
+37. Armature|Armature|Urd_StepL|BaseLayer
+38. Armature|Armature|Urd_StepR|BaseLayer
+39. Armature|Armature|Urd_StunEnd|BaseLayer
+40. Armature|Armature|Urd_StunLoop|BaseLayer
+41. Armature|Armature|Urd_StunStart|BaseLayer
+42. Armature|Armature|Urd_VS_TakeExecution|BaseLayer
+43. Armature|Armature|Urd_WalkBL|BaseLayer
+44. Armature|Armature|Urd_WalkBR|BaseLayer
+45. Armature|Armature|Urd_WalkB|BaseLayer
+46. Armature|Armature|Urd_WalkFL|BaseLayer
+47. Armature|Armature|Urd_WalkFR|BaseLayer
+48. Armature|Armature|Urd_WalkF|BaseLayer
+49. Armature|Armature|Urd_WalkL|BaseLayer
+50. Armature|Armature|Urd_WalkR|BaseLayer
+RootNode
+Armature
+root
+ik_foot_r
+ik_foot_r_end
+ik_hand_l
+ik_hand_l_end
+ik_hand_r
+ik_hand_r_end
+camera
+camera_end
+AnimTargetPoint
+AnimTargetPoint_end
+ik_foot_l
+ik_foot_l_end
+pelvis
+Bip001-Pelvis
+spine_01
+pelvis-Spine1
+pelvis-Spine2
+neck_01
+clavicle_l
+upperarm_l
+Bone_UrdPauldronsL
+Bone_UrdPauldronsL_end
+Bone_Cloak01
+Bone_Cloak02
+Bone_Cloak03_End
+Bone_Cloak03_End_end
+lowerarm_l
+hand_l
+thumb_01_l
+thumb_02_l
+thumb_03_l
+Bip001-L-Finger0Nub
+Bip001-L-Finger0Nub_end
+index_01_l
+index_02_l
+index_03_l
+Bip001-L-Finger1Nub
+Bip001-L-Finger1Nub_end
+middle_01_l
+middle_02_l
+middle_03_l
+Bip001-L-Finger2Nub
+Bip001-L-Finger2Nub_end
+ring_01_l
+ring_02_l
+ring_03_l
+Bip001-L-Finger3Nub
+Bip001-L-Finger3Nub_end
+pinky_01_l
+pinky_02_l
+pinky_03_l
+Bip001-L-Finger4Nub
+Bip001-L-Finger4Nub_end
+weapon_l
+weapon_l_pivot
+weapon_l_end
+weapon_l_end_end
+clavicle_r
+upperarm_r
+lowerarm_r
+hand_r
+thumb_01_r
+thumb_02_r
+thumb_03_r
+Bip001-R-Finger0Nub
+Bip001-R-Finger0Nub_end
+index_01_r
+index_02_r
+index_03_r
+Bip001-R-Finger1Nub
+Bip001-R-Finger1Nub_end
+middle_01_r
+middle_02_r
+middle_03_r
+Bip001-R-Finger2Nub
+Bip001-R-Finger2Nub_end
+ring_01_r
+ring_02_r
+ring_03_r
+Bip001-R-Finger3Nub
+Bip001-R-Finger3Nub_end
+pinky_01_r
+pinky_02_r
+pinky_03_r
+Bip001-R-Finger4Nub
+Bip001-R-Finger4Nub_end
+weapon_r
+weapon_r_pivot
+weapon_r_end
+weapon_r_end_end
+Bone_Cloak12
+Bone_Cloak13
+Bone_Cloak14_End
+Bone_Cloak14_End_end
+Bone_UrdPauldronsR
+Bone_UrdPauldronsR_end
+Head
+Bone_Hair01
+Bone_Hair02
+Bone_Hair03_End
+Bone_Hair03_End_end
+Bone_Hair04
+Bone_Hair05
+Bone_Hair06
+Bone_Hair07_End
+Bone_Hair07_End_end
+Bone_Hair08
+Bone_Hair09
+Bone_Hair10
+Bone_Hair11_End
+Bone_Hair11_End_end
+Bone_Hair12
+Bone_Hair13
+Bone_Hair14
+Bone_Hair15_End
+Bone_Hair15_End_end
+Bone_Hair16
+Bone_Hair17
+Bone_Hair18
+Bone_Hair19_End
+Bone_Hair19_End_end
+Bone_Hair20
+Bone_Hair21
+Bone_Hair22
+Bone_Hair23_End
+Bone_Hair23_End_end
+Bone_Hair24
+Bone_Hair25
+Bone_Hair26_End
+Bone_Hair26_End_end
+Bone_Cloak08
+Bone_Cloak09
+Bone_Cloak10
+Bone_Cloak11_End
+Bone_Cloak11_End_end
+Bone_Cloak04
+Bone_Cloak05
+Bone_Cloak06
+Bone_Cloak07_End
+Bone_Cloak07_End_end
+Bone_Collar02
+Bone_Collar02_end
+Bone_Collar03
+Bone_Collar03_end
+Bone_Collar01
+Bone_Collar01_end
+Bone_Hen06
+Bone_Hen07
+Bone_Hen08
+Bone_Hen09
+Bone_Hen10_End
+Bone_Hen10_End_end
+SK_W_UrdSword01_Point
+SK_W_UrdSword01_Point_end
+SK_W_UrdSword02_Point
+SK_W_UrdSword02_Point_end
+Bone_Hen01
+Bone_Hen02
+Bone_Hen03
+Bone_Hen04
+Bone_Hen05_End
+Bone_Hen05_End_end
+SK_W_UrdSword03_Point
+SK_W_UrdSword03_Point_end
+SK_W_UrdSword04_Point
+SK_W_UrdSword04_Point_end
+thigh_l
+calf_l
+foot_l
+ball_l
+ball_l_end
+thigh_r
+calf_r
+foot_r
+ball_r
+ball_r_end
+ik_weapon_r
+ik_weapon_r_end
+ik_weapon_l
+ik_weapon_l_end
+SK_C_Urd
+0[Mesh]. 6222
+1[Mesh]. 4626
+2[Mesh]. 48435
+3[Mesh]. 1656
+4[Mesh]. 56733
+5[Mesh]. 14022
+6[Mesh]. 9492
+7[Mesh]. 2880
+8[Mesh]. 2880
+9[Mesh]. 1392
+10[Mesh]. 1392
+11[Mesh]. 1053
+12[Mesh]. 1704
+13[Mesh]. 7188
+14[Mesh]. 1095
+15[Mesh]. 540

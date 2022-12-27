@@ -123,6 +123,16 @@ void CNorMonState_Walk_B::OnStateEnd()
 
 
 
+void CNorMonState_Walk_B::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		m_bPlayerToClose = false;
+	}
+}
+
 void CNorMonState_Walk_B::Free()
 {
 

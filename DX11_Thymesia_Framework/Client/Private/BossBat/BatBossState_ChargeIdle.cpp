@@ -119,19 +119,16 @@ _bool CBatBossState_ChargeIdle::Check_AndChangeNextState()
 	_float fPToMDistance = Get_DistanceWithPlayer();
 
 
-	if (m_iChargeCount == 1)
+	if (fPToMDistance < 24.f)
 	{
-		Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_Chest>(0.05f);
+	   Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_Chest>(0.05f);
+	   return true;
+	}
+	else
+	{
+		Get_OwnerCharacter().lock()->Change_State<CBatBossState_AttackIdle>(0.05f);
 		return true;
 	}
-	if(fPToMDistance > 20.f && m_iChargeCount == 0)
-	{
-		Get_OwnerCharacter().lock()->Change_State<CBatBossState_WalkF>(0.05f);
-		m_iChargeCount = 1;
-		return true;
-	}
-	
-
 
 
 	return false;

@@ -104,6 +104,16 @@ void CVargBossState_Exe_Start::Call_AnimationEnd()
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_Dead>(0.05f);
 }
 
+void CVargBossState_Exe_Start::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		m_bDieType = false;
+	}
+}
+
 void CVargBossState_Exe_Start::OnDestroy()
 {
 	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Exe_Start::Call_AnimationEnd, this);
