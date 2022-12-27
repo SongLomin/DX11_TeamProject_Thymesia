@@ -18,12 +18,12 @@ void CEasingComponent_Bezier::LateTick(_float fTimeDelta)
 	__super::LateTick(fTimeDelta);
 }
 
-void CEasingComponent_Bezier::Set_Lerp(_float2 vStart, _float2 vCurve, _float2 vTarget, _float fTime, EASING_TYPE eEasingType, PLAY_TYPE ePlayType, _bool bCustomUse)
+void CEasingComponent_Bezier::Set_Lerp_OneCurve(_float2 vStart, _float2 vCurve, _float2 vTarget, _float fTime, EASING_TYPE eEasingType, PLAY_TYPE ePlayType, _bool bCustomUse)
 {
-    Set_Lerp(vStart, vCurve, vCurve, vTarget, fTime, eEasingType, ePlayType, bCustomUse);
+    Set_Lerp_TwoCurve(vStart, vCurve, vCurve, vTarget, fTime, eEasingType, ePlayType, bCustomUse);
 }
 
-void CEasingComponent_Bezier::Set_Lerp(_float2 vStart, _float2 vCurve1, _float2 vCurve2, _float2 vTarget, _float fTime, EASING_TYPE eEasingType, PLAY_TYPE ePlayType, _bool bCustomUse)
+void CEasingComponent_Bezier::Set_Lerp_TwoCurve(_float2 vStart, _float2 vCurve1, _float2 vCurve2, _float2 vTarget, _float fTime, EASING_TYPE eEasingType, PLAY_TYPE ePlayType, _bool bCustomUse)
 {
     _float4         _vStart;
     _float4         _vTarget;

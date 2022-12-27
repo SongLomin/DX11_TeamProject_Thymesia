@@ -37,7 +37,11 @@ HRESULT CUI_ItemSlot::Start()
 void CUI_ItemSlot::Tick(_float fTimeDelta)
 {
 	fTimeDelta = CUI_Utils::UI_TimeDelta();
-	__super::Tick(fTimeDelta);
+
+	if (m_bRenderIcon)//아이콘이 없을 때는 버튼처리도 무시함.
+	{
+		__super::Tick(fTimeDelta);
+	}
 
 	m_tTextInfo.vPosition.y = m_tUIDesc.fY;
 

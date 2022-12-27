@@ -17,10 +17,10 @@ public:
     // CEasingComponent을(를) 통해 상속됨
 
 public:
-    virtual void	Set_Lerp(_float2 vStart, _float2 vCurve, _float2 vTarget, _float fTime,
+    virtual void	Set_Lerp_OneCurve(_float2 vStart, _float2 vCurve, _float2 vTarget, _float fTime,
         EASING_TYPE eEasingType, PLAY_TYPE ePlayType, _bool bCustomUse);
 
-    virtual void	Set_Lerp(_float2 vStart, _float2 vCurve1, _float2 vCurve2, _float2 vTarget, _float fTime,
+    virtual void	Set_Lerp_TwoCurve(_float2 vStart, _float2 vCurve1, _float2 vCurve2, _float2 vTarget, _float fTime,
         EASING_TYPE eEasingType, PLAY_TYPE ePlayType, _bool bCustomUse);
 
     _float2         Get_Lerp();
