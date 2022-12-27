@@ -401,19 +401,10 @@ void CUI_EveolveMenu_Talent::Call_TalentMouseOut(weak_ptr<CTalent> pSelectedTale
     m_pSelectedTalent = pSelectedTalent;
 
 
-    //지금 마우스오버한 상태에 따라 분기를 가름.
-    TALENT_RESULT eTalentResult;
-
     CStatus_Player::PLAYERDESC tPlayerDesc;
 
-    if (!GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock())
-    {
-        tPlayerDesc.m_iTalent = 5;
-    }
-    else
-    {
-        GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Status().lock()->Get_Desc(&tPlayerDesc);
-    }
+    GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Status().lock()->Get_Desc(&tPlayerDesc);
+
     _int        iCost = 0;
     list<weak_ptr<CTalent>> visitNodes;
     m_pSelectedTalent.lock()->Check_Requiment(tPlayerDesc.m_iTalent, iCost, visitNodes);

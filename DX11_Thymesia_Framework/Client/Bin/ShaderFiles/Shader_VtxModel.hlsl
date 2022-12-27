@@ -16,7 +16,6 @@ vector      g_vPlayerPosition;
 float       g_fMaskingRange = 2.f;
 float       g_fMaskingScalar;
 
-
 float g_fFar = 300.f;
 
 float g_fUVScale;
@@ -79,7 +78,7 @@ struct PS_OUT
     vector      vShaderFlag : SV_Target3;
     vector      vORM : SV_Target4;
     vector      vExtractBloom : SV_Target5;
-    vector      vExtractGlow : SV_Target6;
+    vector      vRimLight : SV_Target6;
 };
 
 PS_OUT PS_MAIN(PS_IN In)
@@ -94,6 +93,7 @@ PS_OUT PS_MAIN(PS_IN In)
     Out.vShaderFlag = g_vShaderFlag;
 	
     Out.vExtractBloom = 0;
+    Out.vRimLight = 0;
 
 
 	return Out;	
@@ -225,6 +225,7 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
     Out.vDiffuse.a = 1.f;
     
     Out.vExtractBloom = 0;
+    Out.vRimLight = 0;
 
     return Out;
 }
@@ -263,6 +264,8 @@ PS_OUT PS_MAIN_NORMAL_MASKING(PS_IN_NORMAL In)
 
     Out.vDiffuse.a = 1.f;
     Out.vExtractBloom = 0;
+    Out.vRimLight = 0;
+    
     
     return Out;
 }
@@ -298,6 +301,7 @@ PS_OUT PS_MAIN_NORMAL_MASKING_SCALAR(PS_IN_NORMAL In)
     Out.vDiffuse.a = 1.f;
     
     Out.vExtractBloom = 0;
+    Out.vRimLight = 0;
 
     return Out;
 }
@@ -329,6 +333,7 @@ PS_OUT      PS_MAIN_PICK(PS_IN In)
     Out.vNormal     = vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
     Out.vDepth      = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
+    Out.vRimLight = 0;
 
 
     return Out;
@@ -358,9 +363,9 @@ PS_OUT PS_MAIN_NORMAL_PBR(PS_IN_NORMAL In)
     Out.vShaderFlag = g_vShaderFlag;
 
     Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
-   // Out.vORM = g_ORMTexture.Sample(DefaultSampler, In.vTexUV);
 
     Out.vExtractBloom = 0;
+    Out.vRimLight = 0;
 
     return Out;
 }
@@ -397,7 +402,8 @@ PS_OUT PS_MAIN_NORMAL_MASKING_SCALAR_PBR(PS_IN_NORMAL In)
     Out.vShaderFlag = g_vShaderFlag;
 
     Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
-   // Out.vORM = g_ORMTexture.Sample(DefaultSampler, In.vTexUV);
+    Out.vRimLight = 0;
+
 
     return Out;
 }
@@ -431,6 +437,8 @@ PS_OUT PS_MAIN_NORMAL_MOVE_UV(PS_IN_NORMAL In)
     Out.vDepth        = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vShaderFlag   = g_vShaderFlag;
     Out.vORM          = 0;
+    Out.vRimLight = 0;
+    
 
     Out.vExtractBloom = 0;
 
@@ -570,7 +578,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_NORMAL_MASKING_SCALAR_PBR();
     }
 
-    pass Pass10_MoveUV
+    pass Pass10_MoveUV //10
     {
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_Default, 0);
@@ -581,5 +589,18 @@ technique11 DefaultTechnique
         DomainShader   = NULL;
         GeometryShader = NULL;
         PixelShader    = compile ps_5_0 PS_MAIN_NORMAL_MOVE_UV();
+    }
+
+    pass DefaultNonCulling //11
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
+        SetRasterizerState(RS_NonCulling);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN();
     }
 }

@@ -16,15 +16,12 @@ CLONE_C(CCorvusState_LAttack1, CComponent)
 HRESULT CCorvusState_LAttack1::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
-
-
 	return S_OK;
 }
 
 HRESULT CCorvusState_LAttack1::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
 	m_vShakingOffSet = _float3(-0.8f, -0.6f, 0.f);
 	return S_OK;
 }
@@ -39,11 +36,7 @@ void CCorvusState_LAttack1::Start()
 void CCorvusState_LAttack1::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
-
-
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
-
 	Attack();
 }
 

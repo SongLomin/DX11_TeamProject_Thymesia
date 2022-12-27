@@ -16,6 +16,8 @@
 #include "UI_PauseMenu.h"
 #include "UIManager.h"
 #include "UI_AppearEventVarg.h"
+#include "Monster.h"
+#include "Talent_Effects.h"
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -35,11 +37,18 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_pStatus = CGameObject::Add_Component<CStatus_Player>();
 
-	CStatus_Player::PLAYERDESC& pStatus_PlayerDesc = GET_SINGLE(CGameManager)->Get_PlayerStatusDesc();
 
-	m_pStatus.lock()->Set_Desc(&pStatus_PlayerDesc);
+	json LoadedJson;
+	string strCorvusComponentPath = m_szClientComponentPath + "Corvus.json";
 
+	if (SUCCEEDED(CJson_Utility::Load_Json(strCorvusComponentPath.c_str(), LoadedJson)))
+	{
+		Load_FromJson(LoadedJson);
+		//DEBUG_ASSERT;
+	}
+	//CStatus_Player::PLAYERDESC& pStatus_PlayerDesc = GET_SINGLE(CGameManager)->Get_PlayerStatusDesc();
 
+	//m_pStatus.lock()->Set_Desc(&pStatus_PlayerDesc);
 	//m_pStatus.lock()->Load_FromJson(m_szClientComponentPath + "Corvus/SaveData.json");
 
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
@@ -130,6 +139,7 @@ HRESULT CCorvus::Start()
 
 	Test_BindSkill();
 
+	m_vRimLightColor = { 0.6f,0.f,0.f };
 #ifdef _CLOTH_
 	// m_pModelCom.lock()->Set_NvClothMeshWithIndex(0);
 #endif // _CLOTH_
@@ -158,7 +168,15 @@ void CCorvus::Tick(_float fTimeDelta)
 
 	GAMEINSTANCE->Set_LightDesc(m_LightDesc);
 
-	this->Debug_KeyInput(fTimeDelta);
+	// TODO : Test For RimLight Power
+	//if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
+	//{
+	//	m_fRimLightPower = 1.f;
+	//}
+	//m_fRimLightPower = max(0.f, m_fRimLightPower - fTimeDelta);
+	//
+
+	Debug_KeyInput(fTimeDelta);
 
 }
 
@@ -224,7 +242,7 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 			m_pShaderCom.lock()->Set_RawValue("g_vDissolveStartPos", &iter->second.vStartPos, sizeof(_float3));
 			m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &iter->second.fAmount, sizeof(_float));
 
-			_float4 vShaderFlag = { 0.f,0.f,1.f,0.f };
+			_float4 vShaderFlag = { 0.f,0.f,1.f,1.f };
 
 			m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_float4));
 
@@ -301,7 +319,16 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	}
 	if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
 	{
-		GAMEINSTANCE->Get_GameObjects<CUI_AppearEventVarg>(LEVEL_STATIC).front().lock()->Start_Event();
+		json	CorvusJson;
+
+		Write_Json(CorvusJson);
+		
+		string corvusComponentPath = m_szClientComponentPath + "Corvus.json";
+
+		CJson_Utility::Save_Json(corvusComponentPath.c_str(), CorvusJson);
+
+
+		//GAMEINSTANCE->Get_GameObjects<CUI_AppearEventVarg>(LEVEL_STATIC).front().lock()->Start_Event();
 	}
 	/*
 	if (KEY_INPUT(KEY::T, KEY_STATE::TAP))
@@ -432,6 +459,8 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_HurtFallDown);
 	ADD_STATE_MACRO(CCorvusState_HurtFallDownEnd);
 	ADD_STATE_MACRO(CCorvusState_KnockBack);
+	ADD_STATE_MACRO(CCorvusState_PS_VargSwordStart);
+
 
 
 
@@ -443,6 +472,7 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_Execution_Start);
 	ADD_STATE_MACRO(CCorvusState_Varg_Execution);
 	ADD_STATE_MACRO(CCorvusState_Execution_R_R);
+	ADD_STATE_MACRO(CCorvusState_Urd_Execution);
 
 #undef ADD_STATE_MACRO
 }
@@ -475,6 +505,10 @@ void CCorvus::Move_RootMotion_Internal()
 
 void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
+
+	__super::OnCollisionEnter(pMyCollider, pOtherCollider);
+
+
 	switch ((COLLISION_LAYER)pOtherCollider.lock()->Get_CollisionLayer())
 	{
 	case Client::COLLISION_LAYER::LADDER_UP:
@@ -499,7 +533,8 @@ void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 		break;
 	}
 
-	__super::OnCollisionEnter(pMyCollider,pOtherCollider);
+
+	
 }
 
 void CCorvus::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
@@ -534,6 +569,9 @@ void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::ITEM;
 		break;
 	}
+
+	
+	
 }
 
 void CCorvus::OnBattleEnd()
@@ -580,9 +618,9 @@ void CCorvus::OnEventMessage(_uint iArg)
 		Change_State<CCorvusState_Execution_Start>();
 	}
 
-	if (EVENT_TYPE::ON_RESET_OBJ == (EVENT_TYPE)iArg)
+	if (EVENT_TYPE::ON_STEALCORVUS == (EVENT_TYPE)iArg)
 	{
-
+		Change_State<CCorvusState_ClawPlunderAttack>();
 	}
 
 }
@@ -600,5 +638,14 @@ void CCorvus::SetUp_Requirement()
 void CCorvus::Test_BindSkill()
 {
 	m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_VargSword>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_MAIN);
+}
+
+void CCorvus::WriteTalentFromJson(json& Out_Json)
+{
+
+}
+
+void CCorvus::LoadTalentFromJson(const json& In_Json)
+{
 }
 

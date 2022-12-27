@@ -16,13 +16,13 @@ HRESULT MODEL_DATA::Make_ModelData(const char* szFilePath, const MODEL_TYPE& In_
 
     szModelFilePath = szFilePath;
 
-    if (true == g_bUseAssimp)
+    /*if (true == g_bUseAssimp)
     {
         if (FAILED(Load_FromAssimp(bAnimZero)))
             return E_FAIL;
 
         return S_OK;
-    }
+    }*/
 
     string          szBinFilePath;
 
@@ -38,7 +38,7 @@ HRESULT MODEL_DATA::Make_ModelData(const char* szFilePath, const MODEL_TYPE& In_
 
     ifstream is(szBinFilePath, std::ios::binary);
 
-    if (!is.is_open())
+    if (!is.is_open() || g_bUseAssimp)
     {
         is.close();
         if (FAILED(Load_FromAssimp(bAnimZero)))

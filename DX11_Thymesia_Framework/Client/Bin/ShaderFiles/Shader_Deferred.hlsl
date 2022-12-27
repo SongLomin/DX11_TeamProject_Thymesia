@@ -46,6 +46,8 @@ texture2D g_ExtractBloomTexture;
 texture2D g_OriginalRenderTexture;
 texture2D g_ShaderFlagTexture;
 
+texture2D g_RimLightTexture;
+
 textureCUBE g_IrradianceTexture;
 textureCUBE g_PreFilterTexture;
 texture2D g_BRDFTexture;
@@ -121,9 +123,8 @@ PS_OUT PS_MAIN_DEBUG(PS_IN In)
 
 struct PS_OUT_LIGHT
 {
-	vector vShade    : SV_TARGET0;
-	vector vSpecular : SV_TARGET1;
-    vector vAmbient  : SV_TARGET2;
+	vector vSpecular : SV_TARGET0;
+    vector vAmbient  : SV_TARGET1;
 };
 
 vector Get_ScreenToWorldPos(float2 vTexUV, vector vDepthDesc)
@@ -187,7 +188,7 @@ float3 fresnelSchlickRoughness(float cosTheta, float3 F0, float roughness)
 
 PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 {
-	PS_OUT_LIGHT Out = (PS_OUT_LIGHT)1;
+    PS_OUT_LIGHT Out = (PS_OUT_LIGHT) 0;
 
 	/* 방향성광원의 정보와 노멀 타겟에 담겨있는 노멀과의 빛연산을 수행한다. */
     vector vDiffuseColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
@@ -273,8 +274,6 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 
         Out.vSpecular = vSpecularAcc * g_fLightIntensity;
         Out.vSpecular.a = 0.f;
-
-        Out.vShade = 1;
         
         Out.vAmbient = vAmbientColor * g_fLightIntensity;
         Out.vAmbient.a = 1.f;
@@ -287,16 +286,14 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
         if (vResult.r < 0.05f && vResult.g < 0.05f && vResult.b < 0.05f)
             discard;
 
-        Out.vShade = vResult * g_fLightIntensity;
-        Out.vShade.a = 1.f;
+        Out.vAmbient = vResult * g_fLightIntensity;
+        Out.vAmbient.a = 1.f;
 
         vector vReflect = reflect(normalize(g_vLightDir), vNormal);
 
 
         Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f) ;
-
         Out.vSpecular.a = 0.f;
-        Out.vAmbient = vector(0.f, 0.f, 0.f, 0.f);
     }
     
     //Out.vAmbient = pow(Out.vAmbient, 2.2f);
@@ -307,7 +304,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 
 PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 {
-	PS_OUT_LIGHT Out = (PS_OUT_LIGHT)1;
+	PS_OUT_LIGHT Out = (PS_OUT_LIGHT)0;
 
 	/* 방향성광원의 정보와 노멀 타겟에 담겨있는 노멀과의 빛연산을 수행한다. */
     vector vDiffuseColor = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
@@ -346,7 +343,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
     
     float fDenom = fDistance / g_fRange;
     float fAtt = 1.f / (1.f + fDenom * fDenom);
- 
+    
     clip(fAtt - 0.05f);
     
     fAtt *= g_fLightIntensity;
@@ -388,8 +385,6 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 
         Out.vSpecular = vSpecularAcc;
         Out.vSpecular.a = 0.f;
-        
-        Out.vShade = 1;
 
         Out.vAmbient = vAmbientColor;
         Out.vAmbient.a = 1.f;
@@ -403,14 +398,13 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
         if (vResult.r < 0.05f && vResult.g < 0.05f && vResult.b < 0.05f)
             discard;
 
-        Out.vShade = vResult * fAtt;
-        Out.vShade.a = 1.f;
+        Out.vAmbient = vResult * fAtt;
+        Out.vAmbient.a = 1.f;
 
         vector vReflect = reflect(normalize(vLightDir), vNormal);
    
         Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f) * fAtt;
         Out.vSpecular.a = 0.f;
-        Out.vAmbient = vector(0.f, 0.f, 0.f, 0.f);
     }
    
     //Out.vAmbient = pow(Out.vAmbient, 2.2f);
@@ -511,8 +505,6 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_SPOTLIGHT(PS_IN In)
         Out.vSpecular = vSpecularAcc;
         Out.vSpecular.a = 0.f;
         
-        Out.vShade = 1;
-
         Out.vAmbient = vAmbientColor;
         Out.vAmbient.a = 1.f;
       
@@ -525,14 +517,13 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_SPOTLIGHT(PS_IN In)
         if (vResult.r < 0.05f && vResult.g < 0.05f && vResult.b < 0.05f)
             discard;
 
-        Out.vShade = vResult * fAtt;
-        Out.vShade.a = 1.f;
+        Out.vAmbient = vResult * fAtt;
+        Out.vAmbient.a = 1.f;
 
         vector vReflect = reflect(normalize(g_vLightDir), vNormal);
    
         Out.vSpecular = (g_vLightSpecular * g_vMtrlSpecular) * pow(saturate(dot(normalize(vReflect) * -1.f, vLook)), 20.f) * fAtt;
         Out.vSpecular.a = 0.f;
-        Out.vAmbient = vector(0.f, 0.f, 0.f, 0.f);
     }
     
     return Out;
@@ -543,10 +534,8 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
 	PS_OUT Out = (PS_OUT)Out;
 
 	vector vDiffuse       = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
-	vector vShade         = g_ShadeTexture.Sample(DefaultSampler, In.vTexUV);
     vector vNormalDesc    = g_NormalTexture.Sample(DefaultSampler, In.vTexUV);
 	vector vSpecular      = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
-   // vector vLightFlagDesc = g_LightFlagTexture.Sample(DefaultSampler, In.vTexUV);
     vector vViewShadow    = g_ViewShadow.Sample(DefaultSampler, In.vTexUV);
     vector vDepthDesc     = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
     vector vFogDesc       = g_FogTexture.Sample(DefaultSampler, In.vTexUV);
@@ -577,7 +566,7 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
     
     bool bIsInShadow = 0.9f > vViewShadow.r;
   
-    if (vAmbientDesc.a > 0.f)
+    if (vORMDesc.r > 0.f || vORMDesc.g > 0.f || vORMDesc.b > 0.f)
     {
         vector vNormal = vector(vNormalDesc.xyz * 2.f - 1.f, 0.f);
         vNormal = normalize(vNormal);
@@ -616,7 +605,7 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
     else
     {
                                            
-        Out.vColor = vDiffuse * vShade + vSpecular * (1.f - bIsInShadow);
+        Out.vColor = vDiffuse * vAmbientDesc + vSpecular /** (1.f - bIsInShadow)*/;
         Out.vColor.rgb *= vViewShadow.rgb;
     }
     
@@ -629,7 +618,7 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
         
     Out.vColor.rgb = lerp(Out.vColor.rgb, float3(0.f, 0.f, 0.f), fRatio);
         
-    if (0.f < Out.vColor.a)
+    if (0.01f < Out.vColor.a)
     {
         Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor.rgb;
     }
@@ -637,14 +626,14 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
     {
         Out.vColor.rgb = float3(0.f, 0.f, 0.f);
         Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor.rgb;
-        Out.vColor.a = 1.f;
-           
     }
+    Out.vColor.a = 1.f;
+    
     //if (vLightFlagDesc.r > 0.f || vLightFlagDesc.g > 0.f)
     //    return Out;
 
-    if (Out.vColor.a < 0.1f)
-        discard;
+    //if (Out.vColor.a < 0.1f)
+    //    discard;
 
 	return Out;
 }
@@ -905,40 +894,93 @@ PS_OUT PS_MAIN_SSR(PS_IN In)
     vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
     
     vector vViewDir = normalize(vWorldPos - g_vCamPosition);
+    vViewDir.w = 0.f;
     
     vector vRayOrigin = vWorldPos;
     vector vRayDir = normalize(reflect(vViewDir, vNormal));
+    vRayDir.w = 0.f;
+    
     float fStep = 0.01f;
     
     matrix matVP = mul(g_CamViewMatrix, g_CamProjMatrix);
     
     float fPixelDepth = 0.f;
-    int iStepDiatance = 0;
+    int iStepDistance = 0;
     float2 vRayPixelPos = (float2) 0;
   
-    for (iStepDiatance = 0; iStepDiatance < 50; ++iStepDiatance)
+    for (iStepDistance = 1; iStepDistance < 50; ++iStepDistance)
     {
-        vector vDirStep = vRayDir * fStep * iStepDiatance;
+        vector vDirStep = vRayDir * fStep * iStepDistance;
+        vDirStep.w = 0.f;
         vector vRayWorldPos = vRayOrigin + vDirStep;
-        
+
         vector vRayProjPos = mul(vRayWorldPos, matVP);
-        vRayProjPos /= vRayProjPos.w;
+        vRayProjPos.x =  vRayProjPos.x/vRayProjPos.w;
+        vRayProjPos.y =  vRayProjPos.y/vRayProjPos.w;
       
         vRayPixelPos = float2(vRayProjPos.x * 0.5f + 0.5f, vRayProjPos.y * -0.5f + 0.5f);
         
         clip(vRayPixelPos);
         clip(1.f - vRayPixelPos);
         
-        fPixelDepth = g_DepthTexture.Sample(DefaultSampler, vRayPixelPos).x;
-      
-        if (vRayProjPos.z > fPixelDepth)
+        vector vPixelDepth = g_DepthTexture.Sample(DefaultSampler, vRayPixelPos);
+        
+        fPixelDepth = vPixelDepth.x;
+        fPixelDepth *= vPixelDepth.y * g_fFar;
+        
+        float fDiff = vRayProjPos.z - fPixelDepth;
+        
+        if (fDiff > 0.f && fDiff < 0.01f)
             break;
     }
-    clip(49.5f - iStepDiatance);
     
-    Out.vColor = g_OriginalRenderTexture.Sample(DefaultSampler, vRayPixelPos);
-    //Out.vColor = float4(vRayPixelPos, 0.f, 1.f);
-  
+    clip(49.5f - iStepDistance);
+
+    Out.vColor = g_OriginalRenderTexture.Sample(DefaultSampler, vRayPixelPos) * 0.5f*(1.f - iStepDistance / 60.f);
+   
+    return Out;
+}
+
+PS_OUT PS_MAIN_RIMLIGHT(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+
+    vector vShaderflag = g_ShaderFlagTexture.Sample(DefaultSampler, In.vTexUV);
+    clip(vShaderflag.a - 1.f);
+   
+    vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
+    vector vRimDesc = g_RimLightTexture.Sample(DefaultSampler, In.vTexUV);
+    vector vNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV) * 2.f -1.f;
+    vNormal = normalize(vNormal);
+    
+    
+    float fViewZ = vDepthDesc.y * 300.f;
+    /* 0 -> -1, 1 -> 1*/
+
+    vector vWorldPos;
+
+    vWorldPos.x = In.vTexUV.x * 2.f - 1.f;
+    vWorldPos.y = In.vTexUV.y * -2.f + 1.f;
+    vWorldPos.z = vDepthDesc.x;
+    vWorldPos.w = 1.0f;
+
+    vWorldPos *= fViewZ;
+
+    vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
+
+    vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
+    
+    vector vView = normalize(g_vCamPosition - vWorldPos);
+    half fRim = 1.f - abs(dot(vNormal, vView));
+    
+    vector vRimColor = g_RimLightTexture.Sample(DefaultSampler, In.vTexUV);
+    vRimColor.xyz = lerp(vRimColor.xyz*0.03f, vRimColor.xyz, fRim*fRim);
+    
+    
+    half fRimPower = vRimColor.a;
+      
+    Out.vColor = vector(vRimColor.xyz, 1.f) * fRim * fRimPower;
+    
     return Out;
 }
 
@@ -966,6 +1008,7 @@ BlendState BS_ForwardAlphaBlend
     DestBlend[0]   = INV_SRC_ALPHA;
     BlendOp[0]     = Add;
 };
+
 
 RasterizerState RS_Default
 {
@@ -1157,6 +1200,18 @@ technique11 DefaultTechnique
         DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_SSR();
+    }
+
+    pass RimLight //13
+    {
+        SetBlendState(BS_ForwardAlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+        SetRasterizerState(RS_Default);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_RIMLIGHT();
     }
 
 }

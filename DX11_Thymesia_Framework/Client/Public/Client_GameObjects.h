@@ -25,6 +25,7 @@
 #include "Interaction_NextPoint.h"
 #include "Interaction_Elevator.h"
 #include "Interaction_Door.h"
+#include "Interaction_CastleGate.h"
 #include "Interaction_Note.h"
 #include "Interaction_Item.h"
 #include "Interaction_DeadSpot.h"

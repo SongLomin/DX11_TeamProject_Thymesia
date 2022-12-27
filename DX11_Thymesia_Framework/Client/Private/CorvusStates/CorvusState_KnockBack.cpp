@@ -32,7 +32,7 @@ void CCorvusState_KnockBack::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_HurtKnockDown");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_Defense_Hurt_Large");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_KnockBack::Call_AnimationEnd, this);
 }
 
@@ -60,13 +60,8 @@ void CCorvusState_KnockBack::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex , 34);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-	_float3 vRandDir = SMath::vRandom(_float3(-1.f, -1.f, 0.f), _float3(1.f, 1.f, 0.f));
-
-	_matrix WorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
-
-	GET_SINGLE(CGameManager)->Add_Shaking(XMVector3TransformNormal(XMLoadFloat3(&vRandDir), WorldMatrix), 0.25f, 1.f, 9.f, 0.4f);
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_

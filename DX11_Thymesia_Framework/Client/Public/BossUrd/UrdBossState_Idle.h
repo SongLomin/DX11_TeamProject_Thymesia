@@ -1,5 +1,5 @@
 #pragma once
-#include "BossUrd/UrdBossStateBase.h"
+#include "BossUrd/UrdBossState_IdleStates.h"
 
 BEGIN(Engine)
 class CModel;
@@ -8,7 +8,7 @@ END
 BEGIN(Client)
 
 class CUrdBossState_Idle :
-	public CUrdBossStateBase
+	public CUrdBossState_IdleStates
 {
 	GAMECLASS_H(CUrdBossState_Idle);
 	CLONE_H(CUrdBossState_Idle, CComponent)
@@ -29,14 +29,8 @@ protected:
 	virtual _bool Check_AndChangeNextState() override;
 
 
-private:
-	_bool    m_bNextState = false;
-	_float   m_fSinematic = 0.f;
 
-private:
-//	void Call_AnimationEnd();
 protected:
-	//virtual void OnDestroy() override;
 	void Free();
 
 };

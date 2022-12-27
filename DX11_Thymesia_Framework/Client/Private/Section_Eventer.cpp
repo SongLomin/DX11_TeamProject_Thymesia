@@ -245,3 +245,14 @@ void CSection_Eventer::SetUpColliderDesc(_float* _pColliderDesc)
     m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
     m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 }
+
+void CSection_Eventer::OnDestroy()
+{
+    __super::OnDestroy();
+
+    GET_SINGLE(CGameManager)->Remove_SectionLight(m_iSectionIndex, Weak_Cast<CGameObject>(m_this));
+}
+
+void CSection_Eventer::Free()
+{
+}

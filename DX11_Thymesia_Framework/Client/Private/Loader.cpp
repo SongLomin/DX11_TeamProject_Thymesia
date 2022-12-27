@@ -116,6 +116,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Elevator>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_DeadSpot>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Door>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_CastleGate>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Note>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Item>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CSection_Eventer>();
@@ -211,10 +212,21 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
+	/*lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Else/Binary/ ]"));
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+
+	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/ ]"));
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+
+	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/ ]"));
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv2_Fortress/Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+
+	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/ ]"));
+	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);*/
+
 	lstrcpy(m_szLoadingText, TEXT("Logo : Loading Complete"));
-	//D:\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Bin\Resources\Meshes\Map_Lv1_Circus\Binary
-	GAMEINSTANCE->Load_Model("P_DropTombstone01", "../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/P_DropTombstone01.bin", MODEL_TYPE::NONANIM, XMMatrixIdentity());
-	GAMEINSTANCE->Add_SingleGameObject<CInteraction_DeadSpot>(LEVEL::LEVEL_STATIC);
+
+	
 
 	m_isFinished = true;
 	return S_OK;
@@ -290,20 +302,21 @@ HRESULT CLoader::Loading_ForTestLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Destructable/Fence_16a/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
-	LIGHTDESC LightDesc;
-	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
+	//LIGHTDESC LightDesc;
+	//ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
-	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
-	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 1.f;
+	//LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+	//LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	//LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
+	//LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
+	//LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
+	//LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+	//LightDesc.bEnable = true;
+	//LightDesc.fIntensity = 1.f;
+	//GAMEINSTANCE->Add_Light(LightDesc);
+
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Light..."));
-	GAMEINSTANCE->Add_Light(LightDesc);
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Irradiance Map..."));
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
@@ -389,29 +402,31 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	LIGHTDESC LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
-#ifdef _BRIGHT_LIGHT_
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
-	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
-	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 1.f;
-#else
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
-	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
-	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 0.3f;
+//#ifdef _BRIGHT_LIGHT_
+//	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+//	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+//	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+//	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
+//	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
+//	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+//	LightDesc.bEnable = true;
+//	LightDesc.fIntensity = 1.f;
+//#else
+//	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+//	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+//	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
+//	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
+//	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
+//	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+//	LightDesc.bEnable = true;
+//	LightDesc.fIntensity = 0.3f;
+//
+//#endif // _BRIGHT_LIGHT_
 
-#endif // _BRIGHT_LIGHT_
+	//lstrcpy(m_szLoadingText, TEXT("Loading Light..."));
+	//GAMEINSTANCE->Add_Light(LightDesc);
 
-	lstrcpy(m_szLoadingText, TEXT("Loading Light..."));
-	GAMEINSTANCE->Add_Light(LightDesc);
+	GAMEINSTANCE->Clear_Lights();
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Environmental Shader Effects..."));
 	GAMEINSTANCE->Set_FogDesc(_float4(0.2f, 0.15f, 0.03f, 0.5f), 20.f);
@@ -421,11 +436,11 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	GAMEINSTANCE->Set_Exposure(2.f);
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Irradiance Map..."));
-	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"),MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap1.dds"),MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
 
 	lstrcpy(m_szLoadingText, TEXT("Loading PreFilter..."));
-	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
+	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter1.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
 	lstrcpy(m_szLoadingText, TEXT("GamePlay : Loading Complete"));
@@ -437,10 +452,7 @@ HRESULT CLoader::Loading_ForStage2Level()
 #ifdef _LOAD_CAPTURED_RESOURCE_
 	lstrcpy(m_szLoadingText, TEXT("Loading Captured Resources from : [ ../Bin/LevelData/CapturedResource/Stage2.json ]"));
 	GAMEINSTANCE->Load_ResourcesFromJson("../Bin/LevelData/CapturedResource/Stage2.json");
-#endif
-//#else // _LOAD_CAPTURED_RESOURCE_
-
-#ifndef _ONLY_UI_
+	#else // _LOAD_CAPTURED_RESOURCE_
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/ForTest_Mesh/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 
@@ -458,49 +470,49 @@ HRESULT CLoader::Loading_ForStage2Level()
 
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/GroundInfo/Mesh/ ]"));
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
-#endif // _LOAD_CAPTURED_RESOURCE_
+#endif
 
-	lstrcpy(m_szLoadingText, TEXT("Loading Skybox Texture..."));
+	
 
-#ifndef _ONLY_UI_
 #ifdef _SKYBOX_
 	lstrcpy(m_szLoadingText, TEXT("Loading Skybox Texture..."));
 	GAMEINSTANCE->Load_Textures("Sky", TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 #endif // _SKYBOX_
-#endif
+
 
 	// TODO : Turn off temporarily for Light_Prop
-	LIGHTDESC LightDesc;
-	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
+//	LIGHTDESC LightDesc;
+//	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
+//
+//#ifdef _BRIGHT_LIGHT_
+//	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+//	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+//	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+//	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
+//	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
+//	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+//	LightDesc.bEnable = true;
+//	LightDesc.fIntensity = 1.f;
+//#else
+//	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+//	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+//	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
+//	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
+//	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
+//	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+//	LightDesc.bEnable = true;
+//	LightDesc.fIntensity = 0.2f;
+//
+//#endif // _BRIGHT_LIGHT_
 
-#ifdef _BRIGHT_LIGHT_
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
-	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
-	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 1.f;
-#else
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
-	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
-	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 0.2f;
+	//GAMEINSTANCE->Add_Light(LightDesc);
+	GAMEINSTANCE->Clear_Lights();
 
-#endif // _BRIGHT_LIGHT_
-
-	GAMEINSTANCE->Add_Light(LightDesc);
-
-	GAMEINSTANCE->Set_FogDesc(_float4(1.f, 1.f, 1.f, 0.65f), 70.f);
-	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
-	GAMEINSTANCE->Set_Contrast(1.f);
-	GAMEINSTANCE->Set_Saturation(1.f);
-	GAMEINSTANCE->Set_Exposure(1.f);
+	GAMEINSTANCE->Set_FogDesc(_float4(0.45f, 0.26f, 0.28f, 0.92f), 60.f);
+	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 1.f, 1.f, 1.f), _float4(1.f, 1.f, 1.f, 1.f), _float4(1.f, 1.f, 1.f, 1.f));
+	GAMEINSTANCE->Set_Contrast(1.2f);
+	GAMEINSTANCE->Set_Saturation(1.5f);
+	GAMEINSTANCE->Set_Exposure(2.f);
 
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
@@ -515,12 +527,9 @@ HRESULT CLoader::Loading_ForStage2Level()
 HRESULT CLoader::Loading_ForStage3Level()
 {
 #ifdef _LOAD_CAPTURED_RESOURCE_
-	lstrcpy(m_szLoadingText, TEXT("Loading Captured Resources from : [ ../Bin/LevelData/CapturedResource/Stage2.json ]"));
-	GAMEINSTANCE->Load_ResourcesFromJson("../Bin/LevelData/CapturedResource/Stage2.json");
-#endif
-	//#else // _LOAD_CAPTURED_RESOURCE_
-
-#ifndef _ONLY_UI_
+	lstrcpy(m_szLoadingText, TEXT("Loading Captured Resources from : [ ../Bin/LevelData/CapturedResource/Stage3.json ]"));
+	GAMEINSTANCE->Load_ResourcesFromJson("../Bin/LevelData/CapturedResource/Stage3.json");
+#else // _LOAD_CAPTURED_RESOURCE_
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/ForTest_Mesh/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 
@@ -538,45 +547,21 @@ HRESULT CLoader::Loading_ForStage3Level()
 
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/GroundInfo/Mesh/ ]"));
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
-#endif // _LOAD_CAPTURED_RESOURCE_
+#endif
 
 
-#ifndef _ONLY_UI_
+
 #ifdef _SKYBOX_
 	lstrcpy(m_szLoadingText, TEXT("Loading Skybox Texture..."));
 	GAMEINSTANCE->Load_Textures("Sky", TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 #endif // _SKYBOX_
-#endif
+
+
 	m_isFinished = true;
 
-	// TODO : Turn off temporarily for Light_Prop
-	LIGHTDESC LightDesc;
-	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
+	GAMEINSTANCE->Clear_Lights();
 
-#ifdef _BRIGHT_LIGHT_
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
-	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
-	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 1.f;
-#else
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
-	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
-	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 0.2f;
-
-#endif // _BRIGHT_LIGHT_
-
-	//GAMEINSTANCE->Add_Light(LightDesc);
-
-	GAMEINSTANCE->Set_FogDesc(_float4(1.f, 1.f, 1.f, 1.f), 1000.f);
+	GAMEINSTANCE->Set_FogDesc(_float4(0.5f, 0.5f, 0.5f, 1.f), 140.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 	GAMEINSTANCE->Set_Contrast(1.f);
 	GAMEINSTANCE->Set_Saturation(1.f);
@@ -608,8 +593,8 @@ HRESULT CLoader::Loading_ForEditLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));
 	this->Load_CorvusModel();
-	/*lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
-	this->Load_BossMobModel();*/
+	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
+	this->Load_BossMobModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
 	this->Load_EliteMobModel();
 	//lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
@@ -639,10 +624,6 @@ HRESULT CLoader::Loading_ForEditLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Destructable/Wagon03/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
-	this->Load_CorvusModel();
-	this->Load_BossMobModel();
-	this->Load_NormalMobModel();
-	this->Load_EliteMobModel();
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 #endif // _MAP_TOOL_
@@ -651,16 +632,16 @@ HRESULT CLoader::Loading_ForEditLevel()
 	LIGHTDESC LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
-	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
-	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 1.f;
+	LightDesc.eActorType	= tagLightDesc::TYPE_DIRECTIONAL;
+	LightDesc.vDirection	= _float4(1.f, -1.f, 1.f, 0.f);
+	LightDesc.vDiffuse		= _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient		= _float4(0.7f, 0.7f, 0.7f, 1.f);
+	LightDesc.vSpecular		= _float4(0.6f, 0.6f, 0.6f, 1.f);
+	LightDesc.vLightFlag	= _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.bEnable		= true;
+	LightDesc.fIntensity	= 1.f;
 
-	GAMEINSTANCE->Add_Light(LightDesc);
+	//GAMEINSTANCE->Add_Light(LightDesc);
 
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
@@ -770,26 +751,15 @@ void CLoader::Load_AllEffectMeshInPath_Recursive(const filesystem::path& In_Path
 		szFileName = entry.path().filename().string().c_str();
 		szFileName = szFileName.substr(0, szFileName.size() - 4);
 
-#ifndef _BAKE_EFFECTMESH_FBX_
 		if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
 		{
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
 		}
-#endif // _BAKE_EFFECTMESH_FBX_
 
-#ifdef _DEBUG
-#ifdef _BAKE_EFFECTMESH_FBX_
-		if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0)
-		{
-			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
-		}
-
-		if (strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
-		{
-			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f));
-		}
-#endif // _BAKE_EFFECTMESH_FBX_
-#endif // _DEBUG
+		//if (strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
+		//{
+		//	GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f));
+		//}
 		itr++;
 	}
 }
@@ -1387,8 +1357,6 @@ void CLoader::Load_NormalMobModel()
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(0.f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixRotationZ(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Mon_Mutation7", "../Bin/Resources/Meshes/NorMonster/Mutation/Mutation7.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
-
-
 }
 
 void CLoader::Load_RareMobModel()
@@ -1419,11 +1387,11 @@ void CLoader::Load_BossMobModel()
 	// TransformMatrix = XMMatrixRotationX() * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	// GAMEINSTANCE->Load_Model("Boss_VargWeapon", "../Bin/Resources/Meshes/Boss/Varg/Weapon/VargWeapon.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
-	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model("Boss_Urd", "../Bin/Resources/Meshes/Boss/Urd/Urd.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC,true);
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.0037f, 0.0037f, 0.0037f);
+	GAMEINSTANCE->Load_Model("Boss_Urd", "../Bin/Resources/Meshes/Boss/Urd/Urd2.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
-	GAMEINSTANCE->Load_Model("Boss_UrdWeapon", "../Bin/Resources/Meshes/Boss/Urd/Weapon/UrdSword.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Model("Boss_UrdWeapon", "../Bin/Resources/Meshes/Boss/Urd/Weapon/SK_W_UrdSword01.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.0037f, 0.0037f, 0.0037f);
 	GAMEINSTANCE->Load_Model("Boss_Bat", "../Bin/Resources/Meshes/Boss/Bat/Bat.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC,true);

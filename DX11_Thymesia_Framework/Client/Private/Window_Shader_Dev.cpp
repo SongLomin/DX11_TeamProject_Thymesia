@@ -109,6 +109,25 @@ HRESULT CWindow_Shader_Dev::Render(ID3D11DeviceContext* pDeviceContext)
 		}
 	}
 
+	if (ImGui::CollapsingHeader("Screen Tone"))
+	{
+		ImGui::DragFloat("Contrast", &m_fContrast,0.01f,0.f,10.f,"%.3f");
+
+		if (ImGui::Button("Update Contrast"))
+		{
+			GAMEINSTANCE->Set_Contrast(m_fContrast);
+		}
+		ImGui::DragFloat("Saturation", &m_fSaturation, 0.01f, 0.f, 10.f, "%.3f");
+		if (ImGui::Button("Update Saturation"))
+		{
+			GAMEINSTANCE->Set_Saturation(m_fSaturation);
+		}
+		ImGui::DragFloat("Exposure", &m_fExposure, 0.01f, 0.f, 10.f, "%.3f");
+		if (ImGui::Button("Update Exposure"))
+		{
+			GAMEINSTANCE->Set_Exposure(m_fExposure);
+		}
+	}
 
 	// Draw actual text bounding box, following by marker of our expected limit (should not overlap!)
 	

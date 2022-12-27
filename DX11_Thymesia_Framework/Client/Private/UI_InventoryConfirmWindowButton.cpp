@@ -53,13 +53,13 @@ void CUI_InventoryConfirmWindowButton::Create_UI()
     m_pFontImage = ADD_STATIC_CUSTOMUI;
 
     m_pFontImage.lock()->Set_Size(74.f, 23.f);
-    m_pFontImage.lock()->Set_Depth(0.45);
+    m_pFontImage.lock()->Set_Depth(0.45f);
     m_pFontImage.lock()->Set_Texture("None");
 
     m_pBG = ADD_STATIC_CUSTOMUI;
 
     m_pBG.lock()->Set_Size(205.f, 27.f);
-    m_pBG.lock()->Set_Depth(0.46);
+    m_pBG.lock()->Set_Depth(0.46f);
     m_pBG.lock()->Set_Texture("None");
 
     Add_Child(m_pFontImage);

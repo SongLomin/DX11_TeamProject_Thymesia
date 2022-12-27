@@ -69,6 +69,8 @@ HRESULT CMainApp::Initialize()
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::MONSTER       , (_uint)COLLISION_LAYER::PLAYER_BATCOL);
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::CHECK_DIR     , (_uint)COLLISION_LAYER::PLAYER);
 
+
+
 	GAMEINSTANCE->Check_PhysXFilterGroup((_uint)PHYSX_COLLISION_LAYER::DYNAMIC_PEICE, (_uint)PHYSX_COLLISION_LAYER::GROUND);
 	GAMEINSTANCE->Check_PhysXFilterGroup((_uint)PHYSX_COLLISION_LAYER::DYNAMIC_PEICE, (_uint)PHYSX_COLLISION_LAYER::DYNAMIC_PEICE);
 	GAMEINSTANCE->Check_PhysXFilterGroup((_uint)PHYSX_COLLISION_LAYER::DYNAMIC_PEICE, (_uint)PHYSX_COLLISION_LAYER::STATIC_PROP);
@@ -105,6 +107,7 @@ HRESULT CMainApp::Initialize()
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
+
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking

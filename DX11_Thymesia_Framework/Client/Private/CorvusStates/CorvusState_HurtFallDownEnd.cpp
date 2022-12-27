@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
 #include "GameManager.h"
+#include "PhysXCollider.h"
 
 
 GAMECLASS_C(CCorvusState_HurtFallDownEnd);
@@ -59,14 +60,7 @@ void CCorvusState_HurtFallDownEnd::OnStateStart(const _float& In_fAnimationBlend
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex , 34);
-
-	_float3 vRandDir = SMath::vRandom(_float3(-1.f, -1.f, 0.f), _float3(1.f, 1.f, 0.f));
-
-	_matrix WorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
-
-	GET_SINGLE(CGameManager)->Add_Shaking(XMVector3TransformNormal(XMLoadFloat3(&vRandDir), WorldMatrix), 0.25f, 1.f, 9.f, 0.4f);
-
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "NorMonState: RunStart -> OnStateStart" << endl;
@@ -87,6 +81,9 @@ void CCorvusState_HurtFallDownEnd::Call_AnimationEnd()
 {
 	if (!Get_Enable())
 		return;
+
+
+	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
 
 	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
 

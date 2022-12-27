@@ -8,7 +8,7 @@
 #include "Player.h"
 #include "CorvusStates/CorvusStates.h"
 #include "GameManager.h"
-
+#include "PhysXController.h"
 
 GAMECLASS_C(CCorvusState_HurtFallDown);
 CLONE_C(CCorvusState_HurtFallDown, CComponent)
@@ -59,13 +59,10 @@ void CCorvusState_HurtFallDown::OnStateStart(const _float& In_fAnimationBlendTim
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex , 34);
+	m_pPhysXControllerCom.lock()->Enable_Gravity(false);
 
-	_float3 vRandDir = SMath::vRandom(_float3(-1.f, -1.f, 0.f), _float3(1.f, 1.f, 0.f));
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-	_matrix WorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
-
-	GET_SINGLE(CGameManager)->Add_Shaking(XMVector3TransformNormal(XMLoadFloat3(&vRandDir), WorldMatrix), 0.25f, 1.f, 9.f, 0.4f);
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_

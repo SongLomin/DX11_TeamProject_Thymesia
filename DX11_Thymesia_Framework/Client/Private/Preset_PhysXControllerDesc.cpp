@@ -32,7 +32,7 @@ PxCapsuleControllerDesc Preset::PhysXControllerDesc::BossBatSetting(weak_ptr<CTr
 	PxCapsuleControllerDesc Out_Desc;
 
 	Out_Desc.height = 4.f;
-	Out_Desc.radius = 6.f;
+	Out_Desc.radius = 5.5f;
 	Out_Desc.density = 5.f;
 	//Out_Desc.climbingMode = PxCapsuleClimbingMode::eCONSTRAINED;
 	_vector vPos = pTransform.lock()->Get_Position();

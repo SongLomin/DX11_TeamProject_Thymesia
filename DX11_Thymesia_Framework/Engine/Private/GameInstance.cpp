@@ -106,6 +106,7 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 
 	GET_SINGLE(CThread_Manager)->Enqueue_Job(bind(&CCollision_Manager::Tick, m_pCollision_Manager));
 	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 	//m_pTimer_Manager->Tick();
 
 
@@ -644,6 +645,11 @@ const LIGHTDESC& CGameInstance::Add_Light(const LIGHTDESC& LightDesc)
 _bool CGameInstance::Remove_Light(const _uint& iIndex)
 {
 	return m_pLight_Manager->Remove_Light(iIndex);
+}
+
+void CGameInstance::Clear_Lights()
+{
+	m_pLight_Manager->Clear_Lights();
 }
 
 _bool CGameInstance::isIn_Frustum_InWorldSpace(_fvector vWorldPoint, _float fRange)

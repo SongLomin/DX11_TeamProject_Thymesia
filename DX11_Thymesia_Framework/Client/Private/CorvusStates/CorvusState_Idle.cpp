@@ -61,7 +61,9 @@ void CCorvusState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 	list<weak_ptr<CWeapon>>	pWeapons(pPlayer.lock()->Get_Weapon());
 
 	for (auto& elem : pWeapons)
+	{
 		elem.lock()->Set_RenderOnOff(true);
+	}
 
 	m_bFirstFoot = true;
 
@@ -74,31 +76,23 @@ void CCorvusState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 		m_bLadderLock = true;
 	}
 	else
+	{
 		m_bLadderLock = false;
+	}
 
 
 	if (!m_pModelCom.lock().get())
+	{
 		m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
+	}
 
 	Get_OwnerPlayer()->Set_LadderCheck(false);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-#ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "CORVUSMonState: Stand -> OnStateStart" << endl;
 #endif // _DEBUG
-#endif // _DEBUG_COUT_
-
-	/*
-	1: �ٱ״��
-	2: ����
-	3. �ܰ�
-	4. �ٱ�ó��
-	5. ������
-	6. ������
-	7. ����(������)?����
-	*/
 }
 
 void CCorvusState_Idle::OnStateEnd()
@@ -294,7 +288,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Axe>();
 			break;
 		case 2:
-			Get_OwnerPlayer()->Change_State<CCorvusState_Execution_R_R>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Knife>();
 			break;
 		case 3:
 			Get_OwnerPlayer()->Change_State<CCorvusState_NorMob_Execution>();
@@ -309,7 +303,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 			Get_OwnerPlayer()->Change_State<CCorvusState_PS_CaneSword>();
 			break;
 		case 7:
-			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Knife>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Execution_R_R>();
 			break;
 		case 8:
 			Get_OwnerPlayer()->Change_State<CCorvusState_Execution_Start>();

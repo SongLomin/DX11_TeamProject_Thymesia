@@ -30,6 +30,11 @@ private: /* For. ShadowLight */
 	_float3 m_vEye = {};
 	_float3 m_vLookAt = {};
 
+private:/* For. Screen Tone*/
+	_float m_fContrast = 1.f;
+	_float m_fSaturation = 1.f;
+	_float m_fExposure = 1.f;
+
 private:
 	virtual void OnEventMessage(_uint iArg) override;
 

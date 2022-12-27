@@ -82,7 +82,7 @@ void CClientLevel::Load_FromJson(const string& In_szJsonPath, const LEVEL& In_eL
 void CClientLevel::Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex)
 {
 	fs::directory_iterator itr(In_FolderPath);
-
+	 
 	while (itr != fs::end(itr)) {
 		const fs::directory_entry& entry = *itr;
 

@@ -123,6 +123,18 @@ void CNorMonState_Run::OnStateEnd()
 
 
 
+void CNorMonState_Run::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+	      m_bRunCheck = false; 
+	      m_iGardnerAtkIndex = 0;
+	      m_bClosePlayer = true;
+	}
+}
+
 void CNorMonState_Run::Call_AnimationEnd()
 {
 	if (!Get_Enable())

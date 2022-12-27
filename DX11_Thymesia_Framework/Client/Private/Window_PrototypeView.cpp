@@ -146,6 +146,7 @@ void CWindow_PrototypeView::Add_Prototypes()
     ADD_PROTOTYPE(PROTOTYPE_PROP, CInteraction_Elevator);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CInteraction_Door);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CInteraction_Item);
+    ADD_PROTOTYPE(PROTOTYPE_PROP, CInteraction_CastleGate);
     ADD_PROTOTYPE(PROTOTYPE_PROP, CWater);
 
     ADD_PROTOTYPE(PROTOTYPE_EDIT, CEditGround);

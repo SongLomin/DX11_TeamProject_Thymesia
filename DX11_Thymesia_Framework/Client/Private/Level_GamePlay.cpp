@@ -108,8 +108,7 @@ void CLevel_GamePlay::ExitLevel(LEVEL eLevel)
 	if (eLevel == LEVEL::LEVEL_STAGE2)
 	{
 		CStatus_Player::PLAYERDESC tPlayerDesc = GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status().lock()->Get_Desc();
-		GET_SINGLE(CGameManager)->Set_PlayerStatusDesc(&tPlayerDesc);
-
+		
 		m_eNextLevel = eLevel;
 
 		FaderDesc tFaderDesc;

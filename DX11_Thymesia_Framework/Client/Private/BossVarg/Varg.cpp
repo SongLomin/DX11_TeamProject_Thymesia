@@ -14,6 +14,7 @@
 #include "MonsterHPBar_Boss.h"
 #include "Status_Monster.h"
 #include "Status_Boss.h"
+#include "BoneNode.h"
 
 
 GAMECLASS_C(CVarg);
@@ -35,7 +36,10 @@ HRESULT CVarg::Initialize(void* pArg)
 		VTXANIM_DECLARATION::Element,
 		VTXANIM_DECLARATION::iNumElements);
 
-	m_pModelCom.lock()->Init_Model("Boss_Varg", "", (_uint)TIMESCALE_LAYER::MONSTER);
+	CModel::NVCLOTH_MODEL_DESC NvClothDesc;
+	Preset::NvClothMesh::VargSetting(NvClothDesc, XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixRotationX(XMConvertToRadians(-90.f)));
+
+	m_pModelCom.lock()->Init_Model("Boss_Varg", "", (_uint)TIMESCALE_LAYER::MONSTER, &NvClothDesc);
 
 	m_pStandState = Add_Component<CVargBossState_Start>();
 	Add_Component<CVargBossState_Attack1a>();
@@ -97,6 +101,12 @@ HRESULT CVarg::Initialize(void* pArg)
 #ifdef _DEBUG
 	m_fCullingRange = 999.f;
 #endif // _DEBUG
+
+#ifdef _USE_THREAD_
+	Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
+#endif // _USE_THREAD_
+
+
 	return S_OK;
 }
 
@@ -131,6 +141,53 @@ void CVarg::Tick(_float fTimeDelta)
 void CVarg::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+}
+
+void CVarg::Thread_PreBeforeRender(_float fTimeDelta)
+{
+	__super::Thread_PreBeforeRender(fTimeDelta);
+
+	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
+
+	_matrix		BoneMatrix;
+	_matrix		InverseMatrix;
+	_float4x4	ModelTransform4x4 = m_pModelCom.lock()->Get_TransformationMatrix();
+	_matrix		ModelTransformMatrix = XMLoadFloat4x4(&ModelTransform4x4);
+	_vector		vGravity;
+
+	//Bip001-Ponytail1
+	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_CombinedMatrix()
+		* ModelTransformMatrix;
+
+	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
+	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
+	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
+
+	InverseMatrix = XMMatrixInverse(nullptr, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix());
+
+	vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), XMMatrixRotationX(XMConvertToRadians(90.f)) * InverseMatrix);
+	//vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), InverseMatrix * XMMatrixRotationX(XMConvertToRadians(-90.f)));
+
+	m_pModelCom.lock()->Get_MeshContainer(1).lock()->Update_NvClothVertices(pDeferredContext, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(), vGravity);
+
+	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_CombinedMatrix()
+		* ModelTransformMatrix;
+
+	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
+	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
+	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
+
+	InverseMatrix = XMMatrixInverse(nullptr, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix());
+
+	vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), InverseMatrix);
+	//vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), InverseMatrix);
+
+	// "Bip001-Xtra10"
+
+	m_pModelCom.lock()->Get_MeshContainer(3).lock()->Update_NvClothVertices(pDeferredContext, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(), vGravity);
+
+	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
+
 }
 
 HRESULT CVarg::Render(ID3D11DeviceContext* pDeviceContext)
@@ -190,7 +247,7 @@ void CVarg::Init_Desc()
 {
 	__super::Init_Desc();
 
-	m_pModelCom.lock()->Init_Model("Boss_Varg", "", (_uint)TIMESCALE_LAYER::MONSTER);
+	//m_pModelCom.lock()->Init_Model("Boss_Varg", "", (_uint)TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CVargWeapon>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
 

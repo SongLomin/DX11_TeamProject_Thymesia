@@ -238,8 +238,8 @@ Bip001-Xtra1302
 Bip001-Xtra13Nub
 Bip001-Xtra13Nub_end
 SK_C_Varg.mo
-0[SK_C_Varg.md]. 9000
-1[SK_C_Varg.md]. 8664
-2[SK_C_Varg.md]. 79158
-3[SK_C_Varg.md]. 702
-4[SK_C_Varg.md]. 29151
+0[SK_C_Varg.md]. 2724
+1[SK_C_Varg.md]. 2220
+2[SK_C_Varg.md]. 13479
+3[SK_C_Varg.md]. 152
+4[SK_C_Varg.md]. 5072

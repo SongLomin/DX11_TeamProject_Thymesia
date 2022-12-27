@@ -208,6 +208,7 @@ public: /* For.Light_Manager */
 	void Set_LightDesc(const LIGHTDESC& LightDesc);
 	const LIGHTDESC& Add_Light(const LIGHTDESC& LightDesc);
 	_bool Remove_Light(const _uint& iIndex);
+	void Clear_Lights();
 
 public: /* For.Frustum */
 	_bool isIn_Frustum_InWorldSpace(_fvector vWorldPoint, _float fRange = 0.f);

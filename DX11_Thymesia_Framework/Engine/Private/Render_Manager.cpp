@@ -1,4 +1,4 @@
-#include "Render_Manager.h"
+ï»¿#include "Render_Manager.h"
 #include "GameObject.h"
 #include "GameInstance.h"
 #include "Shader.h"
@@ -24,9 +24,6 @@ ID3D11DeviceContext* CRender_Manager::Get_BeforeRenderContext()
 	lock.unlock();
 
 	return pContext;
-	// ³ªÁß¿¡ ÀÌÆåÆ®_·ºÆ®³ª ÀÌÆåÆ® ¸Þ½¬, ¸Ê¾ð¸Ê µîµî ½Ã°£ÀÌ ¿À·¡ °É¸®´Â °÷¿¡ º¸³»ÁØ´Ù.
-	// ¸Ê¾ð¸ÊÀÌ ³¡³ª¸é ´Ù½Ã µ¹·Á¹ÞÀ» °Í.
-	// ÇØ´ç Late_TickÀº ¾²·¹µå·Î ÇÒ °Í.
 }
 
 void CRender_Manager::Release_BeforeRenderContext(ID3D11DeviceContext* pDeviceContext)
@@ -64,7 +61,7 @@ void CRender_Manager::Execute_BeforeRenderCommandList()
 HRESULT CRender_Manager::Initialize()
 {
 
-	/* ·»´õÅ¸°ÙµéÀ» Ãß°¡ÇÑ´Ù. */
+	/* ï¿½ï¿½ï¿½ï¿½Å¸ï¿½Ùµï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½Ñ´ï¿½. */
 
 	D3D11_VIEWPORT			ViewPortDesc;
 	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
@@ -91,10 +88,10 @@ HRESULT CRender_Manager::Initialize()
 
 	/*For. Target_AntiAliasing*/
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_AntiAliasing"),
-		(_uint)ViewPortDesc.Width*2.f, (_uint)ViewPortDesc.Height*2.f, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 128.f / 255.f, 1.f, 1.f))))
+		(_uint)ViewPortDesc.Width * 2.f, (_uint)ViewPortDesc.Height * 2.f, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 128.f / 255.f, 1.f, 1.f))))
 		DEBUG_ASSERT;
 
-	if (FAILED(pRenderTargetManager->Bake_AntiAliasingDepthStencilView((_uint)ViewPortDesc.Width*2.f, (_uint)ViewPortDesc.Height*2.f)))
+	if (FAILED(pRenderTargetManager->Bake_AntiAliasingDepthStencilView((_uint)ViewPortDesc.Width * 2.f, (_uint)ViewPortDesc.Height * 2.f)))
 		DEBUG_ASSERT;
 
 	/* For.Target_Diffuse */
@@ -109,21 +106,18 @@ HRESULT CRender_Manager::Initialize()
 
 	/* For.Target_Depth */
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Depth"),
-		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(1.f, 1.f,  0.f, 1.f))))
+		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R32G32B32A32_FLOAT, _float4(1.f, 1.f, 0.f, 1.f))))
 		DEBUG_ASSERT;
 
-	/* For.Target_Shade */
-	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Shade"),
-		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 1.f))))
+	/* For.Target_RimLight */
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_RimLight"),
+		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
+
 	/* For.Target_PBR */
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_PBR"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
-	///* For.Target_Emissive*/
-	//if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Emissive"),
-	//	(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
-	//	DEBUG_ASSERT;
 
 	/* For.Target_Specular */
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Specular"),
@@ -222,15 +216,15 @@ HRESULT CRender_Manager::Initialize()
 		(_uint)ViewPortDesc.Width * 5, (_uint)ViewPortDesc.Height * 5, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 1.f, 1.f))))
 		DEBUG_ASSERT;*/
 
-	//if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Glow"), (_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 0.f, 1.f))))
-	//	DEBUG_ASSERT;
+		//if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Glow"), (_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(1.f, 1.f, 0.f, 1.f))))
+		//	DEBUG_ASSERT;
 
-	/* For.Target_PostEffect */
-	/*if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_PostEffect"), (_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 1.f))))
-		DEBUG_ASSERT;*/
+		/* For.Target_PostEffect */
+		/*if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_PostEffect"), (_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_R16G16B16A16_UNORM, _float4(0.f, 0.f, 0.f, 1.f))))
+			DEBUG_ASSERT;*/
 
-	/* For.MRT_Deferred */
-	/* Á¶¸í¿¬»êÀÌ ÇÊ¿äÇÑ °´Ã¼µéÀ» ±×¸± ¶§, ÃßÈÄ ºû¿¬»ê¿¡ ÇÊ¿äÇÑ Á¤º¸¸¦ ÀúÀå¹Þ±âÀ§ÇÑ ·»´õÅ¸°Ùµé (Diffuse + Normal ) */
+			/* For.MRT_Deferred */
+			/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ ï¿½×¸ï¿½ ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ê¿¡ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Þ±ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Å¸ï¿½Ùµï¿½ (Diffuse + Normal ) */
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_Diffuse"))))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_Normal"))))
@@ -242,6 +236,8 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_PBR"))))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_ExtractBloom"))))
+		DEBUG_ASSERT;
+	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Deferred"), TEXT("Target_RimLight"))))
 		DEBUG_ASSERT;
 
 
@@ -284,7 +280,7 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Distortion"), TEXT("Target_Distortion"))))
 		DEBUG_ASSERT;
 
-	if(FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_AntiAliasing"),TEXT("Target_AntiAliasing"))))
+	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_AntiAliasing"), TEXT("Target_AntiAliasing"))))
 		DEBUG_ASSERT;
 
 	//if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_Glow"), TEXT("Target_Glow"))))
@@ -292,9 +288,9 @@ HRESULT CRender_Manager::Initialize()
 
 
 	/* For.MRT_LightAcc */
-	/* Á¶¸í¿¬»êÇÑ °á°ú¸¦ ÀúÀåÇØ³õ±âÀ§ÇÑ Å¸°Ù (Shade + Specular) */
-	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Shade"))))
-		DEBUG_ASSERT;
+	/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ (Shade + Specular) */
+	//if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Shade"))))
+	//	DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Specular"))))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Add_MRT(TEXT("MRT_LightAcc"), TEXT("Target_Ambient"))))
@@ -334,7 +330,7 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 
 
-	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Shade"), fHalf + fSize, fHalf, fSize, fSize)))
+	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_RimLight"), fHalf + fSize, fHalf, fSize, fSize)))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Specular"), fHalf + fSize, fHalf + fSize, fSize, fSize)))
 		DEBUG_ASSERT;
@@ -366,9 +362,9 @@ HRESULT CRender_Manager::Initialize()
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_AntiAliasing"), ViewPortDesc.Width - fHalf - fSize, fHalf + fSize * 5.f, fSize, fSize)))
 		DEBUG_ASSERT;
 
-	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_StaticShadowDepth"), ViewPortDesc.Width - fHalf -fSize*2.f, fHalf, fSize, fSize)))
+	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_StaticShadowDepth"), ViewPortDesc.Width - fHalf - fSize * 2.f, fHalf, fSize, fSize)))
 		DEBUG_ASSERT;
-	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Distortion"), ViewPortDesc.Width - fHalf - fSize * 2.f, fHalf +fSize, fSize, fSize)))
+	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Distortion"), ViewPortDesc.Width - fHalf - fSize * 2.f, fHalf + fSize, fSize, fSize)))
 		DEBUG_ASSERT;
 	if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Fog"), ViewPortDesc.Width - fHalf - fSize * 3.f, fHalf, fSize, fSize)))
 		DEBUG_ASSERT;
@@ -378,8 +374,8 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;*/
 
 
-	//if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Glow"), ViewPortDesc.Width - 300, 700, 200, 200)))
-	//	DEBUG_ASSERT;
+		//if (FAILED(pRenderTargetManager->Ready_Debug(TEXT("Target_Glow"), ViewPortDesc.Width - 300, 700, 200, 200)))
+		//	DEBUG_ASSERT;
 
 #endif // _DEBUG
 
@@ -393,10 +389,10 @@ HRESULT CRender_Manager::Initialize()
 
 	XMStoreFloat4x4(&m_ProjMatrix, XMMatrixTranspose(XMMatrixOrthographicLH(ViewPortDesc.Width, ViewPortDesc.Height, 0.f, 1.f)));
 
-	WorldMatrix.r[0] = XMVectorSet(ViewPortDesc.Width*2.f, 0.f, 0.f, 0.f);
-	WorldMatrix.r[1] = XMVectorSet(0.f, ViewPortDesc.Height*2.f, 0.f, 0.f);
+	WorldMatrix.r[0] = XMVectorSet(ViewPortDesc.Width * 2.f, 0.f, 0.f, 0.f);
+	WorldMatrix.r[1] = XMVectorSet(0.f, ViewPortDesc.Height * 2.f, 0.f, 0.f);
 	XMStoreFloat4x4(&m_AntiAliasingWorldMatrix, XMMatrixTranspose(WorldMatrix));
-	XMStoreFloat4x4(&m_AntiAliasingProjMatrixTranspose, XMMatrixTranspose(XMMatrixOrthographicLH(ViewPortDesc.Width*2.f, ViewPortDesc.Height*2.f, 0.f, 1.f)));
+	XMStoreFloat4x4(&m_AntiAliasingProjMatrixTranspose, XMMatrixTranspose(XMMatrixOrthographicLH(ViewPortDesc.Width * 2.f, ViewPortDesc.Height * 2.f, 0.f, 1.f)));
 
 
 	m_pShader = CShader::Create();
@@ -504,15 +500,16 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Bake_Fog()))
 		DEBUG_ASSERT;
 
-
-
 	if (FAILED(Render_Blend()))
 		DEBUG_ASSERT;
-	///////SSR ³Ö±â
-	//if (FAILED(Render_SSR()))
-	//	DEBUG_ASSERT;
 
-	//////¿©±â´Ù°¡ È­¸é ºí·ë
+	if (FAILED(Render_RimLight()))
+		DEBUG_ASSERT;
+
+	if (FAILED(Render_SSR()))
+		DEBUG_ASSERT;
+
+	//////ï¿½ï¿½ï¿½ï¿½Ù°ï¿½ È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	if (FAILED(Blend_OutLine()))
 		DEBUG_ASSERT;
 
@@ -606,7 +603,7 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 #endif
 
 	return S_OK;
-  }
+}
 
 HRESULT CRender_Manager::Set_MotionBlur(const _float In_fBlurScale)
 {
@@ -619,7 +616,7 @@ HRESULT CRender_Manager::Set_MotionBlur(const _float In_fBlurScale)
 HRESULT CRender_Manager::Add_MotionBlur(const _float In_fBlurScale)
 {
 	m_fMotionBlurStrengthAcc += In_fBlurScale;
-	m_fMotionBlurStrengthAcc = min(1.f,max(0.f, m_fMotionBlurStrengthAcc));
+	m_fMotionBlurStrengthAcc = min(1.f, max(0.f, m_fMotionBlurStrengthAcc));
 
 	return S_OK;
 }
@@ -785,7 +782,7 @@ HRESULT CRender_Manager::Render_ShadowDepth()
 
 	/*_vector		vLightEye = { -iHeight, iHeight, -iHeight };
 	_vector		vLightAt = { 0.f, 0.f, 0.f };*/
-	_vector		vLightUp = {0.f, 1.f, 0.f};
+	_vector		vLightUp = { 0.f, 1.f, 0.f };
 
 	_matrix LightViewMatrix = XMMatrixLookAtLH(vLightEye, vLightAt, vLightUp);
 	LightViewMatrix = XMMatrixTranspose(LightViewMatrix);
@@ -880,12 +877,12 @@ HRESULT CRender_Manager::Render_Lights()
 
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
-	/* ¼ÎÀÌµå Å¸°ÙÀ» ÀåÄ¡¿¡ ¹ÙÀÎµåÇÑ´Ù. */
-	if (FAILED(pRenderTargetManager->Begin_MRT( TEXT("MRT_LightAcc"))))
+	/* ï¿½ï¿½ï¿½Ìµï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½Îµï¿½ï¿½Ñ´ï¿½. */
+	if (FAILED(pRenderTargetManager->Begin_MRT(TEXT("MRT_LightAcc"))))
 		DEBUG_ASSERT;
 
-	/* ¸ðµç ºûÀº ÀÌ ³ë¸ÖÅØ½ºÃÄ(Å¸°Ù)°ú ¿¬»êÀÌ ÀÌ·ïÁö¸é µÇ±â¶§¹®¿¡.
-	¸ðµç ºû¸¶´Ù °¢°¢ ´øÁúÇÇ·æ°¡ ¾ø´Ù. */
+	/* ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ø½ï¿½ï¿½ï¿½(Å¸ï¿½ï¿½)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç±â¶§ï¿½ï¿½ï¿½ï¿½.
+	ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç·æ°¡ ï¿½ï¿½ï¿½ï¿½. */
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_DiffuseTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Diffuse")))))
 		DEBUG_ASSERT;
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_NormalTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Normal")))))
@@ -898,7 +895,7 @@ HRESULT CRender_Manager::Render_Lights()
 		DEBUG_ASSERT;
 
 
-	/* ¸ðµç ºûµéÀº ¼ÎÀÌµå Å¸°ÙÀ» ²Ë Ã¤¿ì°í Áö‚uÅõ¿µÀ¸·Î ±×·ÁÁö¸é µÇ±â¶§¹®¿¡ ºû¸¶´Ù ´Ù¸¥ »óÅÂ¸¦ ÁÙ ÇÊ¿ä°¡ ¾ø´Ù. */
+	/* ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Ã¤ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç±â¶§ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½ï¿½ ï¿½Ê¿ä°¡ ï¿½ï¿½ï¿½ï¿½. */
 	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
@@ -930,16 +927,16 @@ HRESULT CRender_Manager::Bake_Fog()
 
 	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
 
-	/* ¼ÎÀÌµå Å¸°ÙÀ» ÀåÄ¡¿¡ ¹ÙÀÎµåÇÑ´Ù. */
+	/* ï¿½ï¿½ï¿½Ìµï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½Îµï¿½ï¿½Ñ´ï¿½. */
 	if (FAILED(pRenderTargetManager->Begin_MRT(TEXT("MRT_Fog"))))
 		DEBUG_ASSERT;
 
-	/* ¸ðµç ºûÀº ÀÌ ³ë¸ÖÅØ½ºÃÄ(Å¸°Ù)°ú ¿¬»êÀÌ ÀÌ·ïÁö¸é µÇ±â¶§¹®¿¡.
-	¸ðµç ºû¸¶´Ù °¢°¢ ´øÁúÇÇ·æ°¡ ¾ø´Ù. */
+	/* ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ø½ï¿½ï¿½ï¿½(Å¸ï¿½ï¿½)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç±â¶§ï¿½ï¿½ï¿½ï¿½.
+	ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç·æ°¡ ï¿½ï¿½ï¿½ï¿½. */
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_DepthTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Depth")))))
 		DEBUG_ASSERT;
 
-	/* ¸ðµç ºûµéÀº ¼ÎÀÌµå Å¸°ÙÀ» ²Ë Ã¤¿ì°í Áö‚uÅõ¿µÀ¸·Î ±×·ÁÁö¸é µÇ±â¶§¹®¿¡ ºû¸¶´Ù ´Ù¸¥ »óÅÂ¸¦ ÁÙ ÇÊ¿ä°¡ ¾ø´Ù. */
+	/* ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Ã¤ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç±â¶§ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½ï¿½ ï¿½Ê¿ä°¡ ï¿½ï¿½ï¿½ï¿½. */
 	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
@@ -1028,8 +1025,8 @@ HRESULT CRender_Manager::Render_Blend()
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_DiffuseTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Diffuse")))))
 		DEBUG_ASSERT;
 
-	if (FAILED(m_pShader->Set_ShaderResourceView("g_ShadeTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Shade")))))
-		DEBUG_ASSERT;
+	//if (FAILED(m_pShader->Set_ShaderResourceView("g_ShadeTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Shade")))))
+	//	DEBUG_ASSERT;
 
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_SpecularTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Specular")))))
 		DEBUG_ASSERT;
@@ -1064,7 +1061,7 @@ HRESULT CRender_Manager::Render_Blend()
 		DEBUG_ASSERT;
 
 
-	/* ¸ðµç ºûµéÀº ¼ÎÀÌµå Å¸°ÙÀ» ²Ë Ã¤¿ì°í Áö‚uÅõ¿µÀ¸·Î ±×·ÁÁö¸é µÇ±â¶§¹®¿¡ ºû¸¶´Ù ´Ù¸¥ »óÅÂ¸¦ ÁÙ ÇÊ¿ä°¡ ¾ø´Ù. */
+	/* ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Ã¤ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç±â¶§ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½ï¿½ ï¿½Ê¿ä°¡ ï¿½ï¿½ï¿½ï¿½. */
 	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
@@ -1088,7 +1085,7 @@ HRESULT CRender_Manager::Render_Blend()
 
 	m_pShader->Begin(3, pDeviceContext);
 
-	/* »ç°¢Çü ¹öÆÛ¸¦ ¹é¹öÆÛÀ§¿¡ ±×·Á³½´Ù. */
+	/* ï¿½ç°¢ï¿½ï¿½ ï¿½ï¿½ï¿½Û¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×·ï¿½ï¿½ï¿½ï¿½ï¿½. */
 	m_pVIBuffer->Render(pDeviceContext);
 
 	GET_SINGLE(CCollision_Manager)->Render_Collider();
@@ -1480,7 +1477,7 @@ HRESULT CRender_Manager::Blend_Distortion()
 	if (FAILED(m_pDistortionShader->Set_ShaderResourceView("g_OriginTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")))))
 		DEBUG_ASSERT;
 
- 	m_pDistortionShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	m_pDistortionShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
 	m_pDistortionShader->Set_RawValue("g_ViewMatrix", &m_ViewMatrix, sizeof(_float4x4));
 	m_pDistortionShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
 
@@ -1710,10 +1707,23 @@ HRESULT CRender_Manager::Blend_Bloom()
 	m_pShader->Set_ShaderResourceView("g_XBlurTexture", pRenderTargetManager->Get_SRV(TEXT("Target_BlurForBloom")));
 	m_pShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")));
 
-	/* ºí·ë ¸¸µé±â. */
+	/* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½. */
 	m_pShader->Begin(5, pDeviceContext);
 	m_pVIBuffer->Render(pDeviceContext);
 
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Render_RimLight()
+{
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
+	m_pShader->Set_ShaderResourceView("g_RimLightTexture", pRenderTargetManager->Get_SRV(TEXT("Target_RimLight")));
+	m_pShader->Set_ShaderResourceView("g_ShaderFlagTexture", pRenderTargetManager->Get_SRV(TEXT("Target_ShaderFlag")));
+
+	m_pShader->Begin(13, DEVICECONTEXT);
+	m_pVIBuffer->Render(pDeviceContext);
 
 	return S_OK;
 }
@@ -1757,9 +1767,11 @@ HRESULT CRender_Manager::Render_SSR()
 	return S_OK;
 }
 
+
+
 HRESULT CRender_Manager::PostProcessing()
 {
-	//¸ð¼Ç ºí·¯, »ö¼öÂ÷, Áß½É ºí·¯(¾ê´Â À§¿¡ ÀÖÀ½) µîµî È­¸é ÀüÃ¼ ÇØ¾ßÇÏ´Â ºí·¯ÀÇ °æ¿ì
+	//ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ß½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½) ï¿½ï¿½ï¿½ È­ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½Ø¾ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 	//Bake_OriginalRenderTexture();
 
 	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
@@ -1778,8 +1790,8 @@ HRESULT CRender_Manager::PostProcessing()
 
 	shared_ptr<CPipeLine> pPipeLine = GET_SINGLE(CPipeLine);
 
-	_float4x4		ViewMatrixInv, ProjMatrixInv,ViewMatrix,ProjMatrix;
-	_matrix			CamViewMatrix= pPipeLine->Get_Transform(CPipeLine::D3DTS_VIEW);
+	_float4x4		ViewMatrixInv, ProjMatrixInv, ViewMatrix, ProjMatrix;
+	_matrix			CamViewMatrix = pPipeLine->Get_Transform(CPipeLine::D3DTS_VIEW);
 
 
 	XMStoreFloat4x4(&ViewMatrixInv, XMMatrixTranspose(XMMatrixInverse(nullptr, CamViewMatrix)));
@@ -1793,7 +1805,7 @@ HRESULT CRender_Manager::PostProcessing()
 	m_pPostProcessingShader->Set_RawValue("g_ViewMatrixInv", &ViewMatrixInv, sizeof(_float4x4));
 	m_pPostProcessingShader->Set_RawValue("g_CamProjMatrix", &ProjMatrix, sizeof(_float4x4));
 
-	m_pPostProcessingShader->Set_RawValue("g_vCamPosition", &ViewMatrixInv.m[3],sizeof(_float4));
+	m_pPostProcessingShader->Set_RawValue("g_vCamPosition", &ViewMatrixInv.m[3], sizeof(_float4));
 
 	m_pPostProcessingShader->Set_RawValue("g_vLift", &m_LiftGammaGainDesc.vLift, sizeof(_float4));
 	m_pPostProcessingShader->Set_RawValue("g_vGamma", &m_LiftGammaGainDesc.vGamma, sizeof(_float4));
@@ -1836,14 +1848,14 @@ HRESULT CRender_Manager::PostProcessing()
 	//fMotionLerpValue *= 0.01f;
 
 
-	m_pPostProcessingShader->Set_RawValue("g_fChromaticStrength", &fChromaticLerpValue, sizeof(_float));//chromatic Àü¿ë
+	m_pPostProcessingShader->Set_RawValue("g_fChromaticStrength", &fChromaticLerpValue, sizeof(_float));//chromatic ï¿½ï¿½ï¿½ï¿½
 
-	m_pPostProcessingShader->Set_RawValue("g_fMotionBlurStrength", &m_fMotionBlurStrengthAcc, sizeof(_float));//MotionBlur Àü¿ë
+	m_pPostProcessingShader->Set_RawValue("g_fMotionBlurStrength", &m_fMotionBlurStrengthAcc, sizeof(_float));//MotionBlur ï¿½ï¿½ï¿½ï¿½
 	m_pPostProcessingShader->Set_RawValue("g_PreCamViewMatrix", &XMMatrixTranspose(XMLoadFloat4x4(&pPipeLine->Get_PreViewMatrix())), sizeof(_float4x4));
 
-	m_pPostProcessingShader->Set_RawValue("g_fRadialBlurStrength", &m_fRadialBlurStrengthAcc, sizeof(_float));//RadialBlur Àü¿ë
-	m_pPostProcessingShader->Set_RawValue("g_vBlurWorldPosition", &m_vRadialBlurWorldPos, sizeof(_float3));//RadialBlur Àü¿ë
-	m_pPostProcessingShader->Set_RawValue("g_CameraViewMatrix", &XMMatrixTranspose(CamViewMatrix), sizeof(_float4x4));//RadialBlur Àü¿ë
+	m_pPostProcessingShader->Set_RawValue("g_fRadialBlurStrength", &m_fRadialBlurStrengthAcc, sizeof(_float));//RadialBlur ï¿½ï¿½ï¿½ï¿½
+	m_pPostProcessingShader->Set_RawValue("g_vBlurWorldPosition", &m_vRadialBlurWorldPos, sizeof(_float3));//RadialBlur ï¿½ï¿½ï¿½ï¿½
+	m_pPostProcessingShader->Set_RawValue("g_CameraViewMatrix", &XMMatrixTranspose(CamViewMatrix), sizeof(_float4x4));//RadialBlur ï¿½ï¿½ï¿½ï¿½
 
 
 	for (_int i = 0; i < 5; ++i)
@@ -1922,7 +1934,7 @@ HRESULT CRender_Manager::Bake_OriginalRenderTexture()
 
 	m_pShader->Set_ShaderResourceView("g_OriginalRenderTexture", GET_SINGLE(CGraphic_Device)->Get_SRV());
 
-	/* ºí·ë ¸¸µé±â. */
+	/* ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½. */
 	m_pShader->Begin(7, pDeviceContext);
 	m_pVIBuffer->Render(pDeviceContext);
 

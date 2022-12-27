@@ -137,20 +137,20 @@ _bool CBatBossState_Bite_1::Check_AndChangeNextState()
 
 	_float fPToMDistance = Get_DistanceWithPlayer();
 
-	if (fPToMDistance <= 7.f && m_bOne)
+	if (fPToMDistance <= 7.5f && m_bOne)
 	{
 		m_bRootStop = false;
 		m_bOne = false;
 	}
 
 	
-	if (ComputeAngleWithPlayer() > 0.98f)
+	if (ComputeAngleWithPlayer() > 0.98f && m_bAttackLookAtLimit)
 	{
 		Rotation_TargetToLookDir();
 		m_bAttackLookAtLimit = false;
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 242)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 242)
 	{
 		Get_OwnerCharacter().lock()->Change_State<CBatBossState_Bite_2>(0.05f);
 		return true;

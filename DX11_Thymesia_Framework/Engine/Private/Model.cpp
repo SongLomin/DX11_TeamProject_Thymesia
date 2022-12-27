@@ -293,6 +293,11 @@ weak_ptr<CAnimation> CModel::Get_AnimationFromIndex(const _uint& In_iIndex) cons
 	return m_Animations[In_iIndex];
 }
 
+weak_ptr<CMeshContainer> CModel::Get_MeshContainer(const _uint In_iIndex) const
+{
+	return m_MeshContainers[In_iIndex];
+}
+
 _bool CModel::IsModelPicking(const RAY& In_Ray, _float& Out_fRange)
 {
 	if (m_pModelData)
@@ -442,9 +447,18 @@ HRESULT CModel::Render_AnimModel(_uint iMeshContainerIndex, weak_ptr<CShader> pS
 //	m_MeshContainers[In_iIndex].lock()->Set_NvCloth();
 //}
 
-void CModel::Init_Model(const char* sModelKey, const string& szTexturePath, _uint iTimeScaleLayer, const _flag In_NvClothFlag)
+void CModel::Init_Model(const char* sModelKey, const string& szTexturePath, _uint iTimeScaleLayer, const NVCLOTH_MODEL_DESC* In_pNvClothModelDesc)
 {
-	Init_Model_Internal(sModelKey, szTexturePath, iTimeScaleLayer, In_NvClothFlag);
+	Reset_Model();
+
+	m_pModelData = GAMEINSTANCE->Get_ModelFromKey(sModelKey);
+
+	if (!m_pModelData)
+		assert(false);
+
+	m_szModelKey = sModelKey;
+
+	Init_Model_Internal(m_pModelData, szTexturePath, iTimeScaleLayer, In_pNvClothModelDesc);
 
 	//future<void> futureInitModel = async(launch::async, &CModel::Init_Model_Internal, this, sModelKey, szTexturePath);
 
@@ -455,21 +469,24 @@ void CModel::Init_Model(const char* sModelKey, const string& szTexturePath, _uin
 	Create_Materials(szDir);*/
 }
 
-
-void CModel::Init_Model_Internal(const char* sModelKey, const string& szTexturePath, _uint iTimeScaleLayer, const _flag In_NvClothFlag)
+void CModel::Init_Model(shared_ptr<MODEL_DATA> pModelData, const string& szTexturePath, _uint iTimeScaleLayer, const NVCLOTH_MODEL_DESC* In_pNvClothModelDesc)
 {
-	//재사용할거라서 Reset은 필요하지 않음.
-	//Reset_Model();
-
 	Reset_Model();
 
-	m_pModelData = GAMEINSTANCE->Get_ModelFromKey(sModelKey);
+	m_pModelData = pModelData;
 
-	if (!m_pModelData.get())
+	if (!m_pModelData)
 		assert(false);
 
-	m_szModelKey = sModelKey;
+	m_szModelKey = pModelData->szModelFileName;
 
+	Init_Model_Internal(m_pModelData, szTexturePath, iTimeScaleLayer, In_pNvClothModelDesc);
+}
+
+
+void CModel::Init_Model_Internal(shared_ptr<MODEL_DATA> pModelData, const string& szTexturePath, _uint iTimeScaleLayer, const NVCLOTH_MODEL_DESC* In_pNvClothModelDesc)
+{
+	
 	if (szTexturePath.empty())
 	{
 		char szDir[MAX_PATH];
@@ -486,7 +503,7 @@ void CModel::Init_Model_Internal(const char* sModelKey, const string& szTextureP
 		{
 			return pSour.lock()->Get_Depth() < pDest.lock()->Get_Depth();
 		});
-	Create_MeshContainers(In_NvClothFlag);
+	Create_MeshContainers(In_pNvClothModelDesc);
 	Create_Animations(iTimeScaleLayer);
 
 }
@@ -631,17 +648,28 @@ weak_ptr<CBoneNode> CModel::Find_BoneNode(const string& pBoneName)
 	return *iter;
 }
 
-void CModel::Create_MeshContainers(const _flag In_NvClothFlag)
+void CModel::Create_MeshContainers(const NVCLOTH_MODEL_DESC* In_pNvClothModelDesc)
 {
 	m_iNumMeshContainers = m_pModelData->iNumMeshs;
 
-	_bool bNvCloth;
+	
+
 	for (_uint i = 0; i < m_iNumMeshContainers; ++i)
 	{
-		bNvCloth = In_NvClothFlag & (1 << i);
+		const NVCLOTH_MESH_DESC* pMeshDesc = nullptr;
+
+		if (In_pNvClothModelDesc)
+		{
+			auto iter = In_pNvClothModelDesc->NvClothMeshDescs.find(i);
+
+			if (In_pNvClothModelDesc->NvClothMeshDescs.end() != iter)
+			{
+				pMeshDesc = &(*iter).second;
+			}
+		}
 
 		weak_ptr<CMeshContainer> pMeshContainer = m_pOwner.lock()->Add_Component<CMeshContainer>();
-		pMeshContainer.lock()->Init_Mesh(m_pModelData->Mesh_Datas[i], Cast<CModel>(m_this), bNvCloth);
+		pMeshContainer.lock()->Init_Mesh(m_pModelData->Mesh_Datas[i], Cast<CModel>(m_this), pMeshDesc);
 		m_MeshContainers.push_back(pMeshContainer);
 	}
 }

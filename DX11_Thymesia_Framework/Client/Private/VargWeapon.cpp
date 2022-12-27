@@ -22,7 +22,10 @@ HRESULT CVargWeapon::Initialize(void* pArg)
 	ZeroMemory(&TrailDesc, sizeof(TRAIL_DESC));
 
 
-	m_pModelCom.lock()->Init_Model("Boss_VargWeapon", "", (_uint)TIMESCALE_LAYER::MONSTER, (_flag)FLAG_INDEX::_1);
+	CModel::NVCLOTH_MODEL_DESC ClothDesc;
+	Preset::NvClothMesh::VargWeaponSetting(ClothDesc);
+
+	m_pModelCom.lock()->Init_Model("Boss_VargWeapon", "", (_uint)TIMESCALE_LAYER::MONSTER, &ClothDesc);
 	m_iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 
 	TrailDesc.iMaxCnt = 100;
@@ -81,7 +84,41 @@ void CVargWeapon::Thread_PreBeforeRender(_float fTimeDelta)
 
 HRESULT CVargWeapon::Render(ID3D11DeviceContext* pDeviceContext)
 {
+	SetUp_ShaderResource();
+
 	__super::Render(pDeviceContext);
+
+	_int iPassIndex;
+	m_iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
+	if (m_bWeaponRenderOnOff)
+	{
+		for (_uint i(0); i < m_iNumMeshContainers; ++i)
+		{
+			if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+			{
+
+			}
+
+			if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+			{
+				iPassIndex = 11;
+			}
+			else
+			{
+				iPassIndex = 3;
+
+				if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+				{
+					iPassIndex = 3;
+				}
+				else
+					iPassIndex = 7;
+			}
+
+			m_pShaderCom.lock()->Begin(iPassIndex, pDeviceContext);
+			m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
+		}
+	}
 	return S_OK;
 }
 

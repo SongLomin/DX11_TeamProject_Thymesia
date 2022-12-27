@@ -49,6 +49,12 @@ private:
 public:
     void       Test_BindSkill();
 
+
+private:
+    void        WriteTalentFromJson(json& Out_Json);
+    void        LoadTalentFromJson(const json& In_Json);
+
+
 private:
     LIGHTDESC   m_LightDesc;
 

@@ -228,6 +228,7 @@ void CJoker::OnEventMessage(_uint iArg)
 	{
 		Set_Enable(true);
 	}
+
 	if ((_uint)EVENT_TYPE::ON_GROGGY == iArg)
 	{
 		Change_State<CJokerState_Stun_Start>();

@@ -110,6 +110,13 @@ void CUI_ShuffleIcon::Start_Lerp(_float fLerpTime)
 		bind(&CUI_ShuffleIcon::Call_TransformLerpEnd, this);
 }
 
+void CUI_ShuffleIcon::Start_SwapLerp(_float2 TargetPos, _float fLerpTime)
+{
+	m_pEasingTransform.lock()->Set_Lerp(GetPos(), TargetPos, fLerpTime, EASING_TYPE::QUAD_IN,
+		CEasingComponent::ONCE, true);
+
+}
+
 void CUI_ShuffleIcon::Call_TransformLerpEnd()
 {
 	m_pEasingScale.lock()->Set_Lerp(64.f, 84.f, 0.3f, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE);

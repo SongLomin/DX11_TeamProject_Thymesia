@@ -25,8 +25,9 @@ HRESULT CNvCloth_Manager::Initialize()
 
 	InitializeNvCloth(m_pAllocatorCallback, m_pErrorCallback, m_pAssertHander, nullptr);
 
-	m_pFactory = NvClothCreateFactoryCPU();
-	//m_pFactory = NvClothCreateFactoryDX11(m_pGraphicsContextManager);
+	//m_pFactory = NvClothCreateFactoryCPU();
+	//m_pFactory = NvClothCreateFactoryCUDA();
+	m_pFactory = NvClothCreateFactoryDX11(m_pGraphicsContextManager);
 	//We need to release all DX objects after destroying the factory.
 	
 	m_pSolver = m_pFactory->createSolver();

@@ -264,6 +264,9 @@ void CEffect_Rect::SetUp_ShaderResource()
 	// For. Sprite
 	if (Check_Option(EFFECTPARTICLE_DESC::Option6::Is_Sprite))
 	{
+		_bool bDiffMask(m_tEffectParticleDesc.byOption6 & _byte(EFFECTPARTICLE_DESC::Option6::Sprite_UseMask));
+		m_pShaderCom.lock()->Set_RawValue("g_bUseMask", &bDiffMask, sizeof(_bool));
+
 		m_pShaderCom.lock()->Set_RawValue("g_iNumFrameX", &m_tEffectParticleDesc.iNumFrameX, sizeof(_uint));
 		m_pShaderCom.lock()->Set_RawValue("g_iNumFrameY", &m_tEffectParticleDesc.iNumFrameY, sizeof(_uint));
 	}
@@ -929,14 +932,13 @@ void CEffect_Rect::Play(_float fTimeDelta)
 		return;
 	}
 
-	_float	fFrameTime(HZ_144);
 	_int	iTickCount(0);
 	m_fPreFrame += fTimeDelta;
 
-	while (fFrameTime <= m_fPreFrame)
+	while (HZ_144 <= m_fPreFrame)
 	{
 		++iTickCount;
-		m_fPreFrame -= fFrameTime;
+		m_fPreFrame -= HZ_144;
 	}
 
 	_matrix BoneMatrix(XMMatrixIdentity());
@@ -986,22 +988,23 @@ void CEffect_Rect::Play(_float fTimeDelta)
 
 				continue;
 			}
+
 			m_tParticleDescs[i].fCurrentLifeTime += fTimeDelta;
 		}
 
 
 		for (_int x(0); x < iTickCount; ++x)
 		{
-			Play_Internal(i, fFrameTime, BoneMatrix);
+			Play_Internal(i, HZ_144, BoneMatrix);
 		}
 	}
 
 	for (_int x(0); x < iTickCount; ++x)
 	{
-		Update_ParticleUV(fFrameTime);
+		Update_ParticleUV(HZ_144);
 
 		if (Check_Option(EFFECTPARTICLE_DESC::Option6::Use_Glow))
-			Update_ParticleGlowColor(fFrameTime);
+			Update_ParticleGlowColor(HZ_144);
 	}
 }
 
@@ -1165,8 +1168,6 @@ void CEffect_Rect::Generate_RandomOriginalParticleDesc()
 
 		if (Check_Option(EFFECTPARTICLE_DESC::Option3::Ratio_Scale))
 			m_tOriginalParticleDescs[i].fTargetYScaleRatio = SMath::fRandom(m_tEffectParticleDesc.fMinYScaleRatio, m_tEffectParticleDesc.fMaxYScaleRatio);
-
-
 	}
 }
 
@@ -2662,6 +2663,7 @@ void CEffect_Rect::Tool_Sprite()
 {
 	if (ImGui::TreeNode("Sprite Option"))
 	{
+		Tool_ToggleOption("On : Diffuse, Off : Mask", "#Sprite_DiffMask", EFFECTPARTICLE_DESC::Option6::Sprite_UseMask);
 		Tool_ToggleOption("Loop Sprite", "##Loop_Sprite", EFFECTPARTICLE_DESC::Option6::Loop_Sprite);
 		Tool_ToggleOption("Stop at End", "##Sprite_StopAtEnd", EFFECTPARTICLE_DESC::Option6::Sprite_StopAtEnd);
 		ImGui::NewLine();

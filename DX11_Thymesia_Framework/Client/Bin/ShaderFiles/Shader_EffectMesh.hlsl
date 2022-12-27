@@ -24,6 +24,8 @@ float3 g_vDissolveStartPos;
 float3 g_vDissolveDir;
 float4 g_vShaderFlag;
 
+float4 g_vRimLightColor;
+
 /**
 * Wrap Weight for Textures
 *  x : Diff, y : Noise, z : Mask, w : None

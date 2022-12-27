@@ -17,9 +17,9 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
             shared_ptr<BONE_DATA> pBoneData = make_shared<BONE_DATA>();
             pBoneData->Make_BoneData(In_pAiMesh->mBones[i]);
             Bone_Datas.push_back(pBoneData);
-        }      
+        }
 
-        pAnimVertices = shared_ptr<VTXANIM[]>(new VTXANIM[iNumVertices]);
+        pAnimVertices = shared_ptr<VTXANIM[]>(DBG_NEW VTXANIM[iNumVertices]);
 
         for (_uint i(0); i < iNumVertices; ++i)
         {
@@ -77,8 +77,8 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
     // 애니메이션이 아님
     else if (MODEL_TYPE::NONANIM == In_eModelType)
     {
-        pVertices = shared_ptr<VTXMODEL[]>(new VTXMODEL[iNumVertices]);
-        pPosVertices = shared_ptr<VTXPOS[]>(new VTXPOS[iNumVertices]);
+        pVertices = shared_ptr<VTXMODEL[]>(DBG_NEW VTXMODEL[iNumVertices]);
+        pPosVertices = shared_ptr<VTXPOS[]>(DBG_NEW VTXPOS[iNumVertices]);
 
         for (_uint i(0); i < iNumVertices; ++i)
         {
@@ -88,7 +88,7 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
 
             memcpy(&pVertices[i].vNormal, &In_pAiMesh->mNormals[i], sizeof(_float3));
             XMStoreFloat3(&pVertices[i].vNormal, XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&pVertices[i].vNormal), In_TransformMatrix)));
-            
+
             if (In_pAiMesh->mTextureCoords[0])
                 memcpy(&pVertices[i].vTexUV, &In_pAiMesh->mTextureCoords[0][i], sizeof(_float2));
             else
@@ -106,7 +106,7 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
 
     else if (MODEL_TYPE::NAVI == In_eModelType)
     {
-        pPosVertices = shared_ptr<VTXPOS[]>(new VTXPOS[iNumVertices]);
+        pPosVertices = shared_ptr<VTXPOS[]>(DBG_NEW VTXPOS[iNumVertices]);
 
         for (_uint i(0); i < iNumVertices; ++i)
         {
@@ -121,7 +121,7 @@ HRESULT MESH_DATA::Make_MeshData(const MODEL_TYPE& In_eModelType, aiMesh* In_pAi
         DEBUG_ASSERT;
     }
 
-    pIndices = shared_ptr<FACEINDICES32[]>(new FACEINDICES32[iNumFaces]);
+    pIndices = shared_ptr<FACEINDICES32[]>(DBG_NEW FACEINDICES32[iNumFaces]);
 
     for (_uint i(0); i < iNumFaces; ++i)
     {
@@ -143,7 +143,7 @@ void MESH_DATA::Bake_Binary(ofstream& os)
     write_typed_data(os, iNumFaces);
     write_typed_data(os, iNumBones);
     write_typed_data(os, iMaterialIndex);
-    
+
     if (MODEL_TYPE::ANIM == eModelType)
     {
         for (_uint i(0); i < iNumBones; i++)
@@ -153,7 +153,7 @@ void MESH_DATA::Bake_Binary(ofstream& os)
             write_typed_data(os, pAnimVertices[i]);
     }
 
-    else if(MODEL_TYPE::NONANIM == eModelType)
+    else if (MODEL_TYPE::NONANIM == eModelType)
     {
         for (_uint i(0); i < iNumVertices; ++i)
             write_typed_data(os, pVertices[i]);
@@ -198,7 +198,7 @@ void MESH_DATA::Load_FromBinary(ifstream& is)
             Bone_Datas.push_back(pBoneData);
         }
 
-        pAnimVertices = shared_ptr<VTXANIM[]>(new VTXANIM[iNumVertices]);
+        pAnimVertices = shared_ptr<VTXANIM[]>(DBG_NEW VTXANIM[iNumVertices]);
 
         for (_uint i(0); i < iNumVertices; ++i)
         {
@@ -209,8 +209,8 @@ void MESH_DATA::Load_FromBinary(ifstream& is)
 
     else if (MODEL_TYPE::NONANIM == eModelType)
     {
-        pVertices = shared_ptr<VTXMODEL[]>(new VTXMODEL[iNumVertices]);
-        pPosVertices = shared_ptr<VTXPOS[]>(new VTXPOS[iNumVertices]);
+        pVertices = shared_ptr<VTXMODEL[]>(DBG_NEW VTXMODEL[iNumVertices]);
+        pPosVertices = shared_ptr<VTXPOS[]>(DBG_NEW VTXPOS[iNumVertices]);
 
         for (_uint i(0); i < iNumVertices; ++i)
         {
@@ -221,7 +221,7 @@ void MESH_DATA::Load_FromBinary(ifstream& is)
 
     else if (MODEL_TYPE::NAVI == eModelType)
     {
-        pPosVertices = shared_ptr<VTXPOS[]>(new VTXPOS[iNumVertices]);
+        pPosVertices = shared_ptr<VTXPOS[]>(DBG_NEW VTXPOS[iNumVertices]);
 
         for (_uint i(0); i < iNumVertices; ++i)
         {
@@ -231,7 +231,7 @@ void MESH_DATA::Load_FromBinary(ifstream& is)
 
     else if (MODEL_TYPE::GROUND == eModelType)
     {
-        pGroundVertices = shared_ptr<VTXGROUND[]>(new VTXGROUND[iNumVertices]);
+        pGroundVertices = shared_ptr<VTXGROUND[]>(DBG_NEW VTXGROUND[iNumVertices]);
 
         for (_uint i(0); i < iNumVertices; ++i)
         {
@@ -239,7 +239,7 @@ void MESH_DATA::Load_FromBinary(ifstream& is)
         }
     }
 
-    pIndices = shared_ptr<FACEINDICES32[]>(new FACEINDICES32[iNumFaces]);
+    pIndices = shared_ptr<FACEINDICES32[]>(DBG_NEW FACEINDICES32[iNumFaces]);
 
     for (_uint i(0); i < iNumFaces; ++i)
     {

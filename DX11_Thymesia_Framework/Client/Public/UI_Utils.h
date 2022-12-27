@@ -16,6 +16,9 @@ public:
 
 	static weak_ptr<class CUI> Get_BaseToUI(weak_ptr<CBase> pBase);
 
+	static _float2		Get_BezierCurve(_float2 fStart, _float2 fTarget, _float fCustomWeight);
+
+
 };
 
 END

@@ -58,6 +58,8 @@ private:
                                               
     _int                m_iPickingIndex       = 0;
     _uint               m_iOption             = 0;
+    _int                m_iSelect_Find        = 0;
+    _uint               m_iSize               = 0;
     _float4x4           m_PickingMatrix;
     MESH_VTX_INFO	    m_tPickingVtxInfo;
 

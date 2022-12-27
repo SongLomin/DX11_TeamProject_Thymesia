@@ -39,6 +39,8 @@ private:
 	_bool  m_bWalkCheck = false;
 	_uint  m_iGardnerAtkIndex = 0;
 
+	virtual void OnEventMessage(_uint iArg) override;
+
 private:
 	void Call_AnimationEnd();
 protected:

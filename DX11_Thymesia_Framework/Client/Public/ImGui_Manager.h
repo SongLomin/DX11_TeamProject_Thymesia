@@ -28,6 +28,7 @@ public:
 	{
 		SCENE,
 		EFFECT,
+		MODEL,
 		TYPE_END
 	};
 
@@ -41,9 +42,13 @@ public:
 public:
 	void Save_EffectJson();
 
+public:
+	_bool Open_File(string& Out_szSelectedFile, string& Out_szFilePath);
+
 private:
 	void Init_SceneEditer();
 	void Init_EffectEditer();
+	void Init_ModelEditer();
 
 	void Release_CurrentEditer();
 
@@ -51,6 +56,8 @@ private:
 	void Load_FromJson(const string& In_szPath);
 
 	void Toggle_PhysXInfo();
+
+	
 
 public:
 	vector<shared_ptr<CImGui_Window>> m_arrWindows;

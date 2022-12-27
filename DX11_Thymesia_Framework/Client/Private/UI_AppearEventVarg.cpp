@@ -84,14 +84,14 @@ void CUI_AppearEventVarg::CreateUI()
 {
     m_pSliceTop = ADD_STATIC_CUSTOMUI;
     m_pSliceTop.lock()->Set_Texture("Varg_Appear_SliceTop");
-    m_pSliceTop.lock()->Set_Depth(0.3);
+    m_pSliceTop.lock()->Set_Depth(0.3f);
     m_pSliceTop.lock()->Add_Component<CEasingComponent_Transform>();
     m_pSliceTop.lock()->Add_Component<CEasingComponent_Alpha>();
 
 
     m_pSliceBottom = ADD_STATIC_CUSTOMUI;
     m_pSliceBottom.lock()->Set_Texture("Varg_Appear_SliceBottom");
-    m_pSliceBottom.lock()->Set_Depth(0.3);
+    m_pSliceBottom.lock()->Set_Depth(0.3f);
     m_pSliceBottom.lock()->Add_Component<CEasingComponent_Transform>();
     m_pSliceBottom.lock()->Add_Component<CEasingComponent_Alpha>();
 
@@ -99,14 +99,14 @@ void CUI_AppearEventVarg::CreateUI()
 
     m_pSliceTopBG = ADD_STATIC_CUSTOMUI;
     m_pSliceTopBG.lock()->Set_Texture("Varg_Appear_SliceTop_BG");
-    m_pSliceTopBG.lock()->Set_Depth(0.35);
+    m_pSliceTopBG.lock()->Set_Depth(0.35f);
     m_pSliceTopBG.lock()->Add_Component<CEasingComponent_Transform>();
     m_pSliceTopBG.lock()->Add_Component<CEasingComponent_Alpha>();
 
 
     m_pSliceBottomBG = ADD_STATIC_CUSTOMUI;
     m_pSliceBottomBG.lock()->Set_Texture("Varg_Appear_SliceBottom_BG");
-    m_pSliceBottomBG.lock()->Set_Depth(0.35);
+    m_pSliceBottomBG.lock()->Set_Depth(0.35f);
     m_pSliceBottomBG.lock()->Add_Component<CEasingComponent_Transform>();
     m_pSliceBottomBG.lock()->Add_Component<CEasingComponent_Alpha>();
      

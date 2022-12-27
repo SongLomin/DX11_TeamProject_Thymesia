@@ -13,6 +13,8 @@
 //#include "DamageUI.h"
 #include "Status_Player.h"
 #include "UI_DamageFont.h"
+#include "PhysXCharacterController.h"
+
 GAMECLASS_C(CNorMonsterStateBase)
 
 _bool CNorMonsterStateBase::Check_RequirementAttackState()
@@ -104,6 +106,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 		//pAttackArea.lock()->Get_ParentObject().lock()->
 
 		CStatus_Player::PLAYERDESC tPlayerDesc;
+		PxControllerFilters Filters;
 
 		pAttackArea.lock()->Get_ParentObject().lock()->Get_ComponentByType<CStatus>().lock()
 			->Get_Desc(&tPlayerDesc);
@@ -113,6 +116,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 		//m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
 		_vector vViewPosition;
 		_matrix ViewProjMatrix;
+		_matrix vResultOtherWorldMatrix;
 
 		vViewPosition = pMyCollider.lock()->Get_Owner().lock()->Get_Transform()->Get_Position();
 			
@@ -164,6 +168,30 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 			pDamageFont.lock()->SetUp_DamageFont((_uint)fMagnifiedDamage, vHitPos, eAttackOption);
 			break;
 		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
+			break;
+		case Client::ATTACK_OPTION::KNOCKBACK:
+		
+			if (In_eHitType == HIT_TYPE::LEFT_HIT)
+			{
+				Get_OwnerMonster()->Change_State<CNorMonState_HurtL>();
+			}
+
+			else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
+			{
+
+				Get_OwnerMonster()->Change_State<CNorMonState_HurtR>();
+			}
+			else if (In_eHitType == HIT_TYPE::WARNING)
+			{
+				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_STEALCORVUS);
+				//_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
+				//vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, 0.f, 0.f));
+				//pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
+				//	vResultOtherWorldMatrix.r[3],
+				//	GAMEINSTANCE->Get_DeltaTime(),
+				//	Filters);
+				//pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
+			}
 			break;
 		}
 
