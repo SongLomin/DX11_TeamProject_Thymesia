@@ -97,6 +97,14 @@ HRESULT CMonster::Render(ID3D11DeviceContext* pDeviceContext)
 
     m_pShaderCom.lock()->Set_RawValue("g_vDissolveDir", &vDissolveDir, sizeof(_float3));
     m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &m_fDissolveAmount, sizeof(_float));
+
+    _float4 vRimLightDesc = { 0.f, 0.f, 0.f, 0.f };
+    vRimLightDesc.x = m_vRimLightColor.x;
+    vRimLightDesc.y = m_vRimLightColor.y;
+    vRimLightDesc.z = m_vRimLightColor.z;
+    vRimLightDesc.w = m_fRimLightPower;
+
+    m_pShaderCom.lock()->Set_RawValue("g_vRimLightColor", &vRimLightDesc, sizeof(_float4));
  
     __super::Render(pDeviceContext);
 

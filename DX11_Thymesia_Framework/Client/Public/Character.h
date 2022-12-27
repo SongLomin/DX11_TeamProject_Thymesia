@@ -45,6 +45,7 @@ public:
     void Set_SuperArmor(const _bool In_bSuperArmor) { m_bSuperArmor = In_bSuperArmor; }
     _bool Get_SuperArmor() const { return m_bSuperArmor; }
     void Set_PassIndex(const _uint In_iPassIndex) { m_iPassIndex = In_iPassIndex; }
+    void Set_RimLightDesc(const _float In_fLightTime, const _float3 In_vColor, const _float In_fPower);
 
 public:
     virtual void Enable_Weapons(const _bool In_bEnable) {};
@@ -77,6 +78,8 @@ protected:
 
     string                  m_szClientComponentPath = "../Bin/ClientComponentData/";
 
+    _float m_fRimLightTime = 1.f;
+    _float m_fRimLightTimeAcc = 0.f;
     _float m_fRimLightPower = 0.f;
     _float3 m_vRimLightColor = { 0.f,0.f,0.f };
 
