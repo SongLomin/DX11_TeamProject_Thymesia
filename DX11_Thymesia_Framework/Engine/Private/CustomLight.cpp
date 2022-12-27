@@ -45,7 +45,6 @@ HRESULT CCustomLight::Render(weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect>
 		if (!IsInFrustum)
 			return E_FAIL;*/
 		
-
 		iPassIndex = 2;
 
 		if (FAILED(pShader.lock()->Set_RawValue("g_vLightPos", &m_LightDesc.vPosition, sizeof(_float4))))
@@ -57,10 +56,10 @@ HRESULT CCustomLight::Render(weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect>
 
 	else if (LIGHTDESC::TYPE_SPOTLIGHT == m_LightDesc.eActorType)
 	{
-		//_bool IsInFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(XMLoadFloat4(&m_LightDesc.vPosition), m_LightDesc.fRange);
+		/*_bool IsInFrustum = GAMEINSTANCE->isIn_Frustum_InWorldSpace(XMLoadFloat4(&m_LightDesc.vPosition), m_LightDesc.fRange);
 
-		//if (!IsInFrustum)
-		//	return E_FAIL;
+		if (!IsInFrustum)
+			return E_FAIL;*/
 
 		iPassIndex = 9;
 		

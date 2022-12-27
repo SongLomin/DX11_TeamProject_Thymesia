@@ -31,7 +31,6 @@ HRESULT CLevel_Edit::Initialize()
 	XMStoreFloat2(&m_TextInfo_FPS.vScale, XMVectorSet(0.55f, 0.55f, 0.f, 0.f));
 #endif // _RENDER_FPS_
 
-	GAMEINSTANCE->Set_FogDesc(_float4(0.f, 0.f, 1.f, 1.f), 500.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 
 	return S_OK;

@@ -81,6 +81,7 @@ HRESULT CInteraction_CheckPoint::Render(ID3D11DeviceContext* pDeviceContext)
 {
     return __super::Render(pDeviceContext);
 }
+
 void CInteraction_CheckPoint::OnEventMessage(_uint iArg)
 {
     switch ((EVENT_TYPE)iArg)
