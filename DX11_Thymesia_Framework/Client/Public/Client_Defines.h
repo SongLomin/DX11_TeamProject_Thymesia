@@ -1,5 +1,5 @@
 #pragma once
-// #define _EFFECT_TOOL_
+#define _EFFECT_TOOL_
 
 
 #include "Client_Structs.h"
@@ -161,7 +161,7 @@
 #undef _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
 #undef _JOJO_EFFECTS_
-#define _ANIMATION_TOOL_WEAPON_
+// #define _ANIMATION_TOOL_WEAPON_
 // #define _BAKE_EFFECTMESH_FBX_
 #pragma endregion // Effects
 
