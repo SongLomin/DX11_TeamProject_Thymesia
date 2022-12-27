@@ -6,6 +6,7 @@
 #include "Renderer.h"
 #include "Model.h"
 #include "PhysXCollider.h"
+#include "Collider.h"
 #include "Client_Presets.h"
 
 #include "GameInstance.h"
@@ -24,6 +25,8 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
+	m_pColliderCom = Add_Component<CCollider>();
+
 	m_pShaderCom.lock()->Set_ShaderInfo
 	(
 		TEXT("Shader_VtxModel"),
@@ -41,6 +44,9 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	m_tLightDesc.vLightFlag = { 1.f, 1.f, 1.f, 1.f };
 	m_tLightDesc.fRange     = 5.f;
 	m_tLightDesc.fIntensity = 1.f;
+
+	_float fDefaultDesc[4] = { m_tLightDesc.fRange, 0.f, 0.f, 0.f };
+	SetUpColliderDesc(fDefaultDesc);
 
 	m_eRenderGroup = RENDERGROUP::RENDER_NONALPHABLEND;
 
@@ -81,6 +87,10 @@ void CLight_Prop::LateTick(_float fTimeDelta)
 
 void CLight_Prop::Before_Render(_float fTimeDelta)
 {
+#ifdef _DEBUG
+	m_pColliderCom.lock()->Render_IgnoreDebugCheck();
+#endif
+
 	if (!m_bRendering)
 		return;
 
@@ -215,6 +225,8 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 		{
 			XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_Position() + XMLoadFloat3(&m_vOffset));
 			GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+
+			m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 		}
 		break;
 
@@ -237,10 +249,10 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 				if (ImGui::InputText("Effect", szEffectTag, MAX_PATH))
 					m_szEffectTag = szEffectTag;
 
-				ImGui::InputInt("Section Index", &m_iSectionIndex);
-				ImGui::InputFloat("DelayTime", &m_fDelayTime);
+				ImGui::InputInt("Section Index"   , &m_iSectionIndex);
+				ImGui::InputFloat("DelayTime"     , &m_fDelayTime);
 				ImGui::InputFloat("Intensity Time", &m_fIntensityTime);
-				ImGui::InputFloat("Disable Time", &m_fDisableTime);
+				ImGui::InputFloat("Disable Time"  , &m_fDisableTime);
 
 				ImGui::Separator();
 
@@ -274,6 +286,11 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 						{
 							m_fTargetIntensity = m_tLightDesc.fIntensity;
 							m_fTargetRange     = m_tLightDesc.fRange;
+
+							COLLIDERDESC ColliderDesc = m_pColliderCom.lock()->Get_ColliderDesc();
+							ColliderDesc.vScale.x = m_fTargetRange;
+
+							m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
 						}
 					}
 					break;
@@ -356,6 +373,19 @@ void CLight_Prop::Act_LightTurnOffEvent(_float fTimeDelta, _bool& Out_End)
 	}
 
 	GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+}
+
+void CLight_Prop::SetUpColliderDesc(_float* _pColliderDesc)
+{
+	COLLIDERDESC ColliderDesc;
+    ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
+
+    ColliderDesc.iLayer       = (_uint)COLLISION_LAYER::TRIGGER;
+    ColliderDesc.vScale       = _float3(_pColliderDesc[0], 0.f, 0.f);
+    ColliderDesc.vTranslation = _float3(_pColliderDesc[1], _pColliderDesc[2], _pColliderDesc[3]);
+
+    m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
+    m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 }
 
 void CLight_Prop::OnDestroy()

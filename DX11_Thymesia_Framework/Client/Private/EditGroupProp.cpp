@@ -232,6 +232,9 @@ void CEditGroupProp::View_CreateProp()
 		"CastleGate"
 	};
 
+	ImGui::Text(string(string(" Size  : ") + to_string(m_iSize)).c_str());
+	ImGui::Text("");
+
 	static _int iSelect_PropType = 0;
 	static _int iSelect_PropName = 0;
 
@@ -456,6 +459,12 @@ void    CEditGroupProp::View_PickProp()
 
 	for (auto& iter : iter_prop->second)
 	{
+		if ((0 != m_iSelect_Find) && (string::npos == iter.TypeName.find(items_FindType[m_iSelect_Find])))
+		{
+			++iIndex;
+			continue;
+		}
+
 		weak_ptr<CTransform> pTransform = iter.pInstance.lock()->Get_Component<CTransform>();
 		weak_ptr<CModel>     pModel     = iter.pInstance.lock()->Get_Component<CModel>();
 		weak_ptr<CCollider>  pCollider  = iter.pInstance.lock()->Get_Component<CCollider>();
@@ -599,7 +608,9 @@ void CEditGroupProp::View_EditProp()
 	if (iter_prop->second.empty() || 0 > m_iPickingIndex || iter_prop->second.size() <= m_iPickingIndex)
 		return;
 
-	ImGui::Text(string(string(" Size  : ") + to_string((_uint)iter_prop->second.size())).c_str());
+	m_iSize = (_uint)iter_prop->second.size();
+
+	ImGui::Text(string(string(" Size  : ") + to_string(m_iSize)).c_str());
 	ImGui::Text(string(string(" Index : ") + to_string(m_iPickingIndex)).c_str());
 
 	ImGui::Combo("Opt", &m_iSelect_Find, items_FindType, IM_ARRAYSIZE(items_FindType));
@@ -614,11 +625,8 @@ void CEditGroupProp::View_EditProp()
 
 				string szTag = "( " + to_string(i) + " )  " + iter_prop->second[i].TypeName;
 
-				if (0 != m_iSelect_Find)
-				{
-					if (string::npos == iter_prop->second[i].TypeName.find(items_FindType[m_iSelect_Find]))
-						continue;
-				}
+				if ((0 != m_iSelect_Find) && (string::npos == iter_prop->second[i].TypeName.find(items_FindType[m_iSelect_Find])))
+					continue;
 
 				if (ImGui::Selectable(szTag.c_str(), is_selected))
 				{

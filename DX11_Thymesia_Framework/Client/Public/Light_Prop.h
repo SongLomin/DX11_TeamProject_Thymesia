@@ -4,7 +4,8 @@
 
 BEGIN(Engine)
 
-class CPhysXCollider;
+class CPhysXCollider; 
+class CCollider;
 
 END
 
@@ -56,6 +57,13 @@ private:
     _float      m_fDisableTime     = 0.5f;
 
     FDelegate<_float, _bool&>   Callback_ActUpdate;
+
+#ifdef _DEBUG
+    weak_ptr<CCollider>   m_pColliderCom;
+#endif
+
+private:
+    void    SetUpColliderDesc(_float* _pColliderDesc);
 
 private:
     virtual void OnDestroy() override;
