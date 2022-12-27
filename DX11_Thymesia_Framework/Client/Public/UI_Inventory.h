@@ -69,11 +69,6 @@ private:
 
 
 private:
-    void                    Start_Shuffle();               
-    void                    End_Shuffle();
-
-
-private:
     virtual void            OnEnable(void* pArg) override;
     virtual void            OnDisable() override;
 

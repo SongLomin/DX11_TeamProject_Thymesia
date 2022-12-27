@@ -170,6 +170,7 @@ AnimTargetPoint
 camera
 ik_head
 SK_C_BossBat_NEW_V1_$AssimpFbx$_PreRotation
+SK_C_BossBat_NEW_V1_$AssimpFbx$_Scaling
 SK_C_BossBat_NEW_V1
 0[SK_C_BossBat_NEW_V1]. 4952
 1[SK_C_BossBat_NEW_V1]. 4341

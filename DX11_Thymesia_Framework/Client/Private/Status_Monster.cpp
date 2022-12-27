@@ -106,12 +106,6 @@ void CStatus_Monster::Full_Recovery()
 	Callback_Full_Recovery();
 }
 
-void CStatus_Monster::Full_Recovery()
-{
-	Init_StatusFromMonsterType(m_eMonsterType);
-	Callback_Full_Recovery();
-}
-
 void CStatus_Monster::Get_Desc(void* pOutDesc)
 {
 	MONSTERDESC* pMonsterDesc = (MONSTERDESC*)pOutDesc;

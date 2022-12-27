@@ -781,24 +781,6 @@ void  CGameManager::Registration_SectionEvent(_uint In_iSection, weak_ptr<CSecti
 
 }
 
-void  CGameManager::Registration_SectionEvent(_uint In_iSection, weak_ptr<CSection_Eventer> In_pSectionEvent)
-{
-	auto iter_find = m_SectionEventers.find(In_iSection);
-
-	if (iter_find == m_SectionEventers.end())
-	{
-		list<weak_ptr<CSection_Eventer>> ObjList;
-		ObjList.push_back(In_pSectionEvent);
-
-		m_SectionEventers[In_iSection] = ObjList;
-	}
-	else
-	{
-		iter_find->second.push_back(In_pSectionEvent);
-	}
-
-}
-
 void CGameManager::Registration_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj)
 {
 	auto iter_find = m_SectionObejects.find(In_iSection);

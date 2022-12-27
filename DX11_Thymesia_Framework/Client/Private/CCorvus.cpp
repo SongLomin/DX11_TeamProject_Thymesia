@@ -623,8 +623,6 @@ void CCorvus::OnEventMessage(_uint iArg)
 		Change_State<CCorvusState_ClawPlunderAttack>();
 	}
 
-	}
-
 }
 
 void CCorvus::Free()

@@ -106,6 +106,7 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 
 	GET_SINGLE(CThread_Manager)->Enqueue_Job(bind(&CCollision_Manager::Tick, m_pCollision_Manager));
 	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 	//m_pTimer_Manager->Tick();
 
 
