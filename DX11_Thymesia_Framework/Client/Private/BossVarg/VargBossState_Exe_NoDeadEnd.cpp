@@ -117,6 +117,16 @@ void CVargBossState_Exe_NoDeadEnd::Call_AnimationEnd()
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_SPA_Roar_Getup>(0.05f);
 }
 
+void CVargBossState_Exe_NoDeadEnd::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		m_bDeadChoice = false;
+	}
+}
+
 void CVargBossState_Exe_NoDeadEnd::OnDestroy()
 {
 	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_Exe_NoDeadEnd::Call_AnimationEnd, this);

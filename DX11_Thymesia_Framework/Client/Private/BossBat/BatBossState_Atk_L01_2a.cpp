@@ -47,7 +47,7 @@ void CBatBossState_Atk_L01_2a::Tick(_float fTimeDelta)
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
 
 		PxControllerFilters Filters = Filters;
-		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);	
 	}
 
 	
@@ -58,11 +58,7 @@ void CBatBossState_Atk_L01_2a::Tick(_float fTimeDelta)
 		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * -fTurnValue);
 	}
 	
-	if (m_bAttackLookAtLimit)
-	{
-		TurnAttack(fTimeDelta);
-	}
-	
+
 	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -125,7 +121,7 @@ void CBatBossState_Atk_L01_2a::Call_AnimationEnd()
 		return;
 
 
-	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_AttackCount(1);
+	Get_Owner().lock()->Get_Component<CBatBossState_AttackIdle>().lock()->Set_AttackCount(1);
 	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Idle>(0.05f);
 }
 
@@ -154,18 +150,14 @@ _bool CBatBossState_Atk_L01_2a::Check_AndChangeNextState()
 		m_bOne = false;
 	}
 
-	if (ComputeAngleWithPlayer() > 0.98f)
-	{
-		Rotation_TargetToLookDir();
-		m_bAttackLookAtLimit = false;
-	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 144)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 144 &&
+		m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() < 288)
 	{
 		m_bTurnTuning = true;
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 288)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 288)
 	{
 		m_bTurnTuning = false;
 	}

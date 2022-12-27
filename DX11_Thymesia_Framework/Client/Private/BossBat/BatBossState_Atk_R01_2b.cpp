@@ -56,7 +56,7 @@ void CBatBossState_Atk_R01_2b::Tick(_float fTimeDelta)
 
 	if (m_bTurnAttack)
 	{
-		_float fTurnValue = 0.2f / 1.66f;
+		_float fTurnValue = 0.14f / 0.383f;
 
 		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * 2.f);
 	}
@@ -118,7 +118,7 @@ void CBatBossState_Atk_R01_2b::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_AttackCount(1);
+	Get_Owner().lock()->Get_Component<CBatBossState_AttackIdle>().lock()->Set_AttackCount(1);
 	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Idle>(0.05f);
 }
 
@@ -147,13 +147,14 @@ _bool CBatBossState_Atk_R01_2b::Check_AndChangeNextState()
 		m_bOne = false;
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 90)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 72 &&
+		m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() < 95)
 	{
 		m_bTurnAttack = true;
 	}
 
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 190)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 93)
 	{
 		m_bTurnAttack = false;
 	}

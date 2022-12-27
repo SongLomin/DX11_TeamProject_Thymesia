@@ -104,7 +104,7 @@ void CBatBossState_JumpSmash_ForwardL::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_AttackCount(1);
+	Get_Owner().lock()->Get_Component<CBatBossState_AttackIdle>().lock()->Set_AttackCount(1);
 	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Idle>(0.05f);
 }
 
@@ -143,7 +143,7 @@ _bool CBatBossState_JumpSmash_ForwardL::Check_AndChangeNextState()
 	}
 
 
-	if (ComputeAngleWithPlayer() > 0.98f)
+	if (ComputeAngleWithPlayer() > 0.98f && m_bAttackLookAtLimit)
 	{
 		Rotation_TargetToLookDir();
 		m_bAttackLookAtLimit = false;

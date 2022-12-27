@@ -260,6 +260,7 @@
     </ClInclude>
     <ClInclude Include="..\Public\NodeData.h" />
     <ClInclude Include="..\Public\NvCloth_Manager.h" />
+    <ClInclude Include="..\Public\NvCloth_Structs.h" />
     <ClInclude Include="..\Public\Object_Manager.h" />
     <ClInclude Include="..\Public\PhysXCollider.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>

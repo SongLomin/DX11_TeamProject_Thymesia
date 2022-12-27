@@ -16,8 +16,8 @@
 #include "UI_PauseMenu.h"
 #include "UIManager.h"
 #include "UI_AppearEventVarg.h"
+#include "Monster.h"
 #include "Talent_Effects.h"
-
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -53,6 +53,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
 	//m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER, (_flag)FLAG_INDEX::_2);
+
 
 
 	// Corvus_SD_Ladder_Climb_R_UP_End_Reverse
@@ -449,6 +450,8 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_HurtFallDown);
 	ADD_STATE_MACRO(CCorvusState_HurtFallDownEnd);
 	ADD_STATE_MACRO(CCorvusState_KnockBack);
+	ADD_STATE_MACRO(CCorvusState_PS_VargSwordStart);
+
 
 
 
@@ -460,6 +463,7 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_Execution_Start);
 	ADD_STATE_MACRO(CCorvusState_Varg_Execution);
 	ADD_STATE_MACRO(CCorvusState_Execution_R_R);
+	ADD_STATE_MACRO(CCorvusState_Urd_Execution);
 
 #undef ADD_STATE_MACRO
 }
@@ -492,6 +496,10 @@ void CCorvus::Move_RootMotion_Internal()
 
 void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
+
+	__super::OnCollisionEnter(pMyCollider, pOtherCollider);
+
+
 	switch ((COLLISION_LAYER)pOtherCollider.lock()->Get_CollisionLayer())
 	{
 	case Client::COLLISION_LAYER::LADDER_UP:
@@ -516,7 +524,8 @@ void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 		break;
 	}
 
-	__super::OnCollisionEnter(pMyCollider,pOtherCollider);
+
+	
 }
 
 void CCorvus::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
@@ -551,6 +560,9 @@ void CCorvus::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 		m_CollisionObjectFlags &= !(_flag)COLISIONOBJECT_FLAG::ITEM;
 		break;
 	}
+
+	
+	
 }
 
 void CCorvus::OnBattleEnd()
@@ -597,8 +609,10 @@ void CCorvus::OnEventMessage(_uint iArg)
 		Change_State<CCorvusState_Execution_Start>();
 	}
 
-	if (EVENT_TYPE::ON_RESET_OBJ == (EVENT_TYPE)iArg)
+	if (EVENT_TYPE::ON_STEALCORVUS == (EVENT_TYPE)iArg)
 	{
+		Change_State<CCorvusState_ClawPlunderAttack>();
+	}
 
 	}
 

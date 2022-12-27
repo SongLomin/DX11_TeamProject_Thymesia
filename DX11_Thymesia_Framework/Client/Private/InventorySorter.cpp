@@ -15,6 +15,7 @@ HRESULT CInventorySorter::Initialize()
 {
 	m_fItemSlotSotringStartPos = { 148.f, 78.f };//Left Top
 
+
 	return S_OK;
 }
 
@@ -33,7 +34,7 @@ vector<weak_ptr<CUI_ItemSlot>> CInventorySorter::Sorting_Start(vector<weak_ptr<C
     switch (eAnimType)
     {
     case Client::CInventorySorter::SORTING_ANIMATION_TYPE::SORTING_ANIMATION_MOBILE:
-        SetPostionToSortedReadyItemSlots();
+	SetPostionToSortedReadyItemSlots();
         Start_Sort_TypeMobile(iSortType);
         Start_Animation_TypeMobile();
         break;
@@ -58,6 +59,7 @@ vector<weak_ptr<CUI_ItemSlot>> CInventorySorter::Sorting_Start(vector<weak_ptr<C
 
 void CInventorySorter::Call_OnEndTransformItemSlot()//뽑혀서 정렬되는 아이템 슬롯이 끝났을 때
 {
+
 
 }
 

@@ -30,21 +30,15 @@ void CUrdBossState_Idle::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_Urd.ao|Urd_Idle");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_Idle|BaseLayer");
 
-	//m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Idle::Call_AnimationEnd, this);
+	
 }
 
 void CUrdBossState_Idle::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 	
-	_matrix LocalMat = XMMatrixIdentity();
-	LocalMat *= XMMatrixRotationX(XMConvertToRadians(-90.f));
-	LocalMat *= XMMatrixRotationAxis(LocalMat.r[1], XMConvertToRadians(90.f));
-
-
-
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -52,8 +46,6 @@ void CUrdBossState_Idle::Tick(_float fTimeDelta)
 void CUrdBossState_Idle::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
-
-
 
 	Check_AndChangeNextState();
 }
@@ -64,6 +56,7 @@ void CUrdBossState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	
 	
 #ifdef _DEBUG
@@ -80,24 +73,8 @@ void CUrdBossState_Idle::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-
-
 }
 
-
-
-//void CUrdBossState_Idle::Call_AnimationEnd()
-//{
-//	if (!Get_Enable())
-//		return;
-//
-//	Get_OwnerCharacter().lock()->Change_State<CVargBossState_WalkF>(0.05f);
-//}
-//
-//void CUrdBossState_Idle::OnDestroy()
-//{
-//	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CUrdBossState_Idle::Call_AnimationEnd, this);
-//}
 
 void CUrdBossState_Idle::Free()
 {
@@ -109,8 +86,6 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
-
-
 
 
 

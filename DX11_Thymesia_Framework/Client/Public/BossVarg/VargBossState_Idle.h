@@ -37,7 +37,7 @@ private:
 	_uint    m_iBackCount = 0;
 
 private:
-	//void Call_AnimationEnd();
+	virtual void OnEventMessage(_uint iArg) override;
 protected:
 	//virtual void OnDestroy() override;
 	void Free();

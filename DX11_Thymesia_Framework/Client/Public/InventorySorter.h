@@ -45,6 +45,7 @@ private:
 	vector<weak_ptr<CUI_ItemSlot>> m_vecItemSlot;
 	list<weak_ptr<CUI_ShuffleIcon>> m_listShuffleIcon;
 
+
 	_float			m_fItemSlotOffset;
 	_float2			m_fItemSlotStartPos;
 	_float2			m_fItemSlotSotringStartPos;

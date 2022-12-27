@@ -1,9 +1,11 @@
 #pragma once
 // #define _EFFECT_TOOL_
 
+
 #include "Client_Structs.h"
 #include "Client_Presets.h"
 #include "Client_Enum.h"
+#include "NvCloth_Structs.h"
 
 //////////////// DEBUG MODE DEFINES ////////////////
 #ifdef _DEBUG
@@ -48,7 +50,7 @@
 
 #pragma region Boss Mobs
  #define _BOSS_VARG_
-// #define _BOSS_URD_
+// #define _BOSS_Armature|Armature|Urd_
 #pragma endregion // Boss Mobs
 
 #pragma region Normal Mobs
@@ -94,7 +96,7 @@
 
 #pragma region Boss Mobs
 #define _BOSS_VARG_
-// #define _BOSS_URD_
+// #define _BOSS_Armature|Armature|Urd_
 #pragma endregion // Boss Mobs
 
 #pragma region Normal Mobs
@@ -147,7 +149,7 @@
 
 #pragma region Boss Mobs
 #undef _BOSS_VARG_
-#undef _BOSS_URD_
+#undef _BOSS_Armature|Armature|Urd_
 #pragma endregion // Boss Mobs
 
 #pragma region Normal Mobs

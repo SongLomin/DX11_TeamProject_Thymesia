@@ -52,14 +52,14 @@ void CBatBossState_Atk_L01_1::Tick(_float fTimeDelta)
 
 	if (m_bAttackLookAtLimit)
 	{
-		TurnAttack(fTimeDelta);
+		TurnAttack(fTimeDelta * 0.7);
 	}
 
 	if (m_bTurnAttack)
 	{
 		_float fTurnValue = 0.2f / 0.33f;
 	
-		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue);
+		m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * 2.f);
 	}
 	
 	
@@ -131,52 +131,50 @@ _bool CBatBossState_Atk_L01_1::Check_AndChangeNextState()
 
 	_float fPToMDistance = Get_DistanceWithPlayer();
 
+	BATATTACK_DOTRESULT DotResult = BATATTACK_DOTRESULT::BATATTACK_DOTRESULT_END;
+
 	if (fPToMDistance <= 7.f && m_bOne)
 	{
 		m_bRootStop = false;
 		m_bOne = false;
 	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 180)
-	{
-		m_bTurnAttack = true;
-	}
-
-	if (ComputeAngleWithPlayer() > 0.98f)
+	if (ComputeAngleWithPlayer() > 0.98f && m_bAttackLookAtLimit)
 	{
 		Rotation_TargetToLookDir();
 		m_bAttackLookAtLimit = false;
 	}
-		
 
 
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 180 &&
+		m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() < 200)
+	{
+		m_bTurnAttack = true;
+	}
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 200)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 200)
 	{
 		m_bTurnAttack = false;
 	}
 
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 220)
-	{
-		int iRand = rand() % 2;
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 220)
+	{	
+		DotResult = (BATATTACK_DOTRESULT)Check_DotAttackState();
 
-		switch (iRand)
+		switch (DotResult)
 		{
-		case 0:
-		{
+		case Client::BATATTACK_DOTRESULT::MID:
 			Get_OwnerCharacter().lock()->Change_State<CBatBossState_Atk_L01_2b>(0.05f);
-			return true;
-		}
 			break;
-		case 1:
-		{
+		case Client::BATATTACK_DOTRESULT::RIGHT:
+			Get_OwnerCharacter().lock()->Change_State<CBatBossState_Atk_R01_2a>(0.05f);
+			break;
+		case Client::BATATTACK_DOTRESULT::LEFT:
 			Get_OwnerCharacter().lock()->Change_State<CBatBossState_Atk_L01_2a>(0.05f);
-			return true;
-		}
 			break;
 		}
-		
+		return true;
 	}
 
 

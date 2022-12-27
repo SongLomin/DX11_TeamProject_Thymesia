@@ -90,6 +90,7 @@ public:
 
 public:
     _flag           Get_CollisionObjectFlags() { return m_CollisionObjectFlags; }
+    _flag           Get_CollisionMonstertFlags() { return m_CollisionMonsterFlags; }
     void            Set_CollisionObjectFlag(const _flag In_CollisionObjectFlags, const _bool In_bEnable);
  
 protected:
@@ -122,6 +123,7 @@ private:
 
 protected:
     _flag      m_CollisionObjectFlags = 0;
+    _flag      m_CollisionMonsterFlags = 0;
     _bool      m_bLadderCheck = false;
    
 

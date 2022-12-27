@@ -45,9 +45,7 @@ private: // 아이들에서만쓰는불값
 	_uint     m_iIdleType = 0; // 이거 enum으로 관리하면될듯  다하고할거임 ㅇㅇ
 
 	
-
-
-
+	virtual void OnEventMessage(_uint iArg) override;
 
 
 protected:

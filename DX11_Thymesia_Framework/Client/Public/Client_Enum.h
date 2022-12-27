@@ -59,11 +59,13 @@ namespace Client
 		ON_VARGEXECUTION,
 		ON_JOKEREXECUTION,
 		ON_BATEXECUTION,
+		ON_URDEXECUTON,
 		ON_SITUP,
 		ON_CONSOLE_ENABLE,
 		ON_CONSOLE_DISABLE,
 		ON_DIE,
 		ON_BOSS_EXECUTIONSTART,
+		ON_STEALCORVUS,
 		EVENT_END
 	};
 
@@ -421,6 +423,24 @@ namespace Client
 		FLAG_END
 	};
 
+	enum class MONSTERTYPE_FLAG
+	{
+		AXEMAN = (1 << 0),
+		KNIFEWOMAN = (1 << 1),
+		GARDENER = (1 << 2),
+		SHILEDAXEMAN = (1 << 3),
+		JOKER = (1 << 4),
+		SPEARMAN = (1 << 5),
+		GREATSWORDMAN = (1 << 6),
+		DAGGERWOMAN = (1 << 7),
+		VARG = (1 << 8),
+		BAT = (1 << 9),
+		URD = (1 << 10),
+		MONSTERTYPE_END
+
+
+	};
+
 	enum class STATE_FLAG
 	{
 		EXECUTABLE = (1 << 0),
@@ -479,4 +499,14 @@ namespace Client
 		LEVEL4,
 		LEVEL5
 	};
+
+	enum class BATATTACK_DOTRESULT
+	{
+		MID,
+		RIGHT,
+		LEFT,
+		BATATTACK_DOTRESULT_END
+	};
 }
+
+

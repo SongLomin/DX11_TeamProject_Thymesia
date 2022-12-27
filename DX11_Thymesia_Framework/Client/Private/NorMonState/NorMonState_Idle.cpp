@@ -172,6 +172,19 @@ void CNorMonState_Idle::OnStateEnd()
 
 }
 
+void CNorMonState_Idle::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+	     m_bClosePlayerCheck = false;
+	     m_bCloseToRun = false;
+	     m_bGoAtk = false;
+	     m_iIdleType = 0; // 이거 enum으로 관리하면될듯  다하고할거임 ㅇㅇ
+	}
+}
+
 void CNorMonState_Idle::Free()
 {
 

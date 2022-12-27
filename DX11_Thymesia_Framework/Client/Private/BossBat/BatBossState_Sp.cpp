@@ -96,10 +96,10 @@ void CBatBossState_Sp::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_ZeroChargeCount(0);
-	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_ZeroAttackCount(0);
+
 	Get_Owner().lock()->Get_Component<CBatBossState_Idle>().lock()->Set_HeelScream(false);
-	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Idle>(0.05f);
+	Get_Owner().lock()->Get_Component<CBatBossState_Storm>().lock()->Set_SpecialAtk(true);
+	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Storm>(0.05f);
 }
 
 void CBatBossState_Sp::OnDestroy()

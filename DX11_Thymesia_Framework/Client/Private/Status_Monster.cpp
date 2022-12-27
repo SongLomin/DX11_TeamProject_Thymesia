@@ -106,6 +106,12 @@ void CStatus_Monster::Full_Recovery()
 	Callback_Full_Recovery();
 }
 
+void CStatus_Monster::Full_Recovery()
+{
+	Init_StatusFromMonsterType(m_eMonsterType);
+	Callback_Full_Recovery();
+}
+
 void CStatus_Monster::Get_Desc(void* pOutDesc)
 {
 	MONSTERDESC* pMonsterDesc = (MONSTERDESC*)pOutDesc;
@@ -312,11 +318,19 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 		break;
 	case Client::MONSTERTYPE::BAT:
 		m_tMonsterDesc.m_fAtk = 40.f;
-		m_tMonsterDesc.m_fMaxHP_white = 100.f;
+		m_tMonsterDesc.m_fMaxHP_white = 25.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 1000.f;
 		m_tMonsterDesc.m_iLifeCount = 2;
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
 		m_tMonsterDesc.m_szModelKey = "Boss_Bat";
+		break;
+	case Client::MONSTERTYPE::URD:
+		m_tMonsterDesc.m_fAtk = 40.f;
+		m_tMonsterDesc.m_fMaxHP_white = 25.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 1000.f;
+		m_tMonsterDesc.m_iLifeCount = 2;
+		m_tMonsterDesc.m_iMaxParryCount = 10000;
+		m_tMonsterDesc.m_szModelKey = "Boss_Urd";
 		break;
 	}
 	m_tMonsterDesc.m_fCurrentHP_white = m_tMonsterDesc.m_fMaxHP_white;
@@ -327,7 +341,7 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 	m_tMonsterDesc.m_fRecoveryAlramTime = 5.f;
 	m_tMonsterDesc.m_fRecoveryTime = 7.f;
 	m_tMonsterDesc.m_fHpBarDisableTime = 15.f;
-	m_tMonsterDesc.m_iCueentParryCount = 0;
+	m_tMonsterDesc.m_iCueentParryCount = 0.f;
 	m_tMonsterDesc.m_fCurrentParryingGauge = 0.f;
 	m_tMonsterDesc.m_fRecoveryAmountPercentageFromSecond = 0.3f;
 	m_tMonsterDesc.m_fRecoveryMag = 1.f;

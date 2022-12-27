@@ -15,6 +15,9 @@ class CCorvusState_ClawAttackAway :
     SHALLOW_COPY(CCorvusState_ClawAttackAway)
     CLONE_H(CCorvusState_ClawAttackAway, CComponent)
 
+public:
+    _bool   Get_StealOnOff() { return m_bStealOnOff; }
+
 protected:
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize(void* pArg) override;
@@ -34,8 +37,8 @@ private:
     weak_ptr<CAnimation> m_pThisAnimationCom;
 
 private:
+    _bool m_bStealOnOff = false;
     _bool m_IsNextAttack = false;
-
     
 
     _uint m_iEffectIndex = 0;

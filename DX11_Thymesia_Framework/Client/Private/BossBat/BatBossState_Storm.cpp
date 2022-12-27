@@ -90,6 +90,7 @@ void CBatBossState_Storm::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	m_bSpecialAtk = false;
 }
 
 
@@ -109,7 +110,7 @@ _bool CBatBossState_Storm::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (ComputeAngleWithPlayer() > 0.97f)
+	if (ComputeAngleWithPlayer() > 0.97f && m_bAttackLookAtLimit)
 	{
 		Rotation_TargetToLookDir();
 		m_bAttackLookAtLimit = false;

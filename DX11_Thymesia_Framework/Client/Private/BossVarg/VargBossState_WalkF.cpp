@@ -109,6 +109,17 @@ void CVargBossState_WalkF::OnStateEnd()
 //	m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CVargBossState_WalkF::Call_AnimationEnd, this);
 //}
 
+void CVargBossState_WalkF::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_RESET_OBJ == iArg)
+	{
+		 m_iPhase2 = 0;
+		m_bOneCheck = false;
+	}
+}
+
 void CVargBossState_WalkF::Free()
 {
 
