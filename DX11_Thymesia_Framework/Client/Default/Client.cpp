@@ -106,7 +106,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 #else
             1
 #endif // _144HZ_
-            )
+            ) 
         {
             if (KEY_INPUT(KEY::ESC, KEY_STATE::TAP))
             {

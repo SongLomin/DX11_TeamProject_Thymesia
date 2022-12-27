@@ -23,6 +23,7 @@ bool g_bGlow;
 float4 g_vGlowColor;
 
 // for Sprite Image
+bool g_bUseMask;
 int g_iNumFrameX;
 int g_iNumFrameY;
 
@@ -415,11 +416,24 @@ PS_OUT PS_SPRITE_BLACKDISCARD(PS_IN_SPRITE In)
         In.vTexUV.y = 1.f - In.vTexUV.y;
 	
 	// Sprite Image
-    Out.vColor = g_DiffuseTexture.Sample(PointClampSampler,
-		float2(In.vTexUV.x / g_iNumFrameX + In.vSpriteUV.x,
-			In.vTexUV.y / g_iNumFrameY + In.vSpriteUV.y));
-	
-    Out.vColor *= In.vColor;
+	if (g_bUseMask)
+	{
+		Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexUV + g_vDiffuseUV);
+		Out.vColor *= In.vColor;
+
+		vector vColor = g_MaskTexture.Sample(PointClampSampler,
+			float2(In.vTexUV.x / g_iNumFrameX + In.vSpriteUV.x,
+				In.vTexUV.y / g_iNumFrameY + In.vSpriteUV.y));
+
+		Out.vColor.a *= vColor.r;
+	}
+	else
+	{
+		Out.vColor = g_DiffuseTexture.Sample(PointClampSampler,
+			float2(In.vTexUV.x / g_iNumFrameX + In.vSpriteUV.x,
+				In.vTexUV.y / g_iNumFrameY + In.vSpriteUV.y));
+		Out.vColor *= In.vColor;
+	}
 
     if ((Out.vColor.r + Out.vColor.g + Out.vColor.b) <= g_fDiscardRatio)
         discard;
@@ -443,12 +457,25 @@ PS_OUT PS_SPRITE_ALPHADISCARD_SOFT(PS_IN_SPRITE_SOFT In)
     if (g_bYInverse)
         In.vTexUV.y = 1.f - In.vTexUV.y;
 
-    // Sprite Image
-    Out.vColor = g_DiffuseTexture.Sample(PointClampSampler,
-        float2(In.vTexUV.x / g_iNumFrameX + In.vSpriteUV.x,
-            In.vTexUV.y / g_iNumFrameY + In.vSpriteUV.y));
+	// Sprite Image
+	if (g_bUseMask)
+	{
+		Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexUV + g_vDiffuseUV);
+		Out.vColor *= In.vColor;
 
-    Out.vColor *= In.vColor;
+		vector vColor = g_MaskTexture.Sample(PointClampSampler,
+			float2(In.vTexUV.x / g_iNumFrameX + In.vSpriteUV.x,
+				In.vTexUV.y / g_iNumFrameY + In.vSpriteUV.y));
+
+		Out.vColor.a *= vColor.r;
+	}
+	else
+	{
+		Out.vColor = g_DiffuseTexture.Sample(PointClampSampler,
+			float2(In.vTexUV.x / g_iNumFrameX + In.vSpriteUV.x,
+				In.vTexUV.y / g_iNumFrameY + In.vSpriteUV.y));
+		Out.vColor *= In.vColor;
+	}
 
     float2 vTexUV;
 
@@ -488,12 +515,25 @@ PS_OUT PS_SPRITE_ALPHADISCARD(PS_IN_SPRITE In)
     if (g_bYInverse)
         In.vTexUV.y = 1.f - In.vTexUV.y;
 
-    // Sprite Image
-    Out.vColor = g_DiffuseTexture.Sample(PointClampSampler,
-        float2(In.vTexUV.x / g_iNumFrameX + In.vSpriteUV.x,
-            In.vTexUV.y / g_iNumFrameY + In.vSpriteUV.y));
+	// Sprite Image
+	if (g_bUseMask)
+	{
+		Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexUV + g_vDiffuseUV);
+		Out.vColor *= In.vColor;
 
-    Out.vColor *= In.vColor;
+		vector vColor = g_MaskTexture.Sample(PointClampSampler,
+			float2(In.vTexUV.x / g_iNumFrameX + In.vSpriteUV.x,
+				In.vTexUV.y / g_iNumFrameY + In.vSpriteUV.y));
+
+		Out.vColor.a *= vColor.r;
+	}
+	else
+	{
+		Out.vColor = g_DiffuseTexture.Sample(PointClampSampler,
+			float2(In.vTexUV.x / g_iNumFrameX + In.vSpriteUV.x,
+				In.vTexUV.y / g_iNumFrameY + In.vSpriteUV.y));
+		Out.vColor *= In.vColor;
+	}
 
     if (Out.vColor.a <= g_fDiscardRatio)
         discard;
@@ -517,12 +557,25 @@ PS_OUT PS_SPRITE_BLACKDISCARD_SOFT(PS_IN_SPRITE_SOFT In)
     if (g_bYInverse)
         In.vTexUV.y = 1.f - In.vTexUV.y;
 
-    // Sprite Image
-    Out.vColor = g_DiffuseTexture.Sample(PointClampSampler,
-        float2(In.vTexUV.x / g_iNumFrameX + In.vSpriteUV.x,
-            In.vTexUV.y / g_iNumFrameY + In.vSpriteUV.y));
+	// Sprite Image
+	if (g_bUseMask)
+	{
+		Out.vColor = g_DiffuseTexture.Sample(PointSampler, In.vTexUV + g_vDiffuseUV);
+		Out.vColor *= In.vColor;
 
-    Out.vColor *= In.vColor;
+		vector vColor = g_MaskTexture.Sample(PointClampSampler,
+			float2(In.vTexUV.x / g_iNumFrameX + In.vSpriteUV.x,
+				In.vTexUV.y / g_iNumFrameY + In.vSpriteUV.y));
+
+		Out.vColor.a *= vColor.r;
+	}
+	else
+	{
+		Out.vColor = g_DiffuseTexture.Sample(PointClampSampler,
+			float2(In.vTexUV.x / g_iNumFrameX + In.vSpriteUV.x,
+				In.vTexUV.y / g_iNumFrameY + In.vSpriteUV.y));
+        Out.vColor *= In.vColor;
+	}
 
     float2 vTexUV;
 

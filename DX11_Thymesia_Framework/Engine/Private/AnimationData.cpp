@@ -9,6 +9,89 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
     fDuration = (_float)In_pAiAnimation->mDuration;
     fTickPerSecond = (_float)In_pAiAnimation->mTicksPerSecond * In_fSpeed;
 
+    // TODO : !!! DO NOT ERASE !!!
+// Temporary Macro for changing animation speed.
+// undefined after use.
+#define SET_ANIM_SPEED(AnimationName, WantedSpeed)\
+    if (!strcmp(szName.c_str(), AnimationName))\
+    {\
+        fTickPerSecond *= WantedSpeed;\
+    }
+
+	/*SET_ANIM_SPEED("BossBat_Seq_BossFightStart_V1", 4.f);
+	SET_ANIM_SPEED("BossBat_AttackL_01_1", 4.f);
+	SET_ANIM_SPEED("BossBat_AttackL_01_2a", 4.f);
+	SET_ANIM_SPEED("BossBat_AttackL_01_2b", 4.f);
+	SET_ANIM_SPEED("BossBat_AttackL_01_3a", 4.f);
+	SET_ANIM_SPEED("BossBat_AttackR_01_1", 2.f);
+	SET_ANIM_SPEED("BossBat_AttackR_01_2a", 4.f);
+	SET_ANIM_SPEED("BossBat_AttackR_01_2b", 4.f);
+	SET_ANIM_SPEED("BossBat_Bite_1", 4.f);
+	SET_ANIM_SPEED("BossBat_Bite_2", 4.f);
+	SET_ANIM_SPEED("BossBat_Car", 4.f);
+	SET_ANIM_SPEED("BossBat_Charge", 4.f);
+	SET_ANIM_SPEED("BossBat_FTurn_L", 1.f);
+	SET_ANIM_SPEED("BossBat_FTurn_R", 4.f);
+	SET_ANIM_SPEED("BossBat_Hellscream", 4.f);
+	SET_ANIM_SPEED("BossBat_HurtXL_F", 4.f);
+	SET_ANIM_SPEED("BossBat_HurtXL_L", 4.f);
+	SET_ANIM_SPEED("BossBat_JumpSmash_Chest", 2.f);
+	SET_ANIM_SPEED("BossBat_JumpSmashForwardL", 4.f);
+	SET_ANIM_SPEED("BossBat_JumpSmashL", 4.f);
+	SET_ANIM_SPEED("BossBat_SonicBoom", 4.f);
+	SET_ANIM_SPEED("BossBat_SP01", 2.f);
+	SET_ANIM_SPEED("BossBat_Storm_1", 4.f);
+	SET_ANIM_SPEED("BossBat_StunEnd", 4.f);
+	SET_ANIM_SPEED("BossBat_StunLoop", 1.3f);
+	SET_ANIM_SPEED("BossBat_StunStart", 1.3f);
+	SET_ANIM_SPEED("BossBat_TakeExecution_End", 1.2f);
+	SET_ANIM_SPEED("BossBat_TakeExecution_Loop", 1.2f);
+	SET_ANIM_SPEED("BossBat_TakeExecution_Start01", 1.46f);
+	SET_ANIM_SPEED("BossBat_TurnL90", 2.f);
+	SET_ANIM_SPEED("BossBat_TurnR90", 2.f);
+	SET_ANIM_SPEED("BossBat_WalkF", 2.f);*/
+
+#undef SET_ANIM_SPEED
+
+    for (_uint i(0); i < iNumChannels; i++)
+    {
+        shared_ptr<CHANNEL_DATA> pChannelData = make_shared<CHANNEL_DATA>();
+        pChannelData->Make_ChannelData(In_pAiAnimation->mChannels[i]);
+        Channel_Datas.push_back(pChannelData);
+    }
+
+    return S_OK;
+}
+
+void ANIMATION_DATA::Bake_Binary(ofstream& os)
+{
+    write_typed_data(os, szName.size());
+    os.write(&szName[0], szName.size());
+
+    write_typed_data(os, iNumChannels);
+    write_typed_data(os, fDuration);
+    write_typed_data(os, fTickPerSecond);
+
+    for (_uint i = 0; i < iNumChannels; i++)
+    {
+        Channel_Datas[i]->Bake_Binary(os);
+    }
+}
+
+void ANIMATION_DATA::Load_FromBinary(ifstream& is)
+{
+    size_t istringSize;
+    read_typed_data(is, istringSize);
+    szName.resize(istringSize);
+    is.read(&szName[0], istringSize);
+
+    read_typed_data(is, iNumChannels);
+    read_typed_data(is, fDuration);
+    read_typed_data(is, fTickPerSecond);
+
+    // TODO : !!! DO NOT ERASE !!!
+    // Temporary Macro for changing animation speed.
+    // undefined after use.
 #define SET_ANIM_SPEED(AnimationName, WantedSpeed)\
     if (!strcmp(szName.c_str(), AnimationName))\
     {\
@@ -17,12 +100,12 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
 
 	// TODO : change animation speed here
 #pragma region Corvus
-	SET_ANIM_SPEED("Corvus_SD_LAttack1", 2.5f);
-	SET_ANIM_SPEED("Corvus_SD_LAttack2", 2.5f);
-	SET_ANIM_SPEED("Corvus_SD_LAttack3_New", 2.5f);
-	SET_ANIM_SPEED("Corvus_SD1_ParryL_NEW", 4.f);
-	SET_ANIM_SPEED("Corvus_SD1_ParryR_NEW", 4.f);
-	SET_ANIM_SPEED("Corvus_VSVarg_TakeSPAttack", 1.853f);
+  /* SET_ANIM_SPEED("Corvus_SD_LAttack1", 2.5f);
+   SET_ANIM_SPEED("Corvus_SD_LAttack2", 2.5f);
+   SET_ANIM_SPEED("Corvus_SD_LAttack3_New", 2.5f);
+   SET_ANIM_SPEED("Corvus_SD1_ParryL_NEW", 4.f);
+   SET_ANIM_SPEED("Corvus_SD1_ParryR_NEW", 4.f);
+   SET_ANIM_SPEED("Corvus_VSVarg_TakeSPAttack", 1.853f);
 
 
 	SET_ANIM_SPEED("Corvus_Raven_ClawLong_L01", 2.f);
@@ -91,16 +174,16 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
 
 	SET_ANIM_SPEED("Corvus_StunExecute_StartL_L", 7.f);
 	SET_ANIM_SPEED("Corvus_SD_TD2Thorw2", 2.5f);
-	SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution_Blending", 1.1f);
+	SET_ANIM_SPEED("Corvus_SD_VSVarg_Execution_Blending", 1.1f);*/
 
 #pragma region Varg
-	SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Catch", 2.306f);
-	SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Fail", 1.25f);
-	SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Roar", 1.25f);
-	SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Roar_GetUp", 1.25f);
-	SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_1", 1.25f);
-	SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_2", 1.25f);
-	SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_3", 1.25f);
+  /*  SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Catch", 2.306f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Fail", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Roar", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_SPAttack1_Roar_GetUp", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_1", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_2", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack1_3", 1.25f);
 
 	SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_1", 2.5f);
 	SET_ANIM_SPEED("SK_C_Varg.ao|Varg_ComboAttack2_2", 2.5f);
@@ -139,46 +222,32 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
 	SET_ANIM_SPEED("SK_C_Varg.ao|Varg_StunLoop", 2.f);
 	SET_ANIM_SPEED("SK_C_Varg.ao|Varg_StunEnd", 2.f);
 
-	SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Dead", 1.25f);
+    SET_ANIM_SPEED("SK_C_Varg.ao|Varg_Dead", 1.25f);*/
 #pragma endregion // Varg
 
-#pragma region Bat
-	SET_ANIM_SPEED("BossBat_Seq_BossFightStart_V1", 4.f);
-	SET_ANIM_SPEED("BossBat_AttackL_01_1", 4.f);
-	SET_ANIM_SPEED("BossBat_AttackL_01_2a", 4.f);
-	SET_ANIM_SPEED("BossBat_AttackL_01_2b", 4.f);
-	SET_ANIM_SPEED("BossBat_AttackL_01_3a", 4.f);
-	SET_ANIM_SPEED("BossBat_AttackR_01_1", 2.f);
-	SET_ANIM_SPEED("BossBat_AttackR_01_2a", 4.f);
-	SET_ANIM_SPEED("BossBat_AttackR_01_2b", 4.f);
-	SET_ANIM_SPEED("BossBat_Bite_1", 4.f);
-	SET_ANIM_SPEED("BossBat_Bite_2", 4.f);
-	SET_ANIM_SPEED("BossBat_Car", 4.f);
-	SET_ANIM_SPEED("BossBat_Charge", 4.f);
-	SET_ANIM_SPEED("BossBat_FTurn_L", 1.f);
-	SET_ANIM_SPEED("BossBat_FTurn_R", 4.f);
-	SET_ANIM_SPEED("BossBat_Hellscream", 4.f);
-	SET_ANIM_SPEED("BossBat_HurtXL_F", 4.f);
-	SET_ANIM_SPEED("BossBat_HurtXL_L", 4.f);
-	SET_ANIM_SPEED("BossBat_JumpSmash_Chest", 2.f);
-	SET_ANIM_SPEED("BossBat_JumpSmashForwardL", 4.f);
-	SET_ANIM_SPEED("BossBat_JumpSmashL", 4.f);
-	SET_ANIM_SPEED("BossBat_SonicBoom", 4.f);
-	SET_ANIM_SPEED("BossBat_SP01", 2.f);
-	SET_ANIM_SPEED("BossBat_Storm_1", 4.f);
-	SET_ANIM_SPEED("BossBat_StunEnd", 4.f);
-	SET_ANIM_SPEED("BossBat_StunLoop", 1.3f);
-	SET_ANIM_SPEED("BossBat_StunStart", 1.3f);
-	SET_ANIM_SPEED("BossBat_TakeExecution_End", 1.2f);
-	SET_ANIM_SPEED("BossBat_TakeExecution_Loop", 1.2f);
-	SET_ANIM_SPEED("BossBat_TakeExecution_Start01", 1.46f);
-	SET_ANIM_SPEED("BossBat_TurnL90", 2.f);
-	SET_ANIM_SPEED("BossBat_TurnR90", 2.f);
-	SET_ANIM_SPEED("BossBat_WalkF", 2.f);
-#pragma endregion // Bat
+#pragma region Joker
+    SET_ANIM_SPEED("Joker_ComboA01", 1.25f);
+    SET_ANIM_SPEED("Joker_ComboA02", 1.25f);
+    SET_ANIM_SPEED("Joker_ComboB01", 1.25f);
+    SET_ANIM_SPEED("Joker_ComboB02", 1.25f);
+    SET_ANIM_SPEED("Joker_JumpAttack", 1.25f);
+    SET_ANIM_SPEED("Joker_ShockAttack", 1.25f);
+    SET_ANIM_SPEED("Joker_Stun_Start", 1.25f);
+    SET_ANIM_SPEED("Joker_Stun_Loop", 1.25f);
+    SET_ANIM_SPEED("Joker_Stun_End", 1.25f);
+    SET_ANIM_SPEED("Joker_TurnAttackL", 1.25f);
+    SET_ANIM_SPEED("Joker_TurnAttackR", 1.25f);
+    SET_ANIM_SPEED("Joker_TurnL90", 1.25f);
+    SET_ANIM_SPEED("Joker_TurnR90", 1.25f);
+    SET_ANIM_SPEED("Joker_WheelAttackStart", 1.25f);
+    SET_ANIM_SPEED("Joker_WheelAttackLoop", 1.25f);
+    SET_ANIM_SPEED("Joker_WheelAttackEnd", 1.25f);
+    SET_ANIM_SPEED("Joker_TakeExecution_Start", 1.4f);
+#pragma endregion // Joker
+
 
 #pragma region Mon_AxeMan
-	SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtStunStart|BaseLaye", 2.f);
+    // SET_ANIM_SPEED("Armature|Armature|Armature|Armature|LV1Villager_M_HurtStunStart|BaseLaye", 2.f);
 #pragma endregion // Mon_AxeMan
 
 #undef SET_ANIM_SPEED
