@@ -363,7 +363,8 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
     Out.vDiffuse.a = 1.f;
     Out.vExtractBloom = 0;
     
-    Out.vRimLight = g_vShaderFlag.a * g_vRimLightColor;
+    Out.vShaderFlag.a = smoothstep(0.f, 0.01f, g_vRimLightColor.a);
+    Out.vRimLight = Out.vShaderFlag.a * g_vRimLightColor;
 
     return Out;
 }
@@ -415,7 +416,9 @@ PS_OUT PS_MAIN_DISSOLVE(PS_IN_NORMAL In)
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
 
     Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
-    Out.vRimLight = g_vShaderFlag.a * g_vRimLightColor;
+    
+    Out.vShaderFlag.a = smoothstep(0.f, 0.01f, g_vRimLightColor.a);
+    Out.vRimLight = Out.vShaderFlag.a * g_vRimLightColor;
 
     return Out;
 }
@@ -443,9 +446,11 @@ PS_OUT PS_MAIN_NORMAL_SPECULAR(PS_IN_NORMAL In)
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
 
     Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
-
+  
+    Out.vShaderFlag.a = smoothstep(0.f, 0.01f, g_vRimLightColor.a);
+    Out.vRimLight = Out.vShaderFlag.a * g_vRimLightColor;
+    
     Out.vExtractBloom = 0;
-    Out.vRimLight = g_vShaderFlag.a * g_vRimLightColor;
     
     return Out;
 }
@@ -486,11 +491,11 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_NORMAL In)
     Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
-    Out.vShaderFlag.a = 1.f;
+
+    Out.vShaderFlag.a = smoothstep(0.f,0.01f,g_vRimLightColor.a);
+    Out.vRimLight = Out.vShaderFlag.a * g_vRimLightColor;
     
     Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
-    //Out.vRimLight = g_vShaderFlag.a * g_vRimLightColor;
-    Out.vRimLight = Out.vShaderFlag.a * vector(0.f, 1.f, 0.408f, 1.f);
     
     return Out;
 }

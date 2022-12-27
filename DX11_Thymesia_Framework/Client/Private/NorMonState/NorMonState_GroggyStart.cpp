@@ -89,6 +89,8 @@ void CNorMonState_GroggyStart::OnStateStart(const _float& In_fAnimationBlendTime
 	m_vShakingOffSet = { 0.f, 1.f, 0.f };
 	GET_SINGLE(CGameManager)->Add_Shaking(XMLoadFloat3(&m_vShakingOffSet), 0.3f, 1.f, 9.f, 0.25f);
 
+	Get_OwnerMonster()->Set_RimLightDesc(2.f, { 0.5f,1.f,0.9f }, 1.f);
+
 #ifdef _DEBUG_COUT_
 	cout << "NorMonState: Stop -> StopStop" << endl;
 #endif

@@ -68,6 +68,8 @@ void CVargBossState_Stun_Start::OnStateStart(const _float& In_fAnimationBlendTim
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	Get_OwnerMonster()->Set_RimLightDesc(2.f, { 0.5f,1.f,0.9f }, 1.f);
+
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
 	cout << "VargState: Sturn_Start -> OnStateStart" << endl;

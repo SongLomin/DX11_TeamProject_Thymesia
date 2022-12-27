@@ -65,6 +65,8 @@ void CCorvusState_HurtXL::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	_matrix WorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 
+	m_pOwnerFromPlayer.lock()->Set_RimLightDesc(0.5f, { 0.6f,0.f,0.f }, 0.6f);
+
 	GET_SINGLE(CGameManager)->Add_Shaking(XMVector3TransformNormal(XMLoadFloat3(&vRandDir), WorldMatrix), 0.25f, 1.f, 9.f, 0.4f);
 
 #ifdef _DEBUG

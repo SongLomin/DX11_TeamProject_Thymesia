@@ -103,6 +103,7 @@ void CNorMonState_HurtL::OnStateStart(const _float& In_fAnimationBlendTime)
 	}
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	
 
 #ifdef _DEBUG
 	#ifdef _DEBUG_COUT_
