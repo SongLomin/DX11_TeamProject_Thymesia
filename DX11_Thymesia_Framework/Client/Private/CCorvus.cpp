@@ -16,6 +16,8 @@
 #include "UI_PauseMenu.h"
 #include "UIManager.h"
 #include "UI_AppearEventVarg.h"
+#include "Talent_Effects.h"
+
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -35,16 +37,22 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	m_pStatus = CGameObject::Add_Component<CStatus_Player>();
 
-	CStatus_Player::PLAYERDESC& pStatus_PlayerDesc = GET_SINGLE(CGameManager)->Get_PlayerStatusDesc();
 
-	m_pStatus.lock()->Set_Desc(&pStatus_PlayerDesc);
+	json LoadedJson;
+	string strCorvusComponentPath = m_szClientComponentPath + "Corvus.json";
 
+	if (SUCCEEDED(CJson_Utility::Load_Json(strCorvusComponentPath.c_str(), LoadedJson)))
+	{
+		Load_FromJson(LoadedJson);
+		//DEBUG_ASSERT;
+	}
+	//CStatus_Player::PLAYERDESC& pStatus_PlayerDesc = GET_SINGLE(CGameManager)->Get_PlayerStatusDesc();
 
+	//m_pStatus.lock()->Set_Desc(&pStatus_PlayerDesc);
 	//m_pStatus.lock()->Load_FromJson(m_szClientComponentPath + "Corvus/SaveData.json");
 
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
 	//m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER, (_flag)FLAG_INDEX::_2);
-
 
 
 	// Corvus_SD_Ladder_Climb_R_UP_End_Reverse
@@ -301,7 +309,16 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	}
 	if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
 	{
-		GAMEINSTANCE->Get_GameObjects<CUI_AppearEventVarg>(LEVEL_STATIC).front().lock()->Start_Event();
+		json	CorvusJson;
+
+		Write_Json(CorvusJson);
+		
+		string corvusComponentPath = m_szClientComponentPath + "Corvus.json";
+
+		CJson_Utility::Save_Json(corvusComponentPath.c_str(), CorvusJson);
+
+
+		//GAMEINSTANCE->Get_GameObjects<CUI_AppearEventVarg>(LEVEL_STATIC).front().lock()->Start_Event();
 	}
 	/*
 	if (KEY_INPUT(KEY::T, KEY_STATE::TAP))
@@ -600,5 +617,14 @@ void CCorvus::SetUp_Requirement()
 void CCorvus::Test_BindSkill()
 {
 	m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_VargSword>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_MAIN);
+}
+
+void CCorvus::WriteTalentFromJson(json& Out_Json)
+{
+
+}
+
+void CCorvus::LoadTalentFromJson(const json& In_Json)
+{
 }
 

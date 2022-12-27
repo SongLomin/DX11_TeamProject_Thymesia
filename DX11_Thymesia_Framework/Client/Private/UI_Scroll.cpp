@@ -129,9 +129,9 @@ void CUI_Scroll::CalcScrolledTrackToMaxSize()
 
 _bool CUI_Scroll::CheckMoveWheelCurrentTick()
 {
-    _float  fWheelMovement =  fabsf(GAMEINSTANCE->Get_DIMouseMoveState(MMS_WHEEL));
+    _long  fWheelMovement =  abs(GAMEINSTANCE->Get_DIMouseMoveState(MMS_WHEEL));
 
-    if (fWheelMovement > 0.0f)
+    if (fWheelMovement > 0)
     {
         return true;
     }

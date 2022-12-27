@@ -1584,6 +1584,7 @@
     <ClInclude Include="..\Public\Preset_NvClothMesh.h">
       <Filter>06. DataPreset\07. Preset_NvClothMesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\EasingComponent_Bezier.h" />
     <ClInclude Include="..\Public\Window_ModelContantView.h">
       <Filter>97. Tool\00. IMGUI\Windows\03. Model\00. ModelContant</Filter>
     </ClInclude>
@@ -3214,6 +3215,7 @@
     <ClCompile Include="..\Private\Preset_NvClothMesh.cpp">
       <Filter>06. DataPreset\07. Preset_NvClothMesh</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\EasingComponent_Bezier.cpp" />
     <ClCompile Include="..\Private\Window_ModelContantView.cpp">
       <Filter>97. Tool\00. IMGUI\Windows\03. Model\00. ModelContant</Filter>
     </ClCompile>

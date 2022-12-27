@@ -35,9 +35,9 @@ void CStatus_Player::Tick(_float fTimeDelta)
 
     m_fPotionTime -= fTimeDelta;
 
-    if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
+    if (KEY_INPUT(KEY::Z, KEY_STATE::TAP))
     {
-        m_tDesc.m_iMemory += 10000;
+        m_tDesc.m_iMemory += 100000;
         Callback_Update_Status();
     }
     //if (m_fPotionTime >= 0.f)
@@ -54,13 +54,47 @@ void CStatus_Player::LateTick(_float fTimeDelta)
 
 void CStatus_Player::Write_Json(json& Out_Json)
 {
-    __super::Load_FromJson(Out_Json);
+    __super::Write_Json(Out_Json);
 
+   Out_Json["Status_Player"]["m_fMaxHP"] = m_tDesc.m_fMaxHP;
+   Out_Json["Status_Player"]["m_fMaxMP"] = m_tDesc.m_fMaxMP;
+   Out_Json["Status_Player"]["m_fNormalAtk"] = m_tDesc.m_fNormalAtk;
+   Out_Json["Status_Player"]["m_fPlagueAtk"] = m_tDesc.m_fPlagueAtk;
+   Out_Json["Status_Player"]["m_fParryingAtk"] = m_tDesc.m_fParryingAtk;
+   Out_Json["Status_Player"]["m_iLevel"] = m_tDesc.m_iLevel;
+   Out_Json["Status_Player"]["m_iStr"] = m_tDesc.m_iStr;
+   Out_Json["Status_Player"]["m_iVital"] = m_tDesc.m_iVital;
+   Out_Json["Status_Player"]["m_iPlague"] = m_tDesc.m_iPlague;
+   Out_Json["Status_Player"]["m_iMemory"] = m_tDesc.m_iMemory;
+   Out_Json["Status_Player"]["m_iWound"] = m_tDesc.m_iWound;
 }
 
 void CStatus_Player::Load_FromJson(const json& In_Json)
 {
     __super::Load_FromJson(In_Json);
+
+    if (In_Json.find("Status_Player") == In_Json.end())
+    {
+        return;
+    }
+    json Status_PlayerJson = In_Json["Status_Player"];
+
+    m_tDesc.m_fMaxHP = Status_PlayerJson["m_fMaxHP"];
+    m_tDesc.m_fMaxMP = Status_PlayerJson["m_fMaxMP"];
+    m_tDesc.m_fNormalAtk = Status_PlayerJson["m_fNormalAtk"];
+    m_tDesc.m_fPlagueAtk = Status_PlayerJson["m_fPlagueAtk"];
+    m_tDesc.m_fParryingAtk = Status_PlayerJson["m_fParryingAtk"];
+    m_tDesc.m_iLevel = Status_PlayerJson["m_iLevel"];
+    m_tDesc.m_iStr = Status_PlayerJson["m_iStr"];
+    m_tDesc.m_iVital = Status_PlayerJson["m_iVital"];
+    m_tDesc.m_iPlague = Status_PlayerJson["m_iPlague"];
+    m_tDesc.m_iMemory = Status_PlayerJson["m_iMemory"];
+    m_tDesc.m_iWound = Status_PlayerJson["m_iWound"];
+   
+    m_tDesc.m_fCurrentHP = m_tDesc.m_fMaxHP;
+    m_tDesc.m_fCurrentMP = m_tDesc.m_fMaxMP;
+
+    Callback_Update_Status();
 }
 
 _bool CStatus_Player::Is_Dead()

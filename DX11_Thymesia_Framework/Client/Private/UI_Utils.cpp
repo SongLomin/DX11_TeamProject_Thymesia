@@ -65,3 +65,55 @@ weak_ptr<CUI> CUI_Utils::Get_BaseToUI(weak_ptr<CBase> pBase)
 {
 	return Weak_StaticCast<CUI>(pBase);
 }
+
+_float2 CUI_Utils::Get_BezierCurve(_float2 fStart, _float2 fTarget, _float fCustomWeight)
+{
+	/*
+		둘의 중점을 구한다.
+		둘 사이의 거리의 절반을 오프셋으로 사용한다. 이 값이 더해지면서 커브가 된다.
+		가중치를 곱해 커브의 방향을 정한다.
+
+		500,300,  1000,300
+
+		->중점 = 750,300(a+b/2)
+
+		->거리 ->500.f,0.f(abs(a-b))
+
+		그러면 최대 비율에서 가져야할 가중치를 계산함.
+
+		1 - (원소의 값을 두 원소를 더한 값으로 나눔)
+		그렇게 하면
+		 거리의  가중치는 
+		 x = 0 (1 - (500 / (500 + 0))
+	     y = 1 (1 - (0 / (500 + 0))
+
+		y +  (반대쪽 원소의 값) * 가중치 * 커스텀 가중치 = 커브의 높이나 너비.
+
+		왜 계산을 저렇게 함?
+		커브를 굳이 생각하면 튀어나온 선분이라는건데,
+		상대적으로 평평한 쪽을 기준으로 값에 변화를 줘야한다고 생각함.
+
+		커스텀 가중치가 0.5라면
+		x = 0
+		y = 500 * 1 * 0.5 = 250.
+
+		(750, 300) + (0,250) = (750,550)
+
+		가중치를 반대로주면 -가 나옴.
+
+
+	*/
+	_float2 fCurve = { 0.f, 0.f };
+
+	_vector	vStart = XMVectorSet(fStart.x, fStart.y, 0.f, 1.f);
+	_vector	vTarget = XMVectorSet(fTarget.x, fTarget.y, 0.f, 1.f);
+
+	_vector vCenter = (vStart + vTarget) / 2.f;
+	_vector vDistance = XMVectorAbs(vTarget - vStart);
+
+
+
+
+
+	return _float2();
+}
