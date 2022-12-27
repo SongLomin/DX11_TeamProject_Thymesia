@@ -46,6 +46,23 @@ HRESULT CShader::Set_RawValue(const char* pConstantName, void* pData, _uint iDat
 	return pVariable->SetRawValue(pData, 0, iDataSize);
 }
 
+HRESULT CShader::Set_Matrix(const char* pConstantName, _fmatrix In_Matrix)
+{
+	if (nullptr == m_pEffect)
+		return E_FAIL;
+
+	ID3DX11EffectVariable* pVariable = m_pEffect->GetVariableByName(pConstantName);
+	if (nullptr == pVariable)
+		return E_FAIL;
+
+
+	ID3DX11EffectMatrixVariable* pMatrixVariable = pVariable->AsMatrix();
+	if (nullptr == pVariable)
+		return E_FAIL;
+	
+	return pMatrixVariable->SetMatrix(In_Matrix.r->m128_f32);
+}
+
 HRESULT CShader::Begin(_uint iPassIndex, ID3D11DeviceContext* pDeviceContext)
 {
 	if (!pDeviceContext)

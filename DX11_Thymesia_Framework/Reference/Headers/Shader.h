@@ -26,6 +26,7 @@ public:
 
 public:
 	HRESULT Set_RawValue(const char* pConstantName, void* pData, _uint iDataSize);
+	HRESULT Set_Matrix(const char* pConstantName, _fmatrix In_Matrix);
 	HRESULT Set_ShaderResourceView(const char* pConstantName, ComPtr<ID3D11ShaderResourceView> pSRV);
 	HRESULT Begin(_uint iPassIndex, ID3D11DeviceContext* pDeviceContext);
 

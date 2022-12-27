@@ -182,6 +182,9 @@ void CWindow_AnimationModelView::Load_PreViewModels()
     m_pPreviewModel = GAMEINSTANCE->Add_GameObject<CPreviewAnimationModel>(LEVEL_EDIT);
     m_AllModelKeys = GAMEINSTANCE->Get_AllAnimModelKeys();
 
+    //m_pPreviewModel.lock()->Get_Transform()->Set_Position(XMVectorSet(10.f, 0.5f, 10.f, 1.f));
+    //m_pPreviewModel.lock()->Get_Transform()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), 0.3f);
+
     // TODO : comment because explode
     m_pPreviewNoAnimModel = GAMEINSTANCE->Add_GameObject<CPreview_Prop>(LEVEL_EDIT);
     m_AllNoAnimModelKeys = GAMEINSTANCE->Get_AllNoneAnimModelKeys();

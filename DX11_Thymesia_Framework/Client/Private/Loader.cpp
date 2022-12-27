@@ -641,7 +641,7 @@ HRESULT CLoader::Loading_ForEditLevel()
 	LightDesc.bEnable		= true;
 	LightDesc.fIntensity	= 1.f;
 
-	//GAMEINSTANCE->Add_Light(LightDesc);
+	GAMEINSTANCE->Add_Light(LightDesc);
 
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
