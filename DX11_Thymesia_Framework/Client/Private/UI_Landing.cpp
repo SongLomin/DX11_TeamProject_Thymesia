@@ -12,6 +12,8 @@
 #include "UI_EvolveMenu_Level.h"
 #include "UI_EvolveMenu.h"
 #include "ClientLevel.h"
+#include "UIManager.h"
+
 
 GAMECLASS_C(CUI_Landing)
 CLONE_C(CUI_Landing, CGameObject)

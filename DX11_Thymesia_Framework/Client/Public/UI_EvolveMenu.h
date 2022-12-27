@@ -43,7 +43,7 @@ public:
     virtual void    LateTick(_float fTimeDelta) override;
 
     virtual void OnEnable(void* _Arg = nullptr);
-
+    virtual void OnDisable() override;
 
 
     /*

@@ -52,7 +52,7 @@ void CCorvusState_Die::Tick(_float fTimeDelta)
 
 		if (FAILED(GET_SINGLE(CGameManager)->Respawn_LastCheckPoint(&vOutPos)))
 		{
-			Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_JoggingStartEnd>();
 		}
 		else
 		{

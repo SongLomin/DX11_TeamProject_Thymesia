@@ -50,7 +50,7 @@ public:
 
 	_int	Get_UpdatedBoneIndex() const { return m_iSwapBoneIndex; }
 
-	
+	Cloth* Get_NvCloth() const { return m_pCloth; }
 
 public:
 	virtual HRESULT Initialize_Prototype() override;
@@ -65,10 +65,11 @@ public:
 
 public: /* For. NvCloth */
 	void Update_NvClothVertices(ID3D11DeviceContext* pDeviceContext, _fmatrix In_WorldMatrix, _fvector In_Gravity = {});
+	void Update_NvClothCollisionSpheres(Range<const physx::PxVec4> spheres, uint32_t first, uint32_t last);
 
 private:
 	void Update_NvClothVertices_NonAnim(ID3D11DeviceContext* pDeviceContext);
-	void Update_NvClothVertices_Anim(ID3D11DeviceContext* pDeviceContext);
+	void Update_NvClothVertices_Anim(ID3D11DeviceContext* pDeviceContext, _fmatrix In_WorldMatrix);
 
 private:
 	HRESULT Ready_VertexBuffer_NonAnim(shared_ptr<MESH_DATA> tMeshData);

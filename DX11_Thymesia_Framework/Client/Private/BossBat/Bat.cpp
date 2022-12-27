@@ -235,7 +235,9 @@ void CBat::Init_Desc()
 	INIT_STATE(CBatBossState_ChargeIdle);
 	INIT_STATE(CBatBossState_BackJump);
 
+#ifdef _BAT_EFFECT_
 	Bind_KeyEvent("Boss_Bat");
+#endif // _BAT_EFFECT_
 }
 
 //void CBat::Move_RootMotion_Internal()

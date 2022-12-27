@@ -430,7 +430,7 @@ HRESULT CRender_Manager::Initialize()
 	m_pPreFilterTextureCom = CTexture::Create();
 	//m_pPreFilterTextureCom->Use_Texture("PreFilter");
 
-	Emplace_SleepContext(100);
+	Emplace_SleepContext(300);
 
 	return S_OK;
 }

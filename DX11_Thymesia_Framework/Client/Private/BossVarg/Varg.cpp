@@ -37,9 +37,10 @@ HRESULT CVarg::Initialize(void* pArg)
 		VTXANIM_DECLARATION::iNumElements);
 
 	CModel::NVCLOTH_MODEL_DESC NvClothDesc;
-	Preset::NvClothMesh::VargSetting(NvClothDesc, XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixRotationX(XMConvertToRadians(-90.f)));
+	Preset::NvClothMesh::VargSetting(NvClothDesc, XMMatrixIdentity());
 
 	m_pModelCom.lock()->Init_Model("Boss_Varg", "", (_uint)TIMESCALE_LAYER::MONSTER, &NvClothDesc);
+	m_TransformationMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
 
 	m_pStandState = Add_Component<CVargBossState_Start>();
 	Add_Component<CVargBossState_Attack1a>();
@@ -151,40 +152,61 @@ void CVarg::Thread_PreBeforeRender(_float fTimeDelta)
 
 	_matrix		BoneMatrix;
 	_matrix		InverseMatrix;
-	_float4x4	ModelTransform4x4 = m_pModelCom.lock()->Get_TransformationMatrix();
-	_matrix		ModelTransformMatrix = XMLoadFloat4x4(&ModelTransform4x4);
 	_vector		vGravity;
 
+
+	//BoneMatrix = //m_pModelCom.lock()->Find_BoneNode("Bip001-Head").lock()->Get_OffsetMatrix() * 
+	//	m_pModelCom.lock()->Find_BoneNode("Bip001-Head").lock()->Get_CombinedMatrix() *
+	//	XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix();
+
+	//_vector vSpherePos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+	//vSpherePos = XMVector3TransformCoord(vSpherePos, BoneMatrix);
+	//PxVec4 spheres[2]{
+	//	PxVec4(SMath::Convert_PxVec3(vSpherePos), 0.3f),
+	//	PxVec4(999.f, 999.f, 999.f, 1.0f),
+	//};
+	//nv::cloth::Range<const physx::PxVec4> sphereRange(spheres, spheres + 2);
+
+	//m_pModelCom.lock()->Get_MeshContainer(1).lock()->Get_NvCloth()->setSpheres(sphereRange, 0, m_pModelCom.lock()->Get_MeshContainer(1).lock()->Get_NvCloth()->getNumSpheres());
+
 	//Bip001-Ponytail1
-	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_CombinedMatrix()
-		* ModelTransformMatrix;
+	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_OffsetMatrix() * 
+		m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_CombinedMatrix() * 
+		XMLoadFloat4x4(&m_TransformationMatrix);
 
 	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
 	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
 	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
 
-	InverseMatrix = XMMatrixInverse(nullptr, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix());
+	//InverseMatrix = XMMatrixInverse(nullptr, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix());
 
-	vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), XMMatrixRotationX(XMConvertToRadians(90.f)) * InverseMatrix);
+	//vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), XMMatrixRotationX(XMConvertToRadians(90.f)) * InverseMatrix);
 	//vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), InverseMatrix * XMMatrixRotationX(XMConvertToRadians(-90.f)));
 
-	m_pModelCom.lock()->Get_MeshContainer(1).lock()->Update_NvClothVertices(pDeferredContext, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(), vGravity);
+	m_pModelCom.lock()->Get_MeshContainer(1).lock()->Update_NvClothVertices(pDeferredContext,
+		BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(),
+		XMVectorSet(0.f, -9.81f, 0.f, 0.f));
 
-	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_CombinedMatrix()
-		* ModelTransformMatrix;
+
+
+	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_OffsetMatrix() * 
+		m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_CombinedMatrix() * 
+		XMLoadFloat4x4(&m_TransformationMatrix);
 
 	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
 	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
 	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
 
-	InverseMatrix = XMMatrixInverse(nullptr, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix());
+	//InverseMatrix = XMMatrixInverse(nullptr, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix());
 
-	vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), InverseMatrix);
+	//vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), XMMatrixRotationX(XMConvertToRadians(0.f)) * InverseMatrix);
 	//vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), InverseMatrix);
 
 	// "Bip001-Xtra10"
 
-	m_pModelCom.lock()->Get_MeshContainer(3).lock()->Update_NvClothVertices(pDeferredContext, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(), vGravity);
+	m_pModelCom.lock()->Get_MeshContainer(3).lock()->Update_NvClothVertices(pDeferredContext,
+		BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(),
+		XMVectorSet(0.f, -9.81f, 0.f, 0.f));
 
 	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
 
@@ -213,8 +235,16 @@ HRESULT CVarg::Render(ID3D11DeviceContext* pDeviceContext)
 			iPassIndex = 4;
 		}
 
-		if (3 == i)
-			iPassIndex = 8;
+		if (1 == i || 3 == i)
+		{
+			iPassIndex = 9;
+
+			m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", XMMatrixIdentity());
+		}
+		else
+		{
+			m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pTransformCom.lock()->Get_WorldMatrix());
+		}
 
 		//m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
 

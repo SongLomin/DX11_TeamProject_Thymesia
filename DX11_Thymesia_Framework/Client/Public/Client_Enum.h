@@ -141,6 +141,7 @@ namespace Client
 		CHECKPOINT,
 		PLAYER_BATCOL,
 		ITEM,
+		ONLY_VIEW,
 		CHECK_DIR,
 
 		LAYER_END
@@ -480,6 +481,11 @@ namespace Client
 		VARG_KEY,
 
 		MEMORY01,
+		MEMORY02,
+
+		SKILLPIECE_VARGSWORD,
+
+
 		ITEM_NAME_END
 	};
 
@@ -506,6 +512,14 @@ namespace Client
 		RIGHT,
 		LEFT,
 		BATATTACK_DOTRESULT_END
+	};
+
+	enum class BOSSNAME
+	{
+		VARG,
+		BAT,
+		URD,
+		NAMENED
 	};
 }
 

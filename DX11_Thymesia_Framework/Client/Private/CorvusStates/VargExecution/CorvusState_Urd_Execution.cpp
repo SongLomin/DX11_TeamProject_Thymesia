@@ -64,7 +64,7 @@ void CCorvusState_Urd_Execution::OnStateStart(const _float& In_fAnimationBlendTi
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,59);
 
 
 	//m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();

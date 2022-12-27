@@ -97,6 +97,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Font((_uint)FONT_INDEX::PRETENDARD, TEXT("../Bin/Resources/Fonts/Pretendard.spriteFont"));
 	GAMEINSTANCE->Add_Font((_uint)FONT_INDEX::HEIROLIGHT, TEXT("../Bin/Resources/Fonts/HeiroLightRegular.spritefont"));
 
+	CEditGround::Load_AllMeshInfo();
+
 #ifndef _ONLY_UI_
 	lstrcpy(m_szLoadingText, TEXT("Loading Prototype Objects..."));
 	GAMEINSTANCE->Add_Prototype_GameObject<CFadeMask>();
@@ -161,15 +163,6 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading UI Resources..."));
 	Load_UIResource();
 
-#ifndef _EFFECT_TOOL_
-	lstrcpy(m_szLoadingText, TEXT("Loading Prop Textures..."));
-	Load_AllTexture("../Bin/Resources/Textures/Prop/", MEMORY_TYPE::MEMORY_STATIC);
-	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Textures..."));
-	Load_AllTexture("../Bin/GroundInfo/Texture/", MEMORY_TYPE::MEMORY_STATIC);
-	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Filters..."));
-	Load_AllTexture("../Bin/GroundInfo/Filter/", MEMORY_TYPE::MEMORY_STATIC);
-#endif // _EFFECT_TOOL_
-
 #endif // _LOAD_CAPTURED_RESOURCE_
 
 #endif // _ONLY_UI_
@@ -212,23 +205,10 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
-	/*lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Else/Binary/ ]"));
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/ ]"));
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/ ]"));
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv2_Fortress/Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/ ]"));
-	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);*/
-
 	lstrcpy(m_szLoadingText, TEXT("Logo : Loading Complete"));
 
-	
-
 	m_isFinished = true;
+
 	return S_OK;
 }
 
@@ -240,7 +220,6 @@ HRESULT CLoader::Loading_ForLobby()
 
 HRESULT CLoader::Loading_ForTestLevel()
 {
-
 	lstrcpy(m_szLoadingText, TEXT("Loading Diffuse Textures..."));
 	Load_AllDiffuseTexture();
 	lstrcpy(m_szLoadingText, TEXT("Loading Mask Textures..."));
@@ -271,8 +250,13 @@ HRESULT CLoader::Loading_ForTestLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading Captured Resources..."));
 	GAMEINSTANCE->Load_ResourcesFromJson("../Bin/LevelData/CapturedResource/TestLevel.json");
 #else // _LOAD_CAPTURED_RESOURCE_
+	lstrcpy(m_szLoadingText, TEXT("Loading Prop Textures..."));
+	Load_AllTexture("../Bin/Resources/Textures/Prop/", MEMORY_TYPE::MEMORY_DYNAMIC);
+	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Textures..."));
+	Load_AllTexture("../Bin/GroundInfo/Texture/", MEMORY_TYPE::MEMORY_DYNAMIC);
+	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Filters..."));
+	Load_AllTexture("../Bin/GroundInfo/Filter/", MEMORY_TYPE::MEMORY_DYNAMIC);
 	lstrcpy(m_szLoadingText, TEXT("Loading EditGround All Mesh Infos..."));
-	CEditGround::Load_AllMeshInfo();
 
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Destructable/Wagon03/ ]"));
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
@@ -302,18 +286,18 @@ HRESULT CLoader::Loading_ForTestLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Destructable/Fence_16a/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
-	//LIGHTDESC LightDesc;
-	//ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
+	LIGHTDESC LightDesc;
+	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
-	//LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	//LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	//LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
-	//LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	//LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
-	//LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	//LightDesc.bEnable = true;
-	//LightDesc.fIntensity = 1.f;
-	//GAMEINSTANCE->Add_Light(LightDesc);
+	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
+	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
+	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
+	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.bEnable = true;
+	LightDesc.fIntensity = 1.f;
+	GAMEINSTANCE->Add_Light(LightDesc);
 
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Light..."));
@@ -365,8 +349,13 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
 	this->Load_NormalMobModel();
 
+	lstrcpy(m_szLoadingText, TEXT("Loading Prop Textures..."));
+	Load_AllTexture("../Bin/Resources/Textures/Prop/", MEMORY_TYPE::MEMORY_DYNAMIC);
+	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Textures..."));
+	Load_AllTexture("../Bin/GroundInfo/Texture/", MEMORY_TYPE::MEMORY_DYNAMIC);
+	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Filters..."));
+	Load_AllTexture("../Bin/GroundInfo/Filter/", MEMORY_TYPE::MEMORY_DYNAMIC);
 	lstrcpy(m_szLoadingText, TEXT("Loading all EditGround Mesh Info..."));
-	CEditGround::Load_AllMeshInfo();
 
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/ ]"));
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
@@ -396,37 +385,23 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Destructable/Fence_16a/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 #endif // _ONLY_UI_
-	m_isFinished = true;
 
 	// TODO : Turn off temporarily for Light_Prop
-	LIGHTDESC LightDesc;
+	GAMEINSTANCE->Clear_Lights();
+
+	/*LIGHTDESC LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
-//#ifdef _BRIGHT_LIGHT_
-//	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-//	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-//	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-//	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
-//	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
-//	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-//	LightDesc.bEnable = true;
-//	LightDesc.fIntensity = 1.f;
-//#else
-//	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-//	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-//	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
-//	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-//	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
-//	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-//	LightDesc.bEnable = true;
-//	LightDesc.fIntensity = 0.3f;
-//
-//#endif // _BRIGHT_LIGHT_
+	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	LightDesc.vDiffuse   = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient   = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vSpecular  = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.bEnable    = true;
+	LightDesc.fIntensity = 50.f;
+	GAMEINSTANCE->Add_Light(LightDesc);*/
 
-	//lstrcpy(m_szLoadingText, TEXT("Loading Light..."));
-	//GAMEINSTANCE->Add_Light(LightDesc);
-
-	GAMEINSTANCE->Clear_Lights();
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Environmental Shader Effects..."));
 	GAMEINSTANCE->Set_FogDesc(_float4(0.2f, 0.15f, 0.03f, 0.5f), 20.f);
@@ -444,6 +419,9 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
 	lstrcpy(m_szLoadingText, TEXT("GamePlay : Loading Complete"));
+
+	m_isFinished = true;
+
 	return S_OK;
 }
 
@@ -452,7 +430,14 @@ HRESULT CLoader::Loading_ForStage2Level()
 #ifdef _LOAD_CAPTURED_RESOURCE_
 	lstrcpy(m_szLoadingText, TEXT("Loading Captured Resources from : [ ../Bin/LevelData/CapturedResource/Stage2.json ]"));
 	GAMEINSTANCE->Load_ResourcesFromJson("../Bin/LevelData/CapturedResource/Stage2.json");
-	#else // _LOAD_CAPTURED_RESOURCE_
+#else // _LOAD_CAPTURED_RESOURCE_
+	lstrcpy(m_szLoadingText, TEXT("Loading Prop Textures..."));
+	Load_AllTexture("../Bin/Resources/Textures/Prop/", MEMORY_TYPE::MEMORY_DYNAMIC);
+	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Textures..."));
+	Load_AllTexture("../Bin/GroundInfo/Texture/", MEMORY_TYPE::MEMORY_DYNAMIC);
+	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Filters..."));
+	Load_AllTexture("../Bin/GroundInfo/Filter/", MEMORY_TYPE::MEMORY_DYNAMIC);
+
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/ForTest_Mesh/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 
@@ -481,32 +466,31 @@ HRESULT CLoader::Loading_ForStage2Level()
 
 
 	// TODO : Turn off temporarily for Light_Prop
-//	LIGHTDESC LightDesc;
-//	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
-//
-//#ifdef _BRIGHT_LIGHT_
-//	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-//	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-//	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-//	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
-//	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
-//	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-//	LightDesc.bEnable = true;
-//	LightDesc.fIntensity = 1.f;
-//#else
-//	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-//	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-//	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
-//	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-//	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
-//	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-//	LightDesc.bEnable = true;
-//	LightDesc.fIntensity = 0.2f;
-//
-//#endif // _BRIGHT_LIGHT_
+	LIGHTDESC LightDesc;
+	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
-	//GAMEINSTANCE->Add_Light(LightDesc);
+#ifdef _BRIGHT_LIGHT_
+	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
+	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
+	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.bEnable = true;
+	LightDesc.fIntensity = 1.f;
+#else // _BRIGHT_LIGHT_
+	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
+	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
+	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
+	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.bEnable = true;
+	LightDesc.fIntensity = 0.2f;
+#endif // _BRIGHT_LIGHT_
+
 	GAMEINSTANCE->Clear_Lights();
+	GAMEINSTANCE->Add_Light(LightDesc);
 
 	GAMEINSTANCE->Set_FogDesc(_float4(0.45f, 0.26f, 0.28f, 0.92f), 60.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 1.f, 1.f, 1.f), _float4(1.f, 1.f, 1.f, 1.f), _float4(1.f, 1.f, 1.f, 1.f));
@@ -530,6 +514,14 @@ HRESULT CLoader::Loading_ForStage3Level()
 	lstrcpy(m_szLoadingText, TEXT("Loading Captured Resources from : [ ../Bin/LevelData/CapturedResource/Stage3.json ]"));
 	GAMEINSTANCE->Load_ResourcesFromJson("../Bin/LevelData/CapturedResource/Stage3.json");
 #else // _LOAD_CAPTURED_RESOURCE_
+	lstrcpy(m_szLoadingText, TEXT("Loading Prop Textures..."));
+	Load_AllTexture("../Bin/Resources/Textures/Prop/", MEMORY_TYPE::MEMORY_DYNAMIC);
+	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Textures..."));
+	Load_AllTexture("../Bin/GroundInfo/Texture/", MEMORY_TYPE::MEMORY_DYNAMIC);
+	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Filters..."));
+	Load_AllTexture("../Bin/GroundInfo/Filter/", MEMORY_TYPE::MEMORY_DYNAMIC);
+	lstrcpy(m_szLoadingText, TEXT("Loading all EditGround Mesh Info..."));
+
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/ForTest_Mesh/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 
@@ -556,12 +548,9 @@ HRESULT CLoader::Loading_ForStage3Level()
 	GAMEINSTANCE->Load_Textures("Sky", TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 #endif // _SKYBOX_
 
-
-	m_isFinished = true;
-
 	GAMEINSTANCE->Clear_Lights();
 
-	GAMEINSTANCE->Set_FogDesc(_float4(0.5f, 0.5f, 0.5f, 1.f), 140.f);
+	GAMEINSTANCE->Set_FogDesc(_float4(0.5f, 0.5f, 0.5f, 0.f), 10000.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 	GAMEINSTANCE->Set_Contrast(1.f);
 	GAMEINSTANCE->Set_Saturation(1.f);
@@ -572,6 +561,7 @@ HRESULT CLoader::Loading_ForStage3Level()
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
+	m_isFinished = true;
 
 	return S_OK;
 }
@@ -597,8 +587,8 @@ HRESULT CLoader::Loading_ForEditLevel()
 	this->Load_BossMobModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
 	this->Load_EliteMobModel();
-	//lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
-	//this->Load_NormalMobModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
+	this->Load_NormalMobModel();
 
 #ifdef _MAP_TOOL_
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/ForTest_Mesh/ ]"));
@@ -641,14 +631,16 @@ HRESULT CLoader::Loading_ForEditLevel()
 	LightDesc.bEnable		= true;
 	LightDesc.fIntensity	= 1.f;
 
-	//GAMEINSTANCE->Add_Light(LightDesc);
+	GAMEINSTANCE->Add_Light(LightDesc);
 
+	GAMEINSTANCE->Set_FogDesc(_float4(0.2f, 0.15f, 0.03f, 0.f), 10000.f);
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter%d.dds"));
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
 	m_isFinished = true;
+
 	return S_OK;
 }
 
@@ -1231,7 +1223,10 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Item_Icon_BlackPepper"), TEXT("../Bin/Resources/Textures/UI/Icons/Items/Ingredients/TexUI_IngredientIcon_BlackPepper.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Item_Icon_Thyme"), TEXT("../Bin/Resources/Textures/UI/Icons/Items/Ingredients/TexUI_IngredientIcon_Thyme.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Item_Icon_Key01"), TEXT("../Bin/Resources/Textures/UI/Icons/Items/Puzzle/TexUI_PuzzleIcon_Key01.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Item_Icon_Key02"), TEXT("../Bin/Resources/Textures/UI/Icons/Items/Puzzle/TexUI_PuzzleIcon_Key02.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
 	GAMEINSTANCE->Load_Textures(("Item_Icon_Memory01"), TEXT("../Bin/Resources/Textures/UI/Icons/Items/Useable/TexUI_MemoryCollectionIcon_01.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Item_Icon_Memory02"), TEXT("../Bin/Resources/Textures/UI/Icons/Items/Useable/TexUI_MemoryCollectionIcon_02.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 
 
@@ -1245,6 +1240,11 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Item_Basil_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/Basil/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Item_Basil_Information"), TEXT("../Bin/Resources/Textures/UI/ItemData/Basil/Information.png"), MEMORY_TYPE::MEMORY_STATIC);
 
+	//Cinnamon
+	GAMEINSTANCE->Load_Textures(("Item_Cinnamon_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/Cinnamon/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Item_Cinnamon_Information"), TEXT("../Bin/Resources/Textures/UI/ItemData/Cinnamon/Information.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
 
 	//Thyme
 	GAMEINSTANCE->Load_Textures(("Item_Thyme_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/Thyme/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
@@ -1254,6 +1254,12 @@ void CLoader::Load_UIResource()
 	//GardenKey
 	GAMEINSTANCE->Load_Textures(("Item_GardenKey_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/GardenKey/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Item_GardenKey_Information"), TEXT("../Bin/Resources/Textures/UI/ItemData/GardenKey/Information.png"), MEMORY_TYPE::MEMORY_STATIC);
+	
+
+	//VargKey
+	GAMEINSTANCE->Load_Textures(("Item_VargKey_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/VargKey/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Item_VargKey_Information"), TEXT("../Bin/Resources/Textures/UI/ItemData/VargKey/Information.png"), MEMORY_TYPE::MEMORY_STATIC);
+
 
 
 	//Memory01
@@ -1261,12 +1267,25 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Item_Memory01_Information"), TEXT("../Bin/Resources/Textures/UI/ItemData/Memory01/Information.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
+	//Memory02
+	GAMEINSTANCE->Load_Textures(("Item_Memory02_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/Memory02/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Item_Memory02_Information"), TEXT("../Bin/Resources/Textures/UI/ItemData/Memory02/Information.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+
 
 	//Popup
 	GAMEINSTANCE->Load_Textures(("Popup_Item_Basil"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_Basil.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Popup_Item_Cinnamon"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_Cinnamon.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
 	GAMEINSTANCE->Load_Textures(("Popup_Item_Thyme"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_Thyme.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Popup_Item_GardenKey"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_GardenKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Popup_Item_VargKey"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_VargKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
 	GAMEINSTANCE->Load_Textures(("Popup_Item_Memory01"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_Memory01.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Popup_Item_Memory02"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_Memory02.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+
 
 	//BloodOverlay
 	GAMEINSTANCE->Load_Textures(("BloodOverlay_Mask"), TEXT("../Bin/Resources/Textures/UI/BloodOverlay/Mask.dds"), MEMORY_TYPE::MEMORY_STATIC);

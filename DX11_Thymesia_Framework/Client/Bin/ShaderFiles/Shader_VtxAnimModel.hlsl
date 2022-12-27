@@ -291,6 +291,32 @@ VS_OUT_NORMAL VS_MAIN_NORMAL(VS_IN In)
     return Out;
 }
 
+//9 
+VS_OUT_NORMAL VS_MAIN_NORMAL_NONBONEMATRIX(VS_IN In)
+{
+    VS_OUT_NORMAL Out = (VS_OUT_NORMAL) 0;
+
+    matrix matWV, matWVP;
+
+    matWV = mul(g_WorldMatrix, g_ViewMatrix);
+    matWVP = mul(matWV, g_ProjMatrix);
+
+    vector vPosition = vector(In.vPosition, 1.f);
+    vector vNormal = vector(In.vNormal, 0.f);
+    vector vTangent = vector(In.vTangent, 0.f);
+
+    Out.vPosition = mul(vPosition, matWVP);
+    Out.vNormal = normalize(mul(vNormal, g_WorldMatrix));
+    Out.vLocalPos = vector(In.vPosition.xyz, 1.f);
+    Out.vTexUV = In.vTexUV;
+    Out.vProjPos = Out.vPosition;
+    Out.vTangent = normalize(mul(vTangent, g_WorldMatrix)).xyz;
+    //Out.vTangent = vTangent.xyz;
+    Out.vBinormal = normalize(cross(float3(Out.vNormal.xyz), Out.vTangent));
+
+    return Out;
+}
+
 // w나누기연산을 수행하낟. (In 투영스페이스)
 // 뷰포트 변환. (In 뷰포트(윈도우좌표))
 
@@ -337,7 +363,8 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
     Out.vDiffuse.a = 1.f;
     Out.vExtractBloom = 0;
     
-    Out.vRimLight = g_vShaderFlag.a * g_vRimLightColor;
+    Out.vShaderFlag.a = smoothstep(0.f, 0.01f, g_vRimLightColor.a);
+    Out.vRimLight = Out.vShaderFlag.a * g_vRimLightColor;
 
     return Out;
 }
@@ -389,7 +416,9 @@ PS_OUT PS_MAIN_DISSOLVE(PS_IN_NORMAL In)
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
 
     Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
-    Out.vRimLight = g_vShaderFlag.a * g_vRimLightColor;
+    
+    Out.vShaderFlag.a = smoothstep(0.f, 0.01f, g_vRimLightColor.a);
+    Out.vRimLight = Out.vShaderFlag.a * g_vRimLightColor;
 
     return Out;
 }
@@ -417,9 +446,11 @@ PS_OUT PS_MAIN_NORMAL_SPECULAR(PS_IN_NORMAL In)
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
 
     Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
-
+  
+    Out.vShaderFlag.a = smoothstep(0.f, 0.01f, g_vRimLightColor.a);
+    Out.vRimLight = Out.vShaderFlag.a * g_vRimLightColor;
+    
     Out.vExtractBloom = 0;
-    Out.vRimLight = g_vShaderFlag.a * g_vRimLightColor;
     
     return Out;
 }
@@ -460,11 +491,11 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_NORMAL In)
     Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
-    Out.vShaderFlag.a = 1.f;
+
+    Out.vShaderFlag.a = smoothstep(0.f,0.01f,g_vRimLightColor.a);
+    Out.vRimLight = Out.vShaderFlag.a * g_vRimLightColor;
     
     Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
-    //Out.vRimLight = g_vShaderFlag.a * g_vRimLightColor;
-    Out.vRimLight = Out.vShaderFlag.a * vector(0.f, 1.f, 0.408f, 1.f);
     
     return Out;
 }
@@ -583,6 +614,19 @@ technique11 DefaultTechnique
         SetRasterizerState(RS_NonCulling );
 
         VertexShader = compile vs_5_0 VS_MAIN_NORMAL();
+        HullShader = NULL;
+        DomainShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_NORMAL_SPECULAR();
+    }
+
+    pass Default_Normal_Specular_NonCulling_NonBoneMatrix //9
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
+        SetRasterizerState(RS_NonCulling);
+
+        VertexShader = compile vs_5_0 VS_MAIN_NORMAL_NONBONEMATRIX();
         HullShader = NULL;
         DomainShader = NULL;
         GeometryShader = NULL;

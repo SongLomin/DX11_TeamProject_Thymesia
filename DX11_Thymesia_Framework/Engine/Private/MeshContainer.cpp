@@ -796,6 +796,8 @@ void CMeshContainer::Set_NvCloth(const void* In_pNvClothMeshDesc)
 		m_pCloth->setLiftCoefficient(pCustomDesc->fLiftCoefficient);
 	}
 
+	
+
 	GET_SINGLE(CNvCloth_Manager)->Get_Solver()->addCloth(m_pCloth);
 
 }
@@ -807,11 +809,11 @@ void CMeshContainer::Update_NvClothVertices(ID3D11DeviceContext* pDeviceContext,
 
 	m_pCloth->setGravity(SMath::Convert_PxVec3(In_Gravity));
 
-	_vector vPos = In_WorldMatrix.r[3];
+	/*_vector vPos = In_WorldMatrix.r[3];
 	_vector vQuaternion = XMQuaternionRotationMatrix(SMath::Get_RotationMatrix(In_WorldMatrix));
 
 	m_pCloth->setTranslation(SMath::Convert_PxVec3(vPos));
-	m_pCloth->setRotation(SMath::Convert_PxQuat(vQuaternion));
+	m_pCloth->setRotation(SMath::Convert_PxQuat(vQuaternion));*/
 
 	if (!m_bSimulation)
 	{
@@ -822,7 +824,7 @@ void CMeshContainer::Update_NvClothVertices(ID3D11DeviceContext* pDeviceContext,
 
 	if (MODEL_TYPE::ANIM == m_pMeshData.lock()->eModelType)
 	{
-		Update_NvClothVertices_Anim(pDeviceContext);
+		Update_NvClothVertices_Anim(pDeviceContext, In_WorldMatrix);
 	}
 	else
 	{
@@ -831,7 +833,15 @@ void CMeshContainer::Update_NvClothVertices(ID3D11DeviceContext* pDeviceContext,
 
 }
 
-void CMeshContainer::Update_NvClothVertices_Anim(ID3D11DeviceContext* pDeviceContext)
+void CMeshContainer::Update_NvClothCollisionSpheres(Range<const physx::PxVec4> spheres, uint32_t first, uint32_t last)
+{
+	if (!m_pCloth)
+		return;
+
+	m_pCloth->setSpheres(spheres, first, last);
+}
+
+void CMeshContainer::Update_NvClothVertices_Anim(ID3D11DeviceContext* pDeviceContext, _fmatrix In_WorldMatrix)
 {
 	D3D11_MAPPED_SUBRESOURCE		SubResource;
 
@@ -840,6 +850,14 @@ void CMeshContainer::Update_NvClothVertices_Anim(ID3D11DeviceContext* pDeviceCon
 	MappedRange<PxVec4> particle = m_pCloth->getCurrentParticles();
 	MappedRange<PxVec4> preparticle = m_pCloth->getPreviousParticles();
 	//m_pCloth->get
+
+	/*nv::cloth::Range<physx::PxVec4> motionConstraints = m_pCloth->getMotionConstraints();
+	_int iSize = motionConstraints.size();
+	for (_int i = 0; i < iSize; i++)
+	{
+		_vector vConstraintsPoint = XMVector3TransformCoord(XMLoadFloat3(&m_pAnimVertices[i].vPosition), In_WorldMatrix);
+		motionConstraints[i] = physx::PxVec4(SMath::Convert_PxVec3(vConstraintsPoint), 1.1f);
+	}*/
 
 	pDeviceContext->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResource);
 
@@ -858,10 +876,17 @@ void CMeshContainer::Update_NvClothVertices_Anim(ID3D11DeviceContext* pDeviceCon
 
 		XMStoreFloat3(&((VTXANIM*)SubResource.pData)[i].vPosition, vPos);*/
 
+		if (particle[i].w < DBL_EPSILON)
+		{
+			_vector vAttachPoint = XMVector3TransformCoord(XMLoadFloat3(&m_pAnimVertices[i].vPosition), In_WorldMatrix);
+			particle[i] = PxVec4(SMath::Convert_PxVec3(vAttachPoint), particle[i].w);
+		}
 		memcpy(&((VTXANIM*)SubResource.pData)[i], &m_pAnimVertices[i], sizeof(VTXANIM));
 		_vector vNewPos = SMath::Convert_Vector(particle[i].getXYZ());
 		XMStoreFloat3(&((VTXANIM*)SubResource.pData)[i].vPosition, vNewPos);
 	}
+
+
 
 	pDeviceContext->Unmap(m_pVB.Get(), 0);
 }

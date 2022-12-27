@@ -8,7 +8,7 @@
 #include "EasingComponent_Transform.h"
 #include "UI_ItemSlot.h"
 #include "EasingComponent_Float.h"
-
+#include "EasingComponent_Bezier.h"
 GAMECLASS_C(CUI_ShuffleIcon)
 CLONE_C(CUI_ShuffleIcon, CGameObject)
 
@@ -50,6 +50,13 @@ void CUI_ShuffleIcon::Tick(_float fTimeDelta)
 	if (m_pEasingTransform.lock()->Is_Lerping())
 	{
 		_float2	fPos = m_pEasingTransform.lock()->Get_Lerp();
+
+		Set_UIPosition(fPos.x, fPos.y);
+	}
+
+	if (m_pEasingBezier.lock()->Is_Lerping())
+	{
+		_float2	fPos = m_pEasingBezier.lock()->Get_Lerp();
 
 		Set_UIPosition(fPos.x, fPos.y);
 	}
@@ -110,11 +117,11 @@ void CUI_ShuffleIcon::Start_Lerp(_float fLerpTime)
 		bind(&CUI_ShuffleIcon::Call_TransformLerpEnd, this);
 }
 
-void CUI_ShuffleIcon::Start_SwapLerp(_float2 TargetPos, _float fLerpTime)
+void CUI_ShuffleIcon::Start_SwapLerp(_float2 TargetPos, _float fWeight, _float fLerpTime)
 {
-	m_pEasingTransform.lock()->Set_Lerp(GetPos(), TargetPos, fLerpTime, EASING_TYPE::QUAD_IN,
-		CEasingComponent::ONCE, true);
+	_float2	fCurve = CUI_Utils::Get_BezierCurve(GetPos(), TargetPos, fWeight);
 
+	m_pEasingBezier.lock()->Set_Lerp_OneCurve(GetPos(), fCurve, TargetPos, fLerpTime, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE, false);
 }
 
 void CUI_ShuffleIcon::Call_TransformLerpEnd()
@@ -142,6 +149,9 @@ void CUI_ShuffleIcon::Call_ScaleDownEnd()
 void CUI_ShuffleIcon::SetUp_Component()
 {
 	m_pEasingTransform = Add_Component<CEasingComponent_Transform>();
+	
+	m_pEasingBezier = Add_Component<CEasingComponent_Bezier>();
+
 	m_pEasingScale = Add_Component<CEasingComponent_Float>();
 
 }

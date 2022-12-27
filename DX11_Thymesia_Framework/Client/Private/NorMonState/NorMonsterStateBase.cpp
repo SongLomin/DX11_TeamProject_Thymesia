@@ -203,6 +203,9 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.08f + fShakingRatio, 1.f, 9.f, 0.25f);
 		GAMEINSTANCE->Set_MotionBlur(0.05f);
 
+		Get_OwnerMonster()->Set_RimLightDesc(1.5f, { 0.6f,0.f,0.f }, 0.9f);
+
+
 		//GAMEINSTANCE->Get_GameObjects<CDamageUI>(LEVEL::LEVEL_STATIC).front().lock()->Add_DamageText(vMyPosition, In_fDamage, bRandom);
 
 		//GAMEINSTANCE->Get_GameObjects<CMonsterHpBar>(LEVEL::LEVEL_STATIC).front().lock()->OnHit(m_pOwner);

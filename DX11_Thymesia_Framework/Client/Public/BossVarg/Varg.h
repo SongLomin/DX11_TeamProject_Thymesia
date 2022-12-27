@@ -34,6 +34,8 @@ private:
     weak_ptr<class CEffect_Trail> m_pTrailEffect;
     weak_ptr<CBoneNode> m_pTrailBoneNode;
 
+    _float4x4                     m_TransformationMatrix;
+
 private:
     virtual void Move_RootMotion_Internal() override;
     virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;

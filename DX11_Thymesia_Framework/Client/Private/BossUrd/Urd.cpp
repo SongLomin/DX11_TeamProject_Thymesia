@@ -105,7 +105,7 @@ HRESULT CUrd::Start()
 
 
 	CBase::Set_Enable(true);
-	Change_State<CUrdBossState_Idle>();
+	Change_State<CUrdBossState_Start>();
 
 
 	//m_EffectIndexList.emplace_back("Character_Target", GET_SINGLE(CGameManager)->Use_EffectGroup("Character_Target", m_pTransformCom));
@@ -169,11 +169,17 @@ void CUrd::Init_Desc()
 
 	m_pModelCom.lock()->Init_Model("Boss_Urd", "", (_uint)TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
-	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
+	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "AnimTargetPoint");
+	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
+	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword02_Point");
+	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
+	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword03_Point");
+	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
+	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword04_Point");
 
 	//TODO 여기서하는 이유는 몬스터가 배치되고 원점에서 우리가 피킹한위치만큼더해지고 난뒤에 그월드포지션값저장하기위해서 여기서함
 
-	m_pModelCom.lock()->Set_RootNode("root_$AssimpFbx$_Translation", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
+	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
 
 
 
@@ -245,9 +251,9 @@ void CUrd::Init_Desc()
 void CUrd::Move_RootMotion_Internal()
 {
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
 
-	PxControllerFilters Filters = Filters;
+	PxControllerFilters Filters;
 	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 }
 
@@ -269,6 +275,11 @@ void CUrd::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> 
 void CUrd::OnEventMessage(_uint iArg)
 {
 	__super::OnEventMessage(iArg);
+
+	if ((_uint)EVENT_TYPE::ON_BOSS_EXECUTIONSTART == iArg)
+	{
+		m_bBossExecutionStartOnOff = true;
+	}
 }
 
 void CUrd::OnEnable(void* _Arg)

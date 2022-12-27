@@ -29,8 +29,8 @@ HRESULT CUrdBossState_Attack03_DashSting_R::Initialize(void* pArg)
 void CUrdBossState_Attack03_DashSting_R::Start()
 {
 	__super::Start();
-
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_Attack03_DashSting_R|BaseLayer");
+	                                                          
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_Attack04_DashSting_R|BaseLayer");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_Attack03_DashSting_R::Call_AnimationEnd, this);
 }

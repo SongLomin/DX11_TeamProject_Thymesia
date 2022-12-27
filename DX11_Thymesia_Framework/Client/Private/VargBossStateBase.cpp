@@ -129,7 +129,7 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 		vSameHeightOtherColliderPosition.m128_f32[1] = vMyPosition.m128_f32[1];
 		PxControllerFilters Filters;
 
-		m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
+		m_pTransformCom.lock()->LookAt2D(vSameHeightOtherColliderPosition);
 
 		ATTACK_OPTION eAttackOption = pAttackArea.lock()->Get_OptionType();
 

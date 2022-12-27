@@ -281,21 +281,29 @@ void CPreset_UIDesc::Set_CUI_ItemInformaiton_BindItem(weak_ptr<class CUI_ItemInf
         pUI.lock()->m_pItemTitle.lock()->Set_Texture("Item_Basil_Title");
         pUI.lock()->m_pItemInformation.lock()->Set_Texture("Item_Basil_Information");
         break;
+    case Client::ITEM_NAME::CINNAMON:
+        pUI.lock()->m_pItemTitle.lock()->Set_Texture("Item_Cinnamon_Title");
+        pUI.lock()->m_pItemInformation.lock()->Set_Texture("Item_Cinnamon_Information");
+        break;
     case Client::ITEM_NAME::THYME:
         pUI.lock()->m_pItemTitle.lock()->Set_Texture("Item_Thyme_Title");
         pUI.lock()->m_pItemInformation.lock()->Set_Texture("Item_Thyme_Information");
-        break;
-    case Client::ITEM_NAME::CINNAMON:
-        pUI.lock()->m_pItemTitle.lock()->Set_Texture("Item_Basil_Title");
-        pUI.lock()->m_pItemInformation.lock()->Set_Texture("Item_Basil_Information");
         break;
     case Client::ITEM_NAME::GARDEN_KEY:
         pUI.lock()->m_pItemTitle.lock()->Set_Texture("Item_GardenKey_Title");
         pUI.lock()->m_pItemInformation.lock()->Set_Texture("Item_GardenKey_Information");
         break;
+    case Client::ITEM_NAME::VARG_KEY:
+        pUI.lock()->m_pItemTitle.lock()->Set_Texture("Item_VargKey_Title");
+        pUI.lock()->m_pItemInformation.lock()->Set_Texture("Item_VargKey_Information");
+        break;
     case Client::ITEM_NAME::MEMORY01:
         pUI.lock()->m_pItemTitle.lock()->Set_Texture("Item_Memory01_Title");
         pUI.lock()->m_pItemInformation.lock()->Set_Texture("Item_Memory01_Information");
+        break;
+    case Client::ITEM_NAME::MEMORY02:
+        pUI.lock()->m_pItemTitle.lock()->Set_Texture("Item_Memory02_Title");
+        pUI.lock()->m_pItemInformation.lock()->Set_Texture("Item_Memory02_Information");
         break;
     default:
         break;
@@ -334,17 +342,23 @@ void CPreset_UIDesc::Set_CUI_ItemPopup_Ready_Popup(weak_ptr<class CUI> pUI, ITEM
         pUI.lock()->Set_Texture("Popup_Item_Thyme");
         break;
     case Client::ITEM_NAME::CINNAMON:
+        pUI.lock()->Set_Texture("Popup_Item_Cinnamon");
         break;
     case Client::ITEM_NAME::GARDEN_KEY:
         pUI.lock()->Set_Texture("Popup_Item_GardenKey");
         break;
+    case Client::ITEM_NAME::VARG_KEY:
+        pUI.lock()->Set_Texture("Popup_Item_VargKey");
+        break;
     case Client::ITEM_NAME::MEMORY01:
         pUI.lock()->Set_Texture("Popup_Item_Memory01");
+        break;
+    case Client::ITEM_NAME::MEMORY02:
+        pUI.lock()->Set_Texture("Popup_Item_Memory02");
         break;
     default:
         break;
     }
-
 }
 
 

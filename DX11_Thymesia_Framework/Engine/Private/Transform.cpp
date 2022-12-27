@@ -254,13 +254,13 @@ HRESULT CTransform::Set_Position(_fvector vPos, weak_ptr<CNavigation> pNaviCom)
     {
         _float3 vLineDir;
 
-        if (!pNaviCom.lock()->IsMove(vPos, &vLineDir))
+        if (!pNaviCom.lock()->IsMove(XMVectorSetW(vPos, 1.f), &vLineDir))
         {
             return S_OK;
         }
     }
 
-    Set_State(CTransform::STATE_TRANSLATION, vPos);
+    Set_State(CTransform::STATE_TRANSLATION, XMVectorSetW(vPos, 1.f));
 
     return S_OK;
 }

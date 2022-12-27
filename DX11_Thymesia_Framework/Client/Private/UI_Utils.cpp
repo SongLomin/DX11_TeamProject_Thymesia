@@ -92,10 +92,12 @@ _float2 CUI_Utils::Get_BezierCurve(_float2 fStart, _float2 fTarget, _float fCust
 		왜 계산을 저렇게 함?
 		커브를 굳이 생각하면 튀어나온 선분이라는건데,
 		상대적으로 평평한 쪽을 기준으로 값에 변화를 줘야한다고 생각함.
+		
+		같은 원소의 값을 줘봤자, 직선 선분은 더 길어지고, 곡선은 생기지 않음
 
 		커스텀 가중치가 0.5라면
-		x = 0
-		y = 500 * 1 * 0.5 = 250.
+		x = 0(거리.y) * 0(가중치.x) * 0.5 = 0
+		y = 500(거리.x) * 1(가중치.y) * 0.5 = 250.
 
 		(750, 300) + (0,250) = (750,550)
 
@@ -111,9 +113,20 @@ _float2 CUI_Utils::Get_BezierCurve(_float2 fStart, _float2 fTarget, _float fCust
 	_vector vCenter = (vStart + vTarget) / 2.f;
 	_vector vDistance = XMVectorAbs(vTarget - vStart);
 
+	_float2	fWeight;
 
+	fWeight.x = 1.f - (vDistance.m128_f32[0] / (vDistance.m128_f32[0] + vDistance.m128_f32[1]));
+	fWeight.y = 1.f - (vDistance.m128_f32[1] / (vDistance.m128_f32[0] + vDistance.m128_f32[1]));
 
+	_vector vCurve;
+	_vector vWeight;
 
+	vWeight.m128_f32[0] = vDistance.m128_f32[1] * fWeight.x * fCustomWeight;
+	vWeight.m128_f32[1] = vDistance.m128_f32[0] * fWeight.y * fCustomWeight;
 
-	return _float2();
+	vCurve = vCenter + vWeight;
+
+	fCurve = { vCurve.m128_f32[0],vCurve.m128_f32[1] };
+
+	return fCurve;
 }

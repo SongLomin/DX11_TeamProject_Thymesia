@@ -17,7 +17,7 @@ public:
 	enum class SORTING_ANIMATION_TYPE
 	{
 		SORTING_ANIMATION_MOBILE,//모바일 갬성 정렬
-		SORTING_ANIMATION_QUICK_FLOW,//퀵소트 플로우 보여주면서(직선보간)
+		SORTING_ANIMATION_QUICK,//
 		SORTING_ANIMATION_QUICK_FLOW_BEZIER//퀵소트 플로우 보여주면서(베지어 곡선추가)
 	};
 

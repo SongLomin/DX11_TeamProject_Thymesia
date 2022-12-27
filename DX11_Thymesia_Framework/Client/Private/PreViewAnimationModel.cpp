@@ -83,12 +83,29 @@ void CPreviewAnimationModel::Thread_PreBeforeRender(_float fTimeDelta)
 	if (!m_pTargetBoneNode.lock())
 		return;
 
+	
+
 	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
 
 	_matrix		BoneMatrix;
 	_matrix		InverseMatrix;
 	_vector		vGravity;
-	
+
+
+	BoneMatrix = //m_pModelCom.lock()->Find_BoneNode("Bip001-Head").lock()->Get_OffsetMatrix() * 
+		m_pModelCom.lock()->Find_BoneNode("Bip001-Head").lock()->Get_CombinedMatrix() *
+		XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix();
+
+	_vector vSpherePos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+	vSpherePos = XMVector3TransformCoord(vSpherePos, BoneMatrix);
+	PxVec4 spheres[2]{
+		PxVec4(SMath::Convert_PxVec3(vSpherePos), 0.3f),
+		PxVec4(999.f, 999.f, 999.f, 1.0f),
+	};
+	nv::cloth::Range<const physx::PxVec4> sphereRange(spheres, spheres + 2);
+
+	m_pModelCom.lock()->Get_MeshContainer(1).lock()->Get_NvCloth()->setSpheres(sphereRange, 0, m_pModelCom.lock()->Get_MeshContainer(1).lock()->Get_NvCloth()->getNumSpheres());
+
 	//Bip001-Ponytail1
 	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_CombinedMatrix()
 		* XMLoadFloat4x4(&m_TransformationMatrix);
@@ -96,13 +113,17 @@ void CPreviewAnimationModel::Thread_PreBeforeRender(_float fTimeDelta)
 	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
 	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
 	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
-	
-	InverseMatrix = XMMatrixInverse(nullptr, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix());
 
-	vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), XMMatrixRotationX(XMConvertToRadians(90.f)) * InverseMatrix);
+	//InverseMatrix = XMMatrixInverse(nullptr, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix());
+
+	//vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), XMMatrixRotationX(XMConvertToRadians(90.f)) * InverseMatrix);
 	//vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), InverseMatrix * XMMatrixRotationX(XMConvertToRadians(-90.f)));
 
-	m_pModelCom.lock()->Get_MeshContainer(1).lock()->Update_NvClothVertices(pDeferredContext, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(), vGravity);
+	m_pModelCom.lock()->Get_MeshContainer(1).lock()->Update_NvClothVertices(pDeferredContext,
+		m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_OffsetMatrix() * BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(),
+		XMVectorSet(0.f, -9.81f, 0.f, 0.f));
+
+
 
 	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_CombinedMatrix()
 		* XMLoadFloat4x4(&m_TransformationMatrix);
@@ -111,15 +132,17 @@ void CPreviewAnimationModel::Thread_PreBeforeRender(_float fTimeDelta)
 	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
 	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
 
-	InverseMatrix = XMMatrixInverse(nullptr, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix());
+	//InverseMatrix = XMMatrixInverse(nullptr, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix());
 
-	vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), XMMatrixRotationX(XMConvertToRadians(0.f)) * InverseMatrix);
+	//vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), XMMatrixRotationX(XMConvertToRadians(0.f)) * InverseMatrix);
 	//vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), InverseMatrix);
 
 	// "Bip001-Xtra10"
-	
-	m_pModelCom.lock()->Get_MeshContainer(3).lock()->Update_NvClothVertices(pDeferredContext, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(), vGravity);
-	
+
+	m_pModelCom.lock()->Get_MeshContainer(3).lock()->Update_NvClothVertices(pDeferredContext,
+		m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_OffsetMatrix() * BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(),
+		XMVectorSet(0.f, -9.81f, 0.f, 0.f));
+
 	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
 
 }
@@ -155,8 +178,33 @@ HRESULT CPreviewAnimationModel::Render(ID3D11DeviceContext* pDeviceContext)
 			iPassIndex = 4;
 		}
 
-		/*if (3 == i)
-			iPassIndex = 8;*/
+		if (m_pModelCom.lock()->Get_ModelData().lock()->szModelFileName == "Varg")
+		{
+			if (1 == i || 3 == i)
+			{
+				iPassIndex = 9;
+
+				if (1 == i)
+				{
+					m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", XMMatrixIdentity());
+					/*m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_OffsetMatrix() * m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_CombinedMatrix()
+						* XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix());*/
+				}
+
+
+				if (3 == i)
+				{
+					m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", XMMatrixIdentity());
+					/*m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_OffsetMatrix() * m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_CombinedMatrix()
+						* XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix());*/
+				}
+			}
+			else
+			{
+				//m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
+				m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pTransformCom.lock()->Get_WorldMatrix());
+			}
+		}	
 
 		//m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
 

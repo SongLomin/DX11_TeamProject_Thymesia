@@ -160,7 +160,7 @@ void CMainApp::Tick(float fTimeDelta)
 		}
 		else
 		{
-			RECT ClientRect = { 0, 0, 99999, 99999 };
+			RECT ClientRect = { -99999, -99999, 99999, 99999 };
 			ClipCursor(&ClientRect);
 		}
 	}
