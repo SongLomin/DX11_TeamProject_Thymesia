@@ -139,6 +139,7 @@ HRESULT CCorvus::Start()
 
 	Test_BindSkill();
 
+	m_vRimLightColor = { 0.6f,0.f,0.f };
 #ifdef _CLOTH_
 	// m_pModelCom.lock()->Set_NvClothMeshWithIndex(0);
 #endif // _CLOTH_
@@ -167,7 +168,15 @@ void CCorvus::Tick(_float fTimeDelta)
 
 	GAMEINSTANCE->Set_LightDesc(m_LightDesc);
 
-	this->Debug_KeyInput(fTimeDelta);
+	// TODO : Test For RimLight Power
+	//if (KEY_INPUT(KEY::DELETEKEY, KEY_STATE::TAP))
+	//{
+	//	m_fRimLightPower = 1.f;
+	//}
+	//m_fRimLightPower = max(0.f, m_fRimLightPower - fTimeDelta);
+	//
+
+	Debug_KeyInput(fTimeDelta);
 
 }
 
@@ -233,7 +242,7 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 			m_pShaderCom.lock()->Set_RawValue("g_vDissolveStartPos", &iter->second.vStartPos, sizeof(_float3));
 			m_pShaderCom.lock()->Set_RawValue("g_fDissolveAmount", &iter->second.fAmount, sizeof(_float));
 
-			_float4 vShaderFlag = { 0.f,0.f,1.f,0.f };
+			_float4 vShaderFlag = { 0.f,0.f,1.f,1.f };
 
 			m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_float4));
 

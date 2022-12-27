@@ -33,9 +33,8 @@ public:
 public:
 	void Tick();
 
-	_vector Get_LinearVelocity();
 	_float4x4 Get_PreViewMatrix();
-	_vector Get_AngularVelocity();
+
 
 private:
 	_float4x4			m_TransformState[D3DTS_END];
