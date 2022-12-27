@@ -1,0 +1,203 @@
+{
+  "GameObject": [
+    {
+      "Component": {
+        "Transform": [
+          [ -0.2439841330051422, 6.402842700481415e-10, -0.9697787761688232, 0.0 ],
+          [ 0.6383680105209351, 0.7527906894683838, -0.1606043428182602, 0.0 ],
+          [ 0.730042040348053, -0.6582602858543396, -0.1836690753698349, 0.0 ],
+          [ -7.75622034072876, 21.26911163330078, 29.34173011779785, 1.0 ]
+        ]
+      },
+      "Hash": 8675365520207489377,
+      "Name": "class Client::CCamera_Free",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": { "Transform": { "": null } },
+      "Hash": 12159710856434595157,
+      "Name": "class Client::CGround",
+      "Setting": { "Enable": true },
+      "ShaderPass": 0,
+      "TextureInfo": {
+        "g_Texture_Sorc": {
+          "Density": 30.0,
+          "Diff": "T_P_Gravel_floor01_D",
+          "Norm": "T_P_Gravel_floor01_N"
+        }
+      },
+      "VIBufferCom": "Test2",
+      "g_FilterTexture": "Test2_Filter"
+    },
+    {
+      "Component": { "Transform": { "": null } },
+      "Hash": 12159710856434595157,
+      "Name": "class Client::CGround",
+      "Setting": { "Enable": true },
+      "ShaderPass": 0,
+      "TextureInfo": {
+        "g_Texture_Sorc": {
+          "Density": 30.0,
+          "Diff": "T_P_Gravel_floor01_D",
+          "Norm": "T_P_Gravel_floor01_N"
+        }
+      },
+      "VIBufferCom": "Test2",
+      "g_FilterTexture": "Test2_Filter"
+    },
+    {
+      "Component": {
+        "Model": "Tent_P_WoodenStand01",
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 20.0, -2.5, 20.0, 1.0 ]
+        ]
+      },
+      "Hash": 15438220394405784524,
+      "Name": "class Client::CStatic_Prop",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Model": "Tent_P_WoodenStand04",
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 20.0, -2.5, 20.0, 1.0 ]
+        ]
+      },
+      "Hash": 15438220394405784524,
+      "Name": "class Client::CStatic_Prop",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Model": "Tent_P_WoodenStand05",
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 20.0, -2.5, 20.0, 1.0 ]
+        ]
+      },
+      "Hash": 15438220394405784524,
+      "Name": "class Client::CStatic_Prop",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Model": "Tent_P_WoodenStand08",
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 20.0, -2.5, 20.0, 1.0 ]
+        ]
+      },
+      "Hash": 15438220394405784524,
+      "Name": "class Client::CStatic_Prop",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Model": "Tent_P_WoodenStand10",
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 20.0, -2.5, 20.0, 1.0 ]
+        ]
+      },
+      "Hash": 15438220394405784524,
+      "Name": "class Client::CStatic_Prop",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Model": "Tent_P_Rag01",
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 20.0, -2.5, 20.0, 1.0 ]
+        ]
+      },
+      "Hash": 15438220394405784524,
+      "Name": "class Client::CStatic_Prop",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Model": "Tent_P_Rag02",
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 20.0, -2.5, 20.0, 1.0 ]
+        ]
+      },
+      "Hash": 15438220394405784524,
+      "Name": "class Client::CStatic_Prop",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Model": "Tent_P_Rag03",
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 20.0, -2.5, 20.0, 1.0 ]
+        ]
+      },
+      "Hash": 15438220394405784524,
+      "Name": "class Client::CStatic_Prop",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Model": "Tent_P_Rag04",
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 20.0, -2.5, 20.0, 1.0 ]
+        ]
+      },
+      "Hash": 15438220394405784524,
+      "Name": "class Client::CStatic_Prop",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Model": "Tent_P_Rag05",
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 20.0, -2.5, 20.0, 1.0 ]
+        ]
+      },
+      "Hash": 15438220394405784524,
+      "Name": "class Client::CStatic_Prop",
+      "Setting": { "Enable": true }
+    },
+    {
+      "Component": {
+        "Model": "Tent_P_Rag07",
+        "Transform": [
+          [ 1.0, 0.0, 0.0, 0.0 ],
+          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
+          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
+          [ 20.0, -2.5, 20.0, 1.0 ]
+        ]
+      },
+      "Hash": 15438220394405784524,
+      "Name": "class Client::CStatic_Prop",
+      "Setting": { "Enable": true }
+    }
+  ]
+}

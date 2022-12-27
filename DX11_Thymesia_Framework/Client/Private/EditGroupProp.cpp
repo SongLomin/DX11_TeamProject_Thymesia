@@ -780,7 +780,11 @@ void CEditGroupProp::RenderView_Transform_Edit(weak_ptr<CGameObject> In_Obj)
 					case 2 : vPos = XMVectorSetZ(vPos, XMVectorGetZ(vPos) + MouseMove * -0.01f); break;
 				}
 
-				pTransformCom.lock()->Set_State(CTransform::STATE_TRANSLATION, vPos);
+				pTransformCom.lock()->Set_State
+				(
+					CTransform::STATE_TRANSLATION,
+					XMVectorSetW(vPos, 1.f)
+				);
 			}
 		}
 	}

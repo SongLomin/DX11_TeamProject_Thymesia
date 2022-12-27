@@ -144,42 +144,42 @@ HRESULT CMainApp::Initialize()
 
 void CMainApp::Tick(float fTimeDelta)
 {
-	if (GetFocus())
-	{
-		if (KEY_INPUT(KEY::TAB, KEY_STATE::TAP))
-		{
-			m_bClip = !m_bClip;
-		}
-
-		if (m_bClip)
-		{
-			POINT WinSize{ g_iWinCX , g_iWinCY };
-			ClientToScreen(g_hWnd, &WinSize);
-			RECT ClientRect = { _long(WinSize.x - g_iWinCX), _long(WinSize.y - g_iWinCY), (_long)WinSize.x, (_long)WinSize.y };
-			ClipCursor(&ClientRect);
-		}
-		else
-		{
-			RECT ClientRect = { 0, 0, 99999, 99999 };
-			ClipCursor(&ClientRect);
-		}
-	}
-
-#ifdef _DEBUG
-	if (KEY_INPUT(KEY::GRAVE, KEY_STATE::TAP))
-	{
-		m_bEnableConsole = !m_bEnableConsole;
-		m_pDeveloperConsole->OnEnableConsole(m_bEnableConsole);
-
-		ShowCursor(m_bEnableConsole);
-		weak_ptr<CCamera_Target> pTargetCamera = GET_SINGLE(CGameManager)->Get_TargetCamera();
-
-		if (pTargetCamera.lock())
-		{
-			pTargetCamera.lock()->Set_StopCamera(m_bEnableConsole);
-		}
-	}
-#endif // _DEBUG
+//	if (GetFocus())
+//	{
+//		if (KEY_INPUT(KEY::TAB, KEY_STATE::TAP))
+//		{
+//			m_bClip = !m_bClip;
+//		}
+//
+//		if (m_bClip)
+//		{
+//			POINT WinSize{ g_iWinCX , g_iWinCY };
+//			ClientToScreen(g_hWnd, &WinSize);
+//			RECT ClientRect = { _long(WinSize.x - g_iWinCX), _long(WinSize.y - g_iWinCY), (_long)WinSize.x, (_long)WinSize.y };
+//			ClipCursor(&ClientRect);
+//		}
+//		else
+//		{
+//			RECT ClientRect = { 0, 0, 99999, 99999 };
+//			ClipCursor(&ClientRect);
+//		}
+//	}
+//
+//#ifdef _DEBUG
+//	if (KEY_INPUT(KEY::GRAVE, KEY_STATE::TAP))
+//	{
+//		m_bEnableConsole = !m_bEnableConsole;
+//		m_pDeveloperConsole->OnEnableConsole(m_bEnableConsole);
+//
+//		ShowCursor(m_bEnableConsole);
+//		weak_ptr<CCamera_Target> pTargetCamera = GET_SINGLE(CGameManager)->Get_TargetCamera();
+//
+//		if (pTargetCamera.lock())
+//		{
+//			pTargetCamera.lock()->Set_StopCamera(m_bEnableConsole);
+//		}
+//	}
+//#endif // _DEBUG
 
 	if (nullptr == GAMEINSTANCE)
 		return;

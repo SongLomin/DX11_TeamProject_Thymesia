@@ -142,6 +142,7 @@ namespace Client
 		PLAYER_BATCOL,
 		ITEM,
 		CHECK_DIR,
+		ONLY_VIEW,
 
 		LAYER_END
 	};

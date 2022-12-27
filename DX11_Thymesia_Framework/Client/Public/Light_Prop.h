@@ -39,6 +39,7 @@ private:
     void Act_LightTurnOnEvent(_float fTimeDelta, _bool& Out_End);
     void Act_LightTurnOffEvent(_float fTimeDelta, _bool& Out_End);
 
+
 private:
 	LIGHTDESC   m_tLightDesc;
     _int        m_iSectionIndex    = -1;
@@ -60,10 +61,10 @@ private:
 
 #ifdef _DEBUG
     weak_ptr<CCollider>   m_pColliderCom;
-#endif
 
 private:
     void    SetUpColliderDesc(_float* _pColliderDesc);
+#endif
 
 private:
     virtual void OnDestroy() override;
