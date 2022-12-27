@@ -37,13 +37,16 @@ private:
     weak_ptr<CGameObject> m_pTargetObject;
     _uint m_iDustEffectIndex;
     weak_ptr<CAnimation> m_ThisStateAnimationCom;
-
+    BOSSNAME eBossName = BOSSNAME::NAMENED;
 protected:
     virtual void OnEventMessage(weak_ptr<CBase> pArg) override;
     void Free();
     virtual void OnDestroy() override;
     // CNorMonStateBase을(를) 통해 상속됨
     virtual _bool Check_AndChangeNextState() override;
+
+private:
+    virtual void OnEventMessage(_uint iArg) override;
 
 };
 

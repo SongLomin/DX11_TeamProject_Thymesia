@@ -88,7 +88,7 @@ void CLight_Prop::LateTick(_float fTimeDelta)
 void CLight_Prop::Before_Render(_float fTimeDelta)
 {
 #ifdef _DEBUG
-	m_pColliderCom.lock()->Render_IgnoreDebugCheck();
+	//m_pColliderCom.lock()->Render_IgnoreDebugCheck();
 #endif
 
 	if (!m_bRendering)

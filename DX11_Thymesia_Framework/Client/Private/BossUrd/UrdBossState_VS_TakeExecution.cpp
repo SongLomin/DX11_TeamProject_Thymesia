@@ -8,6 +8,8 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossUrd/UrdStates.h"
+#include "PhysXController.h"
+#include "PhysXCharacterController.h"
 
 GAMECLASS_C(CUrdBossState_VS_TakeExecution);
 CLONE_C(CUrdBossState_VS_TakeExecution, CComponent)
@@ -56,7 +58,25 @@ void CUrdBossState_VS_TakeExecution::OnStateStart(const _float& In_fAnimationBle
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,49);
+
+	m_pPhysXControllerCom.lock()->Set_Enable(false);
+
+	if (Get_OwnerMonster()->Get_BossExecutionStartOnOff())
+	{
+		PxControllerFilters Filters;
+		_matrix                    vResultOtherWorldMatrix;
+		weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+		weak_ptr<CCharacter> pOtherCharacter = Weak_StaticCast<CCharacter>(pCurrentPlayer);
+		_matrix vOtherWorldMatrix = pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix();
+
+		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(-0.7f, 0.f, -1.5f, 0.f));
+			pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
+				vResultOtherWorldMatrix.r[3],
+				GAMEINSTANCE->Get_DeltaTime(),
+				Filters);
+		Get_OwnerMonster()->Set_BossExecutionStartOnOff(false);
+	}
 	
 	
 #ifdef _DEBUG
@@ -73,6 +93,7 @@ void CUrdBossState_VS_TakeExecution::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	m_pPhysXControllerCom.lock()->Set_Enable(true);
 }
 
 

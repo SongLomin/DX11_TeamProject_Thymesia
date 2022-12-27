@@ -32,6 +32,7 @@ protected:
 private:
 	_bool    m_bNextState = false;
 	_float   m_fSinematic = 0.f;
+	_bool    m_bSinematicStart = false;
 
 private:
 	void Call_AnimationEnd();

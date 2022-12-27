@@ -302,18 +302,18 @@ HRESULT CLoader::Loading_ForTestLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Destructable/Fence_16a/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
-	//LIGHTDESC LightDesc;
-	//ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
+	LIGHTDESC LightDesc;
+	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
-	//LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	//LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	//LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
-	//LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	//LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
-	//LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	//LightDesc.bEnable = true;
-	//LightDesc.fIntensity = 1.f;
-	//GAMEINSTANCE->Add_Light(LightDesc);
+	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
+	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
+	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
+	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.bEnable = true;
+	LightDesc.fIntensity = 1.f;
+	GAMEINSTANCE->Add_Light(LightDesc);
 
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Light..."));
@@ -641,7 +641,7 @@ HRESULT CLoader::Loading_ForEditLevel()
 	LightDesc.bEnable		= true;
 	LightDesc.fIntensity	= 1.f;
 
-	//GAMEINSTANCE->Add_Light(LightDesc);
+	GAMEINSTANCE->Add_Light(LightDesc);
 
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");

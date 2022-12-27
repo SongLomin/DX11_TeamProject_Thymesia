@@ -507,6 +507,14 @@ namespace Client
 		LEFT,
 		BATATTACK_DOTRESULT_END
 	};
+
+	enum class BOSSNAME
+	{
+		VARG,
+		BAT,
+		URD,
+		NAMENED
+	};
 }
 
 

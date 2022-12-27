@@ -291,7 +291,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Knife>();
 			break;
 		case 3:
-			Get_OwnerPlayer()->Change_State<CCorvusState_NorMob_Execution>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_Urd_Execution>();
 			break;
 		case 4:
 			Get_OwnerPlayer()->Change_State<CCorvusState_PS_UrdSword>();
