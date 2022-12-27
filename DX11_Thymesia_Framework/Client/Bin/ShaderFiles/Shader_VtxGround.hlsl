@@ -166,7 +166,7 @@ DS_OUT DS_Main(const OutputPatch<HS_OUT, PATCH_SIZE> input, float3 location : SV
     
     matrix matWV = mul(g_WorldMatrix, g_ViewMatrix);
     matrix matWVP = mul(matWV, g_ProjMatrix);
-         
+    
     output.vPosition = mul(float4(localPos + vDisplacement.xyz, 1.f), matWVP);
     output.vTexUV    = uv;
     output.vNormal   = normalize(mul(vector(normal, 0.f), g_WorldMatrix));
@@ -347,13 +347,13 @@ PS_OUT PS_MAIN_WATER(DS_OUT In)
     vPixelNorm = float3(vPixelNorm.rg, lerp(1, vPixelNorm.b, 1.f));
     
     float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, float3(In.vNormal.xyz));
+    vPixelNorm = vPixelNorm * 2.f - 1.f;
     vPixelNorm = mul(vPixelNorm, WorldMatrix);
-      
+ 
     Out.vDiffuse = 0.1f * Out.vDiffuse + 0.9f * vector(0.8f, 0.f, 0.01f, 1.f);
-    
+      
     Out.vDiffuse.a = 1.f;
     Out.vNormal = vector(vPixelNorm.xyz * 0.5f + 0.5f, 0.f);
-    //Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
     Out.vORM = 0;

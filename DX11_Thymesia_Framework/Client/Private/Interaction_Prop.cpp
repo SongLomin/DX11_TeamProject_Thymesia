@@ -72,13 +72,8 @@ HRESULT CInteraction_Prop::Render(ID3D11DeviceContext* pDeviceContext)
         if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
             m_iPassIndex = 0;
         else
-        {
-            if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
-                m_iPassIndex = 3;
+            m_iPassIndex = 7;
 
-            else
-                m_iPassIndex = 7;
-        }
         m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
         m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
     }
