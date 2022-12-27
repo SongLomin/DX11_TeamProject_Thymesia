@@ -88,7 +88,11 @@ HRESULT CStatic_Prop::Render(ID3D11DeviceContext* pDeviceContext)
             }
             else
             {
-                m_iPassIndex = 3;
+                if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+                    m_iPassIndex = 3;
+                    
+                else
+                    m_iPassIndex = 7;
             }
         }
 

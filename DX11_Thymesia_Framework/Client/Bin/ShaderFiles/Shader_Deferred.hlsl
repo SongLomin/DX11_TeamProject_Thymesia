@@ -905,40 +905,48 @@ PS_OUT PS_MAIN_SSR(PS_IN In)
     vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
     
     vector vViewDir = normalize(vWorldPos - g_vCamPosition);
+    vViewDir.w = 0.f;
     
     vector vRayOrigin = vWorldPos;
     vector vRayDir = normalize(reflect(vViewDir, vNormal));
+    vRayDir.w = 0.f;
+    
     float fStep = 0.01f;
     
     matrix matVP = mul(g_CamViewMatrix, g_CamProjMatrix);
     
     float fPixelDepth = 0.f;
-    int iStepDiatance = 0;
+    int iStepDistance = 0;
     float2 vRayPixelPos = (float2) 0;
   
-    for (iStepDiatance = 0; iStepDiatance < 50; ++iStepDiatance)
+    for (iStepDistance = 1; iStepDistance < 50; ++iStepDistance)
     {
-        vector vDirStep = vRayDir * fStep * iStepDiatance;
+        vector vDirStep = vRayDir * fStep * iStepDistance;
+        vDirStep.w = 0.f;
         vector vRayWorldPos = vRayOrigin + vDirStep;
-        
+
         vector vRayProjPos = mul(vRayWorldPos, matVP);
-        vRayProjPos /= vRayProjPos.w;
+        vRayProjPos.x =  vRayProjPos.x/vRayProjPos.w;
+        vRayProjPos.y =  vRayProjPos.y/vRayProjPos.w;
       
         vRayPixelPos = float2(vRayProjPos.x * 0.5f + 0.5f, vRayProjPos.y * -0.5f + 0.5f);
         
         clip(vRayPixelPos);
         clip(1.f - vRayPixelPos);
         
-        fPixelDepth = g_DepthTexture.Sample(DefaultSampler, vRayPixelPos).x;
-      
-        if (vRayProjPos.z > fPixelDepth)
+        vector vPixelDepth = g_DepthTexture.Sample(DefaultSampler, vRayPixelPos);
+        
+        fPixelDepth = vPixelDepth.x;
+        fPixelDepth *= vPixelDepth.y * g_fFar;
+    
+        if (vRayProjPos.z - fPixelDepth > 0.f )
             break;
     }
-    clip(49.5f - iStepDiatance);
     
-    Out.vColor = g_OriginalRenderTexture.Sample(DefaultSampler, vRayPixelPos);
-    //Out.vColor = float4(vRayPixelPos, 0.f, 1.f);
-  
+    //clip(49.5f - iStepDistance);
+
+    Out.vColor = g_OriginalRenderTexture.Sample(DefaultSampler, vRayPixelPos)/* * (1.f - iStepDistance / 40.f)*/;
+   
     return Out;
 }
 
