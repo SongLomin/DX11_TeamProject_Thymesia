@@ -480,6 +480,11 @@ namespace Client
 		VARG_KEY,
 
 		MEMORY01,
+		MEMORY02,
+
+		SKILLPIECE_VARGSWORD,
+
+
 		ITEM_NAME_END
 	};
 

@@ -10,7 +10,7 @@
 #include "UI_EvolveLeftBG.h"
 #include "UI_EvolveMenu_SelectDecoration.h"
 #include "Player.h"
-
+#include "UIManager.h"
 
 GAMECLASS_C(CUI_EvolveMenu)
 CLONE_C(CUI_EvolveMenu, CGameObject)
@@ -242,6 +242,13 @@ void CUI_EvolveMenu::OnEnable(void* _Arg)
 	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::PLAYERHUD);
 	ChangeButtonIndex();
 
+}
+
+void CUI_EvolveMenu::OnDisable()
+{
+	__super::OnDisable();
+
+	GET_SINGLE(CUIManager)->Set_OpenedMenu(false);
 }
 
 void CUI_EvolveMenu::Call_FadeEndEnableEvolveMenu()

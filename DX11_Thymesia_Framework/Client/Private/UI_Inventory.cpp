@@ -10,7 +10,7 @@
 #include "GameManager.h"
 #include "Item.h"
 #include "InventorySorter.h"
-
+#include "UIManager.h"
 
 GAMECLASS_C(CUI_Inventory)
 CLONE_C(CUI_Inventory, CGameObject)
@@ -262,6 +262,13 @@ void CUI_Inventory::Update_KeyInput(_float fTimeDelta)
 {
     if (KEY_INPUT(KEY::R, KEY_STATE::TAP))
     {
+        if (GET_SINGLE(CUIManager)->Is_Animation())
+            return;
+
+
+
+        GET_SINGLE(CUIManager)->Set_UIAnimation(true);
+
         m_pScroll.lock()->Reset_Scroll();
 
         _uint iSortTypeIndex = (_uint)m_eSortType;

@@ -10,6 +10,7 @@
 #include "UI_EvolveMenu.h"
 #include "HUD_PlagueWeapon.h"
 #include "UI_Landing.h"
+#include "UIManager.h"
 #include "Static_Instancing_Prop.h"
 #include "HUD_PlagueWeapon.h"
 #include "UI_PauseMenu.h"
@@ -250,6 +251,9 @@ void CClientLevel::Call_FadeOutToLevelChange()
 
 void CClientLevel::Call_Enable_PauseMenu()
 {
+
+
+
 	m_pPauseMenu.lock()->Set_Enable(true);
 	m_pFadeMask.lock()->Set_Enable(false);
 }

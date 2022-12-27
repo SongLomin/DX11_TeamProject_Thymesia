@@ -8,6 +8,9 @@
 #include "UI_Inventory.h"
 #include "CUtils_EasingTransform.h"
 #include "EasingComponent_Transform.h"
+#include "EasingComponent_Bezier.h"
+#include "UIManager.h"
+
 GAMECLASS_C(CInventorySorter)
 
 
@@ -29,7 +32,7 @@ vector<weak_ptr<CUI_ItemSlot>> CInventorySorter::Sorting_Start(vector<weak_ptr<C
 
 	m_fItemSlotOffset = fItemSlotOffset;
 
-    m_fSortTime = 0.3f;
+    m_fSortTime = 1.f;
 
     switch (eAnimType)
     {
@@ -229,17 +232,23 @@ _int	 CInventorySorter::MyPartition(vector<weak_ptr<CUI_ItemSlot>>& vecItemSlots
             ++i;
         }
         MySwap(vecItemSlots, i, j);
-        m_SortFlowList.push_back(i);
-        m_SortFlowList.push_back(j);
+        if (i != j)
+        {
+            m_SortFlowList.push_back(i);
+            m_SortFlowList.push_back(j);
+        }
+
 
     }
 
     vecItemSlots[iLeft] = vecItemSlots[i];
     vecItemSlots[i] = pPivotSlot;
 
-    m_SortFlowList.push_back(iLeft);
-    m_SortFlowList.push_back(i);
-
+    if (i != iLeft)
+    {
+        m_SortFlowList.push_back(iLeft);
+        m_SortFlowList.push_back(i);
+    }
     return i;
 }
 void CInventorySorter::MySwap(vector<weak_ptr<CUI_ItemSlot>>& vecItemSlots, _int iLeft, _int iRight)
@@ -261,6 +270,7 @@ void CInventorySorter::Start_Animation_TypeFlow()
         {
             elem.lock()->Set_RenderIcon(true);
         }
+        GET_SINGLE(CUIManager)->Set_UIAnimation(false);
         return;
     }
     _int            iDest = m_SortFlowList.front();
@@ -276,12 +286,11 @@ void CInventorySorter::Start_Animation_TypeFlow()
    weak_ptr<CUI_ShuffleIcon> pSourIcon = m_vecShuffleIcon[iSour];
 
 
-   pDescIcon.lock()->Get_Component<CEasingComponent_Transform>().lock()->Callback_LerpEnd
+   pDescIcon.lock()->Get_Component<CEasingComponent_Bezier>().lock()->Callback_LerpEnd
         += bind(&CInventorySorter::Start_Animation_TypeFlow, this); //두개 뽑아서 하나 쓰는거라, 한쪽 콜백에만 달아둠.
 
-   pDescIcon.lock()->Start_SwapLerp(pSourIcon.lock()->GetPos(), m_fSortTime);
-   pSourIcon.lock()->Start_SwapLerp(pDescIcon.lock()->GetPos(), m_fSortTime);
-
+   pDescIcon.lock()->Start_SwapLerp(pSourIcon.lock()->GetPos(), 0.5f, m_fSortTime);
+   pSourIcon.lock()->Start_SwapLerp(pDescIcon.lock()->GetPos(), -0.5f, m_fSortTime);
 
    weak_ptr<CUI_ShuffleIcon> pTempIcon = m_vecShuffleIcon[iDest];
 
