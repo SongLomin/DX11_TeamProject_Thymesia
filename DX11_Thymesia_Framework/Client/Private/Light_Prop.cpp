@@ -40,8 +40,8 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	m_tLightDesc.bEnable    = true;
 
 	m_tLightDesc.vPosition  = { 0.f, 5.f, 0.f, 1.f };
-	m_tLightDesc.vDiffuse   = { 1.f, 1.f, 1.f, 0.f };
-	m_tLightDesc.vAmbient   = { 1.f, 1.f, 1.f, 0.f };
+	m_tLightDesc.vDiffuse   = { 1.f, 1.f, 1.f, 1.f };
+	m_tLightDesc.vAmbient   = { 1.f, 1.f, 1.f, 1.f };
 	m_tLightDesc.vSpecular  = { 1.f, 1.f, 1.f, 1.f };
 	m_tLightDesc.vLightFlag = { 1.f, 1.f, 1.f, 1.f };
 	m_tLightDesc.fRange     = 5.f;
@@ -54,16 +54,23 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 
 HRESULT CLight_Prop::Start()
 {
+	if (LIGHTDESC::TYPE::TYPE_POINT == m_tLightDesc.eActorType)
+	{
+		m_tLightDesc.fRange     = 15.f;
+		m_tLightDesc.fIntensity = 1.f;
+		m_tLightDesc.vDiffuse   = { 0.3f, 0.3f, 0.3f, 1.f };
+		m_tLightDesc.vAmbient   = { 0.3f, 0.3f, 0.3f, 1.f };
+		m_tLightDesc.vSpecular  = { 0.3f, 0.3f, 0.3f, 1.f };
+	}
+
+	m_fTargetIntensity      = m_tLightDesc.fIntensity;
+	m_fTargetRange          = m_tLightDesc.fRange;
+
 	m_tLightDesc = GAMEINSTANCE->Add_Light(m_tLightDesc);
 
 	if (-1 == m_iSectionIndex && "" != m_szEffectTag)
 		m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup(m_szEffectTag, m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
 
-	//m_tLightDesc.fRange     = 100.f;
-	//m_tLightDesc.fIntensity = 100.f;
-
-	m_fTargetIntensity = m_tLightDesc.fIntensity;
-	m_fTargetRange     = m_tLightDesc.fRange;
 
 #ifdef _DEBUG
 	_float fDefaultDesc[4] = { m_fTargetRange, 0.f, 0.f, 0.f };
