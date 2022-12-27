@@ -143,7 +143,6 @@ namespace Client
 		ITEM,
 		ONLY_VIEW,
 		CHECK_DIR,
-		ONLY_VIEW,
 
 		LAYER_END
 	};

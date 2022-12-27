@@ -466,32 +466,31 @@ HRESULT CLoader::Loading_ForStage2Level()
 
 
 	// TODO : Turn off temporarily for Light_Prop
-//	LIGHTDESC LightDesc;
-//	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
-//
-//#ifdef _BRIGHT_LIGHT_
-//	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-//	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-//	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-//	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
-//	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
-//	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-//	LightDesc.bEnable = true;
-//	LightDesc.fIntensity = 1.f;
-//#else
-//	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-//	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-//	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
-//	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-//	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
-//	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-//	LightDesc.bEnable = true;
-//	LightDesc.fIntensity = 0.2f;
-//
-//#endif // _BRIGHT_LIGHT_
+	LIGHTDESC LightDesc;
+	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
-	//GAMEINSTANCE->Add_Light(LightDesc);
+#ifdef _BRIGHT_LIGHT_
+	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
+	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
+	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.bEnable = true;
+	LightDesc.fIntensity = 1.f;
+#else // _BRIGHT_LIGHT_
+	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
+	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
+	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
+	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.bEnable = true;
+	LightDesc.fIntensity = 0.2f;
+#endif // _BRIGHT_LIGHT_
+
 	GAMEINSTANCE->Clear_Lights();
+	GAMEINSTANCE->Add_Light(LightDesc);
 
 	GAMEINSTANCE->Set_FogDesc(_float4(0.45f, 0.26f, 0.28f, 0.92f), 60.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 1.f, 1.f, 1.f), _float4(1.f, 1.f, 1.f, 1.f), _float4(1.f, 1.f, 1.f, 1.f));
@@ -506,7 +505,6 @@ HRESULT CLoader::Loading_ForStage2Level()
 
 
 	m_isFinished = true;
-
 	return S_OK;
 }
 
@@ -552,7 +550,7 @@ HRESULT CLoader::Loading_ForStage3Level()
 
 	GAMEINSTANCE->Clear_Lights();
 
-	//GAMEINSTANCE->Set_FogDesc(_float4(0.5f, 0.5f, 0.5f, 1.f), 140.f);
+	GAMEINSTANCE->Set_FogDesc(_float4(0.5f, 0.5f, 0.5f, 0.f), 10000.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 	GAMEINSTANCE->Set_Contrast(1.f);
 	GAMEINSTANCE->Set_Saturation(1.f);

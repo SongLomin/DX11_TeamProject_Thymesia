@@ -178,7 +178,7 @@ HRESULT CPreviewAnimationModel::Render(ID3D11DeviceContext* pDeviceContext)
 			iPassIndex = 4;
 		}
 
-		if (m_pModelCom.lock()->Get_ModelData().lock()->szModelFileName == "Boss_Varg")
+		if (m_pModelCom.lock()->Get_ModelData().lock()->szModelFileName == "Varg")
 		{
 			if (1 == i || 3 == i)
 			{

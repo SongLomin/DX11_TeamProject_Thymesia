@@ -172,13 +172,13 @@ ik_head
 SK_C_BossBat_NEW_V1_$AssimpFbx$_PreRotation
 SK_C_BossBat_NEW_V1_$AssimpFbx$_Scaling
 SK_C_BossBat_NEW_V1
-0[SK_C_BossBat_NEW_V1]. 29976
-1[SK_C_BossBat_NEW_V1]. 25596
-2[SK_C_BossBat_NEW_V1]. 45504
-3[SK_C_BossBat_NEW_V1]. 35616
-4[SK_C_BossBat_NEW_V1]. 119982
-5[SK_C_BossBat_NEW_V1]. 19554
-6[SK_C_BossBat_NEW_V1]. 52968
-7[SK_C_BossBat_NEW_V1]. 16470
-8[SK_C_BossBat_NEW_V1]. 15648
-9[SK_C_BossBat_NEW_V1]. 2544
+0[SK_C_BossBat_NEW_V1]. 4952
+1[SK_C_BossBat_NEW_V1]. 4341
+2[SK_C_BossBat_NEW_V1]. 7618
+3[SK_C_BossBat_NEW_V1]. 5880
+4[SK_C_BossBat_NEW_V1]. 20026
+5[SK_C_BossBat_NEW_V1]. 3359
+6[SK_C_BossBat_NEW_V1]. 8847
+7[SK_C_BossBat_NEW_V1]. 2755
+8[SK_C_BossBat_NEW_V1]. 4066
+9[SK_C_BossBat_NEW_V1]. 508
