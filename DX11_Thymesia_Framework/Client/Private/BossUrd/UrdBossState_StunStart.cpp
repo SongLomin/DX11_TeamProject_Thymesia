@@ -102,6 +102,11 @@ _bool CUrdBossState_StunStart::Check_AndChangeNextState()
 		return false;
 
 
+	if (Get_OwnerMonster()->Get_BossExecutionStartOnOff())
+	{
+		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_VS_TakeExecution>(0.05f);
+		return true;
+	}
 
 	return false;
 }

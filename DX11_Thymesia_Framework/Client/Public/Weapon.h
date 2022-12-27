@@ -36,6 +36,7 @@ protected:// CGameObject을(를) 통해 상속됨
 public:
     void Init_Weapon(weak_ptr<CModel> In_pModelCom, weak_ptr<CTransform> In_ParentTransformCom, const string& szTargetNode = "WeaponCase1");
     void Init_Model(const string& strWeaponName, TIMESCALE_LAYER eLayer);
+    void Weapon_BoneChange(weak_ptr<CModel> In_pModelCom, const string& szTargetNode);
   
     void Add_Collider(_fvector In_vOffset, const _float In_fScale, const COLLISION_LAYER In_Layer);
     void Enable_Weapon();

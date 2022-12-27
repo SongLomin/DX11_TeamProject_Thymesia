@@ -124,6 +124,11 @@ void CWeapon::Init_Weapon(weak_ptr<CModel> In_pModelCom, weak_ptr<CTransform> In
 	m_pParentCharacter = pParentFromCharacter;
 }
 
+void CWeapon::Weapon_BoneChange(weak_ptr<CModel> In_pModelCom,const string& szTargetNode)
+{
+	m_pTargetBoneNode = In_pModelCom.lock()->Find_BoneNode(szTargetNode);
+}
+
 void CWeapon::Enable_Weapon()
 {
 	for (auto& elem : m_pHitColliderComs)

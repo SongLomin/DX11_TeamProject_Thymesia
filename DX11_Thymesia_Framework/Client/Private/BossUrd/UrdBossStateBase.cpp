@@ -9,6 +9,10 @@
 #include "Status.h"
 //#include "ComboTimer.h"
 #include "Attack_Area.h"
+#include "Status_Boss.h"
+#include "Monster.h"
+#include "BossUrd/UrdStates.h"
+#include "PhysXCharacterController.h"
 //#include "DamageUI.h"
 
 
@@ -81,6 +85,12 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 		//맞았을때 플레이어를 바라보는 시선 처리
 		weak_ptr<CAttackArea> pAttackArea = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner());
 
+		weak_ptr<CStatus_Boss> pStatus = m_pOwner.lock()->Get_Component<CStatus_Boss>();
+
+		weak_ptr<CCharacter> pOtherCharacter = Weak_Cast<CAttackArea>(pOtherCollider.lock()->Get_Owner()).lock()->Get_ParentObject();
+
+		weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+
 		if (!pAttackArea.lock())
 			return;
 
@@ -89,50 +99,118 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 			Get_Component<CTransform>().lock()->
 			Get_State(CTransform::STATE_TRANSLATION);
 
-		/*_vector vOtherColliderPosition = Weak_Cast<CWeapon>(pOtherCollider.lock()->Get_Owner()).lock()->
-			Get_ParentObject().lock()->
-			Get_Component<CTransform>().lock()->
-			Get_State(CTransform::STATE_TRANSLATION);*/
-
 		_vector vSameHeightOtherColliderPosition = vOtherColliderPosition;
 		vSameHeightOtherColliderPosition.m128_f32[1] = vMyPosition.m128_f32[1];
+		PxControllerFilters Filters;
 
-		m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
+		m_pTransformCom.lock()->LookAt2D(vSameHeightOtherColliderPosition);
 
-		_bool bRandom = (_bool)(rand() % 2);
+		ATTACK_OPTION eAttackOption = pAttackArea.lock()->Get_OptionType();
 
-		//데미지 적용
-		//m_pStatusCom.lock()->Add_Damage(In_fDamage);
-		//GAMEINSTANCE->Get_GameObjects<CDamageUI>(LEVEL::LEVEL_STATIC).front().lock()->Add_DamageText(vMyPosition, In_fDamage, bRandom);
 
-		//GAMEINSTANCE->Get_GameObjects<CMonsterHpBar>(LEVEL::LEVEL_STATIC).front().lock()->OnHit(m_pOwner);
-		//GAMEINSTANCE->Get_GameObjects<CComboTimer>(LEVEL::LEVEL_STATIC).front().lock()->Update_Combo();
+		CStatus_Player::PLAYERDESC tPlayerDesc;
+		_matrix                    vResultOtherWorldMatrix;
+		//_matrix                    vDoorOpenPlayerMatrix = Get_Owner().lock()->Get_Component<CVargBossState_Start>().lock()->Get_PlayerTransform();
 
-		GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Set_TargetMonster(Get_OwnerMonster());
+		pAttackArea.lock()->Get_ParentObject().lock()->Get_ComponentByType<CStatus>().lock()
+			->Get_Desc(&tPlayerDesc);
+
 
 		Play_OnHitEffect();
+		
 
-		//공격 형태에 따라서 애니메이션 변경
+		_float fMagnifiedDamage = In_fDamage;
+		_uint iRand = rand() % 8 + 1;
 
-		//if (m_pStatusCom.lock()->Is_Dead())
-		//{
-		//	Get_OwnerMonster()->Change_State<CMonster1State_Death>();
-		//}
+		switch (eAttackOption)
+		{
+		case Client::ATTACK_OPTION::NONE:
+			fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, ATTACK_OPTION::NORMAL);
+			break;
+		case Client::ATTACK_OPTION::NORMAL:
+			fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk;
+			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+			break;
+		case Client::ATTACK_OPTION::PLAGUE:
+			fMagnifiedDamage *= tPlayerDesc.m_fParryingAtk;
+			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+			break;
+		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
+			break;
+		}
+		_float3 vShakingOffset = pOtherCharacter.lock()->Get_CurState().lock()->Get_ShakingOffset();
+		_vector vShakingOffsetToVector = XMLoadFloat3(&vShakingOffset);
+		_float fShakingRatio = 0.01f * iRand;
 
-		//else if (In_eHitType == HIT_TYPE::NORMAL_HIT)
-		//{
-		//	Get_OwnerMonster()->Change_State<CMonster1State_Hit>();
-		//	GET_SINGLE(CGameManager)->Add_Shaking(SHAKE_DIRECTION::LOOK, 0.15f, 0.2f);
-		//}
-		//
-		//else if (In_eHitType == HIT_TYPE::DOWN_HIT)
-		//{
-		//	Get_OwnerMonster()->Change_State<CMonster1State_HitDown>(0.1f);
-		//	GET_SINGLE(CGameManager)->Add_Shaking(SHAKE_DIRECTION::RIGHT, 0.25f, 0.3f);
-		//}
+		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.08f + fShakingRatio, 1.f, 9.f, 0.25f);
+		GAMEINSTANCE->Set_MotionBlur(0.05f);
 
 
+
+		if (Get_OwnerCharacter().lock()->Get_CurState().lock() != Get_Owner().lock()->Get_Component<CUrdBossState_StunStart>().lock() &&
+			Get_OwnerCharacter().lock()->Get_CurState().lock() != Get_Owner().lock()->Get_Component<CUrdBossState_StunLoop>().lock())
+		{
+			if (pStatus.lock()->Is_Dead())
+			{
+				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StunStart>(0.05f);
+			}
+		}
+		else
+		{
+			//이떄 플레이어한테 이벤트를 던져줍시다
+			if (pStatus.lock()->Get_Desc().m_iLifeCount == 2)
+			{
+				pStatus.lock()->Minus_LifePoint(1);
+				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_URDEXECUTON);
+
+				//Get_Owner().lock()->Get_Component<CVargBossState_Exe_Start>().lock()->Set_DieType(true);
+				//Get_Owner().lock()->Get_Component<CVargBossState_Exe_NoDeadEnd>().lock()->Set_DeadChoice(true);
+
+			}
+			//else
+			//{
+			//	pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_VARGEXECUTION);	
+			//
+			//
+			//	_matrix vOtherWorldMatrix = pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix();
+			//	vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, -1.4f, 0.f));
+			//	pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
+			//		vResultOtherWorldMatrix.r[3],
+			//		GAMEINSTANCE->Get_DeltaTime(),
+			//		Filters);
+			//
+			//	Get_Owner().lock()->Get_Component<CVargBossState_Exe_NoDeadEnd>().lock()->Set_DeadChoice(true);
+			//	Get_Owner().lock()->Get_Component<CVargBossState_Exe_Start>().lock()->Set_DieType(false);
+			//
+			//}
+		}
+
+
+
+
+		if (!pStatus.lock()->Is_Dead())
+		{
+			if (Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_StateIndex() ||
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_HurtS_FR>().lock()->Get_StateIndex() ||
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_HurtS_FL>().lock()->Get_StateIndex())
+			{
+
+				if (In_eHitType == HIT_TYPE::LEFT_HIT)
+				{
+					Get_OwnerMonster()->Change_State<CUrdBossState_HurtS_FR>();
+				}
+
+				else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
+				{
+
+					Get_OwnerMonster()->Change_State<CUrdBossState_HurtS_FL>();
+				}
+			}
+		}
+		  
 	}
+
 
 }
 

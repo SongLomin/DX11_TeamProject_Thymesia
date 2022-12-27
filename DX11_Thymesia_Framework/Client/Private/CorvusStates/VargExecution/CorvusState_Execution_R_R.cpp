@@ -116,6 +116,24 @@ void CCorvusState_Execution_R_R::OnDestroy()
 		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_Execution_R_R::Call_AnimationEnd, this);
 }
 
+void CCorvusState_Execution_R_R::OnEventMessage(_uint iArg)
+{
+	__super::OnEventMessage(iArg);
+
+
+
+	if (EVENT_TYPE::ON_URDEXECUTON == (EVENT_TYPE)iArg)
+	{
+		eBossName = BOSSNAME::URD;
+	}
+
+	if ((_uint)EVENT_TYPE::ON_VARGEXECUTION == iArg)
+	{
+		eBossName = BOSSNAME::VARG;
+	}
+
+}
+
 _bool CCorvusState_Execution_R_R::Check_AndChangeNextState()
 {
 	if (!Check_Requirement())
@@ -123,7 +141,7 @@ _bool CCorvusState_Execution_R_R::Check_AndChangeNextState()
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 27)
 	{
-		Get_OwnerPlayer()->Change_State<CCorvusState_Varg_Execution>();
+		
 
 		list<weak_ptr <CGameObject>> pBossMonsters = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::BOSSMONSTER);
 
@@ -131,6 +149,18 @@ _bool CCorvusState_Execution_R_R::Check_AndChangeNextState()
 		{
 			elem.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_BOSS_EXECUTIONSTART);
 		}
+		switch (eBossName)
+		{
+		case Client::BOSSNAME::VARG:
+			Get_OwnerPlayer()->Change_State<CCorvusState_Varg_Execution>();
+			break;
+		case Client::BOSSNAME::BAT:
+			break;
+		case Client::BOSSNAME::URD:
+			Get_OwnerPlayer()->Change_State<CCorvusState_Urd_Execution>();
+			break;
+		}
+		
 		return true;
 	}
 

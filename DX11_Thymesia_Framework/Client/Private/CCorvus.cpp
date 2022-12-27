@@ -637,6 +637,11 @@ void CCorvus::OnEventMessage(_uint iArg)
 		Change_State<CCorvusState_ClawPlunderAttack>();
 	}
 
+	if (EVENT_TYPE::ON_URDEXECUTON == (EVENT_TYPE)iArg)
+	{
+		Change_State<CCorvusState_Execution_R_R>();
+	}
+
 }
 
 void CCorvus::Free()
