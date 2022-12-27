@@ -54,14 +54,14 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 
 HRESULT CLight_Prop::Start()
 {
-	if (LIGHTDESC::TYPE::TYPE_POINT == m_tLightDesc.eActorType)
+	/*if (LIGHTDESC::TYPE::TYPE_POINT == m_tLightDesc.eActorType)
 	{
 		m_tLightDesc.fRange     = 15.f;
 		m_tLightDesc.fIntensity = 1.f;
 		m_tLightDesc.vDiffuse   = { 0.3f, 0.3f, 0.3f, 1.f };
 		m_tLightDesc.vAmbient   = { 0.3f, 0.3f, 0.3f, 1.f };
 		m_tLightDesc.vSpecular  = { 0.3f, 0.3f, 0.3f, 1.f };
-	}
+	}*/
 
 	m_fTargetIntensity      = m_tLightDesc.fIntensity;
 	m_fTargetRange          = m_tLightDesc.fRange;
