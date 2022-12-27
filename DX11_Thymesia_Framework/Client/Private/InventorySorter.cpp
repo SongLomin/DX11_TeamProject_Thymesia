@@ -32,7 +32,7 @@ vector<weak_ptr<CUI_ItemSlot>> CInventorySorter::Sorting_Start(vector<weak_ptr<C
 
 	m_fItemSlotOffset = fItemSlotOffset;
 
-    m_fSortTime = 1.f;
+    m_fSortTime = 0.5f;
 
     switch (eAnimType)
     {

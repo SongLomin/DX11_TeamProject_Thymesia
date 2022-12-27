@@ -141,6 +141,7 @@ namespace Client
 		CHECKPOINT,
 		PLAYER_BATCOL,
 		ITEM,
+		ONLY_VIEW,
 		CHECK_DIR,
 
 		LAYER_END

@@ -202,7 +202,10 @@ void CUI_Inventory::Start_AnimationSorting(_uint eSortingAnimType)
         pVecItem.push_back(elem);
     }
     if (pVecItem.size() < 2)//2개보다 작다.->섞을게 없다.
+    {
+        GET_SINGLE(CUIManager)->Set_UIAnimation(false);//아까 걸어줬던 락 해제
         return;
+    }
 
    // Start_AnimationPreSorting(pVecItem, m_eSortType);
    pVecItem =  m_pInventorySorter->Sorting_Start(pVecItem, m_fSlotOffset, (_uint)m_eSortType, 
