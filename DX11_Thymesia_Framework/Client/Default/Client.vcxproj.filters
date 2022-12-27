@@ -1584,6 +1584,9 @@
     <ClInclude Include="..\Public\Preset_NvClothMesh.h">
       <Filter>06. DataPreset\07. Preset_NvClothMesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Window_ModelContantView.h">
+      <Filter>97. Tool\00. IMGUI\Windows\03. Model\00. ModelContant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3211,6 +3214,9 @@
     <ClCompile Include="..\Private\Preset_NvClothMesh.cpp">
       <Filter>06. DataPreset\07. Preset_NvClothMesh</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Window_ModelContantView.cpp">
+      <Filter>97. Tool\00. IMGUI\Windows\03. Model\00. ModelContant</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -4762,6 +4768,12 @@
     </Filter>
     <Filter Include="06. DataPreset\07. Preset_NvClothMesh">
       <UniqueIdentifier>{5d34804a-c93d-4e31-ba18-1ff1280567ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\00. IMGUI\Windows\03. Model">
+      <UniqueIdentifier>{7d033e5b-9eab-4972-9170-0895bd527ee4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\00. IMGUI\Windows\03. Model\00. ModelContant">
+      <UniqueIdentifier>{a818d747-8142-42c1-b039-798cb9687325}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

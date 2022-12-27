@@ -659,7 +659,7 @@ void CMeshContainer::Set_NvCloth(const void* In_pNvClothMeshDesc)
 	{
 	case SELECTION_TYPE::FORWARD:
 	{
-		m_pInvMasses = vector<_float>(m_iNumVertices, 0.5f);
+		m_pInvMasses = vector<_float>(m_iNumVertices, pCustomDesc->fSimpleInvMess);
 
 		_int iAttachCount = (_int)(m_iNumVertices * pCustomDesc->fSimpleAttachRatio);
 
@@ -672,7 +672,7 @@ void CMeshContainer::Set_NvCloth(const void* In_pNvClothMeshDesc)
 
 	case SELECTION_TYPE::REVERSE:
 	{
-		m_pInvMasses = vector<_float>(m_iNumVertices, 0.5f);
+		m_pInvMasses = vector<_float>(m_iNumVertices, pCustomDesc->fSimpleInvMess);
 
 		_int iAttachCount = (_int)(m_iNumVertices * pCustomDesc->fSimpleAttachRatio);
 
@@ -800,16 +800,25 @@ void CMeshContainer::Set_NvCloth(const void* In_pNvClothMeshDesc)
 
 }
 
-void CMeshContainer::Update_NvClothVertices(ID3D11DeviceContext* pDeviceContext, _fmatrix In_WorldMatrix)
+void CMeshContainer::Update_NvClothVertices(ID3D11DeviceContext* pDeviceContext, _fmatrix In_WorldMatrix, _fvector In_Gravity)
 {
 	if (!m_pCloth)
 		return;
+
+	m_pCloth->setGravity(SMath::Convert_PxVec3(In_Gravity));
 
 	_vector vPos = In_WorldMatrix.r[3];
 	_vector vQuaternion = XMQuaternionRotationMatrix(SMath::Get_RotationMatrix(In_WorldMatrix));
 
 	m_pCloth->setTranslation(SMath::Convert_PxVec3(vPos));
 	m_pCloth->setRotation(SMath::Convert_PxQuat(vQuaternion));
+
+	if (!m_bSimulation)
+	{
+		m_bSimulation = true;
+		m_pCloth->clearInertia();
+		return;
+	}
 
 	if (MODEL_TYPE::ANIM == m_pMeshData.lock()->eModelType)
 	{
@@ -859,19 +868,11 @@ void CMeshContainer::Update_NvClothVertices_Anim(ID3D11DeviceContext* pDeviceCon
 
 void CMeshContainer::Update_NvClothVertices_NonAnim(ID3D11DeviceContext* pDeviceContext)
 {
-	if (!m_bSimulation)
-	{
-		m_bSimulation = true;
-		return;
-	}
-
 
 	D3D11_MAPPED_SUBRESOURCE		SubResource;
 	ZeroMemory(&SubResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
 	MappedRange<PxVec4> particle = m_pCloth->getCurrentParticles();
-
-	
 
 	pDeviceContext->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResource);
 

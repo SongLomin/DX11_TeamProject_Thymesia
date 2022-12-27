@@ -8,6 +8,8 @@
 #include "Corvus_DefaultDagger.h"
 #include "MobWeapon.h"
 #include "Weapon.h"
+#include "BoneNode.h"
+#include "MeshContainer.h"
 
 GAMECLASS_C(CPreviewAnimationModel)
 CLONE_C(CPreviewAnimationModel, CGameObject)
@@ -39,6 +41,12 @@ HRESULT CPreviewAnimationModel::Initialize(void* pArg)
 	GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::MONSTER, Weak_Cast<CGameObject>(m_this));
 
 	m_fCullingRange = FLT_MAX;
+
+#ifdef _USE_THREAD_
+	Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
+#endif // _USE_THREAD_
+
+
 	return S_OK;
 }
 
@@ -64,36 +72,96 @@ void CPreviewAnimationModel::LateTick(_float fTimeDelta)
 
 void CPreviewAnimationModel::Thread_PreTick(_float fTimeDelta)
 {
-	if (m_pCurrentModelCom.lock())
-		m_pCurrentModelCom.lock()->Update_BoneMatrices();
+	if (m_pModelCom.lock())
+		m_pModelCom.lock()->Update_BoneMatrices();
+}
+
+void CPreviewAnimationModel::Thread_PreBeforeRender(_float fTimeDelta)
+{
+	__super::Thread_PreBeforeRender(fTimeDelta);
+
+	if (!m_pTargetBoneNode.lock())
+		return;
+
+	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
+
+	_matrix		BoneMatrix;
+	_matrix		InverseMatrix;
+	_vector		vGravity;
+	
+	//Bip001-Ponytail1
+	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_CombinedMatrix()
+		* XMLoadFloat4x4(&m_TransformationMatrix);
+
+	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
+	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
+	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
+	
+	InverseMatrix = XMMatrixInverse(nullptr, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix());
+
+	vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), XMMatrixRotationX(XMConvertToRadians(90.f)) * InverseMatrix);
+	//vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), InverseMatrix * XMMatrixRotationX(XMConvertToRadians(-90.f)));
+
+	m_pModelCom.lock()->Get_MeshContainer(1).lock()->Update_NvClothVertices(pDeferredContext, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(), vGravity);
+
+	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_CombinedMatrix()
+		* XMLoadFloat4x4(&m_TransformationMatrix);
+
+	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
+	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
+	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
+
+	InverseMatrix = XMMatrixInverse(nullptr, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix());
+
+	vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), XMMatrixRotationX(XMConvertToRadians(0.f)) * InverseMatrix);
+	//vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), InverseMatrix);
+
+	// "Bip001-Xtra10"
+	
+	m_pModelCom.lock()->Get_MeshContainer(3).lock()->Update_NvClothVertices(pDeferredContext, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(), vGravity);
+	
+	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
+
 }
 
 HRESULT CPreviewAnimationModel::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	__super::Render(pDeviceContext);
 
-	if (!m_pCurrentModelCom.lock())
-		return E_FAIL;
-	_uint iNumMeshContainers(m_pCurrentModelCom.lock()->Get_NumMeshContainers());
+	_uint iNumMeshContainers(m_pModelCom.lock()->Get_NumMeshContainers());
 
 #ifdef _DEBUG
 	//if (m_iContainerIndex >= iNumMeshContainers)
 	//	m_iContainerIndex = 0;
 #endif //_DEBUG
 
-	for (_uint i(0); i < iNumMeshContainers; ++i)
+	_int iPassIndex = 0;
+	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
 #ifdef _DEBUG
 		//if (i == m_iContainerIndex)
 		//	continue;
 #endif // _DEBUG
 
-		if (FAILED(m_pCurrentModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
-		/*if (FAILED(m_pModelCom->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
-			return E_FAIL;*/
 
-		m_pCurrentModelCom.lock()->Render_AnimModel(i, m_pShaderCom, 0, "g_Bones", pDeviceContext);
+		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+		{
+			iPassIndex = 0;
+		}
+		else
+		{
+			iPassIndex = 4;
+		}
+
+		/*if (3 == i)
+			iPassIndex = 8;*/
+
+		//m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
+
+		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, iPassIndex, "g_Bones", pDeviceContext);
+		//m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
 	}
 
 	return S_OK;
@@ -101,8 +169,6 @@ HRESULT CPreviewAnimationModel::Render(ID3D11DeviceContext* pDeviceContext)
 
 HRESULT CPreviewAnimationModel::Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix, ID3D11DeviceContext* pDeviceContext)
 {
-	if (!m_pCurrentModelCom.lock())
-		return E_FAIL;
 
 	CallBack_Bind_SRV(m_pShaderCom, "");
 
@@ -112,7 +178,7 @@ HRESULT CPreviewAnimationModel::Render_ShadowDepth(_fmatrix In_LightViewMatrix, 
 	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)&In_LightViewMatrix, sizeof(_float4x4));
 	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)&In_LightProjMatrix, sizeof(_float4x4));
 
-	_uint iNumMeshContainers(m_pCurrentModelCom.lock()->Get_NumMeshContainers());
+	_uint iNumMeshContainers(m_pModelCom.lock()->Get_NumMeshContainers());
 	for (_uint i(0); i < iNumMeshContainers; ++i)
 	{
 		//m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
@@ -121,7 +187,7 @@ HRESULT CPreviewAnimationModel::Render_ShadowDepth(_fmatrix In_LightViewMatrix, 
 
 			//m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
 
-		m_pCurrentModelCom.lock()->Render_AnimModel(i, m_pShaderCom, 1, "g_Bones", pDeviceContext);
+		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, 1, "g_Bones", pDeviceContext);
 		//m_pModelCom.lock()->Render_Mesh(i, pDeviceContext);
 	}
 
@@ -141,8 +207,18 @@ void CPreviewAnimationModel::SetUp_ShaderResource()
 
 void CPreviewAnimationModel::Init_EditPreviewAnimationModel(const string& In_szModelKey)
 {
-	m_pModelCom.lock()->Init_Model(In_szModelKey.c_str(),"", (_uint)TIMESCALE_LAYER::EDITER);
-	m_pCurrentModelCom = m_pModelCom;
+	if (strcmp(In_szModelKey.c_str(), "Boss_Varg") == 0)
+	{
+		CModel::NVCLOTH_MODEL_DESC NvModelDesc;
+		//XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixRotationX(XMConvertToRadians(-90.f))
+		Preset::NvClothMesh::VargSetting(NvModelDesc, XMMatrixIdentity());
+
+		m_pModelCom.lock()->Init_Model(In_szModelKey.c_str(), "", (_uint)TIMESCALE_LAYER::EDITER, &NvModelDesc);
+	}
+	else
+	{
+		m_pModelCom.lock()->Init_Model(In_szModelKey.c_str(), "", (_uint)TIMESCALE_LAYER::EDITER);
+	}
 
 	if (!strcmp(In_szModelKey.c_str(), "Corvus"))
 	{
@@ -167,6 +243,9 @@ void CPreviewAnimationModel::Init_EditPreviewAnimationModel(const string& In_szM
 		m_pModelWeapons.back().lock()->Init_Model("Boss_VargWeapon", TIMESCALE_LAYER::MONSTER);
 		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, "weapon_r");
 #endif // _ANIMATION_TOOL_WEAPON_
+
+		m_pTargetBoneNode = m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10");
+		m_TransformationMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
 	}
 
 	if (!strcmp(In_szModelKey.c_str(), "Elite_Joker"))
@@ -183,21 +262,22 @@ void CPreviewAnimationModel::Init_EditPreviewAnimationModel(const string& In_szM
 
 void CPreviewAnimationModel::Change_AnimationFromIndex(const _uint& In_iAnimIndex)
 {
-	m_pCurrentModelCom.lock()->Set_CurrentAnimation(In_iAnimIndex, 0, 0.f);
+	m_pModelCom.lock()->Set_CurrentAnimation(In_iAnimIndex, 0, 0.f);
 }
 
 void CPreviewAnimationModel::Play_Animation(_float fTimeDelta)
 {
-	if (!m_pCurrentModelCom.lock())
+	if (!m_pModelCom.lock()->Get_ModelData().lock())
 		return;
 
-	m_pCurrentModelCom.lock()->Play_Animation(fTimeDelta);
+	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
 void CPreviewAnimationModel::Add_DebugWeapon(const string& In_szBoneName)
 {
 	m_pDebugWeapons.push_back(GAMEINSTANCE->Add_GameObject<CWeapon>(LEVEL_EDIT));
-	m_pDebugWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, In_szBoneName);
+	m_pDebugWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, In_szBoneName);
+	m_pDebugWeapons.back().lock()->Add_Collider({}, 0.1f, COLLISION_LAYER::NONE);
 }
 
 void CPreviewAnimationModel::Clear_DebugWeapon()

@@ -80,6 +80,16 @@ HRESULT CWindow_Level_Dev::Render(ID3D11DeviceContext* pDeviceContext)
 			if (FAILED(GAMEINSTANCE->Open_Level(LEVEL_LOADING, pLevel_Loading)))
 				return E_FAIL;
 		}
+
+		if (ImGui::Button("Level_Stage3"))
+		{
+			shared_ptr<CLevel_Loading>		pLevel_Loading = CLevel_Loading::Create(LEVEL::LEVEL_STAGE3);
+			if (nullptr == pLevel_Loading.get())
+				return E_FAIL;
+
+			if (FAILED(GAMEINSTANCE->Open_Level(LEVEL_LOADING, pLevel_Loading)))
+				return E_FAIL;
+		}
 	}
 
 

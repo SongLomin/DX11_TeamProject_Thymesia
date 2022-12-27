@@ -22,6 +22,7 @@ protected:
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
     virtual void Thread_PreTick(_float fTimeDelta) override;
+    virtual void Thread_PreBeforeRender(_float fTimeDelta) override;
     virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
     virtual HRESULT Render_ShadowDepth(_fmatrix In_LightViewMatrix, _fmatrix In_LightProjMatrix, ID3D11DeviceContext* pDeviceContext) override;
 
@@ -39,14 +40,16 @@ private:
     void Release_BeforeModel();
 
 private:
-    unordered_map<string, weak_ptr<CModel>> m_pModelComs;
-    weak_ptr<CModel>                        m_pCurrentModelCom;
 
     _int   m_iContainerIndex = 0;
 
 private:
     list<weak_ptr<CWeapon>>                 m_pDebugWeapons;
     list<weak_ptr<CWeapon>>                 m_pModelWeapons;
+
+private: /* For. NvCloth */
+    weak_ptr<CBoneNode>                     m_pTargetBoneNode;
+    _float4x4                               m_TransformationMatrix;
 
 private:
     void Free();

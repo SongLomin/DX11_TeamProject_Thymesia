@@ -212,8 +212,8 @@ void CUI_Inventory::Start_AnimationPreSorting(vector<weak_ptr<CUI_ItemSlot>>& ve
     sort(vecItemSlot.begin(), vecItemSlot.end(),
         [&](weak_ptr<CUI_ItemSlot> pFirst, weak_ptr<CUI_ItemSlot> pSecond)
         {
-            if (pFirst.lock()->Get_BindItem().lock() == false ||
-            pSecond.lock()->Get_BindItem().lock() == false)
+            if (!pFirst.lock()->Get_BindItem().lock() ||
+            !pSecond.lock()->Get_BindItem().lock())
             {
                 return false;
             }
@@ -344,8 +344,8 @@ void CUI_Inventory::Sort_ItemList(INVENTORY_SORTTYPE eSortType)
     sort(pVecItem.begin(), pVecItem.end(),
         [&](weak_ptr<CUI_ItemSlot> pFirst, weak_ptr<CUI_ItemSlot> pSecond)
         {
-            if (pFirst.lock()->Get_BindItem().lock() == false ||
-            pSecond.lock()->Get_BindItem().lock() == false)
+            if (!pFirst.lock()->Get_BindItem().lock() ||
+            !pSecond.lock()->Get_BindItem().lock())
             {
                 return false;
             }

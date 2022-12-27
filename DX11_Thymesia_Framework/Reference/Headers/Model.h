@@ -25,6 +25,7 @@ public:
 	{
 		SELECTION_TYPE	eSimpleAttachType = SELECTION_TYPE::TYPE_END;
 		_float			fSimpleAttachRatio = 0.f;
+		_float			fSimpleInvMess = 1.f;
 
 		// It is not used when using Simple Attach.
 		vector<_float>	InvMesses;
@@ -84,6 +85,8 @@ public:
 
 	weak_ptr<CAnimation> Get_AnimationFromIndex(const _uint& In_iIndex) const;
 
+	weak_ptr<CMeshContainer> Get_MeshContainer(const _uint In_iIndex) const;
+
 	_bool IsModelPicking(const RAY& In_Ray, _float& Out_fRange);
 
 	weak_ptr<CBoneNode> Find_BoneNode(const string& pBoneName);
@@ -96,9 +99,10 @@ private: /* CGameObject Based */
 
 public: /* Init */
 	void Init_Model(const char* sModelKey, const string& szTexturePath = "", _uint iTimeScaleLayer = 0, const NVCLOTH_MODEL_DESC* In_pNvClothModelDesc = nullptr);
+	void Init_Model(shared_ptr<MODEL_DATA> pModelData, const string& szTexturePath = "", _uint iTimeScaleLayer = 0, const NVCLOTH_MODEL_DESC* In_pNvClothModelDesc = nullptr);
 
 private:
-	void Init_Model_Internal(const char* sModelKey, const string& szTexturePath = "", _uint iTimeScaleLayer = 0, const NVCLOTH_MODEL_DESC* In_pNvClothModelDesc = nullptr);
+	void Init_Model_Internal(shared_ptr<MODEL_DATA> pModelData, const string& szTexturePath = "", _uint iTimeScaleLayer = 0, const NVCLOTH_MODEL_DESC* In_pNvClothModelDesc = nullptr);
 	void Reset_Model();
 
 private:

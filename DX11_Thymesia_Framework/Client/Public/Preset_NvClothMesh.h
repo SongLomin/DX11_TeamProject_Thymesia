@@ -8,6 +8,6 @@ namespace Preset
 	{
 		void CorvusSetting(CModel::NVCLOTH_MODEL_DESC& Out_Desc);
 		void VargWeaponSetting(CModel::NVCLOTH_MODEL_DESC& Out_Desc);
-		void VargSetting(CModel::NVCLOTH_MODEL_DESC& Out_Desc);
+		void VargSetting(CModel::NVCLOTH_MODEL_DESC& Out_Desc, _fmatrix In_ModelTransformMatrix);
 	}
 }

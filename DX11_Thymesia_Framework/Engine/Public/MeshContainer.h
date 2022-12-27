@@ -64,7 +64,7 @@ public:
 	void Set_NvCloth(const void* In_pNvClothMeshDesc);
 
 public: /* For. NvCloth */
-	void Update_NvClothVertices(ID3D11DeviceContext* pDeviceContext, _fmatrix In_WorldMatrix);
+	void Update_NvClothVertices(ID3D11DeviceContext* pDeviceContext, _fmatrix In_WorldMatrix, _fvector In_Gravity = {});
 
 private:
 	void Update_NvClothVertices_NonAnim(ID3D11DeviceContext* pDeviceContext);

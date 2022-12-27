@@ -705,6 +705,7 @@
     <ClInclude Include="..\Public\Window_GameSystem_Dev.h" />
     <ClInclude Include="..\Public\Window_HierarchyView.h" />
     <ClInclude Include="..\Public\Window_Level_Dev.h" />
+    <ClInclude Include="..\Public\Window_ModelContantView.h" />
     <ClInclude Include="..\Public\Window_Optimization_Dev.h" />
     <ClInclude Include="..\Public\Window_PrototypeView.h" />
     <ClInclude Include="..\Public\Window_RenderTarget_Dev.h" />
@@ -1219,6 +1220,7 @@
     <ClCompile Include="..\Private\Window_GameSystem_Dev.cpp" />
     <ClCompile Include="..\Private\Window_HierarchyView.cpp" />
     <ClCompile Include="..\Private\Window_Level_Dev.cpp" />
+    <ClCompile Include="..\Private\Window_ModelContantView.cpp" />
     <ClCompile Include="..\Private\Window_Optimization_Dev.cpp" />
     <ClCompile Include="..\Private\Window_PrototypeView.cpp" />
     <ClCompile Include="..\Private\Window_RenderTarget_Dev.cpp" />
