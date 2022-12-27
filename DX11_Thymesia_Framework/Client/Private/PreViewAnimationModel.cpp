@@ -43,7 +43,7 @@ HRESULT CPreviewAnimationModel::Initialize(void* pArg)
 	m_fCullingRange = FLT_MAX;
 
 #ifdef _USE_THREAD_
-	//Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
+	Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
 #endif // _USE_THREAD_
 
 
@@ -178,33 +178,33 @@ HRESULT CPreviewAnimationModel::Render(ID3D11DeviceContext* pDeviceContext)
 			iPassIndex = 4;
 		}
 
-		//if (1 == i || 3 == i)
-		//{
-		//	iPassIndex = 9;
+		if (m_pModelCom.lock()->Get_ModelData().lock()->szModelFileName == "Boss_Varg")
+		{
+			if (1 == i || 3 == i)
+			{
+				iPassIndex = 9;
 
-		//	if (1 == i)
-		//	{
-		//		m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", XMMatrixIdentity());
-		//		/*m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_OffsetMatrix() * m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_CombinedMatrix()
-		//			* XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix());*/
-		//	}
-		//	
+				if (1 == i)
+				{
+					m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", XMMatrixIdentity());
+					/*m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_OffsetMatrix() * m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_CombinedMatrix()
+						* XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix());*/
+				}
 
-		//	if (3 == i)
-		//	{
-		//		m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", XMMatrixIdentity());
-		//		/*m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_OffsetMatrix() * m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_CombinedMatrix()
-		//			* XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix());*/
-		//	}
-		//}
-		//else
-		//{
-		//	//m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
-		//	m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pTransformCom.lock()->Get_WorldMatrix());
-		//}
 
-		
-			
+				if (3 == i)
+				{
+					m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", XMMatrixIdentity());
+					/*m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_OffsetMatrix() * m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_CombinedMatrix()
+						* XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix());*/
+				}
+			}
+			else
+			{
+				//m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
+				m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pTransformCom.lock()->Get_WorldMatrix());
+			}
+		}	
 
 		//m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
 

@@ -43,7 +43,7 @@ void Preset::NvClothMesh::VargSetting(CModel::NVCLOTH_MODEL_DESC& Out_Desc, _fma
 	Out_Desc.NvClothMeshDescs[1] = MeshDesc;
 
 	MeshDesc.eSimpleAttachType = SELECTION_TYPE::FORWARD;
-	MeshDesc.fSimpleAttachRatio = 1.f;
+	MeshDesc.fSimpleAttachRatio = 0.1f;
 	MeshDesc.fSimpleInvMess = 0.1f;
 	XMStoreFloat3(&MeshDesc.vGravity, vGravity);
 	MeshDesc.fDragCoefficient = 1.f;
