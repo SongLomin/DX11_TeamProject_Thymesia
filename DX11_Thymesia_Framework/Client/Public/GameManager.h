@@ -207,9 +207,11 @@ public:
 
     void  Registration_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj);
     void  Activate_Section(_uint In_iSection, EVENT_TYPE In_eEventType);
+    void  Remove_Section(_uint In_iSection, weak_ptr<CGameObject> In_pObj);
 
     void  Registration_SectionLight(_uint In_iSection, weak_ptr<CLight_Prop> In_pObj);
     void  Activate_SectionLight(_uint In_iSection, EVENT_TYPE In_eEventType);
+    void  Remove_SectionLight(_uint In_iSection, weak_ptr<CGameObject> In_pObj);
 
 
  public:

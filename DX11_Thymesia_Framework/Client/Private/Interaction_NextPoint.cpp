@@ -51,7 +51,6 @@ HRESULT CInteraction_NextPoint::Start()
 
     ZeroMemory(&m_tLightDesc, sizeof(LIGHTDESC));
 	m_tLightDesc.eActorType = LIGHTDESC::TYPE::TYPE_POINT;
-	m_tLightDesc.bEnable    = true;
 
     XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION) + XMVectorSet(0.f, 0.5f, 0.f, 0.f));
 	m_tLightDesc.vDiffuse   = { 0.f, 1.f, 0.486f, 0.3f };
@@ -59,15 +58,25 @@ HRESULT CInteraction_NextPoint::Start()
 	m_tLightDesc.vSpecular  = { 0.f, 1.f, 0.486f, 0.6f };
 	m_tLightDesc.vLightFlag = { 1.f, 1.f,    1.f, 1.f };
     m_tLightDesc.fIntensity = 1.f;
-	m_tLightDesc.fRange     = 1.5f;
+	m_tLightDesc.fRange     = 1.f;
     m_tLightDesc.bEnable     = (LEVEL::LEVEL_EDIT == m_CreatedLevel);
 
-	m_tLightDesc = GAMEINSTANCE->Add_Light(m_tLightDesc);
-
-    Set_Enable((LEVEL::LEVEL_EDIT == m_CreatedLevel));   
     m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
-    m_pColliderCom.lock()->Set_Enable((LEVEL::LEVEL_EDIT == m_CreatedLevel));
 
+    if (LEVEL::LEVEL_EDIT == m_CreatedLevel || LEVEL::LEVEL_TEST == m_CreatedLevel)
+    {
+        m_tLightDesc.bEnable = true;
+        Set_Enable(true);
+        m_pColliderCom.lock()->Set_Enable(true);
+    }
+    else
+    {
+        m_tLightDesc.bEnable = false;
+        Set_Enable(false);
+        m_pColliderCom.lock()->Set_Enable(false);
+    }
+
+    m_tLightDesc = GAMEINSTANCE->Add_Light(m_tLightDesc);
 
     return S_OK;
 }
@@ -227,7 +236,10 @@ void CInteraction_NextPoint::SetUpColliderDesc()
 
 void CInteraction_NextPoint::OnDestroy()
 {
+    __super::OnDestroy();
+
     GAMEINSTANCE->Remove_Light(m_tLightDesc.Get_LightIndex());
+    GET_SINGLE(CGameManager)->Remove_SectionLight(m_iSectionIndex, Weak_Cast<CGameObject>(m_this));
 }
 
 void CInteraction_NextPoint::Free()

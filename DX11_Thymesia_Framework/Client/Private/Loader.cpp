@@ -116,6 +116,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Elevator>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_DeadSpot>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Door>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_CastleGate>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Note>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Item>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CSection_Eventer>();
@@ -224,9 +225,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);*/
 
 	lstrcpy(m_szLoadingText, TEXT("Logo : Loading Complete"));
-	//D:\Git Project\DX11_TeamProject_Thymesia\DX11_Thymesia_Framework\Client\Bin\Resources\Meshes\Map_Lv1_Circus\Binary
-	GAMEINSTANCE->Load_Model("P_DropTombstone01", "../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/P_DropTombstone01.bin", MODEL_TYPE::NONANIM, XMMatrixIdentity());
-	//GAMEINSTANCE->Add_SingleGameObject<CInteraction_DeadSpot>(LEVEL::LEVEL_STATIC);
+
+	
 
 	m_isFinished = true;
 	return S_OK;
@@ -302,20 +302,21 @@ HRESULT CLoader::Loading_ForTestLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Destructable/Fence_16a/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
-	LIGHTDESC LightDesc;
-	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
+	//LIGHTDESC LightDesc;
+	//ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
-	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
-	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 1.f;
+	//LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+	//LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	//LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
+	//LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
+	//LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
+	//LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+	//LightDesc.bEnable = true;
+	//LightDesc.fIntensity = 1.f;
+	//GAMEINSTANCE->Add_Light(LightDesc);
+
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Light..."));
-	GAMEINSTANCE->Add_Light(LightDesc);
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Irradiance Map..."));
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
@@ -401,29 +402,31 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	LIGHTDESC LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
-#ifdef _BRIGHT_LIGHT_
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
-	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
-	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 1.f;
-#else
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
-	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
-	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 0.3f;
+//#ifdef _BRIGHT_LIGHT_
+//	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+//	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+//	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+//	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
+//	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
+//	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+//	LightDesc.bEnable = true;
+//	LightDesc.fIntensity = 1.f;
+//#else
+//	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+//	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+//	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
+//	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
+//	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
+//	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+//	LightDesc.bEnable = true;
+//	LightDesc.fIntensity = 0.3f;
+//
+//#endif // _BRIGHT_LIGHT_
 
-#endif // _BRIGHT_LIGHT_
+	//lstrcpy(m_szLoadingText, TEXT("Loading Light..."));
+	//GAMEINSTANCE->Add_Light(LightDesc);
 
-	lstrcpy(m_szLoadingText, TEXT("Loading Light..."));
-	GAMEINSTANCE->Add_Light(LightDesc);
+	GAMEINSTANCE->Clear_Lights();
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Environmental Shader Effects..."));
 	GAMEINSTANCE->Set_FogDesc(_float4(0.2f, 0.15f, 0.03f, 0.5f), 20.f);
@@ -478,31 +481,32 @@ HRESULT CLoader::Loading_ForStage2Level()
 
 
 	// TODO : Turn off temporarily for Light_Prop
-	LIGHTDESC LightDesc;
-	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
+//	LIGHTDESC LightDesc;
+//	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
+//
+//#ifdef _BRIGHT_LIGHT_
+//	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+//	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+//	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+//	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
+//	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
+//	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+//	LightDesc.bEnable = true;
+//	LightDesc.fIntensity = 1.f;
+//#else
+//	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+//	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+//	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
+//	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
+//	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
+//	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+//	LightDesc.bEnable = true;
+//	LightDesc.fIntensity = 0.2f;
+//
+//#endif // _BRIGHT_LIGHT_
 
-#ifdef _BRIGHT_LIGHT_
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
-	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
-	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 1.f;
-#else
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
-	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
-	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 0.2f;
-
-#endif // _BRIGHT_LIGHT_
-
-	GAMEINSTANCE->Add_Light(LightDesc);
+	//GAMEINSTANCE->Add_Light(LightDesc);
+	GAMEINSTANCE->Clear_Lights();
 
 	GAMEINSTANCE->Set_FogDesc(_float4(1.f, 1.f, 1.f, 0.65f), 70.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
@@ -555,34 +559,9 @@ HRESULT CLoader::Loading_ForStage3Level()
 
 	m_isFinished = true;
 
-	// TODO : Turn off temporarily for Light_Prop
-	LIGHTDESC LightDesc;
-	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
+	GAMEINSTANCE->Clear_Lights();
 
-#ifdef _BRIGHT_LIGHT_
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
-	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
-	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 1.f;
-#else
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(0.2f, 0.19f, 0.18f, 1.f);
-	LightDesc.vAmbient = _float4(0.3f, 0.3f, 0.3f, 1.f);
-	LightDesc.vSpecular = _float4(0.1f, 0.1f, 0.1f, 1.f);
-	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 0.2f;
-
-#endif // _BRIGHT_LIGHT_
-
-	//GAMEINSTANCE->Add_Light(LightDesc);
-
-	GAMEINSTANCE->Set_FogDesc(_float4(1.f, 1.f, 1.f, 1.f), 1000.f);
+	GAMEINSTANCE->Set_FogDesc(_float4(0.5f, 0.5f, 0.5f, 1.f), 140.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 	GAMEINSTANCE->Set_Contrast(1.f);
 	GAMEINSTANCE->Set_Saturation(1.f);
@@ -653,16 +632,16 @@ HRESULT CLoader::Loading_ForEditLevel()
 	LIGHTDESC LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
-	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
-	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
-	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
-	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
-	LightDesc.bEnable = true;
-	LightDesc.fIntensity = 1.f;
+	LightDesc.eActorType	= tagLightDesc::TYPE_DIRECTIONAL;
+	LightDesc.vDirection	= _float4(1.f, -1.f, 1.f, 0.f);
+	LightDesc.vDiffuse		= _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient		= _float4(0.7f, 0.7f, 0.7f, 1.f);
+	LightDesc.vSpecular		= _float4(0.6f, 0.6f, 0.6f, 1.f);
+	LightDesc.vLightFlag	= _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.bEnable		= true;
+	LightDesc.fIntensity	= 1.f;
 
-	GAMEINSTANCE->Add_Light(LightDesc);
+	//GAMEINSTANCE->Add_Light(LightDesc);
 
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");

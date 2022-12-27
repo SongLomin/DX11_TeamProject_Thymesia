@@ -55,6 +55,11 @@ _bool CLight_Manager::Remove_Light(const _uint& iIndex)
 	return false;
 }
 
+void CLight_Manager::Clear_Lights()
+{
+	m_pLights.clear();
+}
+
 HRESULT CLight_Manager::Render_Lights(weak_ptr<CShader> pShader, weak_ptr<CVIBuffer_Rect> pVIBuffer, ID3D11DeviceContext* pDeviceContext)
 {
 	for (auto& pLight : m_pLights)

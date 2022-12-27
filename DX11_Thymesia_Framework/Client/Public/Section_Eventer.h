@@ -69,6 +69,10 @@ private:
     _flag                 m_ActFlag       = 0;
     _int                  m_iSectionIndex = 0;
     _float4               m_vColor        = { 1.f, 0.f, 0.f, 1.f };
+
+private:
+    virtual void OnDestroy() override;
+    void Free();
 };
 
 END
