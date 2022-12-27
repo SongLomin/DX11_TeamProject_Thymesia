@@ -1,7 +1,6 @@
 #pragma once
 #define _EFFECT_TOOL_
 
-
 #include "Client_Structs.h"
 #include "Client_Presets.h"
 #include "Client_Enum.h"
@@ -62,6 +61,7 @@
 // #define _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
 #define _VARG_EFFECT_
+#define	_BAT_EFFECT_
 #pragma endregion // Effects
 
 #endif // _DEBUG
