@@ -8,6 +8,8 @@
 #include "Texture.h"
 #include "Collider.h"
 #include "UI_Landing.h"
+#include "UIManager.h"
+
 
 #include "GameInstance.h"
 #include "ClientLevel.h"
@@ -148,6 +150,13 @@ void CInteraction_CheckPoint::Load_FromJson(const json& In_Json)
 
 void CInteraction_CheckPoint::Act_Interaction()
 {
+    if (GET_SINGLE(CUIManager)->Is_OpenedMenu())
+        return;
+
+    GET_SINGLE(CUIManager)->Set_OpenedMenu(true);
+
+
+
     GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front().lock()->Call_Landing(CUI_Landing::LANDING_BECONFOUND);
 
     weak_ptr<CStatus_Player> pPlayerStatus = GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status();

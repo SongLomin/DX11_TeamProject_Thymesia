@@ -7,6 +7,7 @@ BEGIN(Client)
 class CItem;
 class CEasingComponent_Transform;
 class CEasingComponent_Float;
+class CEasingComponent_Bezier;
 
 class CUI_ItemSlot;
 
@@ -36,7 +37,7 @@ public:
 
 
 
-	void			Start_SwapLerp(_float2 TargetPos, _float fLerpTime);
+	void			Start_SwapLerp(_float2 TargetPos, _float fWeight, _float fLerpTime);
 	
 private:
 	void			Call_TransformLerpEnd();
@@ -51,7 +52,9 @@ private:
 	weak_ptr<CItem>	m_pBindItem;
 	weak_ptr<CUI_ItemSlot>	m_pTargetItemSlot;
 	weak_ptr<CEasingComponent_Transform>	m_pEasingTransform;
-	weak_ptr<CEasingComponent_Float>	m_pEasingScale;
+	weak_ptr<CEasingComponent_Bezier>		m_pEasingBezier;
+
+	weak_ptr<CEasingComponent_Float>		m_pEasingScale;
 
 
 private:

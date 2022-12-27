@@ -752,17 +752,6 @@ void CGameManager::Change_NextLevel(void* pArg)
 	pCurrentLevel.lock()->Change_NextLevel(nullptr);
 }
 
-POINT CGameManager::Get_MousePoint()
-{
-	POINT	tMousePt;
-
-	GetCursorPos(&tMousePt);
-	ClientToScreen(g_hWnd, &tMousePt);
-
-	return tMousePt;
-}
-
-
 void  CGameManager::Registration_SectionEvent(_uint In_iSection, weak_ptr<CSection_Eventer> In_pSectionEvent)
 {
 	auto iter_find = m_SectionEventers.find(In_iSection);
@@ -856,15 +845,6 @@ void  CGameManager::Registration_SectionLight(_uint In_iSection, weak_ptr<CLight
 	}
 }
 
-void CGameManager::CreatePopupQueue()
-{
-	m_pItemPopupQueue = CItemPopup_Queue::Create();
-}
-
-void CGameManager::Add_Popup(ITEM_NAME eItemName)
-{
-	m_pItemPopupQueue->AddPopup(eItemName);
-}
 
 void  CGameManager::Activate_SectionLight(_uint In_iSection, EVENT_TYPE In_eEventType)
 {
@@ -925,14 +905,4 @@ void CGameManager::OnLevelExit()
 
 void CGameManager::Free()
 {
-}
-
-void CGameManager::EnableCursor()
-{
-	m_pCursor.lock()->Set_Enable(true);
-}
-
-void CGameManager::DisableCursor()
-{
-	m_pCursor.lock()->Set_Enable(false);
 }

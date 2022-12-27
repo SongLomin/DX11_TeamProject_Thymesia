@@ -25,7 +25,9 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	if (FAILED(__super::Initialize(pArg)))
 		return E_FAIL;
 
+#ifdef _DEBUG
 	m_pColliderCom = Add_Component<CCollider>();
+#endif
 
 	m_pShaderCom.lock()->Set_ShaderInfo
 	(
@@ -35,18 +37,15 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 	);
 
 	m_tLightDesc.eActorType = LIGHTDESC::TYPE::TYPE_POINT;
-	m_tLightDesc.bEnable    = true;
+	m_tLightDesc.bEnable = true;
 
-	m_tLightDesc.vPosition  = { 0.f, 5.f, 0.f, 1.f };
-	m_tLightDesc.vDiffuse   = { 1.f, 1.f, 1.f, 0.f };
-	m_tLightDesc.vAmbient   = { 1.f, 1.f, 1.f, 0.f };
-	m_tLightDesc.vSpecular  = { 1.f, 1.f, 1.f, 1.f };
+	m_tLightDesc.vPosition = { 0.f, 5.f, 0.f, 1.f };
+	m_tLightDesc.vDiffuse = { 1.f, 1.f, 1.f, 0.f };
+	m_tLightDesc.vAmbient = { 1.f, 1.f, 1.f, 0.f };
+	m_tLightDesc.vSpecular = { 1.f, 1.f, 1.f, 1.f };
 	m_tLightDesc.vLightFlag = { 1.f, 1.f, 1.f, 1.f };
-	m_tLightDesc.fRange     = 5.f;
+	m_tLightDesc.fRange = 5.f;
 	m_tLightDesc.fIntensity = 1.f;
-
-	_float fDefaultDesc[4] = { m_tLightDesc.fRange, 0.f, 0.f, 0.f };
-	SetUpColliderDesc(fDefaultDesc);
 
 	m_eRenderGroup = RENDERGROUP::RENDER_NONALPHABLEND;
 
@@ -55,13 +54,18 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 
 HRESULT CLight_Prop::Start()
 {
+	m_fTargetIntensity = m_tLightDesc.fIntensity;
+	m_fTargetRange = m_tLightDesc.fRange;
+
 	m_tLightDesc = GAMEINSTANCE->Add_Light(m_tLightDesc);
 
 	if (-1 == m_iSectionIndex && "" != m_szEffectTag)
 		m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup(m_szEffectTag, m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
 
-	m_fTargetIntensity = m_tLightDesc.fIntensity;
-	m_fTargetRange     = m_tLightDesc.fRange;
+#ifdef _DEBUG
+	_float fDefaultDesc[4] = { m_fTargetRange, 0.f, 0.f, 0.f };
+	SetUpColliderDesc(fDefaultDesc);
+#endif
 
 	return S_OK;
 }
@@ -79,34 +83,28 @@ void CLight_Prop::Tick(_float fTimeDelta)
 
 void CLight_Prop::LateTick(_float fTimeDelta)
 {
-	if (m_bRendering && !m_pModelCom.lock()->Get_ModelData().lock().get())
-		m_bRendering = false;
-
 	__super::LateTick(fTimeDelta);
 }
 
 void CLight_Prop::Before_Render(_float fTimeDelta)
 {
-#ifdef _DEBUG
-	//m_pColliderCom.lock()->Render_IgnoreDebugCheck();
-#endif
-
-	if (!m_bRendering)
-		return;
-
 	__super::Before_Render(fTimeDelta);
 }
 
 HRESULT CLight_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 {
-	__super::SetUp_ShaderResource();
+	if (!m_pModelCom.lock()->Get_ModelData().lock().get()) // 모델링 없을 경우 그냥 패스
+		return S_OK;
+
+	if (FAILED(__super::SetUp_ShaderResource()))
+		return E_FAIL;
 
 	_uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
 		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 		m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_HEIGHT);
-	
+
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
 			m_iPassIndex = 3;
 		else
@@ -117,6 +115,7 @@ HRESULT CLight_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 	}
 
 	CGameObject::Render(pDeviceContext);
+
 	return S_OK;
 }
 
@@ -124,40 +123,36 @@ void CLight_Prop::Write_Json(json& Out_Json)
 {
 	__super::Write_Json(Out_Json);
 
-	Out_Json["Light_Type"]    = (_int)m_tLightDesc.eActorType;
-	Out_Json["Light_Range"]   = m_tLightDesc.fRange;
-	Out_Json["SectionIndex"]  = m_iSectionIndex;
-	Out_Json["DelayTime"]     = m_fDelayTime;
+	Out_Json["Light_Type"] = (_int)m_tLightDesc.eActorType;
+	Out_Json["Light_Range"] = m_tLightDesc.fRange;
+	Out_Json["SectionIndex"] = m_iSectionIndex;
+	Out_Json["DelayTime"] = m_fDelayTime;
 	Out_Json["IntensityTime"] = m_fIntensityTime;
-	Out_Json["DisableTime"]   = m_fDisableTime;
+	Out_Json["DisableTime"] = m_fDisableTime;
 
 	if ("" != m_szEffectTag)
 		Out_Json["EffectTag"] = m_szEffectTag;
-	
+
 	Out_Json["Light_Intensity"] = m_fTargetIntensity;
-	Out_Json["Light_Range"]     = m_fTargetRange;
-	CJson_Utility::Write_Float3(Out_Json["Offset"]         , m_vOffset);
-	CJson_Utility::Write_Float4(Out_Json["Light_Position"] , m_tLightDesc.vPosition);
+	Out_Json["Light_Range"] = m_fTargetRange;
+	CJson_Utility::Write_Float3(Out_Json["Offset"], m_vOffset);
+	CJson_Utility::Write_Float4(Out_Json["Light_Position"], m_tLightDesc.vPosition);
 	CJson_Utility::Write_Float4(Out_Json["Light_Direction"], m_tLightDesc.vDirection);
-	CJson_Utility::Write_Float4(Out_Json["Light_Diffuse"]  , m_tLightDesc.vDiffuse);
-	CJson_Utility::Write_Float4(Out_Json["Light_Ambient"]  , m_tLightDesc.vAmbient);
-	CJson_Utility::Write_Float4(Out_Json["Light_Specular"] , m_tLightDesc.vSpecular);
-	CJson_Utility::Write_Float4(Out_Json["Light_Flag"]     , m_tLightDesc.vLightFlag);
+	CJson_Utility::Write_Float4(Out_Json["Light_Diffuse"], m_tLightDesc.vDiffuse);
+	CJson_Utility::Write_Float4(Out_Json["Light_Ambient"], m_tLightDesc.vAmbient);
+	CJson_Utility::Write_Float4(Out_Json["Light_Specular"], m_tLightDesc.vSpecular);
+	CJson_Utility::Write_Float4(Out_Json["Light_Flag"], m_tLightDesc.vLightFlag);
 }
 
 void CLight_Prop::Load_FromJson(const json& In_Json)
 {
 	__super::Load_FromJson(In_Json);
 
-	_int iLightTypeFromInt  = In_Json["Light_Type"];
+	_int iLightTypeFromInt = In_Json["Light_Type"];
 
-	m_tLightDesc.eActorType = (LIGHTDESC::TYPE)iLightTypeFromInt;
-	m_tLightDesc.fRange     = In_Json["Light_Range"];
-	m_iSectionIndex         = In_Json["SectionIndex"];
-	m_fDelayTime            = In_Json["DelayTime"];
+	m_iSectionIndex = In_Json["SectionIndex"];
+	m_fDelayTime = In_Json["DelayTime"];
 
-	if (In_Json.end() != In_Json.find("IntensityTime"))
-		m_fIntensityTime = In_Json["IntensityTime"];
 
 	if (In_Json.end() != In_Json.find("EffectTag"))
 		m_szEffectTag = In_Json["EffectTag"];
@@ -165,26 +160,32 @@ void CLight_Prop::Load_FromJson(const json& In_Json)
 	if (In_Json.end() != In_Json.find("Offset"))
 		CJson_Utility::Load_Float3(In_Json["Offset"], m_vOffset);
 
-	if (In_Json.end() != In_Json.find("Light_Intensity"))
-		m_fTargetIntensity = In_Json["Light_Intensity"];
-
-	if (In_Json.end() != In_Json.find("Light_Range"))
-		m_fTargetIntensity = In_Json["Light_Range"];
-
 	if (In_Json.end() != In_Json.find("DisableTime"))
 		m_fDisableTime = In_Json["DisableTime"];
 
-	CJson_Utility::Load_Float4(In_Json["Light_Position"] , m_tLightDesc.vPosition);
+	if (In_Json.end() != In_Json.find("IntensityTime"))
+		m_fIntensityTime = In_Json["IntensityTime"];
+
+	m_tLightDesc.eActorType = (LIGHTDESC::TYPE)iLightTypeFromInt;
+	m_tLightDesc.fRange = In_Json["Light_Range"];
+	CJson_Utility::Load_Float4(In_Json["Light_Position"], m_tLightDesc.vPosition);
 	CJson_Utility::Load_Float4(In_Json["Light_Direction"], m_tLightDesc.vDirection);
-	CJson_Utility::Load_Float4(In_Json["Light_Diffuse"]  , m_tLightDesc.vDiffuse);
-	CJson_Utility::Load_Float4(In_Json["Light_Ambient"]  , m_tLightDesc.vAmbient);
-	CJson_Utility::Load_Float4(In_Json["Light_Specular"] , m_tLightDesc.vSpecular);
-	CJson_Utility::Load_Float4(In_Json["Light_Flag"]     , m_tLightDesc.vLightFlag);
+	CJson_Utility::Load_Float4(In_Json["Light_Diffuse"], m_tLightDesc.vDiffuse);
+	CJson_Utility::Load_Float4(In_Json["Light_Ambient"], m_tLightDesc.vAmbient);
+	CJson_Utility::Load_Float4(In_Json["Light_Specular"], m_tLightDesc.vSpecular);
+	CJson_Utility::Load_Float4(In_Json["Light_Flag"], m_tLightDesc.vLightFlag);
 
 	if (0 <= m_iSectionIndex)
 	{
 		m_tLightDesc.bEnable = false;
 		GET_SINGLE(CGameManager)->Registration_SectionLight(m_iSectionIndex, Weak_Cast<CLight_Prop>(m_this));
+	}
+
+	_vector vPos = m_pTransformCom.lock()->Get_Position();
+
+	if (1.f != XMVectorGetW(vPos))
+	{
+		m_pTransformCom.lock()->Set_Position(XMVectorSetW(vPos, 1.f));
 	}
 }
 
@@ -192,129 +193,135 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 {
 	switch ((EVENT_TYPE)iArg)
 	{
-		case EVENT_TYPE::ON_ENTER_SECTION:
+	case EVENT_TYPE::ON_ENTER_SECTION:
+	{
+		if (!Callback_ActUpdate.empty())
+			return;
+
+		Callback_ActUpdate += bind(&CLight_Prop::Act_LightTurnOnEvent, this, placeholders::_1, placeholders::_2);
+	}
+	break;
+
+	case EVENT_TYPE::ON_EXIT_SECTION:
+	{
+		if (!Callback_ActUpdate.empty())
+			return;
+
+		Callback_ActUpdate += bind(&CLight_Prop::Act_LightTurnOffEvent, this, placeholders::_1, placeholders::_2);
+	}
+	break;
+
+	case EVENT_TYPE::ON_RESET_OBJ:
+	{
+		m_tLightDesc.bEnable = false;
+
+		GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+
+		if ((!m_szEffectTag.empty()) && (0 <= m_iEffectIndex))
+			GET_SINGLE(CGameManager)->UnUse_EffectGroup(m_szEffectTag, m_iEffectIndex);
+
+#ifdef _DEBUG
+		m_pColliderCom.lock()->Set_Enable(true);
+#endif
+	}
+	break;
+
+	case EVENT_TYPE::ON_EDIT_UDATE:
+	{
+		XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_Position() + XMLoadFloat3(&m_vOffset));
+		GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+#ifdef _DEBUG
+		m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+#endif
+	}
+	break;
+
+	case EVENT_TYPE::ON_EDITDRAW:
+	{
+		if (ImGui::CollapsingHeader("Light_Prop GameObject"))
 		{
-			if (!Callback_ActUpdate.empty())
-				return;
+			const char* LightTypeItems[] = { "Direction", "Point", "HalfPoint" };
+			_int        iSelect_LightType = (_int)m_tLightDesc.eActorType;
 
-			Callback_ActUpdate += bind(&CLight_Prop::Act_LightTurnOnEvent, this, placeholders::_1, placeholders::_2);
-		}
-		break;
-
-		case EVENT_TYPE::ON_EXIT_SECTION:
-		{
-			if (!Callback_ActUpdate.empty())
-				return;
-
-			Callback_ActUpdate += bind(&CLight_Prop::Act_LightTurnOffEvent, this, placeholders::_1, placeholders::_2);
-		}
-		break;
-
-		case EVENT_TYPE::ON_RESET_OBJ:
-		{
-			m_tLightDesc.bEnable = false;
-
-			GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
-
-			if ((!m_szEffectTag.empty()) && (0 <= m_iEffectIndex))
-				GET_SINGLE(CGameManager)->UnUse_EffectGroup(m_szEffectTag, m_iEffectIndex);
-		}
-		break;
-
-		case EVENT_TYPE::ON_EDIT_UDATE:
-		{
-			XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_Position() + XMLoadFloat3(&m_vOffset));
-			GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
-
-			m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
-		}
-		break;
-
-		case EVENT_TYPE::ON_EDITDRAW:
-		{
-			if (ImGui::CollapsingHeader("Light_Prop GameObject"))
+			if (ImGui::Combo("Light Type", &iSelect_LightType, LightTypeItems, IM_ARRAYSIZE(LightTypeItems)))
 			{
-				const char* LightTypeItems[]  = { "Direction", "Point", "HalfPoint" };
-				_int        iSelect_LightType = (_int)m_tLightDesc.eActorType;
-
-				if (ImGui::Combo("Light Type", &iSelect_LightType, LightTypeItems, IM_ARRAYSIZE(LightTypeItems)))
-				{
-					m_tLightDesc.eActorType = (LIGHTDESC::TYPE)iSelect_LightType;
-					GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
-				}
-
-				_char szEffectTag[MAX_PATH] = "";
-				strcpy_s(szEffectTag, m_szEffectTag.c_str());
-
-				if (ImGui::InputText("Effect", szEffectTag, MAX_PATH))
-					m_szEffectTag = szEffectTag;
-
-				ImGui::InputInt("Section Index"   , &m_iSectionIndex);
-				ImGui::InputFloat("DelayTime"     , &m_fDelayTime);
-				ImGui::InputFloat("Intensity Time", &m_fIntensityTime);
-				ImGui::InputFloat("Disable Time"  , &m_fDisableTime);
-
-				ImGui::Separator();
-
-				switch (m_tLightDesc.eActorType)
-				{
-					case LIGHTDESC::TYPE_DIRECTIONAL:
-					{
-						ImGui::DragFloat4("Light_Direction", &m_tLightDesc.vDirection.x, 0.01f);
-						ImGui::DragFloat4("Light_Diffuse"  , &m_tLightDesc.vDiffuse.x  , 0.01f);
-						ImGui::DragFloat4("Light_Ambient"  , &m_tLightDesc.vAmbient.x  , 0.01f);
-						ImGui::DragFloat4("Light_Specular" , &m_tLightDesc.vSpecular.x , 0.01f);
-						ImGui::DragFloat ("Light_Intensity", &m_tLightDesc.fIntensity  , 0.01f);
-					}
-					break;
-
-					case LIGHTDESC::TYPE_POINT:
-					{
-						_bool       bChangeData = false;
-
-						ImGui::DragFloat3("Offset", &m_vOffset.x, 0.01f);
-
-						ImGui::DragFloat4("Light_Position" , &m_tLightDesc.vPosition.x , 0.01f);
-						ImGui::DragFloat4("Light_Diffuse"  , &m_tLightDesc.vDiffuse.x  , 0.01f);
-						ImGui::DragFloat4("Light_Ambient"  , &m_tLightDesc.vAmbient.x  , 0.01f);
-						ImGui::DragFloat4("Light_Specular" , &m_tLightDesc.vSpecular.x , 0.01f);
-
-						bChangeData |= ImGui::DragFloat ("Light_Range"    , &m_tLightDesc.fRange      , 0.01f);
-						bChangeData |= ImGui::DragFloat ("Light_Intensity", &m_tLightDesc.fIntensity  , 0.01f);
-
-						if (bChangeData)
-						{
-							m_fTargetIntensity = m_tLightDesc.fIntensity;
-							m_fTargetRange     = m_tLightDesc.fRange;
-
-							COLLIDERDESC ColliderDesc = m_pColliderCom.lock()->Get_ColliderDesc();
-							ColliderDesc.vScale.x = m_fTargetRange;
-
-							m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
-						}
-					}
-					break;
-			
-					case LIGHTDESC::TYPE_SPOTLIGHT:
-					{
-						ImGui::DragFloat4("Light_Position" , &m_tLightDesc.vPosition.x , 0.01f);
-						ImGui::DragFloat4("Light_Direction", &m_tLightDesc.vDirection.x, 0.01f);
-						ImGui::DragFloat4("Light_Diffuse"  , &m_tLightDesc.vDiffuse.x  , 0.01f);
-						ImGui::DragFloat4("Light_Ambient"  , &m_tLightDesc.vAmbient.x  , 0.01f);
-						ImGui::DragFloat4("Light_Specular" , &m_tLightDesc.vSpecular.x , 0.01f);
-						ImGui::DragFloat ("Light_Range"    , &m_tLightDesc.fRange      , 0.01f);
-						ImGui::DragFloat ("Light_Intensity", &m_tLightDesc.fIntensity  , 0.01f);
-						ImGui::DragFloat("Light_CutOff", &m_tLightDesc.fCutOff, 0.01f);
-						ImGui::DragFloat("Light_OuterCutoff", &m_tLightDesc.fOuterCutOff, 0.01f);
-					}
-					break;
-				}
+				m_tLightDesc.eActorType = (LIGHTDESC::TYPE)iSelect_LightType;
+				GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
 			}
 
-			ImGui::Text("");
+			_char szEffectTag[MAX_PATH] = "";
+			strcpy_s(szEffectTag, m_szEffectTag.c_str());
+
+			if (ImGui::InputText("Effect", szEffectTag, MAX_PATH))
+				m_szEffectTag = szEffectTag;
+
+			ImGui::InputInt("Section Index", &m_iSectionIndex);
+			ImGui::InputFloat("DelayTime", &m_fDelayTime);
+			ImGui::InputFloat("Intensity Time", &m_fIntensityTime);
+			ImGui::InputFloat("Disable Time", &m_fDisableTime);
+
 			ImGui::Separator();
+
+			switch (m_tLightDesc.eActorType)
+			{
+			case LIGHTDESC::TYPE_DIRECTIONAL:
+			{
+				ImGui::DragFloat4("Light_Direction", &m_tLightDesc.vDirection.x, 0.01f);
+				ImGui::DragFloat4("Light_Diffuse", &m_tLightDesc.vDiffuse.x, 0.01f);
+				ImGui::DragFloat4("Light_Ambient", &m_tLightDesc.vAmbient.x, 0.01f);
+				ImGui::DragFloat4("Light_Specular", &m_tLightDesc.vSpecular.x, 0.01f);
+				ImGui::DragFloat("Light_Intensity", &m_tLightDesc.fIntensity, 0.01f);
+			}
+			break;
+
+			case LIGHTDESC::TYPE_POINT:
+			{
+				_bool       bChangeData = false;
+
+				ImGui::DragFloat3("Offset", &m_vOffset.x, 0.01f);
+
+				ImGui::DragFloat4("Light_Position", &m_tLightDesc.vPosition.x, 0.01f);
+				ImGui::DragFloat4("Light_Diffuse", &m_tLightDesc.vDiffuse.x, 0.01f);
+				ImGui::DragFloat4("Light_Ambient", &m_tLightDesc.vAmbient.x, 0.01f);
+				ImGui::DragFloat4("Light_Specular", &m_tLightDesc.vSpecular.x, 0.01f);
+
+				bChangeData |= ImGui::DragFloat("Light_Range", &m_tLightDesc.fRange, 0.01f);
+				bChangeData |= ImGui::DragFloat("Light_Intensity", &m_tLightDesc.fIntensity, 0.01f);
+
+				if (bChangeData)
+				{
+					m_fTargetIntensity = m_tLightDesc.fIntensity;
+					m_fTargetRange = m_tLightDesc.fRange;
+#ifdef _DEBUG
+					COLLIDERDESC ColliderDesc = m_pColliderCom.lock()->Get_ColliderDesc();
+					ColliderDesc.vScale.x = m_fTargetRange;
+
+					m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
+#endif
+				}
+			}
+			break;
+
+			case LIGHTDESC::TYPE_SPOTLIGHT:
+			{
+				ImGui::DragFloat4("Light_Position", &m_tLightDesc.vPosition.x, 0.01f);
+				ImGui::DragFloat4("Light_Direction", &m_tLightDesc.vDirection.x, 0.01f);
+				ImGui::DragFloat4("Light_Diffuse", &m_tLightDesc.vDiffuse.x, 0.01f);
+				ImGui::DragFloat4("Light_Ambient", &m_tLightDesc.vAmbient.x, 0.01f);
+				ImGui::DragFloat4("Light_Specular", &m_tLightDesc.vSpecular.x, 0.01f);
+				ImGui::DragFloat("Light_Range", &m_tLightDesc.fRange, 0.01f);
+				ImGui::DragFloat("Light_Intensity", &m_tLightDesc.fIntensity, 0.01f);
+				ImGui::DragFloat("Light_CutOff", &m_tLightDesc.fCutOff, 0.01f);
+				ImGui::DragFloat("Light_OuterCutoff", &m_tLightDesc.fOuterCutOff, 0.01f);
+			}
+			break;
+			}
 		}
-		break;
+
+		ImGui::Text("");
+		ImGui::Separator();
+	}
+	break;
 	}
 }
 
@@ -325,14 +332,14 @@ void CLight_Prop::Act_LightTurnOnEvent(_float fTimeDelta, _bool& Out_End)
 	if (m_tLightDesc.bEnable)
 	{
 		m_tLightDesc.fIntensity = (0.f < m_fIntensityTime) ? ((m_fAccTime / m_fIntensityTime) * m_fTargetIntensity) : (m_fTargetIntensity);
-		m_tLightDesc.fRange     = (0.f < m_fIntensityTime) ? ((m_fAccTime / m_fIntensityTime) * m_fTargetRange)     : (m_fTargetRange);
+		m_tLightDesc.fRange = (0.f < m_fIntensityTime) ? ((m_fAccTime / m_fIntensityTime) * m_fTargetRange) : (m_fTargetRange);
 
 		if (m_fIntensityTime <= m_fAccTime)
 		{
-			m_fAccTime              = 0.f;
+			m_fAccTime = 0.f;
 			m_tLightDesc.fIntensity = m_fTargetIntensity;
-			m_tLightDesc.fRange     = m_fTargetRange;
-			Out_End                 = true;
+			m_tLightDesc.fRange = m_fTargetRange;
+			Out_End = true;
 		}
 
 		GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
@@ -340,10 +347,10 @@ void CLight_Prop::Act_LightTurnOnEvent(_float fTimeDelta, _bool& Out_End)
 
 	else if (m_fDelayTime <= m_fAccTime)
 	{
-		m_fAccTime              = 0.f;
-		m_tLightDesc.fRange     = 0.f;
+		m_fAccTime = 0.f;
+		m_tLightDesc.fRange = 0.f;
 		m_tLightDesc.fIntensity = 0.f;
-		m_tLightDesc.bEnable    = true;
+		m_tLightDesc.bEnable = true;
 
 		GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
 
@@ -357,14 +364,14 @@ void CLight_Prop::Act_LightTurnOffEvent(_float fTimeDelta, _bool& Out_End)
 	m_fAccTime += fTimeDelta;
 
 	m_tLightDesc.fIntensity = (0.f < m_fDisableTime) ? (fabs(1.f - (m_fAccTime / m_fDisableTime)) * m_fTargetIntensity) : (0.f);
-	m_tLightDesc.fRange     = (0.f < m_fDisableTime) ? (fabs(1.f - (m_fAccTime / m_fDisableTime)) * m_fTargetRange)     : (0.f);
+	m_tLightDesc.fRange = (0.f < m_fDisableTime) ? (fabs(1.f - (m_fAccTime / m_fDisableTime)) * m_fTargetRange) : (0.f);
 
 	if (m_fDisableTime <= m_fAccTime)
 	{
-		m_fAccTime              = 0.f;
+		m_fAccTime = 0.f;
 		m_tLightDesc.fIntensity = 0.f;
-		m_tLightDesc.fRange     = 0.f;
-		m_tLightDesc.bEnable    = false;
+		m_tLightDesc.fRange = 0.f;
+		m_tLightDesc.bEnable = false;
 
 		if ((!m_szEffectTag.empty()) && (0 <= m_iEffectIndex))
 			GET_SINGLE(CGameManager)->UnUse_EffectGroup(m_szEffectTag, m_iEffectIndex);
@@ -375,18 +382,20 @@ void CLight_Prop::Act_LightTurnOffEvent(_float fTimeDelta, _bool& Out_End)
 	GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
 }
 
+#ifdef _DEBUG
 void CLight_Prop::SetUpColliderDesc(_float* _pColliderDesc)
 {
 	COLLIDERDESC ColliderDesc;
-    ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
+	ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
 
-    ColliderDesc.iLayer       = (_uint)COLLISION_LAYER::TRIGGER;
-    ColliderDesc.vScale       = _float3(_pColliderDesc[0], 0.f, 0.f);
-    ColliderDesc.vTranslation = _float3(_pColliderDesc[1], _pColliderDesc[2], _pColliderDesc[3]);
+	ColliderDesc.iLayer = (_uint)COLLISION_LAYER::ONLY_VIEW;
+	ColliderDesc.vScale = _float3(_pColliderDesc[0], 0.f, 0.f);
+	ColliderDesc.vTranslation = _float3(_pColliderDesc[1], _pColliderDesc[2], _pColliderDesc[3]);
 
-    m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
-    m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
+	m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
+	m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 }
+#endif
 
 void CLight_Prop::OnDestroy()
 {

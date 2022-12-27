@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #include "EasingComponent_Bezier.h"
 
+
+GAMECLASS_C(CEasingComponent_Bezier)
+CLONE_C(CEasingComponent_Bezier, CComponent)
+
 void CEasingComponent_Bezier::Start()
 {
 	__super::Start();
@@ -28,8 +32,8 @@ void CEasingComponent_Bezier::Set_Lerp_TwoCurve(_float2 vStart, _float2 vCurve1,
     _float4         _vStart;
     _float4         _vTarget;
 
-    _float2        m_vCurve1 = vCurve1;
-    _float2        m_vCurve2 = vCurve2;
+    m_vCurve1 = vCurve1;
+    m_vCurve2 = vCurve2;
 
     _vStart = { vStart.x,vStart.y,0.f,0.f };
     _vTarget = { vTarget.x,vTarget.y,0.f,0.f };

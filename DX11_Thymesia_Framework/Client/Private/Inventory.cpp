@@ -4,6 +4,8 @@
 #include "Item.h"
 #include "UI_ItemPopup.h"
 #include "GameManager.h"
+#include "UIManager.h"
+
 
 GAMECLASS_C(CInventory)
 CLONE_C(CInventory, CComponent)
@@ -55,7 +57,7 @@ void CInventory::Push_Item(ITEM_NAME eItemName)
 		pair->second->Add_Quantity();//있다면 수량 하나 추가.
 	}
 
-	GET_SINGLE(CGameManager)->Add_Popup(eItemName);
+	GET_SINGLE(CUIManager)->Add_ItemPopup(eItemName);
 
 	//weak_ptr<CUI_ItemPopup> pPopupUI = GAMEINSTANCE->Get_GameObjects<CUI_ItemPopup>(LEVEL_STATIC).front();
 	//pPopupUI.lock()->Ready_Popup(eItemName);

@@ -5,6 +5,7 @@
 #include "UI_Inventory.h"
 #include "GameManager.h"
 #include "UI_ItemInformation.h"
+#include "UIManager.h"
 
 GAMECLASS_C(CUI_PauseMenu_Page_Inventory)
 CLONE_C(CUI_PauseMenu_Page_Inventory, CGameObject)
@@ -72,14 +73,14 @@ void CUI_PauseMenu_Page_Inventory::OnEnable(void* pArg)
 {
 	__super::OnEnable(pArg);
 
-	GET_SINGLE(CGameManager)->EnableCursor();
+	GET_SINGLE(CUIManager)->EnableCursor();
 }
 
 void CUI_PauseMenu_Page_Inventory::OnDisable()
 {
 	__super::OnDisable();
 
-	GET_SINGLE(CGameManager)->DisableCursor();
+	GET_SINGLE(CUIManager)->DisableCursor();
 }
 
 void CUI_PauseMenu_Page_Inventory::Call_OnMouseOver(weak_ptr<CItem> pItem)

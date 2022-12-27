@@ -32,7 +32,7 @@ public:
 
 private:
     void                OnPaging();
-
+    void                Update_KeyInput();
 
 private:
     weak_ptr<CCustomUI> m_pPauseMenuBackground;

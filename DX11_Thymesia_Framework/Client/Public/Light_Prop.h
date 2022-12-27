@@ -4,7 +4,7 @@
 
 BEGIN(Engine)
 
-class CPhysXCollider; 
+class CPhysXCollider;
 class CCollider;
 
 END
@@ -39,31 +39,32 @@ private:
     void Act_LightTurnOnEvent(_float fTimeDelta, _bool& Out_End);
     void Act_LightTurnOffEvent(_float fTimeDelta, _bool& Out_End);
 
-private:
-	LIGHTDESC   m_tLightDesc;
-    _int        m_iSectionIndex    = -1;
-	_float      m_fMinLightRange   = 0.f;
-	_float      m_fMaxLightRange   = 0.f;
-    _float3     m_vOffset          = { 0.f, 0.f, 0.f };
-    _float      m_fDelayTime       = 0.f;
-    _float      m_fIntensityTime   = 1.f;
-    _float      m_fAccTime         = 0.f;
 
-    string      m_szEffectTag      = "";
-    _int        m_iEffectIndex     = -1;
+private:
+    LIGHTDESC   m_tLightDesc;
+    _int        m_iSectionIndex = -1;
+    _float      m_fMinLightRange = 0.f;
+    _float      m_fMaxLightRange = 0.f;
+    _float3     m_vOffset = { 0.f, 0.f, 0.f };
+    _float      m_fDelayTime = 0.f;
+    _float      m_fIntensityTime = 1.f;
+    _float      m_fAccTime = 0.f;
+
+    string      m_szEffectTag = "";
+    _int        m_iEffectIndex = -1;
 
     _float      m_fTargetIntensity = 0.f;
-    _float      m_fTargetRange     = 0.f;
-    _float      m_fDisableTime     = 0.5f;
+    _float      m_fTargetRange = 0.f;
+    _float      m_fDisableTime = 0.5f;
 
     FDelegate<_float, _bool&>   Callback_ActUpdate;
 
 #ifdef _DEBUG
     weak_ptr<CCollider>   m_pColliderCom;
-#endif
 
 private:
     void    SetUpColliderDesc(_float* _pColliderDesc);
+#endif
 
 private:
     virtual void OnDestroy() override;

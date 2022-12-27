@@ -304,6 +304,7 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	if (KEY_INPUT(KEY::NUM3, KEY_STATE::TAP))
 	{
 		m_pInventory.lock()->Push_Item(ITEM_NAME::BASIL);
+
 	}
 	if (KEY_INPUT(KEY::NUM4, KEY_STATE::TAP))
 	{
@@ -312,10 +313,14 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	if (KEY_INPUT(KEY::NUM5, KEY_STATE::TAP))
 	{
 		m_pInventory.lock()->Push_Item(ITEM_NAME::GARDEN_KEY);
+		m_pInventory.lock()->Push_Item(ITEM_NAME::VARG_KEY);
+		m_pInventory.lock()->Push_Item(ITEM_NAME::CINNAMON);
+		m_pInventory.lock()->Push_Item(ITEM_NAME::MEMORY02);
 	}
 	if (KEY_INPUT(KEY::NUM6, KEY_STATE::TAP))
 	{
 		m_pInventory.lock()->Push_Item(ITEM_NAME::MEMORY01);
+		m_pInventory.lock()->Push_Item(ITEM_NAME::MEMORY02);
 	}
 	if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
 	{

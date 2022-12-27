@@ -57,36 +57,7 @@ void CUI_PauseMenu::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	if (KEY_INPUT(KEY::CTRL, KEY_STATE::TAP) && m_bOpenThisFrame == false)
-	{
-		FaderDesc tFaderDesc;
-		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
-		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
-		tFaderDesc.fFadeMaxTime = 0.3f;
-		tFaderDesc.fDelayTime = 0.f;
-		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
-
-		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
-		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CUI_PauseMenu::Call_FadeInPauseMenu, this);
-	}
-
-
-	if (KEY_INPUT(KEY::Q, KEY_STATE::TAP))
-	{
-		if (m_iPageIndex > 0)
-		{
-			m_iPageIndex--;
-			OnPaging();
-		}
-	}
-	if (KEY_INPUT(KEY::E, KEY_STATE::TAP))
-	{
-		if (m_iPageIndex < (_uint)PAUSE_MENU_QUIT)
-		{
-			m_iPageIndex++;
-			OnPaging();
-		}
-	}
+	Update_KeyInput();
 	m_bOpenThisFrame = false;
 }
 
@@ -178,6 +149,43 @@ void CUI_PauseMenu::OnPaging()
 
 
 		m_pInventoryBG.lock()->Set_Enable(false);
+	}
+}
+
+void CUI_PauseMenu::Update_KeyInput()
+{
+	if (GET_SINGLE(CUIManager)->Is_Animation())
+		return;
+
+	if (KEY_INPUT(KEY::CTRL, KEY_STATE::TAP) && m_bOpenThisFrame == false)
+	{
+		FaderDesc tFaderDesc;
+		tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
+		tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
+		tFaderDesc.fFadeMaxTime = 0.3f;
+		tFaderDesc.fDelayTime = 0.f;
+		tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
+
+		m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
+		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CUI_PauseMenu::Call_FadeInPauseMenu, this);
+	}
+
+
+	if (KEY_INPUT(KEY::Q, KEY_STATE::TAP))
+	{
+		if (m_iPageIndex > 0)
+		{
+			m_iPageIndex--;
+			OnPaging();
+		}
+	}
+	if (KEY_INPUT(KEY::E, KEY_STATE::TAP))
+	{
+		if (m_iPageIndex < (_uint)PAUSE_MENU_QUIT)
+		{
+			m_iPageIndex++;
+			OnPaging();
+		}
 	}
 }
 

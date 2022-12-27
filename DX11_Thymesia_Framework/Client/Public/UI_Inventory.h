@@ -48,7 +48,7 @@ private:
     void                    Set_ItemSlotPosFromWidthHeightIndex(weak_ptr<CUI_ItemSlot> pItemSlot, _uint iWidthIndex, _uint iHeightIndex);
 
 
-    void                    Start_AnimationSorting();
+    void                    Start_AnimationSorting(_uint eSortingAnimType);
     void                    Start_AnimationPreSorting(vector<weak_ptr<CUI_ItemSlot>>& vecItemSlot, INVENTORY_SORTTYPE eSortType);
 
 
