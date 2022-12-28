@@ -62,6 +62,8 @@ HRESULT CLight_Prop::Start()
 		m_tLightDesc.vAmbient   = { 0.3f, 0.3f, 0.3f, 1.f };
 		m_tLightDesc.vSpecular  = { 0.3f, 0.3f, 0.3f, 1.f };
 	}*/
+	
+	//Set_Enable(false);
 
 	m_fTargetIntensity      = m_tLightDesc.fIntensity;
 	m_fTargetRange          = m_tLightDesc.fRange;
@@ -70,7 +72,6 @@ HRESULT CLight_Prop::Start()
 
 	if (-1 == m_iSectionIndex && "" != m_szEffectTag)
 		m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup(m_szEffectTag, m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
-
 
 #ifdef _DEBUG
 	_float fDefaultDesc[4] = { m_fTargetRange, 0.f, 0.f, 0.f };

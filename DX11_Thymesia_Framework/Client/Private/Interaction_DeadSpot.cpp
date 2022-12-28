@@ -63,6 +63,7 @@ HRESULT CInteraction_DeadSpot::Start()
 	m_tLightDesc = GAMEINSTANCE->Add_Light(m_tLightDesc);  
     m_pColliderCom.lock()->Set_Enable(false);
     Set_Enable(false);
+
     return S_OK;
 }
 
@@ -73,8 +74,6 @@ void CInteraction_DeadSpot::Tick(_float fTimeDelta)
 
 void CInteraction_DeadSpot::LateTick(_float fTimeDelta)
 {
-
-    m_bRendering = true;
     __super::LateTick(fTimeDelta);
 }
 

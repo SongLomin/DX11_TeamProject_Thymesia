@@ -229,7 +229,8 @@ void CEditGroupProp::View_CreateProp()
 		"Ladder",
 		"Note",
 		"NextPoint",
-		"CastleGate"
+		"CastleGate",
+		"Item"
 	};
 
 	ImGui::Text(string(string(" Size  : ") + to_string(m_iSize)).c_str());
@@ -336,6 +337,17 @@ void CEditGroupProp::View_CreateProp()
 				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_CastleGate>(LEVEL::LEVEL_EDIT);
 				tObjDesc.HashCode = typeid(CInteraction_CastleGate).hash_code();
 				tObjDesc.TypeName = typeid(CInteraction_CastleGate).name();
+			}
+			break;
+
+			case 7:
+			{
+				if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
+					return;
+
+				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_Item>(LEVEL::LEVEL_EDIT);
+				tObjDesc.HashCode  = typeid(CInteraction_Item).hash_code();
+				tObjDesc.TypeName  = typeid(CInteraction_Item).name();
 			}
 			break;
 		}
