@@ -139,6 +139,7 @@ HRESULT CMainApp::Initialize()
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter%d.dds"));
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
+
 	return S_OK;
 }
 
