@@ -298,10 +298,12 @@ void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
 				 typeid(CLight_Prop).hash_code()             == TempDesc.HashCode ||
 				 typeid(CInteraction_Door).hash_code()       == TempDesc.HashCode ||
 			     typeid(CInteraction_CastleGate).hash_code() == TempDesc.HashCode ||
+			     typeid(CInteraction_Fence).hash_code()      == TempDesc.HashCode ||
 				 typeid(CInteraction_CheckPoint).hash_code() == TempDesc.HashCode ||
 			     typeid(CInteraction_NextPoint).hash_code()  == TempDesc.HashCode ||
 				 typeid(CInteraction_Elevator).hash_code()   == TempDesc.HashCode ||
 				 typeid(CInteraction_Ladder).hash_code()     == TempDesc.HashCode ||
+				 typeid(CInteraction_Item).hash_code()       == TempDesc.HashCode ||
 			     typeid(CSection_Eventer).hash_code()        == TempDesc.HashCode)
 		{
 			weak_ptr<CGameObject> pNewGameObject = GAMEINSTANCE->Add_GameObject(TempDesc.HashCode, LEVEL::LEVEL_EDIT);
@@ -325,10 +327,10 @@ void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
 			continue;
 		}
 
-		else if (typeid(CEditMapCollider).hash_code() == TempDesc.HashCode ||
-			     typeid(CEditSetActor).hash_code()    == TempDesc.HashCode ||
-			     typeid(CEditGroupProp).hash_code()   == TempDesc.HashCode ||
-			     typeid(CEditEventContoller).hash_code()      == TempDesc.HashCode)
+		else if (typeid(CEditMapCollider).hash_code()     == TempDesc.HashCode ||
+			     typeid(CEditSetActor).hash_code()        == TempDesc.HashCode ||
+			     typeid(CEditGroupProp).hash_code()       == TempDesc.HashCode ||
+			     typeid(CEditEventContoller).hash_code()  == TempDesc.HashCode)
 		{
 			continue;
 		}

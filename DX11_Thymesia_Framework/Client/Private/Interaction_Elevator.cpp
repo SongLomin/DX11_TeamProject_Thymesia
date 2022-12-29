@@ -10,6 +10,7 @@
 
 #include "GameInstance.h"
 #include "ClientLevel.h"
+#include "imgui.h"
 
 GAMECLASS_C(CInteraction_Elevator);
 CLONE_C(CInteraction_Elevator, CGameObject);

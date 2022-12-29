@@ -11,6 +11,8 @@
 
 #include "PhysXColliderObject.h"
 #include "Window_HierarchyView.h"
+#include "SMath.h"
+#include "imgui.h"
 
 GAMECLASS_C(CEditSetActor)
 CLONE_C(CEditSetActor, CGameObject)
@@ -235,7 +237,7 @@ void CEditSetActor::View_CreateActor()
 
 	RAY MouseRayInWorldSpace;
 
-	if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) || !Picking(MouseRayInWorldSpace))
+	if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) || !Picking(MouseRayInWorldSpace, m_PickingDesc._42))
 		return;
 
 	CMonster::STATE_LINK_MONSTER_DESC tMonsterDesc;
@@ -328,12 +330,12 @@ void CEditSetActor::View_Picking_Actor()
 {
 	RAY MouseRayInWorldSpace;
 
-	if (!KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) || !Picking(MouseRayInWorldSpace))
+	if (!KEY_INPUT(KEY::CTRL, KEY_STATE::HOLD) || !Picking(MouseRayInWorldSpace, 0.f))
 		return;
 
 	MESH_VTX_INFO VtxInfo;
 	VtxInfo.vMin = { -1.f, 0.f, -1.f };
-	VtxInfo.vMax = { 1.f, 2.f,  1.f };
+	VtxInfo.vMax = {  1.f, 2.f,  1.f };
 
 	_uint   iIndex = 0;
 	_float  fDistance = 99999999.f;
@@ -657,7 +659,7 @@ void CEditSetActor::Add_ActorToTool(_hashcode _HashCode, string _szTypeName, wea
 	}
 }
 
-_bool CEditSetActor::Picking(RAY& _pMouseRayInWorldSpace)
+_bool CEditSetActor::Picking(RAY& _pMouseRayInWorldSpace, _float _fSetY)
 {
 	if (!KEY_INPUT(KEY::LBUTTON, KEY_STATE::TAP))
 		return false;
@@ -666,7 +668,7 @@ _bool CEditSetActor::Picking(RAY& _pMouseRayInWorldSpace)
 
 	_float4 vOutPos;
 	ZeroMemory(&vOutPos, sizeof(_float4));
-	vOutPos.y = m_PickingDesc._42;
+	vOutPos.y = _fSetY;
 
 	if (SMath::Is_Picked_AbstractTerrain(_pMouseRayInWorldSpace, &vOutPos))
 	{

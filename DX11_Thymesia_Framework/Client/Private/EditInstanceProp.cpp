@@ -187,7 +187,7 @@ HRESULT CEditInstanceProp::SetUp_ShaderResource(ID3D11DeviceContext* pDeviceCont
 
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
-		m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
+		_bool bCheck = FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE));
 
 		if (m_bDissolve)
 		{

@@ -15,6 +15,7 @@
 
 #include "Window_HierarchyView.h"
 #include "ImGui_Window.h"
+#include "imgui.h"
 
 GAMECLASS_C(CEditGroupProp)
 CLONE_C(CEditGroupProp, CGameObject)
@@ -22,11 +23,17 @@ CLONE_C(CEditGroupProp, CGameObject)
 static const char* items_FindType[] =
 {
 	"( none )",
-	"Interaction_Prop",
-	"Static_Prop",
-	"Dynamic_Prop",
-	"Light_Prop",
-	"Section_Eventer",
+	"CStatic_Prop",
+	"CLight_Prop",
+	"CInteraction_Door",
+	"CInteraction_CastleGate",
+	"CInteraction_CheckPoint",
+	"CInteraction_NextPoint",
+	"CInteraction_Elevator",
+	"CInteraction_Ladder",
+	"CInteraction_Item",
+	"CInteraction_Fence",
+	"CSection_Eventer"
 };
 
 HRESULT CEditGroupProp::Initialize_Prototype()
@@ -172,8 +179,10 @@ void CEditGroupProp::OnEventMessage(_uint iArg)
 				if (ImGui::BeginTabItem("Create"))
 				{
 					View_CreateProp();
+					View_PropOption();
 					View_PickProp();
 					View_OnlyTranformEdit();
+
 
 					ImGui::EndTabItem();
 				}
@@ -229,7 +238,9 @@ void CEditGroupProp::View_CreateProp()
 		"Ladder",
 		"Note",
 		"NextPoint",
-		"CastleGate"
+		"CastleGate",
+		"Item",
+		"Interaction_Fence"
 	};
 
 	ImGui::Text(string(string(" Size  : ") + to_string(m_iSize)).c_str());
@@ -338,6 +349,28 @@ void CEditGroupProp::View_CreateProp()
 				tObjDesc.TypeName = typeid(CInteraction_CastleGate).name();
 			}
 			break;
+
+			case 7:
+			{
+				if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
+					return;
+
+				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_Item>(LEVEL::LEVEL_EDIT);
+				tObjDesc.HashCode  = typeid(CInteraction_Item).hash_code();
+				tObjDesc.TypeName  = typeid(CInteraction_Item).name();
+			}
+			break;
+
+			case 8:
+			{
+				if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
+					return;
+
+				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_Fence>(LEVEL::LEVEL_EDIT);
+				tObjDesc.HashCode = typeid(CInteraction_Fence).hash_code();
+				tObjDesc.TypeName = typeid(CInteraction_Fence).name();
+			}
+			break;
 		}
 	}
 
@@ -438,6 +471,55 @@ void    CEditGroupProp::View_OnlyTranformEdit()
 		return;
 
 	RenderView_Transform_Edit(iter_prop->second[m_iPickingIndex].pInstance);
+}
+
+void CEditGroupProp::View_PropOption()
+{
+	ImGui::Separator();
+	
+	static _bool bRenderOptionState[IM_ARRAYSIZE(items_FindType)][2] = { true, };
+	static _int  iSelectRenderOpt = 0;
+
+	ImGui::Combo("Render Option", &iSelectRenderOpt, items_FindType, IM_ARRAYSIZE(items_FindType));
+
+	if (0 == iSelectRenderOpt)
+		return;
+
+	if (ImGui::Checkbox("No Render Model", &bRenderOptionState[iSelectRenderOpt][0]))
+	{
+		auto iter_prop = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditGroupProp).hash_code());
+
+		if (iter_prop == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
+			return;
+
+		for (auto& elem : iter_prop->second)
+		{
+			if (string::npos == elem.TypeName.find(items_FindType[iSelectRenderOpt]))
+				continue;
+
+			elem.pInstance.lock()->Set_Enable(!bRenderOptionState[iSelectRenderOpt][0]);
+			elem.pInstance.lock()->OnEventMessage((_uint)((!bRenderOptionState[iSelectRenderOpt][0]) ? (EVENT_TYPE::ON_EDIT_RENDER_ACTIVATE) : (EVENT_TYPE::ON_EDIT_RENDER_DISABLE)));
+		}
+	}
+
+	if (ImGui::Checkbox("No Render Collider", &bRenderOptionState[iSelectRenderOpt][1]))
+	{
+		auto iter_prop = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditGroupProp).hash_code());
+
+		if (iter_prop == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
+			return;
+
+		for (auto& elem : iter_prop->second)
+		{
+			if (string::npos == elem.TypeName.find(items_FindType[iSelectRenderOpt]))
+				continue;
+
+			weak_ptr<CCollider> pCollider = elem.pInstance.lock()->Get_Component<CCollider>();
+
+			if (pCollider.lock())
+				pCollider.lock()->Set_Enable(!bRenderOptionState[iSelectRenderOpt][1]);
+		}
+	}
 }
 
 void    CEditGroupProp::View_PickProp()

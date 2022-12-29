@@ -15,6 +15,7 @@
 #include "ClientLevel.h"
 #include "GameManager.h"
 #include "Status_Player.h"
+#include "imgui.h"
 
 GAMECLASS_C(CInteraction_CheckPoint);
 CLONE_C(CInteraction_CheckPoint, CGameObject);

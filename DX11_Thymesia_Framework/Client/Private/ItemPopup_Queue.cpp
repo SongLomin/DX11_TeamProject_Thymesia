@@ -56,8 +56,8 @@ void CItemPopup_Queue::Pull_Popup()
 	{
 		elem.lock()->Add_Y(m_fPopupOffset);
 	}
+
 	weak_ptr<CUI_ItemPopup>	pItemPopup = m_pItemPopupQueue.front();
-	
 
 	m_pItemPopupQueue.pop();
 

@@ -12,6 +12,7 @@
 #include "GameInstance.h"
 #include "ClientLevel.h"
 #include "GameManager.h"
+#include "imgui.h"
 
 GAMECLASS_C(CInteraction_Note);
 CLONE_C(CInteraction_Note, CGameObject);

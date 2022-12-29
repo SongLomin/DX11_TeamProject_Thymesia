@@ -11,6 +11,7 @@
 
 #include "GameInstance.h"
 #include "GameManager.h"
+#include "imgui.h"
 
 GAMECLASS_C(CLight_Prop)
 CLONE_C(CLight_Prop, CGameObject)
@@ -62,6 +63,8 @@ HRESULT CLight_Prop::Start()
 		m_tLightDesc.vAmbient   = { 0.3f, 0.3f, 0.3f, 1.f };
 		m_tLightDesc.vSpecular  = { 0.3f, 0.3f, 0.3f, 1.f };
 	}*/
+	
+	//Set_Enable(false);
 
 	m_fTargetIntensity      = m_tLightDesc.fIntensity;
 	m_fTargetRange          = m_tLightDesc.fRange;
@@ -70,7 +73,6 @@ HRESULT CLight_Prop::Start()
 
 	if (-1 == m_iSectionIndex && "" != m_szEffectTag)
 		m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup(m_szEffectTag, m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
-
 
 #ifdef _DEBUG
 	_float fDefaultDesc[4] = { m_fTargetRange, 0.f, 0.f, 0.f };
@@ -330,6 +332,22 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 
 			ImGui::Text("");
 			ImGui::Separator();
+		}
+		break;
+
+		case EVENT_TYPE::ON_EDIT_RENDER_ACTIVATE:
+		{
+			m_tLightDesc.bEnable = true;
+
+			GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+		}
+		break;
+
+		case EVENT_TYPE::ON_EDIT_RENDER_DISABLE:
+		{
+			m_tLightDesc.bEnable = false;
+
+			GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
 		}
 		break;
 	}
