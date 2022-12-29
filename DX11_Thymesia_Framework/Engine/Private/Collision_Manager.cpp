@@ -13,6 +13,7 @@ void CCollision_Manager::Initialize(const _uint& In_iNumLayer)
 	for (_uint i(0); i < In_iNumLayer; ++i)
 	{
 		m_pColliderList.push_back({});
+		m_pReservedColliderList.push_back({});
 		m_arrCheck.push_back(0);
 	}
 
