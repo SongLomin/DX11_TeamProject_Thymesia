@@ -166,6 +166,7 @@ void CNorMonster::Init_Desc()
 		break;
 	case MONSTERTYPE::BALLOON:
 		m_pModelCom.lock()->Init_Model("Balloon", "", (_uint)TIMESCALE_LAYER::MONSTER);
+		m_pPhysXControllerCom.lock()->Enable_Gravity(false);
 		break;
 	}
 
