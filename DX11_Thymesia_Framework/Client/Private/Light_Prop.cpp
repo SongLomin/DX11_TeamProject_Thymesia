@@ -11,6 +11,7 @@
 
 #include "GameInstance.h"
 #include "GameManager.h"
+#include "imgui.h"
 
 GAMECLASS_C(CLight_Prop)
 CLONE_C(CLight_Prop, CGameObject)
@@ -331,6 +332,22 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 
 			ImGui::Text("");
 			ImGui::Separator();
+		}
+		break;
+
+		case EVENT_TYPE::ON_EDIT_RENDER_ACTIVATE:
+		{
+			m_tLightDesc.bEnable = true;
+
+			GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+		}
+		break;
+
+		case EVENT_TYPE::ON_EDIT_RENDER_DISABLE:
+		{
+			m_tLightDesc.bEnable = false;
+
+			GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
 		}
 		break;
 	}

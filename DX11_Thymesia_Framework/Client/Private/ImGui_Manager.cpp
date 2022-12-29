@@ -271,8 +271,6 @@ HRESULT CImGui_Manager::Render(void)
 
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
-
-
 	return S_OK;
 }
 

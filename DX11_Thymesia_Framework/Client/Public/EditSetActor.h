@@ -45,7 +45,7 @@ private:
     void    SetUp_ShaderResource_Select(ID3D11DeviceContext* pDeviceContext);
 
     void    Add_ActorToTool(_hashcode _HashCode, string _szTypeName, weak_ptr<CGameObject> _pInstance);
-    _bool   Picking(RAY& _pMouseRayInWorldSpace);
+    _bool   Picking(RAY& _pMouseRayInWorldSpace, _float _fSetY);
 
 private: 
     weak_ptr<CVIBuffer_DynamicCube>  m_pSelect_VIBufferCom;

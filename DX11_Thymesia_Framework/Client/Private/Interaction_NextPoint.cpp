@@ -12,6 +12,7 @@
 #include "GameInstance.h"
 #include "ClientLevel.h"
 #include "GameManager.h"
+#include "imgui.h"
 
 GAMECLASS_C(CInteraction_NextPoint);
 CLONE_C(CInteraction_NextPoint, CGameObject);
@@ -172,6 +173,22 @@ void CInteraction_NextPoint::OnEventMessage(_uint iArg)
 
             ImGui::InputInt("Tex", &m_iTexPass);
             ImGui::InputFloat2("Speed", &m_vAddSpeed.x);
+        }
+        break;
+
+        case EVENT_TYPE::ON_EDIT_RENDER_ACTIVATE:
+        {
+            m_tLightDesc.bEnable = true;
+
+            GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+        }
+        break;
+
+        case EVENT_TYPE::ON_EDIT_RENDER_DISABLE:
+        {
+            m_tLightDesc.bEnable = false;
+
+            GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
         }
         break;
     }

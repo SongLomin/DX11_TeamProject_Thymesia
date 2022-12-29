@@ -10,6 +10,7 @@
 #include "Collider.h"
 
 #include "GameManager.h"
+#include "imgui.h"
 
 GAMECLASS_C(CInteraction_Ladder);
 CLONE_C(CInteraction_Ladder, CGameObject);

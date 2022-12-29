@@ -17,8 +17,6 @@ class CInteraction_Item final :
     GAMECLASS_H(CInteraction_Item);
     CLONE_H(CInteraction_Item, CGameObject);
 
-    // 머지 후 아이템 열거체로 변경하기
-
 public:
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize(void* pArg) override;
@@ -44,6 +42,7 @@ private:
 
 private:
     weak_ptr<CCollider>     m_pColliderCom;
+
     ITEM_NAME               m_eItem = ITEM_NAME::ITEM_NAME_END;
 
 private:
