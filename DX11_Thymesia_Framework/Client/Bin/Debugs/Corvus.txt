@@ -483,17 +483,17 @@ AnimTargetPoint
 camera
 SK_C_Corvus_$AssimpFbx$_PreRotation
 SK_C_Corvus
-0[SK_C_Corvus]. 27672
-1[SK_C_Corvus]. 35202
-2[SK_C_Corvus]. 864
-3[SK_C_Corvus]. 26292
-4[SK_C_Corvus]. 11220
-5[SK_C_Corvus]. 4683
-6[SK_C_Corvus]. 5610
-7[SK_C_Corvus]. 5610
-8[SK_C_Corvus]. 9066
-9[SK_C_Corvus]. 11220
-10[SK_C_Corvus]. 7560
-11[SK_C_Corvus]. 7560
-12[SK_C_Corvus]. 6552
-13[SK_C_Corvus]. 4683
+0[SK_C_Corvus]. 4634
+1[SK_C_Corvus]. 6062
+2[SK_C_Corvus]. 189
+3[SK_C_Corvus]. 4405
+4[SK_C_Corvus]. 3609
+5[SK_C_Corvus]. 791
+6[SK_C_Corvus]. 947
+7[SK_C_Corvus]. 947
+8[SK_C_Corvus]. 1509
+9[SK_C_Corvus]. 3609
+10[SK_C_Corvus]. 2277
+11[SK_C_Corvus]. 2277
+12[SK_C_Corvus]. 2183
+13[SK_C_Corvus]. 791

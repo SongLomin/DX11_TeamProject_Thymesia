@@ -8,3 +8,8 @@ GRB예제보기 GPU 연산
 쿠킹파람
 실린더랑 캡슐은 GPU 생성 안됨.
 Cooking의 gpu를 true로 해야됨.
+
+
+
+
+피직스 이동은 몬스터 Late_tick과 OnHit에서 하면 안됨.
