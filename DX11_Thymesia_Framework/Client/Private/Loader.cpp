@@ -492,7 +492,7 @@ HRESULT CLoader::Loading_ForStage2Level()
 	GAMEINSTANCE->Clear_Lights();
 	GAMEINSTANCE->Add_Light(LightDesc);
 
-	GAMEINSTANCE->Set_FogDesc(_float4(0.45f, 0.26f, 0.28f, 0.92f), 60.f);
+	GAMEINSTANCE->Set_FogDesc(_float4(0.45f, 0.45f, 0.45f, 0.5f), 60.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 1.f, 1.f, 1.f), _float4(1.f, 1.f, 1.f, 1.f), _float4(1.f, 1.f, 1.f, 1.f));
 	GAMEINSTANCE->Set_Contrast(1.2f);
 	GAMEINSTANCE->Set_Saturation(1.5f);
@@ -550,7 +550,7 @@ HRESULT CLoader::Loading_ForStage3Level()
 
 	GAMEINSTANCE->Clear_Lights();
 
-	GAMEINSTANCE->Set_FogDesc(_float4(0.5f, 0.5f, 0.5f, 0.f), 10000.f);
+	GAMEINSTANCE->Set_FogDesc(_float4(0.5f, 0.5f, 0.5f, 0.65f), 50.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 	GAMEINSTANCE->Set_Contrast(1.f);
 	GAMEINSTANCE->Set_Saturation(1.f);

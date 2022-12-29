@@ -131,6 +131,8 @@ HRESULT CStatic_Instancing_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 
 	m_pMaskingTextureCom.lock()->Set_ShaderResourceView(m_pShaderCom, "g_MaskTexture", 92);
 
+	_float fCamFar = GAMEINSTANCE->Get_CameraFar();
+	m_pShaderCom.lock()->Set_RawValue("g_fFar", &fCamFar, sizeof(_float));
 
 	_vector vShaderFlag = { 0.f, 0.f, 0.f, 0.f };
 	m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector));
