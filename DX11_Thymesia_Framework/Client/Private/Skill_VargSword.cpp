@@ -17,7 +17,6 @@ void CSkill_VargSword::UseSkill()
 {
 	__super::UseSkill();
 
-
 }
 
 void CSkill_VargSword::Start()

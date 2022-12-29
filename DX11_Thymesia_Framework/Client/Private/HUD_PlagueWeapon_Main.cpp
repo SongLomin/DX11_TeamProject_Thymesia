@@ -42,7 +42,10 @@ HRESULT CHUD_PlagueWeapon_Main::Initialize(void* pArg)
     m_pIcon = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC, &m_tUIDesc);
     m_pIcon.lock()->Set_Texture("None");
     m_pIcon.lock()->Set_Depth(0.2f);
-    m_pIcon.lock()->Set_Size(160.f, 160.f);
+       
+    _float fSize = m_tUIDesc.fSizeX * 1.72f;
+
+    m_pIcon.lock()->Set_Size(fSize, fSize);
 
     m_pPlagueWeapon_Ready = GAMEINSTANCE->Add_GameObject<CProgressBar>(LEVEL_STATIC, &m_tUIDesc);
     m_pPlagueWeapon_Ready.lock()->Set_Texture("HUD_PlagueWeapon_Frame_Ready");
@@ -64,7 +67,6 @@ HRESULT CHUD_PlagueWeapon_Main::Initialize(void* pArg)
     Add_Child(m_pPlagueWeapon_Main);
     Add_Child(m_pIcon);
 
-
     //HoverDesc
     //HoverFaderDesc
     m_tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
@@ -72,11 +74,6 @@ HRESULT CHUD_PlagueWeapon_Main::Initialize(void* pArg)
     m_tFaderDesc.fDelayTime = 0.f;
     m_tFaderDesc.fFadeMaxTime = 1.f;
     m_tFaderDesc.vFadeColor = _float4(0, 0, 0, 0.7f);
-
-    m_eSkillSocketType = CPlayerSkill_System::SOCKET_TYPE::SOCKET_MAIN;
-    
-    Bind_Player();
-
 
     return S_OK;
 }
@@ -104,6 +101,14 @@ HRESULT CHUD_PlagueWeapon_Main::Render(ID3D11DeviceContext* pDeviceContext)
     //__super::Render(pDeviceContext);
 
     return S_OK;
+}
+
+void CHUD_PlagueWeapon_Main::Bind_Player_FromSocketType(_uint iSocket_Type)
+{
+    m_eSkillSocketType = CPlayerSkill_System::SOCKET_TYPE(iSocket_Type);
+
+    Bind_Player();
+
 }
 
 

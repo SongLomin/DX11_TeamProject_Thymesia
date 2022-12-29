@@ -9,7 +9,8 @@
 #include "Animation.h"
 #include "Character.h"
 #include "VargStates.h"
-
+#include "BossMonster.h"
+#include "MonsterHPBar_Boss.h"
 #include "GameManager.h"
 
 GAMECLASS_C(CVargBossState_IdleGeneral);
@@ -68,6 +69,8 @@ void CVargBossState_IdleGeneral::OnStateStart(const _float& In_fAnimationBlendTi
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+
+	Weak_StaticCast<CBossMonster>(m_pOwner).lock()->Get_HPBar().lock()->Set_Enable(false);
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_

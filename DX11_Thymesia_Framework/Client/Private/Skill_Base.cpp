@@ -50,11 +50,16 @@ void CSkill_Base::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	if (m_bUseAble)
+	{
+		return;
+	}	
+
 	_bool isUseAble = Is_UseAble();
 
-	if (isUseAble)
+	if (isUseAble)//쿨타임이 다 돌았다면
 	{
-		if (m_bUseAble == false)
+		if (m_bUseAble == false)//전프레임이 사용 불가능이었다면
 		{
 			Callback_EndCoolDown();
 		}
@@ -102,6 +107,18 @@ _float CSkill_Base::Get_RatioCoolDown()
 void CSkill_Base::Reset_Skill()
 {
 	Init_SkillInfo();
+}
+
+void CSkill_Base::Clear_Callback()
+{
+	//Safe_DelegateClear(Callback_StartSkill);
+	//Safe_DelegateClear(Callback_UpdateCoolDown);
+	//Safe_DelegateClear(Callback_EndCoolDown);
+
+	Callback_StartSkill.Clear();
+	Callback_UpdateCoolDown.Clear();
+	Callback_EndCoolDown.Clear();
+
 }
 
 void CSkill_Base::Start_Skill()

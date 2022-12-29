@@ -1789,6 +1789,12 @@
     <ClInclude Include="..\Public\Window_ModelContantView.h">
       <Filter>97. Tool\00. IMGUI\Windows\03. Model\00. ModelContant</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\UI_ItemRequirement.h" />
+    <ClInclude Include="..\Public\Skill_Axe.h" />
+    <ClInclude Include="..\Public\PlayerSkillHeader.h" />
+    <ClInclude Include="..\Public\Client_Functions.h">
+      <Filter>99. Defines</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Interaction_Fence.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClInclude>
@@ -3628,6 +3634,8 @@
     <ClCompile Include="..\Private\Window_ModelContantView.cpp">
       <Filter>97. Tool\00. IMGUI\Windows\03. Model\00. ModelContant</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\UI_ItemRequirement.cpp" />
+    <ClCompile Include="..\Private\Skill_Axe.cpp" />
     <ClCompile Include="..\Private\Interaction_Fence.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClCompile>

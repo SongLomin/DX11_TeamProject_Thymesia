@@ -29,7 +29,9 @@ public:
 	void					ResetAllSkillCoolDown();
 
 public:
-	weak_ptr<CSkill_Base>	Get_MainSkill();
+	void					UseMainSKill();
+
+	void					SwapSkillMaintoSub();
 
 
 public:
@@ -37,6 +39,8 @@ public:
 	
 
 public:
+	void			UnBindSkill(SOCKET_TYPE eType);
+
 	void			OnChangeSkill(weak_ptr<CSkill_Base> pSkill, SOCKET_TYPE eType);
 private:
 	void			Tick_SkillList(_float fTimeDelta);

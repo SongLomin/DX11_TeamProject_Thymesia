@@ -60,7 +60,7 @@ public:
     void Call_FadeOutToLevelChange();
 
 public:
-    virtual void ExitLevel(LEVEL eLevel) {};
+    virtual void ExitLevel(LEVEL eLevel);
 
 
 public:

@@ -22,6 +22,10 @@ public:
 
 private:
 	weak_ptr<CHUD_PlagueWeapon_Main> m_pMainSkill;
+
+	weak_ptr<CHUD_PlagueWeapon_Main> m_pSubSkill;
+
+
 	weak_ptr<CHUD_PlagueWeapon_Steal> m_pStealSkill;
 
 

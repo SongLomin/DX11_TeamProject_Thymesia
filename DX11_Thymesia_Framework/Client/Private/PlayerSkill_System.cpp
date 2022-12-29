@@ -51,23 +51,53 @@ void CPlayerSkill_System::ResetAllSkillCoolDown()
     }
 }
 
-weak_ptr<CSkill_Base> CPlayerSkill_System::Get_MainSkill()
+void CPlayerSkill_System::UseMainSKill()
 {
-    return m_pSkillList[(_uint)SOCKET_TYPE::SOCKET_MAIN];
+    if (!m_pSkillList[(_uint)SOCKET_TYPE::SOCKET_MAIN].lock())
+        return;
+
+    m_pSkillList[(_uint)SOCKET_TYPE::SOCKET_MAIN].lock()->UseSkill();
+}
+
+void CPlayerSkill_System::SwapSkillMaintoSub()
+{
+    //서브나 메인 스킬 둘중에 하나라도 없으면 스왑 X
+    if (!m_pSkillList[(_uint)SOCKET_TYPE::SOCKET_MAIN].lock() || !m_pSkillList[(_uint)SOCKET_TYPE::SOCKET_SUB].lock())
+        return;
+
+    weak_ptr<CSkill_Base>   pSkillBase_Main = m_pSkillList[(_uint)SOCKET_TYPE::SOCKET_MAIN];
+    weak_ptr<CSkill_Base>   pSkillBase_Sub = m_pSkillList[(_uint)SOCKET_TYPE::SOCKET_SUB];
+
+    UnBindSkill(SOCKET_TYPE::SOCKET_MAIN);
+    UnBindSkill(SOCKET_TYPE::SOCKET_SUB);
+
+    OnChangeSkill(pSkillBase_Sub, SOCKET_TYPE::SOCKET_MAIN);
+    OnChangeSkill(pSkillBase_Main, SOCKET_TYPE::SOCKET_SUB);
 }
 
 
+void CPlayerSkill_System::UnBindSkill(SOCKET_TYPE eType)
+{
+    if (!m_pSkillList[(_uint)eType].lock())
+        return;
+
+    m_pSkillList[(_uint)eType].lock()->Clear_Callback();
+    m_pSkillList[(_uint)eType] = weak_ptr<CSkill_Base>();
+}
+
 void CPlayerSkill_System::OnChangeSkill(weak_ptr<CSkill_Base> pSkill, SOCKET_TYPE eType)
 {
-    pSkill.lock()->Reset_Skill();
+    if (m_pSkillList[(_uint)eType].lock())
+    {
+        m_pSkillList[(_uint)eType].lock()->Clear_Callback();
+    }
+    if (!pSkill.lock())
+    {
+        DEBUG_ASSERT;
+    }
+    
     m_pSkillList[(_uint)eType] = pSkill;
-
-
-   // Callback_OnChangeSkill[(_uint)eType].Clear();//스킬의 바인딩은 무조건 하나만 되어있어야한다. 
-    //기존 (기존에도 하나겠지만) 바인딩되었던 함수를 제거하고 콜백을 호출해야함.
-    //이러니까 내꺼 날려서 잠시 대기
-
-
+   
     Callback_OnChangeSkill[(_uint)eType](pSkill);
 }
 void CPlayerSkill_System::Tick_SkillList(_float fTimeDelta)

@@ -470,6 +470,7 @@ namespace Client
 	enum class SKILL_NAME
 	{
 		SKILL_VARGSWORD,
+		SKILL_AXE,
 		SKILL_END
 	};
 

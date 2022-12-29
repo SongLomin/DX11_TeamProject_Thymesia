@@ -34,13 +34,17 @@ public:
 	//HoverEvent
 	virtual void			Call_HoverFadeEnd(FADER_TYPE eFaderType);
 	
-public:
+protected:
 	virtual void			Bind_Player();//플레이어 스킬 시스템을 바인딩하는 함수
 
 
-private:
-	virtual void			Init_UI();
-	virtual void			Init_Icon(SKILL_NAME eSkillName);
+
+protected:
+	virtual void			Init_UI();//의자앉을때나, 게임 시작할때 초기화 먹여주기
+	void			Init_Icon(SKILL_NAME eSkillName);
+
+	
+	
 
 
 private:
