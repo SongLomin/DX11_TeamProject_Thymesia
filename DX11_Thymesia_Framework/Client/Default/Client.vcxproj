@@ -572,6 +572,7 @@
     <ClInclude Include="..\Public\UI_InventoryConfirmWindowButton.h" />
     <ClInclude Include="..\Public\UI_ItemInformation.h" />
     <ClInclude Include="..\Public\UI_ItemPopup.h" />
+    <ClInclude Include="..\Public\UI_ItemRequirement.h" />
     <ClInclude Include="..\Public\UI_ItemSlot.h" />
     <ClInclude Include="..\Public\UI_LerpBar.h" />
     <ClInclude Include="..\Public\UI_MenuText.h" />
@@ -1144,6 +1145,7 @@
     <ClCompile Include="..\Private\UI_InventoryConfirmWindowButton.cpp" />
     <ClCompile Include="..\Private\UI_ItemInformation.cpp" />
     <ClCompile Include="..\Private\UI_ItemPopup.cpp" />
+    <ClCompile Include="..\Private\UI_ItemRequirement.cpp" />
     <ClCompile Include="..\Private\UI_ItemSlot.cpp" />
     <ClCompile Include="..\Private\UI_LerpBar.cpp" />
     <ClCompile Include="..\Private\BossMonster.cpp" />

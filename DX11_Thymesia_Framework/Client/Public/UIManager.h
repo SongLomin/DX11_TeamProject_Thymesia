@@ -20,6 +20,8 @@ public:
 	void		Set_UIAnimation(_bool bUIAnimation) { m_bIsAnimation = bUIAnimation; }
 	_bool		Is_Animation() { return m_bIsAnimation; }
 
+    
+
 public:// For UI;
     POINT   Get_MousePoint();
 
