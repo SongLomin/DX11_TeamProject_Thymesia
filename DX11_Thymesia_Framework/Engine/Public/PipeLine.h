@@ -41,6 +41,8 @@ public:
 		return m_fCameraFar;
 	}
 
+	_bool Is_Binded() { return m_bBinded; }
+
 public:
 	void Tick();
 
@@ -56,6 +58,9 @@ private:
 	_float4x4			m_PreViewMatrix;
 
 	_float				m_fCameraFar = 300.f;
+
+	_bool				m_bBinded = false;
+
 public:
 	void Free();
 };

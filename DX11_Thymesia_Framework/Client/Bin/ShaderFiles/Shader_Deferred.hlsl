@@ -45,6 +45,7 @@ texture2D g_XBlurTexture;
 texture2D g_ExtractBloomTexture;
 texture2D g_OriginalRenderTexture;
 texture2D g_ShaderFlagTexture;
+texture2D g_HBAOTexture;
 
 texture2D g_RimLightTexture;
 
@@ -961,6 +962,18 @@ PS_OUT PS_MAIN_RIMLIGHT(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_MAIN_MUL(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+	
+    vector vHBAO = g_HBAOTexture.Sample(DefaultSampler, In.vTexUV);
+	
+    Out.vColor = g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV) * vHBAO;
+    //Out.vColor = vHBAO;
+    Out.vColor.a = 1.f;
+    return Out;
+}
+
 BlendState BS_Default
 {
 	BlendEnable[0] = false;
@@ -1189,6 +1202,18 @@ technique11 DefaultTechnique
         DomainShader = NULL;
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_RIMLIGHT();
+    }
+
+    pass MulTexture //14
+    {
+        SetBlendState(BS_ForwardAlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
+        SetRasterizerState(RS_Default);
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_MUL();
     }
 
 }
