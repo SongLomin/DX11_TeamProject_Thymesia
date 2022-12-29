@@ -24,6 +24,7 @@ void CCollision_Manager::Tick()
 {
 	std::unique_lock<std::mutex> lock(m_job_q_);
 
+	Update_ReservedColliderList();
 	Remove_DeadCollision();
 
 	for (size_t iRow(0); iRow < m_arrCheck.size(); ++iRow)
@@ -61,7 +62,7 @@ void CCollision_Manager::Add_Collision(const _uint& In_iLayer, weak_ptr<CCollide
 	if (m_pColliderList[In_iLayer].end() == iter)
 	{
 
-		m_pColliderList[In_iLayer].push_back(In_pCollider);
+		m_pReservedColliderList[In_iLayer].push_back(In_pCollider);
 #ifdef _DEBUG
 		cout << In_pCollider.lock()->Get_ColliderIndex() << ": Add Collider" << endl;
 #endif // _DEBUG
@@ -119,6 +120,19 @@ void CCollision_Manager::Remove_DeadCollision()
 				iter++;
 			}
 		}
+	}
+
+}
+
+void CCollision_Manager::Update_ReservedColliderList()
+{
+	for (_size_t i = 0; i < m_pReservedColliderList.size(); ++i)
+	{
+		for (auto& elem : m_pReservedColliderList[i])
+		{
+			m_pColliderList[i].push_back(elem);
+		}
+		m_pReservedColliderList[i].clear();
 	}
 
 }
