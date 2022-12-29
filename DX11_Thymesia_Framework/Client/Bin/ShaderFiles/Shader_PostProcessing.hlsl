@@ -8,6 +8,8 @@ matrix  g_PreCamViewMatrix, g_CamProjMatrix;//proj는 변하지 않는다고 가정
 
 vector		g_vCamPosition;
 
+float g_fFar = 300;
+
 float g_PixelWidth;
 float g_PixelHeight;
 
@@ -92,7 +94,7 @@ PS_OUT PS_MAIN_MOTION_BLUR(PS_IN In)
 
 	vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
 		   
-	float fViewZ      = vDepthDesc.y * 300.f;
+	float fViewZ = vDepthDesc.y * g_fFar;
 		   
 	vector vPixelWorldPos,vPixelPos;
 

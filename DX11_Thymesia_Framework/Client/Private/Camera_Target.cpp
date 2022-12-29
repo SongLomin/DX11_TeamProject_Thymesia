@@ -164,6 +164,10 @@ void CCamera_Target::Focus_Monster(weak_ptr<CMonster> _pMonster)
 	{
 		m_pTargetMonsterBoneNodeCom = m_pTargetMonsterModelCom.lock()->Find_BoneNode("spine_01");
 	}
+	if (!m_pTargetMonsterBoneNodeCom.lock())
+	{
+		m_pTargetMonsterBoneNodeCom = m_pTargetMonsterModelCom.lock()->Find_BoneNode("Bone");
+	}
 
 }
 
@@ -174,7 +178,6 @@ void CCamera_Target::Release_Focus()
 	m_pTargetMonsterTransformCom = weak_ptr<CTransform>();
 	m_pTargetMonsterModelCom = weak_ptr<CModel>();
 	m_pTargetMonsterBoneNodeCom = weak_ptr<CBoneNode>();
-
 }
 
 void CCamera_Target::Start_Cinematic(weak_ptr<CModel> _pModel, const _char* pBoneName, _fmatrix OffSetMatrix, CINEMATIC_TYPE eType)

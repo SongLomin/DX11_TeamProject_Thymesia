@@ -143,7 +143,7 @@ HRESULT CGameInstance::Render_Engine()
 
 	m_pObject_Manager->After_Render();
 
-
+	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 	return S_OK;
 }
 
