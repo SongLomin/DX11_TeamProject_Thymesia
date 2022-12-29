@@ -127,29 +127,6 @@ struct PS_OUT_LIGHT
     vector vAmbient  : SV_TARGET1;
 };
 
-vector Get_ScreenToWorldPos(float2 vTexUV, vector vDepthDesc)
-{
-    vector vWorldPos;
-
-    /* 투영스페이스 상의 위치르 ㄹ구한다. */
-    /* 뷰스페이스 상 * 투영행렬 / w 까지 위치를 구한다. */
-    vWorldPos.x = vTexUV.x * 2.f - 1.f;
-    vWorldPos.y = vTexUV.y * -2.f + 1.f;
-    vWorldPos.z = vDepthDesc.x;
-    vWorldPos.w = 1.0f;
-
-    /* 뷰스페이스 상 * 투영행렬까지 곱해놓은 위치를 구한다. */
-    vWorldPos *= vDepthDesc.y * 300.f;
-
-    /* 뷰스페이스 상  위치를 구한다. */
-    vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
-
-    /* 월드페이스 상  위치를 구한다. */
-    vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
-
-    return vWorldPos;
-}
-
 float trowbridgeReitzNDF(float NdotH, float roughness)
 {
     float alpha = roughness * roughness;
@@ -213,7 +190,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_DIRECTIONAL(PS_IN In)
 
 	vector vNormal = vector(vNormalDesc.xyz * 2.f - 1.f, 0.f);
     vNormal = normalize(vNormal);
-    float fViewZ = vDepthDesc.y * 300.f;
+    float fViewZ = vDepthDesc.y * g_fFar;
     /* 0 -> -1, 1 -> 1*/
     vector vWorldPos;
 
@@ -316,7 +293,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_POINT(PS_IN In)
 	
     float fMaxScalar = 0.f;
 
-	float fViewZ = vDepthDesc.y * 300.f;
+    float fViewZ = vDepthDesc.y * g_fFar;
 	/* 0 -> -1, 1 -> 1*/
 	vector vNormal = vector(vNormalDesc.xyz * 2.f - 1.f, 0.f);
 
@@ -423,7 +400,7 @@ PS_OUT_LIGHT PS_MAIN_LIGHT_SPOTLIGHT(PS_IN In)
     vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
     vector vORMDesc = g_ORMTexture.Sample(DefaultSampler, In.vTexUV);
 
-    float fViewZ = vDepthDesc.y * 300.f;
+    float fViewZ = vDepthDesc.y * g_fFar;
 	/* 0 -> -1, 1 -> 1*/
     vector vNormal = vector(vNormalDesc.xyz * 2.f - 1.f, 0.f);
 
@@ -542,7 +519,7 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
     vector vORMDesc       = g_ORMTexture.Sample(DefaultSampler, In.vTexUV);
     vector vAmbientDesc   = g_AmbientTexture.Sample(DefaultSampler, In.vTexUV);
 
-    float fViewZ = vDepthDesc.y * 300.f;
+    float fViewZ = vDepthDesc.y * g_fFar;
 
     vector vWorldPos;
 
@@ -833,7 +810,7 @@ PS_OUT_FOG PS_MAIN_FOG(PS_IN In)
     /* 방향성광원의 정보와 노멀 타겟에 담겨있는 노멀과의 빛연산을 수행한다. */
     vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexUV);
 
-    float fViewZ = vDepthDesc.y * 300.f;
+    float fViewZ = vDepthDesc.y * g_fFar;
     /* 0 -> -1, 1 -> 1*/
 
     vector vWorldPos;
@@ -954,7 +931,7 @@ PS_OUT PS_MAIN_RIMLIGHT(PS_IN In)
     vNormal = normalize(vNormal);
     
     
-    float fViewZ = vDepthDesc.y * 300.f;
+    float fViewZ = vDepthDesc.y * g_fFar;
     /* 0 -> -1, 1 -> 1*/
 
     vector vWorldPos;

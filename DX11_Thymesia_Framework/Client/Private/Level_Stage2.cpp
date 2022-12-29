@@ -41,6 +41,8 @@ HRESULT CLevel_Stage2::Initialize()
 	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_GAMEPLAY, &CameraDesc);
 	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
 
+	GAMEINSTANCE->Set_CameraFar(CameraDesc.fFar);
+
 	Load_FromJson(m_szDefaultJsonPath + "Stage2-2.json", LEVEL::LEVEL_STAGE2);
 
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL_STAGE2);

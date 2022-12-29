@@ -993,7 +993,10 @@ HRESULT CRender_Manager::Bake_ViewShadow()
 	m_pShader->Set_RawValue("g_DynamicLightViewMatrix", &m_DynamicLightViewMatrixTranspose, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_DynamicLightProjMatrix", &m_DynamicLightProjMatrixTranspose, sizeof(_float4x4));
 
+
 	shared_ptr<CPipeLine> pPipeLine = GET_SINGLE(CPipeLine);
+	_float fCamFar = pPipeLine->Get_CameraFar();
+	m_pShader->Set_RawValue("g_fFar", &fCamFar, sizeof(_float));
 
 	_float4x4		ViewMatrixInv, ProjMatrixInv;
 

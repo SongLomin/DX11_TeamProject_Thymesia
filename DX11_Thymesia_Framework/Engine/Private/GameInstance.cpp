@@ -512,6 +512,20 @@ _float4 CGameInstance::Get_CamPosition()
 
 	return m_pPipeLine->Get_CamPosition();
 }
+void CGameInstance::Set_CameraFar(const _float In_fCameraFar)
+{
+	if (nullptr == m_pPipeLine)
+		return;
+
+	m_pPipeLine ->Set_CameraFar(In_fCameraFar);
+}
+_float CGameInstance::Get_CameraFar()
+{
+	if (nullptr == m_pPipeLine)
+		return 0.f;
+
+	return m_pPipeLine->Get_CameraFar();
+}
 
 void CGameInstance::Write_JsonUsingResource(const char* In_szFilePath)
 {

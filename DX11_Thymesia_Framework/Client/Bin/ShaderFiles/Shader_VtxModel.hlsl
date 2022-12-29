@@ -89,7 +89,7 @@ PS_OUT PS_MAIN(PS_IN In)
     clip(Out.vDiffuse.a - 0.1f);
     
 	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
-	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
 	
     Out.vExtractBloom = 0;
@@ -218,7 +218,7 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
     vPixelNormal = mul(vPixelNormal, WorldMatrix);
 
     Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
-    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
     Out.vORM = 0;
 
@@ -259,7 +259,7 @@ PS_OUT PS_MAIN_NORMAL_MASKING(PS_IN_NORMAL In)
     vPixelNormal = mul(vPixelNormal, WorldMatrix);
 
     Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
-    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
 
     Out.vDiffuse.a = 1.f;
@@ -295,7 +295,7 @@ PS_OUT PS_MAIN_NORMAL_MASKING_SCALAR(PS_IN_NORMAL In)
     vPixelNormal = mul(vPixelNormal, WorldMatrix);
 
     Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
-    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
 
     Out.vDiffuse.a = 1.f;
@@ -331,7 +331,7 @@ PS_OUT      PS_MAIN_PICK(PS_IN In)
     clip(Out.vDiffuse.a - 0.1f);
     
     Out.vNormal     = vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
-    Out.vDepth      = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
     Out.vRimLight = 0;
 
@@ -359,7 +359,7 @@ PS_OUT PS_MAIN_NORMAL_PBR(PS_IN_NORMAL In)
     vPixelNormal = mul(vPixelNormal, WorldMatrix);
 
     Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
-    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
 
     Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
@@ -398,7 +398,7 @@ PS_OUT PS_MAIN_NORMAL_MASKING_SCALAR_PBR(PS_IN_NORMAL In)
     vPixelNormal = mul(vPixelNormal, WorldMatrix);
 
     Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
-    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
 
     Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
@@ -434,7 +434,7 @@ PS_OUT PS_MAIN_NORMAL_MOVE_UV(PS_IN_NORMAL In)
     vPixelNormal = mul(vPixelNormal, WorldMatrix);
 
     Out.vNormal       = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
-    Out.vDepth        = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag   = g_vShaderFlag;
     Out.vORM          = 0;
     Out.vRimLight = 0;

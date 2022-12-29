@@ -29,11 +29,21 @@ public:
 		return m_vCamPosition;
 	}
 
+	_float4x4 Get_PreViewMatrix();
+
+	void Set_CameraFar(const _float In_fCameraFar)
+	{
+		m_fCameraFar = In_fCameraFar;
+	}
+
+	_float Get_CameraFar()
+	{
+		return m_fCameraFar;
+	}
 
 public:
 	void Tick();
 
-	_float4x4 Get_PreViewMatrix();
 
 
 private:
@@ -44,6 +54,8 @@ private:
 	_float4				m_vPreCamPosition;
 	_float4				m_vPreCamQuaternion;
 	_float4x4			m_PreViewMatrix;
+
+	_float				m_fCameraFar = 300.f;
 public:
 	void Free();
 };

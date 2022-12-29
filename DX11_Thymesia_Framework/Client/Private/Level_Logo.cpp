@@ -31,6 +31,8 @@ HRESULT CLevel_Logo::Initialize()
 	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
 	CameraDesc.fNear   = 0.2f;
 	CameraDesc.fFar    = 300.f;
+	
+	GAMEINSTANCE->Set_CameraFar(CameraDesc.fFar);
 
 	m_eNextLevel = LEVEL_LOBBY;
 

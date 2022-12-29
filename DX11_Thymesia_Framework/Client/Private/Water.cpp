@@ -105,6 +105,9 @@ HRESULT CWater::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector))))
 		DEBUG_ASSERT;
 
+	_float fCamFar = GAMEINSTANCE->Get_CameraFar();
+	m_pShaderCom.lock()->Set_RawValue("g_fFar", &fCamFar, sizeof(_float));
+
 	return S_OK;
 }
 

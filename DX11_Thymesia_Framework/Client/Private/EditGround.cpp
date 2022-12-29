@@ -134,6 +134,9 @@ HRESULT CEditGround::SetUp_ShaderResource()
 	if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector))))
 		return E_FAIL;
 
+	_float fCamFar = GAMEINSTANCE->Get_CameraFar();
+	m_pShaderCom.lock()->Set_RawValue("g_fFar", &fCamFar, sizeof(_float));
+
 	return S_OK;
 }
 

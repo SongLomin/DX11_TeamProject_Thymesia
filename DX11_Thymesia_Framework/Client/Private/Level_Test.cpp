@@ -58,6 +58,8 @@ HRESULT CLevel_Test::Initialize()
 	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_TEST, &CameraDesc);
 	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
 
+	GAMEINSTANCE->Set_CameraFar(CameraDesc.fFar);
+
 	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_TEST);
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
 

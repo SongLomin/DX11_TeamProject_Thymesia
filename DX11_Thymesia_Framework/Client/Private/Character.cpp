@@ -69,7 +69,7 @@ void CCharacter::Tick(_float fTimeDelta)
 	if (m_pHitColliderCom.lock())
 		m_pHitColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 
-	if (0.f < m_fRimLightTime)
+	if (0.f < m_fRimLightTimeAcc)
 	{
 		m_fRimLightTimeAcc -= fTimeDelta;
 
