@@ -100,7 +100,6 @@ HRESULT CMeshContainer::Initialize_Prototype()
 
 HRESULT CMeshContainer::Initialize(void* pArg)
 {
-	m_vWorldPosition = { 0.f, 0.f, 0.f };
 	return S_OK;
 }
 
@@ -654,7 +653,7 @@ void CMeshContainer::Set_NvCloth(const void* In_pNvClothMeshDesc)
 {
 	
 	const CModel::NVCLOTH_MESH_DESC* pCustomDesc = (const CModel::NVCLOTH_MESH_DESC*)In_pNvClothMeshDesc;
-	m_pNvCloth_Mesh_Desc = pCustomDesc;
+	
 	
 	switch (pCustomDesc->eSimpleAttachType)
 	{
@@ -816,34 +815,12 @@ void CMeshContainer::Update_NvClothVertices(ID3D11DeviceContext* pDeviceContext,
 	m_pCloth->setTranslation(SMath::Convert_PxVec3(vPos));
 	m_pCloth->setRotation(SMath::Convert_PxQuat(vQuaternion));*/
 
-	/*if (!m_bSimulation)
+	if (!m_bSimulation)
 	{
 		m_bSimulation = true;
 		m_pCloth->clearInertia();
 		return;
-	}*/
-
-	_float fLength = XMVectorGetX(XMVector3Length(In_WorldMatrix.r[3] - XMLoadFloat3(&m_vWorldPosition)));
-
-	if (fLength > 2.f)
-	{
-		Reset_NvCloth(In_WorldMatrix);
-		//m_pCloth->clearInertia();
-		//m_pCloth->clearInterpolation();
-		//m_pCloth->clearParticleAccelerations();
-		//m_pCloth->clearSeparationConstraints();
-		//m_pCloth->setDragCoefficient(0.f);
-		//m_pCloth->setLiftCoefficient(0.f);
 	}
-	else
-	{
-		//const CModel::NVCLOTH_MESH_DESC* pCustomDesc = (const CModel::NVCLOTH_MESH_DESC*)m_pNvCloth_Mesh_Desc;
-
-		//m_pCloth->setDragCoefficient(pCustomDesc->fDragCoefficient);
-		//m_pCloth->setLiftCoefficient(pCustomDesc->fLiftCoefficient);
-	}
-
-	XMStoreFloat3(&m_vWorldPosition, In_WorldMatrix.r[3]);
 
 	if (MODEL_TYPE::ANIM == m_pMeshData.lock()->eModelType)
 	{
@@ -862,24 +839,6 @@ void CMeshContainer::Update_NvClothCollisionSpheres(Range<const physx::PxVec4> s
 		return;
 
 	m_pCloth->setSpheres(spheres, first, last);
-}
-
-void CMeshContainer::Reset_NvCloth(_fmatrix In_WorldMatrix)
-{
-	MappedRange<PxVec4> particle = m_pCloth->getCurrentParticles();
-
-	_vector vResetPosition;
-
-	for (_int i = 0; i < m_iNumVertices; ++i)
-	{
-		vResetPosition = XMLoadFloat3(&m_pPosVertices[i]);
-		vResetPosition = XMVectorSetW(vResetPosition, 1.f);
-		vResetPosition = XMVector3TransformCoord(vResetPosition, In_WorldMatrix);
-
-		particle[i] = physx::PxVec4(SMath::Convert_PxVec3(vResetPosition), m_pInvMasses[i]);
-
-	}
-
 }
 
 void CMeshContainer::Update_NvClothVertices_Anim(ID3D11DeviceContext* pDeviceContext, _fmatrix In_WorldMatrix)
