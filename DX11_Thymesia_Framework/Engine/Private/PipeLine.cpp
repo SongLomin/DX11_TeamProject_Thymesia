@@ -4,6 +4,8 @@ IMPLEMENT_SINGLETON(CPipeLine)
 
 void CPipeLine::Set_Transform(TRANSFORMSTATE eState, _fmatrix TransformState)
 {
+	m_bBinded = true;
+
 	if (D3DTS_VIEW == eState)
 	{
 		m_PreViewMatrix = m_TransformState[D3DTS_VIEW];
