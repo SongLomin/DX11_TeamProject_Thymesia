@@ -4,6 +4,8 @@
 #include "PreViewAnimationModel.h"
 #include "Model.h"
 #include "PreView_Prop.h"
+#include <imgui_impl_win32.h>
+//#include <imgui_impl_win32.h>
 
 IMPLEMENT_SINGLETON(CWindow_AnimationModelView)
 
@@ -57,7 +59,7 @@ HRESULT CWindow_AnimationModelView::Render(ID3D11DeviceContext* pDeviceContext)
     ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
     if (ImGui::BeginTabBar("AnimationModelView", tab_bar_flags))
     {
-        if (ImGui::CollapsingHeader("Load Model"), ImGuiTreeNodeFlags_DefaultOpen)
+        if (ImGui::CollapsingHeader("Load Model"))
         {
             //ImGui::Text("Input Model Key");
             //ImGui::InputText("##ModelKey", m_szModelKey, MAX_PATH);
@@ -86,65 +88,31 @@ HRESULT CWindow_AnimationModelView::Render(ID3D11DeviceContext* pDeviceContext)
                 Update_PreViewModel();
             }
 
-            if (ImGui::CollapsingHeader("Load NoAnimModel"), ImGuiTreeNodeFlags_DefaultOpen)
-            {
-                //ImGui::Text("Input Model Key");
-                //ImGui::InputText("##ModelKey", m_szModelKey, MAX_PATH);
-
-                ImGui::Text(" NoAnimModel List");
-
-				static ImGuiTextFilter ModelFilter;
-				ImGui::Text("Search"); ImGui::SameLine();
-                ModelFilter.Draw("##NoAnimModelSearchBar", 250.f);
-
-                if (ImGui::BeginListBox("## NoAnimModel List", ImVec2(-FLT_MIN, 15 * ImGui::GetTextLineHeightWithSpacing())))
-                {
-                    for (int i = 0; i < m_AllNoAnimModelKeys.size(); i++)
-                    {
-                        auto ModelKit = m_AllNoAnimModelKeys.at(i);
-                        const bool is_selected = (m_CurrentNoAnimModelIndex == i);
-
-                        if (ModelFilter.PassFilter(ModelKit.c_str()))
-                        {
-                            std::string label = ModelKit + "##" + std::to_string(i);
-
-                            if (ImGui::Selectable(label.c_str(), is_selected))
-                            {
-								m_CurrentNoAnimModelIndex = i;
-                            }
-                        }
-                        // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-                        if (is_selected)
-                            ImGui::SetItemDefaultFocus();
-                    }
-                    ImGui::EndListBox();
-                }
-
-                if (ImGui::Button("Load_NonAnim"))
-                {
-                    // TODO : comment because explode
-                    m_pPreviewNoAnimModel.lock()->Get_Component<CModel>().lock()->
-                        Get_Owner().lock()->
-                            Get_Component<CModel>().lock()->Init_Model(m_AllNoAnimModelKeys[m_CurrentNoAnimModelIndex].c_str());
-
-                }
-            }
+            
 
 
             if (m_pPreviewModel.lock())
             {
-                if (ImGui::CollapsingHeader("Bone Collider"), ImGuiTreeNodeFlags_DefaultOpen)
+                if (ImGui::CollapsingHeader("Bone Collider"))
                 {
 
                     ImGui::Text("Bone List");
+
+                    static ImGuiTextFilter BoneFilter;
+                    ImGui::Text("Search_Bone"); ImGui::SameLine();
+                    BoneFilter.Draw("##BoneSearchBar", 250.f);
+
                     if (ImGui::BeginListBox("##Bone List", ImVec2(-FLT_MIN, 5 * ImGui::GetTextLineHeightWithSpacing())))
                     {
-
                         for (int i = 0; i < m_AllBoneNames.size(); i++)
                         {
                             const bool is_selected = (m_CurrentBoneIndex == i);
-                            if (ImGui::Selectable(m_AllBoneNames[i].c_str(), is_selected))
-                                m_CurrentBoneIndex = i;
+
+                            if (BoneFilter.PassFilter(m_AllBoneNames[i].c_str()))
+                            {
+                                if (ImGui::Selectable(m_AllBoneNames[i].c_str(), is_selected))
+                                    m_CurrentBoneIndex = i;
+                            }
 
                             // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
                             if (is_selected)
@@ -153,10 +121,22 @@ HRESULT CWindow_AnimationModelView::Render(ID3D11DeviceContext* pDeviceContext)
                         ImGui::EndListBox();
                     }
 
+                    ImGui::InputFloat3("Offset", &m_vOffset.x, "%.1f");
+                    ImGui::InputFloat("Size", &m_fSize);
+
                     if (ImGui::Button("Create"))
                     {
+                        m_pPreviewModel.lock()->Add_DebugWeapon(m_AllBoneNames[m_CurrentBoneIndex], m_vOffset, m_fSize * 2.f);
+                    }
+
+                    if (ImGui::Button("Delete"))
+                    {
+                        m_pPreviewModel.lock()->Remove_DebugWeapon(m_AllBoneNames[m_CurrentBoneIndex]);
+                    }
+
+                    if (ImGui::Button("Clear"))
+                    {
                         m_pPreviewModel.lock()->Clear_DebugWeapon();
-                        m_pPreviewModel.lock()->Add_DebugWeapon(m_AllBoneNames[m_CurrentBoneIndex]);
                     }
 
                     ImGui::SameLine();
@@ -168,6 +148,50 @@ HRESULT CWindow_AnimationModelView::Render(ID3D11DeviceContext* pDeviceContext)
                 }
             }
 
+        }
+
+        if (ImGui::CollapsingHeader("Load NoAnimModel"))
+        {
+            //ImGui::Text("Input Model Key");
+            //ImGui::InputText("##ModelKey", m_szModelKey, MAX_PATH);
+
+            ImGui::Text(" NoAnimModel List");
+
+            static ImGuiTextFilter ModelFilter;
+            ImGui::Text("Search"); ImGui::SameLine();
+            ModelFilter.Draw("##NoAnimModelSearchBar", 250.f);
+
+            if (ImGui::BeginListBox("## NoAnimModel List", ImVec2(-FLT_MIN, 15 * ImGui::GetTextLineHeightWithSpacing())))
+            {
+                for (int i = 0; i < m_AllNoAnimModelKeys.size(); i++)
+                {
+                    auto ModelKit = m_AllNoAnimModelKeys.at(i);
+                    const bool is_selected = (m_CurrentNoAnimModelIndex == i);
+
+                    if (ModelFilter.PassFilter(ModelKit.c_str()))
+                    {
+                        std::string label = ModelKit + "##" + std::to_string(i);
+
+                        if (ImGui::Selectable(label.c_str(), is_selected))
+                        {
+                            m_CurrentNoAnimModelIndex = i;
+                        }
+                    }
+                    // Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+                    if (is_selected)
+                        ImGui::SetItemDefaultFocus();
+                }
+                ImGui::EndListBox();
+            }
+
+            if (ImGui::Button("Load_NonAnim"))
+            {
+                // TODO : comment because explode
+                m_pPreviewNoAnimModel.lock()->Get_Component<CModel>().lock()->
+                    Get_Owner().lock()->
+                    Get_Component<CModel>().lock()->Init_Model(m_AllNoAnimModelKeys[m_CurrentNoAnimModelIndex].c_str());
+
+            }
         }
 
         ImGui::EndTabBar();

@@ -49,7 +49,8 @@ private: /* For Weapon Collider */
 
 	ATTACKAREA_DESC		                    m_tWeaponDesc;
 
-
+	_float3								m_vOffset{ 0.f, 0.f, 0.f };
+	_float								m_fSize = { 1.f };
 
 public:
 	void Free();

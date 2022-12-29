@@ -185,7 +185,7 @@ HRESULT CWindow_AnimationPlayerView::Load_KeyEvent()
         return E_FAIL;
 
     m_KeyEventEffectGroupNames.clear();
-    m_pPreViewModel.lock()->Clear_DebugWeapon();
+    //m_pPreViewModel.lock()->Clear_DebugWeapon();
 
     // 읽어서 콜라이더 추가
     if (m_KeyEventJson.end() != m_KeyEventJson.find("Collider"))
@@ -195,7 +195,7 @@ HRESULT CWindow_AnimationPlayerView::Load_KeyEvent()
             if (m_KeyEventJson["Collider"][i].empty())
                 continue;
 
-            m_pPreViewModel.lock()->Add_DebugWeapon(m_KeyEventJson["Collider"][i]);
+            m_pPreViewModel.lock()->Add_DebugWeapon(m_KeyEventJson["Collider"][i], {0.f, 0.f, 0.f}, 0.1f);
         }
     }
 

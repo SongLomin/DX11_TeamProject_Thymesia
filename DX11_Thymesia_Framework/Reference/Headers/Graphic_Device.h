@@ -18,10 +18,15 @@ public:
 public:
 	ID3D11Device* Get_Device() { return m_pDevice; }
 	ID3D11DeviceContext* Get_DeviceContext() { return m_pDeviceContext; }
+	GFSDK_SSAO_Context_D3D11* Get_AOContext() { return m_pAOContext; }
 
 public:
 	const ComPtr<ID3D11ShaderResourceView>& Get_SRV() const {
 		return m_pBackBufferSRV;
+	}
+
+	const ComPtr<ID3D11ShaderResourceView>& Get_DepthStencilSRV() const {
+		return m_pDepthStencilSRV;
 	}
 
 private:	
@@ -39,6 +44,10 @@ private:
 	ComPtr<ID3D11ShaderResourceView>	m_pBackBufferSRV;
 	ComPtr<ID3D11DepthStencilView>		m_pDepthStencilView;
 	ComPtr<ID3D11Texture2D>				m_pDepthStencilTexture;
+	ComPtr<ID3D11ShaderResourceView>	m_pDepthStencilSRV;
+
+private:
+	GFSDK_SSAO_Context_D3D11*			m_pAOContext;
 
 private:
 	HRESULT Ready_SwapChain(HWND hWnd, GRAPHICDESC::WINMODE WinMode, _uint iWinCX, _uint iWinCY);

@@ -102,6 +102,7 @@ using namespace DirectX::PackedVector;
 using namespace Microsoft::WRL;
 
 #include "Delegate.h"
+#include "HBAO/GFSDK_SSAO.h"
 
 #ifdef _DEBUG
 

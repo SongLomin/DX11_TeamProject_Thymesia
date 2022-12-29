@@ -443,6 +443,7 @@ XMMATRIX ENGINE_DLL Engine::SMath::Add_PositionWithRotation(FXMMATRIX Mat, FXMVE
 	_vector vRotatedPosition(XMVector3TransformCoord(vPosition, SMath::Get_RotationMatrix(Mat)));
 	_matrix ResultMatrix(Mat);
 	ResultMatrix.r[3] += vRotatedPosition;
+	ResultMatrix.r[3] = XMVectorSetW(ResultMatrix.r[3], 1.f);
 	return ResultMatrix;
 }
 

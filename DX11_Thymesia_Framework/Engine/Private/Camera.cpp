@@ -74,7 +74,7 @@ HRESULT CCamera::Bind_PipeLine()
 	_matrix		ProjMatrix = XMMatrixPerspectiveFovLH(m_CameraDesc.fFovy, m_CameraDesc.fAspect, m_CameraDesc.fNear, m_CameraDesc.fFar);
 	GET_SINGLE(CPipeLine)->Set_Transform(CPipeLine::D3DTS_PROJ, ProjMatrix);
 
-
+	//여기에 CPipeLine->Set_Far(값); 함수 추가할 것.
 	return S_OK;
 }
 

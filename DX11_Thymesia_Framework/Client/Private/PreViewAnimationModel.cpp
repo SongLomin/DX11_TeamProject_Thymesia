@@ -92,19 +92,51 @@ void CPreviewAnimationModel::Thread_PreBeforeRender(_float fTimeDelta)
 	_vector		vGravity;
 
 
-	BoneMatrix = //m_pModelCom.lock()->Find_BoneNode("Bip001-Head").lock()->Get_OffsetMatrix() * 
-		m_pModelCom.lock()->Find_BoneNode("Bip001-Head").lock()->Get_CombinedMatrix() *
+	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Head").lock()->Get_CombinedMatrix() *
 		XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix();
 
-	_vector vSpherePos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+	_vector vSpherePos = XMVectorSet(0.2f, 0.f, 0.f, 1.f);
 	vSpherePos = XMVector3TransformCoord(vSpherePos, BoneMatrix);
-	PxVec4 spheres[2]{
-		PxVec4(SMath::Convert_PxVec3(vSpherePos), 0.3f),
-		PxVec4(999.f, 999.f, 999.f, 1.0f),
-	};
-	nv::cloth::Range<const physx::PxVec4> sphereRange(spheres, spheres + 2);
+	PxVec4 spheres[5];
+
+	spheres[0] = PxVec4(SMath::Convert_PxVec3(vSpherePos), 0.15f);
+
+	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Neck").lock()->Get_CombinedMatrix() *
+		XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix();
+
+	vSpherePos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+	vSpherePos = XMVector3TransformCoord(vSpherePos, BoneMatrix);
+
+	spheres[1] = PxVec4(SMath::Convert_PxVec3(vSpherePos), 0.2f);
+
+	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Neck").lock()->Get_CombinedMatrix() *
+		XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix();
+
+	vSpherePos = XMVectorSet(0.1f, 0.f, 0.f, 1.f);
+	vSpherePos = XMVector3TransformCoord(vSpherePos, BoneMatrix);
+
+	spheres[2] = PxVec4(SMath::Convert_PxVec3(vSpherePos), 0.2f);
+
+	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Spine2").lock()->Get_CombinedMatrix() *
+		XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix();
+
+	vSpherePos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+	vSpherePos = XMVector3TransformCoord(vSpherePos, BoneMatrix);
+
+	spheres[3] = PxVec4(SMath::Convert_PxVec3(vSpherePos), 0.3f);
+
+	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001").lock()->Get_CombinedMatrix() *
+		XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix();
+
+	vSpherePos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+	vSpherePos = XMVector3TransformCoord(vSpherePos, BoneMatrix);
+
+	spheres[4] = PxVec4(SMath::Convert_PxVec3(vSpherePos), 0.3f);
+
+	nv::cloth::Range<const physx::PxVec4> sphereRange(spheres, spheres + 5);
 
 	m_pModelCom.lock()->Get_MeshContainer(1).lock()->Get_NvCloth()->setSpheres(sphereRange, 0, m_pModelCom.lock()->Get_MeshContainer(1).lock()->Get_NvCloth()->getNumSpheres());
+	m_pModelCom.lock()->Get_MeshContainer(3).lock()->Get_NvCloth()->setSpheres(sphereRange, 0, m_pModelCom.lock()->Get_MeshContainer(3).lock()->Get_NvCloth()->getNumSpheres());
 
 	//Bip001-Ponytail1
 	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_CombinedMatrix()
@@ -121,7 +153,7 @@ void CPreviewAnimationModel::Thread_PreBeforeRender(_float fTimeDelta)
 
 	m_pModelCom.lock()->Get_MeshContainer(1).lock()->Update_NvClothVertices(pDeferredContext,
 		m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_OffsetMatrix() * BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(),
-		XMVectorSet(0.f, -9.81f, 0.f, 0.f));
+		XMVectorSet(0.f, -9.81f * 15.f, 0.f, 0.f));
 
 
 
@@ -141,7 +173,7 @@ void CPreviewAnimationModel::Thread_PreBeforeRender(_float fTimeDelta)
 
 	m_pModelCom.lock()->Get_MeshContainer(3).lock()->Update_NvClothVertices(pDeferredContext,
 		m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_OffsetMatrix() * BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(),
-		XMVectorSet(0.f, -9.81f, 0.f, 0.f));
+		XMVectorSet(0.f, -9.81f * 5.f, 0.f, 0.f));
 
 	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
 
@@ -321,17 +353,38 @@ void CPreviewAnimationModel::Play_Animation(_float fTimeDelta)
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
-void CPreviewAnimationModel::Add_DebugWeapon(const string& In_szBoneName)
+void CPreviewAnimationModel::Add_DebugWeapon(const string& In_szBoneName, const _float3& In_vOffset, const _float In_fSize)
 {
-	m_pDebugWeapons.push_back(GAMEINSTANCE->Add_GameObject<CWeapon>(LEVEL_EDIT));
-	m_pDebugWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, In_szBoneName);
-	m_pDebugWeapons.back().lock()->Add_Collider({}, 0.1f, COLLISION_LAYER::NONE);
+	_hashcode NameToHash = hash<string>()(In_szBoneName);
+
+	weak_ptr<CWeapon> pWeapon = GAMEINSTANCE->Add_GameObject<CWeapon>(LEVEL_EDIT);
+
+	m_pDebugWeapons[NameToHash].push_back(pWeapon);
+	pWeapon.lock()->Init_Weapon(m_pModelCom, m_pTransformCom, In_szBoneName);
+	pWeapon.lock()->Add_Collider(XMLoadFloat3(&In_vOffset), In_fSize, COLLISION_LAYER::NONE);
+}
+
+void CPreviewAnimationModel::Remove_DebugWeapon(const string& In_szBoneName)
+{
+	_hashcode NameToHash = hash<string>()(In_szBoneName);
+
+	if (m_pDebugWeapons.find(NameToHash) != m_pDebugWeapons.end())
+	{
+		m_pDebugWeapons[NameToHash].back().lock()->Set_Dead();
+		m_pDebugWeapons.erase(NameToHash);
+	}
 }
 
 void CPreviewAnimationModel::Clear_DebugWeapon()
 {
 	for (auto& elem : m_pDebugWeapons)
-		elem.lock()->Set_Dead();
+	{
+		for (auto& elem_Weapon : elem.second)
+		{
+			elem_Weapon.lock()->Set_Dead();
+		}
+	}
+		
 
 	m_pDebugWeapons.clear();
 }

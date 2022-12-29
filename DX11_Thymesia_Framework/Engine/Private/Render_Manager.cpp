@@ -5,6 +5,7 @@
 #include "Texture.h"
 #include "VIBuffer_Rect.h"
 #include "Easing_Utillity.h"
+#include "RenderTarget.h"
 
 
 IMPLEMENT_SINGLETON(CRender_Manager)
@@ -209,6 +210,10 @@ HRESULT CRender_Manager::Initialize()
 		DEBUG_ASSERT;
 
 	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_Ambient"),
+		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
+		DEBUG_ASSERT;
+
+	if (FAILED(pRenderTargetManager->Add_RenderTarget(TEXT("Target_HBAO+"),
 		(_uint)ViewPortDesc.Width, (_uint)ViewPortDesc.Height, DXGI_FORMAT_B8G8R8A8_UNORM, _float4(0.f, 0.f, 0.f, 0.f))))
 		DEBUG_ASSERT;
 
@@ -560,7 +565,8 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(AntiAliasing()))
 		DEBUG_ASSERT;
 
-
+	if (FAILED(Render_HBAO_PLUS()))
+		DEBUG_ASSERT;
 
 	/*hr = futures.front().get();
 	while (!GET_SINGLE(CThread_Manager)->Check_JobDone())
@@ -1902,6 +1908,36 @@ HRESULT CRender_Manager::AntiAliasing()
 
 	m_pShader->Begin(7, pDeviceContext);
 	m_pVIBuffer->Render(pDeviceContext);
+
+	return S_OK;
+}
+
+HRESULT CRender_Manager::Render_HBAO_PLUS()
+{
+	//GFSDK_SSAO_InputData_D3D11 Input;
+	//Input.DepthData.DepthTextureType = GFSDK_SSAO_HARDWARE_DEPTHS;
+	//Input.DepthData.pFullResDepthTextureSRV = GET_SINGLE(CGraphic_Device)->Get_DepthStencilSRV().Get();
+	//Input.DepthData.ProjectionMatrix.Data = GFSDK_SSAO_Float4x4((const GFSDK_SSAO_FLOAT*)&m_ProjMatrix);
+	//Input.DepthData.ProjectionMatrix.Layout = GFSDK_SSAO_ROW_MAJOR_ORDER;
+	//Input.DepthData.MetersToViewSpaceUnits = 1.f;
+
+
+	//GFSDK_SSAO_Parameters Params;
+	//Params.Radius = 2.f;
+	//Params.Bias = 0.1f;
+	//Params.PowerExponent = 2.f;
+	//Params.Blur.Enable = true;
+	//Params.Blur.Radius = GFSDK_SSAO_BLUR_RADIUS_4;
+	//Params.Blur.Sharpness = 16.f;
+
+	//GFSDK_SSAO_Output_D3D11 Output;
+	//Output.pRenderTargetView = GET_SINGLE(CRenderTarget_Manager)->Find_RenderTarget(TEXT("Target_HBAO+"))->Get_RTV().Get();
+	////Output.pRenderTargetView = GET_SINGLE(CRenderTarget_Manager)->Find_RenderTarget(TEXT("Target_HBAO+"))->Get_RTV().Get();
+	//Output.Blend.Mode = GFSDK_SSAO_OVERWRITE_RGB;
+
+	//GFSDK_SSAO_Status status;
+	//status = GET_SINGLE(CGraphic_Device)->Get_AOContext()->RenderAO(DEVICECONTEXT, Input, Params, Output);
+	//assert(status == GFSDK_SSAO_OK);
 
 	return S_OK;
 }

@@ -100,6 +100,7 @@ private:
 
 	HRESULT PostProcessing();
 	HRESULT AntiAliasing();
+	HRESULT Render_HBAO_PLUS();
 	HRESULT Render_UI();
 	HRESULT Render_Final();
 

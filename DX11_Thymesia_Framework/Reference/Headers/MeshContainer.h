@@ -66,6 +66,7 @@ public:
 public: /* For. NvCloth */
 	void Update_NvClothVertices(ID3D11DeviceContext* pDeviceContext, _fmatrix In_WorldMatrix, _fvector In_Gravity = {});
 	void Update_NvClothCollisionSpheres(Range<const physx::PxVec4> spheres, uint32_t first, uint32_t last);
+	void Reset_NvCloth(_fmatrix In_WorldMatrix);
 
 private:
 	void Update_NvClothVertices_NonAnim(ID3D11DeviceContext* pDeviceContext);
@@ -111,6 +112,8 @@ private: /* For. NvCloth */
 	vector<FACEINDICES32>				m_pIndices;
 	vector<_float>						m_pInvMasses;
 	vector<PxVec4>						m_pParticles;
+	_float3								m_vWorldPosition;
+	const void*							m_pNvCloth_Mesh_Desc;
 
 public:
 	void Free();

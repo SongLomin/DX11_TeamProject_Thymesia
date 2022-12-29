@@ -41,6 +41,14 @@ HRESULT CGraphic_Device::Ready_Graphic_Device(HWND hWnd, GRAPHICDESC::WINMODE Wi
 
 	m_pDeviceContext->RSSetViewports(1, &ViewPortDesc);
 
+	GFSDK_SSAO_CustomHeap CustomHeap;
+	CustomHeap.new_ = ::operator new;
+	CustomHeap.delete_ = ::operator delete;
+
+	GFSDK_SSAO_Status status;
+	status = GFSDK_SSAO_CreateContext_D3D11(m_pDevice, &m_pAOContext, &CustomHeap);
+	assert(status == GFSDK_SSAO_OK); // HBAO+ requires feature level 11_0 or above
+
 	return S_OK;
 }
 
@@ -161,25 +169,42 @@ HRESULT CGraphic_Device::Ready_DepthStencilRenderTargetView(_uint iWinCX, _uint 
 	TextureDesc.Height = iWinCY;
 	TextureDesc.MipLevels = 1;
 	TextureDesc.ArraySize = 1;
-	TextureDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	TextureDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;
+	//TextureDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
 	TextureDesc.SampleDesc.Quality = 0;
 	TextureDesc.SampleDesc.Count = 1;
 
 	TextureDesc.Usage = D3D11_USAGE_DEFAULT;
-	TextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	TextureDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
 	TextureDesc.CPUAccessFlags = 0;
 	TextureDesc.MiscFlags = 0;
 
 	if (FAILED(m_pDevice->CreateTexture2D(&TextureDesc, nullptr, m_pDepthStencilTexture.GetAddressOf())))
-		return E_FAIL;
+		DEBUG_ASSERT;
 
 	/* RenderTarget */
 	/* ShaderResource */
 	/* DepthStencil */
 
-	if (FAILED(m_pDevice->CreateDepthStencilView(m_pDepthStencilTexture.Get(), nullptr, m_pDepthStencilView.GetAddressOf())))
-		return E_FAIL;	
+	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
+	ZeroMemory(&depthStencilViewDesc, sizeof(D3D11_DEPTH_STENCIL_VIEW_DESC));
+	depthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	depthStencilViewDesc.Texture2D.MipSlice = 0;
+
+	if (FAILED(m_pDevice->CreateDepthStencilView(m_pDepthStencilTexture.Get(), &depthStencilViewDesc, m_pDepthStencilView.GetAddressOf())))
+		DEBUG_ASSERT;
+
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc;
+	ZeroMemory(&shaderResourceViewDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+	shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	shaderResourceViewDesc.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
+	shaderResourceViewDesc.Texture2D.MipLevels = 1;
+
+	if (FAILED(m_pDevice->CreateShaderResourceView(m_pDepthStencilTexture.Get(), &shaderResourceViewDesc, m_pDepthStencilSRV.GetAddressOf())))
+		DEBUG_ASSERT;
 
 	return S_OK;
 }
@@ -194,8 +219,9 @@ void CGraphic_Device::Free()
 	m_pBackBufferRTV.Reset();
 
 	m_pDeviceContext->Flush();
-	m_pDevice->Release();
 	m_pDeviceContext->Release();
+	m_pAOContext->Release();
+	m_pDevice->Release();
 //
 //#if defined(DEBUG) || defined(_DEBUG)
 //	ID3D11Debug* d3dDebug;

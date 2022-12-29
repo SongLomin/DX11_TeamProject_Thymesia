@@ -170,6 +170,53 @@ void CVarg::Thread_PreBeforeRender(_float fTimeDelta)
 	//m_pModelCom.lock()->Get_MeshContainer(1).lock()->Get_NvCloth()->setSpheres(sphereRange, 0, m_pModelCom.lock()->Get_MeshContainer(1).lock()->Get_NvCloth()->getNumSpheres());
 
 	//Bip001-Ponytail1
+
+	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Head").lock()->Get_CombinedMatrix() *
+		XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix();
+
+	_vector vSpherePos = XMVectorSet(0.2f, 0.f, 0.f, 1.f);
+	vSpherePos = XMVector3TransformCoord(vSpherePos, BoneMatrix);
+	PxVec4 spheres[5];
+
+	spheres[0] = PxVec4(SMath::Convert_PxVec3(vSpherePos), 0.15f);
+
+	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Neck").lock()->Get_CombinedMatrix() *
+		XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix();
+
+	vSpherePos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+	vSpherePos = XMVector3TransformCoord(vSpherePos, BoneMatrix);
+
+	spheres[1] = PxVec4(SMath::Convert_PxVec3(vSpherePos), 0.2f);
+
+	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Neck").lock()->Get_CombinedMatrix() *
+		XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix();
+
+	vSpherePos = XMVectorSet(0.1f, 0.f, 0.f, 1.f);
+	vSpherePos = XMVector3TransformCoord(vSpherePos, BoneMatrix);
+
+	spheres[2] = PxVec4(SMath::Convert_PxVec3(vSpherePos), 0.2f);
+
+	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Spine2").lock()->Get_CombinedMatrix() *
+		XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix();
+
+	vSpherePos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+	vSpherePos = XMVector3TransformCoord(vSpherePos, BoneMatrix);
+
+	spheres[3] = PxVec4(SMath::Convert_PxVec3(vSpherePos), 0.3f);
+
+	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001").lock()->Get_CombinedMatrix() *
+		XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix();
+
+	vSpherePos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+	vSpherePos = XMVector3TransformCoord(vSpherePos, BoneMatrix);
+
+	spheres[4] = PxVec4(SMath::Convert_PxVec3(vSpherePos), 0.3f);
+
+	nv::cloth::Range<const physx::PxVec4> sphereRange(spheres, spheres + 5);
+
+	m_pModelCom.lock()->Get_MeshContainer(1).lock()->Get_NvCloth()->setSpheres(sphereRange, 0, m_pModelCom.lock()->Get_MeshContainer(1).lock()->Get_NvCloth()->getNumSpheres());
+	m_pModelCom.lock()->Get_MeshContainer(3).lock()->Get_NvCloth()->setSpheres(sphereRange, 0, m_pModelCom.lock()->Get_MeshContainer(3).lock()->Get_NvCloth()->getNumSpheres());
+
 	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_OffsetMatrix() * 
 		m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_CombinedMatrix() * 
 		XMLoadFloat4x4(&m_TransformationMatrix);
@@ -185,7 +232,7 @@ void CVarg::Thread_PreBeforeRender(_float fTimeDelta)
 
 	m_pModelCom.lock()->Get_MeshContainer(1).lock()->Update_NvClothVertices(pDeferredContext,
 		BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(),
-		XMVectorSet(0.f, -9.81f, 0.f, 0.f));
+		XMVectorSet(0.f, -9.81f * 15.f, 0.f, 0.f));
 
 
 
@@ -206,7 +253,7 @@ void CVarg::Thread_PreBeforeRender(_float fTimeDelta)
 
 	m_pModelCom.lock()->Get_MeshContainer(3).lock()->Update_NvClothVertices(pDeferredContext,
 		BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(),
-		XMVectorSet(0.f, -9.81f, 0.f, 0.f));
+		XMVectorSet(0.f, -9.81f * 5.f, 0.f, 0.f));
 
 	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
 
