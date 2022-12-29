@@ -1068,10 +1068,8 @@ void CEffect_Rect::Reset_ParticleDesc(const _uint& In_iIndex)
 	if (Check_Option(EFFECTPARTICLE_DESC::Option1::Is_Attraction))
 	{
 		_float3	f3LookAt(SMath::Add_Float3(m_tEffectParticleDesc.vGoalPosition, SMath::Mul_Float3(m_tParticleDescs[In_iIndex].vCurrentTranslation, -1.f)));
-
 		XMStoreFloat3(&m_tParticleDescs[In_iIndex].vTargetLookAt, XMVector3Normalize(XMLoadFloat3(&f3LookAt)));
 	}
-
 }
 
 
