@@ -30,7 +30,7 @@ void CUrdBossState_FightStart::Start()
 {
 	__super::Start();
 
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Urd_FightStart|BaseLayer");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Urd_FightStart");
 
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CUrdBossState_FightStart::Call_AnimationEnd, this);
 }

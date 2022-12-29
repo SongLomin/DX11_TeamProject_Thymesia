@@ -98,22 +98,23 @@ void CBatBossState_BackJump::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
+	_float fPToMDistance = Get_DistanceWithPlayer();
+
 	if (m_bSpecialAtk)
 	{
 		Get_OwnerCharacter().lock()->Change_State<CBatBossState_Sp>(0.05f);
 	}
 	else
 	{
-		int iRand = rand() % 2;
-
-		switch (iRand)
+		if (fPToMDistance <= 15)
 		{
-		case 0:
-			Get_OwnerCharacter().lock()->Change_State<CBatBossState_Idle>(0.05f);
-			break;
-		case 1:
 			Get_OwnerCharacter().lock()->Change_State<CBatBossState_Charge>(0.05f);
-			break;
+			return;
+		}
+		else
+		{
+			Get_OwnerCharacter().lock()->Change_State<CBatBossState_SonicBullet>(0.05f);
+			return;
 		}
 		
 	}

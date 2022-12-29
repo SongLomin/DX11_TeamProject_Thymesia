@@ -73,7 +73,7 @@ void CBatBossState_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 	//m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X | (_byte)ROOTNODE_FLAG::Y| (_byte)ROOTNODE_FLAG::Z);
 
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,500);
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_

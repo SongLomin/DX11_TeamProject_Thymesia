@@ -79,6 +79,7 @@ namespace Client
 		RIGHT_HIT,
 		EXCTUE_HIT,
 		PARRY_HIT,
+		STEALMONSTER,
 		TYPE_END
 	};
 
@@ -225,6 +226,7 @@ namespace Client
 		PARRY,
 		KNOCKBACK,
 		FALLDOWN,
+		STEALMONSTER,
 		OPTION_END
 	};
 

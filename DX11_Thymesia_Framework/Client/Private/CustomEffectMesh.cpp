@@ -1333,7 +1333,7 @@ void CCustomEffectMesh::Tool_Collider()
 
 		if (ImGui::TreeNode("Hit Type"))
 		{
-			const char* HitType_items[] = { "Normal", "Upper", "Down", "Warning","left","right","excute","Parry" };
+			const char* HitType_items[] = { "Normal", "Upper", "Down", "Warning","left","right","excute","Parry","MonsterSteal"};
 
 			if (ImGui::BeginListBox("Hit Type"))
 			{
@@ -1356,7 +1356,7 @@ void CCustomEffectMesh::Tool_Collider()
 		}
 		if (ImGui::TreeNode("Option Type"))
 		{
-			const char* Option_items[] = { "None", "Normal", "Plague", "Special_Attack","Parry","KnockBack","FallDown"};
+			const char* Option_items[] = { "None", "Normal", "Plague", "Special_Attack","Parry","KnockBack","FallDown","MonsterSteal"};
 
 			if (ImGui::BeginListBox("Option Type"))
 			{
