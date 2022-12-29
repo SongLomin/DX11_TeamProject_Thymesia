@@ -298,6 +298,7 @@ void CWindow_HierarchyView::Load_FromJson(const json& In_Json)
 				 typeid(CLight_Prop).hash_code()             == TempDesc.HashCode ||
 				 typeid(CInteraction_Door).hash_code()       == TempDesc.HashCode ||
 			     typeid(CInteraction_CastleGate).hash_code() == TempDesc.HashCode ||
+			     typeid(CInteraction_Fence).hash_code()      == TempDesc.HashCode ||
 				 typeid(CInteraction_CheckPoint).hash_code() == TempDesc.HashCode ||
 			     typeid(CInteraction_NextPoint).hash_code()  == TempDesc.HashCode ||
 				 typeid(CInteraction_Elevator).hash_code()   == TempDesc.HashCode ||

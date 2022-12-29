@@ -32,6 +32,7 @@ static const char* items_FindType[] =
 	"CInteraction_Elevator",
 	"CInteraction_Ladder",
 	"CInteraction_Item",
+	"CInteraction_Fence",
 	"CSection_Eventer"
 };
 
@@ -238,7 +239,8 @@ void CEditGroupProp::View_CreateProp()
 		"Note",
 		"NextPoint",
 		"CastleGate",
-		"Item"
+		"Item",
+		"Interaction_Fence"
 	};
 
 	ImGui::Text(string(string(" Size  : ") + to_string(m_iSize)).c_str());
@@ -356,6 +358,17 @@ void CEditGroupProp::View_CreateProp()
 				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_Item>(LEVEL::LEVEL_EDIT);
 				tObjDesc.HashCode  = typeid(CInteraction_Item).hash_code();
 				tObjDesc.TypeName  = typeid(CInteraction_Item).name();
+			}
+			break;
+
+			case 8:
+			{
+				if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
+					return;
+
+				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_Fence>(LEVEL::LEVEL_EDIT);
+				tObjDesc.HashCode = typeid(CInteraction_Fence).hash_code();
+				tObjDesc.TypeName = typeid(CInteraction_Fence).name();
 			}
 			break;
 		}
