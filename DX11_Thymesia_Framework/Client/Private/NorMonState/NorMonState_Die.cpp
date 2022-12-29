@@ -76,7 +76,7 @@ void CNorMonState_Die::Start()
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Armature|Armature|LV1Villager_M_Die01|BaseLayer|Armatu");
 		break;
 	case Client::MONSTERTYPE::BALLOON:
-		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Die");
+		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Armature|Die|Die");
 		break;
 	}
 

@@ -310,7 +310,7 @@ void CCorvusStateBase::Check_AndChangeHitState(weak_ptr<CCollider> pMyCollider, 
 
 		Get_OwnerPlayer()->Change_State<CCorvusState_HurtBlown>();
 	}
-	m_pOwnerFromPlayer.lock()->Set_RimLightDesc(1.5f, {0.6f,0.f,0.f}, 0.9f);
+	m_pOwnerFromPlayer.lock()->Set_RimLightDesc(4.5f, {0.6f,0.f,0.f}, 0.9f);
 
 
 }

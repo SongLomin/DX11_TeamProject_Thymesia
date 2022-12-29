@@ -70,7 +70,7 @@ void CCorvusState_ParryDeflectLeft::OnStateStart(const _float& In_fAnimationBlen
 		m_bParry1ORParry2 = false;
 	}
 
-	m_pOwnerFromPlayer.lock()->Set_RimLightDesc(2.f, { 1.f, 0.92f, 0.5f }, 1.f);
+	m_pOwnerFromPlayer.lock()->Set_RimLightDesc(6.f, { 1.f, 0.92f, 0.5f }, 1.f);
 
 
 	//if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CCorvusState_ParryDeflectLeft>().lock())
