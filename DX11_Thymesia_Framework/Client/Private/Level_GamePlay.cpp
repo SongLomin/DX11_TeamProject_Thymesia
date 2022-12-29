@@ -42,7 +42,7 @@ HRESULT CLevel_GamePlay::Initialize()
 	CameraDesc.fFovy = XMConvertToRadians(65.0f);
 	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
 	CameraDesc.fNear = 0.2f;
-	CameraDesc.fFar = 50.f;
+	CameraDesc.fFar = 20.f;
 
 	GAMEINSTANCE->Set_CameraFar(CameraDesc.fFar);
 

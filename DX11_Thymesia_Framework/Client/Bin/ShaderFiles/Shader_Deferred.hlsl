@@ -605,7 +605,7 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
         Out.vColor.rgb = (1.f - vFogDesc.r) * Out.vColor.rgb + vFogDesc.r * g_vFogColor.rgb;
     }
     Out.vColor.a = 1.f;
-    
+      
     //if (vLightFlagDesc.r > 0.f || vLightFlagDesc.g > 0.f)
     //    return Out;
 
@@ -910,10 +910,10 @@ PS_OUT PS_MAIN_SSR(PS_IN In)
         if (fDiff > 0.f && fDiff < 0.01f)
             break;
     }
-    
+ 
     clip(49.5f - iStepDistance);
 
-    Out.vColor = g_OriginalRenderTexture.Sample(DefaultSampler, vRayPixelPos) * 0.5f*(1.f - iStepDistance / 60.f);
+    Out.vColor = g_OriginalRenderTexture.Sample(DefaultSampler, vRayPixelPos) * (1.f - iStepDistance / 60.f);
    
     return Out;
 }
