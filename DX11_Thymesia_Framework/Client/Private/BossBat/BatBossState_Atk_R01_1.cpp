@@ -132,7 +132,7 @@ _bool CBatBossState_Atk_R01_1::Check_AndChangeNextState()
 	BATATTACK_DOTRESULT DotResult = BATATTACK_DOTRESULT::BATATTACK_DOTRESULT_END;
 
 
-	if (fPToMDistance <= 7.f && m_bOne)
+	if (fPToMDistance <= 6.5f && m_bOne)
 	{
 		m_bRootStop = false;
 		m_bOne = false;

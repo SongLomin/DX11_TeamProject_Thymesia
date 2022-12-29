@@ -83,7 +83,7 @@ void CVargBossState_Exe_NoDeadEnd::OnStateStart(const _float& In_fAnimationBlend
 		_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
 		vOtherWorldMatrix.r[3] = XMVectorSet(41.5f, 0.09f, 40.05f, 1.f);
 		_matrix                    vResultOtherWorldMatrix;
-		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.25f, 0.f, 1.25f, 0.f));
+		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, 1.25f, 0.f));
 		pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
 			vResultOtherWorldMatrix.r[3],
 			GAMEINSTANCE->Get_DeltaTime(),

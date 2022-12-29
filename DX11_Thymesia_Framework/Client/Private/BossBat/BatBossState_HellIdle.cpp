@@ -120,20 +120,36 @@ _bool CBatBossState_HellIdle::Check_AndChangeNextState()
 
 	if (fPToMDistance <= 12.f)
 	{
-		int iRand = rand() % 3;
 
-		switch (iRand)
+		if (m_iAttackCount > 2)
 		{
-		case 0:
-			Check_CrossAttackState();
-			break;
-		case 1:
-			Get_OwnerCharacter().lock()->Change_State<CBatBossState_Bite_1>(0.05f);
-			break;
-		case 2:
-			Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_SmarhL>(0.05f);
-			break;
+			Get_Owner().lock()->Get_Component<CBatBossState_AttackIdle>().lock()->Set_ZeroAttackCount(0);
+			Get_OwnerCharacter().lock()->Change_State<CBatBossState_BackJump>(0.05f);
+			m_iAttackCount = 0;
+			return true;
 		}
+		else
+		{
+			int iRand = rand() % 4;
+
+
+			switch (iRand)
+			{
+			case 0:
+				Get_OwnerCharacter().lock()->Change_State<CBatBossState_Bite_1>(0.05f);
+				break;
+			case 1:
+				Check_CrossAttackState();
+				break;
+			case 2:
+				Check_CrossAttackState();
+				break;
+			case 3:
+				Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_SmarhL>(0.05f);
+				break;
+			}
+		}
+		
 		return true;
 	}
 	else if (fPToMDistance > 12.f && fPToMDistance <= 16.f)

@@ -1253,6 +1253,12 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Item_VargKey_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/VargKey/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Item_VargKey_Information"), TEXT("../Bin/Resources/Textures/UI/ItemData/VargKey/Information.png"), MEMORY_TYPE::MEMORY_STATIC);
 
+	//VargKey
+	GAMEINSTANCE->Load_Textures(("Item_VargKey_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/VargKey/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Item_VargKey_Information"), TEXT("../Bin/Resources/Textures/UI/ItemData/VargKey/Information.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+
 	//Memory01
 	GAMEINSTANCE->Load_Textures(("Item_Memory01_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/Memory01/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Item_Memory01_Information"), TEXT("../Bin/Resources/Textures/UI/ItemData/Memory01/Information.png"), MEMORY_TYPE::MEMORY_STATIC);
@@ -1377,7 +1383,7 @@ void CLoader::Load_EliteMobModel()
 {
 	_matrix TransformMatrix = XMMatrixIdentity();
 
-	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.0037f, 0.0037f, 0.0037f);
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.0f, 0.0037f, 0.0037f);
 	GAMEINSTANCE->Load_Model("Elite_Joker", "../Bin/Resources/Meshes/EliteMonster/Joker/Joker.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
@@ -1391,7 +1397,8 @@ void CLoader::Load_BossMobModel()
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Boss_Varg", "../Bin/Resources/Meshes/Boss/Varg/Varg.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
-	TransformMatrix = XMMatrixRotationZ(XMConvertToRadians(-90.0f)) * XMMatrixRotationX(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	//TransformMatrix = XMMatrixRotationZ(XMConvertToRadians(-90.0f)) * XMMatrixRotationX(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixRotationZ(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Boss_VargWeapon", "../Bin/Resources/Meshes/Boss/Varg/Weapon/VargWeapon.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	// TransformMatrix = XMMatrixRotationX() * XMMatrixScaling(0.01f, 0.01f, 0.01f);

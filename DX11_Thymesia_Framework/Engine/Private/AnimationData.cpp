@@ -299,8 +299,8 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
         fTickPerSecond *= WantedSpeed;\
     }
 
-    SET_ANIM_SPEED("Armature|Armature|Urd_VS_TakeExecution|BaseLayer", 0.25f);
-    SET_ANIM_SPEED("Corvus_VSUrd_Execution",0.69f);
+    SET_ANIM_SPEED("Armature|Armature|Urd_VS_TakeExecution|BaseLayer", 0.5f);
+    SET_ANIM_SPEED("Corvus_VSUrd_Execution",0.72f);
 
 #undef SET_ANIM_SPEED
 

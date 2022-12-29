@@ -137,7 +137,7 @@ _bool CBatBossState_Bite_1::Check_AndChangeNextState()
 
 	_float fPToMDistance = Get_DistanceWithPlayer();
 
-	if (fPToMDistance <= 7.5f && m_bOne)
+	if (fPToMDistance <= 6.5f && m_bOne)
 	{
 		m_bRootStop = false;
 		m_bOne = false;

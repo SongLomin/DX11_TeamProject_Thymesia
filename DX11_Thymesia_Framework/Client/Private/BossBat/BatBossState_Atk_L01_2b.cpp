@@ -114,6 +114,7 @@ void CBatBossState_Atk_L01_2b::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
+	Get_Owner().lock()->Get_Component<CBatBossState_HellIdle>().lock()->Set_AttackCount(1);
 	Get_Owner().lock()->Get_Component<CBatBossState_AttackIdle>().lock()->Set_AttackCount(1);
 	Get_OwnerCharacter().lock()->Change_State<CBatBossState_Idle>(0.05f);
 }
@@ -136,7 +137,7 @@ _bool CBatBossState_Atk_L01_2b::Check_AndChangeNextState()
 
 	_float fPToMDistance = Get_DistanceWithPlayer();
 
-	if (fPToMDistance <= 7.f && m_bOne)
+	if (fPToMDistance <= 6.5f && m_bOne)
 	{
 		m_bRootStop = false;
 		m_bOne = false;

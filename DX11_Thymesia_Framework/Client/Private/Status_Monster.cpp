@@ -92,8 +92,8 @@ void CStatus_Monster::Add_Damage(const _float In_fDamage, ATTACK_OPTION eAttackO
 		Decrease_Green_HP(In_fDamage);
 		break;
 	case Client::ATTACK_OPTION::SPECIAL_ATTACK:
-		break;
-	case Client::ATTACK_OPTION::OPTION_END:
+		Decrease_White_HP(In_fDamage);
+		Decrease_Green_HP(In_fDamage * 0.2f);
 		break;
 	default:
 		break;
@@ -279,7 +279,7 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 		break;
 	case Client::MONSTERTYPE::VARG:
 		//TODO 공격력몰름 임시
-		m_tMonsterDesc.m_fAtk = 50.f;
+		m_tMonsterDesc.m_fAtk = 500.f;
 		m_tMonsterDesc.m_fMaxHP_white = 2500.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 100.f;
 		m_tMonsterDesc.m_iLifeCount = 2;

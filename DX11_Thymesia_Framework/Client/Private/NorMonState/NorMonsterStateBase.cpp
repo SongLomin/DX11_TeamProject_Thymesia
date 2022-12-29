@@ -97,7 +97,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 		_vector vSameHeightOtherColliderPosition = vOtherColliderPosition;
 		vSameHeightOtherColliderPosition.m128_f32[1] = vMyPosition.m128_f32[1];
 
-		m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
+		m_pTransformCom.lock()->LookAt2D(vSameHeightOtherColliderPosition);
 
 		//데미지 적용
 
@@ -168,29 +168,37 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 			pDamageFont.lock()->SetUp_DamageFont((_uint)fMagnifiedDamage, vHitPos, eAttackOption);
 			break;
 		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
+			if (In_eHitType == HIT_TYPE::RIGHT_HIT)
+			{
+				fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk + iRand;
+				m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+				Get_OwnerMonster()->Change_State<CNorMonState_HurtR>();
+			}
+			else if (In_eHitType == HIT_TYPE::LEFT_HIT)
+			{
+				fMagnifiedDamage *= tPlayerDesc.m_fNormalAtk + iRand;
+				m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
+				Get_OwnerMonster()->Change_State<CNorMonState_HurtL>();
+			}
 			break;
-		case Client::ATTACK_OPTION::KNOCKBACK:
-		
-			if (In_eHitType == HIT_TYPE::LEFT_HIT)
+		case Client::ATTACK_OPTION::STEALMONSTER:
+		    if (In_eHitType == HIT_TYPE::STEALMONSTER)
+			{
+				_matrix vOtherWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, 1.f, 0.f));
+				pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
+					vResultOtherWorldMatrix.r[3],
+					GAMEINSTANCE->Get_DeltaTime(),
+					Filters);
+				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_STEALCORVUS);
+			}
+			else if (In_eHitType == HIT_TYPE::LEFT_HIT)
 			{
 				Get_OwnerMonster()->Change_State<CNorMonState_HurtL>();
 			}
-
 			else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
 			{
-
 				Get_OwnerMonster()->Change_State<CNorMonState_HurtR>();
-			}
-			else if (In_eHitType == HIT_TYPE::WARNING)
-			{
-				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_STEALCORVUS);
-				//_matrix vOtherWorldMatrix = Get_OwnerCharacter().lock()->Get_Transform()->Get_WorldMatrix();
-				//vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, 0.f, 0.f));
-				//pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
-				//	vResultOtherWorldMatrix.r[3],
-				//	GAMEINSTANCE->Get_DeltaTime(),
-				//	Filters);
-				//pOtherCharacter.lock()->Get_Transform()->Set_Look2D(-vOtherWorldMatrix.r[2]);
 			}
 			break;
 		}
@@ -205,26 +213,6 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 
 		Get_OwnerMonster()->Set_RimLightDesc(1.5f, { 0.6f,0.f,0.f }, 0.9f);
 
-
-		//GAMEINSTANCE->Get_GameObjects<CDamageUI>(LEVEL::LEVEL_STATIC).front().lock()->Add_DamageText(vMyPosition, In_fDamage, bRandom);
-
-		//GAMEINSTANCE->Get_GameObjects<CMonsterHpBar>(LEVEL::LEVEL_STATIC).front().lock()->OnHit(m_pOwner);
-		//GAMEINSTANCE->Get_GameObjects<CComboTimer>(LEVEL::LEVEL_STATIC).front().lock()->Update_Combo();
-
-	/*	switch (eAttackOption)
-		{
-		case Client::ATTACK_OPTION::NONE:
-			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, ATTACK_OPTION::NORMAL);
-			break;
-		case Client::ATTACK_OPTION::NORMAL:
-			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
-			break;
-		case Client::ATTACK_OPTION::PLAGUE:
-			m_pStatusCom.lock()->Add_Damage(fMagnifiedDamage, eAttackOption);
-			break;
-		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
-			break;
-		}*/
 
 		GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Set_TargetMonster(Get_OwnerMonster());
 
@@ -241,7 +229,6 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 			}
 			else if (m_pStatusCom.lock()->Is_Dead())
 			{
-				// GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::GROOGYMOSNTER, m_pOwner);
 				Get_OwnerMonster()->Change_State<CNorMonState_GroggyStart>();
 			}
 			else if (Get_StateIndex() == m_pOwner.lock()->Get_Component<CNorMonState_Idle>().lock()->Get_StateIndex() ||
