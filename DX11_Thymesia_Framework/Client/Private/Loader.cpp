@@ -942,10 +942,8 @@ void CLoader::Load_UIResource()
 
 
 	//skill Icon
-	GAMEINSTANCE->Load_Textures(("SkillIcon_Axe"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_Axe.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("SkillIcon_Axe"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_Axe.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("SkillIcon_VargSword"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_VargSword.dds"), MEMORY_TYPE::MEMORY_STATIC);
-
-
 
 
 
@@ -1038,7 +1036,7 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_LevelUp"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_UnlockTalent"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/UnlockTalent.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_PlagueWeapon"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/PlagueWeapon.png"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_Potion"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_Potion"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Potion.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_UseForgottenFeather"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/UseForgottenFeather.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_Cease_Recall"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Cease_Recall.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_ResumeGame"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/ResumeGame.png"), MEMORY_TYPE::MEMORY_STATIC);
@@ -1201,10 +1199,6 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Inventory_SortByQuantity"), TEXT("../Bin/Resources/Textures/UI/Inventory/Sort_Quantity.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Inventory_SortByType"), TEXT("../Bin/Resources/Textures/UI/Inventory/Sort_Type.png"), MEMORY_TYPE::MEMORY_STATIC);
 
-
-
-
-
 	GAMEINSTANCE->Load_Textures(("Cursor"), TEXT("../Bin/Resources/Textures/UI/Cursor.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 
@@ -1260,19 +1254,13 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Item_VargKey_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/VargKey/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Item_VargKey_Information"), TEXT("../Bin/Resources/Textures/UI/ItemData/VargKey/Information.png"), MEMORY_TYPE::MEMORY_STATIC);
 
-
-
 	//Memory01
 	GAMEINSTANCE->Load_Textures(("Item_Memory01_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/Memory01/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Item_Memory01_Information"), TEXT("../Bin/Resources/Textures/UI/ItemData/Memory01/Information.png"), MEMORY_TYPE::MEMORY_STATIC);
 
-
 	//Memory02
 	GAMEINSTANCE->Load_Textures(("Item_Memory02_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/Memory02/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Item_Memory02_Information"), TEXT("../Bin/Resources/Textures/UI/ItemData/Memory02/Information.png"), MEMORY_TYPE::MEMORY_STATIC);
-
-
-
 
 	//Popup
 	GAMEINSTANCE->Load_Textures(("Popup_Item_Basil"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_Basil.dds"), MEMORY_TYPE::MEMORY_STATIC);
@@ -1284,6 +1272,10 @@ void CLoader::Load_UIResource()
 
 	GAMEINSTANCE->Load_Textures(("Popup_Item_Memory01"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_Memory01.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Popup_Item_Memory02"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_Memory02.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	//UI _ ItemRequirement
+	GAMEINSTANCE->Load_Textures(("ItemRequirement_GardenKey"), TEXT("../Bin/Resources/Textures/UI/ItemRequirement/Requirement_InnerGardenKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 
 

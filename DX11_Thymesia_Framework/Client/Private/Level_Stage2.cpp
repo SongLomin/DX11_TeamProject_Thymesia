@@ -82,6 +82,8 @@ HRESULT CLevel_Stage2::Render(ID3D11DeviceContext* pDeviceContext)
 
 void CLevel_Stage2::ExitLevel(LEVEL eLevel)
 {
+	__super::ExitLevel(eLevel);
+
 	switch (eLevel)
 	{
 		case  LEVEL::LEVEL_STAGE3:

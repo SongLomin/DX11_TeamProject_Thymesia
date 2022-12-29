@@ -30,6 +30,8 @@ public:
     SKILL_TYPE  Get_SkillType() { return m_eSkillType; }
 
 
+
+
 public:
     /*
      마나를 소모하는 스킬이 아니라 체력을 소모하는 스킬이 있다면
@@ -42,6 +44,9 @@ public:
 
     virtual void    Reset_Skill();
 public:
+    void                    Clear_Callback();
+
+
     FDelegate<>             Callback_StartSkill;//스킬이 시작할때 발동
     FDelegate<_float>       Callback_UpdateCoolDown;//쿨타임이 도는 매 틱마다 발동
     FDelegate<>             Callback_EndCoolDown;//쿨타임이 다 돌았을 때 발동
@@ -56,7 +61,7 @@ protected:
 
 
 protected:
-    shared_ptr<CRequirementChecker>     m_pRequirementChecker;
+    shared_ptr<CRequirementChecker>             m_pRequirementChecker;
     shared_ptr<CRequirement_Time>               m_pRequirementTime;
     shared_ptr<CRequirement_PlayerStatusMana>   m_pRequirementMana;
 

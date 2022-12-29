@@ -9,8 +9,7 @@
 #include "Light_Prop.h"
 #include "Status_Player.h"
 #include "PhysXController.h"
-#include "PlayerSkill_System.h"
-#include "Skill_VargSword.h"
+#include "PlayerSkillHeader.h"
 #include "Inventory.h"
 #include "UI_BloodOverlay.h"
 #include "UI_PauseMenu.h"
@@ -18,6 +17,8 @@
 #include "UI_AppearEventVarg.h"
 #include "Monster.h"
 #include "Talent_Effects.h"
+
+
 
 GAMECLASS_C(CCorvus)
 CLONE_C(CCorvus, CGameObject)
@@ -122,7 +123,6 @@ HRESULT CCorvus::Initialize(void* pArg)
 	Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
 #endif // _USE_THREAD_
 	
-
 
 	return S_OK;
 }
@@ -344,13 +344,11 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 
 		//GAMEINSTANCE->Get_GameObjects<CUI_AppearEventVarg>(LEVEL_STATIC).front().lock()->Start_Event();
 	}
-	/*
-	if (KEY_INPUT(KEY::T, KEY_STATE::TAP))
+	if (KEY_INPUT(KEY::P, KEY_STATE::TAP))
 	{
-		GAMEINSTANCE->Get_GameObjects<CUI_BloodOverlay>(LEVEL_STATIC).front().lock()->
-			Call_Overlay(1.f);
+		m_pSkillSystem.lock()->SwapSkillMaintoSub();
 	}
-	*/
+	
 
 #ifdef _DEBUG
 	//if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
@@ -494,9 +492,9 @@ void CCorvus::Ready_States()
 void CCorvus::Ready_Skills()
 {
 	//스킬 추가입니다.
-
 	m_pSkillSystem = Add_Component<CPlayerSkill_System>();
 	Add_Component<CSkill_VargSword>();
+	Add_Component<CSkill_Axe>();
 
 }
 
@@ -657,6 +655,19 @@ void CCorvus::SetUp_Requirement()
 void CCorvus::Test_BindSkill()
 {
 	m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_VargSword>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_MAIN);
+	m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_Axe>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_SUB);
+
+}
+
+void CCorvus::Save_ClientComponentData()
+{
+	json	CorvusJson;
+
+	Write_Json(CorvusJson);
+
+	string corvusComponentPath = m_szClientComponentPath + "Corvus.json";
+
+	CJson_Utility::Save_Json(corvusComponentPath.c_str(), CorvusJson);
 }
 
 void CCorvus::WriteTalentFromJson(json& Out_Json)

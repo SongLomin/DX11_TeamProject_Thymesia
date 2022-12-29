@@ -73,6 +73,9 @@ void CVargBossState_Exe_Start::OnStateStart(const _float& In_fAnimationBlendTime
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	if (Check_RequirementIsTargeted())
+		GET_SINGLE(CGameManager)->Release_Focus();
+
 	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::PLAYERHUD);
 	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
 

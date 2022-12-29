@@ -73,9 +73,15 @@ void CHUD_PlagueWeaponBase::Call_OnChangeSkill(weak_ptr<CSkill_Base> pSkillBase)
     pSkillBase.lock()->Callback_EndCoolDown+=
         bind(&CHUD_PlagueWeaponBase::Call_EndCoolDown, this);
 
-    Init_UI();
+    if (pSkillBase.lock()->Is_UseAble())
+    {
+        Init_UI();
+    }
+    else
+    {
+       Call_UseStartSkill();
+    }
     Init_Icon(pSkillBase.lock()->Get_SkillName());
-
 }
 
 void CHUD_PlagueWeaponBase::Call_UseStartSkill()
@@ -92,6 +98,8 @@ void CHUD_PlagueWeaponBase::Call_UpdateCoolDown(_float fCoolDownRatio)
 {
     m_pPlagueWeapon_Border.lock()->Set_Ratio(fCoolDownRatio);
     m_pPlagueWeapon_Ready.lock()->Set_Ratio(fCoolDownRatio);
+
+
 }
 
 void CHUD_PlagueWeaponBase::Call_EndCoolDown()
@@ -106,7 +114,6 @@ void CHUD_PlagueWeaponBase::Call_EndCoolDown()
 
     m_pPlagueWeapon_Main.lock()->Set_AlphaColor(1.f);
     m_pIcon.lock()->Set_AlphaColor(1.f);
-        
     m_pPlagueWeapon_Ready.lock()->Set_Enable(false);
 }
 
@@ -132,6 +139,8 @@ void CHUD_PlagueWeaponBase::Init_UI()
     m_pHover.lock()->Set_Enable(false);
     m_pPlagueWeapon_Ready.lock()->Set_Enable(false);
     m_pPlagueWeapon_Border.lock()->Set_Ratio(1.f);
+    m_pPlagueWeapon_Main.lock()->Set_AlphaColor(1.f);
+    m_pIcon.lock()->Set_AlphaColor(1.f);
 }
 
 void CHUD_PlagueWeaponBase::Init_Icon(SKILL_NAME eSkillName)
@@ -140,6 +149,9 @@ void CHUD_PlagueWeaponBase::Init_Icon(SKILL_NAME eSkillName)
     {
     case Client::SKILL_NAME::SKILL_VARGSWORD:
         m_pIcon.lock()->Set_Texture("SkillIcon_VargSword");
+        break;
+    case Client::SKILL_NAME::SKILL_AXE:
+        m_pIcon.lock()->Set_Texture("SkillIcon_Axe");
         break;
     case Client::SKILL_NAME::SKILL_END:
         m_pIcon.lock()->Set_Texture("None");

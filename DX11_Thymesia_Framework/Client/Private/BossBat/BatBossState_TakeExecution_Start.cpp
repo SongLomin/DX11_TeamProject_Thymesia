@@ -64,9 +64,15 @@ void CBatBossState_TakeExecution_Start::OnStateStart(const _float& In_fAnimation
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "VargState: Start -> OnStateStart" << endl;
+	cout << "BatState: Start -> OnStateStart" << endl;
 #endif
 #endif
+
+	if (Check_RequirementIsTargeted())
+		GET_SINGLE(CGameManager)->Release_Focus();
+
+	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::PLAYERHUD);
+	GET_SINGLE(CGameManager)->Disable_Layer(OBJECT_LAYER::BATTLEUI);
 
 
 }	
@@ -77,7 +83,7 @@ void CBatBossState_TakeExecution_Start::OnStateEnd()
 	__super::OnStateEnd();
 
 
-
+	GET_SINGLE(CGameManager)->Enable_Layer(OBJECT_LAYER::PLAYERHUD);
 }
 
 

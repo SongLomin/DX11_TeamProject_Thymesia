@@ -281,7 +281,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		{
 		case 0:
 		{
-			m_pOwner.lock()->Get_Component<CPlayerSkill_System>().lock()->Get_MainSkill().lock()->UseSkill();
+			m_pOwner.lock()->Get_Component<CPlayerSkill_System>().lock()->UseMainSKill();
 		}
 			break;
 		case 1:

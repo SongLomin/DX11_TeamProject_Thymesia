@@ -105,6 +105,8 @@ HRESULT CLevel_GamePlay::Render(ID3D11DeviceContext* pDeviceContext)
 
 void CLevel_GamePlay::ExitLevel(LEVEL eLevel)
 {
+	__super::ExitLevel(eLevel);
+
 	if (eLevel == LEVEL::LEVEL_STAGE2)
 	{
 		CStatus_Player::PLAYERDESC tPlayerDesc = GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status().lock()->Get_Desc();
