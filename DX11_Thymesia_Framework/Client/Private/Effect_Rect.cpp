@@ -628,6 +628,11 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 			m_tEffectParticleDesc.fMaxLifeTime = In_Json["Max_Life_Time"];
 	}
 
+#ifdef _DEBUG
+	if (m_tEffectParticleDesc.fMinLifeTime > 900.f)
+		assert(0);
+#endif // _DEBUG
+
 #pragma endregion // Life Time
 
 #pragma region Boner

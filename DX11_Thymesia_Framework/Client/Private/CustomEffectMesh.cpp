@@ -511,6 +511,14 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 	if (In_Json.find("Life_Time") != In_Json.end())
 		m_tEffectMeshDesc.fLifeTime = In_Json["Life_Time"];
 
+#ifdef _DEBUG
+	if (m_tEffectMeshDesc.fLifeTime > 900.f)
+	{
+		int a = 0;
+	}
+
+#endif // _DEBUG
+
 	if (In_Json.find("Sync_Animation") != In_Json.end())
 		m_tEffectMeshDesc.bSyncAnimation = In_Json["Sync_Animation"];
 
