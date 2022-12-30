@@ -62,7 +62,7 @@ void CBatBossState_Stun_Start::OnStateStart(const _float& In_fAnimationBlendTime
 	
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-	Get_OwnerMonster()->Set_RimLightDesc(2.f, { 0.5f,1.f,0.9f }, 1.f);
+	Get_OwnerMonster()->Set_RimLightDesc(6.f, { 0.5f,1.f,0.9f }, 1.f);
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_

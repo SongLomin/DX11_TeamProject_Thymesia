@@ -48,7 +48,7 @@ private:
 
 public:
     void       Test_BindSkill();
-
+    virtual void       Save_ClientComponentData() override;
 
 private:
     void        WriteTalentFromJson(json& Out_Json);

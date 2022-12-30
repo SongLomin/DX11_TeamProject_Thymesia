@@ -144,6 +144,9 @@ void CActor::SetUp_ShaderResource()
     m_pTransformCom.lock()->Set_ShaderResource(m_pShaderCom, "g_WorldMatrix");
     m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4));
     m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
+
+    _float fCamFar = GAMEINSTANCE->Get_CameraFar();
+    m_pShaderCom.lock()->Set_RawValue("g_fFar", &fCamFar, sizeof(_float));
 }
 
 void CActor::OnEnable(void* pArg)

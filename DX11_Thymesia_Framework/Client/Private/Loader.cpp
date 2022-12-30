@@ -492,7 +492,7 @@ HRESULT CLoader::Loading_ForStage2Level()
 	GAMEINSTANCE->Clear_Lights();
 	GAMEINSTANCE->Add_Light(LightDesc);
 
-	GAMEINSTANCE->Set_FogDesc(_float4(0.45f, 0.26f, 0.28f, 0.92f), 60.f);
+	GAMEINSTANCE->Set_FogDesc(_float4(0.45f, 0.26f, 0.28f, 0.92f), 120.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 1.f, 1.f, 1.f), _float4(1.f, 1.f, 1.f, 1.f), _float4(1.f, 1.f, 1.f, 1.f));
 	GAMEINSTANCE->Set_Contrast(1.2f);
 	GAMEINSTANCE->Set_Saturation(1.5f);
@@ -550,7 +550,7 @@ HRESULT CLoader::Loading_ForStage3Level()
 
 	GAMEINSTANCE->Clear_Lights();
 
-	GAMEINSTANCE->Set_FogDesc(_float4(0.5f, 0.5f, 0.5f, 0.f), 10000.f);
+	GAMEINSTANCE->Set_FogDesc(_float4(0.5f, 0.5f, 0.5f, 0.65f), 50.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 	GAMEINSTANCE->Set_Contrast(1.f);
 	GAMEINSTANCE->Set_Saturation(1.f);
@@ -568,7 +568,7 @@ HRESULT CLoader::Loading_ForStage3Level()
 
 HRESULT CLoader::Loading_ForEditLevel()
 {
-	// Load_AllMeshes("../Bin/Resources/Meshes/Temp/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
+	Load_AllMeshes("../Bin/Resources/Meshes/Temp/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Diffuse Textures..."));
 	Load_AllDiffuseTexture();
@@ -591,27 +591,23 @@ HRESULT CLoader::Loading_ForEditLevel()
 	this->Load_NormalMobModel();
 
 #ifdef _MAP_TOOL_
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/ForTest_Mesh/ ]"));
+	lstrcpy(m_szLoadingText, TEXT("Loading Prop Textures..."));
+	Load_AllTexture("../Bin/Resources/Textures/Prop/", MEMORY_TYPE::MEMORY_DYNAMIC);
+	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Textures..."));
+	Load_AllTexture("../Bin/GroundInfo/Texture/", MEMORY_TYPE::MEMORY_DYNAMIC);
+	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Filters..."));
+	Load_AllTexture("../Bin/GroundInfo/Filter/", MEMORY_TYPE::MEMORY_DYNAMIC);
+	lstrcpy(m_szLoadingText, TEXT("Loading all EditGround Mesh Info..."));
+
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Else/Binary/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Else/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv1_Circus/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv2_Fortress/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Map_Lv3_Garden/Binary/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
-
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/GroundInfo/Mesh/ ]"));
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
 
 	_matrix TransformMatrix;
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
-	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Destructable/Wagon03/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
@@ -764,6 +760,9 @@ void CLoader::Load_AllMeshes(const filesystem::path& In_Path, MODEL_TYPE In_eMod
 {
 	if (!In_Path.filename().extension().string().empty())
 		return;
+
+	wstring Text = L"[ " + wstring(In_Path) + L" ]";
+	lstrcpy(m_szLoadingText, Text.c_str());
 
 	string szFileName;
 	string szExtension;
@@ -942,10 +941,8 @@ void CLoader::Load_UIResource()
 
 
 	//skill Icon
-	GAMEINSTANCE->Load_Textures(("SkillIcon_Axe"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_Axe.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("SkillIcon_Axe"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_Axe.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("SkillIcon_VargSword"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_VargSword.dds"), MEMORY_TYPE::MEMORY_STATIC);
-
-
 
 
 
@@ -1038,7 +1035,7 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_LevelUp"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_UnlockTalent"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/UnlockTalent.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_PlagueWeapon"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/PlagueWeapon.png"), MEMORY_TYPE::MEMORY_STATIC);
-	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_Potion"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_Potion"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Potion.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_UseForgottenFeather"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/UseForgottenFeather.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_Cease_Recall"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/Cease_Recall.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Text_ResumeGame"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/ResumeGame.png"), MEMORY_TYPE::MEMORY_STATIC);
@@ -1201,10 +1198,6 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Inventory_SortByQuantity"), TEXT("../Bin/Resources/Textures/UI/Inventory/Sort_Quantity.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Inventory_SortByType"), TEXT("../Bin/Resources/Textures/UI/Inventory/Sort_Type.png"), MEMORY_TYPE::MEMORY_STATIC);
 
-
-
-
-
 	GAMEINSTANCE->Load_Textures(("Cursor"), TEXT("../Bin/Resources/Textures/UI/Cursor.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 
@@ -1260,19 +1253,19 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Item_VargKey_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/VargKey/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Item_VargKey_Information"), TEXT("../Bin/Resources/Textures/UI/ItemData/VargKey/Information.png"), MEMORY_TYPE::MEMORY_STATIC);
 
+	//VargKey
+	GAMEINSTANCE->Load_Textures(("Item_VargKey_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/VargKey/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Item_VargKey_Information"), TEXT("../Bin/Resources/Textures/UI/ItemData/VargKey/Information.png"), MEMORY_TYPE::MEMORY_STATIC);
+
 
 
 	//Memory01
 	GAMEINSTANCE->Load_Textures(("Item_Memory01_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/Memory01/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Item_Memory01_Information"), TEXT("../Bin/Resources/Textures/UI/ItemData/Memory01/Information.png"), MEMORY_TYPE::MEMORY_STATIC);
 
-
 	//Memory02
 	GAMEINSTANCE->Load_Textures(("Item_Memory02_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/Memory02/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Item_Memory02_Information"), TEXT("../Bin/Resources/Textures/UI/ItemData/Memory02/Information.png"), MEMORY_TYPE::MEMORY_STATIC);
-
-
-
 
 	//Popup
 	GAMEINSTANCE->Load_Textures(("Popup_Item_Basil"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_Basil.dds"), MEMORY_TYPE::MEMORY_STATIC);
@@ -1284,6 +1277,10 @@ void CLoader::Load_UIResource()
 
 	GAMEINSTANCE->Load_Textures(("Popup_Item_Memory01"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_Memory01.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Popup_Item_Memory02"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_Memory02.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	//UI _ ItemRequirement
+	GAMEINSTANCE->Load_Textures(("ItemRequirement_GardenKey"), TEXT("../Bin/Resources/Textures/UI/ItemRequirement/Requirement_InnerGardenKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 
 
@@ -1386,7 +1383,7 @@ void CLoader::Load_EliteMobModel()
 {
 	_matrix TransformMatrix = XMMatrixIdentity();
 
-	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.0037f, 0.0037f, 0.0037f);
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.0f, 0.0037f, 0.0037f);
 	GAMEINSTANCE->Load_Model("Elite_Joker", "../Bin/Resources/Meshes/EliteMonster/Joker/Joker.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
@@ -1400,7 +1397,8 @@ void CLoader::Load_BossMobModel()
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Boss_Varg", "../Bin/Resources/Meshes/Boss/Varg/Varg.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
-	TransformMatrix = XMMatrixRotationZ(XMConvertToRadians(-90.0f)) * XMMatrixRotationX(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	//TransformMatrix = XMMatrixRotationZ(XMConvertToRadians(-90.0f)) * XMMatrixRotationX(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixRotationZ(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Boss_VargWeapon", "../Bin/Resources/Meshes/Boss/Varg/Weapon/VargWeapon.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	// TransformMatrix = XMMatrixRotationX() * XMMatrixScaling(0.01f, 0.01f, 0.01f);

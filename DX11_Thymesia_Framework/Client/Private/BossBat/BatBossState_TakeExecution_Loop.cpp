@@ -8,7 +8,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossBat/BatStates.h"
-
+#include "MonsterHPBar_Boss.h"
 #include "GameManager.h"
 
 GAMECLASS_C(CBatBossState_TakeExecution_Loop);
@@ -67,6 +67,7 @@ void CBatBossState_TakeExecution_Loop::OnStateStart(const _float& In_fAnimationB
 #endif
 #endif
 
+	Weak_StaticCast<CBossMonster>(m_pOwner).lock()->Get_HPBar().lock()->Set_Enable(false);
 	GET_SINGLE(CGameManager)->Activate_Section(1000, EVENT_TYPE::ON_ENTER_SECTION);
 }	
 

@@ -167,6 +167,9 @@ public: /* For.PipeLine */
 	const _float4x4* Get_Transform_TP(CPipeLine::TRANSFORMSTATE eState);
 
 	_float4 Get_CamPosition();
+	void Set_CameraFar(const _float In_fCameraFar);
+	_float Get_CameraFar();
+
 
 
 public: /* For.Resource_Manager */

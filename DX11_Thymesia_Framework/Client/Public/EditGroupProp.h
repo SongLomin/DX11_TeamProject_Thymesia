@@ -33,6 +33,7 @@ public:
 private:
     void    View_CreateProp();
     void    View_OnlyTranformEdit();
+    void    View_PropOption();
 
     void    View_PickProp();
     void    View_EditProp();

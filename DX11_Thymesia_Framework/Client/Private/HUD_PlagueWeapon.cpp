@@ -3,7 +3,7 @@
 #include "HUD_PlagueWeaponBase.h"
 #include "HUD_PlagueWeapon_Main.h"
 #include "HUD_PlagueWeapon_Steal.h"
-
+#include "PlayerSkill_System.h"
 
 GAMECLASS_C(CHUD_PlagueWeapon);
 CLONE_C(CHUD_PlagueWeapon, CGameObject);
@@ -24,6 +24,15 @@ HRESULT CHUD_PlagueWeapon::Initialize(void* pArg)
 
 
 	m_pMainSkill = GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon_Main>(LEVEL_STATIC, &tMainSKillDesc);
+	m_pMainSkill.lock()->Bind_Player_FromSocketType((_uint)CPlayerSkill_System::SOCKET_TYPE::SOCKET_MAIN);
+
+	UI_DESC tSubSKillDesc = { 1353.f, 835.f, 78.f, 78.f, 0.f };
+
+	m_pSubSkill = GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon_Main>(LEVEL_STATIC, &tSubSKillDesc);
+	m_pSubSkill.lock()->Bind_Player_FromSocketType((_uint)CPlayerSkill_System::SOCKET_TYPE::SOCKET_SUB);
+
+
+
 
 	UI_DESC tStealSKillDesc = { 1502.f, 785.f, 93.f, 93.f, 0.f };
 
@@ -33,6 +42,8 @@ HRESULT CHUD_PlagueWeapon::Initialize(void* pArg)
 	m_eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
 
 	Add_Child(m_pMainSkill);
+	Add_Child(m_pSubSkill);
+
 	//Add_Child(m_pStealSkill);
 
 

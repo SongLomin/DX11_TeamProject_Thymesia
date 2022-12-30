@@ -19,6 +19,8 @@ texture2D g_NoiseTexture1;
 texture2D g_NoiseTexture2;
 texture2D g_DisplacementTexture;
 
+float g_fFar = 300.f;
+
 float2 g_vUVNoise;
 /* ---------------------------------------------------------- */
 
@@ -234,7 +236,7 @@ PS_OUT PS_MAIN_DEFAULT(PS_IN In)
 
     Out.vDiffuse.a = 1.f;
     Out.vNormal = In.vNormal;
-    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
     Out.vORM = 0;
 
@@ -287,7 +289,7 @@ PS_OUT PS_MAIN_NORM(PS_IN In)
        
     Out.vDiffuse.a  = 1.f;
     Out.vNormal     = vector(vPixelNorm.xyz * 0.5f + 0.5f, 0.f);
-    Out.vDepth      = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
     Out.vORM        = 0;
 
@@ -300,7 +302,7 @@ PS_OUT PS_MAIN_WIREFRAM(PS_IN In)
 
     Out.vDiffuse = vector(1.f, 1.f, 0.f, 1.f);
     Out.vNormal = In.vNormal;
-    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
     Out.vORM = 0;
     return Out;
@@ -325,7 +327,7 @@ PS_OUT PS_MAIN_FILLTER(PS_IN In)
 
     Out.vDiffuse.a = 1.f;
     Out.vNormal = In.vNormal;
-    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
     Out.vORM = 0;
 
@@ -354,7 +356,7 @@ PS_OUT PS_MAIN_WATER(DS_OUT In)
       
     Out.vDiffuse.a = 1.f;
     Out.vNormal = vector(vPixelNorm.xyz * 0.5f + 0.5f, 0.f);
-    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
     Out.vORM = 0;
     return Out;

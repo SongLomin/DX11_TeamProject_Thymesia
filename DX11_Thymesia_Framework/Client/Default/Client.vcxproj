@@ -306,6 +306,7 @@
     <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h" />
     <ClInclude Include="..\Public\BossVarg\VargBossState_TurnAttack.h" />
     <ClInclude Include="..\Public\ClientComponent_Utils.h" />
+    <ClInclude Include="..\Public\Client_Functions.h" />
     <ClInclude Include="..\Public\Client_Enum.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidB.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_AVoidF.h" />
@@ -489,6 +490,7 @@
     <ClInclude Include="..\Public\Interaction_Door.h" />
     <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h" />
     <ClInclude Include="..\Public\Interaction_Elevator.h" />
+    <ClInclude Include="..\Public\Interaction_Fence.h" />
     <ClInclude Include="..\Public\Interaction_Item.h" />
     <ClInclude Include="..\Public\Interaction_Ladder.h" />
     <ClInclude Include="..\Public\Interaction_NextPoint.h" />
@@ -523,6 +525,7 @@
     <ClInclude Include="..\Public\Effect_Trail_Distortion.h" />
     <ClInclude Include="..\Public\Effect_Trail_EyeLight.h" />
     <ClInclude Include="..\Public\MobWeapon.h" />
+    <ClInclude Include="..\Public\PlayerSkillHeader.h" />
     <ClInclude Include="..\Public\PlayerSkill_System.h" />
     <ClInclude Include="..\Public\PlayerUI_Defines.h" />
     <ClInclude Include="..\Public\Player_ItemSkillCollection.h" />
@@ -538,6 +541,7 @@
     <ClInclude Include="..\Public\Requirement_State.h" />
     <ClInclude Include="..\Public\Requirement_Time.h" />
     <ClInclude Include="..\Public\Section_Eventer.h" />
+    <ClInclude Include="..\Public\Skill_Axe.h" />
     <ClInclude Include="..\Public\Skill_base.h" />
     <ClInclude Include="..\Public\Skill_VargSword.h" />
     <ClInclude Include="..\Public\State_Monster.h" />
@@ -572,6 +576,7 @@
     <ClInclude Include="..\Public\UI_InventoryConfirmWindowButton.h" />
     <ClInclude Include="..\Public\UI_ItemInformation.h" />
     <ClInclude Include="..\Public\UI_ItemPopup.h" />
+    <ClInclude Include="..\Public\UI_ItemRequirement.h" />
     <ClInclude Include="..\Public\UI_ItemSlot.h" />
     <ClInclude Include="..\Public\UI_LerpBar.h" />
     <ClInclude Include="..\Public\UI_MenuText.h" />
@@ -1084,6 +1089,7 @@
     <ClCompile Include="..\Private\Interaction_Door.cpp" />
     <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\Interaction_Elevator.cpp" />
+    <ClCompile Include="..\Private\Interaction_Fence.cpp" />
     <ClCompile Include="..\Private\Interaction_Item.cpp" />
     <ClCompile Include="..\Private\Interaction_Ladder.cpp" />
     <ClCompile Include="..\Private\Interaction_NextPoint.cpp" />
@@ -1119,6 +1125,7 @@
     <ClCompile Include="..\Private\RequirementChecker.cpp" />
     <ClCompile Include="..\Private\Requirement_Once.cpp" />
     <ClCompile Include="..\Private\Requirement_State.cpp" />
+    <ClCompile Include="..\Private\Skill_Axe.cpp" />
     <ClCompile Include="..\Private\Skill_Base.cpp" />
     <ClCompile Include="..\Private\Skill_VargSword.cpp" />
     <ClCompile Include="..\Private\Status_Boss.cpp" />
@@ -1144,6 +1151,7 @@
     <ClCompile Include="..\Private\UI_InventoryConfirmWindowButton.cpp" />
     <ClCompile Include="..\Private\UI_ItemInformation.cpp" />
     <ClCompile Include="..\Private\UI_ItemPopup.cpp" />
+    <ClCompile Include="..\Private\UI_ItemRequirement.cpp" />
     <ClCompile Include="..\Private\UI_ItemSlot.cpp" />
     <ClCompile Include="..\Private\UI_LerpBar.cpp" />
     <ClCompile Include="..\Private\BossMonster.cpp" />

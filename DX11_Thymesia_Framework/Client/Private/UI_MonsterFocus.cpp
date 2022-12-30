@@ -195,6 +195,10 @@ weak_ptr<CBoneNode> CUI_MonsterFocus::FindTargetBone(weak_ptr<class CModel> pTar
     {
         pBoneNode = pTargetModel.lock()->Find_BoneNode("spine_01");
     }
+	if (!pBoneNode.lock())
+	{
+		pBoneNode = pTargetModel.lock()->Find_BoneNode("Bone");
+	}
 
     return pBoneNode;
 }

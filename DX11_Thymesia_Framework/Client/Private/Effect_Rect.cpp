@@ -628,6 +628,11 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 			m_tEffectParticleDesc.fMaxLifeTime = In_Json["Max_Life_Time"];
 	}
 
+#ifdef _DEBUG
+	if (m_tEffectParticleDesc.fMinLifeTime > 900.f)
+		assert(0);
+#endif // _DEBUG
+
 #pragma endregion // Life Time
 
 #pragma region Boner
@@ -1068,10 +1073,8 @@ void CEffect_Rect::Reset_ParticleDesc(const _uint& In_iIndex)
 	if (Check_Option(EFFECTPARTICLE_DESC::Option1::Is_Attraction))
 	{
 		_float3	f3LookAt(SMath::Add_Float3(m_tEffectParticleDesc.vGoalPosition, SMath::Mul_Float3(m_tParticleDescs[In_iIndex].vCurrentTranslation, -1.f)));
-
 		XMStoreFloat3(&m_tParticleDescs[In_iIndex].vTargetLookAt, XMVector3Normalize(XMLoadFloat3(&f3LookAt)));
 	}
-
 }
 
 

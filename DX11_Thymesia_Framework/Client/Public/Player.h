@@ -80,6 +80,11 @@ public:
     virtual void Write_Json(json& Out_Json) override;
     virtual void Load_FromJson(const json& In_Json) override;
     
+
+public:
+    virtual void    Save_ClientComponentData() { }
+
+
 protected:
     virtual void OnEnable(void* pArg = nullptr) override;
     virtual void OnDisable() override;

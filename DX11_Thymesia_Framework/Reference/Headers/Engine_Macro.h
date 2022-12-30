@@ -15,7 +15,6 @@
 
 #define MSG_BOX(MESSAGE) MessageBox(0, TEXT(MESSAGE), TEXT("System Error"), MB_OK)
 
-
 #define BEGIN(NAMESPACE) namespace NAMESPACE { 
 #define END }
 

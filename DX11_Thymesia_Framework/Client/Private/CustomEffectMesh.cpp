@@ -511,6 +511,14 @@ void CCustomEffectMesh::Load_EffectJson(const json& In_Json, const _uint& In_iTi
 	if (In_Json.find("Life_Time") != In_Json.end())
 		m_tEffectMeshDesc.fLifeTime = In_Json["Life_Time"];
 
+#ifdef _DEBUG
+	if (m_tEffectMeshDesc.fLifeTime > 900.f)
+	{
+		int a = 0;
+	}
+
+#endif // _DEBUG
+
 	if (In_Json.find("Sync_Animation") != In_Json.end())
 		m_tEffectMeshDesc.bSyncAnimation = In_Json["Sync_Animation"];
 
@@ -1333,7 +1341,7 @@ void CCustomEffectMesh::Tool_Collider()
 
 		if (ImGui::TreeNode("Hit Type"))
 		{
-			const char* HitType_items[] = { "Normal", "Upper", "Down", "Warning","left","right","excute","Parry" };
+			const char* HitType_items[] = { "Normal", "Upper", "Down", "Warning","left","right","excute","Parry","MonsterSteal"};
 
 			if (ImGui::BeginListBox("Hit Type"))
 			{
@@ -1356,7 +1364,7 @@ void CCustomEffectMesh::Tool_Collider()
 		}
 		if (ImGui::TreeNode("Option Type"))
 		{
-			const char* Option_items[] = { "None", "Normal", "Plague", "Special_Attack","Parry","KnockBack","FallDown"};
+			const char* Option_items[] = { "None", "Normal", "Plague", "Special_Attack","Parry","KnockBack","FallDown","MonsterSteal"};
 
 			if (ImGui::BeginListBox("Option Type"))
 			{

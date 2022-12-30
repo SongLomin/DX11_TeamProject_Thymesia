@@ -104,8 +104,8 @@ HRESULT CGameInstance::Tick_Engine(_float fTimeDelta)
 
 	GET_SINGLE(CObject_Manager)->LateTick(fTimeDelta);
 
-	GET_SINGLE(CThread_Manager)->Enqueue_Job(bind(&CCollision_Manager::Tick, m_pCollision_Manager));
-	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+	m_pCollision_Manager->Tick();
+	//GET_SINGLE(CThread_Manager)->Enqueue_Job(bind(&CCollision_Manager::Tick, m_pCollision_Manager));
 	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 	//m_pTimer_Manager->Tick();
 
@@ -143,7 +143,7 @@ HRESULT CGameInstance::Render_Engine()
 
 	m_pObject_Manager->After_Render();
 
-
+	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 	return S_OK;
 }
 
@@ -511,6 +511,20 @@ _float4 CGameInstance::Get_CamPosition()
 		return _float4(0.f, 0.f, 0.f, 1.f);
 
 	return m_pPipeLine->Get_CamPosition();
+}
+void CGameInstance::Set_CameraFar(const _float In_fCameraFar)
+{
+	if (nullptr == m_pPipeLine)
+		return;
+
+	m_pPipeLine ->Set_CameraFar(In_fCameraFar);
+}
+_float CGameInstance::Get_CameraFar()
+{
+	if (nullptr == m_pPipeLine)
+		return 0.f;
+
+	return m_pPipeLine->Get_CameraFar();
 }
 
 void CGameInstance::Write_JsonUsingResource(const char* In_szFilePath)

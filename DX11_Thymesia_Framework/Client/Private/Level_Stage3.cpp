@@ -37,10 +37,12 @@ HRESULT CLevel_Stage3::Initialize()
 	CameraDesc.fFovy   = XMConvertToRadians(65.0f);
 	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
 	CameraDesc.fNear   = 0.2f;
-	CameraDesc.fFar    = 300.f;
+	CameraDesc.fFar    = 50.f;
 
 	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_STAGE3, &CameraDesc);
 	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
+
+	GAMEINSTANCE->Set_CameraFar(CameraDesc.fFar);
 
 	Load_FromJson(m_szDefaultJsonPath + "Stage_Lv3-1.json", LEVEL::LEVEL_STAGE3);
 

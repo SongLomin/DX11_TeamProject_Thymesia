@@ -22,6 +22,7 @@ public: /* For. MyCollision */
 
 private:
 	void Remove_DeadCollision();
+	void Update_ReservedColliderList();
 	void Update_CollisionGroup(const _uint& In_iLeftLayer, const _uint& In_iRightLayer);
 	_bool Is_Collision(weak_ptr<CCollider> In_pLeft, weak_ptr<CCollider> In_pRight);
 	void End_CollisionCheck();

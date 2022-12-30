@@ -38,6 +38,8 @@ namespace Client
 		ON_EDIT_PHYSXINFO_N,
 		ON_EDIT_DELETE,
 		ON_EDIT_UDATE,
+		ON_EDIT_RENDER_ACTIVATE,
+		ON_EDIT_RENDER_DISABLE,
 		ON_ANIMATIONEND,
 		ON_MOVING,
 		ON_MONSTERDEAD,
@@ -79,6 +81,7 @@ namespace Client
 		RIGHT_HIT,
 		EXCTUE_HIT,
 		PARRY_HIT,
+		STEALMONSTER,
 		TYPE_END
 	};
 
@@ -225,6 +228,7 @@ namespace Client
 		PARRY,
 		KNOCKBACK,
 		FALLDOWN,
+		STEALMONSTER,
 		OPTION_END
 	};
 
@@ -468,6 +472,7 @@ namespace Client
 	enum class SKILL_NAME
 	{
 		SKILL_VARGSWORD,
+		SKILL_AXE,
 		SKILL_END
 	};
 

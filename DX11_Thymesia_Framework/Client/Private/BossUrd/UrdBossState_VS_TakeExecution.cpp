@@ -58,10 +58,17 @@ void CUrdBossState_VS_TakeExecution::OnStateStart(const _float& In_fAnimationBle
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,49);
+	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Y + (_byte)ROOTNODE_FLAG::Z);
+
+	m_pPhysXControllerCom.lock()->Enable_Gravity(false);
+
+	m_pPhysXControllerCom.lock()->Set_EnableSimulation(false);
 
 	m_pPhysXControllerCom.lock()->Set_Enable(false);
 
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,47);
+
+	
 	if (Get_OwnerMonster()->Get_BossExecutionStartOnOff())
 	{
 		PxControllerFilters Filters;
@@ -69,8 +76,8 @@ void CUrdBossState_VS_TakeExecution::OnStateStart(const _float& In_fAnimationBle
 		weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 		weak_ptr<CCharacter> pOtherCharacter = Weak_StaticCast<CCharacter>(pCurrentPlayer);
 		_matrix vOtherWorldMatrix = pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix();
-
-		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(-0.7f, 0.f, -1.5f, 0.f));
+	
+		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(-0.5f, 0.f, -2.f, 0.f));
 			pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
 				vResultOtherWorldMatrix.r[3],
 				GAMEINSTANCE->Get_DeltaTime(),
@@ -93,7 +100,16 @@ void CUrdBossState_VS_TakeExecution::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X ||  (_byte)ROOTNODE_FLAG::Z);
+
+	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+
+	m_pPhysXControllerCom.lock()->Set_EnableSimulation(true);
+
 	m_pPhysXControllerCom.lock()->Set_Enable(true);
+
+	//m_pPhysXControllerCom.lock()->Set_Enable(true);
+	//m_pPhysXControllerCom.lock()->Enable_Gravity(true);
 }
 
 

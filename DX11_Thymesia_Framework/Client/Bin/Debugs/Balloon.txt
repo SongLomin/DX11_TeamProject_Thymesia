@@ -1,12 +1,15 @@
-0. Idle
-1. Die
+0. Armature|Idle|Idle
+1. Armature|Armature|Die|Die
+2. Armature|Armature|Idle|Idle
 RootNode
 Armature
 Bone
 Bone_end
 Bone_end_end
+Bone_end_end_end
 root
 root_end
 root_end_end
+root_end_end_end
 P_CircusBalloonDamage02.mo
-0[P_CircusBalloonDamage02.md.001]. 4922
+0[P_CircusBalloonDamage02.md.001]. 29520

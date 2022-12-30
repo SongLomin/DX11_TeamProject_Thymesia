@@ -87,7 +87,7 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-
+	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 
 	return false;
 }

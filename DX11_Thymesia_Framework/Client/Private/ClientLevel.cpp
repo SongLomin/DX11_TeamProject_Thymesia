@@ -40,7 +40,6 @@
 #include "UI_BloodOverlay.h"
 #include "UI_AppearEventVarg.h"
 
-
 GAMECLASS_C(CClientLevel)
 
 HRESULT CClientLevel::Initialize()
@@ -251,6 +250,14 @@ void CClientLevel::Call_FadeOutToLevelChange()
 	m_pFadeMask.lock()->Set_Enable(false);
 	if (FAILED(GAMEINSTANCE->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_eNextLevel))))
 		return;
+}
+
+void CClientLevel::ExitLevel(LEVEL eLevel)
+{
+	if (m_eMyLevel != LEVEL_LOGO)
+	{
+		GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Save_ClientComponentData();
+	}
 }
 
 void CClientLevel::Call_Enable_PauseMenu()

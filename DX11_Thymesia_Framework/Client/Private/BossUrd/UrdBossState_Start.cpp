@@ -115,13 +115,14 @@ _bool CUrdBossState_Start::Check_AndChangeNextState()
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 
 	
-	if (fPToMDistance <= 10.f)
+	if (fPToMDistance <= 15.f)
 	{
 		m_bSinematicStart = true;
 	}
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 500)
 	{
+
 		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
 		pWeapons.front().lock()->Weapon_BoneChange(m_pModelCom, "weapon_r");

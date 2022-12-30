@@ -119,7 +119,7 @@ PS_OUT PS_MAIN(PS_IN In)
     Out.vDiffuse.rgb += float3(1.f, 1.f, 1.f) * step(DissolveDesc - g_fDissolveAmount, 0.02f);
 
 	Out.vNormal = vector(In.vNormal.xyz * 0.5f + 0.5f, 1.f);
-	Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
 
 
@@ -357,7 +357,7 @@ PS_OUT PS_MAIN_NORMAL(PS_IN_NORMAL In)
 
     Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
 
-    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vORM = 0;
 
     Out.vDiffuse.a = 1.f;
@@ -413,7 +413,7 @@ PS_OUT PS_MAIN_DISSOLVE(PS_IN_NORMAL In)
     vPixelNormal = mul(vPixelNormal, WorldMatrix);
 
     Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
-    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
 
     Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
     
@@ -443,7 +443,7 @@ PS_OUT PS_MAIN_NORMAL_SPECULAR(PS_IN_NORMAL In)
     vPixelNormal = mul(vPixelNormal, WorldMatrix);
 
     Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
-    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
 
     Out.vORM = g_SpecularTexture.Sample(DefaultSampler, In.vTexUV);
   
@@ -489,7 +489,7 @@ PS_OUT PS_MAIN_NORMAL_DIRECTIONAL_DISSOLVE(PS_IN_NORMAL In)
     vPixelNormal = mul(vPixelNormal, WorldMatrix);
         
     Out.vNormal = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
-    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / 300.0f, 0.f, 0.f);
+    Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag = g_vShaderFlag;
 
     Out.vShaderFlag.a = smoothstep(0.f,0.01f,g_vRimLightColor.a);

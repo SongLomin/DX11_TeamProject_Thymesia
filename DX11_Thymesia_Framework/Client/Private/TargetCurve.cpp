@@ -188,6 +188,10 @@ void CTargetCurve::Call_UpdateTarget()
 	{
 		m_pTargetBoneNodeCom = m_pTargetModelCom.lock()->Find_BoneNode("spine_01");
 	}
+	if (!m_pTargetBoneNodeCom.lock())
+	{
+		m_pTargetBoneNodeCom = m_pTargetModelCom.lock()->Find_BoneNode("Bone");
+	}
 }
 
 void CTargetCurve::Call_ReleaseTarget()

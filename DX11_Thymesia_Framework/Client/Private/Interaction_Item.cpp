@@ -12,6 +12,7 @@
 #include "GameInstance.h"
 #include "ClientLevel.h"
 #include "GameManager.h"
+#include "imgui.h"
 
 GAMECLASS_C(CInteraction_Item);
 CLONE_C(CInteraction_Item, CGameObject);
@@ -66,7 +67,6 @@ HRESULT CInteraction_Item::Render(ID3D11DeviceContext* pDeviceContext)
 
 void CInteraction_Item::OnEventMessage(_uint iArg)
 {
-#ifdef _DEBUG
     switch ((EVENT_TYPE)iArg)
     {
         case EVENT_TYPE::ON_EDIT_UDATE:
@@ -98,7 +98,6 @@ void CInteraction_Item::OnEventMessage(_uint iArg)
         }
         break;
     }
-#endif // _DEBUG
 }
 
 

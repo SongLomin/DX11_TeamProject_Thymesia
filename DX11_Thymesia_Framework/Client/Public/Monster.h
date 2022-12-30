@@ -22,7 +22,7 @@ public:
         NORMONSTERIDLETYPE   eNorMonIdleType;
         _float4              m_fStartPositon;
         BOSSSTARTTYPE        eBossStartType;
-        _uint                iSectionIndex;
+        _int                 iSectionIndex;
 
         void Reset()
         {

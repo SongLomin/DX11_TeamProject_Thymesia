@@ -123,6 +123,7 @@ _bool CBatBossState_AttackIdle::Check_AndChangeNextState()
 		if (m_iAttackCount  >  2)
 		{
 			Get_OwnerCharacter().lock()->Change_State<CBatBossState_BackJump>(0.05f);
+			Get_Owner().lock()->Get_Component<CBatBossState_HellIdle>().lock()->Set_ZeroAttackCount(0);
 			m_iAttackCount = 0;
 			return true;
 		}
@@ -133,16 +134,16 @@ _bool CBatBossState_AttackIdle::Check_AndChangeNextState()
 			switch (iRand)
 			{
 			case 0:
-				Check_CrossAttackState();
-				break;
-			case 1:
 				Get_OwnerCharacter().lock()->Change_State<CBatBossState_Bite_1>(0.05f);
 				break;
+			case 1:
+				Check_CrossAttackState();
+				break;
 			case 2:
-				Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_SmarhL>(0.05f);
+				Check_CrossAttackState();
 				break;
 			case 3:
-				Check_CrossAttackState();
+				Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_SmarhL>(0.05f);
 				break;
 			}
 		}
@@ -154,15 +155,25 @@ _bool CBatBossState_AttackIdle::Check_AndChangeNextState()
 	{
 		int iRand = rand() % 2;
 
-		switch (iRand)
+
+		if (m_iAttackCount == 1)
 		{
-		case 0:
-			Get_OwnerCharacter().lock()->Change_State<CBatBossState_Storm>(0.05f);
-			break;
-		case 1:
-			Get_OwnerCharacter().lock()->Change_State<CBatBossState_BackJump>(0.05f);
-			break;
+			Get_OwnerCharacter().lock()->Change_State<CBatBossState_JumpSmash_ForwardL>(0.05f);
+			return true;
 		}
+		else
+		{
+			switch (iRand)
+			{
+			case 0:
+				Get_OwnerCharacter().lock()->Change_State<CBatBossState_Storm>(0.05f);
+				break;
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CBatBossState_BackJump>(0.05f);
+				break;
+			}
+		}
+		
 		return true;
 	}
 	else

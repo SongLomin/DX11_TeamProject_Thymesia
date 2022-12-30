@@ -999,7 +999,10 @@ HRESULT CRender_Manager::Bake_ViewShadow()
 	m_pShader->Set_RawValue("g_DynamicLightViewMatrix", &m_DynamicLightViewMatrixTranspose, sizeof(_float4x4));
 	m_pShader->Set_RawValue("g_DynamicLightProjMatrix", &m_DynamicLightProjMatrixTranspose, sizeof(_float4x4));
 
+
 	shared_ptr<CPipeLine> pPipeLine = GET_SINGLE(CPipeLine);
+	_float fCamFar = pPipeLine->Get_CameraFar();
+	m_pShader->Set_RawValue("g_fFar", &fCamFar, sizeof(_float));
 
 	_float4x4		ViewMatrixInv, ProjMatrixInv;
 
@@ -1914,30 +1917,53 @@ HRESULT CRender_Manager::AntiAliasing()
 
 HRESULT CRender_Manager::Render_HBAO_PLUS()
 {
-	//GFSDK_SSAO_InputData_D3D11 Input;
-	//Input.DepthData.DepthTextureType = GFSDK_SSAO_HARDWARE_DEPTHS;
-	//Input.DepthData.pFullResDepthTextureSRV = GET_SINGLE(CGraphic_Device)->Get_DepthStencilSRV().Get();
-	//Input.DepthData.ProjectionMatrix.Data = GFSDK_SSAO_Float4x4((const GFSDK_SSAO_FLOAT*)&m_ProjMatrix);
-	//Input.DepthData.ProjectionMatrix.Layout = GFSDK_SSAO_ROW_MAJOR_ORDER;
-	//Input.DepthData.MetersToViewSpaceUnits = 1.f;
+	if (!GET_SINGLE(CPipeLine)->Is_Binded())
+		return S_OK;
+
+	Bake_OriginalRenderTexture();
+
+	ID3D11DeviceContext* pDeviceContext = DEVICECONTEXT;
+
+	GFSDK_SSAO_InputData_D3D11 Input;
+	Input.DepthData.DepthTextureType = GFSDK_SSAO_HARDWARE_DEPTHS;
+	Input.DepthData.pFullResDepthTextureSRV = GET_SINGLE(CGraphic_Device)->Get_DepthStencilSRV().Get();
+
+	const _float4x4* ProjMatrix = GET_SINGLE(CPipeLine)->Get_Transform_float4x4(CPipeLine::D3DTS_PROJ);
+
+	Input.DepthData.ProjectionMatrix.Data = GFSDK_SSAO_Float4x4((const GFSDK_SSAO_FLOAT*)ProjMatrix);
+	Input.DepthData.ProjectionMatrix.Layout = GFSDK_SSAO_ROW_MAJOR_ORDER;
+	Input.DepthData.MetersToViewSpaceUnits = 1.f;
 
 
-	//GFSDK_SSAO_Parameters Params;
-	//Params.Radius = 2.f;
-	//Params.Bias = 0.1f;
-	//Params.PowerExponent = 2.f;
-	//Params.Blur.Enable = true;
-	//Params.Blur.Radius = GFSDK_SSAO_BLUR_RADIUS_4;
-	//Params.Blur.Sharpness = 16.f;
+	GFSDK_SSAO_Parameters Params;
+	Params.Radius = 2.f;
+	Params.Bias = 0.1f;
+	Params.PowerExponent = 2.f;
+	Params.Blur.Enable = true;
+	Params.Blur.Radius = GFSDK_SSAO_BLUR_RADIUS_4;
+	Params.Blur.Sharpness = 16.f;
 
-	//GFSDK_SSAO_Output_D3D11 Output;
+	GFSDK_SSAO_Output_D3D11 Output;
+	Output.pRenderTargetView = GET_SINGLE(CRenderTarget_Manager)->Find_RenderTarget(TEXT("Target_HBAO+"))->Get_RTV().Get();
 	//Output.pRenderTargetView = GET_SINGLE(CRenderTarget_Manager)->Find_RenderTarget(TEXT("Target_HBAO+"))->Get_RTV().Get();
-	////Output.pRenderTargetView = GET_SINGLE(CRenderTarget_Manager)->Find_RenderTarget(TEXT("Target_HBAO+"))->Get_RTV().Get();
-	//Output.Blend.Mode = GFSDK_SSAO_OVERWRITE_RGB;
+	Output.Blend.Mode = GFSDK_SSAO_OVERWRITE_RGB;
 
-	//GFSDK_SSAO_Status status;
-	//status = GET_SINGLE(CGraphic_Device)->Get_AOContext()->RenderAO(DEVICECONTEXT, Input, Params, Output);
-	//assert(status == GFSDK_SSAO_OK);
+	GFSDK_SSAO_Status status;
+	status = GET_SINGLE(CGraphic_Device)->Get_AOContext()->RenderAO(DEVICECONTEXT, Input, Params, Output);
+	assert(status == GFSDK_SSAO_OK);
+
+	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
+
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_HBAOTexture", pRenderTargetManager->Get_SRV(TEXT("Target_HBAO+")))))
+		DEBUG_ASSERT;
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")))))
+		DEBUG_ASSERT;
+
+	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
+	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
+
+	m_pShader->Begin(14, pDeviceContext);
+	m_pVIBuffer->Render(pDeviceContext);
 
 	return S_OK;
 }

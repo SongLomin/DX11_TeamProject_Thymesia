@@ -24,6 +24,8 @@ HRESULT CCamera::Initialize(void * pArg)
 
 	memcpy(&m_CameraDesc, pArg, sizeof(CAMERADESC));
 
+	GAMEINSTANCE->Set_CameraFar(m_CameraDesc.fFar);
+
 	//m_pTransformCom.lock()->Set_TransformDesc(&m_CameraDesc.TransformDesc);
 	/*_vector		vPos = XMLoadFloat3(&m_CameraDesc.vEye);
 	vPos = XMVectorSetW(vPos, 1.f);*/

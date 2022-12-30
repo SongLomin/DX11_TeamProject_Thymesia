@@ -42,7 +42,9 @@ HRESULT CLevel_GamePlay::Initialize()
 	CameraDesc.fFovy = XMConvertToRadians(65.0f);
 	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
 	CameraDesc.fNear = 0.2f;
-	CameraDesc.fFar = 300.f;
+	CameraDesc.fFar = 20.f;
+
+	GAMEINSTANCE->Set_CameraFar(CameraDesc.fFar);
 
 	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_GAMEPLAY, &CameraDesc);
 	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
@@ -105,6 +107,8 @@ HRESULT CLevel_GamePlay::Render(ID3D11DeviceContext* pDeviceContext)
 
 void CLevel_GamePlay::ExitLevel(LEVEL eLevel)
 {
+	__super::ExitLevel(eLevel);
+
 	if (eLevel == LEVEL::LEVEL_STAGE2)
 	{
 		CStatus_Player::PLAYERDESC tPlayerDesc = GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status().lock()->Get_Desc();

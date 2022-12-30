@@ -36,10 +36,12 @@ HRESULT CLevel_Stage2::Initialize()
 	CameraDesc.fFovy   = XMConvertToRadians(65.0f);
 	CameraDesc.fAspect = (_float)g_iWinCX / g_iWinCY;
 	CameraDesc.fNear   = 0.2f;
-	CameraDesc.fFar    = 300.f;
+	CameraDesc.fFar    = 60.f;
 
-	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_GAMEPLAY, &CameraDesc);
+	weak_ptr<CCamera_Target> TargetCamera = GAMEINSTANCE->Add_GameObject<CCamera_Target>(LEVEL::LEVEL_STAGE2, &CameraDesc);
 	GET_SINGLE(CGameManager)->Set_TargetCamera(TargetCamera);
+
+	GAMEINSTANCE->Set_CameraFar(CameraDesc.fFar);
 
 	Load_FromJson(m_szDefaultJsonPath + "Stage2-2.json", LEVEL::LEVEL_STAGE2);
 
@@ -82,6 +84,8 @@ HRESULT CLevel_Stage2::Render(ID3D11DeviceContext* pDeviceContext)
 
 void CLevel_Stage2::ExitLevel(LEVEL eLevel)
 {
+	__super::ExitLevel(eLevel);
+
 	switch (eLevel)
 	{
 		case  LEVEL::LEVEL_STAGE3:
