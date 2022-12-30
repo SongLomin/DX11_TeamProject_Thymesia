@@ -132,12 +132,6 @@ protected:
     _bool      m_bLadderCheck = false;
    
 
-    //TODO ¾ß¸Å
-
-
-
-
-
 protected:
     virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;

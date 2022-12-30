@@ -33,7 +33,8 @@ public:
     _uint Get_PreStateIndex() const;
     _bool Is_Edit() const { return m_isEdit; }
     PxControllerCollisionFlags Get_LastCollisionFlags() const { return m_LastCollisionFlags; }
-  
+    void        Set_MonsterType(MONSTERTYPE Monstertype) { m_eMonsterType = Monstertype; }
+    const MONSTERTYPE Get_MonsterType()  const { return m_eMonsterType; }
     weak_ptr<CPhysXCharacterController> Get_PhysX() { return m_pPhysXControllerCom; }
     weak_ptr<CStatus>   Get_Status() { return m_pStatus; }
 
@@ -88,8 +89,9 @@ private:
     _bool     m_bSuperArmor = false;
     PxControllerCollisionFlags m_LastCollisionFlags;
 
-private: /* For. RootMotion */
-    
+
+protected: /* For. RootMotion */
+    MONSTERTYPE                m_eMonsterType = MONSTERTYPE::NMON_END;
 
 public:
     virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage);

@@ -170,6 +170,17 @@ void CUrd::Init_Desc()
 	m_pModelCom.lock()->Init_Model("Boss_Urd", "", (_uint)TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "AnimTargetPoint");
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.9f,-2.4f,1.0f }, 0.2f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.9f,-2.4f,1.0f }, 0.2f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.8f,-2.2f,1.0f }, 0.2f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.7f,-2.0f,1.0f }, 0.2f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.6f,-1.8f,1.0f }, 0.2f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.5f,-1.6f,1.0f }, 0.2f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.4f,-1.4f,1.0f }, 0.2f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.3f,-1.2f,1.0f }, 0.2f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.2f,-1.f,1.0f },  0.2f, COLLISION_LAYER::MONSTER_ATTACK);
+	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.1f,-0.8f,1.0f }, 0.2f, COLLISION_LAYER::MONSTER_ATTACK);
+	
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword02_Point");
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));

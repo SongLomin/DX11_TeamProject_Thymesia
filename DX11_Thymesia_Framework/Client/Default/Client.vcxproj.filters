@@ -1798,6 +1798,18 @@
     <ClInclude Include="..\Public\Interaction_Fence.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Ballon.h">
+      <Filter>02. GameObject\03. Actor\Character\Normal\00.Ballon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\UI_ItemRequirement.h" />
+    <ClInclude Include="..\Public\Skill_Axe.h" />
+    <ClInclude Include="..\Public\PlayerSkillHeader.h" />
+    <ClInclude Include="..\Public\Client_Functions.h">
+      <Filter>99. Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Interaction_Fence.h">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
+    </ClInclude>
     <ClInclude Include="..\Public\Window_Player_Dev.h">
       <Filter>97. Tool\01. DeveloperConsole\Windows\05. Player</Filter>
     </ClInclude>
@@ -3642,6 +3654,14 @@
     <ClCompile Include="..\Private\Interaction_Fence.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Ballon.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Normal\00.Ballon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\UI_ItemRequirement.cpp" />
+    <ClCompile Include="..\Private\Skill_Axe.cpp" />
+    <ClCompile Include="..\Private\Interaction_Fence.cpp">
+      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
+    </ClCompile>
     <ClCompile Include="..\Private\Window_Player_Dev.cpp">
       <Filter>97. Tool\01. DeveloperConsole\Windows\05. Player</Filter>
     </ClCompile>
@@ -5418,6 +5438,9 @@
     </Filter>
     <Filter Include="97. Tool\00. IMGUI\Windows\03. Model\00. ModelContant">
       <UniqueIdentifier>{a818d747-8142-42c1-b039-798cb9687325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Normal\00.Ballon">
+      <UniqueIdentifier>{c122092f-8c6d-4cd1-9fb3-06624e1a5902}</UniqueIdentifier>
     </Filter>
     <Filter Include="97. Tool\01. DeveloperConsole\Windows\05. Player">
       <UniqueIdentifier>{d48e7336-63dd-477e-aa1b-3831356ac8a3}</UniqueIdentifier>

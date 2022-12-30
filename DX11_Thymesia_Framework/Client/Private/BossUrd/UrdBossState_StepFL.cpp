@@ -38,6 +38,8 @@ void CUrdBossState_StepFL::Start()
 void CUrdBossState_StepFL::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	TurnAttack(fTimeDelta);
 	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }

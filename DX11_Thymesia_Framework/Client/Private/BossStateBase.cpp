@@ -8,6 +8,7 @@
 #include "Player.h"
 #include  "VargStates.h"
 #include "BossBat/BatStates.h"
+#include "BossUrd/UrdStates.h"
 
 GAMECLASS_C(CBossStateBase);
 
@@ -373,6 +374,42 @@ void CBossStateBase::TurnMechanism()
 
 		break;
 	case Client::MONSTERTYPE::URD:
+	{
+		_float fDistance = Get_DistanceWithPlayer();
+		if (ComputeAngleWithPlayer() <= 0.f) // 90일때 0 90보다크면 -값이다 90보다 작으면 +값이다
+		{
+			switch (ComputeDirectionToPlayer())
+			{
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_TurnR>(0.05f);
+				break;
+			case -1:
+				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_TurnL>(0.05f);
+				break;
+			default:
+				assert(0);
+				return;
+			}
+		}
+
+		else
+		{
+			switch (ComputeDirectionToPlayer())
+			{
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_TurnR>(0.05f);
+				break;
+			case -1:
+				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_TurnL>(0.05f);
+				break;
+			default:
+				assert(0);
+				return;
+			}
+		}
+
+	}
+		
 		break;
 	case Client::MONSTERTYPE::BAT:
 	{
