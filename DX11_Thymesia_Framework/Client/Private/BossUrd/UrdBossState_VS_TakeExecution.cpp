@@ -58,8 +58,6 @@ void CUrdBossState_VS_TakeExecution::OnStateStart(const _float& In_fAnimationBle
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Y + (_byte)ROOTNODE_FLAG::Z);
-
 	m_pPhysXControllerCom.lock()->Enable_Gravity(false);
 
 	m_pPhysXControllerCom.lock()->Set_EnableSimulation(false);
@@ -99,8 +97,6 @@ void CUrdBossState_VS_TakeExecution::OnStateStart(const _float& In_fAnimationBle
 void CUrdBossState_VS_TakeExecution::OnStateEnd()
 {
 	__super::OnStateEnd();
-
-	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X ||  (_byte)ROOTNODE_FLAG::Z);
 
 	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
 
