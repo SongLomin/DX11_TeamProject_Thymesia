@@ -179,9 +179,6 @@ void CNorMonState_Die::Call_AnimationEnd()
 
 	m_bAnimEnd = true;
 
-
-
-
 	//Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
 }
 

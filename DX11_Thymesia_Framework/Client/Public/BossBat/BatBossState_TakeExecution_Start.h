@@ -34,6 +34,7 @@ protected:
 private:
 	_bool   m_bDieType = false;
 
+
 private:
 	void Call_AnimationEnd();
 protected:
