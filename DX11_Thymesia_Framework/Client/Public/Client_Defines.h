@@ -157,7 +157,7 @@
 
 #pragma region Effects
 #undef _DAGGER_TRAIL_
-// #define _ANIMATION_TOOL_WEAPON_
+#define _ANIMATION_TOOL_WEAPON_
 // #define _BAKE_EFFECTMESH_FBX_
 #pragma endregion // Effects
 

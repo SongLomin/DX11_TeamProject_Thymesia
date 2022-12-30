@@ -628,8 +628,8 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 	}
 
 #ifdef _EFFECT_TOOL_
-	if (m_tEffectParticleDesc.fMinLifeTime > 900.f)
-		assert(0);
+	//if (m_tEffectParticleDesc.fMinLifeTime > 900.f)
+	//	assert(0);
 #endif // _EFFECT_TOOL_
 
 #pragma endregion // Life Time
