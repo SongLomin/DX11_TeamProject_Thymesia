@@ -46,6 +46,15 @@ public:
 
     void Set_DissolveAmount(const _float& In_fAmount) { m_fDissolveAmount = In_fAmount; }
 
+    void Set_LightDesc(const LIGHTDESC& In_LightDesc)
+    {
+        m_LightDesc = In_LightDesc;
+    }
+    LIGHTDESC Get_LightDesc()
+    {
+        return m_LightDesc;
+    }
+
 public:
     // CGameObject을(를) 통해 상속됨
     virtual HRESULT Initialize_Prototype() override;
@@ -111,6 +120,8 @@ protected:
     weak_ptr<CMonsterHPBar_Base>   m_pHPBar;
     
 
+protected:
+    LIGHTDESC   m_LightDesc;
 
 private:
     
