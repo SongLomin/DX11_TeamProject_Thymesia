@@ -80,7 +80,9 @@ HRESULT CLoader::Initialize(LEVEL eNextLevel)
 	m_eNextLevel = eNextLevel;
 
 	//std::future<void> a = std::async(std::launch::async, LoadingMain, this);
-
+	
+	// TODO : Turn off temporarily for Light_Prop
+	GAMEINSTANCE->Clear_Lights();
 	InitializeCriticalSection(&m_CriticalSection);
 
 	m_hThread = (HANDLE)_beginthreadex(nullptr, 0, LoadingMain, this, 0, nullptr);
@@ -386,8 +388,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 #endif // _ONLY_UI_
 
-	// TODO : Turn off temporarily for Light_Prop
-	GAMEINSTANCE->Clear_Lights();
+	
 
 	/*LIGHTDESC LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
@@ -489,7 +490,6 @@ HRESULT CLoader::Loading_ForStage2Level()
 	LightDesc.fIntensity = 0.2f;
 #endif // _BRIGHT_LIGHT_
 
-	GAMEINSTANCE->Clear_Lights();
 	GAMEINSTANCE->Add_Light(LightDesc);
 
 	GAMEINSTANCE->Set_FogDesc(_float4(0.45f, 0.26f, 0.28f, 0.92f), 120.f);
@@ -547,8 +547,6 @@ HRESULT CLoader::Loading_ForStage3Level()
 	lstrcpy(m_szLoadingText, TEXT("Loading Skybox Texture..."));
 	GAMEINSTANCE->Load_Textures("Sky", TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 #endif // _SKYBOX_
-
-	GAMEINSTANCE->Clear_Lights();
 
 	GAMEINSTANCE->Set_FogDesc(_float4(0.5f, 0.5f, 0.5f, 0.65f), 50.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));

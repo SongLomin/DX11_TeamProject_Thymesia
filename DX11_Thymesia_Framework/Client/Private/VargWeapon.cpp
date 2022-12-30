@@ -77,7 +77,12 @@ void CVargWeapon::Thread_PreBeforeRender(_float fTimeDelta)
 
 
 	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
-	m_pModelCom.lock()->Update_NvCloth(pDeferredContext, m_pTransformCom.lock()->Get_WorldMatrix());
+
+	m_pModelCom.lock()->Get_MeshContainer(1).lock()->Update_NvClothVertices(pDeferredContext,
+		m_pTransformCom.lock()->Get_WorldMatrix(),
+		XMVectorSet(0.f, -9.81f, 0.f, 0.f));
+
+
 	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
 }
 
@@ -113,6 +118,17 @@ HRESULT CVargWeapon::Render(ID3D11DeviceContext* pDeviceContext)
 				}
 				else
 					iPassIndex = 7;
+			}
+
+			// NvCloth
+			if (1 == i)
+			{
+				iPassIndex = 11;
+				m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", XMMatrixIdentity());
+			}
+			else
+			{
+				m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pTransformCom.lock()->Get_WorldMatrix());
 			}
 
 			m_pShaderCom.lock()->Begin(iPassIndex, pDeviceContext);

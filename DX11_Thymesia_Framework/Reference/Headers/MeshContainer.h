@@ -1,5 +1,6 @@
 #pragma once
 #include "VIBuffer.h"
+#include "Model.h"
 BEGIN(Engine)
 
 struct MESH_DATA;
@@ -66,10 +67,10 @@ public:
 public: /* For. NvCloth */
 	void Update_NvClothVertices(ID3D11DeviceContext* pDeviceContext, _fmatrix In_WorldMatrix, _fvector In_Gravity = {});
 	void Update_NvClothCollisionSpheres(Range<const physx::PxVec4> spheres, uint32_t first, uint32_t last);
-	void Reset_NvCloth(_fmatrix In_WorldMatrix);
+	//void Reset_NvCloth(_fmatrix In_WorldMatrix);
 
 private:
-	void Update_NvClothVertices_NonAnim(ID3D11DeviceContext* pDeviceContext);
+	void Update_NvClothVertices_NonAnim(ID3D11DeviceContext* pDeviceContext, _fmatrix In_WorldMatrix);
 	void Update_NvClothVertices_Anim(ID3D11DeviceContext* pDeviceContext, _fmatrix In_WorldMatrix);
 
 private:
@@ -99,6 +100,7 @@ private:
 
 	_float4x4							m_ModelTransform;
 	_bool								m_bSimulation = false;
+	_bool								m_bTwoSimulation = false;
 
 
 private: /* For. NvCloth */
@@ -113,7 +115,7 @@ private: /* For. NvCloth */
 	vector<_float>						m_pInvMasses;
 	vector<PxVec4>						m_pParticles;
 	_float3								m_vWorldPosition;
-	const void*							m_pNvCloth_Mesh_Desc;
+	CModel::NVCLOTH_MESH_DESC			m_pNvCloth_Mesh_Desc{};
 
 public:
 	void Free();

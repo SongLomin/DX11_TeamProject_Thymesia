@@ -113,6 +113,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                 break;
             }
 
+            if (fTimerAcc > 1.f)
+            {
+                fTimerAcc = 0.f;
+                continue;
+            }
+
             pMainApp->Tick(fTimerAcc);
             
             fTimerAcc = 0.f;

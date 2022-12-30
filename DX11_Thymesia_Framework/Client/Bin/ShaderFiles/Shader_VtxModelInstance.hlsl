@@ -359,7 +359,7 @@ PS_OUT PS_MAIN_Dissove(PS_IN_NORMAL In)
 
 technique11 DefaultTechnique
 {
-	pass Default
+	pass Default //0
 	{
 		SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_DepthStencilEnable, 0);
@@ -372,7 +372,7 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_MAIN();
 	}
 
-	pass NormalMapping
+	pass NormalMapping //1
 	{
 		SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_DepthStencilEnable, 0);
@@ -398,7 +398,7 @@ technique11 DefaultTechnique
 		PixelShader = compile ps_5_0 PS_MAIN_SHADOW();
 	}
 
-    pass Just_Red
+    pass Just_Red //3
     {
         SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_DepthStencilEnable, 0);
@@ -411,7 +411,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN_RED();
     }
 
-	pass Pass4_NonCulling
+	pass Pass4_NonCulling //4
 	{
 		SetBlendState			(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_DepthStencilEnable, 0);
@@ -424,7 +424,7 @@ technique11 DefaultTechnique
 		PixelShader		= compile ps_5_0	PS_MAIN();
 	}
 
-	pass Pass5_NonCulling_Norm
+	pass Pass5_NonCulling_Norm //5
 	{
 		SetBlendState			(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_DepthStencilEnable, 0);

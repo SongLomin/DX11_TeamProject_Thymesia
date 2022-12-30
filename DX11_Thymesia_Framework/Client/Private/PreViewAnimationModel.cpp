@@ -153,7 +153,7 @@ void CPreviewAnimationModel::Thread_PreBeforeRender(_float fTimeDelta)
 
 	m_pModelCom.lock()->Get_MeshContainer(1).lock()->Update_NvClothVertices(pDeferredContext,
 		m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_OffsetMatrix() * BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(),
-		XMVectorSet(0.f, -9.81f * 15.f, 0.f, 0.f));
+		XMVectorSet(0.f, -9.81f , 0.f, 0.f));
 
 
 
@@ -173,7 +173,7 @@ void CPreviewAnimationModel::Thread_PreBeforeRender(_float fTimeDelta)
 
 	m_pModelCom.lock()->Get_MeshContainer(3).lock()->Update_NvClothVertices(pDeferredContext,
 		m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_OffsetMatrix() * BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(),
-		XMVectorSet(0.f, -9.81f * 5.f, 0.f, 0.f));
+		XMVectorSet(0.f, -9.81f, 0.f, 0.f));
 
 	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
 
