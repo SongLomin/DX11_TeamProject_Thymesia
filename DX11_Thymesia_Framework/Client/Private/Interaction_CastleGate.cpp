@@ -46,10 +46,10 @@ HRESULT CInteraction_CastleGate::Initialize(void* pArg)
     GAMEINSTANCE->Add_RenderGroup(RENDERGROUP::RENDER_STATICSHADOWDEPTH, Weak_StaticCast<CGameObject>(m_this));
     m_eInteractionType = INTERACTION_DOOR;
 
-    m_pModelCom.lock()->Init_Model("P_CityGateMachine01_01");
+    m_pModelCom.lock()->Init_Model("P_CityGateMachine01_01_Body");
     m_pDoorRightModelCom.lock()->Init_Model("P_MainChurchDoorRight01");
     m_pDoorLeftModelCom.lock()->Init_Model("P_MainChurchDoorLeft01");
-    m_pGearModelCom.lock()->Init_Model("P_CityGateMachine01_02");
+    m_pGearModelCom.lock()->Init_Model("P_CityGateMachine01_01_Roll");
 
     _float fDefaultDesc[4] = { 3.5f, -1.f, 1.5f, 0.f };
     SetUpColliderDesc(m_pColliderCom, fDefaultDesc, COLLISION_LAYER::TRIGGER);
@@ -96,15 +96,17 @@ HRESULT CInteraction_CastleGate::Start()
         PhysXColliderDesc tDesc;
         m_pRightPhysXColliderCom.lock()->Init_ModelCollider(m_pDoorRightModelCom.lock()->Get_ModelData(), false);
         m_pTransformCom.lock()->Set_WorldMatrix(XMLoadFloat4x4(&m_RightDoorMatrix));
-        Preset::PhysXColliderDesc::DynamicPropSetting(tDesc, m_pTransformCom);
+        Preset::PhysXColliderDesc::StaticPropSetting(tDesc, m_pTransformCom);
         m_pRightPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
         m_pRightPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
+        m_pRightPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
 
         m_pLeftPhysXColliderCom.lock()->Init_ModelCollider(m_pDoorLeftModelCom.lock()->Get_ModelData(), false);
         m_pTransformCom.lock()->Set_WorldMatrix(XMLoadFloat4x4(&m_LeftDoorMatrix));
-        Preset::PhysXColliderDesc::DynamicPropSetting(tDesc, m_pTransformCom);
+        Preset::PhysXColliderDesc::StaticPropSetting(tDesc, m_pTransformCom);
         m_pLeftPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
         m_pLeftPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
+        m_pLeftPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
 
         m_pTransformCom.lock()->Set_WorldMatrix(WorldMatrix);
     }
@@ -173,8 +175,9 @@ void CInteraction_CastleGate::OnEventMessage(_uint iArg)
             if (ImGui::Combo("Key ID", &iSelect_KeyID, szKeyTag, IM_ARRAYSIZE(szKeyTag)))
                 m_iKeyID = (ITEM_NAME)((_uint)ITEM_NAME::GARDEN_KEY + iSelect_KeyID);
 
-            ImGui::DragFloat("Door Offset", &m_fDoorOffset);
-            ImGui::DragFloat3("Door Size" , &m_fDoorSize.x);
+            ImGui::InputFloat("Door Offset" , &m_fDoorOffset);
+            ImGui::InputFloat3("Gear Offset", &m_vGearOffset.x);
+            ImGui::InputFloat3("Door Size"  , &m_fDoorSize.x);
 
             COLLIDERDESC ColliderDesc;
             ZeroMemory(&ColliderDesc, sizeof(COLLIDERDESC));
@@ -201,8 +204,9 @@ void CInteraction_CastleGate::Write_Json(json& Out_Json)
 
     Out_Json["KeyID"]         = m_iKeyID;
     Out_Json["DoorOffset"]    = m_fDoorOffset;
-    CJson_Utility::Write_Float3(Out_Json["DoorSize"], m_fDoorSize);
-    CJson_Utility::Write_Float3(Out_Json["Offset"]  , m_vOffset);
+    CJson_Utility::Write_Float3(Out_Json["DoorSize"]  , m_fDoorSize);
+    CJson_Utility::Write_Float3(Out_Json["Offset"]    , m_vOffset);
+    CJson_Utility::Write_Float3(Out_Json["GearOffset"], m_vGearOffset);
 
     auto iter = Out_Json["Component"].find("Model");
     Out_Json["Component"].erase(iter);
@@ -260,18 +264,15 @@ void CInteraction_CastleGate::Requirement_Key(_bool& Out_bRequirement)
 {
     if (ITEM_NAME::ITEM_NAME_END == m_iKeyID)
     {
-#ifdef _DEBUG
-        MSG_BOX("Err KeyID : KeyID Value is [ITEM_NAME::ITEM_NAME_END]");
-#endif
-
         Out_bRequirement = true;
     }
-    
-    // 나중에 인벤토리 컴포넌트 찾아서 검색하기
-    weak_ptr<CInventory> pInventory = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock();
-    weak_ptr<CItem>      pItem      = pInventory.lock()->Find_Item(m_iKeyID);
+    else
+    {
+        weak_ptr<CInventory> pInventory = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock();
+        weak_ptr<CItem>      pItem = pInventory.lock()->Find_Item(m_iKeyID);
 
-    Out_bRequirement = (nullptr != pItem.lock());
+        Out_bRequirement = (nullptr != pItem.lock());
+    }
 
     if (!Out_bRequirement)
         Callback_ActFail();
@@ -425,16 +426,16 @@ HRESULT CInteraction_CastleGate::DrawShader_Gear(ID3D11DeviceContext* pDeviceCon
 {
     _matrix	RotationMatrix = XMMatrixRotationAxis(XMVectorSet(1.f, 0.f, 0.f, 0.f), m_fGearRotationRadian);
 
-    _matrix WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
-    WorldMatrix.r[0]  = XMVector3TransformNormal(WorldMatrix.r[0], RotationMatrix);
-    WorldMatrix.r[1]  = XMVector3TransformNormal(WorldMatrix.r[1], RotationMatrix);
-    WorldMatrix.r[2]  = XMVector3TransformNormal(WorldMatrix.r[2], RotationMatrix);
-    WorldMatrix.r[3] += XMVectorSet(-1.05f, 1.f, 0.f, 0.f);
+    _matrix GearWorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix();
+    GearWorldMatrix.r[0]  = XMVector3TransformNormal(GearWorldMatrix.r[0], RotationMatrix);
+    GearWorldMatrix.r[1]  = XMVector3TransformNormal(GearWorldMatrix.r[1], RotationMatrix);
+    GearWorldMatrix.r[2]  = XMVector3TransformNormal(GearWorldMatrix.r[2], RotationMatrix);
+    GearWorldMatrix.r[3] += XMLoadFloat3(&m_vGearOffset);
 
-    _float4x4 GearWorldMatrix;
-    XMStoreFloat4x4(&GearWorldMatrix, XMMatrixTranspose(WorldMatrix));
+    _float4x4 WorldMatrix;
+    XMStoreFloat4x4(&WorldMatrix, XMMatrixTranspose(GearWorldMatrix));
 
-    if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", &GearWorldMatrix, sizeof(_float4x4))))
+    if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_float4x4))))
         return E_FAIL;
     if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4))))
         return E_FAIL;

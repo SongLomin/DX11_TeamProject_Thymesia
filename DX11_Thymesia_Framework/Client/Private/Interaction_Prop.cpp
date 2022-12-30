@@ -162,7 +162,7 @@ HRESULT CInteraction_Prop::SetUp_ShaderResource(ID3D11DeviceContext* pDeviceCont
     if (FAILED(CProp::SetUp_ShaderResource()))
         return E_FAIL;
 
-    _vector	vShaderFlag = { 1.f,m_fOutLineBlurIntensity,0.f,0.f };
+    _vector	vShaderFlag = { 1.f, m_fOutLineBlurIntensity, 0.f, 0.f };
     if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector))))
     {
         DEBUG_ASSERT;

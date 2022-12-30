@@ -6,6 +6,8 @@
 #include "VIBuffer_Cell.h"
 #include "Shader.h"
 
+#include "imgui.h"
+
 GAMECLASS_C(CEditNaviMesh)
 CLONE_C(CEditNaviMesh, CGameObject)
 

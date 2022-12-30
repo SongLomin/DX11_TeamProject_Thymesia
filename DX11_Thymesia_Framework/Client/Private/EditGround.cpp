@@ -12,6 +12,8 @@
 
 #include "Ground.h"
 
+#include "imgui.h"
+
 GAMECLASS_C(CEditGround)
 CLONE_C(CEditGround, CGameObject)
 

@@ -51,8 +51,8 @@ protected:
 
     _float3     m_vCenterOffset{ 0.f, 0.f, 0.f };
 
-    _bool       m_bNearPlayer           = false;//플레이어 근처에 있을 때 아웃라인 활성화
-    _float      m_fOutLineBlurIntensity = 0.f;//For Interaction Props;
+    _bool       m_bNearPlayer           = false; //플레이어 근처에 있을 때 아웃라인 활성화
+    _float      m_fOutLineBlurIntensity = 0.f;   //For Interaction Props;
 
 protected:
     void Free();

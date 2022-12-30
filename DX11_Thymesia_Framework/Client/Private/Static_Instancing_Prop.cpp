@@ -157,8 +157,7 @@ HRESULT CStatic_Instancing_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
-		if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-			return E_FAIL;
+		m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE);
 
 		if (m_bDissolve)
 		{

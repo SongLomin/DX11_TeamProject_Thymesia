@@ -1795,8 +1795,8 @@
     <ClInclude Include="..\Public\Client_Functions.h">
       <Filter>99. Defines</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Interaction_Fence.h">
-      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
+    <ClInclude Include="..\Public\Prop_Fence.h">
+      <Filter>02. GameObject\04. Prop\07. Event_Prop</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3636,8 +3636,8 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_ItemRequirement.cpp" />
     <ClCompile Include="..\Private\Skill_Axe.cpp" />
-    <ClCompile Include="..\Private\Interaction_Fence.cpp">
-      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
+    <ClCompile Include="..\Private\Prop_Fence.cpp">
+      <Filter>02. GameObject\04. Prop\07. Event_Prop</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -5412,6 +5412,9 @@
     </Filter>
     <Filter Include="97. Tool\00. IMGUI\Windows\03. Model\00. ModelContant">
       <UniqueIdentifier>{a818d747-8142-42c1-b039-798cb9687325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\04. Prop\07. Event_Prop">
+      <UniqueIdentifier>{74061c23-2f93-4f8d-9aed-b7c480905d6d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
