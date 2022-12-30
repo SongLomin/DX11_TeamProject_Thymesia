@@ -1,5 +1,5 @@
 #pragma once
-#include "BossUrd/UrdBossStateBase.h"
+#include "BossUrd/UrdBossState_IdleStates.h"
 
 BEGIN(Engine)
 class CModel;
@@ -8,7 +8,7 @@ END
 BEGIN(Client)
 
 class CUrdBossState_Walk_Idle :
-	public CUrdBossStateBase
+	public CUrdBossState_IdleStates
 {
 	GAMECLASS_H(CUrdBossState_Walk_Idle);
 	CLONE_H(CUrdBossState_Walk_Idle, CComponent)
