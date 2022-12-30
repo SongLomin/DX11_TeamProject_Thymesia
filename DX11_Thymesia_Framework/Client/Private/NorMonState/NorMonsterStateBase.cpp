@@ -131,7 +131,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 		vViewPosition.m128_f32[1] = (-1.f * vViewPosition.m128_f32[1] + 1.f) * (_float)g_iWinCY * 0.5f;
 
 		weak_ptr<CUI_DamageFont> pDamageFont = GAMEINSTANCE->Add_GameObject<CUI_DamageFont>(LEVEL_STATIC);
-
+		
 		_float2 vHitPos;
 		
 		vHitPos.x = vViewPosition.m128_f32[0];
@@ -198,6 +198,7 @@ void CNorMonsterStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CColl
 			}
 			else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
 			{
+				pOtherCharacter.lock()->Set_MonsterType(Get_OwnerMonster()->Get_MonsterType());
 				Get_OwnerMonster()->Change_State<CNorMonState_HurtR>();
 			}
 			break;

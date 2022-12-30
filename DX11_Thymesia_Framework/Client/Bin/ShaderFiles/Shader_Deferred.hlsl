@@ -965,6 +965,18 @@ PS_OUT PS_MAIN_RIMLIGHT(PS_IN In)
     return Out;
 }
 
+PS_OUT PS_MAIN_MUL(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+	
+    vector vHBAO = g_HBAOTexture.Sample(DefaultSampler, In.vTexUV);
+	
+    Out.vColor = g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV) * vHBAO;
+    //Out.vColor = vHBAO;
+    Out.vColor.a = 1.f;
+    return Out;
+}
+
 BlendState BS_Default
 {
 	BlendEnable[0] = false;
