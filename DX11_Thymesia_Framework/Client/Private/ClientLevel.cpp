@@ -39,6 +39,7 @@
 #include "UI_ItemPopup.h"
 #include "UI_BloodOverlay.h"
 #include "UI_AppearEventVarg.h"
+#include "UI_ItemRequirement.h"
 
 GAMECLASS_C(CClientLevel)
 
@@ -101,6 +102,17 @@ void CClientLevel::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+	//한번만 실행되도록
+	/*
+		다른 실행시점에서 테스트해보니, 이니셜라이즈나 스타트에서
+		세팅해주는게 많아서 정상적으로 작동안함
+		그래서 Tick에서 한번만 실행되도록 추가해줌.
+	*/
+	if (!m_bLading)
+	{
+		m_bLading = true;
+		Call_StageLanding();
+	}
 }
 
 void CClientLevel::SetUp_UI()
@@ -109,30 +121,29 @@ void CClientLevel::SetUp_UI()
 
 	weak_ptr<CUIManager>	pUIManager = GET_SINGLE(CUIManager);
 
+	pUIManager.lock()->SetCursor(GAMEINSTANCE->Add_SingleGameObject<CUI_Cursor>(LEVEL_STATIC));
 
+	m_pPauseMenu = GAMEINSTANCE->Add_SingleGameObject<CUI_PauseMenu>(LEVEL_STATIC);
 
-	pUIManager.lock()->SetCursor(GAMEINSTANCE->Add_GameObject<CUI_Cursor>(LEVEL_STATIC));
-
-	GAMEINSTANCE->Add_GameObject<CUI_Landing>(LEVEL_STATIC);//여기서
-	m_pPauseMenu = GAMEINSTANCE->Add_GameObject<CUI_PauseMenu>(LEVEL_STATIC);
-
-	m_pEvolveMenu = GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu>(LEVEL_STATIC);
+	m_pEvolveMenu = GAMEINSTANCE->Add_SingleGameObject<CUI_EvolveMenu>(LEVEL_STATIC);
 	GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu_Level>(LEVEL_STATIC);
 
 	Preset::AddGameObject::TalentSetting();
 
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_HPBar>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_MPBar>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CHUD_Player_Memory>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_PotionUI>(LEVEL_STATIC));                                                                                                  pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::EVENT_UI, GAMEINSTANCE->Add_GameObject<CUI_ScriptQueue>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_SingleGameObject<CPlayer_HPBar>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_SingleGameObject<CPlayer_MPBar>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_SingleGameObject<CHUD_Player_Memory>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_SingleGameObject<CHUD_PlagueWeapon>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_SingleGameObject<CPlayer_PotionUI>(LEVEL_STATIC));                                                                                                  pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::EVENT_UI, GAMEINSTANCE->Add_SingleGameObject<CUI_ScriptQueue>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::INTERACTIONUI, GAMEINSTANCE->Add_GameObject<CUI_Interaction>(LEVEL_STATIC));
 
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_GameObject<CUI_MonsterFocus>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::EVENT_UI, GAMEINSTANCE->Add_GameObject<CUI_AppearEventVarg>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_SingleGameObject<CUI_MonsterFocus>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::EVENT_UI, GAMEINSTANCE->Add_SingleGameObject<CUI_AppearEventVarg>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::EVENT_UI, GAMEINSTANCE->Add_SingleGameObject<CUI_Landing>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::EVENT_UI, GAMEINSTANCE->Add_SingleGameObject<CUI_ItemRequirement>(LEVEL_STATIC));
 
-	GAMEINSTANCE->Add_GameObject<CUI_BloodOverlay>(LEVEL_STATIC);
+	GAMEINSTANCE->Add_SingleGameObject<CUI_BloodOverlay>(LEVEL_STATIC);
 
 	pUIManager.lock()->CreateItemPopupQueue();
 
@@ -231,6 +242,22 @@ void CClientLevel::Tick_Key_InputEvent()
 #endif // _ONLY_UI_
 }
 
+void CClientLevel::Call_StageLanding()
+{	
+	if (m_eMyLevel == LEVEL_LOADING || m_eMyLevel == LEVEL_LOGO)
+		return;
+
+	weak_ptr<CUI_Landing> pUILanding = GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front();
+		
+	if (!pUILanding.lock())
+	{
+		return;
+	}
+	pUILanding.lock()->Call_Landing(
+		CUI_Landing::LANDING_ENTER_STAGE
+	);
+}
+
 void CClientLevel::Change_NextLevel(void* pArg)
 {
 	m_bChangeNextLevel = true;
@@ -250,6 +277,16 @@ void CClientLevel::Call_FadeOutToLevelChange()
 	m_pFadeMask.lock()->Set_Enable(false);
 	if (FAILED(GAMEINSTANCE->Open_Level(LEVEL_LOADING, CLevel_Loading::Create(m_eNextLevel))))
 		return;
+}
+
+void CClientLevel::OnLevelEnter()
+{
+	__super::OnLevelEnter();
+
+	if (m_eMyLevel == LEVEL_LOGO || m_eMyLevel == LEVEL_LOADING)
+		return;
+
+	Call_StageLanding();
 }
 
 void CClientLevel::ExitLevel(LEVEL eLevel)

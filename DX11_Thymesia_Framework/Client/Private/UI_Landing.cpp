@@ -13,6 +13,8 @@
 #include "UI_EvolveMenu.h"
 #include "ClientLevel.h"
 #include "UIManager.h"
+#include "GameInstance.h"
+#include "ClientLevel.h"
 
 
 GAMECLASS_C(CUI_Landing)
@@ -127,7 +129,6 @@ void CUI_Landing::Call_Landing(LANDING_TYPE eLandingType)
     desc.fSizeMag = 0.1f;
     desc.eType = CHUD_Hover::HUD_HOVER_ANIMATION_JUSTADD;
    
-    
     if ((_uint)eLandingType < (_uint)LANDING_ENTER_STAGE)
     {
         m_pLanding.lock()->Init_Fader(m_tLandingFaderDesc, desc);
@@ -149,8 +150,31 @@ void CUI_Landing::Call_Landing(LANDING_TYPE eLandingType)
     else//스테이지에 따라 나와야함.GetCurrentLevel이나 머시기...그런걸로
     {
         m_pLanding.lock()->Init_Fader(m_tLandingFaderDesc, desc);
-        m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture(m_LandingTextures[eLandingType].c_str());
-        m_pLanding.lock()->Set_UIDesc(m_tLandingUIDesc[eLandingType]);
+
+        LEVEL eLevel =  Weak_StaticCast<CClientLevel>(GAMEINSTANCE->Get_CurrentLevel()).lock()->Get_MyLevel();
+
+        switch (eLevel)
+        {
+        case Client::LEVEL_LOBBY:
+            m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture("Landing_SafeHouse");
+            break;
+        case Client::LEVEL_GAMEPLAY:
+            m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture("Landing_SeaOfTrees");
+            break;
+        case Client::LEVEL_STAGE2:
+            m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture("Landing_RoyalGarden");
+            break;
+        case Client::LEVEL_STAGE3:
+            m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture("Landing_HermesFortress");
+            break;
+        case Client::LEVEL_TEST:
+            m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture("Landing_HermesFortress");
+            break;
+        default:
+            m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture("Landing_HermesFortress");
+            break;
+        }
+        m_pLanding.lock()->Set_UIDesc(m_tLandingUIDesc[LANDING_ENTER_STAGE]);
         m_pLanding.lock()->CallBack_FadeEnd += bind(&CUI_Landing::Call_FadeEnd, this, placeholders::_1);
     }
 }

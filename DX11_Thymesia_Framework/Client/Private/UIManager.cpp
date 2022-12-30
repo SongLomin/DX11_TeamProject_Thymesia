@@ -35,6 +35,9 @@ void CUIManager::DisableCursor()
 
 void CUIManager::CreateItemPopupQueue()
 {
+	if (m_pItemPopupQueue)
+		return;
+
 	m_pItemPopupQueue = CItemPopup_Queue::Create();
 }
 

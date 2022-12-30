@@ -7,6 +7,8 @@
 #include "Engine_Defines.h"
 #include "Fader.h"
 #include "Engine_Defines.h"
+#include "UI_Utils.h"
+
 
 GAMECLASS_C(CHUD_Hover)
 CLONE_C(CHUD_Hover, CGameObject)
@@ -46,6 +48,13 @@ HRESULT CHUD_Hover::Start()
 
 void CHUD_Hover::Tick(_float fTimeDelta)
 {
+	fTimeDelta = CUI_Utils::UI_TimeDelta();
+
+	if (fTimeDelta > 0.5f)//Æ½ÀÌ °³¢O¶ó½ê°Ôµé¾î¿À¸é
+	{
+		return;
+	}
+
 	__super::Tick(fTimeDelta);
 	
 	m_vFadeColor = m_pFaderCom.lock()->Get_FadeColor();

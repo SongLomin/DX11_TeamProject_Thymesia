@@ -10,6 +10,7 @@
 #include "BossBat/BatStates.h"
 #include "MonsterHPBar_Boss.h"
 #include "GameManager.h"
+#include "UI_Landing.h"
 
 GAMECLASS_C(CBatBossState_TakeExecution_Loop);
 CLONE_C(CBatBossState_TakeExecution_Loop, CComponent)
@@ -68,6 +69,9 @@ void CBatBossState_TakeExecution_Loop::OnStateStart(const _float& In_fAnimationB
 #endif
 
 	Weak_StaticCast<CBossMonster>(m_pOwner).lock()->Get_HPBar().lock()->Set_Enable(false);
+
+	GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front().lock()->Call_Landing(CUI_Landing::LANDING_KILL_BOSS);
+
 	GET_SINGLE(CGameManager)->Activate_Section(1000, EVENT_TYPE::ON_ENTER_SECTION);
 }	
 
