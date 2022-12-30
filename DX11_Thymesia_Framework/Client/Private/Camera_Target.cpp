@@ -54,7 +54,9 @@ HRESULT CCamera_Target::Start()
 		DEBUG_ASSERT;
 
 	m_pCurrentPlayerTransformCom = m_pCurrentPlayer.lock()->Get_Component<CTransform>();
-	XMStoreFloat4(&m_vPlayerFollowLerpPosition, m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION));
+	_vector vPlayerPos = m_pCurrentPlayerTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
+	XMStoreFloat4(&m_vPlayerFollowLerpPosition, vPlayerPos);
+	XMStoreFloat4(&m_vPrePlayerPos, vPlayerPos);
 
 
 	return S_OK;
