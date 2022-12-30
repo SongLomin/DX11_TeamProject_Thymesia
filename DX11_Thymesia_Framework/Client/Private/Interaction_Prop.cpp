@@ -35,7 +35,7 @@ HRESULT CInteraction_Prop::Start()
 void CInteraction_Prop::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
-    if (m_bNearPlayer)
+    if (m_bNearPlayer && !m_bUsingInteraction)
     {
         m_fOutLineBlurIntensity += fTimeDelta*2.f;
         m_fOutLineBlurIntensity = min(1.f, m_fOutLineBlurIntensity);
@@ -123,6 +123,7 @@ void CInteraction_Prop::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_pt
         Callback_ActStart();
 
         Act_Interaction();
+        m_bUsingInteraction = true;
     }
 }
 
@@ -132,10 +133,15 @@ void CInteraction_Prop::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_pt
 
     weak_ptr<CUI_Interaction> pUI_Interaction = GAMEINSTANCE->Get_GameObjects<CUI_Interaction>(LEVEL_STATIC).front();
 
+  
+
     if (!pUI_Interaction.lock())
         return;
 
     pUI_Interaction.lock()->Call_CollisionExit();
+
+    Callback_ActStart.Clear();
+    Callback_ActEnd.Clear();
 
     _uint iCheckIndex = pMyCollider.lock()->Get_ColliderIndex();
 
@@ -146,6 +152,8 @@ void CInteraction_Prop::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_pt
 
     if (m_CollisionIndex.end() != iter_find)
         m_CollisionIndex.erase(iter_find);
+
+    m_bUsingInteraction = false;
 }
 
 void CInteraction_Prop::Act_Interaction()
@@ -162,7 +170,7 @@ HRESULT CInteraction_Prop::SetUp_ShaderResource(ID3D11DeviceContext* pDeviceCont
     if (FAILED(CProp::SetUp_ShaderResource()))
         return E_FAIL;
 
-    _vector	vShaderFlag = { 1.f,m_fOutLineBlurIntensity,0.f,0.f };
+    _vector	vShaderFlag = { 1.f, m_fOutLineBlurIntensity, 0.f, 0.f };
     if (FAILED(m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector))))
     {
         DEBUG_ASSERT;

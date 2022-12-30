@@ -519,7 +519,8 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
     vector vFogDesc       = g_FogTexture.Sample(DefaultSampler, In.vTexUV);
     vector vORMDesc       = g_ORMTexture.Sample(DefaultSampler, In.vTexUV);
     vector vAmbientDesc   = g_AmbientTexture.Sample(DefaultSampler, In.vTexUV);
-
+    vector vHBAO          = g_HBAOTexture.Sample(DefaultSampler, In.vTexUV);
+    
     float fViewZ = vDepthDesc.y * g_fFar;
 
     vector vWorldPos;
@@ -586,6 +587,8 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
         Out.vColor = vDiffuse * vAmbientDesc + vSpecular /** (1.f - bIsInShadow)*/;
         Out.vColor.rgb *= vViewShadow.rgb;
     }
+       
+    Out.vColor.rgb *= vHBAO.rgb;
     
     float3 mapped = 1.f - exp(-Out.vColor.rgb * g_fExposure);
     Out.vColor.rgb = pow(mapped, 1.f / 2.2f);
@@ -1203,17 +1206,4 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_RIMLIGHT();
     }
-
-    pass MulTexture //14
-    {
-        SetBlendState(BS_ForwardAlphaBlend, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_ZEnable_ZWriteEnable_false, 0);
-        SetRasterizerState(RS_Default);
-        VertexShader = compile vs_5_0 VS_MAIN();
-        HullShader = NULL;
-        DomainShader = NULL;
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN_MUL();
-    }
-
 }

@@ -198,6 +198,7 @@
     <ClInclude Include="..\Public\ActorDecor.h" />
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
+    <ClInclude Include="..\Public\Ballon.h" />
     <ClInclude Include="..\Public\BossBat\Bat.h" />
     <ClInclude Include="..\Public\BossBat\BatBossStateBase.h" />
     <ClInclude Include="..\Public\BossBat\BatBossState_Atk_L01_1.h" />
@@ -490,7 +491,7 @@
     <ClInclude Include="..\Public\Interaction_Door.h" />
     <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h" />
     <ClInclude Include="..\Public\Interaction_Elevator.h" />
-    <ClInclude Include="..\Public\Interaction_Fence.h" />
+    <ClInclude Include="..\Public\Prop_Fence.h" />
     <ClInclude Include="..\Public\Interaction_Item.h" />
     <ClInclude Include="..\Public\Interaction_Ladder.h" />
     <ClInclude Include="..\Public\Interaction_NextPoint.h" />
@@ -499,7 +500,6 @@
     <ClInclude Include="..\Public\InventorySorter.h" />
     <ClInclude Include="..\Public\Item.h" />
     <ClInclude Include="..\Public\ItemPopup_Queue.h" />
-    <ClInclude Include="..\Public\JoJoParticleShaderManager.h" />
     <ClInclude Include="..\Public\JokerStateBase.h" />
     <ClInclude Include="..\Public\JokerStates.h" />
     <ClInclude Include="..\Public\JokerWeapon.h" />
@@ -776,6 +776,7 @@
     <ClInclude Include="..\Public\Window_Level_Dev.h" />
     <ClInclude Include="..\Public\Window_ModelContantView.h" />
     <ClInclude Include="..\Public\Window_Optimization_Dev.h" />
+    <ClInclude Include="..\Public\Window_Player_Dev.h" />
     <ClInclude Include="..\Public\Window_PrototypeView.h" />
     <ClInclude Include="..\Public\Window_RenderTarget_Dev.h" />
     <ClInclude Include="..\Public\Window_Shader_Dev.h" />
@@ -805,6 +806,7 @@
     <ClCompile Include="..\Private\ActorDecor.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Attack_Area.cpp" />
+    <ClCompile Include="..\Private\Ballon.cpp" />
     <ClCompile Include="..\Private\BossBat\Bat.cpp" />
     <ClCompile Include="..\Private\BossBat\BatBossStateBase.cpp" />
     <ClCompile Include="..\Private\BossBat\BatBossState_Atk_L01_1.cpp" />
@@ -1089,7 +1091,7 @@
     <ClCompile Include="..\Private\Interaction_Door.cpp" />
     <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\Interaction_Elevator.cpp" />
-    <ClCompile Include="..\Private\Interaction_Fence.cpp" />
+    <ClCompile Include="..\Private\Prop_Fence.cpp" />
     <ClCompile Include="..\Private\Interaction_Item.cpp" />
     <ClCompile Include="..\Private\Interaction_Ladder.cpp" />
     <ClCompile Include="..\Private\Interaction_NextPoint.cpp" />
@@ -1098,7 +1100,6 @@
     <ClCompile Include="..\Private\InventorySorter.cpp" />
     <ClCompile Include="..\Private\Item.cpp" />
     <ClCompile Include="..\Private\ItemPopup_Queue.cpp" />
-    <ClCompile Include="..\Private\JoJoParticleShaderManager.cpp" />
     <ClCompile Include="..\Private\JokerStateBase.cpp" />
     <ClCompile Include="..\Private\JokerWeapon.cpp" />
     <ClCompile Include="..\Private\Level_Stage2.cpp" />
@@ -1358,6 +1359,7 @@
     <ClCompile Include="..\Private\Window_Level_Dev.cpp" />
     <ClCompile Include="..\Private\Window_ModelContantView.cpp" />
     <ClCompile Include="..\Private\Window_Optimization_Dev.cpp" />
+    <ClCompile Include="..\Private\Window_Player_Dev.cpp" />
     <ClCompile Include="..\Private\Window_PrototypeView.cpp" />
     <ClCompile Include="..\Private\Window_RenderTarget_Dev.cpp" />
     <ClCompile Include="..\Private\Window_Shader_Dev.cpp" />

@@ -153,7 +153,7 @@ void CPreviewAnimationModel::Thread_PreBeforeRender(_float fTimeDelta)
 
 	m_pModelCom.lock()->Get_MeshContainer(1).lock()->Update_NvClothVertices(pDeferredContext,
 		m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_OffsetMatrix() * BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(),
-		XMVectorSet(0.f, -9.81f * 15.f, 0.f, 0.f));
+		XMVectorSet(0.f, -9.81f , 0.f, 0.f));
 
 
 
@@ -173,7 +173,7 @@ void CPreviewAnimationModel::Thread_PreBeforeRender(_float fTimeDelta)
 
 	m_pModelCom.lock()->Get_MeshContainer(3).lock()->Update_NvClothVertices(pDeferredContext,
 		m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_OffsetMatrix() * BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(),
-		XMVectorSet(0.f, -9.81f * 5.f, 0.f, 0.f));
+		XMVectorSet(0.f, -9.81f, 0.f, 0.f));
 
 	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
 
@@ -305,10 +305,10 @@ void CPreviewAnimationModel::Init_EditPreviewAnimationModel(const string& In_szM
 		this->Clear_ModelWeapon();
 #ifdef _ANIMATION_TOOL_WEAPON_
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultSaber>(LEVEL_STATIC));
-		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, "weapon_r");
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
 
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CCorvus_DefaultDagger>(LEVEL_STATIC));
-		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, "weapon_l");
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_l");
 #endif // _ANIMATION_TOOL_WEAPON_
 
 		m_pModelCom.lock()->Add_ReverseAnimation(m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_SD_Ladder_Climb_R_UP_End"), (_uint)TIMESCALE_LAYER::EDITER);
@@ -321,7 +321,7 @@ void CPreviewAnimationModel::Init_EditPreviewAnimationModel(const string& In_szM
 #ifdef _ANIMATION_TOOL_WEAPON_
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
 		m_pModelWeapons.back().lock()->Init_Model("Boss_VargWeapon", TIMESCALE_LAYER::MONSTER);
-		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, "weapon_r");
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
 #endif // _ANIMATION_TOOL_WEAPON_
 
 		m_pTargetBoneNode = m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10");
@@ -335,7 +335,7 @@ void CPreviewAnimationModel::Init_EditPreviewAnimationModel(const string& In_szM
 #ifdef _ANIMATION_TOOL_WEAPON_
 		m_pModelWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(LEVEL_STATIC));
 		m_pModelWeapons.back().lock()->Init_Model("Joker_Weapon", TIMESCALE_LAYER::MONSTER);
-		m_pModelWeapons.back().lock()->Init_Weapon(m_pCurrentModelCom, m_pTransformCom, "weapon_r");
+		m_pModelWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
 #endif // _ANIMATION_TOOL_WEAPON_
 	}
 }

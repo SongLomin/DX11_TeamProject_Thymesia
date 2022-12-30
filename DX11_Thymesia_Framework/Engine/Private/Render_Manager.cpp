@@ -505,6 +505,10 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(Bake_Fog()))
 		DEBUG_ASSERT;
 
+	if (FAILED(Render_HBAO_PLUS()))
+		DEBUG_ASSERT;
+
+
 	if (FAILED(Render_Blend()))
 		DEBUG_ASSERT;
 
@@ -565,8 +569,6 @@ HRESULT CRender_Manager::Draw_RenderGroup()
 	if (FAILED(AntiAliasing()))
 		DEBUG_ASSERT;
 
-	if (FAILED(Render_HBAO_PLUS()))
-		DEBUG_ASSERT;
 
 	/*hr = futures.front().get();
 	while (!GET_SINGLE(CThread_Manager)->Check_JobDone())
@@ -1034,9 +1036,6 @@ HRESULT CRender_Manager::Render_Blend()
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_DiffuseTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Diffuse")))))
 		DEBUG_ASSERT;
 
-	//if (FAILED(m_pShader->Set_ShaderResourceView("g_ShadeTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Shade")))))
-	//	DEBUG_ASSERT;
-
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_SpecularTexture", pRenderTargetManager->Get_SRV(TEXT("Target_Specular")))))
 		DEBUG_ASSERT;
 
@@ -1048,6 +1047,8 @@ HRESULT CRender_Manager::Render_Blend()
 
 	//if (FAILED(m_pShader->Set_ShaderResourceView("g_LightFlagTexture", pRenderTargetManager->Get_SRV(TEXT("Target_LightFlag")))))
 	//	DEBUG_ASSERT;
+	if (FAILED(m_pShader->Set_ShaderResourceView("g_HBAOTexture", pRenderTargetManager->Get_SRV(TEXT("Target_HBAO+")))))
+		DEBUG_ASSERT;
 
 	if (FAILED(m_pShader->Set_ShaderResourceView("g_ViewShadow", pRenderTargetManager->Get_SRV(TEXT("Target_ViewShadow")))))
 		DEBUG_ASSERT;
@@ -1952,18 +1953,6 @@ HRESULT CRender_Manager::Render_HBAO_PLUS()
 	status = GET_SINGLE(CGraphic_Device)->Get_AOContext()->RenderAO(DEVICECONTEXT, Input, Params, Output);
 	assert(status == GFSDK_SSAO_OK);
 
-	shared_ptr<CRenderTarget_Manager> pRenderTargetManager = GET_SINGLE(CRenderTarget_Manager);
-
-	if (FAILED(m_pShader->Set_ShaderResourceView("g_HBAOTexture", pRenderTargetManager->Get_SRV(TEXT("Target_HBAO+")))))
-		DEBUG_ASSERT;
-	if (FAILED(m_pShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")))))
-		DEBUG_ASSERT;
-
-	m_pShader->Set_RawValue("g_WorldMatrix", &m_WorldMatrix, sizeof(_float4x4));
-	m_pShader->Set_RawValue("g_ProjMatrix", &m_ProjMatrix, sizeof(_float4x4));
-
-	m_pShader->Begin(14, pDeviceContext);
-	m_pVIBuffer->Render(pDeviceContext);
 
 	return S_OK;
 }

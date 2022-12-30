@@ -66,6 +66,28 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	Add_Component<CNorMonState_Die>();
 	Add_Component<CNorMonState_Parry>();
 
+	LIGHTDESC LightDesc;
+
+	LightDesc.eActorType = LIGHTDESC::TYPE_SPOTLIGHT;
+	LightDesc.vDiffuse = { 1.f,0.95f,0.8f,1.f };
+	LightDesc.vSpecular = { 1.f,0.95f,0.8f,1.f };
+	LightDesc.vAmbient = { 1.f,0.95f,0.8f,1.f };
+	LightDesc.fIntensity = 0.4f;
+	LightDesc.fRange = 5.f;
+	LightDesc.fCutOff = cosf(XMConvertToRadians(30.f));
+	LightDesc.fOuterCutOff = cosf(XMConvertToRadians(40.f));
+	_vector vPlayerPos = m_pTransformCom.lock()->Get_Position();
+	_vector vPlayerLook = m_pTransformCom.lock()->Get_State(CTransform::STATE_LOOK);
+
+	_vector vLightPos = vPlayerPos + XMVectorSet(0.f, 2.f, 0.f, 0.f) ;
+	_vector vLightLook = XMVectorSet(0.f, -1.f, 0.f, 0.f);
+	XMStoreFloat4(&LightDesc.vPosition, vLightPos);
+	XMStoreFloat4(&LightDesc.vDirection, vLightLook);
+
+	LightDesc.bEnable = true;
+
+	m_LightDesc = GAMEINSTANCE->Add_Light(LightDesc);
+
 	return S_OK;
 }
 
@@ -236,16 +258,19 @@ void CNorMonster::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	//TestCode
-	//if (m_pHPBar.lock())
-	//{
-	//}
+	_vector vLightPos = m_pTransformCom.lock()->Get_Position() + XMVectorSet(0.f, 2.f, 0.f, 0.f);
+	
+	XMStoreFloat4(&m_LightDesc.vPosition, vLightPos);
 
 }
 
 void CNorMonster::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	if(m_LightDesc.bEnable)
+		GAMEINSTANCE->Set_LightDesc(m_LightDesc);
+
 }
 
 HRESULT CNorMonster::Render(ID3D11DeviceContext* pDeviceContext)

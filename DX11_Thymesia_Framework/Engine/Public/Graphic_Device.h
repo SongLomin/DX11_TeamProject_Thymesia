@@ -17,7 +17,7 @@ public:
 
 public:
 	ID3D11Device* Get_Device() { return m_pDevice; }
-	ID3D11DeviceContext* Get_DeviceContext() { return m_pDeviceContext; }
+	ID3D11DeviceContext* Get_DeviceContext();
 	GFSDK_SSAO_Context_D3D11* Get_AOContext() { return m_pAOContext; }
 
 public:
@@ -30,7 +30,7 @@ public:
 	}
 
 private:	
-
+	std::mutex m_job_q_;
 	/* 메모리 할당. (정점버퍼, 인덱스버퍼, 텍스쳐로드) */
 	ID3D11Device*			m_pDevice;
 

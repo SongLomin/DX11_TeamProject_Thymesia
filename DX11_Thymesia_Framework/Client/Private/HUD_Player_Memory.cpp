@@ -83,7 +83,7 @@ void CHUD_Player_Memory::LateTick(_float fTimeDelta)
     _itow_s((_uint)m_fLerpMemory, szMemoryStr, MAX_PATH, 10);
 
     tTextInfo.bAlways = false;
-    tTextInfo.vPosition = _float2(m_tUIDesc.fX, m_tUIDesc.fY - 5.f);
+    tTextInfo.vPosition = _float2(m_tUIDesc.fX, m_tUIDesc.fY - 10.f);
     tTextInfo.vColor = _float4(1.f, 1.f, 1.f, 1.f);
     tTextInfo.bCenterAlign = false;
     tTextInfo.vScale = _float2(0.4f, 0.4f);

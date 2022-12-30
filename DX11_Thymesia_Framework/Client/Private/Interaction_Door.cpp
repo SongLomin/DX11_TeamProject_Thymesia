@@ -11,6 +11,8 @@
 #include "Inventory.h"
 #include "Item.h"
 
+#include "UI_ItemRequirement.h"
+
 
 #include "GameInstance.h"
 #include "GameManager.h"
@@ -468,7 +470,10 @@ void CInteraction_Door::Requirement_Key(_bool& Out_bRequirement)
     Out_bRequirement = (nullptr != pItem.lock());
 
     if (!Out_bRequirement)
+    {
+        GAMEINSTANCE->Get_GameObjects<CUI_ItemRequirement>(LEVEL_STATIC).front().lock()->Call_ItemRequireMent(m_iKeyID);
         Callback_ActFail();
+    }
 }
 
 void CInteraction_Door::Requirement_Dir(_bool& Out_bRequirement)
@@ -488,7 +493,9 @@ void CInteraction_Door::Requirement_Dir(_bool& Out_bRequirement)
     Out_bRequirement = (m_CollisionIndex.end() != iter_find);
 
     if (!Out_bRequirement)
+    {
         Callback_ActFail();
+    }
 }
 
 void CInteraction_Door::SetUpColliderDesc(weak_ptr<CCollider> In_pColldierCom, _float* _pColliderDesc, COLLISION_LAYER _eCollLayer)

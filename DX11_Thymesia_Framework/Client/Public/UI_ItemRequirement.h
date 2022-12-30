@@ -4,6 +4,8 @@
 BEGIN(Client)
 
 class CEasingComponent_Alpha;
+class CEasingComponent_Float;
+
 
 class CUI_ItemRequirement : public CCustomUI
 {
@@ -21,7 +23,16 @@ public:
 	void		Call_ItemRequireMent(ITEM_NAME eITemName);
 
 public:
-	void			Call_EndLerp();
+	void				Call_EndLerp();
+	void				Call_EndFadeIn();
+	void				Call_EndTimeOut();
+
+
+
+
+	void				Start_UI();
+
+
 
 
 private:
@@ -30,6 +41,10 @@ private:
 
 private:
 	weak_ptr<CEasingComponent_Alpha> m_pEasingAlpha;
+	weak_ptr<CEasingComponent_Float> m_pEasingFloat;
+
+	_bool							m_bIsAnimation = false;
+
 };
 
 END

@@ -27,10 +27,12 @@ public:
 protected:
     void	Loading_AllEffectGroup(const char* In_FolderPath, const _uint& In_LevelIndex);
 
-    virtual void Tick(_float fTimeDelta) override;
-    virtual void		SetUp_UI();
+    virtual void    Tick(_float fTimeDelta) override;
+    virtual void    SetUp_UI();
 
     void    Tick_Key_InputEvent();
+    void    Call_StageLanding();
+
 
 
 protected:
@@ -46,6 +48,7 @@ protected:
 
     _bool m_bChangeNextLevel = false;
 
+    _bool m_bLading = false;
 
 protected:
     weak_ptr<CUI_PauseMenu> m_pPauseMenu;
@@ -59,7 +62,10 @@ protected:
 public:
     void Call_FadeOutToLevelChange();
 
+
+
 public:
+    virtual void OnLevelEnter() override;
     virtual void ExitLevel(LEVEL eLevel);
 
 

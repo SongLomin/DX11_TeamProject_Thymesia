@@ -1798,6 +1798,9 @@
     <ClInclude Include="..\Public\Interaction_Fence.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Window_Player_Dev.h">
+      <Filter>97. Tool\01. DeveloperConsole\Windows\05. Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3639,6 +3642,9 @@
     <ClCompile Include="..\Private\Interaction_Fence.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Window_Player_Dev.cpp">
+      <Filter>97. Tool\01. DeveloperConsole\Windows\05. Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -5412,6 +5418,9 @@
     </Filter>
     <Filter Include="97. Tool\00. IMGUI\Windows\03. Model\00. ModelContant">
       <UniqueIdentifier>{a818d747-8142-42c1-b039-798cb9687325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97. Tool\01. DeveloperConsole\Windows\05. Player">
+      <UniqueIdentifier>{d48e7336-63dd-477e-aa1b-3831356ac8a3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

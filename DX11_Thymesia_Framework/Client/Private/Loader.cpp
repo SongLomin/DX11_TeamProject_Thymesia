@@ -80,7 +80,9 @@ HRESULT CLoader::Initialize(LEVEL eNextLevel)
 	m_eNextLevel = eNextLevel;
 
 	//std::future<void> a = std::async(std::launch::async, LoadingMain, this);
-
+	
+	// TODO : Turn off temporarily for Light_Prop
+	GAMEINSTANCE->Clear_Lights();
 	InitializeCriticalSection(&m_CriticalSection);
 
 	m_hThread = (HANDLE)_beginthreadex(nullptr, 0, LoadingMain, this, 0, nullptr);
@@ -121,6 +123,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_CastleGate>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Note>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Item>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CProp_Fence>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CSection_Eventer>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CWater>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CVarg>();
@@ -386,8 +389,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 #endif // _ONLY_UI_
 
-	// TODO : Turn off temporarily for Light_Prop
-	GAMEINSTANCE->Clear_Lights();
+	
 
 	/*LIGHTDESC LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
@@ -489,10 +491,9 @@ HRESULT CLoader::Loading_ForStage2Level()
 	LightDesc.fIntensity = 0.2f;
 #endif // _BRIGHT_LIGHT_
 
-	GAMEINSTANCE->Clear_Lights();
 	GAMEINSTANCE->Add_Light(LightDesc);
 
-	GAMEINSTANCE->Set_FogDesc(_float4(0.45f, 0.26f, 0.28f, 0.92f), 120.f);
+	GAMEINSTANCE->Set_FogDesc(_float4(0.45f, 0.26f, 0.28f, 0.92f), 160.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 1.f, 1.f, 1.f), _float4(1.f, 1.f, 1.f, 1.f), _float4(1.f, 1.f, 1.f, 1.f));
 	GAMEINSTANCE->Set_Contrast(1.2f);
 	GAMEINSTANCE->Set_Saturation(1.5f);
@@ -548,8 +549,6 @@ HRESULT CLoader::Loading_ForStage3Level()
 	GAMEINSTANCE->Load_Textures("Sky", TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 #endif // _SKYBOX_
 
-	GAMEINSTANCE->Clear_Lights();
-
 	GAMEINSTANCE->Set_FogDesc(_float4(0.5f, 0.5f, 0.5f, 0.65f), 50.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 	GAMEINSTANCE->Set_Contrast(1.f);
@@ -590,7 +589,7 @@ HRESULT CLoader::Loading_ForEditLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
 	this->Load_NormalMobModel();
 
-#ifdef _MAP_TOOL_
+//#ifdef _MAP_TOOL_
 	lstrcpy(m_szLoadingText, TEXT("Loading Prop Textures..."));
 	Load_AllTexture("../Bin/Resources/Textures/Prop/", MEMORY_TYPE::MEMORY_DYNAMIC);
 	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Textures..."));
@@ -612,12 +611,13 @@ HRESULT CLoader::Loading_ForEditLevel()
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
-#endif // _MAP_TOOL_
+//#endif // _MAP_TOOL_
 
 	// TODO : Turn off temporarily for Light_Prop
 	LIGHTDESC LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
+#ifdef _BRIGHT_LIGHT_
 	LightDesc.eActorType	= tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection	= _float4(1.f, -1.f, 1.f, 0.f);
 	LightDesc.vDiffuse		= _float4(1.f, 1.f, 1.f, 1.f);
@@ -626,7 +626,18 @@ HRESULT CLoader::Loading_ForEditLevel()
 	LightDesc.vLightFlag	= _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.bEnable		= true;
 	LightDesc.fIntensity	= 1.f;
+#else
+	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
+	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
+	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.bEnable = true;
+	LightDesc.fIntensity = 0.1f;
+#endif // _BRIGHT_LIGHT_
 
+	GAMEINSTANCE->Clear_Lights();
 	GAMEINSTANCE->Add_Light(LightDesc);
 
 	GAMEINSTANCE->Set_FogDesc(_float4(0.2f, 0.15f, 0.03f, 0.f), 10000.f);
@@ -1296,7 +1307,7 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Varg_Appear_SliceBottom_BG"), TEXT("../Bin/Resources/Textures/UI/AppearEvent/Varg/Slice_Bottom_BG.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
-#endif // _JOJO_EFFECT_TOOL_
+#endif // _EFFECT_TOOL_
 }
 
 void CLoader::Load_CorvusModel()

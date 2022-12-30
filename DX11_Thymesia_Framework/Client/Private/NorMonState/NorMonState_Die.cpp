@@ -101,6 +101,15 @@ void CNorMonState_Die::Tick(_float fTimeDelta)
 		_float fDissolveAmount = SMath::Lerp(1.f, -0.1f, m_fDissolveTime / 4.f);
 		Get_OwnerMonster()->Set_DissolveAmount(fDissolveAmount);		
 	}
+
+	LIGHTDESC LightDesc = Get_OwnerMonster()->Get_LightDesc();
+	if (LightDesc.bEnable)
+	{
+		LightDesc.bEnable = GAMEINSTANCE->Remove_Light(LightDesc.Get_LightIndex());
+	}
+	LightDesc.fIntensity = max(0.f, LightDesc.fIntensity - fTimeDelta);
+	Get_OwnerMonster()->Set_LightDesc(LightDesc);
+
 }
 
 void CNorMonState_Die::LateTick(_float fTimeDelta)
@@ -169,9 +178,6 @@ void CNorMonState_Die::Call_AnimationEnd()
 		return;
 
 	m_bAnimEnd = true;
-
-
-
 
 	//Get_OwnerCharacter().lock()->Change_State<CNorMonState_Idle>(0.05f);
 }

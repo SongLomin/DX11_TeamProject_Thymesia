@@ -155,18 +155,155 @@ HRESULT CStatic_Instancing_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 
 	_uint iNumMeshContainers = m_pInstanceModelCom.lock()->Get_NumMeshContainers();
 
+	_flag BindTextureFlag;
+
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
-		if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
-			return E_FAIL;
+		BindTextureFlag = 0;
 
-		if (m_bDissolve)
+		if (SUCCEEDED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_DIFFUSE);
+		}
+
+		if (SUCCEEDED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_NORMALS);
+		}
+
+		if (SUCCEEDED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
+		{
+			BindTextureFlag |= (1 << aiTextureType_SPECULAR);
+		}
+
+		// DiffuseTexture	NO.
+		if (!((1 << aiTextureType_DIFFUSE) & BindTextureFlag))
+		{
+#ifdef _DEBUG
+			cout << "DiffuseTexture is not binded. : " << m_pInstanceModelCom.lock()->Get_ModelKey() << endl;
+#endif // _DEBUG
+			m_iPassIndex = 3; //Just Red.
+		}
+
+		// Dissolve			OK.
+		else if (m_bDissolve)
+		{
+			m_iPassIndex = 9;
+		}
+
+		// Invisibility		NO.
+		// NonCulling		NO.
+		// NormalTexture	NO.
+		else if (!m_bInvisibility &&
+			!m_bNonCulling &&
+			!((1 << aiTextureType_NORMALS) & BindTextureFlag))
+		{
+			m_iPassIndex = 0;
+		}
+
+		// Invisibility		NO.
+		// NonCulling		NO.
+		// NormalTexture	OK.
+		// ORMTexture		OK.
+		else if (!m_bInvisibility &&
+			!m_bNonCulling &&
+			(1 << aiTextureType_NORMALS) & BindTextureFlag &&
+			(1 << aiTextureType_SPECULAR) & BindTextureFlag)
+		{
+			m_iPassIndex = 1;
+		}
+
+		// Invisibility		NO.
+		// NonCulling		OK.
+		// NormalTexture	NO.
+		else if (!m_bInvisibility &&
+			m_bNonCulling &&
+			!((1 << aiTextureType_NORMALS) & BindTextureFlag))
+		{
+			m_iPassIndex = 4;
+		}
+
+		// Invisibility		NO.
+		// NonCulling		OK.
+		// NormalTexture	OK.
+		// ORMTexture		OK.
+		else if (!m_bInvisibility &&
+			m_bNonCulling &&
+			(1 << aiTextureType_NORMALS) & BindTextureFlag &&
+			(1 << aiTextureType_SPECULAR) & BindTextureFlag)
+		{
+			m_iPassIndex = 5;
+		}
+
+		// Invisibility		OK.
+		// NonCulling		NO.
+		// NormalTexture	OK.
+		// ORMTexture		OK.
+		else if (m_bInvisibility &&
+			!m_bNonCulling &&
+			(1 << aiTextureType_NORMALS) & BindTextureFlag &&
+			(1 << aiTextureType_SPECULAR) & BindTextureFlag)
+		{
+			m_iPassIndex = 6;
+		}
+
+		// Invisibility		OK.
+		// NonCulling		OK.
+		// NormalTexture	OK.
+		// ORMTexture		OK.
+		else if (m_bInvisibility &&
+			m_bNonCulling &&
+			(1 << aiTextureType_NORMALS) & BindTextureFlag &&
+			(1 << aiTextureType_SPECULAR) & BindTextureFlag)
+		{
+			m_iPassIndex = 7;
+		}		
+
+		// Invisibility		OK.
+		// NonCulling		OK.
+		// NormalTexture	NO.
+		else if (m_bInvisibility &&
+			m_bNonCulling &&
+			!((1 << aiTextureType_NORMALS) & BindTextureFlag))
+		{
+#ifdef _DEBUG
+			cout << "The correct pass does not define. : " << m_pInstanceModelCom.lock()->Get_ModelKey() << endl;
+#endif // _DEBUG
+
+			m_iPassIndex = 4;
+		}
+
+		// Invisibility		OK.
+		// NonCulling		OK.
+		// NormalTexture	OK.
+		// ORMTexture		NO.
+		else if (m_bInvisibility &&
+			m_bNonCulling &&
+			(1 << aiTextureType_NORMALS) & BindTextureFlag &&
+			!((1 << aiTextureType_SPECULAR) & BindTextureFlag))
+		{
+#ifdef _DEBUG
+			cout << "The correct pass does not define. : " << m_pInstanceModelCom.lock()->Get_ModelKey() << endl;
+#endif // _DEBUG
+
+			m_iPassIndex = 4;
+		}
+
+		else
+		{
+			// undefined case. check m_bInvisibility, m_bNonCulling and flag.
+			DEBUG_ASSERT;
+		}
+
+
+
+		/*if (m_bDissolve)
 		{
 			m_iPassIndex = 9;
 		}
 		else
 		{
-			if (m_bNonCulling)
+			if (m_bInvisibility && m_bNonCulling)
 			{
 				if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 					m_iPassIndex = 4;
@@ -181,7 +318,7 @@ HRESULT CStatic_Instancing_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 				}
 				else
 				{
-					if (m_bInvisibility && LEVEL::LEVEL_EDIT != Get_CreatedLevel())
+					if (LEVEL::LEVEL_EDIT != Get_CreatedLevel())
 					{
 						if (FAILED(m_pInstanceModelCom.lock()->Bind_SRV(m_pShaderCom, "g_SpecularTexture", i, aiTextureType_SPECULAR)))
 							m_iPassIndex = 6;
@@ -197,7 +334,7 @@ HRESULT CStatic_Instancing_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 					}
 				}
 			}
-		}
+		}*/
 
 		m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
 		m_pInstanceModelCom.lock()->Render_Mesh(i, pDeviceContext);

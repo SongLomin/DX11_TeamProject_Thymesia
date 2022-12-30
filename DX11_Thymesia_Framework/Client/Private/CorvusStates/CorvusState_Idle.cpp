@@ -41,6 +41,7 @@ void CCorvusState_Idle::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
+
 }
 
 void CCorvusState_Idle::LateTick(_float fTimeDelta)

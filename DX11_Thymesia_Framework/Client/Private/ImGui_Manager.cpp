@@ -29,6 +29,8 @@
 #include "Terrain.h"
 #include "PipeLine.h"
 
+#include "Transform.h"
+
 #include "Client_GameObjects.h"
 
 IMPLEMENT_SINGLETON(CImGui_Manager)

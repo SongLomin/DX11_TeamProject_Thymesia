@@ -13,10 +13,6 @@
 
 #include "GameManager.h"
 
-#ifdef _EFFECT_TOOL_
-#include "JoJoParticleShaderManager.h"
-#endif // _EFFECT_TOOL_
-
 GAMECLASS_C(CEffect_Rect)
 CLONE_C(CEffect_Rect, CGameObject)
 
@@ -75,11 +71,14 @@ HRESULT CEffect_Rect::Initialize_Prototype()
 	return S_OK;
 }
 
-HRESULT CEffect_Rect::Initialize(void* pArg)
+HRESULT CEffect_Rect::Initialize(void* pArg)	
 {
 	m_eRenderGroup = RENDERGROUP::RENDER_ALPHABLEND;
 
 	__super::Initialize(pArg);
+#ifdef _EFFECT_TOOL_
+	Initialize_ParticleShaderInfos();
+#endif // _EFFECT_TOOL_
 
 	m_pVIBuffer = Add_Component<CVIBuffer_Rect_Instance>();
 
@@ -158,16 +157,16 @@ void CEffect_Rect::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 
 	if (Check_Option(EFFECTPARTICLE_DESC::Option1::Is_Boner))
 	{
-#ifdef _DEBUG
+#ifdef _EFFECT_TOOL_
 		if (pParentTransform.lock())
 		{
 			m_pParentModel = pParentTransform.lock()->Get_Owner().lock()->Get_Component<CModel>();
 			m_pBoneNode = m_pParentModel.lock()->Find_BoneNode(m_strBoneName);
 		}
-#else // _DEBUG
+#else // _EFFECT_TOOL_
 		m_pParentModel = pParentTransform.lock()->Get_Owner().lock()->Get_Component<CModel>();
 		m_pBoneNode = m_pParentModel.lock()->Find_BoneNode(m_strBoneName);
-#endif // _DEBUG
+#endif // _EFFECT_TOOL_
 	}
 
 	m_pTransformCom.lock()->Set_WorldMatrix(XMMatrixIdentity());
@@ -205,12 +204,12 @@ void CEffect_Rect::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 			BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
 		}
 
-#ifdef _DEBUG
+#ifdef _EFFECT_TOOL_
 		if (pParentTransform.lock())
 			m_pTransformCom.lock()->Set_WorldMatrix(BoneMatrix * pParentTransform.lock()->Get_UnScaledWorldMatrix());
-#else
+#else // _EFFECT_TOOL_
 		m_pTransformCom.lock()->Set_WorldMatrix(BoneMatrix * pParentTransform.lock()->Get_UnScaledWorldMatrix());
-#endif // _DEBUG
+#endif // _EFFECT_TOOL_
 	}
 
 	Update_ParentTransform();
@@ -628,10 +627,10 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 			m_tEffectParticleDesc.fMaxLifeTime = In_Json["Max_Life_Time"];
 	}
 
-#ifdef _DEBUG
-	if (m_tEffectParticleDesc.fMinLifeTime > 900.f)
-		assert(0);
-#endif // _DEBUG
+#ifdef _EFFECT_TOOL_
+	//if (m_tEffectParticleDesc.fMinLifeTime > 900.f)
+	//	assert(0);
+#endif // _EFFECT_TOOL_
 
 #pragma endregion // Life Time
 
@@ -647,13 +646,13 @@ void CEffect_Rect::Load_EffectJson(const json& In_Json, const _uint& In_iTimeSca
 			goto JumpBoner;
 		}
 
-#ifdef _DEBUG
+#ifdef _EFFECT_TOOL_
 		if ((_uint)LEVEL_EDIT == m_CreatedLevel)
 		{
 			m_pParentTransformCom = GET_SINGLE(CWindow_AnimationModelView)->Get_PreviewAnimModel().lock()->Get_Component<CTransform>().lock();
 			m_pBoneNode = GET_SINGLE(CWindow_AnimationModelView)->Get_PreviewAnimModel().lock()->Get_CurrentModel().lock()->Find_BoneNode(m_strBoneName);
 		}
-#endif // _DEBUG
+#endif // _EFFECT_TOOL_
 	}
 
 #pragma endregion // Boner
@@ -1061,10 +1060,10 @@ void CEffect_Rect::Reset_ParticleDescs()
 
 void CEffect_Rect::Reset_ParticleDesc(const _uint& In_iIndex)
 {
-#ifdef _DEBUG
+#ifdef _EFFECT_TOOL_
 	if (0 == m_tParticleDescs.size() || 0 == m_tOriginalParticleDescs.size())
 		return;
-#endif // _DEBUG
+#endif // _EFFECT_TOOL_
 
 	memcpy(&m_tParticleDescs[In_iIndex], &m_tOriginalParticleDescs[In_iIndex], sizeof(PARTICLE_DESC));
 
@@ -1209,12 +1208,12 @@ void CEffect_Rect::Update_ParticlePosition(const _uint& i, _float fTimeDelta, _m
 {
 	if (m_pBoneNode.lock() && (_int)TRANSFORMTYPE::CHILD == m_tEffectParticleDesc.iFollowTransformType)
 	{
-#ifdef _DEBUG
+#ifdef _EFFECT_TOOL_
 		if (m_pParentTransformCom.lock())
 			m_pTransformCom.lock()->Set_WorldMatrix(BoneMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix());
-#else // _DEBUG
+#else // _EFFECT_TOOL_
 		m_pTransformCom.lock()->Set_WorldMatrix(BoneMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix());
-#endif // _DEBUG
+#endif // _EFFECT_TOOL_
 	}
 
 	_float3 vMove;
@@ -1919,7 +1918,7 @@ const _bool CEffect_Rect::Check_Option(const EFFECTPARTICLE_DESC::Option6 eOptio
 	return (m_tEffectParticleDesc.byOption6 & (_ubyte)eOption) ? true : false;
 }
 
-#ifdef _DEBUG
+#ifdef _EFFECT_TOOL_
 void CEffect_Rect::TurnOn_Option(const EFFECTPARTICLE_DESC::Option1 eOption)
 {
 	m_tEffectParticleDesc.byOption1 |= (_ubyte)eOption;
@@ -2088,21 +2087,20 @@ void CEffect_Rect::Tool_ToggleOption(const char* szOptionName, const char* szOpt
 	ImGui::Text(szOptionName);
 }
 
-#endif // _DEBUG
+#endif // _EFFECT_TOOL_
 
-#ifdef _DEBUG
 #ifdef _EFFECT_TOOL_
 void CEffect_Rect::Show_ShaderPasses()
 {
-	for (auto iter : GET_SINGLE(CJoJoParticleShaderManager)->m_ParticleShaderInfos)
+	for (auto elem : m_ParticleShaderInfos)
 	{
-		ImGui::Text("[%d]", iter.iShaderPassNumber); ImGui::SameLine();
-		switch (iter.eRectType)
+		ImGui::Text("[%d]", elem.iShaderPassNumber); ImGui::SameLine();
+		switch (elem.eRectType)
 		{
-		case JJ_PARTICLE_SHADER_INFO::PARTICLE_RECT_TYPE::DEFAULT:
+		case PARTICLE_SHADER_INFO::PARTICLE_RECT_TYPE::DEFAULT:
 			ImGui::TextColored(ImVec4{ 0.0705f, 0.f, 0.6510f, 1.f }, "Default");
 			break;
-		case JJ_PARTICLE_SHADER_INFO::PARTICLE_RECT_TYPE::SPRITE:
+		case PARTICLE_SHADER_INFO::PARTICLE_RECT_TYPE::SPRITE:
 			ImGui::TextColored(ImVec4{ 0.6510f, 0.1490f, 0.1490f, 1.f }, "Sprite");
 			break;
 		default:
@@ -2111,19 +2109,19 @@ void CEffect_Rect::Show_ShaderPasses()
 
 		ImGui::SameLine();
 
-		switch (iter.eDiscardType)
+		switch (elem.eDiscardType)
 		{
-		case JJ_PARTICLE_SHADER_INFO::PARTICLE_DISCARD_TYPE::DISCARD_ALPHA:
+		case PARTICLE_SHADER_INFO::PARTICLE_DISCARD_TYPE::DISCARD_ALPHA:
 			ImGui::TextColored(ImVec4{ 0.3333f, 0.3333f, 0.3333f, 1.f }, "Alpha Discard");
 			break;
-		case JJ_PARTICLE_SHADER_INFO::PARTICLE_DISCARD_TYPE::DISCARD_BLACK:
+		case PARTICLE_SHADER_INFO::PARTICLE_DISCARD_TYPE::DISCARD_BLACK:
 			ImGui::TextColored(ImVec4{ 0.f, 0.f, 0.f, 1.f }, "Black Discard");
 			break;
 		default:
 			assert(0);
 		}
 
-		switch (iter.bSoftRendering)
+		switch (elem.bSoftRendering)
 		{
 		case true:
 			ImGui::SameLine();
@@ -2133,7 +2131,7 @@ void CEffect_Rect::Show_ShaderPasses()
 			break;
 		}
 
-		switch (iter.bSpecialRendering)
+		switch (elem.bSpecialRendering)
 		{
 		case true:
 			ImGui::SameLine();
@@ -2144,7 +2142,6 @@ void CEffect_Rect::Show_ShaderPasses()
 		}
 	}
 }
-#endif // _EFFECT_TOOL_
 
 void CEffect_Rect::Tool_Spawn_Life_Time()
 {
@@ -2955,11 +2952,11 @@ void CEffect_Rect::Tool_Glow()
 		ImGui::TreePop();
 	}
 }
-#endif // _DEBUG
+#endif // _EFFECT_TOOL_
 
 void CEffect_Rect::OnEventMessage(_uint iArg)
 {
-#ifdef _DEBUG
+#ifdef _EFFECT_TOOL_
 	if ((_uint)EVENT_TYPE::ON_EDITDRAW == iArg)
 	{
 		if (ImGui::CollapsingHeader("Effect_Particle"), ImGuiTreeNodeFlags_DefaultOpen)
@@ -3195,12 +3192,49 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			}
 		}
 	}
-#endif // _DEBUG
+#endif // _EFFECT_TOOL_
 }
 
 void CEffect_Rect::Free()
 {
 }
+
+#ifdef _EFFECT_TOOL_
+void CEffect_Rect::Initialize_ParticleShaderInfos()
+{
+	m_ParticleShaderInfos.reserve(16);
+
+#define REGISGER_PARTICLE_SHADER(variable_name, pass_num, rect_type, discard_type, soft, special)\
+	PARTICLE_SHADER_INFO variable_name;\
+	ZeroMemory(&variable_name, sizeof(PARTICLE_SHADER_INFO));\
+	variable_name.iShaderPassNumber = pass_num;\
+	variable_name.eRectType         = PARTICLE_SHADER_INFO::PARTICLE_RECT_TYPE::rect_type;\
+	variable_name.eDiscardType      = PARTICLE_SHADER_INFO::PARTICLE_DISCARD_TYPE::discard_type;\
+	variable_name.bSoftRendering    = soft;\
+	variable_name.bSpecialRendering = special;\
+	m_ParticleShaderInfos.emplace_back(variable_name);
+
+	REGISGER_PARTICLE_SHADER(tInfo0, 0, SPRITE, DISCARD_BLACK, false, false);
+	REGISGER_PARTICLE_SHADER(tInfo1, 1, DEFAULT, DISCARD_ALPHA, false, false);
+	REGISGER_PARTICLE_SHADER(tInfo2, 2, DEFAULT, DISCARD_BLACK, false, false);
+	REGISGER_PARTICLE_SHADER(tInfo3, 3, SPRITE, DISCARD_ALPHA, false, false);
+	REGISGER_PARTICLE_SHADER(tInfo4, 4, DEFAULT, DISCARD_ALPHA, true, false);
+	REGISGER_PARTICLE_SHADER(tInfo5, 5, DEFAULT, DISCARD_BLACK, true, false);
+	REGISGER_PARTICLE_SHADER(tInfo6, 6, SPRITE, DISCARD_ALPHA, true, false);
+	REGISGER_PARTICLE_SHADER(tInfo7, 7, SPRITE, DISCARD_BLACK, true, false);
+
+	REGISGER_PARTICLE_SHADER(tInfo8, 8, SPRITE, DISCARD_BLACK, false, true);
+	REGISGER_PARTICLE_SHADER(tInfo9, 9, DEFAULT, DISCARD_ALPHA, false, true);
+	REGISGER_PARTICLE_SHADER(tInfo10, 10, DEFAULT, DISCARD_BLACK, false, true);
+	REGISGER_PARTICLE_SHADER(tInfo11, 11, SPRITE, DISCARD_ALPHA, false, true);
+	REGISGER_PARTICLE_SHADER(tInfo12, 12, DEFAULT, DISCARD_ALPHA, true, true);
+	REGISGER_PARTICLE_SHADER(tInfo13, 13, DEFAULT, DISCARD_BLACK, true, true);
+	REGISGER_PARTICLE_SHADER(tInfo14, 14, SPRITE, DISCARD_ALPHA, true, true);
+	REGISGER_PARTICLE_SHADER(tInfo15, 15, SPRITE, DISCARD_BLACK, true, true);
+
+#undef REGISGER_PARTICLE_SHADER
+}
+#endif // _EFFECT_TOOL_
 
 void CEffect_Rect::OnChangeAnimationKey(const _uint& In_Key)
 {

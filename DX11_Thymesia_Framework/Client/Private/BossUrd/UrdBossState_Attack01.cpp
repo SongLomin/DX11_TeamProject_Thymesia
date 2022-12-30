@@ -82,6 +82,7 @@ void CUrdBossState_Attack01::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_AttackCount(true);
 	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
 }
 

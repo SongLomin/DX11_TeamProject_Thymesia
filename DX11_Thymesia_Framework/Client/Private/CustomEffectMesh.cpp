@@ -1334,6 +1334,9 @@ void CCustomEffectMesh::Tool_Collider()
 		ImGui::Text("Sync Transform"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);
 		ImGui::Checkbox("##Sync_Transform", &m_tEffectMeshDesc.bWeaponSyncTransform);
 
+		ImGui::Text("Sync Transform to Effect"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);
+		ImGui::Checkbox("##Sync_Transform_to_Effect", &m_tEffectMeshDesc.bWeaponSyncTransformToEffect);
+
 		ImGui::DragFloat("Collider_Life_Time", &m_tEffectMeshDesc.fWeaponLifeTime, 0.05f);
 
 		ImGui::Text("Weapon Scale"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);

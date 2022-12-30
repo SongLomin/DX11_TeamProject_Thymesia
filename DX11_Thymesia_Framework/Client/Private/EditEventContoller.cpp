@@ -16,6 +16,7 @@
 #include "GameManager.h";
 #include "Window_HierarchyView.h"
 #include "ImGui_Window.h"
+#include "imGui.h"
 
 GAMECLASS_C(CEditEventContoller)
 CLONE_C(CEditEventContoller, CGameObject)
