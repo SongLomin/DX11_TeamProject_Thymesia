@@ -3645,7 +3645,7 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_ItemRequirement.cpp" />
     <ClCompile Include="..\Private\Skill_Axe.cpp" />
-    <ClCompile Include="..\Private\Prop_Fence.cpp">
+    <ClCompile Include="..\Private\Prop_Fence.cpp"/>
       <Filter>02. GameObject\04. Prop\07. Event_Prop</Filter>
     <ClCompile Include="..\Private\Interaction_Fence.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
