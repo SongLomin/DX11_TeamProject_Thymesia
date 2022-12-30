@@ -9,6 +9,8 @@
 #include "Collider.h"
 
 #include "UI_Landing.h"
+#include "UI_Interaction.h"
+
 
 #include "GameInstance.h"
 #include "ClientLevel.h"
@@ -120,6 +122,9 @@ void CInteraction_DeadSpot::Act_Interaction()
 {
     //GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL::LEVEL_STATIC).front().lock()->Call_Landing(CUI_Landing::LANDING_BECONFOUND);
     GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status().lock()->Add_Memory(m_iMemory);
+
+    
+    GAMEINSTANCE->Get_GameObjects<CUI_Interaction>(LEVEL_STATIC).front().lock()->Call_CollisionExit();
 
     OnEventMessage((_uint)EVENT_TYPE::ON_RESET_OBJ);
 }

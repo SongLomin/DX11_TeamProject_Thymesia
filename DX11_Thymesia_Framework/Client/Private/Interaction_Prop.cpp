@@ -132,10 +132,15 @@ void CInteraction_Prop::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_pt
 
     weak_ptr<CUI_Interaction> pUI_Interaction = GAMEINSTANCE->Get_GameObjects<CUI_Interaction>(LEVEL_STATIC).front();
 
+  
+
     if (!pUI_Interaction.lock())
         return;
 
     pUI_Interaction.lock()->Call_CollisionExit();
+
+    Callback_ActStart.Clear();
+    Callback_ActEnd.Clear();
 
     _uint iCheckIndex = pMyCollider.lock()->Get_ColliderIndex();
 

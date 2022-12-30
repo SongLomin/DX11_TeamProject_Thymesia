@@ -357,7 +357,10 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	{
 		m_pSkillSystem.lock()->SwapSkillMaintoSub();
 	}
-	
+	if (KEY_INPUT(KEY::INSERTKEY, KEY_STATE::TAP))
+	{
+		Change_State<CCorvusState_Die>();
+	}
 
 #ifdef _DEBUG
 	//if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))

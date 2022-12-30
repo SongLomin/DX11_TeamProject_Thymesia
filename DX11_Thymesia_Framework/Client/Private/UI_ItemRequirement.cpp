@@ -23,6 +23,7 @@ HRESULT CUI_ItemRequirement::Initialize(void* pArg)
 
     Set_UIPosition(360.f, 287.f, 881.f, 68.f, CUI::ALIGN_LEFTTOP);
 
+    Set_AlphaColor(0.0f);
     SetUp_Component();
 
     return S_OK;
