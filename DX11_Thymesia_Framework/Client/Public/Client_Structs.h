@@ -148,6 +148,7 @@ namespace Client
 #pragma region Collider
 		_bool		bCollider;
 		_bool		bWeaponSyncTransform;
+		_bool		bWeaponSyncTransformToEffect;
 		_float		fWeaponLifeTime;
 		_float		fWeaponScale;
 		_int		iHitType;

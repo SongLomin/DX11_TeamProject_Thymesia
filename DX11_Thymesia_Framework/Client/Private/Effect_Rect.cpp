@@ -71,7 +71,7 @@ HRESULT CEffect_Rect::Initialize_Prototype()
 	return S_OK;
 }
 
-HRESULT CEffect_Rect::Initialize(void* pArg)
+HRESULT CEffect_Rect::Initialize(void* pArg)	
 {
 	m_eRenderGroup = RENDERGROUP::RENDER_ALPHABLEND;
 
