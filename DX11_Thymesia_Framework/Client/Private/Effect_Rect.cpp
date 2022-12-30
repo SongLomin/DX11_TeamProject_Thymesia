@@ -76,7 +76,9 @@ HRESULT CEffect_Rect::Initialize(void* pArg)
 	m_eRenderGroup = RENDERGROUP::RENDER_ALPHABLEND;
 
 	__super::Initialize(pArg);
+#ifdef _EFFECT_TOOL_
 	Initialize_ParticleShaderInfos();
+#endif // _EFFECT_TOOL_
 
 	m_pVIBuffer = Add_Component<CVIBuffer_Rect_Instance>();
 
