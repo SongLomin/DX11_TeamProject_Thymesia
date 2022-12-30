@@ -1296,7 +1296,7 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Varg_Appear_SliceBottom_BG"), TEXT("../Bin/Resources/Textures/UI/AppearEvent/Varg/Slice_Bottom_BG.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
-#endif // _JOJO_EFFECT_TOOL_
+#endif // _EFFECT_TOOL_
 }
 
 void CLoader::Load_CorvusModel()

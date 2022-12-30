@@ -869,9 +869,6 @@
     <ClInclude Include="..\Public\Corvus_DefaultDagger.h" />
     <ClInclude Include="..\Public\Corvus_DefaultSaber.h" />
     <ClInclude Include="..\Public\CUtils_EasingTransform.h" />
-    <ClInclude Include="..\Public\JoJoParticleShaderManager.h">
-      <Filter>97. Tool\00. IMGUI\Windows\02. Effect\99. JoJoParticleShaderManager</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Interaction_Ladder.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClInclude>
@@ -2709,9 +2706,6 @@
     <ClCompile Include="..\Private\Corvus_DefaultDagger.cpp" />
     <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp" />
     <ClCompile Include="..\Private\CUtils_EasingTransform.cpp" />
-    <ClCompile Include="..\Private\JoJoParticleShaderManager.cpp">
-      <Filter>97. Tool\00. IMGUI\Windows\02. Effect\99. JoJoParticleShaderManager</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Interaction_Ladder.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClCompile>

@@ -1,12 +1,12 @@
 #pragma once
-#define _EFFECT_TOOL_
 
 #include "Client_Structs.h"
 #include "Client_Presets.h"
 #include "Client_Enum.h"
 #include "NvCloth_Structs.h"
 #include "Client_Functions.h"
-//////////////// DEBUG MODE DEFINES ////////////////
+
+/////////////////////////////////////////// DEBUG MODE DEFINES ///////////////////////////////////////////
 #ifdef _DEBUG
 
 #pragma region System
@@ -27,10 +27,7 @@
 #define _USE_GRAVITY_
 #define _LIFEGUARD_FOR_FALL_
 
-#pragma region Console Outputs
 #define _DEBUG_COUT_
-// #define _DEBUG_COUT_JOJO
-#pragma endregion // Console Outputs
 
 #pragma region Map
 #define _MAP_DATA_
@@ -44,7 +41,7 @@
 
 #pragma region Tool
 #define _MAP_TOOL_
-// #define _EFFECT_TOOL_
+#define _EFFECT_TOOL_
 #pragma endregion // Tool
 
 #pragma region Boss Mobs
@@ -58,6 +55,7 @@
 #pragma endregion // Normal Mobs
 
 #pragma region Effects
+
 // #define _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
 #define _VARG_EFFECT_
@@ -65,9 +63,9 @@
 #pragma endregion // Effects
 
 #endif // _DEBUG
-//////////////// DEBUG MODE DEFINES ////////////////
+/////////////////////////////////////////// DEBUG MODE DEFINES ///////////////////////////////////////////
 
-//////////////// RELEASE MODE DEFINES ////////////////
+/////////////////////////////////////////// RELEASE MODE DEFINES ///////////////////////////////////////////
 #ifdef NDEBUG
 
 #undef _EFFECT_TOOL_
@@ -105,21 +103,21 @@
 #pragma endregion // Normal Mobs
 
 #pragma region Effects
+#undef _EFFECT_TOOL_
 // #define _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
-#define _JOJO_EFFECTS_
 #define _VARG_EFFECT_
 #define	_BAT_EFFECT_
 #pragma endregion // Effects
 
 #endif // NDEBUG
-//////////////// RELEASE MODE DEFINES ////////////////
+/////////////////////////////////////////// RELEASE MODE DEFINES ///////////////////////////////////////////
 
-/////////////// For. JoJo Effect Tool ///////////////
+/////////////////////////////////////////// For. Effect Tool ///////////////////////////////////////////
 #ifdef _EFFECT_TOOL_
 
 #pragma region System
-// #define _ONLY_UI_
+#undef _ONLY_UI_
 #define _USE_THREAD_
 #define _144HZ_
 #define _RENDER_FPS_
@@ -132,7 +130,6 @@
 
 #pragma region Console Outputs
 #undef _DEBUG_COUT_
-#define _DEBUG_COUT_JOJO
 #pragma endregion // Console Outputs
 
 #pragma region Map
@@ -150,7 +147,7 @@
 
 #pragma region Boss Mobs
 #undef _BOSS_VARG_
-#undef _BOSS_Armature|Armature|Urd_
+#undef _BOSS_URD_
 #pragma endregion // Boss Mobs
 
 #pragma region Normal Mobs
@@ -160,14 +157,12 @@
 
 #pragma region Effects
 #undef _DAGGER_TRAIL_
-#define _CORVUS_EFFECT_
-#undef _JOJO_EFFECTS_
 // #define _ANIMATION_TOOL_WEAPON_
 // #define _BAKE_EFFECTMESH_FBX_
 #pragma endregion // Effects
 
 #endif // _EFFECT_TOOL_
-/////////////// For. JoJo Effect Tool ///////////////
+/////////////////////////////////////////// For. Effect Tool ///////////////////////////////////////////
 
 #define CLIENT_DECLATION_UI class CUI; class CCustomUI; class CProgressBar; class CHUD_Hover;
 #define ENGINE_DECLATION_UI class CTexture; class CShader;

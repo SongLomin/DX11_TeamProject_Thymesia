@@ -438,19 +438,4 @@ namespace Client
 		_float3		vOffset;
 
 	};
-
-	// For. JoJo Particle Tool [Shader]
-#ifdef _EFFECT_TOOL_
-	typedef struct tagJoJoParticleShaderInfo
-	{
-		enum class PARTICLE_RECT_TYPE		{ DEFAULT, SPRITE, TYPE_END };
-		enum class PARTICLE_DISCARD_TYPE	{ DISCARD_ALPHA, DISCARD_BLACK, TYPE_END };
-
-		_uint iShaderPassNumber;
-		PARTICLE_RECT_TYPE		eRectType;
-		PARTICLE_DISCARD_TYPE	eDiscardType;
-		_bool bSoftRendering;
-		_bool bSpecialRendering;
-	}JJ_PARTICLE_SHADER_INFO;
-#endif // _EFFECT_TOOL_
 }
