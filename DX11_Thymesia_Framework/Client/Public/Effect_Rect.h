@@ -47,13 +47,13 @@ public:
     virtual void OnEventMessage(_uint iArg) override;
     void OnChangeAnimationKey(const _uint& In_Key);
 
-#ifdef _DEBUG
+#ifdef _EFFECT_TOOL_
     const void Trigger_Reset(weak_ptr<CTransform> pPreviewModelTransform)
     {
         m_pParentTransformCom = pPreviewModelTransform;
         m_bResetTrigger = true;
     }
-#endif // _DEBUG
+#endif // _EFFECT_TOOL_
 
 private:
     virtual HRESULT Initialize_Prototype()   override;
@@ -119,7 +119,7 @@ private:
 	const _bool Check_Option(const EFFECTPARTICLE_DESC::Option5 eOption) const;
 	const _bool Check_Option(const EFFECTPARTICLE_DESC::Option6 eOption) const;
 
-#ifdef _DEBUG
+#ifdef _EFFECT_TOOL_
     void TurnOn_Option(const EFFECTPARTICLE_DESC::Option1 eOption);
 	void TurnOn_Option(const EFFECTPARTICLE_DESC::Option2 eOption);
 	void TurnOn_Option(const EFFECTPARTICLE_DESC::Option3 eOption);
@@ -140,9 +140,9 @@ private:
     void Tool_ToggleOption(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option4 eOption);
     void Tool_ToggleOption(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option5 eOption);
     void Tool_ToggleOption(const char* szOptionName, const char* szOptionButtonName, const EFFECTPARTICLE_DESC::Option6 eOption);
-#endif // _DEBUG
+#endif // _EFFECT_TOOL_
 
-#ifdef _DEBUG
+#ifdef _EFFECT_TOOL_
 private: // For. Tool
 #ifdef _EFFECT_TOOL_
     void Show_ShaderPasses();
@@ -163,7 +163,7 @@ private: // For. Tool
     void Tool_Texture_Mask();
     void Tool_Texture_Noise();
     void Tool_Glow();
-#endif // _DEBUG
+#endif // _EFFECT_TOOL_
 
 private:
     void Free();
@@ -207,15 +207,34 @@ private:
     weak_ptr<CBoneNode>                 m_pBoneNode;
     weak_ptr<CModel>                    m_pParentModel;
     std::string                         m_strBoneName   = "";
-#ifdef _DEBUG
+#ifdef _EFFECT_TOOL_
     _int                                m_iCurrentBoneIndex = 0;
-#endif // _DEBUG
+#endif // _EFFECT_TOOL_
 
-#ifdef _DEBUG
+#ifdef _EFFECT_TOOL_
     // For. Thread
     _bool                   m_bResetTrigger = false;
     weak_ptr<CTransform>    m_pPreviewModelTransform;
-#endif // _DEBUG
+#endif // _EFFECT_TOOL_
+
+#ifdef _EFFECT_TOOL_
+private:
+	typedef struct tagJoJoParticleShaderInfo
+	{
+		enum class PARTICLE_RECT_TYPE { DEFAULT, SPRITE, TYPE_END };
+		enum class PARTICLE_DISCARD_TYPE { DISCARD_ALPHA, DISCARD_BLACK, TYPE_END };
+
+		_uint iShaderPassNumber;
+		PARTICLE_RECT_TYPE		eRectType;
+		PARTICLE_DISCARD_TYPE	eDiscardType;
+		_bool bSoftRendering;
+		_bool bSpecialRendering;
+	}PARTICLE_SHADER_INFO;
+
+    std::vector<PARTICLE_SHADER_INFO> m_ParticleShaderInfos;
+
+    void Initialize_ParticleShaderInfos();
+#endif // _EFFECT_TOOL_
 };
 
 END

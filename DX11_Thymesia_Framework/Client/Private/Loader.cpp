@@ -616,6 +616,7 @@ HRESULT CLoader::Loading_ForEditLevel()
 	LIGHTDESC LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
+#ifdef _BRIGHT_LIGHT_
 	LightDesc.eActorType	= tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection	= _float4(1.f, -1.f, 1.f, 0.f);
 	LightDesc.vDiffuse		= _float4(1.f, 1.f, 1.f, 1.f);
@@ -624,7 +625,18 @@ HRESULT CLoader::Loading_ForEditLevel()
 	LightDesc.vLightFlag	= _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.bEnable		= true;
 	LightDesc.fIntensity	= 1.f;
+#else
+	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
+	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
+	LightDesc.vSpecular = _float4(0.6f, 0.6f, 0.6f, 1.f);
+	LightDesc.vLightFlag = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.bEnable = true;
+	LightDesc.fIntensity = 0.1f;
+#endif // _BRIGHT_LIGHT_
 
+	GAMEINSTANCE->Clear_Lights();
 	GAMEINSTANCE->Add_Light(LightDesc);
 
 	GAMEINSTANCE->Set_FogDesc(_float4(0.2f, 0.15f, 0.03f, 0.f), 10000.f);
@@ -1294,7 +1306,7 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Varg_Appear_SliceBottom_BG"), TEXT("../Bin/Resources/Textures/UI/AppearEvent/Varg/Slice_Bottom_BG.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
-#endif // _JOJO_EFFECT_TOOL_
+#endif // _EFFECT_TOOL_
 }
 
 void CLoader::Load_CorvusModel()
