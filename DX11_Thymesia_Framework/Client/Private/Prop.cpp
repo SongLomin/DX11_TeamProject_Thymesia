@@ -7,6 +7,8 @@
 #include "GameManager.h"
 #include "Texture.h"
 
+#include "imgui.h"
+
 GAMECLASS_C(CProp);
 CLONE_C(CProp, CGameObject);
 

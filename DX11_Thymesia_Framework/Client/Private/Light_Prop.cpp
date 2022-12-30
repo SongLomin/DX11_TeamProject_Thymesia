@@ -75,8 +75,16 @@ HRESULT CLight_Prop::Start()
 		m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup(m_szEffectTag, m_pTransformCom, _uint(TIMESCALE_LAYER::NONE));
 
 #ifdef _DEBUG
-	_float fDefaultDesc[4] = { m_fTargetRange, 0.f, 0.f, 0.f };
-	SetUpColliderDesc(fDefaultDesc);
+	if (LEVEL::LEVEL_EDIT == m_CreatedLevel)
+	{
+		_float fDefaultDesc[4] = { m_fTargetRange, 0.f, 0.f, 0.f };
+		SetUpColliderDesc(fDefaultDesc);
+	}
+	else
+	{
+		m_pColliderCom.lock()->Set_Enable(false);
+	}
+
 #endif
 
 	return S_OK;

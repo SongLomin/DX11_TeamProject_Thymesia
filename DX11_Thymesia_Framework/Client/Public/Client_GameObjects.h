@@ -29,9 +29,9 @@
 #include "Interaction_Note.h"
 #include "Interaction_Item.h"
 #include "Interaction_DeadSpot.h"
-#include "Interaction_Fence.h"
 #include "Section_Eventer.h"
 #include "Water.h"
+#include "Prop_Fence.h"
 
 #include "EditGround.h"
 #include "EditGroupProp.h"

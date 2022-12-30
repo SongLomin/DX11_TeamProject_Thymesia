@@ -60,6 +60,7 @@ private:
     weak_ptr<CModel>            m_pGearModelCom;
          
     _float3                     m_vOffset             = { 0.f, 0.f, 0.f };
+    _float3                     m_vGearOffset         = { 0.f, 1.5f, 0.f };
     _float                      m_fDoorOffset         = -4.8f;
     _float3                     m_fDoorSize           = { 1.f, 1.f, 1.f };
     ITEM_NAME                   m_iKeyID              = ITEM_NAME::ITEM_NAME_END;

@@ -19,6 +19,7 @@
 #include "Window_Optimization_Dev.h"
 #include "ImGui_Window.h"
 #include "GameManager.h"
+#include "imgui.h"
 
 _bool CEditInstanceProp::m_bDetailPicking	= true;
 _uint CEditInstanceProp::m_iOption			= 0;
@@ -70,7 +71,6 @@ HRESULT CEditInstanceProp::Initialize(void* pArg)
 #ifdef _USE_THREAD_
 	Use_Thread(THREAD_TYPE::PRE_LATETICK);
 #endif // _USE_THREAD_
-
 
 	return S_OK;
 }

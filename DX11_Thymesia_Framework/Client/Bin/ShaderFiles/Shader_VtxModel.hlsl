@@ -23,6 +23,8 @@ float2 g_vAddUVPos;
 
 float g_fColorScale;
 
+float g_fDissolveRatio;
+
 struct VS_IN
 {
 	float3		vPosition : POSITION;
@@ -437,13 +439,42 @@ PS_OUT PS_MAIN_NORMAL_MOVE_UV(PS_IN_NORMAL In)
     Out.vDepth = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
     Out.vShaderFlag   = g_vShaderFlag;
     Out.vORM          = 0;
-    Out.vRimLight = 0;
-    
-
+    Out.vRimLight     = 0;
     Out.vExtractBloom = 0;
 
     return Out;
 }
+
+PS_OUT      PS_MAIN_DISSOLVE(PS_IN_NORMAL In)
+{
+    PS_OUT Out = (PS_OUT)0;
+
+    vector DissolveTex = g_NoiseTexture.Sample(DefaultSampler, In.vTexUV);
+
+    Out.vDiffuse   = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
+    Out.vDiffuse.a = 1.f;
+
+    if (g_fDissolveRatio < DissolveTex.r)
+        discard;
+
+    clip(Out.vDiffuse.a - 0.1f);
+
+    float3 vPixelNormal = g_NormalTexture.Sample(DefaultSampler, In.vTexUV).xyz;
+    vPixelNormal = vPixelNormal * 2.f - 1.f;
+
+    float3x3 WorldMatrix = float3x3(In.vTangent, In.vBinormal, In.vNormal);
+
+    vPixelNormal      = mul(vPixelNormal, WorldMatrix);
+    Out.vNormal       = vector(vPixelNormal * 0.5f + 0.5f, 0.f);
+    Out.vDepth        = vector(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w / g_fFar, 0.f, 0.f);
+    Out.vShaderFlag   = g_vShaderFlag;
+    Out.vORM          = 0;
+    Out.vRimLight     = 0;
+    Out.vExtractBloom = 0;
+
+    return Out;
+}
+
 
 technique11 DefaultTechnique
 {
@@ -603,4 +634,19 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
     }
+
+    pass Pass12_Normal_Dissolve
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_DepthStencilEnable, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader    = compile vs_5_0 VS_MAIN_NORMAL();
+        HullShader      = NULL;
+        DomainShader    = NULL;
+        GeometryShader  = NULL;
+        PixelShader     = compile ps_5_0 PS_MAIN_DISSOLVE();
+    }
+
+
 }

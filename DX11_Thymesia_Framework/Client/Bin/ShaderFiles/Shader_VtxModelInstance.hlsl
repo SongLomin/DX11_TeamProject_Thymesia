@@ -414,12 +414,12 @@ technique11 DefaultTechnique
 	pass Pass4_NonCulling //4
 	{
 		SetBlendState			(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
-        SetDepthStencilState(DSS_DepthStencilEnable, 0);
+        SetDepthStencilState    (DSS_DepthStencilEnable, 0);
 		SetRasterizerState		(RS_NonCulling);
 
-        VertexShader = compile vs_5_0 VS_MAIN();
-        HullShader = NULL;
-        DomainShader = NULL;
+        VertexShader    = compile vs_5_0 VS_MAIN();
+        HullShader      = NULL;
+        DomainShader    = NULL;
 		GeometryShader	= NULL;
 		PixelShader		= compile ps_5_0	PS_MAIN();
 	}

@@ -32,7 +32,7 @@ static const char* items_FindType[] =
 	"CInteraction_Elevator",
 	"CInteraction_Ladder",
 	"CInteraction_Item",
-	"CInteraction_Fence",
+	"CProp_Fence",
 	"CSection_Eventer"
 };
 
@@ -211,7 +211,6 @@ void CEditGroupProp::OnEventMessage(_uint iArg)
 
 				iter_collider->second.clear();
 			}
-
 		}
 		break;
 	}
@@ -228,6 +227,7 @@ void CEditGroupProp::View_CreateProp()
 		"Dynamic_Prop",
 		"Light_Prop",
 		"Section_Eventer",
+		"Event_Prop"
 	};
 
 	static const char* items_Interaction_Prop[] =
@@ -240,14 +240,19 @@ void CEditGroupProp::View_CreateProp()
 		"NextPoint",
 		"CastleGate",
 		"Item",
-		"Interaction_Fence"
+	};
+
+	static const char* items_Event_Prop[] =
+	{
+		"Prop_Fence"
 	};
 
 	ImGui::Text(string(string(" Size  : ") + to_string(m_iSize)).c_str());
 	ImGui::Text("");
 
-	static _int iSelect_PropType = 0;
-	static _int iSelect_PropName = 0;
+	static _int iSelect_PropType      = 0;
+	static _int iSelect_PropName      = 0;
+	static _int iSelect_EventPropName = 0;
 
 	if (ImGui::Combo("Prop Type", &iSelect_PropType, items_PropType, IM_ARRAYSIZE(items_PropType)))
 	{
@@ -360,17 +365,6 @@ void CEditGroupProp::View_CreateProp()
 				tObjDesc.TypeName  = typeid(CInteraction_Item).name();
 			}
 			break;
-
-			case 8:
-			{
-				if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD))
-					return;
-
-				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CInteraction_Fence>(LEVEL::LEVEL_EDIT);
-				tObjDesc.HashCode = typeid(CInteraction_Fence).hash_code();
-				tObjDesc.TypeName = typeid(CInteraction_Fence).name();
-			}
-			break;
 		}
 	}
 
@@ -427,6 +421,25 @@ void CEditGroupProp::View_CreateProp()
 		tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CSection_Eventer>(LEVEL::LEVEL_EDIT);
 		tObjDesc.HashCode  = typeid(CSection_Eventer).hash_code();
 		tObjDesc.TypeName  = typeid(CSection_Eventer).name();
+	}
+
+	else if (5 == iSelect_PropType)
+	{
+		ImGui::Combo("Prop Name", &iSelect_EventPropName, items_Event_Prop, IM_ARRAYSIZE(items_Event_Prop));
+
+		switch (iSelect_EventPropName)
+		{
+			case 0 :
+			{
+				if (!KEY_INPUT(KEY::LSHIFT, KEY_STATE::HOLD) || !Pick_Prop(MouseRayInWorldSpace))
+					return;
+
+				tObjDesc.pInstance = GAMEINSTANCE->Add_GameObject<CProp_Fence>(LEVEL::LEVEL_EDIT);
+				tObjDesc.HashCode = typeid(CProp_Fence).hash_code();
+				tObjDesc.TypeName = typeid(CProp_Fence).name();
+			}
+			break;
+		}
 	}
 
 	else
