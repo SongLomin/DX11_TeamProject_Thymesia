@@ -119,7 +119,7 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 					if (m_bThreeAttack)
 					{
 						//세번공격하거는거 여기서 바로 가도 될듯?
-						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Step_Idle>(0.05f);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack01>(0.05f);
 						return true;
 					}
 					else

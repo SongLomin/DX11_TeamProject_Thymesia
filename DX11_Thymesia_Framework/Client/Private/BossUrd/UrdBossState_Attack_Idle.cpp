@@ -88,6 +88,15 @@ _bool CUrdBossState_Attack_Idle::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	if (m_bPhaseTwoStart)
+	{
+		//1페이지일때
+	}
+	else
+	{
+		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack02>(0.05f);
+		return true;
+	}
 
 
 	return false;

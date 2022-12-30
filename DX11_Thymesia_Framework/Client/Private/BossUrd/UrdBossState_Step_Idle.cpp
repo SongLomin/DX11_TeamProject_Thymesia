@@ -86,6 +86,50 @@ _bool CUrdBossState_Step_Idle::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	if (m_iStepCount == 0)
+	{
+		_int iStepCount = ComputeDirectionToPlayer();
+
+		switch (iStepCount)
+		{
+		case 1://¿À¸¥ÂÊ
+			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepFL45>(0.05f);
+			m_iStepCount = 1;
+			return true;
+			break;
+		case -1:// ¿ŞÂÊ
+			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepFR45>(0.05f);
+			m_iStepCount = 2;
+			return true;
+			break;
+		}
+	}
+	else if (m_iStepCount == 1)
+	{
+		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepFR45>(0.05f);
+		m_iStepCount = 3;
+		return true;
+	}
+	else if (m_iStepCount == 2)
+	{
+		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_StepFL45>(0.05f);
+		m_iStepCount = 4;
+		return true;
+	}
+	else if (m_iStepCount == 3)
+	{
+		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_L>(0.05f);
+		m_iStepCount = 0;
+		return true;
+	}
+	else if (m_iStepCount == 4)
+	{
+		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack03_DashSting_R>(0.05f);
+		m_iStepCount = 0;
+		return true;
+	}
+
+	
 
 
 	return false;
