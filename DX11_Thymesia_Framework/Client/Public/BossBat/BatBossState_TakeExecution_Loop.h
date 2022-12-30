@@ -28,6 +28,8 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
+private:
+	_float      m_fDissolveTime = 0.f;
 
 protected:
 
