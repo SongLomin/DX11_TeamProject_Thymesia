@@ -41,7 +41,7 @@
 
 #pragma region Tool
 #define _MAP_TOOL_
-#define _EFFECT_TOOL_
+//#define _EFFECT_TOOL_
 #pragma endregion // Tool
 
 #pragma region Boss Mobs

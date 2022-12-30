@@ -145,6 +145,8 @@ HRESULT CGameInstance::Render_Engine()
 
 	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+	GET_SINGLE(CThread_Manager)->Wait_JobDone();
+	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 	return S_OK;
 }
 
