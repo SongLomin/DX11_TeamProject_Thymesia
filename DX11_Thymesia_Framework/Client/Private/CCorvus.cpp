@@ -17,7 +17,7 @@
 #include "UI_AppearEventVarg.h"
 #include "Monster.h"
 #include "Talent_Effects.h"
-
+#include "UI_Landing.h"
 
 
 GAMECLASS_C(CCorvus)
@@ -137,7 +137,10 @@ HRESULT CCorvus::Start()
 	if (m_pCamera.lock())
 		m_pCameraTransform = m_pCamera.lock()->Get_Component<CTransform>();
 
+
 	Test_BindSkill();
+
+
 
 #ifdef _CLOTH_
 	// m_pModelCom.lock()->Set_NvClothMeshWithIndex(0);
@@ -344,6 +347,12 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 
 		//GAMEINSTANCE->Get_GameObjects<CUI_AppearEventVarg>(LEVEL_STATIC).front().lock()->Start_Event();
 	}
+	if (KEY_INPUT(KEY::BACKSPACE, KEY_STATE::TAP))
+	{
+		GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front().lock()->Call_Landing(
+			CUI_Landing::LANDING_ENTER_STAGE);	
+	}
+
 	if (KEY_INPUT(KEY::P, KEY_STATE::TAP))
 	{
 		m_pSkillSystem.lock()->SwapSkillMaintoSub();

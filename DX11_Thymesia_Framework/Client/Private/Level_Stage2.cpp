@@ -55,6 +55,8 @@ HRESULT CLevel_Stage2::Initialize()
 	m_pPauseMenu  = GAMEINSTANCE->Get_GameObjects<CUI_PauseMenu>(LEVEL::LEVEL_STATIC).front();
 
 
+
+
 	return S_OK;
 }
 
