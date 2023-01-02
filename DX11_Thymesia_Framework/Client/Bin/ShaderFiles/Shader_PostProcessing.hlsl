@@ -4,9 +4,11 @@
 matrix	g_WorldMatrix     , g_ViewMatrix	, g_ProjMatrix; //직교투영
 matrix g_ViewMatrixInv	  , g_ProjMatrixInv; //월드 <-> 스크린
 
-matrix  g_PreCamViewMatrix, g_CamProjMatrix;//proj는 변하지 않는다고 가정
+matrix g_PreCamViewMatrix, g_CamProjMatrix,g_CamViewMatrix; //proj는 변하지 않는다고 가정
 
 vector		g_vCamPosition;
+vector g_vLightPos;
+vector g_vLightDiffuse;
 
 float g_fFar = 300;
 
@@ -26,7 +28,7 @@ float		g_fMotionBlurStrength = 0.f;
 //RadialBlur
 float3		g_vBlurWorldPosition;
 float		g_fRadialBlurStrength;
-matrix		g_CameraViewMatrix;
+
 //liftgammaain
 vector g_vLift, g_vGamma, g_vGain;
 //ScreenTone
@@ -87,6 +89,43 @@ struct PS_OUT
 {	
 	vector vColor    : SV_TARGET0;	
 };
+
+PS_OUT PS_MAIN_GODRAY(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT) 0;
+    
+    Out.vColor = g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV);
+    
+    matrix matVP = mul(g_CamViewMatrix, g_CamProjMatrix);
+       
+    float4 vScreenLightPos = mul(vector(50.f,25.f,50.f,1.f), matVP);
+    vScreenLightPos.x /= vScreenLightPos.w;
+    vScreenLightPos.y /= vScreenLightPos.w;
+    
+    vScreenLightPos.x = vScreenLightPos.x * 0.5f + 0.5f;
+    vScreenLightPos.y = vScreenLightPos.y * -0.5f + 0.5f;
+    
+    half2 vDeltaTexCoord = In.vTexUV - vScreenLightPos.xy;
+    
+    vDeltaTexCoord *= 1.0f / 64.f/*NUM_SAMPLES*/*0.8f;
+      
+    half illuminationDecay = 1.0f;
+    float s = 0.f;
+    
+    for (int i = 0; i < 64;++i)
+    {
+        float2 vSampleUV = In.vTexUV - vDeltaTexCoord * i;
+        
+        float fDepth = g_DepthTexture.Sample(DefaultSampler, vSampleUV).x;
+        
+        s += (fDepth >= 0.95f) * 1.f / 64.f * 0.8f;
+    }
+    
+    Out.vColor = lerp(Out.vColor, 1.f, 0.2f * s);
+
+    
+    return Out;
+}
 
 PS_OUT PS_MAIN_MOTION_BLUR(PS_IN In)
 {
@@ -209,7 +248,7 @@ PS_OUT PS_MAIN_RADIALBLUR(PS_IN In)
 
     float fBlurStart = 1.f;
 	
-    matrix matVP = mul(g_CameraViewMatrix, g_CamProjMatrix);
+    matrix matVP = mul(g_CamViewMatrix, g_CamProjMatrix);
     vector vBlurCenter = mul(vector(g_vBlurWorldPosition, 1.f), matVP);
     vBlurCenter /= vBlurCenter.w;
 
@@ -263,7 +302,7 @@ DepthStencilState DSS_None_ZTestWrite_True_StencilTest
     StencilEnable = true;
     StencilReadMask = 0xff;
 	
-    FrontFaceStencilFunc = greater;
+    FrontFaceStencilFunc = not_equal;
     FrontFaceStencilPass = keep;
     FrontFaceStencilFail = keep;
 };
@@ -271,7 +310,19 @@ DepthStencilState DSS_None_ZTestWrite_True_StencilTest
 
 technique11 DefaultTechnique
 {
-    pass Lift_Gamma_Gain //0
+    pass God_Ray//0
+    {
+        SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
+        SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
+        SetRasterizerState(RS_Default);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        HullShader = NULL;
+        DomainShader = NULL;
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_GODRAY();
+    }
+    pass Lift_Gamma_Gain //1
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
@@ -283,7 +334,7 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_LIFTGAMMAGAIN();
     }
-    pass ScreenTone //1
+    pass ScreenTone //2
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
@@ -295,7 +346,7 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN_SCREENTONE();
     }
-	pass Chromatic_Aberration//2
+	pass Chromatic_Aberration//3
 	{
 		SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
 		SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
@@ -307,7 +358,7 @@ technique11 DefaultTechnique
 		GeometryShader = NULL;
 		PixelShader    = compile ps_5_0 PS_MAIN_CHROMATIC();
 	}
-	pass MotionBlur //3
+	pass MotionBlur //4
 	{
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_None_ZTest_And_Write, 0);
@@ -320,7 +371,7 @@ technique11 DefaultTechnique
 		PixelShader    = compile ps_5_0 PS_MAIN_MOTION_BLUR();
 	}
 
-    pass RadialBlur//4
+    pass RadialBlur//5
     {
         SetBlendState(BS_None, float4(0.f, 0.f, 0.f, 1.f), 0xffffffff);
         SetDepthStencilState(DSS_None_ZTestWrite_True_StencilTest, 1);

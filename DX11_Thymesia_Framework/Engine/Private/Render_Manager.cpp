@@ -1865,10 +1865,14 @@ HRESULT CRender_Manager::PostProcessing()
 
 	m_pPostProcessingShader->Set_RawValue("g_fRadialBlurStrength", &m_fRadialBlurStrengthAcc, sizeof(_float));//RadialBlur ����
 	m_pPostProcessingShader->Set_RawValue("g_vBlurWorldPosition", &m_vRadialBlurWorldPos, sizeof(_float3));//RadialBlur ����
-	m_pPostProcessingShader->Set_RawValue("g_CameraViewMatrix", &XMMatrixTranspose(CamViewMatrix), sizeof(_float4x4));//RadialBlur ����
+	m_pPostProcessingShader->Set_RawValue("g_CamViewMatrix", &XMMatrixTranspose(CamViewMatrix), sizeof(_float4x4));//RadialBlur ����
 
+	_float4 vLightPos = { 1.f,1.f,1.f,1.f };
 
-	for (_int i = 0; i < 5; ++i)
+	m_pPostProcessingShader->Set_RawValue("g_vLightPos", &vLightPos, sizeof(_float4));
+	m_pPostProcessingShader->Set_RawValue("g_LightDiffuse", &vLightPos, sizeof(_float4));
+
+	for (_int i = 0; i < 6; ++i)
 	{
 		Bake_OriginalRenderTexture();
 		if (FAILED(m_pPostProcessingShader->Set_ShaderResourceView("g_OriginalRenderTexture", pRenderTargetManager->Get_SRV(TEXT("Target_CopyOriginalRender")))))
