@@ -8,6 +8,7 @@
 #include "PhysXCollider.h"
 
 #include "Client_Presets.h"
+#include "imgui.h"
 
 GAMECLASS_C(CStatic_Prop);
 CLONE_C(CStatic_Prop, CGameObject);

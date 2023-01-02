@@ -32,6 +32,7 @@ class CLight_Prop;
 class CItemPopup_Queue;
 class CInteraction_DeadSpot;
 class CSection_Eventer;
+class CFog;
 
 class CGameManager :
     public CBase
@@ -194,6 +195,8 @@ public:
     void  Activate_SectionLight(_uint In_iSection, EVENT_TYPE In_eEventType);
     void  Remove_SectionLight(_uint In_iSection, weak_ptr<CGameObject> In_pObj);
 
+    void  Registration_Fog(weak_ptr<CFog> In_pObj);
+    void  Activate_Fog(_uint In_iFogIndex);
 
  public:
     FDelegate<>                 CallBack_ChangePlayer;
@@ -221,6 +224,7 @@ private:
 
     SECTION_EVENTER                     m_SectionEventers;
     SECTION_OBJ                         m_SectionObejects;
+    weak_ptr<CFog>                      m_FogObject;
     SECTION_LIGHT                       m_SectionLights;
     weak_ptr<CInteraction_CheckPoint>   m_pCurSavePoint;
     weak_ptr<CInteraction_DeadSpot>     m_pDeadSpot;

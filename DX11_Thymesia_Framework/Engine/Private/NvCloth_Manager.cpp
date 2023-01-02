@@ -45,21 +45,21 @@ void CNvCloth_Manager::Tick(_float fTimeDelta)
 		return;
 	}
 
-	shared_ptr<CThread_Manager> pThread_Manager = GET_SINGLE(CThread_Manager);
+	//shared_ptr<CThread_Manager> pThread_Manager = GET_SINGLE(CThread_Manager);
 
-	m_pGraphicsContextManager->mDevice = DEVICE;
-	m_pGraphicsContextManager->mContext = DEVICECONTEXT;
-	m_pGraphicsContextManager->mSynchronizeResources = false;
-	m_pSolver->beginSimulation(fTimeDelta);
-	for (int i = 0; i < m_pSolver->getSimulationChunkCount(); i++)
-	{
-		//pThread_Manager->Enqueue_Job(bind(&Solver::simulateChunk, m_pSolver, i));
-		m_pSolver->simulateChunk(i);
-	} 
+	//m_pGraphicsContextManager->mDevice = DEVICE;
+	//m_pGraphicsContextManager->mContext = DEVICECONTEXT;
+	//m_pGraphicsContextManager->mSynchronizeResources = false;
+	//m_pSolver->beginSimulation(fTimeDelta);
+	//for (int i = 0; i < m_pSolver->getSimulationChunkCount(); i++)
+	//{
+	//	//pThread_Manager->Enqueue_Job(bind(&Solver::simulateChunk, m_pSolver, i));
+	//	m_pSolver->simulateChunk(i);
+	//} 
 
-	pThread_Manager->Wait_JobDone();
+	//pThread_Manager->Wait_JobDone();
 
-	m_pSolver->endSimulation();
+	//m_pSolver->endSimulation();
 
 }
 

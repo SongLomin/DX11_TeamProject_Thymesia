@@ -18,7 +18,7 @@ class CSection_Eventer final :
     GAMECLASS_H(CSection_Eventer);
     CLONE_H(CSection_Eventer, CGameObject);
 
-public:
+private:
     enum EVENT_FLAG
     {
         EVENT_ENTER         = (1 << 0),
@@ -31,6 +31,7 @@ public:
         ACT_SECTION         = (1 << 0),
         ACT_MONSTER_TRIGGER = (1 << 1),
         ACT_LIGHT           = (1 << 2),
+        ACT_FOG             = (1 << 3)
     };
 
 public:

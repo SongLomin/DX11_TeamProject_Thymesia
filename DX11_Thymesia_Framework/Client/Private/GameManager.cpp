@@ -885,6 +885,19 @@ void CGameManager::Remove_SectionLight(_uint In_iSection, weak_ptr<CGameObject> 
 	}
 }
 
+void  CGameManager::Registration_Fog(weak_ptr<CFog> In_pObj)
+{
+	m_FogObject = In_pObj;
+}
+
+void  CGameManager::Activate_Fog(_uint In_iFogIndex)
+{
+	if (!m_FogObject.lock())
+		return;
+
+	m_FogObject.lock()->Activate_Fog(In_iFogIndex);
+}
+
 //void CGameManager::Set_TargetForTargetCamera(weak_ptr<CGameObject> In_TargetGameObject)
 //{
 //	//타겟 카메라 객체가 없는데 타겟을 넘겨주려고 함.

@@ -28,6 +28,7 @@ HRESULT CLight_Prop::Initialize(void* pArg)
 
 #ifdef _DEBUG
 	m_pColliderCom = Add_Component<CCollider>();
+	m_pColliderCom.lock()->Set_DebugColor(XMVectorSet(1.f, 1.f, 0.f, 1.f));
 #endif
 
 	m_pShaderCom.lock()->Set_ShaderInfo
@@ -77,7 +78,7 @@ HRESULT CLight_Prop::Start()
 #ifdef _DEBUG
 	if (LEVEL::LEVEL_EDIT == m_CreatedLevel)
 	{
-		_float fDefaultDesc[4] = { m_fTargetRange, 0.f, 0.f, 0.f };
+		_float fDefaultDesc[4] = { 1.f, 0.f, 0.f, 0.f };
 		SetUpColliderDesc(fDefaultDesc);
 	}
 	else
@@ -139,6 +140,26 @@ HRESULT CLight_Prop::Render(ID3D11DeviceContext* pDeviceContext)
 	return S_OK;
 }
 
+void  CLight_Prop::Set_LightDesc(const LIGHTDESC& In_Desc)
+{
+	m_tLightDesc.vDiffuse   = In_Desc.vDiffuse;
+	m_tLightDesc.vAmbient   = In_Desc.vAmbient;
+	m_tLightDesc.vSpecular  = In_Desc.vSpecular;
+	m_tLightDesc.fIntensity = In_Desc.fIntensity;
+
+	if (LIGHTDESC::TYPE::TYPE_DIRECTIONAL == In_Desc.eActorType)
+	{
+		m_tLightDesc.vDirection = In_Desc.vDirection;
+	}
+	
+	else if (LIGHTDESC::TYPE::TYPE_POINT == In_Desc.eActorType)
+	{
+		m_tLightDesc.fRange = In_Desc.fRange;
+	}
+
+	GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+}
+
 void CLight_Prop::Write_Json(json& Out_Json)
 {
 	__super::Write_Json(Out_Json);
@@ -188,6 +209,7 @@ void CLight_Prop::Load_FromJson(const json& In_Json)
 
 	m_tLightDesc.eActorType = (LIGHTDESC::TYPE)iLightTypeFromInt;
 	m_tLightDesc.fRange     = In_Json["Light_Range"];
+	m_tLightDesc.fIntensity = In_Json["Light_Intensity"];
 	CJson_Utility::Load_Float4(In_Json["Light_Position"] , m_tLightDesc.vPosition);
 	CJson_Utility::Load_Float4(In_Json["Light_Direction"], m_tLightDesc.vDirection);
 	CJson_Utility::Load_Float4(In_Json["Light_Diffuse"]  , m_tLightDesc.vDiffuse);
@@ -250,6 +272,7 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 		{
 			XMStoreFloat4(&m_tLightDesc.vPosition, m_pTransformCom.lock()->Get_Position() + XMLoadFloat3(&m_vOffset));
 			GAMEINSTANCE->Set_LightDesc(m_tLightDesc);
+
 #ifdef _DEBUG
 			m_pColliderCom.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 #endif
@@ -286,11 +309,13 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 				{
 					case LIGHTDESC::TYPE_DIRECTIONAL:
 					{
-						ImGui::DragFloat4("Light_Direction", &m_tLightDesc.vDirection.x, 0.01f);
-						ImGui::DragFloat4("Light_Diffuse"  , &m_tLightDesc.vDiffuse.x  , 0.01f);
-						ImGui::DragFloat4("Light_Ambient"  , &m_tLightDesc.vAmbient.x  , 0.01f);
-						ImGui::DragFloat4("Light_Specular" , &m_tLightDesc.vSpecular.x , 0.01f);
-						ImGui::DragFloat ("Light_Intensity", &m_tLightDesc.fIntensity  , 0.01f);
+						ImGui::InputFloat4("Light_Direction", &m_tLightDesc.vDirection.x);
+						ImGui::InputFloat4("Light_Diffuse"  , &m_tLightDesc.vDiffuse.x);
+						ImGui::InputFloat4("Light_Ambient"  , &m_tLightDesc.vAmbient.x);
+						ImGui::InputFloat4("Light_Specular" , &m_tLightDesc.vSpecular.x);
+
+						ImGui::InputFloat("Light_Range", &m_tLightDesc.fRange);
+						ImGui::InputFloat("Light_Intensity", &m_tLightDesc.fIntensity);
 					}
 					break;
 
@@ -298,15 +323,15 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 					{
 						_bool       bChangeData = false;
 
-						ImGui::DragFloat3("Offset", &m_vOffset.x, 0.01f);
+						ImGui::InputFloat3("Offset", &m_vOffset.x);
 
-						ImGui::DragFloat4("Light_Position" , &m_tLightDesc.vPosition.x , 0.01f);
-						ImGui::DragFloat4("Light_Diffuse"  , &m_tLightDesc.vDiffuse.x  , 0.01f);
-						ImGui::DragFloat4("Light_Ambient"  , &m_tLightDesc.vAmbient.x  , 0.01f);
-						ImGui::DragFloat4("Light_Specular" , &m_tLightDesc.vSpecular.x , 0.01f);
-
-						bChangeData |= ImGui::DragFloat ("Light_Range"    , &m_tLightDesc.fRange      , 0.01f);
-						bChangeData |= ImGui::DragFloat ("Light_Intensity", &m_tLightDesc.fIntensity  , 0.01f);
+						ImGui::InputFloat4("Light_Position" , &m_tLightDesc.vPosition.x);
+						ImGui::InputFloat4("Light_Diffuse"  , &m_tLightDesc.vDiffuse.x);
+						ImGui::InputFloat4("Light_Ambient"  , &m_tLightDesc.vAmbient.x);
+						ImGui::InputFloat4("Light_Specular" , &m_tLightDesc.vSpecular.x);
+						
+						bChangeData |= ImGui::InputFloat ("Light_Range"    , &m_tLightDesc.fRange);
+						bChangeData |= ImGui::InputFloat ("Light_Intensity", &m_tLightDesc.fIntensity);
 
 						if (bChangeData)
 						{

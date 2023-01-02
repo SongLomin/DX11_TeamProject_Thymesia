@@ -490,6 +490,7 @@
     <ClInclude Include="..\Public\EliteMonState\Joker\JokerState_WheelAtkLoop.h" />
     <ClInclude Include="..\Public\EliteMonState\Joker\JokerState_WheelAtkStart.h" />
     <ClInclude Include="..\Public\EliteMonster.h" />
+    <ClInclude Include="..\Public\Fog.h" />
     <ClInclude Include="..\Public\Interaction_CastleGate.h" />
     <ClInclude Include="..\Public\Interaction_CheckPoint.h" />
     <ClInclude Include="..\Public\Interaction_DeadSpot.h" />
@@ -1098,6 +1099,7 @@
     <ClCompile Include="..\Private\EliteMonState\Joker\JokerState_WheelAtkLoop.cpp" />
     <ClCompile Include="..\Private\EliteMonState\Joker\JokerState_WheelAtkStart.cpp" />
     <ClCompile Include="..\Private\EliteMonster.cpp" />
+    <ClCompile Include="..\Private\Fog.cpp" />
     <ClCompile Include="..\Private\Interaction_CastleGate.cpp" />
     <ClCompile Include="..\Private\Interaction_CheckPoint.cpp" />
     <ClCompile Include="..\Private\Interaction_DeadSpot.cpp" />

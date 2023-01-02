@@ -1797,6 +1797,11 @@
     </ClInclude>
     <ClInclude Include="..\Public\Ballon.h" />
     <ClInclude Include="..\Public\Prop_Fence.h" />
+    <ClInclude Include="..\Public\Fog.h">
+      <Filter>02. GameObject\17. Fog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Ballon.h" />
+    <ClInclude Include="..\Public\Prop_Fence.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Scythe.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Hammer.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Hammer_Upgrade.h" />
@@ -3651,6 +3656,11 @@
     </ClCompile>
     <ClCompile Include="..\Private\Ballon.cpp" />
     <ClCompile Include="..\Private\Prop_Fence.cpp" />
+    <ClCompile Include="..\Private\Fog.cpp">
+      <Filter>02. GameObject\17. Fog</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Ballon.cpp" />
+    <ClCompile Include="..\Private\Prop_Fence.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Scythe.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Hammer.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Hammer_Upgrade.cpp" />
@@ -5441,6 +5451,9 @@
     </Filter>
     <Filter Include="97. Tool\01. DeveloperConsole\Windows\05. Player">
       <UniqueIdentifier>{d48e7336-63dd-477e-aa1b-3831356ac8a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\17. Fog">
+      <UniqueIdentifier>{35d63f61-2bb9-4331-b056-817e40e42f00}</UniqueIdentifier>
     </Filter>
     <Filter Include="02. GameObject\01. UI\UI_Container\Evolve\PlagueWeapon">
       <UniqueIdentifier>{4b36c82c-40da-4d0d-85df-f5b26a434fca}</UniqueIdentifier>
