@@ -221,10 +221,6 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 	 _uint iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 	for (_uint i(0); i < m_iNumMeshContainers; ++i)
 	{
-#ifdef _DEBUG
-		//if (i == m_iContainerIndex)
-		//	continue;
-#endif // _DEBUG
 		if (4 == i || 5 == i || 8 == i || 9 == i || 10 == i || 11 == i|| 12 == i|| 13 == i)
 		{
 			unordered_map<_uint, DISSOLVE_DESC>::iterator iter = m_DissolveDescs.find(i);
@@ -283,6 +279,11 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 
 
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones", pDeviceContext);
+
+#ifdef _DEBUG
+		//if (i == 2)
+		//	continue;
+#endif // _DEBUG
 	}
 
 	m_DissolveDescs.clear();

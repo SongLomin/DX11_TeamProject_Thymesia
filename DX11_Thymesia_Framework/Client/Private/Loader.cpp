@@ -769,15 +769,22 @@ void CLoader::Load_AllEffectMeshInPath_Recursive(const filesystem::path& In_Path
 		szFileName = entry.path().filename().string().c_str();
 		szFileName = szFileName.substr(0, szFileName.size() - 4);
 
+#ifdef _BAKE_EFFECTMESH_FBX_
+		if (strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
+		{
+			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f));
+		}
+
+		if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0)
+		{
+			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f));
+		}
+#else // _BAKE_EFFECTMESH_FBX_
 		if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
 		{
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
 		}
-
-		//if (strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
-		//{
-		//	GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f));
-		//}
+#endif // _BAKE_EFFECTMESH_FBX_
 		itr++;
 	}
 }
