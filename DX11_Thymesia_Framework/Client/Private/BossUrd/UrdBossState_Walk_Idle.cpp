@@ -93,15 +93,15 @@ _bool CUrdBossState_Walk_Idle::Check_AndChangeNextState()
 	switch (iRand)
 	{
 	case 0:
-		Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_AttackCount(false);
+		Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_WalkStart(false);
 		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_WalkL>(0.05f);
 		return true;
 		break;
 	case 1:
-		Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_AttackCount(false);
+		Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_WalkStart(false);
 		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_WalkR>(0.05f);
 		return true;
-		break;
+
 	}
 
 	return false;

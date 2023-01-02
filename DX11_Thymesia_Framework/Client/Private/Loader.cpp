@@ -239,6 +239,8 @@ HRESULT CLoader::Loading_ForTestLevel()
 	this->Load_CorvusModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
 	this->Load_BossMobModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Rare Mob..."));
+	this->Load_RareMobModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
 	this->Load_EliteMobModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
@@ -348,6 +350,8 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	this->Load_CorvusModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
 	this->Load_BossMobModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Rare Mob..."));
+	this->Load_RareMobModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
 	this->Load_EliteMobModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
@@ -604,6 +608,8 @@ HRESULT CLoader::Loading_ForEditLevel()
 	this->Load_CorvusModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
 	this->Load_BossMobModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Rare Mob..."));
+	this->Load_RareMobModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
 	this->Load_EliteMobModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
@@ -1452,6 +1458,19 @@ void CLoader::Load_NormalMobModel()
 
 void CLoader::Load_RareMobModel()
 {
+	_matrix TransformMatrix = XMMatrixIdentity();
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Rare_ArmorMan", "../Bin/Resources/Meshes/RareMonster/ArmorMan/ArmorMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Rare_ShieldMan", "../Bin/Resources/Meshes/RareMonster/ShieldMan/ShieldMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Rare_SpearMan", "../Bin/Resources/Meshes/RareMonster/SpearMan/SpearMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Rare_SkullMan", "../Bin/Resources/Meshes/RareMonster/SkullMan/SkullMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 }
 
 void CLoader::Load_EliteMobModel()
@@ -1460,6 +1479,18 @@ void CLoader::Load_EliteMobModel()
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.0f, 0.0037f, 0.0037f);
 	GAMEINSTANCE->Load_Model("Elite_Joker", "../Bin/Resources/Meshes/EliteMonster/Joker/Joker.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Elite_BigHandman", "../Bin/Resources/Meshes/EliteMonster/BigHandMan/BigHandMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Elite_GreatSwordman", "../Bin/Resources/Meshes/EliteMonster/GreatSwordMan/GreatSwordMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Elite_TwinSwordman", "../Bin/Resources/Meshes/EliteMonster/TwinSwordMan/TwinSwordMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Elite_TwinSwordWoman", "../Bin/Resources/Meshes/EliteMonster/TwinSwordWoman/TwinSwordMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Joker_Weapon", "../Bin/Resources/Meshes/EliteMonster/Joker/Hammer/Hammer.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);

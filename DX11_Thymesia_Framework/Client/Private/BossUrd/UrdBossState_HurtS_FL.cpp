@@ -56,6 +56,9 @@ void CUrdBossState_HurtS_FL::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	m_iParryCount += 1;
+	Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FL>().lock()->Set_ParryCount(1);
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	
 	
@@ -102,6 +105,14 @@ _bool CUrdBossState_HurtS_FL::Check_AndChangeNextState()
 		return false;
 
 
+	if (m_bParryStart)
+	{
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
+		{
+			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Parry_R>(0.05f);
+			return true;
+		}
+	}
 
 	return false;
 }

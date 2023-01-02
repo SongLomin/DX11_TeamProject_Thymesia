@@ -88,7 +88,48 @@ _bool CUrdBossState_Skill_Idle::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	//거리가 가까우면 뒤로 거리가멀면 
 
+	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
+
+	if (fPToMDistance <= 3.5f)
+	{
+		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill01>(0.05f);
+		return true;
+	}
+	
+
+	if (fPToMDistance > 3.5f)
+	{
+		
+
+		_uint  iRand = rand() % 2;
+
+		switch (iRand)
+		{
+		case 0:
+		{
+			_int iResulut = ComputeDirectionToPlayer();
+
+			switch (iResulut)
+			{
+			case 1:
+				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill03_L>(0.05f);
+				break;
+			case -1:
+				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill03_R>(0.05f);
+				break;
+			}
+		}
+			break;
+		case 1:
+			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill02_1>(0.05f);
+			break;
+		}
+
+
+		return true;
+	}
 
 	return false;
 }

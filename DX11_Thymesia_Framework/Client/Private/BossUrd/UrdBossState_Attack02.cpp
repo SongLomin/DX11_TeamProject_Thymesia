@@ -41,7 +41,7 @@ void CUrdBossState_Attack02::Tick(_float fTimeDelta)
 
 	if (m_bAttackLookAtLimit)
 	{
-		TurnAttack(fTimeDelta);
+		TurnAttack(fTimeDelta * 2.f);
 	}
 
 	
@@ -90,6 +90,9 @@ void CUrdBossState_Attack02::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_Attack(false);
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_WalkStart(true);
+	Get_Owner().lock()->Get_Component<CUrdBossState_Step_Idle>().lock()->Set_NoParryAttack(false);
 	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
 }
 
@@ -109,7 +112,7 @@ _bool CUrdBossState_Attack02::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.3f)
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 		m_bAttackLookAtLimit = false;
 
 	if (ComputeAngleWithPlayer() > 0.99f && m_bAttackLookAtLimit)

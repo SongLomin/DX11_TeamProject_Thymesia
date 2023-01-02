@@ -9,6 +9,7 @@
 #include "Character.h"
 #include "BossUrd/UrdStates.h"
 
+
 GAMECLASS_C(CUrdBossState_StepFL);
 CLONE_C(CUrdBossState_StepFL, CComponent)
 
@@ -39,7 +40,7 @@ void CUrdBossState_StepFL::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
-	TurnAttack(fTimeDelta);
+	Rotation_TargetToLookDir();
 	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -57,6 +58,9 @@ void CUrdBossState_StepFL::LateTick(_float fTimeDelta)
 void CUrdBossState_StepFL::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+	
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.f, 2.f, 2.f));
+	 
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	
@@ -75,6 +79,7 @@ void CUrdBossState_StepFL::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
 }
 
 
@@ -103,7 +108,11 @@ _bool CUrdBossState_StepFL::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.8f)
+	{
+		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
+		return true;
+	}
 
 	return false;
 }

@@ -1,0 +1,271 @@
+0. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_Avoid_B
+1. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_Avoid_L
+2. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_Avoid_R
+3. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_ComboD01
+4. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_ComboD01-2
+5. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_ComboD01-3
+6. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_ComboD01_End
+7. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_ComboF01
+8. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_ComboG01
+9. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_Fall_End
+10. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_Fall_Loop
+11. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_Parry_L
+12. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_Parry_L_2
+13. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_Parry_R
+14. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_Parry_R_2
+15. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_Sit_Idle
+16. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_SitToIdle
+17. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_SP01_Attack
+18. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_SP_Idle1
+19. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_SP_Idle1_End
+20. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_SP_Idle2
+21. SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_SP_Idle2_End
+22. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_ComboA01
+23. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_ComboA02
+24. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_ComboA03
+25. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_ComboB01
+26. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_ComboC01
+27. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_ComboC02
+28. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_ComboC03
+29. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_Dead
+30. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtCounter
+31. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtFall_End_FaceUp
+32. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtFall_Loop_FaceUp
+33. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtKnockBack
+34. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtKnockDownB
+35. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtKnockUp_Sart
+36. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtL_F
+37. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtLieDie_FaceDown
+38. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtLieDie_FaceUp
+39. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtLieGetup_FaceDown
+40. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtLieGetup_FaceUp
+41. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtLieLoop_FaceDown
+42. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtLieLoop_FaceUp
+43. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtM_FL
+44. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtM_FR
+45. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtS_FL
+46. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtS_FR
+47. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtStunEnd
+48. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtStunLoop
+49. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtStunStart
+50. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_HurtXL_F
+51. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_Idle
+52. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_IdleN
+53. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_IdleN2Fight
+54. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_Run_F
+55. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_TurnL90
+56. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_TurnNL90
+57. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_TurnNR90
+58. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_TurnR90
+59. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_VS_TakeExecution
+60. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_VS_TakeExecution02
+61. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_WalkB
+62. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_WalkBL
+63. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_WalkBR
+64. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_WalkF
+65. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_WalkFL
+66. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_WalkFN
+67. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_WalkFR
+68. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_WalkL
+69. SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_WalkR
+70. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_Attack01
+71. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_Attack02_1
+72. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_Attack02_2
+73. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_Attack02_3
+74. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_Attack03
+75. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_Attack04
+76. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_Block
+77. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_HurtFall_End_FaceUp
+78. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_HurtKnockBack
+79. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_HurtKnockUp_Sart
+80. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_HurtL_F
+81. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_HurtLieDie_FaceDown
+82. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_HurtLieDie_FaceUp
+83. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_HurtLieGetup_FaceDown
+84. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_HurtLieGetup_FaceUp
+85. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_HurtLieLoop_FaceDown
+86. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_HurtLieLoop_FaceUp
+87. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_HurtM_FL
+88. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_HurtM_FR
+89. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_HurtS_FL
+90. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_HurtS_FR
+91. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_HurtStunEnd
+92. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_HurtStunLoop
+93. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_HurtStunStart
+94. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_Idle
+95. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_IdleN
+96. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_IdleN2Fight
+97. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_Parry_Attack01
+98. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_Parry_Attack02
+99. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_Run_F
+100. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_Sit_Idle
+101. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_SitToIdle
+102. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_SP_Attack01_End
+103. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_SP_Attack01_Start
+104. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_SP_Idle1
+105. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_SP_Idle1_End
+106. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_SP_Idle2
+107. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_SP_Idle2_End
+108. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_WalkB
+109. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_WalkBL
+110. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_WalkBR
+111. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_WalkF
+112. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_WalkFL
+113. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_WalkFN
+114. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_WalkFR
+115. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_WalkL
+116. SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_WalkR
+117. SK_C_HArmorTypeLV0_02.ao|LArmor_VS_TakeExecution_01
+118. SK_C_HArmorTypeLV0_02.ao|LArmor_VS_TakeExecution_02
+RootNode
+SK_C_HArmorTypeLV0_02.ao
+root
+ik_hand_l
+ik_hand_l_end
+ik_hand_r
+ik_hand_r_end
+ik_foot_l
+ik_foot_l_end
+ik_foot_r
+ik_foot_r_end
+ik_weapon_r
+ik_weapon_r_end
+ik_weapon_l
+ik_weapon_l_end
+AnimTargetPoint
+AnimTargetPoint_end
+camera
+camera_end
+pelvis
+Bip001-Pelvis
+spine_01
+spine_02
+spine_03
+neck_01
+head
+Bip001-HeadNub
+Bip001-HeadNub_end
+clavicle_l
+upperarm_l
+lowerarm_l
+hand_l
+thumb_01_l
+thumb_02_l
+thumb_03_l
+Bip001-L-Finger0Nub
+Bip001-L-Finger0Nub_end
+index_01_l
+index_02_l
+index_03_l
+Bip001-L-Finger1Nub
+Bip001-L-Finger1Nub_end
+middle_01_l
+middle_02_l
+middle_03_l
+Bip001-L-Finger2Nub
+Bip001-L-Finger2Nub_end
+ring_01_l
+ring_02_l
+ring_03_l
+Bip001-L-Finger3Nub
+Bip001-L-Finger3Nub_end
+pinky_01_l
+pinky_02_l
+pinky_03_l
+Bip001-L-Finger4Nub
+Bip001-L-Finger4Nub_end
+weapon_l
+weapon_l_pivot
+weapon_l_end
+weapon_l_end_end
+clavicle_r
+upperarm_r
+lowerarm_r
+hand_r
+thumb_01_r
+thumb_02_r
+thumb_03_r
+Bip001-R-Finger0Nub
+Bip001-R-Finger0Nub_end
+index_01_r
+index_02_r
+index_03_r
+Bip001-R-Finger1Nub
+Bip001-R-Finger1Nub_end
+middle_01_r
+middle_02_r
+middle_03_r
+Bip001-R-Finger2Nub
+Bip001-R-Finger2Nub_end
+ring_01_r
+ring_02_r
+ring_03_r
+Bip001-R-Finger3Nub
+Bip001-R-Finger3Nub_end
+pinky_01_r
+pinky_02_r
+pinky_03_r
+Bip001-R-Finger4Nub
+Bip001-R-Finger4Nub_end
+weapon_r
+weapon_r_pivot
+weapon_r_end
+weapon_r_end_end
+SK_W_Halberd01_Bone
+SK_W_Halberd01_Bone_end
+Bone_shoulder01
+Bone_shoulder02_End
+Bone_shoulder02_End_end
+Bone_Cloak01
+Bone_Cloak02
+Bone_Cloak03
+Bone_Cloak04
+Bone_Cloak05
+Bone_Cloak06
+Bone_Cloak07_End
+Bone_Cloak07_End_end
+Bone_Fitting04_1
+Bone_Fitting04_1_end
+Root_Bone_Belt01
+Bone_Belt01_1
+Bone_Belt01_2
+Bone_Belt01_3_E
+Bone_Belt01_3_E_end
+Bone_Belt04_1
+Bone_Belt04_2_End
+Bone_Belt04_2_End_end
+Bone_Fitting05_01
+Bone_Fitting05_01_end
+Root_Bone_Belt02
+Bone_Belt02_1
+Bone_Belt02_2
+Bone_Belt02_3_End
+Bone_Belt02_3_End_end
+Bone_Fitting03_1
+Bone_Fitting03_2_End
+Bone_Fitting03_2_End_end
+Bone_Fitting02_1
+Bone_Fitting02_2_End
+Bone_Fitting02_2_End_end
+Bone_Fitting01_1
+Bone_Fitting01_1_End
+Bone_Fitting01_1_End_end
+thigh_r
+calf_r
+foot_r
+ball_r
+Bip001-R-Toe0Nub
+Bip001-R-Toe0Nub_end
+Root_Bone_Belt03
+Bone_Belt03_1
+Bone_Belt03_2
+Bone_Belt03_3_End
+Bone_Belt03_3_End_end
+thigh_l
+calf_l
+foot_l
+ball_l
+Bip001-L-Toe0Nub
+Bip001-L-Toe0Nub_end
+SK_C_HArmorTypeLV0_02.mo
+0[SK_C_HArmorTypeLV0_02.md]. 33186
