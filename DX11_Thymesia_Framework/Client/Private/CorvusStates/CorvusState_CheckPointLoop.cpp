@@ -62,7 +62,7 @@ void CCorvusState_CheckPointLoop::OnStateStart(const _float& In_fAnimationBlendT
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	
 #endif
 #endif
 

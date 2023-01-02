@@ -289,19 +289,19 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Hammer>();
 			break;
 		case 2:
-			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Knife>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Hammer_Upgrade>();
 			break;
 		case 3:
 			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Scythe>();
 			break;
 		case 4:
-			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Axe>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Scythe_Upgrade>();
 			break;
 		case 5:
-			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Magician>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Axe>();
 			break;
 		case 6:
-			Get_OwnerPlayer()->Change_State<CCorvusState_PS_CaneSword>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Knife>();
 			break;
 		case 7:
 			Get_OwnerPlayer()->Change_State<CCorvusState_Execution_R_R>();
@@ -318,7 +318,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 
 	if (KEY_INPUT(KEY::NUM9, KEY_STATE::TAP))
 	{
-		if (6 == m_iSkillType)
+		if (9 == m_iSkillType)
 			m_iSkillType = 0;
 		else
 			m_iSkillType++;
@@ -327,7 +327,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 	if (KEY_INPUT(KEY::NUM8, KEY_STATE::TAP))
 	{
 		if (0 == m_iSkillType)
-			m_iSkillType = 6;
+			m_iSkillType = 9;
 		else
 			m_iSkillType--;
 	}

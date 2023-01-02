@@ -1799,6 +1799,8 @@
     <ClInclude Include="..\Public\Prop_Fence.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Scythe.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Hammer.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Hammer_Upgrade.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Scythe_Upgrade.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3641,6 +3643,8 @@
     <ClCompile Include="..\Private\Prop_Fence.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Scythe.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Hammer.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Hammer_Upgrade.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Scythe_Upgrade.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

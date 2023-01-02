@@ -32,7 +32,7 @@ void CCorvusState_PS_Hammer::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_PW_Hammer_B_Ver2");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_PW_Hammer_A");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_Hammer::Call_AnimationEnd, this);
 }
 
@@ -62,18 +62,18 @@ void CCorvusState_PS_Hammer::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
-#ifdef _DEBUG
-#ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
-#endif
-#endif
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
 
+	if (m_pThisAnimationCom.lock())
+		m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_PS_Hammer::Call_NextKeyFrame, this, placeholders::_1);
 }
 
 void CCorvusState_PS_Hammer::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	if (m_pThisAnimationCom.lock())
+		m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CCorvusState_PS_Hammer::Call_NextKeyFrame, this, placeholders::_1);
 }
 
 void CCorvusState_PS_Hammer::Call_AnimationEnd()
@@ -83,6 +83,32 @@ void CCorvusState_PS_Hammer::Call_AnimationEnd()
 
 	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
 
+}
+
+void CCorvusState_PS_Hammer::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
+	switch (In_KeyIndex)
+	{
+	case 40:
+	{
+		GET_SINGLE(CGameManager)->Store_EffectIndex("Corvus_PW_EyeGlow", GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_PW_EyeGlow", m_pTransformCom, _uint(TIMESCALE_LAYER::PLAYER)));
+	}
+	return;
+	case 102:
+	{
+		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_vector vShakingOffset = XMVectorSet(0.f, -1.f, 0.f, 0.f);
+		vShakingOffset = XMVector3TransformNormal(vShakingOffset, OwnerWorldMatrix);
+		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffset, 0.3f, 1.f, 9.f, 0.4f);
+		GAMEINSTANCE->Set_MotionBlur(0.3f);
+	}
+	return;
+	case 156:
+	{
+		GET_SINGLE(CGameManager)->UnUse_EffectGroup("Corvus_PW_EyeGlow", GET_SINGLE(CGameManager)->Get_StoredEffectIndex("Corvus_PW_EyeGlow"));
+	}
+	return;
+	}
 }
 
 

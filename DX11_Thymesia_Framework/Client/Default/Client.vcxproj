@@ -363,9 +363,11 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Axe.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_CaneSword.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Hammer.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Hammer_Upgrade.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Knife.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Magician.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Scythe.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Scythe_Upgrade.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_UrdSword.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_VargSword.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_VargSwordStart.h" />
@@ -969,9 +971,11 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Axe.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_CaneSword.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Hammer.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Hammer_Upgrade.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Knife.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Magician.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Scythe.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Scythe_Upgrade.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_UrdSword.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_VargSword.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_VargSwordStart.cpp" />

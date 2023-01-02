@@ -83,7 +83,7 @@ void CCorvusState_ParryDeflectRight::OnStateStart(const _float& In_fAnimationBle
 	//}
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	
 #endif
 #endif
 

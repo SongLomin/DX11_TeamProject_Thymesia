@@ -72,15 +72,6 @@ void CCorvusState_PS_VargSword::OnStateStart(const _float& In_fAnimationBlendTim
 		m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_PS_VargSword::Call_NextKeyFrame, this, placeholders::_1);
 
 	m_pPhysXControllerCom.lock()->Callback_ControllerHit += bind(&CCorvusState_PS_VargSword::Call_OtherControllerHit, this, placeholders::_1);
-
-
-
-#ifdef _DEBUG
-#ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
-#endif
-#endif
-
 }
 
 void CCorvusState_PS_VargSword::OnStateEnd()
