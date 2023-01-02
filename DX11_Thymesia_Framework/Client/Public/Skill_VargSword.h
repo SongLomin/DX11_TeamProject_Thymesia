@@ -12,7 +12,6 @@ public:
 	SHALLOW_COPY(CSkill_VargSword)
 
 public:
-	virtual void UseSkill() override;
 	virtual void Start() override;
 private:
 	virtual void Init_SkillInfo() override;

@@ -275,9 +275,11 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 			}
 		}
 
-	if (KEY_INPUT(KEY::O, KEY_STATE::TAP))
+	if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
 	{
 		Rotation_InputToLookDir();
+		m_pOwner.lock()->Get_Component<CPlayerSkill_System>().lock()->UseMainSKill();
+		/*
 		switch (m_iSkillType)
 		{
 		case 0:
@@ -309,9 +311,17 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		case 8:
 			Get_OwnerPlayer()->Change_State<CCorvusState_Execution_Start>();
 			break;
-		}
+		}*/
 		return true;
 	}
+
+	if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
+	{
+		Rotation_InputToLookDir();
+		m_pOwner.lock()->Get_Component<CPlayerSkill_System>().lock()->UseStealSKill();
+		return true;
+	}
+
 
 	if (KEY_INPUT(KEY::NUM9, KEY_STATE::TAP))
 	{

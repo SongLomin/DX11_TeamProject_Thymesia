@@ -47,7 +47,26 @@ void CPreset_ItemData::CreateItemData(weak_ptr<class CItem> pItem, ITEM_NAME eIt
 		pItem.lock()->m_eItemType = ITEM_TYPE::CONSUMPTION;
 		pItem.lock()->m_iMaxQuantity = 99;
 		break;
-
+	case Client::ITEM_NAME::SKILLPIECE_AXE:
+		pItem.lock()->m_eItemType = ITEM_TYPE::SKILLPIECE;
+		pItem.lock()->m_iMaxQuantity = 99;
+		break;
+	case Client::ITEM_NAME::SKILLPIECE_HAMMER:
+		pItem.lock()->m_eItemType = ITEM_TYPE::SKILLPIECE;
+		pItem.lock()->m_iMaxQuantity = 99;
+		break;
+	case Client::ITEM_NAME::SKILLPIECE_KNIFE:
+		pItem.lock()->m_eItemType = ITEM_TYPE::SKILLPIECE;
+		pItem.lock()->m_iMaxQuantity = 99;
+		break;
+	case Client::ITEM_NAME::SKILLPIECE_SCYTHE:
+		pItem.lock()->m_eItemType = ITEM_TYPE::SKILLPIECE;
+		pItem.lock()->m_iMaxQuantity = 99;
+		break;
+	case Client::ITEM_NAME::SKILLPIECE_VARGSWORD:
+		pItem.lock()->m_eItemType = ITEM_TYPE::SKILLPIECE;
+		pItem.lock()->m_iMaxQuantity = 99;
+		break;
 	default:
 		break;
 	}
@@ -79,6 +98,21 @@ void CPreset_ItemData::SetUITextureFromItemName(weak_ptr<class CUI> Out_pUI, ITE
 		break;
 	case Client::ITEM_NAME::MEMORY02:
 		Out_pUI.lock()->Set_Texture("Item_Icon_Memory02");
+		break;
+	case Client::ITEM_NAME::SKILLPIECE_AXE:
+		Out_pUI.lock()->Set_Texture("Item_Icon_SkillPiece");
+		break;
+	case Client::ITEM_NAME::SKILLPIECE_HAMMER:
+		Out_pUI.lock()->Set_Texture("Item_Icon_SkillPiece");
+		break;
+	case Client::ITEM_NAME::SKILLPIECE_KNIFE:
+		Out_pUI.lock()->Set_Texture("Item_Icon_SkillPiece");
+		break;
+	case Client::ITEM_NAME::SKILLPIECE_SCYTHE:
+		Out_pUI.lock()->Set_Texture("Item_Icon_SkillPiece");
+		break;
+	case Client::ITEM_NAME::SKILLPIECE_VARGSWORD:
+		Out_pUI.lock()->Set_Texture("Item_Icon_SkillPiece");
 		break;
 	default:
 		break;

@@ -156,18 +156,23 @@ void CUI_Landing::Call_Landing(LANDING_TYPE eLandingType)
         switch (eLevel)
         {
         case Client::LEVEL_LOBBY:
+            m_pLanding.lock()->Set_Size(820.f, 643.f);
             m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture("Landing_SafeHouse");
             break;
         case Client::LEVEL_GAMEPLAY:
+            m_pLanding.lock()->Set_Size(820.f, 643.f);
             m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture("Landing_SeaOfTrees");
             break;
         case Client::LEVEL_STAGE2:
+            m_pLanding.lock()->Set_Size(820.f, 643.f);
             m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture("Landing_RoyalGarden");
             break;
         case Client::LEVEL_STAGE3:
+            m_pLanding.lock()->Set_Size(820.f, 643.f);
             m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture("Landing_HermesFortress");
             break;
         case Client::LEVEL_TEST:
+            m_pLanding.lock()->Set_Size(820.f, 643.f);
             m_pLanding.lock()->Get_Component<CTexture>().lock()->Use_Texture("Landing_HermesFortress");
             break;
         default:

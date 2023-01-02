@@ -13,12 +13,6 @@ GAMECLASS_C(CSkill_VargSword)
 CLONE_C(CSkill_VargSword, CComponent)
 
 
-void CSkill_VargSword::UseSkill()
-{
-	__super::UseSkill();
-
-}
-
 void CSkill_VargSword::Start()
 {
 	__super::Start();

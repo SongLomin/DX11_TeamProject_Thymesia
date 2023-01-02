@@ -71,6 +71,8 @@ void Preset::AddGameObject::TalentSetting()
 	pThrust2Talent.lock()->Callback_OnMouseOver += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOver, pEvolveMenu_Talent.lock(), placeholders::_1);
 	pThrust2Talent.lock()->Callback_OnMouseOut += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOut, pEvolveMenu_Talent.lock(), placeholders::_1);
 
+	
+	
 	pEvolveMenu_Talent.lock()->SetRootTalent(pSword1Talent, CUI_EveolveMenu_Talent::TALENT_TAP::TALENT_SWORD);
 
 	// 검파트  공중공격@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -102,20 +104,32 @@ void Preset::AddGameObject::TalentSetting()
 	pExecutionTalent.lock()->Add_Component<CTalent_Effect_Execution>();
 	pExecutionTalent.lock()->Set_TalentName(TALENT_NAME::EXECUTION);
 	pExecutionTalent.lock()->Set_Active(true);
+	pExecutionTalent.lock()->Callback_OnMouseOver += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOver, pEvolveMenu_Talent.lock(), placeholders::_1);
+	pExecutionTalent.lock()->Callback_OnMouseOut += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOut, pEvolveMenu_Talent.lock(), placeholders::_1);
+
+
 
 	// 치유의처형1
 	weak_ptr<CTalent> pHealingExecution1Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
 	pHealingExecution1Talent.lock()->Add_Component<CTalent_Effect_HealingExecutionLV1>();
 	pHealingExecution1Talent.lock()->Set_TalentName(TALENT_NAME::HEALINGEXECUTIONLV1);
 	pHealingExecution1Talent.lock()->Set_Parent(pExecutionTalent);
+	pHealingExecution1Talent.lock()->Callback_OnMouseOver += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOver, pEvolveMenu_Talent.lock(), placeholders::_1);
+	pHealingExecution1Talent.lock()->Callback_OnMouseOut += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOut, pEvolveMenu_Talent.lock(), placeholders::_1);
 
 	// 치유의처형2
 	weak_ptr<CTalent> pHealingExecution2Talent = GAMEINSTANCE->Add_GameObject<CTalent>(LEVEL_STATIC);
 	pHealingExecution2Talent.lock()->Add_Component<CTalent_Effect_HealingExecutionLV2>();
 	pHealingExecution2Talent.lock()->Set_TalentName(TALENT_NAME::HEALINGEXECUTIONLV2);
 	pHealingExecution2Talent.lock()->Set_Parent(pHealingExecution1Talent);
+	pHealingExecution2Talent.lock()->Callback_OnMouseOver += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOver, pEvolveMenu_Talent.lock(), placeholders::_1);
+	pHealingExecution2Talent.lock()->Callback_OnMouseOut += bind(&CUI_EveolveMenu_Talent::Call_TalentMouseOut, pEvolveMenu_Talent.lock(), placeholders::_1);
 
-	// 검파트 처형
+	pEvolveMenu_Talent.lock()->SetRootTalent(pExecutionTalent, CUI_EveolveMenu_Talent::TALENT_TAP::TALENT_SWORD);
+
+
+	// 검파트 처형 끝
+
 
 	// 검파트 날카로운 공격 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 

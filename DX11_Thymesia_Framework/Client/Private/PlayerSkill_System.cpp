@@ -2,6 +2,9 @@
 #include "PlayerSkill_System.h"
 #include "ClientComponent_Utils.h"
 #include "Skill_Base.h"
+#include "PlayerSkillHeader.h"
+#include "RequirementChecker.h"
+#include "Requirement_Time.h"
 
 GAMECLASS_C(CPlayerSkill_System);
 CLONE_C(CPlayerSkill_System, CComponent)
@@ -14,6 +17,11 @@ HRESULT CPlayerSkill_System::Initialize_Prototype()
 
 HRESULT CPlayerSkill_System::Initialize(void* pArg)
 {
+    __super::Initialize(pArg);
+
+    USE_START(CPlayerSkill_System);
+
+
 
     return S_OK;
 }
@@ -22,13 +30,16 @@ void CPlayerSkill_System::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
-    
+
     Tick_SkillList(fTimeDelta);
+    m_pStealSkill.lock()->Tick(fTimeDelta);
+
 
 }
 
 void CPlayerSkill_System::LateTick(_float fTimeDelta)
 {
+    __super::LateTick(fTimeDelta);
 
 }
 
@@ -37,36 +48,47 @@ void CPlayerSkill_System::Start()
     __super::Start();
 
 
+    m_pStealSkill = m_pOwner.lock()->Get_Component<CStolenSkill>();
 
+    SetUp_MonsterSkillMap();
 }
 
 void CPlayerSkill_System::ResetAllSkillCoolDown()
 {
     for (_uint i = 0; i < (_uint)SOCKET_TYPE::SOCKET_END; i++)
     {
-        if (m_pSkillList[i].lock())
+        if (m_SkillList[i].lock())
         {
-            m_pSkillList[i].lock()->Reset_Skill();
+            m_SkillList[i].lock()->Reset_Skill();
         }
     }
 }
 
 void CPlayerSkill_System::UseMainSKill()
 {
-    if (!m_pSkillList[(_uint)SOCKET_TYPE::SOCKET_MAIN].lock())
+    if (!m_SkillList[(_uint)SOCKET_TYPE::SOCKET_MAIN].lock())
         return;
 
-    m_pSkillList[(_uint)SOCKET_TYPE::SOCKET_MAIN].lock()->UseSkill();
+    m_SkillList[(_uint)SOCKET_TYPE::SOCKET_MAIN].lock()->UseSkill();
+}
+
+void CPlayerSkill_System::UseStealSKill()
+{
+    if (!m_pStealSkill.lock())
+        return;
+
+   
+    m_pStealSkill.lock()->UseSkill();
 }
 
 void CPlayerSkill_System::SwapSkillMaintoSub()
 {
     //서브나 메인 스킬 둘중에 하나라도 없으면 스왑 X
-    if (!m_pSkillList[(_uint)SOCKET_TYPE::SOCKET_MAIN].lock() || !m_pSkillList[(_uint)SOCKET_TYPE::SOCKET_SUB].lock())
+    if (!m_SkillList[(_uint)SOCKET_TYPE::SOCKET_MAIN].lock() || !m_SkillList[(_uint)SOCKET_TYPE::SOCKET_SUB].lock())
         return;
 
-    weak_ptr<CSkill_Base>   pSkillBase_Main = m_pSkillList[(_uint)SOCKET_TYPE::SOCKET_MAIN];
-    weak_ptr<CSkill_Base>   pSkillBase_Sub = m_pSkillList[(_uint)SOCKET_TYPE::SOCKET_SUB];
+    weak_ptr<CSkill_Base>   pSkillBase_Main = m_SkillList[(_uint)SOCKET_TYPE::SOCKET_MAIN];
+    weak_ptr<CSkill_Base>   pSkillBase_Sub = m_SkillList[(_uint)SOCKET_TYPE::SOCKET_SUB];
 
     UnBindSkill(SOCKET_TYPE::SOCKET_MAIN);
     UnBindSkill(SOCKET_TYPE::SOCKET_SUB);
@@ -75,38 +97,63 @@ void CPlayerSkill_System::SwapSkillMaintoSub()
     OnChangeSkill(pSkillBase_Main, SOCKET_TYPE::SOCKET_SUB);
 }
 
+HRESULT CPlayerSkill_System::OnStealMonsterSkill(MONSTERTYPE In_eMonsterType)
+{
+    //몬스터 스킬을 뺏었을 때.
+    MONSTERSKILLMAP::iterator mapIter;
+
+    mapIter = m_MonsterSkillMap.find(In_eMonsterType);
+
+    if (mapIter == m_MonsterSkillMap.end())
+    {
+        //만약에 바인딩된 스킬이 없을 경우, 
+        return E_FAIL;
+    }
+    m_pStealSkill.lock()->OnStealSkill(mapIter->second);
+    
+    Callback_OnStealSkill(m_pStealSkill);
+    return S_OK;
+}
 
 void CPlayerSkill_System::UnBindSkill(SOCKET_TYPE eType)
 {
-    if (!m_pSkillList[(_uint)eType].lock())
+    if (!m_SkillList[(_uint)eType].lock())
         return;
 
-    m_pSkillList[(_uint)eType].lock()->Clear_Callback();
-    m_pSkillList[(_uint)eType] = weak_ptr<CSkill_Base>();
+    m_SkillList[(_uint)eType].lock()->Clear_Callback();
+    m_SkillList[(_uint)eType] = weak_ptr<CSkill_Base>();
 }
 
 void CPlayerSkill_System::OnChangeSkill(weak_ptr<CSkill_Base> pSkill, SOCKET_TYPE eType)
 {
-    if (m_pSkillList[(_uint)eType].lock())
+    if (m_SkillList[(_uint)eType].lock())
     {
-        m_pSkillList[(_uint)eType].lock()->Clear_Callback();
+        m_SkillList[(_uint)eType].lock()->Clear_Callback();
     }
     if (!pSkill.lock())
     {
         DEBUG_ASSERT;
     }
     
-    m_pSkillList[(_uint)eType] = pSkill;
+    m_SkillList[(_uint)eType] = pSkill;
    
     Callback_OnChangeSkill[(_uint)eType](pSkill);
 }
+void CPlayerSkill_System::SetUp_MonsterSkillMap()
+{
+   m_MonsterSkillMap.emplace(MONSTERTYPE::AXEMAN, m_pOwner.lock()->Get_Component<CSkill_Axe>());
+   m_MonsterSkillMap.emplace(MONSTERTYPE::VARG, m_pOwner.lock()->Get_Component<CSkill_VargSword>());
+   m_MonsterSkillMap.emplace(MONSTERTYPE::KNIFEWOMAN, m_pOwner.lock()->Get_Component<CSkill_Knife>());
+
+}
+
 void CPlayerSkill_System::Tick_SkillList(_float fTimeDelta)
 {
     for (_uint i = 0; i < (_uint)SOCKET_TYPE::SOCKET_END; i++)
     {
-        if (m_pSkillList[i].lock())
+        if (m_SkillList[i].lock())
         {
-            m_pSkillList[i].lock()->Tick(fTimeDelta);
+            m_SkillList[i].lock()->Tick(fTimeDelta);
         }
     }
 }

@@ -8,6 +8,9 @@ END
 
 BEGIN(Client)
 
+
+class CEasingComponent_Float;
+
 class CHUD_PlagueWeapon_Steal_Icon :public CDissolveUI
 {
 	GAMECLASS_H(CHUD_PlagueWeapon_Steal_Icon);
@@ -24,12 +27,12 @@ public:
 protected:
 	virtual HRESULT SetUp_ShaderResource() override;
 
-public:
-	void Free();
-
-
 private:
 	weak_ptr<CTexture>	m_pMask;
+
+private:
+	void Free();
+
 };
 
 

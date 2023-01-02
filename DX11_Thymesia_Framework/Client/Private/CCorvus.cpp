@@ -9,16 +9,27 @@
 #include "Light_Prop.h"
 #include "Status_Player.h"
 #include "PhysXController.h"
-#include "PlayerSkillHeader.h"
+
 #include "Inventory.h"
+#include "Talent_Effects.h"
+#include "PlayerSkill_System.h"
+#include "Skill_Axe.h"
+#include "Skill_VargSword.h"
+#include "StolenSkill.h"
+
+
+
 #include "UI_BloodOverlay.h"
 #include "UI_PauseMenu.h"
 #include "UIManager.h"
+#include "UI_Landing.h"
 #include "UI_AppearEventVarg.h"
 #include "Monster.h"
+#include "PlayerSkillHeader.h"
 #include "Talent_Effects.h"
 #include "UI_Landing.h"
 #include "BoneNode.h"
+
 
 
 GAMECLASS_C(CCorvus)
@@ -182,7 +193,7 @@ void CCorvus::Tick(_float fTimeDelta)
 		Set_RimLightDesc(0.5f, { 0.6f,0.f,0.f }, 1.f);
 	}
 	
-
+	Update_KeyInput(fTimeDelta);
 	Debug_KeyInput(fTimeDelta);
 
 }
@@ -349,6 +360,14 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 	return S_OK;
 }
 
+void CCorvus::OnStealMonsterSkill(MONSTERTYPE eMonstertype)
+{
+	__super::OnStealMonsterSkill(eMonstertype);
+
+	m_pSkillSystem.lock()->OnStealMonsterSkill(eMonstertype);
+
+}
+
 
 void CCorvus::Debug_KeyInput(_float fTimeDelta)
 {
@@ -411,16 +430,14 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 		GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front().lock()->Call_Landing(
 			CUI_Landing::LANDING_ENTER_STAGE);	
 	}
-
-	if (KEY_INPUT(KEY::P, KEY_STATE::TAP))
-	{
-		m_pSkillSystem.lock()->SwapSkillMaintoSub();
-	}
 	if (KEY_INPUT(KEY::INSERTKEY, KEY_STATE::TAP))
 	{
 		Change_State<CCorvusState_Die>();
 	}
-
+	if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
+	{
+		OnStealMonsterSkill(MONSTERTYPE::AXEMAN);
+	}
 #ifdef _DEBUG
 	//if (KEY_INPUT(KEY::UP, KEY_STATE::TAP))
 	//{
@@ -430,6 +447,15 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	//	cout << "m_iContainerIndex : " << m_iContainerIndex << endl;
 	//}
 #endif // _DEBUG
+}
+
+void CCorvus::Update_KeyInput(_float fTimeDelta)
+{
+	if (KEY_INPUT(KEY::C, KEY_STATE::TAP))
+	{
+		m_pSkillSystem.lock()->SwapSkillMaintoSub();
+	}
+	
 }
 
 void CCorvus::Ready_Weapon()
@@ -562,18 +588,19 @@ void CCorvus::Ready_States()
 
 void CCorvus::Ready_Skills()
 {
-	//스킬 추가입니다.
-	m_pSkillSystem = Add_Component<CPlayerSkill_System>();
 	Add_Component<CSkill_VargSword>();
 	Add_Component<CSkill_Axe>();
+	Add_Component<CStolenSkill>();
+	Add_Component<CSkill_Knife>();
+
+	//스킬 추가입니다.
+	m_pSkillSystem = Add_Component<CPlayerSkill_System>();
 
 }
 
 void CCorvus::SetUp_ShaderResource()
 {
 	__super::SetUp_ShaderResource();
-
-
 }
 
 void CCorvus::Move_RootMotion_Internal()
@@ -616,8 +643,6 @@ void CCorvus::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 		break;
 	}
 
-
-	
 }
 
 void CCorvus::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)

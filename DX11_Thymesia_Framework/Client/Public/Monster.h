@@ -40,6 +40,8 @@ public:
     virtual _float  Get_CamOffset() const { return 0.f; }
     _float  Get_TimeAcc() const { return m_fTimeAcc; }
 
+    MONSTERTYPE Get_MonsterType();
+
     weak_ptr<CMonsterHPBar_Base>    Get_HPBar() { return m_pHPBar; }
 
     const STATE_LINK_MONSTER_DESC& Get_LinkStateDesc() { return m_tLinkStateDesc; }

@@ -28,8 +28,6 @@
 
 #include <DirectXTex.h>
 
-
-
 using namespace DirectX;
 
 

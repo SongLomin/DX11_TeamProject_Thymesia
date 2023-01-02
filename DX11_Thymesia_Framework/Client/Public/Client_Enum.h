@@ -473,6 +473,7 @@ namespace Client
 	{
 		SKILL_VARGSWORD,
 		SKILL_AXE,
+		SKILL_KNIFE,
 		SKILL_END
 	};
 
@@ -489,8 +490,10 @@ namespace Client
 		MEMORY02,
 
 		SKILLPIECE_VARGSWORD,
-
-
+		SKILLPIECE_AXE,
+		SKILLPIECE_KNIFE,
+		SKILLPIECE_SCYTHE,
+		SKILLPIECE_HAMMER,
 		ITEM_NAME_END
 	};
 
@@ -510,7 +513,6 @@ namespace Client
 		LEVEL4,
 		LEVEL5
 	};
-
 	enum class BATATTACK_DOTRESULT
 	{
 		MID,

@@ -26,6 +26,10 @@ public:
     virtual void Thread_PreLateTick(_float fTimeDelta) override;
     virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
+public:
+    virtual void                        OnStealMonsterSkill(MONSTERTYPE eMonstertype) override;
+
+
 protected:
     virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
@@ -34,6 +38,9 @@ protected:
 private:
     virtual void OnEventMessage(_uint iArg) override;
     void Debug_KeyInput(_float fTimeDelta);
+
+    void Update_KeyInput(_float fTimeDelta);
+
     void Ready_Weapon();
     void Ready_States();
     void Ready_Skills();
