@@ -424,6 +424,7 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_PS_Axe);
 	ADD_STATE_MACRO(CCorvusState_PS_CaneSword);
 	ADD_STATE_MACRO(CCorvusState_PS_Knife);
+	ADD_STATE_MACRO(CCorvusState_PS_Scythe);
 	ADD_STATE_MACRO(CCorvusState_PS_Magician);
 	ADD_STATE_MACRO(CCorvusState_PS_UrdSword);
 	ADD_STATE_MACRO(CCorvusState_PS_VargSword);

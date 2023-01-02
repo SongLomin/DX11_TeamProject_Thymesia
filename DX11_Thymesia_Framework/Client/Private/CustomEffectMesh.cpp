@@ -1702,16 +1702,17 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 	{
 		if (ImGui::CollapsingHeader("CustomEffectMesh"), ImGuiTreeNodeFlags_DefaultOpen)
 		{
-			if (ImGui::TreeNode("! For Collider Mesh, use EffectMesh0455 !"))
+#ifdef _EFFECT_TOOL_
+			if (ImGui::TreeNode("!!!!For Collider Mesh, use EffectMesh0455!!!!"))
 			{
-				ImGui::Text("↓↓↓↓↓↓↓↓↓↓↓↓Collider Mesh↓↓↓↓↓↓↓↓↓↓↓↓");
 				if (ImGui::Button("Collider Mesh##Make_Collider_Mesh"))
 				{
 					Make_Collider();
 				}
-				ImGui::Text("↑↑↑↑↑↑↑↑↑↑↑↑Collider Mesh↑↑↑↑↑↑↑↑↑↑↑↑");
+
 				ImGui::TreePop();
 			}
+#endif // _EFFECT_TOOL_
 
 
 			if (ImGui::Button("Clone##Clone_EffectMesh"))

@@ -292,7 +292,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Knife>();
 			break;
 		case 3:
-			Get_OwnerPlayer()->Change_State<CCorvusState_Urd_Execution>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Scythe>();
 			break;
 		case 4:
 			Get_OwnerPlayer()->Change_State<CCorvusState_PS_UrdSword>();
@@ -308,6 +308,9 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 			break;
 		case 8:
 			Get_OwnerPlayer()->Change_State<CCorvusState_Execution_Start>();
+			break;
+		case 9:
+			Get_OwnerPlayer()->Change_State<CCorvusState_Urd_Execution>();
 			break;
 		}
 		return true;
