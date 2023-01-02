@@ -387,11 +387,12 @@ PS_OUT PS_MAIN_DISSOLVE(PS_IN_NORMAL In)
 
     Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexUV);
     Out.vShaderFlag = g_vShaderFlag;
-
+        
     float fStepValue1 = IsIn_Range(0.03f, 0.05f, diff);
     float fStepValue2 = IsIn_Range(0.05f, 0.065f, diff);
     float fStepValue3 = IsIn_Range(0.065f, 0.08f, diff);
-
+    
+   
     Out.vDiffuse = IsIn_Range(0.f, 0.03f, diff) * vector(1.f, 0.95f, 0.9f, 1.f) +
                    fStepValue1 * vector(1.f, 0.9f, 0.4f, 1.f) +
                    fStepValue2 * vector(0.9f, 0.1f, 0.f, 1.f) +

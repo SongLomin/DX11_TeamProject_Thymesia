@@ -74,9 +74,9 @@ HRESULT CWindow_Shader_Dev::Render(ID3D11DeviceContext* pDeviceContext)
 	if (ImGui::CollapsingHeader("LiftGammaGain"))
 	{
 		
-		ImGui::ColorPicker4("Lift", &m_vLiftColor.x, ImGuiColorEditFlags_AlphaPreviewHalf | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_InputRGB);
-		ImGui::ColorPicker4("Gamma", &m_vGammaColor.x, ImGuiColorEditFlags_AlphaPreviewHalf | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_InputRGB);
-		ImGui::ColorPicker4("Gain", &m_vGainColor.x, ImGuiColorEditFlags_AlphaPreviewHalf | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_InputRGB);
+		ImGui::DragFloat4("Lift", &m_vLiftColor.x, 0.01f, 0.f, 10.f, "%.3f");
+		ImGui::DragFloat4("Gamma", &m_vGammaColor.x, 0.01f, 0.f, 10.f, "%.3f");
+		ImGui::DragFloat4("Gain", &m_vGainColor.x, 0.01f, 0.f, 10.f, "%.3f");
 	
 		if (ImGui::Button("Update LiftGammaGain"))
 		{
