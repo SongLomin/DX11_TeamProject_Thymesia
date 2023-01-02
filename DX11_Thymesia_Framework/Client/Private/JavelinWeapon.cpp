@@ -24,7 +24,7 @@ HRESULT CJavelinWeapon::Initialize(void* pArg)
 
 	m_vOffset = { 0.f, 0.f, 0.f };
 
-	m_pModelCom.lock()->Init_Model("Boss_UrdWeapon", "", (_uint)TIMESCALE_LAYER::MONSTER);
+	m_pModelCom.lock()->Init_Model("Boss_UrdWeapon2", "", (_uint)TIMESCALE_LAYER::MONSTER);
 
 	m_pShaderCom.lock()->Set_ShaderInfo(
 		TEXT("Shader_VtxModel"),

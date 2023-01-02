@@ -139,14 +139,15 @@ _bool CUrdBossState_Skill01::Check_AndChangeNextState()
 		}
 
 		//Get_OwnerMonster()->Get_JavelinWeapon().push_back(GAMEINSTANCE->Add_GameObject<CJavelinWeapon>(m_CreatedLevel));
-		Get_OwnerMonster()->Get_JavelinWeapon().back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
-		Get_OwnerMonster()->Get_JavelinWeapon().back().lock()->Get_Transform()->Rotation(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(-180.0f));
+		Get_OwnerMonster()->Get_JavelinWeapon().back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "AnimTargetPoint");
+		//Get_OwnerMonster()->Get_JavelinWeapon().back().lock()->Get_Transform()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(180.0f));
 
 	}	
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 43 && !m_bOne)
 	{
 		Get_OwnerMonster()->Get_JavelinWeapon().back().lock()->Set_BoneBindOff(false);
+		//Get_OwnerMonster()->Get_JavelinWeapon().back().lock()->Get_Transform()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(-90.0f));
 		//Get_OwnerMonster()->Get_JavelinWeapon().back().lock()->Get_Transform()->LookAt2D(pCurrentPlayer.lock()->Get_WorldPosition());
 		//Get_OwnerMonster
 	
