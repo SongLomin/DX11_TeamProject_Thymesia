@@ -244,18 +244,18 @@ void CClientLevel::Tick_Key_InputEvent()
 
 void CClientLevel::Call_StageLanding()
 {	
-	if (m_eMyLevel == LEVEL_LOADING || m_eMyLevel == LEVEL_LOGO)
-		return;
+	//if (m_eMyLevel == LEVEL_LOADING || m_eMyLevel == LEVEL_LOGO)
+	//	return;
 
-	weak_ptr<CUI_Landing> pUILanding = GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front();
-		
-	if (!pUILanding.lock())
-	{
-		return;
-	}
-	pUILanding.lock()->Call_Landing(
-		CUI_Landing::LANDING_ENTER_STAGE
-	);
+	//weak_ptr<CUI_Landing> pUILanding = GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front();
+	//	
+	//if (!pUILanding.lock())
+	//{
+	//	return;
+	//}
+	//pUILanding.lock()->Call_Landing(
+	//	CUI_Landing::LANDING_ENTER_STAGE
+	//);
 }
 
 void CClientLevel::Change_NextLevel(void* pArg)

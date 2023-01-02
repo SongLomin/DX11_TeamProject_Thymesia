@@ -30,6 +30,7 @@
 #include "Interaction_Item.h"
 #include "Interaction_DeadSpot.h"
 #include "Section_Eventer.h"
+#include "Fog.h"
 #include "Water.h"
 #include "Prop_Fence.h"
 

@@ -60,8 +60,8 @@ HRESULT CLevel_Test::Initialize()
 
 	GAMEINSTANCE->Set_CameraFar(CameraDesc.fFar);
 
-	weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_TEST);
-	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);
+	/*weak_ptr<CCorvus> pCorvus = GAMEINSTANCE->Add_GameObject<CCorvus>(LEVEL_TEST);
+	GET_SINGLE(CGameManager)->Set_CurrentPlayer(pCorvus);*/
 
 #ifdef _TEST_DYNAMIC_PROPS_
 	GAMEINSTANCE->Add_GameObject<CDynamic_Prop>(LEVEL_TEST).lock()->Get_Transform()->Add_Position({ 5.f, 2.f, 5.f });

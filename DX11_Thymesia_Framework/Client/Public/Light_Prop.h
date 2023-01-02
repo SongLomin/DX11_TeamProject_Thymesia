@@ -28,6 +28,7 @@ public:
 
 public:
     const LIGHTDESC& Get_LightDesc() { return m_tLightDesc; }
+    void  Set_LightDesc(const LIGHTDESC& In_Desc);
 
 public:
     virtual void Write_Json(json& Out_Json) override;

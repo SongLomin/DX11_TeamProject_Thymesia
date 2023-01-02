@@ -123,6 +123,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_CastleGate>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Note>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Item>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CFog>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CProp_Fence>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CSection_Eventer>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CWater>();
@@ -406,7 +407,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Environmental Shader Effects..."));
-	GAMEINSTANCE->Set_FogDesc(_float4(0.2f, 0.15f, 0.03f, 0.5f), 20.f);
+	//GAMEINSTANCE->Set_FogDesc(_float4(0.2f, 0.15f, 0.03f, 0.5f), 20.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 	GAMEINSTANCE->Set_Contrast(1.07f);
 	GAMEINSTANCE->Set_Saturation(1.7f);
@@ -493,7 +494,7 @@ HRESULT CLoader::Loading_ForStage2Level()
 
 	GAMEINSTANCE->Add_Light(LightDesc);
 
-	GAMEINSTANCE->Set_FogDesc(_float4(0.45f, 0.26f, 0.28f, 0.92f), 160.f);
+	//GAMEINSTANCE->Set_FogDesc(_float4(0.45f, 0.26f, 0.28f, 0.92f), 160.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 1.f, 1.f, 1.f), _float4(1.f, 1.f, 1.f, 1.f), _float4(1.f, 1.f, 1.f, 1.f));
 	GAMEINSTANCE->Set_Contrast(1.2f);
 	GAMEINSTANCE->Set_Saturation(1.5f);
@@ -549,7 +550,7 @@ HRESULT CLoader::Loading_ForStage3Level()
 	GAMEINSTANCE->Load_Textures("Sky", TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 #endif // _SKYBOX_
 
-	GAMEINSTANCE->Set_FogDesc(_float4(0.5f, 0.5f, 0.5f, 0.65f), 50.f);
+	//GAMEINSTANCE->Set_FogDesc(_float4(0.5f, 0.5f, 0.5f, 0.65f), 50.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 	GAMEINSTANCE->Set_Contrast(1.f);
 	GAMEINSTANCE->Set_Saturation(1.f);
@@ -637,8 +638,7 @@ HRESULT CLoader::Loading_ForEditLevel()
 	LightDesc.fIntensity = 0.1f;
 #endif // _BRIGHT_LIGHT_
 
-	GAMEINSTANCE->Clear_Lights();
-	GAMEINSTANCE->Add_Light(LightDesc);
+	//GAMEINSTANCE->Add_Light(LightDesc);
 
 	GAMEINSTANCE->Set_FogDesc(_float4(0.2f, 0.15f, 0.03f, 0.f), 10000.f);
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
