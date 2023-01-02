@@ -305,6 +305,27 @@ void CPreset_UIDesc::Set_CUI_ItemInformaiton_BindItem(weak_ptr<class CUI_ItemInf
         pUI.lock()->m_pItemTitle.lock()->Set_Texture("Item_Memory02_Title");
         pUI.lock()->m_pItemInformation.lock()->Set_Texture("Item_Memory02_Information");
         break;
+
+    case Client::ITEM_NAME::SKILLPIECE_AXE:
+        pUI.lock()->m_pItemTitle.lock()->Set_Texture("Item_SkillPiece_Axe_Title");
+        pUI.lock()->m_pItemInformation.lock()->Set_Texture("Item_SkillPiece_Information");
+        break;
+    case Client::ITEM_NAME::SKILLPIECE_HAMMER:
+        pUI.lock()->m_pItemTitle.lock()->Set_Texture("Item_SkillPiece_Hammer_Title");
+        pUI.lock()->m_pItemInformation.lock()->Set_Texture("Item_SkillPiece_Information");
+        break;
+    case Client::ITEM_NAME::SKILLPIECE_KNIFE:
+        pUI.lock()->m_pItemTitle.lock()->Set_Texture("Item_SkillPiece_Knife_Title");
+        pUI.lock()->m_pItemInformation.lock()->Set_Texture("Item_SkillPiece_Information");
+        break;
+    case Client::ITEM_NAME::SKILLPIECE_SCYTHE:
+        pUI.lock()->m_pItemTitle.lock()->Set_Texture("Item_SkillPiece_Scythe_Title");
+        pUI.lock()->m_pItemInformation.lock()->Set_Texture("Item_SkillPiece_Information");
+        break;
+    case Client::ITEM_NAME::SKILLPIECE_VARGSWORD:
+        pUI.lock()->m_pItemTitle.lock()->Set_Texture("Item_SkillPiece_VargSword_Title");
+        pUI.lock()->m_pItemInformation.lock()->Set_Texture("Item_SkillPiece_Information");
+        break;
     default:
         break;
     }
@@ -330,7 +351,6 @@ void CPreset_UIDesc::Set_CUI_ItemInformaiton_BindItem(weak_ptr<class CUI_ItemInf
         break;
     }
 }
-
 void CPreset_UIDesc::Set_CUI_ItemPopup_Ready_Popup(weak_ptr<class CUI> pUI, ITEM_NAME eItemName)
 {
     switch (eItemName)
@@ -356,6 +376,24 @@ void CPreset_UIDesc::Set_CUI_ItemPopup_Ready_Popup(weak_ptr<class CUI> pUI, ITEM
     case Client::ITEM_NAME::MEMORY02:
         pUI.lock()->Set_Texture("Popup_Item_Memory02");
         break;
+
+    case Client::ITEM_NAME::SKILLPIECE_AXE:
+        pUI.lock()->Set_Texture("Popup_SkillPiece_Axe");
+        break;
+    case Client::ITEM_NAME::SKILLPIECE_HAMMER:
+        pUI.lock()->Set_Texture("Popup_SkillPiece_Hammer");
+        break;
+    case Client::ITEM_NAME::SKILLPIECE_KNIFE:
+        pUI.lock()->Set_Texture("Popup_SkillPiece_Knife");
+        break;
+    case Client::ITEM_NAME::SKILLPIECE_SCYTHE:
+        pUI.lock()->Set_Texture("Popup_SkillPiece_Scythe");
+        break;
+    case Client::ITEM_NAME::SKILLPIECE_VARGSWORD:
+        pUI.lock()->Set_Texture("Popup_SkillPiece_Varg");
+        break;
+
+
     default:
         break;
     }

@@ -543,6 +543,7 @@
     <ClInclude Include="..\Public\Section_Eventer.h" />
     <ClInclude Include="..\Public\Skill_Axe.h" />
     <ClInclude Include="..\Public\Skill_base.h" />
+    <ClInclude Include="..\Public\Skill_Knife.h" />
     <ClInclude Include="..\Public\Skill_VargSword.h" />
     <ClInclude Include="..\Public\State_Monster.h" />
     <ClInclude Include="..\Public\State_Player.h" />
@@ -550,6 +551,7 @@
     <ClInclude Include="..\Public\Status_Monster.h" />
     <ClInclude Include="..\Public\Status_Player.h" />
     <ClInclude Include="..\Public\Preset_PhysXControllerDesc.h" />
+    <ClInclude Include="..\Public\StolenSkill.h" />
     <ClInclude Include="..\Public\TargetCurve.h" />
     <ClInclude Include="..\Public\TestUI.h" />
     <ClInclude Include="..\Public\UIManager.h" />
@@ -1128,8 +1130,10 @@
     <ClCompile Include="..\Private\Requirement_State.cpp" />
     <ClCompile Include="..\Private\Skill_Axe.cpp" />
     <ClCompile Include="..\Private\Skill_Base.cpp" />
+    <ClCompile Include="..\Private\Skill_Knife.cpp" />
     <ClCompile Include="..\Private\Skill_VargSword.cpp" />
     <ClCompile Include="..\Private\Status_Boss.cpp" />
+    <ClCompile Include="..\Private\StolenSkill.cpp" />
     <ClCompile Include="..\Private\TargetCurve.cpp" />
     <ClCompile Include="..\Private\UIManager.cpp" />
     <ClCompile Include="..\Private\UI_AppearEventVarg.cpp" />

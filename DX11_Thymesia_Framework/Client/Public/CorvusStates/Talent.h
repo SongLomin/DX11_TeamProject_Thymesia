@@ -86,7 +86,7 @@ public:
     virtual void	CheckLButtonClick(_bool bActive);
                                           
 
-    void            Set_Root();
+    void            OnActive();
 public:
     _uint			GetActiveNodeCount(weak_ptr<CTalent> In_Talent);
     weak_ptr<CTalent> Get_RootNode();

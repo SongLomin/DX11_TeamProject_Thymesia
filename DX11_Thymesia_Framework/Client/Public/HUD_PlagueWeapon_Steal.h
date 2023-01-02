@@ -25,9 +25,23 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext);
 
+public:
+	/*Delegate  From SkillSystem*/
+	virtual void		Call_OnChangeSkill(weak_ptr<CSkill_Base> pSkillBase) override;
+
+	/*Delegate From SkillBase*/
+	virtual void		Call_UseStartSkill() override;
+	virtual void		Call_UpdateCoolDown(_float fCoolDownRatio) override;
+	virtual void		Call_EndCoolDown() override;
+
+
 private:
-	weak_ptr<CCustomUI>				m_pPlagueWeapon_Decoration;//쿨타임 알려주는 게이지 프레임
-	weak_ptr<CHUD_PlagueWeapon_Steal_Icon>	m_pPlagueWeapon_Icon;//아이콘
+		virtual void			Bind_Player() override;
+
+private:
+	weak_ptr<CCustomUI>						m_pPlagueWeapon_Decoration;	//쿨타임 알려주는 게이지 프레임
+
+
 public:
 	void Free();
 

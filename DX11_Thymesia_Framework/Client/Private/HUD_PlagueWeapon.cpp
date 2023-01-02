@@ -32,19 +32,16 @@ HRESULT CHUD_PlagueWeapon::Initialize(void* pArg)
 	m_pSubSkill.lock()->Bind_Player_FromSocketType((_uint)CPlayerSkill_System::SOCKET_TYPE::SOCKET_SUB);
 
 
-
-
 	UI_DESC tStealSKillDesc = { 1502.f, 785.f, 93.f, 93.f, 0.f };
 
-	//m_pStealSkill = GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon_Steal>(LEVEL_STATIC, &tStealSKillDesc);
+	m_pStealSkill = GAMEINSTANCE->Add_GameObject<CHUD_PlagueWeapon_Steal>(LEVEL_STATIC, &tStealSKillDesc);
 
 
 	m_eRenderGroup = RENDERGROUP::RENDER_BEFOREUI;
 
 	Add_Child(m_pMainSkill);
 	Add_Child(m_pSubSkill);
-
-	//Add_Child(m_pStealSkill);
+	Add_Child(m_pStealSkill);
 
 
 	return S_OK;

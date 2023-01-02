@@ -7,8 +7,6 @@ class CPlayerStateBase;
 class CRequirement_PlayerStatusMana;
 class CRequirement_Time;
 
-
-
 class CSkill_Base : public CClientComponent
 {
 
@@ -24,13 +22,11 @@ public:
     virtual void    LateTick(_float fTimeDelta) override;
 
 public:
-    _float      Get_SkillCollDown() { return m_fSkillCoolDown; }
+    _float      Get_SkillCoolDown() { return m_fSkillCoolDown; }
 
     SKILL_NAME  Get_SkillName() { return m_eSkillName; }
     SKILL_TYPE  Get_SkillType() { return m_eSkillType; }
-
-
-
+    weak_ptr<CPlayerStateBase>  Get_SkillState() { return m_pSkillState; }
 
 public:
     /*
@@ -42,7 +38,7 @@ public:
 
     _float  Get_RatioCoolDown();
 
-    virtual void    Reset_Skill();
+    virtual void            Reset_Skill();
 public:
     void                    Clear_Callback();
 

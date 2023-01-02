@@ -32,9 +32,9 @@ public:
     _uint Get_CurrentStateIndex() const;
     _uint Get_PreStateIndex() const;
     _bool Is_Edit() const { return m_isEdit; }
-    PxControllerCollisionFlags Get_LastCollisionFlags() const { return m_LastCollisionFlags; }
-    void        Set_MonsterType(MONSTERTYPE Monstertype) { m_eMonsterType = Monstertype; }
-    const MONSTERTYPE Get_MonsterType()  const { return m_eMonsterType; }
+    PxControllerCollisionFlags  Get_LastCollisionFlags() const { return m_LastCollisionFlags; }
+  
+
     weak_ptr<CPhysXCharacterController> Get_PhysX() { return m_pPhysXControllerCom; }
     weak_ptr<CStatus>   Get_Status() { return m_pStatus; }
 
@@ -47,6 +47,10 @@ public:
     _bool Get_SuperArmor() const { return m_bSuperArmor; }
     void Set_PassIndex(const _uint In_iPassIndex) { m_iPassIndex = In_iPassIndex; }
     void Set_RimLightDesc(const _float In_fLightTime, const _float3 In_vColor, const _float In_fPower);
+
+public:
+    virtual void                        OnStealMonsterSkill(MONSTERTYPE Monstertype);
+
 
 public:
     virtual void Enable_Weapons(const _bool In_bEnable) {};
@@ -90,8 +94,9 @@ private:
     PxControllerCollisionFlags m_LastCollisionFlags;
 
 
-protected: /* For. RootMotion */
-    MONSTERTYPE                m_eMonsterType = MONSTERTYPE::NMON_END;
+protected:
+    
+
 
 public:
     virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage);

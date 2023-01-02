@@ -61,9 +61,13 @@ HRESULT CUI_EveolveMenu_Talent::Start()
     tUIDesc.fSizeY = 40.f;
     tUIDesc.fDepth = 0.1f;
 
-    SetUp_TalentNode(m_pRoot[0], tUIDesc);
+    _float      fOffsetX = 150.f;
 
-    int a = 10;
+    for (_uint i = 0; i < m_pRootList[m_iTapIndex].size(); i++)
+    {
+        tUIDesc.fX += fOffsetX * i;
+        SetUp_TalentNode(m_pRootList[m_iTapIndex][i], tUIDesc);
+    }
 
     return S_OK;
 }
@@ -99,7 +103,7 @@ void CUI_EveolveMenu_Talent::LateTick(_float fTimeDelta)
 
 void CUI_EveolveMenu_Talent::SetRootTalent(weak_ptr<CTalent> In_pTalent, TALENT_TAP eRootType)
 {
-    m_pRoot[(_uint)eRootType] = In_pTalent;
+    m_pRootList[(_uint)eRootType].push_back(In_pTalent);
 }
 
 void CUI_EveolveMenu_Talent::Create_Background()
@@ -204,7 +208,6 @@ void CUI_EveolveMenu_Talent::Init_Tap()
 void CUI_EveolveMenu_Talent::Update_UI()
 {
 
-
 }
 
 void CUI_EveolveMenu_Talent::OnEnable(void* pArg)
@@ -216,12 +219,12 @@ void CUI_EveolveMenu_Talent::OnEnable(void* pArg)
     if (!m_pFadeMask.lock())
         m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 
-    for (_uint i = 0; i < 1; i++)
+    for (_uint i = 0; i < m_pRootList[m_iTalentIndex].size(); i++)
     {
-        if (m_pRoot[i].lock())
+        if (m_pRootList[m_iTalentIndex][i].lock())
         {
-            m_pRoot[i].lock()->Set_Enable(true);
-            m_pRoot[i].lock()->Set_Root();
+            m_pRootList[m_iTalentIndex][i].lock()->Set_Enable(true);
+            m_pRootList[m_iTalentIndex][i].lock()->OnActive();//루트들은 기본적으로 켜져 있다.
         }
     }
 
@@ -232,11 +235,11 @@ void CUI_EveolveMenu_Talent::OnDisable()
 
     ShowCursor(false);
 
-    for (_uint i = 0; i < (_uint)TALENT_TAP::TALENT_TAP_END; i++)
+    for (_uint i = 0; i < m_pRootList[m_iTalentIndex].size(); i++)
     {
-        if (m_pRoot[i].lock())
+        if (m_pRootList[m_iTalentIndex][i].lock())
         {
-            m_pRoot[i].lock()->Set_Enable(false);
+            m_pRootList[m_iTalentIndex][i].lock()->Set_Enable(false);
         }
     }
 }
@@ -328,10 +331,16 @@ void CUI_EveolveMenu_Talent::TalentViewInformaiton_MouseOver(TALENT_NAME eTalent
     case Client::TALENT_NAME::JUMPATTACKLV3:
         break;
     case Client::TALENT_NAME::EXECUTION:
+        m_pTalentTitle.lock()->Set_Texture("EvolveMenu_Talent_Icon_Execution_Title");
+        m_pTalentInformation.lock()->Set_Texture("EvolveMenu_Talent_Icon_Execution_Information");
         break;
     case Client::TALENT_NAME::HEALINGEXECUTIONLV1:
+        m_pTalentTitle.lock()->Set_Texture("EvolveMenu_Talent_Icon_HealingExecution0_Title");
+        m_pTalentInformation.lock()->Set_Texture("EvolveMenu_Talent_Icon_HealingExecution0_Information");
         break;
     case Client::TALENT_NAME::HEALINGEXECUTIONLV2:
+        m_pTalentTitle.lock()->Set_Texture("EvolveMenu_Talent_Icon_HealingExecution1_Title");
+        m_pTalentInformation.lock()->Set_Texture("EvolveMenu_Talent_Icon_HealingExecution1_Information");
         break;
     case Client::TALENT_NAME::SHARPWEAPONLV1:
         break;

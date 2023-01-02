@@ -50,6 +50,11 @@ _uint CCharacter::Get_PreStateIndex() const
 	return m_pPreState.lock()->Get_StateIndex();
 }
 
+void CCharacter::OnStealMonsterSkill(MONSTERTYPE Monstertype)
+{
+	
+}
+
 void CCharacter::Set_RimLightDesc(const _float In_fLightTime, const _float3 In_vColor, const _float In_fPower)
 {
 	m_fRimLightTime = m_fRimLightTimeAcc = In_fLightTime;
