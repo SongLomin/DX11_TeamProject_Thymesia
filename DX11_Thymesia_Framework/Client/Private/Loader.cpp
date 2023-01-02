@@ -580,6 +580,25 @@ HRESULT CLoader::Loading_ForEditLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading Effect Meshes..."));
 	Load_AllEffectMesh();
 
+
+#ifdef _EFFECT_TOOL_
+#ifdef _CORVUS_MODEL_
+	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));
+	this->Load_CorvusModel();
+#endif // _CORVUS_MODEL
+#ifdef _BOSS_MODEL_
+	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
+	this->Load_BossMobModel();
+#endif // _BOSS_MODEL_
+#ifdef _ELITE_MOB_MODEL_
+	lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
+	this->Load_EliteMobModel();
+#endif // _ELITE_MOB_MODEL_
+#ifdef _NORMAL_MOB_MODEL_
+	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
+	this->Load_NormalMobModel();
+#endif // _NORMAL_MOB_MODEL_
+#else //_EFFECT_TOOL_
 	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));
 	this->Load_CorvusModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
@@ -588,8 +607,9 @@ HRESULT CLoader::Loading_ForEditLevel()
 	this->Load_EliteMobModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
 	this->Load_NormalMobModel();
+#endif // _EFFECT_TOOL_
 
-//#ifdef _MAP_TOOL_
+#ifndef _EFFECT_TOOL_
 	lstrcpy(m_szLoadingText, TEXT("Loading Prop Textures..."));
 	Load_AllTexture("../Bin/Resources/Textures/Prop/", MEMORY_TYPE::MEMORY_DYNAMIC);
 	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Textures..."));
@@ -611,7 +631,7 @@ HRESULT CLoader::Loading_ForEditLevel()
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
-//#endif // _MAP_TOOL_
+#endif // _MAP_TOOL_
 
 	// TODO : Turn off temporarily for Light_Prop
 	LIGHTDESC LightDesc;
@@ -647,7 +667,6 @@ HRESULT CLoader::Loading_ForEditLevel()
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
 	m_isFinished = true;
-
 	return S_OK;
 }
 
@@ -750,15 +769,22 @@ void CLoader::Load_AllEffectMeshInPath_Recursive(const filesystem::path& In_Path
 		szFileName = entry.path().filename().string().c_str();
 		szFileName = szFileName.substr(0, szFileName.size() - 4);
 
+#ifdef _BAKE_EFFECTMESH_FBX_
+		if (strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
+		{
+			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f));
+		}
+
+		if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0)
+		{
+			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f));
+		}
+#else // _BAKE_EFFECTMESH_FBX_
 		if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
 		{
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
 		}
-
-		//if (strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
-		//{
-		//	GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f));
-		//}
+#endif // _BAKE_EFFECTMESH_FBX_
 		itr++;
 	}
 }

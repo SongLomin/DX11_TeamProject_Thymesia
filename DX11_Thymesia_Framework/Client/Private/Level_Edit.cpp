@@ -38,22 +38,20 @@ HRESULT CLevel_Edit::Initialize()
 
 void CLevel_Edit::Tick(_float fTimeDelta)
 {
-	__super::Tick(fTimeDelta);
-
 	m_pImGui_Manager->Tick(fTimeDelta);
 
 #ifdef	_RENDER_FPS_
-	//m_fTimeAcc += fTimeDelta;
+	m_fTimeAcc += fTimeDelta;
 
-	//if (m_fTimeAcc >= 1.f)
-	//{
-	//	wsprintf(m_szFPS, TEXT("Thymesia : EDIT | %d"), m_iNumRender);
-	//	m_TextInfo_FPS.szText = m_szFPS;
-	//	m_fTimeAcc = 0.f;
-	//	m_iNumRender = 0;
-	//}
+	if (m_fTimeAcc >= 1.f)
+	{
+		wsprintf(m_szFPS, TEXT("Thymesia : EDIT | %d"), m_iNumRender);
+		m_TextInfo_FPS.szText = m_szFPS;
+		m_fTimeAcc = 0.f;
+		m_iNumRender = 0;
+	}
 
-	//++m_iNumRender;
+	++m_iNumRender;
 #endif // _RENDER_FPS_
 }
 

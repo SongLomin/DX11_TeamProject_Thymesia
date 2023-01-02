@@ -4,7 +4,7 @@
 #include "Status_Player.h"
 #include "Player.h"
 #include "ClientComponent_Utils.h"
-#include "CCorvus.h"
+#include "Corvus.h"
 #include "RequirementChecker.h"
 #include "Requirement_PlayerStatusMana.h"
 #include "Requirement_Time.h"

@@ -67,7 +67,9 @@ public: // For. ON / OFF Eye Effect
     }
     const _uint Get_StoredEffectIndex(const char* szEffectName)
     {
-        return m_StoredEffects[szEffectName];
+        _uint iIndex = m_StoredEffects[szEffectName];
+        m_StoredEffects.erase(szEffectName);
+        return iIndex;
     }
 
 private:

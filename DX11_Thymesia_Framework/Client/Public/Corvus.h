@@ -9,7 +9,7 @@ class CTalent_Sword;
 class CPlayerSkill_System;
 
 
-class CCorvus : 
+class CCorvus final : 
     public CPlayer
 {
     GAMECLASS_H(CCorvus)

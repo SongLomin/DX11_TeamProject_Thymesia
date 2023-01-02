@@ -863,6 +863,20 @@ void CCustomEffectMesh::Apply_ImGui_Controls_to_Mesh()
 		XMStoreFloat3(&m_vCurrentRotation, XMLoadFloat3(&m_tEffectMeshDesc.vStartRotation));
 	}
 }
+
+void CCustomEffectMesh::Make_Collider()
+{
+	m_tEffectMeshDesc.fInitTime = 0.f;
+	m_tEffectMeshDesc.fLifeTime = 0.3f;
+	m_tEffectMeshDesc.vStartScale = { FLT_MIN, FLT_MIN , FLT_MIN };
+	m_tEffectMeshDesc.vMaxScale = { FLT_MIN , FLT_MIN , FLT_MIN };
+	m_tEffectMeshDesc.fDiscardRatio = 1.f;
+	m_tEffectMeshDesc.vStartColor = { 0.f, 0.f, 0.f, 0.f };
+	m_tEffectMeshDesc.vMinColor = { 0.f, 0.f, 0.f, 0.f };
+	m_tEffectMeshDesc.vMaxColor = { 0.f, 0.f, 0.f, 0.f };
+	m_tEffectMeshDesc.bCollider = true;
+}
+
 #endif // _EFFECT_TOOL_
 
 void CCustomEffectMesh::Tool_Control()
@@ -1745,6 +1759,19 @@ void CCustomEffectMesh::OnEventMessage(_uint iArg)
 	{
 		if (ImGui::CollapsingHeader("CustomEffectMesh"), ImGuiTreeNodeFlags_DefaultOpen)
 		{
+#ifdef _EFFECT_TOOL_
+			if (ImGui::TreeNode("!!!!For Collider Mesh, use EffectMesh0455!!!!"))
+			{
+				if (ImGui::Button("Collider Mesh##Make_Collider_Mesh"))
+				{
+					Make_Collider();
+				}
+
+				ImGui::TreePop();
+			}
+#endif // _EFFECT_TOOL_
+
+
 			if (ImGui::Button("Clone##Clone_EffectMesh"))
 				Clone_EffectMesh();
 

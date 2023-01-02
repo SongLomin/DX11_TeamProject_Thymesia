@@ -1115,7 +1115,7 @@
     <ClInclude Include="..\Public\NorMonster.h">
       <Filter>02. GameObject\03. Actor\Character\Normal</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CCorvus.h">
+    <ClInclude Include="..\Public\Corvus.h">
       <Filter>02. GameObject\03. Actor\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Player.h">
@@ -1795,6 +1795,12 @@
     <ClInclude Include="..\Public\Window_Player_Dev.h">
       <Filter>97. Tool\01. DeveloperConsole\Windows\05. Player</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Ballon.h" />
+    <ClInclude Include="..\Public\Prop_Fence.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Scythe.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Hammer.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Hammer_Upgrade.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Scythe_Upgrade.h" />
     <ClInclude Include="..\Public\Ballon.h" />
     <ClInclude Include="..\Public\Prop_Fence.h" />
     <ClInclude Include="..\Public\StolenSkill.h" />
@@ -2961,7 +2967,7 @@
     <ClCompile Include="..\Private\NorMonster.cpp">
       <Filter>02. GameObject\03. Actor\Character\Normal</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CCorvus.cpp">
+    <ClCompile Include="..\Private\Corvus.cpp">
       <Filter>02. GameObject\03. Actor\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Player.cpp">
@@ -3643,6 +3649,12 @@
     <ClCompile Include="..\Private\Window_Player_Dev.cpp">
       <Filter>97. Tool\01. DeveloperConsole\Windows\05. Player</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Ballon.cpp" />
+    <ClCompile Include="..\Private\Prop_Fence.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Scythe.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Hammer.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Hammer_Upgrade.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Scythe_Upgrade.cpp" />
     <ClCompile Include="..\Private\Ballon.cpp" />
     <ClCompile Include="..\Private\Prop_Fence.cpp" />
     <ClCompile Include="..\Private\StolenSkill.cpp" />

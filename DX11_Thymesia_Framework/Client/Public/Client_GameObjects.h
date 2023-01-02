@@ -40,7 +40,7 @@
 #include "EditSetActor.h"
 #include "EditEventContoller.h"
 
-#include "CCorvus.h"
+#include "Corvus.h"
 #include "PreViewAnimationModel.h"
 
 #include "Player_HPBar.h"

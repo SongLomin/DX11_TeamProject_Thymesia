@@ -28,8 +28,6 @@ HRESULT CCorvusState_PS_VargSword::Initialize_Prototype()
 HRESULT CCorvusState_PS_VargSword::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
-
 	return S_OK;
 }
 
@@ -72,15 +70,6 @@ void CCorvusState_PS_VargSword::OnStateStart(const _float& In_fAnimationBlendTim
 		m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_PS_VargSword::Call_NextKeyFrame, this, placeholders::_1);
 
 	m_pPhysXControllerCom.lock()->Callback_ControllerHit += bind(&CCorvusState_PS_VargSword::Call_OtherControllerHit, this, placeholders::_1);
-
-
-
-#ifdef _DEBUG
-#ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
-#endif
-#endif
-
 }
 
 void CCorvusState_PS_VargSword::OnStateEnd()
@@ -118,7 +107,7 @@ void CCorvusState_PS_VargSword::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffset, 0.2f, 1.f, 9.f, 0.4f);
 		GAMEINSTANCE->Set_MotionBlur(0.2f);
 	}
-		return;
+	return;
 	case 97:
 	{
 		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
@@ -127,7 +116,7 @@ void CCorvusState_PS_VargSword::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffset, 0.3f, 1.f, 9.f, 0.4f);
 		GAMEINSTANCE->Set_MotionBlur(0.3f);
 	}
-		return;
+	return;
 	case 178:
 	{
 		GET_SINGLE(CGameManager)->UnUse_EffectGroup("Corvus_PW_EyeGlow", GET_SINGLE(CGameManager)->Get_StoredEffectIndex("Corvus_PW_EyeGlow"));

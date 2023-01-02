@@ -54,7 +54,11 @@
 #include "CorvusStates/CorvusState_ParryDeflectRightup.h"
 #include "CorvusStates/CorvusState_PS_Axe.h"
 #include "CorvusStates/CorvusState_PS_CaneSword.h"
+#include "CorvusStates/CorvusState_PS_Scythe.h"
+#include "CorvusStates/CorvusState_PS_Scythe_Upgrade.h"
 #include "CorvusStates/CorvusState_PS_Knife.h"
+#include "CorvusStates/CorvusState_PS_Hammer.h"
+#include "CorvusStates/CorvusState_PS_Hammer_Upgrade.h"
 #include "CorvusStates/CorvusState_PS_Magician.h"
 #include "CorvusStates/CorvusState_PS_UrdSword.h"
 #include "CorvusStates/CorvusState_PS_VargSword.h"
@@ -140,4 +144,4 @@
 //#include "CorvusStates/CorvusState_Win.h"
 //#include "CorvusStates/CorvusState_StandUp.h"
 
-#include "CCorvus.h"
+#include "Corvus.h"

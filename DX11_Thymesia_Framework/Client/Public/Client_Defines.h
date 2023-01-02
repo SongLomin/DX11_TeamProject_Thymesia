@@ -41,12 +41,13 @@
 
 #pragma region Tool
 #define _MAP_TOOL_
-//#define _EFFECT_TOOL_
+#define _EFFECT_TOOL_
+#define _ANIMATION_TOOL_WEAPON_
 #pragma endregion // Tool
 
 #pragma region Boss Mobs
  #define _BOSS_VARG_
-// #define _BOSS_Armature|Armature|Urd_
+// #define _BOSS_URD_
 #pragma endregion // Boss Mobs
 
 #pragma region Normal Mobs
@@ -55,7 +56,6 @@
 #pragma endregion // Normal Mobs
 
 #pragma region Effects
-
 // #define _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
 #define _VARG_EFFECT_
@@ -103,6 +103,7 @@
 #pragma endregion // Normal Mobs
 
 #pragma region Effects
+#undef _BAKE_EFFECTMESH_FBX_
 #undef _EFFECT_TOOL_
 // #define _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
@@ -143,6 +144,12 @@
 
 #pragma region Tool
 #undef _MAP_TOOL_
+#define _CORVUS_MODEL_
+// #define _BOSS_MODEL_
+// #define _ELITE_MOB_MODEL_
+// #define _NORMAL_MOB_MODEL_
+// #define _ANIMATION_TOOL_WEAPON_
+#undef _BAKE_EFFECTMESH_FBX_
 #pragma endregion // Tool
 
 #pragma region Boss Mobs
@@ -157,8 +164,6 @@
 
 #pragma region Effects
 #undef _DAGGER_TRAIL_
-#define _ANIMATION_TOOL_WEAPON_
-// #define _BAKE_EFFECTMESH_FBX_
 #pragma endregion // Effects
 
 #endif // _EFFECT_TOOL_

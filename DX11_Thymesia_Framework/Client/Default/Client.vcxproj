@@ -363,8 +363,12 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectRightup.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Axe.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_CaneSword.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Hammer.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Hammer_Upgrade.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Knife.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Magician.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Scythe.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Scythe_Upgrade.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_UrdSword.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_VargSword.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_VargSwordStart.h" />
@@ -635,7 +639,7 @@
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\Public\Camera_Static.h" />
     <ClInclude Include="..\Public\Camera_Target.h" />
-    <ClInclude Include="..\Public\CCorvus.h" />
+    <ClInclude Include="..\Public\Corvus.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ClientComponent.h" />
     <ClInclude Include="..\Public\ClientLevel.h" />
@@ -971,8 +975,12 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab2.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Axe.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_CaneSword.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Hammer.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Hammer_Upgrade.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Knife.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Magician.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Scythe.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Scythe_Upgrade.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_UrdSword.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_VargSword.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_VargSwordStart.cpp" />
@@ -1231,7 +1239,7 @@
     <ClCompile Include="..\Private\Camera_Free.cpp" />
     <ClCompile Include="..\Private\Camera_Static.cpp" />
     <ClCompile Include="..\Private\Camera_Target.cpp" />
-    <ClCompile Include="..\Private\CCorvus.cpp" />
+    <ClCompile Include="..\Private\Corvus.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ClientComponent.cpp" />
     <ClCompile Include="..\Private\ClientLevel.cpp" />
