@@ -148,7 +148,7 @@ private:
 	shared_ptr<CTexture>		m_pPreFilterTextureCom;
 	shared_ptr<CTexture>		m_pBRDFLUTTextureCom;
 
-
+	shared_ptr<CTexture>		m_pMaskingTextureCom;
 private:
 	list<weak_ptr<CGameObject>>				m_RenderObjects[(_uint)RENDERGROUP::RENDER_END];
 	typedef list<weak_ptr<CGameObject>>		RENDEROBJECTS;

@@ -36,6 +36,8 @@ float g_fGrayScale;
 float g_fContrastValue;
 float g_fSaturation;
 
+texture2D g_MaskTexture;
+
 static const float BlurWeights[13] =
 {
 	0.002216f,
@@ -96,32 +98,41 @@ PS_OUT PS_MAIN_GODRAY(PS_IN In)
     
     Out.vColor = g_OriginalRenderTexture.Sample(DefaultSampler, In.vTexUV);
     
-    matrix matVP = mul(g_CamViewMatrix, g_CamProjMatrix);
+    //matrix matVP = mul(g_CamViewMatrix, g_CamProjMatrix);
        
-    float4 vScreenLightPos = mul(vector(50.f,25.f,50.f,1.f), matVP);
-    vScreenLightPos.x /= vScreenLightPos.w;
-    vScreenLightPos.y /= vScreenLightPos.w;
+    //float4 vScreenLightPos = mul(vector(50.f,25.f,50.f,1.f), matVP);
     
-    vScreenLightPos.x = vScreenLightPos.x * 0.5f + 0.5f;
-    vScreenLightPos.y = vScreenLightPos.y * -0.5f + 0.5f;
+    //if(vScreenLightPos.z < 0.f)
+    //{
+    //    Out.vColor = lerp(Out.vColor, 1.f, 0.1f);
+    //    return Out;
+
+    //}
     
-    half2 vDeltaTexCoord = In.vTexUV - vScreenLightPos.xy;
+    //vScreenLightPos /= vScreenLightPos.w;
+    //vScreenLightPos.x = vScreenLightPos.x * 0.5f + 0.5f;
+    //vScreenLightPos.y = vScreenLightPos.y * -0.5f + 0.5f;
     
-    vDeltaTexCoord *= 1.0f / 64.f/*NUM_SAMPLES*/*0.8f;
+    
+    //half2 vDeltaTexCoord = In.vTexUV - vScreenLightPos.xy;
+    //half fDither = g_MaskTexture.Sample(DefaultSampler, In.vTexUV).r;
+    //vDeltaTexCoord *= 1.0f / 64.f/*NUM_SAMPLES*/*0.8f;
       
-    half illuminationDecay = 1.0f;
-    float s = 0.f;
+    //half illuminationDecay = 1.0f;
+    //float s = 0.f;
     
-    for (int i = 0; i < 64;++i)
-    {
-        float2 vSampleUV = In.vTexUV - vDeltaTexCoord * i;
-        
-        float fDepth = g_DepthTexture.Sample(DefaultSampler, vSampleUV).x;
-        
-        s += (fDepth >= 0.95f) * 1.f / 64.f * 0.8f;
-    }
+    //float2 vSampleUV = In.vTexUV;
     
-    Out.vColor = lerp(Out.vColor, 1.f, 0.2f * s);
+    //for (int i = 0; i < 64;++i)
+    //{
+    //    vSampleUV -= vDeltaTexCoord;
+        
+    //    float fDepth = g_DepthTexture.Sample(DefaultSampler, vSampleUV + vDeltaTexCoord * fDither).x;
+        
+    //    s += (fDepth >= 0.95f) * 1.f / 64.f * 0.8f;
+    //}
+    
+    //Out.vColor = lerp(Out.vColor, 1.f, 0.1f * s);
 
     
     return Out;
