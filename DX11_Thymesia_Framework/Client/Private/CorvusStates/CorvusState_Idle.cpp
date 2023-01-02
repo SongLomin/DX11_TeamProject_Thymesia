@@ -278,8 +278,8 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 	if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
 	{
 		Rotation_InputToLookDir();
-		m_pOwner.lock()->Get_Component<CPlayerSkill_System>().lock()->UseMainSKill();
-		/*
+		// m_pOwner.lock()->Get_Component<CPlayerSkill_System>().lock()->UseMainSKill();
+		
 		switch (m_iSkillType)
 		{
 		case 0:
@@ -300,18 +300,12 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Scythe_Upgrade>();
 			break;
 		case 5:
-			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Axe>();
-			break;
-		case 6:
-			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Knife>();
-			break;
-		case 7:
 			Get_OwnerPlayer()->Change_State<CCorvusState_Execution_R_R>();
 			break;
-		case 8:
+		case 6:
 			Get_OwnerPlayer()->Change_State<CCorvusState_Execution_Start>();
 			break;
-		}*/
+		}
 		return true;
 	}
 
