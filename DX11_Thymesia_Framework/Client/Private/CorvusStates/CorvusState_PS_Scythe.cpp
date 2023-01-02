@@ -39,8 +39,6 @@ void CCorvusState_PS_Scythe::Start()
 void CCorvusState_PS_Scythe::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
-
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
