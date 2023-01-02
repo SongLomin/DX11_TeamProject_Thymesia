@@ -580,6 +580,25 @@ HRESULT CLoader::Loading_ForEditLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading Effect Meshes..."));
 	Load_AllEffectMesh();
 
+
+#ifdef _EFFECT_TOOL_
+#ifdef _CORVUS_MODEL_
+	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));
+	this->Load_CorvusModel();
+#endif // _CORVUS_MODEL
+#ifdef _BOSS_MODEL_
+	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
+	this->Load_BossMobModel();
+#endif // _BOSS_MODEL_
+#ifdef _ELITE_MOB_MODEL_
+	lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
+	this->Load_EliteMobModel();
+#endif // _ELITE_MOB_MODEL_
+#ifdef _NORMAL_MOB_MODEL_
+	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
+	this->Load_NormalMobModel();
+#endif // _NORMAL_MOB_MODEL_
+#else //_EFFECT_TOOL_
 	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));
 	this->Load_CorvusModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
@@ -588,6 +607,7 @@ HRESULT CLoader::Loading_ForEditLevel()
 	this->Load_EliteMobModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
 	this->Load_NormalMobModel();
+#endif // _EFFECT_TOOL_
 
 #ifndef _EFFECT_TOOL_
 	lstrcpy(m_szLoadingText, TEXT("Loading Prop Textures..."));
