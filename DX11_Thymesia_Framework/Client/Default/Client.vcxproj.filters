@@ -1798,6 +1798,7 @@
     <ClInclude Include="..\Public\Ballon.h" />
     <ClInclude Include="..\Public\Prop_Fence.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Scythe.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Hammer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3639,6 +3640,7 @@
     <ClCompile Include="..\Private\Ballon.cpp" />
     <ClCompile Include="..\Private\Prop_Fence.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Scythe.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Hammer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

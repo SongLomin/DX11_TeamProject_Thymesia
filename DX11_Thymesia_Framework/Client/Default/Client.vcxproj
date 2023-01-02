@@ -362,6 +362,7 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectRightup.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Axe.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_CaneSword.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Hammer.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Knife.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Magician.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Scythe.h" />
@@ -967,6 +968,7 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab2.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Axe.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_CaneSword.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Hammer.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Knife.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Magician.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Scythe.cpp" />
