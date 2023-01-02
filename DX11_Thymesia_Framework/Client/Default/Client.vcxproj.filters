@@ -1115,7 +1115,7 @@
     <ClInclude Include="..\Public\NorMonster.h">
       <Filter>02. GameObject\03. Actor\Character\Normal</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CCorvus.h">
+    <ClInclude Include="..\Public\Corvus.h">
       <Filter>02. GameObject\03. Actor\Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Player.h">
@@ -2955,7 +2955,7 @@
     <ClCompile Include="..\Private\NorMonster.cpp">
       <Filter>02. GameObject\03. Actor\Character\Normal</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CCorvus.cpp">
+    <ClCompile Include="..\Private\Corvus.cpp">
       <Filter>02. GameObject\03. Actor\Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Player.cpp">

@@ -633,7 +633,7 @@
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\Public\Camera_Static.h" />
     <ClInclude Include="..\Public\Camera_Target.h" />
-    <ClInclude Include="..\Public\CCorvus.h" />
+    <ClInclude Include="..\Public\Corvus.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ClientComponent.h" />
     <ClInclude Include="..\Public\ClientLevel.h" />
@@ -1227,7 +1227,7 @@
     <ClCompile Include="..\Private\Camera_Free.cpp" />
     <ClCompile Include="..\Private\Camera_Static.cpp" />
     <ClCompile Include="..\Private\Camera_Target.cpp" />
-    <ClCompile Include="..\Private\CCorvus.cpp" />
+    <ClCompile Include="..\Private\Corvus.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ClientComponent.cpp" />
     <ClCompile Include="..\Private\ClientLevel.cpp" />
