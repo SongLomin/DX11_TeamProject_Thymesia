@@ -75,6 +75,7 @@ private:
 #ifdef _EFFECT_TOOL_
     void Key_Input_ControlMesh(_float fTimeDelta);
     void Apply_ImGui_Controls_to_Mesh();
+    void Make_Collider();
 #endif // _EFFECT_TOOL_
     void Tool_Control();
     void Tool_Spawn_Life_Time();
