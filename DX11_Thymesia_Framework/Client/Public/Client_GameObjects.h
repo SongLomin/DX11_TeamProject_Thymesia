@@ -60,5 +60,6 @@
 #include "Status_Player.h"
 #include "Status_Monster.h"
 #include "Attack_Area.h"
+#include "Effect_AttackArea.h"
 
 #include "TargetCurve.h"

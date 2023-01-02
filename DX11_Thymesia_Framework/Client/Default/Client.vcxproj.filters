@@ -869,9 +869,6 @@
     <ClInclude Include="..\Public\Corvus_DefaultDagger.h" />
     <ClInclude Include="..\Public\Corvus_DefaultSaber.h" />
     <ClInclude Include="..\Public\CUtils_EasingTransform.h" />
-    <ClInclude Include="..\Public\JoJoParticleShaderManager.h">
-      <Filter>97. Tool\00. IMGUI\Windows\02. Effect\99. JoJoParticleShaderManager</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Interaction_Ladder.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClInclude>
@@ -1795,11 +1792,13 @@
     <ClInclude Include="..\Public\Client_Functions.h">
       <Filter>99. Defines</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Interaction_Fence.h">
-      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Window_Player_Dev.h">
       <Filter>97. Tool\01. DeveloperConsole\Windows\05. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Ballon.h" />
+    <ClInclude Include="..\Public\Prop_Fence.h" />
+    <ClInclude Include="..\Public\Effect_AttackArea.h">
+      <Filter>02. GameObject\99. Other\03. Attack_collider\04. Attack_Projectile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2712,9 +2711,6 @@
     <ClCompile Include="..\Private\Corvus_DefaultDagger.cpp" />
     <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp" />
     <ClCompile Include="..\Private\CUtils_EasingTransform.cpp" />
-    <ClCompile Include="..\Private\JoJoParticleShaderManager.cpp">
-      <Filter>97. Tool\00. IMGUI\Windows\02. Effect\99. JoJoParticleShaderManager</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Interaction_Ladder.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClCompile>
@@ -3639,11 +3635,13 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_ItemRequirement.cpp" />
     <ClCompile Include="..\Private\Skill_Axe.cpp" />
-    <ClCompile Include="..\Private\Interaction_Fence.cpp">
-      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Window_Player_Dev.cpp">
       <Filter>97. Tool\01. DeveloperConsole\Windows\05. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Ballon.cpp" />
+    <ClCompile Include="..\Private\Prop_Fence.cpp" />
+    <ClCompile Include="..\Private\Effect_AttackArea.cpp">
+      <Filter>02. GameObject\99. Other\03. Attack_collider\04. Attack_Projectile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -5421,6 +5419,9 @@
     </Filter>
     <Filter Include="97. Tool\01. DeveloperConsole\Windows\05. Player">
       <UniqueIdentifier>{d48e7336-63dd-477e-aa1b-3831356ac8a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\99. Other\03. Attack_collider\04. Attack_Projectile">
+      <UniqueIdentifier>{90d229ce-3752-4972-9795-f34625cfaaff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -198,6 +198,7 @@
     <ClInclude Include="..\Public\ActorDecor.h" />
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
+    <ClInclude Include="..\Public\Effect_AttackArea.h" />
     <ClInclude Include="..\Public\Ballon.h" />
     <ClInclude Include="..\Public\BossBat\Bat.h" />
     <ClInclude Include="..\Public\BossBat\BatBossStateBase.h" />
@@ -806,6 +807,7 @@
     <ClCompile Include="..\Private\ActorDecor.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Attack_Area.cpp" />
+    <ClCompile Include="..\Private\Effect_AttackArea.cpp" />
     <ClCompile Include="..\Private\Ballon.cpp" />
     <ClCompile Include="..\Private\BossBat\Bat.cpp" />
     <ClCompile Include="..\Private\BossBat\BatBossStateBase.cpp" />

@@ -45,62 +45,16 @@ void CAttackArea::Tick(_float fTimeDelta)
 
 	__super::Tick(fTimeDelta);
 
-	if (Check_AllDisableCollider())
-		return;
-
-
-	if (m_fLifeTime > 0.f)
-	{
-		m_fLifeTime -= fTimeDelta;
-	}
-
-	else
-	{
-		Disable_Weapon();
-		return;
-	}
-
-	if (m_tWeaponDesc.fHitFreq > 0.f)
-	{
-		if (m_fCurrentFreq > 0.f)
-		{
-			m_fCurrentFreq -= fTimeDelta;
-		}
-
-		else
-		{
-			// 갱신 시간이 되면 갱신한다.
-
-			m_fCurrentFreq = m_tWeaponDesc.fHitFreq;
-
-			Disable_Weapon();
-			Enable_Weapon(m_fLifeTime, m_bSyncTransform);
-		}
-	}
-
-	__super::Tick(fTimeDelta);
-
 }
 
 void CAttackArea::LateTick(_float fTimeDelta)
 {
-	if (Check_AllDisableCollider())
-		return;
-
-	//부모 게임 오브젝트가 없음.
-	if (!m_pParentTransformCom.lock())
-	{
-		DEBUG_ASSERT;
-	}
+	
 
 	__super::LateTick(fTimeDelta);
 
 
-	if (m_bSyncTransform)
-	{
-		Update_TransformWithParent();
-		
-	}
+	
 }
 
 HRESULT CAttackArea::Render(ID3D11DeviceContext* pDeviceContext)
@@ -148,14 +102,14 @@ void CAttackArea::Init_AttackArea(const ATTACKAREA_DESC& In_WeaponDesc, weak_ptr
 	Disable_Weapon();
 }
 
-void CAttackArea::Enable_Weapon(const _float& In_fLifeTime, const _bool& In_bSyncTransform)
+void CAttackArea::Enable_Weapon(const _float& In_fLifeTime)
 {
 	for (auto& elem : m_pHitColliderComs)
 	{
 		if (elem.lock()->Set_Enable(true))
 		{
 			m_fLifeTime = In_fLifeTime;
-			m_bSyncTransform = In_bSyncTransform;
+			//m_bSyncTransform = In_bSyncTransform;
 			m_bFirstAttack = true;
 		}
 	}
@@ -170,6 +124,8 @@ void CAttackArea::Disable_Weapon()
 			m_iHitColliderIndexs.clear();
 		}
 	}
+
+	m_pTransformCom.lock()->Set_WorldMatrix(XMMatrixIdentity());
 }
 
 

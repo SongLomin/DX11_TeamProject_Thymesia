@@ -6,10 +6,11 @@
 #include "Json/Json_Utility.h"
 #include "Window_EffectHierarchyView.h"
 #include "Window_AnimationModelView.h"
-#include "Attack_Area.h"
 #include "PreViewAnimationModel.h"
 #include "Easing_Utillity.h"
 #include "BoneNode.h"
+#include <imgui_impl_win32.h>
+#include "Effect_AttackArea.h"
 
 GAMECLASS_C(CCustomEffectMesh)
 CLONE_C(CCustomEffectMesh, CGameObject)
@@ -22,6 +23,11 @@ const _char* CCustomEffectMesh::Get_EffectName() const
 _bool CCustomEffectMesh::Is_Finish() const
 {
 	return m_bFinish;
+}
+
+void CCustomEffectMesh::Set_EffectGroup(weak_ptr<CEffectGroup> pEffectGroup)
+{
+	m_pEffectGroup = pEffectGroup;
 }
 
 HRESULT CCustomEffectMesh::Initialize_Prototype()
@@ -164,11 +170,12 @@ void CCustomEffectMesh::SetUp_ShaderResource()
 		BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
 	}
 
-	WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix() * BoneMatrix ;
+	WorldMatrix = m_pTransformCom.lock()->Get_WorldMatrix() * BoneMatrix;
 
-	WorldMatrix = XMMatrixTranspose(WorldMatrix * XMLoadFloat4x4(&m_ParentMatrix));
-
-	m_pShaderCom.lock()->Set_RawValue("g_WorldMatrix", &WorldMatrix, sizeof(_matrix));
+	WorldMatrix = WorldMatrix * XMLoadFloat4x4(&m_ParentMatrix);
+	XMStoreFloat4x4(&m_WorldMatrix, WorldMatrix);
+	
+	m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", WorldMatrix);
 	m_pShaderCom.lock()->Set_RawValue("g_ViewMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_VIEW), sizeof(_float4x4));
 	m_pShaderCom.lock()->Set_RawValue("g_ProjMatrix", (void*)GAMEINSTANCE->Get_Transform_TP(CPipeLine::D3DTS_PROJ), sizeof(_float4x4));
 
@@ -279,6 +286,8 @@ void CCustomEffectMesh::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 	Set_Enable(true);
 	m_bFinish = false;
 
+	//XMStoreFloat4x4(&m_WorldMatrix, XMMatrixIdentity());
+
 	m_iNumMeshContainers = m_pModelCom.lock()->Get_NumMeshContainers();
 
 	if (!pParentTransform.lock())
@@ -341,7 +350,7 @@ void CCustomEffectMesh::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 	if (m_tEffectMeshDesc.bCollider)
 	{
 		if (!m_pAttackArea.lock())
-			m_pAttackArea = GAMEINSTANCE->Add_GameObject<CAttackArea>(m_CreatedLevel);
+			m_pAttackArea = GAMEINSTANCE->Add_GameObject<CEffect_AttackArea>(m_CreatedLevel);
 
 		ATTACKAREA_DESC WeaponDesc;
 		ZeroMemory(&WeaponDesc, sizeof(ATTACKAREA_DESC));
@@ -352,8 +361,26 @@ void CCustomEffectMesh::Reset_Effect(weak_ptr<CTransform> pParentTransform)
 		WeaponDesc.vWeaponOffset = m_tEffectMeshDesc.vWeaponOffset;
 		WeaponDesc.fHitFreq      = m_tEffectMeshDesc.fHitFreq;
 
+		EFFECT_ATTACKAREA_DESC EffectAttackDesc;
+		EffectAttackDesc.Reset();
+
+		if (m_tEffectMeshDesc.bWeaponSyncTransform)
+			EffectAttackDesc.AttackAreaFlag |= (_flag)ATTACKAREA_FLAG::FOLLOW_TRANSFORM;
+
+		if (m_tEffectMeshDesc.bWeaponSyncTransformToEffect)
+			EffectAttackDesc.AttackAreaFlag |= (_flag)ATTACKAREA_FLAG::FOLLOW_EFFECTMESH;
+
+		if (m_tEffectMeshDesc.bOnCollision_DisableEffectGroup)
+			EffectAttackDesc.AttackAreaFlag |= (_flag)ATTACKAREA_FLAG::DISABLE_EFFECTGROUP;
+
+		if (m_tEffectMeshDesc.bOnCollision_UseEffectGroup)
+			EffectAttackDesc.AttackAreaFlag |= (_flag)ATTACKAREA_FLAG::ONCOLLISION_EFFECTGROUP;
+		
+		EffectAttackDesc.szOnCollisionEffectGroupName = m_szOnCollision_UseEffectGroupName;
+
 		m_pAttackArea.lock()->Init_AttackArea(WeaponDesc, pParentTransform);
-		m_pAttackArea.lock()->Enable_Weapon(m_tEffectMeshDesc.fWeaponLifeTime, m_tEffectMeshDesc.bWeaponSyncTransform);
+		m_pAttackArea.lock()->Init_EffectAttackArea(EffectAttackDesc, m_pEffectGroup, Weak_StaticCast<CCustomEffectMesh>(m_this));
+		m_pAttackArea.lock()->Enable_Weapon(m_tEffectMeshDesc.fWeaponLifeTime);
 	}
 }
 
@@ -487,6 +514,10 @@ void CCustomEffectMesh::Write_EffectJson(json& Out_Json)
 
 	Out_Json["Collider"]        = m_tEffectMeshDesc.bCollider;
 	Out_Json["Sync_Transform"]  = m_tEffectMeshDesc.bWeaponSyncTransform;
+	Out_Json["Sync_Transform_to_Effect"] = m_tEffectMeshDesc.bWeaponSyncTransformToEffect;
+	Out_Json["OnCollision_Disable_Effect_Group"] = m_tEffectMeshDesc.bOnCollision_DisableEffectGroup;
+	Out_Json["OnCollision_Use_Effect_Group"] = m_tEffectMeshDesc.bOnCollision_UseEffectGroup;
+	Out_Json["OnCollision_Use_Effect_Group_Name"] = m_szOnCollision_UseEffectGroupName;
 	Out_Json["Weapon_LifeTime"] = m_tEffectMeshDesc.fWeaponLifeTime;
 	Out_Json["Weapon_Scale"]    = m_tEffectMeshDesc.fWeaponScale;
 	Out_Json["Hit_Type"]        = m_tEffectMeshDesc.iHitType;
@@ -746,6 +777,15 @@ JUMP:
 		m_tEffectMeshDesc.fDamage              = In_Json["Damage"];
 		CJson_Utility::Load_Float3(In_Json["Weapon_Offset"], m_tEffectMeshDesc.vWeaponOffset);
 		m_tEffectMeshDesc.fHitFreq             = In_Json["HitFreq"];
+
+		if (In_Json.find("OnCollision_Disable_Effect_Group") != In_Json.end())
+		{
+			m_tEffectMeshDesc.bWeaponSyncTransformToEffect		= In_Json["Sync_Transform_to_Effect"];
+			m_tEffectMeshDesc.bOnCollision_DisableEffectGroup	= In_Json["OnCollision_Disable_Effect_Group"];
+			m_tEffectMeshDesc.bOnCollision_UseEffectGroup		= In_Json["OnCollision_Use_Effect_Group"];
+			m_szOnCollision_UseEffectGroupName					= In_Json["OnCollision_Use_Effect_Group_Name"];
+		}
+
 	}
 
 	if (In_Json.find("Option_Type") != In_Json.end())
@@ -1337,6 +1377,23 @@ void CCustomEffectMesh::Tool_Collider()
 		ImGui::Text("Sync Transform to Effect"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);
 		ImGui::Checkbox("##Sync_Transform_to_Effect", &m_tEffectMeshDesc.bWeaponSyncTransformToEffect);
 
+		ImGui::Text("OnCollision: Disable Effect Group"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);
+		ImGui::Checkbox("##OnCollision_Disable_Effect_Group", &m_tEffectMeshDesc.bOnCollision_DisableEffectGroup);
+
+		ImGui::Text("OnCollision: Use Effect Group"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);
+		ImGui::Checkbox("##OnCollision_Use_Effect_Group", &m_tEffectMeshDesc.bOnCollision_UseEffectGroup);
+
+		if (m_tEffectMeshDesc.bOnCollision_UseEffectGroup)
+		{
+			_char szEffectTag[64] = "";
+			strcpy_s(szEffectTag, m_szOnCollision_UseEffectGroupName.c_str());
+
+			if (ImGui::InputText("OnCollision_Use_Effect_Group_Name", szEffectTag, 64))
+			{
+				m_szOnCollision_UseEffectGroupName = szEffectTag;
+			}
+		}
+
 		ImGui::DragFloat("Collider_Life_Time", &m_tEffectMeshDesc.fWeaponLifeTime, 0.05f);
 
 		ImGui::Text("Weapon Scale"); ImGui::SameLine(); ImGui::SetNextItemWidth(100.f);
@@ -1373,7 +1430,7 @@ void CCustomEffectMesh::Tool_Collider()
 			{
 				for (int n(0); n < IM_ARRAYSIZE(Option_items); n++)
 				{
-					const bool is_selected = (m_tEffectMeshDesc.iHitType == n);
+					const bool is_selected = (m_tEffectMeshDesc.iOptionType == n);
 					if (ImGui::Selectable(Option_items[n], is_selected))
 					{
 						m_tEffectMeshDesc.iOptionType = n;

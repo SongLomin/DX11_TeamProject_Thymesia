@@ -32,6 +32,8 @@
 
 using namespace DirectX;
 
+
+// Assimp
 #include <assimp/scene.h>
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
@@ -45,6 +47,7 @@ using namespace DirectX;
 using namespace physx;
 #pragma endregion
 
+// NvCloth
 #include <NvCloth/Factory.h>
 #include <NvCloth/Cloth.h>
 #include <NvCloth/Callbacks.h>
@@ -102,6 +105,8 @@ using namespace DirectX::PackedVector;
 using namespace Microsoft::WRL;
 
 #include "Delegate.h"
+
+// HBAO+
 #include "HBAO/GFSDK_SSAO.h"
 
 #ifdef _DEBUG

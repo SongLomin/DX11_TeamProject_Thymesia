@@ -18,6 +18,7 @@
 #include "Monster.h"
 #include "Talent_Effects.h"
 #include "UI_Landing.h"
+#include "BoneNode.h"
 
 
 GAMECLASS_C(CCorvus)
@@ -52,9 +53,14 @@ HRESULT CCorvus::Initialize(void* pArg)
 	//m_pStatus.lock()->Set_Desc(&pStatus_PlayerDesc);
 	//m_pStatus.lock()->Load_FromJson(m_szClientComponentPath + "Corvus/SaveData.json");
 
+	//CModel::NVCLOTH_MODEL_DESC NvClothDesc;
+	//Preset::NvClothMesh::CorvusSetting(NvClothDesc);
+
+	//m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER, &NvClothDesc);
 	m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER);
 	//m_pModelCom.lock()->Init_Model("Corvus", "", (_uint)TIMESCALE_LAYER::PLAYER, (_flag)FLAG_INDEX::_2);
 
+	m_TransformationMatrix = m_pModelCom.lock()->Get_TransformationMatrix();
 
 
 	// Corvus_SD_Ladder_Climb_R_UP_End_Reverse
@@ -120,7 +126,7 @@ HRESULT CCorvus::Initialize(void* pArg)
 	m_LightDesc = GAMEINSTANCE->Add_Light(LightDesc);
 
 #ifdef _USE_THREAD_
-	Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
+	//Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
 #endif // _USE_THREAD_
 	
 
@@ -198,7 +204,46 @@ void CCorvus::Thread_PreBeforeRender(_float fTimeDelta)
 	__super::Thread_PreBeforeRender(fTimeDelta);
 
 	ID3D11DeviceContext* pDeferredContext = GAMEINSTANCE->Get_BeforeRenderContext();
-	m_pModelCom.lock()->Update_NvCloth(pDeferredContext, m_pTransformCom.lock()->Get_WorldMatrix());
+
+	_matrix		BoneMatrix;
+	_matrix		InverseMatrix;
+	_vector		vGravity;
+
+
+	//BoneMatrix = //m_pModelCom.lock()->Find_BoneNode("Bip001-Head").lock()->Get_OffsetMatrix() * 
+	//	m_pModelCom.lock()->Find_BoneNode("Bip001-Head").lock()->Get_CombinedMatrix() *
+	//	XMLoadFloat4x4(&m_TransformationMatrix) * m_pTransformCom.lock()->Get_WorldMatrix();
+
+	//_vector vSpherePos = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+	//vSpherePos = XMVector3TransformCoord(vSpherePos, BoneMatrix);
+	//PxVec4 spheres[2]{
+	//	PxVec4(SMath::Convert_PxVec3(vSpherePos), 0.3f),
+	//	PxVec4(999.f, 999.f, 999.f, 1.0f),
+	//};
+	//nv::cloth::Range<const physx::PxVec4> sphereRange(spheres, spheres + 2);
+
+	//m_pModelCom.lock()->Get_MeshContainer(1).lock()->Get_NvCloth()->setSpheres(sphereRange, 0, m_pModelCom.lock()->Get_MeshContainer(1).lock()->Get_NvCloth()->getNumSpheres());
+
+	//Bip001-Ponytail1
+
+	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-L-Clavicle").lock()->Get_OffsetMatrix() *
+		m_pModelCom.lock()->Find_BoneNode("Bip001-L-Clavicle").lock()->Get_CombinedMatrix() *
+		XMLoadFloat4x4(&m_TransformationMatrix);
+
+	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
+	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
+	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
+
+	//InverseMatrix = XMMatrixInverse(nullptr, BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix());
+
+	//vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), XMMatrixRotationX(XMConvertToRadians(90.f)) * InverseMatrix);
+	//vGravity = XMVector3TransformNormal(XMVectorSet(0.f, -9.81f, 0.f, 0.f), InverseMatrix * XMMatrixRotationX(XMConvertToRadians(-90.f)));
+
+	m_pModelCom.lock()->Get_MeshContainer(2).lock()->Update_NvClothVertices(pDeferredContext,
+		BoneMatrix * m_pTransformCom.lock()->Get_WorldMatrix(),
+		XMVectorSet(0.f, -9.81f, 0.f, 0.f));
+
+
 	GAMEINSTANCE->Release_BeforeRenderContext(pDeferredContext);
 
 }
@@ -225,6 +270,9 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 		//if (i == m_iContainerIndex)
 		//	continue;
 #endif // _DEBUG
+
+		
+
 		if (4 == i || 5 == i || 8 == i || 9 == i || 10 == i || 11 == i|| 12 == i|| 13 == i)
 		{
 			unordered_map<_uint, DISSOLVE_DESC>::iterator iter = m_DissolveDescs.find(i);
@@ -281,6 +329,17 @@ HRESULT CCorvus::Render(ID3D11DeviceContext* pDeviceContext)
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_NormalTexture", i, aiTextureType_NORMALS)))
 			m_iPassIndex = 0;
 
+
+		/*if (2 == i)
+		{
+			m_iPassIndex = 9;
+
+			m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", XMMatrixIdentity());
+		}
+		else
+		{
+			m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pTransformCom.lock()->Get_WorldMatrix());
+		}*/
 
 		m_pModelCom.lock()->Render_AnimModel(i, m_pShaderCom, m_iPassIndex, "g_Bones", pDeviceContext);
 	}

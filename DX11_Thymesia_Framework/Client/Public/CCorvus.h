@@ -72,6 +72,8 @@ private:
     weak_ptr<CCamera_Target> m_pCamera;
     weak_ptr<CTransform> m_pCameraTransform;
 
+    _float4x4                     m_TransformationMatrix;
+
   
 };
 

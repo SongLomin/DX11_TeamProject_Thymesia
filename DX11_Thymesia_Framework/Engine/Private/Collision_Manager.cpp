@@ -48,7 +48,7 @@ void CCollision_Manager::Tick()
 
 void CCollision_Manager::Add_Collision(const _uint& In_iLayer, weak_ptr<CCollider> In_pCollider)
 {
-	std::unique_lock<std::mutex> lock(m_job_q_);
+	//std::unique_lock<std::mutex> lock(m_job_q_);
 
 	list<weak_ptr<CCollider>>::iterator iter = find_if(m_pColliderList[In_iLayer].begin(),
 		m_pColliderList[In_iLayer].end(),
@@ -68,7 +68,7 @@ void CCollision_Manager::Add_Collision(const _uint& In_iLayer, weak_ptr<CCollide
 		cout << In_pCollider.lock()->Get_ColliderIndex() << ": Add Collider" << endl;
 #endif // _DEBUG
 	}
-	lock.unlock();
+	//lock.unlock();
 }
 
 void CCollision_Manager::Check_Group(const _uint& In_iLeftLayer, const _uint& In_iRightLayer)

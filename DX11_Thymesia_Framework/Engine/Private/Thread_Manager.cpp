@@ -9,12 +9,12 @@ void CThread_Manager::Initialize(const _uint In_iNumLayer)
 	num_threads_ = In_iNumLayer;
 	stop_all = false;
 
+	worker_jopdones = vector<_bool>(In_iNumLayer, false);
 
 	worker_threads_.reserve(num_threads_);
 	for (size_t i = 0; i < num_threads_; ++i) {
-		_bool* bCheck_JobDone = DBG_NEW _bool(true);
-		worker_jopdones.push_back(bCheck_JobDone);
-		worker_threads_.emplace_back([this]() { this->WorkerThread(*worker_jopdones.back()); });
+		//_bool* bCheck_JobDone = DBG_NEW _bool(true);
+		worker_threads_.emplace_back([this, i]() { this->WorkerThread(i); });
 	}
 }
 
@@ -38,7 +38,7 @@ void CThread_Manager::Bind_GameObjectWorks(const _flag In_ThreadTypeFlag)
 {
 	for (_uint i = 0; i < (_uint)THREAD_TYPE::TYPE_END; ++i)
 	{
-		if (In_ThreadTypeFlag & (1 << (_flag)i))
+		if (In_ThreadTypeFlag & ((_flag)1 << (_flag)i))
 		{
 			if (m_GameObject_Threads[i].pInstance)
 			{
@@ -59,35 +59,40 @@ void CThread_Manager::Clear_EngineThreads(const THREAD_TYPE In_eThread_Type)
 
 }
 
-void CThread_Manager::WorkerThread(_bool& JobDoneChecker)
+void CThread_Manager::WorkerThread(_int iIndex)
 {
+	_bool bWait = false;
+
 	while (true) {
 		std::unique_lock<std::mutex> lock(m_job_q_);
-		cv_job_q_.wait(lock, [this]() { 
-			return !this->jobs_.empty() || stop_all; 
+		cv_job_q_.wait(lock, [this, iIndex, &bWait]() {
+			bWait = !this->jobs_.empty() || stop_all;
+			worker_jopdones[iIndex] = !bWait;
+			return bWait;
 			});
 		if (stop_all && this->jobs_.empty()) {
+			worker_jopdones[iIndex] = true;
 			return;
 		}
 
-		JobDoneChecker = false;
+		worker_jopdones[iIndex] = false;
 		// 맨 앞의 job 을 뺀다.
 		std::function<void()> job = std::move(jobs_.front());
 		jobs_.pop();
 		lock.unlock();
-
+		worker_jopdones[iIndex] = false;
 		// 해당 job 을 수행한다 :)
 		job();
-
-		JobDoneChecker = true;
 	}
 }
 
 _bool CThread_Manager::Check_JobDone()
 {
+	cv_job_q_.notify_all();
+
 	for (auto& elem : worker_jopdones)
 	{
-		if (!(*elem))
+		if (!(elem))
 			return false;
 	}
 
@@ -96,6 +101,7 @@ _bool CThread_Manager::Check_JobDone()
 
 void CThread_Manager::Wait_JobDone(const _char* In_szConsoleText)
 {
+
 	while (!Check_JobDone())
 	{
 #ifdef _DEBUG
@@ -147,10 +153,10 @@ void CThread_Manager::OnDestroy()
 		Clear_EngineThreads((THREAD_TYPE)i);
 	}
 
-	for (auto& elem : worker_jopdones)
+	/*for (auto& elem : worker_jopdones)
 	{
 		Safe_Delete(elem);
-	}
+	}*/
 
 	worker_jopdones.clear();
 

@@ -318,6 +318,7 @@ void CMonster::OnEnable(void* _Arg)
 void CMonster::OnDisable()
 {
     __super::OnDisable();
+    m_pHitColliderCom.lock()->Set_Enable(false);
 }
 
 void CMonster::OnDestroy()

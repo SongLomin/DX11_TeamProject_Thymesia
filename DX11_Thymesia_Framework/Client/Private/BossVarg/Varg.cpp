@@ -142,6 +142,8 @@ void CVarg::Tick(_float fTimeDelta)
 void CVarg::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	
 }
 
 void CVarg::Thread_PreBeforeRender(_float fTimeDelta)
@@ -217,8 +219,8 @@ void CVarg::Thread_PreBeforeRender(_float fTimeDelta)
 	m_pModelCom.lock()->Get_MeshContainer(1).lock()->Get_NvCloth()->setSpheres(sphereRange, 0, m_pModelCom.lock()->Get_MeshContainer(1).lock()->Get_NvCloth()->getNumSpheres());
 	m_pModelCom.lock()->Get_MeshContainer(3).lock()->Get_NvCloth()->setSpheres(sphereRange, 0, m_pModelCom.lock()->Get_MeshContainer(3).lock()->Get_NvCloth()->getNumSpheres());
 
-	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_OffsetMatrix() * 
-		m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_CombinedMatrix() * 
+	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_OffsetMatrix() *
+		m_pModelCom.lock()->Find_BoneNode("Bip001-Ponytail1").lock()->Get_CombinedMatrix() *
 		XMLoadFloat4x4(&m_TransformationMatrix);
 
 	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
@@ -236,8 +238,8 @@ void CVarg::Thread_PreBeforeRender(_float fTimeDelta)
 
 
 
-	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_OffsetMatrix() * 
-		m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_CombinedMatrix() * 
+	BoneMatrix = m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_OffsetMatrix() *
+		m_pModelCom.lock()->Find_BoneNode("Bip001-Xtra10").lock()->Get_CombinedMatrix() *
 		XMLoadFloat4x4(&m_TransformationMatrix);
 
 	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
