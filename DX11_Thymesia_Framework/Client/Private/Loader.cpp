@@ -638,7 +638,7 @@ HRESULT CLoader::Loading_ForEditLevel()
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
-#endif // _MAP_TOOL_
+#endif // _EFFECT_TOOL_
 
 	// TODO : Turn off temporarily for Light_Prop
 	LIGHTDESC LightDesc;
@@ -653,7 +653,7 @@ HRESULT CLoader::Loading_ForEditLevel()
 	LightDesc.vLightFlag	= _float4(1.f, 1.f, 1.f, 1.f);
 	LightDesc.bEnable		= true;
 	LightDesc.fIntensity	= 1.f;
-#else
+#else // _BRIGHT_LIGHT_
 	LightDesc.eActorType = tagLightDesc::TYPE_DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
 	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
@@ -664,7 +664,7 @@ HRESULT CLoader::Loading_ForEditLevel()
 	LightDesc.fIntensity = 0.1f;
 #endif // _BRIGHT_LIGHT_
 
-	//GAMEINSTANCE->Add_Light(LightDesc);
+	GAMEINSTANCE->Add_Light(LightDesc);
 
 	GAMEINSTANCE->Set_FogDesc(_float4(0.2f, 0.15f, 0.03f, 0.f), 10000.f);
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
