@@ -66,7 +66,7 @@ struct MappedRange : public Range<T>
 
 	~MappedRange()
 	{
-		(mCloth.*mUnlock)();
+ 		(mCloth.*mUnlock)();
 	}
 
   private:
