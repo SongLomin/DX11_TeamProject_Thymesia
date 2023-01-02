@@ -183,7 +183,6 @@ void CEditGroupProp::OnEventMessage(_uint iArg)
 					View_PickProp();
 					View_OnlyTranformEdit();
 
-
 					ImGui::EndTabItem();
 				}
 
@@ -191,6 +190,13 @@ void CEditGroupProp::OnEventMessage(_uint iArg)
 				{
 					View_PickProp();
 					View_EditProp();
+
+					ImGui::EndTabItem();
+				}
+
+				if (ImGui::BeginTabItem("Group Edit"))
+				{
+					View_GroupSetting();
 
 					ImGui::EndTabItem();
 				}
@@ -770,6 +776,99 @@ void CEditGroupProp::View_EditProp()
 	
 	ImGui::Text("");
 	ImGui::Separator();
+}
+
+void    CEditGroupProp::View_GroupSetting()
+{
+	ImGui::Combo("Opt", &m_iSelect_Find, items_FindType, IM_ARRAYSIZE(items_FindType));
+
+	if (0 == m_iSelect_Find)
+		return;
+
+	auto iter_prop = GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.find(typeid(CEditGroupProp).hash_code());
+
+	if (iter_prop == GET_SINGLE(CWindow_HierarchyView)->m_pObjGroup.end())
+		return;
+
+	if (iter_prop->second.empty() || 0 > m_iPickingIndex || iter_prop->second.size() <= m_iPickingIndex)
+		return;
+
+	if (string::npos != string(items_FindType[m_iSelect_Find]).find("CLight_Prop"))
+	{
+		static LIGHTDESC tLightDesc;
+
+		ImGui::Text("[ Find Info ]");
+
+		static const char* LightTypeItems[] = { "Direction", "Point", "HalfPoint" };
+		static char szModelTag[MAX_PATH] = "";
+
+		_int iLightType = (_int)tLightDesc.eActorType;
+		if (ImGui::Combo("Light Type", &iLightType, LightTypeItems, IM_ARRAYSIZE(LightTypeItems)))
+			tLightDesc.eActorType = (LIGHTDESC::TYPE)iLightType;
+
+		ImGui::InputText("Model Key", szModelTag, MAX_PATH);
+
+		ImGui::Separator();
+		
+		static _bool bChange[5] = { false, };
+
+
+		ImGui::InputFloat4("Light_Diffuse", &tLightDesc.vDiffuse.x);	
+		ImGui::SameLine();
+		ImGui::Checkbox("##Val_no0", &bChange[0]);
+
+		ImGui::InputFloat4("Light_Ambient", &tLightDesc.vAmbient.x);
+		ImGui::SameLine();
+		ImGui::Checkbox("##Val_no1", &bChange[1]);
+
+		ImGui::InputFloat4("Light_Specular", &tLightDesc.vSpecular.x);
+		ImGui::SameLine();
+		ImGui::Checkbox("##Val_no2", &bChange[2]);
+		
+		ImGui::InputFloat("Light_Range", &tLightDesc.fRange);
+		ImGui::SameLine();
+		ImGui::Checkbox("##Val_no3", &bChange[3]);
+
+		ImGui::InputFloat("Light_Intensity", &tLightDesc.fIntensity);
+		ImGui::SameLine();
+		ImGui::Checkbox("##Val_no4", &bChange[4]);
+
+		ImGui::Text("");
+
+		if (ImGui::Button("All Apply"))
+		{
+			for (auto& elem : iter_prop->second)
+			{
+				if (string::npos != elem.TypeName.find("CLight_Prop"))
+				{
+					weak_ptr<CLight_Prop> pLight_Prop = Weak_Cast<CLight_Prop>(elem.pInstance);
+
+					if (tLightDesc.eActorType != pLight_Prop.lock()->Get_LightDesc().eActorType)
+						continue;
+
+					if ("" != string(szModelTag))
+					{
+						weak_ptr<CModel> pModel = pLight_Prop.lock()->Get_Component<CModel>();
+
+						if ((pModel.lock() && (string::npos == string(pModel.lock()->Get_ModelKey()).find(szModelTag))))
+							continue;
+					}
+
+					LIGHTDESC ChangeLightDesc = pLight_Prop.lock()->Get_LightDesc();
+
+					if (bChange[0])	ChangeLightDesc.vDiffuse   = tLightDesc.vDiffuse;
+					if (bChange[1])	ChangeLightDesc.vAmbient   = tLightDesc.vAmbient;
+					if (bChange[2])	ChangeLightDesc.vSpecular  = tLightDesc.vSpecular;
+					if (bChange[3])	ChangeLightDesc.fRange     = tLightDesc.fRange;
+					if (bChange[4])	ChangeLightDesc.fIntensity = tLightDesc.fIntensity;
+
+					pLight_Prop.lock()->Set_LightDesc(ChangeLightDesc);
+
+					ZeroMemory(bChange, sizeof(_bool) * 5);
+				}
+			}
+		}
+	}
 }
 
 void CEditGroupProp::RenderView_Transform_Info(weak_ptr<CGameObject> In_Obj)

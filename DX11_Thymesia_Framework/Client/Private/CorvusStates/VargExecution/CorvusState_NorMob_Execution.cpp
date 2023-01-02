@@ -68,7 +68,7 @@ void CCorvusState_NorMob_Execution::OnStateStart(const _float& In_fAnimationBlen
 	//GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera",XMMatrixIdentity());
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	
 #endif
 #endif
 

@@ -34,17 +34,19 @@ protected:// CGameObject을(를) 통해 상속됨
 	virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
 
 public:
-    void Init_Weapon(weak_ptr<CModel> In_pModelCom, weak_ptr<CTransform> In_ParentTransformCom, const string& szTargetNode = "WeaponCase1");
-    void Init_Model(const string& strWeaponName, TIMESCALE_LAYER eLayer);
-    void Weapon_BoneChange(weak_ptr<CModel> In_pModelCom, const string& szTargetNode);
+    void  Init_Weapon(weak_ptr<CModel> In_pModelCom, weak_ptr<CTransform> In_ParentTransformCom, const string& szTargetNode = "WeaponCase1");
+    void  Set_WeaponNum(_int In_WeaponNum) { m_iWeaponNum = In_WeaponNum; }
+    _uint Get_WeaponNum() { return m_iWeaponNum; }
+    void  Init_Model(const string& strWeaponName, TIMESCALE_LAYER eLayer);
+    void  Weapon_BoneChange(weak_ptr<CModel> In_pModelCom, const string& szTargetNode);
   
-    void Add_Collider(_fvector In_vOffset, const _float In_fScale, const COLLISION_LAYER In_Layer);
-    void Enable_Weapon();
-    void Disable_Weapon();
+    void  Add_Collider(_fvector In_vOffset, const _float In_fScale, const COLLISION_LAYER In_Layer);
+    void  Enable_Weapon();
+    void  Disable_Weapon();
     weak_ptr<CCharacter> Get_ParentCharacter();
-    void Set_RenderOnOff(_bool RenderOnOff) { m_bWeaponRenderOnOff = RenderOnOff; }
-    void Set_WeaponDesc(const WEAPON_DESC& In_Weapon);
-    void Set_WeaponDesc(const HIT_TYPE In_eHitType, const _float In_fDamage, const ATTACK_OPTION In_eOptionType = ATTACK_OPTION::OPTION_END);
+    void  Set_RenderOnOff(_bool RenderOnOff) { m_bWeaponRenderOnOff = RenderOnOff; }
+    void  Set_WeaponDesc(const WEAPON_DESC& In_Weapon);
+    void  Set_WeaponDesc(const HIT_TYPE In_eHitType, const _float In_fDamage, const ATTACK_OPTION In_eOptionType = ATTACK_OPTION::OPTION_END);
 
 public:
     FDelegate<weak_ptr<CCollider>> CallBack_Attack;
@@ -65,6 +67,7 @@ protected:
     _float3                 m_vOffset;
     _bool                   m_bWeaponRenderOnOff = true;
     _uint m_iNumMeshContainers;
+    _uint m_iWeaponNum = 0;
 
 private:
     void Free();

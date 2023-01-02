@@ -32,6 +32,11 @@ protected:
 
 public:
     void Call_AnimationEnd();
+    void Call_NextKeyFrame(const _uint& In_KeyIndex);
+
+
+private:
+    weak_ptr<CAnimation> m_pThisAnimationCom;
 
 private:
     weak_ptr<CGameObject> m_pTargetObject;

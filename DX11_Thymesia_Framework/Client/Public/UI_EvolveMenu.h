@@ -20,8 +20,6 @@ class CUI_EvolveMenu final : public CUI_Container
 {
 
 public:
-   
-
 
     enum class EVOLVEMENU_TYPE {
         EVOLVE_LEVELUP = 0,

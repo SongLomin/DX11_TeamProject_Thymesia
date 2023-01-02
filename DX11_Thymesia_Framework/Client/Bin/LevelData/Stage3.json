@@ -3,10 +3,10 @@
     {
       "Component": {
         "Transform": [
-          [ 0.8646506071090698, 4.656612873077393e-10, -0.5023741722106934, 0.0 ],
-          [ 0.14713385701179504, 0.9561501741409302, 0.253235399723053, 0.0 ],
-          [ 0.48034560680389404, -0.2928766906261444, 0.8267344832420349, 0.0 ],
-          [ -6.541692733764648, 18.745365142822266, -27.36907196044922, 1.0 ]
+          [ 0.9845889806747437, -1.1350493878126144e-09, 0.1748783439397812, 0.0 ],
+          [ -0.0628642737865448, 0.9331542253494263, 0.3539333641529083, 0.0 ],
+          [ -0.16318948566913605, -0.35947325825691223, 0.9187761545181274, 0.0 ],
+          [ 12.087297439575195, 7.09660530090332, 2.8684959411621094, 1.0 ]
         ]
       },
       "Hash": 8675365520207489377,
@@ -22,72 +22,28 @@
           [ 0.0, 0.0, 0.0, 1.0 ]
         ]
       },
-      "Hash": 12159710856434595157,
-      "Name": "class Client::CGround",
-      "Setting": { "Enable": true },
-      "ShaderPass": 0,
-      "TextureInfo": {
-        "g_Texture_AddNo1": {
-          "Density": 30.0,
-          "Diff": "T_Moss_D",
-          "Norm": "T_Moss_N"
-        },
-        "g_Texture_AddNo2": {
-          "Density": 30.0,
-          "Diff": "brick2moss_D",
-          "Norm": "brick2moss_N"
-        },
-        "g_Texture_AddNo3": {
-          "Density": 30.0,
-          "Diff": "T_moss_1_a_D",
-          "Norm": "T_moss_1_a_N"
-        },
-        "g_Texture_Sorc": {
-          "Density": 30.0,
-          "Diff": "T_GroundMud_D",
-          "Norm": "T_GroundMud_N"
-        }
-      },
-      "VIBufferCom": "Stage_Lv1-2Boss_Ver2",
-      "g_FilterTexture": "Stage_Lv1-2Boss_Ver2_Filter"
+      "Hash": 3297996505304094455,
+      "Name": "class Client::CTerrain",
+      "Setting": { "Enable": true }
     },
     {
-      "Component": {
-        "Transform": [
-          [ 1.0, 0.0, 0.0, 0.0 ],
-          [ 0.0, 1.0, 2.6941299438476563e-05, 0.0 ],
-          [ 0.0, -2.6941299438476563e-05, 1.0, 0.0 ],
-          [ -43.199405670166016, 0.0, 121.9782943725586, 1.0 ]
-        ]
-      },
-      "Hash": 12159710856434595157,
-      "Name": "class Client::CGround",
-      "Setting": { "Enable": true },
-      "ShaderPass": 0,
-      "TextureInfo": {
-        "g_Texture_AddNo1": {
-          "Density": 30.0,
-          "Diff": "T_Moss_D",
-          "Norm": "T_Moss_N"
+      "Component": { "Transform": { "": null } },
+      "FogDesc": [
+        {
+          "Color": [ 1.0, 1.0, 1.0, 1.0 ],
+          "Range": 50.0,
+          "Time" :  6.0
         },
-        "g_Texture_AddNo2": {
-          "Density": 30.0,
-          "Diff": "brick2moss_D",
-          "Norm": "brick2moss_N"
-        },
-        "g_Texture_AddNo3": {
-          "Density": 30.0,
-          "Diff": "T_moss_1_a_D",
-          "Norm": "T_moss_1_a_N"
-        },
-        "g_Texture_Sorc": {
-          "Density": 30.0,
-          "Diff": "T_GroundMud_D",
-          "Norm": "T_GroundMud_N"
+        {
+          "Color": [ 0.0, 0.0, 1.0, 1.0 ],
+          "Range": 200.0,
+          "Time": 6.0
         }
-      },
-      "VIBufferCom": "Stage_Lv1-2Boss",
-      "g_FilterTexture": "Stage_Lv1-2Boss_Filter"
+      ],
+      "FogSize": 2,
+      "Hash": 6775806544075544679,
+      "Name": "class Client::CFog",
+      "Setting": { "Enable": true }
     }
   ]
 }

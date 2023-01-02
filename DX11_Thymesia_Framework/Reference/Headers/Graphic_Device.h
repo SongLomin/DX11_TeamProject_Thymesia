@@ -50,6 +50,9 @@ private:
 	GFSDK_SSAO_Context_D3D11*			m_pAOContext;
 
 private:
+	HWND		m_hVideo;
+
+private:
 	HRESULT Ready_SwapChain(HWND hWnd, GRAPHICDESC::WINMODE WinMode, _uint iWinCX, _uint iWinCY);
 	HRESULT Ready_BackBufferRenderTargetView();
 	HRESULT Ready_DepthStencilRenderTargetView(_uint iWinCX, _uint iWinCY);

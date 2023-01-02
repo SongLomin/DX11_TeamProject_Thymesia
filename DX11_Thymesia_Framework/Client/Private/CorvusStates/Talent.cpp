@@ -127,10 +127,13 @@ void CTalent::Set_TalentName(TALENT_NAME TalentName)
     case Client::TALENT_NAME::JUMPATTACKLV3:
         break;
     case Client::TALENT_NAME::EXECUTION:
+        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_Execute");
         break;
     case Client::TALENT_NAME::HEALINGEXECUTIONLV1:
+        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_Execute");
         break;
     case Client::TALENT_NAME::HEALINGEXECUTIONLV2:
+        m_pIcon.lock()->Set_Texture("EvolveMenu_Talent_Icon_Execute");
         break;
     case Client::TALENT_NAME::SHARPWEAPONLV1:
         break;
@@ -336,7 +339,7 @@ void CTalent::CheckLButtonClick(_bool bActive)//마우스 버튼 켜진시점
 
 }
 
-void CTalent::Set_Root()
+void CTalent::OnActive()
 {
     m_bActive = true;
     //m_pButtonActive.lock()->Set_Texture("EvolveMenu_PW_Active");

@@ -5,6 +5,7 @@ BEGIN(Client)
 
 class CActorDecor;
 class CMobWeapon;
+class CJavelinWeapon;
 class CStatus_Monster;
 class CMonsterHPBar_Base;
 #define INIT_STATE(STATE) Weak_StaticCast<STATE>(m_pComponents.find(typeid(STATE).hash_code())->second.front()).lock()->Init_Desc(&m_tLinkStateDesc);
@@ -40,6 +41,8 @@ public:
     virtual _float  Get_CamOffset() const { return 0.f; }
     _float  Get_TimeAcc() const { return m_fTimeAcc; }
 
+    MONSTERTYPE Get_MonsterType();
+
     weak_ptr<CMonsterHPBar_Base>    Get_HPBar() { return m_pHPBar; }
 
     const STATE_LINK_MONSTER_DESC& Get_LinkStateDesc() { return m_tLinkStateDesc; }
@@ -71,6 +74,7 @@ public:
 
 public:
     list<weak_ptr<CMobWeapon>>  Get_Wepons() { return m_pWeapons; }
+    list<weak_ptr<CJavelinWeapon>> Get_JavelinWeapon() { return m_pJavelinWeapon; }
 
 public:
     virtual void Enable_Weapons(const _bool In_bEnable) override;
@@ -108,6 +112,7 @@ protected:
 
 protected:
     list<weak_ptr<CMobWeapon>> m_pWeapons;
+    list<weak_ptr<CJavelinWeapon>> m_pJavelinWeapon;
     list<weak_ptr<CActorDecor>> m_pActorDecor;
     weak_ptr<CStateBase> m_pStandState;
 

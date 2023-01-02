@@ -61,9 +61,11 @@ public:
 	void	Set_DebugColor(_fvector In_vColor);
 	HRESULT Render(ID3D11DeviceContext* pDeviceContext);
 	HRESULT Render_IgnoreDebugCheck();
+	HRESULT Render_IgnoreDebugCheck_Color();
 
 private:
 	_float4	m_vColor = { 1.f, 1.f, 1.f, 1.f };
+	_bool	m_bEditerDraw = false;
 #endif // _DEBUG
 
 private:

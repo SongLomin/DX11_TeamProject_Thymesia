@@ -5,6 +5,7 @@
 #include "Shader.h"
 #include "GameManager.h"
 #include "Engine_Defines.h"
+#include "EasingComponent_Float.h"
 
 GAMECLASS_C(CDissolveUI);
 CLONE_C(CDissolveUI, CGameObject);
@@ -28,13 +29,14 @@ HRESULT CDissolveUI::Initialize(void* pArg)
     m_fRatio = 0.f;
     m_iPassIndex = 4;
 
+    SetUp_Component();
+
     return S_OK;
 }
 
 HRESULT CDissolveUI::Start()
 {
     __super::Start();
-
 
     return S_OK;
 }
@@ -93,8 +95,12 @@ HRESULT CDissolveUI::Render(ID3D11DeviceContext* pDeviceContext)
 {
     __super::Render(pDeviceContext);
 
-
     return S_OK;
+}
+
+void CDissolveUI::SetUp_Component()
+{
+    m_pEasingFloat = Add_Component<CEasingComponent_Float>();
 }
 
 HRESULT CDissolveUI::SetUp_ShaderResource()
@@ -105,11 +111,37 @@ HRESULT CDissolveUI::SetUp_ShaderResource()
 
     m_pShaderCom.lock()->Set_RawValue("g_Ratio", &m_fRatio, sizeof(_float));
 
-
     return S_OK;
 }
+void CDissolveUI::Start_FadeIn(_float fStart, _float fTarget, _float fTime)
+{
+    m_pEasingFloat.lock()->Set_Lerp(fStart, fTarget, fTime, EASING_TYPE::QUAD_IN, CEasingComponent::ONCE);
 
+    m_pEasingFloat.lock()->Callback_LerpEnd += bind(&CDissolveUI::Call_EndFadeIn, this);
 
+}
+
+void CDissolveUI::Start_FadeOut(_float fStart, _float fTarget, _float fTime)
+{
+   m_pEasingFloat.lock()->Set_Lerp(fStart, fTarget, fTime, EASING_TYPE::QUAD_OUT, CEasingComponent::ONCE);
+
+   m_pEasingFloat.lock()->Callback_LerpEnd += bind(&CDissolveUI::Call_EndFadeOut, this);
+}
+
+void CDissolveUI::Call_EndFadeIn()
+{
+    Callback_EndFadeIn();
+
+    Callback_EndFadeIn.Clear();
+}
+
+void CDissolveUI::Call_EndFadeOut()
+{
+    Callback_EndFadeOut();
+
+    Callback_EndFadeOut.Clear();
+
+}
 
 void CDissolveUI::Free()
 {

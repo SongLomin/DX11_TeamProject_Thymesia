@@ -10,7 +10,12 @@ _bool CRequirement_Time::Check_Requirement()
 _bool CRequirement_Time::Is_Valid()
 {
 	m_fReqTime -= GAMEINSTANCE->Get_DeltaTime();
-
+	if (m_fReqTime < 0.f)
+	{ 
+		m_fReqTime = 0.f;
+	
+		return false;
+	}
 	return true;
 }
 

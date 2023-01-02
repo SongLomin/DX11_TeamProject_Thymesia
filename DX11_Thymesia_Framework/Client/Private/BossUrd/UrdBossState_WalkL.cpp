@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossUrd/UrdStates.h"
+#include "PhysXController.h"
 
 GAMECLASS_C(CUrdBossState_WalkL);
 CLONE_C(CUrdBossState_WalkL, CComponent)
@@ -38,8 +39,18 @@ void CUrdBossState_WalkL::Start()
 void CUrdBossState_WalkL::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	Rotation_TargetToLookDir();
 	
+	m_fCurrentSpeed += m_fAccel * fTimeDelta;
+	m_fCurrentSpeed = min(m_fMaxSpeed, m_fCurrentSpeed);
+	_vector vDirLook = Get_CurMonToStartMonDir();
+
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
+
+	PxControllerFilters Filters;
+
+	m_pPhysXControllerCom.lock()->MoveWithRotation({ -m_fCurrentSpeed * fTimeDelta, 0.f, 0.f }, 0.f, fTimeDelta, Filters, nullptr, m_pTransformCom);
 }
 
 

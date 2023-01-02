@@ -13,12 +13,6 @@ GAMECLASS_C(CSkill_Axe)
 CLONE_C(CSkill_Axe, CComponent)
 
 
-void CSkill_Axe::UseSkill()
-{
-	__super::UseSkill();
-
-}
-
 void CSkill_Axe::Start()
 {
 	__super::Start();

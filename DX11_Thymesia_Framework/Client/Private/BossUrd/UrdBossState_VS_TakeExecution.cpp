@@ -58,15 +58,15 @@ void CUrdBossState_VS_TakeExecution::OnStateStart(const _float& In_fAnimationBle
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Y + (_byte)ROOTNODE_FLAG::Z);
+	//m_pPhysXControllerCom.lock()->Set_Enable(false);
 
-	m_pPhysXControllerCom.lock()->Enable_Gravity(false);
-
-	m_pPhysXControllerCom.lock()->Set_EnableSimulation(false);
-
-	m_pPhysXControllerCom.lock()->Set_Enable(false);
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.5f, 1.5f, 1.5f));
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,47);
+
+	_vector vTransformPositon = Get_OwnerMonster()->Get_Transform()->Get_Position();
+
+	cout << "x" << vTransformPositon.m128_f32[0] << "," << "y" << vTransformPositon.m128_f32[1] << "," << "z" << vTransformPositon.m128_f32[2] << endl;
 
 	
 	if (Get_OwnerMonster()->Get_BossExecutionStartOnOff())
@@ -77,11 +77,16 @@ void CUrdBossState_VS_TakeExecution::OnStateStart(const _float& In_fAnimationBle
 		weak_ptr<CCharacter> pOtherCharacter = Weak_StaticCast<CCharacter>(pCurrentPlayer);
 		_matrix vOtherWorldMatrix = pCurrentPlayer.lock()->Get_Transform()->Get_WorldMatrix();
 	
-		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(-0.5f, 0.f, -2.f, 0.f));
+		vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(1.5f, 0.f, -1.f, 0.f));
 			pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
 				vResultOtherWorldMatrix.r[3],
 				GAMEINSTANCE->Get_DeltaTime(),
 				Filters);
+
+		Get_OwnerMonster()->Get_Transform()->LookAt2D(vOtherWorldMatrix.r[3]);
+		pCurrentPlayer.lock()->Get_Transform()->LookAt2D(Get_OwnerMonster()->Get_WorldPosition());
+		
+
 		Get_OwnerMonster()->Set_BossExecutionStartOnOff(false);
 	}
 	
@@ -100,16 +105,9 @@ void CUrdBossState_VS_TakeExecution::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X ||  (_byte)ROOTNODE_FLAG::Z);
-
-	m_pPhysXControllerCom.lock()->Enable_Gravity(true);
-
-	m_pPhysXControllerCom.lock()->Set_EnableSimulation(true);
-
-	m_pPhysXControllerCom.lock()->Set_Enable(true);
-
 	//m_pPhysXControllerCom.lock()->Set_Enable(true);
-	//m_pPhysXControllerCom.lock()->Enable_Gravity(true);
+
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
 }
 
 
@@ -119,6 +117,7 @@ void CUrdBossState_VS_TakeExecution::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SpecailAttack(true);
 	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
 }
 
@@ -138,7 +137,19 @@ _bool CUrdBossState_VS_TakeExecution::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	//124 180 °¡Áö
 
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 60 &&
+		m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() <= 180)
+	{
+		m_pPhysXControllerCom.lock()->Set_Enable(false);
+	}
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() > 180)
+	{
+		m_pPhysXControllerCom.lock()->Set_Enable(true);
+	}
 
 	return false;
 }

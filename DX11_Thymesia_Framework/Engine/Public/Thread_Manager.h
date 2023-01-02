@@ -30,7 +30,7 @@ private:
 
 	void Clear_EngineThreads(const THREAD_TYPE In_eThread_Type);
 
-	void WorkerThread(_bool& JobDoneChecker);
+	void WorkerThread(_int iIndex);
 	
 	
 
@@ -51,7 +51,7 @@ private:
 	// 위의 job 큐를 위한 cv 와 m.
 	condition_variable cv_job_q_;
 	mutex m_job_q_;
-	vector<_bool*> worker_jopdones;
+	vector<_bool> worker_jopdones;
 
 
 	// 모든 쓰레드 종료

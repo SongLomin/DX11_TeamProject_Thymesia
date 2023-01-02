@@ -38,6 +38,11 @@ void CUrdBossState_Attack01::Start()
 void CUrdBossState_Attack01::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	if (m_bAttackLookAtLimit)
+	{
+		TurnAttack(fTimeDelta * 2.f);
+	}
 	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -46,6 +51,8 @@ void CUrdBossState_Attack01::Tick(_float fTimeDelta)
 void CUrdBossState_Attack01::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+	m_bAttackLookAtLimit = true;
 
 	Check_AndChangeNextState();
 }
@@ -82,7 +89,7 @@ void CUrdBossState_Attack01::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_AttackCount(true);
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_Attack(true);
 	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
 }
 
@@ -102,7 +109,11 @@ _bool CUrdBossState_Attack01::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
+		m_bAttackLookAtLimit = false;
 
+	if (ComputeAngleWithPlayer() > 0.99f && m_bAttackLookAtLimit)
+		Rotation_TargetToLookDir();
 
 	return false;
 }

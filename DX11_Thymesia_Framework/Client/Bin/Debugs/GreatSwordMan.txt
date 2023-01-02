@@ -1,0 +1,170 @@
+0. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_ComboA01_1
+1. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_ComboA01_2
+2. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_ComboA01_3
+3. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_ComboA02
+4. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_ComboB01
+5. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_ComboB02
+6. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_ComboB02_1
+7. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_ComboD01
+8. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_ComboE01
+9. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_Fall_End
+10. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_Fall_Loop
+11. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_HurtCounter
+12. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_HurtFall_End_FaceUp
+13. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_HurtFall_Loop_FaceUp
+14. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_HurtKnockBack
+15. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_HurtKnockUp_Sart
+16. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_HurtL_F
+17. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_HurtLieGetup_FaceUp
+18. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_HurtM_FL
+19. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_HurtM_FR
+20. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_HurtS_FL
+21. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_HurtS_FR
+22. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_HurtStunEnd
+23. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_HurtStunLoop
+24. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_HurtStunStart
+25. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_HurtXL_F
+26. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_Idle
+27. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_IdleN
+28. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_IdleN2Fight
+29. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_Parry_L
+30. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_Parry_R
+31. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_Parry_R2
+32. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_RaidAttack1
+33. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_Run_F
+34. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_SP_Attack01
+35. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_SP_Idle01
+36. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_Step_B
+37. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_Step_L
+38. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_Step_R
+39. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_TurnAttack1
+40. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_TurnL90
+41. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_TurnL90N
+42. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_TurnR90
+43. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_TurnR90N
+44. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_WalkB
+45. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_WalkBL
+46. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_WalkBR
+47. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_WalkF
+48. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_WalkFL
+49. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_WalkFN
+50. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_WalkFR
+51. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_WalkL
+52. SK_C_HArmorLV2_01.ao|HArmor_GreatSword_WalkR
+RootNode
+SK_C_HArmorLV2_01.ao
+root
+ik_hand_l
+ik_hand_l_end
+ik_hand_r
+ik_hand_r_end
+ik_foot_l
+ik_foot_l_end
+ik_foot_r
+ik_foot_r_end
+ik_weapon_r
+ik_weapon_r_end
+ik_weapon_l
+ik_weapon_l_end
+AnimTargetPoint
+AnimTargetPoint_end
+camera
+camera_end
+pelvis
+Bip001-Pelvis
+spine_01
+spine_02
+spine_03
+neck_01
+head
+head_end
+clavicle_l
+upperarm_l
+lowerarm_l
+hand_l
+thumb_01_l
+thumb_02_l
+thumb_03_l
+thumb_03_l_end
+index_01_l
+index_02_l
+index_03_l
+index_03_l_end
+middle_01_l
+middle_02_l
+middle_03_l
+middle_03_l_end
+ring_01_l
+ring_02_l
+ring_03_l
+ring_03_l_end
+pinky_01_l
+pinky_02_l
+pinky_03_l
+pinky_03_l_end
+weapon_l
+weapon_l_pivot
+weapon_l_end
+weapon_l_end_end
+clavicle_r
+upperarm_r
+lowerarm_r
+hand_r
+thumb_01_r
+thumb_02_r
+thumb_03_r
+thumb_03_r_end
+index_01_r
+index_02_r
+index_03_r
+index_03_r_end
+middle_01_r
+middle_02_r
+middle_03_r
+middle_03_r_end
+ring_01_r
+ring_02_r
+ring_03_r
+ring_03_r_end
+pinky_01_r
+pinky_02_r
+pinky_03_r
+pinky_03_r_end
+weapon_r
+weapon_r_pivot
+weapon_r_end
+weapon_r_end_end
+Bone_shoulder01
+Bone_shoulder01_end
+Bone_Cloak01
+Bone_Cloak02
+Bone_Cloak03
+Bone_Cloak04
+Bone_Cloak05
+Bone_Cloak06
+Bone_Cloak06_end
+Root_Bone_Belt01
+Bone_Belt01_1
+Bone_Belt01_2
+Bone_Belt01_3_E
+Bone_Belt01_3_E_end
+Root_Bone_Belt02
+Bone_Belt02_1
+Bone_Belt02_2
+Bone_Belt02_3_End
+Bone_Belt02_3_End_end
+thigh_r
+calf_r
+foot_r
+ball_r
+ball_r_end
+thigh_l
+calf_l
+foot_l
+ball_l
+ball_l_end
+SK_C_HArmorLV2_01.mo
+0[SK_C_HArmorLV2_01.md]. 28971
+1[SK_C_HArmorLV2_01.md]. 31572
+2[SK_C_HArmorLV2_01.md]. 32517
+3[SK_C_HArmorLV2_01.md]. 29442

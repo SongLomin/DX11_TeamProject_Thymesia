@@ -213,6 +213,9 @@ _bool CBossStateBase::Rotation_TargetToLookDir()
 
 	_vector CharacterPosition = pCurrentPlayer.lock()->Get_Component<CTransform>().lock()->Get_State(CTransform::STATE_TRANSLATION);
 
+	if (!m_pTransformCom.lock())
+		return false;
+
 	m_pTransformCom.lock()->LookAt2D(CharacterPosition);
 
 	return true;

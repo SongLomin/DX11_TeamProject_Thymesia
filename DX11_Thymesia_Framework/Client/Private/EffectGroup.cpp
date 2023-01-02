@@ -150,6 +150,7 @@ void CEffectGroup::ReBake_EditParticle()
 void CEffectGroup::Add_EffectMesh(const _uint iLevelIndex)
 {
     weak_ptr<CCustomEffectMesh> pEffectMesh = GAMEINSTANCE->Add_GameObject<CCustomEffectMesh>(iLevelIndex);
+    pEffectMesh.lock()->Set_EffectGroup(Weak_StaticCast<CEffectGroup>(m_this));
     m_pEffectMeshs.emplace_back(pEffectMesh);
 }
 

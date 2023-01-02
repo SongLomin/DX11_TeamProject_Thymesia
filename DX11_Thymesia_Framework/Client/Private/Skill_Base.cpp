@@ -4,7 +4,7 @@
 #include "Status_Player.h"
 #include "Player.h"
 #include "ClientComponent_Utils.h"
-#include "CCorvus.h"
+#include "Corvus.h"
 #include "RequirementChecker.h"
 #include "Requirement_PlayerStatusMana.h"
 #include "Requirement_Time.h"
@@ -32,8 +32,7 @@ HRESULT CSkill_Base::Initialize(void* pArg)
 	m_pRequirementTime = CRequirementBase::Create< CRequirement_Time>();
 
 	m_pRequirementChecker->Add_Requirement(m_pRequirementMana);
-	m_pRequirementChecker->Add_Requirement(m_pRequirementTime);
-
+	
 	Init_SkillInfo();
 	Init_State();
 
@@ -96,6 +95,16 @@ void CSkill_Base::UseSkill()
 	{
 		return;
 	}
+
+	m_bUseAble = false;
+
+	CClientComponent_Utils::ConvertOwnerToPlayer(m_pOwner).lock()->Change_State(m_pSkillState);
+	
+	GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status().lock()->Consumed_Mana(m_fRequiredCost);
+
+	m_pRequirementTime->Init_Req(m_fSkillCoolDown);
+	m_pRequirementChecker->Add_Requirement(m_pRequirementTime);
+
 	Start_Skill();
 }
 
@@ -124,11 +133,6 @@ void CSkill_Base::Clear_Callback()
 void CSkill_Base::Start_Skill()
 {
 	Callback_StartSkill();
-	CClientComponent_Utils::ConvertOwnerToPlayer(m_pOwner).lock()->Change_State(m_pSkillState);
-	m_bUseAble = false;
-	GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status().lock()->Consumed_Mana(m_fRequiredCost);
-
-	m_pRequirementTime->Init_Req(m_fSkillCoolDown);
 }
 
 void CSkill_Base::End_Skill()

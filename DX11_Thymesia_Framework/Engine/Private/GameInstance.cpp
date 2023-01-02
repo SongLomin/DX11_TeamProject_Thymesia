@@ -144,9 +144,6 @@ HRESULT CGameInstance::Render_Engine()
 	m_pObject_Manager->After_Render();
 
 	GET_SINGLE(CThread_Manager)->Wait_JobDone();
-	GET_SINGLE(CThread_Manager)->Wait_JobDone();
-	GET_SINGLE(CThread_Manager)->Wait_JobDone();
-	GET_SINGLE(CThread_Manager)->Wait_JobDone();
 	return S_OK;
 }
 
@@ -647,10 +644,6 @@ const LIGHTDESC& CGameInstance::Get_LightDesc(_uint iIndex) const
 
 void CGameInstance::Set_LightDesc(const LIGHTDESC& LightDesc)
 {
-	if (LightDesc.Get_LightIndex() == 0)
-		int a = 0;
-
-
 	m_pLight_Manager->Set_LightDesc(LightDesc);
 }
 

@@ -6,6 +6,9 @@
 #include "Shader.h"
 #include "GameManager.h"
 #include "Engine_Defines.h"
+#include "EasingComponent_Float.h"
+
+
 
 GAMECLASS_C(CHUD_PlagueWeapon_Steal_Icon);
 CLONE_C(CHUD_PlagueWeapon_Steal_Icon, CGameObject);
@@ -24,9 +27,15 @@ HRESULT CHUD_PlagueWeapon_Steal_Icon::Initialize(void* pArg)
 
     m_pMask = Add_Component<CTexture>();
 
+    Set_Texture("None");
+
     m_pMask.lock()->Use_Texture("MaskColor_Vertical");
 
     m_iPassIndex = 5;
+
+    SetUp_Component();
+
+
     return S_OK;
 }
 
@@ -40,6 +49,12 @@ HRESULT CHUD_PlagueWeapon_Steal_Icon::Start()
 void CHUD_PlagueWeapon_Steal_Icon::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
+
+    if (m_pEasingFloat.lock()->Is_Lerping())
+    {
+        m_fRatio = m_pEasingFloat.lock()->Get_Lerp();
+    }
+
 }
 
 void CHUD_PlagueWeapon_Steal_Icon::LateTick(_float fTimeDelta)
@@ -66,5 +81,5 @@ HRESULT CHUD_PlagueWeapon_Steal_Icon::SetUp_ShaderResource()
 
 void CHUD_PlagueWeapon_Steal_Icon::Free()
 {
-    __super::Free();
+   
 }

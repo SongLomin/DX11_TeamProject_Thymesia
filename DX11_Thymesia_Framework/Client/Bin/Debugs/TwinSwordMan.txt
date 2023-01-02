@@ -1,0 +1,196 @@
+0. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_ComboA01
+1. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_ComboA02
+2. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_ComboA03
+3. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_ComboB01_1
+4. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_ComboB01_2
+5. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_ComboC01
+6. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_ComboC02
+7. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_ComboC03
+8. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_Dodge_B
+9. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_FallLoop
+10. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_HurtCounter
+11. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_HurtFall_End_FaceUp
+12. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_HurtFall_Loop_FaceUp
+13. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_HurtKnockBack
+14. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_HurtKnockDownB
+15. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_HurtKnockUp_Sart
+16. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_HurtL_F
+17. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_HurtLieDie_FaceDown
+18. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_HurtLieDie_FaceUp
+19. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_HurtLieGetup_FaceDown
+20. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_HurtLieGetup_FaceUp
+21. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_HurtM_FL
+22. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_HurtM_FR
+23. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_HurtS_FL
+24. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_HurtS_FR
+25. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_HurtStunEnd
+26. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_HurtStunLoop
+27. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_HurtStunStart
+28. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_Idle
+29. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_IdleN
+30. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_IdleN2Fight
+31. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_Land
+32. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_Parry_L
+33. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_Parry_L_Attack
+34. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_Parry_R
+35. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_Parry_R_Attack
+36. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_RaidAttack1
+37. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_Run_F
+38. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_SP_Attack01_End
+39. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_SP_Attack01_Loop
+40. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_SP_Attack01_Start
+41. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_SP_Idle01
+42. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_TurnL90
+43. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_TurnL90N
+44. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_TurnR90
+45. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_TurnR90N
+46. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_VS_TakeExecution
+47. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_WalkB
+48. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_WalkBL
+49. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_WalkBR
+50. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_WalkF
+51. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_WalkFL
+52. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_WalkFN
+53. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_WalkFR
+54. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_WalkL
+55. SK_C_HArmorTypeLV2_01.ao|LArmor_TwinSwords_WalkR
+RootNode
+SK_C_HArmorTypeLV2_01.ao
+root
+ik_hand_l
+ik_hand_l_end
+ik_hand_r
+ik_hand_r_end
+ik_foot_l
+ik_foot_l_end
+ik_foot_r
+ik_foot_r_end
+ik_weapon_r
+ik_weapon_r_end
+ik_weapon_l
+ik_weapon_l_end
+AnimTargetPoint
+AnimTargetPoint_end
+camera
+camera_end
+pelvis
+Bip001-Pelvis
+spine_01
+spine_02
+spine_03
+neck_01
+head
+head_end
+clavicle_l
+upperarm_l
+lowerarm_l
+hand_l
+thumb_01_l
+thumb_02_l
+thumb_03_l
+thumb_03_l_end
+index_01_l
+index_02_l
+index_03_l
+index_03_l_end
+middle_01_l
+middle_02_l
+middle_03_l
+middle_03_l_end
+ring_01_l
+ring_02_l
+ring_03_l
+ring_03_l_end
+pinky_01_l
+pinky_02_l
+pinky_03_l
+pinky_03_l_end
+weapon_l
+weapon_l_pivot
+weapon_l_end
+weapon_l_end_end
+clavicle_r
+upperarm_r
+lowerarm_r
+hand_r
+thumb_01_r
+thumb_02_r
+thumb_03_r
+thumb_03_r_end
+index_01_r
+index_02_r
+index_03_r
+index_03_r_end
+middle_01_r
+middle_02_r
+middle_03_r
+middle_03_r_end
+ring_01_r
+ring_02_r
+ring_03_r
+ring_03_r_end
+pinky_01_r
+pinky_02_r
+pinky_03_r
+pinky_03_r_end
+weapon_r
+weapon_r_pivot
+weapon_r_end
+weapon_r_end_end
+Bone_shoulder01
+Bone_shoulder01_end
+Bone_Cloak01
+Bone_Cloak02
+Bone_Cloak03
+Bone_Cloak04
+Bone_Cloak05
+Bone_Cloak06
+Bone_Cloak06_end
+Bone_Fitting04_1
+Bone_Fitting04_1_end
+Root_Bone_Belt01
+Bone_Belt01_1
+Bone_Belt01_2
+Bone_Belt01_3_E
+Bone_Belt01_3_E_end
+Bone_Belt04_1
+Bone_Belt04_2_End
+Bone_Belt04_2_End_end
+Bone_Fitting05_01
+Bone_Fitting05_01_end
+Root_Bone_Belt02
+Bone_Belt02_1
+Bone_Belt02_2
+Bone_Belt02_3_End
+Bone_Belt02_3_End_end
+Bone_Fitting03_1
+Bone_Fitting03_2_End
+Bone_Fitting03_2_End_end
+Bone_Fitting02_1
+Bone_Fitting02_2_End
+Bone_Fitting02_2_End_end
+Bone_Fitting01_1
+Bone_Fitting01_1_End
+Bone_Fitting01_1_End_end
+thigh_r
+calf_r
+foot_r
+ball_r
+ball_r_end
+Root_Bone_Belt03
+Bone_Belt03_1
+Bone_Belt03_2
+Bone_Belt03_3_End
+Bone_Belt03_3_End_end
+thigh_l
+calf_l
+foot_l
+ball_l
+ball_l_end
+SK_C_HArmorTypeLV2_01.mo
+0[SK_C_HArmorTypeLV2_01.md]. 5256
+1[SK_C_HArmorTypeLV2_01.md]. 30162
+2[SK_C_HArmorTypeLV2_01.md]. 9426
+3[SK_C_HArmorTypeLV2_01.md]. 28575
+4[SK_C_HArmorTypeLV2_01.md]. 11031
+5[SK_C_HArmorTypeLV2_01.md]. 31572

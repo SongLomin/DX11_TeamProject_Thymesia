@@ -108,7 +108,6 @@ void CUrdBossState_Start::Free()
 
 _bool CUrdBossState_Start::Check_AndChangeNextState()
 {
-
 	if (!Check_Requirement())
 		return false;
 
@@ -126,13 +125,12 @@ _bool CUrdBossState_Start::Check_AndChangeNextState()
 		weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
 		list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
 		pWeapons.front().lock()->Weapon_BoneChange(m_pModelCom, "weapon_r");
+
+
 	}
-
 	
-
-	
-	
-
+	GET_SINGLE(CGameManager)->Activate_Section(200, EVENT_TYPE::ON_LOCK_SECTION);
+	GET_SINGLE(CGameManager)->Activate_Fog(1);
 	
 	return false;
 }

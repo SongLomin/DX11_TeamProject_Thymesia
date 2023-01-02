@@ -198,6 +198,7 @@
     <ClInclude Include="..\Public\ActorDecor.h" />
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
+    <ClInclude Include="..\Public\Effect_AttackArea.h" />
     <ClInclude Include="..\Public\Ballon.h" />
     <ClInclude Include="..\Public\BossBat\Bat.h" />
     <ClInclude Include="..\Public\BossBat\BatBossStateBase.h" />
@@ -362,8 +363,12 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_ParryDeflectRightup.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Axe.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_CaneSword.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Hammer.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Hammer_Upgrade.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Knife.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Magician.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Scythe.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Scythe_Upgrade.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_UrdSword.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_VargSword.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_VargSwordStart.h" />
@@ -485,12 +490,14 @@
     <ClInclude Include="..\Public\EliteMonState\Joker\JokerState_WheelAtkLoop.h" />
     <ClInclude Include="..\Public\EliteMonState\Joker\JokerState_WheelAtkStart.h" />
     <ClInclude Include="..\Public\EliteMonster.h" />
+    <ClInclude Include="..\Public\Fog.h" />
     <ClInclude Include="..\Public\Interaction_CastleGate.h" />
     <ClInclude Include="..\Public\Interaction_CheckPoint.h" />
     <ClInclude Include="..\Public\Interaction_DeadSpot.h" />
     <ClInclude Include="..\Public\Interaction_Door.h" />
     <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h" />
     <ClInclude Include="..\Public\Interaction_Elevator.h" />
+    <ClInclude Include="..\Public\JavelinWeapon.h" />
     <ClInclude Include="..\Public\Prop_Fence.h" />
     <ClInclude Include="..\Public\Interaction_Item.h" />
     <ClInclude Include="..\Public\Interaction_Ladder.h" />
@@ -543,6 +550,7 @@
     <ClInclude Include="..\Public\Section_Eventer.h" />
     <ClInclude Include="..\Public\Skill_Axe.h" />
     <ClInclude Include="..\Public\Skill_base.h" />
+    <ClInclude Include="..\Public\Skill_Knife.h" />
     <ClInclude Include="..\Public\Skill_VargSword.h" />
     <ClInclude Include="..\Public\State_Monster.h" />
     <ClInclude Include="..\Public\State_Player.h" />
@@ -550,6 +558,7 @@
     <ClInclude Include="..\Public\Status_Monster.h" />
     <ClInclude Include="..\Public\Status_Player.h" />
     <ClInclude Include="..\Public\Preset_PhysXControllerDesc.h" />
+    <ClInclude Include="..\Public\StolenSkill.h" />
     <ClInclude Include="..\Public\TargetCurve.h" />
     <ClInclude Include="..\Public\TestUI.h" />
     <ClInclude Include="..\Public\UIManager.h" />
@@ -567,6 +576,7 @@
     <ClInclude Include="..\Public\UI_EvolveMenu.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Level.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Level_BG.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_SelectDecoration.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_Talent.h" />
     <ClInclude Include="..\Public\UI_EvolveTalent_Active.h" />
@@ -631,7 +641,7 @@
     <ClInclude Include="..\Public\Camera_Free.h" />
     <ClInclude Include="..\Public\Camera_Static.h" />
     <ClInclude Include="..\Public\Camera_Target.h" />
-    <ClInclude Include="..\Public\CCorvus.h" />
+    <ClInclude Include="..\Public\Corvus.h" />
     <ClInclude Include="..\Public\Character.h" />
     <ClInclude Include="..\Public\ClientComponent.h" />
     <ClInclude Include="..\Public\ClientLevel.h" />
@@ -806,6 +816,7 @@
     <ClCompile Include="..\Private\ActorDecor.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Attack_Area.cpp" />
+    <ClCompile Include="..\Private\Effect_AttackArea.cpp" />
     <ClCompile Include="..\Private\Ballon.cpp" />
     <ClCompile Include="..\Private\BossBat\Bat.cpp" />
     <ClCompile Include="..\Private\BossBat\BatBossStateBase.cpp" />
@@ -966,8 +977,12 @@
     <ClCompile Include="..\Private\CorvusStates\CorvusState_ClawAttackTab2.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Axe.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_CaneSword.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Hammer.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Hammer_Upgrade.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Knife.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Magician.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Scythe.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Scythe_Upgrade.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_UrdSword.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_VargSword.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_VargSwordStart.cpp" />
@@ -1085,12 +1100,14 @@
     <ClCompile Include="..\Private\EliteMonState\Joker\JokerState_WheelAtkLoop.cpp" />
     <ClCompile Include="..\Private\EliteMonState\Joker\JokerState_WheelAtkStart.cpp" />
     <ClCompile Include="..\Private\EliteMonster.cpp" />
+    <ClCompile Include="..\Private\Fog.cpp" />
     <ClCompile Include="..\Private\Interaction_CastleGate.cpp" />
     <ClCompile Include="..\Private\Interaction_CheckPoint.cpp" />
     <ClCompile Include="..\Private\Interaction_DeadSpot.cpp" />
     <ClCompile Include="..\Private\Interaction_Door.cpp" />
     <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\Interaction_Elevator.cpp" />
+    <ClCompile Include="..\Private\JavelinWeapon.cpp" />
     <ClCompile Include="..\Private\Prop_Fence.cpp" />
     <ClCompile Include="..\Private\Interaction_Item.cpp" />
     <ClCompile Include="..\Private\Interaction_Ladder.cpp" />
@@ -1128,8 +1145,10 @@
     <ClCompile Include="..\Private\Requirement_State.cpp" />
     <ClCompile Include="..\Private\Skill_Axe.cpp" />
     <ClCompile Include="..\Private\Skill_Base.cpp" />
+    <ClCompile Include="..\Private\Skill_Knife.cpp" />
     <ClCompile Include="..\Private\Skill_VargSword.cpp" />
     <ClCompile Include="..\Private\Status_Boss.cpp" />
+    <ClCompile Include="..\Private\StolenSkill.cpp" />
     <ClCompile Include="..\Private\TargetCurve.cpp" />
     <ClCompile Include="..\Private\UIManager.cpp" />
     <ClCompile Include="..\Private\UI_AppearEventVarg.cpp" />
@@ -1143,6 +1162,7 @@
     <ClCompile Include="..\Private\UI_EvolveMenu.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Level.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Level_BG.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_SelectDecoration.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp" />
     <ClCompile Include="..\Private\UI_EvolveTalent_Active.cpp" />
@@ -1223,7 +1243,7 @@
     <ClCompile Include="..\Private\Camera_Free.cpp" />
     <ClCompile Include="..\Private\Camera_Static.cpp" />
     <ClCompile Include="..\Private\Camera_Target.cpp" />
-    <ClCompile Include="..\Private\CCorvus.cpp" />
+    <ClCompile Include="..\Private\Corvus.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\ClientComponent.cpp" />
     <ClCompile Include="..\Private\ClientLevel.cpp" />

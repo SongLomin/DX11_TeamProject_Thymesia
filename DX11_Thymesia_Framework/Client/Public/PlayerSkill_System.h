@@ -4,13 +4,17 @@
 BEGIN(Client)
 
 class CSkill_Base;
+class CRequirementChecker;
+class CRequirement_Time;
+class CStolenSkill;
+
 
 class CPlayerSkill_System : public CClientComponent
 {
 public:
 	typedef enum class socketType
 	{
-		SOCKET_MAIN = 0, SOCKET_SUB, SOCKET_STEAL, SOCKET_END
+		SOCKET_MAIN = 0, SOCKET_SUB, SOCKET_END
 	}SOCKET_TYPE;
 
 public:
@@ -30,24 +34,34 @@ public:
 
 public:
 	void					UseMainSKill();
+	void					UseStealSKill();
 
 	void					SwapSkillMaintoSub();
+	HRESULT					OnStealMonsterSkill(MONSTERTYPE In_eMonsterType);
+
+public:
+	void			UnBindSkill(SOCKET_TYPE eType);
+	void			OnChangeSkill(weak_ptr<CSkill_Base> pSkill, SOCKET_TYPE eType);
 
 
 public:
 	FDelegate<weak_ptr<CSkill_Base>>	Callback_OnChangeSkill[(_uint)SOCKET_TYPE::SOCKET_END];
-	
 
-public:
-	void			UnBindSkill(SOCKET_TYPE eType);
-
-	void			OnChangeSkill(weak_ptr<CSkill_Base> pSkill, SOCKET_TYPE eType);
+	FDelegate<weak_ptr<CSkill_Base>>	Callback_OnStealSkill;
 private:
+	void			SetUp_MonsterSkillMap();
 	void			Tick_SkillList(_float fTimeDelta);
 
 private:
-	weak_ptr<CSkill_Base>		m_pSkillList[(_uint)SOCKET_TYPE::SOCKET_END];
-	
+	shared_ptr<CRequirementChecker> m_pRequirementChecker;
+	shared_ptr<CRequirement_Time>	m_pRequirement_Time;
+
+
+	weak_ptr<CSkill_Base>		m_SkillList[(_uint)SOCKET_TYPE::SOCKET_END];
+	weak_ptr<CStolenSkill>		m_pStealSkill;
+
+	typedef map<MONSTERTYPE, weak_ptr<CSkill_Base>> MONSTERSKILLMAP;
+	map<MONSTERTYPE, weak_ptr<CSkill_Base>>	m_MonsterSkillMap;
 public:
 	
 };

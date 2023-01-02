@@ -35,13 +35,13 @@ public:// CGameObject을(를) 통해 상속됨
 
 public:
     void Init_AttackArea(const ATTACKAREA_DESC& In_WeaponDesc, weak_ptr<CTransform> In_ParentTransformCom);
-    void Enable_Weapon(const _float& In_fLifeTime, const _bool& In_bSyncTransform);
+    void Enable_Weapon(const _float& In_fLifeTime);
     void Disable_Weapon();
     weak_ptr<CCharacter> Get_ParentObject();
 
     //void Set_WeaponDesc(const _float& In_fLifeTime, const _bool& );
 
-private:
+protected:
     void Update_TransformWithParent();
     _bool Check_AllDisableCollider();
 
@@ -54,12 +54,13 @@ protected:
     list<_uint>             m_iHitColliderIndexs;
     _bool                   m_bFirstAttack = true;
 
-private:
+protected:
     ATTACKAREA_DESC         m_tWeaponDesc;
 
-    _float              m_fLifeTime = 0.f;
-    _float              m_fCurrentFreq = 0.f;
-    _bool               m_bSyncTransform = false;
+    _float                  m_fLifeTime = 0.f;
+    _float                  m_fCurrentFreq = 0.f;
+
+    _uint                   m_iTimeScaleLayer = (_uint)TIMESCALE_LAYER::NONE;
 
 protected:
     virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;

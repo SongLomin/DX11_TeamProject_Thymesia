@@ -356,6 +356,8 @@ _matrix CCollider::Remove_Rotation(_fmatrix TransformMatrix)
 void CCollider::Set_DebugColor(_fvector In_vColor)
 {
 	XMStoreFloat4(&m_vColor, In_vColor);
+
+	m_bEditerDraw = true;
 }
 
 HRESULT CCollider::Render(ID3D11DeviceContext* pDeviceContext)
@@ -376,7 +378,12 @@ HRESULT CCollider::Render(ID3D11DeviceContext* pDeviceContext)
 
 	m_pEffect->Apply(DEVICECONTEXT);
 
-	_vector		vColor = m_isColl == true ? XMVectorSet(1.f, 0.f, 0.f, 1.f) : XMVectorSet(0.f, 1.f, 0.f, 1.f);
+	_vector		vColor;
+
+	if (m_bEditerDraw)
+		vColor = XMLoadFloat4(&m_vColor);
+	else
+		vColor = (m_isColl == true) ? (XMVectorSet(1.f, 0.f, 0.f, 1.f)) : (XMVectorSet(0.f, 1.f, 0.f, 1.f));
 
 	m_pBatch->Begin();
 
@@ -432,6 +439,7 @@ HRESULT CCollider::Render_IgnoreDebugCheck()
 
 	return S_OK;
 }
+
 #endif // _DEBUG
 
 

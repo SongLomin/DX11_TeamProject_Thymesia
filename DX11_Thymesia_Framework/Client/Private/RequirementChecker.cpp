@@ -31,6 +31,11 @@ _bool CRequirementChecker::Check_Requirments()
 				bResult = false;
 				break;
 			}
+			else
+			{
+				(*iter)->Callback_OnRequirementTrue();
+				(*iter)->Callback_OnRequirementTrue.Clear();
+			}
 			++iter;
 		}
 	}

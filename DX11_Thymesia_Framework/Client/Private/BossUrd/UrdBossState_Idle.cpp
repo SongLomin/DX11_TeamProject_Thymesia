@@ -56,6 +56,20 @@ void CUrdBossState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CUrdBossState_Attack01>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CUrdBossState_Attack02>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CUrdBossState_Attack05>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CUrdBossState_VS_TakeExecution>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CUrdBossState_Skill01>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CUrdBossState_Skill02_1>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CUrdBossState_Skill03_L>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CUrdBossState_Skill03_R>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CUrdBossState_SPSkill01>().lock())
+	{
+		m_bTurnCheck = true;
+	}
+	
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	
 	
@@ -93,103 +107,87 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 	//여기서 해줘야한다 
 	//거리가 8정도 가까우면 공격을하고 
 	// 공격을 하고 한번걷고 다시 스탭밟음 
-	if (fPToMDistance <= 8.f)
+
+	if (m_bSpecailAttack)
 	{
-		if (m_bSkillStart)
+		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_SPSkill01>(0.05f);
+		return true;
+	}
+	else
+	{
+		if (fPToMDistance <= 4.f)
 		{
-			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill_Idle>(0.05f);
-			return true;
-		}
-		else
-		{
-			if (m_bAttack)
+			if (m_bTurnCheck)
 			{
-				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Walk_Idle>(0.05f);
-				return true;
+				TurnMechanism();
 			}
 			else
 			{
-				if (m_iStepCount == 0)
+				if (m_bWalkStart)
 				{
-					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Step_Idle>(0.05f);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Walk_Idle>(0.05f);
 					return true;
 				}
-				else if (m_iStepCount == 1)
+				else
 				{
-					if (m_bThreeAttack)
+					if (m_bSkillStart) // 만약 피가 어느정도달면 무조건 이거먼저실행하게끔 이렇게 짬
 					{
-						//세번공격하거는거 여기서 바로 가도 될듯?
-						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack01>(0.05f);
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill_Idle>(0.05f);
 						return true;
 					}
 					else
 					{
+						Get_Owner().lock()->Get_Component<CUrdBossState_Step_Idle>().lock()->Set_StepClose(true);
 						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Step_Idle>(0.05f);
 						return true;
 					}
 				}
-				else
-				{
-					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
-					return true;
-				}
+
 			}
-		}
-		//if (m_iStepCount == 1 && m_bThreeAttack)
-		//{
-		//	Get_Owner().lock()->Get_Component<CUrdBossState_Attack_Idle>().lock()->Set_ThreeAttack(true);
-		//	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack_Idle>(0.05f);
-		//	return true;
-		//}
-	}
-	else
-	{
-		//멀엇을때
-		// 거리가멀면 최대 3번 스탭을밟고
-		//공격을하고
-		//공격을한뒤에  한번걷고
-		// 걸은다음에 또멀면 스탭을 최대 세번밟고 한번공격을하고 그다음에 특수공격을한다 그리고
-		// 스킬카운트가 증가되어있으면 무조건 스킬발동이 먼저 스킬이 3일떄 특수패턴으로 바로들어감
-		if (m_bSkillStart)
-		{
-			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill_Idle>(0.05f);
-			return true;
+
 		}
 		else
 		{
-			if (m_bAttack)
+			if (m_bTurnCheck)
 			{
-				Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Walk_Idle>(0.05f);
-				return true;
+				TurnMechanism();
 			}
 			else
 			{
-				if (m_iStepCount == 0)
+				if (m_bSkillStart) // 만약 피가 어느정도달면 무조건 이거먼저실행하게끔 이렇게 짬
 				{
-					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Step_Idle>(0.05f);
-					return true;
-				}
-				else if (m_iStepCount == 1)
-				{
-					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Step_Idle>(0.05f);
-					return true;
-				}
-				else if (m_iStepCount == 2)
-				{
-					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Step_Idle>(0.05f);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill_Idle>(0.05f);
 					return true;
 				}
 				else
 				{
-					//이때는 여기서 발 공격 가도 될듯?
-					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack02>(0.05f);
-					return true;
-				}
-			}
-			
-		}
+					if (m_bWalkStart)
+					{
+						Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Walk_Idle>(0.05f);
+						return true;
+					}
+					else
+					{
+						if (m_bAttack) // 거리가 존나게 먼상태에서 두번 댄싱공격했을떄 ->바로 발동하게
+						{
+							Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack02>(0.05f);
+							return true;
+						}
+						else
+						{
+							Get_Owner().lock()->Get_Component<CUrdBossState_Step_Idle>().lock()->Set_StepClose(false);
+							Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Step_Idle>(0.05f);
+							return true;
+						}
+					}
 
+				}
+
+			}
+
+		}
 	}
+	
 
 	return false;
 }

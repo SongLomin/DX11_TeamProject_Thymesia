@@ -11,6 +11,7 @@
 //#include "Monster1States/Monster1States.h"
 #include "Client_Components.h"
 #include "UrdWeapon.h"
+#include "JavelinWeapon.h"
 
 GAMECLASS_C(CUrd);
 CLONE_C(CUrd, CGameObject);
@@ -170,6 +171,7 @@ void CUrd::Init_Desc()
 	m_pModelCom.lock()->Init_Model("Boss_Urd", "", (_uint)TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "AnimTargetPoint");
+	m_pWeapons.back().lock()->Set_WeaponNum(1);
 	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.9f,-2.4f,1.0f }, 0.2f, COLLISION_LAYER::MONSTER_ATTACK);
 	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.9f,-2.4f,1.0f }, 0.2f, COLLISION_LAYER::MONSTER_ATTACK);
 	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.8f,-2.2f,1.0f }, 0.2f, COLLISION_LAYER::MONSTER_ATTACK);
@@ -183,16 +185,19 @@ void CUrd::Init_Desc()
 	
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword02_Point");
+	m_pWeapons.back().lock()->Set_WeaponNum(2);
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword03_Point");
+	m_pWeapons.back().lock()->Set_WeaponNum(3);
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword04_Point");
+	m_pWeapons.back().lock()->Set_WeaponNum(4);
+
+	m_pJavelinWeapon.push_back(GAMEINSTANCE->Add_GameObject<CJavelinWeapon>(m_CreatedLevel));
 
 	//TODO 여기서하는 이유는 몬스터가 배치되고 원점에서 우리가 피킹한위치만큼더해지고 난뒤에 그월드포지션값저장하기위해서 여기서함
 
 	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
-
-
 
 
 	INIT_STATE(CUrdBossState_Attack01);
@@ -262,7 +267,7 @@ void CUrd::Init_Desc()
 void CUrd::Move_RootMotion_Internal()
 {
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root") * XMLoadFloat3(&m_vMoveScale);
 
 	PxControllerFilters Filters;
 	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);

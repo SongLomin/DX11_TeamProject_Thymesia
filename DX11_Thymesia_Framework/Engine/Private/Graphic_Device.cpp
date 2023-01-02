@@ -1,5 +1,7 @@
 #include "..\public\Graphic_Device.h"
 
+//#include <evr.h>
+
 IMPLEMENT_SINGLETON(CGraphic_Device);
 
 HRESULT CGraphic_Device::Ready_Graphic_Device(HWND hWnd, GRAPHICDESC::WINMODE WinMode, _uint iWinCX, _uint iWinCY)
@@ -49,17 +51,130 @@ HRESULT CGraphic_Device::Ready_Graphic_Device(HWND hWnd, GRAPHICDESC::WINMODE Wi
 	status = GFSDK_SSAO_CreateContext_D3D11(m_pDevice, &m_pAOContext, &CustomHeap);
 	assert(status == GFSDK_SSAO_OK); // HBAO+ requires feature level 11_0 or above
 
+
+	/*uint32_t resetToken = 0;
+	ComPtr<IMFDXGIDeviceManager> manager;*/
+
+	//m_hVideo = MCIWndCreate(hWnd, nullptr, WS_CHILD | WS_VISIBLE | MCIWNDF_NOPLAYBAR, L"../Bin/Video/Wildlife.wmv");
+
+	// 동영상을 재생할 크기를 설정하여 윈도우 창으로 적용, 만약 설정하지 않을 경우 동영상의 원래 크기대로 출력
+	//MoveWindow(m_hVideo, 0, 0, 1600, 900, FALSE);
+
+
+
+	// 동영상 재생
+	//MCIWndPlayFrom(m_hVideo, 3);
+	//MCIWndPlay(m_hVideo);
+
+	//if (FAILED(MFCreateDXGIDeviceManager(&resetToken, &manager)))
+	//{
+	//	DEBUG_ASSERT;
+	//}
+
+	//if (FAILED(manager->ResetDevice(m_pDevice, resetToken)))
+	//{
+	//	DEBUG_ASSERT;
+	//}
+
+
+
+	//// Create a media source for the video file
+	//IMFSourceReader* pSourceReader = nullptr;
+	//HRESULT hr = MFCreateSourceReaderFromURL(L"C:\\path\\to\\video.mp4", nullptr, &pSourceReader);
+	//if (FAILED(hr)) {
+	//	return hr;
+	//}
+
+	//IMFMediaType* pMediaType;
+	//hr = MFCreateMediaType(&pMediaType);
+	//
+	//pMediaType->SetUnknown(MF_SOURCE_READER_D3D_MANAGER, manager.Get());
+	//pMediaType->SetUINT32(MF_SOURCE_READER_ENABLE_ADVANCED_VIDEO_PROCESSING, 1);
+	//pMediaType->SetUINT32(MF_READWRITE_ENABLE_HARDWARE_TRANSFORMS, 1);
+
+
+
+	//// Configure the media source to output video frames in a DXGI-compatible format
+	//hr = pSourceReader->SetCurrentMediaType((DWORD)MF_SOURCE_READER_FIRST_VIDEO_STREAM, nullptr, pMediaType);
+	//if (FAILED(hr)) {
+	//	return hr;
+	//}
+
+	//// Create a media sink for rendering the video frames
+	//IMFVideoDisplayControl* pVideoDisplayControl = nullptr;
+	//hr = MFCreateVideoRenderer(IID_PPV_ARGS(&pVideoDisplayControl));
+	//if (FAILED(hr)) {
+	//	return hr;
+	//}
+
+	//// Set the media sink's device handle
+	//hr = pVideoDisplayControl->SetVideoWindow(hWnd);
+	//if (FAILED(hr)) {
+	//	return hr;
+	//}
+	///*hr = pVideoDisplayControl->Set(nullptr);
+	//if (FAILED(hr)) {
+	//	return hr;
+	//}*/
+
+	//RECT rect;
+	//rect.left = 0;
+	//rect.right = 1600;
+	//rect.top = 0;
+	//rect.bottom = 900;
+
+	//hr = pVideoDisplayControl->SetVideoPosition(nullptr, &rect);
+	//if (FAILED(hr)) {
+	//	return hr;
+	//}
+
+	//// Start the media pipeline
+	//hr = pSourceReader->ReadSample((DWORD)MF_SOURCE_READER_FIRST_VIDEO_STREAM, 0, nullptr, nullptr, nullptr, nullptr);
+	//if (FAILED(hr)) {
+	//	return hr;
+	//}
+
+	//BOOL bEOS = FALSE;
+	//while (!bEOS) {
+	//	DWORD streamIndex, flags;
+	//	LONGLONG llTimestamp;
+	//	IMFSample* pSample = nullptr;
+	//	hr = pSourceReader->ReadSample((DWORD)MF_SOURCE_READER_FIRST_VIDEO_STREAM, 0, &streamIndex, &flags, &llTimestamp, &pSample);
+	//	if (FAILED(hr)) {
+	//		break;
+	//	}
+
+	//	if (flags & MF_SOURCE_READERF_ENDOFSTREAM) {
+	//		bEOS = TRUE;
+	//	}
+	//	else {
+
+	//		//pSample->ConvertToContiguousBuffer();
+	//		// Process the video frame
+	//		//hr = pVideoDisplayControl->ProcessFrame(pSample);
+	//		if (FAILED(hr)) {
+	//			break;
+	//		}
+	//	}
+	//}
+
+	/*ComPtr<IMFAttributes> mVideoAttributes;
+
+	mVideoAttributes->SetUnknown(MF_SOURCE_READER_D3D_MANAGER, manager.Get());
+	mVideoAttributes->SetUINT32(MF_SOURCE_READER_ENABLE_ADVANCED_VIDEO_PROCESSING, 1);
+	mVideoAttributes->SetUINT32(MF_READWRITE_ENABLE_HARDWARE_TRANSFORMS, 1);
+
+	MFCreateSourceReaderFromURL(url.data(), mVideoAttributes.Get(), &mSourceReader);*/
+
+
+
 	return S_OK;
 }
 
 HRESULT CGraphic_Device::Clear_BackBuffer_View(_float4 vClearColor)
 {
-
-	/* 백버퍼를 초기화하낟.  */
 	m_pDeviceContext->ClearRenderTargetView(m_pBackBufferRTV.Get(), (_float*)&vClearColor);
 	
-
-
  	return S_OK;
 }
 

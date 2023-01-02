@@ -62,7 +62,7 @@ void CCorvusState_ShortHealing::OnStateStart(const _float& In_fAnimationBlendTim
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	
 #endif // _DEBUG_COUT_
 	
 	Weak_StaticCast<CStatus_Player>(m_pStatusCom).lock()->Use_Potion();

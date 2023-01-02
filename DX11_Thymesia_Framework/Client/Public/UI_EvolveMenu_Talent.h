@@ -13,7 +13,7 @@ class CTalent;
 class CUI_EveolveMenu_Talent : public CUI_Container
 {
 public:
-	enum class TALENT_TAP{TALENT_SWORD, TALENT_PARRY, TALENT_TAP_END};
+	enum class TALENT_TAP{TALENT_SWORD, TALENT_CLAW, TALENT_TAP_END};
 
 public:
 	GAMECLASS_H(CUI_EveolveMenu_Talent)
@@ -45,15 +45,16 @@ private:
 private:
 	weak_ptr<CCustomUI> m_pPauseMenuBackground;
 	weak_ptr<CCustomUI> m_pPauseMenuBackground_Main;
+	weak_ptr<CCustomUI> m_pPauseMenuBackground_Main2;
+
 	weak_ptr<CCustomUI> m_pPauseMenuBackground_Top;
 	weak_ptr<CCustomUI>	m_pTitle;
-
 
 private:
 	weak_ptr<CCustomUI> m_pTap[(_uint)TALENT_TAP::TALENT_TAP_END];
 	weak_ptr<CCustomUI>	m_pTapTitle[(_uint)TALENT_TAP::TALENT_TAP_END];
 	
-	weak_ptr<CTalent>	m_pRoot[(_uint)TALENT_TAP::TALENT_TAP_END];
+	vector<weak_ptr<CTalent>>	m_pRootList[(_uint)TALENT_TAP::TALENT_TAP_END];
 
 private:
 	void				TalentAnimation_MouseOver(weak_ptr<CTalent> pSelectedTalent);
@@ -79,7 +80,7 @@ private:
 
 private:
 	_uint				m_iTalentIndex = 0;
-
+	_uint				m_iTapIndex = 0;
 private:
 	weak_ptr<CFadeMask>   m_pFadeMask;
 

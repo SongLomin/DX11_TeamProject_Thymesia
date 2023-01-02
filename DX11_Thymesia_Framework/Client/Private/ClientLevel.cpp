@@ -124,7 +124,6 @@ void CClientLevel::SetUp_UI()
 	pUIManager.lock()->SetCursor(GAMEINSTANCE->Add_SingleGameObject<CUI_Cursor>(LEVEL_STATIC));
 
 	m_pPauseMenu = GAMEINSTANCE->Add_SingleGameObject<CUI_PauseMenu>(LEVEL_STATIC);
-
 	m_pEvolveMenu = GAMEINSTANCE->Add_SingleGameObject<CUI_EvolveMenu>(LEVEL_STATIC);
 	GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu_Level>(LEVEL_STATIC);
 
@@ -134,10 +133,9 @@ void CClientLevel::SetUp_UI()
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_SingleGameObject<CPlayer_MPBar>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_SingleGameObject<CHUD_Player_Memory>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_SingleGameObject<CHUD_PlagueWeapon>(LEVEL_STATIC));
-	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_SingleGameObject<CPlayer_PotionUI>(LEVEL_STATIC));                                                                                                  pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_GameObject<CPlayer_FeatherUI>(LEVEL_STATIC));
+	pGameManager.lock()->Register_Layer(OBJECT_LAYER::PLAYERHUD, GAMEINSTANCE->Add_SingleGameObject<CPlayer_PotionUI>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::EVENT_UI, GAMEINSTANCE->Add_SingleGameObject<CUI_ScriptQueue>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::INTERACTIONUI, GAMEINSTANCE->Add_GameObject<CUI_Interaction>(LEVEL_STATIC));
-
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::BATTLEUI, GAMEINSTANCE->Add_SingleGameObject<CUI_MonsterFocus>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::EVENT_UI, GAMEINSTANCE->Add_SingleGameObject<CUI_AppearEventVarg>(LEVEL_STATIC));
 	pGameManager.lock()->Register_Layer(OBJECT_LAYER::EVENT_UI, GAMEINSTANCE->Add_SingleGameObject<CUI_Landing>(LEVEL_STATIC));
@@ -244,18 +242,18 @@ void CClientLevel::Tick_Key_InputEvent()
 
 void CClientLevel::Call_StageLanding()
 {	
-	if (m_eMyLevel == LEVEL_LOADING || m_eMyLevel == LEVEL_LOGO)
+	if (m_eMyLevel == LEVEL_LOADING || m_eMyLevel == LEVEL_LOGO || m_eMyLevel == LEVEL_EDIT)
 		return;
 
-	weak_ptr<CUI_Landing> pUILanding = GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front();
-		
-	if (!pUILanding.lock())
-	{
-		return;
-	}
-	pUILanding.lock()->Call_Landing(
-		CUI_Landing::LANDING_ENTER_STAGE
-	);
+	//weak_ptr<CUI_Landing> pUILanding = GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front();
+	//	
+	//if (!pUILanding.lock())
+	//{
+	//	return;
+	//}
+	//pUILanding.lock()->Call_Landing(
+	//	CUI_Landing::LANDING_ENTER_STAGE
+	//);
 }
 
 void CClientLevel::Change_NextLevel(void* pArg)

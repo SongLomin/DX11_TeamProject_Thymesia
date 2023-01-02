@@ -8,7 +8,7 @@ END
 
 BEGIN(Client)
 class CSkill;
-class CAttackArea;
+class CEffect_AttackArea;
 class CCustomEffectMesh final :
     public CEffectMesh
 {
@@ -18,8 +18,13 @@ class CCustomEffectMesh final :
 
 public: // Get & Set
 	const _char* Get_EffectName() const;
-	_bool Is_Finish() const;
-	void Set_TimeScaleLayer(const _uint& In_iTimeScaleLayer) { m_iTimeScaleLayerIndex = In_iTimeScaleLayer; }
+    _bool Is_Finish() const;
+    void Set_TimeScaleLayer(const _uint& In_iTimeScaleLayer) { m_iTimeScaleLayerIndex = In_iTimeScaleLayer; }
+    void Set_EffectGroup(weak_ptr<CEffectGroup> pEffectGroup);
+    _matrix Get_EffectWorldMatrix() { return XMLoadFloat4x4(&m_WorldMatrix); }
+public:
+
+	
     void Reset_Effect(weak_ptr<CTransform> pParentTransform);
     virtual void OnEventMessage(_uint iArg) override;
     void OnChangeAnimationKey(const _uint& In_Key);
@@ -75,6 +80,7 @@ private:
 #ifdef _EFFECT_TOOL_
     void Key_Input_ControlMesh(_float fTimeDelta);
     void Apply_ImGui_Controls_to_Mesh();
+    void Make_Collider();
 #endif // _EFFECT_TOOL_
     void Tool_Control();
     void Tool_Spawn_Life_Time();
@@ -94,15 +100,18 @@ private:
 #endif // _DEBUG
 
 private:
-    weak_ptr<CAttackArea> m_pAttackArea;
+    weak_ptr<CEffectGroup> m_pEffectGroup;
+    weak_ptr<CEffect_AttackArea> m_pAttackArea;
     weak_ptr<CTransform>  m_pParentTransformCom;
 
     _uint                 m_iTimeScaleLayerIndex;
     _bool                 m_bFinish;
     _float4x4             m_ParentMatrix;
+    _float4x4             m_WorldMatrix;
     _float                m_fPreFrame;
 
     string                m_szEffectName;
+    string                m_szOnCollision_UseEffectGroupName;
     EFFECTMESH_DESC       m_tEffectMeshDesc;
 
     weak_ptr<CTexture>    m_pColorDiffuseTextureCom;

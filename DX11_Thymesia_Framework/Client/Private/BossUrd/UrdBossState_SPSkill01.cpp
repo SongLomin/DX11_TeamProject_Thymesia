@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossUrd/UrdStates.h"
+#include "MobWeapon.h"
 
 GAMECLASS_C(CUrdBossState_SPSkill01);
 CLONE_C(CUrdBossState_SPSkill01, CComponent)
@@ -82,7 +83,9 @@ void CUrdBossState_SPSkill01::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
-	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillCount(0);
+	Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SpecailAttack(false);
+	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Equip_R>(0.05f);
 }
 
 void CUrdBossState_SPSkill01::OnDestroy()
@@ -101,7 +104,16 @@ _bool CUrdBossState_SPSkill01::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-
+	//weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+	//list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+	//
+	//for (auto& elem : pWeapons)
+	//{
+	//	if (elem.lock()->Get_WeaponNum() == 1)
+	//	{
+	//		elem.lock()->Set_RenderOnOff(false);
+	//	}
+	//}
 
 	return false;
 }

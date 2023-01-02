@@ -149,6 +149,8 @@ namespace Client
 		_bool		bCollider;
 		_bool		bWeaponSyncTransform;
 		_bool		bWeaponSyncTransformToEffect;
+		_bool		bOnCollision_DisableEffectGroup;
+		_bool		bOnCollision_UseEffectGroup;
 		_float		fWeaponLifeTime;
 		_float		fWeaponScale;
 		_int		iHitType;
@@ -405,6 +407,7 @@ namespace Client
 		_int		iOptionType;
 		_float      fDamage;
 		_float3		vWeaponOffset;
+		_uint		iTimeScaleLayer = 0;
 	};
 
 	struct WEAPON_DESC
@@ -438,5 +441,25 @@ namespace Client
 		INTERPOLATION eInterpolationType;
 		_float3		vOffset;
 
+	};
+
+	enum class ATTACKAREA_FLAG
+	{
+		FOLLOW_TRANSFORM = (1 << 0),
+		FOLLOW_EFFECTMESH = (1 << 1),
+		DISABLE_EFFECTGROUP = (1 << 2),
+		ONCOLLISION_EFFECTGROUP = (1 << 3),
+	};
+
+	struct EFFECT_ATTACKAREA_DESC
+	{
+		_flag AttackAreaFlag;
+		string szOnCollisionEffectGroupName;
+
+		void Reset()
+		{
+			ZeroMemory(&AttackAreaFlag, sizeof(_flag));
+			szOnCollisionEffectGroupName.clear();
+		}
 	};
 }

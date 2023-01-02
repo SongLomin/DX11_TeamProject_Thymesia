@@ -52,6 +52,8 @@ HRESULT CProp_Fence::Start()
 {
     __super::Start();
 
+    XMStoreFloat4(&m_vFirstPosition, m_pTransformCom.lock()->Get_Position());
+    
     if (LEVEL::LEVEL_EDIT != m_CreatedLevel)
     {
         m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), false);
@@ -59,11 +61,15 @@ HRESULT CProp_Fence::Start()
         Preset::PhysXColliderDesc::StaticPropSetting(tDesc, m_pTransformCom);
         m_pPhysXColliderCom.lock()->CreatePhysXActor(tDesc);
         m_pPhysXColliderCom.lock()->Add_PhysXActorAtSceneWithOption();
+
+        m_pTransformCom.lock()->Set_Position(XMVectorSet(0.f, 0.f, 0.f, 1.f));
         m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
 
         m_pPhysXColliderCom.lock()->Set_Enable(false);
-        Set_Enable(false);
+        //Set_Enable(false);
     }
+
+
 
     return S_OK;
 }
@@ -131,6 +137,9 @@ void CProp_Fence::OnEventMessage(_uint iArg)
             Callback_ActEvent.Clear();
             Callback_ActEvent += bind(&CProp_Fence::Act_Event, this, placeholders::_1, placeholders::_2);
 
+            m_pTransformCom.lock()->Set_Position(XMLoadFloat4(&m_vFirstPosition));
+            m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
+
             m_fDissolveRatio = 0.f;
             m_iPassIndex     = 12;
 
@@ -141,6 +150,9 @@ void CProp_Fence::OnEventMessage(_uint iArg)
 
         case EVENT_TYPE::ON_EXIT_SECTION:
         {
+            m_pTransformCom.lock()->Set_Position(XMVectorSet(0.f, 0.f, 0.f, 1.f));
+            m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
+
             m_iPassIndex = 3;
 
             m_pPhysXColliderCom.lock()->Set_Enable(false);

@@ -117,6 +117,7 @@ _bool CVargBossState_IdleGeneral::Check_AndChangeNextState()
 		GET_SINGLE(CGameManager)->Activate_Section(100, EVENT_TYPE::ON_EXIT_SECTION);
 		GET_SINGLE(CGameManager)->Activate_Section(100, EVENT_TYPE::ON_LOCK_SECTION);
 		GET_SINGLE(CGameManager)->Activate_SectionLight(0, EVENT_TYPE::ON_ENTER_SECTION);
+		GET_SINGLE(CGameManager)->Activate_Fog(1);
 
 		CallBack_EventTrigger += bind(&CVargBossState_IdleGeneral::EventTrigger, this, placeholders::_1, placeholders::_2);
 

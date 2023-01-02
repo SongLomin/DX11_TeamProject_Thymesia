@@ -66,6 +66,8 @@ void CCorvusState_Urd_Execution::OnStateStart(const _float& In_fAnimationBlendTi
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex,59);
 
+	Weak_StaticCast<CCorvus>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.5f, 1.5f, 1.5f));
+
 
 	//m_ThisStateAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
 	//m_ThisStateAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_Urd_Execution::Call_NextAnimationKey, this, placeholders::_1);
@@ -74,7 +76,7 @@ void CCorvusState_Urd_Execution::OnStateStart(const _float& In_fAnimationBlendTi
 	//GET_SINGLE(CGameManager)->Start_Cinematic(m_pModelCom, "camera",XMMatrixIdentity());
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	
 #endif
 #endif
 
@@ -84,6 +86,7 @@ void CCorvusState_Urd_Execution::OnStateEnd()
 {
 	__super::OnStateEnd();
 	GET_SINGLE(CGameManager)->End_Cinematic();
+	Weak_StaticCast<CCorvus>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
 }
 
 void CCorvusState_Urd_Execution::Call_AnimationEnd()
@@ -93,6 +96,10 @@ void CCorvusState_Urd_Execution::Call_AnimationEnd()
 
 	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
 
+}
+
+void CCorvusState_Urd_Execution::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
 }
 
 void CCorvusState_Urd_Execution::Call_NextAnimationKey(const _uint& In_iKeyIndex)

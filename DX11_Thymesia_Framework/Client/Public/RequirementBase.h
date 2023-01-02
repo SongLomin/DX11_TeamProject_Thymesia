@@ -16,8 +16,14 @@ public:
     virtual _bool       Check_Requirement() PURE;
     virtual _bool       Is_Valid() PURE;
 
+public:
+    FDelegate<>         Callback_OnRequirementTrue;
+
+
 protected:
     virtual HRESULT     Initialize(void* pArg = nullptr);
+
+
 
 protected:
     virtual void Free() {};

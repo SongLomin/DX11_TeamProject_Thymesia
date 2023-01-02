@@ -123,6 +123,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_CastleGate>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Note>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CInteraction_Item>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CFog>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CProp_Fence>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CSection_Eventer>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CWater>();
@@ -238,6 +239,8 @@ HRESULT CLoader::Loading_ForTestLevel()
 	this->Load_CorvusModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
 	this->Load_BossMobModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Rare Mob..."));
+	this->Load_RareMobModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
 	this->Load_EliteMobModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
@@ -347,6 +350,8 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	this->Load_CorvusModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
 	this->Load_BossMobModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Rare Mob..."));
+	this->Load_RareMobModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
 	this->Load_EliteMobModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
@@ -406,8 +411,8 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Environmental Shader Effects..."));
-	GAMEINSTANCE->Set_FogDesc(_float4(0.2f, 0.15f, 0.03f, 0.5f), 20.f);
-	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
+	//GAMEINSTANCE->Set_FogDesc(_float4(0.2f, 0.15f, 0.03f, 0.5f), 20.f);
+	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.1f, 1.05f, 1.05f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 	GAMEINSTANCE->Set_Contrast(1.07f);
 	GAMEINSTANCE->Set_Saturation(1.7f);
 	GAMEINSTANCE->Set_Exposure(2.f);
@@ -493,7 +498,7 @@ HRESULT CLoader::Loading_ForStage2Level()
 
 	GAMEINSTANCE->Add_Light(LightDesc);
 
-	GAMEINSTANCE->Set_FogDesc(_float4(0.45f, 0.26f, 0.28f, 0.92f), 160.f);
+	//GAMEINSTANCE->Set_FogDesc(_float4(0.45f, 0.26f, 0.28f, 0.92f), 160.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 1.f, 1.f, 1.f), _float4(1.f, 1.f, 1.f, 1.f), _float4(1.f, 1.f, 1.f, 1.f));
 	GAMEINSTANCE->Set_Contrast(1.2f);
 	GAMEINSTANCE->Set_Saturation(1.5f);
@@ -549,7 +554,7 @@ HRESULT CLoader::Loading_ForStage3Level()
 	GAMEINSTANCE->Load_Textures("Sky", TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 #endif // _SKYBOX_
 
-	GAMEINSTANCE->Set_FogDesc(_float4(0.5f, 0.5f, 0.5f, 0.65f), 50.f);
+	//GAMEINSTANCE->Set_FogDesc(_float4(0.5f, 0.5f, 0.5f, 0.65f), 50.f);
 	GAMEINSTANCE->Set_LiftGammaGain(_float4(1.f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f), _float4(0.95f, 0.95f, 0.95f, 1.f));
 	GAMEINSTANCE->Set_Contrast(1.f);
 	GAMEINSTANCE->Set_Saturation(1.f);
@@ -580,16 +585,38 @@ HRESULT CLoader::Loading_ForEditLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading Effect Meshes..."));
 	Load_AllEffectMesh();
 
+
+#ifdef _EFFECT_TOOL_
+#ifdef _CORVUS_MODEL_
+	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));
+	this->Load_CorvusModel();
+#endif // _CORVUS_MODEL
+#ifdef _BOSS_MODEL_
+	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
+	this->Load_BossMobModel();
+#endif // _BOSS_MODEL_
+#ifdef _ELITE_MOB_MODEL_
+	lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
+	this->Load_EliteMobModel();
+#endif // _ELITE_MOB_MODEL_
+#ifdef _NORMAL_MOB_MODEL_
+	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
+	this->Load_NormalMobModel();
+#endif // _NORMAL_MOB_MODEL_
+#else //_EFFECT_TOOL_
 	lstrcpy(m_szLoadingText, TEXT("Loading Corvus..."));
 	this->Load_CorvusModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Boss Mob..."));
 	this->Load_BossMobModel();
+	lstrcpy(m_szLoadingText, TEXT("Loading Rare Mob..."));
+	this->Load_RareMobModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Elite Mob..."));
 	this->Load_EliteMobModel();
 	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
 	this->Load_NormalMobModel();
+#endif // _EFFECT_TOOL_
 
-//#ifdef _MAP_TOOL_
+#ifndef _EFFECT_TOOL_
 	lstrcpy(m_szLoadingText, TEXT("Loading Prop Textures..."));
 	Load_AllTexture("../Bin/Resources/Textures/Prop/", MEMORY_TYPE::MEMORY_DYNAMIC);
 	lstrcpy(m_szLoadingText, TEXT("Loading GroundInfo Textures..."));
@@ -611,7 +638,7 @@ HRESULT CLoader::Loading_ForEditLevel()
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
-//#endif // _MAP_TOOL_
+#endif // _MAP_TOOL_
 
 	// TODO : Turn off temporarily for Light_Prop
 	LIGHTDESC LightDesc;
@@ -637,8 +664,7 @@ HRESULT CLoader::Loading_ForEditLevel()
 	LightDesc.fIntensity = 0.1f;
 #endif // _BRIGHT_LIGHT_
 
-	GAMEINSTANCE->Clear_Lights();
-	GAMEINSTANCE->Add_Light(LightDesc);
+	//GAMEINSTANCE->Add_Light(LightDesc);
 
 	GAMEINSTANCE->Set_FogDesc(_float4(0.2f, 0.15f, 0.03f, 0.f), 10000.f);
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
@@ -647,7 +673,6 @@ HRESULT CLoader::Loading_ForEditLevel()
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
 	m_isFinished = true;
-
 	return S_OK;
 }
 
@@ -750,15 +775,22 @@ void CLoader::Load_AllEffectMeshInPath_Recursive(const filesystem::path& In_Path
 		szFileName = entry.path().filename().string().c_str();
 		szFileName = szFileName.substr(0, szFileName.size() - 4);
 
+#ifdef _BAKE_EFFECTMESH_FBX_
+		if (strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
+		{
+			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f));
+		}
+
+		if (strcmp(entry.path().extension().string().c_str(), ".fbx") == 0)
+		{
+			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f));
+		}
+#else // _BAKE_EFFECTMESH_FBX_
 		if (strcmp(entry.path().extension().string().c_str(), ".bin") == 0)
 		{
 			GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)));
 		}
-
-		//if (strcmp(entry.path().extension().string().c_str(), ".FBX") == 0)
-		//{
-		//	GAMEINSTANCE->Load_Model(szFileName.c_str(), entry.path().string().c_str(), MODEL_TYPE::NONANIM, XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f));
-		//}
+#endif // _BAKE_EFFECTMESH_FBX_
 		itr++;
 	}
 }
@@ -954,6 +986,9 @@ void CLoader::Load_UIResource()
 	//skill Icon
 	GAMEINSTANCE->Load_Textures(("SkillIcon_Axe"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_Axe.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("SkillIcon_VargSword"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_VargSword.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("SkillIcon_Knife"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_Knife.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+
 
 
 
@@ -1162,6 +1197,22 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Stab1_Title"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/LAtk_Stab1_Title.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_LAttack_Stab1_Information"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/LAtk_Stab1_Information.png"), MEMORY_TYPE::MEMORY_STATIC);
 
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_Execute"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/TexUI_TalentIcon_LAtk_Execute.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_Sharpen"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/TexUI_TalentIcon_LAtk_Sharpen.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_Execution_Title"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/Execution_Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_Execution_Information"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/Execution_Information.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_HealingExecution0_Title"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/HealingExecution_0_Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_HealingExecution0_Information"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/HealingExceution_0_Information.png"), MEMORY_TYPE::MEMORY_STATIC);
+	
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_HealingExecution1_Title"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/HealingExecution_1_Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_HealingExecution1_Information"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/HealingExecution_1_Information.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+
+
 	GAMEINSTANCE->Load_Textures(("Test"), TEXT("../Bin/Resources/Textures/Mask/545.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 	GAMEINSTANCE->Load_Textures(("MediaFrame"), TEXT("../Bin/Resources/Textures/UI/TexUI_MediaFrame.png"), MEMORY_TYPE::MEMORY_STATIC);
@@ -1232,7 +1283,7 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Item_Icon_Memory01"), TEXT("../Bin/Resources/Textures/UI/Icons/Items/Useable/TexUI_MemoryCollectionIcon_01.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Item_Icon_Memory02"), TEXT("../Bin/Resources/Textures/UI/Icons/Items/Useable/TexUI_MemoryCollectionIcon_02.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
-
+	GAMEINSTANCE->Load_Textures(("Item_Icon_SkillPiece"), TEXT("../Bin/Resources/Textures/UI/Icons/Items/TexUI_PureBloodCoreIcon.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 	GAMEINSTANCE->Load_Textures(("Item_Type_Ingredient"), TEXT("../Bin/Resources/Textures/UI/ItemData/Type_Ingredient.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Item_Type_Common"), TEXT("../Bin/Resources/Textures/UI/ItemData/Type_Common.png"), MEMORY_TYPE::MEMORY_STATIC);
@@ -1278,6 +1329,16 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Item_Memory02_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/Memory02/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Item_Memory02_Information"), TEXT("../Bin/Resources/Textures/UI/ItemData/Memory02/Information.png"), MEMORY_TYPE::MEMORY_STATIC);
 
+	//SkillPiece
+	GAMEINSTANCE->Load_Textures(("Item_SkillPiece_Axe_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/SkillPiece/Axe_Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Item_SkillPiece_Hammer_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/SkillPiece/Hammer_Title.png"), MEMORY_TYPE::MEMORY_STATIC);	
+	GAMEINSTANCE->Load_Textures(("Item_SkillPiece_Knife_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/SkillPiece/Knife_Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Item_SkillPiece_VargSword_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/SkillPiece/VargSword_Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Item_SkillPiece_Scythe_Title"), TEXT("../Bin/Resources/Textures/UI/ItemData/SkillPiece/Scythe_Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("Item_SkillPiece_Information"), TEXT("../Bin/Resources/Textures/UI/ItemData/SkillPiece/Information.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
 	//Popup
 	GAMEINSTANCE->Load_Textures(("Popup_Item_Basil"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_Basil.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Popup_Item_Cinnamon"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_Cinnamon.dds"), MEMORY_TYPE::MEMORY_STATIC);
@@ -1288,6 +1349,15 @@ void CLoader::Load_UIResource()
 
 	GAMEINSTANCE->Load_Textures(("Popup_Item_Memory01"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_Memory01.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Popup_Item_Memory02"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_Memory02.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+
+	GAMEINSTANCE->Load_Textures(("Popup_SkillPiece_Axe"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_SkillPiece_Axe.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Popup_SkillPiece_Hammer"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_SkillPiece_Hammer.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Popup_SkillPiece_Knife"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_SkillPiece_Knife.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Popup_SkillPiece_Scythe"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_SkillPiece_Scythe.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Popup_SkillPiece_Varg"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_SkillPiece_Varg.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+
 
 
 	//UI _ ItemRequirement
@@ -1388,6 +1458,19 @@ void CLoader::Load_NormalMobModel()
 
 void CLoader::Load_RareMobModel()
 {
+	_matrix TransformMatrix = XMMatrixIdentity();
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Rare_ArmorMan", "../Bin/Resources/Meshes/RareMonster/ArmorMan/ArmorMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Rare_ShieldMan", "../Bin/Resources/Meshes/RareMonster/ShieldMan/ShieldMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Rare_SpearMan", "../Bin/Resources/Meshes/RareMonster/SpearMan/SpearMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Rare_SkullMan", "../Bin/Resources/Meshes/RareMonster/SkullMan/SkullMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 }
 
 void CLoader::Load_EliteMobModel()
@@ -1396,6 +1479,18 @@ void CLoader::Load_EliteMobModel()
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.0f, 0.0037f, 0.0037f);
 	GAMEINSTANCE->Load_Model("Elite_Joker", "../Bin/Resources/Meshes/EliteMonster/Joker/Joker.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Elite_BigHandman", "../Bin/Resources/Meshes/EliteMonster/BigHandMan/BigHandMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Elite_GreatSwordman", "../Bin/Resources/Meshes/EliteMonster/GreatSwordMan/GreatSwordMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Elite_TwinSwordman", "../Bin/Resources/Meshes/EliteMonster/TwinSwordMan/TwinSwordMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Elite_TwinSwordWoman", "../Bin/Resources/Meshes/EliteMonster/TwinSwordWoman/TwinSwordMan.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Joker_Weapon", "../Bin/Resources/Meshes/EliteMonster/Joker/Hammer/Hammer.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);

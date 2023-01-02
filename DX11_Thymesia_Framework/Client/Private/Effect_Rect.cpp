@@ -2237,7 +2237,6 @@ void CEffect_Rect::Tool_Boner()
 		if (nullptr == m_pBoneNode.lock())
 		{
 			MSG_BOX("Invalid Bone Name!");
-			assert(0);
 		}
 	}
 

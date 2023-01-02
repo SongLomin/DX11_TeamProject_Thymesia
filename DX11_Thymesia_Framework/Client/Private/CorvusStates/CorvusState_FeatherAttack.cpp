@@ -62,10 +62,10 @@ void CCorvusState_FeatherAttack::OnStateStart(const _float& In_fAnimationBlendTi
 
 #ifdef _DEBUG
 #ifdef _DEBUG_COUT_
-	cout << "NorMonState: RunStart -> OnStateStart" << endl;
+	
 #endif
 #endif
-
+	m_pModelCom.lock()->Set_AnimationSpeed(0.5f);
 	
 }
 
@@ -73,7 +73,7 @@ void CCorvusState_FeatherAttack::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	
+	m_pModelCom.lock()->Set_AnimationSpeed(1.f);
 }
 
 void CCorvusState_FeatherAttack::Call_AnimationEnd()

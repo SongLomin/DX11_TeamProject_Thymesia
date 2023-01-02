@@ -26,6 +26,11 @@ weak_ptr<CCharacter> CMonster::Get_TargetCharacter() const
     return weak_ptr<CCharacter>();
 }
 
+MONSTERTYPE CMonster::Get_MonsterType()
+{
+    return  m_tLinkStateDesc.eMonType;
+}
+
 HRESULT CMonster::Initialize_Prototype()
 {
 	__super::Initialize_Prototype();
@@ -318,6 +323,7 @@ void CMonster::OnEnable(void* _Arg)
 void CMonster::OnDisable()
 {
     __super::OnDisable();
+    m_pHitColliderCom.lock()->Set_Enable(false);
 }
 
 void CMonster::OnDestroy()

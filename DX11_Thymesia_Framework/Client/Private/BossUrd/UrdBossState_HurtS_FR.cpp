@@ -22,7 +22,6 @@ HRESULT CUrdBossState_HurtS_FR::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
 
-
 	return S_OK;
 }
 
@@ -51,10 +50,12 @@ void CUrdBossState_HurtS_FR::LateTick(_float fTimeDelta)
 }
 
 
-
 void CUrdBossState_HurtS_FR::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
+
+	m_iParryCount += 1;
+	Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FL>().lock()->Set_ParryCount(1);
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	
@@ -68,14 +69,11 @@ void CUrdBossState_HurtS_FR::OnStateStart(const _float& In_fAnimationBlendTime)
 
 }	
 
-
 void CUrdBossState_HurtS_FR::OnStateEnd()
 {
 	__super::OnStateEnd();
 
 }
-
-
 
 void CUrdBossState_HurtS_FR::Call_AnimationEnd()
 {
@@ -101,7 +99,14 @@ _bool CUrdBossState_HurtS_FR::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-
+	if (m_bParryStart)
+	{
+		if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.1f)
+		{
+			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Parry_L>(0.05f);
+			return true;
+		}
+	}
 
 	return false;
 }

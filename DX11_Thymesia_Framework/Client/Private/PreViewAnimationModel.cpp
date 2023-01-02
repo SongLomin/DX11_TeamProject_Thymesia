@@ -193,11 +193,6 @@ HRESULT CPreviewAnimationModel::Render(ID3D11DeviceContext* pDeviceContext)
 	_int iPassIndex = 0;
 	for (_uint i = 0; i < iNumMeshContainers; ++i)
 	{
-#ifdef _DEBUG
-		//if (i == m_iContainerIndex)
-		//	continue;
-#endif // _DEBUG
-
 		if (FAILED(m_pModelCom.lock()->Bind_SRV(m_pShaderCom, "g_DiffuseTexture", i, aiTextureType_DIFFUSE)))
 			return E_FAIL;
 
@@ -237,6 +232,11 @@ HRESULT CPreviewAnimationModel::Render(ID3D11DeviceContext* pDeviceContext)
 				m_pShaderCom.lock()->Set_Matrix("g_WorldMatrix", m_pTransformCom.lock()->Get_WorldMatrix());
 			}
 		}	
+
+#ifdef _DEBUG
+		if (i == 2)
+			continue;
+#endif // _DEBUG
 
 		//m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);
 

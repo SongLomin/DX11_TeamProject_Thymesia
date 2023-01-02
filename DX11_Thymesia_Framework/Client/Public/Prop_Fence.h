@@ -46,6 +46,7 @@ private:
 
     FDelegate<_float, _bool&>   Callback_ActEvent;
     _float                      m_fDissolveRatio = 0.f;
+    _float4                     m_vFirstPosition = { 0.f, 0.f, 0.f, 1.f };
 
 private:
     virtual void OnDestroy() override;

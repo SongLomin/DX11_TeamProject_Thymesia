@@ -30,6 +30,7 @@
 #include "Interaction_Item.h"
 #include "Interaction_DeadSpot.h"
 #include "Section_Eventer.h"
+#include "Fog.h"
 #include "Water.h"
 #include "Prop_Fence.h"
 
@@ -40,7 +41,7 @@
 #include "EditSetActor.h"
 #include "EditEventContoller.h"
 
-#include "CCorvus.h"
+#include "Corvus.h"
 #include "PreViewAnimationModel.h"
 
 #include "Player_HPBar.h"
@@ -60,5 +61,6 @@
 #include "Status_Player.h"
 #include "Status_Monster.h"
 #include "Attack_Area.h"
+#include "Effect_AttackArea.h"
 
 #include "TargetCurve.h"
