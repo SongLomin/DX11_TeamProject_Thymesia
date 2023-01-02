@@ -45,6 +45,8 @@ private:
 private:
 	weak_ptr<CCustomUI> m_pPauseMenuBackground;
 	weak_ptr<CCustomUI> m_pPauseMenuBackground_Main;
+	weak_ptr<CCustomUI> m_pPauseMenuBackground_Main2;
+
 	weak_ptr<CCustomUI> m_pPauseMenuBackground_Top;
 	weak_ptr<CCustomUI>	m_pTitle;
 

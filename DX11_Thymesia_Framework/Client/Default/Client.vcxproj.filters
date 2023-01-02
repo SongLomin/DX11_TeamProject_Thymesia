@@ -1799,6 +1799,7 @@
     <ClInclude Include="..\Public\Prop_Fence.h" />
     <ClInclude Include="..\Public\StolenSkill.h" />
     <ClInclude Include="..\Public\Skill_Knife.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3641,6 +3642,7 @@
     <ClCompile Include="..\Private\Prop_Fence.cpp" />
     <ClCompile Include="..\Private\StolenSkill.cpp" />
     <ClCompile Include="..\Private\Skill_Knife.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -5417,6 +5419,9 @@
     </Filter>
     <Filter Include="97. Tool\01. DeveloperConsole\Windows\05. Player">
       <UniqueIdentifier>{d48e7336-63dd-477e-aa1b-3831356ac8a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\01. UI\UI_Container\Evolve\PlagueWeapon">
+      <UniqueIdentifier>{4b36c82c-40da-4d0d-85df-f5b26a434fca}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

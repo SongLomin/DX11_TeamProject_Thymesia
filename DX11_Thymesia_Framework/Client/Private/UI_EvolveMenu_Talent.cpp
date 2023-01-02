@@ -116,13 +116,19 @@ void CUI_EveolveMenu_Talent::Create_Background()
     m_pPauseMenuBackground_Main.lock()->Set_Texture("PauseMenu_Background1");
     m_pPauseMenuBackground_Main.lock()->Set_Depth(0.8f);
 
+    m_pPauseMenuBackground_Main2 = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
+    m_pPauseMenuBackground_Main2.lock()->Set_Texture("PauseMenu_Background2");
+    m_pPauseMenuBackground_Main2.lock()->Set_Depth(0.75f);
+
     m_pPauseMenuBackground_Top = GAMEINSTANCE->Add_GameObject<CCustomUI>(LEVEL_STATIC);
     m_pPauseMenuBackground_Top.lock()->Set_Texture("PauseMenu_Background3");
     m_pPauseMenuBackground_Top.lock()->Set_Depth(0.7f);
 
     m_vecChildUI.push_back(m_pPauseMenuBackground);
     m_vecChildUI.push_back(m_pPauseMenuBackground_Main);
+    m_vecChildUI.push_back(m_pPauseMenuBackground_Main2);
     m_vecChildUI.push_back(m_pPauseMenuBackground_Top);
+
 }
 void CUI_EveolveMenu_Talent::Create_TalentInformation()
 {
