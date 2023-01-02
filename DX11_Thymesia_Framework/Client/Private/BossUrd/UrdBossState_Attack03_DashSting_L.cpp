@@ -38,6 +38,12 @@ void CUrdBossState_Attack03_DashSting_L::Start()
 void CUrdBossState_Attack03_DashSting_L::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	if (m_bAttackLookAtLimit)
+	{
+		Rotation_TargetToLookDir();
+	}
+
 	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -56,6 +62,10 @@ void CUrdBossState_Attack03_DashSting_L::OnStateStart(const _float& In_fAnimatio
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.5f, 1.5f, 1.5f));
+
+	m_bAttackLookAtLimit = true;
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	
 	
@@ -73,6 +83,8 @@ void CUrdBossState_Attack03_DashSting_L::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
+
 }
 
 
@@ -82,6 +94,8 @@ void CUrdBossState_Attack03_DashSting_L::Call_AnimationEnd()
 	if (!Get_Enable())
 		return;
 
+	Get_Owner().lock()->Get_Component<CUrdBossState_Step_Idle>().lock()->Set_StepCloseCount(0);
+	Get_Owner().lock()->Get_Component<CUrdBossState_Step_Idle>().lock()->Set_StepFarCount(0);
 	Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
 }
 
@@ -101,7 +115,8 @@ _bool CUrdBossState_Attack03_DashSting_L::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
-
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.8f)
+		m_bAttackLookAtLimit = false;
 
 	return false;
 }

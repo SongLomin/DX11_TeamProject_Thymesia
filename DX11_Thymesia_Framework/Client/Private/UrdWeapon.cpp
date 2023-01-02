@@ -82,15 +82,13 @@ void CUrdWeapon::Thread_PreBeforeRender(_float fTimeDelta)
 HRESULT CUrdWeapon::Render(ID3D11DeviceContext* pDeviceContext)
 {
 	__super::Render(pDeviceContext);
+
 	return S_OK;
 }
 
 _bool CUrdWeapon::Set_TrailEnable(const _bool In_bEnable)
 {
-	//if (!m_pTrailDistortion.lock() || !m_pTrailDiffuse.lock())
-	//	return false;
-	//m_pTrailDistortion.lock()->Set_Enable(In_bEnable);
-	//m_pTrailDiffuse.lock()->Set_Enable(In_bEnable);
+	
 	return true;
 
 }

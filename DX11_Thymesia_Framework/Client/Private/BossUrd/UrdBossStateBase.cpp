@@ -91,6 +91,7 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 
 		weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
+
 		if (!pAttackArea.lock())
 			return;
 
@@ -146,6 +147,24 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffsetToVector, 0.08f + fShakingRatio, 1.f, 9.f, 0.25f);
 		GAMEINSTANCE->Set_MotionBlur(0.05f);
 
+		//1,2 ,3 ÆÐÅÏ
+
+		if (pStatus.lock()->Get_Desc().m_fCurrentHP_Green <= 1500.f && Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_SkillCount() == 0)
+		{
+			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(true);
+			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillCount(1);
+		}
+		else if (pStatus.lock()->Get_Desc().m_fCurrentHP_Green <= 1000.f && Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_SkillCount() == 1)
+		{
+			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(true);
+			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillCount(2);
+		}
+		else if (pStatus.lock()->Get_Desc().m_fCurrentHP_Green <= 500.f && Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_SkillCount() == 2)
+		{
+			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillStart(true);
+			Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_SkillCount(3);
+		}
+
 
 
 		if (Get_OwnerCharacter().lock()->Get_CurState().lock() != Get_Owner().lock()->Get_Component<CUrdBossState_StunStart>().lock() &&
@@ -193,21 +212,43 @@ void CUrdBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollide
 		{
 			if (Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_Idle>().lock()->Get_StateIndex() ||
 				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_HurtS_FR>().lock()->Get_StateIndex() ||
-				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_HurtS_FL>().lock()->Get_StateIndex())
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_HurtS_FL>().lock()->Get_StateIndex() ||
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_WalkL>().lock()->Get_StateIndex() ||
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_WalkR>().lock()->Get_StateIndex() ||
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_StepFL>().lock()->Get_StateIndex() ||
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_StepFR>().lock()->Get_StateIndex() ||
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_StepFL45>().lock()->Get_StateIndex() ||
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_StepFR45>().lock()->Get_StateIndex() ||
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_StepR>().lock()->Get_StateIndex() ||
+				Get_StateIndex() == m_pOwner.lock()->Get_Component<CUrdBossState_StepL>().lock()->Get_StateIndex()
+
+				)
 			{
 
 				if (In_eHitType == HIT_TYPE::LEFT_HIT)
 				{
+					if (Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FL>().lock()->Get_ParryCount() >= 4 ||
+						Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FR>().lock()->Get_ParryCount() >= 4)
+					{
+						Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FR>().lock()->Set_ParryStart(true);
+					}					
 					Get_OwnerMonster()->Change_State<CUrdBossState_HurtS_FR>();
+					return;
 				}
 
 				else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
 				{
-
+					if (Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FL>().lock()->Get_ParryCount() >= 4 ||
+						Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FR>().lock()->Get_ParryCount() >= 4)
+					{
+						Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FL>().lock()->Set_ParryStart(true);
+					}
 					Get_OwnerMonster()->Change_State<CUrdBossState_HurtS_FL>();
+					return;
 				}
 			}
 		}
+	
 		  
 	}
 

@@ -48,6 +48,7 @@ private:
 
 public:
     void                Test_BindSkill();
+    void                Set_MoveScale(const _float3& In_vMoveScale) { m_vMoveScale = In_vMoveScale; }
     virtual void        Save_ClientComponentData() override;
 
 private:
@@ -56,8 +57,8 @@ private:
 
 
 private:
-    LIGHTDESC   m_LightDesc;
-
+    LIGHTDESC            m_LightDesc;
+    _float3             m_vMoveScale = { 1.f,1.f,1.f };
 
 private://Moon SkillSytem RequireMent;
     virtual void SetUp_Requirement();

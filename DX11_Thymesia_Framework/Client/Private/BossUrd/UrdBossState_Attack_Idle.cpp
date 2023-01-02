@@ -55,6 +55,9 @@ void CUrdBossState_Attack_Idle::OnStateStart(const _float& In_fAnimationBlendTim
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	Get_Owner().lock()->Get_Component<CUrdBossState_Step_Idle>().lock()->Set_StepCloseCount(0);
+	Get_Owner().lock()->Get_Component<CUrdBossState_Step_Idle>().lock()->Set_StepFarCount(0);
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	
 	
@@ -90,12 +93,21 @@ _bool CUrdBossState_Attack_Idle::Check_AndChangeNextState()
 
 	if (m_bPhaseTwoStart)
 	{
-		//1페이지일때
+		//2페이지일때
 	}
-	else
+	else // 1페이지일떄
 	{
-		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack02>(0.05f);
-		return true;
+		// 공격패턴 -> 두번공격 찌르기세번 
+		if (m_bAttack)
+		{
+			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack05>(0.05f);
+			return true;
+		}
+		else
+		{
+			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack01>(0.05f);
+			return true;
+		}
 	}
 
 

@@ -869,9 +869,6 @@
     <ClInclude Include="..\Public\Corvus_DefaultDagger.h" />
     <ClInclude Include="..\Public\Corvus_DefaultSaber.h" />
     <ClInclude Include="..\Public\CUtils_EasingTransform.h" />
-    <ClInclude Include="..\Public\JoJoParticleShaderManager.h">
-      <Filter>97. Tool\00. IMGUI\Windows\02. Effect\99. JoJoParticleShaderManager</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Interaction_Ladder.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClInclude>
@@ -1604,9 +1601,6 @@
     <ClInclude Include="..\Public\BossBat\BatBossState_HellIdle.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle\03.HellIdle</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\UrdWeapon.h">
-      <Filter>02. GameObject\03. Actor\Character\Boss\01.Urd</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\BossUrd\UrdBossState_Equip_L.h">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\00.Start\00.Equip_L</Filter>
     </ClInclude>
@@ -1795,11 +1789,16 @@
     <ClInclude Include="..\Public\Client_Functions.h">
       <Filter>99. Defines</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Interaction_Fence.h">
-      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\Window_Player_Dev.h">
       <Filter>97. Tool\01. DeveloperConsole\Windows\05. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Ballon.h" />
+    <ClInclude Include="..\Public\Prop_Fence.h" />
+    <ClInclude Include="..\Public\UrdWeapon.h">
+      <Filter>02. GameObject\03. Actor\Character\Boss\01.Urd\00.Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\JavelinWeapon.h">
+      <Filter>02. GameObject\03. Actor\Character\Boss\01.Urd\01.JavelinWeapon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2712,9 +2711,6 @@
     <ClCompile Include="..\Private\Corvus_DefaultDagger.cpp" />
     <ClCompile Include="..\Private\Corvus_DefaultSaber.cpp" />
     <ClCompile Include="..\Private\CUtils_EasingTransform.cpp" />
-    <ClCompile Include="..\Private\JoJoParticleShaderManager.cpp">
-      <Filter>97. Tool\00. IMGUI\Windows\02. Effect\99. JoJoParticleShaderManager</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Interaction_Ladder.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_NonMovement</Filter>
     </ClCompile>
@@ -3443,9 +3439,6 @@
     <ClCompile Include="..\Private\ImGui_Manager.cpp">
       <Filter>97. Tool\00. IMGUI\Windows\02. Effect</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\UrdWeapon.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Boss\01.Urd</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\BossUrd\UrdBossState_Attack01.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\02.Attack\00.Attack01</Filter>
     </ClCompile>
@@ -3639,11 +3632,16 @@
     </ClCompile>
     <ClCompile Include="..\Private\UI_ItemRequirement.cpp" />
     <ClCompile Include="..\Private\Skill_Axe.cpp" />
-    <ClCompile Include="..\Private\Interaction_Fence.cpp">
-      <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Window_Player_Dev.cpp">
       <Filter>97. Tool\01. DeveloperConsole\Windows\05. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Ballon.cpp" />
+    <ClCompile Include="..\Private\Prop_Fence.cpp" />
+    <ClCompile Include="..\Private\UrdWeapon.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Boss\01.Urd\00.Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\JavelinWeapon.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Boss\01.Urd\01.JavelinWeapon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -5421,6 +5419,12 @@
     </Filter>
     <Filter Include="97. Tool\01. DeveloperConsole\Windows\05. Player">
       <UniqueIdentifier>{d48e7336-63dd-477e-aa1b-3831356ac8a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Boss\01.Urd\00.Weapon">
+      <UniqueIdentifier>{8ac81779-97d8-4ab8-9291-d7c128e84a41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Boss\01.Urd\01.JavelinWeapon">
+      <UniqueIdentifier>{a3238bc5-1e3c-4746-a7a2-93ab8bd0d811}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

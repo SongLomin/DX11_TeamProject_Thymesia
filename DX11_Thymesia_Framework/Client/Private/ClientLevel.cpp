@@ -244,7 +244,7 @@ void CClientLevel::Tick_Key_InputEvent()
 
 void CClientLevel::Call_StageLanding()
 {	
-	if (m_eMyLevel == LEVEL_LOADING || m_eMyLevel == LEVEL_LOGO)
+	if (m_eMyLevel == LEVEL_LOADING || m_eMyLevel == LEVEL_LOGO || m_eMyLevel == LEVEL_EDIT)
 		return;
 
 	weak_ptr<CUI_Landing> pUILanding = GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front();

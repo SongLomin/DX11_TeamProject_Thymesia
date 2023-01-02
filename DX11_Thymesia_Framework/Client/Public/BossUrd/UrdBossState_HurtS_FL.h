@@ -14,8 +14,11 @@ class CUrdBossState_HurtS_FL :
 	CLONE_H(CUrdBossState_HurtS_FL, CComponent)
 		SHALLOW_COPY(CUrdBossState_HurtS_FL)
 
-
-
+public:
+	void        Set_ParryCount(_int iParryCount) { m_iParryCount += iParryCount; }
+	void        Set_ParryStart(_bool bParryStart) { m_bParryStart = bParryStart; }
+	void        Set_ParryZeroCount(_int iParryCount) { m_iParryCount = iParryCount; }
+	const _int  Get_ParryCount() {return m_iParryCount;}
 protected:
 	virtual HRESULT Initialize_Prototype() override;
 	virtual HRESULT Initialize(void* pArg) override;
@@ -28,6 +31,9 @@ protected:
 	virtual void OnStateEnd() override;
 	virtual _bool Check_AndChangeNextState() override;
 
+private:
+	_int   m_iParryCount = 0;
+	_bool  m_bParryStart = false;
 
 private:
 	void Call_AnimationEnd();

@@ -38,6 +38,10 @@ void CUrdBossState_TurnR::Start()
 void CUrdBossState_TurnR::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	_float fTurnValue = 1.57f / 0.683f;
+
+	m_pTransformCom.lock()->Turn(XMVectorSet(0.f, 1.f, 0.f, 0.f), fTimeDelta * fTurnValue * 2.f);
 	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -102,6 +106,14 @@ _bool CUrdBossState_TurnR::Check_AndChangeNextState()
 		return false;
 
 
+
+	if (ComputeAngleWithPlayer() > 0.98f)
+	{
+		Rotation_TargetToLookDir();
+		Get_Owner().lock()->Get_Component<CUrdBossState_Idle>().lock()->Set_TurnCheck(false);
+		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Idle>(0.05f);
+		return true;
+	}
 
 	return false;
 }

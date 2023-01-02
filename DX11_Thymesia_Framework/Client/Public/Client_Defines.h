@@ -45,7 +45,7 @@
 #pragma endregion // Tool
 
 #pragma region Boss Mobs
- #define _BOSS_VARG_
+// #define _BOSS_VARG_
 // #define _BOSS_Armature|Armature|Urd_
 #pragma endregion // Boss Mobs
 
@@ -58,7 +58,7 @@
 
 // #define _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
-#define _VARG_EFFECT_
+//#define _VARG_EFFECT_
 #define	_BAT_EFFECT_
 #pragma endregion // Effects
 
@@ -68,7 +68,7 @@
 /////////////////////////////////////////// RELEASE MODE DEFINES ///////////////////////////////////////////
 #ifdef NDEBUG
 
-#undef _EFFECT_TOOL_
+//#undef _EFFECT_TOOL_
 #undef _ONLY_UI_
 
 #pragma region System

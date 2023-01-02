@@ -520,7 +520,7 @@ void CCorvus::SetUp_ShaderResource()
 void CCorvus::Move_RootMotion_Internal()
 {
 	_vector vMoveDir = XMVectorSet(0.f, 0.f, 0.f, 0.f);
-	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation");
+	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root_$AssimpFbx$_Translation") * XMLoadFloat3(&m_vMoveScale);
 	//m_pTransformCom.lock()->Add_PositionWithRotation(vMoveDir, m_pNaviMeshCom);
 
 	PxControllerFilters Filters;

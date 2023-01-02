@@ -38,6 +38,8 @@ void CUrdBossState_Parry_L::Start()
 void CUrdBossState_Parry_L::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	
 	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
@@ -56,6 +58,13 @@ void CUrdBossState_Parry_L::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FL>().lock()->Set_ParryStart(false);
+	Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FR>().lock()->Set_ParryStart(false);
+	Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FL>().lock()->Set_ParryZeroCount(0);
+	Get_Owner().lock()->Get_Component<CUrdBossState_HurtS_FR>().lock()->Set_ParryZeroCount(0);
+
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.f, 2.f, 2.f));
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	
 	
@@ -72,6 +81,8 @@ void CUrdBossState_Parry_L::OnStateStart(const _float& In_fAnimationBlendTime)
 void CUrdBossState_Parry_L::OnStateEnd()
 {
 	__super::OnStateEnd();
+
+	Weak_StaticCast<CUrd>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
 
 }
 
@@ -100,8 +111,6 @@ _bool CUrdBossState_Parry_L::Check_AndChangeNextState()
 
 	if (!Check_Requirement())
 		return false;
-
-
 
 	return false;
 }

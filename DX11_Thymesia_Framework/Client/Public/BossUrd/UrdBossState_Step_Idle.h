@@ -29,10 +29,7 @@ protected:
 	virtual _bool Check_AndChangeNextState() override;
 
 
-private:
-//	void Call_AnimationEnd();
 protected:
-	//virtual void OnDestroy() override;
 	void Free();
 
 };
