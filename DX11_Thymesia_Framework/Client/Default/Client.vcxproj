@@ -435,6 +435,7 @@
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Short_ClawLv1.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Effect_Short_ClawLv2.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Sword.h" />
+    <ClInclude Include="..\Public\Corvus_Feather.h" />
     <ClInclude Include="..\Public\CState_AVoid.h" />
     <ClInclude Include="..\Public\CustomFont.h" />
     <ClInclude Include="..\Public\CUtils_EasingTransform.h" />
@@ -1039,6 +1040,7 @@
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_RaidAttack1Hurt.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Urd_Execution.cpp" />
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_Varg_Execution.cpp" />
+    <ClCompile Include="..\Private\Corvus_Feather.cpp" />
     <ClCompile Include="..\Private\CustomFont.cpp" />
     <ClCompile Include="..\Private\CUtils_EasingTransform.cpp" />
     <ClCompile Include="..\Private\DeveloperConsole_Manager.cpp" />

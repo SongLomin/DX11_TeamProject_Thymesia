@@ -39,6 +39,11 @@ void CUrdBossState_Attack03_DashSting_R::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 	
+	if (m_bAttackLookAtLimit)
+	{
+		TurnAttack(fTimeDelta);
+	}
+
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
@@ -101,6 +106,12 @@ _bool CUrdBossState_Attack03_DashSting_R::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.3f)
+		m_bAttackLookAtLimit = false;
+
+	if (ComputeAngleWithPlayer() > 0.99f && m_bAttackLookAtLimit)
+		Rotation_TargetToLookDir();
 
 
 	return false;

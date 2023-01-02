@@ -38,6 +38,8 @@ void CUrdBossState_WalkR::Start()
 void CUrdBossState_WalkR::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
+
+	Rotation_TargetToLookDir();
 	
 	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }

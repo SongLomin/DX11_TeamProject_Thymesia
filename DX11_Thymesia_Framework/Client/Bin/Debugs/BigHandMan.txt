@@ -1,0 +1,137 @@
+0. SK_C_LV2Villager_M.ao|LV2Villager01_M_ComboA01
+1. SK_C_LV2Villager_M.ao|LV2Villager01_M_ComboA02
+2. SK_C_LV2Villager_M.ao|LV2Villager01_M_ComboB_End
+3. SK_C_LV2Villager_M.ao|LV2Villager01_M_ComboB_Loop
+4. SK_C_LV2Villager_M.ao|LV2Villager01_M_ComboB_Start
+5. SK_C_LV2Villager_M.ao|LV2Villager01_M_HurtCounter
+6. SK_C_LV2Villager_M.ao|LV2Villager01_M_HurtL
+7. SK_C_LV2Villager_M.ao|LV2Villager01_M_HurtR
+8. SK_C_LV2Villager_M.ao|LV2Villager01_M_Idle
+9. SK_C_LV2Villager_M.ao|LV2Villager01_M_SP_Idle1
+10. SK_C_LV2Villager_M.ao|LV2Villager01_M_SP_Idle1_End
+11. SK_C_LV2Villager_M.ao|LV2Villager01_M_Stun_End
+12. SK_C_LV2Villager_M.ao|LV2Villager01_M_Stun_Loop
+13. SK_C_LV2Villager_M.ao|LV2Villager01_M_Stun_Start
+14. SK_C_LV2Villager_M.ao|LV2Villager01_M_TurnL90
+15. SK_C_LV2Villager_M.ao|LV2Villager01_M_TurnR90
+16. SK_C_LV2Villager_M.ao|LV2Villager01_M_VS_TakeExecution_01
+17. SK_C_LV2Villager_M.ao|LV2Villager01_M_Walk
+RootNode
+SK_C_LV2Villager_M.ao
+root
+pelvis
+Bip001-Pelvis
+spine_01
+spine_02
+spine_03
+neck_01
+head
+head_end
+clavicle_r
+upperarm_r
+lowerarm_r
+hand_r
+thumb_01_r
+thumb_02_r
+thumb_03_r
+thumb_03_r_end
+index_01_r
+index_02_r
+index_03_r
+index_03_r_end
+middle_01_r
+middle_02_r
+middle_03_r
+middle_03_r_end
+ring_01_r
+ring_02_r
+ring_03_r
+ring_03_r_end
+pinky_01_r
+pinky_02_r
+pinky_03_r
+pinky_03_r_end
+weapon_r
+weapon_r_end
+weapon_r_end_end
+clavicle_l
+upperarm_l
+lowerarm_l
+hand_l
+thumb_01_l
+thumb_02_l
+thumb_03_l
+thumb_03_l_end
+index_01_l
+index_02_l
+index_03_l
+index_03_l_end
+middle_01_l
+middle_02_l
+middle_03_l
+middle_03_l_end
+ring_01_l
+ring_02_l
+ring_03_l
+ring_03_l_end
+pinky_01_l
+pinky_02_l
+pinky_03_l
+pinky_03_l_end
+weapon_l
+weapon_l_end
+thigh_r
+calf_r
+foot_r
+ball_r
+ball_r_end
+thigh_l
+calf_l
+foot_l
+ball_l
+ball_l_end
+Bone_Hen11
+Bone_Hen12
+Bone_Hen13
+Bone_Hen14
+Bone_Hen14_end
+Bone_Hen16
+Bone_Hen17
+Bone_Hen18
+Bone_Hen19
+Bone_Hen19_end
+Bone_Hen21
+Bone_Hen22
+Bone_Hen23
+Bone_Hen24
+Bone_Hen24_end
+Bone_Hen01
+Bone_Hen02
+Bone_Hen03
+Bone_Hen04
+Bone_Hen04_end
+Bone_Hen06
+Bone_Hen07
+Bone_Hen08
+Bone_Hen09
+Bone_Hen09_end
+ik_hand_root
+ik_hand_gun
+ik_hand_gun_end
+ik_foot_r
+ik_foot_r_end
+ik_foot_l
+ik_foot_l_end
+ik_hand_r
+ik_hand_r_end
+ik_hand_l
+ik_hand_l_end
+AnimTargetPoint
+AnimTargetPoint_end
+camera
+camera_end
+weapon_r_IK
+weapon_r_IK_end
+SK_C_LV2Villager_M.mo
+0[SK_C_LV2Villager_M.md]. 94335
+1[SK_C_LV2Villager_M.md]. 2844

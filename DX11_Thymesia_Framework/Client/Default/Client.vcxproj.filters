@@ -5422,6 +5422,30 @@
     <Filter Include="02. GameObject\03. Actor\Character\Normal\00.Ballon">
       <UniqueIdentifier>{c122092f-8c6d-4cd1-9fb3-06624e1a5902}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Elite\01.BigHandman">
+      <UniqueIdentifier>{763a678b-7520-4a56-a689-44a82eb73452}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Elite\02.GreatSwordman">
+      <UniqueIdentifier>{f41a456f-87cc-4315-9a3d-452ae92f026f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Elite\03.TwinSwordman">
+      <UniqueIdentifier>{6f80923f-a6d4-4351-a8b6-951cb444805f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Elite\04.TwinSwordWoman">
+      <UniqueIdentifier>{be6a44bb-a7ed-4ad3-b3fd-f1d8ea17196d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Rare">
+      <UniqueIdentifier>{c7b34a55-cd94-4b5c-b4e7-4595d82c3de8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Rare\00.ArmorMan">
+      <UniqueIdentifier>{ba7d5b97-00a4-4702-92c8-03bc5881788e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Rare\01.SkullMan">
+      <UniqueIdentifier>{08bcf479-08c5-45e5-ab64-9fcccf2924b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. GameObject\03. Actor\Character\Rare\02.SpearMan">
+      <UniqueIdentifier>{178a1715-fca9-4649-8660-21c448c7a6f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

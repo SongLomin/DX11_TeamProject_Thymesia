@@ -56,6 +56,17 @@ void CUrdBossState_Idle::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	if (Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CUrdBossState_Attack01>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CUrdBossState_Attack02>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CUrdBossState_Attack03_DashSting_L>().lock() ||
+		Get_OwnerCharacter().lock()->Get_PreState().lock() == Get_Owner().lock()->Get_Component<CUrdBossState_Attack03_DashSting_R>().lock())
+
+	{
+
+		m_bTurnCheck = true;
+
+	}
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	
 	
@@ -89,6 +100,7 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 
+	
 
 	//여기서 해줘야한다 
 	//거리가 8정도 가까우면 공격을하고 
@@ -182,7 +194,7 @@ _bool CUrdBossState_Idle::Check_AndChangeNextState()
 				else
 				{
 					//이때는 여기서 발 공격 가도 될듯?
-					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack02>(0.05f);
+					Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Step_Idle>(0.05f);
 					return true;
 				}
 			}

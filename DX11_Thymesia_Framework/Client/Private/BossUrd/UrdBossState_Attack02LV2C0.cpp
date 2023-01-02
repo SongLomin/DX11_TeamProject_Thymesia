@@ -56,6 +56,8 @@ void CUrdBossState_Attack02LV2C0::OnStateStart(const _float& In_fAnimationBlendT
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
+	m_bAttackLookAtLimit = true;
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	
 	

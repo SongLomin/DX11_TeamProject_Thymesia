@@ -94,7 +94,7 @@ _bool CUrdBossState_Attack_Idle::Check_AndChangeNextState()
 	}
 	else
 	{
-		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack02>(0.05f);
+		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Attack05>(0.05f);
 		return true;
 	}
 

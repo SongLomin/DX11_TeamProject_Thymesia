@@ -14,7 +14,9 @@ class CUrdBossState_Idle :
 	CLONE_H(CUrdBossState_Idle, CComponent)
 		SHALLOW_COPY(CUrdBossState_Idle)
 
-
+		
+public:
+	void   Set_TurnCheck(_bool TurnCheck) { m_bTurnCheck = TurnCheck; }
 
 protected:
 	virtual HRESULT Initialize_Prototype() override;
@@ -29,6 +31,9 @@ protected:
 	virtual _bool Check_AndChangeNextState() override;
 
 
+
+private:
+	_bool   m_bTurnCheck = false;
 
 protected:
 	void Free();
