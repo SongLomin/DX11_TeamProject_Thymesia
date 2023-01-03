@@ -1,18 +1,20 @@
 #pragma once
 #include "PlayerStateBase.h"
-#include "Client_Defines.h"
 
 BEGIN(Engine)
 class CCollider;
-class CModel;
 END
 
 BEGIN(Client)
-
 class CCorvusStateBase abstract :
     public CPlayerStateBase
 {
     GAMECLASS_H(CCorvusStateBase)
+
+public:
+	virtual void Call_OtherControllerHit(const PxControllersHit& In_hit) override;
+	virtual void OnEventMessage(_uint iArg) override;
+	void Free();
 
 protected:
     virtual _bool Check_RequirementAttackState();
@@ -36,24 +38,11 @@ protected:
     virtual _bool Check_AndChangeLadderState(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider);
     virtual _bool Check_RequirementAttackClose(weak_ptr<CGameObject>& Out_pGameObject);
 
-public:
-    virtual void Call_OtherControllerHit(const PxControllersHit& In_hit) override;
-    
-protected:
     virtual void OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage) override;
 
     virtual void OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
     virtual void OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider) override;
-
-
-
-public:
-    virtual void OnEventMessage(_uint iArg) override;
-    void Free();
-
-private:
-    
 };
 
 END
