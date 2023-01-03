@@ -171,7 +171,6 @@ void CUrd::Init_Desc()
 	m_pModelCom.lock()->Init_Model("Boss_Urd", "", (_uint)TIMESCALE_LAYER::MONSTER);
 	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
 	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "AnimTargetPoint");
-	m_pWeapons.back().lock()->Set_WeaponNum(1);
 	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.9f,-2.4f,1.0f }, 0.2f, COLLISION_LAYER::MONSTER_ATTACK);
 	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.9f,-2.4f,1.0f }, 0.2f, COLLISION_LAYER::MONSTER_ATTACK);
 	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.8f,-2.2f,1.0f }, 0.2f, COLLISION_LAYER::MONSTER_ATTACK);
@@ -183,16 +182,15 @@ void CUrd::Init_Desc()
 	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.2f,-1.f,1.0f },  0.2f, COLLISION_LAYER::MONSTER_ATTACK);
 	m_pWeapons.back().lock()->Add_Collider({ 0.f,0.1f,-0.8f,1.0f }, 0.2f, COLLISION_LAYER::MONSTER_ATTACK);
 	
-	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
-	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword02_Point");
-	m_pWeapons.back().lock()->Set_WeaponNum(2);
-	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
-	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword03_Point");
-	m_pWeapons.back().lock()->Set_WeaponNum(3);
-	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
-	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword04_Point");
-	m_pWeapons.back().lock()->Set_WeaponNum(4);
+	m_pDecoWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
+	m_pDecoWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword02_Point");
+	m_pDecoWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
+	m_pDecoWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword03_Point");
+	m_pDecoWeapons.push_back(GAMEINSTANCE->Add_GameObject<CUrdWeapon>(m_CreatedLevel));
+	m_pDecoWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "SK_W_UrdSword04_Point");
 
+	m_pJavelinWeapon.push_back(GAMEINSTANCE->Add_GameObject<CJavelinWeapon>(m_CreatedLevel));
+	m_pJavelinWeapon.push_back(GAMEINSTANCE->Add_GameObject<CJavelinWeapon>(m_CreatedLevel));
 	m_pJavelinWeapon.push_back(GAMEINSTANCE->Add_GameObject<CJavelinWeapon>(m_CreatedLevel));
 
 	//TODO 여기서하는 이유는 몬스터가 배치되고 원점에서 우리가 피킹한위치만큼더해지고 난뒤에 그월드포지션값저장하기위해서 여기서함
@@ -304,13 +302,24 @@ void CUrd::OnEnable(void* _Arg)
 
 
 }
+void CUrd::Use_DecoWeapon()
+{
+	m_pDecoWeapons[m_iDecoIndex].lock()->Set_Enable(false);
+	++m_iDecoIndex;
+}
 
 void CUrd::OnDisable()
 {
 	__super::OnDisable();
 }
 
-
+void CUrd::Reset_JavelinWeapon()
+{
+	for (auto& elem : m_pJavelinWeapon)
+	{
+		elem.lock()->Set_Enable(false);
+	}
+}
 
 void CUrd::Free()
 {

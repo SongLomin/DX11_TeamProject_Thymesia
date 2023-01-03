@@ -131,24 +131,40 @@ _bool CUrdBossState_Skill02_1::Check_AndChangeNextState()
 		//여기서 첫번쨰꺼 안보이게하고 두번쨰거 여기서 바인딩하면될듯
 		m_bOne = false;
 
-		for (auto& elem : pWeapons)
+
+
+
+
+		pJavelinWeapon = GAMEINSTANCE->Get_GameObject_UseMemoryPool<CJavelinWeapon>(Get_Owner().lock()->Get_CreatedLevel());
+
+		if (!pJavelinWeapon.lock())
 		{
-			if (elem.lock()->Get_WeaponNum() == 1)
-			{
-				elem.lock()->Set_RenderOnOff(false);
-			}
+			DEBUG_ASSERT;
+			return false;
 		}
 
+
+
 		//Get_OwnerMonster()->Get_JavelinWeapon().push_back(GAMEINSTANCE->Add_GameObject<CJavelinWeapon>(m_CreatedLevel));
-		Get_OwnerMonster()->Get_JavelinWeapon().back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
-		Get_OwnerMonster()->Get_JavelinWeapon().back().lock()->Get_Transform()->Rotation(XMVectorSet(1.f, 0.f, 0.f, 0.f), XMConvertToRadians(-180.0f));
+		pJavelinWeapon.lock()->Set_JavelinState(CJavelinWeapon::JAVELIN_STATE::BIND_HAND);
+		pJavelinWeapon.lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_l");
+		pJavelinWeapon.lock()->Set_Enable(true);
+		//Get_OwnerMonster()->Get_JavelinWeapon().back().lock()->Get_Transform()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(180.0f));
 
 	}
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 40 && !m_bOne)
 	{
-		Get_OwnerMonster()->Get_JavelinWeapon().back().lock()->Set_BoneBindOff(false);
-		//Get_OwnerMonster()->Get_JavelinWeapon().back().lock()->Get_Transform()->LookAt2D(pCurrentPlayer.lock()->Get_WorldPosition());
+		if (!pJavelinWeapon.lock())
+		{
+			DEBUG_ASSERT;
+			return false;
+		}
+
+
+		pJavelinWeapon.lock()->Set_JavelinState(CJavelinWeapon::JAVELIN_STATE::STAKE);
+		pJavelinWeapon.lock()->Get_Transform()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(45.0f));
+		pJavelinWeapon.lock()->Get_Transform()->Rotation(XMVectorSet(0.f, 0.f, 1.f, 0.f), XMConvertToRadians(-90.0f));
 	
 	}
 

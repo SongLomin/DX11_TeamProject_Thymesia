@@ -8,6 +8,8 @@
 #include "Animation.h"
 #include "Character.h"
 #include "BossUrd/UrdStates.h"
+#include "MobWeapon.h"
+#include "JavelinWeapon.h"
 
 GAMECLASS_C(CUrdBossState_Skill03_L);
 CLONE_C(CUrdBossState_Skill03_L, CComponent)
@@ -65,6 +67,8 @@ void CUrdBossState_Skill03_L::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_bAttackLookAtLimit = true;
 
+	m_bOne = true;
+
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	
 	
@@ -112,11 +116,52 @@ _bool CUrdBossState_Skill03_L::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+	weak_ptr<CMonster> pMonster = Weak_Cast<CMonster>(m_pOwner);
+	list<weak_ptr<CMobWeapon>>	pWeapons = pMonster.lock()->Get_Wepons();
+	weak_ptr<CPlayer> pCurrentPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
+
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_fAnimRatio() > 0.5f)
 		m_bAttackLookAtLimit = false;
 
 	if (ComputeAngleWithPlayer() > 0.99f && m_bAttackLookAtLimit)
 		Rotation_TargetToLookDir();
+
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 54 && m_bOne)
+	{
+		//여기서 첫번쨰꺼 안보이게하고 두번쨰거 여기서 바인딩하면될듯
+		m_bOne = false;
+
+
+		pJavelinWeapon = GAMEINSTANCE->Get_GameObject_UseMemoryPool<CJavelinWeapon>(Get_Owner().lock()->Get_CreatedLevel());
+
+		if (!pJavelinWeapon.lock())
+		{
+			// 자벨린이 없으면 이 상태에 들어오면 안됨.
+			DEBUG_ASSERT;
+			return false;
+		}
+
+
+
+		
+		//Get_OwnerMonster()->Get_JavelinWeapon().push_back(GAMEINSTANCE->Add_GameObject<CJavelinWeapon>(m_CreatedLevel));
+		pJavelinWeapon.lock()->Set_JavelinState(CJavelinWeapon::JAVELIN_STATE::BIND_HAND);
+		pJavelinWeapon.lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_l");
+		pJavelinWeapon.lock()->Set_Enable(true);
+		//Get_OwnerMonster()->Get_JavelinWeapon().back().lock()->Get_Transform()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 0.f), XMConvertToRadians(180.0f));
+
+	}
+	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 55 && !m_bOne)
+	{
+		if (!pJavelinWeapon.lock())
+		{
+			// 여기서 걸렸다면, 위에 if가 돌지 않는건지 확인할 것.
+			DEBUG_ASSERT;
+			return false;
+		}
+			
+		pJavelinWeapon.lock()->Set_JavelinState(CJavelinWeapon::JAVELIN_STATE::THROW);
+	}
 
 	return false;
 }

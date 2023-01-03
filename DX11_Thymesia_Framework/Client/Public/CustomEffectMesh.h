@@ -9,6 +9,7 @@ END
 BEGIN(Client)
 class CSkill;
 class CEffect_AttackArea;
+class CEffectGroup;
 class CCustomEffectMesh final :
     public CEffectMesh
 {

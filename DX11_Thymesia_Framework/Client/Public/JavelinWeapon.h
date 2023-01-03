@@ -19,6 +19,18 @@ class CJavelinWeapon :
     GAMECLASS_H(CJavelinWeapon);
     CLONE_H(CJavelinWeapon, CGameObject);
 
+public: 
+    enum class JAVELIN_STATE
+    {
+        BIND_HAND,
+        THROW,
+        STAKE,
+        STATE_END
+    };
+
+public:
+    void Set_JavelinState(const JAVELIN_STATE In_JavelinState);
+
 protected:// CGameObject을(를) 통해 상속됨
     virtual HRESULT Initialize_Prototype() override;
     virtual HRESULT Initialize(void* pArg) override;
@@ -39,7 +51,7 @@ public:
     _uint Get_WeaponNum() { return m_iWeaponNum; }
     void  Init_Model(const string& strWeaponName, TIMESCALE_LAYER eLayer);
     void  Weapon_BoneChange(weak_ptr<CModel> In_pModelCom, const string& szTargetNode);
-    void  Set_BoneBindOff(_bool bBoneBindOff) { m_bBoneBindOff = bBoneBindOff; }
+   
   
     void  Add_Collider(_fvector In_vOffset, const _float In_fScale, const COLLISION_LAYER In_Layer);
     void  Enable_Weapon();
@@ -48,6 +60,14 @@ public:
     void  Set_RenderOnOff(_bool RenderOnOff) { m_bWeaponRenderOnOff = RenderOnOff; }
     void  Set_WeaponDesc(const WEAPON_DESC& In_Weapon);
     void  Set_WeaponDesc(const HIT_TYPE In_eHitType, const _float In_fDamage, const ATTACK_OPTION In_eOptionType = ATTACK_OPTION::OPTION_END);
+
+private:
+    void Update_Matrix_Hand();
+    void Update_Matrix_Throw(_float fTimeDelta);
+    void Update_Matrix_Stake();
+
+    void LookAt_Player();
+
 
 public:
     FDelegate<weak_ptr<CCollider>> CallBack_Attack;
@@ -69,7 +89,10 @@ protected:
     _bool                   m_bWeaponRenderOnOff = true;
     _uint                   m_iNumMeshContainers;
     _uint                   m_iWeaponNum = 0;
-    _bool                   m_bBoneBindOff = true;
+    _bool                   m_bBoneBind = true;
+
+private:
+    JAVELIN_STATE           m_eCurrentState = JAVELIN_STATE::STATE_END;
 
 private:
     void Free();

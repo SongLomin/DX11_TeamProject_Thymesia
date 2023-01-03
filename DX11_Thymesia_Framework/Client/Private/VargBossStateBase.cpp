@@ -163,6 +163,27 @@ void CVargBossStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 			break;
 		case Client::ATTACK_OPTION::SPECIAL_ATTACK:
 			break;
+		case Client::ATTACK_OPTION::STEALMONSTER:
+			if (In_eHitType == HIT_TYPE::STEALMONSTER)
+			{
+				_matrix vOtherWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+				vResultOtherWorldMatrix = SMath::Add_PositionWithRotation(vOtherWorldMatrix, XMVectorSet(0.f, 0.f, 1.f, 0.f));
+				pOtherCharacter.lock()->Get_PhysX().lock()->Set_Position(
+					vResultOtherWorldMatrix.r[3],
+					GAMEINSTANCE->Get_DeltaTime(),
+					Filters);
+				pOtherCharacter.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_STEALCORVUS);
+			}
+			else if (In_eHitType == HIT_TYPE::LEFT_HIT)
+			{
+				Get_OwnerMonster()->Change_State<CVargBossState_Hurt>();
+			}
+			else if (In_eHitType == HIT_TYPE::RIGHT_HIT)
+			{
+				pOtherCharacter.lock()->OnStealMonsterSkill(Get_OwnerMonster()->Get_MonsterType());
+				Get_OwnerMonster()->Change_State<CVargBossState_Hurt>();
+			}
+			break;
 		}
 		_float3 vShakingOffset = pOtherCharacter.lock()->Get_CurState().lock()->Get_ShakingOffset();
 		_vector vShakingOffsetToVector = XMLoadFloat3(&vShakingOffset);
