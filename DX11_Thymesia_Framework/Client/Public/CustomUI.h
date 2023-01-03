@@ -5,6 +5,7 @@
 BEGIN(Client)
 
 class CEasingTransform;
+class CEasingComponent_Alpha;
 
 class CCustomUI : public CUI
 {
@@ -31,9 +32,9 @@ public:
 protected:
 	virtual HRESULT SetUp_ShaderResource() override;
 
-private:
+protected:
 	_uint	m_iDeffuseIndex = 0;
-	
+
 public:
 	void Free();
 };

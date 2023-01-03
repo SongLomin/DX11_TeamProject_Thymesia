@@ -60,7 +60,24 @@ void CUI_ItemRequirement::Call_ItemRequireMent(ITEM_NAME eITemName)
         Set_Texture("ItemRequirement_GardenKey");
         break;
     case Client::ITEM_NAME::VARG_KEY:
-        Set_Texture("ItemRequirement_GardenKey");
+        Set_Texture("ItemRequirement_VargKey");
+        break;
+    default:
+        return;
+        break;
+    }
+    Start_UI();
+}
+
+void CUI_ItemRequirement::Call_UseItem(ITEM_NAME eITemName)
+{
+    switch (eITemName)
+    {
+    case Client::ITEM_NAME::GARDEN_KEY:
+        Set_Texture("Use_GardenKey");
+        break;
+    case Client::ITEM_NAME::VARG_KEY:
+        Set_Texture("Use_VargKey");
         break;
     default:
         return;

@@ -856,7 +856,6 @@
     <ClInclude Include="..\Public\State_Player.h" />
     <ClInclude Include="..\Public\UI_Elements.h" />
     <ClInclude Include="..\Public\UI_MenuText.h" />
-    <ClInclude Include="..\Public\UI_PauseMenu_PlagueWeapon.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Sword.h" />
     <ClInclude Include="..\Public\EditSetActor.h">
       <Filter>02. GameObject\99. Other\08. EditSetActor</Filter>
@@ -1821,6 +1820,8 @@
     <ClInclude Include="..\Public\Effect_AttackArea.h">
       <Filter>02. GameObject\99. Other\03. Attack_collider\04. Attack_Projectile</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Skill_Hammer.h" />
+    <ClInclude Include="..\Public\Skill_Scythe.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3685,6 +3686,8 @@
     <ClCompile Include="..\Private\Effect_AttackArea.cpp">
       <Filter>02. GameObject\99. Other\03. Attack_collider\04. Attack_Projectile</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\Skill_Hammer.cpp" />
+    <ClCompile Include="..\Private\Skill_Scythe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

@@ -176,6 +176,8 @@ void CMainApp::Tick(float fTimeDelta)
 	GAMEINSTANCE->Add_MotionBlur(-0.4f * fTimeDelta);
 
 	GAMEINSTANCE->Tick_Engine(fTimeDelta);
+	GET_SINGLE(CUIManager)->Tick(fTimeDelta);
+
 	
 #ifdef _DEBUG
 	if (m_pDeveloperConsole && m_bEnableConsole)
@@ -189,10 +191,8 @@ void CMainApp::Tick(float fTimeDelta)
 	}
 #endif // _DEBUG
 
-
-	
-
 	GET_SINGLE(CGameManager)->LateTick(fTimeDelta);
+	GET_SINGLE(CUIManager)->LateTick(fTimeDelta);
 
 #ifdef	_RENDER_FPS_
 	m_fTimeAcc += fTimeDelta;

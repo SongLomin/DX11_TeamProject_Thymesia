@@ -16,6 +16,8 @@
 #include "GameManager.h"
 #include "imgui.h"
 #include "SMath.h"
+#include "UI_ItemRequirement.h"
+
 
 GAMECLASS_C(CInteraction_CastleGate);
 CLONE_C(CInteraction_CastleGate, CGameObject);
@@ -255,7 +257,11 @@ void CInteraction_CastleGate::Act_CloseDoor(_float fTimeDelta, _bool& Out_IsEnd)
 void CInteraction_CastleGate::Act_Interaction()
 {
     if (m_bActionFlag)
+    {
+        GAMEINSTANCE->Get_GameObjects<CUI_ItemRequirement>(LEVEL_STATIC).front().lock()->Call_UseItem(m_iKeyID);
         Callback_ActUpdate += bind(&CInteraction_CastleGate::Act_OpenDoor, this, placeholders::_1, placeholders::_2);
+
+    }
     else
         Callback_ActUpdate += bind(&CInteraction_CastleGate::Act_CloseDoor, this, placeholders::_1, placeholders::_2);
 }
@@ -275,7 +281,10 @@ void CInteraction_CastleGate::Requirement_Key(_bool& Out_bRequirement)
     }
 
     if (!Out_bRequirement)
+    {
+        GAMEINSTANCE->Get_GameObjects<CUI_ItemRequirement>(LEVEL_STATIC).front().lock()->Call_ItemRequireMent(m_iKeyID);
         Callback_ActFail();
+    }
 }
 
 void CInteraction_CastleGate::Update_PhysX()
