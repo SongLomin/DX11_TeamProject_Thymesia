@@ -156,6 +156,12 @@ void CHUD_PlagueWeaponBase::Init_Icon(SKILL_NAME eSkillName)
     case Client::SKILL_NAME::SKILL_KNIFE:
         m_pIcon.lock()->Set_Texture("SkillIcon_Knife");
         break;
+    case Client::SKILL_NAME::SKILL_HAMMER:
+        m_pIcon.lock()->Set_Texture("SkillIcon_Hammer");
+        break;
+    case Client::SKILL_NAME::SKILL_SCYTHE:
+        m_pIcon.lock()->Set_Texture("SkillIcon_Scythe");
+        break;
     case Client::SKILL_NAME::SKILL_END:
         m_pIcon.lock()->Set_Texture("None");
         break;

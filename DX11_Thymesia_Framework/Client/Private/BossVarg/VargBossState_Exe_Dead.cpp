@@ -11,6 +11,9 @@
 #include "VargStates.h"
 
 #include "UI_Landing.h"
+#include "Inventory.h"
+
+
 
 GAMECLASS_C(CVargBossState_Exe_Dead);
 CLONE_C(CVargBossState_Exe_Dead, CComponent)
@@ -91,6 +94,9 @@ void CVargBossState_Exe_Dead::Call_AnimationEnd()
 		return;
 
 	GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front().lock()->Call_Landing(CUI_Landing::LANDING_KILL_BOSS);
+	GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Component<CInventory>().lock()
+		->Push_Item(ITEM_NAME::VARG_KEY);
+
 	Get_OwnerCharacter().lock()->Change_State<CVargBossState_Exe_End>(0.05f);
 
 	GET_SINGLE(CGameManager)->Activate_Section(100, EVENT_TYPE::ON_UNLOCK_SECTION);

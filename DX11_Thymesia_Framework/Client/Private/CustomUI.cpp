@@ -4,6 +4,8 @@
 #include "Shader.h"
 #include "GameManager.h"
 #include "Engine_Defines.h"
+#include "EasingComponent_Alpha.h"
+
 
 GAMECLASS_C(CCustomUI)
 CLONE_C(CCustomUI, CGameObject)
@@ -64,6 +66,7 @@ HRESULT CCustomUI::Render(ID3D11DeviceContext* pDeviceContext)
 
 void CCustomUI::SetUp_Component()
 {
+
 }
 
 void CCustomUI::Set_PassIndex(_uint _iPassIndex)

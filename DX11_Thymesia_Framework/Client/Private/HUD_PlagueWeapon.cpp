@@ -4,6 +4,9 @@
 #include "HUD_PlagueWeapon_Main.h"
 #include "HUD_PlagueWeapon_Steal.h"
 #include "PlayerSkill_System.h"
+#include "EasingComponent_Alpha.h"
+
+
 
 GAMECLASS_C(CHUD_PlagueWeapon);
 CLONE_C(CHUD_PlagueWeapon, CGameObject);
@@ -43,6 +46,7 @@ HRESULT CHUD_PlagueWeapon::Initialize(void* pArg)
 	Add_Child(m_pSubSkill);
 	Add_Child(m_pStealSkill);
 
+	SetUp_Component();
 
 	return S_OK;
 }
@@ -59,10 +63,21 @@ void CHUD_PlagueWeapon::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
 
+
 }
 
 void CHUD_PlagueWeapon::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
+
+}
+
+void CHUD_PlagueWeapon::OnLevelEnter()
+{
+	__super::OnLevelEnter();
+}
+
+void CHUD_PlagueWeapon::SetUp_Component()
+{
 }
 

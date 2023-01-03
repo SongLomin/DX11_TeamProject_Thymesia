@@ -999,11 +999,8 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("SkillIcon_Axe"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_Axe.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("SkillIcon_VargSword"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_VargSword.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("SkillIcon_Knife"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_Knife.dds"), MEMORY_TYPE::MEMORY_STATIC);
-
-
-
-
-
+	GAMEINSTANCE->Load_Textures(("SkillIcon_Hammer"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_Hammer.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("SkillIcon_Scythe"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_Scythe.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 	//Landing
 	GAMEINSTANCE->Load_Textures(("Landing_MemoriesRetrived"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_MemoriesRetrived.png"), MEMORY_TYPE::MEMORY_STATIC);
@@ -1369,13 +1366,12 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Popup_SkillPiece_Scythe"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_SkillPiece_Scythe.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Popup_SkillPiece_Varg"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_SkillPiece_Varg.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
-
-
-
-	//UI _ ItemRequirement
+	//UI _ ItemRequirement	
 	GAMEINSTANCE->Load_Textures(("ItemRequirement_GardenKey"), TEXT("../Bin/Resources/Textures/UI/ItemRequirement/Requirement_InnerGardenKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("ItemRequirement_VargKey"), TEXT("../Bin/Resources/Textures/UI/ItemRequirement/Requirement_VargKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
-
+	GAMEINSTANCE->Load_Textures(("Use_GardenKey"), TEXT("../Bin/Resources/Textures/UI/ItemRequirement/Use_InnerGardenKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Use_VargKey"), TEXT("../Bin/Resources/Textures/UI/ItemRequirement/Use_VargKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 	//BloodOverlay
 	GAMEINSTANCE->Load_Textures(("BloodOverlay_Mask"), TEXT("../Bin/Resources/Textures/UI/BloodOverlay/Mask.dds"), MEMORY_TYPE::MEMORY_STATIC);
