@@ -354,7 +354,7 @@ void CNorMonster::Move_RootMotion_Internal()
 		break;
 	case MONSTERTYPE::BALLOON:
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
-		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		//m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 		break;
 	}
 

@@ -8,6 +8,9 @@ class CHUD_PlagueWeaponBase;
 class CHUD_PlagueWeapon_Main;
 class CHUD_PlagueWeapon_Steal;
 
+class CComponent_Alpha;
+
+
 class CHUD_PlagueWeapon : public CUI
 {
 	GAMECLASS_H(CHUD_PlagueWeapon);
@@ -20,6 +23,15 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) { return S_OK; }
 
+public:
+	virtual void		OnLevelEnter() override;
+
+private:
+	virtual void SetUp_Component() override; 
+	
+
+
+
 private:
 	weak_ptr<CHUD_PlagueWeapon_Main> m_pMainSkill;
 
@@ -28,6 +40,8 @@ private:
 
 	weak_ptr<CHUD_PlagueWeapon_Steal> m_pStealSkill;
 
+private:
+	weak_ptr<CEasingComponent_Alpha> m_pEasingAlpha;
 
 };
 END

@@ -198,6 +198,7 @@
     <ClInclude Include="..\Public\ActorDecor.h" />
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS.h" />
     <ClInclude Include="..\Public\Effect_AttackArea.h" />
     <ClInclude Include="..\Public\Ballon.h" />
     <ClInclude Include="..\Public\BossBat\Bat.h" />
@@ -550,7 +551,9 @@
     <ClInclude Include="..\Public\Section_Eventer.h" />
     <ClInclude Include="..\Public\Skill_Axe.h" />
     <ClInclude Include="..\Public\Skill_base.h" />
+    <ClInclude Include="..\Public\Skill_Hammer.h" />
     <ClInclude Include="..\Public\Skill_Knife.h" />
+    <ClInclude Include="..\Public\Skill_Scythe.h" />
     <ClInclude Include="..\Public\Skill_VargSword.h" />
     <ClInclude Include="..\Public\State_Monster.h" />
     <ClInclude Include="..\Public\State_Player.h" />
@@ -592,7 +595,6 @@
     <ClInclude Include="..\Public\UI_MenuText.h" />
     <ClInclude Include="..\Public\UI_MonsterFocus.h" />
     <ClInclude Include="..\Public\UI_PauseMenu_Page_Inventory.h" />
-    <ClInclude Include="..\Public\UI_PauseMenu_PlagueWeapon.h" />
     <ClInclude Include="..\Public\UI_Script.h" />
     <ClInclude Include="..\Public\UI_ScriptQueue.h" />
     <ClInclude Include="..\Public\UI_Scroll.h" />
@@ -816,6 +818,7 @@
     <ClCompile Include="..\Private\ActorDecor.cpp" />
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Attack_Area.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS.cpp" />
     <ClCompile Include="..\Private\Effect_AttackArea.cpp" />
     <ClCompile Include="..\Private\Ballon.cpp" />
     <ClCompile Include="..\Private\BossBat\Bat.cpp" />
@@ -1145,7 +1148,9 @@
     <ClCompile Include="..\Private\Requirement_State.cpp" />
     <ClCompile Include="..\Private\Skill_Axe.cpp" />
     <ClCompile Include="..\Private\Skill_Base.cpp" />
+    <ClCompile Include="..\Private\Skill_Hammer.cpp" />
     <ClCompile Include="..\Private\Skill_Knife.cpp" />
+    <ClCompile Include="..\Private\Skill_Scythe.cpp" />
     <ClCompile Include="..\Private\Skill_VargSword.cpp" />
     <ClCompile Include="..\Private\Status_Boss.cpp" />
     <ClCompile Include="..\Private\StolenSkill.cpp" />

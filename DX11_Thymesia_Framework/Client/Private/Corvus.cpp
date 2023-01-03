@@ -91,13 +91,6 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
-
-
-
-
-
-
-
 #ifdef _CORVUS_EFFECT_
 	// Key Frame Effect ON
 	Bind_KeyEvent("Corvus");
@@ -601,6 +594,9 @@ void CCorvus::Ready_Skills()
 	Add_Component<CSkill_Axe>();
 	Add_Component<CStolenSkill>();
 	Add_Component<CSkill_Knife>();
+	Add_Component<CSkill_Hammer>();
+	Add_Component<CSkill_Scythe>();
+
 
 	//스킬 추가입니다.
 	m_pSkillSystem = Add_Component<CPlayerSkill_System>();
@@ -759,9 +755,8 @@ void CCorvus::SetUp_Requirement()
 
 void CCorvus::Test_BindSkill()
 {
-	m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_VargSword>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_MAIN);
-	m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_Axe>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_SUB);
-
+	m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_Hammer>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_MAIN);
+	m_pSkillSystem.lock()->OnChangeSkill(Get_Component<CSkill_Scythe>(), CPlayerSkill_System::SOCKET_TYPE::SOCKET_SUB);
 }
 
 void CCorvus::Save_ClientComponentData()

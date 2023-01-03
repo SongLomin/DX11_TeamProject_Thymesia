@@ -375,10 +375,31 @@ HRESULT CGameInstance::Set_IrradianceMap(const _char* In_szIrradianceMap)
 	return m_pRender_Manager->Set_IrradianceMap(In_szIrradianceMap);
 }
 
+HRESULT CGameInstance::Set_IrradianceColorScale(const _float3& In_vIrradianceColorScale)
+{
+	return m_pRender_Manager->Set_IrradianceColorScale(In_vIrradianceColorScale);
+}
+
+_float3 CGameInstance::Get_IrradianceColorScale()
+{
+	return m_pRender_Manager->Get_IrradianceColorScale();
+}
+
 HRESULT CGameInstance::Set_PreFilteredMap(const _char* In_szPreFiltered)
 {
 	return m_pRender_Manager->Set_PreFilteredMap(In_szPreFiltered);
 }
+
+HRESULT CGameInstance::Set_MaskingTexture(const _char* In_szPreFiltered)
+{
+	return m_pRender_Manager->Set_MaskingTexture(In_szPreFiltered);
+}
+
+HRESULT CGameInstance::Set_GodRayDesc(const _float4& In_vColor, const _float4& In_vPosition)
+{
+	return m_pRender_Manager->Set_GodRayDesc(In_vColor, In_vPosition);
+}
+
 
 ID3D11DeviceContext* CGameInstance::Get_BeforeRenderContext()
 {

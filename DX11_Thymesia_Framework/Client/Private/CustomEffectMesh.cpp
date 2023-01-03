@@ -9,6 +9,7 @@
 #include "PreViewAnimationModel.h"
 #include "Easing_Utillity.h"
 #include "BoneNode.h"
+#include "Transform.h"
 #include <imgui_impl_win32.h>
 #include "Effect_AttackArea.h"
 

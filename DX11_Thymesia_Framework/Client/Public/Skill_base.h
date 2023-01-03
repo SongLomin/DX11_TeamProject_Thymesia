@@ -26,7 +26,7 @@ public:
 
     SKILL_NAME  Get_SkillName() { return m_eSkillName; }
     SKILL_TYPE  Get_SkillType() { return m_eSkillType; }
-    weak_ptr<CPlayerStateBase>  Get_SkillState() { return m_pSkillState; }
+    virtual weak_ptr<CPlayerStateBase>  Get_SkillState() { return m_pSkillState; }
 
 public:
     /*
@@ -41,7 +41,6 @@ public:
     virtual void            Reset_Skill();
 public:
     void                    Clear_Callback();
-
 
     FDelegate<>             Callback_StartSkill;//스킬이 시작할때 발동
     FDelegate<_float>       Callback_UpdateCoolDown;//쿨타임이 도는 매 틱마다 발동
@@ -69,6 +68,10 @@ protected:
 
     _float                              m_fRequiredCost;
     weak_ptr<CPlayerStateBase>          m_pSkillState;
+
+    _uint                               m_iMaxSkillLevel = 0;
+    _uint                               m_iCurrentSkillLevel = 0;
+
 
 private:
     void                        Free();

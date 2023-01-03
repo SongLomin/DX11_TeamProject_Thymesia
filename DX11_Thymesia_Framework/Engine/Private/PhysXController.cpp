@@ -190,6 +190,9 @@ PxControllerCollisionFlags CPhysXController::MoveWithRotation(_fvector disp, PxF
 	//cout << "피직스 이동 값: ";
 	//Print_Vector(vRotatedPosition);
 
+	if (DBL_EPSILON < vRotatedPositionFromPx.y || DBL_EPSILON < vRotatedPosition.m128_f32[1])
+		int a = 0;
+
 	auto Result = m_pController->move(vRotatedPositionFromPx, minDist, elapsedTime, filters, obstacles);
 
 	PxExtendedVec3 CurPosition = m_pController->getPosition();

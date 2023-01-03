@@ -406,7 +406,7 @@ void CInteraction_Door::Act_OpenDoor(_float fTimeDelta, _bool& Out_IsEnd)
 {
     m_fAddRadian += fTimeDelta * m_fRotationtSpeed;
 
-    _float fDir = (0.f == m_fRotationtSpeed) ? (1.f) : (m_fRotationtSpeed / abs(m_fRotationtSpeed));
+    //_float fDir = (0.f == m_fRotationtSpeed) ? (1.f) : (m_fRotationtSpeed / abs(m_fRotationtSpeed));
     m_pTransformCom.lock()->Rotation(XMVectorSet(0.f, 1.f, 0.f, 1.f), ((m_fFirstRadian + (m_fAddRadian))));
 
     if (m_fRotationtRadian <= fabs(m_fAddRadian))
@@ -438,10 +438,11 @@ void CInteraction_Door::Act_CloseDoor(_float fTimeDelta, _bool& Out_IsEnd)
     }
 }
 
-void CInteraction_Door::Act_Interaction()
+void CInteraction_Door::Act_Interaction()//¿©±â¼­ Use
 {
     if (m_ActionFlag & ACTION_FLAG::ROTATION)
     {
+        GAMEINSTANCE->Get_GameObjects<CUI_ItemRequirement>(LEVEL_STATIC).front().lock()->Call_UseItem(m_iKeyID);
         Callback_ActUpdate += bind(&CInteraction_Door::Act_OpenDoor, this, placeholders::_1, placeholders::_2);
         m_pPhysXColliderCom.lock()->Set_Enable(false);
     }

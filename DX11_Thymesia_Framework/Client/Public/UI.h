@@ -85,6 +85,9 @@ public:
     virtual void    Set_X(_float fX);
 
     virtual void    Set_AlphaColor(_float fAlphaColor) { m_fAlphaColor = fAlphaColor; }
+
+    void            Set_AlphaColorAllChilds(_float fAlphaColor);
+
     virtual void            Set_Depth(_float _fDepth);
     virtual void    Set_SizeX(const _float In_fSize);
 

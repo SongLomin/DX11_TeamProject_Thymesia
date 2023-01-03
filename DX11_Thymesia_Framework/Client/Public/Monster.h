@@ -74,7 +74,7 @@ public:
 
 public:
     list<weak_ptr<CMobWeapon>>  Get_Wepons() { return m_pWeapons; }
-    list<weak_ptr<CJavelinWeapon>> Get_JavelinWeapon() { return m_pJavelinWeapon; }
+ 
 
 public:
     virtual void Enable_Weapons(const _bool In_bEnable) override;
@@ -112,7 +112,6 @@ protected:
 
 protected:
     list<weak_ptr<CMobWeapon>> m_pWeapons;
-    list<weak_ptr<CJavelinWeapon>> m_pJavelinWeapon;
     list<weak_ptr<CActorDecor>> m_pActorDecor;
     weak_ptr<CStateBase> m_pStandState;
 

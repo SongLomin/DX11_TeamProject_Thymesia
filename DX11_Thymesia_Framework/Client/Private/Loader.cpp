@@ -209,6 +209,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
+	GAMEINSTANCE->Set_MaskingTexture("UVMask");
+
 	lstrcpy(m_szLoadingText, TEXT("Logo : Loading Complete"));
 
 	m_isFinished = true;
@@ -269,6 +271,9 @@ HRESULT CLoader::Loading_ForTestLevel()
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Wagon03/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
+	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Column/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
+
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/ForTest_Mesh/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/ForTest_Mesh/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_DYNAMIC);
 
@@ -292,6 +297,7 @@ HRESULT CLoader::Loading_ForTestLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Destructable/Fence_16a/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
+	lstrcpy(m_szLoadingText, TEXT("Loading Light..."));
 	LIGHTDESC LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
@@ -305,9 +311,6 @@ HRESULT CLoader::Loading_ForTestLevel()
 	LightDesc.fIntensity = 1.f;
 	GAMEINSTANCE->Add_Light(LightDesc);
 
-
-	lstrcpy(m_szLoadingText, TEXT("Loading Light..."));
-
 	lstrcpy(m_szLoadingText, TEXT("Loading Irradiance Map..."));
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_IrradianceMap("IrradianceMap");
@@ -315,6 +318,9 @@ HRESULT CLoader::Loading_ForTestLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading PreFilter..."));
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
+
+	GAMEINSTANCE->Set_MaskingTexture("UVMask");
+
 
 	lstrcpy(m_szLoadingText, TEXT("Test : Loading Complete"));
 
@@ -546,8 +552,9 @@ HRESULT CLoader::Loading_ForStage3Level()
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/GroundInfo/Mesh/ ]"));
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
 #endif
-
-
+	_matrix TransformMatrix(XMMatrixIdentity());
+	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Column/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
 #ifdef _SKYBOX_
 	lstrcpy(m_szLoadingText, TEXT("Loading Skybox Texture..."));
@@ -638,6 +645,10 @@ HRESULT CLoader::Loading_ForEditLevel()
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
+
+	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Column/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
+
 #endif // _MAP_TOOL_
 
 	// TODO : Turn off temporarily for Light_Prop
@@ -664,7 +675,7 @@ HRESULT CLoader::Loading_ForEditLevel()
 	LightDesc.fIntensity = 0.1f;
 #endif // _BRIGHT_LIGHT_
 
-	//GAMEINSTANCE->Add_Light(LightDesc);
+	GAMEINSTANCE->Add_Light(LightDesc);
 
 	GAMEINSTANCE->Set_FogDesc(_float4(0.2f, 0.15f, 0.03f, 0.f), 10000.f);
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
@@ -987,11 +998,8 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("SkillIcon_Axe"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_Axe.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("SkillIcon_VargSword"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_VargSword.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("SkillIcon_Knife"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_Knife.dds"), MEMORY_TYPE::MEMORY_STATIC);
-
-
-
-
-
+	GAMEINSTANCE->Load_Textures(("SkillIcon_Hammer"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_Hammer.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("SkillIcon_Scythe"), TEXT("../Bin/Resources/Textures/UI/Icons/Skills/TexUI_SkillIcon_Scythe.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 	//Landing
 	GAMEINSTANCE->Load_Textures(("Landing_MemoriesRetrived"), TEXT("../Bin/Resources/Textures/UI/LandingMessages/TexUI_LandingMessage_MemoriesRetrived.png"), MEMORY_TYPE::MEMORY_STATIC);
@@ -1357,13 +1365,12 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Popup_SkillPiece_Scythe"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_SkillPiece_Scythe.dds"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Popup_SkillPiece_Varg"), TEXT("../Bin/Resources/Textures/UI/ItemData/Popup/Popup_SkillPiece_Varg.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
-
-
-
-	//UI _ ItemRequirement
+	//UI _ ItemRequirement	
 	GAMEINSTANCE->Load_Textures(("ItemRequirement_GardenKey"), TEXT("../Bin/Resources/Textures/UI/ItemRequirement/Requirement_InnerGardenKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("ItemRequirement_VargKey"), TEXT("../Bin/Resources/Textures/UI/ItemRequirement/Requirement_VargKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
-
+	GAMEINSTANCE->Load_Textures(("Use_GardenKey"), TEXT("../Bin/Resources/Textures/UI/ItemRequirement/Use_InnerGardenKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Use_VargKey"), TEXT("../Bin/Resources/Textures/UI/ItemRequirement/Use_VargKey.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 	//BloodOverlay
 	GAMEINSTANCE->Load_Textures(("BloodOverlay_Mask"), TEXT("../Bin/Resources/Textures/UI/BloodOverlay/Mask.dds"), MEMORY_TYPE::MEMORY_STATIC);
@@ -1515,6 +1522,9 @@ void CLoader::Load_BossMobModel()
 
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(290.0f)) * XMMatrixRotationY(XMConvertToRadians(0.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
 	GAMEINSTANCE->Load_Model("Boss_UrdWeapon", "../Bin/Resources/Meshes/Boss/Urd/Weapon/SK_W_UrdSword01.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
+
+	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.f)) * XMMatrixRotationY(XMConvertToRadians(230.f)) * XMMatrixRotationZ(XMConvertToRadians(90.f)) * XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	GAMEINSTANCE->Load_Model("Boss_UrdWeapon2", "../Bin/Resources/Meshes/Boss/Urd/Weapon/SK_W_UrdSword02.fbx", MODEL_TYPE::NONANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC);
 
 	TransformMatrix = XMMatrixRotationY(XMConvertToRadians(180.f)) * XMMatrixScaling(0.0037f, 0.0037f, 0.0037f);
 	GAMEINSTANCE->Load_Model("Boss_Bat", "../Bin/Resources/Meshes/Boss/Bat/Bat.fbx", MODEL_TYPE::ANIM, TransformMatrix, MEMORY_TYPE::MEMORY_STATIC,true);

@@ -22,6 +22,9 @@ public:
 
 	void		Call_ItemRequireMent(ITEM_NAME eITemName);
 
+	void		Call_UseItem(ITEM_NAME eITemName);
+
+
 public:
 	void				Call_EndLerp();
 	void				Call_EndFadeIn();

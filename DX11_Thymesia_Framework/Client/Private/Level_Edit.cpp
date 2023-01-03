@@ -13,7 +13,7 @@ HRESULT CLevel_Edit::Initialize()
 	if (FAILED(__super::Initialize()))
 		return E_FAIL;
 
-	GAMEINSTANCE->Clear_Lights();
+	/*GAMEINSTANCE->Clear_Lights();*/
 
 	SetWindowText(g_hWnd, TEXT("Loading All Effect Group..."));
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_GAMEPLAY);

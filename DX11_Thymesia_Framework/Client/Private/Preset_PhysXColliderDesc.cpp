@@ -3,6 +3,8 @@
 #include "PhysXCollider.h"
 #include "GameInstance.h"
 #include "Client_Components.h"
+#include "Transform.h"
+#include "SMath.h" 
 
 //void Preset::PhysXColliderDesc::PlayerBodySetting(PHYSXCOLLIDERDESC& Out_Desc, weak_ptr<CTransform> pTransform)
 //{

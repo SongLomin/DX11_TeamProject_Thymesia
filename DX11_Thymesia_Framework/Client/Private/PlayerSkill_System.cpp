@@ -142,8 +142,12 @@ void CPlayerSkill_System::OnChangeSkill(weak_ptr<CSkill_Base> pSkill, SOCKET_TYP
 void CPlayerSkill_System::SetUp_MonsterSkillMap()
 {
    m_MonsterSkillMap.emplace(MONSTERTYPE::AXEMAN, m_pOwner.lock()->Get_Component<CSkill_Axe>());
+   m_MonsterSkillMap.emplace(MONSTERTYPE::SHIELDAXEMAN, m_pOwner.lock()->Get_Component<CSkill_Axe>());
    m_MonsterSkillMap.emplace(MONSTERTYPE::VARG, m_pOwner.lock()->Get_Component<CSkill_VargSword>());
    m_MonsterSkillMap.emplace(MONSTERTYPE::KNIFEWOMAN, m_pOwner.lock()->Get_Component<CSkill_Knife>());
+   m_MonsterSkillMap.emplace(MONSTERTYPE::JOKER, m_pOwner.lock()->Get_Component<CSkill_Hammer>());
+   m_MonsterSkillMap.emplace(MONSTERTYPE::GARDENER, m_pOwner.lock()->Get_Component<CSkill_Scythe>());
+   m_MonsterSkillMap.emplace(MONSTERTYPE::ENHANCE_GARDENER, m_pOwner.lock()->Get_Component<CSkill_Scythe>());
 
 }
 

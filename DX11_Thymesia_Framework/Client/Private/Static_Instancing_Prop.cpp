@@ -17,6 +17,8 @@
 #include "Window_Optimization_Dev.h"
 #endif // _DEBUG
 
+#include "SMath.h"
+
 
 
 GAMECLASS_C(CStatic_Instancing_Prop);

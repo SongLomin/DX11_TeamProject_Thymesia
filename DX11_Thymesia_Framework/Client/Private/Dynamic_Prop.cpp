@@ -37,15 +37,22 @@ HRESULT CDynamic_Prop::Start()
 {
     if (!m_pModelCom.lock()->Get_ModelData().lock() && (_uint)LEVEL_EDIT != m_CreatedLevel)
     {
-        m_pModelCom.lock()->Init_Model("Wagon3_Origin");
+        m_pModelCom.lock()->Init_Model("ColumnDamage08_Origin");
         m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
         Preset::Dynamic_Prop::GateWay_DynamicPropSetting(m_pModelCom.lock()->Get_ModelKey(), m_CreatedLevel, m_pPieces);
     }
 
     __super::Start();
 
+    COLLISION_LAYER CollisionLayer = COLLISION_LAYER::DYNAMIC_PROP;
+
+    if (hash<string>()("ColumnDamage08_Origin") == hash<string>()(m_pModelCom.lock()->Get_ModelKey()))
+    {
+        CollisionLayer = COLLISION_LAYER::BOSS_DYNAMIC_PROP;
+    }
+
     COLLIDERDESC tColliderDesc;
-    tColliderDesc.iLayer = (_uint)COLLISION_LAYER::DYNAMIC_PROP;
+    tColliderDesc.iLayer = (_uint)CollisionLayer;
     tColliderDesc.vRotation = { 0.f, 0.f, 0.f, 0.f };
     tColliderDesc.vScale = { 2.3f, 0.f, 0.f };
     tColliderDesc.vOffset = { 0.f, 0.f, 0.f };

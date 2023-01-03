@@ -2,6 +2,7 @@
 #include "Window_Shader_Dev.h"
 #include "GameInstance.h"
 #include "Engine_Struct.h"
+#include <imgui_impl_win32.h>
 IMPLEMENT_SINGLETON(CWindow_Shader_Dev)
 
 HRESULT CWindow_Shader_Dev::Initialize()
@@ -129,6 +130,17 @@ HRESULT CWindow_Shader_Dev::Render(ID3D11DeviceContext* pDeviceContext)
 		}
 	}
 
+	if (ImGui::CollapsingHeader("Irradiance Color Scale"))
+	{
+		
+		ImGui::ColorPicker3("Irradiance Color", &m_vIrradianceColorScale.x, ImGuiColorEditFlags_AlphaPreviewHalf | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_Uint8 | ImGuiColorEditFlags_InputRGB);
+	
+		if (ImGui::Button("Update Irradiance Color"))
+		{
+			GAMEINSTANCE->Set_IrradianceColorScale(m_vIrradianceColorScale);
+		}
+	}
+
 	// Draw actual text bounding box, following by marker of our expected limit (should not overlap!)
 	
 	
@@ -152,6 +164,8 @@ void CWindow_Shader_Dev::OnEventMessage(_uint iArg)
 		m_vLiftColor = LiftGammaGain.vLift;
 		m_vGammaColor = LiftGammaGain.vGamma;
 		m_vGainColor = LiftGammaGain.vGain;
+
+		m_vIrradianceColorScale = GAMEINSTANCE->Get_IrradianceColorScale();
 	}
 
 	if ((_uint)EVENT_TYPE::ON_CONSOLE_DISABLE == iArg)
