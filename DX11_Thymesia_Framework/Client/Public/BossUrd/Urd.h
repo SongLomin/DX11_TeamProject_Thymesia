@@ -37,7 +37,7 @@ public:
 
 private:
     weak_ptr<class CEffect_Trail>   m_pTrailEffect;
-    list<weak_ptr<CJavelinWeapon>>  m_pJavelinWeapon;
+    list<weak_ptr<CJavelinWeapon>>  m_m_pJavelinWeapon;
     vector<weak_ptr<CMobWeapon>>    m_pDecoWeapons;
     weak_ptr<CBoneNode> m_pTrailBoneNode;
     _float3             m_vMoveScale = {1.f,1.f,1.f};

@@ -31,7 +31,7 @@ protected:
 
 private:
 	_bool m_bOne = false;
-	weak_ptr<CJavelinWeapon> pJavelinWeapon;
+	weak_ptr<CJavelinWeapon> m_pJavelinWeapon;
 
 private:
 	void Call_AnimationEnd();

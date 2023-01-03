@@ -216,7 +216,11 @@ void CJavelinWeapon::Update_Matrix_Hand()
 	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
 	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
 
+
+	
 	m_pTransformCom.lock()->Set_WorldMatrix(BoneMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix());
+
+
 
 }
 
