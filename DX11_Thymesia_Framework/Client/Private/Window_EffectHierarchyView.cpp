@@ -70,7 +70,7 @@ HRESULT CWindow_EffectHierarchyView::Render(ID3D11DeviceContext* pDeviceContext)
             //ImGui::Text("Search : ");
             //filter.Draw("##EffectGroupSearchBar", 340.f);
             //ImGui::BeginChild("##Effect");
-            for (int i = 0; i < m_szEffectMeshNames.size(); ++i)
+            for (int i(0); i < m_szEffectMeshNames.size(); ++i)
             {
                 const bool is_selected = (m_iCurrentEffectIndex == i);
                 if (ImGui::Selectable(m_szEffectMeshNames[i].c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
@@ -88,7 +88,7 @@ HRESULT CWindow_EffectHierarchyView::Render(ID3D11DeviceContext* pDeviceContext)
                     ImGui::SetItemDefaultFocus();
             }
 
-            for (int i = 0; i < m_szEffectParticleNames.size(); ++i)
+            for (int i(0); i < m_szEffectParticleNames.size(); ++i)
             {
                 const bool is_selected = (m_iCurrentEffectIndex == i + m_szEffectMeshNames.size());
                 if (ImGui::Selectable(m_szEffectParticleNames[i].c_str(), is_selected, ImGuiSelectableFlags_AllowDoubleClick))
