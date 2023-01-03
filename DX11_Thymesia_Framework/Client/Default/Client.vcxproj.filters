@@ -579,27 +579,6 @@
     <ClInclude Include="..\Public\PhysXColliderObject.h">
       <Filter>02. GameObject\12. PhysXColliderObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\BossVarg\VargBossState_TurnAttack.h">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\36.TurnAttack</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\37.RaidAttack</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidAttack.h">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\38.AvoidAttack</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack3b.h">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\11.ComboAttack3b</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\BossVarg\VargBossState_RunAttack.h">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\39.RunAttack</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b1.h">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\09.ComboAttack2b1</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b2.h">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\10.ComboAttack2b2</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\PhysXColliderObject.h">
       <Filter>02. GameObject\12. PhysXColliderObject</Filter>
     </ClInclude>
@@ -827,10 +806,8 @@
     <ClInclude Include="..\Public\Interaction_Door.h">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Actor.h" />
     <ClInclude Include="..\Public\Interaction_Dynamic_Prop.h" />
     <ClInclude Include="..\Public\Interaction_Ladder.h" />
-    <ClInclude Include="..\Public\BossMonster.h" />
     <ClInclude Include="..\Public\MobWeapon.h" />
     <ClInclude Include="..\Public\UI_Button.h" />
     <ClInclude Include="..\Public\Character.h" />
@@ -856,7 +833,6 @@
     <ClInclude Include="..\Public\State_Player.h" />
     <ClInclude Include="..\Public\UI_Elements.h" />
     <ClInclude Include="..\Public\UI_MenuText.h" />
-    <ClInclude Include="..\Public\UI_PauseMenu_PlagueWeapon.h" />
     <ClInclude Include="..\Public\CorvusStates\Talent_Sword.h" />
     <ClInclude Include="..\Public\EditSetActor.h">
       <Filter>02. GameObject\99. Other\08. EditSetActor</Filter>
@@ -1120,12 +1096,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\Player.h">
       <Filter>02. GameObject\03. Actor\Character\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\BossUrd\Urd.h">
-      <Filter>02. GameObject\03. Actor\Character\Boss</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\BossVarg\Varg.h">
-      <Filter>02. GameObject\03. Actor\Character\Boss</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Corvus_DefaultDagger.h">
       <Filter>02. GameObject\03. Actor\Character\Player</Filter>
@@ -1832,6 +1802,41 @@
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Hammer_Upgrade.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Hammer\Upgrade</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Skill_Hammer.h" />
+    <ClInclude Include="..\Public\Skill_Scythe.h" />
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b1.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\09.ComboAttack2b1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack2b2.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\10.ComboAttack2b2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_Attack3b.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\11.ComboAttack3b</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_AvoidAttack.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\38.AvoidAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_RaidAttack.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\37.RaidAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_RunAttack.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\39.RunAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\VargBossState_TurnAttack.h">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\36.TurnAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossUrd\Urd.h">
+      <Filter>02. GameObject\03. Actor\Character\Boss\01.Urd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossVarg\Varg.h">
+      <Filter>02. GameObject\03. Actor\Character\Boss\00.Varg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Actor.h">
+      <Filter>02. GameObject\03. Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\BossMonster.h">
+      <Filter>02. GameObject\03. Actor\Character\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2375,27 +2380,6 @@
     <ClCompile Include="..\Private\PhysXColliderObject.cpp">
       <Filter>02. GameObject\12. PhysXColliderObject</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\BossVarg\VargBossState_TurnAttack.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\36.TurnAttack</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BossVarg\VargBossState_RaidAttack.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\37.RaidAttack</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidAttack.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\38.AvoidAttack</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack3b.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\11.ComboAttack3b</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BossVarg\VargBossState_RunAttack.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\39.RunAttack</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b1.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\09.ComboAttack2b1</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b2.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\10.ComboAttack2b2</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_LAttack4.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\11.State_Attack\State_Attack4</Filter>
     </ClCompile>
@@ -2701,12 +2685,10 @@
     <ClCompile Include="..\Private\Interaction_Door.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Movement</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\Actor.cpp" />
     <ClCompile Include="..\Private\Interaction_Dynamic_Prop.cpp" />
     <ClCompile Include="..\Private\Interaction_Ladder.cpp" />
     <ClCompile Include="..\Private\UI_Button.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_Talent.cpp" />
-    <ClCompile Include="..\Private\BossMonster.cpp" />
     <ClCompile Include="..\Private\MobWeapon.cpp" />
     <ClCompile Include="..\Private\Character.cpp" />
     <ClCompile Include="..\Private\Monster.cpp" />
@@ -2993,12 +2975,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Player.cpp">
       <Filter>02. GameObject\03. Actor\Character\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BossUrd\Urd.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Boss</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\BossVarg\Varg.cpp">
-      <Filter>02. GameObject\03. Actor\Character\Boss</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\Corvus_DefaultDagger.cpp">
       <Filter>02. GameObject\03. Actor\Character\Player</Filter>
@@ -3706,6 +3682,41 @@
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Hammer_Upgrade.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Hammer\Upgrade</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Skill_Hammer.cpp" />
+    <ClCompile Include="..\Private\Skill_Scythe.cpp" />
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b1.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\09.ComboAttack2b1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack2b2.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\10.ComboAttack2b2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_Attack3b.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\11.ComboAttack3b</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_AvoidAttack.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\38.AvoidAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_RaidAttack.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\37.RaidAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_RunAttack.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\39.RunAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\VargBossState_TurnAttack.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\03.BossState\00.VargState\36.TurnAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossUrd\Urd.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Boss\01.Urd</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossVarg\Varg.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Boss\00.Varg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Actor.cpp">
+      <Filter>02. GameObject\03. Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\BossMonster.cpp">
+      <Filter>02. GameObject\03. Actor\Character\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

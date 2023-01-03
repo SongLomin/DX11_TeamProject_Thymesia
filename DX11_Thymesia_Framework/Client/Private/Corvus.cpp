@@ -91,13 +91,6 @@ HRESULT CCorvus::Initialize(void* pArg)
 
 	GET_SINGLE(CGameManager)->Set_CurrentPlayer(Weak_StaticCast<CPlayer>(m_this));
 
-
-
-
-
-
-
-
 #ifdef _CORVUS_EFFECT_
 	// Key Frame Effect ON
 	Bind_KeyEvent("Corvus");

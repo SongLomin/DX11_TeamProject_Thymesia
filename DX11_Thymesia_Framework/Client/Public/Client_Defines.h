@@ -30,12 +30,8 @@
 #define _DEBUG_COUT_
 
 #pragma region Map
-#define _MAP_DATA_
 //#define _BRIGHT_LIGHT_
 #define _GENERATE_PROP_COLLIDER_ true
-// #define _STAGE_1_
-#define _STAGE_2_
-#define _TEST_STATIC_PROPS_
 #define _TEST_DYNAMIC_PROPS_
 #pragma endregion // Map
 
@@ -44,16 +40,6 @@
 //#define _EFFECT_TOOL_
 #define _ANIMATION_TOOL_WEAPON_
 #pragma endregion // Tool
-
-#pragma region Boss Mobs
-// #define _BOSS_VARG_
-// #define _BOSS_Armature|Armature|Urd_
-#pragma endregion // Boss Mobs
-
-#pragma region Normal Mobs
- #define _STAGE_1_MONSTER_
- #define _STAGE_2_MONSTER_
-#pragma endregion // Normal Mobs
 
 #pragma region Effects
 // #define _DAGGER_TRAIL_
@@ -87,19 +73,9 @@
 #pragma region Map
 #undef _BRIGHT_LIGHT_
 #define _GENERATE_PROP_COLLIDER_ true
-#define _STAGE_2_
 #define _MAP_TOOL_
+#undef _TEST_DYNAMIC_PROPS_
 #pragma endregion // Map
-
-#pragma region Boss Mobs
-#define _BOSS_VARG_
-#undef _BOSS_URD_
-#pragma endregion // Boss Mobs
-
-#pragma region Normal Mobs
-#define _STAGE_1_MONSTER_
-#define _STAGE_2_MONSTER_
-#pragma endregion // Normal Mobs
 
 #pragma region Effects
 #undef _BAKE_EFFECTMESH_FBX_

@@ -297,6 +297,7 @@ HRESULT CLoader::Loading_ForTestLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Destructable/Fence_16a/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
+	lstrcpy(m_szLoadingText, TEXT("Loading Light..."));
 	LIGHTDESC LightDesc;
 	ZeroMemory(&LightDesc, sizeof(LIGHTDESC));
 
@@ -309,9 +310,6 @@ HRESULT CLoader::Loading_ForTestLevel()
 	LightDesc.bEnable = true;
 	LightDesc.fIntensity = 1.f;
 	GAMEINSTANCE->Add_Light(LightDesc);
-
-
-	lstrcpy(m_szLoadingText, TEXT("Loading Light..."));
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Irradiance Map..."));
 	GAMEINSTANCE->Load_Textures("IrradianceMap", TEXT("../Bin/Resources/Textures/IrradianceMap/IrradianceMap0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
@@ -554,8 +552,9 @@ HRESULT CLoader::Loading_ForStage3Level()
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/GroundInfo/Mesh/ ]"));
 	Load_AllMeshes("../Bin/GroundInfo/Mesh/", MODEL_TYPE::GROUND, MEMORY_TYPE::MEMORY_DYNAMIC);
 #endif
-
-
+	_matrix TransformMatrix(XMMatrixIdentity());
+	TransformMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Column/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
 
 #ifdef _SKYBOX_
 	lstrcpy(m_szLoadingText, TEXT("Loading Skybox Texture..."));

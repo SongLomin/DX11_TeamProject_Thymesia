@@ -11,7 +11,7 @@ CLONE_C(CStatus_Monster, CComponent)
 
 HRESULT CStatus_Monster::Initialize_Prototype()
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 HRESULT CStatus_Monster::Initialize(void* pArg)
@@ -250,6 +250,14 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 {
 	switch (eMonsterType)
 	{
+	case Client::MONSTERTYPE::BALLOON:
+		m_tMonsterDesc.m_fAtk = 10.f;
+		m_tMonsterDesc.m_fMaxHP_white = 100.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 1.f;
+		m_tMonsterDesc.m_iLifeCount = 1;
+		m_tMonsterDesc.m_iMaxParryCount = 1;
+		m_tMonsterDesc.m_szModelKey = "Balloon";
+		break;
 	case Client::MONSTERTYPE::AXEMAN:
 		m_tMonsterDesc.m_fAtk = 30.f;
 		m_tMonsterDesc.m_fMaxHP_white = 150.f;
@@ -326,6 +334,7 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
 		m_tMonsterDesc.m_szModelKey = "Boss_Urd";
 		break;
+
 	}
 	m_tMonsterDesc.m_fCurrentHP_white = m_tMonsterDesc.m_fMaxHP_white;
 	m_tMonsterDesc.m_fCurrentHP_Green = m_tMonsterDesc.m_fMaxHP_white;
