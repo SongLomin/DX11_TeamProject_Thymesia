@@ -129,6 +129,7 @@
 #include "CorvusStates/StateExecution/CorvusState_Varg_Execution.h"
 #include "CorvusStates/StateExecution/CorvusState_Execution_R_R.h"
 #include "CorvusStates/StateExecution/CorvusState_Urd_Execution.h"
+#include "CorvusStates/StateExecution/CorvusState_BigHandman_Execution.h"
 //플레이어 처형 스테이트
 // 
 // 

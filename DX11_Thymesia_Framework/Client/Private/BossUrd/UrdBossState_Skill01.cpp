@@ -174,10 +174,6 @@ _bool CUrdBossState_Skill01::Check_AndChangeNextState()
 	
 	}
 		
-	
-		
-
-
 	if (!Check_Requirement())
 		return false;
 

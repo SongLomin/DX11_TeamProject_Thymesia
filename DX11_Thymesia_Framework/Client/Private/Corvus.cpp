@@ -452,8 +452,7 @@ void CCorvus::Update_KeyInput(_float fTimeDelta)
 	if (KEY_INPUT(KEY::C, KEY_STATE::TAP))
 	{
 		m_pSkillSystem.lock()->SwapSkillMaintoSub();
-	}
-	
+	}	
 }
 
 void CCorvus::Ready_Weapon()
@@ -584,6 +583,7 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_Varg_Execution);
 	ADD_STATE_MACRO(CCorvusState_Execution_R_R);
 	ADD_STATE_MACRO(CCorvusState_Urd_Execution);
+	ADD_STATE_MACRO(CCorvusState_BigHandman_Execution);
 
 #undef ADD_STATE_MACRO
 }
@@ -737,6 +737,11 @@ void CCorvus::OnEventMessage(_uint iArg)
 	}
 
 	if (EVENT_TYPE::ON_URDEXECUTON == (EVENT_TYPE)iArg)
+	{
+		Change_State<CCorvusState_Execution_R_R>();
+	}
+
+	if (EVENT_TYPE::ON_BIGHANDMANEXECUTION == (EVENT_TYPE)iArg)
 	{
 		Change_State<CCorvusState_Execution_R_R>();
 	}

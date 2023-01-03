@@ -257,7 +257,6 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     }
 
 #pragma region Urd
-
     SET_ANIM_SPEED("Armature|Armature|Urd_Attack01LV2|BaseLayer", 2.5f);
     SET_ANIM_SPEED("Armature|Armature|Urd_Attack01|BaseLayer", 2.5f);
     SET_ANIM_SPEED("Armature|Armature|Urd_Attack02LV2C0|BaseLayer", 2.5f);
@@ -309,6 +308,14 @@ void ANIMATION_DATA::Load_FromBinary(ifstream& is)
     SET_ANIM_SPEED("Armature|Armature|Urd_WalkR|BaseLayer", 1.5f);
     SET_ANIM_SPEED("Armature|Armature|Urd_VS_TakeExecution|BaseLayer", 1.f);
 #pragma endregion // Urd
+
+#pragma region BigHandMan
+
+    SET_ANIM_SPEED("SK_C_LV2Villager_M.ao|LV2Villager01_M_ComboA01", 2.f);
+    SET_ANIM_SPEED("SK_C_LV2Villager_M.ao|LV2Villager01_M_ComboA02", 2.f);
+    SET_ANIM_SPEED("SK_C_LV2Villager_M.ao|LV2Villager01_M_VS_TakeExecution_01", 1.1f);
+
+#pragma endregion // BigHandMan
 
     //SET_ANIM_SPEED("Armature|Armature|Urd_VS_TakeExecution|BaseLayer", 0.5f);
     SET_ANIM_SPEED("Corvus_VSUrd_Execution",0.8f);

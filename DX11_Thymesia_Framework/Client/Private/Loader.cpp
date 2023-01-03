@@ -131,6 +131,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CJoker>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CUrd>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CBat>();
+	GAMEINSTANCE->Add_Prototype_GameObject<CBigHandMan>();
 #endif
 
 #ifndef _ONLY_UI_

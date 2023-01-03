@@ -318,9 +318,17 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
 		m_tMonsterDesc.m_szModelKey = "Elite_Joker";
 		break;
+	case Client::MONSTERTYPE::BIGHANDMAN:
+		m_tMonsterDesc.m_fAtk = 30.f;
+		m_tMonsterDesc.m_fMaxHP_white = 400.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 400.f;
+		m_tMonsterDesc.m_iLifeCount = 1;
+		m_tMonsterDesc.m_iMaxParryCount = 10000;
+		m_tMonsterDesc.m_szModelKey = "Elite_BigHandman";
+		break;
 	case Client::MONSTERTYPE::BAT:
 		m_tMonsterDesc.m_fAtk = 40.f;
-		m_tMonsterDesc.m_fMaxHP_white = 25.f;
+		m_tMonsterDesc.m_fMaxHP_white = 1000.f;
 		m_tMonsterDesc.m_fMaxParryingGauge = 1000.f;
 		m_tMonsterDesc.m_iLifeCount = 2;
 		m_tMonsterDesc.m_iMaxParryCount = 10000;

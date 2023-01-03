@@ -68,6 +68,7 @@ namespace Client
 		ON_DIE,
 		ON_BOSS_EXECUTIONSTART,
 		ON_STEALCORVUS,
+		ON_BIGHANDMANEXECUTION,
 		EVENT_END
 	};
 
@@ -82,6 +83,7 @@ namespace Client
 		EXCTUE_HIT,
 		PARRY_HIT,
 		STEALMONSTER,
+		NOPARRYATTACK,
 		TYPE_END
 	};
 
@@ -115,6 +117,7 @@ namespace Client
 		PLAYERHUD,
 		SWAPUI,
 		BOSSMONSTER,
+		ELITEMONSTER,
 		LAYER_END
 	};
 
@@ -198,6 +201,7 @@ namespace Client
 
 		START_ELITE_MONSTER = 10000,
 		JOKER,
+		BIGHANDMAN,
 
 		STARTBOSS_MONSTER = 20000,
 		VARG, // 보스바그
@@ -230,6 +234,7 @@ namespace Client
 		KNOCKBACK,
 		FALLDOWN,
 		STEALMONSTER,
+		NOPARRYATTACK,
 		OPTION_END
 	};
 
@@ -529,7 +534,14 @@ namespace Client
 		VARG,
 		BAT,
 		URD,
-		NAMENED
+		NAMEEND
+	};
+
+	enum class EXECUTIONMONSTERNAME
+	{
+		BIGHANDMAN,
+		ARMORMAN,
+		NAMEEND
 	};
 }
 
