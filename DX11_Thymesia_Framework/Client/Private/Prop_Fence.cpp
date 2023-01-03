@@ -66,10 +66,8 @@ HRESULT CProp_Fence::Start()
         m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
 
         m_pPhysXColliderCom.lock()->Set_Enable(false);
-        //Set_Enable(false);
+        Set_Enable(false);
     }
-
-
 
     return S_OK;
 }
@@ -135,11 +133,15 @@ void CProp_Fence::OnEventMessage(_uint iArg)
         case EVENT_TYPE::ON_ENTER_SECTION:
         {
             Callback_ActEvent.Clear();
+            
+            if (0.f < m_fDelayTime)
+                Callback_ActEvent += bind(&CProp_Fence::Act_Delay, this, placeholders::_1, placeholders::_2);
             Callback_ActEvent += bind(&CProp_Fence::Act_Event, this, placeholders::_1, placeholders::_2);
 
             m_pTransformCom.lock()->Set_Position(XMLoadFloat4(&m_vFirstPosition));
             m_pPhysXColliderCom.lock()->Synchronize_Collider(m_pTransformCom);
 
+            m_bDelayDone     = false;
             m_fDissolveRatio = 0.f;
             m_iPassIndex     = 12;
 
@@ -171,6 +173,7 @@ void CProp_Fence::OnEventMessage(_uint iArg)
         {
             SetUp_Invisibility();
 
+            ImGui::DragFloat("Delay Time"    , &m_fDelayTime);
             ImGui::DragFloat("Dissolve Speed", &m_fDissolveSpeed);
             ImGui::DragInt("Section Index"   , &m_iSectionIndex);
         }
@@ -182,14 +185,16 @@ void CProp_Fence::Write_Json(json& Out_Json)
 {
     __super::Write_Json(Out_Json);
 
+    Out_Json["DelayTime"]     = m_fDelayTime;
     Out_Json["DissolveSpeed"] = m_fDissolveSpeed;
-    Out_Json["SectionIndex"]   = m_iSectionIndex;
+    Out_Json["SectionIndex"]  = m_iSectionIndex;
 }
 
 void CProp_Fence::Load_FromJson(const json& In_Json)
 {
     __super::Load_FromJson(In_Json);
 
+    m_fDelayTime     = In_Json["DelayTime"];
     m_fDissolveSpeed = In_Json["DissolveSpeed"];
     m_iSectionIndex  = In_Json["SectionIndex"];
 
@@ -197,15 +202,37 @@ void CProp_Fence::Load_FromJson(const json& In_Json)
         GET_SINGLE(CGameManager)->Registration_Section(m_iSectionIndex, Weak_Cast<CGameObject>(m_this));
 }
 
+void   CProp_Fence::Act_Delay(_float _fTimeDelta, _bool& _bEnd)
+{
+    if (m_bDelayDone)
+        return;
+
+    m_fAccTime += _fTimeDelta;
+
+    if (m_fAccTime >= m_fDelayTime)
+    {
+        m_fAccTime   = 0.f;
+        m_bDelayDone = true;
+    }
+}
+
 void CProp_Fence::Act_Event(_float _fTimeDelta, _bool& _bEnd)
 {
+    if (!m_bDelayDone)
+        return;
+
     m_fDissolveRatio += _fTimeDelta * m_fDissolveSpeed;
 
     if (1.f <= m_fDissolveRatio)
     {
         m_fDissolveRatio = 1.f;
-        _bEnd = true;
+        m_bDelayDone     = false;
+        _bEnd            = true;
+
+        return;
     }
+
+    _bEnd = false;
 }
 
 void CProp_Fence::OnDestroy()

@@ -9,6 +9,8 @@ END
 BEGIN(Client)
 class CSkill;
 class CEffect_AttackArea;
+class CEffectGroup;
+
 class CCustomEffectMesh final :
     public CEffectMesh
 {
@@ -22,9 +24,8 @@ public: // Get & Set
     void Set_TimeScaleLayer(const _uint& In_iTimeScaleLayer) { m_iTimeScaleLayerIndex = In_iTimeScaleLayer; }
     void Set_EffectGroup(weak_ptr<CEffectGroup> pEffectGroup);
     _matrix Get_EffectWorldMatrix() { return XMLoadFloat4x4(&m_WorldMatrix); }
-public:
 
-	
+public:
     void Reset_Effect(weak_ptr<CTransform> pParentTransform);
     virtual void OnEventMessage(_uint iArg) override;
     void OnChangeAnimationKey(const _uint& In_Key);

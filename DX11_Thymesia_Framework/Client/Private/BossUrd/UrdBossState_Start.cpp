@@ -117,6 +117,9 @@ _bool CUrdBossState_Start::Check_AndChangeNextState()
 	if (fPToMDistance <= 15.f)
 	{
 		m_bSinematicStart = true;
+
+		GET_SINGLE(CGameManager)->Activate_Section(200, EVENT_TYPE::ON_ENTER_SECTION);
+		GET_SINGLE(CGameManager)->Activate_Fog(1);
 	}
 
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() >= 500)
@@ -128,9 +131,6 @@ _bool CUrdBossState_Start::Check_AndChangeNextState()
 
 
 	}
-	
-	GET_SINGLE(CGameManager)->Activate_Section(200, EVENT_TYPE::ON_LOCK_SECTION);
-	GET_SINGLE(CGameManager)->Activate_Fog(1);
 	
 	return false;
 }
