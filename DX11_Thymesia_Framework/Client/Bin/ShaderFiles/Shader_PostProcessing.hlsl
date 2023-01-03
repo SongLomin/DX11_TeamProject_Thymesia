@@ -108,12 +108,12 @@ PS_OUT PS_MAIN_GODRAY(PS_IN In)
        
     float4 vScreenLightPos = mul(g_vLightPos, matVP);
     
-    //if (vScreenLightPos.z < 0.f)
-    //{
-    //    Out.vColor = lerp(Out.vColor, g_vLightDiffuse, 0.3f);
-    //    return Out;
+    if (vScreenLightPos.z < 0.f)
+    {
+        Out.vColor = lerp(Out.vColor, g_vLightDiffuse, 0.1f);
+        return Out;
 
-    //}
+    }
     
     vScreenLightPos /= vScreenLightPos.w;
     vScreenLightPos.x = vScreenLightPos.x * 0.5f + 0.5f;
@@ -133,38 +133,40 @@ PS_OUT PS_MAIN_GODRAY(PS_IN In)
     {
         vSampleUV -= vDeltaTexCoord;
         
-        vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, vSampleUV + vDeltaTexCoord * fDither);
+        //vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, vSampleUV + vDeltaTexCoord * fDither);
         
-        vector vPixelWorldPos;
+        //vector vPixelWorldPos;
 
-        float fViewZ = vDepthDesc.y * g_fFar;
+        //float fViewZ = vDepthDesc.y * g_fFar;
         
-        vPixelWorldPos.x = In.vTexUV.x * 2.f - 1.f;
-        vPixelWorldPos.y = In.vTexUV.y * -2.f + 1.f;
-        vPixelWorldPos.z = vDepthDesc.x;
-        vPixelWorldPos.w = 1.0f;
+        //vPixelWorldPos.x = In.vTexUV.x * 2.f - 1.f;
+        //vPixelWorldPos.y = In.vTexUV.y * -2.f + 1.f;
+        //vPixelWorldPos.z = vDepthDesc.x;
+        //vPixelWorldPos.w = 1.0f;
 	    
-        vPixelWorldPos *= fViewZ;
+        //vPixelWorldPos *= fViewZ;
 
-        vPixelWorldPos = mul(vPixelWorldPos, g_ProjMatrixInv);
+        //vPixelWorldPos = mul(vPixelWorldPos, g_ProjMatrixInv);
 
-        vPixelWorldPos = mul(vPixelWorldPos, g_ViewMatrixInv);
+        //vPixelWorldPos = mul(vPixelWorldPos, g_ViewMatrixInv);
         
-        matrix matLightVP = mul(g_LightViewMatrix, g_LightProjMatrix);
+        //matrix matLightVP = mul(g_LightViewMatrix, g_LightProjMatrix);
         
-        vector vStaticPosition = mul(vPixelWorldPos, matLightVP);
+        //vector vStaticPosition = mul(vPixelWorldPos, matLightVP);
 	
-        float2 vNewUV;
+        //float2 vNewUV;
 	
-        vNewUV.x = (vStaticPosition.x / vStaticPosition.w) * 0.5f + 0.5f;
-        vNewUV.y = (vStaticPosition.y / vStaticPosition.w) * -0.5f + 0.5f;
+        //vNewUV.x = (vStaticPosition.x / vStaticPosition.w) * 0.5f + 0.5f;
+        //vNewUV.y = (vStaticPosition.y / vStaticPosition.w) * -0.5f + 0.5f;
 	
-        vector vStaticShadowDepth = g_StaticShadowDepthTexture.Sample(ClampSampler, vNewUV);
-          
-        s += (vStaticPosition.z - 0.01f < vStaticShadowDepth.r * g_fFar) * 1.f / 64.f;
+        //vector vStaticShadowDepth = g_StaticShadowDepthTexture.Sample(ClampSampler, vNewUV);
+        
+        float fDepth = g_DepthTexture.Sample(DefaultSampler, vSampleUV + vDeltaTexCoord * fDither).x;
+        s += (fDepth >= 0.99f) * 1.f / 64.f;
+        //s += (vStaticPosition.z - 0.01f < vStaticShadowDepth.r * g_fFar) * 1.f / 64.f;
     }
            
-    Out.vColor = lerp(Out.vColor, g_vLightDiffuse, 0.8f * s);
+    Out.vColor = lerp(Out.vColor, g_vLightDiffuse, 0.2f * s);
     
     return Out;
 }
