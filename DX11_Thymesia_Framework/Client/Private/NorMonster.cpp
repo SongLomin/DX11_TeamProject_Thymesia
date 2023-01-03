@@ -251,7 +251,7 @@ void CNorMonster::Init_Desc()
 	string	strModelKey = Weak_StaticCast<CStatus_Monster>(m_pStatus).lock()->Get_Desc().m_szModelKey;
 	Bind_KeyEvent(strModelKey.c_str());
 
-	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom), (_uint)PHYSX_COLLISION_LAYER::MONSTER);
+	m_pPhysXControllerCom.lock()->Init_Controller(Preset::PhysXControllerDesc::PlayerSetting(m_pTransformCom), (_uint)PHYSX_COLLISION_LAYER::PLAYER);
 }
 
 void CNorMonster::Tick(_float fTimeDelta)
@@ -354,7 +354,7 @@ void CNorMonster::Move_RootMotion_Internal()
 		break;
 	case MONSTERTYPE::BALLOON:
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
-		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		//m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 		break;
 	}
 

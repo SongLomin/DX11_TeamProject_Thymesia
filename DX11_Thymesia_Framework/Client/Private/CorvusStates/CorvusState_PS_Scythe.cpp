@@ -32,7 +32,7 @@ void CCorvusState_PS_Scythe::Start()
 {
 	__super::Start();
 	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
-	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_PW_Scythe_A");
+	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_PW_Scythe");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_Scythe::Call_AnimationEnd, this);
 }
 
