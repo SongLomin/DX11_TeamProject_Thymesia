@@ -25,6 +25,8 @@ vector g_vLightFlag;
 vector g_vMtrlAmbient  = vector(1.f, 1.f, 1.f, 1.f);
 vector g_vMtrlSpecular = vector(1.f, 1.f, 1.f, 1.f);
 
+float3 g_IrradianceColorScale;
+
 vector g_vFogColor;
 float g_fFogRange;
 
@@ -576,7 +578,7 @@ PS_OUT PS_MAIN_BLEND(PS_IN In)
  
         litColor = pow(litColor, 2.2f);
       
-        Out.vColor = vAmbientDesc + vSpecular /* * (1 - bIsInShadow)*/ + litColor;
+        Out.vColor = vAmbientDesc + vSpecular /* * (1 - bIsInShadow)*/ + (litColor * float4(g_IrradianceColorScale, 1.f));
         Out.vColor.rgb *= vViewShadow.rgb;
      
         Out.vColor.a = 1.f;

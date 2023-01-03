@@ -145,6 +145,8 @@ public: /* For.Render_Manager */
 	HRESULT Set_Contrast(const _float In_fContrast);
 	HRESULT Set_Saturation(const _float In_fSaturation);
 	HRESULT Set_IrradianceMap(const _char* In_szIrradianceMap);
+	HRESULT Set_IrradianceColorScale(const _float3& In_vIrradianceColorScale);
+	_float3 Get_IrradianceColorScale();
 	HRESULT Set_PreFilteredMap(const _char* In_szPreFiltered);
 
 	ID3D11DeviceContext* Get_BeforeRenderContext();

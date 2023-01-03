@@ -690,6 +690,18 @@ HRESULT CRender_Manager::Set_IrradianceMap(const _char* In_szIrradianceMap)
 	return S_OK;
 }
 
+HRESULT CRender_Manager::Set_IrradianceColorScale(const _float3& In_vIrradianceColorScale)
+{
+	m_vIrradianceColorScale = In_vIrradianceColorScale;
+
+	return S_OK;
+}
+
+_float3 CRender_Manager::Get_IrradianceColorScale()
+{
+	return m_vIrradianceColorScale;
+}
+
 HRESULT CRender_Manager::Set_PreFilteredMap(const _char* In_szPreFilteredMap)
 {
 	m_pPreFilterTextureCom->Use_Texture(In_szPreFilteredMap);
@@ -1067,6 +1079,9 @@ HRESULT CRender_Manager::Render_Blend()
 
 	if (FAILED(m_pIrradianceTextureCom->Set_ShaderResourceView(m_pShader, "g_IrradianceTexture")))
 		DEBUG_ASSERT;
+
+	m_pShader->Set_RawValue("g_IrradianceColorScale", &m_vIrradianceColorScale, sizeof(_float3));
+
 	if (FAILED(m_pPreFilterTextureCom->Set_ShaderResourceView(m_pShader, "g_PreFilterTexture")))
 		DEBUG_ASSERT;
 

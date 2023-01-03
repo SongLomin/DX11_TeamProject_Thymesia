@@ -35,6 +35,10 @@ private:/* For. Screen Tone*/
 	_float m_fSaturation = 1.f;
 	_float m_fExposure = 1.f;
 
+private:/* For. Irradiance Color Scale */
+	_float3 m_vIrradianceColorScale{ 1.f,1.f,1.f };
+
+
 private:
 	virtual void OnEventMessage(_uint iArg) override;
 

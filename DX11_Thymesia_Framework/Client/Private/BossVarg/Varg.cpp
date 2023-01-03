@@ -104,7 +104,7 @@ HRESULT CVarg::Initialize(void* pArg)
 #endif // _DEBUG
 
 #ifdef _USE_THREAD_
-	//Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
+	Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
 #endif // _USE_THREAD_
 
 

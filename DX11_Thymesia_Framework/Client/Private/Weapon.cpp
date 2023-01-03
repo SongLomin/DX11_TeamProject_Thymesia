@@ -213,24 +213,28 @@ void CWeapon::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollid
 
 	m_iHitColliderIndexs.push_back(iOtherColliderIndex);
 
-	Weak_Cast<CCharacter>(pOtherCollider.lock()->Get_Owner()).lock()->OnHit(pOtherCollider, pMyCollider, (HIT_TYPE)m_tWeaponDesc.iHitType, m_tWeaponDesc.fDamage);
-
-	if (m_bFirstAttack)
+	if ((_uint)COLLISION_LAYER::PLAYER == pOtherCollider.lock()->Get_CollisionLayer())
 	{
-		if (m_pParentCharacter.lock())
-		{
-			m_pParentCharacter.lock()->Call_WeaponFirstAttack(pMyCollider, pOtherCollider);
-		}
+		Weak_Cast<CCharacter>(pOtherCollider.lock()->Get_Owner()).lock()->OnHit(pOtherCollider, pMyCollider, (HIT_TYPE)m_tWeaponDesc.iHitType, m_tWeaponDesc.fDamage);
 
-		m_bFirstAttack = false;
-	}
-	else
-	{
-		if (m_pParentCharacter.lock())
+		if (m_bFirstAttack)
 		{
-			m_pParentCharacter.lock()->Call_WeaponAttack(pMyCollider, pOtherCollider);
+			if (m_pParentCharacter.lock())
+			{
+				m_pParentCharacter.lock()->Call_WeaponFirstAttack(pMyCollider, pOtherCollider);
+			}
+
+			m_bFirstAttack = false;
+		}
+		else
+		{
+			if (m_pParentCharacter.lock())
+			{
+				m_pParentCharacter.lock()->Call_WeaponAttack(pMyCollider, pOtherCollider);
+			}
 		}
 	}
+	
 }
 
 void CWeapon::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)

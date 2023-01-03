@@ -41,7 +41,7 @@
 
 #pragma region Tool
 #define _MAP_TOOL_
-#define _EFFECT_TOOL_
+//#define _EFFECT_TOOL_
 #define _ANIMATION_TOOL_WEAPON_
 #pragma endregion // Tool
 
@@ -59,7 +59,7 @@
 // #define _DAGGER_TRAIL_
 #define _CORVUS_EFFECT_
 //#define _VARG_EFFECT_
-#define	_BAT_EFFECT_
+//#define	_BAT_EFFECT_
 #pragma endregion // Effects
 
 #endif // _DEBUG
