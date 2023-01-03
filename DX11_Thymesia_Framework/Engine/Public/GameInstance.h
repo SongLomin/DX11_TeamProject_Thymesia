@@ -146,6 +146,9 @@ public: /* For.Render_Manager */
 	HRESULT Set_Saturation(const _float In_fSaturation);
 	HRESULT Set_IrradianceMap(const _char* In_szIrradianceMap);
 	HRESULT Set_PreFilteredMap(const _char* In_szPreFiltered);
+	HRESULT Set_MaskingTexture(const _char* In_szPreFiltered);
+	HRESULT Set_GodRayDesc(const _float4& In_vColor, const _float4& In_vPosition);
+
 
 	ID3D11DeviceContext* Get_BeforeRenderContext();
 	void Release_BeforeRenderContext(ID3D11DeviceContext* pDeviceContext);

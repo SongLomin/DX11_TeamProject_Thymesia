@@ -209,6 +209,8 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
 
+	GAMEINSTANCE->Set_MaskingTexture("UVMask");
+
 	lstrcpy(m_szLoadingText, TEXT("Logo : Loading Complete"));
 
 	m_isFinished = true;
@@ -315,6 +317,9 @@ HRESULT CLoader::Loading_ForTestLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading PreFilter..."));
 	GAMEINSTANCE->Load_Textures("PreFilter", TEXT("../Bin/Resources/Textures/PreFilterIrradiance/PreFilter0.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 	GAMEINSTANCE->Set_PreFilteredMap("PreFilter");
+
+	GAMEINSTANCE->Set_MaskingTexture("UVMask");
+
 
 	lstrcpy(m_szLoadingText, TEXT("Test : Loading Complete"));
 

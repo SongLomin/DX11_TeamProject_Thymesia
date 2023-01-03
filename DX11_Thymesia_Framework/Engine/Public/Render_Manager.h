@@ -69,6 +69,9 @@ public:
 	HRESULT Set_Saturation(const _float In_fSaturation);
 	HRESULT Set_IrradianceMap(const _char* In_szIrradianceMap);
 	HRESULT Set_PreFilteredMap(const _char* In_szPreFiltered);
+	HRESULT Set_MaskingTexture(const _char* In_szPreFiltered);
+
+	HRESULT Set_GodRayDesc(const _float4& In_vColor, const _float4& In_vPosition);
 
 private:
 	HRESULT Render_Priority();
@@ -166,6 +169,9 @@ private:
 
 	_float4x4	m_AntiAliasingWorldMatrix;
 	_float4x4	m_AntiAliasingProjMatrixTranspose;
+
+	_float4		m_vGodRayColor = { 0.f,0.f,0.f,0.f };
+	_float4		m_vGodRayPosition = { 0.f,0.f,0.f,0.f };
 
 private:
 	_float		m_fBlurWitdh = 0.f;

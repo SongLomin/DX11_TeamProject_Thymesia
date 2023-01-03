@@ -435,6 +435,8 @@ HRESULT CRender_Manager::Initialize()
 	m_pPreFilterTextureCom = CTexture::Create();
 	//m_pPreFilterTextureCom->Use_Texture("PreFilter");
 
+	m_pMaskingTextureCom = CTexture::Create();
+
 	Emplace_SleepContext(300);
 
 	return S_OK;
@@ -697,6 +699,21 @@ HRESULT CRender_Manager::Set_PreFilteredMap(const _char* In_szPreFilteredMap)
 	return S_OK;
 }
 
+HRESULT CRender_Manager::Set_MaskingTexture(const _char* In_szPreFiltered)
+{
+	m_pMaskingTextureCom->Use_Texture(In_szPreFiltered);
+	
+	return S_OK;
+}
+
+
+HRESULT CRender_Manager::Set_GodRayDesc(const _float4& In_vColor, const _float4& In_vPosition)
+{
+	m_vGodRayColor = In_vColor;
+	m_vGodRayPosition = In_vPosition;
+
+	return S_OK;
+}
 
 
 HRESULT CRender_Manager::Set_LiftGammaGain(const _float4 In_vLift, const _float4 In_vGamma, const _float4 In_vGain)
@@ -721,7 +738,6 @@ HRESULT CRender_Manager::Set_Exposure(const _float In_fExposure)
 
 	return S_OK;
 }
-
 
 HRESULT CRender_Manager::Set_ShadowLight(_fvector In_vEye, _fvector In_vLookAt)
 {
@@ -1857,6 +1873,7 @@ HRESULT CRender_Manager::PostProcessing()
 
 	//fMotionLerpValue *= 0.01f;
 
+	m_pMaskingTextureCom->Set_ShaderResourceView(m_pPostProcessingShader, "g_MaskTexture", 92);
 
 	m_pPostProcessingShader->Set_RawValue("g_fChromaticStrength", &fChromaticLerpValue, sizeof(_float));//chromatic ����
 
@@ -1867,11 +1884,14 @@ HRESULT CRender_Manager::PostProcessing()
 	m_pPostProcessingShader->Set_RawValue("g_vBlurWorldPosition", &m_vRadialBlurWorldPos, sizeof(_float3));//RadialBlur ����
 	m_pPostProcessingShader->Set_RawValue("g_CamViewMatrix", &XMMatrixTranspose(CamViewMatrix), sizeof(_float4x4));//RadialBlur ����
 
-	_float4 vLightPos = { 1.f,1.f,1.f,1.f };
+	_float4 vLightPos = { m_vShadowLightEye.x,m_vShadowLightEye.y,m_vShadowLightEye.z,1.f };
+
+	m_pPostProcessingShader->Set_RawValue("g_LightProjMatrix", &m_LightProjMatrixTranspose, sizeof(_float4x4));
+	m_pPostProcessingShader->Set_RawValue("g_LightViewMatrix", &m_LightViewMatrixTranspose, sizeof(_float4x4));
 
 	m_pPostProcessingShader->Set_RawValue("g_vLightPos", &vLightPos, sizeof(_float4));
-	m_pPostProcessingShader->Set_RawValue("g_LightDiffuse", &vLightPos, sizeof(_float4));
-
+	m_pPostProcessingShader->Set_RawValue("g_vLightDiffuse", &m_vGodRayColor, sizeof(_float4));
+	 
 	for (_int i = 0; i < 6; ++i)
 	{
 		Bake_OriginalRenderTexture();
