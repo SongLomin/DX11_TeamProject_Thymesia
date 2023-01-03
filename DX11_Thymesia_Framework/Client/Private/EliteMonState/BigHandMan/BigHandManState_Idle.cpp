@@ -179,9 +179,10 @@ _bool CBigHandManState_Idle::Check_AndChangeNextState()
 	}
 	else
 	{
-		if (fPToMDistance <= 4.f)
+		if (fPToMDistance <= 4.f && !m_bFightStart)
 		{
 			m_bFightStart = true;
+			m_bTurnCheck = true;
 		}
 	}
 	
