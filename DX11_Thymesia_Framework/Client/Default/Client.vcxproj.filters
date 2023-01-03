@@ -1807,10 +1807,6 @@
     </ClInclude>
     <ClInclude Include="..\Public\Ballon.h" />
     <ClInclude Include="..\Public\Prop_Fence.h" />
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Scythe.h" />
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Hammer.h" />
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Hammer_Upgrade.h" />
-    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Scythe_Upgrade.h" />
     <ClInclude Include="..\Public\Ballon.h" />
     <ClInclude Include="..\Public\Prop_Fence.h" />
     <ClInclude Include="..\Public\StolenSkill.h" />
@@ -1820,6 +1816,21 @@
     <ClInclude Include="..\Public\Prop_Fence.h" />
     <ClInclude Include="..\Public\Effect_AttackArea.h">
       <Filter>02. GameObject\99. Other\03. Attack_collider\04. Attack_Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Hammer.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Hammer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Scythe.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Scythe</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Scythe_Upgrade.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Scythe\Upgrade</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_Hammer_Upgrade.h">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Hammer\Upgrade</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -3671,10 +3682,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\Ballon.cpp" />
     <ClCompile Include="..\Private\Prop_Fence.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Scythe.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Hammer.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Hammer_Upgrade.cpp" />
-    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Scythe_Upgrade.cpp" />
     <ClCompile Include="..\Private\Ballon.cpp" />
     <ClCompile Include="..\Private\Prop_Fence.cpp" />
     <ClCompile Include="..\Private\StolenSkill.cpp" />
@@ -3684,6 +3691,21 @@
     <ClCompile Include="..\Private\Prop_Fence.cpp" />
     <ClCompile Include="..\Private\Effect_AttackArea.cpp">
       <Filter>02. GameObject\99. Other\03. Attack_collider\04. Attack_Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Hammer.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Hammer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Scythe.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Scythe</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Scythe_Upgrade.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Scythe\Upgrade</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_Hammer_Upgrade.cpp">
+      <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Hammer\Upgrade</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -5476,6 +5498,18 @@
     </Filter>
     <Filter Include="02. GameObject\99. Other\03. Attack_collider\04. Attack_Projectile">
       <UniqueIdentifier>{90d229ce-3752-4972-9795-f34625cfaaff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Hammer">
+      <UniqueIdentifier>{02fa06dd-ba7d-4768-8f35-7da3a71cd6ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Scythe">
+      <UniqueIdentifier>{1c4ece8d-9150-44bc-a4a4-10404043e078}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Scythe\Upgrade">
+      <UniqueIdentifier>{39946892-e5c8-4899-b88c-385b3f8d64ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\00.CorvusState\21.PlayerSkills\PS_Hammer\Upgrade">
+      <UniqueIdentifier>{d1172711-659b-4baf-9ad3-f41c455953de}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

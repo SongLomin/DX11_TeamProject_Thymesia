@@ -1,30 +1,52 @@
 #include "stdafx.h"
 #include "CorvusStates/CorvusStateBase.h"
-#include "GameInstance.h"
-#include "Collider.h"
-#include "CorvusStates/CorvusStates.h"
-//#include "MonsterWeapon.h"
-#include "Status.h"
-#include "Attack_Area.h"
-#include "Status.h"
-#include "Status_Player.h"
-#include "Character.h"
-#include "Status_Monster.h"
-#include "Monster.h"
-#include "NorMonStates.h"
-#include "PhysXCharacterController.h"
-#include "Interaction_Ladder.h"
-#include "VargStates.h"
-#include "BoneNode.h"
-#include "Model.h"
-#include "Camera_Target.h"
+#include "Requirement_State.h"
 #include "RequirementChecker.h"
-#include "Status_Player.h"
 #include "UIManager.h"
-
-
+#include "Status_Player.h"
+#include "GameManager.h"
+#include "CorvusStates/CorvusState_Die.h"
+#include "Attack_Area.h"
+#include "Collider.h"
+#include "CorvusStates/CorvusState_HurtR.h"
+#include "CorvusStates/CorvusState_HurtL.h"
+#include "CorvusStates/CorvusState_HurtXXL.h"
+#include "CorvusStates/CorvusState_HurtXL.h"
+#include "CorvusStates/CorvusState_HurtBlown.h"
+#include "Interaction_Ladder.h"
+#include "SMath.h"
+#include "PhysXController.h"
+#include "CorvusStates/CorvusState_Climb_L_Up_Down_End.h"
+#include "CorvusStates/CorvusState_Climb_Start.h"
+#include "CorvusStates/CorvusState_CheckPointStart.h"
+#include "Status_Monster.h"
+#include "CorvusStates/StateExecution/CorvusState_RaidAttack1Hurt.h"
+#include "CorvusStates/CorvusState_Headache_Start.h"
+#include "CorvusStates/CorvusState_KnockBack.h"
 
 GAMECLASS_C(CCorvusStateBase)
+
+void CCorvusStateBase::Call_OtherControllerHit(const PxControllersHit& In_hit)
+{
+	__super::Call_OtherControllerHit(In_hit);
+
+	shared_ptr<CRequirement_State> pReq_Once = make_shared<CRequirement_State>();
+	pReq_Once->Init_Req(m_pOwnerFromPlayer, m_iStateIndex);
+
+	m_pOwnerFromPlayer.lock()->Get_Requirement("RootMotion").lock()->Add_Requirement(pReq_Once);
+}
+
+void CCorvusStateBase::OnEventMessage(_uint iArg)
+{
+	/*if ((_uint)EVENT_TYPE::ON_EXCUTION_NORMOB)
+	{
+		Get_OwnerCharacter().lock()->Change_State<CCorvusState_NorMob_Execution>();
+	}*/
+}
+
+void CCorvusStateBase::Free()
+{
+}
 
 _bool CCorvusStateBase::Check_RequirementAttackState()
 {
@@ -35,7 +57,6 @@ _bool CCorvusStateBase::Check_RequirementAttackState()
 
 	return false;
 }
-
 
 _bool CCorvusStateBase::Check_RequirementFadderAttackState()
 {
@@ -51,11 +72,6 @@ _bool CCorvusStateBase::Check_RequirementDashState()
 	{
 		return false;
 	}
-
-	//if (!m_pStatusCom.lock()->Requirment_Dash())
-	//{
-	//	return false;
-	//}
 
 	return true;
 }
@@ -140,8 +156,9 @@ _bool CCorvusStateBase::Check_RequirementHealingState()
 	{
 		if (GET_SINGLE(CUIManager)->Is_OpenedMenu())
 		{
-			return false;//메인 메뉴류가 열려있다면
+			return false;
 		}
+
 		weak_ptr<CStatus_Player> pStatus = GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status();
 		if (pStatus.lock()->Get_UseableCurrentPotion())
 		{
@@ -205,9 +222,6 @@ _bool CCorvusStateBase::Check_RequirementExcuteState(weak_ptr<CGameObject>& Out_
 {
 	list<weak_ptr<CGameObject>>  pGameObjects = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::GROOGYMOSNTER);
 
-
-	//몬스터랑 거리비교를해야함
-
 	return Get_NearGameObjectInDistance(Out_pGameObject, pGameObjects, 5.f);
 }
 
@@ -233,7 +247,6 @@ void CCorvusStateBase::Check_AndChangeHitState(weak_ptr<CCollider> pMyCollider, 
 
 		m_pTransformCom.lock()->LookAt(vSameHeightOtherColliderPosition);
 
-
 		_vector vCorssPotision = pMyCollider.lock()->Get_CurrentPosition();
 		_vector vOtherDoCorssPositon = pOtherCollider.lock()->Get_CurrentPosition();
 		_vector vPlayerColToMonsterColDireciton = XMVector3Normalize(vOtherDoCorssPositon - vCorssPotision);
@@ -253,13 +266,6 @@ void CCorvusStateBase::Check_AndChangeHitState(weak_ptr<CCollider> pMyCollider, 
 		{
 			Get_OwnerPlayer()->Change_State<CCorvusState_HurtL>();
 		}
-
-
-
-		//왼쪽오른쪽구분밥먹고합시다 ㅇㅈ?어 ㅇㅈ
-
-
-		//Get_OwnerPlayer()->Change_State<CCorvusState_HurtL>();
 	}
 	else if (In_eHitType == HIT_TYPE::DOWN_HIT)
 	{
@@ -310,14 +316,12 @@ void CCorvusStateBase::Check_AndChangeHitState(weak_ptr<CCollider> pMyCollider, 
 
 		Get_OwnerPlayer()->Change_State<CCorvusState_HurtBlown>();
 	}
+
 	m_pOwnerFromPlayer.lock()->Set_RimLightDesc(4.5f, {0.6f,0.f,0.f}, 0.9f);
-
-
 }
 
 _int CCorvusStateBase::Check_AndChangeSuccessParrying(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
-
 	CORSS_RESULT CorssResult = CORSS_RESULT::CORSS_END;
 
 	//외적
@@ -355,7 +359,6 @@ _int CCorvusStateBase::Check_AndChangeSuccessParrying(weak_ptr<CCollider> pMyCol
 
 	_float fCos = XMVectorGetX(XMVector3Dot(vOtherColliderToPlayerClollider, vMyLookVecTor));
 
-
 	if (CorssResult == CORSS_RESULT::LEFT)
 	{
 		if (fCos >= 0.f && fCos <= 0.7f) // 0도45도 또는 135도 180도
@@ -366,10 +369,6 @@ _int CCorvusStateBase::Check_AndChangeSuccessParrying(weak_ptr<CCollider> pMyCol
 		{
 			return (_uint)PARRY_SUCCESS::LEFT;
 		}
-	
-		
-
-
 	}
 	else if (CorssResult == CORSS_RESULT::RIGHT)
 	{
@@ -381,8 +380,6 @@ _int CCorvusStateBase::Check_AndChangeSuccessParrying(weak_ptr<CCollider> pMyCol
 		{
 			return (_uint)PARRY_SUCCESS::RIGHT;
 		}
-
-
 	}
 
 	return (_uint)PARRY_SUCCESS::FAIL;
@@ -396,7 +393,6 @@ _bool CCorvusStateBase::Check_AndChangeLadderState(weak_ptr<CCollider> pMyCollid
 	{
 		return false;
 	}
-
 
 	_bool bChanged = true;
 	_matrix vOtherWorldMatrix = pOtherCollider.lock()->Get_Owner().lock()->Get_Transform()->Get_WorldMatrix();
@@ -477,23 +473,10 @@ _bool CCorvusStateBase::Check_RequirementAttackClose(weak_ptr<CGameObject>& Out_
 {
 	list<weak_ptr<CGameObject>>  pGameObjects = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::MONSTER);
 
-
 	if (!Out_pGameObject.lock())
 		return false;
 
-
-
 	return false;
-}
-
-void CCorvusStateBase::Call_OtherControllerHit(const PxControllersHit& In_hit)
-{
-	__super::Call_OtherControllerHit(In_hit);
-
-	shared_ptr<CRequirement_State> pReq_Once = make_shared<CRequirement_State>();
-	pReq_Once->Init_Req(m_pOwnerFromPlayer, m_iStateIndex);
-
-	m_pOwnerFromPlayer.lock()->Get_Requirement("RootMotion").lock()->Add_Requirement(pReq_Once);
 }
 
 void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider, const HIT_TYPE& In_eHitType, const _float& In_fDamage)
@@ -548,46 +531,21 @@ void CCorvusStateBase::OnHit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider
 			Check_AndChangeHitState(pMyCollider, pOtherCollider, In_eHitType, In_fDamage);
 			break;
 		}
-
-
-
-	
 	}
-
-
-
-
 }
 
 void CCorvusStateBase::OnCollisionEnter(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 	__super::OnCollisionEnter(pMyCollider, pOtherCollider);
-
 }
 
 void CCorvusStateBase::OnCollisionStay(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 	__super::OnCollisionStay(pMyCollider, pOtherCollider);
-
 	Check_AndChangeLadderState(pMyCollider, pOtherCollider);
-
-	
 }
 
 void CCorvusStateBase::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CCollider> pOtherCollider)
 {
 	__super::OnCollisionExit(pMyCollider, pOtherCollider);
-
-}
-
-void CCorvusStateBase::OnEventMessage(_uint iArg)
-{
-	/*if ((_uint)EVENT_TYPE::ON_EXCUTION_NORMOB)
-	{
-		Get_OwnerCharacter().lock()->Change_State<CCorvusState_NorMob_Execution>();
-	}*/
-}
-
-void CCorvusStateBase::Free()
-{
 }
