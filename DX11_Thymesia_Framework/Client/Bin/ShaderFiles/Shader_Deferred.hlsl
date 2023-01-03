@@ -774,30 +774,32 @@ PS_OUT PS_MAIN_VIEW_SHADOW(PS_IN In)
 	/* 월드페이스 상  위치를 구한다. */
     vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
 	
-    vector vStaticPosition = vWorldPos;
+    vector vStaticPosition = vWorldPos;                                                                            
     vStaticPosition = mul(vStaticPosition, g_LightViewMatrix);
 	
-    vector vUVPos = mul(vStaticPosition, g_LightProjMatrix);
+    vStaticPosition = mul(vStaticPosition, g_LightProjMatrix);
     float2 vNewUV;
 	
-    vNewUV.x = (vUVPos.x / vUVPos.w) * 0.5f + 0.5f;
-    vNewUV.y = (vUVPos.y / vUVPos.w) * -0.5f + 0.5f;
+    vNewUV.x = (vStaticPosition.x / vStaticPosition.w) * 0.5f + 0.5f;
+    vNewUV.y = (vStaticPosition.y / vStaticPosition.w) * -0.5f + 0.5f;
 	
     vector vStaticShadowDepth = g_StaticShadowDepthTexture.Sample(ClampSampler, vNewUV);
     
     vector vDynamicPosition = vWorldPos;
     vDynamicPosition = mul(vDynamicPosition, g_DynamicLightViewMatrix);
 	
-    vUVPos = mul(vDynamicPosition, g_DynamicLightProjMatrix);
+    vDynamicPosition = mul(vDynamicPosition, g_DynamicLightProjMatrix);
     
-    vNewUV.x = (vUVPos.x / vUVPos.w) * 0.5f + 0.5f;
-    vNewUV.y = (vUVPos.y / vUVPos.w) * -0.5f + 0.5f;
+    vNewUV.x = (vDynamicPosition.x / vDynamicPosition.w) * 0.5f + 0.5f;
+    vNewUV.y = (vDynamicPosition.y / vDynamicPosition.w) * -0.5f + 0.5f;
     
     vector vShadowDepth = g_ShadowDepthTexture.Sample(ClampSampler, vNewUV);
 
+    //Out.vColor = float4(vDynamicPosition.z / vDynamicPosition.w, vShadowDepth.r, 0.f, 1.f);
+    
     // TODO : Hong Hong Hong Juseok
-    if (vDynamicPosition.z - 0.15f > vShadowDepth.r * g_fFar
-         || vStaticPosition.z - 0.15f > vStaticShadowDepth.r * g_fFar)
+    if (vDynamicPosition.z / vDynamicPosition.w > vShadowDepth.r||
+        vStaticPosition.z / vStaticPosition.w > vStaticShadowDepth.r)
         Out.vColor = 0.8f;
 
     return Out;

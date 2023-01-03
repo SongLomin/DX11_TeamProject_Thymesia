@@ -390,6 +390,17 @@ HRESULT CGameInstance::Set_PreFilteredMap(const _char* In_szPreFiltered)
 	return m_pRender_Manager->Set_PreFilteredMap(In_szPreFiltered);
 }
 
+HRESULT CGameInstance::Set_MaskingTexture(const _char* In_szPreFiltered)
+{
+	return m_pRender_Manager->Set_MaskingTexture(In_szPreFiltered);
+}
+
+HRESULT CGameInstance::Set_GodRayDesc(const _float4& In_vColor, const _float4& In_vPosition)
+{
+	return m_pRender_Manager->Set_GodRayDesc(In_vColor, In_vPosition);
+}
+
+
 ID3D11DeviceContext* CGameInstance::Get_BeforeRenderContext()
 {
 	return m_pRender_Manager->Get_BeforeRenderContext();

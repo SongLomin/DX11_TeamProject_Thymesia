@@ -47,13 +47,17 @@ HRESULT CLevel_Stage3::Initialize()
 	Load_FromJson(m_szDefaultJsonPath + "Stage_Lv3-1.json", LEVEL::LEVEL_STAGE3);
 
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL::LEVEL_STAGE3);
-	GAMEINSTANCE->Set_ShadowLight({ -15.f, 30.f, -15.f }, { 0.f, 0.f, 0.f });
+	GAMEINSTANCE->Set_ShadowLight({ -50.67f, 50.f, 40.f, 1.f }, { 3.45f, 0.f, 40.f });
 
 #endif // ! _ONLY_UI_
 
 	m_pFadeMask   = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL::LEVEL_STATIC).front();
     m_pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL::LEVEL_STATIC).front();
 	m_pPauseMenu  = GAMEINSTANCE->Get_GameObjects<CUI_PauseMenu>(LEVEL::LEVEL_STATIC).front();
+
+	GAMEINSTANCE->Set_GodRayDesc(_float4(0.7f, 0.7f, 0.7f, 1.f), _float4(-50.f, 30.f, -10.f, 1.f));
+
+	m_pPlayer = GET_SINGLE(CGameManager)->Get_CurrentPlayer();
 
 	return S_OK;
 }
@@ -67,6 +71,16 @@ void CLevel_Stage3::Tick(_float fTimeDelta)
 	{
 		GAMEINSTANCE->Write_JsonUsingResource("../Bin/LevelData/CapturedResource/Stage3.json");
 	}
+
+	_vector vPosition = m_pPlayer.lock()->Get_WorldPosition();
+
+	GAMEINSTANCE->Set_DynamicShadowLight(
+		{ -50.67f + XMVectorGetX(vPosition)
+		, 50.f + XMVectorGetY(vPosition)
+		, 40.f + XMVectorGetZ(vPosition) }
+		, { 3.45f+XMVectorGetX(vPosition)
+			, XMVectorGetY(vPosition)
+			,40.f+ XMVectorGetZ(vPosition) });
 }
 
 HRESULT CLevel_Stage3::Render(ID3D11DeviceContext* pDeviceContext)
