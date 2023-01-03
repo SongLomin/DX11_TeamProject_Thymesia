@@ -9,6 +9,28 @@
 GAMECLASS_C(CJavelinWeapon);
 CLONE_C(CJavelinWeapon, CGameObject);
 
+void CJavelinWeapon::Set_JavelinState(const JAVELIN_STATE In_JavelinState)
+{
+	m_eCurrentState = In_JavelinState;
+
+	switch (m_eCurrentState)
+	{
+	case Client::CJavelinWeapon::JAVELIN_STATE::BIND_HAND:
+		break;
+	case Client::CJavelinWeapon::JAVELIN_STATE::THROW:
+		LookAt_Player();
+		break;
+	case Client::CJavelinWeapon::JAVELIN_STATE::STAKE:
+		break;
+	case Client::CJavelinWeapon::JAVELIN_STATE::STATE_END:
+		break;
+	default:
+		break;
+	}
+
+
+}
+
 HRESULT CJavelinWeapon::Initialize_Prototype()
 {
 	return S_OK;
@@ -24,7 +46,9 @@ HRESULT CJavelinWeapon::Initialize(void* pArg)
 
 	m_vOffset = { 0.f, 0.f, 0.f };
 
-	m_pModelCom.lock()->Init_Model("Boss_UrdWeapon", "", (_uint)TIMESCALE_LAYER::MONSTER);
+	m_pModelCom.lock()->Init_Model("Boss_UrdWeapon2", "", (_uint)TIMESCALE_LAYER::MONSTER);
+
+	Set_Enable(false);
 
 	m_pShaderCom.lock()->Set_ShaderInfo(
 		TEXT("Shader_VtxModel"),
@@ -36,28 +60,29 @@ HRESULT CJavelinWeapon::Initialize(void* pArg)
 
 HRESULT CJavelinWeapon::Start()
 {
+	
+
 	return S_OK;
 }
 
 void CJavelinWeapon::Tick(_float fTimeDelta)
 {
-	if (!m_pParentTransformCom.lock() || !m_pTargetBoneNode.lock())
-		return;
-
-	_matrix		BoneMatrix = m_pTargetBoneNode.lock()->Get_CombinedMatrix()
-		* XMLoadFloat4x4(&m_TransformationMatrix);
-
-	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
-	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
-	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
-
-	if (m_bBoneBindOff)
+	switch (m_eCurrentState)
 	{
-		m_pTransformCom.lock()->Set_WorldMatrix(BoneMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix());
+	case Client::CJavelinWeapon::JAVELIN_STATE::BIND_HAND:
+		Update_Matrix_Hand();
+		break;
+	case Client::CJavelinWeapon::JAVELIN_STATE::THROW:
+		Update_Matrix_Throw(fTimeDelta);
+		break;
+	case Client::CJavelinWeapon::JAVELIN_STATE::STAKE:
+		Update_Matrix_Stake();
+		break;
+	case Client::CJavelinWeapon::JAVELIN_STATE::STATE_END:
+		break;
+	default:
+		break;
 	}
-		
-	for (auto& elem : m_pHitColliderComs)
-		elem.lock()->Update(m_pTransformCom.lock()->Get_WorldMatrix());
 }
 
 void CJavelinWeapon::LateTick(_float fTimeDelta)
@@ -180,6 +205,42 @@ void CJavelinWeapon::Set_WeaponDesc(const HIT_TYPE In_eHitType, const _float In_
 	m_tWeaponDesc.iHitType = (_int)In_eHitType;
 	m_tWeaponDesc.iOptionType = (_int)In_eOptionType;
 	m_tWeaponDesc.fDamage = In_fDamage;
+}
+
+void CJavelinWeapon::Update_Matrix_Hand()
+{
+	_matrix		BoneMatrix = m_pTargetBoneNode.lock()->Get_CombinedMatrix()
+		* XMLoadFloat4x4(&m_TransformationMatrix);
+
+	BoneMatrix.r[0] = XMVector3Normalize(BoneMatrix.r[0]);
+	BoneMatrix.r[1] = XMVector3Normalize(BoneMatrix.r[1]);
+	BoneMatrix.r[2] = XMVector3Normalize(BoneMatrix.r[2]);
+
+	m_pTransformCom.lock()->Set_WorldMatrix(BoneMatrix * m_pParentTransformCom.lock()->Get_WorldMatrix());
+
+}
+
+void CJavelinWeapon::Update_Matrix_Throw(_float fTimeDelta)
+{
+	if (m_pTransformCom.lock()->Get_Position().m128_f32[1] <= 0.4f)
+	{
+		Set_JavelinState(JAVELIN_STATE::STAKE);
+		return;
+	}
+	
+	m_pTransformCom.lock()->Go_Straight(fTimeDelta * 4.f);
+	
+}
+
+void CJavelinWeapon::Update_Matrix_Stake()
+{
+}
+
+void CJavelinWeapon::LookAt_Player()
+{
+	_vector vPos = GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Transform()->Get_Position();
+	m_pTransformCom.lock()->LookAt(vPos);
+
 }
 
 void CJavelinWeapon::SetUp_ShaderResource()
