@@ -25,8 +25,9 @@ protected:
 	virtual _bool Check_AndChangeNextState() override;
 	void Free();
 
-private:
 	void Set_WeaponRender(const _bool bRender);
+
+private:
 	void TurnOn_EyeGlow();
 	void TurnOff_EyeGlow();
 

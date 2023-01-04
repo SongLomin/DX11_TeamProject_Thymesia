@@ -4,6 +4,7 @@
 #include "Animation.h"
 #include "PhysXController.h"
 #include "GameManager.h"
+#include "Weapon.h"
 
 GAMECLASS_C(CCorvusState_PS_CaneSword_Start);
 CLONE_C(CCorvusState_PS_CaneSword_Start, CComponent)
@@ -51,7 +52,11 @@ void CCorvusState_PS_CaneSword_Start::LateTick(_float fTimeDelta)
 
 void CCorvusState_PS_CaneSword_Start::OnStateStart(const _float& In_fAnimationBlendTime)
 {
-	__super::OnStateStart(In_fAnimationBlendTime);
+	CPlayerStateBase::OnStateStart(In_fAnimationBlendTime);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
+	Set_WeaponRender(false);
+	GET_SINGLE(CGameManager)->Store_EffectIndex("Corvus_PW_EyeGlow_Special", GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_PW_EyeGlow_Special", m_pTransformCom, _uint(TIMESCALE_LAYER::PLAYER)));
 
 	if (m_pThisAnimationCom.lock())
 		m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_PS_CaneSword_Start::Call_NextKeyFrame, this, placeholders::_1);
@@ -61,7 +66,7 @@ void CCorvusState_PS_CaneSword_Start::OnStateStart(const _float& In_fAnimationBl
 
 void CCorvusState_PS_CaneSword_Start::OnStateEnd()
 {
-	__super::OnStateEnd();
+	CPlayerStateBase::OnStateEnd();
 
 	GET_SINGLE(CGameManager)->Activate_Zoom(3.f, 2.f, EASING_TYPE::QUINT_IN);
 

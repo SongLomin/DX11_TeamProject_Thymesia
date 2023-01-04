@@ -3,7 +3,7 @@
 #include "Animation.h"
 #include "PhysXController.h"
 #include "GameManager.h"
-
+#include "Weapon.h"
 
 GAMECLASS_C(CCorvusState_PS_CaneSword);
 CLONE_C(CCorvusState_PS_CaneSword, CComponent)
@@ -73,7 +73,9 @@ void CCorvusState_PS_CaneSword::LateTick(_float fTimeDelta)
 
 void CCorvusState_PS_CaneSword::OnStateStart(const _float& In_fAnimationBlendTime)
 {
-	__super::OnStateStart(In_fAnimationBlendTime);
+	CPlayerStateBase::OnStateStart(In_fAnimationBlendTime);
+	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
 
 	GET_SINGLE(CGameManager)->Store_EffectIndex("Corvus_PW_CaneSword_SP02_Weapon", GET_SINGLE(CGameManager)->Use_EffectGroup("Corvus_PW_CaneSword_SP02_Weapon", m_pTransformCom, _uint(TIMESCALE_LAYER::PLAYER)));
 
@@ -85,7 +87,12 @@ void CCorvusState_PS_CaneSword::OnStateStart(const _float& In_fAnimationBlendTim
 
 void CCorvusState_PS_CaneSword::OnStateEnd()
 {
-	__super::OnStateEnd();
+	CPlayerStateBase::OnStateEnd();
+
+	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Corvus_PW_EyeGlow_Special", GET_SINGLE(CGameManager)->Get_StoredEffectIndex("Corvus_PW_EyeGlow_Special"));
+	GET_SINGLE(CGameManager)->UnUse_EffectGroup("Corvus_PW_CaneSword_SP02_Weapon", GET_SINGLE(CGameManager)->Get_StoredEffectIndex("Corvus_PW_CaneSword_SP02_Weapon"));
+
+	Set_WeaponRender(true);
 
 	if (m_pThisAnimationCom.lock())
 		m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CCorvusState_PS_CaneSword::Call_NextKeyFrame, this, placeholders::_1);
