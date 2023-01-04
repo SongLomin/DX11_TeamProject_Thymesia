@@ -615,8 +615,8 @@ void    CEditGroupProp::View_PickProp()
 			LIGHTDESC  tLightDesc = Weak_Cast<CLight_Prop>(iter.pInstance).lock()->Get_LightDesc();
 
 			MESH_VTX_INFO	VtxInfo;
-			VtxInfo.vMin = { tLightDesc.fRange * -0.5f, tLightDesc.fRange * -0.5f, tLightDesc.fRange * -0.5f };
-			VtxInfo.vMax = { tLightDesc.fRange *  0.5f, tLightDesc.fRange *  0.5f, tLightDesc.fRange *  0.5f };
+			VtxInfo.vMin = { -2.f, -2.f, -2.f };
+			VtxInfo.vMax = {  2.f,  2.f,  2.f };
 
 			if (SMath::Is_Picked_AbstractCube(MouseRayInWorldSpace, VtxInfo, pTransform.lock()->Get_WorldMatrix()))
 			{

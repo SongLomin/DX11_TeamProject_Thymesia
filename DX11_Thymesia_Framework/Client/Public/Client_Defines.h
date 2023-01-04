@@ -32,8 +32,8 @@
 #pragma region Map
 #define _MAP_DATA_
 //#define _BRIGHT_LIGHT_
-#define _GENERATE_PROP_COLLIDER_ true
-// #define _STAGE_1_
+//#define _GENERATE_PROP_COLLIDER_ true
+//#define _STAGE_1_
 #define _STAGE_2_
 #define _TEST_STATIC_PROPS_
 #define _TEST_DYNAMIC_PROPS_
@@ -56,10 +56,10 @@
 #pragma endregion // Normal Mobs
 
 #pragma region Effects
-// #define _DAGGER_TRAIL_
-#define _CORVUS_EFFECT_
+//#define _DAGGER_TRAIL_
+//#define _CORVUS_EFFECT_
 //#define _VARG_EFFECT_
-#define	_BAT_EFFECT_
+//#define	_BAT_EFFECT_
 #pragma endregion // Effects
 
 #endif // _DEBUG

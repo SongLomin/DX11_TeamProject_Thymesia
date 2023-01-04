@@ -78,7 +78,7 @@ HRESULT CLight_Prop::Start()
 #ifdef _DEBUG
 	if (LEVEL::LEVEL_EDIT == m_CreatedLevel)
 	{
-		_float fDefaultDesc[4] = { 1.f, 0.f, 0.f, 0.f };
+		_float fDefaultDesc[4] = { 2.f, 0.f, 0.f, 0.f };
 		SetUpColliderDesc(fDefaultDesc);
 	}
 	else
@@ -261,10 +261,6 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 
 			if ((!m_szEffectTag.empty()) && (0 <= m_iEffectIndex))
 				GET_SINGLE(CGameManager)->UnUse_EffectGroup(m_szEffectTag, m_iEffectIndex);
-
-#ifdef _DEBUG
-			m_pColliderCom.lock()->Set_Enable(true);
-#endif
 		}
 		break;
 
@@ -337,12 +333,6 @@ void CLight_Prop::OnEventMessage(_uint iArg)
 						{
 							m_fTargetIntensity = m_tLightDesc.fIntensity;
 							m_fTargetRange     = m_tLightDesc.fRange;
-#ifdef _DEBUG
-							COLLIDERDESC ColliderDesc = m_pColliderCom.lock()->Get_ColliderDesc();
-							ColliderDesc.vScale.x = m_fTargetRange;
-
-							m_pColliderCom.lock()->Init_Collider(COLLISION_TYPE::SPHERE, ColliderDesc);
-#endif
 						}
 					}
 					break;

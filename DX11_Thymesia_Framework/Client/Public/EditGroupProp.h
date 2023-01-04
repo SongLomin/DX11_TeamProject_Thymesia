@@ -46,7 +46,6 @@ private:
     void     RenderView_Transform_Info(weak_ptr<CGameObject> In_Obj);
     void     RenderView_Transform_Edit(weak_ptr<CGameObject> In_Obj);
     void     Update_VtxInfo(weak_ptr<CGameObject> In_pObj, _hashcode In_HashCode);
-    void     Update_NewDate(const string& In_szFindTag);
 
 private:
     HRESULT SetUp_ShaderResource();

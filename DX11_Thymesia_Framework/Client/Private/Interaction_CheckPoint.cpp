@@ -61,8 +61,7 @@ HRESULT CInteraction_CheckPoint::Start()
     m_tLightDesc.fIntensity = 0.8f;
 	m_tLightDesc.fRange     = 1.5f;
 
-	m_tLightDesc = GAMEINSTANCE->Add_Light(m_tLightDesc);
-
+	m_tLightDesc   = GAMEINSTANCE->Add_Light(m_tLightDesc);
     m_iEffectIndex = GET_SINGLE(CGameManager)->Use_EffectGroup("CheckPointChair_Loop", m_pTransformCom.lock(), (_uint)TIMESCALE_LAYER::NONE);
 
     return S_OK;
@@ -144,7 +143,7 @@ void CInteraction_CheckPoint::Load_FromJson(const json& In_Json)
 
         // TODO : Save 기능이 구현될 경우 수정하기, 스테이지 시작시 처음 인덱스 의자를 체크포인트로 등록하는 기능임
         if (0 == m_iCheckIndex)
-            GET_SINGLE(CGameManager).get()->Registration_CheckPoint(Weak_Cast<CInteraction_CheckPoint>(m_this));
+            GET_SINGLE(CGameManager)->Registration_CheckPoint(Weak_Cast<CInteraction_CheckPoint>(m_this));
     }
 
     SetUpColliderDesc();
@@ -157,8 +156,6 @@ void CInteraction_CheckPoint::Act_Interaction()
 
     GET_SINGLE(CUIManager)->Set_OpenedMenu(true);
 
-
-
     GAMEINSTANCE->Get_GameObjects<CUI_Landing>(LEVEL_STATIC).front().lock()->Call_Landing(CUI_Landing::LANDING_BECONFOUND);
 
     weak_ptr<CStatus_Player> pPlayerStatus = GET_SINGLE(CGameManager)->Get_CurrentPlayer_Status();
@@ -166,7 +163,8 @@ void CInteraction_CheckPoint::Act_Interaction()
     if (pPlayerStatus.lock())
         pPlayerStatus.lock()->Full_Recovery();
 
-    GET_SINGLE(CGameManager).get()->Registration_CheckPoint(Weak_Cast<CInteraction_CheckPoint>(m_this));
+    GET_SINGLE(CGameManager)->Registration_CheckPoint(Weak_Cast<CInteraction_CheckPoint>(m_this));
+    GET_SINGLE(CGameManager)->ResetWorld();
 }
 
 void CInteraction_CheckPoint::SetUpColliderDesc()
