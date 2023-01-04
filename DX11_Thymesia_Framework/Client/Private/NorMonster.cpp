@@ -65,6 +65,7 @@ HRESULT CNorMonster::Initialize(void* pArg)
 	Add_Component<CNorMonState_GroggyEnd>();
 	Add_Component<CNorMonState_Die>();
 	Add_Component<CNorMonState_Parry>();
+	Add_Component<CNorMonState_Petrol>();
 
 	LIGHTDESC LightDesc;
 
@@ -177,11 +178,11 @@ void CNorMonster::Init_Desc()
 		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Axe", TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
-		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
-		m_pWeapons.front().lock()->Add_Collider({0.51f,0.f,0.0f,1.f}, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.front().lock()->Add_Collider({ 0.51f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		m_pWeapons.front().lock()->Add_Collider({ 0.61f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		m_pWeapons.front().lock()->Add_Collider({ 0.71f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
 		m_pWeapons.front().lock()->Add_Collider({ 0.81f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
 		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Shield", TIMESCALE_LAYER::MONSTER);
 		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_l");
 
@@ -190,6 +191,64 @@ void CNorMonster::Init_Desc()
 		m_pModelCom.lock()->Init_Model("Balloon", "", (_uint)TIMESCALE_LAYER::MONSTER);
 		m_pPhysXControllerCom.lock()->Enable_Gravity(false);
 		break;
+	case MONSTERTYPE::SKULLSHIELDMAN:
+		m_pModelCom.lock()->Init_Model("Skullman", "", (_uint)TIMESCALE_LAYER::MONSTER);
+		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
+		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Sword", TIMESCALE_LAYER::MONSTER);
+		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
+		m_pWeapons.back().lock()->Add_Collider({ 0.51f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.61f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.71f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.81f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
+		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Shield2", TIMESCALE_LAYER::MONSTER);
+		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_l");
+		break;
+	case MONSTERTYPE::SKULLSPEARMAN:
+		m_pModelCom.lock()->Init_Model("Skullman", "", (_uint)TIMESCALE_LAYER::MONSTER);
+		m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
+		m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Spear", TIMESCALE_LAYER::MONSTER);
+		m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
+		m_pWeapons.back().lock()->Add_Collider({ 0.51f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.61f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.71f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.81f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 0.91f,0.f,0.0f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 1.01f,0.f,0.2f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 1.11f,0.f,0.4f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		m_pWeapons.back().lock()->Add_Collider({ 1.21f,0.f,0.6f,1.f }, 0.3f, COLLISION_LAYER::MONSTER_ATTACK);
+		break;
+	//case MONSTERTYPE::ARMORSPEARMAN:
+	//	m_pModelCom.lock()->Init_Model("Armorman", "", (_uint)TIMESCALE_LAYER::MONSTER);
+	//	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
+	//	m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Halberd", TIMESCALE_LAYER::MONSTER);
+	//	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
+	//	break;
+	//case MONSTERTYPE::ARMORSHIELDMAN:
+	//	m_pModelCom.lock()->Init_Model("Armorman", "", (_uint)TIMESCALE_LAYER::MONSTER);
+	//	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
+	//	m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Sword", TIMESCALE_LAYER::MONSTER);
+	//	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
+	//	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
+	//	m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Shield1", TIMESCALE_LAYER::MONSTER);
+	//	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_l");
+	//	break;
+	//case MONSTERTYPE::SPEARMAN:
+	//	m_pModelCom.lock()->Init_Model("Spearman", "", (_uint)TIMESCALE_LAYER::MONSTER);
+	//	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
+	//	m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Spear", TIMESCALE_LAYER::MONSTER);
+	//	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
+	//	break;
+	//case MONSTERTYPE::SHIELDMAN:
+	//	m_pModelCom.lock()->Init_Model("Shieldman", "", (_uint)TIMESCALE_LAYER::MONSTER);
+	//	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
+	//	m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Sword", TIMESCALE_LAYER::MONSTER);
+	//	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_r");
+	//	m_pWeapons.push_back(GAMEINSTANCE->Add_GameObject<CMobWeapon>(m_CreatedLevel));
+	//	m_pWeapons.back().lock()->Init_Model("Mon_Weapon_Shield1", TIMESCALE_LAYER::MONSTER);
+	//	m_pWeapons.back().lock()->Init_Weapon(m_pModelCom, m_pTransformCom, "weapon_l");
+	//	break;
+		
 	}
 
 
@@ -213,6 +272,26 @@ void CNorMonster::Init_Desc()
 		break;
 	case MONSTERTYPE::BALLOON:
 		m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
+		break;
+	case MONSTERTYPE::SKULLSHIELDMAN:
+		m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
+		break;
+	case MONSTERTYPE::SKULLSPEARMAN:
+		m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
+		break;
+	//case MONSTERTYPE::ARMORSHIELDMAN:
+	//	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
+	//	break;
+	//case MONSTERTYPE::ARMORSPEARMAN:
+	//	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
+	//	break;
+	//case MONSTERTYPE::SHIELDMAN:
+	//	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
+	//	break;
+	//case MONSTERTYPE::SPEARMAN :
+	//	m_pModelCom.lock()->Set_RootNode("root", (_byte)ROOTNODE_FLAG::X + (_byte)ROOTNODE_FLAG::Z);
+	//	break;
+
 
 	}
 	_vector vecStartPositon = m_pTransformCom.lock()->Get_State(CTransform::STATE_TRANSLATION);
@@ -246,6 +325,7 @@ void CNorMonster::Init_Desc()
 	INIT_STATE(CNorMonState_GroggyEnd);
 	INIT_STATE(CNorMonState_Die);
 	INIT_STATE(CNorMonState_Parry);
+	INIT_STATE(CNorMonState_Petrol);
 
 
 	string	strModelKey = Weak_StaticCast<CStatus_Monster>(m_pStatus).lock()->Get_Desc().m_szModelKey;
@@ -356,6 +436,38 @@ void CNorMonster::Move_RootMotion_Internal()
 		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root");
 		//m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
 		break;
+	case  MONSTERTYPE::SKULLSHIELDMAN:
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		break;
+	case MONSTERTYPE::SKULLSPEARMAN:
+		vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+		m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+		break;
+	//case  MONSTERTYPE::ARMORSHIELDMAN:
+	//	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+	//	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+	//	break;
+	//case  MONSTERTYPE::ARMORSPEARMAN:
+	//	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+	//	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+	//	break;
+	//case MONSTERTYPE::SKULLSHIELDMAN:
+	//	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+	//	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+	//	break;
+	//case  MONSTERTYPE::SKULLSPEARMAN:
+	//	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+	//	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+	//	break;
+	//case  MONSTERTYPE::SPEARMAN:
+	//	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+	//	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+	//	break;
+	//case MONSTERTYPE::SHIELDMAN:
+	//	vMoveDir = m_pModelCom.lock()->Get_DeltaBonePosition("root", true, XMMatrixRotationX(XMConvertToRadians(-90.f)));
+	//	m_pPhysXControllerCom.lock()->MoveWithRotation(vMoveDir, 0.f, 1.f, Filters, nullptr, m_pTransformCom);
+	//	break;
 	}
 
 }

@@ -116,8 +116,50 @@ void CNorMonState_Idle::Start()
 		m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Armature|Idle|Idle");
 	}
 
+	if (m_eMonType == MONSTERTYPE::SKULLSPEARMAN)
+	{
+		switch (m_eNorMonIdleType)
+		{
+		case Client::NORMONSTERIDLETYPE::NORIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|HArmorLV1_Halberds_Idle");
+			break;
+		case Client::NORMONSTERIDLETYPE::SITIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_Sit_Idle");
+			break;
+		case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_SP_Idle2");
+			break;
+		case Client::NORMONSTERIDLETYPE::SPIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|HArmor_Halberds_SP_Idle1");
+			break;
 
+		}
+	}
+
+	if (m_eMonType == MONSTERTYPE::SKULLSHIELDMAN)
+	{
+		switch (m_eNorMonIdleType)
+		{
+		case Client::NORMONSTERIDLETYPE::NORIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_Idle");
+			break;
+		case Client::NORMONSTERIDLETYPE::SITIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_Sit_Idle");
+			break;
+		case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_SP_Idle2");
+			break;
+		case Client::NORMONSTERIDLETYPE::SPIDLE:
+			m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("SK_C_HArmorTypeLV0_02.ao|LArmor_Shield_SP_Idle1");
+			break;
+
+		}
+
+	}
 }
+
+
+
 
 void CNorMonState_Idle::Tick(_float fTimeDelta)
 {
@@ -203,298 +245,384 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 	_float fPToMDistance = Get_DistanceWithPlayer(); // 플레이어와 몬스터 거리
 	_float fMToMDistance = GetStartPositionToCurrentPositionDir(); // 몬스터스타트포지션과 몬스터현재 포지션 사이의 거리
 
-	if (fMToMDistance >= 20.f) // 거리20보다멀어지면 다른거 다끄고 돌아가게금 30보다멀어지면 트루줌
+	if (m_bPatrol)
 	{
-		m_iIdleType = 3;
-	}
-
-	// 1. 아이들상태부터 검사  근데이떄가 거리가 가까워졌을대임
-	// 첫번째로아이들들어오면 무조건 이친구가 들어오게함
-	if (fPToMDistance <= 3.f && m_iIdleType == 0  )
-	{
-
-		switch (m_eMonType)
+		if (fMToMDistance >= 20.f) // 거리20보다멀어지면 다른거 다끄고 돌아가게금 30보다멀어지면 트루줌
 		{
-		case Client::MONSTERTYPE::AXEMAN:
-			switch (m_eNorMonIdleType)
-			{
-			case Client::NORMONSTERIDLETYPE::NORIDLE:
-				TurnMechanism();
-				break;
-			case Client::NORMONSTERIDLETYPE::SITIDLE:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_SitToIdle>(0.05f);
-				break;
-			case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
-				break;
-			}
-			break;
-		case Client::MONSTERTYPE::KNIFEWOMAN:
-			switch (m_eNorMonIdleType)
-			{
-			case Client::NORMONSTERIDLETYPE::NORIDLE:
-				TurnMechanism();
-				break;
-			case Client::NORMONSTERIDLETYPE::SITIDLE:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_SitToIdle>(0.05f);
-				break;
-			case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
-				break;
-			}
-			break;
-		case Client::MONSTERTYPE::SKULL:
-			break;
-		case Client::MONSTERTYPE::GARDENER:
-			switch (m_eNorMonIdleType)
-			{
-			case Client::NORMONSTERIDLETYPE::NORIDLE:
-				TurnMechanism();
-				break;
-			case Client::NORMONSTERIDLETYPE::SITIDLE:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_SitToIdle>(0.05f);
-				break;
-			case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
-				break;
-			}
-			break;
-		case Client::MONSTERTYPE::ENHANCE_GARDENER:
-			switch (m_eNorMonIdleType)
-			{
-			case Client::NORMONSTERIDLETYPE::NORIDLE:
-				TurnMechanism();
-				break;
-			}
-			break;
-		case Client::MONSTERTYPE::SHIELDAXEMAN:
-			switch (m_eNorMonIdleType)
-			{
-			case Client::NORMONSTERIDLETYPE::NORIDLE:
-				TurnMechanism();
-				break;
-			}
-			break;
-		}
-		m_iIdleType = 1;
-		m_bCloseToRun = true;
-		return true;
-
-	}
-
-	// 2.재내들 끊나면 다시아이들로옴 어떤상태는 무조건 NORIDLE상태임
-	// 아이들타입으로 들어왔고 이때 턴검사한번 더해야함 90보다 작은상태이거나
-	// 90보다큰상태일떄 검사를해야하기에 아직 기본아이들도 룩앳이아님
-	// 기본아이들이면 각도를계산해
-	if (m_bCloseToRun && m_iIdleType == 1)
-	{
-
-		switch (m_eMonType)
-		{
-		case Client::MONSTERTYPE::AXEMAN:
-			TurnMechanism();
-			break;
-		case Client::MONSTERTYPE::KNIFEWOMAN:
-			TurnMechanism();
-			break;
-		case Client::MONSTERTYPE::SKULL:
-			break;
-		case Client::MONSTERTYPE::GARDENER:
-			TurnMechanism();
-			break;
-		case Client::MONSTERTYPE::ENHANCE_GARDENER:
-			TurnMechanism();
-			break;
-		case Client::MONSTERTYPE::SHIELDAXEMAN:
-			TurnMechanism();
-			break;
-
+			m_iIdleType = 3;
 		}
 
-
-		m_iIdleType = 2;
-		m_bClosePlayerCheck = true;
-		return true;
-	}
-	//이러면 서있는거는 턴검사를했고 룩앳인상태고 나머지는 90보만큼돌았을거임 (그거보다작으면룩앳)
-	//이제는 각도계산해서 90보다크면 다시턴검사하고 아니면 원래코드로가야됨
-
-	if (fPToMDistance <= 3.f && m_iIdleType == 2 )
-	{
-
-		switch (m_eMonType)
+		// 1. 아이들상태부터 검사  근데이떄가 거리가 가까워졌을대임
+		// 첫번째로아이들들어오면 무조건 이친구가 들어오게함
+		if (fPToMDistance <= 3.f && m_iIdleType == 0)
 		{
-		case Client::MONSTERTYPE::AXEMAN:
-			if (ComputeAngleWithPlayer() <= 0.f)
+
+			switch (m_eMonType)
 			{
-				TurnMechanism();
-			}
-			else
-			{
-				Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
-				m_bClosePlayerCheck = true;
-				m_bCloseToRun = true;
-				int iRunORWalk = rand() % 2;
-				switch (iRunORWalk)
+			case Client::MONSTERTYPE::AXEMAN:
+				switch (m_eNorMonIdleType)
 				{
-				case 0:
-					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+				case Client::NORMONSTERIDLETYPE::NORIDLE:
+					TurnMechanism();
 					break;
-				case 1:
-					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+				case Client::NORMONSTERIDLETYPE::SITIDLE:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_SitToIdle>(0.05f);
+					break;
+				case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
 					break;
 				}
-			}
-			break;
-		case Client::MONSTERTYPE::KNIFEWOMAN:
-			if (ComputeAngleWithPlayer() <= 0.f)
-			{
-				TurnMechanism();
-			}
-			else
-			{
-				Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
-				m_bClosePlayerCheck = true;
-				m_bCloseToRun = true;
-				int iRunORWalk = rand() % 2;
-				switch (iRunORWalk)
+				break;
+			case Client::MONSTERTYPE::KNIFEWOMAN:
+				switch (m_eNorMonIdleType)
 				{
-				case 0:
-					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+				case Client::NORMONSTERIDLETYPE::NORIDLE:
+					TurnMechanism();
 					break;
-				case 1:
-					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+				case Client::NORMONSTERIDLETYPE::SITIDLE:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_SitToIdle>(0.05f);
+					break;
+				case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
 					break;
 				}
-			}
-			break;
-		case Client::MONSTERTYPE::SKULL:
-			break;
-		case Client::MONSTERTYPE::GARDENER:
-			if (ComputeAngleWithPlayer() <= 0.f)
-			{
-				TurnMechanism();
-			}
-			else
-			{
-				Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
-				m_bClosePlayerCheck = true;
-				m_bCloseToRun = true;
-				int iRunORWalk = rand() % 2;
-				switch (iRunORWalk)
+				break;
+			case Client::MONSTERTYPE::SKULL:
+				break;
+			case Client::MONSTERTYPE::GARDENER:
+				switch (m_eNorMonIdleType)
 				{
-				case 0:
-					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+				case Client::NORMONSTERIDLETYPE::NORIDLE:
+					TurnMechanism();
 					break;
-				case 1:
-					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+				case Client::NORMONSTERIDLETYPE::SITIDLE:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_SitToIdle>(0.05f);
+					break;
+				case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
 					break;
 				}
-			}
-			break;
-		case Client::MONSTERTYPE::ENHANCE_GARDENER:
-			if (ComputeAngleWithPlayer() <= 0.f)
-			{
-				TurnMechanism();
-			}
-			else
-			{
-				Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
-				m_bClosePlayerCheck = true;
-				m_bCloseToRun = true;
-				int iRunORWalk = rand() % 2;
-				switch (iRunORWalk)
+				break;
+			case Client::MONSTERTYPE::ENHANCE_GARDENER:
+				switch (m_eNorMonIdleType)
 				{
-				case 0:
-					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
-					break;
-				case 1:
-					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+				case Client::NORMONSTERIDLETYPE::NORIDLE:
+					TurnMechanism();
 					break;
 				}
-			}
-			break;
-		case Client::MONSTERTYPE::SHIELDAXEMAN:
-			if (ComputeAngleWithPlayer() <= 0.f)
-			{
-				TurnMechanism();
-			}
-			else
-			{
-				Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
-				m_bClosePlayerCheck = true;
-				m_bCloseToRun = true;
-				int iRunORWalk = rand() % 2;
-				switch (iRunORWalk)
+				break;
+			case Client::MONSTERTYPE::SHIELDAXEMAN:
+				switch (m_eNorMonIdleType)
 				{
-				case 0:
-					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
-					break;
-				case 1:
-					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+				case Client::NORMONSTERIDLETYPE::NORIDLE:
+					TurnMechanism();
 					break;
 				}
+				break;
+			case Client::MONSTERTYPE::SKULLSHIELDMAN:
+				switch (m_eNorMonIdleType)
+				{
+				case Client::NORMONSTERIDLETYPE::NORIDLE:
+					TurnMechanism();
+					break;
+				case Client::NORMONSTERIDLETYPE::SITIDLE:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_SitToIdle>(0.05f);
+					break;
+				case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
+					break;
+				case Client::NORMONSTERIDLETYPE::SPIDLE:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
+					break;
+				}
+				break;
+			case Client::MONSTERTYPE::SKULLSPEARMAN:
+				switch (m_eNorMonIdleType)
+				{
+				case Client::NORMONSTERIDLETYPE::NORIDLE:
+					TurnMechanism();
+					break;
+				case Client::NORMONSTERIDLETYPE::SITIDLE:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_SitToIdle>(0.05f);
+					break;
+				case Client::NORMONSTERIDLETYPE::FIDGETIDLE:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
+					break;
+				case Client::NORMONSTERIDLETYPE::SPIDLE:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Awake>(0.05f);
+					break;
+				}
+				break;
 			}
-			break;
+			m_iIdleType = 1;
+			m_bCloseToRun = true;
+			return true;
+
 		}
 
-		return true;
-	}
-
-	//
-	if (m_bCloseToRun && m_iIdleType == 2 && m_bClosePlayerCheck)
-	{
-		Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
-		int iRunORWalk = rand() % 2;
-
-		switch (m_eMonType)
+		// 2.재내들 끊나면 다시아이들로옴 어떤상태는 무조건 NORIDLE상태임
+		// 아이들타입으로 들어왔고 이때 턴검사한번 더해야함 90보다 작은상태이거나
+		// 90보다큰상태일떄 검사를해야하기에 아직 기본아이들도 룩앳이아님
+		// 기본아이들이면 각도를계산해
+		if (m_bCloseToRun && m_iIdleType == 1)
 		{
-		case Client::MONSTERTYPE::AXEMAN:
-			switch (iRunORWalk)
+
+			switch (m_eMonType)
 			{
-			case 0:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+			case Client::MONSTERTYPE::AXEMAN:
+				TurnMechanism();
 				break;
-			case 1:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+			case Client::MONSTERTYPE::KNIFEWOMAN:
+				TurnMechanism();
+				break;
+			case Client::MONSTERTYPE::SKULL:
+				break;
+			case Client::MONSTERTYPE::GARDENER:
+				TurnMechanism();
+				break;
+			case Client::MONSTERTYPE::ENHANCE_GARDENER:
+				TurnMechanism();
+				break;
+			case Client::MONSTERTYPE::SHIELDAXEMAN:
+				TurnMechanism();
+				break;
+			case Client::MONSTERTYPE::SKULLSHIELDMAN:
+				TurnMechanism();
+				break;
+			case Client::MONSTERTYPE::SKULLSPEARMAN:
+				TurnMechanism();
+				break;
+
+			}
+
+
+			m_iIdleType = 2;
+			m_bClosePlayerCheck = true;
+			return true;
+		}
+		//이러면 서있는거는 턴검사를했고 룩앳인상태고 나머지는 90보만큼돌았을거임 (그거보다작으면룩앳)
+		//이제는 각도계산해서 90보다크면 다시턴검사하고 아니면 원래코드로가야됨
+
+		if (fPToMDistance <= 3.f && m_iIdleType == 2)
+		{
+
+			switch (m_eMonType)
+			{
+			case Client::MONSTERTYPE::AXEMAN:
+				if (ComputeAngleWithPlayer() <= 0.f)
+				{
+					TurnMechanism();
+				}
+				else
+				{
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
+					m_bClosePlayerCheck = true;
+					m_bCloseToRun = true;
+					int iRunORWalk = rand() % 2;
+					switch (iRunORWalk)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+						break;
+					}
+				}
+				break;
+			case Client::MONSTERTYPE::KNIFEWOMAN:
+				if (ComputeAngleWithPlayer() <= 0.f)
+				{
+					TurnMechanism();
+				}
+				else
+				{
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
+					m_bClosePlayerCheck = true;
+					m_bCloseToRun = true;
+					int iRunORWalk = rand() % 2;
+					switch (iRunORWalk)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+						break;
+					}
+				}
+				break;
+			case Client::MONSTERTYPE::SKULL:
+				break;
+			case Client::MONSTERTYPE::GARDENER:
+				if (ComputeAngleWithPlayer() <= 0.f)
+				{
+					TurnMechanism();
+				}
+				else
+				{
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
+					m_bClosePlayerCheck = true;
+					m_bCloseToRun = true;
+					int iRunORWalk = rand() % 2;
+					switch (iRunORWalk)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+						break;
+					}
+				}
+				break;
+			case Client::MONSTERTYPE::ENHANCE_GARDENER:
+				if (ComputeAngleWithPlayer() <= 0.f)
+				{
+					TurnMechanism();
+				}
+				else
+				{
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
+					m_bClosePlayerCheck = true;
+					m_bCloseToRun = true;
+					int iRunORWalk = rand() % 2;
+					switch (iRunORWalk)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+						break;
+					}
+				}
+				break;
+			case Client::MONSTERTYPE::SHIELDAXEMAN:
+				if (ComputeAngleWithPlayer() <= 0.f)
+				{
+					TurnMechanism();
+				}
+				else
+				{
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
+					m_bClosePlayerCheck = true;
+					m_bCloseToRun = true;
+					int iRunORWalk = rand() % 2;
+					switch (iRunORWalk)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+						break;
+					}
+				}
+				break;
+			case Client::MONSTERTYPE::SKULLSHIELDMAN:
+				if (ComputeAngleWithPlayer() <= 0.f)
+				{
+					TurnMechanism();
+				}
+				else
+				{
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
+					m_bClosePlayerCheck = true;
+					m_bCloseToRun = true;
+					int iRunORWalk = rand() % 2;
+					switch (iRunORWalk)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+						break;
+					}
+				}
+				break;
+			case Client::MONSTERTYPE::SKULLSPEARMAN:
+				if (ComputeAngleWithPlayer() <= 0.f)
+				{
+					TurnMechanism();
+				}
+				else
+				{
+					Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
+					m_bClosePlayerCheck = true;
+					m_bCloseToRun = true;
+					int iRunORWalk = rand() % 2;
+					switch (iRunORWalk)
+					{
+					case 0:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+						break;
+					case 1:
+						Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+						break;
+					}
+				}
 				break;
 			}
-			break;
-		case Client::MONSTERTYPE::KNIFEWOMAN:
-			switch (iRunORWalk)
+
+			return true;
+		}
+
+		//
+		if (m_bCloseToRun && m_iIdleType == 2 && m_bClosePlayerCheck)
+		{
+			Get_Owner().lock()->Get_Component<CNorMonState_Run>().lock()->Set_ClosePlayer(true);
+			int iRunORWalk = rand() % 2;
+
+			switch (m_eMonType)
 			{
-			case 0:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+			case Client::MONSTERTYPE::AXEMAN:
+				switch (iRunORWalk)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+					break;
+				}
 				break;
-			case 1:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+			case Client::MONSTERTYPE::KNIFEWOMAN:
+				switch (iRunORWalk)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+					break;
+				}
 				break;
-			}
-			break;
-		case Client::MONSTERTYPE::SKULL:
-			break;
-		case Client::MONSTERTYPE::GARDENER:
-			switch (iRunORWalk)
-			{
-			case 0:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+			case Client::MONSTERTYPE::SKULL:
 				break;
-			case 1:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+			case Client::MONSTERTYPE::GARDENER:
+				switch (iRunORWalk)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+					break;
+				}
 				break;
-			}
-			break;
-		case Client::MONSTERTYPE::ENHANCE_GARDENER:
-			switch (iRunORWalk)
-			{
-			case 0:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+			case Client::MONSTERTYPE::ENHANCE_GARDENER:
+				switch (iRunORWalk)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+					break;
+				}
 				break;
-			case 1:
-				Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
-				break;
-			}
-			break;
 			case Client::MONSTERTYPE::SHIELDAXEMAN:
 				switch (iRunORWalk)
 				{
@@ -505,19 +633,49 @@ _bool CNorMonState_Idle::Check_AndChangeNextState()
 					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
 					break;
 				}
-			break;
+				break;
+			case Client::MONSTERTYPE::SKULLSHIELDMAN:
+				switch (iRunORWalk)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+					break;
+				}
+				break;
+			case Client::MONSTERTYPE::SKULLSPEARMAN:
+				switch (iRunORWalk)
+				{
+				case 0:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Run>(0.05f);
+					break;
+				case 1:
+					Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_F>(0.05f);
+					break;
+				}
+				break;
+			}
+
+			return true;
 		}
 
-		return true;
+
+		if (m_iIdleType == 3)
+		{
+			Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_B>(0.05f);
+			return true;
+		}
+
 	}
-
-
-	if (m_iIdleType == 3)
+	else
 	{
-		Get_OwnerCharacter().lock()->Change_State<CNorMonState_Walk_B>(0.05f);
-		return true;
+	       Get_OwnerCharacter().lock()->Change_State<CNorMonState_Petrol>(0.05f);
+	       return true;
 	}
 
+	
 
 
 

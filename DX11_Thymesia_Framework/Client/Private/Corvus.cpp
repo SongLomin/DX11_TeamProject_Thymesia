@@ -570,6 +570,7 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_HurtFallDownEnd);
 	ADD_STATE_MACRO(CCorvusState_KnockBack);
 	ADD_STATE_MACRO(CCorvusState_PS_VargSwordStart);
+	
 
 
 

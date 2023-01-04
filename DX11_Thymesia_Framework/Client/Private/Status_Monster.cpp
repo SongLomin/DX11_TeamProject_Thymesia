@@ -310,6 +310,22 @@ void CStatus_Monster::Init_StatusFromMonsterType(MONSTERTYPE eMonsterType)
 		m_tMonsterDesc.m_iMaxParryCount = 10000;
 		m_tMonsterDesc.m_szModelKey = "Mon_AxeMan";
 		break;
+	case Client::MONSTERTYPE::SKULLSHIELDMAN :
+		m_tMonsterDesc.m_fAtk = 20.f;
+		m_tMonsterDesc.m_fMaxHP_white = 150.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 200.f;
+		m_tMonsterDesc.m_iLifeCount = 1;
+		m_tMonsterDesc.m_iMaxParryCount = 10000;
+		m_tMonsterDesc.m_szModelKey = "Skullman";
+		break;
+	case Client::MONSTERTYPE::SKULLSPEARMAN:
+		m_tMonsterDesc.m_fAtk = 20.f;
+		m_tMonsterDesc.m_fMaxHP_white = 150.f;
+		m_tMonsterDesc.m_fMaxParryingGauge = 200.f;
+		m_tMonsterDesc.m_iLifeCount = 1;
+		m_tMonsterDesc.m_iMaxParryCount = 10000;
+		m_tMonsterDesc.m_szModelKey = "Skullman";
+		break;
 	case Client::MONSTERTYPE::JOKER:
 		m_tMonsterDesc.m_fAtk = 40.f;
 		m_tMonsterDesc.m_fMaxHP_white = 500.f;

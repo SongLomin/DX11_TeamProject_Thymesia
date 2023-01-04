@@ -34,6 +34,7 @@
 #include "NorMonState/NorMonState_Walk_L.h"
 #include "NorMonState/NorMonState_Walk_R.h"
 #include "NorMonState/NorMonState_Parry.h"
+#include "NorMonState/NorMonState_Petrol.h"
 
 
 

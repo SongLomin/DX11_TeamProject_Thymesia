@@ -158,7 +158,9 @@ void CEditSetActor::View_CreateActor()
 		"Gardener",
 		"Shield Axe Man",
 		"Balloon",
-		"Enhance_Gardener"
+		"Enhance_Gardener",
+		"Skull_Shield",
+		"Skull_Spear"
 	};
 
 	static const char* ActorList_Elite[] =
@@ -180,6 +182,8 @@ void CEditSetActor::View_CreateActor()
 		"Idle",
 		"Sit",
 		"Fidget",
+		"Spidle",
+		"RunAttackIdle"
 	};
 
 	static const char* BossActionList[] =

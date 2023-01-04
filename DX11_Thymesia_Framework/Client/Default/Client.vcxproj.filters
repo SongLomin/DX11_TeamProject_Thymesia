@@ -314,13 +314,10 @@
       <Filter>05. Component\03. State\01. AIStateBase\00.NorState\03.Run</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\NorMonState\NorMonState_TurnL90.h">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\06.LitghAttack1\04.TurnL90</Filter>
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\04.TurnL90</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\NorMonState\NorMonState_TurnR90.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorState\05.TurnR90</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttack.h">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\NorMonState\NorMonState_Walk_F.h">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorState\21.Walk_F</Filter>
@@ -1889,6 +1886,12 @@
     <ClInclude Include="..\Public\CorvusStates\StateExecution\CorvusState_BigHandman_Execution.h">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\06.BigHandMan_Execution</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_Petrol.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\29.Petrol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\NorMonState\NorMonState_SpecialAttack.h">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\00.Start</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -2177,13 +2180,10 @@
       <Filter>05. Component\03. State\01. AIStateBase\00.NorState\03.Run</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\NorMonState\NorMonState_TurnL90.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\06.LitghAttack1\04.TurnL90</Filter>
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\04.TurnL90</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\NorMonState\NorMonState_TurnR90.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorState\05.TurnR90</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttack.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\NorMonState\NorMonState_Walk_F.cpp">
       <Filter>05. Component\03. State\01. AIStateBase\00.NorState\21.Walk_F</Filter>
@@ -3376,9 +3376,6 @@
     <ClCompile Include="..\Private\UI_Scroll.cpp">
       <Filter>02. GameObject\01. UI\UI_Container\PauseMenu\Page\ScrollBox</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\AIStateBase.cpp">
-      <Filter>05. Component\03. State\01. AIStateBase</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\Interaction_Item.cpp">
       <Filter>02. GameObject\04. Prop\03. Interaction_Prop\Interaction_Item</Filter>
     </ClCompile>
@@ -3818,6 +3815,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\CorvusStates\VargExecution\CorvusState_BigHandman_Execution.cpp">
       <Filter>05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\06.BigHandMan_Execution</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_Petrol.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\29.Petrol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\AIStateBase.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\NorMonState\NorMonState_SpecialAttack.cpp">
+      <Filter>05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\00.Start</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -5383,9 +5389,6 @@
     <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\02.BatState\01.Idle\03.HellIdle">
       <UniqueIdentifier>{7ebce04c-c7c7-478f-b6d1-98c97fd0127b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\06.LitghAttack1\04.TurnL90">
-      <UniqueIdentifier>{02be8622-50d7-4460-8f70-a69504affb03}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05. Component\03. State\01. AIStateBase\03.BossState\01.UrdState\01.Idle">
       <UniqueIdentifier>{d4020cdb-cd3a-4888-96a8-4ab6f434e72b}</UniqueIdentifier>
     </Filter>
@@ -5721,6 +5724,18 @@
     </Filter>
     <Filter Include="05. Component\03. State\00. PlayerStateBase\00.CorvusStateBase\01.State_Execution\Monster\06.BigHandMan_Execution">
       <UniqueIdentifier>{c5ca34d7-7a5c-4924-b918-77444e0b616b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\29.Petrol">
+      <UniqueIdentifier>{cec77c45-c0be-43e3-898c-34fab5a4f0e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\00.Start">
+      <UniqueIdentifier>{ec764086-871a-4327-b2d9-fe2e9ae7ba2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\12.SpecialAttack\01.End">
+      <UniqueIdentifier>{ebb248d1-a80d-45be-8c8a-47045f7a4812}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Component\03. State\01. AIStateBase\00.NorState\04.TurnL90">
+      <UniqueIdentifier>{02be8622-50d7-4460-8f70-a69504affb03}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
