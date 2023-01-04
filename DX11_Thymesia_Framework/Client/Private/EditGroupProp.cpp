@@ -588,7 +588,7 @@ void    CEditGroupProp::View_PickProp()
 			}
 		}
 
-		else if (pCollider.lock())
+		else if (pCollider.lock() && typeid(CLight_Prop).hash_code() != iter.HashCode)
 		{
 			COLLIDERDESC CollDesc = iter.pInstance.lock()->Get_Component<CCollider>().lock()->Get_ColliderDesc();
 
@@ -610,7 +610,7 @@ void    CEditGroupProp::View_PickProp()
 			}
 		}
 
-		else if (typeid(CLight_Prop).hash_code() == iter.HashCode)
+		else if (!pModel.lock() && typeid(CLight_Prop).hash_code() == iter.HashCode)
 		{
 			LIGHTDESC  tLightDesc = Weak_Cast<CLight_Prop>(iter.pInstance).lock()->Get_LightDesc();
 
