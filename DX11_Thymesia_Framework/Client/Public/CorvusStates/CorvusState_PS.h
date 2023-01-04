@@ -26,8 +26,6 @@ protected:
 	void Free();
 
 	void Set_WeaponRender(const _bool bRender);
-
-private:
 	void TurnOn_EyeGlow();
 	void TurnOff_EyeGlow();
 

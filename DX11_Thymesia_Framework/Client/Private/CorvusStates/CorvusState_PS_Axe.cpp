@@ -16,8 +16,10 @@ void CCorvusState_PS_Axe::Call_NextKeyFrame(const _uint& In_KeyIndex)
 {
 	switch (In_KeyIndex)
 	{
+	case 38:
+		TurnOn_EyeGlow();
+		return;
 	case 63:
-		// blur & Shake À§¾Æ·¡
 	{
 		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
 		_vector vShakingOffset = XMVectorSet(0.f, -1.f, 0.f, 0.f);
@@ -26,6 +28,9 @@ void CCorvusState_PS_Axe::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		GAMEINSTANCE->Set_MotionBlur(0.2f);
 	}
 	return;
+	case 156:
+		TurnOff_EyeGlow();
+		return;
 	}
 }
 

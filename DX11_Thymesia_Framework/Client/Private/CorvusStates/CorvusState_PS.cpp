@@ -55,14 +55,12 @@ void CCorvusState_PS::OnStateStart(const _float& In_fAnimationBlendTime)
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 	m_pThisAnimationCom = m_pModelCom.lock()->Get_CurrentAnimation();
 
-	TurnOn_EyeGlow();
 	Set_WeaponRender(false);
 }
 
 void CCorvusState_PS::OnStateEnd()
 {
 	__super::OnStateEnd();
-	TurnOff_EyeGlow();
 	Set_WeaponRender(true);
 }
 
