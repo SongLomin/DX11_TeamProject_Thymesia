@@ -506,6 +506,7 @@ void CCorvus::Ready_States()
 	ADD_STATE_MACRO(CCorvusState_ParryDeflectRightup);
 	ADD_STATE_MACRO(CCorvusState_PS_Axe);
 	ADD_STATE_MACRO(CCorvusState_PS_CaneSword);
+	ADD_STATE_MACRO(CCorvusState_PS_CaneSword_Start);
 	ADD_STATE_MACRO(CCorvusState_PS_Knife);
 	ADD_STATE_MACRO(CCorvusState_PS_Scythe);
 	ADD_STATE_MACRO(CCorvusState_PS_Scythe_Upgrade);

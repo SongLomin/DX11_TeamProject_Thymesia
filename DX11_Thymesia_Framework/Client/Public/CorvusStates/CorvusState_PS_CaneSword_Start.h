@@ -2,12 +2,12 @@
 #include  "CorvusStates/CorvusState_PS.h"
 
 BEGIN(Client)
-class CCorvusState_PS_CaneSword final :
+class CCorvusState_PS_CaneSword_Start final :
     public CCorvusState_PS
 {
-    GAMECLASS_H(CCorvusState_PS_CaneSword);
-    CLONE_H(CCorvusState_PS_CaneSword, CComponent);
-    SHALLOW_COPY(CCorvusState_PS_CaneSword);
+    GAMECLASS_H(CCorvusState_PS_CaneSword_Start);
+    CLONE_H(CCorvusState_PS_CaneSword_Start, CComponent);
+    SHALLOW_COPY(CCorvusState_PS_CaneSword_Start);
 
 public:
 	void Call_AnimationEnd();

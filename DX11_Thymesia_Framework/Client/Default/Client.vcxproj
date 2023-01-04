@@ -199,6 +199,7 @@
     <ClInclude Include="..\Public\AIStateBase.h" />
     <ClInclude Include="..\Public\Attack_Area.h" />
     <ClInclude Include="..\Public\CorvusStates\CorvusState_PS.h" />
+    <ClInclude Include="..\Public\CorvusStates\CorvusState_PS_CaneSword_Start.h" />
     <ClInclude Include="..\Public\Effect_AttackArea.h" />
     <ClInclude Include="..\Public\Ballon.h" />
     <ClInclude Include="..\Public\BossBat\Bat.h" />
@@ -819,6 +820,7 @@
     <ClCompile Include="..\Private\AIStateBase.cpp" />
     <ClCompile Include="..\Private\Attack_Area.cpp" />
     <ClCompile Include="..\Private\CorvusStates\CorvusState_PS.cpp" />
+    <ClCompile Include="..\Private\CorvusStates\CorvusState_PS_CaneSword_Start.cpp" />
     <ClCompile Include="..\Private\Effect_AttackArea.cpp" />
     <ClCompile Include="..\Private\Ballon.cpp" />
     <ClCompile Include="..\Private\BossBat\Bat.cpp" />

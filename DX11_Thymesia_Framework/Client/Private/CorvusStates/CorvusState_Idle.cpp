@@ -288,7 +288,7 @@ _bool CCorvusState_Idle::Check_AndChangeNextState()
 		}
 			break;
 		case 1:
-			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Hammer>();
+			Get_OwnerPlayer()->Change_State<CCorvusState_PS_CaneSword_Start>();
 			break;
 		case 2:
 			Get_OwnerPlayer()->Change_State<CCorvusState_PS_Hammer_Upgrade>();

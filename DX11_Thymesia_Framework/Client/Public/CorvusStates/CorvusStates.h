@@ -54,6 +54,7 @@
 #include "CorvusStates/CorvusState_ParryDeflectRightup.h"
 #include "CorvusStates/CorvusState_PS_Axe.h"
 #include "CorvusStates/CorvusState_PS_CaneSword.h"
+#include "CorvusStates/CorvusState_PS_CaneSword_Start.h"
 #include "CorvusStates/CorvusState_PS_Scythe.h"
 #include "CorvusStates/CorvusState_PS_Scythe_Upgrade.h"
 #include "CorvusStates/CorvusState_PS_Knife.h"

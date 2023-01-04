@@ -27,7 +27,7 @@ public:
     virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
 
 public:
-    virtual void                        OnStealMonsterSkill(MONSTERTYPE eMonstertype) override;
+    virtual void OnStealMonsterSkill(MONSTERTYPE eMonstertype) override;
 
 
 protected:
@@ -70,19 +70,16 @@ private:
 private://Moon SkillSytem RequireMent;
     virtual void SetUp_Requirement();
 
-    //TODO¿”Ω√
 private:
     weak_ptr<CTalent_Sword>  m_pSword;
     _uint                    m_iContainerIndex = 0;
     
     weak_ptr<CPlayerSkill_System> m_pSkillSystem;
-private:
+
     weak_ptr<CCamera_Target> m_pCamera;
     weak_ptr<CTransform> m_pCameraTransform;
 
-    _float4x4                     m_TransformationMatrix;
-
-  
+    _float4x4 m_TransformationMatrix;
 };
 
 END
