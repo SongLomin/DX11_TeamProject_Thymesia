@@ -7,6 +7,7 @@ class CCustomUI;
 
 class CUI_EvolveMenu_PlagueWeapon_SkillButton;
 
+class CEasingComponent_Alpha;
 
 class CUI_EvolveMenu_PlagueWeapon_SkillInformation : public CUI_Container
 {
@@ -21,9 +22,34 @@ public:
     virtual void Tick(_float fTimeDelta) override;
     virtual void LateTick(_float fTimeDelta) override;
 
+
 public:
-    void            Call_OnSkillButtonMouseOver(weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton> pSkillButton);
-    void            Call_OnSkillButtonMouseOut();
+    void    View_Information(weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton> pSkillButton);
+    void    Clear_Information();
+
+    _bool    Check_MouseOveredButtonIsUnLocked();
+
+    void    Set_UnlockedHintUI();
+
+
+private:
+    void                    SetUp_UnlockedHintUI();
+
+private:
+    virtual void            OnEnable(void* pArg);
+    virtual void            OnDisable();
+
+private:
+    weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton> m_pMouseOveredButton;
+
+
+private://UnlockedHintUI
+    weak_ptr<CCustomUI>     m_pUnlockedHintBG;
+    weak_ptr<CCustomUI>     m_pUnlockedHintIcon;
+    weak_ptr<CCustomUI>     m_pUnlockedHintTextImage;
+
+    TEXTINFO                m_tUnlockedHintTextCurrentPiece;
+    TEXTINFO                m_tUnlockedHintTextRequirePiece;
 
 private:
     void            Free();

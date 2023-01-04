@@ -6,6 +6,8 @@
 #include "UIManager.h"
 #include "FadeMask.h"
 #include "UI_EvolveMenu_PlagueWeapon_SkillView.h"
+#include "UI_EvolveMenu_PlagueWeapon_SkillInformation.h"
+
 
 GAMECLASS_C(CUI_EvolveMenu_PlagueWeapon);
 CLONE_C(CUI_EvolveMenu_PlagueWeapon, CGameObject);
@@ -24,9 +26,8 @@ HRESULT CUI_EvolveMenu_PlagueWeapon::Initialize(void* pArg)
 	m_eRenderGroup = RENDERGROUP::RENDER_UI;
 
 	Init_Backgrounds();
-	Init_LeftSkillView();
+	Init_ChildUI();
 
-	m_pFadeMask = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL_STATIC).front();
 	//시작시 꺼준다.
 	Set_Enable(false);
 
@@ -95,11 +96,16 @@ void CUI_EvolveMenu_PlagueWeapon::Init_Backgrounds()
 	Add_Child(m_pTitle);
 }
 
-void CUI_EvolveMenu_PlagueWeapon::Init_LeftSkillView()
+void CUI_EvolveMenu_PlagueWeapon::Init_ChildUI()
 {
 	m_pSkillView = GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu_PlagueWeapon_SkillView>(LEVEL_STATIC);
+	m_pSkillInformation = GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu_PlagueWeapon_SkillInformation>(LEVEL_STATIC);
+
+	m_pSkillView.lock()->Callback_OnMouseOver += bind(&CUI_EvolveMenu_PlagueWeapon::Call_OnSkillButtonMouseOver, this, placeholders::_1);
+	m_pSkillView.lock()->Callback_OnMouseOut += bind(&CUI_EvolveMenu_PlagueWeapon::Call_OnSkillButtonMouseOut, this);
 
 	Add_Child(m_pSkillView);
+	Add_Child(m_pSkillInformation);
 }
 
 void CUI_EvolveMenu_PlagueWeapon::OnEnable(void* pArg)
@@ -114,6 +120,16 @@ void CUI_EvolveMenu_PlagueWeapon::OnDisable()
 	__super::OnDisable();
 
 	GET_SINGLE(CUIManager)->DisableCursor();
+}
+
+void CUI_EvolveMenu_PlagueWeapon::Call_OnSkillButtonMouseOver(weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton> pSkillButton)
+{
+	m_pSkillInformation.lock()->View_Information(pSkillButton);
+}
+
+void CUI_EvolveMenu_PlagueWeapon::Call_OnSkillButtonMouseOut()
+{
+	m_pSkillInformation.lock()->Clear_Information();
 }
 
 void CUI_EvolveMenu_PlagueWeapon::Free()

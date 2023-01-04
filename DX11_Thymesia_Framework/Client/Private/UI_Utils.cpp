@@ -161,3 +161,32 @@ void CUI_Utils::Set_SkillIcon(weak_ptr<CUI> pUI, SKILL_NAME eSkillName)
 	}
 }
 
+ITEM_NAME CUI_Utils::ConvertSkillNameToSkillPiece(SKILL_NAME eSkillName)
+{
+	ITEM_NAME eItemName = ITEM_NAME::ITEM_NAME_END;
+
+	switch (eSkillName)
+	{
+	case Client::SKILL_NAME::SKILL_AXE:
+		eItemName = ITEM_NAME::SKILLPIECE_AXE;
+		break;
+	case Client::SKILL_NAME::SKILL_KNIFE:
+		eItemName = ITEM_NAME::SKILLPIECE_KNIFE;
+		break;
+	case Client::SKILL_NAME::SKILL_HAMMER:
+		eItemName = ITEM_NAME::SKILLPIECE_HAMMER;
+		break;
+	case Client::SKILL_NAME::SKILL_SCYTHE:
+		eItemName = ITEM_NAME::SKILLPIECE_SCYTHE;
+		break;
+	case Client::SKILL_NAME::SKILL_VARGSWORD:
+		eItemName = ITEM_NAME::SKILLPIECE_VARGSWORD;
+		break;
+	case Client::SKILL_NAME::SKILL_END:
+		break;
+	default:
+		break;
+	}
+	return eItemName;
+}
+

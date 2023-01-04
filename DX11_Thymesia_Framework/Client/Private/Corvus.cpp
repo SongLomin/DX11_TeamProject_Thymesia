@@ -409,6 +409,11 @@ void CCorvus::Debug_KeyInput(_float fTimeDelta)
 	{
 		m_pInventory.lock()->Push_Item(ITEM_NAME::MEMORY01);
 		m_pInventory.lock()->Push_Item(ITEM_NAME::MEMORY02);
+		
+		m_pInventory.lock()->Push_Item(MONSTERTYPE::AXEMAN);
+		m_pInventory.lock()->Push_Item(MONSTERTYPE::VARG);
+		m_pInventory.lock()->Push_Item(MONSTERTYPE::JOKER);
+		m_pInventory.lock()->Push_Item(ITEM_NAME::SKILLPIECE_SCYTHE);
 	}
 	if (KEY_INPUT(KEY::NUM1, KEY_STATE::TAP))
 	{

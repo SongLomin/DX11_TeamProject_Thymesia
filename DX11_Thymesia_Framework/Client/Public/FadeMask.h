@@ -34,6 +34,8 @@ public:
 public:
 	void Call_FadeEnd(FADER_TYPE In_eFaderType);
 
+
+
 public:
 	FDelegate<> CallBack_FadeEnd;
 

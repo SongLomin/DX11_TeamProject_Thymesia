@@ -7,6 +7,7 @@ class CCustomUI;
 class CFadeMask;
 class CUI_EvolveMenu_PlagueWeapon_SkillView;
 class CUI_EvolveMenu_PlagueWeapon_SkillButton;
+class CUI_EvolveMenu_PlagueWeapon_SkillInformation;
 
 class CUI_EvolveMenu_PlagueWeapon : public CUI_EvolveMenu_Page
 {
@@ -23,7 +24,7 @@ public:
     
 private://Init Functions
     void                    Init_Backgrounds();
-    void                    Init_LeftSkillView();
+    void                    Init_ChildUI();
 
 private:
     virtual void	OnEnable(void* pArg) override;
@@ -45,6 +46,7 @@ private://For...LeftSkillView
     weak_ptr< CUI_EvolveMenu_PlagueWeapon_SkillView>    m_pSkillView;
 
 private://For...RightSkillInformationTap
+    weak_ptr< CUI_EvolveMenu_PlagueWeapon_SkillInformation> m_pSkillInformation;
 
 private:
     void    Free();

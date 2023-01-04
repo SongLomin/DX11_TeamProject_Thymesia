@@ -1285,8 +1285,13 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("Item_Icon_SkillPiece"), TEXT("../Bin/Resources/Textures/UI/Icons/Items/TexUI_PureBloodCoreIcon.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 	GAMEINSTANCE->Load_Textures(("Item_Type_Ingredient"), TEXT("../Bin/Resources/Textures/UI/ItemData/Type_Ingredient.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("Item_Type_SkillPiece"), TEXT("../Bin/Resources/Textures/UI/ItemData/Type_SkillPiece.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	
 	GAMEINSTANCE->Load_Textures(("Item_Type_Common"), TEXT("../Bin/Resources/Textures/UI/ItemData/Type_Common.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Item_Type_Consumption"), TEXT("../Bin/Resources/Textures/UI/ItemData/Type_Consumption.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+
 
 	GAMEINSTANCE->Load_Textures(("Item_Quantity"), TEXT("../Bin/Resources/Textures/UI/ItemData/Quantity.png"), MEMORY_TYPE::MEMORY_STATIC);
 
@@ -1376,11 +1381,14 @@ void CLoader::Load_UIResource()
 
 	//EvolveMenu_Skill
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Skill_Title"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Title.dds"), MEMORY_TYPE::MEMORY_STATIC);
-
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_SkillView_Frame"), TEXT("../Bin/Resources/Textures/UI/General/SkillBackground.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 	
 
+	//EvolveMenu_Information;
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_UnlockSkillHintBackground"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_UnlockSkillHintBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_TextEnoughSkillPiece"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/Text_EnoughSkillPiece.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_TextNotEnoughSkillPiece"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/Text_NotEnoughSkillPiece.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
 

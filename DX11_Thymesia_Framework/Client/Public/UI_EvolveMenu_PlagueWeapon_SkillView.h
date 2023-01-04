@@ -40,8 +40,6 @@ public:
     void        Call_OnMouseOut();
 
 
-
-
 private:
     vector<_float2>             m_vecSkillPos;
     

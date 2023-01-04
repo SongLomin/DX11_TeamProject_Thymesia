@@ -393,7 +393,6 @@ void CPreset_UIDesc::Set_CUI_ItemPopup_Ready_Popup(weak_ptr<class CUI> pUI, ITEM
         pUI.lock()->Set_Texture("Popup_SkillPiece_Varg");
         break;
 
-
     default:
         break;
     }

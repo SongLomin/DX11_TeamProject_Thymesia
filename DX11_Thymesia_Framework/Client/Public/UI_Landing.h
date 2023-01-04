@@ -6,9 +6,11 @@
 BEGIN(Client)
 class CCustomUI;
 class CHUD_Hover;
+class CFadeMask;
+
 
 class CEasingComponent_Alpha;
-
+class CEasingComponent_Float;
 
 class CUI_Landing : public CUI
 {
@@ -51,9 +53,12 @@ public:
 	void			Call_FadeEnd(FADER_TYPE eFaderType);
 
 
+
 private://For Blur
 	weak_ptr<CEasingComponent_Alpha>		m_pEasingBlurAmount;
+	weak_ptr<CEasingComponent_Float>		m_pEasingFloat;
 
+	weak_ptr<CFadeMask>						m_pFadeMask;
 };
 
 END

@@ -49,6 +49,9 @@ HRESULT CClientLevel::Initialize()
 {
 	__super::Initialize();
 
+
+	m_bLading = false;
+
 	GAMEINSTANCE->Set_CreatedLevelIndex(m_eMyLevel);
 
 	return S_OK;

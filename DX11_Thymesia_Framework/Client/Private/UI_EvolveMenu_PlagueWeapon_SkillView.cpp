@@ -111,7 +111,8 @@ void CUI_EvolveMenu_PlagueWeapon_SkillView::SetUp_SkillButtons()
 
 		pButton.lock()->Set_UIPosition(m_vecSkillPos[i].x, m_vecSkillPos[i].y);
 
-		pButton.lock();
+		Bind_Callback(pButton);
+
 
 		m_vecSkillButton.push_back(pButton);
 	}

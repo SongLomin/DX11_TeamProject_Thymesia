@@ -69,6 +69,39 @@ void CUI_EvolveMenu_PlagueWeapon_SkillButton::Set_Skill(SKILL_NAME eSkillName)
     CUI_Utils::Set_SkillIcon(m_pIcon, m_eSkillName);
 }
 
+_bool CUI_EvolveMenu_PlagueWeapon_SkillButton::Get_Unlocked()
+{
+    return (m_eLockType == SKILLBUTTON_LOCK_TYPE::UNLOCKED);
+}
+
+_uint CUI_EvolveMenu_PlagueWeapon_SkillButton::Get_RequirementSkillPiece()
+{
+    _uint iRequirementSkillPiece = 3;
+    
+
+    switch (m_eSkillName)
+    {
+    case Client::SKILL_NAME::SKILL_AXE:
+        break;
+    case Client::SKILL_NAME::SKILL_KNIFE:
+        break;
+    case Client::SKILL_NAME::SKILL_HAMMER:
+        iRequirementSkillPiece = 1;
+        break;
+    case Client::SKILL_NAME::SKILL_SCYTHE:
+        break;
+    case Client::SKILL_NAME::SKILL_VARGSWORD:
+        iRequirementSkillPiece = 1;
+        break;
+    case Client::SKILL_NAME::SKILL_END:
+        break;
+    default:
+        break;
+    }
+
+    return iRequirementSkillPiece;
+}
+
 void CUI_EvolveMenu_PlagueWeapon_SkillButton::SetUp_UI()
 {
     Set_Size(114.f, 114.f);
