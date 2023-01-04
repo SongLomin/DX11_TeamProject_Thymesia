@@ -205,6 +205,7 @@ void CClientLevel::Tick_Key_InputEvent()
 		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToStartGame, this);
 		m_bFadeTrigger = true;
 	}
+
 #ifdef _ONLY_UI_
 	if (KEY_INPUT(KEY::T, KEY_STATE::TAP))
 	{
