@@ -35,7 +35,7 @@ HRESULT CVargWeapon::Initialize(void* pArg)
 	m_pTrailDiffuse = GAMEINSTANCE->Add_GameObject<CEffect_Trail>(LEVEL_GAMEPLAY, &TrailDesc);
 	
 #ifdef _USE_THREAD_
-	//Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
+	Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
 #endif // _USE_THREAD_
 
 

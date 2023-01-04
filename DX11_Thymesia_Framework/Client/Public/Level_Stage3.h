@@ -16,6 +16,9 @@ public:
 	virtual void Tick(_float TimeDelta);
 	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext);
 
+private:
+	weak_ptr<CPlayer> m_pPlayer;
+
 public:
 	static shared_ptr<CLevel_Stage3> Create();
 	void Free();

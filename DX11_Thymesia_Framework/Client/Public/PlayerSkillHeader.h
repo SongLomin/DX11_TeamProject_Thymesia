@@ -5,6 +5,9 @@
 #include "Skill_Axe.h"
 #include "StolenSkill.h"
 #include "Skill_Knife.h"
+#include "Skill_Hammer.h"
+#include "Skill_Scythe.h"
+
 
 //Player Skill State
 #include "CorvusStates/CorvusState_PS_Axe.h"

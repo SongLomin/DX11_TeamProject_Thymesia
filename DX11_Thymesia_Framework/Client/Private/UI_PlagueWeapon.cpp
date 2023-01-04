@@ -8,7 +8,6 @@
 #include "Client_GameObjects.h"
 #include "CustomUI.h"
 
-
 GAMECLASS_C(CUI_PlagueWeapon)
 CLONE_C(CUI_PlagueWeapon, CGameObject)
 

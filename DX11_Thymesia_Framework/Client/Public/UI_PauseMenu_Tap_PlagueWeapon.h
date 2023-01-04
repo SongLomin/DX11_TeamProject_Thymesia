@@ -1,12 +1,12 @@
 #pragma once
-#include "UI.h"
+#include "CustomUI.h"
 
 BEGIN(Client)
 
 class CCustomUI;
 class CUI_PlagueWeapon;
 
-class CUI_PauseMenu_Tap_PlagueWeapon : public CUI
+class CUI_PauseMenu_Tap_PlagueWeapon : public CCustomUI
 {
 public:
     GAMECLASS_H(CUI_PauseMenu_Tap_PlagueWeapon)

@@ -438,10 +438,11 @@ void CInteraction_Door::Act_CloseDoor(_float fTimeDelta, _bool& Out_IsEnd)
     }
 }
 
-void CInteraction_Door::Act_Interaction()
+void CInteraction_Door::Act_Interaction()//¿©±â¼­ Use
 {
     if (m_ActionFlag & ACTION_FLAG::ROTATION)
     {
+        GAMEINSTANCE->Get_GameObjects<CUI_ItemRequirement>(LEVEL_STATIC).front().lock()->Call_UseItem(m_iKeyID);
         Callback_ActUpdate += bind(&CInteraction_Door::Act_OpenDoor, this, placeholders::_1, placeholders::_2);
         m_pPhysXColliderCom.lock()->Set_Enable(false);
     }

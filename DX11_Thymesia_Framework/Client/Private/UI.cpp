@@ -205,6 +205,14 @@ void CUI::Set_X(_float fX)
 	m_tUIDesc.fX = fX;
 }
 
+void CUI::Set_AlphaColorAllChilds(_float fAlphaColor)
+{
+	Set_AlphaColor(fAlphaColor);
+	for (auto elem : m_vecChildUI)
+	{
+		elem.lock()->Set_AlphaColorAllChilds(fAlphaColor);
+	}
+}
 void CUI::Set_Depth(_float _fDepth)
 {
 	m_tUIDesc.fDepth = _fDepth;

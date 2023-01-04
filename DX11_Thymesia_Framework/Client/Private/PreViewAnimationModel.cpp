@@ -234,8 +234,8 @@ HRESULT CPreviewAnimationModel::Render(ID3D11DeviceContext* pDeviceContext)
 		}	
 
 #ifdef _DEBUG
-		if (i == 2)
-			continue;
+		//if (i == 2)
+		//	continue;
 #endif // _DEBUG
 
 		//m_pShaderCom.lock()->Begin(m_iPassIndex, pDeviceContext);

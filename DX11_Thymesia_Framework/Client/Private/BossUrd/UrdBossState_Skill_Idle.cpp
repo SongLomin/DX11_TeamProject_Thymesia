@@ -103,7 +103,7 @@ _bool CUrdBossState_Skill_Idle::Check_AndChangeNextState()
 	{
 		
 
-		_uint  iRand = rand() % 2;
+		_uint  iRand = rand() % 1;
 
 		switch (iRand)
 		{
@@ -122,9 +122,9 @@ _bool CUrdBossState_Skill_Idle::Check_AndChangeNextState()
 			}
 		}
 			break;
-		case 1:
-			Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill02_1>(0.05f);
-			break;
+	case 1:
+		Get_OwnerCharacter().lock()->Change_State<CUrdBossState_Skill02_1>(0.05f);
+		break;
 		}
 
 

@@ -1,18 +1,33 @@
 #include "stdafx.h"
 #include "CorvusStates/CorvusState_PS_Axe.h"
-#include "Model.h"
-#include "GameInstance.h"
-#include "GameObject.h"
-#include "BehaviorBase.h"
 #include "Animation.h"
-#include "Player.h"
-#include "CorvusStates/CorvusStates.h"
+#include "PhysXController.h"
 #include "GameManager.h"
-#include "Monster.h"
-#include "NorMonStates.h"
 
 GAMECLASS_C(CCorvusState_PS_Axe);
 CLONE_C(CCorvusState_PS_Axe, CComponent)
+
+void CCorvusState_PS_Axe::Call_AnimationEnd()
+{
+	__super::Call_AnimationEnd();
+}
+
+void CCorvusState_PS_Axe::Call_NextKeyFrame(const _uint& In_KeyIndex)
+{
+	switch (In_KeyIndex)
+	{
+	case 63:
+		// blur & Shake À§¾Æ·¡
+	{
+		_matrix OwnerWorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
+		_vector vShakingOffset = XMVectorSet(0.f, -1.f, 0.f, 0.f);
+		vShakingOffset = XMVector3TransformNormal(vShakingOffset, OwnerWorldMatrix);
+		GET_SINGLE(CGameManager)->Add_Shaking(vShakingOffset, 0.3f, 1.f, 9.f, 0.4f);
+		GAMEINSTANCE->Set_MotionBlur(0.2f);
+	}
+	return;
+	}
+}
 
 HRESULT CCorvusState_PS_Axe::Initialize_Prototype()
 {
@@ -23,15 +38,12 @@ HRESULT CCorvusState_PS_Axe::Initialize_Prototype()
 HRESULT CCorvusState_PS_Axe::Initialize(void* pArg)
 {
 	__super::Initialize(pArg);
-
-
 	return S_OK;
 }
 
 void CCorvusState_PS_Axe::Start()
 {
 	__super::Start();
-	m_pModelCom = m_pOwner.lock()->Get_Component<CModel>();
 	m_iAnimIndex = m_pModelCom.lock()->Get_IndexFromAnimName("Corvus_PW_Axe");
 	m_pModelCom.lock()->CallBack_AnimationEnd += bind(&CCorvusState_PS_Axe::Call_AnimationEnd, this);
 }
@@ -39,70 +51,42 @@ void CCorvusState_PS_Axe::Start()
 void CCorvusState_PS_Axe::Tick(_float fTimeDelta)
 {
 	__super::Tick(fTimeDelta);
-
-
-	m_pModelCom.lock()->Play_Animation(fTimeDelta);
 }
 
 void CCorvusState_PS_Axe::LateTick(_float fTimeDelta)
 {
 	__super::LateTick(fTimeDelta);
-
-	Check_AndChangeNextState();
-}
-
-void CCorvusState_PS_Axe::OnDisable()
-{
-
 }
 
 void CCorvusState_PS_Axe::OnStateStart(const _float& In_fAnimationBlendTime)
 {
 	__super::OnStateStart(In_fAnimationBlendTime);
 
-	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
+	if (m_pThisAnimationCom.lock())
+		m_pThisAnimationCom.lock()->CallBack_NextChannelKey += bind(&CCorvusState_PS_Axe::Call_NextKeyFrame, this, placeholders::_1);
 
-#ifdef _DEBUG
-#ifdef _DEBUG_COUT_
-	
-#endif
-#endif
-
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit += bind(&CCorvusState_PS_Axe::Call_OtherControllerHit, this, placeholders::_1);
 }
 
 void CCorvusState_PS_Axe::OnStateEnd()
 {
 	__super::OnStateEnd();
 
+	if (m_pThisAnimationCom.lock())
+		m_pThisAnimationCom.lock()->CallBack_NextChannelKey -= bind(&CCorvusState_PS_Axe::Call_NextKeyFrame, this, placeholders::_1);
+
+	m_pPhysXControllerCom.lock()->Callback_ControllerHit -= bind(&CCorvusState_PS_Axe::Call_OtherControllerHit, this, placeholders::_1);
 }
-
-void CCorvusState_PS_Axe::Call_AnimationEnd()
-{
-	if (!Get_Enable())
-		return;
-
-	Get_OwnerPlayer()->Change_State<CCorvusState_Idle>();
-
-}
-
-
 
 void CCorvusState_PS_Axe::OnEventMessage(weak_ptr<CBase> pArg)
 {
-
+	__super::OnEventMessage(pArg);
 }
 
 void CCorvusState_PS_Axe::Free()
 {
+	__super::Free();
+
 	if (m_pModelCom.lock())
 		m_pModelCom.lock()->CallBack_AnimationEnd -= bind(&CCorvusState_PS_Axe::Call_AnimationEnd, this);
 }
-
-_bool CCorvusState_PS_Axe::Check_AndChangeNextState()
-{
-	if (!Check_Requirement())
-		return false;
-
-	return false;
-}
-

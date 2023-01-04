@@ -51,6 +51,7 @@ HRESULT CMainApp::Initialize()
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::PLAYER_ATTACK , (_uint)COLLISION_LAYER::MONSTER);
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::PLAYER_ATTACK , (_uint)COLLISION_LAYER::DYNAMIC_PROP);
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::MONSTER_ATTACK, (_uint)COLLISION_LAYER::PLAYER);
+	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::MONSTER_ATTACK, (_uint)COLLISION_LAYER::BOSS_DYNAMIC_PROP);
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::TRIGGER       , (_uint)COLLISION_LAYER::PLAYER);
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::LADDER_DOWN   , (_uint)COLLISION_LAYER::PLAYER);
 	GAMEINSTANCE->Check_Group((_uint)COLLISION_LAYER::LADDER_UP     , (_uint)COLLISION_LAYER::PLAYER);
@@ -176,6 +177,8 @@ void CMainApp::Tick(float fTimeDelta)
 	GAMEINSTANCE->Add_MotionBlur(-0.4f * fTimeDelta);
 
 	GAMEINSTANCE->Tick_Engine(fTimeDelta);
+	GET_SINGLE(CUIManager)->Tick(fTimeDelta);
+
 	
 #ifdef _DEBUG
 	if (m_pDeveloperConsole && m_bEnableConsole)
@@ -189,10 +192,8 @@ void CMainApp::Tick(float fTimeDelta)
 	}
 #endif // _DEBUG
 
-
-	
-
 	GET_SINGLE(CGameManager)->LateTick(fTimeDelta);
+	GET_SINGLE(CUIManager)->LateTick(fTimeDelta);
 
 #ifdef	_RENDER_FPS_
 	m_fTimeAcc += fTimeDelta;

@@ -35,18 +35,24 @@ HRESULT CDynamic_Piece::Initialize(void* pArg)
 
     m_pPhysXColliderCom.lock()->Init_ModelCollider(m_pModelCom.lock()->Get_ModelData(), true);
 
+#ifdef _USE_THREAD_
+    Use_Thread(THREAD_TYPE::PRE_BEFORERENDER);
+#endif // _USE_THREAD_
+
+
     return S_OK;
 }
 
 HRESULT CDynamic_Piece::Start()
-{
-    __super::Start();
+{   
 
     PhysXColliderDesc tPhysXColliderDesc;
     Preset::PhysXColliderDesc::DynamicPieceSetting(tPhysXColliderDesc, m_pTransformCom);
     m_pPhysXColliderCom.lock()->CreatePhysXActor(tPhysXColliderDesc);
     m_pPhysXColliderCom.lock()->Add_PhysXActorAtScene();
     Set_Enable(false);
+
+    __super::Start();
 
     return S_OK;
 }
@@ -80,13 +86,16 @@ void CDynamic_Piece::LateTick(_float fTimeDelta)
     __super::LateTick(fTimeDelta);
 }
 
+void CDynamic_Piece::Thread_PreBeforeRender(_float fTimeDelta)
+{
+    __super::Thread_PreBeforeRender(fTimeDelta);
+    m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom);
+}
+
 void CDynamic_Piece::Before_Render(_float fTimeDelta)
 {
     __super::Before_Render(fTimeDelta);
-
-    m_pPhysXColliderCom.lock()->Synchronize_Transform(m_pTransformCom);
-
-}
+} 
 
 HRESULT CDynamic_Piece::Render(ID3D11DeviceContext* pDeviceContext)
 {

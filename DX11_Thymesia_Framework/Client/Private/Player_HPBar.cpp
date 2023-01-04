@@ -76,7 +76,6 @@ HRESULT CPlayer_HPBar::Render(ID3D11DeviceContext* pDeviceContext)
 void CPlayer_HPBar::SetUp_Component()
 {
     m_pEasingFloatCom = Add_Component<CEasingComponent_Float>();
-
 }
 
 void CPlayer_HPBar::Set_CurrentHp(_float _fCurrentHp)

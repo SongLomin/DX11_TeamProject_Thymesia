@@ -4,6 +4,8 @@
 #include "Engine_Defines.h"
 #include "ItemPopup_Queue.h"
 #include "UI_Cursor.h"
+#include "GameManager.h"
+
 
 
 IMPLEMENT_SINGLETON(CUIManager)
@@ -11,6 +13,19 @@ IMPLEMENT_SINGLETON(CUIManager)
 void CUIManager::Set_OpenedMenu(_bool bOpenedMenu)
 {
 	m_bOpenedMenu = bOpenedMenu;
+}
+
+void CUIManager::OnEnterStage()
+{
+
+}
+
+void CUIManager::Tick(_float fTimeDelta)
+{
+}
+
+void CUIManager::LateTick(_float fTimeDelta)
+{
 }
 
 POINT CUIManager::Get_MousePoint()
