@@ -40,6 +40,8 @@
 #include "UI_BloodOverlay.h"
 #include "UI_AppearEventVarg.h"
 #include "UI_ItemRequirement.h"
+#include "UI_EvolveMenu_PlagueWeapon.h"
+
 
 GAMECLASS_C(CClientLevel)
 
@@ -125,7 +127,8 @@ void CClientLevel::SetUp_UI()
 
 	m_pPauseMenu = GAMEINSTANCE->Add_SingleGameObject<CUI_PauseMenu>(LEVEL_STATIC);
 	m_pEvolveMenu = GAMEINSTANCE->Add_SingleGameObject<CUI_EvolveMenu>(LEVEL_STATIC);
-	GAMEINSTANCE->Add_GameObject<CUI_EvolveMenu_Level>(LEVEL_STATIC);
+	GAMEINSTANCE->Add_SingleGameObject<CUI_EvolveMenu_PlagueWeapon>(LEVEL_STATIC);
+	GAMEINSTANCE->Add_SingleGameObject<CUI_EvolveMenu_Level>(LEVEL_STATIC);
 
 	Preset::AddGameObject::TalentSetting();
 
@@ -144,16 +147,6 @@ void CClientLevel::SetUp_UI()
 	GAMEINSTANCE->Add_SingleGameObject<CUI_BloodOverlay>(LEVEL_STATIC);
 
 	pUIManager.lock()->CreateItemPopupQueue();
-
-
-	//GET_SINGLE(CGameManager)->DisableCursor();
-
-#ifdef _ONLY_UI_
-
-	GAMEINSTANCE->Add_GameObject<CTestUI>(LEVEL_STATIC);
-
-#endif
-
 
 
 
@@ -205,39 +198,6 @@ void CClientLevel::Tick_Key_InputEvent()
 		m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_FadeOutToStartGame, this);
 		m_bFadeTrigger = true;
 	}
-#ifdef _ONLY_UI_
-	if (KEY_INPUT(KEY::T, KEY_STATE::TAP))
-	{
-		if (m_pEvolveMenu.lock()->Get_Enable() == false)
-		{
-			FaderDesc tFaderDesc;
-			tFaderDesc.eFaderType = FADER_TYPE::FADER_OUT;
-			tFaderDesc.eLinearType = LINEAR_TYPE::LNIEAR;
-			tFaderDesc.fFadeMaxTime = 0.2f;
-			tFaderDesc.fDelayTime = 0.f;
-			tFaderDesc.vFadeColor = _float4(0.f, 0.f, 0.f, 1.f);
-
-			m_pFadeMask.lock()->Init_Fader((void*)&tFaderDesc);
-			m_pFadeMask.lock()->CallBack_FadeEnd += bind(&CClientLevel::Call_Enable_EvolveMenu, this);
-		}
-	}
-	if (KEY_INPUT(KEY::V, KEY_STATE::TAP))
-	{
-		GAMEINSTANCE->Add_GameObject<CUI_DamageFont>(LEVEL_STATIC).lock()->SetUp_DamageFont
-		(
-			557,
-			_float2(g_iWinCX >> 1, g_iWinCY >> 1),
-			Client::ATTACK_OPTION::NORMAL
-		);
-	}
-	if (KEY_INPUT(KEY::NUM2, KEY_STATE::TAP))
-	{
-		if (m_pPauseMenu.lock()->Get_Enable() == false)
-		{
-			ExitLevel(LEVEL::LEVEL_STAGE2);
-		}
-	}
-#endif // _ONLY_UI_
 }
 
 void CClientLevel::Call_StageLanding()

@@ -104,8 +104,6 @@ void CPlayer_HPBar::Call_ChangeCurrentHP(_float fCurrentHP)
 
 void CPlayer_HPBar::Bind_Player()
 {
-
-#ifndef _ONLY_UI_
     __super::Bind_Player();
     Call_UpdateStatus();
 
@@ -116,12 +114,6 @@ void CPlayer_HPBar::Bind_Player()
 
     Set_MaxHp(m_pPlayerStatus.lock()->Get_MaxHP());
     Set_CurrentHp(m_pPlayerStatus.lock()->Get_CurrentHP());
-#else
-    m_fMaxHp = 300.f;
-    m_fLerpHp = m_fMaxHp;
-    m_fCurrentHp = m_fMaxHp;
-#endif // !_ONLY_UI_
-
 }
 
 void CPlayer_HPBar::OnDisable()

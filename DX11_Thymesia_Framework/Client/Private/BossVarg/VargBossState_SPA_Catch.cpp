@@ -59,7 +59,7 @@ void CVargBossState_SPA_Catch::Tick(_float fTimeDelta)
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 225)
 	{
 		GAMEINSTANCE->Get_GameObjects<CUI_BloodOverlay>(LEVEL_STATIC).front().lock()->
-			Call_Overlay(1.f);
+			Call_Overlay(2.f);
 	}
 }
 

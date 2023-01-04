@@ -247,13 +247,10 @@ void CTalent::OnLButtonClick()
         {
             pTalent = elem;
             elem.lock()->CheckLButtonClick(true);
-#ifndef _ONLY_UI_
             m_pPlayer.lock()->Bind_TalentEffects(elem.lock()->Get_Effect());
-#endif
         }
-#ifndef _ONLY_UI_
         GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Status().lock()->Set_Desc(&tPlayerDesc);
-#endif
+
         if (pTalent.lock()->m_pParent.lock())
             pTalent.lock()->m_pParent.lock()->CheckLButtonClick(true);
         break;
@@ -265,15 +262,10 @@ void CTalent::OnLButtonClick()
             if (elem.lock()->m_pParent.lock())
             {
                 elem.lock()->CheckLButtonClick(false);
-#ifndef _ONLY_UI_
                 m_pPlayer.lock()->UnBind_TalentEffects(elem.lock()->Get_Effect());
-#endif
             }
         }
-        
-#ifndef _ONLY_UI_
         GET_SINGLE(CGameManager)->Get_CurrentPlayer().lock()->Get_Status().lock()->Set_Desc(&tPlayerDesc);
-#endif
         break;
     case Client::TALENT_RESULT::RESULT_END:
         break;

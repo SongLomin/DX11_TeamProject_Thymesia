@@ -10,7 +10,6 @@
 #ifdef _DEBUG
 
 #pragma region System
-//#define _ONLY_UI_
 //#define _BAKE_MIPMAPS_
 #define _USE_THREAD_
 #define _144HZ_
@@ -31,14 +30,14 @@
 
 #pragma region Map
 //#define _BRIGHT_LIGHT_
-#define _GENERATE_PROP_COLLIDER_ true
-#define _TEST_DYNAMIC_PROPS_
+//#define _GENERATE_PROP_COLLIDER_ true
+//#define _TEST_DYNAMIC_PROPS_
 #pragma endregion // Map
 
 #pragma region Tool
-#define _MAP_TOOL_
+//#define _MAP_TOOL_
 //#define _EFFECT_TOOL_
-#define _ANIMATION_TOOL_WEAPON_
+//#define _ANIMATION_TOOL_WEAPON_
 #pragma endregion // Tool
 
 #pragma region Effects
@@ -54,7 +53,6 @@
 /////////////////////////////////////////// RELEASE MODE DEFINES ///////////////////////////////////////////
 #ifdef NDEBUG
 
-#undef _ONLY_UI_
 
 #pragma region System
 #define _USE_THREAD_
@@ -93,7 +91,6 @@
 #ifdef _EFFECT_TOOL_
 
 #pragma region System
-#undef _ONLY_UI_
 #define _USE_THREAD_
 #define _144HZ_
 #define _RENDER_FPS_

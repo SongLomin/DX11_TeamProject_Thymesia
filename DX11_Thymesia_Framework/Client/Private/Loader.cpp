@@ -101,7 +101,6 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 	CEditGround::Load_AllMeshInfo();
 
-#ifndef _ONLY_UI_
 	lstrcpy(m_szLoadingText, TEXT("Loading Prototype Objects..."));
 	GAMEINSTANCE->Add_Prototype_GameObject<CFadeMask>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CCamera_Target>();
@@ -131,9 +130,7 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Add_Prototype_GameObject<CJoker>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CUrd>();
 	GAMEINSTANCE->Add_Prototype_GameObject<CBat>();
-#endif
 
-#ifndef _ONLY_UI_
 
 #ifdef _LOAD_CAPTURED_RESOURCE_
 
@@ -169,11 +166,6 @@ HRESULT CLoader::Loading_ForLogoLevel()
 
 #endif // _LOAD_CAPTURED_RESOURCE_
 
-#endif // _ONLY_UI_
-
-#ifdef _ONLY_UI_
-	Load_UIResource();
-#endif
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Shaders..."));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_UI"), TEXT("../Bin/ShaderFiles/Shader_UI.hlsl"));
@@ -191,10 +183,10 @@ HRESULT CLoader::Loading_ForLogoLevel()
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxModelInstance"), TEXT("../Bin/ShaderFiles/Shader_VtxModelInstance.hlsl"));
 	GAMEINSTANCE->Load_Shader(TEXT("Shader_VtxCurve"), TEXT("../Bin/ShaderFiles/Shader_VtxCurve.hlsl"));
 
-#ifndef _ONLY_UI_
+
 	lstrcpy(m_szLoadingText, TEXT("Loading All Key Event from Json...."));
 	GET_SINGLE(CGameManager)->Load_AllKeyEventFromJson();
-#endif // _ONLY_UI_
+
 
 	lstrcpy(m_szLoadingText, TEXT("Loading Damage Fonts..."));
 	GAMEINSTANCE->Load_Textures(("DamageFont_Claw"), TEXT("../Bin/Resources/Textures/UI/DamageFont/Claw/%d.png"), MEMORY_TYPE::MEMORY_STATIC);
@@ -248,7 +240,7 @@ HRESULT CLoader::Loading_ForTestLevel()
 	lstrcpy(m_szLoadingText, TEXT("Loading Normal Mob..."));
 	this->Load_NormalMobModel();
 
-#ifndef _ONLY_UI_
+
 	lstrcpy(m_szLoadingText, TEXT("Loading Skybox Texture..."));
 
 	GAMEINSTANCE->Load_Textures("Sky", TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
@@ -324,7 +316,7 @@ HRESULT CLoader::Loading_ForTestLevel()
 
 	lstrcpy(m_szLoadingText, TEXT("Test : Loading Complete"));
 
-#endif _ONLY_UI_
+
 	m_isFinished = true;
 	return S_OK;
 }
@@ -344,7 +336,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 
 	_matrix TransformMatrix;
 
-#ifndef _ONLY_UI_
+
 	lstrcpy(m_szLoadingText, TEXT("Loading Skybox Texture..."));
 	GAMEINSTANCE->Load_Textures("Sky", TEXT("../Bin/Resources/Textures/SkyBox/Sky_%d.dds"), MEMORY_TYPE::MEMORY_DYNAMIC);
 
@@ -398,7 +390,7 @@ HRESULT CLoader::Loading_ForGamePlayLevel()
 	TransformMatrix = XMMatrixRotationX(XMConvertToRadians(90.0f)) * XMMatrixScaling(0.0001f, 0.0001f, 0.0001f);
 	lstrcpy(m_szLoadingText, TEXT("Loading All Meshes from : [ ../Bin/Resources/Meshes/Destructable/Fence_16a/ ]"));
 	Load_AllMeshes("../Bin/Resources/Meshes/Destructable/Fence_16a/", MODEL_TYPE::NONANIM, MEMORY_TYPE::MEMORY_STATIC, TransformMatrix, ".fbx");
-#endif // _ONLY_UI_
+
 
 	
 
@@ -1135,7 +1127,6 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_State_MP"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/MP.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
-
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_LevelUp_Apply"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/Font/LevelUp/Apply.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
@@ -1219,7 +1210,7 @@ void CLoader::Load_UIResource()
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_Talent_Icon_HealingExecution1_Information"), TEXT("../Bin/Resources/Textures/UI/Icons/Talents/LightAttack/Text/HealingExecution_1_Information.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
-
+	GAMEINSTANCE->Load_Textures(("LockedIcon"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_LockedIcon.dds"), MEMORY_TYPE::MEMORY_STATIC);
 
 	GAMEINSTANCE->Load_Textures(("Test"), TEXT("../Bin/Resources/Textures/Mask/545.png"), MEMORY_TYPE::MEMORY_STATIC);
 
@@ -1382,6 +1373,21 @@ void CLoader::Load_UIResource()
 
 	GAMEINSTANCE->Load_Textures(("Varg_Appear_SliceTop_BG"), TEXT("../Bin/Resources/Textures/UI/AppearEvent/Varg/Slice_Top_BG.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("Varg_Appear_SliceBottom_BG"), TEXT("../Bin/Resources/Textures/UI/AppearEvent/Varg/Slice_Bottom_BG.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	//EvolveMenu_Skill
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_Skill_Title"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Title.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_SkillView_Frame"), TEXT("../Bin/Resources/Textures/UI/General/SkillBackground.dds"), MEMORY_TYPE::MEMORY_STATIC);
+
+	
+
+
+
+
+
+
+
+
 
 
 #endif // _EFFECT_TOOL_

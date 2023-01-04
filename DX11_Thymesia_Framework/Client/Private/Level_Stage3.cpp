@@ -26,7 +26,6 @@ HRESULT CLevel_Stage3::Initialize()
 		return E_FAIL;
 
 
-#ifndef  _ONLY_UI_
 	
 	Loading_AllEffectGroup("..\\Bin\\EffectData\\", LEVEL::LEVEL_STAGE3);
 
@@ -49,7 +48,7 @@ HRESULT CLevel_Stage3::Initialize()
 	GAMEINSTANCE->Add_GameObject<CSkyBox>(LEVEL::LEVEL_STAGE3);
 	GAMEINSTANCE->Set_ShadowLight({ -50.67f, 50.f, 40.f, 1.f }, { 3.45f, 0.f, 40.f });
 
-#endif // ! _ONLY_UI_
+
 
 	m_pFadeMask   = GAMEINSTANCE->Get_GameObjects<CFadeMask>(LEVEL::LEVEL_STATIC).front();
     m_pEvolveMenu = GAMEINSTANCE->Get_GameObjects<CUI_EvolveMenu>(LEVEL::LEVEL_STATIC).front();

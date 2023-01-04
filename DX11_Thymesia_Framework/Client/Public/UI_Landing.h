@@ -7,6 +7,8 @@ BEGIN(Client)
 class CCustomUI;
 class CHUD_Hover;
 
+class CEasingComponent_Alpha;
+
 
 class CUI_Landing : public CUI
 {
@@ -47,6 +49,11 @@ private:
 
 public:
 	void			Call_FadeEnd(FADER_TYPE eFaderType);
+
+
+private://For Blur
+	weak_ptr<CEasingComponent_Alpha>		m_pEasingBlurAmount;
+
 };
 
 END

@@ -65,27 +65,6 @@ void CMonsterParryingBar::Tick(_float fTimeDelta)
 {
     __super::Tick(fTimeDelta);
 
-#ifdef _ONLY_UI_
-    if (KEY_INPUT(KEY::Z, KEY_STATE::TAP))
-    {
-        m_fCrurrentParryGauge -= m_fAmount;
-
-        if (m_fCrurrentParryGauge <= 0)
-            m_fCrurrentParryGauge = 0.f;
-     
-         Set_Lerp(m_fLerpedParryGauge, m_fCrurrentParryGauge, 1.f, EASING_TYPE::EXPO_OUT);
-    }
-    else if (KEY_INPUT(KEY::X, KEY_STATE::TAP))
-    {
-        m_fCrurrentParryGauge += m_fAmount;
-     
-        if (m_fCrurrentParryGauge >= 1.f)
-            m_fCrurrentParryGauge = 1.f;
-
-     Set_Lerp(m_fLerpedParryGauge, m_fCrurrentParryGauge,1.f,EASING_TYPE::EXPO_OUT);
-    }
-
-#endif
     if (Is_Lerping())
     {
       m_fLerpedParryGauge = Get_Lerp().x;

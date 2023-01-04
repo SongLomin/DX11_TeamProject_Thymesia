@@ -1,6 +1,8 @@
 #include "UI_Utils.h"
 #include "GameInstance.h"
 #include "GameManager.h"
+#include "UI.h"
+
 
 _float2 CUI_Utils::ConvertWorldPosToUIPos(_fvector vWorldPos, _fvector vOffset)
 {
@@ -130,3 +132,32 @@ _float2 CUI_Utils::Get_BezierCurve(_float2 fStart, _float2 fTarget, _float fCust
 
 	return fCurve;
 }
+
+void CUI_Utils::Set_SkillIcon(weak_ptr<CUI> pUI, SKILL_NAME eSkillName)
+{
+	switch (eSkillName)
+	{
+	case Client::SKILL_NAME::SKILL_VARGSWORD:
+		pUI.lock()->Set_Texture("SkillIcon_VargSword");
+		break;
+	case Client::SKILL_NAME::SKILL_AXE:
+		pUI.lock()->Set_Texture("SkillIcon_Axe");
+		break;
+	case Client::SKILL_NAME::SKILL_KNIFE:
+		pUI.lock()->Set_Texture("SkillIcon_Knife");
+		break;
+	case Client::SKILL_NAME::SKILL_HAMMER:
+		pUI.lock()->Set_Texture("SkillIcon_Hammer");
+		break;
+	case Client::SKILL_NAME::SKILL_SCYTHE:
+		pUI.lock()->Set_Texture("SkillIcon_Scythe");
+		break;
+	case Client::SKILL_NAME::SKILL_END:
+		pUI.lock()->Set_Texture("None");
+		break;
+	default:
+		pUI.lock()->Set_Texture("None");
+		break;
+	}
+}
+
