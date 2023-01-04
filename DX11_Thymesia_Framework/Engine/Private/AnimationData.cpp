@@ -71,8 +71,9 @@ HRESULT ANIMATION_DATA::Make_AnimationData(aiAnimation* In_pAiAnimation, _float 
 	SET_ANIM_SPEED("Corvus_PW_VargSword_B", 1.75f);
 	SET_ANIM_SPEED("Corvus_PW_VargSword_Start", 1.75f);
 
-	SET_ANIM_SPEED("Corvus_PW_UrdSword01", 2.25f);
+	SET_ANIM_SPEED("Corvus_PW_UrdSword01", 2.25f);  
 	SET_ANIM_SPEED("Corvus_PW_Magician_A", 1.75f);
+	SET_ANIM_SPEED("Corvus_PW_CaneSword_Fast", 2.f);
 	SET_ANIM_SPEED("Corvus_PW_CaneSword_SP02", 2.f);
 	SET_ANIM_SPEED("Corvus_SD_LAttack4", 2.5f);
 	SET_ANIM_SPEED("Corvus_SD_LAttack5", 2.5f);

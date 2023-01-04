@@ -279,12 +279,21 @@ void CEffect_Rect::SetUp_ShaderResource()
 	m_pShaderCom.lock()->Set_RawValue("g_bBillboard", &isBillboard, sizeof(_bool));
 #pragma endregion
 
-#pragma region Bloom & Glow
+#pragma region Bloom & Glow & ShaderFlag
 	_bool bBloom(Check_Option(EFFECTPARTICLE_DESC::Option6::Use_Bloom));
 	m_pShaderCom.lock()->Set_RawValue("g_bBloom", &bBloom, sizeof(_bool));
 
 	_bool bGlow(Check_Option(EFFECTPARTICLE_DESC::Option6::Use_Glow));
 	m_pShaderCom.lock()->Set_RawValue("g_bGlow", &bGlow, sizeof(_bool));
+
+	_vector vShaderFlag;
+	ZeroMemory(&vShaderFlag, sizeof(_vector));
+	if (Check_Option(EFFECTPARTICLE_DESC::Option4::Use_Emissive))
+	{
+		vShaderFlag = { 0.f, 0.f, 1.f, 0.f };
+	}
+
+	m_pShaderCom.lock()->Set_RawValue("g_vShaderFlag", &vShaderFlag, sizeof(_vector));
 
 	m_pShaderCom.lock()->Set_RawValue("g_vGlowColor", &m_vCurrentGlowColor, sizeof(_float4));
 #pragma endregion
@@ -3184,6 +3193,7 @@ void CEffect_Rect::OnEventMessage(_uint iArg)
 			{
 				Tool_ToggleOption("Use Bloom", "##Use_Bloom", EFFECTPARTICLE_DESC::Option6::Use_Bloom);
 				Tool_ToggleOption("Use Glow", "##Use_Glow", EFFECTPARTICLE_DESC::Option6::Use_Glow);
+				Tool_ToggleOption("Use Emissive", "##Use_Emissive", EFFECTPARTICLE_DESC::Option4::Use_Emissive);
 
 				if (Check_Option(EFFECTPARTICLE_DESC::Option6::Use_Glow))
 					Tool_Glow();
