@@ -25,7 +25,7 @@ void CCorvusState_PS_CaneSword::Call_NextKeyFrame(const _uint& In_KeyIndex)
 		_float3 vPlayerPos;
 		ZeroMemory(&vPlayerPos, sizeof(_float3));
 		XMStoreFloat3(&vPlayerPos, GET_SINGLE(CGameManager)->Get_PlayerPos());
-		GAMEINSTANCE->Set_RadialBlur(0.4f, vPlayerPos);
+		GAMEINSTANCE->Set_RadialBlur(0.2f, vPlayerPos);
 	}
 		return;
 	case 100:
