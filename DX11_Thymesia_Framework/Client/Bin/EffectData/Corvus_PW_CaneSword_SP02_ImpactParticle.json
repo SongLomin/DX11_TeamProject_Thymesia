@@ -218,8 +218,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -444,8 +444,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -670,8 +670,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -896,8 +896,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -1122,8 +1122,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -1348,8 +1348,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -1574,8 +1574,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -1800,8 +1800,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -2026,8 +2026,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -2252,8 +2252,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -2478,8 +2478,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -2704,8 +2704,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -2930,8 +2930,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -3156,8 +3156,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -3382,8 +3382,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -3608,8 +3608,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -3834,8 +3834,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -4060,8 +4060,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -4286,8 +4286,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -4512,8 +4512,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -4738,8 +4738,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -4964,8 +4964,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -5190,8 +5190,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
@@ -5416,8 +5416,8 @@
       "ShaderPassIndex": 1,
       "Start_Glow_Color": [
         1,
-        1,
-        1,
+        0.7,
+        0,
         0.5
       ],
       "Sync_Animation": false,
