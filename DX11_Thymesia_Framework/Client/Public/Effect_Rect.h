@@ -47,21 +47,14 @@ public:
     virtual void OnEventMessage(_uint iArg) override;
     void OnChangeAnimationKey(const _uint& In_Key);
 
-#ifdef _EFFECT_TOOL_
-    const void Trigger_Reset(weak_ptr<CTransform> pPreviewModelTransform)
-    {
-        m_pParentTransformCom = pPreviewModelTransform;
-        m_bResetTrigger = true;
-    }
-#endif // _EFFECT_TOOL_
-
 private:
     virtual HRESULT Initialize_Prototype()   override;
     virtual HRESULT Initialize(void* pArg)   override;
     virtual void Tick(_float fTimeDelta)     override;
     virtual void Thread_PreLateTick(_float fTimeDelta);
     virtual void LateTick(_float fTimeDelta) override;
-    virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
+	virtual HRESULT Render(ID3D11DeviceContext* pDeviceContext) override;
+	void Free();
 
     virtual void SetUp_ShaderResource();
 
@@ -144,9 +137,7 @@ private:
 
 #ifdef _EFFECT_TOOL_
 private: // For. Tool
-#ifdef _EFFECT_TOOL_
     void Show_ShaderPasses();
-#endif // _EFFECT_TOOL_
     void Tool_Spawn_Life_Time();
     void Tool_Boner();
     void Tool_Position();
@@ -164,9 +155,6 @@ private: // For. Tool
     void Tool_Texture_Noise();
     void Tool_Glow();
 #endif // _EFFECT_TOOL_
-
-private:
-    void Free();
 
 private:
     weak_ptr<CTransform>                m_pParentTransformCom;
@@ -207,19 +195,12 @@ private:
     weak_ptr<CBoneNode>                 m_pBoneNode;
     weak_ptr<CModel>                    m_pParentModel;
     std::string                         m_strBoneName   = "";
+
 #ifdef _EFFECT_TOOL_
     _int                                m_iCurrentBoneIndex = 0;
-#endif // _EFFECT_TOOL_
 
-#ifdef _EFFECT_TOOL_
-    // For. Thread
-    _bool                   m_bResetTrigger = false;
-    weak_ptr<CTransform>    m_pPreviewModelTransform;
-#endif // _EFFECT_TOOL_
-
-#ifdef _EFFECT_TOOL_
 private:
-	typedef struct tagJoJoParticleShaderInfo
+	typedef struct tagParticleShaderInfo
 	{
 		enum class PARTICLE_RECT_TYPE { DEFAULT, SPRITE, TYPE_END };
 		enum class PARTICLE_DISCARD_TYPE { DISCARD_ALPHA, DISCARD_BLACK, TYPE_END };
