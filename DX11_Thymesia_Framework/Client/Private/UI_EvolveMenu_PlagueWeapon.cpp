@@ -103,6 +103,7 @@ void CUI_EvolveMenu_PlagueWeapon::Init_ChildUI()
 
 	m_pSkillView.lock()->Callback_OnMouseOver += bind(&CUI_EvolveMenu_PlagueWeapon::Call_OnSkillButtonMouseOver, this, placeholders::_1);
 	m_pSkillView.lock()->Callback_OnMouseOut += bind(&CUI_EvolveMenu_PlagueWeapon::Call_OnSkillButtonMouseOut, this);
+	m_pSkillView.lock()->Callback_OnUnlockSkill += bind(&CUI_EvolveMenu_PlagueWeapon::Call_OnUnlockSkill, this, placeholders::_1);
 
 	Add_Child(m_pSkillView);
 	Add_Child(m_pSkillInformation);
@@ -130,6 +131,13 @@ void CUI_EvolveMenu_PlagueWeapon::Call_OnSkillButtonMouseOver(weak_ptr<CUI_Evolv
 void CUI_EvolveMenu_PlagueWeapon::Call_OnSkillButtonMouseOut()
 {
 	m_pSkillInformation.lock()->Clear_Information();
+}
+
+void CUI_EvolveMenu_PlagueWeapon::Call_OnUnlockSkill(weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton> pSkillButton)
+{
+	m_pSkillInformation.lock()->Clear_Information();
+	m_pSkillInformation.lock()->View_Information(pSkillButton);
+	//해금 이펙트 추가
 }
 
 void CUI_EvolveMenu_PlagueWeapon::Free()

@@ -88,14 +88,14 @@ public:
 
     void            Set_AlphaColorAllChilds(_float fAlphaColor);
 
-    virtual void            Set_Depth(_float _fDepth);
+    virtual void    Set_Depth(_float _fDepth);
     virtual void    Set_SizeX(const _float In_fSize);
 
     virtual void    Add_Y(_float fAmountY) { m_tUIDesc.fY += fAmountY; }
 
-    virtual void            Set_Render(_bool bRender) { m_bRender = bRender; }
+    virtual void    Set_Render(_bool bRender) { m_bRender = bRender; }
 
-    virtual void		    Set_RenderGroup(RENDERGROUP eRenderGroup) { m_eRenderGroup = eRenderGroup; }
+    virtual void	Set_RenderGroup(RENDERGROUP eRenderGroup) { m_eRenderGroup = eRenderGroup; }
 public: /* Shaking */
     virtual void    Add_Shaking(const _float& In_ShakeTime, const _float& _fShakePower = 5.f);
 

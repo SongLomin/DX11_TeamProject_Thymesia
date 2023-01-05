@@ -29,12 +29,13 @@ public:
 
     _bool    Check_MouseOveredButtonIsUnLocked();
 
+    void    Set_SkillInformationUI();
     void    Set_UnlockedHintUI();
 
 
 private:
     void                    SetUp_UnlockedHintUI();
-
+    void                    SetUp_SkillInfoUI();
 private:
     virtual void            OnEnable(void* pArg);
     virtual void            OnDisable();
@@ -50,6 +51,19 @@ private://UnlockedHintUI
 
     TEXTINFO                m_tUnlockedHintTextCurrentPiece;
     TEXTINFO                m_tUnlockedHintTextRequirePiece;
+
+
+private://SkillInformationUI
+    weak_ptr<CCustomUI>     m_pSkillInfoBG;
+    weak_ptr<CCustomUI>     m_pSkillInfoIconFrame;
+    weak_ptr<CCustomUI>     m_pSkillInfoIcon;
+    weak_ptr<CCustomUI>     m_pSkillInfoActionDescription;
+    weak_ptr<CCustomUI>     m_pSkillInfoActionTitle;
+
+  
+    
+
+
 
 private:
     void            Free();

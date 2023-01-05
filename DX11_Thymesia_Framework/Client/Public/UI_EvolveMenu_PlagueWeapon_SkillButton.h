@@ -5,7 +5,7 @@ BEGIN(Client)
 
 class CEasingComponent_Alpha;
 class CCustomUI;
-
+class CUI_EvolveMenu_SKillIcon;
 
 class CUI_EvolveMenu_PlagueWeapon_SkillButton : public CUI_Button_Base
 {
@@ -20,7 +20,7 @@ public:
 	virtual void LateTick(_float fTimeDelta);
 
 private:
-	void			Check_Locked();
+	_bool			Check_UnLocked();
 
 public:
 	virtual void    Set_UIPosition(const _float fX, const _float fY) override;
@@ -28,12 +28,21 @@ public:
 
 	SKILL_NAME		Get_SkillName() { return m_eSkillName; }
 	_bool			Get_Unlocked();
+	_bool			Get_Unlockable();
+
+
 	_uint			Get_RequirementSkillPiece();
+
+	void			Unlock_Skill();
+
+
 private:
 	void			SetUp_UI();
 
 protected:
 	virtual void	OnMouseOver() override;
+
+	virtual void	OnLButtonUp() override; 
 	virtual void	OnMouseOut() override;
 	virtual void	OnLButtonDown() override;
 
@@ -41,7 +50,7 @@ private:
 	weak_ptr<CCustomUI>			m_pHover;
 	weak_ptr<CCustomUI>			m_pFrame;
 	weak_ptr<CCustomUI>			m_pBorder;
-	weak_ptr<CCustomUI>			m_pIcon;
+	weak_ptr<CUI_EvolveMenu_SKillIcon>			m_pIcon;
 
 private:
 	weak_ptr<CEasingComponent_Alpha> m_pBorderEasingAlpha;

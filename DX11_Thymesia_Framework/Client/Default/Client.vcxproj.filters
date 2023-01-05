@@ -1827,6 +1827,8 @@
     <ClInclude Include="..\Public\UI_EvolveMenu_Page.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillButton.h" />
     <ClInclude Include="..\Public\UI_EvolveMenu_PlagueWeapon_SkillInformation.h" />
+    <ClInclude Include="..\Public\UI_EvolveMenu_SKillIcon.h" />
+    <ClInclude Include="..\Public\UI_UnlockEventUI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -3698,6 +3700,8 @@
     <ClCompile Include="..\Private\UI_EvolveMenu_Page.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillButton.cpp" />
     <ClCompile Include="..\Private\UI_EvolveMenu_PlagueWeapon_SkillInformation.cpp" />
+    <ClCompile Include="..\Private\UI_EvolveMenu_SKillIcon.cpp" />
+    <ClCompile Include="..\Private\UI_UnlockEventUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

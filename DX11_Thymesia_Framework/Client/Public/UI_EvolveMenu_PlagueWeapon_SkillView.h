@@ -35,10 +35,11 @@ public:
 
     FDelegate<weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton>>    Callback_OnMouseOver;
     FDelegate<>    Callback_OnMouseOut;
+    FDelegate<weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton>>    Callback_OnUnlockSkill;
 
     void        Call_OnMouseOver(weak_ptr< CUI_EvolveMenu_PlagueWeapon_SkillButton> pSkillButton);
     void        Call_OnMouseOut();
-
+    void        Call_OnUnlockSkill(weak_ptr< CUI_EvolveMenu_PlagueWeapon_SkillButton> pSkillButton);
 
 private:
     vector<_float2>             m_vecSkillPos;

@@ -1385,17 +1385,31 @@ void CLoader::Load_UIResource()
 
 	
 
-	//EvolveMenu_Information;
+	//EvolveMenu_Information_UnlockHintUI;
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_UnlockSkillHintBackground"), TEXT("../Bin/Resources/Textures/UI/General/TexUI_UnlockSkillHintBackground.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_TextEnoughSkillPiece"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/Text_EnoughSkillPiece.png"), MEMORY_TYPE::MEMORY_STATIC);
 	GAMEINSTANCE->Load_Textures(("EvolveMenu_TextNotEnoughSkillPiece"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/Text_NotEnoughSkillPiece.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
+	//EvolveMenu_Information_SkillInfo
+
+	GAMEINSTANCE->Load_Textures(("EvolveMenu_PW_Background_Right"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu/PlagueWeapon/TexUI_PW_Background_Right.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
+	GAMEINSTANCE->Load_Textures(("PW_Axe_Title"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/Axe/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("PW_Axe_Information"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/Axe/Information0.png"), MEMORY_TYPE::MEMORY_STATIC);
 
+	GAMEINSTANCE->Load_Textures(("PW_Knife_Title"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/Knife/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("PW_Knife_Information"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/Knife/Information0.png"), MEMORY_TYPE::MEMORY_STATIC);
 
+	GAMEINSTANCE->Load_Textures(("PW_VargSword_Title"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/VargSword/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("PW_VargSword_Information"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/VargSword/Information0.png"), MEMORY_TYPE::MEMORY_STATIC);
 
+	GAMEINSTANCE->Load_Textures(("PW_Hammer_Title"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/Hammer/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("PW_Hammer_Information"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/Hammer/Information0.png"), MEMORY_TYPE::MEMORY_STATIC);
+
+	GAMEINSTANCE->Load_Textures(("PW_Scythe_Title"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/Scythe/Title.png"), MEMORY_TYPE::MEMORY_STATIC);
+	GAMEINSTANCE->Load_Textures(("PW_Scythe_Information"), TEXT("../Bin/Resources/Textures/UI/EvolveMenu_PW/Informaiton/Scythe/Information0.png"), MEMORY_TYPE::MEMORY_STATIC);
 
 
 #endif // _EFFECT_TOOL_

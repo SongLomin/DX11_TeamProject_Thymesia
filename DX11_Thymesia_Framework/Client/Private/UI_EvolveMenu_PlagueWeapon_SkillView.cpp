@@ -146,6 +146,10 @@ void CUI_EvolveMenu_PlagueWeapon_SkillView::Bind_Callback(weak_ptr<CUI_EvolveMen
 
 	pButton.lock()->Callback_MouseOut += bind(&CUI_EvolveMenu_PlagueWeapon_SkillView::Call_OnMouseOut, this);
 
+	
+	pButton.lock()->Callback_UnLockSkill += bind(&CUI_EvolveMenu_PlagueWeapon_SkillView::Call_OnUnlockSkill, this,
+		placeholders::_1);
+
 }
 
 void CUI_EvolveMenu_PlagueWeapon_SkillView::Call_OnMouseOver(weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton> pSkillButton)
@@ -156,6 +160,11 @@ void CUI_EvolveMenu_PlagueWeapon_SkillView::Call_OnMouseOver(weak_ptr<CUI_Evolve
 void CUI_EvolveMenu_PlagueWeapon_SkillView::Call_OnMouseOut()
 {
 	Callback_OnMouseOut();
+}
+
+void CUI_EvolveMenu_PlagueWeapon_SkillView::Call_OnUnlockSkill(weak_ptr<CUI_EvolveMenu_PlagueWeapon_SkillButton> pSkillButton)
+{
+	Callback_OnUnlockSkill(pSkillButton);
 }
 
 void CUI_EvolveMenu_PlagueWeapon_SkillView::Free()
