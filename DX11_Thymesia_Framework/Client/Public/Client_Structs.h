@@ -266,13 +266,13 @@ namespace Client
 		_ubyte		byOption2 = 0;
 		enum class Option2
 		{
-			Use_Gravity            = 0b0000'0001
-			, Use_Speed            = 0b0000'0010
-			, Use_Force            = 0b0000'0100
-			, Use_SpeedMaxLimit    = 0b0000'1000
-			, Use_RotationSpeed    = 0b0001'0000
-			, Use_RotationForce    = 0b0010'0000
-			, Use_RotationLimit	   = 0b0100'0000
+			Use_Gravity              = 0b0000'0001
+			, Use_Speed              = 0b0000'0010
+			, Use_Force              = 0b0000'0100
+			, Use_SpeedMaxLimit      = 0b0000'1000
+			, Use_RotationSpeed      = 0b0001'0000
+			, Use_RotationForce      = 0b0010'0000
+			, Use_RotationLimit	     = 0b0100'0000
 			, Option_SpeedRotation_END
 		};
 
@@ -299,11 +299,13 @@ namespace Client
 		_ubyte		byOption3 = 0;
 		enum class Option3
 		{
-			Square_Scale     = 0b0000'0001
-			, Ratio_Scale    = 0b0000'0010
-			, Easing_Scale   = 0b0000'0100
-			, Use_ScaleSpeed = 0b0000'1000
-			, Use_ScaleForce = 0b0001'0000
+			Square_Scale			 = 0b0000'0001
+			, Ratio_Scale			 = 0b0000'0010
+			, Easing_Scale			 = 0b0000'0100
+			, Use_ScaleSpeed		 = 0b0000'1000
+			, Use_ScaleForce		 = 0b0001'0000
+			, Stop_At_GoalAttraction = 0b0010'0000
+			, Kill_At_GoalAttraction = 0b0100'0000
 			, Option_Scale_END
 		};
 #pragma endregion

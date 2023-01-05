@@ -645,6 +645,11 @@ const _bool ENGINE_DLL Engine::SMath::Is_Equal(const XMFLOAT4 Left, const XMFLOA
 	return ((fXDiff < DBL_EPSILON) && (fYDiff < DBL_EPSILON) && (fZDiff < DBL_EPSILON) && (fWDiff < DBL_EPSILON)) ? true : false;
 }
 
+const _bool ENGINE_DLL Engine::SMath::Is_InRange(const XMFLOAT4 Left, const XMFLOAT4 Right, const _float fRange)
+{
+
+}
+
 
 void ENGINE_DLL Engine::SMath::Convert_PxVec3FromMeshData(PxVec3* In_PxVec3, weak_ptr<MESH_DATA> pMeshData)
 {

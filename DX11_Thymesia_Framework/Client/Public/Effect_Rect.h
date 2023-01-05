@@ -140,6 +140,7 @@ private: // For. Tool
     void Show_ShaderPasses();
     void Tool_Spawn_Life_Time();
     void Tool_Boner();
+    void Tool_Attraction();
     void Tool_Position();
     void Tool_Speed();
     void Tool_Speed_Easing();
