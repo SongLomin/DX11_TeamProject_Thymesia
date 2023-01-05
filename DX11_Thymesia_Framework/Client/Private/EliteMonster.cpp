@@ -136,6 +136,12 @@ void CEliteMonster::Bind_HPBar()
     GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::BATTLEUI, m_pHPBar);
 }
 
+void CEliteMonster::Release_Monster()
+{
+    __super::Release_Monster();
+    GET_SINGLE(CGameManager)->Remove_Layer(OBJECT_LAYER::ELITEMONSTER, m_thisToGameObject);
+}
+
 
 //void   CEliteMonster::Bind_HPBar()
 //{
@@ -183,6 +189,9 @@ void CEliteMonster::OnCollisionExit(weak_ptr<CCollider> pMyCollider, weak_ptr<CC
 void CEliteMonster::OnEnable(void* _Arg)
 {
     __super::OnEnable(_Arg);
+
+    GET_SINGLE(CGameManager)->Register_Layer(OBJECT_LAYER::ELITEMONSTER, Weak_Cast<CGameObject>(m_this));
+
 
 }
 

@@ -61,6 +61,8 @@ void CCorvusState_HurtXXL::OnStateStart(const _float& In_fAnimationBlendTime)
 
 	m_pModelCom.lock()->Set_CurrentAnimation(m_iAnimIndex);
 
+	Weak_StaticCast<CCorvus>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(2.f, 2.f, 2.f));
+
 	_float3 vRandDir = SMath::vRandom(_float3(-1.f, -1.f, 0.f), _float3(1.f, 1.f, 0.f));
 
 	_matrix WorldMatrix = m_pOwner.lock()->Get_Transform()->Get_WorldMatrix();
@@ -80,7 +82,7 @@ void CCorvusState_HurtXXL::OnStateEnd()
 {
 	__super::OnStateEnd();
 
-	
+	Weak_StaticCast<CCorvus>(Get_OwnerCharacter()).lock()->Set_MoveScale(_float3(1.f, 1.f, 1.f));
 }
 
 void CCorvusState_HurtXXL::Call_AnimationEnd()

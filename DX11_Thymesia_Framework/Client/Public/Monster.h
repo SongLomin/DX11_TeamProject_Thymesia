@@ -24,6 +24,7 @@ public:
         _float4              m_fStartPositon;
         BOSSSTARTTYPE        eBossStartType;
         _int                 iSectionIndex;
+        _bool                bPatrol;
 
         void Reset()
         {

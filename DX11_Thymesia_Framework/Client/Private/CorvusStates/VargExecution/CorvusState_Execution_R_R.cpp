@@ -121,6 +121,10 @@ void CCorvusState_Execution_R_R::OnEventMessage(_uint iArg)
 	__super::OnEventMessage(iArg);
 
 
+	if (EVENT_TYPE::ON_BIGHANDMANEXECUTION == (EVENT_TYPE)iArg)
+	{
+		eExeMonName = EXECUTIONMONSTERNAME::BIGHANDMAN;
+	}
 
 	if (EVENT_TYPE::ON_URDEXECUTON == (EVENT_TYPE)iArg)
 	{
@@ -139,28 +143,51 @@ _bool CCorvusState_Execution_R_R::Check_AndChangeNextState()
 	if (!Check_Requirement())
 		return false;
 
+
+
 	if (m_pModelCom.lock()->Get_CurrentAnimation().lock()->Get_CurrentChannelKeyIndex() == 27)
 	{
 		
-
-		list<weak_ptr <CGameObject>> pBossMonsters = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::BOSSMONSTER);
-
-		for (auto& elem : pBossMonsters)
+		if (eBossName != BOSSNAME::NAMEEND)
 		{
-			elem.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_BOSS_EXECUTIONSTART);
+			list<weak_ptr <CGameObject>> pBossMonsters = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::BOSSMONSTER);
+
+			for (auto& elem : pBossMonsters)
+			{
+				elem.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_BOSS_EXECUTIONSTART);
+			}
+			switch (eBossName)
+			{
+			case Client::BOSSNAME::VARG:
+				Get_OwnerPlayer()->Change_State<CCorvusState_Varg_Execution>();
+				break;
+			case Client::BOSSNAME::BAT:
+				break;
+			case Client::BOSSNAME::URD:
+				Get_OwnerPlayer()->Change_State<CCorvusState_Urd_Execution>();
+				break;
+			}
 		}
-		switch (eBossName)
+
+		if (eExeMonName != EXECUTIONMONSTERNAME::NAMEEND)
 		{
-		case Client::BOSSNAME::VARG:
-			Get_OwnerPlayer()->Change_State<CCorvusState_Varg_Execution>();
-			break;
-		case Client::BOSSNAME::BAT:
-			break;
-		case Client::BOSSNAME::URD:
-			Get_OwnerPlayer()->Change_State<CCorvusState_Urd_Execution>();
-			break;
+			list<weak_ptr <CGameObject>> pBossMonsters = GET_SINGLE(CGameManager)->Get_Layer(OBJECT_LAYER::ELITEMONSTER);
+
+			for (auto& elem : pBossMonsters)
+			{
+				elem.lock()->OnEventMessage((_uint)EVENT_TYPE::ON_BIGHANDMANEXECUTION);
+			}
+
+			switch (eExeMonName)
+			{
+			case Client::EXECUTIONMONSTERNAME::BIGHANDMAN:
+				Get_OwnerPlayer()->Change_State<CCorvusState_BigHandman_Execution>();
+				break;
+			case Client::EXECUTIONMONSTERNAME::ARMORMAN:
+				break;
+			}
 		}
-		
+			
 		return true;
 	}
 
